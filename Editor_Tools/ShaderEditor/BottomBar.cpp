@@ -14,17 +14,15 @@
 TfraBottomBar *fraBottomBar=0;
 //---------------------------------------------------------------------------
 void TUI::OutGridSize(){
-    if (g_bEditorValid){
-        AnsiString s;
-        s.sprintf("Grid: %1.1f",float(frmEditorPreferences->seGridSquareSize->Value));
-        fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
-    }
+	VERIFY(m_bReady);
+	AnsiString s;
+    s.sprintf("Grid: %1.1f",float(frmEditorPreferences->seGridSquareSize->Value));
+    fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
 }
 //---------------------------------------------------------------------------
 void TUI::SetStatus(LPSTR s){
-    if (g_bEditorValid){
-        fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
-    }
+	VERIFY(m_bReady);
+	fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
 }
 void TUI::ProgressStart(float max_val, const char* text){
 	fraBottomBar->paStatus->Caption=text;
@@ -61,28 +59,25 @@ void TUI::ProgressInc(){
 }
 //---------------------------------------------------------------------------
 void TUI::OutCameraPos(){
-    if (g_bEditorValid){
-    	AnsiString s;
-        const Fvector& c = Device.m_Camera.GetPosition();
-        s.sprintf(" Cam: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
-        fraBottomBar->paCameraPos->Caption=s; fraBottomBar->paCameraPos->Repaint();
-    }
+	VERIFY(m_bReady);
+	AnsiString s;
+    const Fvector& c = Device.m_Camera.GetPosition();
+    s.sprintf(" Cam: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
+    fraBottomBar->paCameraPos->Caption=s; fraBottomBar->paCameraPos->Repaint();
 }
 //---------------------------------------------------------------------------
 void TUI::OutUICursorPos(){
-    if (g_bEditorValid){
-        AnsiString s; POINT pt;
-        GetCursorPos(&pt);
-        s.sprintf("Cursor: %d, %d",pt.x,pt.y);
-        fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
-    }
+	VERIFY(m_bReady);
+    AnsiString s; POINT pt;
+    GetCursorPos(&pt);
+    s.sprintf("Cursor: %d, %d",pt.x,pt.y);
+    fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
 }
 //---------------------------------------------------------------------------
 __fastcall TfraBottomBar::TfraBottomBar(TComponent* Owner)
     : TFrame(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+	DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 

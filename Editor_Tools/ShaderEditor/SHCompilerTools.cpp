@@ -153,10 +153,11 @@ LPCSTR CSHCompilerTools::GenerateShaderName(LPSTR name, LPCSTR source){
 
 Shader_xrLC* CSHCompilerTools::AppendShader(LPCSTR folder_name, Shader_xrLC* parent){
 	// append blender
+    char old_name[128]; if (parent) strcpy(old_name,parent->Name);
     Shader_xrLC* S = m_Library.Append(parent);
     char new_name[128]; new_name[0]=0;
     if (folder_name) strcpy(new_name,folder_name);
-    GenerateShaderName(new_name,parent?parent->Name:0);
+    GenerateShaderName(new_name,parent?old_name:0);
     strcpy(S->Name,new_name);
 	fraLeftBar->AddCShader(S->Name,false);
     return S;

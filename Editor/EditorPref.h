@@ -34,7 +34,7 @@ __published:	// IDE-managed Components
     TPanel *paBottom;
     TTabSheet *tsMouse;
 	TTabSheet *tsScene;
-    TFormStorage *fsEditorPref;
+	TFormStorage *fsStorage;
     TGroupBox *GroupBox1;
     TMxLabel *RxLabel8;
 	TTabSheet *tsEdit;
@@ -126,7 +126,7 @@ __published:	// IDE-managed Components
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall FormCreate(TObject *Sender);
-    void __fastcall fsEditorPrefRestorePlacement(TObject *Sender);
+    void __fastcall fsStorageRestorePlacement(TObject *Sender);
     void __fastcall mcColorDialogClick(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall seNavNetConectDistChange(TObject *Sender);

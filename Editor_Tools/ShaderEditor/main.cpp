@@ -18,11 +18,8 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
         : TForm(Owner)
 {
-    fraBottomBar= new TfraBottomBar(0);
-    fraLeftBar  = new TfraLeftBar(0);
-    fraTopBar   = new TfraTopBar(0);
-	fsMainForm->RestoreFormPlacement();
     if (!UI.Command(COMMAND_INITIALIZE)) exit(-1);
+	fsStorage->RestoreFormPlacement();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormShow(TObject *Sender)
@@ -39,20 +36,17 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
 {
+    Application->OnIdle     = 0;
+
     fraLeftBar->fsStorage->SaveFormPlacement();
     fraBottomBar->fsStorage->SaveFormPlacement();
     fraTopBar->fsStorage->SaveFormPlacement();
 
-    UI.Command(COMMAND_DESTROY);
-
     fraTopBar->Parent       = 0;
     fraLeftBar->Parent      = 0;
     fraBottomBar->Parent    = 0;
-    _DELETE(fraLeftBar);
-    _DELETE(fraTopBar);
-    _DELETE(fraBottomBar);
 
-    Application->OnIdle     = 0;
+    UI.Command(COMMAND_DESTROY);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
@@ -64,8 +58,7 @@ void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormCreate(TObject *Sender)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsMainForm->IniFileName = buf;
+	DEFINE_INI(fsStorage);
     Application->OnIdle = IdleHandler;
 }
 
@@ -97,11 +90,11 @@ void __fastcall TfrmMain::TopClick(TObject *Sender)
 void __fastcall TfrmMain::IdleHandler(TObject *Sender, bool &Done)
 {
     Done = false;
-    if (g_bEditorValid) UI.Idle();
+    UI.Idle();
 }
 void __fastcall TfrmMain::D3DWindowResize(TObject *Sender)
 {
-    if (g_bEditorValid) UI.Resize();
+    UI.Resize();
 }
 //---------------------------------------------------------------------------
 
@@ -109,26 +102,26 @@ void __fastcall TfrmMain::D3DWindowKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     ShiftKey = Shift;
-    if (g_bEditorValid) if (!UI.KeyDown(Key, Shift)){UI.ApplyShortCut(Key, Shift);}
+    if (!UI.KeyDown(Key, Shift)){UI.ApplyShortCut(Key, Shift);}
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::D3DWindowKeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-    if (g_bEditorValid) if (!UI.KeyUp(Key, Shift)){;}
+    if (!UI.KeyUp(Key, Shift)){;}
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::D3DWindowKeyPress(TObject *Sender, char &Key)
 {
-    if (g_bEditorValid) if (!UI.KeyPress(Key, ShiftKey)){;}
+    if (!UI.KeyPress(Key, ShiftKey)){;}
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
 {
-    if (g_bEditorValid&&!D3DWindow->Focused()) UI.ApplyGlobalShortCut(Key, Shift);
+    if (!D3DWindow->Focused()) UI.ApplyGlobalShortCut(Key, Shift);
 }
 //---------------------------------------------------------------------------
 
@@ -155,12 +148,12 @@ void __fastcall TfrmMain::tmRefreshTimer(TObject *Sender)
 
 void __fastcall TfrmMain::D3DWindowPaint(TObject *Sender)
 {
-    if (g_bEditorValid) UI.RedrawScene();
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfrmMain::fsMainFormRestorePlacement(TObject *Sender)
+void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
 {
     fraLeftBar->fsStorage->RestoreFormPlacement();
     fraBottomBar->fsStorage->RestoreFormPlacement();
@@ -177,7 +170,7 @@ void __fastcall TfrmMain::paWindowResize(TObject *Sender)
 
 void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 {
-	if (!g_bEditorValid) return;
+	if (!UI.m_bReady) return;
 	if (D3DWindow->Focused()){
      	paWindow->Color=TColor(0x090FFFF);
 		// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp

@@ -23,9 +23,8 @@ __fastcall TfrmEditorPreferences::TfrmEditorPreferences(TComponent* Owner)
 
 void __fastcall TfrmEditorPreferences::FormCreate(TObject *Sender)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsEditorPref->IniFileName = buf;
-    fsEditorPref->RestoreFormPlacement();
+	DEFINE_INI(fsStorage);
+    fsStorage->RestoreFormPlacement();
 }
 //---------------------------------------------------------------------------
 static TStaticText* temp_text=0;
@@ -58,8 +57,7 @@ void __fastcall TfrmEditorPreferences::ebOkClick(TObject *Sender)
 {
     Close();
     ModalResult = mrOk;
-
-    fsEditorPrefRestorePlacement(0);
+    fsStorageRestorePlacement(0);
 }
 //---------------------------------------------------------------------------
 
@@ -71,7 +69,7 @@ void __fastcall TfrmEditorPreferences::ebCancelClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditorPreferences::fsEditorPrefRestorePlacement(
+void __fastcall TfrmEditorPreferences::fsStorageRestorePlacement(
       TObject *Sender)
 {
 	UI.m_AngleSnap = deg2rad(seSnapAngle->Value);

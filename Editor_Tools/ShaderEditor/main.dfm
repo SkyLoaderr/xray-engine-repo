@@ -127,11 +127,10 @@ object frmMain: TfrmMain
       end
     end
   end
-  object fsMainForm: TFormStorage
+  object fsStorage: TFormStorage
     IniSection = 'Main Form'
-    Options = [fpState]
     RegistryRoot = prLocalMachine
-    OnRestorePlacement = fsMainFormRestorePlacement
+    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'paLeftBar.Tag')
     StoredValues = <>

@@ -14,6 +14,7 @@ DEFINE_MAP_PRED(AnsiString,CEditableObject*,EditObjMap,EditObjPairIt,astr_pred);
 //----------------------------------------------------
 class ELibrary:	public pureDeviceCreate, public pureDeviceDestroy
 {
+	bool				m_bReady;
 	friend class TfrmChoseObject;
 	EditObjMap			m_EditObjects;
     AStringVec			m_Objects;

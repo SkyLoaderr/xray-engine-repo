@@ -16,9 +16,9 @@
 
 TUI UI;
 
-bool g_bEditorValid = false;
 TUI::TUI()
 {
+	m_bReady = false;
     m_D3DWindow = 0;
     bNeedAbort   = false;
 
@@ -76,25 +76,26 @@ bool TUI::OnCreate(){
 #ifdef _LEVEL_EDITOR
     m_Cursor        = new C3DCursor();
 #endif
-	g_bEditorValid  = true;
 
     XRC.RayMode		(RAY_CULL);
 
     pInput			= new CInput(FALSE,mouse_device_key);
     UI.iCapture		();
+
+    m_bReady		= true;
     return true;
 }
 
 void TUI::OnDestroy()
 {
-	R_ASSERT(g_bEditorValid);
+	VERIFY(m_bReady);
+	m_bReady		= false;
 	UI.iRelease			();
     _DELETE(pInput);
     EndEState();
 	DU::UninitUtilLibrary();
 
     Device.ShutDown	();
-    g_bEditorValid = false;
 }
 
 bool TUI::IsModified()
@@ -116,6 +117,7 @@ void TUI::UpdateSelectionRect( const Ipoint& from, const Ipoint& to ){
 
 bool __fastcall TUI::KeyDown (WORD Key, TShiftState Shift)
 {
+	if (!m_bReady) return false;
 	m_ShiftState = Shift;
     if (m_ShiftState.Contains(ssLeft)) Log("LB press.");
 	if (Device.m_Camera.KeyDown(Key,Shift)) return true;
@@ -124,6 +126,7 @@ bool __fastcall TUI::KeyDown (WORD Key, TShiftState Shift)
 
 bool __fastcall TUI::KeyUp   (WORD Key, TShiftState Shift)
 {
+	if (!m_bReady) return false;
 	m_ShiftState = Shift;
 	if (Device.m_Camera.KeyUp(Key,Shift)) return true;
     return Tools.KeyUp(Key, Shift);
@@ -131,12 +134,13 @@ bool __fastcall TUI::KeyUp   (WORD Key, TShiftState Shift)
 
 bool __fastcall TUI::KeyPress(WORD Key, TShiftState Shift)
 {
+	if (!m_bReady) return false;
     return Tools.KeyPress(Key, Shift);
 }
 
 //----------------------------------------------------
 void TUI::OnMousePress(int btn){
-	if(!g_bEditorValid) return;
+	if (!m_bReady) return;
     if(m_MouseCaptured) return;
 
     // test owner
@@ -174,7 +178,7 @@ void TUI::OnMousePress(int btn){
 }
 
 void TUI::OnMouseRelease(int btn){
-	if(!g_bEditorValid) return;
+	if (!m_bReady) return;
 
     if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
     if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
@@ -202,7 +206,7 @@ void TUI::OnMouseRelease(int btn){
     RedrawScene();
 }
 void TUI::OnMouseMove(int x, int y){
-	if(!g_bEditorValid) return;
+	if (!m_bReady) return;
     bool bRayUpdated = false;
 
     if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
@@ -238,12 +242,14 @@ void TUI::OnMouseMove(int x, int y){
 
 void TUI::OnAppActivate()
 {
+	VERIFY(m_bReady);
 	if (pInput) pInput->OnAppActivate();
 }
 //---------------------------------------------------------------------------
 
 void TUI::OnAppDeactivate()
 {
+	VERIFY(m_bReady);
 	if (pInput) pInput->OnAppDeactivate();
 }
 //---------------------------------------------------------------------------

@@ -34,6 +34,7 @@ static bool sort_pred(AnsiString& A, AnsiString& B)
 
 ELibrary::ELibrary(){
 	m_Current = "";
+    m_bReady  = false;
 }
 //----------------------------------------------------
 
@@ -52,10 +53,13 @@ void ELibrary::OnCreate(){
 	std::sort(m_Objects.begin(),m_Objects.end(),sort_pred);
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
+    m_bReady = true;
 }
 //----------------------------------------------------
 
 void ELibrary::OnDestroy(){
+	VERIFY(m_bReady);
+    m_bReady = false;
 	Device.seqDevCreate.Remove(this);
 	Device.seqDevDestroy.Remove(this);
 	m_Current = "";
@@ -72,15 +76,18 @@ void ELibrary::OnDestroy(){
 //----------------------------------------------------
 
 void ELibrary::SetCurrentObject(LPCSTR T){
+	VERIFY(m_bReady);
 	AStringIt P = lower_bound(m_Objects.begin(),m_Objects.end(),AnsiString(T),sort_pred);
     if (P!=m_Objects.end()) m_Current = *P;
 }
 int ELibrary::ObjectCount(){
+	VERIFY(m_bReady);
 	return m_Objects.size();
 }
 //----------------------------------------------------
 
 void ELibrary::UnloadMeshes(){
+	VERIFY(m_bReady);
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++) delete O->second;
@@ -88,11 +95,13 @@ void ELibrary::UnloadMeshes(){
 }
 //----------------------------------------------------
 void ELibrary::ReloadLibrary(){
+	VERIFY(m_bReady);
     OnDestroy();
     OnCreate();
 }
 //----------------------------------------------------
 void ELibrary::RefreshLibrary(){
+	VERIFY(m_bReady);
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++)
@@ -101,6 +110,7 @@ void ELibrary::RefreshLibrary(){
 //----------------------------------------------------
 
 void ELibrary::OnDeviceCreate(){
+	VERIFY(m_bReady);
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++)
@@ -109,6 +119,7 @@ void ELibrary::OnDeviceCreate(){
 //---------------------------------------------------------------------------
 
 void ELibrary::OnDeviceDestroy(){
+	VERIFY(m_bReady);
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++)
@@ -117,6 +128,7 @@ void ELibrary::OnDeviceDestroy(){
 //---------------------------------------------------------------------------
 
 CEditableObject* ELibrary::LoadEditObject(LPCSTR name){
+	VERIFY(m_bReady);
     CEditableObject* m_EditObject = new CEditableObject(name);
     AnsiString fn=ChangeFileExt(name,".object");
     FS.m_Objects.Update(fn);
@@ -132,6 +144,7 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name){
 
 CEditableObject* ELibrary::GetEditObject(LPCSTR name)
 {
+	VERIFY(m_bReady);
     CEditableObject* m_EditObject = 0;
 	AStringIt P = lower_bound(m_Objects.begin(),m_Objects.end(),AnsiString(name),sort_pred);
     if (P==m_Objects.end()) return 0;
@@ -145,6 +158,7 @@ CEditableObject* ELibrary::GetEditObject(LPCSTR name)
 
 void ELibrary::UnloadObject(LPCSTR N)
 {
+	VERIFY(m_bReady);
 	R_ASSERT(N&&N[0]);
 	EditObjPairIt it = m_EditObjects.find(AnsiString(N));
     if (it!=m_EditObjects.end()){
@@ -156,6 +170,7 @@ void ELibrary::UnloadObject(LPCSTR N)
 
 void ELibrary::Save()
 {
+	VERIFY(m_bReady);
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++)

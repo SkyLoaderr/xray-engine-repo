@@ -231,7 +231,7 @@ public:
     }
     IC virtual void Play(){
 		m_bPlaying 		= true;
-		if (m_dwFlag&PS_EM_PLAY_ONCE)	
+		if (m_dwFlag&PS_EM_PLAY_ONCE)
 			m_iPlayResidue = iFloor(m_ParticleLimit);
     }
     IC virtual void Stop(){
@@ -405,5 +405,6 @@ IC void SimulateAnimation(int& frame, SParams* def, const SParticle* P, float T)
     frame = iFloor(P->m_fAnimSpeed*T)+P->m_iAnimStartFrame;
     frame %=def->m_Animation.m_iFrameCount;
 }
+DEFINE_VECTOR		(PS::SDef, PSVec, PSIt);
 }
 #endif //ParticleSystemH

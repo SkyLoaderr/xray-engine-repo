@@ -7,7 +7,6 @@
 #include "UI_MainCommand.h"
 #include "ColorPicker.h"
 #include "FController.h"
-extern bool g_bEditorValid;
 
 // refs
 class CCustomObject;
@@ -39,6 +38,7 @@ protected:
     EStateList m_EditorState;
     bool bNeedAbort;
 public:
+	bool m_bReady;
     TD3DWindow* GetD3DWindow(){return m_D3DWindow;}
 protected:
 	float m_AngleSnap;

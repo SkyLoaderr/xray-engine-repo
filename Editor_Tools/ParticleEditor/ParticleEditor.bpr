@@ -49,7 +49,8 @@
       Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj 
       Intermediate\ShaderFunction.obj Intermediate\PSLibrary.obj 
       Intermediate\xrParticlesLib.obj Intermediate\PSObject.obj 
-      Intermediate\PropertiesPSDef.obj Intermediate\FrameEmitter.obj"/>
+      Intermediate\PropertiesPSDef.obj Intermediate\FrameEmitter.obj 
+      Intermediate\TLSPRITE.obj Intermediate\CustomObject.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

@@ -216,7 +216,7 @@ void __fastcall TfrmPropertiesPSDef::ebSelectShaderClick(TObject *Sender)
     if (S){
     	lbShader->Caption=S;
         ApplyObjectsInfo();
-//S		Tools.UpdateCurrent();
+		Tools.UpdateCurrent();
     }
 }
 //---------------------------------------------------------------------------
@@ -228,7 +228,7 @@ void __fastcall TfrmPropertiesPSDef::ebSelectTextureClick(TObject *Sender)
     if (S){
     	lbTexture->Caption=S;
         ApplyObjectsInfo();
-//S		Tools.UpdateCurrent();
+		Tools.UpdateCurrent();
     }
 }
 //---------------------------------------------------------------------------
@@ -338,7 +338,7 @@ void __fastcall TfrmPropertiesPSDef::ExtBtn1Click(TObject *Sender){
 void __fastcall TfrmPropertiesPSDef::seEmitterExit(TObject *Sender)
 {
 	ApplyObjectsInfo();
-//S	Tools.UpdateEmitter();
+	Tools.UpdateEmitter();
 }
 //---------------------------------------------------------------------------
 
@@ -347,7 +347,7 @@ void __fastcall TfrmPropertiesPSDef::seEmitterKeyDown(TObject *Sender,
 {
 	if (Key==VK_RETURN){
     	ApplyObjectsInfo();
-//S		Tools.UpdateEmitter();
+		Tools.UpdateEmitter();
     }
 }
 //---------------------------------------------------------------------------
@@ -356,7 +356,7 @@ void __fastcall TfrmPropertiesPSDef::seEmitterLWChange(TObject *Sender,
       int Val)
 {
     ApplyObjectsInfo();
-//S	Tools.UpdateEmitter();
+	Tools.UpdateEmitter();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesPSDef::ebBirthFuncMouseUp(TObject *Sender,
@@ -370,14 +370,14 @@ void __fastcall TfrmPropertiesPSDef::ebBirthFuncMouseUp(TObject *Sender,
     	fraEmitter->ebBirthFunc->Down = false;
     }
     ApplyObjectsInfo();
-//S	Tools.UpdateEmitter();
+	Tools.UpdateEmitter();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesPSDef::ebBirthFuncClick(TObject *Sender)
 {
     ApplyObjectsInfo();
-//S	Tools.UpdateEmitter();
+	Tools.UpdateEmitter();
 }
 //---------------------------------------------------------------------------
 

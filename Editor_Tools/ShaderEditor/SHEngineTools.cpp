@@ -322,11 +322,12 @@ LPCSTR CSHEngineTools::GenerateConstantName(LPSTR name){
 
 CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
 	// append blender
+    char old_name[128]; if (parent) strcpy(old_name,parent->GetName());
     CBlender* B = CBlender::Create(cls_id);
     if (parent) *B = *parent;
     char name[128]; name[0]=0;
     if (folder_name) strcpy(name,folder_name);
-    B->getDescription().Setup(GenerateBlenderName(name,parent?parent->getName():0));
+    B->getDescription().Setup(GenerateBlenderName(name,parent?old_name:0));
     // append matrix& constant
     CFS_Memory M;
     B->Save(M);

@@ -372,3 +372,15 @@ void CPSObject::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
+void CPSObject::OnDeviceCreate(){
+	// создать заново shaders
+    if (m_Definition&&m_Definition->m_ShaderName[0]&&m_Definition->m_TextureName[0])
+    	m_Shader = Device.Shader.Create(m_Definition->m_ShaderName,m_Definition->m_TextureName);
+}
+
+void CPSObject::OnDeviceDestroy(){
+	// удалить shaders
+    Device.Shader.Delete(m_Shader);
+}
+
+

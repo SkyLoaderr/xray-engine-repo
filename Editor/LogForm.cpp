@@ -12,8 +12,7 @@ TfrmLog *TfrmLog::form=0;
 __fastcall TfrmLog::TfrmLog(TComponent* Owner)
     : TForm(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+	DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmLog::CreateLog(){

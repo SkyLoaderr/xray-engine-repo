@@ -16,7 +16,7 @@
 #include "UI_Main.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
-//	char filebuffer[MAX_PATH]="";
+	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
 
     bool bRes = true;
 
@@ -24,6 +24,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_INITIALIZE:{
 		FS.OnCreate			();
 		InitMath			();
+        // make interface
+	    fraBottomBar		= new TfraBottomBar(0);
+    	fraLeftBar  		= new TfraLeftBar(0);
+	    fraTopBar   		= new TfraTopBar(0);
+		//----------------
         if (UI.OnCreate()){
             PSLib.OnCreate	();
             Tools.OnCreate	();
@@ -37,6 +42,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
     	}break;
 	case COMMAND_DESTROY:
+		//----------------
+        _DELETE(fraLeftBar);
+	    _DELETE(fraTopBar);
+    	_DELETE(fraBottomBar);
+		//----------------
 		PSLib.OnDestroy	();
 		Lib.OnDestroy	();
 		Tools.OnDestroy	();
@@ -74,7 +84,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Tools.ZoomObject();
     	break;
     case COMMAND_RENDER_FOCUS:
-		if (frmMain->Visible&&g_bEditorValid)
+		if (frmMain->Visible)
         	m_D3DWindow->SetFocus();
     	break;
     case COMMAND_UPDATE_CAPTION:
@@ -126,6 +136,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 {
+	VERIFY(m_bReady);
     if (Shift.Contains(ssCtrl)){
 		if (Key=='S') 				Command(COMMAND_SAVE);
     }else{
@@ -141,6 +152,7 @@ void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 
 void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
+	VERIFY(m_bReady);
     if (Shift.Contains(ssCtrl)){
         if (Key=='S')				Command(COMMAND_SAVE);
     }
@@ -149,11 +161,16 @@ void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 //---------------------------------------------------------------------------
 char* TUI::GetCaption()
 {
+	VERIFY(m_bReady);
  	return "particles.xr";
 }
 char* TUI::GetTitle()
 {
+	VERIFY(m_bReady);
 	return "Particle Editor";
 }
 
+LPSTR GetNameByClassID(EObjClass cls_id){
+	return 0;
+}
 

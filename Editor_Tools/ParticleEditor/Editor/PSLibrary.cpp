@@ -24,13 +24,12 @@ void CPSLibrary::OnDestroy(){
 }
 
 PS::SDef* CPSLibrary::FindPS(const char* name){
-	return psLibrary_Find(name,m_PSs);
+	return psLibrary_FindUnsorted(name,m_PSs);
 }
 
 void CPSLibrary::RenamePS(PS::SDef* src, LPCSTR new_name){
 	R_ASSERT(src&&new_name&&new_name[0]);
 	src->SetName(new_name);
-    Sort();
 }
 
 PS::SDef* CPSLibrary::AppendPS(PS::SDef* src){
@@ -46,10 +45,6 @@ PS::SDef* CPSLibrary::AppendPS(PS::SDef* src){
 void CPSLibrary::RemovePS(const char* nm){
     PS::SDef* sh = FindPS(nm);
     if (sh) m_PSs.erase(sh);
-}
-
-void CPSLibrary::Sort(){
-	psLibrary_Sort(m_PSs);
 }
 
 char* CPSLibrary::GenerateName(char* name, const char* source){
@@ -70,7 +65,6 @@ void CPSLibrary::Save(){
 	AnsiString fn;
     fn = PSLIB_FILENAME;
     FS.m_GameRoot.Update(fn);
-	psLibrary_Sort(m_PSs);
     Save(fn.c_str());
 }
 //----------------------------------------------------

@@ -168,8 +168,7 @@ __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
 //S    sel_thm = 0;
     bMultiSel = false;
     tvItems->ShowCheckboxes = false;
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+	DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)

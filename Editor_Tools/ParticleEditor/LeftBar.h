@@ -19,6 +19,7 @@
 #include "UI_Tools.h"
 #include "ElTreeAdvEdit.hpp"
 #include "ElPgCtl.hpp"
+#include "MXCtrls.hpp"
 
 //---------------------------------------------------------------------------
 class TfraLeftBar : public TFrame
@@ -55,8 +56,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Export1;
 	TElTreeInplaceAdvancedEdit *InplaceParticleEdit;
 	TPanel *paPSList;
-	TPanel *paAction;
-	TExtBtn *ebEngineApplyChanges;
 	TBevel *Bevel2;
 	TElTree *tvParticles;
 	TPanel *Panel1;
@@ -69,6 +68,17 @@ __published:	// IDE-managed Components
 	TLabel *Label2;
 	TExtBtn *ExtBtn1;
 	TPanel *paPSProps;
+	TPanel *paAction;
+	TPanel *paCurrentPS;
+	TLabel *Label3;
+	TExtBtn *ExtBtn4;
+	TExtBtn *ebEngineApplyChanges;
+	TExtBtn *ebCurrentPSPlay;
+	TExtBtn *ebCurrentPSStop;
+	TMxLabel *lbCurState;
+	TMxLabel *lbParticleCount;
+	TMxLabel *RxLabel2;
+	TMxLabel *RxLabel1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -102,6 +112,8 @@ __published:	// IDE-managed Components
           int Y, TDragState State, bool &Accept);
 	void __fastcall tvParticlesDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
+	void __fastcall ebCurrentPSPlayClick(TObject *Sender);
+	void __fastcall ebCurrentPSStopClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
     TElTreeItem*	DragItem;

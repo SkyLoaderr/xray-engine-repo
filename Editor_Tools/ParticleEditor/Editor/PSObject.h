@@ -15,7 +15,7 @@ class CParticleSystem;
 class Shader;
 
 class CPSObject: public CCustomObject{
-	PS::SParams*		m_Definition;
+	PS::SDef*			m_Definition;
 
 	PS::Particles	  	m_Particles;
     Shader*				m_Shader;
@@ -59,6 +59,10 @@ public:
     void				Stop		();
     bool 				IsPlaying	(){return m_Emitter.IsPlaying();}
     int 				ParticleCount(){return m_Particles.size();}
+
+    // device dependent routine
+	void 				OnDeviceCreate 	();
+	void 				OnDeviceDestroy	();
 };
 
 #endif /*_INCDEF_PSObject_H_*/

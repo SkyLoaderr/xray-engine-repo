@@ -16,6 +16,7 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     PS::SDef			m_EditPS;
     bool				m_bModified;
 	TfrmPropertiesPSDef*m_PSProps;
+    bool				m_bReady;
 public:
 						CParticleTools		();
     virtual 			~CParticleTools		();
@@ -41,6 +42,11 @@ public:
     void				RenamePS			(LPCSTR src_name, LPCSTR part_name, int part_idx);
     void				RenamePS			(LPCSTR src_name, LPCSTR dest_name);
     PS::SDef*			GetCurrentPS		(){return m_LibPS?&m_EditPS:0;}
+    void				UpdateCurrent		();
+    void				UpdateEmitter		();
+
+    void				PlayCurrentPS		();
+    void				StopCurrentPS		();
 
     void				Load				();
     void				Save				();

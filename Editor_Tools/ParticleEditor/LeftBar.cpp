@@ -5,7 +5,6 @@
 #include "BottomBar.h"
 #include "UI_Main.h"
 #include "main.h"
-#include "Blender.h"
 #include "xr_trims.h"
 #include "UI_Tools.h"
 #include "FolderLib.h"
@@ -18,6 +17,7 @@
 #pragma link "ElXPThemedControl"
 #pragma link "ElTreeAdvEdit"
 #pragma link "ElPgCtl"
+#pragma link "MXCtrls"
 #pragma resource "*.dfm"
 TfraLeftBar *fraLeftBar;
 
@@ -49,8 +49,8 @@ void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
         : TFrame(Owner)
 {
-    char buf[MAX_PATH] = {"particle_ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+	DEFINE_INI(fsStorage);
+
     InplaceParticleEdit->Editor->Color		= TColor(0x00A0A0A0);
     InplaceParticleEdit->Editor->BorderStyle= bsNone;
     DragItem = 0;
@@ -222,7 +222,7 @@ void __fastcall TfraLeftBar::ebParticleShaderRemoveClick(TObject *Sender)
         	}
         }
     	if (FOLDER::IsObject(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected blender?") == mrYes){
+	        if (ELog.DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
 				FOLDER::MakeName(pNode,0,full_name,false);
 	            Tools.RemovePS(full_name.c_str());
 				Tools.ResetCurrentPS();
@@ -309,7 +309,7 @@ void __fastcall TfraLeftBar::ebPSCreateClick(TObject *Sender)
 {
     AnsiString folder;
 	FOLDER::MakeName(tvParticles->Selected,0,folder,true);
-    PS::SDef* S = Tools.AppendPS(folder.c_str(),0);
+    PS::SDef* S = Tools.AppendPS(folder.IsEmpty()?0:folder.c_str(),0);
 	Tools.SetCurrentPS(S);
 	Tools.Modified();
 }
@@ -404,6 +404,28 @@ void __fastcall TfraLeftBar::tvParticlesDragDrop(TObject *Sender,
     }while(item&&(item->Level>drg_level));
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebCurrentPSPlayClick(TObject *Sender)
+{
+	Tools.PlayCurrentPS();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebCurrentPSStopClick(TObject *Sender)
+{
+	Tools.StopCurrentPS();
+}
+//---------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 

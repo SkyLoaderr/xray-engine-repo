@@ -15,6 +15,7 @@
 
 //---------------------------------------------------------------------------
 void TUI::Redraw(){
+	VERIFY(m_bReady);
 	if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
@@ -68,6 +69,7 @@ void TUI::Redraw(){
 
 void TUI::Idle()
 {
+	VERIFY(m_bReady);
     pInput->OnFrame();
     if (g_ErrorMode) return;
 //    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 622
+  Height = 659
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 622
+    Height = 659
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -150,7 +150,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 202
+      Height = 197
       Align = alClient
       ParentShowHint = False
       ShowHint = True
@@ -171,57 +171,29 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 187
+        Height = 166
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 169
+          Top = 164
           Width = 208
           Height = 2
           Align = alBottom
         end
         object Bevel1: TBevel
           Left = 0
-          Top = 50
+          Top = 34
           Width = 208
           Height = 2
           Align = alTop
         end
-        object paAction: TPanel
-          Left = 0
-          Top = 171
-          Width = 208
-          Height = 16
-          Align = alBottom
-          BevelOuter = bvNone
-          TabOrder = 0
-          object ebEngineApplyChanges: TExtBtn
-            Left = 1
-            Top = 1
-            Width = 80
-            Height = 15
-            Align = alNone
-            BevelShow = False
-            HotTrack = True
-            CloseButton = False
-            Caption = 'Apply Changes'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = []
-            ParentFont = False
-            Transparent = False
-            OnClick = ebEngineApplyChangesClick
-          end
-        end
         object tvParticles: TElTree
           Left = 0
-          Top = 52
+          Top = 36
           Width = 208
-          Height = 117
+          Height = 128
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -291,7 +263,7 @@ object fraLeftBar: TfraLeftBar
           ShowLeafButton = False
           ShowLines = False
           StoragePath = '\Tree'
-          TabOrder = 1
+          TabOrder = 0
           TabStop = True
           Tracking = False
           TrackColor = 10526880
@@ -312,14 +284,14 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 0
           Width = 208
-          Height = 50
+          Height = 34
           Align = alTop
           BevelOuter = bvNone
-          TabOrder = 2
+          TabOrder = 1
           object ebEngineShaderRemove: TExtBtn
-            Left = 1
-            Top = 34
-            Width = 70
+            Left = 69
+            Top = 18
+            Width = 69
             Height = 15
             Align = alNone
             BevelShow = False
@@ -337,9 +309,9 @@ object fraLeftBar: TfraLeftBar
             OnClick = ebParticleShaderRemoveClick
           end
           object ebEngineShaderClone: TExtBtn
-            Left = 71
-            Top = 34
-            Width = 70
+            Left = 138
+            Top = 18
+            Width = 69
             Height = 15
             Align = alNone
             BevelShow = False
@@ -359,7 +331,7 @@ object fraLeftBar: TfraLeftBar
           object ebEngineShaderFile: TExtBtn
             Left = 1
             Top = 2
-            Width = 140
+            Width = 205
             Height = 15
             Align = alNone
             BevelShow = False
@@ -391,7 +363,7 @@ object fraLeftBar: TfraLeftBar
           object ebCShaderCreate: TExtBtn
             Left = 1
             Top = 18
-            Width = 140
+            Width = 68
             Height = 15
             Align = alNone
             BevelShow = False
@@ -413,10 +385,39 @@ object fraLeftBar: TfraLeftBar
           end
         end
       end
+      object paAction: TPanel
+        Left = 1
+        Top = 180
+        Width = 208
+        Height = 16
+        Align = alBottom
+        BevelOuter = bvNone
+        TabOrder = 1
+        object ebEngineApplyChanges: TExtBtn
+          Left = 1
+          Top = 0
+          Width = 205
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          HotTrack = True
+          CloseButton = False
+          Caption = 'Apply Changes'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          Margin = 13
+          ParentFont = False
+          Transparent = False
+          OnClick = ebEngineApplyChangesClick
+        end
+      end
     end
     object paProperties: TPanel
       Left = 1
-      Top = 271
+      Top = 308
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -470,17 +471,189 @@ object fraLeftBar: TfraLeftBar
         TabOrder = 0
       end
     end
+    object paCurrentPS: TPanel
+      Left = 1
+      Top = 266
+      Width = 210
+      Height = 42
+      Hint = 'Scene commands'
+      Align = alBottom
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
+      object Label3: TLabel
+        Left = 1
+        Top = 1
+        Width = 208
+        Height = 13
+        Align = alTop
+        Alignment = taCenter
+        Caption = 'Current PS'
+        Color = clGray
+        ParentColor = False
+        OnClick = PanelMaximizeClick
+      end
+      object ExtBtn4: TExtBtn
+        Left = 197
+        Top = 2
+        Width = 11
+        Height = 11
+        Align = alNone
+        CloseButton = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          DE000000424DDE00000000000000360000002800000007000000070000000100
+          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+          000000000000000000000000FFFFFF0000000000000000000000000000000000
+          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        ParentFont = False
+        OnClick = PanelMimimizeClick
+      end
+      object ebCurrentPSPlay: TExtBtn
+        Left = 2
+        Top = 19
+        Width = 31
+        Height = 19
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          C2010000424DC20100000000000036000000280000000C0000000B0000000100
+          1800000000008C010000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFEBEBEBA7A7A7E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFBABABA0000005050508E8E8EEDEDEDFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFBABABA0000000000000000004F4F4F7B7B7BFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFBABABA00000000000000000000000008080828
+          2828898989FFFFFFFFFFFFFFFFFFFFFFFFBABABA000000000000000000000000
+          0000000000001212121F1F1FC6C6C6FFFFFFFFFFFFBABABA0000000000000000
+          00000000080808282828898989FFFFFFFFFFFFFFFFFFFFFFFFBABABA00000000
+          00000000004F4F4F7B7B7BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABA
+          0000005050508E8E8EEDEDEDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFEBEBEBA7A7A7E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFF}
+        ParentFont = False
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebCurrentPSPlayClick
+      end
+      object ebCurrentPSStop: TExtBtn
+        Left = 33
+        Top = 19
+        Width = 31
+        Height = 19
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          9E010000424D9E0100000000000036000000280000000C0000000A0000000100
+          18000000000068010000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFDDDDDDA5A5A5ADADADADADADADADADADADADA5A5A5DDDDDDFFFFFFFF
+          FFFFFFFFFFFFFFFF969696000000000000000000000000000000000000969696
+          FFFFFFFFFFFFFFFFFFFFFFFF9696960000000000000000000000000000000000
+          00969696FFFFFFFFFFFFFFFFFFFFFFFF96969600000000000000000000000000
+          0000000000969696FFFFFFFFFFFFFFFFFFFFFFFF969696000000000000000000
+          000000000000000000969696FFFFFFFFFFFFFFFFFFFFFFFF9696960000000000
+          00000000000000000000000000969696FFFFFFFFFFFFFFFFFFFFFFFF96969600
+          0000000000000000000000000000000000969696FFFFFFFFFFFFFFFFFFFFFFFF
+          DDDDDDA5A5A5ADADADADADADADADADADADADA5A5A5DDDDDDFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFF}
+        ParentFont = False
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebCurrentPSStopClick
+      end
+      object lbCurState: TMxLabel
+        Left = 113
+        Top = 15
+        Width = 95
+        Height = 13
+        AutoSize = False
+        Caption = '...'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbParticleCount: TMxLabel
+        Left = 113
+        Top = 28
+        Width = 95
+        Height = 13
+        AutoSize = False
+        Caption = '...'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RxLabel2: TMxLabel
+        Left = 65
+        Top = 28
+        Width = 45
+        Height = 13
+        Caption = 'Particles:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        ShadowColor = 15790320
+      end
+      object RxLabel1: TMxLabel
+        Left = 65
+        Top = 15
+        Width = 30
+        Height = 13
+        Caption = 'State:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        ShadowColor = 15790320
+      end
+    end
   end
   object fsStorage: TFormStorage
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 3
+    Version = 4
     StoredProps.Strings = (
       'paScene.Tag'
       'paScene.Height'
       'paParticles.Tag'
-      'paParticles.Height')
+      'paParticles.Height'
+      'paCurrentPS.Tag'
+      'paCurrentPS.Height')
     StoredValues = <>
     Left = 65529
     Top = 65526
@@ -498,8 +671,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 117
-    Top = 88
+    Left = 181
+    Top = 80
     object Save1: TMenuItem
       Caption = 'Save'
       OnClick = ebSaveClick

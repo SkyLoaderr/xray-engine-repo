@@ -25,7 +25,7 @@ __published:	// IDE-managed Components
         TPanel *paBottomBar;
     TPanel *paTools;
     TTimer *tmRefresh;
-    TFormStorage *fsMainForm;
+	TFormStorage *fsStorage;
     TPanel *paMain;
     TPanel *paTopBar;
 	TPanel *paWindow;
@@ -45,7 +45,7 @@ __published:	// IDE-managed Components
     void __fastcall D3DWindowPaint(TObject *Sender);
     void __fastcall D3DWindowKeyPress(TObject *Sender, char &Key);
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
-    void __fastcall fsMainFormRestorePlacement(TObject *Sender);
+    void __fastcall fsStorageRestorePlacement(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall paWindowResize(TObject *Sender);
 	void __fastcall D3DWindowChangeFocus(TObject *Sender);

@@ -7,8 +7,6 @@
 CUI_Camera::CUI_Camera(){
 	m_Style = csPlaneMove;
 
-	Reset();
-
 	m_Aspect = 1.f;
 	m_FOV = deg2rad( 60.f );
 	m_Znear = 0.2f;

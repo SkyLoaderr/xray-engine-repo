@@ -981,11 +981,11 @@ object frmEditorPreferences: TfrmEditorPreferences
       OnClick = ebCancelClick
     end
   end
-  object fsEditorPref: TFormStorage
+  object fsStorage: TFormStorage
     IniSection = 'Main Form'
     Options = []
     RegistryRoot = prLocalMachine
-    OnRestorePlacement = fsEditorPrefRestorePlacement
+    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'seBrushSize.Value'
       'seBrushDnDepth.Value'

@@ -111,6 +111,8 @@ USEUNIT("Engine\xrParticlesLib.cpp");
 USEUNIT("Editor\PSObject.cpp");
 USEUNIT("PropertiesPSDef.cpp");
 USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
+USEUNIT("Editor\TLSPRITE.CPP");
+USEUNIT("Editor\CustomObject.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -133,7 +135,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->SetStatus("Loading...");
 
 // startup create
-		Application->Title = "Shader Editor";
+		Application->Title = "Particle Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		frmMain->SetHInst(hInst);

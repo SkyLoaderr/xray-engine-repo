@@ -74,6 +74,8 @@ CRenderDevice::~CRenderDevice(){
 extern void Surface_Init();
 void CRenderDevice::Initialize()
 {
+//	m_Camera.Reset();
+
 	Surface_Init();
 
 	AnsiString fn = "shaders_xrlc.xr";

@@ -5,12 +5,11 @@
 #define _INCDEF_PSLibrary_H_
 
 #include "ParticleSystem.h"
-DEFINE_VECTOR(PS::SDef, PSList, PSIt);
 
 #define PSLIB_FILENAME "particles.xr"
 
 class CPSLibrary{
-    PSList				m_PSs;
+    PS::PSVec			m_PSs;
     bool 				Load			(LPCSTR nm);
     void				Save			(LPCSTR nm);
     AnsiString			m_CurrentPS;
@@ -19,8 +18,8 @@ public:
     virtual 			~CPSLibrary		(){m_PSs.clear();}
 
     // get object properties methods
-    IC PSIt				FirstPS			()	{return m_PSs.begin();}
-    IC PSIt				LastPS			()	{return m_PSs.end();}
+    IC PS::PSIt			FirstPS			()	{return m_PSs.begin();}
+    IC PS::PSIt			LastPS			()	{return m_PSs.end();}
     IC int				PSCount			()	{return m_PSs.size();}
 
     void				OnCreate		();
@@ -36,7 +35,6 @@ public:
     PS::SDef*			AppendPS		(PS::SDef* src=0);
     void				RemovePS		(LPCSTR name);
     PS::SDef*			FindPS			(LPCSTR name);
-    void				Sort			();
     void				RenamePS		(PS::SDef* src, LPCSTR new_name);
 
 	PS::SDef*			GetCurrentPS	(){return m_CurrentPS.IsEmpty()?0:FindPS(m_CurrentPS.c_str());}
