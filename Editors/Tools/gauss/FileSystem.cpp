@@ -163,12 +163,13 @@ LPSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth,
 	ref_str tmp = src_name;
     LPCSTR s 	= src_name;
     LPSTR d 	= dest_name;
+    int sv_depth= depth;
 	for (; *s&&depth; s++, d++){
 		if (*s=='_'){depth--; *d='\\';}else{*d=*s;}
 	}
 	if (full_name){
 		*d			= 0;
-		strcat		(dest_name,*tmp);
+		if (depth<sv_depth)	strcat(dest_name,*tmp);
 	}else{
 		for (; *s; s++, d++) *d=*s;
 		*d			= 0;
