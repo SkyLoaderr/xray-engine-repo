@@ -6,7 +6,7 @@
 #define AFX_LIGHTPRJ_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_
 #pragma once
 
-#include "fstaticrender_scenegraph.h"
+#include "r__dsgraph_types.h"
 
 class CLightProjector
 {

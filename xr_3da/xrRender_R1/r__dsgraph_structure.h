@@ -1,6 +1,7 @@
 #pragma once
 
-#include "r__dsgraph.h"
+#include "..\ispatial.h"
+#include "r__dsgraph_types.h"
 
 class R_dsgraph_structure
 {

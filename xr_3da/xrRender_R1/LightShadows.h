@@ -7,7 +7,7 @@
 #pragma once
 
 #include "light.h"
-#include "fstaticrender_scenegraph.h"
+#include "r__dsgraph_types.h"
 
 class	CLightShadows			
 {

@@ -313,61 +313,6 @@ void CRender::Calculate				()
 	Device.Statistic.RenderCALC.End	();
 }
 
-IC float calcLOD	(float fDistSq, float R)
-{
-	float dist	= g_fFarSq - fDistSq + R*R;
-	float lod	= g_fLOD*dist/g_fFarSq;
-	clamp		(lod,0.001f,0.999f);
-	return		lod;
-}
-
-// NORMAL
-IC	bool	cmp_normal_items		(const _NormalItem& N1, const _NormalItem& N2)
-{	return (N1.ssa > N2.ssa);		}
-
-extern void __fastcall render_Cached(xr_vector<FCached*>& cache);
-void __fastcall mapNormal_Render	(mapNormalItems& N)
-{
-	// *** DIRECT ***
-	{
-		// DIRECT:SORTED
-		std::sort				(N.begin(),N.end(),cmp_normal_items);
-		_NormalItem				*I=&*N.begin(), *E = &*N.end();
-		for (; I!=E; I++)		{
-			_NormalItem&		Ni	= *I;
-			Ni.pVisual->Render	(calcLOD(Ni.ssa,Ni.pVisual->vis.sphere.R));
-		}
-		N.clear	();
-	}
-}
-
-// MATRIX
-void __fastcall matrix_L2		(mapMatrixItem::TNode *N)
-{
-	IRender_Visual *V			= N->val.pVisual;
-	RCache.set_xform_world		(N->val.Matrix);
-	RImplementation.ApplyObject	(N->val.pObject);
-	V->Render					(calcLOD(N->key,V->vis.sphere.R));
-}
-
-void __fastcall matrix_L1		(mapMatrix_Node *N)
-{
-	RCache.set_Element			(N->key);
-	N->val.traverseLR			(matrix_L2);
-	N->val.clear				();
-}
-
-// ALPHA
-void __fastcall sorted_L1		(mapSorted_Node *N)
-{
-	if (N->val.pObject)			VERIFY	(N->val.pObject->renderable.ROS);
-	IRender_Visual *V	=		N->val.pVisual;
-	RCache.set_Shader			(V->hShader);
-	RCache.set_xform_world		(N->val.Matrix);
-	RImplementation.ApplyObject	(N->val.pObject);
-	V->Render					(calcLOD(N->key,V->vis.sphere.R));
-}
-
 void	CRender::rmNear		()
 {
 	IRender_Target* T	=	getTarget	();
@@ -387,110 +332,12 @@ void	CRender::rmNormal	()
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 
-IC	bool	cmp_codes			(mapNormalCodes::TNode* N1, mapNormalCodes::TNode* N2)
-{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_matrices		(mapNormalMatrices::TNode* N1, mapNormalMatrices::TNode* N2)
-{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_constants		(mapNormalCS::TNode* N1, mapNormalCS::TNode* N2)
-{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_vs				(mapNormalVS::TNode* N1, mapNormalVS::TNode* N2)	{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_ps_nrm			(mapNormalPS::TNode* N1, mapNormalPS::TNode* N2)			{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_cs				(mapNormalCS::TNode* N1, mapNormalCS::TNode* N2)
-{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_vb				(mapNormalVB::TNode* N1, mapNormalVB::TNode* N2)
-{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_textures_lex2	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2)
-{	
-	STextureList*	t1			= N1->key;
-	STextureList*	t2			= N2->key;
-	if ((*t1)[0] < (*t2)[0])	return true;
-	if ((*t1)[0] > (*t2)[0])	return false;
-	if ((*t1)[1] < (*t2)[1])	return true;
-	else						return false;
-}
-IC	bool	cmp_textures_lex3	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2)
-{	
-	STextureList*	t1			= N1->key;
-	STextureList*	t2			= N2->key;
-	if ((*t1)[0] < (*t2)[0])	return true;
-	if ((*t1)[0] > (*t2)[0])	return false;
-	if ((*t1)[1] < (*t2)[1])	return true;
-	if ((*t1)[1] > (*t2)[1])	return false;
-	if ((*t1)[2] < (*t2)[2])	return true;
-	else						return false;
-}
-IC	bool	cmp_textures_lexN	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2)
-{	
-	STextureList*	t1			= N1->key;
-	STextureList*	t2			= N2->key;
-	return std::lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
-}
-IC	bool	cmp_textures_ssa	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2)
-{	
-	return (N1->val.ssa > N2->val.ssa);		
-}
-
-void		sort_tlist			
-(
-	xr_vector<mapNormalTextures::TNode*>& lst, 
-	xr_vector<mapNormalTextures::TNode*>& temp, 
-	mapNormalTextures& textures, 
-	BOOL	bSSA
- )
-{
-	int amount			= textures.begin()->key->size();
-	if (bSSA)	
-	{
-		if (amount<=1)
-		{
-			// Just sort by SSA
-			textures.getANY_P			(lst);
-			std::sort					(lst.begin(), lst.end(), cmp_textures_ssa);
-		} 
-		else 
-		{
-			// Split into 2 parts
-			mapNormalTextures::TNode* _it	= textures.begin	();
-			mapNormalTextures::TNode* _end	= textures.end		();
-			for (; _it!=_end; _it++)	{
-				if (_it->val.ssa > r_ssaHZBvsTEX)	lst.push_back	(_it);
-				else								temp.push_back	(_it);
-			}
-
-			// 1st - part - SSA, 2nd - lexicographically
-			std::sort					(lst.begin(),	lst.end(),	cmp_textures_ssa);
-			if (2==amount)				std::sort	(temp.begin(),	temp.end(),	cmp_textures_lex2);
-			else if (3==amount)			std::sort	(temp.begin(),	temp.end(),	cmp_textures_lex3);
-			else						std::sort	(temp.begin(),	temp.end(),	cmp_textures_lexN);
-
-			// merge lists
-			lst.insert					(lst.end(),temp.begin(),temp.end());
-		}
-	}
-	else 
-	{
-		textures.getANY_P			(lst);
-		if (2==amount)				std::sort	(lst.begin(),	lst.end(),	cmp_textures_lex2);
-		else if (3==amount)			std::sort	(lst.begin(),	lst.end(),	cmp_textures_lex3);
-		else						std::sort	(lst.begin(),	lst.end(),	cmp_textures_lexN);
-	}
-}
-
 void	CRender::Render		()
 {
 	Device.Statistic.RenderDUMP.Begin();
 
-	// Target.set_gray					(.5f+_sin(Device.fTimeGlobal)/2.f);
+	// Target.set_gray				(.5f+_sin(Device.fTimeGlobal)/2.f);
 	Target->Begin					();
-
-	// if (psDeviceFlags.test(rsWarmHZB))	HOM.Render_ZB	();
 
 	// HUD render
 	{

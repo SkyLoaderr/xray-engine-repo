@@ -44,10 +44,9 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 	_MatrixItem				*I=&*N.begin(), *E = &*N.end();
 	for (; I!=E; I++)		{
 		_MatrixItem&	Ni			= *I;
-		IRender_Visual	*V			= ;
-		RCache.set_xform_world		(N.Matrix);
-		RImplementation.ApplyObject	(N.pObject);
-		N.pVisual->Render			(calcLOD(N.ssa_or_distsq,N.pVisual->vis.sphere.R));
+		RCache.set_xform_world		(Ni.Matrix);
+		RImplementation.ApplyObject	(Ni.pObject);
+		Ni.pVisual->Render			(calcLOD(Ni.ssa,N.pVisual->vis.sphere.R));
 	}
 	N.clear	();
 }
