@@ -188,11 +188,6 @@ float CSoldierSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistan
 	return(m_fResult);
 }
 
-CSoldierSelectorPursuit::CSoldierSelectorPursuit()
-{ 
-	Name = "selector_pursuit"; 
-}
-
 CSoldierSelectorMoreDeadThanAlive::CSoldierSelectorMoreDeadThanAlive()
 { 
 	Name = "selector_mdta"; 
@@ -219,6 +214,43 @@ float CSoldierSelectorMoreDeadThanAlive::Estimate(NodeCompressed* tNode, float f
 	vfCheckForEpsilon(bStop);
 	// returning a value
 	return(m_fResult);
+}
+
+CSoldierSelectorNoWeapon::CSoldierSelectorNoWeapon()
+{ 
+	Name = "selector_no_weapon"; 
+}
+
+float CSoldierSelectorNoWeapon::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	/**
+	vfAddTravelCost();
+	CHECK_RESULT;
+	vfAddLightCost();
+	CHECK_RESULT;
+	vfAddTotalCoverCost();
+	CHECK_RESULT;
+	/**/
+	vfAddDistanceToEnemyCost();
+	CHECK_RESULT;
+	/**
+	vfAddCoverFromEnemyCost();
+	CHECK_RESULT;
+	// checking for epsilon
+	vfCheckForEpsilon(bStop);
+	/**/
+	// returning a value
+	return(m_fResult);
+}
+
+CSoldierSelectorPursuit::CSoldierSelectorPursuit()
+{ 
+	Name = "selector_pursuit"; 
 }
 
 float CSoldierSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
@@ -279,7 +311,7 @@ float CSoldierSelectorReload::Estimate(NodeCompressed* tNode, float fDistance, B
 	vfAddCoverFromEnemyCost();
 	CHECK_RESULT;
 	// checking for epsilon
-	vfCheckForEpsilon(bStop);
+	//vfCheckForEpsilon(bStop);
 	// returning a value
 	return(m_fResult);
 }

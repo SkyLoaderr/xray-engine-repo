@@ -45,6 +45,7 @@ public:
 	DWORD						m_dwLeaderChangeCount;
 	Fvector						m_tLastHitDirection;
 	DWORD						m_dwLastHitTime;
+	bool						m_bFiring;
 	// Constructor
 								CGroup				();
 	

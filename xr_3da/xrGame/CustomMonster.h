@@ -40,7 +40,7 @@ protected:
 		
 		void			Create(CKinematics* K, LPCSTR base);
 	};
-	static void	__stdcall SpinCallback(CBoneInstance*);
+	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
 public:
 	// Lighting and effects
 //	CLightPPA			TEST;
@@ -57,16 +57,19 @@ public:
 
 	// AI
 	AI::AIC_Look		q_look;
+	AI::AIC_Look		q_torso_look;
 	AI::AIC_Action		q_action;
 	Fvector				tWatchDirection;
 	float				m_fMinSpeed;
 	float				m_fMaxSpeed;
 	float				m_fCurSpeed;
+	float				m_fCrounchCoefficient;
 
 	virtual void		Think() = 0;
 
 	// Rotation
-	SRotation			r_current,r_target;
+	SRotation			r_current,r_target, r_torso_current, r_torso_target;
+	float				r_torso_speed;
 
 	// Motions
 	DWORD				dwMoveState;
@@ -87,6 +90,7 @@ public:
 	bool				m_bCrouched; 
 	
 	float				m_fTimeUpdateDelta;
+	//float				m_fTorsoAngle;
 
 	// movement
 	float				m_fWalkAccel;
@@ -173,9 +177,9 @@ public:
 
 namespace AI{
 	#define LOST_ENEMY_REACTION_TIME	30000
-	#define HIT_REACTION_TIME			30000
+	#define HIT_REACTION_TIME			3000
 	#define SENSE_REACTION_TIME			30000
-	#define HIT_JUMP_TIME				30000
+	#define HIT_JUMP_TIME				3000
 	#define SENSE_JUMP_TIME				00000
 }
 

@@ -26,7 +26,7 @@ void CCustomMonster::SAnimState::Create(CKinematics* K, LPCSTR base)
 	rs		= K->ID_Cycle_Safe(strconcat(buf,base,"_rs"));
 }
 
-void __stdcall CCustomMonster::SpinCallback(CBoneInstance* B)
+void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 {
 	CCustomMonster*		M = dynamic_cast<CCustomMonster*> (static_cast<CObject*>(B->Callback_Param));
 
@@ -56,6 +56,7 @@ CCustomMonster::CCustomMonster()
 	Weapons				= 0;
 	tWatchDirection = Direction();
 	m_bCrouched = false;
+	r_torso_speed = PI;
 }
 
 CCustomMonster::~CCustomMonster()
@@ -93,6 +94,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	m_fMinSpeed				= ini->ReadFLOAT(section,"min_speed");
 	m_fMaxSpeed				= ini->ReadFLOAT(section,"max_speed");
 	m_fCurSpeed				= m_fMaxSpeed;
+	m_fCrounchCoefficient	= ini->ReadFLOAT(section,"crounch_coefficient");
 
 	// Motions
 	CKinematics* V			= PKinematics(pVisual);
@@ -114,8 +116,8 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 
 	// take index spine bone
 	//"torso1"
-	int spine_bone			= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
-	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
+	int torso_bone			= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
+	PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
 
 	//
 	m_iHealth = ini->ReadINT(section,"health");
@@ -303,8 +305,8 @@ void CCustomMonster::Update	( DWORD DT )
 			
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
-			uNext.o_model		= r_current.yaw;
-			uNext.o_torso		= r_current;
+			uNext.o_model		= r_torso_current.yaw;
+			uNext.o_torso		= r_torso_current;
 			uNext.p_pos			= vPosition;
 			NET.push_back		(uNext);
 		}
@@ -313,8 +315,8 @@ void CCustomMonster::Update	( DWORD DT )
 				Exec_Movement(dt);
 				net_update			uNext;
 				uNext.dwTimeStamp	= Level().timeServer();
-				uNext.o_model		= r_current.yaw;
-				uNext.o_torso		= r_current;
+				uNext.o_model		= r_torso_current.yaw;
+				uNext.o_torso		= r_torso_current;
 				uNext.p_pos			= vPosition;
 				NET.push_back		(uNext);
 			}
@@ -383,11 +385,11 @@ void CCustomMonster::UpdateCL	()
 
 	// Use interpolated/last state
 	// mTransformCL	= mTransform;
-	clTransform.rotateY			(-NET_Last.o_model);
+	clTransform.rotateY			(1* -NET_Last.o_model);
 	clTransform.translate_over	(NET_Last.p_pos);
 
 	if (Remote())		{
-		svTransform.rotateY			(-N.o_model);
+		svTransform.rotateY			(1* -N.o_model);
 		svTransform.translate_over	(N.p_pos);
 		vPosition.set				(NET_Last.p_pos);
 	}

@@ -21,15 +21,17 @@ class CAI_Soldier : public CCustomMonster
 	};
 
 	enum ESoldierStates 	{
-		aiSoldierAttack = 0,
-		aiSoldierDie,
+		aiSoldierAttackRun = 0,
+		aiSoldierAttackFire,
 		aiSoldierDefend,
+		aiSoldierDie,
 		aiSoldierFindEnemy,
 		aiSoldierFollowLeader,
 		aiSoldierFreeHunting,
 		aiSoldierInjuring,
 		aiSoldierJumping,
 		aiSoldierMoreDeadThanAlive,
+		aiSoldierNoWeapon,
 		aiSoldierPursuit,
 		aiSoldierReload,
 		aiSoldierRetreat,
@@ -41,6 +43,9 @@ class CAI_Soldier : public CCustomMonster
 
 	protected:
 		
+		// head turns
+		static void __stdcall HeadSpinCallback(CBoneInstance*);
+
 		// media
 		sound3D			sndHit[SND_HIT_COUNT];
 		sound3D			sndDie[SND_DIE_COUNT];
@@ -77,6 +82,9 @@ class CAI_Soldier : public CCustomMonster
 		// characteristics
 		float			m_fAggressiveness;
 		float			m_fTimorousness;
+
+		// firing
+		bool			m_bFiring;
 		
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
@@ -87,13 +95,16 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorFollowLeader		SelectorFollowLeader;
 		CSoldierSelectorFreeHunting			SelectorFreeHunting;
 		CSoldierSelectorMoreDeadThanAlive	SelectorMoreDeadThanAlive;
+		CSoldierSelectorNoWeapon			SelectorNoWeapon;
 		CSoldierSelectorPursuit				SelectorPursuit;
 		CSoldierSelectorReload				SelectorReload;
 		CSoldierSelectorRetreat				SelectorRetreat;
 		CSoldierSelectorSenseSomething		SelectorSenseSomething;
 		CSoldierSelectorUnderFire			SelectorUnderFire;
 
-		void Attack();
+		void AttackRun();
+		void AttackFire();
+		
 		void Die();
 		void Defend();
 		void FindEnemy();
@@ -102,6 +113,7 @@ class CAI_Soldier : public CCustomMonster
 		void Injuring();
 		void Jumping();
 		void MoreDeadThanAlive();
+		void NoWeapon();
 		void Pursuit();
 		void Reload();
 		void Retreat();
@@ -117,9 +129,10 @@ class CAI_Soldier : public CCustomMonster
 		void vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S);
 		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfAimAtEnemy();
-		bool bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader);
+		void vfSaveEnemy();
+		bool bfCheckIfCanKillMember(CAISelectorBase &S);
 	IC	bool bfCheckIfCanKillEnemy();
-		void vfSetFire(bool bFire, CAISelectorBase &S, CEntity* &Leader);
+		void vfSetFire(bool bFire, CAISelectorBase &S);
 		void vfSetMovementType(bool bCrouched, float fSpeed);
 		void vfCheckForSavedEnemy();
 

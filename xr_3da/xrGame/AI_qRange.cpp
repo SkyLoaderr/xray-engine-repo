@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ai_space.h"
 
+#define COEFFICIENT	0.001
+
 void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost)
 {
 	if (0==vfs)	return;
@@ -85,8 +87,9 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 	NodeCompressed*	Base = m_nodes_ptr	[StartNode];
 	Estimator.BestNode	= StartNode;
 	Estimator.BestCost = MAX_NODE_ESTIMATION_COST;
-	Estimator.BestCost += dwTimeDifference*10.f;
-	fOldCost = Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
+	Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
+	Estimator.BestCost += dwTimeDifference*COEFFICIENT;
+	fOldCost = Estimator.BestCost;
 	float range_sqr		= Range*Range;
 
 	// Cycle
@@ -116,7 +119,7 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 
 			// estimate
 			float cost = Estimator.Estimate(T,distance_sqr,bStop);
-			cost += dwTimeDifference*1/sqrtf(distance_sqr);
+			cost += dwTimeDifference*1/sqrtf(distance_sqr)*COEFFICIENT;
 			
 			if (cost<Estimator.BestCost) {
 				Estimator.BestCost	= cost;

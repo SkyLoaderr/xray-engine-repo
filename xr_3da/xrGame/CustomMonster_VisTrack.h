@@ -7,7 +7,7 @@ class ENGINE_API CEntity;
 
 namespace AI {
 	const float fuzzy_update_vis	= 1.0f;		// speed of fuzzy-logic desisions
-	const float fuzzy_update_novis	= 0.1f;		// speed of fuzzy-logic desisions
+	const float fuzzy_update_novis	= 0.9f;		// speed of fuzzy-logic desisions
 	const float fuzzy_guaranteed	= 4.f;		// distance which is supposed 100% visible
 
 	class VisiTrack 
