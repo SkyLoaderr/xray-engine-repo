@@ -2624,31 +2624,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="_Zombie_OLD"
-						Filter="">
-						<File
-							RelativePath="AI\Zombie\ai_zombie.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie.h">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_animations.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_feel.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_fire.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_fsm.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_templates.cpp">
-						</File>
-					</Filter>
-					<Filter
 						Name="Burer"
 						Filter="">
 						<File
