@@ -57,7 +57,9 @@ TUI::TUI()
 TUI::~TUI()
 {
     VERIFY(m_EditorState.size()==0);
+#ifdef _LEVEL_EDITOR
     _DELETE(m_Cursor);
+#endif
 }
 
 bool TUI::OnCreate(){
@@ -67,8 +69,9 @@ bool TUI::OnCreate(){
     VERIFY(m_D3DWindow);
     Device.Initialize();
 
+#ifdef _LEVEL_EDITOR
     m_Cursor        = new C3DCursor();
-
+#endif
 	g_bEditorValid  = true;
 
     XRC.RayMode		(RAY_CULL);
@@ -220,7 +223,9 @@ void TUI::OnMouseMove(int x, int y){
 		iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
         Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
     }
+#ifdef _LEVEL_EDITOR
     if (m_Cursor->GetVisible()) RedrawScene();
+#endif
     // Out cursor pos
     OutUICursorPos();
 }

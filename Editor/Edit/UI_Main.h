@@ -78,7 +78,9 @@ public:
 	Ipoint m_StartCpH;
 	Ipoint m_DeltaCpH;
 
+#ifdef _LEVEL_EDITOR
     C3DCursor*   m_Cursor;
+#endif
 protected:
 	bool m_MouseCaptured;
 	bool m_MouseMultiClickCaptured;

@@ -5,7 +5,6 @@
 #include "Cursor3D.h"
 #include "ui_main.h"
 #include "scene.h"
-#include "texture.h"
 #include "D3DUtils.h"
 
 //---------------------------------------------------------------------------
@@ -38,7 +37,7 @@ void C3DCursor::SetColor(Fcolor& c){
 	dwColor = c.get();
 }
 //---------------------------------------------------------------------------
-//#define UP_OFFS 1
+
 void C3DCursor::GetPickPoint (Fvector& src, Fvector& dst, Fvector* N){
     Fvector start;
     SRayPickInfo pinf;
