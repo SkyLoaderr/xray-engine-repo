@@ -199,7 +199,7 @@ void EScene::Save(char *_FileName, bool bUndo){
 //	Msg("TOTAL: %d",F.tell());
 
     // back up previous
-    if (!bUndo) Engine.FS.BackupFile	(_FileName);
+    if (!bUndo) Engine.FS.MarkFile		(_FileName,false);
 
     // save data
 	if (!bUndo) Engine.FS.UnlockFile	(0,_FileName,false);

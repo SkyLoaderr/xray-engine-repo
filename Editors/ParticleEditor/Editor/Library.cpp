@@ -58,7 +58,7 @@ void ELibrary::OnDestroy(){
 void ELibrary::SetCurrentObject(LPCSTR nm){
 	VERIFY(m_bReady);
 	R_ASSERT(nm&&nm[0]);
-    sh_name name; strcpy(name,nm); strlwr(name);
+    string256 name; strcpy(name,nm); strlwr(name);
     FilePairIt it = m_Objects.find(name);
     if (it!=m_Objects.end()) m_Current = name;
 }
@@ -78,7 +78,7 @@ void ELibrary::ReloadObject(LPCSTR nm)
 {
 	VERIFY(m_bReady);
 	R_ASSERT(nm&&nm[0]);
-    sh_name name; strcpy(name,nm); strlwr(name);
+    string256 name; strcpy(name,nm); strlwr(name);
 	EditObjPairIt it = m_EditObjects.find(name);
     if (it!=m_EditObjects.end())
     	it->second->Reload();

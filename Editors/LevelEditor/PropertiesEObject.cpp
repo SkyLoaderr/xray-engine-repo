@@ -53,7 +53,7 @@ void TfrmPropertiesEObject::DestroyProperties(TfrmPropertiesEObject*& props)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
 	Fvector* V = (Fvector*)edit_val;
 	V->x = deg2rad(V->x);
@@ -62,7 +62,7 @@ void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(TElTreeItem* item, Prop
 	UI.RedrawScene();
 }
 
-void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(PropValue* sender, LPVOID edit_val)
 {
 	Fvector* V = (Fvector*)edit_val;
 	V->x = rad2deg(V->x);
@@ -87,14 +87,14 @@ void TfrmPropertiesEObject::FillBasicProps()
     	CEditableObject* 	O = S->GetReference();
         PropValueVec values;
 
-	    FILL_PROP(values, "Reference Name",			(LPVOID)S->GetRefName(),PROP::CreateMarkerValue());
-	    FILL_PROP(values, "Flags\\Dynamic",			&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoDynamic));
-	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoHOM));
-	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoUsingLOD));
+	    FILL_PROP(values, "Reference Name",			(LPVOID)S->GetRefName(),PROP::CreateMarker());
+	    FILL_PROP(values, "Flags\\Dynamic",			&O->m_dwFlags, 			PROP::CreateFlag(CEditableObject::eoDynamic));
+	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_dwFlags, 			PROP::CreateFlag(CEditableObject::eoHOM));
+	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_dwFlags, 			PROP::CreateFlag(CEditableObject::eoUsingLOD));
 
-	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 	PROP::CreateVectorValue(-10000,	10000,0.01,2,OnAfterTransformation));
-    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 	PROP::CreateVectorValue(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
-	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 	PROP::CreateVectorValue(0.01,	10000,0.01,2,OnAfterTransformation));
+	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 	PROP::CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
+    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 	PROP::CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
+	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 	PROP::CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
 
 		O->FillPropSummary(values);
 
@@ -113,7 +113,7 @@ void TfrmPropertiesEObject::FillSurfProps()
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
         PropValueVec values;
-        O->FillPropSurf		(values,OnAfterShaderEdit,OnAfterTextureEdit);
+        O->FillPropSurf		(values,OnChangeShader);
         m_SurfProp->AssignValues(values,true);
     }else{
     	m_SurfProp->ClearProperties();
@@ -225,19 +225,13 @@ void __fastcall TfrmPropertiesEObject::OnPick(const SRayPickInfo& pinf)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnAfterShaderEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::OnChangeShader(PropValue* sender)
 {
 	RefreshShaders();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnAfterTextureEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
-{
-	RefreshShaders();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesEObject::OnAfterTransformation(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::OnChangeTransform(PropValue* sender)
 {
 	UI.RedrawScene();
 }

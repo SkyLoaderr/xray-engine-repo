@@ -167,12 +167,12 @@ void TfrmEditLightAnim::UpdateView()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLightAnim::NameOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmEditLightAnim::NameOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
 	FOLDER::AfterTextEdit(tvItems->Selected,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //------------------------------------------------------------------------------
-void __fastcall TfrmEditLightAnim::NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmEditLightAnim::NameOnBeforeEdit(PropValue* sender, LPVOID edit_val)
 {
 	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
@@ -186,9 +186,9 @@ void TfrmEditLightAnim::GetItemData()
 {
 	if (m_CurrentItem){
     	PropValueVec values;
-        FILL_PROP(values,	"Name",			m_CurrentItem->cName,		PROP::CreateTextValue	(sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
-        FILL_PROP(values,	"FPS",			&m_CurrentItem->fFPS,		PROP::CreateFloatValue	(0.1f,1000,1.f,1));
-        FILL_PROP(values,	"Frame Count",	&m_CurrentItem->iFrameCount,PROP::CreateIntValue	(1,100000,1));
+        FILL_PROP(values,	"Name",			m_CurrentItem->cName,		PROP::CreateText	(sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+        FILL_PROP(values,	"FPS",			&m_CurrentItem->fFPS,		PROP::CreateFloat	(0.1f,1000,1.f,1));
+        FILL_PROP(values,	"Frame Count",	&m_CurrentItem->iFrameCount,PROP::CreateInt		(1,100000,1));
     	m_Props->AssignValues(values,true);
     }else{
     	m_Props->ClearProperties();

@@ -598,6 +598,7 @@ Level:
 + Export Tex Assos
 + ImageEditor без копирования
 - ImageEditor удаление текстур
+- glow - non scale flag
 - DO - engine render 
 - осветить хемисферой лод
 - на спавнпоинтах рисовать иконки

@@ -7,8 +7,15 @@
 
 #include "DetailManager.h"
 #include "render.h"
-#include "xr_creator.h"
 #include "cl_intersect.h"
+
+#ifdef _EDITOR
+	#include "SceneClassList.h"
+	#include "Scene.h"
+	#include "SceneObject.h"
+#else
+	#include "xr_creator.h"
+#endif
 
 float		psDetailDensity		= 0.15f;
 
@@ -58,6 +65,13 @@ void bwdithermap	(int levels, int magic[16][16] )
 
 CDetailManager::CDetailManager	()
 {
+	dtFS 		= 0;
+	dtSlots		= 0;
+	soft_VS		= 0;
+	hw_VS		= 0;
+	hw_BatchSize= 0;
+	hw_VB		= 0;
+	hw_IB		= 0;
 }
 
 CDetailManager::~CDetailManager	()
@@ -66,6 +80,7 @@ CDetailManager::~CDetailManager	()
 }
 /*
 */
+#ifndef _EDITOR
 void CDetailManager::Load		()
 {
 	// Open file stream
@@ -110,16 +125,17 @@ void CDetailManager::Load		()
 	// Hardware specific optimizations
 	if (UseVS())	hw_Load		();
 	else			soft_Load	();
-	 
 }
-
+#endif
 void CDetailManager::Unload		()
 {
 	if (UseVS())	hw_Unload	();
 	else			soft_Unload	();
 	
-	for (DWORD it=0; it<objects.size(); it++)
-		objects[it].Unload();
+	for (DetailIt it=objects.begin(); it!=objects.end(); it++){
+		(*it)->Unload();
+		_DELETE		(*it);
+    }
 	objects.clear	();
 	cache.clear		();
 	visible.clear	();
@@ -130,10 +146,13 @@ extern float ssaLIMIT;
 
 void CDetailManager::Render		(Fvector& vecEYE)
 {
+#ifndef _EDITOR
 	if (0==dtFS)	return;
+#endif
 
 	Fvector		EYE				= vecEYE;
 	CFrustum	View			= ::Render->ViewBase;
+    
 	int s_x	= iFloor			(EYE.x/slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/slot_size+.5f);
 
@@ -170,8 +189,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
-						CList<SlotItem*>&	vis = visible	[sp.id];
-						float				R   = objects	[sp.id].bv_sphere.R;
+						vector<SlotItem*>&	vis = visible	[sp.id];
+						float				R   = objects	[sp.id]->bv_sphere.R;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++) 
@@ -203,8 +222,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
-						CList<SlotItem*>&	vis = visible	[sp.id];
-						float				R   = objects	[sp.id].bv_sphere.R;
+						vector<SlotItem*>&	vis = visible	[sp.id];
+						float				R   = objects	[sp.id]->bv_sphere.R;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++) 
@@ -331,10 +350,17 @@ void CDetailManager::UpdateCache	(int limit)
 		Fvector		bC,bD;
 		D.BB.get_CD			(bC,bD);
 		XRC.box_options		(0); // BBOX_TRITEST
+#ifdef _EDITOR
+		// Select polygons
+		SBoxPickInfoVec		pinf;
+		Scene.BoxPick		(D.BB,pinf);//d,&m_SnapObjects);
+		DWORD	triCount	= pinf.size();
+#else
 		XRC.box_query		(pCreator->ObjectSpace.GetStaticModel(),bC,bD);
 		DWORD	triCount	= XRC.r_count	();
-		if (0==triCount)	continue;
 		CDB::TRI* tris		= pCreator->ObjectSpace.GetStaticTris();
+#endif
+		if (0==triCount)	continue;
 
 		// Build shading table
 		float		alpha255	[dm_obj_in_slot][4];
@@ -383,7 +409,7 @@ void CDetailManager::UpdateCache	(int limit)
 				if (selected.size()==1)	index = selected[0];
 				else					index = selected[r_selection.randI(selected.size())]; 
 				
-				CDetail&	Dobj = objects[DS.items[index].id];
+				CDetail*	Dobj = objects[DS.items[index].id];
 				SlotItem	Item;
 				
 				// Position (XZ)
@@ -398,6 +424,21 @@ void CDetailManager::UpdateCache	(int limit)
 				float		r_u,r_v,r_range;
 				for (DWORD tid=0; tid<triCount; tid++)
 				{
+#ifdef _EDITOR                
+                    Fvector verts[3];
+                    SBoxPickInfo& I=pinf[tid];
+		        	for (int k=0; k<(int)I.inf.size(); k++){
+                    	R_ASSERT(I.s_obj);
+                        I.s_obj->GetFaceWorld(I.e_mesh,I.inf[k].id,verts);
+                        if (CDB::TestRayTri(Item.P,dir,verts,r_u,r_v,r_range,TRUE))
+                        {
+                            if (r_range>=0)	{
+                                float y_test	= Item.P.y - r_range;
+                                if (y_test>y)	y = y_test;
+                            }
+                        }
+                    }
+#else
 					CDB::TRI&	T		= tris[XRC.r_begin()[tid].id];
 					if (CDB::TestRayTri(Item.P,dir,T.verts,r_u,r_v,r_range,TRUE))
 					{
@@ -406,12 +447,13 @@ void CDetailManager::UpdateCache	(int limit)
 							if (y_test>y)	y = y_test;
 						}
 					}
+#endif
 				}
 				if (y<D.BB.min.y)	continue;
 				Item.P.y	= y;
 				
 				// Angles and scale
-				Item.scale	= r_scale.randF		(Dobj.s_min,Dobj.s_max);
+				Item.scale	= r_scale.randF		(Dobj->s_min,Dobj->s_max);
 				
 				// X-Form BBox
 				Fmatrix		mScale,mXform;
@@ -420,7 +462,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.mRotY.translate_over		(Item.P);
 				mScale.scale					(Item.scale,Item.scale,Item.scale);
 				mXform.mul_43					(Item.mRotY,mScale);
-				ItemBB.xform					(Dobj.bv_bb,mXform);
+				ItemBB.xform					(Dobj->bv_bb,mXform);
 				Bounds.merge					(ItemBB);
 				
 				// Color

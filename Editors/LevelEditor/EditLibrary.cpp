@@ -458,7 +458,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
                 if (Engine.FS.GetSaveName(Engine.FS.m_Objects,save_nm,path.c_str())){
                 	path = ExtractFilePath(save_nm);
                     O->SaveObject(save_nm.c_str());
-                    Engine.FS.MarkFile(*it);
+                    Engine.FS.MarkFile(*it,true);
                     bNeedUpdate=true;
                 }else bNeedBreak=true;
             }else{

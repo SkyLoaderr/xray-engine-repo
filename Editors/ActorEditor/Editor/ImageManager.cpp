@@ -188,7 +188,7 @@ void CImageManager::SafeCopyLocalToServer(FileMap& files)
         Engine.FS.BackupFile	(&Engine.FS.m_Textures,AnsiString(fn));
 		Engine.FS.CopyFileTo	(src_name.c_str(),dest_name.c_str(),true);
         Engine.FS.WriteAccessLog(dest_name.c_str(),"Replace");
-        Engine.FS.MarkFile		(src_name);
+        Engine.FS.MarkFile		(src_name,true);
     }
 }
 //------------------------------------------------------------------------------
@@ -217,11 +217,11 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     FilePairIt it=M_BASE.begin();
 	FilePairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
-        UI.ProgressInc();
 	    DWORDVec data;
     	int w, h, a;
 
-        sh_name base_name; strcpy(base_name,it->first.c_str());
+        string256 base_name; strcpy(base_name,it->first.c_str());
+        UI.ProgressInc(base_name);
         AnsiString fn = it->first;
         Engine.FS.m_Textures.Update(fn);
         if (strext(base_name)) *strext(base_name)=0;
@@ -289,7 +289,7 @@ int	CImageManager::GetServerModifiedTextures(FileMap& files)
     FilePairIt it=M_BASE.begin();
 	FilePairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
-        sh_name base_name; strcpy(base_name,it->first.c_str());
+        string256 base_name; strcpy(base_name,it->first.c_str());
         if (strext(base_name)) *strext(base_name)=0;
     	// check thumbnail
 		FilePairIt th = M_THUM.find(base_name);
@@ -581,4 +581,24 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, int age)
     return bResult;
 }
 
+BOOL CImageManager::RemoveTexture(LPCSTR fname)
+{
+	AnsiString src_name=fname;
+    Engine.FS.m_Textures.Update(src_name);
+	if (Engine.FS.Exist(src_name.c_str())){
+    	// source
+        Engine.FS.BackupFile		(&Engine.FS.m_Textures,fname);
+        Engine.FS.DeleteFileByName	(src_name.c_str());
+        Engine.FS.WriteAccessLog	(src_name.c_str(),"Remove");
+        // thumbnail
+        AnsiString thm_name 		= ChangeFileExt(fname,".thm");
+        Engine.FS.BackupFile		(&Engine.FS.m_Textures,thm_name.c_str());
+        Engine.FS.DeleteFileByName	(&Engine.FS.m_Textures,thm_name.c_str());
+        // game
+        AnsiString game_name 		= ChangeFileExt(fname,".thm");
+        Engine.FS.DeleteFileByName	(&Engine.FS.m_GameTextures,game_name.c_str());
+        return TRUE;
+    }
+    return FALSE;
+}
 

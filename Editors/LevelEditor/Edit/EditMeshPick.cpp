@@ -172,8 +172,7 @@ bool CEditableMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 	for(DWORD i=0;i<m_Faces.size();i++){
 		for( int k=0;k<3;k++)
             parent.transform_tiny(p[k],m_Points[m_Faces[i].pv[k].pindex]);
-	    sPoly s(p,3);
-		if (frustum.testPoly(s)) return true;
+		if (frustum.testPolyInside(p,3)) return true;
 	}
 	return false;
 }
@@ -191,8 +190,7 @@ void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, const Fmatrix& par
 	        Fplane P; P.build(p[0],p[1],p[2]);
     	    if (P.classify(Device.m_Camera.GetPosition())<0) continue;
         }
-        sPoly s(p,3);
-        if (frustum.testPoly(s))
+        if (frustum.testPolyInside(p,3))
             fl.push_back(i);
     }
 }

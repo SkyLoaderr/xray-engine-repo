@@ -145,7 +145,6 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #include "engine\clsid.h"
 #include "engine\vector.h"
 #include "engine\FixedVector.h"
-#include "engine\xr_list.h"
 
 DEFINE_VECTOR(bool,boolVec,boolIt);
 DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);
@@ -172,6 +171,8 @@ DEFINE_VECTOR(string64,string64Vec,string64It);
 
 #include "Log.h"
 #include "engine.h"
+
+#include "engine\xr_list.h"
 
 extern LPCSTR InterpretError(HRESULT hr);
 #define CHK_DX(_expr_)			{HRESULT hr=_expr_; if (FAILED(hr)){char buf[1024]; sprintf(buf,"%s\n\nD3D Error: %s",#_expr_,InterpretError(hr)); _verify(buf, __FILE__, __LINE__);}}
@@ -233,8 +234,6 @@ IC DWORD bgr2rgb(DWORD val)
 {	BYTE r, g, b; r=(BYTE)(val>>0); g=(BYTE)(val>>8); b=(BYTE)(val>>16); return ((DWORD)(r<<16)|(g<<8)|(b));}
 IC DWORD rgb2bgr(DWORD val)
 {	BYTE r, g, b; r=(BYTE)(val>>16);g=(BYTE)(val>>8); b=(BYTE)(val>>0); return ((DWORD)(b<<16)|(g<<8)|(r)); }
-
-typedef char		sh_name[64];
 
 extern ENGINE_API Fmatrix Fidentity;;
 extern ENGINE_API Fbox box_identity;

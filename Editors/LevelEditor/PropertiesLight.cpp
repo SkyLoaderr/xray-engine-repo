@@ -134,7 +134,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     _L->FillSunProp	(sun_values);
     _L->FillPointProp(point_values);
 	flBrightness 					= (FloatValue*)PROP::FindProp(values,"Brightness"); R_ASSERT(flBrightness);
-    flBrightness->OnAfterEdit		= OnBrightnessAfterEdit;
+    flBrightness->OnChange			= OnBrightnessChange;
     flPointRange					= (FloatValue*)PROP::FindProp(point_values,"Range");					R_ASSERT(flPointRange);
     flPointA0						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
     flPointA1						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Linear"); 		R_ASSERT(flPointA1);
@@ -214,9 +214,9 @@ void __fastcall TfrmPropertiesLight::OnModified()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesLight::OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesLight::OnBrightnessChange(PropValue* sender)
 {
-	DrawGraph(flPointRange->GetValue(), *(float*)edit_val, flBrightness->lim_mx, flPointA0->GetValue(), flPointA1->GetValue(), flPointA2->GetValue());
+	DrawGraph(flPointRange->GetValue(), ((FloatValue*)sender)->GetValue(), flBrightness->lim_mx, flPointA0->GetValue(), flPointA1->GetValue(), flPointA2->GetValue());
 }
 //---------------------------------------------------------------------------
 

@@ -151,8 +151,8 @@ private:	// User declarations
     AnsiString m_NewReference;
     IC bool IsMultiSelection(){return (m_Objects->size()!=1);}
 	void __fastcall OnRenameItem(LPCSTR p0, LPCSTR p1);
-	void __fastcall OnRemoveItem(LPCSTR name);
-	void __fastcall OnRemoveSoundItem(LPCSTR name);
+	BOOL __fastcall OnRemoveItem(LPCSTR name);
+	BOOL __fastcall OnRemoveSoundItem(LPCSTR name);
 	void __fastcall ebResetActive(TElTree* tv, TElTreeItem* ignore_item);
 public:		// User declarations
     __fastcall TfrmPropertiesSceneObject(TComponent* Owner);

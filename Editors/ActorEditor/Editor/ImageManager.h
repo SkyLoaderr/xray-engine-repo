@@ -11,6 +11,7 @@ public:
 				CImageManager		(){;}
 				~CImageManager		(){;}
 	// texture routines
+    BOOL __fastcall	RemoveTexture	(LPCSTR fname);
     BOOL		CheckCompliance		(LPCSTR fname, int& compl);
     void		CheckCompliance		(FileMap& files, FileMap& compl);
     int			GetTextures			(FileMap& files);

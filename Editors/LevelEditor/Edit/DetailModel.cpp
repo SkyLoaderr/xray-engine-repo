@@ -1,104 +1,202 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "detailmodel.h"
-#include "xrstripify.h"
+#include "Library.h"
+#include "EditObject.h"
+#include "EditMesh.h"
 
-void CDetail::Load		(CStream* S)
+//------------------------------------------------------------------------------
+#define DETOBJ_CHUNK_VERSION		0x1000
+#define DETOBJ_CHUNK_REFERENCE 		0x0101
+#define DETOBJ_CHUNK_SCALE_LIMITS	0x0102
+#define DETOBJ_CHUNK_DENSITY_FACTOR	0x0103
+#define DETOBJ_CHUNK_FLAGS			0x0104
+
+#define DETOBJ_VERSION 				0x0001
+//------------------------------------------------------------------------------
+
+CDetail::CDetail(){
+	shader				= 0;
+	flags				= 0;
+	m_pRefs				= 0;
+    m_bMarkDel			= false;
+    s_min				= 0.5f;
+    s_max         		= 2.f;
+    m_fDensityFactor	= 1.f;
+    m_sRefs				= "";
+	vertices			= 0;
+	number_vertices		= 0;
+	indices				= 0;
+	number_indices		= 0;
+}
+
+CDetail::~CDetail()
 {
-	// Shader
-	FILE_NAME		fnT,fnS;
-	S->RstringZ		(fnS);
-	S->RstringZ		(fnT);
-	shader			= Device.Shader.Create(fnS,fnT);
+	Unload();
+}
 
-	// Params
-	flags			= S->Rdword	();
-	s_min			= S->Rfloat	();
-	s_max			= S->Rfloat	();
-	number_vertices	= S->Rdword	();
-	number_indices	= S->Rdword	();
-	R_ASSERT		(0==(number_indices%3));
-	
-	// Vertices
-	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
-	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
-	S->Read			(vertices,size_vertices);
-	
-	// Indices
-	DWORD			size_indices		= number_indices*sizeof(WORD);
-	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
-	S->Read			(indices,size_indices);
-	
-	// Validate indices
-	for (u32 idx = 0; idx<number_indices; idx++)
-		R_ASSERT	(indices[idx]<number_vertices);
-	
-	// Calc BB & SphereRadius
-	bv_bb.invalidate	();
-	for (DWORD i=0; i<number_vertices; i++)
-		bv_bb.modify	(vertices[i].P);
+void CDetail::Unload()
+{
+	if (vertices)		{ xr_free(vertices);	vertices=0; }
+	if (indices)		{ xr_free(indices);		indices=0;	}
+    Lib.RemoveEditObject(m_pRefs);
+}
+
+LPCSTR CDetail::GetName	(){
+    return m_pRefs?m_pRefs->GetName():m_sRefs.c_str();
+}
+
+void CDetail::OnDeviceCreate(){
+	if (!m_pRefs)		return;
+    CSurface* surf		= *m_pRefs->FirstSurface();
+    VERIFY				(surf);
+    VERIFY				(surf->_Shader());
+    shader				= surf->_Shader();
+}
+
+void CDetail::OnDeviceDestroy(){
+    shader 				= 0;
+}
+
+int CDetail::_AddVert(const Fvector& p, float u, float v)
+{
+	fvfVertexIn V(p,u,v);
+    for (DWORD k=0; k<number_vertices; k++)
+    	if (vertices[k].similar(V)) return k;
+    number_vertices++;
+//    if (1==number_vertices) vertices = (fvfVertexIn*)xr_malloc(number_vertices*sizeof(fvfVertexIn));
+//    else					
+    vertices = (fvfVertexIn*)xr_realloc(vertices,number_vertices*sizeof(fvfVertexIn));
+    vertices[number_vertices-1] = V;
+    return number_vertices-1;
+}
+
+bool CDetail::Update	(LPCSTR name){
+	m_sRefs				= name;
+    // update link
+    CEditableObject* R	= Lib.CreateEditObject(name);
+    if (!R){
+        ELog.DlgMsg		(mtError, "CDetail: '%s' not found in library", name);
+        return false;
+    }
+    if(R->SurfaceCount()!=1){
+    	ELog.DlgMsg		(mtError,"Object must contain 1 material.");
+	    Lib.RemoveEditObject(R);
+    	return false;
+    }
+	if(R->MeshCount()==0){
+    	ELog.DlgMsg		(mtError,"Object must contain 1 mesh.");
+	    Lib.RemoveEditObject(R);
+    	return false;
+    }
+
+    Lib.RemoveEditObject(m_pRefs);
+    m_pRefs				= R;
+
+    // create shader
+    CSurface* surf		= *m_pRefs->FirstSurface();
+    shader				= surf->_Shader();
+    R_ASSERT			(shader);
+
+    // fill geometry
+    CEditableMesh* M	= *m_pRefs->FirstMesh();
+	number_indices 		= M->GetFaceCount(false)*3;
+	indices				= (WORD*)xr_malloc(number_indices*sizeof(WORD));
+
+    // fill vertices
+    bv_bb.invalidate();
+    DWORD idx			= 0;
+    for (FaceIt f_it=M->m_Faces.begin(); f_it!=M->m_Faces.end(); f_it++){
+    	for (int k=0; k<3; k++,idx++){
+        	WORD& i_it	= indices[idx];
+        	st_Face& F 	= *f_it;
+            Fvector& P  = M->m_Points[F.pv[k].pindex];
+            st_VMapPt& vm=M->m_VMRefs[F.pv[k].vmref][0];
+            Fvector2& uv= M->m_VMaps[vm.vmap_index]->getUV(vm.index);
+        	i_it 		= _AddVert	(P,uv.x,uv.y);
+	        bv_bb.modify(vertices[i_it].P);
+        }
+    }
 	bv_bb.getsphere		(bv_sphere.P,bv_sphere.R);
 
-	Optimize	();
+    return true;
 }
 
-void CDetail::Optimize	()
-{
-	vector<WORD>		vec_indices, vec_permute;
-	const int			cache	= 14;
+bool CDetail::Load(CStream& F){
+	// check version
+    R_ASSERT			(F.FindChunk(DETOBJ_CHUNK_VERSION));
+    DWORD version		= F.Rdword();
+    if (version!=DETOBJ_VERSION){
+    	ELog.Msg(mtError,"CDetail: unsupported version.");
+        return false;
+    }
 
-	// Stripify
-	vec_indices.assign	(indices,indices+number_indices);
-	vec_permute.resize	(number_vertices);
-	int vt_old			= xrSimulate(vec_indices,cache);
-	xrStripify			(vec_indices,vec_permute,cache,0);
-	int vt_new			= xrSimulate(vec_indices,cache);
-	if (vt_new<vt_old)	
-	{
-		Msg					("DM: %d verts, %d indices, VT: %d/%d",number_vertices,number_indices,vt_old,vt_new);
+	// references
+	char buf[255];
+    R_ASSERT			(F.FindChunk(DETOBJ_CHUNK_REFERENCE));
+    F.RstringZ			(buf);
 
-		// Copy faces
-		PSGP.memCopy		(indices,&*vec_indices.begin(),vec_indices.size()*sizeof(WORD));
+    // scale
+    R_ASSERT			(F.FindChunk(DETOBJ_CHUNK_SCALE_LIMITS));
+    s_min				= F.Rfloat(); if (fis_zero(s_min)) 	s_min = 0.1f;
+	s_max		        = F.Rfloat(); if (s_max<s_min)		s_max = s_min;
 
-		// Permute vertices
-		vector<fvfVertexIn>	verts	(vertices,vertices+number_vertices);
-		for(DWORD i=0; i<verts.size(); i++)
-			vertices[i]=verts[vec_permute[i]];
-	}
+	// density factor
+    if (F.FindChunk(DETOBJ_CHUNK_DENSITY_FACTOR))
+	    m_fDensityFactor= F.Rfloat();
+
+    if (F.FindChunk(DETOBJ_CHUNK_FLAGS))
+    	flags			= F.Rdword();
+
+    // update object
+    return 				Update(buf);
 }
 
-void CDetail::Unload	()
-{
-	if (vertices)		{ _aligned_free(vertices);	vertices=0; }
-	if (indices)		{ _aligned_free(indices);	indices=0;	}
-	Device.Shader.Delete(shader);
+void CDetail::Save(CFS_Base& F){
+	// version
+	F.open_chunk		(DETOBJ_CHUNK_VERSION);
+    F.Wdword			(DETOBJ_VERSION);
+    F.close_chunk		();
+
+    // reference
+	F.open_chunk		(DETOBJ_CHUNK_REFERENCE);
+    F.WstringZ			(m_sRefs.c_str());
+    F.close_chunk		();
+
+	// scale
+	F.open_chunk		(DETOBJ_CHUNK_SCALE_LIMITS);
+    F.Wfloat			(s_min);
+    F.Wfloat			(s_max);
+    F.close_chunk		();
+
+	// density factor
+	F.open_chunk		(DETOBJ_CHUNK_DENSITY_FACTOR);
+    F.Wfloat			(m_fDensityFactor);
+    F.close_chunk		();
+
+    // flags
+	F.open_chunk		(DETOBJ_CHUNK_FLAGS);
+    F.Wdword			(flags);
+    F.close_chunk		();
 }
 
-void CDetail::Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, DWORD C, WORD* iDest, DWORD iOffset)
-{
-	// Transfer vertices
-	{
-		CDetail::fvfVertexIn	*srcIt = vertices, *srcEnd = vertices+number_vertices;
-		CDetail::fvfVertexOut	*dstIt = vDest;
-		for	(; srcIt!=srcEnd; srcIt++, dstIt++)
-		{
-			mXform.transform_tiny	(dstIt->P,srcIt->P);
-			dstIt->C	= C;
-			dstIt->u	= srcIt->u;
-			dstIt->v	= srcIt->v;
-		}
-	}
-	
-	// Transfer indices (in 32bit lines)
-	VERIFY	(iOffset<65535);
-	{
-		DWORD	item	= (iOffset<<16) | iOffset;
-		DWORD	count	= number_indices/2;
-		LPDWORD	sit		= LPDWORD(indices);
-		LPDWORD	send	= sit+count;
-		LPDWORD	dit		= LPDWORD(iDest);
-		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
-		if		(number_indices&1)	
-			iDest[number_indices-1]=indices[number_indices-1]+WORD(iOffset);
-	}
+void CDetail::Export(CFS_Base& F){
+	R_ASSERT			(m_pRefs);
+    CSurface* surf		= *m_pRefs->FirstSurface();
+	R_ASSERT			(surf);
+    // write data
+	F.WstringZ			(surf->_ShaderName());
+	F.WstringZ			(surf->_Texture());
+
+    F.Wdword			(flags);
+    F.Wfloat			(s_min);
+    F.Wfloat			(s_max);
+
+    F.Wdword			(number_vertices);
+    F.Wdword			(number_indices);
+
+    F.write				(vertices, 	number_vertices*sizeof(fvfVertexIn));
+    F.write				(indices, 	number_indices*sizeof(WORD));
 }
 

@@ -15,7 +15,7 @@ namespace FOLDER{
 	const DWORD TYPE_OBJECT=1;
 
 	typedef void 		__fastcall (__closure *TOnRenameItem)(LPCSTR p0, LPCSTR p1);
-	typedef void 		__fastcall (__closure *TOnRemoveItem)(LPCSTR p0);
+	typedef BOOL 		__fastcall (__closure *TOnRemoveItem)(LPCSTR p0);
     IC bool				IsFolder			(TElTreeItem* node){return node?(TYPE_FOLDER==(DWORD)node->Data):TYPE_INVALID;}
     IC bool				IsObject			(TElTreeItem* node){return node?(TYPE_OBJECT==(DWORD)node->Data):TYPE_INVALID;}
 
@@ -35,7 +35,7 @@ namespace FOLDER{
     LPCSTR				ReplacePart			(LPCSTR old_name, LPCSTR ren_part, int level, LPSTR dest);
     bool 				RenameItem          (TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnRenameItem OnRenameItem);
     void 				CreateNewFolder		(TElTree* tv, bool bEditAfterCreate);
-    bool				RemoveItem			(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem);
+    BOOL				RemoveItem			(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem);
     // drag'n'drop
 	void 				DragDrop			(TObject *Sender, TObject *Source, int X, int Y, TOnRenameItem after_drag);
 	void 				DragOver			(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);

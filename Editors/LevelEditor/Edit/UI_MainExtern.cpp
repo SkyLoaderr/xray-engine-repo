@@ -18,6 +18,7 @@
 #include "xr_input.h"
 #include "ui_main.h"
 #include "d3dutils.h"
+#include "frustum.h"
 
 
 bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap, Fvector* hitnormal){
@@ -113,7 +114,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
         p[i].mad(st,d,depth);
     }
 
-    frustum.CreateFromPoints(p,4);
+    frustum.CreateFromPoints(p,4,Device.m_Camera.m_Position);
 
     Fplane P; P.build(p[0],p[1],p[2]);
     if (P.classify(st)>0) P.build(p[2],p[1],p[0]);

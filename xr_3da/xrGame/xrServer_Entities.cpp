@@ -54,7 +54,7 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 #ifdef _EDITOR
 void	xrServerEntity::FillProp(PropValueVec& values)
 {
-	FILL_PROP(values,	"Active",	&s_flags, 	PROP::CreateFlagValue(M_SPAWN_OBJECT_ACTIVE));
+	FILL_PROP(values,	"Active",	&s_flags, 	PROP::CreateFlag(M_SPAWN_OBJECT_ACTIVE));
 }
 #endif
 
@@ -129,8 +129,8 @@ public:
     virtual void			FillProp		(PropValueVec& values)
     {
     	inherited::FillProp(values);
-      	FILL_PROP_EX(values,s_name, "Ammo: total",		&a_current, PROP::CreateIntValue(0,1000,1));
-        FILL_PROP_EX(values,s_name, "Ammo: in magazine",&a_elapsed, PROP::CreateIntValue(0,30,1));
+      	FILL_PROP_EX(values,s_name, "Ammo: total",		&a_current, PROP::CreateInt(0,1000,1));
+        FILL_PROP_EX(values,s_name, "Ammo: in magazine",&a_elapsed, PROP::CreateInt(0,30,1));
     }
 #endif
 };
@@ -169,9 +169,9 @@ public:
     virtual void			FillProp		(PropValueVec& values)
     {
     	inherited::FillProp(values);
-      	FILL_PROP_EX(values,s_name, "Team",		&s_team, 	PROP::CreateIntValue(0,64,1));
-        FILL_PROP_EX(values,s_name, "Squad",	&s_squad, 	PROP::CreateIntValue(0,64,1));
-        FILL_PROP_EX(values,s_name, "Group",	&s_group, 	PROP::CreateIntValue(0,64,1));
+      	FILL_PROP_EX(values,s_name, "Team",		&s_team, 	PROP::CreateInt(0,64,1));
+        FILL_PROP_EX(values,s_name, "Squad",	&s_squad, 	PROP::CreateInt(0,64,1));
+        FILL_PROP_EX(values,s_name, "Group",	&s_group, 	PROP::CreateInt(0,64,1));
     }
 #endif
 };

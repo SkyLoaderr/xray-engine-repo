@@ -16,6 +16,8 @@ const int		dm_size			= 7;
 const int		dm_cache_line	= 1+dm_size+1+dm_size+1;
 const int		dm_cache_size	= dm_cache_line*dm_cache_line;
 
+DEFINE_SVECTOR(CDetail*,dm_max_objects,DetailVec,DetailIt);
+
 class ENGINE_API CDetailManager  
 {
 public:
@@ -25,13 +27,13 @@ public:
 		float	scale;
 		float	C;
 		DWORD	C_dw;
-		float	scale_calculated;
+		float	scale_calculated;           
 		Fmatrix	mRotY;
 	};
 	struct	SlotPart
 	{
 		DWORD				id;	
-		CList<SlotItem>		items;
+		vector<SlotItem>	items;
 	};
 	enum	SlotType
 	{
@@ -57,13 +59,17 @@ public:
 	DetailSlot*				dtSlots;		// note: pointer into VFS
 	DetailSlot				DS_empty;
 public:
-	svector<CDetail,dm_max_objects>			objects;
-	svector<Slot,dm_cache_size>				cache;
-
-	svector<CList<SlotItem*>,dm_max_objects> visible;
-
+	DetailVec				objects;
+	svector<Slot,dm_cache_size>					cache;
+	svector<vector<SlotItem*>,dm_max_objects> 	visible;
 public:
-	IC bool					UseVS			()	{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
+	IC bool					UseVS			()	{ 
+#ifdef _EDITOR
+    	return false; 
+#else    
+    	return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); 
+#endif
+    }
 
 	CVS*					soft_VS;
 	void					soft_Load		();

@@ -80,7 +80,7 @@ private:	// User declarations
     FloatValue*		flPointA1;
     FloatValue*		flPointA2;
 
-	void __fastcall OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall OnBrightnessChange(PropValue* sender);
     void __fastcall OnModified();
 public:		// User declarations
     __fastcall TfrmPropertiesLight(TComponent* Owner);

@@ -153,7 +153,7 @@ public:
 		}
 		return test_mask ? fcvPartial:fcvFully;
 	}
-	IC BOOL			testPolyInside		(Fvector* p, int count) const
+	IC BOOL			testPolyInside_dirty(Fvector* p, int count) const
 	{
 		Fvector* e = p+count;
 		for (int i=0; i<p_count; i++)
@@ -164,6 +164,16 @@ public:
 		}
 		return true;
 	}
+   	IC BOOL			testPolyInside		(sPoly& src)const
+    {
+    	sPoly d;
+        return !!ClipPoly(src,d);
+    }
+   	IC BOOL			testPolyInside		(Fvector* p, int count)const
+    {
+    	sPoly src(p,count);
+        return testPolyInside(src);
+    }
 };
 #pragma pack(pop)
 

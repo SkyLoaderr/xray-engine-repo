@@ -37,8 +37,8 @@ struct 	xr_token;
 class PropValue;
 
 //------------------------------------------------------------------------------
-typedef void 	__fastcall (__closure *TBeforeEdit)		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-typedef void 	__fastcall (__closure *TAfterEdit)		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TBeforeEdit)		(PropValue* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TAfterEdit)		(PropValue* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TOnDrawValue)	(PropValue* sender, LPVOID draw_val);
 typedef void 	__fastcall (__closure *TOnChange)		(PropValue* sender);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)(void);

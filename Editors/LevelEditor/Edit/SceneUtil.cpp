@@ -12,9 +12,10 @@
 #include "Frustum.h"
 #include "ui_tools.h"
 #include "PropertiesListTypes.h"
+#include "Render.h"
 
 //----------------------------------------------------
-void __fastcall EScene::OnObjectNameAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall EScene::OnObjectNameAfterEdit(PropValue* sender, LPVOID edit_val)
 {
 	TextValue* V = (TextValue*)sender;
 	AnsiString* new_name = (AnsiString*)edit_val;
@@ -109,7 +110,7 @@ void EScene::SetLights(){
             CLight* l = (CLight*)(*_F);
             l_cnt++;
             if (l->Visible())
-                if ((l->m_D3D.type==D3DLIGHT_DIRECTIONAL) || Device.m_Frustum.testSphere(l->m_D3D.position,l->m_D3D.range)){
+                if ((l->m_D3D.type==D3DLIGHT_DIRECTIONAL) || ::Render->ViewBase.testSphere_dirty(l->m_D3D.position,l->m_D3D.range)){
                     l->Set( i++ );
                     frame_light.push_back(l);
                     l->Enable(FALSE);
@@ -131,7 +132,9 @@ void EScene::TurnLightsForObject(CSceneObject* obj){
         if (l->m_D3D.type==D3DLIGHT_DIRECTIONAL){
             l->Enable(TRUE);
         }else{
-            float d = obj->GetCenter().distance_to(*((Fvector*)&l->m_D3D.position)) - l->m_D3D.range - obj->GetRadius();
+        	Fbox bb; 	obj->GetBox(bb);
+            Fvector C; 	float R; bb.getsphere(C,R);
+            float d = C.distance_to(*((Fvector*)&l->m_D3D.position)) - l->m_D3D.range - R;
             if (d<0) l->Enable(TRUE);
             else  l->Enable(FALSE);
         }

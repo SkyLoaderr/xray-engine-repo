@@ -8,6 +8,7 @@
 #include "xr_ini.h"
 #include "clsid_game.h"
 #include "d3dutils.h"
+#include "render.h"
 
 #define SPAWNPOINT_VERSION   			0x0012
 //----------------------------------------------------
@@ -85,7 +86,8 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
 {
 	inherited::Render(priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
-        if (Device.m_Frustum.testSphere(PPosition,RPOINT_SIZE)){
+    	Fbox bb; GetBox(bb);
+	    if (::Render->occ_visible(bb)){
         	if (m_SpawnData){
                 switch (m_SpawnClassID){
                 case CLSID_OBJECT_ACTOR:		break;
@@ -120,8 +122,11 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
     }
 }
 
-bool CSpawnPoint::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere(PPosition,RPOINT_SIZE))?true:false;
+bool CSpawnPoint::FrustumPick(const CFrustum& frustum)
+{
+    Fbox bb; GetBox(bb);
+    DWORD mask=0xff;
+    return (frustum.testAABB(bb.min,bb.max,mask));
 }
 
 bool CSpawnPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
@@ -264,10 +269,10 @@ bool CSpawnPoint::FillProp(PropValueVec& values)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-            FILL_PROP_EX(values, "Respawn Point", "Team",	&m_dwTeamID, PROP::CreateDWORDValue(64,1));
+            FILL_PROP_EX(values, "Respawn Point", "Team",	&m_dwTeamID, PROP::CreateDWORD(64,1));
         }break;
         case ptAIPoint: 
-            FILL_PROP_EX(values, "AI Point", "Reserved", "-", PROP::CreateMarkerValue());
+            FILL_PROP_EX(values, "AI Point", "Reserved", "-", PROP::CreateMarker());
         break;
         default: THROW;
         }

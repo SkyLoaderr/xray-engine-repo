@@ -11,6 +11,7 @@
 #include "bottombar.h"
 #include "ui_main.h"
 #include "d3dutils.h"
+#include "render.h"
 //----------------------------------------------------
 #define F_LIM (10000)
 #define V_LIM (F_LIM*3)
@@ -147,15 +148,14 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
     }
 }
 //----------------------------------------------------
-void CEditableMesh::Render(const Fmatrix& parent, CSurface* S){
+void CEditableMesh::Render(const Fmatrix& parent, CSurface* S)
+{
 	// visibility test
     if (!m_Visible) return;
 	// frustum test
-	Fvector C; float r;
     Fbox bb; bb.set(m_Box);
     bb.xform(parent);
-    bb.getsphere(C,r);
-	if (!Device.m_Frustum.testSphere(C,r)) return;
+	if (!::Render->occ_visible(bb)) return;
     // render
     RBMapPairIt rb_pair = m_RenderBuffers.find(S);
     if (rb_pair!=m_RenderBuffers.end()){
@@ -220,11 +220,9 @@ void CEditableMesh::RenderEdge(const Fmatrix& parent, DWORD color){
 
 void CEditableMesh::RenderSelection(const Fmatrix& parent, DWORD color){
 //	if (!m_Visible) return;
-	Fvector C; float r;
     Fbox bb; bb.set(m_Box);
     bb.xform(parent);
-    bb.getsphere(C,r);
-	if (!Device.m_Frustum.testSphere(C,r)) return;
+	if (!::Render->occ_visible(bb)) return;
     // render
 	Device.SetTransform(D3DTS_WORLD,parent);
     Device.SetRS(D3DRS_TEXTUREFACTOR,	color);

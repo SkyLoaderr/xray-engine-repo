@@ -11,6 +11,7 @@
 #include "xr_trims.h"
 #include "bottombar.h"
 #include "d3dutils.h"
+#include "render.h"
 
 #define GLOW_VERSION	   				0x0012
 //----------------------------------------------------
@@ -58,7 +59,7 @@ void CGlow::Render(int priority, bool strictB2F){
         if (pinf.inf.range) D.div(pinf.inf.range);
         // тестируем находится ли во фрустуме glow
 		Device.SetTransform(D3DTS_WORLD,Fidentity);
-        if (Device.m_Frustum.testSphere(PPosition,m_Range)){
+        if (::Render->ViewBase.testSphere_dirty(PPosition,m_Range)){
         	// рендерим Glow
         	if ((fraBottomBar->miGlowTestVisibility->Checked&&!Scene.RayPick(PPosition,D,OBJCLASS_SCENEOBJECT,&pinf,true,0))||
             	!fraBottomBar->miGlowTestVisibility->Checked){
@@ -81,7 +82,7 @@ void CGlow::Render(int priority, bool strictB2F){
 }
 
 bool CGlow::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere(PPosition,m_Range))?true:false;
+    return (frustum.testSphere_dirty(PPosition,m_Range))?true:false;
 }
 
 bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){

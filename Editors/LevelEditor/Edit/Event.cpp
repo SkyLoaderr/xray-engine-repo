@@ -138,8 +138,7 @@ bool CEvent::SForm::FrustumPick(const Fmatrix& parent, const CFrustum& frustum)
             T.transform_tiny(v[0]);
             T.transform_tiny(v[1]);
             T.transform_tiny(v[2]);
-            sPoly s(v,3);
-            if (frustum.testPoly(s)) return true;
+            if (frustum.testPolyInside(v,3)) return true;
         }
     }
     return false;

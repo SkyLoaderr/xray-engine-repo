@@ -332,13 +332,13 @@ void CEditableObject::FillPropSummary(PropValueVec& values)
     FILL_PROP(values, "Game options\\Script",	&m_ClassScript,		PROP::CreateAText());
 }
 
-void CEditableObject::FillPropSurf(PropValueVec& values, TAfterEdit after_eshader, TAfterEdit after_texture)
+void CEditableObject::FillPropSurf(PropValueVec& values, TOnChange change)
 {
     for (SurfaceIt s_it=FirstSurface(); s_it!=LastSurface(); s_it++){
         CSurface* SURF=*s_it;
         AnsiString nm = AnsiString("Surfaces\\")+SURF->_Name();
-        FILL_PROP(values, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture, 		PROP::CreateATexture(after_texture));
-        FILL_PROP(values, AnsiString(nm+"\\Shader").c_str(), 	&SURF->m_ShaderName, 	PROP::CreateAEShader(after_eshader));
+        FILL_PROP(values, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture, 		PROP::CreateATexture(0,0,0,change));
+        FILL_PROP(values, AnsiString(nm+"\\Shader").c_str(), 	&SURF->m_ShaderName, 	PROP::CreateAEShader(0,0,0,change));
         FILL_PROP(values, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName,PROP::CreateACShader());
     }
 }

@@ -17,6 +17,7 @@ public:
 		eFORCE32	= DWORD(-1)
     };
 private:
+	Fbox			m_TBBox;
 	// options
 	DWORD			m_dwFlags;
 public:
@@ -72,10 +73,6 @@ public:
 protected:
 	typedef CCustomObject inherited;
     int				m_iBlinkTime;           
-
-    // internal use
-    float 			m_fRadius;
-    Fvector 		m_Center; 			// центр в мировых координатах
 public:
     // constructor/destructor methods
 					CSceneObject			(LPVOID data, LPCSTR name);
@@ -132,8 +129,6 @@ public:
 	virtual bool 	GetUTBox				(Fbox& box);
     void 			GetFullTransformToWorld	(Fmatrix& m);
     void 			GetFullTransformToLocal	(Fmatrix& m);
-    IC const Fvector& GetCenter				(){return m_Center;}
-    IC float		GetRadius				(){return m_fRadius;}
 
     // load/save methods
   	virtual bool 	Load					(CStream&);

@@ -48,16 +48,16 @@ void TfrmDOShuffle::GetInfo(){
     tvItems->Selected = 0;
     tvItems->Items->Clear();
     // fill
-    CDetailManager* DM=Scene.m_DetailObjects;
+    EDetailManager* DM=Scene.m_DetailObjects;
     VERIFY(DM);
     // objects
-    for (DOIt d_it=DM->m_Objects.begin(); d_it!=DM->m_Objects.end(); d_it++){
+    for (DOIt d_it=DM->objects.begin(); d_it!=DM->objects.end(); d_it++){
     	SDOData* dd 			= new SDOData;
         dd->m_RefName			= (*d_it)->GetName();
-        dd->m_fMinScale 		= (*d_it)->m_fMinScale;
-        dd->m_fMaxScale 		= (*d_it)->m_fMaxScale;
+        dd->m_fMinScale 		= (*d_it)->s_min;
+        dd->m_fMaxScale 		= (*d_it)->s_max;
         dd->m_fDensityFactor 	= (*d_it)->m_fDensityFactor;
-        dd->m_dwFlags			= (*d_it)->m_dwFlags;
+        dd->m_dwFlags			= (*d_it)->flags;
         AddItem(0,(*d_it)->GetName(),(void*)dd);
     }
     // indices
@@ -78,7 +78,7 @@ void TfrmDOShuffle::GetInfo(){
 }
 
 void TfrmDOShuffle::ApplyInfo(){
-    CDetailManager* DM=Scene.m_DetailObjects;
+    EDetailManager* DM=Scene.m_DetailObjects;
     VERIFY(DM);
     bool bNeedUpdate = false;
     // update objects
@@ -92,10 +92,10 @@ void TfrmDOShuffle::ApplyInfo(){
         }
         // update data
         SDOData* DD 		= (SDOData*)node->Data;
-        DO->m_fMinScale 	= DD->m_fMinScale;
-        DO->m_fMaxScale 	= DD->m_fMaxScale;
+        DO->s_min		 	= DD->m_fMinScale;
+        DO->s_max		 	= DD->m_fMaxScale;
         DO->m_fDensityFactor= DD->m_fDensityFactor;
-        DO->m_dwFlags		= DD->m_dwFlags;
+        DO->flags			= DD->m_dwFlags;
     }
     if (DM->RemoveObjects(true)) bNeedUpdate=true;
 	// update indices

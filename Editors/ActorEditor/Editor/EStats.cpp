@@ -38,6 +38,10 @@ void CStats::Show(CFontBase* font)
         clFRUSTUM.FrameEnd			();
 
         RenderDUMP_RT.FrameEnd		();
+
+		RenderDUMP_DT_VIS.FrameEnd	();	
+		RenderDUMP_DT_Render.FrameEnd();	
+		RenderDUMP_DT_Cache.FrameEnd();
 	}
 
 	// calc FPS & TPS
@@ -89,6 +93,10 @@ void CStats::Show(CFontBase* font)
 
 		RenderDUMP_SKIN.FrameStart	();
 		RenderDUMP_RT.FrameStart	();
+
+		RenderDUMP_DT_VIS.FrameStart();	
+		RenderDUMP_DT_Render.FrameStart();	
+		RenderDUMP_DT_Cache.FrameStart();	
 	}
 	dwShader_Codes = dwShader_Textures = dwShader_Matrices = dwShader_Constants = 0;
 	dwSND_Played = dwSND_Allocated = 0;

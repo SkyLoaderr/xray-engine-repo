@@ -13,15 +13,15 @@
       intermediate\BuilderTexFiles.obj intermediate\BuilderLTX.obj 
       intermediate\Glow.obj intermediate\TLSPRITE.obj intermediate\Log.obj 
       intermediate\BuilderCF.obj intermediate\BuilderOGF.obj 
-      intermediate\frustum.obj intermediate\EditLibrary.obj 
-      intermediate\sector.obj intermediate\portal.obj 
-      intermediate\portalutils.obj intermediate\stdafx.obj 
-      intermediate\NumericVector.obj intermediate\EditMesh.obj 
-      intermediate\ShaderFunction.obj intermediate\EditObjectImport.obj 
-      intermediate\EditMeshIO.obj intermediate\EditMeshPick.obj 
-      intermediate\EditMeshModify.obj intermediate\device.obj 
-      intermediate\SceneIO.obj intermediate\EditMeshRender.obj 
-      intermediate\Event.obj intermediate\TopBar.obj intermediate\LeftBar.obj 
+      intermediate\EditLibrary.obj intermediate\sector.obj 
+      intermediate\portal.obj intermediate\portalutils.obj 
+      intermediate\stdafx.obj intermediate\NumericVector.obj 
+      intermediate\EditMesh.obj intermediate\ShaderFunction.obj 
+      intermediate\EditObjectImport.obj intermediate\EditMeshIO.obj 
+      intermediate\EditMeshPick.obj intermediate\EditMeshModify.obj 
+      intermediate\device.obj intermediate\SceneIO.obj 
+      intermediate\EditMeshRender.obj intermediate\Event.obj 
+      intermediate\TopBar.obj intermediate\LeftBar.obj 
       intermediate\BottomBar.obj intermediate\FrameObject.obj 
       intermediate\FrameSector.obj intermediate\FramePortal.obj 
       intermediate\PropertiesLight.obj intermediate\PropertiesSound.obj 
@@ -48,13 +48,12 @@
       intermediate\ui_control.obj intermediate\UI_CustomTools.obj 
       intermediate\UI_DOTools.obj intermediate\UI_EventTools.obj 
       intermediate\UI_GlowTools.obj intermediate\UI_LightTools.obj 
-      intermediate\UI_Main.obj intermediate\UI_MainCommand.obj 
+      intermediate\ui_main.obj intermediate\UI_MainCommand.obj 
       intermediate\UI_ObjectTools.obj intermediate\UI_PortalTools.obj 
       intermediate\UI_PSTools.obj intermediate\UI_RPointTools.obj 
       intermediate\UI_SectorTools.obj intermediate\UI_SoundTools.obj 
       intermediate\ui_tools.obj intermediate\ELight.obj intermediate\FS.obj 
       intermediate\DOShuffle.obj intermediate\DOOneColor.obj 
-      intermediate\DetailObjectsRender.obj 
       intermediate\PropertiesDetailObject.obj intermediate\DetailObjectsPick.obj 
       intermediate\HW.obj intermediate\HWCaps.obj intermediate\PrimitivesR.obj 
       intermediate\SharedPrimitive.obj intermediate\EditObject.obj 
@@ -100,7 +99,11 @@
       intermediate\_math.obj intermediate\xrSkin1W.obj 
       intermediate\ExportObjectOGF.obj intermediate\SoundManager.obj 
       intermediate\tga.obj intermediate\xrServer_Entities.obj 
-      intermediate\SpawnPoint.obj intermediate\PropertiesListTypes.obj"/>
+      intermediate\SpawnPoint.obj intermediate\PropertiesListTypes.obj 
+      intermediate\DetailManager.obj intermediate\DetailManager_soft.obj 
+      intermediate\Frustum.obj intermediate\DetailModel.obj 
+      intermediate\DetailObjectsGenerate.obj intermediate\DetailManager_VS.obj 
+      intermediate\render.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -134,16 +137,16 @@
     <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
-    <INCLUDEPATH value="Engine\Game;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source"/>
-    <LIBPATH value="Engine\Game;lib\DX;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components6\alexmx"/>
+    <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Game;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source"/>
+    <LIBPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Game;lib\DX;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components6\alexmx"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IEngine\Game -Ilib\DX -IR:\DirectX8.1\include -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Iedit -Iengine -IEngine\CPU_Pipe -IEngine\Animations 
-      -IEngine\Blenders -IP:\MagicFM_Borland\Sdk\Include 
-      -IR:\Borland\Components6\alexmx 
+    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -IEngine\Game -Ilib\DX 
+      -IR:\DirectX8.1\include -I$(BCB)\include -I$(BCB)\include\vcl -Iedit 
+      -Iengine -IEngine\CPU_Pipe -IEngine\Animations -IEngine\Blenders 
+      -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\alexmx 
       -IR:\Borland\Components6\ElPack\Code\Source -src_suffix cpp -D_EDITOR 
       -D_LEVEL_EDITOR -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -xf -xp -VF -ff -X- -r- -a4 -6 -b- 
@@ -184,7 +187,6 @@
       <FILE FILENAME="edit\BuilderCF.cpp" FORMNAME="" UNITNAME="BuilderCF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\BuilderOGF.cpp" FORMNAME="" UNITNAME="BuilderOGF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\std_classes.h" FORMNAME="" UNITNAME="std_classes" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\frustum.cpp" FORMNAME="" UNITNAME="frustum" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="EditLibrary.cpp" FORMNAME="frmEditLibrary" UNITNAME="EditLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\sector.cpp" FORMNAME="" UNITNAME="sector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\portal.cpp" FORMNAME="" UNITNAME="portal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -266,7 +268,7 @@
       <FILE FILENAME="edit\UI_EventTools.cpp" FORMNAME="" UNITNAME="UI_EventTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_GlowTools.cpp" FORMNAME="" UNITNAME="UI_GlowTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_LightTools.cpp" FORMNAME="" UNITNAME="UI_LightTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_Main.cpp" FORMNAME="" UNITNAME="UI_Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ui_main.cpp" FORMNAME="" UNITNAME="UI_Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_ObjectTools.cpp" FORMNAME="" UNITNAME="UI_ObjectTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_PortalTools.cpp" FORMNAME="" UNITNAME="UI_PortalTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -279,7 +281,6 @@
       <FILE FILENAME="engine\FS.cpp" FORMNAME="" UNITNAME="FS" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="DOShuffle.cpp" FORMNAME="frmDOShuffle" UNITNAME="DOShuffle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="DOOneColor.cpp" FORMNAME="frmOneColor" UNITNAME="DOOneColor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\DetailObjectsRender.cpp" FORMNAME="" UNITNAME="DetailObjectsRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesDetailObject.cpp" FORMNAME="frmPropertiesDO" UNITNAME="PropertiesDetailObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\DetailObjectsPick.cpp" FORMNAME="" UNITNAME="DetailObjectsPick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="!TODO.txt" FORMNAME="" UNITNAME="!TODO" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -382,6 +383,13 @@
       <FILE FILENAME="PropertiesListTypes.h" FORMNAME="" UNITNAME="PropertiesListTypes.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\xrHemisphere.lib" FORMNAME="" UNITNAME="xrHemisphere.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\DetailManager.cpp" FORMNAME="" UNITNAME="DetailManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\DetailManager_soft.cpp" FORMNAME="" UNITNAME="DetailManager_soft.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Frustum.cpp" FORMNAME="" UNITNAME="Frustum" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\DetailObjectsGenerate.cpp" FORMNAME="" UNITNAME="DetailObjectsGenerate" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\DetailManager_VS.cpp" FORMNAME="" UNITNAME="DetailManager_VS" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\render.cpp" FORMNAME="" UNITNAME="render" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -44,6 +44,7 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bImport){
         form 				= new TfrmImageLib(0);
         form->Caption 		= title;
 	    form->bImportMode 	= bImport;
+        form->ebRemoveTexture->Enabled = !bImport;
         compl_map.clear		();
 
         if (!form->bImportMode) ImageManager.GetTextures(texture_map);
@@ -334,8 +335,9 @@ void __fastcall TfrmImageLib::ebCheckSelComplianceClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::ebAssociationClick(TObject *Sender)
+void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
 {
+	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Export assosiation?")==mrNo) return;
     // save previous data
     SaveTextureParams();
     
@@ -367,6 +369,12 @@ void __fastcall TfrmImageLib::ebAssociationClick(TObject *Sender)
 
     if (!bRes) ini->bSaveAtEnd = false;
 	_DELETE(ini);    
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *Sender)
+{
+  	FOLDER::RemoveItem(tvItems,tvItems->Selected,ImageManager.RemoveTexture);
 }
 //---------------------------------------------------------------------------
 

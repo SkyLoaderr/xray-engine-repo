@@ -280,6 +280,15 @@ void CFileSystem::DeleteFileByName(const char* nm){
 }
 //----------------------------------------------------
 
+void CFileSystem::DeleteFileByName(FSPath *initial, const char* nm)
+{
+	string256 fn;
+    strcpy(fn, nm);
+    initial->Update(fn);
+    DeleteFileByName(fn);
+}
+//----------------------------------------------------
+
 void CFileSystem::CopyFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
 	VerifyPath(dest);
 	CopyFile(src,dest,!bOverwrite);
@@ -323,14 +332,19 @@ int	CFileSystem::FileLength(LPCSTR fn){
 }
 //----------------------------------------------------
 #ifdef M_BORLAND
-void CFileSystem::MarkFile(const AnsiString& fn){
+void CFileSystem::MarkFile(const AnsiString& fn, bool bDeleteSource)
+{
 	AnsiString ext = ExtractFileExt(fn);
     ext.Insert("~",2);
 	AnsiString backup_fn = ChangeFileExt(fn,ext);
-	DeleteFile(backup_fn);
-	RenameFile(fn,backup_fn);
+	if (bDeleteSource){
+    	DeleteFile(backup_fn);
+		RenameFile(fn,backup_fn);
+    }else{
+		CopyFileTo(fn.c_str(),backup_fn.c_str(),true);
+    }
 }
-void CFileSystem::MarkFiles(FSPath* initial, FileMap& files)
+void CFileSystem::MarkFiles(FSPath* initial, FileMap& files, bool bDeleteSource)
 {
     AnsiString fname, init_name;
     initial->Update(init_name);
@@ -339,10 +353,10 @@ void CFileSystem::MarkFiles(FSPath* initial, FileMap& files)
 	FilePairIt _E 	= files.end();
 	for (; it!=_E; it++){
 		fname 		= init_name	+ it->first;
-    	MarkFile	(fname.c_str());
+    	MarkFile	(fname.c_str(),bDeleteSource);
     }
 }
-void CFileSystem::MarkFiles(FSPath* initial, LPSTRVec& files)
+void CFileSystem::MarkFiles(FSPath* initial, LPSTRVec& files, bool bDeleteSource)
 {
     AnsiString fname, init_name;
     initial->Update(init_name);
@@ -351,7 +365,7 @@ void CFileSystem::MarkFiles(FSPath* initial, LPSTRVec& files)
 	LPSTRIt _E 	= files.end();
 	for (; it!=_E; it++){
 		fname 		= init_name	+ AnsiString(*it);
-    	MarkFile	(fname.c_str());
+    	MarkFile	(fname.c_str(),bDeleteSource);
     }
 }
 
@@ -370,26 +384,6 @@ void CFileSystem::BackupFile(FSPath *initial, const AnsiString& fname)
     }
 }
 #endif
-
-void CFileSystem::BackupFile(const AnsiString& fn)
-{
-	AnsiString ext = ExtractFileExt(fn);
-    ext.Insert("~",2);
-	AnsiString backup_fn = ChangeFileExt(fn,ext);
-	CopyFileTo(fn.c_str(),backup_fn.c_str(),true);
-}
-
-bool CFileSystem::RestoreBackup(const AnsiString& fn)
-{
-	AnsiString ext = ExtractFileExt(fn);
-    ext.Insert("~",2);
-	AnsiString backup_fn = ChangeFileExt(fn,ext);
-    if (Exist(backup_fn.c_str(),false)){
-		CopyFileTo(backup_fn.c_str(),fn.c_str(),true);
-		return true;
-    }
-    return false;
-}
 
 bool CFileSystem::CreateNullFile(const char* fn){
     CFS_Memory F;

@@ -74,6 +74,7 @@ void CPSLibrary::Save(const char* nm){
 //----------------------------------------------------
 int CPSLibrary::Merge(const char* nm){
 	int cnt = 0;
+    THROW2("PSLibrary::Merge");
 /*    CPSLibrary L0;
     CPSLibrary L1;
     L0.OnCreate();
@@ -102,16 +103,6 @@ void CPSLibrary::Reload(){
     OnCreate();
 	ELog.Msg( mtInformation, "PS Library was succesfully reloaded." );
 }
-//----------------------------------------------------
-void CPSLibrary::Backup(){
-	AnsiString fn = PSLIB_FILENAME;
-    Engine.FS.BackupFile(fn);
-}
-//----------------------------------------------------
-//void CPSLibrary::RestoreBackup(){
-//	AnsiString fn = PSLIB_FILENAME;
-//	if (FS.RestoreBackup(fn)==1) Load(fn.c_str());
-//}
 //----------------------------------------------------
 PS::SDef* CPSLibrary::ChoosePS(bool bSetCurrent){
 	LPCSTR T = TfrmChoseItem::SelectPS(0,m_CurrentPS.c_str());

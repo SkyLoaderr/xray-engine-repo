@@ -22,7 +22,7 @@ struct UndoItem {
 
 class CLight;
 class CSceneObject;
-class CDetailManager;
+class EDetailManager;
 class CInifile;
 class CStream;
 class CFS_Base;
@@ -83,7 +83,7 @@ class EScene:
 {
 public:
 	// addition objects
-    CDetailManager*	m_DetailObjects;
+    EDetailManager*	m_DetailObjects;
     CSceneObject*	m_SkyDome;
 
     ObjectList		m_SnapObjects;
@@ -228,7 +228,7 @@ public:
 
     void			SynchronizeObjects();
 // utils
-	void __fastcall OnObjectNameAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall OnObjectNameAfterEdit(PropValue* sender, LPVOID edit_val);
 };
 
 //----------------------------------------------------

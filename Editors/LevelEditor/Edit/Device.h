@@ -2,7 +2,6 @@
 #define DeviceH
 
 #include "ui_camera.h"
-#include "frustum.h"
 #include "hw.h"
 #include "texturemanager.h"
 #include "pure.h"
@@ -36,8 +35,6 @@ public:
     Shader*					m_SelectionShader;
 
     Fmaterial				m_DefaultMat;
-
-    CFrustum    			m_Frustum;
 
     CModelPool				Models;
 public:

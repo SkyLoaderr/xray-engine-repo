@@ -56,7 +56,7 @@ void CSound::Render(int priority, bool strictB2F){
 }
 
 bool CSound::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere(PPosition,VIS_RADIUS))?true:false;
+    return (frustum.testSphere_dirty(PPosition,VIS_RADIUS))?true:false;
 }
 
 bool CSound::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){

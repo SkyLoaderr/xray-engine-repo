@@ -13,6 +13,7 @@
 #include "motion.h"
 #include "ui_main.h"
 #include "d3dutils.h"
+#include "render.h"
 
 #define BLINK_TIME 300.f
 
@@ -27,8 +28,7 @@ void CSceneObject::Construct(LPVOID data){
 	m_pRefs 	= 0;
     m_ObjVer.reset();
 
-    m_Center.set(0,0,0);
-    m_fRadius 	= 0;
+    m_TBBox.invalidate();
     m_iBlinkTime= 0;
 
     m_dwFlags	= 0;
@@ -83,13 +83,16 @@ int CSceneObject::GetVertexCount(){
 void CSceneObject::OnUpdateTransform(){
 	inherited::OnUpdateTransform();
     // update bounding volume
-    Fbox BB; GetBox			(BB);
-    BB.getsphere			(m_Center,m_fRadius);
+    if (m_pRefs){ 
+    	m_TBBox.set(m_pRefs->GetBox());
+    	m_TBBox.xform	(_Transform());
+    }
 }
 
-bool CSceneObject::GetBox( Fbox& box ){
+bool CSceneObject::GetBox( Fbox& box )
+{
 	if (!m_pRefs) return false;
-    box.xform(m_pRefs->GetBox(),_Transform());
+	box.set(m_TBBox);
 	return true;
 }
 
@@ -99,10 +102,11 @@ bool CSceneObject::GetUTBox( Fbox& box ){
 	return true;
 }
 
-bool __inline CSceneObject::IsRender(){
+bool __inline CSceneObject::IsRender()
+{
 	if (!m_pRefs) return false;
     if (fraBottomBar->miDrawObjectAnimPath->Checked&&IsDynamic()&&IsOMotionActive()) RenderAnimation();
-    return Device.m_Frustum.testSphere(m_Center,m_fRadius);
+    return ::Render->occ_visible(m_TBBox);
 }
 
 void CSceneObject::Render(int priority, bool strictB2F){
@@ -161,7 +165,7 @@ void CSceneObject::RenderBones(){
 
 void CSceneObject::RenderEdge(CEditableMesh* mesh, DWORD color){
 	if (!m_pRefs) return;
-    if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
+    if (::Render->occ_visible(m_TBBox))
 		m_pRefs->RenderEdge(_Transform(), mesh, color);
 }
 
@@ -172,22 +176,24 @@ void CSceneObject::RenderSelection(DWORD color){
 
 bool CSceneObject::FrustumPick(const CFrustum& frustum){
 	if (!m_pRefs) return false;
-    if(Device.m_Frustum.testSphere(m_Center,m_fRadius))
+    if (::Render->occ_visible(m_TBBox))
 		return m_pRefs->FrustumPick(frustum, _Transform());
     return false;
 }
 
 bool CSceneObject::SpherePick(const Fvector& center, float radius){
 	if (!m_pRefs) return false;
-	float R=radius+m_fRadius;
-    float dist_sqr=center.distance_to_sqr(m_Center);
+    float fR; Fvector vC;
+	m_TBBox.getsphere(vC,fR);
+	float R=radius+fR;
+    float dist_sqr=center.distance_to_sqr(vC);
     if (dist_sqr<R*R) return true;
     return false;
 }
 
 bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf){
 	if (!m_pRefs) return false;
-    if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
+    if (::Render->occ_visible(m_TBBox))
 		if (m_pRefs&&m_pRefs->RayPick(dist, S, D, _ITransform(), pinf)){
         	if (pinf) pinf->s_obj = this;
             return true;

@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "detailmanager.h"
 
 const DWORD	vs_size				= 3000;
@@ -27,10 +29,10 @@ void CDetailManager::soft_Render	()
 
 	for (DWORD O=0; O<objects.size(); O++)
 	{
-		CList<SlotItem*>&	vis = visible	[O];
+		vector<SlotItem*>&	vis = visible	[O];
 		if (vis.empty())	continue;
 
-		CDetail&	Object		= objects[O];
+		CDetail&	Object		= *objects[O];
 		DWORD	vCount_Object	= Object.number_vertices;
 		DWORD	iCount_Object	= Object.number_indices;
 		DWORD	vCount_Total	= vis.size()*vCount_Object;

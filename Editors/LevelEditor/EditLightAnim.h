@@ -135,8 +135,8 @@ private:	// User declarations
 
     TProperties*		m_Props;
     void __fastcall		OnModified		(void);
-	void __fastcall 	NameOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnAfterEdit	(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnBeforeEdit(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	NameOnDraw		(PropValue* sender, LPVOID draw_val);
 public:		// User declarations
     __fastcall TfrmEditLightAnim(TComponent* Owner);

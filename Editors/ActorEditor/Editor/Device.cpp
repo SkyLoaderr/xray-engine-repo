@@ -5,6 +5,7 @@
 #include "dxerr8.h"
 #include "ImageManager.h"
 #include "ui_main.h"
+#include "render.h"
 
 #pragma package(smart_init)
 
@@ -258,6 +259,8 @@ void CRenderDevice::UpdateFog(DWORD color, float fogness, float view_dist){
 	SetRS( D3DRS_FOGEND,	*(DWORD *)(&end)	);
 }
 
+extern float 	ssaLIMIT;
+extern float	g_fSCREEN;
 //---------------------------------------------------------------------------
 void __fastcall CRenderDevice::Resize(int w, int h)
 {
@@ -269,6 +272,9 @@ void __fastcall CRenderDevice::Resize(int w, int h)
     dwHeight 		= m_RealHeight * m_ScreenQuality;
     m_RenderWidth_2 = dwWidth * 0.5f;
     m_RenderHeight_2= dwHeight * 0.5f;
+
+	g_fSCREEN		=	float(dwWidth*dwHeight);
+	ssaLIMIT		=	(4.f*4.f)/g_fSCREEN;
 
     Destroy			();
 
@@ -326,7 +332,7 @@ void CRenderDevice::UpdateView(){
     mFullTransform.mul(mProjection,mView);
 
 // frustum culling sets
-    m_Frustum.CreateFromViewMatrix();
+    ::Render->ViewBase.CreateFromMatrix(mFullTransform,FRUSTUM_P_ALL);
 }
 
 void CRenderDevice::UpdateTimer(){

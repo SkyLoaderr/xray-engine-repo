@@ -60,6 +60,9 @@ public:
 	CStatTimer	RenderCALC;			// portal traversal, frustum culling, entities "OnVisible"
 	CStatTimer	RenderDUMP_SKIN;
 	CStatTimer	Animation;			// skeleton calculation
+	CStatTimer	RenderDUMP_DT_VIS;	// ...details visibility detection
+	CStatTimer	RenderDUMP_DT_Render;// ...details rendering
+	CStatTimer	RenderDUMP_DT_Cache;// ...details slot cache access
 
 	CStatTimer	Input;				// total time taken by input subsystem (accurate only in single-threaded mode)
 	CStatTimer	clRAY;				// total: ray-testing

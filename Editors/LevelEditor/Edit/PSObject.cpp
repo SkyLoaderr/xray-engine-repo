@@ -11,6 +11,7 @@
 #include "tlsprite.h"
 #include "d3dutils.h"
 #include "ui_main.h"
+#include "render.h"
 // export spawn
 #include "net_utils.h"
 #include "xrMessages.h"
@@ -184,7 +185,8 @@ void CPSObject::Render(int priority, bool strictB2F){
                 DU::DrawSelectionBox(bb,&clr);
             }
         }else{
-            if (Device.m_Frustum.testSphere(m_Emitter.m_Position,PSOBJECT_SIZE))
+            Fbox bb; GetBox(bb);
+            if (::Render->occ_visible(bb))
                 DrawPS();
         }
     }
@@ -198,7 +200,7 @@ void CPSObject::RenderSingle(){
 //----------------------------------------------------
 
 bool CPSObject::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere(m_Emitter.m_Position,PSOBJECT_SIZE))?true:false;
+    return (frustum.testSphere_dirty(m_Emitter.m_Position,PSOBJECT_SIZE))?true:false;
 }
 //----------------------------------------------------
 

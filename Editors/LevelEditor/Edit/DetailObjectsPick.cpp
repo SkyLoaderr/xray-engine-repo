@@ -9,8 +9,10 @@
 #include "cl_intersect.h"
 #include "bottombar.h"
 #include "ui_main.h"
+#include "frustum.h"
 
-int CDetailManager::RaySelect(bool flag, float& distance, Fvector& start, Fvector& direction){
+int EDetailManager::RaySelect(bool flag, float& distance, Fvector& start, Fvector& direction)
+{
 // box selected only
 
 	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
@@ -23,10 +25,10 @@ int CDetailManager::RaySelect(bool flag, float& distance, Fvector& start, Fvecto
 
     int count = 0;
 
-    for (DWORD z=0; z<m_Header.size_z; z++){
+    for (DWORD z=0; z<dtH.size_z; z++){
         fz			= fromSlotZ(z);
-        for (DWORD x=0; x<m_Header.size_x; x++){
-			DSIt slot= m_Slots.begin()+z*m_Header.size_x+x;
+        for (DWORD x=0; x<dtH.size_x; x++){
+			DetailSlot* slot= dtSlots+z*dtH.size_x+x;
             fx		= fromSlotX(x);
             bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->y_min, fz-DETAIL_SLOT_SIZE_2);
             bbox.max.set(fx+DETAIL_SLOT_SIZE_2, slot->y_max, fz+DETAIL_SLOT_SIZE_2);
@@ -40,14 +42,15 @@ int CDetailManager::RaySelect(bool flag, float& distance, Fvector& start, Fvecto
         }
     }
     if ((sx>=0)||(sz>=0)){
-    	m_Selected[sz*m_Header.size_x+sx] = flag;
+    	m_Selected[sz*dtH.size_x+sx] = flag;
         count++;
     }
     UI.RedrawScene();
     return count;
 }
 
-int CDetailManager::FrustumSelect(bool flag){
+int EDetailManager::FrustumSelect(bool flag)
+{
 // box selected only
 
 	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
@@ -58,10 +61,10 @@ int CDetailManager::FrustumSelect(bool flag){
 
     float 			fx,fz;
     Fbox			bbox;
-    for (DWORD z=0; z<m_Header.size_z; z++){
+    for (DWORD z=0; z<dtH.size_z; z++){
         fz			= fromSlotZ(z);
-        for (DWORD x=0; x<m_Header.size_x; x++){
-            DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
+        for (DWORD x=0; x<dtH.size_x; x++){
+            DetailSlot* slot = dtSlots+z*dtH.size_x+x;
             fx			= fromSlotX(x);
 
             bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->y_min, fz-DETAIL_SLOT_SIZE_2);
@@ -69,7 +72,7 @@ int CDetailManager::FrustumSelect(bool flag){
 			BYTE mask	= 0xff;
             bool bRes 	= !!frustum.testAABB(bbox.min,bbox.max,mask);
             if (bRes==flag){
-	            m_Selected[z*m_Header.size_x+x] = flag;
+	            m_Selected[z*dtH.size_x+x] = flag;
             	count++;
             }
         }
@@ -78,7 +81,7 @@ int CDetailManager::FrustumSelect(bool flag){
     return count;
 }
 
-int CDetailManager::SelectObjects(bool flag){
+int EDetailManager::SelectObjects(bool flag){
 //	for (int i=0; i<m_Selected.size(); i++)
 //    	m_Selected[i] = flag;
 	for (BYTEIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
@@ -86,7 +89,7 @@ int CDetailManager::SelectObjects(bool flag){
     return m_Selected.size();
 }
 
-int CDetailManager::InvertSelection(){
+int EDetailManager::InvertSelection(){
 	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
 //	for (int i=0; i<m_Selected.size(); i++)
 //    	m_Selected[i] = m_Selected[i];
@@ -95,7 +98,7 @@ int CDetailManager::InvertSelection(){
     return m_Selected.size();
 }
 
-int CDetailManager::SelectionCount(bool testflag){
+int EDetailManager::SelectionCount(bool testflag){
 	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
 	int count = 0;
 //	for (int i=0; i<m_Selected.size(); i++)

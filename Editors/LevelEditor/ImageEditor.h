@@ -45,8 +45,9 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCheckSelCompliance;
 	TExtBtn *ebCancel;
 	TBevel *Bevel3;
-	TExtBtn *ebAssociation;
+	TExtBtn *ebExportAssociation;
 	TBevel *Bevel4;
+	TExtBtn *ebRemoveTexture;
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
@@ -63,7 +64,8 @@ __published:	// IDE-managed Components
 	void __fastcall ebCheckAllComplianceClick(TObject *Sender);
 	void __fastcall ebCheckSelComplianceClick(TObject *Sender);
 	void __fastcall ebCancelClick(TObject *Sender);
-	void __fastcall ebAssociationClick(TObject *Sender);
+	void __fastcall ebExportAssociationClick(TObject *Sender);
+	void __fastcall ebRemoveTextureClick(TObject *Sender);
 private:
 // list functions
     void InitItemsList(const char* nm=0);

@@ -22,7 +22,7 @@ BOOL SceneBuilder::BuildGame()
     if (F.spawn.chunk){
 	    AnsiString lev_spawn = "level.spawn";
     	m_LevelPath.Update	(lev_spawn);
-        Engine.FS.MarkFile	(lev_spawn);
+        Engine.FS.MarkFile	(lev_spawn,true);
 	    F.spawn.stream.SaveTo(lev_spawn.c_str(),0);
     }
 
@@ -35,7 +35,7 @@ BOOL SceneBuilder::BuildGame()
     if (GAME.size()){
 	    AnsiString lev_game	= "level.game";
     	m_LevelPath.Update	(lev_game);
-        Engine.FS.MarkFile	(lev_game);
+        Engine.FS.MarkFile	(lev_game,true);
 	    GAME.SaveTo			(lev_game.c_str(),0);
     }
     return TRUE;

@@ -98,7 +98,7 @@ EScene::EScene(){
     // first init scene graph for objects
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
-    m_DetailObjects	= new CDetailManager();
+    m_DetailObjects	= new EDetailManager();
     m_SkyDome 		= 0;
     ClearSnapList	();
 }

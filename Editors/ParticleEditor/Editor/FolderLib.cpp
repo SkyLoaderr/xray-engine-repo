@@ -467,9 +467,10 @@ void FOLDER::CreateNewFolder(TElTree* tv, bool bEditAfterCreate)
 }
 //------------------------------------------------------------------------------
 
-bool FOLDER::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem)
+BOOL FOLDER::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem)
 {
-	bool bRes = false;
+	BOOL bRes = FALSE;
+    R_ASSERT(OnRemoveItem);
     if (pNode){
 		tv->IsUpdating = true;
 	    TElTreeItem* pSelNode = pNode->GetPrevSibling();
@@ -477,24 +478,24 @@ bool FOLDER::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveI
 		AnsiString full_name;
     	if (FOLDER::IsFolder(pNode)){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
+                bRes = TRUE;
 		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
                     FOLDER::MakeName(item,0,full_name,false);
-                	if (FOLDER::IsObject(item)) OnRemoveItem(full_name.c_str());
+                	if (FOLDER::IsObject(item)) 
+                    	if (!OnRemoveItem(full_name.c_str())) bRes=FALSE;
                 }
-	            pNode->Delete();
-                bRes = true;
+                if (bRes) pNode->Delete();
         	}
         }
     	if (FOLDER::IsObject(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected blender?") == mrYes){
+	        if (ELog.DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
 				FOLDER::MakeName(pNode,0,full_name,false);
-                OnRemoveItem(full_name.c_str());
-	            pNode->Delete();
-                bRes = true;
+                bRes = OnRemoveItem(full_name.c_str());
+	            if (bRes) pNode->Delete();
         	}
         }
-        tv->Selected	= pSelNode;
-		tv->IsUpdating 	= false;
+        if (bRes) tv->Selected = pSelNode;
+        tv->IsUpdating 	= false;
         tv->SetFocus();
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");

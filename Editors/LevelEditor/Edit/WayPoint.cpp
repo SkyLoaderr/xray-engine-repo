@@ -10,6 +10,7 @@
 #include "FrameWayPoint.h"
 #include "d3dutils.h"
 #include "ui_main.h"
+#include "render.h"
 
 //----------------------------------------------------
 
@@ -73,7 +74,7 @@ bool CWayPoint::RayPick(float& distance, Fvector& S, Fvector& D)
 bool CWayPoint::FrustumPick(const CFrustum& frustum)
 {
 	Fvector P=m_vPosition; P.y+=WAYPOINT_RADIUS;
-    return (frustum.testSphere(P,WAYPOINT_RADIUS))?true:false;
+    return (frustum.testSphere_dirty(P,WAYPOINT_RADIUS))?true:false;
 }
 bool CWayPoint::FrustumSelect(int flag, const CFrustum& frustum)
 {
@@ -365,8 +366,7 @@ void CWayObject::Render(int priority, bool strictB2F)
 //	inherited::Render(priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
 		Fbox bb; GetBox(bb);
-        Fvector C; float S; bb.getsphere(C,S);
-        if (Device.m_Frustum.testSphere(C,S)){
+        if (::Render->occ_visible(bb)){
 			for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render(Selected());
             if( Selected() ){
                 DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;

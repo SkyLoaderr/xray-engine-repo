@@ -90,6 +90,7 @@ public:
 	bool		Exist			(char* fn, const char* path, const char* name, bool bMessage = false);
 	bool		Exist			(char* fn, const char* path, const char* name, const char* ext, bool bMessage = false);
     void 		DeleteFileByName(const char* nm);
+    void 		DeleteFileByName(FSPath *initial, const char* nm);
 	void 		CopyFileTo		(LPCSTR src, LPCSTR dest, bool bOverwrite=true);
 	void 		MoveFileTo		(LPCSTR src, LPCSTR dest, bool bOverwrite=true);
     int			FileLength		(LPCSTR src);
@@ -99,11 +100,9 @@ public:
 
     bool 		CreateNullFile	(const char* fn);
 
-    void 		MarkFile		(const AnsiString& fn);
-    void		MarkFiles		(FSPath* initial, FileMap& files);
-    void		MarkFiles		(FSPath* initial, LPSTRVec& files);
-	void 		BackupFile		(const AnsiString& fn);
-	bool 		RestoreBackup	(const AnsiString& fn);
+    void 		MarkFile		(const AnsiString& fn, bool bDeleteSource);
+    void		MarkFiles		(FSPath* initial, FileMap& files, bool bDeleteSource);
+    void		MarkFiles		(FSPath* initial, LPSTRVec& files, bool bDeleteSource);
 	void 		BackupFile		(FSPath *initial, const AnsiString& fname);
 
     int			GetFileList		(LPCSTR path, FileMap& items, bool bClampPath, bool bClampExt, bool bRootOnly, LPCSTR ext_mask="*.*"); // return item count

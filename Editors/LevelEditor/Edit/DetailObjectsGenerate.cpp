@@ -46,41 +46,6 @@ const DWORD	vs_size				= 3000;
 
 #define DETMGR_VERSION 				0x0002
 //------------------------------------------------------------------------------
-EDetailManager::EDetailManager()
-{
-	dtSlots				= 0;
-	m_fDensity			= 0.1f;
-    ZeroMemory			(&dtH,sizeof(dtH));
-    m_Selected.clear	();
-    InitRender			();
-//s	VS					= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_TEX1, vs_size);
-	Device.seqDevCreate.Add	(this,REG_PRIORITY_LOW);
-	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
-}
-
-EDetailManager::~EDetailManager(){
-	Device.seqDevCreate.Remove(this);
-	Device.seqDevDestroy.Remove(this);
-	Clear();
-    Unload				();
-}
-
-void EDetailManager::OnDeviceCreate(){
-	// base texture
-    m_Base.CreateShader();
-	// detail objects
-//d	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-//d    	(*it)->OnDeviceCreate();
-}
-
-void EDetailManager::OnDeviceDestroy(){
-	// base texture
-    m_Base.DestroyShader();
-	// detail objects
-//d	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-//d    	(*it)->OnDeviceDestroy();
-}
-
 DetailSlot&	EDetailManager::GetSlot(DWORD sx, DWORD sz){
 	VERIFY(sx<dtH.size_x);
 	VERIFY(sz<dtH.size_z);
@@ -154,7 +119,7 @@ bool EDetailManager::Initialize(LPCSTR tex_name){
     	return false;
     }
 
-    if (m_Objects.empty()){
+    if (objects.empty()){
     	ELog.DlgMsg(mtError,"Fill object list before generating slots!");
     	return false;
     }
@@ -175,7 +140,7 @@ bool EDetailManager::Reinitialize(){
     	return false;
     }
 
-    if (m_Objects.empty()){
+    if (objects.empty()){
     	ELog.DlgMsg(mtError,"Fill object list before reinitialize!");
     	return false;
     }
@@ -336,16 +301,16 @@ BYTE EDetailManager::GetRandomObject(DWORD color_index){
 	ColorIndexPairIt CI=m_ColorIndices.find(color_index);
 	R_ASSERT(CI!=m_ColorIndices.end());
 	int k = DetailRandom.randI(0,CI->second.size());
-    DOIt it = find(m_Objects.begin(),m_Objects.end(),CI->second[k]);
-    VERIFY(it!=m_Objects.end());
-	return (it-m_Objects.begin());
+    DetailIt it = find(objects.begin(),objects.end(),CI->second[k]);
+    VERIFY(it!=objects.end());
+	return (it-objects.begin());
 }
 
 BYTE EDetailManager::GetObject(ColorIndexPairIt& CI, BYTE id){
 	VERIFY(CI!=m_ColorIndices.end());
-    DOIt it = find(m_Objects.begin(),m_Objects.end(),CI->second[id]);
-    VERIFY(it!=m_Objects.end());
-	return (it-m_Objects.begin());
+    DOIt it = find(objects.begin(),objects.end(),CI->second[id]);
+    VERIFY(it!=objects.end());
+	return (it-objects.begin());
 }
 
 bool CompareWeightFunc(SIndexDist& d0, SIndexDist& d1){
@@ -455,7 +420,7 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
 
         slot->color					= 0xffffffff;
         // density
-        float f = m_Objects[slot->items[k].id]->m_fDensityFactor;
+        float f = objects[slot->items[k].id]->m_fDensityFactor;
 
         slot->items[k].palette.a0 	= iFloor(best[k].dens[0]*f*15.f+.5f);
         slot->items[k].palette.a1 	= iFloor(best[k].dens[1]*f*15.f+.5f);
@@ -508,32 +473,34 @@ void EDetailManager::Clear(bool bOnlySlots){
 	m_Selected.clear	();
     _DELETEARRAY		(dtSlots);
     InvalidateCache		();
+    m_Base.DestroyShader();
+    _DELETEARRAY(dtSlots);
 }
 
 
-EDetail* EDetailManager::FindObjectByName(LPCSTR name){
-	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+CDetail* EDetailManager::FindObjectByName(LPCSTR name){
+	for (DOIt it=objects.begin(); it!=objects.end(); it++)
     	if (stricmp((*it)->GetName(),name)==0) return *it;
     return 0;
 }
 
 void EDetailManager::MarkAllObjectsAsDel(){
-	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+	for (DOIt it=objects.begin(); it!=objects.end(); it++)
     	(*it)->m_bMarkDel = true;
 }
 
 
-EDetail* EDetailManager::AppendObject(LPCSTR name, bool bTestUnique)
+CDetail* EDetailManager::AppendObject(LPCSTR name, bool bTestUnique)
 {
-    EDetail* D=0;
+    CDetail* D=0;
 	if (bTestUnique&&(D=FindObjectByName(name))) return D;
 
-    D = new EDetail();
+    D = new CDetail();
     if (!D->Update(name)){
     	_DELETE(D);
         return 0;
     }
-    m_Objects.push_back(D);
+    objects.push_back(D);
 	return D;
 }
 
@@ -550,22 +517,23 @@ void EDetailManager::InvalidateSlots()
     InvalidateCache();
 }
 
-int EDetailManager::RemoveObjects(bool bOnlyMarked){
+int EDetailManager::RemoveObjects(bool bOnlyMarked)
+{
 	int cnt=0;
 	if (bOnlyMarked){
-		for (DWORD i=0; i<m_Objects.size(); i++){  // не менять int i; на DWORD
-    		if (m_Objects[i]->m_bMarkDel){
-            	_DELETE(m_Objects[i]);
-	            m_Objects.erase(m_Objects.begin()+i);
+		for (DWORD i=0; i<objects.size(); i++){  // не менять int i; на DWORD
+    		if (objects[i]->m_bMarkDel){
+            	_DELETE(objects[i]);
+	            objects.erase(objects.begin()+i);
     	        i--;
                 cnt++;
             }
         }
     }else{
-		for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+		for (DOIt it=objects.begin(); it!=objects.end(); it++)
     		_DELETE(*it);
-        cnt = m_Objects.size();
-	    m_Objects.clear();
+        cnt = objects.size();
+	    objects.clear();
     }
     return cnt;
 }
@@ -574,7 +542,7 @@ void EDetailManager::RemoveColorIndices(){
 	m_ColorIndices.clear();
 }
 
-EDetail* EDetailManager::FindObjectInColorIndices(DWORD index, LPCSTR name)
+CDetail* EDetailManager::FindObjectInColorIndices(DWORD index, LPCSTR name)
 {
 	ColorIndexPairIt CI=m_ColorIndices.find(index);
 	if (CI!=m_ColorIndices.end()){
@@ -588,314 +556,14 @@ EDetail* EDetailManager::FindObjectInColorIndices(DWORD index, LPCSTR name)
 void EDetailManager::AppendIndexObject(DWORD color,LPCSTR name, bool bTestUnique)
 {
 	if (bTestUnique){
-		EDetail* DO = FindObjectInColorIndices(color,name);
+		CDetail* DO = FindObjectInColorIndices(color,name);
         if (DO)
 			m_ColorIndices[color].push_back(DO);
     }else{
-		EDetail* DO = FindObjectByName(name);
+		CDetail* DO = FindObjectByName(name);
 	    R_ASSERT(DO);
 		m_ColorIndices[color].push_back(DO);
     }
 }
 
-void EDetailManager::RemoveFromSnapList(CCustomObject* O)
-{
-	m_SnapObjects.remove(O);
-}
 
-void EDetailManager::ExportColorIndices(LPCSTR fname)
-{
-	CFS_Memory F;
-    SaveColorIndices(F);
-    F.SaveTo(fname,0);
-}
-
-void EDetailManager::ImportColorIndices(LPCSTR fname)
-{
-	Clear				(false);
-	CStream* F=Engine.FS.Open(fname); R_ASSERT(F);
-	LoadColorIndices(*F);
-	Engine.FS.Close(F);
-}
-
-void EDetailManager::SaveColorIndices(CFS_Base& F)
-{
-	// objects
-	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
-    for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-		F.open_chunk	(it-m_Objects.begin());
-        (*it)->Save		(F);
-	    F.close_chunk	();
-    }
-    F.close_chunk		();
-    // color index map
-	F.open_chunk		(DETMGR_CHUNK_COLOR_INDEX);
-    F.Wbyte				(m_ColorIndices.size());
-    ColorIndexPairIt S 	= m_ColorIndices.begin();
-    ColorIndexPairIt E 	= m_ColorIndices.end();
-    ColorIndexPairIt i_it= S;
-	for(; i_it!=E; i_it++){
-		F.Wdword		(i_it->first);
-        F.Wbyte			(i_it->second.size());
-	    for (DOIt do_it=i_it->second.begin(); do_it!=i_it->second.end(); do_it++)
-        	F.WstringZ	((*do_it)->GetName());
-    }
-    F.close_chunk		();
-}
-
-bool EDetailManager::LoadColorIndices(CStream& F)
-{
-    // objects
-    CStream* OBJ 		= F.OpenChunk(DETMGR_CHUNK_OBJECTS);
-    if (OBJ){
-        CStream* O   	= OBJ->OpenChunk(0);
-        for (int count=1; O; count++) {
-            EDetail* DO = new EDetail();
-            if (!DO->Load(*O)) ELog.Msg(mtError,"Can't load detail object.");
-			m_Objects.push_back(DO);
-            O->Close();
-            O = OBJ->OpenChunk(count);
-        }
-        OBJ->Close();
-    }
-    // color index map
-    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
-    int cnt				= F.Rbyte();
-    string256			buf;
-    DWORD index;
-    int ref_cnt;
-    for (int k=0; k<cnt; k++){
-		index			= F.Rdword();
-        ref_cnt			= F.Rbyte();
-		for (int j=0; j<ref_cnt; j++){
-        	F.RstringZ	(buf);
-            EDetail* DO	= FindObjectByName(buf);
-            if (DO) 	m_ColorIndices[index].push_back(DO);
-        }
-    }
-
-    return true;
-}
-
-bool EDetailManager::Load(CStream& F){
-    string256 buf;
-    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_VERSION));
-	DWORD version		= F.Rdword();
-
-    if (version!=DETMGR_VERSION){
-    	ELog.Msg(mtError,"EDetailManager: unsupported version.");
-        return false;
-    }
-
-	// header
-    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_HEADER,&dtH));
-
-    // objects
-    LoadColorIndices	(F);
-
-    // slots
-    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_SLOTS));
-    int cnt 			= F.Rdword();
-    dtSlots				= new DetailSlot[cnt];
-    m_Selected.resize	(cnt);
-	F.Read				(dtSlots,cnt*sizeof(DetailSlot));
-
-    // internal
-    // bbox
-    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_BBOX,&m_BBox));
-
-	// snap objects
-    if (F.FindChunk(DETMGR_CHUNK_SNAP_OBJECTS)){
-		cnt 			= F.Rdword();
-        if (cnt){
-	        for (int i=0; i<cnt; i++){
-    	    	F.RstringZ	(buf);
-        	    CCustomObject* O = Scene.FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
-            	if (!O)		ELog.Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
-	            else		m_SnapObjects.push_back(O);
-    	    }
-        }else{
-	    	m_SnapObjects= Scene.m_SnapObjects;
-        }
-    }else{
-    	m_SnapObjects	= Scene.m_SnapObjects;
-    }
-
-    if (F.FindChunk(DETMGR_CHUNK_DENSITY))
-		m_fDensity 			= F.Rfloat();
-
-	// base texture
-	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
-	    F.RstringZ		(buf);
-    	if (m_Base.LoadImage(buf)){
-		    m_Base.CreateShader();
-		    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
-        }else{
-        	ELog.Msg(mtError,"DetailManager: Can't find base texture '%s'.",buf);
-            Clear(true);
-        }
-    }
-
-    InvalidateCache		();
-
-    return true;
-}
-
-void EDetailManager::Save(CFS_Base& F){
-	// version
-	F.open_chunk		(DETMGR_CHUNK_VERSION);
-    F.Wdword			(DETMGR_VERSION);
-    F.close_chunk		();
-
-	// header
-	F.write_chunk		(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
-
-    // objects
-    SaveColorIndices	(F);
-
-    // slots
-	F.open_chunk		(DETMGR_CHUNK_SLOTS);
-    F.Wdword			(dtH.size_x*dtH.size_z);
-	F.write				(dtSlots,dtH.size_x*dtH.size_z*sizeof(DetailSlot));
-    F.close_chunk		();
-    // internal
-    // bbox
-	F.write_chunk		(DETMGR_CHUNK_BBOX,&m_BBox,sizeof(Fbox));
-	// base texture
-    if (m_Base.Valid()){
-		F.open_chunk	(DETMGR_CHUNK_BASE_TEXTURE);
-    	F.WstringZ		(m_Base.GetName());
-	    F.close_chunk	();
-    }
-    F.open_chunk		(DETMGR_CHUNK_DENSITY);
-    F.Wfloat			(m_fDensity);
-    F.close_chunk		();
-	// snap objects
-	F.open_chunk		(DETMGR_CHUNK_SNAP_OBJECTS);
-    F.Wdword			(m_SnapObjects.size());
-    for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++)
-    	F.WstringZ		((*o_it)->Name);
-    F.close_chunk		();
-}
-
-bool EDetailManager::Export(LPCSTR fn)
-{
-    bool bRes=true;
-
-    UI.ProgressStart	(4,"Making details...");
-    dtH.version	= DETAIL_VERSION;
-	CFS_Memory F;
-    dtH.object_count=m_Objects.size();
-	// header
-	F.write_chunk		(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
-	UI.ProgressInc();
-
-    // objects
-	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
-    for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-		F.open_chunk	(it-m_Objects.begin());
-        if (!(*it)->m_pRefs){
-        	ELog.DlgMsg(mtError, "Bad object or object not found '%s'.", (*it)->m_sRefs.c_str());
-            bRes=false;
-        }else{
-	        (*it)->Export	(F);
-        }
-	    F.close_chunk	();
-        if (!bRes) break;
-    }
-    F.close_chunk		();
-	UI.ProgressInc();
-
-    // slots
-    if (bRes){
-		F.open_chunk	(DETMGR_CHUNK_SLOTS);
-		F.write			(dtSlots,dtH.size_x*dtH.size_z*sizeof(DetailSlot));
-	    F.close_chunk	();
-		UI.ProgressInc	();
-    }
-
-    if (bRes)			F.SaveTo(fn,0);
-
-	UI.ProgressInc();
-    UI.ProgressEnd		();
-    return bRes;
-}
-
-//------------------------------------------------------------------------------
-// SBase
-//------------------------------------------------------------------------------
-#define MAX_BUF_SIZE 0xFFFF
-
-EDetailManager::SBase::SBase(){
-	name[0]			= 0;
-	shader_overlap	= 0;
-    shader_blended	= 0;
-}
-
-bool EDetailManager::SBase::LoadImage(LPCSTR nm){
-	strcpy(name,nm);
-    ImageManager.LoadTextureData(nm,data,w,h);
-    return Valid();
-}
-
-void EDetailManager::SBase::CreateRMFromObjects(const Fbox& box, ObjectList& lst)
-{
-	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-    	CSceneObject*	 S = (CSceneObject*)(*it);
-    	CEditableObject* O = S->GetReference(); VERIFY(O);
-
-        Fmatrix T; S->GetFullTransformToWorld(T);
-        mesh.reserve	(mesh.size()+S->GetFaceCount()*3);
-        for (EditMeshIt m_it=O->FirstMesh(); m_it!=O->LastMesh(); m_it++){
-		    FaceVec&	faces 	= (*m_it)->GetFaces();
-		    FvectorVec&	pts 	= (*m_it)->GetPoints();
-        	for (FaceIt f_it=faces.begin(); f_it!=faces.end(); f_it++){
-            	FVF::V v;
-                for (int k=0; k<3; k++){
-                	T.transform_tiny(v.p,pts[f_it->pv[k].pindex]);
-					v.t.x = GetUFromX(v.p.x,box);
-					v.t.y = GetVFromZ(v.p.z,box);
-                    mesh.push_back(v);
-                }
-            }
-        }
-    }
-//s	stream = Device.Streams.Create(FVF::F_V,MAX_BUF_SIZE);
-}
-
-void EDetailManager::SBase::Render()
-{
-	if (!Valid()) return;
-    Device.RenderNearer(0.001f);
-	Device.SetTransform(D3DTS_WORLD,Fidentity);
-    Device.SetShader((fraBottomBar->miDrawDOBlended->Checked)?shader_blended:shader_overlap);
-    div_t cnt = div(mesh.size(),MAX_BUF_SIZE);
-    DWORD vBase;
-    for (int k=0; k<cnt.quot; k++){
-//s		LPBYTE pv = (LPBYTE)stream->Lock(MAX_BUF_SIZE,vBase);
-//s		CopyMemory(pv,mesh.begin()+k*MAX_BUF_SIZE,sizeof(FVF::V)*MAX_BUF_SIZE);
-//s		stream->Unlock(MAX_BUF_SIZE);
-//s		Device.DP(D3DPT_TRIANGLELIST,stream,vBase,MAX_BUF_SIZE/3);
-    }
-    if (cnt.rem){
-//s	    LPBYTE pv = (LPBYTE)stream->Lock(cnt.rem,vBase);
-//s		CopyMemory(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,sizeof(FVF::V)*cnt.rem);
-//s	    stream->Unlock(cnt.rem);
-//s    	Device.DP(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
-    }
-    Device.ResetNearer();
-}
-
-void EDetailManager::SBase::CreateShader()
-{
-	if (Valid()){
-		shader_blended = Device.Shader.Create("editor\\do_base",name);
-		shader_overlap = Device.Shader.Create("default",name);
-	}
-}
-
-void EDetailManager::SBase::DestroyShader()
-{
-	if (shader_blended) Device.Shader.Delete(shader_blended);
-	if (shader_overlap) Device.Shader.Delete(shader_overlap);
-}

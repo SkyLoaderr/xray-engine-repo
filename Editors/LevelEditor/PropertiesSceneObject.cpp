@@ -279,11 +279,12 @@ void __fastcall TfrmPropertiesSceneObject::ebOMotionAppendClick(
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesSceneObject::OnRemoveItem(LPCSTR name)
+BOOL __fastcall TfrmPropertiesSceneObject::OnRemoveItem(LPCSTR name)
 {
 	m_EditObject->RemoveOMotion(name);
 	lbOMotionCount->Caption = m_EditObject->m_OMotions.size();
     OnModified(0);
+    return TRUE;
 }
 void __fastcall TfrmPropertiesSceneObject::ebOMotionDeleteClick(
       TObject *Sender)
@@ -454,11 +455,12 @@ void __fastcall TfrmPropertiesSceneObject::cbDummyClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesSceneObject::OnRemoveSoundItem(LPCSTR name)
+BOOL __fastcall TfrmPropertiesSceneObject::OnRemoveSoundItem(LPCSTR name)
 {
 	m_EditObject->RemoveSound(name);
 	lbSoundCount->Caption = m_EditObject->m_Sounds.size();
     OnModified(0);
+    return TRUE;
 }
 
 void __fastcall TfrmPropertiesSceneObject::ebSoundAppendClick(

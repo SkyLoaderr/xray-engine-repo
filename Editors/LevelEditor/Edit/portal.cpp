@@ -109,8 +109,7 @@ void CPortal::Move( Fvector& amount ){
 //------------------------------------------------------------------------------
 
 bool CPortal::FrustumPick(const CFrustum& frustum){
-    sPoly s(m_Vertices.begin(),m_Vertices.size());
-	if (frustum.testPoly(s)) return true;
+	if (frustum.testPolyInside(m_Vertices.begin(),m_Vertices.size())) return true;
     return false;
 }
 //------------------------------------------------------------------------------

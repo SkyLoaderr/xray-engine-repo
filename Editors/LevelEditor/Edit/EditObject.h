@@ -311,7 +311,7 @@ public:
 	void 			Save					(CFS_Base&);
 #ifdef _EDITOR
     void			FillPropSummary			(PropValueVec& values);
-    void			FillPropSurf			(PropValueVec& values, TAfterEdit after_eshader=0, TAfterEdit after_texture=0);
+    void			FillPropSurf			(PropValueVec& values, TOnChange change=0);
 #endif
 	bool			Import_LWO				(LPCSTR fname, bool bNeedOptimize);
 
