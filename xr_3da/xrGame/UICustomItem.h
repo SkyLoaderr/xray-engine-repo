@@ -1,5 +1,3 @@
-#ifndef __XR_UICUSTOMITEM_H__
-#define __XR_UICUSTOMITEM_H__
 #pragma once
 
 enum EUIItemAlign{
@@ -77,5 +75,3 @@ public:
 	void			SetScale		(float new_scale);
 	float			GetScale		();
 };
-
-#endif //__XR_UICUSTOMITEM_H__
