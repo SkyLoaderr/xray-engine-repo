@@ -1,0 +1,9 @@
+[logic]
+active = sr_tip
+
+[sr_tip]
+name = info_val_give_suicider_task
+type = news
+cond = {-val_suicide_quest_start} %+val_suicide_quest_start +val_escort_start%
+on_info = {+val_suicide_quest_start} nil
+
