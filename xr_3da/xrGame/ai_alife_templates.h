@@ -75,7 +75,7 @@ void save_base_vector(xr_vector<T> &tpVector, NET_Packet &tNetPacket)
 	xr_vector<T>::iterator		I = tpVector.begin();
 	xr_vector<T>::iterator		E = tpVector.end();
 	for ( ; I != E; I++)
-		tNetPacket.w			(I,sizeof(*I));
+		tNetPacket.w			(&*I,sizeof(*I));
 };
 
 template <class T>
@@ -87,7 +87,7 @@ void load_base_vector(xr_vector<T> &tpVector, NET_Packet &tNetPacket)
 	xr_vector<T>::iterator		I = tpVector.begin();
 	xr_vector<T>::iterator		E = tpVector.end();
 	for ( ; I != E; I++)
-		tNetPacket.r			(I,sizeof(*I));
+		tNetPacket.r			(&*I,sizeof(*I));
 };
 
 template <class T>

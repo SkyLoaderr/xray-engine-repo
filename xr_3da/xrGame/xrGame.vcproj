@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="xrGame"
 	ProjectGUID="{A15B9EF4-D198-45DE-8836-C736D09FF389}"
 	SccProjectName="&quot;$/xr_3da/xrGame&quot;, LSDAAAAA"
@@ -88,7 +88,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
@@ -108,17 +114,19 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
+				AssemblerOutput="4"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
@@ -164,7 +172,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -184,7 +198,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
@@ -192,10 +206,12 @@
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/xrGame.pch"
+				AssemblerOutput="4"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
@@ -241,13 +257,24 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Kernel"
 			Filter="">
+			<File
+				RelativePath=".\clsid_game.h">
+			</File>
 			<File
 				RelativePath=".\StdAfx.cpp">
 				<FileConfiguration
@@ -273,9 +300,6 @@
 				RelativePath=".\StdAfx.h">
 			</File>
 			<File
-				RelativePath=".\clsid_game.h">
-			</File>
-			<File
 				RelativePath=".\xrGame.cpp">
 			</File>
 		</Filter>
@@ -289,16 +313,16 @@
 				RelativePath="CameraFirstEye.h">
 			</File>
 			<File
-				RelativePath="GamePersistent.cpp">
-			</File>
-			<File
-				RelativePath="GamePersistent.h">
-			</File>
-			<File
 				RelativePath="cameralook.cpp">
 			</File>
 			<File
 				RelativePath="cameralook.h">
+			</File>
+			<File
+				RelativePath="GamePersistent.cpp">
+			</File>
+			<File
+				RelativePath="GamePersistent.h">
 			</File>
 			<File
 				RelativePath="xr_level_controller.cpp">
@@ -322,21 +346,6 @@
 					RelativePath=".\Level.h">
 				</File>
 				<File
-					RelativePath="LevelGameDef.cpp">
-				</File>
-				<File
-					RelativePath="LevelGameDef.h">
-				</File>
-				<File
-					RelativePath="Level_SLS_Default.cpp">
-				</File>
-				<File
-					RelativePath="Level_SLS_Load.cpp">
-				</File>
-				<File
-					RelativePath="Level_SLS_Save.cpp">
-				</File>
-				<File
 					RelativePath="Level_input.cpp">
 				</File>
 				<File
@@ -355,36 +364,27 @@
 					RelativePath="Level_network_start_client.cpp">
 				</File>
 				<File
+					RelativePath="Level_SLS_Default.cpp">
+				</File>
+				<File
+					RelativePath="Level_SLS_Load.cpp">
+				</File>
+				<File
+					RelativePath="Level_SLS_Save.cpp">
+				</File>
+				<File
 					RelativePath="Level_start.cpp">
+				</File>
+				<File
+					RelativePath="LevelGameDef.cpp">
+				</File>
+				<File
+					RelativePath="LevelGameDef.h">
 				</File>
 			</Filter>
 			<Filter
 				Name="Games"
 				Filter="">
-				<File
-					RelativePath="PlayerList.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="PlayerList.h">
-				</File>
 				<File
 					RelativePath="game_base.cpp">
 				</File>
@@ -420,6 +420,30 @@
 				</File>
 				<File
 					RelativePath="game_sv_single.h">
+				</File>
+				<File
+					RelativePath="PlayerList.cpp">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="PlayerList.h">
 				</File>
 			</Filter>
 			<Filter
@@ -647,6 +671,15 @@
 						RelativePath="Actor.h">
 					</File>
 					<File
+						RelativePath="Actor_Events.cpp">
+					</File>
+					<File
+						RelativePath="Actor_Feel.cpp">
+					</File>
+					<File
+						RelativePath=".\Actor_Flags.h">
+					</File>
+					<File
 						RelativePath=".\ActorAnimation.cpp">
 					</File>
 					<File
@@ -663,15 +696,6 @@
 					</File>
 					<File
 						RelativePath="ActorVehicle.cpp">
-					</File>
-					<File
-						RelativePath="Actor_Events.cpp">
-					</File>
-					<File
-						RelativePath="Actor_Feel.cpp">
-					</File>
-					<File
-						RelativePath=".\Actor_Flags.h">
 					</File>
 					<File
 						RelativePath=".\EffectorBobbing.cpp">
@@ -1441,6 +1465,9 @@
 				RelativePath=".\ContextMenu.h">
 			</File>
 			<File
+				RelativePath=".\HitMarker.cpp">
+			</File>
+			<File
 				RelativePath=".\HUDCursor.cpp">
 			</File>
 			<File
@@ -1451,9 +1478,6 @@
 			</File>
 			<File
 				RelativePath=".\HUDManager.h">
-			</File>
-			<File
-				RelativePath=".\HitMarker.cpp">
 			</File>
 			<Filter
 				Name="UI"
@@ -1649,6 +1673,9 @@
 				RelativePath=".\xrServer.h">
 			</File>
 			<File
+				RelativePath="xrServer_balance.cpp">
+			</File>
+			<File
 				RelativePath="xrServer_CL_connect.cpp">
 			</File>
 			<File
@@ -1691,22 +1718,16 @@
 				RelativePath="xrServer_Objects_ALife_Monsters.h">
 			</File>
 			<File
-				RelativePath="xrServer_Space.h">
-			</File>
-			<File
-				RelativePath="xrServer_balance.cpp">
-			</File>
-			<File
 				RelativePath="xrServer_perform_GameExport.cpp">
 			</File>
 			<File
 				RelativePath="xrServer_perform_IDgen.cpp">
 			</File>
 			<File
-				RelativePath="xrServer_perform_RPgen.cpp">
+				RelativePath="xrServer_perform_migration.cpp">
 			</File>
 			<File
-				RelativePath="xrServer_perform_migration.cpp">
+				RelativePath="xrServer_perform_RPgen.cpp">
 			</File>
 			<File
 				RelativePath="xrServer_perform_sls_default.cpp">
@@ -1737,6 +1758,9 @@
 			</File>
 			<File
 				RelativePath="xrServer_sls_clear.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_Space.h">
 			</File>
 		</Filter>
 		<Filter
@@ -1858,10 +1882,16 @@
 						RelativePath=".\AI_Console.h">
 					</File>
 					<File
+						RelativePath="ai_misc.cpp">
+					</File>
+					<File
 						RelativePath=".\AI_PathNodes.cpp">
 					</File>
 					<File
 						RelativePath=".\AI_PathNodes.h">
+					</File>
+					<File
+						RelativePath=".\AI_qNode.cpp">
 					</File>
 					<File
 						RelativePath=".\AI_Space.cpp">
@@ -1877,12 +1907,6 @@
 					</File>
 					<File
 						RelativePath=".\AI_Utilities.cpp">
-					</File>
-					<File
-						RelativePath=".\AI_qNode.cpp">
-					</File>
-					<File
-						RelativePath="ai_misc.cpp">
 					</File>
 				</Filter>
 				<Filter
@@ -1917,7 +1941,22 @@
 			Name="Physics"
 			Filter="">
 			<File
+				RelativePath="_cylinder.h">
+			</File>
+			<File
+				RelativePath="dCylinder\dCylinder.cpp">
+			</File>
+			<File
+				RelativePath="dCylinder\dCylinder.h">
+			</File>
+			<File
 				RelativePath="ExtendedGeom.h">
+			</File>
+			<File
+				RelativePath="ode_include.h">
+			</File>
+			<File
+				RelativePath="ode_redefine.h">
 			</File>
 			<File
 				RelativePath="PHDynamicData.cpp">
@@ -1938,6 +1977,9 @@
 				RelativePath="PHInterpolation.h">
 			</File>
 			<File
+				RelativePath="PHjeep.cpp">
+			</File>
+			<File
 				RelativePath="PHJeep.h">
 			</File>
 			<File
@@ -1956,9 +1998,6 @@
 				RelativePath="PHShell.h">
 			</File>
 			<File
-				RelativePath="PHjeep.cpp">
-			</File>
-			<File
 				RelativePath="Physics.cpp">
 			</File>
 			<File
@@ -1970,38 +2009,11 @@
 			<File
 				RelativePath="PhysicsShell.h">
 			</File>
-			<File
-				RelativePath="_cylinder.h">
-			</File>
-			<File
-				RelativePath="dCylinder\dCylinder.cpp">
-			</File>
-			<File
-				RelativePath="dCylinder\dCylinder.h">
-			</File>
-			<File
-				RelativePath="ode_include.h">
-			</File>
-			<File
-				RelativePath="ode_redefine.h">
-			</File>
 			<Filter
 				Name="Tri-Collider"
 				Filter="">
 				<File
 					RelativePath="tri-colliderKNoOPC\__aabb_tri.h">
-				</File>
-				<File
-					RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
-				</File>
-				<File
-					RelativePath="tri-colliderKNoOPC\dTriCollideK.h">
-				</File>
-				<File
-					RelativePath="tri-colliderKNoOPC\dTriList.cpp">
-				</File>
-				<File
-					RelativePath="tri-colliderKNoOPC\dTriList.h">
 				</File>
 				<File
 					RelativePath="tri-colliderknoopc\dcTriListCollider.cpp">
@@ -2028,6 +2040,18 @@
 					RelativePath="tri-colliderKNoOPC\dcTriListCollider.h">
 				</File>
 				<File
+					RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriCollideK.h">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriList.cpp">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriList.h">
+				</File>
+				<File
 					RelativePath="tri-colliderKNoOPC\dxTriList.h">
 				</File>
 			</Filter>
@@ -2035,16 +2059,16 @@
 				Name="PhyMove"
 				Filter="">
 				<File
-					RelativePath="PHAICharacter.cpp">
-				</File>
-				<File
-					RelativePath="PHAICharacter.h">
-				</File>
-				<File
 					RelativePath="PHActorCharacter.cpp">
 				</File>
 				<File
 					RelativePath="PHActorCharacter.h">
+				</File>
+				<File
+					RelativePath="PHAICharacter.cpp">
+				</File>
+				<File
+					RelativePath="PHAICharacter.h">
 				</File>
 				<File
 					RelativePath="PHCharacter.cpp">
@@ -2076,13 +2100,13 @@
 			RelativePath="Error.txt">
 		</File>
 		<File
+			RelativePath=".\notes.txt">
+		</File>
+		<File
 			RelativePath=".\Shedule.txt">
 		</File>
 		<File
 			RelativePath="System.ltx">
-		</File>
-		<File
-			RelativePath=".\notes.txt">
 		</File>
 		<File
 			RelativePath=".\todo.txt">

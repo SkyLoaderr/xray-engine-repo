@@ -63,6 +63,22 @@
 
 #include <mmreg.h>
 
+
+// stl-config
+// *** disable exceptions for both STLport and VC7.1 STL
+#define _STLP_NO_EXCEPTIONS	1
+
+// *** try to minimize code bloat of STLport
+#ifdef __BORLANDC__
+#else
+#ifdef XRCORE_EXPORTS				// no exceptions, export allocator and common stuff
+#define _STLP_DESIGNATED_DLL 1
+#define _STLP_USE_DECLSPEC 1
+#else
+#define _STLP_USE_DECLSPEC 1	// no exceptions, import allocator and common stuff
+#endif
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -132,17 +148,14 @@
     #endif
 #endif
 
-// stl-config
-#define _STLP_NO_EXCEPTIONS	1
-#ifdef __BORLANDC__
-#else
-	#ifdef XRCORE_EXPORTS				// no exceptions, export allocator and common stuff
-		#define _STLP_DESIGNATED_DLL 1
-		#define _STLP_USE_DECLSPEC 1
-	#else
-		#define _STLP_USE_DECLSPEC 1	// no exceptions, import allocator and common stuff
-	#endif
-#endif
+// Warnings
+#pragma warning (disable : 4251 )		// object needs DLL interface
+#pragma warning (disable : 4201 )		// nonstandard extension used : nameless struct/union
+#pragma warning (disable : 4100 )		// unreferenced formal parameter
+#pragma warning (disable : 4127 )		// conditional expression is constant
+#pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
+#pragma warning (disable : 4714 )		// 'function' marked as __forceinline not inlined
+#pragma warning (disable : 4530 )		// C++ exception handler used, but unwind semantics are not enabled
 
 // stl
 #include <algorithm>
@@ -152,17 +165,6 @@
 #include <list>
 #include <set>
 #include <map>
-
-// Warnings
-#pragma warning (disable : 4786 )		// too long names
-#pragma warning (disable : 4503 )		// decorated name length exceeded
-#pragma warning (disable : 4251 )		// object needs DLL interface
-#pragma warning (disable : 4201 )		// nonstandard extension used : nameless struct/union
-#pragma warning (disable : 4100 )		// unreferenced formal parameter
-#pragma warning (disable : 4127 )		// conditional expression is constant
-#pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
-#pragma warning (disable : 4714 )		// 'function' marked as __forceinline not inlined
-#pragma warning (disable : 4530 )		// C++ exception handler used, but unwind semantics are not enabled
 
 // Our headers
 #ifdef XRCORE_EXPORTS

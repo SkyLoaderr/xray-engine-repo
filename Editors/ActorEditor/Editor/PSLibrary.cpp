@@ -108,7 +108,7 @@ bool CPSLibrary::Load(const char* nm)
     u32 count 				= F->r_u32();
     if (count){
         m_PSs.resize		(count);
-        F->r				(m_PSs.begin(), count*sizeof(PS::SDef));
+        F->r				(&*m_PSs.begin(), count*sizeof(PS::SDef));
         for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
             s_it->m_CachedShader = 0;
     }

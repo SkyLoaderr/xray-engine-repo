@@ -3,378 +3,341 @@
 
 
 /*
-template <class T>
-void _sphere<T>::compute_fast(const _vector<T> *verts, int count)
+template <class float>
+void _sphere<float>::compute_fast(const _vector<float> *verts, int count)
 {
-	_box3<T>	BB;
+_box3<float>	BB;
 }
 */
 
-namespace
+class Miniball;
+class Basis;
+
+// Basis
+// -----
+class Basis 
 {
-	template <class T> class Miniball;
-	template <class T> class Basis;
+private:
+	enum { d = 3 }		eDimensions;
 
-	// Basis
-	// -----
-	template <class T>
-	class Basis 
+	// data members
+	int					m, s;			// size and number of support vectors
+
+	Fvector				q0;
+
+	float					z[d+1];
+	float					f[d+1];
+	Fvector				v[d+1];
+	Fvector				a[d+1];
+	Fvector				c[d+1];
+	float					sqr_r[d+1];
+
+	Fvector*			current_c;      // vectors to some c[j]
+	float					current_sqr_r;
+public:
+	Basis();
+
+	// access
+	const Fvector*		center			() const;
+	float					squared_radius	() const;
+	int                 size			() const;
+	int                 support_size	() const;
+	float					excess			(const Fvector& p) const;
+
+	// modification
+	void                reset			(); // generates empty sphere with m=s=0
+	bool                push			(const Fvector& p);
+	void                pop				();
+};
+
+// Miniball
+// --------
+class Miniball
+{
+public:
+	// types
+	typedef xr_list<Fvector>			VectorList;
+	typedef VectorList::iterator        It;
+	typedef VectorList::const_iterator  Cit;
+
+private:
+	// data members
+	VectorList	L;						// STL list keeping the gVectors
+	Basis		B;						// basis keeping the current ball
+	It          support_end;			// past-the-end iterator of support set
+
+	// private methods
+	void		mtf_mb					(It k);
+	void		pivot_mb				(It k);
+	void		move_to_front			(It j);
+	float			max_excess				(It t, It i, It& pivot) const;
+	float			abs						(float r) const {return (r>0)? r: (-r);}
+	float			sqr						(float r) const {return r*r;}
+public:
+	// construction
+	Miniball() {}
+	void        check_in				(const Fvector& p);
+	void        build					();
+
+	// access
+	Fvector      center					() const;
+	float			squared_radius			() const;
+	int         num_points				() const;
+	Cit         points_begin			() const;
+	Cit         points_end				() const;
+	int         nr_support_gVectors		() const;
+	Cit         support_points_begin	() const;
+	Cit         support_points_end		() const;
+};
+
+// Miniball
+// --------
+
+void Miniball::check_in (const Fvector& p)
+{
+	L.push_back(p);
+}
+
+void Miniball::build ()
+{
+	B.reset();
+	support_end = L.begin();
+
+	// @@ pivotting or not ?
+	if ( 1 )
+		pivot_mb	(L.end());
+	else
+		mtf_mb		(L.end());
+}
+
+void Miniball::mtf_mb (It i)
+{
+	support_end = L.begin();
+
+	if ((B.size())== 4) 
+		return;
+
+	for (It k=L.begin(); k!=i;) 
 	{
-		typedef _vector<T>	vec3D;
-	private:
-		enum { d = 3 }		eDimensions;
-
-		// data members
-		int					m, s;			// size and number of support vectors
-
-		vec3D				q0;
-
-		T					z[d+1];
-		T					f[d+1];
-		vec3D				v[d+1];
-		vec3D				a[d+1];
-		vec3D				c[d+1];
-		T					sqr_r[d+1];
-
-		vec3D*				current_c;      // vectors to some c[j]
-		T					current_sqr_r;
-
-		T					sqr (T r) const {return r*r;}
-	public:
-		Basis();
-
-		// access
-		const vec3D*		center			() const;
-		T					squared_radius	() const;
-		int                 size			() const;
-		int                 support_size	() const;
-		T					excess			(const vec3D& p) const;
-
-		// modification
-		void                reset			(); // generates empty sphere with m=s=0
-		bool                push			(const vec3D& p);
-		void                pop				();
-	};
-
-	// Miniball
-	// --------
-	template <class T>
-	class Miniball
-	{
-		typedef _vector<T>	vec3D;
-	public:
-		// types
-		// use my alloactor so that it doesn't leak forever !
-		typedef xr_list<vec3D>				VectorList;
-
-		typedef VectorList::iterator        It;
-		typedef VectorList::const_iterator  Cit;
-
-	private:
-		// data members
-		VectorList	L;						// STL list keeping the gVectors
-		Basis<T>    B;						// basis keeping the current ball
-		It          support_end;			// past-the-end iterator of support set
-
-		// private methods
-		void		mtf_mb					(It k);
-		void		pivot_mb				(It k);
-		void		move_to_front			(It j);
-		T			max_excess				(It t, It i, It& pivot) const;
-		T			abs						(T r) const {return (r>0)? r: (-r);}
-		T			sqr						(T r) const {return r*r;}
-	public:
-		// construction
-		Miniball() {}
-		void        check_in				(const vec3D& p);
-		void        build					();
-
-		// access
-		vec3D      center					() const;
-		T			squared_radius			() const;
-		int         num_points				() const;
-		Cit         points_begin			() const;
-		Cit         points_end				() const;
-		int         nr_support_gVectors		() const;
-		Cit         support_points_begin	() const;
-		Cit         support_points_end		() const;
-	};
-
-	// Miniball
-	// --------
-
-	template <class T>
-		void Miniball<T>::check_in (const vec3D& p)
-	{
-		L.push_back(p);
-	}
-
-	template <class T>
-		void Miniball<T>::build ()
-	{
-		B.reset();
-		support_end = L.begin();
-
-		// @@ pivotting or not ?
-		if ( 1 )
-			pivot_mb	(L.end());
-		else
-			mtf_mb		(L.end());
-	}
-
-	template <class T>
-		void Miniball<T>::mtf_mb (It i)
-	{
-		support_end = L.begin();
-
-		if ((B.size())== 4) 
-			return;
-
-		for (It k=L.begin(); k!=i;) 
+		It j=k++;
+		if (B.excess(*j) > 0) 
 		{
-			It j=k++;
-			if (B.excess(*j) > 0) 
+			if (B.push(*j)) 
 			{
-				if (B.push(*j)) 
-				{
-					mtf_mb (j);
-					B.pop();
-					move_to_front(j);
-				}
-			}
-		}
-	}
-
-	template <class T>
-		void Miniball<T>::move_to_front (It j)
-	{
-		if (support_end == j)
-			support_end++;
-		L.splice (L.begin(), L, j);
-	}
-
-
-	template <class T>
-		void Miniball<T>::pivot_mb (It i)
-	{
-		It t = ++L.begin();
-		mtf_mb (t);
-		T max_e =0, old_sqr_r = 0;
-		do 
-		{
-			It pivot = L.begin();
-			max_e = max_excess (t, i, pivot);
-			if (max_e > 0) 
-			{
-				t = support_end;
-				if (t==pivot) ++t;
-				old_sqr_r = B.squared_radius();
-				B.push (*pivot);
-				mtf_mb (support_end);
+				mtf_mb (j);
 				B.pop();
-				move_to_front (pivot);
-			}
-		} while ((max_e > 0) && (B.squared_radius() > old_sqr_r));
-	}
-
-	template <class T>
-		T Miniball<T>::max_excess (It t, It i, It& pivot) const
-	{
-		const	vec3D* pCenter = B.center();
-		T				sqr_r	= B.squared_radius();
-
-		T e, max_e = 0;
-
-		for (It k=t; k!=i; ++k)
-		{
-			const vec3D & point = (*k);
-			e = -sqr_r;
-
-			e += point.distance_to_sqr(*pCenter);
-
-			if (e > max_e)
-			{
-				max_e = e;
-				pivot = k;
+				move_to_front(j);
 			}
 		}
-
-		return max_e;
 	}
+}
 
-	template <class T>
-		Miniball<T>::vec3D Miniball<T>::center () const
+void Miniball::move_to_front (It j)
+{
+	if (support_end == j)
+		support_end++;
+	L.splice (L.begin(), L, j);
+}
+
+
+void Miniball::pivot_mb (It i)
+{
+	It t = ++L.begin();
+	mtf_mb (t);
+	float max_e =0, old_sqr_r = 0;
+	do 
 	{
-		return *((vec3D *)B.center());
-	}
-
-	template <class T>
-		T Miniball<T>::squared_radius () const
-	{
-		return B.squared_radius();
-	}
-
-	template <class T>
-		int Miniball<T>::num_points () const
-	{
-		return L.size();
-	}
-
-	template <class T>
-		Miniball<T>::Cit Miniball<T>::points_begin () const
-	{
-		return L.begin();
-	}
-
-	template <class T>
-		Miniball<T>::Cit Miniball<T>::points_end () const
-	{
-		return L.end();
-	}
-
-	template <class T>
-		int Miniball<T>::nr_support_gVectors () const
-	{
-		return B.support_size();
-	}
-
-	template <class T>
-		Miniball<T>::Cit Miniball<T>::support_points_begin () const
-	{
-		return L.begin();
-	}
-
-	template <class T>
-		Miniball<T>::Cit Miniball<T>::support_points_end () const
-	{
-		return support_end;
-	}
-
-
-	//----------------------------------------------------------------------
-	// Basis
-	//---------------------------------------------------------------------
-	template <class T>
-		const Basis<T>::vec3D* Basis<T>::center () const
-	{
-		return current_c;
-	}
-
-	template <class T>
-		T Basis<T>::squared_radius() const
-	{
-		return current_sqr_r;
-	}
-
-	template <class T>
-		int Basis<T>::size() const
-	{
-		return m;
-	}
-
-	template <class T>
-		int Basis<T>::support_size() const
-	{
-		return s;
-	}
-
-	template <class T>
-		T Basis<T>::excess (const vec3D& p) const
-	{
-		T e = -current_sqr_r;
-		e += p.distance_to_sqr(*current_c);
-		return e;
-	}
-
-	template <class T>
-		void Basis<T>::reset ()
-	{
-		m = s = 0;
-		// we misuse c[0] for the center of the empty sphere
-		c[0].set(0,0,0);
-		current_c = c;
-		current_sqr_r = -1;
-	}
-
-
-	template <class T>
-		Basis<T>::Basis ()
-	{
-		reset();
-	}
-
-
-	template <class T>
-		void Basis<T>::pop ()
-	{
-		--m;
-	}
-
-
-	template <class T>
-		bool Basis<T>::push (const vec3D& p)
-	{
-		if (m==0)
+		It pivot = L.begin();
+		max_e = max_excess (t, i, pivot);
+		if (max_e > 0) 
 		{
-			q0 = p;
-			c[0] = q0;
-			sqr_r[0] = 0;
+			t = support_end;
+			if (t==pivot) ++t;
+			old_sqr_r = B.squared_radius();
+			B.push (*pivot);
+			mtf_mb (support_end);
+			B.pop();
+			move_to_front (pivot);
 		}
-		else
+	} while ((max_e > 0) && (B.squared_radius() > old_sqr_r));
+}
+
+float Miniball::max_excess (It t, It i, It& pivot) const
+{
+	const	Fvector* pCenter = B.center();
+	float				sqr_r	= B.squared_radius();
+
+	float e, max_e = 0;
+
+	for (It k=t; k!=i; ++k)
+	{
+		const Fvector & point = (*k);
+		e = -sqr_r;
+
+		e += point.distance_to_sqr(*pCenter);
+
+		if (e > max_e)
 		{
-			int i;
-			const T eps = 1e-16f;
-
-			// set v_m to Q_m
-			v[m].sub(p,q0);
-
-			// compute the a_{m,i}, i< m
-			for (i=1; i<m; ++i)
-			{
-				a[m][i] =  v[i].dotproduct(v[m]);
-				a[m][i] *= (2.f/z[i]);
-			}
-
-			// update v_m to Q_m-\bar{Q}_m
-			for (i=1; i<m; ++i)
-			{
-				v[m].mad(v[m],v[i],-a[m][i]);
-			}
-
-			// compute z_m
-			z[m]=0;
-			z[m] += v[m].square_magnitude();
-			z[m]*=2;
-
-			// reject push if z_m too small
-			if (z[m]<eps*current_sqr_r)
-			{
-				return false;
-			}
-
-			// update c, sqr_r
-			T e = -sqr_r[m-1];
-			e += p.distance_to_sqr(c[m-1]);
-
-			f[m]=e/z[m];
-
-			c[m].mad(c[m-1],v[m],f[m]);
-
-			sqr_r[m] = sqr_r[m-1] + e*f[m]/2;
+			max_e = e;
+			pivot = k;
 		}
-
-		current_c = c+m;
-		current_sqr_r = sqr_r[m];
-		s = ++m;
-		return true;
 	}
 
+	return max_e;
+}
 
-}; // nameless namespace
+Fvector Miniball::center () const
+{
+	return *((Fvector *)B.center());
+}
+
+float Miniball::squared_radius () const
+{
+	return B.squared_radius();
+}
+
+int Miniball::num_points () const
+{
+	return L.size();
+}
+
+Miniball::Cit Miniball::points_begin () const
+{
+	return L.begin();
+}
+
+Miniball::Cit Miniball::points_end () const
+{
+	return L.end();
+}
+
+int Miniball::nr_support_gVectors () const
+{
+	return B.support_size();
+}
+
+Miniball::Cit Miniball::support_points_begin () const
+{
+	return L.begin();
+}
+
+Miniball::Cit Miniball::support_points_end () const
+{
+	return support_end;
+}
+
+
+//----------------------------------------------------------------------
+// Basis
+//---------------------------------------------------------------------
+const Fvector* Basis::center () const
+{
+	return current_c;
+}
+
+float Basis::squared_radius() const
+{
+	return current_sqr_r;
+}
+
+int Basis::size() const
+{
+	return m;
+}
+
+int Basis::support_size() const
+{
+	return s;
+}
+
+float Basis::excess (const Fvector& p) const
+{
+	float e = -current_sqr_r;
+	e += p.distance_to_sqr(*current_c);
+	return e;
+}
+
+void Basis::reset ()
+{
+	m = s = 0;
+	// we misuse c[0] for the center of the empty sphere
+	c[0].set(0,0,0);
+	current_c = c;
+	current_sqr_r = -1;
+}
+
+
+Basis::Basis ()
+{
+	reset();
+}
+
+
+void Basis::pop ()
+{
+	--m;
+}
+
+bool Basis::push (const Fvector& p)
+{
+	if (m==0)
+	{
+		q0 = p;
+		c[0] = q0;
+		sqr_r[0] = 0;
+	}
+	else
+	{
+		int i;
+		const float eps = 1e-16f;
+
+		// set v_m to Q_m
+		v[m].sub(p,q0);
+
+		// compute the a_{m,i}, i< m
+		for (i=1; i<m; ++i)
+		{
+			a[m][i] =  v[i].dotproduct(v[m]);
+			a[m][i] *= (2.f/z[i]);
+		}
+
+		// update v_m to Q_m-\bar{Q}_m
+		for (i=1; i<m; ++i)
+		{
+			v[m].mad(v[m],v[i],-a[m][i]);
+		}
+
+		// compute z_m
+		z[m]=0;
+		z[m] += v[m].square_magnitude();
+		z[m]*=2;
+
+		// reject push if z_m too small
+		if (z[m]<eps*current_sqr_r)
+		{
+			return false;
+		}
+
+		// update c, sqr_r
+		float e = -sqr_r[m-1];
+		e += p.distance_to_sqr(c[m-1]);
+
+		f[m]=e/z[m];
+
+		c[m].mad(c[m-1],v[m],f[m]);
+
+		sqr_r[m] = sqr_r[m-1] + e*f[m]/2;
+	}
+
+	current_c = c+m;
+	current_sqr_r = sqr_r[m];
+	s = ++m;
+	return true;
+}
 
 void Fsphere_compute(Fsphere& dest, const Fvector *verts, int count)
 {
-	Miniball<float> mb;
+	Miniball mb;
 
 	for(int i=0;i<count;i++)
 		mb.check_in(verts[i]);

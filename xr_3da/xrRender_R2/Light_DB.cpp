@@ -24,7 +24,7 @@ void CLight_DB::Load			(IReader *fs)
 			F->r						(temp.name,sizeof(temp.name));
 			u32 cnt						= F->r_u32();
 			temp.data.resize			(cnt);
-			F->r						(temp.data.begin(),cnt*sizeof(u32));
+			F->r						(&*temp.data.begin(),cnt*sizeof(u32));
 			v_static_controls.push_back	(temp);
 		}
 

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="ParticleDLL"
 	ProjectGUID="{94A1C366-3D19-48E6-8170-4ADC2E70DF97}"
 	SccProjectName="SAK"
@@ -30,7 +30,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories=".."
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;PARTICLEDLL_EXPORTS"
 				StringPooling="TRUE"
@@ -39,8 +39,11 @@
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderFile=".\Release/ParticleDLL.pch"
+				AssemblerOutput="4"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -84,7 +87,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
@@ -148,13 +157,24 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Kernel"
 			Filter="">
+			<File
+				RelativePath="psystem.h">
+			</File>
 			<File
 				RelativePath="StdAfx.cpp">
 				<FileConfiguration
@@ -169,9 +189,6 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="psystem.h">
 			</File>
 			<File
 				RelativePath="stdafx.h">

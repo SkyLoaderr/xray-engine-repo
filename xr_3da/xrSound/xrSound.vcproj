@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="xrSound"
 	ProjectGUID="{CCCA7859-EB86-493E-9B53-C4235F45B3C5}"
 	SccProjectName="SAK"
@@ -75,7 +75,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -93,14 +99,17 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRSOUND_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
+				AssemblerOutput="4"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				BrowseInformation="0"
 				WarningLevel="4"
@@ -132,7 +141,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
@@ -150,15 +165,17 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRSOUND_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
+				AssemblerOutput="4"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
@@ -192,19 +209,21 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Kernel"
 			Filter="">
-			<File
-				RelativePath="Sound.h">
-			</File>
-			<File
-				RelativePath="SoundRender.h">
-			</File>
 			<File
 				RelativePath="cl_intersect.h">
 			</File>
@@ -228,6 +247,12 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Sound.h">
+			</File>
+			<File
+				RelativePath="SoundRender.h">
 			</File>
 			<File
 				RelativePath="stdafx.cpp">

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="XR_3DA"
 	ProjectGUID="{2578C6D8-660D-48AE-9322-7422F8664F06}"
 	SccProjectName="&quot;$/XR_3DA&quot;, WABAAAAA"
@@ -90,7 +90,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
@@ -110,7 +116,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories="scripting\,.."
 				PreprocessorDefinitions="MIXED,NDEBUG,WIN32,_WINDOWS,ENGINE_BUILD"
 				StringPooling="TRUE"
@@ -118,10 +124,12 @@
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
+				AssemblerOutput="4"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
@@ -168,7 +176,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -188,7 +202,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories="scripting\,.."
 				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,ENGINE_BUILD"
 				StringPooling="TRUE"
@@ -197,10 +211,12 @@
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/XR_3DA.pch"
+				AssemblerOutput="4"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
@@ -246,9 +262,17 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="General"
@@ -299,9 +323,6 @@
 				Name="Resources"
 				Filter="">
 				<File
-					RelativePath=".\StartUp_Logo.bmp">
-				</File>
-				<File
 					RelativePath=".\icon1.ico">
 				</File>
 				<File
@@ -310,11 +331,17 @@
 				<File
 					RelativePath=".\resource.rc">
 				</File>
+				<File
+					RelativePath=".\StartUp_Logo.bmp">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Interfaces"
 			Filter="">
+			<File
+				RelativePath="psystem.h">
+			</File>
 			<File
 				RelativePath="Render.cpp">
 			</File>
@@ -324,23 +351,26 @@
 			<File
 				RelativePath="Sound.h">
 			</File>
-			<File
-				RelativePath="psystem.h">
-			</File>
 			<Filter
 				Name="Execution &amp; 3D"
 				Filter="">
 				<File
-					RelativePath=".\Device_Initialize.cpp">
+					RelativePath=".\device.cpp">
 				</File>
 				<File
-					RelativePath=".\Device_Misc.cpp">
+					RelativePath=".\device.h">
 				</File>
 				<File
 					RelativePath="Device_create.cpp">
 				</File>
 				<File
 					RelativePath="Device_destroy.cpp">
+				</File>
+				<File
+					RelativePath=".\Device_Initialize.cpp">
+				</File>
+				<File
+					RelativePath=".\Device_Misc.cpp">
 				</File>
 				<File
 					RelativePath="Device_overdraw.cpp">
@@ -359,12 +389,6 @@
 				</File>
 				<File
 					RelativePath=".\Stats_Timer.h">
-				</File>
-				<File
-					RelativePath=".\device.cpp">
-				</File>
-				<File
-					RelativePath=".\device.h">
 				</File>
 				<Filter
 					Name="HW"
@@ -463,16 +487,16 @@
 							RelativePath=".\Texture.h">
 						</File>
 						<File
-							RelativePath="xrImage_Resampler.cpp">
-						</File>
-						<File
-							RelativePath="xrImage_Resampler.h">
-						</File>
-						<File
 							RelativePath=".\xr_avi.cpp">
 						</File>
 						<File
 							RelativePath=".\xr_avi.h">
+						</File>
+						<File
+							RelativePath="xrImage_Resampler.cpp">
+						</File>
+						<File
+							RelativePath="xrImage_Resampler.h">
 						</File>
 					</Filter>
 					<Filter
@@ -602,13 +626,13 @@
 				Name="Input"
 				Filter="">
 				<File
+					RelativePath=".\fcontroller.cpp">
+				</File>
+				<File
 					RelativePath=".\FController.h">
 				</File>
 				<File
 					RelativePath=".\Xr_input.cpp">
-				</File>
-				<File
-					RelativePath=".\fcontroller.cpp">
 				</File>
 				<File
 					RelativePath=".\xr_input.h">
@@ -625,16 +649,16 @@
 				RelativePath=".\Properties.h">
 			</File>
 			<File
-				RelativePath=".\ReferenceCount.cpp">
-			</File>
-			<File
-				RelativePath=".\ReferenceCount.h">
-			</File>
-			<File
 				RelativePath=".\pure.cpp">
 			</File>
 			<File
 				RelativePath=".\pure.h">
+			</File>
+			<File
+				RelativePath=".\ReferenceCount.cpp">
+			</File>
+			<File
+				RelativePath=".\ReferenceCount.h">
 			</File>
 			<File
 				RelativePath=".\std_classes.h">
@@ -659,16 +683,16 @@
 				Name="Console"
 				Filter="">
 				<File
-					RelativePath=".\XR_IOConsole.cpp">
-				</File>
-				<File
-					RelativePath=".\XR_IOConsole.h">
-				</File>
-				<File
 					RelativePath=".\xr_ioc_cmd.cpp">
 				</File>
 				<File
 					RelativePath=".\xr_ioc_cmd.h">
+				</File>
+				<File
+					RelativePath=".\XR_IOConsole.cpp">
+				</File>
+				<File
+					RelativePath=".\XR_IOConsole.h">
 				</File>
 			</Filter>
 			<Filter
@@ -721,6 +745,9 @@
 					RelativePath=".\NET_Compressor.h">
 				</File>
 				<File
+					RelativePath=".\net_messages.h">
+				</File>
+				<File
 					RelativePath=".\NET_Server.cpp">
 				</File>
 				<File
@@ -731,9 +758,6 @@
 				</File>
 				<File
 					RelativePath=".\NET_utils.h">
-				</File>
-				<File
-					RelativePath=".\net_messages.h">
 				</File>
 			</Filter>
 			<Filter
@@ -782,9 +806,6 @@
 			Name="Game API"
 			Filter="">
 			<File
-				RelativePath=".\xrLevel.h">
-			</File>
-			<File
 				RelativePath=".\xr_creator.cpp">
 			</File>
 			<File
@@ -792,6 +813,9 @@
 			</File>
 			<File
 				RelativePath="xr_creator_check_textures.cpp">
+			</File>
+			<File
+				RelativePath=".\xrLevel.h">
 			</File>
 			<Filter
 				Name="Objects"
@@ -960,16 +984,10 @@
 				Name="Animator"
 				Filter="">
 				<File
-					RelativePath=".\Envelope.cpp">
-				</File>
-				<File
-					RelativePath=".\ObjectAnimator.cpp">
-				</File>
-				<File
-					RelativePath=".\ObjectAnimator.h">
-				</File>
-				<File
 					RelativePath="bone.h">
+				</File>
+				<File
+					RelativePath=".\Envelope.cpp">
 				</File>
 				<File
 					RelativePath=".\envelope.h">
@@ -982,6 +1000,12 @@
 				</File>
 				<File
 					RelativePath=".\motion.h">
+				</File>
+				<File
+					RelativePath=".\ObjectAnimator.cpp">
+				</File>
+				<File
+					RelativePath=".\ObjectAnimator.h">
 				</File>
 			</Filter>
 			<Filter
@@ -1023,16 +1047,16 @@
 					RelativePath=".\FBasicVisual.h">
 				</File>
 				<File
-					RelativePath=".\FShotMarkVisual.cpp">
-				</File>
-				<File
-					RelativePath=".\FShotMarkVisual.h">
+					RelativePath=".\fmesh.cpp">
 				</File>
 				<File
 					RelativePath=".\Fmesh.h">
 				</File>
 				<File
-					RelativePath=".\fmesh.cpp">
+					RelativePath=".\FShotMarkVisual.cpp">
+				</File>
+				<File
+					RelativePath=".\FShotMarkVisual.h">
 				</File>
 				<Filter
 					Name="ShadowForm"
@@ -1318,6 +1342,12 @@
 				Name="Particle system"
 				Filter="">
 				<File
+					RelativePath=".\Particle.h">
+				</File>
+				<File
+					RelativePath=".\ParticleSystem.h">
+				</File>
+				<File
 					RelativePath="PGObject.cpp">
 				</File>
 				<File
@@ -1334,12 +1364,6 @@
 				</File>
 				<File
 					RelativePath=".\PSObject.h">
-				</File>
-				<File
-					RelativePath=".\Particle.h">
-				</File>
-				<File
-					RelativePath=".\ParticleSystem.h">
 				</File>
 				<File
 					RelativePath=".\xrParticlesLib.cpp">
@@ -1362,13 +1386,13 @@
 				Name="Lighting"
 				Filter="">
 				<File
+					RelativePath=".\light.h">
+				</File>
+				<File
 					RelativePath="LightAnimLibrary.cpp">
 				</File>
 				<File
 					RelativePath="LightAnimLibrary.h">
-				</File>
-				<File
-					RelativePath=".\light.h">
 				</File>
 			</Filter>
 			<Filter
@@ -1389,10 +1413,10 @@
 			RelativePath=".\Effects description.txt">
 		</File>
 		<File
-			RelativePath=".\TODO.txt">
+			RelativePath=".\features.txt">
 		</File>
 		<File
-			RelativePath=".\features.txt">
+			RelativePath=".\TODO.txt">
 		</File>
 	</Files>
 	<Globals>

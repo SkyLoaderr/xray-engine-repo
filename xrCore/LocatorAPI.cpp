@@ -213,7 +213,7 @@ bool CLocatorAPI::Recurse		(const char* path)
 	std::sort		(rec_files.begin(), rec_files.end(), pred_str_ff);
 
 	for (FFIt it=rec_files.begin(); it!=rec_files.end(); it++)
-		ProcessOne	(path,it);
+		ProcessOne	(path,&*it);
 
 	// insert self
     if (path&&path[0])

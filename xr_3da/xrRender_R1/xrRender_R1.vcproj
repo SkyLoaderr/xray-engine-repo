@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="xrRender_R1"
 	ProjectGUID="{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}"
 	SccProjectName="SAK"
@@ -67,7 +67,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -85,15 +91,17 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R1_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
+				AssemblerOutput="4"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="FALSE"
@@ -124,7 +132,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
@@ -142,15 +156,17 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R1_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
+				AssemblerOutput="4"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="FALSE"
@@ -181,9 +197,17 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Kernel"
@@ -216,13 +240,13 @@
 				RelativePath="stdafx.h">
 			</File>
 			<File
-				RelativePath="xrRender_R1.cpp">
-			</File>
-			<File
 				RelativePath="xrRender_console.cpp">
 			</File>
 			<File
 				RelativePath="xrRender_console.h">
+			</File>
+			<File
+				RelativePath="xrRender_R1.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -247,10 +271,10 @@
 				RelativePath="FStaticRender_DetectSector.cpp">
 			</File>
 			<File
-				RelativePath="FStaticRender_LODs.cpp">
+				RelativePath="FStaticRender_Loader.cpp">
 			</File>
 			<File
-				RelativePath="FStaticRender_Loader.cpp">
+				RelativePath="FStaticRender_LODs.cpp">
 			</File>
 			<File
 				RelativePath="FStaticRender_RenderTarget.cpp">
@@ -293,10 +317,10 @@
 				RelativePath="DetailManager_Decompress.cpp">
 			</File>
 			<File
-				RelativePath="DetailManager_VS.cpp">
+				RelativePath="DetailManager_soft.cpp">
 			</File>
 			<File
-				RelativePath="DetailManager_soft.cpp">
+				RelativePath="DetailManager_VS.cpp">
 			</File>
 			<File
 				RelativePath="DetailModel.cpp">
@@ -391,12 +415,6 @@
 			Name="Shading templates"
 			Filter="">
 			<File
-				RelativePath="BlenderDefault.cpp">
-			</File>
-			<File
-				RelativePath="BlenderDefault.h">
-			</File>
-			<File
 				RelativePath="Blender_B.cpp">
 			</File>
 			<File
@@ -415,6 +433,18 @@
 				RelativePath="Blender_BmmD.h">
 			</File>
 			<File
+				RelativePath="Blender_default_aref.cpp">
+			</File>
+			<File
+				RelativePath="Blender_default_aref.h">
+			</File>
+			<File
+				RelativePath="Blender_detail_still.cpp">
+			</File>
+			<File
+				RelativePath="Blender_detail_still.h">
+			</File>
+			<File
 				RelativePath="Blender_Editor_Selection.cpp">
 			</File>
 			<File
@@ -431,6 +461,12 @@
 			</File>
 			<File
 				RelativePath="Blender_LaEmB.h">
+			</File>
+			<File
+				RelativePath="blender_light.cpp">
+			</File>
+			<File
+				RelativePath="blender_light.h">
 			</File>
 			<File
 				RelativePath="Blender_Lm(EbB).cpp">
@@ -481,6 +517,12 @@
 				RelativePath="Blender_Shadow_World.h">
 			</File>
 			<File
+				RelativePath="Blender_tree.cpp">
+			</File>
+			<File
+				RelativePath="Blender_tree.h">
+			</File>
+			<File
 				RelativePath="Blender_Vertex.cpp">
 			</File>
 			<File
@@ -493,28 +535,10 @@
 				RelativePath="Blender_Vertex_aref.h">
 			</File>
 			<File
-				RelativePath="Blender_default_aref.cpp">
+				RelativePath="BlenderDefault.cpp">
 			</File>
 			<File
-				RelativePath="Blender_default_aref.h">
-			</File>
-			<File
-				RelativePath="Blender_detail_still.cpp">
-			</File>
-			<File
-				RelativePath="Blender_detail_still.h">
-			</File>
-			<File
-				RelativePath="Blender_tree.cpp">
-			</File>
-			<File
-				RelativePath="Blender_tree.h">
-			</File>
-			<File
-				RelativePath="blender_light.cpp">
-			</File>
-			<File
-				RelativePath="blender_light.h">
+				RelativePath="BlenderDefault.h">
 			</File>
 		</Filter>
 		<Filter

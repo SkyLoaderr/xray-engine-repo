@@ -37,8 +37,8 @@ public:
 	template<class _Other>	xr_allocator_t<T>&		operator=		(const xr_allocator_t<_Other>&)			{	return (*this);	}
 							pointer					allocate		(size_type n, const void* p=0) const	{	return xr_alloc<T>((u32)n);	}
 							void					deallocate		(pointer p, size_type n) const			{	xr_free	(p);				}
-							void					construct		(pointer p, const T& _Val)				{	_Construct(p, _Val);		}
-							void					destroy			(pointer p)								{	_Destroy(p);				}
+							void					construct		(pointer p, const T& _Val)				{	std::_Construct(p, _Val);	}
+							void					destroy			(pointer p)								{	std::_Destroy(p);			}
 							size_type				max_size		() const								{	size_type _Count = (size_type)(-1) / sizeof (T);	return (0 < _Count ? _Count : 1);	}
 };
 template<class _Ty,	class _Other>	inline	bool operator==(const xr_allocator_t<_Ty>&, const xr_allocator_t<_Other>&)			{	return (true);							}

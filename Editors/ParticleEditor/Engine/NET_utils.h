@@ -130,7 +130,7 @@ public:
 	{
 		return r_pos>=B.count;
 	}
-	IC u32	r_elapsed			()
+	IC u32		r_elapsed			()
 	{
 		return B.count-r_pos;
 	}

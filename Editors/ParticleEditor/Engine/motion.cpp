@@ -159,7 +159,7 @@ void CSMotion::Clear()
 st_BoneMotion* CSMotion::FindBoneMotion(LPCSTR name)
 {
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++)
-    	if (0==stricmp(bm_it->name,name)) return bm_it;
+    	if (0==stricmp(bm_it->name,name)) return &*bm_it;
     return 0;
 }
 

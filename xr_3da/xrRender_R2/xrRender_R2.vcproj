@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="xrRender_R2"
 	ProjectGUID="{963BA4E5-499A-454D-B002-1D5ECE0527A6}"
 	SccProjectName="SAK"
@@ -67,7 +67,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -85,15 +91,17 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R2_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
+				AssemblerOutput="4"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="FALSE"
@@ -124,9 +132,17 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Kernel"
@@ -153,13 +169,13 @@
 				RelativePath="stdafx.h">
 			</File>
 			<File
-				RelativePath="xrRender_R2.cpp">
-			</File>
-			<File
 				RelativePath="xrRender_console.cpp">
 			</File>
 			<File
 				RelativePath="xrRender_console.h">
+			</File>
+			<File
+				RelativePath="xrRender_R2.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -175,6 +191,12 @@
 				RelativePath="r2.h">
 			</File>
 			<File
+				RelativePath="r2_blenders.cpp">
+			</File>
+			<File
+				RelativePath="r2_loader.cpp">
+			</File>
+			<File
 				RelativePath="r2_R_calculate.cpp">
 			</File>
 			<File
@@ -188,12 +210,6 @@
 			</File>
 			<File
 				RelativePath="r2_R_smap_direct.cpp">
-			</File>
-			<File
-				RelativePath="r2_blenders.cpp">
-			</File>
-			<File
-				RelativePath="r2_loader.cpp">
 			</File>
 			<File
 				RelativePath="r2_scenegraph.cpp">
@@ -282,10 +298,10 @@
 				RelativePath="DetailManager_Decompress.cpp">
 			</File>
 			<File
-				RelativePath="DetailManager_VS.cpp">
+				RelativePath="DetailManager_soft.cpp">
 			</File>
 			<File
-				RelativePath="DetailManager_soft.cpp">
+				RelativePath="DetailManager_VS.cpp">
 			</File>
 			<File
 				RelativePath="DetailModel.cpp">
@@ -326,6 +342,12 @@
 			Name="Lights"
 			Filter="">
 			<File
+				RelativePath="light.cpp">
+			</File>
+			<File
+				RelativePath="light.h">
+			</File>
+			<File
 				RelativePath="Light_DB.cpp">
 			</File>
 			<File
@@ -345,12 +367,6 @@
 			</File>
 			<File
 				RelativePath="Light_Render_Direct_ComputeXFS.cpp">
-			</File>
-			<File
-				RelativePath="light.cpp">
-			</File>
-			<File
-				RelativePath="light.h">
 			</File>
 		</Filter>
 		<Filter
@@ -434,16 +450,16 @@
 				Name="R1"
 				Filter="">
 				<File
-					RelativePath="Blender_Screen_SET.cpp">
-				</File>
-				<File
-					RelativePath="Blender_Screen_SET.h">
-				</File>
-				<File
 					RelativePath="Blender_detail_still.cpp">
 				</File>
 				<File
 					RelativePath="Blender_detail_still.h">
+				</File>
+				<File
+					RelativePath="Blender_Screen_SET.cpp">
+				</File>
+				<File
+					RelativePath="Blender_Screen_SET.h">
 				</File>
 				<File
 					RelativePath="Blender_tree.cpp">

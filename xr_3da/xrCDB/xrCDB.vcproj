@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="xrCDB"
 	ProjectGUID="{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}"
 	SccProjectName="&quot;$/xr_3da/xrCDB&quot;, XKFAAAAA"
@@ -32,17 +32,19 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCDB_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="FALSE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/xrCDB.pch"
+				AssemblerOutput="4"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
@@ -83,7 +85,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
@@ -104,17 +112,19 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCDB_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="FALSE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
+				AssemblerOutput="4"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
@@ -157,7 +167,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
@@ -231,13 +247,42 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Kernel"
 			Filter="">
+			<File
+				RelativePath=".\cl_raypick.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath=".\Frustum.cpp">
 			</File>
@@ -273,34 +318,10 @@
 				RelativePath=".\StdAfx.h">
 			</File>
 			<File
-				RelativePath=".\cl_raypick.cpp">
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="xrCDB.cpp">
 			</File>
 			<File
 				RelativePath=".\xrCDB.h">
-			</File>
-			<File
-				RelativePath="xrCDB_Collector.cpp">
 			</File>
 			<File
 				RelativePath=".\xrCDB_box.cpp">
@@ -310,6 +331,9 @@
 						Name="VCCLCompilerTool"
 						AssemblerOutput="4"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="xrCDB_Collector.cpp">
 			</File>
 			<File
 				RelativePath=".\xrCDB_frustum.cpp">
@@ -352,13 +376,13 @@
 				RelativePath=".\OPC_AABBTree.h">
 			</File>
 			<File
-				RelativePath=".\OPC_BVTCache.h">
-			</File>
-			<File
 				RelativePath=".\OPC_BoundingSphere.h">
 			</File>
 			<File
 				RelativePath=".\OPC_BoxBoxOverlap.h">
+			</File>
+			<File
+				RelativePath=".\OPC_BVTCache.h">
 			</File>
 			<File
 				RelativePath=".\OPC_Collider.cpp">
@@ -493,16 +517,16 @@
 				RelativePath=".\OPC_TreeCollider.h">
 			</File>
 			<File
-				RelativePath=".\OPC_TriBoxOverlap.h">
-			</File>
-			<File
-				RelativePath=".\OPC_TriTriOverlap.h">
-			</File>
-			<File
 				RelativePath=".\OPC_Triangle.cpp">
 			</File>
 			<File
 				RelativePath=".\OPC_Triangle.h">
+			</File>
+			<File
+				RelativePath=".\OPC_TriBoxOverlap.h">
+			</File>
+			<File
+				RelativePath=".\OPC_TriTriOverlap.h">
 			</File>
 			<File
 				RelativePath=".\OPC_Types.h">
