@@ -229,12 +229,23 @@ private:
 	float					fPrevCamPos;
 	CEffectorBobbing*		pCamBobbing;
 
+
+	////////////////////////////////////////////
+	// для взаимодействия с другими персонажами 
+	// или предметами
+
 	// Person we're looking at
 	CInventoryOwner*		m_pPersonWeLookingAt;
 	// Car or lorry we're looking at
 	CCar*					m_pCarWeLookingAt;
+	//режим подбирания предметов
+	bool					m_bPickupMode;
 
-	
+	void					PickupModeOn();
+	void					PickupModeOff();
+	void					PickupModeUpdate();
+	void					PickupInfoDraw		(CObject* object);
+		
 	//------------------------------
 	struct				net_update 		
 	{
@@ -289,6 +300,7 @@ private:
 
 	virtual void			feel_touch_new			(CObject* O);
 	virtual void			feel_touch_delete		(CObject* O);
+	virtual BOOL			feel_touch_contact		(CObject* O);
 
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(float dt, float fFOV);

@@ -28,6 +28,8 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 	if (cmd == kUSE) 
 	{
+		PickupModeOn();
+
 		if(m_pPersonWeLookingAt)
 		{
 			CEntityAlive* pEntityAliveWeLookingAt = 
@@ -137,6 +139,12 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 	if (g_Alive())	
 	{
 		if(inventory().Action(cmd, CMD_STOP)) return;
+
+		if (cmd == kUSE) 
+		{
+			PickupModeOff();
+		}
+
 
 		if(m_vehicle)
 		{

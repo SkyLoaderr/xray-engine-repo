@@ -15,9 +15,10 @@ CWeaponCustomPistol::~CWeaponCustomPistol()
 }
 void CWeaponCustomPistol::switch2_Fire	()
 {
+
 	if (fTime<=0)
 	{
-		m_bPending = false;
+		m_bPending = true;
 		UpdateFP					();
 
 		// Fire

@@ -44,6 +44,7 @@ CInventoryItem::CInventoryItem()
 	m_bInInterpolation = false;
 	
 	m_inventory_mask = u64(-1);
+	m_name = m_nameShort = NULL;
 }
 
 CInventoryItem::~CInventoryItem() 

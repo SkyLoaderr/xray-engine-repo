@@ -201,7 +201,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 				Position().y		= EPS_L + ai().level_graph().vertex_plane_y(*level_vertex(),Position().x,Position().z);
 		
 		}
-		inherited::net_Spawn	(DC);
+ 		inherited::net_Spawn	(DC);
 	}
 	IPhysicShellCreator* shell_creator=dynamic_cast<IPhysicShellCreator*>(this);
 	if(shell_creator)shell_creator->CreatePhysicsShell();

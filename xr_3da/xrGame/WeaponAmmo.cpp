@@ -50,6 +50,7 @@ void CWeaponAmmo::Load(LPCSTR section)
 	m_buckShot = pSettings->r_s32(section, "buck_shot");
 	m_impair = pSettings->r_float(section, "impair");
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
+	R_ASSERT(fWallmarkSize>0);
 
 	m_boxSize = (u16)pSettings->r_s32(section, "box_size");
 	m_boxCurr = m_boxSize;

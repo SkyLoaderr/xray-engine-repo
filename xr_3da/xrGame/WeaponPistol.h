@@ -11,6 +11,7 @@ public:
 
 	virtual void	Load			(LPCSTR section);
 	
+	virtual void	switch2_Fire	();
 	virtual void	switch2_Reload	();
 
 	virtual void	OnShot			();

@@ -122,6 +122,7 @@ CActor::CActor() : CEntityAlive()
 
 	m_pPersonWeLookingAt = NULL;
 	m_pCarWeLookingAt = NULL;
+	m_bPickupMode = false;
 
 	NET_I_NeedReculc = FALSE;
 
@@ -242,8 +243,6 @@ void CActor::Load	(LPCSTR section )
 	skel_fatal_impulse_factor	= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	m_fCamHeightFactor			= pSettings->r_float(section,"camera_height_factor");
 	m_PhysicMovementControl.SetJumpUpVelocity(m_fJumpSpeed);
-
-
 
 	//actor condition variables
 	CActorCondition::Load(section);
@@ -851,7 +850,11 @@ void CActor::UpdateCL()
 		Level().m_pFogOfWar->UpdateFog(Position(), CFogOfWar::ACTOR_FOG_REMOVE_RADIUS);
 	};
 
-	if (g_Alive()) {
+	if (g_Alive()) 
+	{
+		//обновить информацию о предметах лежащих рядом с актером
+		PickupModeUpdate();	
+
 		float				k =	(mstate_real&mcCrouch)?0.75f:1.f;
 		float				tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 		float				s_k	= ((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
@@ -875,36 +878,9 @@ void CActor::UpdateCL()
 			}
 		}
 	}
-		
-	// Analyze Die-State
-		/*
-		if (!g_Alive())			
-		{
-		float dt			=	Device.fTimeDelta;
-		setEnabled	(FALSE);
-		if (die_hide>0)		
-		{
-		die_hide			-=	.01f*dt;
-		if (die_hide>0)		{
-		Fmatrix					mScale,mTranslate;
-		float	down			= (1.f-die_hide)/10.f;
-		vScale.set				(1,die_hide,1);
-		mScale.scale			(vScale);
-		mTranslate.translate	(Position().x,Position().y-down,Position().z);
-		XFORM().mul_43		(mTranslate,mRotate);
-		XFORM().mulB_43		(mScale);
-		}
-		else if (Local()) 
-		{
-		// Request destroy
-		NET_Packet			P;
-		u_EventGen			(P,GE_DESTROY,ID());
-		u_EventSend			(P);
-		}
-		}
-		}
-		*/
 }
+
+
 
 void CActor::shedule_Update	(u32 DT)
 {
@@ -1127,6 +1103,7 @@ void CActor::shedule_Update	(u32 DT)
 		inventory().m_pTarget = NULL;
 		m_pPersonWeLookingAt = NULL;
 	}
+
 	setEnabled(true);
 
 	//обновление инвентаря и торговли

@@ -96,6 +96,14 @@ void CWeaponPistol::PlayAnimShoot	()
 	}
 }
 
+
+void CWeaponPistol::switch2_Fire()
+{
+	inherited::switch2_Fire();
+	m_bPending = false;
+}
+
+
 void CWeaponPistol::switch2_Reload()
 {
 	m_opened = false;
