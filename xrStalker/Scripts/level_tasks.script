@@ -2,7 +2,7 @@ actor = nil
 
 function main()
 	while true do
-	
+		printf("!!!")	
 		if actor == nil then
 			actor = level.actor()
 		end
@@ -34,8 +34,7 @@ function main()
        		end       	
        	end
 
-       	if actor ~= nil then
-       		printf("!!!")
+       	if actor ~= nil then       		
 --       		if actor:has_info("garbage_find_stalker") and
        		if   actor:object("garbage_letter") ~= nil
        		then
