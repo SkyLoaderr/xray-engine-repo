@@ -3,8 +3,7 @@
 void	CRenderTarget::phase_scene		()
 {
 	// Targets
-	if (RImplementation.b_fp16)	u_setrt	(rt_Position,rt_Normal,rt_Color,HW.pBaseZB);
-	else						u_setrt	(rt_Depth,rt_Accumulator,rt_Color,HW.pBaseZB);
+	u_setrt		(rt_Position,	rt_Normal,		rt_Color,HW.pBaseZB);
 
 	// Clear
 	if (dwZBufferClearMark!=Device.dwFrame)

@@ -692,9 +692,6 @@
 				RelativePath="r2_rendertarget_accum_spot_geom.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_decompress.cpp">
-			</File>
-			<File
 				RelativePath=".\r2_rendertarget_draw_volume.cpp">
 			</File>
 			<File
