@@ -856,6 +856,9 @@
 				RelativePath=".\scripts\escape_patrol2.script">
 			</File>
 			<File
+				RelativePath=".\scripts\escape_raid.script">
+			</File>
+			<File
 				RelativePath=".\scripts\escape_raid_heli.script">
 			</File>
 			<File
@@ -1216,6 +1219,9 @@
 				RelativePath=".\scripts\ui_options_base_tab.script">
 			</File>
 			<File
+				RelativePath=".\scripts\ui_options_controls_tab.script">
+			</File>
+			<File
 				RelativePath=".\scripts\ui_options_dialog.script">
 			</File>
 			<File
@@ -1409,6 +1415,9 @@
 			</File>
 			<File
 				RelativePath=".\scripts\xr_talker.script">
+			</File>
+			<File
+				RelativePath=".\scripts\xr_test.script">
 			</File>
 			<File
 				RelativePath=".\scripts\xr_trivial.script">
