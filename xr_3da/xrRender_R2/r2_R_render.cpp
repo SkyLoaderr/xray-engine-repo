@@ -73,6 +73,10 @@ void CRender::Render	()
 		Target.accum_direct						();
 	}
 
+	// $$$
+	// Target.phase_accumulator				();
+	// Target.accum_direct					();
+
 	// Point/spot lighting (unshadowed)
 	if (0)
 	{
