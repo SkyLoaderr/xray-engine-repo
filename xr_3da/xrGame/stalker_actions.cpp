@@ -419,8 +419,8 @@ void CStalkerActionGetItemToKill::initialize	()
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
 	m_object->CSightManager::clear();
-	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_item_to_kill->Position(),false)));
-	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
+	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_item_to_kill->Position(),false)));
+	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
 }
 
 void CStalkerActionGetItemToKill::finalize	()
@@ -518,8 +518,8 @@ void CStalkerActionMakeItemKilling::initialize	()
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
 	m_object->CSightManager::clear();
-	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,5000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_ammo->Position(),false)));
-	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
+	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_ammo->Position(),false)));
+	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
 }
 
 void CStalkerActionMakeItemKilling::finalize	()
