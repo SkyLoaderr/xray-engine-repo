@@ -910,6 +910,8 @@ void CWeapon::UpdateAddonsVisibility()
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
 		}
 	}
+	pWeaponVisual->CalculateBones_Invalidate();
+	pWeaponVisual->CalculateBones();
 }
 
 void CWeapon::InitAddons()

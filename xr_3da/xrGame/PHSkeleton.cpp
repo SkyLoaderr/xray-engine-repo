@@ -49,6 +49,8 @@ void CPHSkeleton::RespawnInit()
 	{
 		K->LL_SetBoneRoot(0);
 		K->LL_SetBonesVisible(0xffffffffffffffffL);
+		K->CalculateBones_Invalidate();
+		K->CalculateBones();
 	}
 	Init();
 	ClearUnsplited();

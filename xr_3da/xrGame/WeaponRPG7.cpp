@@ -45,6 +45,8 @@ void CWeaponRPG7::UpdateGrenadeVisibility(bool visibility)
 
 	if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID(*m_sHudGrenadeBoneName),visibility,TRUE);
 	pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID(*m_sGrenadeBoneName),visibility,TRUE);
+	pWeaponVisual->CalculateBones_Invalidate();
+	pWeaponVisual->CalculateBones();
 }
 
 

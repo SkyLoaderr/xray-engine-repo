@@ -37,7 +37,10 @@ void CHangingLamp::Init()
 void CHangingLamp::RespawnInit()
 {
 	Init();
-	smart_cast<CKinematics*>(Visual())->LL_SetBonesVisible(u64(-1));
+	CKinematics* K = smart_cast<CKinematics*>(Visual());
+	K->LL_SetBonesVisible(u64(-1));
+	K->CalculateBones_Invalidate();
+	K->CalculateBones();
 	
 }
 void CHangingLamp::Center	(Fvector& C) const 
@@ -245,7 +248,15 @@ void CHangingLamp::TurnOn	()
 	light_render->set_active						(true);
 	if (glow_render)	glow_render->set_active		(true);
 	if (light_ambient)	light_ambient->set_active	(true);
-	if (Visual())		smart_cast<CKinematics*>(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
+	if (Visual())
+	{
+		CKinematics* K=smart_cast<CKinematics*>(Visual());
+		K->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
+		K->CalculateBones_Invalidate();
+		K->CalculateBones();
+
+	}
+
 	processing_activate		();
 }
 

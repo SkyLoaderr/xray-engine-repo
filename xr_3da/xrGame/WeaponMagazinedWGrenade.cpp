@@ -606,4 +606,6 @@ void CWeaponMagazinedWGrenade::UpdateGrenadeVisibility(bool visibility)
 	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());
 	VERIFY(pHudVisual);
 	pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID(*grenade_bone_name),visibility,TRUE);
+	pHudVisual->CalculateBones_Invalidate();
+	pHudVisual->CalculateBones();
 }
