@@ -16,7 +16,8 @@ function talking_or_tutor(actor, npc)
 end
 
 function actor_enemy(actor, npc)
-	return npc:relation(actor) == game_object.enemy
+	local t = xr_motivator.storage[npc:id()].death
+	return npc:relation(actor) == game_object.enemy or (t ~= nil and t.killer == actor:id())
 end
 
 function gar_dm_nearest_bandit(actor, npc)
