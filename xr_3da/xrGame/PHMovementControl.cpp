@@ -38,6 +38,7 @@ CPHMovementControl::CPHMovementControl(void)
 	vVelocity.set		(0,0,0);
 	vPosition.set		(0,0,0);
 	vExternalImpulse.set(0,0,0);
+	bExernalImpulse		=false;
 	fLastMotionMag		= 1.f;
 	//fAirFriction		= AIR_FRICTION;
 	//fWallFriction		= WALL_FRICTION;
@@ -66,11 +67,14 @@ CPHMovementControl::~CPHMovementControl(void)
 //static bool bFirst=true;
 void CPHMovementControl::AddControlVel	(const Fvector& vel)
 {
-	m_character->AddControlVel(vel);
+	vExternalImpulse.add(vel);
+	bExernalImpulse=true;
+	Log("add external",vel);
 }
 
 void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float jump,float /**dt/**/,bool /**bLight/**/){
 
+	
 	
 	if(m_capture) 
 	{
@@ -78,7 +82,15 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float 
 	}
 	
 	m_character->IPosition(vPosition);
-
+	if(bExernalImpulse)
+	{
+		
+		vAccel.add(vExternalImpulse);
+		m_character->ApplyForce(vExternalImpulse);
+		vExternalImpulse.set(0.f,0.f,0.f);
+		
+		bExernalImpulse=false;
+	}
 	//vAccel.y=jump;
 	m_character->SetMaximumVelocity(vAccel.magnitude()/10.f);
 	m_character->SetAcceleration(vAccel);

@@ -102,6 +102,7 @@ private:
 	
 public:
 	Fvector				vExternalImpulse;
+	bool				bExernalImpulse;
 	BOOL				bSleep;
 
 	BOOL				gcontact_Was;			// Приземление
