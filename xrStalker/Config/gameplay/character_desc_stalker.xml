@@ -137,7 +137,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Сталкер новичок. Делает первые шаги в Зоне.</bio>
 
-		<class>Stalker_novice</class>
+		<class>stalker_gar_dram_novice</class>
 		<community>stalker</community>
 		
 		<rank>20</rank>
