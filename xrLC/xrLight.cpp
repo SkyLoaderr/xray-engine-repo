@@ -29,7 +29,7 @@ void CBuild::Light()
 
 	// Main process (4 threads)
 	DWORD	dwTimeStart = timeGetTime();
-	CLMThread*	threads[4] = {0,0,0};
+	CLMThread*	threads[4] = {0,0,0,0};
 	DWORD		N=0;
 	for (;;) {
 		for (int L=0; L<4; L++) {
@@ -46,8 +46,8 @@ void CBuild::Light()
 				Status	("Calculating surface up to #%d...",N);
 			}
 		}
-		if ((0==threads[0])&&(0==threads[1])&&(0==threads[2])&&(0==threads[3]))	break;
-		Sleep	(100);
+		if		((0==threads[0])&&(0==threads[1])&&(0==threads[2])&&(0==threads[3]))	break;
+		Sleep	(50);
 	}
 	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);
 
