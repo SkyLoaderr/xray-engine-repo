@@ -43,3 +43,6 @@ chugai_scout_base    = chugai_evaluators + 30
 zmey_evaluators = stalker_ids.property_script + 4000
 zmey_guard_base      = zmey_evaluators + 0
 zmey_property_guard_activity_end    = zmey_evaluators + 1
+
+--  эвалуоторы Жени
+jon_evaluators       = stalker_ids.property_script + 4000
