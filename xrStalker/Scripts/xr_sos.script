@@ -51,7 +51,7 @@ function decide (npc, sos)
 
     -- Нейтрал. То же, что и с чайником, но помощь продаем
     if rel == neutral then
-       if health < 0.75 return sos_ignore end
+       if health < 0.75 then return sos_ignore end
        return sos_mercant 
     end
 
