@@ -3,71 +3,41 @@ class "SoundSet"
 -- запоминается.
 
 function SoundSet:__init (is_randomized, ...)
+	self.is_randomized = is_randomized
 	self.cur_snd = 0
-	self.snd_list = {}      -- Список звуков
+	self.snd_list = arg     -- Список звуков
 	self.snd_times = {}     -- Время длительности звуков
-	
-end
 
-function AnimationSet:add_animation (name, flag, move_type, anim_snd, anim_snd_prob)
-	printf ("Add animation %s", name)
-	table.insert (self.anims_list, anim (name, flag))
-	
-	if move_type then
-		table.insert (self.move_types_list, move_type)
-	else
-		table.insert (self.move_types_list, move.stand)
-	end
-	
-	if anim_snd then
-		table.insert (self.anim_snd_list, sound (anim_snd, "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false))
-	else
-		table.insert (self.anim_snd_list, nil)
-	end
-
-	if anim_snd_prob then
-		table.insert (self.anim_snd_prob_list, anim_snd_prob)
-	else
-		table.insert (self.anim_snd_prob_list, 100)
+	for i = 1, arg.n do
+		self.snd_times[i] = sound_object(arg[i])
 	end
 end
 
 -- Возвращает следующую в очереди анимацию, движение, звук, вероятность проигрывания звука
-function AnimationSet:next_anim()
-	local size = table.getn (self.anims_list)
-	if size == 0 then
-		return nil, 0, nil, 0
-	end
-	if self.flags == 0 then
-		self.current_animation = self.current_animation + 1
-		if self.current_animation > size then
-			self.current_animation = 1
-		end
-		printf("AnimationSet:next_anim(): current_animation == %d", self.current_animation)
-	else
-		self.current_animation = math.random (1, size)
-		printf("AnimationSet:next_anim(): current_animation = math.random (1, %d) == %d", size, self.current_animation)
-	end
-	return self.anims_list[self.current_animation], self.move_types_list[self.current_animation],
-	       self.anim_snd_list[self.current_animation], self.anim_snd_prob_list[self.current_animation]
-end
-
--- // УСТАРЕЛА, ИСПОЛЬЗУЙТЕ next_anim()
--- Возвращает следующую в очереди анимацию
-function AnimationSet:get_animation ()
-	local size = table.getn (self.anims_list)
+function SoundSet:next_sound()
+	local size = table.getn(self.snd_list)
 	if size == 0 then
 		return nil
 	end
-	if self.flags == 0 then
-	   self.current_animation = self.current_animation + 1
-	   if self.current_animation > size then
-		   self.current_animation = 1
-	   end
-   	   return self.anims_list[self.current_animation]
+	if not self.is_randomized then
+		self.cur_snd = self.cur_snd + 1
+		if self.cur_snd > size then
+			self.cur_snd = 1
+		end
+		printf("SoundSet:next_sound(): cur_snd == %d", self.cur_snd)
+	else
+		self.cur_snd = math.random (1, size)
+		printf("Soundset:next_sound(): cur_snd = math.random (1, %d) == %d", size, self.cur_snd)
 	end
-	self.current_animation = math.random (1, size)
-	return self.anims_list[self.current_animation]
+	return self.snd_list[cur_snd]
+end
+
+function SoundSet:next_sound_object(bone)
+	local next_snd = self.next_sound()
+	if next_snd == nil then
+		return nil
+	end
+	return sound(next_snd, if_then_else(bone ~= nil, bone, "bip01_head"), vector():set(0,0,0), vector():set(0,0,0), false)
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -83,28 +53,44 @@ function Soldier:__init(npc_name)
 end
 
 function Soldier:nothing_happened_yet()
+
 	debug_log(zmey_gameplay_2.script_name(), "Nothing happened yet ... " .. game.time())
+end
+
+function Soldier:set_nothing_happened_yet_handler(new_handler)
+	if self.state == self.nothing_happened_yet then
+		self.state = new_handler
+	end
+	self.nothing_happened_yet = new_handler
 end
 
 -- "Мотор" всего класса, должна вызываться периодически
 -- Возвращает:
 -- 	true, если сценарий все еще выполняется
 -- 	false, в случае завершения
-function Soldier:heartbeat ()
+function Soldier:heartbeat()
 	if self.state ~= nil then
-		self.state()
+		self:state()
 		return true
 	end
 	return false
 end
 
 ----------------------------------------------------------------------------------------------------
+-- MAIN
+----------------------------------------------------------------------------------------------------
+
+function nothing_happened_yet(mob)
+	debug_log(zmey_gameplay_2.script_name(), "MY OWN HANDLER ... " .. game.time())
+end
+
 function main ()
 	debug_script_name = zmey_gameplay_2.script_name()
 
 	debug_log(zmey_gameplay_2.script_name(), "SCRIPT ACTIVATED: zmey_gameplay_2")
 
 	walker = zmey_gameplay_2.Soldier("m_stalker_pes")
+	walker.set_nothing_happened_yet_handler(zmey_gameplay_2.nothing_happened_yet)
 	
 	while walker:heartbeat() do
 		wait()

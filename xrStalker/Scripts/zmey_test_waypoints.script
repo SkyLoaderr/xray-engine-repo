@@ -2,20 +2,33 @@ function main ()
 
 	printf ("call zmey_test_waypoints");
 	local anim_razv = classes.AnimationSet (1)
-	anim_razv:add_animation ("stoya_ruje_ 0", true)
-	anim_razv:add_animation ("plechi", false)
-	anim_razv:add_animation ("vishka_3", false)
-	anim_razv:add_animation ("vishka_1", false)
+	anim_razv:add_animation ("stoya_ruje_ 0", true, move.walk, "wounded_ston4")
+	anim_razv:add_animation ("plechi", false, move.stand, "wounded_ston4")
+	anim_razv:add_animation ("vishka_3", false, move.stand, "wounded_ston4")
+	anim_razv:add_animation ("vishka_1", false, move.stand, "wounded_ston4")
 
 	local anim_end = classes.AnimationSet (1)
-	anim_end:add_animation ("prisluh", false)
-	anim_end:add_animation ("proverka_dver", false)
-	anim_end:add_animation ("uslishal", false)
+	anim_end:add_animation ("prisluh", false, move.stand, "wounded_ston4")
+	anim_end:add_animation ("proverka_dver", false, move.stand, "wounded_ston4")
+	anim_end:add_animation ("uslishal", false, move.stand, "wounded_ston4")
 
 	local actor = get_actor ()
   	local horror_sound = sound_object("rnd_the_horror4")
 
 	local bredun1 = classes.SinglePatrol (get_level_object ("m_stalker_e0000"), zmey_test_waypoints.script_name (), "way0000", anim_razv, anim_end)
+	bredun1:add_random_phrase(
+		[[monsters\Stalker\Humming\em1_humming1]], 14000,
+		[[monsters\Stalker\Humming\em1_humming2]], 6000,
+		[[monsters\Stalker\Humming\em1_humming3]], 7000,
+		[[monsters\Stalker\Humming\em1_humming4]], 4000,
+		[[monsters\Stalker\Humming\em1_humming5]], 3000,
+		[[monsters\Stalker\Humming\em1_whistle1]], 7000,
+		[[monsters\Stalker\Humming\em1_whistle2]], 3000,
+		[[monsters\Stalker\Humming\em1_whistle3]], 3000,
+		[[monsters\Stalker\Humming\em1_whistle4]], 7000,
+		[[monsters\Stalker\Humming\em1_whistle5]], 4000)
+	bredun1:set_phrase_interval(5000, 10000)
+
 	--local bredun2 = classes.SinglePatrol (get_level_object ("stalker_ptr12"), zmey_test_waypoints.script_name (), "patrol_way2", anim_razv, anim_end)
 	--local bredun3 = classes.SinglePatrol (get_level_object ("stalker_ptr13"), zmey_test_waypoints.script_name (), "patrol_way2", anim_razv, anim_end)
 	--local bredun4 = classes.SinglePatrol (get_level_object ("stalker_ptr21"), zmey_test_waypoints.script_name (), "patrol_way1", anim_razv, anim_end)
@@ -25,7 +38,7 @@ function main ()
 	--local bredun8 = classes.SinglePatrol (get_level_object ("stalker_ptr25"), zmey_test_waypoints.script_name (), "patrol_way1", anim_razv, anim_end)
 
 	local old_time = game.time ()
-	local played = false
+
 
 	while true do 
 		  bredun1:process ()		
