@@ -16,7 +16,7 @@ CAmebaZone::~CAmebaZone()
 }
 void CAmebaZone::Load(LPCSTR section)
 {
-
+	inherited::Load(section);
 }
 bool CAmebaZone::BlowoutState()
 {

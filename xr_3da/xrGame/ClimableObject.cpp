@@ -268,6 +268,7 @@ bool CClimableObject::InRange(CPHCharacter *actor)const
 	return AxDistToLowerP(actor)>0.f && AxDistToUpperP(actor)+actor->FootRadius()>0.f;
 }
 
+
 bool CClimableObject::BeforeLadder(CPHCharacter *actor)const
 {
 	Fvector d;

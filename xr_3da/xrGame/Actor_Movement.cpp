@@ -96,6 +96,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		if(!(mstate_real & mcClimb))
 		{
 			mstate_real				|=mcClimb;
+			mstate_real				&=~mcSprint;
 			cam_SetLadder();
 //			HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);//, true);
 		}

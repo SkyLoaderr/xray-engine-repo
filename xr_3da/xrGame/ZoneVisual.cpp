@@ -34,7 +34,14 @@ void CVisualZone:: AffectObjects					()
 }
 void CVisualZone::SwitchZoneState(EZoneState new_state)
 {
+	if(m_eZoneState==eZoneStateBlowout && new_state != eZoneStateBlowout)
+	{
+	//	CSkeletonAnimated*	SA=smart_cast<CSkeletonAnimated*>(Visual());
+		smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(*m_idle_animation);
+	}
+
 	inherited::SwitchZoneState(new_state);
+
 }
 void CVisualZone::Load(LPCSTR section)
 {
