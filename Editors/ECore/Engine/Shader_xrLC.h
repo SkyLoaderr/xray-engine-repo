@@ -32,8 +32,8 @@ public:
 	float		lm_density;
 
 	Shader_xrLC()	{
-		ZeroMemory	(this,sizeof(*this));
-		strcpy		(Name,"unknown");
+		strcpy					(Name,"unknown");
+		m_Flags.assign			(0);
 		flags.bCollision		= TRUE;
 		flags.bRendering		= TRUE;
 		flags.bOptimizeUV		= TRUE;
