@@ -555,6 +555,15 @@
 					RelativePath=".\Device_Misc.cpp">
 				</File>
 				<File
+					RelativePath="Device_create.cpp">
+				</File>
+				<File
+					RelativePath="Device_destroy.cpp">
+				</File>
+				<File
+					RelativePath="Device_wndproc.cpp">
+				</File>
+				<File
 					RelativePath=".\Stats.cpp">
 				</File>
 				<File

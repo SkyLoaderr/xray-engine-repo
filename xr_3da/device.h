@@ -34,17 +34,19 @@ private:
 	void									_Destroy	(BOOL	bKeepTextures);
 public:
     HWND									m_hWnd;
-	LRESULT									MsgProc	(HWND,UINT,WPARAM,LPARAM);
+	LRESULT									MsgProc		(HWND,UINT,WPARAM,LPARAM);
 
 	DWORD									dwFrame;
+	DWORD									dwPrecacheFrame;
+	DWORD									dwPrecacheTotal;
 
 	DWORD									dwWidth, dwHeight;
 	float									fWidth_2, fHeight_2;
 	BOOL									bReady;
 	BOOL									bActive;
 
-	void __cdecl							Fatal	(const char* F,...);
-	void									Error	(HRESULT,LPCSTR,int);
+	void __cdecl							Fatal		(const char* F,...);
+	void									Error		(HRESULT,LPCSTR,int);
 public:
 	// Registrators
 	CRegistrator	<pureDeviceDestroy	 >	seqDevDestroy;
@@ -85,7 +87,8 @@ public:
 	IC void									set_xform_view		(const Fmatrix& M)	{ set_xform(D3DTS_VIEW,M);			}
 	IC void									set_xform_project	(const Fmatrix& M)	{ set_xform(D3DTS_PROJECTION,M);	}
 	
-	CRenderDevice() {
+	CRenderDevice() 
+	{
 	    m_hWnd              = NULL;
 		bActive				= FALSE;
 		bReady				= FALSE;
@@ -93,38 +96,39 @@ public:
 	};
 
 	// Scene control
-	void Begin			(void);
-	void Clear			(void);
-	void End			(void);
-	void FrameMove		(void);
+	void PreCache							(DWORD frames);
+	void Begin								(void);
+	void Clear								(void);
+	void End								(void);
+	void FrameMove							(void);
 	
-	void overdrawBegin	(void);
-	void overdrawEnd	(void);
+	void overdrawBegin						(void);
+	void overdrawEnd						(void);
 
 	// Mode control
-	void DumpFlags		(void);
-	u32	 TimerAsync		(void)
+	void DumpFlags							(void);
+	u32	 TimerAsync							(void)
 	{
 		u64	qTime		= TimerGlobal.GetElapsed();
 		return u32((qTime*u64(1000))/CPU::cycles_per_second);
 	}
-	u32	 TimerAsyncMM	(void)
+	u32	 TimerAsyncMM						(void)
 	{
 		return TimerAsync()+Timer_MM_Delta;
 	}
 
 	// Creation & Destroying
-	void Create			(void);
-	void Run			(void);
-	void Destroy		(void);
-	void Reset			(LPCSTR shName="GameData\\shaders.xr", BOOL bKeepTextures=FALSE);
+	void Create								(void);
+	void Run								(void);
+	void Destroy							(void);
+	void Reset								(LPCSTR shName="GameData\\shaders.xr", BOOL bKeepTextures=FALSE);
 
-	void Initialize		(void);
-	void ShutDown		(void);
+	void Initialize							(void);
+	void ShutDown							(void);
 
 	// Sprite rendering
-	IC float _x2real	(float x)	{ return (x+1)*fWidth_2;	}
-	IC float _y2real	(float y)	{ return (y+1)*fHeight_2;	}
+	IC float _x2real	(float x)			{ return (x+1)*fWidth_2;	}
+	IC float _y2real	(float y)			{ return (y+1)*fHeight_2;	}
 
 	// Multi-threading
 	CRITICAL_SECTION	mt_csEnter;
