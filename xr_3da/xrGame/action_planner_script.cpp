@@ -43,7 +43,7 @@ void CActionPlanner<CScriptGameObject>::script_register(lua_State *L)
 			.def("current_action_id",			&CScriptActionPlanner::current_action_id)
 			.def("current_action",				&CScriptActionPlanner::current_action)
 			.def("initialized",					&CScriptActionPlanner::initialized)
-			.def("set_goal_world_state",		(void (CScriptActionPlanner::*)(const CScriptActionPlanner::CState &))(CScriptActionPlanner::add_condition))
+			.def("set_goal_world_state",		&CScriptActionPlanner::set_target_state)
 			.def("clear",						&CScriptActionPlanner::clear)
 #ifdef LOG_ACTION
 			.def("show",						&CScriptActionPlanner::show)

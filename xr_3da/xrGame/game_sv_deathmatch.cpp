@@ -1338,7 +1338,7 @@ void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
 		};
 	};
 	///////////////////////////////////////////////////
-	if (AnomalySet != -1 && AnomalySet < m_AnomalySetsList.size())
+	if (AnomalySet != -1 && AnomalySet < (int)m_AnomalySetsList.size())
 		m_dwLastAnomalySetID = u32(AnomalySet);
 	else
 		m_dwLastAnomalySetID = NewAnomalySetID;
