@@ -71,7 +71,7 @@ blin-bump-high-spec	, anisotroptic-low,
 anisotroptic-low	, anisotroptic-high
 ----------------------------
 	bump:
-		format					: 
+		format					: Bump
 	  + virtual_height			: float (5cm default)
 		mipmaps					: none
 		details					: inaplicable
@@ -81,8 +81,8 @@ anisotroptic-low	, anisotroptic-high
 			-> 2 textures (DXT5)
 
 	texture:
-		format					: 
-	  +	material_id				: float
+		format					: 2D/Cube
+	  +	material_id				: float 
 	  +	bump_mode				: flat, autogen, use
 			bump_autogen		: height (5 cm, default)
 			bump_use			: bump-texture
