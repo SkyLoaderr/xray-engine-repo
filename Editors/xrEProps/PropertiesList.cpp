@@ -138,7 +138,7 @@ TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* paren
     	props->paFolders->Show	();
         props->paFolders->Refresh();
     	props->m_Folders		= static_cast<TItemList*>(IItemList::CreateForm("Folders",props->paFolders,alClient,TItemList::ilSuppressIcon|TItemList::ilFolderStore|TItemList::ilSuppressStatus));
-        props->m_Folders->OnItemFocusedEvent 	= props->OnFolderFocused;
+        props->m_Folders->OnItemFocusedEvent.bind(props,&TProperties::OnFolderFocused);
     }else{
     	props->spFolders->Hide	();
     	props->paFolders->Hide	();
@@ -170,7 +170,7 @@ TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowBut
     	props->paFolders->Show	();
         props->paFolders->Refresh();
     	props->m_Folders		= static_cast<TItemList*>(IItemList::CreateForm("Folders",props->paFolders,alClient,TItemList::ilSuppressIcon|TItemList::ilFolderStore|TItemList::ilSuppressStatus));
-        props->m_Folders->OnItemFocusedEvent = props->OnFolderFocused;
+        props->m_Folders->OnItemFocusedEvent.bind(props,&TProperties::OnFolderFocused);
     }else{
     	props->spFolders->Hide	();
     	props->paFolders->Hide	();
@@ -533,7 +533,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 R.Left += 1;
                 CanvasValue* val = dynamic_cast<CanvasValue*>(prop->GetFrontValue()); R_ASSERT(val);
                 if (!val->OnDrawCanvasEvent.empty())
-	                val->OnDrawCanvasEvent(val,Surface,R);
+	                val->OnDrawCanvasEvent(val,Surface,Irect().set(R.left,R.top,R.right,R.bottom));
                 DrawText	(Surface->Handle, prop->GetText(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             }break;
             case PROP_FCOLOR:{
@@ -1333,7 +1333,7 @@ void TProperties::ExecTextEditor(PropItem* prop)
 
 void __fastcall TProperties::tvPropertiesItemFocused(TObject *Sender)
 {
-	if (OnItemFocused) 	OnItemFocused(tvProperties->Selected);
+	if (!OnItemFocused.empty()) 	OnItemFocused(tvProperties->Selected);
     HideExtBtn			();
 	if (tvProperties->Selected){
         PropItem* prop 		= (PropItem*)tvProperties->Selected->Tag;

@@ -4,17 +4,16 @@
 
 //---------------------------------------------------------------------------
 
-class XR_EPROPS_API ListItem{
+class ListItem{
 	friend class		CListHelper;
     friend class		TItemList;
     ref_str				key;
     int					type;
 	void*				item;
 public:                        
-    typedef void 	__stdcall  (__closure *TOnListItemFocused)	(ListItem* sender);
-    typedef void 	__stdcall  (__closure *TOnClick)			(ListItem* sender);
-    typedef bool 	__stdcall  (__closure *TOnDrawThumbnail)	(ListItem* sender, TCanvas *Surface, TRect &R);
-
+    typedef fastdelegate::FastDelegate1<ListItem*> 					TOnListItemFocused;   
+    typedef fastdelegate::FastDelegate1<ListItem*> 					TOnClick;
+    typedef fastdelegate::FastDelegate3<ListItem*, TCanvas*, TRect&>TOnDrawThumbnail;
     TOnClick			OnClickEvent;
     TOnListItemFocused	OnItemFocused;
     TOnDrawThumbnail	OnDrawThumbnail;

@@ -30,8 +30,8 @@ DEFINE_VECTOR(SChooseItem,ChooseItemVec,ChooseItemVecIt);
 // refs
 class ECustomThumbnail;
 // typedef
-typedef void __fastcall (*TOnChooseFill)			(ChooseItemVec& lst);
-typedef void __fastcall (*TOnChooseSelect)			(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items);
+typedef fastdelegate::FastDelegate1<ChooseItemVec&> 											TOnChooseFill;
+typedef fastdelegate::FastDelegate4<SChooseItem*, ECustomThumbnail*&, ref_sound&, PropItemVec&>	TOnChooseSelect;
 
 typedef void (*TOnChooseFillEvents)();
 

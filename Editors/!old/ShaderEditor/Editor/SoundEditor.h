@@ -57,7 +57,7 @@ private:
     void 				InitItemsList		();
 	void __stdcall  	OnItemsFocused		(ListItemsVec& items);
 
-    BOOL __stdcall 		RemoveSound			(LPCSTR fname, EItemType type);
+    void __stdcall 		RemoveSound			(LPCSTR fname, EItemType type, bool& res);
 	void __stdcall  	RenameSound			(LPCSTR p0, LPCSTR p1, EItemType type);
 
 	enum{

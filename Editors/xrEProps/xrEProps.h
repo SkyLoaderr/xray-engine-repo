@@ -16,17 +16,19 @@ enum EItemType{
 	TYPE_OBJECT	= 1
 };
 
-typedef void 	__stdcall  (__closure *TOnILItemsFocused)	(ListItemsVec& items);
-typedef void 	__stdcall  (__closure *TOnILCloseEvent)		(void);
-
-typedef void	__stdcall  (__closure *TOnItemRename)		(LPCSTR p0, LPCSTR p1, EItemType type);
-typedef BOOL 	__stdcall  (__closure *TOnItemRemove)		(LPCSTR p0, EItemType type);  
-typedef void 	__stdcall  (__closure *TOnItemAfterRemove)	();
+typedef fastdelegate::FastDelegate1<ListItemsVec&> 				TOnILItemsFocused;
+typedef fastdelegate::FastDelegate0								TOnILCloseEvent;      
+typedef fastdelegate::FastDelegate3<LPCSTR, LPCSTR, EItemType>	TOnItemRename;
+typedef fastdelegate::FastDelegate3<LPCSTR, EItemType, bool&>	TOnItemRemove;
+typedef fastdelegate::FastDelegate0								TOnItemAfterRemove;
+typedef fastdelegate::FastDelegate0 							TOnCloseEvent;
+typedef fastdelegate::FastDelegate0 							TOnModifiedEvent;
+typedef fastdelegate::FastDelegate1<ChooseItemVec&>				TOnChooseFillProp;
 
 #ifdef __BORLANDC__
 #	include "mxPlacemnt.hpp"
 	DEFINE_VECTOR	(TElTreeItem*,ElItemsVec,ElItemsIt);
-    typedef void 	__stdcall  (__closure *TOnILItemFocused)(TElTreeItem* item);
+    typedef fastdelegate::FastDelegate1<TElTreeItem*>			TOnILItemFocused;
 #endif
 
 //------------------------------------------------------------------------------
@@ -43,7 +45,7 @@ public:
     virtual void 				__stdcall 	FvectorRDOnDraw		(PropValue* sender, ref_str& draw_val)=0;
     virtual void 				__stdcall 	floatRDOnAfterEdit	(PropValue* sender,	float& edit_val, bool& accepted)=0;
     virtual void 				__stdcall 	floatRDOnBeforeEdit	(PropValue* sender,	float& edit_val)=0;
-    virtual void 				__stdcall 	floatRDOnDraw		(PropValue* sender, ref_str& draw_val)=0;
+    virtual void 				__stdcall 	floatRDOnDraw		(PropValue* sender, ref_str& draw_val)=0;    
 // name edit
     virtual void 				__stdcall  	NameAfterEdit		(PropValue* sender,	ref_str& edit_val, bool& accepted)=0;
     virtual void				__stdcall  	NameBeforeEdit		(PropValue* sender,	ref_str& edit_val)=0;
@@ -83,7 +85,7 @@ public:
     virtual FloatValue* 		__stdcall	CreateAngle		    (PropItemVec& items, ref_str key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)=0;
     virtual VectorValue* 		__stdcall	CreateAngle3	    (PropItemVec& items, ref_str key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)=0;
     virtual RTextValue* 		__stdcall	CreateName		    (PropItemVec& items, ref_str key, ref_str* val, ListItem* owner)=0;  
-	virtual RTextValue* 		__stdcall	CreateNameCB		(PropItemVec& items, ref_str key, ref_str* val, TOnDrawTextEvent=0, void __stdcall (__closure* before) (PropValue*, ref_str&)=0, void __stdcall (__closure* after) (PropValue*, ref_str&, bool&)=0)=0;
+	virtual RTextValue* 		__stdcall	CreateNameCB		(PropItemVec& items, ref_str key, ref_str* val, TOnDrawTextEvent=0, RTextValue::TOnBeforeEditEvent=0, RTextValue::TOnAfterEditEvent=0)=0;
 
     virtual ref_str  			__stdcall	PrepareKey			(LPCSTR pref, 	LPCSTR key)=0;
     virtual ref_str  			__stdcall	PrepareKey			(LPCSTR pref0, 	LPCSTR pref1,	LPCSTR key)=0;

@@ -17,9 +17,9 @@ public:
     virtual void 				__stdcall 	FvectorRDOnAfterEdit(PropValue* sender, Fvector& edit_val, bool& accepted);
     virtual void 				__stdcall 	FvectorRDOnBeforeEdit(PropValue* sender,Fvector& edit_val);
     virtual void 				__stdcall 	FvectorRDOnDraw		(PropValue* sender, ref_str& draw_val);
-    virtual void 				__stdcall 	floatRDOnAfterEdit	(PropValue* sender,	float& edit_val, bool& accepted);
-    virtual void 				__stdcall 	floatRDOnBeforeEdit	(PropValue* sender, float& edit_val);
-    virtual void 				__stdcall 	floatRDOnDraw		(PropValue* sender, ref_str& draw_val);
+    virtual void 				__stdcall 	floatRDOnAfterEdit	(PropValue* sender,  float& edit_val, bool& accepted);
+    virtual void 				__stdcall 	floatRDOnBeforeEdit	(PropValue* sender,  float& edit_val);
+    virtual void 				__stdcall 	floatRDOnDraw		(PropValue* sender,  ref_str& draw_val);
 // name edit
     virtual void 				__stdcall  	NameAfterEdit		(PropValue* sender, ref_str& edit_val, bool& accepted);
     virtual void				__stdcall  	NameBeforeEdit		(PropValue* sender, ref_str& edit_val);
@@ -59,7 +59,7 @@ public:
     virtual FloatValue* 		__stdcall	CreateAngle		    (PropItemVec& items, ref_str key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2);
     virtual VectorValue* 		__stdcall	CreateAngle3	    (PropItemVec& items, ref_str key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2);
     virtual RTextValue* 		__stdcall	CreateName		    (PropItemVec& items, ref_str key, ref_str* val, ListItem* owner);
-	virtual RTextValue* 		__stdcall	CreateNameCB		(PropItemVec& items, ref_str key, ref_str* val, TOnDrawTextEvent=0, void __stdcall (__closure* before) (PropValue*, ref_str&)=0, void __stdcall (__closure* after) (PropValue*, ref_str&, bool&)=0);
+	virtual RTextValue* 		__stdcall	CreateNameCB		(PropItemVec& items, ref_str key, ref_str* val, TOnDrawTextEvent=0, RTextValue::TOnBeforeEditEvent=0, RTextValue::TOnAfterEditEvent=0);
 
     virtual ref_str  			__stdcall	PrepareKey			(LPCSTR pref, 	LPCSTR key);
     virtual ref_str  			__stdcall	PrepareKey			(LPCSTR pref0, 	LPCSTR pref1,	LPCSTR key);

@@ -177,11 +177,12 @@ int ELibrary::GetObjects(FS_QueryMap& files)
 }
 //---------------------------------------------------------------------------
 
-BOOL ELibrary::RemoveObject(LPCSTR _fname, EItemType type)   
+void ELibrary::RemoveObject(LPCSTR _fname, EItemType type, bool& res)   
 {
 	if (TYPE_FOLDER==type){
     	FS.dir_delete			(_objects_,_fname,FALSE);
-		return TRUE;
+        res = true;
+		return;
     }else if (TYPE_OBJECT==type){
         AnsiString src_name;
         AnsiString fname		= ChangeFileExt(_fname,".object");
@@ -198,10 +199,11 @@ BOOL ELibrary::RemoveObject(LPCSTR _fname, EItemType type)
 
 	        UnloadEditObject	(_fname);
             
-            return TRUE;
+            res = true;
+            return;
         }
     }else THROW;
-    return FALSE;
+    res = false;
 }
 //---------------------------------------------------------------------------
 

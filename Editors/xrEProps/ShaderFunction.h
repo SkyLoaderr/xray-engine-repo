@@ -75,10 +75,10 @@ public:		// User declarations
     static int __fastcall Run(WaveForm* func);
 };
 
-typedef void __fastcall (__closure *ClickEvent)(System::TObject* Sender);
+typedef void __fastcall (__closure *TClickEvent)(System::TObject* Sender);
 AnsiString& GetTokenNameFromVal_EQ	(u32 val, AnsiString& res, const xr_token *token_list);
 u32 		GetTokenValFromName		(AnsiString& res, const xr_token *token_list);
-void 		FillMenuFromToken		(TMxPopupMenu* menu, const xr_token *token_list, ClickEvent func);
+void 		FillMenuFromToken		(TMxPopupMenu* menu, const xr_token *token_list, TClickEvent func);
 
 //---------------------------------------------------------------------------
 #endif

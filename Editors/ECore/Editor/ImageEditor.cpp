@@ -34,7 +34,8 @@ void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps 				= TProperties::CreateForm	("",paProperties,alClient);
     m_ItemList					= IItemList::CreateForm		("Items",paItems,alClient);
-    m_ItemList->SetOnItemsFocusedEvent(OnItemsFocused);
+    m_ItemList->SetOnItemsFocusedEvent	(TOnILItemsFocused	(this,&TfrmImageLib::OnItemsFocused));
+    m_ItemList->SetOnItemRemoveEvent	(TOnItemRemove		(&ImageLib,&CImageManager::RemoveTexture));
     m_ItemList->SetImages		(ImageList);
 }
 //---------------------------------------------------------------------------
@@ -268,7 +269,7 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
 
 void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *Sender)
 {
-	m_ItemList->RemoveSelItems(ImageLib.RemoveTexture);
+	m_ItemList->RemoveSelItems(0);
 }
 //---------------------------------------------------------------------------
 

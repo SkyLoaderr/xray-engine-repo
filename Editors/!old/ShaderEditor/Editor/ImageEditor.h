@@ -55,6 +55,8 @@ __published:	// IDE-managed Components
 	void __fastcall paImagePaint(TObject *Sender);
 private:
 // list functions
+    void __stdcall 		RemoveTexture		(LPCSTR fname, EItemType type, bool& res);
+
     void 				InitItemsList		();
 	void __stdcall  	OnItemsFocused		(ListItemsVec& items);
 

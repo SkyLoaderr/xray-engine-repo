@@ -221,7 +221,7 @@ void CCustomObject::OnNumChangeScale(PropValue* sender)
 
 void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
-    PHelper().CreateNameCB		(items,PHelper().PrepareKey(pref, "Name"),&FName,NULL,NULL,&OnObjectNameAfterEdit);
+    PHelper().CreateNameCB		(items,PHelper().PrepareKey(pref, "Name"),&FName,NULL,NULL,RTextValue::TOnAfterEditEvent(this,&CCustomObject::OnObjectNameAfterEdit));
     PropValue* V;
     V = PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Transform\\Position"),	&PPosition,	-10000,	10000,0.01,2);
     V->OnChangeEvent.bind		(this,&CCustomObject::OnNumChangePosition);

@@ -214,7 +214,7 @@ void TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1, EItemType tp)
 void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-	FHelper.DragDrop(Sender,Source,X,Y,RenameItem);
+	FHelper.DragDrop(Sender,Source,X,Y,TOnItemRename(this,&TfraLeftBar::RenameItem));
 }
 //---------------------------------------------------------------------------
 

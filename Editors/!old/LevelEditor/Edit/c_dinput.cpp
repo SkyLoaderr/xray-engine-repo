@@ -6,6 +6,8 @@
     Visit my site: http://www.geocities.com/foetsch
     Contact me: foetsch@crosswinds.net
 */
+#include "stdafx.h"
+#pragma hdrstop
 
 #include <dinput.h>
 

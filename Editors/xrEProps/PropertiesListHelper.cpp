@@ -125,52 +125,52 @@ FloatValue* 	CPropHelper::CreateTime		(PropItemVec& items, ref_str key, float* v
 //---------------------------------------------------------------------------
     
 FloatValue* 	CPropHelper::CreateAngle 	(PropItemVec& items, ref_str key, float* val, float mn, float mx, float inc, int decim)
-{   FloatValue* V				= (FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_NUMERIC);
-    V->OnAfterEditEvent			= floatRDOnAfterEdit;
-    V->OnBeforeEditEvent		= floatRDOnBeforeEdit; 
+{   FloatValue* V					= (FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_NUMERIC);
+    V->OnAfterEditEvent.bind		(this,&CPropHelper::floatRDOnAfterEdit);
+    V->OnBeforeEditEvent.bind		(this,&CPropHelper::floatRDOnBeforeEdit); 
     V->Owner()->OnDrawTextEvent.bind(this,&CPropHelper::floatRDOnDraw);
     return V;						
 }
 VectorValue* 	CPropHelper::CreateAngle3	(PropItemVec& items, ref_str key, Fvector* val, float mn, float mx, float inc, int decim)
-{   VectorValue* V				= (VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);
-    V->OnAfterEditEvent			= FvectorRDOnAfterEdit;
-    V->OnBeforeEditEvent		= FvectorRDOnBeforeEdit;
+{   VectorValue* V					= (VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);
+    V->OnAfterEditEvent.bind		(this,&CPropHelper::FvectorRDOnAfterEdit);
+    V->OnBeforeEditEvent.bind		(this,&CPropHelper::FvectorRDOnBeforeEdit);
     V->Owner()->OnDrawTextEvent.bind(this,&CPropHelper::FvectorRDOnDraw);
     return V;					
 }
 RTextValue* 	CPropHelper::CreateName		(PropItemVec& items, ref_str key, ref_str* val, ListItem* owner)  
-{   RTextValue* V				= (RTextValue*) CreateRText	(items,key,val);
-    V->OnAfterEditEvent   		= NameAfterEdit;
-    V->OnBeforeEditEvent  		= NameBeforeEdit;
+{   RTextValue* V					= (RTextValue*) CreateRText	(items,key,val);
+    V->OnAfterEditEvent.bind		(this,&CPropHelper::NameAfterEdit);
+    V->OnBeforeEditEvent.bind		(this,&CPropHelper::NameBeforeEdit);
     V->Owner()->OnDrawTextEvent.bind(this,&CPropHelper::NameDraw);
-    V->tag						= (u32)owner; VERIFY(owner);
+    V->tag							= (u32)owner; VERIFY(owner);
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
     return V;					
 }
-RTextValue* 	CPropHelper::CreateNameCB	(PropItemVec& items, ref_str key, ref_str* val, TOnDrawTextEvent draw, void __stdcall (__closure* before) (PropValue*, ref_str&), void __stdcall (__closure* after) (PropValue*, ref_str&, bool&))  
-{   RTextValue* V				= (RTextValue*) CreateRText	(items,key,val);
-    V->OnAfterEditEvent   		= after;
-    V->OnBeforeEditEvent  		= before;
-    V->Owner()->OnDrawTextEvent = draw;
+RTextValue* 	CPropHelper::CreateNameCB	(PropItemVec& items, ref_str key, ref_str* val, TOnDrawTextEvent draw, RTextValue::TOnBeforeEditEvent before, RTextValue::TOnAfterEditEvent after)
+{   RTextValue* V					= (RTextValue*) CreateRText	(items,key,val);
+    V->OnAfterEditEvent   			= after;
+    V->OnBeforeEditEvent  			= before;
+    V->Owner()->OnDrawTextEvent 	= draw;
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
     return V;					
 }
 //---------------------------------------------------------------------------
 
-void __fastcall 	CPropHelper::FvectorRDOnBeforeEdit(PropValue* sender, Fvector& edit_val)
+void CPropHelper::FvectorRDOnBeforeEdit(PropValue* sender, Fvector& edit_val)
 {
     edit_val.set	(rad2deg(edit_val.x),rad2deg(edit_val.y),rad2deg(edit_val.z));
     VectorValue* V 	= dynamic_cast<VectorValue*>(sender); R_ASSERT(V);
     V->lim_mn.set	(rad2deg(V->lim_mn.x),rad2deg(V->lim_mn.y),rad2deg(V->lim_mn.z));  
     V->lim_mx.set	(rad2deg(V->lim_mx.x),rad2deg(V->lim_mx.y),rad2deg(V->lim_mx.z));  
 }
-void __fastcall 	CPropHelper::FvectorRDOnDraw(PropValue* sender, ref_str& draw_val)
+void CPropHelper::FvectorRDOnDraw(PropValue* sender, ref_str& draw_val)
 {
 	VectorValue* V	= dynamic_cast<VectorValue*>(sender); VERIFY(V);
     Fvector val;    val.set	(rad2deg(V->value->x),rad2deg(V->value->y),rad2deg(V->value->z));
     rstring_sprintf	(draw_val,val,V->dec);
 }
-void __fastcall 	CPropHelper::FvectorRDOnAfterEdit(PropValue* sender, Fvector& edit_val, bool& accepted)
+void CPropHelper::FvectorRDOnAfterEdit(PropValue* sender, Fvector& edit_val, bool& accepted)
 {
     edit_val.set	(deg2rad(edit_val.x),deg2rad(edit_val.y),deg2rad(edit_val.z));
     VectorValue* V 	= dynamic_cast<VectorValue*>(sender); R_ASSERT(V);
@@ -179,19 +179,19 @@ void __fastcall 	CPropHelper::FvectorRDOnAfterEdit(PropValue* sender, Fvector& e
 }
 //------------------------------------------------------------------------------
 
-void __fastcall 	CPropHelper::floatRDOnBeforeEdit(PropValue* sender, float& edit_val)
+void CPropHelper::floatRDOnBeforeEdit(PropValue* sender, float& edit_val)
 {
     edit_val 		= rad2deg(edit_val);
     FloatValue* V 	= dynamic_cast<FloatValue*>(sender); R_ASSERT(V);
     V->lim_mn 		= rad2deg(V->lim_mn); V->lim_mx = rad2deg(V->lim_mx);
 }
-void __fastcall 	CPropHelper::floatRDOnDraw(PropValue* sender, ref_str& draw_val)
+void CPropHelper::floatRDOnDraw(PropValue* sender, ref_str& draw_val)
 {
 	FloatValue* V	= dynamic_cast<FloatValue*>(sender); VERIFY(V);
     float val;    	val = rad2deg(*V->value);
     rstring_sprintf	(draw_val,val,V->dec);
 }
-void __fastcall 	CPropHelper::floatRDOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
+void CPropHelper::floatRDOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
 {
     edit_val 		= deg2rad(edit_val);
     FloatValue* V 	= dynamic_cast<FloatValue*>(sender); R_ASSERT(V);

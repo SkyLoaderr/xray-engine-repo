@@ -66,7 +66,7 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
     form->tvItems->Selected 		= 0;
 
     // fill items
-    if (item_fill.empty()){
+    if (!item_fill.empty()){
     	// custom
         item_fill					(form->m_Items);
 	    form->Caption				= "Select Item";
@@ -75,7 +75,7 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
     	SChooseEvents* E			= GetEvents(choose_ID); VERIFY(E);
         E->on_fill					(form->m_Items);
 	    form->Caption				= E->caption;
-	    form->item_select_event		= item_select?item_select:E->on_sel;
+	    form->item_select_event		= item_select.empty()?E->on_sel:item_select;
     }
     form->FillItems					();
     
@@ -334,7 +334,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 	xr_delete			(m_Thm);
 	m_Snd.destroy		();
 	if (Item&&FHelper.IsObject(Item)&&Item->Tag){
-    	if (ebExt->Down&&item_select_event)	item_select_event((SChooseItem*)Item->Tag,m_Thm,m_Snd,items);
+    	if (ebExt->Down&&!item_select_event.empty())	item_select_event((SChooseItem*)Item->Tag,m_Thm,m_Snd,items);
         lbItemName->Caption 	= Item->Text;
         lbHint->Caption 		= Item->Hint;
     }

@@ -14,7 +14,7 @@ public:
 				CImageManager		(){;}
 				~CImageManager		(){;}
 	// texture routines
-    BOOL __stdcall 	RemoveTexture	(LPCSTR fname, EItemType type);
+    void __stdcall 	RemoveTexture	(LPCSTR fname, EItemType type, bool& res);
     BOOL		CheckCompliance		(LPCSTR fname, int& compl);
     void		CheckCompliance		(FS_QueryMap& files, FS_QueryMap& compl);
     int			GetTextures			(FS_QueryMap& files, BOOL bFolder=FALSE);

@@ -61,7 +61,7 @@ void __fastcall TfrmText::ebCancelClick(TObject *Sender)
 void __fastcall TfrmText::ebApplyClick(TObject *Sender)
 {
 	*m_Text 				= mmText->Text;
-    if (OnApplyClick) 		OnApplyClick();
+    if (!OnApplyClick.empty())OnApplyClick();
 	mmText->Modified 		= false;
 }
 //---------------------------------------------------------------------------
@@ -156,7 +156,7 @@ void __fastcall TfrmText::ebSaveClick(TObject *Sender)
 
 void __fastcall TfrmText::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
-	if (OnCloseClick) OnCloseClick(CanClose);
+	if (!OnCloseClick.empty()) OnCloseClick(CanClose);
 }
 //---------------------------------------------------------------------------
 
@@ -169,11 +169,13 @@ void TfrmText::OutLineNumber()
 void __fastcall TfrmText::mmTextKeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-	if ((Key==VK_SPACE)&&(Shift.Contains(ssCtrl))&&(Shift.Contains(ssShift))&&OnCodeInsight)
+	if ((Key==VK_SPACE)&&(Shift.Contains(ssCtrl))&&(Shift.Contains(ssShift))&&!OnCodeInsight.empty())
     {
-    	AnsiString src_line, hint;
-        src_line = mmText->Lines->Strings[mmText->CaretPos.y];
-    	if (OnCodeInsight(src_line,hint)){
+    	AnsiString 		src_line, hint;
+        src_line 		= mmText->Lines->Strings[mmText->CaretPos.y];
+        bool result		= true;
+        OnCodeInsight	(src_line,hint,result);
+    	if (result){
 		    sbStatusPanel->Panels->Items[1]->Text = AnsiString("Hint: ")+hint;
             sbStatusPanel->Hint = hint;
         }else{

@@ -21,9 +21,9 @@
 // refs
 class CCustomObject;
 
-typedef void __fastcall (__closure *TOnApplyClick)();
-typedef void __fastcall (__closure *TOnCloseClick)(bool& can_close);
-typedef bool __fastcall (__closure *TOnCodeIndight)(const AnsiString& src_line, AnsiString& hint);
+typedef fastdelegate::FastDelegate0 										TOnApplyClick;
+typedef fastdelegate::FastDelegate1<bool&> 									TOnCloseClick;
+typedef fastdelegate::FastDelegate3<const AnsiString&, AnsiString&, bool&> 	TOnCodeIndight;
 
 class XR_EPROPS_API TfrmText : public TForm
 {

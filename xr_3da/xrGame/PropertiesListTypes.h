@@ -4,7 +4,7 @@
 
 #include "WaveForm.H"
 
-#ifdef __BORLANDC__    
+#ifdef __BORLANDC__            
 #	include "ElTree.hpp"
 #endif
 //---------------------------------------------------------------------------
@@ -38,18 +38,10 @@ DEFINE_VECTOR			(PropItem*,PropItemVec,PropItemIt);
 
 //------------------------------------------------------------------------------
 #include "ChooseTypes.H"     
-#include "fastdelegate.h"     
+#include "fastdelegate.h"                         
 //------------------------------------------------------------------------------
 typedef fastdelegate::FastDelegate2<PropValue*, ref_str&> 		TOnDrawTextEvent; 
-typedef fastdelegate::FastDelegate1<PropValue*> 				TOnChange;
 typedef fastdelegate::FastDelegate1<PropItem*> 					TOnClick;
-typedef fastdelegate::FastDelegate3<PropValue*, bool&, bool&> 	TOnBtnClick;
-typedef fastdelegate::FastDelegate0 							TOnCloseEvent;
-typedef fastdelegate::FastDelegate0 							TOnModifiedEvent;
-typedef fastdelegate::FastDelegate1<PropItem*> 					TOnPropItemFocused;
-typedef fastdelegate::FastDelegate3<PropValue*,TCanvas*, const TRect&>	TOnDrawCanvasEvent;
-typedef fastdelegate::FastDelegate3<PropValue*,PropValue*,bool&>TOnTestEqual;
-typedef fastdelegate::FastDelegate1<ChooseItemVec&>				TOnChooseFillProp;
 //------------------------------------------------------------------------------
 
 class PropValue
@@ -62,6 +54,7 @@ public:
 	u32					tag;
 public:
 	// base events
+	typedef fastdelegate::FastDelegate1<PropValue*> TOnChange;
     TOnChange			OnChangeEvent;
 public:
 						PropValue		():tag(0),m_Owner(0),OnChangeEvent(0){;}
@@ -84,11 +77,13 @@ class CustomValue: public PropValue
 public:
 	typedef T			TYPE;
 public:
-	TYPE				init_value;
+	TYPE				init_value;            
 	TYPE*				value;
 public:
-    void __stdcall (__closure* OnBeforeEditEvent) 	(PropValue*, T&);
-    void __stdcall (__closure* OnAfterEditEvent) 	(PropValue*, T&, bool &Accepted);
+	typedef fastdelegate::FastDelegate2<PropValue*, T&> 		TOnBeforeEditEvent;
+	typedef fastdelegate::FastDelegate3<PropValue*, T&, bool&> 	TOnAfterEditEvent;
+    TOnBeforeEditEvent	OnBeforeEditEvent;
+    TOnAfterEditEvent	OnAfterEditEvent;
 public:
 						CustomValue		(T* val)
 	{
@@ -126,6 +121,7 @@ class PropItem
     PropValueVec		values;
 // events
 public:
+	typedef fastdelegate::FastDelegate1<PropItem*> 	TOnPropItemFocused;
     TOnDrawTextEvent	OnDrawTextEvent;
     TOnPropItemFocused	OnItemFocused;
     TOnClick			OnClickEvent;
@@ -191,14 +187,14 @@ public:
     IC void 			BeforeEdit		(T2& val)
     {
         T1* CV			= dynamic_cast<T1*>(values.front()); VERIFY(CV);
-        if (CV->OnBeforeEditEvent) CV->OnBeforeEditEvent(CV,val);
+        if (!CV->OnBeforeEditEvent.empty()) CV->OnBeforeEditEvent(CV,val);
     }
     template <class T1, class T2>
     IC bool 			AfterEdit		(T2& val)
     {
     	bool Accepted	= true;
         T1* CV			= dynamic_cast<T1*>(values.front()); VERIFY(CV);
-        if (CV->OnAfterEditEvent) CV->OnAfterEditEvent(CV,val,Accepted);
+        if (!CV->OnAfterEditEvent.empty()) CV->OnAfterEditEvent(CV,val,Accepted);
         return Accepted;
 	}    
     template <class T1, class T2>
@@ -260,6 +256,9 @@ public:
 class CanvasValue: public PropValue{
 	ref_str				value;
 public:
+	typedef fastdelegate::FastDelegate3<CanvasValue*,PropValue*,bool&>			TOnTestEqual;
+	typedef fastdelegate::FastDelegate3<CanvasValue*,void*/* TCanvas* */, const Irect&>	TOnDrawCanvasEvent;
+public:
     int					height;
     TOnTestEqual		OnTestEqual;
     TOnDrawCanvasEvent	OnDrawCanvasEvent;
@@ -278,6 +277,7 @@ class ButtonValue: public PropValue{
 public:
 	RStringVec			value;
     int					btn_num;
+	typedef fastdelegate::FastDelegate3<PropValue*, bool&, bool&> 	TOnBtnClick;
     TOnBtnClick			OnBtnClickEvent;
     enum{
     	flFirstOnly		= (1<<0)
@@ -319,6 +319,7 @@ class ChooseValue: public RTextValue{
 public:
 	u32					choose_id;
     ref_str				start_path;
+	typedef fastdelegate::FastDelegate1<ChooseItemVec&>	TOnChooseFillProp;
     TOnChooseFillProp	OnChooseFillEvent;
 public:
 						ChooseValue			(ref_str* val, u32 cid, LPCSTR path):RTextValue(val),choose_id(cid),start_path(path),OnChooseFillEvent(0){}

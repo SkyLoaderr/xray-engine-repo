@@ -271,19 +271,21 @@ CLAItem* ELightAnimLibrary::AppendItem(LPCSTR folder_name, CLAItem* parent)
 	return I;
 }
 #ifdef _EDITOR
-BOOL ELightAnimLibrary::RemoveObject(LPCSTR _fname, EItemType type)   
+void ELightAnimLibrary::RemoveObject(LPCSTR _fname, EItemType type, bool& res)   
 {
 	if (TYPE_FOLDER==type){
-		return TRUE;
+        res = true;
+		return;
     }else if (TYPE_OBJECT==type){
         LAItemIt it=FindItemI(_fname); 
         if (it!=Items.end()){
 	        xr_delete(*it);
     	    Items.erase(it);
-            return TRUE;
+            res = true;
+            return;
         }
     }else THROW;
-    return FALSE;
+    res = false;
 }
 //---------------------------------------------------------------------------
 

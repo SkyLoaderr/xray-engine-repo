@@ -32,13 +32,15 @@ __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
 
 void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
-	m_ItemProps = TProperties::CreateForm("SoundED",paProperties,alClient);
-    m_ItemList	= IItemList::CreateForm("Items",paItems,alClient,IItemList::ilEditMenu|IItemList::ilMultiSelect|IItemList::ilDragAllowed);
-    m_ItemList->SetOnItemRemoveEvent	(RemoveSound);
-    m_ItemList->SetOnItemRenameEvent	(RenameSound);
-    m_ItemList->SetOnItemsFocusedEvent	(OnItemsFocused);
-    m_ItemList->SetImages				(ImageList);
-    bAutoPlay 	= FALSE;
+	m_ItemProps = TProperties::CreateForm	("SoundED",paProperties,alClient);
+    m_ItemList	= IItemList::CreateForm		("Items",paItems,alClient,IItemList::ilEditMenu|IItemList::ilMultiSelect|IItemList::ilDragAllowed);
+    m_ItemList->SetOnItemsFocusedEvent		(TOnILItemsFocused(this,&TfrmSoundLib::OnItemsFocused));
+    TOnItemRemove on_remove; on_remove.bind	(this,&TfrmSoundLib::RemoveSound);
+    TOnItemRename on_rename; on_rename.bind	(this,&TfrmSoundLib::RenameSound);
+    m_ItemList->SetOnItemRemoveEvent		(on_remove);
+	m_ItemList->SetOnItemRenameEvent		(on_rename);
+    m_ItemList->SetImages					(ImageList);
+    bAutoPlay 								= FALSE;
 }
 //---------------------------------------------------------------------------
 
@@ -98,13 +100,13 @@ void TfrmSoundLib::AppendModif(LPCSTR nm)
 }
 //---------------------------------------------------------------------------
 
-BOOL __fastcall TfrmSoundLib::RemoveSound(LPCSTR fname, EItemType type)
+void TfrmSoundLib::RemoveSound(LPCSTR fname, EItemType type, bool& res)
 {
 	// delete it from modif map
     FS_QueryPairIt it=modif_map.find(fname); 
     if (it!=modif_map.end()) modif_map.erase(it);
 	// remove sound source
-	return SndLib->RemoveSound(fname,type);
+	res = SndLib->RemoveSound(fname,type);
 }
 //---------------------------------------------------------------------------
 

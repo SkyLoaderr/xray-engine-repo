@@ -25,7 +25,7 @@ xr_token							function_token			[ ]={
 	{ 0,							0						}
 };
 //---------------------------------------------------------------------------
-void FillMenuFromToken(TMxPopupMenu* menu, const xr_token *token_list, ClickEvent func ){
+void FillMenuFromToken(TMxPopupMenu* menu, const xr_token *token_list, TClickEvent func ){
 	menu->Items->Clear();
 	for( int i=0; token_list[i].name; i++ ){
     	TMenuItem* mi = xr_new<TMenuItem>((TComponent*)0);

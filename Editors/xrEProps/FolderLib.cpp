@@ -460,7 +460,7 @@ void CFolderHelper::CreateNewFolder(TElTree* tv, bool bEditAfterCreate)
 
 BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove OnRemoveItem, TOnItemAfterRemove OnAfterRemoveItem)
 {
-	BOOL bRes = FALSE;
+	bool bRes = false;
     R_ASSERT(OnRemoveItem);
     if (pNode){
 		tv->IsUpdating = true;
@@ -469,27 +469,31 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove On
 		AnsiString full_name;
     	if (IsFolder(pNode)){
             if (mrYes==MessageDlg("Delete selected folder?", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo, 0)){
-                bRes = TRUE;
+                bRes = true;
 		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
                     MakeName(item,0,full_name,false);
-                	if (IsObject(item))
-                    	if (!OnRemoveItem(full_name.c_str(),TYPE_OBJECT)) bRes=FALSE;
+                	if (IsObject(item)){
+                    	bool res		= true;
+                    	OnRemoveItem(full_name.c_str(),TYPE_OBJECT,res);
+                    	if (!res) bRes	= FALSE;
+                    }
                 }
                 if (bRes){
                     MakeName(pNode,0,full_name,true);
-                	OnRemoveItem(full_name.c_str(),TYPE_FOLDER);
+                    bool res			= true;
+                	OnRemoveItem(full_name.c_str(),TYPE_FOLDER,res);
                 	pNode->Delete();
-                    if (OnAfterRemoveItem) OnAfterRemoveItem();
+                    if (!OnAfterRemoveItem.empty()) OnAfterRemoveItem();
                 }
         	}
         }
     	if (IsObject(pNode)){
             if (mrYes==MessageDlg("Delete selected item?", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo, 0)){
-				MakeName(pNode,0,full_name,false);
-                bRes = OnRemoveItem(full_name.c_str(),TYPE_OBJECT);
+				MakeName	(pNode,0,full_name,false);
+                OnRemoveItem(full_name.c_str(),TYPE_OBJECT,bRes);
 	            if (bRes){
                 	pNode->Delete();
-                    if (OnAfterRemoveItem) OnAfterRemoveItem();
+                    if (!OnAfterRemoveItem.empty()) OnAfterRemoveItem();
                 }
         	}
         }
@@ -595,13 +599,15 @@ bool CFolderHelper::DrawThumbnail(TCanvas *Surface, TRect &R, ref_str fname, u32
 
 AnsiString CFolderHelper::GenerateName(LPCSTR pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name)
 {
-	VERIFY		(cb);
+	VERIFY		(!cb.empty());
 	AnsiString result;
     int counter 		= 0;
    // test exist name
     if (allow_pref_name&&pref&&pref[0]){
         result	= pref;
-        if (!cb(result.c_str())) return result;
+        bool 	res;
+        cb		(result.c_str(),res);
+        if (!res)return result;
     }
     // generate new name
     string256 	prefix	= {"name"};
@@ -612,8 +618,12 @@ AnsiString CFolderHelper::GenerateName(LPCSTR pref, int dgt_cnt, TFindObjectByNa
         int i			= strlen(prefix)-1;
         for (; i>=0; i--) if (isdigit(prefix[i])) prefix[i]=0; else break;
     }
-    do	result.sprintf	(mask, prefix, counter++); //"%s%04d"
-    while(cb(result.c_str()));
+    bool 	res;
+    do{	
+    	result.sprintf	(mask, prefix, counter++); //"%s%04d"
+        res				= false;
+        cb				(result.c_str(),res);
+    }while(res);
     return result;
 }
 //---------------------------------------------------------------------------

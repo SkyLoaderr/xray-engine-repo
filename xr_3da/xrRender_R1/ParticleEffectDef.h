@@ -117,7 +117,7 @@ namespace PS
 	    DEFINE_VECTOR		(EParticleAction*,EPAVec,EPAVecIt);
 		EPAVec 				m_EActionList;
 	public:             
-		bool __stdcall  	FindActionByName	(LPCSTR new_name);
+		void __stdcall  	FindActionByName	(LPCSTR new_name, bool& res);
 		void __stdcall  	CollisionFrictionOnAfterEdit	(PropValue* sender, float& edit_val, bool& accepted);
 		void __stdcall  	CollisionFrictionOnBeforeEdit	(PropValue* sender, float& edit_val);
 		void __stdcall  	CollisionFrictionOnDraw			(PropValue* sender, ref_str& draw_val);

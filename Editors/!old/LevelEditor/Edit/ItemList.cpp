@@ -198,8 +198,8 @@ void __fastcall TItemList::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
 
-    if (OnCloseEvent) 	OnCloseEvent();
-	ClearParams			();
+    if (!OnCloseEvent.empty()) 	OnCloseEvent();
+	ClearParams					();
 }
 //---------------------------------------------------------------------------
 
@@ -301,7 +301,7 @@ void __fastcall TItemList::tvItemsClick(TObject *Sender)
 	TElTreeItem* item = dynamic_cast<TElTreeItem*>(Sender);
   	if (item){
         ListItem* prop = (ListItem*)item->Tag;
-        if (prop&&prop->OnClickEvent) prop->OnClickEvent(prop);
+        if (prop&&!prop->OnClickEvent.empty()) prop->OnClickEvent(prop);
     };
 }
 //---------------------------------------------------------------------------
@@ -372,10 +372,10 @@ void __fastcall TItemList::tvItemsAfterSelectionChange(TObject *Sender)
 	if (IsLocked()) return;
     ListItemsVec sel_items;
     GetSelected	(0,sel_items,false);
-    if (OnItemFocusedEvent)		OnItemFocusedEvent(GetSelected());
-    if (OnItemsFocusedEvent) 	OnItemsFocusedEvent(sel_items);
+    if (!OnItemFocusedEvent.empty())	OnItemFocusedEvent(GetSelected());
+    if (!OnItemsFocusedEvent.empty()) 	OnItemsFocusedEvent(sel_items);
     for (ListItemsIt it=sel_items.begin(); it!=sel_items.end(); it++){
-        if ((*it)->OnItemFocused)(*it)->OnItemFocused(*it);
+        if (!(*it)->OnItemFocused.empty())(*it)->OnItemFocused(*it);
     }
 }
 //---------------------------------------------------------------------------
@@ -447,7 +447,7 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
         DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
         if (miDrawThumbnails->Checked&&prop->m_Flags.is(ListItem::flDrawThumbnail)){ 
             R.top			+= tvItems->LineHeight-4;
-            if (prop->OnDrawThumbnail)
+            if (!prop->OnDrawThumbnail.empty())
             	prop->OnDrawThumbnail(prop,Surface,R);
         }
     }else{
@@ -482,10 +482,10 @@ void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
         R_ASSERT(m_Flags.is(ilEditMenu));
         TElTreeInplaceAdvancedEdit* IE	= InplaceEdit;
         AnsiString new_text 			= AnsiString(IE->Editor->Text).LowerCase();
-        bool bRes						= FHelper.RenameItem(tvItems,IE->Item,new_text,RenameItem); 
+        bool bRes						= FHelper.RenameItem(tvItems,IE->Item,new_text,TOnItemRename(this,&TItemList::RenameItem)); 
         if (bRes){
 	        if (tvItems->OnAfterSelectionChange)tvItems->OnAfterSelectionChange(0);
-            if (OnModifiedEvent.empty())OnModifiedEvent();
+            if (!OnModifiedEvent.empty())OnModifiedEvent();
             // ensure visible
             IE->Item->Text				= new_text;
 			tvItems->EnsureVisible		(IE->Item); 
@@ -494,9 +494,9 @@ void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall	TItemList::RenameItem(LPCSTR fn0, LPCSTR fn1, EItemType type)
+void TItemList::RenameItem(LPCSTR fn0, LPCSTR fn1, EItemType type)
 {
-	if (OnItemRenameEvent) OnItemRenameEvent	(fn0,fn1,type);
+	if (!OnItemRenameEvent.empty())	OnItemRenameEvent(fn0,fn1,type);
     if (type==TYPE_OBJECT){
         TElTreeItem* item0			= FHelper.FindObject(tvItems,fn0); 	VERIFY(item0);
         ListItem* prop				= (ListItem*)item0->Tag; 			VERIFY(prop);
@@ -511,7 +511,7 @@ void __fastcall TItemList::tvItemsDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
 	R_ASSERT(m_Flags.is(ilEditMenu));
-	FHelper.DragDrop(Sender,Source,X,Y,RenameItem);
+	FHelper.DragDrop(Sender,Source,X,Y,TOnItemRename(this,&TItemList::RenameItem));
 	if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
 }
 //---------------------------------------------------------------------------
@@ -540,7 +540,7 @@ void __fastcall TItemList::tvItemsKeyDown(TObject *Sender, WORD &Key,
 	if (m_Flags.is(ilEditMenu)){
 		if (Key==VK_DELETE) 
 			if (FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemoveEvent))
-            	if (OnModifiedEvent.empty()) OnModifiedEvent();
+            	if (!OnModifiedEvent.empty()) OnModifiedEvent();
     }
 }
 //---------------------------------------------------------------------------
@@ -596,7 +596,8 @@ void __fastcall TItemList::tvItemsHeaderResize(TObject *Sender)
 
 void TItemList::RemoveSelItems(TOnItemRemove on_remove)
 {
-	R_ASSERT(m_Flags.is(ilEditMenu)||on_remove);
+	on_remove 	= on_remove.empty()?OnItemRemoveEvent:on_remove;
+	VERIFY		(!on_remove.empty());
     ElItemsVec sel_items;
     if (GetSelected(sel_items)){
     	tvItems->IsUpdating = true; // LockUpdating нельзя
@@ -605,7 +606,7 @@ void TItemList::RemoveSelItems(TOnItemRemove on_remove)
         bool bSelChanged=false;
         bool bRes=false;
         for (ElItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
-			if (!FHelper.RemoveItem(tvItems,*it,on_remove?on_remove:OnItemRemoveEvent)){
+			if (!FHelper.RemoveItem(tvItems,*it,on_remove.empty()?OnItemRemoveEvent:on_remove)){
             	AnsiString fn;
                 FHelper.MakeFullName(*it,0,fn);
             	SelectItem(fn.c_str(),true,true,false);
@@ -615,7 +616,7 @@ void TItemList::RemoveSelItems(TOnItemRemove on_remove)
             }
         if (bSelChanged||bRes){
             tvItemsAfterSelectionChange	(0);
-            if (bRes&&OnModifiedEvent.empty())	OnModifiedEvent(); 
+            if (bRes&&!OnModifiedEvent.empty())	OnModifiedEvent(); 
         }
     	tvItems->IsUpdating 		= false;
     }
@@ -624,7 +625,7 @@ void TItemList::RemoveSelItems(TOnItemRemove on_remove)
 
 void TItemList::RenameSelItem()
 {
-	R_ASSERT(m_Flags.is(ilEditMenu));
+	VERIFY(m_Flags.is(ilEditMenu));
     ElItemsVec sel_items;
     if (1==GetSelected(sel_items)){
 		if (sel_items.back()) tvItems->EditItem(sel_items.back(),-1);

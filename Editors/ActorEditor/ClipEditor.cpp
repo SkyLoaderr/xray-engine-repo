@@ -135,7 +135,7 @@ void __fastcall TClipMaker::FormCreate(TObject *Sender)
 {
 	m_ClipProps		= TProperties::CreateForm("Clip Properties",paClipProps,alClient);
 	m_ClipList		= IItemList::CreateForm("Clips",paClipList,alClient,0);
-	m_ClipList->SetOnItemsFocusedEvent(OnClipItemFocused);
+	m_ClipList->SetOnItemsFocusedEvent(TOnILItemsFocused(this,&TClipMaker::OnClipItemFocused));
 
 	Device.seqFrame.Add	(this);
 }
@@ -490,13 +490,13 @@ void TClipMaker::RealUpdateProperties()
     PropValue* V	= 0;
 	PHelper().CreateCaption		(p_items,"Length",				FloatTimeToStrTime(m_TotalLength,true,true,true,true).c_str());
     V=PHelper().CreateFloat		(p_items,"Zoom",				&m_Zoom,			1.f,1000.f,0.1f,1);
-    V->OnChangeEvent			= OnZoomChange;
+    V->OnChangeEvent.bind		(this,&TClipMaker::OnZoomChange);
     if (sel_clip){
     	ListItem* l_owner		= m_ClipList->FindItem(*sel_clip->name); VERIFY(l_owner);
 	    V=PHelper().CreateName	(p_items,"Current Clip\\Name",	&sel_clip->name,	l_owner);
-        V->OnChangeEvent		= OnNameChange;
+        V->OnChangeEvent.bind	(this,&TClipMaker::OnNameChange);
 	    V=PHelper().CreateFloat	(p_items,"Current Clip\\Length",&sel_clip->length,	0.f,10000.f,0.1f,2);
-        V->OnChangeEvent		= OnClipLengthChange;
+        V->OnChangeEvent.bind	(this,&TClipMaker::OnClipLengthChange);
         for (u32 k=0; k<4; k++){
             AnsiString mname	= sel_clip->CycleName(k);	
             CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str());

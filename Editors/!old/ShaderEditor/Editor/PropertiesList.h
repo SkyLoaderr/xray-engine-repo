@@ -121,11 +121,11 @@ private:	// User declarations
     PropItemVec 		m_ViewItems;
 	void 				FillElItems		(PropItemVec& items, LPCSTR startup_pref=0);
     
-    typedef void 		__stdcall 		(__closure *TOnItemFocused)(TElTreeItem* item);
+    typedef 			fastdelegate::FastDelegate1<TElTreeItem*> TOnItemFocused;    
     TOnItemFocused      OnItemFocused;
     TOnModifiedEvent 	OnModifiedEvent;
     TOnCloseEvent		OnCloseEvent;
-    void 				Modified				(){bModified=true; if (OnModifiedEvent.empty()) OnModifiedEvent();}
+    void 				Modified				(){bModified=true; if (!OnModifiedEvent.empty()) OnModifiedEvent();}
     void 				ClearParams				(TElTreeItem* node=0);
     void 				ApplyEditControl		();
     void 				CancelEditControl		();

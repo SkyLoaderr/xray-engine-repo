@@ -45,7 +45,7 @@ public:
 					ELightAnimLibrary	();
 					~ELightAnimLibrary	();
 #ifdef _EDITOR       
-    BOOL __stdcall 	RemoveObject		(LPCSTR fname, EItemType type);
+    void __stdcall 	RemoveObject		(LPCSTR fname, EItemType type, bool& res);
     void __stdcall 	RenameObject		(LPCSTR fn0, LPCSTR fn1, EItemType type);
 #endif
 

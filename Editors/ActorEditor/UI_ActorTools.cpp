@@ -161,8 +161,8 @@ bool CActorTools::OnCreate()
     // props
 	m_ClipMaker		= TClipMaker::CreateForm();
     m_ObjectItems 	= IItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,IItemList::ilDragCustom|IItemList::ilMultiSelect|IItemList::ilSuppressStatus);
-	m_ObjectItems->SetOnItemsFocusedEvent(OnObjectItemFocused);
-    m_Props 		= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,OnItemModified);
+	m_ObjectItems->SetOnItemsFocusedEvent(TOnILItemsFocused(this,&CActorTools::OnObjectItemFocused));
+    m_Props 		= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,TOnModifiedEvent().bind(this,&CActorTools::OnItemModified));
     m_PreviewObject.OnCreate();
 
     // key bar

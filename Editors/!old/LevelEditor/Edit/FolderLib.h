@@ -7,6 +7,8 @@
 #include "ExtBtn.hpp"
 #include "MxMenus.hpp"
 
+typedef fastdelegate::FastDelegate2<LPCSTR,bool&> TFindObjectByName;     
+
 class XR_EPROPS_API CFolderHelper{
     IC TElTreeItem*		LL_CreateFolder	(TElTree* tv, TElTreeItem* parent, const AnsiString& name, bool force_icon)
     {
@@ -57,7 +59,6 @@ public:
 
 	bool 				DrawThumbnail		(TCanvas *Surface, TRect &R, ref_str fname, u32 thm_type);
 
-	typedef bool 		__stdcall  			(__closure *TFindObjectByName)(LPCSTR new_name);
     AnsiString			GenerateName		(LPCSTR pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name);
 //------------------------------------------------------------------------------
 };
