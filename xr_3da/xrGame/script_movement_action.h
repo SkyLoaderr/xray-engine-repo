@@ -42,7 +42,7 @@ public:
 	};
 
 public:
-	shared_str										m_path_name;
+	shared_str									m_path_name;
 	MonsterSpace::EBodyState					m_tBodyState;
 	MonsterSpace::EMovementType					m_tMovementType;
 	DetailPathManager::EDetailPathType			m_tPathType;

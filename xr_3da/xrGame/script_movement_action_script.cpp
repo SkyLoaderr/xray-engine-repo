@@ -10,6 +10,7 @@
 #include "script_movement_action.h"
 #include "script_space.h"
 #include "script_game_object.h"
+#include "patrol_path_manager.h"
 
 using namespace luabind;
 

@@ -9,30 +9,29 @@
 #pragma once
 
 #include "script_export_space.h"
-#include "patrol_path_manager.h"
+#include "patrol_path_manager_space.h"
 
 class CPatrolPath;
 
 class CPatrolPathParams {
 public:
 	const CPatrolPath						*m_path;
-	shared_str									m_path_name;
+	shared_str								m_path_name;
 	PatrolPathManager::EPatrolStartType		m_tPatrolPathStart;
 	PatrolPathManager::EPatrolRouteType		m_tPatrolPathStop;
 	bool									m_bRandom;
 	u32										m_previous_index;
 
 public:
-	IC					CPatrolPathParams	(LPCSTR caPatrolPathToGo, const PatrolPathManager::EPatrolStartType tPatrolPathStart = PatrolPathManager::ePatrolStartTypeNearest, const PatrolPathManager::EPatrolRouteType tPatrolPathStop = PatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true, u32 index = u32(-1));
-	virtual				~CPatrolPathParams	();
-	IC	u32				count				() const;
-	IC	const Fvector	&point				(u32 index) const;
-	IC	u32				level_vertex_id		(u32 index) const;
-	IC	u32				point				(LPCSTR name) const;
-	IC	u32				point				(const Fvector &point) const;
-	IC	LPCSTR			name				(u32 index) const;	
-	IC	bool			flag				(u32 index, u8 flag_index) const;
-
+							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const PatrolPathManager::EPatrolStartType tPatrolPathStart = PatrolPathManager::ePatrolStartTypeNearest, const PatrolPathManager::EPatrolRouteType tPatrolPathStop = PatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true, u32 index = u32(-1));
+	virtual					~CPatrolPathParams	();
+			u32				count				() const;
+			const Fvector	&point				(u32 index) const;
+			u32				level_vertex_id		(u32 index) const;
+			u32				point				(LPCSTR name) const;
+			u32				point				(const Fvector &point) const;
+			LPCSTR			name				(u32 index) const;	
+			bool			flag				(u32 index, u8 flag_index) const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CPatrolPathParams)
