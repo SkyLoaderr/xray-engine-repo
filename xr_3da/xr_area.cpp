@@ -2,8 +2,6 @@
 #include "xr_area.h"
 #include "xr_object.h"
 #include "xrLevel.h"
-#include "xr_sndman.h"
-
 #include "xr_creator.h"
 
 #include "x_ray.h"
@@ -29,7 +27,7 @@ CObjectSpace::CObjectSpace( )
 //----------------------------------------------------------------------
 CObjectSpace::~CObjectSpace( )
 {
-	pSounds->SetGeometry		(NULL);
+	Sound->SetGeometry			(NULL);
 
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
@@ -198,8 +196,8 @@ void CObjectSpace::Load	(CStream *F)
 	Fvector*	verts	= (Fvector*)F->Pointer();
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 	Static.build		( verts, H.vertcount, tris, H.facecount );
+	Sound->SetGeometry	( &Static );
 	Msg("* Level CFORM memory usage: %dK",Static.memory()/1024);
-	pSounds->SetGeometry( &Static );
 
 	// CForm
 	x_count				= iCeil((H.aabb.max.x-H.aabb.min.x)/CL_SLOT_SIZE);
