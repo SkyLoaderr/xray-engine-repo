@@ -105,6 +105,11 @@ void CGameTask::load_shared	(LPCSTR)
 	{
 		LPCSTR tag_text = uiXml.Read(task_node, "objective:text", i, NULL);
 		objective.description = tag_text;
+		objective.icon_texture_name = uiXml.Read(task_node, "objective:icon", i, NULL);
+		objective.icon_x = uiXml.ReadAttribInt(task_node, "objective:icon", i, "x");
+		objective.icon_y = uiXml.ReadAttribInt(task_node, "objective:icon", i, "y");
+		objective.icon_width = uiXml.ReadAttribInt(task_node, "objective:icon", i, "width");
+		objective.icon_height = uiXml.ReadAttribInt(task_node, "objective:icon", i, "height");
 		data()->m_Objectives.push_back(objective);
 	}
 }

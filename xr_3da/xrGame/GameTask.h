@@ -21,6 +21,9 @@ struct SGameTaskObjective
 	SGameTaskObjective() {}
 	//текстовое описание
 	shared_str description;
+	//прикрипленная иконка
+	shared_str icon_texture_name;
+	int icon_x, icon_y, icon_width, icon_height;
 };
 
 //////////////////////////////////////////////////////////////////////////
