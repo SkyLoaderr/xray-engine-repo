@@ -24,6 +24,7 @@ public:
 	virtual				~CConsoleUI		();
 			int __cdecl log				(LPCSTR format, ...);
 			void		execute			(char argc, char *argv[]);
+			void		flush			();
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CConsoleUI)

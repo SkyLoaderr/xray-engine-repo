@@ -135,3 +135,13 @@ void CConsoleUI::execute	(char argc, char *argv[])
 		scanf				("%c",s);
 	}
 }
+
+void CConsoleUI::flush		()
+{
+	fflush					(stdout);
+
+	if (!m_log)
+		return;
+
+	fflush					(m_log);
+}

@@ -19,12 +19,14 @@
 #ifdef _DEBUG
 	#define	NODEFAULT		{\
 		ui().log("nodefault reached : %s(%s)",__FILE__, __LINE__);\
+		ui().flush();\
 		__asm int 3\
 	}
 
 	#define VERIFY(expr)	{\
 		if (!(expr)) {\
-		ui().log("\n\nexpression : %s\nfile       : %s\nline       : %d\n",#expr,__FILE__, __LINE__);\
+			ui().log("\n\nAssertion failed!\nexpression : \"%s\"\nfile       : %s\nline       : %d\n",#expr,__FILE__, __LINE__);\
+			ui().flush();\
 			__asm int 3\
 		}\
 	}
