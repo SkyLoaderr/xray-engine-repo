@@ -5,7 +5,7 @@
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
         <text>ak_74_desc</text>
     </article>
-    <article id="bbb" name="AK-74 nfo" group="Weapons/Machineguns">
+    <article id="bbb" name="AK-74_info" group="Weapons/Machineguns">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
         <text>ak_74_info</text>
     </article>

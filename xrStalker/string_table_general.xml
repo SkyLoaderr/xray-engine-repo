@@ -19,6 +19,10 @@
 		<text>AK-74</text>
 		<text ln="rus">Автомат АК-74</text>
 	</string>
+	<string id="AK-74_info">
+		<text>AK-74 info</text>
+		<text ln="rus">АК-74 инфо</text>
+	</string>
 
 	<string id="ak_74_desc">
 		<text>AK-74 this is main weapon of\npost soviet military troops.\nIt is highly robust 
