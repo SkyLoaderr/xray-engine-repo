@@ -149,8 +149,8 @@ public:
 	virtual void					add_Patch				(Shader* S, const Fvector& P, float s, float a, BOOL bNearer)	= 0;
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T)				= 0;
 
-	CBlender*						blender_create			(CLSID cls)								= 0;
-	void							blender_destroy			(CBlender* &)							= 0;
+	virtual CBlender*				blender_create			(CLSID cls)								= 0;
+	virtual void					blender_destroy			(CBlender* &)							= 0;
 
 	// Lighting
 	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest)			= 0;
