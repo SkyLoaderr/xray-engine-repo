@@ -390,6 +390,7 @@ void CAI_Rat::UpdateCL			()
 void CAI_Rat::UpdatePositionAnimation()
 {
 	Fmatrix						l_tSavedTransform = XFORM();
+	m_fTimeUpdateDelta			= Device.fTimeDelta;
 	vfComputeNewPosition		(m_bCanAdjustSpeed,m_bStraightForward);
 
 	float						y,p,b;
