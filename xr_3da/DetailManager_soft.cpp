@@ -86,25 +86,33 @@ void CDetailManager::soft_Render	()
 					DWORD					C = Instance.C_dw;
 					CDetail::fvfVertexIn	*srcIt = Object.vertices, *srcEnd = Object.vertices+Object.number_vertices;
 					CDetail::fvfVertexOut	*dstIt = vDest;
+
+					//
+					float	tm			= Device.fTimeGlobal*0.1f; 
+					float	height		= Object.bv_bb.max.y-Object.bv_bb.min.y;
+					float	cx			= 1.f/5.f;
+					float	cy			= 1.f/7.f;
+					float	cz			= 1.f/3.f;
+					Fvector&	B		= mXform.c;
+					Fvector dir2D;
+					dir2D.set			(0,0,1);
+					/*
+					dir2D.x				= sinf(B.x*cx)+cosf(B.z*cz)+2*cosf(B.y*cy);
+					dir2D.y				= 0;
+					dir2D.z				= cosf(B.x*cx)+sinf(B.z*cz)+2*sinf(B.y*cy);
+					*/
+					dir2D.normalize		();
+
 					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
 					{
-						float	tm			= Device.fTimeGlobal*0.1f; 
-						float	height		= Object.bv_bb.max.y-Object.bv_bb.min.y;
 						Fvector& src		= srcIt->P;
-						Fvector dir2D;
-						float	c1			= 1.f/5.f;
-						float	c2			= 1.f/3.f;
 
 						//
 						Fvector pos;		mXform.transform_tiny	(pos,src);			// normal coords
 						Fvector pos2D;		pos2D.set				(pos.x,0,pos.z);	// 2D pos
 						float	H			= pos.y - mXform.c.y;						// height of vertex (scaled)
 						float	frac		= src.y/height;								// fraction of model height
-						float	inten		= H * sinf(tm);
-						dir2D.x				= sinf(pos.x*c1)+sinf(pos.z*c2);
-						dir2D.y				= 0;
-						dir2D.z				= cosf(pos.x*c1)+cosf(pos.z*c2);
-						dir2D.normalize		();
+						float	inten		= H * sinf	(tm + pos.x*cx+pos.y*cy+pos.z*cz);
 
 						//
 						Fvector ctrl1;		ctrl1.set	(0,				0,		0				);
