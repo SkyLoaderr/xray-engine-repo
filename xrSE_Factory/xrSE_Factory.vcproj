@@ -289,6 +289,9 @@
 			Name="Scripts"
 			Filter="">
 			<File
+				RelativePath=".\script_export_space.h">
+			</File>
+			<File
 				RelativePath=".\script_space.h">
 			</File>
 			<Filter
