@@ -240,6 +240,8 @@ void		sort_tlist_mat
 
 void CRender::render_scenegraph	()
 {
+	Device.Statistic.RenderDUMP.Begin		();
+
 	// **************************************************** NORMAL
 	// Perform sorting based on ScreenSpaceArea
 	// Sorting by SSA and changes minimizations
@@ -388,4 +390,6 @@ void CRender::render_scenegraph	()
 		matVS.clear				();
 		vs.clear				();
 	}
+
+	Device.Statistic.RenderDUMP.End	();
 }

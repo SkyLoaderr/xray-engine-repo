@@ -24,7 +24,6 @@ void CRender::Render	()
 	Device.Statistic.RenderCALC.End				();
 
 	//******* Main render
-	Device.Statistic.RenderDUMP.Begin			();
 	{
 		// level
 		Target.phase_scene						();
@@ -34,7 +33,6 @@ void CRender::Render	()
 		// mapSorted.traverseRL					(sorted_L1);
 		mapSorted.clear							();
 	}
-	Device.Statistic.RenderDUMP.End			();
 
 	if (ps_r2_ls_flags.test(R2FLAG_SUN))
 	{
@@ -54,7 +52,6 @@ void CRender::Render	()
 			Device.Statistic.RenderCALC.End			();
 
 			//******* Direct lighting+shadow		::: Render
-			Device.Statistic.RenderDUMP.Begin		();
 			{
 				Target.phase_smap_direct				();
 
@@ -63,15 +60,12 @@ void CRender::Render	()
 				RCache.set_xform_project				(LR_Direct.L_project);
 				render_scenegraph						();
 			}
-			Device.Statistic.RenderDUMP.End			();
 
 			//******* Direct lighting+shadow		::: Accumulate
-			Device.Statistic.RenderDUMP.Begin		();
 			{
 				Target.phase_accumulator				();
 				Target.shadow_direct					(dls_phase);
 			}
-			Device.Statistic.RenderDUMP.End			();
 		}
 
 		// Multiply by lighting contribution
