@@ -31,11 +31,22 @@ IC	CCoverPoint *CCoverManager::best_cover(const Fvector &position, float radius,
 
 	covers().nearest		(position,radius,m_nearest);
 
+	float					radius_sqr = _sqr(radius);
+
 	xr_vector<CCoverPoint*>::const_iterator	I = m_nearest.begin();
 	xr_vector<CCoverPoint*>::const_iterator	E = m_nearest.end();
-	for ( ; I != E; ++I)
-		if (evaluator.accessible((*I)->position()) && restrictor(*I))
-			evaluator.evaluate	(*I,restrictor.weight(*I));
+	for ( ; I != E; ++I) {
+		if (radius_sqr < position.distance_to_sqr((*I)->position()))
+			continue;
+
+		if (!evaluator.accessible((*I)->position()))
+			continue;
+
+		if (!restrictor(*I))
+			continue;
+
+		evaluator.evaluate	(*I,restrictor.weight(*I));
+	}
 
 	evaluator.finalize		();
 
