@@ -4,6 +4,14 @@
 -- –азработчик: Jim
 ----------------------------------------------------------------------------------------------------
 
+-- константы
+local TIME_RELEASE	=	10000		-- врем€, которое монстр находитс€ под унисхемой
+local TIME_CAPTURE	=	10000		-- врем€, которое монстр находитс€ под скриптом
+local MIN_DIST		=	20			-- рассто€ние до актера, меньше которого, монстр переходит в унисхему
+local MAX_DIST		=	30			-- рассто€ние до актера, больше которого, монстр переходит в унисхему
+local DIST_TO_END	=	2			-- рассто€ние до конца пути
+
+
 class "mob_eluder"
 
 ----------------------------------------------------------------------------------------------------
@@ -30,6 +38,7 @@ function mob_eluder:reset_scheme()
 	self.prev_point_id			= 0
 	
 	self.time_released			= 0
+	self.time_captured			= 0
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -49,7 +58,7 @@ function mob_eluder:update(delta)
 		-- Select point here
 		self:update_distances	()
 		
-		action(self.object, move(move.run_fwd, patrol(self.st.path):point(self.best_point_id), 2), cond(cond.move_end))
+		action(self.object, move(move.run_fwd, patrol(self.st.path):point(self.best_point_id), DIST_TO_END), cond(cond.move_end))
 	end
 	
 end
@@ -107,30 +116,39 @@ function mob_eluder:update_distances()
 end
 
 
-
+----------------------------------------------------------------------------------------------------
+-- Check Script Control
 function mob_eluder:check_script_control()
+	
+	local cur_time = device():time_global()
 
 	if xr_logic.mob_captured(self.object) then
 		-- check for release conditions	
 
-		if self.object:position():distance_to(db.actor:position()) < 20 then
+		-- if near actor
+		-- if far from actor and its time to release for a while
+		if  (self.object:position():distance_to(db.actor:position()) < MIN_DIST) or
+			(self.time_captured + TIME_CAPTURE < cur_time) then
+			
 			xr_logic.mob_release(self.object)
-			self.time_released = device():time_global()
+			self.time_released = cur_time
 		end
 
 	else 
 		-- check for capture conditions
-		if self.object:position():distance_to(db.actor:position()) > 30 then
-			-- check time
-			if self.time_released + 10000 < device():time_global() then
+		
+		-- if far from actor
+		if self.object:position():distance_to(db.actor:position()) > MAX_DIST then
+			-- if its time to capture for a while
+			if self.time_released + TIME_RELEASE < cur_time then
 				-- check if it can_capture
-				--if self.object:can_capture() then 
+				if self.object:can_script_capture() then 
 					xr_logic.mob_capture(self.object, true)
-				--end
+					self.time_captured = cur_time
+				end
 			end
 		end
 	end
-	
 	
 	if not xr_logic.mob_captured(self.object) then
 		return false
@@ -159,10 +177,10 @@ end
 ----------------------------------------------------------------------------------------------------
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
-	local storage       = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	local storage				= xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 
-	storage.logic       = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	storage.logic				= xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	
-	storage.path		= utils.cfg_get_string(ini, section, "path",	npc,	false, "")
+	storage.path				= utils.cfg_get_string(ini, section, "path",	npc,	false, "")
 end
 
