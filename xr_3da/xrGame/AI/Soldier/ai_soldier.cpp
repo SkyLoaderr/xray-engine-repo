@@ -1374,4 +1374,11 @@ void CAI_Soldier::Think()
 				SenseSomething();
 				break;
 			}
-			case aiSoldier
+			case aiSoldierUnderFire : {
+				UnderFire();
+				break;
+			}
+		}
+	}
+	while (!bStopThinking);
+}
