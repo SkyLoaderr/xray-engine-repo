@@ -29,5 +29,19 @@
 		<text>Вернуть ружье охотнику</text>
 	</string>
 
+	<string id="bar_dolg_test_quest">
+		<text>Тестовое задание на вступление в Долг</text>
+	</string>
+	<string id="bar_dolg_bring_document">
+		<text>Принести архивные документы капитану Иванцову</text>
+	</string>
+	<string id="bar_dolg_find_document">
+		<text>Взять в ангаре архивные документы</text>
+	</string>
+	<string id="bar_dolg_return_document">
+		<text>Принести документы капитану Иванцову</text>
+	</string>
+
+
 
 </string_table>
