@@ -65,7 +65,7 @@ void	CSoundRender_Target::_initialize		()
 	case sq_HIGH:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;			break;
 	default:			Debug.fatal("Unknown 3D-sound algorithm");			break;
 	}
-	dsBD.guid3DAlgorithm	= DS3DALG_HRTF_LIGHT;
+	dsBD.guid3DAlgorithm	= DS3DALG_HRTF_FULL;
 
 	// Create
 	R_CHK	(SoundRender.pDevice->CreateSoundBuffer(&dsBD, &pBuffer_base, NULL));

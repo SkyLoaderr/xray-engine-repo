@@ -6,11 +6,11 @@
 CSoundRender_Core				SoundRender;
 CSound_manager_interface*		Sound		= &SoundRender;
 
-int		psSoundRelaxTime		= 15;
+int		psSoundRelaxTime		= 10;
 Flags32	psSoundFlags			= {ssWaveTrace | ssSoftware};
 float	psSoundOcclusionScale	= 0.85f;
-float	psSoundCull				= 0.07f;
-float	psSoundRolloff			= 0.3f;
+float	psSoundCull				= 0.01f;
+float	psSoundRolloff			= 0.25f;
 float	psSoundDoppler			= 0.3f;
 u32		psSoundFreq				= 0;
 u32		psSoundModel			= 0;
