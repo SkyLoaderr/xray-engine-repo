@@ -158,9 +158,7 @@ void xrLoad(LPCSTR name)
 	
 	// Load lights
 	{
-		strconcat			(N,name,"build.prj");
-
-		IReader*	fs		= FS.r_open (N);
+		IReader*	fs		= FS.r_open ("$level$","build.prj");
 		IReader*	F;
 
 		// Version
@@ -231,8 +229,7 @@ void xrLoad(LPCSTR name)
 				LPSTR N			= BT.name;
 				if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 				strlwr			(N);
-				char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
-				IReader* THM	= FS.r_open(th_name);
+				IReader* THM	= FS.r_open("$game_textures$",N);
 
 				// analyze thumbnail information
 				R_ASSERT		(THM->r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
