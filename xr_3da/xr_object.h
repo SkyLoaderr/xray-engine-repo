@@ -85,7 +85,7 @@ public:
 
 	// Name management
 	IC const char *						cName			()					{ return ObjectName; }
-	IC void								cNameSET		(LPCSTR N)			{ _FREE(ObjectName); ObjectName=strdup(N); }
+	void								cNameSET		(LPCSTR N);
 
 	// Visible property
 	PropertyGP(getVisible,setVisible)	BOOL bVisible;

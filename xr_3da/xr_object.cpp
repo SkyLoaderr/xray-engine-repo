@@ -11,17 +11,23 @@
 #include "x_ray.h"
 #include "XR_SmallFont.h"
 
-void CObject::StatusBegin()
+void CObject::StatusBegin	()
 {
 	Fvector		T;
 	Fvector4	S;
-
+	
 	T.set	(vPosition); T.y+=(Radius()*2);
 	Device.mFullTransform.transform	(S,T);
-
+	
 	pApp->pFont->Size	(0.07f/sqrtf(fabsf(S.w)));
 	pApp->pFont->Color	(D3DCOLOR_RGBA(0,255,0,(S.z<=0)?0:255));
 	pApp->pFont->OutSet	(S.x,-S.y);
+}
+
+void CObject::cNameSET		(LPCSTR N)
+{ 
+	_FREE(ObjectName); 
+	ObjectName=strdup(N); 
 }
 
 //----------------------------------------------------------------------
