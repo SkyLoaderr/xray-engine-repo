@@ -71,7 +71,7 @@ public:
 		P.w_u8				(s_squad);
 		P.w_u8				(s_group);
 	}
-
+	
 	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
 		return TRUE;
@@ -85,6 +85,10 @@ public:
 //---------------------------------------------------------------------------------------------
 class xrSE_Enemy : public xrServerEntity
 {
+public:
+	u8						s_team;
+	u8						s_squad;
+	u8						s_group;
 public:
 	u32				dwTimeStamp;			// server(game) timestamp
 	u8				flags;
