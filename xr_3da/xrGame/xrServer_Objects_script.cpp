@@ -41,6 +41,11 @@ LPCSTR get_name(const CSE_Abstract *abstract)
 	return	(abstract->name_replace());
 }
 
+CInifile *get_spawn_ini(CSE_Abstract *abstract)
+{
+	return	(&abstract->spawn_ini());
+}
+
 void CSE_Abstract::script_register(lua_State *L)
 {
 	module(L)[
@@ -52,7 +57,7 @@ void CSE_Abstract::script_register(lua_State *L)
 			.def			("section_name",	&get_section_name)
 			.def			("name",			&get_name)
 			.def			("clsid",			&CSE_Abstract::script_clsid)
-			.def			("spawn_ini",		&CSE_Abstract::spawn_ini)
+			.def			("spawn_ini",		&get_spawn_ini)
 //			.def(		constructor<LPCSTR>())
 	];
 }
