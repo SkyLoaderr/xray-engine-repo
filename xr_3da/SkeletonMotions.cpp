@@ -62,6 +62,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 				MP->r_stringZ	(buf);
 				u16 m_idx 		= u16			(MP->r_u32());
 				*b_it			= find_bone_id	(bones,buf); 
+				VERIFY(*b_it==m_idx);
 //				Msg				("Bone: #%2d, ID: %2d, Name: '%s'",b_it-PART.bones.begin(),*b_it,buf);
 #ifdef _EDITOR
 				if (*b_it==BI_NONE){
