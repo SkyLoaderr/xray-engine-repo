@@ -13,8 +13,10 @@ local run_min_time = 2000
 local keep_state_min_time = 1500 -- переключившись в состояние (бег, ходьба, спринт), не переключаться в другое N ms
 
 local default_wait_time = 5000
-local default_state_standing = "wait"
-local default_state_moving = "patrol"
+local default_state_standing = "guard"
+local default_state_moving1 = "patrol"
+local default_state_moving2 = "rush"
+local default_state_moving3 = "sprint"
 --local sl_speed_h = 0.52 -- горизонтальная скорость вращения прожекторов
 --local sl_speed_v = 0.22 -- вертикальная скорость вращения прожекторов
 
@@ -35,9 +37,11 @@ function choose_look_point(patrol_look, path_look_info, search_for)
 	local pts_found_total_weight = 0 -- количество найденных точек (с нужными флагами)
 	local pt_chosen_idx = nil -- индекс выбранной точки
 	local r
+	local num_equal_pts = 0
 	for look_idx = 0, patrol_look:count() - 1 do
 		this_val = path_look_info[look_idx].flags
 		if this_val:equal(search_for) then
+			num_equal_pts = num_equal_pts + 1
 			-- Нашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
 			-- точки, возьмем текущую только с некоторой вероятностью:
 			-- Шанс, с которым на точку посмотрит персонаж:
@@ -54,7 +58,7 @@ function choose_look_point(patrol_look, path_look_info, search_for)
 			end
 		end
 	end
-	return pt_chosen_idx
+	return pt_chosen_idx, num_equal_pts
 end
 
 -------------------------------------------------------------------------------------------------------------------------
@@ -152,7 +156,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	self.cur_state_standing = default_state_standing
 	if not suggested_state_moving then
-		self.cur_state_moving = default_state_moving
+		self.cur_state_moving = default_state_moving1
 	else
 		self.cur_state_moving = suggested_state_moving
 	end
@@ -320,7 +324,6 @@ end
 function move_mgr:update()
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 	--printf("move_mgr:update(self.object:anims == %d)", self.object:animation_count())
-	--[[
 	if self.can_use_get_current_point_index and not self:arrived_to_first_waypoint() then
 		local t = device():time_global()
 		if t >= self.keep_state_until then
@@ -332,72 +335,23 @@ function move_mgr:update()
 			local dist = self.object:position():distance_to(self.patrol_walk:point(cur_pt))
 			--printf("_bp: move_mgr: distance to destination waypoint: %d", dist)
 			if dist <= dist_walk or t < self.walk_until then
-				self.crouch = false
-				self.running = false
-				self.search = false
-				self.danger = false
-				self.sprint = false
+				self.cur_state_moving = default_state_moving1
 			elseif dist <= dist_run or t < self.run_until then
-				self.crouch = false
-				self.running = true
-				self.search = false
-				self.danger = false
-				self.sprint = false
+				self.cur_state_moving = default_state_moving2
 			else
-				self.crouch = false
-				self.running = false
-				self.search = false
-				self.danger = false
-				self.sprint = true
+				self.cur_state_moving = default_state_moving3
 			end
+			self:update_movement_state()
 		end
-
-		self:update_movement_state()
+		return
 	end
-	--]]
+	
 
 	-- Если это не тот тип звука, который нужно проиграть всего один раз, то играть его:
 	if not self.play_sound_after_anim_start then
 		self:update_sound()
 	end
 
---[[
-	if (self.state == state_standing and self.expiration_time and device():time_global() >= self.expiration_time
-		--[[and (self.is_shooting or xr_state.anim_safe_to_break(self.object))]]
-	   ) then
-		-- Очищать анимации, только если собираемся идти дальше по пути...
-		-- Не очищать, если дальше будем стоять, т.к. иначе будут рывки
-		local patrol_walk_count = self.patrol_walk:count()
-		if patrol_walk_count == 1 then
-			if utils.stalker_at_waypoint(self.object, self.patrol_walk, 0) then
-				self.state = state_moving
-				self:waypoint_callback(self.object, nil, self.last_index)
-			else
-				-- Кто-то сдвинул нас с точки, вернуться путем сброса схемы
-				-- (нельзя просто продолжить движение, потому что сталкерный move manager попытается
-				-- идти к следующей точке, которой нет)
-				self:reset(self.path_walk, self.path_walk_info,
-					self.path_look, self.path_look_info,
-					self.team,
-					{ crouch = self.crouch, running = self.running,
-				          search = self.search,
-					  danger = self.danger, sprint = self.sprint },
-					{ obj = self.move_cb_obj, func = self.move_cb_func } )
-			end
-		else
-			if self.object:animation_count() ~= 0 then
-				self.object:clear_animations() -- FIXME: заплатка, на самом деле надо дождаться окончания анимации
-				xr_state.anim_update(nil, self.object)
-				-- self:update_standing_state() -- anim_update сбивает crouch -- не надо! все равно дальше пойдем
-			end
-			self.state = state_moving
-
-			self:reset_sl() -- отпустить прожектор
-			self:update_movement_state() -- идти дальше
-			--self.object:set_sight(look.danger, nil, 0) -- делается в update_movement_state
-		end
-	end
--]]
 end
 
 function move_mgr:finalize(npc)
@@ -506,7 +460,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	if suggested_state_moving then
 		self.cur_state_moving = suggested_state_moving
 	else
-		self.cur_state_moving = default_state_moving
+		self.cur_state_moving = default_state_moving1
 	end
 	self.standing_crouch = self.crouch
 
@@ -548,7 +502,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		return
 	end
 
-	local pt_chosen_idx = choose_look_point(self.patrol_look, self.path_look_info, search_for)
+	local pt_chosen_idx, num_equal_pts = choose_look_point(self.patrol_look, self.path_look_info, search_for)
 	if pt_chosen_idx then
 		local suggested_anim_set = self.path_look_info[pt_chosen_idx]["a"]
 		if suggested_anim_set then
@@ -604,6 +558,11 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			end
 		end
 
+		-- Если из этой вершины никуда нельзя идти, и ей соответствует только
+		-- одна точка path_look, то стоять бесконечно:
+		if self.patrol_walk:terminal(index) and num_equal_pts == 1 then
+			self.pt_wait_time = nil
+		end
 		local look_pos = self.patrol_look:point(pt_chosen_idx)
 		self:update_standing_state(look_pos)
 

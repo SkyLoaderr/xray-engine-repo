@@ -14,11 +14,8 @@ function action_process_hit:hit_callback(obj, amount, local_direction, who, bone
 		db.storage[obj:id()].hit.who = -1
 	end
 	if db.storage[self.object:id()].active_scheme then
-		local actor = level.actor()
-		if actor then
-			if xr_logic.try_switch_to_another_section(obj, self.st, actor) then
-				return
-			end
+		if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
+			return
 		end
 	end
 end
@@ -34,10 +31,10 @@ end
 function set_hit_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-	npc:set_callback(callback.hit, "hit_callback", st.action)
+	npc:set_callback(callback.hit, st.action.hit_callback, st.action)
 end
 
 function disable_scheme(npc, scheme)
-	npc:set_callback(callback.hit, nil);
+	npc:set_callback(callback.hit, nil)
 end
 

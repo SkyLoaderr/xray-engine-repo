@@ -119,13 +119,53 @@ end
 -- ѕри смерти кровососа дать ему небольшой пинок в сторону вейпоинта, чтобы он упал
 -- с обрыва
 function val_bs_victim_dead(actor, npc)
+	printf("_bp: val_bs_victim_dead: npc='%s'", npc:name())
 	local h = hit()
-	h.power = 1000
-	h.direction = patrol("val_bs_hit_direction"):point(0):sub(npc:position())
-	h.bone = "bip01_legs"
+	h.power = 100
+	h.direction = utils.vector_copy_by_val(patrol("val_bs_hit_direction"):point(0)):sub(npc:position())
+	h.bone = "bip01_spine1"
 	h.draftsman = npc 
-	h.impulse = 1000
+	h.impulse = 2000
 	h.type = hit.wound
 	npc:hit(h)
 end
 
+function test_hit_in_actor_dir(actor, npc)
+--
+	-- TODO: реагировать только на смерть от пули (last hit = пул€)
+	-- TODO: сделать общей схемой с настройкой через пути
+	local actor_pos = utils.vector_copy_by_val(actor:position())
+	local npc_pos = npc:position()
+
+	if actor_pos.y >= npc_pos.y - 3.0 then
+		-- ≈сли игрок несущественно ниже, или выше - не давать толчек
+		return
+	end
+
+	printf("_bp: test_hit_in_actor_dir")
+	local h = hit()
+	h.power = 100
+	actor_pos.y = npc_pos.y + 1.0
+	h.direction = actor_pos:sub(npc_pos)
+	h.bone = "bip01_spine1"
+	h.draftsman = npc 
+	h.impulse = 2000
+	h.type = hit.wound
+	npc:hit(h)
+--]]
+	
+--[[
+	local actor_pos = utils.vector_copy_by_val(actor:position())
+	local npc_pos = npc:position()
+
+	--if actor_pos.y >= npc_pos.y - 3.0 then
+		-- ≈сли игрок несущественно ниже, или выше - не давать толчек
+	--	return
+	--end
+	actor_pos.y = npc_pos.y + 1.0
+	local pshell = npc:get_physics_shell()
+	local dir = actor_pos:sub(npc_pos)
+	local constant = 20000
+	pshell:apply_force (constant * dir.x, constant * dir.y, constant * dir.z)
+--]]
+end
