@@ -176,7 +176,7 @@
 <!---------------------------BANDIT VETERAN---------------------->
 	<specific_character id="bandit_veteran_default1" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="14" y="4"></icon>
+		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -188,7 +188,7 @@
 		<rank>70</rank>
 		<reputation>-20</reputation>
 
-		<visual>actors\bandit\stalker_bandit_3</visual>
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -205,7 +205,7 @@
 
 	<specific_character id="bandit_veteran_default2" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="14" y="4"></icon>
+		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -217,7 +217,7 @@
 		<rank>70</rank>
 		<reputation>-20</reputation>
 
-		<visual>actors\bandit\stalker_bandit_4</visual>
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -234,7 +234,7 @@
 
 	<specific_character id="bandit_veteran_default3" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="14" y="4"></icon>
+		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
@@ -246,7 +246,7 @@
 		<rank>70</rank>
 		<reputation>-20</reputation>
 
-		<visual>actors\bandit\stalker_bandit_8</visual>
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -264,7 +264,7 @@
 <!---------------------------BANDIT MASTER----------------------->
 	<specific_character id="bandit_master_default1" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="14" y="4"></icon>
+		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -276,7 +276,7 @@
 		<rank>95</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\bandit\stalker_bandit_3</visual>
+		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -293,7 +293,7 @@
 
 	<specific_character id="bandit_master_default2" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="14" y="4"></icon>
+		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -305,7 +305,7 @@
 		<rank>95</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\bandit\stalker_bandit_4</visual>
+		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -322,7 +322,7 @@
 
 	<specific_character id="bandit_master_default3" team_default = "1">
 		<name>Неизвестный бандит</name>
-		<icon x="14" y="4"></icon>
+		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
@@ -334,7 +334,7 @@
 		<rank>95</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\bandit\stalker_bandit_8</visual>
+		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
@@ -348,4 +348,34 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
+
+<!---------------------------BANDIT BOROV----------------------->
+
+	<specific_character id="bandit_borov" team_default = "1">
+		<name>Боров</name>
+		<icon x="26" y="14"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Лидер бандитов.</bio>
+
+		<class>bandit_borov</class>
+		<community>bandit</community>
+		
+		<rank>60</rank>
+		<reputation>-70</reputation>
+ 
+		<visual>actors\bandit\stalker_bandit_5</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_toz34 \n
+			ammo_12x76_zhekan \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	
 </xml>

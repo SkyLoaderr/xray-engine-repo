@@ -38,6 +38,9 @@
 	<character id="bandit_master">
 		<class>Bandit_master</class>
 	</character>
+	<character id="bandit_borov">
+		<class>Bandit_borov</class>
+	</character>
 
 	<!-- Soldier  -->
 	<character id="soldier">
