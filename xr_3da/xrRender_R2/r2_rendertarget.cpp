@@ -3,7 +3,6 @@
 #include "blender_light_mask.h"
 #include "blender_light_direct.h"
 #include "blender_light_point.h"
-#include "blender_light_point_uns.h"
 #include "blender_light_spot.h"
 #include "blender_combine.h"
 #include "blender_bloom_build.h"
@@ -122,9 +121,8 @@ void	CRenderTarget::OnDeviceCreate	()
 	// Blenders
 	b_accum_mask					= xr_new<CBlender_accum_direct_mask>	();
 	b_accum_direct					= xr_new<CBlender_accum_direct>			();
-	b_accum_point_s					= xr_new<CBlender_accum_point>			();
-	b_accum_point_uns				= xr_new<CBlender_accum_point_uns>		();
-	b_accum_spot_s					= xr_new<CBlender_accum_spot>			();
+	b_accum_point					= xr_new<CBlender_accum_point>			();
+	b_accum_spot					= xr_new<CBlender_accum_spot>			();
 	b_bloom							= xr_new<CBlender_bloom_build>			();
 	b_combine						= xr_new<CBlender_combine>				();
 	b_decompress					= xr_new<CBlender_decompress>			();
@@ -200,8 +198,7 @@ void	CRenderTarget::OnDeviceCreate	()
 			R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
 			rt_smap_p.create			(r2_RT_smap_p,				size,D3DFMT_R32F);
 		}
-		s_accum_point_s.create			(b_accum_point_s,			"r2\\accum_point_s");
-		s_accum_point_uns.create		(b_accum_point_uns,			"r2\\accum_point_uns");
+		s_accum_point.create		(b_accum_point,				"r2\\accum_point_s");
 
 		accum_point_geom_create		();
 		g_accum_point.create		(D3DFVF_XYZ,				g_accum_point_vb, g_accum_point_ib);
@@ -209,7 +206,7 @@ void	CRenderTarget::OnDeviceCreate	()
 
 	// SPOT
 	{
-		s_accum_spot_s.create		(b_accum_spot_s,			"r2\\accum_spot_s",	"lights\\lights_spot01");
+		s_accum_spot.create			(b_accum_spot,				"r2\\accum_spot_s",	"lights\\lights_spot01");
 		accum_spot_geom_create		();
 		g_accum_spot.create			(D3DFVF_XYZ,				g_accum_spot_vb, g_accum_spot_ib);
 	}
@@ -414,10 +411,8 @@ void	CRenderTarget::OnDeviceDestroy	()
 	xr_delete					(b_decompress			);
 	xr_delete					(b_combine				);
 	xr_delete					(b_bloom				);
-	xr_delete					(b_accum_spot_s			);
-	xr_delete					(b_accum_spot_uns		);
-	xr_delete					(b_accum_point_uns		);
-	xr_delete					(b_accum_point_s		);
+	xr_delete					(b_accum_spot			);
+	xr_delete					(b_accum_point			);
 	xr_delete					(b_accum_direct			);
 	xr_delete					(b_accum_mask			);
 }

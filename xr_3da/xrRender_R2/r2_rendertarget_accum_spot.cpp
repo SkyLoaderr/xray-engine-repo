@@ -6,8 +6,8 @@ void CRenderTarget::accum_spot	(light* L)
 {
 	// *** assume accumulator setted up ***
 	// *****************************	Mask by stencil		*************************************
-	ref_shader		shader		= L->flags.bShadow ? L->s_spot_s	: L->s_spot_uns;
-	if (!shader)	shader		= L->flags.bShadow ? s_accum_spot_s : s_accum_spot_uns;
+	ref_shader		shader		= L->s_spot;
+	if (!shader)	shader		= s_accum_spot;
 
 	if (1)
 	{
@@ -124,6 +124,7 @@ void CRenderTarget::accum_spot	(light* L)
 	L_dir.normalize				();
 
 	// Perform "unmasking" where dot(L,N) < 0
+	/*
 	if (0 && ps_r2_ls_flags.test(R2FLAG_SPOT_UNMASK))
 	{
 		// General: if stencil>=light_id && alpha<="small_value" => stencil=0x1
@@ -137,11 +138,12 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.Render				(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
 		CHK_DX						(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_GREATER	));
 	}
+	*/
 
 	// Draw volume with projective texgen
 	{
 		// Lighting
-		RCache.set_Element			(shader->E[2]);
+		RCache.set_Element			(shader->E[ L->flags.bShadow ? 1:2 ]);
 
 		// Constants
 		RCache.set_c				("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L->range*L->range));

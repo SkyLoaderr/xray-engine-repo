@@ -14,10 +14,8 @@ light::light(void)
 	cone			= deg2rad(60.f);
 	color.set		(1,1,1,1);
 
-	s_spot_s		= NULL;
-	s_spot_uns		= NULL;
-	s_point_s		= NULL;
-	s_point_uns		= NULL;
+	s_spot			= NULL;
+	s_point			= NULL;
 }
 
 light::~light(void)
@@ -33,16 +31,14 @@ void light::set_texture		(LPCSTR name)
 	if (NULL==name)
 	{
 		// default shaders
-		s_spot_s.destroy	();
-		s_spot_uns.destroy	();
-		s_point_s.destroy	();
-		s_point_uns.destroy	();
+		s_spot.destroy		();
+		s_point.destroy		();
 		return;
 	}
 
 #pragma todo				("Only shadowed spot implements projective texture")
 	string128				temp;
-	s_spot_s.create			(RImplementation.Target.b_accum_spot_s,strconcat(temp,"r2\\accum_spot_s_",name),name);
+	s_spot.create			(RImplementation.Target.b_accum_spot,strconcat(temp,"r2\\accum_spot_",name),name);
 }
 #endif
 

@@ -2,8 +2,8 @@
 
 void CRenderTarget::accum_point		(light* L)
 {
-	ref_shader		shader			= L->flags.bShadow ? L->s_point_s		: L->s_point_uns;
-	if (!shader)	shader			= L->flags.bShadow ? s_accum_point_s	: s_accum_point_uns;
+	ref_shader		shader			= L->s_point;
+	if (!shader)	shader			= s_accum_point;
 
 	// Common
 	Fvector		L_pos;
@@ -53,14 +53,8 @@ void CRenderTarget::accum_point		(light* L)
 	plane.mul						(denom);
 	Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
 	float	p_dist					= P.classify	(L->position) - L->range;
-	if (p_dist<0)					{
-		RCache.set_Element			(shader->E[2]);	// back
-		RCache.set_CullMode			(CULL_CW);
-	}
-	else							{
-		RCache.set_Element			(shader->E[1]);	// front
-		RCache.set_CullMode			(CULL_CCW);
-	}
+	if (p_dist<0)					RCache.set_CullMode			(CULL_CW);
+	else							RCache.set_CullMode			(CULL_CCW);
 
 	// 2D texgen (texture adjustment matrix)
 	float	_w						= float(Device.dwWidth);
@@ -77,6 +71,7 @@ void CRenderTarget::accum_point		(light* L)
 	m_Tex.mul		(m_TexelAdjust,RCache.xforms.m_wvp);
 
 	// Constants
+	RCache.set_Element				(shader->E[L->flags.bShadow ? 1 : 2]);
 	RCache.set_c					("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L_R*L_R));
 	RCache.set_c					("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
 	RCache.set_c					("m_texgen",		m_Tex);

@@ -18,10 +18,8 @@ public:
 	// 
 	IBlender*					b_accum_mask;
 	IBlender*					b_accum_direct;
-	IBlender*					b_accum_point_s;
-	IBlender*					b_accum_point_uns;
-	IBlender*					b_accum_spot_s;
-	IBlender*					b_accum_spot_uns;
+	IBlender*					b_accum_point;
+	IBlender*					b_accum_spot;
 	IBlender*					b_bloom;
 	IBlender*					b_combine;
 	IBlender*					b_decompress;
@@ -66,10 +64,8 @@ private:
 	// Accum
 	ref_shader					s_accum_mask;
 	ref_shader					s_accum_direct;
-	ref_shader					s_accum_point_s;
-	ref_shader					s_accum_point_uns;
-	ref_shader					s_accum_spot_s;
-	ref_shader					s_accum_spot_uns;
+	ref_shader					s_accum_point;
+	ref_shader					s_accum_spot;
 	ref_geom					g_accum_point;
 	ref_geom					g_accum_spot;
 	ref_geom					g_accum_point_tl;

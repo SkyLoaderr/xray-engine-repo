@@ -240,34 +240,34 @@ void CRender::Render		()
 
 		//		if (has_point_unshadowed)	-> 	accum point unshadowed
 		if		(!Lights.v_point.empty())	{
-				Target.accum_point_unshadow	(Lights.v_point.back());
+				Target.accum_point			(Lights.v_point.back());
 				Lights.v_point.pop_back		();
 		}
 
 		//		if (has_spot_unshadowed)	-> 	accum spot unshadowed
 		if		(!Lights.v_spot.empty())	{
-			Target.accum_point_unshadow	(Lights.v_spot.back());
-			Lights.v_spot.pop_back		();
+			Target.accum_point				(Lights.v_spot.back());
+			Lights.v_spot.pop_back			();
 		}
 
 		//		if (was_point_shadowed)		->	accum point shadowed
-		if		(L_point_s)					Target.accum_point_shadow	(L_point_s);
+		if		(L_point_s)					Target.accum_point			(L_point_s);
 
 		//		if (was_spot_shadowed)		->	accum spot shadowed
-		if		(L_spot_s)					Target.accum_spot_shadow	(L_spot_s);
+		if		(L_spot_s)					Target.accum_spot			(L_spot_s);
 	}
 
 	// Point lighting (unshadowed, if left)
 	if (!Lights.v_point.empty())		{
 		xr_vector<light*>&	Lvec		= Lights.v_point;
-		for	(u32 pid=0; pid<Lvec.size(); pid++)	Target.accum_point_unshadow	(Lvec[pid]);
+		for	(u32 pid=0; pid<Lvec.size(); pid++)	Target.accum_point		(Lvec[pid]);
 		Lvec.clear	();
 	}
 
 	// Spot lighting (unshadowed, if left)
 	if (!Lights.v_spot.empty())		{
 		xr_vector<light*>&	Lvec		= Lights.v_spot;
-		for	(u32 pid=0; pid<Lvec.size(); pid++)	Target.accum_spot_unshadow	(Lvec[pid]);
+		for	(u32 pid=0; pid<Lvec.size(); pid++)	Target.accum_spot		(Lvec[pid]);
 		Lvec.clear	();
 	}
 
