@@ -143,12 +143,12 @@ Shader*	CResourceManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_co
 	_ParseList			(C.L_constants,	s_constants	);
 	_ParseList			(C.L_matrices,	s_matrices	);
 
-	// Compile element
+	// Compile element	(LOD0 - HQ)
 	C.iElement			= 0;
 	C.bDetail			= TRUE;
 	S.E[0]				= _CreateElement	(C);
 
-	// Compile element
+	// Compile element	(LOD1)
 	C.iElement			= 1;
 	C.bDetail			= FALSE;
 	S.E[1]				= _CreateElement	(C);
@@ -162,6 +162,11 @@ Shader*	CResourceManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_co
 	C.iElement			= 3;
 	C.bDetail			= FALSE;
 	S.E[3]				= _CreateElement	(C);
+
+	// Compile element
+	C.iElement			= 4;
+	C.bDetail			= FALSE;
+	S.E[4]				= _CreateElement	(C);
 
 	// Search equal in shaders array
 	for (u32 it=0; it<v_shaders.size(); it++)
