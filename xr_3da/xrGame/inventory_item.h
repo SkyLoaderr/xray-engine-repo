@@ -63,6 +63,11 @@ public:
 	virtual void	OnH_A_Chield		();
 	virtual void	OnH_B_Independent	();
 
+	virtual void	save				(NET_Packet &output_packet);
+	virtual void	load				(IReader &input_packet);
+	virtual BOOL	net_SaveRelevant	()								{return inherited::net_SaveRelevant();}
+
+
 	virtual void	UpdateCL			();
 
 	virtual	void	Hit					(	float P, Fvector &dir,	

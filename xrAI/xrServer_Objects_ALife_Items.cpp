@@ -82,8 +82,6 @@ void CSE_ALifeInventoryItem::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 
 void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 {
-	tNetPacket.w_u8					((u8)m_eItemPlace);
-
 	tNetPacket.w_float				(m_fCondition);
 	tNetPacket.w_u32				(m_dwTimeStamp);
 	tNetPacket.w_u16				(m_u16NumItems);
@@ -113,10 +111,6 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 
 void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 {
-	u8 item_place;
-	tNetPacket.r_u8					(item_place);
-	m_eItemPlace =					(EItemPlace)item_place;
-
 	tNetPacket.r_float				(m_fCondition);
 	tNetPacket.r_u32				(m_dwTimeStamp);
 	tNetPacket.r_u16				(m_u16NumItems);

@@ -88,8 +88,9 @@
 //		CSE_ALifeHelicopter				heritage changed
 // 70 -	CSE_Abstract					appended with m_script_version, script version support
 // 71 -	CSE_Abstract					appended with m_client_data, ability to save/load client data
+// 72 -	CSE_AlifeInventoryItem			removed property m_eItemPlace, added flag
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(71)
+#define SPAWN_VERSION	u16(72)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

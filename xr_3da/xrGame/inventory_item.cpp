@@ -312,6 +312,7 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 
 	CSE_ALifeInventoryItem			*pSE_InventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(e);
 	if(!pSE_InventoryItem) return res;
+
 	//!!!
 	m_eItemPlace = pSE_InventoryItem->m_eItemPlace;
 	m_fCondition = pSE_InventoryItem->m_fCondition;
@@ -336,11 +337,6 @@ void CInventoryItem::net_Destroy		()
 
 void CInventoryItem::net_Import			(NET_Packet& P) 
 {	
-	u8 item_place;
-	P.r_u8					(item_place);
-	m_eItemPlace = (EItemPlace)item_place;
-
-
 	P.r_float				(m_fCondition);
 
 	net_update_IItem			N;
@@ -392,7 +388,6 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 {	
 	
 //	inherited::net_Export(P);
-	P.w_u8				((u8)m_eItemPlace);
 	P.w_float			(m_fCondition);
 	P.w_u32				(Level().timeServer());	
 
@@ -433,6 +428,19 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 	P.w_float				( State.quaternion.w );
 };
 
+
+void CInventoryItem::save(NET_Packet &packet)
+{
+	inherited::save(packet);
+	packet.w_u8 ((u8)m_eItemPlace);
+}
+void CInventoryItem::load(IReader &packet)
+{
+	inherited::load(packet);
+	m_eItemPlace = (EItemPlace)packet.r_u8 ();
+}
+
+///////////////////////////////////////////////
 void CInventoryItem::PH_B_CrPr		()
 {
 	//just set last update data for now
@@ -832,6 +840,8 @@ void CInventoryItem::UpdateXForm	()
 	//	UpdatePosition	(mRes);
 	Position().set(mRes.c);
 }
+
+
 
 #ifdef DEBUG
 void CInventoryItem::OnRender()
