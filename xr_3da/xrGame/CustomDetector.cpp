@@ -119,7 +119,7 @@ void CCustomDetector::UpdateCL() {
 	inherited::UpdateCL();
 	f32 l_zonePow = 0;
 	list<CCustomZone*>::iterator l_it;
-	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(vPosition)));
+	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = _max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(vPosition)));
 	/*
 	CGameFont* H		= Level().HUD()->pFontMedium;
 	H->SetColor			(0xf0ffffff); 
