@@ -17,15 +17,20 @@
 
 class ENGINE_API CBlender  
 {
+protected:
 	BP_Integer	oPriority;
 	BP_BOOL		oStrictSorting;
 	BP_TCS		oTCS;
 	BP_TCM		oTCM;
+
+	static		BP_TCS		oTCS_identity;
+	static		BP_TCM		oTCM_identity;
 protected:
 	DWORD		BC			(BOOL v)		{ return v?0xff:0; }
 
 	void		BP_write_c	(CFS_Base& FS,  DWORD ID, LPCSTR name, LPCVOID data, DWORD size );
 	DWORD		BP_read_c   (CStream&  FS);
+	BOOL		c_XForm		();
 public:
 	virtual		LPCSTR		getName()		= 0;
 	virtual		LPCSTR		getComment()	= 0;

@@ -5,6 +5,9 @@
 #include "stdafx.h"
 #include "Blender.h"
 
+BP_TCS	CBlender::oTCS_identity;
+BP_TCM	CBlender::oTCM_identity;
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -35,6 +38,14 @@ DWORD CBlender::BP_read_c(CStream& FS)
 	DWORD T		= FS.Rdword();
 	FS.RstringZ	(temp);
 	return		T;
+}
+
+BOOL	CBlender::c_XForm()
+{
+	// Detect if XForm is needed at all
+	if (oTCS.tcs != BP_TCS::tcsGeometry)	return TRUE;
+	if (oTCM.tcm != 0)						return TRUE;
+	return FALSE;
 }
 
 void	CBlender::Save(	CFS_Base& FS )
