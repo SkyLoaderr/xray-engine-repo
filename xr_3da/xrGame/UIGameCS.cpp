@@ -43,13 +43,8 @@ void CUIGameCS::BuyItem(CCustomMenuItem* sender)
 		string64 buf;
 		sprintf(buf,"%s/cost=%s",sender->value1,sender->value0);
 		// buy item
-		CEntity* E		= dynamic_cast<CEntity*>(Level().CurrentEntity());
-		if (E){
-			NET_Packet P;
-			E->u_EventGen	(P,GE_BUY,E->ID());
-			P.w_string		(buf);
-			E->u_EventSend	(P);
-		}
+		CEntityAlive* E	= dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
+		if (E)		E->BuyItem(buf);
 	}
 }
 //--------------------------------------------------------------------

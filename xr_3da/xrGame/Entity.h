@@ -120,6 +120,8 @@ public:
 	virtual void			GetVisible				(objVisible& R)	{};
 	virtual	float			ffGetFov				()				= 0;	
 	virtual	float			ffGetRange				()				= 0;	
+
+	void					BuyItem					(LPCSTR buf);
 };
 
 #endif // !defined(AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_)
