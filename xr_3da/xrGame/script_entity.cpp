@@ -204,7 +204,7 @@ CScriptEntityAction *CScriptEntity::GetCurrentAction()
 void __stdcall ActionCallback(CKinematics *tpKinematics)
 {
 	// sounds
-	CScriptEntity	*l_tpScriptMonster = (CScriptEntity*)(tpKinematics->Update_Callback_Param);
+	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>((CGameObject*)(tpKinematics->Update_Callback_Param));
 	VERIFY			(l_tpScriptMonster);
 	if (!l_tpScriptMonster->GetCurrentAction())
 		return;
