@@ -802,8 +802,9 @@ void	CalcGauss	(
 	for (int i=-n; i<=0; i++)
 	{
 		// w.push_back		(1.f);
-		float weight	=	expf	(float(i*i)/(2*r*r));
+		float weight	=	expf	(-float(i*i)/(2*r*r));
 		w.push_back		(weight);	// weight
+		fpreset			();
 
 		float offset	= bs*float(-i); 
 		H.push_back		(D3DXVECTOR4(offset/tw,0,0,0));
@@ -1610,8 +1611,9 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 
 	// setup weights
 	R_constant*	W							= s_Filter_Bloom.constants.get("weight");
-	cc.seta									(W,0,bloom_W[0].x,bloom_W[0].y,bloom_W[0].z,bloom_W[0].w);
-	cc.seta									(W,1,bloom_W[1].x,bloom_W[1].y,bloom_W[1].z,bloom_W[1].w);
+	D3DXVECTOR4	w;
+	w = bloom_W[0]; cc.seta					(W,0,w.x,w.y,w.z,w.w);
+	w = bloom_W[1]; cc.seta					(W,1,w.x,w.y,w.z,w.w);
 	R_constant* O							= s_Filter_Bloom.constants.get("offset");
 	u32			o_it;
 
