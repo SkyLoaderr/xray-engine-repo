@@ -8,7 +8,6 @@
 #include "blender_screen_gray.h"
 #include "blender_editor_wire.h"
 #include "blender_editor_selection.h"
-#include "blender_light.h"
 #include "blender_LaEmB.h"
 #include "blender_Lm(EbB).h"
 #include "blender_LmBmmD.h"
@@ -34,11 +33,8 @@ IBlender*	CRender::blender_create	(CLASS_ID cls)
 	case B_SCREEN_GRAY:		return xr_new<CBlender_Screen_GRAY>		();	
 	case B_EDITOR_WIRE:		return xr_new<CBlender_Editor_Wire>		();	
 	case B_EDITOR_SEL:		return xr_new<CBlender_Editor_Selection>();
-	case B_LIGHT:			return xr_new<CBlender_LIGHT>			();		
-	case B_LmBmmD:			return xr_new<CBlender_LmBmmD>			();		
 	case B_LaEmB:			return xr_new<CBlender_LaEmB>			();		
 	case B_LmEbB:			return xr_new<CBlender_LmEbB>			();		
-	case B_B:				return xr_new<CBlender_B>				();			
 	case B_BmmD:			return xr_new<CBlender_BmmD>			();			
 	case B_SHADOW_TEX:		return xr_new<CBlender_ShTex>			();		
 	case B_SHADOW_WORLD:	return xr_new<CBlender_ShWorld>			();		
