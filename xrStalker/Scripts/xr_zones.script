@@ -24,7 +24,9 @@ function zone_binder:reinit()
 end
 
 function zone_binder:net_spawn( server_object )
-	r = object_binder.net_spawn( self, server_object )
+	if not object_binder.net_spawn( self, server_object ) then
+		return false
+	end
 
 	db.add_zone( self.object )
 
@@ -36,7 +38,7 @@ function zone_binder:net_spawn( server_object )
 	ini = self.object:spawn_ini()
 
 	if not ini then
-		return r
+		return true
 	end
 
 	if ini:section_exist( "gulag1" ) then
@@ -113,7 +115,7 @@ function zone_binder:net_spawn( server_object )
 		self.managers.no_weapon = CZoneNotWeapon(self.object)
 	end
 
-	return r
+	return true
 end
 
 function zone_binder:net_destroy()
