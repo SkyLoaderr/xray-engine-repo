@@ -421,6 +421,7 @@
 			[spawn] \n
 			wpn_groza \n
 			ammo_9x39_ap \n
+			bar_lucky_pda \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
