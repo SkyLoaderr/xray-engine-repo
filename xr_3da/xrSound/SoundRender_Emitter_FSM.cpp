@@ -72,7 +72,7 @@ void CSoundRender_Emitter::update	(float dt)
 				// switch to: PLAY
 				state					=	stPlaying;
 				position				= 	(((dwTime-dwTimeStarted)%source->dwTimeTotal)*source->dwBytesPerMS);
-				SoundRender.i_start	(this);
+				SoundRender.i_start		(this);
 			}
 		}
 		break;
