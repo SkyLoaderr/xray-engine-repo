@@ -6,7 +6,7 @@
 #define AFX_RAIN_H__5284C8A3_153D_4331_83F8_02165A1B8AF4__INCLUDED_
 #pragma once
 
-class CEffect_Rain	: public CEventBase
+class CEffect_Rain	: public CEventBase, public pureDeviceDestroy, public pureDeviceCreate
 {
 private:
 	struct	Item
@@ -24,8 +24,15 @@ private:
 		stStopping
 	};
 private:
+	// Control
 	EVENT			control_start;
 	EVENT			control_stop;
+
+	// Visualization
+	Shader*			SH;
+	CVertexStream*	VS;
+	
+	// Data and logic
 	vector<Item>	items;
 	States			state;
 

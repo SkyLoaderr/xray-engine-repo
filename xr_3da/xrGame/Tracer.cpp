@@ -7,7 +7,7 @@
 #include "Tracer.h"
 #include "..\fstaticrender.h"
 
-const DWORD	MAX_TRACERS	= (1024*6);
+const DWORD	MAX_TRACERS	= (1024*5);
 const float TRACER_SIZE = 0.2f;
 
 //////////////////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ const float TRACER_SIZE = 0.2f;
 
 CTracer::CTracer()
 {
-	sh_Tracer	= Device.Shader.Create	("bullet_tracer","bullet_tracer");
+	sh_Tracer	= Device.Shader.Create	("effects\\bullet_tracer","effects\\bullet_tracer");
 	VS			= Device.Streams.Create	(FVF::F_LIT,MAX_TRACERS*4);
 }
 
