@@ -11,6 +11,7 @@
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
+#include "../states/monster_state_controlled.h"
 
 
 CStateManagerDog::CStateManagerDog(CAI_Dog *monster) : inherited(monster)
@@ -22,39 +23,37 @@ CStateManagerDog::CStateManagerDog(CAI_Dog *monster) : inherited(monster)
 	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CAI_Dog> >	(monster));
 	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CAI_Dog> >	(monster));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CAI_Dog> >				(monster));
-
-	//add_state(eStateControlled,				xr_new<CBaseMonsterControlled>	(monster));
+	add_state(eStateControlled,			xr_new<CStateMonsterControlled<CAI_Dog> >			(monster));
+	
 }
 
 void CStateManagerDog::execute()
 {
-	//if (m_object->is_under_control()) {
-	//	set_state(eStateControlled);
-	//	return;
-	//}
-
 	u32 state_id = u32(-1);
 
-	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	if (!object->is_under_control()) {
 
-	if (enemy) {
-		switch (object->EnemyMan.get_danger_type()) {
-			case eVeryStrong:	state_id = eStatePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:			state_id = eStateAttack; break;
+		const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+
+		if (enemy) {
+			switch (object->EnemyMan.get_danger_type()) {
+				case eVeryStrong:	state_id = eStatePanic; break;
+				case eStrong:		
+				case eNormal:
+				case eWeak:			state_id = eStateAttack; break;
+			}
+
+		} else if (object->HitMemory.is_hit()) {
+			state_id = eStateHitted;
+		} else if (object->hear_interesting_sound) {
+			state_id = eStateInterestingSound;
+		} else if (object->hear_dangerous_sound) {
+			state_id = eStateHearDangerousSound;	
+		} else {
+			if (can_eat())	state_id = eStateEat;
+			else			state_id = eStateRest;
 		}
-
-	} else if (object->HitMemory.is_hit()) {
-		state_id = eStateHitted;
-	} else if (object->hear_interesting_sound) {
-		state_id = eStateInterestingSound;
-	} else if (object->hear_dangerous_sound) {
-		state_id = eStateHearDangerousSound;	
-	} else {
-		if (can_eat())	state_id = eStateEat;
-		else			state_id = eStateRest;
-	}
+	} else state_id = eStateControlled;
 
 	select_state		(state_id); 
 

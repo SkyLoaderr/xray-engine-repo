@@ -11,7 +11,7 @@
 
 CPseudoGigant::CPseudoGigant()
 {
-	controlled::init_external(this);
+	CControlled::init_external(this);
 
 	StateMan = xr_new<CStateManagerGigant>(this);
 }

@@ -1,9 +1,14 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
+#include "../controlled_entity.h"
 #include "../../../script_export_space.h"
 
-class CTushkano : public CBaseMonster {
-	typedef		CBaseMonster		inherited;
+class CTushkano :	public CBaseMonster,
+					public CControlledEntity<CTushkano> {
+
+
+	typedef		CBaseMonster					inherited;
+	typedef		CControlledEntity<CTushkano>	CControlled;
 
 public:
 					CTushkano 			();

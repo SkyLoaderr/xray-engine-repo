@@ -11,8 +11,8 @@ class CAI_Dog : public CBaseMonster,
 				public CJumping,
 				public CControlledEntity<CAI_Dog> {
 	
-	typedef		CBaseMonster					inherited;
-	typedef		CControlledEntity<CAI_Dog>	controlled;
+	typedef		CBaseMonster				inherited;
+	typedef		CControlledEntity<CAI_Dog>	CControlled;
 
 	bool					strike_in_jump;
 	bonesManipulation		Bones;

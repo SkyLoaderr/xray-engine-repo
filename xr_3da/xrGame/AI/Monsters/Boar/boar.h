@@ -8,7 +8,7 @@ class CAI_Boar : public CBaseMonster,
 				 public CControlledEntity<CAI_Boar> {
 
 	typedef		CBaseMonster	inherited;
-	typedef		CControlledEntity<CAI_Boar>	controlled;
+	typedef		CControlledEntity<CAI_Boar>	CControlled;
 
 public:
 					CAI_Boar			();

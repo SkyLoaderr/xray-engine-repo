@@ -6,8 +6,8 @@
 class CPseudoGigant : public CBaseMonster,
 					  public CControlledEntity<CPseudoGigant> {
 	
-	typedef		CBaseMonster	inherited;
-	typedef		CControlledEntity<CPseudoGigant>	controlled;
+	typedef		CBaseMonster						inherited;
+	typedef		CControlledEntity<CPseudoGigant>	CControlled;
 
 	// step_effector
 	struct {

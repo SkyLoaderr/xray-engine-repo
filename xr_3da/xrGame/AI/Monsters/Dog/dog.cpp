@@ -12,7 +12,7 @@ CAI_Dog::CAI_Dog()
 	StateMan = xr_new<CStateManagerDog>(this);
 
 	CJumping::Init		(this);
-	controlled::init_external(this);
+	CControlled::init_external(this);
 }
 
 CAI_Dog::~CAI_Dog()
