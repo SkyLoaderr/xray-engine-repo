@@ -122,9 +122,9 @@ void			CLight_DB::Destroy	(light* L)
 #if RENDER==R_R1
 void			CLight_DB::add_light		(light* L)
 {
-	if (Device.dwFrame==L->dwFrame)	return;
-	L->dwFrame	=	Device.dwFrame;
-	if (L->flags.bStatic)			return;	// skip static lighting, 'cause they are in lmaps
+	if (Device.dwFrame==L->frame_render)	return;
+	L->frame_render							=	Device.dwFrame;
+	if (L->flags.bStatic)					return;	// skip static lighting, 'cause they are in lmaps
 
 	RImplementation.L_Dynamic->add	(L);
 }
@@ -133,8 +133,8 @@ void			CLight_DB::add_light		(light* L)
 #if RENDER==R_R2
 void			CLight_DB::add_light		(light* L)
 {
-	if (Device.dwFrame==L->dwFrame)	return;
-	L->dwFrame	=	Device.dwFrame;
+	if (Device.dwFrame==L->frame_render)	return;
+	L->frame_render							=	Device.dwFrame;
 
 	if (RImplementation.b_noshadows)		L->flags.bShadow	= FALSE;
 	if (L->flags.bShadow)			{

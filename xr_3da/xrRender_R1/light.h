@@ -25,7 +25,7 @@ public:
 	float			cone;
 	Fcolor			color;
 
-	u32				dwFrame;
+	u32				frame_render;
 
 #if RENDER==R_R2
 	xr_vector<light_indirect>	indirect;

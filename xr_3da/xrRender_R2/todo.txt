@@ -37,6 +37,7 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +FEATURE:	particles/transparency
 self-ilum
 volume-fog
+light-sleeping logic
 
 Engine/Game:
 	* refactor/rebuild collision detection infrastructure (along with Slipch)	
