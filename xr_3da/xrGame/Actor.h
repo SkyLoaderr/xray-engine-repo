@@ -274,11 +274,12 @@ protected:
 	// или предметами
 	///////////////////////////////////////////
 public:
-	virtual void			feel_touch_new		(CObject* O);
-	virtual void			feel_touch_delete	(CObject* O);
-	virtual BOOL			feel_touch_contact	(CObject* O);
+	virtual void			feel_touch_new				(CObject* O);
+	virtual void			feel_touch_delete			(CObject* O);
+	virtual BOOL			feel_touch_contact			(CObject* O);
 
-	CGameObject*			ObjectWeLookingAt	() {return m_pObjectWeLookingAt;}
+	CGameObject*			ObjectWeLookingAt			() {return m_pObjectWeLookingAt;}
+	EActorAction			GetDefaultActionForObject	() {return m_eDefaultObjAction;}
 
 protected:
 
@@ -287,6 +288,8 @@ protected:
 	// Vehicle or lorry we're looking at
 	CVehicleCustom*			m_pVehicleWeLookingAt;
 	CGameObject*			m_pObjectWeLookingAt;
+	// Default action for object we're looking at
+	EActorAction			m_eDefaultObjAction;
 
 	//режим подбирания предметов
 	bool					m_bPickupMode;

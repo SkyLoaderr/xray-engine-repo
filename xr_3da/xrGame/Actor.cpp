@@ -800,9 +800,28 @@ void CActor::shedule_Update	(u32 DT)
 
 	if(RQ.O &&  RQ.range<inventory().GetTakeDist()) 
 	{
-		inventory().m_pTarget	= dynamic_cast<PIItem>(RQ.O);
-		m_pPersonWeLookingAt	= dynamic_cast<CInventoryOwner*>(RQ.O);
-		m_pVehicleWeLookingAt	= dynamic_cast<CVehicleCustom*>(RQ.O);
+		inventory().m_pTarget			= dynamic_cast<PIItem>(RQ.O);
+		m_pPersonWeLookingAt			= dynamic_cast<CInventoryOwner*>(RQ.O);
+		m_pVehicleWeLookingAt			= dynamic_cast<CVehicleCustom*>(RQ.O);
+		CEntityAlive* pEntityAlive		= dynamic_cast<CEntityAlive*>(RQ.O);
+		
+		// Анализируем какой объект мы видим, и назначаем соответсвующее
+		// действие по умолчанию, которое будет определять всплывающую 
+		// подсказку
+		if (m_pPersonWeLookingAt && pEntityAlive->g_Health() > 0)
+			m_eDefaultObjAction = eaaTalk;
+
+		else if (pEntityAlive)
+			m_eDefaultObjAction = eaaSearchCorpse;
+
+		else if (m_pVehicleWeLookingAt)
+			m_eDefaultObjAction = eaaOpenDoor;
+
+		else if (inventory().m_pTarget)
+			m_eDefaultObjAction = eaaPickup;
+
+		else 
+			m_eDefaultObjAction = eaaNoAction;
 	}
 	else 
 	{

@@ -38,6 +38,16 @@ enum EMoveCommand
 	mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
 };
 
+// enum для определения действия над вещью на которую наведен в текущее время прицел.
+// Используется для показа всплывающих динамических подсказок
+enum EActorAction
+{
+	eaaNoAction			= 0,
+	eaaPickup,
+	eaaTalk,
+	eaaOpenDoor,
+	eaaSearchCorpse,
+};
 
 struct					SActorMotions
 {
