@@ -136,11 +136,15 @@ void	CLightTrack::ltrack	(IRenderable* O)
 		if (E > EPS)
 		{
 			// Select light
-			lights.push_back		(CLightTrack::Light());
-			CLightTrack::Light&	L	= lights.back();
-			L.source				= xrL;
-			L.color.mul_rgb			(xrL->color,I->energy/2);
-			L.energy				= I->energy/2;
+			lights.push_back			(CLightTrack::Light());
+			CLightTrack::Light&	L		= lights.back();
+			L.source					= xrL;
+			L.color.mul_rgb				(xrL->color,I->energy/2);
+			L.energy					= I->energy/2;
+			if (!xrL->flags.bStatic)	{
+				L.color.mul_rgb	(.5f);
+				L.energy		*= .5f;
+			}
 		}
 	}
 	
