@@ -411,6 +411,7 @@ bool CPHFracture::Update(CPHElement* element)
 			force.set(i_i->force);
 			Fvector second_to_point;
 			second_to_point.sub(body_to_second,i_i->point);
+			force.mul(30.f);
 			second_part_force.add(force);
 			Fvector torque;
 			torque.crossproduct(second_to_point,force);
@@ -422,6 +423,7 @@ bool CPHFracture::Update(CPHElement* element)
 			force.set(i_i->force);
 			Fvector first_to_point;
 			first_to_point.sub(body_to_first,i_i->point);
+			//force.mul(4.f);
 			first_part_force.add(force);
 			Fvector torque;
 			torque.crossproduct(first_to_point,force);

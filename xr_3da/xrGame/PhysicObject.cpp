@@ -144,7 +144,8 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 }
 
 
-void CPhysicObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse)
+void CPhysicObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
+										Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/)
 {
 	if(m_pPhysicsShell){
 		switch(m_type) {

@@ -8,36 +8,6 @@ class CBlockAllocator
 	T*	current_block;
 	xr_vector<T*> blocks;
 public:
-	IC T* pointer	(u32 position)
-	{
-		return blocks[position/block_size]+position%block_size;
-	}
-
-	IC T& back()
-	{
-		return current_block[block_position-1];
-	}
-
-	IC T& back_pointer()
-	{
-		return current_block+block_position-1;
-	}
-
-	IC T& operator[](u32 position)
-	{
-		return *pointer(position);
-	}
-
-	IC void construct(u32 position)
-	{
-		xr_allocator_t <T> ().construct(pointer(position));
-	}
-
-	IC void construct_back()
-	{
-		xr_allocator_t <T> ().construct(back_pointer());
-	}
-
 	IC T* add()
 	{
 		if(block_position==block_size)next_block();
@@ -71,6 +41,7 @@ public:
 		blocks.clear();
 	}
 private:
+/////////////////////////////////////////////////////////////////
 	IC	void add_block()
 	{
 		blocks.push_back((T*)xr_malloc(block_size*sizeof(T)));
@@ -83,6 +54,7 @@ private:
 		++block_count;
 		block_position=0;
 	}
+////////////////////////////////////////////////////////////////
 public:
 	template <typename _Predicate>
 	IC	void for_each(const _Predicate &pred)
@@ -101,6 +73,36 @@ public:
 			pred.operator()(current_block+j);
 		}
 		//for_each(blocks.begin(),block.end(),pred);
+	}
+private:
+	IC T* pointer	(u32 position)
+	{
+		return blocks[position/block_size]+position%block_size;
+	}
+
+	IC T& back()
+	{
+		return current_block[block_position-1];
+	}
+
+	IC T& back_pointer()
+	{
+		return current_block+block_position-1;
+	}
+
+	IC T& operator[](u32 position)
+	{
+		return *pointer(position);
+	}
+
+	IC void construct(u32 position)
+	{
+		xr_allocator_t <T> ().construct(pointer(position));
+	}
+
+	IC void construct_back()
+	{
+		xr_allocator_t <T> ().construct(back_pointer());
 	}
 };
 
