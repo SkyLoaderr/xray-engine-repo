@@ -8,7 +8,6 @@
 
 #include "..\render.h"
 #include "..\FLightsController.h"
-#include "..\portal.h"
 #include "..\modelpool.h"
 #include "..\hom.h"
 #include "..\lightPPA.h"
