@@ -4,6 +4,8 @@
 #include "xrIsect.h"
 #include "math.h"
 
+#define BORDER 2
+
 vecDefl					g_deflectors;
 CDeflector*				Deflector = 0;
 
@@ -103,21 +105,21 @@ VOID CDeflector::OA_Export()
 	}
 
 	// UV rect
-	UVpoint min,max,size;
-	GetRect(min,max);
-	size.sub(max,min);
+	UVpoint		min,max,size;
+	GetRect		(min,max);
+	size.sub	(max,min);
 
 	// Surface
-	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density)+2; clamp(lm.dwWidth, 2ul,512ul);
-	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density)+2; clamp(lm.dwHeight,2ul,512ul);
+	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density)+BORDER*2; clamp(lm.dwWidth, BORDER*2ul,512ul);
+	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density)+BORDER*2; clamp(lm.dwHeight,BORDER*2ul,512ul);
 	lm.bHasAlpha= FALSE;
 	iArea		= lm.dwWidth*lm.dwHeight;
 
 	// Setup variables
-	UVpoint		dim,guard,half,scale;
-	dim.set		(float(lm.dwWidth),float(lm.dwHeight));
-	guard.set	(1.f/dim.u,1.f/dim.v);
-	half.set	(.5f/dim.u,.5f/dim.v);
+	UVpoint		dim, guard, half, scale;
+	dim.set		(float(lm.dwWidth), float(lm.dwHeight));
+	guard.set	(BORDER/dim.u,BORDER/dim.v);
+	half.set	(.5f/512.f, .5f/512.f);
 	scale.set	(1.f-2.f*guard.u, 1.f-2.f*guard.v); 
 
 	// *** Addressing 
