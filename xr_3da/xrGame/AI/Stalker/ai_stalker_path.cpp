@@ -46,7 +46,7 @@ void CAI_Stalker::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntit
 
 void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader)
 {
-	Device.Statistic.AI_Range.Begin();
+	Device.Statistic.AI_Range.Begin();	// определение времени вып. функции
 	
 	if ((!m_dwLastRangeSearch) || (AI_Path.TravelPath.empty()) || (int(AI_Path.TravelStart) > int(AI_Path.TravelPath.size()) - 4) || (AI_Path.fSpeed < EPS_L) || ((tNodeEvaluator.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL))) {
 		
@@ -314,7 +314,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 		AI_Path.Nodes.clear	();
 	}
 	if (tpNodeEvaluator)
-	vfInitSelector			(*tpNodeEvaluator,Squad,Leader);
+		vfInitSelector			(*tpNodeEvaluator,Squad,Leader);
 		
 	EPathType tPathType = m_tPathType;
 	switch (m_tPathType) {
