@@ -91,28 +91,30 @@ void CCustomObject::AnimationDrawPath()
     // motion path
 	VERIFY (m_Motion);
 
-    float fps 				= m_Motion->FPS();
-    float min_t				= (float)m_Motion->FrameStart()/fps;
-    float max_t				= (float)m_Motion->FrameEnd()/fps;
+	if (fraBottomBar->miDrawObjectAnimPath->Checked){
+        float fps 				= m_Motion->FPS();
+        float min_t				= (float)m_Motion->FrameStart()/fps;
+        float max_t				= (float)m_Motion->FrameEnd()/fps;
 
-    Fvector 				T,r;
-    u32 clr					= 0xffffffff;
-    path_points.clear		();
-    path_key_points.clear	();
-    for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=1/30.f){
-        m_Motion->_Evaluate	(t,T,r);
-        path_points.push_back(T);
-    }
+        Fvector 				T,r;
+        u32 clr					= 0xffffffff;
+        path_points.clear		();
+        path_key_points.clear	();
+        for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=1/30.f){
+            m_Motion->_Evaluate	(t,T,r);
+            path_points.push_back(T);
+        }
 
-    Device.SetShader		(Device.m_WireShader);
-    RCache.set_xform_world	(Fidentity);
-    if (!path_points.empty())DU.DrawPrimitiveL		(D3DPT_LINESTRIP,path_points.size()-1,path_points.begin(),path_points.size(),clr,true,false);
-    CEnvelope* E 			= m_Motion->Envelope();
-    for (KeyIt k_it=E->keys.begin(); k_it!=E->keys.end(); k_it++){
-        m_Motion->_Evaluate	((*k_it)->time,T,r);
-        if (Device.m_Camera.GetPosition().distance_to_sqr(T)<50.f*50.f){
-            DU.DrawCross		(T,0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr,false);
-            DU.DrawTextA		(T,AnsiString().sprintf("K: %3.3f",(*k_it)->time).c_str(),0xffffffff,0x00000000);
+        Device.SetShader		(Device.m_WireShader);
+        RCache.set_xform_world	(Fidentity);
+        if (!path_points.empty())DU.DrawPrimitiveL		(D3DPT_LINESTRIP,path_points.size()-1,path_points.begin(),path_points.size(),clr,true,false);
+        CEnvelope* E 			= m_Motion->Envelope();
+        for (KeyIt k_it=E->keys.begin(); k_it!=E->keys.end(); k_it++){
+            m_Motion->_Evaluate	((*k_it)->time,T,r);
+            if (Device.m_Camera.GetPosition().distance_to_sqr(T)<50.f*50.f){
+                DU.DrawCross		(T,0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr,false);
+                DU.DrawTextA		(T,AnsiString().sprintf("K: %3.3f",(*k_it)->time).c_str(),0xffffffff,0x00000000);
+            }
         }
     }
 }
