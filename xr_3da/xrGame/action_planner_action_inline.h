@@ -71,7 +71,7 @@ void CPlanner::update					(u32 time_delta)
 {
 	execute						();
 	inherited_planner::update	(time_delta);
-	CActionPlanner<_object_type>	*action_planner = dynamic_cast<CActionPlanner*>(&current_action());
+	inherited_planner			*action_planner = dynamic_cast<inherited_planner*>(&current_action());
 	if (action_planner)
 		action_planner->update	(time_delta);
 }
@@ -81,35 +81,43 @@ void CPlanner::execute				()
 {
 	inherited_action::execute	();
 
-//	if (current_vertex_id() == dest_vertex_id()) {
-//		IGraphManager			*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());
-//		if (!state_manager_interface)
-//			current_state().execute	();
+//	if (!solution().empty()) {
+//		// therefore execute current operator
+//		action(current_operator()).execute();
 //		return;
 //	}
 //
-//	if (solution().empty())
-//		return;
-//
-//	for (;;) {
-//		if (
-//			(internal_state(solution().front()).priority() <= internal_state(solution().back()).priority()) 
-//			&& 
-//			!action(solution().front()).completed()
+//	if (current_operator() != solution().front()) {
+//		if	(
+//				!action(current_operator()).completed()
+//				&&
+//				(action(current_operator()).priority() < action(solution().front()).priority())
 //			)
 //		{
+//			action(current_operator()).execute();
+//			return;
+//		}
+//	}
+//	VERIFY						(!solution().empty());
+//
+//	if (1 == solution().size()) {
+//		inherited_planner		*action_planner = dynamic_cast<inherited_planner*>(&current_state());
+//		if (!action_planner)
+//			current_action().execute	();
+//		return;
+//	}
+//
+//	for (;;) {
+//		if (!action(solution().front()).completed()) {
 //			action(solution().front()).execute();
 //			return;
 //		}
-//
 //		action(solution().front()).finalize();
+//
 //		follow_solution			();
+//
 //		action(solution().front()).initialize();
 //		action(solution().front()).execute();
-//		if (solution().size() < 2) {
-//			follow_solution		();
-//			break;
-//		}
 //	}
 }
 
