@@ -898,7 +898,9 @@ BOOL CTreeViewFiles::Load(CArchive &ar)
 		ar >> isFolder;
 		HTREEITEM parent_item = FindFolder(parent_name);
 		if(!parent_item){
-			AfxMessageBox("Error loading project file");
+			CString msg;
+			msg.Format("Error loading project file");
+			AfxMessageBox(msg);
 			return FALSE;
 		}
 		if(isFolder==1)

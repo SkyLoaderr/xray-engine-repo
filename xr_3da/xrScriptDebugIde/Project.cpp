@@ -308,7 +308,9 @@ BOOL CProject::Save(CString strPathName)
 	CFile fout;
 	if ( !fout.Open(strPathName, CFile::modeCreate|CFile::modeWrite) )
 	{
-		AfxMessageBox("Unable to open project file");
+		CString msg;
+		msg.Format("Unable to save project file %s",strPathName);
+		AfxMessageBox(msg);
 		return FALSE;
 	}
 
