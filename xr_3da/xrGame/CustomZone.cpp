@@ -1003,9 +1003,7 @@ void	CCustomZone::OnEvent (NET_Packet& P, u16 type)
 			{
 				u16 id;
                 P.r_u16(id);
-				CArtefact *artefact = smart_cast<CArtefact*>(Level().Objects.net_Find(id));  VERIFY(artefact);
-				artefact->H_SetParent(this);
-				AddArtefact(artefact);
+				OnOwnershipTake(id);
 				break;
 			} 
          case GE_OWNERSHIP_REJECT : 
@@ -1023,7 +1021,12 @@ void	CCustomZone::OnEvent (NET_Packet& P, u16 type)
 	}
 	inherited::OnEvent(P, type);
 };
-
+void CCustomZone::OnOwnershipTake(u16 id)
+{
+	CArtefact *artefact = smart_cast<CArtefact*>(Level().Objects.net_Find(id));  VERIFY(artefact);
+	artefact->H_SetParent(this);
+	AddArtefact(artefact);
+}
 void CCustomZone::OnStateSwitch	(EZoneState new_state)
 {
 	if (eZoneStateDisabled == new_state)

@@ -78,6 +78,7 @@ public:
 	virtual void Postprocess		(float val) {}
 
 	virtual void OnEvent			(NET_Packet& P, u16 type);
+	virtual void OnOwnershipTake	(u16 id);
 
 	float GetMaxPower() {return m_fMaxPower;}
 

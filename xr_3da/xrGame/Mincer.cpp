@@ -92,18 +92,15 @@ void CMincer ::Center	(Fvector& C) const
 	C.set(Position());
 }
 
-void CMincer ::OnEvent(NET_Packet& P,u16 type)
+
+void CMincer::OnOwnershipTake(u16 id)
 {
-
-	switch(type)
-	{
-
-	case GE_OWNERSHIP_TAKE:
-		u16 id=P.r_u16();
 		Fvector dir;float impulse;
+		if(!m_telekinetics.has_impacts()) return;
 		m_telekinetics.draw_out_impact(dir,impulse);
+
 		CObject* obj=Level().Objects.net_Find(id);
-		if(obj->SUB_CLS_ID ==CLSID_ARTEFACT) break;
+		if(obj->SUB_CLS_ID ==CLSID_ARTEFACT) return;
 		if (OnServer())
 		{
 			NET_Packet	l_P;
@@ -118,12 +115,10 @@ void CMincer ::OnEvent(NET_Packet& P,u16 type)
 			l_P.w_float	(impulse);
 			l_P.w_u16	(ALife::eHitTypeStrike);
 			u_EventSend	(l_P);
-	/////////////////////////////////////////////////////////
+			/////////////////////////////////////////////////////////
 			obj->H_SetParent(NULL);
 			return;
 		};
-	}
-		inherited::OnEvent(P,type);
 }
 #ifdef DEBUG
 void CMincer::OnRender()

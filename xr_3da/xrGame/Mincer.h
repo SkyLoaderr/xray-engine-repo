@@ -32,6 +32,6 @@ public:
 	virtual BOOL net_Spawn					(LPVOID DC);
 	virtual void net_Destroy				();
 	virtual void Center						(Fvector& C) const;
-	virtual void OnEvent					(NET_Packet& P,u16 type);
+	virtual void OnOwnershipTake			(u16 id);
 
 };
