@@ -259,7 +259,7 @@ bool	game_cl_TeamDeathmatch::OnKeyboardPress			(int key)
 
 void	game_cl_TeamDeathmatch::OnRender				()
 {
-	if (local_player)
+	if (local_player && m_bFriendlyIndicators)
 	{
 		cl_TeamStruct *pTS = &TeamList[ModifyTeam(local_player->team)]; 
 		PLAYERS_MAP_IT it = players.begin();
@@ -272,7 +272,7 @@ void	game_cl_TeamDeathmatch::OnRender				()
 			if (!pObject) continue;
 			if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) continue;
 			if (ps->team != local_player->team) continue;
-			//		if (ps == local_player) continue;
+			if (ps == local_player) continue;
 
 			VERIFY(pObject);
 			CActor* pActor = smart_cast<CActor*>(pObject);

@@ -28,7 +28,8 @@ class	game_cl_GameState	: public game_GameState, public ISheduled
 	CUIGameCustom*						m_game_ui_custom;
 	bool								m_bCrosshair;	//был ли показан прицел-курсор HUD перед вызовом меню
 protected:
-	bool								m_bVotingEnabled;	
+	bool								m_bVotingEnabled;
+	bool								m_bFriendlyIndicators;
 
 public:
 	typedef xr_map<ClientID,game_PlayerState*> PLAYERS_MAP;
