@@ -34,16 +34,10 @@ namespace SceneGraph
 		FixedMAP<float,CVisual*>			sorted;
 		std::vector<CVisual*>				unsorted;
 	};
-	struct mapNormalCached
-	{
-		FixedMAP<float,FCached*>			sorted;
-		std::vector<FCached*>				unsorted;
-	};
 	struct mapNormalItems 
 	{
 		float								ssa;
 		mapNormalDirect						direct;
-		mapNormalCached						cached;
 	};
 	struct mapNormalConstants	: public	FixedMAP<SConstantList*,mapNormalItems>
 	{

@@ -39,11 +39,11 @@ public:
 	SceneGraph::mapLOD_T							mapLOD;
 	SceneGraph::vecPatches_T						vecPatches;
 
-	vector<FCached*>								vecCached;
 	vector<int>										vecGroups;
 	vector<SceneGraph::mapNormalCodes::TNode*>		lstCodes;
 	vector<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
 	vector<SceneGraph::mapNormalTextures::TNode*>	lstTexturesTemp;
+	vector<SceneGraph::mapNormalVS::TNode*>			lstVS;
 	vector<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
 	vector<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
 	vector<SceneGraph::_LodItem>					lstLODs;
@@ -95,7 +95,6 @@ private:
 	void							add_leafs_Static		(CVisual	*pVisual);					// if detected node's full visibility
 	void							InsertSG_Dynamic		(CVisual	*pVisual, Fvector& Center);
 	void							InsertSG_Static			(CVisual	*pVisual);
-	void							InsertSG_Cached			(CVisual	*pVisual);
 
 	void							flush_Patches			();
 	void							flush_Models			();

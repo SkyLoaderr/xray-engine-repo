@@ -88,7 +88,8 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 				SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
 				SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state);
 				SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
-				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
+				SceneGraph::mapNormalVS::TNode*			Nvs		= Ntex->val.insert	(pass.vs);
+				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Nvs->val.insert	(pass.M);
 				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
 				SceneGraph::mapNormalItems&				item	= Nconst->val;
 				if (pass_id)	{
@@ -100,9 +101,13 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 						Nconst->val.ssa = SSA;
 						if (SSA>Nmat->val.ssa) {
 							Nmat->val.ssa = SSA;
-							if (SSA>Ntex->val.ssa)	{
-								Ntex->val.ssa = SSA; 
-								if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
+							if (SSA>Nvs->val.ssa)
+							{
+								Nvs->val.ssa = SSA;
+								if (SSA>Ntex->val.ssa)	{
+									Ntex->val.ssa = SSA; 
+									if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
+								}
 							}
 						}
 					}
@@ -110,51 +115,6 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 					if (SSA<r_ssaDONTSORT)		item.direct.unsorted.push_back		(pVisual);
 					else						item.direct.sorted.insertInAnyWay	(distSQ,pVisual);
 				}
-			}
-		}
-	}
-}
-
-void CRender::InsertSG_Cached(CVisual *V)
-{
-	FCached* pVisual = (FCached*)V;
-	if (pVisual->dwFrame!= Device.dwFrame) {
-		pVisual->dwFrame = Device.dwFrame;
-		
-		float distSQ;
-		float SSA    = CalcSSA(distSQ,pVisual->bv_Position,pVisual);
-		
-		if (SSA<=r_ssaDISCARD)	return;
-		
-		// Select List and add to it
-		ShaderElement*		sh		= ShowLM?pVisual->hShader->lighting:pVisual->hShader->lod0;
-		for (u32 pass_id=0; pass_id<sh->Passes.size(); pass_id++)
-		{
-			SPass&									pass	= *(sh->Passes[pass_id]);
-			SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
-			SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state);
-			SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
-			SceneGraph::mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
-			SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
-			SceneGraph::mapNormalItems&				item	= Nconst->val;
-			if (pass_id)	{
-				// No need to sort - ZB already setted up
-				item.cached.unsorted.push_back	(pVisual);
-			} else {
-				// Need to sort for HZB efficient use
-				if (SSA>Nconst->val.ssa) {
-					Nconst->val.ssa = SSA;
-					if (SSA>Nmat->val.ssa) {
-						Nmat->val.ssa = SSA;
-						if (SSA>Ntex->val.ssa)	{
-							Ntex->val.ssa = SSA; 
-							if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
-						}
-					}
-				}
-				
-				if (SSA<r_ssaDONTSORT)		item.cached.unsorted.push_back		(pVisual);
-				else						item.cached.sorted.insertInAnyWay	(distSQ,pVisual);
 			}
 		}
 	}
@@ -225,12 +185,6 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 			I = pV->children.begin	();
 			E = pV->children.end	();
 			for (; I!=E; I++)	add_leafs_Static	(*I);
-		}
-		return;
-	case MT_CACHED:
-		{
-			// Cached visual
-			InsertSG_Cached((FCached*)pVisual);
 		}
 		return;
 	case MT_LOD:
@@ -376,21 +330,10 @@ void CRender::add_Static(CVisual *pVisual, u32 planes)
 				// Add all children, perform tests
 				I = pV->children.begin	();
 				E = pV->children.end	();
-				/*
-				if (fcvPartial==VIS) {
-					for (; I!=E; I++)	add_Static			(*I,planes);
-				} else {
-				*/
 				for (; I!=E; I++)	add_leafs_Static	(*I);
 			}
 		}
 		break;
-	case MT_CACHED:
-		{
-			// Cached visual
-			InsertSG_Cached((FCached*)pVisual);
-		}
-		return;
 	default:
 		{
 			// General type of visual

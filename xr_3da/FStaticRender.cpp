@@ -276,25 +276,6 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 		}
 		L.clear	();
 	}
-
-	// *** CACHED ***
-	{
-		Device.Statistic.RenderDUMP_Cached.Begin();
-
-		// CACHED:SORTED
-		vector<FCached*>& CS			= ::Render_Implementation.vecCached;
-		N.cached.sorted.getLR			(CS);
-		if (!CS.empty())				render_Cached(CS);
-		CS.clear						();
-		N.cached.sorted.clear			();
-
-		// CACHED:UNSORTED
-		vector<FCached*>& CU			= N.cached.unsorted;
-		if (!CU.empty())				render_Cached(CU);
-		CU.clear						();
-
-		Device.Statistic.RenderDUMP_Cached.End	();
-	}
 }
 
 // MATRIX
@@ -426,6 +407,9 @@ IC	bool	cmp_matrices		(SceneGraph::mapNormalMatrices::TNode* N1, SceneGraph::map
 {	return (N1->val.ssa > N2->val.ssa);		}
 
 IC	bool	cmp_constants		(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::mapNormalConstants::TNode* N2)
+{	return (N1->val.ssa > N2->val.ssa);		}
+
+IC	bool	cmp_vs				(SceneGraph::mapNormalVS::TNode* N1, SceneGraph::mapNormalVS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
 IC	bool	cmp_textures_lex2	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
@@ -567,42 +551,54 @@ void	CRender::Render		()
 				for (u32 texture_id=0; texture_id<lstTextures.size(); texture_id++)
 				{
 					SceneGraph::mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
-					SceneGraph::mapNormalMatrices& matrices				= Ntexture->val;
+					SceneGraph::mapNormalVS&	vs						= Ntexture->val;
 					RCache.set_Textures	(Ntexture->key);
 
-					matrices.getANY_P	(lstMatrices);
-					if (sort) std::sort	(lstMatrices.begin(),lstMatrices.end(), cmp_matrices);
-					for (u32 matrix_id=0; matrix_id<lstMatrices.size(); matrix_id++) 
+					vs.getANY_P			(lstVS);
+					if (sort)			std::sort	(lstVS.begin(),lstVS.end(),cmp_vs);
+					for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
 					{
-						SceneGraph::mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
-						SceneGraph::mapNormalConstants& constants			= Nmatrix->val;
-						RCache.set_Matrices	(Nmatrix->key);
+						SceneGraph::mapNormalVS::TNode*	Nvs					= lstVS[vs_id];
+						SceneGraph::mapNormalMatrices& matrices				= Nvs->val;
+						RCache.set_VS		(Nvs->key);
 
-						constants.getANY_P	(lstConstants);
-						if (sort) std::sort	(lstConstants.begin(),lstConstants.end(), cmp_constants);
-						for (u32 constant_id=0; constant_id<lstConstants.size(); constant_id++)
+						matrices.getANY_P	(lstMatrices);
+						if (sort) std::sort	(lstMatrices.begin(),lstMatrices.end(), cmp_matrices);
+						for (u32 matrix_id=0; matrix_id<lstMatrices.size(); matrix_id++) 
 						{
-							SceneGraph::mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
-							SceneGraph::mapNormalItems&	items					= Nconstant->val;
-							RCache.set_Constants	(Nconstant->key,FALSE);
-							mapNormal_Render			(Nconstant->val);
-							items.ssa					= 0;
+							SceneGraph::mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
+							SceneGraph::mapNormalConstants& constants			= Nmatrix->val;
+							RCache.set_Matrices	(Nmatrix->key);
+
+							constants.getANY_P	(lstConstants);
+							if (sort) std::sort	(lstConstants.begin(),lstConstants.end(), cmp_constants);
+							for (u32 constant_id=0; constant_id<lstConstants.size(); constant_id++)
+							{
+								SceneGraph::mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
+								SceneGraph::mapNormalItems&	items					= Nconstant->val;
+								RCache.set_Constants		(Nconstant->key,FALSE);
+								mapNormal_Render			(Nconstant->val);
+								items.ssa					= 0;
+							}
+							lstConstants.clear		();
+							constants.clear			();
+							constants.ssa			= 0;
 						}
-						lstConstants.clear	();
-						constants.clear		();
-						constants.ssa		= 0;
+						lstMatrices.clear		();
+						matrices.clear			();
+						matrices.ssa			= 0;
 					}
-					lstMatrices.clear	();
-					matrices.clear		();
-					matrices.ssa		= 0;
+					lstVS.clear				();
+					vs.clear				();
+					vs.ssa					= 0;
 				}
 				lstTextures.clear		();
 				lstTexturesTemp.clear	();
 				textures.clear			();
 				textures.ssa			= 0;
 			}
-			lstCodes.clear		();
-			codes.clear			();
+			lstCodes.clear			();
+			codes.clear				();
 		}
 
 		if (1==pr)			{
