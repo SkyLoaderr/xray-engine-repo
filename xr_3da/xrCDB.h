@@ -31,6 +31,12 @@ namespace CDB
 		DWORD			ray_mode;
 		DWORD			box_mode;
 		DWORD			frustum_mode;
+
+		// Result management
+		int*			r_data;
+		int				r_count;
+		int				r_size;
+		void			r_add			(int id);
 	public:
 		CDB				();
 		~CDB			();
@@ -43,6 +49,9 @@ namespace CDB
 		
 		void			frustum_mode	(DWORD f)	{	frustum_mode = f;	}
 		void			frustum_query	(const Model *m_def, const CFrustum& F);
-	};
+		
+		int*			r_begin			()	{	return r_data;				};
+		int*			r_end			()	{	return r_data + r_count;	};
+		int				r_count			()	{	return r_count;				};
+		int				r_free			();
 };
-
