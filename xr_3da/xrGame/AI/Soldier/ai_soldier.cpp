@@ -13,7 +13,7 @@
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-#define WRITE_LOG
+//#define WRITE_LOG
 #define MIN_RANGE_SWITCH 500
 
 CAI_Soldier::CAI_Soldier()
@@ -196,7 +196,6 @@ bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
 
 void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 {
-	//Fvector tWatchDirection;
 	for (int i=1, iMaxOpenIndex=0, iMaxOpen = tNode->cover[0]; i<4; i++)
 		if (tNode->cover[i] > iMaxOpen) {
 			iMaxOpenIndex = i; 
@@ -232,6 +231,52 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 	
 	q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
 	q_look.o_look_speed=_FB_look_speed;
+}
+
+void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
+{
+	Fvector tLeft;
+	Fvector tRight;
+	Fvector tFront;
+	Fvector tBack;
+	tLeft.set(-1,0,0);
+	tRight.set(1,0,0);
+	tFront.set(0,0,1);
+	tBack.set(0,0,-1);
+
+	tEnemyDirection.normalize();
+		
+	float fCover = 0;
+	if ((tEnemyDirection.x < 0) && (tEnemyDirection.z > 0)) {
+		float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
+		fCover = cosf(fAlpha)*tNode->cover[0] + sinf(fAlpha)*tNode->cover[1];
+	}
+	else 
+		if ((tEnemyDirection.x > 0) && (tEnemyDirection.z > 0)) {
+			float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
+			fCover = cosf(fAlpha)*tNode->cover[1] + sinf(fAlpha)*tNode->cover[2];
+		}
+		else 
+			if ((tEnemyDirection.x > 0) && (tEnemyDirection.z < 0)) {
+				float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
+				fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[2];
+			}
+			else 
+				if ((tEnemyDirection.x < 0) && (tEnemyDirection.z < 0)) {
+					float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
+					fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[0];
+				}
+	
+
+	Msg("%8.2f",fCover);
+	if (fCover > 0.2f*255.f) {
+		q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tEnemyDirection), 1000);
+		q_look.o_look_speed=8*_FB_look_speed;
+	}
+	else {
+		SetLessCoverLook(tNode);
+		q_look.o_look_speed=8*_FB_look_speed;
+	}
 }
 
 void CAI_Soldier::Attack()
@@ -385,12 +430,12 @@ void CAI_Soldier::Attack()
 						}
 					
 				if (!bCanKillMember)
-					q_action.setup(AI::AIC_Action::FireBegin);
+					q_action.setup(AI::AIC_Action::AttackBegin);
 				else
 					q_action.setup(AI::AIC_Action::FireEnd);
 				/**/
 				// checking flag to stop processing more states
-				//q_action.setup(AI::AIC_Action::FireBegin);
+				//q_action.setup(AI::AIC_Action::AttackBegin);
 				m_fCurSpeed = m_fMaxSpeed;
 				bStopThinking = true;
 				return;
@@ -516,19 +561,17 @@ void CAI_Soldier::Attack()
 							AI_Path.bNeedRebuild = TRUE;
 					}
 				
-				tWatchDirection.sub(Position(),tSavedEnemyPosition);
-				if (tWatchDirection.magnitude() > 0.0001) {
-					tWatchDirection.normalize();
-					q_look.setup(
-						AI::AIC_Look::Look, 
-						AI::t_Direction, 
-						&tWatchDirection,
-						1000);
-					q_look.o_look_speed=_FB_look_speed;
-				}
+				tWatchDirection.sub(tSavedEnemyPosition,Position());
+				if (tWatchDirection.magnitude() > 0.0001f)
+					SetSmartLook(AI_Node,tWatchDirection);
 				else
 					SetLessCoverLook(AI_Node);
+
 				q_action.setup(AI::AIC_Action::FireEnd);
+				
+				m_fCurSpeed = m_fMaxSpeed;
+				bStopThinking = true;
+				return;
 				/**/
 			}
 			/**/
@@ -965,8 +1008,11 @@ void CAI_Soldier::Pursuit()
 							}
 						// setting up a look
 						// getting my current node
-						NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
-						SetLessCoverLook(tNode);
+						tWatchDirection.sub(tSavedEnemyPosition,Position());
+						if (tWatchDirection.magnitude() > 0.0001f)
+							SetSmartLook(AI_Node,tWatchDirection);
+						else
+							SetLessCoverLook(AI_Node);
 						// checking flag to stop processing more states
 						q_action.setup(AI::AIC_Action::FireEnd);
 						bStopThinking = true;
@@ -1152,7 +1198,7 @@ void CAI_Soldier::UnderFire()
 								}
 							
 						if (!bCanKillMember)
-							q_action.setup(AI::AIC_Action::FireBegin);
+							q_action.setup(AI::AIC_Action::AttackBegin);
 						else
 							q_action.setup(AI::AIC_Action::FireEnd);
 						m_fCurSpeed = m_fMaxSpeed;
@@ -1163,7 +1209,7 @@ void CAI_Soldier::UnderFire()
 						m_fCurSpeed = m_fMaxSpeed;
 					}
 					// setting up look speed
-					q_look.o_look_speed=_FB_look_speed;
+					q_look.o_look_speed=8*_FB_look_speed;
 					// checking flag to stop processing more states
 					bStopThinking = true;
 					return;

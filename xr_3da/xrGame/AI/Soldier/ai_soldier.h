@@ -93,6 +93,7 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorUnderFire	SelectorUnderFire;
 
 		void SetLessCoverLook(NodeCompressed *tNode);
+		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 	public:
 					   CAI_Soldier();
 		virtual		  ~CAI_Soldier();
