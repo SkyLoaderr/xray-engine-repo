@@ -24,7 +24,7 @@ struct CStringSortPredicate {
 struct CStringFindPredicate {
 	bool		operator()	(const ref_str &s1, const ref_str &s2) const
 	{
-		return			(s1 != s2);
+		return			(s1 < s2);
 	}
 };
 
@@ -357,15 +357,13 @@ void CInventoryOwner::renderable_Render		()
 	if (inventory().ActiveItem())
 		inventory().ActiveItem()->renderable_Render();
 
-	CInventoryItem		*torch = inventory().Get(CLSID_DEVICE_TORCH,false);
-	if (!torch)
-		torch			= inventory().Get(CLSID_DEVICE_TORCH,true);
-
-	if (torch)
-		torch->renderable_Render();
+	xr_vector<CAttachableItem*>::iterator	I = m_attached_objects.begin();
+	xr_vector<CAttachableItem*>::iterator	E = m_attached_objects.end();
+	for ( ; I != E; ++I)
+		(*I)->renderable_Render();
 }
 
-void CInventoryOwner::OnItemTake			(CInventoryItem *inventory_item)
+void CInventoryOwner::attach(CInventoryItem *inventory_item)
 {
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
@@ -373,7 +371,7 @@ void CInventoryOwner::OnItemTake			(CInventoryItem *inventory_item)
 		VERIFY								((*I)->ID() != inventory_item->ID());
 	}
 
-	if (attach_item(inventory_item)) {
+	if (can_attach(inventory_item)) {
 		VERIFY								(dynamic_cast<CAttachableItem*>(inventory_item));
 		if (m_attached_objects.empty()) {
 			CGameObject						*game_object = dynamic_cast<CGameObject*>(this);
@@ -384,7 +382,7 @@ void CInventoryOwner::OnItemTake			(CInventoryItem *inventory_item)
 	}
 }
 
-void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
+void CInventoryOwner::detach(CInventoryItem *inventory_item)
 {
 	xr_vector<CAttachableItem*>::iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::iterator	E = m_attached_objects.end();
@@ -401,6 +399,16 @@ void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
 	}
 }
 
+void CInventoryOwner::OnItemTake			(CInventoryItem *inventory_item)
+{
+	attach		(inventory_item);
+}
+
+void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
+{
+	detach		(inventory_item);
+}
+
 bool CInventoryOwner::attached				(const CInventoryItem *inventory_item) const
 {
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
@@ -411,11 +419,10 @@ bool CInventoryOwner::attached				(const CInventoryItem *inventory_item) const
 	return				(false);
 }
 
-bool CInventoryOwner::attach_item			(const CInventoryItem *inventory_item) const
+bool CInventoryOwner::can_attach			(const CInventoryItem *inventory_item) const
 {
 	if (!dynamic_cast<const CAttachableItem*>(inventory_item))
 		return			(false);
 
-#pragma todo("Dima to Oles : Please make one more cName and cNameSect prototype which return ref_str")
-	return				(std::binary_search(m_attach_item_sections.begin(),m_attach_item_sections.end(),ref_str(inventory_item->cNameSect()),CStringFindPredicate()));
+	return				(std::binary_search(m_attach_item_sections.begin(),m_attach_item_sections.end(),inventory_item->cNameSect(),CStringFindPredicate()));
 }

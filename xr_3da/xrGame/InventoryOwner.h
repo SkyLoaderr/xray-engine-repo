@@ -87,7 +87,10 @@ public:
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
 	virtual void			OnItemDropUpdate		() {}
 	virtual bool			use_bolts				() const {return(true);}
-	virtual	bool			attach_item				(const CInventoryItem *inventory_item) const;
+
+			void			attach					(CInventoryItem *inventory_item);
+			void			detach					(CInventoryItem *inventory_item);
+	virtual	bool			can_attach				(const CInventoryItem *inventory_item) const;
 			bool			attached				(const CInventoryItem *inventory_item) const;
 	IC		const xr_vector<CAttachableItem*> &attached_objects() const;
 

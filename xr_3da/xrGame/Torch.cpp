@@ -101,8 +101,8 @@ void CTorch::net_Destroy()
 void CTorch::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield			();
-	H_Root()->Center				(Position());
-	XFORM().c.set					(Position());
+//	H_Root()->Center				(Position());
+//	XFORM().c.set					(Position());
 	m_focus.set						(Position());
 	Switch							(false);
 }

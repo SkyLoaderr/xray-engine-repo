@@ -42,3 +42,11 @@ void CAttachableItem::OnH_A_Chield	()
 	if (inventory_owner->attached(this))
 		setVisible					(true);
 }
+
+void CAttachableItem::renderable_Render()
+{
+	if (getVisible()) {
+		::Render->set_Transform	(&XFORM());
+		::Render->add_Visual	(Visual());
+	}
+}

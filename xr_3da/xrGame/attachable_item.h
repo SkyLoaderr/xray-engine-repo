@@ -24,6 +24,7 @@ public:
 	virtual	void			Load				(LPCSTR section);
 	virtual	void			reload				(LPCSTR section);
 	virtual void			OnH_A_Chield		();
+	virtual void			renderable_Render	();
 	IC		LPCSTR			bone_name			() const;
 	IC		const Fmatrix	&offset				() const;
 };

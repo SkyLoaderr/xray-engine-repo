@@ -89,6 +89,6 @@ public:
 			void			OnStopTrade				();
 			void			OnTradeAction			(CGameObject *O, bool bSell);
 public:	
-	virtual	bool			attach_item				(const CInventoryItem *inventory_item) const;
+	virtual	bool			can_attach				(const CInventoryItem *inventory_item) const;
 	virtual bool			use_bolts				() const;
 };
