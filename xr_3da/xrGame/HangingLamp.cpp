@@ -9,7 +9,7 @@
 #include "xrserver_objects_alife.h"
 #include "PHElement.h"
 #include "../skeletonanimated.h"
-
+#include "script_space.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -351,4 +351,14 @@ void CHangingLamp::net_Import(NET_Packet& P)
 BOOL CHangingLamp::UsedAI_Locations()
 {
 	return					(FALSE);
+}
+
+void CHangingLamp::script_register(lua_State *L)
+{
+	luabind::module(L)
+		[
+			luabind::class_<CHangingLamp>("hanging_lamp")
+			.def("turn_on",		&CHangingLamp::TurnOn)
+			.def("turn_off",	&CHangingLamp::TurnOff)
+		];
 }

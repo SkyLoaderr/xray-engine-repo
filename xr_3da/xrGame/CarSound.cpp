@@ -67,7 +67,9 @@ void CCar::SCarSound::Update()
 
 void CCar::SCarSound::SwitchOn()
 {
-	snd_engine.play_at_pos			(pcar,pcar->Position(),TRUE);
+	Fvector pos;
+	pcar->XFORM().transform_tiny(pos,relative_pos);
+	snd_engine.play_at_pos			(pcar,pos,TRUE);
 	pcar->processing_activate();
 }
 void CCar::SCarSound::Destroy()

@@ -39,6 +39,7 @@ void CMincer::Load (LPCSTR section)
 	
 	m_telekinetics.set_destroing_particles(shared_str(pSettings->r_string(section,"tearing_particles")));
 	m_torn_particles=pSettings->r_string(section,"torn_particles");
+	m_tearing_sound.create(TRUE,pSettings->r_string(section,"body_tearing_sound"));
 	//pSettings->r_fvector3(section,whirlwind_center);
 }
 
@@ -123,7 +124,7 @@ void CMincer::OnOwnershipTake(u16 id)
 		{
 			PP->StartParticles(m_torn_particles,Fvector().set(0,1,0),ID());
 		}
-
+		m_tearing_sound.play_at_pos(this,m_telekinetics.Center());
 		if (OnServer())
 		{
 			NET_Packet	l_P;
