@@ -710,6 +710,7 @@ public:
 			bool				heli_use_mgun			()const;*/
 			
 			Fvector				bone_position			(LPCSTR bone_name) const;
+			bool				is_body_turning			() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptGameObject)

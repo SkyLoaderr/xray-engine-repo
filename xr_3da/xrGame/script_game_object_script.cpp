@@ -204,6 +204,8 @@ void CScriptGameObject::script_register(lua_State *L)
 
 			.def("bone_position",				&CScriptGameObject::bone_position)
 
+			.def("is_body_turning",				&CScriptGameObject::is_body_turning)
+
 			//////////////////////////////////////////////////////////////////////////
 			//inventory owner
 			//////////////////////////////////////////////////////////////////////////

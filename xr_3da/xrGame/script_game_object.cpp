@@ -936,3 +936,13 @@ Fvector	CScriptGameObject::bone_position	(LPCSTR bone_name) const
 	matrix.mul_43		(m_tpGameObject->XFORM(),PKinematics(m_tpGameObject->Visual())->LL_GetBoneInstance(bone_id).mTransform);
 	return				(matrix.c);
 }
+
+bool CScriptGameObject::is_body_turning		() const
+{
+	CMovementManager	*movement_manager = dynamic_cast<CMovementManager*>(m_tpGameObject);
+	if (!movement_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member is_turning!");
+		return			(false);
+	}
+	return				(!!fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
+}
