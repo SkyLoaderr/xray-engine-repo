@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "TextureManager.h"
 #include "tss.h"
+#include "blender.h"
+#include "blender_recorder.h"
 
 DWORD		CShaderManager::_CreateCode		(SimulatorStates& code)
 {
@@ -135,7 +137,8 @@ CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 {
 	R_ASSERT(Name && Name[0]);
 
-	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(Name);
+	LPSTR N = LPSTR(Name);
+	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
 	if (I==blenders.end())	Device.Fatal("Shader '%s' not found in library.",Name);
 	else					return I->second;
 }
@@ -150,7 +153,7 @@ STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 			return base;
 		}
 	}
-	STextureList*	lst		= new STextureList(L.begin(),L.size());
+	STextureList*	lst		= new STextureList(L);
 	lst->dwReference		= 1;
 	lst_textures.push_back	(lst);
 	return lst;
@@ -172,7 +175,7 @@ SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 			return base;
 		}
 	}
-	SMatrixList*	lst		= new SMatrixList(L.begin(),L.size());
+	SMatrixList*	lst		= new SMatrixList(L);
 	lst->dwReference		= 1;
 	lst_matrices.push_back	(lst);
 	return lst;
@@ -194,7 +197,7 @@ SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 			return base;
 		}
 	}
-	SConstantList*	lst		= new SConstantList(L.begin(),L.size());
+	SConstantList*	lst		= new SConstantList(L);
 	lst->dwReference		= 1;
 	lst_constants.push_back	(lst);
 	return lst;
@@ -259,7 +262,6 @@ Shader	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_const
 
 void CShaderManager::Delete(Shader &S) 
 {
-	R_ASSERT(S);
 	for (DWORD p=0; p<S.Passes.size(); p++)
 	{
 		CPass& P = S.Passes[p];
@@ -302,8 +304,8 @@ void	CShaderManager::OnDeviceDestroy(void)
 	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
 	{
 		R_ASSERT	(0==t->second->dwReference);
-		_FREE		(t->first);
-		_DELETE		(t->second);
+		free		(t->first);
+		delete		t->second;
 	}
 	textures.clear	();
 	
@@ -311,8 +313,8 @@ void	CShaderManager::OnDeviceDestroy(void)
 	for (map<LPSTR,CMatrix*,str_pred>::iterator m=matrices.begin(); m!=matrices.end(); m++)
 	{
 		R_ASSERT	(0==m->second->dwReference);
-		_FREE		(m->first);
-		_DELETE		(m->second);
+		free		(m->first);
+		delete		m->second;
 	}
 	matrices.clear	();
 	
@@ -320,8 +322,8 @@ void	CShaderManager::OnDeviceDestroy(void)
 	for (map<LPSTR,CConstant*,str_pred>::iterator c=constants.begin(); c!=constants.end(); c++)
 	{
 		R_ASSERT	(0==c->second->dwReference);
-		_FREE		(c->first);
-		_DELETE		(c->second);
+		free		(c->first);
+		delete		c->second;
 	}
 	constants.clear	();
 }
