@@ -14,7 +14,7 @@ private:
 	// Media :: sounds
 	sound3D					sndShow;
 	sound3D					sndHide;
-	sound3D					sndFireLoop;
+	sound3D					sndShot;
 	sound3D					sndEmptyClick;
 	sound3D					sndReload;
 	sound3D					sndRicochet		[SND_RIC_COUNT];

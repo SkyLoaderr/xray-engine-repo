@@ -28,7 +28,7 @@ CWeaponAutoRifle::~CWeaponAutoRifle()
 	// sounds
 	SoundDestroy		(sndShow		);
 	SoundDestroy		(sndHide		);
-	SoundDestroy		(sndFireLoop	);
+	SoundDestroy		(sndShot		);
 	SoundDestroy		(sndEmptyClick	);
 	SoundDestroy		(sndReload		);
 	SoundDestroy		(sndRicochet[0]	);
@@ -51,7 +51,7 @@ void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
 	// Sounds
 	SoundCreate			(sndShow,		"show");
 	SoundCreate			(sndHide,		"hide");
-	SoundCreate			(sndFireLoop,	"fire");
+	SoundCreate			(sndShot,		"shoot");
 	SoundCreate			(sndEmptyClick,	"empty");
 	SoundCreate			(sndReload,		"reload");
 	SoundCreate			(sndRicochet[0],"ric1");
@@ -100,18 +100,14 @@ void CWeaponAutoRifle::MediaUNLOAD	()
 
 void CWeaponAutoRifle::switch2_Idle	(BOOL bHUDView)
 {
-	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 	m_pHUD->animPlay(mhud_idle);
 }
 void CWeaponAutoRifle::switch2_Fire	(BOOL bHUDView)
 {
-	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
-	pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 }
 void CWeaponAutoRifle::switch2_Empty	(BOOL bHUDView)
 {
-	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 }
 void CWeaponAutoRifle::switch2_Reload(BOOL bHUDView)
@@ -137,6 +133,7 @@ void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
 		if (S)			S->Shot();
 	}
 	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
+	pSounds->Play3D		(sndShot,vLastFP);
 }
 void CWeaponAutoRifle::OnEmptyClick	(BOOL bHUDView)
 {
