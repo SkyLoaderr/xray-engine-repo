@@ -21,9 +21,9 @@ public:
 public:
 	Fmatrix			xform;
 
-	u32			dwReference;
-	u32			dwFrame;
-	u32			dwMode;
+	u32				dwReference;
+	u32				dwFrame;
+	u32				dwMode;
     union{
 		u32		tcm;				// mask for tc-modifiers
         Flags32	tcm_flags;
@@ -32,7 +32,10 @@ public:
 	WaveForm		rotate;
 	WaveForm		scrollU,scrollV;
 
-	CMatrix			(){	ZeroMemory(this,sizeof(CMatrix));}
+	CMatrix			()
+	{	
+		Memory.mem_fill	(this,0,sizeof(CMatrix));
+	}
 
 	IC void			tc_trans	(Fmatrix& T, float u, float v)
 	{

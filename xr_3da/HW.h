@@ -7,7 +7,8 @@
 
 #pragma once
 
-class ENGINE_API CHW {
+class ENGINE_API CHW 
+{
 public:
 	IDirect3D8* 			pD3D;		// D3D
 	IDirect3DDevice8*       pDevice;	// render device
@@ -19,17 +20,23 @@ public:
 	CHWCaps					Caps;
 
 	CHW()
-	{ ZeroMemory(this, sizeof(CHW)); };
+	{ 
+		pD3D		= NULL;
+		pDevice		= NULL;
+		pBaseRT		= NULL;
+		pBaseZB		= NULL;
+		pTempZB		= NULL;
+	};
 
 	void					CreateD3D				();
 	void					DestroyD3D				();
-	u32					CreateDevice			(HWND hw,u32 &dwWidth,u32 &dwHeight);
+	u32						CreateDevice			(HWND hw,u32 &dwWidth,u32 &dwHeight);
 	void					DestroyDevice			();
 
 	D3DFORMAT				selectDepthStencil		(D3DFORMAT);
-	u32					selectPresentInterval	();
-	u32					selectGPU				();
-	u32					selectRefresh			(u32 dwWidth, u32 dwHeight);
+	u32						selectPresentInterval	();
+	u32						selectGPU				();
+	u32						selectRefresh			(u32 dwWidth, u32 dwHeight);
 
 #ifdef DEBUG
 	void	Validate(void)	{	VERIFY(pDevice); VERIFY(pD3D); };

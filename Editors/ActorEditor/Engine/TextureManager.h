@@ -71,9 +71,9 @@ private:
 		
 		void						Invalidate	()
 		{	
-			ZeroMemory	(&pass,		sizeof(pass)	);
-			ZeroMemory	(surfaces,	sizeof(surfaces));
-			ZeroMemory	(matrices,	sizeof(matrices));
+			Memory.mem_fill			(&pass,0,sizeof(pass));
+			Memory.mem_fill			(surfaces,0,sizeof(surfaces));
+			Memory.mem_fill			(matrices,0,sizeof(matrices));
 		}
 	}								cache;
 

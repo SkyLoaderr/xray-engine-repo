@@ -19,12 +19,17 @@ class ENGINE_API _VertexStream
 	friend class				CRender;
 private :
 	IDirect3DVertexBuffer8*		pVB;
-	u32						mSize;			// size in bytes
-	u32						mPosition;		// position in bytes
-	u32						mDiscardID;		// ID of discard - usually for caching
+	u32							mSize;			// size in bytes
+	u32							mPosition;		// position in bytes
+	u32							mDiscardID;		// ID of discard - usually for caching
 private:
 	void						_clear	()
-	{ ZeroMemory	(this,sizeof(*this)); }
+	{ 
+		pVB			= NULL;
+		mSize		= 0;
+		mPosition	= 0;
+		mDiscardID	= 0;
+	}
 	void						Create	();
 	void						Destroy	();
 public:
@@ -83,12 +88,17 @@ class ENGINE_API _IndexStream
 	friend class				CRender;
 private :
 	IDirect3DIndexBuffer8*		pIB;
-	u32						mSize;		// real size (usually mCount, aligned on 512b boundary)
-	u32						mPosition;
-	u32						mDiscardID;
+	u32							mSize;		// real size (usually mCount, aligned on 512b boundary)
+	u32							mPosition;
+	u32							mDiscardID;
 private:
 	void						_clear	()
-	{ ZeroMemory				(this,sizeof(*this)); }
+	{ 
+		pIB			= NULL;
+		mSize		= 0;
+		mPosition	= 0;
+		mDiscardID	= 0;
+	}
 	void						Create	();
 	void						Destroy	();
 public:

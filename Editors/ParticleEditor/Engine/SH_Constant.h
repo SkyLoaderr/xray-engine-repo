@@ -13,17 +13,20 @@ public:
 	enum { modeProgrammable=0, modeWaveForm	};
 public:
 	Fcolor			const_float;
-	u32			const_dword;
+	u32				const_dword;
 
-	u32			dwReference;
-	u32			dwFrame;
-	u32			dwMode;
+	u32				dwReference;
+	u32				dwFrame;
+	u32				dwMode;
 	WaveForm		_R;
 	WaveForm		_G;
 	WaveForm		_B;
 	WaveForm		_A;
 
-	CConstant		(){	ZeroMemory(this,sizeof(CConstant));}
+	CConstant		()
+	{	
+		Memory.mem_fill	(this,0,sizeof(CConstant));
+	}
 	IC void			set_float	(float r, float g, float b, float a)
 	{
 		const_float.set	(r,g,b,a);

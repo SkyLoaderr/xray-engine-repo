@@ -19,7 +19,8 @@ public:
     float	        phi;              /* Outer angle of spotlight cone */
 	
 	IC	D3DLIGHT8	*d3d() { return (D3DLIGHT8 *)this; };
-	IC	void	set(u32 ltType, float x, float y, float z) {
+	IC	void	set(u32 ltType, float x, float y, float z) 
+	{
 		VERIFY(sizeof(_light)==sizeof(D3DLIGHT8));
 		ZeroMemory( this, sizeof(_light) );
 		type=ltType;
@@ -28,7 +29,7 @@ public:
 		position.set(x,y,z);
 		direction.set(x,y,z);
 		direction.normalize();
-		range= sqrtf(flt_max);
+		range= _sqrt(flt_max);
 	}
     IC	void		mul(float brightness){
 	    diffuse.mul_rgb		(brightness);

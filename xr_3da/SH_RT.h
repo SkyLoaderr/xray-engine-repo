@@ -11,11 +11,14 @@ public:
 	IDirect3DSurface8*	pRT;
 	CTexture*			pTexture;
 	
-	u32				dwReference;
-	u32				dwWidth;
-	u32				dwHeight;
+	u32					dwReference;
+	u32					dwWidth;
+	u32					dwHeight;
 
-	CRT					(){	ZeroMemory(this,sizeof(CRT));}
+	CRT					()
+	{	
+		Memory.mem_fill	(this,0,sizeof(CRT));
+	}
 
 	void				Create	(LPCSTR Name, u32 w, u32 h);
 	void				Destroy	();
