@@ -40,11 +40,11 @@ private:
 			TNode*	Nnew	= newNodes + I;
 
 			if (Nold->left) {
-				u32	Lid		= Nold->left  - nodes;
+				u32	Lid			= u32(Nold->left  - nodes);
 				Nnew->left		= newNodes + Lid;
 			}
 			if (Nold->right) {
-				u32	Rid		= Nold->right - nodes;
+				u32	Rid			= u32(Nold->right - nodes);
 				Nnew->right		= newNodes + Rid;
 			}
 		}
@@ -64,7 +64,7 @@ private:
 	}
 	IC TNode*	CreateChild(TNode* &parent, const K& key)
 	{
-		u32 PID	= parent-nodes;
+		u32 PID		= u32(parent-nodes);
 		TNode*	N	= Alloc(key);
 		parent		= nodes+PID;
 		return	N;
