@@ -166,6 +166,9 @@ function enable_scripts(npc, ini, stype)
 		else
 			actual_ini = ini
 		end
+	
+		--xr_combat.set_combat_checker(npc, actual_ini, "combat", "combat")
+	
 		local active_section = utils.cfg_get_string(actual_ini, "logic", "active", npc, true, "")
 		if active_section == "nil" then
 			printf("WARNING: object '%s': active section is 'nil'", npc:name())
