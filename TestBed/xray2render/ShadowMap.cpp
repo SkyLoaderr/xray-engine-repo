@@ -581,23 +581,23 @@ HRESULT CMyD3DApplication::RenderShadowMap()
 	D3DVIEWPORT9		oldViewport;
 
 	// Save old render taget
-	m_pd3dDevice->GetRenderTarget		(0, &pOldBackBuffer);
-	m_pd3dDevice->GetDepthStencilSurface(&pOldZBuffer);
+	m_pd3dDevice->GetRenderTarget			(0, &pOldBackBuffer);
+	m_pd3dDevice->GetDepthStencilSurface	(&pOldZBuffer);
 	// Save old viewport
-	m_pd3dDevice->GetViewport			(&oldViewport);
+	m_pd3dDevice->GetViewport				(&oldViewport);
 
 	// Set new render target
-	m_pd3dDevice->SetRenderTarget		(0, m_pShadowMapSurf);
-	m_pd3dDevice->SetDepthStencilSurface(m_pShadowMapZ);
+	m_pd3dDevice->SetRenderTarget			(0, m_pShadowMapSurf);
+	m_pd3dDevice->SetDepthStencilSurface	(m_pShadowMapZ);
 
 	// Setup shadow map viewport
 	D3DVIEWPORT9	shadowViewport;
-	shadowViewport.X					= 0;
-	shadowViewport.Y					= 0;
-	shadowViewport.Width				= SHADOW_MAP_SIZE;
-	shadowViewport.Height				= SHADOW_MAP_SIZE;
-	shadowViewport.MinZ					= 0.0f;
-	shadowViewport.MaxZ					= 1.0f;
+	shadowViewport.X						= 0;
+	shadowViewport.Y						= 0;
+	shadowViewport.Width					= SHADOW_MAP_SIZE;
+	shadowViewport.Height					= SHADOW_MAP_SIZE;
+	shadowViewport.MinZ						= 0.0f;
+	shadowViewport.MaxZ						= 1.0f;
 	m_pd3dDevice->SetViewport				(&shadowViewport);
 
 	// Clear viewport
