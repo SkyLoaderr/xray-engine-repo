@@ -320,7 +320,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 {
 	CActor *pActor = dynamic_cast<CActor*>(m_pOwner);
 	
-	if(!Level().Server->client_Count() && pActor)
+	if (OnClient() && pActor)
 	{
 		switch(cmd)
 		{

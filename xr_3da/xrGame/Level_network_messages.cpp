@@ -25,7 +25,7 @@ void CLevel::ClientReceive()
 					E->UPDATE_Read	(*P);
 
 				//force object to be local for server client
-				if (Server->client_Count())
+				if (OnServer())
 				{
 					E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 				};

@@ -233,7 +233,7 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 	}
 
 	//отправить хит пораженному объекту
-	if(Level().Server->client_Count())
+	if(OnServer())
 	{
 		NET_Packet		P;
 		u_EventGen		(P,GE_HIT,R.O->ID());
