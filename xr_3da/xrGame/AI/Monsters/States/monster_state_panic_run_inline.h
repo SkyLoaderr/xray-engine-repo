@@ -42,6 +42,13 @@ void CStateMonsterPanicRunAbstract::execute()
 	object->MotionMan.accel_activate		(eAT_Aggressive);
 	object->MotionMan.accel_set_braking		(false);
 	object->CSoundPlayer::play				(MonsterSpace::eMonsterSoundPanic, 0,0,object->get_sd()->m_dwAttackSndDelay);
+
+#ifdef DEBUG
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		object->HDebug->M_Add(0,"Panic :: Run", D3DCOLOR_XRGB(255,0,0));
+	}
+#endif
+
 }
 
 TEMPLATE_SPECIALIZATION

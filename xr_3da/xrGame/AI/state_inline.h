@@ -10,6 +10,7 @@ TEMPLATE_SPECIALIZATION
 CStateAbstract::CState(_Object *obj, void *data) 
 {
 	reset();
+
 	object	= obj;
 	_data	= data;
 }

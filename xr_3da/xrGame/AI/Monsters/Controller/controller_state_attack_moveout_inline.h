@@ -15,6 +15,13 @@ void CStateControlMoveOutAbstract::execute()
 	object->MotionMan.m_tAction			= ACT_STEAL;
 	object->MotionMan.accel_deactivate	();
 	object->MotionMan.accel_set_braking (false);
+	object->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
+
+#ifdef DEBUG
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		object->HDebug->M_Add(0,"Attack :: Move Out", D3DCOLOR_XRGB(255,0,0));
+	}
+#endif
 
 }
 

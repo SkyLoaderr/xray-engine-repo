@@ -54,6 +54,13 @@ void CStateMonsterPanicAbstract::setup_substates()
 		data.time_out		= 3000;		
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Panic :: Face Unprotected Area", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
 		return;
 	}
 

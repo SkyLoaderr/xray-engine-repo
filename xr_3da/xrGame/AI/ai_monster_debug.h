@@ -54,7 +54,7 @@ public:
 	// -------------------------------------------------------------------
 	// Level lines
 	void	L_AddPoint			(const Fvector &pos, float box_size, u32 col);
-	void	L_AddLine			(const Fvector &pos, const Fvector &pos2, u32 col);				
+	void	L_AddLine			(const Fvector &pos, const Fvector &pos2, u32 col);	
 	void	L_Update			();
 	void	L_Clear				();
 

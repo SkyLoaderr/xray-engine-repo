@@ -49,7 +49,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterEatAbstract::setup_substates()
 {
 
-#ifdef _DEBUG
+#ifdef DEBUG
 	switch (current_substate) {
 		case eStateCorpseApproachRun:
 			object->HDebug->M_Add(0, "Run", D3DCOLOR_XRGB(0,0,255));
@@ -94,6 +94,14 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.completion_dist= ((current_substate == eStateCorpseApproachRun) ? 4.5f : object->get_sd()->m_fDistToCorpse);
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Eat :: Approach To Corpse", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 
@@ -103,6 +111,14 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.spec_params	= ASP_CHECK_CORPSE;
 		data.time_out		= 1500;
 		state->fill_data_with(&data, sizeof(SStateDataAction));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Eat :: Check Corpse", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 	
@@ -119,6 +135,14 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.cover_max_dist			= 10.f;
 		data.cover_search_radius	= 20.f;
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Eat :: Walk Away", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 
@@ -128,6 +152,14 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.spec_params	= 0;
 		data.time_out		= 8500;
 		state->fill_data_with(&data, sizeof(SStateDataAction));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Eat :: Little Rest After Meal", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 

@@ -4,12 +4,6 @@
 #include "../hudmanager.h"
 #include "../level.h"
 
-#define	DISABLE_MONSTER_DEBUG
-
-#ifdef _DEBUG
-	#undef DISABLE_MONSTER_DEBUG
-#endif
-
 CMonsterDebug::CMonsterDebug(CEntityAlive *pM, const Fvector &shift_vec, float height)
 {
 	pMonster		= pM;
@@ -39,7 +33,7 @@ void CMonsterDebug::M_Add(u32 index, LPCSTR str, u32 col)
 
 void CMonsterDebug::M_Update()
 { 
-#ifndef DISABLE_MONSTER_DEBUG	
+#ifdef DEBUG
 	if (!active) return;
 
 	Fmatrix res;
@@ -103,7 +97,7 @@ void CMonsterDebug::L_Clear()
 
 void CMonsterDebug::L_Update()
 {
-#ifndef DISABLE_MONSTER_DEBUG	
+#ifdef DEBUG
 	if (!active) return;
 
 	for (u32 i=0; i<_points.size(); i++) {
@@ -148,7 +142,7 @@ void CMonsterDebug::HT_Clear()
 
 void CMonsterDebug::HT_Update()
 {
-#ifndef DISABLE_MONSTER_DEBUG	
+#ifdef DEBUG
 	if (!active) return;
 
 	for (u32 i=0; i<_text.size(); i++) {

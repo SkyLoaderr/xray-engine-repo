@@ -45,7 +45,6 @@ private:
 
 	xr_map<u32, CSState*> substates;	
 	typedef typename xr_map<u32, CSState*>::iterator STATE_MAP_IT;		
-	
 };
 
 #include "state_inline.h"

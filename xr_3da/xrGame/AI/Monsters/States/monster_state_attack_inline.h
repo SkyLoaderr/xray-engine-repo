@@ -36,4 +36,7 @@ void CStateMonsterAttackAbstract::execute()
 	get_state_current()->execute();
 	
 	prev_substate = current_substate;
+
+
+	object->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
 }

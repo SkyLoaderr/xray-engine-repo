@@ -76,6 +76,15 @@ void CStateControllerAttackAbstract::setup_substates()
 		data.action.action		= ACT_STAND_IDLE;
 
 		state->fill_data_with(&data, sizeof(SStateDataLookToPoint));
+	
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Attack:: Face Enemy", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
 		return;
 	}
 }

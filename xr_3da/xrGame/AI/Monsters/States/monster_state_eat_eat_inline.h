@@ -56,9 +56,27 @@ void CStateMonsterEatingAbstract::execute()
 			corpse->m_fFood -= object->get_sd()->m_fEatSliceWeight;
 			time_last_eat = object->m_current_update;
 		}
+
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundEat, 0,0,object->get_sd()->m_dwIdleSndDelay);
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Eat :: Eating", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
 	} else {
 		object->MotionMan.m_tAction = ACT_WALK_FWD;
 		object->MoveToTarget(nearest_bone_pos, corpse->level_vertex_id());
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Eat :: Walk To Corpse", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
+
 	}
 
 	prev_state = cur_state;	

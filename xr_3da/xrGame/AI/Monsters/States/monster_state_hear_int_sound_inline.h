@@ -43,6 +43,14 @@ void CStateMonsterHearInterestingSoundAbstract::setup_substates()
 		data.completion_dist= 2.f;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Interesting Snd :: Move To Sound Source", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 
@@ -50,6 +58,14 @@ void CStateMonsterHearInterestingSoundAbstract::setup_substates()
 		SStateDataAction data;
 		data.action			= ACT_LOOK_AROUND;
 		state->fill_data_with(&data, sizeof(SStateDataAction));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Interesting Snd :: Look Around", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 }

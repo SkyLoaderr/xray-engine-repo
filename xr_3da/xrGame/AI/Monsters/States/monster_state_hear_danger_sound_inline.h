@@ -48,6 +48,13 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.distance			= 40.f;
 		data.action.action		= ACT_RUN;
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Danger Snd :: Hide From Point", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 
@@ -57,6 +64,15 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.spec_params	= ASP_STAND_SCARED;
 		data.time_out		= 2000;
 		state->fill_data_with(&data, sizeof(SStateDataAction));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Danger Snd :: Face Open Place", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+		
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
+
 		return;
 	}
 
@@ -65,6 +81,14 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.action			= ACT_STAND_IDLE;
 		data.spec_params	= ASP_STAND_SCARED;
 		state->fill_data_with(&data, sizeof(SStateDataAction));
+
+#ifdef DEBUG
+		if (psAI_Flags.test(aiMonsterDebug)) {
+			object->HDebug->M_Add(0,"Danger Snd :: Stand Scared", D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
+
+		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 }

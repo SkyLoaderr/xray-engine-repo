@@ -945,6 +945,8 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 			CMD3(CCC_Mask,				"ai_dbg_cover",			&psAI_Flags,	aiCover);
 			CMD3(CCC_Mask,				"ai_dbg_anim",			&psAI_Flags,	aiAnimation);
 			CMD3(CCC_Mask,				"ai_dbg_vision",		&psAI_Flags,	aiVision);
+			CMD3(CCC_Mask,				"ai_dbg_monster",		&psAI_Flags,	aiMonsterDebug);
+
 			CMD1(CCC_Script,			"run_script");
 			CMD1(CCC_ScriptCommand,		"run_string");
 
