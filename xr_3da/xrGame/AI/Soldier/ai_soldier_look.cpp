@@ -149,6 +149,41 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 	//r_torso_target.pitch = 0;
 }
 
+void CAI_Soldier::SetLessCoverLook()
+{
+	if (AI_Path.TravelPath.empty() || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1))
+		SetLessCoverLook(AI_Node);
+	else {
+		SetDirectionLook();
+		
+		NodeCompressed *tpNextNode;
+		bool bOk = false;
+		NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
+		int iCount = AI_Node->link_count;
+		for (int i=0; i<iCount; i++) {
+			tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
+ 			if (bfInsideNode(Level().AI,tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P,.35f)) {
+				bOk = true;
+				break;
+			}
+		}
+		if (!bOk)
+			SetLessCoverLook(AI_Node);
+		else {
+			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = 0.f;
+			
+			for (float fIncrement = r_torso_current.yaw - MAX_HEAD_TURN_ANGLE; fIncrement <= r_torso_current.yaw + MAX_HEAD_TURN_ANGLE; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60.f) {
+				float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,AI_Node),FNN(1,AI_Node),FNN(2,AI_Node),FNN(3,AI_Node));
+				float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,FNN(0,tpNextNode),FNN(1,tpNextNode),FNN(2,tpNextNode),FNN(3,tpNextNode));
+				if (fSquare1 - fSquare0 > fMaxSquare) {
+					fMaxSquare = fSquare1 - fSquare0;
+					r_target.yaw = fIncrement;
+				}
+			}
+		}
+	}
+}
+
 static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
 {
 	if (O->CLS_ID!=CLSID_ENTITY)			

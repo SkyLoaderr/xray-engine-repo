@@ -14,7 +14,6 @@
 #define	FIRE_SAFETY_ANGLE				PI/10
 #define SPECIAL_SQUAD					6
 #define LIGHT_FITTING			
-#define FNN(x,tpNode)					float(tpNode->cover[x]/255.f)
 
 bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
 {
@@ -889,7 +888,7 @@ bool CAI_Soldier::bfCheckForDangerPlace()
 	
 	bool bOk = false;
 	NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
-	int iCount = AI_Node->links;
+	int iCount = AI_Node->link_count;
 	for (int i=0; i<iCount; i++) {
 		tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
  		if (bfInsideNode(Level().AI,tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P,.35f)) {

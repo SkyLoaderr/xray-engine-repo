@@ -277,7 +277,6 @@ void CAI_Soldier::OnFindAloneFire()
 			vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 
 		if (!bfTooBigDistance(tSavedEnemyPosition,5.f) || AI_Node == tpSavedEnemyNode)
-		//if (AI_Node == tpSavedEnemyNode)
 			m_bActionStarted = true;
 	}
 	if (m_bActionStarted) {

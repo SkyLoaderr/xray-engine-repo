@@ -536,6 +536,7 @@ class CAI_Soldier : public CCustomMonster
 		bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
+		void SetLessCoverLook();
 		void SetDirectionLook();
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
@@ -561,7 +562,7 @@ class CAI_Soldier : public CCustomMonster
 				if ((m_bLessCoverLook) && (dwCurTime - Group.m_dwLastViewChange > 5000))
 					Group.m_bLessCoverLook = m_bLessCoverLook = false;
 			if (m_bLessCoverLook)
-				SetLessCoverLook(AI_Node);
+				SetLessCoverLook();
 			else
 				SetDirectionLook();
 			vfSetFire(a,Group);
