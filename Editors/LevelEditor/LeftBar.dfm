@@ -3257,10 +3257,6 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Synchronize Sounds'
       OnClick = SynchronizeSounds1Click
     end
-    object CheckNewSounds: TMenuItem
-      Caption = 'Check New Sounds'
-      OnClick = CheckNewSoundsClick
-    end
     object N23: TMenuItem
       Caption = '-'
     end

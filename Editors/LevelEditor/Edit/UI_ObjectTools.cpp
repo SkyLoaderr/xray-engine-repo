@@ -9,7 +9,6 @@
 #include "ESceneObjectTools.h"
 #include "FrameObject.h"
 #include "leftbar.h"
-#include "EditorPref.h"
 #include "ui_main.h"
 
 //------------------------------------------------------------------------------

@@ -8,7 +8,6 @@
 #include "ObjectList.h"
 #include "scene.h"
 #include "EditLibrary.h"
-#include "EditorPref.h"
 #include "UI_Tools.h"
 #include "folderlib.h"
 #include "ui_main.h"
@@ -657,12 +656,6 @@ void __fastcall TfraLeftBar::ebSnapListModeClick(TObject *Sender)
 void __fastcall TfraLeftBar::MenuItem12Click(TObject *Sender)
 {
 	UI.Command(COMMAND_SOUND_EDITOR);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::CheckNewSoundsClick(TObject *Sender)
-{
-	UI.Command(COMMAND_CHECK_SOUNDS);
 }
 //---------------------------------------------------------------------------
 

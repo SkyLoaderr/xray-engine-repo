@@ -4,9 +4,9 @@
 #include "scene.h"
 #include "sceneobject.h"
 #include "topbar.h"
-#include "editorpref.h"
 #include "ui_main.h"
 #include "PropertiesListHelper.h"
+#include "editorpreferences.h"
 
 //------------------------------------------------------------------------------
 // static part
@@ -20,9 +20,9 @@ void CCustomObject::SnapMove(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, c
     up.invert(dn);
     Fvector s2,s1=pos;
     s1.add(amount);
-    s2.mad(s1,up,frmEditPrefs->seSnapMoveTo->Value);
+    s2.mad(s1,up,EPrefs.snap_moveto);
 
-    pinf.inf.range=frmEditPrefs->seSnapMoveTo->Value;
+    pinf.inf.range=EPrefs.snap_moveto;
     if (Scene.RayPickObject( pinf.inf.range, s1, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false))||Scene.RayPickObject( pinf.inf.range, s2, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false))){
             pos.set(pinf.pt);
             if (fraTopBar->ebNormalAlignment->Down){

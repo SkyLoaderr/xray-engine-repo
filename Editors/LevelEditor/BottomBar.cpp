@@ -5,7 +5,6 @@
 #include "BottomBar.h"
 #include "leftbar.h"
 #include "LogForm.h"
-#include "EditorPref.h"
 #include "ui_main.h"
 #include "igame_persistent.h"
 #include "environment.h"

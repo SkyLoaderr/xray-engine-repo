@@ -11,7 +11,6 @@
 #include "leftbar.h"
 #include "scene.h"
 #include "sceneobject.h"
-#include "EditorPref.h"
 #include "Cursor3D.h"
 #include "bottombar.h"
 #include "xr_trims.h"
@@ -25,6 +24,7 @@
 #include "builder.h"
 #include "SoundManager.h"
 #include "NumericVector.h"
+#include "EditorPreferences.h"
 
 bool TUI::CommandExt(int _Command, int p1, int p2)
 {
@@ -698,14 +698,14 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
     SRayPickInfo pinf;
     for (int i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
-        if (frmEditPrefs->cbBoxPickLimitedDepth->Checked){
+        if (EPrefs.bp_lim_depth){
 			pinf.inf.range = Device.m_Camera.m_Zfar; // max pick range
             if (Scene.RayPickObject(pinf.inf.range, st, d, OBJCLASS_SCENEOBJECT, &pinf, 0))
 	            if (pinf.inf.range > depth) depth = pinf.inf.range;
         }
     }
     if (depth<Device.m_Camera.m_Znear) depth = Device.m_Camera.m_Zfar;
-    else depth += frmEditPrefs->seBoxPickDepthTolerance->Value;
+    else depth += EPrefs.bp_depth_tolerance;
 
     for (i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);

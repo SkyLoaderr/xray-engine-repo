@@ -10,7 +10,6 @@
 #include "Texture.h"
 #include "Scene.h"
 #include "SceneObject.h"
-#include "EditorPref.h"
 #include "leftbar.h"
 #include "cl_intersect.h"
 #include "Library.h"

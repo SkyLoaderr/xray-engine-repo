@@ -193,7 +193,6 @@ __published:	// IDE-managed Components
 	TMenuItem *ebSaveSel;
 	TMenuItem *N23;
 	TMenuItem *SynchronizeSounds1;
-	TMenuItem *CheckNewSounds;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -280,7 +279,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebSaveSelClick(TObject *Sender);
 	void __fastcall ebViewClick(TObject *Sender);
 	void __fastcall MenuItem12Click(TObject *Sender);
-	void __fastcall CheckNewSoundsClick(TObject *Sender);
 	void __fastcall SynchronizeSounds1Click(TObject *Sender);
 private:	// User declarations
     void RefreshBar();

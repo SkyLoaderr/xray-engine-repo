@@ -3,7 +3,6 @@
 #include "main.h"
 #include "splash.h"
 #include "LogForm.h"
-#include "EditorPref.h"
 //---------------------------------------------------------------------------
 USEFORM("edit\ItemList.cpp", ItemList);
 USEFORM("TopBar.cpp", fraTopBar); /* TFrame: File Type */
@@ -13,7 +12,6 @@ USEFORM("DOOneColor.cpp", frmOneColor);
 USEFORM("DOShuffle.cpp", frmDOShuffle);
 USEFORM("EditLibrary.cpp", frmEditLibrary);
 USEFORM("EditLightAnim.cpp", frmEditLightAnim);
-USEFORM("EditorPref.cpp", frmEditPrefs);
 USEFORM("FrameAIMap.cpp", fraAIMap); /* TFrame: File Type */
 USEFORM("FrameDetObj.cpp", fraDetailObject); /* TFrame: File Type */
 USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
