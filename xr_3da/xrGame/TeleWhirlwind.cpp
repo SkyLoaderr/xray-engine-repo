@@ -2,7 +2,7 @@
 #include "telewhirlwind.h"
 #include "PhysicsShell.h"
 #include "PhysicsShellHolder.h"
-#include "../level.h"
+#include "level.h"
 #include "phdestroyable.h"
 #include "xrmessages.h"
 #include "../SkeletonCustom.h"
