@@ -79,7 +79,7 @@ function stalker_zombe_action:speak()
         self.a.stand = true
     end
 
-    self.time    = device():time_global() + 5000
+    self.time    = device():time_global() + 9000
     self.a.time = device():time_global() + ( 0.8 + math.random() ) * time_to_speak          --Запоминаем время, когда надо сказать следующую фразу( время всегда разное )
 end
 ---------------------------------------------------------------------------------------------------------------------
