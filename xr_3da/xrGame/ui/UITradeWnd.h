@@ -49,7 +49,8 @@ public:
 
 	void DropCurrentItem();
 	void SwitchToTalk();
-
+	void StartTrade();
+	void StopTrade();
 protected:
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
@@ -80,7 +81,7 @@ protected:
 	CUIFrameWindow		UIDescWnd;
 	CUIItemInfo			UIItemInfo;
 
-	
+	bool				bStarted;
 	//функции, выполн€ющие согласование отображаемых окошек
 	//с реальным инвентарем
 	static bool OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);

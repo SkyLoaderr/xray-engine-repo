@@ -42,6 +42,7 @@ public:
 	static TradeFactors m_tTradeFactors;
 
 public:
+	void TradeCB(bool bStart);
 	SInventoryOwner	pThis;
 	SInventoryOwner pPartner;
 

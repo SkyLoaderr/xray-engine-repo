@@ -38,7 +38,10 @@ const char * const TRADE_ITEM_XML		= "trade_item.xml";
 
 CUITradeWnd::CUITradeWnd()
 	:	m_pCurrentDragDropItem	(NULL),
-		m_bDealControlsVisible	(false)
+		m_bDealControlsVisible	(false),
+		m_pTrade(NULL),
+		m_pOthersTrade(NULL),
+		bStarted(false)
 {
 	Init();
 	Hide();
@@ -285,11 +288,12 @@ void CUITradeWnd::Update()
 }
 
 //////////////////////////////////////////////////////////////////////////
-
+//#include "../ai/trader/ai_trader.h"
 void CUITradeWnd::Show()
 {
 	inherited::Show(true);
 	inherited::Enable(true);
+
 
 	ResetAll();
 }
@@ -300,7 +304,21 @@ void CUITradeWnd::Hide()
 {
 	inherited::Show(false);
 	inherited::Enable(false);
+	if(bStarted)
+		StopTrade();
+}
+void CUITradeWnd::StartTrade()
+{
+	if (m_pTrade)m_pTrade->TradeCB(true);
+	if (m_pOthersTrade)m_pOthersTrade->TradeCB(true);
+	bStarted = true;
+}
 
+void CUITradeWnd::StopTrade()
+{
+	if (m_pTrade) m_pTrade->TradeCB(false);
+	if (m_pOthersTrade) m_pOthersTrade->TradeCB(false);
+	bStarted = false;
 }
 
 //при вызове проверки необходимо помнить 

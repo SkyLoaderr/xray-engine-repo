@@ -429,16 +429,21 @@ LPCSTR CScriptGameObject::snd_character_profile_sect () const
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
+/*
+struct EGameTask{
 
+};
+xr_vector<>
+CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_num)
+{
+
+}
+*/
 ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_num)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());
 	VERIFY(pActor);
 
-//	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
-
-//	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
-	
 	const GAME_TASK_VECTOR* tasks =  pActor->game_task_registry->registry().objects_ptr();
 	if(!tasks) 
 		return eTaskStateDummy;

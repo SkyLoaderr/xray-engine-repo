@@ -194,15 +194,22 @@ void CTrade::StartTrade()
 	TradeState = true;
 	m_dwLastTradeTime =  Level().timeServer();
 	m_bNeedToUpdateArtefactTasks = false;
+
+//	if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnStartTrade();
 }
 
 void CTrade::StartTrade(CInventoryOwner* pInvOwner)
 {
 	SetPartner(smart_cast<CEntity*>(pInvOwner));
 	StartTrade();
+}
+void CTrade::TradeCB(bool bStart)
+{
+	if(bStart){
+		if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnStartTrade();
+	}else
+		if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnStopTrade();
 
-	if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnStartTrade();
-	
 }
 
 void CTrade::OnPerformTrade(u32 money_get, u32 money_put)
@@ -220,8 +227,8 @@ void CTrade::StopTrade()
 	CAI_Trader* pTrader = NULL;
 	if (pThis.type == TT_TRADER)
 	{
-		pTrader = smart_cast<CAI_Trader*>(pThis.base);
-		pTrader->OnStopTrade();
+		//pTrader = smart_cast<CAI_Trader*>(pThis.base);
+		//pTrader->OnStopTrade();
 	}
 	else if (pPartner.type == TT_TRADER)
 	{

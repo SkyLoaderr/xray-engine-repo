@@ -248,7 +248,7 @@ void CUITalkWnd::Show()
 void CUITalkWnd::Hide()
 {
 	inherited::Hide();
-
+	UITradeWnd.Hide();
 	if(!m_pActor) return;
 	
 	ToTopicMode();
@@ -372,6 +372,7 @@ void CUITalkWnd::SwitchToTrade()
 
 	UITradeWnd.InitTrade(m_pOurInvOwner, m_pOthersInvOwner);
 	UITradeWnd.Show();
+	UITradeWnd.StartTrade();
 	UITradeWnd.BringAllToTop();
 }
 
