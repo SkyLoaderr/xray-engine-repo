@@ -651,6 +651,8 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 {
 #pragma todo("Dima to Dima : Add food and medikit items need count computations")
 	// choosing food
+	if (tpObjectVector)
+		sort					(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 	getAI().m_tpCurrentALifeMember	= this;
 	u32							l_dwCount = 0;
 	ITEM_P_IT					I = m_tpALife->m_tpItemVector.begin();
@@ -679,7 +681,9 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing medikits
-	u32							l_dwCount = 0;
+	if (tpObjectVector)
+		sort				(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
+	u32						l_dwCount = 0;
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
 	for ( ; I != E; I++) {
@@ -706,11 +710,13 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing detector
-	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
-	float							l_fItemBestValue	= -1.f;
+	if (tpObjectVector)
+		sort					(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
+	CSE_ALifeInventoryItem		*l_tpALifeItemBest	= 0;
+	float						l_fItemBestValue	= -1.f;
 	getAI().m_tpCurrentALifeMember	= this;
-	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin(), X;
-	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
+	ITEM_P_IT					I = m_tpALife->m_tpItemVector.begin(), X;
+	ITEM_P_IT					E = m_tpALife->m_tpItemVector.end();
 	for ( ; I != E; I++) {
 		// checking if it is an item
 		CSE_ALifeItemDetector	*l_tpALifeItem = dynamic_cast<CSE_ALifeItemDetector*>(*I);

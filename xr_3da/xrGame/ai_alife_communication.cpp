@@ -347,6 +347,39 @@ void CSE_ALifeSimulator::vfRunFunctionByIndex(CSE_ALifeHumanAbstract *tpALifeHum
 	}
 }
 
+void CSE_ALifeSimulator::vfAttachOwnerItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, ITEM_P_VECTOR &tpItemVector, ITEM_P_VECTOR *tpOwnItems)
+{
+	ITEM_P_IT				I = tpItemVector.begin();
+	ITEM_P_IT				E = tpItemVector.end();
+	for ( ; I != E; I++)
+		if ((!tpOwnItems || (std::find(tpOwnItems->begin(),tpOwnItems->end(),*I) != tpOwnItems->end())) && tpALifeHumanAbstract->bfCanGetItem(*I))
+			vfAttachItem	(*tpALifeHumanAbstract,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
+}
+
+void CSE_ALifeSimulator::vfAttachGatheredItems(CSE_ALifeTraderAbstract *tpALifeTraderAbstract, OBJECT_VECTOR &tpObjectVector)
+{
+	tpObjectVector.clear();
+	tpObjectVector.insert(tpObjectVector.end(),tpALifeTraderAbstract->children.begin(),tpALifeTraderAbstract->children.end());
+	tpALifeTraderAbstract->children.clear();
+	OBJECT_IT				I = tpObjectVector.begin();
+	OBJECT_IT				E = tpObjectVector.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
+		vfAttachItem		(*tpALifeTraderAbstract,dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject),l_tpALifeDynamicObject->m_tGraphID);
+	}
+}
+
+void CSE_ALifeSimulator::vfRestoreItems(CSE_ALifeTraderAbstract *tpALifeTraderAbstract, ITEM_P_VECTOR &tpItemVector)
+{
+	tpALifeTraderAbstract->children.clear();
+	{
+		ITEM_P_IT		I = tpItemVector.begin();
+		ITEM_P_IT		E = tpItemVector.end();
+		for ( ; I != E; I++)
+			vfAttachItem(*tpALifeTraderAbstract,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
+	}
+}
+
 int  CSE_ALifeSimulator::ifComputeBallance(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, ITEM_P_VECTOR &tpItemVector)
 {
 	int				l_iDebt = 0;
@@ -372,8 +405,6 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	
 	sort				(m_tpItems1.begin(),m_tpItems1.end());
 	sort				(m_tpItems2.begin(),m_tpItems2.end());
-
-	sort				(m_tpItemVector.begin(),m_tpItemVector.end(),CSortItemPredicate());
 
 	tpALifeHumanAbstract1->vfDetachAll();
 	tpALifeHumanAbstract2->vfDetachAll();
@@ -424,8 +455,10 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 				}
 			}
 			
-			if (!(m_tpBlockedItems1.size() + m_tpBlockedItems1.size()))
+			if (!(m_tpBlockedItems1.size() + m_tpBlockedItems1.size())) {
+				ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 				m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1*l_iItemCount2,m_tpItemVector.end());
+			}
 			else {
 				if (m_tpBlockedItems1.size())
 					if (m_tpBlockedItems2.size())
@@ -440,21 +473,20 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 		}
 	}
 
-	if (!bfCheckIfCanNullTradersBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2,ifComputeBallance(tpALifeHumanAbstract1,m_tpItems2) - ifComputeBallance(tpALifeHumanAbstract2,m_tpItems1))) {
-		tpALifeHumanAbstract1->children.clear();
-		tpALifeHumanAbstract2->children.clear();
-		{
-			ITEM_P_IT		I = m_tpItems1.begin();
-			ITEM_P_IT		E = m_tpItems1.end();
-			for ( ; I != E; I++)
-				vfAttachItem(*tpALifeHumanAbstract1,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
-		}
-		{
-			ITEM_P_IT		I = m_tpItems2.begin();
-			ITEM_P_IT		E = m_tpItems2.end();
-			for ( ; I != E; I++)
-				vfAttachItem(*tpALifeHumanAbstract2,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
-		}
+	vfAttachOwnerItems(tpALifeHumanAbstract1,m_tpItemVector,&m_tpItems1);
+	vfAttachOwnerItems(tpALifeHumanAbstract2,m_tpItemVector,&m_tpItems2);
+	if (!m_tpItemVector.empty()) {
+		vfAttachOwnerItems(tpALifeHumanAbstract1,m_tpItemVector);
+		vfAttachOwnerItems(tpALifeHumanAbstract2,m_tpItemVector);
+	}
+	
+	if (m_tpItemVector.empty() && !bfCheckIfCanNullTradersBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2,ifComputeBallance(tpALifeHumanAbstract1,m_tpItems2) - ifComputeBallance(tpALifeHumanAbstract2,m_tpItems1))) {
+		vfRestoreItems	(tpALifeHumanAbstract1,m_tpItems1);
+		vfRestoreItems	(tpALifeHumanAbstract2,m_tpItems2);
+	}
+	else {
+		vfAttachGatheredItems(tpALifeHumanAbstract1,m_tpBlockedItems1);
+		vfAttachGatheredItems(tpALifeHumanAbstract2,m_tpBlockedItems2);
 	}
 }
 

@@ -95,7 +95,7 @@ class CSE_ALifeSimulator :
 	// interaction routines
 			void					vfInitAI_ALifeMembers		();
 			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable,		_GRAPH_ID				tGraphID);
-			bool					bfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable1,		CSE_ALifeSchedulable	*tpALifeSchedulable2,			int			&iCombatGroupIndex, bool			&bMutualDetection);
+			bool					bfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable1,		CSE_ALifeSchedulable	*tpALifeSchedulable2,			int				&iCombatGroupIndex, bool			&bMutualDetection);
 			bool					bfCheckObjectDetection		(CSE_ALifeSchedulable		*tpALifeSchedulable1,		CSE_ALifeSchedulable	*tpALifeSchedulable2);
 
 			void					vfPerformAttackAction		(int						iCombatGroupIndex);
@@ -104,13 +104,16 @@ class CSE_ALifeSimulator :
 			void					vfFillCombatGroup			(CSE_ALifeSchedulable		*tpALifeSchedulable,		int						iGroupIndex);
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
 	// trading routines
-			void					vfRunFunctionByIndex		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int			i,					int				j,					int						&i1,						int				&i2);
+			void					vfRunFunctionByIndex		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int				i,					int				j,					int						&i1,						int				&i2);
+			void					vfAttachOwnerItems			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector,					ITEM_P_VECTOR	*tpOwnItems = 0);
+			void					vfRestoreItems				(CSE_ALifeTraderAbstract	*tpALifeTraderAbstract,		ITEM_P_VECTOR			&tpItemVector);
+			void					vfAttachGatheredItems		(CSE_ALifeTraderAbstract	*tpALifeTraderAbstract,		OBJECT_VECTOR			&tpObjectVector);
 			int						ifComputeBallance			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
 			void					vfGenerateSums				(ITEM_P_VECTOR				&tpTrader,					INT_VECTOR				&tpSums);
-			bool					bfGetItemIndexes			(ITEM_P_VECTOR				&tpTrader,					int						iSum1,							INT_VECTOR	&tpIndexes,			SSumStackCell	*tpStack,			int						iStartI,					int				iStackPointer);
-			bool					bfCheckInventoryCapacity	(CSE_ALifeTraderAbstract	*tpALifeTraderAbstract1,	ITEM_P_VECTOR			&tpTrader1,						int			iSum1,				int				iMoney1,			CSE_ALifeTraderAbstract *tpALifeTraderAbstract2,	ITEM_P_VECTOR	&tpTrader2,		int			iSum2,		int iMoney2, int iBallance);
-			bool					bfCheckForTrade				(CSE_ALifeTraderAbstract	*tpALifeTraderAbstract1,	ITEM_P_VECTOR			&tpTrader1,						INT_VECTOR	&tpSums1,			int				iMoney1,			CSE_ALifeTraderAbstract *tpALifeTraderAbstract2,	ITEM_P_VECTOR	&tpTrader2,		INT_VECTOR	&tpSums2,	int iMoney2, int iBallance);
-			bool					bfCheckIfCanNullTradersBallance(CSE_ALifeTraderAbstract *tpALifeTraderAbstract1,	CSE_ALifeTraderAbstract	*tpALifeTraderAbstract2,		int			iBallance);
+			bool					bfGetItemIndexes			(ITEM_P_VECTOR				&tpTrader,					int						iSum1,							INT_VECTOR		&tpIndexes,			SSumStackCell	*tpStack,			int						iStartI,					int				iStackPointer);
+			bool					bfCheckInventoryCapacity	(CSE_ALifeTraderAbstract	*tpALifeTraderAbstract1,	ITEM_P_VECTOR			&tpTrader1,						int				iSum1,				int				iMoney1,			CSE_ALifeTraderAbstract *tpALifeTraderAbstract2,	ITEM_P_VECTOR	&tpTrader2,		int			iSum2,		int iMoney2, int iBallance);
+			bool					bfCheckForTrade				(CSE_ALifeTraderAbstract	*tpALifeTraderAbstract1,	ITEM_P_VECTOR			&tpTrader1,						INT_VECTOR		&tpSums1,			int				iMoney1,			CSE_ALifeTraderAbstract *tpALifeTraderAbstract2,	ITEM_P_VECTOR	&tpTrader2,		INT_VECTOR	&tpSums2,	int iMoney2, int iBallance);
+			bool					bfCheckIfCanNullTradersBallance(CSE_ALifeTraderAbstract *tpALifeTraderAbstract1,	CSE_ALifeTraderAbstract	*tpALifeTraderAbstract2,		int				iBallance);
 			void					vfPerformTrading			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2);
 			void					vfPerformCommunication		();
 
@@ -146,7 +149,7 @@ public:
 	// miscellanious
 			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTraderAbstract		*tpTraderAbstract);
 			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable);
-			void					vfAppendItemVector			(OBJECT_VECTOR &tObjectVector, ITEM_P_VECTOR &tItemList);
+			void					vfAppendItemVector			(OBJECT_VECTOR				&tObjectVector,				ITEM_P_VECTOR				&tItemList);
 			ECombatAction			tfChooseCombatAction		(int						iCombatGroupIndex);
 			ERelationType			tfGetRelationType			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract2);
 			CSE_Abstract			*tpfCreateGroupMember		(CSE_ALifeGroupAbstract		*tpALifeGroupAbstract,		CSE_ALifeDynamicObject		*j);
