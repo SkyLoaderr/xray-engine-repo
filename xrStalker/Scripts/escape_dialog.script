@@ -4,10 +4,12 @@
 function give_kalash_to_loser(first_speaker, second_speaker)
 	local weap = first_speaker:object("wpn_ak74")
 	first_speaker:transfer_item (weap, second_speaker)
+	first_speaker:set_task_state(task.completed, "escape_novice_need_weapon", 0)
 end
 function give_toz_to_loser(first_speaker, second_speaker)
 	local weap = first_speaker:object("wpn_toz34")
 	first_speaker:transfer_item (weap, second_speaker)
+	first_speaker:set_task_state(task.completed, "escape_novice_need_weapon", 0)
 end
 function haveAK(first_speaker, second_speaker)
 	return( first_speaker:object("wpn_ak74") ~= nil )
@@ -32,7 +34,7 @@ function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
 	first_speaker:transfer_item (case, second_speaker)
 	second_speaker:transfer_money (500, first_speaker)
-	first_speaker:set_task_state(task.completed, "blockpost_case", 0)
+	first_speaker:set_task_state(task.completed, "escape_blockpost_case", 0)
 end
 function trader_need_blockpost_box(first_speaker, second_speaker)
 	local actor = level.actor()

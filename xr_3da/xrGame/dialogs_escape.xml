@@ -61,11 +61,11 @@
 			<text>Ну и хам же ты. Немудрено, что тебя даже на том свете не приняли.</text>
 		</phrase>
 		<phrase id="12">
-	                <precondition>escape_dialog.trader_dont_has_job</precondition>
+	        <precondition>escape_dialog.trader_dont_has_job</precondition>
 			<text>Не, пока ничего нету.</text>
 		</phrase>
 		<phrase id="13">
-	                <precondition>escape_dialog.trader_alredy_give_job</precondition>
+	        <precondition>escape_dialog.trader_alredy_give_job</precondition>
 			<text>Кажется ты уже что-то обещал мне сделать, и еще не сделал. Пока не сделаешь - никаких новых заданий.</text>
 		</phrase>
 		<phrase id="15">
