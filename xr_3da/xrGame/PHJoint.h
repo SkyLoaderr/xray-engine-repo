@@ -105,7 +105,7 @@ public:
 virtual CPHJointDestroyInfo*	JointDestroyInfo(){return m_destroy_info;}
 				 CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual		 ~CPHJoint();
-	void SetShell					(CPHShell* p)			 {pShell=p;}
+	void SetShell							(CPHShell* p);			
 
 };
 

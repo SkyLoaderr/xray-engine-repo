@@ -3,6 +3,7 @@
 #define CPHOBJECT
 #include "../ispatial.h"
 #include "PHItemList.h"
+#include "PHIsland.h"
 class CPHObject;
 
 class CPHUpdateObject;
@@ -17,27 +18,36 @@ class CPHObject :
 				bool		b_activated;
 				bool		b_freezed;
 				bool		b_dirty;
-								
+			CPHIsland		m_island;
 protected:
 				Fvector		AABB;
 protected:
 
 	virtual		dGeomID		dSpacedGeom			()								=0;
 	virtual		void		get_spatial_params	()								=0;
-
 	virtual		void		spatial_register	()								;
 
+				CPHObject*	SelfPointer			()								{return this;}
 public:
+				void		IslandReinit		()								{m_island.Unmerge();}
+				void		IslandStep			(dReal step)					{m_island.Step(step);}
+				void		MergeIsland			(CPHObject* obj)				{m_island.Merge(&obj->m_island);}
+				CPHIsland&	Island				()								{return m_island;}
+				dWorldID	DActiveWorld		()								{return m_island.DActiveWorld();}
+				CPHIsland*	DActiveIsland		()								{return m_island.DActiveIsland();}
+				dWorldID	DWorld				()								{return m_island.DWorld();}
+	
 	virtual		void		FreezeContent		()								;
 	virtual		void		UnFreezeContent		()								;
-	virtual		void 		EnableObject	()											;
-	virtual 	void 		PhDataUpdate	(dReal step)						=0;
-	virtual 	void 		PhTune			(dReal step)						=0;
-	virtual		void 		spatial_move	()									;
-	virtual 	void 		InitContact	(dContact* c,bool& do_collide)			=0;
+	virtual		void 		EnableObject		()								;
+
+	virtual 	void 		PhDataUpdate		(dReal step)					=0;
+	virtual 	void 		PhTune				(dReal step)					=0;
+	virtual		void 		spatial_move		()								;
+	virtual 	void 		InitContact			(dContact* c,bool& do_collide)	=0;
 	
-				void 		Freeze			()									;
-				void 		UnFreeze		()									;
+				void 		Freeze				()								;
+				void 		UnFreeze			()								;
 
 	//virtual void StepFrameUpdate(dReal step)=0;
 

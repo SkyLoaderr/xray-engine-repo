@@ -239,4 +239,5 @@ void CPHCapture::Init(CInifile* ini)
 	m_taget_element->set_DynamicLimits(default_l_limit*pulling_vel_scale,default_w_limit*pulling_vel_scale);
 	//m_taget_element->PhysicsShell()->set_ObjectContactCallback(object_contactCallbackFun);
 	m_character->SetObjectContactCallback(object_contactCallbackFun);
+	m_island.Init();
 }

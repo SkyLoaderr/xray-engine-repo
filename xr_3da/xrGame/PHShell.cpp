@@ -1014,7 +1014,11 @@ void CPHShell::PassEndElements(u16 from,u16 to,CPHShell *dest)
 void CPHShell::PassEndJoints(u16 from,u16 to,CPHShell *dest)
 {
 	JOINT_I i_from=joints.begin()+from,e=joints.begin()+to;
-
+	JOINT_I i=i_from;
+	for(;i!=e;i++)
+	{
+		(*i)->SetShell(dest);
+	}
 	dest->joints.insert(dest->joints.end(),i_from,e);
 	joints.erase(i_from,e);
 }

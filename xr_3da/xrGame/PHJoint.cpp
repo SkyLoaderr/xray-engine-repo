@@ -560,8 +560,13 @@ void CPHJoint::Create()
 }
 void CPHJoint::RunSimulation()
 {
-	dWorldAddJoint(phWorld,m_joint);
-	if(m_joint1)dWorldAddJoint(phWorld,m_joint1);
+	pShell->Island().AddJoint(m_joint);
+	///dWorldAddJoint(phWorld,m_joint);
+	if(m_joint1)
+	{
+	//dWorldAddJoint(phWorld,m_joint1);
+		pShell->Island().AddJoint(m_joint1);
+	}
 }
 void CPHJoint::Activate()
 {
@@ -579,11 +584,16 @@ void CPHJoint::Deactivate()
 	case universal_hinge:		;
 	case shoulder1:				;
 	case shoulder2:				;
-	case car_wheel:				dJointDestroy(m_joint); 
+	case car_wheel:			
+							if(m_joint->world)pShell->Island().RemoveJoint(m_joint);
+							dJointDestroy(m_joint); 
 		break;
 
-	case full_control:			dJointDestroy(m_joint);
-		dJointDestroy(m_joint1);
+	case full_control:			
+								if(m_joint->world)pShell->Island().RemoveJoint(m_joint);
+								if(m_joint1->world)pShell->Island().RemoveJoint(m_joint1);
+								dJointDestroy(m_joint);
+								dJointDestroy(m_joint1);
 		m_joint1=NULL;
 		break;
 	}
@@ -1081,4 +1091,24 @@ CPhysicsElement* CPHJoint::PSecond_element()
 void CPHJoint::SetBreakable(u16 bone_id,float force,float torque)
 {
 	if(!m_destroy_info)	m_destroy_info=xr_new<CPHJointDestroyInfo>(bone_id,force,torque);
+}
+
+void CPHJoint::SetShell(CPHShell* p)
+{
+	if(!m_joint||!pShell)
+	{
+		pShell=p;
+		return;
+	}
+	if(pShell!=p)
+	{
+		pShell->Island().RemoveJoint(m_joint);
+		p->Island().AddJoint(m_joint);
+		if(m_joint1)
+		{
+			pShell->Island().RemoveJoint(m_joint1);
+			p->Island().AddJoint(m_joint1);
+		}
+		pShell=p;
+	}
 }

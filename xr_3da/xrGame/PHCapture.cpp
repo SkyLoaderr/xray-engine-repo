@@ -12,7 +12,8 @@
 
 void CPHCapture::CreateBody()
 {
-	m_body= dBodyCreate(phWorld);
+	m_body= dBodyCreate(0);
+	m_island.AddBody(m_body);
 	dMass m;
 	dMassSetSphere(&m,1.f,1000000.f);
 	dMassAdjust(&m,100000.f);
@@ -50,20 +51,33 @@ void CPHCapture::PhTune(dReal /**step/**/)
 	bool act_capturer=m_character->CPHObject::is_active();
 	bool act_taget=m_taget_object->PPhysicsShell()->isEnabled();
 	b_disabled=!act_capturer&&!act_taget;
+	if(act_capturer)
+	{
+		m_taget_element->Enable();
+	}
+	if(act_taget)
+	{
+		m_character->Enable();
+	}
 	switch(e_state) 
 	{
 	case cstPulling:  ;
 		break;
-	case cstCaptured: if(b_disabled)dBodyDisable(m_body);
+	case cstCaptured: 
+		{
+				if(b_disabled) dBodyDisable(m_body);
+				else 
+				{
+					m_character->Island().Merge(&m_island);
+					m_taget_element->PhysicsShell()->PIsland()->Merge(&m_island);
+				}
+		}
 		break;
 	case cstReleased: ;
 		break;
 	default: NODEFAULT;
 	}
-	if(act_capturer)
-	{
-		m_taget_element->Enable();
-	}
+
 }
 
 void CPHCapture::PullingUpdate()
@@ -92,8 +106,8 @@ void CPHCapture::PullingUpdate()
 	{
 		m_back_force=0.f;
 
-		m_joint=dJointCreateBall(phWorld,0);
-
+		m_joint=dJointCreateBall(0,0);
+		m_island.AddJoint(m_joint);
 		m_ajoint=dJointCreateAMotor(phWorld,0);
 		dJointSetAMotorMode (m_ajoint, dAMotorEuler);
 		dJointSetAMotorNumAxes (m_ajoint, 3);
@@ -178,6 +192,7 @@ void CPHCapture::PullingUpdate()
 
 void CPHCapture::CapturedUpdate()
 {
+	m_island.Unmerge();
 	if(m_character->CPHObject::is_active())
 	{
 		m_taget_element->Enable();
@@ -226,9 +241,17 @@ void CPHCapture::Release()
 {
 	if(b_failed) return;
 	if(e_state==cstReleased) return;
-	if(m_joint) dJointDestroy(m_joint);
+	if(m_joint) 
+	{
+		m_island.RemoveJoint(m_joint);
+		dJointDestroy(m_joint);
+	}
 	m_joint=NULL;
-	if(m_body) dBodyDestroy(m_body);
+	if(m_body) 
+	{
+		m_island.RemoveBody(m_body);
+		dBodyDestroy(m_body);
+	}
 	m_body=NULL;
 
 	if(m_taget_element&&m_taget_object->m_pPhysicsShell)

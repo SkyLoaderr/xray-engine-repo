@@ -54,6 +54,8 @@ public:
 		joints.push_back((CPHJoint*)J);
 		dynamic_cast<CPHJoint*>(J)->SetShell(this);
 	};
+
+	virtual CPHIsland*		PIsland					(){return &Island();};
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	;
 
 	virtual void			Update					()	;											

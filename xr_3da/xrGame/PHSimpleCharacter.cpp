@@ -170,8 +170,8 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dGeomTransformSetGeom(m_hat_transform,m_hat);
 	//dGeomTransformSetGeom(m_wheel_transform,m_wheel);
 	dGeomTransformSetGeom(m_shell_transform,m_geom_shell);
-	m_body=dBodyCreate(phWorld);
-
+	m_body=dBodyCreate(0);
+	Island().AddBody(m_body);
 	dGeomSetBody(m_shell_transform,m_body);
 	dGeomSetBody(m_hat_transform,m_body);
 	//dGeomSetBody(m_wheel_transform,m_body);
@@ -297,6 +297,7 @@ void CPHSimpleCharacter::Destroy(){
 	}
 
 	if(m_body) {
+		Island().RemoveBody(m_body);
 		dBodyDestroy(m_body);
 		m_body=NULL;
 	}
@@ -1005,7 +1006,8 @@ void CPHSimpleCharacter::SetPhysicsRefObject					(CGameObject* ref_object)
 
 void CPHSimpleCharacter::CaptureObject(dBodyID body,const dReal* anchor)
 {
-	m_capture_joint=dJointCreateBall(phWorld,0);
+	m_capture_joint=dJointCreateBall(0,0);
+	Island().AddJoint(m_capture_joint);
 	dJointAttach(m_capture_joint,m_body,body);
 	dJointSetBallAnchor(m_capture_joint,anchor[0],anchor[1],anchor[2]);
 	dJointSetFeedback(m_capture_joint,&m_capture_joint_feedback);

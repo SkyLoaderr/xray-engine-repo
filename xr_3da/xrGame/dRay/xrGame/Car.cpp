@@ -435,6 +435,7 @@ void CCar::CreateSkeleton()
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->Activate(true);
 	m_pPhysicsShell->SetAirResistance(0.f,0.f);
+
 }
 
 void CCar::Init()
@@ -881,18 +882,7 @@ void CCar::PhTune(dReal step)
 		if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
 	}
 
-	for (int k=0; k<(int)m_doors_update.size(); ++k){
-		SDoor* D = m_doors_update[k];
-		if (!D->update)
-		{
-			m_doors_update.erase(m_doors_update.begin()+k);
-			--k;
-		}
-		else
-		{
-			D->Update();
-		}
-	}
+
 }
 
 
@@ -1164,6 +1154,18 @@ void CCar::ResetScriptData(void	*P)
 
 void CCar::PhDataUpdate(dReal /**step/**/)
 {
+	for (int k=0; k<(int)m_doors_update.size(); ++k){
+		SDoor* D = m_doors_update[k];
+		if (!D->update)
+		{
+			m_doors_update.erase(m_doors_update.begin()+k);
+			--k;
+		}
+		else
+		{
+			D->Update();
+		}
+	}
 	if (GetScriptControl())
 		ProcessScripts();
 }

@@ -11,6 +11,7 @@ DEFINE_VECTOR(ISpatial*,qResultVec,qResultIt)
 	b_activated=false;
 	b_freezed =false;
 	spatial.type|=STYPE_PHYSIC;
+	m_island.Init();
 }
 
 void CPHObject::activate()
@@ -42,6 +43,9 @@ void CPHObject::spatial_move()
 	b_dirty=true;
 }
 
+
+
+
 void CPHObject::Collide()
 {
 	//spatial_move();
@@ -55,7 +59,7 @@ void CPHObject::Collide()
 		NearCallback(this,obj2,dSpacedGeom(),obj2->dSpacedGeom());
 	}
 ///////////////////////////////
-	CollideStatic(dSpacedGeom());
+	CollideStatic(dSpacedGeom(),this);
 	b_dirty=false;
 	//near_callback(this,0,(dGeomID)dSpace(),ph_world->GetMeshGeom());
 }

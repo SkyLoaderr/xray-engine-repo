@@ -104,7 +104,11 @@ void CPHElement::RunSimulation()
 		dSpaceAdd(m_shell->dSpace(),(dGeomID)m_group);
 	else
 		(*m_geoms.begin())->add_to_space(m_shell->dSpace());
-	if(!m_body->world) dWorldAddBody(phWorld, m_body);
+	if(!m_body->world) 
+	{
+		//dWorldAddBody(phWorld, m_body);
+		m_shell->Island().AddBody(m_body);
+	}
 	dBodyEnable(m_body);
 }
 
@@ -112,8 +116,9 @@ void CPHElement::destroy	()
 {
 	//dJointGroupDestroy(m_saved_contacts);
 	CPHGeometryOwner::destroy();
-	if(m_body)
+	if(m_body&&m_body->world)
 	{
+		m_shell->Island().RemoveBody(m_body);
 		dBodyDestroy(m_body);
 		m_body=NULL;
 	}
@@ -677,9 +682,7 @@ void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 
 
 }
-# define DET(a) 	 (( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -\
-a._12 * ( a._21 * a._33 - a._23 * a._31 ) +\
-a._13 * ( a._21 * a._32 - a._22 * a._31 ) ))
+
 
 void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 {
@@ -1098,7 +1101,21 @@ CPHShell* CPHElement::PHShell()
 {
 	return (m_shell);
 }
+void	CPHElement::SetShell(CPHShell* p)
+{
+	if(!m_body||!m_shell)
+		{
+			m_shell=p;
+			return;
+		}
+	if(m_shell!=p)
+	{
+		m_shell->Island().RemoveBody(m_body);
+		p->Island().AddBody(m_body);
+		m_shell=p;
+	}
 
+}
 void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 {
 	GEOM_I i_from=m_geoms.begin()+from,e=m_geoms.begin()+to;
@@ -1135,7 +1152,8 @@ void CPHElement::DeleteFracturesHolder()
 
 void CPHElement::CreateSimulBase()
 {
-	m_body=dBodyCreate(phWorld);
+	m_body=dBodyCreate(0);
+	m_shell->Island().AddBody(m_body);
 	//m_saved_contacts=dJointGroupCreate (0);
 	//b_contacts_saved=false;
 	dBodyDisable(m_body);
