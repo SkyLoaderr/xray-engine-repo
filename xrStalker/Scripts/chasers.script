@@ -54,7 +54,8 @@ function main ()
              else
                 if game.time () - checktime > 5000 then
                    checktime = game.time () 
-                   local vec = pos - scr_monster:position ()
+                   local p = scr_monster:position ()
+                   local vec = vector():set (pos.x - p.x, pos.y - p.y, pos.z - p.z)
                    if vec:magnitude () < 10 then
                       scr_monster:script (false, chasers.script_name ())  
                       old_monster = scr_monster:id ()
