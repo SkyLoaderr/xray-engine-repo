@@ -96,8 +96,16 @@ function fract:calculate()
 	--self:print()
 end
 function fract:updateJob()
+	function availState(st, state)
+		for k,v in st do
+			if v == state then return true end
+		end
+		return false
+	end
+
 	for k,v in self.Job do
-		if v.state ~= self.state then
+		-- проверка на доступность при текущем стейте
+		if availState(v.state, self.state) then
 			v.object = nil
 		else
 			if v.object == nil and
@@ -275,7 +283,7 @@ function createGulag(name, type)
 	return xr_gulag.fraction[name]
 end
 
-function isUnderFraction (npc)
+function isUnderFraction(npc)
 	for k,v in fraction do
 		if v:stalkerExist(npc) == true then
 			return k
