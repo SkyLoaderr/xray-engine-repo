@@ -46,6 +46,7 @@ float		ps_r2_tonemap_amount		= 0.5f;				// r2-only
 float		ps_r2_ls_bloom_kernel_g		= 3.3f;				// r2-only
 float		ps_r2_ls_bloom_kernel_b		= .6f;				// r2-only
 float		ps_r2_ls_bloom_speed		= 10.f;				// r2-only
+float		ps_r2_ls_bloom_kernel_scale	= 1.1f;				// r2-only	// gauss
 float		ps_r2_ls_dsm_kernel			= .7f;				// r2-only
 float		ps_r2_ls_psm_kernel			= .7f;				// r2-only
 float		ps_r2_ls_ssm_kernel			= .7f;				// r2-only
@@ -158,6 +159,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_tonemap_adaptation",&ps_r2_tonemap_adaptation,	0.01f,	10.0f	);
 	CMD4(CCC_Float,		"r2_tonemap_lowlum",	&ps_r2_tonemap_low_lum,		0.0001f,1.0f	);
 	CMD4(CCC_Float,		"r2_tonemap_amount",	&ps_r2_tonemap_amount,		0.0000f,1.0f	);
+	CMD4(CCC_Float,		"r2_ls_bloom_kernel_scale",&ps_r2_ls_bloom_kernel_scale,	1.f,	2.f);
 	CMD4(CCC_Float,		"r2_ls_bloom_kernel_g",	&ps_r2_ls_bloom_kernel_g,	1.f,	7.f		);
 	CMD4(CCC_Float,		"r2_ls_bloom_kernel_b",	&ps_r2_ls_bloom_kernel_b,	0.01f,	1.f		);
 	CMD4(CCC_Float,		"r2_ls_bloom_threshold",&ps_r2_ls_bloom_threshold,	0.f,	1.f		);
