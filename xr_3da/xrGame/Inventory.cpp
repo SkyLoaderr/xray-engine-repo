@@ -190,7 +190,7 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 		if (InRuck(pIItem) || Ruck(pIItem))
 		{
 			m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
-			m_all.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
+			m_all.erase(std::find(m_all.begin(), m_all.end(), pIItem));
 			pIItem->m_pInventory = NULL;
 
 			if (call_drop && smart_cast<CInventoryItem*>(pObj))
