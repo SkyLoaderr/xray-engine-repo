@@ -106,11 +106,8 @@ public:
 
 			void	Drop				();										// Если объект в инвенторе, то он будет выброшен
 
-			u32		Cost				() const	{
-				// for "dead" weapon we use 10% from base cost, for "good" weapon we use full base cost
-				return iFloor	(float(m_cost)*(m_fCondition*0.9f + .1f) + .5f); 
-			}
-			float	Weight				() const	{return m_weight;}		
+			u32		Cost				() const	{ return m_cost; }
+			float	Weight				() const	{ return m_weight;}		
 
 public:
 	// Указатель на инвентарь. Всегда полезно знать где находишься :)

@@ -162,9 +162,13 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 	CArtefact* pArtefact = smart_cast<CArtefact*>(pItem);
 
 	// определение коэффициента
-	float factor = 1.0f;
-	u32 item_cost = pItem->Cost();
+	float factor	= 1.0f;
+	u32 item_cost	= pItem->Cost();
 	
+	// condition
+	// for "dead" weapon we use 10% from base cost, for "good" weapon we use full base cost
+	item_cost		= iFloor	(float(item_cost)*powf(pItem->GetCondition()*0.9f + .1f, 0.75f) + .5f); 
+
 	//дл€ актера цену вещи всегда определ€ют 
 	//его собеседники
 	if (pThis.type == TT_ACTOR)
