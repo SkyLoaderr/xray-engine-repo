@@ -18,6 +18,10 @@ void		CBlendInstance::construct()
 }
 void		CBlendInstance::blend_add	(CBlend* H)
 {	
+	if (Blend.size()>=MAX_BLENDED)	{
+		Msg	("! WARNING: more than 16 blend-sequences per bone played");
+		return;
+	}
 	Blend.push_back(H);	
 }
 void		CBlendInstance::blend_remove	(CBlend* H)
