@@ -97,8 +97,9 @@ void	game_sv_CS::OnTimelimitExceed	()
 	// if ()
 }
 
-BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 id_target)
+BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 {
+	return FALSE;
 }
 
 void	game_sv_CS::Update			()
