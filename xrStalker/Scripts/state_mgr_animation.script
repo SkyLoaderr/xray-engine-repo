@@ -432,10 +432,11 @@ function animation:set_state(id)
 		end
 		if self.animations[id].idle ~= nil then
 			self.npc:add_animation(self.animations[id].idle[self:weapon_slot()], true)
+			nn = nn + 1
+		else
+			-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
+			self.mgr.animstate:add_idle_animation()
 		end
-	else
-		-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
-		self.mgr.animstate:add_idle_animation()		
 	end
 	if nn > 0 then
 		self.states.current_state = "wait"
