@@ -192,14 +192,6 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 
 }
 
-//прорисовка кнопки
-void  CUIButton::Draw()
-{
-	DrawTexture();
-	CUIWindow::Draw();
-	DrawText();	
-}
-
 void CUIButton::DrawTexture()
 {
 	Irect rect = GetAbsoluteRect();
