@@ -7,17 +7,17 @@
 -- Copyright 2004 GSC Game World
 --
 
-class "ui_main_main_tab" (ui_main_base_tab.main_base_tab)
+class "main_main_tab" (ui_main_base_tab.main_base_tab)
 
-function ui_main_main_tab:__init() super()
+function main_main_tab:__init() super()
 	
 end
 
-function ui_main_main_tab:__finalize()
+function main_main_tab:__finalize()
 	
 end
 
-function ui_main_main_tab:InitControls()
+function main_main_tab:InitControls()
 	ui_main_base_tab.InitControls(self)
 	
 	local btn_new_rect    = {x = self.btn.x,
@@ -134,7 +134,7 @@ function ui_main_main_tab:InitControls()
 
 end
 
-function ui_main_main_tab:InitCallbacks()
+function main_main_tab:InitCallbacks()
 
 end
 
