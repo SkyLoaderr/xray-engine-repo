@@ -45,7 +45,7 @@
 			<level>0</level>
 			<object>quest_case_01</object>
 			<icon name="ящик" x="2" y="8" width="1" height="1"></icon>
-			<text>”кради €щик с блокпоста,\nтак чтобы никто не заметил...</text>
+			<text>”кради €щик \nс блокпоста,\nтак чтобы никто не заметил...</text>
 		</location>
 	</info_portion>
 
