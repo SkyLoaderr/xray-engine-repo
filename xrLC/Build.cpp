@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "Build.h"
 #include "Image.h"
-#include "xr_func.h"
 
 vector<OGF_Base *>	g_tree;
 vector<DetailPatch>	g_pathes;

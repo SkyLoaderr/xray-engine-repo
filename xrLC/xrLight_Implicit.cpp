@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "build.h"
-#include "xr_func.h"
 #include "tga.h"
 #include "xrThread.h"
 #include "hash2D.h"
