@@ -60,9 +60,9 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 
 	float			_sin1,_cos1,_sin2,_cos2;
 	angle			-=PI_DIV_4;
-    _sincos			(angle,_sin1,_cos1); 
+	_sin1=_sin(angle); _cos1=_cos(angle);
 	angle			+=PI_DIV_2;
-	_sincos			(angle,_sin2,_cos2);
+	_sin2=_sin(angle); _cos2=_cos(angle);
 
 	Fvector2 C;
 	Ivector2 RS;

@@ -37,10 +37,11 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 	Fvector2	c;
 	c.x				= (PT.p.x+1)*w_2;
 	c.y				= (PT.p.y+1)*h_2;
+
 	// Rotation
 	float	_sin1,_cos1,_sin2,_cos2,da;
-	da = angle;		 _sincos	(da,_sin1,_cos1);
-	da += PI_DIV_2;  _sincos	(da,_sin2,_cos2);
+	da = angle;		 _sin1=_sin(da); _cos1=_cos(da);
+	da += PI_DIV_2;  _sin2=_sin(da); _cos2=_cos(da);
 
 	pv->set	(c.x+sz*_sin1,	c.y+sz*_cos1,	PT.p.z, PT.p.w, clr, lt.x,rb.y);	pv++;
 	pv->set	(c.x-sz*_sin2,	c.y-sz*_cos2,	PT.p.z, PT.p.w, clr, lt.x,lt.y);	pv++;

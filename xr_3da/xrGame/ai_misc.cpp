@@ -224,9 +224,10 @@ void vfComputeCircle(Fvector tPosition, Fvector tPoint0, Fvector tPoint1, float 
 	tFinalPosition.add(tPoint0);
 	
 	tCircleCentre.add(tP0,tP1);
-	_sincos(fAlpha,fSinus,fCosinus);
-	fRadius = fRx*fSinus/fCosinus;
-	fRx = fRadius*(1.f/fSinus - 1.f);
+	fSinus			= _sin(fAlpha);
+	fCosinus		= _cos(fAlpha);
+	fRadius			= fRx*fSinus/fCosinus;
+	fRx				= fRadius*(1.f/fSinus - 1.f);
 	tCircleCentre.mul((fRadius + fRx)/tCircleCentre.magnitude());
 	tCircleCentre.add(tPoint0);
 }
@@ -837,8 +838,9 @@ void CAI_Space::vfCreateFastRealisticPath(xr_vector<Fvector> &tpaPoints, u32 dwS
 	tpaDeviations[0].set(0,0,0);
 	for ( i=1; i<(int)tpaDeviations.size(); i++) {
 		fRadius = ::Random.randF(fRadiusMin,fRadiusMax);
-		fAlpha = ::Random.randF(0.f,PI_MUL_2);
-		_sincos(fAlpha,fAlpha0,fTemp);
+		fAlpha	= ::Random.randF(0.f,PI_MUL_2);
+		fAlpha0	= _sin(fAlpha);
+		fTemp	= _cos(fAlpha);
 		if (bUseDeviations)
 			tpaDeviations[i].set(fTemp*fRadius,0,fAlpha0*fRadius);
 		else

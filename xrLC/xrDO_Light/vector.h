@@ -81,14 +81,6 @@ IC T	deg2rad			( T val )	{ return (val*T(M_PI)/T(180)); };
 template <class T>		
 IC T	rad2deg			( T val )	{ return (val*T(180)/T(M_PI)); };
 
-// assembler accelerated simultaneus SIN/COS
-#ifdef	M_VISUAL
-#define _sincos(_a,_s,_c)	{ __asm fld _a __asm fsincos __asm fstp _c __asm fstp _s }
-#endif
-#ifdef	M_BORLAND
-#define _sincos(a,s,c)		{ s = sinf(a); c=cosf(a); }
-#endif
-
 // clamping/snapping
 template <class T>
 IC void clamp( T& val, const T& _low, const T& _high ){

@@ -188,7 +188,8 @@ public:
 		z	= R.randF(-1,1);
 		T a = R.randF(PI_MUL_2);
 		T r = _sqrt(1-z*z);
-		T sa,ca; _sincos(a,sa,ca);
+		T sa= _sin (a);
+		T ca= _cos (a);
 		x	= r * ca;
 		y	= r * sa;
 	};
@@ -266,10 +267,7 @@ public:
     };
 	IC	void	setHP	(T h, T p)
 	{
-        T _ch, _cp, _sh, _sp;
-        _sincos(h,_sh,_ch);
-        _sincos(p,_sp,_cp);
-
+        T _ch=_cos(h), _cp=_cos(p), _sh=_sin(h), _sp=_sin(p);
         x = -_cp*_sh;
         y = _sp;
         z = _cp*_ch;

@@ -367,9 +367,9 @@ void CRender::flush_Patches	()
 		// Rotation
 		float			_sin1,_cos1,_sin2,_cos2;
 		float			da	= P.angle;
-		_sincos			(da,_sin1,_cos1);
+		_sin1			= _sin(da); _cos1 = _cos(da);
 		da				+= PI_DIV_2;
-		_sincos			(da,_sin2,_cos2);
+		_sin2			= _sin(da); _cos2 = _cos(da);
 
 		V->set			(	cx + size * _sin1,	// sx
 							cy + size * _cos1,	// sy

@@ -479,9 +479,9 @@ public:
 	{
         T _ch, _cp, _cb, _sh, _sp, _sb, _cc, _cs, _sc, _ss;
 
-        _sincos(h,_sh,_ch);
-        _sincos(p,_sp,_cp);
-        _sincos(b,_sb,_cb);
+        _sh = _sin(h); _ch = _cos(h);
+        _sp = _sin(p); _cp = _cos(p);
+        _sb = _sin(b); _cb = _cos(b);
         _cc = _ch*_cb; _cs = _ch*_sb; _sc = _sh*_cb; _ss = _sh*_sb;
 
         i.set(_cc-_sp*_ss,	-_cp*_sb,	_sp*_cs+_sc	);	_14_=0;
@@ -511,9 +511,9 @@ public:
     // remove
 	IC	void	setHPB_old	(T h, T p, T b)
 	{
-		T _sp,_cp;		_sincos(_p,_sp,_cp);
-		T _sh,_ch;		_sincos(_h,_sh,_ch);
-		T _sb,_cb;		_sincos(_b,_sb,_cb);
+		T _sp,_cp;		_sp = _sin(p); _cp = _cos(p);
+		T _sh,_ch;		_sh = _sin(h); _ch = _cos(h);
+		T _sb,_cb;		_sb = _sin(b); _cb = _cos(b);
 
 		i.set(_cb*_ch+_sb*_sp*_sh, 	_sb*_cp,	_sh*_cb-_sb*_sp*_ch);	_14_=0;
 		j.set(-_sb*_ch+_cb*_sp*_sh, _cb*_cp,	-_sb*_sh-_cb*_sp*_ch);	_24_=0;
