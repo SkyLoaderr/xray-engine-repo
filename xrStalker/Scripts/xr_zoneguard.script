@@ -126,7 +126,7 @@ function action_zoneguard_activity:execute()
 		return
 	end
 
-	if self.sound_activated then
+	if self.sound_activated and distance_between(self.object, actor) <= 5 then
 		--printf("_bp: zoneguard: sound_update: maxidle = %d, sumidle = %s", self.snd.maxidle, self.snd.sumidle)
 		xr_sound.sound_update(self.object, self.snd)
 	end
@@ -177,7 +177,7 @@ function action_zoneguard_activity:execute()
 			teams[self.st.team].triggered = self.object:id()
 
 			if self.st.snd_greet and not self.sound_activated then
-				xr_sound.sound_update(self.object, self.snd)
+				--xr_sound.sound_update(self.object, self.snd)
 				self.sound_activated = true
 			end
 		else

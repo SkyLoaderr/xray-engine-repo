@@ -173,7 +173,7 @@ function action_remark_activity:step()
 
 		-- ѕробовать включать звук, когда мы близко, или долго не можем добратьс€ до игрока:
 		if self.st.snd and
-		   (self.st.snd_dist < distance_between(self.object, self.target) or
+		   (self.st.snd_dist < distance_between(self.object, self.target) or -- FIXME
 		    self.st.snd_timeout <= device():time_global() - self.reset_time) then
 			self:activate_sound()
 		end
