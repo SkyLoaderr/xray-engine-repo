@@ -101,7 +101,7 @@ extern	Fbox				LevelBB;
 extern	Vectors				Emitters;
 
 // phases
-void	xrLoad			(LPCSTR name);
+void	xrLoad			(LPCSTR name, bool draft_mode);
 void	xrBuildNodes	();
 void	xrSmoothNodes	();
 void	xrLight			();

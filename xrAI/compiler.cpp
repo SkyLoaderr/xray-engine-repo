@@ -64,7 +64,7 @@ void	mem_Optimize	()
 void xrCompiler(LPCSTR name, bool draft_mode)
 {
 	Phase("Loading level...");
-	xrLoad		(name);
+	xrLoad		(name,draft_mode);
 	mem_Optimize();
 
 //	Phase("Building nodes...");

@@ -32,46 +32,48 @@ IC CNodePositionConverter::CNodePositionConverter(const SNodePositionOld &Psrc, 
 	np.y		(Psrc.y);
 }
 
-void xrLoad(LPCSTR name)
+void xrLoad(LPCSTR name, bool draft_mode)
 {
-	// Load CFORM
-	string256				N;
-	{
-		strconcat			(N,name,"level.cform");
-		IReader				*fs = FS.r_open(N);
-		R_ASSERT			(fs);
-		
-		hdrCFORM			H;
-		fs->r				(&H,sizeof(hdrCFORM));
-		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
-		
-		Fvector*	verts	= (Fvector*)fs->pointer();
-		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
-		Level.build			( verts, H.vertcount, tris, H.facecount );
-		Msg("* Level CFORM: %dK",Level.memory()/1024);
-		fs->close			();
+	string256					N;
+	if (!draft_mode) {
+		// Load CFORM
+		{
+			strconcat			(N,name,"level.cform");
+			IReader				*fs = FS.r_open(N);
+			R_ASSERT			(fs);
+			
+			hdrCFORM			H;
+			fs->r				(&H,sizeof(hdrCFORM));
+			R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
+			
+			Fvector*	verts	= (Fvector*)fs->pointer();
+			CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
+			Level.build			( verts, H.vertcount, tris, H.facecount );
+			Msg("* Level CFORM: %dK",Level.memory()/1024);
+			fs->close			();
 
-		LevelBB.set			(H.aabb);
-	}
+			LevelBB.set			(H.aabb);
+		}
 
-	// Load CFORM ("lighting")
-	{
-		strconcat			(N,name,"build.cform");
-		IReader				*F = FS.r_open(N);
-		R_ASSERT2			(F,"There is no file 'build.cform'!");
-		
-		hdrCFORM			H;
-		IReader				*fs	= F->open_chunk(0);
-		fs->r				(&H,sizeof(hdrCFORM));
-		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
-		
-		//fs					= F->open_chunk(1);
-		Fvector*	verts	= (Fvector*)fs->pointer();
-		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
-		LevelLight.build	( verts, H.vertcount, tris, H.facecount );
-		fs->close			();
-		F->close			();
-		Msg("* Level CFORM(L): %dK",LevelLight.memory()/1024);
+		// Load CFORM ("lighting")
+		{
+			strconcat			(N,name,"build.cform");
+			IReader				*F = FS.r_open(N);
+			R_ASSERT2			(F,"There is no file 'build.cform'!");
+			
+			hdrCFORM			H;
+			IReader				*fs	= F->open_chunk(0);
+			fs->r				(&H,sizeof(hdrCFORM));
+			R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
+			
+			//fs					= F->open_chunk(1);
+			Fvector*	verts	= (Fvector*)fs->pointer();
+			CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
+			LevelLight.build	( verts, H.vertcount, tris, H.facecount );
+			fs->close			();
+			F->close			();
+			Msg("* Level CFORM(L): %dK",LevelLight.memory()/1024);
+		}
 	}
 	
 //	// Load emitters
