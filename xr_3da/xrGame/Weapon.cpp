@@ -310,6 +310,10 @@ void CWeapon::Load		(LPCSTR section)
 		m_dwWeaponRemoveTime = WEAPON_REMOVE_TIME;
 	//////////////////////////////////////
 
+
+	m_bHideCrosshairInZoom = false;
+	if(pSettings->line_exist(section, "zoom_hide_crosshair"))
+		m_bHideCrosshairInZoom = !!pSettings->r_bool(section, "zoom_hide_crosshair");
 }
 
 

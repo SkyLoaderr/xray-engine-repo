@@ -216,6 +216,7 @@ protected:
 	//от 0 до 1, показывает насколько процентов
 	//мы перемещаем HUD  
 	float			m_fZoomRotationFactor;
+	bool			m_bHideCrosshairInZoom;
 public:
 
 	IC bool					IsZoomEnabled		()	const	{return m_bZoomEnabled;}
@@ -223,6 +224,8 @@ public:
 	virtual void			OnZoomOut			();
 	virtual bool			IsZoomed			()	const	{return m_bZoomMode;}
 	CUIStaticItem*			ZoomTexture			();
+	virtual bool			ZoomHideCrosshair	()			{return m_bHideCrosshairInZoom || ZoomTexture();}
+
 	IC float				GetZoomFactor		() const		{	return m_fZoomFactor;	}
 	//показывает, что оружие находится в соостоянии поворота для приближенного прицеливания
 	virtual bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor<1.f);}
