@@ -397,7 +397,7 @@ void CALifeUpdateManager::add_restriction	(ALife::_OBJECT_ID id, ALife::_OBJECT_
 	switch (restriction_type) {
 		case RestrictionSpace::eRestrictorTypeOut : {
 			if (std::find(creature->m_dynamic_out_restrictions.begin(),creature->m_dynamic_out_restrictions.end(),restriction_id) != creature->m_dynamic_out_restrictions.end()) {
-				Msg							("! cannot add restriction with id %d to the entity with id %d, because it is already added",restriction_id,id);
+				Msg							("! cannot add out-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
 				return;
 			}
 
@@ -407,7 +407,7 @@ void CALifeUpdateManager::add_restriction	(ALife::_OBJECT_ID id, ALife::_OBJECT_
 		}
 		case RestrictionSpace::eRestrictorTypeIn : {
 			if (std::find(creature->m_dynamic_in_restrictions.begin(),creature->m_dynamic_in_restrictions.end(),restriction_id) != creature->m_dynamic_in_restrictions.end()) {
-				Msg							("! cannot add restriction with id %d to the entity with id %d, because it is already added",restriction_id,id);
+				Msg							("! cannot add in-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
 				return;
 			}
 
