@@ -92,10 +92,10 @@ end
 function action_wait:execute()
 	self.a.evn:get_event(self.a.obj)
 
-	if self.a.obj.id ~= nil and
-	   self.a.obj.type ~= nil then
-	   printf("Process obj %d, type: %s",self.a.obj.id, self.a.obj.type)
-	end
+--	if self.a.obj.id ~= nil and
+--	   self.a.obj.type ~= nil then
+--	   printf("Process obj %d, type: %s",self.a.obj.id, self.a.obj.type)
+--	end
 
 	if self.a.obj.type == "watch" then
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
