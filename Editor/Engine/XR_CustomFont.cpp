@@ -14,6 +14,8 @@ CFontBase::CFontBase()
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	pShader = 0;
+
+	strings.reserve	(128);
 }
 
 CFontBase::~CFontBase()
@@ -68,8 +70,8 @@ void CFontBase::OnRender()
 		// fill vertices
 		DWORD last=i+count;
 		for (; i<last; i++) {
-			String	&PS = strings[i];
-			int				len	= strlen(PS.string);
+			String		&PS	= strings[i];
+			int			len	= strlen(PS.string);
 			if (len) {
 				float	X	= GetRealX(PS.x);
 				float	Y	= GetRealY(PS.y);
@@ -108,7 +110,7 @@ void CFontBase::OnRender()
 		// Unlock and draw
 		DWORD vCount = v-start;
 		Stream->Unlock(vCount);
-		Device.Primitive.Draw(Stream,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
+		// Device.Primitive.Draw(Stream,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
 	}
 	strings.clear();
 }
