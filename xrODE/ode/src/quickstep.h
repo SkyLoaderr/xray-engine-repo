@@ -27,7 +27,7 @@
 
 
 void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
-		     dxJoint **joint, int nj, dReal stepsize);
+		     dxJoint *const*joint, int nj, dReal stepsize);
 
 
 #endif
