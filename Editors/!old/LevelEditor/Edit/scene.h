@@ -122,6 +122,8 @@ protected:
 protected:
 	void			RegisterSceneTools			(ESceneCustomMTools* mt);
 	void			CreateSceneTools			();
+
+    bool __fastcall FindObjectByNameCB			(LPCSTR new_name){return !!FindObjectByName(new_name,0);}
 public:
 	enum{
     	flRT_Unsaved 	= (1<<0),
