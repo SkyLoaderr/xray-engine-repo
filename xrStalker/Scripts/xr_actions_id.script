@@ -18,6 +18,7 @@ stohe_reactions_base        = stohe_actions + 40
 stohe_state_base        = stohe_actions + 50
 stohe_position          = stohe_actions + 60
 stohe_gulag_base        = stohe_actions + 70
+stohe_bobik_base	= stohe_actions + 80
 
 --Sidorovich
 sidor_actions = stohe_actions + 1024

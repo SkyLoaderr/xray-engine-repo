@@ -513,6 +513,10 @@ xr_motivator.storage[self.object:id()].reactions = {
     escape_factory_bandits.add_to_binder(self.object)
     agroprom_military_commander.add_to_binder(self.object)
 
+    if char_ini:section_exist ("bobik") == true then
+	escape_bobic.add_to_binder(self.object)
+    end
+
     --Привязка к организации
     if char_ini:section_exist ("fraction") == true then
         if char_ini:line_exist("fraction", "name") == true then
