@@ -559,8 +559,10 @@ CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
 	// to delete them properly
 	D_OBJECT_P_IT			I = m_tpSpawnPoints.begin();
 	D_OBJECT_P_IT			E = m_tpSpawnPoints.end();
-	for ( ; I != E; I++)
-		xr_delete				(dynamic_cast<CSE_Abstract*>(*I));
+	for ( ; I != E; I++) {
+		CSE_Abstract*			A	= dynamic_cast<CSE_Abstract*>(*I);
+		xr_delete				(A);
+	}
 }
 
 void CSE_ALifeSpawnRegistry::Init()
@@ -569,8 +571,10 @@ void CSE_ALifeSpawnRegistry::Init()
 	// to delete them properly
 	D_OBJECT_P_IT			I = m_tpSpawnPoints.begin();
 	D_OBJECT_P_IT			E = m_tpSpawnPoints.end();
-	for ( ; I != E; I++)
-		xr_delete				(dynamic_cast<CSE_Abstract*>(*I));
+	for ( ; I != E; I++) {
+		CSE_Abstract*			A	= dynamic_cast<CSE_Abstract*>(*I);
+		xr_delete				(A);
+	}
 }
 
 void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
