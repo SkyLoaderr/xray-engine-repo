@@ -33,7 +33,7 @@ struct	st_ObjectDB;
 #define LOD_IMAGE_SIZE 		64.f
 
 // refs
-class XRayMaterial;
+class XRayMtl;
 
 class CSurface
 {
@@ -349,7 +349,7 @@ public:
 	BOOL			ExtractTexName			(Texmap *src, LPSTR dest);
 	BOOL			ParseStdMaterial		(StdMat* src, CSurface* dest);
 	BOOL			ParseMultiMaterial		(MultiMtl* src, DWORD mid, CSurface* dest);
-	BOOL			ParseXRayMaterial		(XRayMaterial* src, DWORD mid, CSurface* dest);
+	BOOL			ParseXRayMaterial		(XRayMtl* src, DWORD mid, CSurface* dest);
 	CSurface*		CreateSurface			(Mtl* M, DWORD mat_id);
 	LPCSTR			GenerateSurfaceName		(LPCSTR base_name); 
 	bool			ImportMAXSkeleton		(CExporter* exporter);
