@@ -12,10 +12,12 @@
 	</character>
 	
 	<character id="escape_trader">
+		<team>Trader</team>
 		<specific_character>escape_trader</specific_character>
 	</character>
 		
 	<character id="actor">
+		<team>Actor</team>
 		<specific_character>actor</specific_character>
 	</character>
 </xml>
