@@ -141,8 +141,7 @@ void CBuild::PreOptimize()
 			for (int iy=0; iy<HDIM_Y+1; iy++)
 				for (int iz=0; iz<HDIM_Z+1; iz++)
 				{
-					HASH[ix][iy][iz] = new vecVertex;
-					HASH[ix][iy][iz]->reserve	(_average);
+					_DELETE(HASH[ix][iy][iz]);
 				}
 	}
 	mem_Compact	();
