@@ -3,7 +3,7 @@ function main ()
     local boar = get_level_object ("attack_boar")
     boar:script (true, tir_attack.script_name ())
     
-    action (boar, move (move.act_idle, move.default, boar:position ()), cond (cond.time_end, time_infinite))
+    action (boar, move (move.act_stand_idle, move.default, boar:position ()), cond (cond.time_end, time_infinite))
     
     while true do
           if boar:see (get_actor ()) then

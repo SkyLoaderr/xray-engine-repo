@@ -31,7 +31,7 @@ function main ()
               action (monsters[a], move (move.act_walk_fwd, move.force_type, ways[a], cond (cond.move_end))
            end
         else
-           action (monsters[a], move (move.act_idle, move.default, monsters[a]:position ()), cond (cond.time_end, time_infinite))    
+           action (monsters[a], move (move.act_stand_idle, move.default, monsters[a]:position ()), cond (cond.time_end, time_infinite))    
         end      
     end
     
