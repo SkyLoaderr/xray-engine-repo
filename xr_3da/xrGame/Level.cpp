@@ -179,7 +179,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		while (!isCompleted_Connect()) Sleep(5);
 
 		// Signal main actor spawn
-		g_cl_Spawn	("m_car", -1, 0, 0, 0);
+		g_cl_Spawn	("actor", -1, 0, 0, 0);
 		FILE_NAME	fn_spawn;
 		if (Engine.FS.Exist(fn_spawn, Path.Current, "level.spawn"))
 		{
