@@ -17,11 +17,38 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	RCache.set_xform_view			(Device.mView);
 	RCache.set_xform_project		(Device.mProject);
 
-	// Mask by stencil
-	
+	// *****************************	Mask by stencil		*************************************
+	// *** similar to "Carmack's reverse", but assumes convex, non intersecting objects,
+	// *** thus can cope without stencil clear with 127 lights
+	// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
+	RCache.set_Element				(s_accum_point->E[0]);			// masker
+	RCache.set_Geometry				(g_accum_point);
+	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
+	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 
+	// backfaces: if (stencil>=1 && zfail)	stencil = light_id
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			dwLightMarkerID		));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0x01				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0xff				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_REPLACE));
+	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
+	// frontfaces: if (stencil>=light_id && zfail)	stencil = 0x1
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			dwLightMarkerID		));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x01				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_REPLACE));
+	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
+	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
 	Fmatrix& M						= Device.mFullTransform;
 	Fvector4 plane;
@@ -68,7 +95,15 @@ void CRenderTarget::accum_point_shadow	(light* L)
 		J.set(+1,+1,+1); J.mul(scale); RCache.set_ca	(_C,7,J);
 	}
 
-	// Render if stencil >= 0x1
+	// Render if (stencil >= light_id && z-pass)
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			dwLightMarkerID		));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x00				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
+
 	RCache.set_Geometry				(g_accum_point);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
