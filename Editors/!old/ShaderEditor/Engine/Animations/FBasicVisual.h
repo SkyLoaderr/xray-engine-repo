@@ -34,8 +34,8 @@ struct	ENGINE_API				IRender_Mesh
 	u32							iCount;
 	u32							dwPrimitives;
 
-	_mesh()						{ pVertices=0; pIndices=0;					}
-	~_mesh()					{ _RELEASE(pVertices); _RELEASE(pIndices);	}
+	IRender_Mesh()				{ pVertices=0; pIndices=0;					}
+	virtual ~IRender_Mesh()		{ _RELEASE(pVertices); _RELEASE(pIndices);	}
 };
 
 // The class itself
