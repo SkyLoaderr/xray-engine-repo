@@ -1908,17 +1908,17 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 
 void CUIBuyWeaponWnd::SwitchIndicator(bool bOn, const int activeTabIndex)
 {
+	if (IsChild(&UIGreenIndicator))
+	{
+		DetachChild(&UIGreenIndicator);
+	};
 	if (bOn)
 	{
 		R_ASSERT(activeTabIndex < UIWeaponsTabControl.GetTabsCount());
 		RECT r	= (*UIWeaponsTabControl.GetButtonsVector())[activeTabIndex]->GetAbsoluteRect();
 		UIGreenIndicator.SetWndRect(r.left + 5, r.top + 22, uIndicatorWidth, uIndicatorHeight);
 		AttachChild(&UIGreenIndicator);
-	}
-	else
-	{
-		DetachChild(&UIGreenIndicator);
-	}
+	};	
 }
 
 //////////////////////////////////////////////////////////////////////////
