@@ -13,14 +13,13 @@
 #include "object_broker.h"
 #include "alife_event_personal.h"
 
-#include "character_info.h"
-
 #ifndef AI_COMPILER
 #	include "ai_space.h"
 #endif
 
 #ifdef XRGAME_EXPORTS
 #	include "ef_storage.h"
+#	include "character_info.h"
 #endif
 
 using namespace ALife;
@@ -90,10 +89,12 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		if (ini.section_exist("game_info") && ini.line_exist("game_info","name_id"))
 			profile_id = ini.r_string("game_info", "name_id");
 
+#ifdef XRGAME_EXPORTS
 		if(NULL == profile_id)
 			m_iCharacterProfile = NO_PROFILE;
 		else
             m_iCharacterProfile = CCharacterInfo::IdToIndex(PROFILE_ID(profile_id));
+#endif
 	}
 }
 

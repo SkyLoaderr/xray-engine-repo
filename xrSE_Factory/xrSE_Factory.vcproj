@@ -1111,6 +1111,9 @@
 					Name="ServerStuff"
 					Filter="">
 					<File
+						RelativePath=".\character_info_defs.h">
+					</File>
+					<File
 						RelativePath=".\xrMessages.h">
 					</File>
 					<File
