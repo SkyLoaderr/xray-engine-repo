@@ -15,9 +15,9 @@ void CDetail::Load		(IReader* S)
 	shader.create	(fnS,	fnT);
 
 	// Params
-	flags			= S->r_u32	();
-	s_min			= S->r_float();
-	s_max			= S->r_float();
+	m_Flags			= S->r_u32	();
+	m_fMinScale		= S->r_float();
+	m_fMaxScale		= S->r_float();
 	number_vertices	= S->r_u32	();
 	number_indices	= S->r_u32	();
 	R_ASSERT		(0==(number_indices%3));
