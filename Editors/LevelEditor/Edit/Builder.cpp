@@ -15,7 +15,6 @@
 SceneBuilder Builder;
 //----------------------------------------------------
 SceneBuilder::SceneBuilder(){
-	m_InProgress = false;
     m_iDefaultSectorNum = 0;
     l_vertices	= 0;
     l_faces		= 0;
@@ -26,282 +25,107 @@ SceneBuilder::SceneBuilder(){
 }
 
 SceneBuilder::~SceneBuilder(){
-	VERIFY( !m_InProgress );
 }
 
-bool SceneBuilder::Execute( ){
+//------------------------------------------------------------------------------
+#define CHECK_BREAK     	if (UI.NeedAbort()) break;
+#define VERIFY_COMPILE(x,c) CHECK_BREAK \
+							if (!x){ELog.DlgMsg( mtError, "Error: %s.", c); break;}
+//------------------------------------------------------------------------------
+BOOL SceneBuilder::Compile()
+{
+	AnsiString error_text="";
 	UI.ResetBreak();
-	if( m_InProgress ) return false;
+	if(UI.ContainEState(esBuildLevel)) return false;
 	ELog.Msg( mtInformation, "Building started..." );
-
-    // save scene
-	UI.Command(COMMAND_SAVE);
-
+    
+    UI.BeginEState(esBuildLevel);
     try{
-        // check debug
-        if ((Scene.ObjCount(OBJCLASS_SECTOR)==0)&&(Scene.ObjCount(OBJCLASS_PORTAL)==0)){
-        	int res=ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Can't find sector and portal in scene. Create default?");
-            switch (res){
-            case mrYes: PortalUtils.CreateDebugCollection(); break;
-            default: return false;
-            }
-        }
+        do{
+            UI.Command( COMMAND_RESET_ANIMATION );
+	        // check debug
+            bool bTestPortal = Scene.ObjCount(OBJCLASS_SECTOR)||Scene.ObjCount(OBJCLASS_PORTAL);
+//    	    if ((Scene.ObjCount(OBJCLASS_SECTOR)==0)&&(Scene.ObjCount(OBJCLASS_PORTAL)==0))
+//        	    if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Can't find sector and portal in scene. Create default?")) PortalUtils.CreateDebugCollection();
+//            	else { error_text="Building canceled"; break; }
+	        // validate scene
+    	    VERIFY_COMPILE(Scene.Validate(false,bTestPortal),"Validation failed. Invalid scene.");
+        	// build
+            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
+            VERIFY_COMPILE(LightenObjects(),			"Failed to prepare level folders.");
+            VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders.");
+            VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
+            VERIFY_COMPILE(RenumerateSectors(),			"Failed to renumerate sectors.");
+            VERIFY_COMPILE(CompileStatic(),				"Failed static remote build.");
+            VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
+            VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
+            VERIFY_COMPILE(BuildSkyModel(),				"Failed to build OGF model.");
+            VERIFY_COMPILE(WriteTextures(),				"Failed to write textures."); 				// only implicit lighted
+        } while(0);
 
-
-        // validate scene
-        if (!Scene.Validate()){
-            ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
-            UI.Command(COMMAND_RELOAD);
-            return false;
-        }
-
-        // build
-        m_InProgress = true;
-        //---------------
-        UI.BeginEState(esBuildLevel);
-        Thread();
-        UI.EndEState();
-        //---------------
-        UI.ProgressStart(2, "Restoring scene...");
-        UI.ProgressUpdate(1);
-        UI.Command(COMMAND_RELOAD);
-        UI.ProgressEnd();
+        if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
+        else if (UI.NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated...");
+        else						ELog.DlgMsg(mtInformation,"Building OK...");
     }catch(...){
     	ELog.DlgMsg(mtError,"Error has occured in builder routine. Editor aborted.");
         abort();
     }
+    UI.EndEState();
 
-	return true;
+	return error_text.IsEmpty();
 }
+//------------------------------------------------------------------------------
 
-bool SceneBuilder::MakeGame( ){
+BOOL SceneBuilder::MakeGame( )
+{
+	AnsiString error_text="";
 	UI.ResetBreak();
-	if( m_InProgress ) return false;
+	if(UI.ContainEState(esBuildLevel)) return false;
 	ELog.Msg( mtInformation, "Making started..." );
-
-    // save scene
-	UI.Command(COMMAND_SAVE);
-
-    // validate scene
-    if (!Scene.Validate(false,false)){
-    	ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
-		UI.Command(COMMAND_RELOAD);
-        return false;
-    }
-
-    // build
-	m_InProgress = true;
-	//---------------
-	UI.BeginEState(esBuildLevel);
+    
+    UI.BeginEState(esBuildLevel);
     try{
-	    ThreadMakeGame();
+        do{
+            UI.Command( COMMAND_RESET_ANIMATION );
+	        // validate scene
+    	    VERIFY_COMPILE(Scene.Validate(false,false),	"Validation failed. Invalid scene.");
+        	// build
+            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
+            VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders.");
+            VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
+            VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
+            VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
+            VERIFY_COMPILE(BuildSkyModel(),				"Failed to build OGF model.");
+        } while(0);
+
+        if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
+        else if (UI.NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated...");
+        else						ELog.DlgMsg(mtInformation,"Building OK...");
     }catch(...){
     	ELog.DlgMsg(mtError,"Error has occured in builder routine. Editor aborted.");
         abort();
     }
-	UI.EndEState();
-	//---------------
-	UI.ProgressStart(2, "Restoring scene...");
-	UI.ProgressUpdate(1);
-	UI.Command(COMMAND_RELOAD);
-	UI.ProgressEnd();
+    UI.EndEState();
 
-	return true;
+	return error_text.IsEmpty();
 }
+//------------------------------------------------------------------------------
 
-bool SceneBuilder::MakeDetails(bool bOkMessage){
-	bool error_flag = false;
+BOOL SceneBuilder::MakeDetails()
+{
 	AnsiString error_text;
     do{
-	    if( !PreparePath() ){
-    	    error_text="*ERROR: Failed to prepare level path....";
-        	error_flag = true;
-	        break;
-    	}
+		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
         AnsiString fn="level.details";
         m_LevelPath.Update(fn);
         // save details
-		if (!Scene.m_DetailObjects->Export(fn.c_str())){
-			error_text="Export failed.";
-            error_flag=true;
-        };
+		VERIFY_COMPILE(Scene.m_DetailObjects->Export(fn.c_str()), "Export failed.");
     }while(0);
-	if( error_flag )  	ELog.DlgMsg(mtError,error_text.c_str());
-    else				if (bOkMessage) ELog.DlgMsg(mtInformation,"Details succesfully exported.");
+    if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
+    else if (UI.NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
+    else						ELog.DlgMsg(mtInformation,"Details succesfully exported.");
 
-	return error_flag;
+	return error_text.IsEmpty();
 }
-
-//----------------------------
-DWORD SceneBuilder::Thread(){
-	bool error_flag = false;
-	AnsiString error_text;
-	do{
-		UI.Command( COMMAND_RESET_ANIMATION );
-
-        if (UI.NeedAbort()) break;
-		if( !PreparePath() ){
-			error_text="*ERROR: Failed to prepare level path....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !LightenObjects() ){
-			error_text="*ERROR: Failed to prepare level folders....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !PrepareFolders() ){
-			error_text="*ERROR: Failed to prepare level folders....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !UngroupAndUnlockObjects() ){
-			error_text="*ERROR: Failed to ungroup and unlock objects...";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !GetShift() ){
-			error_text="*ERROR: Failed to acquire level shift....";
-			error_flag = true;
-			break;
-		}
-
-
-        if (UI.NeedAbort()) break;
-		if( !ShiftLevel() ){
-			error_text="*ERROR: Failed to shift level....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !RenumerateSectors() ){
-			error_text="*ERROR: Failed to renumerate sectors....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !RemoteStaticBuild() ){
-			error_text="*ERROR: Failed static remote build....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !BuildLTX() ){
-			error_text="*ERROR: Failed to build level description....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-        if( !BuildGame() ){
-			error_text="*ERROR: Failed to build game....";
-			error_flag = true;
-			break;
-        }
-
-        if (UI.NeedAbort()) break;
-		if( !BuildSkyModel() ){
-			error_text="*ERROR: Failed to build OGF model....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		// only implicit lighted
-		if( !WriteTextures() ){
-			error_text="*ERROR: Failed to write textures....";
-			error_flag = true;
-			break;
-		}
-
-	} while(0);
-
-	if( error_flag ) 		ELog.DlgMsg(mtError,error_text.c_str());
-	else if ( UI.NeedAbort())ELog.DlgMsg(mtInformation,"Building terminated...");
-
-    else					ELog.DlgMsg(mtInformation,"Building OK...");
-
-	m_InProgress = false;
-
-	return 0;
-}
-
-//----------------------------
-DWORD SceneBuilder::ThreadMakeGame(){
-	bool error_flag = false;
-	AnsiString error_text;
-	do{
-		UI.Command( COMMAND_RESET_ANIMATION );
-
-        if (UI.NeedAbort()) break;
-		if( !PreparePath() ){
-			error_text="*ERROR: Failed to prepare level path....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !UngroupAndUnlockObjects() ){
-			error_text="*ERROR: Failed to ungroup and unlock objects...";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !GetShift() ){
-			error_text="*ERROR: Failed to acquire level shift....";
-			error_flag = true;
-			break;
-		}
-
-
-        if (UI.NeedAbort()) break;
-		if( !ShiftLevel() ){
-			error_text="*ERROR: Failed to shift level....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-		if( !BuildLTX() ){
-			error_text="*ERROR: Failed to build level description....";
-			error_flag = true;
-			break;
-		}
-
-        if (UI.NeedAbort()) break;
-        if( !BuildGame() ){
-			error_text="*ERROR: Failed to build game....";
-			error_flag = true;
-			break;
-        }
-
-        if (UI.NeedAbort()) break;
-		if( !BuildSkyModel() ){
-			error_text="*ERROR: Failed to build OGF model....";
-			error_flag = true;
-			break;
-		}
-	} while(0);
-
-	if( error_flag ) 		ELog.DlgMsg(mtError,error_text.c_str());
-	else if ( UI.NeedAbort())ELog.DlgMsg(mtInformation,"Building terminated...");
-    else					ELog.DlgMsg(mtInformation,"Building OK...");
-
-	m_InProgress = false;
-
-	return 0;
-}
-
+//------------------------------------------------------------------------------
 

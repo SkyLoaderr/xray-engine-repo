@@ -7,6 +7,7 @@
 
 #include "communicate.h"
 #include "EditMesh.h"
+#include "CustomObject.h"
 //----------------------------------------------------
 
 // refs
@@ -29,6 +30,7 @@ class SceneBuilder{
     b_vertex*		        l_vertices;
     b_face*  		        l_faces;
     SVertVec				l_svertices;
+    vector<b_light>			l_lights;
     vector<b_texture>       l_textures;
     vector<b_shader>        l_shaders;
     vector<b_shader>        l_shaders_xrlc;
@@ -45,7 +47,6 @@ class SceneBuilder{
     void    BuildPortal   	(b_portal* b, CPortal* e);
     void    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num);
     void    BuildObject     (CSceneObject* obj);
-    void    BuildObjectDynamic(CEditableObject* obj);
 
     void    ResetStructures ();
 
@@ -63,61 +64,39 @@ class SceneBuilder{
 protected:
 	friend void SaveBuild(b_transfer *info);
     friend class TfrmBuildProgress;
-    friend struct st_SPLIT;
 
-	bool m_InProgress;
-
-	Fvector m_LevelShift;
-	Fbox m_LevelBox;
+	Fbox 	m_LevelBox;
 
 	AStringVec m_TexNames;
 public:
-	FSPath m_LevelPath;
+	FSPath 	m_LevelPath;
 protected:
-	bool LightenObjects				();
-	bool PrepareFolders             ();
-    bool PreparePath				();
-    bool UngroupAndUnlockObjects	();
+	bool 	LightenObjects			();
+	bool 	PrepareFolders          ();
+    bool 	PreparePath				();
 
-	bool GetShift                   ();
-	bool ShiftLevel                 ();
+	bool 	GetBounding            	();
 
-	bool BuildLTX                   ();
-    bool BuildGame					();
+	bool 	BuildLTX                ();
+    bool 	BuildGame				();
 
-	bool WriteTextures              ();
-	void AddUniqueTexName           (const char *name);
+	bool 	WriteTextures           ();
+	void 	AddUniqueTexName        (const char *name);
 
-    // OGF
-//	bool BuildObjectOGF             (CFS_Base& F, CEditableObject *obj, const char* base_name, FSPath& path);
-//	bool BuildSingleOGF             (CFS_Base& F, DWORD fid_start, DWORD cnt, int mid);
-    bool BuildSkyModel				();
+    bool 	BuildSkyModel			();
+    void	ParseStaticObjects		(ObjectList& lst);
+    bool 	CompileStatic		   	();
 
-    void AssembleSkeletonObject		(CEditableObject* obj);
-    void AssembleSkeletonMesh		(CEditableMesh* mesh);
-
-    bool BuildObjectVCF             (CFS_Base& F, CEditableObject* obj);
-
-    bool RemoteStaticBuild          ();
-
-	int m_iDefaultSectorNum;
-	bool RenumerateSectors			();
-	int CalculateSector				(const Fvector& P, float R);
+	int 	m_iDefaultSectorNum;
+	bool 	RenumerateSectors		();
+	int 	CalculateSector			(const Fvector& P, float R);
 public:
-	virtual DWORD Thread            ();
-	DWORD ThreadMakeGame            ();
-public:
-	SceneBuilder                    ();
+			SceneBuilder            ();
 	virtual ~SceneBuilder           ();
 
-	virtual bool Execute            ();
-	bool MakeGame  			        ();
-    bool MakeDetails				(bool bOkMessage);
-
-	__inline bool InProgress        (){	return m_InProgress; }
-
-    bool SaveObjectVCF              (const char* name, CEditableObject* obj);
-//    bool SaveObjectOGF              (const char* name, CEditableObject* obj);
+	BOOL	Compile            		();
+	BOOL 	MakeGame				();
+    BOOL 	MakeDetails				();
 };
 
 extern SceneBuilder Builder;

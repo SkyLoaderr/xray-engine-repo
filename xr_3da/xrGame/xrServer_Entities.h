@@ -76,6 +76,8 @@ public:
         s_flags				= 0;
 		ZeroMemory			(s_name,		sizeof(string64));
 		ZeroMemory			(s_name_replace,sizeof(string64));
+        o_Angle.set			(0.f,0.f,0.f);
+        o_Position.set		(0.f,0.f,0.f);
 	}
 	~xrServerEntity			()
 	{

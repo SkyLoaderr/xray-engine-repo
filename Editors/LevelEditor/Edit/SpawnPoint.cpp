@@ -110,7 +110,7 @@ bool CSpawnPoint::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(SPAWNPOINT_CHUNK_VERSION,&version));
     if(version!=SPAWNPOINT_VERSION){
-        ELog.DlgMsg( mtError, "SPAWNPOINT: Unsupported version.");
+        ELog.Msg( mtError, "SPAWNPOINT: Unsupported version.");
         return false;
     }
 
@@ -127,7 +127,7 @@ bool CSpawnPoint::Load(CStream& F){
     F.Read		(Packet.B.data,Packet.B.count);
     m_SpawnData	= F_entity_Create(entity_ref);
     if (!m_SpawnData){
-        ELog.DlgMsg( mtError, "SPAWNPOINT: Can't find CLASS_ID.");
+        ELog.Msg( mtError, "SPAWNPOINT: Can't find CLASS_ID.");
         return false;
     }
     m_SpawnData->Spawn_Read(Packet);

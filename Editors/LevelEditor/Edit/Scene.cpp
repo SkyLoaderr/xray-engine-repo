@@ -618,14 +618,14 @@ void EScene::Unload(){
 
 bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
 	if (bTestPortal){
-        if (ObjCount(OBJCLASS_SECTOR)<2){
-            ELog.DlgMsg(mtError,"*ERROR: Can't find 'Sector'.");
-            return false;
-        }
-        if (ObjCount(OBJCLASS_PORTAL)==0){
-            ELog.DlgMsg(mtError,"*ERROR: Can't find 'Portal'.");
-            return false;
-        }
+//        if (ObjCount(OBJCLASS_SECTOR)<2){
+//            ELog.DlgMsg(mtError,"*ERROR: Can't find 'Sector'.");
+//            return false;
+//        }
+//        if (ObjCount(OBJCLASS_PORTAL)==0){
+//            ELog.DlgMsg(mtError,"*ERROR: Can't find 'Portal'.");
+//            return false;
+//        }
 		if (!PortalUtils.Validate(false)){
 			ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
 	    	return false;
