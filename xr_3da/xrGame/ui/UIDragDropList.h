@@ -22,6 +22,7 @@ typedef enum{CELL_EMPTY, CELL_FULL} E_CELL_STATE;
 
 
 DEF_LIST (DRAG_DROP_LIST, CUIDragDropItem*);
+#define DRAG_DROP_LIST_IT xr_list<CUIDragDropItem*>::iterator
 
 
 class CUIDragDropList: public CUIWindow
