@@ -68,6 +68,16 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 		Player& IP		= I->second;
 		Memory.mem_copy	(&IP,&PS,sizeof(PS));
 	}
+
+	if (OnServer()) return;
+	//Syncronize GameTime
+	u64 GameTime;
+	P.r_u64(GameTime);
+	float TimeFactor;
+	P.r_float(TimeFactor);
+
+	Level().SetGameTime(GameTime);
+	Level().SetGameTimeFactor(TimeFactor);
 }
 
 void	game_cl_GameState::net_signal		(NET_Packet& P)

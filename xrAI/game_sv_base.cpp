@@ -194,8 +194,15 @@ void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id
 
 		P.w_u32	(id);
 		P.w		(&copy,sizeof(game_PlayerState));
-	}
-}
+	};
+};
+
+void game_sv_GameState::net_Export_GameTime						(NET_Packet& P)
+{
+	//Syncronize GameTime 
+	P.w_u64(GetGameTime());
+	P.w_float(GetGameTimeFactor());
+};
 
 void game_sv_GameState::OnRoundStart			()
 {
@@ -409,6 +416,10 @@ void game_sv_GameState::SetGameTimeFactor(const float fTimeFactor)
 	m_fTimeFactor				= fTimeFactor;
 }
 
+void game_sv_GameState::SetGameTime(ALife::_TIME_ID GameTime)
+{
+	m_qwStartGameTime			= GameTime;
+}
 
 bool game_sv_GameState::change_level		(NET_Packet &net_packet, DPNID sender)
 {

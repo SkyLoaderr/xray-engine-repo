@@ -251,6 +251,11 @@ public:
 	{
 		Server->game->SetGameTimeFactor(fTimeFactor);
 	}
+	
+	IC	void	SetGameTime(ALife::_TIME_ID GameTime)
+	{
+		Server->game->SetGameTime(GameTime);
+	}
 
 	IC	float GetGameTimeSec()
 	{
