@@ -147,6 +147,9 @@ void CAI_Space::Render()
 {
 	if (!psHUD_Flags.test(HUD_DRAW))
 		return;
+#ifdef DEBUG
+	DrawTravelLine();
+#endif
 	if (psAI_Flags.test(aiBrain)) {
 		if (bfCheckIfGraphLoaded()) {
 			if (!Level().CurrentEntity())

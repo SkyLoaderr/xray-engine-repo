@@ -177,6 +177,35 @@ public:
 
 	bool	bfCreateStraightPTN_Path		(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint);
 	void	vfFindGraphPointNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tDirection, u32 &dwFinishNode, _GRAPH_ID tGraphID);
+
+#ifdef DEBUG
+private:
+	Fvector									m_tStartPoint;
+	Fvector									m_tFinishPoint;
+	xr_vector<Fvector>						m_tpTravelLine;
+	xr_vector<Fvector>						m_tpaPoints;
+	xr_vector<Fvector>						m_tpaDeviations;
+	xr_vector<Fvector>						m_tpaTravelPath;
+	xr_vector<u32>							m_tpaPointNodes;
+	xr_vector<Fvector>						m_tpaLine;
+	xr_vector<u32>							m_tpaNodes;
+	xr_vector<Fvector>						m_tpaTempPath;
+public:
+
+	IC		void	SetStartPoint			(const Fvector &tStartPoint)
+	{
+		m_tStartPoint						= tStartPoint;
+	}
+	
+	IC		void	SetFinishPoint			(const Fvector &tFinishPoint)
+	{
+		m_tFinishPoint						= tFinishPoint;
+	}
+
+			void	ComputeTravelLine		(AI::NodePath &AI_Path, u32 dwStartNodeID, u32 dwFinishNodeID);
+			void	ComputePath				();
+			void	DrawTravelLine			();
+#endif
 };
 
 extern CAI_Space *g_tpAI_Space;

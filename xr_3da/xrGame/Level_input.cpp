@@ -39,10 +39,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 			Engine.Event.Defer		("KERNEL:start",size_t(xr_strdup(m_caServerOptions)),size_t(xr_strdup(m_caClientOptions)));
 		}
 		return;
-	case DIK_F9:
-		// SLS_Load					("quick.save");
-		return;
-	case DIK_F5:
+	case DIK_F5: {
 		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
 		xr_vector<CObject*>::iterator E = Objects.objects.end();
 		bool bOk = false;
@@ -78,6 +75,18 @@ void CLevel::IR_OnKeyboardPress(int key)
 			}
 		}
 		return;
+	}
+#ifdef DEBUG
+	case DIK_F9:
+		getAI().SetStartPoint(CurrentEntity()->Position());
+		return;
+	case DIK_F10:
+		getAI().SetFinishPoint(CurrentEntity()->Position());
+		return;
+	case DIK_F11:
+		getAI().ComputePath();
+		return;
+#endif
 	}
 
 	switch (key_binding[key]) {

@@ -1595,3 +1595,128 @@ void CAI_Space::vfFindGraphPointNodeInDirection(u32 dwStartNode, Fvector tStartP
 		dwFinishNode		= dwCurNode;
 	}
 }
+
+#ifdef DEBUG
+#include "a_star.h"
+
+void CAI_Space::ComputeTravelLine(AI::NodePath &AI_Path, u32 dwStartNodeID, u32 dwFinishNodeID)
+{
+	Fvector						*tpDestinationPosition = &m_tStartPoint;
+	
+	if (tpDestinationPosition && bfInsideNode(Node(dwFinishNodeID),*tpDestinationPosition))
+		tpDestinationPosition->y = ffGetY(*Node(dwFinishNodeID),tpDestinationPosition->x,tpDestinationPosition->z);
+	
+	m_tpaPoints.clear			();
+	m_tpaDeviations.clear		();
+	m_tpaTravelPath.clear		();
+	m_tpaPointNodes.clear		();
+
+	u32							N = (int)AI_Path.Nodes.size();
+	if (!N) {
+		Msg						("! Node list is empty!");
+		AI_Path.Nodes.clear		();
+		m_tpTravelLine.clear	();
+		return;
+	}
+	Fvector						tStartPosition = m_tStartPoint;
+	u32							dwCurNode = dwStartNodeID;
+	m_tpaPoints.push_back		(tStartPosition);
+	m_tpaPointNodes.push_back	(dwCurNode);
+
+	for (u32 i=1; i<=N; i++)
+		if (i<N) {
+			if (!bfCheckNodeInDirection(dwCurNode,tStartPosition,AI_Path.Nodes[i])) {
+				if (dwCurNode != AI_Path.Nodes[i - 1])
+					m_tpaPoints.push_back(tStartPosition = tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
+				else
+					m_tpaPoints.push_back(tStartPosition = tfGetNodeCenter(dwCurNode = AI_Path.Nodes[i]));
+				m_tpaPointNodes.push_back(dwCurNode);
+			}
+		}
+		else
+			if (tpDestinationPosition)
+				if (dwfCheckPositionInDirection(dwCurNode,tStartPosition,*tpDestinationPosition) == u32(-1)) {
+					if (dwCurNode != dwFinishNodeID)
+						m_tpaPointNodes.push_back(dwFinishNodeID);
+					m_tpaPoints.push_back(*tpDestinationPosition);
+				}
+				else {
+					dwCurNode = dwFinishNodeID;
+					if (bfInsideNode(Node(dwCurNode),*tpDestinationPosition)) {
+						tpDestinationPosition->y = ffGetY(*Node(dwFinishNodeID),tpDestinationPosition->x,tpDestinationPosition->z);
+						m_tpaPointNodes.push_back(dwFinishNodeID);
+						m_tpaPoints.push_back(*tpDestinationPosition);
+					}
+				}
+	
+	m_tpaDeviations.resize	(N = (int)m_tpaPoints.size());
+	
+	m_tpTravelLine.clear();
+	
+	AI_Path.Nodes.clear		();
+	
+	Fvector			T;
+	T.set			(0,0,0);
+	for (i=1; i<N; i++) {
+		m_tpaLine.clear();
+		m_tpaLine.push_back(m_tpaPoints[i-1]);
+		m_tpaLine.push_back(m_tpaPoints[i]);
+		bfCreateStraightPTN_Path(m_tpaPointNodes[i-1],m_tpaPoints[i-1],m_tpaPoints[i],m_tpaTravelPath,m_tpaNodes, i == 1);
+		u32 n = (u32)m_tpaTravelPath.size();
+		for (u32 j= 0; j<n; j++) {
+			T = m_tpaTravelPath[j];
+			m_tpTravelLine.push_back(T);
+			AI_Path.Nodes.push_back(m_tpaNodes[j]);
+		}
+	}
+	if (N > 1) {
+		AI_Path.Nodes[AI_Path.Nodes.size() - 1] = dwFinishNodeID;
+		if (tpDestinationPosition && m_tpTravelLine.size() && m_tpTravelLine[m_tpTravelLine.size() - 1].distance_to(*tpDestinationPosition) > EPS_L) {
+			if (bfInsideNode(Node(dwFinishNodeID),*tpDestinationPosition) && dwfCheckPositionInDirection(dwFinishNodeID,T,*tpDestinationPosition) != -1) {
+				T = *tpDestinationPosition;
+				m_tpTravelLine.push_back(T);
+			}
+		}
+	}
+	else
+		if (tpDestinationPosition && m_tpTravelLine.size() && m_tpTravelLine[m_tpTravelLine.size() - 1].distance_to(*tpDestinationPosition) > EPS_L)
+			if (bfInsideNode(Node(dwFinishNodeID),*tpDestinationPosition) && dwfCheckPositionInDirection(dwFinishNodeID,T,*tpDestinationPosition) != -1)
+				m_tpaTempPath.push_back(*tpDestinationPosition);
+}
+
+void CAI_Space::ComputePath()
+{
+	u32						l_dwStartNodeID		= q_LoadSearch(m_tStartPoint);
+	u32						l_dwFinishNodeID	= q_LoadSearch(m_tFinishPoint);
+	AI::NodePath			l_tpNodePath;
+	m_tpAStar->ffFindMinimalPath(l_dwStartNodeID,l_dwFinishNodeID,l_tpNodePath,false);
+	ComputeTravelLine		(l_tpNodePath,l_dwStartNodeID,l_dwFinishNodeID);
+}
+
+void CAI_Space::DrawTravelLine()
+{
+	for (u32 I=1; I<m_tpTravelLine.size(); I++) {
+		Fvector	P1, P2; 
+		P1.set							(m_tpTravelLine[I - 1]);
+		P2.set							(m_tpTravelLine[I]);
+		
+		P1.y							+= 0.1f;
+		P2.y							+= 0.1f;
+		
+		RCache.dbg_DrawLINE				(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
+		
+		if (I == (m_tpTravelLine.size() - 1 ))
+			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+		else 
+			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+		
+		Fvector         T;
+        Fvector4        S;
+        
+        T.set							(m_tpTravelLine[I]);
+		T.y								+= (.5f);
+        
+		Device.mFullTransform.transform (S,T);
+	}
+}
+#endif
