@@ -103,12 +103,13 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 3000)
 				)
-				script_01.play_sound_object("stalker2","scripts\\prover",0)
-
                	break		
+		script_01.play_sound_object("stalker2","scripts\\kto-to_idet",0)
 		end
 		wait()
 	end
+
+
 
 	while stalker1:action() and stalker2:action() do
 	    wait	()
