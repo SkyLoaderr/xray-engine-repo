@@ -340,19 +340,14 @@ public:
 		tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
 	}
 
-	IC void vfDetachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bGenEvent = true)
+	IC void vfDetachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild = true)
 	{
-		if (bGenEvent) {
-			NET_Packet		P;
-			m_tpGame->u_EventGen(P,GE_OWNERSHIP_REJECT,tServerEntity.ID);
-			P.w_u16			(u16(tpALifeItem->ID));
-			m_tpGame->u_EventSend(P);
+		if (bRemoveChild) {
+			vector<u16>				&tChildren = tServerEntity.children;
+			vector<u16>::iterator	I = find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
+			VERIFY					(I != tChildren.end());
+			tChildren.erase			(I);
 		}
-		
-		vector<u16>				&tChildren = tServerEntity.children;
-		vector<u16>::iterator	I = find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
-		VERIFY					(I != tChildren.end());
-		tChildren.erase			(I);
 
 		vfAddObjectToGraphPoint(tpALifeItem,tGraphID);
 		

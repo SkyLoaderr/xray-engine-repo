@@ -135,7 +135,7 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 		CALifeDynamicObject *tpALifeDynamicObject = (*i).second;
 		VERIFY(tpALifeDynamicObject);
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
-		if (tpALifeItem) {
+		if (tpALifeItem && !tpALifeItem->m_bOnline) {
 			// adding _new item to the item list
 			if (tpALifeTraderParams->m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
 				if (randF(1.0f) < fProbability) {

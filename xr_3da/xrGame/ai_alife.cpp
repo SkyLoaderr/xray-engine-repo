@@ -288,7 +288,6 @@ void CAI_ALife::vfRemoveObject(xrServerEntity *tpServerEntity)
 				bOk = true;
 				break;
 			}
-		VERIFY(bOk);
 	}
 
 	tpServerEntity->m_bALifeControl = false;
