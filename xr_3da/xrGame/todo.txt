@@ -44,6 +44,7 @@
 	. TODO: xrLC: aligned split-plane heuristics
 	+ TODO: xrLC: LOD-building
 	+ TODO: xrLC: LOD-lighting
+	+ TODO: xrGame: Actor zone effect
 	
 --------------------------------------------------------
 11.09.2001
