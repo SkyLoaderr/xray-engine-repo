@@ -208,6 +208,6 @@ void occRasterizer::rasterize	(occTri* T)
 	c[0] = T->raster[2].x; c[1] = T->raster[2].y; c[2] = T->raster[2].z;
 	
 	i_order				(a, b, c);					// Order the vertices by Y
-	i_section			(this,a, b, c, T,BOTTOM);	// Rasterise First Section
+	// i_section		(this,a, b, c, T,BOTTOM);	// Rasterise First Section
 	i_section			(this,a, b, c, T,TOP);		// Rasterise Second Section
 }
