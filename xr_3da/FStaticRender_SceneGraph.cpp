@@ -2,7 +2,6 @@
 #include "fstaticrender.h"
 #include "fhierrarhyvisual.h"
 #include "bodyinstance.h"
-#include "xrShader.h"
 #include "fmesh.h"
 #include "fcached.h"
 

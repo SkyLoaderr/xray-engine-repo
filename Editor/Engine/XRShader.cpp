@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "XRShader.h"
+// #include "XRShader.h"
 
 #define DUMMY
 

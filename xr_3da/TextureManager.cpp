@@ -4,8 +4,6 @@
 
 #include "stdafx.h"
 #include "texture.h"
-#include "xrShader.h"
-#include "xrShaderLib.h"
 #include "TextureManager.h"
 
 //////////////////////////////////////////////////////////////////////
