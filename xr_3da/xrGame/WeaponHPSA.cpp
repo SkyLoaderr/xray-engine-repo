@@ -92,18 +92,21 @@ void CWeaponAutoRifle::MediaUNLOAD	()
 
 void CWeaponAutoRifle::switch2_Idle	(BOOL bHUDView)
 {
-	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 	m_pHUD->animPlay(mhud_idle);
 }
 void CWeaponAutoRifle::switch2_Fire	(BOOL bHUDView)
 {
-	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
-	pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
+	// Fire
+	Fvector					p1, d;
+	m_pParent->g_fireParams	(p1,d);
+	bFlame					=	TRUE;
+	OnShot					(bHUDView);
+	FireTrace				(p1,vLastFP,d);
 }
 void CWeaponAutoRifle::switch2_Empty	(BOOL bHUDView)
 {
-	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
+	pSounds->Play3DAtPos(sndEmptyClick,vLastFP);
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 }
 void CWeaponAutoRifle::switch2_Reload(BOOL bHUDView)
@@ -122,10 +125,16 @@ void CWeaponAutoRifle::switch2_Showing(BOOL bHUDView)
 }
 void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
 {
+	// Sound
+	pSounds->Play3DAtPos	(sndFireShoot,vLastFP);
+
+	// Camera
 	if (bHUDView)	{
 		CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
 		if (S)			S->Shot();
 	}
+
+	// Animation
 	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
 }
 void CWeaponAutoRifle::OnEmptyClick	(BOOL bHUDView)

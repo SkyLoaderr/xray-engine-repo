@@ -1,5 +1,5 @@
-#ifndef __XR_WEAPON_AUTORIFLE_H__
-#define __XR_WEAPON_AUTORIFLE_H__
+#ifndef __XR_WEAPON_HPSA_H__
+#define __XR_WEAPON_HPSA_H__
 #pragma once
 
 #include "WeaponMagazined.h"
@@ -44,12 +44,12 @@ protected:
 	virtual void	OnShotmark			(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnAnimationEnd		();
 public:
-					CWeaponAutoRifle	(LPCSTR name);
-	virtual			~CWeaponAutoRifle	();
+					CWeaponHPSA			(LPCSTR name);
+	virtual			~CWeaponHPSA		();
 
 	virtual void	Load				(CInifile* ini, const char* section);
 	virtual void	Update				(float dt, BOOL bHUDView);
 
 };
 
-#endif //__XR_WEAPON_AUTORIFLE_H__
+#endif //__XR_WEAPON_HPSA_H__
