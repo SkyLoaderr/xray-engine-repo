@@ -113,9 +113,6 @@ VOID CDeflector::OA_Export()
 	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwHeight,1ul,512ul-2*BORDER);
 	lm.bHasAlpha= FALSE;
 	iArea		= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
-
-	// Addressing
-	RemapUV		(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
 }
 
 BOOL CDeflector::OA_Place(Face *owner)

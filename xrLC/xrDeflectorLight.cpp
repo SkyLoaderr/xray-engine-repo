@@ -369,26 +369,14 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms, DWORD& w, DWORD& h)
 	return FALSE;
 }
 
-VOID CDeflector::Light()
+VOID CDeflector::L_Calculate(HASH& hash)
 {
-	HASH	hash;
-
-	// Surface
-	lm.pSurface = 0;
-	lm_rad		= 0;
-
-	if (g_params.m_bRadiosity) {
-		DWORD size = lm.dwWidth*lm.dwHeight*sizeof(Fvector);
-		lm_rad = (Fvector*)malloc(size);
-		ZeroMemory	(lm_rad,size);
-	}
-
-	// Filling it with new triangles
-	Fbox bb; bb.invalidate	();
-	Fbox2 bounds;
-	Bounds_Summary			(bounds);
-	hash.initialize			(bounds);
-
+	// UV & HASH
+	RemapUV			(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
+	Fbox bb;		bb.invalidate	();
+	Fbox2			bounds;
+	Bounds_Summary	(bounds);
+	hash.initialize	(bounds);
 	for (DWORD fid=0; fid<tris.size(); fid++)
 	{
 		UVtri* T		= &(tris[fid]);
@@ -400,6 +388,18 @@ VOID CDeflector::Light()
 	}
 	bb.getsphere(Center,Radius);
 
+	// Calculate
+	{
+		DWORD size = lm.dwWidth*lm.dwHeight*4;
+		lm.pSurface = (DWORD *)malloc(size);
+		ZeroMemory	(lm.pSurface,size);
+	}
+	if (g_params.m_bRadiosity)	L_Radiosity	(hash);
+	else						L_Direct	(hash);
+}
+
+VOID CDeflector::Light(HASH& hash)
+{
 	// Convert lights to local form
 	{
 		R_Light*	L = pBuild->lights_soften.begin();
@@ -413,16 +413,8 @@ VOID CDeflector::Light()
 		}
 	}
 
-	// Calculate
-	{
-		DWORD size = lm.dwWidth*lm.dwHeight*4;
-		lm.pSurface = (DWORD *)malloc(size);
-		ZeroMemory	(lm.pSurface,size);
-	}
-	if (g_params.m_bRadiosity)	L_Radiosity	(hash);
-	else						L_Direct	(hash);
-
-	// Expand LMap with borders
+	// Calculate and fill borders
+	L_Calculate	(hash);
 	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 
 	// Compression
@@ -432,17 +424,10 @@ VOID CDeflector::Light()
 	else if (compress_RMS(lm,rms,w,h))	
 	{
 		// Reacalculate lightmap at lower resolution
-		{
-			lm.dwWidth	= w;
-			lm.dwHeight	= h;
-			_FREE		(lm.pSurface);
-
-			DWORD size	= w*h*4;
-			lm.pSurface = (DWORD *)malloc(size);
-			ZeroMemory	(lm.pSurface,size);
-		}
-		if (g_params.m_bRadiosity)	L_Radiosity	(hash);
-		else						L_Direct	(hash);
+		lm.dwWidth	= w;
+		lm.dwHeight	= h;
+		_FREE		(lm.pSurface);
+		L_Calculate	(hash);
 	}
 
 	// Expand with borders

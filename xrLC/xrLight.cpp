@@ -9,6 +9,7 @@ class CLMThread : public CThread
 public:
 	CDeflector *	volatile defl;
 	BOOL			volatile bContinue;
+	HASH			hash;
 public:
 	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
 	{
