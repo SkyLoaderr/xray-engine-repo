@@ -526,9 +526,10 @@ void CUIMainIngameWnd::Update()
 						std::bind2nd(std::less<float>(), value));
 		}
 
-
 		if (rit != m_Thresholds[i].rend())
-			SetWarningIconColor(i, RGB_ALPHA(0xFF, 255 * (*rit), 255 * (1.0f - *rit), 0));
+			SetWarningIconColor(i, RGB_ALPHA(0xFF, clampr<u32>(static_cast<u32>(255 * (*rit * 2)), 0, 255), 
+												   clampr<u32>(static_cast<u32>(255 * (2.0f - *rit * 2)), 0, 255),
+												   0));
 		else
 			TurnOffWarningIcon(i);
 
