@@ -15,6 +15,9 @@
 	<info_portion id="rad_code_door_unlocked">
 	</info_portion>
 
+	<info_portion id="rad_lab_door_unlocked">
+	</info_portion>
+
 	<info_portion id="rad_find_stalkers_reward_start">
 		<action>level_tasks.notify_new_task</action>
 		<task>rad_find_stalkers</task>
