@@ -515,6 +515,7 @@ void CCF_Shape::ComputeBounds()
 {
 	bv_box.invalidate	();
 
+	BOOL bCalcSphere	= (shapes.size()>1);
 	for (u32 el=0; el<shapes.size(); el++)
 	{
 		switch (shapes[el].type)
@@ -525,6 +526,7 @@ void CCF_Shape::ComputeBounds()
 				Fvector		P;
 				P.set		(T.P);	P.sub(T.R);	bv_box.modify(P);
 				P.set		(T.P);	P.add(T.R);	bv_box.modify(P);
+				bv_sphere	= T;
 			}
 			break;
 		case 1:	// box
@@ -541,11 +543,13 @@ void CCF_Shape::ComputeBounds()
 				A.set( +.5f, +.5f, -.5f); T.transform_tiny	(B,A); bv_box.modify(B);
 				A.set( +.5f, -.5f, +.5f); T.transform_tiny	(B,A); bv_box.modify(B);
 				A.set( +.5f, -.5f, -.5f); T.transform_tiny	(B,A); bv_box.modify(B);
+
+				bCalcSphere	= TRUE;
 			}
 			break;
 		}
 	}
-	bv_box.getsphere		(bv_sphere.P,bv_sphere.R);
+	if (bCalcSphere) bv_box.getsphere(bv_sphere.P,bv_sphere.R);
 }
 
 BOOL CCF_Shape::Contact		( CObject* O )
