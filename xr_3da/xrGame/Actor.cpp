@@ -1147,19 +1147,9 @@ void CActor::OnItemTake			(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemTake(inventory_item);
 	if (OnClient()) return;
-	
-/*	switch (GameID())
-	{
-	case GAME_DEATHMATCH:
-	case GAME_TEAMDEATHMATCH:
-	case GAME_ARTEFACTHUNT:
-		{
-			SpawnAmmoForWeapon(inventory_item);
-		}break;
-	};	
-*/
-	if (GameID()!=GAME_SINGLE)
-			SpawnAmmoForWeapon(inventory_item);
+
+//	if (GameID()!=GAME_SINGLE)
+//			SpawnAmmoForWeapon(inventory_item);
 }
 
 void CActor::OnItemDrop			(CInventoryItem *inventory_item)
@@ -1170,7 +1160,7 @@ void CActor::OnItemDrop			(CInventoryItem *inventory_item)
 	CArtefact* artefact = smart_cast<CArtefact*>(inventory_item);
 	if(artefact && artefact->m_eItemPlace == eItemPlaceBelt)
 		MoveArtefactBelt(artefact, false);
-
+/*
 	switch (GameID())
 	{
 	case GAME_DEATHMATCH:
@@ -1180,6 +1170,7 @@ void CActor::OnItemDrop			(CInventoryItem *inventory_item)
 			RemoveAmmoForWeapon(inventory_item);
 		}break;
 	};
+	*/
 }
 
 
@@ -1292,8 +1283,8 @@ void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
 	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
 	if (!pWM || !pWM->AutoSpawnAmmo()) return;
 
-//	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[0]), false));
-//	if (!pAmmo) 
+	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[0]), false));
+	if (!pAmmo) 
 		pWM->SpawnAmmo(0xffffffff, NULL, ID());
 };
 

@@ -162,7 +162,7 @@ bool CWeaponMagazined::TryReload()
 			return true;
 		}
 
-		if(m_pAmmo) 
+		if(m_pAmmo || psActorFlags.test(AF_UNLIMITEDAMMO)) 
 		{
 			m_bPending = true;
 			SwitchState(eReload); 
@@ -271,7 +271,9 @@ void CWeaponMagazined::ReloadMagazine()
 		m_pAmmo		= NULL;
 	}
 	
-	if(m_pInventory) 
+	if (!m_pInventory) return;
+
+	if(!psActorFlags.test(AF_UNLIMITEDAMMO)) 
 	{
 		//попытаться найти в инвентаре патроны текущего типа 
 		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
@@ -292,11 +294,13 @@ void CWeaponMagazined::ReloadMagazine()
 			}
 		}
 	}
+	else
+		m_ammoType = 0;
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 	//нет патронов для перезарядки
-	if(!m_pAmmo || !m_pInventory) return;
+	if(!m_pAmmo && !psActorFlags.test(AF_UNLIMITEDAMMO) ) return;
 
 	//разрядить магазин, если загружаем патронами другого типа
 	if(!m_bLockType && !m_magazine.empty() && 
@@ -307,18 +311,28 @@ void CWeaponMagazined::ReloadMagazine()
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	
 	CCartridge l_cartridge;
-	while(iAmmoElapsed < iMagazineSize && m_pAmmo->Get(l_cartridge)) 
+	//---------------------------------------------------
+	if (psActorFlags.test(AF_UNLIMITEDAMMO))
 	{
+		l_cartridge.Load(*(m_ammoTypes[0]));
+	}
+	//---------------------------------------------------
+	while(iAmmoElapsed < iMagazineSize)
+	{
+		if (!psActorFlags.test(AF_UNLIMITEDAMMO))
+		{
+			if (!m_pAmmo->Get(l_cartridge)) break;
+		}
 		++iAmmoElapsed;
 		m_magazine.push(l_cartridge);
 		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
 	}
-	m_ammoName = m_pAmmo->m_nameShort;
+	m_ammoName = (m_pAmmo) ? m_pAmmo->m_nameShort : NULL;
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 	//выкинуть коробку патронов, если она пустая
-	if(!m_pAmmo->m_boxCurr && OnServer()) m_pAmmo->Drop();
+	if(m_pAmmo && !m_pAmmo->m_boxCurr && OnServer()) m_pAmmo->Drop();
 
 	if(iMagazineSize > iAmmoElapsed) 
 	{ 
