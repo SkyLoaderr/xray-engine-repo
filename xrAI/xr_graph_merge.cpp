@@ -69,6 +69,7 @@ public:
 		m_S						= S;
 		m_dwOffset				= dwOffset;
 		m_Ini					= Ini;
+		m_tpLevelPoints			= tpLevelPoints;
 		
 		// loading graph
 		strconcat				(caFileName,S,"level.graph");
