@@ -120,7 +120,7 @@ void CSoundRender_Core::_initialize	(u64 window)
 		s_targets.push_back			(T);
 	}
 
-	cache.initialize			(psSoundCacheSizeMB*1024,(sdef_target_block/2)*wfm.nAvgBytesPerSec/1000)
+	cache.initialize			(psSoundCacheSizeMB*1024,(sdef_target_block/2)*wfm.nAvgBytesPerSec/1000);
 }
 
 void CSoundRender_Core::_destroy	()
