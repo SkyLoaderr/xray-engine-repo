@@ -80,8 +80,6 @@ void CBitingAttack::Init()
 	once_flag_1 = once_flag_1 = false;
 
 	ThreatenTimeStarted = 0;
-	// Test
-	LOG_EX("_ Attack Init _");
 }
 
 #define TIME_WALK_PATH 5000

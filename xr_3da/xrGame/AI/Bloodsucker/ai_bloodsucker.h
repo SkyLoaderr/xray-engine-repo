@@ -56,7 +56,13 @@ public:
 	bool					SquadTaskIsHigherPriority	(); 
 	void					UpdateTaskStatus			();
 	bool					IsTaskActive				();
-	
+	bool					ShouldReplan				();
+
+	void					ProcessTask					(bool bInit);
+
+	void					DBG_TranslateTask			(const GTask *pTask);
+	bool					IsTaskMustFinished			();
+	void					ProcessSquad				();
 	// ---------------------------------------------------------------------------------
 
 };

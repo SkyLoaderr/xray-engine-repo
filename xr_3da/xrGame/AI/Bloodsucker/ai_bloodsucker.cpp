@@ -251,46 +251,68 @@ void CAI_Bloodsucker::StateSelector()
 	else if (F && !H && !I) 	SetState(stateAttack);		
 	else if (A && !K)			SetState(stateExploreNDE); 
 	else if (B && !K)			SetState(stateExploreNDE); 
-
-//	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)))
 	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
 		SetState(stateEat);	
 	else						SetState(stateRest);
 
-	// Check Seq
-
 	EMotionAnim anim = MotionMan.Seq_CurAnim();
 	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
 	
-//	///////////////////////////////////////////////////////////////////////////////////////////
-//	// Process Squad AI
-//
-//	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
-//	
-//	LOG_EX("_________PRED_________:");
-//	pSquad->Dump();
-//
-//	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
-//	task = &pSquad->GetTask(this);
-//
-//	LOG_EX("_________PRED AFTER_________:");
-//	pSquad->Dump();
-//
-//	if (IsTaskActive()) 
-//		if (IsActiveTaskFinished()) StopTask();
-//	
-//	bool bInit = !IsTaskActive();
-//
-//	if (CanExecuteSquadTask()) {
-//		UpdateTaskStatus();
-//		ProcessTask(bInit);
-//	}
-//
-//	LOG_EX("_________AFTER_________:");
-//	pSquad->Dump();
-//
-//	///////////////////////////////////////////////////////////////////////////////////////////
+	ProcessSquad();
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// Process Squad AI
+
+
+void CAI_Bloodsucker::DBG_TranslateTask(const GTask *pTask)
+{
+
+	LOG_EX2("SQUAD:: [M =%s] Getting task: ", *"*/ cName() /*"*);
+
+	string32 s_type;
+
+	switch (pTask->state.type) {
+		case TS_REQUEST:	strcpy(s_type, "TS_REQUEST");	break;
+		case TS_PROGRESS:	strcpy(s_type, "TS_PROGRESS");	break;
+		case TS_REFUSED:	strcpy(s_type, "TS_REFUSED");	break;
+	}	
+
+	LOG_EX2("SQUAD:: [M =%s] Task desc: [type = %s], [ttl = %u]: ", *"*/ cName(), s_type, pTask->state.ttl /*"*);
+}
+
+// ----------------------------------------------------------------------------------------------
+
+void CAI_Bloodsucker::ProcessSquad()
+{
+	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
+
+	// Если лидер - выполнить планирование (!!!)
+	// Проверить условия перепланирования
+	if ((pSquad->GetLeader() == this) && ShouldReplan()) pSquad->ProcessGroupIntel();
+	
+	// получить свою задачу
+	GTask *task = &pSquad->GetTask(this);
+
+	
+	DBG_TranslateTask(task);
+
+	
+	// Проверить на завершение задачи
+	if (IsTaskActive() && IsTaskMustFinished()) StopTask();
+	
+	// Может быть запущена задача?
+	if (CanExecuteSquadTask()) {
+		// Обновить состояние задачи
+		UpdateTaskStatus();
+		// Выполнить задачу
+		ProcessTask(!IsTaskActive());
+	} else if (IsTaskActive()) StopTask();
+
+}
+
+// ----------------------------------------------------------------------------------------------
 
 bool CAI_Bloodsucker::IsTaskActive()
 {
@@ -303,7 +325,7 @@ bool CAI_Bloodsucker::IsTaskActive()
 }
 
 // ----------------------------------------------------------------------------------------------
-bool CAI_Bloodsucker::IsActiveTaskFinished()
+bool CAI_Bloodsucker::IsTaskMustFinished()
 { 
 	if (task->state.command == SC_FOLLOW) {
 		if (task->target.pos.distance_to(Position()) < 1.0f) return true;
@@ -311,14 +333,26 @@ bool CAI_Bloodsucker::IsActiveTaskFinished()
 
 	return false;
 }
-
+// ----------------------------------------------------------------------------------------------
 void CAI_Bloodsucker::StopTask()
 {
 	task->state.ttl				= 0;
 	last_time_finished			= m_dwCurrentTime;
 	stateSquadTask->Done();
 }
+// ----------------------------------------------------------------------------------------------
 
+bool CAI_Bloodsucker::CanExecuteSquadTask()
+{
+	return	(
+		CheckValidity() &&				// проверить валидность задачи (по type && ttl)
+		CheckCanSetWithTime() &&		// после выполненой задачи есть время, во время котторого новую брать задачу - нельзя
+		SquadTaskIsHigherPriority() &&	// приоритет внутреннего состояния меньше приоритета задачи 
+		CheckCanSetWithConditions()		// внутреннее состояние персонажа позволяют взять задание
+		);
+}
+
+// ----------------------------------------------------------------------------------------------
 
 bool CAI_Bloodsucker::CheckValidity()
 {
@@ -329,24 +363,15 @@ bool CAI_Bloodsucker::CheckValidity()
 		return false;
 	}
 
-	if (task->state.type == TS_REQUEST) {
-		return true;
-	}
-
-	if (task->state.type == TS_PROGRESS) {
-		if (SquadTaskIsHigherPriority()) return true;
-		else {		
-			StopTask();
-			return false;
-		}
-	}
-
+	if (task->state.type == TS_REQUEST) return true;
+	if (task->state.type == TS_PROGRESS) return true;
 	if (task->state.type == TS_REFUSED) return false; 
+
 	return false;
 }
 // -----------------------------------------------------------------------------------------
 
-#define TASK_MIN_INTERVAL		3000
+#define TASK_MIN_INTERVAL		4000
 
 bool CAI_Bloodsucker::CheckCanSetWithTime()
 {
@@ -356,28 +381,21 @@ bool CAI_Bloodsucker::CheckCanSetWithTime()
 	return false;
 }
 
+// ----------------------------------------------------------------------------------------------
 
 bool CAI_Bloodsucker::CheckCanSetWithConditions()
 {
 	return true;
 }
 
-bool CAI_Bloodsucker::CanExecuteSquadTask()
-{
-	return	(
-				CheckValidity() && 
-				CheckCanSetWithTime() &&
-				SquadTaskIsHigherPriority() &&
-				CheckCanSetWithConditions()
-			);
-}
+// ----------------------------------------------------------------------------------------------
 
 bool CAI_Bloodsucker::SquadTaskIsHigherPriority() 
 {
 	return (Level().SquadMan.TransformPriority(task->state.command) > CurrentState->GetPriority());
 }
 
-
+// ----------------------------------------------------------------------------------------------
 
 void CAI_Bloodsucker::UpdateTaskStatus()
 {
@@ -393,14 +411,43 @@ void CAI_Bloodsucker::UpdateTaskStatus()
 		case SC_FEEL_DANGER:	ttl = 10000;	break;
 		}
 
-		if (task->state.type == TS_REQUEST)	{
-			task->state.type	= TS_PROGRESS;
-			task->state.ttl		= m_dwCurrentTime + ttl;
-		}
+		task->state.type	= TS_PROGRESS;
+		task->state.ttl		= m_dwCurrentTime + ttl;
 	}
+
+	task->state.type	= TS_PROGRESS;
 }
 
-//void CAI_Bloodsucker::ProcessTask(bool bInit)
+// ----------------------------------------------------------------------------------------------
+
+bool CAI_Bloodsucker::ShouldReplan()
+{
+	return true;
+}
+
+// ----------------------------------------------------------------------------------------------
+
+void CAI_Bloodsucker::ProcessTask(bool bInit)
+{
+	LOG_EX2("SQUAD:: Processing Task:  Init = [%u]", *"*/ bInit /*"*);
+
+	//SetSquadState(stateSquadTask);
+}
+
+//void CAI_Biting::SetSquadState(IState *pS, bool bSkipInertiaCheck)
 //{
-//	
+//	if (CurrentState != pS) {
+//		// проверка инерций
+//		if (!bSkipInertiaCheck)
+//			if (CurrentState->IsInertia()) {
+//				if (CurrentState->GetPriority() >= pS->GetPriority()) return;
+//			}
+//
+//			CurrentState->Done();
+//			CurrentState->Reset();
+//			CurrentState = pS;
+//			CurrentState->Activate();
+//	}
 //}
+ 
+// ----------------------------------------------------------------------------------------------

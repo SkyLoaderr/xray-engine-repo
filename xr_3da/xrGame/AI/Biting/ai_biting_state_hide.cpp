@@ -21,8 +21,6 @@ void CBitingHide::Init()
 	SetInertia(20000);
 	pMonster->SetMemoryTime(20000);
 
-	// Test
-	LOG_EX("_ Hide Init _");
 }
 
 void CBitingHide::Reset()

@@ -23,8 +23,6 @@ void CBitingExploreDE::Reset()
 
 void CBitingExploreDE::Init()
 {
-	// Test
-	LOG_EX("_ ExploreDE Init _");
 
 	inherited::Init();
 

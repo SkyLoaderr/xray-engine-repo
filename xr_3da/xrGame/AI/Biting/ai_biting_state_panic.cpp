@@ -37,8 +37,6 @@ void CBitingPanic::Init()
 	SetInertia(15000);
 	pMonster->SetMemoryTime(15000);
 
-	// Test
-	LOG_EX("_ Panic Init _");
 }
 
 void CBitingPanic::Run()

@@ -10,8 +10,6 @@ CBitingSquadTask::CBitingSquadTask(CAI_Biting *p)
 void CBitingSquadTask::Init()
 {
 	inherited::Init();
-	// Test
-	LOG_EX("_ Squad Task Init _");
 
 	// Get task
 	CMonsterSquad *pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());

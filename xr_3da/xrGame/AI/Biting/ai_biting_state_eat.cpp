@@ -60,9 +60,6 @@ void CBitingEat::Init()
 	m_dwTimeStartRest	= 0;
 
 	pMonster->flagEatNow = true;
-
-	// Test
-	LOG_EX("_ Eat Init _");
 }
 
 

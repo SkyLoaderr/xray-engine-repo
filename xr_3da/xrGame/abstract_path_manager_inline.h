@@ -81,7 +81,7 @@ IC	u32 CPathManagerTemplate::intermediate_index() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	bool CPathManagerTemplate::actual(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const
+IC	bool CPathManagerTemplate::actual(const _vertex_id_type /*start_vertex_id*/, const _vertex_id_type /*dest_vertex_id*/) const
 {
 	return					(m_actuality);
 }
