@@ -217,6 +217,7 @@ public:
 
 		void	accel_chain_add			(EMotionAnim anim1, EMotionAnim anim2);
 		bool	accel_chain_get			(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed);
+		bool	accel_chain_test		();
 
 		bool	accel_check_braking		(float before_interval);
 

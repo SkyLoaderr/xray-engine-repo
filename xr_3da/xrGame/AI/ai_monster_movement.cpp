@@ -104,7 +104,14 @@ void CMonsterMovement::MoveToTarget(const CEntity *entity)
 
 void CMonsterMovement::MoveToTarget(const Fvector &pos, u32 node_id) 
 {
-	SetPathParams(node_id,pos);
+	if (accessible(node_id)) {
+		SetPathParams(node_id,pos);
+	} else {
+		Fvector res;
+		u32 node = accessible_nearest(pos, res);
+		SetPathParams(node,res);
+	}
+	
 }
 
 
@@ -122,8 +129,10 @@ void CMonsterMovement::MoveToTarget(const Fvector &position)
 	if (!new_params) return;
 
 	// если нода в прямой видимости - не использовать селектор
+	CRestrictedObject::add_border		(Position(), position);
 	u32 node_id = ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),position);
-	if (ai().level_graph().valid_vertex_id(node_id)) {
+	CRestrictedObject::remove_border	();
+	if (ai().level_graph().valid_vertex_id(node_id) && accessible(node_id)) {
 		SetPathParams (node_id, position);
 
 		// хранить в данном селекторе время последнего перестраивания пути
@@ -131,9 +140,9 @@ void CMonsterMovement::MoveToTarget(const Fvector &position)
 	} else {
 		bool use_selector = true;
 
-		if (ai().level_graph().valid_vertex_position(position)) {
+		if (ai().level_graph().valid_vertex_position(position) && accessible(position)) {
 			u32 vertex_id = ai().level_graph().vertex_id(position);
-			if (ai().level_graph().valid_vertex_id(vertex_id)) {
+			if (ai().level_graph().valid_vertex_id(vertex_id) && accessible(vertex_id)) {
 				SetPathParams (vertex_id, position);
 
 				// хранить в данном селекторе время последнего перестраивания пути

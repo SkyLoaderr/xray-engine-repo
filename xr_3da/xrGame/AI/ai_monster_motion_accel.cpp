@@ -87,6 +87,35 @@ bool CMotionManager::accel_chain_get(float cur_speed, EMotionAnim target_anim, E
 	return false;
 }
 
+bool CMotionManager::accel_chain_test()
+{
+	string256 error_msg;
+
+	// пройти по всем Chain-векторам
+	for (VELOCITY_CHAIN_VEC_IT I = m_accel.chain.begin(); I != m_accel.chain.end(); I++) {
+
+		VERIFY2(I->size() >= 2, error_msg);
+
+		ANIM_ITEM_MAP_IT	anim_from	= get_sd()->m_tAnims.find(*(I->begin()));
+		ANIM_ITEM_MAP_IT	anim_to;
+
+		// Пройти по текущему вектору
+		for (SEQ_VECTOR_IT IT = I->begin() + 1; IT != I->end(); IT++) {
+			anim_to = get_sd()->m_tAnims.find(*IT);
+			
+			float from	=	anim_from->second.velocity->velocity.linear * anim_from->second.velocity->max_factor;
+			float to	=	anim_to->second.velocity->velocity.linear * anim_to->second.velocity->min_factor;
+			
+			sprintf(error_msg,"Incompatible speed ranges. Monster[%s] From animation  [%s] To animation [%s]",*pMonster->cName(),*anim_from->second.target_name, *anim_to->second.target_name);
+			VERIFY2(to < from, error_msg);
+			
+			anim_from = anim_to;
+		}
+	}
+
+	return true;
+}
+
 bool CMotionManager::accel_check_braking(float before_interval)
 {
 	if (!pMonster->IsMovingOnPath())	return false;
