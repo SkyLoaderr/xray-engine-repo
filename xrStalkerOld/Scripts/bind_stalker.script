@@ -1,4 +1,4 @@
-db.storage("level_tips")
+module("level_tips")
 
 function init    (obj)
 	xr_motivator.AddToMotivator(obj)
