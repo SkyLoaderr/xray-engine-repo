@@ -90,6 +90,8 @@ CWeapon::CWeapon(LPCSTR name)
 	bMisfire = false;
 
 	m_flagsAddOnState = 0;
+
+	m_bZoomMode = false;
 }
 
 CWeapon::~CWeapon		()
@@ -422,20 +424,39 @@ void CWeapon::Load		(LPCSTR section)
 	m_eGrenadeLauncherStatus = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
 
 	
-	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable)
+	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable)
 	{
 		m_sScopeName = pSettings->r_string(section,"scope_name");
 		m_iScopeX = pSettings->r_s32(section,"scope_x");
 		m_iScopeY = pSettings->r_s32(section,"scope_y");
+
+		ref_str scope_tex_name;
+		scope_tex_name = pSettings->r_string(*m_sScopeName, "scope_texture");
+
+		m_fScopeZoomFactor = pSettings->r_float	(*m_sScopeName, "scope_zoom_factor");
+		
+		m_UIScope.Init(*scope_tex_name, "hud\\default", 0, 0, alNone);
 	}
-	if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable)
+	else if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddonPermanent)
+	{
+		m_fScopeZoomFactor = pSettings->r_float	(section, "scope_zoom_factor");
+		if (pSettings->line_exist(section, "scope_texture"))
+		{
+			ref_str scope_tex_name;
+			scope_tex_name = pSettings->r_string(section, "scope_texture");
+			m_UIScope.Init(*scope_tex_name, "hud\\default", 0, 0, alNone);
+		}
+
+	}
+
+	if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable)
 	{
 		m_sSilencerName = pSettings->r_string(section,"silencer_name");
 		m_iSilencerX = pSettings->r_s32(section,"silencer_x");
 		m_iSilencerY = pSettings->r_s32(section,"silencer_y");
 
 	}
-	if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable)
+	if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonAttachable)
 	{
 		m_sGrenadeLauncherName = pSettings->r_string(section,"grenade_launcher_name");
 		m_iGrenadeLauncherX = pSettings->r_s32(section,"grenade_launcher_x");
@@ -605,6 +626,8 @@ void CWeapon::OnH_B_Chield		()
 	setEnabled					(false);
 
 	if(m_pHUD)					m_pHUD->Hide();
+	
+	OnZoomOut();
 
 	if (m_pPhysicsShell)		m_pPhysicsShell->Deactivate	();
 
@@ -788,13 +811,14 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 			*/
 		}
 	} else {
+		/* !!! remove comments line!!!
 		::Render->add_Wallmark	(
 			hWallmark,
 			vEnd,
 			fWallmarkSize,
 			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element,
 			g_pGameLevel->ObjectSpace.GetStaticVerts()
-			);
+			);*/
 	}
 }
 
@@ -1007,6 +1031,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 {
 	if(inherited::Action(cmd, flags)) return true;
 
+	//если оружие чем-то занято, то ничего не делать
 	if(bPending) return false;
 	
 	switch(cmd) 
@@ -1040,6 +1065,16 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 				}
 			} 
             return true;
+		case kWPN_ZOOM:
+			if(IsScopeAttached())
+			{
+                if(flags&CMD_START)
+					OnZoomIn();
+                else 
+					OnZoomOut();
+				return true;
+			} 
+			else return false;
 	}
 	return false;
 }
@@ -1175,6 +1210,7 @@ BOOL CWeapon::IsMisfire()
 }
 void CWeapon::Reload()
 {
+	OnZoomOut();
 }
 
 bool CWeapon::Attach(PIItem pIItem) 
@@ -1188,35 +1224,35 @@ bool CWeapon::Detach(const char* item_section_name)
 
 bool CWeapon::IsGrenadeLauncherAttached()
 {
-	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
 			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)) || 
 			CSE_ALifeItemWeapon::eAddonPermanent == m_eGrenadeLauncherStatus;
 }
 bool CWeapon::IsScopeAttached()
 {
-	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eScopeStatus &&
+	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eScopeStatus &&
 			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope)) || 
 			CSE_ALifeItemWeapon::eAddonPermanent == m_eScopeStatus;
 
 }
 bool CWeapon::IsSilencerAttached()
 {
-	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eSilencerStatus &&
+	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eSilencerStatus &&
 			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer)) || 
 			CSE_ALifeItemWeapon::eAddonPermanent == m_eSilencerStatus;
 }
 
 bool CWeapon::GrenadeLauncherAttachable()
 {
-	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus);
+	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus);
 }
 bool CWeapon::ScopeAttachable()
 {
-	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eScopeStatus);
+	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eScopeStatus);
 }
 bool CWeapon::SilencerAttachable()
 {
-	return (CSE_ALifeItemWeapon::eAddondAttachable == m_eSilencerStatus);
+	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eSilencerStatus);
 }
 
 void CWeapon::UpdateAddonsVisibility()
@@ -1263,4 +1299,24 @@ void CWeapon::UpdateAddonsVisibility()
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
 		}
 	}
+}
+
+
+void CWeapon::OnZoomIn()
+{
+	m_bZoomMode = true;
+	fZoomFactor = m_fScopeZoomFactor;
+}
+
+void CWeapon::OnZoomOut()
+{
+	m_bZoomMode = false;
+	fZoomFactor = DEFAULT_FOV;
+}
+CUIStaticItem* CWeapon::ZoomTexture()
+{
+	if(m_UIScope.GetShader()) 
+		return &m_UIScope;
+	else 
+		return NULL;
 }

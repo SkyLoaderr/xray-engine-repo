@@ -48,7 +48,7 @@ public:
 
 	virtual void	Hide				();
 	virtual void	Show				();
-	virtual BOOL	HasOpticalAim		()		{ return FALSE; }
+
 	virtual void	Fire2Start			();
 	virtual void	Fire2End			();
 	virtual void	FireStart			();

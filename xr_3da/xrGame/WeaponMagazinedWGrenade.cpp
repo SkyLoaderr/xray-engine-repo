@@ -918,7 +918,7 @@ bool CWeaponMagazinedWGrenade::CanAttach(PIItem pIItem)
 	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
 	
 	if(pGrenadeLauncher &&
-	   CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+	   CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
 	   0 == (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
 	   !strcmp(*m_sGrenadeLauncherName, pIItem->cNameSect()))
        return true;
@@ -928,7 +928,7 @@ bool CWeaponMagazinedWGrenade::CanAttach(PIItem pIItem)
 
 bool CWeaponMagazinedWGrenade::CanDetach(const char* item_section_name)
 {
-	if(CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+	if(CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
 	   !strcmp(*m_sGrenadeLauncherName, item_section_name))
 	   return true;
@@ -941,7 +941,7 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
 	
 	if(pGrenadeLauncher &&
-	   CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+	   CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
 	   0 == (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
 	   !strcmp(*m_sGrenadeLauncherName, pIItem->cNameSect()))
 	{
@@ -962,7 +962,7 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 }
 bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
 {
-	if (CSE_ALifeItemWeapon::eAddondAttachable == m_eGrenadeLauncherStatus &&
+	if (CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
 	   !strcmp(*m_sGrenadeLauncherName, item_section_name))
 	{

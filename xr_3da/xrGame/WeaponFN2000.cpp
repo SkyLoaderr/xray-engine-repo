@@ -9,14 +9,13 @@ CWeaponFN2000::CWeaponFN2000() : CWeaponMagazined("FN2000",SOUND_TYPE_WEAPON_SNI
 {
 	m_weight = 1.5f;
 	m_slot = 2;
-	fMaxZoomFactor		= 25.f;
 }
 
 CWeaponFN2000::~CWeaponFN2000()
 {
 }
 
-void CWeaponFN2000::Load	(LPCSTR section)
+/*void CWeaponFN2000::Load	(LPCSTR section)
 {
 	inherited::Load			(section);
 	fMaxZoomFactor			= pSettings->r_float	(section,"max_zoom_factor");
@@ -43,3 +42,4 @@ bool CWeaponFN2000::Action(s32 cmd, u32 flags) {
 	}
 	return false;
 }
+*/

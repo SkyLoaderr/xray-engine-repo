@@ -685,12 +685,12 @@ bool CWeaponMagazined::CanAttach(PIItem pIItem)
 	CSilencer* pSilencer = dynamic_cast<CSilencer*>(pIItem);
 	
 	if(pScope &&
-	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
 	   !strcmp(*m_sScopeName, pIItem->cNameSect()))
        return true;
 	else if(pSilencer &&
-	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
 	   !strcmp(*m_sSilencerName, pIItem->cNameSect()))
        return true;
@@ -700,11 +700,11 @@ bool CWeaponMagazined::CanAttach(PIItem pIItem)
 
 bool CWeaponMagazined::CanDetach(const char* item_section_name)
 {
-	if( m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	if( m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
 	   strcmp(*m_sScopeName, item_section_name))
        return true;
-	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
 	   strcmp(*m_sSilencerName, item_section_name))
        return true;
@@ -720,7 +720,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 	CSilencer* pSilencer = dynamic_cast<CSilencer*>(pIItem);
 	
 	if(pScope &&
-	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
 	   !strcmp(*m_sScopeName, pIItem->cNameSect()))
 	{
@@ -728,7 +728,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 		result = true;
 	}
 	else if(pSilencer &&
-	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
 	   !strcmp(*m_sSilencerName, pIItem->cNameSect()))
 	{
@@ -756,7 +756,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 
 bool CWeaponMagazined::Detach(const char* item_section_name)
 {
-	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
 	   !strcmp(*m_sScopeName, item_section_name))
 	{
@@ -765,7 +765,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 
 		return CInventoryItem::Detach(item_section_name);
 	}
-	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
 	   !strcmp(*m_sSilencerName, item_section_name))
 	{

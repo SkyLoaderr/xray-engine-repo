@@ -6,19 +6,16 @@
 
 class CWeaponFN2000: public CWeaponMagazined
 {
-	float			fMaxZoomFactor;
 private:
 	typedef CWeaponMagazined inherited;
 public:
 	CWeaponFN2000	();
 	virtual			~CWeaponFN2000	();
-//	virtual	BOOL	HasOpticalAim	()	{ return TRUE; }
-//	virtual float	GetZoomFactor	()	{ return fMaxZoomFactor; }
-	virtual void	Load			(LPCSTR section);
+/*	virtual void	Load			(LPCSTR section);
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();
 
-	virtual bool Action(s32 cmd, u32 flags);
+	virtual bool Action(s32 cmd, u32 flags);*/
 
 };
 

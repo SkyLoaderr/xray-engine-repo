@@ -8,6 +8,7 @@
 
 #include "PhysicsShell.h"
 #include "weaponammo.h"
+#include "UIStaticItem.h"
 
 // refs
 class CEntity;
@@ -19,7 +20,6 @@ class ENGINE_API CMotionDef;
 
 class CWeapon : public CInventoryItem//CGameObject
 {
-	friend class CWeaponList;
 private:
 	typedef CInventoryItem		inherited;
 public:
@@ -140,6 +140,13 @@ protected:
 	int	m_iScopeX, m_iScopeY;
 	int	m_iSilencerX, m_iSilencerY;
 	int	m_iGrenadeLauncherX, m_iGrenadeLauncherY;
+	
+	//текстура для снайперского прицела, в режиме приближения
+	CUIStaticItem	m_UIScope;
+	//коэффициент увеличения прицела
+	float			m_fScopeZoomFactor;
+	//режим включенного приближения
+	bool m_bZoomMode;
 
 	//состояние подключенных аддонов
 	u8			m_flagsAddOnState;
@@ -198,8 +205,12 @@ public:
 
 	virtual void			OnMagazineEmpty		()			{};
 	virtual void			OnAnimationEnd		()			{};
-	virtual void			OnZoomIn			()			{};
-	virtual void			OnZoomOut			()			{};
+	
+	virtual void			OnZoomIn			();
+	virtual void			OnZoomOut			();
+	virtual bool			IsZoomed			()			{return m_bZoomMode;}
+	CUIStaticItem*			ZoomTexture			();
+
 	virtual void			OnDrawFlame			();
 	virtual void			OnStateSwitch		(u32 /**S/**/)		{};
 
@@ -249,7 +260,6 @@ public:
 	virtual bool			IsPending			()				{   return bPending;}
 	
 	IC EHandDependence		HandDependence		()				{	return eHandDependence;}
-	virtual BOOL			HasOpticalAim		()				{	return FALSE;								}
 	virtual float			GetZoomFactor		()				{	return fZoomFactor;							}
 
 	float					GetPrecision		();
