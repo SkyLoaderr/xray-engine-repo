@@ -45,10 +45,18 @@ void CObjectList::Load()
 
 void CObjectList::Unload	( )
 {
-	for (u32 i=0; i<objects.size(); i++) 
+	// Destroy objects
+	Msg	("!!!------------- Unload, %d objects",objects.size());
+	while (objects.size())
 	{
-		objects[i]->net_Destroy	();
-		Destroy					( objects[i] );
+		CObject*	O	= objects.back();
+		Msg	("!!!------------- Unload: %s",O->cName());
+		O->net_Destroy	(   );
+		Destroy			( O );
 	}
 	objects.clear();
+
+	// Clear POOL
+	for (POOL_IT it=map_POOL.begin(); it!=map_POOL.end(); it++)	
+		xr_delete	(it->second);
 }

@@ -11,9 +11,11 @@ class ENGINE_API NET_Packet;
 class	ENGINE_API 				CObjectList
 {
 private:
-	typedef vector<CObject*>::iterator	OBJ_IT;
+	typedef vector<CObject*>::iterator				OBJ_IT;
+	typedef multimap<CLASS_ID,CObject*>				POOL;
+	typedef POOL::iterator							POOL_IT;
 private:
-	multimap<CLASS_ID,CObject*>	map_POOL;
+	POOL						map_POOL;
 	map<u32,CObject*>			map_NETID;
 public:
 	// data
