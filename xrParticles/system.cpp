@@ -30,22 +30,6 @@ float ParticleAction::dt;
 _ParticleState::ParticleEffectVec	_ParticleState::effect_vec;
 _ParticleState::PAHeaderVec			_ParticleState::alist_vec;
 
-// This AutoCall struct allows for static initialization of the above shared variables.
-struct AutoCall
-{
-	AutoCall();
-};
-
-AutoCall::AutoCall()
-{
-	// The list of effects, etc.	
-	/*
-	_ParticleState::effect_vec.reserve(128);
-	_ParticleState::alist_vec.reserve(128);
-	*/
-}
-static AutoCall AC;
-
 // This is the global state.
 _ParticleState __ps;
 _ParticleState& _GetPState()

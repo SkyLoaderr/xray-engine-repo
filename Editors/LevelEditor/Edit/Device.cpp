@@ -51,7 +51,7 @@ CRenderDevice::CRenderDevice()
     pSystemFont		= 0;
 
 	fASPECT 		= 1.f;
-	fFOV 			= deg2rad( 60.f );
+	fFOV 			= 60.f;
 }
 
 CRenderDevice::~CRenderDevice(){
@@ -237,7 +237,7 @@ void __fastcall CRenderDevice::Resize(int w, int h, bool bRefreshDevice)
     if (bRefreshDevice) Destroy();
 
     fASPECT 		= (float)dwHeight / (float)dwWidth;
-    mProjection.build_projection( fFOV, fASPECT, m_Camera.m_Znear, m_Camera.m_Zfar );
+    mProjection.build_projection( deg2rad(fFOV), fASPECT, m_Camera.m_Znear, m_Camera.m_Zfar );
     m_fNearer 		= mProjection._43;
 
     if (bRefreshDevice) Create();

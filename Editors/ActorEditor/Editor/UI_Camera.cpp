@@ -85,10 +85,9 @@ void CUI_Camera::SetDepth(float _far, bool bForcedUpdate)
 
 void CUI_Camera::SetViewport(float _near, float _far, float _fov)
 {
-    float fov=deg2rad(_fov);
     if (m_Znear!=_near)		{m_Znear=_near; UI.Resize();}
     if (m_Zfar!=_far)		{m_Zfar=_far; UI.Resize();}
-    if (Device.fFOV!=fov)	{Device.fFOV=fov; UI.Resize();}
+    if (Device.fFOV!=_fov)	{Device.fFOV=_fov; UI.Resize();}
 }
 
 void CUI_Camera::SetSensitivity(float sm, float sr)
@@ -244,7 +243,7 @@ void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Iv
 
 	start.set( m_Position );
 
-	float size_y = m_Znear * tan( Device.fFOV * 0.5f );
+	float size_y = m_Znear * tan( deg2rad(Device.fFOV) * 0.5f );
 	float size_x = size_y / Device.fASPECT;
 
 	float r_pt = float(point2.x) * size_x / (float) halfwidth;
@@ -261,8 +260,8 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
     float R,H1,H2;
     bb.getsphere(C,R);
 	D.mul(m_CamMat.k,-1);
-    H1 = R/sinf(Device.fFOV*0.5f);
-    H2 = R/sinf(Device.fFOV*0.5f/Device.fASPECT);
+    H1 = R/sinf(deg2rad(Device.fFOV)*0.5f);
+    H2 = R/sinf(deg2rad(Device.fFOV)*0.5f/Device.fASPECT);
     m_Position.mad(C,D,_max(H1,H2));
 	m_Target.set(C);
 
