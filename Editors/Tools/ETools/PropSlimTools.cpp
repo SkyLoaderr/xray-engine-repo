@@ -1,100 +1,128 @@
 #include "stdafx.h"
 #include "PropSlimTools.h"
-#include <MxStdModel.h>
-#include <MxPropSlim.h>
-#include <MxQSlim.h>
+#include "object.h"
 
-#pragma comment (lib,"x:/xrQSlim.lib")
-
-#define MAX_DECIMATE_ERROR 0.1f
-#define MAX_DECIMATE_ERROR_TOLERANCE 0.1f
-#define COMPACTNESS_RATIO  0.5f
-//0.000005f
 namespace ETOOLS{
 ETOOLS_API void ContractionClear		(QSContraction*& dst_conx)
 {
 	xr_delete				(dst_conx);
 }
 
-struct SCBParams{
-	QSContraction*	contr;
-	MxPropSlim*		slim;
-	SCBParams(MxPropSlim*s, QSContraction* c):slim(s),contr(c){}
-};
-
-void contraction_callback(const MxPairContraction& conx, float err, void* cb_params)
+void CalculateAllCollapses(Object* m_pObject, float m_fSlidingWindowErrorTolerance=0.1f)
 {
-	SCBParams* cb			= (SCBParams*)cb_params;
+	while (true){
+		// Find the best collapse you can.
+		// (how expensive is this? Ohhhh yes).
+		float		fBestError			= 1.0e10f;
+		MeshEdge	*pedgeBestError		= NULL;
+		MeshPt		*pptBestError		= NULL;
+		// NL = NewLevel - would force a new level.
+		float		fBestErrorNL		= 1.0e10f;
+		MeshEdge	*pedgeBestErrorNL	= NULL;
+		MeshPt		*pptBestErrorNL		= NULL;
+		MeshPt		*ppt;
+		MeshEdge	*pedge;
 
-	// leave callback if change empty 
-//	if ((0==conx.dead_faces.length())&&(0==(conx.delta_faces.length()-conx.delta_pivot))) return;
+		float		fAverage			= 0.0f;
+		int			iAvCount			= 0;
 
-//	QSContractionItem* ci	= xr_new<QSContractionItem>(conx.dead_faces.length(),conx.delta_faces.length());
-	QSContractionItem* ci	= 
-		xr_new<QSContractionItem>(conx.dead_faces.length(),conx.delta_faces.length()-conx.delta_pivot);
-	ci->v_kept				= conx.v1;
-	ci->v_dead				= conx.v2;
-	ci->error				= err;
+		// Flush the cache, just in case.
+		m_pObject->FindCollapseError		( NULL, NULL, FALSE );
 
-	// dead faces
-	const MxFaceList& N1	= conx.dead_faces;
-	for (u32 f_idx=0; f_idx<(u32)N1.size(); f_idx++)
-		ci->f_dead[f_idx]	= N1[f_idx];
-	// changed faces
-	const MxFaceList& N2	= conx.delta_faces;
-	for (u32 f_idx=conx.delta_pivot; f_idx<(u32)N2.size(); f_idx++){
-		ci->f_delta[f_idx-conx.delta_pivot]	= N2[f_idx];
-//		info->heap_key(-10000.f);
-//		cb->slim->model().vertex_mark_locked(F[0]);
-//		cb->slim->model().vertex_mark_locked(F[1]);
-//		cb->slim->model().vertex_mark_locked(F[2]);
+		for ( ppt = m_pObject->CurPtRoot.ListNext(); ppt != NULL; ppt = ppt->ListNext() ){
+			// Disallow any pts that are on an edge - shouldn't be collapsing them.
+			BOOL bAllowed = TRUE;
+			for ( pedge = ppt->FirstEdge(); pedge != NULL; pedge = ppt->NextEdge() ){
+				if ( ( pedge->pTri12 == NULL ) || ( pedge->pTri21 == NULL ) ){
+					// This edge does not have two tris on it - disallow it.
+					bAllowed = FALSE;
+					break;
+				}
+			}
+			if ( !bAllowed ) continue;
+
+			BOOL bRequiresNewLevel = FALSE;
+			if ( !m_pObject->CollapseAllowedForLevel ( ppt, m_pObject->iCurSlidingWindowLevel ) ){
+				// This collapse would force a new level.
+				bRequiresNewLevel = TRUE;
+			}
+
+			// collect error
+			for ( pedge = ppt->FirstEdge(); pedge != NULL; pedge = ppt->NextEdge() ){
+				float fErrorBin = m_pObject->FindCollapseError ( ppt, pedge, TRUE );
+				iAvCount++;
+				fAverage += fErrorBin;
+				if ( bRequiresNewLevel ){
+					if ( fBestErrorNL > fErrorBin ){
+						fBestErrorNL = fErrorBin;
+						pedgeBestErrorNL = pedge;
+						pptBestErrorNL = ppt;
+					}
+				}else{
+					if ( fBestError > fErrorBin ){
+						fBestError = fErrorBin;
+						pedgeBestError = pedge;
+						pptBestError = ppt;
+					}
+				}
+			}
+		}
+		fAverage /= (float)iAvCount;
+
+		// Tweak up the NewLevel errors by a factor.
+		if ( fBestError > ( fBestErrorNL + fAverage * m_fSlidingWindowErrorTolerance ) ){
+			// Despite the boost, it's still the best,
+			// so bite the bullet and do the collapse.
+			fBestError = fBestErrorNL;
+			pedgeBestError = pedgeBestErrorNL;
+			pptBestError = pptBestErrorNL;
+		}
+
+		//-----------------------------------------------------------------------------------------------------------
+		// Do we need to do any collapses?
+		// Collapse auto-found edge.
+		if ( ( pedgeBestError != NULL ) && ( pptBestError != NULL ) ){
+			MeshPt *pKeptPt = pedgeBestError->OtherPt ( pptBestError ); 
+			VERIFY ( pKeptPt != NULL );
+			m_pObject->CreateEdgeCollapse ( pptBestError, pKeptPt );
+		}else{
+			break;
+		}
 	}
-//	for (u32 f_idx=0; f_idx<(u32)N2.size(); f_idx++)
-//		ci->f_delta[f_idx]	= N2[f_idx];
-
-	cb->contr->AppendItem	(ci);
 }
 
-ETOOLS_API BOOL ContractionGenerate	(QSMesh* src_mesh, QSContraction*& dst_conx, u32 min_faces, float max_error)
+ETOOLS_API BOOL ContractionGenerate		(QSMesh* src_mesh, QSContraction*& dst_conx, u32 min_faces, float max_error)
 {
 	VERIFY					(src_mesh);
 	VERIFY					(src_mesh->verts.size());
 	VERIFY					(src_mesh->faces.size());
 
+	Object*	m_pObject		= xr_new<Object>();
 	// prepare model
-	MxStdModel* mdl			= xr_new<MxStdModel>(src_mesh->verts.size(),src_mesh->faces.size());
-	mdl->texcoord_binding	(MX_PERVERTEX);
+	// The de-index list.
+	MeshPt **ppPts			= xr_alloc<MeshPt*>(src_mesh->verts.size());
 	for (u32 v_idx=0; v_idx<src_mesh->verts.size(); v_idx++){
 		QSVert& v			= src_mesh->verts[v_idx];
-		mdl->add_vertex		(v.pt.x,v.pt.y,v.pt.z);
-		mdl->add_texcoord	(v.uv.x,v.uv.y);
+		MeshPt * pt			= xr_new<MeshPt>( &m_pObject->CurPtRoot );
+		ppPts[v_idx]		= pt;
+		pt->mypt.vPos 		= v.pt;
+		pt->mypt.fU			= 1.f;//float(rand())/32767.f;
+		pt->mypt.fV			= 1.f;//float(rand())/32767.f;
+		pt->mypt.dwIndex	= v_idx;
 	}
 	for (u32 f_idx=0; f_idx<src_mesh->faces.size(); f_idx++){
 		QSFace& f			= src_mesh->faces[f_idx];
-		mdl->add_face		(f.v[0],f.v[1],f.v[2]);
+		MeshTri *ptri		= xr_new<MeshTri>(ppPts[f.v[0]],ppPts[f.v[1]],ppPts[f.v[2]], &m_pObject->CurTriRoot, &m_pObject->CurEdgeRoot );
+		ptri->mytri.dwIndex	= f_idx;
 	}
-
-	// create slim and set params
-	MxPropSlim* slim		= xr_new<MxPropSlim>(mdl);
-	slim->boundary_weight	= 1000.f;
-	slim->compactness_ratio	= COMPACTNESS_RATIO;
-	slim->meshing_penalty	= 1000.f;
-	slim->placement_policy	= MX_PLACE_ENDPOINTS;
-	slim->weighting_policy	= MX_WEIGHT_AREA_AVG;
-	slim->contraction_callback = contraction_callback;
-
-	// initialiez slim
-	slim->initialize		();
-
-	// collect edges
-	slim->collect_edges		();
+	xr_free(ppPts);
 
 	dst_conx				= xr_new<QSContraction>(src_mesh->verts.size());
-	SCBParams				CBP(slim,dst_conx);
 
-	// decimate
-	slim->decimate			(0,MAX_DECIMATE_ERROR,&CBP);
+	CalculateAllCollapses	(m_pObject);
 
+
+/*
 	// write SMF
 	IWriter* W			= FS.w_open("x:\\import\\original.smf");
 	string256 tmp;
@@ -112,10 +140,9 @@ ETOOLS_API BOOL ContractionGenerate	(QSMesh* src_mesh, QSContraction*& dst_conx,
 		}
 	}
 	FS.w_close	(W);
-
+*/
 	// -----
-	xr_delete				(mdl);
-	xr_delete				(slim);
+	xr_delete				(m_pObject);
 
 	return TRUE;
 }

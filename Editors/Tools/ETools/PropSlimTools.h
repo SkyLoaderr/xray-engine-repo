@@ -85,6 +85,7 @@ namespace ETOOLS{
 		u32					v_dead;
 		u32					v_kept;
 		float				error;
+		int					iSlidingWindowLevel;
 		qs_vector<u32>		f_dead;
 		qs_vector<u32>		f_delta;
 		QSContractionItem	(u32 dead_cnt, u32 delta_cnt):f_dead(dead_cnt),f_delta(delta_cnt)	{}
