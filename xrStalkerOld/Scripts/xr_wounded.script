@@ -161,7 +161,7 @@ function action_cover:initialize ()
     action_base.initialize (self)
     
     local pt = self.object:safe_cover (self.object:position (), 20, 0)
-    if pt == nil or self.object.health < self.a.hp_min then
+    if pt == nil or self.object.health < self.a.hp_min or self.object:accessible (pt:level_vertex_id ()) == false then
        self.pos = self.object:position ()
        self.vid = self.object:level_vertex_id ()
     else
@@ -354,6 +354,20 @@ function action_help:initialize ()
     --end   
     xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()
+    
+    local found = false
+    if self.a.theme ~= nil then
+       for a = 1, table.getn (self.sounds.themes), 1 do
+           if self.sounds.themes[a] == self.a.theme then
+              found = true
+           end
+       end
+       if found == false then         
+          table.insert (self.sounds.themes, self.a.theme)
+          printf ("Additional theme %s added", self.a.theme)
+       end   
+    end
+    
 end
 ------------
 function action_help:execute ()
@@ -633,7 +647,6 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
     action:add_precondition (world_property (stalker_ids.property_enemy,    true))
     action:add_precondition (world_property (properties["enable"],          true))
---    action:add_precondition (world_property (properties["medikit"],         false))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["sit"],             true))
@@ -645,7 +658,6 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["medikit"],         true))
-    --action:add_precondition (world_property (properties["cover"],           false))
     action:add_precondition (world_property (properties["sit"],             false))
     action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["medkit"], action)
@@ -662,19 +674,14 @@ function set_wounded (object, ini, scheme, section)
 
 	local st = xr_logic.assign_storage_and_bind (object, ini, scheme, section)
     	
-    --if section ~= nil then    	
-       st.on_medikit = xr_logic.cfg_get_condlist (char_ini, section, "on_medikit", object)
-	   st.dialog  = utils.cfg_get_string (char_ini, section, "dialog", object, false, "")
-       st.on_sit_info = xr_logic.cfg_get_condlist (char_ini, section, "on_sit", object)
-       st.hp_min = utils.cfg_get_number (char_ini, section, "hp_min", object, false, 10)
-       st.hp_max = utils.cfg_get_number (char_ini, section, "hp_max", object, false, 20)
-    --else
-       --st.on_medikit = nil
-	   --st.dialog  = nil
-       --st.on_sit_info = nil
-       --st.hp_min = 10
-       --st.hp_max = 20
-    --end       
+    st.on_medikit = xr_logic.cfg_get_condlist (ini, section, "on_medikit", object)
+    st.dialog  = utils.cfg_get_string (ini, section, "dialog", object, false, "")
+    st.on_sit_info = xr_logic.cfg_get_condlist (ini, section, "on_sit", object)
+    st.hp_min = utils.cfg_get_number (ini, section, "hp_min", object, false, 10)
+    st.hp_max = utils.cfg_get_number (ini, section, "hp_max", object, false, 20)
+    st.theme = utils.cfg_get_string (ini, section, "help_theme", object, false, "")
+    if st.theme == "" then st.theme = nil end
+    
     if st.hp_min >= st.hp_max then
        abort ("WOUNDED SCHEME IS NOT WORKING WHILE hp_min MORE OR EQUAL THAN hp_max !!! Object %s", npc:name ())
     end
