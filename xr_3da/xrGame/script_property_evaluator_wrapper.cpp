@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "script_property_evaluator_wrapper.h"
 #include "script_game_object.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 void CScriptPropertyEvaluatorWrapper::setup			(CScriptGameObject *object, CPropertyStorage *storage)
 {
@@ -22,7 +24,17 @@ void CScriptPropertyEvaluatorWrapper::setup_static	(CScriptPropertyEvaluator *ev
 
 bool CScriptPropertyEvaluatorWrapper::evaluate		()
 {
-	return		(luabind::call_member<bool>(this,"evaluate"));
+	try {
+		return	(luabind::call_member<bool>(this,"evaluate"));
+	}
+	catch(luabind::cast_failed &exception) {
+#ifdef LOG_ACTION
+		ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : evaluator [%s] returns value with not a %s type!",m_evaluator_name,exception.info()->name());
+#else
+		ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : evaluator returns value with not a %s type!",exception.info()->name());
+#endif
+	}
+	return		(false);
 }
 
 bool CScriptPropertyEvaluatorWrapper::evaluate_static	(CScriptPropertyEvaluator *evaluator)
