@@ -188,7 +188,8 @@ void CUIInventoryWnd::EatItem()
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
 
-	pActor->inventory().Eat(m_pCurrentItem);
+//	pActor->inventory().Eat(m_pCurrentItem);
+	SendEvent_Item_Eat(m_pCurrentItem);
 
 	if(!m_pCurrentItem->Useful())
 	{
@@ -198,20 +199,13 @@ void CUIInventoryWnd::EatItem()
 		DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
 		VERIFY(it != m_vDragDropItems.end());
 		m_vDragDropItems.erase(it);
-
 		//-----------------------------------------------------------------------
 		//SendEvent_ItemDrop(m_pCurrentItem);
 		//-----------------------------------------------------------------------
+		m_pCurrentDragDropItem->Highlight(false);
 		SetCurrentItem(NULL);
 		m_pCurrentDragDropItem = NULL;
 	}
-
-	/*m_pCurrentItem->Drop();
-
-	NET_Packet P;
-	pActor->u_EventGen(P,GE_DESTROY,m_pCurrentItem->ID());
-	P.w_u16(u16(m_pCurrentItem->ID()));
-	pActor->u_EventSend(P);*/
 }
 
 //------------------------------------------------

@@ -539,6 +539,7 @@ void CActor::Die	(CObject* who)
 
 	if (OnServer() && GameID() != GAME_SINGLE)
 	{
+		bool MedKitDropped = false;
 		//if we are on server and actor has PDA - destroy PDA
 		TIItemList &l_rlist = inventory().m_ruck;
 		for(PPIItem l_it = l_rlist.begin(); l_rlist.end() != l_it; ++l_it)
@@ -550,6 +551,13 @@ void CActor::Die	(CObject* who)
 					(*l_it)->Drop();
 					continue;
 				};
+			};
+
+			if ((*l_it)->object().CLS_ID == CLSID_IITEM_MEDKIT && !MedKitDropped)
+			{
+				MedKitDropped = true;
+				(*l_it)->Drop();
+				continue;
 			};
 
 			CCustomOutfit *pOutfit = smart_cast<CCustomOutfit *> (*l_it);

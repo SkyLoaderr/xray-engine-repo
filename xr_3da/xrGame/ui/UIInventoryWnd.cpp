@@ -622,6 +622,14 @@ void	CUIInventoryWnd::SendEvent_ItemDrop			(PIItem	pItem)
 	pItem->object().u_EventSend(P);
 };
 
+void	CUIInventoryWnd::SendEvent_Item_Eat			(PIItem	pItem)
+{
+	NET_Packet	P;
+	pItem->object().u_EventGen(P, GEG_PLAYER_ITEM_EAT, pItem->object().H_Parent()->ID());
+	P.w_u16		(pItem->object().ID());
+	pItem->object().u_EventSend(P);
+};
+
 //////////////////////////////////////////////////////////////////////////
 
 void CUIInventoryWnd::UpdateTime()
