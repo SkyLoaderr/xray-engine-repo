@@ -143,6 +143,7 @@ public:
 	void SetEnvironment( int enviroment,int old_enviroment);
 	void		ApplyImpulse(const Fvector& dir,const dReal P){m_character->ApplyImpulse(dir,P);};
 	void		SetJumpUpVelocity(float velocity){m_character->SetJupmUpVelocity(velocity);}
+	void		EnableCharacter(){m_character->Enable();}
 	CPHMovementControl(void);
 	~CPHMovementControl(void);
 };

@@ -92,8 +92,11 @@ u32* p_lastMaterial;
 
 
 void Disable										();
+
 public:
-bool b_exist;
+	void Enable											(){dBodyEnable(m_body);}
+
+	bool b_exist;
 float m_update_time;
 public:
 void		SetPLastMaterial						(u32* p){p_lastMaterial=p;}
