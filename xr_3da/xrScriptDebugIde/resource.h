@@ -101,6 +101,7 @@
 #define ID_FILE_SAVEALLMODIFIED         32847
 #define ID_SHOW_FUNCTION_LIST           32852
 #define ID_PROJECT_ADDFOLDER            32858
+#define ID_VSS_GETLATESTVERSION         32859
 
 // Next default values for new objects
 // 
@@ -108,7 +109,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        143
-#define _APS_NEXT_COMMAND_VALUE         32859
+#define _APS_NEXT_COMMAND_VALUE         32860
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           112
 #endif

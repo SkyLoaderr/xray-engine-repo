@@ -64,6 +64,7 @@ BEGIN_MESSAGE_MAP(CTreeViewFiles, CTreeView)
 	ON_COMMAND(ID_VSS_CHECKOUT,			OnVSSCheckOut)
 	ON_COMMAND(ID_VSS_UNDOCHECKOUT,		OnVSSUndoCheckOut)
 	ON_COMMAND(ID_VSS_DIFFERENCE,		OnVSSDifference)
+	ON_COMMAND(ID_VSS_GETLATESTVERSION,	OnVSSGetLatest)
 
 
 	
@@ -387,6 +388,8 @@ void CTreeViewFiles::OnRclick(NMHDR* pNMHDR, LRESULT* pResult)
 	mnu.EnableMenuItem(mnu_itm,(stat==VSSFILE_CHECKEDOUT_ME)?MF_ENABLED : MF_GRAYED);
 	mnu_itm = mnu.GetMenuItemID(3);
 	mnu.EnableMenuItem(mnu_itm,(stat != -1)?MF_ENABLED : MF_GRAYED);
+	mnu_itm = mnu.GetMenuItemID(4);
+	mnu.EnableMenuItem(mnu_itm,/*(stat != -1)?MF_ENABLED : */MF_GRAYED);
 
 		POINT mouse;
 		GetCursorPos(&mouse);
@@ -610,6 +613,12 @@ void CTreeViewFiles::OnVSSUndoCheckOut(){
 	VSSUpdateStatus(hItem);
 
 }
+
+void CTreeViewFiles::OnVSSGetLatest(){
+	HTREEITEM hItem = m_pTree->GetSelectedItem();
+	VSSGetLatest(hItem);
+}
+
 void CTreeViewFiles::OnVSSDifference(){
 	HTREEITEM hItem = m_pTree->GetSelectedItem();
 	VSSDifferences(hItem);
@@ -686,6 +695,28 @@ void CTreeViewFiles::VSSUndoCheckOut(HTREEITEM itm){
 		Reload(itm);
 		VSSUpdateStatus(itm);
 	}
+}
+
+void CTreeViewFiles::VSSGetLatest(HTREEITEM itm){
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
+	CString str;
+	str = m_pTree->GetItemText(itm);
+
+	IVSSItemPtr vssItem;
+	CComBSTR file_name = working_folder+str;
+	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+
+	CComBSTR bstr_localSpec;
+	vssItem->get_LocalSpec(&bstr_localSpec);
+	vssItem->Get(&bstr_localSpec, 0);
+	if (!b_DisplayAnyError())
+	{
+		Reload(itm);
+		VSSUpdateStatus(itm);
+	}
+
 }
 
 void CTreeViewFiles::VSSDifferences(HTREEITEM itm){

@@ -91,6 +91,7 @@ protected:
 	afx_msg void OnVSSCheckOut();
 	afx_msg void OnVSSUndoCheckOut();
 	afx_msg void OnVSSDifference();
+	afx_msg void OnVSSGetLatest();
 
 //}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
@@ -100,6 +101,7 @@ protected:
 	void VSSCheckOut(HTREEITEM);
 	void VSSUndoCheckOut(HTREEITEM);
 	void VSSDifferences(HTREEITEM);
+	void VSSGetLatest(HTREEITEM itm);
 	void Reload(HTREEITEM itm);
 	void Save(HTREEITEM itm);
 };
