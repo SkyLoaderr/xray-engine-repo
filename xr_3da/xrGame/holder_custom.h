@@ -7,8 +7,12 @@ class CActor;
 
 class CHolderCustom
 {
+private:
+	CActor*					m_owner;
+protected:
+	CActor*					Owner				(){return m_owner;}
 public:
-							CHolderCustom		(){;}
+							CHolderCustom		(){m_owner=0;}
 	virtual					~CHolderCustom		(){;}
 
 	virtual void			OnMouseMove			(int x, int y)	= 0;
@@ -25,7 +29,7 @@ public:
 	virtual bool			attach_Actor		(CActor* actor)	= 0;
 	virtual void			detach_Actor		()				= 0;
 
-	virtual const Fvector&	ExitPosition		()				= 0;
+	virtual Fvector			ExitPosition		()				= 0;
 
 	virtual CCameraBase*	Camera				()				= 0;
 };

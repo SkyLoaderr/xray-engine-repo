@@ -46,6 +46,7 @@
 #include "radioactivezone.h"
 #include "PhysicsCommon.h"
 #include "BreakableObject.h"
+#include "WeaponMounted.h"
 
 #include "ui/UIMainIngameWnd.h"
 
@@ -1167,6 +1168,7 @@ extern "C" {
 			
 			// objects
 			case CLSID_OBJECT_PROJECTOR:	P = xr_new<CProjector>();			break;
+			case CLSID_OBJECT_W_MOUNTED:	P = xr_new<CWeaponMounted>();		break;
 
 			// entity
 			case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;

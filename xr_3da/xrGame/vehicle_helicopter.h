@@ -10,7 +10,7 @@
 
 #include "gameobject.h"
 #include "../feel_touch.h"
-#include "vehicle_custom.h"
+#include "holder_custom.h"
 
 class CObjectAnimator;
 class CMotionDef;
@@ -19,7 +19,7 @@ class CCameraBase;
 class CVehicleHelicopter : 
 	public CEntity,
 	public Feel::Touch,
-	public CVehicleCustom
+	public CHolderCustom
 {
 	typedef CGameObject inherited;
 protected:
@@ -57,7 +57,7 @@ public:
 	virtual bool		attach_Actor		(CActor* actor)	{return false;}
 	virtual void		detach_Actor		()				{}
 
-	virtual const Fvector&	ExitPosition	()				{return XFORM().c;}
+	virtual Fvector		ExitPosition		()				{return XFORM().c;}
 
 	virtual CCameraBase*Camera				()				{return 0;}
 	virtual void		cam_Update			(float dt);

@@ -31,7 +31,6 @@ CCar::CCar(void)
 	OnCameraChange(ectFirst);
 
 	m_repairing		=false;
-	m_owner			=NULL;
 
 	///////////////////////////////
 	//////////////////////////////
@@ -154,7 +153,7 @@ void	CCar::UpdateCL				( )
 	inherited::UpdateCL();
 
 	//#ifdef DEBUG
-	if(m_pPhysicsShell&&m_owner)
+	if(m_pPhysicsShell&&Owner())
 	{
 		Fvector v;
 		m_pPhysicsShell->get_LinearVel(v);
@@ -186,12 +185,12 @@ void	CCar::UpdateCL				( )
 	V.set		(lin_vel);
 
 	m_car_sound->Update();
-	if(m_owner)
+	if(Owner())
 	{
-		m_pPhysicsShell->InterpolateGlobalTransform(&m_owner->XFORM());
-		m_owner->XFORM().mulB	(m_sits_transforms[0]);
+		m_pPhysicsShell->InterpolateGlobalTransform(&Owner()->XFORM());
+		Owner()->XFORM().mulB	(m_sits_transforms[0]);
 
-		if(m_owner->IsMyCamera()) 
+		if(Owner()->IsMyCamera()) 
 			cam_Update	(Device.fTimeDelta);
 	}
 
@@ -240,9 +239,9 @@ void CCar::Hit(float /**P/**/,Fvector &dir,CObject * /**who/**/,s16 element,Fvec
 
 void CCar::detach_Actor()
 {
-	if(!m_owner) return;
-	m_owner->setVisible(1);
-	m_owner=NULL;
+	if(!Owner()) return;
+	Owner()->setVisible(1);
+	CHolderCustom::detach_Actor();
 	NeutralDrive();
 	Unclutch();
 	ResetKeys();
@@ -253,8 +252,8 @@ void CCar::detach_Actor()
 
 bool CCar::attach_Actor(CActor* actor)
 {
-	if(m_owner) return false;
-	m_owner=actor;
+	if(Owner()) return false;
+	CHolderCustom::attach_Actor(actor);
 
 	CKinematics* K	= PKinematics(Visual());
 	CInifile* ini	= K->LL_UserData();
@@ -263,7 +262,7 @@ bool CCar::attach_Actor(CActor* actor)
 		id=K->LL_BoneID(ini->r_string("car_definition","driver_place"));
 	else
 	{	
-		m_owner->setVisible(0);
+		Owner()->setVisible(0);
 		id=K->LL_GetBoneRoot();
 	}
 	CBoneInstance& instance=K->LL_GetBoneInstance				(u16(id));
@@ -941,7 +940,7 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
 	xr_map<u16,SDoor>::iterator i;
 
-	if(!m_owner)
+	if(!Owner())
 	{
 		if(Enter(pos,dir,foot_pos)) return true;
 	}
@@ -963,7 +962,7 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 		}
 	}
 
-	if(m_owner)return Exit(pos,dir);
+	if(Owner())return Exit(pos,dir);
 
 	return false;
 

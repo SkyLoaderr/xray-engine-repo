@@ -128,7 +128,7 @@ void ACTOR_DEFS::SActorMotions::Create(CSkeletonAnimated* V)
 }
 void CActor::steer_Vehicle(float angle)	
 {
-	if(!m_vehicle)		return;
+	if(!m_holder)		return;
 	if(angle==0.f) 		PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_idle);
 	else if(angle>0.f)	PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_right);
 	else				PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_left);

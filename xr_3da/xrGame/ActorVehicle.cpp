@@ -2,23 +2,23 @@
 #pragma hdrstop
 
 #include "actor.h"
-#include "vehicle_custom.h"
 #include "../CameraBase.h"
 
 #include "ActorEffector.h"
+#include "holder_custom.h"
 
-void CActor::attach_Vehicle(CVehicleCustom* vehicle)
+void CActor::attach_Vehicle(CHolderCustom* vehicle)
 {
 	if(!vehicle) return;
 
-	if(m_vehicle) return;
+	if(m_holder) return;
 
-	m_vehicle=vehicle;
+	m_holder=vehicle;
 
 	CSkeletonAnimated* V		= PSkeletonAnimated(Visual()); R_ASSERT(V);
 	
-	if(!m_vehicle->attach_Actor(this)){
-		m_vehicle=NULL;
+	if(!m_holder->attach_Actor(this)){
+		m_holder=NULL;
 		return;
 	}
 	// temp play animation
@@ -40,14 +40,14 @@ void CActor::attach_Vehicle(CVehicleCustom* vehicle)
 
 void CActor::detach_Vehicle()
 {
-	if(!m_vehicle) return;
-	m_vehicle->detach_Actor();//
+	if(!m_holder) return;
+	m_holder->detach_Actor();//
 	m_PhysicMovementControl->CreateCharacter();
-	m_PhysicMovementControl->SetPosition(m_vehicle->ExitPosition());
-	r_model_yaw=-m_vehicle->Camera()->yaw;
+	m_PhysicMovementControl->SetPosition(m_holder->ExitPosition());
+	r_model_yaw=-m_holder->Camera()->yaw;
 	r_torso.yaw=r_model_yaw;
 	r_model_yaw_dest=r_model_yaw;
-	m_vehicle=NULL;
+	m_holder=NULL;
 	CKinematics* V		= PKinematics(Visual());
 	R_ASSERT			(V);
 	u16 spine_bone		= V->LL_BoneID("bip01_spine1");
@@ -64,15 +64,14 @@ void CActor::detach_Vehicle()
 bool CActor::use_Vehicle(CGameObject* object)
 {
 	
-	CVehicleCustom* vehicle=dynamic_cast<CVehicleCustom*>(object);
+	CHolderCustom* vehicle=dynamic_cast<CHolderCustom*>(object);
 	Fvector center;
 	Center(center);
-	if(m_vehicle){
-		if(!vehicle&& m_vehicle->Use(Device.vCameraPosition, Device.vCameraDirection,center)) detach_Vehicle();
-		else 
-		{ 
-			if(m_vehicle==vehicle)
-				if(m_vehicle->Use(Device.vCameraPosition, Device.vCameraDirection,center))detach_Vehicle();
+	if(m_holder){
+		if(!vehicle&& m_holder->Use(Device.vCameraPosition, Device.vCameraDirection,center)) detach_Vehicle();
+		else{ 
+			if(m_holder==vehicle)
+				if(m_holder->Use(Device.vCameraPosition, Device.vCameraDirection,center))detach_Vehicle();
 		}
 		return true;
 	}else{

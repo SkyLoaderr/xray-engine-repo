@@ -74,9 +74,9 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		}
 	}
 
-	if(m_vehicle && kUSE != cmd)
+	if(m_holder && kUSE != cmd)
 	{
-		m_vehicle->OnKeyboardPress(cmd);
+		m_holder->OnKeyboardPress(cmd);
 		return;
 	}
 
@@ -146,9 +146,9 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 		}
 
 
-		if(m_vehicle)
+		if(m_holder)
 		{
-			m_vehicle->OnKeyboardRelease(cmd);
+			m_holder->OnKeyboardRelease(cmd);
 			return;
 		}
 
@@ -172,9 +172,9 @@ void CActor::IR_OnKeyboardHold(int cmd)
 	if (Remote() || !g_Alive())		return;
 	if (IsSleeping())				return;
 
-	if(m_vehicle)
+	if(m_holder)
 	{
-		m_vehicle->OnKeyboardHold(cmd);
+		m_holder->OnKeyboardHold(cmd);
 		return;
 	}
 
@@ -196,9 +196,9 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 	if (Remote())		return;
 	if (IsSleeping())	return;
 
-	if(m_vehicle) 
+	if(m_holder) 
 	{
-		m_vehicle->OnMouseMove(dx,dy);
+		m_holder->OnMouseMove(dx,dy);
 		return;
 	}
 
@@ -224,7 +224,21 @@ void CActor::ActorUse()
 	if(object) 
 		element = (u16)RQ.element;
 
-	if(use_Vehicle(object)) return;
+	if (object){
+		switch (object->SUB_CLS_ID){
+		case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
+		case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
+		}
+	}else{
+		if (m_holder){
+			CGameObject* holder			= dynamic_cast<CGameObject*>(m_holder);
+			switch (holder->SUB_CLS_ID){
+			case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
+			case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(0))	return;	break;
+			}
+		}
+	}
+	
 	if(!m_PhysicMovementControl->PHCapture())
 		m_PhysicMovementControl->PHCaptureObject(object,element);
 	else

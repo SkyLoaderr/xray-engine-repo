@@ -10,14 +10,14 @@ void	CCar::cam_Update			(float /**dt/**/)
 {
 	Fvector							P,Da;
 	Da.set							(0,0,0);
-	if(m_owner)	m_owner->setEnabled(false);
+	if(Owner())	Owner()->setEnabled(false);
 	XFORM().transform_tiny			(P,m_camera_position);
 
 	switch(active_camera->tag) {
 	case ectFirst:
 		// rotate head
-		m_owner->Orientation().yaw	= -active_camera->yaw;
-		m_owner->Orientation().pitch= -active_camera->pitch;
+		Owner()->Orientation().yaw	= -active_camera->yaw;
+		Owner()->Orientation().pitch= -active_camera->pitch;
 		break;
 	case ectChase:					break;
 	case ectFree:					break;
@@ -26,7 +26,7 @@ void	CCar::cam_Update			(float /**dt/**/)
 	active_camera->Update			(P,Da);
 	Level().Cameras.Update			(active_camera);
 
-	if(m_owner)	m_owner->setEnabled	(true);
+	if(Owner())	Owner()->setEnabled	(true);
 }
 
 void	CCar::OnCameraChange		(int type)

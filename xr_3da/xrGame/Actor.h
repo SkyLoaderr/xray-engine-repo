@@ -30,7 +30,7 @@ class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
 class CTargetCS;
-class CVehicleCustom;
+class CHolderCustom;
 
 struct SShootingEffector;
 struct SSleepEffector;
@@ -176,9 +176,10 @@ public:
 	void					detach_Vehicle			();
 	void					steer_Vehicle			(float angle);
 protected:
-	CVehicleCustom*			m_vehicle;
-	void					attach_Vehicle			(CVehicleCustom* vehicle);
+	CHolderCustom*			m_holder;
+	void					attach_Vehicle			(CHolderCustom* vehicle);
 	bool					use_Vehicle				(CGameObject* object);
+	bool					use_MountedWeapon		(CGameObject* object);
 	void					ActorUse				();
 
 
@@ -227,18 +228,18 @@ public:
 	static void	__stdcall	HeadCallback		(CBoneInstance*);
 	static void __stdcall	VehicleHeadCallback	(CBoneInstance*);
 
-	virtual const SRotation	Orientation()		const	 { return r_torso; };
-	SRotation				&Orientation()				 { return r_torso; };
+	virtual const SRotation	Orientation			()	const	{ return r_torso; };
+	SRotation				&Orientation		()			 { return r_torso; };
 
-	void					g_SetAnimation				(u32 mstate_rl);
+	void					g_SetAnimation		(u32 mstate_rl);
 	//////////////////////////////////////////////////////////////////////////
 	// HUD
 	//////////////////////////////////////////////////////////////////////////
 public:
-	virtual void				OnHUDDraw			(CCustomHUD* hud);
-	IC		BOOL				HUDview				( )const 
+	virtual void			OnHUDDraw			(CCustomHUD* hud);
+	IC		BOOL			HUDview				( )const 
 	{ 
-		return IsFocused()&&(cam_active==eacFirstEye)&&(!m_vehicle); 
+		return IsFocused()&&(cam_active==eacFirstEye)&&(!m_holder); 
 	}
 
 	//visiblity 
@@ -291,7 +292,7 @@ protected:
 	// Person we're looking at
 	CInventoryOwner*		m_pPersonWeLookingAt;
 	// Vehicle or lorry we're looking at
-	CVehicleCustom*			m_pVehicleWeLookingAt;
+	CHolderCustom*			m_pVehicleWeLookingAt;
 	CGameObject*			m_pObjectWeLookingAt;
 	// Default action for object we're looking at
 	EActorAction			m_eDefaultObjAction;

@@ -121,7 +121,7 @@ CActor::CActor() : CEntityAlive()
 	bDeathInit				=	false;
 	m_saved_dir.set(0,0,0);
 	m_saved_impulse=0.f;
-	m_vehicle				=	NULL;
+	m_holder				=	NULL;
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::actor);
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
@@ -693,7 +693,7 @@ void CActor::shedule_Update	(u32 DT)
 {
 	setSVU(OnServer());
 
-	if(m_vehicle)
+	if(m_holder)
 	{
 		inherited::shedule_Update		(DT);
 		return;
@@ -808,7 +808,7 @@ void CActor::shedule_Update	(u32 DT)
 	{
 		inventory().m_pTarget			= dynamic_cast<PIItem>(RQ.O);
 		m_pPersonWeLookingAt			= dynamic_cast<CInventoryOwner*>(RQ.O);
-		m_pVehicleWeLookingAt			= dynamic_cast<CVehicleCustom*>(RQ.O);
+		m_pVehicleWeLookingAt			= dynamic_cast<CHolderCustom*>(RQ.O);
 		CEntityAlive* pEntityAlive		= dynamic_cast<CEntityAlive*>(RQ.O);
 		
 		// Анализируем какой объект мы видим, и назначаем соответсвующее
@@ -847,13 +847,13 @@ void CActor::renderable_Render	()
 {
 	inherited::renderable_Render			();
 
-	if (!m_vehicle)
+	if (!m_holder)
 		CInventoryOwner::renderable_Render	();
 }
 
 BOOL CActor::renderable_ShadowGenerate	() 
 {
-	if(m_vehicle)
+	if(m_holder)
 		return FALSE;
 	
 	return inherited::renderable_ShadowGenerate();
@@ -896,7 +896,7 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 	//if (W)				W->renderable_Render		();
 	//CWeapon *W = dynamic_cast<CWeapon*>(inventory().ActiveItem()); if(W) W->renderable_Render();
 
-	if(inventory().ActiveItem()&&!m_vehicle) {
+	if(inventory().ActiveItem()&&!m_holder) {
 		inventory().ActiveItem()->renderable_Render();
 	}
 
@@ -936,9 +936,11 @@ float CActor::HitScale	(int element)
 	return hit_factor*scale;
 }
 
-void CActor::SetPhPosition(const Fmatrix &pos)
+void CActor::SetPhPosition(const Fmatrix &transform)
 {
-	if(!m_pPhysicsShell) m_PhysicMovementControl->SetPosition(pos.c);
+	if(!m_pPhysicsShell){ 
+		m_PhysicMovementControl->SetPosition(transform.c);
+	}
 	//else m_phSkeleton->S
 }
 

@@ -3651,6 +3651,9 @@
 							RelativePath=".\ActorInput.cpp">
 						</File>
 						<File
+							RelativePath=".\ActorMountedWeapon.cpp">
+						</File>
+						<File
 							RelativePath="ActorPhySkeleton.cpp">
 						</File>
 						<File
@@ -3752,6 +3755,16 @@
 							</File>
 							<File
 								RelativePath=".\ParticlesPlayer.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Holder"
+							Filter="">
+							<File
+								RelativePath=".\holder_custom.cpp">
+							</File>
+							<File
+								RelativePath=".\holder_custom.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -4051,7 +4064,7 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="Various wepons"
+								Name="Various weapons"
 								Filter="">
 								<Filter
 									Name="Weapon Walther 99"
@@ -4268,6 +4281,16 @@
 								</File>
 								<File
 									RelativePath=".\WeaponHUD.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Mounted Weapon"
+								Filter="">
+								<File
+									RelativePath=".\WeaponMounted.cpp">
+								</File>
+								<File
+									RelativePath=".\WeaponMounted.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -4642,16 +4665,6 @@
 					<Filter
 						Name="Vehicles"
 						Filter="">
-						<Filter
-							Name="VehicleCustom"
-							Filter="">
-							<File
-								RelativePath=".\vehicle_custom.cpp">
-							</File>
-							<File
-								RelativePath=".\vehicle_custom.h">
-							</File>
-						</Filter>
 						<Filter
 							Name="helicopter"
 							Filter="">

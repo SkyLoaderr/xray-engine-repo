@@ -92,6 +92,7 @@ void CLSID_Holder::init		()
 	add					("wpn_usp45",			CLSID_OBJECT_W_USP45		);
 	add					("wpn_groza",			CLSID_OBJECT_W_GROZA		);
 	add					("wpn_knife",			CLSID_OBJECT_W_KNIFE		);
+	add					("wpn_mounted",			CLSID_OBJECT_W_MOUNTED		);
 	add					("ammo_m134",			CLSID_OBJECT_A_M134			);
 	add					("ammo_fn2000",			CLSID_OBJECT_A_FN2000		);
 	add					("ammo_ak74",			CLSID_OBJECT_A_AK74			);

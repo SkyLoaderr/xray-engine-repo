@@ -5,7 +5,7 @@
 #include "ai/script/ai_script_monster.h"
 #include "CarLights.h"
 #include "phobject.h"
-#include "vehicle_custom.h"
+#include "holder_custom.h"
 
 // refs
 class ENGINE_API			CBoneInstance;
@@ -20,7 +20,7 @@ class CCar :
 	public CEntity, 
 	public CScriptMonster,
 	public CPHUpdateObject,
-	public CVehicleCustom
+	public CHolderCustom
 {
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
 	virtual void PhDataUpdate(dReal step);
@@ -237,7 +237,6 @@ private:
 
 	Fvector					m_camera_position;
 
-	CActor*					m_owner;
 	////////////////////////////////////////////////////
 	friend struct SWheel;
 	friend struct SDoor;
@@ -366,7 +365,7 @@ private:
 	static void __stdcall	cb_Steer			(CBoneInstance* B);
 	virtual void Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 public:
-	virtual const Fvector&	ExitPosition		(){return m_exit_position;}
+	virtual Fvector			ExitPosition		(){return m_exit_position;}
 	void					GetVelocity			(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
 	void					cam_Update			(float dt);
 	void					detach_Actor		();
