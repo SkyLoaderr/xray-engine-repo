@@ -635,32 +635,20 @@ void fill_params(
 //	start.linear_velocity	= 0.f;//0.0001f;
 //	start_set.push_back		(start);
 
-	start.angular_velocity	= PI;
-	start.linear_velocity	= 2.15f;
+	start.angular_velocity	= PI_DIV_4;
+	start.linear_velocity	= 9.f;
 	start_set.push_back		(start);
 
 	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 4.5f;
+	start.linear_velocity	= 1.5f;
 	start_set.push_back		(start);
 
-	start.angular_velocity	= PI_DIV_4;
-	start.linear_velocity	= 6.f;
+	start.angular_velocity	= PI_DIV_8;
+	start.linear_velocity	= 0.f;
 	start_set.push_back		(start);
-
-//	dest.angular_velocity	= PI_DIV_2;
-//	dest.linear_velocity	= 0.f;
-//	dest_set.push_back		(dest);
-
-	dest.angular_velocity	= PI;
-	dest.linear_velocity	= 2.15f;
-	dest_set.push_back		(dest);
 
 	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 4.5f;
-	dest_set.push_back		(dest);
-
-	dest.angular_velocity	= PI_DIV_4;
-	dest.linear_velocity	= 6.f;
+	dest.linear_velocity	= 0.f;
 	dest_set.push_back		(dest);
 }
 
@@ -676,12 +664,12 @@ void test_smooth_path(LPCSTR name)
 	CGraphEngine							*graph_engine = xr_new<CGraphEngine>(level_graph->header().vertex_count());
 	xr_vector<u32>							m_tpaNodes;
 	
-	start.position.set			(-30.799995f,-15.400002f);
-	start.direction.set			(35.700005f,0.000000f);
+	start.position.set			(-83.817009f,-0.093572f);
+	start.direction.set			(-_sin(1.820413f),_cos(1.820413f));
 	start.vertex_id				= level_graph->vertex(v3d(start.position));
 
-	dest.position.set			(5.010808f,3.826570f);
-	dest.direction.set			(-0.012606f,-0.999921f);
+	dest.position.set			(-84.000008f,-0.093299f);
+	dest.direction.set			(0.f,0.f);
 	dest.vertex_id				= level_graph->vertex(v3d(dest.position));
 	
 	fill_params					(start,dest,start_set,dest_set);
@@ -692,8 +680,8 @@ void test_smooth_path(LPCSTR name)
 	RESET_ALL_TIMERS;
 
 	u64							s,f;
-	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+//	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+//	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
 	
 	s							= CPU::GetCycleCount();
