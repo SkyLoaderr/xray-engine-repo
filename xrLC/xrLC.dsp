@@ -720,6 +720,10 @@ SOURCE=.\xrLight_Implicit.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\xrOptimizeCFORM.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrPhase_MergeGeometry.cpp
 # End Source File
 # Begin Source File
