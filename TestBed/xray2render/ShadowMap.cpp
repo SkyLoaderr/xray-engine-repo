@@ -430,21 +430,19 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	// Create special textures
 	{
-		const DWORD	size				= 512;
-		const float	array[size];
+		const DWORD	size				= 256;
+		float		array[size];
 		for (DWORD it=0; it<size; it++)
 		{
 			float	v		= float(it)/float(size);
 			array	[it]	= powf		(v,32);
 		}
-		m_pd3dDevice->CreateTexture		(512,1, 1, 0, D3DFMT_R16F, D3DPOOL_MANAGED, &t_SpecularPower_32, NULL);
+		m_pd3dDevice->CreateTexture		(size,1, 1, 0, D3DFMT_R16F, D3DPOOL_MANAGED, &t_SpecularPower_32, NULL);
 		D3DLOCKED_RECT					R;
 		t_SpecularPower_32->LockRect	(0,&R,0, D3DLOCK_DISCARD);
-		D3DXFloat32To16Array			()
-		R.
+		D3DXFloat32To16Array			((D3DXFLOAT16*)R.pBits,array,size);
+		t_SpecularPower_32->UnlockRect	(0);
 	}
-
-
 
 	// Create shadow map texture and retrieve surface
 	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, 
@@ -788,6 +786,13 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// samplers and texture (Power32)
+	m_pd3dDevice->SetTexture				(2, t_SpecularPower_32);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Light_Direct.ps);

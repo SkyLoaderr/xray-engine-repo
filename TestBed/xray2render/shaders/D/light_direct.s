@@ -24,6 +24,7 @@ struct 	p2f
 uniform sampler2D 	s_position;
 uniform sampler2D 	s_normal;
 uniform sampler2D 	s_diffuse;
+uniform sampler1D 	s_power;
 uniform float4 		light_direction;
 uniform float4 		light_color;
 
@@ -62,7 +63,7 @@ p2f 	p_main	( v2p_in IN )
   float3 H 	= normalize	(L + V);
 
   // Specular = (H • N)^m
-  float S 	= pow		(saturate(dot(H, N)), 32);
+  float S 	= tex1D		(s_power,	saturate(dot(H, N))); //pow		(saturate(dot(H, N)), 32);
   
   // Final color
   float4 C	= light_color*D;
