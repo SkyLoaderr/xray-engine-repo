@@ -22,58 +22,25 @@ struct v_filter {
 
 // Gauss filtering coeffs
 // Samples:			0-central, -1, -2,..., -7, 1, 2,... 7
-//		half2 tc0: 	TEXCOORD0;	// Central
-//		half4 tc1: 	TEXCOORD1;	// -1,+1
-//		half4 tc2: 	TEXCOORD2;	// -2,+2
-//		half4 tc3: 	TEXCOORD3;	// -3,+3
-//		half4 tc4: 	TEXCOORD4;	// -4,+4
-//		half4 tc5: 	TEXCOORD5;	// -5,+5
-//		half4 tc6: 	TEXCOORD6;	// -6,+6
-//		half4 tc7: 	TEXCOORD7;	// -7,+7
-
-void	CalcGauss	(
-					 svector<float,32>&		W,	// weight
-					 svector<float,32>&		H,	// horizontal offsets
-					 svector<float,32>&		V,	// vertical offsets
-					 int	n		=7,			// kernel size
-					 float	r		=3.3f,		// gaussian radius
-					 float	s_out	=1.f,		// resulting magnitude
-					 float	tw		=320.f,		// grid/texture width
-					 float	th		=240.f		// grid/texture height
+// 
+void	CalcGauss_k7(
+					 Fvector4&	w0,					// weight
+					 Fvector4&	w1,					// weight
+					 float		r		=3.3f,		// gaussian radius
+					 float		s_out	=1.f		// resulting magnitude
 					 )
 {
+	float				W[8];
+
 	// calculate
-	for (int i=-n; i<=0; i++)
-	{
-		float weight	=	expf	(-float(i*i)/(2*r*r));
-		W.push_back		(weight);	// weight
+	float mag					=	0;
+	for (int i=-7; i<=0; i++)	W[-i]	=	expf	(-float(i*i)/(2*r*r));	// weight
+	for (i=0; i<8; i++)	mag		+= i?2*W[i]:W[i];	// symmetrical weight
+	for (i=0; i<8; i++)	W[i]	= s_out*W[i]/mag;
 
-		float offset	=	float	(-i); 
-		H.push_back		(D3DXVECTOR4(offset/tw,0,0,0));
-		V.push_back		(D3DXVECTOR4(0,offset/th,0,0));
-	}
-
-	// scale weights
-	float mag				= 0;
-	for (i=0; i<s32(w.size()); i++)	mag		+= w[i];
-	for (i=0; i<s32(w.size()); i++)	w[i]	= s_out*w[i]/mag;
-
-	// exploit symmetry and pack weights
-	D3DXVECTOR4	buf;
-	int			buf_p	= 0;
-	for (i=0; i<s32(w.size()); i++)
-	{
-		buf[buf_p++]	= w[i];
-		if (4==buf_p)	{ 
-			W.push_back	(buf); 
-			buf_p		=0; 
-		}
-	}
-	if (buf_p)
-	{
-		while (4!=buf_p)	buf[buf_p++]=0.f;
-		W.push_back			(buf);
-	}
+	// W[0]=0, W[7]=-7
+	w0.set	(W[1],W[2],W[3],W[4]);		// -1, -2, -3, -4
+	w1.set	(W[5],W[6],W[7],W[0]);		// -5, -6, -7, 0
 }
 
 void CRenderTarget::phase_bloom	()
@@ -81,13 +48,9 @@ void CRenderTarget::phase_bloom	()
 	u32		Offset;
 
 	// Targets
-	dwWidth								= Device.dwWidth	/2;
-	dwHeight							= Device.dwHeight	/2;
-	RCache.set_RT						(rt_Bloom_1->pRT,		0);
 	RCache.set_RT						(NULL,					1);
 	RCache.set_RT						(NULL,					2);
 	RCache.set_ZB						(NULL);					// No need for ZBuffer at all
-	RImplementation.rmNormal			();
 
 	// Clear	- don't clear - it's stupid here :)
 	// Stencil	- disable
@@ -96,46 +59,121 @@ void CRenderTarget::phase_bloom	()
 	CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
 
 	// Transfer into Bloom1
-	float		_w				= float(Device.dwWidth);
-	float		_h				= float(Device.dwHeight);
-	float		_2w				= _w/2;
-	float		_2h				= _h/2;
-	Fvector2	one				= { 1.f/_w, 1.f/_h };
-	Fvector2	half			= { .5f/_w, .5f/_h };
-	Fvector2	a_0				= { half.x + 0,		half.y + 0		};
-	Fvector2	a_1				= { half.x + one.x, half.y + 0		};
-	Fvector2	a_2				= { half.x + 0,		half.y + one.y	};
-	Fvector2	a_3				= { half.x + one.x,	half.y + one.y	};
-	Fvector2	b_0				= { 1 + a_0.x,		1 + a_0.y		};
-	Fvector2	b_1				= { 1 + a_1.x,		1 + a_1.y		};
-	Fvector2	b_2				= { 1 + a_2.x,		1 + a_2.y		};
-	Fvector2	b_3				= { 1 + a_3.x,		1 + a_3.y		};
+	{
+		float		_w				= float(Device.dwWidth);
+		float		_h				= float(Device.dwHeight);
+		float		_2w				= _w/2;
+		float		_2h				= _h/2;
+		Fvector2	one				= { 1.f/_w, 1.f/_h };
+		Fvector2	half			= { .5f/_w, .5f/_h };
+		Fvector2	a_0				= { half.x + 0,		half.y + 0		};
+		Fvector2	a_1				= { half.x + one.x, half.y + 0		};
+		Fvector2	a_2				= { half.x + 0,		half.y + one.y	};
+		Fvector2	a_3				= { half.x + one.x,	half.y + one.y	};
+		Fvector2	b_0				= { 1 + a_0.x,		1 + a_0.y		};
+		Fvector2	b_1				= { 1 + a_1.x,		1 + a_1.y		};
+		Fvector2	b_2				= { 1 + a_2.x,		1 + a_2.y		};
+		Fvector2	b_3				= { 1 + a_3.x,		1 + a_3.y		};
 
-	// Fill vertex buffer
-	v_build* pv					= (v_build*) RCache.Vertex.Lock	(4,g_bloom_build->vb_stride,Offset);
-	pv->p.set	(EPS,			float(_2h+EPS),	EPS,1.f);	
-	pv->uv0.set	(a_0.x,b_0.y);	pv->uv1.set	(a_1.x,b_1.y);	pv->uv2.set	(a_2.x,b_2.y);	pv->uv3.set	(a_3.x,b_3.y);
-	pv++;
-	pv->p.set	(EPS,			EPS,			EPS,1.f);	
-	pv->uv0.set	(a_0.x,a_0.y);	pv->uv1.set	(a_1.x,a_1.y);	pv->uv2.set	(a_2.x,a_2.y);	pv->uv3.set	(a_3.x,a_3.y);
-	pv++;
-	pv->p.set	(float(_2w+EPS),float(_2h+EPS),	EPS,1.f);	
-	pv->uv0.set	(b_0.x,b_0.y);	pv->uv1.set	(b_1.x,b_1.y);	pv->uv2.set	(b_2.x,b_2.y);	pv->uv3.set	(b_3.x,b_3.y);
-	pv++;
-	pv->p.set	(float(_2w+EPS),EPS,			EPS,1.f);	
-	pv->uv0.set	(b_0.x,a_0.y);	pv->uv1.set	(b_1.x,a_1.y);	pv->uv2.set	(b_2.x,a_2.y);	pv->uv3.set	(b_3.x,a_3.y);
-	pv++;
-	RCache.Vertex.Unlock		(4,g_bloom_build->vb_stride);
+		// Fill vertex buffer
+		v_build* pv					= (v_build*) RCache.Vertex.Lock	(4,g_bloom_build->vb_stride,Offset);
+		pv->p.set	(EPS,			float(_2h+EPS),	EPS,1.f);	
+		pv->uv0.set	(a_0.x,b_0.y);	pv->uv1.set	(a_1.x,b_1.y);	pv->uv2.set	(a_2.x,b_2.y);	pv->uv3.set	(a_3.x,b_3.y);
+		pv++;
+		pv->p.set	(EPS,			EPS,			EPS,1.f);	
+		pv->uv0.set	(a_0.x,a_0.y);	pv->uv1.set	(a_1.x,a_1.y);	pv->uv2.set	(a_2.x,a_2.y);	pv->uv3.set	(a_3.x,a_3.y);
+		pv++;
+		pv->p.set	(float(_2w+EPS),float(_2h+EPS),	EPS,1.f);	
+		pv->uv0.set	(b_0.x,b_0.y);	pv->uv1.set	(b_1.x,b_1.y);	pv->uv2.set	(b_2.x,b_2.y);	pv->uv3.set	(b_3.x,b_3.y);
+		pv++;
+		pv->p.set	(float(_2w+EPS),EPS,			EPS,1.f);	
+		pv->uv0.set	(b_0.x,a_0.y);	pv->uv1.set	(b_1.x,a_1.y);	pv->uv2.set	(b_2.x,a_2.y);	pv->uv3.set	(b_3.x,a_3.y);
+		pv++;
+		RCache.Vertex.Unlock		(4,g_bloom_build->vb_stride);
 
-	// Perform combine (all scalers must account for 4 samples + final diffuse multiply);
-	float lscale				= .3f;	// must be .25 infact
-	float ldr					= .25f*ps_r2_ls_dynamic_range;	ldr *= lscale;
-	float lh					= .25f*.5f;						lh	*= lscale;
-	RCache.set_Element			(s_bloom->E[0]);
-	RCache.set_c				("light_dynamic_range",	ldr,ldr,ldr,ldr);
-	RCache.set_c				("light_hemi",			lh,lh,lh,0.f);
-	RCache.set_Geometry			(g_bloom_build);
-	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		// Perform combine (all scalers must account for 4 samples + final diffuse multiply);
+		float lscale				= .3f;	// must be .25 infact
+		float ldr					= .25f*ps_r2_ls_dynamic_range;	ldr *= lscale;
+		float lh					= .25f*.5f;						lh	*= lscale;
+		RCache.set_RT				(rt_Bloom_1->pRT,		0);
+		RCache.set_Element			(s_bloom->E[0]);
+		RCache.set_c				("light_dynamic_range",	ldr,ldr,ldr,ldr);
+		RCache.set_c				("light_hemi",			lh,lh,lh,0.f);
+		RCache.set_Geometry			(g_bloom_build);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	}
 
-	// 
+	// Transfer into Bloom2, horizontal filter
+	{
+		float		_w				= float	(Device.dwWidth		/ 2);
+		float		_h				= float	(Device.dwHeight	/ 2);
+		Fvector2	two				= { 2.f/_w, 2.f/_h };
+		Fvector2	one				= { 1.f/_w, 1.f/_h };
+		Fvector2	half			= { .5f/_w, .5f/_h };
+		Fvector4	a_0				= { half.x,					half.y,	0,			0						};	// center
+		Fvector4	a_1				= { a_0.x - one.x - half.x, half.y,	half.y,		a_0.x + one.x + half.x	};	// -1,+1i
+		Fvector4	a_2				= { a_1.x - two.x,			half.y,	half.y,		a_1.x + two.x			};	// -2,+2i
+		Fvector4	a_3				= { a_2.x - two.x,			half.y,	half.y,		a_2.x + two.x			};	// -3,+3i
+		Fvector4	a_4				= { a_3.x - two.x,			half.y,	half.y,		a_3.x + two.x			};	// -4,+4i
+		Fvector4	a_5				= { a_4.x - two.x,			half.y,	half.y,		a_4.x + two.x			};	// -5,+5i
+		Fvector4	a_6				= { a_5.x - two.x,			half.y,	half.y,		a_5.x + two.x			};	// -6,+6i
+		Fvector4	a_7				= { a_6.x - two.x,			half.y,	half.y,		a_6.x + two.x			};	// -7,+7i
+
+		// Fill vertex buffer
+		v_filter* pv				= (v_filter*) RCache.Vertex.Lock	(4,g_bloom_filter->vb_stride,Offset);
+		pv->p.set	(EPS,			float(_h+EPS),	EPS,1.f);	
+		pv->uv0.set	(a_0.x,1+a_0.y,0,0);	
+		pv->uv1.set	(a_1.x,1+a_1.y,1+a_1.z,a_1.w);	
+		pv->uv2.set	(a_2.x,1+a_2.y,1+a_2.z,a_2.w);	
+		pv->uv3.set	(a_3.x,1+a_3.y,1+a_3.z,a_3.w);
+		pv->uv4.set	(a_4.x,1+a_4.y,1+a_4.z,a_4.w);
+		pv->uv5.set	(a_5.x,1+a_5.y,1+a_5.z,a_5.w);
+		pv->uv6.set	(a_6.x,1+a_6.y,1+a_6.z,a_6.w);
+		pv->uv7.set	(a_7.x,1+a_7.y,1+a_7.z,a_7.w);
+		pv++;
+
+		pv->p.set	(EPS,			EPS,			EPS,1.f);	
+		pv->uv0.set	(a_0.x,a_0.y,0,0);	
+		pv->uv1.set	(a_1.x,a_1.y,a_1.z,a_1.w);
+		pv->uv2.set	(a_2.x,a_2.y,a_2.z,a_2.w);
+		pv->uv3.set	(a_3.x,a_3.y,a_3.z,a_3.w);
+		pv->uv4.set	(a_4.x,a_4.y,a_4.z,a_4.w);
+		pv->uv5.set	(a_5.x,a_5.y,a_5.z,a_5.w);
+		pv->uv6.set	(a_6.x,a_6.y,a_6.z,a_6.w);
+		pv->uv7.set	(a_7.x,a_7.y,a_7.z,a_7.w);
+		pv++;
+
+		pv->p.set	(float(_w+EPS),	float(_h+EPS),	EPS,1.f);	
+		pv->uv0.set	(1+a_0.x,1+a_0.y,0,0);	
+		pv->uv1.set	(1+a_1.x,1+a_1.y,1+a_1.z,1+a_1.w);	
+		pv->uv2.set	(1+a_2.x,1+a_2.y,1+a_2.z,1+a_2.w);	
+		pv->uv3.set	(1+a_3.x,1+a_3.y,1+a_3.z,1+a_3.w);
+		pv->uv4.set	(1+a_4.x,1+a_4.y,1+a_4.z,1+a_4.w);
+		pv->uv5.set	(1+a_5.x,1+a_5.y,1+a_5.z,1+a_5.w);
+		pv->uv6.set	(1+a_6.x,1+a_6.y,1+a_6.z,1+a_6.w);
+		pv->uv7.set	(1+a_7.x,1+a_7.y,1+a_7.z,1+a_7.w);
+		pv++;								
+
+		pv->p.set	(float(_w+EPS),	EPS,			EPS,1.f);	
+		pv->uv0.set	(1+a_0.x,a_0.y,0,0);	
+		pv->uv1.set	(1+a_1.x,a_1.y,a_1.z,1+a_1.w);	
+		pv->uv2.set	(1+a_2.x,a_2.y,a_2.z,1+a_2.w);	
+		pv->uv3.set	(1+a_3.x,a_3.y,a_3.z,1+a_3.w);
+		pv->uv4.set	(1+a_4.x,a_4.y,a_4.z,1+a_4.w);
+		pv->uv5.set	(1+a_5.x,a_5.y,a_5.z,1+a_5.w);
+		pv->uv6.set	(1+a_6.x,a_6.y,a_6.z,1+a_6.w);
+		pv->uv7.set	(1+a_7.x,a_7.y,a_7.z,1+a_7.w);
+		pv++;							 
+		RCache.Vertex.Unlock		(4,g_bloom_filter->vb_stride);
+
+		// Perform combine (all scalers must account for 4 samples + final diffuse multiply);
+		Fvector4	w0,w1;
+		CalcGauss_k7				(w0,w1,3.3f,1.f);
+		RCache.set_RT				(rt_Bloom_2->pRT,		0);
+		RCache.set_Element			(s_bloom->E[1]);
+		RCache.set_ca				("weight", 0,			w0);
+		RCache.set_ca				("weight", 1,			w1);
+		RCache.set_Geometry			(g_bloom_filter);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	}
 }
