@@ -32,9 +32,10 @@ BOOL CCustomZone::net_Spawn		(LPVOID DC)
 		l_pShape->ComputeBounds();
 		pCreator->ObjectSpace.Object_Register(this);
 		cfModel->OnMove();
-		m_maxPower = Z->m_maxPower;
-		m_attn = Z->m_attn;
-		m_period = Z->m_period;
+		//m_maxPower = Z->m_maxPower;
+		//m_attn = Z->m_attn;
+		//m_period = Z->m_period;
+
 //		setVisible(true);
 		setEnabled(true);
 	}
