@@ -18,7 +18,7 @@ public:
 	{
 		string256	S1, S2;
 		CMotionDef	*tpMotionDef;
-		for (int i=0; ; i++)
+		for (int i=0; ; ++i)
 			if (0 != (tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)))))
 				A.push_back(tpMotionDef);
 			else
@@ -36,9 +36,9 @@ public:
 	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
 		string256 S;
-		for (int j=0; caBaseNames[j]; j++);
+		for (int j=0; caBaseNames[j]; ++j);
 		A.resize	(j);
-		for (int i=0; i<j; i++)
+		for (int i=0; i<j; ++i)
 			A[i] = tpKinematics->ID_Cycle_Safe(strconcat(S,caBaseName,caBaseNames[i]));
 	}
 };
@@ -50,9 +50,9 @@ public:
 	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
 		string256	S;
-		for (int j=0; caBaseNames[j]; j++);
+		for (int j=0; caBaseNames[j]; ++j);
 		A.resize	(j);
-		for (int i=0; i<j; i++)
+		for (int i=0; i<j; ++i)
 			A[i].Load	(tpKinematics,strconcat(S,caBaseName,caBaseNames[i]));
 	}
 };

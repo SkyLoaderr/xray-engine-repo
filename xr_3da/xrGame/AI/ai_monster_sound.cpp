@@ -50,9 +50,9 @@ void CMonsterSound::ControlSound(TTime time)
 	}
 
 	// there is no sound to play
-	if (delay == 0) return;
+	if (0 == delay) return;
 
-	if (time_next_play == 0) time_next_play = time + ::Random.randI(delay);
+	if (0 == time_next_play) time_next_play = time + ::Random.randI(delay);
 	
 	// check if it's time to play sound
 	if (time_next_play < time) PlaySound(cur_type);

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ai_monster_motion.h"
 #include "ai_monster_jump.h"
-#include "biting\\ai_biting.h"
+#include "biting/ai_biting.h"
 
 #define CHECK_SHARED_LOADED() {if (CSharedClass<_motion_shared>::IsLoaded()) return; }
 
@@ -59,7 +59,7 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, 
 // «агрузка анимаций. Ќеобходимо вызывать на Monster::NetSpawn 
 void CMotionManager::LoadVisualData()
 {
-	for (ANIM_ITEM_MAP_IT item_it = _sd->m_tAnims.begin(); item_it != _sd->m_tAnims.end(); item_it++) {
+	for (ANIM_ITEM_MAP_IT item_it = _sd->m_tAnims.begin(); _sd->m_tAnims.end() != item_it; ++item_it) {
 		// ќчистка старых анимаций
 		if (!item_it->second.pMotionVect.empty()) item_it->second.pMotionVect.clear();
 		// «агрузка новых
@@ -188,7 +188,7 @@ void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 	
 	string256	S1, S2; 
 	CMotionDef	*tpMotionDef;
-	for (int i=0; ; i++) {
+	for (int i=0; ; ++i) {
 		if (0 != (tpMotionDef = PSkeletonAnimated(pVisual)->ID_Cycle_Safe(strconcat(S1,pmt_name,itoa(i,S2,10)))))  pMotionVect->push_back(tpMotionDef);
 		else if (0 != (tpMotionDef = PSkeletonAnimated(pVisual)->ID_FX_Safe(strconcat(S1,pmt_name,itoa(i,S2,10))))) pMotionVect->push_back(tpMotionDef);
 		else break;
@@ -201,7 +201,7 @@ void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 bool CMotionManager::PrepareAnimation()
 {
 	if (pJumping && pJumping->IsActive())  return pJumping->PrepareAnimation(&m_tpCurAnim);
-	if (m_tpCurAnim != 0) return false;
+	if (0 != m_tpCurAnim) return false;
 
 	// проверка на отыгрывание анимации смерти
 	if (!pMonster->g_Alive()) 
@@ -213,11 +213,11 @@ bool CMotionManager::PrepareAnimation()
 
 	// получить элемент SAnimItem соответствующий cur_anim
 	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(cur_anim);
-	R_ASSERT(anim_it != _sd->m_tAnims.end());
+	R_ASSERT(_sd->m_tAnims.end() != anim_it);
 
 	// определить необходимый индекс
 	int index;
-	if (anim_it->second.spec_id != -1) index = anim_it->second.spec_id;
+	if (-1 != anim_it->second.spec_id) index = anim_it->second.spec_id;
 	else {
 		R_ASSERT(!anim_it->second.pMotionVect.empty());
 		index = ::Random.randI(anim_it->second.pMotionVect.size());
@@ -264,7 +264,7 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 				continue;
 			} else break;
 		}
-		if ((++I) == _sd->m_tTransitions.end()) break;
+		if (_sd->m_tTransitions.end() == ++I) break;
 	}
 
 	if (bActivated) {
@@ -287,17 +287,17 @@ void CMotionManager::ProcessAction()
 		cur_anim = MI.anim;
 
 		// установить target.yaw
-		if (!pMonster->AI_Path.TravelPath.empty()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
+		if (!pMonster->CDetailPathManager::m_path.empty()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
 		// если нова€ анимаци€ не совпадает с предыдущей, проверить переход
 		if (prev_anim != cur_anim) CheckTransition(prev_anim, cur_anim);
 		
 		if (!seq_playing) {
 			// проверить необходимость установки анимации поворота
-			float &cur_yaw		= pMonster->r_torso_current.yaw;
-			float &target_yaw	= pMonster->r_torso_target.yaw;
+			float &cur_yaw		= pMonster->m_body.current.yaw;
+			float &target_yaw	= pMonster->m_body.target.yaw;
 			if (MI.is_turn_params) {
-				if (!getAI().bfTooSmallAngle(cur_yaw, target_yaw, MI.turn.min_angle)) {
+				if (angle_difference(cur_yaw, target_yaw) > MI.turn.min_angle) {
 					// необходим поворот влево или вправо
 					if (angle_normalize_signed(target_yaw - cur_yaw) > 0) 	cur_anim = MI.turn.anim_right;	// вправо
 					else													cur_anim = MI.turn.anim_left; 	// влево
@@ -339,10 +339,10 @@ void CMotionManager::ProcessAction()
 void CMotionManager::ApplyParams()
 {
 	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
-	R_ASSERT(item_it != _sd->m_tAnims.end());
+	R_ASSERT(_sd->m_tAnims.end() != item_it);
 
 	pMonster->m_fCurSpeed		= item_it->second.speed.linear;
-	pMonster->r_torso_speed		= item_it->second.speed.angular;
+	pMonster->m_body.speed		= item_it->second.speed.angular;
 }
 
 // Callback на завершение анимации
@@ -362,7 +362,7 @@ void CMotionManager::FixBadState()
 	TTime cur_time = Level().timeServer();
 
 	// если конец пути и монстр идЄт - исправить
-	if (!pMonster->AI_Path.TravelPath.empty() && ((pMonster->AI_Path.TravelPath.size() - 1 ) <= pMonster->AI_Path.TravelStart) && is_moving_action) {
+	if (!pMonster->CDetailPathManager::m_path.empty() && ((pMonster->CDetailPathManager::m_path.size() - 1 ) <= pMonster->CDetailPathManager::m_current_travel_point) && is_moving_action) {
 		cur_anim = eAnimStandIdle;
 		return;
 	}
@@ -373,7 +373,7 @@ void CMotionManager::FixBadState()
 	}
 
 	// если только начинаем сто€ть, проигрыва€ анимацию движени€
-	if (is_moving_action && (time_start_stand == 0)) {
+	if (is_moving_action && (0 == time_start_stand)) {
 		time_start_stand	= cur_time;
 	}
 
@@ -388,7 +388,7 @@ void CMotionManager::FixBadState()
 
 void CMotionManager::CheckReplacedAnim()
 {
-	for (REPLACED_ANIM_IT it=m_tReplacedAnims.begin(); it!= m_tReplacedAnims.end();it++) 
+	for (REPLACED_ANIM_IT it=m_tReplacedAnims.begin(); m_tReplacedAnims.end()!=it ;++it) 
 		if ((cur_anim == it->cur_anim) && (*(it->flag) == true)) { 
 			cur_anim = it->new_anim;
 			return;
@@ -397,8 +397,8 @@ void CMotionManager::CheckReplacedAnim()
 
 bool CMotionManager::IsMoving()
 {
-	return ((m_tAction == ACT_WALK_FWD) || (m_tAction == ACT_WALK_BKWD) || (m_tAction == ACT_RUN) || 
-		(m_tAction == ACT_DRAG) || (m_tAction == ACT_STEAL));
+	return ((ACT_WALK_FWD == m_tAction) || (ACT_WALK_BKWD == m_tAction) || (ACT_RUN == m_tAction) || 
+		(ACT_DRAG == m_tAction) || (ACT_STEAL == m_tAction));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -421,8 +421,8 @@ void CMotionManager::Seq_Switch()
 		// активаци€ последовательностей
 		seq_it = seq_states.begin();
 	} else {
-		seq_it++; 
-		if (seq_it == seq_states.end()) {
+		++seq_it; 
+		if (seq_states.end() == seq_it) {
 			Seq_Finish();
 			return;
 		}
@@ -494,7 +494,7 @@ void CMotionManager::AA_SwitchAnimation(EMotionAnim anim, u32 i3)
 	ATTACK_ANIM_IT I = _sd->aa_all.begin();
 	ATTACK_ANIM_IT E = _sd->aa_all.end();
 
-	for (;I!=E; I++) {
+	for (;I!=E; ++I) {
 		if ((I->anim == anim) && (I->anim_i3 == i3)) {
 			aa_stack.push_back(*I);
 		}
@@ -513,7 +513,7 @@ bool CMotionManager::AA_CheckTime(TTime cur_time, SAttackAnimation &anim)
 	ATTACK_ANIM_IT I = aa_stack.begin();
 	ATTACK_ANIM_IT E = aa_stack.end();
 
-	for (;I!=E; I++) if ((aa_time_started + I->time_from <= cur_time) && (cur_time <= aa_time_started + I->time_to)) {
+	for (;I!=E; ++I) if ((aa_time_started + I->time_from <= cur_time) && (cur_time <= aa_time_started + I->time_to)) {
 		anim = (*I);
 		return true;
 	}
@@ -524,7 +524,7 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 {
 	// найти анимацию 
 	ANIM_ITEM_MAP_IT  item_it = _sd->m_tAnims.find(a);
-	R_ASSERT(item_it != _sd->m_tAnims.end());
+	R_ASSERT(_sd->m_tAnims.end() != item_it);
 
 	return item_it->second.pos_state;
 }
@@ -573,12 +573,12 @@ void CMotionManager::FX_LoadMap(LPCSTR section)
 	string16	first,second; 
 	t_fx_index	index;
 
-	for (u32 i=0; pSettings->r_line(sect,i,&bone_name,&val); i++) {
+	for (u32 i=0; pSettings->r_line(sect,i,&bone_name,&val); ++i) {
 		
 		_GetItem(val,0,first);
 		_GetItem(val,1,second);
 
-		if (strcmp(bone_name, "default") == 0) {
+		if (0 == strcmp(bone_name, "default")) {
 			_sd->default_fx_indexes.front	= s8(atoi(first));
 			_sd->default_fx_indexes.back	= s8(atoi(second));
 		} else {
@@ -599,7 +599,7 @@ void CMotionManager::FX_ConvertMap()
 	_sd->map_converted = true;
 
 	// ѕреобразовать названи€ бон в их u16-индексы
-	for (FX_MAP_STRING_IT item_it = _sd->fx_map_string.begin(); item_it != _sd->fx_map_string.end(); item_it++) {
+	for (FX_MAP_STRING_IT item_it = _sd->fx_map_string.begin(); item_it != _sd->fx_map_string.end(); ++item_it) {
 		u16 bone_id = PKinematics(pVisual)->LL_BoneID(*item_it->first);
 		_sd->fx_map_u16.insert(mk_pair(bone_id,item_it->second)); 
 	}
@@ -615,14 +615,14 @@ void CMotionManager::FX_Play(u16 bone, bool is_front, float amount)
 	FX_MAP_U16_IT	fx_it = _sd->fx_map_u16.find(bone);
 	
 	t_fx_index cur_fx = cur_fx = fx_it->second;
-	if (fx_it == _sd->fx_map_u16.end()) {
+	if (_sd->fx_map_u16.end() == fx_it) {
 		
 		// Ќайти минимальное рассто€ние до боны на которой есть fx
 		CBoneInstance *target_bone = &PKinematics(pVisual)->LL_GetBoneInstance(bone);
 		
 		float	best_dist = flt_max;
 
-		for (FX_MAP_U16_IT it = _sd->fx_map_u16.begin(); it != _sd->fx_map_u16.end(); it++) {
+		for (FX_MAP_U16_IT it = _sd->fx_map_u16.begin(); it != _sd->fx_map_u16.end(); ++it) {
 			CBoneInstance *cur_bone = &PKinematics(pVisual)->LL_GetBoneInstance(it->first);
 			
 			float cur_dist = target_bone->mTransform.c.distance_to(cur_bone->mTransform.c);

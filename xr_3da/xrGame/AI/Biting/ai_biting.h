@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include "..\\..\\CustomMonster.h"
-#include "..\\ai_monsters_misc.h"
-#include "..\\ai_monster_motion.h"
+#include "../../CustomMonster.h"
+#include "../ai_monsters_misc.h"
+#include "../ai_monster_motion.h"
 #include "ai_biting_state.h"
-#include "..\\ai_monster_mem.h"
-#include "..\\ai_monster_sound.h"
-#include "..\\ai_monster_share.h"
-
+#include "../ai_monster_mem.h"
+#include "../ai_monster_sound.h"
+#include "../ai_monster_share.h"
+#include "../../path_manager_level_selector.h"
 
 // flags
 #define FLAG_ENEMY_DIE					( 1 << 0 )
@@ -36,6 +36,7 @@
 
 
 class CCharacterPhysicsSupport;
+class PathManagers::CAbstractVertexEvaluator;
 
 // Paths
 enum EBitingPathState {
@@ -155,8 +156,6 @@ public:
 	virtual void			net_Export						(NET_Packet& P);
 	virtual void			net_Import						(NET_Packet& P);
 
-	virtual void			Exec_Movement					(float dt);
-	
 	virtual void			UpdateCL						();
 	virtual void			shedule_Update					(u32 dt);
 
@@ -167,11 +166,11 @@ public:
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
 
 	// path routines
-			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, bool hear_sound = false);
-			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader);
-			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *tpNodeEvaluator);
+			void			vfInitSelector					(PathManagers::CAbstractVertexEvaluator &S, bool hear_sound = false);
+			void			vfSearchForBetterPosition		(PathManagers::CAbstractVertexEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader);
+			void			vfBuildPathToDestinationPoint	(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator);
 			void			vfBuildTravelLine				(Fvector *tpDestinationPosition);
-			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false, u32 TimeToRebuild = 0);
+			void			vfChoosePointAndBuildPath		(PathManagers::CAbstractVertexEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false, u32 TimeToRebuild = 0);
 			void			vfChooseNextGraphPoint			();
 			void			vfUpdateDetourPoint				();
 			void			Path_GetAwayFromPoint			(CEntity *pE, Fvector position, float dist, TTime rebuild_time);
@@ -187,7 +186,7 @@ public:
 	virtual bool			AA_CheckHit						();
 
 	// установка специфических анимаций 
-	virtual	void			CheckSpecParams					(u32 spec_params) {}
+	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
 
 	// FSM
 	virtual void            StateSelector					() = 0;  // should be pure 
@@ -235,16 +234,21 @@ public:
 	Fvector					m_tNextGraphPoint;
 	
 	// search and path parameters
-	u32						m_dwLastRangeSearch;		//!< время последнего поиска узла
+	u32						m_previous_query_time;		//!< время последнего поиска узла
 	xr_vector<Fvector>		m_tpaPoints;
 	xr_vector<Fvector>		m_tpaTravelPath;
 	xr_vector<u32>			m_tpaPointNodes;
 	xr_vector<u32>			m_tpaNodes;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	m_tSelectorCover;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorGetAway;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorApproach;
-	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorHearSnd;
+//	PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>			*m_tSelectorFreeHunting;
+//	PathManagers::CVertexEvaluator<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	*m_tSelectorCover;
+//	PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>			*m_tSelectorGetAway;
+//	PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>			*m_tSelectorApproach;
+//	PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>			*m_tSelectorHearSnd;
+	PathManagers::CAbstractVertexEvaluator	*m_tSelectorFreeHunting;
+	PathManagers::CAbstractVertexEvaluator	*m_tSelectorCover;
+	PathManagers::CAbstractVertexEvaluator	*m_tSelectorGetAway;
+	PathManagers::CAbstractVertexEvaluator	*m_tSelectorApproach;
+	PathManagers::CAbstractVertexEvaluator	*m_tSelectorHearSnd;
 
 	EBitingPathState		m_tPathState;
 	u32						m_dwPathBuiltLastTime;
@@ -265,7 +269,7 @@ public:
 	// Combat flags 
 	u32						flagsEnemy; 
 
-	// Enemy
+	// m_enemy
 	SEnemy					m_tEnemy;				// Current frame enemy 
 	SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 
 	

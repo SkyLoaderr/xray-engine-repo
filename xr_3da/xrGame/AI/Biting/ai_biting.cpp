@@ -8,12 +8,14 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
-#include "..\\..\\PhysicsShell.h"
-#include "..\\..\\CharacterPhysicsSupport.h"
+#include "../../PhysicsShell.h"
+#include "../../CharacterPhysicsSupport.h"
+#include "../../game_level_cross_table.h"
+#include "../../game_graph.h"
 
 CAI_Biting::CAI_Biting()
 {
-	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
 }
 
@@ -24,7 +26,7 @@ CAI_Biting::~CAI_Biting()
 
 void CAI_Biting::Init()
 {
-	inherited::Init();
+	inherited::Init					();
 
 	// initializing class members
 	m_tCurGP						= _GRAPH_ID(-1);
@@ -32,7 +34,7 @@ void CAI_Biting::Init()
 	m_fGoingSpeed					= 0.f;
 	m_dwTimeToChange				= 0;
 	
-	m_dwLastRangeSearch				= 0;
+	m_previous_query_time				= 0;
 
 	m_tPathState					= PATH_STATE_SEARCH_NODE;
 
@@ -45,10 +47,10 @@ void CAI_Biting::Init()
 
 	m_dwPathBuiltLastTime			= 0;
 	
-	AI_Path.TravelPath.clear		();
-	AI_Path.Nodes.clear				();
-	AI_Path.TravelStart				= 0;
-	AI_Path.DestNode				= u32(-1);
+//	CDetailPathManager::m_path.clear				();
+//	m_level_path.clear				();
+//	CDetailPathManager::m_current_travel_point		= 0;
+//	m_level_dest_vertex_id				= u32(-1);
 	m_pPhysics_support				->in_Init();
 
 	flagEatNow						= false;
@@ -80,13 +82,13 @@ void CAI_Biting::Load(LPCSTR section)
 	m_tpaTerrain.clear				();
 	LPCSTR							S = pSettings->r_string(section,"terrain");
 	u32								N = _GetItemCount(S);
-	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
+	R_ASSERT						(!(N % (LOCATION_TYPE_COUNT + 2)) && N);
 	STerrainPlace					tTerrainPlace;
 	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
 	m_tpaTerrain.reserve			(32);
 	string16						I;
 	for (u32 i=0; i<N;) {
-		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
+		for (u32 j=0; j<LOCATION_TYPE_COUNT; ++j, ++i)
 			tTerrainPlace.tMask[j]	= _LOCATION_ID(atoi(_GetItem(S,i,I)));
 		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
 		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
@@ -99,13 +101,13 @@ void CAI_Biting::Load(LPCSTR section)
 	
 	LoadSounds						(section);
 
-	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
-	m_tSelectorCover.Load			(section,"selector_cover");
+//	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
+//	m_tSelectorCover.Load			(section,"selector_cover");
 
-	m_tSelectorGetAway.Load			(section,"selector_getaway");
-	m_tSelectorApproach.Load		(section,"selector_approach");
+//	m_tSelectorGetAway.Load			(section,"selector_getaway");
+//	m_tSelectorApproach.Load		(section,"selector_approach");
 
-	m_tSelectorHearSnd.Load			(section,"selector_hear_sound");	 // like _free hunting
+//	m_tSelectorHearSnd.Load			(section,"selector_hear_sound");	 // like _free hunting
 	
 	eye_fov							= pSettings->r_float(section,"EyeFov");
 	eye_range						= pSettings->r_float(section,"eye_range");
@@ -184,7 +186,7 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_fMoraleRestoreQuant			= pSettings->r_float(section,"MoraleRestoreQuant");
 	_sd->m_fMoraleBroadcastDistance		= pSettings->r_float(section,"MoraleBroadcastDistance");
 
-	R_ASSERT2 ((_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
+	R_ASSERT2 (100 == (_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft), "Probability sum isn't 1");
 }
 
 
@@ -196,20 +198,20 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterBiting			*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
 	
-	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
+	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
 
 	cNameVisual_set					(l_tpSE_Biting->get_visual());
 	
-	R_ASSERT2						(getAI().bfCheckIfMapLoaded() && getAI().bfCheckIfGraphLoaded() && getAI().bfCheckIfCrossTableLoaded() && (getAI().m_dwCurrentLevelID != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
-	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+	R_ASSERT2						(ai().get_level_graph() && ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
+	m_tNextGP						= m_tCurGP = ai().cross_table().vertex(level_vertex_id()).game_vertex_id();
 	
 	// Установить новый Visual, перезагрузить анимации
 	MotionMan.UpdateVisual();
 
 	m_pPhysics_support->in_NetSpawn();
 
-	Movement.SetPosition	(Position());
-	Movement.SetVelocity	(0,0,0);
+	m_PhysicMovementControl.SetPosition	(Position());
+	m_PhysicMovementControl.SetVelocity	(0,0,0);
 
 	return(TRUE);
 }
@@ -236,14 +238,15 @@ void CAI_Biting::net_Export(NET_Packet& P)
 	P.w_angle8				(N.o_torso.yaw);
 	P.w_angle8				(N.o_torso.pitch);
 
-	P.w						(&m_tNextGP,				sizeof(m_tNextGP));
-	P.w						(&m_tCurGP,					sizeof(m_tCurGP));
+	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
+	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
+	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	float					f1;
-	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
+	f1						= Position().distance_to	(ai().game_graph().vertex(game_vertex_id())->level_point());
 	P.w						(&f1,						sizeof(f1));
-	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+	f1						= Position().distance_to	(ai().game_graph().vertex(game_vertex_id())->level_point());
 	P.w						(&f1,						sizeof(f1));
 }
 
@@ -276,12 +279,6 @@ void CAI_Biting::net_Import(NET_Packet& P)
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
 }
-
-void CAI_Biting::Exec_Movement		(float dt)
-{
-	AI_Path.Calculate				(this,Position(),Position(),m_fCurSpeed,dt);
-}
-
 
 //////////////////////////////////////////////////////////////////////
 // Other functions
@@ -327,7 +324,7 @@ CBoneInstance *CAI_Biting::GetBoneInstance(int bone_id)
 void CAI_Biting::MoraleBroadcast(float fValue)
 {
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	for (u32 i=0; i<Group.Members.size(); i++) {
+	for (u32 i=0; i<Group.Members.size(); ++i) {
 		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(Group.Members[i]);
 		if (!pE) continue;
 		

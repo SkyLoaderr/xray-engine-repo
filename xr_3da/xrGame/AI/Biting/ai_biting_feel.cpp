@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
-#include "..\\..\\actor.h"
+#include "../../actor.h"
 
 
 void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
@@ -17,7 +17,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 		return;
 
 #ifdef IGNORE_ACTOR
-	if ((who == Level().CurrentEntity()) || (who && (who->H_Parent() == Level().CurrentEntity())))
+	if ((Level().CurrentEntity() == who) || (who && (who->H_Parent() == Level().CurrentEntity())))
 		return;
 #endif
 	
@@ -31,7 +31,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 
 	if (power >= _sd->m_fSoundThreshold) {
 		if (this != who) {
-			HearSound(who,eType,Position,power,m_dwCurrentUpdate);
+			HearSound(who,eType,Position,power,m_current_update);
 		}
  	}
 }
@@ -44,7 +44,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity, float fDamage, float yaw, float pitc
 	VisionElem ve;
 	if (!GetEnemy(ve)) return;
 
-	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
+	if ((CLSID_ENTITY == ve.obj->CLS_ID) && (ve.obj == pEntity)) {
 		Fvector position_in_bone_space;
 		position_in_bone_space.set(0.f,0.f,0.f);
 
@@ -65,7 +65,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity, float fDamage, float yaw, float pitc
 
 BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 {
-	if (O->CLS_ID!=CLSID_ENTITY)	
+	if (CLSID_ENTITY!=O->CLS_ID)	
 		return FALSE;
 	else  {
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);

@@ -9,14 +9,14 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 
-#include "..\\ai_monster_jump.h"
+#include "../ai_monster_jump.h"
 
 void CAI_Biting::Think()
 {
 	if (!g_Alive()) return;
 
-	m_dwLastUpdateTime		= m_dwCurrentUpdate;
-	m_dwCurrentUpdate		= Level().timeServer();
+	m_dwLastUpdateTime		= m_current_update;
+	m_current_update		= Level().timeServer();
 
 	vfUpdateParameters		();
 
@@ -32,12 +32,12 @@ void CAI_Biting::Think()
 	}
 
 	StateSelector			();
-	CurrentState->Execute	(m_dwCurrentUpdate);
+	CurrentState->Execute	(m_current_update);
 
 	MotionMan.ProcessAction();
 
 	// process sound
-	ControlSound(m_dwCurrentUpdate);
+	ControlSound(m_current_update);
 }
 
 

@@ -10,11 +10,11 @@ public:
 public:
 	static T*		Instance() {
 		if(!_self) _self=xr_new<T>(); 
-		_refcount++;
+		++_refcount;
 		return _self;
 	}
 	void			FreeInst() {
-		if(--_refcount==0) {
+		if(0 == --_refcount) {
 			IShared<T> *ptr = this;
 			xr_delete(ptr);
 		} 
@@ -47,7 +47,7 @@ template<class T_shared> T_shared *CSharedObj<T_shared>::get_shared(CLASS_ID id)
 	T_shared *_data;
 
 	// if not found - create appropriate shared data object
-	if (shared_it == _shared_tab.end()) {
+	if (_shared_tab.end() == shared_it) {
 		_data		= xr_new<T_shared>();
 		_shared_tab.insert(mk_pair(id, _data));
 	} else _data = shared_it->second;

@@ -55,7 +55,7 @@ public:
 		virtual void	Reset			();										//!< инициализирует все значения по-умолчанию 
 
 	IC			void	Activate		() {m_tState = STATE_INIT;}				//!< Перейти в данное состояние
-	IC			bool	Active			() {return (m_tState != STATE_NOT_ACTIVE);}
+	IC			bool	Active			() {return (STATE_NOT_ACTIVE != m_tState);}
 
 		virtual void	Init			();									//!< Стадия инициализации состояния
 		virtual void	Run				();									//!< Стадия выполнения состояния
@@ -69,7 +69,7 @@ public:
 	IC			void	SetNormalPriority() {m_tPriority = PRIORITY_NORMAL;}
 	IC			void	SetHighPriority	() {m_tPriority = PRIORITY_HIGH;}
 	IC			void	SetInertia		(TTime inertia) {m_dwInertia = inertia + m_dwCurrentTime;}
-	IC			bool 	IsInertia		() {return ((m_tPriority != PRIORITY_NONE) && (m_dwInertia > m_dwCurrentTime));}
+	IC			bool 	IsInertia		() {return ((PRIORITY_NONE != m_tPriority) && (m_dwInertia > m_dwCurrentTime));}
 	IC		EPriority	GetPriority		() {return m_tPriority;}
 };
 
