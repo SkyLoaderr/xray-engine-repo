@@ -13,7 +13,7 @@ IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 
 void CRender::render_main	()
 {
-	Msg						("---begin");
+//	Msg						("---begin");
 	marker									++;
 	phase									= PHASE_NORMAL;
 
@@ -111,17 +111,18 @@ void CRender::render_main	()
 		g_pGameLevel->pHUD->Render_Last						();	
 	}
 	set_Recorder			(NULL);
-	Msg						("---end");
+//	Msg						("---end");
 }
 
 void CRender::Render		()
 {
-	Msg		("*** main-start"	);
-	VERIFY									(g_pGameLevel && g_pGameLevel->pHUD);
+	VERIFY					(0==mapDistort.size());
+	VERIFY					(g_pGameLevel && g_pGameLevel->pHUD);
 
-	//******* Main calc
-	Device.Statistic.RenderCALC.Begin		();
+	RImplementation.o.distortion				= FALSE;		// disable distorion
 
+	//******* Main calc - DEFERRER RENDERER
+	Device.Statistic.RenderCALC.Begin			();
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix					(Device.mFullTransform,FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
 	View										= 0;
@@ -230,11 +231,16 @@ void CRender::Render		()
 	// Lighting, dependant on OCCQ
 	render_lights							(LP_pending);
 
-	Msg		("*** main-end"	);
 	// Postprocess
 	Target->phase_combine					();
+	VERIFY	(0==mapDistort.size());
+}
 
-	Msg		("*** second-start"	);
+void CRender::render_forward				()
+{
+	VERIFY	(0==mapDistort.size());
+	RImplementation.o.distortion				= RImplementation.o.distortion_enabled;	// enable distorion
+
 	//******* Main render - second order geometry (the one, that doesn't support deffering)
 	//.todo: should be done inside "combine" with estimation of of luminance, tone-mapping, etc.
 	{
@@ -246,11 +252,5 @@ void CRender::Render		()
 		g_pGamePersistent->Environment.RenderLast();			// rain/thunder-bolts
 	}
 
-	// PortalTraverser.dbg_draw				();
-
-	// HUD
-	Device.Statistic.RenderDUMP_HUD.Begin	();
-	g_pGameLevel->pHUD->Render_Direct		();
-	Device.Statistic.RenderDUMP_HUD.End		();
-	Msg		("*** second-end"	);
+	RImplementation.o.distortion				= FALSE;		// disable distorion
 }

@@ -335,6 +335,7 @@ CParticleGroup::CParticleGroup()
 
 CParticleGroup::~CParticleGroup()
 {
+	// Msg ("!!! destoy PG");
 	for (u32 i=0; i<items.size(); i++) items[i].Clear();
 	items.clear();
 }

@@ -170,9 +170,6 @@ void CHUDManager::Render_Last()
 	::Render->set_HUD				(FALSE);
 }
 
-void CHUDManager::Render_Direct	()
-{
-}
 //отрисовка элементов интерфейса
 void  CHUDManager::RenderUI()
 {

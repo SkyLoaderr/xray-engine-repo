@@ -55,7 +55,6 @@ public:
 	
 	virtual		void		Render_First		();
 	virtual		void		Render_Last			();	   
-	virtual		void		Render_Direct		();
 	virtual		void		OnFrame				();
 
 	virtual		void		RenderUI			();

@@ -36,25 +36,27 @@ public:
 
 public:
 	struct		_options	{
-		u32		smapsize	: 16;
-		u32		depth16		: 1;
-		u32		mrt			: 1;
-		u32		mrtmixdepth	: 1;
-		u32		fp16_filter	: 1;
-		u32		fp16_blend	: 1;
-		u32		HW_smap		: 1;
-		u32		nvstencil	: 1;
-		u32		ldr			: 1;
+		u32		smapsize			: 16;
+		u32		depth16				: 1;
+		u32		mrt					: 1;
+		u32		mrtmixdepth			: 1;
+		u32		fp16_filter			: 1;
+		u32		fp16_blend			: 1;
+		u32		HW_smap				: 1;
+		u32		nvstencil			: 1;
+		u32		ldr					: 1;
 
-		u32		sunfilter	: 1;
-		u32		sjitter		: 1;
-		u32		noshadows	: 1;
-		u32		Tshadows	: 1;						// transluent shadows
-		u32		distortion	: 1;
-		u32		disasm		: 1;
+		u32		distortion			: 1;
+		u32		distortion_enabled	: 1;
 
-		u32		forcegloss	: 1;
-		float	forcegloss_v;
+		u32		sunfilter			: 1;
+		u32		sjitter				: 1;
+		u32		noshadows			: 1;
+		u32		Tshadows			: 1;						// transluent shadows
+		u32		disasm				: 1;
+
+		u32		forcegloss			: 1;
+		float	forcegloss_v		;
 	}			o;
 	struct		_stats		{
 		u32		l_total,	l_visible;
@@ -119,6 +121,7 @@ private:
 
 	IRender_Sector*					rimp_detectSector			(Fvector& P, Fvector& D);
 	void							render_main					();
+	void							render_forward				();
 	void							render_smap_direct			(Fmatrix& mCombined);
 	void							render_indirect				(light*			L	);
 	void							render_lights				(light_Package& LP	);

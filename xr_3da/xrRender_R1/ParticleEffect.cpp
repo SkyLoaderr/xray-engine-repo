@@ -42,7 +42,7 @@ CParticleEffect::CParticleEffect()
 }
 CParticleEffect::~CParticleEffect()
 {
-	Log						("--- destroy PE");
+	// Log					("--- destroy PE");
 	OnDeviceDestroy			();
 	ParticleManager()->DestroyEffect		(m_HandleEffect);
 	ParticleManager()->DestroyActionList	(m_HandleActionList);

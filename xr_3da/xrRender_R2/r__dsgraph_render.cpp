@@ -55,7 +55,9 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 // ALPHA
 void __fastcall sorted_L1		(mapSorted_Node *N)
 {
+	VERIFY (N);
 	IRender_Visual *V				= N->val.pVisual;
+	VERIFY (V && V->hShader._get() && V->hGeom._get());
 	RCache.set_Element				(N->val.se);
 	RCache.set_xform_world			(N->val.Matrix);
 #if RENDER==R_R1

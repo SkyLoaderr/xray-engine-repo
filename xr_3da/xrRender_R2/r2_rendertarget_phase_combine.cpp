@@ -84,12 +84,33 @@ void	CRenderTarget::phase_combine	()
 		g_pGamePersistent->Environment.RenderFirst	();
 	}
 
+	// Forward rendering
+	{
+		u_setrt							(rt_Generic_0,0,0,HW.pBaseZB);		// LDR RT
+		RCache.set_CullMode				(CULL_CCW);
+		RCache.set_Stencil				(FALSE);
+		RCache.set_ColorWriteEnable		();
+		RImplementation.render_forward	();
+	}
+
+
 	// Perform blooming filter and distortion if needed
 	RCache.set_Stencil	(FALSE);
-	phase_bloom			( );
-	BOOL	bDistort	= RImplementation.o.distortion;
-	if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
-	if (bDistort)		phase_distortion		();
+	phase_bloom			( );												// HDR RT invalidated here
+
+	// Distortion filter
+	BOOL	bDistort	= RImplementation.o.distortion_enabled;				// This can be modified
+	{
+		if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
+		if (bDistort)		{
+			u_setrt						(rt_Generic_1,0,0,HW.pBaseZB);		// Now RT is a distortion mask
+			RCache.set_CullMode			(CULL_CCW);
+			RCache.set_Stencil			(FALSE);
+			RCache.set_ColorWriteEnable	();
+			CHK_DX(HW.pDevice->Clear	( 0L, NULL, D3DCLEAR_TARGET, color_rgba(127,127,127,127), 1.0f, 0L));
+			RImplementation.r_dsgraph_render_distort	();
+		}
+	}
 
 	// Combine everything + perform AA
 	u_setrt				( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
