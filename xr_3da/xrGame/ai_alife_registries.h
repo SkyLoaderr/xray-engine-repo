@@ -412,17 +412,19 @@ public:
 		ALIFE_ENTITY_P_IT			E = m_tpALifeEntitites.end();
 		NET_Packet					P;
 		CStream						*S = 0;
+		u16							ID;
 		for (int id=0; I != E; I++, id++) {
 			R_ASSERT				(0!=(S = tFileStream.OpenChunk(id)));
-			u16						ID;
 			// Spawn
 			P.B.count				= S->Rword();
 			S->Read					(P.B.data,P.B.count);
 			P.r_begin				(ID);
 			R_ASSERT				(M_SPAWN == ID);
+			
 			string64				s_name;
 			P.r_string				(s_name);
 			xrServerEntity			*E = F_entity_Create(s_name);
+
 			R_ASSERT2				(E,"Can't create entity.");
 			E->Spawn_Read			(P);
 			// Update
@@ -442,11 +444,11 @@ public:
 			ALIFE_ENTITY_P_VECTOR_PAIR_IT	K = m_tLevelEntities.find(tLevelID);
 			if (K == m_tLevelEntities.end()) {
 				ALIFE_ENTITY_P_VECTOR	*T = xr_new<ALIFE_ENTITY_P_VECTOR>();
-				T->push_back(*I);
-				m_tLevelEntities.insert(make_pair(tLevelID,*T));
+				T->push_back		(*I);
+				m_tLevelEntities.insert(make_pair(tLevelID,T));
 			}
 			else
-				(*K).second.push_back(*I);
+				(*K).second->push_back(*I);
 		}
 	};
 };
