@@ -160,9 +160,9 @@ void CWallmarksEngine::AddWallmark	(RAPID::tri* pTri, const Fvector &contact_poi
 		if (wm.S.P.similar(W.S.P,0.01f))	
 		{
 			// replace
-			*it				= W;
+			wm				= W;
 			marks.pop_back	();
-			break;
+			return;
 		}
 	}
 }
