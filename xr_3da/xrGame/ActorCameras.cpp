@@ -25,10 +25,48 @@ void CActor::cam_SetLadder()
 {
 	CCameraBase* C			= cameras[eacFirstEye];
 	g_LadderOrient			();
-	C->yaw					= -XFORM().k.getH();
-	C->lim_yaw[0]			= C->yaw-1.f;
-	C->lim_yaw[1]			= C->yaw+1.f;
-	C->bClampYaw			= true;
+	float yaw				=(-XFORM().k.getH());
+	float lo,hi;
+	lo=(yaw-f_Ladder_cam_limit);
+	hi=(yaw+f_Ladder_cam_limit);
+	float &cam_yaw=C->yaw;
+	cam_yaw=(cam_yaw);
+	float delta_yaw=angle_normalize_signed(yaw-cam_yaw);
+	if(-f_Ladder_cam_limit<delta_yaw&&f_Ladder_cam_limit>delta_yaw)
+	{
+		C->lim_yaw[0]			= lo;
+		C->lim_yaw[1]			= hi;
+		C->bClampYaw			= true;
+	}
+}
+void CActor::camUpdateLeader(float dt)
+{
+	if(cameras[eacFirstEye]->bClampYaw) return;
+	float yaw				= (-XFORM().k.getH());
+	float lo,hi;
+	lo=(yaw-0.05f);
+	hi=(yaw+0.05f);
+	float & cam_yaw=cameras[eacFirstEye]->yaw;
+	cam_yaw=(cam_yaw);
+	float delta=angle_normalize_signed(yaw-cam_yaw);
+
+	if(-0.05f<delta&&0.05f>delta)
+	{
+		cameras[eacFirstEye]->lim_yaw[0]			= yaw-f_Ladder_cam_limit;
+		cameras[eacFirstEye]->lim_yaw[1]			= yaw+f_Ladder_cam_limit;
+		cameras[eacFirstEye]->bClampYaw				= true;
+	}else{
+		cam_yaw+=delta* _min(dt*10.f,1.f) ;
+	}
+
+	//if(_abs(delta_lo)<_abs(delta_hi))
+	//{
+	//	cam_yaw+=Device.fTimeDelta*delta_lo*10.f;
+	//}
+	//else 
+	//{
+	//	cam_yaw+=Device.fTimeDelta*delta_hi*10.f;
+	//}
 }
 void CActor::cam_UnsetLadder()
 {
@@ -83,7 +121,10 @@ void CActor::cam_Update(float dt, float fFOV)
 		EffectorManager().ApplyDevice();
 		return;
 	}
-	
+	if(mstate_real & mcClimb)
+	{
+		camUpdateLeader(dt);
+	}
 	Fvector point={0,CameraHeight(),0}, dangle={0,0,0};
 	
 	// apply inertion
