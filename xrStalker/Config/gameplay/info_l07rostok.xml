@@ -200,5 +200,19 @@
 		<!-- BLOODSUCKER SPAWNERS -->
 	<info_portion id="spawn_bloodsucker1"></info_portion>
 	<info_portion id="spawn_bloodsucker2"></info_portion>	
+	
+	
+	
+	
+	
+	<!-- ARENA -->
+	<info_portion id="bar_arena_door_1_open"></info_portion>
+	
+	<info_portion id="bar_arena_door_2_open"></info_portion>
+
+	<info_portion id="bar_arena_door_3_open"></info_portion>
+	
+	
+	
     
 </game_information_portions>
