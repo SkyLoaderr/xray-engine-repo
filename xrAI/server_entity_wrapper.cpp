@@ -11,6 +11,10 @@
 #include "xrServer_Objects.h"
 #include "xrmessages.h"
 
+#ifdef AI_COMPILER
+#	include "xrSE_Factory_import_export.h"
+#endif
+
 struct ISE_Abstract;
 
 CServerEntityWrapper::~CServerEntityWrapper	()
