@@ -63,6 +63,8 @@ void CCreator::net_Disconnect	( )
 //-------------------------------------------------------------------------------------------
 BOOL CCreator::Load(DWORD dwNum) 
 {
+	Device.Reset				();
+
 	// Initialize level data
 	pApp->Level_Set				( dwNum );
 	FILE_NAME					temp;
