@@ -108,7 +108,9 @@ void CBuild::xrPhase_Subdivide()
 		s2.clear	();
 	}
 	Msg("%d subdivisions.",g_XSplit.size());
-	
+
+	/*
 	for (u32 i=0; i<g_XSplit.size(); i++)
 		g_XSplit[i]->compact();
+	*/
 }
