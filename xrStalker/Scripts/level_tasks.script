@@ -148,7 +148,7 @@ function proceed(actor)
  		actor:dont_has_info("bar_kill_veteran_kill") and
 		actor:object("bar_lucky_pda") ~= nil 
 	then		
-		actor:give_info_portion("bar_bar_hunter_quest_find_rifle")
+		actor:give_info_portion("bar_kill_veteran_kill")
 	end 
 
 
