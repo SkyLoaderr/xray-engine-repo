@@ -20,3 +20,4 @@ const u32				PSM_size			= 512;
 const float				PSM_near_plane		= .07f;
 
 const u32				TEX_material_size	= 256;
+const u32				TEX_ds2_fade		= 256;
