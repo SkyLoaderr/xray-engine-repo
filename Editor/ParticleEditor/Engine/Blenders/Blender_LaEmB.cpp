@@ -14,6 +14,9 @@
 CBlender_LaEmB::CBlender_LaEmB	()
 {
 	description.CLS		= B_LaEmB;
+	strcpy				(oT2_Name,	"$null");
+	strcpy				(oT2_xform,	"$null");
+	strcpy				(oT2_const,	"$null");
 }
 
 CBlender_LaEmB::~CBlender_LaEmB	()

@@ -14,6 +14,8 @@
 CBlender_LmEbB::CBlender_LmEbB	()
 {
 	description.CLS		= B_LmEbB;
+	strcpy				(oT2_Name,	"$null");
+	strcpy				(oT2_xform,	"$null");
 }
 
 CBlender_LmEbB::~CBlender_LmEbB	()

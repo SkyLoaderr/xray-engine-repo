@@ -14,6 +14,8 @@
 CBlender_LmBmmD::CBlender_LmBmmD	()
 {
 	description.CLS		= B_LmBmmD;
+	strcpy				(oT2_Name,	"$null");
+	strcpy				(oT2_xform,	"$null");
 }
 
 CBlender_LmBmmD::~CBlender_LmBmmD	()
