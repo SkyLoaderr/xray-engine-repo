@@ -105,7 +105,7 @@ void CMotionSequence::Add(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, f
 	States.push_back(tS);
 }
 
-void CMotionSequence::Switch(CAI_Biting *pData)
+void CMotionSequence::Switch()
 {
 		Started = true;
 		if (it == 0) it = States.begin();
@@ -117,17 +117,21 @@ void CMotionSequence::Switch(CAI_Biting *pData)
 				return;
 			}
 		}
-
-		it->SetData(pData);
 }
+
+void CMotionSequence::SetData(CAI_Biting *pData)
+{
+	it->SetData(pData);
+}
+
 void CMotionSequence::Finish()
 {
 	Init(); Finished = true;
 }
 
-void CMotionSequence::Cycle(u32 cur_time, CAI_Biting *pData)
+void CMotionSequence::Cycle(u32 cur_time)
 {
-	if (((it->mask & MASK_TIME) == MASK_TIME) && (cur_time > it->time))	Switch(pData);
+	if (((it->mask & MASK_TIME) == MASK_TIME) && (cur_time > it->time))	Switch();
 }
 
 
@@ -208,8 +212,6 @@ void CRest::Run()
 	// проверить нужно ли провести перепланировку
 	if (m_dwCurrentTime > m_dwLastPlanTime + m_dwReplanTime) Replanning();
 
-	//if (NoEvents()) return;
-	
 	// FSM 2-го уровня
 	switch (m_tAction) {
 		case ACTION_WALK:
@@ -222,10 +224,8 @@ void CRest::Run()
 			pData->Motion.m_tTurn.Clear();
 			break;
 		case ACTION_LIE:
-			if (!pData->MotionSeq.Active()) {
-				pData->Motion.m_tParams.SetParams(ePostureLie,eActionIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-				pData->Motion.m_tTurn.Clear();
-			}
+			pData->Motion.m_tParams.SetParams(ePostureLie,eActionIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tTurn.Clear();
 			break;
 		case ACTION_TURN:
 			pData->Motion.m_tParams.SetParams(ePostureStand,eActionIdleTurnLeft,0,m_cfStandTurnRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
@@ -254,8 +254,8 @@ void CRest::Replanning()
 		m_tAction = ACTION_STAND;
 	} else if (rand_val < 90) {	
 		m_tAction = ACTION_LIE;
-		pData->MotionSeq.Add(ePostureStand,eActionLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pData->MotionSeq.Switch(pData);
+		pData->Motion.m_tSeq.Add(ePostureStand,eActionLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pData->Motion.m_tSeq.Switch();
 	} else  {	
 		m_tAction = ACTION_TURN;
 		pData->r_torso_target.yaw += PI_DIV_2;
@@ -373,14 +373,14 @@ void CAI_Biting::SetState(IState *pS)
 void CAI_Biting::ControlAnimation()
 {
 	//-- проверка специфических анимаций --
-	if (MotionSeq.Started) {
-		MotionSeq.Playing = true;
-		MotionSeq.Started = false;
-		MotionSeq.Finished = false;	
+	if (Motion.m_tSeq.Started) {
+		Motion.m_tSeq.Playing = true;
+		Motion.m_tSeq.Started = false;
+		Motion.m_tSeq.Finished = false;	
 		FORCE_ANIMATION_SELECT();
 	} 
 
-	if (!MotionSeq.Playing) {
+	if (!Motion.m_tSeq.Playing) {
 		if (m_tActionAnimPrevFrame != m_tActionAnim || m_tPostureAnimPrevFrame != m_tPostureAnim) {
 			FORCE_ANIMATION_SELECT();
 		}	

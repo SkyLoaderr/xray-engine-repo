@@ -598,23 +598,20 @@ void CAI_Biting::Think()
 
 	// Обновление памяти монстра
 	UpdateMemory();
-	
 
-	if (MotionSeq.Active())	{
-		MotionSeq.Cycle(m_dwCurrentUpdate,this);
+	if (Motion.m_tSeq.Active())	{
+		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	} else {
-	
 		VisionElem VE;
 		if (SelectEnemy(VE)) {
 			SetState(stateAttack);
 		} else {	
 			SetState(stateRest);
 		}
-
 		CurrentState->Execute(true);
-		Motion.SetFrameParams(this);
-
 	}
+	Motion.SetFrameParams(this);
+
 	ControlAnimation();
 	
 //---------------------------------------------------------------------------------	

@@ -350,7 +350,6 @@ private:
 	IState				*CurrentState;
 	CRest				*stateRest;
 	CAttack				*stateAttack;
-	CMotionSequence		MotionSeq;
 
 	friend	class IState;
 	friend	class CRest;
@@ -369,8 +368,6 @@ private:
 	
 	
 	void ControlAnimation();
-
-	//CMonsterMemory			Mem;
 
 	virtual BOOL			feel_vision_isRelevant	(CObject* O);
 

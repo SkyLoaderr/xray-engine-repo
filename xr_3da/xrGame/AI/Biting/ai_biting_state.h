@@ -83,22 +83,6 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingMotion class
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class CBitingMotion {
-public:
-	CMotionParams	m_tParams;
-	CMotionTurn		m_tTurn;
-
-
-	void SetFrameParams(CAI_Biting *pData) {
-		m_tParams.SetData(pData);
-		m_tTurn.CheckTurning(pData);
-	}
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CMotionSequence class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CMotionSequence {
@@ -113,20 +97,46 @@ public:
 	bool Finished;
 
 public:
-	
+
 	// Инициализация всех полей
 	void Init();
 	// добавить 
 	void Add(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, float s, float r_s, float y, TTime t, u32 m);
 	// Перейти в следующее состояние, если такового не имеется - завершить
-	void Switch(CAI_Biting *pData);
+	void Switch();
 	// Выполняется в каждом фрейме
-	void Cycle(u32 cur_time, CAI_Biting *pData);
+	void Cycle(u32 cur_time);
+	
+	void SetData(CAI_Biting *pData);
 
 	void Finish();
 	bool Active() {return (Playing || Started);}
 };
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CBitingMotion class
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CBitingMotion {
+public:
+	CMotionParams		m_tParams;
+	CMotionTurn			m_tTurn;
+	CMotionSequence		m_tSeq;
+
+	void Init() {
+		m_tSeq.Init();
+	}
+
+	void SetFrameParams(CAI_Biting *pData) {
+		if (!m_tSeq.Active()) {
+			m_tParams.SetData(pData);
+			m_tTurn.CheckTurning(pData);
+		} else {
+			m_tSeq.SetData(pData);
+		}
+	}
+};
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

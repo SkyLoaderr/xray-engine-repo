@@ -54,11 +54,14 @@ static void __stdcall vfPlayCallBack(CBlend* B)
 void CAI_Biting::OnAnimationEnd()
 {
 	m_tpCurrentGlobalAnimation = 0;
-	if (_CA.Playing) _CA.Finished = true;
-	if (_CAction.Playing) _CAction.Switch();
-	if (MotionSeq.Playing) {
-		MotionSeq.Switch(this);
-		if (MotionSeq.Finished) MotionSeq.Init();
+
+	if (Motion.m_tSeq.Playing) {		// Sequence activated?
+		Motion.m_tSeq.Switch();	
+		if (Motion.m_tSeq.Finished) {
+			Motion.m_tSeq.Init();		// сброс
+			// После проигрывания Seq, m_tParams содержит необходимые данные для установки анимации
+			Motion.m_tParams.SetData(this);
+		}
 	}
 }
 

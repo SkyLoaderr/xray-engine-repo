@@ -106,7 +106,8 @@ void CAI_Biting::Init()
 	m_tActionAnimPrevFrame	= m_tActionAnim;
 	m_tPostureAnimPrevFrame	= m_tPostureAnim;
 
-	MotionSeq.Init();
+	Motion.Init();
+	
 }
 
 void CAI_Biting::Die()
