@@ -39,7 +39,7 @@ void CLevel::g_sv_Spawn		(xrServerEntity* E)
 	// Client spawn
 	T.Start		();
 	CObject*	O		= Objects.LoadOne	(E->s_name);
-	// Msg			("--spawn--LOAD: %f ms",1000.f*T.GetAsync());
+	Msg			("--spawn--LOAD: %f ms",1000.f*T.GetAsync());
 
 	T.Start		();
 	if (0==O || (!O->net_Spawn	(E))) 
@@ -47,14 +47,14 @@ void CLevel::g_sv_Spawn		(xrServerEntity* E)
 		O->net_Destroy			( );
 		Msg						("! Failed to spawn entity '%s'",E->s_name);
 	} else {
-		// Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
+		Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	SetEntity		(O);
 		if (E->s_flags.is(M_SPAWN_OBJECT_ACTIVE))											O->OnActivate	( );
 
 		T.Start					( );
 		O->OnDeviceCreate		( );
-		// Msg			("--spawn--DEV: %f ms",1000.f*T.GetAsync());
+		Msg			("--spawn--DEV: %f ms",1000.f*T.GetAsync());
 
 		if (0xffff != E->ID_Parent)	
 		{
