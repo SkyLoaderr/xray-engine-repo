@@ -344,6 +344,9 @@
 			RelativePath="shaders\D\fat_base.s">
 		</File>
 		<File
+			RelativePath="shaders\D\light_direct.s">
+		</File>
+		<File
 			RelativePath="r_constants.cpp">
 		</File>
 		<File
