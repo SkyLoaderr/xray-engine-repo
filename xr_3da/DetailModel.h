@@ -27,7 +27,7 @@ public:
 	WORD		*indices;
 	u32			number_indices;
 	
-	void		Load		(CStream* S);
+	void		Load		(IReader* S);
 	void		Optimize	();
 	void		Unload		();
 	void		Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, WORD* iDest, u32 iOffset);

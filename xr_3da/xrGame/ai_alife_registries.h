@@ -52,7 +52,7 @@ public:
 		tMemoryStream.close_chunk	();
 	};
 	
-	void CALifeObjectRegistry::Load(CStream	&tFileStream)
+	void CALifeObjectRegistry::Load(IReader	&tFileStream)
 	{
 		R_ASSERT(tFileStream.FindChunk(OBJECT_CHUNK_DATA));
 		m_tObjectRegistry.clear();
@@ -149,7 +149,7 @@ public:
 		tMemoryStream.close_chunk	();
 	};
 
-	virtual	void					Load(CStream	&tFileStream)
+	virtual	void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT(tFileStream.FindChunk(EVENT_CHUNK_DATA));
 		tFileStream.Read(&m_tEventID,sizeof(m_tEventID));
@@ -186,7 +186,7 @@ public:
 		tMemoryStream.close_chunk	();
 	};
 	
-	virtual	void					Load(CStream	&tFileStream)
+	virtual	void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT(tFileStream.FindChunk(TASK_CHUNK_DATA));
 		tFileStream.Read			(&m_tTaskID,sizeof(m_tTaskID));
@@ -390,14 +390,14 @@ public:
 		free_vector					(m_tpSpawnPoints);
 	};
 	
-	virtual void					Load(CStream	&tFileStream)
+	virtual void					Load(IReader	&tFileStream)
 	{
 		inherited::Load				(tFileStream);
 		m_tpSpawnPoints.resize	(m_dwSpawnCount);
 		ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
 		ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
 		NET_Packet					tNetPacket;
-		CStream						*S = 0;
+		IReader						*S = 0;
 		u16							ID;
 		for (int id=0; I != E; I++, id++) {
 			R_ASSERT				(0!=(S = tFileStream.OpenChunk(id)));

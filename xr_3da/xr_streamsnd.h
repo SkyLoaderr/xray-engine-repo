@@ -5,7 +5,7 @@
 
 // refs
 class ENGINE_API CInifile;
-class ENGINE_API CStream;
+class ENGINE_API IReader;
 
 class ENGINE_API CSoundStream : 
 	public CSound_stream_interface
@@ -54,7 +54,7 @@ private:
     u32						writepos;
 	BOOL					isPresentData; // признак окончания буфера
 	u32						dwDecPos;
-	CStream*				hf;
+	IReader*				hf;
 	int					    DataPos;
 
 private:

@@ -16,8 +16,8 @@ void CRender::level_Load()
 
 	// Begin
 	pApp->LoadBegin		();
-	CStream*	fs		= pCreator->LL_Stream;
-	CStream*	chunk;
+	IReader*	fs		= pCreator->LL_Stream;
+	IReader*	chunk;
 
 	// VB
 	pApp->LoadTitle		("Loading geometry...");
@@ -105,7 +105,7 @@ void CRender::level_Unload()
 	IB.clear				();
 }
 
-void CRender::LoadBuffers	(CStream *base_fs)
+void CRender::LoadBuffers	(IReader *base_fs)
 {
 	Device.Shader.Evict		();
 	u32	dwUsage				= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
@@ -114,7 +114,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 	if (base_fs->FindChunk(fsL_VBUFFERS_DX9))
 	{
 		// Use DX9-style declarators
-		destructor<CStream>		fs	(base_fs->OpenChunk(fsL_VBUFFERS_DX9));
+		destructor<IReader>		fs	(base_fs->OpenChunk(fsL_VBUFFERS_DX9));
 		u32 count				= fs().Rdword();
 		DCL.resize				(count);
 		VB.resize				(count);
@@ -142,7 +142,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 		}
 	} else {
 		// Use DX7-style FVFs
-		destructor<CStream>		fs	(base_fs->OpenChunk(fsL_VBUFFERS));
+		destructor<IReader>		fs	(base_fs->OpenChunk(fsL_VBUFFERS));
 		u32 count				= fs().Rdword();
 		DCL.resize				(count);
 		VB.resize				(count);
@@ -170,7 +170,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 	// Index buffers
 	if (base_fs->FindChunk(fsL_IBUFFERS))
 	{
-		destructor<CStream>		fs	(base_fs->OpenChunk	(fsL_IBUFFERS));
+		destructor<IReader>		fs	(base_fs->OpenChunk	(fsL_IBUFFERS));
 		u32 count				= fs().Rdword();
 		IB.resize				(count);
 		for (u32 i=0; i<count; i++)
@@ -190,9 +190,9 @@ void CRender::LoadBuffers	(CStream *base_fs)
 	}
 }
 
-void CRender::LoadVisuals(CStream *fs)
+void CRender::LoadVisuals(IReader *fs)
 {
-	CStream*		chunk	= 0;
+	IReader*		chunk	= 0;
 	u32			index	= 0;
 	CVisual*		V		= 0;
 	ogf_header		H;
@@ -209,13 +209,13 @@ void CRender::LoadVisuals(CStream *fs)
 	}
 }
 
-void CRender::LoadLights(CStream *fs)
+void CRender::LoadLights(IReader *fs)
 {
 	// lights
 	L_DB.Load	(fs);
 
 	// glows
-	CStream*	chunk = fs->OpenChunk(fsL_GLOWS);
+	IReader*	chunk = fs->OpenChunk(fsL_GLOWS);
 	R_ASSERT	(chunk && "Can't find glows");
 	Glows.Load(chunk);
 	chunk->Close();
@@ -228,7 +228,7 @@ struct b_portal
 	svector<Fvector,6>	vertices;
 };
 
-void CRender::LoadSectors(CStream* fs)
+void CRender::LoadSectors(IReader* fs)
 {
 	// allocate memory for portals
 	u32 size = fs->FindChunk(fsL_PORTALS); 
@@ -237,10 +237,10 @@ void CRender::LoadSectors(CStream* fs)
 	Portals.resize(count);
 
 	// load sectors
-	CStream* S = fs->OpenChunk(fsL_SECTORS);
+	IReader* S = fs->OpenChunk(fsL_SECTORS);
 	for (u32 i=0; ; i++)
 	{
-		CStream* P = S->OpenChunk(i);
+		IReader* P = S->OpenChunk(i);
 		if (0==P) break;
 
 		Sectors.push_back(xr_new<CSector> (i));

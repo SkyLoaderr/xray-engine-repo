@@ -2,7 +2,7 @@
 #include "flod.h"
 #include "fmesh.h"
 
-void FLOD::Load			(LPCSTR N, CStream *data, u32 dwFlags)
+void FLOD::Load			(LPCSTR N, IReader *data, u32 dwFlags)
 {
 	inherited::Load		(N,data,dwFlags);
 

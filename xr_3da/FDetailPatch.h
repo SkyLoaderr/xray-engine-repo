@@ -23,7 +23,7 @@ class FDetailPatch : public CVisual
 	vector<DPatch>	patches;
 public:
 	virtual void	Render		(float LOD);
-	virtual void	Load		(const char* N, CStream *data, u32 dwFlags);
+	virtual void	Load		(const char* N, IReader *data, u32 dwFlags);
 
 	FDetailPatch();
 	virtual ~FDetailPatch();

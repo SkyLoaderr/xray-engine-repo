@@ -6,7 +6,7 @@
 
 DEF_VECTOR(vecI,int);
 
-class ENGINE_API CStream;
+class ENGINE_API IReader;
 class ENGINE_API CObject;
 class ENGINE_API CLightTrack;
 
@@ -41,7 +41,7 @@ public:
 	void	Select			(Fvector &pos, float fRadius);
 	void	Track			(CObject* O);
 
-	void	Load			(CStream* fs);
+	void	Load			(IReader* fs);
 	void	Unload			(void);
 	void	Render			(void);
 };

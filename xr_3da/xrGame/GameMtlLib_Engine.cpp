@@ -60,7 +60,7 @@ SGameMtlPair::~SGameMtlPair()
 	DestroyMarks	(HitMarks);
 }
 
-void SGameMtlPair::Load(CStream& fs)
+void SGameMtlPair::Load(IReader& fs)
 {
 	string128			buf;
 

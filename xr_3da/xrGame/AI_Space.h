@@ -54,7 +54,7 @@ class CAI_Space	: public CALifeGraph, public CAI_DDD, public CALifeCrossTable, p
 {
 private:
 	// Initial data
-	CStream*			vfs;			// virtual file
+	IReader*			vfs;			// virtual file
 	hdrNODES			m_header;		// m_header
 	BYTE*				m_nodes;		// virtual nodes DATA array
 	NodeCompressed**	m_nodes_ptr;	// pointers to node's data

@@ -97,7 +97,7 @@ public:
 									CObjectSpace		( );
 									~CObjectSpace		( );
 
-	void							Load				( CStream  * );
+	void							Load				( IReader  * );
 
 	void							Object_Register		( CObject *O );
 	void							Object_Move			( CObject *O );

@@ -20,7 +20,7 @@ FDetailPatch::~FDetailPatch()
 
 }
 
-void FDetailPatch::Load(const char* N, CStream* fs, u32 dwFlags)
+void FDetailPatch::Load(const char* N, IReader* fs, u32 dwFlags)
 {
 	CVisual::Load(N,fs,dwFlags);
 

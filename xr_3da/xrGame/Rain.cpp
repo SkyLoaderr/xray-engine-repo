@@ -59,7 +59,7 @@ void	CEffect_Rain::OnDeviceCreate	()
 
 	string256			name;
 	strconcat			(name,Path.Meshes,"dm\\rain.dm");
-	CStream*	 fs		= Engine.FS.Open(name);
+	IReader*	 fs		= Engine.FS.Open(name);
 	DM_Drop.Load		(fs);
 	Engine.FS.Close		(fs);
 

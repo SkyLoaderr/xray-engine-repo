@@ -58,7 +58,7 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 		}
 
 	// Actual load
-	CStream*			f	= Engine.FS.Open(full_path);
+	IReader*			f	= Engine.FS.Open(full_path);
 	hdrCFORM			H;
 	f->Read				(&H,sizeof(hdrCFORM));
 	R_ASSERT			(CFORM_CURRENT_VERSION==H.version);

@@ -51,7 +51,7 @@ public:
 	#pragma pack(pop)
 
 	SGraphHeader							m_tGraphHeader;	// graph header
-	CStream									*m_tpGraphVFS;	// virtual file
+	IReader									*m_tpGraphVFS;	// virtual file
 	SGraphVertex							*m_tpaGraph;
 
 	CALifeGraph								()

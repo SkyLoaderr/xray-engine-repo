@@ -19,7 +19,7 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 	// Check if file is compressed already
 	string32	ID			= PS_LIB_SIGN;
 	string32	id;
-	CStream*	F			= Engine.FS.Open(Name);
+	IReader*	F			= Engine.FS.Open(Name);
 	F->Read		(&id,8);
 	if (0==strncmp(id,ID,8))	
 	{
@@ -28,7 +28,7 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 	}else{
     	F->Seek	(0);
     }
-	CStream&				FS	= *F;
+	IReader&				FS	= *F;
     
 	
 	// Load

@@ -280,7 +280,7 @@ void CSector::DebugDump()
 	}
 }
 
-void CSector::Load(CStream& fs)
+void CSector::Load(IReader& fs)
 {
 	// Assign portal polygons
 	u32 size	= fs.FindChunk(fsP_Portals); R_ASSERT(0==(size&1));

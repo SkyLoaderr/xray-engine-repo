@@ -25,7 +25,7 @@ public:
 	// Loader
 	typedef vector<char *>		vecC;
 	typedef vecC::iterator		vecCIT;
-	CStream*					LL_Stream;
+	IReader*					LL_Stream;
 	vecC						LL_strings;
 	LPCSTR						getString	(int id)	{
 		if (id<0)	return 0;

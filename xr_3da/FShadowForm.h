@@ -45,7 +45,7 @@ public:
 	void					RenderShadow		(LPDIRECT3DVERTEXBUFFER7 pv);
 	void					MakeShadowVolume	(_vector &L, _matrix &mWorld );
 
-	virtual	void			Load(CStream *data, u32 dwFlags);
+	virtual	void			Load(IReader *data, u32 dwFlags);
 	virtual void			Render(float LOD);
 
 	FShadowForm();

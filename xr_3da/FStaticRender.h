@@ -82,12 +82,12 @@ public:
 	CMatrix*										matFogPass;
 private:
 	// Loading / Unloading
-	void							LoadBuffers				(CStream	*fs);
-	void							LoadVisuals				(CStream	*fs);
-	void							LoadLights				(CStream	*fs);
-	void							LoadPortals				(CStream	*fs);
-	void							LoadSectors				(CStream	*fs);
-	void							LoadTrees				(CStream	*fs);
+	void							LoadBuffers				(IReader	*fs);
+	void							LoadVisuals				(IReader	*fs);
+	void							LoadLights				(IReader	*fs);
+	void							LoadPortals				(IReader	*fs);
+	void							LoadSectors				(IReader	*fs);
+	void							LoadTrees				(IReader	*fs);
 
 	BOOL							add_Dynamic				(CVisual	*pVisual, u32 planes);	// normal processing
 	void							add_Static				(CVisual	*pVisual, u32 planes);
@@ -136,7 +136,7 @@ public:
 	// Models
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
 	virtual CVisual*				model_Create			(LPCSTR name);
-	virtual CVisual*				model_Create			(LPCSTR name, CStream* data);
+	virtual CVisual*				model_Create			(LPCSTR name, IReader* data);
 	virtual CVisual*				model_Duplicate			(CVisual* V);
 	virtual void					model_Delete			(CVisual* &V);
 	

@@ -91,7 +91,7 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 	}
 	
 	// Actual loading
-	CStream*			data	= Engine.FS.Open(fn);
+	IReader*			data	= Engine.FS.Open(fn);
 	ogf_header			H;
 	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
@@ -104,7 +104,7 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 	return V;
 }
 
-CVisual*	CModelPool::Instance_Load(LPCSTR name, CStream* data)
+CVisual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
 {
 	CVisual	*V;
 	
@@ -182,7 +182,7 @@ CVisual* CModelPool::Create(const char* name)
 	return Instance_Duplicate(Instance_Load(low_name));
 }
 
-CVisual* CModelPool::Create(LPCSTR name, CStream* data)
+CVisual* CModelPool::Create(LPCSTR name, IReader* data)
 {
 	// Msg					("-CREATE_STREAM- %s",name);
 	string128 low_name;		R_ASSERT(strlen(name)<128);

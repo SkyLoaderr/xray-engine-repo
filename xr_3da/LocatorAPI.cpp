@@ -71,7 +71,7 @@ void CLocatorAPI::ProcessArchive(const char* path)
 	strcat				(base,"\\");
 
 	// Read headers
-	CStream*	hdr		= A.vfs->OpenChunk(1);
+	IReader*	hdr		= A.vfs->OpenChunk(1);
 	while (!hdr->Eof())
 	{
 		string512		name,full;
@@ -222,7 +222,7 @@ void CLocatorAPI::List			(vector<char*>& dest, const char* path, u32 flags)
 	return;
 }
 
-CStream* CLocatorAPI::Open	(const char* F)
+IReader* CLocatorAPI::Open	(const char* F)
 {
 	// Search entry
 	string256		N;
@@ -253,12 +253,12 @@ CStream* CLocatorAPI::Open	(const char* F)
 			return xr_new<CTempStream>	(dest,size);
 		} else {
 			// Plain (VFS)
-			return xr_new<CStream>		(ptr,desc.size);
+			return xr_new<IReader>		(ptr,desc.size);
 		}
 	}
 }
 
-void	CLocatorAPI::Close	(CStream* &fs)
+void	CLocatorAPI::Close	(IReader* &fs)
 {
 	xr_delete	(fs);
 }

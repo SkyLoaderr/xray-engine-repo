@@ -96,7 +96,7 @@ public:
 
 	// Main interface
 	void					Render		(CFrustum& F);
-	void					Load		(CStream& fs);
+	void					Load		(IReader& fs);
 	void					DebugDump	();
 	CVisual*				Root		()	{ return pRoot; }
 

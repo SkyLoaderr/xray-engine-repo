@@ -32,7 +32,7 @@ public:
 		tMemoryStream.close_chunk	();
 	};
 	
-	virtual void					Load(CStream	&tFileStream)
+	virtual void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT					(tFileStream.FindChunk(GAME_TIME_CHUNK_DATA));
 		tFileStream.Read			(&m_tGameTime,		sizeof(m_tGameTime));
@@ -75,7 +75,7 @@ public:
 		tMemoryStream.close_chunk	();
 	}
 	
-	virtual void					Load(CStream	&tFileStream)
+	virtual void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT					(tFileStream.FindChunk(ALIFE_CHUNK_DATA));
 		tFileStream.Read			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
@@ -91,7 +91,7 @@ public:
 	u32								m_dwSpawnCount;
 	u32								m_dwLevelCount;
 	
-	virtual void					Load(CStream	&tFileStream)
+	virtual void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT(tFileStream.FindChunk(SPAWN_POINT_CHUNK_VERSION));
 		m_tSpawnVersion				= tFileStream.Rdword();

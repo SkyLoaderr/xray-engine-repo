@@ -13,7 +13,7 @@ enum FS_List
 	FS_forcedword	=u32(-1)
 };
 
-class ENGINE_API CStream;
+class ENGINE_API IReader;
 class ENGINE_API CVirtualFileStream;
 
 class ENGINE_API CLocatorAPI  
@@ -54,8 +54,8 @@ public:
 	void						Initialize		();
 	void						Destroy			();
 
-	CStream*					Open			(const char* N);
-	void						Close			(CStream* &S);
+	IReader*					Open			(const char* N);
+	void						Close			(IReader* &S);
 
 	BOOL						Exist			(const char* N);
 	BOOL						Exist			(char* fn, const char* path, const char* name);

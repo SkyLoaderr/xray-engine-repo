@@ -19,7 +19,7 @@ protected:
 	vector<primLOD>			LODs;
 public:
 	virtual void Render		(float LOD);		// LOD - Level Of Detail  [0.0f - min, 1.0f - max], -1 = Ignored
-	virtual void Load		(const char* N, CStream *data,u32 dwFlags);
+	virtual void Load		(const char* N, IReader *data,u32 dwFlags);
 	virtual void Copy		(CVisual *pFrom);
 	virtual void Release	();
 

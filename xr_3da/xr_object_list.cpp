@@ -184,7 +184,7 @@ void	CObjectList::SLS_Save			(CFS_Base&	fs		)
 	}
 }
 
-void	CObjectList::SLS_Load			(CStream&	fs		)
+void	CObjectList::SLS_Load			(IReader&	fs		)
 {
 	u32 ID	= 0; 
 	while (fs.FindChunk(ID)) 

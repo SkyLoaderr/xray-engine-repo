@@ -99,7 +99,7 @@ void FCached::Release()
 	xr_free			(pIndices);
 }
 
-void FCached::Load(const char* N, CStream *data, u32 dwFlags)
+void FCached::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	CVisual::Load(N,data,dwFlags);
 

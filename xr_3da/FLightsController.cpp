@@ -42,9 +42,9 @@ void	CLightDB_Static::Select		(Fvector &pos, float fRadius, vector<xrLIGHT*>& de
 	}
 }
 
-void CLightDB_Static::Load			(CStream *fs) 
+void CLightDB_Static::Load			(IReader *fs) 
 {
-	CStream* F	= 0;
+	IReader* F	= 0;
 
 	// Controlles/Layers
 	{

@@ -162,7 +162,7 @@ void CAI_ALife::Load()
 	m_dwSwitchDelay				= pSettings->ReadINT	("alife","switch_delay");
 
 	string256					caFileName;
-	CStream						*tpStream;
+	IReader						*tpStream;
 	if (!Engine.FS.Exist(caFileName,SAVE_PATH,SAVE_NAME)) {
 		R_ASSERT				(Engine.FS.Exist(caFileName, ::Path.GameData, SPAWN_NAME));
 		tpStream				= Engine.FS.Open(caFileName);

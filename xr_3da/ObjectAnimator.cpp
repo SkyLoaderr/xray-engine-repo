@@ -54,7 +54,7 @@ void CObjectAnimator::LoadMotions(const char* fname)
 		if (!Engine.FS.Exist( full_path, Path.Meshes, fname ))
 			Debug.fatal("Can't find motion file '%s'.",fname);
 
-	CStream* F			= Engine.FS.Open(full_path);
+	IReader* F			= Engine.FS.Open(full_path);
 	u32 dwMCnt		= F->Rdword(); VERIFY(dwMCnt);
 	for (u32 i=0; i<dwMCnt; i++){
 		COMotion* M		= xr_new<COMotion> ();

@@ -148,7 +148,7 @@ IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 	rect.y2				= TransZ(bb.max.z);
 }
 //----------------------------------------------------------------------
-void CObjectSpace::Load	(CStream *F)
+void CObjectSpace::Load	(IReader *F)
 {
 	R_ASSERT			(F);
 	int					x_count, z_count;

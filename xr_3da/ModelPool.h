@@ -31,13 +31,13 @@ public:
 	CVisual*			Instance_Create		(u32 Type);
 	CVisual*			Instance_Duplicate	(CVisual* V);
 	CVisual*			Instance_Load		(LPCSTR N);
-	CVisual*			Instance_Load		(LPCSTR N, CStream* data);
+	CVisual*			Instance_Load		(LPCSTR N, IReader* data);
 	void				Instance_Register	(LPCSTR N, CVisual* V);
 	CVisual*			Instance_Find		(LPCSTR N);
 
 	CVisual*			CreatePS			(PS::SDef_RT* source, PS::SEmitter* E);
 	CVisual*			Create				(LPCSTR name);
-	CVisual*			Create				(LPCSTR name, CStream* data);
+	CVisual*			Create				(LPCSTR name, IReader* data);
 	void				Delete				(CVisual* &V);
 
 	CModelPool			();

@@ -228,8 +228,8 @@ void game_sv_GameState::Create					(LPCSTR options)
 	string256	fn_game;
 	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) 
 	{
-		CStream *F = Engine.FS.Open	(fn_game);
-		CStream *O = 0;
+		IReader *F = Engine.FS.Open	(fn_game);
+		IReader *O = 0;
 
 		// Load RPoints
 		if (0!=(O = F->OpenChunk	(RPOINT_CHUNK)))

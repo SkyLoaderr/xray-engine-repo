@@ -35,7 +35,7 @@ class ENGINE_API CGlowManager
 public:
 	void	add				(vector<WORD> &V);
 
-	void	Load			(CStream *fs);
+	void	Load			(IReader *fs);
 	void	Unload			();
 
 	void	Render			();

@@ -27,7 +27,7 @@ FShadowForm::~FShadowForm()
 	_DELETEARRAY(pwCHI);
 }
 
-void FShadowForm::Load(CStream *data)
+void FShadowForm::Load(IReader *data)
 {
 	CVisual::Load(data);
 

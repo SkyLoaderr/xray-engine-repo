@@ -33,7 +33,7 @@ CGlowManager::~CGlowManager	()
 {
 }
 
-void CGlowManager::Load		(CStream* fs)
+void CGlowManager::Load		(IReader* fs)
 {
 	// glows itself
 	u32 size	= fs->Length();

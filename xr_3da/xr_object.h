@@ -113,7 +113,7 @@ public:
 
 	// SLS
 	virtual void						SLS_Save			(CFS_Base& fs)		{};
-	virtual void						SLS_Load			(CStream& fs)		{};
+	virtual void						SLS_Load			(IReader& fs)		{};
 	
 	// Accessors
 	IC CVisual*							Visual				()					{ return pVisual;			}

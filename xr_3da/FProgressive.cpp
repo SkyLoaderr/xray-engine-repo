@@ -34,17 +34,17 @@ void FProgressive::Release	()
 		LODs[I].P.Release();
 }
 
-void FProgressive::Load		(const char* N, CStream *data, u32 dwFlags)
+void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 {
 	CVisual::Load(N,data,dwFlags);
 	
 	LODs.reserve(8);
-	CStream*	lods = data->OpenChunk	(OGF_P_LODS);
+	IReader*	lods = data->OpenChunk	(OGF_P_LODS);
 	R_ASSERT	(lods);
 	u32		lod_id=0;
 	while (lods->FindChunk(lod_id))
 	{
-		CStream* ONE = lods->OpenChunk(lod_id);
+		IReader* ONE = lods->OpenChunk(lod_id);
 		primLOD	LOD;
 		
 		// read vertices

@@ -15,9 +15,9 @@ void xrServer::SLS_Default	()
 	string256			fn_spawn;
 	if (Engine.FS.Exist(fn_spawn, ::Path.Current, "level.spawn"))
 	{
-		CStream*		SP	= Engine.FS.Open(fn_spawn);
+		IReader*		SP	= Engine.FS.Open(fn_spawn);
 		NET_Packet		P;
-		CStream*		S		= 0;
+		IReader*		S		= 0;
 		int				S_id	= 0;
 		while (0!=(S = SP->OpenChunk(S_id)))
 		{

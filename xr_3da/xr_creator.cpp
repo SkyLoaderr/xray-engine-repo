@@ -70,9 +70,9 @@ BOOL CCreator::Load(u32 dwNum)
 	
 	pApp->LoadTitle				("Opening virtual stream: ",LDesc);
 	LL_Stream					= Engine.FS.Open	(LDesc);
-	CStream	&fs					= *LL_Stream;
+	IReader	&fs					= *LL_Stream;
 	
-	CStream *chunk = 0;
+	IReader *chunk = 0;
 	u32	count,i;
 
 	Environment.Load			(pLevel, "environment");

@@ -4,7 +4,7 @@
 #include "xrSound.h"
 #include "3dsound.h"
 
-void* ParseWave		(CStream *data, LPWAVEFORMATEX &wfx, u32 &len)
+void* ParseWave		(IReader *data, LPWAVEFORMATEX &wfx, u32 &len)
 {
     u32	dwRiff		= data->Rdword();
     u32	dwLength	= data->Rdword();
@@ -99,7 +99,7 @@ IDirectSoundBuffer* CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 	if (bCtrlFreq)			dsBD.dwFlags |= DSBCAPS_CTRLFREQUENCY;
 
 	// Load file into memory and parse WAV-format
-	destructor<CStream>		data	(Engine.FS.Open(pName));
+	destructor<IReader>		data	(Engine.FS.Open(pName));
 	WAVEFORMATEX*			pFormat;
 	u32						dwLen;
 	void *					wavedata = ParseWave(&data(),pFormat,dwLen);
@@ -196,7 +196,7 @@ IDirectSoundBuffer*	CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 
 	// Load file into memory and parse WAV-format
 	R_ASSERT2			(Engine.FS.Exist(pName),pName);
-	destructor<CStream>	data(Engine.FS.Open(pName));
+	destructor<IReader>	data(Engine.FS.Open(pName));
 	WAVEFORMATEX*	pFormat;
 	u32				dwLen;
 	void *			wavedata = ParseWave(&data(),pFormat,dwLen);

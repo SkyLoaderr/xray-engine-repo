@@ -2,7 +2,7 @@
 #include "detailmodel.h"
 #include "xrstripify.h"
    
-void CDetail::Load		(CStream* S)
+void CDetail::Load		(IReader* S)
 {
 	// Shader
 	string256		fnT,fnS;

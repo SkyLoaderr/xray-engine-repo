@@ -64,7 +64,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 		return;
 	}
 	
-	CStream *F = Engine.FS.Open(caPath);
+	IReader *F = Engine.FS.Open(caPath);
 	F->Read(&m_tEFHeader,sizeof(SEFHeader));
 
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {

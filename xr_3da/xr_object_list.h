@@ -45,7 +45,7 @@ public:
 	CObject*					net_Find			(u32 ID				);
 
 	void						SLS_Save			(CFS_Base&	fs		);
-	void						SLS_Load			(CStream&	fs		);
+	void						SLS_Load			(IReader&	fs		);
 
 	virtual void				OnDeviceCreate		();
 	virtual void				OnDeviceDestroy		();

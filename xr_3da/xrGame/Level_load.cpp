@@ -196,14 +196,14 @@ BOOL CLevel::Load_GameSpecific_Before()
 	string256		fn_game;
 	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) 
 	{
-		CStream *F = Engine.FS.Open	(fn_game);
-		CStream *O = 0;
+		IReader *F = Engine.FS.Open	(fn_game);
+		IReader *O = 0;
 
 		// Load WayPoints
 		if (0!=(O = F->OpenChunk	(WAY_PATROLPATH_CHUNK)))
 		{
 			int chunk = 0;
-			for (CStream *OBJ = O->OpenChunk(chunk++); OBJ; OBJ = O->OpenChunk(chunk++)) {
+			for (IReader *OBJ = O->OpenChunk(chunk++); OBJ; OBJ = O->OpenChunk(chunk++)) {
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_VERSION));
 				u32 dw = OBJ->Rword();
 				R_ASSERT(dw == WAYOBJECT_VERSION);
