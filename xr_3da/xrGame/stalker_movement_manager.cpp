@@ -62,6 +62,13 @@ void CStalkerMovementManager::initialize()
 	set_movement_type		(eMovementTypeStand);
 	set_mental_state		(eMentalStateDanger);
 	set_desired_direction	(0);
+	
+	Fvector					desired_position = object().Position();
+	u32						level_vertex_id = object().ai_location().level_vertex_id();
+
+	if (!restrictions().accessible(object().Position()))
+		level_vertex_id		= restrictions().accessible_nearest(object().Position(),desired_position);
+
 	set_level_dest_vertex	(object().ai_location().level_vertex_id());
 	set_desired_position	(&object().Position());
 }
