@@ -289,7 +289,7 @@ void C3DSound::Update()
 		pBuffer->SetVolume			( LONG((1-fRealVolume*psSoundVEffects*fBaseVolume)*float(DSBVOLUME_MIN)) );
 		pBuffer3D->SetAllParameters	( ps.d3d(), DS3D_DEFERRED );
 		bNeedUpdate = false;
-
+/*
 		// Dbg mode
 		DWORD	mode=ps.dwMode;		// pBuffer3D->GetMode(&mode);
 		switch (mode)
@@ -298,6 +298,7 @@ void C3DSound::Update()
 		case DS3DMODE_HEADRELATIVE: Log("headrel"); break;
 		case DS3DMODE_NORMAL:		Log("normal");	break;
 		}
+*/
 	}
 }
 
@@ -332,6 +333,7 @@ void C3DSound::OnMove()
 			}
 		}
 	}
+	Update	();
 }
 
 void C3DSound::internalStopOrComplete()
@@ -344,7 +346,7 @@ void C3DSound::internalStopOrComplete()
 
 void C3DSound::SetPosition	(const Fvector &pos)
 {
-	ps.vPosition.set(pos);
+	ps.vPosition.set	(pos);
 	bNeedUpdate			= true;
 }
 
