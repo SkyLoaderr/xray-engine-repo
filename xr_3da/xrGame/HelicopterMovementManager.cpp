@@ -746,7 +746,7 @@ void CHelicopterMovManager::GoBySpecifiedPatrolPath()
 
 void CHelicopterMovManager::UpdatePatrolPath()
 {
-	if(m_heli->GetDistanceToDestPosition() < 10.0f){
+	if(m_heli->GetDistanceToDestPosition() < m_heli->m_on_point_range_dist){
 		CPatrolPath::const_iterator b,e;
 		m_heli->m_data.m_currPatrolPath->begin(m_heli->m_data.m_currPatrolVertex->vertex_id(),b,e);
 		if(b!=e){

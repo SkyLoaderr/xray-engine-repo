@@ -11,10 +11,12 @@
 CHelicopter::CHelicopter()
 {
 	init();
+	m_pParticle = NULL;
 }
 
 CHelicopter::~CHelicopter()
 {
+//	xr_delete(m_pParticle);
 }
 
 void CHelicopter::setState(CHelicopter::EHeliState s)
@@ -131,7 +133,7 @@ void CHelicopter::Load(LPCSTR section)
 	CRocketLauncher::Load	(section);
 
 ////////////////////////////////////
-	m_on_point_range_dist				= 10.0f;
+	m_on_point_range_dist		= 10.0f;
 	m_data.m_time_last_patrol_end		= 0.0f;
 	m_data.m_time_last_patrol_start	= 0.0f;
 
@@ -139,6 +141,8 @@ void CHelicopter::Load(LPCSTR section)
 	m_data.m_hunt_time				= 5.0f;
 	
 	m_data.m_startDir.set				(1.0f,0.0f,2.0f);
+	m_smoke_particle					= pSettings->r_string(section,"smoke_particle");
+	m_explode_particle					= pSettings->r_string(section,"explode_particle");
 	m_angularSpeedPitch					= pSettings->r_float(section,"path_angular_sp_pitch");
 	m_angularSpeedHeading				= pSettings->r_float(section,"path_angular_sp_heading");
 	m_LinearAcc_fw						= pSettings->r_float(section,"path_linear_acc_fw");
@@ -159,6 +163,10 @@ void CHelicopter::Load(LPCSTR section)
 	m_data.m_time_delay_between_patrol	= pSettings->r_float(section,"time_delay_between_patrol");
 	m_data.m_time_patrol_period		= pSettings->r_float(section,"time_patrol_period");
 	m_data.m_time_delay_before_start	= pSettings->r_float(section,"time_delay_before_start");
+
+	m_death_ang_vel						= pSettings->r_fvector3(section,"death_angular_vel");
+	m_death_lin_vel_k					= pSettings->r_float(section,"death_lin_vel_koeff");
+
 
 	m_data.m_wrk_altitude = m_data.m_baseAltitude;
 	m_maxLinearSpeed = m_data.m_basePatrolSpeed;
@@ -219,9 +227,11 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	m_rotate_x_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_x_bone"));
 	m_rotate_y_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_y_bone"));
 	m_fire_bone			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_fire_bone"));
-
+	m_death_bones_to_hide = pUserData->r_string("on_death_mode","scale_bone");
 	m_left_rocket_bone			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","left_rocket_bone"));
 	m_right_rocket_bone			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","right_rocket_bone"));
+
+	m_smoke_bone 			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","smoke_bone"));
 
 	LPCSTR s = pUserData->r_string("helicopter_definition","hit_section");
 
@@ -346,9 +356,15 @@ void CHelicopter::UpdateCL()
 	inherited::UpdateCL	();
 	if(PPhysicsShell() && (state() == CHelicopter::eDead) ){
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
+
+		CKinematics* K		= PKinematics(Visual());
+		K->CalculateBones	();
+		//smoke
+		m_particleXFORM	= K->LL_GetTransform(m_smoke_bone);
+		m_particleXFORM.mulA(XFORM());
+		UpdateHeliParticles();
 		return;
 	}
-
 //	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
 
 ///////////////////////////////////////////////////////////////////////////
@@ -436,20 +452,26 @@ void CHelicopter::UpdateCL()
 */
 ///////////////////////////////////////////////////////////////////////////
 	m_engineSound.set_position(XFORM().c);
+	UpdateHeliParticles();
 
 	//weapon
 	MGunUpdateFire();
 
+	CKinematics* K		= PKinematics(Visual());
+	K->CalculateBones	();
+
+	//smoke
+	m_particleXFORM	= K->LL_GetTransform(m_smoke_bone);
+	m_particleXFORM.mulA(XFORM());
+
 	if( m_curState==CHelicopter::eMovingByAttackTraj ){
-		CKinematics* K		= PKinematics(Visual());
-		K->CalculateBones	();
 
 		m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
 
 		m_fire_bone_xform.mulA(XFORM());
 		m_fire_pos.set(0,0,0); 
 		m_fire_bone_xform.transform_tiny(m_fire_pos);
-		m_fire_dir.set(0,0,1); 
+		m_fire_dir.set(0,0,1);
 		m_fire_bone_xform.transform_dir(m_fire_dir);
 
 		m_left_rocket_bone_xform	= K->LL_GetTransform(m_left_rocket_bone);
@@ -521,10 +543,13 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	if (!getEnabled())	return;
 	inherited::shedule_Update	(time_delta);
 	CPHSkeleton::Update(time_delta);
+/*
+	if ( (state() != CHelicopter::eDead) && (GetfHealth() < 30.0f) )
+		PrepareDie();
 
 	if ( (state() != CHelicopter::eDead) && (GetfHealth() <= 0.0f) )
 		Die();
-
+*/
 	if(state() != CHelicopter::eDead){
 		float dist = GetDistanceToDestPosition();
 		if(dist < m_on_point_range_dist  ){
@@ -581,11 +606,11 @@ if(who==this)
 		Log("----------------------------------------");
 	};
 	
-	if ( GetfHealth() <= 0.0f ) {
+/*	if ( GetfHealth() <= 0.0f ) {
 		Die();
 		return;
 	}
-
+*/
 	if (who){
 		switch (who->SUB_CLS_ID){
 			case CLSID_OBJECT_ACTOR: {
@@ -653,13 +678,36 @@ void CHelicopter::OnEvent(	NET_Packet& P, u16 type)
 
 void CHelicopter::Die()
 {
-	if(!PPhysicsShell())
+	if(!PPhysicsShell()){
+		string256						I;
+		LPCSTR bone;
+		CKinematics* K		= PKinematics(Visual());
+		u16 bone_id;
+		for (u32 i=0, n=_GetItemCount(*m_death_bones_to_hide); i<n; ++i){
+			bone = _GetItem(*m_death_bones_to_hide,i,I);
+			bone_id		= K->LL_BoneID	(bone);
+			K->LL_SetBoneVisible(bone_id,FALSE,TRUE);
+		}
+
 		PPhysicsShell()=P_build_Shell	(this,false);
-//	setState(CHelicopter::eInitiateWaitBetweenPatrol);
+	}
+	Fvector lin_vel;
+//	lin_vel.sub(m_data.m_desiredP,XFORM().c);
+//	lin_vel.div(Device.fTimeDelta);
+
+	Fvector prev_pos = PositionStack.back().vPosition;
+	lin_vel.sub(XFORM().c,prev_pos);
+	lin_vel.div((Device.dwTimeGlobal-PositionStack.back().dwTime)/1000.0f);
+
+	lin_vel.mul(m_death_lin_vel_k);
+	PPhysicsShell()->set_LinearVel(lin_vel);
+	PPhysicsShell()->set_AngularVel(m_death_ang_vel);
+
 	setState(CHelicopter::eDead);
 	m_engineSound.stop();
-//	SetfHealth(100.0f);
-//	StartParticles();
+
+	Fvector last_pos = PositionStack.back().vPosition;
+
 }
 
 void CHelicopter::gotoStayPoint(float time, Fvector* pos)
@@ -747,16 +795,6 @@ void CHelicopter::SetCurrVelocity(float v)
 	m_maxLinearSpeed = v;
 }
 
-void CHelicopter::SetOnPointDist(float dist)
-{
-	m_on_point_range_dist = dist;
-}
-
-float CHelicopter::GetOnPointDist()
-{
-	return m_on_point_range_dist;
-}
-
 void CHelicopter::SetEnemy(CScriptGameObject* e)
 {
 	m_data.m_destEnemy = e->object();
@@ -765,4 +803,64 @@ void CHelicopter::SetEnemy(CScriptGameObject* e)
 float CHelicopter::GetDistanceToDestPosition()
 {
 	return m_data.m_desiredP.distance_to(m_currP);
+}
+
+float CHelicopter::GetRealAltitude()
+{
+	Collide::rq_result		cR;
+	Fvector down_dir;
+
+	down_dir.set(0.0f, -1.0f, 0.0f);
+
+
+	Level().ObjectSpace.RayPick(XFORM().c, down_dir, 1000.0f, Collide::rqtStatic, cR);
+	
+	return cR.range;
+}
+
+void CHelicopter::PrepareDie ()
+{
+	if(m_pParticle)return;
+	m_pParticle = xr_new<CParticlesObject>(*m_smoke_particle,false);
+
+	Fvector zero_vector;
+	zero_vector.set(0.f,0.f,0.f);
+	m_pParticle->UpdateParent(m_particleXFORM, zero_vector );
+	m_pParticle->Play();
+}
+
+void CHelicopter::UpdateHeliParticles	()
+{
+	if (!m_pParticle)return;
+	Fvector vel;
+
+	Fvector last_pos = PositionStack.back().vPosition;
+	vel.sub(Position(), last_pos);
+	vel.mul(5.0f);
+
+	m_pParticle->UpdateParent(m_particleXFORM, vel );
+}
+void CHelicopter::Explode ()
+{
+	if(m_pParticle){
+		m_pParticle->Stop();
+		xr_delete(m_pParticle);
+	}
+	m_pParticle = xr_new<CParticlesObject>(*m_explode_particle,false);
+
+	Fvector zero_vector;
+	zero_vector.set(0.f,0.f,0.f);
+	m_pParticle->UpdateParent(m_particleXFORM, zero_vector );
+	m_pParticle->Play();
+}
+
+float CHelicopter::GetfHealth() const 
+{ 
+	float f = CEntity::GetfHealth(); 
+	return f;
+}
+
+float CHelicopter::SetfHealth(float value) {
+	CEntity::SetfHealth(value);
+	return value;
 }

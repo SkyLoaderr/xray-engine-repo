@@ -41,6 +41,7 @@ struct SHeliShared{
 	Fvector							m_desiredP;
 	Fvector							m_desiredR;
 
+
 	float							m_wrk_altitude;
 
 	int								m_patrol_begin_idx;
@@ -81,8 +82,18 @@ public:
 	EV_FORCE32 = u32(-1)
 	};
 	SHeliShared						m_data;
-protected:
+
+	bool							m_use_rocket_on_attack;
+	bool							m_use_mgun_on_attack;
+	float							m_min_rocket_dist;
+	float							m_max_rocket_dist;
+	float							m_min_mgun_dist;
+	float							m_max_mgun_dist;
+	u32								m_time_between_rocket_attack;
+	bool							m_syncronize_rocket;
 	float							m_on_point_range_dist;
+
+protected:
 	float							m_maxLinearSpeed;
 
 	float							m_curLinearSpeed;//m/s
@@ -104,7 +115,8 @@ protected:
 	float							m_currBodyP;
 	float							m_currBodyB;
 
-
+	Fvector							m_death_ang_vel;
+	float							m_death_lin_vel_k;
 //////////////////////////////////////////////////
 	EHeliState						m_curState;
 
@@ -133,25 +145,21 @@ protected:
 	float							m_bind_x_rot, m_bind_y_rot;
 	Fvector							m_bind_x, m_bind_y;
 	bool							m_allow_fire;
-	bool							m_use_rocket_on_attack;
-	bool							m_use_mgun_on_attack;
 	u16								m_last_launched_rocket;
-	float							m_min_rocket_dist;
-	float							m_max_rocket_dist;
-	float							m_min_mgun_dist;
-	float							m_max_mgun_dist;
-	u32								m_time_between_rocket_attack;
 	u32								m_last_rocket_attack;
-	bool							m_syncronize_rocket;
 
 
 	ref_str							m_sAmmoType;
 	ref_str							m_sRocketSection;
 	CCartridge						m_CurrentAmmo;
 
+	ref_str							m_smoke_particle;
+	ref_str							m_explode_particle;
+	CParticlesObject*				m_pParticle;
+	Fmatrix							m_particleXFORM;
+	u16								m_smoke_bone;
 
-
-
+	ref_str							m_death_bones_to_hide;
 	static void __stdcall	BoneMGunCallbackX		(CBoneInstance *B);
 	static void __stdcall	BoneMGunCallbackY		(CBoneInstance *B);
 
@@ -204,6 +212,10 @@ public:
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element){;}
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
 	virtual void			Die					();
+	
+			void			PrepareDie			();
+			void			UpdateHeliParticles	();
+			void			Explode				();
 
 protected:
 	//CShootingObject
@@ -240,9 +252,12 @@ public:
 	void					SetCurrAltitude(float a);
 	float					GetCurrVelocity();
 	void					SetCurrVelocity(float v);
-	void					SetOnPointDist(float dist);
-	float					GetOnPointDist();
 	void					SetEnemy(CScriptGameObject* e);
+	float					GetRealAltitude();
+
+	virtual float GetfHealth() const;
+	virtual float SetfHealth(float value);
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CHelicopter)

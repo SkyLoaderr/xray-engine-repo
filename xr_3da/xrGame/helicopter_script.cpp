@@ -33,7 +33,6 @@ void CHelicopter::script_register(lua_State *L)
 					value("eDead",							int(CHelicopter::eDead))
 //					value("eForce",							int(CHelicopter::eForce))
 				]
-				.def_readwrite("on_point_dist", &CHelicopter::m_on_point_range_dist)
 
 				.def("GetState",					&CHelicopter::state_script)
 				.def("SetState",					&CHelicopter::setState_script)
@@ -41,11 +40,29 @@ void CHelicopter::script_register(lua_State *L)
 				.def("GetCurrAltitude",				&CHelicopter::GetCurrAltitude)
 				.def("GetCurrVelocity",				&CHelicopter::GetCurrVelocity)
 				.def("SetCurrVelocity",				&CHelicopter::SetCurrVelocity)
+				.def("GetfHealth",					&CHelicopter::GetfHealth)
+				.def("SetfHealth",					&CHelicopter::SetfHealth)
 				
 				.def("GetDistanceToDestPosition",	&CHelicopter::GetDistanceToDestPosition)
 
 				.def("SetEnemy",					&CHelicopter::SetEnemy)
 				.def("GoPatrolByPatrolPath",		&CHelicopter::goPatrolByPatrolPath)
-				
+				.def("Die",							&CHelicopter::Die)
+				.def("PrepareDie",					&CHelicopter::PrepareDie)
+				.def("Explode",						&CHelicopter::Explode)
+
+				.def("GetRealAltitude",				&CHelicopter::GetRealAltitude)
+
+				.def_readwrite("m_use_rocket_on_attack", &CHelicopter::m_use_rocket_on_attack)
+				.def_readwrite("m_use_mgun_on_attack", &CHelicopter::m_use_mgun_on_attack)
+				.def_readwrite("m_min_rocket_dist", &CHelicopter::m_min_rocket_dist)
+				.def_readwrite("m_max_rocket_dist", &CHelicopter::m_max_rocket_dist)
+				.def_readwrite("m_min_mgun_dist", &CHelicopter::m_min_mgun_dist)
+				.def_readwrite("m_max_mgun_dist", &CHelicopter::m_max_mgun_dist)
+				.def_readwrite("m_time_between_rocket_attack", &CHelicopter::m_time_between_rocket_attack)
+				.def_readwrite("m_syncronize_rocket", &CHelicopter::m_syncronize_rocket)
+				.def_readwrite("m_on_point_range_dist", &CHelicopter::m_on_point_range_dist)
+//				.def_readwrite("", &CHelicopter::)
+
 		];
 }
