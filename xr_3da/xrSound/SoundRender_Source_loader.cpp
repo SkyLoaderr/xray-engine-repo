@@ -14,13 +14,13 @@ int ov_seek_func(void *datasource, s64 offset, int whence)
 	switch (whence){
 	case SEEK_SET: ((IReader*)datasource)->seek((int)offset);	 break;
 	case SEEK_CUR: ((IReader*)datasource)->advance((int)offset); break;
-	case SEEK_END: ((IReader*)datasource)->seek(((IReader*)datasource)->length()+offset); break;
+	case SEEK_END: ((IReader*)datasource)->seek(offset + ((IReader*)datasource)->length()); break;
 	}
 	return 0; 
 }
 size_t ov_read_func(void *ptr, size_t size, size_t nmemb, void *datasource)
 { 
-	IReader* F = (IReader*)datasource; 
+	IReader* F			= (IReader*)datasource; 
 	size_t exist_block	= _max(0ul,iFloor(F->elapsed()/size));
 	size_t read_block	= _min(exist_block,nmemb);
 	F->r				(ptr,read_block*size);	
