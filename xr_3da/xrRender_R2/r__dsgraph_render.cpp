@@ -35,7 +35,6 @@ void __fastcall mapNormal_Render	(mapNormalItems& N)
 		_NormalItem&		Ni	= *I;
 		Ni.pVisual->Render	(calcLOD(Ni.ssa,Ni.pVisual->vis.sphere.R));
 	}
-	N.clear	();
 }
 
 // Matrix
@@ -291,6 +290,7 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority, bool _clear)
 
 								mapNormalItems&				items	= Nvb->val;		items.ssa	= 0;
 								mapNormal_Render					(items);
+								if (_clear)				items.clear	();
 							}
 							nrmVB.clear				();
 							if(_clear) vb.clear		();
