@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include	"xrCore_platform.h"
 #include	"xrsharedmem.h"
 
 #include	<malloc.h>
@@ -31,7 +32,7 @@ void	xrMemory::_initialize	(BOOL bDebug)
 	stat_calls				= 0;
 	stat_counter			= 0;
 
-	DWORD	features		= CPU::ID.feature & CPU::ID.os_support;
+	u32	features		= CPU::ID.feature & CPU::ID.os_support;
 	if (features & _CPU_FEATURE_MMX)
 	{
 		mem_copy	= xrMemCopy_MMX;

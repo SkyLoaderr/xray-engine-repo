@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include <time.h>
-#include "errors.h"
+//#include "errors.h"
 #include "resource.h"
 #include "log.h"
 
@@ -113,8 +113,8 @@ void Log(const char *msg, const Fvector &dop) {
 	Log		(buf);
 }
 
-void Log(const char *msg, const Fmatrix &dop) {
-	char buf[1024];
+void Log	(const char *msg, const Fmatrix &dop)	{
+	char	buf	[1024];
 
 	sprintf	(buf,"%s:\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n",msg,dop.i.x,dop.i.y,dop.i.z,dop._14_
 																				,dop.j.x,dop.j.y,dop.j.z,dop._24_
@@ -123,38 +123,8 @@ void Log(const char *msg, const Fmatrix &dop) {
 	Log		(buf);
 }
 
-void LogWinErr(const char *msg, u32 err_code){
-    LPVOID lpMsgBuf = NULL;
-    FormatMessage(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER |
-        FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        err_code,
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        (LPTSTR) &lpMsgBuf,
-        0,
-        NULL);
-	Msg			("%s: %s",msg,lpMsgBuf);
-    LocalFree	(lpMsgBuf);
-}
-
-ref_str GetWinErr(u32 err_code)
-{
-    LPVOID lpMsgBuf = NULL;
-    FormatMessage(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER |
-        FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        err_code,
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        (LPTSTR) &lpMsgBuf,
-        0,
-        NULL);
-    ref_str tmp	= (LPCSTR)lpMsgBuf; 
-    LocalFree	(lpMsgBuf);
-    return tmp;
+void LogWinErr	(const char *msg, long err_code)	{
+	Msg			("%s: %s",msg,Debug.error2string(err_code)	);
 }
 
 static char *month[12] = {

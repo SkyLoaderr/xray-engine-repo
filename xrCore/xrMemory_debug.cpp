@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #ifndef DEBUG
+	#include "xrCore_platform.h"
 
 void	xrMemory::dbg_register		(void* _p, size_t _size)	{ }
 void	xrMemory::dbg_unregister	(void* _p)					{ }

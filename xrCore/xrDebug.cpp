@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
+#include "xrCore_platform.h"
 
 #include "xrdebug.h"
 #include "resource.h"
@@ -105,25 +106,28 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	CS.Leave			();
 }
 
-
-
-void xrDebug::error		(HRESULT hr, const char* expr, const char *file, int line)
+std::string xrDebug::error2string	(long code)
 {
-	string1024	buffer;
-	string1024	reason;
+	std::string			desc;
 
 #ifdef _M_AMD64
-	const char *desc	= 0;
 #else
-	const char *desc	= DXGetErrorDescription9	(hr);
+	desc				= DXGetErrorDescription9	(code);
 #endif
-	if (desc==0) 
+	if (desc.empty()) 
 	{
-		FormatMessage	(FORMAT_MESSAGE_FROM_SYSTEM,0,hr,0,buffer,1024,0);
-		desc			= buffer;
+		LPVOID lpMsgBuf = NULL;
+		FormatMessage	(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,0,code,0,(LPTSTR)&lpMsgBuf,0,0);
+		desc			= (LPCSTR)lpMsgBuf;
+		LocalFree		(lpMsgBuf);
 	}
+	return		desc;
+}
 
-	sprintf		(reason,"*** API-failure ***\n%s\nExpression: %s",desc,expr);
+void xrDebug::error		(long hr, const char* expr, const char *file, int line)
+{
+	string1024	reason;
+	sprintf		(reason,"*** API-failure ***\n%s\nExpression: %s",error2string(hr).c_str(),expr);
 	backend		(reason,file,line);
 }
 
@@ -145,7 +149,6 @@ void xrDebug::fail		(const char *e1, const char *e2, const char *e3, const char 
 	sprintf		(reason,"*** Assertion failed ***\nExpression: %s\n%s\n%s",e1,e2,e3);
 	backend		(reason,file,line);
 }
-
 void __cdecl xrDebug::fatal(const char* F,...)
 {
 	string1024	buffer;
@@ -159,7 +162,6 @@ void __cdecl xrDebug::fatal(const char* F,...)
 	sprintf		(reason,"*** Fatal Error ***\n%s",buffer);
 	backend		(reason,0,0);
 }
-
 int __cdecl _out_of_memory	(size_t size)
 {
 	Debug.fatal				("Out of memory. Memory request: %d K",size/1024);

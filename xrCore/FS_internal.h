@@ -34,7 +34,7 @@ public:
     { 
 		if (0!=count){
 			const u32 mb_sz = 0x1000000;
-			LPBYTE ptr 		= (LPBYTE)_ptr;
+			u8* ptr 		= (u8*)_ptr;
 			for (int req_size = count; req_size>mb_sz; req_size-=mb_sz, ptr+=mb_sz){
 				size_t W = fwrite(ptr,mb_sz,1,hf);
 				R_ASSERT2(W==1,"Can't write mem block to file. Disk maybe full.");
@@ -72,27 +72,10 @@ public:
 class CVirtualFileReader : public IReader
 {
 private:
-   HANDLE	hSrcFile,hSrcMap;
+   void			*hSrcFile, *hSrcMap;
 public:
-	CVirtualFileReader(const char *cFileName) {
-		// Open the file
-		hSrcFile = CreateFile(cFileName, GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE,
-			0, OPEN_EXISTING, 0, 0);
-		R_ASSERT(hSrcFile!=INVALID_HANDLE_VALUE);
-		Size = (int)GetFileSize(hSrcFile, NULL);
-		R_ASSERT(Size);
-
-		hSrcMap = CreateFileMapping (hSrcFile, 0, PAGE_READONLY, 0, 0, 0);
-		R_ASSERT(hSrcMap!=INVALID_HANDLE_VALUE);
-
-		data = (char*)MapViewOfFile (hSrcMap, FILE_MAP_READ, 0, 0, 0);
-		R_ASSERT2(data,cFileName);
-	}
-	virtual ~CVirtualFileReader() {
-        UnmapViewOfFile ((void*)data);
-		CloseHandle		(hSrcMap);
-		CloseHandle		(hSrcFile);
-	}
+				CVirtualFileReader(const char *cFileName);
+	virtual		~CVirtualFileReader();
 };
 
 #endif

@@ -25,7 +25,7 @@ typedef struct SECUROM_PID{
 
 IC	void	CheckCopyProtection	()
 {
-	DWORD ret;
+	u32		ret;
 
 	__asm{
 		mov eax,8791h;
