@@ -39,13 +39,13 @@ public:
 	IC	void	modify		(const Fvector &p)		{ min.min(p); max.max(p);	}
 	IC	void	merge		(const _fbox &b)		{ modify(b.min); modify(b.max); };
 	IC	void	merge		(const _fbox &b1, const _fbox &b2) { invalidate(); merge(b1); merge(b2); }
-	IC	void	transform_p	(const _matrix &m)		{ m.transform_tiny(min); m.transform_tiny(max);	}
-	IC	void	transform_p	(const _fbox& B, const _matrix &m)	
+	IC	void	transform_p	(const Fmatrix &m)		{ m.transform_tiny(min); m.transform_tiny(max);	}
+	IC	void	transform_p	(const _fbox& B, const Fmatrix &m)	
 	{ 
 		m.transform_tiny(min,B.min);
 		m.transform_tiny(max,B.max);
 	}
-	IC	void	xform		(const _fbox &B, const _matrix &m)
+	IC	void	xform		(const _fbox &B, const Fmatrix &m)
 	{
 		// The three edges transformed: you can efficiently transform an X-only vector
 		// by just getting the "X" column of the matrix
