@@ -14,16 +14,27 @@
 template <
 	typename _condition_type,
 	typename _value_type,
+	typename _edge_value_type,
 	typename _operator_id_type
 >
 class CProblemSolver {
 public:
-	typedef COperatorConditionAbstract<_condition_type,_value_type>	COperatorCondition;
-	typedef COperatorAbstract<_condition_type,_value_type>			COperator;
-	typedef CConditionState<_condition_type,_value_type>			CState;
-	typedef IConditionEvaluator<_value_type>						CConditionEvaluator;
-	typedef CState													_index_type;
-	typedef _operator_id_type										_edge_type;
+	typedef COperatorConditionAbstract<
+		_condition_type,
+		_value_type
+	>											COperatorCondition;
+	typedef COperatorAbstract<
+		_condition_type,
+		_value_type,
+		_edge_value_type
+	>											COperator;
+	typedef CConditionState<
+		_condition_type,
+		_value_type
+	>											CState;
+	typedef IConditionEvaluator<_value_type>	CConditionEvaluator;
+	typedef CState								_index_type;
+	typedef _operator_id_type					_edge_type;
 	struct SOperator {
 		_operator_id_type	m_operator_id;
 		COperator			*m_operator;

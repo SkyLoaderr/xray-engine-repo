@@ -20,14 +20,14 @@ template <
 	typename _index_type,
 	typename _iteration_type
 >	class CPathManager <
-		CProblemSolver<T1,T2,T3>,
+		CProblemSolver<T1,T2,T3,_dist_type>,
 		_DataStorage,
 		_Parameters,
 		_dist_type,
 		_index_type,
 		_iteration_type
 	> : public CPathManagerGeneric <
-			CProblemSolver<T1,T2,T3>,
+			CProblemSolver<T1,T2,T3,_dist_type>,
 			_DataStorage,
 			_Parameters,
 			_dist_type,
@@ -36,8 +36,8 @@ template <
 		>
 {
 protected:
-	typedef CProblemSolver<T1,T2,T3>	_Graph;
-	typedef typename _Graph::_edge_type	_edge_type;
+	typedef CProblemSolver<T1,T2,T3,_dist_type>	_Graph;
+	typedef typename _Graph::_edge_type			_edge_type;
 
 protected:
 	xr_vector<_edge_type>				*m_edge_path;

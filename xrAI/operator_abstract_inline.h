@@ -10,10 +10,11 @@
 
 #define TEMPLATE_SPECIALIZATION template<\
 	typename _condition_type,\
-	typename _value_type\
+	typename _value_type,\
+	typename _edge_value_type\
 >
 
-#define CAbstractOperator COperatorAbstract<_condition_type,_value_type>
+#define CAbstractOperator COperatorAbstract<_condition_type,_value_type,_edge_value_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CAbstractOperator::COperatorAbstract	()
@@ -225,6 +226,12 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 			result.add_condition(*I);
 
 	return					(true);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	_edge_value_type CAbstractOperator::weight		() const
+{
+	return					(_edge_value_type(1));
 }
 
 #undef TEMPLATE_SPECIALIZATION

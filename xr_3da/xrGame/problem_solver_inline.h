@@ -13,10 +13,11 @@
 #define TEMPLATE_SPECIALIZATION template<\
 	typename _condition_type,\
 	typename _value_type,\
-	typename _operator_id_type\
+	typename _operator_id_type,\
+	typename _edge_value_type\
 >
 
-#define CProblemSolverAbstract CProblemSolver<_condition_type,_value_type,_operator_id_type>
+#define CProblemSolverAbstract CProblemSolver<_condition_type,_value_type,_operator_id_type,_edge_value_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CProblemSolverAbstract::CProblemSolver				()
@@ -198,9 +199,11 @@ IC	bool CProblemSolverAbstract::is_goal_reached(const _index_type &vertex_index)
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::solve			()
 {
+#ifndef AI_COMPILER
 	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CBaseParameters());
 	if (!successful)
 		return;
+#endif
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -20,7 +20,7 @@
 		typename _iteration_type\
 	>
 
-#define CSolverPathManager CPathManager<CProblemSolver<T1,T2,T3>,_DataStorage,_Parameters,_dist_type,_index_type,_iteration_type>
+#define CSolverPathManager CPathManager<CProblemSolver<T1,T2,T3,_dist_type>,_DataStorage,_Parameters,_dist_type,_index_type,_iteration_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CSolverPathManager::~CSolverPathManager			()
@@ -69,7 +69,7 @@ TEMPLATE_SPECIALIZATION
 IC	_dist_type CSolverPathManager::evaluate			(const _index_type &node_index1, const _index_type &node_index2, const const_iterator &i) const
 {
 	VERIFY					(graph);
-	return					(1);//graph->get_edge_weight(node_index1,node_index2,i));
+	return					((*i).m_operator->weight());
 }
 
 TEMPLATE_SPECIALIZATION

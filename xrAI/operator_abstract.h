@@ -12,7 +12,8 @@
 
 template <
 	typename _condition_type,
-	typename _value_type
+	typename _value_type,
+	typename _edge_value_type
 >
 class COperatorAbstract : public CConditionState<_condition_type,_value_type> {
 protected:
@@ -38,6 +39,7 @@ public:
 	virtual void								execute				();
 	virtual void								finalize			();
 	virtual bool								completed			() const;
+	virtual _edge_value_type					weight				() const;
 };
 
 #include "operator_abstract_inline.h"
