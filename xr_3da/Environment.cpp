@@ -41,12 +41,12 @@ struct v_skybox				{
 	u32			color;
 	Fvector3	uv	[2];
 
-	void		set			(Fvector3& _p, u32 _c, Fvector3& _tc)
+	void		set			(Fvector3& _p, u32 _c, Fvector3& _tc, Fmatrix& m0, Fmatrix& m1)
 	{
-		p		= _p;
-		color	= _c;
-		uv[0]	= _tc;
-		uv[1]	= _tc;
+		p					= _p;
+		color				= _c;
+		m0.transform_dir	(uv[0],_tc);
+		m1.transform_dir	(uv[1],_tc);
 	}
 };
 const	u32 v_skybox_fvf	= D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX2 | D3DFVF_TEXCOORDSIZE3(0) | D3DFVF_TEXCOORDSIZE3(1);
@@ -109,6 +109,7 @@ void CEnvDescriptor::load	(LPCSTR S, CEnvironment* parent)
 {
 	sky_texture				= Device.Resources->_CreateTexture(pSettings->r_string(S,"sky_texture"));
 	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
+	sky_rotation			= deg2rad(pSettings->r_float(S,"sky_rotation"));
 	far_plane				= pSettings->r_float	(S,"far_plane");
 	fog_color				= pSettings->r_fvector3	(S,"fog_color");
 	fog_density				= pSettings->r_float	(S,"fog_density");
@@ -136,6 +137,8 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	sky_r_textures.push_back(A.sky_texture);
 	sky_r_textures.push_back(B.sky_texture);
 	sky_factor				= f;
+	sky_R0					= A.sky_rotation;
+	sky_R1					= B.sky_rotation;
 	sky_color.lerp			(A.sky_color,B.sky_color,f);
 	far_plane				= fi*A.far_plane + f*B.far_plane;
 	fog_color.lerp			(A.fog_color,B.fog_color,f);
@@ -202,9 +205,11 @@ void CEnvironment::RenderFirst	()
 	// Render skybox/plane
 	{
 		::Render->rmFar				();
-		Fmatrix						mSky;
+		Fmatrix						mSky,m0,m1;
 		mSky.translate				(Device.vCameraPosition);
 		RCache.set_xform_world		(mSky);
+		m0.rotateY					(Current.sky_R0);
+		m1.rotateY					(Current.sky_R1);
 
 		u32		i_offset,v_offset;
 		Fcolor	clr					= { Current.sky_color.x, Current.sky_color.y, Current.sky_color.z, Current.sky_factor };
@@ -218,7 +223,7 @@ void CEnvironment::RenderFirst	()
 		// Fill vertex buffer
 		v_skybox* pv				= (v_skybox*)	RCache.Vertex.Lock	(12,sh_2geom.stride(),v_offset);
 		for (u32 v=0; v<12; v++)
-			pv[v].set				(hbox_verts[v*2],C,hbox_verts[v*2+1]);
+			pv[v].set				(hbox_verts[v*2],C,hbox_verts[v*2+1],m0,m1);
 		RCache.Vertex.Unlock		(12,sh_2geom.stride());
 
 		// Render
