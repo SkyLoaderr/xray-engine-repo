@@ -242,7 +242,18 @@ m_breaked=false;
 
 bool CPHFracture::Update(CPHElement* element)
 {
-	//itterate through impacts & calculate 
+	////itterate through impacts & calculate 
+	//dBodyID body=element->get_body();
+	//CPHFracturesHolder* holder=element->FracturesHolder();
+	//PH_IMPACT_STORAGE&	impacts=holder->Impacts();
+	//int num=dBodyGetNumJoints(body);
+	//for(int i=0;i<num;i++)
+	//{
+	//	dJointID joint=dBodyGetJoint(body,i);
+	//	dJointFeedback* feedback=dJointGetFeedback(joint);
+	//	//R_ASSERT(feedback,"Feedback was not set!!!");
+	//
+	//}
 
 	m_breaked=true;
 	return m_breaked;

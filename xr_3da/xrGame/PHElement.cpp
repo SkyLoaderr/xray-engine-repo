@@ -915,8 +915,7 @@ void CPHElement::CallBack1(CBoneInstance* B)
 		//if(m_parent_element)
 		global_transform.mulB(mXFORM);
 		SetTransform(global_transform);
-		UpdateInterpolation				();
-		UpdateInterpolation				();
+		FillInterpolation();
 		bActivating=false;
 		if(!m_parent_element) 
 		{
