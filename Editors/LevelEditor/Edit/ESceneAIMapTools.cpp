@@ -149,11 +149,27 @@ void ESceneAIMapTools::EnumerateNodes()
 
 void ESceneAIMapTools::DenumerateNodes()
 {
+	u32 cnt=m_Nodes.size();
 	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
+    	R_ASSERT2	((((u32)(*it)->n1<cnt)||((u32)(*it)->n1==InvalidNode))&&
+        			 (((u32)(*it)->n2<cnt)||((u32)(*it)->n2==InvalidNode))&&
+                     (((u32)(*it)->n3<cnt)||((u32)(*it)->n3==InvalidNode))&&
+                     (((u32)(*it)->n4<cnt)||((u32)(*it)->n4==InvalidNode))
+                     ,"AINode: Wrong link found.");
     	(*it)->n1	= ((u32)(*it)->n1==InvalidNode)?0:m_Nodes[(u32)(*it)->n1];
     	(*it)->n2	= ((u32)(*it)->n2==InvalidNode)?0:m_Nodes[(u32)(*it)->n2];
     	(*it)->n3	= ((u32)(*it)->n3==InvalidNode)?0:m_Nodes[(u32)(*it)->n3];
     	(*it)->n4	= ((u32)(*it)->n4==InvalidNode)?0:m_Nodes[(u32)(*it)->n4];
+/*    
+    	if (((u32)(*it)->n1<cnt)||((u32)(*it)->n1==InvalidNode)) (*it)->n1	= ((u32)(*it)->n1==InvalidNode)?0:m_Nodes[(u32)(*it)->n1]; 
+        else (*it)->n1=0;
+    	if (((u32)(*it)->n2<cnt)||((u32)(*it)->n2==InvalidNode)) (*it)->n2	= ((u32)(*it)->n2==InvalidNode)?0:m_Nodes[(u32)(*it)->n2];
+        else (*it)->n2=0;
+    	if (((u32)(*it)->n3<cnt)||((u32)(*it)->n3==InvalidNode)) (*it)->n3	= ((u32)(*it)->n3==InvalidNode)?0:m_Nodes[(u32)(*it)->n3];
+        else (*it)->n3=0;
+    	if (((u32)(*it)->n4<cnt)||((u32)(*it)->n4==InvalidNode)) (*it)->n4	= ((u32)(*it)->n4==InvalidNode)?0:m_Nodes[(u32)(*it)->n4];
+        else (*it)->n4=0;
+*/
     }
 }
 
@@ -307,22 +323,6 @@ void ESceneAIMapTools::RemoveNode(AINodeIt it)
     	if (node==*I){V->erase(I); return;}
     // remove node from list
     m_Nodes.erase	(it);
-    // remove all link to this node
-    Irect rect;
-    HashRect		(node->Pos,m_Params.fPatchSize,rect);
-    for (int x=rect.x1; x<=rect.x2; x++){
-        for (int z=rect.y1; z<=rect.y2; z++){
-            AINodeVec* nodes	= HashMap(x,z);
-            if (nodes){
-                for (AINodeIt h_it=nodes->begin(); h_it!=nodes->end(); h_it++){
-                    if ((*h_it)->n1==node) 		(*h_it)->n1	= 0;
-                    else if ((*h_it)->n2==node)	(*h_it)->n2	= 0;
-                    else if ((*h_it)->n3==node)	(*h_it)->n3	= 0;
-                    else if ((*h_it)->n4==node)	(*h_it)->n4	= 0;
-                }
-            }
-        }
-    }
     // delete node & erase from list
     xr_delete		(node);
 }
@@ -330,6 +330,13 @@ void ESceneAIMapTools::RemoveNode(AINodeIt it)
 void ESceneAIMapTools::RemoveInvalidNodes(int link)
 {
     UI.ProgressStart	(m_Nodes.size(), "Removing invalid nodes...");
+    // remove link to sel nodes
+    for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
+        for (int k=0; k<4; k++){ 
+        	if ((*it)->n[k]&&(link==(*it)->n[k]->Links())) (*it)->n[k]=0;
+        }
+    }
+    // realy remove node
 	int count=0;
     for (int k=0; k<(int)m_Nodes.size(); k++){
         AINodeIt it = m_Nodes.begin()+k;
@@ -383,12 +390,14 @@ int ESceneAIMapTools::RemoveSelection()
         }
     }break;
     case estAIMapNode:{
-    	if (m_Nodes.size()==SelectionCount(true)){
+    	if (m_Nodes.size()==(u32)SelectionCount(true)){
         	Clear(true);
         }else{
         	// remove link to sel nodes
-	        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
-            	for (int k=0; k<4; k++) if ((*it)->n[k]&&(*it)->n[k]->flags.is(SAINode::flSelected)) (*it)->n[k]=0;
+	        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
+            	for (int k=0; k<4; k++) 
+                	if ((*it)->n[k]&&(*it)->n[k]->flags.is(SAINode::flSelected)) (*it)->n[k]=0;
+            }
             // remove sel nodes
             for (int k=0; k<(int)m_Nodes.size(); k++){
                 AINodeIt it = m_Nodes.begin()+k;

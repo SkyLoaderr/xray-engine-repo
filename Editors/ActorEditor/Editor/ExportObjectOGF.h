@@ -47,6 +47,9 @@ DEFINE_VECTOR(SOGFFace,OGFFaceVec,OGFFaceIt);
 class CObjectOGFCollectorPacked
 {
 public:
+//	Fobb			m_OBB;
+    Fbox			m_Box;
+    
     OGFVertVec		m_Verts;
     OGFFaceVec		m_Faces;
 
@@ -54,7 +57,8 @@ public:
     U32Vec			m_VM[clpOGFMX+1][clpOGFMY+1][clpOGFMZ+1];
     Fvector			m_VMeps;
 
-    u32				VPack(SOGFVert& V);
+    u32				VPack			(SOGFVert& V);
+	void			ComputeBounding	();
 public:
     CObjectOGFCollectorPacked	(const Fbox &bb, int apx_vertices, int apx_faces);
     IC bool 		check      	(SOGFFace& F){
@@ -108,7 +112,7 @@ class CExportObjectOGF
     	COGFCPVec		m_Parts;
         CObjectOGFCollectorPacked* m_CurrentPart;
         
-        Fbox			m_Box;
+	    Fbox			m_Box;
         CSurface*		m_Surf;
 
         // Progressive

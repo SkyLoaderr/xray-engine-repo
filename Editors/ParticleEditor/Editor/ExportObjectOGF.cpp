@@ -12,6 +12,7 @@
 #include "bone.h"
 #include "motion.h"
 #include "ui_main.h"
+#include "MgcCont3DMinBox.h"
 
 CObjectOGFCollectorPacked::CObjectOGFCollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces)
 {
@@ -87,6 +88,28 @@ u32 CObjectOGFCollectorPacked::VPack(SOGFVert& V)
     return P;
 }
 //----------------------------------------------------
+void CObjectOGFCollectorPacked::ComputeBounding()
+{
+	m_Box.invalidate		();
+//	FvectorVec				split_verts;
+//    split_verts.resize		(m_Verts.size());
+//    FvectorIt r_it=split_verts.begin();
+    for (OGFVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++/*,r_it++*/){
+//        r_it->set			(v_it->P);
+        m_Box.modify		(v_it->P);
+    }
+/*
+    // compute OBB
+    if (split_verts.size()<3) { m_OBB.invalidate(); return; }
+    Mgc::Box3	BOX			= Mgc::MinBox(split_verts.size(), (const Mgc::Vector3*) split_verts.begin());
+    m_OBB.m_rotate.i.set	(BOX.Axis(0));
+    m_OBB.m_rotate.j.set	(BOX.Axis(1));
+    m_OBB.m_rotate.k.set	(BOX.Axis(2));
+    m_OBB.m_translate.set	(BOX.Center());
+    m_OBB.m_halfsize.set	(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+*/
+}
+//----------------------------------------------------
 
 CExportObjectOGF::SSplit::SSplit(CSurface* surf, const Fbox& bb)
 {
@@ -112,8 +135,11 @@ void CExportObjectOGF::SSplit::AppendPart(int apx_vertices, int apx_faces)
 
 void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
 {
+	m_Box.invalidate();
 	for (COGFCPIt it=m_Parts.begin(); it!=m_Parts.end(); it++){
 	    CObjectOGFCollectorPacked* part = *it;
+        part->ComputeBounding	();
+		m_Box.merge				(part->m_Box);
         F.open_chunk			(chunk_id);
         {
             // Header
@@ -132,7 +158,6 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             F.close_chunk		();
 
             // Vertices
-            m_Box.invalidate	();
             u32 dwFVF			= D3DFVF_XYZ|D3DFVF_NORMAL|(1<<D3DFVF_TEXCOUNT_SHIFT);
             F.open_chunk		(OGF_VERTICES);
             F.w_u32				(dwFVF);
@@ -142,9 +167,8 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
                 F.w				(&(pV.P),sizeof(float)*3);		// position (offset)
                 F.w				(&(pV.N),sizeof(float)*3);		// normal
                 F.w_float		(pV.UV.x); F.w_float(pV.UV.y);	// tu,tv
-                m_Box.modify	(pV.P);
             }
-            F.close_chunk();
+            F.close_chunk		();
 
             // Faces
             F.open_chunk(OGF_INDICES);
@@ -176,9 +200,15 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             }
 */
             // BBox (already computed)
-            F.open_chunk(OGF_BBOX);
-            F.w(&m_Box,sizeof(Fvector)*2);
-            F.close_chunk();
+            F.open_chunk		(OGF_BBOX);
+            F.w					(&part->m_Box,sizeof(part->m_Box));
+            F.close_chunk		();
+
+/*
+            F.open_chunk		(OGF_OBB);
+            F.w					(&part->m_OBB,sizeof(part->m_OBB));
+            F.close_chunk		();
+*/
         }
         F.close_chunk();
         chunk_id++;

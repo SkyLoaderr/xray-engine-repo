@@ -251,7 +251,7 @@ void ESceneAIMapTools::HashRect(const Fvector& v, float radius, Irect& result)
 	scale.div			(VMscale);
 
 	// Hash
-	result.x1 			= iFloor((v.x-VMmin.x-radius)*scale.x); clamp(result.x1,0,HDIM_X);
+	result.x1 			= iFloor((v.x-VMmin.x-radius)*scale.x);	clamp(result.x1,0,HDIM_X);
 	result.y1 			= iFloor((v.z-VMmin.z-radius)*scale.z);	clamp(result.y1,0,HDIM_Z);
 	result.x2 			= iFloor((v.x-VMmin.x+radius)*scale.x);	clamp(result.x2,0,HDIM_X);
 	result.y2 			= iFloor((v.z-VMmin.z+radius)*scale.z);	clamp(result.y2,0,HDIM_Z);
