@@ -14,11 +14,11 @@ sound_wounded_base  =   sound_sidor_base + 10
 
 
 -- Стохе
-sound_stohe_base    		= global_sounds + 2000
-stohe_kamp_base     		= sound_stohe_base + 0
-stohe_tradeseller_base  	= sound_stohe_base + 10
-stohe_meet_base     		= sound_stohe_base + 20
-stohe_reaction_base     	= sound_stohe_base + 30
+sound_stohe_base            = global_sounds + 2000
+stohe_kamp_base             = sound_stohe_base + 0
+stohe_tradeseller_base      = sound_stohe_base + 10
+stohe_meet_base             = sound_stohe_base + 20
+stohe_reaction_base         = sound_stohe_base + 30
 
 -- Змей
 sound_zmey_base             =   global_sounds + 3000
@@ -36,15 +36,10 @@ ambush_good_weather    = chugai_sounds + 2
 ambush_group_idle      = chugai_sounds + 3
 ambush_idle            = chugai_sounds + 4
 
-commander_singing       = chugai_sounds + 20
-commander_look_outside  = chugai_sounds + 21
-commander_talk_outside  = chugai_sounds + 22
-commander_enemy_stalker = chugai_sounds + 23
-commander_enemy_monster = chugai_sounds + 24
-commander_radio_talk    = chugai_sounds + 25
+chugai_commander_base  = chugai_sounds + 20
 
 -- Jon
 jon_sounds              = global_sounds + 5000
 
-zombe_walk_speak	    = jon_sounds + 0
+zombe_walk_speak        = jon_sounds + 0
 zombe_stand_speak       = jon_sounds + 1
