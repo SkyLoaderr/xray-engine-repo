@@ -45,8 +45,8 @@ public:
 	CInifile*					pLevel;
 	CCustomHUD*					pHUD;
 
-	xr_vector<CPS_Instance*>	ps_active;
-	xr_vector<CPS_Instance*>	ps_destoy;
+	xr_set<CPS_Instance*>		ps_active;
+	xr_set<CPS_Instance*>		ps_destoy;
 public:
 	// Main, global functions
 	IGame_Level					();
