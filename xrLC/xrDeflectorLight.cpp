@@ -295,7 +295,7 @@ VOID CDeflector::Light()
 					DWORD pixel			= lm.pSurface[y*s_x+x];
 					if (RGBA_GETALPHA(pixel)>=254)	{
 						_r		+= RGBA_GETRED	(pixel);
-						_g		+= RGBA_GETGREEN	(pixel);
+						_g		+= RGBA_GETGREEN(pixel);
 						_b		+= RGBA_GETBLUE	(pixel);
 						_count	++;
 					}
@@ -306,11 +306,11 @@ VOID CDeflector::Light()
 			Msg("* ERROR: Lightmap not calculated (T:%d)",tris.size());
 			return;
 		}
-		_r	/= _count;	_g	/= _count;	_b	/= _count;
 		
 		// Test for equality
 		DWORD	bCompress	= TRUE;
 		const DWORD rms		= 4;
+		_r	/= _count;	_g	/= _count;	_b	/= _count;
 		{
 			for (DWORD y=0; y<s_y; y++)
 			{
