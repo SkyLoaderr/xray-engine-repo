@@ -292,18 +292,10 @@ void CCustomMonster::Update	( DWORD DT )
 		}
 		// Look and action streams
 		if (iHealth>0) {
-			Device.Statistic.TEST0.Begin	();
 			Exec_Look			(dt);
-			Device.Statistic.TEST0.End		();
-			Device.Statistic.TEST1.Begin	();
 			Exec_Movement		(dt);
-			Device.Statistic.TEST1.End		();
-			Device.Statistic.TEST2.Begin	();
 			Exec_Visibility		(dt);
-			Device.Statistic.TEST2.End		();
-			Device.Statistic.TEST3.Begin	();
 			Exec_Physics		(dt);
-			Device.Statistic.TEST3.End		();
 			
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
@@ -401,9 +393,8 @@ void CCustomMonster::UpdateCL	()
 
 static BOOL __fastcall Qualifier				(CObject* O, void* P)
 {
-	if (O->CLS_ID!=CLSID_ENTITY)			return FALSE;
 	CEntity* E = dynamic_cast<CEntity*>		(O);
-	if (!E) return FALSE;
+	if (0==E)								return FALSE;
 	if (E->g_Team() == int(*LPDWORD(P)))	return FALSE;
 	if (!E->IsVisibleForAI())				return FALSE;
 	return TRUE;
@@ -425,13 +416,15 @@ void CCustomMonster::Exec_Visibility	( float dt )
 
 	// ************** first - detect visibility
 	// 1. VIEW: From, Dir and Up vector
-	CKinematics* V		= PKinematics(Visual());
-	V->Calculate		();
-	Fmatrix&	mEye	= V->LL_GetTransform(eye_bone);
-	Fmatrix		X;		X.mul_43(svTransform,mEye);
+	Device.Statistic.TEST0.Begin	();
+	CKinematics* V				= PKinematics(Visual());
+	V->Calculate				();
+	Fmatrix&	mEye			= V->LL_GetTransform(eye_bone);
+	Fmatrix		X;				X.mul_43(svTransform,mEye);
 
 	eye_matrix.setHPB			(-r_current.yaw + 0*m_fBananPadlaCorrection,-r_current.pitch,0);
 	eye_matrix.c.set			(X.c);
+	Device.Statistic.TEST0.End		();
 	
 	Device.Statistic.AI_Vis.Begin();		//--------------
 
@@ -442,7 +435,6 @@ void CCustomMonster::Exec_Visibility	( float dt )
 	mView.build_camera_dir		(eye_matrix.c,eye_matrix.k,eye_matrix.j);
 	mProject.build_projection	(deg2rad(eye_fov),1,0.1f,eye_range);
 	mFull.mul					(mProject,mView);
-
 	Frustum.CreateFromMatrix	(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	
 	// 3. Detection itself
