@@ -56,7 +56,7 @@ void CLightDB_Static::Load			(IReader *fs)
 			F->r				(temp.name,sizeof(temp.name));
 			u32 cnt				= F->r_u32();
 			temp.data.resize	(cnt);
-			F->r				(temp.data.begin(),cnt*sizeof(u32));
+			F->r				(&*temp.data.begin(),cnt*sizeof(u32));
 			strconcat			(c_name,"$light$",temp.name);
 			temp.dest			= Device.Shader._CreateConstant(c_name);
 			Layers.push_back	(temp);
