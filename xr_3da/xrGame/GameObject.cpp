@@ -95,9 +95,10 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	CALifeObject*		a_obj	= dynamic_cast<CALifeObject*>(E);
 	if (a_obj)
 	{
-		R_ASSERT			(getAI().bfCheckIfGraphLoaded());
-		AI_NodeID			=	getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID;
-		AI_Node				=	getAI().Node(AI_NodeID);
+		CAI_Space&	AI		= getAI();
+		R_ASSERT			(AI.bfCheckIfGraphLoaded());
+		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,vPosition);
+		AI_Node				=	AI.Node		(AI_NodeID);
 		getAI().ref_add		(AI_NodeID);
 	}
 	else 
