@@ -1917,9 +1917,11 @@ namespace callback_test {
 
 extern void slipch_test();
 extern void string_test();
+extern void broker_test();
 
 int __cdecl main(int argc, char* argv[])
 {
+	broker_test();
 //	test1();
 //	test0();
 //	time_smart_ptr_test();

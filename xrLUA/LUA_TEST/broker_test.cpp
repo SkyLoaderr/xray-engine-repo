@@ -16,7 +16,11 @@ u32 update_count = 0;
 u32 save_count = 0;
 u32 inequality_count = 0;
 
-struct CTestObject : public IPureServerObject, public IPureDestroyableObject{
+struct CTestObject : 
+	public IPureSerializeObject<IReader,IWriter>, 
+	public IPureSerializeObject<NET_Packet,NET_Packet>, 
+	public IPureDestroyableObject
+{
 	int a;
 
 	IC								CTestObject	()
@@ -86,6 +90,20 @@ struct CTestObject : public IPureServerObject, public IPureDestroyableObject{
 	}
 
 	virtual void					load		(IReader	&tFileStream)
+	{
+		printf	("load called\n");
+		--save_count;
+		tFileStream.r				(&a,sizeof(a));
+	}
+
+	virtual void					save		(NET_Packet	&tMemoryStream)
+	{
+		printf	("save called\n");
+		++save_count;
+		tMemoryStream.w				(&a,sizeof(a));
+	}
+
+	virtual void					load		(NET_Packet	&tFileStream)
 	{
 		printf	("load called\n");
 		--save_count;
@@ -193,6 +211,38 @@ struct CTemplate {};
 
 void broker_test()
 {
+	{
+		Core._initialize				("lua-test",NULL);
+		{
+			NET_Packet					packet;
+			u16							_packet_type = 6, __packet_type;
+			packet.w_begin				(_packet_type);
+
+			CTestObject					test, test1;
+			save_data					(test,packet);
+
+			packet.r_begin				(__packet_type);
+			VERIFY						(__packet_type == _packet_type);
+			load_data					(test1,packet);
+
+//			VERIFY						(test == test1);
+		}
+		{
+			CTestObject					test, test1;
+			{
+				CMemoryWriter			writer;
+				save_data				(test,writer);
+				writer.save_to			("x:\\test_template.dat");
+			}
+			{
+				IReader					*f = FS.r_open("x:\\test_template.dat");
+				load_data				(test1,*f);
+				FS.r_close				(f);
+			}
+			VERIFY						(test == test1);
+		}
+	}
+	return;
 	printf	("%s : %d\n",typeid(xr_vector<u16>).name(),object_type_traits::is_stl_container<xr_multimap<u16,u16> >::value);
 //	printf	("%s : %d\n",typeid(CTemplate<u16>).name(),object_type_traits::has_iterator<CTemplate<u16> >::value);
 	traits_test();
