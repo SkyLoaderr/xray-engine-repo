@@ -26,8 +26,8 @@ void CRender::Render	()
 	//******* Main render
 	Device.Statistic.RenderDUMP.Begin			();
 	{
+		// level
 		Target.phase_scene						();
-
 		render_hud								();
 		render_scenegraph						();
 		Details.Render							(Device.vCameraPosition);

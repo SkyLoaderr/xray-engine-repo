@@ -5,6 +5,12 @@ void CRenderTarget::phase_accumulator_init()
 	dwLightMarkerID						= 5;	// start from 5, increment in 2 units
 	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L));
 
+	// Common
+	u32		Offset						= 0;
+	float	d_Z							= EPS_S;
+	float	d_W							= 1.f;
+	Fvector2							p0,p1;
+
 	// ***** Prepare mask for skybox *****
 	// Render white quad where stencil = 0
 	if (1)
@@ -19,13 +25,11 @@ void CRenderTarget::phase_accumulator_init()
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
 
 		// Assuming next usage will be for directional light
-		u32		Offset;
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 		float	_w					= float			(Device.dwWidth);
 		float	_h					= float			(Device.dwHeight);
 
 		// Fill vertex buffer
-		float	d_Z	= EPS_S, d_W = 1.f;
 		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
 		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, 0, 0);	pv++;
 		pv->set						(EPS,			EPS,			d_Z,	d_W, C, 0, 0);	pv++;
@@ -34,6 +38,38 @@ void CRenderTarget::phase_accumulator_init()
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 		RCache.set_Geometry			(g_combine);
 		RCache.set_Element			(s_accum_mask->E[0]);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	}
+
+	//  *****  Prepare mask for skybox  *****
+	// ***** Downsample into bloom2.rgba *****
+	if (1)
+	{
+		RCache.set_RT						(rt_Bloom_2->pRT,		0);
+		RCache.set_RT						(NULL,					1);
+		RCache.set_RT						(NULL,					2);
+		RCache.set_ZB						(NULL);					// No need for ZBuffer at all
+		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
+		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
+
+		// Assuming next usage will be for directional light
+		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+		float	_w					= float			(Device.dwWidth/2);
+		float	_h					= float			(Device.dwHeight/2);
+		float	tw					= float			(Device.dwWidth);
+		float	th					= float			(Device.dwHeight);
+		p0.set						(1.f/tw, 1.f/th);
+		p1.set						((tw+1.f)/tw, (th+1.f)/th );
+
+		// Fill vertex buffer
+		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
+		pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
+		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
+		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
+		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
+		RCache.set_Geometry			(g_combine);
+		RCache.set_Shader			(s_combine_dbg_Accumulator);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
@@ -52,17 +88,14 @@ void CRenderTarget::phase_accumulator_init()
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
 
 		// Assuming next usage will be for directional light
-		u32		Offset;
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 		float	_w					= float(Device.dwWidth);
 		float	_h					= float(Device.dwHeight);
 
-		Fvector2					p0,p1;
 		p0.set						(.5f/_w, .5f/_h);
 		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 
 		// Fill vertex buffer
-		float	d_Z	= EPS_S, d_W = 1.f;
 		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
 		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
 		pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;

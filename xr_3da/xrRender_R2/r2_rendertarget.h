@@ -80,6 +80,7 @@ public:
 	void						accum_point_geom_destroy();
 
 	void						phase_scene				();
+	void						phase_scene_sky			();
 	void						phase_smap_direct		();
 	void						phase_smap_point		(u32 pls_phase);
 	void						phase_accumulator		();
