@@ -98,6 +98,7 @@ public:
 			if (LT_SECONDARY == src.type)	factor *= .5f;				// secondary lights get half the photons
 					factor		*= _sqrt(src.energy / 2.f);				// 3.f is optimal energy = baseline
 			int		count		= iCeil( factor * float(gi_num_photons) );
+			float	_clip		= (src.energy/10.f + gi_clip)/2.f;
 			for (int it=0; it<count; it++)	{
 				Fvector	dir,idir;		float	s=1.f;
 				switch	(src.type)		{
@@ -119,7 +120,7 @@ public:
 				dst.position.mad		(src.position,dir,R->range);
 				dst.direction.reflect	(dir,TN);
 				dst.energy				= src.energy * dot * gi_reflect * (1-R->range/src.range);
-				if (dst.energy < gi_clip)	continue;
+				if (dst.energy < _clip)	continue;
 
 				// color bleeding
 				dst.diffuse.mul			(src.diffuse,GetPixel_5x5(*R));
@@ -132,11 +133,11 @@ public:
 					dst.diffuse				= _c;
 					dst.energy				= _e;
 				}
-				if (dst.energy < gi_clip)	continue;
+				if (dst.energy < _clip)	continue;
 
 				// scale range in proportion with energy
 				float	_r1			= src.range * _sqrt(dst.energy / src.energy);
-				float	_r2			= (dst.energy - gi_clip)/gi_clip;
+				float	_r2			= (dst.energy - _clip)/_clip;
 				float	_r3			= src.range;
 				dst.range			= (1.f*_r1 + 3.f*_r2 + 3.f*_r3)/7.f;
 				// clMsg			("submit: level[%d],type[%d], energy[%f]",dst.level,dst.type,dst.energy);
