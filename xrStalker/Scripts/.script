@@ -264,7 +264,7 @@ function object_idle(name,...)
 	while true do
 		local			obj	= get_level_object(name)
 		obj:set_command	(action);
-		while			(level.object(name)) do
+		while			(level.object(name) ~= nil) do
 			wait		()
 		end
 	end
