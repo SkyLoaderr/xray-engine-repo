@@ -19,7 +19,12 @@ class CSHSoundEnvTools: public ISHTools
 
     ESoundSource*				m_PreviewSnd;
     void __fastcall 			OnRevResetClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __fastcall 			OnEnvSizeChange		(PropValue* sender);
+	void __fastcall 			OnEnvChange			(PropValue* sender);
+	void __fastcall 			FillChooseEnv		(ChooseItemVec& items);
 public:
+	AnsiString					m_SrcEnvName;
+    CSoundRender_Environment 	m_EnvSrc;
     CSoundRender_Environment* 	m_Env;
     virtual LPCSTR				AppendItem			(LPCSTR folder_name, LPCSTR parent=0);            
     virtual BOOL __fastcall 	OnRemoveItem		(LPCSTR name, EItemType type); 

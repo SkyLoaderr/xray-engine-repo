@@ -12,7 +12,35 @@
 #include "ItemList.h"
 
 //------------------------------------------------------------------------------
-
+xr_token eax_environment[]		= {
+	{"Generic",			   	EAX_ENVIRONMENT_GENERIC			},
+	{"Padded Cell",		    EAX_ENVIRONMENT_PADDEDCELL		},
+	{"Room",                EAX_ENVIRONMENT_ROOM			},
+	{"Bathroom",            EAX_ENVIRONMENT_BATHROOM		},                             
+	{"Livingroom",          EAX_ENVIRONMENT_LIVINGROOM		},                               
+	{"Stone Room",          EAX_ENVIRONMENT_STONEROOM		},                               
+	{"Auditorium",          EAX_ENVIRONMENT_AUDITORIUM		},                               
+	{"Concert Hall",        EAX_ENVIRONMENT_CONCERTHALL		},                                 
+	{"Cave",                EAX_ENVIRONMENT_CAVE			},                         
+	{"Arena",               EAX_ENVIRONMENT_ARENA			},                          
+	{"Hangar",              EAX_ENVIRONMENT_HANGAR			},                           
+	{"Carpeted Hallway",    EAX_ENVIRONMENT_CARPETEDHALLWAY	},                                     
+	{"Hallway",             EAX_ENVIRONMENT_HALLWAY			},                            
+	{"Stone Corridor",      EAX_ENVIRONMENT_STONECORRIDOR	},                                   
+	{"Alley",               EAX_ENVIRONMENT_ALLEY			},                          
+	{"Forest",              EAX_ENVIRONMENT_FOREST			},                           
+	{"City",                EAX_ENVIRONMENT_CITY			},                         
+	{"Mountains",           EAX_ENVIRONMENT_MOUNTAINS		},                              
+	{"Quarry",              EAX_ENVIRONMENT_QUARRY			},                           
+	{"Plain",               EAX_ENVIRONMENT_PLAIN			},                          
+	{"Parkinglot",          EAX_ENVIRONMENT_PARKINGLOT		},                               
+	{"Sewer Pipe",          EAX_ENVIRONMENT_SEWERPIPE		},                               
+	{"Under Water",         EAX_ENVIRONMENT_UNDERWATER		},                                
+	{"Drugged",             EAX_ENVIRONMENT_DRUGGED			},                            
+	{"Dizzy",               EAX_ENVIRONMENT_DIZZY			},                          
+	{"Psychotic",           EAX_ENVIRONMENT_PSYCHOTIC		},
+    {0,						0								}
+};
 //------------------------------------------------------------------------------
 CSHSoundEnvTools::CSHSoundEnvTools(ISHInit& init):ISHTools(init)
 {
@@ -68,9 +96,9 @@ void CSHSoundEnvTools::OnRender()
 
 bool CSHSoundEnvTools::OnCreate()
 {
-	m_PreviewSnd 		= xr_new<ESoundSource>((LPVOID)NULL, "Test");
-    m_PreviewSnd->Select(TRUE);
-    Load();
+	m_PreviewSnd 					= xr_new<ESoundSource>((LPVOID)NULL, "Test");
+    m_PreviewSnd->Select			(TRUE);
+    Load							();
     return true;
 }
 
@@ -89,8 +117,8 @@ void CSHSoundEnvTools::ApplyChanges(bool bForced)
 
 void CSHSoundEnvTools::Reload()
 {
-    ResetCurrentItem();
-    Load();
+    ResetCurrentItem	();
+    Load				();
     FillItemList		();
 }
 
@@ -119,7 +147,8 @@ void CSHSoundEnvTools::Load()
     m_bLockUpdate		= TRUE;
     
     if (FS.exist(fn.c_str())){
-    	m_Library.Load(fn.c_str());
+		m_Library.Unload();
+    	m_Library.Load	(fn.c_str());
     }else{
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
     }
@@ -130,7 +159,6 @@ void CSHSoundEnvTools::Load()
 void CSHSoundEnvTools::Save()
 {
     ApplyChanges();
-	ResetCurrentItem			();
 	m_bLockUpdate				= TRUE;
 
     // save
@@ -191,7 +219,9 @@ void CSHSoundEnvTools::SetCurrentItem(LPCSTR name, bool bView)
     if (m_bLockUpdate) return;
 	CSoundRender_Environment* S = FindItem(name);
 	if (m_Env!=S){
-        m_Env = S;
+        m_Env 			= S;
+        m_EnvSrc		= *m_Env;
+        m_SrcEnvName	= *m_Env->name;
 	    UI->Command(COMMAND_UPDATE_PROPERTIES);
 		if (bView) ViewSetCurrentItem(name);
     }
@@ -204,15 +234,53 @@ void CSHSoundEnvTools::ResetCurrentItem()
 	UseEnvironment	();
 }
 
+void __fastcall CSHSoundEnvTools::FillChooseEnv(ChooseItemVec& items)
+{
+    for (int k=0; eax_environment[k].name; k++)
+	    items.push_back	(SChooseItem(eax_environment[k].name,""));
+}
+
 void __fastcall CSHSoundEnvTools::OnRevResetClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: m_Env->set_default();	break;
     case 1: m_Env->set_identity();	break;
+    case 1:{
+        LPCSTR MP=0;
+        if (TfrmChoseItem::SelectItem(smCustom,MP,1,0,FillChooseEnv)&&MP){
+            for (int k=0; eax_environment[k].name; k++)
+            	if (0==strcmp(eax_environment[k].name,MP)){
+                	Sound->set_environment(eax_environment[k].id,m_Env);
+                    m_SrcEnvName= MP;
+			        m_EnvSrc	= *m_Env;
+				    UI->Command	(COMMAND_UPDATE_PROPERTIES);
+                	break;
+                }
+        }
+    }break;
 	}
     Ext.m_ItemProps->RefreshForm();
     Modified();
+}
+
+void __fastcall CSHSoundEnvTools::OnEnvSizeChange(PropValue* sender)
+{
+    CSoundRender_Environment 	test_env=*m_Env;
+    test_env.EnvironmentSize	= m_EnvSrc.EnvironmentSize;
+    test_env.DecayTime			= m_EnvSrc.DecayTime;
+    test_env.Reflections	 	= m_EnvSrc.Reflections;
+    test_env.ReflectionsDelay	= m_EnvSrc.ReflectionsDelay;
+    test_env.Reverb				= m_EnvSrc.Reverb;
+    test_env.ReverbDelay 		= m_EnvSrc.ReverbDelay;
+	Sound->test_env_size		(&test_env,m_Env);
+    UI->Command					(COMMAND_UPDATE_PROPERTIES);
+}
+
+void __fastcall CSHSoundEnvTools::OnEnvChange(PropValue* sender)
+{
+    Sound->set_environment		(m_Env->Environment,m_Env);
+    UI->Command					(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CSHSoundEnvTools::RealUpdateProperties()
@@ -226,8 +294,12 @@ void CSHSoundEnvTools::RealUpdateProperties()
         PHelper.CreateRName		(items, "Environment\\Name",								&S.name,  				m_CurrentItem);
         B=PHelper.CreateButton	(items, "Environment\\Set",	"Default,Identity",				ButtonValue::flFirstOnly);
         B->OnBtnClickEvent 		= OnRevResetClick;
-
-        PHelper.CreateFloat		(items, "Environment\\Environment\\EnvironmentSize",		&S.EnvironmentSize     ,EAXLISTENER_MINENVIRONMENTSIZE, 	EAXLISTENER_MAXENVIRONMENTSIZE			,0.01f,	3);
+        PHelper.CreateCaption	(items, "Environment\\Source Name",							m_SrcEnvName);
+        PropValue* V=0;
+        V=PHelper.CreateToken<u32>(items,"Environment\\Environment\\Preset",				&S.Environment	       ,eax_environment);
+        V->OnChangeEvent		= OnEnvChange;
+        V=PHelper.CreateFloat	(items, "Environment\\Environment\\EnvironmentSize",		&S.EnvironmentSize     ,EAXLISTENER_MINENVIRONMENTSIZE, 	EAXLISTENER_MAXENVIRONMENTSIZE			,0.01f,	3);
+        V->OnChangeEvent		= OnEnvSizeChange;
         PHelper.CreateFloat		(items, "Environment\\Environment\\EnvironmentDiffusion",	&S.EnvironmentDiffusion,EAXLISTENER_MINENVIRONMENTDIFFUSION,EAXLISTENER_MAXENVIRONMENTDIFFUSION		,0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Room\\Room",							&S.Room                ,(float)EAXLISTENER_MINROOM, 	  	(float)EAXLISTENER_MAXROOM				,1.f,	0);
         PHelper.CreateFloat		(items, "Environment\\Room\\RoomHF",						&S.RoomHF              ,(float)EAXLISTENER_MINROOMHF, 	  	(float)EAXLISTENER_MAXROOMHF			,1.f,	0);
