@@ -178,7 +178,8 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 
 		P.w_u32					(get_it_2_id	(p_it));
 		P.w_string				(p_name);
-		P.w						(&copy,sizeof(game_PlayerState));
+		copy.net_Export			(P);
+//		P.w						(&copy,sizeof(game_PlayerState));
 	}
 }
 
@@ -194,7 +195,8 @@ void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id
 		}
 
 		P.w_u32	(id);
-		P.w		(&copy,sizeof(game_PlayerState));
+//		P.w		(&copy,sizeof(game_PlayerState));
+		copy.net_Export(P);
 	};
 };
 

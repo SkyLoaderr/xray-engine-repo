@@ -229,10 +229,15 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 					pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(xrCData->owner);
 					R_ASSERT2(pA, "Owner not a Actor");
 
-					SpawnItem4Actor(pA->ID, GetWeaponForSlot(KNIFE_SLOT, ps));
-					SpawnItem4Actor(pA->ID, GetWeaponForSlot(PISTOL_SLOT, ps));
-					SpawnItem4Actor(pA->ID, GetWeaponForSlot(RIFLE_SLOT, ps));
-					SpawnItem4Actor(pA->ID, GetWeaponForSlot(GRENADE_SLOT, ps));
+					SpawnItem4Actor(pA->ID, GetItemForSlot(KNIFE_SLOT, 0xff, ps));
+					SpawnItem4Actor(pA->ID, GetItemForSlot(PISTOL_SLOT, 0xff,  ps));
+					SpawnItem4Actor(pA->ID, GetItemForSlot(RIFLE_SLOT, 0xff,  ps));
+					SpawnItem4Actor(pA->ID, GetItemForSlot(GRENADE_SLOT, 0xff,  ps));
+
+					for (u32 i = 0; i<ps->BeltItems.size(); i++)
+					{
+						SpawnItem4Actor(pA->ID, GetItemForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps));
+					};
 					//------------------------------------------------------------
 				};				
 			};			
@@ -297,7 +302,6 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 		*/
 		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
 		S->Perform_destroy				(from,net_flags(TRUE, TRUE));
-		
 	}
 //	HUD().outMessage			(0xffffffff,"DM","Player '%s' disconnected",Name);
 };
@@ -525,6 +529,18 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	P.r_u8		(ps->Slots[PISTOL_SLOT]	);
 	P.r_u8		(ps->Slots[RIFLE_SLOT]	);
 	P.r_u8		(ps->Slots[GRENADE_SLOT]);
+
+	ps->BeltItems.clear();
+
+	u8 NumItemsInBelt;
+	P.r_u8(NumItemsInBelt);
+	for (u8 i=0; i<NumItemsInBelt; i++)
+	{
+		u8 SectID, ItemID;
+		P.r_u8(SectID);
+		P.r_u8(ItemID);
+		ps->BeltItems.push_back(game_PlayerState::BeltItem(SectID, ItemID));
+	};
 };
 
 void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
@@ -537,19 +553,22 @@ void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
 	Memory.mem_fill(ps->Slots, 0xff, sizeof(ps->Slots));
 };
 
-const char* game_sv_Deathmatch::GetWeaponForSlot		(u32 SlotNum, game_PlayerState* ps)
+const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
 {
 	if (!ps) return NULL;
-
+	
+	u8 Item = ps->Slots[SlotNum];
+	if (0xff != ItemID) Item = ItemID;
+	
 	if (0xff == ps->Slots[SlotNum]) return NULL;
 
 	WPN_LISTS	WpnList = wpnTeamsSectStorage[ps->team];
 
 	WPN_SECT_NAMES WpnSectNames = WpnList[SlotNum];
 
-	std::string Wpn = WpnSectNames[ps->Slots[SlotNum]];
+	std::string Wpn = WpnSectNames[Item & 0x1f];
 
-	return wpnTeamsSectStorage[ps->team][SlotNum][ps->Slots[SlotNum]].c_str();
+	return wpnTeamsSectStorage[ps->team][SlotNum][Item & 0x1f].c_str();
 };
 
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSection)

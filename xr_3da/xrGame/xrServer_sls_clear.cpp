@@ -3,15 +3,18 @@
 #include "ai_alife.h"
 #include "xrServer_Objects.h"
 
-void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode)
+void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode, BOOL Recursive)
 {
 	VERIFY				(tpSE_Abstract);
-	xr_vector<u16>::const_iterator	I = tpSE_Abstract->children.begin	();
-	xr_vector<u16>::const_iterator	E = tpSE_Abstract->children.end		();
-	for ( ; I != E; ++I) {
-		CSE_Abstract	*e_dest	= game->get_entity_from_eid(*I);
-		Perform_destroy	(e_dest,mode);
-	}
+	if (Recursive)
+	{
+		xr_vector<u16>::const_iterator	I = tpSE_Abstract->children.begin	();
+		xr_vector<u16>::const_iterator	E = tpSE_Abstract->children.end		();
+		for ( ; I != E; ++I) {
+			CSE_Abstract	*e_dest	= game->get_entity_from_eid(*I);
+			Perform_destroy	(e_dest,mode, Recursive);
+		}
+	};
 
 	NET_Packet			P;
 	P.w_begin			(M_EVENT);
@@ -36,5 +39,5 @@ void xrServer::SLS_Clear		()
 	// Collect entities
 	u32					mode	= net_flags(TRUE,TRUE);
 	while (entities.begin() != entities.end())
-		Perform_destroy			(entities.begin()->second,mode);
+		Perform_destroy			(entities.begin()->second,mode, FALSE);
 }

@@ -88,7 +88,7 @@ public:
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);//	{};
 
 	virtual		void				ClearPlayerState		(game_PlayerState* ps);
-	virtual		const char * 		GetWeaponForSlot		(u32 SlotNum, game_PlayerState* ps);
+	virtual		const char * 		GetItemForSlot			(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
 
 	virtual		void				LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSection);
 	virtual		void				LoadSkinsForTeam		(SkinsStruct *pTeamList, char* caSection);

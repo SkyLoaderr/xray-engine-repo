@@ -143,6 +143,16 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	P.w_u8		(pBuyMenu->GetWeaponIndex(RIFLE_SLOT));
 	P.w_u8		(pBuyMenu->GetWeaponIndex(GRENADE_SLOT));
 
+	P.w_u8		(pBuyMenu->GetBeltSize());
+	
+	for (u8 i=0; i<pBuyMenu->GetBeltSize(); i++)
+	{
+		u8 SectID, ItemID;
+		pBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
+		P.w_u8	(SectID);
+		P.w_u8	(ItemID);
+	};	
+
 	l_pPlayer->u_EventSend		(P);
 };
 
@@ -154,6 +164,7 @@ bool		CUIGameDM::CanBeReady				()
 	res &=	pBuyMenu->GetWeaponIndex(PISTOL_SLOT);
 	res &=	pBuyMenu->GetWeaponIndex(RIFLE_SLOT);
 	res &=	pBuyMenu->GetWeaponIndex(GRENADE_SLOT);
+	res &=	pBuyMenu->GetBeltSize();
 
 	if (res != 0xff) return true;
 

@@ -51,9 +51,27 @@ struct	game_PlayerState
 	u16			GameID;
 
 	game_PlayerState();
+	~game_PlayerState();
+
+	void	net_Export		(NET_Packet& P);
+	void	net_Import		(NET_Packet& P);
 
 	//selected weapons & etc.
 	u8			Slots[8];
+	struct		BeltItem
+	{
+		u8		SlotID;
+		u8		ItemID;
+
+		BeltItem(u8 IDSlot, u8 IDItem):
+			SlotID(IDSlot),
+			ItemID(IDItem)
+		{
+		};
+	};
+	DEF_VECTOR	(BELT_ITEMS_LIST, BeltItem);
+
+	BELT_ITEMS_LIST	BeltItems;
 };
 
 struct	game_TeamState

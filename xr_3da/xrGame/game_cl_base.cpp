@@ -47,7 +47,8 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 		Player			IP;
 		P.r_u32			(ID);
 		P.r_string		(IP.name);
-		P.r				(&IP,sizeof(game_PlayerState));
+//		P.r				(&IP,sizeof(game_PlayerState));
+		IP.net_Import	(P);
 		I				= players.insert(mk_pair(ID,IP));
 		if (IP.flags&GAME_PLAYER_FLAG_LOCAL) local_player = &I.first->second;
 	}
@@ -60,7 +61,8 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 	u32					ID;
 	game_PlayerState	PS;
 	P.r_u32				(ID);
-	P.r					(&PS,sizeof(game_PlayerState));
+//	P.r					(&PS,sizeof(game_PlayerState));
+	PS.net_Import		(P);
 
 	// Update
 	xr_map<u32,Player>::iterator I	= players.find(ID);
