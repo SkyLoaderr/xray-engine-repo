@@ -7,7 +7,7 @@
 CString parseParams(LPCSTR fn, LPCSTR params);
 BOOL copy_file(LPCSTR src, LPCSTR dst_fldr, LPCSTR dst_fn);
 BOOL rename_file(LPCSTR src, LPCSTR dst);
-BOOL check_RO(LPCSTR src, BOOL& old);
+BOOL check_RO(LPCSTR src);
 
 BOOL file_exist(LPCSTR src);
 BOOL mk_bk_rename(LPCSTR src, int start_from=0);
@@ -62,7 +62,7 @@ void CTaskCopyFolder::run ()
 	CTask::exec();
 
 	Msg("[%s]:Copying folder %s to %s ",name(),*m_source_folder, *m_target_folder);
-	check_RO(*m_target_folder,attr_save);
+	check_RO(*m_target_folder);
 	copy_folder(*m_source_folder, *m_target_folder);
 }
 
@@ -174,6 +174,7 @@ BOOL copy_file(LPCSTR src, LPCSTR dst_fldr, LPCSTR dst_fn)
 	fo.SetOverwriteMode(true); // reset OverwriteMode flag (optional)
 	fo.SetAskIfReadOnly(true);
 	BOOL res;
+	res = check_RO(dst_fn);
 	if(FALSE==res)
 		return FALSE;
 
@@ -245,7 +246,7 @@ BOOL rename_file(LPCSTR src, LPCSTR dst)
 	return TRUE;
 }
 
-BOOL check_RO(LPCSTR src, BOOL& old)
+BOOL check_RO(LPCSTR src)
 {
 	DWORD dwAttr = GetFileAttributes(src);
 	//if (dwAttr == -1); //not_found
