@@ -8,7 +8,8 @@ function main ()
 		particle	("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
 --		object		(wpn,object.activate),
 	    cond		(cond.time_end,3000),
-		move		(move.standing,move.walk,move.line,patrol("way0000"))
+		move		(move.standing,move.walk,move.line,patrol("way0000")),
+		cond		(cond.move_end)
 	)
 	
 	while stalker:action() do
