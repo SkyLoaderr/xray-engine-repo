@@ -28,6 +28,7 @@ void CMonsterMovement::reinit()
 
 	b_try_min_time					= false;
 	time_last_approach				= 0;
+	b_use_dest_orient				= false;
 
 	m_velocity_linear.set			(0.f,0.f);
 	m_velocity_angular.set			(0.f,0.f);
@@ -50,7 +51,7 @@ void CMonsterMovement::Frame_Init()
 	b_try_min_time									= true;
 	b_enable_movement								= true;
 	set_path_targeted								(false);
-	//CDetailPathManager::set_use_dest_orientation	(false);
+	set_use_dest_orient								(false);
 }
 
 
@@ -58,8 +59,11 @@ void CMonsterMovement::Frame_Init()
 // Update Movement
 void CMonsterMovement::Frame_Update()
 {
-	CDetailPathManager::set_try_min_time	(b_try_min_time); 
-	enable_movement							(b_enable_movement);
+	CDetailPathManager::set_try_min_time			(b_try_min_time); 
+	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);
+	
+	enable_movement									(b_enable_movement);
+	
 	update_path								();
 }
 

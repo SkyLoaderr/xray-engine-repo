@@ -43,5 +43,5 @@ public:
 	// вернуть количество врагов
 	u32					get_enemies_count		();
 
-
+	void				reinit					();
 };

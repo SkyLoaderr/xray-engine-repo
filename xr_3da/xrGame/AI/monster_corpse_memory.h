@@ -21,6 +21,8 @@ public:
 	SMonsterCorpse		get_corpse_info			();
 	u32					get_corpse_count		() {return m_objects.size();}
 
+	void				clear					() {m_objects.clear();}
+
 private:
 
 	void				add_corpse				(const CEntityAlive *corpse);

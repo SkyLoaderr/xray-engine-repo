@@ -11,11 +11,9 @@ class		CAnimTriple;
 class CMotionManager : public CSharedClass<_motion_shared> {
 
 	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
-	
 
 	CAI_Biting				*pMonster;
 	CJumping				*pJumping;
-	IRender_Visual			*pVisual;
 
 	// работа с последовательностями
 	SEQ_VECTOR				seq_states;
@@ -79,6 +77,8 @@ public:
 
 				CMotionManager			();
 				~CMotionManager			();
+
+	void		reinit					();
 	void		Init					(CAI_Biting	*pM);
 
 	// создание карты анимаций (выполнять на Monster::Load)
@@ -148,20 +148,12 @@ public:
 	// FX's
 	void		FX_Play					(EHitSide side, float amount);
 	
-
-	// Обновить tpKinematics
-	void		UpdateVisual			();
-
-
 	bool		BadMotionFixed			() {return bad_motion_fixed;}
 
 private:	
 
-	// загрузка MotionDef для определённого типа анимации 
-	void		Load					(LPCSTR pmt_name, ANIM_VECTOR	*pMotionVect);
-	// очистка и загрузка MotionDef для карты анимаций (выполнять на Monster::Spawn, после обновления Visual)
-	void		LoadVisualData			();
-
+	void		UpdateAnimCount			();
+	
 	// работа с последовательностями
 	void		Seq_Init				();
 
@@ -177,6 +169,7 @@ private:
 
 	void		CheckReplacedAnim		();
 
+	CMotionDef	*get_motion_def			(ANIM_ITEM_MAP_IT &it, u32 index);
 
 public:
 
@@ -241,5 +234,11 @@ public:
 		void	TA_Deactivate			();
 		void	TA_PointBreak			();
 		bool	TA_IsActive				();
+
+	// -----------------------------------------------------
+	// Jumps
+		
+		void	ActivateJump			();
+		void	DeactivateJump			();
 };
 

@@ -21,6 +21,8 @@ void CAI_Biting::Think()
 	time_next_update = Level().timeServer() + 1000 / UPS;
 #endif
 
+	if (getDestroy()) return;
+
 	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
 
@@ -65,6 +67,11 @@ void CAI_Biting::Think()
 	HDebug->SetActive						(true);
 #endif
 
+//	m_velocity_linear.current = 0.f;
+//	m_velocity_linear.target = 0.f;
+//
+//	m_fCurSpeed = 0.f;
+//	Msg("Monster [%s], Dest orient = [%u]", *cName(), CDetailPathManager::use_dest_orientation());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

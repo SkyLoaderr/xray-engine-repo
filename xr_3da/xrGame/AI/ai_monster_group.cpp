@@ -405,11 +405,10 @@ void CMonsterSquad::UpdateDecentralized()
 		}
 
 		if (pGeneralEnemy != 0) {
-			if (squad_attack_algorithm == SAA_DESTINATION_DIRECTION) SetupMemeberPositions_TargetDir(general_enemy,pGeneralEnemy);
-			else SetupMemeberPositions_Deviation(general_enemy,pGeneralEnemy);
+			SetupMemeberPositions_TargetDir(general_enemy,pGeneralEnemy);
 		}
 
-		//R_ASSERT(general_enemy.empty());
+		//VERIFY(general_enemy.empty());
 		
 		// удалить все элементы из temp_v, у которых враг = pGeneralEnemy
 		MEMBER_ENEMY_VEC_IT iter = std::remove_if(vect_copy.begin(), vect_copy.end(), remove_predicate(pGeneralEnemy));

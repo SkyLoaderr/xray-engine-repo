@@ -24,7 +24,8 @@ public:
 	
 	Fvector				get_last_hit_dir		();
 	TTime				get_last_hit_time		();
-
+	
+	void				clear					() {m_hits.clear();}
 
 private:
 	void				remove_non_actual		();

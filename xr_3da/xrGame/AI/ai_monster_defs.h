@@ -262,9 +262,8 @@ struct SAnimItem {
 
 	anim_string		target_name;	// "stand_idle_"
 	int				spec_id;		// (-1) - any,  (0 - ...) - идентификатор 3
-
-	ANIM_VECTOR		pMotionVect;	// вектор указателей на анимации модели
-
+	u8				count;			// количество анимаций : "idle_0", "idle_1", "idle_2" 
+	
 	SVelocityParam	*velocity;
 
 	EPState			pos_state;

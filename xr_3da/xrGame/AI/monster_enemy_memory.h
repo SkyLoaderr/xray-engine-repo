@@ -24,6 +24,8 @@ public:
 
 	const ENEMIES_MAP	&get_memory				() {return m_objects;}
 
+	void				clear					() {m_objects.clear();}
+
 private:
 
 	void				add_enemy				(const CEntityAlive *enemy);

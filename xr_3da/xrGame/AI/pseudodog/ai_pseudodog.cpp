@@ -249,6 +249,7 @@ void CAI_PseudoDog::UpdateCL()
 }
 void CAI_PseudoDog::OnJumpStop()
 {
+	MotionMan.DeactivateJump();
 	MotionMan.Update();
 	strike_in_jump = false;
 }

@@ -61,3 +61,10 @@ void CMonsterCorpseManager::unforce_corpse()
 	forced = false;
 }
 
+void CMonsterCorpseManager::reinit()
+{
+	corpse			= 0;
+	forced			= false;
+	time_last_seen	= 0;
+}
+

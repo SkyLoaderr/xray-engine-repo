@@ -136,8 +136,10 @@ void CBitingAttack::Run()
 
 	// проверить на возможность прыжка
 	if (flags.is(AF_HAS_JUMP_ABILITY)) 
-		if (pJumping->Check(pMonster->Position(),enemy->Position(),enemy))
+		if (pJumping->Check(pMonster->Position(),enemy->Position(),enemy)){
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
+			pMonster->MotionMan.ActivateJump();
+		}
 	
 	// восстановить некоторые переменные
 	if (!b_attack_melee) bEnableBackAttack = true;
@@ -148,6 +150,8 @@ void CBitingAttack::Run()
 	if ((m_tAction == ACTION_RUN) && CheckPsiAttack()) m_tAction = ACTION_PSI_ATTACK; 
 
 	bool bNeedRebuild = false;
+	bool squad_active = false;
+	CMonsterSquad	*pSquad = 0;
 
 	//if (flags.is(AF_CAN_ATTACK_RUN)) m_tAction = ACTION_ATTACK_RUN;
 
@@ -170,39 +174,26 @@ void CBitingAttack::Run()
 			DO_IN_TIME_INTERVAL_END();
 			if (IS_NEED_REBUILD()) bNeedRebuild = true;
 			
+			
+			pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
+			squad_active = pSquad && pSquad->SquadActive();
+			
 			if (bNeedRebuild) {
 				// Получить позицию, определённую груп. интелл.
-				CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
-				bool squad_target_selected = false;
-
-				if (pSquad && pSquad->SquadActive()) {
-				 
+				if (squad_active) {
 					TTime			squad_ai_last_updated;
 					Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
-					ESquadAttackAlg alg_type = pSquad->GetAlgType();
+					pMonster->set_dest_direction	(target);
+				}
 				
-					// выбор алгоритма
-					if (alg_type == SAA_DEVIATION) {
-						if (squad_ai_last_updated !=0 ) {		// новая позиция
-							pMonster->MoveToTarget(target);
-							squad_target_selected = true;
-						}
-					} else {
-						pMonster->set_dest_direction		(target);
-						pMonster->set_use_dest_orientation	(true);
-
-						pMonster->MoveToTarget(enemy);
-						squad_target_selected = true;
-					}
-				}
-
-				if (!squad_target_selected) {
-					pMonster->MoveToTarget(enemy);
-				}
+				pMonster->MoveToTarget(enemy);
 			}
 			
+			if (squad_active)
+				pMonster->set_use_dest_orient	(true);
+			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
-
+			
 			break;
 
 		// *********************
@@ -396,6 +387,9 @@ void CBitingAttack::Done()
 // если состояния ATTACK_MELEE ещё не было
 bool CBitingAttack::CheckStartThreaten()
 {
+	// временно отключить пугание
+	if (true) return false;
+	
 	if (b_in_threaten) return false;
 
 	// проверка флагов
@@ -608,7 +602,6 @@ bool CBitingAttack::CheckRotationJump()
 }
 
 
-
 bool CBitingAttack::CheckCompletion()
 {
 	return false;
@@ -648,7 +641,6 @@ bool CBitingAttack::CheckPsiAttack()
 
 	CWeaponMagazined *pWeapon = dynamic_cast<CWeaponMagazined *>(pA->m_inventory->ActiveItem());
 	if (!pWeapon) return false;
-
 
 	return true;
 }

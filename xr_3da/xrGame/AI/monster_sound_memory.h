@@ -85,5 +85,7 @@ public:
 	void		UpdateHearing			();
 
 	bool		is_loud_sound			(float val);
+	
+	void		clear					() {Sounds.clear();}
 };
 

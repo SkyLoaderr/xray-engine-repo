@@ -261,7 +261,8 @@ void CAI_Dog::UpdateCL()
 
 void CAI_Dog::OnJumpStop()
 {
-	//MotionMan.ProcessAction();
+	MotionMan.DeactivateJump();
+	MotionMan.Update();
 	strike_in_jump = false;
 }
 

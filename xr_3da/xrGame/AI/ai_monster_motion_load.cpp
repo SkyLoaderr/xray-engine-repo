@@ -19,6 +19,8 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam
 	new_item.fxs.left		= fx_left;
 	new_item.fxs.right		= fx_right;
 
+	new_item.count			= 0;
+
 	_sd->m_tAnims.insert			(mk_pair(ma, new_item));
 }
 
@@ -34,23 +36,15 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam
 	new_item.velocity		= vel;
 	new_item.pos_state		= p_s;
 
+	new_item.count			= 0;
+
 	_sd->m_tAnims.insert			(mk_pair(ma, new_item));
-}
-
-
-// Загрузка анимаций. Необходимо вызывать на Monster::NetSpawn 
-void CMotionManager::LoadVisualData()
-{
-	for (ANIM_ITEM_MAP_IT item_it = _sd->m_tAnims.begin(); _sd->m_tAnims.end() != item_it; ++item_it) {
-		// Очистка старых анимаций
-		if (!item_it->second.pMotionVect.empty()) item_it->second.pMotionVect.clear();
-		// Загрузка новых
-		Load(*item_it->second.target_name, &item_it->second.pMotionVect);
-	}
 }
 
 void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
+	CHECK_SHARED_LOADED();
+
 	STransition new_item;
 
 	new_item.from.state_used	= false;
@@ -148,6 +142,7 @@ void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion)
 	_sd->m_tMotions.insert	(mk_pair(act, new_item));
 }
 
+// не может быть shared!!! поле на которое указывает b_flag, у каждого экземпляра класса biting - содержит свои данные
 void CMotionManager::AddReplacedAnim(bool *b_flag, EMotionAnim pmt_cur_anim, EMotionAnim pmt_new_anim)
 {
 	SReplacedAnim ra;
@@ -159,26 +154,6 @@ void CMotionManager::AddReplacedAnim(bool *b_flag, EMotionAnim pmt_cur_anim, EMo
 	m_tReplacedAnims.push_back(ra);
 }
 
-
-// загрузка анимаций из модели начинающиеся с pmt_name в вектор pMotionVect
-void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
-{
-
-	string256	S1, S2; 
-	CMotionDef	*tpMotionDef;
-	for (int i=0; ; ++i) {
-		if (0 != (tpMotionDef = PSkeletonAnimated(pVisual)->ID_Cycle_Safe(strconcat(S1,pmt_name,itoa(i,S2,10)))))  pMotionVect->push_back(tpMotionDef);
-		else if (0 != (tpMotionDef = PSkeletonAnimated(pVisual)->ID_FX_Safe(strconcat(S1,pmt_name,itoa(i,S2,10))))) pMotionVect->push_back(tpMotionDef);
-		else {
-			if (i == 0) {
-				string128	s;
-				sprintf(s, "Error! No animation: %s for monster %s", pmt_name, *pMonster->cName());
-				R_ASSERT2(i != 0, s);
-			}
-			break;
-		}
-	}
-}
 
 void CMotionManager::AA_Load(LPCSTR section)
 {

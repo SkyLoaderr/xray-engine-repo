@@ -69,7 +69,16 @@ void CAI_Biting::reinit()
 	
 	inherited::reinit					();
 	CMonsterMovement::reinit			();
+	
+	MotionMan.reinit					();
+	
+	EnemyMemory.clear					();
+	SoundMemory.clear					();
+	CorpseMemory.clear					();
+	HitMemory.clear						();
 
+	EnemyMan.reinit						();
+	CorpseMan.reinit					();
 
 	flagEatNow						= false;
 	m_bDamaged						= false;
@@ -168,7 +177,6 @@ void CAI_Biting::load_shared(LPCSTR section)
 	_sd->m_fEatSlice					= pSettings->r_float(section,"eat_slice");
 	_sd->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
 
-	_sd->m_bUsedSquadAttackAlg			= pSettings->r_u8	(section,"squad_attack_algorithm");
 
 	// Load attack postprocess --------------------------------------------------------
 	LPCSTR ppi_section = pSettings->r_string(section, "attack_effector");
@@ -213,17 +221,8 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	
 	R_ASSERT2						(ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 	
-	// Установить новый Visual, перезагрузить анимации
-	MotionMan.UpdateVisual();
-
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
-
-	// Установить алгоритм групповой атаки
-	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
-	if ((pSquad->GetLeader() == this)) { 
-		pSquad->SetupAlgType(ESquadAttackAlg(_sd->m_bUsedSquadAttackAlg));
-	}
 
 	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(_sd->m_fsVelocityStandTurn.velocity.linear,		_sd->m_fsVelocityStandTurn.velocity.angular)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(_sd->m_fsVelocityWalkFwdNormal.velocity.linear,	_sd->m_fsVelocityWalkFwdNormal.velocity.angular)));

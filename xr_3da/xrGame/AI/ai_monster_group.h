@@ -57,12 +57,6 @@ struct GTask {
 	} target;
 };
 
-enum ESquadAttackAlg {
-	SAA_DEVIATION = 0,
-	SAA_DESTINATION_DIRECTION
-};
-
-
 /////////////////////////////////////////////////////////////////////////////////////////
 // MonsterSquad Class
 class CMonsterSquad {
@@ -81,13 +75,11 @@ class CMonsterSquad {
 
 	ENTITY_STATE_MAP	states;
 
-	ESquadAttackAlg		squad_attack_algorithm;
-	
 	MEMBER_ENEMY_VEC	vect_copy;
 	MEMBER_ENEMY_VEC	general_enemy;		
 
 public:
-				CMonsterSquad(u8 i) : id(i), leader(0), squad_attack_algorithm(SAA_DESTINATION_DIRECTION) {}
+				CMonsterSquad(u8 i) : id(i), leader(0) {}
 				~CMonsterSquad() {}
 	
 	// -----------------------------------------------------------------
@@ -113,9 +105,6 @@ public:
 	void		UpdateMonsterData	(CEntity *pE, CEntity *pEnemy);
 	void		UpdateDecentralized	();
 	Fvector		GetTargetPoint		(CEntity *pE, u32 &time);
-	void		SetupAlgType		(ESquadAttackAlg new_alg) {squad_attack_algorithm = new_alg;}
-	ESquadAttackAlg	GetAlgType		() {return squad_attack_algorithm;}
-
 
 
 	// Проверить, стоит активность группы

@@ -38,34 +38,37 @@ CMotionManager::~CMotionManager()
 void CMotionManager::Init (CAI_Biting	*pM)
 {
 	pMonster				= pM;
-	pJumping				= dynamic_cast<CJumping*>(pM);
-	pVisual					= 0;
+}
 
+void CMotionManager::reinit()
+{
 	prev_anim				= cur_anim	= eAnimStandIdle; 
-	m_tAction				= ACT_STAND_IDLE;
+	prev_action				= m_tAction	= ACT_STAND_IDLE;
 	m_tpCurAnim				= 0;
 	spec_params				= 0;
 
-	time_start_stand		= 0;
-	prev_action				= ACT_STAND_IDLE;
-
 	should_play_die_anim	= true;			//этот флаг на NetSpawn должен устанавливатьс€ в true
-
+	
 	Seq_Init				();
-
+	
 	b_end_transition		= false;
 	saved_anim				= cur_anim;
 
 	fx_time_last_play		= 0;
-	
 	b_forced_velocity		= false;
 	
 	accel_init				();
-
-	aa_time_last_attack		= 0;
 	
+	aa_time_last_attack		= 0;
+
 	pCurAnimTriple			= 0;
+
+	// обновить количество анимаций
+	UpdateAnimCount			();
+
+	pJumping				= 0;
 }
+
 
 // ”станавливает текущую анимацию, которую необходимо проиграть.
 // ¬озвращает false, если в смене анимации нет необходимости
@@ -91,19 +94,19 @@ bool CMotionManager::PrepareAnimation()
 
 	// получить элемент SAnimItem соответствующий cur_anim
 	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(cur_anim);
-	R_ASSERT(_sd->m_tAnims.end() != anim_it);
+	VERIFY(_sd->m_tAnims.end() != anim_it);
 
 	// определить необходимый индекс
 	int index;
 	if (-1 != anim_it->second.spec_id) index = anim_it->second.spec_id;
 	else {
-		R_ASSERT(!anim_it->second.pMotionVect.empty());
-		index = ::Random.randI(anim_it->second.pMotionVect.size());
+		VERIFY(anim_it->second.count != 0);
+		index = ::Random.randI(anim_it->second.count);
 	}
 
 	
 	// установить анимацию	
-	m_tpCurAnim = anim_it->second.pMotionVect[index];
+	m_tpCurAnim = get_motion_def(anim_it,index);
 
 	// «аполнить текущую анимацию
 	string64 st;
@@ -164,7 +167,7 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 void CMotionManager::ApplyParams()
 {
 	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
-	R_ASSERT(_sd->m_tAnims.end() != item_it);
+	VERIFY(_sd->m_tAnims.end() != item_it);
 
 	//pMonster->m_fCurSpeed		= item_it->second.speed.linear;
 	pMonster->m_velocity_linear.target	= item_it->second.velocity->velocity.linear;
@@ -298,7 +301,7 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 {
 	// найти анимацию 
 	ANIM_ITEM_MAP_IT  item_it = _sd->m_tAnims.find(a);
-	R_ASSERT(_sd->m_tAnims.end() != item_it);
+	VERIFY(_sd->m_tAnims.end() != item_it);
 
 	return item_it->second.pos_state;
 }
@@ -320,12 +323,6 @@ void CMotionManager::ForceAnimSelect()
 	pMonster->SelectAnimation(pMonster->Direction(),pMonster->Direction(),0);
 }
 
-void CMotionManager::UpdateVisual()
-{
-	pVisual = pMonster->Visual();
-	LoadVisualData();
-}	
-
 #define FX_CAN_PLAY_MIN_INTERVAL	50
 
 void CMotionManager::FX_Play(EHitSide side, float amount)
@@ -333,7 +330,7 @@ void CMotionManager::FX_Play(EHitSide side, float amount)
 	if (fx_time_last_play + FX_CAN_PLAY_MIN_INTERVAL > pMonster->m_dwCurrentTime) return;
 
 	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(cur_anim);
-	R_ASSERT(_sd->m_tAnims.end() != anim_it);
+	VERIFY(_sd->m_tAnims.end() != anim_it);
 	
 	clamp(amount,0.f,1.f);
 
@@ -345,7 +342,7 @@ void CMotionManager::FX_Play(EHitSide side, float amount)
 		case eSideRight:	p_str = &anim_it->second.fxs.right;	break;
 	}
 	
-	if (p_str && p_str->size()) PSkeletonAnimated(pVisual)->PlayFX(*(*p_str), amount);
+	if (p_str && p_str->size()) PSkeletonAnimated(pMonster->Visual())->PlayFX(*(*p_str), amount);
 
 	fx_time_last_play = pMonster->m_dwCurrentTime;
 }
@@ -355,10 +352,10 @@ float CMotionManager::GetAnimTime(EMotionAnim anim, u32 index)
 {
 	// получить элемент SAnimItem соответствующий anim
 	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(anim);
-	R_ASSERT(_sd->m_tAnims.end() != anim_it);
+	VERIFY(_sd->m_tAnims.end() != anim_it);
 
-	CMotionDef			*def = anim_it->second.pMotionVect[index];
-	CBoneData			&bone_data = PKinematics(pVisual)->LL_GetData(0);
+	CMotionDef			*def = get_motion_def(anim_it, index);
+	CBoneData			&bone_data = PKinematics(pMonster->Visual())->LL_GetData(0);
 	CBoneDataAnimated	*bone_anim = dynamic_cast<CBoneDataAnimated *>(&bone_data);
 
 	return  bone_anim->Motions[def->motion].GetLength() / def->Dequantize(def->speed);
@@ -366,8 +363,8 @@ float CMotionManager::GetAnimTime(EMotionAnim anim, u32 index)
 
 float CMotionManager::GetAnimTime(LPCSTR anim_name)
 {
-	CMotionDef			*def		= PSkeletonAnimated(pVisual)->ID_Cycle(anim_name);
-	CBoneData			&bone_data	= PSkeletonAnimated(pVisual)->LL_GetData(0);
+	CMotionDef			*def		= PSkeletonAnimated(pMonster->Visual())->ID_Cycle(anim_name);
+	CBoneData			&bone_data	= PSkeletonAnimated(pMonster->Visual())->LL_GetData(0);
 	CBoneDataAnimated	*bone_anim	= dynamic_cast<CBoneDataAnimated *>(&bone_data);
 
 	return  bone_anim->Motions[def->motion].GetLength() / def->Dequantize(def->speed);
@@ -377,9 +374,9 @@ float CMotionManager::GetAnimTime(LPCSTR anim_name)
 float CMotionManager::GetAnimSpeed(EMotionAnim anim)
 {
 	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(anim);
-	R_ASSERT(_sd->m_tAnims.end() != anim_it);
+	VERIFY(_sd->m_tAnims.end() != anim_it);
 
-	CMotionDef *def = anim_it->second.pMotionVect[0];
+	CMotionDef *def = get_motion_def(anim_it, 0);
 
 	return def->Dequantize(def->speed);
 }
@@ -394,7 +391,7 @@ void CMotionManager::ForceAngularSpeed(float vel)
 bool CMotionManager::IsStandCurAnim()
 {
 	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
-	R_ASSERT(_sd->m_tAnims.end() != item_it);
+	VERIFY(_sd->m_tAnims.end() != item_it);
 
 	if (fis_zero(item_it->second.velocity->velocity.linear)) return true;
 	return false;
@@ -472,13 +469,13 @@ void CMotionManager::SelectVelocities()
 		} 
 		
 		xr_map<u32,CDetailPathManager::STravelParams>::const_iterator it = pMonster->m_movement_params.find(cur_point_velocity_index);
-		R_ASSERT(it != pMonster->m_movement_params.end());
+		VERIFY(it != pMonster->m_movement_params.end());
 
 		path_vel.set(_abs((*it).second.linear_velocity), (*it).second.angular_velocity);
 	}
 
 	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
-	R_ASSERT(_sd->m_tAnims.end() != item_it);
+	VERIFY(_sd->m_tAnims.end() != item_it);
 
 	// получить скорости движени€ по анимации
 	anim_vel.set(item_it->second.velocity->velocity.linear, item_it->second.velocity->velocity.angular);
@@ -512,7 +509,7 @@ void CMotionManager::SelectVelocities()
 	// установка угловой скорости
 	if (!b_forced_velocity) {
 		item_it = _sd->m_tAnims.find(cur_anim);
-		R_ASSERT(_sd->m_tAnims.end() != item_it);
+		VERIFY(_sd->m_tAnims.end() != item_it);
 
 		pMonster->m_velocity_angular.target	= pMonster->m_velocity_angular.current = item_it->second.velocity->velocity.angular;
 	}
@@ -568,7 +565,7 @@ EAction CMotionManager::GetActionFromPath()
 LPCSTR CMotionManager::GetAnimationName(EMotionAnim anim)
 {
 	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(anim);
-	R_ASSERT(_sd->m_tAnims.end() != item_it);
+	VERIFY(_sd->m_tAnims.end() != item_it);
 
 	return *item_it->second.target_name;
 }
@@ -714,6 +711,7 @@ bool CMotionManager::TA_IsActive()
 
 	return false;
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////
 
 void CMotionManager::CheckAnimWithPath()
@@ -742,4 +740,43 @@ void CMotionManager::CheckAnimWithPath()
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////
+void CMotionManager::UpdateAnimCount()
+{
+	for (ANIM_ITEM_MAP_IT it = _sd->m_tAnims.begin(); it != _sd->m_tAnims.end(); it++)	{
+		
+		// проверить, были ли уже загружены данные
+		if (it->second.count != 0) return;
+
+		string128	s, s_temp; 
+		u8 count = 0;
+		
+		for (int i=0; ; ++i) {
+			if (0 != PSkeletonAnimated(pMonster->Visual())->ID_Cycle_Safe(strconcat(s_temp, *it->second.target_name,itoa(i,s,10))))  count++;
+			else break;
+		}
+
+		if (count != 0) it->second.count = count;
+		else {
+			sprintf(s, "Error! No animation: %s for monster %s", *it->second.target_name, *pMonster->cName());
+			R_ASSERT2(count != 0, s);
+		} 
+	}
+}
+
+CMotionDef *CMotionManager::get_motion_def(ANIM_ITEM_MAP_IT &it, u32 index)
+{
+	string128 s1,s2;
+	return PSkeletonAnimated(pMonster->Visual())->ID_Cycle_Safe(strconcat(s2,*it->second.target_name,itoa(index,s1,10)));
+}
+
+
+void CMotionManager::ActivateJump()
+{
+	pJumping = dynamic_cast<CJumping *>(pMonster);
+}
+void CMotionManager::DeactivateJump()
+{
+	pJumping = 0;
+}
 

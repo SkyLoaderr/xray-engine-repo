@@ -126,3 +126,13 @@ u32	CMonsterEnemyManager::get_enemies_count()
 {
 	return monster->EnemyMemory.get_enemies_count();
 }
+
+void CMonsterEnemyManager::reinit()
+{
+	enemy			= 0;
+	time_last_seen	= 0;
+	flags.zero		();
+	forced			= false;
+	prev_enemy		= 0;
+	danger_type		= eNone;
+}
