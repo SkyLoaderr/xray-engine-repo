@@ -288,3 +288,7 @@ function GiveInfo(obj, info_number)
 		result = obj:give_info_portion(info_number)
 	end
 end 
+
+function GiveInfoViaPda(obj_receiver, obj_sender, info_number)
+	obj_receiver:give_info_portion_via_pda(info_number, obj_sender)
+end 
