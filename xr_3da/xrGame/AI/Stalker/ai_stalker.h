@@ -140,7 +140,7 @@ public:
 	virtual void						g_WeaponBones						(int &L, int &R1, int &R2);
 	virtual void						g_fireParams						(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 	virtual void						HitSignal							(float P,	Fvector& vLocalDir, CObject* who, s16 element);
-	virtual void						Die									();
+	virtual void						Die									(CObject* who);
 
 	virtual void						OnEvent								(NET_Packet& P, u16 type);
 	virtual void						feel_touch_new						(CObject* O);
@@ -246,6 +246,10 @@ public:
 			void						dbg_animation			(LPCSTR caption, CMotionDef *animation);
 	virtual BOOL						feel_touch_on_contact	(CObject* O);
 
+	//флаги, какие действия совершал актер по отношению к сталкеру
+	//(помог, атаковал и т.д.)
+	Flags32								m_actor_relation_flags;
+
 	// ALife
 private:
 	struct CTradeItem {
@@ -272,6 +276,7 @@ private:
 	CInventoryOwner						*m_current_trader;
 	xr_vector<CTradeItem>				m_temp_items;
 	u32									m_total_money;
+
 
 private:
 	bool								m_not_enough_food;

@@ -115,7 +115,7 @@ public:
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 	virtual	void			HitScale			(const int bone_num, float& hit_scale, float& wound_scale);
-	virtual void			Die					();
+	virtual void			Die					(CObject* who);
 	virtual void			KillEntity			(CObject* who);
 		
 	// Events

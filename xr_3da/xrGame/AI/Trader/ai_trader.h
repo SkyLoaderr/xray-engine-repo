@@ -72,7 +72,7 @@ public:
 	virtual void		load			(IReader &input_packet);
 	virtual BOOL		net_SaveRelevant()							{return inherited::net_SaveRelevant();}
 
-	virtual void		Die				();
+	virtual void		Die				(CObject* who);
 	virtual void		Think			();
 	virtual void		HitSignal		(float /**P/**/, Fvector &/**local_dir/**/,	CObject* /**who/**/, s16 /**element/**/){};
 	virtual void		HitImpulse		(float /**P/**/, Fvector &/**vWorldDir/**/, 	Fvector& /**vLocalDir/**/){};

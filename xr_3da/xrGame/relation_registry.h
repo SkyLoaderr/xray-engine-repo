@@ -9,9 +9,13 @@
 
 class CRelationRegistryWrapper;
 
+class CInventoryOwner;
+class CEntityAlive;
+
 //////////////////////////////////////////////////////////////////////////
 
 #define GAME_RELATIONS_SECT "game_relations"
+#define ACTIONS_POINTS_SECT "action_points"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -56,6 +60,46 @@ private:
 	CHARACTER_GOODWILL	 GetCommunityRelation		(CHARACTER_COMMUNITY_INDEX, CHARACTER_COMMUNITY_INDEX) const;	
 	CHARACTER_GOODWILL	 GetRankRelation			(CHARACTER_RANK_VALUE, CHARACTER_RANK_VALUE) const;
 	CHARACTER_GOODWILL	 GetReputationRelation		(CHARACTER_REPUTATION_VALUE, CHARACTER_REPUTATION_VALUE) const;
+
+
+	//реакцией на действия персонажей и соответствующее изменение отношения
+public:
+	
+	//список действий актера, за которые начисляются
+	//очки рейтинга, репутации или меняется отношения персонажа
+	//к группировке
+	enum ERelationAction
+	{
+		KILL				= 0x00,		//убийство персонажа
+		ATTACK				= 0x01,		//атака персонажа
+		FIGHT_HELP_HUMAN	= 0x02,		//помощь в драке персонажу с другим персонажем
+		FIGHT_HELP_MONSTER	= 0x04,		//помощь в драке персонажу c монстром
+		SOS_HELP			= 0x08		//приход на помощь по сигналу SOS
+	};
+	void Action (CEntityAlive* from, CEntityAlive* to, ERelationAction action);
+	
+public:	
+
+	struct FIGHT_DATA
+	{
+		FIGHT_DATA			();
+		u16					attacker;
+		u16					defender;
+		float				total_hit;
+		u32					time;
+	};
+
+
+	//зарегистрировать драку (реакция на Hit в EntityAlive)
+	void FightRegister (u16 attacker, u16 defender, float hit_amount);
+	void UpdateFightRegister ();
+
+private:
+	DEFINE_VECTOR(FIGHT_DATA, FIGHT_VECTOR, FIGHT_VECTOR_IT);
+	static FIGHT_VECTOR*						m_fight_registry;
+	static FIGHT_VECTOR&						fight_registry();
+	
+	FIGHT_DATA*									FindFight(u16 attacker);
 	
 public:
 	static CRelationRegistryWrapper&			relation_registry();

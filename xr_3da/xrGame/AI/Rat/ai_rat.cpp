@@ -77,9 +77,9 @@ void CAI_Rat::reload					(LPCSTR	section)
 	CSoundPlayer::add		(pSettings->r_string(section,"sound_eat"),		100, SOUND_TYPE_MONSTER_EATING	,	3, u32(eRatSoundMaskEat),		eRatSoundEat,		head_bone_name);
 }
 
-void CAI_Rat::Die()
+void CAI_Rat::Die(CObject* who)
 {
-	inherited::Die( );
+	inherited::Die(who);
 	m_eCurrentState = aiRatDie;
 
 	SelectAnimation(XFORM().k,direction(),speed());

@@ -52,10 +52,17 @@ public:
 	static CHARACTER_GOODWILL	relation			(int from, int to);
 	CHARACTER_GOODWILL			relation			(int to);
 
+	static CHARACTER_RANK_VALUE	rank_kill_points	(int);
+
 	static void					DeleteIdToIndexData	();
 
 private:
 	typedef CIni_Table<CHARACTER_GOODWILL, CHARACTER_RANK> GOODWILL_TABLE;
 	friend GOODWILL_TABLE;
 	static GOODWILL_TABLE m_relation_table;
+
+	//очки рейтинга которые прибавляются за убийство персонажа с определенным рангом
+	typedef CIni_Table<CHARACTER_RANK_VALUE, CHARACTER_RANK> RANK_KILL_TABLE;
+	friend RANK_KILL_TABLE;
+	static RANK_KILL_TABLE m_rank_kill_table;
 };

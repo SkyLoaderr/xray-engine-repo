@@ -428,6 +428,11 @@ void CInventoryOwner::SetRank			(CHARACTER_RANK_VALUE rank)
 	CharacterInfo().m_CurrentRank.set(rank);
 	trader->m_rank  = rank;
 }
+
+void CInventoryOwner::ChangeRank			(CHARACTER_RANK_VALUE delta)
+{
+	SetRank(Rank()+delta);
+}
 void CInventoryOwner::SetReputation		(CHARACTER_REPUTATION_VALUE reputation)
 {
 	CEntityAlive* EA					= smart_cast<CEntityAlive*>(this); VERIFY(EA);
@@ -438,6 +443,12 @@ void CInventoryOwner::SetReputation		(CHARACTER_REPUTATION_VALUE reputation)
 	CharacterInfo().m_CurrentReputation.set(reputation);
 	trader->m_reputation  = reputation;
 }
+
+void CInventoryOwner::ChangeReputation	(CHARACTER_REPUTATION_VALUE delta)
+{
+	SetReputation(Reputation() + delta);
+}
+
 
 
 CHARACTER_COMMUNITY_INDEX  CInventoryOwner::Community	() const

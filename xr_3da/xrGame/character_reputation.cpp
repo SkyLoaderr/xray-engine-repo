@@ -18,6 +18,8 @@ REPUTATION_DATA::REPUTATION_DATA (int idx, shared_str idn, LPCSTR team_str)
 	id = idn;
 	threshold = (u8)atoi(team_str);
 }
+//////////////////////////////////////////////////////////////////////////
+CHARACTER_REPUTATION::GOODWILL_TABLE CHARACTER_REPUTATION::m_relation_table;
 
 //////////////////////////////////////////////////////////////////////////
 CHARACTER_REPUTATION::CHARACTER_REPUTATION	()
@@ -65,7 +67,7 @@ void CHARACTER_REPUTATION::InitIdToIndex	()
 	section_name	= GAME_RELATIONS_SECT;
 	line_name		= REPUTATION_LINE;
 
-	m_relation_table.set_table_sect(REPUTATION_TABLE);
+	m_relation_table.set_table_params(REPUTATION_TABLE);
 }
 
 

@@ -649,9 +649,9 @@ void CCustomMonster::HitSignal(float /**perc/**/, Fvector& /**vLocalDir/**/, COb
 {
 }
 
-void CCustomMonster::Die	()
+void CCustomMonster::Die	(CObject* who)
 {
-	inherited::Die			();
+	inherited::Die			(who);
 	//Level().RemoveMapLocationByID(this->ID());
 }
 

@@ -10,6 +10,9 @@
 #include "level.h"
 #include "../skeletoncustom.h"
 
+#include "relation_registry.h"
+
+
 
 #define SMALL_ENTITY_RADIUS		0.6f
 #define BLOOD_MARKS_SECT		"bloody_marks"
@@ -231,6 +234,13 @@ void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, F
 
 void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 {
+	CEntityAlive* EA = smart_cast<CEntityAlive*>(who);
+	if(EA && EA->g_Alive())
+	{
+		RELATION_REGISTRY().FightRegister(EA->ID(), ID(), P);
+		RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
+	}
+		
 	HitScale(element, m_fHitBoneScale, m_fWoundBoneScale);
 
 	//изменить состояние, перед тем как родительский класс обработает хит
@@ -249,14 +259,12 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 
 	inherited::Hit(P,dir,who,element,position_in_object_space,impulse, hit_type);
 }
-/* not used
-void CEntityAlive::BuyItem(LPCSTR buf)
+
+void CEntityAlive::Die	(CObject* who)
 {
-	NET_Packet P;
-	u_EventGen	(P,GE_BUY,ID());
-	P.w_stringZ	(buf);
-	u_EventSend	(P);
-}*/
+	RELATION_REGISTRY().Action(smart_cast<CEntityAlive*>(who), this, RELATION_REGISTRY::KILL);
+	inherited::Die(who);
+}
 
 //вывзывает при подсчете хита
 float CEntityAlive::CalcCondition(float /**hit/**/)

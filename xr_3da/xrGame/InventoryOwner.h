@@ -142,7 +142,9 @@ public:
 	//установка группировки на клиентском и серверном объкте
 	virtual void			SetCommunity	(CHARACTER_COMMUNITY_INDEX);
 	virtual void			SetRank			(CHARACTER_RANK_VALUE);
+	virtual void			ChangeRank		(CHARACTER_RANK_VALUE);
 	virtual void			SetReputation	(CHARACTER_REPUTATION_VALUE);
+	virtual void			ChangeReputation(CHARACTER_REPUTATION_VALUE);
 
 	//для работы с relation system
 	u16								object_id	() const;

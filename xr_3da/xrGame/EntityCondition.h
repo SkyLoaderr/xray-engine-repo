@@ -160,6 +160,8 @@ protected:
 	//скорость заживания раны
 	float m_fV_WoundIncarnation;
 	float m_fMinWoundSize;
+	//флаг, указывающий на то что есть кровотечение
+	bool m_bIsBleeding;
 
 
 	//части хита, затрачиваемые на уменьшение здоровья и силы
@@ -168,6 +170,7 @@ protected:
 
 	//состояние сна
 	bool m_bIsSleeping;
+
 
 	//потеря здоровья от последнего хита
 	float m_fHealthLost;

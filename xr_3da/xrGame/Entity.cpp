@@ -57,13 +57,13 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 				if (this!=who)	if(bDebug) HUD().outMessage	(0xffffffff,cName(),"Killed by '%s'...",who->cName());
 				else			if(bDebug) HUD().outMessage	(0xffffffff,cName(),"Crashed...");
 			};
-			Die				();
+			Die				(who);
 		}
 		break;
 	}
 }
 
-void CEntity::Die() 
+void CEntity::Die(CObject* who)
 {
 	set_ready_to_save	();
 	fEntityHealth = -1.f;

@@ -5694,7 +5694,13 @@
 									RelativePath=".\relation_registry.h">
 								</File>
 								<File
+									RelativePath=".\relation_registry_actions.cpp">
+								</File>
+								<File
 									RelativePath=".\relation_registry_defs.h">
+								</File>
+								<File
+									RelativePath=".\relation_registry_fights.cpp">
 								</File>
 								<File
 									RelativePath=".\relation_registry_inline.h">

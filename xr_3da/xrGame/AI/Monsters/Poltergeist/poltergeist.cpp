@@ -182,7 +182,7 @@ void CPoltergeist::net_Destroy()
 	Energy::disable();
 }
 
-void CPoltergeist::Die()
+void CPoltergeist::Die(CObject* who)
 {
 	if (m_hidden) {
 		setVisible(true);
@@ -190,7 +190,7 @@ void CPoltergeist::Die()
 		CParticlesPlayer::StopParticles(m_particles_hidden);
 	}
 
-	inherited::Die();
+	inherited::Die(who);
 	Energy::disable();
 }
 

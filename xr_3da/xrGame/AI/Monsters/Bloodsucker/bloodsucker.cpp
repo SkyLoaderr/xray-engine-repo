@@ -301,11 +301,11 @@ void CAI_Bloodsucker::net_Destroy()
 	inherited::net_Destroy();
 }
 
-void CAI_Bloodsucker::Die()
+void CAI_Bloodsucker::Die(CObject* who)
 {
 	CInvisibility::deactivate(); 
 	CInvisibility::disable();
 
-	inherited::Die();
+	inherited::Die(who);
 }
 

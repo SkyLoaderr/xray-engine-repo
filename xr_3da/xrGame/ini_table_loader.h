@@ -22,28 +22,47 @@ class CIni_Table
 {
 public:
 			CIni_Table	();
-	virtual ~CIni_Table	();
+			~CIni_Table	();
 
 	typedef						xr_vector<T_ITEM>						ITEM_VECTOR;
 	typedef						xr_vector<ITEM_VECTOR>					ITEM_TABLE;
 
 
-	static ITEM_TABLE&			table			();
-	static void					clear			();
-	static void					set_table_sect	(LPCSTR sect) {table_sect = sect;}
+	ITEM_TABLE&			table			();
+	void				clear			();
+	void				set_table_params(LPCSTR sect, int width = -1) {table_sect = sect; table_width = width;}
 
 private:
-	static ITEM_TABLE*			m_pTable;
-	static LPCSTR				table_sect;
+	ITEM_TABLE*			m_pTable;
+	LPCSTR				table_sect;
+	//ширина таблицы, если -1 то таблица делается квадратной (ширина равна высоте)
+	int					table_width;
 };
 
+/*
 TEMPLATE_SPECIALIZATION
 typename CSIni_Table::ITEM_TABLE* CSIni_Table::m_pTable = NULL;
 
 //имя секции таблицы
 TEMPLATE_SPECIALIZATION
 LPCSTR CSIni_Table::table_sect = NULL;
+TEMPLATE_SPECIALIZATION
+int CSIni_Table::table_width = -1;
+*/
 
+TEMPLATE_SPECIALIZATION
+CSIni_Table::CIni_Table	()
+{
+	m_pTable = NULL;
+	table_sect = NULL;
+	table_width = -1;
+}
+
+TEMPLATE_SPECIALIZATION
+CSIni_Table::~CIni_Table	()
+{
+	xr_delete(m_pTable);
+}
 
 TEMPLATE_SPECIALIZATION
 typename CSIni_Table::ITEM_TABLE& CSIni_Table::table	()
@@ -53,10 +72,11 @@ typename CSIni_Table::ITEM_TABLE& CSIni_Table::table	()
 	if(m_pTable)
 		return *m_pTable;
 
-		m_pTable = xr_new<ITEM_TABLE>();
+	m_pTable = xr_new<ITEM_TABLE>();
 
 	VERIFY(table_sect);
 	std::size_t table_size = T_INI_LOADER::GetMaxIndex()+1;
+	std::size_t cur_table_width = (table_width == -1)?table_size:(std::size_t)table_width;
 
 	m_pTable->resize(table_size);
 
@@ -72,8 +92,8 @@ typename CSIni_Table::ITEM_TABLE& CSIni_Table::table	()
 		if(type_max(T_INI_LOADER::index_type) == cur_index)
 			Debug.fatal("wrong community %s in section [%s]", (*i).first, table_sect);
 
-		(*m_pTable)[cur_index].resize(table_size);
-		for(std::size_t j=0; j<table_size; j++)
+		(*m_pTable)[cur_index].resize(cur_table_width);
+		for(std::size_t j=0; j<cur_table_width; j++)
 		{
 			(*m_pTable)[cur_index][j] = (T_ITEM)atoi(_GetItem(*(*i).second,(int)j,buffer));
 		}

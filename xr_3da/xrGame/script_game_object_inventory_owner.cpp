@@ -281,7 +281,7 @@ int CScriptGameObject::CharacterRank			()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	return pInventoryOwner->CharacterInfo().Rank().value();
+	return pInventoryOwner->Rank();
 }
 void CScriptGameObject::SetCharacterRank			(int char_rank)
 {
@@ -294,14 +294,14 @@ void CScriptGameObject::ChangeCharacterRank			(int char_rank)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	return pInventoryOwner->SetRank(pInventoryOwner->CharacterInfo().Rank().value() + char_rank);
+	return pInventoryOwner->ChangeRank(char_rank);
 }
 
 int CScriptGameObject::CharacterReputation			()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	return pInventoryOwner->CharacterInfo().Reputation().value();
+	return pInventoryOwner->Reputation();
 }
 
 void CScriptGameObject::SetCharacterReputation		(int char_rep)
@@ -315,7 +315,7 @@ void CScriptGameObject::ChangeCharacterReputation		(int char_rep)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	pInventoryOwner->SetReputation(pInventoryOwner->CharacterInfo().Reputation().value() + char_rep);
+	pInventoryOwner->ChangeReputation(char_rep);
 }
 
 LPCSTR CScriptGameObject::CharacterCommunity	()

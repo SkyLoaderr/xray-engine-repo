@@ -78,6 +78,8 @@ CEntityCondition::CEntityCondition(void)
 
 	m_fHitBoneScale = 1.f;
 	m_fWoundBoneScale = 1.f;
+
+	m_bIsBleeding = false;
 }
 
 CEntityCondition::~CEntityCondition(void)
@@ -90,6 +92,8 @@ void CEntityCondition::ClearWounds()
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 		xr_delete(*it);
 	m_WoundVector.clear();
+
+	m_bIsBleeding = false;
 }
 
 void CEntityCondition::LoadCondition(LPCSTR entity_section)
@@ -156,11 +160,7 @@ void CEntityCondition::reinit	()
 	m_fHealthLost = 0.f;
 	m_pWho = NULL;
 
-
-
-	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
-		xr_delete(*it);
-	m_WoundVector.clear();
+	ClearWounds();
 
 	Awoke();
 }
@@ -444,7 +444,10 @@ float CEntityCondition::BleedingSpeed()
 void CEntityCondition::UpdateHealth()
 {
 	float delta_time = float(m_iDeltaTime)/1000.f;
-	m_fDeltaHealth -= BleedingSpeed() * delta_time * m_fV_Bleeding;
+	
+	float bleeding_speed = BleedingSpeed() * delta_time * m_fV_Bleeding;
+	m_bIsBleeding = fis_zero(bleeding_speed)?false:true;
+	m_fDeltaHealth -= bleeding_speed;
 	VERIFY(_valid(m_fDeltaHealth));
 	ChangeBleeding(m_fV_WoundIncarnation * delta_time);
 }
@@ -464,9 +467,13 @@ void CEntityCondition::UpdateSatiety()
 		sleep_k = m_fCurrentSleepHealth;
 	}
 		
-	m_fDeltaHealth += m_fV_SatietyHealth*
+	//сытость увеличивает здоровье только если нет открытых ран
+	if(!m_bIsBleeding)
+	{
+		m_fDeltaHealth += m_fV_SatietyHealth*
 					(m_fSatiety>m_fSatietyCritical?1.f:-1.f)*
 					sleep_k*m_iDeltaTime/1000;
+	}
 
 	//коэффициенты уменьшения восстановления силы от сытоти и радиации
 	float radiation_power_k = 1.f;/*_abs(m_fRadiationMax - m_fRadiation)/m_fRadiationMax*/

@@ -194,7 +194,11 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 
 	int offset;
 
+#ifdef _DEBUG
+	sprintf(str, "%s,%d", *stbl(GetRankAsText(pCharInfo->Rank().value())), pCharInfo->Rank().value());
+#else
 	sprintf(str, "%s", *stbl(GetRankAsText(pCharInfo->Rank().value())));
+#endif
 	if (m_bInfoAutoAdjust)
 	{
 		if (UIRankCaption.IsEnabled() && UIRankCaption.GetFont())
@@ -205,7 +209,12 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	}
 	UIRank.SetText(str);
 
+
+#ifdef _DEBUG
+	sprintf(str, "%s,%d", *stbl(GetReputationAsText(pCharInfo->Reputation().value())), pCharInfo->Reputation().value());
+#else
 	sprintf(str, "%s", *stbl(GetReputationAsText(pCharInfo->Reputation().value())));
+#endif
 	if (m_bInfoAutoAdjust)
 	{
 		if (UIReputationCaption.IsEnabled() && UIReputationCaption.GetFont())
@@ -292,7 +301,14 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 		NODEFAULT;
 	}
 
-	UIRelation.SetText(*stbl(GetGoodwillAsText(goodwill)));
+	string256		str;
+#ifdef _DEBUG
+	sprintf(str, "%s,%d", *stbl(GetGoodwillAsText(goodwill)), goodwill);
+#else
+	sprintf(str, "%s", *stbl(GetGoodwillAsText(goodwill)));
+#endif
+
+	UIRelation.SetText(str);
 	if (m_bInfoAutoAdjust)
 	{
 		int offset = static_cast<int>(UIRelationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIRelationCaption.GetWndRect().left + 5);

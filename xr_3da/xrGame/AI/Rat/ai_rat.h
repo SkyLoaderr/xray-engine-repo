@@ -273,7 +273,7 @@ public:
 	virtual void				net_Export				(NET_Packet& P);
 	virtual void				net_Import				(NET_Packet& P);
 	virtual void				HitSignal				(float amount, Fvector& vLocalDir, CObject* who, s16 element);
-	virtual void				Die						();
+	virtual void				Die						(CObject* who);
 	virtual void				Load					(LPCSTR section);
 	virtual void				Think					();
 	virtual void				SelectAnimation			(const Fvector& _view, const Fvector& _move, float speed );

@@ -711,7 +711,7 @@ void CHelicopter::OnEvent(	NET_Packet& P, u16 type)
 	}
 }
 
-void CHelicopter::Die()
+void CHelicopter::DieHelicopter()
 {
 	if ( state() == CHelicopter::eDead )
 		return;

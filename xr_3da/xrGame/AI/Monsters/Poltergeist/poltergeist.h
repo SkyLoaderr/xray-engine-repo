@@ -35,7 +35,7 @@ public:
 	virtual void	UpdateCL			();
 	virtual	void	shedule_Update		(u32 dt);
 
-	virtual void	Die					();
+	virtual void	Die					(CObject* who);
 
 	virtual void	ForceFinalAnimation	();
 

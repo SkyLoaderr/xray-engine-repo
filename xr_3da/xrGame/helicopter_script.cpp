@@ -48,7 +48,7 @@ void CHelicopter::script_register(lua_State *L)
 
 				.def("SetEnemy",					&CHelicopter::SetEnemy)
 				.def("GoPatrolByPatrolPath",		&CHelicopter::goPatrolByPatrolPath)
-				.def("Die",							&CHelicopter::Die)
+				.def("Die",							&CHelicopter::DieHelicopter)
 				.def("PrepareDie",					&CHelicopter::PrepareDie)
 				.def("Explode",						&CHelicopter::Explode)
 

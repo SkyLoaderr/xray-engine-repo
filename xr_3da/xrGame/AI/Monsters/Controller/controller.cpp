@@ -340,9 +340,9 @@ void CController::Jump()
 	}
 }
 
-void CController::Die()
+void CController::Die(CObject* who)
 {
-	inherited::Die();
+	inherited::Die(who);
 	CPsyAuraController::deactivate();
 	CPsyAuraController::set_auto_activate(false);
 	

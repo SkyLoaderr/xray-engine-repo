@@ -365,9 +365,9 @@ void CAI_Trader::Think()
 {
 }
 
-void CAI_Trader::Die ()
+void CAI_Trader::Die (CObject* who)
 {
-	inherited::Die ();
+	inherited::Die (who);
 }
 
 void CAI_Trader::net_Destroy()

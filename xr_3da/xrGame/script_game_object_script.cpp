@@ -320,6 +320,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("set_relation",				&CScriptGameObject::SetRelation)
 
 
+
 			//////////////////////////////////////////////////////////////////////////
 			
 			.def("need_to_answer_pda",			&CScriptGameObject::NeedToAnswerPda)

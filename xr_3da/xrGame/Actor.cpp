@@ -486,15 +486,11 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 	}
 }
 
-void CActor::Die	( )
+void CActor::Die	(CObject* who)
 {
-	inherited::Die();
+	inherited::Die(who);
 
-	//// Dima
-	//b_DropActivated			= TRUE;
-	//g_PerformDrop			();
-	// @@@ WT
-//	inventory().DropAll();
+
 	//-------------------------------------
 	xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
 	xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();

@@ -132,7 +132,7 @@ public:
 public:
 
 	virtual BOOL		net_Spawn				( LPVOID DC);
-	virtual void		Die						( );
+	virtual void		Die						( CObject* who);
 
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);
 	virtual void		g_WeaponBones			(int &/**L/**/, int &/**R1/**/, int &/**R2/**/) {};

@@ -322,9 +322,9 @@ void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_objec
 }
 
 
-void CBurer::Die()
+void CBurer::Die(CObject* who)
 {
-	inherited::Die( );
+	inherited::Die(who);
 
 	MotionMan.TA_Deactivate();
 	CTelekinesis::Deactivate();

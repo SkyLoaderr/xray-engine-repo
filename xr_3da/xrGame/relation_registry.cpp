@@ -12,9 +12,6 @@
 #include "character_rank.h"
 
 
-
-
-
 //////////////////////////////////////////////////////////////////////////
 
 SRelation::SRelation()
@@ -60,6 +57,10 @@ void SRelation::SetGoodwill(CHARACTER_GOODWILL new_goodwill)
 //////////////////////////////////////////////////////////////////////////
 
 CRelationRegistryWrapper* RELATION_REGISTRY::m_relation_registry = NULL;
+RELATION_REGISTRY::FIGHT_VECTOR* RELATION_REGISTRY::m_fight_registry = NULL;
+
+
+//////////////////////////////////////////////////////////////////////////
 
 
 RELATION_REGISTRY::RELATION_REGISTRY  ()
@@ -80,9 +81,19 @@ CRelationRegistryWrapper& RELATION_REGISTRY::relation_registry()
 	return *m_relation_registry;
 }
 
+
+RELATION_REGISTRY::FIGHT_VECTOR& RELATION_REGISTRY::fight_registry()
+{
+	if(!m_fight_registry)
+		m_fight_registry = xr_new<FIGHT_VECTOR>();
+
+	return *m_fight_registry;
+}
+
 void RELATION_REGISTRY::clear_relation_registry()
 {
 	xr_delete(m_relation_registry);
+	xr_delete(m_fight_registry);
 }
 
 

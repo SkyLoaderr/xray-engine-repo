@@ -376,14 +376,14 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 	XFORM().setHPB		(yaw,pitch,bank);
 }
 //---------------------------------------------------------------------
-void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)
+void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* who, s16 /**element/**/)
 {
 	
 	fEntityHealth		= 0;
 	set_death_time		();
 	if (eDeathDead!=st_current) 
 	{	
-		Die();
+		Die(who);
 		st_target = eDeathFall;
 	}
 	else smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());

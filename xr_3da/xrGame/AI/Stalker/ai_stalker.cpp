@@ -36,6 +36,8 @@ CAI_Stalker::CAI_Stalker			()
 	InitTrade						();
 	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+
+	m_actor_relation_flags.zero();
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -128,13 +130,13 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone2"));
 }
 
-void CAI_Stalker::Die				()
+void CAI_Stalker::Die				(CObject* who)
 {
 	SelectAnimation					(XFORM().k,direction(),speed());
 
 	set_sound_mask					(0);
 	play							(eStalkerSoundDie);
-	inherited::Die					();
+	inherited::Die					(who);
 	m_bHammerIsClutched				= !::Random.randI(0,2);
 
 	//запретить использование слотов в инвенторе
@@ -390,10 +392,6 @@ void CAI_Stalker::UpdateCL()
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	CActor* pActor = smart_cast<CActor*>(who);
-	if(pActor)
-		RELATION_REGISTRY().SetRelationType(static_cast<CInventoryOwner*>(this), static_cast<CInventoryOwner*>(pActor), ALife::eRelationTypeEnemy);
-		
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
 

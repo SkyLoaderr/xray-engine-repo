@@ -218,7 +218,7 @@ public:
 	//CEntity
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element){;}
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
-	virtual void			Die					();
+	virtual void			DieHelicopter		();
 	
 			void			PrepareDie			();
 			void			UpdateHeliParticles	();
