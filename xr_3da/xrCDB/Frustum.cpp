@@ -230,47 +230,71 @@ BOOL CFrustum::CreateFromClipPoly(Fvector* p, int count, Fvector& vBase, CFrustu
 	return	true;
 }
 
-void CFrustum::CreateFromViewMatrix(Fmatrix &M)
+void CFrustum::CreateFromMatrix(Fmatrix &M, DWORD mask)
 {
+	p_count			= 0;
+
 	// Left clipping plane
-	planes[0].n.x	= -(M._14 + M._11);
-	planes[0].n.y	= -(M._24 + M._21);
-	planes[0].n.z	= -(M._34 + M._31);
-	planes[0].d		= -(M._44 + M._41);
+	if (mask&FRUSTUM_P_LEFT) 
+	{
+		planes[p_count].n.x	= -(M._14 + M._11);
+		planes[p_count].n.y	= -(M._24 + M._21);
+		planes[p_count].n.z	= -(M._34 + M._31);
+		planes[p_count].d	= -(M._44 + M._41);
+		p_count++;
+	}
 	
 	// Right clipping plane
-	planes[1].n.x	= -(M._14 - M._11);
-	planes[1].n.y	= -(M._24 - M._21);
-	planes[1].n.z	= -(M._34 - M._31);
-	planes[1].d		= -(M._44 - M._41);
+	if (mask&FRUSTUM_P_RIGHT) 
+	{
+		planes[p_count].n.x	= -(M._14 - M._11);
+		planes[p_count].n.y	= -(M._24 - M._21);
+		planes[p_count].n.z	= -(M._34 - M._31);
+		planes[p_count].d		= -(M._44 - M._41);
+		p_count++;
+	}
 	
 	// Top clipping plane
-	planes[2].n.x	= -(M._14 - M._12);
-	planes[2].n.y	= -(M._24 - M._22);
-	planes[2].n.z	= -(M._34 - M._32);
-	planes[2].d		= -(M._44 - M._42);
+	if (mask&FRUSTUM_P_TOP) 
+	{
+		planes[p_count].n.x	= -(M._14 - M._12);
+		planes[p_count].n.y	= -(M._24 - M._22);
+		planes[p_count].n.z	= -(M._34 - M._32);
+		planes[p_count].d		= -(M._44 - M._42);
+		p_count++;
+	}
 	
 	// Bottom clipping plane
-	planes[3].n.x	= -(M._14 + M._12);
-	planes[3].n.y	= -(M._24 + M._22);
-	planes[3].n.z	= -(M._34 + M._32);
-	planes[3].d		= -(M._44 + M._42);
-
-	/*
-	// Near clipping plane
-	planes[4].n.x	= -(M._14 + M._13);
-	planes[4].n.y	= -(M._24 + M._23);
-	planes[4].n.z	= -(M._34 + M._33);
-	planes[4].d		= -(M._44 + M._43);
-	*/
-
+	if (mask&FRUSTUM_P_BOTTOM) 
+	{
+		planes[p_count].n.x	= -(M._14 + M._12);
+		planes[p_count].n.y	= -(M._24 + M._22);
+		planes[p_count].n.z	= -(M._34 + M._32);
+		planes[p_count].d		= -(M._44 + M._42);
+		p_count++;
+	}
+	
 	// Far clipping plane
-	planes[4].n.x	= -(M._14 - M._13);
-	planes[4].n.y	= -(M._24 - M._23);
-	planes[4].n.z	= -(M._34 - M._33);
-	planes[4].d		= -(M._44 - M._43);
-
-	for (int i=0;i<5;i++)
+	if (mask&FRUSTUM_P_FAR) 
+	{
+		planes[p_count].n.x	= -(M._14 - M._13);
+		planes[p_count].n.y	= -(M._24 - M._23);
+		planes[p_count].n.z	= -(M._34 - M._33);
+		planes[p_count].d		= -(M._44 - M._43);
+		p_count++;
+	}
+	
+	// Near clipping plane
+	if (mask&FRUSTUM_P_NEAR) 
+	{
+		planes[p_count].n.x	= -(M._14 + M._13);
+		planes[p_count].n.y	= -(M._24 + M._23);
+		planes[p_count].n.z	= -(M._34 + M._33);
+		planes[p_count].d		= -(M._44 + M._43);
+		p_count++;
+	}
+	
+	for (int i=0;i<p_count;i++)
 	{
 		float denom = 1.0f / planes[i].n.magnitude();// Get magnitude of Vector
 		planes[i].n.x	*= denom;
@@ -278,43 +302,4 @@ void CFrustum::CreateFromViewMatrix(Fmatrix &M)
 		planes[i].n.z	*= denom;
 		planes[i].d		*= denom;
 	}
-
-	p_count = 5;
-}
-void CFrustum::CreateFromMatrix(Fmatrix &M)
-{
-	// Left clipping plane
-	planes[0].n.x	= -(M._14 + M._11);
-	planes[0].n.y	= -(M._24 + M._21);
-	planes[0].n.z	= -(M._34 + M._31);
-	planes[0].d		= -(M._44 + M._41);
-	
-	// Right clipping plane
-	planes[1].n.x	= -(M._14 - M._11);
-	planes[1].n.y	= -(M._24 - M._21);
-	planes[1].n.z	= -(M._34 - M._31);
-	planes[1].d		= -(M._44 - M._41);
-	
-	// Top clipping plane
-	planes[2].n.x	= -(M._14 - M._12);
-	planes[2].n.y	= -(M._24 - M._22);
-	planes[2].n.z	= -(M._34 - M._32);
-	planes[2].d		= -(M._44 - M._42);
-	
-	// Bottom clipping plane
-	planes[3].n.x	= -(M._14 + M._12);
-	planes[3].n.y	= -(M._24 + M._22);
-	planes[3].n.z	= -(M._34 + M._32);
-	planes[3].d		= -(M._44 + M._42);
-
-	for (int i=0;i<4;i++)
-	{
-		float denom = 1.0f / planes[i].n.magnitude();// Get magnitude of Vector
-		planes[i].n.x	*= denom;
-		planes[i].n.y	*= denom;
-		planes[i].n.z	*= denom;
-		planes[i].d		*= denom;
-	}
-
-	p_count = 4;
 }

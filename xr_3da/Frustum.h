@@ -17,6 +17,15 @@ enum EFC_Visible {
 #include "fixedvector.h"
 
 #define FRUSTUM_MAXPLANES	8
+#define FRUSTUM_P_LEFT		(1<<0)
+#define FRUSTUM_P_RIGHT		(1<<1)
+#define FRUSTUM_P_TOP		(1<<2)
+#define FRUSTUM_P_BOTTOM	(1<<3)
+#define FRUSTUM_P_NEAR		(1<<4)
+#define FRUSTUM_P_FAR		(1<<5)
+
+#define FRUSTUM_P_LRTB		(FRUSTUM_P_LEFT|FRUSTUM_P_RIGHT|FRUSTUM_P_TOP|FRUSTUM_P_BOTTOM)
+#define FRUSTUM_P_ALL		(FRUSTUM_P_LRTB|FRUSTUM_P_NEAR|FRUSTUM_P_FAR)
 
 #define FRUSTUM_SAFE	(FRUSTUM_MAXPLANES*4)
 typedef svector<Fvector,FRUSTUM_SAFE>	sPoly;
@@ -70,8 +79,7 @@ public:
 	void			CreateOccluder		(Fvector* p, int count, Fvector& vBase, CFrustum& clip);
 	BOOL			CreateFromClipPoly	(Fvector* p, int count, Fvector& vBase, CFrustum& clip);	// returns 'false' if creation failed
 	void			CreateFromPoints	(Fvector* p, int count, Fvector& vBase );
-	void			CreateFromViewMatrix(Fmatrix &M);
-	void			CreateFromMatrix	(Fmatrix &M);
+	void			CreateFromMatrix	(Fmatrix &M, DWORD mask);
 	void			CreateFromPortal	(sPoly* P, Fvector& vBase, Fmatrix& mFullXFORM);
 	void			CreateFromPlanes	(Fplane* p, int count);
 
