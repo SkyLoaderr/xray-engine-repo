@@ -6,6 +6,8 @@
 #define AFX_3DSOUND_H__4CEA9FC5_4F0D_441A_AED2_8027C1395B54__INCLUDED_
 #pragma once
 
+#include "xr_snd_defs.h"
+
 class ENGINE_API CInifile;
 
 class ENGINE_API C3DSound
