@@ -252,6 +252,9 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 		if dik == DIK_keys.DIK_S then
 			self:OnButton_load_spawn()
 			
+		elseif dik == DIK_keys.DIK_Q then
+			self:OnButton_quit_clicked()
+			
 		elseif bind == key_bindings.kCONSOLE then
 			console:show()
 			
