@@ -651,9 +651,9 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	r_torso_tgt_roll		= 0;
 
-	r_model_yaw				= E->o_Angle.y;
-	r_torso.yaw				= E->o_Angle.y;
-	r_torso.pitch			= E->o_Angle.x;
+	r_model_yaw				= E->o_torso.yaw;
+	r_torso.yaw				= E->o_torso.yaw;
+	r_torso.pitch			= E->o_torso.pitch;
 	r_torso.roll			= 0.0f;//E->o_Angle.z;
 
 	unaffected_r_torso.yaw	= r_torso.yaw;
@@ -661,7 +661,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	unaffected_r_torso.roll	= r_torso.roll;
 
 	cam_Set					(eacFirstEye);
-	cam_Active()->Set		(-E->o_Angle.y,E->o_Angle.x,0);//E->o_Angle.z);
+	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);//E->o_Angle.z);
 
 	// *** movement state - respawn
 	mstate_wishful			= 0;

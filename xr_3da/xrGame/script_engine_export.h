@@ -9,6 +9,7 @@
 #pragma once
 
 #include "script_fvector.h"
+#include "script_fcolor.h"
 #include "script_fmatrix.h"
 #include "script_flags.h"
 #include "script_engine.h"
@@ -114,4 +115,5 @@
 #	include "ai/monsters/cat/cat.h"
 #	include "ai/monsters/tushkano/tushkano.h"
 #	include "car.h"
+#	include "script_lanim.h"
 #endif

@@ -1035,6 +1035,9 @@ void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 	}
 	if (m_wVersion > 94)
 		tNetPacket.r			(&m_killer_id,sizeof(m_killer_id));
+
+	o_torso.pitch				= o_Angle.x;
+	o_torso.yaw					= o_Angle.y;
 }
 
 void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
@@ -1069,8 +1072,6 @@ void CSE_ALifeCreatureAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_angle8			(o_torso.pitch	);
 	tNetPacket.r_angle8			(o_torso.roll	);
 	
-	o_Angle.set					(o_torso.pitch,o_torso.yaw,0.f);
-
 	tNetPacket.r_u8				(s_team);
 	tNetPacket.r_u8				(s_squad);
 	tNetPacket.r_u8				(s_group);

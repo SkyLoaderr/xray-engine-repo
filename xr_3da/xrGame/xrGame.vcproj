@@ -5400,6 +5400,26 @@
 							RelativePath=".\script_callback_ex_void.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="ScriptLAnim"
+						Filter="">
+						<File
+							RelativePath=".\script_lanim.cpp">
+						</File>
+						<File
+							RelativePath=".\script_lanim.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ScriptFcolor"
+						Filter="">
+						<File
+							RelativePath=".\script_fcolor.h">
+						</File>
+						<File
+							RelativePath=".\script_fcolor_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScriptDebugger"

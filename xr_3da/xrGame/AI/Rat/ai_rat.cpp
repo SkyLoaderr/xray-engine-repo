@@ -174,7 +174,7 @@ BOOL CAI_Rat::net_Spawn	(CSE_Abstract* DC)
 		return(FALSE);
 
 	// personal characteristics
-	movement().m_body.current.yaw	= movement().m_body.target.yaw	= -tpSE_Rat->o_Angle.y;
+	movement().m_body.current.yaw	= movement().m_body.target.yaw	= -tpSE_Rat->o_torso.yaw;
 	movement().m_body.current.pitch	= movement().m_body.target.pitch	= 0;
 	movement().m_body.speed			= PI_MUL_2;
 

@@ -712,7 +712,7 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 	CSE_ALifeMonsterAbstract	*E	= smart_cast<CSE_ALifeMonsterAbstract*>(e);
 
 	eye_matrix.identity			();
-	movement().m_body.current.yaw			= movement().m_body.target.yaw	= -E->o_Angle.y;
+	movement().m_body.current.yaw		= movement().m_body.target.yaw		= -E->o_torso.yaw;
 	movement().m_body.current.pitch		= movement().m_body.target.pitch	= 0;
 	fEntityHealth				= E->fHealth;
 	if (!g_Alive())
@@ -742,8 +742,8 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 	if (Local()) {
 		net_update				N;
 		N.dwTimeStamp			= Level().timeServer()-NET_Latency;
-		N.o_model				= -E->o_Angle.y;
-		N.o_torso.yaw			= -E->o_Angle.y;
+		N.o_model				= -E->o_torso.yaw;
+		N.o_torso.yaw			= -E->o_torso.yaw;
 		N.o_torso.pitch			= 0;
 		N.p_pos.set				(Position());
 		NET.push_back			(N);
