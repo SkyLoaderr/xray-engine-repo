@@ -452,3 +452,21 @@ function ini_file(npc, filename)
 end
 
 
+-- Перевод угла из радианов в градусы
+function rad2deg(r)
+	return r * 180.0 / math.pi
+end
+
+-- Перевод угла из градусов в радианы
+function deg2rad(d)
+	return d * math.pi / 180.0
+end
+
+-- угол между двумя векторами в градусах.
+function angle_diff(a1, a2)
+	local b1 = a1:normalize()
+	local b2 = a2:normalize()
+	local dotp = b1:dotproduct(b2)
+
+	return rad2deg(math.acos(math.abs(dotp)))
+end
