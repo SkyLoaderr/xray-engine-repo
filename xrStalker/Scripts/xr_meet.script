@@ -97,6 +97,7 @@ function action_meet_wait:time_callback()
 	state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
 end
 function action_meet_wait:execute ()
+	action_base.execute(self)
 	-- Звуки
 	if self.object:active_sound_count() == 0 then
 		xr_sound.sound_update(self.object, self.sound_w)		
@@ -110,8 +111,6 @@ function action_meet_wait:execute ()
 			end
 		end
 	end
-		
-	action_base.execute(self)
 end
 function action_meet_wait:finalize ()
 	self.object:disable_talk()
@@ -138,7 +137,8 @@ function action_weapon:initialize()
 	stop_play_sound(self.object)
 	state_mgr.set_state(self.object, "backoff", nil, nil, {look_object = db.actor}, {animation = true})
 end
-function action_weapon:execute ()
+function action_weapon:execute()
+	action_base.execute (self)
 	if self.object:active_sound_count() == 0 then
 		xr_sound.sound_update(self.object, self.sound_e)		
 	end	
@@ -152,10 +152,8 @@ function action_weapon:execute ()
 			end
 		end
 	end
-	
-	action_base.execute (self)
 end
-function action_weapon:finalize ()
+function action_weapon:finalize()
 	action_base.finalize (self)
 end
 
