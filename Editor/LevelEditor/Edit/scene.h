@@ -57,6 +57,8 @@ struct st_LevelOptions{
     int 		m_CurEnv;
     float		m_DOClusterSize;
 
+    b_params	m_BuildParams;
+
     st_LevelOptions();
     // routine
 	void 		Save			(CFS_Base&);
@@ -91,9 +93,6 @@ public:
 	mapObject_D						    mapRenderObjects;
 public:
 	st_LevelOptions	m_LevelOp;
-
-// Build options
-    b_params    m_BuildParams;
 
     vector<CLight*> frame_light;
 //    CList<SRayPickInfo> pickFaces;

@@ -78,6 +78,8 @@ void st_LevelOptions::Reset(){
     m_CurEnv		= 0;
 
 	m_DOClusterSize = 8.f;
+
+    m_BuildParams.Init();
 }
 //------------------------------------------------------------------------------
 
@@ -94,7 +96,6 @@ EScene::EScene(){
     // first init scene graph for objects
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
-    m_BuildParams.Init();
     m_DetailObjects	= new CDetailManager();
     m_SkyDome = 0;
     ClearSnapList();

@@ -32,6 +32,7 @@
 #define CHUNK_LO_SKYDOME	 	0x7804
 #define CHUNK_LO_ENVS		 	0x7805
 #define CHUNK_LO_DOCLUSTERSIZE	0x7806
+#define CHUNK_BUILD_PARAMS		0x7850
 
 //------------------------------------------------------------------------------------------------
 // Environment
@@ -82,6 +83,10 @@ void st_LevelOptions::Save( CFS_Base& F ){
     F.open_chunk( CHUNK_LO_DOCLUSTERSIZE );
 	F.Wfloat	( m_DOClusterSize );
     F.close_chunk();
+
+    F.open_chunk( CHUNK_BUILD_PARAMS );
+	F.write		( &m_BuildParams, sizeof(m_BuildParams) );
+    F.close_chunk();
 }
 
 void st_LevelOptions::Read(CStream& F){
@@ -111,6 +116,9 @@ void st_LevelOptions::Read(CStream& F){
 
     R_ASSERT(F.FindChunk(CHUNK_LO_DOCLUSTERSIZE));
     m_DOClusterSize = F.Rfloat();
+
+    if (F.FindChunk(CHUNK_BUILD_PARAMS))
+		F.Read	( &m_BuildParams, sizeof(m_BuildParams) );
 }
 //------------------------------------------------------------------------------------------------
 // Scene
@@ -172,9 +180,9 @@ void EScene::Save(char *_FileName, bool bUndo){
     if (!bUndo) FS.BackupFile	(_FileName);
 
     // save data
-	FS.UnlockFile	(0,_FileName,false);
-    F.SaveTo		(_FileName,0);
-	FS.LockFile		(0,_FileName,false);
+	if (!bUndo) FS.UnlockFile	(0,_FileName,false);
+    F.SaveTo					(_FileName,0);
+	if (!bUndo) FS.LockFile		(0,_FileName,false);
 }
 //--------------------------------------------------------------------------------------------------
 

@@ -218,7 +218,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             BeginEState(esSceneLocked);
 			// unlock
 			FS.UnlockFile(0,m_LastFileName);
-//            m_pTexturizer->Reset();
 			Device.m_Camera.Reset();
 			Scene.Unload();
             Scene.m_LevelOp.Reset();
@@ -328,7 +327,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	case COMMAND_OPTIONS:
 		if( !Scene.locked() ){
-            frmScenePropertiesRun(&Scene.m_BuildParams,false);
+            frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,false);
             Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -339,7 +338,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_BUILD:
 		if( !Scene.locked() ){
             if( !Builder.InProgress() )
-                if (frmScenePropertiesRun(&Scene.m_BuildParams,true)==mrOk)
+                if (frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,true)==mrOk)
                     Builder.Execute( );
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -350,7 +349,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_MAKE_LTX:
 		if( !Scene.locked() ){
             if( !Builder.InProgress() )
-                if (frmScenePropertiesRun(&Scene.m_BuildParams,true)==mrOk)
+                if (frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,true)==mrOk)
                     Builder.MakeLTX( );
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -665,7 +664,7 @@ void TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
         else if (Key=='O')   			Command(COMMAND_LOAD);
         else if (Key=='N')   			Command(COMMAND_CLEAR);
     }
-    if (Key==VK_OEM_3)		  			Command(COMMAND_RENDER_FOCUS);
+    if ((Key==VK_OEM_3)||(Key==VK_SHIFT))Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 

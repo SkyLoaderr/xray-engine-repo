@@ -450,7 +450,7 @@ bool SceneBuilder::RemoteStaticBuild()
 // Build Options
     ZeroMemory(&TSData, sizeof(b_transfer));
 	TSData._version = XRCL_CURRENT_VERSION;
-    CopyMemory(&TSData.params,&Scene.m_BuildParams,sizeof(b_params));
+    CopyMemory(&TSData.params,&Scene.m_LevelOp.m_BuildParams,sizeof(b_params));
     strcpy(TSData.params.L_name,Scene.m_LevelOp.m_LevelName.c_str());
     strcpy(TSData.params.L_path,"");
     m_LevelPath.Update(TSData.params.L_path);

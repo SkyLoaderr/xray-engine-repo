@@ -49,7 +49,7 @@ __fastcall TfrmSceneProperties::TfrmSceneProperties(TComponent* Owner, b_params*
     DEFINE_INI(fsSceneProps);
     SetEditParams();
     ShowPage(AnsiString(""));
-    fsSceneProps->RestoreFormPlacement();
+	fsSceneProps->RestoreFormPlacement();
 }
 //---------------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
 	mmText->Text			= Scene.m_LevelOp.m_BOPText;
 	edSkydomeObjectName->Text = Scene.m_LevelOp.m_SkydomeObjName;
 
-    tsLevelScript->Enabled = true;
+    tsLevelScript->Enabled 	= true;
     tsLevelOptions->Enabled = true;
     tsLevelEnvironment->Enabled = true;
 #else
@@ -257,7 +257,7 @@ void __fastcall TfrmSceneProperties::fsScenePropsRestorePlacement(
       TObject *Sender)
 {
 #ifdef _LEVEL_EDITOR
-    SetSceneParams();
+//S	SetSceneParams();
 #endif
 	UpdateMinValue(seLMFuzzyMax,seLMFuzzyMin->Value); // set min value
 }
