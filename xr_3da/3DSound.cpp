@@ -99,7 +99,7 @@ void CSound::Update_Occlusion	()
 {
 	if (!_3D)			return;
 
-	if (Sound_Implementation.IsOccluded(ps.vPosition,1.f,occluder))	{
+	if (Sound_Implementation.IsOccluded(ps.vPosition,.3f,occluder))	{
 		fBaseVolume -=	Device.fTimeDelta*fOcclusionSpeed;
 		clamp		(fBaseVolume,0.f,1.f);
 	} else {
