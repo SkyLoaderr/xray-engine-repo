@@ -15,22 +15,25 @@
 class CHUDManager;
 class CWeapon;
 #define MAX_GROUPS		10
-#define MAX_UIMESSAGES	5
+#define MAX_UIMESSAGES	7
 #define LIFE_TIME		7.f		// sec
-#define HIDE_TIME		1.5f	// sec 
+#define HIDE_TIME		2.5f	// sec 
 
-struct SUIMessage{
+struct SUIMessage
+{
 	LPSTR sender;
 	LPSTR msg;
 	DWORD color;
 	int life_time;
-	SUIMessage(LPCSTR S, LPCSTR M, DWORD clr, float lt){
+	SUIMessage(LPCSTR S, LPCSTR M, DWORD clr, float lt)
+	{
 		sender		= xr_strdup(S);
 		msg			= xr_strdup(M);
 		life_time	= int(lt*1000);
 		color		= clr;
 	}
-	~SUIMessage(){
+	~SUIMessage()
+	{
 		_FREE(sender);
 		_FREE(msg);
 	}
@@ -54,7 +57,7 @@ class CUI{
 
 	// group management
 	bool				bShift;
-	bool				bSelGroups[MAX_GROUPS];
+	bool				bSelGroups			[MAX_GROUPS];
 
 	void				ResetSelected		();
 	bool				FindGroup			(int idx);

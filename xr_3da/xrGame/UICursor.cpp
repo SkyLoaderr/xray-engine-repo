@@ -17,13 +17,13 @@ CUICursor::CUICursor()
 	hShader		= Device.Shader.Create		("hud\\cursor","ui\\ui_cursor",FALSE);
 }
 //--------------------------------------------------------------------
-CUICursor::~CUICursor()
+CUICursor::~CUICursor	()
 {
 	Device.Shader.Delete	(hShader);
 	Device.Shader._DeleteVS	(hVS);
 }
 //--------------------------------------------------------------------
-void CUICursor::Render()
+void CUICursor::Render	()
 {
 	_VertexStream*	Stream	= &Device.Streams.Vertex; 
 	// actual rendering

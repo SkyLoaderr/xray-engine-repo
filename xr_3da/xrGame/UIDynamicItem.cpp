@@ -9,22 +9,24 @@
 CUIDynamicItem::CUIDynamicItem()
 {    
 	item_cnt	= 0;
+	hShader		= 0;
+	hVS			= 0;
 }
 //--------------------------------------------------------------------
-
 CUIDynamicItem::~CUIDynamicItem()
 {
 	Device.Shader.Delete	(hShader);
 	Device.Shader._DeleteVS	(hVS);
 }
+
 //--------------------------------------------------------------------
-void CUIDynamicItem::Init(LPCSTR tex, LPCSTR sh, float tx_width, float tx_height)
+void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh, float tx_width, float tx_height)
 {
 	inherited::Init(tx_width,tx_height);
-	hVS			= Device.Shader._CreateVS	(FVF::F_TL);
-	hShader		= Device.Shader.Create		(sh,tex,FALSE);
+	if (0==hVS)		hVS		= Device.Shader._CreateVS	(FVF::F_TL);
+	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex,FALSE);
 }
- 
+
 void CUIDynamicItem::Out(float left, float top, DWORD color, DWORD align)
 {
 	SDynamicItemData* D = 0;
