@@ -163,9 +163,9 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 0;
 		C.bDetail			= TRUE;
-		ShaderElement		S;
-		C._lua_Compile		(&S,strconcat(fname,s_shader,".normal"));
-		S.E[0]				= _CreateElement	(S);
+		ShaderElement		E;
+		C._lua_Compile		(&E,strconcat(fname,s_shader,".normal"));
+		S.E[0]				= _CreateElement	(E);
 	}
 
 	// Compile element	(LOD1)
@@ -173,9 +173,9 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 1;
 		C.bDetail			= FALSE;
-		ShaderElement		S;
-		C._lua_Compile		(&S,strconcat(fname,s_shader,".normal"));
-		S.E[1]				= _CreateElement	(S);
+		ShaderElement		E;
+		C._lua_Compile		(&E,strconcat(fname,s_shader,".normal"));
+		S.E[1]				= _CreateElement	(E);
 	}
 
 	// Compile element
@@ -183,9 +183,9 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 2;
 		C.bDetail			= FALSE;
-		ShaderElement		S;
-		C._lua_Compile		(&S,strconcat(fname,s_shader,".l_point"));
-		S.E[2]				= _CreateElement	(S);
+		ShaderElement		E;
+		C._lua_Compile		(&E,strconcat(fname,s_shader,".l_point"));
+		S.E[2]				= _CreateElement	(E);
 	}
 
 	// Compile element
@@ -193,9 +193,9 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 3;
 		C.bDetail			= FALSE;
-		ShaderElement		S;
-		C._lua_Compile		(&S,strconcat(fname,s_shader,".l_spot"));
-		S.E[3]				= _CreateElement	(C);
+		ShaderElement		E;
+		C._lua_Compile		(&E,strconcat(fname,s_shader,".l_spot"));
+		S.E[3]				= _CreateElement	(E);
 	}
 
 	// Compile element
@@ -203,9 +203,9 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	{
 		C.iElement			= 4;
 		C.bDetail			= FALSE;
-		ShaderElement		S;
-		C._lua_Compile		(&S,strconcat(fname,s_shader,".l_special"));
-		S.E[4]				= _CreateElement	(C);
+		ShaderElement		E;
+		C._lua_Compile		(&E,strconcat(fname,s_shader,".l_special"));
+		S.E[4]				= _CreateElement	(E);
 	}
 
 	// Search equal in shaders array
