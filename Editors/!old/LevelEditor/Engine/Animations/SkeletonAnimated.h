@@ -8,6 +8,7 @@
 // consts
 const	u32		MAX_BLENDED			=	16;
 const	u32		MAX_BLENDED_POOL	=	(MAX_BLENDED*MAX_PARTS);
+const	u32		MAX_ANIM_REFS		=	4;
 
 // refs
 class   ENGINE_API CBlend;
@@ -16,6 +17,24 @@ class	ENGINE_API CBoneDataAnimated;
 class   ENGINE_API CBoneInstanceAnimated;
 struct	ENGINE_API CKey;
 class	ENGINE_API CInifile;
+
+struct MotionID{
+	union{
+    	struct{
+    	    u16		idx:14;
+	        u16		slot:2;
+        };
+        u16			val;
+    };
+    public:
+    				MotionID(){val=u16(-1);}
+    				MotionID(u16 motion_slot, u16 motion_idx){set(motion_slot,motion_idx);}
+    ICF void		set		(u16 motion_slot, u16 motion_idx){slot=motion_slot; idx=motion_idx;}
+    ICF bool		valid	(){return val!=u16(-1);}
+};
+
+//. typedef u16 	BoneID;
+//. typedef u16 	PartitionID;
 
 //*** Run-time Blend definition *******************************************************************
 class ENGINE_API CBlend {
@@ -32,7 +51,7 @@ public:
 	float			blendAmount;
 	float			timeCurrent;
 	float			timeTotal;
-	u16				motionID;
+    MotionID		motionID;
 	u16				bone_or_part;	// startup parameters
 
 	ECurvature		blend;
@@ -79,7 +98,7 @@ public:
 class ENGINE_API		CBoneDataAnimated: public CBoneData             
 {
 public:
-	MotionVec*			Motions;		// all known motions
+	MotionVec*			Motions[MAX_ANIM_REFS];	// all known motions
 public:
 						CBoneDataAnimated(u16 ID):CBoneData(ID){}
 	// Motion control
@@ -111,13 +130,8 @@ private:
 #endif
 	CBlendInstance*								blend_instances;
 
-	shared_motions								motions;
-	// Fast search
-//.	accel_map*									motion_map;			// motion assotiations	(shared) - by name
-//.	mdef*										m_cycle;			// motion data itself	(shared)
-//.	mdef*										m_fx;				// motion data itself	(shared)
-	// Partition
-//.	CPartition*									partition;
+    svector<shared_motions,MAX_ANIM_REFS>       m_Motions;
+    CPartition*									m_Partition;
 
 	// Blending
 	svector<CBlend, MAX_BLENDED_POOL>			blend_pool;
@@ -138,38 +152,40 @@ public:
 	LPCSTR						LL_MotionDefName_dbg	(u16	ID);
 	LPCSTR						LL_MotionDefName_dbg	(LPVOID ptr);
 #endif
+#ifdef _EDITOR
+    u32							LL_CycleCount	(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].cycle()->size(); return cnt;}
+    u32							LL_FXCount		(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].fx()->size(); return cnt;}
+	accel_map*					LL_Motions		(u32 slot){return m_Motions[slot].motion_map();}
+	u16							LL_MotionsSlotCount(){return m_Motions.size();}
+    CMotionDef*					LL_GetMotionDef	(MotionID id){return m_Motions[id.slot].motion_def(id.idx);}
+	MotionID					ID_Motion		(LPCSTR  N, u16 slot);
+#endif
 
 	// Low level interface
-	u16							LL_MotionID		(LPCSTR B);
+	MotionID					LL_MotionID		(LPCSTR B);
 	u16							LL_PartID		(LPCSTR B);
 
-	accel_map*					LL_Motions		(){return motions.motion_map();}
-
-    u32							LL_CycleCount	(){return motions.cycle()->size();}
-    u32							LL_FXCount		(){return motions.fx()->size();}
-	CBlend*						LL_PlayFX		(u16 bone,		u16		motion, float blendAccrue,	float blendFalloff, float Speed, float Power);
-	CBlend*						LL_PlayCycle	(u16 partition, u16		motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID Callback_Param);
+	CBlend*						LL_PlayFX		(u16 bone,		MotionID motion, float blendAccrue,	float blendFalloff, float Speed, float Power);
+	CBlend*						LL_PlayCycle	(u16 partition, MotionID motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID CallbackParam);
+	CBlend*						LL_PlayCycle	(u16 partition, MotionID motion, BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam);
 	void						LL_FadeCycle	(u16 partition, float	falloff);
 	void						LL_CloseCycle	(u16 partition);
 	CBlendInstance&				LL_GetBlendInstance	(u16 bone_id)	{	VERIFY(bone_id<LL_BoneCount()); return blend_instances[bone_id];	}
-	
+	                                                                
 	// Main functionality
 	void						Update			();								// Update motions
 	virtual void				CalculateBones	(BOOL bForced=FALSE);			// Recalculate skeleton 
 
 	// cycles
-	CMotionDef*					ID_Cycle		(LPCSTR  N);
-	CMotionDef*					ID_Cycle_Safe	(LPCSTR  N);
+	MotionID					ID_Cycle		(LPCSTR  N);
+	MotionID					ID_Cycle_Safe	(LPCSTR  N);
 	CBlend*						PlayCycle		(LPCSTR  N,  BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0);
-	CBlend*						PlayCycle		(CMotionDef* M,  BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0)
-	{	VERIFY(M); return M->PlayCycle(this,bMixIn,Callback,CallbackParam); }
-
+	CBlend*						PlayCycle		(MotionID M, BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0);
 	// fx'es
-	CMotionDef*					ID_FX			(LPCSTR  N);
-	CMotionDef*					ID_FX_Safe		(LPCSTR  N);
+	MotionID					ID_FX			(LPCSTR  N);
+	MotionID					ID_FX_Safe		(LPCSTR  N);
 	CBlend*						PlayFX			(LPCSTR  N, float power_scale);
-	CBlend*						PlayFX			(CMotionDef* M, float power_scale)
-	{	VERIFY(M); return M->PlayFX(this,power_scale);	}
+	CBlend*						PlayFX			(MotionID M, float power_scale);
 
 	// General "Visual" stuff
 	virtual void				Copy			(IRender_Visual *pFrom);

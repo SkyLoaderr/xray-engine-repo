@@ -7,7 +7,6 @@
 #include	"fmesh.h"
 #include	"motion.h"
 
-const float			fAA					= 1.5f;	// anim-change acceleration
 motions_container*	g_pMotionsContainer	= 0;
 
 u16 find_bone_id(vecBones* bones, shared_str nm)
@@ -69,20 +68,23 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 		if (bRes){
 			// motion defs (cycle&fx)
 			u16 mot_count			= MP->r_u16();
+            m_mdefs.resize			(mot_count);
 			for (u16 mot_i=0; mot_i<mot_count; mot_i++){
 				MP->r_stringZ		(buf,sizeof(buf));
 				shared_str nm		= _strlwr		(buf);
 				u32 dwFlags			= MP->r_u32		();
-				CMotionDef	D;		D.Load			(MP,dwFlags);
-				if (dwFlags&esmFX)	m_fx.insert		(mk_pair(nm,D));
-				else				m_cycle.insert	(mk_pair(nm,D));
+				CMotionDef&	D		= m_mdefs[mot_i];
+                D.Load				(MP,dwFlags);
+                m_mdefs.push_back	(D);
+				if (dwFlags&esmFX)	m_fx.insert		(mk_pair(nm,mot_i));
+				else				m_cycle.insert	(mk_pair(nm,mot_i));
+                m_motion_map.insert	(mk_pair(nm,mot_i));
 			}
 		}
 		MP->close();
 	}else{
 		Debug.fatal	("Old skinned model version unsupported! (%s)",N);
 	}
-
 	if (!bRes)	return false;
 
 	// Load animation
@@ -91,19 +93,23 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 
 	u32			dwCNT	= 0;
 	MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
+    VERIFY		(dwCNT<0x3FFF); // MotionID 2 bit - slot, 14 bit - motion index
 
 	// set per bone motion size
 	for (u32 i=0; i<bones->size(); i++)
 		m_motions[bones->at(i)->name].resize(dwCNT);
 	// load motions
-	for (u32 m_idx=0; m_idx<dwCNT; m_idx++){
+	for (u16 m_idx=0; m_idx<(u16)dwCNT; m_idx++){
 		string128			mname;
 		R_ASSERT			(MS->find_chunk(m_idx+1));             
 		MS->r_stringZ		(mname,sizeof(mname));
-
-		shared_str	m_key	= shared_str(strlwr(mname));
-		m_motion_map.insert	(mk_pair(m_key,m_idx));
-
+#ifdef _DEBUG        
+		// sanity check
+		xr_strlwr			(mname);
+        accel_map::iterator I= m_motion_map.find(mname); 
+        VERIFY3				(I!=m_motion_map.end(),"Can't find motion:",mname);
+        VERIFY3				(I->second==m_idx,"Invalid motion index:",mname);
+#endif
 		u32 dwLen			= MS->r_u32();
 		for (u32 i=0; i<bones->size(); i++){
 			u16 bone_id		= rm_bones[i];
@@ -135,8 +141,10 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 	}
 //	Msg("Motions %d/%d %4d/%4d/%d, %s",p_cnt,m_cnt, m_load,m_total,m_r,N);
 	MS->close();
+
 	return bRes;
 }
+
 MotionVec* motions_value::motions(shared_str bone_name)
 {
 	BoneMotionMapIt it			= m_motions.find(bone_name); VERIFY(it!=m_motions.end());
@@ -222,38 +230,8 @@ void CMotionDef::Load(IReader* MP, u32 fl)
 	flags		= fl;
 	if (!(flags&esmFX) && (falloff>=accrue)) falloff = accrue-1;
 }
-
-CBlend*	CMotionDef::PlayCycle(CSkeletonAnimated* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param)
+bool CMotionDef::StopAtEnd()
 {
-	return P->LL_PlayCycle(
-		bone_or_part,motion,bMixIn,
-		fAA*Dequantize(accrue),
-		fAA*Dequantize(falloff),
-		Dequantize(speed),
-		flags&esmStopAtEnd,
-		Callback,Callback_Param
-		);
+	return flags&esmStopAtEnd;
 }
 
-CBlend*	CMotionDef::PlayCycle(CSkeletonAnimated* P, u16 part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param)
-{
-	return P->LL_PlayCycle(
-		part,motion,bMixIn,
-		fAA*Dequantize(accrue),
-		fAA*Dequantize(falloff),
-		Dequantize(speed),
-		flags&esmStopAtEnd,
-		Callback,Callback_Param
-		);
-}
-
-CBlend*	CMotionDef::PlayFX(CSkeletonAnimated* P, float power_scale)
-{
-	return P->LL_PlayFX(
-		bone_or_part,motion,
-		fAA*Dequantize(accrue),
-		fAA*Dequantize(falloff),
-		Dequantize(speed),
-		Dequantize(power)*power_scale
-		);
-}

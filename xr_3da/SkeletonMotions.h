@@ -67,33 +67,36 @@ public:
 		return			sz;
 	}
 };
+const float	fQuantizerRangeExt	= 1.5f;
 class ENGINE_API		CMotionDef
 {
 public:
-	u16					bone_or_part;
+    u16					bone_or_part;
 	u16					motion;
 	u16					speed;				// quantized: 0..10
 	u16					power;				// quantized: 0..10
 	u16					accrue;				// quantized: 0..10
 	u16					falloff;			// quantized: 0..10
-	u32					flags;
+    u16					flags;
 
 	IC float			Dequantize			(u16 V)		{	return  float(V)/655.35f; }
 	IC u16				Quantize			(float V)	{	s32		t = iFloor(V*655.35f); clamp(t,0,65535); return u16(t); }
 
 	void				Load				(IReader* MP, u32 fl);
-	CBlend*				PlayCycle			(CSkeletonAnimated* P, BOOL	bMixIn, PlayCallback Callback, LPVOID Callback_Param);
-	CBlend*				PlayCycle			(CSkeletonAnimated* P, u16	part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
-	CBlend*				PlayFX				(CSkeletonAnimated* P, float	power_scale);
-
 	u32					mem_usage			(){ return sizeof(*this);}
+
+    ICF float			Accrue				(){return fQuantizerRangeExt*Dequantize(accrue);}
+    ICF float			Falloff				(){return fQuantizerRangeExt*Dequantize(falloff);}
+    ICF float			Speed				(){return Dequantize(speed);}
+    ICF float			Power				(){return Dequantize(power);}
+    bool				StopAtEnd			();
 };
 struct accel_str_pred : public std::binary_function<shared_str, shared_str, bool>	{	
 	IC bool operator()(const shared_str& x, const shared_str& y) const	{	return xr_strcmp(x,y)<0;	}
 };
-typedef xr_map<shared_str,u16,accel_str_pred>			accel_map;
-typedef xr_map<shared_str,CMotionDef,accel_str_pred>	mdef;
+typedef xr_map<shared_str,u16,accel_str_pred> 	accel_map;
 DEFINE_VECTOR			(CMotion,MotionVec,MotionVecIt);
+DEFINE_VECTOR			(CMotionDef,MotionDefVec,MotionDefVecIt);
 
 // partition
 class ENGINE_API		CPartDef
@@ -109,31 +112,30 @@ class ENGINE_API		CPartition
 {
 	CPartDef			P[MAX_PARTS];
 public:
-	IC CPartDef&		operator[] (u16 id)	{ return P[id]; }
-
-	u32					mem_usage			(){ return P[0].mem_usage()*MAX_PARTS;}
+	IC CPartDef&		operator[] 			(u16 id){ return P[id]; }
+	IC CPartDef&		part				(u16 id){ return P[id]; }
+	u32					mem_usage			()		{ return P[0].mem_usage()*MAX_PARTS;}
 };
 
 // shared motions
 struct ENGINE_API		motions_value
 {
-	accel_map			m_motion_map;			// motion associations
-	mdef				m_cycle;			// motion data itself	(shared)
-	mdef				m_fx;				// motion data itself	(shared)
-	CPartition			m_partition;			// partition
+	accel_map			m_motion_map;		// motion associations
+	accel_map			m_cycle;			// motion data itself	(shared)
+	accel_map			m_fx;				// motion data itself	(shared)
+	CPartition			m_partition;		// partition
 	u32					m_dwReference;
 	DEFINE_MAP			(shared_str,MotionVec,BoneMotionMap,BoneMotionMapIt);
 	BoneMotionMap		m_motions;
+    MotionDefVec		m_mdefs;
 
 	BOOL				load				(LPCSTR N, IReader *data, vecBones* bones);
 	MotionVec*			motions				(shared_str bone_name);
 
 	u32					mem_usage			(){ 
 		u32 sz			=	sizeof(*this)+m_motion_map.size()*6+m_partition.mem_usage();
-		for (mdef::iterator c_it=m_cycle.begin(); c_it!=m_cycle.end(); c_it++)
-			sz			+=	c_it->second.mem_usage();
-		for (mdef::iterator f_it=m_fx.begin(); f_it!=m_fx.end(); f_it++)
-			sz			+=	f_it->second.mem_usage();
+        for (MotionDefVecIt it=m_mdefs.begin(); it!=m_mdefs.end(); it++)
+			sz			+=	it->mem_usage();
 		for (BoneMotionMapIt bm_it=m_motions.begin(); bm_it!=m_motions.end(); bm_it++)
 			for (MotionVecIt m_it=bm_it->second.begin(); m_it!=bm_it->second.end(); m_it++)
 				sz		+=	m_it->mem_usage();
@@ -177,9 +179,11 @@ public:
 	// misc func
 	MotionVec*			motions			(shared_str bone_name)		{	VERIFY(p_); return p_->motions(bone_name);		}
 	accel_map*			motion_map		()							{	VERIFY(p_); return &p_->m_motion_map;			}
-	mdef*				cycle			()							{	VERIFY(p_); return &p_->m_cycle;				}
-	mdef*				fx				()							{	VERIFY(p_); return &p_->m_fx;					}
+	accel_map*			cycle			()							{	VERIFY(p_); return &p_->m_cycle;				}
+	accel_map*			fx				()							{	VERIFY(p_); return &p_->m_fx;					}
 	CPartition*			partition		()							{	VERIFY(p_); return &p_->m_partition;			}
+    MotionDefVec*		motion_defs		()							{	VERIFY(p_); return &p_->m_mdefs;				}
+    CMotionDef*			motion_def		(u16 idx)					{	VERIFY(p_); return &p_->m_mdefs[idx];			}
 };
 //---------------------------------------------------------------------------
 #endif

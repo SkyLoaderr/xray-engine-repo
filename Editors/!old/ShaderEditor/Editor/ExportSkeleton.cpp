@@ -752,9 +752,9 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 
 //		if (motion->m_Flags.is(esmStopAtEnd)) Msg("%s - %d",motion->Name(),motion->m_Flags.is(esmStopAtEnd));
         
-        F.open_chunk(smot);
-        F.w_stringZ(motion->Name());
-        F.w_u32(motion->Length());
+        F.open_chunk		(smot);
+        F.w_stringZ			(motion->Name());
+        F.w_u32				(motion->Length());
 
         u32 dwLen			= motion->Length();
         BoneVec& b_lst 		= m_Source->Bones();
@@ -910,7 +910,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
         // motion defs
         SMotionVec& sm_lst	= m_Source->SMotions();
         F.w_u16(sm_lst.size());
-        for (SMotionIt motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
+        for (SMotionIt motion_it=m_Source->FirstSMotion(); motion_it!=m_Source->LastSMotion(); motion_it++){
             CSMotion* motion = *motion_it;
             // verify
             if (!motion->m_Flags.is(esmFX)){
