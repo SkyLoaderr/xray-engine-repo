@@ -59,10 +59,10 @@ occRasterizer::~occRasterizer	()
 
 void occRasterizer::clear		()
 {
-	u32 size		= occ_dim*occ_dim;
-	float f			= 1.f;
-	fillDW_8x		(bufFrame,size,0);
-	fillDW_8x		(bufDepth,size,*LPDWORD(&f));
+	u32 size			= occ_dim*occ_dim;
+	float f				= 1.f;
+	Memory.mem_fill32	(bufFrame,0,size);
+	Memory.mem_fill32	(bufDepth,*LPDWORD(&f),size);
 }
 
 IC BOOL shared(occTri* T1, occTri* T2)

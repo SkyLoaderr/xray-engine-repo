@@ -512,7 +512,7 @@ void	CRender::Render		()
 	// Target.set_gray					(.5f+sinf(Device.fTimeGlobal)/2.f);
 	Target.Begin					();
 
-	if (psDeviceFlags.test(rsWarmHZB))	HOM.Render_ZB	();
+	// if (psDeviceFlags.test(rsWarmHZB))	HOM.Render_ZB	();
 
 	// HUD render
 	{

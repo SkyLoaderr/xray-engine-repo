@@ -29,7 +29,7 @@ CHOM::~CHOM()
 struct HOM_poly			
 {
 	Fvector	v1,v2,v3;
-	u32	flags;
+	u32		flags;
 };
 #pragma pack(pop)
 
@@ -92,6 +92,7 @@ void CHOM::Load			()
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	m_ZB.clear			();
 
+	/*
 	h_Geom					= Device.Shader.CreateGeom	(FVF::F_L, RCache.Vertex.Buffer(), NULL	);
 	h_Shader				= Device.Shader.Create		("zfill"	);
 	
@@ -103,13 +104,16 @@ void CHOM::Load			()
 	dbg_texture				= Device.Shader._CreateTexture	(RTname);
 	dbg_shader				= Device.Shader.Create			("effects\\screen_set",		RTname);
 	dbg_texture->surface_set(dbg_surf);
+	*/
 }
 
 void CHOM::Unload		()
 {
+	/*
 	Device.Shader.Delete		(h_Shader);
 	Device.Shader.DeleteGeom	(h_Geom);
 	_RELEASE	(dbg_surf);
+	*/
 	xr_delete	(m_pModel);
 	xr_free		(m_pTris);
 }
@@ -126,26 +130,6 @@ IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
 	D.z	= z/w;
 }
 
-IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat )
-{
-	int halfwidth  = occ_dim/2;
-	int halfheight = occ_dim/2;
-
-	Ivector2 point2;
-	point2.set	(x-halfwidth, halfheight-y);
-
-	float size_y = VIEWPORT_NEAR * tanf( deg2rad(60.f) * 0.5f );
-	float size_x = size_y;
-
-	float r_pt	= float(point2.x) * size_x / (float) halfwidth;
-	float u_pt	= float(point2.y) * size_y / (float) halfheight;
-
-	direction.mul		( m_CamMat.k, VIEWPORT_NEAR		);
-	direction.mad		( direction, m_CamMat.j, u_pt	);
-	direction.mad		( direction, m_CamMat.i, r_pt	);
-	direction.normalize	();
-}
-
 void CHOM::Render_DB	(CFrustum& base)
 {
 	// Query DB
@@ -154,8 +138,8 @@ void CHOM::Render_DB	(CFrustum& base)
 	if (0==XRC.r_count())	return;
 
 	// Prepare
-	CDB::RESULT*	it		= XRC.r_begin();
-	CDB::RESULT*	end		= XRC.r_end();
+	CDB::RESULT*	it		= XRC.r_begin	();
+	CDB::RESULT*	end		= XRC.r_end		();
 	Fvector			COP		= Device.vCameraPosition;
 	Fmatrix			XF		= Device.mFullTransform;
 	float			dim		= occ_dim_0/2;
@@ -196,12 +180,11 @@ void CHOM::Render_DB	(CFrustum& base)
 			xform			(XF,T.raster[0],(*P)[0],	dim);
 			xform			(XF,T.raster[1],(*P)[v+0],	dim);
 			xform			(XF,T.raster[2],(*P)[v+1],	dim);
-			pixels +=		Raster.rasterize(&T);
+			pixels	+=		Raster.rasterize(&T);
 		}
 		if (0==pixels)
 		{ T.skip=next; continue; }
 	}
-	Log	("polys",m_ZB.size());
 }
 
 void CHOM::Render		(CFrustum& base)
@@ -216,7 +199,7 @@ void CHOM::Render		(CFrustum& base)
 	Device.Statistic.RenderCALC_HOM.End		();
 }
 
-
+/*
 void CHOM::Render_ZB	()
 {
 	if (m_ZB.empty())		return;
@@ -251,6 +234,8 @@ void CHOM::Render_ZB	()
 
 void CHOM::Debug		()
 {
+	return;
+
 	if (0==dbg_surf)	return;
 
 	// Texture
@@ -262,8 +247,8 @@ void CHOM::Debug		()
 		{
 			int*	pD	= Raster.get_depth_level(0);
 			int		D	= pD[y*occ_dim_0+x];
-			int		V	= iFloor	(Raster.d2float(D) * 255.f);
-			clamp	(V,0,255);
+			float   d	= Raster.d2float(D);
+			int		V	= (d<(1.f-EPS))?0:255;
 			u32	C	= D3DCOLOR_XRGB(V,V,V);
 			LPDWORD(R.pBits)[y*occ_dim_0+x]	= C;
 		}
@@ -290,6 +275,7 @@ void CHOM::Debug		()
 	RCache.set_Geometry	(dbg_geom);
 	RCache.Render		(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
 }
+*/
 
 IC	BOOL	xform_b0	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
 {

@@ -15,6 +15,7 @@ private:
 	occTri*					m_pTris;
 	vector<u32>				m_ZB;
 
+	/*
 	Shader*					h_Shader;
 	SGeometry*				h_Geom;
 
@@ -22,6 +23,7 @@ private:
 	CTexture*				dbg_texture;
 	Shader*					dbg_shader;
 	SGeometry*				dbg_geom;
+	*/
 	
 	void					Render_DB	(CFrustum& base);
 public:
