@@ -395,5 +395,17 @@ function load_common (obj, sounds_base)
                }
                }
 
+    themes["ambush"] =
+               {
+               -- idle
+               {
+               sounds_base,
+               obj:add_sound ("script_replics\\bandit_1\\idle\\bandit_idle_2",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\idle\\bandit_idle_3",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\idle\\bandit_idle_4",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\idle\\bandit_idle_8",  1, snd_type.talk, 2, 1, id ()),
+              }
+              }
+
     return sounds_base
 end
