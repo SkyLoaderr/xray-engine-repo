@@ -130,8 +130,6 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_decompress					= xr_new<CBlender_decompress>			();
 
 	//	NORMAL
-	//  gk
-#if FP16_FILTER_AND_BLEND
 	if (RImplementation.b_fp16)
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
@@ -141,7 +139,6 @@ void	CRenderTarget::OnDeviceCreate	()
 		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A16B16G16R16F);
 	}
 	else
-#endif
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Depth.create				(r2_RT_depth,	w,h,D3DFMT_R32F			);
@@ -160,9 +157,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	}
 	else
 	{
-#if FP16_FILTER_AND_BLEND
 		if (!RImplementation.b_fp16)
-#endif
 		{
 			u32 _fvf					= (u32)D3DFVF_XYZRHW|D3DFVF_TEX2|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE4(1);
 			s_decompress.create			(b_decompress,	"r2\\rt32x64decode");
