@@ -206,7 +206,7 @@ public:
 						for ( ; II != EE; ++II)
 							if (T.tOldGraphID == (*II).second.tOldGraphID) {
 								ok						= false;
-								Msg						("Graph point %s is removed",E->s_name_replace);
+								Msg						("Graph point %s is removed,because it has the same position as some another graph point",E->s_name_replace);
 								break;
 							}
 
