@@ -311,7 +311,7 @@ void CCustomMonster::Update	( DWORD DT )
 			Exec_Movement			(dt);
 			Exec_Visibility			();
 			Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
-			g_sv_Feel_Neighbours	(C,R);
+			feel_touch_update		(C,R);
 
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();
@@ -423,7 +423,9 @@ objQualifier* CCustomMonster::GetQualifier	()
 
 void CCustomMonster::GetVisible			(objVisible& R)
 {
-	ai_Track.o_get	(R);
+	R.clear		();
+	vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
+	for (; I!=E; I++)	if (positive(I->fuzzy)) R.push_back(I->O);
 }
 
 void CCustomMonster::eye_pp_s0			( )
@@ -467,7 +469,7 @@ void CCustomMonster::eye_pp_s2			( )
 	u32 dwTime			= Level().timeServer();
 	u32 dwDT			= dwTime-eye_pp_timestamp;
 	eye_pp_timestamp	= dwTime;
-	ai_Track.o_update						(eye_pp_seen,this,eye_matrix.c,float(dwDT)/1000.f);
+	feel_vision_update						(eye_pp_seen,this,eye_matrix.c,float(dwDT)/1000.f);
 	Device.Statistic.AI_Vis_RayTests.End	();
 }
 
@@ -640,8 +642,6 @@ BOOL CCustomMonster::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvec
 
 void CCustomMonster::OnHUDDraw(CCustomHUD* hud)
 {
-	ai_Track.o_dump			();
-
 	CHUDManager* H			= (CHUDManager*)hud;
 	H->pHUDFont->Color		(D3DCOLOR_XRGB(255,0,0));
 	H->pHUDFont->OutSet		(0,200);

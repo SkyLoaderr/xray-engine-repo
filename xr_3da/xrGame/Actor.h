@@ -8,6 +8,7 @@
 
 #include "entity.h"
 #include "actor_flags.h"
+#include "..\feel_touch.h"
 
 // refs
 class ENGINE_API CCameraBase;
@@ -18,7 +19,10 @@ class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
 
-class CActor: public CEntityAlive, public CEHelper_FeelNearest
+class CActor: 
+	public CEntityAlive, 
+	public Feel::Touch
+
 #ifdef DEBUG
 	,public pureRender
 #endif

@@ -25,7 +25,7 @@ namespace Feel {
 				return;
 			}
 	}
-	void	Vision::feel_visible_update	(objSET& seen, CObject* parent, Fvector& P, float dt)
+	void	Vision::feel_vision_update	(objSET& seen, CObject* parent, Fvector& P, float dt)
 	{
 		if (seen.size()>1) 
 		{

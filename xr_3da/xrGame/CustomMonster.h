@@ -1,4 +1,4 @@
-	// CustomMonster.h: interface for the CCustomMonster class.
+// CustomMonster.h: interface for the CCustomMonster class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -6,12 +6,12 @@
 #define AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_
 #pragma once
 
-#include "..\portal.h"
+#include "..\feel_vision.h"
+#include "..\feel_sound.h"
+#include "..\feel_touch.h"
 #include "entity.h"
-#include "custommonster_vistrack.h"
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
-#include "level.h"
 
 class ENGINE_API CMotionDef;
 class ENGINE_API CKinematics;
@@ -19,9 +19,10 @@ class ENGINE_API CBoneInstance;
 class CWeaponList;
 
 class CCustomMonster : 
-	public CEntityAlive,
-	public CEHelper_FeelNearest,
-	public soundListener
+	public CEntityAlive, 
+	public Feel::Vision, 
+	public Feel::Sound, 
+	public Feel::Touch
 #ifdef DEBUG
 	, public pureRender
 #endif
@@ -82,7 +83,6 @@ public:
 	CPathNodes			AI_Path;
 
 	// Eyes
-	AI::VisiTrack		ai_Track;
 	Fmatrix				eye_matrix;
 	int					eye_bone;
 	float				eye_fov;
@@ -91,7 +91,6 @@ public:
 	u32					eye_pp_stage;
 	u32					eye_pp_timestamp;
 	objSET				eye_pp_seen;
-
 
 	// AI
 	AI::AIC_Look		q_look;

@@ -32,8 +32,8 @@ namespace Feel
 		};
 		vector<feel_visible_Item>	feel_visible;
 	public:
-		void						feel_visible_update	(objSET& seen, CObject* parent, Fvector& P, float dt);
-		void						feel_visible_get	(objSET& R)
+		void						feel_vision_update	(objSET& seen, CObject* parent, Fvector& P, float dt);
+		void						feel_vision_get		(objSET& R)
 		{
 			R.clear		();
 			vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
