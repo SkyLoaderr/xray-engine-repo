@@ -1055,27 +1055,8 @@ struct CMemCallbackHolder {
 extern void script_test();
 extern void delegate_test();
 
-struct A_ {
-};
-
-struct B_ : public A_{
-	int a;
-private:
-	typedef A_ inherited;
-};
-
-struct C_ : public B_{
-	typedef B_ inherited;
-	static void cc(B_ *c_)
-	{
-//		printf("%d\n",c_->inherited::a);
-	}
-};
-
 void test1()
 {
-	B_	cc;
-	C_::cc(&cc);
 //	script_test();
 ////	printf	("%s\n",typeid(final::Head).name());
 ////	printf	("%s\n",typeid(final::Tail::Head).name());
@@ -1098,7 +1079,7 @@ void test1()
 //		printf					("FALSE\n");
 //	holder.OnSomeEvent			(5);
 
-	delegate_test();
+//	delegate_test();
 
 	string4096		SSS;
 	strcpy			(SSS,"");
@@ -1147,7 +1128,8 @@ void test1()
 //	registrator().script_register(L);
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
-	lua_dofile		(L,"x:\\virtual_test.script");
+	lua_dofile		(L,"x:\\heritage_test.script");
+//	lua_dofile		(L,"x:\\virtual_test.script");
 //	lua_dofile		(L,"x:\\comment_test.script");
 	if (xr_strlen(SSS)) {
 		printf		("\n%s\n",SSS);
