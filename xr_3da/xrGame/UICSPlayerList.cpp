@@ -40,5 +40,6 @@ void CUICSPlayerList::OnFrame()
 		else									H->Color(0xb0a0a0a0);
 		H->OutNext		("%3d: %-20s %-5d %s",k++,P->name,P->kills,(P->flags&GAME_PLAYER_FLAG_READY)?"ready":"");
 	}
+	H->OutSkip(3.f);
 }
 //--------------------------------------------------------------------

@@ -408,10 +408,8 @@ void CWeapon::OnH_B_Independent	()
 		Fvector l_fw; l_fw.set(svTransform.k); l_fw.mul(2.f);
 		Fvector l_up; l_up.set(svTransform.j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
-		l_p1.set(svTransform); /*l_p1.c.add(l_up);*/ l_p1.c.add(l_fw);
-		l_p2.set(svTransform); /*l_p2.c.add(l_up);*/ l_fw.mul(3.f); l_p2.c.add(l_fw);
-		Log("aaa",l_p1.c);
-		Log("bbb",l_p2.c);
+		l_p1.set(svTransform);
+		l_p2.set(svTransform); l_fw.mul(2.f); l_p2.c.add(l_fw);
 		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
 		svTransform.set(l_p1);
 		vPosition.set(svTransform.c);

@@ -76,7 +76,7 @@ public:
 	CObject*					CurrentViewEntity		( void )		{ return pCurrentViewEntity; }
 	void						ChangeEntity			( CLASS_ID id )	{ pCurrentEntity=pCurrentViewEntity=(CObject*)Objects.FindObjectByCLS_ID(id); }
 	void						ChangeViewEntity		( CLASS_ID id )	{ pCurrentViewEntity=(CObject*)Objects.FindObjectByCLS_ID(id); }
-	void						SetEntity				( CObject* O  ) { VERIFY(O); pCurrentEntity=pCurrentViewEntity=O; }
+	void						SetEntity				( CObject* O  ) { pCurrentEntity=pCurrentViewEntity=O; }
 
 	// Loader interface
 	Shader*						LL_CreateShader			(int S, int T, int M, int C);
