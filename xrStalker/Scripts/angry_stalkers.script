@@ -20,13 +20,13 @@ function main()
 			action(
 				siviy,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-				anim	(anim.danger),
+				anim	(anim.free),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				chert,
 			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-				anim	(anim.danger),
+				anim	(anim.free),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
