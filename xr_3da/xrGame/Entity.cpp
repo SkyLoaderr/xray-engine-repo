@@ -254,7 +254,7 @@ BOOL CEntityAlive::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvecto
 	Movement.SetVelocity	(0,0,0);
 	return					TRUE;
 }
-void CEntityAlive::HitImpulse	(Fvector& vWorldDir, Fvector& vLocalDir, float amount)
+void CEntityAlive::HitImpulse	( float amount, Fvector& vWorldDir, Fvector& vLocalDir )
 {
 	float Q						=	2*float(amount)/Movement.GetMass();
 	Movement.vExternalImpulse.mad	(vWorldDir,Q);
