@@ -471,9 +471,7 @@ IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 
 IC	void CLevelNavigationGraph::update_cells	(u32 vertex_id, u32 right, u32 down)
 {
-#if 1
-	CROSS_PTABLE::iterator		I = remove_if(m_temp.begin(),m_temp.end(),remove_cell_preciate());
-	m_temp.erase				(I,m_temp.end());
+	m_temp.erase				(remove_if(m_temp.begin(),m_temp.end(),remove_cell_preciate()),m_temp.end());
 
 	for (u32 right_id = vertex_id, i=0; i<right; right_id = vertex(right_id)->link(1), ++i)
 		update_cell				(right_id,0);
@@ -482,32 +480,6 @@ IC	void CLevelNavigationGraph::update_cells	(u32 vertex_id, u32 right, u32 down)
 		update_cell				(down_id,3);
 
 	std::sort					(m_temp.begin(),m_temp.end(),sort_cells_predicate());
-#else
-	CROSS_PTABLE::iterator		I = remove_if(m_temp.begin(),m_temp.end(),remove_cell_preciate());
-	m_temp.erase				(I,m_temp.end());
-
-	{
-		CROSS_PTABLE::iterator	I = m_temp.begin();
-		CROSS_PTABLE::iterator	E = m_temp.end();
-		for ( ; I != E; ++I) {
-			(*I)->m_right		= 0;
-			(*I)->m_down		= 0;
-		}
-	}
-
-	{
-		CROSS_PTABLE::iterator	I = m_temp.begin();
-		CROSS_PTABLE::iterator	E = m_temp.end();
-		for ( ; I != E; ++I) {
-			if (!(*I)->m_right)
-				fill_cell		(this->vertex_id(I),1);
-			if (!(*I)->m_down)
-				fill_cell		(this->vertex_id(I),2);
-		}
-	}
-
-	std::sort					(m_temp.begin(),m_temp.end(),sort_cells_predicate());
-#endif
 }
 
 IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &down, u32 max_square)
