@@ -33,9 +33,9 @@ function evaluator_contact:evaluate()
 		self.a.actor = nil
 	end	
 	if self.a.over == false then
-		printf("OVER TRU")
+		printf("self.a.over == false TRUE")
 	else
-		printf("OVER FALSE")
+		printf("self.a.over == false FALSE")
 	end
 	
 	return self.a.actor ~= nil and self.a.over == false
