@@ -31,6 +31,9 @@ private:
 	// Вставляем хвост списка в лист
 	// Return:	Указатель на последний вставленный элемент
 	CUITreeViewItem * AddTreeTail(GroupTree_it it, GroupTree &cont, CUITreeViewItem *pItemToIns);
+
+	// Изменить размер статика по размеру текстуры
+	void RescaleStatic(CUIStatic &s);
 public:
 	CUIEncyclopediaWnd();
 	virtual ~CUIEncyclopediaWnd();
@@ -38,6 +41,7 @@ public:
 	virtual void Init();
 	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
+	virtual void Draw();
 
 	// Добавлем 1 энциклопедиционную статью
 	void AddArticle(const ref_str &ID);

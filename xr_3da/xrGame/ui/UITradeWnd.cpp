@@ -26,6 +26,8 @@ using namespace InventoryUtilities;
 //////////////////////////////////////////////////////////////////////
 
 CUITradeWnd::CUITradeWnd()
+	:	m_pCurrentDragDropItem	(NULL)
+
 {
 	Init();
 	Hide();
@@ -137,6 +139,11 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	VERIFY(pOur);
 	VERIFY(pOthers);
 
+	UIOthersBagList.HighlightAllCells(false);
+	UIOthersTradeList.HighlightAllCells(false);
+	UIOurTradeList.HighlightAllCells(false);
+	UIOurBagList.HighlightAllCells(false);
+
 	m_pInvOwner = pOur;
 	m_pOthersInvOwner = pOthers;
 
@@ -182,12 +189,14 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(msg == CUIDragDropItem::ITEM_DRAG)
 	{
+		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		SetCurrentItem(pInvItem);
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
+		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		

@@ -7654,16 +7654,6 @@
 						RelativePath=".\UIZoneMap.h">
 					</File>
 				</Filter>
-				<Filter
-					Name="TaskWnd"
-					Filter="">
-					<File
-						RelativePath=".\ui\UITaskWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UITaskWnd.h">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="UIWindows"
@@ -8281,9 +8271,6 @@
 			</File>
 			<File
 				RelativePath=".\dialogs.xml">
-			</File>
-			<File
-				RelativePath=".\diary.xml">
 			</File>
 			<File
 				RelativePath=".\info_portions old.xml">

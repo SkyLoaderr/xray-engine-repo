@@ -17,7 +17,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const ENCYCLOPEDIA_DIALOG_XML	= "encyclopedia.xml";
+const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia.xml";
+static int			MAX_PICTURE_WIDTH			= 0;
+static const int	MIN_PICTURE_FRAME_WIDTH		= 64;
+static const int	MIN_PICTURE_FRAME_HEIGHT	= 64;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -61,18 +64,20 @@ void CUIEncyclopediaWnd::Init()
 
 	UIEncyclopediaInfoBkg.AttachChild(&UIEncyclopediaInfoHeader);
 	xml_init.InitFrameLine(uiXml, "einfo_frame_line", 0, &UIEncyclopediaInfoHeader);
-
 	UIEncyclopediaIdxBkg.AttachChild(&UIIdxList);
+
 	xml_init.InitListWnd(uiXml, "idx_list", 0, &UIIdxList);
 	UIIdxList.SetMessageTarget(this);
-
 	UIEncyclopediaInfoBkg.AttachChild(&UIInfoList);
+
 	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoList);
-	UIInfoList.AddItem<CUIListItem>("Test of UIInfoList");
 	UIInfoList.ActivateList(false);
 
 	// mask
 	xml_init.InitFrameWindow(uiXml, "item_static:mask_frame_window", 0, &UIImgMask);
+
+	// Читаем максимальную длинну картинки в энциклопедии
+	MAX_PICTURE_WIDTH = uiXml.ReadAttribInt("item_static", 0, "width", 0);
 
 	string256 header;
 	strconcat(header, ALL_PDA_HEADER_PREFIX, "/Encyclopedia");
@@ -125,11 +130,31 @@ void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 
 	// Текстура
 	localXml.SetLocalRoot(pNode);
-	xml_init.InitTexture(localXml, "", 0, &a.image);
+	// если записи с текстурой нет, то ищем раздел с именем секции в ltx файле для вещи
+	if (!xml_init.InitTexture(localXml, "", 0, &a.image))
+	{
+		const ref_str ltx_record = localXml.Read("ltx", 0, "");
+		R_ASSERT(ltx_record != NULL);
+		a.image.SetShader(InventoryUtilities::GetEquipmentIconsShader());
 
-	// И текст
-	a.info = uiXml.Read(pNode, "");
-	R_ASSERT(a.info != "");
+		u32 x		= pSettings->r_u32(ltx_record, "inv_grid_x") * INV_GRID_WIDTH;
+		u32 y		= pSettings->r_u32(ltx_record, "inv_grid_y") * INV_GRID_HEIGHT;
+		u32 width	= pSettings->r_u32(ltx_record, "inv_grid_width") * INV_GRID_WIDTH;
+		u32 height	= pSettings->r_u32(ltx_record, "inv_grid_height") * INV_GRID_HEIGHT;
+
+		a.image.GetUIStaticItem().SetOriginalRect(x, y, width, height);
+		a.image.ClipperOn();
+	}
+	else
+	{
+		// текст
+		a.info = uiXml.Read(pNode, "");
+		R_ASSERT(a.info != "");
+	}
+
+	RescaleStatic(a.image);
+
+	// Начинаем алгоритм определения группы вещи в иерархии энциклопедии
 	std::string group = uiXml.ReadAttrib(pNode, "group", "");
 	R_ASSERT(!group.empty());
 
@@ -271,7 +296,7 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 
 		if (!pTVItem->IsRoot())
 		{
-			// Удаляем текущую катинку и текст
+			// Удаляем текущую картинку и текст
 			if (m_pCurrArticle)
 			{
 				UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->image);
@@ -293,4 +318,44 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 			m_pCurrArticle = &m_ArticlesDB[pTVItem->GetValue()];
 		}
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIEncyclopediaWnd::RescaleStatic(CUIStatic &s)
+{
+	Irect	r		= s.GetUIStaticItem().GetOriginalRect();
+
+	// Если картинка не пoмещается в максимальную допустимую длинну
+	s.SetWidth(MAX_PICTURE_WIDTH);
+
+	if (r.width() > MAX_PICTURE_WIDTH)
+	{
+		float scale = static_cast<float>(MAX_PICTURE_WIDTH) / r.width();
+		s.SetTextureScale(scale);
+		s.SetHeight(static_cast<int>(r.height() * scale));
+	}
+	// Если помещается, то центрируем ее в отведенной области
+	else
+	{
+		s.SetHeight(r.height());
+	}
+
+	if (r.height() < MIN_PICTURE_FRAME_HEIGHT)
+	{
+		s.SetHeight(MIN_PICTURE_FRAME_HEIGHT);
+		s.SetTextureOffset(0, (MIN_PICTURE_FRAME_HEIGHT - r.height()) / 2);
+	}
+
+	if (r.width() < MAX_PICTURE_WIDTH)
+	{
+		s.SetTextureOffset((MAX_PICTURE_WIDTH - r.width()) / 2, s.GetTextureOffeset()[1]);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIEncyclopediaWnd::Draw()
+{
+	inherited::Draw();
 }

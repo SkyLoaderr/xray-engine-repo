@@ -10,7 +10,6 @@
 #include "UITabControl.h"
 #include "UIPdaCommunication.h"
 #include "UIMapWnd.h"
-#include "UITaskWnd.h"
 #include "UIDiaryWnd.h"
 #include "UIFrameLineWnd.h"
 #include "UIEncyclopediaWnd.h"
@@ -61,9 +60,8 @@ protected:
 	// Поддиалоги PDA
 	CUIPdaCommunication	UIPdaCommunication;
 	CUIMapWnd			UIMapWnd;
-	CUITaskWnd			UITaskWnd;
-	CUIDiaryWnd			UIDiaryWnd;
 	CUIEncyclopediaWnd	UIEncyclopediaWnd;
+	CUIDiaryWnd			UIDiaryWnd;
 
 	//элементы декоративного интерфейса
 	CUIStatic			UIStaticTop;

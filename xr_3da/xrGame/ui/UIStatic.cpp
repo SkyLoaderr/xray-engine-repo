@@ -24,8 +24,10 @@ CUIStatic:: CUIStatic()
 
 	SetTextAlign(CGameFont::alLeft);
 
-	m_iTextOffsetX = 0;
-	m_iTextOffsetY = 0;
+	m_iTextOffsetX	= 0;
+	m_iTextOffsetY	= 0;
+	m_iTexOffsetY	= 0;
+	m_iTexOffsetX	= 0;
 
 	m_dwFontColor = 0xFFFFFFFF;
 
@@ -69,9 +71,11 @@ void  CUIStatic::Draw()
 	{
 
 		RECT rect = GetAbsoluteRect();
-		m_UIStaticItem.SetPos(rect.left, rect.top);
+//		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
 		if(m_bClipper) TextureClipper();
+
+		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
 		if(m_bStretchTexture)
 			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
@@ -528,7 +532,8 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 	if (m_pMask)
 	{
 		AttachChild(m_pMask);
-		RECT r = GetWndRect();
+		RECT r		= GetWndRect();
+
 		m_pMask->SetWidth(r.right - r.left);
 		m_pMask->SetHeight(r.bottom - r.top);
 	}

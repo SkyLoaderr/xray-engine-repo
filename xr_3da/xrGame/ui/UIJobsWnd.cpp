@@ -43,19 +43,10 @@ void CUIJobsWnd::Init()
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$", JOBS_XML);
 	R_ASSERT2(xml_result, "xml file not found");
-	string256 buf;
 
 	CUIXmlInit xml_init;
 
-	AttachChild(&UIMainJobsFrame);
-	xml_init.InitFrameWindow(uiXml, "msglog_frame_window", 0, &UIMainJobsFrame);
-
-	UIMainJobsFrame.AttachChild(&UIMJFHeader);
-	xml_init.InitFrameLine(uiXml, "cntd_frame_line", 0, &UIMJFHeader);
-	strconcat(buf, ALL_PDA_HEADER_PREFIX, " / Task List");
-	UIMJFHeader.UITitleText.SetText(buf);
-
-	UIMainJobsFrame.AttachChild(&UIList);
+	AttachChild(&UIList);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIList);
 	UIList.EnableScrollBar(true);
 }
@@ -69,19 +60,6 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	R_ASSERT(task->ObjectivesNum() > 0);
 	if (!task || task->ObjectivesNum() < 0)	return;
 
-	// ѕервый таск у нас €вл€ет собой заголовок задани€
-	CUIListItem *pHeader1 = xr_new<CUIListItem>();
-	CUIListItem *pHeader2 = xr_new<CUIListItem>();
-	CUIListItem *pHeader3 = xr_new<CUIListItem>();
-	UIList.AddItem<CUIListItem>(pHeader1);
-	UIList.AddItem<CUIListItem>(pHeader2);
-	pHeader2->SetFont(pHeaderFnt);
-	pHeader2->SetTextColor(clTaskHeaderColor);
-	pHeader2->SetText(*task->ObjectiveDesc(0));
-	UIList.AddItem<CUIListItem>(pHeader3);
-
-	// “еперь пробегаемс€ по остальным таскам и заносим их как задани€
-
 	// “ак как AddParsedItem добавл€ет несколько UIIconedListItem'ов, то мы запоминаем индекс первого
 	// дл€ того чтобы только ему присвоить иконку соответсвующую состо€нию задани€
 	int iconedItemIdx = 0; 
@@ -93,6 +71,21 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		"ui\\ui_pda_icon_mission_in_progress",
 		"ui\\ui_pda_icon_mission_completed"
 	};
+
+	// ѕервый таск у нас €вл€ет собой заголовок задани€
+	CUIListItem			*pHeader1 = xr_new<CUIListItem>();
+	CUIIconedListItem	*pHeader2 = xr_new<CUIIconedListItem>();
+	CUIListItem			*pHeader3 = xr_new<CUIListItem>();
+	UIList.AddItem<CUIListItem>(pHeader1);
+	UIList.AddItem<CUIIconedListItem>(pHeader2);
+	pHeader2->SetIcon(iconsTexturesArr[task->ObjectiveState(0)], uTaskIconSize);
+	pHeader2->SetFont(pHeaderFnt);
+	pHeader2->SetTextColor(clTaskHeaderColor);
+	pHeader2->SetText(*task->ObjectiveDesc(0));
+	pHeader2->SetTextX(15);
+	UIList.AddItem<CUIListItem>(pHeader3);
+
+	// “еперь пробегаемс€ по остальным таскам и заносим их как задани€
 
 	for (u32 i = 1; i < task->ObjectivesNum(); ++i)
 	{
@@ -108,4 +101,40 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 			pTask->SetIcon(iconsTexturesArr[task->ObjectiveState(i)], uTaskIconSize);
 		}
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIJobsWnd::ReloadJobs()
+{
+	UIList.RemoveAll();
+
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+
+	if (!pActor) return;
+
+	for(KNOWN_INFO_VECTOR::const_iterator it = pActor->KnownInfo().begin();
+		pActor->KnownInfo().end() != it; ++it)
+	{
+		//подгрузить кусочек информации с которым мы работаем
+		CInfoPortion info_portion;
+		info_portion.Load(it->id);
+
+		// ƒобавл€ем таск если есть
+		CGameTask *pTask = info_portion.GetTask();
+
+		if (pTask)
+		{
+			pTask->CalcState(pActor);
+			AddTask(pTask);
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIJobsWnd::Show()
+{
+	ReloadJobs();
+	inherited::Show();
 }

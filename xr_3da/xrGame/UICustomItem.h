@@ -42,7 +42,7 @@ public:
 	  void			SetOriginalRect	(int x, int y, int width, int height);
 
 	IC Irect		GetRect					() {return iVisRect;}
-	   Irect		GetOriginalRect			();
+	   Irect		GetOriginalRect			() const;
 	   Irect		GetOriginalRectScaled	();
 
 

@@ -56,8 +56,10 @@ void CUIPdaContactsWnd::Init(int x, int y, int width, int height)
 	UIFrameContacts.AttachChild(&UIListWnd);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIListWnd);
 	UIListWnd.SetMessageTarget(this);
-	UIListWnd.EnableActiveBackground(true);
+	UIListWnd.EnableActiveBackground(false);
 	UIListWnd.EnableScrollBar(true);
+
+	xml_init.InitAutoStatic(uiXml, "auto_static", &UIFrameContacts);
 }
 
 
@@ -65,7 +67,6 @@ void CUIPdaContactsWnd::Update()
 {
 	inherited::Update();
 }
-
 
 void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
@@ -80,6 +81,13 @@ void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			GetTop()->SendMessage(this, CONTACT_SELECTED);
 		}
 	}
+
+	if (pWnd->GetParent() == &UIListWnd && CUIButton::BUTTON_FOCUS_RECEIVED)
+	{
+		CUIPdaListItem *pPLIItem = dynamic_cast<CUIPdaListItem*>(pWnd);
+		R_ASSERT(pPLIItem);
+	}
+
 	inherited::SendMessage(pWnd, msg, pData);
 }
 

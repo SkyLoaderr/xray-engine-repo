@@ -84,6 +84,9 @@ public:
 
 	// Работа с маской
 	void SetMask(CUIFrameWindow *pMask);
+	// Cмещение текстуры кнопки
+	void		SetTextureOffset(int x, int y) { m_iTexOffsetX = x; m_iTexOffsetY = y; }
+	Ivector2	GetTextureOffeset() const { Ivector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
 
 protected:
 	bool m_bClipper;
@@ -137,6 +140,9 @@ protected:
 
     // Для вывода текстуры с обрезанием по маске используем CUIFrameWindow
 	CUIFrameWindow	*m_pMask;
+
+	// для смещения текстуры
+	int m_iTexOffsetX, m_iTexOffsetY;
 };
 
 #endif // _UI_STATIC_H_

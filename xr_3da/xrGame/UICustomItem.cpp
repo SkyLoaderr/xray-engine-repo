@@ -199,7 +199,7 @@ Irect CUICustomItem::GetOriginalRectScaled()
 	return rect;
 }
 
-Irect CUICustomItem::GetOriginalRect()
+Irect CUICustomItem::GetOriginalRect() const
 {
 	Irect rect;
 	rect.x1 = iOriginalRect.x1;

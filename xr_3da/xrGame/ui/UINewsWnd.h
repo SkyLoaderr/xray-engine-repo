@@ -29,13 +29,6 @@ public:
 
 	// Окно вывода информации
 	CUIListWnd	UIListWnd;
-
-//	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
-protected:
-	// Название окна в верхнем правом углу...
-	CUIStatic	UIStaticCaptionMain;
-	// ...и в окне вывода информации
-	CUIStatic	UIStaticCaptionCenter;
 };
 
 #endif

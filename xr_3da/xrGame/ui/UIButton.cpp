@@ -226,7 +226,7 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 //прорисовка кнопки
 void  CUIButton::Draw()
 {
-	CUIWindow::Draw();
+//	CUIWindow::Draw();
 
 	RECT rect = GetAbsoluteRect();
 

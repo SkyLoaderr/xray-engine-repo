@@ -62,17 +62,12 @@ void CUIPdaWnd::Init()
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
 	// Main buttons background
-	AttachChild(&UIMainButtonsBackground);
+	UIMainPdaFrame.AttachChild(&UIMainButtonsBackground);
 	xml_init.InitFrameLine(uiXml, "mbbackground_frame_line", 0, &UIMainButtonsBackground);
 
 	// Timer background
-	AttachChild(&UITimerBackground);
+	UIMainPdaFrame.AttachChild(&UITimerBackground);
 	xml_init.InitFrameLine(uiXml, "timer_frame_line", 0, &UITimerBackground);
-
-
- 	// Tab control
-	AttachChild(&UITabControl);
-	xml_init.InitTabControl(uiXml, "tab", 0, &UITabControl);
 
 	// Oкно коммуникaции
 	UIPdaCommunication.Init();
@@ -82,23 +77,21 @@ void CUIPdaWnd::Init()
 	UIMainPdaFrame.AttachChild(&UIMapWnd);
 	UIMapWnd.Init();
 
-	// Окно задач
-	UIMainPdaFrame.AttachChild(&UITaskWnd);
-	UITaskWnd.Init();
-	
 	// Oкно новостей
-//	UIMainPdaFrame.AttachChild(&UIDiaryWnd);
+	UIMainPdaFrame.AttachChild(&UIDiaryWnd);
 	UIDiaryWnd.Init();
-	UIDiaryWnd.SetMessageTarget(this);
 
 	// Окно энциклопедии
 	UIMainPdaFrame.AttachChild(&UIEncyclopediaWnd);
 	UIEncyclopediaWnd.Init();
 	UIEncyclopediaWnd.Hide();
 
-	m_pActiveDialog = &UIPdaCommunication;
-	//!!!
-	//UITabControl.SetNewActiveTab(1);
+	m_pActiveDialog = &UIDiaryWnd;
+
+	// Tab control
+	UIMainPdaFrame.AttachChild(&UITabControl);
+	xml_init.InitTabControl(uiXml, "tab", 0, &UITabControl);
+	UITabControl.SetMessageTarget(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -116,7 +109,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			switch (UITabControl.GetActiveIndex()) 
 			{
 			case 0:
-				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UITaskWnd);
+				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIDiaryWnd);
 				break;
 			case 1:
 				m_pActiveDialog = dynamic_cast<CUIDialogWnd*>(&UIPdaCommunication);

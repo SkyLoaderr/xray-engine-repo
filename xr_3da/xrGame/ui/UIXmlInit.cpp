@@ -528,6 +528,8 @@ bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int inde
 		InitFont(xml_doc, ph, i, argb, pFont);
         p->effect.SetFont(pFont);
 		p->effect.SetTextColor(argb);
+
+		p->str = xml_doc.Read(ph, i);
 	}
 
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());

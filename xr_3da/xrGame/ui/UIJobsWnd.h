@@ -20,27 +20,28 @@ class CUIJobsWnd: public CUIDialogWnd
 {
 	typedef CUIDialogWnd inherited;
 public:
+
 	CUIJobsWnd();
 	virtual ~CUIJobsWnd();
 	virtual void Init();
+	virtual void Show();
 	// Добавить 1 таск
 	void AddTask(CGameTask * const task);
 //	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 	// Нет смысла скрывать листбокс, так как все равно пока это практически все, что есть, и
 	// придется писать обертки над всеми управляющими функциями листбокса
 	CUIListWnd		UIList;
+	// Загрузить jobs
+	void ReloadJobs();
+
+	// Установить фильтр
+//	void SetFilter(EDiaryIDs)
 protected:
 	// Добавляем заголовок крупным шрифтом
 	void AddHeader(ref_str strHeader);
-	// Добавляем надпись с иконкой
-	// Фрейи с описанием задач задачами
-	CUIFrameWindow	UIMainJobsFrame;
-	// Декоративный заголовок
-	CUIFrameLineWnd	UIMJFHeader;
 
 	CGameFont			*pHeaderFnt;
 	CGameFont			*pSubTasksFnt;
-
 };
 
 #endif

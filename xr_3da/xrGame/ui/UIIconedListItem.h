@@ -25,14 +25,24 @@ public:
 	{}
 
 	// Устанавливаем иконку и ее размер
-	void SetIcon(ref_str textureName, u32 uIconSize);
-	virtual void Draw();
+	void			SetIcon(ref_str textureName, u32 uIconSize);
+	virtual void	Draw();
+	virtual void	Show(bool status);
+	// После смены позиции листа обновить положение иконочки
+	virtual void	Update();
+
+	// Смещение иконки
+	void SetIconOffset(const int oX, const int oY);
 protected:
 	CUIStaticItem	m_Icon;
 	// Размер иконки
 	u32				m_uIconSize;
 	// Иконка присутствует
 	bool			m_bTexturePresent;
+	// Иконка отображается
+	bool			m_bIconDraw;
+	// Запоминаем предыдущий AbsoluteRect
+	RECT			m_OldAbsoluteWndRect;
 };
 
 #endif	//UI_ICONED_LIST_ITEM_H_

@@ -72,7 +72,7 @@ public:
 
 		int GroupID = GetSize();
 
-		for(u32 i = 0; i<text.size()-2; ++i)
+		for(int i = 0; i < static_cast<int>(text.size()) - 2; ++i)
 		{
 			// '\n' - переход на новую строку
 			if(text[i] == '\\' && text[i+1]== 'n')
