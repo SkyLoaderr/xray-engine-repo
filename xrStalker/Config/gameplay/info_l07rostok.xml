@@ -71,13 +71,8 @@
 		<task>bar_hunter_rifle</task>
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
-
-	<info_portion id="bar_bar_hunter_quest_find_rifle"></info_portion>
-                                                        
-	<info_portion id="bar_bar_hunter_quest_finish">
-		<disable>bar_bar_hunter_quest_start</disable>
-		<disable>bar_bar_hunter_quest_find_rifle</disable>
-	</info_portion>
+	<info_portion id="bar_bar_hunter_quest_find_rifle"></info_portion>                                                        
+	<info_portion id="bar_bar_hunter_quest_finish"></info_portion>
 
 	<!-- BAR DRUNK DOLG QUEST -->
 	<info_portion id="bar_bar_drunk_dolg_quest_start">
@@ -106,10 +101,7 @@ bar_drunk_dolg_quest
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="bar_dolg_veteran_gain"></info_portion>
-	<info_portion id="bar_dolg_veteran_done">
-		<disable>bar_dolg_veteran_start</disable>
-		<disable>bar_dolg_veteran_gain</disable>
-	</info_portion>
+	<info_portion id="bar_dolg_veteran_done"></info_portion>
 
 	<info_portion id="bar_dolg_community_leader"></info_portion>
 	<info_portion id="bar_dolg_community_leader_talk"></info_portion>
@@ -136,7 +128,10 @@ bar_drunk_dolg_quest
 	<info_portion id="bar_resque_research_fail"></info_portion>
     
     <!-- FREEDOM FLASH QUEST -->
-	<info_portion id="bar_get_research_start"></info_portion> 
+	<info_portion id="bar_get_research_start">
+		<task>bar_get_information</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="bar_get_research_gain"></info_portion>
 	<info_portion id="bar_get_research_done"></info_portion>
 	<info_portion id="bar_get_research_fail"></info_portion>

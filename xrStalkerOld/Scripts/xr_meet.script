@@ -186,6 +186,15 @@ function evaluator_state_talk:evaluate()
 	return self.object:is_talking()
 end
 
+class "evaluator_need_exit" (property_evaluator)
+function evaluator_need_exit:__init(name, storage) super (nil, name)
+	self.a = storage
+end
+function evaluator_need_exit:evaluate()
+	return false
+end
+
+
 --' Стоим, болтаем
 class "action_state_talk" (action_base)
 function action_state_talk:__init (npc_name,action_name, storage) super (nil, action_name)
@@ -205,13 +214,28 @@ function action_state_talk:initialize()
 		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
 	end
 end
-function action_state_talk:execute ()
-	action_base.execute (self)
+function action_state_talk:execute()
+	action_base.execute(self)
 end
-function action_state_talk:finalize ()
-	action_base.finalize (self)
+function action_state_talk:finalize()
+	action_base.finalize(self)
 end
 
+--' Принудительный выход из болтовни
+class "action_state_exit" (action_base)
+function action_state_exit:__init (npc_name,action_name, storage) super (nil, action_name)
+	self.a = storage
+end
+function action_state_exit:initialize()
+	action_base.initialize(self)
+	self.object:stop_talk()
+end
+function action_state_exit:execute()
+	action_base.execute(self)
+end
+function action_state_exit:finalize()
+	action_base.finalize(self)
+end
 
 
 
@@ -228,16 +252,20 @@ function add_to_binder(object, char_ini)
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1         
 	properties["weapon"]		= xr_evaluators_id.stohe_meet_base + 2
 	properties["state_talk"]	= xr_evaluators_id.stohe_meet_base + 3
+	properties["need_exit"]		= xr_evaluators_id.stohe_meet_base + 4
 	properties["need_punch"]	= xr_evaluators_id.zmey_punch_base + 1
 
 	operators["wait_trade"]			= xr_actions_id.stohe_meet_base + 1
 	operators["weapon"]				= xr_actions_id.stohe_meet_base + 2
 	operators["state_talk"]			= xr_actions_id.stohe_meet_base + 3
+	operators["state_exit"]			= xr_actions_id.stohe_meet_base + 4
 
 	-- Evaluators
-	manager:add_evaluator (properties["contact"], 		evaluator_contact	("meet_contact", db.storage[object:id()].meet))
-	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	("meet_weapon", db.storage[object:id()].meet))
-	manager:add_evaluator (properties["state_talk"], 	evaluator_state_talk("state_talk", db.storage[object:id()].meet))
+	manager:add_evaluator (properties["contact"], 		evaluator_contact("meet_contact", db.storage[object:id()].meet))
+	manager:add_evaluator (properties["weapon"], 		evaluator_weapon("meet_weapon", db.storage[object:id()].meet))
+	manager:add_evaluator (properties["state_talk"], 	evaluator_state_talk("meet_state_talk", db.storage[object:id()].meet))
+	manager:add_evaluator (properties["need_exit"], 	evaluator_need_exit("meet_need_exit", db.storage[object:id()].meet))
+	
 
 	-- Actions
 	local action = action_meet_wait (object:name(),"action_meet_wait", db.storage[object:id()].meet, char_ini)
@@ -257,12 +285,21 @@ function add_to_binder(object, char_ini)
 	manager:add_action (operators["weapon"], action)
 
 
-	action = action_state_talk (object:name(),"state_talk", db.storage[object:id()].meet)
+
+	action = action_state_talk (object:name(),"meet_state_talk", db.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["need_exit"],	false))
 	action:add_precondition		(world_property(properties["state_talk"], 	true))
 	action:add_effect 		(world_property(properties["state_talk"], 		false))
 	manager:add_action (operators["state_talk"], action)
+
+	action = action_state_exit (object:name(),"meet_state_exit", db.storage[object:id()].meet)
+	action:add_precondition		(world_property(stalker_ids.property_alive, true))
+	action:add_precondition		(world_property(properties["need_exit"],	true))
+	action:add_effect 		(world_property(properties["need_exit"], 		false))
+	manager:add_action (operators["state_exit"], action)
+
+
 
 	action = manager:action (xr_actions_id.alife)	
 	action:add_precondition		(world_property(properties["contact"],		false))

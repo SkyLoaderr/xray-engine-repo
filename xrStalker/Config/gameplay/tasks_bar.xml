@@ -17,6 +17,23 @@
 		</objective>
 	</game_task>
 
+	<game_task id="bar_get_information">
+		<title>bar_get_information</title>
+		<objective>
+			<text>bar_get_scientific_information</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_get_scientific_information_gain</text>
+			<icon x="200" y="100" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_get_scientific_information_done</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
+
 	<game_task id="bar_hunter_rifle">
 		<title>bar_hunter_rifle</title>
 		<objective>
