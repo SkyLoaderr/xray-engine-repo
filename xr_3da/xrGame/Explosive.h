@@ -90,7 +90,15 @@ protected:
 	float m_lightRange;
 	u32 m_lightTime;
 
-public:
+	// эффектор
+	struct {
+		float time;
+		float amplitude;	
+		float period_number;
+	} effector;
+
+public:	 
+
 	virtual void			net_Import			(NET_Packet& P);					// import from server
 	virtual void			net_Export			(NET_Packet& P);					// export to server
 	virtual void			make_Interpolation	();

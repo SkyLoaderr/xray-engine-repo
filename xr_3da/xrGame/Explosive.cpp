@@ -14,6 +14,7 @@
 //для вызова статических функций поражения осколками
 #include "Weapon.h"
 
+#include "explode_effector.h" 
 
 CExplosive::CExplosive(void) 
 {
@@ -70,6 +71,11 @@ void CExplosive::Load(LPCSTR section)
 
 
 	m_dwExplodeDurationMax= EXPLODE_TIME_MAX;
+
+
+	effector.time			= pSettings->r_float("explode_effector","time");
+	effector.amplitude		= pSettings->r_float("explode_effector","amplitude");
+	effector.period_number	= pSettings->r_float("explode_effector","period_number");
 }
 
 /////////////////////////////////////////////////////////
@@ -228,6 +234,15 @@ void CExplosive::Explode()
 		}
 		m_blasted.pop_front();
 	}	
+
+	//////////////////////////////////////////////////////////////////////////
+	// Explode Effector	//////////////
+	float dist_to_actor = Level().CurrentEntity()->Position().distance_to(Position());
+	float max_dist		= 30.f;
+	if (dist_to_actor < max_dist) 
+		Level().Cameras.AddEffector(xr_new<CExplodeEffector>(effector.time, effector.amplitude, effector.period_number, (max_dist - dist_to_actor) / max_dist));
+	//////////////////////////////////
+	
 }
 
 void CExplosive::feel_touch_new(CObject* O) 

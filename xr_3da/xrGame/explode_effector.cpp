@@ -1,23 +1,23 @@
 #include "stdafx.h"
-#include "ai_bloodsucker_effector.h" 
+#include "explode_effector.h" 
 
-CBloodsuckerEffector::CBloodsuckerEffector(float time, float amp, float periods, float power) 
-					 : CEffector(EEffectorType(BLOODSUCKER_EFFECTOR_TYPE_ID), time, FALSE)
+CExplodeEffector::CExplodeEffector(float time, float amp, float periods, float power) 
+		: CEffector(EEffectorType(EXPLODE_EFFECTOR_TYPE_ID), time, FALSE)
 {
 	total			= time;
-	
+
 	max_amp			= amp * power;
 	period_number	= periods;
 	this->power		= power;
 }
 
-BOOL CBloodsuckerEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
+BOOL CExplodeEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
 {
 	fLifeTime -= Device.fTimeDelta; if(fLifeTime<0) return FALSE;
 
 	// процент оставшегося времени
 	float time_left_perc = fLifeTime / total;
-	
+
 	// Инициализация
 	Fmatrix	Mdef;
 	Mdef.identity		();
@@ -34,18 +34,17 @@ BOOL CBloodsuckerEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fF
 	dangle.x = cur_amp		* _sin(period_all	* (1.0f - time_left_perc));
 	dangle.y = cur_amp		* _cos(period_all/2 * (1.0f - time_left_perc));
 	dangle.z = cur_amp/4	* _sin(period_all/4	* (1.0f - time_left_perc));
-	
-	
+
 	// Установить углы смещения
 	Fmatrix		R;
 	R.setHPB	(dangle.x,dangle.y,dangle.z);
-	
+
 	Fmatrix		mR;
 	mR.mul		(Mdef,R);
 
 	d.set		(mR.k);
 	n.set		(mR.j);
-	
+
 	return TRUE;
 }
 

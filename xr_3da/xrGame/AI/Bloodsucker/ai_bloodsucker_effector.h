@@ -8,9 +8,12 @@ class CBloodsuckerEffector : public CEffector {
 	typedef CEffector inherited;	
 
 	float total;
-		
+	float max_amp;
+	float period_number;
+	float power;
+
 public:
-					CBloodsuckerEffector		(float time);
+					CBloodsuckerEffector		(float time, float amp, float periods, float power);
 	virtual	BOOL	Process						(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 };
 

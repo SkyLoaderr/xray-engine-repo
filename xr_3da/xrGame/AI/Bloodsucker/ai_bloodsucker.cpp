@@ -221,7 +221,6 @@ void CAI_Bloodsucker::LookPosition(Fvector to_point, float angular_speed)
 void CAI_Bloodsucker::ActivateEffector(float life_time)
 {
 	//Level().Cameras.AddEffector(xr_new<CMonsterEffector>(pp_effector, life_time, 0.3f, 0.9f));
-	//Level().Cameras.AddEffector(xr_new<CBloodsuckerEffector>(2.0f));
 }
 
 
