@@ -455,7 +455,7 @@ float CScriptGameObject::GetCondition	() const
 
 void CScriptGameObject::eat				(CScriptGameObject *item)
 {
-	CInventoryItem		*inventory_item = smart_cast<CInventoryItem*>(item);
+	CInventoryItem		*inventory_item = smart_cast<CInventoryItem*>(&item->object());
 	if (!inventory_item) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptEntity : cannot access class member eat!");
 		return;
