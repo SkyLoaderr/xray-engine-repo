@@ -152,5 +152,15 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path)
 
 float CDetailPathManager::speed	()
 {
-	return	(0);
+	return				(0.f);
+}
+
+bool CDetailPathManager::detail_path_actual() const
+{
+	return				(true);
+}
+
+bool CDetailPathManager::game_path_completed() const
+{
+	return				(true);
 }

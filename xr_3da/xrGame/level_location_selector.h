@@ -34,4 +34,5 @@ public:
 //	template <u64 flags>
 //			void	select_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);
 			void	select_level_vertex		();
+			bool	level_vertex_selection_actual();
 };

@@ -20,3 +20,8 @@ CGameLocationSelector::~CGameLocationSelector	()
 void CGameLocationSelector::select_game_vertex	()
 {
 }
+
+bool CGameLocationSelector::game_vertex_selection_actual()
+{
+	return				(true);
+}

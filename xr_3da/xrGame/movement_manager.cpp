@@ -203,7 +203,7 @@ void CMovementManager::process_game_path()
 			break;
 		}
 		case ePathStateBuildDetailPath : {
-			build_detail_path	();
+			build_detail_path	(m_level_path);
 			m_path_state		= ePathStatePathVerification;
 			break;
 		}

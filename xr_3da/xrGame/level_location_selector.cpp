@@ -87,3 +87,8 @@ CLevelLocationSelector::~CLevelLocationSelector		()
 void CLevelLocationSelector::select_level_vertex()
 {
 }
+
+bool CLevelLocationSelector::level_vertex_selection_actual()
+{
+	return				(true);
+}

@@ -52,3 +52,13 @@ void CGamePathManager::build_game_path	()
 void CGamePathManager::select_game_path_vertex()
 {
 }
+
+bool CGamePathManager::game_path_actual() const
+{
+	return				(true);
+}
+
+bool CGamePathManager::game_path_completed() const
+{
+	return				(true);
+}

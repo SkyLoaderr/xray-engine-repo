@@ -16,3 +16,12 @@ CEnemyLocationPredictor::CEnemyLocationPredictor		()
 CEnemyLocationPredictor::~CEnemyLocationPredictor		()
 {
 }
+
+void CEnemyLocationPredictor::predict_enemy_location	()
+{
+}
+
+bool CEnemyLocationPredictor::enemy_prediction_actual	() const
+{
+	return				(true);
+}

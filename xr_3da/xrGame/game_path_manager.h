@@ -33,5 +33,7 @@ public:
 	virtual void	init						();
 			void	build_game_path				();
 			void	select_game_path_vertex		();
+			bool	game_path_actual			() const;
+			bool	game_path_completed			() const;
 };
 

@@ -116,3 +116,13 @@ void CLevelPathManager::build_level_path()
 void CLevelPathManager::select_level_path_vertex()
 {
 }
+
+bool CLevelPathManager::level_path_actual() const
+{
+	return				(true);
+}
+
+bool CLevelPathManager::game_path_completed() const
+{
+	return				(true);
+}

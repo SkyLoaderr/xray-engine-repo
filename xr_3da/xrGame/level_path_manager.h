@@ -43,4 +43,6 @@ public:
 	virtual void	init						();
 			void	build_level_path			();
 			void	select_level_path_vertex	();
+			bool	level_path_actual			() const;
+			bool	level_path_completed		() const;
 };
