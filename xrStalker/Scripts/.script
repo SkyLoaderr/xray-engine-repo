@@ -234,6 +234,10 @@ end
 -- end of  class 'FSM'
 --------------------------------------------------
 
+function reset_action (npc, script_name)
+	npc:script (false, script_name)
+	npc.script (true, script_name)
+end
 
 
 
