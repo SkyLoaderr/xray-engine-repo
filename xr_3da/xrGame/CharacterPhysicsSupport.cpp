@@ -4,22 +4,24 @@
 #include "CustomMonster.h"
 #include "PhysicsShell.h"
 CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity) 
-	: Movement(*aentity->PMovement())
+: Movement(*aentity->PMovement()), 
+  m_pPhysicsShell(aentity->PPhysicsShell()),
+  m_EntityAlife(*aentity),
+  mXFORM(aentity->XFORM())
 {
-	R_ASSERT2(aentity->PMovement()->CharacterExist()!=
-				((!!aentity->PPhysicsShell())
-				&&aentity->PPhysicsShell()->bActive)
-				,"wrong parameter state");
-	if(!aentity->PPhysicsShell() )
-	{
-		m_eState=esAlive;
-	}
-	else
-	{
-		m_eState=esDead;
-	}
-m_pEntityAlife=aentity;
-m_pPhysicsShell=aentity->PPhysicsShell();
+	//R_ASSERT2(aentity->PMovement()->CharacterExist()!=
+	//			((!!aentity->PPhysicsShell())
+	//			&&aentity->PPhysicsShell()->bActive)
+	//			,"wrong parameter state");
+	//if(!aentity->PPhysicsShell() )
+	//{
+	//	m_eState=esAlive;
+	//}
+	//else
+	//{
+	//	m_eState=esDead;
+	//}
+m_eState=esAlive;
 };
 
 void CCharacterPhysicsSupport::Activate()
@@ -56,7 +58,7 @@ void CCharacterPhysicsSupport::in_NetSpawn()
 {
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.CreateCharacter();
-	Movement.SetPhysicsRefObject(this);
+	Movement.SetPhysicsRefObject(&m_EntityAlife);
 #endif
 }
 void CCharacterPhysicsSupport::in_NetDestroy()
@@ -72,6 +74,7 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 
 void CCharacterPhysicsSupport::in_Init()
 {
+	b_death_anim_on					= false;
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
 }
@@ -84,7 +87,7 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
 		{
 			if(!m_pPhysicsShell->bActivating&&!b_death_anim_on)
 			{
-				PKinematics(m_pEntityAlife->Visual())->PlayCycle("death_init");
+				PKinematics(m_EntityAlife.Visual())->PlayCycle("death_init");
 				b_death_anim_on=true;
 			}
 
@@ -104,14 +107,14 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
 		}
 
 	}
-	else if (!m_pEntityAlife->g_Alive())
+	else if (!m_EntityAlife.g_Alive())
 	{
 
 		CreateSkeleton();
 #ifndef NO_PHYSICS_IN_AI_MOVE
 
 		Movement.DestroyCharacter();
-		m_pEntityAlife->PHSetPushOut();
+		m_EntityAlife.PHSetPushOut();
 #endif
 	}
 }
@@ -129,7 +132,7 @@ void CCharacterPhysicsSupport::in_Hit(float P, Fvector &dir, CObject *who,s16 el
 #endif
 	}
 	else {
-		if (!m_pEntityAlife->g_Alive()) {
+		if (!m_EntityAlife.g_Alive()) {
 			if(m_pPhysicsShell&&m_pPhysicsShell->bActive) 
 				m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
@@ -149,7 +152,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 	{
 
 		//XFORM().set(m_pPhysicsShell->mXFORM);
-		m_pPhysicsShell->InterpolateGlobalTransform(&(m_pEntityAlife->XFORM()));
+		m_pPhysicsShell->InterpolateGlobalTransform(&mXFORM);
 	}
 }
 
@@ -157,31 +160,31 @@ void CCharacterPhysicsSupport::CreateSkeleton()
 {
 	if(m_pPhysicsShell) return;
 #ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.GetDeathPosition	(Position());
+	Movement.GetDeathPosition	(m_EntityAlife.Position());
 	Movement.DestroyCharacter();
 	//Position().y+=.1f;
 	//#else
 	//Position().y+=0.1f;
 #endif
 
-	if (!m_pEntityAlife->Visual())
+	if (!m_EntityAlife.Visual())
 		return;
 	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(PKinematics(m_pEntityAlife->Visual()));
-	m_pPhysicsShell->mXFORM.set(m_pEntityAlife->XFORM());
+	m_pPhysicsShell->build_FromKinematics(PKinematics(m_EntityAlife.Visual()));
+	m_pPhysicsShell->mXFORM.set(mXFORM);
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
 
-	m_pPhysicsShell->set_PhysicsRefObject(m_pEntityAlife);
-	CInifile* ini = PKinematics(m_pEntityAlife->Visual())->LL_UserData();
+	m_pPhysicsShell->set_PhysicsRefObject(&m_EntityAlife);
+	CInifile* ini = PKinematics(m_EntityAlife.Visual())->LL_UserData();
 	R_ASSERT2(ini,"NO INI FILE IN MODEL");
 
-	///////////////////////////car definition///////////////////////////////////////////////////
+	
 	m_pPhysicsShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
 	m_pPhysicsShell->Activate(true);
 
-	PKinematics(m_pEntityAlife->Visual())->Calculate();
+	PKinematics(m_EntityAlife.Visual())->Calculate();
 	b_death_anim_on=false;
 	m_eState=esDead;
 }

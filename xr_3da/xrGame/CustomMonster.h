@@ -6,7 +6,7 @@
 #define AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_
 #pragma once
 
-#define NO_PHYSICS_IN_AI_MOVE
+///#define NO_PHYSICS_IN_AI_MOVE
 
 #include "..\feel_vision.h"
 #include "..\feel_sound.h"

@@ -15,7 +15,7 @@
 #include "..\\..\\inventory.h"
 
 class CSE_ALifeSimulator;
-
+class CCharacterPhysicsSupport;
 //#define LOG_PARAMETERS
 
 #ifdef LOG_PARAMETERS
@@ -153,20 +153,7 @@ private:
 	Fvector					m_saved_hit_dir;
 	s16						m_saved_element;
 	
-	//PHYS
-	float					m_phMass;
-	
-	//skeleton
-	float					skel_density_factor;
-	float					skel_airr_lin_factor;
-	float					skel_airr_ang_factor;
-	float					hinge_force_factor;
-	float					hinge_force_factor1;
-	float					hinge_force_factor2;
-	float					hinge_vel;
-	float					skel_fatal_impulse_factor;
-	int						skel_ddelay;
-	bool					b_death_anim_on;
+	CCharacterPhysicsSupport* m_pPhysics_support;
 	// Graph
 	_GRAPH_ID				m_tCurGP;
 	_GRAPH_ID				m_tNextGP;

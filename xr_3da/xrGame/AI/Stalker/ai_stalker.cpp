@@ -10,9 +10,10 @@
 #include "ai_stalker.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\weapon.h"
-
+#include "..\\..\\CharacterPhysicsSupport.h"
 CAI_Stalker::CAI_Stalker			()
 {
+	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	Init();
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 	shedule.t_min	= 200;
@@ -21,6 +22,7 @@ CAI_Stalker::CAI_Stalker			()
 
 CAI_Stalker::~CAI_Stalker			()
 {
+xr_delete(m_pPhysics_support);
 }
 
 void CAI_Stalker::Init()
@@ -28,7 +30,7 @@ void CAI_Stalker::Init()
 	//	m_tStateList.clear				();
 	//	while (m_tStateStack.size())
 	//		m_tStateStack.pop			();
-	b_death_anim_on					= false;
+	m_pPhysics_support				->in_Init();
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;
 	m_tLookType						= eLookTypeDirection;
@@ -101,9 +103,6 @@ void CAI_Stalker::Init()
 
 	m_dwLastEnemySearch				= 0;
 	m_dwLastSoundUpdate				= 0;
-
-	m_pPhysicsShell					= NULL;
-	m_saved_impulse					= 0.f;
 
 	m_tpCurrentSound				= 0;
 	m_bPlayHumming					= false;
@@ -202,15 +201,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_dwMaxDynamicSoundsCount		= _min(pSettings->r_s32(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
 
 	// skeleton physics
-	skel_density_factor				= pSettings->r_float(section,"ph_skeleton_mass_factor");
-	skel_airr_lin_factor			= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
-	skel_airr_ang_factor			= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
-	hinge_force_factor				= pSettings->r_float(section,"ph_skeleton_hinger_factor");
-	hinge_force_factor1				= pSettings->r_float(section,"ph_skeleton_hinger_factor1");
-	skel_ddelay						= pSettings->r_s32(section,"ph_skeleton_ddelay");
-	hinge_force_factor2				= pSettings->r_float(section,"ph_skeleton_hinger_factor2");
-	hinge_vel						= pSettings->r_float(section,"ph_skeleton_hinge_vel");
-	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
+	m_pPhysics_support				->in_Load(section);
 
 	::Sound->create					(m_tpSoundStep[0],	TRUE,	"Actor\\StepL",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
 	::Sound->create					(m_tpSoundStep[1],	TRUE,	"Actor\\StepR",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
@@ -267,10 +258,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	setEnabled						(true);
 
-#ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.CreateCharacter();
-	Movement.SetPhysicsRefObject(this);
-#endif
+	m_pPhysics_support->in_NetSpawn();
 	Movement.SetPosition	(Position());
 	Movement.SetVelocity	(0,0,0);
 
@@ -302,14 +290,8 @@ void CAI_Stalker::net_Destroy()
 {
 	inherited::net_Destroy	();
 	Init					();
-	Movement.DestroyCharacter();
-	if(m_pPhysicsShell)	
-	{
-		m_pPhysicsShell->Deactivate();
-		m_pPhysicsShell->ZeroCallbacks();
-	}
-	xr_delete				(m_pPhysicsShell);
 	m_inventory.Clear		();
+	m_pPhysics_support->in_NetDestroy();
 }
 
 void CAI_Stalker::net_Export		(NET_Packet& P)
@@ -401,45 +383,13 @@ void CAI_Stalker::Exec_Movement		(float dt)
 
 void CAI_Stalker::CreateSkeleton()
 {
-if(m_pPhysicsShell) return;
-#ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.GetDeathPosition	(Position());
-	Movement.DestroyCharacter();
-	//Position().y+=.1f;
-	//#else
-	//Position().y+=0.1f;
-#endif
 
-	if (!Visual())
-		return;
-	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
-	m_pPhysicsShell->mXFORM.set(XFORM());
-	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
-		0.3f*skel_airr_ang_factor);
-	m_pPhysicsShell->SmoothElementsInertia(0.3f);
-
-	m_pPhysicsShell->set_PhysicsRefObject(this);
-	CInifile* ini = PKinematics(Visual())->LL_UserData();
-	R_ASSERT2(ini,"NO INI FILE IN MODEL");
-
-	///////////////////////////car definition///////////////////////////////////////////////////
-	m_pPhysicsShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
-	m_pPhysicsShell->Activate(true);
-
-	PKinematics(Visual())->Calculate();
-	b_death_anim_on=false;
 }
 
 void CAI_Stalker::UpdateCL(){
 
 	inherited::UpdateCL();
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)
-	{
-
-		//XFORM().set(m_pPhysicsShell->mXFORM);
-		m_pPhysicsShell->InterpolateGlobalTransform(&(XFORM()));
-	}
+	m_pPhysics_support->in_UpdateCL();
 		if (Level().CurrentViewEntity() == this) {
 			Exec_Visibility();
 		}
@@ -447,31 +397,8 @@ void CAI_Stalker::UpdateCL(){
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
 
-
-	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
-	{
-		inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
-		m_saved_impulse=impulse*skel_fatal_impulse_factor;
-		m_saved_element=element;
-		m_saved_hit_dir.set(dir);
-		m_saved_hit_position.set(p_in_object_space);
-#ifndef NO_PHYSICS_IN_AI_MOVE
-		Movement.ApplyImpulse(dir,impulse);
-#endif
-	}
-	else {
-		if (!g_Alive()) {
-			if(m_pPhysicsShell&&m_pPhysicsShell->bActive) 
-				m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
-			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
-			else{
-				m_saved_hit_dir.set(dir);
-				m_saved_impulse=impulse*skel_fatal_impulse_factor;
-				m_saved_element=element;
-				m_saved_hit_position.set(p_in_object_space);
-			}
-		}
-	}
+if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
 }
 
 void CAI_Stalker::shedule_Update		( u32 DT )
@@ -608,43 +535,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	m_inventory.Update(DT);
 	VERIFY				(_valid(Position()));
 
-////physics/////////////////////////////////////////////////////////////////////////////////////
-	if(m_pPhysicsShell)
-	{	
-		if(m_pPhysicsShell->bActive)
-	{
-		if(!m_pPhysicsShell->bActivating&&!b_death_anim_on)
-		{
-			PKinematics(Visual())->PlayCycle("death_init");
-			b_death_anim_on=true;
-		}
-
-		if(m_saved_impulse!=0.f)
-		{
-			m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
-			m_saved_impulse=0.f;
-		}
-
-		if(skel_ddelay==0)
-		{
-			m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
-			//m_pPhysicsShell->SetAirResistance()
-
-		}
-		skel_ddelay--;
-	}
-
-	}
-	else if (!g_Alive())
-	{
-
-		CreateSkeleton();
-#ifndef NO_PHYSICS_IN_AI_MOVE
-
-		Movement.DestroyCharacter();
-		PHSetPushOut();
-#endif
-	}
+	m_pPhysics_support->in_shedule_Update(DT);
 	VERIFY				(_valid(Position()));
 }
 

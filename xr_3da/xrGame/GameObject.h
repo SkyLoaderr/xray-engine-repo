@@ -19,7 +19,7 @@ public:
 	u32											AI_NodeID;
 	NodeCompressed*								AI_Node;
 	CPhysicsShell*								m_pPhysicsShell;
-	IC CPhysicsShell*			PPhysicsShell()		
+	IC CPhysicsShell*&			PPhysicsShell()		
 	{
 		return m_pPhysicsShell;
 	}

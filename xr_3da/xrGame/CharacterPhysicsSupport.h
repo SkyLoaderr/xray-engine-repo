@@ -10,6 +10,7 @@ public:
 enum EType
 {
 	etActor,
+	etStalker,
 	etBitting
 };
 
@@ -23,8 +24,9 @@ private:
 EType				m_eType;
 EState				m_eState;
 
-CEntityAlive*		m_pEntityAlife;
-CPhysicsShell*		m_pPhysicsShell;
+CEntityAlive&		m_EntityAlife;
+Fmatrix&			mXFORM;
+CPhysicsShell*      &m_pPhysicsShell;
 CPHMovementControl& Movement;
 //skeleton
 float					skel_density_factor;
