@@ -112,7 +112,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	if(!CanAccelerate()&&isAccelerated(mstate_real))
 	{
 		mstate_real				^=mcAccel; // toggle accel
-	};
+	};	
 
 	if (this == Level().CurrentControlEntity())
 	{
@@ -237,6 +237,11 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 				if(ActivateBox(1))mstate_real	&=~mcAccel;
 			}
 
+		}
+
+		if (!CanAccelerate())
+		{
+			mstate_wf				&= ~mcSprint;
 		}
 
 		mstate_real &= (~move);
