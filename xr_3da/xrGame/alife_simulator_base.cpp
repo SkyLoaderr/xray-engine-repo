@@ -238,9 +238,13 @@ void CALifeSimulatorBase::create(CSE_ALifeDynamicObject *&i, CSE_ALifeDynamicObj
 void CALifeSimulatorBase::create	(CSE_ALifeObject *object)
 {
 	CSE_ALifeDynamicObject		*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(object);
-	if (!dynamic_object || !dynamic_object->can_save())
+	if (!dynamic_object)
 		return;
 	
+	if (!dynamic_object->can_save()) {
+		dynamic_object->m_bALifeControl	= false;
+		return;
+	}
 	VERIFY						(dynamic_object->m_bOnline);
 
 	if (0xffff != dynamic_object->ID_Parent) {
