@@ -53,6 +53,8 @@ public:
 	virtual void	Show			();
 	virtual BOOL	HasOpticalAim	()		{ return TRUE; }
 	virtual float	GetZoomFactor	();
+	virtual void			Fire2Start			();
+	virtual void			Fire2End			();
 };
 
 #endif //__XR_WEAPON_BINOCULAR_H__

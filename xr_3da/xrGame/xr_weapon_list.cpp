@@ -55,6 +55,20 @@ void CWeaponList::FireEnd()
 	W->FireEnd();
 }
 
+void CWeaponList::Fire2Start()
+{ 
+	if (m_iActiveWeapon==-1) return;
+	CWeapon* W = m_Weapons[m_iActiveWeapon];
+	W->Fire2Start();
+}
+
+void CWeaponList::Fire2End()
+{ 
+	if (m_iActiveWeapon==-1) return;
+	CWeapon* W = m_Weapons[m_iActiveWeapon];
+	W->Fire2End();
+}
+
 BOOL CWeaponList::isWorking()
 {
 	if (m_iActiveWeapon==-1) return false;

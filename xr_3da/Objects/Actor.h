@@ -252,6 +252,8 @@ public:
 	virtual void						g_fireParams		(Fvector& P, Fvector& D);
 	virtual void						g_fireStart			( );
 	virtual void						g_fireEnd			( );
+	virtual void						g_fire2Start		( );
+	virtual void						g_fire2End			( );
 	virtual BOOL						g_State				(SEntityState& state)
 	{
 		state.bJump			= !!(mstate_real&mcJump);

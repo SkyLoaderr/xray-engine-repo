@@ -913,6 +913,16 @@ void CActor::g_fireEnd	( )
 	Weapons->FireEnd	( );
 }
 
+void CActor::g_fire2Start	( )
+{
+	Weapons->Fire2Start		( );
+}
+
+void CActor::g_fire2End	( )
+{
+	Weapons->Fire2End	( );
+}
+
 void CActor::g_PerformDrop	( )
 {
 	VERIFY					(b_DropActivated);

@@ -167,8 +167,11 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 	case eFire:
 		switch2_Fire	();
 		break;
+	case eFire2:
+		switch2_Fire2	();
+		break;
 	case eMagEmpty:
-		bFlame			= FALSE;
+		//bFlame			= FALSE;
 		switch2_Empty	();
 		break;
 	case eReload:

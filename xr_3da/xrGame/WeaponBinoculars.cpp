@@ -252,3 +252,15 @@ void CWeaponBinoculars::switch2_Showing	()
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
 
+
+void CWeaponBinoculars::Fire2Start () {
+	inherited::Fire2Start();
+	OnZoomIn();
+	fZoomFactor = fMaxZoomFactor;
+}
+
+void CWeaponBinoculars::Fire2End () {
+	inherited::Fire2End();
+	OnZoomOut();
+	fZoomFactor = DEFAULT_FOV;
+}

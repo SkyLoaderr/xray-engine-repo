@@ -12,9 +12,11 @@ private:
 public:
 	CWeaponFN2000	();
 	virtual			~CWeaponFN2000	();
-	virtual	BOOL	HasOpticalAim	()	{ return TRUE; }
-	virtual float	GetZoomFactor	()	{ return fMaxZoomFactor; }
+//	virtual	BOOL	HasOpticalAim	()	{ return TRUE; }
+//	virtual float	GetZoomFactor	()	{ return fMaxZoomFactor; }
 	virtual void	Load			(LPCSTR section);
+	virtual void			Fire2Start			();
+	virtual void			Fire2End			();
 };
 
 #endif //__XR_WEAPON_FN2000_H__

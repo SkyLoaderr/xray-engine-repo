@@ -57,6 +57,8 @@ CWeapon::CWeapon(LPCSTR name)
 	hud_mode			= FALSE;
 	
 	eHandDependence		= hdNone;
+
+	fZoomFactor			= DEFAULT_FOV;
 }
 
 CWeapon::~CWeapon		()
@@ -600,6 +602,7 @@ void CWeapon::signal_HideComplete()
 void CWeapon::SetDefaults()
 {
 	bWorking		= false;
+	bWorking2		= false;
 	bPending		= false;
 }
 

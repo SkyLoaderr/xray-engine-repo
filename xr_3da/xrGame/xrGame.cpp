@@ -113,7 +113,7 @@ public:
 				u32 l_cnt = Level().Server->game->get_count();
 				while(l_cnt--) {
 					game_PlayerState *l_pPs = Level().Server->game->get_it(l_cnt);
-					l_pPs->money_total = s16(l_money);
+					l_pPs->money_total = l_money;
 				}
 			}
 		}

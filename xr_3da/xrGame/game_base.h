@@ -40,7 +40,7 @@ struct	game_PlayerState
 	s16			team;
 	s16			kills;
 	s16			deaths;
-	s16			money_total;
+	s32			money_total;
 	s16			money_for_round;
 	u16			flags;
 

@@ -30,7 +30,7 @@ public:
 	};
 protected:
 	EHandDependence			eHandDependence;// 0-используется без участия рук, 1-одна рука, 2-две руки
-	BOOL					bWorking;		// Weapon fires now
+	BOOL					bWorking, bWorking2;		// Weapon fires now
 	BOOL					bPending;		// Weapon needs some time to update itself, even if hidden
 	LPSTR					m_WpnName;
 
@@ -102,6 +102,8 @@ protected:
 
 	u32						dwFP_Frame;
 	u32						dwXF_Frame;
+
+	float					fZoomFactor;
 protected:
 	struct	net_update 		
 	{
@@ -136,6 +138,7 @@ public:
 	{
 		eIdle		= 0,
 		eFire,
+		eFire2,
 		eReload,
 		eShowing,
 		eHiding,
@@ -174,6 +177,8 @@ public:
 	virtual int				Ammo_eject			();
 	virtual void			FireStart			()				{ bWorking=true;	}
 	virtual void			FireEnd				()				{ bWorking=false;	}
+	virtual void			Fire2Start			()				{ bWorking2=true;	}
+	virtual void			Fire2End			()				{ bWorking2=false;	}
 	virtual void			Reload				()				{};
 	
 	virtual void			Hide				()				= 0;
@@ -185,7 +190,7 @@ public:
 	IC BOOL					IsUpdating			()				{	return bWorking || bPending || getVisible();}	// Does weapon need's update?
 	IC EHandDependence		HandDependence		()				{	return eHandDependence;}
 	virtual BOOL			HasOpticalAim		()				{	return FALSE;								}
-	virtual float			GetZoomFactor		()				{	return DEFAULT_FOV;							}
+	virtual float			GetZoomFactor		()				{	return fZoomFactor;							}
 
 	float					GetPrecision		();
 	IC LPCSTR				GetName				()				{	return m_WpnName;							}

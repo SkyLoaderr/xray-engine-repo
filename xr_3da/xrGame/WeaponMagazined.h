@@ -51,6 +51,7 @@ protected:
 	virtual void	MediaUNLOAD		();
 	virtual void	switch2_Idle	();
 	virtual void	switch2_Fire	();
+	virtual void	switch2_Fire2	(){}
 	virtual void	switch2_Empty	();
 	virtual void	switch2_Reload	();
 	virtual void	switch2_Hiding	();

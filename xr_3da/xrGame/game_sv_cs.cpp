@@ -33,7 +33,7 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CFS_Memory &store) {
 		l_pWeapon->ID = 0xffff;					// set 0xffff to get new gen ID
 		l_pWeapon->Spawn_Write(l_packet, true);
 		l_pWeapon->ID = id_save;				// restore wpn entity ID 
-		l_pWeapon->state = 3;
+		l_pWeapon->state = 4;
 		l_mem.open_chunk((l_pActor->weapon==l_pWeapon->get_slot())?(l_pCilds->size() - 1):l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 	}
 }
@@ -56,7 +56,7 @@ void game_sv_CS::SaveDefaultWeapon(CFS_Memory &store) {		//@@@ WT: Это надо пере
 				W_prim->ID = 0xffff;
 				W_prim->a_elapsed = W_prim->get_ammo_magsize();
 				W_prim->a_current = u16(prim_ammo) * W_prim->a_elapsed;
-				W_prim->state = 3;
+				W_prim->state = 4;
 			}
 		}
 		if(pistol) {
@@ -68,7 +68,7 @@ void game_sv_CS::SaveDefaultWeapon(CFS_Memory &store) {		//@@@ WT: Это надо пере
 				W_pistol->ID = 0xffff;
 				W_pistol->a_elapsed = W_pistol->get_ammo_magsize();
 				W_pistol->a_current = u16(pistol_ammo) * W_pistol->a_elapsed;
-				W_pistol->state = 3;
+				W_pistol->state = 4;
 			}
 		}
 		CInifile::Destroy	(ini);
@@ -149,7 +149,7 @@ void game_sv_CS::OnRoundStart() {
 	for(u32 i = 0; i < l_cnt; i++) {
 		game_PlayerState *l_pPS = get_it(i);
 		if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;		// Наблюдателей это не касается
-		if(l_pPS->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) SaveDefaultWeapon(l_memAr[i]);
+		if((round==-1)||(l_pPS->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD)) SaveDefaultWeapon(l_memAr[i]);
 		else SavePlayerWeapon(i, l_memAr[i]);
 	}
 
@@ -788,7 +788,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 
 		// check if has same-slot-weapon(s)
 		xrSE_Weapon*		W	=	dynamic_cast<xrSE_Weapon*>(E);
-		W->state = 3;
+		W->state = 4;
 		if (W)
 		{
 			xrServer*		S		=	Level().Server;
