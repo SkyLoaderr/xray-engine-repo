@@ -88,7 +88,7 @@ protected:
 	void			state_Flying	();
 
 	void			CreateSkeleton();
-	void			UpdatePhysicsShell();
+	
 public:
 					CAI_Crow();
 	virtual			~CAI_Crow();

@@ -316,7 +316,6 @@ void CAI_Rat::CreateSkeleton(){
 	m_pPhysicsShell=P_create_Shell();
 	m_pPhysicsShell->add_Element(element);
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-	m_pPhysicsShell->Update();
 	if(!fsimilar(0.f,m_saved_impulse)){
 
 		m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse);
