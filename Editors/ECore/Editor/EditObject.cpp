@@ -61,13 +61,11 @@ CEditableObject::~CEditableObject()
 void CEditableObject::VerifyMeshNames()
 {
 	int idx=0;
+	string256 nm; 
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++){
-    	AnsiString nm = (*m_def)->m_Name;
-		while (FindMeshByName(nm.c_str(),*m_def)||(nm=="")){
-	    	nm="Mesh_#";
-			nm+=idx++;
-		}
-        strcpy((*m_def)->m_Name,nm.c_str());
+		strcpy(nm,(*m_def)->m_Name[0]?(*m_def)->m_Name:"mesh");
+		while (FindMeshByName(nm,*m_def))
+			sprintf(nm,"%s_%d",(*m_def)->m_Name[0]?(*m_def)->m_Name:"mesh",idx++);
     }
 }
 
