@@ -92,6 +92,8 @@ struct b_lod
 };
 
 /*
+	NUMBER-OF-OBJECTS
+
 	name
 	vert_count
 	vertices[]
