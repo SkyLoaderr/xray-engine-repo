@@ -247,7 +247,8 @@ class "NPC"
 -- Обертка над NPC для отслеживания типа выполняемого им в данный момент действия.
 -- Maintained by: Zmey
 
-function NPC:__init(npc, wpn)
+function NPC:__init(script_name, npc, wpn)
+	self.script_name = script_name
 	self.npc = npc
 	self.wpn = wpn
 	
@@ -261,9 +262,9 @@ function NPC:__init(npc, wpn)
 end
 
 function NPC:look(whom)
-	debug_log(zmey_gameplay_2.script_name(), 'NPC:look_at')
+	debug_log(self.script_name, 'NPC:look_at')
 	if not self.npc:get_script() then
-		self.npc:script(true, zmey_gameplay_2.script_name())
+		self.npc:script(true, self.script_name)
 	end
 
 	action(self.npc,
@@ -340,14 +341,14 @@ function NPC:shoot_then_reload_actions(whom)
 end
 
 function NPC:shoot(whom)
-	debug_log(zmey_gameplay_2.script_name(), 'NPC:shoot')
+	debug_log(self.script_name, 'NPC:shoot')
 	-- Всегда отключать looking и talking при начале shooting
 	if self:is_looking() or self:is_talking() then
-		interrupt_action(self.npc, zmey_gameplay_2.script_name())
+		interrupt_action(self.npc, self.script_name)
 	end
 
 	if not self.npc:get_script() then
-		self.npc:script(true, zmey_gameplay_2.script_name())
+		self.npc:script(true, self.script_name)
 	end
 
 	self:shoot_then_reload_actions(whom)
@@ -368,14 +369,14 @@ function NPC:is_shooting()
 end
 
 function NPC:talk(to_whom, snd, bone)
-	debug_log(zmey_gameplay_2.script_name(), 'NPC:talk snd=\"%s\"', if_then_else(snd ~= nil, snd, "<nil>"))
+	debug_log(self.script_name, 'NPC:talk snd=\"%s\"', if_then_else(snd ~= nil, snd, "<nil>"))
 	-- Всегда отключать looking при начале talking
 	if self:is_looking() then
-		interrupt_action(self.npc, zmey_gameplay_2.script_name())
+		interrupt_action(self.npc, self.script_name)
 	end
 
 	if not self.npc:get_script() then
-		self.npc:script(true, zmey_gameplay_2.script_name())
+		self.npc:script(true, self.script_name)
 	end
 
 	if snd ~= nil then
@@ -401,6 +402,10 @@ end
 
 function NPC:set_dialogue(dlg_fsm)
 	self.dlg_fsm = dlg_fsm
+end
+
+function NPC:get_dialogue()
+	return self.dlg_fsm
 end
 
 function NPC:talk_dialogue(to_whom)
@@ -527,7 +532,7 @@ function Camper:__init(c_npc, c_enemy, dlg_nothing_happened_yet, dlg_see_enemy, 
 
 	-- Сразу взять монстра под скрипт:
 	if not self.c_npc.npc:get_script() then
-		self.c_npc.npc:script(true, zmey_gameplay_2.script_name())
+		self.c_npc.npc:script(true, self.script_name)
 	end
 end
 
@@ -540,7 +545,7 @@ function Camper:nothing_happened_yet()
 	--printf("Camper: nothing_happened_yet: %d", game.time())
 	if self.c_npc.npc:see(self.c_enemy.npc) then
 		printf("Campler: nothing_happened_yet: npc sees enemy")
-		interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
+		interrupt_action(self.c_npc.npc, self.script_name)
 		self.dlg_see_enemy:reset()
 		self.c_npc:set_dialogue(self.dlg_see_enemy)
 		self.state = self.see_enemy
@@ -565,7 +570,7 @@ function Camper:see_enemy()
 	if not self.c_npc.npc:see(self.c_enemy.npc) then
 		-- Если стреляет - хватит, он уже потерял его из виду:
 		if self.c_npc:is_shooting() then
-			interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
+			interrupt_action(self.c_npc.npc, self.script_name)
 		end
 		self.dlg_not_see_enemy:reset()
 		self.c_npc:set_dialogue(self.dlg_not_see_enemy)
@@ -576,7 +581,7 @@ function Camper:see_enemy()
 	if not self.c_npc:is_shooting() and
 	   (distance_between(self.c_npc.npc, self.c_enemy.npc) <= 10 or self.c_npc.npc.health < 0.99) then
 		if self.c_npc:is_talking() or self.c_npc:is_looking() then
-			interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
+			interrupt_action(self.c_npc.npc, self.script_name)
 		end
 		self.c_npc:shoot(self.c_enemy.npc)
 		return
@@ -595,7 +600,7 @@ function Camper:not_see_enemy()
 
 	--printf("Camper: not_see_enemy: %d", game.time())
 	if self.c_npc.npc:see(self.c_enemy.npc) then
-		interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
+		interrupt_action(self.c_npc.npc, self.script_name)
 		self.dlg_see_enemy:reset()
 		self.c_npc:set_dialogue(self.dlg_see_enemy)
 		self.state = self.see_enemy
@@ -625,7 +630,7 @@ function Camper:heartbeat()
 	end
 
 	if self.c_npc.npc:get_script() then
-		self.c_npc.npc:script(false, zmey_gameplay_2.script_name())
+		self.c_npc.npc:script(false, self.script_name)
 	end
 	return false
 end
