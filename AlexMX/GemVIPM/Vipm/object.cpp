@@ -395,7 +395,6 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 {
 	CheckObject();
 
-
 	// The thing had better be fully collapsed.
 	ASSERT ( pNextCollapse == &CollapseRoot );
 
