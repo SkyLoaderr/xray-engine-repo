@@ -23,14 +23,18 @@ CObjectFactory::CObjectFactory	()
 {
 	m_initialized				= false;
 	register_classes			();
-#ifndef NO_SCRIPTS
-	register_script_classes		();
-#endif
-	std::sort					(m_clsids.begin(),m_clsids.end(),CObjectItemPredicate());
-	m_initialized				= true;
 }
 
 CObjectFactory::~CObjectFactory	()
 {
 	delete_data					(m_clsids);
+}
+
+void CObjectFactory::init		()
+{
+#ifndef NO_SCRIPTS
+	register_script_classes		();
+#endif
+	std::sort					(m_clsids.begin(),m_clsids.end(),CObjectItemPredicate());
+	m_initialized				= true;
 }

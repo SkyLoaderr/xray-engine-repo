@@ -10,8 +10,10 @@
 
 IC	const CObjectFactory &object_factory()
 {
-	if (!g_object_factory)
+	if (!g_object_factory) {
 		g_object_factory		= xr_new<CObjectFactory>();
+		g_object_factory->init	();
+	}
 	return						(*g_object_factory);
 }
 
