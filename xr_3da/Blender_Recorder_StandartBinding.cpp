@@ -90,20 +90,23 @@ static cl_eye_N		binder_eye_N;
 void	CBlender_Compile::SetMapping	()
 {
 	// matrices
-	r_Constant				("m_W",			&binder_w);
-	r_Constant				("m_V",			&binder_v);
-	r_Constant				("m_P",			&binder_p);
-	r_Constant				("m_WV",		&binder_wv);
-	r_Constant				("m_VP",		&binder_vp);
-	r_Constant				("m_WVP",		&binder_wvp);
+	r_Constant				("m_W",				&binder_w);
+	r_Constant				("m_V",				&binder_v);
+	r_Constant				("m_P",				&binder_p);
+	r_Constant				("m_WV",			&binder_wv);
+	r_Constant				("m_VP",			&binder_vp);
+	r_Constant				("m_WVP",			&binder_wvp);
 
 	// fog-params
-	r_Constant				("fog_plane",	&binder_fog_plane);
-	r_Constant				("fog_params",	&binder_fog_params);
+	r_Constant				("fog_plane",		&binder_fog_plane);
+	r_Constant				("fog_params",		&binder_fog_params);
 
 	// eye-params
 	r_Constant				("eye_position",	&binder_eye_P);
 	r_Constant				("eye_direction",	&binder_eye_D);
 	r_Constant				("eye_normal",		&binder_eye_N);
-}
 
+	// detail
+	if (bDetail	&& detail_scaler)
+		r_Constant			("dt_scaler",		detail_scaler);
+}

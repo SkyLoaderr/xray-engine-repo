@@ -16,6 +16,9 @@ public:
 	sh_list				L_constants;
 	sh_list				L_matrices;
 
+	LPCSTR				detail_texture;
+	R_constant_setup*	detail_scaler;
+
 	BOOL				bEditor;
 	BOOL				bDetail;
 	int					iElement;
@@ -58,7 +61,6 @@ public:
 	void				PassSET_PS			(LPCSTR name);
 	void				PassSET_VS			(LPCSTR name);
 	void				PassEnd				();
-	void				PassTemplate_Detail	(LPCSTR T);
 
 	void				StageBegin			();
 	u32					Stage				()	{ return dwStage; }

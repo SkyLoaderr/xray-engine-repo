@@ -37,9 +37,29 @@ void	CBlender_Compile::Compile		(ShaderElement* _SH)
 {
 	SH =			_SH;
 	RS.Invalidate	();
+
+	// Analyze possibility to detail this shader
+	detail_texture	= NULL;
+	detail_scaler	= NULL;
+	if (bDetail && BT->canBeDetailed())
+	{
+		// 
+		sh_list& lst=	L_textures;
+		int id		=	ParseName(BT->oT_Name);
+		LPCSTR N	=	BT->oT_Name;
+		if (id>=0)	{
+			if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
+			N = lst [id];
+		}
+		if (!Device.Resources->_GetDetailTexture(N,detail_texture,detail_scaler))	bDetail	= FALSE;
+	} else {
+		bDetail	= FALSE;
+	}
+
+	// Compile
 	BT->Compile		(*this);
-	if (bDetail && BT->canBeDetailed())	PassTemplate_Detail(BT->oT_Name);
 }
+
 void	CBlender_Compile::SetParams		(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader)
 {
 	SH->Flags.iPriority		= iPriority;
@@ -91,47 +111,6 @@ void	CBlender_Compile::PassSET_VS		(LPCSTR name)
 {
 	strcpy	(pass_vs,name);
 	strlwr	(pass_vs);
-}
-
-void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
-{
-	// Parse texture
-	sh_list& lst=	L_textures;
-	int id		=	ParseName(Base);
-	LPCSTR N	=	Base;
-	if (id>=0)	{
-		if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
-		N = lst [id];
-	}
-
-	// 
-	LPCSTR		T,M;
-	if (!Device.Resources->_GetDetailTexture(N,T,M))	return;
-
-	// Detail
-	PassBegin		();
-	{
-		PassSET_ZB				(TRUE,FALSE);
-		PassSET_Blend_MUL2X		();
-		PassSET_LightFog		(FALSE,FALSE);
-
-		// Stage0 - Detail
-		StageBegin				();
-		StageSET_Color			(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-		StageSET_Alpha			(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-		StageSET_TMC			(T,M,"$null",0);
-		StageSET_XForm			(D3DTTFF_COUNT2,D3DTSS_TCI_PASSTHRU|0);
-		StageEnd				();
-
-		// Stage0 - Detail
-		StageBegin				();
-		StageSET_Address		(D3DTADDRESS_CLAMP);
-		StageSET_Color			(D3DTA_TEXTURE,	  D3DTOP_BLENDTEXTUREALPHA,	D3DTA_CURRENT);
-		StageSET_Alpha			(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
-		StageSET_TMC			("project","$user$detail","$null",1);
-		StageEnd				();
-	}
-	PassEnd			();
 }
 
 void	CBlender_Compile::PassSET_ZB		(BOOL bZTest, BOOL bZWrite)
