@@ -132,7 +132,7 @@ void CSector::Render(CFrustum &F)
 			S.assign(POLY.begin(),POLY.size()); D.clear();
 
 			// Clip by frustum
-			sPoly* P	= F->ClipPoly(S,D);
+			sPoly* P	= F.ClipPoly(S,D);
 			if (0==P)	continue;
 			
 			// Cull by HOM
@@ -162,9 +162,6 @@ void CSector::GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objS
 
 void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 {
-	// Occluders
-	Occluders.Select(F,vBase,mFullXFORM);
-
 	// Traverse objects
 	{
 		vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
@@ -175,7 +172,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 
 			Fvector		Pos;
 			O->clTransform.transform_tiny	(Pos,O->Visual()->bv_Position);
-			if (Occluders.visibleSphereNC	(Pos,O->Radius()))
+			if (F.testSphere_dirty	(Pos,O->Radius()))
 				oQuery.Collector->push_back(O);
 		}
 	}
@@ -187,13 +184,16 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 		if (Portals[I]->dwFrameObject != oQuery.dwMark) {
 			vector<Fvector> &POLY = Portals[I]->getPoly();
 			S.assign(POLY.begin(),POLY.size()); D.clear();
-			sPoly*	P = Occluders.clipPortal(S,D);
-			if (P) {
-				CFrustum Clip;
-				Clip.CreateFromPortal		(P,vBase,mFullXFORM);
-				Portals[I]->dwFrameObject	= oQuery.dwMark;
-				Portals[I]->getSector(this)->ll_GetObjects(Clip,vBase,mFullXFORM);
-			}
+			
+			// Clip by frustum
+			sPoly* P	= F.ClipPoly(S,D);
+			if (0==P)	continue;
+
+			// Recurse
+			CFrustum Clip;
+			Clip.CreateFromPortal		(P,vBase,mFullXFORM);
+			Portals[I]->dwFrameObject	= oQuery.dwMark;
+			Portals[I]->getSector(this)->ll_GetObjects(Clip,vBase,mFullXFORM);
 		}
 	}
 }
@@ -240,11 +240,13 @@ void CSector::Load(CStream& fs)
 	pRoot = ::Render.getVisual(fs.Rdword());
 
 	// Load occluders
+	/*
 	CStream* O = fs.OpenChunk(fsP_Occluders);
 	if (O) {
 		Occluders.Load(O);
 		O->Close();
 	}
+	*/
 
 	// Load glows
 	size	= fs.FindChunk(fsP_Glows);

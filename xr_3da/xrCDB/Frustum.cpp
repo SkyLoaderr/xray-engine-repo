@@ -9,11 +9,6 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-EFC_Visible testSI(CFrustum& F, Fvector& C, float r, BYTE& tmp)
-{
-	return F.testSphere(C,r,tmp);
-}
-
 void CFrustum::CreateFromPoints(Fvector* p, int count, Fvector& COP)
 {
 	VERIFY(count<FRUSTUM_MAXPLANES);

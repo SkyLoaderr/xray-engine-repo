@@ -155,7 +155,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			Device.Statistic.RenderDUMP_DT_Cache.End	();
 
 			// Transfer visibile and partially visible slot contents
-			BYTE mask		= 0xff;
+			DWORD mask		= 0xff;
 			switch (::Render.ViewBase.testAABB(S.BB.min,S.BB.max,mask))
 			{
 			case fcvNone:		// nothing to do
