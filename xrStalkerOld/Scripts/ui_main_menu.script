@@ -211,6 +211,7 @@ end
 
 function main_menu:OnButton_quit_clicked()	
 	local console = get_console()
+	console:execute("main_menu off")
 	console:execute("quit")
 end
 
