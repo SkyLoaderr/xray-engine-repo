@@ -160,6 +160,13 @@ LPSTR EFS_Utils::AppendFolderToName(LPSTR tex_name)
 
 LPSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name)
 {
+    LPCSTR s 	= src_name;
+    LPSTR d 	= dest_name;
+	for (; *s; s++, d++) 
+    	*d		=(*s=='_')?'\\':*s; 
+    *d			= 0;
+    return dest_name;
+/*    
 	if (_GetItemCount(src_name,'_')>1){
 		string256 fld;
 		_GetItem(src_name,0,fld,'_');
@@ -168,6 +175,7 @@ LPSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name)
 		strcpy(dest_name,src_name);
 	}
 	return dest_name;
+*/
 }
 
 LPCSTR EFS_Utils::GenerateName(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name)

@@ -21,7 +21,9 @@
 #define DEBUG_INVOKE	DebugBreak	()
 #else
 #define DEBUG_INVOKE	__asm		{ int 3 }
-#pragma comment			(lib,"dxerr9.lib")
+#ifndef __BORLANDC__
+	#pragma comment			(lib,"dxerr9.lib")
+#endif
 #endif
 
 XRCORE_API	xrDebug		Debug;
