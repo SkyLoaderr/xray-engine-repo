@@ -35,6 +35,8 @@
 #define CLSID_AI_DOG_BLACK			MK_CLSID('A','I','_','D','O','G','_','B')
 #define CLSID_AI_TRADER				MK_CLSID('A','I','_','T','R','A','D','E')
 
+#define CLSID_AI_IDOL				MK_CLSID('A','I','_','I','D','O','L',' ')
+
 #define CLSID_CAR_NIVA				MK_CLSID('C','_','N','I','V','A',' ',' ')
 
 #define CLSID_EVENT					MK_CLSID('E','V','E','N','T',' ',' ',' ')

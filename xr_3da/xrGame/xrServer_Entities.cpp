@@ -1299,6 +1299,32 @@ void xrSE_Human::FillProp(LPCSTR pref, PropItemVec& items)
 #endif
 
 
+void xrSE_Idol::STATE_Read(NET_Packet& P, u16 size)
+{
+	inherited::STATE_Read(P,size);
+}
+
+void xrSE_Idol::STATE_Write(NET_Packet& P)
+{
+	inherited::STATE_Write(P);
+}
+
+void xrSE_Idol::UPDATE_Read(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+}
+
+void xrSE_Idol::UPDATE_Write(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+}
+
+#ifdef _EDITOR
+void xrSE_Idol::FillProp(LPCSTR pref, PropItemVec& items)
+{
+   	inherited::FillProp(pref, items);
+}	
+#endif
 
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR caSection)
@@ -1318,6 +1344,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_AI_DOG:				return xr_new<xrSE_Dog>				(caSection);
 	case CLSID_AI_SOLDIER:			return xr_new<xrSE_Enemy>			(caSection);
 	case CLSID_AI_STALKER:			return xr_new<xrSE_Human>			(caSection);
+	case CLSID_AI_IDOL				return xr_new<xrSE_Idol>			(caSection);
 	case CLSID_EVENT:				return xr_new<xrSE_Event>			(caSection);
 	case CLSID_CAR_NIVA:			return xr_new<xrSE_Car>				(caSection);
 	case CLSID_SPECTATOR:			return xr_new<xrSE_Spectator>		(caSection);

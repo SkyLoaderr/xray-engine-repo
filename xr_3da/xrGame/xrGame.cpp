@@ -677,6 +677,7 @@ extern "C" {
 		case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;
 		case CLSID_AI_STALKER:			P =	xr_new<CAI_Stalker>();			break;
 		case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;
+		case CLSID_AI_IDOL:				P = xr_new<CAI_Idol>();				break;
 		
 		case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
 		case CLSID_CAR_NIVA:			P = xr_new<CCar>();					break;

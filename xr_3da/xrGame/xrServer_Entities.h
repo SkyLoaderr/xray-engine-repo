@@ -430,6 +430,10 @@ xrSE_DECLARE_BEGIN(xrSE_Human,CALifeMonsterAbstract)
 	// Personal characteristics:
 									xrSE_Human	(LPCSTR caSection);
 xrSE_DECLARE_END
+
+xrSE_DECLARE_BEGIN(xrSE_Idol,xrSE_Human)
+xrSE_DECLARE_END
+
 //***** Zone
 //xrSE_DECLARE_BEGIN(xrSE_Zone,CALifeDynamicObject)
 class xrSE_Zone : public CALifeDynamicObject, public xrSE_CFormed { typedef CALifeDynamicObject inherited; public:
