@@ -12,6 +12,9 @@
 #include "phmovementcontrol.h"
 #include "xrmessages.h"
 #include "physicsshellholder.h"
+#include "explosive.h"
+
+
 CBlackGraviArtefact::CBlackGraviArtefact(void) 
 {
 	m_fImpulseThreshold = 10.f;
@@ -119,7 +122,7 @@ void CBlackGraviArtefact::feel_touch_new(CObject* O)
 
 void CBlackGraviArtefact::feel_touch_delete(CObject* O) 
 {
-	CGameObject* pGameObject = dynamic_cast<CGameObject*>(O);
+	CGameObject* pGameObject = static_cast<CGameObject*>(O);
 	CArtefact* pArtefact = dynamic_cast<CArtefact*>(O);
 
 	if(pGameObject && !pArtefact)
@@ -132,7 +135,7 @@ void CBlackGraviArtefact::feel_touch_delete(CObject* O)
 
 BOOL CBlackGraviArtefact::feel_touch_contact(CObject* O) 
 {
-	CGameObject* pGameObject = dynamic_cast<CGameObject*>(O);
+	CGameObject* pGameObject = static_cast<CGameObject*>(O);
 
 	if(pGameObject)
 		return TRUE;
@@ -168,14 +171,14 @@ void CBlackGraviArtefact::GraviStrike()
 		if(impulse > .001f) 
 		{
 			setEnabled(false);
-			impulse *= pGameObject->ExplosionEffect(Position(), m_fRadius, 
+			impulse *= CExplosive::ExplosionEffect(pGameObject, Position(), m_fRadius, 
 											  elements_list, 
 											  bone_position_list);
 			setEnabled(true);
 		}
 
 		float hit_power;
-		CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(pGameObject);
+		CEntityAlive* pEntityAlive =pGameObject->cast_entity_alive();
 		if(pGameObject->m_pPhysicsShell) 
 			hit_power = 0;
 		else if(pEntityAlive && pEntityAlive->g_Alive() && 

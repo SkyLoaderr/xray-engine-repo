@@ -113,6 +113,36 @@ void CExplosive::net_Destroy	()
 /////////////////////////////////////////////////////////
 // Взрыв 
 /////////////////////////////////////////////////////////
+
+//проверка на попадание "осколком" по объекту
+float CExplosive::ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
+{
+	Collide::rq_result RQ;
+	Fvector l_pos; 
+	pExpObject->Center(l_pos);
+	Fvector l_dir; 
+	l_dir.sub(l_pos, expl_centre); 
+	l_dir.normalize();
+	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, Collide::rqtBoth, RQ)) return 0;
+	//осколок не попал или попал, но не по нам
+	if(pExpObject != RQ.O) return 0;
+
+	/*	//предотвращение вылетания
+	if(-1 != (s16)RQ.element)
+	{
+	elements.push_back((s16)RQ.element);
+	}
+	else
+	{
+	elements.push_back(0);
+	}*/
+	elements.push_back((s16)RQ.element);
+
+	l_pos.set(0, 0, 0);
+	bs_positions.push_back(l_pos);
+	return 1.f;
+}
+
 void CExplosive::Explode()
 {
 	VERIFY(0xffff != m_iCurrentParentID);
@@ -239,7 +269,7 @@ void CExplosive::Explode()
 
 		if(l_impuls > .001f) 
 		{
-			l_impuls *= l_pGO->ExplosionEffect(pos, m_fBlastRadius, l_elements, l_bs_positions);
+			l_impuls *= ExplosionEffect(l_pGO, pos, m_fBlastRadius, l_elements, l_bs_positions);
 		}
 
 		if(l_impuls > .001f) 
@@ -268,7 +298,8 @@ void CExplosive::Explode()
 
 	//////////////////////////////////////////////////////////////////////////
 	// Explode Effector	//////////////
-	CActor* pActor =  dynamic_cast<CActor*>(Level().CurrentEntity());
+	CGameObject* GO = static_cast<CGameObject*>(Level().CurrentEntity());
+	CActor* pActor = GO?GO->cast_actor():NULL;
 	if(pActor)
 	{
 		float dist_to_actor = pActor->Position().distance_to(pos);
@@ -282,7 +313,7 @@ void CExplosive::Explode()
 
 void CExplosive::feel_touch_new(CObject* O) 
 {
-	CGameObject *pGameObject = dynamic_cast<CGameObject*>(O);
+	CGameObject *pGameObject = static_cast<CGameObject*>(O);
 	if(pGameObject && this != pGameObject) m_blasted.push_back(pGameObject);
 }
 
