@@ -296,7 +296,6 @@ void CScriptDebugger::Eval(const char* strCode, char* res)
 void CScriptDebugger::CheckNewMessages()
 {
 	CMailSlotMsg msg;
-	int msgType;
 	while(CheckMailslotMessage(m_mailSlot,msg)){
 		TranslateIdeMessage(&msg);
 	};
