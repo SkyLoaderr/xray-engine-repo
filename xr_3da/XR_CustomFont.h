@@ -1,10 +1,10 @@
-// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 12:12:39 , by user : Oles , from computer : OLES
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:47:33 , by user : Oles , from computer : OLES
 #if !defined(AFX_XR_CUSTOMFONT_H__6CFEF2C0_D4F5_11D3_B4E3_4854E82A090D__INCLUDED_)
 #define AFX_XR_CUSTOMFONT_H__6CFEF2C0_D4F5_11D3_B4E3_4854E82A090D__INCLUDED_
 #pragma once
 
 class ENGINE_API CFontBase
-#ifdef ENGINE_BUILD
+#ifndef M_BORLAND
 	:public pureRender, pureDeviceDestroy, pureDeviceCreate
 #endif
 {
@@ -40,17 +40,17 @@ public:
 
 	CVertexStream*			Stream;
 
-	IC void					Color	(DWORD C) {dwCurrentColor=C;};
-	IC void					Size	(float S) {fCurrentSize=S;};
+	IC void					Color	(DWORD C)		{dwCurrentColor=C;};
+	IC void					Size	(float S)		{fCurrentSize=S;};
 	IC void					Interval(float x, float y) {vInterval.set(x,y);};
 	IC void					Add		(float _x, float _y, char *s, DWORD _c=0xffffffff, float _size=0.01f);
-	IC float				SizeOf	(char *s) { return fCurrentSize*.66f*float(strlen(s)); }
+	IC float				SizeOf	(char *s)		{ return fCurrentSize*.66f*float(strlen(s)); }
 	void					OutSet	(float x, float y) { fCurrentX=x; fCurrentY=y; }
 	void __cdecl            OutNext	(char *fmt, ...);
 	void __cdecl            OutPrev	(char *fmt, ...);
-	IC void					OutSkip	()	{ 	fCurrentY += fCurrentSize*2.f; }
 	void __cdecl 			Out		(float _x, float _y, char *fmt, ...);
-
+	IC void					OutSkip	()				{ 	fCurrentY += fCurrentSize*2.f; }
+	
 	virtual void			OnRender		();
 	virtual void			OnDeviceCreate	();
 	virtual void			OnDeviceDestroy	();
