@@ -473,7 +473,7 @@ void CAI_Biting::CreateSkeleton()
 	//m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 	//	0.3f*skel_airr_ang_factor);
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
-
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->Activate(true);
+	PKinematics(Visual())->Calculate();
 }

@@ -409,6 +409,7 @@ if(m_pPhysicsShell) return;
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->Activate(true);
+	PKinematics(Visual())->Calculate();
 }
 
 void CAI_Stalker::UpdateCL(){

@@ -352,4 +352,5 @@ void CAI_Chimera::CreateSkeleton()
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->Activate(true);
+	PKinematics(Visual())->Calculate();
 }
