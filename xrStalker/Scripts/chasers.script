@@ -16,7 +16,7 @@ function main ()
                       get_level_object ("m_pseudodog_e0002"),   
                       get_level_object ("m_pseudodog_e0003"),   
                       get_level_object ("m_pseudodog_e0004"),   
---                      get_level_object ("m_pseudodog_e0005"),   
+                      get_level_object ("m_pseudodog_e0005"),   
                       get_level_object ("m_pseudodog_e0007"),   
                       get_level_object ("m_boar_e0000"),   
                       get_level_object ("m_boar_e0001"),   
@@ -36,15 +36,10 @@ function main ()
     
     while true do
     
---          if scr_monster ~= nil then
---             printf ("Attacker %s has move to player. Distance : %f", scr_monster:name (),   distance_between (scr_monster, actor))
---          end               
-          
           if scr_monster ~= nil and distance_between (scr_monster, actor) < 10 then
              scr_monster:script (false, chasers.script_name ())
              old_monster = scr_monster:id ()
              scr_monster = nil   
---             printf ("Attacker freed")
              wait (30000)
           end
           
@@ -52,7 +47,6 @@ function main ()
              if scr_monster:alive () == false then 
                 scr_monster = nil 
                 old_monster = 0
-  --              printf ("Attacker is dead")
              else
                 if game.time () - checktime > 10000 then
                    checktime = game.time () 
@@ -60,7 +54,8 @@ function main ()
                       scr_monster:script (false, chasers.script_name ())  
                       old_monster = scr_monster:id ()
                       scr_monster = nil 
-    --                  printf ("Zastryal")
+                   else
+                      pos = scr_monster:position ()   
                    end
                 end      
              end
@@ -72,7 +67,6 @@ function main ()
              for a = 1, table.getn (monsters), 1 do
                  if monsters[a] ~= nil and monsters[a]:alive () == true then
                     local t = distance_between (actor, monsters[a])
---                    printf ("Distance from attackers %s - %f", monsters[a]:name (), t)
                     if t < distance and monsters[a]:id () ~= old_monster then
                        scr_monster = monsters[a]
                        distance = t
@@ -81,7 +75,6 @@ function main ()
              end
              
              if scr_monster ~= nil then
---                printf ("Attacker %s", scr_monster:name ())
                 scr_monster:script (true, chasers.script_name ())
                 action (scr_monster, move (move.act_run, move.force_type, actor), cond (cond.move_end))
                 old_monster = 0
