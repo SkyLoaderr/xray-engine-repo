@@ -92,6 +92,9 @@ private:
 	ref_shader					s_bloom_dbg_2;
 	ref_shader					s_bloom;
 
+	// Luminance
+	ref_shader					s_luminance;
+
 	// Combine
 	ref_geom					g_combine;
 	ref_geom					g_aa_blur;

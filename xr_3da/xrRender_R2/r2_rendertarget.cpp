@@ -246,7 +246,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	{
 		rt_LUM_64.create			(r2_RT_luminance_t64,	64, 64,	D3DFMT_A16B16G16R16F	);
 		rt_LUM_8.create				(r2_RT_luminance_t8,	8,	8,	D3DFMT_A16B16G16R16F	);
-		rt_LUM_1.create				(r2_RT_luminance,		1,	1,	D3DFMT_A16B16G16R16F	);	// need blending here
+		rt_LUM_result.create		(r2_RT_luminance,		1,	1,	D3DFMT_A16B16G16R16F	);	// need blending here
 		s_luminance.create			(b_luminance,				"r2\\luminance");
 	}
 
