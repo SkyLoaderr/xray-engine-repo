@@ -300,12 +300,9 @@ end
 function action_single_patrol:set_command (command)
     local size = table.getn (xr_motivator.storage[self.object:id()].followers)
     if size == 0 then return end
-    if command == leader_stop then
-       printf ("COMMANDER SEND leader_stop at %d time", device ():time_global ())
-    end    
     for a = 1, size, 1 do
         xr_motivator.storage[self.object:id()].followers[a].leader_command = command
-        --xr_motivator.storage[self.object:id()].followers[a].npc:motivation_action_manager ():action (xr_actions_id.sidor_act_follower_base + 1):recalculate_position ()
+        xr_motivator.storage[self.object:id()].followers[a].npc:motivation_action_manager ():action (xr_actions_id.sidor_act_follower_base + 1):recalculate_position ()
         --recalculate_position
     end
 end

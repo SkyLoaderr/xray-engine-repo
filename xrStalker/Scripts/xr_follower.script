@@ -264,7 +264,6 @@ function action_follow:check_path ()
     end   
     
     if self.a.leader_command == leader_stop then
-       printf ("FOLLOWER RECEIVED COMMAND leader_stop at %d time", device ():time_global ()) 
        self.object:set_movement_type (move.stand)
        if self.a.look_dir.x == 0 and self.a.look_dir.y == 0 and self.a.look_dir.z == 0 then 
           self.stage = 2  
