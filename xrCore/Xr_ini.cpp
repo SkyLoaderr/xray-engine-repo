@@ -11,6 +11,17 @@ CInifile* CInifile::Create(const char* szFileName, BOOL ReadOnly)
 void CInifile::Destroy(CInifile* ini)
 {	xr_delete(ini); }
 
+bool sect_pred(const CInifile::Sect& x, LPCSTR val)
+{
+	return strcmp(*x.Name,val)<0;
+};
+
+bool item_pred(const CInifile::Item& x, LPCSTR val)
+{
+    if ((!x.first) || (!val))	return x.first<val;
+    else				   		return strcmp(*x.first,val)<0;
+}
+
 //------------------------------------------------------------------------------
 //Тело функций Inifile
 //------------------------------------------------------------------------------
@@ -55,7 +66,7 @@ XRCORE_API void _decorate(LPSTR dest, LPCSTR src)
 
 BOOL	CInifile::Sect::line_exist( LPCSTR L, LPCSTR* val )
 {
-	Item Test; Test.first=(char*)L; SectIt A = std::lower_bound(Data.begin(),Data.end(),Test,item_pred());
+	SectIt A = std::lower_bound(Data.begin(),Data.end(),L,item_pred);
     if (A!=Data.end() && strcmp(*A->first,L)==0){
     	if (val) *val = *A->second;
     	return TRUE;
@@ -124,7 +135,7 @@ void	CInifile::Load(IReader* F, LPCSTR path)
         }else if (str[0] && (str[0]=='[')){
 			if (*Current.Name && Current.Name[0])
 			{
-				RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
+				RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),*Current.Name,sect_pred);
 				DATA.insert		(I,Current);
 				Current.clear	();
 			}
@@ -152,12 +163,12 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 
 				if (bReadOnly) {
 					if (*I.first) {
-						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
+						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),*I.first,item_pred);
 						Current.Data.insert(it,I);
 					}
 				} else {
 					if (*I.first || *I.second || *I.comment) {
-						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
+						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),*I.first,item_pred);
 						Current.Data.insert(it,I);
 					}
 				}
@@ -166,7 +177,7 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 	}
 	if (*Current.Name && Current.Name[0])
 	{
-		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
+		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),*Current.Name,sect_pred);
 		DATA.insert		(I,Current);
 		Current.clear	();
 	}
@@ -224,7 +235,7 @@ void	CInifile::save_as( LPCSTR new_fname )
 
 BOOL	CInifile::section_exist( LPCSTR S )
 {
-	Sect Test; Test.Name = (char*)S; RootIt I = std::lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
+	RootIt I = std::lower_bound(DATA.begin(),DATA.end(),S,sect_pred);
 	return (I!=DATA.end() && strcmp(*I->Name,S)==0);
 }
 
@@ -232,7 +243,7 @@ BOOL	CInifile::line_exist( LPCSTR S, LPCSTR L )
 {
 	if (!section_exist(S)) return FALSE;
 	Sect&	I = r_section(S);
-	Item Test; Test.first=(char*)L; SectIt A = std::lower_bound(I.begin(),I.end(),Test,item_pred());
+	SectIt A = std::lower_bound(I.begin(),I.end(),L,item_pred);
 	return (A!=I.end() && strcmp(*A->first,L)==0);
 }
 
@@ -251,7 +262,7 @@ u32	CInifile::line_count(LPCSTR Sname)
 CInifile::Sect& CInifile::r_section( LPCSTR S )
 {
 	char	section[256]; strcpy(section,S); strlwr(section);
-	static  Sect Test; Test.Name = section; RootIt I = std::lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
+	RootIt I = std::lower_bound(DATA.begin(),DATA.end(),section,sect_pred);
 #ifdef ENGINE_BUILD
 	if (I!=DATA.end() && strcmp(*I->Name,section)==0)	return *I;
 	else												{ Debug.fatal("Can't open section '%s'",S); return Test; }
@@ -270,7 +281,7 @@ LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L )
 {
 #pragma todo("std::lower_bound is INEFFICIENT here")
 	Sect&	I = r_section(S);
-	Item Test; Test.first=(char*)L; SectIt	A = std::lower_bound(I.begin(),I.end(),Test,item_pred());
+	SectIt	A = std::lower_bound(I.begin(),I.end(),L,item_pred);
 #ifdef ENGINE_BUILD
 	if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
 	else										{ Debug.fatal("Can't find variable '%s'",L); return 0; }
@@ -424,7 +435,7 @@ void	CInifile::w_string	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 		// create _new_ section
 		Sect			NEW;
 		NEW.Name		= sect;
-		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),NEW,sect_pred());
+		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),sect,sect_pred);
 		DATA.insert		(I,NEW);
 	}
 
@@ -439,7 +450,7 @@ void	CInifile::w_string	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 	I.first			= (line[0]?line:0);
 	I.second		= (value[0]?value:0);
 	I.comment		= (comment?comment:0);
-	SectIt	it		= std::lower_bound(data.begin(),data.end(),I,item_pred());
+	SectIt	it		= std::lower_bound(data.begin(),data.end(),*I.first,item_pred);
 
     if (it != data.end()) {
 	    // Check for "first" matching
@@ -540,7 +551,7 @@ void	CInifile::remove_line	( LPCSTR S, LPCSTR L )
 
     if (line_exist(S,L)){
 		Sect&	data	= r_section	(S);
-		Item Test; Test.first=(char*)L; SectIt A = std::lower_bound(data.begin(),data.end(),Test,item_pred());
+		SectIt A = std::lower_bound(data.begin(),data.end(),L,item_pred);
     	R_ASSERT(A!=data.end() && strcmp(*A->first,L)==0);
         data.Data.erase(A);
     }

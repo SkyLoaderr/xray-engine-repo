@@ -41,7 +41,6 @@ private:
 	str_value*			p_;
 protected:
 	// ref-counting
-	void				_inc		()								{	if (0==p_) return;	p_->dwReference++;														}
 	void				_dec		()								{	if (0==p_) return;	p_->dwReference--; 	if (0==p_->dwReference)	p_=0;						}
 public:
 	void				_set		(str_c rhs) 					{	str_value* v = g_pStringContainer->dock(rhs); if (0!=v) v->dwReference++; _dec(); p_ = v;	}

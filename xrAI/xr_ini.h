@@ -36,18 +36,6 @@ public:
 	typedef	xr_vector<Sect>		Root;
 	typedef Root::iterator		RootIt;
 
-	struct sect_pred : public std::binary_function<Sect&, Sect&, bool>	{
-		IC bool operator() (const Sect& x, const Sect& y) const
-		{	return strcmp(*x.Name,*y.Name)<0;	}
-	};
-	struct item_pred : public std::binary_function<Item&, Item&, bool>	{
-		IC bool operator() (const Item& x, const Item& y) const
-		{
-			if ((!x.first) || (!y.first))	return x.first<y.first;
-			else							return strcmp(*x.first,*y.first)<0;
-		}
-	};
-
 	// factorisation
 	static CInifile*	Create	( LPCSTR szFileName, BOOL ReadOnly=TRUE);
 	static void			Destroy	( CInifile*);
