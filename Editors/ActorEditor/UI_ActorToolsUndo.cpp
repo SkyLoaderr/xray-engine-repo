@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#pragma hdrstop
-
-#include "UI_ActorTools.h"
-#include "ui_main.h"
+#include "stdafx.h"         
+#pragma hdrstop                                                                                
+                                        
+#include "UI_ActorTools.h"           
+#include "ui_main.h"                                            
 #include "EditorPreferences.h"
-
+                                           
 void CActorTools::UndoClear()
 {                                             
 	while( !m_RedoStack.empty() ){

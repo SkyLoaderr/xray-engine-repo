@@ -20,6 +20,7 @@
 
 TfrmSoundLib* TfrmSoundLib::form = 0;
 FS_QueryMap	TfrmSoundLib::modif_map;
+Flags32 TfrmSoundLib::m_Flags={0};
 //---------------------------------------------------------------------------
 __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
     : TForm(Owner)
@@ -57,6 +58,7 @@ void __fastcall TfrmSoundLib::EditLib(AnsiString& title, bool bImport)
         form->ebRemoveCurrent->Enabled = !bImport;
         form->ebRenameCurrent->Enabled = !bImport;
 		form->modif_map.clear	();
+        m_Flags.zero		();
     }
 
     form->ShowModal			();
@@ -66,7 +68,8 @@ void __fastcall TfrmSoundLib::EditLib(AnsiString& title, bool bImport)
 
 void __fastcall TfrmSoundLib::UpdateLib()
 {
-    SaveSoundParams();
+    RegisterModifiedTHM		();
+    SaveUsedTHM				();
     // save game sounds
     if (modif_map.size()){
         AStringVec modif;
@@ -129,7 +132,7 @@ void __fastcall TfrmSoundLib::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	if (!form) 		return;
     form->Enabled 	= false;
-    DestroyTHMs		();
+    DestroyUsedTHM	();
 	form 			= 0;
 	Action 			= caFree;
 }
@@ -188,11 +191,26 @@ void __fastcall TfrmSoundLib::ebCancelClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmSoundLib::SaveSoundParams()
+ESoundThumbnail* TfrmSoundLib::FindUsedTHM(LPCSTR name)
+{
+	for (THMIt it=m_THM_Used.begin(); it!=m_THM_Used.end(); it++)
+    	if (0==strcmp((*it)->SrcName(),name)) return *it;
+    return 0;
+}
+//---------------------------------------------------------------------------
+
+void TfrmSoundLib::SaveUsedTHM()
+{
+	for (THMIt t_it=m_THM_Used.begin(); t_it!=m_THM_Used.end(); t_it++)
+		(*t_it)->Save(0,0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmSoundLib::RegisterModifiedTHM()
 {
 	if (m_ItemProps->IsModified()){
-	    for (THMIt t_it=m_THMs.begin(); t_it!=m_THMs.end(); t_it++){
-            (*t_it)->Save	(0,0);
+	    for (THMIt t_it=m_THM_Current.begin(); t_it!=m_THM_Current.end(); t_it++){
+//.            (*t_it)->Save	(0,0);
             AppendModif		((*t_it)->SrcName());
         }
     }
@@ -277,14 +295,6 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TfrmSoundLib::DestroyTHMs()
-{
-    for (THMIt it=m_THMs.begin(); it!=m_THMs.end(); it++)
-    	xr_delete(*it);
-    m_THMs.clear();
-}
-//------------------------------------------------------------------------------
-
 void __fastcall TfrmSoundLib::OnControlClick(PropValue* sender, bool& bModif)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
@@ -315,28 +325,37 @@ void __fastcall TfrmSoundLib::OnControl2Click(PropValue* sender, bool& bModif)
 }
 //------------------------------------------------------------------------------
 
+void TfrmSoundLib::DestroyUsedTHM()
+{
+    for (THMIt it=m_THM_Used.begin(); it!=m_THM_Used.end(); it++)
+    	xr_delete(*it);
+    m_THM_Used.clear();
+}
+//------------------------------------------------------------------------------
+
 void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
 {
 	PropItemVec props;
 
-    SaveSoundParams	();
-    DestroyTHMs		();
-    m_Snd.destroy	();
+    RegisterModifiedTHM	();
+    m_Snd.destroy		();
+    m_THM_Current.clear	();
                                           
 	if (!items.empty()){
 	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
             ListItem* prop = *it;
             if (prop){
-            	ESoundThumbnail* thm=xr_new<ESoundThumbnail>(prop->Key());
-                m_THMs.push_back	(thm);
+            	ESoundThumbnail* thm=FindUsedTHM(prop->Key());
+                if (!thm) m_THM_Used.push_back(thm=xr_new<ESoundThumbnail>(prop->Key()));
+                m_THM_Current.push_back(thm);
                 thm->FillProp		(props);
             }
         }
     }
 
-    if (m_THMs.size()==1)
+    if (m_THM_Current.size()==1)
     {
-        ESoundThumbnail* thm=m_THMs.back();
+        ESoundThumbnail* thm=m_THM_Current.back();
         u32 size=0;
         u32 time=0;
 		PlaySound(thm->SrcName(), size, time);
@@ -366,5 +385,14 @@ void TfrmSoundLib::PlaySound(LPCSTR name, u32& size, u32& time)
     }
 }
 
+void TfrmSoundLib::OnFrame()
+{
+	if (form){
+    	if (m_Flags.is(flUpdateProperties)){
+        	form->m_ItemList->FireOnItemFocused();
+        	m_Flags.set(flUpdateProperties,FALSE);
+        }
+    }
+}
 
 

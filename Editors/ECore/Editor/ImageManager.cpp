@@ -13,9 +13,10 @@ CImageManager ImageLib;
 #pragma package(smart_init)
 extern bool IsFormatRegister(LPCSTR ext);
 extern FIBITMAP* Surface_Load(char* full_name);
+
 extern "C" __declspec(dllimport)
-bool DXTCompress(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
-				 STextureParams* options, u32 depth);
+bool DXTCompress	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
+					STextureParams* options, u32 depth);
 
 bool IsValidSize(u32 w, u32 h){
 	if (!btwIsPow2(h)) return false;
@@ -130,7 +131,7 @@ void CImageManager::CreateGameTexture(const AnsiString& src_name, ETextureThumbn
 //------------------------------------------------------------------------------
 // создает игровую текстуру
 //------------------------------------------------------------------------------
-void CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, bool bGenMipMap)
+bool CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, bool bGenMipMap)
 {
 	VerifyPath(game_name);
     // fill texture params
@@ -147,26 +148,33 @@ void CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, u32 w, u32 h, S
     bool bRes 		= DXTCompress(game_name, (u8*)data, w, h, w4, &TP, 4);
     if (!bRes){
     	FS.file_delete(game_name);
-    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nCheck texture size (%dx%d).",game_name,w,h);
-		return;
+    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.",game_name,w,h);
+		return false;
     }
     R_ASSERT(bRes&&FS.file_length(game_name));
+    return bRes;
 }
-void CImageManager::MakeGameTexture(ETextureThumbnail* THM, LPCSTR game_name, u32* load_data)
+bool CImageManager::MakeGameTexture(ETextureThumbnail* THM, LPCSTR game_name, u32* load_data)
 {
 	VerifyPath(game_name);
     // flip
     u32 w = THM->_Width();
     u32 h = THM->_Height();
     u32 w4= w*4;
+	// remove old
+    FS.file_delete			(game_name);
+    AnsiString game_name2 	= ChangeFileExt(game_name,"#.dds");
+    FS.file_delete			(game_name2.c_str());
     // compress
     bool bRes 	= DXTCompress(game_name, (u8*)load_data, w, h, w4, &THM->m_TexParams, 4);
     if (!bRes){
-    	FS.file_delete(game_name);
-    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nCheck texture size (%dx%d).",game_name,w,h);
-		return;
+    	FS.file_delete		(game_name);
+	    FS.file_delete		(game_name2.c_str());
+    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.",game_name,w,h);
+		return false;
     }
     R_ASSERT(bRes&&FS.file_length(game_name));
+    return bRes;
 }
 
 //------------------------------------------------------------------------------
@@ -273,7 +281,8 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 
 		ETextureThumbnail* THM=0;
 
-        BOOL bUpdated = FALSE;
+        BOOL bUpdated 	= FALSE;
+        BOOL bFailed 	= FALSE;
     	// check thumbnail
     	if (sync_thm&&bThm){
         	THM = xr_new<ETextureThumbnail>(it->first.c_str());
@@ -288,32 +297,35 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
             R_ASSERT(THM);
             if (data.empty()){ bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);}
 			if (IsValidSize(w,h)){
-                AnsiString game_name=AnsiString(base_name)+".dds";
+                STextureParams& FMT 	= THM->_Format();
+                AnsiString game_name	= AnsiString(base_name)+".dds";
                 FS.update_path			(_game_textures_,game_name);
-                MakeGameTexture(THM,game_name.c_str(),data.begin());
-                FS.get_file_age(game_name.c_str());
-                FS.set_file_age(game_name.c_str(), it->second.modif);
-                if (sync_list) sync_list->push_back(base_name);
-                if (modif_map) modif_map->insert(*it);
-                // save to assoc ltx
-                STextureParams& FMT = THM->_Format();
-		        if (FMT.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
-                    AnsiString det;                          
-                    det.sprintf("%s, %f, %d, %d",	FMT.detail_name, FMT.detail_scale,
-                                                    FMT.flags.is(STextureParams::flDiffuseDetail),
-                                                    FMT.flags.is(STextureParams::flBumpDetail));
-                    ltx_ini->w_string("association", base_name.c_str(), det.c_str());
+                if (MakeGameTexture(THM,game_name.c_str(),data.begin())){
+                    FS.set_file_age		(game_name.c_str(), it->second.modif);
+                    if (sync_list) 		sync_list->push_back(base_name);
+                    if (modif_map) 		modif_map->insert(*it);
+                    // save to assoc ltx
+                    if (FMT.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
+                        AnsiString det;                          
+                        det.sprintf("%s, %f, %d, %d",	FMT.detail_name, FMT.detail_scale,
+                                                        FMT.flags.is(STextureParams::flDiffuseDetail),
+                                                        FMT.flags.is(STextureParams::flBumpDetail));
+                        ltx_ini->w_string("association", base_name.c_str(), det.c_str());
+                    }else{
+                        ltx_ini->remove_line("association", base_name.c_str());
+                    }
                 }else{
-                    ltx_ini->remove_line("association", base_name.c_str());
+					bFailed				= TRUE;
                 }
-	            bUpdated = TRUE;
+                bUpdated 				= TRUE;
             }else{
 		    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nInvalid size (%dx%d).",base_name.c_str(),w,h);
             }
 		}
 		if (THM) xr_delete(THM);
 		if (UI->NeedAbort()) break;
-        if (bProgress) UI->ProgressInc(bUpdated?AnsiString(base_name+" - UPDATED.").c_str():base_name.c_str(),bUpdated);
+        
+        if (bProgress) UI->ProgressInc(bUpdated?AnsiString(base_name+(bFailed?" - FAILED":" - UPDATED.")).c_str():base_name.c_str(),bUpdated);
     }
 
     xr_delete(ltx_ini);
@@ -331,43 +343,6 @@ void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)
     SynchronizeTextures	(true,true,true,&t_map,&modif);
     RefreshTextures		(&modif);
 }
-/*
-int	CImageManager::GetServerModifiedTextures(FS_QueryMap& files)
-{
-	FileMap M_BASE;
-	FileMap M_THUM;
-    FileMap M_GAME;
-
-    AnsiString p_base;
-    AnsiString p_game;
-    FS.update_path			(p_base,_textures_,"");
-    FS.update_path			(p_game,_game_textures_,"");
-
-    if (0==EFS.GetFileList(p_base.c_str(),M_BASE,true,false,false,"*.tga,*.bmp")) return 0;
-    EFS.GetFileList(p_base.c_str(),M_THUM,true,true,false,"*.thm");
-    EFS.GetFileList(p_game.c_str(),M_GAME,true,true,false,"*.dds");
-
-    FilePairIt it=M_BASE.begin();
-	FilePairIt _E = M_BASE.end();
-	for (; it!=_E; it++){
-        string256 base_name; strcpy(base_name,it->first.c_str());
-        if (strext(base_name)) *strext(base_name)=0;
-    	// check thumbnail
-		FilePairIt th = M_THUM.find(base_name);
-    	if ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second!=it->second))){
-        	files.insert(*it);
-            continue;
-        }
-        // check game textures
-		FilePairIt gm = M_GAME.find(base_name);
-    	if ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second!=it->second))){
-        	files.insert(*it);
-            continue;
-        }
-    }
-    return files.size();
-}
-*/
 //------------------------------------------------------------------------------
 // возвращает список всех текстур
 //------------------------------------------------------------------------------
@@ -656,6 +631,7 @@ BOOL CImageManager::RemoveTexture(LPCSTR fname, EItemType type)
             AnsiString base_name= ChangeFileExt(fname,"");
             AnsiString thm_name = ChangeFileExt(fname,".thm");
             AnsiString game_name= ChangeFileExt(fname,".dds");
+            AnsiString game_name2=ChangeFileExt(fname,"#.dds");
             // source
             EFS.BackupFile		(_textures_,fname);
             FS.file_delete		(src_name.c_str());
@@ -665,6 +641,8 @@ BOOL CImageManager::RemoveTexture(LPCSTR fname, EItemType type)
             FS.file_delete		(_textures_,thm_name.c_str());
             // game
             FS.file_delete		(_game_textures_,game_name.c_str());
+            // game 2
+            FS.file_delete		(_game_textures_,game_name2.c_str());
             // assoc
             AnsiString ltx_nm;
             FS.update_path		(ltx_nm,_game_textures_,"textures.ltx");

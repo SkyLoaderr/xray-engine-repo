@@ -614,3 +614,9 @@ void __fastcall TItemList::tvItemsCompareItems(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void TItemList::FireOnItemFocused()
+{
+	tvItemsAfterSelectionChange(0);
+}
+//---------------------------------------------------------------------------
+

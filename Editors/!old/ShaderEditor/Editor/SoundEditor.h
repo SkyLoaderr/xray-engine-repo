@@ -57,20 +57,30 @@ private:
 // list functions
     void 				InitItemsList		();
 	void __fastcall 	OnItemsFocused		(ListItemsVec& items);
-    void				DestroyTHMs			();
 
     BOOL __fastcall		RemoveSound			(LPCSTR fname, EItemType type);
 	void __fastcall 	RenameSound			(LPCSTR p0, LPCSTR p1, EItemType type);
+
+	enum{
+    	flUpdateProperties = (1<<0),
+    };    
+    static Flags32		m_Flags;
 private:	// User declarations
 	static TfrmSoundLib* form;
 
     DEFINE_VECTOR		(ESoundThumbnail*,THMVec,THMIt);
-    THMVec				m_THMs;
+    THMVec				m_THM_Used;
+    THMVec				m_THM_Current;
     TItemList*			m_ItemList;
     TProperties* 		m_ItemProps;
 
+    ESoundThumbnail*	FindUsedTHM			(LPCSTR name);
+    void				SaveUsedTHM			();
+    void				DestroyUsedTHM		();
+
+	void __fastcall 	RegisterModifiedTHM	();
+
     void 				OnModified			();
-	void __fastcall 	SaveSoundParams		();
     void __fastcall 	UpdateLib			();
 
     bool 				bFormLocked;
@@ -92,6 +102,8 @@ public:		// User declarations
     static void __fastcall EditLib			(AnsiString& title, bool bImport=false);
     static bool __fastcall HideLib			();
     static bool __fastcall Visible			(){return !!form;}
+    static void 		OnFrame				();
+    static void			UpdateProperties	(){m_Flags.set(flUpdateProperties,TRUE);}
 };
 //---------------------------------------------------------------------------
 #endif

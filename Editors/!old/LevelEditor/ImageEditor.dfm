@@ -1,6 +1,6 @@
 object frmImageLib: TfrmImageLib
-  Left = 509
-  Top = 234
+  Left = 418
+  Top = 188
   Width = 350
   Height = 455
   BorderIcons = [biSystemMenu, biMinimize]
@@ -30,7 +30,6 @@ object frmImageLib: TfrmImageLib
     Width = 2
     Height = 428
     Cursor = crHSplit
-    Align = alRight
     Color = 3026478
     ParentColor = False
   end
@@ -39,14 +38,14 @@ object frmImageLib: TfrmImageLib
     Top = 0
     Width = 172
     Height = 428
-    Align = alRight
+    Align = alClient
     BevelOuter = bvLowered
     Color = 10528425
     Constraints.MinWidth = 172
     TabOrder = 0
     object Bevel2: TBevel
       Left = 1
-      Top = 302
+      Top = 351
       Width = 170
       Height = 2
       Align = alBottom
@@ -54,9 +53,9 @@ object frmImageLib: TfrmImageLib
     end
     object paCommand: TPanel
       Left = 1
-      Top = 304
+      Top = 353
       Width = 170
-      Height = 123
+      Height = 74
       Align = alBottom
       BevelInner = bvLowered
       BevelOuter = bvNone
@@ -64,7 +63,7 @@ object frmImageLib: TfrmImageLib
       TabOrder = 0
       object ebOk: TExtBtn
         Left = 1
-        Top = 87
+        Top = 39
         Width = 168
         Height = 17
         Align = alTop
@@ -76,40 +75,16 @@ object frmImageLib: TfrmImageLib
       end
       object Bevel1: TBevel
         Left = 1
-        Top = 58
+        Top = 18
         Width = 168
-        Height = 6
+        Height = 2
         Align = alTop
         Shape = bsLeftLine
         Style = bsRaised
       end
-      object ebCheckAllCompliance: TExtBtn
-        Left = 1
-        Top = 41
-        Width = 168
-        Height = 17
-        Align = alTop
-        BevelShow = False
-        CloseButton = False
-        Caption = 'Check All Compliance'
-        FlatAlwaysEdge = True
-        OnClick = ebCheckAllComplianceClick
-      end
-      object ebCheckSelCompliance: TExtBtn
-        Left = 1
-        Top = 24
-        Width = 168
-        Height = 17
-        Align = alTop
-        BevelShow = False
-        CloseButton = False
-        Caption = 'Check Sel Compliance'
-        FlatAlwaysEdge = True
-        OnClick = ebCheckSelComplianceClick
-      end
       object ebCancel: TExtBtn
         Left = 1
-        Top = 104
+        Top = 56
         Width = 168
         Height = 17
         Align = alTop
@@ -118,15 +93,6 @@ object frmImageLib: TfrmImageLib
         Caption = 'Cancel'
         FlatAlwaysEdge = True
         OnClick = ebCancelClick
-      end
-      object Bevel3: TBevel
-        Left = 1
-        Top = 18
-        Width = 168
-        Height = 6
-        Align = alTop
-        Shape = bsLeftLine
-        Style = bsRaised
       end
       object ebRemoveTexture: TExtBtn
         Left = 1
@@ -142,7 +108,7 @@ object frmImageLib: TfrmImageLib
       end
       object ebRebuildAssociation: TExtBtn
         Left = 1
-        Top = 64
+        Top = 20
         Width = 168
         Height = 17
         Align = alTop
@@ -154,100 +120,44 @@ object frmImageLib: TfrmImageLib
       end
       object Bevel5: TBevel
         Left = 1
-        Top = 81
+        Top = 37
         Width = 168
-        Height = 6
+        Height = 2
         Align = alTop
         Shape = bsLeftLine
         Style = bsRaised
       end
     end
-    object Panel3: TPanel
-      Left = 1
-      Top = 171
-      Width = 170
-      Height = 34
-      Align = alTop
-      BevelOuter = bvNone
-      Color = 10528425
-      TabOrder = 1
-      object lbFileName: TLabel
-        Left = 33
-        Top = 2
-        Width = 9
-        Height = 13
-        Caption = '...'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clNavy
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object RxLabel2: TLabel
-        Left = 4
-        Top = 2
-        Width = 29
-        Height = 13
-        AutoSize = False
-        Caption = 'File:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RxLabel3: TLabel
-        Left = 4
-        Top = 18
-        Width = 29
-        Height = 13
-        AutoSize = False
-        Caption = 'Info:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object lbInfo: TLabel
-        Left = 33
-        Top = 18
-        Width = 9
-        Height = 13
-        Caption = '...'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clNavy
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-    end
     object paProperties: TPanel
       Left = 1
-      Top = 205
+      Top = 133
       Width = 170
-      Height = 97
+      Height = 218
       Align = alClient
       BevelOuter = bvNone
       Color = 10528425
-      TabOrder = 2
+      TabOrder = 1
     end
-    object paImage: TMxPanel
+    object Panel1: TPanel
       Left = 1
       Top = 1
       Width = 170
-      Height = 170
+      Height = 132
       Align = alTop
-      BevelOuter = bvLowered
-      Caption = '<no image>'
+      BevelOuter = bvNone
       ParentColor = True
-      TabOrder = 3
-      OnResize = paImageResize
-      OnPaint = paImagePaint
+      TabOrder = 2
+      object paImage: TMxPanel
+        Left = 1
+        Top = 1
+        Width = 130
+        Height = 130
+        BevelOuter = bvLowered
+        Caption = '<no image>'
+        ParentColor = True
+        TabOrder = 0
+        OnPaint = paImagePaint
+      end
     end
   end
   object paItems: TPanel
@@ -255,8 +165,9 @@ object frmImageLib: TfrmImageLib
     Top = 0
     Width = 168
     Height = 428
-    Align = alClient
+    Align = alLeft
     BevelOuter = bvNone
+    Constraints.MinWidth = 168
     ParentColor = True
     TabOrder = 1
   end

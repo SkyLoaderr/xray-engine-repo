@@ -8,8 +8,8 @@
 
 class CImageManager{
     void		MakeThumbnailImage	(ETextureThumbnail* THM, u32* data, u32 w, u32 h, u32 a);
-    void		MakeGameTexture		(ETextureThumbnail* THM, LPCSTR game_name, u32* data);
-    void		MakeGameTexture		(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, bool bGenMipMap);
+    bool		MakeGameTexture		(ETextureThumbnail* THM, LPCSTR game_name, u32* data);
+    bool		MakeGameTexture		(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, bool bGenMipMap);
 public:
 				CImageManager		(){;}
 				~CImageManager		(){;}

@@ -12,6 +12,8 @@
 #include "PSLibrary.h"
 
 #include "itemlist.h"
+#include "ImageEditor.h"
+#include "SoundEditor.h"
 
 TUI* 	UI		= 0;
 
@@ -408,6 +410,9 @@ void TUI::Idle()
     CheckMailslot	();
     // update item list
     TItemList::OnFrame();
+    // OnFrame
+    TfrmImageLib::OnFrame();
+    TfrmSoundLib::OnFrame();
     // test quit
     if (m_Flags.is(flNeedQuit))	RealQuit();
 }

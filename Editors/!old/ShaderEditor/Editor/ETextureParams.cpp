@@ -118,6 +118,7 @@ void STextureParams::Save(IWriter& F)
 #ifdef _EDITOR
 #include "PropertiesListHelper.h"
 #include "ui_main.h"
+#include "ImageEditor.h"
 void STextureParams::OnTypeChange(PropValue* prop)
 {
 	switch (type){
@@ -128,7 +129,7 @@ void STextureParams::OnTypeChange(PropValue* prop)
 	    flags.set	(flGenerateMipMaps,FALSE);
     break;
     }
-    UI->Command		(COMMAND_UPDATE_PROPERTIES);
+    TfrmImageLib::UpdateProperties();
 }
 
 void STextureParams::FillProp(PropItemVec& items)
@@ -139,6 +140,9 @@ void STextureParams::FillProp(PropItemVec& items)
     case ttImage:	
     case ttCubeMap:	
 	    PHelper.CreateToken<u32>	(items, "Format",	   				(u32*)&fmt, 		tfmt_token);
+        PHelper.CreateCaption		(items, "Width",					width);
+        PHelper.CreateCaption		(items, "Height",					height);
+        PHelper.CreateCaption		(items, "Alpha",					HasAlphaChannel()?"on":"off"); 
 
 	    PHelper.CreateFlag<Flags32>	(items, "MipMaps\\Enabled",			&flags,				flGenerateMipMaps);
     	PHelper.CreateToken<u32>	(items, "MipMaps\\Filter",			(u32*)&mip_filter,	tparam_token);
@@ -172,7 +176,7 @@ void STextureParams::FillProp(PropItemVec& items)
         PHelper.CreateColor			(items, "Border\\Color",			&border_color		);
     break;
     case ttBumpMap:	
-        PHelper.CreateFloat			(items, "Bump\\Virtual Height",		&bump_virtual_height, 0.f, 0.1f	);
+        PHelper.CreateFloat			(items, "Bump\\Virtual Height (m)",	&bump_virtual_height, 0.f, 0.1f, 0.001f, 3);
     break;
     }
 

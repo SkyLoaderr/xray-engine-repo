@@ -169,6 +169,7 @@ public:		// User declarations
 
     void 				RemoveSelItems			(CFolderHelper::TOnItemRemove on_remove=0);
     void 				RenameSelItem			();
+    void				FireOnItemFocused		();
 };
 //---------------------------------------------------------------------------
 #endif

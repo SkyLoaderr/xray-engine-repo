@@ -80,6 +80,8 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall tvItemsCompareItems(TObject *Sender, TElTreeItem *Item1,
+          TElTreeItem *Item2, int &res);
 private:	// User declarations
 	static TfrmChoseItem* form;
     static AnsiString select_item;

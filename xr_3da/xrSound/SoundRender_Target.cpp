@@ -96,8 +96,8 @@ void	CSoundRender_Target::_initialize		()
             desc[0].guidDSFXClass	= GUID_DSFX_STANDARD_I3DL2REVERB;
             desc[0].dwReserved1		= 0;
             desc[0].dwReserved2		= 0;
-			R_CHK	(pBuffer->SetFX(1,desc,NULL));
-        	pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXI3DL2Reverb8,	(void**)&pFX_EReverb);
+//.			R_CHK	(pBuffer->SetFX(1,desc,NULL));
+//.        	pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXI3DL2Reverb8,	(void**)&pFX_EReverb);
         }else{
             desc[0].dwSize			= sizeof(DSEFFECTDESC);
             desc[0].dwFlags			= DSFX_LOCSOFTWARE;
@@ -264,6 +264,7 @@ void	CSoundRender_Target::fill_parameters()
 		// 1. Environment Reverb
         if (pFX_EReverb)
         {
+        	/*
         	DSFXI3DL2Reverb					para;
             para.lRoom               		= iFloor(E.L_Room);              
             para.lRoomHF             		= iFloor(E.L_RoomHF);            
@@ -278,6 +279,8 @@ void	CSoundRender_Target::fill_parameters()
             para.flDensity           		= E.L_Density;          
             para.flHFReference       		= E.L_HFReference;                  
 			pFX_EReverb->SetAllParameters	(&para);
+            pFX_EReverb->SetPreset			(DSFX_I3DL2_ENVIRONMENT_PRESET_CONCERTHALL);
+            */
         }
 
 		// 2. Wave Reverb

@@ -30,23 +30,16 @@ __published:	// IDE-managed Components
 	TPanel *paCommand;
 	TExtBtn *ebOk;
 	TBevel *Bevel1;
-	TPanel *Panel3;
 	TPanel *paProperties;
-	TLabel *lbFileName;
-	TLabel *RxLabel2;
-	TLabel *RxLabel3;
-	TLabel *lbInfo;
 	TPanel *paItems;
 	TSplitter *Splitter1;
 	TBevel *Bevel2;
-	TExtBtn *ebCheckAllCompliance;
 	TImageList *ImageList;
-	TExtBtn *ebCheckSelCompliance;
 	TExtBtn *ebCancel;
-	TBevel *Bevel3;
 	TExtBtn *ebRemoveTexture;
 	TExtBtn *ebRebuildAssociation;
 	TBevel *Bevel5;
+	TPanel *Panel1;
 	TMxPanel *paImage;
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -56,45 +49,52 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
-	void __fastcall ebCheckAllComplianceClick(TObject *Sender);
-	void __fastcall ebCheckSelComplianceClick(TObject *Sender);
 	void __fastcall ebCancelClick(TObject *Sender);
 	void __fastcall ebRebuildAssociationClick(TObject *Sender);
 	void __fastcall ebRemoveTextureClick(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
-	void __fastcall paImageResize(TObject *Sender);
 	void __fastcall paImagePaint(TObject *Sender);
 private:
 // list functions
     void 				InitItemsList		();
 	void __fastcall 	OnItemsFocused		(ListItemsVec& items);
-    void				DestroyTHMs			();
+
+	enum{
+    	flUpdateProperties = (1<<0),
+    };    
+    static Flags32		m_Flags;
 private:	// User declarations
 	static TfrmImageLib* form;
 
     DEFINE_VECTOR		(ETextureThumbnail*,THMVec,THMIt);
-    THMVec				m_THMs;
+    THMVec				m_THM_Used;
+    THMVec				m_THM_Current;
     TItemList*			m_ItemList;
     TProperties* 		m_ItemProps;
 
+    ETextureThumbnail*	FindUsedTHM			(LPCSTR name);
+    void				SaveUsedTHM			();
+    void				DestroyUsedTHM		();
+
+	void __fastcall 	RegisterModifiedTHM	();
+    
     void 				OnModified			();
-    static FS_QueryMap	compl_map;
     static FS_QueryMap	texture_map;
     static FS_QueryMap	modif_map;
-	void __fastcall 	SaveTextureParams	();
     bool 				bImportMode;
-    void __fastcall 	UpdateImageLib		();
-    void 				ExtractCompValue	(int val, int& A, int& M){	A = val/1000; M = val-A*1000; }
+    void __fastcall 	UpdateLib			();
     static bool 		bFormLocked;
-    static void 		LockForm			()	{ bFormLocked = true;	form->paProperties->Enabled = false; 	form->paItems->Enabled = false; }
-    static void 		UnlockForm			(){ bFormLocked = false;	form->paProperties->Enabled = true; 	form->paItems->Enabled = true; 	}
+    static void 		LockForm			(){ bFormLocked = true;	form->paProperties->Enabled = false; 	form->paItems->Enabled = false; }
+    static void 		UnlockForm			(){ bFormLocked = false;form->paProperties->Enabled = true; 	form->paItems->Enabled = true; 	}
 public:		// User declarations
     __fastcall 			TfrmImageLib		(TComponent* Owner);
 // static function
-    static void __fastcall ImportTextures();
-    static void __fastcall EditLib(AnsiString& title, bool bImport=false);
-    static bool __fastcall HideLib();
-    static bool __fastcall Visible(){return !!form;}
+    static void __fastcall ImportTextures	();
+    static void __fastcall EditLib			(AnsiString& title, bool bImport=false);
+    static bool __fastcall HideLib			();
+    static bool __fastcall Visible			(){return !!form;}
+    static void 		OnFrame				();
+    static void			UpdateProperties	(){m_Flags.set(flUpdateProperties,TRUE);}
 };
 //---------------------------------------------------------------------------
 #endif

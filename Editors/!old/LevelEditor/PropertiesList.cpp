@@ -1595,6 +1595,13 @@ void TProperties::CancelEditControl()
 }
 //---------------------------------------------------------------------------
 
+bool __fastcall TProperties::IsModified()
+{
+	ApplyEditControl();
+	return bModified;
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TProperties::FormDeactivate(TObject *Sender)
 {
 	ApplyEditControl();
@@ -1686,13 +1693,13 @@ void __fastcall TProperties::RefreshForm()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TProperties::ebLightAnimationEditorClick(TObject *Sender)
+void __fastcall TProperties::ebOKClick(TObject *Sender)
 {
 	ModalResult = mrOk;	
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TProperties::ExtBtn1Click(TObject *Sender)
+void __fastcall TProperties::ebCancelClick(TObject *Sender)
 {
 	ModalResult = mrCancel;	
 }
@@ -1723,4 +1730,5 @@ void __fastcall TProperties::tvPropertiesCompareItems(TObject *Sender,
     else if (type2==TYPE_FOLDER)	    	res =  1;
 }
 //---------------------------------------------------------------------------
+
 

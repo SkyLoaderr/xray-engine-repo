@@ -83,6 +83,9 @@ int __fastcall TfrmChoseItem::SelectItem(EChooseMode mode, LPCSTR& dest, int sel
     default:
     	THROW2("ChooseForm: Unknown Item Type");
     }
+    // sort
+    form->tvItems->Sort			(true);
+    form->tvItems->SortMode 	= smAdd;
     // redraw
 	form->tvItems->IsUpdating 	= false;
 	form->paItemsCount->Caption	= AnsiString(" Items in list: ")+AnsiString(form->tvItems->Items->Count);
@@ -567,6 +570,20 @@ void __fastcall TfrmChoseItem::fsStorageRestorePlacement(TObject *Sender)
 void __fastcall TfrmChoseItem::fsStorageSavePlacement(TObject *Sender)
 {
 	m_Props->SaveParams(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmChoseItem::tvItemsCompareItems(TObject *Sender,
+      TElTreeItem *Item1, TElTreeItem *Item2, int &res)
+{
+	u32 type1 = (u32)Item1->Data;
+	u32 type2 = (u32)Item2->Data;
+    if (type1==type2){
+        if (Item1->Text<Item2->Text) 		res = -1;
+        else if (Item1->Text>Item2->Text) 	res =  1;
+        else if (Item1->Text==Item2->Text) 	res =  0;
+    }else if (type1==TYPE_FOLDER)	    	res = -1;
+    else if (type2==TYPE_FOLDER)	    	res =  1;
 }
 //---------------------------------------------------------------------------
 

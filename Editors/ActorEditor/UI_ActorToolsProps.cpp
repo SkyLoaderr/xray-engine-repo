@@ -191,7 +191,7 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
     ButtonValue* B;
     B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Global\\Edit"),			"Append,Delete,Save",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnMotionEditClick;
-    if (SM){
+    if (SM){                                                                   
         B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Motion\\Control"),		"Play,Stop,Pause",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent		= OnMotionControlClick;
 	    PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Motion\\Frame\\Start"),	SM->FrameStart());
@@ -200,9 +200,9 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
         PropValue* P=0;                                              
         P=PHelper.CreateName	(items,FHelper.PrepareKey(pref,"Motion\\Name"),		&SM->Name(), sizeof(SM->Name()), sender);
         P->OnChangeEvent		= OnMotionNameChange;
-        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Speed"),	&SM->fSpeed,  0.f,20.f,0.01f,2);
-        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Accrue"),	&SM->fAccrue, 0.f,20.f,0.01f,2);
-        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Falloff"), 	&SM->fFalloff,0.f,20.f,0.01f,2);
+        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Speed"),	&SM->fSpeed,  0.f,10.f,0.01f,2);
+        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Accrue"),	&SM->fAccrue, 0.f,10.f,0.01f,2);
+        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Falloff"), 	&SM->fFalloff,0.f,10.f,0.01f,2);
 
         PropValue /**C=0,*/*TV=0;
         TV = PHelper.CreateFlag<Flags8>(items,FHelper.PrepareKey(pref,"Motion\\Type FX"),	&SM->m_Flags, esmFX);
@@ -213,7 +213,7 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
 				bone_parts.push_back	(TokenValue3Custom::Item((*it)->index,(*it)->Name()));
 			PHelper.CreateToken3<u16>	(items,FHelper.PrepareKey(pref,"Motion\\FX\\Start bone"),	(u16*)&SM->m_BoneOrPart,	&bone_parts);
 
-            PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Motion\\FX\\Power"),	 	&SM->fPower,   	0.f,20.f,0.01f,2);
+            PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Motion\\FX\\Power"),	 	&SM->fPower,   	0.f,10.f,0.01f,2);
         }else{
         	bone_parts.clear	();
             bone_parts.push_back(TokenValue3Custom::Item(BI_NONE,"--all bones--"));

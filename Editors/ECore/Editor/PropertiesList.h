@@ -48,8 +48,8 @@ __published:	// IDE-managed Components
 	TMenuItem *N3;
 	TPanel *paButtons;
 	TBevel *Bevel2;
-	TExtBtn *ebLightAnimationEditor;
-	TExtBtn *ExtBtn1;
+	TExtBtn *ebOK;
+	TExtBtn *ebCancel;
 	TMaskEdit *edText;
 	TPanel *paFolders;
 	TSplitter *spFolders;
@@ -78,8 +78,8 @@ __published:	// IDE-managed Components
 	void __fastcall 	tvPropertiesMouseMove(TObject *Sender, TShiftState Shift, int X, int Y);
 	void __fastcall ExpandSelected1Click(TObject *Sender);
 	void __fastcall CollapseSelected1Click(TObject *Sender);
-	void __fastcall ebLightAnimationEditorClick(TObject *Sender);
-	void __fastcall ExtBtn1Click(TObject *Sender);
+	void __fastcall ebOKClick(TObject *Sender);
+	void __fastcall ebCancelClick(TObject *Sender);
 	void __fastcall tvPropertiesShowLineHint(TObject *Sender,
           TElTreeItem *Item, TElHeaderSection *Section, TElFString &Text,
           THintWindow *HintWindow, TPoint &MousePos, bool &DoShowHint);
@@ -161,7 +161,7 @@ public:		// User declarations
     void __fastcall 	ShowProperties			();
     void __fastcall 	HideProperties			();
     void __fastcall 	ClearProperties			();
-    bool __fastcall 	IsModified				(){return bModified;}
+    bool __fastcall 	IsModified				();
     void __fastcall 	ResetModified			(){bModified = false;}
     void __fastcall 	RefreshForm				();
 
