@@ -541,7 +541,7 @@ class CAI_Soldier : public CCustomMonster
 	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
 		bool bfCheckForEntityVisibility(CEntity *tpEntity);
 		bool bfCheckForVisibility(CEntity* tpEntity);
-		bool bfCheckForVisibility(int iTestNode);
+		bool bfCheckForVisibility(int iTestNode, SRotation tMyRotation, bool bRotation);
 		void vfLoadSounds();
 		void vfLoadSelectors(LPCSTR section);
 		void vfAssignBones(CInifile *ini, const char *section);

@@ -29,6 +29,7 @@ DEFINE_VECTOR(CEntity*,EntityVec,EntityIt);
 typedef struct tagSSearchPlace {
 	DWORD	dwNodeID:31;
 	DWORD	bSearched:1;
+	float	fCost;
 } SSearchPlace;
 
 typedef svector<Fvector,MAX_GROUP_SIZE>				MemberPlacement;

@@ -564,7 +564,7 @@ bool CAI_Soldier::bfAddEnemyToDynamicObjects(CAI_Soldier *tpSoldier)
 	return(false);
 }
 
-bool CAI_Soldier::bfCheckForVisibility(int iTestNode)
+bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, bool bRotation)
 {
 //	Fvector tDirection, tNodePosition, tMyDirection, tP0, tP1;
 //	float fEyeFov = ffGetFov()*PI/180.f, fEyeRange = ffGetRange();
@@ -598,7 +598,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode)
 	tNodePosition.add(tP0,tP1);
 	tNodePosition.mul(.5f);
 
-	tDirection.sub(tNodePosition,vPosition);
+	tDirection.sub(vPosition,tNodePosition);
 	float fDistance = tDirection.magnitude();
 	if (fDistance > fEyeRange + EPS_L)
 		return(false);
@@ -606,6 +606,38 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode)
 	tDirection.normalize_safe();
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
-	float fResult = ffGetCoverInDirection(tRotation.yaw,FNN(0,AI_Node),FNN(1,AI_Node),FNN(2,AI_Node),FNN(3,AI_Node));
-	return(fResult > .6f);
+	float fResult = ffGetCoverInDirection(tRotation.yaw,FNN(0,tpNode),FNN(1,tpNode),FNN(2,tpNode),FNN(3,tpNode));
+	tDirection.sub(vPosition,tNodePosition);
+	
+	tDirection.sub(tNodePosition,vPosition);
+	tDirection.normalize_safe();
+	tRotation;
+	mk_rotation(tDirection,tRotation);
+	float fResult1 = ffGetCoverInDirection(tRotation.yaw,FNN(0,AI_Node),FNN(1,AI_Node),FNN(2,AI_Node),FNN(3,AI_Node));
+
+	if (tMyRotation.yaw >= tRotation.yaw) {
+		if (tMyRotation.yaw - tRotation.yaw > PI)
+			tRotation.yaw += PI_MUL_2;
+	}
+	else
+		if (tRotation.yaw >= tMyRotation.yaw) {
+			if (tRotation.yaw - tMyRotation.yaw > PI)
+				tMyRotation.yaw += PI_MUL_2;
+		}
+	if (bRotation) {
+		if (tMyRotation.yaw >= tRotation.yaw)
+			if (fResult > .3f)
+				return(true);
+			else
+				return(false);
+		return(false);
+	}
+	else {
+		if (tMyRotation.yaw <= tRotation.yaw)
+			if (fResult > .3f)
+				return(true);
+			else
+				return(false);
+		return(false);
+	}
 }

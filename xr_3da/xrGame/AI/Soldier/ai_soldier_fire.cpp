@@ -997,10 +997,30 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 //	else
 		fEyeFov = ffGetFov();
 	fEyeFov *=PI/180.f;
+
+	Fvector tMyDirection;
+	SRotation tMyRotation,tEnemyRotation;
+	tMyDirection.sub(tSavedEnemyPosition,vPosition);
+	mk_rotation(tMyDirection,tMyRotation);
+	tMyDirection.sub(tSavedEnemy->Position(),vPosition);
+	mk_rotation(tMyDirection,tEnemyRotation);
+	if (tEnemyRotation.yaw > tMyRotation.yaw) {
+		if (tEnemyRotation.yaw - tMyRotation.yaw > PI)
+			tMyRotation.yaw += PI_MUL_2;
+	}
+	else
+		if (tMyRotation.yaw > tEnemyRotation.yaw)
+			if (tMyRotation.yaw - tEnemyRotation.yaw > PI)
+				tEnemyRotation.yaw += PI_MUL_2;
+    bool bRotation = tMyRotation.yaw < tEnemyRotation.yaw;
+
+	Msg("Nodes being checked for suspicious :");
 	for (DWORD it=0; it<AI.q_stack.size(); it++) {
 		DWORD ID = AI.q_stack[it];
-		if (bfCheckForVisibility(ID) && (ID != StartNode))
+
+		if (bfCheckForVisibility(ID,tMyRotation,bRotation) && (ID != StartNode))
 			continue;
+
 		NodeCompressed*	N = AI.Node(ID);
 		DWORD L_count	= DWORD(N->links);
 		NodeLink* L_it	= (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
@@ -1025,29 +1045,44 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 
 			// estimate
 			SSearchPlace tSearchPlace;
-			float fCost = ffGetCoverFromNode(AI,tPointPosition,T,fEyeFov);
+
+			Fvector tDirection, tNodePosition, tP0, tP1;
+			float fEyeRange = ffGetRange();
+
+			Level().AI.UnpackPosition(tP0,T->p0);
+			Level().AI.UnpackPosition(tP1,T->p1);
+			tNodePosition.add(tP0,tP1);
+			tNodePosition.mul(.5f);
+
+			tDirection.sub(tPointPosition,tNodePosition);
+			tDirection.normalize_safe();
+			SRotation tRotation;
+			mk_rotation(tDirection,tRotation);
+			float fCost = ffGetCoverInDirection(tRotation.yaw,FNN(0,T),FNN(1,T),FNN(2,T),FNN(3,T));
+			Msg("%d %.2f",Test,fCost);
 			if (bMinimum) {
-				if (fCost < .5f)
+				if (fCost < .3f)
 					if (Group.m_tpaSuspiciousNodes.size() < MAX_SUSPICIOUS_NODE_COUNT) {
-						tSearchPlace.dwNodeID = Test;
-						tSearchPlace.bSearched = 0;
+						tSearchPlace.dwNodeID	= Test;
+						tSearchPlace.bSearched	= 0;
+						tSearchPlace.fCost		= fCost;
 						Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
 					}
 					else {
 						float fMax = 0.f;
-						for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-							float fTempCost = ffGetCoverFromNode(AI,tPointPosition,AI.Node(Group.m_tpaSuspiciousNodes[i].dwNodeID),fEyeFov);
-							if (fTempCost > fMax) {
-								fMax = fTempCost;
+						for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++)
+							if (Group.m_tpaSuspiciousNodes[i].fCost > fMax) {
+								fMax = Group.m_tpaSuspiciousNodes[i].fCost;
 								iIndex = i;
 							}
-						}
-						if (fMax > fCost)
+						if ((fMax > fCost) && (iIndex >= 0)) {
 							Group.m_tpaSuspiciousNodes[iIndex].dwNodeID = Test;
+							Group.m_tpaSuspiciousNodes[iIndex].fCost = fCost;
+						}
 					}
 			}
 			else {
-				if (fCost > .5f)
+				if (fCost > .7f)
 					if (Group.m_tpaSuspiciousNodes.size() < MAX_SUSPICIOUS_NODE_COUNT) {
 						tSearchPlace.dwNodeID = Test;
 						tSearchPlace.bSearched = 0;
@@ -1078,6 +1113,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 			AI.q_mark[*it] -= 1;
 	}
 	
+	Msg("Suspicious nodes :");
 	for (int k=0; k<Group.m_tpaSuspiciousNodes.size(); k++)
 		Msg("%d",Group.m_tpaSuspiciousNodes[k].dwNodeID);
 

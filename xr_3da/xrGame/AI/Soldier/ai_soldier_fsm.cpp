@@ -276,7 +276,7 @@ void CAI_Soldier::OnFindAloneFire()
  		if (!m_bActionStarted) {
 			if (m_bStateChanged) {
 				if (!Group.m_tpaSuspiciousNodes.size()) {
-					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,min(6.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,30.f),Group);
+					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,min(8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,30.f),Group);
 				}
 			}
 			vfInitSelector(SelectorPatrol,Squad,Leader);
@@ -305,9 +305,8 @@ void CAI_Soldier::OnFindAloneFire()
 					for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
 						if (Group.m_tpaSuspiciousNodes[i].bSearched)
 							continue;
-						float fTemp = Level().AI.u_SqrDistance2Node(vPosition,Level().AI.Node(Group.m_tpaSuspiciousNodes[i].dwNodeID));
-						if (fTemp < fMin) {
-							fMin = fTemp;
+						if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+							fMin = Group.m_tpaSuspiciousNodes[i].fCost;
 							Index = i;
 						}
 					}
@@ -349,9 +348,8 @@ void CAI_Soldier::OnFindAloneFire()
 						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
 							if (Group.m_tpaSuspiciousNodes[i].bSearched)
 								continue;
-							float fTemp = Level().AI.u_SqrDistance2Node(vPosition,Level().AI.Node(Group.m_tpaSuspiciousNodes[i].dwNodeID));
-							if (fTemp < fMin) {
-								fMin = fTemp;
+							if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+								fMin = Group.m_tpaSuspiciousNodes[i].fCost;
 								Index = i;
 							}
 						}
@@ -392,9 +390,8 @@ void CAI_Soldier::OnFindAloneFire()
 						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
 							if (Group.m_tpaSuspiciousNodes[i].bSearched)
 								continue;
-							float fTemp = Level().AI.u_SqrDistance2Node(vPosition,Level().AI.Node(Group.m_tpaSuspiciousNodes[i].dwNodeID));
-							if (fTemp < fMin) {
-								fMin = fTemp;
+							if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+								fMin = Group.m_tpaSuspiciousNodes[i].fCost;
 								Index = i;
 							}
 						}
