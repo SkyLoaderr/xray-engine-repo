@@ -196,9 +196,9 @@ BOOL	CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
 		return FALSE;
 	} else {
 		// cache polygon
-		const CDB::RESULT*	R = geom_DB.r_begin();
-		const CDB::TRI&		T = geom_MODEL->get_tris() [ R->id ];
-		const Fvector*		V = geom_MODEL->get_verts();
+		const CDB::RESULT*	R = geom_DB.r_begin			();
+		const CDB::TRI&		T = geom_MODEL->get_tris	() [ R->id ];
+		const Fvector*		V = geom_MODEL->get_verts	();
 		occ[0].set			(V[T.verts[0]]);
 		occ[1].set			(V[T.verts[1]]);
 		occ[2].set			(V[T.verts[2]]);
