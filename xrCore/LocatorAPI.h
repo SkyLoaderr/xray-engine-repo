@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_LOCATORAPI_H__C37C9279_84E9_462B_9B58_F080971F8AED__INCLUDED_)
-#define AFX_LOCATORAPI_H__C37C9279_84E9_462B_9B58_F080971F8AED__INCLUDED_
+#ifndef LocatorAPIH
+#define LocatorAPIH
 #pragma once
 
 enum FS_List
@@ -13,15 +13,40 @@ enum FS_List
 	FS_forcedword	=u32(-1)
 };
 
-class ENGINE_API CLocatorAPI  
+class FS_Path{
+public:
+	LPSTR		m_Path;
+#ifdef _EDITOR
+	LPSTR		m_Root;
+	LPSTR		m_Add;
+	LPSTR		m_DefExt;
+	LPSTR		m_FilterCaption;
+	const AnsiString& _update(AnsiString& _FileName) const;
+#endif
+public:
+	FS_Path		(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt=0, LPCSTR _FilterString=0);
+	~FS_Path	()
+	{
+		xr_free	(m_Path);
+#ifdef _EDITOR
+		xr_free	(m_Root);
+		xr_free	(m_Add);
+		xr_free	(m_DefExt);
+		xr_free	(m_FilterCaption);
+#endif
+	}
+	LPCSTR		_update		(LPSTR _FileName) const;
+};
+
+class XRCORE_API CLocatorAPI  
 {
 public:
 	struct	file
 	{
 		LPCSTR	name;			// low-case name
-		u32	vfs;			// 0xffffffff - standart file
-		u32	ptr;			// pointer inside vfs
-		u32	size;
+		u32		vfs;			// 0xffffffff - standart file
+		u32		ptr;			// pointer inside vfs
+		u32		size;			// for REAL file - its file size, for COMPRESSED inside VFS - compressed size, for PLAIN inside VFS - file size
 		BOOL	bCompressed;
 	};
 	struct	file_pred		: public std::binary_function<file&, file&, bool> 
@@ -33,6 +58,9 @@ public:
 	{
 		CVirtualFileReader*		vfs;
 	};
+
+	DEFINE_MAP_PRED(LPCSTR,FS_Path*,PathMap,PathPairIt,pred_str);
+	PathMap						pathes;
 private:
 	typedef set<file,file_pred>		set_files;
 	typedef set_files::iterator		set_files_it;
@@ -48,15 +76,18 @@ private:
 	void						ProcessOne		(const char* path, LPVOID F);
 	void						Recurse			(const char* path);
 public:
-	void						Initialize		();
-	void						Destroy			();
+	void						_initialize		();
+	void						_destroy		();
 
-	IReader*					Open			(const char* N);
-	void						Close			(IReader* &S);
+	IReader*					r_open			(LPCSTR path, LPCSTR N);
+	void						r_close			(IReader* &S);
 
-	BOOL						Exist			(const char* N);
-	BOOL						Exist			(char* fn, const char* path, const char* name);
-	BOOL						Exist			(char* fn, const char* path, const char* name, const char* ext);
+	IWriter*					w_open			(LPCSTR path, LPCSTR N);
+	void						w_close			(IWriter* &S, bool bDiscard=false);
+
+	BOOL						exist			(const char* N);
+	BOOL						exist			(char* fn, const char* path, const char* name);
+	BOOL						exist			(char* fn, const char* path, const char* name, const char* ext);
 
 	void						List			(vector<char*>& dest, const char* path, u32 flags=FS_ListFiles);
 
@@ -64,4 +95,6 @@ public:
 	~CLocatorAPI();
 };
 
-#endif // !defined(AFX_LOCATORAPI_H__C37C9279_84E9_462B_9B58_F080971F8AED__INCLUDED_)
+extern XRCORE_API	CLocatorAPI	FS;
+
+#endif // LocatorAPIH

@@ -74,6 +74,11 @@
 #include <assert.h>
 #include <typeinfo.h>
 
+// io
+#include <io.h>
+#include <fcntl.h>
+#include <sys\stat.h>
+
 #ifndef DEBUG
 	#ifdef _DEBUG
     	#define DEBUG
@@ -169,6 +174,7 @@ using namespace std;
 #include "log.h"
 #include "xr_trims.h"
 #include "xr_ini.h"
+#include "LocatorAPI.h"
 
 template <class T>
 class destructor

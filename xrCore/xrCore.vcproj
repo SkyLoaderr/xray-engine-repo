@@ -352,6 +352,15 @@
 				RelativePath="FS.h">
 			</File>
 			<File
+				RelativePath="FS_internal.h">
+			</File>
+			<File
+				RelativePath="LocatorAPI.cpp">
+			</File>
+			<File
+				RelativePath="LocatorAPI.h">
+			</File>
+			<File
 				RelativePath="LzHuf.cpp">
 			</File>
 			<File

@@ -31,8 +31,15 @@ private:
 		} return 0;
 	}
 public:
+	LPSTR			fName;
+public:
+	IWriter	()
+	{
+		fName		= 0;
+	}
 	virtual	~IWriter	()
 	{
+		xr_free		(fName);
 		while (!chunk_pos.empty())
 			close_chunk();
 	}
@@ -98,31 +105,6 @@ public:
 	IC u32			size		()	{ return file_size;	}
 	IC void			clear		()  { file_size=0; position=0;	}
 	void			save_to		(const char* fn, const char* sign=0);
-};
-
-class XRCORE_API CFileWriter : public IWriter
-{
-private:
-	FILE*			hf;
-public:
-	CFileWriter		(const char *name)
-	{
-		R_ASSERT(name);
-		R_ASSERT(name[0]);
-		hf = fopen(name, "wb");
-		R_ASSERT(hf);
-		setvbuf(hf, 0, _IOFBF, 24*1024 );
-	}
-	
-	virtual ~CFileWriter()
-	{
-		fclose(hf);
-	}
-	
-	// kernel
-	virtual void	w			(const void* ptr, u32 count) { fwrite(ptr,count,1,hf);};
-	virtual void	seek		(u32 pos)	{	fseek(hf,pos,SEEK_SET);		};
-	virtual u32		tell		()			{	return ftell(hf);			};
 };
 
 //------------------------------------------------------------------------------------

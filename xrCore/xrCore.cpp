@@ -46,6 +46,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 
 	Debug._initialize		();
 	Memory._initialize		();
+	FS._initialize			();
 
 	CreateLog				(cb);
 
@@ -54,5 +55,6 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 
 void xrCore::_destroy		()
 {
+	FS._destroy				();
 	CloseLog				();
 }
