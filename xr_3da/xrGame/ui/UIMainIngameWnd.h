@@ -24,12 +24,16 @@
 
 #include "xrXMLParser.h"
 
+//////////////////////////////////////////////////////////////////////////
+
 //для режима настройки HUD
 extern int				g_bHudAdjustMode;
 extern float			g_fHudAdjustValue;
 extern int				g_bNewsDisable;
 
 class					CUIPdaMsgListItem;
+
+//////////////////////////////////////////////////////////////////////////
 
 struct CUSTOM_TEXTURE
 {
@@ -48,8 +52,11 @@ struct CUSTOM_TEXTURE
 	int				texPriority;
 };
 
+//////////////////////////////////////////////////////////////////////////
+
 DEFINE_VECTOR(CUSTOM_TEXTURE, CUSTOM_TEXTURE_VECTOR, CUSTOM_TEXTURE_IT);
 
+//////////////////////////////////////////////////////////////////////////
 
 class CUIMainIngameWnd: public CUIWindow  
 {
@@ -84,15 +91,15 @@ protected:
 	CUIStatic			UIStaticHealth;
 	CUIStatic			UIStaticArmor;
 	CUIStatic			UIStaticMapBack;
+	CUIStatic			UIStaticBattery;
 
 	// Статик контрол для отображения подсказок действий при наведении прицела на объект
 	// Кнопка потому, что в статике еще нет функции выравнивания текста
 	CUIButton			UIStaticQuickHelp;
-	
 	CUIStatic			UITextWound;
-
 	CUIProgressBar		UIHealthBar;
 	CUIProgressBar		UIArmorBar;
+	CUIProgressBar		UIBatteryBar;
 
 	CUIZoneMap			UIZoneMap;
 
@@ -262,4 +269,8 @@ public:
 	void				AddMonsterClawsEffect(const ref_str &monsterName, const ref_str &textureName);
 	// Проиграть анимацию текстуры когтей монстра
 	void				PlayClawsAnimation(const ref_str &monsterName);
+	// Установить позицию заряда батарейки
+	void				SetBatteryCharge(float value);
+	// Показать/спрятать батарейку
+	void				ShowBattery(bool on);
 };

@@ -18,43 +18,39 @@
 
 #include "actor.h"
 
-#define MAX_VIEW_DISTANCE 50.f
-#define VIEW_DISTANCE	(MAX_VIEW_DISTANCE/m_fScale)
+//////////////////////////////////////////////////////////////////////////
 
-#define VIEW_DISTANCE2	VIEW_DISTANCE*VIEW_DISTANCE
-#define COLOR_ENEMY		0xffff0000
-#define COLOR_FRIEND	0xffffffff
-#define COLOR_SELF		0xff00ff00
-#define COLOR_TARGET	0xFFFFA0FF
-#define COLOR_BASE		0xff00a000
-#define COLOR_ARTEFACT	0xffffff00
+#define				MAX_VIEW_DISTANCE			50.f
+#define				VIEW_DISTANCE				(MAX_VIEW_DISTANCE/m_fScale)
 
-#define BASE_LEFT		9
-#define BASE_TOP		6
-//#define MAP_LEFT		76
-//#define MAP_TOP			80
-//#define MAP_RADIUS		65
-#define MAP_LEFT		89
-#define MAP_TOP			93
-#define MAP_RADIUS		80
+#define				VIEW_DISTANCE2				VIEW_DISTANCE*VIEW_DISTANCE
+#define				COLOR_ENEMY					0xffff0000
+#define				COLOR_FRIEND				0xffffffff
+#define				COLOR_SELF					0xff00ff00
+#define				COLOR_TARGET				0xFFFFA0FF
+#define				COLOR_BASE					0xff00a000
+#define				COLOR_ARTEFACT				0xffffff00
+#define				BASE_LEFT					9
+#define				BASE_TOP					6
+#define				MAP_LEFT					89
+#define				MAP_TOP						93
+#define				MAP_RADIUS					80
+#define				LEVEL_DIFF					3.f
+#define				MAX_SCALE					8.f
+#define				MIN_SCALE					1.f
+#define				MAP_AROW					8.f
+#define				MIN_SCALE					1.f
+#define				MAP_ARROW_TEXTURE			"ui\\ui_map_arrow_02"
+#define				MAP_ARROW_ROTATION			-PI
+#define				MAP_ARROW_WIDTH				16
+#define				MAP_ARROW_HEIGHT			16
 
-#define LEVEL_DIFF		3.f
-
-
-#define MAX_SCALE		8.f
-#define MIN_SCALE		1.f
-
-
-
-#define MAP_AROW		8.f
-#define MIN_SCALE		1.f
-
-
-#define MAP_ARROW_TEXTURE "ui\\ui_map_arrow_02"
-#define MAP_ARROW_ROTATION -PI
-#define MAP_ARROW_WIDTH  16
-#define MAP_ARROW_HEIGHT 16
-
+// Название ключа имени текстуры карты уровня
+const char * const	mapTextureKey				= "level_map";
+// Аналогично её координаты на глобальной карте
+const char * const	mapLocalCoordinatesKey		= "ui_map_coords";
+// Аналогично её размеры в метрах
+const char * const	mapDimentions				= "ui_map_dims";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -69,6 +65,22 @@ CUIZoneMap::CUIZoneMap()
 CUIZoneMap::~CUIZoneMap()
 {    
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+struct FindLevelByName
+{
+	FindLevelByName(const ref_str &l)
+		:	levelName(l)
+	{}
+	bool operator ()(const CGameGraph::LEVEL_MAP::value_type &lhs)
+	{
+		return 0 == xr_strcmp(levelName, lhs.second.name());
+	}
+	ref_str levelName;
+};
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIZoneMap::Init()
 {
@@ -97,12 +109,36 @@ void CUIZoneMap::Init()
 	back.Init	("ui\\ui_mg_back_map",	"hud\\default",BASE_LEFT,BASE_TOP,align);
 	back.SetRect(0,0,180,180);
 
+	// Получаем список уровней игры
+	const CGameGraph::LEVEL_MAP &levelMap = ai().get_game_graph()->header().levels();
 
-	ref_str map_texture;
-	if(Level().pLevel->line_exist("level_map","texture"))
-		map_texture = Level().pLevel->r_string("level_map","texture");
+	FindLevelByName currentLevel(Level().name());
+	CGameGraph::LEVEL_MAP::const_iterator currLIt = std::find_if(levelMap.begin(), levelMap.end(), currentLevel);
+
+	ref_str				map_texture;
+	string256			gameLtxPath;
+	FS.update_path					(gameLtxPath, "$game_data$", "game.ltx");
+	CInifile			gameLtx		(gameLtxPath);
+
+	if(currLIt != levelMap.end() &&
+	   gameLtx.line_exist(currLIt->second.section(), mapTextureKey) &&
+	   gameLtx.line_exist(currLIt->second.section(), mapDimentions))
+	{
+
+		map_texture		= gameLtx.r_string		(currLIt->second.section(), mapTextureKey);
+		Fvector4 f		= gameLtx.r_fvector4	(currLIt->second.section(), mapDimentions);
+
+		level_box.x1	= f.x;
+		level_box.z1	= f.z;
+		level_box.x2	= f.y;
+		level_box.z2	= f.w;
+
+	}
 	else
-		map_texture = "ui\\ui_minimap_level3";
+	{
+		map_texture = "ui\\ui_nomap";
+		level_box.x1 = level_box.z1 = level_box.x2 = level_box.z2 = 0.f;
+	}
 
 	landscape.Init(*map_texture,	"hud\\default",
 					map_center.x - map_radius + 1,
@@ -111,20 +147,6 @@ void CUIZoneMap::Init()
 	
 	landscape.SetRect(0,0,2*map_radius,2*map_radius);
 	landscape.SetColor(subst_alpha(landscape.GetColor(), 128));
-
-#pragma todo("Correct ininializing params")
-	if (Level().pLevel->section_exist("level_map"))	
-	{
-		level_box.x1 = Level().pLevel->r_float("level_map","x1");
-		level_box.z1 = Level().pLevel->r_float("level_map","z1");
-		level_box.x2 = Level().pLevel->r_float("level_map","x2");
-		level_box.z2 = Level().pLevel->r_float("level_map","z2");
-	}
-	else
-	{
-		level_box.x1 = level_box.z1 = level_box.x2 = level_box.z2 = 0.f;
-	}
-
 }
 //--------------------------------------------------------------------
 

@@ -3,25 +3,15 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "UIMainIngameWnd.h"
-
-#include "UIXmlInit.h"
-
-#include "UIPdaMsgListItem.h"
-
 #include "../Entity.h"
 #include "../HUDManager.h"
 #include "../PDA.h"
 #include "../UIStaticItem.h"
 #include "../WeaponHUD.h"
 #include "../character_info.h"
-
-#include "UIInventoryUtilities.h"
-
 #include "../inventory.h"
 #include "../UIGameSP.h"
 #include "../weaponmagazined.h"
-
 #include "../xrServer_objects_ALife.h"
 #include "../alife_simulator.h"
 #include "../alife_news_registry.h"
@@ -30,10 +20,16 @@
 #include "../level.h"
 #include "../seniority_hierarchy_holder.h"
 
+#include "UIInventoryUtilities.h"
+#include "UIMainIngameWnd.h"
+#include "UIXmlInit.h"
+#include "UIPdaMsgListItem.h"
+
+//////////////////////////////////////////////////////////////////////////
+
 using namespace InventoryUtilities;
 
-
-//hud adjust mode
+//	hud adjust mode
 int			g_bHudAdjustMode			= 0;
 float		g_fHudAdjustValue			= 0.0f;
 int			g_bNewsDisable				= 0;
@@ -87,10 +83,14 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_iPrevTime					= 0;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 CUIMainIngameWnd::~CUIMainIngameWnd()
 {
 	DestroyFlashingIcons();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::Init()
 {
@@ -258,9 +258,16 @@ void CUIMainIngameWnd::Init()
 	m_ClawsAnimation.SetPlayDuration(uiXml.ReadAttribInt("claws_animation", 0, "duration", 2000));
 	m_ClawsTexture.SetRect(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
-	// !!! TEST !!!
-	AddMonsterClawsEffect("aa", "wpn\\wpn_crosshair");
+	AttachChild(&UIStaticBattery);
+	xml_init.InitStatic(uiXml, "battery_static", 0, &UIStaticBattery);
+	//Полоса прогресса армора
+	UIStaticBattery.AttachChild(&UIBatteryBar);
+	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIBatteryBar);
+	ShowBattery(false);
+	SetBatteryCharge(1.0df);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::Draw()
 {
@@ -323,6 +330,8 @@ void CUIMainIngameWnd::Draw()
 		Msg("%i", color_get_A(m_ClawsTexture.GetColor()));
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::Update()
 {
@@ -1303,4 +1312,20 @@ void CUIMainIngameWnd::PlayClawsAnimation(const ref_str &monsterName)
 	m_ClawsAnimation.Reset();
 	m_ClawsAnimation.SetAnimationDirection(CUIAnimationFade::efdFadeOut);
 	m_ClawsAnimation.Play();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::ShowBattery(bool on)
+{
+	UIStaticBattery.Show(on);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::SetBatteryCharge(float value)
+{
+	s16 pos = static_cast<s16>(value * 100);
+	clamp<s16>(pos, 0, 100);
+	UIBatteryBar.SetProgressPos(pos);
 }

@@ -9,6 +9,7 @@
 #include "../infoportion.h"
 #include "../level.h"
 #include "../string_table.h"
+#include "../UIZoneMap.h"
 #include "UIInventoryUtilities.h"
 #include "UIPdaWnd.h"
 #include "UIXmlInit.h"
@@ -753,13 +754,6 @@ void CUIMapWnd::AddLocalMap(const ref_str levelName, const Ivector4 &v, const Fv
 void CUIMapWnd::InitLocalMaps()
 {
 	R_ASSERT(ai().get_game_graph());
-
-	// Название ключа имени текстуры карты уровня
-	const char * const	mapTextureKey			= "level_map";
-	// Аналогично её координаты на глобальной карте
-	const char * const	mapLocalCoordinatesKey	= "ui_map_coords";
-	// Аналогично её размеры в метрах
-	const char * const	mapDimentions			= "ui_map_dims";
 
 	// Получаем список уровней игры
 	const CGameGraph::LEVEL_MAP &levelMap		= ai().get_game_graph()->header().levels();

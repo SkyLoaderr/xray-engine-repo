@@ -5,6 +5,17 @@
 #include "uistaticitem.h"
 #include "uidynamicitem.h"
 
+//////////////////////////////////////////////////////////////////////////
+
+// Название ключа имени текстуры карты уровня
+extern const char * const	mapTextureKey;
+// Аналогично её координаты на глобальной карте
+extern const char * const	mapLocalCoordinatesKey;
+// Аналогично её размеры в метрах
+extern const char * const	mapDimentions;
+
+//////////////////////////////////////////////////////////////////////////
+
 class CActor;
 
 class CUIZoneMap
