@@ -4,6 +4,9 @@ module ("xr_actions_id")
 module ("xr_evaluators_id")
 module ("xr_sounds_id")
 module ("xr_evaluators")
+
+module ("gramofon")
+
 module ("xr_motivator")
 module ("xr_sounds")
 
