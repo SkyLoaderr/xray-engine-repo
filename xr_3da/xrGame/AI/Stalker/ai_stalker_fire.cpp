@@ -3,7 +3,7 @@
 //	Created 	: 25.02.2003
 //  Modified 	: 25.02.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Fire and enemy parameters for monster "Soldier"
+//	Description : Fire and enemy parameters for monster "Stalker"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

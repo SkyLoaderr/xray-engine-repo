@@ -3,7 +3,7 @@
 //	Created 	: 25.02.2003
 //  Modified 	: 25.02.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Visibility and look for monster "Soldier"
+//	Description : Visibility and look for monster "Stalker"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

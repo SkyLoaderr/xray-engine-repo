@@ -3,7 +3,7 @@
 //	Created 	: 26.02.2003
 //  Modified 	: 26.02.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Events handling for monster "Soldier"
+//	Description : Events handling for monster "Stalker"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

@@ -3,7 +3,7 @@
 //	Created 	: 25.02.2003
 //  Modified 	: 25.02.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Fuzzy State Machine for monster "Soldier"
+//	Description : Fuzzy State Machine for monster "Stalker"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -51,8 +51,16 @@ void CAI_Stalker::Think()
 				Recharge();
 				break;
 			}
+			case eStalkerStateDrop : {
+				Drop();
+				break;
+			}
 			case eStalkerStateLookingOver : {
 				LookingOver();
+				break;
+			}
+			case eStalkerStateSearching: {
+				Searching();
 				break;
 			}
 		}
@@ -94,17 +102,21 @@ void CAI_Stalker::Recharge()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
 }
 
+void CAI_Stalker::Drop()
+{
+	WRITE_TO_LOG("Drop");
+	VERIFY(Weapons->ActiveWeapon());
+	DropItem();
+}
+
 void CAI_Stalker::LookingOver()
 {
 	WRITE_TO_LOG("Looking over");
-	
-	if (Weapons->ActiveWeapon())
-		Weapons->ActiveWeapon()->FireEnd();
-	if (!::Random.randI(100))
-		if (Weapons->ActiveWeapon()) {
-			CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
-			Weapons->ActiveWeapon()->FireStart();
-		}
-	if (!::Random.randI(10000))
-		DropItem();
+	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(eStalkerStateSearching);
+}
+
+void CAI_Stalker::Searching()
+{
+	WRITE_TO_LOG("Searching");
+
 }

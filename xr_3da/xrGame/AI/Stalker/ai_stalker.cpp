@@ -28,8 +28,8 @@ CAI_Stalker::~CAI_Stalker()
 // when soldier is dead
 void CAI_Stalker::Die()
 {
-	m_eCurrentState = eStalkerStateDie;
-	
+	vfAddStateToList(m_eCurrentState = eStalkerStateDie);
+
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
@@ -46,6 +46,7 @@ void CAI_Stalker::Load	(LPCSTR section)
 { 
 	inherited::Load		(section);
 	Weapons				= xr_new<CWeaponList> (this);
+	m_tSelectorFreeHunting.Load(section);
 }
 
 BOOL CAI_Stalker::net_Spawn	(LPVOID DC)

@@ -11,6 +11,7 @@
 #include "..\\..\\CustomMonster.h"
 #include "..\\ai_monsters.h"
 #include "ai_stalker_animations.h"
+#include "ai_stalker_selectors.h"
 
 #define MAX_STATE_LIST_SIZE 256
 
@@ -23,7 +24,9 @@ private:
 		eStalkerStateWaitForAnimation,
 		eStalkerStateWaitForTime,
 		eStalkerStateRecharge,
+		eStalkerStateDrop,
 		eStalkerStateLookingOver,
+		eStalkerStateSearching,
 	};
 
 	typedef struct tagSStalkerStates {
@@ -40,6 +43,8 @@ private:
 	EStalkerStates			m_eCurrentState;
 	EStalkerStates			m_ePreviousState;
 	bool					m_bStateChanged;
+	CStalkerSelectorFreeHunting	m_tSelectorFreeHunting;
+
 
 	IC		void			vfAddStateToList		(EStalkerStates eState)
 	{
@@ -59,8 +64,12 @@ private:
 			void			WaitForAnimation();
 			void			WaitForTime();
 			void			Recharge();
+			void			Drop();
 			void			LookingOver();
+			void			Searching();
+			///
 			void			DropItem();
+			void			vfBuildPathToDestinationPoint(CAISelectorBase *S);
 
 public:
 	typedef CCustomMonster inherited;
