@@ -46,13 +46,10 @@ void CSpectator::Update	(u32 DT)
 
 void CSpectator::OnKeyboardPress(int cmd)
 {
-/*
 	if (Remote())												return;
 
-	if (GAME_PHASE_PENDING	== Game().phase || !g_Alive())
-	{
-		if (kWPN_FIRE == cmd)	
-		{
+	if (GAME_PHASE_PENDING	== Game().phase){
+		if (kWPN_FIRE == cmd){
 			// Switch our "ready" status
 			NET_Packet			P;
 			u_EventGen			(P,GEG_PLAYER_READY,ID());
@@ -60,6 +57,7 @@ void CSpectator::OnKeyboardPress(int cmd)
 		}
 		return;
 	}
+	/*
 	if (!g_Alive())												return;
 
 	switch(cmd){
