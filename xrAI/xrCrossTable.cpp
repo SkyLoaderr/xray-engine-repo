@@ -7,8 +7,16 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "defines.h"
 #include "xrCrossTable.h"
+#include "ai_map.h"
 
 void xrBuildCrossTable(LPCSTR caProjectName)
 {
+	FILE_NAME		caFileName;
+	strconcat		(caFileName,caProjectName,"level.graph");
+	
+	CGraph			tGraph	(caFileName);
+	CAI_Map			tMap	(caProjectName);
+
 }

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "xrLevel.h"
+#include "ai_a_star_search.h"
+
 #define EPS_H				0.5f
 
 #define	LI_NONE				0

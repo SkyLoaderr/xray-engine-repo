@@ -475,6 +475,16 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="Cross"
+				Filter="">
+				<File
+					RelativePath="xrCrossTable.cpp">
+				</File>
+				<File
+					RelativePath="xrCrossTable.h">
+				</File>
+			</Filter>
+			<Filter
 				Name="Graph"
 				Filter="">
 				<File
@@ -482,12 +492,6 @@
 				</File>
 				<File
 					RelativePath="ai_nodes.h">
-				</File>
-				<File
-					RelativePath="xrCrossTable.cpp">
-				</File>
-				<File
-					RelativePath="xrCrossTable.h">
 				</File>
 				<File
 					RelativePath="xrGraph.cpp">
@@ -501,11 +505,61 @@
 				<File
 					RelativePath="xrSort.h">
 				</File>
+			</Filter>
+			<Filter
+				Name="Merge"
+				Filter="">
 				<File
 					RelativePath="xr_graph_merge.cpp">
 				</File>
 				<File
 					RelativePath="xr_graph_merge.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="Shared"
+				Filter="">
+				<File
+					RelativePath="NET_Compressor.h">
+				</File>
+				<File
+					RelativePath="NET_utils.h">
+				</File>
+				<File
+					RelativePath="ai_alife_interfaces.h">
+				</File>
+				<File
+					RelativePath="ai_alife_server_objects.cpp">
+				</File>
+				<File
+					RelativePath="ai_alife_server_objects.h">
+				</File>
+				<File
+					RelativePath="ai_alife_space.h">
+				</File>
+				<File
+					RelativePath="ai_alife_templates.h">
+				</File>
+				<File
+					RelativePath="clsid_game.h">
+				</File>
+				<File
+					RelativePath="game_base.h">
+				</File>
+				<File
+					RelativePath="xrMessages.h">
+				</File>
+				<File
+					RelativePath="xrServer_Entities.cpp">
+				</File>
+				<File
+					RelativePath="xrServer_Entities.h">
+				</File>
+				<File
+					RelativePath="xrServer_Entity_Custom.cpp">
+				</File>
+				<File
+					RelativePath="xrServer_Entity_Custom.h">
 				</File>
 			</Filter>
 			<Filter
@@ -517,52 +571,6 @@
 				<File
 					RelativePath="xr_spawn_merge.h">
 				</File>
-				<Filter
-					Name="Shared"
-					Filter="">
-					<File
-						RelativePath="NET_Compressor.h">
-					</File>
-					<File
-						RelativePath="NET_utils.h">
-					</File>
-					<File
-						RelativePath="ai_alife_interfaces.h">
-					</File>
-					<File
-						RelativePath="ai_alife_server_objects.cpp">
-					</File>
-					<File
-						RelativePath="ai_alife_server_objects.h">
-					</File>
-					<File
-						RelativePath="ai_alife_space.h">
-					</File>
-					<File
-						RelativePath="ai_alife_templates.h">
-					</File>
-					<File
-						RelativePath="clsid_game.h">
-					</File>
-					<File
-						RelativePath="game_base.h">
-					</File>
-					<File
-						RelativePath="xrMessages.h">
-					</File>
-					<File
-						RelativePath="xrServer_Entities.cpp">
-					</File>
-					<File
-						RelativePath="xrServer_Entities.h">
-					</File>
-					<File
-						RelativePath="xrServer_Entity_Custom.cpp">
-					</File>
-					<File
-						RelativePath="xrServer_Entity_Custom.h">
-					</File>
-				</Filter>
 			</Filter>
 		</Filter>
 		<File

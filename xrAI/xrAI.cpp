@@ -47,7 +47,7 @@ void Startup(LPSTR     lpCmdLine)
 	strcpy(cmd,lpCmdLine);
 	strlwr(cmd);
 	if (strstr(cmd,"-?") || strstr(cmd,"-h"))			{ Help(); return; }
-	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0) && (strstr(cmd,"-m")==0) && (strstr(cmd,"-s")==0))	{ Help(); return; }
+	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0) && (strstr(cmd,"-c")==0)&& (strstr(cmd,"-m")==0) && (strstr(cmd,"-s")==0))	{ Help(); return; }
 	if (strstr(cmd,"-o"))								bModifyOptions = TRUE;
 
 	// Give a LOG-thread a chance to startup
@@ -63,8 +63,8 @@ void Startup(LPSTR     lpCmdLine)
 		if (strstr(cmd,"-g"))
 			sscanf	(strstr(cmd,"-g")+2,"%s",name);
 		else
-			if (strstr(cmd,"-a"))
-				sscanf	(strstr(cmd,"-g")+2,"%s",name);
+			if (strstr(cmd,"-c"))
+				sscanf	(strstr(cmd,"-c")+2,"%s",name);
 
 	string prjName		= "gamedata\\levels\\"+string(name)+"\\";
 
@@ -76,7 +76,7 @@ void Startup(LPSTR     lpCmdLine)
 		if (strstr(cmd,"-g"))
 			xrBuildGraph		(prjName.c_str());
 		else
-			if (strstr(cmd,"-a"))
+			if (strstr(cmd,"-c"))
 				xrBuildCrossTable	(prjName.c_str());
 			else {
 				if (strstr(cmd,"-m")) {

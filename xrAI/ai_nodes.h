@@ -12,8 +12,6 @@
 #include "xrThread.h"
 
 #include "xrGraph.h"
-#include "ai_nodes.h"
-#include "ai_a_star_search.h"
 #include "ai_map.h"
 
 
