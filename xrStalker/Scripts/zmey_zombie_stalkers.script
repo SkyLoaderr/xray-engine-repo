@@ -3,7 +3,16 @@ local zombied_stalker_names = {
 	"m_stalker_zombie1",
 	"m_stalker_zombie2",
 	"m_stalker_zombie3",
-	"m_stalker_zombie4"
+	"m_stalker_zombie4",
+	"m_dog_e0004",
+	"m_dog_e0005",
+	"m_dog_e0006",
+	"m_dog_e0007",
+	"m_dog_e0012",
+	"m_dog_e0014",
+	"m_pseudodog_e0003",
+	"m_pseudodog_e0010",
+	"m_bloodsucker_e0001"
 }
 
 local release_distance = 100
