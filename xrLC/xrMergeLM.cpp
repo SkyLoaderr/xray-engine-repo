@@ -279,12 +279,14 @@ void CBuild::MergeLM()
 					_point&		Offset		= Place.a;
 					BOOL		bRotated;
 					b_texture&	T			= SEL[iRealIndex]->lm;
-					if (Place.SizeX() == (int)T.dwWidth) {
-						R_ASSERT(Place.SizeY() == (int)T.dwHeight);
+					int			T_W			= (int)T.dwWidth	+ 2*BORDER;
+					int			T_H			= (int)T.dwHeight	+ 2*BORDER;
+					if (Place.SizeX() == T_W) {
+						R_ASSERT(Place.SizeY() == T_H);
 						bRotated = FALSE;
 					} else {
-						R_ASSERT(Place.SizeX() == (int)T.dwHeight);
-						R_ASSERT(Place.SizeY() == (int)T.dwWidth);
+						R_ASSERT(Place.SizeX() == T_H);
+						R_ASSERT(Place.SizeY() == T_W);
 						bRotated = TRUE;
 					}
 
