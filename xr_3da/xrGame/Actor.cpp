@@ -327,6 +327,10 @@ void CActor::g_sv_AnalyzeNeighbours	()
 			{
 				// We have similar weapon - just get ammo out of it
 				T->Ammo_add	(W->Ammo_eject());
+				continue;
+			} else {
+				// We doesn't have similar weapon - pick up it
+				
 			}
 		}
 
