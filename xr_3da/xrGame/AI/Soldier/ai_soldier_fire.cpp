@@ -112,7 +112,7 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	// Save event
 	Fvector D;
 	svTransform.transform_dir(D,vLocalDir);
-	dwHitTime = Level().timeServer();
+	dwHitTime = m_dwLastUpdate;
 	tHitDir.set(D);
 	tHitDir.normalize();
 	tHitPosition = who->Position();
@@ -236,7 +236,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 
 bool CAI_Soldier::bfCheckForDanger()
 {
-	DWORD dwCurTime = Level().timeServer();
+	DWORD dwCurTime = m_dwLastUpdate;
 
 	if (bfAmIHurt())
 		return(true);

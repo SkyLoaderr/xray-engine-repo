@@ -174,7 +174,7 @@ void CAI_Soldier::OnVisible()
 void CAI_Soldier::vfUpdateDynamicObjects()
 {
 	ai_Track.o_get(tpaVisibleObjects);
-	DWORD dwTime = Level().timeServer();
+	DWORD dwTime = m_dwLastUpdate;
 	for (int i=0; i<tpaVisibleObjects.size(); i++) {
 		
 		CEntity *tpEntity = dynamic_cast<CEntity *>(tpaVisibleObjects[i]);
@@ -230,8 +230,8 @@ void CAI_Soldier::vfUpdateSounds(DWORD dwTimeDelta)
 {
 	/**/
 	if (m_fSoundPower > EPS_L) {
-		//m_fSoundPower = m_fStartPower/(10*float(Level().timeServer() - m_dwSoundUpdate)/1000.f + 1);
-		m_fSoundPower -= m_fStartPower*float(Level().timeServer() - m_dwSoundUpdate)/1000.f/2.f;
+		//m_fSoundPower = m_fStartPower/(10*float(m_dwLastUpdate - m_dwSoundUpdate)/1000.f + 1);
+		m_fSoundPower -= m_fStartPower*float(m_dwLastUpdate - m_dwSoundUpdate)/1000.f/2.f;
 		if (m_fSoundPower <= EPS_L)
 			m_fSoundPower = 0.f;
 	}
@@ -260,11 +260,11 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));
 
-	DWORD dwTime = Level().timeServer();
+	DWORD dwTime = m_dwLastUpdate;
 	
 	if ((power >= m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
 		if (this != who) {
-			//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+			//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",m_dwLastUpdate,Position.x,Position.y,Position.z,power);
 			int j;
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 			//if (!tpEntity) 
