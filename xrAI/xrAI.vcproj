@@ -481,9 +481,6 @@
 					RelativePath="ai_map.h">
 				</File>
 				<File
-					RelativePath="ai_nodes.cpp">
-				</File>
-				<File
 					RelativePath="ai_nodes.h">
 				</File>
 				<File
