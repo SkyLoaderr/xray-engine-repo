@@ -648,6 +648,7 @@ void CCustomMonster::Die	()
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
+	CMovementManager::Init		();
 	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))		return FALSE;
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
