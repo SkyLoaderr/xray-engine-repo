@@ -11,8 +11,10 @@
 #include "WeaponAmmo.h"
 
 #include "actor.h"
+#include "game_cl_base.h"
 #include "level.h"
 #include "level_bullet_manager.h"
+#include "clsid_game.h"
 
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
@@ -329,12 +331,42 @@ void CShootingObject::RenderLight()
 		Light_Render(CurrentFirePoint());
 }
 
+bool CShootingObject::SendHitAllowed		(CObject* pUser)
+{
+	if (Game().IsServerControlHits())
+		return OnServer();
+
+	if (OnServer())
+	{
+		if (pUser->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+		{
+			if (Level().CurrentControlEntity() != pUser)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	else
+	{
+		if (pUser->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+		{
+			if (Level().CurrentControlEntity() == pUser)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+};
+
 void CShootingObject::FireBullet(const Fvector& pos, 
 								 const Fvector& shot_dir, 
 								 float fire_disp,
 								 const CCartridge& cartridge,
 								 u16 parent_id,
-								 u16 weapon_id)
+								 u16 weapon_id,
+								 bool send_hit)
 {
 	Fvector dir;
 	dir.random_dir(shot_dir, fire_disp, Random);
@@ -350,7 +382,7 @@ void CShootingObject::FireBullet(const Fvector& pos,
 
 	Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, float(iHitPower), 
 										fHitImpulse, parent_id, weapon_id, 
-										ALife::eHitTypeFireWound, fireDistance, cartridge);
+										ALife::eHitTypeFireWound, fireDistance, cartridge, send_hit);
 }
 
 void CShootingObject::FireStart	()

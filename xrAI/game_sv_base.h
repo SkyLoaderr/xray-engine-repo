@@ -23,7 +23,7 @@ protected:
 	GameEventQueue*					m_event_queue;
 	bool							m_bVotingEnabled;
 	bool							m_bFriendlyIndicators;
-
+	
 	//Events
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 

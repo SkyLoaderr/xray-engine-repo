@@ -33,6 +33,7 @@ void SBullet::Init(const Fvector& position,
 				   ALife::EHitType e_hit_type,
 				   float maximum_distance,
 				   const CCartridge& cartridge,
+				   bool SendHit,
 				   float tracer_length)
 {
 	flags.zero();
@@ -51,6 +52,7 @@ void SBullet::Init(const Fvector& position,
 	fly_dist		= 0;
 
 	parent_id		= sender_id;
+	m_bSendHit		= SendHit;
 	weapon_id		= sendersweapon_id;
 	hit_type		= e_hit_type;
 
@@ -122,11 +124,14 @@ void CBulletManager::AddBullet(const Fvector& position,
 							   ALife::EHitType e_hit_type,
 							   float maximum_distance,
 							   const CCartridge& cartridge,
+							   bool SendHit,
 							   float tracer_length)
 {
+//	u32 CurID = Level().CurrentControlEntity()->ID();
+//	u32 OwnerID = sender_id;
 	m_Bullets.push_back(SBullet());
 	SBullet& bullet	= m_Bullets.back();
-	bullet.Init		(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge, tracer_length);
+	bullet.Init		(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge, SendHit, tracer_length);
 	bullet.frame_num = Device.dwFrame;
 }
 

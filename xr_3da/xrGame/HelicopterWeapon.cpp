@@ -4,6 +4,7 @@
 #include "xrMessages.h"
 #include "net_utils.h"
 #include "../skeletoncustom.h"
+#include "Level.h"
 
 void __stdcall 
 CHelicopter::BoneMGunCallbackX(CBoneInstance *B)
@@ -64,7 +65,8 @@ void CHelicopter::OnShot		()
 		fireDispersionBase,
 		m_CurrentAmmo, 
 		ID(),
-		ID());
+		ID(),
+		OnServer());
 
 	StartShotParticles	();
 	if(m_bShotLight) Light_Start();

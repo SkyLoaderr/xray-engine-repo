@@ -231,7 +231,8 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 	}
 
 	//отправить хит пораженному объекту
-	if(OnServer())
+//	if(!OnServer())
+	if (bullet->m_bSendHit)
 	{
 		NET_Packet		P;
 		CGameObject::u_EventGen	(P,GE_HIT,R.O->ID());
@@ -244,6 +245,7 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 		P.w_float		(impulse);
 		P.w_u16			(u16(bullet->hit_type));
 		CGameObject::u_EventSend (P);
+//		Msg("GE_HIT Sended");
 	}
 }
 

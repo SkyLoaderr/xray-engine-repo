@@ -296,7 +296,7 @@ void CWeaponMounted::OnShot		()
 
 	FireBullet(CurrentFirePoint(),fire_dir, 
 		fireDispersionBase,
-		m_CurrentAmmo, Owner()->ID(),ID());
+		m_CurrentAmmo, Owner()->ID(),ID(), SendHitAllowed(Owner()));
 
 	StartShotParticles	();
 	if(m_bShotLight) Light_Start();

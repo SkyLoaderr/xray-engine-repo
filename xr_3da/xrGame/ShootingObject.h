@@ -46,12 +46,14 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 protected:
 	virtual void			LoadFireParams		(LPCSTR section, LPCSTR prefix);
+	virtual bool			SendHitAllowed		(CObject* pUser);
 	virtual void			FireBullet			(const Fvector& pos, 
         										const Fvector& dir, 
 												float fire_disp,
 												const CCartridge& cartridge,
 												u16 parent_id,
-												u16 weapon_id);
+												u16 weapon_id,
+												bool send_hit);
 
 	virtual void			FireStart			();
 	virtual void			FireEnd				();

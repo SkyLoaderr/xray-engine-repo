@@ -185,6 +185,11 @@ void CExplosive::Explode()
 	//////////////////////////////
 	//осколки
 	//////////////////////////////
+	//-------------------------------------
+	bool SendHits = false;
+	if (OnServer()) SendHits = true;
+	else SendHits = false;
+	//-------------------------------------
 	for(int i = 0; i < m_iFragsNum; ++i) 
 	{
 		frag_dir.random_dir();
@@ -207,7 +212,7 @@ void CExplosive::Explode()
 
 		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, tracerHeadSpeed,
 											m_fCurrentHitPower, m_fCurrentHitImpulse, m_iCurrentParentID,
-											ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge, tracerMaxLength);
+											ID(), m_eCurrentHitType, m_fCurrentFireDist, cartridge, SendHits, tracerMaxLength);
 	}	
 
 	if (Remote()) return;

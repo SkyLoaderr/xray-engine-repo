@@ -24,6 +24,7 @@ struct SBullet
 		ALife::EHitType e_hit_type,
 		float maximum_distance,
 		const CCartridge& cartridge,
+		bool SendHit, 
 		float tracer_length);
 
 	//номер кадра на котором была запущена пуля
@@ -52,6 +53,7 @@ struct SBullet
 	float			speed;
 	//ID персонажа который иницировал действие
 	u16				parent_id;
+	bool			m_bSendHit;
 	//ID оружия из которого была выпущены пуля
 	u16				weapon_id;
 	//для отладки
@@ -106,7 +108,7 @@ public:
 	void AddBullet	(const Fvector& position, const Fvector& direction, float starting_speed,
 					float power, float impulse, u16	sender_id, u16 sendersweapon_id,
 					ALife::EHitType e_hit_type, float maximum_distance, const CCartridge& cartridge,
-					float tracer_length = flt_max);
+					bool SendHit, float tracer_length = flt_max);
 	void Update		();
 
 	void Render		();

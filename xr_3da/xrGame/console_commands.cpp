@@ -43,6 +43,7 @@ extern	u32		g_dwMaxCorpses;
 extern	int		x_m_x;
 extern	int		x_m_z;
 extern	BOOL	net_cl_inputguaranteed		;
+extern	BOOL	net_sv_control_hit	;
 extern	int		g_dwInputUpdateDelta		;
 
 		BOOL	g_bCheckTime			= FALSE;
@@ -1187,6 +1188,31 @@ public:
 	  }
 };
 
+class CCC_SvControlHit : public CCC_Integer {
+protected:
+	int		*value_blin;
+public:
+	CCC_SvControlHit(LPCSTR N, int* V, int _min=0, int _max=999) :
+	  CCC_Integer(N,V,_min,_max),
+		  value_blin(V)
+	  {};
+
+	  virtual void	Execute	(LPCSTR args)
+	  {
+		  CCC_Integer::Execute(args);
+		  if (g_pGameLevel)
+		  {
+			  Level().Server->game->signal_Syncronize();
+		  };
+		  /*
+		  if (*value_blin == 0)
+			  Level().Server->game->SetServerControlHits(false);
+		  else
+			  Level().Server->game->SetServerControlHits(true);
+			  */
+	  }
+};
+
 class CCC_Net_CL_ClearStats : public IConsole_Command {
 public:
 	CCC_Net_CL_ClearStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -1596,5 +1622,6 @@ void CCC_RegisterCommands()
 	CMD1(CCC_Vote_Yes,		"cl_voteyes"				);
 	CMD1(CCC_Vote_No,		"cl_voteno"				);
 
+	CMD4(CCC_SvControlHit,		"net_sv_control_hit",	&net_sv_control_hit,	0, 1)	;
 }
 

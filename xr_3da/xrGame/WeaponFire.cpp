@@ -34,11 +34,12 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 
 	float cartirdge_fire_disp = GetFireDispersion(true) - weapon_fire_disp;
 
+	bool SendHit = SendHitAllowed(H_Parent());
 	//выстерлить пулю (с учетом возможной стрельбы дробью)
 	for(int i = 0; i < l_cartridge.m_buckShot; ++i) 
 	{
 		FireBullet(P, dir_base_disp, cartirdge_fire_disp,
-					l_cartridge, H_Parent()->ID(), ID());
+					l_cartridge, H_Parent()->ID(), ID(), SendHit);
 	}
 
 	StartShotParticles	();

@@ -30,6 +30,7 @@ class	game_cl_GameState	: public game_GameState, public ISheduled
 protected:
 	bool								m_bVotingEnabled;
 	bool								m_bFriendlyIndicators;
+	bool								m_bServerControlHits;
 
 public:
 	typedef xr_map<ClientID,game_PlayerState*> PLAYERS_MAP;
@@ -106,4 +107,5 @@ public:
 	virtual		void				OnVoteStop				(NET_Packet& P)	{};
 
 	virtual		void				OnRender				()	{};
+	virtual		bool				IsServerControlHits		()	{return m_bServerControlHits;};
 };
