@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "soundrender_core.h"
 #include "soundrender_source.h"
+#include "soundrender_emitter.h"
 
 CSoundRender_Core				SoundRender;
 CSound_manager_interface*		Sound		= &SoundRender;
@@ -129,7 +130,11 @@ void	CSoundRender_Core::play					( sound& S, CObject* O, BOOL bLoop)
 	if (!bPresent || 0==S.handle)	return;
 
 	S.g_object		= O;
-	if (S.feedback)	S.feedback->rewind	();
+	if (S.feedback)	
+	{
+		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
+		E->rewind	();
+	}	
 	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
 }
 void	CSoundRender_Core::play_unlimited		( sound& S, CObject* O, BOOL bLoop)
@@ -141,8 +146,12 @@ void	CSoundRender_Core::play_at_pos			( sound& S, CObject* O, const Fvector &pos
 {
 	if (!bPresent || S.handle==soundUndefinedHandle) return;
 	S.g_object		= O;
-	if (S.feedback)	S.feedback->Rewind	();
-	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
+	if (S.feedback)	
+	{
+		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
+		E->rewind	();
+	}	
+	else			pSoundRender->Play		(S.handle,&S,bLoop,iLoopCnt);
 	S.feedback->set_position				(pos);
 }
 void	CSoundRender_Core::play_at_pos_unlimited	( sound& S, CObject* O, const Fvector &pos, BOOL bLoop)
