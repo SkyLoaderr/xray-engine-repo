@@ -221,21 +221,21 @@ void CObjectFactory::register_classes	()
 
 	ADD(CHelicopter				,CSE_ALifeHelicopter			,CLSID_VEHICLE_HELICOPTER	,"helicopter");
 
-	// Artifacts
+	// Artefacts
 	ADD(CMercuryBall			,CSE_ALifeItemArtefact			,CLSID_AF_MERCURY_BALL		,"art_mercury_ball");
 	ADD(CBlackDrops				,CSE_ALifeItemArtefact			,CLSID_AF_BLACKDROPS		,"art_black_drops");
-	ADD(CBlackGraviArtifact		,CSE_ALifeItemArtefact			,CLSID_AF_NEEDLES			,"art_needles");
-	ADD(CBastArtifact			,CSE_ALifeItemArtefact			,CLSID_AF_BAST				,"art_bast_artefact");
-	ADD(CBlackGraviArtifact		,CSE_ALifeItemArtefact			,CLSID_AF_BLACK_GRAVI		,"art_gravi_black");
-	ADD(CDummyArtifact			,CSE_ALifeItemArtefact			,CLSID_AF_DUMMY				,"art_dummy");
-	ADD(CZudaArtifact			,CSE_ALifeItemArtefact			,CLSID_AF_ZUDA				,"art_zuda");
-	ADD(CThornArtifact			,CSE_ALifeItemArtefact			,CLSID_AF_THORN				,"art_thorn");
+	ADD(CBlackGraviArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_NEEDLES			,"art_needles");
+	ADD(CBastArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_BAST				,"art_bast_artefact");
+	ADD(CBlackGraviArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_BLACK_GRAVI		,"art_gravi_black");
+	ADD(CDummyArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_DUMMY				,"art_dummy");
+	ADD(CZudaArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_ZUDA				,"art_zuda");
+	ADD(CThornArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_THORN				,"art_thorn");
 	ADD(CFadedBall				,CSE_ALifeItemArtefact			,CLSID_AF_FADED_BALL		,"art_faded_ball");
 	ADD(CElectricBall			,CSE_ALifeItemArtefact			,CLSID_AF_ELECTRIC_BALL		,"art_electric_ball");
-	ADD(CRustyHairArtifact		,CSE_ALifeItemArtefact			,CLSID_AF_RUSTY_HAIR		,"art_rusty_hair");
-	ADD(CGalantineArtifact		,CSE_ALifeItemArtefact			,CLSID_AF_GALANTINE			,"art_galantine");
-	ADD(CGraviArtifact			,CSE_ALifeItemArtefact			,CLSID_AF_GRAVI				,"art_gravi");
-	ADD(CGraviArtifact			,CSE_ALifeItemArtefact			,CLSID_ARTEFACT				,"artefact");
+	ADD(CRustyHairArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_RUSTY_HAIR		,"art_rusty_hair");
+	ADD(CGalantineArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_GALANTINE			,"art_galantine");
+	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_GRAVI				,"art_gravi");
+	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_ARTEFACT				,"artefact");
 
 	// Targets
 	ADD(CTargetAssault			,CSE_TargetAssault				,CLSID_TARGET_ASSAULT		,"net_target_assault");
@@ -320,7 +320,7 @@ void CObjectFactory::register_classes	()
 	// Devices
 	ADD(CTorch					,CSE_ALifeItemTorch				,CLSID_DEVICE_TORCH			,"device_torch");
 	ADD(CPda					,CSE_ALifeItemPDA				,CLSID_DEVICE_PDA			,"device_pda");
-	ADD(CArtifactMerger			,CSE_ALifeItem					,CLSID_DEVICE_AF_MERGER		,"device_art_merger");
+	ADD(CArtefactMerger			,CSE_ALifeItem					,CLSID_DEVICE_AF_MERGER		,"device_art_merger");
 
 	// objects
 	ADD(CProjector				,CSE_ALifeObjectProjector		,CLSID_OBJECT_PROJECTOR		,"projector");

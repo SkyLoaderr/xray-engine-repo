@@ -150,8 +150,8 @@ protected:
 	bool ToBelt();
 
 	//запуск и остановка меню работы с артефактами
-	void StartArtifactMerger();
-	void StopArtifactMerger();
+	void StartArtefactMerger();
+	void StopArtefactMerger();
 
 	//запуск и остановка меню работы с артефактами
 	void StartSleepWnd();

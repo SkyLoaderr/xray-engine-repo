@@ -18,7 +18,7 @@
 #include "../../script_task.h"
 
 class CInventoryItem;
-class CArtifact;
+class CArtefact;
 
 class CAI_Trader : public CEntityAlive, 
 				   public CInventoryOwner, 
@@ -132,11 +132,11 @@ private:
 	//генерируемые задания
 public:
 	//проверяет список артефактов в заказах
-	virtual	u32				ArtifactPrice				(CArtifact* pArtifact);
+	virtual	u32				ArtefactPrice				(CArtefact* pArtefact);
 	//продажа артефакта, с последуещим изменением списка заказов  (true - если артефакт был в списке)
-	virtual	bool			BuyArtifact				(CArtifact* pArtifact);
+	virtual	bool			BuyArtefact				(CArtefact* pArtefact);
 	//синхронизация заданий артефактов для сервера
-	virtual	void			SyncArtifactsWithServer	();
+	virtual	void			SyncArtefactsWithServer	();
 public:
 	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
 };

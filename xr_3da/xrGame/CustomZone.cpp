@@ -967,3 +967,37 @@ void CCustomZone::ZoneDisable()
 //	if (!IsEnabled()) return;
 	SwitchZoneState(eZoneStateDisabled);
 };
+
+
+void CCustomZone::SpawnArtefact(LPCSTR artefact_sect, 
+								const Fvector& position, 
+								const Fvector& impulse)
+{
+	Level().spawn_item(artefact_sect, position, level_vertex_id(), ID());
+}
+/*
+void CCustomZone::OnEvent(NET_Packet& P, u16 type)
+{
+	inherited::OnEvent (P,type);
+	u16 id;
+	switch (type) 
+	{
+		case GE_OWNERSHIP_TAKE : {
+			P.r_u16(id);
+			CArtefact *artifact = dynamic_cast<CArtefact*>(Level().Objects.net_Find(id));
+			m_fake_missile	= missile;
+			missile->H_SetParent(this);
+			break;
+								 } 
+		case GE_OWNERSHIP_REJECT : {
+			P.r_u16			(id);
+			if (m_fake_missile && (id == m_fake_missile->ID()))
+				m_fake_missile	= NULL;
+			CMissile		*missile = dynamic_cast<CMissile*>(Level().Objects.net_Find(id));
+			if (!missile)
+				break;
+			missile->H_SetParent(0);
+			break;
+								   }
+	}
+}*/

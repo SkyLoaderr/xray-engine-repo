@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // GalantineArtifact.cpp
-// GalantineArtifact - артефакт ведбмин студень
+// GalantineArtefact - артефакт ведбмин студень
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -8,20 +8,20 @@
 #include "PhysicsShell.h"
 
 
-CGalantineArtifact::CGalantineArtifact(void) 
+CGalantineArtefact::CGalantineArtefact(void) 
 {
 }
 
-CGalantineArtifact::~CGalantineArtifact(void) 
+CGalantineArtefact::~CGalantineArtefact(void) 
 {
 }
 
-void CGalantineArtifact::Load(LPCSTR section) 
+void CGalantineArtefact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
-void CGalantineArtifact::UpdateCL() 
+void CGalantineArtefact::UpdateCL() 
 {
 	inherited::UpdateCL();
 }

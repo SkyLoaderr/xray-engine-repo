@@ -90,9 +90,6 @@ public:
 	//абсолютный размер
 	virtual float Power(float dist);
 
-
-
-
 protected:
 	//список объетков, находящихся в зоне
 	xr_set<CObject*> m_inZone;
@@ -285,4 +282,11 @@ public:
 	virtual bool VisibleByDetector	() {return m_bVisibleByDetector;}
 protected:
 	bool	m_bVisibleByDetector;
+
+	//////////////////////////////////////////////////////////////////////////
+	// список артефактов
+public:
+	//рождение артефакта в зоне, во время ее срабатывания
+	virtual void SpawnArtefact(LPCSTR artefact_sect, const Fvector& offset, const Fvector& impulse);
+protected:
 };

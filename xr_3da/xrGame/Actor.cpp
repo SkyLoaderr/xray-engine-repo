@@ -502,9 +502,9 @@ void CActor::Die	( )
 	TIItemList &l_list = inventory().m_ruck;
 	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 	{
-		CArtifact* pArtifact = dynamic_cast<CArtifact*>(*l_it);
-		if(pArtifact)
-			pArtifact->Drop();
+		CArtefact* pArtefact = dynamic_cast<CArtefact*>(*l_it);
+		if(pArtefact)
+			pArtefact->Drop();
 	}
 	*/
 
@@ -973,14 +973,14 @@ void CActor::g_PerformDrop	( )
 	VERIFY					(b_DropActivated);
 	b_DropActivated			= FALSE;
 
-	if (m_pArtifact)
+	if (m_pArtefact)
 	{
 		NET_Packet				P;
 		u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16					(u16(m_pArtifact->ID()));
+		P.w_u16					(u16(m_pArtefact->ID()));
 		u_EventSend				(P);
 
-		m_pArtifact				= 0;
+		m_pArtefact				= 0;
 	} else {
 		//
 		

@@ -455,9 +455,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 //			TIItemList &l_list = inventory().m_ruck;
 //			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 //			{
-//				CArtifact* pArtifact = dynamic_cast<CArtifact*>(*l_it);
-//				if(pArtifact)
-//					pArtifact->Drop();
+//				CArtefact* pArtefact = dynamic_cast<CArtefact*>(*l_it);
+//				if(pArtefact)
+//					pArtefact->Drop();
 //
 //				//if ((*l_it)->Useful())
 //					//(*l_it)->Drop();

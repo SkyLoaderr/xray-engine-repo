@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // BlackGraviArtifact.cpp
-// BlackGraviArtifact - гравитационный артефакт, 
+// BlackGraviArtefact - гравитационный артефакт, 
 // такой же как и обычный, но при получении хита
 ///////////////////////////////////////////////////////////////
 
@@ -12,7 +12,7 @@
 #include "phmovementcontrol.h"
 #include "xrmessages.h"
 #include "physicsshellholder.h"
-CBlackGraviArtifact::CBlackGraviArtifact(void) 
+CBlackGraviArtefact::CBlackGraviArtefact(void) 
 {
 	m_fImpulseThreshold = 10.f;
 	m_fRadius = 10.f;
@@ -21,14 +21,14 @@ CBlackGraviArtifact::CBlackGraviArtifact(void)
 	m_bStrike = false;
 }
 
-CBlackGraviArtifact::~CBlackGraviArtifact(void) 
+CBlackGraviArtefact::~CBlackGraviArtefact(void) 
 {
 	m_GameObjectList.clear();
 }
 
 
 
-void CBlackGraviArtifact::Load(LPCSTR section) 
+void CBlackGraviArtefact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 
@@ -38,7 +38,7 @@ void CBlackGraviArtifact::Load(LPCSTR section)
 	m_sParticleName = pSettings->r_string(section,"particle");
 }
 
-BOOL CBlackGraviArtifact::net_Spawn(LPVOID DC)
+BOOL CBlackGraviArtefact::net_Spawn(LPVOID DC)
 {
 	if(!inherited::net_Spawn(DC)) return FALSE;
 
@@ -62,7 +62,7 @@ BOOL CBlackGraviArtifact::net_Spawn(LPVOID DC)
 	return TRUE;
 }
 
-void CBlackGraviArtifact::UpdateCL() 
+void CBlackGraviArtefact::UpdateCL() 
 {
 	inherited::UpdateCL();
 
@@ -90,7 +90,7 @@ void CBlackGraviArtifact::UpdateCL()
 	}
 }
 
-void CBlackGraviArtifact::Hit(float P, Fvector &dir,
+void CBlackGraviArtefact::Hit(float P, Fvector &dir,
 						CObject* who, s16 element,
 						Fvector position_in_object_space,
 						float impulse,
@@ -106,23 +106,23 @@ void CBlackGraviArtifact::Hit(float P, Fvector &dir,
 	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
 }
 
-void CBlackGraviArtifact::feel_touch_new(CObject* O) 
+void CBlackGraviArtefact::feel_touch_new(CObject* O) 
 {
 	CPhysicsShellHolder* pGameObject = dynamic_cast<CPhysicsShellHolder*>(O);
-	CArtifact* pArtifact = dynamic_cast<CArtifact*>(O);
+	CArtefact* pArtefact = dynamic_cast<CArtefact*>(O);
 
-	if(pGameObject && !pArtifact) 
+	if(pGameObject && !pArtefact) 
 	{
 		m_GameObjectList.push_back(pGameObject);
 	}
 }
 
-void CBlackGraviArtifact::feel_touch_delete(CObject* O) 
+void CBlackGraviArtefact::feel_touch_delete(CObject* O) 
 {
 	CGameObject* pGameObject = dynamic_cast<CGameObject*>(O);
-	CArtifact* pArtifact = dynamic_cast<CArtifact*>(O);
+	CArtefact* pArtefact = dynamic_cast<CArtefact*>(O);
 
-	if(pGameObject && !pArtifact)
+	if(pGameObject && !pArtefact)
 	{
 		m_GameObjectList.erase(std::find(m_GameObjectList.begin(), 
 										 m_GameObjectList.end(), 
@@ -130,7 +130,7 @@ void CBlackGraviArtifact::feel_touch_delete(CObject* O)
 	}
 }
 
-BOOL CBlackGraviArtifact::feel_touch_contact(CObject* O) 
+BOOL CBlackGraviArtefact::feel_touch_contact(CObject* O) 
 {
 	CGameObject* pGameObject = dynamic_cast<CGameObject*>(O);
 
@@ -140,7 +140,7 @@ BOOL CBlackGraviArtifact::feel_touch_contact(CObject* O)
 		return FALSE;
 }
 
-void CBlackGraviArtifact::GraviStrike()
+void CBlackGraviArtefact::GraviStrike()
 {
 	xr_list<s16>		elements_list;
 	xr_list<Fvector>	bone_position_list;

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // BastArtifact.h
-// BastArtifact - артефакт мочалка
+// BastArtefact - артефакт мочалка
 ///////////////////////////////////////////////////////////////
 
 #pragma once
@@ -13,14 +13,14 @@ struct SGameMtl;
 DEFINE_VECTOR (CEntityAlive*, ALIVE_LIST, ALIVE_LIST_it);
 
 
-class CBastArtifact : public CArtifact,
+class CBastArtefact : public CArtefact,
 					  public Feel::Touch
 {
 private:
-	typedef CArtifact inherited;
+	typedef CArtefact inherited;
 public:
-	CBastArtifact(void);
-	virtual ~CBastArtifact(void);
+	CBastArtefact(void);
+	virtual ~CBastArtefact(void);
 
 	virtual void Load				(LPCSTR section);
 	virtual void UpdateCL			();

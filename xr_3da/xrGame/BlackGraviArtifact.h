@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // BlackGraviArtifact.h
-// BlackGraviArtifact - гравитационный артефакт, 
+// BlackGraviArtefact - гравитационный артефакт, 
 // такой же как и обычный, но при получении хита
 ///////////////////////////////////////////////////////////////
 
@@ -10,14 +10,14 @@
 #include "PhysicsShellHolder.h"
 DEFINE_VECTOR (CPhysicsShellHolder*, GAME_OBJECT_LIST, GAME_OBJECT_LIST_it);
 
-class CBlackGraviArtifact: public CGraviArtifact,
+class CBlackGraviArtefact: public CGraviArtefact,
 						   public Feel::Touch
 {
 private:
-	typedef CGraviArtifact inherited;
+	typedef CGraviArtefact inherited;
 public:
-	CBlackGraviArtifact(void);
-	virtual ~CBlackGraviArtifact(void);
+	CBlackGraviArtefact(void);
+	virtual ~CBlackGraviArtefact(void);
 
 	virtual BOOL net_Spawn			(LPVOID DC);
 

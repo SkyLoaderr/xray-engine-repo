@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // BastArtifact.cpp
-// BastArtifact - артефакт мочалка
+// BastArtefact - артефакт мочалка
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -10,7 +10,7 @@
 #include "ParticlesObject.h"
 
 
-CBastArtifact::CBastArtifact(void) 
+CBastArtefact::CBastArtefact(void) 
 {
 	m_fImpulseThreshold = 10.f;
 	
@@ -26,12 +26,12 @@ CBastArtifact::CBastArtifact(void)
 
 }
 
-CBastArtifact::~CBastArtifact(void) 
+CBastArtefact::~CBastArtefact(void) 
 {
 }
 
 //вызывается при столкновении мочалки с чем-то
-void __stdcall CBastArtifact::ObjectContactCallback(bool& /**do_colide/**/,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/) 
+void __stdcall CBastArtefact::ObjectContactCallback(bool& /**do_colide/**/,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/) 
 {
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
@@ -41,19 +41,19 @@ void __stdcall CBastArtifact::ObjectContactCallback(bool& /**do_colide/**/,dCont
 	if(!l_pUD1 || !l_pUD2) return;
 
 	//определить кто есть кто, из двух столкнувшихся предметов
-	CBastArtifact *pBastArtifact = l_pUD1 ? dynamic_cast<CBastArtifact*>(l_pUD1->ph_ref_object) : NULL;
-	if(!pBastArtifact) pBastArtifact = l_pUD2 ? dynamic_cast<CBastArtifact*>(l_pUD2->ph_ref_object) : NULL;
-	if(!pBastArtifact) return;
-	if(!pBastArtifact->IsAttacking()) return;
+	CBastArtefact *pBastArtefact = l_pUD1 ? dynamic_cast<CBastArtefact*>(l_pUD1->ph_ref_object) : NULL;
+	if(!pBastArtefact) pBastArtefact = l_pUD2 ? dynamic_cast<CBastArtefact*>(l_pUD2->ph_ref_object) : NULL;
+	if(!pBastArtefact) return;
+	if(!pBastArtefact->IsAttacking()) return;
 
 	CEntityAlive *pEntityAlive = NULL;
 	pEntityAlive = l_pUD1 ? dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object) : NULL;
 	if(!pEntityAlive) pEntityAlive = l_pUD2 ? dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object) : NULL;
 
-	pBastArtifact->BastCollision(pEntityAlive);
+	pBastArtefact->BastCollision(pEntityAlive);
 }
 
-void CBastArtifact::BastCollision(CEntityAlive* pEntityAlive)
+void CBastArtefact::BastCollision(CEntityAlive* pEntityAlive)
 {
 	//попали во что-то живое
 	if(pEntityAlive && pEntityAlive->g_Alive())
@@ -80,7 +80,7 @@ void CBastArtifact::BastCollision(CEntityAlive* pEntityAlive)
 	}
 }
 
-BOOL CBastArtifact::net_Spawn(LPVOID DC)
+BOOL CBastArtefact::net_Spawn(LPVOID DC)
 {
 	BOOL result = inherited::net_Spawn(DC);
 	if(!result) return FALSE;
@@ -93,7 +93,7 @@ BOOL CBastArtifact::net_Spawn(LPVOID DC)
 	return TRUE;
 }
 
-void CBastArtifact::net_Destroy		()
+void CBastArtefact::net_Destroy		()
 {
 	inherited::net_Destroy();
 
@@ -103,7 +103,7 @@ void CBastArtifact::net_Destroy		()
 	m_AliveList.clear();
 }
 
-void CBastArtifact::Load(LPCSTR section) 
+void CBastArtefact::Load(LPCSTR section) 
 {
 	// verify class
 	LPCSTR Class = pSettings->r_string(section,"class");
@@ -123,7 +123,7 @@ void CBastArtifact::Load(LPCSTR section)
 
 }
 
-void CBastArtifact::shedule_Update(u32 dt) 
+void CBastArtefact::shedule_Update(u32 dt) 
 {
 	inherited::shedule_Update(dt);
 
@@ -133,10 +133,10 @@ void CBastArtifact::shedule_Update(u32 dt)
 }
 
 
-void CBastArtifact::UpdateCL() 
+void CBastArtefact::UpdateCL() 
 {
-	//Log						("--- A - CBastArtifact",*cName());
-	//Log						("--- A - CBastArtifact",renderable.xform);
+	//Log						("--- A - CBastArtefact",*cName());
+	//Log						("--- A - CBastArtefact",renderable.xform);
 	inherited::UpdateCL		();
 
 	//современем энергия по немногу тоже уменьшается
@@ -210,7 +210,7 @@ void CBastArtifact::UpdateCL()
 }
 
 
-void CBastArtifact::Hit(float P, Fvector &dir,	
+void CBastArtefact::Hit(float P, Fvector &dir,	
 						CObject* who, s16 element,
 						Fvector position_in_object_space, 
 						float impulse, 
@@ -234,7 +234,7 @@ void CBastArtifact::Hit(float P, Fvector &dir,
 
 
 //объект можно поднять только в спокойном состоянии
-bool CBastArtifact::Useful() const
+bool CBastArtefact::Useful() const
 {
 	if(m_fEnergy>0) 
 		return false;
@@ -243,7 +243,7 @@ bool CBastArtifact::Useful() const
 
 }
 
-void CBastArtifact::feel_touch_new(CObject* O) 
+void CBastArtefact::feel_touch_new(CObject* O) 
 {
 	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
 
@@ -253,7 +253,7 @@ void CBastArtifact::feel_touch_new(CObject* O)
 	}
 }
 
-void CBastArtifact::feel_touch_delete(CObject* O) 
+void CBastArtefact::feel_touch_delete(CObject* O) 
 {
 	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
 
@@ -265,7 +265,7 @@ void CBastArtifact::feel_touch_delete(CObject* O)
 	}
 }
 
-BOOL CBastArtifact::feel_touch_contact(CObject* O) 
+BOOL CBastArtefact::feel_touch_contact(CObject* O) 
 {
 	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
 
@@ -275,7 +275,7 @@ BOOL CBastArtifact::feel_touch_contact(CObject* O)
 		return FALSE;
 }
 
-void CBastArtifact::setup_physic_shell	()
+void CBastArtefact::setup_physic_shell	()
 {
 	inherited::setup_physic_shell();
 	m_pPhysicsShell->set_PhysicsRefObject(this);

@@ -1,18 +1,18 @@
 ///////////////////////////////////////////////////////////////
 // DummyArtifact.h
-// DummyArtifact - артефакт пустышка
+// DummyArtefact - артефакт пустышка
 ///////////////////////////////////////////////////////////////
 
 #pragma once
 #include "artifact.h"
 
-class CDummyArtifact : public CArtifact 
+class CDummyArtefact : public CArtefact 
 {
 private:
-	typedef CArtifact inherited;
+	typedef CArtefact inherited;
 public:
-	CDummyArtifact(void);
-	virtual ~CDummyArtifact(void);
+	CDummyArtefact(void);
+	virtual ~CDummyArtefact(void);
 
 	virtual void Load				(LPCSTR section);
 	virtual void UpdateCL			();

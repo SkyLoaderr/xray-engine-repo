@@ -635,7 +635,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	hit_slowmo				= 0.f;
 	hit_factor				= 1.f;
 
-	m_pArtifact				= 0;
+	m_pArtefact				= 0;
 
 	CSE_ALifeTraderAbstract	 *pTA	= dynamic_cast<CSE_ALifeTraderAbstract*>(e);
 	m_dwMoney				= pTA->m_dwMoney;

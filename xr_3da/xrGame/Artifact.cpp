@@ -5,7 +5,7 @@
 #include "game_cl_base.h"
 #include "level.h"
 
-xr_set<CArtifact*> CArtifact::m_all;
+xr_set<CArtefact*> CArtefact::m_all;
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
 	if(x>y)\
@@ -17,7 +17,7 @@ xr_set<CArtifact*> CArtifact::m_all;
 
 
 
-CArtifact::CArtifact(void) 
+CArtefact::CArtefact(void) 
 {
 	shedule.t_min = 20;
 	shedule.t_max = 50;
@@ -28,12 +28,12 @@ CArtifact::CArtifact(void)
 }
 
 
-CArtifact::~CArtifact(void) 
+CArtefact::~CArtefact(void) 
 {
 	SoundDestroy(m_detectorSound);
 }
 
-void CArtifact::Load(LPCSTR section) 
+void CArtefact::Load(LPCSTR section) 
 {
 	// verify class
 	LPCSTR Class = pSettings->r_string(section,"class");
@@ -61,7 +61,7 @@ void CArtifact::Load(LPCSTR section)
 	}
 }
 
-BOOL CArtifact::net_Spawn(LPVOID DC) 
+BOOL CArtefact::net_Spawn(LPVOID DC) 
 {
 	BOOL result = inherited::net_Spawn(DC);
 	m_all.insert(this);
@@ -85,7 +85,7 @@ BOOL CArtifact::net_Spawn(LPVOID DC)
 	return result;	
 }
 
-void CArtifact::net_Destroy() 
+void CArtefact::net_Destroy() 
 {
 	m_all.erase(this);
 	if (*m_sParticlesName) 
@@ -99,7 +99,7 @@ void CArtifact::net_Destroy()
 	m_pTrailLight = NULL;
 }
 
-void CArtifact::OnH_A_Chield() 
+void CArtefact::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield		();
 
@@ -121,7 +121,7 @@ void CArtifact::OnH_A_Chield()
 	}
 }
 
-void CArtifact::OnH_B_Independent() 
+void CArtefact::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
 
@@ -134,7 +134,7 @@ void CArtifact::OnH_B_Independent()
 	}
 }
 
-void CArtifact::UpdateCL() 
+void CArtefact::UpdateCL() 
 {
 	Fvector vel = {0, 0, 0};
 	if (H_Parent()) dynamic_cast<CPhysicsShellHolder*>(H_Parent())->PHGetLinearVell(vel);
@@ -145,17 +145,17 @@ void CArtifact::UpdateCL()
 	UpdateLights();
 }
 
-void CArtifact::shedule_Update	(u32 dt) 
+void CArtefact::shedule_Update	(u32 dt) 
 {
 	inherited::shedule_Update(dt);
 }
 
-void CArtifact::renderable_Render() 
+void CArtefact::renderable_Render() 
 {
 	inherited::renderable_Render();
 }
 
-void CArtifact::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
+void CArtefact::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
 {
 	string256 temp;
 	if (FS.exist(temp,"$game_sounds$",s_name,".ogg")) 
@@ -166,12 +166,12 @@ void CArtifact::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtr
 	Debug.fatal	("Can't find ref_sound '%s'",s_name,*cName());
 }
 
-void CArtifact::SoundDestroy(ref_sound& dest) 
+void CArtefact::SoundDestroy(ref_sound& dest) 
 {
 	::Sound->destroy			(dest);
 }
 
-void CArtifact::create_physic_shell	()
+void CArtefact::create_physic_shell	()
 {
 	///create_box2sphere_physic_shell	();
 	m_pPhysicsShell=P_build_Shell(this,false);
@@ -181,7 +181,7 @@ void CArtifact::create_physic_shell	()
 //////////////////////////////////////////////////////////////////////////
 //	Lights
 //////////////////////////////////////////////////////////////////////////
-void CArtifact::StartLights()
+void CArtefact::StartLights()
 {
 	if(!m_bLightsEnabled) return;
 
@@ -195,13 +195,13 @@ void CArtifact::StartLights()
 	m_pTrailLight->set_active(true);
 }
 
-void CArtifact::StopLights()
+void CArtefact::StopLights()
 {
 	if(!m_bLightsEnabled) return;
 	m_pTrailLight->set_active(false);
 }
 
-void CArtifact::UpdateLights()
+void CArtefact::UpdateLights()
 {
 	if(!m_bLightsEnabled || !m_pTrailLight->get_active()) return;
 	m_pTrailLight->set_position(Position());

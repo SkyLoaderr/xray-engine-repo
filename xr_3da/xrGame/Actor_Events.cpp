@@ -52,13 +52,13 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				//мы работали с устройством сочетания 
 				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 				
-				CArtifact* pArtifact = dynamic_cast<CArtifact*>(O);
-				if(pGameSP && pArtifact)
+				CArtefact* pArtefact = dynamic_cast<CArtefact*>(O);
+				if(pGameSP && pArtefact)
 				{
 					if(pGameSP->MainInputReceiver() == &pGameSP->InventoryMenu &&
-						pGameSP->InventoryMenu.IsArtifactMergeShown())
+						pGameSP->InventoryMenu.IsArtefactMergeShown())
 					{
-						pGameSP->InventoryMenu.AddArtifactToMerger(pArtifact);
+						pGameSP->InventoryMenu.AddArtefactToMerger(pArtefact);
 					}
 				}
 

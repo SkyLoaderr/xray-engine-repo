@@ -245,7 +245,7 @@ void game_cl_ArtefactHunt::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 	if(!pObject)
 		return;
 
-	CArtifact* pArtefact = dynamic_cast<CArtifact*>(pObject);
+	CArtefact* pArtefact = dynamic_cast<CArtefact*>(pObject);
 	VERIFY(pArtefact);
 
 	CObject* pParent = pArtefact->H_Parent();

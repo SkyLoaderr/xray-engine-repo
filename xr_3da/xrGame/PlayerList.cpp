@@ -85,7 +85,7 @@ void	game_GameState::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 
 void	game_GameState::OnTimeElapsed	()
 {
-	// Artifacts count
+	// Artefacts count
 	if ()
 }
 

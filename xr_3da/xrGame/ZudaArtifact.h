@@ -1,18 +1,18 @@
 ///////////////////////////////////////////////////////////////
 // ZudaArtifact.h
-// ZudaArtifact - артефакт зуда
+// ZudaArtefact - артефакт зуда
 ///////////////////////////////////////////////////////////////
 
 #pragma once
 #include "artifact.h"
 
-class CZudaArtifact : public CArtifact 
+class CZudaArtefact : public CArtefact 
 {
 private:
-	typedef CArtifact inherited;
+	typedef CArtefact inherited;
 public:
-	CZudaArtifact(void);
-	virtual ~CZudaArtifact(void);
+	CZudaArtefact(void);
+	virtual ~CZudaArtefact(void);
 
 	virtual void Load				(LPCSTR section);
 	virtual void UpdateCL			();

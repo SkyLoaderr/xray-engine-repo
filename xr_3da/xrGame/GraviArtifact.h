@@ -1,19 +1,19 @@
 ///////////////////////////////////////////////////////////////
 // GraviArtifact.h
-// GraviArtifact - гравитационный артефакт, прыгает на месте
+// GraviArtefact - гравитационный артефакт, прыгает на месте
 // и парит над землей
 ///////////////////////////////////////////////////////////////
 
 #pragma once
 #include "artifact.h"
 
-class CGraviArtifact : public CArtifact 
+class CGraviArtefact : public CArtefact 
 {
 private:
-	typedef CArtifact inherited;
+	typedef CArtefact inherited;
 public:
-	CGraviArtifact(void);
-	virtual ~CGraviArtifact(void);
+	CGraviArtefact(void);
+	virtual ~CGraviArtefact(void);
 
 	virtual void Load				(LPCSTR section);
 	virtual void UpdateCL			();

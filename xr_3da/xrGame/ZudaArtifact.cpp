@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // ZudaArtifact.cpp
-// ZudaArtifact - артефакт "зуда"
+// ZudaArtefact - артефакт "зуда"
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -8,20 +8,20 @@
 #include "PhysicsShell.h"
 
 
-CZudaArtifact::CZudaArtifact(void) 
+CZudaArtefact::CZudaArtefact(void) 
 {
 }
 
-CZudaArtifact::~CZudaArtifact(void) 
+CZudaArtefact::~CZudaArtefact(void) 
 {
 }
 
-void CZudaArtifact::Load(LPCSTR section) 
+void CZudaArtefact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
-void CZudaArtifact::UpdateCL() 
+void CZudaArtefact::UpdateCL() 
 {
 	inherited::UpdateCL();
 }

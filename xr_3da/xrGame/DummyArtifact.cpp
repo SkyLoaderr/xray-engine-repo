@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // DummyArtifact.cpp
-// DummyArtifact - артефакт пустышка
+// DummyArtefact - артефакт пустышка
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -8,20 +8,20 @@
 #include "PhysicsShell.h"
 
 
-CDummyArtifact::CDummyArtifact(void) 
+CDummyArtefact::CDummyArtefact(void) 
 {
 }
 
-CDummyArtifact::~CDummyArtifact(void) 
+CDummyArtefact::~CDummyArtefact(void) 
 {
 }
 
-void CDummyArtifact::Load(LPCSTR section) 
+void CDummyArtefact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
-void CDummyArtifact::UpdateCL() 
+void CDummyArtefact::UpdateCL() 
 {
 	inherited::UpdateCL();
 }

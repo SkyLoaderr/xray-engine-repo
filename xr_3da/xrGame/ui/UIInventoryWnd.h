@@ -26,7 +26,7 @@ class CInventory;
 
 //////////////////////////////////////////////////////////////////////////
 
-class CArtifact;
+class CArtefact;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -56,8 +56,8 @@ public:
 	virtual void Hide();
 
 	//для работы с сочетателем артефактом извне
-	bool IsArtifactMergeShown() {return UIArtifactMergerWnd.IsShown();}
-	void AddArtifactToMerger(CArtifact* pArtifact);
+	bool IsArtefactMergeShown() {return UIArtefactMergerWnd.IsShown();}
+	void AddArtefactToMerger(CArtefact* pArtefact);
 	//для добавления новых предметов во время работы с интерфейсом (например 
 	//отсоединенных аддонов)
 	void AddItemToBag(PIItem pItem);
@@ -117,7 +117,7 @@ protected:
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox	UIPropertiesBox;
 	//менюшка для работы с устройством производства артефактов
-	CUIArtifactMerger	UIArtifactMergerWnd;
+	CUIArtefactMerger	UIArtefactMergerWnd;
 	
 	//информация о персонаже
 	CUICharacterInfo UICharacterInfo;
@@ -176,8 +176,8 @@ protected:
 
 
 	//запуск и остановка меню работы с артефактами
-	void StartArtifactMerger();
-	void StopArtifactMerger();
+	void StartArtefactMerger();
+	void StopArtefactMerger();
 
 	//присоединение/отсоединение аддонов к оружию
 	void AttachAddon();

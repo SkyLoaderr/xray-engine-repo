@@ -54,7 +54,7 @@
 #define CLSID_OBJECT_DOOR			MK_CLSID('O','_','D','O','O','R',' ',' ')
 #define CLSID_OBJECT_LIFT			MK_CLSID('O','_','L','I','F','T',' ',' ')
 
-// Artifacts
+// Artefacts
 #define CLSID_AF_MERCURY_BALL		MK_CLSID('A','F','_','M','B','A','L','L')
 #define CLSID_AF_GRAVI				MK_CLSID('A','F','_','G','R','A','V','I')
 #define CLSID_AF_BLACKDROPS			MK_CLSID('A','F','_','B','D','R','O','P')

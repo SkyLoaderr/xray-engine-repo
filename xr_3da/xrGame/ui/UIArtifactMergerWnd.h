@@ -1,4 +1,4 @@
-// UIArtifactMergerWnd.h:  подменю для работы с аппаратом 
+// UIArtefactMergerWnd.h:  подменю для работы с аппаратом 
 // производства новых артефактов
 //////////////////////////////////////////////////////////////////////
 
@@ -9,13 +9,13 @@
 #include "uibutton.h"
 #include "../ArtifactMerger.h"
 
-class CUIArtifactMerger: public CUIFrameWindow
+class CUIArtefactMerger: public CUIFrameWindow
 {
 private:
 	typedef CUIFrameWindow inherited;
 public:
-	CUIArtifactMerger();
-	virtual ~CUIArtifactMerger();
+	CUIArtefactMerger();
+	virtual ~CUIArtefactMerger();
 	
 	
 	virtual void Init(int x, int y, int width, int height);
@@ -24,8 +24,8 @@ public:
 				 PERFORM_BUTTON_CLICKED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
-	void InitArtifactMerger(CArtifactMerger* pArtifactMerger);
-	void PerformArtifactMerger();
+	void InitArtefactMerger(CArtefactMerger* pArtefactMerger);
+	void PerformArtefactMerger();
 
 	void Show();
 	void Hide();
@@ -34,13 +34,13 @@ public:
 
 
 	//места для артефактов в приборе
-	CUIDragDropList		UIArtifactList;
+	CUIDragDropList		UIArtefactList;
 protected:
 	CUIButton UIPerformButton;
 	CUIButton UICloseButton;
 
-	static bool ArtifactProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
+	static bool ArtefactProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 
 	//указатель на устройство сочетания артефактов
-	CArtifactMerger* m_pArtifactMerger;
+	CArtefactMerger* m_pArtefactMerger;
 };

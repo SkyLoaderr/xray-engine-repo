@@ -128,10 +128,10 @@ void CCustomDetector::shedule_Update(u32 dt)
 	//Звуки обнаружения артефактов
 	//////////////////////////////////
 /*	
-	xr_set<CArtifact*>::iterator l_it2;
-	for(l_it2 = CArtifact::m_all.begin(); CArtifact::m_all.end() != l_it2; ++l_it2) 
+	xr_set<CArtefact*>::iterator l_it2;
+	for(l_it2 = CArtefact::m_all.begin(); CArtefact::m_all.end() != l_it2; ++l_it2) 
 	{
-		CArtifact &l_af = **l_it2;
+		CArtefact &l_af = **l_it2;
 		float l_dst = P.distance_to(l_af.Position());
 		if(!l_af.H_Parent() && l_dst < l_af.m_detectorDist) 
 		{

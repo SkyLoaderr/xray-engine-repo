@@ -118,7 +118,7 @@ void CLevel::script_register(lua_State *L)
 		def("object",							get_object_by_name),
 //		def("object",							get_object_by_id),
 		def("actor",							tpfGetActor),
-		//def("set_artifact_merge",				SetArtifactMergeFunctor),
+		//def("set_artifact_merge",				SetArtefactMergeFunctor),
 		def("get_weather",						get_weather),
 		def("set_weather",						set_weather),
 		def("set_time_factor",					set_time_factor),

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // ThornArtifact.cpp
-// ThornArtifact - артефакт колючка
+// ThornArtefact - артефакт колючка
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -8,20 +8,20 @@
 #include "PhysicsShell.h"
 
 
-CThornArtifact::CThornArtifact(void) 
+CThornArtefact::CThornArtefact(void) 
 {
 }
 
-CThornArtifact::~CThornArtifact(void) 
+CThornArtefact::~CThornArtefact(void) 
 {
 }
 
-void CThornArtifact::Load(LPCSTR section) 
+void CThornArtefact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
-void CThornArtifact::UpdateCL() 
+void CThornArtefact::UpdateCL() 
 {
 	inherited::UpdateCL();
 }

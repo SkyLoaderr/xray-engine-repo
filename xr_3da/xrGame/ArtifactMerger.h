@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
-// ArtifactMerger.h
-// ArtifactMerger - устройство для получения новых артефактов 
+// ArtefactMerger.h
+// ArtefactMerger - устройство для получения новых артефактов 
 // из имеющихся
 ///////////////////////////////////////////////////////////////
 
@@ -16,16 +16,16 @@
 #include "xrmessages.h"
 #include "script_export_space.h"
 
-DEF_LIST (ARTIFACT_LIST, CArtifact*);
+DEF_LIST (ARTIFACT_LIST, CArtefact*);
 
-// void SetArtifactMergeFunctor(const luabind::functor<void> &artifactMergeFunctor);
+// void SetArtefactMergeFunctor(const luabind::functor<void> &artifactMergeFunctor);
 
-class CArtifactMerger : public CInventoryItem
+class CArtefactMerger : public CInventoryItem
 {
 typedef	CInventoryItem	inherited;
 public:
-	CArtifactMerger(void);
-	virtual ~CArtifactMerger(void);
+	CArtefactMerger(void);
+	virtual ~CArtefactMerger(void);
 
 	virtual BOOL net_Spawn			(LPVOID DC);
 	virtual void Load				(LPCSTR section);
@@ -40,9 +40,9 @@ public:
 
 
 	//функции для работы со списком артефактов
-	void AddArtifact(CArtifact* pArtifact);
-	void RemoveArtifact(CArtifact* pArtifact);
-	void RemoveAllArtifacts();
+	void AddArtefact(CArtefact* pArtefact);
+	void RemoveArtefact(CArtefact* pArtefact);
+	void RemoveAllArtefacts();
 
 	//выполняет операцию слияния над теми
 	//артефктами, что находятся в списке
@@ -50,30 +50,30 @@ public:
 	bool PerformMerge();
 
 	//количество различных артефактов в списке
-	template<typename A> int GetArtifactNum()
+	template<typename A> int GetArtefactNum()
 	{
 		int artifact_count = 0;
-		for(ARTIFACT_LIST_it it = m_ArtifactList.begin();
-							 m_ArtifactList.end() != it;
+		for(ARTIFACT_LIST_it it = m_ArtefactList.begin();
+							 m_ArtefactList.end() != it;
 							 ++it)
 							if(dynamic_cast<A*>(*it)) ++artifact_count;
 		return artifact_count;
 	};
 
-	int GetMercuryBallNum()		{return GetArtifactNum<CMercuryBall>();}
-	int GetGraviArtifactNum()	{return GetArtifactNum<CGraviArtifact>();}
-	int GetBlackDropsNum()		{return GetArtifactNum<CBlackDrops>();}
-	int GetNeedlesNum()			{return GetArtifactNum<CNeedles>();}
+	int GetMercuryBallNum()		{return GetArtefactNum<CMercuryBall>();}
+	int GetGraviArtefactNum()	{return GetArtefactNum<CGraviArtefact>();}
+	int GetBlackDropsNum()		{return GetArtefactNum<CBlackDrops>();}
+	int GetNeedlesNum()			{return GetArtefactNum<CNeedles>();}
 
 	//удаление определенного числа артефактов некоторого типа из списка
-	template<typename A> void DestroyArtifacts(int num_to_destroy)
+	template<typename A> void DestroyArtefacts(int num_to_destroy)
 	{
 		int artifact_count=0;
-//		for(ARTIFACT_LIST_it it = m_ArtifactList.begin();
-//							 (m_ArtifactList.end() != it) &&
+//		for(ARTIFACT_LIST_it it = m_ArtefactList.begin();
+//							 (m_ArtefactList.end() != it) &&
 //							 (artifact_count<num_to_destroy);)
 
-		ARTIFACT_LIST_it it = m_ArtifactList.begin();
+		ARTIFACT_LIST_it it = m_ArtefactList.begin();
 		do
 		{
 			if(dynamic_cast<A*>(*it)) 
@@ -91,47 +91,47 @@ public:
 				pObject->u_EventSend(P);
 			
 				//удалить артефакт
-				m_ArtifactDeletedList.push_back(*it);
-				RemoveArtifact(*it);
+				m_ArtefactDeletedList.push_back(*it);
+				RemoveArtefact(*it);
 			
 				//начать поиск сначала списка
-				it = m_ArtifactList.begin();
+				it = m_ArtefactList.begin();
 			}
 			else
 			{
 				++it;
 			}
-		} while((m_ArtifactList.end() != it) &&
+		} while((m_ArtefactList.end() != it) &&
 		  	    (artifact_count<num_to_destroy));
 	}
 
 	
-	void DestroyMercuryBall(int num_to_destroy)		{DestroyArtifacts<CMercuryBall>(num_to_destroy);}
-	void DestroyGraviArtifact(int num_to_destroy)	{DestroyArtifacts<CGraviArtifact>(num_to_destroy);}
-	void DestroyBlackDrops(int num_to_destroy)		{DestroyArtifacts<CBlackDrops>(num_to_destroy);}
-	void DestroyNeedles(int num_to_destroy)			{DestroyArtifacts<CNeedles>(num_to_destroy);}
+	void DestroyMercuryBall(int num_to_destroy)		{DestroyArtefacts<CMercuryBall>(num_to_destroy);}
+	void DestroyGraviArtefact(int num_to_destroy)	{DestroyArtefacts<CGraviArtefact>(num_to_destroy);}
+	void DestroyBlackDrops(int num_to_destroy)		{DestroyArtefacts<CBlackDrops>(num_to_destroy);}
+	void DestroyNeedles(int num_to_destroy)			{DestroyArtefacts<CNeedles>(num_to_destroy);}
 
 
 	//добавление определенного числа новых артефактов 
-	void SpawnArtifact(const char* af_section);
+	void SpawnArtefact(const char* af_section);
 	
-	void SpawnMercuryBall()		{SpawnArtifact("af_mercury_ball");}
-	void SpawnGraviArtifact()	{SpawnArtifact("af_magnet");}
-	void SpawnBlackDrops()		{SpawnArtifact("af_black_drops");}
-	void SpawnNeedles()			{SpawnArtifact("af_needles");}
+	void SpawnMercuryBall()		{SpawnArtefact("af_mercury_ball");}
+	void SpawnGraviArtefact()	{SpawnArtefact("af_magnet");}
+	void SpawnBlackDrops()		{SpawnArtefact("af_black_drops");}
+	void SpawnNeedles()			{SpawnArtefact("af_needles");}
 
 
 	//список артефактов только что удаленных
-	ARTIFACT_LIST m_ArtifactDeletedList;
+	ARTIFACT_LIST m_ArtefactDeletedList;
 	//только что появившихся
-	ARTIFACT_LIST m_ArtifactNewList;
+	ARTIFACT_LIST m_ArtefactNewList;
 
 
 protected:
 	//список артефактов помещенных в устройство
-	ARTIFACT_LIST m_ArtifactList;
+	ARTIFACT_LIST m_ArtefactList;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
-add_to_type_list(CArtifactMerger)
+add_to_type_list(CArtefactMerger)
 #undef script_type_list
-#define script_type_list save_type_list(CArtifactMerger)
+#define script_type_list save_type_list(CArtefactMerger)

@@ -219,7 +219,7 @@ void CTrade::StopTrade()
 
 	if(pTrader && m_bNeedToUpdateArtefactTasks)
 	{
-		pTrader->SyncArtifactsWithServer();
+		pTrader->SyncArtefactsWithServer();
 	}
 	RemovePartner();
 }
@@ -336,9 +336,9 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	{
 		pTrader = dynamic_cast<CAI_Trader*>(pPartner.base);
 		pTrader->OnTradeAction(pItem, false);
-		CArtifact* pArtifact= dynamic_cast<CArtifact*>(pItem);
-		if(pArtifact)
-			m_bNeedToUpdateArtefactTasks |= pTrader->BuyArtifact(pArtifact);
+		CArtefact* pArtefact= dynamic_cast<CArtefact*>(pItem);
+		if(pArtefact)
+			m_bNeedToUpdateArtefactTasks |= pTrader->BuyArtefact(pArtefact);
 
 	}
 }
@@ -368,7 +368,7 @@ CInventoryOwner* CTrade::GetPartner()
 
 u32	CTrade::GetItemPrice(PIItem pItem)
 {
-	CArtifact* pArtifact = dynamic_cast<CArtifact*>(pItem);
+	CArtefact* pArtefact = dynamic_cast<CArtefact*>(pItem);
 
 	// определение коэффициента
 	float factor = 1.0f;
@@ -378,11 +378,11 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 	//его собеседники
 	if (pThis.type == TT_ACTOR)
 	{
-		if(pPartner.type == TT_TRADER && pArtifact)
+		if(pPartner.type == TT_TRADER && pArtefact)
 		{
 			CAI_Trader* pTrader = dynamic_cast<CAI_Trader*>(pPartner.inv_owner); VERIFY(pTrader);
 			if (pTrader)
-				item_cost = pTrader->ArtifactPrice(pArtifact);
+				item_cost = pTrader->ArtefactPrice(pArtefact);
 		}
 
 
@@ -399,11 +399,11 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 	}
 	else if(pPartner.type == TT_ACTOR)
 	{
-		if(pThis.type == TT_TRADER && pArtifact)
+		if(pThis.type == TT_TRADER && pArtefact)
 		{
 			CAI_Trader* pTrader = dynamic_cast<CAI_Trader*>(pThis.inv_owner); VERIFY(pTrader);
 			if (pTrader)
-				item_cost = pTrader->ArtifactPrice(pArtifact);
+				item_cost = pTrader->ArtefactPrice(pArtefact);
 		}
 
 

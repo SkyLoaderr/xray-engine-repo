@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
-// ArtifactMerger.cpp
-// ArtifactMerger - устройство для получения новых артефактов 
+// ArtefactMerger.cpp
+// ArtefactMerger - устройство для получения новых артефактов 
 // из имеющихся
 ///////////////////////////////////////////////////////////////
 
@@ -15,30 +15,30 @@
 //глобальный указатель на функтор, который
 //запускает функцию сочетания артефактов из 
 //скиптов
-luabind::functor<void> *g_ArtifactMergeFunctor = NULL;
+luabind::functor<void> *g_ArtefactMergeFunctor = NULL;
 
-CArtifactMerger::CArtifactMerger(void) 
+CArtefactMerger::CArtefactMerger(void) 
 {
-	m_ArtifactList.clear();
+	m_ArtefactList.clear();
 }
 
-CArtifactMerger::~CArtifactMerger(void) 
+CArtefactMerger::~CArtefactMerger(void) 
 {
-	m_ArtifactList.clear();
-	xr_delete			(g_ArtifactMergeFunctor);
+	m_ArtefactList.clear();
+	xr_delete			(g_ArtefactMergeFunctor);
 }
 
-void SetArtifactMergeFunctor(const luabind::functor<void>& artifactMergeFunctor)
+void SetArtefactMergeFunctor(const luabind::functor<void>& artifactMergeFunctor)
 {
-	g_ArtifactMergeFunctor = xr_new<luabind::functor<void> >(artifactMergeFunctor);
+	g_ArtefactMergeFunctor = xr_new<luabind::functor<void> >(artifactMergeFunctor);
 }
 
-BOOL CArtifactMerger::net_Spawn(LPVOID DC) 
+BOOL CArtefactMerger::net_Spawn(LPVOID DC) 
 {
 	return		(inherited::net_Spawn(DC));
 }
 
-void CArtifactMerger::Load(LPCSTR section) 
+void CArtefactMerger::Load(LPCSTR section) 
 {
 	//загрузить все возможные комбинации артефактов для получения
 	//новых
@@ -46,33 +46,33 @@ void CArtifactMerger::Load(LPCSTR section)
 	inherited::Load(section);
 }
 
-void CArtifactMerger::net_Destroy() 
+void CArtefactMerger::net_Destroy() 
 {
 	inherited::net_Destroy();
 }
 
-void CArtifactMerger::shedule_Update(u32 dt) 
+void CArtefactMerger::shedule_Update(u32 dt) 
 {
 	inherited::shedule_Update(dt);
 }
 
-void CArtifactMerger::UpdateCL() 
+void CArtefactMerger::UpdateCL() 
 {
 	inherited::UpdateCL();
 }
 
 
-void CArtifactMerger::OnH_A_Chield() 
+void CArtefactMerger::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield		();
 }
 
-void CArtifactMerger::OnH_B_Independent() 
+void CArtefactMerger::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
 }
 
-void CArtifactMerger::renderable_Render() 
+void CArtefactMerger::renderable_Render() 
 {
 	inherited::renderable_Render();
 }
@@ -80,34 +80,34 @@ void CArtifactMerger::renderable_Render()
 //функции для работы со списком артефактов
 ////////////////////////////////////////////
 
-void CArtifactMerger::AddArtifact(CArtifact* pArtifact)
+void CArtefactMerger::AddArtefact(CArtefact* pArtefact)
 {
-	m_ArtifactList.push_back(pArtifact);
+	m_ArtefactList.push_back(pArtefact);
 }
-void CArtifactMerger::RemoveArtifact(CArtifact* pArtifact)
+void CArtefactMerger::RemoveArtefact(CArtefact* pArtefact)
 {
-	m_ArtifactList.remove(pArtifact);
+	m_ArtefactList.remove(pArtefact);
 }
-void CArtifactMerger::RemoveAllArtifacts()
+void CArtefactMerger::RemoveAllArtefacts()
 {
-	m_ArtifactList.clear();
+	m_ArtefactList.clear();
 }
 
 //выполняет операцию слияния над теми
 //артефктами, что находятся в списке
 //(вызов скриптованной процедуры)
-bool CArtifactMerger::PerformMerge()
+bool CArtefactMerger::PerformMerge()
 {
-	R_ASSERT2(g_ArtifactMergeFunctor->is_valid(), "The function that perform artifact merge doesn't set yet");
+	R_ASSERT2(g_ArtefactMergeFunctor->is_valid(), "The function that perform artifact merge doesn't set yet");
 	
-	m_ArtifactDeletedList.clear();
-	m_ArtifactNewList.clear();
+	m_ArtefactDeletedList.clear();
+	m_ArtefactNewList.clear();
 	
-	(*g_ArtifactMergeFunctor)(this);
+	(*g_ArtefactMergeFunctor)(this);
 	return false;
 }
 
-void CArtifactMerger::SpawnArtifact(const char* af_section)
+void CArtefactMerger::SpawnArtefact(const char* af_section)
 {
 	CSE_Abstract*		D	= F_entity_Create(af_section);
 	R_ASSERT		   (D);

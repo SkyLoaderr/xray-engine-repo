@@ -491,7 +491,7 @@ void CAI_Trader::load (IReader &input_packet)
 
 
 //проверяет список артефактов в заказах
-u32 CAI_Trader::ArtifactPrice (CArtifact* pArtifact)
+u32 CAI_Trader::ArtefactPrice (CArtefact* pArtefact)
 {
 	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator i = m_tpOrderedArtefacts.begin();
 	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator e = m_tpOrderedArtefacts.end();
@@ -499,7 +499,7 @@ u32 CAI_Trader::ArtifactPrice (CArtifact* pArtifact)
 	{
 		//			Msg     ("Artefact : section[%s] total_count[%d]",(*i).second->m_caSection,(*i).second->m_dwTotalCount);
 		//			Msg     ("Orders : ");
-		if(pArtifact->cNameSect() == (*i).second->m_caSection)
+		if(pArtefact->cNameSect() == (*i).second->m_caSection)
 		{
 			ALife::ARTEFACT_ORDER_VECTOR::const_iterator    II = (*i).second->m_tpOrders.begin();
 			ALife::ARTEFACT_ORDER_VECTOR::const_iterator    EE = (*i).second->m_tpOrders.end();
@@ -511,20 +511,20 @@ u32 CAI_Trader::ArtifactPrice (CArtifact* pArtifact)
 		}
 	}
 
-	return pArtifact->Cost();
+	return pArtefact->Cost();
 }
 
 //продажа артефакта, с последуещим изменением списка заказов (true - если артефакт был в списке)
-bool CAI_Trader::BuyArtifact (CArtifact* pArtifact)
+bool CAI_Trader::BuyArtefact (CArtefact* pArtefact)
 {
-	VERIFY(pArtifact);
+	VERIFY(pArtefact);
 	ALife::ARTEFACT_TRADER_ORDER_MAP::iterator i = m_tpOrderedArtefacts.begin();
 	ALife::ARTEFACT_TRADER_ORDER_MAP::iterator e = m_tpOrderedArtefacts.end();
 	for ( ; i != e; ++i) 
 	{
 		//			Msg     ("Artefact : section[%s] total_count[%d]",(*i).second->m_caSection,(*i).second->m_dwTotalCount);
 		//			Msg     ("Orders : ");
-		if(pArtifact->cNameSect() == (*i).second->m_caSection)
+		if(pArtefact->cNameSect() == (*i).second->m_caSection)
 		{
 			ALife::ARTEFACT_ORDER_VECTOR::iterator    II = (*i).second->m_tpOrders.begin();
 			ALife::ARTEFACT_ORDER_VECTOR::iterator    EE = (*i).second->m_tpOrders.end();
@@ -542,7 +542,7 @@ bool CAI_Trader::BuyArtifact (CArtifact* pArtifact)
 	return false;
 }
 
-void CAI_Trader::SyncArtifactsWithServer	()
+void CAI_Trader::SyncArtefactsWithServer	()
 {
 	CSE_Abstract					*e	= Level().Server->game->get_entity_from_eid(ID()); VERIFY(e);
     CSE_ALifeTrader					*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(e);

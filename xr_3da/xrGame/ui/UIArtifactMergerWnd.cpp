@@ -1,4 +1,4 @@
-// UIArtifactMergerWnd.cpp:  подменю для работы с аппаратом 
+// UIArtefactMergerWnd.cpp:  подменю для работы с аппаратом 
 // производства новых артефактов
 //////////////////////////////////////////////////////////////////////
 
@@ -8,24 +8,24 @@
 
 #include "../Artifact.h"
 
-CUIArtifactMerger::CUIArtifactMerger()
+CUIArtefactMerger::CUIArtefactMerger()
 {
 }
-CUIArtifactMerger::~CUIArtifactMerger()
+CUIArtefactMerger::~CUIArtefactMerger()
 {
 }
-void CUIArtifactMerger::Init(int x, int y, int width, int height)
+void CUIArtefactMerger::Init(int x, int y, int width, int height)
 {
 
 	inherited::Init("ui\\ui_frame", x, y, width, height);
 
-	AttachChild(&UIArtifactList);
-	UIArtifactList.Init(10,10,100,100);
-	UIArtifactList.SetCellHeight(50);
-	UIArtifactList.SetCellWidth(50);
-	UIArtifactList.InitGrid(4, 4, true, 4);
+	AttachChild(&UIArtefactList);
+	UIArtefactList.Init(10,10,100,100);
+	UIArtefactList.SetCellHeight(50);
+	UIArtefactList.SetCellWidth(50);
+	UIArtefactList.InitGrid(4, 4, true, 4);
 	
-	UIArtifactList.SetCheckProc(ArtifactProc);
+	UIArtefactList.SetCheckProc(ArtefactProc);
 
 
 	AttachChild(&UIPerformButton);
@@ -36,28 +36,28 @@ void CUIArtifactMerger::Init(int x, int y, int width, int height)
 	UICloseButton.Init("ui\\ui_button_01", 10, 300,150,40);
 	UICloseButton.SetText("close");
 }
-void CUIArtifactMerger::InitArtifactMerger(CArtifactMerger* pArtifactMerger)
+void CUIArtefactMerger::InitArtefactMerger(CArtefactMerger* pArtefactMerger)
 {
-	m_pArtifactMerger = pArtifactMerger;
-	R_ASSERT(m_pArtifactMerger);
+	m_pArtefactMerger = pArtefactMerger;
+	R_ASSERT(m_pArtefactMerger);
 
-	m_pArtifactMerger->RemoveAllArtifacts();
+	m_pArtefactMerger->RemoveAllArtefacts();
 
-	UIArtifactList.DropAll();
+	UIArtefactList.DropAll();
 	ResetAll();
 }
 
-void CUIArtifactMerger::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
+void CUIArtefactMerger::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &UIPerformButton && msg == CUIButton::BUTTON_CLICKED)
 	{
-		PerformArtifactMerger();
+		PerformArtefactMerger();
 		GetMessageTarget()->SendMessage(this, PERFORM_BUTTON_CLICKED);
 	}
 	else if(pWnd == &UICloseButton && msg == CUIButton::BUTTON_CLICKED)
 	{
 		//выкинуть все артефакты
-		m_pArtifactMerger->RemoveAllArtifacts();
+		m_pArtefactMerger->RemoveAllArtefacts();
 
 		GetMessageTarget()->SendMessage(this, CLOSE_BUTTON_CLICKED);
 	}
@@ -67,71 +67,71 @@ void CUIArtifactMerger::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 
 
-void CUIArtifactMerger::Show()
+void CUIArtefactMerger::Show()
 {
 	inherited::Show(true);
 	inherited::Enable(true);
 }
-void CUIArtifactMerger::Hide()
+void CUIArtefactMerger::Hide()
 {
 	inherited::Show(false);
 	inherited::Enable(false);
 }
 
-void CUIArtifactMerger::Update()
+void CUIArtefactMerger::Update()
 {
 	inherited::Update();
 }
 
-bool CUIArtifactMerger::ArtifactProc(CUIDragDropItem* pItem, CUIDragDropList* /**pList/**/)
+bool CUIArtefactMerger::ArtefactProc(CUIDragDropItem* pItem, CUIDragDropList* /**pList/**/)
 {
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
-	if(dynamic_cast<CArtifact*>(pInvItem))
+	if(dynamic_cast<CArtefact*>(pInvItem))
 		return true;
 	else
 		return false;
 }
 
-void CUIArtifactMerger::PerformArtifactMerger()
+void CUIArtefactMerger::PerformArtefactMerger()
 {
-	for(DRAG_DROP_LIST_it it = UIArtifactList.GetDragDropItemsList().begin(); 
- 						  UIArtifactList.GetDragDropItemsList().end() != it;
+	for(DRAG_DROP_LIST_it it = UIArtefactList.GetDragDropItemsList().begin(); 
+ 						  UIArtefactList.GetDragDropItemsList().end() != it;
 						  ++it)
 	{
 		CUIDragDropItem* pDragDropItem = *it;
 		PIItem pItem = (PIItem)pDragDropItem->GetData();
 
-		m_pArtifactMerger->AddArtifact(dynamic_cast<CArtifact*>(pItem));
+		m_pArtefactMerger->AddArtefact(dynamic_cast<CArtefact*>(pItem));
 	}
 
-	m_pArtifactMerger->PerformMerge();
-	m_pArtifactMerger->RemoveAllArtifacts();
+	m_pArtefactMerger->PerformMerge();
+	m_pArtefactMerger->RemoveAllArtefacts();
 
 
 
 	//удалить из списка иконки тех артефактов, которые
 	//изчезли при сочетании
-	if(!m_pArtifactMerger->m_ArtifactDeletedList.empty())
+	if(!m_pArtefactMerger->m_ArtefactDeletedList.empty())
 	{
-		for(ARTIFACT_LIST_it it = m_pArtifactMerger->m_ArtifactDeletedList.begin();
-							 m_pArtifactMerger->m_ArtifactDeletedList.end() != it; 
+		for(ARTIFACT_LIST_it it = m_pArtefactMerger->m_ArtefactDeletedList.begin();
+							 m_pArtefactMerger->m_ArtefactDeletedList.end() != it; 
 							 ++it)
 		{
 		
-			for(DRAG_DROP_LIST_it it1 = UIArtifactList.GetDragDropItemsList().begin(); 
- 								  UIArtifactList.GetDragDropItemsList().end() != it1;
+			for(DRAG_DROP_LIST_it it1 = UIArtefactList.GetDragDropItemsList().begin(); 
+ 								  UIArtefactList.GetDragDropItemsList().end() != it1;
 								  ++it1)
 			{
 				if((*it1)->GetData() == *it)
 				{
 					((CUIDragDropList*)(*it1)->GetParent())->DetachChild(*it1);
-					it1 = UIArtifactList.GetDragDropItemsList().begin();	
+					it1 = UIArtefactList.GetDragDropItemsList().begin();	
 				}
 			}
 		}
 
-		m_pArtifactMerger->m_ArtifactDeletedList.clear();
+		m_pArtefactMerger->m_ArtefactDeletedList.clear();
 	}
 }
 

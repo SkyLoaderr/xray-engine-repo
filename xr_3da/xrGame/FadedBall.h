@@ -6,10 +6,10 @@
 #pragma once
 #include "artifact.h"
 
-class CFadedBall : public CArtifact 
+class CFadedBall : public CArtefact 
 {
 private:
-	typedef CArtifact inherited;
+	typedef CArtefact inherited;
 public:
 	CFadedBall(void);
 	virtual ~CFadedBall(void);

@@ -1,18 +1,18 @@
 ///////////////////////////////////////////////////////////////
 // ThornArtifact.h
-// ThornArtifact - артефакт колючка
+// ThornArtefact - артефакт колючка
 ///////////////////////////////////////////////////////////////
 
 #pragma once
 #include "artifact.h"
 
-class CThornArtifact : public CArtifact 
+class CThornArtefact : public CArtefact 
 {
 private:
-	typedef CArtifact inherited;
+	typedef CArtefact inherited;
 public:
-	CThornArtifact(void);
-	virtual ~CThornArtifact(void);
+	CThornArtefact(void);
+	virtual ~CThornArtefact(void);
 
 	virtual void Load				(LPCSTR section);
 	virtual void UpdateCL			();

@@ -1,13 +1,13 @@
 #pragma once
 #include "inventory_item.h"
 
-class CArtifact : public CInventoryItem
+class CArtefact : public CInventoryItem
 {
 private:
 	typedef	CInventoryItem	inherited;
 public:
-	CArtifact(void);
-	virtual ~CArtifact(void);
+	CArtefact(void);
+	virtual ~CArtefact(void);
 
 	virtual void Load				(LPCSTR section);
 	
@@ -41,7 +41,7 @@ protected:
 
 	u16			m_CarringBoneID;
 	
-	static xr_set<CArtifact*> m_all;
+	static xr_set<CArtefact*> m_all;
 
 	ref_str		m_sParticlesName;
 	//////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // GraviArtifact.cpp
-// GraviArtifact - гравитационный артефакт, прыгает на месте
+// GraviArtefact - гравитационный артефакт, прыгает на месте
 // и неустойчиво парит над землей
 ///////////////////////////////////////////////////////////////
 
@@ -20,7 +20,7 @@
 		else{inst_z;}
 
 
-CGraviArtifact::CGraviArtifact(void) 
+CGraviArtefact::CGraviArtefact(void) 
 {
 	shedule.t_min = 20;
 	shedule.t_max = 50;
@@ -29,11 +29,11 @@ CGraviArtifact::CGraviArtifact(void)
 	m_fEnergy = 1.f;
 }
 
-CGraviArtifact::~CGraviArtifact(void) 
+CGraviArtefact::~CGraviArtefact(void) 
 {
 }
 
-void CGraviArtifact::Load(LPCSTR section) 
+void CGraviArtefact::Load(LPCSTR section) 
 {
 	// verify class
 	LPCSTR Class = pSettings->r_string(section,"class");
@@ -48,7 +48,7 @@ void CGraviArtifact::Load(LPCSTR section)
 
 
 
-void CGraviArtifact::UpdateCL() 
+void CGraviArtefact::UpdateCL() 
 {
 	inherited::UpdateCL();
 

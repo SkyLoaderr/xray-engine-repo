@@ -216,7 +216,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 				{
 					if (GameID() == GAME_ARTEFACTHUNT)
 					{
-						CArtifact* pArtefact = dynamic_cast<CArtifact*>(pObj);
+						CArtefact* pArtefact = dynamic_cast<CArtefact*>(pObj);
 						if (pArtefact)
 						{
 							ConvertToLocal(LM,pItem->Position(),P);
@@ -234,7 +234,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 				{
 					if (pItem)
 					{
-						CArtifact* pArtefact = dynamic_cast<CArtifact*>(pObj);
+						CArtefact* pArtefact = dynamic_cast<CArtefact*>(pObj);
 						if (pArtefact)
 						{
 							CObject* pParent = pArtefact->H_Parent();

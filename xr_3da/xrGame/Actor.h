@@ -179,7 +179,7 @@ protected:
 	// misc properties
 protected:
 	// Weapons and Items
-	CTargetCS*				m_pArtifact;
+	CTargetCS*				m_pArtefact;
 
 	// Death
 	float					hit_slowmo;

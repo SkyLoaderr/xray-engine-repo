@@ -7,10 +7,10 @@
 #pragma once
 #include "artifact.h"
 
-class CMercuryBall : public CArtifact 
+class CMercuryBall : public CArtefact 
 {
 private:
-	typedef CArtifact inherited;
+	typedef CArtefact inherited;
 public:
 	CMercuryBall(void);
 	virtual ~CMercuryBall(void);

@@ -1,18 +1,18 @@
 ///////////////////////////////////////////////////////////////
 // RustyHairArtifact.h
-// RustyHairArtifact - артефакт ржавые волосы
+// RustyHairArtefact - артефакт ржавые волосы
 ///////////////////////////////////////////////////////////////
 
 #pragma once
 #include "artifact.h"
 
-class CRustyHairArtifact : public CArtifact 
+class CRustyHairArtefact : public CArtefact 
 {
 private:
-	typedef CArtifact inherited;
+	typedef CArtefact inherited;
 public:
-	CRustyHairArtifact(void);
-	virtual ~CRustyHairArtifact(void);
+	CRustyHairArtefact(void);
+	virtual ~CRustyHairArtefact(void);
 
 	virtual void Load				(LPCSTR section);
 	virtual void UpdateCL			();

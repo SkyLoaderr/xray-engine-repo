@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////
 // RustyHairArtifact.cpp
-// RustyHairArtifact - артефакт ржавые волосы
+// RustyHairArtefact - артефакт ржавые волосы
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -8,20 +8,20 @@
 #include "PhysicsShell.h"
 
 
-CRustyHairArtifact::CRustyHairArtifact(void) 
+CRustyHairArtefact::CRustyHairArtefact(void) 
 {
 }
 
-CRustyHairArtifact::~CRustyHairArtifact(void) 
+CRustyHairArtefact::~CRustyHairArtefact(void) 
 {
 }
 
-void CRustyHairArtifact::Load(LPCSTR section) 
+void CRustyHairArtefact::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 }
 
-void CRustyHairArtifact::UpdateCL() 
+void CRustyHairArtefact::UpdateCL() 
 {
 	inherited::UpdateCL();
 }
