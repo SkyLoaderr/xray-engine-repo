@@ -21,7 +21,7 @@ BOOL CAI_Rat::feel_vision_isRelevant(CObject* O)
 	return TRUE;
 }
 
-void CAI_Rat::feel_sound_new(CObject* who, int eType, CSoundUserDataPtr user_data, const Fvector &Position, float power)
+void CAI_Rat::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr user_data, const Fvector &Position, float power)
 {
 	if (!g_Alive())
 		return;

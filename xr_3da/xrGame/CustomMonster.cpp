@@ -930,7 +930,7 @@ float CCustomMonster::feel_vision_mtl_transp(u32 element)
 	return	(memory().visual().feel_vision_mtl_transp(element));
 }
 
-void CCustomMonster::feel_sound_new	(CObject* who, int type, CSoundUserDataPtr user_data, const Fvector &position, float power)
+void CCustomMonster::feel_sound_new	(CObject* who, int type, CSound_UserDataPtr user_data, const Fvector &position, float power)
 {
 	if (getDestroy())
 		return;

@@ -21,7 +21,7 @@
 #include "../../../game_object_space.h"
 #include "../../../ai_monster_space.h"
 
-void CBaseMonster::feel_sound_new(CObject* who, int eType, CSoundUserDataPtr user_data, const Fvector &Position, float power)
+void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr user_data, const Fvector &Position, float power)
 {
 	if (!g_Alive())		return;
 
