@@ -21,7 +21,7 @@ IC u32	color					(Fvector& N, u32 rgbh, u8 sun, u32 Alpha)
 	c_lmap.set					(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);
 	c_ambient.set				(desc.ambient.x,	desc.ambient.y,		desc.ambient.z);
 	c_hemi.set					(desc.hemi_color.x, desc.hemi_color.y,	desc.hemi_color.z);
-	float	sun_factor			= .333f * clampr	(c_sun_dir.dotproduct(N),0.f,1.f);	//. hack to immitate sun
+	float	sun_factor			= .5f * clampr	(c_sun_dir.dotproduct(N),0.f,1.f);	//. hack to immitate sun
 
 	Fvector C,rgb; 
 	rgb.set						(float(color_get_R(rgbh)),float(color_get_G(rgbh)),float(color_get_B(rgbh)));
