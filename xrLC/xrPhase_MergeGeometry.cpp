@@ -35,9 +35,9 @@ BOOL	NeedMerge		(vecFace& subdiv, Fbox& bb_base)
 		bb_base.modify(F->v[2]->P);
 	}
 	Fvector sz_base;	bb_base.getsize(sz_base);
-	if (sz_base.x<(3*g_params.m_SS_maxsize/4))		return TRUE;
-	if (sz_base.y<(3*g_params.m_SS_maxsize/4))		return TRUE;
-	if (sz_base.z<(3*g_params.m_SS_maxsize/4))		return TRUE;
+	if (sz_base.x<g_params.m_SS_maxsize)		return TRUE;
+	if (sz_base.y<g_params.m_SS_maxsize)		return TRUE;
+	if (sz_base.z<g_params.m_SS_maxsize)		return TRUE;
 	return FALSE;
 }
 
