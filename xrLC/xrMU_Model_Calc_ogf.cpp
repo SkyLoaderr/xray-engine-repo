@@ -54,14 +54,19 @@ void xrMU_Model::calc_ogf()
 
 		try {
 			pOGF->Optimize			();
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [optimize], model %s",*m_name); }
+		try {
 			pOGF->CalcBounds		();
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [bounds], model %s",*m_name); }
+		try {
 			pOGF->CalculateTB		();
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [calc_tb], model %s",*m_name); }
+		try {
 			pOGF->MakeProgressive	(c_PM_MetricLimit_mu);
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [progressive], model %s",*m_name); }
+		try {
 			pOGF->Stripify			();
-		} catch (...)
-		{
-			clMsg	("* ERROR: MU2OGF, 2nd part, model %s",*m_name);
-		}
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [stripify], model %s",*m_name); }
 
 		it->ogf		=	pOGF;
 	}
