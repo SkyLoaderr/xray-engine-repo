@@ -93,7 +93,29 @@ void __stdcall TestPathCallback(bool& do_colide,dContact& c,SGameMtl * /*materia
 	do_colide=false;
 }
 
+void CPHSimpleCharacter::SetBox(const dVector3 &sizes)
+{
+	m_radius=_min(sizes[0],sizes[2])/2.f;
+	m_cyl_hight=sizes[1]-2.f*m_radius;
+	if (m_cyl_hight<0.f) m_cyl_hight=0.01f;
+	const dReal k=1.20f;
+	dReal doun=m_radius*_sqrt(1.f-1.f/k/k)/2.f;
+	//m_geom_shell=dCreateCylinder(0,m_radius/k,m_cyl_hight+doun);
+	dGeomCylinderSetParams(m_geom_shell,m_radius/k,m_cyl_hight+doun);
+	//m_wheel=dCreateSphere(0,m_radius);
+	dGeomSphereSetRadius(m_wheel,m_radius);
+	//m_hat=dCreateSphere(0,m_radius/k);
+	dGeomSphereSetRadius(m_hat,m_radius/k);
 
+	dGeomSetPosition(m_hat,0.f,m_cyl_hight,0.f);
+	dGeomSetPosition(m_geom_shell,0.f,m_cyl_hight/2.f-doun,0.f);
+	
+	float test_radius=m_radius*2.f;
+	float test_height=test_radius+m_radius/2.f;
+	//m_cap=dCreateSphere(0,test_radius);
+	dGeomSphereSetRadius(m_cap,test_radius);
+	dGeomSetPosition(m_cap,0.f,test_height,0.f);
+}
 void CPHSimpleCharacter::Create(dVector3 sizes){
 
 	if(b_exist) return;
@@ -109,6 +131,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	b_exist=true;
 	const dReal k=1.20f;
 	dReal doun=m_radius*_sqrt(1.f-1.f/k/k)/2.f;
+
 	m_geom_shell=dCreateCylinder(0,m_radius/k,m_cyl_hight+doun);
 
 	m_wheel=dCreateSphere(0,m_radius);
@@ -142,6 +165,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dGeomTransformSetGeom(m_shell_transform,m_geom_shell);
 	m_body=dBodyCreate(0);
 	Island().AddBody(m_body);
+
 	dGeomSetBody(m_shell_transform,m_body);
 	dGeomSetBody(m_hat_transform,m_body);
 

@@ -696,13 +696,13 @@ void CActor::UpdateCL()
 		}
 
 		// landing sounds
-		if (mtl_pair && (mstate_real & (mcLanding | mcLanding2))){
-			if (!mtl_pair->CollideSounds.empty()){
-				Fvector	s_pos		=	Position	();
-				s_pos.y				+=	.15f;
-				::Sound->play_at_pos(mtl_pair->CollideSounds[0],this,s_pos);
-			}
-		}
+		//if (mtl_pair && (mstate_real & (mcLanding | mcLanding2))){
+		//	if (!mtl_pair->CollideSounds.empty()){
+		//		Fvector	s_pos		=	Position	();
+		//		s_pos.y				+=	.15f;
+		//		::Sound->play_at_pos(mtl_pair->CollideSounds[0],this,s_pos);
+		//	}
+		//}
 	}
 	//-------------------------------------------------------------------
 //*
@@ -1362,7 +1362,7 @@ void __stdcall TestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material
 
 		if(depth>0.1f)
 		{
-			float force = 100.f *world_gravity;
+			float force = 50.f *world_gravity;
 			dBodyID b1=dGeomGetBody(c.geom.g1);
 			dBodyID b2=dGeomGetBody(c.geom.g2);
 			if(b1)dBodyAddForce(b1,c.geom.normal[0]*force,c.geom.normal[1]*force,c.geom.normal[2]*force);
@@ -1390,6 +1390,82 @@ void __stdcall TestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material
 	}
 	
 }
+
+class CVelocityLimiter :
+	public CPHUpdateObject
+{
+	dBodyID m_body;
+	float l_limit;
+	dVector3 m_safe_velocity;
+	dVector3 m_safe_position;
+public:
+	CVelocityLimiter(dBodyID b,float l)
+	{
+		R_ASSERT(b);
+		m_body=b;
+		dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+		dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+		l_limit=l;
+	}
+	virtual ~CVelocityLimiter()
+	{
+		Deactivate();
+		m_body =0;
+	}
+
+
+bool VelocityLimit()
+{
+	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
+	//limit velocity
+
+	if(dV_valid(linear_velocity))
+	{
+		dReal mag;
+		mag=_sqrt(linear_velocity[0]*linear_velocity[0]+linear_velocity[1]*linear_velocity[1]+linear_velocity[2]*linear_velocity[2]);//
+		if(mag>l_limit)
+		{
+			dReal f=mag/l_limit;
+			dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
+			return true;
+		}
+		else return false;
+	}
+	else
+	{
+		dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
+		return true;
+	}
+}
+virtual void PhDataUpdate(dReal step)
+{
+	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
+
+	if(VelocityLimit())
+	{
+		dBodySetPosition(m_body,
+			m_safe_position[0]+linear_velocity[0]*fixed_step,
+			m_safe_position[1]+linear_velocity[1]*fixed_step,
+			m_safe_position[2]+linear_velocity[2]*fixed_step);
+	}
+
+	if(!dV_valid(dBodyGetPosition(m_body)))
+		dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
+		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
+		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
+
+
+	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dVectorSet(m_safe_velocity,linear_velocity);
+}
+
+virtual void PhTune(dReal step)
+{
+	VelocityLimit();
+}
+
+};
+
 bool CActor:: ActivateBox(DWORD id)
 {
 	// могу ли я встать
@@ -1445,17 +1521,22 @@ bool CActor:: ActivateBox(DWORD id)
 	const Fbox& box =m_PhysicMovementControl->Box();
 	float pass=box.x2-box.x1;
 	float max_vel=pass/fnum_it/fixed_step; 
+	
+	CVelocityLimiter vl(m_PhysicMovementControl->GetBody(),max_vel);
+	vl.Activate();
+
 	for(int i=0;num_it>i;i++){
 		max_depth=0.f;
 		m_PhysicMovementControl->EnableCharacter();
-		m_PhysicMovementControl->SetVelocityLimit(max_vel);
+		//m_PhysicMovementControl->SetVelocityLimit(0.f);
 		ph_world->Step();
-		if(max_depth<0.1f) 
+		if(max_depth<0.05f) 
 		{
 			ret=true;
 			break;
 		}
 	}
+	vl.Deactivate();
 	if(!ret)
 	{	
 		if(!character_exist)m_PhysicMovementControl->DestroyCharacter();

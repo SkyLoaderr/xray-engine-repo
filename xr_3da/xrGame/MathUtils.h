@@ -45,7 +45,29 @@ IC	void	dVectorSub(dReal* v,const dReal* av0,const dReal* av1)
 {
 	v[0]=av1[0]-av0[0];	v[1]=av1[1]-av0[1]; v[2]=av1[2]-av0[2];
 }
-
+IC	void	dVectorInvert(dReal* v)
+{
+	v[0]=-v[0];v[1]=-v[1];v[2]=-v[2];
+}
+IC	void	dVectorMul(dReal* v,float mt)
+{
+	v[0]*=mt;v[1]*=mt;v[2]*=mt;
+}
+IC	void	dVectorMul(dReal* res,const dReal* av,float mt)
+{
+	res[0]=av[0]*mt;res[1]=av[1]*mt;res[2]=av[2]*mt;
+}
+IC	void	dVectorInterpolate(dReal* v,dReal* to,float k) //changes to
+{
+	dVectorMul(v,1.f-k);dVectorMul(to,k);dVectorAdd(v,to);
+}
+IC	void	dVectorInterpolate(dReal* res,const dReal* from,const dReal* to,float k) //changes to
+{
+	dVector3 tov;
+	dVectorSet(res,from);
+	dVectorSet(tov,to);
+	dVectorInterpolate(res,tov,k);
+}
 IC	void	dVectorDeviation(const dReal* vector3_from,const dReal* vector3_to,dReal* vector_dev)
 {
 	dVectorSub(vector_dev,vector3_to,vector3_from);

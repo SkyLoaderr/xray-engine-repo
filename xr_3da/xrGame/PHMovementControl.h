@@ -150,6 +150,7 @@ public:
 	void				CalcMaximumVelocity	(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
 	void				CalcMaximumVelocity	(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};
 	void				ActivateBox		(DWORD id, BOOL Check = false);
+	void				InterpolateBox	(DWORD id,float k);
 	EEnvironment		Environment		( )			{ return eEnvironment; }
 	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }
 	const Fbox&			Box				( )			{ return aabb; }

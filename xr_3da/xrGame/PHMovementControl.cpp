@@ -924,14 +924,24 @@ void CPHMovementControl::ActivateBox		(DWORD id, BOOL Check/*false*/)
 	m_dwCurBox = id;
 	aabb.set(boxes[id]);
 	if(!m_character||!m_character->b_exist) return;
-	Fvector v;
-	m_character->GetVelocity(v);
-	m_character->Destroy();
-	CreateCharacter();	
-	m_character->SetVelocity(v);
-	m_character->SetPosition(vPosition);	
+	dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
+	m_character->SetBox(size);
+	//Fvector v;
+	//m_character->GetVelocity(v);
+	//m_character->Destroy();
+	//CreateCharacter();	
+	//m_character->SetVelocity(v);
+	//m_character->SetPosition(vPosition);	
 }
-
+void CPHMovementControl::InterpolateBox		(DWORD id, float k)
+{ 
+	if (m_dwCurBox == id) return;
+	if(!m_character||!m_character->b_exist) return;
+	dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
+	dVector3 to_size={boxes[id].x2-boxes[id].x1,boxes[id].y2-boxes[id].y1,boxes[id].z2-boxes[id].z1};
+	dVectorInterpolate(size,to_size,k);
+	m_character->SetBox(size);
+}
 void CPHMovementControl::ApplyHit(const Fvector& dir,const dReal P,ALife::EHitType hit_type)
 {
 	if(hit_type==ALife::eHitTypeExplosion||hit_type==ALife::eHitTypeWound)
