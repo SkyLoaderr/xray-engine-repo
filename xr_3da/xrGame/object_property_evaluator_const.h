@@ -13,9 +13,9 @@
 class CObjectPropertyEvaluatorConst : public CSObjectPropertyEvaluatorBase {
 protected:
 	typedef CSObjectPropertyEvaluatorBase	inherited;
-	bool				m_value;
+	_value_type			m_value;
 
 public:
-						CObjectPropertyEvaluatorConst	(CGameObject *item, CAI_Stalker *owner, bool value);
-	virtual bool		evaluate						();
+						CObjectPropertyEvaluatorConst	(CGameObject *item, CAI_Stalker *owner, _value_type value);
+	virtual _value_type	evaluate						();
 };

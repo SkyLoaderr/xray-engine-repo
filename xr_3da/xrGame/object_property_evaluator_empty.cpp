@@ -16,10 +16,10 @@ CObjectPropertyEvaluatorEmpty::CObjectPropertyEvaluatorEmpty(CWeapon *item, CAI_
 {
 }
 
-bool CObjectPropertyEvaluatorEmpty::evaluate	()
+CObjectPropertyEvaluatorEmpty::_value_type CObjectPropertyEvaluatorEmpty::evaluate	()
 {
 	if (!m_ammo_type)
-		return		(!m_item->GetAmmoElapsed());
+		return		(_value_type(!m_item->GetAmmoElapsed()));
 	else
-		return		(false);
+		return		(_value_type(false));
 }

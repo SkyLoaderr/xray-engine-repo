@@ -9,13 +9,13 @@
 #include "stdafx.h"
 #include "object_property_evaluator_const.h"
 
-CObjectPropertyEvaluatorConst::CObjectPropertyEvaluatorConst	(CGameObject *item, CAI_Stalker *owner, bool value) :
+CObjectPropertyEvaluatorConst::CObjectPropertyEvaluatorConst	(CGameObject *item, CAI_Stalker *owner, _value_type value) :
 	inherited		(item,owner),
 	m_value			(value)
 {
 }
 
-bool CObjectPropertyEvaluatorConst::evaluate	()
+CObjectPropertyEvaluatorConst::_value_type CObjectPropertyEvaluatorConst::evaluate	()
 {
 	return			(m_value);
 }

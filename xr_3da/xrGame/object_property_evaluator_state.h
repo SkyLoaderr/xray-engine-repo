@@ -20,5 +20,5 @@ protected:
 
 public:
 							CObjectPropertyEvaluatorState	(CWeapon *item, CAI_Stalker *owner, u32 state, bool equality = true);
-	virtual bool			evaluate						();
+	virtual _value_type		evaluate						();
 };

@@ -45,8 +45,10 @@ public:
 	typedef u32																	_index_type;
 	typedef u32																	_iteration_type;
 	typedef u16																	_solver_dist_type;
+	typedef u32																	_solver_condition_type;
+	typedef u16																	_solver_value_type;
 
-	typedef COperatorConditionAbstract<u32,bool>								CWorldProperty;
+	typedef COperatorConditionAbstract<_solver_condition_type,_solver_value_type>CWorldProperty;
 	typedef CConditionState<CWorldProperty>										CWorldState;
 	typedef COperatorAbstract<CWorldProperty,_solver_dist_type>					CWorldOperator;
 	typedef CWorldState															_solver_index_type;

@@ -16,10 +16,10 @@ CObjectPropertyEvaluatorAmmo::CObjectPropertyEvaluatorAmmo	(CWeapon *item, CAI_S
 {
 }
 
-bool CObjectPropertyEvaluatorAmmo::evaluate	()
+CObjectPropertyEvaluatorAmmo::_value_type CObjectPropertyEvaluatorAmmo::evaluate	()
 {
 	if (!m_ammo_type)
-		return		(!!(m_item->GetAmmoCurrent() - m_item->GetAmmoElapsed()));
+		return		(_value_type(!!(m_item->GetAmmoCurrent() - m_item->GetAmmoElapsed())));
 	else
-		return		(false);
+		return		(_value_type(false));
 }

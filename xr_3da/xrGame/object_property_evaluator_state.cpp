@@ -17,8 +17,8 @@ CObjectPropertyEvaluatorState::CObjectPropertyEvaluatorState	(CWeapon *item, CAI
 {
 }
 
-bool CObjectPropertyEvaluatorState::evaluate	()
+CObjectPropertyEvaluatorState::_value_type CObjectPropertyEvaluatorState::evaluate	()
 {
 	VERIFY			(m_item);
-	return			((m_item->STATE == m_state) == m_equality);
+	return			(_value_type((m_item->STATE == m_state) == m_equality));
 }

@@ -19,5 +19,5 @@ protected:
 
 public:
 							CObjectPropertyEvaluatorEmpty	(CWeapon *item, CAI_Stalker *owner, u32 ammo_type);
-	virtual bool			evaluate						();
+	virtual _value_type		evaluate						();
 };

@@ -16,7 +16,7 @@ CObjectPropertyEvaluatorMember::CObjectPropertyEvaluatorMember	(CGameObject *ite
 {
 }
 
-bool CObjectPropertyEvaluatorMember::evaluate	()
+CObjectPropertyEvaluatorMember::_value_type CObjectPropertyEvaluatorMember::evaluate	()
 {
-	return			(*m_member == m_equality);
+	return			(_value_type(*m_member == m_equality));
 }

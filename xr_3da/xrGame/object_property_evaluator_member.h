@@ -17,6 +17,6 @@ protected:
 	bool					m_equality;
 
 public:
-						CObjectPropertyEvaluatorMember	(CGameObject *item, CAI_Stalker *owner, bool *member, bool equality = true);
-	virtual bool		evaluate						();
+							CObjectPropertyEvaluatorMember	(CGameObject *item, CAI_Stalker *owner, bool *member, bool equality = true);
+	virtual _value_type		evaluate						();
 };

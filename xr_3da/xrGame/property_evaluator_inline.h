@@ -44,9 +44,9 @@ void CEvaluator::reload				(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-bool CEvaluator::evaluate			()
+typename CEvaluator::_value_type CEvaluator::evaluate	()
 {
-	return				(false);
+	return				(0);
 }
 
 #undef TEMPLATE_SPECIALIZATION
