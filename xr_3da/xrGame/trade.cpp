@@ -202,6 +202,11 @@ void CTrade::StartTrade(CInventoryOwner* pInvOwner)
 	if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnStartTrade();
 }
 
+void CTrade::OnPerformTrade(u32 money_get, u32 money_put)
+{
+	if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnPerformTrade(money_get, money_put);	
+}
+
 void CTrade::StopTrade()
 {
 	TradeState = false;

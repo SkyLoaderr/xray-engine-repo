@@ -59,6 +59,8 @@ public:
 	void		StopTrade();
 	bool		IsInTradeState() {return TradeState;}
 
+	void		OnPerformTrade		(u32 money_get, u32 money_put);
+
 //	void		Communicate();
 //	bool		OfferTrade(SInventoryOwner man);					// man предлагает торговать
 	

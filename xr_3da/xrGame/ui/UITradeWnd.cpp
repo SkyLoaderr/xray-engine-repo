@@ -457,12 +457,15 @@ void CUITradeWnd::PerformTrade()
 	//денег хватает, продать вещи
 	else if(m_iOurTradePrice>0 || m_iOthersTradePrice>0)
 	{
+		m_pOthersTrade->OnPerformTrade(m_iOthersTradePrice, m_iOurTradePrice);
+		
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		SellItems(&UIOurTradeList, &UIOthersBagList, m_pTrade);
 		SellItems(&UIOthersTradeList, &UIOurBagList, m_pOthersTrade);
 		UpdatePrices();
 		
 		UIDealMsg.SetText(*stbl("The deal is done!"));
+
 	}
 
 	SwitchDealControls(true);

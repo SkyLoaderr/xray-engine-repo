@@ -272,6 +272,11 @@ public:
 			void				SetTradeCallback	(const luabind::functor<void> &tpTradeCallback);	
 			void				SetTradeCallback	(const luabind::object &object, LPCSTR method);
 			void				ClearTradeCallback	();
+
+			void				SetPerformTradeCallback		(const luabind::functor<void> &tpTradeCallback);	
+			void				SetPerformTradeCallback		(const luabind::object &object, LPCSTR method);
+			void				ClearPerformTradeCallback	();
+
 	//////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////use calback///////////////////////////////////////////////
 			void				SetUseCallback		(const luabind::functor<void> &tpUseCallback);

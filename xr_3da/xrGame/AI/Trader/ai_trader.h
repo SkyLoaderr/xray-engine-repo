@@ -34,6 +34,7 @@ private:
 	CScriptCallback		m_OnStartCallback;
 	CScriptCallback		m_OnStopCallback;
 	CScriptCallback		m_OnTradeCallback;
+	CScriptCallback		m_OnPerformTradeCallback;
 
 	bool				m_busy_now;
 
@@ -122,9 +123,16 @@ public:
 			void			set_trade_callback		(const luabind::object &lua_object, LPCSTR method);
 			void			clear_trade_callback	();
 
+			void			set_perform_trade_callback		(const luabind::functor<void> &lua_function);
+			void			set_perform_trade_callback		(const luabind::object &lua_object, LPCSTR method);
+			void			clear_perform_trade_callback	();
+			
 			void			OnStartTrade			();
 			void			OnStopTrade				();
+			// callback на торговлю каждым item-ом
 			void			OnTradeAction			(CGameObject *O, bool bSell, u32 money);
+			// callback на нажатие кнопки 'Trade'
+			void			OnPerformTrade			(u32 money_get, u32 money_put);
 
 			//игровое имя 
 			virtual LPCSTR	Name					() const {return CInventoryOwner::Name();}

@@ -80,6 +80,34 @@ void CScriptGameObject::ClearTradeCallback() {
 	else l_tpTrader->clear_trade_callback();
 }
 
+
+
+void CScriptGameObject::SetPerformTradeCallback(const luabind::functor<void> &tpTradeCallback) {
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(&object());
+
+	if (!l_tpTrader) 
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_perform_trade_callback!");
+	else l_tpTrader->set_perform_trade_callback(tpTradeCallback);
+}
+
+void CScriptGameObject::SetPerformTradeCallback(const luabind::object &lua_object, LPCSTR method) {
+	CAI_Trader	*l_tpTrader	= smart_cast<CAI_Trader*>	(&object());
+
+	if (!l_tpTrader) 
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_perform_trade_callback!");
+	else l_tpTrader->set_perform_trade_callback(lua_object, method);
+}
+
+
+void CScriptGameObject::ClearPerformTradeCallback() {
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(&object());
+
+	if (!l_tpTrader) 
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member clear_perform_trade_callback!");
+	else l_tpTrader->clear_perform_trade_callback();
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

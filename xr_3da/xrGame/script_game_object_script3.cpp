@@ -215,6 +215,10 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("set_trade_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetTradeCallback))			
 		.def("clear_trade_callback",		(void (CScriptGameObject::*)())(CScriptGameObject::ClearTradeCallback))
 
+		.def("set_perform_trade_callback",		(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetPerformTradeCallback))
+		.def("set_perform_trade_callback",		(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetPerformTradeCallback))			
+		.def("clear_perform_trade_callback",	(void (CScriptGameObject::*)())(CScriptGameObject::ClearPerformTradeCallback))
+
 		.enum_("CLSIDS")
 		[
 			value("no_pda_msg",				int(ePdaMsgMax))

@@ -441,11 +441,32 @@ void CAI_Trader::clear_trade_callback()
 	m_OnTradeCallback.clear();
 }
 
+void CAI_Trader::set_perform_trade_callback(const luabind::functor<void> &lua_function)
+{
+	m_OnPerformTradeCallback.set(lua_function);
+}
+
+void CAI_Trader::set_perform_trade_callback(const luabind::object &lua_object, LPCSTR method)
+{
+	m_OnPerformTradeCallback.set(lua_object,method);
+}
+
+void CAI_Trader::clear_perform_trade_callback()
+{
+	m_OnPerformTradeCallback.clear();
+}
+
 void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell,u32 money)
 {
 	if (!O) return;
 	SCRIPT_CALLBACK_EXECUTE_3(m_OnTradeCallback,O->lua_game_object(), bSell, money);
 }
+
+void CAI_Trader::OnPerformTrade(u32 money_get, u32 money_put)
+{
+	SCRIPT_CALLBACK_EXECUTE_2(m_OnPerformTradeCallback, money_get, money_put);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 
