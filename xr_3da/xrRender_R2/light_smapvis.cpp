@@ -54,6 +54,7 @@ void	smapvis::end		()
 		if (testQ_V)
 		{
 			RImplementation.occq_begin				(testQ_id);
+			RImplementation.marker					+= 1;
 			RImplementation.r_dsgraph_insert_static	(testQ_V);
 			RImplementation.r_dsgraph_render_graph	(0);
 			RImplementation.occq_end				(testQ_id);
