@@ -35,6 +35,14 @@ void	CRenderTarget::OnDeviceCreate	()
 		g_smap_d_debug				= Device.Shader.CreateGeom	(FVF::F_TL,					RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
+	// POINT
+	{
+		u32 size = PSM_size;
+		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
+		rt_smap_p					= Device.Shader._CreateRT	(r2_RT_smap_p,				size,D3DFMT_R32F);
+		s_accum_point				= Device.Shader.Create_B	(b_accum_point,				"r2\\accum_point");
+	}
+
 	// COMBINE
 	{
 		s_combine					= Device.Shader.Create_B	(b_combine,					"r2\\combine");
@@ -59,6 +67,11 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(s_combine_dbg_Color	);
 	Device.Shader.Delete		(s_combine_dbg_Accumulator);
 	Device.Shader.Delete		(s_combine				);
+
+	// POINT
+	Device.Shader.Delete		(s_accum_point			);
+	Device.Shader._DeleteRTC	(rt_smap_p				);
+	_RELEASE					(rt_smap_p_ZB			);
 
 	// DIRECT
 	Device.Shader.DeleteGeom	(g_smap_d_debug			);

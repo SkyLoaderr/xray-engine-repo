@@ -11,6 +11,7 @@ private:
 	// 
 	CBlender*			b_accum_direct_mask;
 	CBlender*			b_accum_direct;
+	CBlender*			b_accum_point;
 	CBlender*			b_combine;
 
 	//
@@ -21,9 +22,13 @@ private:
 	CRT*				rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
 	CRT*				rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
 
-	//
+	// D-smap
 	CRT*				rt_smap_d;		// 32bit, (depth)	(eye-space)
 	IDirect3DSurface9*	rt_smap_d_ZB;
+
+	// P-smap
+	CRTC*				rt_smap_p;
+	IDirect3DSurface9*	rt_smap_p_ZB;
 private:
 	//
 	SGeometry*			g_smap_d_debug;
@@ -32,6 +37,7 @@ private:
 	// 
 	Shader*				s_accum_direct_mask;
 	Shader*				s_accum_direct;
+	Shader*				s_accum_point;
 
 	//
 	SGeometry*			g_combine;
