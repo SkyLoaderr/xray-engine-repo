@@ -5,6 +5,12 @@
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
+local state_none = 0
+local state_moving_fwd = 1
+local state_rotating_left = 2
+local state_rotating_right = 3
+local state_end = 4
+
 class "action_car"
 
 function action_car:__init(obj, storage)
@@ -14,47 +20,176 @@ end
 
 function action_car:reset_scheme()
 	printf("_bp: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
+
+	self.object:set_nonscript_usable(self.st.nonscript_usable)
+
+	self.patrol_walk = patrol(self.st.path_walk)
+	if not self.patrol_walk then
+		utils.abort("object '%s': unable to find path_walk '%s' on the map", self.object:name(), self.st.path_walk)
+	end
+
+	self.patrol_walk_count = self.patrol_walk:count()
+
+	if self.st.path_walk_info == nil then
+		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
+	end
+	if not self.st.path_walk_info then
+		utils.abort("object '%s': path_walk ('%s'): unable to obtain path_walk_info from path",
+			self.object:name(), self.st.path_walk)
+	end
 	
 	xr_logic.mob_capture(self.object, true)
 
 	--action(self.object, move(move.fwd), cond(cond.time_end, time_infinite))                                                                                                             
 		
-	action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
-	action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
+	--action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
+	--action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
 
-	action(self.object,
-		move(move.on + move.fwd, 500),
-		object("right_light", object.activate),
-		object("left_light", object.activate),
-		cond(cond.time_end, 500))
+	--action(self.object,
+	--	move(move.on + move.fwd, 10),
+	--	object("right_light", object.activate),
+	--	object("left_light", object.activate),
+	--	cond(cond.time_end, 3000))
 	--[[
-	action(self.object,
-		move(move.on + move.fwd + move.right, 10),
-		cond(cond.time_end, 1000))
-	action(self.object,
-		move(move.on + move.back + move.right, 10),
-		cond(cond.time_end, 1000))
-	action(self.object,
-		move(move.off, 0),
-		cond(cond.time_end, 100))
-	action(self.object,
-		object("left_door", object.activate),
-		cond(cond.time_end, time_infinite))
+	--action(self.object,
+	--	move(move.on + move.fwd + move.right, 10),
+	--	cond(cond.time_end, 1000))
+	--action(self.object,
+	--	move(move.on + move.back + move.right, 10),
+	--	cond(cond.time_end, 1000))
 	--]]
+
+	--action(self.object,
+	--	move(move.off, 0),
+	--	cond(cond.time_end, 100))
+	--action(self.object,
+	--	object("left_door", object.activate),
+	--	cond(cond.time_end, time_infinite))
 
 --[[
 	action(self.object,
 		move(move.on + move.up + move.fwd, 20.1),
 		object("right_light", object.activate),
-		object ("left_light", object.activate),
+		object("left_light", object.activate),
 		cond(cond.time_end, 8200))
 	action(self.object, move(move.right + move.on + move.fwd, 20.1), cond(cond.time_end, 655))
 	action(self.object, move(move.on + move.up + move.fwd, 20.1), cond(cond.time_end, 14750))
 --]]
+
+	self.state = state_none
+
+	self.target_pt = self:get_nearest_waypoint()
+	if self:at_target_waypoint() then
+		self:arrival_callback(self.target_pt)
+	end
+
+	self:go_to_waypoint(self.target_pt)
+end
+
+function action_car:get_nearest_waypoint()
+	local pt_chosen = nl
+	local min_dist = nil
+	local dist
+	for i = 0, self.patrol_walk_count - 1 do
+		dist = self.object:position():distance_to(self.patrol_walk:point(i))
+		if not min_dist or dist < min_dist then
+			min_dist = dist
+			pt_chosen = i
+		end
+	end
+	if not pt_chosen then
+		utils.abort("object '%s': path '%s': action_car: unable to choose a nearest waypoint (path has no waypoints?)",
+			self.object:name(), self.st.path_walk)
+	end
+	return pt_chosen
+end
+
+function action_car:get_next_waypoint()
+	if self.target_pt < self.patrol_walk_count - 1 then
+		return self.target_pt + 1
+	end
+	return nil
+end
+
+function action_car:at_target_waypoint()
+	local dist = self.object:position():distance_to(self.patrol_walk:point(self.target_pt))
+	local arrived = dist < 5
+	printf("_bp: action_car:at_target_waypoint(self.target_pt=%d) = %d (arrived = %s)",
+		self.target_pt, dist, utils.to_str(arrived))
+	return arrived
+end
+
+function action_car:arrival_callback(index)
+	printf("_bp: action_car: arrival_callback() called")
+
+	local suggested_explode = self.st.path_walk_info[index]["explode"]
+	if suggested_explode == "true" then
+		printf("action_car:arrival_callback(): EXPLODE")
+		self.object:explode(device():time_global())
+	end
+
+	-- Выбрать следующую точку езды:
+	self.target_pt = self:get_next_waypoint()
+	if not self.target_pt then
+		-- Остановить машину
+		action(self.object, move(move.off, 0), cond(cond.time_end, 100))
+		self.state = state_end
+		return
+	end
+	-- Если эта точка рядом и уже приехали - не ждать апдейта, чтобы вызвать callback
+	if self:at_target_waypoint() then
+		self:arrival_callback()
+	end
+
+	self:go_to_waypoint(self.target_pt)
+end
+
+function action_car:go_to_waypoint()
+	--action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
+	--action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
+	if utils.no_need_to_rotate_xz(self.object, self.patrol_walk:point(self.target_pt)) then
+		printf("_bp: no_need_to_rotate")
+		if self.state ~= state_moving_fwd then
+	   		xr_logic.mob_capture(self.object, true)
+			action(self.object,
+				move(move.on + move.fwd, 20),
+				object("right_light", object.activate),
+				object("left_light", object.activate),
+				cond(cond.time_end, time_infinite))
+			self.state = state_moving_fwd
+		end
+	else
+		-- Поворачиваться нужно, но в какую сторону?
+		local rotate_left = utils.angle_left_xz(self.object:direction(), 
+		                                    utils.vector_copy_by_val(self.patrol_walk:point(self.target_pt)):sub(
+		                                                                     self.object:position()))
+		printf("_bp: must rotate: left? %s", utils.to_str(rotate_left))
+		if rotate_left then
+			if self.state ~= state_rotating_left then 
+				xr_logic.mob_capture(self.object, true)
+				action(self.object,
+					move(move.on + move.fwd + move.left, 5),
+					object("right_light", object.activate),
+					object("left_light", object.activate),
+					cond(cond.time_end, time_infinite))
+				self.state = state_rotating_left
+			end
+		else
+			if self.state ~= state_rotating_right then
+				xr_logic.mob_capture(self.object, true)
+				action(self.object,
+					move(move.on + move.fwd + move.right, 5),
+					object("right_light", object.activate),
+					object("left_light", object.activate),
+					cond(cond.time_end, time_infinite))
+				self.state = state_rotating_right
+			end
+		end
+	end
 end
 
 function action_car:update(delta)
-	--printf("_bp: action_car:update()", delta)
+	printf("_bp: action_car:update(): state=%d", self.state)
 
 	if not xr_logic.is_active(self.object, self.st) then
 		return
@@ -66,9 +201,32 @@ function action_car:update(delta)
 	end
 
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+		-- Остановить машину перед отпусканием из под скрипта
+		action(self.object, move(move.off, 0), cond(cond.time_end, 100))
 		return
 	end
 	
+	--if not self.object:action() then
+	--	printf("_bp: CAR EXPLODE")
+	--	self.object:explode(0)
+	--	self.object:Explode()
+	--end
+
+
+	if self.state == state_end then
+		if xr_logic.mob_captured(self.object) and not self.object:action() then
+			xr_logic.mob_release(self.object)
+		end
+		return
+	end
+	
+	if self:at_target_waypoint() then
+		-- Прибыли, выбрать новую точку
+		self:arrival_callback(self.target_pt)
+	else
+		-- Продолжать ехать, или поворачиваться
+		self:go_to_waypoint(self.target_pt)
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -86,5 +244,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
+	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
+	st.nonscript_usable = utils.cfg_get_bool(ini, section, "nonscript_usable", npc, false)
+
+	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
+	                        -- не загружены.
 end
 

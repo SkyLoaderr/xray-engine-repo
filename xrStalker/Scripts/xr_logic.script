@@ -364,7 +364,7 @@ function reset_generic_schemes_on_scheme_switch(npc)
 		mob_release(npc)
 	elseif st.stype == modules.stype_item then
 		npc:clear_use_callback()
-		npc:set_nonscript_usable(false)
+		npc:set_nonscript_usable(true)
 	end
 end
 

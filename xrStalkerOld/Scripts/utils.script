@@ -34,9 +34,10 @@ function stalker_go_to_waypoint(stalker, patrol_path, path_point)
 function abort(fmt, ...)
 	local reason = string.format(fmt, unpack(arg))
 	printf("ERROR: %s", reason)
-	patrol(".." .. reason .. "..")
+	--patrol(".." .. reason .. "..")
 	--printf("! Assertion failed : %s", reason)
 	--printf("%s",nil)
+	string.format("%s") -- crash the script
 end
 
 -- Выводит отладочное сообщение в лог, если скрипт активен (активный скрипт выбирается с помощью
@@ -438,6 +439,16 @@ function no_need_to_rotate(npc, target_pos)
 	return y < 0.3
 end
 
+function no_need_to_rotate_xz(npc, target_pos)
+	local dir1 = npc:direction()
+	dir1.y = 0
+	local dir2 = utils.vector_copy_by_val(target_pos):sub(npc:position())
+	dir2.y = 0
+	local y = yaw(dir1, dir2)
+
+	return y < 0.3
+end
+
 function get_customdata_or_ini_file(npc, filename)
 	if filename == "<customdata>" then
 		local ini = npc:spawn_ini()
@@ -469,3 +480,19 @@ function angle_diff(a1, a2)
 
 	return rad2deg(math.acos(math.abs(dotp)))
 end
+
+-- true, если нужно поворачивать влево
+function angle_left(dir1, dir2)
+	local dir_res = vector()
+	dir_res:crossproduct(dir1, dir2)
+	return dir_res.y <= 0
+end
+
+function angle_left_xz(dir1, dir2)
+	local dir_res = vector()
+	dir1.y = 0
+	dir2.y = 0
+	dir_res:crossproduct(dir1, dir2)
+	return dir_res.y <= 0
+end
+
