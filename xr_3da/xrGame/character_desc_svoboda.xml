@@ -9,6 +9,10 @@
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
 		<team>Svoboda_novice</team>
+		
+		<class>Svoboda_novice</class>
+		<community>freedom</community>
+		
 		<rank>30</rank>
 		<reputation>50</reputation>
 
@@ -27,6 +31,10 @@
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
 		<team>Svoboda_general</team>
+		
+		<class>Svoboda_general</class>
+		<community>freedom</community>
+
 		<rank>50</rank>
 		<reputation>50</reputation>
 
@@ -45,6 +53,10 @@
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
 		<team>Svoboda_veteran</team>
+		
+		<class>Svoboda_veteran</class>
+		<community>freedom</community>
+
 		<rank>70</rank>
 		<reputation>50</reputation>
 
@@ -63,6 +75,11 @@
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
 		<team>Svoboda_master</team>
+		
+		<class>Svoboda_master</class>
+		<community>freedom</community>
+
+		
 		<rank>90</rank>
 		<reputation>50</reputation>
 
