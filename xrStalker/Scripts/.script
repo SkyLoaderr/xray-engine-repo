@@ -40,8 +40,6 @@ module ("xr_rest")
 module ("escape")
 
 module ("escape_factory_bandits")
---For Dark Laboratory
---module ("xr_scientist")
 
 function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
@@ -726,19 +724,16 @@ function isWeapon(object)
     elseif id == clsid.wpn_hpsa then return true
     elseif id == clsid.wpn_pm then return true
     elseif id == clsid.wpn_fort then return true
-    elseif id == clsid.wpn_binocular then return true
     elseif id == clsid.wpn_shotgun then return true
     elseif id == clsid.wpn_svd then return true
     elseif id == clsid.wpn_svu then return true
     elseif id == clsid.wpn_rpg7 then return true
     elseif id == clsid.wpn_val then return true
-    elseif id == clsid.wpn_vintorez then return true
     elseif id == clsid.wpn_walther then return true
     elseif id == clsid.wpn_usp45 then return true
     elseif id == clsid.wpn_groza then return true
     elseif id == clsid.wpn_knife then return true
     elseif id == clsid.wpn_grenade_launcher then return true
-    elseif id == clsid.obj_explosive then return true
     elseif id == clsid.wpn_grenade_f1 then return true
     elseif id == clsid.wpn_grenade_rpg7 then return true
     elseif id == clsid.wpn_grenade_rgd5 then return true
