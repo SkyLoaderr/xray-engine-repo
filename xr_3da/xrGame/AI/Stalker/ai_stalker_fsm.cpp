@@ -40,26 +40,55 @@ void CAI_Stalker::BackCover(bool bFire)
 	WRITE_TO_LOG				("Back cover");
 	
 	m_dwInertion				= bFire ? 20000 : 60000;
-	if (!m_tEnemy.Enemy) {
+	if (!m_tEnemy.Enemy && bfCheckIfCanKillTarget(vPosition,m_tSavedEnemyPosition,-r_torso_current.yaw,-r_torso_current.pitch,ffGetFov()/180.f*PI)) {
 		Camp(bFire);
 		return;
 	}
-	m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
+	m_tSelectorCover.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
+	if (m_bStateChanged) {
+		m_dwActionStartTime = Level().timeServer() + ::Random.randI(2000,3000);
+		m_tActionState = eActionStateRun;
+	}
 
-	Fvector						tPoint;
-	m_tEnemy.Enemy->clCenter	(tPoint);
-	m_dwRandomFactor			= 50;
-	vfSetParameters				(
-		&m_tSelectorCover,
-		0,
-		true,
-		bFire ? eWeaponStatePrimaryFire : eWeaponStateIdle,
-		ePathTypeDodgeCriteria,
-		eBodyStateStand,
-		m_tEnemy.Enemy->Position().distance_to(vPosition) > 15.f ? eMovementTypeRun : eMovementTypeWalk,
-		eStateTypeDanger,
-		eLookTypeFirePoint,
-		tPoint);
+	if (m_tActionState == eActionStateRun) {
+		vfSetParameters				(
+			&m_tSelectorCover,
+			0,
+			true,
+			eWeaponStateIdle,
+			ePathTypeDodgeCriteria,
+			eBodyStateStand,
+			m_tSavedEnemyPosition.distance_to(vPosition) > 0.f ? eMovementTypeRun : eMovementTypeWalk,
+			eStateTypeDanger,
+			eLookTypeDirection);
+		if (Level().timeServer() >= m_dwActionStartTime) {
+			m_tActionState = eActionStateStand;
+			m_dwActionStartTime = Level().timeServer() + ::Random.randI(4000,7000);
+		}
+	}
+	else {
+		Fvector						tPoint;
+		if (m_tEnemy.Enemy)
+			m_tEnemy.Enemy->clCenter	(tPoint);
+		else
+			tPoint					= m_tSavedEnemyPosition;
+		m_dwRandomFactor			= 50;
+		vfSetParameters				(
+			&m_tSelectorCover,
+			0,
+			true,
+			bFire ? eWeaponStatePrimaryFire : eWeaponStateIdle,
+			ePathTypeDodgeCriteria,
+			eBodyStateCrouch,
+			eMovementTypeWalk,
+			eStateTypeDanger,
+			eLookTypeFirePoint,
+			tPoint);
+		if (Level().timeServer() >= m_dwActionStartTime) {
+			m_tActionState = eActionStateRun;
+			m_dwActionStartTime = Level().timeServer() + ::Random.randI(4000,7000);
+		}
+	}
 }
 
 void CAI_Stalker::ForwardStraight()
@@ -444,6 +473,7 @@ void CAI_Stalker::Think()
 	if (D && H && I) {
 		m_dwRandomFactor	= 50;
 		BackCover	(true);
+//		ForwardCover();
 	} else
 	if (D && H && !I) {
 		Hide		();
@@ -451,6 +481,7 @@ void CAI_Stalker::Think()
 	if (D && !H && I) {
 		m_dwRandomFactor	= 50;
 		BackCover	(false);
+//		ForwardCover();
 	} else
 	if (D && !H && !I) {
 		Hide	();
@@ -458,11 +489,11 @@ void CAI_Stalker::Think()
 	
 	if (E && H && I) {
 		m_dwRandomFactor	= 0;
-		ForwardCover	();
+		BackCover	(true);
 	} else
 	if (E && H && !I) {
 		m_dwRandomFactor	= 0;
-		ForwardCover	();
+		BackCover	(true);
 	} else
 	if (E && !H && I) {
 		Detour			();

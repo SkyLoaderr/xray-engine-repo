@@ -13,6 +13,8 @@
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
+#define	FIRE_SAFETY_ANGLE				PI/10
+
 //#define LOG_PARAMETERS
 
 #ifdef LOG_PARAMETERS
@@ -265,7 +267,7 @@ private:
 			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool			bfCheckIfCanKillEnemy			();
 			bool			bfCheckIfCanKillMember			();
-			bool			bfCheckIfCanKillTarget			(Fvector fire_pos, Fvector target_pos, float yaw2, float pitch2);
+			bool			bfCheckIfCanKillTarget			(Fvector fire_pos, Fvector target_pos, float yaw2, float pitch2, float fSafetyAngle = FIRE_SAFETY_ANGLE);
 			void			vfSetWeaponState				(EWeaponState tWeaponState);
 			void			vfCheckForItems					();
 			

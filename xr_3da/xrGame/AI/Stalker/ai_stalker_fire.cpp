@@ -10,8 +10,6 @@
 #include "ai_stalker.h"
 #include "..\\..\\WeaponMagazined.h"
 
-#define	FIRE_SAFETY_ANGLE				PI/10
-
 void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
@@ -29,7 +27,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	L				= V->LL_BoneID("bip01_l_finger1");
 }
 
-bool CAI_Stalker::bfCheckIfCanKillTarget(Fvector fire_pos, Fvector target_pos, float yaw2, float pitch2) 
+bool CAI_Stalker::bfCheckIfCanKillTarget(Fvector fire_pos, Fvector target_pos, float yaw2, float pitch2, float fSafetyAngle) 
 {
 	if (!m_inventory.ActiveItem() || !dynamic_cast<CWeapon*>(m_inventory.ActiveItem()) || !dynamic_cast<CWeapon*>(m_inventory.ActiveItem())->GetAmmoElapsed())
 		return(false);
@@ -41,7 +39,7 @@ bool CAI_Stalker::bfCheckIfCanKillTarget(Fvector fire_pos, Fvector target_pos, f
 	pitch1 = angle_normalize_signed(pitch1);
 	yaw2 = angle_normalize_signed(yaw2);
 	pitch2 = angle_normalize_signed(pitch2);
-	return(getAI().bfTooSmallAngle(yaw1,yaw2,FIRE_SAFETY_ANGLE) && getAI().bfTooSmallAngle(pitch1,pitch2,FIRE_SAFETY_ANGLE));
+	return(getAI().bfTooSmallAngle(yaw1,yaw2,fSafetyAngle) && getAI().bfTooSmallAngle(pitch1,pitch2,fSafetyAngle));
 }
 
 bool CAI_Stalker::bfCheckIfCanKillEnemy()
