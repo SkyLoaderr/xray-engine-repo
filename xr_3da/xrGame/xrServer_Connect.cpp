@@ -53,7 +53,8 @@ BOOL xrServer::Connect(LPSTR &session_name)
 		game				= xr_new<game_sv_CS> ();
 		break;
 	default:
-		return				FALSE;
+		R_ASSERT2(0, "Unknown game type!!!");
+//		return				FALSE;
 		break;
 	}
 
