@@ -8,6 +8,12 @@
 local desired_distance = 3
 local min_distance = 1.5
 
+local keep_state_min_time = 1000 -- переключившись в состояние (бег, ходьба, спринт), не переключаться в другое N ms
+
+local dist_walk = 6 -- < dist_run
+local dist_run = 20
+-- otherwise - sprint
+
 local mt_stand = 0
 local mt_walk = 1
 local mt_run = 2
@@ -52,9 +58,11 @@ function action_companion_activity:initialize()
 	self.object:enable_talk()	
 
 	self.assist_point = nil
+	--self.dir_approaching = true
 	
-	self.move_type = mt_stand
 	self.last_state = ""
+	
+	self.keep_state_until = device():time_global()
 end
 
 function action_companion_activity:execute()
@@ -62,11 +70,26 @@ function action_companion_activity:execute()
 
 	local actor = db.actor
 
+	local select_new_pt = false
+	if self.assist_point == nil then
+		select_new_pt = true
+	else
+		local dist_from_self_to_actor = self.object:position():distance_to(actor:position())
+		local dist_from_assist_pt_to_actor = level.vertex_position(self.assist_point):distance_to(actor:position())
+		if dist_from_self_to_actor >= desired_distance and
+		   dist_from_assist_pt_to_actor >= desired_distance * 2 then
+			select_new_pt = true
+			--self.dir_approaching = true
+		elseif --self.dir_approaching and
+		   dist_from_self_to_actor < min_distance and
+		   dist_from_assist_pt_to_actor < min_distance * 2 then
+			select_new_pt = true
+			--self.dir_approaching = false
+		end
+	end
+	
 	-- 1. Если мы находимся за большим радиусом - необходимо выбрать новую точку
-	if self.assist_point == nil or
-	   (self.object:position():distance_to(actor:position()) >= desired_distance and
-	    level.vertex_position(self.assist_point):distance_to(actor:position()) >= 2*desired_distance)
-	then
+	if select_new_pt then
 		self.assist_point = select_position(self.object, self.st)
 		if self.assist_point == nil then
 			return
@@ -77,38 +100,33 @@ function action_companion_activity:execute()
 	self.object:set_path_type(game_object.level_path)
 	self.object:set_dest_level_vertex_id(self.assist_point)
 
-	local dist = level.vertex_position(self.assist_point):distance_to(self.object:position())
+	local dist_to_assist_pt = level.vertex_position(self.assist_point):distance_to(self.object:position())
 	
-	printf("_bp: action_companion_activity:execute(): name='%s', dist=%s",
-		self.object:name(), dist)
-	
-	if dist < 1 then
-		self.move_type = mt_stand
-	end
-	if dist >= 1 and self.move_type == mt_stand then
-		self.move_type = mt_walk
-	end
-	if dist >= 6 and
-		(self.move_type == mt_stand or self.move_type == mt_walk)
-	then
-		self.move_type = mt_run		
-	end
-	if dist >= 10 and
-		(self.move_type == mt_stand or self.move_type == mt_walk or
-		self.move_type == mt_run)
-	then
-		self.move_type = mt_sprint		
-	end
-	
+	printf("_bp: action_companion_activity:execute(): name='%s', dist_to_assist_pt=%s",
+		self.object:name(), dist_to_assist_pt)
+
 	local new_state
-	if self.move_type == mt_stand then
+
+	if self.object:level_vertex_id() == self.assist_point then
+		-- Уже пришли на точку отхода, разрешить еще раз начать отход
+		-- (случай, когда игрок подошел слишком близко к ассистенту)
+		--self.dir_approaching = true
+
 		new_state = "guard_na"
-	elseif self.move_type == mt_walk then
-		new_state = "patrol"
-	elseif self.move_type == mt_run then
-		new_state = "rush"
 	else
-		new_state = "sprint"
+		local t = device():time_global()
+		if t >= self.keep_state_until then
+			self.keep_state_until = t + keep_state_min_time
+
+			--printf("_bp: move_mgr: distance to destination waypoint: %d", dist_to_assist_pt)
+			if dist_to_assist_pt <= dist_walk then
+				new_state = "patrol"
+			elseif dist_to_assist_pt <= dist_run then
+				new_state = "rush"
+			else
+				new_state = "sprint"
+			end
+		end
 	end
 	
 	if new_state and new_state ~= self.last_state then
