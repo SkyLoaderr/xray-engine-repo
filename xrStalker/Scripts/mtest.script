@@ -1,12 +1,20 @@
 module("monsterAi")
 module("manager")
+module("s_zombie_walk")
+module("s_black_devil_walk")
 
 function main()
 	local scene	= manager.CManager()
 	
-	scene:insert(monsterai.CMonsterBase("dog", nil, stateattack.CStateAttackCoward))
-	scene:insert(monsterai.CMonsterBase("dog1", nil, stateattack.CStateAttackCoward))	
+//	scene:insert(monsterai.CMonsterBase("dog", nil, stateattack.CStateAttackCoward))
+//	scene:insert(monsterai.CMonsterBase("dog1", statewalk.CStateWalkPatrol, stateattack.CStateAttackCoward, 
+//										 statehit.CStateHitLook, 
+//										 statedangersound.CStateDangerSoundRun))	
 	
+//	scene:insert(monsterai.CMonsterBase("zombie", s_zombie_walk.CStateZombieWalk))	
+	
+	scene:insert(monsterai.CMonsterAttack("dog", s_black_devil_walk.CStateDevilWalk, 
+												 stateattack.CStateAttackDevil))	
 	scene:initialize()
 	
 	while(scene:execute()) do

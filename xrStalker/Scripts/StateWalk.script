@@ -1,7 +1,7 @@
 local s_walk	= 7
 
 class "CStateWalk"
-function CStateWalk:__init(_data, _mem, sWalk)
+function CStateWalk:__init(_data, _mem)
 	self.data	= _data
 	self.memory = _mem
 	self.path	= nil
@@ -32,7 +32,7 @@ local time_to_look	= 4000
 local time_to_walk	= 10000
 
 class "CStateWalkPatrol" (CStateWalk)
-function CStateWalkPatrol:__init(_data, _mem, sWalk) super(_data, _mem, sWalk)
+function CStateWalkPatrol:__init(_data, _mem) super(_data, _mem)
 	self.index	= 0
 end
 
@@ -61,6 +61,8 @@ function CStateWalkPatrol:move_callback(obj, type, index)
 end
 
 function CStateWalkPatrol:finalize()
-	self.data.npc:clear_callback(game_object.movement)
+	if(self.data.npc) then
+		self.data.npc:clear_callback(game_object.movement)
+	end
 	this.CStateWalk.finalize(sefl)
 end

@@ -8,8 +8,7 @@ function CStateAttack:__init(_data, _mem)
 end
 
 function CStateAttack:initialize()
-	reset_action(self.data.npc, self.data.scr_name)
-	self.enemy_id	= self.memory.enemy:id()
+	self.enemy_id	= -1
 end
 
 function CStateAttack:execute()
@@ -23,7 +22,7 @@ function CStateAttack:execute()
 end
 
 function CStateAttack:enemy_changed()
-	if(self.memory.enemy:id() ~= self.enemy_id) then
+	if(self.memory.enemy and self.memory.enemy:id() ~= self.enemy_id) then
 		self.enemy_id	= self.memory.enemy:id()
 		return true
 	end
@@ -54,6 +53,90 @@ function CStateAttackCoward:execute()
 	if(self.data.npc:action() == nil) then
 		action(self.data.npc, act(act.panic, self.memory.enemy), cond(cond.time_end, 60000))
 	end
+end
+
+//---------------------------------------------------------------------------------------------------------
+//—осто€ние атаки, при котором видит врага, сначала убегает, а потом если его преследуют, начинает атаковать
+//---------------------------------------------------------------------------------------------------------
+
+class "CStateAttackDevil" (CStateAttack)
+function CStateAttackDevil:__init(_data, _mem) super(_data, _mem)
+	self.time		= 0
+	self.last_see	= 0
+	self.attack		= false
+end
+
+function CStateAttackDevil:execute()
+	if(self:enemy_changed()) then
+		reset_action(self.data.npc, self.data.scr_name)
+		if(level.actor() and self.memory.enemy:id() == level.actor():id()) then
+			self.time	= device():time_global()					//'Ќачало атаки актером
+			self.attack = false
+		else
+			self.time	= 0
+			self.attack = false
+		end
+	end
+	
+	if(self.time ~= 0) then
+		//'Ќас атакует актер
+		if(device():time_global() < self.time + 10000) then
+			if(self.data.npc:action() == nil) then
+				action(self.data.npc, act(act.panic, self.memory.enemy), cond(cond.time_end, 60000))
+			end
+		else
+			//'”же давно убегаем от актера.
+			if(distance_between(level.actor(), self.data.npc) < 20 and self.attack == false) then
+				printf("attack is true")
+				self.attack	= true
+				self.last_see	= device():time_global()
+				reset_action(self.data.npc, self.data.scr_name)
+			end
+			if(self.data.npc:action() == nil) then
+				if(self.attack) then
+					action(self.data.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 60000))
+				else
+					action(self.data.npc, act(act.panic, self.memory.enemy), cond(cond.time_end, 60000))
+				end
+			end
+			if(self.attack) then
+				//'«апоминаем врем€, когда последний раз видели актера
+				if(self.data.npc:see(level.actor())) then
+					self.last_see	= device():time_global()
+				end
+			end
+		end
+	else
+		if(self.data.npc:action() == nil) then
+			action(self.data.npc, act(act.panic, self.memory.enemy), cond(cond.time_end, 60000))
+		end
+	end
+end
+
+function CStateAttackDevil:check_completed()
+	if(self.time == 0 and self.enemy == nil) then
+		//'¬раг был не актер, и теперь он пропал
+		return true
+	end
+	
+	if(self.time ~= 0) then
+		if(level.actor():alive() == false) then
+			//'јктер умер
+			return true
+		end
+		
+		if(device():time_global() > self.time + 15000 and self.attack == false and distance_between(self.data.npc, level.actor()) > 30) then
+			//'ƒавно убегаем,  не атакуем актера и актер далеко
+			return true
+		end
+		
+		if(self.attack and device():time_global() > self.last_see + 10000) then
+			//'ƒавно его не видели
+			return true
+		end
+	end
+	
+	return false
 end
 
 

@@ -166,3 +166,191 @@ function CMonsterBase:finalize()
 		self.data.npc:script(false, script_name())
 	end
 end
+
+//---------------------------------------------------------------------------------------------------------
+// Монстр module("StateAttack")
+module("StateHit")
+module("StateDangerSound")
+module("StateNotDangerSound")
+module("StateRest")
+
+local s_attack	= 1
+local s_hit		= 2
+local s_dsound	= 3
+local s_sound	= 4
+local s_rest	= 5
+
+//-------------------------------------------------------------------------------------
+// Базовый монстр
+//-------------------------------------------------------------------------------------
+
+class "CMonsterBase"
+function CMonsterBase:__init(_name, sRest, sAttack, sHit, sDangerSound, sNotDangerSound)
+	self.npc_name	= _name
+	
+	self.data		= {
+						npc			= nil,
+						scr_name	= script_name()
+						}
+	self.memory		= {
+						enemy		= nil,
+						corpse		= nil,
+						sound		= nil, 
+						hit			= nil
+						}
+
+	//Устанавливаем состояния и инициализируем их
+	if(sAttack) then
+		self.stateAttack	= sAttack(self.data, self.memory)
+	else
+		self.stateAttack	= stateattack.CStateAttack(self.data, self.memory)
+	end
+	
+	if(sHit) then
+		self.stateHit		= sHit(self.data, self.memory)
+	else
+		self.stateHit		= statehit.CStateHit(self.data, self.memory)
+	end
+
+	if(sDangerSound) then
+		self.stateDangerSound	= sDangerSound(self.data, self.memory)
+	else
+		self.stateDangerSound	= statedangersound.CStateDangerSound(self.data, self.memory)
+	end
+
+	if(sNotDangerSound) then
+		self.stateNotDangerSound	= sNotDangerSound(self.data, self.memory)
+	else
+		self.stateNotDangerSound	= statenotdangersound.CStateNotDangerSound(self.data, self.memory)
+	end
+
+	if(sRest) then
+		self.stateRest	= staterest.CStateRest(self.data, self.memory, sRest)
+	else
+		self.stateRest	= staterest.CStateRest(self.data, self.memory)
+	end
+
+	self.curState		= nil
+	self.need_update	= false
+end
+
+function CMonsterBase:is_on_line()
+	if(level.object(self.npc_name)) then
+		if(self.data.npc) then	return true  end
+		
+		self.data.npc		= level.object(self.npc_name)
+		self.need_update	= true
+		self.data.npc:script(true, script_name())
+		
+		return true
+	else
+		if(self.data.npc == nil) then return false end
+		
+		self.data.npc		= nil
+		self.curState		= nil
+		
+		return false
+	end
+end		
+		
+
+function CMonsterBase:initialize()
+		
+end
+
+function CMonsterBase:execute()
+	if(self:is_on_line() == false) then			//Монстр в offline, не знаем, закончил ли скрипт работу
+		return true
+	end				
+	
+	if(self.data.npc:alive() == false) then		//Если мертвый, то конец скрипта
+		return false
+	end
+	
+	self:update_memory		()
+	self:select_state		()
+	self.curState:execute	()
+	
+	return true	
+end
+
+function CMonsterBase:select_state()
+
+	if(self.memory.enemy) then
+		self:set_state(s_attack)
+	elseif(self.memory.hit.time ~= 0) then
+		self:set_state(s_hit)
+	elseif(self.memory.sound.time ~= 0) then
+		if(self.memory.sound.danger == 1) then
+			self:set_state(s_dsound)
+		else
+			self:set_state(s_sound)
+		end
+	else
+		self:set_state(s_rest)
+	end
+
+end
+
+function CMonsterBase:set_state(new_state)
+	if(self.curState) then
+		//printf("old state %d", self.curState:id())
+		if(self.curState:id() == new_state) then
+			return
+		end
+		self.curState:finalize()
+	end
+	
+	if(new_state == s_attack) then
+		self.curState	= self.stateAttack
+		printf("[%d]", self.curState:id())
+	elseif(new_state == s_hit) then
+		self.curState	= self.stateHit
+	elseif(new_state == s_dsound) then
+		self.curState	= self.stateDangerSound
+	elseif(new_state == s_sound) then
+		self.curState	= self.stateNotDangerSound
+	else
+		self.curState	= self.stateRest
+	end
+	
+	printf("new state %d", new_state)
+	self.curState:initialize()
+end
+
+function CMonsterBase:update_memory()
+	self.memory.enemy		= self.data.npc:get_enemy()
+	
+	if(self.memory.enemy and self.memory.enemy:alive() == false) then
+		self.memory.enemy	= nil
+	end
+	
+	self.memory.corpse		= self.data.npc:get_corpse()
+	self.memory.sound		= self.data.npc:get_sound_info()
+	self.memory.hit			= self.data.npc:get_monster_hit_info()
+end
+
+function CMonsterBase:finalize()
+	if(self.data.npc and self.data.npc:get_script()) then
+		self.data.npc:script(false, script_name())
+	end
+end
+
+
+//---------------------------------------------------------------------------------------------------------
+//Монстр, у которого состояние атаки, если и началось, то длится до того времени, пока у него функция 
+//check_completed не вернет true
+//---------------------------------------------------------------------------------------------------------
+class "CMonsterAttack" (CMonsterBase)
+function CMonsterAttack:__init(_name, sRest, sAttack, sHit, sDangerSound, sNotDangerSound) super(_name, sRest, sAttack, sHit, sDangerSound, sNotDangerSound)
+end
+
+function CMonsterAttack:set_state(new_state)
+	if(self.curState and self.curState:id() == s_attack) then
+		//'Состояние атаки длится до того времени, пока оно не закончится, а не пока пропадет враг
+		if(self.curState:check_completed() == false) then
+			return
+		end
+	end
+	this.CMonsterBase.set_state(self, new_state)
+end
