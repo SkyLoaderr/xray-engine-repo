@@ -761,6 +761,7 @@ void CAI_Soldier::AttackFire()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -779,6 +780,7 @@ void CAI_Soldier::AttackFire()
 			q_action.setup(AI::AIC_Action::FireEnd);
 			m_dwLastRangeSearch = 0;
 		}
+		bStopThinking = true;
 		return;
 	}
 	
@@ -786,6 +788,7 @@ void CAI_Soldier::AttackFire()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierFindEnemy;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 		
@@ -797,6 +800,7 @@ void CAI_Soldier::AttackFire()
 	if ((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring)))) {
 		eCurrentState = aiSoldierAttackRun;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
@@ -804,6 +808,7 @@ void CAI_Soldier::AttackFire()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierReload;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
@@ -827,6 +832,7 @@ void CAI_Soldier::AttackRun()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -845,6 +851,7 @@ void CAI_Soldier::AttackRun()
 			q_action.setup(AI::AIC_Action::FireEnd);
 			m_dwLastRangeSearch = 0;
 		}
+		bStopThinking = true;
 		return;
 	}
 	
@@ -852,6 +859,7 @@ void CAI_Soldier::AttackRun()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierFindEnemy;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 		
@@ -864,6 +872,7 @@ void CAI_Soldier::AttackRun()
 	//if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() > 0)){
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
@@ -921,6 +930,7 @@ void CAI_Soldier::FindEnemy()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -939,6 +949,7 @@ void CAI_Soldier::FindEnemy()
 			q_action.setup(AI::AIC_Action::FireEnd);
 			m_dwLastRangeSearch = 0;
 		}
+		bStopThinking = true;
 		return;
 	}
 	
@@ -946,6 +957,7 @@ void CAI_Soldier::FindEnemy()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 		
@@ -953,6 +965,7 @@ void CAI_Soldier::FindEnemy()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierReload;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
@@ -974,7 +987,6 @@ void CAI_Soldier::FindEnemy()
 	vfSetMovementType(false,m_fMaxSpeed);
 
 	bStopThinking = true;
-	return;
 }
 
 void CAI_Soldier::FollowLeader()
@@ -985,6 +997,7 @@ void CAI_Soldier::FollowLeader()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 		
@@ -994,6 +1007,7 @@ void CAI_Soldier::FollowLeader()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -1003,6 +1017,7 @@ void CAI_Soldier::FollowLeader()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -1010,6 +1025,7 @@ void CAI_Soldier::FollowLeader()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierSenseSomething;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -1023,6 +1039,7 @@ void CAI_Soldier::FollowLeader()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
@@ -1031,11 +1048,15 @@ void CAI_Soldier::FollowLeader()
 			eCurrentState = aiSoldierPatrolRoute;
 		else
 			eCurrentState = aiSoldierFreeHunting;
+		bStopThinking = true;
 		return;
 	}
 	else
-		if (m_tpaPatrolPoints.size())
+		if (m_tpaPatrolPoints.size()) {
 			eCurrentState = aiSoldierFollowLeaderPatrol;
+			bStopThinking = true;
+			return;
+		}
 
 	vfInitSelector(SelectorFollowLeader,Squad,Leader);
 
@@ -1060,6 +1081,7 @@ void CAI_Soldier::FreeHunting()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 		
@@ -1069,6 +1091,7 @@ void CAI_Soldier::FreeHunting()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -1078,6 +1101,7 @@ void CAI_Soldier::FreeHunting()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -1085,6 +1109,7 @@ void CAI_Soldier::FreeHunting()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierSenseSomething;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -1098,6 +1123,7 @@ void CAI_Soldier::FreeHunting()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
@@ -1145,6 +1171,7 @@ void CAI_Soldier::NoWeapon()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 		
@@ -1185,6 +1212,7 @@ void CAI_Soldier::Pursuit()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 
@@ -1193,6 +1221,7 @@ void CAI_Soldier::Pursuit()
 	if (Enemy.Enemy) {
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
@@ -1211,6 +1240,7 @@ void CAI_Soldier::Pursuit()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierPatrolUnderFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -1218,6 +1248,7 @@ void CAI_Soldier::Pursuit()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierSenseSomething;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -1233,12 +1264,14 @@ void CAI_Soldier::Pursuit()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierUnderFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
 	if (!tSavedEnemy) {
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
+		bStopThinking = true;
 		return;
 	}
 
@@ -1270,6 +1303,7 @@ void CAI_Soldier::Reload()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 
@@ -1277,12 +1311,14 @@ void CAI_Soldier::Reload()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
 	if ((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent()))) {
 		eCurrentState = aiSoldierNoWeapon;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -1294,6 +1330,7 @@ void CAI_Soldier::Reload()
 		tStateStack.pop();
 		q_action.setup(AI::AIC_Action::FireEnd);
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	/**/
@@ -1362,6 +1399,7 @@ void CAI_Soldier::UnderFire()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 
@@ -1371,6 +1409,7 @@ void CAI_Soldier::UnderFire()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
@@ -1381,6 +1420,7 @@ void CAI_Soldier::UnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	/**/
@@ -1397,6 +1437,7 @@ void CAI_Soldier::UnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	

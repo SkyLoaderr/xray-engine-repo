@@ -27,6 +27,7 @@
 	\
 	if (g_Health() <= 0) {\
 		eCurrentState = aiSoldierDie;\
+		bStopThinking = true;\
 		return;\
 	}\
 	\
@@ -36,6 +37,7 @@
 		tStateStack.push(eCurrentState);\
 		eCurrentState = aiSoldierAttackFire;\
 		m_dwLastRangeSearch = 0;\
+		bStopThinking = true;\
 		return;\
 	}\
 	\
@@ -45,6 +47,7 @@
 		tStateStack.push(eCurrentState);\
 		eCurrentState = aiSoldierUnderFire;\
 		m_dwLastRangeSearch = 0;\
+		bStopThinking = true;\
 		return;\
 	}\
 	\
@@ -52,6 +55,7 @@
 		tStateStack.push(eCurrentState);\
 		eCurrentState = aiSoldierSenseSomething;\
 		m_dwLastRangeSearch = 0;\
+		bStopThinking = true;\
 		return;\
 	}\
 	\
@@ -65,6 +69,7 @@
 		tStateStack.push(eCurrentState);\
 		eCurrentState = aiSoldierUnderFire;\
 		m_dwLastRangeSearch = 0;\
+		bStopThinking = true;\
 		return;\
 	}
 
@@ -741,6 +746,7 @@ void CAI_Soldier::PatrolUnderFire()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 
@@ -750,6 +756,7 @@ void CAI_Soldier::PatrolUnderFire()
 	if (Enemy.Enemy)		{
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	/**/
@@ -761,6 +768,7 @@ void CAI_Soldier::PatrolUnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	/**/
@@ -773,6 +781,7 @@ void CAI_Soldier::PatrolUnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	
@@ -824,6 +833,7 @@ void CAI_Soldier::PatrolHurt()
 
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
+		bStopThinking = true;
 		return;
 	}
 
@@ -842,6 +852,7 @@ void CAI_Soldier::PatrolHurt()
 	if (dwCurTime - dwHitTime >= 1*1000) {
 		eCurrentState = aiSoldierPatrolUnderFire;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 
@@ -870,6 +881,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 	
 	if (Leader == this) {
 		eCurrentState = aiSoldierPatrolRoute;
+		bStopThinking = true;
 		return;
 	}
 
@@ -877,6 +889,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierPatrolReturnToRoute;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	else
@@ -951,6 +964,7 @@ void CAI_Soldier::Patrol()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierPatrolReturnToRoute;
 		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
 		return;
 	}
 	else
@@ -993,6 +1007,7 @@ void CAI_Soldier::PatrolReturn()
 			eCurrentState = tStateStack.top();
 			tStateStack.pop();
 			m_dwLastRangeSearch = 0;
+			bStopThinking = true;
 			return;
 		}
 		else {
