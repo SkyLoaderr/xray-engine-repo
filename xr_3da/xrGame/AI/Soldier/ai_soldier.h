@@ -389,7 +389,7 @@ class CAI_Soldier : public CCustomMonster
 		void OnUnderFire();
 		void OnJumping();
 		/**/
-		//void Test();
+		void Test();
 		void Die();
 		void OnWaitingForAnimation();
 		void OnWaitingForTime();
