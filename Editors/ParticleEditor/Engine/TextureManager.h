@@ -87,50 +87,50 @@ public:
 #endif
 
 	// Low level resource creation
-	ref_texture						_CreateTexture		(LPCSTR Name);
+	CTexture*						_CreateTexture		(LPCSTR Name);
 	void							_DeleteTexture		(CTexture* T);
 
-	ref_matrix						_CreateMatrix		(LPCSTR Name);
-	void							_DeleteMatrix		(CMatrix*  &M);
+	CMatrix*						_CreateMatrix		(LPCSTR Name);
+	void							_DeleteMatrix		(CMatrix*  M);
 
 	CConstant*						_CreateConstant		(LPCSTR Name);
-	void							_DeleteConstant		(CConstant* &C);
+	void							_DeleteConstant		(CConstant* C);
 
 	R_constant_table*				_CreateConstantTable(R_constant_table& C);
 
 	CRT*							_CreateRT			(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f);
-	void							_DeleteRT			(CRT* &RT	);
+	void							_DeleteRT			(CRT*	RT	);
 
 	CRTC*							_CreateRTC			(LPCSTR Name, u32 size,	D3DFORMAT f);
-	void							_DeleteRTC			(CRTC* &RT	);
+	void							_DeleteRTC			(CRTC*	RT	);
 
 	SPS*							_CreatePS			(LPCSTR Name);
-	void							_DeletePS			(IDirect3DPixelShader9* &PS);
+	void							_DeletePS			(SPS*	PS	);
 
 	SVS*							_CreateVS			(LPCSTR Name);
-	void							_DeleteVS			(IDirect3DVertexShader9* &PS);
+	void							_DeleteVS			(SVS*	VS	);
 
-	SPass*							_CreatePass			(SPass& P);
-	void							_DeletePass			(SPass* &P);
+	SPass*							_CreatePass			(SPass& P	);
+	void							_DeletePass			(SPass* P	);
 
 	// Shader compiling / optimizing
-	IDirect3DStateBlock9*			_CreateState		(SimulatorStates& Code);
-	void							_DeleteState		(IDirect3DStateBlock9*& SB);
+	SState*							_CreateState		(SimulatorStates& Code);
+	void							_DeleteState		(SState* SB);
 
 	IDirect3DVertexDeclaration9*	_CreateDecl			(D3DVERTEXELEMENT9* dcl);
-	void							_DeleteDecl			(IDirect3DVertexDeclaration9*& dcl);
+	void							_DeleteDecl			(IDirect3DVertexDeclaration9* dcl);
 
 	STextureList*					_CreateTextureList	(STextureList& L);
-	void							_DeleteTextureList	(STextureList* &L);
+	void							_DeleteTextureList	(STextureList* L);
 
 	SMatrixList*					_CreateMatrixList	(SMatrixList& L);
-	void							_DeleteMatrixList	(SMatrixList* &L);
+	void							_DeleteMatrixList	(SMatrixList* L);
 
 	SConstantList*					_CreateConstantList	(SConstantList& L);
-	void							_DeleteConstantList	(SConstantList* &L);
+	void							_DeleteConstantList	(SConstantList* L);
 
 	ShaderElement*					_CreateElement		(CBlender_Compile& C);
-	void							_DeleteElement		(ShaderElement* &L);
+	void							_DeleteElement		(ShaderElement* L);
 
 	CShaderManager			()
 	{
@@ -145,13 +145,13 @@ public:
 	void			OnDeviceDestroy		(BOOL   bKeepTextures);
 
 	// Creation/Destroying
-	Shader*			Create				(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
-	Shader*			Create_B			(IBlender*	B,	LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
+	ref_shader		Create				(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
+	ref_shader		Create_B			(IBlender*	B,	LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void			Delete				(Shader*	&S);
 
-	SGeometry*		CreateGeom			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
-	SGeometry*		CreateGeom			(u32 FVF				, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
-	void			DeleteGeom			(SGeometry* &VS				);
+	ref_geom		CreateGeom			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
+	ref_geom		CreateGeom			(u32 FVF				, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
+	void			DeleteGeom			(SGeometry* VS				);
 	void			DeferredLoad		(BOOL E)					{ bDeferredLoad=E;	}
 	void			DeferredUpload		();
 	void			DeferredUnload		();

@@ -7,16 +7,16 @@
 
 #include "Shader.h"
 
-void	STextureList::_release_			(STextureList * ptr)		{	Device.Shader._DeleteTextureList	(ptr);			}
-void	SMatrixList::_release_			(SMatrixList * ptr)			{	Device.Shader._DeleteMatrixList		(ptr);			}
-void	SConstantList::_release_		(SConstantList * ptr)		{	Device.Shader._DeleteConstantList	(ptr);			}
-void	SDeclaration::_release_			(SDeclaration * ptr)		{	Device.Shader._DeleteDecl			(ptr->dcl);		}
-void	SPass::_release_				(SPass * ptr)				{	Device.Shader._DeletePass			(ptr);			}
-void	ShaderElement::_release_		(ShaderElement * ptr)		{	Device.Shader._DeleteElement		(ptr);			}
-void	SGeometry::_release_			(SGeometry * ptr)			{	Device.Shader.DeleteGeom			(ptr);			}
-void	Shader::_release_				(Shader * ptr)				{	Device.Shader.Delete				(ptr);			}
-
-//////////////////////////////////////////////////////////////////////////
+// 
+STextureList::~STextureList				()			{	Device.Shader._DeleteTextureList	(this);			}
+SMatrixList::~SMatrixList				()			{	Device.Shader._DeleteMatrixList		(this);			}
+SConstantList::~SConstantList			()			{	Device.Shader._DeleteConstantList	(this);			}
+SPass::~SPass							()			{	Device.Shader._DeletePass			(this);			}
+ShaderElement::~ShaderElement			()			{	Device.Shader._DeleteElement		(this);			}
+SGeometry::~SGeometry					()			{	Device.Shader.DeleteGeom			(this);			}
+Shader::~Shader							()			{	Device.Shader.Delete				(this);			}
+																							 
+//////////////////////////////////////////////////////////////////////////					 
 void	resptrcode_shader::create		(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
 	_set(Device.Shader.Create			(s_shader,s_textures,s_constants,s_matrices));

@@ -1239,6 +1239,12 @@
 						Name="Resources"
 						Filter="">
 						<File
+							RelativePath=".\SH_Atomic.cpp">
+						</File>
+						<File
+							RelativePath=".\SH_Atomic.h">
+						</File>
+						<File
 							RelativePath=".\SH_Constant.cpp">
 							<FileConfiguration
 								Name="Debug|Win32">

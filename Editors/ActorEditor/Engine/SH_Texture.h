@@ -6,13 +6,11 @@
 
 class ENGINE_API CAviPlayerCustom;
 
-class ENGINE_API CTexture
-{
+class ENGINE_API CTexture			: public xr_resorce									{
 public:
-	u32								dwReference;
-	IDirect3DBaseTexture9*			pSurface;
-	CAviPlayerCustom*				pAVI;
-	u32								dwMemoryUsage;
+	IDirect3DBaseTexture9*				pSurface;
+	CAviPlayerCustom*					pAVI;
+	u32									dwMemoryUsage;
 
 	// Sequence data
 	u32									seqMSPF;	// milliseconds per frame
@@ -20,32 +18,33 @@ public:
 	BOOL								seqCycles;
 
 	// User-data
-	BOOL							bUser;
+	BOOL								bUser;
 
 	// Description
-	IDirect3DBaseTexture9*			desc_cache;
-	D3DSURFACE_DESC					desc;
-	IC BOOL							desc_valid	()	{ return pSurface==desc_cache; }
-	IC void							desc_enshure()	{ if (!desc_valid()) desc_update(); }
-	void							desc_update	();
+	IDirect3DBaseTexture9*				desc_cache;
+	D3DSURFACE_DESC						desc;
+	IC BOOL								desc_valid	()	{ return pSurface==desc_cache; }
+	IC void								desc_enshure()	{ if (!desc_valid()) desc_update(); }
+	void								desc_update	();
 
 public:
-	void							Load		(LPCSTR Name);
-	void							Unload		(void);
-	void							Apply		(u32 dwStage);
+	void								Load		(LPCSTR Name);
+	void								Unload		(void);
+	void								Apply		(u32 dwStage);
 
-	void							surface_set	(IDirect3DBaseTexture9* surf);
-	IDirect3DBaseTexture9*			surface_get ();
+	void								surface_set	(IDirect3DBaseTexture9* surf);
+	IDirect3DBaseTexture9*				surface_get ();
 
-	IC BOOL							isUser		()	{return bUser;};
+	IC BOOL								isUser		()	{return bUser;};
 
-	IC u32							get_Width	()	{ desc_enshure(); return desc.Width;	}
-	IC u32							get_Height	()	{ desc_enshure(); return desc.Height;	}
-	IC u32							get_Depth	()	{ return 1;								}
+	IC u32								get_Width	()	{ desc_enshure(); return desc.Width;	}
+	IC u32								get_Height	()	{ desc_enshure(); return desc.Height;	}
+	IC u32								get_Depth	()	{ return 1;								}
 
-	CTexture						();
-	virtual ~CTexture				();
+	CTexture							();
+	virtual ~CTexture					();
 };
+
 typedef	resptr_core<CTexture,resptr_base<CTexture> >	
 	ref_texture;
 

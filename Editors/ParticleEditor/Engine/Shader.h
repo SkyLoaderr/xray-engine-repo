@@ -7,8 +7,9 @@
 #pragma once
 
 #include "r_constants.h"
-#include "tss_def.h"
 #include "xr_resource.h"
+
+#include "sh_atomic.h"
 
 typedef svector<string64,4>	sh_list;
 
@@ -22,79 +23,40 @@ class	ENGINE_API			CRTC;
 
 #pragma pack(push,4)
 
-// Atomic resources
-struct	ENGINE_API		SVS				: public xr_resorce									{
-	IDirect3DVertexShader9*				vs;
-	R_constant_table					constants;
-	void				_release_		(SVS * ptr);
+//////////////////////////////////////////////////////////////////////////
+struct	ENGINE_API		STextureList	: public xr_resorce, public svector<ref_texture,8>	{
+						~STextureList	();
 };
-typedef	resptr_core<SVS,resptr_base<SVS> >	
-	ref_vs;
+typedef	resptr_core<STextureList,resptr_base<STextureList> >								ref_texture_list;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SPS				: public xr_resorce									{
-	IDirect3DPixelShader9*				ps;
-	R_constant_table					constants;
-	void				_release_		(SPS * ptr);
+struct	ENGINE_API		SMatrixList		: public xr_resorce, public svector<ref_matrix,4>	{
+						~SMatrixList	();
 };
-typedef	resptr_core<SPS,resptr_base<SPS> >	
-	ref_ps;
+typedef	resptr_core<SMatrixList,resptr_base<SMatrixList> >									ref_matrix_list;
 
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SState			: public xr_resorce									{
-	IDirect3DStateBlock9*				state;
-	SimulatorStates						state_code;
-	void				_release_		(SState * ptr);
+struct	ENGINE_API		SConstantList	: public xr_resorce, public svector<ref_constant,4>	{
+						~SConstantList	();
 };
-typedef	resptr_core<SState,resptr_base<SState> >	
-	ref_state;
-
-// Non-atomic, ref-counted resources
-struct	ENGINE_API		STextureList	: public xr_resorce, public svector<CTexture*,8>	{
-	void				_release_		(STextureList * ptr);
-};
-typedef	resptr_core<STextureList,resptr_base<STextureList> >	
-	ref_texture_list;
-
-//////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SMatrixList		: public xr_resorce, public svector<CMatrix*,8>		{
-	void				_release_		(SMatrixList * ptr);
-};
-typedef	resptr_core<SMatrixList,resptr_base<SMatrixList> >	
-	ref_matrix_list;
-
-//////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SConstantList	: public xr_resorce, public svector<CConstant*,8>	{
-	void				_release_		(SConstantList * ptr);
-};
-typedef	resptr_core<SConstantList,resptr_base<SConstantList> >	
-	ref_constant_list;
-
-//////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SDeclaration	: public xr_resorce									{
-	IDirect3DVertexDeclaration9*		dcl;		// in fact, may be a topper-level thing, but duplicated here for usability
-	xr_vector<D3DVERTEXELEMENT9>		dcl_code;
-	void				_release_		(SDeclaration * ptr);
-};
-typedef	resptr_core<SDeclaration,resptr_base<SDeclaration> >	
-	ref_declaration;
+typedef	resptr_core<SConstantList,resptr_base<SConstantList> >								ref_constant_list;
 
 //////////////////////////////////////////////////////////////////////////
 struct	ENGINE_API		SGeometry		: public xr_resorce									{
-	IDirect3DVertexDeclaration9*		dcl;		// in fact, may be a topper-level thing, but duplicated here for usability
+	ref_declaration						dcl;
 	IDirect3DVertexBuffer9*				vb;
 	IDirect3DIndexBuffer9*				ib;
 	u32									vb_stride;
-	void				_release_		(SGeometry * ptr);
+						~SGeometry		();
 };
-struct ENGINE_API		resptrcode_geom		: public resptr_base<SGeometry>
+struct ENGINE_API		resptrcode_geom	: public resptr_base<SGeometry>
 {
 	void 				create			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
 	void				create			(u32 FVF				, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
 	void				destroy			()			{ _set(NULL);		}
 	u32					stride			()	const	{ return _get()->vb_stride;	}
 };
-typedef	resptr_core<SGeometry,resptrcode_geom>	ref_geom;
+typedef	resptr_core<SGeometry,resptrcode_geom>												ref_geom;
 
 //////////////////////////////////////////////////////////////////////////
 struct	ENGINE_API		SPass			: public xr_resorce									{
@@ -107,11 +69,10 @@ struct	ENGINE_API		SPass			: public xr_resorce									{
 	ref_matrix_list						M;
 	ref_constant_list					C;
 
-	void				_release_		(SPass * ptr);
+						~SPass			();
 	BOOL				equal			(SPass& P);
 };
-typedef	resptr_core<SPass,resptr_base<SPass> >	
-	ref_pass;
+typedef	resptr_core<SPass,resptr_base<SPass> >												ref_pass;
 
 //////////////////////////////////////////////////////////////////////////
 struct ENGINE_API		ShaderElement	: public xr_resorce									{
@@ -127,22 +88,20 @@ public:
 	svector<ref_pass,4>	Passes;
 
 						ShaderElement	();
+						~ShaderElement	();
 	BOOL				equal			(ShaderElement& S);
 	BOOL				equal			(ShaderElement* S);
-	void				_release_		(ShaderElement * ptr);
 };
-typedef	resptr_core<ShaderElement,resptr_base<ShaderElement> >	
-	ref_selement;
+typedef	resptr_core<ShaderElement,resptr_base<ShaderElement> >								ref_selement;
 
 //////////////////////////////////////////////////////////////////////////
 struct ENGINE_API		Shader			: public xr_resorce									{
 public:
-	ref_selement		E		[4];	// R1 - 0=lod0,		1=lod1, 2=lighting, 3=*undefined*
+	ref_selement		E		[4];	// R1 - 0=lod0,		1=lod1, 2=lighting, 3=_undefined_
 										// R2 - 0=deffer,	1=dsm,	2=psm,		3=ssm		(or special usage)
-
+						~Shader			();
 	BOOL				equal			(Shader& S);
 	BOOL				equal			(Shader* S);
-	void				_release_		(Shader* ptr);
 };
 struct ENGINE_API		resptrcode_shader	: public resptr_base<Shader>
 {
@@ -150,7 +109,7 @@ struct ENGINE_API		resptrcode_shader	: public resptr_base<Shader>
 	void				create			(IBlender*	B,	LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void				destroy			()	{ _set(NULL);		}
 };
-typedef	resptr_core<Shader,resptrcode_shader>	ref_shader;
+typedef	resptr_core<Shader,resptrcode_shader>												ref_shader;
 
 #pragma pack(pop)
 

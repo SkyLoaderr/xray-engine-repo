@@ -1,7 +1,6 @@
 #pragma once
 
 // resource itself, the base class for all derived resources
-// *** note ***:	derived must implement "T::_release_(T*)"
 class	ENGINE_API	xr_resorce	{
 public:
 	u32				dwReference;
@@ -19,7 +18,7 @@ protected:
 protected:
 	// ref-counting
 	void				_inc	()									{	if (0==p_) return;	p_->dwReference++;														}
-	void				_dec	()									{	if (0==p_) return;	p_->dwReference--; if (0==p_->dwReference) { p_->_release_(p_); p_=0; }	}
+	void				_dec	()									{	if (0==p_) return;	p_->dwReference--; if (0==p_->dwReference) xr_delete(p_);				}
 	void				_set	(T * rhs) 							{	if (0!=rhs) rhs->dwReference++;	_dec(); p_ = rhs;											}
 	void				_set	(resptr_base<T> const & rhs)		{	T* prhs = rhs._get(); _set(prhs);															}
 public:
