@@ -165,6 +165,8 @@ public:
 	// Make sure you call this with bTryToCacheResult=FALSE if any data changes,
 	//	or you'll confuse the poor thing.
 	float		FindCollapseError			( MeshPt *pptBinned, MeshEdge *pedgeCollapse, long bTryToCacheResult = FALSE );
+
+	bool		Valid						( void );
 };
 
 #endif // objectH

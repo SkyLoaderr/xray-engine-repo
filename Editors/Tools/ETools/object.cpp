@@ -37,6 +37,11 @@ Object::~Object()
 	}
 }
 
+bool Object::Valid( void )
+{
+	return true;
+}
+
 void Object::Initialize( void )
 {
 	iFullNumPts			= 0;

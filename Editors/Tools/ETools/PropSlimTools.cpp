@@ -125,9 +125,10 @@ void CalculateAllCollapses(Object* m_pObject, u32 max_sliding_window=u32(-1), fl
 ETOOLS_API VIPM_Result*	VIPM_Convert		(u32 max_sliding_window, float error_tolerance, u32 optimize_vertex_order)
 {
 	g_pObject->Initialize	();
+	if (!g_pObject->Valid())return NULL;
 	CalculateAllCollapses	(g_pObject,max_sliding_window,error_tolerance);
-	CalculateSW				(g_pObject,g_pResult,optimize_vertex_order);
-	return g_pResult		;
+	if (CalculateSW(g_pObject,g_pResult,optimize_vertex_order)) return g_pResult;
+	else return NULL;
 }
 
 ETOOLS_API void			VIPM_Destroy		()
