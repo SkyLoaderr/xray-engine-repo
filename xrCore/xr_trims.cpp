@@ -375,4 +375,14 @@ LPCSTR _GetItem ( LPCSTR src, int index, std::string& dst, char separator, LPCST
 	return		dst.c_str	();
 }
 
+ref_str	_ListToSequence(const RStringVec& lst)
+{
+	string4096 		out;
+	if (lst.size()){
+    	strcpy		(out,*lst.front());
+		for (RStringVec::const_iterator s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
+        	strconcat(out,",",**s_it);
+	}
+	return ref_str	(out);
+}
 
