@@ -29,7 +29,8 @@ public:
 		eWaitForStart,						// ->eInitiatePatrolZone
 		eWaitBetweenPatrol,					// ->eInitiatePatrolZone
 		eInitiateWaitBetweenPatrol,			// ->eMovingToWaitPoint
-		eMovingToWaitPoint					// ->eWaitBetweenPatrol
+		eMovingToWaitPoint,					// ->eWaitBetweenPatrol
+		eDead
 	}; 
 protected:
 	

@@ -53,6 +53,10 @@ CHelicopter::setState(CHelicopter::EHeliState s)
 		str = "eMovingToWaitPoint";
 		break;
 
+	case CHelicopter::eDead:
+		str = "eDead";
+		break;
+
 	default:
 		str = "unknown";
 		break;
@@ -208,6 +212,7 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	m_engineSound.create(TRUE,*heli->engine_sound);
 	m_engineSound.play_at_pos(0,XFORM().c,sm_Looped);
 
+	PPhysicsShell()=P_build_Shell	(this,true);
 
 	setVisible			(true);
 	setEnabled			(true);
@@ -244,13 +249,18 @@ CHelicopter::UpdateCL()
 {
 	inherited::UpdateCL	();
 	
-	if(PPhysicsShell())
+	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
+	
+	if(PPhysicsShell()&&GetfHealth() < 0.0f)
 	{
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
 		return;
-	};
+	}
+	else
+	{
+		PPhysicsShell()->se
+	}
 
-	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
 
 	m_engineSound.set_position(XFORM().c);
 
@@ -297,6 +307,11 @@ CHelicopter::shedule_Update(u32	time_delta)
 
 	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
 		Die();
+
+	if( m_curState==CHelicopter::eWaitBetweenPatrol)
+	{
+		SetfHealth(100.0f);
+	};
 
 	if( m_curState==CHelicopter::eMovingByAttackTraj )
 	{
@@ -418,7 +433,8 @@ void
 CHelicopter::Die()
 {
 //	PPhysicsShell()=P_build_Shell	(this,false);
-	setState(CHelicopter::eInitiateWaitBetweenPatrol);
-	SetfHealth(100.0f);
+//	setState(CHelicopter::eInitiateWaitBetweenPatrol);
+	setState(CHelicopter::eDead);
+//	SetfHealth(100.0f);
 //	StartParticles();
 }
