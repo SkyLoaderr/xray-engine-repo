@@ -246,6 +246,7 @@
 		<text font="normal" r="156" g="122" b="46" align="c">Autobuy</text>
 		<text_h r="255" g="255" b="255"/>
 		<text_t r="255" g="255" b="255"/>
+		<sound_t>weapons\generic_close</sound_t>
 	</autobuy_button>
 	
 	<clear_button x="840" y="611" width="145" height="48">
@@ -256,6 +257,7 @@
 		<text font="normal" r="156" g="122" b="46" align="c">Clear</text>
 		<text_h r="255" g="255" b="255"/>
 		<text_t r="255" g="255" b="255"/>
+		<sound_t>weapons\generic_close</sound_t>
 	</clear_button>
 	
 </window>

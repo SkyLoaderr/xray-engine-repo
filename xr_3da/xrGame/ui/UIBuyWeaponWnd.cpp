@@ -93,13 +93,21 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	//  нопки OK и Cancel дл€ выходи из диалога покупки оружи€
 	AttachChild(&UIBtnOK);
 	xml_init.Init3tButton(uiXml, "ok_button", 0, &UIBtnOK);
-	UIBtnOK.HighlightText(false);
+	UIBtnOK.EnableTextHighlighting(false);
 	g_iOkAccelerator = uiXml.ReadAttribInt("ok_button", 0, "accel");
 
 	AttachChild(&UIBtnCancel);
 	xml_init.Init3tButton(uiXml, "cancel_button", 0, &UIBtnCancel);
-	UIBtnCancel.HighlightText(false);
+	UIBtnCancel.EnableTextHighlighting(false);
 	g_iCancelAccelerator = uiXml.ReadAttribInt("cancel_button", 0, "accel");
+
+	AttachChild(&UIBtnAutobuy);
+	xml_init.Init3tButton(uiXml, "autobuy_button", 0, &UIBtnAutobuy);
+	UIBtnAutobuy.EnableTextHighlighting(false);
+
+	AttachChild(&UIBtnClear);
+	xml_init.Init3tButton(uiXml, "clear_button", 0, &UIBtnClear);
+	UIBtnClear.EnableTextHighlighting(false);
 
 	UIBagWnd.UpdateBuyPossibility();
 
@@ -422,7 +430,15 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		OnDDItemDbClick(); break;
 
 	case BUTTON_CLICKED:
-		OnButtonClicked(pWnd); break;
+		if (&UIBtnOK == pWnd)
+			OnBtnOkClicked();
+		else if (&UIBtnCancel == pWnd)
+			OnBtnCancelClicked();
+		else if (&UIBtnClear == pWnd)
+			OnBtnClearClicked();
+		else if (&UIBtnAutobuy == pWnd)
+			OnBtnAutobuyClicked();
+		break;
 
 	case DRAG_DROP_ITEM_DRAG:
 		SetCurrentDDItem(pWnd);
@@ -507,20 +523,36 @@ void CUIBuyWeaponWnd::OnTabChange(){
 	UIBagWnd.ShowSection(UITabControl.GetActiveIndex());
 }
 
-void CUIBuyWeaponWnd::OnButtonClicked(CUIWindow* pWnd){
-	if (pWnd == &UIBtnOK)
-	{
-		if (!CanBuyAllItems())
-            return;
+void CUIBuyWeaponWnd::OnBtnOkClicked(){
+	if (!CanBuyAllItems())
+        return;
 
-		Game().StartStopMenu(this,true);
-		game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
-		dm->OnBuyMenu_Ok();
-	}
-	else if (pWnd == &UIBtnCancel)
-	{
-		Game().StartStopMenu(this,true);
-	}
+	Game().StartStopMenu(this,true);
+	game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
+	dm->OnBuyMenu_Ok();
+}
+
+void CUIBuyWeaponWnd::OnBtnCancelClicked(){
+	Game().StartStopMenu(this,true);
+}
+
+void CUIBuyWeaponWnd::OnBtnAutobuyClicked(){
+
+}
+
+void CUIBuyWeaponWnd::OnBtnClearClicked(){
+	SlotToSection(PISTOL_SLOT);
+	SlotToSection(RIFLE_SLOT);
+	SlotToSection(GRENADE_SLOT);
+	SlotToSection(APPARATUS_SLOT);
+	SlotToSection(OUTFIT_SLOT);
+
+	DRAG_DROP_LIST list = UITopList[BELT_SLOT].GetDragDropItemsList();
+	DRAG_DROP_LIST_it it;
+
+	for (it = list.begin(); it != list.end(); ++it)
+		BeltToSection(static_cast<CUIDragDropItemMP*>(*it));
+
 }
 
 void CUIBuyWeaponWnd::OnDDItemDrag(){
@@ -956,20 +988,20 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	}
 
 	if (DIK_ESCAPE == dik)
-	{
-		OnButtonClicked(&UIBtnCancel);		
-		return true;
-	}
+		UIBtnCancel.OnClick();
+
 	else if (g_iOkAccelerator == dik || DIK_SPACE == dik)
-	{
-		OnButtonClicked(&UIBtnOK);
-		return true;
-	}
+		UIBtnOK.OnClick();
+
 	else if (DIK_B == dik)
-	{
 		UITabControl.SetActiveState();
-		return true;
-	}
+
+	else if (DIK_C == dik)
+		UIBtnClear.OnClick();
+	
+	else if (DIK_A == dik)
+		UIBtnAutobuy.OnClick();
+
 
 	return true;
 }

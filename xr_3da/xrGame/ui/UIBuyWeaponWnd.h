@@ -131,6 +131,8 @@ protected:
 	bool CanPutInBelt(CUIDragDropItemMP *pDDItemMP);
 	CUI3tButton UIBtnOK;
 	CUI3tButton UIBtnCancel;
+	CUI3tButton UIBtnAutobuy;
+	CUI3tButton UIBtnClear;
 
 	// Дополнительные функции для получения информации о вещах в слотах
 	// Params:	slotNum	- номер слота (раздела) в котором ищем 
@@ -167,7 +169,10 @@ public:
 			void OnMenuLevelChange();
 			void OnDDItemDbClick();
 			void OnDDItemDrag();
-			void OnButtonClicked(CUIWindow* pWnd);
+			void OnBtnOkClicked();
+			void OnBtnCancelClicked();
+			void OnBtnClearClicked();
+			void OnBtnAutobuyClicked();
 			void SetCurrentDDItem(CUIWindow* pWnd);
 
 	const u8	GetWeaponIndex(u32 slotNum);
