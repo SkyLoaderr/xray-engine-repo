@@ -419,7 +419,7 @@ void CStalkerActionGetItemToKill::initialize	()
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
 	m_object->CSightManager::clear();
-	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,5000,CSightAction(SightManager::eSightTypePosition,m_object->m_best_found_item_to_kill->Position(),false)));
+	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_item_to_kill->Position(),false)));
 	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
 }
 
@@ -451,7 +451,7 @@ void CStalkerActionGetItemToKill::execute	()
 //	m_object->setup					(SightManager::eSightTypePosition,&m_object->enemy()->Position(),"bip01_head");
 //	m_object->setup					(SightManager::eSightTypeSearch);
 
-	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_item_to_kill->Position());
+//	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_item_to_kill->Position());
 	m_object->CSightManager::action(eSightActionTypeWatchEnemy).set_vector3d(m_object->enemy()->Position());
 #ifdef OLD_OBJECT_HANDLER
 	m_object->set_dest_state		(eObjectActionNoItems);
@@ -518,7 +518,7 @@ void CStalkerActionMakeItemKilling::initialize	()
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
 	m_object->CSightManager::clear();
-	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->m_best_found_ammo->Position(),false)));
+	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,5000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_ammo->Position(),false)));
 	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
 }
 
@@ -550,8 +550,8 @@ void CStalkerActionMakeItemKilling::execute	()
 //	m_object->setup					(SightManager::eSightTypePosition,&m_object->enemy()->Position(),"bip01_head");
 //	m_object->setup					(SightManager::eSightTypeSearch);
 
-	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_ammo->Position());
-	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->enemy()->Position());
+//	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_ammo->Position());
+	m_object->CSightManager::action(eSightActionTypeWatchEnemy).set_vector3d(m_object->enemy()->Position());
 #ifdef OLD_OBJECT_HANDLER
 	m_object->set_dest_state		(eObjectActionNoItems);
 #else
