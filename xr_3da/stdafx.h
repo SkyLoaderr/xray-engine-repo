@@ -13,8 +13,8 @@
 #define STRICT						// Enable strict syntax
 #define IDIRECTPLAY2_OR_GREATER
 
+// windows.h
 #define _WIN32_WINNT 0x0400
-
 #define NOGDICAPMASKS
 #define NOSYSMETRICS
 #define NOMENUS
@@ -30,20 +30,39 @@
 #define NOPROFILER
 #define NOMCX
 #define NOMINMAX
-
 #define DOSWIN32
-
-#define DIRECTSOUND_VERSION 0x0700
-#define DIRECTINPUT_VERSION 0x0700
-
 #define _WIN32_DCOM
 
 #include <windows.h>
 #include <windowsx.h>
-#include <winbase.h>
+
+// mmsystem.h
+#define MMNODRV
+#define MMNOSOUND
+#define MMNOWAVE
+#define MMNOMIDI
+#define MMNOAUX
+#define MMNOMIXER
+#define MMNOTIMER
+#define MMNOJOY
+#define MMNOMCI
+
 #include <mmsystem.h>
+
+// mmreg.h
+#define NOMMIDS
+#define NONEWRIFF
+#define NOJPEGDIB
+#define NONEWIC
+#define NOBITMAP
+
 #include <mmreg.h>
-#include <winnls.h>
+
+//#include <winbase.h>
+//#include <winnls.h>
+
+#define DIRECTSOUND_VERSION 0x0700
+#define DIRECTINPUT_VERSION 0x0700
 
 #include <d3d8.h>
 #include <d3dx8.h>
