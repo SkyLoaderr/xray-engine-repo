@@ -78,9 +78,10 @@ public:
 	void	BuildPortals	(CFS_Base &fs);
 	void	BuildRapid		();
 
-	void	SortFaces		();
-	void	ResolveMaterials();
+	void	xrPhase_ResolveMaterials();
+	void	xrPhase_UVmap	();
 
+	void	ResolveMaterials();
 	void	BuildUVmap		();
 	void	MergeLM			();
 	void	SoftenLights	();
