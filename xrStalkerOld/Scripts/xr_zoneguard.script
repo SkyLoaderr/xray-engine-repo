@@ -157,7 +157,7 @@ function action_zoneguard_activity:execute()
 		then
 			xr_state.anim_update(nil, self.object)
 			local mental_state
-			if self.object:relation(actor) == game_object.friend then
+			if self.st.no_danger or self.object:relation(actor) == game_object.friend then
 				mental_state = anim.free
 			else
 				mental_state = anim.danger
@@ -286,17 +286,18 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true, gulag_name)
-	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
-	st.team = utils.cfg_get_string(ini, section, "team", npc, true, gulag_name)
-	st.zone_guard = utils.cfg_get_string(ini, section, "zone_guard", npc, false, gulag_name)
-	st.zone_warn = utils.cfg_get_string(ini, section, "zone_warn", npc, true, gulag_name)
-	st.walker_team = utils.cfg_get_string(ini, section, "walker_team", npc, false, gulag_name)
-	st.no_move = utils.cfg_get_bool(ini, section, "no_move", npc, false)
-	st.snd_greet = utils.cfg_get_string(ini, section, "snd_greet", npc, false, "")
-	st.enable_dialog = utils.cfg_get_bool(ini, section, "enable_dialog", npc, false)
-	st.ignore_friends = utils.cfg_get_bool(ini, section, "ignore_friends", npc, false)
-	st.ignore_cond = xr_logic.cfg_get_condlist(ini, section, "ignore_cond", npc)
+	st.path_walk = utils.cfg_get_string        (ini, section, "path_walk",      npc, true,  gulag_name)
+	st.path_look = utils.cfg_get_string        (ini, section, "path_look",      npc, false, gulag_name)
+	st.team = utils.cfg_get_string             (ini, section, "team",           npc, true,  gulag_name)
+	st.zone_guard = utils.cfg_get_string       (ini, section, "zone_guard",     npc, false, gulag_name)
+	st.zone_warn = utils.cfg_get_string        (ini, section, "zone_warn",      npc, true,  gulag_name)
+	st.walker_team = utils.cfg_get_string      (ini, section, "walker_team",    npc, false, gulag_name)
+	st.no_move = utils.cfg_get_bool            (ini, section, "no_move",        npc, false)
+	st.snd_greet = utils.cfg_get_string        (ini, section, "snd_greet",      npc, false, "")
+	st.enable_dialog = utils.cfg_get_bool      (ini, section, "enable_dialog",  npc, false)
+	st.ignore_friends = utils.cfg_get_bool     (ini, section, "ignore_friends", npc, false)
+	st.ignore_cond = xr_logic.cfg_get_condlist (ini, section, "ignore_cond",    npc)
+	st.no_danger = utils.cfg_get_bool          (ini, section, "no_danger",      npc, false)
 	
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	st.path_look_info = nil -- не загружены.

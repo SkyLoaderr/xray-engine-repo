@@ -142,10 +142,16 @@ function action_remark_activity:step()
 	-- Ќачальное состо€ние
 	if self.state == state_initial then
 		xr_state.anim_update(nil, self.object)
+		local mental_state
+		if self.st.no_danger or self.object:relation(actor) == game_object.friend then
+			mental_state = anim.free
+		else
+			mental_state = anim.danger
+		end
 		if self.st.no_move then
 			self.object:set_movement_type(move.stand)
-			self.object:set_mental_state(anim.danger)
-			self.object:set_body_state(move.standing)
+			self.object:set_body_state(move.standing) -- тут об€зательно standing, т.к. mental_state может быть danger
+			self.object:set_mental_state(mental_state)
 			if self.st.no_rotate then
 				-- ћожно включать и звук и анимацию
 				if self.st.snd then
@@ -165,8 +171,8 @@ function action_remark_activity:step()
 			self.object:set_desired_direction(self.target:direction())
 			self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
 			self.object:set_movement_type(move.run)
-			self.object:set_mental_state(anim.danger)
-			self.object:set_body_state(move.standing)
+			self.object:set_body_state(move.standing) -- тут об€зательно standing, т.к. mental_state может быть danger
+			self.object:set_mental_state(mental_state)
 			self.state = state_going_to_plr
 		end
 		-- ≈сли бежим к сталкеру, или стоим на месте, но не запрещено вращение - посмотреть на сталкера:
@@ -312,6 +318,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.no_move = utils.cfg_get_bool           (ini, section,   "no_move",         npc, false,     st.anim ~= nil)
 	st.dlg = utils.cfg_get_string             (ini, section,   "dlg",             npc, false, "")
 	st.target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
+	st.no_danger = utils.cfg_get_bool         (ini, section,   "no_danger",       npc, false)
 
 	if not st.no_move and st.anim then
 		utils.abort("object '%s': section '%s': anim field specified, when no_move is false",
