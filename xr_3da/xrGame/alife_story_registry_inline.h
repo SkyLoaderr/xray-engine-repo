@@ -15,7 +15,7 @@ IC	void CALifeStoryRegistry::remove					(ALife::_STORY_ID id, bool no_assert)
 
 	ALife::STORY_P_PAIR_IT	I = m_objects.find(id);
 	if (I == m_objects.end()) {
-		if (no_assert) {
+		if (!no_assert) {
 			Msg				("Cannot find story object with id [%d] in the Story registry!",id);
 			R_ASSERT		(false);
 		}
@@ -36,7 +36,7 @@ IC	CSE_ALifeDynamicObject *CALifeStoryRegistry::object	(ALife::_STORY_ID id, boo
 
 	STORY_REGISTRY::const_iterator	I = m_objects.find(id);
 	if (I == m_objects.end()) {
-		if (no_assert) {
+		if (!no_assert) {
 			Msg				("Cannot find story object with id [%d] in the Story registry!",id);
 			R_ASSERT		(false);
 		}
