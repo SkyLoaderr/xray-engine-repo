@@ -279,7 +279,8 @@ CInventory::CInventory() {
 
 CInventory::~CInventory() {}
 
-bool CInventory::Take(CGameObject *pObj) {
+bool CInventory::Take(CGameObject *pObj) 
+{
 	CInventoryItem *l_pIItem = dynamic_cast<CInventoryItem*>(pObj);
 	//if(l_pIItem && l_pIItem->Useful() && (l_pIItem->m_weight + TotalWeight() < m_maxWeight) && (m_ruck.size() < m_maxRuck) && (m_all.find(l_pIItem) == m_all.end())) {
 	if(m_all.find(l_pIItem) != m_all.end()) 
