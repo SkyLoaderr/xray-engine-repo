@@ -110,9 +110,19 @@ protected:
 	// Читаем заготовки стандартных собщений
 	void LoadNewsTemplates();
 
+	// Структурка описывающая ньюс
+	typedef struct tagNewsTemplate
+	{
+		ref_str		str;
+		bool		ignore;
+		///////////////////
+		tagNewsTemplate(): ignore(false) {}
+
+	} SNewsTemplate;
+
 	// Array of news templates
-	typedef std::map<u32, ref_str>	NewsTemplates;
-	NewsTemplates					m_NewsTemplates;
+	typedef std::map<u32, SNewsTemplate>	NewsTemplates;
+	NewsTemplates							m_NewsTemplates;
 
 	// Обработчик события получения новости
 	void OnNewsReceived(const ALife::SGameNews &newsItem);
@@ -121,7 +131,7 @@ protected:
 	bool CheckForNewNews();
 
 	// Период проверки ньюсов в моллисекундах
-	static const int	NEWS_CHECK_INTERVAL = 1000;
-	ALife::_TIME_ID		m_iPrevTime;
+	static const int						NEWS_CHECK_INTERVAL = 1000;
+	ALife::_TIME_ID							m_iPrevTime;
 
 };

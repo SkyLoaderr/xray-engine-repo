@@ -766,6 +766,8 @@ void CUIMainIngameWnd::OnNewsReceived(const ALife::SGameNews &newsItem)
 	string128	locationName = "";
 	string512	result;
 
+	// If ignore flag is set, than ignore whole news item
+	if (m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].ignore) return;
 
 	// Get Level name
 	const CGameGraph::CVertex	*game_vertex = ai().game_graph().vertex(newsItem.m_game_vertex_id);
@@ -779,10 +781,10 @@ void CUIMainIngameWnd::OnNewsReceived(const ALife::SGameNews &newsItem)
 	if (newsItem.m_object_id[1] != static_cast<u16>(-1))
 	{
 		CSE_ALifeDynamicObject	*newsActorTwo = ai().alife().object(newsItem.m_object_id[1]);
-		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)], newsActorTwo->s_name_replace, newsActorOne->s_name_replace);
+		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].str, newsActorTwo->s_name_replace, newsActorOne->s_name_replace);
 	}
 	else
-		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)], newsActorOne->s_name_replace, "");
+		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].str, newsActorOne->s_name_replace, "");
 
 
 	// Calc curent time
@@ -829,9 +831,10 @@ void CUIMainIngameWnd::LoadNewsTemplates()
 	
 	for (int i = 0; i < templatesCount; ++i)
 	{
-		int idx					= uiXml.ReadAttribInt(NODE_NAME, i, "index");
-		ref_str news_template	= uiXml.Read(buf, i, NULL);
-		m_NewsTemplates[idx]	= news_template;
+		int idx						= uiXml.ReadAttribInt(NODE_NAME, i, "index");
+		ref_str news_template		= uiXml.Read(buf, i, NULL);
+		m_NewsTemplates[idx].str	= news_template;
+		m_NewsTemplates[idx].ignore	= !!uiXml.ReadAttribInt(NODE_NAME, i, "ignore");
 	}
 }
 
