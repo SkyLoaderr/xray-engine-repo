@@ -190,6 +190,7 @@ void IGame_Level::OnRender		( )
 
 void IGame_Level::OnFrame		( ) 
 {
+	// Log				("- level:on-frame: ",u32(Device.dwFrame));
 	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
 	// Update all objects

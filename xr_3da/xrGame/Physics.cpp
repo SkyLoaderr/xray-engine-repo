@@ -106,7 +106,11 @@ void CPHMesh ::Destroy(){
 #ifdef PH_PLAIN
 dGeomID plane;
 #endif
-void CPHWorld::Create(){
+
+void CPHWorld::Create()
+{
+	if (psDeviceFlags.test(mtPhysics))	Device.seqFrameMT.Add	(this,REG_PRIORITY_HIGH);
+	else								Device.seqFrame.Add		(this,REG_PRIORITY_LOW);
 
 	phWorld = dWorldCreate();
 	Space = dHashSpaceCreate(0);
@@ -152,6 +156,17 @@ void CPHWorld::Destroy(){
 	dWorldDestroy(phWorld);
 	dCloseODE();
 	dCylinderClassUser=-1;
+
+	Device.seqFrameMT.Remove	(this);
+	Device.seqFrame.Remove		(this);
+}
+
+void CPHWorld::OnFrame()
+{
+	// Msg									("------------- physics: %d / %d",u32(Device.dwFrame),u32(m_steps_num));
+	Device.Statistic.Physics.Begin		();
+	Step								(Device.fTimeDelta);
+	Device.Statistic.Physics.End		();
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -159,7 +174,6 @@ void CPHWorld::Destroy(){
 void CPHWorld::Step(dReal step)
 {
 	// compute contact joints and forces
-
 	xr_list<CPHObject*>::iterator iter;
 	//step+=astep;
 

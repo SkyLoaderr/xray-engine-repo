@@ -177,6 +177,8 @@ void CSheduler::Update				()
 	u32	mcs						= psSheduler;
 	u32	dwTime					= Device.dwTimeGlobal;
 
+	// Log				("------------- CSheduler::Update: ",u32(Device.dwFrame));
+
 	// Realtime priority
 	for (u32 it=0; it<ItemsRT.size(); it++)
 	{

@@ -41,8 +41,8 @@ IC BOOL dV_valid			(const dReal * v)
 IC BOOL dM_valid			(const dReal* m)
 {
 	return  f_valid(m[0])&&f_valid(m[1])&&f_valid(m[2])&& 
-			f_valid(m[4])&&f_valid(m[5])&&f_valid(m[6])&&
-			f_valid(m[8])&&f_valid(m[9])&&f_valid(m[10]);
+		f_valid(m[4])&&f_valid(m[5])&&f_valid(m[6])&&
+		f_valid(m[8])&&f_valid(m[9])&&f_valid(m[10]);
 }
 //const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
 //const dReal world_damping=400000.f;//erp/cfm1.1363636e-006f,0.54545456f
@@ -73,7 +73,8 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
-class CPHWorld {
+class CPHWorld	: public pureFrame
+{
 	u64		m_steps_num;
 	double	m_start_time;
 	u32		m_delay;
@@ -82,7 +83,7 @@ class CPHWorld {
 	u32		m_update_delay_count;
 	static const u32 update_delay=1;
 	dSpaceID Space;
-	
+
 	CPHMesh Mesh;
 	xr_list<CPHObject*> m_objects;
 public:
@@ -117,9 +118,12 @@ public:
 
 	void Destroy();
 
-	void Step(dReal step=0.025f);
+	void Step	(dReal step=0.025f);
 
-	void Render();
+	void Render	();
+
+
+	virtual void OnFrame ();
 
 	//private:
 	//static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);

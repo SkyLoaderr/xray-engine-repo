@@ -56,9 +56,10 @@ CLevel::~CLevel()
 	Engine.Event.Handler_Detach(eChangeRP,		this);
 
 	if (ph_world)
-		ph_world->Destroy();
-
-	xr_delete			(ph_world);
+	{
+		ph_world->Destroy	();
+		xr_delete			(ph_world);
+	}
 
 	// destroy PSs
 	for (PGOIt p_it=m_StaticParticles.begin(); p_it!=m_StaticParticles.end(); p_it++)

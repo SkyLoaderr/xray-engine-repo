@@ -23,6 +23,7 @@ struct _SoundProcessor	: public pureFrame
 {
 	virtual void OnFrame	( )
 	{
+		// Msg							("------------- sound: %d",u32(Device.dwFrame));
 		Device.Statistic.Sound.Begin();
 		::Sound->update				(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop,Device.fTimeDelta);
 		Device.Statistic.Sound.End	();

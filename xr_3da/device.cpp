@@ -54,10 +54,11 @@ void CRenderDevice::End		(void)
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
 }
 
-void __cdecl mt_Thread(void *ptr) {
+volatile u32	mt_Thread_marker		= 0x12345678;
+void __cdecl	mt_Thread(void *ptr)	{
 	while (true) {
 		// waiting for Device permission to execute
-		EnterCriticalSection(&Device.mt_csEnter);
+		EnterCriticalSection	(&Device.mt_csEnter);
 
 		if (Device.mt_bMustExit) {
 			Device.mt_bMustExit = FALSE;				// Important!!!
@@ -65,14 +66,15 @@ void __cdecl mt_Thread(void *ptr) {
 			return;
 		}
 		// we has granted permission to execute
+		mt_Thread_marker			= Device.dwFrame;
 		Device.seqFrameMT.Process	(rp_Frame);
 
 		// now we give control to device - signals that we are ended our work
-		LeaveCriticalSection(&Device.mt_csEnter);
+		LeaveCriticalSection	(&Device.mt_csEnter);
 		// waits for device signal to continue - to start again
-		EnterCriticalSection(&Device.mt_csLeave);
+		EnterCriticalSection	(&Device.mt_csLeave);
 		// returns sync signal to device
-		LeaveCriticalSection(&Device.mt_csLeave);
+		LeaveCriticalSection	(&Device.mt_csLeave);
 	}
 }
 
@@ -164,8 +166,11 @@ void CRenderDevice::Run			()
 				// *** Suspend threads
 				// Capture startup point
 				// Release end point - allow thread to wait for startup point
-				EnterCriticalSection		(&mt_csEnter);
-				LeaveCriticalSection		(&mt_csLeave);
+				EnterCriticalSection					(&mt_csEnter);
+				LeaveCriticalSection					(&mt_csLeave);
+
+				// Ensure, that second thread gets chance to execute anyway
+				if (dwFrame!=mt_Thread_marker)			seqFrameMT.Process	(rp_Frame);
 			}
         }
     }
