@@ -19,7 +19,7 @@
     <info_portion id="bar_killer_sniper_killed"></info_portion>
     <info_portion id="bar_killer_sniper_done"></info_portion>
     <info_portion id="bar_spawn_sniper"></info_portion>
-    <info_portion id="bar_dolg_bad_reputation"></info_portion>
+    <info_portion id="test_bar_bad_reputation"></info_portion>
 
 	<!-- bar talk infoportions -->
 	<info_portion id="bar_bar_kill_borov_start"></info_portion>
