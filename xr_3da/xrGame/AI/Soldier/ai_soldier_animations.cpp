@@ -169,19 +169,19 @@ void CAI_Soldier::vfLoadAnimations()
 	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_LEFT] = tSoldierAnimations.tNormal.tGlobal.tpWalkLeft;
 	m_tpaMovementAnimations[BODY_STATE_STAND][WALK_RIGHT] = tSoldierAnimations.tNormal.tGlobal.tpWalkRight;
 
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1];
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_0] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[0];
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_FORWARD_1] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[1];
 	
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0];
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1];
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_0] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[0];
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_BACK_1] = tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[1];
 
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_LEFT] = tSoldierAnimations.tNormal.tGlobal.tpWalkLeft;
-	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_RIGHT] = tSoldierAnimations.tNormal.tGlobal.tpWalkRight;
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_LEFT] = tSoldierAnimations.tCrouch.tGlobal.tpWalkLeft;
+	m_tpaMovementAnimations[BODY_STATE_CROUCH][WALK_RIGHT] = tSoldierAnimations.tCrouch.tGlobal.tpWalkRight;
 
-	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_FORWARD_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
-	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_BACK_0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0];
-	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_LEFT] = tSoldierAnimations.tNormal.tGlobal.tpWalkLeft;
-	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_RIGHT] = tSoldierAnimations.tNormal.tGlobal.tpWalkRight;
+	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_FORWARD_0] = tSoldierAnimations.tLie.tGlobal.tpWalkForward;
+	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_BACK_0] = tSoldierAnimations.tLie.tGlobal.tpWalkBack;
+	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_LEFT] = tSoldierAnimations.tLie.tGlobal.tpWalkLeft;
+	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_RIGHT] = tSoldierAnimations.tLie.tGlobal.tpWalkRight;
 
 	m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpIdle);
 }
@@ -368,6 +368,10 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			}
 			default : {
 				// not moving
+				//if (speed < .1f) {
+				Msg("speed %.2f",speed);
+				Msg("m_fCurSpeed %.2f",m_fCurSpeed);
+				Msg("BODY_STATE %d",m_cBodyState);
 				if (speed < .1f) {
 					// turning around || standing idle
 					if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
@@ -531,6 +535,9 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				else {
 					//Msg("moving...");
 					tpGlobalAnimation = m_tpaMovementAnimations[m_cBodyState][m_cMovementType];
+					if (!tpGlobalAnimation) {
+						tpGlobalAnimation = tpGlobalAnimation;
+					}
 					//torso
 				}
 			}

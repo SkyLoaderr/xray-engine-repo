@@ -263,7 +263,6 @@ void CAI_Soldier::vfSetMovementType(char cMovementType,float fMultplier)
 	else {
 		switch (m_cBodyState) {
 			case BODY_STATE_STAND : {
-				StandUp();
 				r_torso_speed = PI;
 				if (dot > .7f) {
 					m_cMovementType = cMovementType;
@@ -313,7 +312,6 @@ void CAI_Soldier::vfSetMovementType(char cMovementType,float fMultplier)
 				break;
 			}
 			case BODY_STATE_CROUCH : {
-				Squat();
 				r_torso_speed = 3*PI_DIV_4;
 				if (dot > .7f) {
 					m_cMovementType = cMovementType;
@@ -344,7 +342,6 @@ void CAI_Soldier::vfSetMovementType(char cMovementType,float fMultplier)
 				break;
 			}
 			case BODY_STATE_LIE : {
-				Lie();
 				r_torso_speed = PI_DIV_2;
 				if (dot > .7f) {
 					m_fCurSpeed = 0.6f;

@@ -457,5 +457,8 @@ void CPathNodes::Direction(Fvector& dest)
 		return;
 	}
 	dest.sub		(TravelPath[TravelStart+1].P, TravelPath[TravelStart].P);
-	dest.normalize	();
+	if (dest.magnitude() < EPS_L)
+		dest.set(0,0,1);
+	else
+		dest.normalize();
 }

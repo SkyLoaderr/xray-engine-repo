@@ -636,7 +636,7 @@ void CAI_Soldier::OnTurnOver()
 	else
 		AI_Path.TravelStart = 0;
 	
-	vfSetMovementType(m_cBodyState,WALK_NO);
+	vfSetMovementType(WALK_NO);
 
 	r_torso_speed = PI_DIV_2/1;
 	r_spine_speed = PI_DIV_2/1;
@@ -683,11 +683,14 @@ void CAI_Soldier::OnRecharge()
 	if (Weapons->ActiveWeapon())
 		Weapons->ActiveWeapon()->Reload();
 
+	//StandUp();
 	//vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 	if (m_cBodyState != BODY_STATE_STAND)
-        vfSetMovementType(m_cBodyState,m_cMovementType);
-	else
-        vfSetMovementType(BODY_STATE_CROUCH,m_cMovementType);
+        vfSetMovementType(m_cMovementType);
+	else {
+		Squat();
+		vfSetMovementType(m_cMovementType);
+	}
 }
 
 void CAI_Soldier::OnNoWeapon()
@@ -720,7 +723,8 @@ void CAI_Soldier::OnNoWeapon()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(BODY_STATE_STAND,RUN_FORWARD_3);
+	StandUp();
+	vfSetMovementType(RUN_FORWARD_3);
 }
 
 void CAI_Soldier::OnLookingOver()
@@ -764,7 +768,7 @@ void CAI_Soldier::OnWaitingForAnimation()
 {
 	WRITE_TO_LOG("Waiting for animation...");
 
-	vfSetMovementType(m_cBodyState,WALK_NO);
+	vfSetMovementType(WALK_NO);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
@@ -844,7 +848,7 @@ void CAI_Soldier::OnPatrolReturn()
 		
 		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 		
-		if ((fDistance < 2.f) || (AI_NodeID == AI_Path.DestNode)) {
+		if ((fDistance < 1.f) || (AI_NodeID == AI_Path.DestNode)) {
 			if (this == Leader) {
 				float fDistance = 0.f;
 				for (int i=0; i<SelectorPatrol.taMemberPositions.size(); i++) {
@@ -1127,6 +1131,8 @@ void CAI_Soldier::OnPatrol()
 			m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
 		}
 		
+		//CHECK_IF_SWITCH_TO_NEW_STATE(AI_NodeID != m_dwStartPatrolNode,aiSoldierPatrolReturnToRoute)
+		
 		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_dwaNodes, m_bLooped,true);
 		
 			m_dwCreatePathAttempts++;
@@ -1201,10 +1207,13 @@ void CAI_Soldier::OnAttackFireAlone()
 		vfSetFire(false,Group);
 	
 	if (m_cBodyState != BODY_STATE_STAND)
-		vfSetMovementType(m_cBodyState,WALK_NO);
-	else
-		vfSetMovementType(BODY_STATE_CROUCH,WALK_NO);
+		vfSetMovementType(WALK_NO);
+	else {
+		Squat();
+		vfSetMovementType(WALK_NO);
+	}
 	
+	//StandUp();
 	//vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 }
 
@@ -1257,7 +1266,8 @@ void CAI_Soldier::OnSteal()
 	
 	vfSetFire(false,Group);
 	
-	vfSetMovementType(BODY_STATE_CROUCH,WALK_FORWARD_1);
+	Squat();
+	vfSetMovementType(WALK_FORWARD_1);
 }
 /**/
 
@@ -1283,7 +1293,7 @@ void CAI_Soldier::OnAttackAim()
 	
 	vfSetFire(m_bFiring = false,Group);
 
-	vfSetMovementType(m_cBodyState,WALK_NO);
+	vfSetMovementType(WALK_NO);
 }
 
 void CAI_Soldier::OnPointAtSmth()
@@ -1308,7 +1318,7 @@ void CAI_Soldier::OnPointAtSmth()
 	
 	vfSetFire(m_bFiring = false,Group);
 
-	vfSetMovementType(m_cBodyState,WALK_NO);
+	vfSetMovementType(WALK_NO);
 }
 
 void CAI_Soldier::OnSenseSomethingAlone()
@@ -1409,7 +1419,8 @@ void CAI_Soldier::OnSenseSomethingAlone()
 		GO_TO_PREV_STATE;
 	}
 
-	vfSetMovementType(BODY_STATE_CROUCH,WALK_FORWARD_0);
+	Squat();
+	vfSetMovementType(WALK_FORWARD_0);
 	
 	vfAimAtEnemy();
 }
@@ -1448,7 +1459,7 @@ void CAI_Soldier::OnPatrolHurt()
 	r_torso_speed = TORSO_START_SPEED;
 	r_torso_target.yaw = r_torso_current.yaw;
 
-	vfSetMovementType(m_cBodyState,WALK_FORWARD_1);
+	vfSetMovementType(WALK_FORWARD_1);
 	
 	SelectEnemy(Enemy);
 
@@ -1506,11 +1517,12 @@ void CAI_Soldier::OnHurtAloneDefend()
 					vfAimAtEnemy();
 				else
 					SetDirectionLook();
-				vfSetMovementType(BODY_STATE_STAND,RUN_FORWARD_3);
+				StandUp();
+				vfSetMovementType(RUN_FORWARD_3);
 			}
 			else {
 				vfAimAtEnemy();
-				vfSetMovementType(m_cBodyState,WALK_FORWARD_0);
+				vfSetMovementType(WALK_FORWARD_0);
 			}
 
 			if (dwCurTime - dwHitTime > 45000)
@@ -1530,10 +1542,14 @@ void CAI_Soldier::OnHurtAloneDefend()
 				
 			vfAimAtEnemy();
 			
-			if (dwCurTime - dwHitTime > 25000)
-				vfSetMovementType(BODY_STATE_STAND,WALK_FORWARD_1);
-			else
-				vfSetMovementType(BODY_STATE_CROUCH,WALK_FORWARD_1);
+			if (dwCurTime - dwHitTime > 25000) {
+				StandUp();
+				vfSetMovementType(WALK_FORWARD_1);
+			}
+			else {
+				Squat();
+				vfSetMovementType(WALK_FORWARD_1);
+			}
 			
 			break;
 		}
@@ -1554,7 +1570,7 @@ void CAI_Soldier::OnHurtAloneDefend()
 				if ((dwCurTime - dwHitTime > 12000) && (m_cBodyState != BODY_STATE_STAND)) {
 					StandUp();
 					m_tpAnimationBeingWaited = tSoldierAnimations.tLie.tGlobal.tpStandUp;
-					vfSetMovementType(m_cBodyState,WALK_NO);
+					vfSetMovementType(WALK_NO);
 					SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
 				}
 			}
@@ -1570,9 +1586,10 @@ void CAI_Soldier::OnHurtAloneDefend()
 					vfSearchForBetterPositionWTime(SelectorUnderFireLine,Squad,Leader);
 			}
 			
-			vfSetMovementType(m_cBodyState,WALK_FORWARD_0);
+			vfSetMovementType(WALK_FORWARD_0);
 			break;
 		}
+		default : VERIFY(false);
 	}
 }
 
@@ -1617,7 +1634,8 @@ void CAI_Soldier::OnDangerAlone()
 	else
 		vfAimAtEnemy();
 
-	vfSetMovementType(BODY_STATE_CROUCH,WALK_FORWARD_0);
+	Squat();
+	vfSetMovementType(WALK_FORWARD_0);
 }
 
 void CAI_Soldier::Think()

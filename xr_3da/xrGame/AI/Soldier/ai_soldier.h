@@ -429,7 +429,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfUpdateDynamicObjects();
 		void SetLook(Fvector tPosition);
 		void vfSetMovementType(char cMovementType, float fMultiplier = 1.0f);
-	IC	void vfSetLookAndFireMovement(bool a, char c, float d, CGroup &Group, DWORD dwCurTime)
+	IC	void vfSetLookAndFireMovement(bool a, DWORD c, float d, CGroup &Group, DWORD dwCurTime)
 		{
 			if (!(Group.m_bLessCoverLook)) {
 				Group.m_bLessCoverLook = m_bLessCoverLook = true;
