@@ -102,6 +102,9 @@ void CBaseMonster::load_shared(LPCSTR section)
 	get_sd()->m_fsVelocityDrag.Load				(section,"Velocity_Drag");
 	get_sd()->m_fsVelocitySteal.Load			(section,"Velocity_Steal");
 
+	if (ability_run_attack()) 
+		get_sd()->m_fsVelocityRunAttack.Load	(section,"Velocity_RunAttack");
+
 	get_sd()->m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
 	get_sd()->m_dwDayTimeEnd				= pSettings->r_u32	(section,"DayTime_End");		
 	get_sd()->m_fMinSatiety					= pSettings->r_float(section,"Min_Satiety");
@@ -180,7 +183,8 @@ BOOL CBaseMonster::net_Spawn (LPVOID DC)
 	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(get_sd()->m_fsVelocityRunFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_real)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(get_sd()->m_fsVelocitySteal.velocity.linear,			get_sd()->m_fsVelocitySteal.velocity.angular_path,			get_sd()->m_fsVelocitySteal.velocity.angular_real)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-get_sd()->m_fsVelocityDrag.velocity.linear,			get_sd()->m_fsVelocityDrag.velocity.angular_path,			get_sd()->m_fsVelocityDrag.velocity.angular_real)));
-
+	m_movement_params.insert(std::make_pair(eVelocityParameterRunAttack,	STravelParams(get_sd()->m_fsVelocityRunAttack.velocity.linear,		get_sd()->m_fsVelocityRunAttack.velocity.angular_path,		get_sd()->m_fsVelocityRunAttack.velocity.angular_real)));
+	
 	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
 
 	return(TRUE);

@@ -18,7 +18,7 @@ void CStateMonsterAttackRunAttackAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAttackAbstract::execute()
 {
-	object->set_action				(ACT_ATTACK);
+	object->set_action				(ACT_RUN);
 	object->set_state_sound			(MonsterSpace::eMonsterSoundAttack);
 	object->MotionMan.SetSpecParams	(ASP_ATTACK_RUN);
 
@@ -56,12 +56,9 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 	
 	// try to build path
 	Fvector target_position;
-	target_position.mad(object->Position(), object->Direction(), 3.0f);
+	target_position.mad(object->Position(), object->Direction(), 8.0f);
 	
-	//if (!object->CMonsterMovement::build_special(target_position, u32(-1), object->eVelocityParamsRunAttack)) return false;
-	//else object->CMonsterMovement::enable_path();
-	
-	if (!object->CMonsterMovement::build_special(target_position, u32(-1), object->get_run_attack_velocity_mask())) return false;
+	if (!object->CMonsterMovement::build_special(target_position, u32(-1), object->eVelocityParamsRunAttack)) return false;
 	else object->CMonsterMovement::enable_path();
 
 	return true;

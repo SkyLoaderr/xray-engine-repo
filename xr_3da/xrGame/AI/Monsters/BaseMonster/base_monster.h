@@ -46,7 +46,7 @@ class CBaseMonster : public CCustomMonster,
 	typedef CSharedClass<_base_monster_shared,CLASS_ID>	_sd_base;
 	typedef CMovementManager							MoveMan;
 	
-protected:
+public:
 	enum EMovementParameters {
 		eVelocityParameterStand			= u32(1) <<  4,
 		eVelocityParameterWalkNormal	= u32(1) <<  3,
@@ -57,21 +57,21 @@ protected:
 		eVelocityParameterSteal			= u32(1) <<  7,
 		eVelocityParameterDrag			= u32(1) <<  8,
 		eVelocityParameterInvisible		= u32(1) <<	 9,
+		eVelocityParameterRunAttack		= u32(1) <<	 10,
 
 		eVelocityParamsWalk				= eVelocityParameterStand		| eVelocityParameterWalkNormal,
 		eVelocityParamsWalkDamaged		= eVelocityParameterStand		| eVelocityParameterWalkDamaged,
-		eVelocityParamsRun				= eVelocityParameterStand		| eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
+		eVelocityParamsRun				= eVelocityParameterStand		| eVelocityParameterWalkNormal	| eVelocityParameterRunNormal,
 		eVelocityParamsRunDamaged		= eVelocityParameterStand		| eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
-		eVelocityParamsAttackNorm		= eVelocityParameterStand		| eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
+		eVelocityParamsAttackNorm		= eVelocityParameterStand		| eVelocityParameterWalkNormal	| eVelocityParameterRunNormal,
 		eVelocityParamsAttackDamaged	= eVelocityParameterStand		| eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
 		eVelocityParamsSteal			= eVelocityParameterStand		| eVelocityParameterSteal,
 		eVelocityParamsInvisible		= eVelocityParameterInvisible	| eVelocityParamsRun,
+		eVelocityParamsRunAttack		= eVelocityParameterRunAttack	| eVelocityParameterStand, 
 
 		eVelocityParameterCustom		= u32(1) <<	 12,
 	};
 
-public:
-	
 	// friend definitions
 	friend	class			CMotionManager;
 	friend	class			CBaseMonsterAttack;
@@ -192,6 +192,7 @@ public:
 	virtual bool			ability_earthquake				() {return false;}
 	virtual bool			ability_can_jump				() {return false;}
 	virtual bool			ability_distant_feel			() {return false;}
+	virtual bool			ability_run_attack				() {return false;}
 
 	// ---------------------------------------------------------------------------------
 	virtual void			event_on_step					() {}

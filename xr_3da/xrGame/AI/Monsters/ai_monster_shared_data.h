@@ -13,6 +13,7 @@ public:
 	SVelocityParam			m_fsVelocityRunFwdDamaged;
 	SVelocityParam 			m_fsVelocityDrag;
 	SVelocityParam 			m_fsVelocitySteal;
+	SVelocityParam			m_fsVelocityRunAttack;
 
 	float					m_fDistToCorpse;
 	float					m_fDamagedThreshold;		// порог здоровья, ниже которого устанавливается флаг m_bDamaged

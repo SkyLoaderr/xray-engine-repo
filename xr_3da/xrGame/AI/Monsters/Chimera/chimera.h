@@ -21,11 +21,9 @@ public:
 		eVelocityParameterUpperWalkFwd		= eVelocityParameterCustom << 1,
 		eVelocityParameterJumpOne			= eVelocityParameterCustom << 2,
 		eVelocityParameterJumpTwo			= eVelocityParameterCustom << 3,
-		eVelocityParameterRunAttack			= eVelocityParameterCustom << 4,
 
 		eVelocityParamsJump					= eVelocityParameterJumpOne | eVelocityParameterJumpTwo,
 		eVelocityParamsUpperWalkFwd			= eVelocityParameterStand | eVelocityParameterUpperWalkFwd,
-		eVelocityParamsRunAttack			= eVelocityParameterRunAttack | eVelocityParameterStand, 
 	};
 
 
@@ -41,6 +39,7 @@ public:
 	virtual void	CheckSpecParams				(u32 spec_params);
 	virtual	EAction	CustomVelocityIndex2Action	(u32 velocity_index);
 	virtual	void	TranslateActionToPathParams ();
+	//virtual bool	ability_run_attack			() {return true;}
 			
 			void	try_to_jump					();
 	virtual void	HitEntityInJump				(const CEntity *pEntity);

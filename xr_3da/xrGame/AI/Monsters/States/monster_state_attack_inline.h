@@ -44,15 +44,17 @@ void CStateMonsterAttackAbstract::execute()
 {
 	bool selected = false;
 	
-	if (prev_substate == eStateRun) {
-		if (get_state(eStateRunAttack)->check_start_conditions()) {
-			select_state	(eStateRunAttack);
-			selected		= true;
-		}
-	} else if (prev_substate == eStateRunAttack) {
-		if (!get_state(eStateRunAttack)->check_completion()) {
-			select_state	(eStateRunAttack);
-			selected		= true;
+	if (object->ability_run_attack()) {
+		if (prev_substate == eStateRun) {
+			if (get_state(eStateRunAttack)->check_start_conditions()) {
+				select_state	(eStateRunAttack);
+				selected		= true;
+			}
+		} else if (prev_substate == eStateRunAttack) {
+			if (!get_state(eStateRunAttack)->check_completion()) {
+				select_state	(eStateRunAttack);
+				selected		= true;
+			}
 		}
 	}
 	

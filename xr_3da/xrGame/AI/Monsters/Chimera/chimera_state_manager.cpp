@@ -68,14 +68,14 @@ void CStateManagerChimera::execute()
 		else			state_id = eStateRest;
 	}
 
-	if (state_id == eStateAttack) {
-		if (!object->MotionMan.IsCriticalAction()) {
-			CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
-			if (object->CJumpingAbility::can_jump(target)) {
-				object->try_to_jump();
-			}
-		}
-	}
+	//if (state_id == eStateAttack) {
+	//	if (!object->MotionMan.IsCriticalAction()) {
+	//		CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
+	//		if (object->CJumpingAbility::can_jump(target)) {
+	//			object->try_to_jump();
+	//		}
+	//	}
+	//}
 
 	if (object->CriticalActionInfo->is_fsm_locked()) return;
 
