@@ -99,7 +99,7 @@ void CSHEngineTools::NameOnAfterEdit(PropValue* sender, std::string& new_name, b
 {
 	CTextValue* V 			= dynamic_cast<CTextValue*>(sender); R_ASSERT(V);
     AnsiString nn			= new_name.c_str();
-	if (FHelper.NameAfterEdit((TElTreeItem*)m_CurrentItem->Item(),*V->GetValue(),nn)){
+	if (FHelper.NameAfterEdit((TElTreeItem*)m_CurrentItem->Item(),V->GetValue(),nn)){
     	new_name			= nn.c_str();
     	RemoteRenameBlender(V->GetValue(),new_name.c_str());
     }
