@@ -48,6 +48,7 @@ void CPureServerObject::save				(NET_Packet	&tNetPacket)
 ////////////////////////////////////////////////////////////////////////////
 CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 {
+	m_editor_flags.zero			();
 	RespawnTime					= 0;
 	net_Ready					= FALSE;
 	ID							= 0xffff;

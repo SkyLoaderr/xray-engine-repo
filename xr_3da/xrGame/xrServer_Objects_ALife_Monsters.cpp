@@ -207,9 +207,7 @@ bool CSE_ALifeTrader::interactive			() const
 void CSE_ALifeTrader::OnSuppliesCountChange	(PropValue* sender)
 {
     m_tpSupplies.resize			(supplies_count);
-#ifdef _EDITOR
-	UI->Command					(COMMAND_UPDATE_PROPERTIES);
-#endif
+	set_editor_flag				(flUpdateProperties);
 }
 
 void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
@@ -482,11 +480,7 @@ void CSE_ALifeTorridZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket,size);
 	CSE_Motion::motion_read		(tNetPacket);
-
-
-#ifdef _EDITOR    
-	CSE_Motion::PlayMotion		();
-#endif
+	set_editor_flag				(flMotionChange);
 }
 
 void CSE_ALifeTorridZone::STATE_Write		(NET_Packet	&tNetPacket)

@@ -35,13 +35,8 @@ add_to_type_list(CSE_Shape)
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
 public:
-	enum {
-		flPlayAnimation				= u32(1 << 0),
-	};
-public:
 	ref_str							visual_name;
 	ref_str							startup_animation;
-	Flags32							m_visual_flags;
 public:
 									CSE_Visual		(LPCSTR name=0);
 	virtual							~CSE_Visual		();
@@ -51,10 +46,6 @@ public:
 
     void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return *visual_name;};
-	IC	void						play_animation	()
-	{
-		m_visual_flags.set			(flPlayAnimation,TRUE);
-	}
 
 	virtual CSE_Visual* __stdcall	visual			() = 0;
 };
@@ -80,6 +71,16 @@ add_to_type_list(CSE_Motion)
 #define script_type_list save_type_list(CSE_Motion)
 
 struct ISE_Abstract {
+public:
+	enum {
+		flVisualAnimationChange		= u32(1 << 0),
+		flMotionChange				= u32(1 << 1),
+		flUpdateProperties			= u32(1 << 2),
+	};
+	Flags32							m_editor_flags;
+	IC	void						set_editor_flag	(u32 mask)	{m_editor_flags.set	(mask,TRUE);}
+
+public:
 	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal) = 0;
 	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket) = 0;
 	virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items) = 0;

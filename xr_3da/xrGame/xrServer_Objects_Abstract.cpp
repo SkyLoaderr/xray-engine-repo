@@ -69,7 +69,6 @@ void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
 CSE_Visual::CSE_Visual		   	(LPCSTR name)
 {
 	visual_name					= name;
-	m_visual_flags.zero			();
 }
 
 CSE_Visual::~CSE_Visual			()

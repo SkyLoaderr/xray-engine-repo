@@ -721,7 +721,7 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 			data_load(tNetPacket);
 		}
 	}
-	play_animation				();
+	set_editor_flag				(flVisualAnimationChange);
 }
 
 void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
@@ -768,7 +768,7 @@ xr_token po_types[]={
 
 void CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
 {
-	play_animation				();
+	set_editor_flag				(flVisualAnimationChange);
 }
 
 #ifdef _EDITOR
@@ -887,7 +887,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		if (m_wVersion>17)
 			tNetPacket.r_stringZ	(startup_animation);
 
-		play_animation				();
+		set_editor_flag				(flVisualAnimationChange);
 
 		if (m_wVersion > 42) {
 			tNetPacket.r_stringZ	(s_tmp);
@@ -909,7 +909,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float			(range);
     	tNetPacket.r_u16			(flags.flags);
 		tNetPacket.r_stringZ		(startup_animation);
-		play_animation				();
+		set_editor_flag				(flVisualAnimationChange);
 		tNetPacket.r_stringZ		(fixed_bones);
 		tNetPacket.r_float			(m_health);
 	}
@@ -976,11 +976,10 @@ void CSE_ALifeObjectHangingLamp::load(NET_Packet &tNetPacket)
 }
 void CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
 {
-	play_animation				();
+	set_editor_flag				(flVisualAnimationChange);
 }
 
 #ifdef _EDITOR
-#include "ui_main.h"
 void CSE_ALifeObjectHangingLamp::OnChooseAnim(ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
@@ -1002,9 +1001,7 @@ void CSE_ALifeObjectHangingLamp::OnChooseBone(ChooseItemVec& lst)
 
 void CSE_ALifeObjectHangingLamp::OnChangeFlag(PropValue* sender)
 {
-#ifdef _EDITOR
-	UI->Command					(COMMAND_UPDATE_PROPERTIES);
-#endif
+	set_editor_flag				(flUpdateProperties);
 }
 
 void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
@@ -1168,10 +1165,7 @@ void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
     tNetPacket.r_stringZ		(startup_animation);
 	tNetPacket.r_stringZ		(engine_sound);
 
-	CSE_Visual::play_animation	();
-#ifdef _EDITOR    
-	CSE_Motion::PlayMotion		();
-#endif
+	set_editor_flag				(flVisualAnimationChange | flMotionChange);
 }
 
 void CSE_ALifeHelicopter::STATE_Write		(NET_Packet	&tNetPacket)
@@ -1203,7 +1197,7 @@ void CSE_ALifeHelicopter::load		(NET_Packet &tNetPacket)
 
 void CSE_ALifeHelicopter::OnChangeAnim(PropValue* sender)
 {
-	CSE_Visual::play_animation		();
+	set_editor_flag				(flVisualAnimationChange);
 }
 
 #ifdef _EDITOR
