@@ -202,9 +202,9 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_bDirectControl);
 	tNetPacket.w_u32			(m_tNodeID);
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
-	tNetPacket.w_stringZ			(*m_caGroupControl?*m_caGroupControl:"");
+	tNetPacket.w_stringZ		(*m_caGroupControl?*m_caGroupControl:"");
 	tNetPacket.w_u32			(m_flags.get());
-	tNetPacket.w_stringZ			(m_ini_string);
+	tNetPacket.w_stringZ		(m_ini_string);
 	tNetPacket.w				(&m_story_id,sizeof(m_story_id));
 }
 
@@ -231,14 +231,16 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		tNetPacket.r_u32		(dwDummy);
 		m_bDirectControl		= !!dwDummy;
 	}
+	
 	if (m_wVersion >= 8)
 		tNetPacket.r_u32		(m_tNodeID);
+	
 	if (m_wVersion > 22)
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
-	if (m_wVersion > 23){
-    	string256 tmp;
-		tNetPacket.r_stringZ	(tmp); m_caGroupControl=tmp;
-    }
+	
+	if (m_wVersion > 23)
+		tNetPacket.r_stringZ	(m_caGroupControl);
+
 	if (m_wVersion > 49) {
 		tNetPacket.r_u32		(m_flags.flags);
 	}
