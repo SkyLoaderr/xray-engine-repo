@@ -178,9 +178,6 @@ public:
 			
 			// so, limit is not reached
 			// check if new step will get us success
-			if (i == 142) {
-				i=i;
-			}
 			if (step(data_storage, path_manager, graph))
 				// so this step reached the goal, return success
 				return			(true);

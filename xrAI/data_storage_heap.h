@@ -110,7 +110,7 @@ public:
 		ZeroMemory				(heap,byte_count);
 		memory_usage			+= byte_count;
 
-		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
+//		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
 	}
 
 	virtual				~CDataStorageBinaryHeap()
@@ -262,7 +262,7 @@ public:
 			memory_usage		+= byte_count;
 		}
 
-		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
+//		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
 	}
 
 	virtual				~CDataStorageMultiBinaryHeap()
@@ -452,7 +452,7 @@ public:
 			memory_usage		+= byte_count;
 		}
 
-		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
+//		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
 	}
 
 	virtual				~CDataStorageBinaryHeapList()

@@ -102,7 +102,7 @@ public:
 //		priority_queue.reserved = (_priority_queue::node*)xr_malloc(byte_count);
 //		memory_usage			+= byte_count;
 
-		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
+//		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
 	}
 
 	virtual				~CDataStoragePriorityQueue()

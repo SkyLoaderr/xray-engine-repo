@@ -164,7 +164,7 @@ public:
 		ZeroMemory				(indexes,byte_count);
 		memory_usage			+= byte_count;
 
-		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
+//		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
 	}
 
 	virtual				~CDataStorageBaseIndex()
@@ -221,7 +221,7 @@ public:
 		ZeroMemory				(nodes,byte_count);
 		memory_usage			+= byte_count;
 
-		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
+//		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
 	}
 
 	virtual				~CDataStorageBlock()

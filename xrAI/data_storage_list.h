@@ -1038,6 +1038,7 @@ namespace DataStorageBucketList {
 	template <
 		typename _dist_type, 
 		typename _index_type, 
+		typename _path_id_type, 
 		u8 index_bits, 
 		u8 mask_bits
 	>
@@ -1053,6 +1054,7 @@ namespace DataStorageBucketList {
 		SGraphNode		*next;
 		SGraphNode		*prev;
 		u32				bucket_id;
+		_path_id_type	path_id;
 	};
 	template <
 		typename _GraphNode,
@@ -1084,6 +1086,7 @@ class CDataStorageBucketList :
 		DataStorageBucketList::SGraphNode<
 			_dist_type,
 			_index_type,
+			_path_id_type,
 			index_bits,
 			mask_bits
 		>,
@@ -1091,6 +1094,7 @@ class CDataStorageBucketList :
 			DataStorageBucketList::SGraphNode<
 				_dist_type,
 				_index_type,
+				_path_id_type,
 				index_bits,
 				mask_bits
 			>,
@@ -1108,6 +1112,7 @@ public:
 	typedef DataStorageBucketList::SGraphNode<
 		_dist_type,
 		_index_type,
+		_path_id_type,
 		index_bits,
 		mask_bits
 	> CGraphNode;
@@ -1211,34 +1216,38 @@ public:
 //		}
 	}
 
-	IC		CGraphNode	&create_node	(const _index_type node_index)
-	{
-		if (!clear_buckets) {
-			if (indexes[node_index].node && (indexes[node_index].node->index() == node_index) && (buckets[indexes[node_index].node->bucket_id] == indexes[node_index].node))
-				buckets[indexes[node_index].node->bucket_id] = 0;
-			CGraphNode			&node = inherited::create_node(node_index);
-			if (buckets[node.bucket_id] == &node)
-				buckets[node.bucket_id] = 0;
-			return				(node);
-		}
-		else
-			return				(inherited::create_node(node_index));
-	}
+//	IC		CGraphNode	&create_node	(const _index_type node_index)
+//	{
+//		if (!clear_buckets) {
+//			if (indexes[node_index].node && (indexes[node_index].node->index() == node_index) && (buckets[indexes[node_index].node->bucket_id] == indexes[node_index].node))
+//				buckets[indexes[node_index].node->bucket_id] = 0;
+//			CGraphNode			&node = inherited::create_node(node_index);
+//			if (buckets[node.bucket_id] == &node)
+//				buckets[node.bucket_id] = 0;
+//			return				(node);
+//		}
+//		else
+//			return				(inherited::create_node(node_index));
+//	}
 
 	IC		void		add_to_bucket	(CGraphNode &node, u32 bucket_id)
 	{
 		if (bucket_id < min_bucket_id)
 			min_bucket_id		= bucket_id;
 
-		node.bucket_id = bucket_id;
-		
-		CGraphNode			*i = buckets[bucket_id];
-		if (!i || (!clear_buckets && (indexes[i->index()].path_id != cur_path_id))) {
+		CGraphNode				*i = buckets[bucket_id];
+//		if (!i || (!clear_buckets && (indexes[i->index()].path_id != cur_path_id))) {
+		if (!i || (!clear_buckets && ((i->path_id != cur_path_id) || (i->bucket_id != bucket_id)))) {
+			node.bucket_id			= bucket_id;
+			node.path_id			= cur_path_id;
 			buckets[bucket_id]	= &node;
 			node.next			= node.prev = 0;
 			verify_buckets		();
 			return;
 		}
+
+		node.bucket_id			= bucket_id;
+		node.path_id			= cur_path_id;
 
 		if (i->f() >= node.f()) {
 			buckets[bucket_id]	= &node;
@@ -1329,7 +1338,8 @@ public:
 		if (!buckets[min_bucket_id]) {
 			verify_buckets		();
 			if (!clear_buckets)
-				for (++min_bucket_id; !buckets[min_bucket_id] || (indexes[buckets[min_bucket_id]->index()].path_id != cur_path_id) || (indexes[buckets[min_bucket_id]->index()].node != buckets[min_bucket_id]); ++min_bucket_id);
+//				for (++min_bucket_id; !buckets[min_bucket_id] || (indexes[buckets[min_bucket_id]->index()].path_id != cur_path_id) || (indexes[buckets[min_bucket_id]->index()].node != buckets[min_bucket_id]); ++min_bucket_id);
+				for (++min_bucket_id; !buckets[min_bucket_id] || (buckets[min_bucket_id]->path_id != cur_path_id) || (buckets[min_bucket_id]->bucket_id != min_bucket_id); ++min_bucket_id);
 			else
 				for (++min_bucket_id; !buckets[min_bucket_id]; ++min_bucket_id);
 			VERIFY				(min_bucket_id < bucket_count);
