@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "xrServer_Objects.h"
 #include "script_space.h"
+#include "phnetstate.h"
 #include "xrServer_script_macroses.h"
 
 using namespace luabind;
