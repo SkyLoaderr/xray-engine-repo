@@ -318,7 +318,7 @@ void CBaseMonster::TranslateActionToPathParams()
 		}
 		break;
 	case ACT_DRAG:
-		vel_mask = eVelocityParamsDrag;
+		vel_mask = eVelocityParameterDrag; //. eVelocityParamsDrag
 		des_mask = eVelocityParameterDrag;
 
 		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
