@@ -7,19 +7,19 @@ stand_attack_0 =	  	0.4,		  20,	     150,        2.0, 1.0, 0.5,		 -1.6, 1.6, -1.
 
 [m_burer_attack_effector]
 
-duality_h		= 0.1; 0.01 
-duality_v		= 0.01; 0.01
-blur			= 0.01
-gray			= 0.5
-noise_intensity = 0.1;0.0
-noise_grain		= 1
-noise_fps		= 30
-color_base		= 0.65,0.15,0.1
-color_gray		= 0.333,0.333,0.333
-color_add		= 0.0,0.0,0.0
-time			= 3.00
-time_attack		= 0.05		; fade in
-time_release	= 0.50		; fade out
+duality_h			= 0.1; 0.01 
+duality_v			= 0.01; 0.01
+blur				= 0.01
+gray				= 0.5
+noise_intensity		= 0.1;0.0
+noise_grain			= 1
+noise_fps			= 30
+color_base			= 0.65,0.15,0.1
+color_gray			= 0.333,0.333,0.333
+color_add			= 0.0,0.0,0.0
+time				= 3.00
+time_attack			= 0.05		; fade in
+time_release		= 0.50		; fade out
 
 ; camera effects
 ce_time				= 0.30 ;time 
@@ -38,36 +38,36 @@ stand_run_dmg_0	    =	   1,	  0.4,    1,      0.9,    0.6,
 
 
 [m_burer_e]
-GroupControlSection	= spawn_group
-$spawn               = "monsters\burer"			; option for Level Editor
-$npc			     = on						; option for Level Editor
-$prefetch 			 = 16
-Scheduled		     = on						; option for ALife Simulator
-Human		     	 = off						; option for ALife Simulator
-Health			     = 400						; option for ALife Simulator
-MinSpeed		     = 1.0						; option for ALife Simulator
-MaxSpeed		     = 5.0						; option for ALife Simulator
-going_speed          = 4.5                      ; option for ALife Simulator
-search_speed         = 1.5                       ; option for ALife Simulator
-visual				 = monsters\burer\burer
-MaxHealthValue		     = 200			; range [0..200]
-DynamicObjectsCount	 = 32
+GroupControlSection		= spawn_group
+$spawn					= "monsters\burer"			; option for Level Editor
+$npc					= on						; option for Level Editor
+$prefetch 				 = 16
+Scheduled				= on						; option for ALife Simulator
+Human		     		= off						; option for ALife Simulator
+Health					= 400						; option for ALife Simulator
+MinSpeed				= 1.0						; option for ALife Simulator
+MaxSpeed				= 5.0						; option for ALife Simulator
+going_speed				= 4.5                      ; option for ALife Simulator
+search_speed			= 1.5                       ; option for ALife Simulator
+visual					= monsters\burer\burer
+MaxHealthValue		    = 200			; range [0..200]
+DynamicObjectsCount		= 32
 
-cform                = skeleton					; collision class
-class                = AI_BURER					; AI class
+cform					= skeleton					; collision class
+class					= AI_BURER					; AI class
 
-bone_torso			 = bip01_spine1 			; bone name
-bone_head			 = bip01_head				; bone name
-bone_fire			 = bip01_head				; bone name
-weapon_usage		 = 0						; boolean
+bone_torso				= bip01_spine1 			; bone name
+bone_head				= bip01_head				; bone name
+bone_fire				= bip01_head				; bone name
+weapon_usage			= 0						; boolean
 
-ph_box0_center 		 = 0.0,  0.9,  0.0
-ph_box0_size 		 = 0.35, 0.9,  0.35
-ph_box1_center 		 = 0.0,  0.6,  0.0
-ph_box1_size 		 = 0.40, 0.6,  0.40
-ph_crash_speed_min   = 16
-ph_crash_speed_max   = 30
-ph_mass 		     = 70.
+ph_box0_center 			= 0.0,  0.9,  0.0
+ph_box0_size 			= 0.35, 0.9,  0.35
+ph_box1_center 			= 0.0,  0.6,  0.0
+ph_box1_size 			= 0.40, 0.6,  0.40
+ph_crash_speed_min		= 16
+ph_crash_speed_max		= 30
+ph_mass 				= 70.
 
 
 
@@ -77,13 +77,13 @@ ph_skeleton_hinger_factor1			=1.
 ph_skeleton_ddelay	     			=20
 ph_skel_fatal_impulse_factor		=10.0
 ph_after_death_velocity_factor		=1.35
-ph_skel_shot_up_factor					=.8f
+ph_skel_shot_up_factor				=.8f
 
-SoundThreshold		 = 0.06             ; range [0..1]
+SoundThreshold						= 0.06             ; range [0..1]
 
-EyeFov				 = 100;
-eye_range			 = 90	;50;
-max_hear_dist		 = 60
+EyeFov								= 100;
+eye_range							= 90	;50;
+max_hear_dist						= 60
 
 ; speed factors			linear | angular_real | angular_path | min |  max
 Velocity_Stand			= 0,		2.4,			2.4,		1,		1
@@ -100,20 +100,20 @@ Accel_Calm				= 1.5
 Accel_Aggressive		= 200 ;6.5
 
 ;attack parameters
-MinAttackDist		= 1.0	;0.5
-MaxAttackDist		= 2.5	;3.8
+MinAttackDist			= 1.0	;0.5
+MaxAttackDist			= 2.5	;3.8
 
 as_min_dist				= 0.1
 as_step					= 0.3
 
 transparency_threshold  = 0.25
 
-DayTime_Begin		= 0			; начала дня для монстра
-DayTime_End			= 21		; конец дня для монстра
-Min_Satiety			= 0.6		; мин. норма сытости (меньше - уже голодный)
-Max_Satiety			= 0.9		; макс. норма сытости (больше - очень сытый)
+DayTime_Begin			= 0			; начала дня для монстра
+DayTime_End				= 21		; конец дня для монстра
+Min_Satiety				= 0.6		; мин. норма сытости (меньше - уже голодный)
+Max_Satiety				= 0.9		; макс. норма сытости (больше - очень сытый)
 
-distance_to_corpse	= 1.2		; дист. до трупа, при которой он переходит в состояние еды
+distance_to_corpse		= 1.2		; дист. до трупа, при которой он переходит в состояние еды
 
 
 ;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
@@ -127,43 +127,43 @@ selector_approach		=      20.0,            1.0,                 1000.0,         
 ;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_walk_around	=      20.0,            6.0,                 1000.0,             4.0,               5000.0,					8.0,				5000.0,      
 
-;terrain				 = 014,014,014,014,30,40 ;255,255,255,255,30,40
-terrain				 = 255,255,255,255,30,40
+;terrain				= 014,014,014,014,30,40 ;255,255,255,255,30,40
+terrain					= 255,255,255,255,30,40
 
 hit_type = wound
 
 ;entity condition
 
-satiety_v = 0.001				;0.01			;скорость уменьшения сытости со временем
-radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
-satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
-satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
-satiety_critical = 0		;0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
-radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
-bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
-wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
-morale_v			= 0.01					;скорость восстановления морали
-health_hit_part = 0.4		;0.8			;процент хита, уходящий на отнимание здоровья
-power_hit_part = 0.2		;0.9			;процент хита, уходящий на отнимание силы
+satiety_v				= 0.001				;0.01			;скорость уменьшения сытости со временем
+radiation_v				= 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v			= 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v		= 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical		= 0		;0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v		= 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v				= 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v		= 0.01	;0.001		    ;скорость заживания раны 
+morale_v				= 0.01					;скорость восстановления морали
+health_hit_part			= 0.4		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part			= 0.2		;0.9			;процент хита, уходящий на отнимание силы
 
-burn_immunity = 0.8				;коэффициенты иммунитета 
-strike_immunity = 0.7
-shock_immunity = 1.0
-wound_immunity = 0.15	;0.30	;1.0		
-radiation_immunity = 0.2
-telepatic_immunity = 1.0
-chemical_burn_immunity = 0.9
-explosion_immunity = 0.7
-fire_wound_immunity  = 0.2	;0.7
+burn_immunity			= 0.8				;коэффициенты иммунитета 
+strike_immunity			= 0.7
+shock_immunity			= 1.0
+wound_immunity			= 0.15	;0.30	;1.0		
+radiation_immunity		= 0.2
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 0.9
+explosion_immunity		= 0.7
+fire_wound_immunity		= 0.2	;0.7
 
-sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
-sleep_power = 1.0		;1.5
-sleep_satiety = 1.0		;0.8
-sleep_radiation = 1.0	;1.1
+sleep_health			= 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power				= 1.0		;1.5
+sleep_satiety			= 1.0		;0.8
+sleep_radiation			= 1.0	;1.1
 
-eat_freq			=	5.0		; частота укусов в сек
-eat_slice			=	0.01	; увеличение сытости при 1 укусе
-eat_slice_weight	=	10.0	; уменьшение еды у трупа
+eat_freq				=	5.0		; частота укусов в сек
+eat_slice				=	0.01	; увеличение сытости при 1 укусе
+eat_slice_weight		=	10.0	; уменьшение еды у трупа
 
 
 ; Morale
