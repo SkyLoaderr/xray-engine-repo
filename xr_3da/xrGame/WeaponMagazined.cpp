@@ -402,8 +402,7 @@ void CWeaponMagazined::OnShot(BOOL bHUD)
 	// Camera
 	if (bHUD)	{
 		CEffectorShot* S		= dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot)); 
-		R_ASSERT(S);
-		S->Shot					(camDispersion);
+		if (S)	S->Shot			(camDispersion);
 	}
 	// Animation
 	m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
