@@ -1,0 +1,54 @@
+function main()
+local a = get_actor()
+local b = level.object("stalker001")
+
+transfer_ammo(b,a,"ammo_9x19_fmj")
+//transfer_ammo(b,a,"ammo_9x19_fmj")
+end
+
+
+
+function transfer_ammo(first_speaker, second_speaker, item)
+	local obj = first_speaker:object(item)
+	if obj ~= nil then
+		first_speaker:transfer_item(obj, second_speaker)
+	end
+	obj = first_speaker:object(item)
+	if obj ~= nil then
+		first_speaker:transfer_item(obj, second_speaker)
+	end
+end
+
+
+function __main()
+	local a = level.actor()
+	a:give_game_news("tips_esc_trader_how_to_talk", "ui\\ui_icons_task", 0,100,50,50,5000)
+end
+
+function _main ()
+
+	local ph_object 	= get_level_object ("vagon")
+	local physics_shell	= ph_object:get_physics_shell()
+	local element		= physics_shell:get_element_by_bone_name("pricep")
+	
+	local wp = get_actor()
+	
+	
+	while true do
+
+	local tgt_pos = wp:position()
+	
+	local cur_pos = ph_object:position()
+	local dist = cur_pos:distance_to(tgt_pos)
+	
+	local dir = vector()
+	dir:sub(tgt_pos,cur_pos)
+	dir:normalize_safe()
+	dir:mul(100000)
+	
+	element:apply_force(dir.x,dir.y,dir.z)
+	
+	wait(1000)
+	end
+	
+end
