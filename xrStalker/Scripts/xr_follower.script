@@ -548,28 +548,28 @@ function action_raid:move_callback (obj, action_type, index)
     
     if ptr:flag (index, 12) == true then
        self.in_find = true
-       self.move_type = move.run
-       self.body_state = move.crouch
-       self.mental_state = anim.danger
-       self.object:set_body_state            (move.crouch)
-       self.object:set_movement_type         (move.run)
-       self.object:set_mental_state          (anim.danger)
-       self.stage = 2
-       local num = math.random (1, 4)
-       self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
+       --self.move_type = move.run
+       --self.body_state = move.crouch
+       --self.mental_state = anim.danger
+       --self.object:set_body_state            (move.crouch)
+       --self.object:set_movement_type         (move.run)
+       --self.object:set_mental_state          (anim.danger)
+       --self.stage = 2
+       --local num = math.random (1, 4)
+       --self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
        return 
     end   
     
     if ptr:flag (index, 13) == true then
-       self.move_type = move.walk
-       self.body_state = move.standing
-       self.mental_state = anim.danger
-       self.object:set_body_state            (move.standing)
-       self.object:set_movement_type         (move.walk)
-       self.object:set_mental_state          (anim.danger)
-       self.object:clear_animations ()
+       --self.move_type = move.walk
+       --self.body_state = move.standing
+       --self.mental_state = anim.danger
+       --self.object:set_body_state            (move.standing)
+       --self.object:set_movement_type         (move.walk)
+       --self.object:set_mental_state          (anim.danger)
+       --self.object:clear_animations ()
        self.in_find = false
-       self.stage = 0
+       --self.stage = 0
     end   
         
 end
