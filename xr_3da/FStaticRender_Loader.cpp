@@ -122,7 +122,7 @@ void CRender::LoadBuffers(CStream *fs)
 			&VB[i]));
 
 		BYTE* pData;
-		R_CHK(VB[i]->Lock(0,0,&pData,D3DLOCK_NOSYSLOCK));
+		R_CHK(VB[i]->Lock(0,0,&pData,0));
 
 		CopyMemory(pData,fs->Pointer(),vCount*vSize);
 

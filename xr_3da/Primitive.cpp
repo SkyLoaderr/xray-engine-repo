@@ -63,7 +63,7 @@ void	CPrimitive::IB_Replicate(CPrimitive& P)
 {
 	D3DINDEXBUFFER_DESC	desc;
 	P.pIndices->GetDesc(&desc);
-	WORD* data = P.IB_Lock(D3DLOCK_READONLY|D3DLOCK_NOSYSLOCK);
+	WORD* data = P.IB_Lock(D3DLOCK_READONLY);
 	IB_Create(P.dwBaseVertex,desc.Size/2,desc.Usage,data);
 	P.IB_Unlock();
 }

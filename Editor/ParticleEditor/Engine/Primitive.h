@@ -17,7 +17,7 @@ public:
 	//***** VB interface
 	void	VB_Attach			(DWORD FVF, IDirect3DVertexBuffer8* VB);
 	void	VB_Create			(DWORD FVF, DWORD dwCount,DWORD dwUsage=D3DUSAGE_WRITEONLY, DWORD srcFVF=0, VOID* pData=NULL);
-	void*	VB_Lock				(DWORD dwFlags = D3DLOCK_NOSYSLOCK);
+	void*	VB_Lock				(DWORD dwFlags = 0);
 	void	VB_Unlock			();
 	void	VB_Destroy			();
 
@@ -26,7 +26,7 @@ public:
 	void	IB_Attach			(DWORD dwBaseVert, IDirect3DIndexBuffer8* IB);
 	void	IB_Replicate		(CPrimitive& P);
 	void	IB_Create			(DWORD dwBaseVert, DWORD dwCount, DWORD dwUsage=D3DUSAGE_WRITEONLY,VOID* pData=NULL);
-	WORD*	IB_Lock				(DWORD dwFlags = D3DLOCK_NOSYSLOCK);
+	WORD*	IB_Lock				(DWORD dwFlags = 0);
 	void	IB_Unlock			();
 	void	IB_Destroy			();
 

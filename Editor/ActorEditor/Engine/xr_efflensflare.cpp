@@ -262,7 +262,8 @@ void CLensFlare::OnMove()
 	}
 }
 
-void CLensFlare::Render(BOOL bSun, BOOL bFlares){
+void CLensFlare::Render(BOOL bSun, BOOL bFlares)
+{
 	VERIFY(bInit);
 	if (!bRender) return;
 	
@@ -274,7 +275,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares){
 	dwLight.set		( LightColor );
 	vector<SFlare*>	rlist;
 	
-	FlareVertex *pv = (FlareVertex*) P.VB_Lock(D3DLOCK_NOSYSLOCK|D3DLOCK_DISCARD);
+	FlareVertex *pv = (FlareVertex*) P.VB_Lock(D3DLOCK_DISCARD);
 	
 	float 	fDistance	= FAR_DIST*0.75f;
 	
@@ -315,11 +316,11 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares){
 		}
 	}
 	
-	P.VB_Unlock();
+	P.VB_Unlock	();
+	CHK_DX		(HW.pDevice->SetTransform(D3DTS_WORLD, precalc_identity.d3d()));
 	
-	HW.pDevice->SetTransform	( D3DTS_WORLD, precalc_identity.d3d());
-	
-	for (DWORD i=0; i<rlist.size(); i++){
+	for (DWORD i=0; i<rlist.size(); i++)
+	{
     	if (rlist[i]->hShader){
 			Device.Shader.set_Shader	(rlist[i]->hShader);
 			Device.Primitive.DrawSubset	(P,i*4,4,i*6,2);

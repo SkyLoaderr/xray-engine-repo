@@ -9,6 +9,7 @@ public:
 	struct		caps_Geometry
 	{
 		DWORD	dwVersion	: 8;
+		DWORD	dwRegisters	: 8;
 		DWORD	bSoftware	: 1;
 		DWORD	bPointSprites:1;
 		DWORD	bMPS		: 1;		// matrix-palette-skinning
