@@ -505,6 +505,19 @@ void CAI_Stalker::OnRender			()
 {
 	inherited::OnRender		();
 
+	{
+		Fvector					c0 = Position(),c1,t0 = Position(),t1;
+		c0.y					+= 2.f;
+		c1.setHP				(-m_body.current.yaw,-m_body.current.pitch);
+		c1.add					(c0);
+		RCache.dbg_DrawLINE		(Fidentity,c0,c1,D3DCOLOR_XRGB(0,255,0));
+		
+		t0.y					+= 2.f;
+		t1.setHP				(-m_body.target.yaw,-m_body.target.pitch);
+		t1.add					(t0);
+		RCache.dbg_DrawLINE		(Fidentity,t0,t1,D3DCOLOR_XRGB(255,0,0));
+	}
+
 	if (!psAI_Flags.is(aiVision))
 		return;
 

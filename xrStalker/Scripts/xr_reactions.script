@@ -657,10 +657,14 @@ function events:printid(key)
 	end
 end
 function events:print()
-	printf("--------------------------------------------------------------")
-	printf("Print Start")
-	printf("--------------------------------------------------------------")
+	local i = 0	
 	for key,value in self.arhive do
+		if i == 0 then
+			printf("--------------------------------------------------------------")
+			printf("Print Start")
+			printf("--------------------------------------------------------------")
+		end
+		i = i + 1
 		self:printid(key)
 	end
 end
