@@ -1021,7 +1021,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 		Fmatrix object_form;
 		object_form.set(object->XFORM());
 		object_form.transpose();
-		object_form.transform_tiny(pos_in_object); //project pos_in_object on object axes now it is position of contact in object frame
+		object_form.transform_dir(pos_in_object); //project pos_in_object on object axes now it is position of contact in object frame
 		float sq_dist=dInfinity;
 		for(u16 i=0;i<count;i++)
 		{
