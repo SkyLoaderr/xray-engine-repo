@@ -95,10 +95,12 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 	
 	if(!pThis->Local())  return TRUE;
-    
+
+#ifdef DEBUG
 	CSE_Abstract			*E	= (CSE_Abstract*)(DC);
 	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(E);
 	VERIFY					(dynamic_object);
+#endif
 
 	return TRUE;
 }

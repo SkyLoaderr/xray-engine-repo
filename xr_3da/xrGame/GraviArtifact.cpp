@@ -79,7 +79,7 @@ void CGraviArtifact::UpdateCL()
 					K->Calculate	();
 					Fmatrix Ruck_MTX	= K->LL_GetTransform(m_CarringBoneID);
 					Fvector	x;
-					x.set(-0.1, 0, -0.3);
+					x.set(-0.1f, 0.f, -0.3f);
 					Ruck_MTX.translate_add(x);
 					Ruck_MTX.mulA		(XFORM());
 					XFORM().set(Ruck_MTX);
