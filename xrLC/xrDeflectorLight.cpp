@@ -163,8 +163,10 @@ float getLastRP_Scale(RAPID::XRCollide* DB, R_Light& L)
 	return scale;
 }
 
-float rayTrace(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float R)
+float rayTrace	(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float R)
 {
+	R_ASSERT	(DB);
+
 	try {
 		// 1. Check cached polygon
 		float _u,_v,range;
@@ -172,7 +174,13 @@ float rayTrace(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float R
 		if (res) {
 			if (range>0 && range<R) return 0;
 		}
-		
+	} catch (...)
+	{
+		Msg("* ERROR: rayTrace :: 1");
+		return 0;
+	}
+	
+	try {
 		// 2. Polygon doesn't pick - real database query
 		DB->RayPick(0,&RCAST_Model,P,D,R);
 		if (0==DB->GetRayContactCount()) {
@@ -183,7 +191,7 @@ float rayTrace(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float R
 		}
 	} catch (...)
 	{
-		Msg("* ERROR: rayTrace");
+		Msg("* ERROR: rayTrace :: 2");
 		return 0;
 	}
 }
