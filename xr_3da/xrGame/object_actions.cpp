@@ -123,13 +123,19 @@ CObjectActionFire::CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, 
 void CObjectActionFire::initialize		()
 {
 	inherited::inherited::initialize	();
-	m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+	if (!m_object->can_kill_member())
+		m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+	else
+		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
 }
 
 void CObjectActionFire::execute			()
 {
 	inherited::execute			();
-	m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+	if (!m_object->can_kill_member())
+		m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+	else
+		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
 }
 
 void CObjectActionFire::finalize		()

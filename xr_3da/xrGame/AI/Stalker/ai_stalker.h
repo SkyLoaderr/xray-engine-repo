@@ -234,6 +234,8 @@ public:
 	CCoverEvaluatorAngle		*m_ce_angle;
 
 	virtual	Feel::Sound*		dcast_FeelSound			()			{ return this;	}
+			bool				can_kill_member			();
+			bool				can_kill_member			(const Fvector &position, const Fvector &direction) const;
 };
 
 #include "ai_stalker_inline.h"
