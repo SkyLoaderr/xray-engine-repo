@@ -147,6 +147,15 @@
 	</dialog>
 
 
+	<dialog id="hello_dialog">
+		<phrase_list>
+			<phrase id="0">
+				<text>Привет</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+
 	<dialog id="stalker_hello_dialog">
 		<phrase_list>
 			<phrase id="0">
