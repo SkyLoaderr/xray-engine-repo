@@ -841,15 +841,15 @@ void				game_sv_ArtefactHunt::CheckForAnyAlivePlayer()
 
 bool	game_sv_ArtefactHunt::CheckAlivePlayersInTeam	(s16 Team)
 {
-	u32		cnt		= get_count	();
+	u32		cnt		= get_players_count	();
 	u32		cnt_alive = 0;
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-		game_PlayerState* ps	= &l_pC->ps;
+		game_PlayerState* ps	= l_pC->ps;
 
 		if (ps->team != Team) continue;
-		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD || ps->Skip)	continue;
+		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps->Skip)	continue;
 		cnt_alive++;
 	};
 	return cnt_alive != 0;
