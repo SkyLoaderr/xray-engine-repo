@@ -192,7 +192,7 @@ void SActorMotions::SActorSprintState::Create(CSkeletonAnimated* K)
 	//toroso anims
 	string128 buf,buf1;
 	//strcpy(buf,"norm_toroso_");
-	for (int k=0; k<8; ++k)
+	for (int k=0; k<9; ++k)
 		m_toroso[k]	= K->ID_Cycle(strconcat(buf,"norm_torso_",itoa(k,buf1,10),"_escape_0"));
 	//leg anims
 	legs_fwd=K->ID_Cycle("norm_escape_00");
@@ -269,7 +269,7 @@ void CActor::g_SetSprintAnimation( u32 mstate_rl,CMotionDef* &head,CMotionDef* &
 			SActorMotions::SActorSprintState& sprint=m_anims->m_sprint;
 			CHudItem	*H = smart_cast<CHudItem*>(inventory().ActiveItem());
 			if(H)
-				head=toroso=sprint.m_toroso[H->animation_slot() - 1];
+				head=toroso=sprint.m_toroso[H->animation_slot()];
 			else
 				head=toroso=sprint.m_toroso[0];
 				 if(mstate_rl&mcFwd)		legs	=sprint.legs_fwd;
