@@ -15,23 +15,45 @@
 ENGINE_API int key_binding	[ 2048	];
 
 _keybind  keybind[] = {
-	{ "left",			kLEFT		},	{ "right",			kRIGHT		},
-	{ "up",				kUP			},	{ "down",			kDOWN		},
-
-	{ "forward",		kFWD		},	{ "back",			kBACK		},
-	{ "lstrafe",		kL_STRAFE	},	{ "rstrafe",		kR_STRAFE	},
-
-	{ "camera1",		kCAM1		},	{ "camera2",		kCAM2		},
-	{ "camera3",		kCAM3		},	{ "camera4",		kCAM4		},
-
-	{ "action",			kACTION		},	{ "fire",			kFIRE		},
-	{ "cam_zoomin",		kZOOMIN		},	{ "cam_zoomout",	kZOOMOUT	},
-
-	{ "jump",			kJUMP		},	{ "accel",			kACCEL		},
+	{ "left",			kLEFT		},	
+	{ "right",			kRIGHT		},
+	{ "up",				kUP			},	
+	{ "down",			kDOWN		},
+	{ "jump",			kJUMP		},	
 	{ "crouch",			kCROUCH		},
-	{ "nextweapon",		kWCHANGE	},	{ "quit",			kQUIT		},
+	{ "accel",			kACCEL		},
 
-	{ "zoom",			kWPN_ZOOM	},
+	{ "forward",		kFWD		},	
+	{ "back",			kBACK		},
+	{ "lstrafe",		kL_STRAFE	},	
+	{ "rstrafe",		kR_STRAFE	},
+
+	{ "cam_1",			kCAM_1		},	
+	{ "cam_2",			kCAM_2		},
+	{ "cam_3",			kCAM_3		},	
+	{ "cam_4",			kCAM_4		},
+	{ "cam_zoom_in",	kCAM_ZOOM_IN},	
+	{ "cam_zoom_out",	kCAM_ZOOM_OUT},
+
+	{ "wpn_1",			kWPN_1		},
+	{ "wpn_2",			kWPN_2		},
+	{ "wpn_3",			kWPN_3		},
+	{ "wpn_4",			kWPN_4		},
+	{ "wpn_5",			kWPN_5		},
+	{ "wpn_6",			kWPN_6		},
+	{ "wpn_7",			kWPN_7		},
+	{ "wpn_8",			kWPN_8		},
+	{ "wpn_9",			kWPN_9		},
+	{ "wpn_next",		kWPN_NEXT	},
+	{ "wpn_prev",		kWPN_PREV	},
+	{ "wpn_fire",		kWPN_FIRE	},
+	{ "wpn_zoom",		kWPN_ZOOM	},
+
+	{ "use",			kUSE		},	
+	{ "scores",			kSCORES		},	
+	{ "chat",			kCHAT		},	
+	{ "screenshot",		kSCREENSHOT	},	
+	{ "quit",			kQUIT		},
 
 	{ NULL, 			0			}
 };
