@@ -36,13 +36,13 @@ typedef struct tagRPoint {
 	Fvector A;
 } RPoint;
 
-CALifeGraph::SGraphHeader	tGraphHeader;
-CALifeGraph::SGraphEdge		*tpaEdges;		// graph edges
-CALifeGraph::SGraphEdge		*tpaFullEdges;	// graph edges
+CALifeGraph::SGraphHeader		tGraphHeader;
+CALifeGraph::SGraphEdge		*	tpaEdges;		// graph edges
+CALifeGraph::SGraphEdge		*	tpaFullEdges;	// graph edges
 xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
-stack<u32>					dwaStack;		// stack
-u32							*dwaSortOrder;  // edge sort order
-u32							*dwaEdgeOwner;  // edge owners
+xr_stack<u32>					dwaStack;		// stack
+u32							*	dwaSortOrder;  // edge sort order
+u32							*	dwaEdgeOwner;  // edge owners
 
 void vfLoadGraphPoints(LPCSTR name)
 {

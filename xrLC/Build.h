@@ -88,7 +88,7 @@ public:
 	xr_vector<R_Layer>*				LLayer_by_name	(LPCSTR N);
 public:
 	void	Load					(const b_params& P, const IReader&  FS);
-	void	Run						(string& path);
+	void	Run						(std::string& path);
 
 	void	xrPhase_R2_Lights		();
 	void	Tesselate				();

@@ -151,7 +151,7 @@ public:
 						T.tGraphID						= i;
 						Memory.mem_copy					(S,tpGraphPoint->s_name_replace,strlen(tpGraphPoint->s_name_replace) + 1);
 						Memory.mem_copy					(T.caConnectName,tpGraphPoint->m_caConnectionPointName,strlen(tpGraphPoint->m_caConnectionPointName) + 1);
-						m_tVertexMap.insert				(make_pair(S,T));
+						m_tVertexMap.insert				(mk_pair(S,T));
 						i++;
 					}
 				}
@@ -239,7 +239,7 @@ void xrMergeGraphs(LPCSTR name)
 		tLevel.dwLevelID			= Ini->r_s32(N,"id");
 		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.dwLevelID);
 		dwOffset					+= tpLevelGraph->m_tGraphHeader.dwVertexCount;
-		tpGraphs.insert				(make_pair(tLevel.dwLevelID,tpLevelGraph));
+		tpGraphs.insert				(mk_pair(tLevel.dwLevelID,tpLevelGraph));
 		tGraphHeader.tpLevels.push_back(tLevel);
     }
 	R_ASSERT(tpGraphs.size());
