@@ -128,6 +128,7 @@ void CLSID_Holder::init		()
 	add					("zone_dead",			CLSID_Z_DEAD  				);
 	add					("level_changer",		CLSID_LEVEL_CHANGER			);
 	add					("script_zone",			CLSID_SCRIPT_ZONE			);
+	add					("team_base_zone",		CLSID_Z_TEAM_BASE  			);
 	add					("detector_simple",		CLSID_DETECTOR_SIMPLE		);
 	add					("detector_visual",		CLSID_DETECTOR_VISUAL		);
 	add					("device_pda",			CLSID_DEVICE_PDA			);

@@ -337,4 +337,11 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMountedWeapon,CSE_ALifeDynamicObjectVisual)
 	virtual							~CSE_ALifeMountedWeapon	();
 SERVER_ENTITY_DECLARE_END
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTeamBaseZone,CSE_ALifeScriptZone)
+									CSE_ALifeTeamBaseZone	(LPCSTR caSection);
+	virtual							~CSE_ALifeTeamBaseZone	();
+
+	u8								m_team;
+SERVER_ENTITY_DECLARE_END
+
 #endif

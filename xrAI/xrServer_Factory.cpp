@@ -78,6 +78,7 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_Z_MINCER:			return xr_new<CSE_ALifeAnomalousZone>			(caSection);
 		case CLSID_LEVEL_CHANGER:		return xr_new<CSE_ALifeLevelChanger>			(caSection);
 		case CLSID_SCRIPT_ZONE:			return xr_new<CSE_ALifeScriptZone>				(caSection);
+		case CLSID_Z_TEAM_BASE:			return xr_new<CSE_ALifeTeamBaseZone>			(caSection);
 
 		// Detectors
 		case CLSID_DETECTOR_SIMPLE:		return xr_new<CSE_ALifeItemDetector>			(caSection);

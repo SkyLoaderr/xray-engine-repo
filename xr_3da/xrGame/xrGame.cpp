@@ -39,6 +39,7 @@
 #include "actor.h"
 #include "ai_script_processor.h"
 #include "attachable_item.h"
+#include "team_base_zone.h"
 
 #include "customzone.h"
 #include "mosquitobald.h"
@@ -1172,6 +1173,7 @@ extern "C" {
 			case CLSID_Z_DEAD:				P = xr_new<CMosquitoBald>();		break;
 			case CLSID_LEVEL_CHANGER:		P = xr_new<CLevelChanger>();		break;
 			case CLSID_SCRIPT_ZONE:			P = xr_new<CScriptZone>();			break;
+			case CLSID_Z_TEAM_BASE:			P = xr_new<CTeamBaseZone>();		break;
 
 			// Detectors
 			case CLSID_DETECTOR_SIMPLE:		P = xr_new<CSimpleDetector>();		break;

@@ -4861,6 +4861,16 @@
 								RelativePath=".\GraviZone.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="TeamBaseZone"
+							Filter="">
+							<File
+								RelativePath=".\team_base_zone.cpp">
+							</File>
+							<File
+								RelativePath=".\team_base_zone.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="_lamp"

@@ -232,6 +232,7 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 			print_output(lua(),caScriptName,l_iErrorCode);
 			print_error	(lua(),l_iErrorCode);
 #endif
+			lua_settop	(lua(),start);
 			return	(false);
 		}
 	}

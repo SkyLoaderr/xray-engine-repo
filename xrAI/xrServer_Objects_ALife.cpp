@@ -1372,3 +1372,45 @@ void CSE_ALifeMountedWeapon::FillProp			(LPCSTR pref, PropItemVec& values)
 	inherited::FillProp			(pref,values);
 }
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeTeamBaseZone
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeTeamBaseZone::CSE_ALifeTeamBaseZone(LPCSTR caSection) : CSE_ALifeScriptZone(caSection), CSE_Abstract(caSection)
+{
+	m_team						= 0;
+}
+
+CSE_ALifeTeamBaseZone::~CSE_ALifeTeamBaseZone()
+{
+}
+
+void CSE_ALifeTeamBaseZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+	tNetPacket.r_u8				(m_team);
+}
+
+void CSE_ALifeTeamBaseZone::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+	tNetPacket.w_u8				(m_team);
+}
+
+void CSE_ALifeTeamBaseZone::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeTeamBaseZone::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeTeamBaseZone::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp			(pref,items);
+	PHelper.CreateU8			(values, FHelper.PrepareKey(pref,s_name,"team"),			&m_team,			0, 16);
+}
+#endif
