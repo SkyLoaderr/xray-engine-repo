@@ -57,7 +57,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib x:\xrXMLParser.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib "
 				ShowProgress="0"
 				OutputFile="x:\xrGame.dll"
 				LinkIncremental="2"
