@@ -129,6 +129,7 @@ void OGF::Stripify		()
 
 void OGF::DumpFaces()
 {
+	return	;
 	clMsg	("normal:");
 	for (u32 i=0; i<faces.size(); i++)
 		clMsg("face #%4d: %4d %4d %4d",i,int(faces[i].v[0]),int(faces[i].v[1]),int(faces[i].v[2]));

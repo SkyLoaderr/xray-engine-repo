@@ -108,15 +108,15 @@ void CBuild::Flex2OGF()
 		}
 		
 		try {
-			clMsg		("%3d: base: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: base: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->Optimize						();
-			clMsg		("%3d: opt : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: opt : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->CalcBounds					();
-			clMsg		("%3d: cb  : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: cb  : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->MakeProgressive				(c_PM_MetricLimit_static);
-			clMsg		("%3d: prog: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: prog: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->Stripify						();
-			clMsg		("%3d: strp: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: strp: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 		} catch (...)
 		{
 			clMsg("* ERROR: Flex2OGF, 2nd part, model# %d",MODEL_ID);

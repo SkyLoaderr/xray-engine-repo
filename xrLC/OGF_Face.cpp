@@ -304,18 +304,18 @@ void OGF::MakeProgressive	(float metric_limit)
 	{
 		// prepare progressive geom
 		VIPM_Init				();
-		clMsg("--- append v start .");
+		//clMsg("--- append v start .");
 		for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)	
 			VIPM_AppendVertex	(vertices[v_idx].P,	vertices[v_idx].UV[0]					);
-		clMsg("--- append f start .");
+		//clMsg("--- append f start .");
 		for (u32 f_idx=0;  f_idx<faces.size();    f_idx++)	
 			VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
-		clMsg("--- append end.");
+		//clMsg("--- append end.");
 
 		// Convert
 		VIPM_Result*	VR		= 0;
 		try						{
-						VR		= VIPM_Convert			(u32(30),1.f,1);
+						VR		= VIPM_Convert			(u32(25),1.f,1);
 		} catch (...)			{
 			progressive_clear	()		;
 			clMsg				("* mesh simplification failed: access violation");
@@ -383,7 +383,7 @@ void OGF::MakeProgressive	(float metric_limit)
 
 		VIPM_Result*	VR		= 0;
 		try						{
-			VR		= VIPM_Convert			(u32(30),1.f,1);
+			VR		= VIPM_Convert			(u32(25),1.f,1);
 		} catch (...)			{
 			progressive_clear	()		;
 			clMsg				("* mesh simplification failed: access violation");
@@ -394,7 +394,7 @@ void OGF::MakeProgressive	(float metric_limit)
 		} else {
 			// Convert
 			/*
-			VIPM_Result*	VR		= VIPM_Convert		(u32(30),1.f,1);
+			VIPM_Result*	VR		= VIPM_Convert		(u32(25),1.f,1);
 			VERIFY			(VR->swr_records.size()>0)	;
 			*/
 
