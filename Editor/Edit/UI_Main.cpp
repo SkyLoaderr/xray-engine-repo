@@ -5,23 +5,24 @@
 
 #include "UI_Main.h"
 #include "D3DUtils.h"
-#include "Builder.h"
-#include "Scene.h"
 #include "Library.h"
 #include "Shader.h"
 #include "Cursor3D.h"
-#include "PSLibrary.h"
 
 #include "leftbar.h"
 #include "topbar.h"
 #include "bottombar.h"
 #include "EditorPref.h"
-#include "EditLibrary.h"
-#include "EditParticles.h"
-#include "ImageEditor.h"
-#include "ImageManager.h"
 #include "main.h"
 #include "xr_trims.h"
+
+//#include "Builder.h"
+//#include "Scene.h"
+//#include "PSLibrary.h"
+//#include "EditLibrary.h"
+//#include "EditParticles.h"
+//#include "ImageEditor.h"
+//#include "ImageManager.h"
 
 TUI UI;
 
