@@ -169,7 +169,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 						//m_tpaPoints.push_back(*tpDestinationPosition);
 					}
 					else {
-						if (dwCurNode != AI_Path.DestNode)
+						//if (dwCurNode != AI_Path.DestNode)
 							m_tpaPointNodes.push_back(AI_Path.DestNode);
 						m_tpaPoints.push_back(*tpDestinationPosition);
 					}
