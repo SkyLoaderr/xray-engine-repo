@@ -239,7 +239,7 @@ void CLevelSpawnConstructor::fill_spawn_groups					()
 			clMsg								("! ERROR (spawn group not found!) : %s",*(*I).first);
 		R_ASSERT3								(J != m_spawn_groups.end(),"Specified group control not found!",(*(*I).second)[0]->s_name_replace);
 		
-		float									accumulator = normalize_probability(*(*I).second) / (*J).second->m_fGroupProbability;
+		float									accumulator = normalize_probability(*(*I).second) / (*J).second->m_spawn_probability;
 		GROUP_OBJECTS::iterator					i = (*I).second->begin();
 		GROUP_OBJECTS::iterator					e = (*I).second->end();
 		for ( ; i != e; i++) {

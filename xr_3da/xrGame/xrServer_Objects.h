@@ -97,7 +97,7 @@
 // 78 - CSE_AlifeTraderAbstract			appended with flags for infinite ammo
 // 79 - CSE_AlifeAnomalousZone			appended with power properties (3)
 // 80 - CSE_Abstract					m_tSpawnID property moved from CSE_ALifeObject to CSE_Abstract
-// 81 - CSE_SpawnGroup					appended with 3 properties
+// 81 - CSE_SpawnGroup					appended with 4 properties
 //------------------------------------------------------------------------------
 #define SPAWN_VERSION	u16(81)
 
@@ -202,6 +202,7 @@ public:
 	float								m_min_spawn_interval;
 	float								m_max_spawn_interval;
 	Flags32								m_flags;
+	shared_str							m_group_control;
 
 										CSE_SpawnGroup	(LPCSTR caSection);
 	virtual								~CSE_SpawnGroup	();
