@@ -28,7 +28,7 @@ function main()
 	local actor   	= get_actor()
 --  создаем глоб. переменную содержащую id актера который доступен по переменной actor 
 	actor_id = actor:id()
-	local sound_01 = sound_object("scripts\\Debris5-m")
+	local sound_01 = sound_object("scripts\\alarm\\Debris5-m")
 	local sound_cough = sound_object("scripts\\idle\\cough1")
 
 
@@ -68,7 +68,25 @@ function main()
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				sound	("scripts\\alarm\\say_ti_slishal","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				look	(look.fire_point, stalker1),
+				anim	(anim.danger),
+				cond	(cond.time_end, 000)
+				)
+		wait(500)
+			action(
+				stalker2,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				sound	("scripts\\alarm\\say_chto_eto1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				look	(look.fire_point, stalker1),
+				anim	(anim.danger),
+				cond	(cond.time_end, 000)
+				)
+		wait(1000)
+			action(
+				stalker1,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				sound	("scripts\\alarm\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, stalker2),
 				anim	(anim.danger),
 				cond	(cond.time_end, 5000)
@@ -77,22 +95,15 @@ function main()
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
-				sound	("scripts\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				sound	("scripts\\alarm\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 4000)
 				)
 			action(
 				stalker2,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, stalker1),
-				anim	(anim.danger),
-				cond	(cond.time_end, 000)
-				)
-			action(
-				stalker2,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-				sound	("scripts\\ne_naydem","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				sound	("scripts\\alarm\\say_gde_on","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				anim	(anim.danger),
 				cond	(cond.time_end, 9000)
 				)
@@ -112,7 +123,7 @@ function main()
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\ne_dvigatsya","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				sound	("scripts\\see_actor\\ne_dvigatsya","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 3000)
@@ -121,7 +132,7 @@ function main()
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\kto_ti","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				sound	("scripts\\see_actor\\kto_ti","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 2000)
