@@ -32,6 +32,7 @@ void __stdcall ActionCallback(CKinematics *tpKinematics);
 
 CScriptEntity::CScriptEntity()
 {
+	m_initialized						= false;
 }
 
 CScriptEntity::~CScriptEntity()
@@ -185,7 +186,7 @@ void CScriptEntity::AddAction(const CScriptEntityAction *tpEntityAction, bool bH
 		m_tpActionQueue.insert(m_tpActionQueue.begin(),xr_new<CScriptEntityAction>(*tpEntityAction));
 	}
 
-	if (empty)
+	if (empty && m_initialized)
 		ProcessScripts	();
 }
 
@@ -514,6 +515,7 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 void CScriptEntity::net_Destroy()
 {
 	FreeAll					();
+	m_initialized			= false;
 }
 
 void CScriptEntity::set_callback	(const luabind::object &lua_object, LPCSTR method, const ScriptEntity::EActionType tActionType)
@@ -617,6 +619,7 @@ LPCSTR CScriptEntity::GetPatrolPathName()
 
 BOOL CScriptEntity::net_Spawn		(CSE_Abstract* DC)
 {
+	m_initialized					= true;
 	object().setVisible				(TRUE);
 	object().setEnabled				(TRUE);
 	return							(TRUE);
@@ -709,29 +712,6 @@ void CScriptEntity::hit_callback	(float amount, const Fvector &vLocalDir, const 
 	if (!smart_cast<const CGameObject*>(who))
 		return;
 
-#if 0
-	if (m_tHitCallback.get_function()) {
-		(*m_tHitCallback.get_function()) (
-			object().lua_game_object(),
-			amount,
-			vLocalDir,
-			smart_cast<const CGameObject*>(who)->lua_game_object(),
-			element
-		);
-	}
-
-	if (m_tHitCallback.get_object()) {
-		luabind::call_member<void>(
-			*m_tHitCallback.get_object(),
-			*m_tHitCallback.get_method(),
-			object().lua_game_object(),
-			amount,
-			vLocalDir,
-			smart_cast<const CGameObject*>(who)->lua_game_object(),
-			element
-		);
-	}
-#else
 	SCRIPT_CALLBACK_EXECUTE_5(m_tHitCallback, 
 		object().lua_game_object(),
 		amount,
@@ -739,7 +719,6 @@ void CScriptEntity::hit_callback	(float amount, const Fvector &vLocalDir, const 
 		smart_cast<const CGameObject*>(who)->lua_game_object(),
 		element
 	);
-#endif
 }
 
 CEntity	*CScriptEntity::GetCurrentEnemy()

@@ -62,7 +62,7 @@ BOOL CRestrictedObject::net_Spawn			(CSE_Abstract* data)
 		construct_string		(temp1,monster->m_dynamic_in_restrictions);
 	}
 
-	Level().space_restriction_manager().restrict	(object().ID(),temp0,temp1);
+	Level().space_restriction_manager().restrict	(monster->ID,temp0,temp1);
 	
 	return						(TRUE);
 }

@@ -48,6 +48,7 @@ protected:
 private:
 	CGameObject					*m_object;
 	CCustomMonster				*m_monster;
+	bool						m_initialized;
 
 protected:
 	ACTIONS						m_tpActionQueue;

@@ -37,9 +37,11 @@ IC	void CCoverEvaluatorBase::set_inertia		(u32 inertia_time)
 
 IC	bool CCoverEvaluatorBase::inertia			(float radius)
 {
-	m_actuality				= m_actuality && fsimilar(m_last_radius,radius);
+//	m_actuality				= m_actuality && fsimilar(m_last_radius,radius);
+//	m_actuality				= m_actuality && ((m_last_radius + EPS_L) >= radius);
+	bool					value = ((m_last_radius + EPS_L) >= radius);
 	m_last_radius			= radius;
-	return					(actual() && (Level().timeServer() < m_last_update + m_inertia_time));
+	return					(value && (Level().timeServer() < m_last_update + m_inertia_time));
 }
 
 IC	void CCoverEvaluatorBase::setup				()
