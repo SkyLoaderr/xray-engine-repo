@@ -442,9 +442,6 @@ void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
 // Обработка нажатия клавиш
 void CLevel::OnKeyboardPress(int key)
 {
-	VERIFY(pApp);
-	VERIFY(pConsole);
-
 	if (pHUD->IsUIActive())			if (pHUD->GetUI()->OnKeyboardPress(key)) return;
 
 	switch (key) {
