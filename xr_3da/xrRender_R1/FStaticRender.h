@@ -106,7 +106,7 @@ public:
 	virtual void					set_Object				(IRenderable*		O	);
 	virtual void					add_Visual				(IRender_Visual*	V	);			// add visual leaf (no culling performed at all)
 	virtual void					add_Geometry			(IRender_Visual*	V	);			// add visual(s)	(all culling performed)
-	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T);
+	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V);
 	
 	//
 	virtual IBlender*				blender_create			(CLASS_ID cls);
