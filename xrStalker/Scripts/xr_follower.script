@@ -278,9 +278,12 @@ function action_follow:check_path ()
     local cv_id = level.vertex_in_direction (self.a.leader:level_vertex_id (), self.a.direction, self.a.distance)
     if cv_id == self.current_vertex_id then return false end
     self.current_vertex_id = cv_id
-    local leader_direction = self.a.leader:direction ()
-    leader_direction.invert(leader_direction)
-    self.object:set_desired_direction (leader_direction)
+    
+    --local leader_direction = self.a.leader:direction ()
+    --leader_direction.invert(leader_direction)
+    --self.object:set_desired_direction (leader_direction)
+    
+    self.object:set_desired_direction (self.a.leader:direction ())
     self.object:set_dest_level_vertex_id  (self.current_vertex_id)   
     self.object:set_sight (look.path_dir, nil, 0)
     return false
