@@ -204,6 +204,8 @@ end
 
 function action_sit:finalize()
 	action_base.finalize( self )
+
+	self.object:clear_hit_callback( true )
 end
 
 -------------------------------------------------------------------------------------------------------------------
