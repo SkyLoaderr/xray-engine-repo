@@ -17,6 +17,7 @@ light::light(void)
 	frame_render	= 0;
 
 #if RENDER==R_R2
+	ZeroMemory		(omnipart,sizeof(omnipart));
 	s_spot			= NULL;
 	s_point			= NULL;
 	vis.frame2test	= 0;	// xffffffff;
@@ -29,6 +30,7 @@ light::light(void)
 
 light::~light(void)
 {
+	for (int f=0; f<6; f++)	xr_delete(omnipart[f]);
 	// by Dima
 	set_active	(false);
 	// end
@@ -104,8 +106,6 @@ void	light::set_rotation		(const Fvector& D, const Fvector& R)	{
 
 void	light::spatial_move			()
 {
-	//spatial.center				=	position;
-	//spatial.radius				=	range;
 	switch(flags.type)	{
 	case IRender_Light::REFLECTED	:	
 	case IRender_Light::POINT		:	
@@ -134,12 +134,7 @@ void	light::spatial_move			()
 
 #if RENDER==R_R2
 	if (flags.bActive) gi_generate	();
-	svis[0].invalidate				();
-	svis[1].invalidate				();
-	svis[2].invalidate				();
-	svis[3].invalidate				();
-	svis[4].invalidate				();
-	svis[5].invalidate				();
+	svis.invalidate					();
 #endif
 }
 
@@ -156,35 +151,39 @@ void	light::xform_calc			()
 	if	(Device.dwFrame == m_xform_frame)	return;
 	m_xform_frame	= Device.dwFrame;
 
+	// build final rotation / translation
+	Fvector					L_dir,L_up,L_right;
+	L_dir.set				(direction).normalize		();
+	L_right.set				(right).normalize			();
+	L_up.crossproduct		(L_dir,L_right).normalize	();
+	Fmatrix					mR;
+	mR.i					= L_right;	mR._14	= 0;
+	mR.j					= L_up;		mR._24	= 0;
+	mR.k					= L_dir;	mR._34	= 0;
+	mR.c.set				(0,0,0);	mR._44	= 1;
+
+	// switch
 	switch(flags.type)	{
 	case IRender_Light::REFLECTED	:
 	case IRender_Light::POINT		:
 		{
 			// scale of identity sphere
 			float		L_R			= range;
-			m_xform.scale			(L_R,L_R,L_R);
-			m_xform.translate_over	(position);
+			Fmatrix		mScale;		
+			mScale.scale			(L_R,L_R,L_R);
+			mScale.translate_over	(position);
+
+			// final xform
+			m_xform.mul_43			(mR,mScale);
 		}
 		break;
 	case IRender_Light::SPOT		:
+	case IRender_Light::OMNIPART	:
 		{
 			// scale to account range and angle
 			float		s			= 2.f*range*tanf(cone/2.f);	
 			Fmatrix		mScale;		mScale.scale(s,s,range);	// make range and radius
-
-			// build final rotation / translation
-			Fvector					L_dir,L_up,L_right;
-			L_dir.set				(direction);			L_dir.normalize		();
-			L_up.set				(0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
-			L_right.crossproduct	(L_up,L_dir);			L_right.normalize	();
-			L_up.crossproduct		(L_dir,L_right);		L_up.normalize		();
-
-			Fmatrix		mR;
-			mR.i					= L_right;	mR._14	= 0;
-			mR.j					= L_up;		mR._24	= 0;
-			mR.k					= L_dir;	mR._34	= 0;
 			mR.c					= position;	mR._44	= 1;
-
 			// final xform
 			m_xform.mul_43			(mR,mScale);
 		}
@@ -192,6 +191,46 @@ void	light::xform_calc			()
 	default:
 		m_xform.identity	();
 		break;
+	}
+}
+
+//								+X,				-X,				+Y,				-Y,			+Z,				-Z
+static	Fvector cmNorm[6]	= {{0.f,1.f,0.f}, {0.f,1.f,0.f}, {0.f,0.f,-1.f},{0.f,0.f,1.f}, {0.f,1.f,0.f}, {0.f,1.f,0.f}};
+static	Fvector cmDir[6]	= {{1.f,0.f,0.f}, {-1.f,0.f,0.f},{0.f,1.f,0.f}, {0.f,-1.f,0.f},{0.f,0.f,1.f}, {0.f,0.f,-1.f}};
+
+void	light::export		(light_Package& package)
+{
+	if (flags.bShadow)			{
+		switch (flags.type)	{
+			case IRender_Light::POINT:
+				{
+					// tough: create/update 6 shadowed lights
+					if (0==omnipart[0])	for (int f=0; f<6; f++)	omnipart[f] = xr_new<light> ();
+					for (int f=0; f<6; f++)	{
+						light*	L			= omnipart[f];
+						Fvector				R;
+						R.crossproduct		(cmNorm[f],cmDir[f]);
+						L->set_type			(IRender_Light::OMNIPART);
+						L->set_shadow		(true);
+						L->set_position		(position);
+						L->set_rotation		(cmDir[f],	R);
+						L->set_cone			(PI_DIV_2);
+						L->set_color		(color);
+						L->s_spot			= s_spot;
+						L->s_point			= s_point;
+						package.v_shadowed.push_back	(L);
+					}
+				}
+				break;
+			case IRender_Light::SPOT:
+				package.v_shadowed.push_back			(this);
+				break;
+		}
+	}	else	{
+		switch (L->flags.type)	{
+			case IRender_Light::POINT:		package.v_point.push_back	(this);	break;
+			case IRender_Light::SPOT:		package.v_spot.push_back	(this);	break;
+		}
 	}
 }
 

@@ -37,11 +37,6 @@ void CLight_DB::Load			(IReader *fs)
 #if RENDER==R_R1
 			L->set_shadow				(false);
 #else
-			/*
-			L->set_type					(IRender_Light::SPOT);
-			Fvector	tmpD,tmpR; tmpD.set(0,-1,0);tmpR.set(1,0,0);
-			L->set_rotation				(tmpD,tmpR);
-			*/
 			L->set_shadow				(true);
 #endif
 			u32 controller				= 0;
@@ -135,27 +130,8 @@ void			CLight_DB::add_light		(light* L)
 {
 	if (Device.dwFrame==L->frame_render)	return;
 	L->frame_render							=	Device.dwFrame;
-
 	if (RImplementation.b_noshadows)		L->flags.bShadow	= FALSE;
-	if (L->flags.bShadow)			{
-		switch (L->flags.type)	{
-			case IRender_Light::POINT:
-				package.v_point_s.push_back			(L);
-				break;
-			case IRender_Light::SPOT:
-				package.v_spot_s.push_back			(L);
-				break;
-		}
-	}	else	{
-		switch (L->flags.type)	{
-			case IRender_Light::POINT:
-				package.v_point.push_back	(L);
-				break;
-			case IRender_Light::SPOT:
-				package.v_spot.push_back	(L);
-				break;
-		}
-	}
+	L->export								(package);
 }
 #endif
 

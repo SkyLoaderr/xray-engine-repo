@@ -25,10 +25,11 @@ public:
 	u32				frame_render;
 
 #if RENDER==R_R2
-	xr_vector<light_indirect>	indirect;
+	light*						omnipart	[6]	;
+	xr_vector<light_indirect>	indirect		;
 	u32							indirect_photons;
 
-	smapvis			svis	[6];	// used for 6-cubemap faces
+	smapvis			svis;		// used for 6-cubemap faces
 
 	ref_shader		s_spot;
 	ref_shader		s_point;
@@ -96,6 +97,7 @@ public:
 	void			xform_calc				();
 	void			vis_prepare				();
 	void			vis_update				();
+	void			export 					(light_Package& dest);
 #endif
 
 	light();

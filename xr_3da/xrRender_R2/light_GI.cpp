@@ -18,8 +18,9 @@ void	light::gi_generate	()
 	for (int it=0; it<int(indirect_photons); it++)	{
 		Fvector	dir,idir;
 		switch	(flags.type)		{
-		case IRender_Light::POINT	:	dir.random_dir(random);					break;
-		case IRender_Light::SPOT	:	dir.random_dir(direction,cone,random);	break;
+		case IRender_Light::POINT		:	dir.random_dir(random);					break;
+		case IRender_Light::SPOT		:	dir.random_dir(direction,cone,random);	break;
+		case IRender_Light::OMNIPART	:	dir.random_dir(direction,cone,random);	break;
 		}
 		dir.normalize		();
 		xrc.ray_query		(model,position,dir,range);
