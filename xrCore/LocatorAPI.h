@@ -94,16 +94,6 @@ private:
     DEFINE_VECTOR				(archive,archives_vec,archives_it);
 
     CFS_PathNotificator*		FThread;
-	enum{
-    	flNeedRescan			= (1<<0),
-		flBuildCopy				= (1<<1),
-		flReady					= (1<<2),
-		flEBuildCopy			= (1<<3),
-        flEventNotificator      = (1<<4),
-		flTargetFolderOnly		= (1<<5),
-		flCacheFiles			= (1<<6),
-		flScanAppRoot			= (1<<7),
-    };    
     Flags32						m_Flags			;
     int							m_iLockRescan	;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
@@ -127,6 +117,16 @@ private:
 
 	files_it					file_find_it	(LPCSTR n);
 public:
+	enum{
+		flNeedRescan			= (1<<0),
+		flBuildCopy				= (1<<1),
+		flReady					= (1<<2),
+		flEBuildCopy			= (1<<3),
+		flEventNotificator      = (1<<4),
+		flTargetFolderOnly		= (1<<5),
+		flCacheFiles			= (1<<6),
+		flScanAppRoot			= (1<<7),
+	};    
 	u32							dwAllocGranularity;
 public:
 								CLocatorAPI		();
