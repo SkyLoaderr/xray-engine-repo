@@ -258,14 +258,3 @@ function reset_action (npc, script_name)
 	npc:script (false, script_name)
 	npc:script (true, script_name)
 end
-
-function object_idle(name,...)
-	local				act = action(nil,...)
-	while true do
-		local			obj	= get_level_object(name)
-		obj:set_command	(action);
-		while			(level.object(name) ~= nil) do
-			wait		()
-		end
-	end
-end
