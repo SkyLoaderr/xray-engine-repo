@@ -158,7 +158,7 @@ void CRenderDevice::Run			()
         else
         {
 			if (bReady) {
-					FrameMove					( );
+				FrameMove						( );
 
 				// Precache
 				if (dwPrecacheFrame)
@@ -206,8 +206,9 @@ void CRenderDevice::Run			()
 				// Ensure, that second thread gets chance to execute anyway
 				if (dwFrame!=mt_Thread_marker)			seqFrameMT.Process	(rp_Frame);
 			} else {
-				Sleep	(100);
+				Sleep		(100);
 			}
+			if (!bActive)	Sleep	(1);
         }
     }
 
