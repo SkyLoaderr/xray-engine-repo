@@ -13,18 +13,21 @@
 
 CMovementManager::CMovementManager	()
 {
-	init					();
+	Init					();
 }
 
 CMovementManager::~CMovementManager	()
 {
 }
 
-void CMovementManager::init			()
+void CMovementManager::Init			()
 {
-	CGamePathManager::init	();
-	CLevelPathManager::init	();
-	CDetailPathManager::init();
+	CGameLocationSelector::Init		();
+	CGamePathManager::Init			();
+	CLevelLocationSelector::Init	();
+	CLevelPathManager::Init			();
+	CDetailPathManager::Init		();
+	CEnemyLocationPredictor::Init	();
 }
 
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, float time_delta)

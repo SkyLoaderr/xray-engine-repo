@@ -12,6 +12,7 @@ class CEnemyLocationPredictor {
 public:
 					CEnemyLocationPredictor			();
 	virtual			~CEnemyLocationPredictor		();
+	virtual void	Init							();
 			void	predict_enemy_locations			();
 			bool	enemy_prediction_actual			() const;
 			void	select_enemy_location			();

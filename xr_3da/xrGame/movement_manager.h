@@ -85,7 +85,7 @@ protected:
 public:
 					CMovementManager		();
 	virtual			~CMovementManager		();
-	virtual void	init					();
+	virtual void	Init					();
 			void	build_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
 	IC		void	set_path_type			(EPathType path_type);

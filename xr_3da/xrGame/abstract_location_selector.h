@@ -27,6 +27,7 @@ protected:
 public:
 	IC							CAbstractLocationSelector	();
 	IC	virtual					~CAbstractLocationSelector	();
+	IC	virtual void			Init						();
 	IC			_vertex_id_type selected_vertex_id			() const;
 	IC			bool			selector_failed				() const;
 	IC			void			set_query_interval			(const u32 query_interval);

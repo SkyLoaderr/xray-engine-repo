@@ -25,7 +25,7 @@ public:
 
 	IC					CAbstractPathManager		();
 	IC	virtual			~CAbstractPathManager		();
-	IC	virtual void	init						();
+	IC	virtual void	Init						();
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC			void	select_intermediate_vertex	();
 	IC	_vertex_id_type	get_intermediate_vertex_id	() const;

@@ -12,14 +12,14 @@
 
 CDetailPathManager::CDetailPathManager	()
 {
-	init						();
+	Init						();
 }
 
 CDetailPathManager::~CDetailPathManager	()
 {
 }
 
-void CDetailPathManager::init			()
+void CDetailPathManager::Init			()
 {
 	m_detail_path_actual		= true;
 	m_detail_start_position		= Fvector();

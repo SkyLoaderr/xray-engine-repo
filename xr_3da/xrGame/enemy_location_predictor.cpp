@@ -17,6 +17,10 @@ CEnemyLocationPredictor::~CEnemyLocationPredictor		()
 {
 }
 
+void CEnemyLocationPredictor::Init						()
+{
+}
+
 void CEnemyLocationPredictor::predict_enemy_locations	()
 {
 }

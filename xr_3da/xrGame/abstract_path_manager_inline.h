@@ -19,7 +19,7 @@ template <
 >
 IC	CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::CAbstractPathManager		()
 {
-	init					();
+	Init					();
 }
 
 template <
@@ -36,7 +36,7 @@ template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
 >
-IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::init			()
+IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::Init			()
 {
 	m_path_actuality		= false;
 	m_intermediate_index	= u32(-1);
