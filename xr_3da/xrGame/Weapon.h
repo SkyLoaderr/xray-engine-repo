@@ -51,6 +51,10 @@ public:
 	virtual bool	AddAmmo			(int iValue)	{ iAmmoElapsed+=iValue; return true;}
 	virtual void	FireStart		()				{ bWorking=true;	}
 	virtual void	FireEnd			()				{ bWorking=false;	}
+	
+	virtual void	Hide			();
+	virtual void	Show			();
+
 	BOOL			IsWorking		()				{ return bWorking;	}
 	BOOL			IsValid			()				{ return (iAmmoElapsed!=0); }
 
