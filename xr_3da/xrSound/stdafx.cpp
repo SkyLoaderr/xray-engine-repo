@@ -8,22 +8,22 @@
 // and not in this file
 
 #ifdef __BORLANDC__
-#	pragma comment(lib,	"x:\\eaxB.lib"			)
-#	pragma comment(lib,	"x:\\oggB.lib"			)
-#	pragma comment(lib,	"x:\\vorbisfileB.lib"	)
-#	pragma comment(lib,	"x:\\xrCoreB.lib"		)
-#	pragma comment(lib,	"x:\\xrCDBB.lib"		)
-#	pragma comment(lib,	"x:\\wrap_oalB.lib"		)
-#	pragma comment(lib,	"x:\\dsoundb.lib" 		)
+#	pragma comment(lib,	"eaxB.lib"			)
+#	pragma comment(lib,	"oggB.lib"			)
+#	pragma comment(lib,	"vorbisfileB.lib"	)
+#	pragma comment(lib,	"xrCoreB.lib"		)
+#	pragma comment(lib,	"xrCDBB.lib"		)
+#	pragma comment(lib,	"wrap_oalB.lib"		)
+#	pragma comment(lib,	"dsoundb.lib" 		)
 #else
-#	pragma comment(lib,	"x:\\eax.lib"			)
-#	pragma comment(lib,	"x:\\vorbis.lib")
-#	pragma comment(lib,	"x:\\vorbisfile.lib"	)
-#	pragma comment(lib,	"x:\\xrCore"			)
-#	pragma comment(lib,	"x:\\xrCDB"				)
-#	pragma comment(lib,	"x:\\wrap_oal.lib"		)
-#	pragma comment(lib,	"x:\\dsound.lib" 		)
+#	pragma comment(lib,	"x:\\eax.lib"		)
+#	pragma comment(lib,	"x:\\vorbis.lib"	)
+#	pragma comment(lib,	"x:\\vorbisfile.lib")
+#	pragma comment(lib,	"x:\\xrCore"		)
+#	pragma comment(lib,	"x:\\xrCDB"			)
+#	pragma comment(lib,	"x:\\wrap_oal.lib"	)
+#	pragma comment(lib,	"dsound.lib" 		)
 #endif
 
-#pragma comment(lib,	"msacm32.lib"			)
+#pragma comment(lib,	"msacm32.lib"		)
 
