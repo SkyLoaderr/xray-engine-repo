@@ -94,7 +94,7 @@ void CRenderTarget::accum_point		(light* L)
 			_id						= SE_L_UNSHADOWED;
 			//m_Shadow				= m_Lmap;
 		}
-		RCache.set_Element			(shader->E[ _id ]	);
+		RCache.set_Element				(shader->E[ _id ]	);
 
 		// Constants
 		RCache.set_c					("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L_R*L_R));
