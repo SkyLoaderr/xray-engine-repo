@@ -679,29 +679,57 @@ IC	bool build_circle_trajectory(
 	bool								start_point
 )
 {
+//	Fvector				direction, curr_pos;
+//	u32					curr_vertex_id;
+//	if (start_point) {
+//		direction.sub	(position.position,position.center);
+//		curr_pos		= position.position;
+//		curr_vertex_id	= position.vertex_id;
+//	}
+//	else {
+//		direction.sub	(position.point,position.center);
+//		curr_pos		= position.point;
+//		curr_vertex_id	= ai().level_graph().check_position_in_direction(position.vertex_id,position.position,curr_pos);
+//		if (!ai().level_graph().valid_vertex_id(curr_vertex_id))
+//			return		(false);
+//		curr_pos.y		= ai().level_graph().vertex_plane_y(curr_vertex_id,curr_pos.x,curr_pos.z);
+//	}
+//
+//	float				yaw,pitch;
+//	direction.getHP		(yaw,pitch);
+//	yaw					= angle_normalize(yaw);
+//	u32					m = iFloor(_abs(position.angle)/position.angular_velocity*10.f +.5f);
+//	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
+//		Fvector			t;
+//		adjust_point	(position.center,yaw + float(i)*position.angle/float(n),position.radius,t);
+//		if (!ai().level_graph().inside(curr_vertex_id,t))
+//			curr_vertex_id = ai().level_graph().check_position_in_direction(curr_vertex_id,curr_pos,t);
+//		if (!ai().level_graph().valid_vertex_id(curr_vertex_id))
+//			return		(false);
+//		if (path) {
+//			t.y			= ai().level_graph().vertex_plane_y(curr_vertex_id,t.x,t.z);
+//			path->push_back(t);
+//		}
+//		curr_pos		= t;
+//	}
+//	return				(true);
 	Fvector				direction, curr_pos;
 	u32					curr_vertex_id;
-	if (start_point) {
-		direction.sub	(position.position,position.center);
-		curr_pos		= position.position;
-		curr_vertex_id	= position.vertex_id;
-	}
-	else {
-		direction.sub	(position.point,position.center);
-		curr_pos		= position.point;
-		curr_vertex_id	= ai().level_graph().check_position_in_direction(position.vertex_id,position.position,curr_pos);
-		if (!ai().level_graph().valid_vertex_id(curr_vertex_id))
-			return		(false);
-		curr_pos.y		= ai().level_graph().vertex_plane_y(curr_vertex_id,curr_pos.x,curr_pos.z);
-	}
+	direction.sub		(position.position,position.center);
+	curr_pos			= position.position;
+	curr_vertex_id		= position.vertex_id;
+	float				angle = position.angle;
+	u32					size = path ? path->size() : u32(-1);
+	if (!start_point)
+		angle			*= -1;
 
 	float				yaw,pitch;
 	direction.getHP		(yaw,pitch);
 	yaw					= angle_normalize(yaw);
-	u32					m = iFloor(_abs(position.angle)/position.angular_velocity*10.f +.5f);
+	u32					m = iFloor(_abs(angle)/position.angular_velocity*10.f +.5f);
 	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
 		Fvector			t;
-		adjust_point	(position.center,yaw + float(i)*position.angle/float(n),position.radius,t);
+		adjust_point	(position.center,yaw + float(i)*angle/float(n),position.radius,t);
 		if (!ai().level_graph().inside(curr_vertex_id,t))
 			curr_vertex_id = ai().level_graph().check_position_in_direction(curr_vertex_id,curr_pos,t);
 		if (!ai().level_graph().valid_vertex_id(curr_vertex_id))
@@ -712,6 +740,8 @@ IC	bool build_circle_trajectory(
 		}
 		curr_pos		= t;
 	}
+	if (path && !start_point)
+		reverse			(path->begin() + size,path->end());
 	return				(true);
 }
 
@@ -893,42 +923,42 @@ void fill_params(
 	xr_vector<CLevelGraph::STravelParams>	&dest_set
 )
 {
-	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 0.f;//0.0001f;
+//	start.angular_velocity	= PI_DIV_2;
+//	start.linear_velocity	= 0.f;//0.0001f;
+//	start_set.push_back		(start);
+
+	start.angular_velocity	= PI;
+	start.linear_velocity	= 2.15f;
 	start_set.push_back		(start);
 
-//	start.angular_velocity	= PI;
-//	start.linear_velocity	= 2.15f;
-//	start_set.push_back		(start);
+	start.angular_velocity	= PI_DIV_2;
+	start.linear_velocity	= 4.5f;
+	start_set.push_back		(start);
 
-//	start.angular_velocity	= PI_DIV_2;
-//	start.linear_velocity	= 4.5f;
-//	start_set.push_back		(start);
+	start.angular_velocity	= PI_DIV_4;
+	start.linear_velocity	= 6.f;
+	start_set.push_back		(start);
 
-//	start.angular_velocity	= PI_DIV_4;
-//	start.linear_velocity	= 6.f;
-//	start_set.push_back		(start);
+//	dest.angular_velocity	= PI_MUL_2;
+//	dest.linear_velocity	= 0.f;
+//	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 0.f;
+	dest.angular_velocity	= PI;
+	dest.linear_velocity	= 2.15f;
 	dest_set.push_back		(dest);
 
-//	dest.angular_velocity	= PI;
-//	dest.linear_velocity	= 2.15f;
-//	dest_set.push_back		(dest);
+	dest.angular_velocity	= PI_DIV_2;
+	dest.linear_velocity	= 4.5f;
+	dest_set.push_back		(dest);
 
-//	dest.angular_velocity	= PI_DIV_2;
-//	dest.linear_velocity	= 4.5f;
-//	dest_set.push_back		(dest);
-
-//	dest.angular_velocity	= PI_DIV_4;
-//	dest.linear_velocity	= 6.f;
-//	dest_set.push_back		(dest);
+	dest.angular_velocity	= PI_DIV_4;
+	dest.linear_velocity	= 6.f;
+	dest_set.push_back		(dest);
 	
-	start.position.set		(-30.799995f,-0.000439f,-15.400002f);
-	start.direction.set		(35.700005f,-0.021492f,0.000000);
-	dest.position.set		(5.010808f,-0.000005f,3.826570f);
-	dest.direction.set		(-0.012606f,0.000000f,-0.999921f);
+//	start.position.set		(-30.799995f,-0.000439f,-15.400002f);
+//	start.direction.set		(35.700005f,-0.021492f,0.000000);
+//	dest.position.set		(5.010808f,-0.000005f,3.826570f);
+//	dest.direction.set		(-0.012606f,0.000000f,-0.999921f);
 }
 
 void CLevelGraph::build_detail_path()
