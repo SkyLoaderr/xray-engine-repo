@@ -539,10 +539,11 @@ const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_Pla
 {
 	if (!ps) return NULL;
 	
-	u8 Item = ps->Slots[SlotNum];
-	if (0xff != ItemID) Item = ItemID;
-	
-	if (0xff == ps->Slots[SlotNum]) return NULL;
+	if (ItemID == 0xff)
+	{
+		if (0xff == ps->Slots[SlotNum]) return NULL;
+		ItemID = ps->Slots[SlotNum];
+	};
 
 	if (!(ps->team < s16(TeamList.size()))) return NULL;
     
@@ -552,11 +553,11 @@ const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_Pla
 
 	WPN_SLOT_NAMES WpnSectNames = WpnList[SlotNum];
 
-	if (!((Item & 0x1f) < u8(WpnSectNames.size()))) return NULL;
+	if (!((ItemID & 0x1f) < u8(WpnSectNames.size()))) return NULL;
 
-	std::string Wpn = WpnSectNames[Item & 0x1f];
+	std::string Wpn = WpnSectNames[ItemID & 0x1f];
 
-	return TeamList[ps->team].aWeapons[SlotNum][Item & 0x1f].c_str();
+	return TeamList[ps->team].aWeapons[SlotNum][ItemID & 0x1f].c_str();
 };
 
 u8 		game_sv_Deathmatch::GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
@@ -628,6 +629,7 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 
 	for (u32 i = 0; i<ps->BeltItems.size(); i++)
 	{
+		game_PlayerState::BeltItem	pBeltItem = ps->BeltItems[i]; 
 		SpawnItem4Actor(pA->ID, GetItemForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps));
 	};
 };
