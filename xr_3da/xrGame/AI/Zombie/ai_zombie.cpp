@@ -112,8 +112,8 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_fAngleSpeed					= pSettings->ReadFLOAT (section,"AngleSpeed");
 	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
 	m_tGoalVariation	  			= pSettings->ReadVECTOR(section,"GoalVariation");
-
 	m_fSoundThreshold				= pSettings->ReadFLOAT (section,"SoundThreshold");
+	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
 
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;
