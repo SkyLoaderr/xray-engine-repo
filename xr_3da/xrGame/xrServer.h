@@ -38,9 +38,6 @@ public:
 	// spawn data
 	string64				s_name;
 	string64				s_name_replace;
-	u8						s_team;
-	u8						s_squad;
-	u8						s_group;
 	u8						s_RP;
 	Fvector					o_Position;
 	Fvector					o_Angle;
@@ -60,19 +57,16 @@ public:
 		P.w_begin			(M_SPAWN		);
 		P.w_string			(s_name			);
 		P.w_string			(s_name_replace	);
-		P.w_u8				(s_team			);
-		P.w_u8				(s_squad		);
-		P.w_u8				(s_group		);
 		P.w_u8				(0xFE			);	// No need for RP, use supplied (POS,ANGLEs)
 		P.w_vec3			(o_Position		);
 		P.w_vec3			(o_Angle		);
 		P.w_u16				(ID				);
-		P.w_u8				(bLocal			);
+		if (bLocal)			P.w_u16(s_flags	| M_SPAWN_OBJECT_LOCAL );
+		else				P.w_u16(s_flags );
 
 		// write specific data
 		u32	position		= P.w_tell		();
 		P.w_u16				(0				);
-		P.w_u16				(s_flags		);
 		STATE_Write			(P				);
 		u16 size			= u16			(P.w_tell()-position);
 		P.w_seek			(position,&size,sizeof(u16));
@@ -89,15 +83,11 @@ public:
 		P.r_vec3			(o_Position		);
 		P.r_vec3			(o_Angle		);
 		P.r_u16				(ID				);
-		P.r_u8				(dummy8			);	// bLocal
+		P.r_u16				(s_flags		); s_flags&=~M_SPAWN_OBJECT_LOCAL;
 
 		// read specific data
 		u16					size;
 		P.r_u16				(size			);	// size
-		P.r_u16				(s_flags		);
-		P.r_u8				(s_team			);
-		P.r_u8				(s_squad		);
-		P.r_u8				(s_group		);
 		STATE_Read			(P,size			);
 	}
 

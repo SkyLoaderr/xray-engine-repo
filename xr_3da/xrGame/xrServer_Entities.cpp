@@ -5,6 +5,7 @@
 class xrSE_Actor : public xrServerEntity
 {
 public:
+
 	u32						timestamp;
 	u8						flags;
 	Fvector					pos;
