@@ -17,20 +17,15 @@ CAI_Biting::CAI_Biting()
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
 
-//	stateRest			= xr_new<CRest>(this);
-//	stateWalk			= xr_new<CWalk>(this);
-//	microAction			= xr_new<CMicroAction>(this);
-//	
-//	CurrentState		= stateRest;
-
+	stateRest			= xr_new<CRest>(this);
+	stateAttack			= xr_new<CAttack>(this);
+	CurrentState		= stateRest;
 }
 
 CAI_Biting::~CAI_Biting()
 {
-//	xr_delete(stateRest);
-//	xr_delete(stateWalk);
-//	xr_delete(microAction);
-
+	xr_delete(stateRest);
+	xr_delete(stateAttack);
 
 }
 
@@ -42,15 +37,6 @@ void CAI_Biting::Init()
 	m_tNextGP						= _GRAPH_ID(-1);
 	m_fGoingSpeed					= 0.f;
 	m_dwTimeToChange				= 0;
-	
-	m_tEnemy.Enemy					= 0;
-	m_tSavedEnemy					= 0;
-	m_tSavedEnemyPosition.set		(0,0,0);
-	m_tpSavedEnemyNode				= 0;
-	m_dwSavedEnemyNodeID			= u32(-1);
-	m_dwSeenEnemyLastTime			= 0;
-	m_tMySavedPosition.set			(0,0,0);
-	m_dwMyNodeID					= u32(-1);
 	
 	m_dwLastRangeSearch				= 0;
 
@@ -70,8 +56,6 @@ void CAI_Biting::Init()
 	m_fAttackSuccessProbability2	= .4f;
 	m_fAttackSuccessProbability3	= .2f;
 
-//	m_tActionState					= eMoveBackScared;
-
 	m_dwLostEnemyTime				= 0;
 
 	m_dwInertion					= 100000;
@@ -81,10 +65,6 @@ void CAI_Biting::Init()
 	m_dwActionStartTime				= 0;
 
 	_A=_B=_C=_D=_E=_F=_H=_I=_J=_K   = false;
-
-	m_dwLastSoundNodeID				= 0;
-
-	ZeroMemory						(&m_tCorpse, sizeof(SEnemySelected));
 
 	AnimEx.Init						(ePostureStand,eActionIdle);
 	
@@ -98,9 +78,6 @@ void CAI_Biting::Init()
 	m_tpSoundBeingPlayed			= 0;
 	
 	
-	m_tLastSound.tpEntity			= 0;
-	m_tLastSound.dwTime				= 0;
-	m_tLastSound.eSoundType			= SOUND_TYPE_NO_SOUND;
 	bShowDeath						= false;
 	
 	m_dwEatInterval					= 500;
@@ -119,14 +96,20 @@ void CAI_Biting::Init()
 	m_AttackInterval				= 500;
 	m_AttackLastPosition.set		(0,0,0);		
 
-
 	_CAction.Init();
+
 	bCorpseFoundFirstTime			= true;
 	m_dwEnemyMemoryTime				= 5000;  
 	m_dwEnemyLastMemoryTime			= 0;
+	Mem.Init(5000,10000,this);
 
-#pragma todo("Oles to Jim: CMonsterMemory - commented out")
-	// Mem.Init(5000,10000,this);
+	m_dwAttackMeleeTime				= 0;
+	m_dwAttackActorMeleeTime		= 0;
+
+	m_tActionAnimPrevFrame	= m_tActionAnim;
+	m_tPostureAnimPrevFrame	= m_tPostureAnim;
+
+	MotionSeq.Init();
 }
 
 void CAI_Biting::Die()
@@ -191,6 +174,8 @@ void CAI_Biting::Load(LPCSTR section)
 
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
 	m_fHitPower						= pSettings->r_float (section,"HitPower");
+	// temp
+	//m_fHitPower						= 1.f;
 	fHealth							= (float)m_dwHealth;
 
 
@@ -200,44 +185,7 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fMaxVoiceIinterval			= pSettings->r_float (section,"MaxVoiceInterval");
 	m_fVoiceRefreshRate				= pSettings->r_float (section,"VoiceRefreshRate");
 
-	// loading sounds
-//	g_vfLoadSounds		(m_tpSoundDie,pSettings->r_string(section,"sound_death"),100);
-//	g_vfLoadSounds		(m_tpSoundHit,pSettings->r_string(section,"sound_hit"),100);
-
-	// Load params from section
-
-	// personal properties
-/*
-	m_dwHealth				= pSettings->r_u32   (section,"Health");
-	m_fMinSpeed				= pSettings->r_float   (section,"MinSpeed");
-	m_fMaxSpeed				= pSettings->r_float   (section,"MaxSpeed");
-	m_fAttackSpeed			= pSettings->r_float   (section,"AttackSpeed");
-	m_dwMaxPersuitRadius	= pSettings->r_u32   (section,"MaxPersuitRadius");	
-	m_dwMaxHomeRadius		= pSettings->r_u32   (section,"MaxHomeRadius");	
-
-	// morale
-	m_dwMoraleSuccessAttackQuant	= pSettings->r_s32   (section,"MoraleSuccessAttackQuant");
-	m_dwMoraleDeathQuant			= pSettings->r_s32   (section,"MoraleDeathQuant");
-	m_dwMoraleFearQuant				= pSettings->r_s32   (section,"MoraleFearQuant");
-	m_dwMoraleRestoreQuant			= pSettings->r_s32   (section,"MoraleRestoreQuant");
-	m_dwMoraleRestoreTimeInterval	= pSettings->r_u32   (section,"MoraleRestoreTimeInterval");
-	m_dwMoraleMinValue				= pSettings->r_u32   (section,"MoraleMinValue");
-	m_dwMoraleMaxValue				= pSettings->r_u32   (section,"MoraleMaxValue");
-	m_dwMoraleNormalValue			= pSettings->r_u32   (section,"MoraleNormalValue");
-
-	// attack
-	m_fHitPower						= pSettings->r_float   (section,"HitPower");	
-	m_dwHitInterval					= pSettings->r_u32   (section,"HitInterval");	
-	m_fAttackDistance				= pSettings->r_float   (section,"AttackDistance");	
-	m_dwAttackAngle					= pSettings->r_s32   (section,"AttackAngle");	
-	m_fAttackSuccessProbability		= pSettings->r_float   (section,"AttackSuccessProbability");	
-
-	m_dwActiveScheduleMin			= shedule.t_min;
-	m_dwActiveScheduleMax			= shedule.t_max;
-
-	*/
-	// Prepare terrain
-	// ...
+	vfSetFireBones				(pSettings,section);
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
@@ -268,6 +216,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 void CAI_Biting::net_Destroy()
 {
 	Init();
+	Movement.DestroyCharacter();
 }
 
 void CAI_Biting::net_Export(NET_Packet& P) 
@@ -332,11 +281,6 @@ void CAI_Biting::Exec_Movement		(float dt)
 // Other functions
 //////////////////////////////////////////////////////////////////////
 
-//void CAI_Biting::HitSignal(float amount, Fvector &vLocalDir, CObject *who, s16 element)
-//{
-//}
-
-
 void CAI_Biting::UpdateCL()
 {
 	SetText();
@@ -344,7 +288,7 @@ void CAI_Biting::UpdateCL()
 
 }
 
-// sounds
+// Load sounds
 void CAI_Biting::vfLoadSounds()
 {
 	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters\\flesh\\test_1",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
@@ -352,4 +296,10 @@ void CAI_Biting::vfLoadSounds()
 	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters\\flesh\\test_2",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
 	::Sound->create(m_tpaSoundVoice[0],TRUE,"monsters\\flesh\\test_3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 	::Sound->create(m_tpaSoundVoice[1],TRUE,"monsters\\flesh\\test_3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+}
+
+void CAI_Biting::vfSetFireBones(CInifile *ini, const char *section)
+{
+	m_iLeftFireBone = PKinematics(pVisual)->LL_BoneID(ini->r_string(section,"LeftFireBone"));
+	m_iRightFireBone = PKinematics(pVisual)->LL_BoneID(ini->r_string(section,"RightFireBone"));
 }
