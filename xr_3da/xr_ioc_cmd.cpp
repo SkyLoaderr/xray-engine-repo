@@ -257,7 +257,7 @@ void CCC_Register()
 
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,	mtSound);
 	CMD3(CCC_Mask,		"mt_input",				&psDeviceFlags,	mtInput);
-	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,	1000,	10000	);
+	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,	1000,	20000	);
 	
 	// Events
 	CMD1(CCC_E_Dump,	"e_list"				);
