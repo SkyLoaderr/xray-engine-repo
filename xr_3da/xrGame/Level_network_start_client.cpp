@@ -20,7 +20,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 	// HUD
 	Device.Shader.DeferredLoad	(TRUE);
 
-	if (Connect(name_of_server)) 
+	if (Connect(options)) 
 	{
 		// Determine internal level-ID
 		LPCSTR	level_name	= net_SessionName	();

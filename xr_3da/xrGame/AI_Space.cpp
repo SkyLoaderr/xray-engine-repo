@@ -19,9 +19,10 @@
 
 CAI_Space::CAI_Space	()
 {
-	m_nodes_ptr	= NULL;
-	vfs			= NULL;
-	sh_debug	= 0;
+	m_nodes_ptr					= NULL;
+	vfs							= NULL;
+	m_tpGraphVFS				= NULL;
+	sh_debug					= 0;
 
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
@@ -103,6 +104,7 @@ void CAI_Space::Render()
 {
 	if (!bDebug)	return;
 
+	if (m_tpaGraph)
 	{
 		for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++) {
 			Fvector t1 = m_tpaGraph[i].tPoint;
