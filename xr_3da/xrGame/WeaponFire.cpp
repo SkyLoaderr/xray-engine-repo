@@ -51,15 +51,15 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
 		particle_dir = N;
 
-		/*ref_shader* pShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
+		ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
 					 NULL:
-					 *mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
-		*/
-		 if (hWallmark)
+					 &mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
+		
+		if (pWallmarkShader)
 		{
 			//добавить отметку на материале
 			::Render->add_Wallmark	(
-				hWallmark,
+				*pWallmarkShader,
 				vEnd,
 				fWallmarkSize,
 				Level().ObjectSpace.GetStaticTris()+R.element,
@@ -136,7 +136,7 @@ BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
 		pThisWeapon->StaticObjectHit(result, hit_material_id);
 	}
 
-	SGameMtl* mtl = GMLib.GetMaterial(hit_material_id);
+	SGameMtl* mtl = GMLib.GetMaterialByIdx(hit_material_id);
 
 	pThisWeapon->m_fCurrentHitPower*= mtl->fShootFactor;
 

@@ -38,7 +38,7 @@ void CPHContactBodyEffector::Apply()
 						0.f
 						};
 
-		if(!GMLib.GetMaterial((u16)m_contact.surface.mode)->Flags.is(SGameMtl::flPassable))
+		if(!GMLib.GetMaterialByIdx((u16)m_contact.surface.mode)->Flags.is(SGameMtl::flPassable))
 		{
 			dVector3& norm=m_contact.geom.normal;
 			dNormalize3(norm);

@@ -74,7 +74,7 @@ const dReal def_spring_rate=0.5f;
 const dReal def_dumping_rate=20.1f;
 /////////////////////////////////////////////////////////////////
 void CPHAICharacter::InitContact(dContact* c){
-	SGameMtl* material=GMLib.GetMaterial((u16)c->surface.mode);
+	SGameMtl* material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
 	bool bClimable=!!material->Flags.is(SGameMtl::flClimbable);
 	b_climb=b_climb || bClimable;
 	b_pure_climb=b_pure_climb && bClimable;

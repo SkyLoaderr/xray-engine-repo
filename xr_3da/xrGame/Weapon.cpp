@@ -519,6 +519,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 		m_pPhysicsShell->setDensity			(500.f);//400 - ieioiinou o.a. - ianna 1 i^3!
 		CSE_Abstract *l_pE = (CSE_Abstract*)DC;
 		if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate			(XFORM(),0,XFORM());
+		m_pPhysicsShell->set_PhysicsRefObject(this);
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 	}

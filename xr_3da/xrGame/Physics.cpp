@@ -373,8 +373,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			if(!is_tri_2&&!is_tri_1) surface.mode=0;
 			if(is_tri_1) material_id_1=(u16)surface.mode;
 			if(is_tri_2) material_id_2=(u16)surface.mode;
-			SGameMtl* material_1=GMLib.GetMaterial(material_id_1);
-			SGameMtl* material_2=GMLib.GetMaterial(material_id_2);
+			SGameMtl* material_1=GMLib.GetMaterialByIdx(material_id_1);
+			SGameMtl* material_2=GMLib.GetMaterialByIdx(material_id_2);
 			////////////////params can be changed in callbacks//////////////////////////////////////////////////////////////////////////
 			float spring	=material_2->fPHSpring*material_1->fPHSpring*world_spring;
 			float damping	=material_2->fPHDamping*material_1->fPHDamping*world_damping;
@@ -397,11 +397,11 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			if(usr_data_2){
 
 				pushing_neg=	(usr_data_2->pushing_b_neg
-								&& !GMLib.GetMaterial(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+								&& !GMLib.GetMaterialByIdx(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
 								)
 								||	
 								(usr_data_2->pushing_neg
-								&& !GMLib.GetMaterial(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+								&& !GMLib.GetMaterialByIdx(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
 								);
 				if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&c);
@@ -413,11 +413,11 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			if(usr_data_1){ 
 
 				pushing_neg=	(usr_data_1->pushing_b_neg
-					&& !GMLib.GetMaterial(usr_data_1->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+					&& !GMLib.GetMaterialByIdx(usr_data_1->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
 					)
 					||	
 					(usr_data_1->pushing_neg
-					&& !GMLib.GetMaterial(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+					&& !GMLib.GetMaterialByIdx(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
 					);
 				if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&c);
@@ -534,8 +534,8 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			if(!is_tri_2&&!is_tri_1) surface.mode=0;
 			if(is_tri_1) material_id_1=(u16)surface.mode;
 			if(is_tri_2) material_id_2=(u16)surface.mode;
-			SGameMtl* material_1=GMLib.GetMaterial(material_id_1);
-			SGameMtl* material_2=GMLib.GetMaterial(material_id_2);
+			SGameMtl* material_1=GMLib.GetMaterialByIdx(material_id_1);
+			SGameMtl* material_2=GMLib.GetMaterialByIdx(material_id_2);
 			////////////////params can be changed in callbacks//////////////////////////////////////////////////////////////////////////
 			float spring	=material_2->fPHSpring*material_1->fPHSpring*world_spring;
 			float damping	=material_2->fPHDamping*material_1->fPHDamping*world_damping;
@@ -558,11 +558,11 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			if(usr_data_2){
 
 				pushing_neg=	(usr_data_2->pushing_b_neg
-								&& !GMLib.GetMaterial(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+								&& !GMLib.GetMaterialByIdx(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
 								)
 								||	
 								(usr_data_2->pushing_neg
-								&& !GMLib.GetMaterial(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+								&& !GMLib.GetMaterialByIdx(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
 								);
 				if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&c);
@@ -574,11 +574,11 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			if(usr_data_1){ 
 
 				pushing_neg=	(usr_data_1->pushing_b_neg
-					&& !GMLib.GetMaterial(usr_data_1->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+					&& !GMLib.GetMaterialByIdx(usr_data_1->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
 					)
 					||	
 					(usr_data_1->pushing_neg
-					&& !GMLib.GetMaterial(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+					&& !GMLib.GetMaterialByIdx(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
 					);
 				if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&c);
@@ -669,9 +669,13 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 				if(vel_cret>30.f && !mtl_pair->CollideMarks.empty())
 				{
 				
-#pragma TODO("Oles to Slipch: NO WALLMARKS FROM PHYSICAL HITS. Need vertices here")
-					;
-					
+					ref_shader pWallmarkShader = mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
+		
+					//добавить отметку на материале
+					::Render->add_Wallmark(pWallmarkShader, *((Fvector*)c->pos), 
+											0.09f, T,
+											Level().ObjectSpace.GetStaticVerts());
+
 					//::Render->add_Wallmark	(
 					//SELECT_RANDOM(mtl_pair->HitMarks),
 					//*((Fvector*)c->pos),
@@ -679,7 +683,19 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					//T);
 					
 				}
-				if(vel_cret>15.f && !mtl_pair->CollideSounds.empty())
+				
+				SGameMtl* mtl = NULL;
+				SGameMtl* mtl1 = NULL;
+				if(vel_cret>10.0f)
+				{
+					mtl  = GMLib.GetMaterialByID(mtl_pair->GetMtl0());
+					mtl1 = GMLib.GetMaterialByID(mtl_pair->GetMtl1());
+
+					int a = 0;
+					a++;
+				}
+
+				if(vel_cret>10.0f && !mtl_pair->CollideSounds.empty())
 				{
 					::Sound->play_at_pos(
 						SELECT_RANDOM(mtl_pair->CollideSounds) ,0,*((Fvector*)c->pos)
@@ -706,7 +722,6 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 				}
 
 			}
-
 		}
 
 		//			::Render->add_Wallmark	(
