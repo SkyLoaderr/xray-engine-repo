@@ -600,6 +600,7 @@ void CSE_ALifeMonsterAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
 {
 	set_visual					("actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
+	m_u16NumItems				= 0;
 }
 
 CSE_ALifeCreatureActor::~CSE_ALifeCreatureActor()
