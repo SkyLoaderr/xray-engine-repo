@@ -24,14 +24,13 @@ void CSE_ALifeGraph::Load				(LPCSTR fName)
 	m_tGraphHeader.dwVertexCount		= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.dwEdgeCount			= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.dwDeathPointCount	= m_tpGraphVFS->r_u32();
-	m_tGraphHeader.tpLevels.resize		(m_tGraphHeader.dwLevelCount);
 	{
-		xr_vector<SLevel>::iterator		I = m_tGraphHeader.tpLevels.begin();
-		xr_vector<SLevel>::iterator		E = m_tGraphHeader.tpLevels.end();
-		for ( ; I != E; I++) {
-			m_tpGraphVFS->r_stringZ		((*I).caLevelName);
-			m_tpGraphVFS->r_fvector3	((*I).tOffset);
-			(*I).dwLevelID				= m_tpGraphVFS->r_u32();
+		for (u32 i=0; i<m_tGraphHeader.dwLevelCount; i++) {
+			SLevel						l_tLevel;
+			m_tpGraphVFS->r_stringZ		(l_tLevel.caLevelName);
+			m_tpGraphVFS->r_fvector3	(l_tLevel.tOffset);
+			m_tpGraphVFS->r				(&l_tLevel.tLevelID,sizeof(l_tLevel.tLevelID));
+			m_tGraphHeader.tpLevels.insert(std::make_pair(l_tLevel.tLevelID,l_tLevel));
 		}
 	}
 	R_ASSERT2							(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION,"Graph version mismatch!");

@@ -58,7 +58,7 @@ namespace ALife {
 	typedef u16	_SPAWN_ID;									// Spawn ID
 	typedef u16	_TERRAIN_ID;								// Terrain ID
 	typedef u8	_LOCATION_ID;								// Location ID
-	typedef u8  _LEVEL_ID;									// Level ID
+	typedef u32 _LEVEL_ID;									// Level ID
 	typedef u32	_ORGANIZATION_ID;							// Organization ID
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
@@ -101,6 +101,14 @@ namespace ALife {
 		}
 #endif
 	};
+
+	struct SLevel {
+		string256					caLevelName;
+		Fvector						tOffset;
+		_LEVEL_ID					tLevelID;
+	};
+
+
 
 	enum EInjureType {
 		eInjureTypeNone = u32(0),
@@ -335,6 +343,7 @@ namespace ALife {
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_P_MAP,				D_OBJECT_P_PAIR_IT);
 	DEFINE_MAP		(_LEVEL_ID,					D_OBJECT_P_MAP*,				D_OBJECT_P_MAP_MAP,			D_OBJECT_P_MAP_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeSchedulable*,			SCHEDULE_P_MAP,				SCHEDULE_P_PAIR_IT);
+	DEFINE_MAP		(_LEVEL_ID,					SLevel,							LEVEL_MAP,					LEVEL_PAIR_IT);
 
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,	pred_str);
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT, pred_str);

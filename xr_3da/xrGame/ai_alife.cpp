@@ -213,17 +213,9 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 		strcpy					(S,*m_cppServerOptions);
 		LPSTR					l_cpPointer = strchr(S,'/');
 		R_ASSERT2				(l_cpPointer,"Invalid server options!");
-		u32						l_dwLevelID = getAI().m_tpaGraph[m_tpActor->m_tGraphID].tLevelID;
-		bool					bOk = false;
-		xr_vector<CSE_ALifeGraph::SLevel>::const_iterator	I = getAI().GraphHeader().tpLevels.begin();
-		xr_vector<CSE_ALifeGraph::SLevel>::const_iterator	E = getAI().GraphHeader().tpLevels.end();
-		for ( ; I != E; I++)
-			if ((*I).dwLevelID == l_dwLevelID) {
-				strconcat		(*m_cppServerOptions,(*I).caLevelName,l_cpPointer);
-				bOk				= true;
-				break;
-			}
-		R_ASSERT2				(bOk,"Graph point level ID not found!");
+		xr_map<_LEVEL_ID,SLevel>::const_iterator I = getAI().GraphHeader().tpLevels.find(getAI().m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
+		R_ASSERT2				(I != getAI().GraphHeader().tpLevels.end(),"Graph point level ID not found!");
+		strconcat				(*m_cppServerOptions,(*I).second.caLevelName,l_cpPointer);
 	}
 
 	// finalizing

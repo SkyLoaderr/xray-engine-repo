@@ -103,7 +103,7 @@ void CAI_Space::Load()
 	u32		N = m_tGraphHeader.dwLevelCount, I = (u32)(-1);
 	for ( I=0; I<N; I++)
 		if (!stricmp(m_tGraphHeader.tpLevels[I].caLevelName,Level().net_SessionName())) {
-			I = m_tGraphHeader.tpLevels[I].dwLevelID;
+			I = m_tGraphHeader.tpLevels[I].tLevelID;
 			bOk = true;
 			break;
 		}

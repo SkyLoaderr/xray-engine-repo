@@ -16,27 +16,21 @@ class CSE_ALifeGraph {
 public:
 	#pragma pack(push,4)
 	typedef struct tagSGraphEdge {
-		u32									dwVertexNumber;
-		float								fPathDistance;
+		u32							dwVertexNumber;
+		float						fPathDistance;
 	} SGraphEdge;
 
 	typedef struct tagSGraphVertex {
-		Fvector								tLocalPoint;
-		Fvector								tGlobalPoint;
-		u32									tLevelID:8;
-		u32									tNodeID:24;
-		u8									tVertexTypes[LOCATION_TYPE_COUNT];
-		u32									tNeighbourCount:8;
-		u32									dwEdgeOffset:24;
-		u32									tDeathPointCount:8;
-		u32									dwPointOffset:24;
+		Fvector						tLocalPoint;
+		Fvector						tGlobalPoint;
+		u32							tLevelID:8;
+		u32							tNodeID:24;
+		u8							tVertexTypes[LOCATION_TYPE_COUNT];
+		u32							tNeighbourCount:8;
+		u32							dwEdgeOffset:24;
+		u32							tDeathPointCount:8;
+		u32							dwPointOffset:24;
 	} SGraphVertex;
-
-	typedef struct tagSLevel {
-		string256							caLevelName;
-		Fvector								tOffset;
-		u32									dwLevelID;
-	} SLevel;
 
 	typedef struct tagSGraphHeader {
 		u32							dwVersion;
@@ -44,7 +38,7 @@ public:
 		u32							dwVertexCount;
 		u32							dwEdgeCount;
 		u32							dwDeathPointCount;
-		xr_vector<SLevel>			tpLevels;
+		LEVEL_MAP					tpLevels;
 	} SGraphHeader;
 	#pragma pack(pop)
 
