@@ -1049,6 +1049,12 @@
 						RelativePath=".\config\scripts\dar\dar_burer_master.ltx">
 					</File>
 					<File
+						RelativePath=".\config\scripts\dar\dar_codelock1.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\dar\dar_codelock2.ltx">
+					</File>
+					<File
 						RelativePath=".\config\scripts\dar\dar_door1.ltx">
 					</File>
 					<File
@@ -1477,6 +1483,9 @@
 						</File>
 						<File
 							RelativePath=".\scripts\ph_car.script">
+						</File>
+						<File
+							RelativePath=".\scripts\ph_code.script">
 						</File>
 						<File
 							RelativePath=".\scripts\ph_door.script">

@@ -1,1 +1,9 @@
 <?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+
+<!-- Кодовый замок 1 -->
+<info_portion id="dar_codelock1_unlock"></info_portion>
+<info_portion id="dar_codelock2_unlock"></info_portion>
+
+</game_information_portions>
