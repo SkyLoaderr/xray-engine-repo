@@ -230,6 +230,9 @@ void CCustomRocket::Contact(const Fvector &pos, const Fvector &normal)
 void CCustomRocket::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
+	//-------------------------------------------
+	m_pOwner = H_Parent() ? dynamic_cast<CGameObject*>(H_Parent()->H_Root()) : NULL;
+	//-------------------------------------------
 }
 
 
