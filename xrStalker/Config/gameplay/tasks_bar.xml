@@ -89,7 +89,7 @@
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>bar_dolg_find_max</text>
+			<text>bar_dolg_find_cook</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
