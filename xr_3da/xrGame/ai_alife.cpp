@@ -10,7 +10,7 @@
 #include "ai_alife.h"
 #include "ai_space.h"
 
-CAI_ALife::CAI_ALife(xrServer *tpServer)
+CAI_ALife::CAI_ALife(xrServer *tpServer) : CALifeGraphRegistry(tpServer->game)
 {
 	m_tpServer			= tpServer;
 	m_bLoaded			= false;

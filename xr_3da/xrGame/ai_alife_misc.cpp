@@ -161,10 +161,7 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 				}
 				if (tpALifeTraderParams->m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
 					for (int j=i + 1 ; j < (int)dwCount; j++)
-						vfDetachItem(*tpALifeTraderParams,tpALifeItem,tGraphID);
-					tServerEntity.children.erase		(tServerEntity.children.begin() + i,tServerEntity.children.end());
-					tServerEntity.children.push_back	(tpALifeItem->m_tObjectID);
-					tpALifeTraderParams->m_fCumulativeItemMass	+= tpALifeItem->m_fMass;
+						vfDetachItem(tServerEntity,tpALifeItem,tGraphID);
 					vfAttachItem(tServerEntity,tpALifeItem,tGraphID);
 					return(true);
 				}

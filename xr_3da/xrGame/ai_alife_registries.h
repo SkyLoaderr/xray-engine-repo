@@ -11,7 +11,6 @@
 #include "ai_alife_server_objects.h"
 #include "ai_alife_predicates.h"
 #include "ai_alife_a_star.h"
-//#include "ai_space.h"
 
 using namespace ALife;
 
@@ -207,9 +206,16 @@ public:
 	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];			// массив списков: по идетнификатору 
-															//	местности получить список точек 
+    														//	местности получить список точек 
 															//  графа
+	game_sv_GameState				*m_tpGame;
 
+									CALifeGraphRegistry(game_sv_GameState *tpGame) : CALifeAStar()
+	{
+		VERIFY(tpGame);
+		m_tpGame = tpGame;
+	}
+	
 	void							Init()
 	{
 		inherited::Init				();
@@ -324,7 +330,12 @@ public:
 
 	IC void vfAttachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
 	{
-		tServerEntity.children.push_back(tpALifeItem->m_tObjectID);
+		NET_Packet		P;
+		m_tpGame->u_EventGen(P,GE_OWNERSHIP_TAKE,tServerEntity.ID);
+		P.w_u16			(u16(tpALifeItem->ID));
+		m_tpGame->u_EventSend(P);
+		
+		//tServerEntity.children.push_back(tpALifeItem->m_tObjectID);
 		CALifeTraderParams *tpALifeTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
 		VERIFY(tpALifeTraderParams);
 		tpALifeItem->ID_Parent = tServerEntity.ID;
@@ -338,11 +349,17 @@ public:
 		tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
 	}
 
-	IC void vfDetachItem(CALifeTraderParams &tTraderParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
+	IC void vfDetachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
 	{
-		tpALifeItem->ID = 65535;
+		NET_Packet		P;
+		m_tpGame->u_EventGen(P,GE_OWNERSHIP_REJECT,tServerEntity.ID);
+		P.w_u16			(u16(tpALifeItem->ID));
+		m_tpGame->u_EventSend(P);
+		//tpALifeItem->ID = 65535;
+		CALifeTraderParams *tpTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
+		VERIFY(tpTraderParams);
 		m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
-		tTraderParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+		tpTraderParams->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 	}
 };
 
