@@ -115,7 +115,7 @@
 	</Configurations>
 	<References>
 		<AssemblyReference
-			RelativePath="{ReferencesPath}\MagicLibrary.dll"/>
+			RelativePath="X:\MagicLibrary.dll"/>
 		<AssemblyReference
 			RelativePath="mscorlib.dll"/>
 		<AssemblyReference
@@ -138,6 +138,9 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
 				RelativePath=".\AssemblyInfo.cpp">
+			</File>
+			<File
+				RelativePath=".\new_form.cpp">
 			</File>
 			<File
 				RelativePath=".\stdafx.cpp">

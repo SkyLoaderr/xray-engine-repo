@@ -91,7 +91,7 @@ void xrLauncherControl::InitModPage()
     Collections::IEnumerator* myEnum = dirs->GetEnumerator();
     while (myEnum->MoveNext()) {
         Console::WriteLine(myEnum->Current);
-		String* cur = (String*)myEnum->Current;
+		String* cur = static_cast<String*>(myEnum->Current);
 		String* info_file_name = String::Concat(cur,S"\\mod.inf");
 		if(System::IO::File::Exists(info_file_name)){
 //			LPCSTR f_name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(info_file_name);
