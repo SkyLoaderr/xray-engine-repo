@@ -361,7 +361,7 @@ function CDangerDogs:test_to_end_work()
 	self.enemy		= level.object(self.enemy_name)
 	
 	// Если нет инфопоршена, либо нет врага, то пока не работаем
-	if(self.object:alive() and level.actor():dont_has_info("escape_stalker_help") or self.enemy == nil) then
+	if(self.object:alive() and level.actor():dont_has_info("escape_stalker_spawn") or self.enemy == nil) then
 		self:freeded()
 		return (true)
 	end
