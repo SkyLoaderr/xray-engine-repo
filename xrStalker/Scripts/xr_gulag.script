@@ -523,7 +523,11 @@ function addMember(name, npc)
 	xr_gulag.fraction[name]:calculate()
 end
 function setFractionState(name, id)
-	xr_gulag.fraction[name]:setState(id)
+	if xr_gulag.fraction[name] ~= nil then
+		xr_gulag.fraction[name]:setState(id)
+	else
+		printf("ERROR MAT VASHU! netu fraction")
+	end
 end
 function getFractionState(name)
 	return xr_gulag.fraction[name]:getState()
