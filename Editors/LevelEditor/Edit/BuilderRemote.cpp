@@ -26,7 +26,7 @@ void SceneBuilder::SaveBuild()
 {
 	CMemoryWriter F;
     F.open_chunk	(EB_Version);
-    F.w_u32		(XRCL_CURRENT_VERSION);
+    F.w_u32			(XRCL_CURRENT_VERSION);
     F.close_chunk	();
 
     F.open_chunk	(EB_Parameters);

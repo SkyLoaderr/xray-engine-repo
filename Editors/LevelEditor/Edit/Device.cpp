@@ -428,10 +428,11 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 
 void CRenderDevice::Reset(IReader* F, BOOL bKeepTextures)
 {
-	u32 tm_start	= TimerAsync();
+	CTimer tm;
+    tm.Start();
 	_Destroy		(bKeepTextures);
 	_Create			(F);
-	u32 tm_end		= TimerAsync();
-	Msg				("*** RESET [%d ms]",tm_end-tm_start);
+    tm.Stop();
+	Msg				("*** RESET [%d ms]",tm.GetElapsed_ms());
 }
 
