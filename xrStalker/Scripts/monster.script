@@ -97,6 +97,8 @@ function generic_object_binder:reinit()
 
 	self.st = xr_motivator.storage[self.object:id()]
 
+	self.object:set_callback(self, "waypoint_callback", game_object.movement)
+
 	----------------------------------------------------------------------------------------
 	-- Новые схемы
 	----------------------------------------------------------------------------------------
@@ -146,7 +148,14 @@ function generic_object_binder:update(delta)
 --TEST-------------------------------------------------------------
 end
 
+function generic_object_binder:waypoint_callback(obj, action_type, index)
+	if self.st.active_section ~= nil then
+		xr_logic.non_goap_waypoint_callback_event(self.object, self.st[self.st.active_scheme], action_type, index)
+	end
+end
+
 function generic_object_binder:net_destroy()
+	self.object:clear_callback(game_object.movement)
 	object_binder.net_destroy(self)
 end 
 

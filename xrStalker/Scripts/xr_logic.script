@@ -353,6 +353,36 @@ function non_goap_update_actions_event(npc, st, delta)
 	
 	if not st.actions then
 		local global_st = xr_motivator.storage[npc:id()]
+		printf("WARNING: non_goap_update_actions_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
+			"subscribed for events", global_st.active_scheme, global_st.active_section)
+		return
+	end
+	for action_ptr, is_active in pairs(st.actions) do
+		action_ptr:update(delta)
+	end
+end
+
+function non_goap_waypoint_callback_event(npc, st, action_type, index)
+	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(xr_motivator.storage[npc:id()].active_section))
+	
+	if not st.actions then
+		local global_st = xr_motivator.storage[npc:id()]
+		printf("WARNING: non_goap_waypoint_callback_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
+			"subscribed for events", global_st.active_scheme, global_st.active_section)
+		return
+	end
+	for action_ptr, is_active in pairs(st.actions) do
+		if action_ptr.waypoint_callback then
+			action_ptr:waypoint_callback(npc, action_type, index)
+		end
+	end
+end
+
+function non_goap_update_actions_event(npc, st, delta)
+	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(xr_motivator.storage[npc:id()].active_section))
+	
+	if not st.actions then
+		local global_st = xr_motivator.storage[npc:id()]
 		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
 			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return

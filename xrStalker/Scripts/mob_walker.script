@@ -5,6 +5,12 @@
 -- Исходный скрипт (trader): Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
 ----------------------------------------------------------------------------------------------------
 
+local default_wait_time = nil -- время в ms, или nil для anim_end condition
+local default_anim_standing = anim.stand_idle
+
+local state_moving = 0
+local state_standing = 1
+
 class "mob_walker"
 
 function mob_walker:__init(obj, storage)
@@ -19,12 +25,30 @@ function mob_walker:reset_scheme()
 
 	if self.st.path_walk_info == nil then
 		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
+		self.path_walk_info = self.st.path_walk_info
 	end
 	if self.st.path_look_info == nil then
 		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+		self.path_look_info = self.st.path_look_info
 	end
 
-	action(self.object, move(move.walk_fwd, patrol(self.st.path_walk, patrol.start, patrol.continue)),
+	self.state = state_moving
+	
+	self.crouch = false
+	self.running = true
+	self.cur_anim_set = default_anim_standing
+	self.pt_wait_time = default_wait_time -- сколько ждать в точке, где играем анимацию 
+
+	self.last_index = nil
+	self.last_look_index = nil
+	
+	if self.st.path_look then
+		self.patrol_look = patrol(self.st.path_look)
+	else
+		self.patrol_look = nil
+	end
+	
+	action(self.object, move(move.run_fwd, patrol(self.st.path_walk, patrol.next, patrol.continue)),
 		cond(cond.move_end))
 end
 
@@ -62,10 +86,138 @@ function mob_walker:update(delta)
 	if not xr_logic.mob_captured(self.object) then
 		self:reset_scheme()
 	end
-
+	
 	xr_logic.try_switch_to_another_section(self.object, self.st)
 
+	if self.state == state_standing then
+		if not self.object:action() then
+			self:update_movement_state() -- идти дальше
+			self.state = state_moving
+		end
+	end
+end
 
+function mob_walker:waypoint_callback(obj, action_type, index)
+	printf("mob_walker:waypoint_callback(): name=%s, index=%d", self.object:name(), index)
+	if index == -1 or index == nil then
+		printf("ERROR: mob_walker: waypoint_callback: index is -1 or nil")
+		return
+	end
+
+	self.last_index = index
+
+	local suggested_crouch = self.path_walk_info[index]["c"]
+	if suggested_crouch == "true" then
+		self.crouch = true
+	else
+		self.crouch = false
+	end
+
+	local suggested_running = self.path_walk_info[index]["r"]
+	if suggested_running == "true" then
+		self.running = true
+	else
+		self.running = false
+	end
+	
+	local search_for = self.path_walk_info[index].flags
+	if search_for:get() == 0 then
+		printf("_bp: no flags")
+		self:update_movement_state() -- идти дальше
+		return
+	end
+
+	local this_val -- значение флагов текущей точки
+	local pts_found_total_weight = 0 -- количество найденных точек (с нужными флагами)
+	local pt_chosen_idx = nil -- индекс выбранной точки
+	local r
+	for look_idx = 0, self.patrol_look:count() - 1 do
+		this_val = self.path_look_info[look_idx].flags
+		if this_val:equal(search_for) then
+			-- Нашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
+			-- точки, возьмем текущую только с некоторой вероятностью:
+			-- Шанс, с которым на точку посмотрит персонаж:
+			local point_look_weight = self.path_look_info[look_idx]["p"]
+			if point_look_weight then
+				point_look_weight = tonumber(point_look_weight)
+			else
+				point_look_weight = 100 -- по умолчанию у всех точек вес = 100
+			end
+			pts_found_total_weight = pts_found_total_weight + point_look_weight
+			r = math.random(1, pts_found_total_weight)
+			if r <= point_look_weight then
+				pt_chosen_idx = look_idx
+			end
+		end
+	end
+	if pt_chosen_idx then
+		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["t"]
+		if suggested_wait_time then
+			self.pt_wait_time = tonumber(suggested_wait_time)
+		else
+			self.pt_wait_time = nil
+		end
+
+		local suggested_anim_set = self.path_look_info[pt_chosen_idx]["a"]
+		if suggested_anim_set then
+			if suggested_anim_set == "nil" then
+				suggested_anim_set = nil
+			end
+			self.cur_anim_set = suggested_anim_set
+		else
+			self.cur_anim_set = default_anim_standing
+		end
+
+		if pt_chosen_idx ~= self.last_look_index then
+			self.expiration_time = device():time_global() + move_mgr.rotation_start_time -- дать 700 мс на начало поворота
+			--printf("move_mgr:waypoint_callback(): look_at_waypoint")
+			self:look_at_waypoint(pt_chosen_idx) -- поворачиваемся
+		else
+			self.expiration_time = 0 -- сразу же стартовать анимацию, уже смотрим в нужную сторону
+		end
+		self.state = state_standing
+		self:update_standing_state()
+
+		-- Сразу же стартовать update, не ждать execute. Тогда, если мы уже смотрим
+		-- в нужную сторону - не будет паузы в несколько миллисекунд на поворот.
+		self:update(true)
+	else
+		utils.abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
+			self.object:name(), self.path_walk, index, self.path_look)
+	end
+end
+
+function mob_walker:update_movement_state()
+	xr_logic.mob_capture(self.object, true)
+	
+	local m
+	if self.running then
+		m = move.run_fwd
+	elseif self.crouch then
+		m = move.steal
+	else
+		m = move.walk_fwd
+	end
+	action(self.object, move(m, patrol(self.st.path_walk, patrol.next, patrol.continue, true, self.last_index + 1)), cond(cond.move_end))
+end
+
+function mob_walker:update_standing_state()
+	printf("_bp [%s]: update_standing_state", self.object:name())
+	action(self.object, anim(self.cur_anim_set, 0), cond(cond.time_end, 3000))
+end
+
+function mob_walker:look_at_waypoint(pt)
+	if not self.patrol_look then
+		return
+	end
+
+	local look_pt = utils.vector_copy_by_val(self.patrol_look:point(pt)):sub(self.object:position())
+	--self.object:set_sight(look.direction, look_pt, 0)
+
+	xr_logic.mob_capture(self.object, true)
+	action(self.object, look(look.direction, look_pt), cond(cond.look_end))
+	
+	self.last_look_index = pt
 end
 
 ---------------------------------------------------------------------------------------------------------------------
