@@ -315,8 +315,15 @@ void CCharacterPhysicsSupport::ActivateShell			()
 }
 void CCharacterPhysicsSupport::in_ChangeVisual()
 {
-	R_ASSERT2(m_eState!=esDead,"Cant change visual for dead body");
+	//R_ASSERT2(m_eState!=esDead,"Cant change visual for dead body");
+	if(!m_physics_skeleton&&!m_pPhysicsShell) return;
 	xr_delete(m_physics_skeleton);
 	CreateSkeleton(m_physics_skeleton);
+	if(m_pPhysicsShell)
+	{
+		xr_delete(m_pPhysicsShell);
+		ActivateShell();
+	}
+
 
 }
