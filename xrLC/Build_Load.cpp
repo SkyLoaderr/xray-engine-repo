@@ -65,7 +65,6 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		Shader_xrLCVec&			v	= shaders.Library();
 		for (u32 it=0; it<v.size(); it++)
 			clMsg ("-",v[it].Name);
-		g_params.m_vCacheSize	= 24;
 	}
 
 	//*******
