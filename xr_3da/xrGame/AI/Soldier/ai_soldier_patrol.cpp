@@ -469,20 +469,6 @@ void CAI_Soldier::Patrol()
 			
 			m_iCurrentPoint = m_iCurrentPoint == dwaPatrolNodes.size() - 1 ? 0 : m_iCurrentPoint + 1;
 			
-			/**
-			for (int i=0, iCount = 0; i<tpaPatrolPathes.size(); i++)
-				iCount += tpaPatrolPathes[i].size();
-			
-			AI_Path.TravelPath.resize(iCount);
-
-			for ( i=0, iCount = 0; i<tpaPatrolPathes.size(); i++) {
-				for (int j=0; j<tpaPatrolPathes[i].size(); j++)
-					AI_Path.TravelPath[iCount + j] = tpaPatrolPathes[i][j];
-				iCount += tpaPatrolPathes[i].size();
-			}
-
-			AI_Path.TravelStart = 0;
-			/**/
 			AI_Path.TravelPath.resize(tpaPatrolPath.size());
 
 			for (int i=0; i<tpaPatrolPath.size(); i++)
