@@ -14,9 +14,9 @@
 
 class CAI_Stalker;
 
-typedef CWrapperAbstract<CAI_Stalker,CPropertyEvaluator>								CStalkerPropertyEvaluator;
-typedef CWrapperAbstract<CAI_Stalker,CPropertyEvaluatorConst>							CStalkerPropertyEvaluatorConst;
-typedef CWrapperAbstract<CAI_Stalker,CPropertyEvaluatorMember>						CStalkerPropertyEvaluatorMember;
+typedef CWrapperAbstract<CAI_Stalker,CPropertyEvaluator>		CStalkerPropertyEvaluator;
+typedef CWrapperAbstract<CAI_Stalker,CPropertyEvaluatorConst>	CStalkerPropertyEvaluatorConst;
+typedef CWrapperAbstract<CAI_Stalker,CPropertyEvaluatorMember>	CStalkerPropertyEvaluatorMember;
 
 //////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorALife

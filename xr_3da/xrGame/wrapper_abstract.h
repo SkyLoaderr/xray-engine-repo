@@ -11,7 +11,6 @@
 template <
 	typename _object_type,
 	template <typename _base_object_type> class ancestor,
-	bool reinit2 = false,
 	typename _base_object_type = CLuaGameObject
 >
 class CWrapperAbstract : public ancestor<_base_object_type> {

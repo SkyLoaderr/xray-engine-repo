@@ -12,10 +12,9 @@
 	template <\
 		typename _object_type,\
 		template <typename _base_object_type> class ancestor,\
-		bool reinit2,\
 		typename _base_object_type\
 	>
-#define CWrapper CWrapperAbstract<_object_type,ancestor,reinit2,_base_object_type>
+#define CWrapper CWrapperAbstract<_object_type,ancestor,_base_object_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CWrapper::CWrapperAbstract	()
