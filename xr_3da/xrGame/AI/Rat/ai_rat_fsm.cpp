@@ -82,7 +82,7 @@ void CAI_Rat::AttackFire()
 	
 	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatUnderFire));
 	if (eState != eCurrentState)
-		SWITCH_TO_NEW_STATE(eState);
+		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
 	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy) || !Enemy.Enemy->g_Alive())
 		
@@ -123,7 +123,7 @@ void CAI_Rat::AttackRun()
 
 	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatUnderFire));
 	if (eState != eCurrentState)
-		SWITCH_TO_NEW_STATE(eState);
+		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
 	if (Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
@@ -176,28 +176,28 @@ void CAI_Rat::AttackRun()
 
 	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
 	
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
-		m_fSpeed = EPS_S;
-	else 
-		if (m_fSafeSpeed != m_fSpeed) {
-			int iRandom = ::Random.randI(0,2);
-			switch (iRandom) {
-				case 0 : {
-					m_fSpeed = m_fMaxSpeed;
-					break;
-				}
-				case 1 : {
-					m_fSpeed = m_fMinSpeed;
-					break;
-				}
-				case 2 : {
-					if (::Random.randI(0,4) == 0)
-						m_fSpeed = EPS_S;
-					break;
-				}
-			}
-			m_fSafeSpeed = m_fSpeed;
-		}
+//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+//		m_fSpeed = EPS_S;
+//	else 
+//		if (m_fSafeSpeed != m_fSpeed) {
+//			int iRandom = ::Random.randI(0,2);
+//			switch (iRandom) {
+//				case 0 : {
+//					m_fSpeed = m_fMaxSpeed;
+//					break;
+//				}
+//				case 1 : {
+//					m_fSpeed = m_fMinSpeed;
+//					break;
+//				}
+//				case 2 : {
+//					if (::Random.randI(0,4) == 0)
+//						m_fSpeed = EPS_S;
+//					break;
+//				}
+//			}
+//			m_fSafeSpeed = m_fSpeed;
+//		}
 }
 
 void CAI_Rat::FreeHunting()
@@ -212,7 +212,7 @@ void CAI_Rat::FreeHunting()
 	
 	if (Enemy.Enemy) {
 		m_fGoalChangeTime = 0;
-		SWITCH_TO_NEW_STATE(aiRatAttackFire)
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
 
 	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
@@ -280,29 +280,30 @@ void CAI_Rat::UnderFire()
 	SelectEnemy(Enemy);
 	
 	if (Enemy.Enemy) {
-		ERatStates eState = ERatStates(dwfChooseAction(aiRatAttackFire,aiRatAttackFire,aiRatUnderFire));
+		ERatStates eState = ERatStates(dwfChooseAction(aiRatAttackRun,aiRatAttackRun,aiRatUnderFire));
 		if (eState != eCurrentState)
-			SWITCH_TO_NEW_STATE(eState);
+			GO_TO_NEW_STATE_THIS_UPDATE(eState);
 	}
-
-	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
-		if ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) {
-			tSavedEnemy = m_tLastSound.tpEntity;
-			m_dwLostEnemyTime = Level().timeServer();
-			SWITCH_TO_NEW_STATE(aiRatAttackRun);
+	else {
+		if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
+			if ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) {
+				tSavedEnemy = m_tLastSound.tpEntity;
+				m_dwLostEnemyTime = Level().timeServer();
+				SWITCH_TO_NEW_STATE(aiRatAttackRun);
+			}
+			m_dwLastRangeSearch = Level().timeServer();
+			Fvector tTemp;
+			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+			tTemp.normalize_safe();
+			tTemp.mul(UNDER_FIRE_DISTACNE);
+			m_tSpawnPosition.add(vPosition,tTemp);
+			m_fGoalChangeTime = 0;
 		}
-		m_dwLastRangeSearch = Level().timeServer();
-		Fvector tTemp;
-		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-		tTemp.normalize_safe();
-		tTemp.mul(UNDER_FIRE_DISTACNE);
-		m_tSpawnPosition.add(vPosition,tTemp);
-		m_fGoalChangeTime = 0;
-	}
 
-	if (Level().timeServer() - m_dwLastRangeSearch > UNDER_FIRE_TIME) {
-		m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
-		GO_TO_PREV_STATE;
+		if (Level().timeServer() - m_dwLastRangeSearch > UNDER_FIRE_TIME) {
+			m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
+			GO_TO_PREV_STATE;
+		}
 	}
 
 	m_fGoalChangeDelta		= 10.f;
@@ -319,28 +320,28 @@ void CAI_Rat::UnderFire()
 
 	SetDirectionLook();
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
-		m_fSpeed = EPS_S;
-	else 
-		if (m_fSafeSpeed != m_fSpeed) {
-			int iRandom = ::Random.randI(0,2);
-			switch (iRandom) {
-				case 0 : {
-					m_fSpeed = m_fMaxSpeed;
-					break;
-				}
-				case 1 : {
-					m_fSpeed = m_fMinSpeed;
-					break;
-				}
-				case 2 : {
-					if (::Random.randI(0,4) == 0)
-						m_fSpeed = EPS_S;
-					break;
-				}
-			}
-			m_fSafeSpeed = m_fSpeed;
-		}
+//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+//		m_fSpeed = EPS_S;
+//	else 
+//		if (m_fSafeSpeed != m_fSpeed) {
+//			int iRandom = ::Random.randI(0,2);
+//			switch (iRandom) {
+//				case 0 : {
+//					m_fSpeed = m_fMaxSpeed;
+//					break;
+//				}
+//				case 1 : {
+//					m_fSpeed = m_fMinSpeed;
+//					break;
+//				}
+//				case 2 : {
+//					if (::Random.randI(0,4) == 0)
+//						m_fSpeed = EPS_S;
+//					break;
+//				}
+//			}
+//			m_fSafeSpeed = m_fSpeed;
+//		}
 	AI_Path.TravelPath.clear();
 }
 

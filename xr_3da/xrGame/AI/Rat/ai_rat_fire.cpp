@@ -64,9 +64,9 @@ float CAI_Rat::EnemyHeuristics(CEntity* E)
 	
 	float	f1	= Position().distance_to_sqr(E->Position());
 	float	f2	= float(g_strength);
-	float   f3  = 1;
-	if (E==Level().CurrentEntity())  f3 = .5f;
-	return  f1*f2*f3;
+	//float   f3  = 1;
+	//if (E==Level().CurrentEntity())  f3 = .5f;
+	return  f1*f2;//*f3;
 }
 
 // when someone hit rat
@@ -108,27 +108,8 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;
 	
-#ifdef LIGHT_FITTING
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// this code is dummy
-	// only for fitting light coefficients
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	bool bActorInCamera = false;
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#endif
-
-	if (Known.size()==0) {
-#ifdef LIGHT_FITTING
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// this code is dummy
-		// only for fitting light coefficients
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
-			Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#endif
+	if (Known.size()==0)
 		return;
-	}
 	
 	// Get visible list
 	feel_vision_get	(tpaVisibleObjects);
@@ -143,59 +124,24 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
-			if (!Group.m_bEnemyNoticed)
-#ifdef LIGHT_FITTING
-				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				// this code is dummy
-				// only for fitting light coefficients
-				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				if (g_Squad() == SPECIAL_SQUAD) {
-					bool bB = true;//bfCheckForVisibility(E);
-					CActor *tpActor = dynamic_cast<CActor *>(E);
-					if (tpActor) {
-						Level().HUD()->outMessage(0xffffffff,cName(),bB ? "I see you" : "I don't see you");
-						bActorInCamera = true;
-						//continue;
-					}
-					else
-						if (!bB)
-							continue;
+			// Calculate local visibility
+			//CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
+			//bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
+			bool bVisible = false;
+			for (int i=0; i<(int)tpaVisibleObjects.size(); i++)
+				if (tpaVisibleObjects[i] == E) {
+					bVisible = bfCheckForVisibility(E);
+					break;
 				}
-				else
-					if (!bfCheckForVisibility(E))
-						continue;
-#else
-				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				// this code is correct
-				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				if (!bfCheckForVisibility(E))
-					continue;
-				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#endif
-				// Calculate local visibility
-				CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
-				bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
-				float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-				if (cost<S.fCost)	{
-					S.Enemy		= E;
-					S.bVisible	= bVisible;
-					S.fCost		= cost;
-					Group.m_bEnemyNoticed = true;
-				}
+			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
+			if (cost<S.fCost)	{
+				S.Enemy		= E;
+				S.bVisible	= bVisible;
+				S.fCost		= cost;
+				Group.m_bEnemyNoticed = true;
+			}
 		}
 	}
-#ifdef LIGHT_FITTING
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// this code is dummy
-	// only for fitting light coefficients
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
-		Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
-
-	//if (g_Squad() == SPECIAL_SQUAD)
-	//	Enemy.Enemy = 0;
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#endif
 }
 
 bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, CBaseFunction &tBaseFunction)
@@ -253,10 +199,16 @@ bool CAI_Rat::bfGetActionSuccessProbability(EntityVec &Members, objVisible &Visi
 
 DWORD CAI_Rat::dwfChooseAction(DWORD a1, DWORD a2, DWORD a3)
 {
+	return(a3);
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
-	if (Level().timeServer() - Group.m_dwLastActionTime < ACTION_REFRESH_RATE)
-		return(Group.m_dwLastAction);
+	if (Level().timeServer() - Group.m_dwLastActionTime < ACTION_REFRESH_RATE) {
+		switch (Group.m_dwLastAction) {
+			case 0: return(a1);
+			case 1: return(a2);
+			default: return(a3);
+		}
+	}
 
 	objVisible &VisibleEnemies = Level().Teams[g_Team()].KnownEnemys;
 	
@@ -264,7 +216,8 @@ DWORD CAI_Rat::dwfChooseAction(DWORD a1, DWORD a2, DWORD a3)
 		return(tStateStack.top());
 
 	EntityVec	Members;
-	Members.push_back(Level().Teams[g_Team()].Squads[g_Squad()].Leader);
+	if (this != Level().Teams[g_Team()].Squads[g_Squad()].Leader)
+		Members.push_back(Level().Teams[g_Team()].Squads[g_Squad()].Leader);
 	Members.push_back(this);
 	for (int k=0; k<(int)Group.Members.size(); k++) {
 		if (Group.Members[k]->g_Alive())
@@ -273,15 +226,18 @@ DWORD CAI_Rat::dwfChooseAction(DWORD a1, DWORD a2, DWORD a3)
 
 	if (bfGetActionSuccessProbability(Members,VisibleEnemies,Level().m_tpAI_DDD->pfAttackSuccessProbability)) {
 		Group.m_dwLastActionTime = Level().timeServer();
-		return(Group.m_dwLastAction = a1);
+		Group.m_dwLastAction = 0;
+		return(a1);
 	}
 	else
 		if (bfGetActionSuccessProbability(Members,VisibleEnemies,Level().m_tpAI_DDD->pfDefendSuccessProbability)) {
 			Group.m_dwLastActionTime = Level().timeServer();
+			Group.m_dwLastAction = 1;
 			return(Group.m_dwLastAction = a2);
 		}
 		else {
 			Group.m_dwLastActionTime = Level().timeServer();
+			Group.m_dwLastAction = 2;
 			return(Group.m_dwLastAction = a3);
 		}
 }

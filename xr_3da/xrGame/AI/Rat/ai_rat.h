@@ -31,6 +31,7 @@ class CAI_Rat : public CCustomMonster
 		aiRatAttackFire,
 		aiRatAttackRun,
 		aiRatUnderFire,
+		aiRatRetreat,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -247,6 +248,7 @@ class CAI_Rat : public CCustomMonster
 		void AttackRun();
 		void Turn();
 		void UnderFire();
+		void Retreat();
 		
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
