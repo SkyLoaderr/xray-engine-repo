@@ -123,7 +123,7 @@ function action_path:initialize ()
 	self.object:set_desired_direction	()    
 	
 	self.object:play_sound				(2, 60000, 10000)
-	self.object:set_sight				(look.search, nil, 0)
+	self.object:set_sight				(look.path_dir)
 	self.object:set_item				(object.idle)
 	self.object:set_path_type			(game_object.patrol_path)
 	self.object:set_patrol_path			(self.path, patrol.start, patrol.continue, true)
