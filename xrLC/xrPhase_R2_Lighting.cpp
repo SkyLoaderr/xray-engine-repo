@@ -51,8 +51,9 @@ public:
 			Fcolor			C;
 			C.set			(0,0,0,0);
 			LightPoint		(&DB, RCAST_Model, C, V->P, V->N, Lights.begin(), Lights.end(), 0);
-			V->Color.set	(C);
-			V->Color.a		= 1.f;
+			//V->Color.set	(C);
+			//V->Color.a		= 1.f;
+			V->Color.set	(.7f,.7f,.7f,.7f);
 			thProgress		= float(I - vertStart) / float(vertEnd-vertStart);
 		}
 	}
