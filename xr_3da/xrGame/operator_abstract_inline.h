@@ -121,16 +121,13 @@ IC	bool CAbstractOperator::applicable		(const xr_vector<COperatorCondition> &con
 }
 
 TEMPLATE_SPECIALIZATION
-IC	bool CAbstractOperator::apply	(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const
+IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	(const CSConditionState &condition, const xr_vector<COperatorCondition> &self_condition, CSConditionState &result) const
 {
 	result.clear			();
-	bool					changed = false;
 	xr_vector<COperatorCondition>::const_iterator	i = self_condition.begin();
 	xr_vector<COperatorCondition>::const_iterator	e = self_condition.end();
 	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
-	xr_vector<COperatorCondition>::const_iterator	J = start.begin();
-	xr_vector<COperatorCondition>::const_iterator	EE = start.end();
 	for ( ; (I != E) && (i != e); )
 		if ((*I).condition() < (*i).condition()) {
 			result.add_condition(*I);
@@ -138,72 +135,26 @@ IC	bool CAbstractOperator::apply	(const CSConditionState &condition, const xr_ve
 		}
 		else
 			if ((*I).condition() > (*i).condition()) {
-				while ((J != EE) && ((*J).condition() < (*i).condition()))
-					++J;
-				if ((J != EE) && ((*J).condition() == (*i).condition())) {
-					if ((*J).value() != (*i).value()) {
-						result.add_condition(*i);
-						changed	= true;
-					}
-					++J;
-				}
-				else {
-					result.add_condition(*i);
-					changed	= true;
-				}
+				result.add_condition(*i);
 				++i;
 			}
 			else {
-				if ((*I).value() == (*i).value())
-					result.add_condition(*I);
-				else {
-					changed	= true;
-					while ((J != EE) && ((*J).condition() < (*i).condition()))
-						++J;
-					if ((J != EE) && ((*J).condition() == (*i).condition())) {
-						if ((*J).value() != (*i).value())
-							result.add_condition(*i);
-						++J;
-					}
-					else
-						result.add_condition(*i);
-				}
+				VERIFY			((*I).condition() == (*i).condition());
+				result.add_condition(*i);
 				++I;
 				++i;
 			}
 
 	if (i == e) {
-		if (!changed)
-			return			(false);
-		for ( ; (I != E); ++I)
+		for ( ; I != E; ++I)
 			result.add_condition(*I);
-		return				(true);
+	}
+	else {
+		for ( ; i != e; ++i)
+			result.add_condition(*i);
 	}
 
-	for ( ; (J != EE) && (i != e); )
-		if ((*J).condition() < (*i).condition())
-			++J;
-		else
-			if ((*J).condition() > (*i).condition()) {
-				result.add_condition(*i);
-				changed		= true;
-				++i;
-			}
-			else {
-				if ((*J).value() != (*i).value()) {
-					result.add_condition(*i);
-					changed	= true;
-				}
-				++J;
-				++i;
-			}
-
-	if ((J == EE) && (i != e))
-		changed = true;
-		for ( ; (i != e); ++i)
-			result.add_condition(*i);
-
-	return					(changed);
+	return					(result);
 }
 
 TEMPLATE_SPECIALIZATION

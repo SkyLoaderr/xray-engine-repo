@@ -41,7 +41,7 @@ protected:
 	typedef u32	  _index_type;
 	typedef u32	  _iteration_type;
 
-	typedef CProblemSolver<u32,u32,u32>		CSProblemSolver;
+	typedef CProblemSolver<u32,bool,u32>	CSProblemSolver;
 	typedef u16								_solver_dist_type;
 	typedef CSProblemSolver::_index_type	_solver_index_type;
 	typedef CSProblemSolver::_edge_type		_solver_edge_type;

@@ -28,8 +28,12 @@ CProblemSolverAbstract::~CProblemSolver					()
 {
 	while (!m_operators.empty())
 		remove_operator		(m_operators.back().m_operator_id);
+
+	while (!m_evaluators.empty())
+		remove_evaluator	((*m_evaluators.begin()).first);
 }
 
+// operators
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::add_operator			(COperator *_operator, const _edge_type &operator_id)
 {
@@ -54,6 +58,21 @@ IC	const typename CProblemSolverAbstract::_edge_type &CProblemSolverAbstract::cu
 }
 
 TEMPLATE_SPECIALIZATION
+IC	const typename CProblemSolverAbstract::OPERATOR_VECTOR &CProblemSolverAbstract::operators	() const
+{
+	return					(m_operators);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CProblemSolverAbstract::set_current_operator	(const _edge_type &operator_id)
+{
+	OPERATOR_VECTOR::const_iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
+	VERIFY					((m_operators.end() != E) && ((*I)m_operator_id == operator_id));
+	m_current_operator		= operator_id;
+}
+
+// states
+TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::set_current_state		(const CState &state)
 {
 	m_current_state			= state;
@@ -66,14 +85,6 @@ IC	void CProblemSolverAbstract::set_target_state		(const CState &state)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CProblemSolverAbstract::set_current_operator	(const _edge_type &operator_id)
-{
-	OPERATOR_VECTOR::const_iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
-	VERIFY					((m_operators.end() != E) && ((*I)m_operator_id == operator_id));
-	m_current_operator		= operator_id;
-}
-
-TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::CState &CProblemSolverAbstract::current_state	() const
 {
 	return					(m_current_state);
@@ -83,6 +94,47 @@ TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::CState &CProblemSolverAbstract::target_state	() const
 {
 	return					(m_target_state);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CProblemSolverAbstract::add_evaluator				(const _condition_type &condition_id, CConditionEvaluator *evaluator)
+{
+	VERIFY						(m_evaluators.find(condition_id) == m_evaluators.end());
+	m_evaluators.insert			(std::make_pair(condition_id,evaluator));
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CProblemSolverAbstract::remove_evaluator			(const _condition_type &condition_id)
+{
+	EVALUATOR_MAP::iterator		I = m_evaluators.find(condition_id);
+	VERIFY						(I != m_evaluators.end());
+	xr_delete					((*I).second);
+	m_evaluators.erase			(I);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const typename CProblemSolverAbstract::CConditionEvaluator *CProblemSolverAbstract::evaluator	(const _condition_type &condition_id) const
+{
+	EVALUATOR_MAP::iterator		I = m_evaluators.find(condition_id);
+	VERIFY						(I != m_evaluators.end());
+	return						((*I).second);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const typename CProblemSolverAbstract::EVALUATOR_MAP &CProblemSolverAbstract::evaluators() const
+{
+	return						(m_evaluators);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CProblemSolverAbstract::evaluate_condition			(typename xr_vector<COperatorCondition>::const_iterator &I, typename xr_vector<COperatorCondition>::const_iterator &E, const _condition_type &condition_id) const
+{
+	EVALUATOR_MAP::const_iterator	J = m_evaluators.find(condition_id);
+	VERIFY							(J != m_evaluators.end());
+	size_t							index = I - m_current_state.conditions().begin();
+	m_current_state.add_condition	(I,COperatorCondition(condition_id,(*J).second->evaluate()));
+	I								= m_current_state.conditions().begin() + index;
+	E								= m_current_state.conditions().end();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -120,9 +172,32 @@ IC	void CProblemSolverAbstract::solve			()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const typename CProblemSolverAbstract::OPERATOR_VECTOR &CProblemSolverAbstract::operators	() const
+IC	bool CProblemSolverAbstract::is_goal_reached(const _index_type &vertex_index) const
 {
-	return					(m_operators);
+	xr_vector<COperatorCondition>::const_iterator	I = m_current_state.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = m_current_state.conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	i = vertex_index.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	e = vertex_index.conditions().end();
+	for ( ; i != e; ) {
+		if (I == E)
+			evaluate_condition	(I,E,(*i).condition());
+		if ((*I).condition() < (*i).condition())
+			++I;
+		else
+			if ((*I).condition() > (*i).condition()) {
+				evaluate_condition	(I,E,(*i).condition());
+				if ((*I).value() != (*i).value())
+					return		(false);
+			}
+			else
+				if ((*I).value() != (*i).value())
+					return		(false);
+				else {
+					++I;
+					++i;
+				}
+	}
+	return						(true);
 }
 
 #undef TEMPLATE_SPECIALIZATION

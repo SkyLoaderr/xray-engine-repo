@@ -968,6 +968,13 @@
 									RelativePath=".\problem_solver_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="condition_evaluator"
+								Filter="">
+								<File
+									RelativePath=".\condition_evaluator.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="table"

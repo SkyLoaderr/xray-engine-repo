@@ -50,7 +50,7 @@ IC	void CSolverPathManager::setup					(
 TEMPLATE_SPECIALIZATION
 IC	bool CSolverPathManager::is_goal_reached		(const _index_type &vertex_id) const
 {
-	return					(goal_node_index.includes(vertex_id));
+	return					(graph->is_goal_reached(vertex_id));
 }
 
 TEMPLATE_SPECIALIZATION

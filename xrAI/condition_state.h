@@ -28,11 +28,10 @@ public:
 	virtual										~CConditionState	();
 	IC	const xr_vector<COperatorCondition>		&conditions			() const;
 	IC	void									add_condition		(const COperatorCondition &condition);
+	IC	void									add_condition		(typename xr_vector<COperatorCondition>::const_iterator &J, const COperatorCondition &condition);
 	IC	u8										weight				(const CConditionState &condition) const;
-	IC	u8										weight				(const CConditionState &condition, const CConditionState &start) const;
 	IC	bool									operator<			(const CConditionState &condition) const;
 	IC	bool									includes			(const CConditionState &condition) const;
-	IC	bool									includes			(const CConditionState &condition, const CConditionState &start) const;
 	IC	void									clear				();
 	IC	CSConditionState						&operator-=			(const CConditionState &condition);
 	IC	bool 									operator==			(const CConditionState &condition);

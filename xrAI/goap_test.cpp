@@ -14,7 +14,7 @@ const u32 world_state_dimension = 8;
 const u32 min_operator_count	= 4;
 const u32 max_operator_count	= 8;
 typedef u32																		_condition_type;
-typedef u32																		_value_type;
+typedef bool																	_value_type;
 typedef u32																		_operator_id_type;
 typedef CProblemSolver<_condition_type,_value_type,_operator_id_type>			CSProblemSolver;
 typedef CConditionState<_condition_type,_value_type>							CState;
@@ -23482,6 +23482,21 @@ void show_operator(const COperator &_operator, u32 i)
 	Msg						("operator  %2d : %s",i,s);
 }
 
+struct CConstConditionEvaluator : public IConditionEvaluator<bool> {
+protected:
+	bool					m_value;
+
+public:
+							CConstConditionEvaluator(bool value) :
+								m_value(value)
+	{
+	}
+
+	virtual bool			evaluate				() const {
+		return				(m_value);
+	}
+};
+
 void test_goap	()
 {
 	CGraphEngine						*graph_engine	= xr_new<CGraphEngine>(0);
@@ -23499,7 +23514,15 @@ void test_goap	()
 	for (u64 ii=0; ii<sizeof(seeds)/sizeof(seeds[0]); ++ii) {
 		random.seed						(seeds[ii]);
 		CSProblemSolver					problem_solver;
-		problem_solver.set_current_state(random_condition(100,100,4,1));
+		
+		CSProblemSolver::CState			condition = random_condition(100,100,4,1);
+		{
+			xr_vector<CSProblemSolver::COperatorCondition>::const_iterator	I = condition.conditions().begin();
+			xr_vector<CSProblemSolver::COperatorCondition>::const_iterator	E = condition.conditions().end();
+			for ( ; I != E; ++I)
+				problem_solver.add_evaluator((*I).condition(),xr_new<CConstConditionEvaluator>((*I).value()));
+		}
+
 		problem_solver.set_target_state	(random_condition(100,100,4,3));
 		u32						operator_count = random.random(max_operator_count - min_operator_count + 1) + min_operator_count;
 		for (u32 i=0; i<operator_count; ++i)
@@ -23563,13 +23586,11 @@ void test_goap	()
 			VERIFY						((*i).m_operator_id == *I);
 			show_operator				(*(*i).m_operator,(*i).m_operator_id);
 			VERIFY						((*i).m_operator->applicable(world_state.conditions(),problem_solver.current_state().conditions(),(*i).m_operator->conditions()));
-			bool						applied = (*i).m_operator->apply(world_state,problem_solver.current_state().conditions(),temp,(*i).m_operator->effects());
-			VERIFY						(applied);
-			world_state					= temp;
+			world_state					= (*i).m_operator->apply(world_state,(*i).m_operator->effects(),temp);
 			show_condition				(world_state);
 		}
 
-		VERIFY							(world_state.includes(problem_solver.target_state(),problem_solver.current_state()));
+		VERIFY							(world_state.includes(problem_solver.target_state()));
 		Msg								("Max solution length : %d (test %d, vertices %d, solved : %d)",max_length,best_test,vertex_count,total_solved);
 		Msg								("");
 		FlushLog						();

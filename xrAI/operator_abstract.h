@@ -32,7 +32,7 @@ public:
 	IC		const xr_vector<COperatorCondition>	&effects			() const;
 	IC		void								add_effect			(const COperatorCondition &effect);
 	virtual bool								applicable			(const xr_vector<COperatorCondition> &condition, const xr_vector<COperatorCondition> &start, const xr_vector<COperatorCondition> &self_condition) const;
-	virtual bool								apply				(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const;
+	virtual const CSConditionState				&apply				(const CSConditionState &condition, const xr_vector<COperatorCondition> &self_condition, CSConditionState &result) const;
 	virtual bool								apply_reverse		(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const;
 	virtual void								initialize			();
 	virtual void								execute				();
