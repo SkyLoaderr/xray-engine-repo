@@ -80,7 +80,7 @@ function main()
 	event:set_callback(script_01.on_enter,true)
 	event:set_callback(script_01.on_exit,false)
 
-	while stalker1:action() do		
+	while true do		
 		if is_actor_entered == true then 
 			printf("alarm!")
 			flush()
@@ -90,6 +90,7 @@ function main()
 			stalker2:script	(true,  script_01.script_name())
 			action(
 				stalker1,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
 				sound	("scripts\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
@@ -97,6 +98,7 @@ function main()
 				)
 			action(
 				stalker2,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
 				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
