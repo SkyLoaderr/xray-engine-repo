@@ -102,6 +102,7 @@ class CMyD3DApplication : public CD3DApplication
 
 	// Special textures
 	LPDIRECT3DTEXTURE9				t_SpecularPower_32;
+	LPDIRECT3DTEXTURE9				t_Base;
 
 	// Matrices
 	D3DXMATRIX						dm_model2world;
@@ -420,6 +421,8 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Light_Direct_smap.compile		(m_pd3dDevice,"shaders\\D\\light_direct_smap.s");
 
 	// Create special textures
+	D3DXCreateTextureFromFile		(m_pd3dDevice,"media\\shadowmap.tga",&t_Base);
+
 	{
 		const DWORD	size				= 256;
 		float		array[size];
