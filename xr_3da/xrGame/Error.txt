@@ -14,37 +14,38 @@
 ; -K - from Koan
 
 To OLES : 
--D	(???)		memory leak during reload (press f7 for reload) ~ 346kb on occ_part
-+J	resolved	монстры исчезают в определённых позициях (level - occ_part_jim)
-+О	resolved	Обьекты у которых парент - рендерятся
-+O	resolved	~160 memory operations per frame
-+O	resolved	no particles
-+J	resolved	актер не видим для сталкеров и монстров
-+К	resolved	старые партиклы тоже не рисуются
--K				трасеры не рисуются
--S				после взрыва ручной гранаты обьекты (в том числе актер) становятся невидимыми при FLAGS::bVisible=1
+-D	memory leak during reload (press f7 for reload) ~ 346kb on occ_part
++J	монстры исчезают в определённых позициях (level - occ_part_jim)
++О	Обьекты у которых парент - рендерятся
++O	~160 memory operations per frame
++O	no particles
++J	актер не видим для сталкеров и монстров
++К	старые партиклы тоже не рисуются
+-K	трасеры не рисуются
+-S	после взрыва ручной гранаты обьекты (в том числе актер) становятся невидимыми при FLAGS::bVisible=1
+-A	актер закрывает собой флары (выключить Enable CFModel у Актера)
 
 To WT:
--O				(-WT) когда выбрасываешь оружие, оно исчезает (level - cs_test)
-				ЭТО ЛОГИЧНО, ТЫ Ж ВЕДЬ ДЕЛАЕШЬ 'setVisible(false)'
-				и блядь, какого хуя я должен этим заниматься???
-				помоему это твоя работа.
-				все остальное я смотреть даже не буду.
+-O	(-WT) когда выбрасываешь оружие, оно исчезает (level - cs_test)
+	ЭТО ЛОГИЧНО, ТЫ Ж ВЕДЬ ДЕЛАЕШЬ 'setVisible(false)'
+	и блядь, какого хуя я должен этим заниматься???
+	помоему это твоя работа.
+	все остальное я смотреть даже не буду.
 				
 Да мне насрать. Можешь вообще ни хуя не делать.
 				
--O				(-WT)	ни хера не работает (level - cs_test)
--O				(-WT)	ни хера по прежнему не работает (level - cs_test)
--K				(-WT)	детектор никак не реагирует на зону 
--K				(-WT)	после взрыва гранаты исчезает тело убитого сталкера
+-O	(-WT)	ни хера не работает (level - cs_test)
+-O	(-WT)	ни хера по прежнему не работает (level - cs_test)
+-K	(-WT)	детектор никак не реагирует на зону 
+-K	(-WT)	после взрыва гранаты исчезает тело убитого сталкера
 
 To AlexMX:
--O				ocasional invalid radius and/or center after update of particle system
-				(pure garbage: #INF, #QNAN, #DEN)
-				(cs_test/single)
--O				ocasional memory corruption inside particle system (on destructor, probably?)
-				(game00/single/alife)
--D				зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
+-O	ocasional invalid radius and/or center after update of particle system
+	(pure garbage: #INF, #QNAN, #DEN)
+	(cs_test/single)
+-O	ocasional memory corruption inside particle system (on destructor, probably?)
+	(game00/single/alife)
+-D	зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
 
 To Dima:
--K				сталкеры перемещаются быстрее отыгрываемой анимации 
+-K	сталкеры перемещаются быстрее отыгрываемой анимации 
