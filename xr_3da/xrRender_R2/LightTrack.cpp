@@ -134,7 +134,7 @@ void	CROS_impl::update	(IRenderable* O)
 		// take sample
 		Fvector	direction;	direction.set	(hdir[sample][0],hdir[sample][1],hdir[sample][2]).normalize	();
 		result[sample]	=	!(bool)g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
-		Msg				("%d:-- %s",sample,result[sample]?"true":"false");
+//		Msg				("%d:-- %s",sample,result[sample]?"true":"false");
 	}
 
 	// light-tracing
@@ -200,7 +200,7 @@ void	CROS_impl::update	(IRenderable* O)
 	hemi_value				=	float	(_pass)/float(result_count?result_count:1);
 	hemi_smooth				=	hemi_value*l_f + hemi_smooth*l_i;
 	sun_smooth				=	sun_value *l_f + sun_smooth *l_i;
-	Msg						("- hemi[%f], sun[%f]", hemi_smooth, sun_smooth);
+	// Msg						("- hemi[%f], sun[%f]", hemi_smooth, sun_smooth);
 
 	// Process ambient lighting and approximate average lighting
 	// Process our lights to find average luminiscense
@@ -217,7 +217,7 @@ void	CROS_impl::update	(IRenderable* O)
 		for (u32 lit=0; lit<lights.size(); lit++)	{
 			float	d	=	lights[lit].source->position.distance_to(position);
 			float	r	=	lights[lit].source->range;
-			float	a	=	clampr(1.f - r/(d+EPS),0.f,1.f);
+			float	a	=	clampr(1.f - d/(r+EPS),0.f,1.f);
 			lacc.x		+=	lights[lit].color.r*a;
 			lacc.y		+=	lights[lit].color.g*a;
 			lacc.z		+=	lights[lit].color.b*a;
@@ -225,7 +225,7 @@ void	CROS_impl::update	(IRenderable* O)
 		lacc.x		*= desc.lmap_color.x;
 		lacc.y		*= desc.lmap_color.y;
 		lacc.z		*= desc.lmap_color.z;
-		Msg				("- rgb[%f,%f,%f]",lacc.x,lacc.y,lacc.z);
+//		Msg				("- rgb[%f,%f,%f]",lacc.x,lacc.y,lacc.z);
 		accum.add		(lacc);
 	} else 			accum.mad	( desc.lmap_color,	 .1f );
 	approximate				=	accum;
