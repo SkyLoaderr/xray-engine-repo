@@ -136,21 +136,28 @@ function action_reaction_wait:execute()
 	if self.a.obj.type == "corpse_monstr" then
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
-			--' подойти к трупу
-			if self.object:animation_count() == 0 then
-				self.object:set_path_type(game_object.level_path)
-				self.object:set_dest_level_vertex_id(self.a.obj.position)
-				self.object:set_movement_type(move.walk)
-				self.object:set_sight(look.path_dir, nil, 0)
-				self.object:set_desired_direction()
-				--' Если мы подошли к трупу - поплакать и уйти			
-				if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
-					if self.a.evn:ruleExist("silence") ~= true then 
-						xr_sound.sound_update(self.object, self.sound_crps_mutant) 
+			if self.object:accessible(self.a.obj.position) == true then			
+				--' подойти к трупу
+				if self.object:animation_count() == 0 then
+					self.object:set_path_type(game_object.level_path)
+					self.object:set_dest_level_vertex_id(self.a.obj.position)
+					self.object:set_movement_type(move.walk)
+					self.object:set_sight(look.path_dir, nil, 0)
+					self.object:set_desired_direction()
+					--' Если мы подошли к трупу - поплакать и уйти			
+					if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
+						if self.a.evn:ruleExist("silence") ~= true then 
+							xr_sound.sound_update(self.object, self.sound_crps_mutant) 
+						end
+						self.a.evn:markCorpse(self.a.obj.id)
 					end
-					self.a.evn:markCorpse(self.a.obj.id)
+				end			
+			else
+				if self.a.evn:ruleExist("silence") ~= true then 
+					xr_sound.sound_update(self.object, self.sound_crps_mutant) 
 				end
-			end			
+				self.a.evn:markCorpse(self.a.obj.id)			
+			end
 			return
 		end
 	end
@@ -158,21 +165,28 @@ function action_reaction_wait:execute()
 	if self.a.obj.type == "corpse_friend" then
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
-			--' подойти к трупу
-			if self.object:animation_count() == 0 then
-				self.object:set_path_type(game_object.level_path)
-				self.object:set_dest_level_vertex_id(self.a.obj.position)
-				self.object:set_movement_type(move.walk)
-				self.object:set_sight(look.path_dir, nil, 0)
-				self.object:set_desired_direction()
-				--' Если мы подошли к трупу - поплакать и уйти			
-				if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
-					if self.a.evn:ruleExist("silence") ~= true then 
-						xr_sound.sound_update(self.object, self.sound_crps_friend) 
+			if self.object:accessible(self.a.obj.position) == true then			
+				--' подойти к трупу
+				if self.object:animation_count() == 0 then
+					self.object:set_path_type(game_object.level_path)
+					self.object:set_dest_level_vertex_id(self.a.obj.position)
+					self.object:set_movement_type(move.walk)
+					self.object:set_sight(look.path_dir, nil, 0)
+					self.object:set_desired_direction()
+					--' Если мы подошли к трупу - поплакать и уйти			
+					if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
+						if self.a.evn:ruleExist("silence") ~= true then 
+							xr_sound.sound_update(self.object, self.sound_crps_friend) 
+						end
+						self.a.evn:markCorpse(self.a.obj.id)
 					end
-					self.a.evn:markCorpse(self.a.obj.id)
+				end			
+			else
+				if self.a.evn:ruleExist("silence") ~= true then 
+					xr_sound.sound_update(self.object, self.sound_crps_friend) 
 				end
-			end			
+				self.a.evn:markCorpse(self.a.obj.id)			
+			end
 			return
 		end
 	end
@@ -180,21 +194,28 @@ function action_reaction_wait:execute()
 	if self.a.obj.type == "corpse_neutral" then
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
-			--' подойти к трупу
-			if self.object:animation_count() == 0 then
-				self.object:set_path_type(game_object.level_path)
-				self.object:set_dest_level_vertex_id(self.a.obj.position)
-				self.object:set_movement_type(move.walk)
-				self.object:set_sight(look.path_dir, nil, 0)
-				self.object:set_desired_direction()
-				--' Если мы подошли к трупу - поплакать и уйти			
-				if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
-					if self.a.evn:ruleExist("silence") ~= true then 
-						xr_sound.sound_update(self.object, self.sound_crps_neutral) 
+			if self.object:accessible(self.a.obj.position) == true then			
+				--' подойти к трупу
+				if self.object:animation_count() == 0 then
+					self.object:set_path_type(game_object.level_path)
+					self.object:set_dest_level_vertex_id(self.a.obj.position)
+					self.object:set_movement_type(move.walk)
+					self.object:set_sight(look.path_dir, nil, 0)
+					self.object:set_desired_direction()
+					--' Если мы подошли к трупу - поплакать и уйти			
+					if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
+						if self.a.evn:ruleExist("silence") ~= true then 
+							xr_sound.sound_update(self.object, self.sound_crps_neutral) 
+						end
+						self.a.evn:markCorpse(self.a.obj.id)
 					end
-					self.a.evn:markCorpse(self.a.obj.id)
+				end			
+			else
+				if self.a.evn:ruleExist("silence") ~= true then 
+					xr_sound.sound_update(self.object, self.sound_crps_neutral) 
 				end
-			end			
+				self.a.evn:markCorpse(self.a.obj.id)			
+			end
 			return
 		end
 	end
@@ -202,21 +223,28 @@ function action_reaction_wait:execute()
 	if self.a.obj.type == "corpse_enemy" then
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
-			--' подойти к трупу
-			if self.object:animation_count() == 0 then
-				self.object:set_path_type(game_object.level_path)
-				self.object:set_dest_level_vertex_id(self.a.obj.position)
-				self.object:set_movement_type(move.walk)
-				self.object:set_sight(look.path_dir, nil, 0)
-				self.object:set_desired_direction()
-				--' Если мы подошли к трупу - поплакать и уйти			
-				if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
-					if self.a.evn:ruleExist("silence") ~= true then 
-						xr_sound.sound_update(self.object, self.sound_crps_enemy) 
+			if self.object:accessible(self.a.obj.position) == true then			
+				--' подойти к трупу
+				if self.object:animation_count() == 0 then
+					self.object:set_path_type(game_object.level_path)
+					self.object:set_dest_level_vertex_id(self.a.obj.position)
+					self.object:set_movement_type(move.walk)
+					self.object:set_sight(look.path_dir, nil, 0)
+					self.object:set_desired_direction()
+					--' Если мы подошли к трупу - поплакать и уйти			
+					if self.object:position():distance_to_sqr(level.vertex_position(self.a.obj.position)) < 10 then
+						if self.a.evn:ruleExist("silence") ~= true then 
+							xr_sound.sound_update(self.object, self.sound_crps_enemy) 
+						end
+						self.a.evn:markCorpse(self.a.obj.id)
 					end
-					self.a.evn:markCorpse(self.a.obj.id)
+				end			
+			else
+				if self.a.evn:ruleExist("silence") ~= true then 
+					xr_sound.sound_update(self.object, self.sound_crps_enemy) 
 				end
-			end			
+				self.a.evn:markCorpse(self.a.obj.id)			
+			end
 			return
 		end
 	end
