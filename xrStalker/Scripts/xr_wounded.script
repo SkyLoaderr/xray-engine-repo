@@ -404,7 +404,7 @@ end
 ------------
 function action_stand:initialize ()
     action_base.initialize (self)
-    self.first = false
+    self.stage = 0
     xr_meet.override_meet (self.object, true)
     if self.a.on_medikit ~= nil then
        xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit.condlist) 
@@ -414,30 +414,43 @@ end
 function action_stand:execute ()
     action_base.execute (self)
     
-    if self.first == false then
-       self.first = true
+    if self.stage == 0 then
+       printf ("STAGE 0")
+       self.stage = 1
        self.object:clear_animations ()
        self.object:add_animation ("waunded_stand_up_0", true)
+       return
     end
     
-    if self.object:animation_count () == 0 then
-       self.a.final = true
-       self.object:eat (self.object:object ("medkit"))
-       local act = level.actor ()
-       if act ~= nil and  act:alive () == true and self.object:relation (act) ~= game_object.enemy then
-          level.map_remove_object_icon (self.object)
-       end   
+    if self.stage == 1 then
+       printf ("STAGE 2")
+       if self.object:animation_count () == 0 then
+          self.stage = 2
+          local act = level.actor ()
+          if act ~= nil and  act:alive () == true and self.object:relation (act) ~= game_object.enemy then
+             level.map_remove_object_icon (self.object)
+          end 
+       else
+          return
+       end      
     end    
     
+    if self.object:is_talking () == true then
+       printf ("STAGE 3")
+       xr_state.anim_update ("idle", self.object) 
+    else 
+       self.object:eat (self.object:object ("medkit"))    
+    end   
 end    
 ------------
 function action_stand:finalize ()
     if self.a.on_medikit_info ~= nil then
        xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit_info.condlist)
     end 
+    
+    xr_meet.override_meet (self.object, false)
     self.object:restore_default_start_dialog ()
     action_base.finalize (self)
-    xr_meet.override_meet (self.object, false)
     self.a.sit = false
 end    
 ------------------------------------------------------------------------------------------
