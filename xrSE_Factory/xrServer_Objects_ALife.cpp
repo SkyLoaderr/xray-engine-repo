@@ -261,9 +261,9 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 	if (m_flags.is(flUseSwitches)) {
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
-	}
-	PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
-	PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
+	}                            
+	PHelper.CreateFlag32			(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
+	PHelper.CreateFlag32			(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
 
 	if (story_names.empty()){
 		string256					gm_name;
