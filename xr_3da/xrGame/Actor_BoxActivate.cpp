@@ -20,7 +20,7 @@ struct STestCallbackPars
 };
 
 
-float 	STestCallbackPars::calback_friction_factor					=	0.2f	;
+float 	STestCallbackPars::calback_friction_factor					=	0.1f	;
 float 	STestCallbackPars::depth_to_use_force						=	0.3f	;
 float 	STestCallbackPars::callback_force_factor					=	10.f	;
 float 	STestCallbackPars::depth_to_change_softness_pars			=	0.00f	;
@@ -35,11 +35,11 @@ struct STestFootCallbackPars
 	static float depth_to_change_softness_pars		;
 	static float callback_cfm_factor				;
 	static float callback_erp_factor				;
-	static float decrement_depth					;
+	static float decrement_depth						;
 };
 
 
-float 	STestFootCallbackPars::calback_friction_factor					=	0.2f	;
+float 	STestFootCallbackPars::calback_friction_factor					=	0.3f	;
 float 	STestFootCallbackPars::depth_to_use_force						=	0.3f	;
 float 	STestFootCallbackPars::callback_force_factor					=	10.f	;
 float 	STestFootCallbackPars::depth_to_change_softness_pars			=	0.01f	;
@@ -51,7 +51,8 @@ template<class Pars>
 void __stdcall TTestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
 	if(saved_callback)saved_callback(do_colide,c,material_1,material_2);
-	if(do_colide)
+
+	if(do_colide&&!material_1->Flags.test(SGameMtl::flPassable) &&!material_2->Flags.test(SGameMtl::flPassable))
 	{
 		const float& depth=c.geom.depth;
 		float test_depth=depth-Pars.decrement_depth;
