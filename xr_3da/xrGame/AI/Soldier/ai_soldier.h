@@ -553,9 +553,13 @@ class CAI_Soldier : public CCustomMonster
 					return(false);
 			}
 		}
+	IC	bool bfTooBigDistance(Fvector tPosition, float fDistance)
+		{
+			return(tPosition.distance_to(vPosition) > fDistance);
+		}
 	IC	bool bfTooFarToEnemy(CEntity *tpEntity, float fDistance)
 		{
-			return(tpEntity->Position().distance_to(vPosition) > fDistance);
+			return(bfTooBigDistance(tpEntity->Position(),fDistance));
 		}
 	IC	bool bfNeedRecharge()
 		{

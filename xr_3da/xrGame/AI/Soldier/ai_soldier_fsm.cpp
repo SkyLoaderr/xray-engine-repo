@@ -314,7 +314,8 @@ void CAI_Soldier::OnRetreatAloneFire()
 	
 	SelectEnemy(Enemy);
 	
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || bfAmIHurt() || !bfDoesEnemyExist());
+	//CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || bfAmIHurt() || !bfDoesEnemyExist());
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || bfAmIHurt());
 
 	INIT_SQUAD_AND_LEADER;
 
@@ -322,11 +323,19 @@ void CAI_Soldier::OnRetreatAloneFire()
 	
 	vfInitSelector(SelectorRetreat,Squad,Leader);
 
+	if (!Enemy.Enemy)
+		SelectorRetreat.m_tEnemyPosition = tSavedEnemyPosition;
+
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
-		vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
+		vfSearchForBetterPositionWTime(SelectorRetreat,Squad,Leader);
 
+	if (bfTooBigDistance(tSavedEnemyPosition,25.f))
+		SetDirectionLook();
+	else
+		vfAimAtEnemy();
+	
 	vfStopFire();
 
 	StandUp();
