@@ -67,6 +67,7 @@ void CWeapon::SoundDestroy(	sound3D& dest)
 }
 void CWeapon::ShaderCreate(Shader* &dest, LPCSTR S, LPCSTR T)
 {
+	if (dest)	return;
 	string256	name,temp;
 
 	// test 'WEAPONS' folder
@@ -100,6 +101,7 @@ void CWeapon::ShaderCreate(Shader* &dest, LPCSTR S, LPCSTR T)
 }
 void CWeapon::ShaderDestroy	(Shader* &dest)
 {
+	if (0==dest)	return;
 	Device.Shader.Delete	(dest);
 }
 
@@ -192,7 +194,7 @@ void CWeapon::OnDeviceDestroy()
 {
 	CObject::OnDeviceDestroy();
 
-	Device.Shader.Delete(hUIIcon);
+	ShaderDestroy		(hUIIcon);
 	Device.Shader.Delete(hWallmark);
 }
 
