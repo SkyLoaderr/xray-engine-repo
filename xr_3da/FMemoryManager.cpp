@@ -3,15 +3,17 @@
 //#define TESTMEM
 //#define WRITESYNC
 
+/*
+
 #ifdef DEBUG
 FILE *			memLOG	= NULL;
 _CrtMemState	mmgrState;
 #endif
 
-/* ALLOCATION HOOK FUNCTION   -----------------------------------
-   An allocation hook function can have many, many different
-   uses. This one simply logs each allocation operation in a file.
-*/
+// ALLOCATION HOOK FUNCTION   -----------------------------------
+// An allocation hook function can have many, many different
+// uses. This one simply logs each allocation operation in a file.
+
 #ifdef DEBUG
 int __cdecl MyAllocHook(
 	int		nAllocType,
@@ -51,13 +53,14 @@ int __cdecl MyAllocHook(
 //    fprintf( logFile, " at %X", pvData );
    return( TRUE );         // Allow the memory operation to proceed
 }
-/* REPORT HOOK FUNCTION   --------------------
-   Again, report hook functions can serve a very wide variety of purposes.
-   This one logs error and VERIFYion failure debug reports in the
-   log file, along with 'Damage' reports about overwritten memory.
-   By setting the retVal parameter to zero, we are instructing _CrtDbgReport
-   to return zero, which causes execution to continue. If we want the function
-   to start the debugger, we should have _CrtDbgReport return one.*/
+//REPORT HOOK FUNCTION   --------------------
+//   Again, report hook functions can serve a very wide variety of purposes.
+//   This one logs error and VERIFYion failure debug reports in the
+//   log file, along with 'Damage' reports about overwritten memory.
+//   By setting the retVal parameter to zero, we are instructing _CrtDbgReport
+//   to return zero, which causes execution to continue. If we want the function
+//   to start the debugger, we should have _CrtDbgReport return one.
+
 int __cdecl MyReportHook(
 	int   nRptType,
 	char *szMsg,
@@ -141,6 +144,7 @@ void mmgrMessage(const char *logMSG, const char *dop)
 	}
 #endif
 }
+*/
 
 char * _STRDUP(const char * string)
 {
