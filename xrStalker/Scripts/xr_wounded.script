@@ -8,7 +8,7 @@ function send_sos (npc)
        return 
     end
         
-    if distance_between (npc, act) > 70.0  then
+    if distance_between (npc, act) > 200.0  then
        return 
     end
     
