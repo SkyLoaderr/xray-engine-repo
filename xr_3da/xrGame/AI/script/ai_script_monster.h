@@ -33,7 +33,6 @@ protected:
 	CMotionDef					*m_tpScriptAnimation;
 	CEntityAction				*m_tpCurrentEntityAction;
 public:
-	bool						m_callback_received;
 	struct SMemberCallback {
 		luabind::functor<void>	*m_lua_function;
 		luabind::object			*m_lua_object;

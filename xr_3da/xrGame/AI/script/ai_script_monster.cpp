@@ -35,7 +35,6 @@ void CScriptMonster::Init()
 	// animation
 	m_tpScriptAnimation		= 0;
 	m_tpCurrentEntityAction	= 0;
-	m_callback_received		= false;
 }
 
 void CScriptMonster::reinit()
@@ -497,9 +496,8 @@ void ScriptCallBack(CBlend* B)
 {
 	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
 	R_ASSERT		(l_tpScriptMonster);
-	if (l_tpScriptMonster->GetCurrentAction() && !l_tpScriptMonster->m_callback_received) {
+	if (l_tpScriptMonster->GetCurrentAction() && !B->bone_or_part) {
 //		Msg			("%6d Script animation : %s",Level().timeServer(),PSkeletonAnimated(l_tpScriptMonster->Visual())->LL_MotionDefName_dbg(l_tpScriptMonster->m_tpScriptAnimation));
-		l_tpScriptMonster->m_callback_received = true;
 		
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 			l_tpScriptMonster->callback(CScriptMonster::eActionTypeAnimation);
@@ -522,10 +520,8 @@ bool CScriptMonster::bfScriptAnimation()
 #endif
 			CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
 			CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
-			if (m_tpScriptAnimation != l_tpMotionDef) {
+			if (m_tpScriptAnimation != l_tpMotionDef)
 				tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,ScriptCallBack,this);
-				m_callback_received = false;
-			}
 			return		(true);
 		}
 	else {
