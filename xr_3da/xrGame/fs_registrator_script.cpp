@@ -70,11 +70,11 @@ public:
 		eSortByModifUp,
 		eSortByModifDown
 	};
-	FS_file_list_ex		(LPCSTR path, u32 flags, LPCSTR mask)
+	FS_file_list_ex		(LPCSTR path, u32 flags, LPCSTR mask);
 
 	u32			Size()						{return m_file_items.size();}
 	FS_item		GetAt(u32 idx)				{return m_file_items[idx];}
-	void		Sort(u32 flags)
+	void		Sort(u32 flags);
 };
 
 FS_file_list_ex::FS_file_list_ex(LPCSTR path, u32 flags, LPCSTR mask)
