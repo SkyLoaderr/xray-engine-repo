@@ -1,0 +1,182 @@
+local s_walk		= 7
+
+local walking		= 1
+local speaking		= 2
+local looking		= 3
+
+local look_in		= 20000						//Время, через которое зомби смотрит в точку
+local time_look		= 10000						//Сколько зомби смотрит в точку
+local speak_in		= 5000						//Через сколько зомби говорит фразу
+
+//---------------------------------------------------------------------------------------------------------
+//State zombie walk
+//---------------------------------------------------------------------------------------------------------
+
+local sounds =									//Звуки, которые проигрует зомби
+{
+	"script_replics\\zombie\\stalker_zombie\\zombie_phrase_1", 
+	"script_replics\\zombie\\stalker_zombie\\zombie_phrase_2",
+	"script_replics\\zombie\\stalker_zombie\\zombie_phrase_3",
+	"script_replics\\zombie\\stalker_zombie\\zombie_phrase_4", 
+	"script_replics\\zombie\\stalker_zombie\\zombie_phrase_5",
+	"script_replics\\zombie\\stalker_zombie\\zombie_phrase_6",
+	"script_replics\\zombie\\stalker_zombie\\zombie_phrase_7"
+}
+	 
+class "CStateZombieWalk"
+function CStateZombieWalk:__init(_data, _mem, sWalk)
+	self.data	= _data
+	self.memory = _mem
+	self.path	= nil
+	self.index	= -1
+	self.time	= 0
+	self.state	= walk
+	self.start	= 0							//Во сколько начал выполнятся екшн
+end
+
+function CStateZombieWalk:initialize()
+	reset_action(self.data.npc, self.data.scr_name)
+	self.path	= self.data.npc:spawn_ini():r_string("monster", "walk_path")
+	self.index	= -1
+	self.time	= device():time_global()
+	self.data.npc:set_callback(self, "move_callback", game_object.movement)
+	self:init_state_walk()
+end
+
+function CStateZombieWalk:execute()
+	if(self.state == looking) then
+		self:state_look()
+	else
+		self:state_walk()	
+	end
+end
+
+function CStateZombieWalk:init_state_walk()
+	printf("Init state walk    %d", device():time_global())
+	if(self.data.npc:action()) then
+		reset_action(self.data.npc, self.data.scr_name)
+	end
+	
+	if(self.index == -1) then
+		action(self.data.npc, move(move.walk_fwd, patrol(self.path, patrol.nearest, patrol.continue, true)), 
+							  cond(cond.time_end, 30000))
+	else
+		action(self.data.npc, move(move.walk_fwd, patrol(self.path, patrol.next, patrol.continue, true, self.index)), 
+							  cond(cond.time_end, 30000))
+	end
+	
+	self.state	= walking
+	self.start	= device():time_global()
+	self.time	= self.start + math.random(0.8 * speak_in, 1.3 * speak_in)		//Когда надо сказать фразу
+end
+
+function CStateZombieWalk:state_walk()
+	//Либо говорим фразу, либо просто ходим, иногда бубним
+	if(self.state == walking and device():time_global() > self.start + look_in) then	
+		printf("End walk, now look    %d", device():time_global())
+		self:init_state_look()
+		return
+	end
+
+	if(self.state == walking and device():time_global() > self.time) then
+		//Пришло время говорить
+		reset_action(self.data.npc, self.data.scr_name)
+		printf("speak  %d", device():time_global())
+		self:walk("with_sound")
+		self.state	= speaking
+		return 
+	end
+		
+	if(self.state == speaking and self.data.npc:action() == nil) then
+		printf("end speak, now walk   %d", device():time_global())
+		self:walk()
+		self.time	= device():time_global() + math.random(0.8 * speak_in, 1.3 * speak_in)	//Когда надо сказать фразу
+		self.state	= walking
+		if(device():time_global() > self.start + look_in - 1000) then
+			//Только что закончили говорить, сразу не останавливаемся смотреть, а несколько секунд идем
+			self.start	= device():time_global() - look_in + 2000
+		end
+		return
+	end
+	
+	if(self.data.npc:action() == nil) then
+		printf("again walk   %d", device():time_global())
+		self:walk()
+		self.state	= walking
+		self.time	= device():time_global() + math.random(0.8 * speak_in, 1.3 * speak_in) 		//Когда надо сказать фразу		
+	end
+end
+
+function CStateZombieWalk:walk(_sound)
+	//Устанавливаем экш ходьбы. Причем если далеко от маршрута, то идем к ближайщей точке, если на маршруте, то идем по нему
+	local snd = nil
+	if(_sound == nil) then
+		snd = sound()
+	else
+		snd	= sound(sounds[math.random(1, table.getn(sounds))], "bip01_head")
+	end
+	
+	local new_cond	= nil
+	if(_sound) then
+		new_cond	= cond(cond.sound_end)
+	else
+		new_cond	= cond(cond.time_end, 30000)
+	end
+	
+	if(self.index ~= -1) then
+		//Ходим по маршруту
+		action(self.data.npc, move(move.walk_fwd, patrol(self.path, patrol.next, patrol.continue, true, self.index)), 
+					snd, new_cond)
+	else
+		//Где-то далеко от маршрута
+		action(self.data.npc, move(move.walk_fwd, patrol(self.path, patrol.nearest, patrol.continue, true)), 
+							  snd, new_cond)
+	end
+end
+
+
+function CStateZombieWalk:init_state_look()
+	printf("Init state look   %d", device():time_global())
+	if(self.data.npc:action()) then
+		reset_action(self.data.npc, self.data.scr_name)
+	end
+			
+	//Выбераем направление, куда смотреть, запоминаем время и устанавливаем экшн
+	local dir	= self.data.npc:direction()
+	local angel = math.random(60, 120)				//На сколько градусов будем поворачиватся
+	if(math.random() > 0.5) then
+		angel	= - angel
+	end
+		
+	local new_direction = vector()
+	new_direction.x = dir.x * math.cos(angel) - dir.y * math.sin(angel)
+	new_direction.y = dir.x * math.sin(angel) + dir.y * math.cos(angel)
+		
+	action(self.data.npc, anim(anim.turn, 0), look(look.direction, new_direction),
+						  cond(cond.look_end))
+	action(self.data.npc, anim(anim.stand_idle, 0), look(look.direction, new_direction), cond(cond.time_end, 2*time_look))
+	self.state	= looking
+	self.time	= device():time_global() + math.random(0.8 * time_look, 1.4 * time_look)
+	printf("__device time %d  select time  %d", device():time_global(), self.time)
+end
+
+function CStateZombieWalk:state_look()
+	if(device():time_global() > self.time or self.data.npc:action() == nil) then
+		printf("init state walk call")
+		self:init_state_walk()
+	end		
+end
+
+function CStateZombieWalk:move_callback(obj, type, _index)
+	self.index	= _index
+end
+
+function CStateZombieWalk:id()
+	return s_walk
+end
+
+function CStateZombieWalk:finalize()
+	if(self.data.npc) then
+		self.data.npc:clear_callback(game_object.movement)
+	end
+end
