@@ -31,6 +31,8 @@
 #include "../alife_registry_wrappers.h"
 #include "../actorcondition.h"
 
+#include "../string_table.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 using namespace InventoryUtilities;
@@ -870,7 +872,7 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	{
 		CInfoPortion info_portion;
 		info_portion.Load(info_index);
-		pItem->UIMsgText.SetText(info_portion.GetText());
+		pItem->UIMsgText.SetText(*CStringTable()(info_portion.GetText()));
 	}
 	else
 	{

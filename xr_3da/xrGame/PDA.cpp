@@ -15,6 +15,8 @@
 #include "xrServer_Objects_ALife_Items.h"
 #include "level.h"
 
+#include "specific_character.h"
+
 
 
 
@@ -55,6 +57,7 @@ BOOL CPda::net_Spawn(LPVOID DC)
 	m_iSpecificChracterOwner	= pda->m_specific_character;
 	m_iInfoPortion				= pda->m_info_portion;
 
+	m_sFullName.clear();
 	
 	return				(TRUE);
 }
@@ -405,4 +408,27 @@ void		CPda::SetInfoPortion (INFO_INDEX info)
 INFO_INDEX	CPda::GetInfoPortion ()
 {
 	return m_iInfoPortion;
+}
+
+
+LPCSTR		CPda::Name				()
+{
+	if(m_iSpecificChracterOwner == NO_SPECIFIC_CHARACTER)
+		return inherited::Name();
+
+	if(m_sFullName.empty())
+	{
+		m_sFullName.assign(inherited::Name());
+		
+		CSpecificCharacter spec_char;
+		spec_char.Load(m_iSpecificChracterOwner);
+		m_sFullName += " ";
+		m_sFullName += std::string(spec_char.Name());
+	}
+	
+	return m_sFullName.c_str();
+}
+LPCSTR		CPda::NameComplex		()
+{
+	return Name();
 }

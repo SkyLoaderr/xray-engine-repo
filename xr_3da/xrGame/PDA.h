@@ -94,6 +94,9 @@ public:
 	virtual void		SetInfoPortion (INFO_INDEX);
 	virtual INFO_INDEX	GetInfoPortion ();
 
+	virtual LPCSTR		Name			();
+	virtual LPCSTR		NameComplex		();
+
 protected:
 	//поступление нового сообщения на PDA
 	bool m_bNewMessage;
@@ -110,6 +113,8 @@ protected:
 	SPECIFIC_CHARACTER_INDEX m_iSpecificChracterOwner;
 	//присоединенный info portion
 	INFO_INDEX m_iInfoPortion;
+	//полное название PDA с именем владельца
+	std::string m_sFullName;
 
 	//пассивный режим работы PDA
 	bool m_bPassiveMode;
