@@ -15,7 +15,8 @@ public:
 		T		val;
 		TNode	*left,*right;
 	};
-	typedef void __fastcall callback(TNode*);
+	typedef void __fastcall callback	(TNode*);
+	typedef bool __fastcall callback_cmp(TNode& N1, TNode& N2);
 private:
 	TNode*		nodes;
 	DWORD		pool;

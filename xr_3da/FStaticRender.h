@@ -50,7 +50,7 @@ public:
 	CSector*						pLastSector;
 	Fvector							vLastCameraPos;
 public:
-	CList<FCached*>						vecCached;
+//	CList<FCached*>						vecCached;
 //	CList<SceneGraph::mapNormal_Node*>	vecNormalNodes;
 
 	// Global vertex-buffer container

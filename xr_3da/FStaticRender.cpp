@@ -224,18 +224,6 @@ void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
 	V->Render(calcLOD(N->key,V->bv_Radius));
 }
 
-// LINES
-void __fastcall lines_L1(SceneGraph::mapLine_Node *N)
-{
-	Device.Shader.Set		(N->key);
-	SceneGraph::mapLineItem& L = N->val;
-	Device.Primitive.Lines_Begin(L.size());
-	for (SceneGraph::mapLineItem::iterator I=L.begin(); I!=L.end(); I++)
-		Device.Primitive.Lines_Draw(I->P1,I->P2,I->w,I->C);
-	Device.Primitive.Lines_End();
-	L.clear();
-}
-
 void CRender::flush_Static()
 {
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
@@ -342,39 +330,6 @@ IC	bool	cmp_nodes(SceneGraph::mapNormal_Node* N1, SceneGraph::mapNormal_Node* N2
 {
 	return (N1->val.ssa > N2->val.ssa);
 }
-/*
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
-	Details.Render			(Device.vCameraPosition);
-	
-	// NORMAL			*** mostly the main level
-	// Perform sorting based on "shader" minimal distance
-	for (DWORD pr=0; pr<4; pr++)	
-	{
-		if (0==mapNormal[pr].size())	continue;
-
-		CHK_DX					(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
-		Lights.BeginStatic		();
-		mapNormal[pr].getANY_P	(vecNormalNodes);
-		std::sort				(vecNormalNodes.begin(),vecNormalNodes.end(),cmp_nodes);
-		for (DWORD I=0; I<vecNormalNodes.size(); I++)	{
-			SceneGraph::mapNormal_Node*	N = vecNormalNodes[I];
-			normal_L1				(N);
-			N->val.ssa_valid		= FALSE;
-		}
-		vecNormalNodes.clear	();
-		mapNormal[pr].clear		();
-
-		if (1==pr)			{
-			Wallmarks.Render		();		// Wallmarks has priority as normal geometry
-			Lights_Dynamic.Render	();		// Lights has priority the same as normal geom
-		}
-		if (2==pr)			{
-			// NORMAL-matrix	*** actors and dyn. objects
-			mapMatrix.traverseANY	(matrix_L1);
-			mapMatrix.clear			();
-		}
-	}
-*/
 void	CRender::Render()
 {
 	Device.Statistic.RenderDUMP.Begin();
@@ -385,9 +340,21 @@ void	CRender::Render()
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on "shader" minimal distance
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
+
+	// Sorting first pass by SSA
+	for (DWORD pr=0; pr<4; pr++)
+	{
+		if (0==mapNormal[pr][0].size())	continue;
+
+
+	}
+
+
+
+
 	for (DWORD pr=0; pr<4; pr++)	
 	{
-		if (0==mapNormal[pr].size())	continue;
+		if (0==mapNormal[pr][0].size())	continue;
 
 		mapNormal[pr].getANY_P	(vecNormalNodes);
 		std::sort				(vecNormalNodes.begin(),vecNormalNodes.end(),cmp_nodes);
