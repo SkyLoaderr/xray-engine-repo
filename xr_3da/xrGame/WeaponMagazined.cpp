@@ -172,6 +172,9 @@ void CWeaponMagazined::OnStateSwitch	(DWORD S)
 	case eHiding:
 		switch2_Hiding	();
 		break;
+	case eHidden:
+		switch2_Hidden	();
+		break;
 	}
 	STATE = S;
 }
@@ -191,20 +194,27 @@ void CWeaponMagazined::UpdateCL			()
 	case eIdle:
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
+		UpdateSounds	();
 		break;
 	case eFire:			state_Fire		(dt);	break;
 	case eMagEmpty:		state_MagEmpty	(dt);	break;
+	case eHidden:		break;
 	}
-	// setVisible			(TRUE);
 	bPending			= FALSE;
-	
-	// sound fire loop
-	UpdateFP					();
-	if (sndShow.feedback)		sndShow.feedback->SetPosition		(vLastFP);
-	if (sndHide.feedback)		sndHide.feedback->SetPosition		(vLastFP);
-	if (sndShot.feedback)		sndShot.feedback->SetPosition		(vLastFP);
-	if (sndReload.feedback)		sndReload.feedback->SetPosition		(vLastFP);
-	if (sndEmptyClick.feedback)	sndEmptyClick.feedback->SetPosition	(vLastFP);
+}
+
+void CWeaponMagazined::UpdateSounds	()
+{
+	// sound positions
+	if (sndShow.feedback || sndHide.feedback || sndShot.feedback || sndReload.feedback || sndEmptyClick.feedback)
+	{
+		UpdateFP					();
+		if (sndShow.feedback)		sndShow.feedback->SetPosition		(vLastFP);
+		if (sndHide.feedback)		sndHide.feedback->SetPosition		(vLastFP);
+		if (sndShot.feedback)		sndShot.feedback->SetPosition		(vLastFP);
+		if (sndReload.feedback)		sndReload.feedback->SetPosition		(vLastFP);
+		if (sndEmptyClick.feedback)	sndEmptyClick.feedback->SetPosition	(vLastFP);
+	}
 }
 
 void CWeaponMagazined::state_Fire	(float dt)
@@ -222,13 +232,15 @@ void CWeaponMagazined::state_Fire	(float dt)
 		OnShot			();
 		FireTrace		(p1,vLastFP,d);
 	}
+	UpdateSounds			();
 }
 
 void CWeaponMagazined::state_MagEmpty	(float dt)
 {
-	UpdateFP		();
-	OnEmptyClick	();
-	SwitchState		(eIdle);
+	UpdateFP				();
+	OnEmptyClick			();
+	SwitchState				(eIdle);
+	UpdateSounds			();
 }
 
 void CWeaponMagazined::OnVisible	()
@@ -378,7 +390,7 @@ void CWeaponMagazined::OnAnimationEnd()
 	switch (STATE)
 	{
 	case eReload:	ReloadMagazine();		break;	// End of reload animation
-	case eHiding:	signal_HideComplete();	break;	// End of Hide
+	case eHiding:	SwitchState(eHidden);	break;	// End of Hide
 	case eShowing:	SwitchState(eIdle);		break;	// End of Show
 	}
 }
@@ -399,9 +411,13 @@ void CWeaponMagazined::switch2_Reload()
 }
 void CWeaponMagazined::switch2_Hiding()
 {
-	switch2_Idle			();
+	// switch2_Idle			();
 	pSounds->PlayAtPos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
+}
+void CWeaponMagazined::switch2_Hidden()
+{
+	signal_HideComplete		();
 }
 void CWeaponMagazined::switch2_Showing()
 {

@@ -46,7 +46,8 @@ protected:
 		eMagEmpty,
 		eReload,
 		eShowing,
-		eHiding
+		eHiding,
+		eHidden
 	};
 protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
@@ -59,6 +60,7 @@ protected:
 	virtual void	switch2_Empty	();
 	virtual void	switch2_Reload	();
 	virtual void	switch2_Hiding	();
+	virtual void	switch2_Hidden	();
 	virtual void	switch2_Showing	();
 	virtual void	OnShot			();
 	virtual void	OnShellDrop		();
@@ -68,6 +70,8 @@ protected:
 	virtual void	OnHide			();
 	virtual void	OnAnimationEnd	();
 	virtual void	OnStateSwitch	(DWORD S);
+
+	virtual void	UpdateSounds	();
 
 	void			TryReload		();
 protected:
