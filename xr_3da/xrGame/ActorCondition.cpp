@@ -73,7 +73,7 @@ void CActorCondition::UpdateCondition()
 	if (psActorFlags.test(AF_GODMODE)) return;
 	if (!object().g_Alive()) return;
 	
-	if (object().Remote()) return;
+//	if (object().Remote()) return;
 
 	if ((object().mstate_real&mcAnyMove)) {
 		ConditionWalk(object().inventory().TotalWeight()/object().inventory().GetMaxWeight(), object().isAccelerated(object().mstate_real), (object().mstate_real&mcSprint) != 0);

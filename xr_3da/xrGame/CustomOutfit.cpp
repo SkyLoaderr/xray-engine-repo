@@ -112,7 +112,7 @@ void CCustomOutfit::Hit(float hit_power, ALife::EHitType hit_type)
 
 float CCustomOutfit::GetHitTypeProtection(ALife::EHitType hit_type)
 {
-	return m_HitTypeProtection[hit_type];
+	return 1.0f - m_HitTypeProtection[hit_type]*GetCondition();
 }
 
 void	CCustomOutfit::OnMoveToSlot		()
