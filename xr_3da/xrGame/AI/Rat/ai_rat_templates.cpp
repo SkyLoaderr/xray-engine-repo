@@ -49,7 +49,7 @@ void CAI_Rat::vfAdjustSpeed()
 	
 	float fMinASpeed = PI_MUL_2, fNullASpeed = PI_MUL_2, fMaxASpeed = .2f, fAttackASpeed = .15f;
 	
-	if (fabsf(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
+	if (_abs(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
 		if (fAngle >= 3*PI_DIV_2) {
 			m_fSpeed = 0;
 			m_fASpeed = fNullASpeed;
@@ -62,7 +62,7 @@ void CAI_Rat::vfAdjustSpeed()
 		}
 	}
 	else
-		if (fabsf(m_fSpeed - m_fMaxSpeed) <= EPS_L)	{
+		if (_abs(m_fSpeed - m_fMaxSpeed) <= EPS_L)	{
 			if (fAngle >= 3*PI_DIV_2) {
 				m_fSpeed = 0;
 				m_fASpeed = fNullASpeed;
@@ -79,7 +79,7 @@ void CAI_Rat::vfAdjustSpeed()
 				}
 		}
 		else
-			if (fabsf(m_fSpeed - m_fAttackSpeed) <= EPS_L)	{
+			if (_abs(m_fSpeed - m_fAttackSpeed) <= EPS_L)	{
 				if (fAngle >= 3*PI_DIV_2) {
 					m_fSpeed = 0;
 					m_fASpeed = fNullASpeed;
@@ -113,7 +113,7 @@ void CAI_Rat::vfAdjustSpeed()
 	tTemp1.mad(tTemp2,1*m_fSpeed*m_fTimeUpdateDelta);
 	if (bfCheckIfOutsideAIMap(tTemp1)) {
 		tTemp1 = vPosition;
-		if (fabsf(m_fSpeed - m_fAttackSpeed) < EPS_L) {
+		if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L) {
 			tTemp1.mad(tTemp2,1*m_fMaxSpeed*m_fTimeUpdateDelta);
 			if (bfCheckIfOutsideAIMap(tTemp1)) {
 				m_fSpeed = m_fMinSpeed;

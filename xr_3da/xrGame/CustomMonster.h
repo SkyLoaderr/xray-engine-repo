@@ -160,7 +160,7 @@ public:
 //		IC bool angle_lerp_bounds(float &a, float b, float c)
 //		{
 //			float fDifference;
-//			if ((fDifference = fabsf(a - b)) > PI - EPS_L)
+//			if ((fDifference = _abs(a - b)) > PI - EPS_L)
 //				fDifference = PI_MUL_2 - fDifference;
 //
 //			if (c >= fDifference) {
@@ -254,7 +254,7 @@ public:
 	IC		bool		angle_lerp_bounds(float &a, float b, float c, float d)
 	{
 		float fDifference;
-		if ((fDifference = fabsf(a - b)) > PI - EPS_L)
+		if ((fDifference = _abs(a - b)) > PI - EPS_L)
 			fDifference = PI_MUL_2 - fDifference;
 
 		if (c*d >= fDifference) {

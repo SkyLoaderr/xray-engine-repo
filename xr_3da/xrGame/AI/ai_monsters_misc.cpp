@@ -609,7 +609,7 @@ Fvector	tfComputeSpringPull(Fvector &tCurrentPosition, Fvector &tSpringPosition,
 	tResult.y = 0.f;
 	float m = tResult.magnitude();
 	float F = 1/(fInflexibilityCoefficient*m*m/2);
-	tResult.mul(fabsf(fInflexibilityCoefficient*m) > EPS_L ? F*m : 0.f);
+	tResult.mul(_abs(fInflexibilityCoefficient*m) > EPS_L ? F*m : 0.f);
 	return(tResult);
 }
 

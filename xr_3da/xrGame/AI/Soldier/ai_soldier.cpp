@@ -239,7 +239,7 @@ void CAI_Soldier::OnEvent(EVENT E, u32 P1, u32 P2)
 					u32 team,squad,group;
 					for ( ; ; buf2++)
 						if (*buf2 == ',') {
-							memcpy(monster_name,buf,(buf2 - buf)*sizeof(char));
+							PSGP.memCopy(monster_name,buf,(buf2 - buf)*sizeof(char));
 							monster_name[buf2++ - buf] = 0;
 							break;
 						}

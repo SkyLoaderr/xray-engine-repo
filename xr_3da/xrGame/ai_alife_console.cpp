@@ -30,7 +30,7 @@ void vfPrintLargeString(const char *S1, const char *S, const int i, const int j,
 {
 	string128	S2;
 	for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
-		memcpy(S2,S + k*u,u*sizeof(char));
+		PSGP.memCopy(S2,S + k*u,u*sizeof(char));
 		if (k == m - 1)
 			S2[l - k*u]=0;
 		else
@@ -52,7 +52,7 @@ void vfPrintLargeString(const char *S1, const char *S, const int j, const u32 u)
 {
 	string128	S2;
 	for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
-		memcpy(S2,S + k*u,u*sizeof(char));
+		PSGP.memCopy(S2,S + k*u,u*sizeof(char));
 		if (k == m - 1)
 			S2[l - k*u]=0;
 		else
@@ -74,7 +74,7 @@ void CAI_ALife::vfListObjects()
 	string64		tString;
 	Msg("%s->Listing objects :",cName());
 	for (int i=0; it != E; it++, i++) {
-		memcpy(tString,&((*it).second->m_tClassID),sizeof((*it).second->m_tClassID));
+		PSGP.memCopy(tString,&((*it).second->m_tClassID),sizeof((*it).second->m_tClassID));
 		tString[sizeof((*it).second->m_tClassID)] = 0;
 		Msg("* %4d : %8s[ID=%4d][MDL=%10s][CNT=%3d][GID=%4d][UPD=%d]",i,tString,(*it).first,m_tpSpawnPoints[(*it).second->m_tSpawnID].caModel,(*it).second->m_wCount,(*it).second->m_tGraphID,(*it).second->m_tTimeID);
 	}
@@ -168,7 +168,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	}
 	CALifeDynamicObject	*tpALifeDynamicObject = (*it).second;
 	string64		tString;
-	memcpy			(tString,&(tpALifeDynamicObject->m_tClassID),sizeof(tpALifeDynamicObject->m_tClassID));
+	PSGP.memCopy	(tString,&(tpALifeDynamicObject->m_tClassID),sizeof(tpALifeDynamicObject->m_tClassID));
 	tString[sizeof(tpALifeDynamicObject->m_tClassID)] = 0;
 	Msg("* Class ID      : %s[%I64u]",tString,tpALifeDynamicObject->m_tClassID);
 	Msg("* ObjectID      : %d",tpALifeDynamicObject->m_tObjectID);
@@ -374,14 +374,14 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 	}
 	else if (tTask.tTaskType == eTaskTypeSearchForItemCG) {
 		string64 tString;
-		memcpy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
+		PSGP.memCopy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
 		tString[sizeof(tTask.tClassID)] = 0;
 		Msg("* Graph ID    : %d",tTask.tGraphID);
 		Msg("* Class ID    : %d (%s)",tTask.tClassID,tString);
 	}
 	else if (tTask.tTaskType == eTaskTypeSearchForItemCL) {
 		string64 tString;
-		memcpy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
+		PSGP.memCopy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
 		tString[sizeof(tTask.tClassID)] = 0;
 		Msg("* Location ID : %d",tTask.tLocationID);
 		Msg("* Class ID    : %d (%s)",tTask.tClassID,tString);

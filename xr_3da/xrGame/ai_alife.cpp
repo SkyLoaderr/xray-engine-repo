@@ -162,7 +162,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 			if (!bOk)
 				m_tpSpawnPoints[ii].wGroupID = wGroupID++;
 			j = ::Random.randI(dwpModelCounts[I - B]);
-			memcpy(m_tpSpawnPoints[ii].caModel,cppModels[I - B][j],(1 + strlen(cppModels[I - B][j]))*sizeof(char));
+			PSGP.memCopy(m_tpSpawnPoints[ii].caModel,cppModels[I - B][j],(1 + strlen(cppModels[I - B][j]))*sizeof(char));
 			m_tpSpawnPoints[ii].ucTeam					= (u8)::Random.randI(255);
 			m_tpSpawnPoints[ii].ucSquad					= (u8)::Random.randI(255);
 			m_tpSpawnPoints[ii].ucGroup					= (u8)::Random.randI(255);
@@ -214,7 +214,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 		(*I).tNearestGraphPointID		= _GRAPH_ID(I - B);
 		(*I).wGroupID					= wGroupID++;
 		j								= ::Random.randI(5);
-		memcpy							((*I).caModel,cpArtefactModels[j],(1 + strlen(cpArtefactModels[j]))*sizeof(char));
+		PSGP.memCopy					((*I).caModel,cpArtefactModels[j],(1 + strlen(cpArtefactModels[j]))*sizeof(char));
 		(*I).ucTeam						= 0;
 		(*I).ucSquad					= 0;
 		(*I).ucGroup					= 0;
@@ -229,7 +229,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 	(*I).tNearestGraphPointID		= _GRAPH_ID(::Random.randI(m_tSpawnHeader.dwCount - 2));
 	(*I).wGroupID					= wGroupID++;
 	j								= 1;
-	memcpy							((*I).caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
+	PSGP.memCopy					((*I).caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
 	(*I).ucTeam						= 1;
 	(*I).ucSquad					= 0;
 	(*I).ucGroup					= 0;
@@ -246,7 +246,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 	(*I).tNearestGraphPointID		= _GRAPH_ID(::Random.randI(m_tSpawnHeader.dwCount - 2));
 	(*I).wGroupID					= wGroupID++;
 	j								= 2;
-	memcpy							((*I).caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
+	PSGP.memCopy					((*I).caModel,cpHumanModels[j],(1 + strlen(cpHumanModels[j]))*sizeof(char));
 	(*I).ucTeam						= 1;
 	(*I).ucSquad					= 0;
 	(*I).ucGroup					= 0;
@@ -293,7 +293,7 @@ void CAI_ALife::vfSaveSpawnPoints()
 void CAI_ALife::vfRandomizeGraphTerrain()
 {
 	SGraphVertex *tpaGraph = (SGraphVertex *)xr_malloc(Level().AI.m_tpGraphVFS->Length());
-	memcpy(tpaGraph,(BYTE *)Level().AI.m_tpaGraph - sizeof(SGraphHeader),Level().AI.m_tpGraphVFS->Length());
+	PSGP.memCopy(tpaGraph,(BYTE *)Level().AI.m_tpaGraph - sizeof(SGraphHeader),Level().AI.m_tpGraphVFS->Length());
 	tpaGraph = (SGraphVertex *)((BYTE *)tpaGraph + sizeof(SGraphHeader));
 	for (int i=0, m=0; i<(int)Level().AI.GraphHeader().dwVertexCount; i++)
 		if (!tpaGraph[i].tVertexType) {
