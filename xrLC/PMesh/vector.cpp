@@ -16,7 +16,7 @@ Vector normalize(Vector v) {
     float d=magnitude(v);
     if (d==0) {
 		printf("Cant normalize ZERO vector\n");
-		VERIFY(0);
+		R_ASSERT(0);
 		d=0.1f;
 	}
     v.x/=d;

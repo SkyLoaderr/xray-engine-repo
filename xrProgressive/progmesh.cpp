@@ -174,6 +174,7 @@ float DistanceToLineSegment(
 	
     return magnitude(kDiff);
 }
+
 void P_Vertex::OptimizeBorder()
 {
 	if (!bBorder) return;
@@ -188,6 +189,9 @@ void P_Vertex::OptimizeBorder()
 	
 	Vector	E1		= position-P1;
 	Vector	E2		= position-P2;
+	
+	if (magnitude(E1)<.001f || magnitude(E2)<.001f)	return;
+
 	float	angle	= normalize(E1) ^ normalize(E2);
 	if (angle<PARA.fBorderH) {
 		bCriticalBorder = false;
