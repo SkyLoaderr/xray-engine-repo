@@ -1209,7 +1209,7 @@ void test1()
 
 		class_<MI2,MI2W,MI1>("mi2")
 			.def(constructor<>())
-			.def("vf",&MI2::vf,&MI2W::vf_static,out_value(_2)),
+			.def("vf",&MI2W::vf,&MI2W::vf_static,out_value(_2)),
 
 		def("test_object",&test_object),
 		def("test_object",&test_object1),
