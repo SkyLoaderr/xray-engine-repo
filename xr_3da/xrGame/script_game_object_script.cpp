@@ -211,6 +211,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("enable_memory_object",		&CScriptGameObject::enable_memory_object)
 			.def("active_sound_count",			&CScriptGameObject::active_sound_count)
 			.def("best_cover",					&CScriptGameObject::best_cover)
+			.def("safe_cover",					&CScriptGameObject::safe_cover)
 			.def("spawn_ini",					&CScriptGameObject::spawn_ini)
 			.def("memory_visible_objects",		&CScriptGameObject::memory_visible_objects, return_stl_iterator)
 			.def("memory_sound_objects",		&CScriptGameObject::memory_sound_objects, return_stl_iterator)
@@ -248,16 +249,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("accessible_nearest",			&CScriptGameObject::accessible_nearest, out_value(_3))
 
 			//////////////////////////////////////////////////////////////////////////
-			// Space restrictions
-			//////////////////////////////////////////////////////////////////////////
-			.def("add_restrictions",			&CScriptGameObject::add_restrictions)
-			.def("remove_restrictions",			&CScriptGameObject::remove_restrictions)
-			.def("remove_all_restrictions",		&CScriptGameObject::remove_all_restrictions)
-			.def("in_restrictions",				&CScriptGameObject::in_restrictions)
-			.def("out_restrictions",			&CScriptGameObject::out_restrictions)
-			.def("accessible",					&CScriptGameObject::accessible_position)
-			.def("accessible",					&CScriptGameObject::accessible_vertex_id)
-			.def("accessible_nearest",			&CScriptGameObject::accessible_nearest, out_value(_3))
+			.def("limping",						&CScriptGameObject::limping)
 
 			//////////////////////////////////////////////////////////////////////////
 			//inventory owner

@@ -29,6 +29,7 @@ class CCoverEvaluatorCloseToEnemy;
 class CCoverEvaluatorFarFromEnemy;
 class CCoverEvaluatorBest;
 class CCoverEvaluatorAngle;
+class CCoverEvaluatorSafe;
 class CAgentManager;
 
 class CAI_Stalker : 
@@ -77,7 +78,8 @@ public:
 	CCoverEvaluatorFarFromEnemy	*m_ce_far;
 	CCoverEvaluatorBest			*m_ce_best;
 	CCoverEvaluatorAngle		*m_ce_angle;
-
+	CCoverEvaluatorSafe			*m_ce_safe;
+	
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 
 public:

@@ -112,4 +112,21 @@ public:
 			void		evaluate			(CCoverPoint *cover_point);
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorSafe
+//////////////////////////////////////////////////////////////////////////
+
+class CCoverEvaluatorSafe : public CCoverEvaluatorBase {
+protected:
+	typedef CCoverEvaluatorBase inherited;
+
+protected:
+	float				m_min_distance;
+
+public:
+	IC					CCoverEvaluatorSafe	(CRestrictedObject *object);
+	IC		void		setup				(float min_distance);
+			void		evaluate			(CCoverPoint *cover_point);
+};
+
 #include "cover_evaluators_inline.h"

@@ -336,6 +336,7 @@ public:
 			void				enable_memory_object	(CScriptGameObject *object, bool enable);
 			int					active_sound_count		();
 			const CCoverPoint	*best_cover				(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance);
+			const CCoverPoint	*safe_cover				(float radius, float min_enemy_distance);
 			CScriptIniFile		*spawn_ini				() const;
 			///
 			void				add_restrictions		(LPCSTR in, LPCSTR out);
@@ -352,6 +353,8 @@ public:
 			const xr_vector<MemorySpace::CHitObject>			&memory_hit_objects		() const;
 			const xr_vector<MemorySpace::CNotYetVisibleObject>	&not_yet_visible_objects() const;
 			float				visibility_threshold	() const;
+			//////////////////////////////////////////////////////////////////////////
+			bool				limping					() const;
 			
 			// HELICOPTER
 			void				air_attack				(CScriptGameObject*);

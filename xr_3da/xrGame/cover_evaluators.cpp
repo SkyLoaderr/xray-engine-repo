@@ -153,3 +153,21 @@ void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point)
 	m_best_value			= cover_value;
 	m_best_alpha			= alpha;
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorSafe
+//////////////////////////////////////////////////////////////////////////
+
+void CCoverEvaluatorSafe::evaluate			(CCoverPoint *cover_point)
+{
+	if (m_start_position.distance_to(cover_point->position()) <= m_min_distance)
+		return;
+
+	float					cover_value = ai().level_graph().vertex_cover(cover_point->level_vertex_id());
+	if (cover_value >= m_best_value)
+		return;
+
+	m_selected				= cover_point;
+	m_best_value			= cover_value;
+}
+

@@ -100,10 +100,27 @@ IC	void CCoverEvaluatorAngle::setup		(const Fvector &enemy_position, float min_e
 }
 
 //////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorFarFromEnemy
+//////////////////////////////////////////////////////////////////////////
+
 IC	CCoverEvaluatorFarFromEnemy::CCoverEvaluatorFarFromEnemy	(CRestrictedObject *object) : inherited(object)
 {
 }
 
 IC	CCoverEvaluatorBest::CCoverEvaluatorBest	(CRestrictedObject *object) : inherited(object)
 {
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorSafe
+//////////////////////////////////////////////////////////////////////////
+
+IC	CCoverEvaluatorSafe::CCoverEvaluatorSafe	(CRestrictedObject *object) : inherited(object)
+{
+}
+
+IC	void CCoverEvaluatorSafe::setup		(float min_distance)
+{
+	inherited::setup		();
+	m_min_distance			= min_distance;
 }

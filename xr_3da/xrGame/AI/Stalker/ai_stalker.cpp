@@ -73,10 +73,12 @@ void CAI_Stalker::reinit			()
 	m_ce_far						= xr_new<CCoverEvaluatorFarFromEnemy>(this);
 	m_ce_best						= xr_new<CCoverEvaluatorBest>(this);
 	m_ce_angle						= xr_new<CCoverEvaluatorAngle>(this);
+	m_ce_safe						= xr_new<CCoverEvaluatorSafe>(this);
 	m_ce_close->set_inertia			(3000);
 	m_ce_far->set_inertia			(3000);
 	m_ce_best->set_inertia			(1000);
 	m_ce_angle->set_inertia			(5000);
+	m_ce_safe->set_inertia			(1000);
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
@@ -220,6 +222,7 @@ void CAI_Stalker::net_Destroy()
 	xr_delete							(m_ce_far);
 	xr_delete							(m_ce_best);
 	xr_delete							(m_ce_angle);
+	xr_delete							(m_ce_safe);
 }
 
 

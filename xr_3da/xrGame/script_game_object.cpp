@@ -1174,6 +1174,18 @@ const CCoverPoint *CScriptGameObject::best_cover	(const Fvector &position, const
 	return			(point);
 }
 
+const CCoverPoint *CScriptGameObject::safe_cover	(float radius, float min_enemy_distance)
+{
+	CAI_Stalker		*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member best_cover!");
+		return		(0);
+	}
+	stalker->m_ce_safe->setup(min_enemy_distance);
+	CCoverPoint		*point = ai().cover_manager().best_cover(m_tpGameObject->Position(),radius,*stalker->m_ce_safe);
+	return			(point);
+}
+
 CScriptIniFile *CScriptGameObject::spawn_ini			() const
 {
 	return			((CScriptIniFile*)m_tpGameObject->spawn_ini());
@@ -1482,4 +1494,14 @@ u32	 CScriptGameObject::accessible_nearest	(const Fvector &position, Fvector &re
 		return								(u32(-1));
 	}
 	return									(restricted_object->accessible_nearest(position,result));
+}
+
+bool CScriptGameObject::limping				() const
+{
+	CEntityCondition						*entity_condition = dynamic_cast<CEntityCondition*>(m_tpGameObject);
+	if (!entity_condition) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member limping!");
+		return								(false);
+	}
+	return									(entity_condition->IsLimping());
 }
