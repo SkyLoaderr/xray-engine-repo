@@ -276,7 +276,7 @@ namespace PAPI{
     struct PATurbulence : public ParticleAction
     {
 		float frequency;	// Frequency
-		float octaves;		// Octaves
+		int	octaves;		// Octaves
 		float magnitude;	// Scale for rotation around axis
 		float epsilon;		// Softening parameter
         pVector offset;		// Offset

@@ -9,14 +9,14 @@
 
 #define DOT(a,b) ( a[0]*b[0] + a[1]*b[1] + a[2]*b[2])
 #define AT(rx,ry,rz)	(rx*q[0] + ry*q[1] + rz*q[2] );
-#define S_CURVE(t)		( t*t*(3.0-2.0*t) )
+#define S_CURVE(t)		( t*t*(3.f-2.f*t) )
 #define LERP(t, a, b)	( a + t*(b-a) )
 #define PN_SETUP(i,b0,b1,r0,r1) \
-	t = vec[i] + 10000.0;\
+	t = vec[i] + 10000.f;\
 	b0 = ((int)t) & (B-1);\
 	b1 = (b0+1) & (B-1);\
 	r0 = t - (int)t;\
-	r1 = r0 - 1.0;
+	r1 = r0 - 1.f;
 
 static int		start = 1;
 static int 		p[B+B+2];
@@ -81,7 +81,7 @@ float	noise3(const Fvector& vec)
 	
 	d = LERP(sy, a, b);
 	
-	return 1.5 * LERP(sz, c, d);
+	return 1.5f * LERP(sz, c, d);
 }
 	
 //--------------------------------------------------------------------
@@ -104,7 +104,7 @@ void	noise3Init()
 			}
 			s = DOT(v,v);
 		} while ( s > 1.0 );
-		s = sqrt(s);
+		s = _sqrt(s);
 		for (j = 0; j < 3; j++)
 			g[i][j] = v[j] / s;
 	}
@@ -142,7 +142,7 @@ float	fractalsum3(const Fvector& v, float freq, int octaves)
 	for (i = 0; i < octaves; i++ )
 	{
 		sum		+= noise3(v_)/freq;
-		freq	*= 2.059;
+		freq	*= 2.059f;
 		v_[0] = v[0]*freq;
 		v_[1] = v[1]*freq;
 		v_[2] = v[2]*freq;
@@ -163,8 +163,8 @@ float	turbulence3(const Fvector& v, float freq, int octaves)
 	
 	for (i = 0; i < octaves; i++ )
 	{
-		sum		+= fabs(noise3(v_))/freq;
-		freq	*= 2.059;
+		sum		+= _abs(noise3(v_))/freq;
+		freq	*= 2.059f;
 		v_[0] = v[0]*freq;
 		v_[1] = v[1]*freq;
 		v_[2] = v[2]*freq;

@@ -1337,7 +1337,7 @@ void PASource::Execute(ParticleEffect *effect, float dt)
 	
 	pVector pos, posB, vel, col, siz, rt;
 	
-	if(m_Flags.is(flVertexB_tracks)){
+	if(m_Flags.is(u32(flVertexB_tracks))){
 		for(int i = 0; i < rate; i++){
 			position.Generate	(pos);
 			size.Generate		(siz); 	if (m_Flags.is(flSingleSize)) siz.set(siz.x,siz.x,siz.x);

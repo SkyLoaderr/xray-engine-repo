@@ -439,7 +439,7 @@ void PATurbulence::Load		(IReader& F)
 {
 	ParticleAction::Load  	(F);
 	frequency		= F.r_float();
-	octaves			= F.r_float();
+	octaves			= F.r_s32();
 	magnitude		= F.r_float();
 	epsilon			= F.r_float();
     F.r_fvector3	(offset);
@@ -448,7 +448,7 @@ void PATurbulence::Save		(IWriter& F)
 {
 	ParticleAction::Save 	(F);
 	F.w_float		(frequency);
-	F.w_float		(octaves);
+	F.w_s32			(octaves);
 	F.w_float		(magnitude);
 	F.w_float		(epsilon);
     F.w_fvector3	(offset);

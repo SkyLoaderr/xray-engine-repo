@@ -119,7 +119,7 @@ namespace PAPI{
         PATurbulenceID,     //
 		action_enum_force_dword = u32(-1)
 	};
-    class ParticleAction;
+    struct ParticleAction;
 
     class IParticleManager{
     public:
