@@ -39,6 +39,7 @@ void	game_sv_CS::OnRoundStart	()
 			game_PlayerState*	ps	=	get_it	(it);
 			ps->money_total			=	ps->money_total + ps->money_for_round;
 			ps->money_for_round		=	0;
+			ps->flags = 0;
 		}
 		teams[0].num_targets = teams[1].num_targets = 0;
 	}
