@@ -41,41 +41,41 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 	// Check types
 	switch (type) {
 	case MT_NORMAL:				// our base visual
-		V	= xr_new<Fvisual>	();
+		V	= xr_new<Fvisual>				();
 		break;
 	case MT_HIERRARHY:
-		V	= xr_new<FHierrarhyVisual> ();
+		V	= xr_new<FHierrarhyVisual>		();
 		break;
 	case MT_PROGRESSIVE:		// dynamic-resolution visual
-		V	= xr_new<FProgressive> ();
+		V	= xr_new<FProgressive>			();
 		break;
 	case MT_SKELETON_ANIM:
-		V	= xr_new<CSkeletonAnimated> ();
+		V	= xr_new<CSkeletonAnimated>		();
 		break;
 	case MT_SKELETON_RIGID:
-		V	= xr_new<CSkeletonRigid> ();
+		V	= xr_new<CSkeletonRigid>		();
 		break;
 	case MT_SKELETON_GEOMDEF_PM:
-		V	= xr_new<CSkeletonX_PM> ();
+		V	= xr_new<CSkeletonX_PM>			();
 		break;
 	case MT_SKELETON_GEOMDEF_ST:
-		V	= xr_new<CSkeletonX_ST> ();
+		V	= xr_new<CSkeletonX_ST>			();
 		break;
 	case MT_PARTICLE_EFFECT:
-		V	= xr_new<PS::CParticleEffect> ();
+		V	= xr_new<PS::CParticleEffect>	();
 		break;
 	case MT_PARTICLE_GROUP:
-		V	= xr_new<PS::CParticleGroup> ();
+		V	= xr_new<PS::CParticleGroup>	();
 		break;
 #ifndef _EDITOR
 	case MT_LOD:
-		V	= xr_new<FLOD> ();
+		V	= xr_new<FLOD>					();
 		break;
 	case MT_TREE_ST:
-		V	= xr_new<FTreeVisual_ST> ();
+		V	= xr_new<FTreeVisual_ST>		();
 		break;
 	case MT_TREE_PM:
-		V	= xr_new<FTreeVisual_PM> ();
+		V	= xr_new<FTreeVisual_PM>		();
 		break;
 #endif
 	default:

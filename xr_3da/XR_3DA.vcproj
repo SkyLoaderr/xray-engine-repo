@@ -823,12 +823,6 @@
 					<File
 						RelativePath=".\FProgressive.h">
 					</File>
-					<File
-						RelativePath=".\FProgressiveFixedVisual.cpp">
-					</File>
-					<File
-						RelativePath=".\FProgressiveFixedVisual.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="Hierrarhy"

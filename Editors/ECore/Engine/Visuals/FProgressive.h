@@ -9,7 +9,7 @@
 #include "FVisual.h"
 struct ENGINE_API FSlideWindowItem;
 
-class ENGINE_API FProgressive : public Fvisual
+class	ENGINE_API		FProgressive : public Fvisual
 {
 protected:
 	FSlideWindowItem*	pSWI;
