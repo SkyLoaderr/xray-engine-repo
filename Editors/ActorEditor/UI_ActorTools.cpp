@@ -180,7 +180,7 @@ bool CActorTools::IfModified(){
         case mrCancel: return false;
         }
     }
-    return true;
+    return true;   
 }
 //---------------------------------------------------------------------------
 
@@ -611,8 +611,11 @@ CSMotion* CActorTools::FindMotion(LPCSTR name)
 void CActorTools::SetCurrentMotion(LPCSTR name)
 {
 	if (m_pEditObject){
-    	m_pEditObject->SetActiveSMotion(m_pEditObject->FindSMotionByName(name));
-        PlayMotion();
+    	CSMotion* M = m_pEditObject->FindSMotionByName(name);
+    	if (m_pEditObject->GetActiveSMotion()!=M){
+	    	m_pEditObject->SetActiveSMotion(M);
+    	    PlayMotion();
+        }
     }
 }
 

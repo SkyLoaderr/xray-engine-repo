@@ -7,14 +7,14 @@
 #include "UI_ActorTools.h"
 #include "LogForm.h"
 //---------------------------------------------------------------------------
-USEFORM("BonePart.cpp", frmBonePart);
-USEFORM("ClipEditor.cpp", ClipMaker);
-USEFORM("KeyBar.cpp", frmKeyBar);
-USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
-USEFORM("Splash.cpp", frmSplash);
-USEFORM("main.cpp", frmMain);
-USEFORM("TopBar.cpp", fraTopBar); /* TFrame: File Type */
-USEFORM("BottomBar.cpp", fraBottomBar); /* TFrame: File Type */
+USEFORM("BonePart.cpp", 	frmBonePart	);
+USEFORM("ClipEditor.cpp", 	ClipMaker	);
+USEFORM("KeyBar.cpp", 		frmKeyBar	);
+USEFORM("LeftBar.cpp", 		fraLeftBar	); /* TFrame: File Type */
+USEFORM("Splash.cpp", 		frmSplash	);
+USEFORM("main.cpp", 		frmMain		);
+USEFORM("TopBar.cpp", 		fraTopBar	); /* TFrame: File Type */
+USEFORM("BottomBar.cpp", 	fraBottomBar); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
@@ -24,7 +24,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->Repaint		();
         frmSplash->SetStatus	("Core initializing...");
 
-    	Core._initialize		("editor",ELogCallback);
+    	Core._initialize		("actor",ELogCallback);
 
         Application->Initialize	();
                                        
@@ -37,15 +37,19 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
 
-		Application->CreateForm(__classid(TfrmMain), &frmMain);
+		Application->CreateForm	(__classid(TfrmMain), &frmMain);
+		Application->CreateForm	(__classid(TfrmBonePart), &frmBonePart);
 		frmMain->SetHInst		(hInst);
 
-		xr_delete(frmSplash);
+		xr_delete				(frmSplash);
         
 		Application->Run		();
 
-
         TfrmLog::DestroyLog		();
+
+        xr_delete				(Tools);
+        xr_delete				(UI);
+
     	Core._destroy			();
 //    }
 //    catch (Exception &exception)

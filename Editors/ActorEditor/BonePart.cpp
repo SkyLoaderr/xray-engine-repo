@@ -12,7 +12,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TfrmBonePart *frmBonePart;
+TfrmBonePart *frmBonePart;        
 TElTree* 	T[4];                       
 TEdit* 		E[4];
 TLabel* 	L[4];
@@ -20,7 +20,7 @@ TLabel* 	L[4];
 bool TfrmBonePart::Run(CEditableObject* object)
 {
 	int res = mrCancel;
-	if (object){
+	if (object){            
         m_EditObject = object;
         m_BoneParts = &object->BoneParts();
         res = ShowModal();
@@ -37,12 +37,12 @@ __fastcall TfrmBonePart::TfrmBonePart(TComponent* Owner)
     T[1] = tvPart2;
     T[2] = tvPart3;
     T[3] = tvPart4;
-    E[0] = edPart1Name;
+    E[0] = edPart1Name;                    
     E[1] = edPart2Name;
     E[2] = edPart3Name;
     E[3] = edPart4Name;
     L[0] = lbPart1;
-    L[1] = lbPart2;
+    L[1] = lbPart2;                      
     L[2] = lbPart3;
     L[3] = lbPart4;
 }

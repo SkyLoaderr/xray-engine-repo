@@ -22,7 +22,7 @@ void __fastcall CActorTools::OnObjectItemFocused(ListItemsVec& items)
 //.	    StopMotion					();     // убрал из-за того что не миксятся анимации в режиме енжине
     	m_pEditObject->SelectBones	(false);
     }
-    
+                            
 	if (!items.empty()){
 	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
             ListItem* prop = *it;
@@ -303,7 +303,7 @@ void __fastcall CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif)
 }
 
 void __fastcall CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif)
-{
+{              
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -311,7 +311,6 @@ void __fastcall CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif)
     	AnsiString fn;
     	if (EFS.GetOpenName("$sbones$",fn)){
         	IReader* R = FS.r_open(fn.c_str());
-	    	m_pEditObject->LoadBoneData(*R); 
 	    	if (m_pEditObject->LoadBoneData(*R))	ELog.DlgMsg(mtInformation,"Bone data succesfully loaded.");
             else                                    ELog.DlgMsg(mtError,"Failed to load bone data.");
             FS.r_close(R);

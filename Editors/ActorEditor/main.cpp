@@ -161,15 +161,14 @@ void __fastcall TfrmMain::tmRefreshTimer(TObject *Sender)
 
 void __fastcall TfrmMain::D3DWindowPaint(TObject *Sender)
 {
+	if (!UI||!UI->m_bReady) return;
     UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 
-
-
 void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 {
-	if (!UI->m_bReady) return;
+	if (!UI||!UI->m_bReady) return;
 	if (D3DWindow->Focused()){
 //     	paWindow->Color=TColor(0x090FFFF);
 		// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp

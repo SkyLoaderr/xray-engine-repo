@@ -24,6 +24,13 @@ void CEditableObject::ResetBones()
     	(*b_it)->ResetData();
 }
 
+class fBoneNameEQ {
+	AnsiString	name;
+public:
+	fBoneNameEQ(const char *N) : name(N) {};
+	IC bool operator() (CBone* B) { return (stricmp(B->Name(),name.c_str())==0); }
+};
+
 bool CEditableObject::LoadBoneData(IReader& F)
 {
 	BoneVec	load_bones;
@@ -34,18 +41,27 @@ bool CEditableObject::LoadBoneData(IReader& F)
         load_bones.back()->LoadData(*R);
     }
 	bool bRes = true;
-    if (load_bones.size()==m_Bones.size()){
-        BoneIt s_it=load_bones.begin();
-        for (; s_it!=load_bones.end(); s_it++)
-        	if (!FindBoneByName((*s_it)->Name())){ bRes=false; break; }
-        if (bRes){
-            s_it=load_bones.begin();
-            for (; s_it!=load_bones.end(); s_it++){
-	        	CBone* B = FindBoneByName((*s_it)->Name()); R_ASSERT(B);
-                B->CopyData(*s_it);
-                xr_delete(*s_it);
+    // load bones
+    if (!load_bones.empty()){
+		for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+        	CBone* B	= *b_it;
+            BoneIt n_it = std::find_if(load_bones.begin(),load_bones.end(),fBoneNameEQ(B->Name()));
+            if (n_it!=m_Bones.end()){
+                B->CopyData	(*n_it);
+            }else{
+	            ELog.Msg	(mtError,"Can't find bone: '%s'.",(*b_it)->Name());
+            	bRes		= false; 
+                break;
             }
         }
+    
+        for (BoneIt n_it=load_bones.begin(); n_it!=load_bones.end(); n_it++)
+            xr_delete(*n_it);
+
+        load_bones.clear();
+    }else{
+        ELog.Msg	(mtError,"Empty bone list.");
+    	bRes 		= false;
     }
     // load bone part
     if (F.find_chunk(EOBJ_CHUNK_BONEPARTS)){

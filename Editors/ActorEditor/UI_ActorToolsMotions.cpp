@@ -183,7 +183,7 @@ void CActorTools::OnGeometryModified()
             fraLeftBar->SetRenderStyle(false);
         }
     }
-    UndoSave			();
+    UndoSave			();  
 }
 //---------------------------------------------------------------------------
 
