@@ -123,6 +123,7 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_fLieVisibilityMultiplier = pSettings->ReadFLOAT(section,"LieVisibilityMultiplier");
 	m_fVisibilityThreshold = pSettings->ReadFLOAT(section,"VisibilityThreshold");
 	m_fLateralMutliplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
+	m_fShadowWeight = pSettings->ReadFLOAT(section,"ShadowWeight");
 	
 	//fire
 	m_dwFireRandomMin = pSettings->ReadINT(section,"FireRandomMin");

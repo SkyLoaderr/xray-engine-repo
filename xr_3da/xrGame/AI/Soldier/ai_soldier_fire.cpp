@@ -14,6 +14,7 @@
 
 #define	FIRE_SAFETY_ANGLE				PI/10
 #define SPECIAL_SQUAD					6
+#define LIGHT_FITTING			
 
 bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
 {
@@ -28,20 +29,20 @@ bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvec
 
 bool CAI_Soldier::bfCheckIfCanKillEnemy() 
 {
-//	return(true);
-	Fvector tMyLook;
-	tMyLook.setHP	(-r_torso_current.yaw - m_fAddWeaponAngle,-r_torso_current.pitch);
-	if (Enemy.Enemy) {
-		Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
-		tFireVector.sub(tEnemyPosition,tMyPosition);
-		vfNormalizeSafe(tFireVector);
-		float fAlpha = tFireVector.dotproduct(tMyLook);
-		clamp(fAlpha,-.99999f,+.99999f);
-		fAlpha = acosf(fAlpha);
-		return(fAlpha < FIRE_SAFETY_ANGLE);
-	}
-	else
-		return(false);
+	return(true);
+//	Fvector tMyLook;
+//	tMyLook.setHP	(-r_torso_current.yaw - m_fAddWeaponAngle,-r_torso_current.pitch);
+//	if (Enemy.Enemy) {
+//		Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
+//		tFireVector.sub(tEnemyPosition,tMyPosition);
+//		vfNormalizeSafe(tFireVector);
+//		float fAlpha = tFireVector.dotproduct(tMyLook);
+//		clamp(fAlpha,-.99999f,+.99999f);
+//		fAlpha = acosf(fAlpha);
+//		return(fAlpha < FIRE_SAFETY_ANGLE);
+//	}
+//	else
+//		return(false);
 }
 
 bool CAI_Soldier::bfCheckIfCanKillMember()

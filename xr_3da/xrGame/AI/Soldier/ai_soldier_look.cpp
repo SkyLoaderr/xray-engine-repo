@@ -49,7 +49,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	}
 	
 	// computing lightness weight
-	fResult *= 2*float(0 + tpEntity->AI_Node->light)/(0 + 255.f);
+	fResult *= m_fShadowWeight*float(tpEntity->AI_Node->light)/255.f;
 	
 	// computing enemy state
 	switch (m_cBodyState) {
