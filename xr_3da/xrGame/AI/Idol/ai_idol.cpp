@@ -265,3 +265,10 @@ void CAI_Idol::g_WeaponBones	(int &L, int &R1, int &R2)
 	R2				= V->LL_BoneID("bip01_r_finger2");
 	L				= V->LL_BoneID("bip01_l_finger1");
 }
+
+void CAI_Idol::OnVisible	()
+{
+	inherited::OnVisible	();
+	if(m_inventory.ActiveItem())
+		m_inventory.ActiveItem()->OnVisible();
+}
