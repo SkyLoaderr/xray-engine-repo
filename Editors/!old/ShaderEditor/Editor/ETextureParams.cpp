@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#pragma hdrstop
+#pragma hdrstop          
 
 #include "ETextureParams.h"
 #pragma package(smart_init)
@@ -168,8 +168,8 @@ void STextureParams::FillProp(PropItemVec& items)
         PHelper.CreateToken<u32>	(items, "Material\\Base",			(u32*)&material,	tmtl_token);
         PHelper.CreateFloat			(items, "Material\\Weight",			&material_weight	);
         
-//		PHelper.CreateFlag<Flags32>	(items, "Flags\\Grayscale",			&flags,				flGreyScale);
-//		PHelper.CreateFlag<Flags32>	(items, "Flags\\Binary Alpha",		&flags,				flBinaryAlpha);
+//		PHelper.CreateFlag32		(items, "Flags\\Grayscale",			&flags,				flGreyScale);
+//		PHelper.CreateFlag32		(items, "Flags\\Binary Alpha",		&flags,				flBinaryAlpha);
         PHelper.CreateFlag32		(items, "Flags\\Dither",			&flags,				flDitherColor);
         PHelper.CreateFlag32		(items, "Flags\\Dither Each MIP",	&flags,				flDitherEachMIPLevel);
         PHelper.CreateFlag32		(items, "Flags\\Implicit Lighted",	&flags,				flImplicitLighted);
