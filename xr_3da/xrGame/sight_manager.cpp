@@ -243,14 +243,23 @@ void CSightManager::Exec_Look		(float dt)
 	head.current.yaw	= angle_normalize_signed	(head.current.yaw);
 	head.current.pitch	= angle_normalize_signed	(head.current.pitch);
 
-//	Msg								("%6d AFTER  BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
-//	Msg								("%6d AFTER  HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
+//	Msg					("%6d AFTER  BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
+//	Msg					("%6d AFTER  HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif
 
-	Fmatrix							mXFORM;
-	mXFORM.setHPB					(-body.current.yaw,0,0);
-	mXFORM.c.set					(m_object->Position());
-	m_object->XFORM().set			(mXFORM);
+#if 0
+	Fmatrix				mXFORM;
+	mXFORM.setHPB		(-body.current.yaw,0,0);
+	mXFORM.c.set		(m_object->Position());
+	m_object->XFORM().set(mXFORM);
+#else
+	Fmatrix				&m = m_object->XFORM();
+	float				h = -body.current.yaw;
+	float				_sh = _sin(h), _ch = _cos(h);
+	m.i.set				( _ch,	0.f,	_sh);
+	m.j.set				( 0.f,	1.f,	_sh);
+	m.k.set				(-_sh,	0.f,	_ch);
+#endif
 	STOP_PROFILE
 }
 
