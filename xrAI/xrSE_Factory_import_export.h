@@ -14,4 +14,13 @@ extern "C" {
 	FACTORY_API void		  __stdcall destroy_entity	(CSE_Abstract *&);
 };
 
+#ifdef AI_COMPILER
+CSE_Abstract *F_entity_Create(LPCSTR section)
+{
+	ISE_Abstract	*i = create_entity(section);
+	CSE_Abstract	*j = dynamic_cast<CSE_Abstract*>(i);
+	return			(j);
+}
+#endif
+
 #endif

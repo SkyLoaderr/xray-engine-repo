@@ -13,6 +13,7 @@
 #include "xrGraph.h"
 #include "game_base.h"
 #include "xrServer_Objects_ALife_All.h"
+#include "xrSE_Factory_import_export.h"
 #include "xrCrossTable.h"
 #include "level_graph.h"
 #include "net_utils.h"
@@ -166,7 +167,7 @@ public:
 				P.r_begin							(ID);
 				R_ASSERT							(M_SPAWN==ID);
 				P.r_stringZ							(fName);
-				CSE_Abstract						*E = create_entity(fName);
+				CSE_Abstract						*E = F_entity_Create(fName);
 				R_ASSERT2							(E,"Can't create entity.");
 				E->Spawn_Read						(P);
 				CSE_ALifeGraphPoint					*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);

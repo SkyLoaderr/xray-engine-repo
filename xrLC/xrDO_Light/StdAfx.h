@@ -30,7 +30,6 @@
 #include <io.h>
 #include <stdio.h>
 
-#include "xrSE_Factory_import_export.h"
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}

@@ -13,6 +13,7 @@
 #include "xrGraph.h"
 #include "ai_nodes.h"
 #include "xrServer_Objects_ALife_All.h"
+#include "xrSE_Factory_import_export.h"
 #include "game_base.h"
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
@@ -104,7 +105,7 @@ public:
 			string64			s_name;
 			P.r_stringZ			(s_name);
 			// create server entity
-			CSE_Abstract		*E = create_entity(s_name);
+			CSE_Abstract		*E = F_entity_Create(s_name);
 			if (!E) {
 				string4096		S;
 				sprintf			(S,"Can't create entity '%s' !\n",E->s_name_replace);
