@@ -1373,7 +1373,7 @@ void	CActor::OnRender_Network()
 		}
 		else
 		{
-			if (!g_Alive())
+			if (!g_Alive() && PHGetSyncItemsNumber() > 2)
 			{
 				u16 NumBones = PHGetSyncItemsNumber();
 				for (u16 i=0; i<NumBones; i++)
