@@ -3,14 +3,19 @@
 #include "PHdynamicdata.h"
 #include "Physics.h"
 
-BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
+BOOL CLevel::net_Start_client	( LPCSTR options )
 {
 	pApp->LoadBegin	();
 
+	// name_of_server
+	string64					name_of_server;
+	strcpy						(name_of_server,options);
+	if (strchr(name_of_server,'/'))	*strchr(name_of_server,'/') = 0;
+
 	// Startup client
-	char			temp[256];
-	sprintf			(temp,"CLIENT: Connecting to '%s'...",name_of_server);
-	pApp->LoadTitle	(temp);
+	string128					temp;
+	sprintf						(temp,"CLIENT: Connecting to '%s'...",name_of_server);
+	pApp->LoadTitle				(temp);
 
 	// HUD
 	Device.Shader.DeferredLoad	(TRUE);

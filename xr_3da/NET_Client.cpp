@@ -99,10 +99,16 @@ IPureClient::~IPureClient	()
 {
 }
 
-BOOL IPureClient::Connect(LPCSTR server_name)
+BOOL IPureClient::Connect(LPCSTR options)
 {
-	R_ASSERT		(server_name);
+	R_ASSERT						(options);
 
+	//
+	string64						server_name;
+	strcpy							(server_name,options);
+	if (strchr(server_name,'/'))	*strchr(server_name,'/') = 0;
+
+	//
 	net_Connected	= FALSE;
 	net_Syncronised	= FALSE;
 	net_Disconnected= FALSE;
@@ -142,7 +148,7 @@ BOOL IPureClient::Connect(LPCSTR server_name)
 	
 	// Setup client info
 	WCHAR	ClientNameUNICODE	[256];
-	R_CHK(MultiByteToWideChar	(CP_ACP, 0, psNET_Name, -1, ClientNameUNICODE, 256 ));
+	R_CHK(MultiByteToWideChar	(CP_ACP, 0, options, -1, ClientNameUNICODE, 256 ));
 
 	DPN_PLAYER_INFO				Pinfo;
 	ZeroMemory					(&Pinfo,sizeof(Pinfo));
