@@ -71,7 +71,10 @@ void CBurerAttackMelee::Run()
 			DO_IN_TIME_INTERVAL_END();
 			if (IS_NEED_REBUILD()) b_need_rebuild = true;
 
-			if (b_need_rebuild) pMonster->MoveToTarget(enemy);
+			if (b_need_rebuild) {
+				pMonster->CMonsterMovement::set_target_point		(enemy->Position(), enemy->level_vertex_id());
+				pMonster->CMonsterMovement::set_generic_parameters	();
+			}
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 

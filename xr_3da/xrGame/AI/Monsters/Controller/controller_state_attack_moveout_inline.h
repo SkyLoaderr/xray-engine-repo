@@ -10,8 +10,9 @@
 TEMPLATE_SPECIALIZATION
 void CStateControlMoveOutAbstract::execute()
 {
-	object->MoveToTarget(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
-	
+	object->CMonsterMovement::set_target_point		(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
+	object->CMonsterMovement::set_generic_parameters();
+
 	object->MotionMan.m_tAction			= ACT_STEAL;
 	object->MotionMan.accel_deactivate	();
 	object->MotionMan.accel_set_braking (false);

@@ -27,6 +27,7 @@ void CBaseMonsterRest::Init()
 	m_dwLastPlanTime	= 0;
 	m_tAction			= ACTION_WALK;
 
+	pMonster->CMonsterMovement::initialize_movement();
 }
 
 void CBaseMonsterRest::Replanning()

@@ -18,6 +18,7 @@ void CStateControllerHideAbstract::initialize()
 	
 	m_cover_reached		= false;
 	select_target_point();
+	object->CMonsterMovement::initialize_movement();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -32,9 +33,11 @@ void CStateControllerHideAbstract::execute()
 	}
 
 	if (target.node != u32(-1)) 
-		object->MoveToTarget			(target.position, target.node);
+		object->CMonsterMovement::set_target_point		(target.position, target.node);
 	else
-		object->MoveAwayFromTarget		(object->EnemyMan.get_enemy_position());
+		object->CMonsterMovement::set_retreat_from_point(object->EnemyMan.get_enemy_position());
+
+	object->CMonsterMovement::set_generic_parameters	();
 
 	object->MotionMan.m_tAction			= ACT_RUN;
 	object->MotionMan.accel_activate	(eAT_Aggressive);

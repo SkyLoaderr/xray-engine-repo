@@ -27,28 +27,22 @@ void CStateZombieAttackRunAbstract::initialize()
 	} else {
 		action = ACT_WALK_FWD;
 	}
-
+	object->CMonsterMovement::initialize_movement();
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateZombieAttackRunAbstract::execute()
 {
 	float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
-
-	// проверить необходимость перестройки пути
-	bool b_need_rebuild = false;
 	
 	object->CMonsterMovement::set_try_min_time	(false);
-
-	// check time interval
-	TTime time_current = Level().timeServer();
-	if (m_time_path_rebuild + 100 + 50.f * dist < time_current) {
-		m_time_path_rebuild = time_current;
-		b_need_rebuild		= true;
-	}
-	if (object->IsPathEnd(2,0.5f)) b_need_rebuild = true;
-
 	
+	// установка параметров функциональных блоков
+	object->CMonsterMovement::set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
+	object->CMonsterMovement::set_rebuild_time			(100 + u32(50.f * dist));
+	object->CMonsterMovement::set_distance_to_end		(2.5f);
+	object->CMonsterMovement::set_use_covers			(false);
+
 	//////////////////////////////////////////////////////////////////////////
 	// обработать squad-данные
 	//////////////////////////////////////////////////////////////////////////
@@ -61,15 +55,10 @@ void CStateZombieAttackRunAbstract::execute()
 	if (!squad_active || (command.type != SC_ATTACK)) squad_active = false;
 	//////////////////////////////////////////////////////////////////////////
 
-	
-	if (b_need_rebuild)	{
-		object->MoveToTarget(object->EnemyMan.get_enemy());
-		if (squad_active) object->set_dest_direction(command.direction);
-	}
-
-	if (squad_active)
+	if (squad_active) {
 		object->set_use_dest_orient	(true);
-	
+		object->set_dest_direction	(command.direction);
+	}
 	
 	// установка параметров функциональных блоков
 	object->MotionMan.m_tAction					= action;	

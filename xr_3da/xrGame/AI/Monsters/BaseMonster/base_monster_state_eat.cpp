@@ -72,6 +72,8 @@ void CBaseMonsterEat::Init()
 
 	cover_position		= Fvector().set(0.f,0.f,0.f);		
 	cover_vertex_id		= u32(-1);
+
+	pMonster->CMonsterMovement::initialize_movement();
 }
 
 void CBaseMonsterEat::Run()
@@ -119,7 +121,11 @@ void CBaseMonsterEat::Run()
 		if (IS_NEED_REBUILD()) bNeedRebuild = true;
 		if (pMonster->CMovementManager::level_dest_vertex_id() != approach_vertex_id) bNeedRebuild = true;
 		
-		if (bNeedRebuild) pMonster->MoveToTarget(approach_pos,approach_vertex_id);
+		if (bNeedRebuild) {
+			pMonster->CMonsterMovement::set_target_point		(approach_pos,approach_vertex_id);
+			pMonster->CMonsterMovement::set_generic_parameters	();
+		}
+
 
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
 
@@ -130,7 +136,9 @@ void CBaseMonsterEat::Run()
 		pMonster->MotionMan.accel_activate		(eAT_Calm);
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id());
+		
+		pMonster->CMonsterMovement::set_target_point		(nearest_bone_pos,pCorpse->level_vertex_id());
+		pMonster->CMonsterMovement::set_generic_parameters	();
 		
 		if (cur_dist < m_fDistToCorpse) {
 			
@@ -172,7 +180,8 @@ void CBaseMonsterEat::Run()
 		
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;		
 
-		pMonster->MoveAwayFromTarget	(pCorpse->Position());
+		pMonster->CMonsterMovement::set_retreat_from_point	(pCorpse->Position());
+		pMonster->CMonsterMovement::set_generic_parameters	();
 
 		if (cur_dist > 10.f || (IS_NEED_REBUILD() && (cur_dist > 3.f))) {
 			m_tAction = ACTION_LITTLE_REST;
@@ -199,7 +208,9 @@ void CBaseMonsterEat::Run()
 	/*******************/
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id());
+		
+		pMonster->CMonsterMovement::set_target_point		(nearest_bone_pos,pCorpse->level_vertex_id());
+		pMonster->CMonsterMovement::set_generic_parameters	();
 
 		if (cur_dist < m_fDistToCorpse) {
 			m_tAction = ACTION_EAT;
@@ -243,11 +254,12 @@ void CBaseMonsterEat::Run()
 		pMonster->MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 		
 		if (cover_vertex_id != u32(-1)) {
-			pMonster->MoveToTarget(cover_position, cover_vertex_id);
+			pMonster->CMonsterMovement::set_target_point		(cover_position, cover_vertex_id);
 		} else {
-			pMonster->MoveAwayFromTarget	(pCorpse->Position());
+			pMonster->CMonsterMovement::set_retreat_from_point	(pCorpse->Position());
 		}
 		
+		pMonster->CMonsterMovement::set_generic_parameters	();
 		pMonster->MotionMan.accel_activate(eAT_Calm);
 
 		// если не может тащить

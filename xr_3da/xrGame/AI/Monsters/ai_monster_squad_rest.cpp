@@ -6,8 +6,15 @@ void CMonsterSquad::ProcessIdle()
 {
 	m_temp_entities.clear();
 
+	// fix it!!!
+	if (!leader || !leader->g_Alive() || leader->getDestroy()) return;
+
 	// Выделить элементы с общими врагами и состянием атаки 
 	for (MEMBER_GOAL_MAP_IT it_goal = m_goals.begin(); it_goal != m_goals.end(); it_goal++) {
+		// fix it!!!
+		CEntity *member = it_goal->first;
+		if (!member || !member->g_Alive() || member->getDestroy()) continue;
+		
 		SMemberGoal goal = it_goal->second;
 		
 		if ((goal.type == MG_Rest) || (goal.type == MG_WalkGraph)) {

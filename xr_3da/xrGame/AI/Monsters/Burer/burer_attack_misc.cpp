@@ -44,6 +44,8 @@ void CBurerAttackRunAround::Init()
 		dest_direction.set(dir_to_enemy);
 	}
 	pMonster->CMonsterMovement::disable_path();
+	
+	pMonster->CMonsterMovement::initialize_movement();
 }
 
 
@@ -56,6 +58,9 @@ void CBurerAttackRunAround::Run()
 
 	pMonster->MotionMan.m_tAction = ACT_RUN;
 	pMonster->MoveToTarget(selected_point);
+	pMonster->CMonsterMovement::set_target_point		(selected_point);
+	pMonster->CMonsterMovement::set_generic_parameters	();
+
 	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 }
 

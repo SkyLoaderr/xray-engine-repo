@@ -15,6 +15,7 @@ void CStatePoltergeistAttackHiddenAbstract::initialize()
 {
 	inherited::initialize();
 	select_target_point();
+	object->CMonsterMovement::initialize_movement();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -24,9 +25,10 @@ void CStatePoltergeistAttackHiddenAbstract::execute()
 	if (object->CDetailPathManager::time_path_built() > time_state_started) {
 		if (object->IsPathEnd(DIST_TO_PATH_END)) select_target_point();
 	}
-	if (m_target.node == u32(-1)) object->MoveToTarget(m_target.point);
-	else object->MoveToTarget(m_target.point, m_target.node);
 	
+	object->CMonsterMovement::set_target_point			(m_target.point, m_target.node);
+	object->CMonsterMovement::set_generic_parameters	();
+
 	object->MotionMan.m_tAction			= ACT_RUN;
 	object->MotionMan.accel_activate	(eAT_Aggressive);
 	object->MotionMan.accel_set_braking (false);
