@@ -818,7 +818,7 @@ void CCar::Transmision(size_t num)
 		//	m_current_rpm=m_torque_rpm;
 	}
 #ifdef DEBUG
-	Log("Transmission switch %d",(u32)num);
+	//Log("Transmission switch %d",(u32)num);
 #endif
 }
 void CCar::CircleSwitchTransmission()

@@ -3655,16 +3655,46 @@
 					RelativePath="tri-colliderKNoOPC\dcTriListCollider.h">
 				</File>
 				<File
+					RelativePath=".\tri-colliderknoopc\dSortTriPrimitive.cpp">
+				</File>
+				<File
+					RelativePath=".\tri-colliderknoopc\dSortTriPrimitive.h">
+				</File>
+				<File
+					RelativePath=".\tri-colliderknoopc\dTriBox.cpp">
+				</File>
+				<File
+					RelativePath=".\tri-colliderknoopc\dTriBox.h">
+				</File>
+				<File
 					RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
 				</File>
 				<File
 					RelativePath="tri-colliderKNoOPC\dTriCollideK.h">
 				</File>
 				<File
+					RelativePath=".\tri-colliderknoopc\dTriColliderCommon.h">
+				</File>
+				<File
+					RelativePath=".\tri-colliderknoopc\dTriColliderMath.h">
+				</File>
+				<File
+					RelativePath=".\tri-colliderknoopc\dTriCylinder.cpp">
+				</File>
+				<File
+					RelativePath=".\tri-colliderknoopc\dTriCylinder.h">
+				</File>
+				<File
 					RelativePath="tri-colliderKNoOPC\dTriList.cpp">
 				</File>
 				<File
 					RelativePath="tri-colliderKNoOPC\dTriList.h">
+				</File>
+				<File
+					RelativePath=".\tri-colliderknoopc\dTriSphere.cpp">
+				</File>
+				<File
+					RelativePath=".\tri-colliderknoopc\dTriSphere.h">
 				</File>
 				<File
 					RelativePath="tri-colliderKNoOPC\dxTriList.h">
