@@ -11,9 +11,9 @@ CUITDMFragList::CUITDMFragList()
 }
 //--------------------------------------------------------------------
 
-void CUITDMFragList::Init(u8 Team)
+void CUITDMFragList::Init(u8 Team, u32 X, u32 Y, u32 Width, u32 Height, EUIItemAlign Align)
 {
-	inherited::Init		("ui\\ui_hud_frame",(Team-1)*320,0,300,400,alNone);
+	inherited::Init		("ui\\ui_hud_frame",X, Y, Width, Height, Align);
 
 	m_u8Team = Team;
 }

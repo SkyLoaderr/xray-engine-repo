@@ -13,12 +13,17 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameCustom(parent)
 	pFragListT2	= xr_new<CUITDMFragList>	();
 	pPlayerListT1	= xr_new<CUITDMPlayerList>	();
 	pPlayerListT2	= xr_new<CUITDMPlayerList>	();
+	
+	u32 X = Device.dwWidth / 24;
+	u32	Y = Device.dwHeight / 4;
+	u32 Width = Device.dwWidth/2 - X*2;
+	u32 Height = Device.dwHeight/2;
 
-	pFragListT1->Init						(1);
-	pFragListT2->Init						(2);
+	pFragListT1->Init						(1, Device.dwWidth/2 - X - Width, Y, Width, Height, alNone);
+	pFragListT2->Init						(2, Device.dwWidth/2 + X, Y, Width, Height, alNone);
 
-	pPlayerListT1->Init						(1);
-	pPlayerListT2->Init						(2);
+	pPlayerListT1->Init						(1, Device.dwWidth/2 - X - Width, Y, Width, Height, alNone);
+	pPlayerListT2->Init						(2, Device.dwWidth/2 + X, Y, Width, Height, alNone);
 }
 //--------------------------------------------------------------------
 

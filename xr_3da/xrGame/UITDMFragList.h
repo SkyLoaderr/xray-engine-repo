@@ -11,7 +11,7 @@ private:
 	u8				m_u8Team;
 public:
 	CUITDMFragList	();
-	void			Init			(u8	Team);
+	void			Init			(u8 Team, u32 X, u32 Y, u32 Width, u32 Height, EUIItemAlign Align);
 	virtual void	OnFrame			();
 };
 
