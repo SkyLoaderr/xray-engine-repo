@@ -22,7 +22,7 @@ IC bool				FaceEqual(Face& F1, Face& F2)
 void CBuild::PreOptimize()
 {
 	// We use overlapping hash table to avoid boundary conflicts
-	vecVertex			HASH	[HDIM_X+1][HDIM_Y+1][HDIM_Z+1];
+	vecVertex*			HASH	[HDIM_X+1][HDIM_Y+1][HDIM_Z+1];
 	Fvector				VMmin,	VMscale, VMeps, scale;
 	
 	// Calculate offset,scale,epsilon
@@ -45,8 +45,11 @@ void CBuild::PreOptimize()
 	for (int ix=0; ix<HDIM_X+1; ix++)
 		for (int iy=0; iy<HDIM_Y+1; iy++)
 			for (int iz=0; iz<HDIM_Z+1; iz++)
-				HASH[ix][iy][iz].reserve	(_average);
-
+			{
+				HASH[ix][iy][iz] = new vecVertex;
+				HASH[ix][iy][iz]->reserve	(_average);
+			}
+			
 	// 
 	Status("Processing...");
 	g_bUnregister		= false;
@@ -70,7 +73,7 @@ void CBuild::PreOptimize()
 		iy = iFloor((V.y-VMmin.y)*scale.y);
 		iz = iFloor((V.z-VMmin.z)*scale.z);
 		R_ASSERT(ix<=HDIM_X && iy<=HDIM_Y && iz<=HDIM_Z);
-		vecVertex &H	= HASH[ix][iy][iz];
+		vecVertex &H	= *(HASH[ix][iy][iz]);
 
 		// Search similar vertices in hash table
 		for (vecVertexIt T=H.begin(); T!=H.end(); T++)
@@ -94,13 +97,13 @@ void CBuild::PreOptimize()
 		izE = iFloor((V.z+VMeps.z-VMmin.z)*scale.z);
 		R_ASSERT(ixE<=HDIM_X && iyE<=HDIM_Y && izE<=HDIM_Z);
 		
-		if (ixE!=ix)							HASH[ixE][iy][iz].push_back		(pTest);
-		if (iyE!=iy)							HASH[ix][iyE][iz].push_back		(pTest);
-		if (izE!=iz)							HASH[ix][iy][izE].push_back		(pTest);
-		if ((ixE!=ix)&&(iyE!=iy))				HASH[ixE][iyE][iz].push_back	(pTest);
-		if ((ixE!=ix)&&(izE!=iz))				HASH[ixE][iy][izE].push_back	(pTest);
-		if ((iyE!=iy)&&(izE!=iz))				HASH[ix][iyE][izE].push_back	(pTest);
-		if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))	HASH[ixE][iyE][izE].push_back	(pTest);
+		if (ixE!=ix)							HASH[ixE][iy][iz]->push_back		(pTest);
+		if (iyE!=iy)							HASH[ix][iyE][iz]->push_back		(pTest);
+		if (izE!=iz)							HASH[ix][iy][izE]->push_back		(pTest);
+		if ((ixE!=ix)&&(iyE!=iy))				HASH[ixE][iyE][iz]->push_back		(pTest);
+		if ((ixE!=ix)&&(izE!=iz))				HASH[ixE][iy][izE]->push_back		(pTest);
+		if ((iyE!=iy)&&(izE!=iz))				HASH[ix][iyE][izE]->push_back		(pTest);
+		if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))	HASH[ixE][iyE][izE]->push_back		(pTest);
 	}
 
 	Status("Removing degenerated/duplicated faces...");
@@ -130,7 +133,17 @@ void CBuild::PreOptimize()
 	}
 	g_bUnregister = true;
 
+	DWORD M1 = mem_Usage();
+	for (int ix=0; ix<HDIM_X+1; ix++)
+		for (int iy=0; iy<HDIM_Y+1; iy++)
+			for (int iz=0; iz<HDIM_Z+1; iz++)
+			{
+				HASH[ix][iy][iz] = new vecVertex;
+				HASH[ix][iy][iz]->reserve	(_average);
+			}
 	mem_Compact	();
-	Msg("%d vertices removed.",Vcount-g_vertices.size());
-	Msg("%d faces removed.",Fcount-g_faces.size());
+	DWORD M2 = mem_Usage();
+	Msg("M1(%d) / M2(%d) (M1-M2)=%d",M1/1024,M2/1024,(M1-M2)/1024);
+	Msg("%d vertices removed. (%d left)",Vcount-g_vertices.size(),g_vertices.size());
+	Msg("%d faces removed. (%d left)",   Fcount-g_faces.size(),   g_faces.size());
 }
