@@ -43,11 +43,11 @@ typedef CAI_Map																CGraph;
 //typedef CDataStorageDLSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
 //typedef CDataStorageCheapList<35,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
 //typedef CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
-typedef CDataStorageBucketList<32*1024,_dist_type,u32,u32,true,24,8>				CDataStorage;
+typedef CDataStorageBucketList<6*1024,_dist_type,u32,u32,true,24,8>				CDataStorage;
 typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
 
-//#define TIME_TEST
+#define TIME_TEST
 
 void path_test(LPCSTR caLevelName)
 {
@@ -138,7 +138,7 @@ void path_test(LPCSTR caLevelName)
 			Msg				("[%6d] Path lengths : %d[%f][%d] -> %d[%f][%d] (%f -> %f)",I,path.size(),data_storage->get_best().f(),v,path1.size(),f,v1,v_,v_1);
 		}
 		else
-			if (I % 1 == 0)
+			if (I % 100 == 0)
 				Msg			("%6d",I);
 //		u32					n = _min(path.size(),path1.size());
 //		for (u32 i=0; i<n; ++i)

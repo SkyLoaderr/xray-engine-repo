@@ -351,6 +351,7 @@ namespace DataStorageListDoubleLinked {
 		SGraphNode		*next;
 		SGraphNode		*prev;
 	};
+	#pragma pack(pop)
 };
 
 template <
@@ -1060,6 +1061,25 @@ public:
 namespace DataStorageBucketList {
 	#pragma pack(push,4)
 	template <
+		typename _dist_type, 
+		typename _index_type, 
+		u8 index_bits, 
+		u8 mask_bits
+	>
+	struct SGraphNode : 
+		DataStorageBaseIndex::SGraphNode <
+		_dist_type,
+		_index_type,
+		index_bits,
+		mask_bits
+		>
+	{
+		SGraphNode		*back;
+		SGraphNode		*next;
+		SGraphNode		*prev;
+//		u32				bucket_id;
+	};
+	template <
 		typename _GraphNode,
 		typename _path_id_type
 	>
@@ -1069,7 +1089,7 @@ namespace DataStorageBucketList {
 			_path_id_type
 		>
 	{
-		u32				bucket_id;
+//		u32				bucket_id;
 	};
 	#pragma pack(pop)
 };
@@ -1085,14 +1105,14 @@ template <
 >	
 class CDataStorageBucketList :
 	public CDataStorageBaseIndexBlock <
-		DataStorageListDoubleLinked::SGraphNode<
+		DataStorageBucketList::SGraphNode<
 			_dist_type,
 			_index_type,
 			index_bits,
 			mask_bits
 		>,
 		DataStorageBucketList::SGraphIndexNode<
-			DataStorageListDoubleLinked::SGraphNode<
+			DataStorageBucketList::SGraphNode<
 				_dist_type,
 				_index_type,
 				index_bits,
@@ -1109,7 +1129,7 @@ class CDataStorageBucketList :
 	>
 {
 public:
-	typedef DataStorageListDoubleLinked::SGraphNode<
+	typedef DataStorageBucketList::SGraphNode<
 		_dist_type,
 		_index_type,
 		index_bits,
@@ -1117,7 +1137,7 @@ public:
 	> CGraphNode;
 
 	typedef	DataStorageBucketList::SGraphIndexNode<
-		DataStorageListDoubleLinked::SGraphNode<
+		DataStorageBucketList::SGraphNode<
 			_dist_type,
 			_index_type,
 			index_bits,
@@ -1161,7 +1181,7 @@ public:
 	{
 		inherited::init			();
 		min_bucket_id			= bucket_count;
-//		ZeroMemory				(buckets,bucket_count*sizeof(CGraphNode*));
+		ZeroMemory				(buckets,bucket_count*sizeof(CGraphNode*));
 	}
 
 	IC		void		add_best_closed		()
@@ -1194,29 +1214,29 @@ public:
 
 	IC		void		verify_buckets	()
 	{
-		for (u32 i=0; i<bucket_count; i++) {
-			CGraphNode	*j = buckets[i], *k;
-			if (!j || (indexes[j->index()].path_id != cur_path_id))
-				continue;
-			u32			count = 0, count1 = 0;
-			for ( ; j; k=j,j=j->next, count++) {
-				VERIFY	(indexes[j->index()].path_id == cur_path_id);
-				VERIFY	(compute_bucket_id(*j) == i);
-				VERIFY	(!j->prev || (j == j->prev->next));
-				VERIFY	(!j->next || (j == j->next->prev));
-				VERIFY	(!j->next || (j != j->next));
-				VERIFY	(!j->prev || (j != j->prev));
-			}
-			for ( ; k; k=k->prev, count1++) {
-				VERIFY	(indexes[k->index()].path_id == cur_path_id);
-				VERIFY	(compute_bucket_id(*k) == i);
-				VERIFY	(!k->prev || (k == k->prev->next));
-				VERIFY	(!k->next || (k == k->next->prev));
-				VERIFY	(!k->next || (k != k->next));
-				VERIFY	(!k->prev || (k != k->prev));
-			}
-			VERIFY		(count == count1);
-		}
+//		for (u32 i=0; i<bucket_count; i++) {
+//			CGraphNode	*j = buckets[i], *k;
+//			if (!j || (indexes[j->index()].path_id != cur_path_id))
+//				continue;
+//			u32			count = 0, count1 = 0;
+//			for ( ; j; k=j,j=j->next, count++) {
+//				VERIFY	(indexes[j->index()].path_id == cur_path_id);
+//				VERIFY	(compute_bucket_id(*j) == i);
+//				VERIFY	(!j->prev || (j == j->prev->next));
+//				VERIFY	(!j->next || (j == j->next->prev));
+//				VERIFY	(!j->next || (j != j->next));
+//				VERIFY	(!j->prev || (j != j->prev));
+//			}
+//			for ( ; k; k=k->prev, count1++) {
+//				VERIFY	(indexes[k->index()].path_id == cur_path_id);
+//				VERIFY	(compute_bucket_id(*k) == i);
+//				VERIFY	(!k->prev || (k == k->prev->next));
+//				VERIFY	(!k->next || (k == k->next->prev));
+//				VERIFY	(!k->next || (k != k->next));
+//				VERIFY	(!k->prev || (k != k->prev));
+//			}
+//			VERIFY		(count == count1);
+//		}
 	}
 
 	IC		void		add_to_bucket	(CGraphNode &node, u32 bucket_id)
@@ -1225,10 +1245,13 @@ public:
 		if (bucket_id < min_bucket_id)
 			min_bucket_id		= bucket_id;
 
-		u32						node_bucket_id = indexes[node.index()].bucket_id;
-		if (buckets[node_bucket_id] && (buckets[node_bucket_id]->index() == node.index()))
-			buckets[node_bucket_id] = 0;
-		indexes[node.index()].bucket_id	= bucket_id;
+
+//		u32						node_bucket_id = indexes[node.index()].bucket_id;
+//		if (buckets[node_bucket_id] && (buckets[node_bucket_id]->index() == node.index()))
+//			buckets[node_bucket_id] = 0;
+//		if (buckets[node.bucket_id] == &node)
+//			buckets[node.bucket_id] = 0;
+//		node.bucket_id = indexes[node.index()].bucket_id = bucket_id;
 		
 		CGraphNode			*i = buckets[bucket_id];
 		if (!i || (indexes[i->index()].path_id != cur_path_id)) {
@@ -1284,9 +1307,9 @@ public:
 	IC		void		add_opened		(CGraphNode &node)
 	{
 		node.open_close_mask	= 1;
-		indexes[node.index()].path_id--;
+//		indexes[node.index()].path_id--;
 		verify_buckets			();
-		indexes[node.index()].path_id++;
+//		indexes[node.index()].path_id++;
 		add_to_bucket			(node,compute_bucket_id(node));
 		verify_buckets			();
 	}
@@ -1334,8 +1357,8 @@ public:
 	IC		CGraphNode	&get_best		()
 	{
 		VERIFY					(!is_opened_empty());
-#pragma todo("Dima to Dima : this condition is obsolete!")
-		if (!buckets[min_bucket_id] || (indexes[buckets[min_bucket_id]->index()].path_id != cur_path_id)) {
+//		if (!buckets[min_bucket_id] || (indexes[buckets[min_bucket_id]->index()].path_id != cur_path_id)) {
+		if (!buckets[min_bucket_id]) {
 			verify_buckets		();
 			for ( ++min_bucket_id; !buckets[min_bucket_id] || (indexes[buckets[min_bucket_id]->index()].path_id != cur_path_id); ++min_bucket_id);
 			VERIFY				(min_bucket_id < bucket_count);
