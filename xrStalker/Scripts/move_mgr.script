@@ -435,8 +435,8 @@ function move_mgr:scheme_set_signal(sig)
 	-- FIXME: затычка чтобы не вылетало
 	if stor ~= nil and stor[stor.active_scheme] ~= nil then
 		local signals = stor[stor.active_scheme].signals
-	end
-	signals[sig] = true
+		signals[sig] = true
+	end	
 end
 
 function move_mgr:turn_end_callback()
