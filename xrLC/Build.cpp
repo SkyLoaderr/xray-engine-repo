@@ -48,7 +48,7 @@ public:
 		for (m=0; m<pBuild->mu_refs.size(); m++)
 		{
 			pBuild->mu_refs[m]->calc_lighting	();
-			thProgress					= (float(m)/float(pBuild->mu_refs.size()));
+			thProgress							= (float(m)/float(pBuild->mu_refs.size()));
 		}
 	}
 };

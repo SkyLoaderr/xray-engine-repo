@@ -11,7 +11,7 @@ class CLMThread : public CThread
 public:
 	HASH							H;
 	CDB::COLLIDER					DB;
-	xr_vector<R_Light>					LightsSelected;
+	xr_vector<R_Light>				LightsSelected;
 public:
 	CLMThread	(u32 ID) : CThread(ID)
 	{
