@@ -16,7 +16,7 @@ class "evaluator_first_meet"	(property_evaluator)
 function evaluator_first_meet:__init(obj_name0,obj_name1,func) super()
 	self.object0			= get_level_object(obj_name0)
 	self.object1			= get_level_object(obj_name1)
-	self:func				= func
+	self.func				= func
 	printf					("evaluator is constructed!")
 end
 
@@ -87,7 +87,7 @@ class "action_patrol_hi"	(action_base)
 
 function action_patrol_hi:__init(obj_name,name,func) super(get_level_object(obj_name),name)
 	self.object				= get_level_object(obj_name)
-	self:func				= func
+	self.func				= func
 	self.name				= name
 	printf					("action %s is constructed!",self.name)
 end
