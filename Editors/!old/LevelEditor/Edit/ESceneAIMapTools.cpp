@@ -387,25 +387,25 @@ void ESceneAIMapTools::RemoveSelection()
     	if (m_Nodes.size()==(u32)SelectionCount(true)){
         	Clear	(true);
         }else{
-        	UI->ProgressStart	(4,"Removing nodes...");
+        	SPBItem* pb = UI->PBStart(4,"Removing nodes...");
         	// remove link to sel nodes
-    		UI->ProgressInc		("breaking links");
+    		UI->PBInc(pb,"breaking links");
 	        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
             	for (int k=0; k<4; k++) 
                 	if ((*it)->n[k]&&(*it)->n[k]->flags.is(SAINode::flSelected))
                     	(*it)->n[k]=0;
             }
-    		UI->ProgressInc		("erasing nodes");
+    		UI->PBInc(pb,"erasing nodes");
             // remove sel nodes
            	AINodeIt result		= std::remove_if(m_Nodes.begin(), m_Nodes.end(), sel_node_pred());
 	        for (AINodeIt r_it=m_Nodes.begin(); r_it!=m_Nodes.end(); r_it++) 
             	if ((*r_it)->flags.is(SAINode::flSelected)) xr_delete(*r_it);
             m_Nodes.erase		(result,m_Nodes.end());
-    		UI->ProgressInc		("updating hash");
+    		UI->PBInc(pb,"updating hash");
             hash_Clear		   	();
 		    hash_FillFromNodes 	();
-    		UI->ProgressInc		("end");
-            UI->ProgressEnd		();
+    		UI->PBInc(pb,"end");
+            UI->PBEnd(pb);
         }
     }break;
     }

@@ -36,7 +36,7 @@ bool SceneBuilder::EvictResource()
 	int objcount = Scene->ObjCount(OBJCLASS_SCENEOBJECT);
 	if( objcount <= 0 ) return true;
 
-	UI->ProgressStart(objcount, "Evict objects...");
+	SPBItem* pb = UI->PBStart(objcount, "Evict objects...");
     // unload cform, point normals
     ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
     ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
@@ -44,9 +44,9 @@ bool SceneBuilder::EvictResource()
     	CSceneObject* O = (CSceneObject*)(*_F);
         if (UI->NeedAbort()) break; // break building
         O->EvictObject();
-		UI->ProgressInc();
+		UI->PBInc(pb);
 	}
-	UI->ProgressEnd();
+	UI->PBEnd(pb);
 
     return true;
 }
@@ -66,7 +66,7 @@ bool SceneBuilder::RenumerateSectors()
 {
 	m_iDefaultSectorNum	= -1;
 
-	UI->ProgressStart(Scene->ObjCount(OBJCLASS_SECTOR), "Renumerate sectors...");
+	SPBItem* pb = UI->PBStart(Scene->ObjCount(OBJCLASS_SECTOR), "Renumerate sectors...");
 
 	int sector_num = 0;
     ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
@@ -75,10 +75,10 @@ bool SceneBuilder::RenumerateSectors()
     	CSector* _S=(CSector*)(*_F);
         _S->sector_num = sector_num;
         if (_S->IsDefault()) m_iDefaultSectorNum=sector_num;
-		UI->ProgressInc();
+		UI->PBInc(pb);
 	}
 
-	UI->ProgressEnd();
+	UI->PBEnd(pb);
 
 	if (m_iDefaultSectorNum<0) m_iDefaultSectorNum=Scene->ObjCount(OBJCLASS_SECTOR);
 	return true;

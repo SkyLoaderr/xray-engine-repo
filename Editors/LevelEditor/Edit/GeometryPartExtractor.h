@@ -82,7 +82,7 @@ public:
 	void			append_face			(SBFace* F);
     void			use_face			(SBFace* F, u32& cnt, u32 bone_id, float& area);
     void			recurse_fragment	(SBFace* F, u32& cnt, u32 bone_id, u32 max_faces, float& area);
-    bool			prepare				(SBAdjVec& adjs);
+    bool			prepare				(SBAdjVec& adjs, u32 bone_face_min);
 };
 DEFINE_VECTOR		(SBPart*,SBPartVec,SBPartVecIt);
 //----------------------------------------------------
@@ -91,18 +91,21 @@ class CGeomPartExtractor{
 protected:
 	VCPacked* 		m_Verts;
     SBFaceVec 		m_Faces;       
-    SBPartVec 		m_Parts;
     SBAdjVec		m_Adjs;
+    SBPartVec 		m_Parts;
+
+    u32 			m_PerBoneFaceCountMin;
 public:
 					CGeomPartExtractor	();
-                	~CGeomPartExtractor	();
-	// init & clear
-	void			Initialize			(const Fbox& bb, float eps=EPS_L);
+                	~CGeomPartExtractor	(){Clear();}
+	// init & clean up
+	void			Initialize			(const Fbox& bb, float eps, u32 per_bone_face_count_min);
     void			Clear				();
-	// IO routines
-	void			AppendFace			(CSurface* surf, const Fvector* v[3], const Fvector* n[3], const Fvector2* uvs[3]);
+	// I/O routines
+	void			AppendFace			(CSurface* surf, const Fvector* v, const Fvector* n, const Fvector2* uvs[3]);
+    SBPartVec&		GetParts			(){return m_Parts;}
     // utilities
-    void			Extract				();
+    BOOL			Process				();
 };
 
 #endif //GeometryPartExtractorH

@@ -213,15 +213,15 @@ bool EDetailManager::UpdateSlots()
     xr_free				(dtSlots);
     dtSlots				= xr_alloc<DetailSlot>(dtH.size_x*dtH.size_z);
 
-    UI->ProgressStart	(dtH.size_x*dtH.size_z,"Updating bounding boxes...");
+    SPBItem* pb = UI->PBStart(dtH.size_x*dtH.size_z,"Updating bounding boxes...");
     for (u32 z=0; z<dtH.size_z; z++){
         for (u32 x=0; x<dtH.size_x; x++){
         	DetailSlot* slot = dtSlots+z*dtH.size_x+x;
         	UpdateSlotBBox	(x,z,*slot);
-			UI->ProgressInc	();
+			UI->PBInc	(pb);
         }
     }
-    UI->ProgressEnd		();
+    UI->PBEnd(pb);
 
     m_Selected.resize	(dtH.size_x*dtH.size_z);
 
@@ -414,14 +414,14 @@ bool EDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly)
      	return false;
     }
     // update objects
-    UI->ProgressStart	(dtH.size_x*dtH.size_z,"Updating objects...");
+    SPBItem* pb = UI->PBStart(dtH.size_x*dtH.size_z,"Updating objects...");
     for (u32 z=0; z<dtH.size_z; z++)
         for (u32 x=0; x<dtH.size_x; x++){
         	if (!bUpdateSelectedOnly||(bUpdateSelectedOnly&&m_Selected[z*dtH.size_x+x]))
 	        	UpdateSlotObjects(x,z);
-		    UI->ProgressInc();
+		    UI->PBInc	(pb);
         }
-    UI->ProgressEnd		();
+    UI->PBEnd(pb);
 
     InvalidateCache		();
 

@@ -297,6 +297,10 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
         	ELog.Msg		(mtInformation,"Surface: '%s' contains breakable game material.",surf->_Name());
             continue;
         }
+        if (M->Flags.is(SGameMtl::flClimable)){
+        	ELog.Msg		(mtInformation,"Surface: '%s' contains climable game material.",surf->_Name());
+            continue;
+        }
         if (M->Flags.is(SGameMtl::flDynamic)){
         	ELog.DlgMsg		(mtError,"Surface: '%s' contains non-static game material.",surf->_Name());
         	bResult 		= FALSE; 
@@ -858,8 +862,9 @@ int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num)
 BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
 {
 	BOOL bResult = TRUE;
+    SPBItem* pb	= UI->PBStart(lst.size(),"Parse static objects...");
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-        UI->ProgressInc((*_F)->Name);
+        UI->PBInc(pb,(*_F)->Name);
         if (UI->NeedAbort()) break;
         switch((*_F)->ClassID){
         case OBJCLASS_LIGHT:
@@ -887,6 +892,7 @@ BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
         	break;
         }
     }
+    UI->PBEnd(pb);
     return bResult;
 }
 //------------------------------------------------------------------------------
@@ -942,7 +948,7 @@ BOOL SceneBuilder::CompileStatic()
 // make sun
 	BuildSun		(lt->m_SunShadowQuality,lt->m_SunShadowDir);
 // parse scene
-    UI->ProgressStart(Scene->ObjCount(),"Parse scene objects...");
+    SPBItem* pb = UI->PBStart(Scene->ObjCount(),"Parse scene objects...");
     SceneToolsMapPairIt t_it 	= Scene->FirstTools();
     SceneToolsMapPairIt t_end 	= Scene->LastTools();
     for (; t_it!=t_end; t_it++)
@@ -950,10 +956,10 @@ BOOL SceneBuilder::CompileStatic()
             ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(t_it->second);
             if (mt&&!ParseStaticObjects(mt->GetObjects())){bResult = FALSE; break;}
         }
-	UI->ProgressEnd();
+	UI->PBEnd(pb);
 // process lods
 	if (bResult&&!l_lods.empty()){
-        UI->ProgressStart	(l_lods.size()*2,"Merge LOD textures...");
+        SPBItem* pb = UI->PBStart(l_lods.size()*2,"Merge LOD textures...");
         Fvector2Vec			offsets;
         Fvector2Vec			scales;
         boolVec				rotated;
@@ -961,7 +967,7 @@ BOOL SceneBuilder::CompileStatic()
         RStringVec 			textures;
         for (int k=0; k<(int)l_lods.size(); k++){
             textures.push_back(l_lods[k].tex_name);
-	        UI->ProgressInc	();                    
+	        UI->PBInc(pb);
         }                           
         std::string fn 		= MakeLevelPath(LEVEL_LODS_TEX_NAME);
         if (1==ImageLib.CreateMergedTexture(textures,fn.c_str(),STextureParams::tfDXT5,512,2048,256,1024,offsets,scales,rotated,remap)){
@@ -974,13 +980,13 @@ BOOL SceneBuilder::CompileStatic()
                     	ImageLib.MergedTextureRemapUV(uv.x,uv.y,uv.x,uv.y,offsets[id],scales[id],rotated[id]);
                     }
                 }
-		        UI->ProgressInc	();
+		        UI->PBInc(pb);
 			}
         }else{
             ELog.DlgMsg		(mtError,"Failed to build merged LOD texture.");
         	bResult			= FALSE;
         }
-        UI->ProgressEnd		();
+        UI->PBEnd(pb);
     }
 
 // save build    

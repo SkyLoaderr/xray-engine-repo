@@ -137,7 +137,7 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
         Scene->SelectObjects(false,OBJCLASS_SCENEOBJECT);
 	    AStringVec lst;
     	_SequenceToList(lst,N);
-        UI->ProgressStart(lst.size(),"Append object: ");
+        SPBItem* pb = UI->PBStart(lst.size(),"Append object: ");
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             string256 namebuffer;
             Scene->GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, it->c_str());
@@ -157,7 +157,7 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
             obj->MoveTo(pos,up);
             Scene->AppendObject( obj );
         }
-        UI->ProgressEnd();
+        UI->PBEnd(pb);
     }
 }
 //---------------------------------------------------------------------------

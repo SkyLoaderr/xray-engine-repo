@@ -19,6 +19,7 @@ protected:
     };
     Flags32				m_Flags;
 	bool 				ExportBreakableObjects	(SExportStreams& F);
+	bool 				ExportClimableObjects	(SExportStreams& F);
 public:
     Fvector				m_AppendRandomMinScale;
     Fvector				m_AppendRandomMaxScale;

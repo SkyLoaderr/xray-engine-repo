@@ -26,7 +26,6 @@ bool ESceneCustomOTools::OnLoadSelectionAppendObject(CCustomObject* obj)
 bool ESceneCustomOTools::OnLoadAppendObject(CCustomObject* O)
 {
 	Scene->AppendObject	(O,false);
-	UI->ProgressInc		();
     return true;
 }
 //----------------------------------------------------
@@ -36,9 +35,9 @@ bool ESceneCustomOTools::LoadSelection(IReader& F)
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
-    UI->ProgressStart(count,AnsiString().sprintf("Loading %s's...",ClassDesc()).c_str());
-    Scene->ReadObjects(F,CHUNK_OBJECTS,OnLoadSelectionAppendObject);
-    UI->ProgressEnd	();
+    SPBItem* pb = UI->PBStart(count,AnsiString().sprintf("Loading %s's...",ClassDesc()).c_str());
+    Scene->ReadObjects(F,CHUNK_OBJECTS,OnLoadSelectionAppendObject,pb);
+    UI->PBEnd(pb);
 
     return true;
 }
@@ -66,9 +65,9 @@ bool ESceneCustomOTools::Load(IReader& F)
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
-    UI->ProgressStart(count,AnsiString().sprintf("Loading %s...",ClassDesc()).c_str());
-    Scene->ReadObjects(F,CHUNK_OBJECTS,OnLoadAppendObject);
-    UI->ProgressEnd	();
+    SPBItem* pb 	= UI->PBStart(count,AnsiString().sprintf("Loading %s...",ClassDesc()).c_str());
+    Scene->ReadObjects(F,CHUNK_OBJECTS,OnLoadAppendObject,pb);
+    UI->PBEnd		(pb);
 
     return true;
 }

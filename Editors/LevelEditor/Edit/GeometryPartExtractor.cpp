@@ -3,6 +3,7 @@
 
 #include "GeometryPartExtractor.h"
 #include "EditObject.h"
+#include "UI_Main.h"
 
 //------------------------------------------------------------------------------
 // Parts
@@ -39,7 +40,7 @@ void SBPart::recurse_fragment		(SBFace* F, u32& cnt, u32 bone_id, u32 max_faces,
         } 
     }
 }
-bool SBPart::prepare				(SBAdjVec& adjs)
+bool SBPart::prepare				(SBAdjVec& adjs, u32 bone_face_min)
 {
     m_bValid	= true;
     // compute OBB
@@ -88,9 +89,8 @@ bool SBPart::prepare				(SBAdjVec& adjs)
     }   
     if (m_bValid){
         // calculate bone params
-        int bone_face_min				= 2;
         int bone_cnt_calc				= iFloor(float(m_Faces.size())/bone_face_min);
-        int bone_cnt_max				= (bone_cnt_calc<62)?bone_cnt_calc:62;
+        int bone_cnt_max				= (bone_cnt_calc<62)?(bone_cnt_calc<=0?1:bone_cnt_calc):62;
         int bone_face_max				= iFloor(float(m_Faces.size())/bone_cnt_max+0.5f); bone_face_max *= 4.f;
         int bone_idx					= 0;
         // create big fragment
@@ -137,11 +137,14 @@ bool SBPart::prepare				(SBAdjVec& adjs)
                         face_accum_total++;
                     }else{
                         for (SBFaceVecIt a_it=F->adjs.begin(); a_it!=F->adjs.end(); a_it++){ 
-                            P				= *a_it;
-                            if (-1!=P->bone_id)	break;
+                            if (-1!=(*a_it)->bone_id){	
+	                            P		= *a_it;
+                            	break;
+                            }
                         }
                     }
                     if (P){
+                    	VERIFY(-1!=P->bone_id);
                         F->marked		= true;
                         F->bone_id		= P->bone_id;
                         face_accum_total++;
@@ -153,6 +156,7 @@ bool SBPart::prepare				(SBAdjVec& adjs)
         // calculate bone offset
         for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
             SBFace* F					= *f_it;
+        	VERIFY						(F->bone_id!=-1);
             SBBone& B					= m_Bones[F->bone_id];
             for (int k=0; k<3; k++)		B.offset.add(F->o[k]);
         }
@@ -294,5 +298,89 @@ bool SBPart::Export	(IWriter& F)
     F.close_chunk();
 
     return bRes;
+}
+
+//------------------------------------------------------------------------------
+// Extractor
+//------------------------------------------------------------------------------
+IC void recurse_tri(SBPart* P, SBFaceVec& faces, SBAdjVec& adjs, SBFace* F)
+{
+	if (F->marked) 		return;
+
+	P->append_face		(F);
+    F->marked			= true;
+
+    // recurse
+    for (int k=0; k<3; k++){
+	    SBFaceVec& PL 	= adjs[F->vert_id[k]];
+        for (SBFaceVecIt pl_it=PL.begin(); pl_it!=PL.end(); pl_it++)
+            recurse_tri	(P,faces,adjs,*pl_it);
+    }
+}
+//----------------------------------------------------
+void CGeomPartExtractor::AppendFace(CSurface* surf, const Fvector* v, const Fvector* n, const Fvector2* uvs[3])
+{
+	SBFace* F			= xr_new<SBFace>(surf,uvs);
+    // insert verts
+    for (int k=0; k<3; k++){
+        F->vert_id[k] 	= m_Verts->add_vert(v[k]);
+	    F->o[k].set		(v[k]);
+	    F->n[k].set		(n[k]);
+    }
+    m_Faces.push_back	(F);
+}
+CGeomPartExtractor::CGeomPartExtractor	()
+{
+	m_Verts				= 0;
+}
+void CGeomPartExtractor::Initialize	(const Fbox& bb, float eps, u32 per_bone_face_count_min)
+{
+	VERIFY				(0==m_Verts);
+	m_Verts 			= xr_new<VCPacked>(bb,eps);
+    m_PerBoneFaceCountMin=per_bone_face_count_min;
+}
+void CGeomPartExtractor::Clear		()
+{
+    xr_delete		(m_Verts);
+    for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++) 
+    	xr_delete	(*f_it);
+    m_Faces.clear	();
+    for (SBPartVecIt p_it=m_Parts.begin(); p_it!=m_Parts.end(); p_it++) 
+    	xr_delete	(*p_it);
+    m_Parts.clear	();
+    m_Adjs.clear	();
+}
+BOOL CGeomPartExtractor::Process()
+{
+    // make adjacement
+    {
+        m_Adjs.resize	(m_Verts->getVS());
+        for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++)
+            for (int k=0; k<3; k++) m_Adjs[(*f_it)->vert_id[k]].push_back(*f_it);
+    }
+    // extract parts
+    {
+        SPBItem* pb = UI->PBStart(m_Faces.size(),"Extract Parts...");
+        for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+            UI->PBInc(pb);
+            SBFace* F	= *f_it;
+            if (!F->marked){
+                SBPart* P 		= xr_new<SBPart>();
+                recurse_tri		(P,m_Faces,m_Adjs,*f_it);
+                m_Parts.push_back	(P);
+            }
+        }
+        UI->PBEnd(pb);
+    }
+    // simplify parts
+    {
+	    SPBItem* pb = UI->PBStart(m_Parts.size(),"Simplify Parts...");
+        for (SBPartVecIt p_it=m_Parts.begin(); p_it!=m_Parts.end(); p_it++){	
+            UI->PBInc(pb);
+        	(*p_it)->prepare	(m_Adjs,m_PerBoneFaceCountMin);
+        }
+	    UI->PBEnd(pb);
+    }
+    return TRUE;
 }
 

@@ -186,7 +186,7 @@ bool EScene::ReadObject(IReader& F, CCustomObject*& O)
 }
 //----------------------------------------------------
 
-bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append)
+bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append, SPBItem* pb)
 {
 	R_ASSERT(on_append);
 	bool bRes = true;
@@ -199,6 +199,7 @@ bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append)
             else						bRes = false;
             O->close();
             O = OBJ->open_chunk(count);
+			UI->PBInc(pb);
         }
         OBJ->close();
     }
@@ -209,7 +210,6 @@ bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append)
 bool EScene::OnLoadAppendObject(CCustomObject* O)
 {
 	AppendObject	(O,false);
-	UI->ProgressInc	();
     return true;
 }
 //----------------------------------------------------
@@ -258,9 +258,9 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
         if (F->find_chunk(CHUNK_OBJECT_COUNT))
         	obj_cnt = F->r_u32();
 
-        UI->ProgressStart(obj_cnt,"Loading objects...");
-        ReadObjects		(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject);
-        UI->ProgressEnd	();
+        SPBItem* pb = UI->PBStart(obj_cnt,"Loading objects...");
+        ReadObjects		(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject,pb);
+        UI->PBEnd(pb);
 
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
@@ -397,7 +397,7 @@ bool EScene::LoadSelection( LPCSTR initial, LPCSTR fname )
         }
 
         // Objects
-        if (!ReadObjects(*F,CHUNK_OBJECT_LIST,OnLoadSelectionAppendObject)){
+        if (!ReadObjects(*F,CHUNK_OBJECT_LIST,OnLoadSelectionAppendObject,0)){
             ELog.DlgMsg(mtError,"EScene. Failed to load selection.");
             res = false;
         }

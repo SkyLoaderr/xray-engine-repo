@@ -75,7 +75,8 @@
       intermediate\xrHemisphere.obj intermediate\LevelGameDef.obj 
       intermediate\ESceneWallmarkTools.obj 
       intermediate\ESceneWallmarkControls.obj 
-      intermediate\xrServer_Objects_Abstract.obj"/>
+      intermediate\xrServer_Objects_Abstract.obj 
+      intermediate\GeometryPartExtractor.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -272,6 +273,7 @@
       <FILE FILENAME="Engine\Game\xrMessages.h" FORMNAME="" UNITNAME="xrMessages.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ShapeData.h" FORMNAME="" UNITNAME="ShapeData.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_Abstract.cpp" FORMNAME="" UNITNAME="xrServer_Objects_Abstract" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\GeometryPartExtractor.cpp" FORMNAME="" UNITNAME="GeometryPartExtractor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

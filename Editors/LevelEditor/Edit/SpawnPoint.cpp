@@ -589,7 +589,7 @@ bool CSpawnPoint::Load(IReader& F){
     }
 
 	// objects
-    Scene->ReadObjects(F,SPAWNPOINT_CHUNK_ATTACHED_OBJ,OnAppendObject);
+    Scene->ReadObjects(F,SPAWNPOINT_CHUNK_ATTACHED_OBJ,OnAppendObject,0);
 
 	UpdateTransform	();
 

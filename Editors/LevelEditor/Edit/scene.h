@@ -15,6 +15,7 @@
 //refs
 struct FSChunkDef;
 class PropValue;
+struct SPBItem;
 //----------------------------------------------------
 
 #pragma pack( push,1 )
@@ -132,7 +133,7 @@ public:
 	typedef bool (__closure *TAppendObject)(CCustomObject* object);
 
 	bool 			ReadObject			(IReader& F, CCustomObject*& O);
-	bool 			ReadObjects			(IReader& F, u32 chunk_id, TAppendObject on_append);
+	bool 			ReadObjects			(IReader& F, u32 chunk_id, TAppendObject on_append, SPBItem* pb);
 	void 			SaveObject			(CCustomObject* O,IWriter& F);
 	void 			SaveObjects			(ObjectList& lst, u32 chunk_id, IWriter& F);
 public:
