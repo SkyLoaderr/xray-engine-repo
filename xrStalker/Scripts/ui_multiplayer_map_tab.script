@@ -6,7 +6,7 @@
 --
 
 function main()
-	local dlg = ui_multiplayer_create_map_tab.create_map_tab()
+	local dlg = ui_multiplayer_map_tab.create_map_tab()
 	level.start_stop_menu(dlg,true)	
 	while true do
 		wait(3000)
