@@ -8,6 +8,8 @@
 #include "xr_object.h"
 #include "net_utils.h"
 
+extern Flags32		psNET_Flags;
+
 class fClassEQ {
 	CLASS_ID cls;
 public:
