@@ -407,7 +407,7 @@ void  CScriptGameObject::RunTalkDialog			(CScriptGameObject* pToWho)
 void  CScriptGameObject::ActorSleep			(int hours, int minutes)
 {
 	CActor* pActor = smart_cast<CActor*>(m_tpGameObject);	if(!pActor) return;
-	pActor->GoSleep(generate_time(0,0,0,hours, minutes, 0, 0), true);
+	pActor->GoSleep(generate_time(1,1,1,hours, minutes, 0, 0), true);
 }
 
 //////////////////////////////////////////////////////////////////////////
