@@ -53,21 +53,29 @@ void CActor::OnKeyboardPress(int cmd)
 
 void CActor::OnKeyboardRelease(int cmd)
 {
-	if (Remote() || !g_Alive())		return;
+	if (Remote())		return;
 
-	switch(cmd){
-	case kACCEL:	mstate_wishful &=~mcAccel;		break;
-	case kR_STRAFE:	mstate_wishful &=~mcRStrafe;	break;
-	case kL_STRAFE:	mstate_wishful &=~mcLStrafe;	break;
-	case kFWD:		mstate_wishful &=~mcFwd;		break;
-	case kBACK:		mstate_wishful &=~mcBack;		break;
-	case kJUMP:		mstate_wishful &=~mcJump;		break;
-	case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
+	if (g_Alive())	
+	{
+		switch(cmd)
+		{
+		case kACCEL:	mstate_wishful &=~mcAccel;		break;
+		case kR_STRAFE:	mstate_wishful &=~mcRStrafe;	break;
+		case kL_STRAFE:	mstate_wishful &=~mcLStrafe;	break;
+		case kFWD:		mstate_wishful &=~mcFwd;		break;
+		case kBACK:		mstate_wishful &=~mcBack;		break;
+		case kJUMP:		mstate_wishful &=~mcJump;		break;
+		case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
 
-	case kWPN_FIRE:	g_fireEnd();					break;
-	case kWPN_ZOOM:	Weapons->Zoom(FALSE);			break;
+		case kWPN_FIRE:	g_fireEnd();					break;
+		case kWPN_ZOOM:	Weapons->Zoom(FALSE);			break;
 
-	case kDROP:		g_PerformDrop();				break;
+		case kDROP:		g_PerformDrop();				break;
+		}
+	} else if (kWPN_FIRE == cmd)
+	{
+		// We want to respawn
+		Level().g_cl_Spawn	("actor",0xFF,M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);
 	}
 }
 
