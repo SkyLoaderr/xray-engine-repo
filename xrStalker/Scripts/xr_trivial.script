@@ -511,7 +511,7 @@ function stalker_novice3_action:initialize ()
 
     action_base.initialize          ( self )
   if(level.actor()) then
-        if( self.object:see(level.actor()) or distance_between(self.object, level.actor()) < 40 ) then
+        if( self.object:see(level.actor()) or distance_between(self.object, level.actor()) < 30 ) then
           self:init_state_actor()
             return
         end
