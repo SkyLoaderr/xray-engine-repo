@@ -7,19 +7,20 @@
 #pragma once
 
 class CPhysicsShell;
+class CSE_Abstract;
 #include "PhysicsRefObject.h"
+#include "level_graph.h"
+#include "ai_object_location.h"
 
 class CGameObject : 
 	public CObject, 
-	public CPhysicsRefObject
+	public CPhysicsRefObject,
+	virtual public CAI_ObjectLocation
 {
 	typedef CObject inherited;
 protected:
 	CSE_ALifeSimulator		*m_tpALife;
 public:
-	// AI connection
-	u32						AI_NodeID;
-	NodeCompressed			*AI_Node;
 	CPhysicsShell			*m_pPhysicsShell;
 	IC CPhysicsShell		*&PPhysicsShell()		
 	{
@@ -59,6 +60,9 @@ public:
 
 	// Position stack
 	virtual	SavedPosition	ps_Element			(u32 ID);
+
+			void			setup_parent_ai_locations();
+			void			validate_ai_locations(bool decrement_reference = true);
 
 	// Game-specific events
 	CGameObject();

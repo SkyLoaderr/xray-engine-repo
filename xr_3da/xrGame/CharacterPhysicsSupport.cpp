@@ -4,7 +4,7 @@
 #include "CustomMonster.h"
 #include "PhysicsShell.h"
 CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity) 
-: Movement(*aentity->PMovement()), 
+: m_PhysicMovementControl(*aentity->PMovement()), 
   m_pPhysicsShell(aentity->PPhysicsShell()),
   m_EntityAlife(*aentity),
   mXFORM(aentity->XFORM())
@@ -62,14 +62,14 @@ void CCharacterPhysicsSupport::in_NetSpawn()
 {
 #ifndef NO_PHYSICS_IN_AI_MOVE
 
-	Movement.CreateCharacter();
-	Movement.SetPhysicsRefObject(&m_EntityAlife);
+	m_PhysicMovementControl.CreateCharacter();
+	m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
 	
 #endif
 }
 void CCharacterPhysicsSupport::in_NetDestroy()
 {
-	Movement.DestroyCharacter();
+	m_PhysicMovementControl.DestroyCharacter();
 	if(m_pPhysicsShell)	
 	{
 		m_pPhysicsShell->Deactivate();
@@ -85,7 +85,7 @@ void CCharacterPhysicsSupport::in_Init()
 	//m_saved_impulse					= 0.f;
 }
 
-void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
+void CCharacterPhysicsSupport::in_shedule_Update(u32 /**DT/**/)
 {
 	if(m_pPhysicsShell)
 	{	
@@ -104,7 +104,7 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
 				b_death_anim_on=true;
 			}
 
-			if(m_saved_impulse!=0.f && !m_pPhysicsShell->bActivating)
+			if(!fsimilar(0.f,m_saved_impulse) && !m_pPhysicsShell->bActivating)
 			{
 				m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
 				m_saved_impulse=0.f;
@@ -116,7 +116,7 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
 				//m_pPhysicsShell->SetAirResistance()
 
 			}
-			skel_ddelay--;
+			--skel_ddelay;
 		}
 
 	}
@@ -128,13 +128,13 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
 		//Log("mem use %d",Memory.mem_usage());
 #ifndef NO_PHYSICS_IN_AI_MOVE
 
-		Movement.DestroyCharacter();
+		m_PhysicMovementControl.DestroyCharacter();
 		m_EntityAlife.PHSetPushOut();
 #endif
 	}
 }
 
-void CCharacterPhysicsSupport::in_Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse)
+void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse)
 {
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
 	{
@@ -143,7 +143,7 @@ void CCharacterPhysicsSupport::in_Hit(float P, Fvector &dir, CObject *who,s16 el
 		m_saved_hit_dir.set(dir);
 		m_saved_hit_position.set(p_in_object_space);
 #ifndef NO_PHYSICS_IN_AI_MOVE
-		Movement.ApplyImpulse(dir,impulse);
+		m_PhysicMovementControl.ApplyImpulse(dir,impulse);
 #endif
 	}
 	else {
@@ -175,8 +175,8 @@ void CCharacterPhysicsSupport::CreateSkeleton()
 {
 	if(m_pPhysicsShell) return;
 #ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.GetDeathPosition	(m_EntityAlife.Position());
-	Movement.DestroyCharacter();
+	m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
+	m_PhysicMovementControl.DestroyCharacter();
 	//Position().y+=.1f;
 	//#else
 	//Position().y+=0.1f;

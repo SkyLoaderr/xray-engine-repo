@@ -4,16 +4,16 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\fdemorecord.h"
-#include "..\fdemoplay.h"
-#include "..\environment.h"
+#include "../fdemorecord.h"
+#include "../fdemoplay.h"
+#include "../environment.h"
 #include "ParticlesObject.h"
 
 #include "Level.h"
 #include "entity.h"
 #include "hudmanager.h"
 #include "ai_space.h"
-#include "ai_console.h"
+#include "ai_debug.h"
 
 // events
 #include "PHdynamicdata.h"
@@ -22,7 +22,6 @@
 //fog over the map
 #include "LevelFogOfWar.h"
 #include "ai_script_processor.h"
-//#include "ui\\xrXMLParser.h"
 
 CPHWorld*	ph_world = 0;
 
@@ -74,12 +73,12 @@ CLevel::~CLevel()
 	}
 
 	// destroy PSs
-	for (POIt p_it=m_StaticParticles.begin(); p_it!=m_StaticParticles.end(); p_it++)
+	for (POIt p_it=m_StaticParticles.begin(); m_StaticParticles.end()!=p_it; ++p_it)
 		xr_delete		(*p_it);
 	m_StaticParticles.clear();
 
 	// Unload sounds
-	for (u32 i=0; i<static_Sounds.size(); i++){
+	for (u32 i=0; i<static_Sounds.size(); ++i){
 		static_Sounds[i]->destroy();
 		xr_delete		(static_Sounds[i]);
 	}
@@ -97,14 +96,12 @@ CLevel::~CLevel()
 	m_PatrolPaths.clear();
 	
 	xr_delete			(m_tpScriptProcessor);
-	xr_delete			(g_tpAI_Space);
 	xr_free				(m_caServerOptions);
 	xr_free				(m_caClientOptions);
-//	XML_CleanUpMemory	();
 }
 
 // Game interface ////////////////////////////////////////////////////
-int	CLevel::get_RPID(LPCSTR name)
+int	CLevel::get_RPID(LPCSTR /**name/**/)
 {
 	/*
 	// Gain access to string
@@ -118,7 +115,7 @@ int	CLevel::get_RPID(LPCSTR name)
 
 	// Search respawn point
 	svector<Fvector4,maxRP>	&rp = Level().get_team(team).RespawnPoints;
-	for (int i=0; i<(int)(rp.size()); i++)
+	for (int i=0; i<(int)(rp.size()); ++i)
 		if (pos.similar(rp[i],EPS_L))	return i;
 	*/
 	return -1;
@@ -127,19 +124,19 @@ int	CLevel::get_RPID(LPCSTR name)
 void CLevel::vfMergeKnownEnemies()
 {
 	// Merge visibility data from all units in the team
-	for (u32 T=0; T<Teams.size(); T++)
+	for (u32 T=0; T<Teams.size(); ++T)
 	{
 		CTeam&	TD		= Teams[T];
-		for (u32 S=0; S<TD.Squads.size(); S++)
+		for (u32 S=0; S<TD.Squads.size(); ++S)
 		{
 			CSquad&	SD		= TD.Squads[S];
 			objVisible& VIS	= SD.KnownEnemys;
 
 			VIS.clear		();
-			for (u32 G=0; G<SD.Groups.size(); G++)
+			for (u32 G=0; G<SD.Groups.size(); ++G)
 			{
 				CGroup& GD = SD.Groups[G];
-				for (u32 M=0; M<GD.Members.size(); M++)
+				for (u32 M=0; M<GD.Members.size(); ++M)
 				{
 					CEntityAlive* E	= dynamic_cast<CEntityAlive*>(GD.Members[M]);
 					if (E && E->g_Alive() && !E->getDestroy())	E->GetVisible(VIS);
@@ -231,7 +228,7 @@ void CLevel::OnFrame	()
 			F->OutNext	("client_2_sever ping: %d",	net_Statistic.getPing());
 			
 			F->SetColor	(D3DCOLOR_XRGB(255,255,255));
-			for (u32 I=0; I<Server->client_Count(); I++)
+			for (u32 I=0; I<Server->client_Count(); ++I)
 			{
 				IClient*	C = Server->client_Get(I);
 				F->OutNext("%10s: P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d)",
@@ -264,14 +261,16 @@ void CLevel::OnRender()
 	inherited::OnRender	();
 	Tracers.Render		();
 //	ph_world->Render	();
+#ifdef DEBUG
 	if (bDebug || psAI_Flags.test(aiMotion))
-		getAI().Render		();
+		ai().level_graph().render();
+#endif
 	if (bDebug)	{
 		ObjectSpace.dbgRender	();
 	}
 }
 
-void CLevel::OnEvent(EVENT E, u64 P1, u64 P2)
+void CLevel::OnEvent(EVENT E, u64 P1, u64 /**P2/**/)
 {
 	if (E==eEntitySpawn)	{
 		char	Name[128];	Name[0]=0;

@@ -24,8 +24,8 @@
 //}
 
 // Lua-bind
-#include <luabind\\luabind.hpp>
-#include <luabind\\object.hpp>
+#include <luabind/luabind.hpp>
+#include <luabind/object.hpp>
 
 #pragma warning(default:4244)
 #pragma warning(default:4995)

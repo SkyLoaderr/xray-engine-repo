@@ -40,7 +40,7 @@ CScriptProcessor::CScriptProcessor(LPCSTR caCaption, LPCSTR caScriptString)
 	u32				N = _GetItemCount(caScriptString);
 	string256		I;
 	string256		S,S1;
-	for (u32 i=0; i<N; i++) {
+	for (u32 i=0; i<N; ++i) {
 		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
 		R_ASSERT3	(FS.exist(S),"Script file not found!",S);
 		CScript		*l_tpScript = xr_new<CScript>(m_tpLuaVirtualMachine,S);
@@ -55,7 +55,7 @@ CScriptProcessor::~CScriptProcessor()
 {
 	SCRIPT_IT		I = m_tpScripts.begin();
 	SCRIPT_IT		E = m_tpScripts.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		xr_delete	(*I);
 	lua_close		(m_tpLuaVirtualMachine);
 }
@@ -63,14 +63,14 @@ CScriptProcessor::~CScriptProcessor()
 void CScriptProcessor::Update()
 {
 	LPSTR	S = g_ca_stdout;
-	for (int i=0, n=(int)m_tpScripts.size(); i<n; i++) {
+	for (int i=0, n=(int)m_tpScripts.size(); i<n; ++i) {
 		strcpy	(m_caOutput,"");
 		g_ca_stdout = m_caOutput;
 		if (!m_tpScripts[i]->Update()) {
 			xr_delete(m_tpScripts[i]);
 			m_tpScripts.erase(m_tpScripts.begin() + i);
-			i--;
-			n--;
+			--i;
+			--n;
 			continue;
 		}
 		if (xr_strlen(m_caOutput))

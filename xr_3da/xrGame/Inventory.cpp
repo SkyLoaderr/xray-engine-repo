@@ -4,7 +4,7 @@
 #include "trade.h"
 #include "weapon.h"
 
-#include "ui\\UIInventoryUtilities.h"
+#include "ui/UIInventoryUtilities.h"
 #include "ai_script_lua_space.h"
 using namespace InventoryUtilities;
 
@@ -136,7 +136,7 @@ char* CInventoryItem::NameComplex()
 	else 
 		m_nameComplex[0] = 0;
 
-	/*for(PPIItem l_it = m_subs.begin(); l_it != m_subs.end(); l_it++) 
+	/*for(PPIItem l_it = m_subs.begin(); m_subs.end() != l_it; ++l_it) 
 	{
 		const char *l_subName = (*l_it)->NameShort();
 		if(l_subName)
@@ -204,7 +204,7 @@ bool CInventoryItem::DetachAll()
 								    m_pInventory->m_ruck.end(), this) == 
 									m_pInventory->m_ruck.end()) return false;
 
-/*	for(PPIItem it = m_subs.begin(); it != m_subs.end(); it++) 
+/*	for(PPIItem it = m_subs.begin(); m_subs.end() != it; ++it) 
 	{
 		Detach(*it);
 		//m_pInventory->m_ruck.insert(m_pInventory->m_ruck.end(), *l_it);
@@ -230,14 +230,14 @@ void CInventoryItem::Drop()
 	if(m_pInventory) m_drop = true;
 }
 
-s32 CInventoryItem::Sort(PIItem pIItem) 
+s32 CInventoryItem::Sort(PIItem /**pIItem/**/) 
 {
 	// Если нужно разместить IItem после this - вернуть 1, если
 	// перед - -1. Если пофиг то 0.
 	return 0;
 }
 
-bool CInventoryItem::Merge(PIItem pIItem) 
+bool CInventoryItem::Merge(PIItem /**pIItem/**/) 
 {
 	// Если удалось слить вместе вернуть true
 	return false;
@@ -311,7 +311,7 @@ bool CInventoryItem::Detach(const char* item_section_name)
 	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
 							 dynamic_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT			(l_tpALifeDynamicObject);
-	l_tpALifeDynamicObject->m_tNodeID = this->AI_NodeID;
+	l_tpALifeDynamicObject->m_tNodeID = this->level_vertex_id();
 		
 	// Fill
 	strcpy				(D->s_name, item_section_name);
@@ -381,38 +381,38 @@ void MergeSame(TIItemList &itemList)
 	PPIItem it = itemList.begin();
 	PPIItem it2;
 	
-	while(it != itemList.end()) 
+	while(itemList.end() != it) 
 	{
 		it2 = it; 
-		it2++;
-		while(it2 != itemList.end()) 
+		++it2;
+		while(itemList.end() != it2) 
 		{
 			(*it2)->Merge(*it);
 			if(!(*it)->Useful()) break;
-			it2++;
+			++it2;
 		}
 		if(!(*it)->Useful()) (*it)->Drop();
-		it++;
+		++it;
 	}
 }
 
 void SortRuckAndBelt(CInventory *pInventory) 
 {
-	for(int i = 0; i < 2; i++) 
+	for(int i = 0; i < 2; ++i) 
 	{
 		TIItemList &list = i?pInventory->m_ruck:pInventory->m_belt;
 		PPIItem it = list.begin();
 		PPIItem it2, first, last, erase;
 		
-		while(it != list.end()) 
+		while(list.end() != it) 
 		{
 			first = last = it; 
-			last++;
-			while((last != list.end()) && ((*first)->Sort(*last) > 0)) 
-						last++;
+			++last;
+			while((list.end() != last) && ((*first)->Sort(*last) > 0)) 
+						++last;
 			
 			it2 = last;
-			while(it2 != list.end()) 
+			while(list.end() != it2) 
 			{
 				erase = list.end();
 				s32 sort = (*first)->Sort(*it2);
@@ -427,10 +427,10 @@ void SortRuckAndBelt(CInventory *pInventory)
 					erase = it2;
 				}
 				
-				it2++;
-				if(erase != list.end()) list.erase(erase);
+				++it2;
+				if(list.end() != erase) list.erase(erase);
 			}
-			it++;
+			++it;
 		}
 		MergeSame(list);
 	}
@@ -454,7 +454,7 @@ CInventory::CInventory()
 		if(i < m_slots.size() && pSettings->line_exist("inventory",temp)) 
 		{
 			m_slots[i].m_name = pSettings->r_string("inventory",temp);
-			i++;
+			++i;
 		} 
 		else break;
 	} while(true);
@@ -582,7 +582,7 @@ bool CInventory::DropAll()
 {
 	PSPIItem it;
 
-	for(it = m_all.begin(); it != m_all.end(); it++)
+	for(it = m_all.begin(); m_all.end() != it; ++it)
 	{
 		PIItem pIItem = *it;
 		Ruck(pIItem);
@@ -595,7 +595,7 @@ void CInventory::ClearAll()
 {
 	PSPIItem it;
 	
-	for(it = m_all.begin(); it != m_all.end(); it++) 
+	for(it = m_all.begin(); m_all.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		Ruck(pIItem);
@@ -616,11 +616,11 @@ bool CInventory::Slot(PIItem pIItem)
 			m_slots[pIItem->GetSlot()].m_pIItem = pIItem;
 			PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
 			
-			if(it != m_ruck.end()) m_ruck.erase(it);
+			if(m_ruck.end() != it) m_ruck.erase(it);
 			
 			//by Dandy, also perform search on the belt
 			 it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
-			 if(it != m_belt.end()) m_belt.erase(it);
+			 if(m_belt.end() != it) m_belt.erase(it);
 			
 			return true;
 		} 
@@ -629,11 +629,11 @@ bool CInventory::Slot(PIItem pIItem)
 			/*if(m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem)) 
 			{
 				PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
-				if(it != m_ruck.end()) m_ruck.erase(it);
+				if(m_ruck.end() != it) m_ruck.erase(it);
 
 				//by Dandy, also perform search on the belt
 				 it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
-				 if(it != m_belt.end()) m_belt.erase(it);
+				 if(m_belt.end() != it) m_belt.erase(it);
 
 				return true;
 			}*/
@@ -641,11 +641,11 @@ bool CInventory::Slot(PIItem pIItem)
 	} 
 	else 
 	{
-		/*for(u32 i = 0; i < m_slots.size(); i++) 
+		/*for(u32 i = 0; i < m_slots.size(); ++i) 
 			if(m_slots[i].m_pIItem && m_slots[i].m_pIItem->Attach(pIItem)) 
 			{
 				PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
-				if(it != m_ruck.end()) m_ruck.erase(it);
+				if(m_ruck.end() != it) m_ruck.erase(it);
 				return true;
 			}*/
 	}
@@ -681,7 +681,7 @@ bool CInventory::Belt(PIItem pIItem)
 	else
 	{
 		PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
-		if(it != m_ruck.end()) m_ruck.erase(it);
+		if(m_ruck.end() != it) m_ruck.erase(it);
 		SortRuckAndBelt(this);
 		return true;
 	}
@@ -702,7 +702,7 @@ bool CInventory::Ruck(PIItem pIItem)
 
 	//вещь была на поясе
 	PPIItem it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
-	if(it != m_belt.end()) m_belt.erase(it);
+	if(m_belt.end() != it) m_belt.erase(it);
 	
 	m_ruck.insert(m_ruck.end(), pIItem); 
 	SortRuckAndBelt(this);
@@ -796,7 +796,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-void CInventory::Update(u32 deltaT) 
+void CInventory::Update(u32 /**deltaT/**/) 
 {
 	bool bActiveSlotVisible;
 	
@@ -832,12 +832,12 @@ void CInventory::Update(u32 deltaT)
 	}
 	
 	//проверить рюкзак и пояс, есть ли вещи, которые нужно выкинуть
-	for(int i = 0; i < 2; i++)
+	for(int i = 0; i < 2; ++i)
 	{
 		TIItemList &list = i?m_ruck:m_belt;
 		PPIItem it = list.begin();
 	
-		while(it != list.end())
+		while(list.end() != it)
 		{
 			PIItem pIItem = *it;
 			if(pIItem->m_drop)
@@ -854,12 +854,12 @@ void CInventory::Update(u32 deltaT)
 				else 
 					Drop(pIItem);
 			}
-			it++;
+			++it;
 		}
 	}
 
 	//проверить слоты
-	for(i=0; i<(int)m_slots.size(); i++)
+	for(i=0; i<(int)m_slots.size(); ++i)
 	{
 		PIItem pIItem = m_slots[i].m_pIItem;
 
@@ -884,7 +884,7 @@ void CInventory::Update(u32 deltaT)
 //ищем на поясе гранату такоже типа
 PIItem CInventory::Same(const PIItem pIItem) 
 {
-	for(PPIItem it = m_belt.begin(); it != m_belt.end(); it++) 
+	for(PPIItem it = m_belt.begin(); m_belt.end() != it; ++it) 
 	{
 		PIItem l_pIItem = *it;
 		
@@ -901,7 +901,7 @@ PIItem CInventory::SameSlot(u32 slot)
 {
 	if(slot == NO_ACTIVE_SLOT) 	return NULL;
 	
-	for(PPIItem it = m_belt.begin(); it != m_belt.end(); it++) 
+	for(PPIItem it = m_belt.begin(); m_belt.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(pIItem->GetSlot() == slot) return pIItem;
@@ -915,7 +915,7 @@ PIItem CInventory::Get(const char *name, bool bSearchRuck)
 {
 	TIItemList &list = bSearchRuck ? m_ruck : m_belt;
 	
-	for(PPIItem it = list.begin(); it != list.end(); it++) 
+	for(PPIItem it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(!strcmp(pIItem->cNameSect(), name) && 
@@ -929,7 +929,7 @@ PIItem CInventory::Get(const u32 id, bool bSearchRuck)
 {
 	TIItemList &list = bSearchRuck ? m_ruck : m_belt;
 
-	for(PPIItem it = list.begin(); it != list.end(); it++) 
+	for(PPIItem it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(pIItem->ID() == id) 
@@ -941,7 +941,7 @@ PIItem CInventory::Get(const u32 id, bool bSearchRuck)
 f32 CInventory::TotalWeight() 
 {
 	f32 weight = 0;
-	for(PSPIItem it = m_all.begin(); it != m_all.end(); it++) 
+	for(PSPIItem it = m_all.begin(); m_all.end() != it; ++it) 
 					weight += (*it)->Weight();
 	
 	return weight;
@@ -958,11 +958,11 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 {
 	u32			l_dwCount = 0;
 	TIItemList	&l_list = m_ruck;
-	for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
+	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
 		if (!strcmp(l_pIItem->cNameSect(), caSection))
-            l_dwCount++;
+            ++l_dwCount;
 	}
 	
 	return		(l_dwCount);
@@ -971,7 +971,7 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 bool CInventory::bfCheckForObject(_OBJECT_ID tObjectID)
 {
 	TIItemList	&l_list = m_ruck;
-	for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
+	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
 		if (l_pIItem->ID() == tObjectID)
@@ -1015,7 +1015,7 @@ bool CInventory::Eat(PIItem pIItem)
 	if(pItemToEat->m_iPortionsNum == -1) 
 		pItemToEat->m_iPortionsNum = 0;
 	else
-		pItemToEat->m_iPortionsNum--;
+		--(pItemToEat->m_iPortionsNum);
 
 
 	return true;
@@ -1104,7 +1104,7 @@ CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
 	if ((iIndex >= 0) && (iIndex < (int)m_all.size())) {
 		TIItemSet	&l_list = m_all;
 		int			i = 0;
-		for(PSPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++, i++) 
+		for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it, ++i) 
 			if (i == iIndex)
                 return	(*l_it);
 	}
@@ -1119,7 +1119,7 @@ CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
 CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 {
 	TIItemSet	&l_list = m_all;
-	for(PSPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
+	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 		if (!strcmp((*l_it)->cName(),caItemName))
 			return	(*l_it);
 	LuaOut	(Lua::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,dynamic_cast<CGameObject*>(m_pOwner)->cName());

@@ -4,9 +4,9 @@
 
 #include "stdafx.h"
 #include "Flyer.h"
-#include "..\CameraLook.h"
+#include "../CameraLook.h"
 #include "CameraFirstEye.h"
-#include "..\environment.h"
+#include "../environment.h"
 
 #define	FLY_ACCEL		10.0f
 #define	YAW_ACCEL		0.75f
@@ -29,11 +29,11 @@ IC float sign(float t) { return (t>=0)?1.f:-1.f; }
 CFlyer::CFlyer() : inherited()
 {
 
-	Movement.SetCrashSpeeds	(MIN_CRASH_SPEED,MAX_CRASH_SPEED);
-	Movement.SetParent		(this);
-	Movement.SetMass		(2000);
-	Movement.SetApplyGravity(FALSE);
-	Movement.SetFriction	(FRICTION_AIR,FRICTION_WALL,FRICTION_GROUND);
+	m_PhysicMovementControl.SetCrashSpeeds	(MIN_CRASH_SPEED,MAX_CRASH_SPEED);
+	m_PhysicMovementControl.SetParent		(this);
+	m_PhysicMovementControl.SetMass		(2000);
+	m_PhysicMovementControl.SetApplyGravity(FALSE);
+	m_PhysicMovementControl.SetFriction	(FRICTION_AIR,FRICTION_WALL,FRICTION_GROUND);
 
 	cameras[efcFrontView]	= xr_new<CCameraFirstEye>	(this, pSettings, "heli_front_cam", true);
 	cameras[efcLookAt]		= xr_new<CCameraLook>		(this, pSettings, "heli_look_cam", false);
@@ -57,7 +57,7 @@ CFlyer::~CFlyer()
 {
 //	Device.seqRender.Remove	(this);
 
-	for (int i=0; i<efcMaxCam; i++) xr_delete(cameras[i]);
+	for (int i=0; i<efcMaxCam; ++i) xr_delete(cameras[i]);
 }
 
 void CFlyer::Load(LPCSTR section)
@@ -67,13 +67,13 @@ void CFlyer::Load(LPCSTR section)
 
 	Fbox aabb;
 	aabb.set				(CFORM()->GetBBox());
-//	Movement.SetBox			(aabb);
+//	m_PhysicMovementControl.SetBox			(aabb);
 	Fvector vfC,vfE;
 	vfE.set					(1.f,.25f,1.f);
 	vfC.set					(0.f,.2f,0.f);
-	Movement.SetFoots		(vfC,vfE);
-	Movement.CalcMaximumVelocity(mMaxAirVelocity,FLY_ACCEL*RUN_COEF,FRICTION_AIR);
-	Movement.CalcMaximumVelocity(mMaxYawVelocity,YAW_ACCEL*RUN_COEF,FRICTION_AIR);
+	m_PhysicMovementControl.SetFoots		(vfC,vfE);
+	m_PhysicMovementControl.CalcMaximumVelocity(mMaxAirVelocity,FLY_ACCEL*RUN_COEF,FRICTION_AIR);
+	m_PhysicMovementControl.CalcMaximumVelocity(mMaxYawVelocity,YAW_ACCEL*RUN_COEF,FRICTION_AIR);
 //	R_ASSERT	(Visual()->Type==MT_SKELETON);
 //	PKinematics	(Visual())->PlayCycle("work");
 }
@@ -116,7 +116,7 @@ void CFlyer::CheckControls(Fvector &vControlAccel, float& fYawAccel)
 		vControlAccel.mul		(RUN_COEF);
 		fYawAccel				*= RUN_COEF;
 	}
-	if (Movement.Environment()==CMovementControl::peOnGround){
+	if (m_PhysicMovementControl.Environment()==CMovementControl::peOnGround){
 		vControlAccel.x*=0.1f;
 		vControlAccel.z*=0.1f;
 		fYawAccel*=0.1f;
@@ -148,7 +148,7 @@ void CFlyer::Update(u32 DT)
 	// prepare safe translate object
 	Fvector			accel;
 	/*
-	switch(Movement.Environment())
+	switch(m_PhysicMovementControl.Environment())
 	{
 		case CMovementControl::peInAir:		pApp->pFont->Out(-1.f,0.5f,"Env: air");		break;
 		case CMovementControl::peAtWall:	pApp->pFont->Out(-1.f,0.5f,"Env: wall");	break;
@@ -160,7 +160,7 @@ void CFlyer::Update(u32 DT)
 	// rotation
 	mYaw			= mYaw + mYawVelocity*dt + fYawAccel*dt*dt*0.5f;
 	mYawVelocity	= mYawVelocity + fYawAccel*dt; 
-	mYawVelocity	-= dt*mYawVelocity*Movement.GetCurrentFriction();
+	mYawVelocity	-= dt*mYawVelocity*m_PhysicMovementControl.GetCurrentFriction();
 
 	Fvector D,N;
 	D.set(_sin(mYaw),0.f,_cos(mYaw));
@@ -170,14 +170,14 @@ void CFlyer::Update(u32 DT)
 	// movement
 	mRotate.transform_dir(accel, vControlAccel);
 
-	Movement.SetPosition(Position());
-	Movement.Calculate	(accel,mYawVelocity,0,dt,false);
-	Movement.GetPosition(Position());
+	m_PhysicMovementControl.SetPosition(Position());
+	m_PhysicMovementControl.Calculate	(accel,mYawVelocity,0,dt,false);
+	m_PhysicMovementControl.GetPosition(Position());
 
 //---------------------------------------------------------
 // рассчитаем крен
 //---------------------------------------------------------
-	const Fvector& VM = Movement.GetVelocity();
+	const Fvector& VM = m_PhysicMovementControl.GetVelocity();
 	Fvector		V;
 //	V.set		(vOldVel);
 //	V.inertion	(VM,0.999f);
@@ -229,18 +229,18 @@ void CFlyer::Update(u32 DT)
 //---------------------------------------------------------
 	// test nearest object
 //	Fvector C; float R;
-//	Movement.GetBoundingSphere(C,R);
+//	m_PhysicMovementControl.GetBoundingSphere(C,R);
 //	g_pGameLevel->ObjectSpace.TestNearestObject(CFORM(), C, R);
 
 	// check state
 	UpdateState			();
 
 	// Check ground-contact
-	if (Movement.gcontact_Was) {
+	if (m_PhysicMovementControl.gcontact_Was) {
 //		g_pGameLevel->Cameras.AddEffector(
-//			xr_new<CEffectorFall> (Movement.gcontact_AnimAmount));
+//			xr_new<CEffectorFall> (m_PhysicMovementControl.gcontact_AnimAmount));
 //		Fvector D; D.set(0,0,0);
-//		Hit(Movement.gcontact_HealthLost,D);
+//		Hit(m_PhysicMovementControl.gcontact_HealthLost,D);
 	}
 
 	// update motions
@@ -265,6 +265,6 @@ void CFlyer::Update(u32 DT)
 void CFlyer::OnRender	()
 {
 	if (!bDebug)		return;
-	Movement.dbg_Draw	();
+	m_PhysicMovementControl.dbg_Draw	();
 }
 #endif

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\cl_intersect.h"
+#include "../cl_intersect.h"
 #include "phmovementcontrol.h"
 #include "entity.h"
 #include "PHDynamicData.h"
@@ -61,7 +61,7 @@ CPHMovementControl::~CPHMovementControl(void)
 //static Fvector old_pos={0,0,0};
 //static bool bFirst=true;
 
-void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,float dt,bool bLight){
+void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float jump,float /**dt/**/,bool /**bLight/**/){
 
 	
 	if(m_capture) 
@@ -140,7 +140,7 @@ void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,flo
 
 }
 
-void CPHMovementControl::Calculate(const xr_vector<CTravelNode>& path,float speed,  u32& travel_point,  float& precesition  )
+void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPoint>& path,float speed,  u32& travel_point,  float& /**precision/**/  )
 {
 	
 	if(m_capture) 
@@ -171,9 +171,9 @@ void CPHMovementControl::Calculate(const xr_vector<CTravelNode>& path,float spee
 		//////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////
 		if((m_path_size-1)>(int)travel_point)
-			dir.sub(path[travel_point+1].P,path[travel_point].P);
+			dir.sub(path[travel_point+1].m_position,path[travel_point].m_position);
 		else
-			dir.sub(path[travel_point].P,new_position);
+			dir.sub(path[travel_point].m_position,new_position);
 		m_start_index=travel_point;
 		dir.y=0.f;
 		dir.normalize_safe();
@@ -195,8 +195,8 @@ void CPHMovementControl::Calculate(const xr_vector<CTravelNode>& path,float spee
 			m_character->SetMaximumVelocity(0.f);
 			vPosition.set(new_position);	//todo - insert it in PathNearestPoint
 			index=0;
-			vPathPoint.set(path[0].P);
-			vPathDir.sub(path[0].P,new_position);
+			vPathPoint.set(path[0].m_position);
+			vPathDir.sub(path[0].m_position,new_position);
 			m_path_distance=vPathDir.magnitude();
 			if(m_path_distance>EPS)
 			{
@@ -258,7 +258,7 @@ void CPHMovementControl::Calculate(const xr_vector<CTravelNode>& path,float spee
 }
 
 
-void CPHMovementControl::PathNearestPoint(const xr_vector<CTravelNode>  &path,			//in path
+void CPHMovementControl::PathNearestPoint(const xr_vector<CDetailPathManager::STravelPoint>  &path,			//in path
 										  const Fvector					&new_position,  //in position
 										  int							&index,			//in start from; out nearest
 										  bool							&near_line       //out type
@@ -273,7 +273,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<CTravelNode>  &path,		
 
 	for(int i=0;i<m_path_size-1;++i)
 	{
-		const Fvector &first=path[i].P, &second=path[i+1].P;
+		const Fvector &first=path[i].m_position, &second=path[i+1].m_position;
 		from_first.sub(new_position,first);
 		from_second.sub(new_position,second);
 		dir.sub(second,first);
@@ -329,10 +329,10 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<CTravelNode>  &path,		
 	{
 
 		R_ASSERT2(after_line,"Must be after line");
-		vtemp.sub(new_position,path[i].P);
+		vtemp.sub(new_position,path[i].m_position);
 		m_path_distance=vtemp.magnitude();
 		vPathDir.set(dir);
-		vPathPoint.set(path[i].P);
+		vPathPoint.set(path[i].m_position);
 		index=i;
 		near_line=false;
 	}
@@ -342,7 +342,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<CTravelNode>  &path,		
 
 
 
-void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CTravelNode>	&path,			//in path
+void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CDetailPathManager::STravelPoint>	&path,			//in path
 												const Fvector					&new_position,  //in position
 												int								&index,			//in start from; out nearest
 												float							radius,	//out m_path_distance in exit radius
@@ -358,7 +358,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CTravelNode>	&pa
 
 	for(int i=m_start_index;i<m_path_size-1;++i)
 	{
-		const Fvector &first=path[i].P, &second=path[i+1].P;
+		const Fvector &first=path[i].m_position, &second=path[i+1].m_position;
 		from_first.sub(new_position,first);
 		from_second.sub(new_position,second);
 		dir.sub(second,first);
@@ -416,10 +416,10 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CTravelNode>	&pa
 	{
 
 		R_ASSERT2(after_line,"Must be after line");
-		vtemp.sub(new_position,path[i].P);
+		vtemp.sub(new_position,path[i].m_position);
 		m_path_distance=vtemp.magnitude();
 		vPathDir.set(dir);
-		vPathPoint.set(path[i].P);
+		vPathPoint.set(path[i].m_position);
 		index=i;
 		near_line=false;
 	}
@@ -429,7 +429,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CTravelNode>	&pa
 }
 
 
-void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CTravelNode>	&path,			//in path
+void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CDetailPathManager::STravelPoint>	&path,			//in path
 												const Fvector					&new_position,  //in position
 												int								&index,			//in start from; out nearest
 												float							radius,	//out m_path_distance in exit radius
@@ -443,9 +443,10 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CTravelNode>	&
 	Fvector path_point,vtemp;
 	float temp;
 	//(going down)
-	for(int i=m_start_index;i>1;i--)
+	
+	for(int i=m_start_index;i>1;--i)
 	{
-		const Fvector &first=path[i-1].P, &second=path[i].P;
+		const Fvector &first=path[i-1].m_position, &second=path[i].m_position;
 		from_first.sub(new_position,first);
 		from_second.sub(new_position,second);
 		dir.sub(second,first);
@@ -504,10 +505,10 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CTravelNode>	&
 	{
 
 		R_ASSERT2(after_line,"Must be after line");
-		vtemp.sub(new_position,path[i].P);
+		vtemp.sub(new_position,path[i].m_position);
 		m_path_distance=vtemp.magnitude();
 		vPathDir.set(dir);
-		vPathPoint.set(path[i].P);
+		vPathPoint.set(path[i].m_position);
 		index=i;
 		near_line=false;
 	}
@@ -516,7 +517,7 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CTravelNode>	&
 	return;
 }
 
-void CPHMovementControl::PathDIrLine(const xr_vector<CTravelNode> &path,  int index,  float distance,  float precesition, Fvector &dir  )
+void CPHMovementControl::PathDIrLine(const xr_vector<CDetailPathManager::STravelPoint> &/**path/**/,  int /**index/**/,  float distance,  float precesition, Fvector &dir  )
 {
 
 	Fvector to_path_point;
@@ -533,7 +534,7 @@ void CPHMovementControl::PathDIrLine(const xr_vector<CTravelNode> &path,  int in
 	dir.normalize_safe();
 }
 
-void CPHMovementControl::PathDIrPoint(const xr_vector<CTravelNode> &path,  int index,  float distance,  float precesition, Fvector &dir  )
+void CPHMovementControl::PathDIrPoint(const xr_vector<CDetailPathManager::STravelPoint> &path,  int index,  float distance,  float precesition, Fvector &dir  )
 {
 	Fvector to_path_point,tangent;
 	to_path_point.sub(vPathPoint,vPosition);	//_new position
@@ -546,7 +547,7 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<CTravelNode> &path,  int i
 			dir.set(vPathDir);//??
 			return;
 		}
-		dir.sub(path[index].P,path[index-1].P);
+		dir.sub(path[index].m_position,path[index-1].m_position);
 		dir.normalize_safe();
 		dir.add(vPathDir);
 		dir.normalize_safe();
@@ -572,16 +573,13 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<CTravelNode> &path,  int i
 
 
 	//build mean dir
-	if(index!=0)
-	{
-
-		dir.sub(path[index].P,path[index-1].P);
+	if(0 != index) {
+		dir.sub(path[index].m_position,path[index-1].m_position);
 		dir.normalize_safe();
 		dir.add(vPathDir);
 		dir.normalize_safe();
 	}
-	else 
-	{
+	else {
 		dir.set(vPathDir);
 	}
 
@@ -612,25 +610,25 @@ void CPHMovementControl::Load					(LPCSTR section){
 	
 	Fbox	bb;
 
-	// Movement: BOX
+	// m_PhysicMovementControl: BOX
 	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
 	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
 	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
 	SetBox		(0,bb);
 
-	// Movement: BOX
+	// m_PhysicMovementControl: BOX
 	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
 	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
 	SetBox		(1,bb);
 
-	// Movement: Foots
+	// m_PhysicMovementControl: Foots
 	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
 	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
 	SetFoots	(vFOOT_center,vFOOT_size);
 
-	// Movement: Crash speed and mass
+	// m_PhysicMovementControl: Crash speed and mass
 	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
 	float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
 	float	mass		= pSettings->r_float	(section,"ph_mass"				);
@@ -638,7 +636,7 @@ void CPHMovementControl::Load					(LPCSTR section){
 	SetMass		(mass);
 
 
-	// Movement: Frictions
+	// m_PhysicMovementControl: Frictions
 	//float af, gf, wf;
 	//af					= pSettings->r_float	(section,"ph_friction_air"	);
 	//gf					= pSettings->r_float	(section,"ph_friction_ground");
@@ -649,7 +647,7 @@ void CPHMovementControl::Load					(LPCSTR section){
 	ActivateBox	(0);
 }
 
-void CPHMovementControl::CheckEnvironment(const Fvector &V){
+void CPHMovementControl::CheckEnvironment(const Fvector &/**V/**/){
 	eOldEnvironment=eEnvironment;
 	switch (m_character->CheckInvironment()){
 case peOnGround : eEnvironment=peOnGround;break;

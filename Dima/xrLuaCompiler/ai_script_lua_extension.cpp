@@ -87,7 +87,7 @@ int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, .
 #ifdef ENGINE_BUILD
 	// Msg("[LUA Output] : %s",S2);
 #else
-	getAI().m_tpLuaOutput->w_string(S2);
+	ai().lua_output().w_string(S2);
 #endif
 
 	va_end	(l_tMarker);
@@ -106,7 +106,7 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVM)
 
 	u32				caNamespaceName = _GetItemCount(caScriptString);
 	string256		I;
-	for (u32 i=0; i<caNamespaceName; i++) {
+	for (u32 i=0; i<caNamespaceName; ++i) {
 		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
 		bfLoadFile	(tpLuaVM,S,true);
 	}
@@ -198,7 +198,7 @@ void vfCopyGlobals(CLuaVirtualMachine *tpLuaVM)
 	lua_pushstring	(tpLuaVM,"_G");
 	lua_gettable	(tpLuaVM,LUA_GLOBALSINDEX);
 	lua_pushnil		(tpLuaVM);
-	while (lua_next(tpLuaVM, -2) != 0) {
+	while (lua_next(tpLuaVM, -2)) {
 		lua_pushvalue	(tpLuaVM,-2);
 		lua_pushvalue	(tpLuaVM,-2);
 		lua_settable	(tpLuaVM,-6);
@@ -228,7 +228,7 @@ bool bfDoFile(CLuaVirtualMachine *tpLuaVM, LPCSTR caScriptName, bool bCall)
 	strconcat		(l_caLuaFileName,"@",caScriptName);
 	
 	if (!bfLoadBuffer(tpLuaVM,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName)) {
-		lua_pop			(tpLuaVM,2);
+		lua_pop			(tpLuaVM,4);
 		FS.r_close		(l_tpFileReader);
 		return		(false);
 	}
@@ -254,7 +254,7 @@ bool bfDoFile(CLuaVirtualMachine *tpLuaVM, LPCSTR caScriptName, bool bCall)
 void vfSetNamespace(CLuaVirtualMachine *tpLuaVM)
 {
 	lua_pushnil		(tpLuaVM);
-	while (lua_next(tpLuaVM, -2) != 0) {
+	while (lua_next(tpLuaVM, -2)) {
 		lua_pushvalue	(tpLuaVM,-2);
 		lua_gettable	(tpLuaVM,-5);
 		if (lua_isnil(tpLuaVM,-1)) {
@@ -330,7 +330,7 @@ bool Script::bfGetNamespaceTable(CLuaVirtualMachine *tpLuaVM, LPCSTR N)
 bool	Script::bfIsObjectPresent	(CLuaVirtualMachine *tpLuaVM, LPCSTR identifier, int type)
 {
 	lua_pushnil (tpLuaVM); 
-	while (lua_next(tpLuaVM, -2) != 0) { 
+	while (lua_next(tpLuaVM, -2)) { 
 		if ((lua_type(tpLuaVM, -1) == type) && !strcmp(identifier,lua_tostring(tpLuaVM, -2))) { 
 			lua_pop (tpLuaVM, 3); 
 			return	(true); 

@@ -3,9 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_console.h"
+#include "ai_debug.h"
 #include "CustomMonster.h"
-#include "xr_weapon_list.h"
 #include "customitem.h"
 #include "hudmanager.h"
 #include "ai_space.h"
@@ -13,11 +12,9 @@
 	#include "actor.h"
 #endif
 #include "ai_script_actions.h"
-#include "ai\\rat\\ai_rat.h"
+#include "ai/rat/ai_rat.h"
 
-#include "ai\\biting\\ai_biting.h"
-
-using namespace AI;
+#include "ai/biting/ai_biting.h"
 
 Flags32		psAI_Flags	= {0};
  
@@ -45,10 +42,10 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 
 void CCustomMonster::Init()
 {
+	CMovementManager::Init();
 	tWatchDirection		= Direction();
-	r_torso_speed		= PI;
-	r_spine_speed		= PI;
-	q_look.o_look_speed = PI;
+	m_body.speed		= PI;
+	m_head.speed		= PI;
 	m_fSoundPower		= m_fStartPower = 0;
 	m_dwSoundUpdate		= 0;
 	eye_pp_stage		= 0;
@@ -58,6 +55,10 @@ void CCustomMonster::Init()
 	m_tEyeShift.set		(0,0,0);
 	m_fEyeShiftYaw		= 0.f;
 	NET_WasExtrapolating = FALSE;
+	_FB_hit_RelevantTime	= 10;
+	_FB_sense_RelevantTime	= 10;
+	_FB_look_speed			= PI;
+	_FB_invisible_hscale	= 2.f;
 }
 
 CCustomMonster::CCustomMonster()
@@ -82,47 +83,47 @@ void CCustomMonster::Load		(LPCSTR section)
 //////////////////////////////////////////////////////////////////////////
 
 	///////////
-	// Movement: General
-	Movement.SetParent		(this);
-	Movement.Load			(section);
+	// m_PhysicMovementControl: General
+	m_PhysicMovementControl.SetParent		(this);
+	m_PhysicMovementControl.Load			(section);
 	//Fbox	bb;
 
-	//// Movement: BOX
+	//// m_PhysicMovementControl: BOX
 	//Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
 	//Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
 	//bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
-	//Movement.SetBox		(0,bb);
+	//m_PhysicMovementControl.SetBox		(0,bb);
 
-	//// Movement: BOX
+	//// m_PhysicMovementControl: BOX
 	//Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
 	//Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	//bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
-	//Movement.SetBox		(1,bb);
+	//m_PhysicMovementControl.SetBox		(1,bb);
 
-	//// Movement: Foots
+	//// m_PhysicMovementControl: Foots
 	//Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
 	//Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	//bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	//Movement.SetFoots	(vFOOT_center,vFOOT_size);
+	//m_PhysicMovementControl.SetFoots	(vFOOT_center,vFOOT_size);
 
-	//// Movement: Crash speed and mass
+	//// m_PhysicMovementControl: Crash speed and mass
 	//float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
 	//float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
 	//float	mass		= pSettings->r_float	(section,"ph_mass"				);
-	//Movement.SetCrashSpeeds	(cs_min,cs_max);
-	//Movement.SetMass		(mass);
+	//m_PhysicMovementControl.SetCrashSpeeds	(cs_min,cs_max);
+	//m_PhysicMovementControl.SetMass		(mass);
 	
 
-	// Movement: Frictions
+	// m_PhysicMovementControl: Frictions
 	/*
 	float af, gf, wf;
 	af					= pSettings->r_float	(section,"ph_friction_air"	);
 	gf					= pSettings->r_float	(section,"ph_friction_ground");
 	wf					= pSettings->r_float	(section,"ph_friction_wall"	);
-	Movement.SetFriction	(af,wf,gf);
+	m_PhysicMovementControl.SetFriction	(af,wf,gf);
 
 	// BOX activate
-	Movement.ActivateBox	(0);
+	m_PhysicMovementControl.ActivateBox	(0);
 	*/
 	////////
 
@@ -155,7 +156,7 @@ void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
 	}
 }
 
-void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+void CCustomMonster::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
 //	R_ASSERT(fsimilar(_view.magnitude(),1));
 //	R_ASSERT(fsimilar(_move.magnitude(),1));
@@ -249,7 +250,7 @@ void CCustomMonster::net_Import(NET_Packet& P)
 	setEnabled				(TRUE);
 }
 
-void CCustomMonster::Exec_Physics( float dt )
+void CCustomMonster::Exec_Physics( float /**dt/**/)
 {
 	// 
 	Engine.Sheduler.Slice	();
@@ -299,7 +300,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			Fvector C; float R;
 			//////////////////////////////////////
 			// С Олеся - ПИВО!!!! (Диме :-))))
-			// Movement.GetBoundingSphere	(C,R);
+			// m_PhysicMovementControl.GetBoundingSphere	(C,R);
 			//////////////////////////////////////
 			Center(C);
 			R = Radius();
@@ -308,8 +309,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();
-			uNext.o_model			= r_torso_current.yaw;
-			uNext.o_torso			= r_torso_current;
+			uNext.o_model			= m_body.current.yaw;
+			uNext.o_torso			= m_body.current;
 			uNext.p_pos				= Position();
 			uNext.fHealth			= fEntityHealth;
 			NET.push_back			(uNext);
@@ -318,8 +319,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		{
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
-			uNext.o_model		= r_torso_current.yaw;
-			uNext.o_torso		= r_torso_current;
+			uNext.o_model		= m_body.current.yaw;
+			uNext.o_torso		= m_body.current;
 			uNext.p_pos			= Position();
 			uNext.fHealth		= fEntityHealth;
 			NET.push_back		(uNext);
@@ -357,7 +358,7 @@ void CCustomMonster::UpdateCL	()
 		NET_WasExtrapolating		= FALSE;
 		// Search 2 keyframes for interpolation
 		int select		= -1;
-		for (u32 id=0; id<NET.size()-1; id++)
+		for (u32 id=0; id<NET.size()-1; ++id)
 		{
 			if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
 		}
@@ -372,16 +373,13 @@ void CCustomMonster::UpdateCL	()
 			Fvector					l_tOldPosition = Position();
 			NET_Last.lerp			(A,B,factor);
 			if (Local()) {
-				if (SUB_CLS_ID != CLSID_AI_RAT) {
+				if (CLSID_AI_RAT != SUB_CLS_ID) {
 					NET_Last.p_pos		= l_tOldPosition;
 				}
 			}
 			else {
-				if (!bfScriptAnimation()) {
-					Fvector				dir;
-					AI_Path.Direction	(dir);
-					SelectAnimation		(XFORM().k,dir,AI_Path.fSpeed);
-				}
+				if (!bfScriptAnimation())
+					SelectAnimation	(XFORM().k,direction(),speed());
 			}
 			
 			// Signal, that last time we used interpolation
@@ -393,13 +391,10 @@ void CCustomMonster::UpdateCL	()
 	if (Local() && g_Alive()) {
 #pragma todo("Dima to All : this is FAKE, network is not supported here!")
 		
-		if (SUB_CLS_ID != CLSID_AI_RAT) {
-			AI_Path.Calculate(this,NET_Last.p_pos,Position(),m_fCurSpeed,Device.fTimeDelta);
-			if (!bfScriptAnimation()) {
-				Fvector				dir;
-				AI_Path.Direction	(dir);
-				SelectAnimation		(XFORM().k,dir,AI_Path.fSpeed);
-			}
+		if (CLSID_AI_RAT != SUB_CLS_ID) {
+			move_along_path			(&m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
+			if (!bfScriptAnimation())
+				SelectAnimation		(XFORM().k,direction(),speed());
 		}
 		else {
 			CAI_Rat				*l_tpRat = dynamic_cast<CAI_Rat*>(this);
@@ -426,15 +421,8 @@ void CCustomMonster::UpdateCL	()
 
 	// Use interpolated/last state
 	if(g_Alive()) {
-		
 		XFORM().rotateY				(NET_Last.o_model);
 		XFORM().translate_over		(NET_Last.p_pos);
-		
-		if (Remote())		{
-			XFORM().rotateY			(N.o_model);
-			XFORM().translate_over	(N.p_pos);
-			Position().set			(NET_Last.p_pos);
-		}
 	}
 }
 
@@ -449,7 +437,7 @@ BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
 void CCustomMonster::GetVisible			(objVisible& R)
 {
 	xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
-	for (; I!=E; I++)
+	for (; I!=E; ++I)
 		if (positive(I->fuzzy))
 #ifdef IGNORE_ACTOR
 			if (dynamic_cast<CEntityAlive *>(I->O) && !dynamic_cast<CActor *>(I->O))
@@ -461,7 +449,7 @@ void CCustomMonster::GetVisible			(objVisible& R)
 
 void CCustomMonster::eye_pp_s0			( )
 {
-	eye_pp_stage						++;
+	++eye_pp_stage;
 
 	// Eye matrix
 	CKinematics* V							= PKinematics(Visual());
@@ -469,14 +457,14 @@ void CCustomMonster::eye_pp_s0			( )
 	Fmatrix&	mEye						= V->LL_GetTransform(u16(eye_bone));
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
 	VERIFY									(_valid(mEye));
-	eye_matrix.setHPB						(-r_current.yaw + m_fEyeShiftYaw,-r_current.pitch,0);
+	eye_matrix.setHPB						(-m_head.current.yaw + m_fEyeShiftYaw,-m_head.current.pitch,0);
 //	eye_matrix.c.set						(X.c);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
 }
 
 void CCustomMonster::eye_pp_s1			( )
 {
-	eye_pp_stage						++;
+	++eye_pp_stage;
 
 	// Standart visibility
 	Device.Statistic.AI_Vis_Query.Begin		();
@@ -491,7 +479,7 @@ void CCustomMonster::eye_pp_s1			( )
 
 void CCustomMonster::eye_pp_s2			( )
 {
-	eye_pp_stage						++;
+	++eye_pp_stage;
 
 	// Tracing
 	Device.Statistic.AI_Vis_RayTests.Begin	();
@@ -530,16 +518,15 @@ void CCustomMonster::OnRender()
 	//if (!bDebug)					return;
 	if (!psAI_Flags.test(aiDebug))	return;
 
-//	Movement.DBG_Render();
+//	m_PhysicMovementControl.DBG_Render();
 
 	RCache.OnFrameEnd				();
 	{
-	for (u32 I=1; I<AI_Path.TravelPath.size(); I++)
-	{
-		CTravelNode&	N1 = AI_Path.TravelPath[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
-		CTravelNode&	N2 = AI_Path.TravelPath[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
+	for (u32 I=1; I<CDetailPathManager::path().size(); ++I) {
+		const CDetailPathManager::STravelPoint&	N1 = CDetailPathManager::path()[I-1];	Fvector	P1; P1.set(N1.m_position); P1.y+=0.1f;
+		const CDetailPathManager::STravelPoint&	N2 = CDetailPathManager::path()[I];		Fvector	P2; P2.set(N2.m_position); P2.y+=0.1f;
 		RCache.dbg_DrawLINE			(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
-		if (I == (AI_Path.TravelPath.size() - 1 )) // песледний box?
+		if ((CDetailPathManager::path().size() - 1) == I) // песледний box?
 			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
 		else 
 			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
@@ -548,7 +535,7 @@ void CCustomMonster::OnRender()
 		Fvector         T;
         Fvector4        S;
         
-        T.set			(AI_Path.TravelPath[I].P); T.y+=(Radius()*2);
+        T.set			(CDetailPathManager::path()[I].m_position); T.y+=(Radius()*2);
         Device.mFullTransform.transform (S,T);
         
 //		pApp->pFont->Size       (0.07f/sqrtf(_abs(S.w)));
@@ -559,7 +546,7 @@ void CCustomMonster::OnRender()
 	}
 	/*
 	{
-	for (u32 I=1; I<AI_Path.TravelPath_dbg.size(); I++)
+	for (u32 I=1; I<AI_Path.TravelPath_dbg.size(); ++I)
 	{
 		CTrevelNode&	N1 = AI_Path.TravelPath_dbg[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
 		CTrevelNode&	N2 = AI_Path.TravelPath_dbg[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
@@ -570,11 +557,10 @@ void CCustomMonster::OnRender()
 	*/
 	{
 	
-	for (u32 I=0; I<AI_Path.Segments.size(); I++)
+	for (int I=0; I<(int)CDetailPathManager::path().size() - 1; ++I)
 	{
-		PSegment& S = AI_Path.Segments[I];
-		Fvector P1;	P1.set(S.v1); P1.y+=0.1f;
-		Fvector P2;	P2.set(S.v2); P2.y+=0.1f;
+		Fvector P1 = CDetailPathManager::path()[I].m_position;		P1.y+=0.1f;
+		Fvector P2 = CDetailPathManager::path()[I + 1].m_position;	P2.y+=0.1f;
 		RCache.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
 		RCache.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
 		RCache.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
@@ -583,13 +569,13 @@ void CCustomMonster::OnRender()
 
 	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
 		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-		for (unsigned i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-			Fvector tP0 = getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+		for (unsigned i=0; i<Group.m_tpaSuspiciousNodes.size(); ++i) {
+			Fvector tP0 = ai().level_graph().vertex_position(Group.m_tpaSuspiciousNodes[i].dwNodeID);
 			tP0.y += .35f;
-			if (Group.m_tpaSuspiciousNodes[i].dwSearched == 0)		
+			if (!Group.m_tpaSuspiciousNodes[i].dwSearched)
 				RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
 			else
-				if (Group.m_tpaSuspiciousNodes[i].dwSearched == 1)		
+				if (1 == Group.m_tpaSuspiciousNodes[i].dwSearched)
 					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
 				else
 					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
@@ -631,7 +617,7 @@ void CCustomMonster::OnRender()
 	
 	if (psAI_Flags.test(aiMotion)) 
 	{
-		Movement.dbg_Draw();
+		m_PhysicMovementControl.dbg_Draw();
 	}
 //	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
 
@@ -649,7 +635,7 @@ void CCustomMonster::OnRender()
 }
 #endif
 
-void CCustomMonster::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
+void CCustomMonster::HitSignal(float /**perc/**/, Fvector& /**vLocalDir/**/, CObject* /**who/**/)
 {
 }
 
@@ -664,15 +650,15 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract			*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
 
-	AI_Path.DestNode		= AI_NodeID;
+	set_level_dest_vertex	(level_vertex_id());
 
 	eye_matrix.identity		();
 
-	r_torso_current.yaw		= r_torso_target.yaw	= -E->o_Angle.y;
-	r_torso_current.pitch	= r_torso_target.pitch	= 0;
+	m_body.current.yaw		= m_body.target.yaw	= -E->o_Angle.y;
+	m_body.current.pitch	= m_body.target.pitch	= 0;
 	fEntityHealth			= E->fHealth;
 
-	R_ASSERT				(Visual()->Type==MT_SKELETON_ANIM);
+	R_ASSERT				(MT_SKELETON_ANIM == Visual()->Type);
 
 	// Eyes
 	eye_bone				= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
@@ -697,10 +683,12 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	} else {
 	}
 
+	CMovementManager::Init		();
+
 	return TRUE;
 }
 
-void CCustomMonster::OnHUDDraw(CCustomHUD* hud)
+void CCustomMonster::OnHUDDraw(CCustomHUD* /**hud/**/)
 {
 	HUD().pFontSmall->SetColor	(D3DCOLOR_XRGB(255,0,0));
 	HUD().pFontSmall->OutSet	(0,200);
@@ -764,7 +752,7 @@ void CCustomMonster::OnHUDDraw(CCustomHUD* hud)
 //	// 
 
 
-void CCustomMonster::Exec_Action(float dt)
+void CCustomMonster::Exec_Action(float /**dt/**/)
 {
 }
 

@@ -6,19 +6,19 @@
 #define AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_
 #pragma once
 
-//#define NO_PHYSICS_IN_AI_MOVE
-
-#include "..\feel_vision.h"
-#include "..\feel_sound.h"
-#include "..\feel_touch.h"
+#include "../feel_vision.h"
+#include "../feel_sound.h"
+#include "../feel_touch.h"
 #include "entity.h"
 
 #include "ai_space.h"
 #include "ai_commands.h"
-#include "ai_pathnodes.h"
-#include "AI\\ai_monster_state.h"
-#include "AI\\script\\ai_script_monster.h"
+#include "AI/ai_monster_state.h"
+#include "AI/script/ai_script_monster.h"
 #include "ai_monster_space.h"
+#include "movement_manager.h"
+#include "enemy_selector.h"
+#include "memory_manager.h"
 
 //#define IGNORE_ACTOR
 
@@ -29,11 +29,19 @@ class CCustomMonster :
 	public Feel::Vision, 
 	public Feel::Sound, 
 	public Feel::Touch,
-	public CScriptMonster
+	public CScriptMonster,
+	public CMovementManager,
+	public CEnemySelector,
+	public CMemoryManager
 {
 	typedef	CEntityAlive	inherited;
 protected:
 	
+	u32				_FB_hit_RelevantTime;
+	u32				_FB_sense_RelevantTime;
+	float			_FB_look_speed;
+	float			_FB_invisible_hscale;
+
 	struct				SAnimState
 	{
 		CMotionDef		*fwd;
@@ -78,11 +86,13 @@ protected:
 		CEntity			*tpEntity;
 	} SSimpleSound;
 
-public:
-	// Pathfinding cache
-	AI::CPathNodes		AI_Path;
-	DWORD_VECTOR		m_tpaGraphPath;
+	struct SBoneRotation {
+		SRotation		current;
+		SRotation		target;
+		float			speed;
+	};
 
+public:
 	// Eyes
 	Fmatrix				eye_matrix;
 	int					eye_bone;
@@ -95,9 +105,6 @@ public:
 	float				m_fEyeShiftYaw;
 	BOOL				NET_WasExtrapolating;
 
-	// AI
-	AI::AIC_Look		q_look;
-	AI::AIC_Action		q_action;
 	Fvector				tWatchDirection;
 	float				m_fMinSpeed;
 	float				m_fMaxSpeed;
@@ -113,15 +120,15 @@ public:
 	virtual void		Think() = 0;
 
 	// Rotation
-	SRotation			r_current,r_target, r_torso_current, r_torso_target;
-	float				r_spine_speed, r_torso_speed;
+	SBoneRotation		m_body;
+	SBoneRotation		m_head;
 
 	float				m_fTimeUpdateDelta;
 	u32					m_dwLoopCount;
 	int					m_iCurrentPatrolIndex;
 	bool				m_bPatrolPathInverted;
 	u32					m_dwLastUpdateTime;
-	u32					m_dwCurrentUpdate;
+	u32					m_current_update;
 	xr_vector<CObject*>	m_tpaVisibleObjects;
 //	Fmatrix				m_tServerTransform;
 	
@@ -159,7 +166,6 @@ public:
 	// stream executors
 	virtual void		Exec_Action				( float dt );
 	virtual void		Exec_Look				( float dt );
-	virtual void		Exec_Movement			( float dt );
 	void				Exec_Physics			( float dt );
 	void				Exec_Visibility			( );
 	void				eye_pp_s0				( );
@@ -175,7 +181,7 @@ public:
 	virtual void		Die						( );
 
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);
-	virtual void		g_WeaponBones			(int &L, int &R1, int &R2) {};
+	virtual void		g_WeaponBones			(int &/**L/**/, int &/**R1/**/, int &/**R2/**/) {};
 	virtual void		Load					( LPCSTR	section );				
 	virtual void		shedule_Update					( u32		DT		);
 	virtual void		UpdateCL				( );
@@ -204,7 +210,7 @@ public:
 	{
 		xr_vector<CEntity*> &tpaMembers = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Members;
 		int iCount = (int)tpaMembers.size();
-		for (int i=0; i<iCount; i++)
+		for (int i=0; i<iCount; ++i)
 			if (this == tpaMembers[i])
 				return(i);
 		return(-1);
@@ -219,11 +225,7 @@ public:
 
 	IC		bool		angle_lerp_bounds(float &a, float b, float c, float d)
 	{
-		float fDifference;
-		if ((fDifference = _abs(a - b)) > PI - EPS_L)
-			fDifference = PI_MUL_2 - fDifference;
-
-		if (c*d >= fDifference) {
+		if (c*d >= angle_difference(a,b)) {
 			a = b;
 			return(true);
 		}
@@ -235,6 +237,20 @@ public:
 	
 	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
 
+	IC void vfNormalizeSafe(Fvector& Vector)
+	{
+		float fMagnitude = Vector.magnitude(); 
+		if (fMagnitude > EPS_L) {
+			Vector.x /= fMagnitude;
+			Vector.y /= fMagnitude;
+			Vector.z /= fMagnitude;
+		}
+		else {
+			Vector.x = 1.f;
+			Vector.y = 0.f;
+			Vector.z = 0.f;
+		}
+	}
 public:
 	virtual	float				ffGetFov				()										{return eye_fov;}	
 	virtual	float				ffGetRange				()										{return eye_range;}

@@ -13,7 +13,7 @@ typedef struct tagSSearchPlace {
 	u32		dwNodeID:24;
 	u32		dwSearched:2;
 	u32		dwGroup:6;
-	float	fCost;
+	float	m_cost;
 } SSearchPlace;
 
 //typedef svector<Fvector,MAX_GROUP_SIZE>						MemberPlacement;

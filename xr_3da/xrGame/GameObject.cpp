@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "GameObject.h"
-#include "..\fbasicvisual.h"
+#include "../fbasicvisual.h"
 #include "PhysicsShell.h"
 #include "ai_space.h"
 #include "CustomMonster.h"
@@ -12,32 +12,20 @@
 #include "HangingLamp.h"
 #include "PhysicsShell.h"
 #include "game_sv_single.h"
+#include "level_graph.h"
+#include "game_level_cross_table.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-
 CGameObject::CGameObject		()
 {
-	AI_NodeID		= u32(-1);
-	AI_Node			= 0;
-	m_pPhysicsShell = NULL;
-
-	/******* Oles
-#ifdef DEBUG
-	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
-#endif
-	*/
-	m_tpALife		= 0;
+	m_pPhysicsShell			= NULL;
+	m_tpALife				= 0;
 }
 
 CGameObject::~CGameObject		()
 {
-
-	/******* Oles
-#ifdef DEBUG
-	Device.seqRender.Remove	(this);
-#endif
-	*/
 }
 
 void CGameObject::Load(LPCSTR section)
@@ -45,7 +33,8 @@ void CGameObject::Load(LPCSTR section)
 	inherited::Load			(section);
 	//////////////////////////////////////
 	// С Олеся - ПИВО!!!! (2-я бутылка опять же Диме :-))))
-	// Почему CGameObject не был VISIBLEFORAI ???
+	// Надо что-то придумать, чтобы флаги правильно 
+	// выставлялись в конструкторе
 	//////////////////////////////////////
 	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
 	if (self)	{
@@ -57,17 +46,19 @@ void CGameObject::Load(LPCSTR section)
 
 void CGameObject::net_Destroy	()
 {
-	inherited::net_Destroy		();
+	inherited::net_Destroy						();
 	setReady									(FALSE);
 	g_pGameLevel->Objects.net_Unregister		(this);
-	if (this == Level().CurrentEntity())		Level().SetEntity(0);
-	if (!H_Parent()) {
-//		Msg										("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
-		getAI().ref_dec							(AI_NodeID);
-	}
-	AI_NodeID									= u32(-1);
-	AI_Node										= 0;
-	xr_delete(m_pPhysicsShell);
+	
+	if (this == Level().CurrentEntity())
+		Level().SetEntity						(0);
+
+	if (!H_Parent() && ai().level_graph().valid_vertex_id(level_vertex_id()))
+		ai().level_graph().ref_dec				(level_vertex_id());
+
+	Init										();
+
+	xr_delete									(m_pPhysicsShell);
 }
 
 void CGameObject::OnEvent		(NET_Packet& P, u16 type)
@@ -125,149 +116,98 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	setID							(E->ID);
 	g_pGameLevel->Objects.net_Register	(this);
 
-	m_tpALife						= 0;
-	if (Level().game.type == GAME_SINGLE) {
-		game_sv_Single			*tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-		if (tpGame && tpGame->m_tpALife) {
-			m_tpALife				= tpGame->m_tpALife;
+	// if we have a parent
+	if (0xffff != E->ID_Parent) {
+		
+		setup_parent_ai_locations();
+
+		if (!Parent) {
+			// we need this to prevent illegal ref_dec/ref_add
+			Parent				= this;
+			inherited::net_Spawn(DC);
+			Parent				= 0;
 		}
+		else
+			inherited::net_Spawn(DC);
+	}
+	else {
+		if (ai().get_level_graph()) {
+			CSE_ALifeObject			*l_tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
+			CSE_Temporary			*l_tpTemporary	= dynamic_cast<CSE_Temporary*>	(E);
+			if (l_tpALifeObject && ai().level_graph().valid_vertex_id(l_tpALifeObject->m_tNodeID))
+				set_level_vertex	(l_tpALifeObject->m_tNodeID);
+			else
+				if (l_tpTemporary  && ai().level_graph().valid_vertex_id(l_tpTemporary->m_tNodeID))
+					set_level_vertex(l_tpTemporary->m_tNodeID);
+
+			validate_ai_locations	(false);
+
+			// validating position
+			if (!dynamic_cast<CPhysicObject*>(this) && !dynamic_cast<CHangingLamp*>(this))
+				Position().y		= ai().level_graph().vertex_plane_y(*level_vertex(),Position().x,Position().z);
+		
+		}
+		inherited::net_Spawn	(DC);
 	}
 
-	// AI-DB connectivity
-	CTimer		T; T.Start		();
-	CSE_ALifeObject*		a_obj	= dynamic_cast<CSE_ALifeObject*>(E);
-	CSE_Temporary			*l_tpTemporary = dynamic_cast<CSE_Temporary*>(E);
-	u32						l_dwDesiredNodeID = a_obj ? a_obj->m_tNodeID : (l_tpTemporary ? l_tpTemporary->m_tNodeID : u32(-1));
-	
-	if (!getAI().bfCheckIfMapLoaded()) {
-		AI_NodeID			= u32(-1);
-		AI_Node				= 0;
-	}
-	else
-		if (E->ID_Parent == 0xffff) {
-			if (l_dwDesiredNodeID != u32(-1)) {
-				CAI_Space&	AI		= getAI();
-				R_ASSERT			(AI.bfCheckIfGraphLoaded());
-				//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(Position()));
-				//		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,Position());
-				//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(Position()));
-				//Msg("Net_spawn %s",cName());
-				if ((l_dwDesiredNodeID < getAI().Header().count) && l_dwDesiredNodeID)
-					AI_NodeID			=	AI.q_Node	(l_dwDesiredNodeID,Position());
-				else
-					AI_NodeID			=	AI.q_LoadSearch(Position());
-
-				if (!AI_NodeID || (AI_NodeID == u32(-1))) {
-					Msg					("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
-					R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
-					AI_NodeID			= u32(-1);
-					AI_Node				= NULL;
-				}
-				else {
-					AI_Node				= AI.Node(AI_NodeID);
-					//Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
-					getAI().ref_add		(AI_NodeID);
-					CPhysicObject		*l_tpPhysicObject = dynamic_cast<CPhysicObject*>(this);
-					if (!l_tpPhysicObject) {
-						CHangingLamp	*l_tpHangingLamp = dynamic_cast<CHangingLamp*>(this);
-						if (!l_tpHangingLamp)
-							Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
-					}
-				}
-			}
-			else {
-				Fvector					nPos = Position();
-				int node				= getAI().q_LoadSearch(nPos);
-
-				CPhysicObject			*l_tpPhysicObject = dynamic_cast<CPhysicObject*>(this);
-				if (node<=0)			{
-					if (!l_tpPhysicObject) {
-						Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
-						R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
-						AI_NodeID			= u32(-1);
-						AI_Node				= NULL;
-					}
-				}
-				else {
-					AI_NodeID			= u32(node);
-					AI_Node				= getAI().Node(AI_NodeID);
-					getAI().ref_add		(AI_NodeID);
-					if (!l_tpPhysicObject) {
-						CHangingLamp	*l_tpHangingLamp = dynamic_cast<CHangingLamp*>(this);
-						if (!l_tpHangingLamp)
-							Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
-					}
-				}
-			}
-		}
-		else {
-			CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
-			VERIFY						(O);
-			Position().set				(O->Position());
-			AI_NodeID					= O->AI_NodeID;
-			AI_Node						= O->AI_Node;
-		}
-
-#pragma todo("Oles to Dima : Incorrect spawning, just hackery?")
-#pragma todo("Dima to Oles : Parent will be assigned after object's net_spawn, though I need it filled correctly during net_spawn to prevent illegal node ref_add/ref_dec in the sector_detect")
-	if ((E->ID_Parent != 0xffff) && !Parent) {
-		Parent						= this;
-		inherited::net_Spawn		(DC);
-		Parent						= 0;
-	}
-	else
-		inherited::net_Spawn		(DC);
-
-	//Msg			("--spawn--ai-node: %f ms",1000.f*T.GetAsync());
-
-	// Phantom
-	// respawnPhantom			= E->ID_Phantom;
-	
-	return	TRUE;
+	return						(TRUE);
 }
 
-void CGameObject::spatial_move		()
+void CGameObject::setup_parent_ai_locations()
 {
-	if (H_Parent()) {
-//		// Use parent information
-		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
-		VERIFY						(O);
-//		CAI_Space&	AI				= getAI();
-//		Msg							("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
-//		AI.ref_dec					(AI_NodeID);
+	CGameObject				*l_tpGameObject	= dynamic_cast<CGameObject*>(H_Root());
+	VERIFY					(l_tpGameObject);
+	// get parent's position
+	Position().set			(l_tpGameObject->Position());
+	// setup its ai locations
+	if (ai().level_graph().valid_vertex_id(l_tpGameObject->level_vertex_id()))
+		set_level_vertex		(l_tpGameObject->level_vertex_id());
+	if (ai().game_graph().valid_vertex_id(l_tpGameObject->game_vertex_id()))
+		set_game_vertex			(l_tpGameObject->game_vertex_id());
+}
 
-		Position().set				(O->Position());
-		AI_NodeID					= O->AI_NodeID;
-//		Msg							("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
-//		AI.ref_add					(AI_NodeID);
-		AI_Node						= O->AI_Node;
-		// Sector_Move	(O->Sector());
-	} else {
-		// We was moved - so find _new AI-Node
-//		if ((AI_Node) && (Visual())) {
-		if (Visual() && getAI().bfCheckIfMapLoaded()) {
-			Fvector		Pos	= Visual()->vis.sphere.P;		  
-			Pos.add		(Position());
-			CAI_Space&	AI = getAI();
+void CGameObject::validate_ai_locations			(bool decrement_reference)
+{
+	if (!ai().get_level_graph())
+		return;
 
-//			Msg						("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
-			if ((int(AI_NodeID) > 0) && (getAI().Header().count))
-				AI.ref_dec			(AI_NodeID);
-//			Msg("Spatial move %s",cName());
-			AI_NodeID	= AI.q_Node	(AI_NodeID,Position());
+	u32		l_dwNewLevelVertexID	= ai().level_graph().vertex(level_vertex_id(),Position());
 
-//			Msg						("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
-			AI.ref_add				(AI_NodeID);
-			AI_Node					= AI.Node(AI_NodeID);
-//			if (!getAI().bfInsideNode(AI_Node,Position())) {
-//				AI_NodeID	= AI_NodeID;
-//			}
+	if (level_vertex_id() == l_dwNewLevelVertexID)
+		return;
 
+	if (!ai().level_graph().valid_vertex_id(l_dwNewLevelVertexID)) {
+		Msg							("! GameObject : Corresponding vertex hasn't been found for object %s",cName());
+		R_ASSERT3					(!ai().get_level_graph(),"Cannot find a proper vertex for object ",cName());
+		return;
+	}
+	
+	if (decrement_reference && ai().level_graph().valid_vertex_id(level_vertex_id()))
+		ai().level_graph().ref_dec	(level_vertex_id());
+
+	set_level_vertex				(l_dwNewLevelVertexID);
+	set_level_vertex				(ai().level_graph().vertex(level_vertex_id()));
+
+	ai().level_graph().ref_add		(level_vertex_id());
+
+	if (ai().get_game_graph() && ai().get_cross_table()) {
+		set_game_vertex				(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
+		VERIFY						(ai().game_graph().valid_vertex_id(game_vertex_id()));
+	}
+}
+
+void CGameObject::spatial_move	()
+{
+	if (H_Parent())
+		setup_parent_ai_locations	();
+	else
+		if (Visual()) {
+			Fvector					Pos	= Visual()->vis.sphere.P;		  
+			Pos.add					(Position());
+			validate_ai_locations	();
 		}
 
-		// Perform sector detection
-	}
-	inherited::spatial_move();
+	inherited::spatial_move			();
 }
 
 void CGameObject::renderable_Render	()
@@ -279,12 +219,7 @@ void CGameObject::renderable_Render	()
 
 float CGameObject::renderable_Ambient	()
 {
-//	#pragma todo("by Dandy: temporary change, to prevent error")
-	return (AI_Node && (int(AI_NodeID) > 0) && 
-						(int(AI_NodeID) <getAI().Header().count))?
-						 float(AI_Node->light):255;
-//	return 255;
-
+	return (ai().level_graph().valid_vertex_id(level_vertex_id()) ? float(level_vertex()->light()/15.f) : 1.f);
 }
 
 CObject::SavedPosition CGameObject::ps_Element(u32 ID)
@@ -308,13 +243,13 @@ void CGameObject::u_EventGen(NET_Packet& P, u32 type, u32 dest)
 	P.w_u16		(u16(dest&0xffff));
 }
 
-void CGameObject::u_EventSend(NET_Packet& P, BOOL sync)
+void CGameObject::u_EventSend(NET_Packet& P, BOOL /**sync/**/)
 {
 	Level().Send(P,net_flags(TRUE,TRUE));
 }
 
-void CGameObject::Hit(float P, Fvector &dir, CObject* who, s16 element,
-					  Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void CGameObject::Hit(float /**P/**/, Fvector &dir, CObject* /**who/**/, s16 /**element/**/,
+					  Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/)
 {
 	if(impulse>0)
 		if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse);
@@ -331,10 +266,10 @@ f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radi
 	l_dir.normalize();
 	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, RQ)) return 0;
 	//осколок не попал или попал, но не по нам
-	if(RQ.O != this) return 0;
+	if(this != RQ.O) return 0;
 	
 /*	//предотвращение вылетания
-	if((s16)RQ.element != -1)
+	if(-1 != (s16)RQ.element)
 	{
 		elements.push_back((s16)RQ.element);
 	}
@@ -389,24 +324,7 @@ void CGameObject::OnH_B_Chield()
 void CGameObject::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
-	if (!getAI().bfCheckIfMapLoaded())
-		return;
-
-	if ((AI_NodeID < getAI().Header().count) && AI_NodeID)
-		AI_NodeID			=	getAI().q_Node	(AI_NodeID,Position());
-	else
-		AI_NodeID			=	getAI().q_LoadSearch(Position());
-
-	if (!AI_NodeID || (AI_NodeID == u32(-1))) {
-		Msg					("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
-		R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
-		AI_NodeID			= u32(-1);
-		AI_Node				= NULL;
-	}
-	else
-		AI_Node				= getAI().Node(AI_NodeID);
-
-	getAI().ref_add			(AI_NodeID);
+	validate_ai_locations		();
 }
 
 void CGameObject::PHSetPushOut(u32 time /* = 5000 */)
@@ -416,15 +334,10 @@ void CGameObject::PHSetPushOut(u32 time /* = 5000 */)
 }
 
 
-f32 CGameObject::GetMass() { return m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
-///void CGameObject::OnH_A_Independent()
-//{
-//	if(m_pPhysicsShell)
-//		m_pPhysicsShell->set_PushOut(50000);
-		//m_pPhysicsShell->SetMaterial("objects\\soft_object");
-
-//	inherited::OnH_A_Independent();
-//}
+f32 CGameObject::GetMass()
+{
+	return m_pPhysicsShell ? m_pPhysicsShell->getMass() : 0;
+}
 
 #ifdef DEBUG
 void CGameObject::OnRender()

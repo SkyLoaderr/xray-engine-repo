@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "HUDmanager.h"
-#include "..\xr_ioconsole.h"
+#include "../xr_ioconsole.h"
 #include "entity.h"
 #include "game_sv_single.h"
 #include "ai_alife.h"
+#include "level_graph.h"
 
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
@@ -44,13 +45,13 @@ void CLevel::IR_OnKeyboardPress(int key)
 		xr_vector<CObject*>::iterator E = Objects.objects.end();
 		bool bOk = false;
 		if (pCurrentEntity)
-			for ( ; I != E; I++)
+			for ( ; I != E; ++I)
 				if ((*I) == pCurrentEntity)
 					break;
 		if (I != E) {
 			J = I;
 			bOk = false;
-			for (I++; I != E; I++) {
+			for (++I; I != E; ++I) {
 				CEntityAlive* tpEntityAlive = dynamic_cast<CEntityAlive*>(*I);
 				if (tpEntityAlive) {
 					bOk = true;
@@ -58,7 +59,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 				}
 			}
 			if (!bOk)
-				for (I = B; I != J; I++) {
+				for (I = B; I != J; ++I) {
 					CEntityAlive* tpEntityAlive = dynamic_cast<CEntityAlive*>(*I);
 					if (tpEntityAlive) {
 						bOk = true;
@@ -77,15 +78,15 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 	}
 #ifdef DEBUG
-//	case DIK_F9:
-//		getAI().SetStartPoint(CurrentEntity()->Position());
-//		return;
-//	case DIK_F10:
-//		getAI().SetFinishPoint(CurrentEntity()->Position());
-//		return;
-//	case DIK_F11:
-//		getAI().ComputePath();
-//		return;
+	case DIK_F9:
+		ai().level_graph().set_start_point(CurrentEntity()->Position());
+		return;
+	case DIK_F10:
+		ai().level_graph().set_finish_point(CurrentEntity()->Position());
+		return;
+	case DIK_F11:
+		ai().level_graph().compute_path();
+		return;
 #endif
 	}
 
@@ -129,6 +130,6 @@ void CLevel::IR_OnMouseMove( int dx, int dy )
 	if (CurrentEntity())	CurrentEntity()->IR_OnMouseMove(dx,dy);
 }
 
-void CLevel::IR_OnMouseStop( int axis, int value)
+void CLevel::IR_OnMouseStop( int /**axis/**/, int /**value/**/)
 {
 }

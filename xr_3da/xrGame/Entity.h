@@ -79,8 +79,8 @@ public:
 	virtual float			g_MaxHealth			()const	{ return m_fMaxHealthValue;	}
 	float					g_Accuracy			()const	{ return fAccuracy;	}
 	virtual BOOL			g_Alive				()		{ return fEntityHealth>0; }
-	virtual BOOL			g_State				(SEntityState& state)	{return FALSE;}
-	virtual bool			AlreadyDie()		{return  m_dwDeathTime!=0?true:false;}
+	virtual BOOL			g_State				(SEntityState &/**state/**/)	{return FALSE;}
+	virtual bool			AlreadyDie()		{return  0!=m_dwDeathTime?true:false;}
 
 	virtual float			CalcCondition		(float hit);
 
@@ -95,7 +95,7 @@ public:
 	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
-	virtual	float			HitScale			(int element){return 1.f;}
+	virtual	float			HitScale			(int /**element/**/){return 1.f;}
 	virtual void			Die					() = 0;
 	virtual void			KillEntity			(CObject* who);
 		
@@ -121,8 +121,8 @@ public:
 	bool					m_bMobility;
 	float					m_fAccuracy;
 	float					m_fIntelligence;
-	//Movement
-	CPHMovementControl		Movement;
+	//m_PhysicMovementControl
+	CPHMovementControl		m_PhysicMovementControl;
 public:
 	// General
 	CEntityAlive			();
@@ -152,7 +152,7 @@ public:
 
 
 	// Visibility related
-	virtual void			GetVisible				(objVisible& R)	{};
+	virtual void			GetVisible				(objVisible& /**R/**/)	{};
 	virtual	float			ffGetFov				()				= 0;	
 	virtual	float			ffGetRange				()				= 0;	
 	virtual	ERelationType	tfGetRelationType		(CEntityAlive *tpEntityAlive)
@@ -167,7 +167,7 @@ public:
 public:
 IC	CPHMovementControl* PMovement()
 	{
-		return &Movement;
+		return &m_PhysicMovementControl;
 	}
 
 };

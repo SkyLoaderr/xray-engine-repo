@@ -194,7 +194,7 @@ void CArtifactMerger::SpawnArtifact(const char* af_section)
 	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
 								 dynamic_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT			(l_tpALifeDynamicObject);
-	l_tpALifeDynamicObject->m_tNodeID = this->AI_NodeID;
+	l_tpALifeDynamicObject->m_tNodeID = this->level_vertex_id();
 		
 	// Fill
 	strcpy				(D->s_name, af_section);
@@ -214,3 +214,5 @@ void CArtifactMerger::SpawnArtifact(const char* af_section)
 	// Destroy
 	F_entity_Destroy	(D);
 }
+
+

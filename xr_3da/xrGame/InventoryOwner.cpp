@@ -46,7 +46,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	//////////////////////////////////////////////
 	//проспавнить PDA каждому inventory owner
 	//////////////////////////////////////////////
-	if(getAI().m_tpALife)
+	if(ai().get_alife())
 		return			TRUE;
 
 	CSE_Abstract *E	= (CSE_Abstract*)(DC);
@@ -130,7 +130,7 @@ bool CInventoryOwner::IsActivePDA()
 
 //виртуальная функция обработки сообщений
 //who - id PDA от которого пришло сообщение
-void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger)
+void CInventoryOwner::ReceivePdaMessage(u16 /**who/**/, EPdaMsg /**msg/**/, EPdaMsgAnger /**anger/**/)
 {
 }
 
@@ -211,8 +211,8 @@ bool CInventoryOwner::AskQuestion(SInfoQuestion& question, INFO_INDEX_LIST& inde
 
 	INFO_INDEX_LIST_it it;
 	for(it = question.IndexList.begin();
-		it != question.IndexList.end();
-		it++)
+		question.IndexList.end() != it;
+		++it)
 	{
 		int info_index = *it;
 		if(GetPDA()->IsKnowAbout(info_index))

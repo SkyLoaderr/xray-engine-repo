@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Flyer.h"
-#include "..\CameraBase.h"
+#include "../CameraBase.h"
 
 void CFlyer::UpdateCamera()
 {
@@ -8,7 +8,7 @@ void CFlyer::UpdateCamera()
 	
 	// get calc eye point 90% from player height
 	Fvector						R;
-	Movement.Box().getsize		(R);
+	m_PhysicMovementControl.Box().getsize		(R);
 	point.set					(0.f,R.y*0.55f,0.9f);
 	XFORM().transform_tiny	(point);
 

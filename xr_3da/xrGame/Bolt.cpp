@@ -27,7 +27,7 @@ void CBolt::OnH_A_Chield()
 		R_ASSERT			(D);
 		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
 		R_ASSERT							(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
+		l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
 		// Fill
 		strcpy				(D->s_name,cNameSect());
 		strcpy				(D->s_name_replace,"");
@@ -126,7 +126,7 @@ void CBolt::Throw()
 			R_ASSERT			(D);
 			CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
 			R_ASSERT							(l_tpALifeDynamicObject);
-			l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
+			l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
 			// Fill
 			strcpy				(D->s_name,cNameSect());
 			strcpy				(D->s_name_replace,"");

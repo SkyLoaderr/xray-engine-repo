@@ -25,7 +25,7 @@ CPHCapture::~CPHCapture()
 	CPHObject::Deactivate();
 	Deactivate();
 }
-void CPHCapture::PhDataUpdate(dReal step)
+void CPHCapture::PhDataUpdate(dReal /**step/**/)
 {
 	if(b_failed) return;
 	switch(e_state) 
@@ -40,7 +40,7 @@ void CPHCapture::PhDataUpdate(dReal step)
 	}
 }
 
-void CPHCapture::PhTune(dReal step)
+void CPHCapture::PhTune(dReal /**step/**/)
 {
 
 }
@@ -249,7 +249,7 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 	CEntityAlive* capturer=dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object);
 	if(capturer)
 	{
-		CPHCapture* capture=capturer->Movement.PHCapture();
+		CPHCapture* capture=capturer->m_PhysicMovementControl.PHCapture();
 		if(capture)
 		{
 			if(capture->m_taget_element->PhysicsRefObject()==l_pUD2->ph_ref_object) 
@@ -263,7 +263,7 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 	capturer=dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object);
 	if(capturer)
 	{
-		CPHCapture* capture=capturer->Movement.PHCapture();
+		CPHCapture* capture=capturer->m_PhysicMovementControl.PHCapture();
 		if(capture)
 		{
 			if(capture->m_taget_element->PhysicsRefObject()==l_pUD1->ph_ref_object) 

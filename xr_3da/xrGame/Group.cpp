@@ -28,7 +28,7 @@ CGroup::CGroup()
 const Fvector& CGroup::GetCentroid()
 {
 	vCentroid.set	(0,0,0);
-	for (u32 I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); ++I) 
 		vCentroid.add	(Members[I]->Position());
 	vCentroid.div	(float(Members.size()));
 	return vCentroid;
@@ -40,7 +40,7 @@ void CGroup::Member_Add(CEntity* E){
 
 void CGroup::Member_Remove(CEntity* E){
 	EntityIt it = std::find(Members.begin(),Members.end(),E);
-	if (it!=Members.end()) Members.erase(it);
+	if (Members.end()!=it) Members.erase(it);
 }
 
 void CGroup::GetAliveMemberPlacement(MemberPlacement& MP, CEntity* Me)
@@ -49,7 +49,7 @@ void CGroup::GetAliveMemberPlacement(MemberPlacement& MP, CEntity* Me)
 	MP.clear		();
 	MP.reserve		(Members.size());
 	vCentroid.set	(0,0,0);
-	for (u32 I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); ++I) 
 		if (Members[I]->g_Health() > 0) {
 			CEntity*		E = Members[I];
 			const Fvector&	P = E->Position();
@@ -64,10 +64,10 @@ void CGroup::GetAliveMemberPlacementN(MemberNodes& MP, CEntity* Me)
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	MP.reserve		(Members.size());
-	for (u32 I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); ++I) 
 		if (Members[I]->g_Health() > 0) {
 			CEntity*	E = Members[I];
-			if (E!=Me)	MP.push_back(E->AI_NodeID);
+			if (E!=Me)	MP.push_back(E->level_vertex_id());
 		}
 }
 
@@ -77,7 +77,7 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 	MP.clear		();
 	MP.reserve		(Members.size());
 	vCentroid.set	(0,0,0);
-	for (u32 I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); ++I) 
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
 				CEntity*		E = Members[I];
@@ -91,8 +91,8 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 				if (E!=Me)	{
 					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 					if (M)
-						if (M->AI_Path.DestNode != u32(-1))
-							MP.push_back(getAI().tfGetNodeCenter(M->AI_Path.DestNode));
+						if (u32(-1) != M->level_dest_vertex_id())
+							MP.push_back(ai().level_graph().vertex_position(M->level_dest_vertex_id()));
 						else {
 							Fvector tTemp;
 							tTemp.set(0,0,0);
@@ -109,16 +109,16 @@ void CGroup::GetAliveMemberDedicationN(MemberNodes& MP, CEntity* Me)
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
 	MP.reserve		(Members.size());
-	for (u32 I=0; I<Members.size(); I++) 
+	for (u32 I=0; I<Members.size(); ++I) 
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
-				MP.push_back(Members[I]->AI_NodeID);
+				MP.push_back(Members[I]->level_vertex_id());
 			else {
 				CEntity*		E = Members[I];
 				if (E!=Me)	{
 					CCustomMonster* M	= dynamic_cast<CCustomMonster*>(E);
 					if (M)
-						MP.push_back		(M->AI_Path.DestNode);
+						MP.push_back		(M->level_dest_vertex_id());
 				}
 			}
 		}
@@ -135,15 +135,15 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 	P1.reserve(Members.size());
 	P2.reserve(Members.size());
 	P3.reserve(Members.size());
-	for (u32 I=0; I<Members.size(); I++)
+	for (u32 I=0; I<Members.size(); ++I)
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
 				CEntity*E = Members[I];
 				const Fvector&	P = E->Position();
 				P0.push_back(P);
-				P1.push_back(E->AI_NodeID);
+				P1.push_back(E->level_vertex_id());
 				P2.push_back(P);
-				P3.push_back(E->AI_NodeID);
+				P3.push_back(E->level_vertex_id());
 			}
 			else {
 				CEntity*E = Members[I];
@@ -151,10 +151,10 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 					if (M) {
 						P0.push_back(E->Position());
-						P1.push_back(M->AI_NodeID);
-						if (M->AI_Path.DestNode != u32(-1)) {
-							P2.push_back(getAI().tfGetNodeCenter(M->AI_Path.DestNode));
-							P3.push_back(M->AI_Path.DestNode);
+						P1.push_back(M->level_vertex_id());
+						if (u32(-1) != M->level_dest_vertex_id()) {
+							P2.push_back(ai().level_graph().vertex_position(M->level_dest_vertex_id()));
+							P3.push_back(M->level_dest_vertex_id());
 						}
 						else {
 							Fvector tTemp;

@@ -151,8 +151,8 @@ void CBlackGraviArtifact::GraviStrike()
 	Fvector strike_dir;
 
 	for(GAME_OBJECT_LIST_it it = m_GameObjectList.begin(); 
-						    it!= m_GameObjectList.end();
-							it++)
+						    m_GameObjectList.end() != it;
+							++it)
 	{
 		CGameObject* pGameObject = *it;
 
@@ -181,7 +181,7 @@ void CBlackGraviArtifact::GraviStrike()
 		if(pGameObject->m_pPhysicsShell) 
 			hit_power = 0;
 		else if(pEntityAlive && pEntityAlive->g_Alive() && 
-				pEntityAlive->Movement.CharacterExist())
+				pEntityAlive->m_PhysicMovementControl.CharacterExist())
 			hit_power = 0;
 		else
 			hit_power = impulse;

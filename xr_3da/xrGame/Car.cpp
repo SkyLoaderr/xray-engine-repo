@@ -155,8 +155,8 @@ void	CCar::UpdateCL				( )
 		HUD().pFontSmall->OutNext		("wheel torque:      [%3.2f]",RefWheelCurTorque());
 		HUD().pFontSmall->OutNext		("engine torque:      [%3.2f]",EngineCurTorque());
 		HUD().pFontSmall->OutNext		("fuel:      [%3.2f]",m_fuel);
-		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
-		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",Movement.GetVelocityActual());
+		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl.GetVelocityMagnitude());
+		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl.GetVelocityActual());
 	}
 //#endif
 	//	Log("UpdateCL",Device.dwFrame);
@@ -191,15 +191,15 @@ void	CCar::renderable_Render				( )
 	inherited::renderable_Render			();
 }
 
-void	CCar::net_Export			(NET_Packet& P)
+void	CCar::net_Export			(NET_Packet& /**P/**/)
 {
 }
 
-void	CCar::net_Import			(NET_Packet& P)
+void	CCar::net_Import			(NET_Packet& /**P/**/)
 {
 }
 
-void	CCar::OnHUDDraw				(CCustomHUD* hud)
+void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 {
 #ifdef DEBUG
 	Fvector velocity;
@@ -213,7 +213,7 @@ void	CCar::OnHUDDraw				(CCustomHUD* hud)
 #endif
 }
 
-void CCar::Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void CCar::Hit(float /**P/**/,Fvector &dir,CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/)
 {
 	if(m_pPhysicsShell)		m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 }
@@ -283,7 +283,7 @@ bool CCar::Enter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 	Fvector enter_pos;
 	enter_pos.add(pos,foot_pos);
 	enter_pos.mul(0.5f);
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		if(i->second.CanEnter(pos,dir,enter_pos)) return true;
 	}
@@ -295,7 +295,7 @@ bool CCar::Exit(const Fvector& pos,const Fvector& dir)
 	xr_map<u32,SDoor>::iterator i,e;
 
 	i=m_doors.begin();e=m_doors.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		if(i->second.CanExit(pos,dir)) 
 		{	
@@ -361,7 +361,7 @@ void CCar::ParseDefinitions()
 	m_gear_ratious.push_back(ini->r_fvector3("transmission_gear_ratio","R"));
 	m_gear_ratious[0][0]=-m_gear_ratious[0][0]*main_gear_ratio;
 	string32 rat_num;
-	for(int i=1;true;i++)
+	for(int i=1;true;++i)
 	{
 		sprintf(rat_num,"N%d",i);
 		if(!ini->line_exist("transmission_gear_ratio",rat_num)) break;
@@ -427,7 +427,7 @@ void CCar::Init()
 		xr_map<u32,SWheel>::iterator i,e;
 		i=m_wheels_map.begin();
 		e=m_wheels_map.end();
-		for(;i!=e;i++)
+		for(;i!=e;++i)
 			i->second.Init();
 	}
 
@@ -435,7 +435,7 @@ void CCar::Init()
 		xr_vector<SWheelDrive>::iterator i,e;
 		i=m_driving_wheels.begin();
 		e=m_driving_wheels.end();
-		for(;i!=e;i++)
+		for(;i!=e;++i)
 			i->Init();
 	}
 
@@ -443,7 +443,7 @@ void CCar::Init()
 		xr_vector<SWheelBreak>::iterator i,e;
 		i=m_breaking_wheels.begin();
 		e=m_breaking_wheels.end();
-		for(;i!=e;i++)
+		for(;i!=e;++i)
 			i->Init();
 	}
 
@@ -451,7 +451,7 @@ void CCar::Init()
 		xr_vector<SWheelSteer>::iterator i,e;
 		i=m_steering_wheels.begin();
 		e=m_steering_wheels.end();
-		for(;i!=e;i++)
+		for(;i!=e;++i)
 			i->Init();
 	}
 
@@ -459,7 +459,7 @@ void CCar::Init()
 		xr_vector<SExhaust>::iterator i,e;
 		i=m_exhausts.begin();
 		e=m_exhausts.end();
-		for(;i!=e;i++)
+		for(;i!=e;++i)
 			i->Init();
 	}
 
@@ -467,7 +467,7 @@ void CCar::Init()
 	xr_map<u32,SDoor>::iterator i,e;
 	i=m_doors.begin();
 	e=m_doors.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->second.Init();
 }
 Break();
@@ -489,7 +489,7 @@ void CCar::NeutralDrive()
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->Neutral();
 	e_state_drive=neutral;
 }
@@ -498,7 +498,7 @@ void CCar::Unbreak()
 	xr_vector<SWheelBreak>::iterator i,e;
 	i=m_breaking_wheels.begin();
 	e=m_breaking_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->Neutral();
 	if(e_state_drive==drive) 
 		Drive();
@@ -513,7 +513,7 @@ void CCar::Drive()
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->Drive();
 	e_state_drive=drive;
 
@@ -589,7 +589,7 @@ void CCar::UpdatePower()
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->UpdatePower();
 
 	if(brp)
@@ -603,7 +603,7 @@ void CCar::SteerRight()
 	xr_vector<SWheelSteer>::iterator i,e;
 	i=m_steering_wheels.begin();
 	e=m_steering_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->SteerRight();
 	e_state_steer=right;
 
@@ -615,7 +615,7 @@ void CCar::SteerLeft()
 	xr_vector<SWheelSteer>::iterator i,e;
 	i=m_steering_wheels.begin();
 	e=m_steering_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->SteerLeft();
 	e_state_steer=left;
 }
@@ -627,7 +627,7 @@ void CCar::SteerIdle()
 	xr_vector<SWheelSteer>::iterator i,e;
 	i=m_steering_wheels.begin();
 	e=m_steering_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->SteerIdle();
 	e_state_steer=idle;
 }
@@ -639,7 +639,7 @@ void CCar::LimitWheels()
 	xr_vector<SWheelSteer>::iterator i,e;
 	i=m_steering_wheels.begin();
 	e=m_steering_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->Limit();
 }
 void CCar::Break()
@@ -647,7 +647,7 @@ void CCar::Break()
 	xr_vector<SWheelBreak>::iterator i,e;
 	i=m_breaking_wheels.begin();
 	e=m_breaking_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->Break();
 }
 
@@ -681,8 +681,8 @@ void CCar::PressForward()
 	else 
 	{
 		Clutch();
-		if(m_current_transmission_num==0) Transmision(1);
-		if(m_current_transmission_num==1||m_current_transmission_num==0)Starter();
+		if(0==m_current_transmission_num) Transmision(1);
+		if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
 		Drive();
 	}
 	fwp=true;
@@ -698,7 +698,7 @@ void CCar::PressBack()
 	{
 		Clutch();
 		Transmision(0);
-		if(m_current_transmission_num==1||m_current_transmission_num==0)Starter();
+		if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
 		Drive();
 	}
 	bkp=true;
@@ -731,7 +731,7 @@ void CCar::ReleaseForward()
 	{
 		Clutch();
 		Transmision(0);
-		if(m_current_transmission_num==1||m_current_transmission_num==0)Starter();
+		if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
 		Drive();
 	}
 	else
@@ -747,8 +747,8 @@ void CCar::ReleaseBack()
 	if(fwp)
 	{
 		Clutch();
-		if(m_current_transmission_num==0) Transmision(1);
-		if(m_current_transmission_num==1||m_current_transmission_num==0) Starter();
+		if(0==m_current_transmission_num) Transmision(1);
+		if(1==m_current_transmission_num||0==m_current_transmission_num) Starter();
 		Drive();
 	}
 	else
@@ -767,7 +767,7 @@ void CCar::ReleaseBreaks()
 void CCar::Transmision(size_t num)
 {
 
-	if(num==0||num==1)Starter();
+	if(0==num||1==num)Starter();
 	if(num<m_gear_ratious.size())
 	{
 		m_current_transmission_num=num;
@@ -777,18 +777,18 @@ void CCar::Transmision(size_t num)
 }
 void CCar::CircleSwitchTransmission()
 {
-	if(m_current_transmission_num==0)return;
-	m_current_transmission_num++;
+	if(0==m_current_transmission_num)return;
+	++m_current_transmission_num;
 	m_current_transmission_num=m_current_transmission_num%m_gear_ratious.size();
-	m_current_transmission_num==0 ? m_current_transmission_num++ : m_current_transmission_num;
+	0==m_current_transmission_num ? m_current_transmission_num + 1 : m_current_transmission_num;
 	Transmision(m_current_transmission_num);
 	Drive();
 }
 
 void CCar::TransmisionUp()
 {
-	if(m_current_transmission_num==0)return;
-	m_current_transmission_num++;
+	if(0==m_current_transmission_num)return;
+	++m_current_transmission_num;
 	size_t max_transmition_num=m_gear_ratious.size()-1;
 	m_current_transmission_num>max_transmition_num ? m_current_transmission_num=max_transmition_num :m_current_transmission_num;
 	Transmision(m_current_transmission_num);
@@ -797,8 +797,8 @@ void CCar::TransmisionUp()
 
 void CCar::TransmisionDown()
 {
-	if(m_current_transmission_num==0)return;
-	m_current_transmission_num--;
+	if(0==m_current_transmission_num)return;
+	--m_current_transmission_num;
 	m_current_transmission_num<1 ? m_current_transmission_num=1 : m_current_transmission_num;
 	Transmision(m_current_transmission_num);
 	Drive();
@@ -837,12 +837,12 @@ void CCar::PhTune(dReal step)
 		if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
 	}
 
-	for (int k=0; k<(int)m_doors_update.size(); k++){
+	for (int k=0; k<(int)m_doors_update.size(); ++k){
 		SDoor* D = m_doors_update[k];
 		if (!D->update)
 		{
 			m_doors_update.erase(m_doors_update.begin()+k);
-			k--;
+			--k;
 		}
 		else
 		{
@@ -858,7 +858,7 @@ void CCar::PlayExhausts()
 	xr_vector<SExhaust>::iterator i,e;
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->Play();
 
 }
@@ -869,7 +869,7 @@ void CCar::StopExhausts()
 	xr_vector<SExhaust>::iterator i,e;
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->Stop();
 }
 
@@ -879,7 +879,7 @@ void CCar::UpdateExhausts()
 	xr_vector<SExhaust>::iterator i,e;
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->Update();
 }
 
@@ -888,7 +888,7 @@ void CCar::ClearExhausts()
 	xr_vector<SExhaust>::iterator i,e;
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 		i->Clear();
 }
 
@@ -905,7 +905,7 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 	if (collidable.model->_RayPick	(result,pos, dir, 3.f, 0)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	{
 		int y=result.r_count();
-		for (int k=0; k<y; k++)
+		for (int k=0; k<y; ++k)
 		{
 			ICollisionForm::RayPickResult::Result* R = result.r_begin()+k;
 			if(is_Door(R->element,i)) 
@@ -1017,7 +1017,7 @@ float CCar::EngineDriveSpeed()
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		drive_speed+=i->ASpeed();
 		//if(wheel_speed<drive_speed)drive_speed=wheel_speed;
@@ -1131,7 +1131,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 			}
 			else 
 			{
-				if (!O || !O->H_Parent() || (O->H_Parent() != this)) return;
+				if (!O || !O->H_Parent() || (this != O->H_Parent())) return;
 				NET_Packet P;
 				u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
 				P.w_u16(u16(O->ID()));
@@ -1164,7 +1164,7 @@ void CCar::ResetScriptData(void	*P)
 
 }
 
-void CCar::PhDataUpdate(dReal step)
+void CCar::PhDataUpdate(dReal /**step/**/)
 {
 	if (GetScriptControl())
 		ProcessScripts();

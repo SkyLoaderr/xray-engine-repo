@@ -83,11 +83,11 @@ void CGrenade::Load(LPCSTR section)
 	{
 		if(*l_effectsSTR == ',') 
 		{
-			*l_effectsSTR = 0; l_effectsSTR++;
-			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
+			*l_effectsSTR = 0; ++l_effectsSTR;
+			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') ++l_effectsSTR;
 			m_effects.push_back(l_effectsSTR);
 		}
-		l_effectsSTR++;
+		++l_effectsSTR;
 	}
 
 	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b);
@@ -126,7 +126,7 @@ void CGrenade::OnH_A_Chield()
 		R_ASSERT			(D);
 		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
 		R_ASSERT							(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
+		l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
 		// Fill
 		strcpy				(D->s_name,cNameSect());
 		strcpy				(D->s_name_replace,"");
@@ -236,7 +236,7 @@ void CGrenade::Explode()
 			l_m.k.set(l_dir); 
 			GetBasis(l_m.k, l_m.i, l_m.j);
 			
-			for(int i = 0; i < 8; i++) 
+			for(int i = 0; i < 8; ++i) 
 			{ 
 				Fvector l_v; 
 				l_b1.getpoint(i, l_v); 
@@ -283,7 +283,7 @@ void CGrenade::Explode()
 	
 	
 	//осколки
-	for(s32 i = 0; i < m_frags; i++) 
+	for(s32 i = 0; i < m_frags; ++i) 
 	{
 		l_dir.set(::Random.randF(-.5f,.5f), 
 				  ::Random.randF(-.5f,.5f), 
@@ -318,7 +318,7 @@ void CGrenade::Explode()
 	
 	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 
-	for(s32 i = 0; i < l_c; i++) 
+	for(s32 i = 0; i < l_c; ++i) 
 	{
 		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
 	}
@@ -386,7 +386,7 @@ void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::
 void CGrenade::feel_touch_new(CObject* O) 
 {
 	CGameObject *l_pGO = dynamic_cast<CGameObject*>(O);
-	if(l_pGO && l_pGO != this) m_blasted.push_back(l_pGO);
+	if(l_pGO && this != l_pGO) m_blasted.push_back(l_pGO);
 }
 
 bool CGrenade::Useful() 
@@ -496,12 +496,12 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 
 					//ищем на поясе такую же гранату
 					PPIItem it = m_pInventory->m_belt.begin();
-					while(it != m_pInventory->m_belt.end() && 
-						  strcmp((*it)->cNameSect(), cNameSect())) it++;
+					while(m_pInventory->m_belt.end() != it && 
+						  strcmp((*it)->cNameSect(), cNameSect())) ++it;
 					
-					if(it != m_pInventory->m_belt.end()) 
+					if(m_pInventory->m_belt.end() != it) 
 					{
-						while(it != m_pInventory->m_belt.end()) 
+						while(m_pInventory->m_belt.end() != it) 
 						{
 							CGrenade *pGrenade = dynamic_cast<CGrenade*>(*it);
 							if(pGrenade && strcmp(pGrenade->cNameSect(), cNameSect())) 
@@ -512,14 +512,14 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 								m_pInventory->Activate(pGrenade->m_slot);
 								return true;
 							}
-							it++;
+							++it;
 						}
 
 						
 						it = m_pInventory->m_belt.begin();
 						CGrenade *pGrenade = dynamic_cast<CGrenade*>(*it);
 
-						while(pGrenade != this) 
+						while(this != pGrenade) 
 						{
 							if(pGrenade && strcmp(pGrenade->cNameSect(), cNameSect())) 
 							{
@@ -529,7 +529,7 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 								m_pInventory->Activate(pGrenade->m_slot);
 								return true;
 							}
-							it++;
+							++it;
 							if(it == m_pInventory->m_belt.end()) break;
 							
 							pGrenade = dynamic_cast<CGrenade*>(*it);

@@ -2,7 +2,6 @@
 #include "HUDmanager.h"
 #include "LevelGameDef.h"
 #include "ai_space.h"
-#include "ai\ai_selector_template.h"
 #include "ParticlesObject.h"
 #include "ai_script_processor.h"
 
@@ -24,16 +23,16 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	tpPatrolPath.dwType = PATH_LOOPED | PATH_BIDIRECTIONAL;
 	
 	// computing from-to arrays
-	for ( i=0; i<(int)N; i++)
+	for ( i=0; i<(int)N; ++i)
 		tpaTo[i] = tpaFrom[i] = 0;
 	
-	for ( i=0; i<(int)tpPatrolPath.tpaWayLinks.size(); i++) {
-		tpaTo[tpPatrolPath.tpaWayLinks[i].wTo]++;
-		tpaFrom[tpPatrolPath.tpaWayLinks[i].wFrom]++;
+	for ( i=0; i<(int)tpPatrolPath.tpaWayLinks.size(); ++i) {
+		++(tpaTo[tpPatrolPath.tpaWayLinks[i].wTo]);
+		++(tpaFrom[tpPatrolPath.tpaWayLinks[i].wFrom]);
 	}
 	
 	// counting types of points
-	for ( i=0; i<(int)N; i++) {
+	for ( i=0; i<(int)N; ++i) {
 		if (tpaTo[i] > 2)
 			Debug.fatal("Patrol path %s : invalid count of incoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaTo[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
 		if (tpaFrom[i] > 2)
@@ -41,14 +40,14 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 		if ((tpaTo[i] == 1) && (tpaFrom[i] == 0)) {
 			if (dwOneZero)
 				Debug.fatal("Patrol path %s : invalid count of start points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-			dwOneZero++;
+			++dwOneZero;
 			iFinishPoint = i;
 		}
 		
 		if ((tpaTo[i] == 0) && (tpaFrom[i] == 1)) {
 			if (dwZeroOne)
 				Debug.fatal("Patrol path %s : invalid count of finish points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-			dwZeroOne++;
+			++dwZeroOne;
 			iStartPoint = i;
 		}
 		
@@ -58,11 +57,11 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			else
 				if ((dwOneCount == 1) && (!dwZeroOne) && (!dwOneZero))
 					iFinishPoint = i;
-			dwOneCount++;
+			++dwOneCount;
 		}
 		
 		if ((tpaTo[i] == 2) && (tpaFrom[i] == 2))
-			dwTwoCount++;
+			++dwTwoCount;
 	}
 	
 	// checking for supported path types
@@ -79,7 +78,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 					Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
 	}
 	else
-		if ((dwOneCount != N - 2) || (dwOneZero != 1) || (dwZeroOne != 1))
+		if ((N - 2 != dwOneCount) || (1 != dwOneZero) || (1 != dwZeroOne))
 			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f] in non-looped one-directional path",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
 		else {
 			iCurPoint = iStartPoint;
@@ -88,9 +87,9 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 
 	// building point sequencies and path
 	tpPatrolPath.tpaWayPointIndexes.resize(N);
-	for ( i=0; i<(int)N; i++) {			
+	for ( i=0; i<(int)N; ++i) {			
 		tpPatrolPath.tpaWayPointIndexes[i] = iCurPoint;
-		for (int j=0; j<(int)tpPatrolPath.tpaWayLinks.size(); j++)
+		for (int j=0; j<(int)tpPatrolPath.tpaWayLinks.size(); ++j)
 			if ((tpPatrolPath.tpaWayLinks[j].wFrom == iCurPoint) && (tpPatrolPath.tpaWayLinks[j].wTo != iPrevPoint)) {
 				iPrevPoint = iCurPoint;
 				iCurPoint = tpPatrolPath.tpaWayLinks[j].wTo;
@@ -101,10 +100,10 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 //	// creating realistic path
 //	tpaDeviations.resize(N);
 //	tpaPoints.resize(N);
-//	for (int i=0; i<(int)N; i++)
+//	for (int i=0; i<(int)N; ++i)
 //		tpaPoints[i] = tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[i]].tWayPoint;
 //
-//	getAI().vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
+//	ai().vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
 //
 //	// creating variations
 //	if (!tpPatrolPath.tpaVectors[0].size())
@@ -112,14 +111,14 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 //	tpPatrolPath.tpaVectors[1].resize(tpPatrolPath.tpaVectors[0].size());
 //	tpPatrolPath.tpaVectors[2].resize(tpPatrolPath.tpaVectors[0].size());
 //			
-//	float fHalfSubnodeSize = getAI().Header().size*.5f;
+//	float fHalfSubnodeSize = ai().level_graph().header().cell_size()*.5f;
 //
 //	xr_vector<Fvector> &tpaVector0 = tpPatrolPath.tpaVectors[0];
 //	u32 M = (u32)tpaVector0.size();
 //
-//	for (int I=1; I<3; I++) {
+//	for (int I=1; I<3; ++I) {
 //		xr_vector<Fvector> &tpaVector1 = ((I == 1) ? tpPatrolPath.tpaVectors[1] : tpPatrolPath.tpaVectors[2]);
-//		for (int i=0, j=0, k=0; i<(int)M; i++, j++) {
+//		for (int i=0, j=0, k=0; i<(int)M; ++i, ++j) {
 //			
 //			tpaVector1[j] = tpaVector0[i];
 //
@@ -149,26 +148,26 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 //			
 //			tpaVector1[j].add(tTemp);
 //
-//			for (int m=k; (k < (int)tpaNodes.size()) && (!getAI().bfInsideNode(getAI().Node(tpaNodes[k]),tpaVector0[i])); k++) ;
+//			for (int m=k; (k < (int)tpaNodes.size()) && (!ai().level_graph().inside(ai().level_graph().vertex(tpaNodes[k]),tpaVector0[i])); ++k) ;
 //
 //			if (k >= (int)tpaNodes.size()) {
 //				k = m;
 //				tpaVector1.erase(tpaVector1.begin() + j);
-//				j--;
+//				--j;
 //				continue;
 //			}
 //
-//			CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode> tSearch;
+//			PathManagers::CVertexEvaluator<aiSearchRange | aiInsideNode> tSearch;
 //			tSearch.m_fSearchRange = 4*fHalfSubnodeSize;
 //			tSearch.m_dwStartNode = tpaNodes[k];
 //			tSearch.m_tStartPosition = tpaVector0[i];
-//			tSearch.vfShallowGraphSearch(getAI().q_mark_bit);
-////			getAI().q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
-//			tpaVector1[j].y = getAI().ffGetY(*(getAI().Node(tSearch.m_dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
+//			tSearch.vfShallowGraphSearch(ai().q_mark_bit);
+////			ai().q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
+//			tpaVector1[j].y = ai().level_graph().vertex_plane_y(*(ai().level_graph().vertex(tSearch.m_dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
 //		}
 //		if (tpaVector1[0].distance_to(tpaVector1[j - 1]) > EPS_L) {
 //			tpaVector1.push_back(tpaVector1[0]);
-//			j++;
+//			++j;
 //		}
 //		tpaVector1.resize(j);
 //	}
@@ -180,7 +179,8 @@ BOOL CLevel::Load_GameSpecific_Before()
 {
 	// AI space
 	pApp->LoadTitle	("Loading AI objects...");
-	getAI().Load	();
+	if (!ai().get_alife())
+		ai().load	(net_SessionName());
 
 	string256		fn_game;
 	if (FS.exist(fn_game, "$level$", "level.game")) {
@@ -204,16 +204,16 @@ BOOL CLevel::Load_GameSpecific_Before()
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_POINTS));
 				u32 dwCount = OBJ->r_u16();
 				tPatrolPath.tpaWayPoints.resize(dwCount);
-				for (int i=0; i<(int)dwCount; i++){
+				for (int i=0; i<(int)dwCount; ++i){
 					OBJ->r_fvector3(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->r_u32();
-					tPatrolPath.tpaWayPoints[i].dwNodeID = getAI().q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
+					tPatrolPath.tpaWayPoints[i].dwNodeID = ai().level_graph().vertex(tPatrolPath.tpaWayPoints[i].tWayPoint);
 				}
 
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_LINKS));
 				u32 dwCountL = OBJ->r_u16();
 				tPatrolPath.tpaWayLinks.resize(dwCountL);
-				for ( i=0; i<(int)dwCountL; i++){
+				for ( i=0; i<(int)dwCountL; ++i){
 					tPatrolPath.tpaWayLinks[i].wFrom = OBJ->r_u16();
 					tPatrolPath.tpaWayLinks[i].wTo = OBJ->r_u16();
 				}
@@ -224,7 +224,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 				bool bOk;
 				do {
 					bOk = true;
-					for ( i=1; i<(int)dwCountL; i++)
+					for ( i=1; i<(int)dwCountL; ++i)
 						if ((tPatrolPath.tpaWayLinks[i - 1].wFrom > tPatrolPath.tpaWayLinks[i].wFrom) || ((tPatrolPath.tpaWayLinks[i - 1].wFrom == tPatrolPath.tpaWayLinks[i].wFrom) && (tPatrolPath.tpaWayLinks[i - 1].wTo > tPatrolPath.tpaWayLinks[i].wTo))) {
 							u16 wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
 							tPatrolPath.tpaWayLinks[i - 1].wFrom = tPatrolPath.tpaWayLinks[i].wFrom;
@@ -307,7 +307,7 @@ BOOL CLevel::Load_GameSpecific_After()
 	{
 		CInifile::Sect& S		= pLevel->r_section("random_sounds");
 		Sounds_Random.reserve	(S.size());
-		for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
+		for (CInifile::SectIt I=S.begin(); S.end()!=I; ++I) {
 			Sounds_Random.push_back	(ref_sound());
 			Sound->create			(Sounds_Random.back(),TRUE,*I->second);
 		}
@@ -332,11 +332,11 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 	xr_map<u32,u16>		translator;
 	translator.insert	(mk_pair(u32(-1),default_id));
 	u16 idx				= 0;
-	for (GameMtlIt I=GMLib.FirstMaterial(); I!=GMLib.LastMaterial(); I++)
+	for (GameMtlIt I=GMLib.FirstMaterial(); GMLib.LastMaterial()!=I; ++I)
 		translator.insert(mk_pair((*I)->GetID(),idx++));
 
 	// 3.
-	for (u32 it=0; it<count; it++)
+	for (u32 it=0; it<count; ++it)
 	{
 		CDB::TRI* T						= tris + it;
 		xr_map<u32,u16>::iterator index	= translator.find(T->material);
