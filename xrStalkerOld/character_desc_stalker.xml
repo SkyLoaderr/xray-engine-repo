@@ -147,7 +147,6 @@
 		<supplies>
 			[spawn] \n
 			device_torch \n
-			garbage_seriy_flash \n
 		</supplies>
 					
 		<start_dialog>gar_seriy_start</start_dialog>
