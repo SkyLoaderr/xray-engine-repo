@@ -3171,10 +3171,6 @@
 					<File
 						RelativePath=".\ai_script_lua_export_actions.cpp">
 					</File>
-				</Filter>
-				<Filter
-					Name="ScriptProcessor"
-					Filter="">
 					<File
 						RelativePath=".\ai_script_lua_export_extension.cpp">
 					</File>

@@ -66,6 +66,12 @@ public:
 		return				(m_path->tpaWayPoints[index].tWayPoint);
 	}
 
+	IC	u32					level_vertex_id		(u32 index) const
+	{
+		VERIFY				(m_path->tpaWayPoints.size() > index);
+		return				(m_path->tpaWayPoints[index].dwNodeID);
+	}
+
 	IC	u32					point				(LPCSTR name) const
 	{
 		xr_vector<CLevel::SWayPoint>::const_iterator	i = m_path->tpaWayPoints.begin(), b = i;

@@ -637,7 +637,7 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 			m_object->Position(),
 			position,
 			StalkerSpace::eCoverTypeCloseToEnemy,
-			30.f,
+			100.f,
 			5.f,
 			10.f,
 			70.f
@@ -645,7 +645,7 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 		if (point) {
 			m_object->set_level_dest_vertex	(point->level_vertex_id());
 			m_object->set_desired_position	(&point->position());
-			m_object->set_movement_type		(eMovementTypeWalk);
+			m_object->set_movement_type		(eMovementTypeRun);
 		}
 		else
 			m_object->set_movement_type	(eMovementTypeStand);
