@@ -208,7 +208,7 @@ void CScriptGameObject::ChangeGoodwill(int delta_goodwill, CScriptGameObject* pW
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	RELATION_REGISTRY().SetGoodwill(pInventoryOwner->object_id(), pWhoToSet->m_tpGameObject->ID(), delta_goodwill);
+	RELATION_REGISTRY().ChangeGoodwill(pInventoryOwner->object_id(), pWhoToSet->m_tpGameObject->ID(), delta_goodwill);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -140,7 +140,10 @@ void RELATION_REGISTRY::SetGoodwill 	(u16 from, u16 to, CHARACTER_GOODWILL goodw
 void RELATION_REGISTRY::ChangeGoodwill 	(u16 from, u16 to, CHARACTER_GOODWILL delta_goodwill)
 {
 	RELATION_DATA& relation_data = relation_registry().registry().objects(from);
-	relation_data.personal[to].SetGoodwill(relation_data.personal[to].Goodwill() + delta_goodwill);
+
+	CHARACTER_GOODWILL new_goodwill = relation_data.personal[to].Goodwill() + delta_goodwill;
+	clamp(new_goodwill, -1000, 1000);
+	relation_data.personal[to].SetGoodwill(new_goodwill);
 }
 
 //////////////////////////////////////////////////////////////////////////

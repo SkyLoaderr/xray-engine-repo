@@ -167,6 +167,8 @@ void CInfoPortion::load_shared	(LPCSTR)
 				xml_init.InitColor(uiXml, icon_node, map_location.icon_color);
 				map_location.marker_show = !!uiXml.ReadAttribInt(icon_node, "marker", 1);
 			}
+			else
+				map_location.icon_color = 0xffffffff;
 
 
 			//присоединить к объекту на уровне, если тот задан

@@ -240,7 +240,7 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 	CEntityAlive* EA = smart_cast<CEntityAlive*>(who);
 	if(EA && EA->g_Alive())
 	{
-		RELATION_REGISTRY().FightRegister(EA->ID(), ID(), P);
+		RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), P);
 		RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
 	}
 		

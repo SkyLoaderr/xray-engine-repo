@@ -15,11 +15,14 @@ RELATION_REGISTRY::FIGHT_DATA::FIGHT_DATA			()
 	attacker = defender = 0xffff;
 	total_hit = 0;
 	time = 0;
+	time_old = 0;
+	attack_time = 0;
+	defender_to_attacker = ALife::eRelationTypeDummy;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void RELATION_REGISTRY::FightRegister (u16 attacker, u16 defender, float hit_amount)
+void RELATION_REGISTRY::FightRegister (u16 attacker, u16 defender, ALife::ERelationType defender_to_attacker, float hit_amount)
 {
 	UpdateFightRegister();
 
@@ -42,8 +45,8 @@ void RELATION_REGISTRY::FightRegister (u16 attacker, u16 defender, float hit_amo
 		fight_data.attacker = attacker;
 		fight_data.defender = defender;
 		fight_data.total_hit = hit_amount;
-		fight_data.time_old = 0;
 		fight_data.time = Device.dwTimeGlobal;
+		fight_data.defender_to_attacker = defender_to_attacker;
 		fights.push_back(fight_data);
 	}
 }
