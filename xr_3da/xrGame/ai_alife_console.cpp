@@ -116,11 +116,12 @@ void CAI_ALife::vfListTerrain()
 		GRAPH_VECTOR_IT	I = m_tpTerrain[j].begin();
 		GRAPH_VECTOR_IT	E = m_tpTerrain[j].end();
 		for (int i=0; I != E; I++, i++) {
-			GRAPH_IT   it1 = (*I).begin();
-			GRAPH_IT   E1  = (*I).end();
-			S[0] = 0;
-			string16		S1;
-			for (int j=0; it1 != E1; it1++, j++) {
+			GRAPH_IT	it1 = (*I).begin();
+			GRAPH_IT	E1  = (*I).end();
+			int			j;
+			S[0]		= 0;
+			string16	S1;
+			for ( j=0; it1 != E1; it1++, j++) {
 				if (j)
 					strcat(S,",");
 				strcat(S,itoa(*it1,S1,10));
