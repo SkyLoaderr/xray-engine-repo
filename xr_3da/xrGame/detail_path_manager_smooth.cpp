@@ -474,6 +474,14 @@ bool CDetailPathManager::init_build(
 	
 	validate_vertex_position			(dest);
 
+	if (m_restricted_object) {
+		Fvector							start_pos = ai().level_graph().v3d(start.position);
+		bool							alvi = m_restricted_object->accessible(start.vertex_id);
+		bool							asp = m_restricted_object->accessible(start_pos);
+		VERIFY							((alvi && asp) || !asp);
+		m_restricted_object->add_border	(start_pos,ai().level_graph().v3d(dest.position));
+	}
+
 	if (start.direction.square_magnitude() < EPS_L)
 		start.direction.set				(0.f,1.f);
 	else
