@@ -127,7 +127,7 @@ end
 ------------------
 function action_return:initialize ()
     action_base.initialize (self)
-    self.object:clear_animations ()
+    self.object:clear_animations          ()
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()

@@ -118,6 +118,8 @@ function action_single_patrol:__init (name, storage) super (nil, name)
     self.current_phrase = 0
     self.phrases = {}
     self.path_type = patrol.start
+    self.mental_state = anim.danger
+    self.move_type = move.run
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:initialize ()
@@ -132,12 +134,12 @@ function action_single_patrol:initialize ()
     self.object:set_item                  (object.activate, self.object:best_weapon ())
     self.object:set_detail_path_type      (move.line)
     self.object:set_body_state            (move.standing)
-    self.object:set_movement_type         (move.run)
+    self.object:set_movement_type         (self.move_type)
     self.object:set_path_type             (game_object.patrol_path)
     if self.a.first_init == true then self.path_type = patrol.start
     else  self.path_type = patrol.nearest end 
     self.object:set_patrol_path           (self.a.patrol_path, self.path_type, patrol.continue, true)
-    self.object:set_mental_state          (anim.danger)
+    self.object:set_mental_state          (self.mental_state)
     self.object:set_sight                 (look.path_dir, nil, 0)
     
     if self.stage ~= 3 then self.stage = 0 end
@@ -216,9 +218,10 @@ function action_single_patrol:execute ()
     elseif self.stage == 1 then
         if self.object:animation_count () == 0 then
            self.stage = 0
-           self.object:set_movement_type (move.walk)  
-           self.object:set_mental_state  (anim.free)
-           --self.object:set_patrol_path   (self.a.patrol_path, self.path_type, patrol.continue, true) --!!!
+           self.move_type = move.walk
+           self.mental_state = anim.free
+           self.object:set_movement_type (self.move_type)  
+           self.object:set_mental_state  (self.mental_state)
            self.object:set_previous_point (self.waypoint)
            if patrol (self.object:patrol()):flag (self.waypoint, 0) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 2, 0)
@@ -227,14 +230,17 @@ function action_single_patrol:execute ()
     elseif self.stage == 2 then
         if self:process_radio () == true then
            self.stage = 0
-           self.object:set_movement_type (move.walk)
-           self.object:set_mental_state  (anim.free)
-           --self.object:set_patrol_path   (self.a.patrol_path, self.path_type, patrol.continue, true)    --!!!
+           self.move_type = move.walk
+           self.mental_state = anim.free
+           self.object:set_movement_type (self.move_type)  
+           self.object:set_mental_state  (self.mental_state)
            if patrol (self.object:patrol()):flag (self.waypoint, 2) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 1, 0)
            end   
         end   
     elseif self.stage == 3 then    
+           self.move_type = move.run
+           self.mental_state = anim.danger
            self.object:set_mental_state (anim.danger)
            self.object:set_movement_type (move.run)
            self:set_command (leader_return)
@@ -325,6 +331,8 @@ function action_single_patrol:check_return ()
            end         
            self.object:clear_animations ()
            self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, true) 
+           self.mental_state = anim.danger
+           self.move_type = move.run
            self.object:set_mental_state (anim.danger)
            self.object:set_movement_type (move.run)
            self:set_command (leader_return)
@@ -373,17 +381,28 @@ function action_single_patrol:move_callback (obj, action_type, index)
     self.waypoint = index
     local ptr = patrol (self.object:patrol ())
     
---    if self.stage == 3 then
-       if ptr:flag (index, 6) == true then
-          self.a.enabled = false
-          self.stage = 0
-          self:set_command (leader_free)
-          self:free ()
-       return
-       end           
-  --  end    
+    if ptr:flag (index, 6) == true then
+       self.a.enabled = false
+       self.stage = 0
+       self:set_command (leader_free)
+       self:free ()
+    return
+    end           
+    
+    if ptr:flag (index, 9) == true then
+       self.move_type = move.run
+       self.mental_state = anim.danger
+    end
+    
+    if ptr:flag (index, 8) == true then
+       self.move_type = move.walk
+       self.mental_state = anim.free
+    end
+       
     
     if ptr:flag (index, 0) == true then
+       self.move_type = move.stand
+       self.mental_state = anim.free
        self.object:set_movement_type (move.stand)
        self.object:clear_animations ()
        self:set_animation ()
@@ -394,9 +413,10 @@ function action_single_patrol:move_callback (obj, action_type, index)
     end    
    
     if ptr:flag (index, 1) then
+       self.move_type = move.stand
+       self.mental_state = anim.free
        self.object:set_movement_type (move.stand)
        self.object:clear_animations ()
-       --self:set_animation ()
        self:radio ()
        self:set_look_dir ()
        self:set_command (leader_stop)
@@ -412,9 +432,8 @@ function action_single_patrol:move_callback (obj, action_type, index)
            xr_motivator.storage[self.object:id()].followers[a].raid_enabled = true
        end
     end   
-    --printf ("PATROL LEADER GET CALLBACK ON %d WAYPOINT", index)
-    self.object:set_movement_type (move.walk)
-    self.object:set_mental_state (anim.free)
+    self.object:set_movement_type (self.move_type)
+    self.object:set_mental_state (self.mental_state)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:set_look_dir ()
