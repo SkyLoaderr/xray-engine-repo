@@ -105,35 +105,46 @@ void occRasterizer::propagade	()
 					if (ZR<pDepth[pos])	{ pFrame[pos] = Tu1; pDepth[pos] = ZR; }
 				}
 			}
-
+			
 			//
 			float d				= pDepth[pos];
 			clamp				(d,-1.99f,1.99f);
 			bufDepth_0[y][x]	= d2int(d);
 		}
 	}
-
+	
 	// Propagade other levels
 	propagade_depth	(bufDepth_1,bufDepth_0,occ_dim_1);
 	propagade_depth	(bufDepth_2,bufDepth_1,occ_dim_2);
 	propagade_depth	(bufDepth_3,bufDepth_2,occ_dim_3);
 }
 
-BOOL occRasterizer::test		(float _x0, float _y0, float _x1, float _y1, float _z)
+IC	BOOL			test_Level	(int* depth, int dim, float _x0, float _y0, float _x1, float _y1, int z)
 {
-	float d2	= occ_dim_0/2;
-	int x0		= iFloor(_x0*d2); clamp(x0,0,occ_dim_0-1);
-	int x1		= iCeil (_x1*d2); clamp(x1,0,occ_dim_0-1);
-	int y0		= iFloor(_y0*d2); clamp(y0,0,occ_dim_0-1);
-	int y1		= iCeil (_y1*d2); clamp(y1,0,occ_dim_0-1);
-	int	z		= d2int_up	(_z)+1;
+	float d2	= dim/2;
+	int x0		= iFloor(_x0*d2); clamp(x0,0,dim-1);
+	int x1		= iCeil (_x1*d2); clamp(x1,0,dim-1);
+	int y0		= iFloor(_y0*d2); clamp(y0,0,dim-1);
+	int y1		= iCeil (_y1*d2); clamp(y1,0,dim-1);
 	
 	for (int y=y0; y<=y1; y++)
 	{
-		for (int x=x0; x<=x1; x++)
-		{
-			if (z<bufDepth_0[y][x])	return TRUE;
-		}
+		int* base	= depth+y*dim;
+		int* it		= base + x0;
+		int* end	= base + x1;
+		for (; it<=end; it++)
+			if (z<*it)	return TRUE;
+	}
+	return FALSE;
+}
+
+BOOL occRasterizer::test		(float _x0, float _y0, float _x1, float _y1, float _z)
+{
+	int	z		= d2int_up	(_z)+1;
+	if	(test_Level(get_depth_level(2),occ_dim_2,_x0,_y0,_x1,_y1,z))
+	{
+		// Visbible on level 2 - test level 0
+		return test_Level(get_depth_level(0),occ_dim_0,_x0,_y0,_x1,_y1,z))
 	}
 	return FALSE;
 }
