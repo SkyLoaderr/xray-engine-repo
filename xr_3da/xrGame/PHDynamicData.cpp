@@ -23,7 +23,6 @@ PHDynamicData::~PHDynamicData()
 		for(unsigned int i=0;i<numOfChilds;i++){
 			Childs[i].Destroy();
 		}
-		//delete[] Childs;
 		Childs.clear();
 		//Childs=NULL;
 		numOfChilds=0;
@@ -163,7 +162,6 @@ void PHDynamicData::Destroy()
 		for(unsigned int i=0;i<numOfChilds;i++)
 			Childs[i].Destroy();
 
-		//delete[] Childs;
 		Childs.clear();
 		//Childs=NULL;
 		numOfChilds=0;

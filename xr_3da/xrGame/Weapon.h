@@ -255,7 +255,7 @@ public:
 	float					GetConditionMisfireProbability	();
 
 
-	// @@@ WT: Subject to delete
+	// @@@ WT: Subject to remove
 	IC int					GetAmmoLimit		()				{	return 0/*iAmmoLimit*/;						}
 	int						GetAmmoCurrent		();//				{	return /*m_pAmmo?m_pAmmo->m_boxSize:*/0;	}
 	//

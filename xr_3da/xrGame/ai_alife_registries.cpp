@@ -24,7 +24,7 @@ CSE_ALifeObjectRegistry::CSE_ALifeObjectRegistry()
 CSE_ALifeObjectRegistry::~CSE_ALifeObjectRegistry()
 {
 	// since we use multiple inheritance, we have to cast the objects to the underlying class
-	// to delete them properly
+	// to remove them properly
 	D_OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
 	D_OBJECT_PAIR_IT			E = m_tObjectRegistry.end();
 	for ( ; I != E; I++)	
@@ -556,7 +556,7 @@ CSE_ALifeSpawnRegistry::CSE_ALifeSpawnRegistry()
 CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
 {
 	// since we use multiple inheritance, we have to cast the objects to the underlying class
-	// to delete them properly
+	// to remove them properly
 	D_OBJECT_P_IT			I = m_tpSpawnPoints.begin();
 	D_OBJECT_P_IT			E = m_tpSpawnPoints.end();
 	for ( ; I != E; I++) {
@@ -568,7 +568,7 @@ CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
 void CSE_ALifeSpawnRegistry::Init()
 {
 	// since we use multiple inheritance, we have to cast the objects to the underlying class
-	// to delete them properly
+	// to remove them properly
 	D_OBJECT_P_IT			I = m_tpSpawnPoints.begin();
 	D_OBJECT_P_IT			E = m_tpSpawnPoints.end();
 	for ( ; I != E; I++) {

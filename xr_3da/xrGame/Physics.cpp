@@ -108,12 +108,6 @@ void CPHWorld::Create()
 
 void CPHWorld::Destroy(){
 	Mesh.Destroy();
-	//Jeep.Destroy();
-	//Gun.Destroy();
-	//xr_vector<CPHElement*>::iterator i;
-	//for(i=elements.begin();i!=elements.end();i++){
-	//delete(*i);
-	//}
 	#ifdef PH_PLAIN
 	dGeomDestroy(plane);
 	#endif

@@ -51,7 +51,7 @@ void CPSVisual::Update(u32 dt)
 	for (i=0; i<int(m_Particles.size()); i++)
 	{
 		if (fTime>m_Particles[i].m_Time.end) {
-			// Need to delete particle
+			// Need to destroy particle
 			if (iCount_Create)	{
 				// Replace
 				m_Emitter->GenerateParticle(m_Particles[i], m_Definition, TM);
