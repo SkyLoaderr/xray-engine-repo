@@ -112,3 +112,11 @@ _TIME_ID game_sv_Single::GetGameTime		()
 	else
 		return(inherited::GetGameTime());
 }
+
+float game_sv_Single::GetGameTimeFactor		()
+{
+	if (m_tpALife && m_tpALife->m_bLoaded)
+		return(m_tpALife->m_fTimeFactor);
+	else
+		return(1.f);
+}

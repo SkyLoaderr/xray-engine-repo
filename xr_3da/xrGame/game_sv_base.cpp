@@ -368,6 +368,11 @@ _TIME_ID game_sv_GameState::GetGameTime()
 	return			(u64(Device.TimerAsync()));
 }
 
+float game_sv_GameState::GetGameTimeFactor()
+{
+	return			(1.f);
+}
+
 game_sv_GameState::game_sv_GameState()
 {
 	m_tpScriptProcessor			= 0;

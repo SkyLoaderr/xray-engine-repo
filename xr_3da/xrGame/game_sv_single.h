@@ -39,4 +39,5 @@ public:
 	// Main
 	virtual		void				Update					();
 	virtual		_TIME_ID			GetGameTime				();
+	virtual		float				GetGameTimeFactor		();
 };

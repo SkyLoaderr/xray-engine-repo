@@ -206,6 +206,11 @@ public:
 		return(this->Server->game->GetGameTime());
 	}
 
+	IC	_TIME_ID CLevel::GetGameTimeFactor()
+	{
+		return(this->Server->game->GetTimeFactor());
+	}
+
 	CFogOfWar* m_pFogOfWar;
 
 	// by Jim
