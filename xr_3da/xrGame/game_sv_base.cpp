@@ -51,14 +51,15 @@ u32					game_sv_GameState::get_count				()
 u32					game_sv_GameState::get_alive_count			(u32 team)
 {
 	Device.Fatal	("Not implemented");
+	return 0;
 }
 
 // Network
-void game_sv_GameState::net_Export_State	(NET_Packet& P)
+void game_sv_GameState::net_Export_State						(NET_Packet& P)
 {
 }
 
-void game_sv_GameState::net_Export_Update	(NET_Packet& P, DWORD id)
+void game_sv_GameState::net_Export_Update						(NET_Packet& P, DWORD id)
 {
 	Lock		();
 	game_PlayerState* A		= get_id		(id);

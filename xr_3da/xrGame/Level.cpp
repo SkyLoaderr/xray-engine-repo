@@ -39,10 +39,6 @@ CLevel::~CLevel()
 	Engine.Event.Handler_Detach(eEntitySpawn,	this);
 
 	Engine.Event.Handler_Detach(eEnvironment,	this);
-	Engine.Event.Handler_Detach(eDA_StopMotion,	this);
-	Engine.Event.Handler_Detach(eDA_PlayMotion,	this);
-	Engine.Event.Handler_Detach(eDoorClose,		this);
-	Engine.Event.Handler_Detach(eDoorOpen,		this);
 	Engine.Event.Handler_Detach(eChangeTrack,	this);
 	Engine.Event.Handler_Detach(eDemoPlay,		this);
 	Engine.Event.Handler_Detach(eChangeRP,		this);
