@@ -271,7 +271,6 @@ function CZoneNotWeapon:__init(zone_object)
 	    zone_object:active_zone_contact(level.actor():id())
 	   ) then
 		level.actor():hide_weapon()
-		local i = 10
 	end
 end
 
