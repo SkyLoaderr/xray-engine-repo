@@ -6,7 +6,7 @@
     <!-------------------------------- Niva ----------------------------->
 
     <article id="vehicles_niva" name="Niva" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_niva</text>
     </article>
 
@@ -14,7 +14,7 @@
     <!-------------------------------- btr-70 ----------------------------->
 
     <article id="vehicles_btr-70" name="btr-70" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_btr-70</text>
     </article>
 
@@ -23,7 +23,7 @@
 
 
     <article id="vehicles_bmp-2" name="bmp-2" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_bmp-2</text>
     </article>
 
@@ -31,7 +31,7 @@
     <!-------------------------------- mi-24 ----------------------------->
 
     <article id="vehicles_mi-24" name="mi-24" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_mi-24</text>
     </article>
 
@@ -39,7 +39,7 @@
     <!-------------------------------- Kamaz ----------------------------->
 
     <article id="vehicles_kamaz" name="Kamaz" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_kamaz</text>
     </article>
 
@@ -47,7 +47,7 @@
     <!-------------------------------- Lada ----------------------------->
 
     <article id="vehicles_lada" name="Lada" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_lada</text>
     </article>
 
@@ -55,7 +55,7 @@
     <!-------------------------------- Moskvich ----------------------------->
 
     <article id="vehicles_moskvich" name="Moskvich" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_moskvich</text>
     </article>
 
@@ -63,7 +63,7 @@
     <!-------------------------------- Gaz ----------------------------->
 
     <article id="vehicles_gaz" name="Gaz" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_gaz</text>
     </article>
 
@@ -71,7 +71,7 @@
     <!-------------------------------- Rafik ----------------------------->
 
     <article id="vehicles_rafik" name="Rafik" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_rafik</text>
     </article>
 
@@ -79,7 +79,7 @@
     <!-------------------------------- Bus ----------------------------->
 
     <article id="vehicles_bus" name="Bus" group="Vehicles">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_vehicles_bus</text>
     </article>
 
