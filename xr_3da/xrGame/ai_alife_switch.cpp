@@ -10,7 +10,7 @@
 #include "ai_alife.h"
 #include "GameObject.h"
 
-void CAI_ALife::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	NET_Packet						tNetPacket;
 	
@@ -38,7 +38,7 @@ void CAI_ALife::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 	}
 }
 
-void CAI_ALife::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	//VERIFY(tpALifeDynamicObject->ID_Parent == 0xffff);
 	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
@@ -60,7 +60,7 @@ void CAI_ALife::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 //.	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
 }
 
-void CAI_ALife::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	VERIFY							(!tpALifeDynamicObject->m_bOnline);
 	CSE_ALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject);
@@ -89,7 +89,7 @@ void CAI_ALife::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDynamicObjec
 //.	Msg								("ALife : Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
-void CAI_ALife::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	VERIFY							(tpALifeDynamicObject->m_bOnline);
 	CSE_ALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject);
@@ -128,7 +128,7 @@ void CAI_ALife::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDynamicObje
 //.	Msg								("ALife : Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
-void CAI_ALife::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
+void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 {
 	if ((I->m_bOnline || (I->m_tNodeID < 0) || (I->m_tNodeID >= getAI().Header().count)) && (I->ID_Parent == 0xffff)) {
 //		u32 dwLastNodeID = (u32)I->m_tNodeID;

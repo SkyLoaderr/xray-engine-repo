@@ -10,7 +10,7 @@
 #include "ai_alife.h"
 #include "a_star.h"
 
-void CAI_ALife::Update(u32 dt)
+void CSE_ALifeSimulator::Update(u32 dt)
 {
 	CSheduled::Update					(dt);
 	
@@ -102,7 +102,7 @@ void CAI_ALife::Update(u32 dt)
 	}
 }
 
-void CAI_ALife::vfProcessNPC(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
+void CSE_ALifeSimulator::vfProcessNPC(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
 //	CSE_ALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
 //	if (tpALifeHumanAbstract) {
@@ -125,13 +125,13 @@ void CAI_ALife::vfProcessNPC(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
 	tpALifeMonsterAbstract->m_tTimeID = tfGetGameTime();
 }
 
-void CAI_ALife::vfUpdateMonster(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
+void CSE_ALifeSimulator::vfUpdateMonster(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
 {
 	vfChooseNextRoutePoint	(tpALifeMonsterAbstract);
 	vfCheckForTheBattle		(tpALifeMonsterAbstract);
 }
 
-void CAI_ALife::vfUpdateHuman(CSE_ALifeHumanAbstract *tpALifeHuman)
+void CSE_ALifeSimulator::vfUpdateHuman(CSE_ALifeHumanAbstract *tpALifeHuman)
 {
 //	switch (tpALifeHuman->m_tTaskState) {
 //		case eTaskStateNoTask : {

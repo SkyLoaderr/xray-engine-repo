@@ -10,36 +10,36 @@
 #include "ai_alife.h"
 #include "ai_space.h"
 
-CAI_ALife::CAI_ALife(xrServer *tpServer)
+CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 {
 	m_tpServer			= tpServer;
 	m_bLoaded			= false;
 	m_tpActor			= 0;
 }
 
-CAI_ALife::~CAI_ALife()
+CSE_ALifeSimulator::~CSE_ALifeSimulator()
 {
 	shedule_Unregister	();
 }
 
 
-float CAI_ALife::shedule_Scale()
+float CSE_ALifeSimulator::shedule_Scale()
 {
 	return(.5f); // (schedule_min + schedule_max)*0.5f
 }
 
-BOOL CAI_ALife::Ready()
+BOOL CSE_ALifeSimulator::Ready()
 {
 	return(TRUE);
 }
 
-LPCSTR CAI_ALife::cName()
+LPCSTR CSE_ALifeSimulator::cName()
 {
 	return("ALife Simulator");
 }; 
 
 
-void CAI_ALife::vfNewGame()
+void CSE_ALifeSimulator::vfNewGame()
 {
 	CSE_ALifeGraphRegistry::Init	();
 	CSE_ALifeTraderRegistry::Init	();
@@ -137,7 +137,7 @@ void CAI_ALife::vfNewGame()
 	m_tGameTime						= u64(m_dwStartTime = Device.dwTimeGlobal);
 }
 
-void CAI_ALife::Save(LPCSTR caSaveName)
+void CSE_ALifeSimulator::Save(LPCSTR caSaveName)
 {
 	CMemoryWriter				tStream;
 	CSE_ALifeHeader::Save			(tStream);
@@ -150,7 +150,7 @@ void CAI_ALife::Save(LPCSTR caSaveName)
 	tStream.save_to				(S);
 }
 
-void CAI_ALife::Load(LPCSTR caSaveName)
+void CSE_ALifeSimulator::Load(LPCSTR caSaveName)
 {
 	Memory.mem_compact			();
 	u32							dwMemUsage = Memory.mem_usage();
@@ -203,14 +203,14 @@ void CAI_ALife::Load(LPCSTR caSaveName)
 	Msg							("* Loading ALife Simulator is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - dwMemUsage)/1048576.0);
 }
 
-void CAI_ALife::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	CSE_ALifeGraphRegistry::Update		(tpALifeDynamicObject);
 	CSE_ALifeTraderRegistry::Update	(tpALifeDynamicObject);
 	CSE_ALifeScheduleRegistry::Update	(tpALifeDynamicObject);
 }
 
-void CAI_ALife::vfUpdateDynamicData()
+void CSE_ALifeSimulator::vfUpdateDynamicData()
 {
 	// initialize
 	CSE_ALifeGraphRegistry::Init	();
@@ -232,7 +232,7 @@ void CAI_ALife::vfUpdateDynamicData()
 	}
 }
 
-void CAI_ALife::vfCreateNewTask(CSE_ALifeTrader *tpTrader)
+void CSE_ALifeSimulator::vfCreateNewTask(CSE_ALifeTrader *tpTrader)
 {
 	OBJECT_PAIR_IT						I = m_tObjectRegistry.begin();
 	OBJECT_PAIR_IT						E = m_tObjectRegistry.end();
@@ -252,7 +252,7 @@ void CAI_ALife::vfCreateNewTask(CSE_ALifeTrader *tpTrader)
 	}
 }
 
-CSE_ALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHuman)
+CSE_ALifeTrader* CSE_ALifeSimulator::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHuman)
 {
 	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
 	CSE_ALifeTrader *	tpBestTrader = 0;
@@ -271,7 +271,7 @@ CSE_ALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *
 	return			(tpBestTrader);
 }
 
-void CAI_ALife::vfRemoveObject(CSE_Abstract *tpServerEntity)
+void CSE_ALifeSimulator::vfRemoveObject(CSE_Abstract *tpServerEntity)
 {
 	CSE_ALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpServerEntity->ID];
 	VERIFY						(tpALifeDynamicObject);
@@ -312,38 +312,38 @@ void CAI_ALife::vfRemoveObject(CSE_Abstract *tpServerEntity)
 }
 
 
-void CAI_ALife::vfGenerateAnomalousZones()
+void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 {
 }
 
-void CAI_ALife::vfGenerateArtefacts()
+void CSE_ALifeSimulator::vfGenerateArtefacts()
 {
 }
 
-void CAI_ALife::vfSellArtefacts(CSE_ALifeTrader &tTrader)
+void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 {
 }
 
-void CAI_ALife::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
+void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 {
 }
 
-void CAI_ALife::vfGiveMilitariesBribe(CSE_ALifeTrader &tTrader)
+void CSE_ALifeSimulator::vfGiveMilitariesBribe(CSE_ALifeTrader &tTrader)
 {
 }
 
-void CAI_ALife::vfBuySupplies(CSE_ALifeTrader &tTrader)
+void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 {
 }
 
-void CAI_ALife::vfAssignPrices(CSE_ALifeTrader &tTrader)
+void CSE_ALifeSimulator::vfAssignPrices(CSE_ALifeTrader &tTrader)
 {
 }
 
-void CAI_ALife::vfBallanceCreatures()
+void CSE_ALifeSimulator::vfBallanceCreatures()
 {
 }
 
-void CAI_ALife::vfUpdateCreatures()
+void CSE_ALifeSimulator::vfUpdateCreatures()
 {
 }

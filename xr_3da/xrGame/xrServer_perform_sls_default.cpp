@@ -7,7 +7,7 @@ void xrServer::SLS_Default	()
 	if (game->type == GAME_SINGLE) {
 		game_sv_Single *tpGame	= dynamic_cast<game_sv_Single*>(game);
 		if (tpGame && tpGame->m_bALife) {
-			tpGame->m_tpALife	= xr_new<CAI_ALife>(this);
+			tpGame->m_tpALife	= xr_new<CSE_ALifeSimulator>(this);
 			tpGame->m_tpALife->Load();
 			return;
 		}

@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 
-void CAI_ALife::vfAssignGraphPosition(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
+void CSE_ALifeSimulator::vfAssignGraphPosition(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
 	tpALifeMonsterAbstract->m_tNextGraphID		= tpALifeMonsterAbstract->m_tPrevGraphID = tpALifeMonsterAbstract->m_tGraphID;
 	tpALifeMonsterAbstract->m_fDistanceToPoint	= tpALifeMonsterAbstract->m_fDistance;
@@ -23,7 +23,7 @@ void CAI_ALife::vfAssignGraphPosition(CSE_ALifeMonsterAbstract	*tpALifeMonsterAb
 		}
 }
 
-void CAI_ALife::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
+void CSE_ALifeSimulator::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
 	if (tpALifeMonsterAbstract->m_tNextGraphID != tpALifeMonsterAbstract->m_tGraphID) {
 		_TIME_ID								tCurTime = tfGetGameTime();
@@ -95,17 +95,17 @@ void CAI_ALife::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALifeMonsterA
 	}
 }
 
-void CAI_ALife::vfCheckForTheBattle(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
+void CSE_ALifeSimulator::vfCheckForTheBattle(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
 {
 }
 
-void CAI_ALife::vfCheckForDeletedEvents(CSE_ALifeHumanAbstract	*tpALifeHuman)
+void CSE_ALifeSimulator::vfCheckForDeletedEvents(CSE_ALifeHumanAbstract	*tpALifeHuman)
 {
 	PERSONAL_EVENT_P_IT I = std::remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePersonalEventPredicate(m_tEventRegistry));
 	tpALifeHuman->m_tpEvents.erase(I,tpALifeHuman->m_tpEvents.end());
 }
 
-bool CAI_ALife::bfCheckForItems(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract)
+bool CSE_ALifeSimulator::bfCheckForItems(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract)
 {
 	CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeHumanAbstract);
 	if (tpALifeHuman)
@@ -123,7 +123,7 @@ bool CAI_ALife::bfCheckForItems(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract)
 	}
 }
 
-bool CAI_ALife::bfProcessItems(CSE_Abstract &tServerEntity, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability)
+bool CSE_ALifeSimulator::bfProcessItems(CSE_Abstract &tServerEntity, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability)
 {
 	CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(&tServerEntity);
 	VERIFY(tpALifeTraderParams);
@@ -180,7 +180,7 @@ bool CAI_ALife::bfProcessItems(CSE_Abstract &tServerEntity, _GRAPH_ID tGraphID, 
 	return(bOk);
 }
 
-void CAI_ALife::vfCommunicateWithTrader(CSE_ALifeHumanAbstract *tpALifeHuman, CSE_ALifeTrader *tpTrader)
+void CSE_ALifeSimulator::vfCommunicateWithTrader(CSE_ALifeHumanAbstract *tpALifeHuman, CSE_ALifeTrader *tpTrader)
 {
 //	// update items
 //	TASK_PAIR_IT T = m_tTaskRegistry.find(tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tTaskID);

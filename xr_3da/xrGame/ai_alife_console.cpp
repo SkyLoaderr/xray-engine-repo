@@ -75,7 +75,7 @@ void vfPrintLargeString(const char *S1, const char *S, const int j, const u32 u)
 		Msg("* %s[%d] : %s",S1,j,S);
 }
 
-void CAI_ALife::vfListObjects()
+void CSE_ALifeSimulator::vfListObjects()
 {
 	OBJECT_PAIR_IT	I = m_tObjectRegistry.begin();
 	OBJECT_PAIR_IT	E = m_tObjectRegistry.end();
@@ -89,7 +89,7 @@ void CAI_ALife::vfListObjects()
 	Msg("Total %d objects",i);
 }
 
-void CAI_ALife::vfListEvents()
+void CSE_ALifeSimulator::vfListEvents()
 {
 	EVENT_PAIR_IT	I = m_tEventRegistry.begin();
 	EVENT_PAIR_IT	E = m_tEventRegistry.end();
@@ -99,7 +99,7 @@ void CAI_ALife::vfListEvents()
 	Msg("Total %d events",i);
 }
 
-void CAI_ALife::vfListTasks()
+void CSE_ALifeSimulator::vfListTasks()
 {
 	TASK_PAIR_IT	I = m_tTaskRegistry.begin();
 	TASK_PAIR_IT	E = m_tTaskRegistry.end();
@@ -109,7 +109,7 @@ void CAI_ALife::vfListTasks()
 	Msg("Total %d tasks",i);
 }
 
-void CAI_ALife::vfListTerrain()
+void CSE_ALifeSimulator::vfListTerrain()
 {
 	Msg("%s->Listing terrain locations :",cName());
 	char *S = (char *)xr_malloc(128*1024*sizeof(char));
@@ -136,7 +136,7 @@ void CAI_ALife::vfListTerrain()
 	}
 }
 
-void CAI_ALife::vfListSpawnPoints()
+void CSE_ALifeSimulator::vfListSpawnPoints()
 {
 //	SPAWN_P_IT	I = m_tpSpawnPoints.begin();
 //	SPAWN_P_IT	E = m_tpSpawnPoints.end();
@@ -151,7 +151,7 @@ void CAI_ALife::vfListSpawnPoints()
 //	Msg("Total %d spawn points",i);
 }
 
-void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
+void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	&tObjectID)
 {
 //	string4096		S;
 //	string16		S1;
@@ -341,7 +341,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //	}
 }
 
-void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
+void CSE_ALifeSimulator::vfEventInfo(_EVENT_ID &tEventID)
 {
 	EVENT_PAIR_IT I = m_tEventRegistry.find(tEventID);
 	if (I == m_tEventRegistry.end()) {
@@ -392,7 +392,7 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 	}
 }
 
-void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
+void CSE_ALifeSimulator::vfTaskInfo(_TASK_ID &tTaskID)
 {
 	TASK_PAIR_IT I = m_tTaskRegistry.find(tTaskID);
 	if (I == m_tTaskRegistry.end()) {
@@ -452,7 +452,7 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 	}
 }
 
-void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
+void CSE_ALifeSimulator::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 {
 //	CSE_ALifeSpawnPoint &tSpawnPoint = *(m_tpSpawnPoints[tSpawnID]);
 //	Msg("%s->Spawn-point information :",cName());
@@ -489,7 +489,7 @@ void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 //	}
 }
 
-void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
+void CSE_ALifeSimulator::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
 {
 	CSE_ALifeGraph::SGraphVertex &tGraphVertex = getAI().m_tpaGraph[tGraphID];
 	Msg("%s->Graph vertex information :",cName());
@@ -501,27 +501,27 @@ void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
 		Msg("*   Vertex %d -> distance %7.2f",tpaEdges[i].dwVertexNumber, tpaEdges[i].fPathDistance);
 }
 
-void CAI_ALife::vfSetOnlineDistance			(float	fNewDistance)
+void CSE_ALifeSimulator::vfSetOnlineDistance			(float	fNewDistance)
 {
 	m_fOnlineDistance = fNewDistance;
 }
 
-void CAI_ALife::vfSetProcessTime			(int	iMicroSeconds)
+void CSE_ALifeSimulator::vfSetProcessTime			(int	iMicroSeconds)
 {
 	m_qwMaxProcessTime = iMicroSeconds*CPU::cycles_per_microsec;
 }
 
-void CAI_ALife::vfSetSwitchDelay			(int	iMilliSeconds)
+void CSE_ALifeSimulator::vfSetSwitchDelay			(int	iMilliSeconds)
 {
 	m_dwSwitchDelay = (u32)iMilliSeconds;
 }
 
-void CAI_ALife::vfSetScheduleMin			(int	iMilliSeconds)
+void CSE_ALifeSimulator::vfSetScheduleMin			(int	iMilliSeconds)
 {
 	shedule.t_min = iMilliSeconds;
 }
 
-void CAI_ALife::vfSetScheduleMax			(int	iMilliSeconds)
+void CSE_ALifeSimulator::vfSetScheduleMax			(int	iMilliSeconds)
 {
 	shedule.t_max = iMilliSeconds;
 }

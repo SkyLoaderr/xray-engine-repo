@@ -8,7 +8,7 @@ class	game_sv_Single				: public game_sv_GameState
 private:
 	typedef game_sv_GameState inherited;
 public:
-	CAI_ALife						*m_tpALife;
+	CSE_ALifeSimulator						*m_tpALife;
 	xrServer						*m_tpServer;
 	bool							m_bALife;
 									game_sv_Single			(xrServer *tpServer) : game_sv_GameState()

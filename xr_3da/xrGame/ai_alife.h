@@ -11,7 +11,7 @@
 #include "ai_alife_objects.h"
 #include "ai_alife_registries.h"
 
-class CAI_ALife : 
+class CSE_ALifeSimulator : 
 	public CSE_ALifeHeader, 
 	public CSE_ALifeGameTime,
 	public CSE_ALifeSpawnRegistry, 
@@ -69,8 +69,8 @@ public:
 	// members
 	bool							m_bLoaded;
 	// methods
-									CAI_ALife					(xrServer *tpServer);
-	virtual							~CAI_ALife					();
+									CSE_ALifeSimulator					(xrServer *tpServer);
+	virtual							~CSE_ALifeSimulator					();
 	virtual float					shedule_Scale				();
 	virtual BOOL					Ready						();
 	virtual LPCSTR					cName						();
