@@ -290,6 +290,10 @@ SOURCE=.\OPC_AABB.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\OPC_BoundingSphere.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\OPC_Container.cpp
 # End Source File
 # Begin Source File
