@@ -32,6 +32,7 @@ IC	void CPatrolPathManager::reinit				()
 	m_completed				= true;
 	m_curr_point_index		= u32(-1);
 	m_prev_point_index		= u32(-1);
+	m_start_point_index		= u32(-1);
 	m_callback				= 0;
 }
 
