@@ -3,7 +3,7 @@
 void CRenderTarget::accum_direct	(u32 dls_phase)
 {
 	// *** assume accumulator setted up ***
-	float			z_bias				= dls_phase?0.005f:0.002f;
+	float			z_bias				= dls_phase?0.006f:0.003f;
 
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / DSM_size);
@@ -44,7 +44,7 @@ void CRenderTarget::accum_direct	(u32 dls_phase)
 		RCache.set_Geometry			(g_combine);
 
 		// Shader + constants
-		float circle				= 2.f / DSM_size;
+		float circle				= 1.f / DSM_size;
 		if (1)
 		{
 			Fvector4 J; float scale		= circle/11.f;
