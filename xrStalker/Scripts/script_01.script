@@ -54,7 +54,7 @@ function main()
 	event:set_callback(script_01.on_exit,false)
 
 	while stalker1:action() and stalker2:action() do
-		if is_actor_entered == true then 
+		if is_actor_entered and stalker1:see(actor) == false or stalker2:see(actor) == false then 
 			printf("alarm!")
 			flush()
 			stalker1:script	(false, script_01.script_name())
@@ -96,6 +96,9 @@ function main()
 				)
 			break
 		end
+		wait()			
+	end
+
 	while stalker1:action() and stalker2:action() do
 		if stalker1:see(actor) or stalker2:see(actor) then
 			printf("script 2!")
@@ -131,11 +134,10 @@ function main()
 			stalker1:script	(false, script_01.script_name())
 			stalker2:script	(false, script_01.script_name())
 			wait		(1500)			
-   
 		end
 		wait()			
-		end
 	end
+
 
 	while stalker1:action() and stalker2:action() do
 	    wait	()
