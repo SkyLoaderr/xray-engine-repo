@@ -12,7 +12,7 @@
 using namespace PAPI;
 using namespace PS;
 
-static int action_list_handle=-1;
+//static int action_list_handle=-1;
 
 //------------------------------------------------------------------------------
 // class CParticleEffectDef
@@ -416,8 +416,8 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 			// execute action list
 			pCallActionList		(m_HandleActionList);
 
-			if (action_list_handle>-1) 
-            	pCallActionList	(action_list_handle);
+//			if (action_list_handle>-1) 
+//            	pCallActionList	(action_list_handle);
             
 			ParticleEffect *pg 	= _GetEffectPtr(m_HandleEffect);
 			// our actions
@@ -492,10 +492,10 @@ void CParticleEffect::ApplyExplosion()
 {
     pCurrentEffect		(m_HandleEffect);
 
-    action_list_handle	= pGenActionLists();
-	pNewActionList		(action_list_handle);
-	pExplosion			(0,0,0, 1, 8, 3, 0.1f, 1.0f);
-	pEndActionList		();
+//	action_list_handle	= pGenActionLists();
+//	pNewActionList		(action_list_handle);
+//	pExplosion			(0,0,0, 1, 8, 3, 0.1f, 1.0f);
+//	pEndActionList		();
 }
 
 //------------------------------------------------------------------------------
