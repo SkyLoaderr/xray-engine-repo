@@ -220,6 +220,7 @@ void CRender::Render		()
 	render_lights							(LP_normal);
 	
 	// Sync-Point
+	Device.Statistic.RenderDUMP_Wait.Begin	();
 	{
 		CTimer	T;							T.Start	();
 		BOOL	result						= FALSE;
@@ -232,6 +233,7 @@ void CRender::Render		()
 			}
 		}
 	}
+	Device.Statistic.RenderDUMP_Wait.End	();
 	
 	// Lighting, dependant on OCCQ
 	render_lights							(LP_pending);
