@@ -10,10 +10,7 @@
         <text>"Всего лишь"! Если в лагере бандитов достать костюм не так уж и сложно, то узнать пароль - задача практически неразрешимая. Никто из бандитов откровенничать с тобой не будет. Слышал я в разговоре бандитов, что пароль также хранится на ПДА у Борова, лидера бандитов, но к нему пробраться вообще нереально - в охранниках у него очень серьезные ребята.</text>
     </string>
     <string id="val_escort_hello_111">
-        <text>ОК, спасибо за информацию. Не попадайся больше, будь осторожен.</text>
-    </string>
-    <string id="val_escort_hello_1111">
-        <text>Так точно! Пока.</text>
+        <text>ОК, спасибо за информацию</text>
     </string>
     <string id="val_escort_hello_11111">
         <text>Счастливо.</text>
@@ -23,5 +20,83 @@
     </string>
     <string id="val_escort_hello_211">
         <text>text in default</text>
+    </string>
+    <string id="val_monolith_guard_password_0">
+        <text>Стоять! Говори пароль.</text>
+    </string>
+    <string id="val_monolith_guard_password_1">
+        <text>Большой Монолит</text>
+    </string>
+    <string id="val_monolith_guard_password_2">
+        <text>Ядерная зима</text>
+    </string>
+    <string id="val_monolith_guard_password_3">
+        <text>Ночное солнце</text>
+    </string>
+    <string id="val_monolith_guard_password_4">
+        <text>Пароль</text>
+    </string>
+    <string id="val_monolith_guard_password_5">
+        <text>Слушай, я вчера напился, забыл пароль. Пропусти меня, я в долгу не останусь.</text>
+    </string>
+    <string id="val_monolith_guard_password_6">
+        <text>Вообще-то я новенький, мне пароль еще не доверили. А пройти сюда мне надо - наш лидер приказал.</text>
+    </string>
+    <string id="val_monolith_guard_password_7">
+        <text>Какой такой пароль? А ну пропускай меня, иначе у тебя будут крупные неприятности.</text>
+    </string>
+    <string id="val_monolith_guard_password_8">
+        <text>Я ошибся зданием, извини. Я уже ухожу.</text>
+    </string>
+    <string id="val_prisoner_hello_11">
+        <text>Помоги мне! Я разведчик "Долга". По своей глупости попался бандитам. Они тут... Ш-ш-ш.. Кто-то идет. Подожди, я посмотрю.</text>
+    </string>
+    <string id="val_prisoner_hello_111">
+        <text>ОК, я жду.</text>
+    </string>
+    <string id="val_prisoner_hello_12">
+        <text>Видел? Эти суки убивают сталкеров ради развлечения. Я буду следующим. Помоги мне выбраться отсюда.</text>
+    </string>
+    <string id="val_prisoner_hello_121">
+        <text>Я постараюсь. Сделаю что смогу.</text>
+    </string>
+    <string id="val_prisoner_hello_122">
+        <text>Что-то нет у меня желания связываться с бандитами. Сам выбирайся как знаешь.</text>
+    </string>
+    <string id="val_prisoner_hello_13">
+        <text>Нам никто не поможет. Мы обречены..</text>
+    </string>
+    <string id="val_prisoner_hello_131">
+        <text>Не отчаивайся. Надо что-то придумать.</text>
+    </string>
+    <string id="val_prisoner_hello_14">
+        <text>Спасибо, брат. Я твой должник. Может, тебе чем-то поможет эта иформация: от охранников я слышал, что на Базу Монолита можно пройти только в одежде бандитов, но еще нужно знать пароль. Этот пароль записан в ПДА у Борова, лидера бандитов. Также Боров хранит у себя ключ от секретной Лаборатории Х18, вход на которую и расположен где-то на Базе Монолита. Только пробраться к Борову нелегко - там очень серьезная охрана.</text>
+    </string>
+    <string id="val_prisoner_hello_141">
+        <text>Думаю, эта информация будет мне полезна.</text>
+    </string>
+    <string id="val_prisoner_hello_1411">
+        <text>А теперь я покажу этим бандитам кузькину мать. Всех выкошу, падлы такие!</text>
+    </string>
+    <string id="val_prisoner_hello_14111">
+        <text>Ну, давай. Удачи тебе.</text>
+    </string>
+    <string id="val_prisoner_hello_14112">
+        <text>Лучше давай я проверю окрестности и дам тебе знать, когда сниму всех охранников. А ты подожди здесь.</text>
+    </string>
+    <string id="val_prisoner_hello_15">
+        <text>Ну что, как там ситуация?</text>
+    </string>
+    <string id="val_prisoner_hello_151">
+        <text>Все отлично. Можешь выбираться.</text>
+    </string>
+    <string id="val_prisoner_hello_1511">
+        <text>Спасибо за все, брат. Пока.</text>
+    </string>
+    <string id="val_prisoner_hello_15111">
+        <text>Удачи.</text>
+    </string>
+    <string id="val_prisoner_hello_152">
+        <text>Подожди еще немного.</text>
     </string>
 </string_table>
