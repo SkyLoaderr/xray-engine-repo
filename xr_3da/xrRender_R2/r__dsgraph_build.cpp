@@ -8,6 +8,7 @@
 #include "..\irenderable.h"
 
 #include "particlegroup.h"
+#include "FTreeVisual.h"
 
 using	namespace R_dsgraph;
 
@@ -338,6 +339,7 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 		{
 			// Insert (as dynamic)
 			FTreeVisual*	pV			= (FTreeVisual*)pVisual;
+			set_Object					(0);
 			set_Transform				(&pV->xform);
 			r_dsgraph_insert_dynamic	(pVisual,pV->vis.sphere.P);
 		}
@@ -507,6 +509,7 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 		{
 			// Insert (as dynamic)
 			FTreeVisual*	pV			= (FTreeVisual*)pVisual;
+			set_Object					(0);
 			set_Transform				(&pV->xform);
 			r_dsgraph_insert_dynamic	(pVisual,pV->vis.sphere.P);
 		}
