@@ -6844,6 +6844,12 @@
 						Name="objects"
 						Filter="">
 						<File
+							RelativePath=".\xrServer_Object_Base.cpp">
+						</File>
+						<File
+							RelativePath=".\xrServer_Object_Base.h">
+						</File>
+						<File
 							RelativePath="xrServer_Objects.cpp">
 						</File>
 						<File
