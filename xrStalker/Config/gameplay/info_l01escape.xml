@@ -5,9 +5,9 @@
 	<info_portion id="tutorial_artefact_start">
 		<location>
 			<level>l01_escape</level>
-			<object>002</object>
+			<object>002</object>			
+			<icon name="" x="2" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Артефакт.</text>
-			<icon name="Артефакт" x="2" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 		</location>
 		<task>tutorial_find_artefact</task>
 	</info_portion>

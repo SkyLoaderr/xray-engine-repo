@@ -30,13 +30,17 @@ function send_news(actor, news_id)
 			end
 		end
 	end
-	actor:give_game_news(news_id, "ui\\ui_icons_task", 100,0,50,50)
+	actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
 end
 function send_tip(actor, news_id)
 	if actor == nil or news_id == nil then return false end
-	actor:give_game_news(news_id, "ui\\ui_icons_task", 350,50,50,50)
+	actor:give_game_news(news_id, "ui\\ui_icons_task", 50,100,50,50)
 end
 function send_help(actor)
 	if actor == nil then return false end
-	actor:give_game_news("general_help", "ui\\ui_icons_task", 150,0,50,500)
+	actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,500)
+end
+function send_task(actor, news_id)
+	if actor == nil or news_id == nil then return false end
+	actor:give_game_news(news_id, "ui\\ui_icons_task", 150,100,50,500)
 end
