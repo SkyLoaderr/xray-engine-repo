@@ -90,6 +90,18 @@ CxrUpdateView::CxrUpdateView()
 CxrUpdateView::~CxrUpdateView()
 {
 	g_tree_ctrl = NULL;
+	
+	m_copy_files_dlg->DestroyWindow();
+	xr_delete(m_copy_files_dlg);
+
+	m_copy_folder_dlg->DestroyWindow();
+	xr_delete(m_copy_folder_dlg);
+
+	m_exec_process_dlg->DestroyWindow();
+	xr_delete(m_exec_process_dlg);
+
+	m_batch_process_dlg->DestroyWindow();
+	xr_delete(m_batch_process_dlg);
 }
 
 void CxrUpdateView::DoDataExchange(CDataExchange* pDX)

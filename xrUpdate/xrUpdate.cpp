@@ -52,6 +52,7 @@ CxrUpdateApp::~CxrUpdateApp()
 {
 	Core._destroy();
 	g_log_dlg = NULL;
+	m_log_dlg->DestroyWindow();
 	xr_delete(m_log_dlg);
 	FreeConsole();
 
