@@ -1270,9 +1270,9 @@ const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 slotNum, u8 idx)
 CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::GetWeapon(u32 slotNum, u32 idx)
 {
 	R_ASSERT(slotNum < MP_SLOTS_NUM);
+	if (UITopList[slotNum].GetDragDropItemsList().empty()) return NULL;
 	R_ASSERT(idx < UITopList[slotNum].GetDragDropItemsList().size());
 
-	if (UITopList[slotNum].GetDragDropItemsList().empty()) return NULL;
 
 	DRAG_DROP_LIST_it it = UITopList[slotNum].GetDragDropItemsList().begin(); 
 	std::advance(it, idx);
