@@ -5103,6 +5103,148 @@ sleep_power = 1.0		;1.5
 sleep_satiety = 1.0		;0.8
 sleep_radiation = 1.0	;1.1
 
+;-----------------------------------------------------------------------------------
+; Boar
+;-----------------------------------------------------------------------------------
+[m_boar_e]
+GroupControlSection	= spawn_group
+$spawn               = "monsters\boar"				; option for Level Editor
+$npc			     = on						; option for Level Editor
+$prefetch 			 = 16
+Scheduled		     = on						; option for ALife Simulator
+Human		     	 = off						; option for ALife Simulator
+Health			     = 400						; option for ALife Simulator
+MinSpeed		     = 1.0						; option for ALife Simulator
+MaxSpeed		     = 1.5						; option for ALife Simulator
+going_speed          = 1.0                      ; option for ALife Simulator
+search_speed         = .5                       ; option for ALife Simulator
+visual				 = monsters\mutantboar\mutantboar
+MaxHealthValue		     = 100			; range [0..200]
+
+cform                = skeleton					; collision class
+class                = AI_BOAR					; AI class
+
+bone_torso			 = bip01_spine1 			; bone name
+bone_head			 = bip01_head				; bone name
+weapon_usage		 = 0						; boolean
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min   = 16
+ph_crash_speed_max   = 30
+ph_mass 		     = 170.
+capture_bone		 = 0
+
+ph_skeleton_mass_factor	 = 1.5
+ph_skeleton_airr_lin_factor = 1.0
+ph_skeleton_airr_ang_factor = 1.0
+ph_skeleton_hinger_factor    =15.
+ph_skeleton_hinger_factor1   =0
+ph_skeleton_hinger_factor2   =0
+ph_skeleton_hinge_vel	     =10
+ph_skeleton_ddelay	     	 =20
+ph_skel_fatal_impulse_factor =7.0
+
+ph_friction_air					= 0.05		
+ph_friction_ground				= 8			
+ph_friction_wall				= 4.0              
+
+
+SoundThreshold		 = 0.06             ; range [0..1]
+
+EyeFov				 = 100;
+eye_range			 = 70;
+
+hit_power			 = 70.0;
+
+ImpulseMin			 = 1000.0
+ImpulseMax			 = 1500.0 
+
+; motion factors
+StandTurnRSpeed		= 1.05						; PI_DIV_3
+WalkSpeed			= 3.0
+WalkTurningSpeed	= 1.0
+WalkRSpeed			= 0.79						; PI_DIV_4	when SetDirLook
+WalkTurnRSpeed		= 1.57						; PI_DIV_2	when turn needed
+WalkMinAngle		= 0.52						; PI_DIV_6
+RunAttackSpeed		= 8.5
+RunAttackTurnSpeed	= 3.5
+RunAttackTurnRSpeed = 2.61						; 5 * PI_DIV_6
+RunRSpeed			= 1.57						; PI_DIV_2
+RunAttackMinAngle	= 0.52						; PI_DIV_6
+AttackFastRSpeed	= 2.36						; 3 * PI_DIV_4
+ScaredRSpeed		= 2.36						; 3 * PI_DIV_4
+AttackFastRSpeed2	= 3.14						; PI	- not needed for dog, remove it later
+
+; state times
+LieIdleTimeMin		= 5000
+LieIdleTimeMax		= 7000
+StandIdleTimeMin	= 3000
+StandIdleTimeMax	= 5000
+FreeWalkTimeMin		= 3000
+FreeWalkTimeMax		= 5000
+SleepTimeMin		= 2000
+SleepTimeMax		= 3000
+
+; "Rest" state specific 
+ProbRestWalkFree	= 30    ; при выборе действия, в 50% случаях монстр будет ходить
+ProbRestStandIdle	= 15		
+ProbRestLieIdle		= 50
+ProbRestTurnLeft	= 5
+
+DayTime_Begin		= 6			; начала дня для монстра
+DayTime_End			= 21		; конец дня для монстра
+Min_Satiety			= 0.6		; мин. норма сытости (меньше - уже голодный)
+Max_Satiety			= 0.9		; макс. норма сытости (больше - очень сытый)
+
+distance_to_corpse	= 1.8		; дист. до трупа, при которой он переходит в состояние еды
+
+
+;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
+selector_hear_sound		=      20.0,            1.0,				1000.0,              0.0,               0.0,              1000.0,               10000.0,      
+
+selector_getaway		=      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
+selector_approach		=      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+
+terrain				 = 255,255,255,255,30,40
+
+hit_type = wound
+
+;entity condition
+
+satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical = 0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v = 0.0001;0.001		    ;скорость заживания раны 
+health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+
+burn_immunity = 1.0							;коэффициенты иммунитета 
+strike_immunity = 1.0
+shock_immunity = 1.0
+wound_immunity = 1.0		
+radiation_immunity = 1.0
+telepatic_immunity = 1.0
+chemical_burn_immunity = 1.0
+explosion_immunity = 1.0
+fire_wound_immunity  = 1.0
+
+sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power = 1.0		;1.5
+sleep_satiety = 1.0		;0.8
+sleep_radiation = 1.0	;1.1
+
 ;*************************************************************************************************
 ;**  MONSTERS  _END
 ;*************************************************************************************************
