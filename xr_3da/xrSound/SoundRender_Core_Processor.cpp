@@ -114,7 +114,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	}
 }
 
-void CSoundRender_Core::update_events		()
+void	CSoundRender_Core::update_events		()
 {
 	for (u32 it=0; it<s_events.size(); it++)
 	{
@@ -124,30 +124,16 @@ void CSoundRender_Core::update_events		()
 	s_events.clear();
 }
 
-u32		CSoundRender_Core::stat_render	()
+void	CSoundRender_Core::statistic			(CSound_stats&  dest)
 {
-	u32 counter		= 0;
-	//Msg	("- --------------------");
-	for (u32 it=0; it<s_targets.size(); it++)
-	{
+	dest._rendered		= 0;
+	for (u32 it=0; it<s_targets.size(); it++)	{
 		CSoundRender_Target*	T	= s_targets	[it];
-		if (T->get_emitter() && T->get_Rendering())	
-		{
-			counter++;
-
-			//Msg	("* %2d -- %3d[%1.4f] : %s",it,T->get_emitter()->dbg_ID,T->priority,T->get_emitter()->source->fname);
-		}
-		else 
-		{
-			//Msg	("* %2d -- stopped",it);
-		}
+		if (T->get_emitter() && T->get_Rendering())	dest._rendered++;
 	}
-	return counter;
-}
-
-u32		CSoundRender_Core::stat_simulate()
-{
-	return s_emitters.size();
+	dest._simulated		= s_emitters.size();
+	dest._cache_hits	= cache._stat_hit;
+	dest._cache_misses	= cache._stat_miss;
 }
 
 BOOL	CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)

@@ -74,8 +74,7 @@ public:
 
 	virtual void						update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt );
 	virtual void						update_events			( );
-	virtual u32							stat_render				( );
-	virtual u32							stat_simulate			( );
+	virtual void						statistic				( CSound_stats&  dest );
 
 #ifdef _EDITOR
 	virtual SoundEnvironment_LIB*		get_env_library			()																{ return s_environment; }
