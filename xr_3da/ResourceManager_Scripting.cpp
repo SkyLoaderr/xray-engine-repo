@@ -134,8 +134,7 @@ void	CResourceManager::LS_Load			()
 				value("invdestalpha",			int(D3DBLEND_INVDESTALPHA)),
 				value("destcolor",				int(D3DBLEND_DESTCOLOR)),
 				value("invdestcolor",			int(D3DBLEND_INVDESTCOLOR)),
-				value("srcalphasat",			int(D3DBLEND_SRCALPHASAT)),
-				value("bothinvsrcalpha",		int(D3DBLEND_BOTHINVSRCALPHA))
+				value("srcalphasat",			int(D3DBLEND_SRCALPHASAT))
 			]
 	];
 
