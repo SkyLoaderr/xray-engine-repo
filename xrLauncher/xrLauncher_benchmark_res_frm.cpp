@@ -44,6 +44,9 @@ void xrLauncher_benchmark_res_frm::Init()
 		sscanf(s_name, "test_%d" ,&config_no);
 		sscanf( strstr(s_value,"-benchmark ")+11,"%[^ ] ",&res_file);
 		FS.update_path(s,"$server_root$",res_file);
+		if( !FS.exist(s) )
+			continue;
+
 		CInifile res_ini(s);
 		LPCSTR s_min,s_max,s_avg;
 		s_min = res_ini.r_string("general","min");
