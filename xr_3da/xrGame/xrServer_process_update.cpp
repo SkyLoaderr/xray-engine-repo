@@ -47,7 +47,7 @@ void xrServer::Process_save(NET_Packet& P, ClientID sender)
 
 		P.r_u16			(ID);
 		P.r_u16			(size);
-		u32				_pos_start	= P.r_tell	();
+		s32				_pos_start	= P.r_tell	();
 		CSE_Abstract	*E	= ID_to_entity(ID);
 
 		if (E) {
@@ -56,7 +56,12 @@ void xrServer::Process_save(NET_Packet& P, ClientID sender)
 		}
 		else
 			P.r_advance	(size);
-		u32				_pos_end	= P.r_tell	();
-		VERIFY3			(size == (_pos_end-_pos_start),"load/save mismatch",E?E->s_name.c_str():"unknown");
+		s32				_pos_end	= P.r_tell	();
+		s32				_size		= size;
+		if				(_size != (_pos_end-_pos_start))	{
+			Msg			("! load/save mismatch, object: '%s'",E?E->s_name.c_str():"unknown");
+			s32			_rollback	= _pos_start+_size;
+			P.r_seek	(_rollback);
+		}
 	}
 }
