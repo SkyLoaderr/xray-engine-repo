@@ -15,7 +15,7 @@ function main()
 end
 
 
-class "main_menu" (ui_base_dialog.base_dialog)
+class "main_menu" (CUIScriptWnd)
 
 function main_menu:__init() super()
    self:SetFont(GetFontMedium()) --set base font for dialog.
@@ -33,7 +33,101 @@ function main_menu:SetClGame(game_cl)
 end
 
 function main_menu:InitControls()
-	ui_base_dialog.base_dialog.InitControls(self, "Main Menu")
+
+	self.indent = 18	
+	self.button_indent = -1 
+	self.screen    = {x = 0, y = 0, width = 1024, height = 768}
+	
+	-- rect of main window
+	self.main_rect = {x = 0, y = 0,
+					  width  = 600,
+					  height = 400}
+	self.main_rect.x = (self.screen.width  - self.main_rect.width )/2
+	self.main_rect.y = (self.screen.height - self.main_rect.height)/2
+	-----------------------------------------------------------------
+	self.left_align_x   = self.indent
+	self.right_align_x  = self.main_rect.width - self.indent
+	self.top_align_y    = self.indent
+	self.bottom_align_y = self.main_rect.height - self.indent
+	------------------------------------------------------------------
+	
+	-- button template
+	self.btn_rect  = {x = 0, 
+					  y = 0, 
+					  width = 256, 
+					  height = 33 }
+	self.btn_rect.x = (self.main_rect.width - self.btn_rect.width)/2
+	--------------------------------------------------
+	-- special button aling
+	
+--		| _main form_	     |
+--		|                    |
+--		|          ________  |
+--		----------| cancel |--
+--		          ``````````
+--	self.btn_special_rect = { x = 0, y = 0, width = self.btn_rect.width, height = self.btn_rect.height}
+--	self.btn_special_rect.x = self.right_align_x - self.btn_special_rect.width
+--	self.btn_special_rect.y = self.main_rect.height - self.btn_special_rect.height/2
+	---------------------------------------------------
+	
+	-- Left Top Frame
+--	self.lt_frame_indent = {x = 20, y = 45}
+	-- Caption text rect
+--	self.caption_text_rect = {x = 60, y = -33, width = 500, height = 50 }
+	
+	-- Fonts
+	self.caption_font = GetFontLetterica25()
+--	self.edit_font    = GetFontLetterica25()
+	self.button_font  = GetFontLetterica25()
+--	self.list_file_font = GetFontMedium()
+--	self.list_date_font = GetFontMedium()
+--	self.message_box_font = GetFontLetterica25()
+	
+	-- Message Box
+--	self.message_rect = {x = 0, y = 0, width = 550, height = 300}
+	
+	
+	-- INIT DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	
+	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
+	
+	-- init self position and size
+	self:Init(self.screen.x, 
+			  self.screen.y, 
+			  self.screen.width, 
+			  self.screen.height)
+			  
+	-- BACKGROUND 
+	self.background = CUIStatic()
+	self.background:SetAutoDelete(true)
+	self.background:SetWindowName("background")
+	self.background:Init("ui\\ui_static_main_menu_background",self.screen.x, self.screen.y, self.screen.width, self.screen.height)
+	self:AttachChild(self.background)
+	
+	-- MAIN FRAME WINDOW
+	self.main_frame = CUIFrameWindow()
+	self.main_frame:SetAutoDelete(true)
+	self.main_frame:SetWindowName("main_frame")
+	self.main_frame:Init("ui\\ui_frame", self.main_rect.x, 
+										 self.main_rect.y, 
+										 self.main_rect.width, 
+										 self.main_rect.height)
+	self.main_frame:InitLeftTop("ui\\ui_frame_over_lt", self.lt_frame_indent.x, self.lt_frame_indent.y)
+	self:AttachChild(self.main_frame)
+	
+	-- CAPTION --
+	self.txt_caption = CUIStatic()
+	self.txt_caption:SetAutoDelete(true)
+	self.txt_caption:SetWindowName("txt_caption")
+	self.txt_caption:SetFont(self.caption_font)
+	self.txt_caption:SetTextAlign(CGameFont.alLeft)
+	self.txt_caption:SetText(caption)
+	self.txt_caption:Init(self.caption_text_rect.x, 
+						  self.caption_text_rect.y,
+						  self.caption_text_rect.width, 
+						  self.caption_text_rect.height)
+	self.main_frame:AttachChild(self.txt_caption)
+	
 
 	----- DATA ----
 	local btn_new_rect    = {x = self.btn_rect.x,
