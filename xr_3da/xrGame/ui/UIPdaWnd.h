@@ -88,4 +88,5 @@ public:
 	// Переключиться на карту и сфокусироваться на заданной точке
 	void					FocusOnMap			(const int x, const int y, const int z);
 	void					SetActiveSubdialog	(EPdaSections section, ARTICLE_ID addiotionalValue = "");
+	virtual bool			StopAnyMove			(){return false;}
 };

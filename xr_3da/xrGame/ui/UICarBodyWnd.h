@@ -34,6 +34,7 @@ public:
 	virtual ~CUICarBodyWnd();
 
 	virtual void Init();
+	virtual bool StopAnyMove					(){return true;}
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 

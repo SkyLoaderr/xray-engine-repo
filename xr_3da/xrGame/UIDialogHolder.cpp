@@ -47,7 +47,7 @@ void CDialogHolder::StartMenu (CUIDialogWnd* pDialog)
 
 	GetUICursor()->Show();
 	CActor* A = smart_cast<CActor*>( Level().CurrentViewEntity() );
-	if (A){
+	if ( A && pDialog->StopAnyMove() ){
 		A->StopAnyMove		();
 		A->PickupModeOff	();
 	};
