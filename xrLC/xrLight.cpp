@@ -3,10 +3,10 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
-xrCriticalSection					task_CS;
-xr_vector<int>						task_pool;
+xrCriticalSection	task_CS;
+xr_vector<int>		task_pool;
 
-class CLMThread : public CThread
+class CLMThread		: public CThread
 {
 public:
 	HASH			H;
@@ -150,126 +150,97 @@ void	g_trans_register	(Vertex* V)
 	g_trans_CS.Leave			();
 }
 
-vecFace*	VL_faces;
-
 class CVertexLightThread : public CThread
 {
 public:
-	u32	faceStart, faceEnd;
+	u32	vertStart, vertEnd;
 	
 	CVertexLightThread(u32 ID, u32 _start, u32 _end) : CThread(ID)
 	{
 		thMessages	= FALSE;
-		faceStart	= _start;
-		faceEnd		= _end;
+		vertStart	= _start;
+		vertEnd		= _end;
 	}
 	virtual void		Execute	()
 	{
 		CDB::COLLIDER	DB;
 		DB.ray_options	(0);
 		
-		xr_vector<R_Light>	Lights = pBuild->L_layers.front().lights;
-		if (Lights.empty())		return;
-		
-		for (u32 I = faceStart; I<faceEnd; I++)
+		for (u32 I = vertStart; I<vertEnd; I++)
 		{
-			Face* F		= (*VL_faces)[I];
-			R_ASSERT	(F);
+			Vertex* V		= g_vertices[I];
+			R_ASSERT		(V);
 			
-			float v_amb	= F->Shader().vert_ambient;
-			float v_inv = 1.f-v_amb;
-			for (int v=0; v<3; v++)
+			// Get ambient factor
+			float		v_amb		= 0.f;
+			float		v_trans		= 0.f;
+			u32 		L_flags		= 0;
+			for (u32 f=0; f<V->adjacent.size(); f++)
 			{
-				Vertex* V		= F->v[v];
-				R_ASSERT		(V);
-				if (!fis_zero(V->C.a))	continue;
-				
-				Fcolor			C;
-				C.set			(0,0,0,0);
-				LightPoint		(&DB, RCAST_Model, C, V->P, V->N, &*Lights.begin(), &*Lights.end(), F);
-				
-				V->C.r			= C.r*v_inv+v_amb;
-				V->C.g			= C.g*v_inv+v_amb;
-				V->C.b			= C.b*v_inv+v_amb;
-				V->C.a			= F->Shader().vert_translucency;
-				g_trans_register(V);
+				Face*	F								=	V->adjacent[f];
+				v_amb									+=	F->Shader().vert_ambient;
+				v_trans									+=	F->Shader().vert_translucency;
+				if (!F->Shader().flags.bLIGHT_Vertex)	L_flags=LP_dont_rgb+LP_dont_sun;
 			}
+			v_amb				/=	float(V->adjacent.size());
+			v_trans				/=	float(V->adjacent.size());
+			float v_inv			=	1.f-v_amb;
 
-			thProgress	= float(I - faceStart) / float(faceEnd-faceStart);
+			base_color			vC;
+			LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, L_flags, 0);
+			vC._tmp_			= v_trans;
+			V->C				= vC;
+			if (L_flags)		g_trans_register	(V);
+
+			thProgress	= float(I - vertStart) / float(vertEnd-vertStart);
 		}
 	}
 };
 
-#define NUM_THREADS				12
-void CBuild::LightVertex()
+#define NUM_THREADS			12
+void CBuild::LightVertex	()
 {
-	VL_faces				= xr_new<vecFace>	();
 	g_trans					= xr_new<mapVert>	();
-
-	// Select faces
-	Status					("Selecting...");
-	VL_faces->reserve		(g_faces.size()/2);
-	for (u32 I = 0; I<g_faces.size(); I++)
-	{
-		Face* F = g_faces[I];
-		if (F->pDeflector)					continue;
-		if (hasImplicitLighting(F))			continue;
-		if (!F->Shader().flags.bRendering)	continue;
-
-		VL_faces->push_back					(F);
-	}
-	clMsg	("%d/%d selected.",VL_faces->size(),g_faces.size());
 
 	// Start threads, wait, continue --- perform all the work
 	Status				("Calculating...");
 	u32	start_time		= timeGetTime();
 	CThreadManager		Threads;
-	u32	stride			= VL_faces->size()/NUM_THREADS;
-	u32	last			= VL_faces->size()-stride*(NUM_THREADS-1);
+	u32	stride			= g_vertices.size()/NUM_THREADS;
+	u32	last			= g_vertices.size()-stride*(NUM_THREADS-1);
 	for (u32 thID=0; thID<NUM_THREADS; thID++)
-		Threads.start(xr_new<CVertexLightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
-
-	// Wait other threads
+		Threads.start	(xr_new<CVertexLightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait		();
-	clMsg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
+	clMsg				("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
 	// Process all groups
 	Status				("Transluenting...");
 	for (mapVertIt it=g_trans->begin(); it!=g_trans->end(); it++)
 	{
 		// Unique
-		vecVertex&	VL		= it->second;
+		vecVertex&	VL	= it->second;
 		std::sort		(VL.begin(),VL.end());
 		VL.erase		(std::unique(VL.begin(),VL.end()),VL.end());
 
 		// Calc summary color
-		Fcolor		C;
-		C.set		(0,0,0,0);
+		base_color	C;
 		for (int v=0; v<int(VL.size()); v++)
-		{
-			C.r = _max(C.r,VL[v]->C.r);
-			C.g = _max(C.g,VL[v]->C.g);
-			C.b = _max(C.b,VL[v]->C.b);
-		}
+			C.max		(VL[v]->C);
 
 		// Calculate final vertex color
 		for (v=0; v<int(VL.size()); v++)
 		{
 			// trans-level
-			float	level		= VL[v]->C.a;
+			float	level		= VL[v]->C._tmp_;
 
 			// 
-			Fcolor				R;
+			base_color			R;
 			R.lerp				(VL[v]->C,C,level);
-			R.r					= _max(R.r,VL[v]->C.r);
-			R.g					= _max(R.g,VL[v]->C.g);
-			R.b					= _max(R.b,VL[v]->C.b);
-			VL[v]->C.lerp		(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-			VL[v]->C.mul_rgb	(.5f);
-			VL[v]->C.a			= 1.f;
+			R.max				(VL[v]->C);
+			VL[v]->C			= R;
+			VL[v]->C.mul		(.5f);
 		}
 	}
 
-	xr_delete(VL_faces);
 	xr_delete(g_trans);
 }

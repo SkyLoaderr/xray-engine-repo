@@ -168,28 +168,12 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 		Fvector		ptPos	= m_vertices[I]->P;
 		base_color	ptColor	= m_vertices[I]->C;
 
-		base_color	_C;		
-		float 	_N			= 0;
-		/*
-		for (u32 T=0; T<m_vertices.size(); T++)
-		{
-			base_color		vC; 
-			float			oD	= ptPos.distance_to	(m_vertices[T]->P);
-			float			oA  = 1/(1+10*oD*oD);
-			vC				= m_vertices[T]->C; 
-			vC.mul			(oA);
-			_C.add			(vC);
-			_N				+=	oA;
-		}
-
-		_C.mul			(1/(_N+EPS));
-		_C.a			= 1.f;
-		*/
-		dest[I]			= ptColor;	//.lerp	(_C,ptColor,.9f);
+		float 	_N		= 0;
+		dest[I]			= ptColor;
 	}
 }
 
-void xrMU_Model::calc_lighting		()
+void xrMU_Model::calc_lighting	()
 {
 	// BB
 	Fbox			BB; 
@@ -224,18 +208,6 @@ void xrMU_Reference::calc_lighting	()
 		xr_vector<xr_vector<REAL> >	B;	B.resize(color.size());
 		xr_vector<REAL>					C;
 		xr_vector<REAL>					D;
-		/*
-		if (bFirst)
-		{
-			bFirst				= FALSE;
-			for (u32 it=0; it<color.size(); it++)
-			{
-				Fcolor&		__A		= model->color	[it];
-				Fcolor&		__B		= color			[it];
-				Msg				("[%1.3f,%1.3f,%1.3f]-[%1.3f,%1.3f,%1.3f]",__A.r,__A.g,__A.b,__B.r,__B.g,__B.b);
-			}
-		}
-		*/
 		for (u32 it=0; it<color.size(); it++)
 		{
 			base_color&		__A		= model->color	[it];
