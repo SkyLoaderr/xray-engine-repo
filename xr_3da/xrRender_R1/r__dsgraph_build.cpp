@@ -14,11 +14,11 @@ using	namespace R_dsgraph;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-float r_ssaDISCARD;
-float r_ssaDONTSORT;
-float r_ssaLOD_A;
-float r_ssaLOD_B;
-float r_ssaHZBvsTEX;
+float		r_ssaDISCARD;
+float		r_ssaDONTSORT;
+float		r_ssaLOD_A;
+float		r_ssaLOD_B;
+float		r_ssaHZBvsTEX;
 
 IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 {
@@ -50,71 +50,56 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		C.val.pObject			= val_pObject;
 		C.val.pVisual			= pVisual;
 		C.val.Matrix			= *val_pTransform;
-		C.val.vCenter.set		(Center);
 		L_Shadows->add_element	(&C);
 	} else
 #endif
 
-		// HUD rendering
-		if (val_bHUD)		{
-			mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
-			N->val.pObject			= val_pObject;
-			N->val.pVisual			= pVisual;
-			N->val.Matrix			= *val_pTransform;
-			N->val.vCenter.set		(Center);
-		} else 
+	// HUD rendering
+	if (val_bHUD)		{
+		mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
+		N->val.pObject			= val_pObject;
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= *val_pTransform;
+	} else 
 
-			// strict-sorting selection
-			if (sh->Flags.bStrictB2F) {
-				mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
-				N->val.pObject			= val_pObject;
-				N->val.pVisual			= pVisual;
-				N->val.Matrix			= *val_pTransform;
-				N->val.vCenter.set		(Center);
+	// strict-sorting selection
+	if (sh->Flags.bStrictB2F) {
+		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
+		N->val.pObject			= val_pObject;
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= *val_pTransform;
 #if RENDER==R_R1
-				L_Shadows->add_element	(N);
+		L_Shadows->add_element	(N);
 #endif
-			} else
+	} else
 
-				// the most common node
-			{
-				SPass&						pass	= *sh->Passes.front	();
-				mapMatrix_T&				map		= mapMatrix;
-				mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
-				mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
-				mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
-				mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
-				mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
-				mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
-				mapMatrixItems&				item	= Nvb->val;
+	// the most common node
+	{
+		SPass&						pass	= *sh->Passes.front	();
+		mapMatrix_T&				map		= mapMatrix;
+		mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
+		mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+		mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+		mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
+		mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
+		mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+		mapMatrixItems&				items	= Nvb->val;
+		_MatrixItem					item	= {SSA,val_pObject,pVisual,*val_pTransform,Center};
+		items.push_back						(item);
 
-				// Need to sort for HZB efficient use
-				if (SSA>Nvb->val.ssa) {
-					Nvb->val.ssa = SSA;
-					if (SSA>Ntex->val.ssa) {
-						Ntex->val.ssa = SSA;
-						if (SSA>Nstate->val.ssa) {
-							Nstate->val.ssa = SSA;
-							if (SSA>Ncs->val.ssa)	{
-								Ncs->val.ssa = SSA;
-								if (SSA>Nps->val.ssa) {
-									Nps->val.ssa = SSA;
-									if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA; 
-								}
-							}
-						}
-					}
-				}
-
-				item.unsorted.push_back			(_MatrixItem());
-				item.unsorted.back().pObject	= val_pObject;
-				item.unsorted.back().pVisual	= pVisual;
-				item.unsorted.back().Matrix		= *val_pTransform;
-				item.unsorted.back().vCenter.set(Center);
 #if RENDER==R_R1
-				L_Shadows->add_element			(item.unsorted.back());
+		L_Shadows->add_element				(item);
 #endif
-			}
+
+		// Need to sort for HZB efficient use
+		if (SSA>Nvb->val.ssa)		{ Nvb->val.ssa = SSA;
+		if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
+		if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
+		if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
+		if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
+		if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
+		} } } } } }
+	}
 }
 
 void CRender::InsertSG_Static	(IRender_Visual *pVisual)
@@ -139,7 +124,6 @@ void CRender::InsertSG_Static	(IRender_Visual *pVisual)
 		N->val.pObject				= NULL;
 		N->val.pVisual				= pVisual;
 		N->val.Matrix				= Fidentity;
-		N->val.vCenter.set			(pVisual->vis.sphere.P);
 	} else {
 		SPass&						pass	= *sh->Passes.front	();
 		mapNormal_T&				map		= mapNormal			[sh->Flags.iPriority/2];
@@ -154,17 +138,13 @@ void CRender::InsertSG_Static	(IRender_Visual *pVisual)
 		items.push_back						(item);
 
 		// Need to sort for HZB efficient use
-		if (SSA>Nvb->val.ssa) {	Nvb->val.ssa = SSA;
-		if (SSA>Ntex->val.ssa) { Ntex->val.ssa = SSA;
-		if (SSA>Nstate->val.ssa) { Nstate->val.ssa = SSA;
-		if (SSA>Ncs->val.ssa) { Ncs->val.ssa = SSA;
-		if (SSA>Nps->val.ssa)  { Nps->val.ssa = SSA;
-		if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA;
-		}
-		}
-		}
-		}
-		}
+		if (SSA>Nvb->val.ssa)		{ Nvb->val.ssa = SSA;
+		if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
+		if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
+		if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
+		if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
+		if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
+		} } } } } }
 	}
 }
 
