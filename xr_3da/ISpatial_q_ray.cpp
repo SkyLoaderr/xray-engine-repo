@@ -21,11 +21,12 @@ public:
 		range	= _range;
 		range2	= _range*_range;
 	}
-	void		walk		(ISpatial_NODE* N, Fvector& n_center, float n_radius)
+	void		walk		(ISpatial_NODE* N, Fvector& n_C, float n_R)
 	{
 		// box
 		Fvector	coord;
-		Fbox	BB;			BB.set	(n_center.x-n_radius, n_center.y-n_radius, n_center.z-n_radius, n_center.x+n_radius, n_center.y+n_radius, n_center.z+n_radius);
+		float	n_vR	=		2*n_R;
+		Fbox	BB;		BB.set	(n_C.x-n_vR, n_C.y-n_vR, n_C.z-n_vR, n_C.x+n_vR, n_C.y+n_vR, n_C.z+n_vR);
 		if		(!BB.Pick2	(start,dir,coord))			return;
 		if		(coord.distance_to_sqr(start)>range2)	return;
 
@@ -54,12 +55,12 @@ public:
 		}
 
 		// recurse
-		float	c_radius		= n_radius/2;
+		float	c_R		= n_R/2;
 		for (u32 octant=0; octant<8; octant++)
 		{
-			if (0==N->children[octant])		continue;
-			Fvector		c_center;			c_center.mad	(n_center,c_spatial_offset[octant],n_radius/4.f);
-			walk							(N->children[octant],c_center,c_radius);
+			if (0==N->children[octant])	continue;
+			Fvector		c_C;			c_C.mad	(n_C,c_spatial_offset[octant],c_R);
+			walk						(N->children[octant],c_C,c_R);
 			if (b_first && !g_SpatialSpace.q_result.empty())	return;
 		}
 	}

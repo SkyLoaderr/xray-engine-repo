@@ -35,13 +35,25 @@ ISpatial::~ISpatial		()
 
 BOOL	ISpatial::spatial_inside()
 {
-	float	dr	= - spatial.node_radius + spatial.radius;
+	float	dr	= -(- spatial.node_radius + spatial.radius);
 	if (spatial.center.x < spatial.node_center.x - dr)	return FALSE;
 	if (spatial.center.x > spatial.node_center.x + dr)	return FALSE;
 	if (spatial.center.y < spatial.node_center.y - dr)	return FALSE;
 	if (spatial.center.y > spatial.node_center.y + dr)	return FALSE;
 	if (spatial.center.z < spatial.node_center.z - dr)	return FALSE;
 	if (spatial.center.z > spatial.node_center.z + dr)	return FALSE;
+	return TRUE;
+}
+
+BOOL	verify_sp	(ISpatial* sp, Fvector& node_center, float node_radius)
+{
+	float	dr	= -(- node_radius + sp->spatial.radius);
+	if (sp->spatial.center.x < node_center.x - dr)	return FALSE;
+	if (sp->spatial.center.x > node_center.x + dr)	return FALSE;
+	if (sp->spatial.center.y < node_center.y - dr)	return FALSE;
+	if (sp->spatial.center.y > node_center.y + dr)	return FALSE;
+	if (sp->spatial.center.z < node_center.z - dr)	return FALSE;
+	if (sp->spatial.center.z > node_center.z + dr)	return FALSE;
 	return TRUE;
 }
 
@@ -139,41 +151,45 @@ void			ISpatial_DB::_node_destroy(ISpatial_NODE* &P)
 	P							= NULL;
 }
 
-void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_center, float n_radius)
+void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 {
 	//*** we are assured that object lives inside our node
+	float	n_vR	= 2*n_R;
+	VERIFY	(verify_sp(rt_insert_object,n_C,n_vR));
 
 	// we have to make sure we aren't the leaf node
-	if (n_radius<=c_spatial_min)
+	if (n_R<=c_spatial_min)
 	{
 		// this is leaf node
 		N->_insert									(rt_insert_object);
-		rt_insert_object->spatial.node_center.set	(n_center);
-		rt_insert_object->spatial.node_radius		= n_radius;
+		rt_insert_object->spatial.node_center.set	(n_C);
+		rt_insert_object->spatial.node_radius		= n_vR;		// vR
 		return;
 	}
 
 	// we have to check if it can be putted further down
-	float	s_bounds	= rt_insert_object->spatial.radius;		// spatial bounds
-	float	c_bounds	= n_radius/2;	// children bounds
-	if (s_bounds<=c_bounds)
+	float	s_R			= rt_insert_object->spatial.radius;		// spatial bounds
+	float	c_R			= n_R/2;								// children bounds
+	if (s_R<c_R)
 	{
 		// object can be pushed further down - select "octant", calc node position
-		Fvector&	s_center			=	rt_insert_object->spatial.center;
-		u32			octant				=	_octant(s_center.x<n_center.x?0:1,s_center.y<n_center.y?0:1,s_center.z<n_center.z?0:1);
-		Fvector		c_center;			c_center.mad	(n_center,c_spatial_offset[octant],n_radius/4.f);
+		Fvector&	s_C					=	rt_insert_object->spatial.center;
+		u32			octant				=	_octant	(n_C,s_C);
+		Fvector		c_C;				c_C.mad	(n_C,c_spatial_offset[octant],c_R);
+		VERIFY		(octant == _octant(n_C,c_C));				// check table assosiations
+
 		if (0==N->children[octant])		{
 			N->children[octant]			=	_node_create();
 			N->children[octant]->_init	(N);
 		}
-		_insert							(N->children[octant], c_center, c_bounds);
+		_insert							(N->children[octant], c_C, c_R);
 	}
 	else
 	{
 		// we have to "own" this object (potentially it can be putted down sometimes...)
 		N->_insert									(rt_insert_object);
-		rt_insert_object->spatial.node_center.set	(n_center);
-		rt_insert_object->spatial.node_radius		= n_radius;
+		rt_insert_object->spatial.node_center.set	(n_C);
+		rt_insert_object->spatial.node_radius		= n_vR;
 	}
 }
 
@@ -183,6 +199,7 @@ void			ISpatial_DB::insert		(ISpatial* S)
 	rt_insert_object	= S;
 	_insert				(m_root,m_center,m_bounds);
 	stat_insert.End		();
+	VERIFY				(S->spatial_inside());
 }
 
 void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)

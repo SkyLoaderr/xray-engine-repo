@@ -114,7 +114,15 @@ public:
 	CStatTimer						stat_insert;
 	CStatTimer						stat_remove;
 private:
-	IC u32							_octant			(u32 x, u32 y, u32 z)	{	return z*4 + y*2 + x;	}
+	IC u32							_octant			(u32 x, u32 y, u32 z)			{	return z*4 + y*2 + x;	}
+	IC u32							_octant			(Fvector& base, Fvector& rel)
+	{
+		u32 o	= 0;
+		if (rel.x > base.x) o+=1;
+		if (rel.y > base.y) o+=2;
+		if (rel.z > base.z) o+=4;
+		return	o;
+	}
 
 	ISpatial_NODE*					_node_create	();
 	void 							_node_destroy	(ISpatial_NODE* &P);
