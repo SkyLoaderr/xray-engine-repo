@@ -128,6 +128,8 @@ void CPHWorld::Destroy(){
 	dGeomDestroy(plane);
 #endif
 	dJointGroupEmpty(ContactGroup);
+	ContactFeedBacks.clear();
+	ContactEffectors.clear();
 	//dSpaceDestroy(Space);
 	dWorldDestroy(phWorld);
 	dCloseODE();

@@ -29,16 +29,23 @@ public:
 	}
 	CBlockAllocator()
 	{
+		init();
+	}
+	~CBlockAllocator()
+	{
+		clear();
+	}
+	IC	void init ()
+	{
 		block_position=block_size;
 		block_count=0;
 		current_block=NULL;
 	}
-
-	~CBlockAllocator()
+	IC	void clear()
 	{
 		xr_vector<T*>::iterator i=blocks.begin(),e=blocks.end();
 		for(;i!=e;++i) xr_free(*i);
-		blocks.clear();
+		init();
 	}
 private:
 /////////////////////////////////////////////////////////////////
