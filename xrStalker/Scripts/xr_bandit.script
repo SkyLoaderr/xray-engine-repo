@@ -155,7 +155,7 @@ function bandit:updateJob()
 			end
         	end
 	end
-	self:print()
+--	self:print()
 end
 function bandit:setJob(npc, job) 
 	-- удаляем у этого npc все работы (в сторадже)
