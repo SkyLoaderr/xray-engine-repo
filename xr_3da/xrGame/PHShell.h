@@ -122,7 +122,7 @@ virtual ~CPHShell				()
 	//breabable interface
 	virtual bool				isBreakable				  ();
 	virtual bool				isFractured				  ();
-	virtual void				SplitProcess			  (PHSHELL_VECTOR &out_shels);
+	virtual void				SplitProcess			  (PHSHELL_PAIR_VECTOR &out_shels);
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void				get_LinearVel			  (Fvector& velocity);
 	virtual void				get_AngularVel			  (Fvector& velocity);
@@ -165,8 +165,8 @@ virtual ~CPHShell				()
 	void DeleteJoint(u16 joint);
 	void SetTransform(Fmatrix m);
 private:
-	void AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneData& parent_data);
-	void ZeroCallbacksRecursive(int id);
+	void AddElementRecursive(CPhysicsElement* root_e, u16 id,const CBoneData& parent_data);
+	void ZeroCallbacksRecursive(u16 id);
 
 };
 #endif

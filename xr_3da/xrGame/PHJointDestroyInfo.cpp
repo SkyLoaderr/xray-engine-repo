@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "PHJointDestroyInfo.h"
 
-CPHJointDestroyInfo::CPHJointDestroyInfo(float break_force,float break_torque)
+CPHJointDestroyInfo::CPHJointDestroyInfo(u16 bone_id, float break_force,float break_torque)
 {
+	m_bone_id=bone_id;
 	m_sq_break_force=break_force*break_force;
 	m_sq_break_torque=break_torque*break_torque;
 	m_breaked=false;

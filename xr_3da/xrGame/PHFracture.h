@@ -26,20 +26,20 @@ CFEEDBACK_STORAGE m_feedbacks;		//this store feedbacks for non contact joints
 public:
 CPHFracturesHolder			();
 ~CPHFracturesHolder			();
-void		AddImpact		(const Fvector& force,const Fvector& point);
+void				AddImpact		(const Fvector& force,const Fvector& point);
 protected:
 private:
 
-u16 		CheckFractured	();										//returns first breaked fracture
+u16 				CheckFractured	();										//returns first breaked fracture
 
-CPHElement* SplitFromEnd	(CPHElement* element,u16 geom_num);
-void		InitNewElement	(CPHElement* element);
-void		PassEndFractures(u16 from,CPHElement* dest,u16 shift_geoms);
+element_breakbone	SplitFromEnd	(CPHElement* element,u16 geom_num);
+void				InitNewElement	(CPHElement* element);
+void				PassEndFractures(u16 from,CPHElement* dest,u16 shift_geoms);
 public:
-void		SplitProcess	(CPHElement* element,ELEMENT_STORAGE &new_elements);
-void		AddFracture		(u16 geom_num,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
-void		PhTune			(dBodyID body);										//set feedback for joints called from PhTune of ShellSplitterHolder
-bool		PhDataUpdate	(dBodyID body);										//collect joints and external impacts in fractures Update which set m_fractured; called from PhDataUpdate of ShellSplitterHolder returns true if has breaks
+void				SplitProcess	(CPHElement* element,ELEMENT_PAIR_VECTOR &new_elements);
+void				AddFracture		(u16 geom_num,u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
+void				PhTune			(dBodyID body);										//set feedback for joints called from PhTune of ShellSplitterHolder
+bool				PhDataUpdate	(dBodyID body);										//collect joints and external impacts in fractures Update which set m_fractured; called from PhDataUpdate of ShellSplitterHolder returns true if has breaks
 };
 
 class CPHFracture
@@ -47,11 +47,12 @@ class CPHFracture
 friend class  CPHFracturesHolder;
 bool			m_breaked;
 u16				m_geom_num;
+u16				m_bone_id;
 Fvector			m_position;							//vs body//when fractured is additional linear vel for seccond body
 Fvector			m_direction;						//norm to fracture plane vs body//when fractured is additional angular vel for seccond body
 float			m_break_force;
 float			m_break_torque;
-				CPHFracture(u16 geom_num,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
+				CPHFracture(u16 geom_num,u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
 public:
 bool			Update(PH_IMPACT_STORAGE& impacts,dBodyID body);
 IC bool			Breaked(){return m_breaked;}

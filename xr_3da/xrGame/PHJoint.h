@@ -79,7 +79,7 @@ public:
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 	virtual void SetForce					(const float force,const int axis_num=-1);
 	virtual void SetVelocity				(const float velocity=0.f,const int axis_num=-1);
-	virtual void SetBreakable				(float force,float torque)						;
+	virtual void SetBreakable				(u16 bone_id, float force, float torque)						;
 	//virtual bool Breaked					(){return m_destroy_info->Breaked();}
 	virtual dJointID GetDJoint				(){return m_joint;}
 	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num);

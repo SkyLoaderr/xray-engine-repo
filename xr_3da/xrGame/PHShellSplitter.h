@@ -33,18 +33,18 @@ virtual	void			PhTune(dReal step);						//call fractures PhTune for element spli
 virtual void			PhDataUpdate(dReal step);				//call fractures PhDataUpdate for element splitters m_pShell->m_elements[m_splitters[i]->m_element]->m_pFracturesHolder->PhDataUpdate()
 virtual void			InitContact(dContact* c){};
 		bool			CheckSplitter(u16 aspl);		//
-		CPhysicsShell*	SplitJoint(u16 aspl);		//create new shell moving into it departed elements and joints 
-		void			SplitElement(u16 aspl,PHSHELL_VECTOR &out_shels);//
+		shell_root		SplitJoint(u16 aspl);		//create new shell moving into it departed elements and joints 
+		void			SplitElement(u16 aspl,PHSHELL_PAIR_VECTOR &out_shels);//
 
 		void			PassEndSplitters(u16 from,CPHShell* dest,u16 position,u16 shift_elements,u16 shift_joints);
 		void			InitNewShell(CPHShell* shell);			//inits new active shell
 public:
-						CPHShellSplitterHolder();
+						CPHShellSplitterHolder(CPHShell* shell);
 						~CPHShellSplitterHolder();
 		void			Activate();
 		void			Deactivate();
 		void			AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint);
-		void			SplitProcess(PHSHELL_VECTOR &out_shels);
+		void			SplitProcess(PHSHELL_PAIR_VECTOR &out_shels);
 IC      bool			Breaked(){return m_has_breaks;}
 };
 

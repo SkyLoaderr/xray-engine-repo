@@ -109,7 +109,7 @@ public:
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
-	virtual void			setEndGeomFracturable	(const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)=0;
+	virtual void			setEndGeomFracturable	(u16 bone_id, const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)=0;
 	virtual	dBodyID			get_body				()												= 0;
 	virtual const Fvector&	mass_Center				()												= 0;
 	virtual float			getRadius				()												= 0;
@@ -188,6 +188,8 @@ IC CPhysicsElement* PSecond_element			()												{return pSecond_element;};
 	virtual void SetLimitsVsFirstElement	(const float low,const float high,const int axis_num)=0;
 	virtual void SetLimitsVsSecondElement	(const float low,const float high,const int axis_num)=0;
 
+	virtual void SetBreakable				(u16 bone_id, float force, float torque)			 =0;
+
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1)=0;
 	virtual dJointID GetDJoint				()																  =0;
 	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num)					  =0;
@@ -213,7 +215,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				setEndJointSplitter		()													= 0;
 	virtual bool				isBreakable				()													= 0;
 	virtual bool				isFractured				()													= 0;
-	virtual void				SplitProcess			(PHSHELL_VECTOR &out_shels)							= 0;
+	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)							= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual BoneCallbackFun*	GetBonesCallback		()													= 0;
 	virtual BoneCallbackFun*	GetBonesCallback1		()													= 0;

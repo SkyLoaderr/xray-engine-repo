@@ -398,7 +398,7 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	//Activate(true);
 
 }
-void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneData& parent_data)
+void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,const CBoneData& parent_data)
 {
 
 	CBoneInstance& B	= m_pKinematics->LL_GetInstance(u16(id));
@@ -723,7 +723,7 @@ void CPHShell::ZeroCallbacks()
 {
 ZeroCallbacksRecursive(m_pKinematics->LL_BoneRoot());
 }
-void CPHShell::ZeroCallbacksRecursive(int id)
+void CPHShell::ZeroCallbacksRecursive(u16 id)
 {
 
 	CBoneInstance& B	= m_pKinematics->LL_GetInstance(u16(id));
@@ -852,14 +852,14 @@ void CPHShell::DeleteJoint(u16 joint)
 
 void CPHShell::setEndElementSplitter()
 {
-	if(!m_spliter_holder)	m_spliter_holder=xr_new<CPHShellSplitterHolder>();
+	if(!m_spliter_holder)	m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
 
 	if(!elements.back()->FracturesHolder())//adding fracture for element supposed before adding splitter. Need only one splitter for an element
 					m_spliter_holder->AddSplitter(CPHShellSplitter::splElement,u16(elements.size()-1),u16(joints.size()-1));
 }
 void CPHShell::setEndJointSplitter()
 {
-	if(!m_spliter_holder)m_spliter_holder=xr_new<CPHShellSplitterHolder>();
+	if(!m_spliter_holder)m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
 
 	if(!joints.back()->JointDestroyInfo())//setting joint breacable supposed before adding splitter. Need only one splitter for a joint
 				m_spliter_holder->AddSplitter(CPHShellSplitter::splJoint,u16(elements.size()-1),u16(joints.size()-1));
@@ -875,7 +875,7 @@ bool CPHShell::isFractured()
 return(m_spliter_holder&&m_spliter_holder->Breaked());
 }
 
-void CPHShell::SplitProcess(PHSHELL_VECTOR &out_shels)
+void CPHShell::SplitProcess(PHSHELL_PAIR_VECTOR &out_shels)
 {
 if(! m_spliter_holder) return;
 m_spliter_holder->SplitProcess(out_shels);

@@ -1054,7 +1054,7 @@ void CPHJoint::SPHAxis::set_sd_factors(float sf,float df,enumType jt)
 	}
 }
 
-void CPHJoint::SetBreakable(float force,float torque)
+void CPHJoint::SetBreakable(u16 bone_id,float force,float torque)
 {
-	if(!m_destroy_info)	m_destroy_info=xr_new<CPHJointDestroyInfo>(force,torque);
+	if(!m_destroy_info)	m_destroy_info=xr_new<CPHJointDestroyInfo>(bone_id,force,torque);
 }

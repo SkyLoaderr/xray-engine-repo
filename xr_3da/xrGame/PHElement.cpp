@@ -1236,7 +1236,7 @@ void CPHElement::PassEndGeoms(u16 from,CPHElement* dest)
 	dest->m_geoms.insert(dest->m_geoms.begin(),i_from,e);
 	m_geoms.erase(i_from,e);
 }
-void CPHElement::SplitProcess(ELEMENT_STORAGE &new_elements)
+void CPHElement::SplitProcess(ELEMENT_PAIR_VECTOR &new_elements)
 {
 	m_fratures_holder->SplitProcess(this,new_elements);
 }
@@ -1302,8 +1302,8 @@ void CPHElement::PresetActive()
 	
 }
 
-void	CPHElement::setEndGeomFracturable(const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)
+void	CPHElement::setEndGeomFracturable(u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)
 {
 	if(!m_fratures_holder) m_fratures_holder=xr_new<CPHFracturesHolder>();
-	m_fratures_holder->AddFracture(u16(m_geoms.size()-1),position,direction,break_force,break_torque);
+	m_fratures_holder->AddFracture(u16(m_geoms.size()-1),bone_id,position,direction,break_force,break_torque);
 }
