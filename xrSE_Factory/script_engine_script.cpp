@@ -87,16 +87,6 @@ LPCSTR user_name()
 	return			(Core.UserName);
 }
 
-void obsolete_load(LPCSTR)
-{
-#ifdef DEBUG
-	static bool first_time = true;
-	if (first_time)
-		ai().script_engine().script_log(eLuaMessageTypeError,"Do not use function \"module\", modules are loading on their first use. If you'd like to force module to load use function \"prefetch\"");
-	first_time = false;
-#endif
-}
-
 void prefetch_module(LPCSTR file_name)
 {
 	ai().script_engine().process_file(file_name);
@@ -107,7 +97,6 @@ void CScriptEngine::script_register(lua_State *L)
 	function	(L,	"log",							LuaLog);
 	function	(L,	"error_log",					ErrorLog);
 	function	(L,	"flush",						FlushLogs);
-	function	(L,	"module",						obsolete_load);
 	function	(L,	"prefetch",						prefetch_module);
 	function	(L,	"verify_if_thread_is_running",	verify_if_thread_is_running);
 	function	(L,	"editor",						editor);
