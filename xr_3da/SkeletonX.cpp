@@ -9,6 +9,7 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
+#include "Render.h"
 #include "SkeletonX.h"
 #include "SkeletonCustom.h"
 #include "fmesh.h"
@@ -76,7 +77,6 @@ void CSkeletonX::_Render		(ref_geom& hGeom, u32 vCount, u32 pCount)
 		break;
 	case RM_SINGLE:	
 		{
-			VERIFY					(pVertices);
 			Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->LL_GetTransform(RMS_boneid));
 			RCache.set_xform_world	(W);
 			RCache.set_Geometry		(hGeom);
@@ -145,13 +145,11 @@ void CSkeletonX::_Render_soft	(ref_geom& hGeom, u32 vCount, u32 pCount)
 void CSkeletonX_PM::Release()
 {
 	inherited::Release();
-	_Release	();
 	xr_free		(indices);
 }
 void CSkeletonX_ST::Release()
 {
 	inherited::Release();
-	_Release	();
 }
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount) 
@@ -193,7 +191,7 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 		bpv			= 2;
 		size		= dwVertCount*sizeof(vertBoned2W);
 		crc			= crc32	(data->pointer(),size);
-		Vertices2W.create(crc,dwVertCount,(vertBoned2W)data->pointer());
+		Vertices2W.create(crc,dwVertCount,(vertBoned2W*)data->pointer());
 		for (it=0; it<dwVertCount; it++)	{
 			bids.insert	(Vertices2W[it].matrix0);
 			bids.insert	(Vertices2W[it].matrix1);
