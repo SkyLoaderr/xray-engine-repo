@@ -193,77 +193,95 @@ void CBuild::Run()
 	fs.write(&H,sizeof(H));
 	fs.close_chunk();
 
-	FPU::m64r();
-	Phase	("Optimizing...");
+	FPU::m64r		();
+	Phase			("Optimizing...");
+	mem_Compact		();
 	PreOptimize		();
 
-	FPU::m64r();
-	Phase	("Checking T-Junctions...");
+	FPU::m64r		();
+	Phase			("Checking T-Junctions...");
+	mem_Compact		();
 	CorrectTJunctions();
 
-	FPU::m64r();
-	Phase	("Building normals...");
+	FPU::m64r		();
+	Phase			("Building normals...");
+	mem_Compact		();
 	CalcNormals		();
 
 	FPU::m64r();
-	Phase	("Building collision database...");
+	Phase			("Building collision database...");
+	mem_Compact		();
 	BuildCForm		(fs);
 
-	FPU::m64r();
-	Phase	("Building volume-pick database...");
+	FPU::m64r		();
+	Phase			("Building volume-pick database...");
+	mem_Compact		();
 	BuildPortals	(fs);
 
-	FPU::m64r();
-	Phase	("Building RayCast model...");
+	FPU::m64r		();
+	Phase			("Building RayCast model...");
+	mem_Compact		();
 	BuildRapid		();
 
-	FPU::m64r();
-	Phase	("Resolving materials...");
+	FPU::m64r		();
+	Phase			("Resolving materials...");
+	mem_Compact		();
 	xrPhase_ResolveMaterials	();
 	
-	FPU::m64r();
-	Phase	("Build UV mapping...");
-	xrPhase_UVmap				();
+	FPU::m64r		();
+	Phase			("Build UV mapping...");
+	mem_Compact		();
+	xrPhase_UVmap	();
 	
-	FPU::m64r();
-	Phase	("Subdividing geometry...");
+	FPU::m64r		();
+	Phase			("Subdividing geometry...");
+	mem_Compact		();
 	xrPhase_Subdivide			();
 
-	FPU::m64r();
-	Phase	("Soften lights...");
+	FPU::m64r		();
+	Phase			("Soften lights...");
+	mem_Compact		();
 	SoftenLights				();
 
-	FPU::m64r();
-	Phase	("Implicit lighting...");
+	FPU::m64r		();
+	Phase			("Implicit lighting...");
+	mem_Compact		();
 	ImplicitLighting			();
 
 	// All lighting
-	FPU::m64r();
-	Phase	("Lighting...");
+	FPU::m64r		();
+	Phase			("Lighting...");
+	mem_Compact		();
 	Light						();
 	
-	FPU::m64r();
-	Phase	("Calculating vertex lighting...");
+	FPU::m64r		();
+	Phase			("Calculating vertex lighting...");
+	mem_Compact		();
 	LightVertex					();
 	
-	FPU::m64r();
-	Phase	("Merging lightmaps...");
+	FPU::m64r		();
+	Phase			("Merging lightmaps...");
+	mem_Compact		();
 	xrPhase_MergeLM				();
 
-	FPU::m64r();
-	Phase	("Merging geometry...");
+	FPU::m64r		();
+	Phase			("Merging geometry...");
+	mem_Compact		();
 	xrPhase_MergeGeometry		();
 	
-	FPU::m64r();
-	Phase	("Converting to OpenGraphicsFormat...");
+	FPU::m64r		();
+	Phase			("Converting to OpenGraphicsFormat...");
+	mem_Compact		();
 	Flex2OGF					();
 
-	FPU::m64r();
-	Phase	("Building sectors...");
+	FPU::m64r		();
+	Phase			("Building sectors...");
+	mem_Compact		();
 	BuildSectors	();
 
-	FPU::m64r();
-	Phase	("Saving lights, glows, occlusion planes...");
+	FPU::m64r		();
+	Phase			("Saving lights, glows, occlusion planes...");
+	mem_Compact		();
 	SaveLights		(fs);
 
 	// Glows
@@ -279,10 +297,12 @@ void CBuild::Run()
 	}
 	fs.close_chunk();
 
-	FPU::m64r();
-	Phase	("Saving static geometry...");
+	FPU::m64r		();
+	Phase			("Saving static geometry...");
+	mem_Compact		();
 	SaveTREE		(fs);
 
-	Phase	("Saving sectors...");
+	Phase			("Saving sectors...");
+	mem_Compact		();
 	SaveSectors		(fs);
 }

@@ -121,7 +121,7 @@ void CBuild::PreOptimize()
 	}
 	g_bUnregister = true;
 
-
+	mem_Compact	();
 	Msg("%d vertices removed.",Vcount-g_vertices.size());
 	Msg("%d faces removed.",Fcount-g_faces.size());
 }

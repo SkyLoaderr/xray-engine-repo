@@ -53,6 +53,7 @@ void	CBuild::xrPhase_UVmap()
 	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{
 		Progress	(p_total+=p_cost);
+		mem_Compact	();
 		
 		// Detect vertex-lighting and avoid this subdivision
 		R_ASSERT(!g_XSplit[SP].empty());
@@ -127,8 +128,12 @@ void CBuild::mem_CompactSubdivs()
 		g_XSplit[SP].clear	();
 		g_XSplit[SP].reserve(temp.size());
 		g_XSplit[SP].insert	(g_XSplit[SP].begin(),temp.begin(),temp.end());
-		_heapmin			();
-		HeapCompact			(GetProcessHeap(),0);
+		mem_Compact			();
 	}
 	Msg("%d ms for memory compacting...",timeGetTime()-dwT);
+}
+void CBuild::mem_Compact()
+{
+	_heapmin			();
+	HeapCompact			(GetProcessHeap(),0);
 }
