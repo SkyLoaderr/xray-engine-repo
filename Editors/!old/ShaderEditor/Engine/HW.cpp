@@ -367,5 +367,5 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 	}
 
 	// Hide the cursor if necessary
-	Msg	("* dbg_cursor:CHW::updateWindowProps %d",ShowCursor	(FALSE));
+	ShowCursor	(FALSE);
 }

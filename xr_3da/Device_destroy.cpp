@@ -23,7 +23,7 @@ void CRenderDevice::Destroy	(void) {
 
 	Log("Destroying Direct3D...");
 
-	Msg	("* dbg_cursor:CRenderDevice::Destroy [TRUE] %d",ShowCursor	(TRUE));
+	ShowCursor	(TRUE);
 	HW.Validate					();
 
 	_Destroy					(FALSE);
@@ -36,7 +36,7 @@ void CRenderDevice::Destroy	(void) {
 
 void CRenderDevice::Reset		()
 {
-	Msg	("* dbg_cursor:CRenderDevice::Reset [TRUE] %d",ShowCursor	(TRUE));
+	ShowCursor	(TRUE);
 	u32 tm_start			= TimerAsync();
 	Resources->reset_begin	();
 	Memory.mem_compact		();
@@ -50,5 +50,5 @@ void CRenderDevice::Reset		()
 	PreCache				(DEVICE_RESET_PRECACHE_FRAME_COUNT);
 	u32 tm_end				= TimerAsync();
 	Msg						("*** RESET [%d ms]",tm_end-tm_start);
-	Msg	("* dbg_cursor:CRenderDevice::Reset [FALSE] %d",ShowCursor	(FALSE));
+	ShowCursor	(FALSE);
 }
