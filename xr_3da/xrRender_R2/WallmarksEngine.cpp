@@ -51,8 +51,6 @@ void CWallmarksEngine::clear()
 {
 	{
 		for (WMSlotVecIt p_it=marks.begin(); p_it!=marks.end(); p_it++){
-			for (StaticWMVecIt l_it=(*p_it)->level_items.begin(); l_it!=(*p_it)->level_items.end(); l_it++)
-				xr_delete			(*l_it);
 			for (StaticWMVecIt m_it=(*p_it)->static_items.begin(); m_it!=(*p_it)->static_items.end(); m_it++)
 				static_wm_destroy	(*m_it);
 			xr_delete		(*p_it);
@@ -88,17 +86,6 @@ void		CWallmarksEngine::static_wm_render		(CWallmarksEngine::static_wallmark*	W,
 	float		a		= 1-(W->ttl/W_TTL);
 	int			aC		= iFloor	( a * 255.f);	clamp	(aC,0,255);
 	u32			C		= color_rgba(128,128,128,aC);
-	FVF::LIT*	S		= &*W->verts.begin	();
-	FVF::LIT*	E		= &*W->verts.end	();
-	for (; S!=E; S++, V++){
-		V->p.set		(S->p);
-		V->color		= C;
-		V->t.set		(S->t);
-	}
-}
-void		CWallmarksEngine::level_wm_render		(CWallmarksEngine::static_wallmark*	W, FVF::LIT* &V)
-{
-	u32			C		= color_rgba(255,255,255,255);
 	FVF::LIT*	S		= &*W->verts.begin	();
 	FVF::LIT*	E		= &*W->verts.end	();
 	for (; S!=E; S++, V++){
@@ -361,23 +348,6 @@ void CWallmarksEngine::Render()
 				w_it++;
 			}
 		}
-		// level wallmarks
-		for (StaticWMVecIt w_it=slot->level_items.begin(); w_it!=slot->level_items.end(); w_it++){
-			static_wallmark* W	= *w_it;
-			if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)){
-				Device.Statistic.RenderDUMP_WMS_Count++;
-				float dst	= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
-				float ssa	= W->bounds.R * W->bounds.R / dst;
-				if (ssa>=ssaCLIP)	{
-					u32 w_count		= u32(w_verts-w_start);
-					if ((w_count+W->verts.size())>=(MAX_TRIS*3)){
-						FlushStream	(hGeom,slot->shader,w_offset,w_verts,w_start);
-						BeginStream	(hGeom,w_offset,w_verts,w_start);
-					}
-					level_wm_render(W,w_verts);
-				}
-			}
-		}
 		// dynamic wallmarks
 		for (xr_vector<CSkeletonWallmark*>::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
 			CSkeletonWallmark* W	= *w_it;
@@ -405,67 +375,4 @@ void CWallmarksEngine::Render()
 	RCache.set_xform_project	(Device.mProject);
 
 	lock.Leave();				// Physics may add wallmarks in parallel with rendering
-}
-
-void CWallmarksEngine::load_LevelWallmarks(LPCSTR fn)
-{
-	lock.Enter	();
-	// load level marks
-	IReader* F		= FS.r_open(fn);
-	if (F){
-		IReader* OBJ= F->open_chunk(1);
-		if (OBJ){
-			u32 slot_cnt	= F->r_u32();
-			for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
-				u32 item_cnt= F->r_u32();
-				if (item_cnt){
-					shared_str			sh_name,tx_name;
-					F->r_stringZ		(sh_name);
-					F->r_stringZ		(tx_name);
-					ref_shader	sh;		sh.create		(*sh_name,*tx_name);
-					wm_slot* slot		= FindSlot		(sh);
-					if (0==slot) slot	= AppendSlot	(sh);
-					slot->level_items.resize			(item_cnt);
-					for (StaticWMVecIt w_it=slot->level_items.begin(); w_it!=slot->level_items.end(); w_it++){
-						*w_it			= xr_new<static_wallmark> ();
-						F->r			(&(*w_it)->bounds,sizeof((*w_it)->bounds));
-						(*w_it)->verts.resize	(F->r_u32());
-						F->r			(&*(*w_it)->verts.begin(),sizeof(FVF::LIT)*(*w_it)->verts.size());
-					}
-				}
-			}
-			OBJ->close();
-		}else{
-			IReader* OBJ= F->open_chunk(0);
-			if (OBJ){
-				u32 slot_cnt	= F->r_u32();
-				for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
-					u32 item_cnt= F->r_u32();
-					if (item_cnt){
-						shared_str				tex_name;
-						F->r_stringZ		(tex_name);
-						ref_shader	sh;		sh.create		("effects\\wallmark",*tex_name);
-						wm_slot* slot		= AppendSlot	(sh);
-						slot->static_items.resize			(item_cnt);
-						for (StaticWMVecIt w_it=slot->static_items.begin(); w_it!=slot->static_items.end(); w_it++){
-							*w_it			= static_wm_allocate	();
-							static_wallmark* W = *w_it;
-							W->ttl			= flt_max;
-							F->r			(&W->bounds,sizeof(W->bounds));
-							W->verts.resize	(F->r_u32());
-							F->r			(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
-						}
-					}
-				}
-				OBJ->close();
-			}
-		}
-	}
-    FS.r_close		(F);
-	lock.Leave		();
-}
-
-void CWallmarksEngine::unload_LevelWallmarks()
-{
-	clear			();
 }

@@ -17,7 +17,6 @@ public:
 	{
 		ref_shader		shader;
 		StaticWMVec		static_items;
-		StaticWMVec		level_items;
 		xr_vector<CSkeletonWallmark*> skeleton_items;
 						wm_slot		(ref_shader sh)	{shader=sh;static_items.reserve(256);skeleton_items.reserve(256);}
 	};
@@ -49,8 +48,6 @@ private:
 	void				static_wm_render		(static_wallmark*	W, FVF::LIT* &V);
 	void				static_wm_destroy		(static_wallmark*	W	);
 
-	void				level_wm_render			(static_wallmark*	W, FVF::LIT* &V);
-
 	void				skeleton_wm_render		(CSkeletonWallmark*	W, FVF::LIT* &V);
 
 	void				clear					();
@@ -64,8 +61,4 @@ public:
 
 	// render
 	void				Render					();
-
-	// IO level wallmarks
-	void				load_LevelWallmarks		(LPCSTR fn);
-	void				unload_LevelWallmarks	();
 };
