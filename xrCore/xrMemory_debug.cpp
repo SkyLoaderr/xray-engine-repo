@@ -20,9 +20,18 @@ void	xrMemory::dbg_unregister	(void* _p)
 
 	u32	_found		= u32(-1);
 	for (u32 it=0; it<debug_info.size(); it++)
-		if (debug_info[it]==_p)	{ _found=it; break; }
+	{
+		if (debug_info[it]==_p)	{ 
+			_found=it; 
+			break; 
+		}
+	}
+
 	if (u32(-1)==_found)	Debug.fatal("Memory allocation error");
-	else					debug_info.erase(debug_info.begin()+it);
+	else					{ debug_info[_found]=NULL; debug_info_update++; }
+
+	if (debug_info_update>1024)
+		debug_info.erase(std::remove(debug_info.begin(),debug_info.end(),(void*)0),debug_info.end());
 
 	debug_mode		= TRUE;
 	debug_cs.Leave	();

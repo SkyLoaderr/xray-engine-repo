@@ -26,6 +26,7 @@ xrMemory::xrMemory()
 void	xrMemory::_initialize	(BOOL bDebug)
 {
 	debug_mode				= bDebug;
+	debug_info_update		= 0;
 	stat_calls				= 0;
 	stat_counter			= 0;
 

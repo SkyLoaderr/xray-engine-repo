@@ -15,6 +15,7 @@ public:
 	xrCriticalSection	debug_cs;
 	BOOL				debug_mode;
 	std::vector<void*>	debug_info;
+	u32					debug_info_update;
 
 	u32					stat_calls;
 	s32					stat_counter;
