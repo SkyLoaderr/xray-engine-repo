@@ -8,12 +8,12 @@ const u32	vs_size				= 3000;
 void CDetailManager::soft_Load		()
 {
 	// Vertex Stream
-	soft_Geom	= Device.Shader.CreateGeom	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.Index.Buffer());
+	soft_Geom.create				(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.Index.Buffer());
 }
 
 void CDetailManager::soft_Unload	()
 {
-	Device.Shader.DeleteGeom				(soft_Geom);
+	soft_Geom.destroy				();
 }
 
 void CDetailManager::soft_Render	()

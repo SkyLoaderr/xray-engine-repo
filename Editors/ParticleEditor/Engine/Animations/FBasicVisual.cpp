@@ -84,7 +84,7 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 			data->r_stringZ	(fnS);
 			hShader.create	(fnS,fnT);
 		} else {
-			hShader = 0;	// Device.Shader.Create("null","$null");
+			hShader			= 0;
 		}
 	}
 }

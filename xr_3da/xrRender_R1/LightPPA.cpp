@@ -109,16 +109,16 @@ void CLightPPA::Render	(ref_geom& hGeom)
 
 void CLightPPA_Manager::Initialize	()
 {
-	hShader	= Device.Shader.Create		("effects\\light","effects\\light,effects\\light");
-	hGeom	= Device.Shader.CreateGeom	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
+	hShader.create						("effects\\light","effects\\light,effects\\light");
+	hGeom.create						(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
 }
 
 void CLightPPA_Manager::Destroy		()
 {
 	active.clear				();
 	inactive.clear				();
-	Device.Shader.DeleteGeom	(hGeom);
-	Device.Shader.Delete		(hShader);
+	hGeom.destroy				();
+	hShader.destroy				();
 }
 
 void CLightPPA_Manager::Render()

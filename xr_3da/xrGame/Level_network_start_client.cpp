@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "..\resourcemanager.h"
+
 #include "HUDmanager.h"
 #include "PHdynamicdata.h"
 #include "Physics.h"
@@ -18,7 +20,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 	pApp->LoadTitle				(temp);
 
 	// HUD
-	Device.Shader.DeferredLoad	(TRUE);
+	Device.Resources->DeferredLoad	(TRUE);
 
 	if (Connect(options)) 
 	{
@@ -48,8 +50,8 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 
 		// Textures
 		pApp->LoadTitle						("Loading textures...");
-		Device.Shader.DeferredLoad			(FALSE);
-		Device.Shader.DeferredUpload		();
+		Device.Resources->DeferredLoad			(FALSE);
+		Device.Resources->DeferredUpload		();
 		LL_CheckTextures					();
 
 		// Sync
@@ -62,8 +64,8 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		pApp->LoadEnd	();
 		return TRUE;
 	}
-	Device.Shader.DeferredLoad	(FALSE);
-	Device.Shader.DeferredUpload();
+	Device.Resources->DeferredLoad	(FALSE);
+	Device.Resources->DeferredUpload();
 
 	pApp->LoadEnd				(); 
 	return FALSE;

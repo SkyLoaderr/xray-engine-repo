@@ -117,16 +117,15 @@ void CDetailManager::hw_Load	()
 	hwc_s_consts		= T1.get("consts");
 	hwc_s_xform			= T1.get("xform");
 	hwc_s_array			= T1.get("array");
-	Device.Shader.Delete(S);
 
 	// Declare geometry
-	hw_Geom				= Device.Shader.CreateGeom	(dwDecl, hw_VB, hw_IB);
+	hw_Geom.create		(dwDecl, hw_VB, hw_IB);
 }
 
 void CDetailManager::hw_Unload()
 {
 	// Destroy VS/VB/IB
-	Device.Shader.DeleteGeom	(hw_Geom);
+	hw_Geom.destroy				();
 	_RELEASE					(hw_IB);
 	_RELEASE					(hw_VB);
 }

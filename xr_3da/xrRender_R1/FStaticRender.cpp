@@ -799,16 +799,16 @@ void CRender::OnDeviceCreate	()
 	gm_Nearer					= FALSE;
 	rmNormal					();
 
-	matDetailTexturing			= Device.Shader._CreateMatrix("$user$detail");
-	matFogPass					= Device.Shader._CreateMatrix("$user$fog");
+	matDetailTexturing			= Device.Resources->_CreateMatrix("$user$detail");
+	matFogPass					= Device.Resources->_CreateMatrix("$user$fog");
 
 	marker						= 0;
 }
 
 void CRender::OnDeviceDestroy	()
 {
-	Device.Shader._DeleteMatrix	(matFogPass);
-	Device.Shader._DeleteMatrix	(matDetailTexturing);
+	Device.Resources->_DeleteMatrix	(matFogPass);
+	Device.Resources->_DeleteMatrix	(matDetailTexturing);
 
 	L_Dynamic.Destroy			();
 	level_Unload				();
