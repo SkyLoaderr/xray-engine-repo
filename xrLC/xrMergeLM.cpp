@@ -66,12 +66,12 @@ struct _rect {
 
 IC bool cmp_defl(CDeflector *p1, CDeflector *p2)
 {
-	Fvector &C = Deflector->Center;
+	Fvector &C = Deflector->Sphere.P;
 	WORD M1 = p1->GetBaseMaterial();
 	WORD M2 = p2->GetBaseMaterial();
 	if (M1<M2) return true;
 	if (M1>M2) return false;
-	return C.distance_to_sqr(p1->Center) < C.distance_to_sqr(p1->Center);
+	return C.distance_to_sqr(p1->Sphere.P) < C.distance_to_sqr(p1->Sphere.P);
 }
 
 typedef vector<_rect>	vecR;
@@ -350,5 +350,5 @@ void CBuild::MergeLM()
 	}
 	R_ASSERT(g_deflectors.empty());
 	g_deflectors = deflNew;
-	Msg("%d lightmaps builded",g_deflectors.size());
+	Msg	("%d lightmaps builded",g_deflectors.size());
 }
