@@ -184,6 +184,7 @@ CMyD3DApplication::CMyD3DApplication()
     // Override base class members
 	m_strWindowTitle					= _T	("xray2 : render");
     m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
+	// m_d3dEnumeration.AppMinStencilBits	= 1;
 	m_dwCreationWidth					= 512;
 	m_dwCreationHeight					= 512;
 
