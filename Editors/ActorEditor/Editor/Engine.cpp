@@ -39,7 +39,6 @@ LPCSTR CEngine::LastWindowsError()
 
 extern void __stdcall xrSkin1W_x86	(vertRender* D, vertBoned1W* S, u32 vCount, CBoneInstance* Bones);
 extern void __stdcall xrSkin2W_x86	(vertRender* D, vertBoned2W* S, u32 vCount, CBoneInstance* Bones);
-extern void __stdcall xrBoneLerp_x86(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta);
 
 void CEngine::Initialize(void)
 {
@@ -56,7 +55,7 @@ void CEngine::Initialize(void)
 	hPSGP		            = LoadLibrary("xrCPU_Pipe.dll");
 	R_ASSERT2	            (hPSGP,"Can't find 'xrCPU_Pipe.dll'");
 
-	xrBinder*	bindCPU	    = (xrBinder*)	GetProcAddress(hPSGP,"xrBind_PSGP");	R_ASSERT(bindCPU);
+	xrBinder* bindCPU	    = (xrBinder*)GetProcAddress(hPSGP,"xrBind_PSGP");	R_ASSERT(bindCPU);
 	bindCPU		            (&PSGP, CPU::ID.feature & CPU::ID.os_support);
     // for compliance with editor
     PSGP.skin1W				= xrSkin1W_x86;

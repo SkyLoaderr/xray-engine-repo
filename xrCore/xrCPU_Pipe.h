@@ -9,7 +9,8 @@ struct	ENGINE_API vertBoned1W;
 struct	ENGINE_API vertBoned2W;
 class	ENGINE_API CBoneInstance;
 struct	ENGINE_API CKey;
-struct	ENGINE_API CKeyQ;
+struct	ENGINE_API CKeyQR;
+struct	ENGINE_API CKeyQT;
 
 #ifdef _EDITOR
 #define MATRIX		Fmatrix
@@ -28,7 +29,7 @@ typedef void	__stdcall	xrSkin2W		(vertRender* D, vertBoned2W* S, u32 vCount, CBo
 
 // Spherical-linear interpolation of quaternion
 // NOTE: Quaternions may be non-aligned in memory
-typedef void	__stdcall	xrBoneLerp		(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta);
+typedef void	__stdcall	xrBoneLerp		(CKey* D, CKeyQR* K1r, CKeyQT* K1t, CKeyQR* K2r, CKeyQT* K2t, float delta);
 
 // Matrix multiplication
 typedef void	__stdcall	xrM44_Mul		(MATRIX* D, MATRIX* M1, MATRIX* M2);

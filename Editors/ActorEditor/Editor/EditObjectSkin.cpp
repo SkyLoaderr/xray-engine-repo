@@ -48,6 +48,18 @@ bool CEditableObject::LoadBoneData(IReader& F)
             }
         }
     }
+    // load bone part
+    if (F.find_chunk(EOBJ_CHUNK_BONEPARTS)){
+    	AnsiString buf;
+        m_BoneParts.resize(F.r_u32());
+        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
+            F.r_stringZ	(buf); bp_it->alias=buf;
+            bp_it->bones.resize(F.r_u32());
+            F.r(&*bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+        }
+        if (!m_BoneParts.empty()&&!VerifyBoneParts())
+            ELog.Msg	(mtError,"Invalid bone parts. Found missing or duplicate bone.");
+    }
     return bRes;
 }
 
@@ -58,6 +70,15 @@ void CEditableObject::SaveBoneData(IWriter& F)
         (*b_it)->SaveData	(F);
         F.close_chunk		();
     }
+    // save bone part
+    F.open_chunk	(EOBJ_CHUNK_BONEPARTS);
+    F.w_u32			(m_BoneParts.size());
+    for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
+        F.w_stringZ	(bp_it->alias.c_str());
+        F.w_u32		(bp_it->bones.size());
+        F.w			(&*bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+    }
+    F.close_chunk	();
 }
 
 void CEditableObject::RenderSkeletonSingle(const Fmatrix& parent)

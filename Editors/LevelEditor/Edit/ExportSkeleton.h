@@ -6,7 +6,6 @@
 #include "progmesh.h"
 #include "SkeletonCustom.h"
 //---------------------------------------------------------------------------
-const float KEY_Quant	= 32767.f;
 const int clpSMX = 28, clpSMY=16, clpSMZ=28;
 //---------------------------------------------------------------------------
 // refs

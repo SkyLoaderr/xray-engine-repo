@@ -47,6 +47,7 @@ enum OGF_Chuncks {
 	OGF_IKDATA_obs	= 23,	// * For skeletons only (__obsolete__)
 	OGF_USERDATA	= 24,	// * For skeletons only (Ini-file)
 	OGF_IKDATA		= 25,	// * For skeletons only
+	OGF_MOTIONS2	= 26,	// * For skeletons only
     OGF_forcedword	= 0xFFFFFFFF
 };
 

@@ -78,7 +78,7 @@
       Intermediate\Rain.obj Intermediate\EDetailModel.obj 
       Intermediate\ModelPool.obj Intermediate\thunderbolt.obj 
       Intermediate\SkeletonRigid.obj Intermediate\SkeletonAnimated.obj 
-      Intermediate\SkeletonCustom.obj"/>
+      Intermediate\SkeletonCustom.obj Intermediate\crc32.obj"/>
     <RESFILES value="resource.res ActorEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -286,6 +286,7 @@
       <FILE FILENAME="Engine\Animations\SkeletonRigid.cpp" FORMNAME="" UNITNAME="SkeletonRigid.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonAnimated.cpp" FORMNAME="" UNITNAME="SkeletonAnimated.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonCustom.cpp" FORMNAME="" UNITNAME="SkeletonCustom.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\crc32.cpp" FORMNAME="" UNITNAME="crc32" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

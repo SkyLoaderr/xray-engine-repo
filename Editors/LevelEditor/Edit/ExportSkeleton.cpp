@@ -13,6 +13,7 @@
 #include "motion.h"
 #include "MgcCont3DMinBox.h"
 #include "ui_main.h"          
+#include "SkeletonAnimated.h"
 
 u32 CSkeletonCollectorPacked::VPack(SSkelVert& V){
     u32 P 	= 0xffffffff;
@@ -392,6 +393,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     return bRes;
 }
 //----------------------------------------------------
+extern u32 crc32_calc(void* P, u32 len);
 
 bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 {
@@ -407,7 +409,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
     CSMotion* active_motion=m_Source->ResetSAnimation();
 
     // Motions
-    F.open_chunk(OGF_MOTIONS);
+    F.open_chunk(OGF_MOTIONS2);
     F.open_chunk(0);
     F.w_u32(m_Source->SMotionCount());
     F.close_chunk();
@@ -420,10 +422,16 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
     mGT.mul					(mTranslate,mRotate);
 
     for (SMotionIt motion_it=m_Source->FirstSMotion(); motion_it!=m_Source->LastSMotion(); motion_it++, smot++){
-        CSMotion* motion = *motion_it;
+        CSMotion* motion 	= *motion_it;
         F.open_chunk(smot);
         F.w_stringZ(motion->Name());
         F.w_u32(motion->Length());
+
+        u32 dwLen			= motion->Length();
+		CKeyQR* _keysQR 	= xr_alloc<CKeyQR>(dwLen); 
+		CKeyQT* _keysQT 	= xr_alloc<CKeyQT>(dwLen); 
+		Fvector* _keysT 	= xr_alloc<Fvector>(dwLen);
+        
         BoneMotionVec& lst=motion->BoneMotions();
         int bone_id = 0;
         for (BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++,bone_id++){
@@ -460,14 +468,68 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 
                 q.set		(mat);
 
+                CKeyQR&	Kr 	= _keysQR[frm-motion->FrameStart()];
+                Fvector&Kt 	= _keysT [frm-motion->FrameStart()];
+                
                 // Quantize quaternion
-                int	_x = int(q.x*KEY_Quant); clamp(_x,-32767,32767); short x =  _x; F.w(&x,2);
-                int	_y = int(q.y*KEY_Quant); clamp(_y,-32767,32767); short y =  _y; F.w(&y,2);
-                int	_z = int(q.z*KEY_Quant); clamp(_z,-32767,32767); short z =  _z; F.w(&z,2);
-                int	_w = int(q.w*KEY_Quant); clamp(_w,-32767,32767); short w =  _w; F.w(&w,2);
-                F.w_fvector3(T);
+                int	_x 		= int(q.x*KEY_Quant); clamp(_x,-32767,32767); Kr.x =  _x;
+                int	_y 		= int(q.y*KEY_Quant); clamp(_y,-32767,32767); Kr.y =  _y;
+                int	_z 		= int(q.z*KEY_Quant); clamp(_z,-32767,32767); Kr.z =  _z;
+                int	_w 		= int(q.w*KEY_Quant); clamp(_w,-32767,32767); Kr.w =  _w;
+                Kt.set	(T);
+            }
+            
+            // check T
+            u8 t_present	= FALSE;
+            R_ASSERT		(dwLen);
+            Fvector Mt		= {0,0,0};
+            Fvector Ct		= {0,0,0};
+            Fvector St		= {0,0,0};
+            Fvector At		= _keysT[0];
+            Fvector Bt		= _keysT[0];
+            for (u32 t_idx=0; t_idx<dwLen; t_idx++){
+            	Fvector& t	= _keysT[t_idx];
+            	Mt.add		(t);
+                At.x		= _min(At.x,t.x);
+                At.y		= _min(At.y,t.y);
+                At.z		= _min(At.z,t.z);
+                Bt.x		= _max(Bt.x,t.x);
+                Bt.y		= _max(Bt.y,t.y);
+                Bt.z		= _max(Bt.z,t.z);
+            }
+            Mt.div			(dwLen);
+            Ct.add			(Bt,At);
+            Ct.mul			(0.5f);
+            St.sub			(Bt,At);
+            St.mul			(0.5f);
+            for (t_idx=0; t_idx<dwLen; t_idx++){
+            	Fvector& t	= _keysT[t_idx];
+                if (!Mt.similar(t,EPS_L)){t_present=TRUE;}
+                
+                CKeyQT&	Kt 	= _keysQT[t_idx];
+                int	_x 		= int(127.f*(t.x-Ct.x)/St.x); clamp(_x,-128,127); Kt.x =  _x;
+                int	_y 		= int(127.f*(t.y-Ct.y)/St.y); clamp(_y,-128,127); Kt.y =  _y;
+                int	_z 		= int(127.f*(t.z-Ct.z)/St.z); clamp(_z,-128,127); Kt.z =  _z;
+            }
+            St.div	(127.f);
+            // save
+            F.w_u8	(t_present);
+            F.w_u32	(crc32_calc(_keysQR,dwLen*sizeof(CKeyQR)));
+            F.w		(_keysQR,dwLen*sizeof(CKeyQR));
+            if (t_present){	
+	            F.w_u32(crc32_calc(_keysQT,dwLen*sizeof(CKeyQT)));
+            	F.w	(_keysQT,dwLen*sizeof(CKeyQT));
+	            F.w_fvector3(St);
+    	        F.w_fvector3(Ct);
+            }else{
+                F.w_fvector3(Mt);
             }
         }
+        // free temp storage
+        xr_free(_keysQR);
+        xr_free(_keysQT);
+        xr_free(_keysT);
+
         F.close_chunk();
 	    UI.ProgressInc();
     }
@@ -521,10 +583,12 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
     for (SMotionIt motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
         CSMotion* motion = *motion_it;
         // verify
-        if ((motion->m_BoneOrPart==BI_NONE)&&(!motion->m_Flags.is(esmFX))){
-        	ELog.Msg(mtError,"Invalid Bone Part of motion: '%s'.",motion->Name());
-            bRes=false;
-            continue;
+        if (!motion->m_Flags.is(esmFX)){
+            if (!((motion->m_BoneOrPart==BI_NONE)||(motion->m_BoneOrPart<bp_lst.size()))){
+                ELog.Msg(mtError,"Invalid Bone Part of motion: '%s'.",motion->Name());
+                bRes=false;
+                continue;
+            }
         }
         if (bRes){
 	    	// export
@@ -559,5 +623,6 @@ bool CExportSkeleton::Export(IWriter& F)
     return true;
 };
 //----------------------------------------------------
+
 
 

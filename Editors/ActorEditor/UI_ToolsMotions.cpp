@@ -65,7 +65,7 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
         F.w(m_GeometryStream.pointer(),m_GeometryStream.size());
     }
     IReader R(F.pointer(), F.size());
-    ::Render->model_Delete(m_pVisual);
+    ::Render->model_Delete(m_pVisual,TRUE);
     m_pVisual = ::Render->model_Create(ChangeFileExt(source->GetName(),"").c_str(),&R);
     m_pBlend = 0;
     return bRes;
@@ -85,7 +85,7 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
             }        
         	m_pBlend = PSkeletonAnimated(m_pVisual)->PlayFX(M->Name(),1.f);
         }else{	
-        	R_ASSERT(M->m_BoneOrPart<MAX_PARTS);
+        	R_ASSERT((M->m_BoneOrPart==BI_NONE)||(M->m_BoneOrPart<MAX_PARTS));
             u16 idx 		= M->m_BoneOrPart;
         	if (BI_NONE==idx)for (int k=0; k<MAX_PARTS; k++) m_BPPlayCache[k] = M->Name();
             else			m_BPPlayCache[idx] = M->Name();
