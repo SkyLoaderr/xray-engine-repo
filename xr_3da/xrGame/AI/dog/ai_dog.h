@@ -4,7 +4,7 @@
 #include "..\\ai_monster_bones.h"
 #include "..\\ai_monster_jump.h"
 
-class CAI_Dog : public CAI_Biting, CJumping {
+class CAI_Dog : public CAI_Biting, public CJumping {
 	typedef		CAI_Biting	inherited;
 public:
 					CAI_Dog				();
@@ -12,6 +12,7 @@ public:
 
 	virtual	BOOL	net_Spawn			(LPVOID DC);
 	virtual void	Load				(LPCSTR section);
+	virtual void	UpdateCL			();
 
 
 	virtual void	Init				();
@@ -24,6 +25,5 @@ public:
 	bonesManipulation		Bones;
 
 	virtual void			LookPosition		(Fvector to_point);		
-	
 	
 };

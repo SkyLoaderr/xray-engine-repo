@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "ai_bloodsucker.h"
 #include "ai_bloodsucker_effector.h"
-
-#include "..\\..\\hudmanager.h"
+#include "..\\ai_monsters_misc.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -127,17 +126,6 @@ void CAI_Bloodsucker::UpdateCL()
 	bool NewVis		=	CMonsterInvisibility::Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
 
-	//----------------------------------------------------------------
-	/*
-	float ty,cy;
-
-	cy = r_torso_current.yaw;
-	ty = r_torso_target.yaw;
-
-	HUD().pFontSmall->OutSet (300,420);	
-	HUD().pFontSmall->OutNext("CY = [%f]   TY = [%f]", rad2deg(cy),rad2deg(ty));
-	*/
-	//----------------------------------------------------------------
 }
 
 void CAI_Bloodsucker::StateSelector()
@@ -179,14 +167,14 @@ void CAI_Bloodsucker::vfAssignBones()
 	// Установка callback на кости
 
 	int bone1		= PKinematics(Visual())->LL_BoneID("bip01_spine");
-	PKinematics(Visual())->LL_GetBoneInstance(u16(bone1)).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetInstance(u16(bone1)).set_callback(BoneCallback,this);
 	int bone2	= PKinematics(Visual())->LL_BoneID("bip01_head");
-	PKinematics(Visual())->LL_GetBoneInstance(u16(bone2)).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetInstance(u16(bone2)).set_callback(BoneCallback,this);
 
 	// Bones settings
 	Bones.Reset();
-	Bones.AddBone(GetBone(bone1), AXIS_X); Bones.AddBone(GetBone(bone1), AXIS_Y); Bones.AddBone(GetBone(bone1), AXIS_Z);
-	Bones.AddBone(GetBone(bone2), AXIS_X); Bones.AddBone(GetBone(bone2), AXIS_Y); Bones.AddBone(GetBone(bone2), AXIS_Z);
+	Bones.AddBone(GetBoneInstance(bone1), AXIS_X); Bones.AddBone(GetBoneInstance(bone1), AXIS_Y); Bones.AddBone(GetBoneInstance(bone1), AXIS_Z);
+	Bones.AddBone(GetBoneInstance(bone2), AXIS_X); Bones.AddBone(GetBoneInstance(bone2), AXIS_Y); Bones.AddBone(GetBoneInstance(bone2), AXIS_Z);
 }
 
 
@@ -215,7 +203,7 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	if (angle_normalize_signed(yaw - cur_yaw) > 0) k = -1.f; // right side
 	else k = 1.f;	 // left side
 
-	Bones.SetMotion(GetBone("bip01_spine"), AXIS_X, bone_angle * k, bone_turn_speed, 1);
+	Bones.SetMotion(GetBoneInstance("bip01_spine"), AXIS_X, bone_angle * k, bone_turn_speed, 1);
 }
 
 void CAI_Bloodsucker::LookPosition(Fvector to_point)

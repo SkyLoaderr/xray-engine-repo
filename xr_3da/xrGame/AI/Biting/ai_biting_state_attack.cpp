@@ -5,6 +5,7 @@
 #include "..\\rat\\ai_rat.h"
 #include "..\\bloodsucker\\ai_bloodsucker.h"
 #include "..\\..\\actor.h"
+#include "..\\ai_monster_jump.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingAttack implementation
@@ -114,9 +115,10 @@ void CBitingAttack::Run()
 		}
 	}
 	
-//	if (pMonster->MotionMan.JMP_Check(pMonster->Position(),m_tEnemy.obj->Position()))
-//		pMonster->MotionMan.JMP_Start(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
-
+	// проверить на возможность прыжка
+	CJumping *pJumping = dynamic_cast<CJumping *>(pMonster);
+	if (pJumping) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
+	
 	if (pMonster->Movement.JumpState()) return;
 
 	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
@@ -170,13 +172,6 @@ void CBitingAttack::Run()
 			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, 2000);
 
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
-			break;
-		case ACTION_JUMP:
-			DO_ONCE_BEGIN(flag_once_1);
-//				pMonster->Jump(m_tEnemy.obj->Position());
-			DO_ONCE_END();
-			
-//			pMonster->MotionMan.m_tAction = ACT_JUMP;
 			break;
 	}
 
