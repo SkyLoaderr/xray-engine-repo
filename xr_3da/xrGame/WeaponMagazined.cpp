@@ -15,13 +15,13 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapon(name)
 {
-	m_eSoundShow = ESoundTypes(SOUND_TYPE_WEAPON_CHANGING | eSoundType);
-	m_eSoundHide = ESoundTypes(SOUND_TYPE_WEAPON_HIDING | eSoundType);
-	m_eSoundShot = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING | eSoundType);
-	m_eSoundEmptyClick = ESoundTypes(SOUND_TYPE_WEAPON_EMPTY_CLICKING | eSoundType);
-	m_eSoundReload = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
-	m_eSoundRicochet = ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET | eSoundType);
-	fTime			= 0;
+	m_eSoundShow		= ESoundTypes(SOUND_TYPE_WEAPON_CHANGING | eSoundType);
+	m_eSoundHide		= ESoundTypes(SOUND_TYPE_WEAPON_HIDING | eSoundType);
+	m_eSoundShot		= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING | eSoundType);
+	m_eSoundEmptyClick	= ESoundTypes(SOUND_TYPE_WEAPON_EMPTY_CLICKING | eSoundType);
+	m_eSoundReload		= ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
+	m_eSoundRicochet	= ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET | eSoundType);
+	fTime				= 0;
 }
 
 CWeaponMagazined::~CWeaponMagazined()
@@ -80,7 +80,8 @@ void CWeaponMagazined::OnDeviceDestroy()
 
 void CWeaponMagazined::FireStart		()
 {
-	if (IsValid()){
+	if (IsValid())
+	{
 		if (!IsWorking())
 		{
 			if (st_current==eReload)			return;
@@ -146,10 +147,10 @@ void CWeaponMagazined::ReloadMagazine	()
 	}
 }
 
-void CWeaponMagazined::Update			(DWORD T)
+void CWeaponMagazined::UpdateCL			()
 {
-	inherited::Update	(T);
-	float dt			= float(T)/1000.f;
+	inherited::UpdateCL	();
+	float dt			= Device.fTimeDelta;
 
 	// on state change
 	if (st_target!=st_current)
@@ -193,7 +194,7 @@ void CWeaponMagazined::Update			(DWORD T)
 	case eFire:			state_Fire		(dt);	break;
 	case eMagEmpty:		state_MagEmpty	(dt);	break;
 	}
-	setVisible			(TRUE);
+	// setVisible			(TRUE);
 	bPending			= FALSE;
 	
 	// sound fire loop
@@ -210,7 +211,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 	UpdateFP				();
 	fTime					-=dt;
 	Fvector					p1, d;
-	dynamic_cast<CEntity*>(H_Parent())->g_fireParams	(p1,d);
+	dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
 	
 	while (fTime<0)
 	{
@@ -380,7 +381,6 @@ void CWeaponMagazined::OnAnimationEnd()
 	}
 }
 
-
 void CWeaponMagazined::switch2_Idle	()
 {
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
@@ -396,7 +396,6 @@ void CWeaponMagazined::switch2_Reload()
 	pSounds->PlayAtPos		(sndReload,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
 }
-
 void CWeaponMagazined::switch2_Hiding()
 {
 	switch2_Idle			();

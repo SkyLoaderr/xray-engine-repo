@@ -141,6 +141,7 @@ public:
 	virtual void			net_Export			(NET_Packet& P);	// export to server
 	virtual void			net_Import			(NET_Packet& P);	// import from server
 	virtual void			Update				(DWORD dt);
+	virtual void			UpdateCL			();
 	virtual void			OnVisible			();
 
 	// logic & effects

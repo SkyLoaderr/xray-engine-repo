@@ -48,7 +48,7 @@ public:
 	virtual			~CWeaponBinoculars();
 
 	void			Load			(LPCSTR section);
-	virtual	void	Update			(DWORD	dT);
+	virtual	void	UpdateCL		();
 	virtual	void	OnVisible		();
 
 	virtual void	Hide			();

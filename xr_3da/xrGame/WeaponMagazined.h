@@ -70,8 +70,6 @@ protected:
 	virtual void	OnAnimationEnd	();
 	void			TryReload		();
 protected:
-//	virtual void	UpdateFP		();
-//	virtual void	UpdateXForm		();
 	virtual void	ReloadMagazine	();
 
 	virtual void	state_Fire		(float dt);
@@ -90,7 +88,7 @@ public:
 	virtual void	Hide			();
 	virtual void	Show			();
 
-	virtual	void	Update			(DWORD T		);
+	virtual	void	UpdateCL		();
 	virtual	void	OnVisible		();
 
 	virtual void	OnDeviceCreate	();

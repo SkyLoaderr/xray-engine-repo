@@ -71,74 +71,6 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	animGet				(mhud_hide,		"holster");
 }
 
-/*
-void CWeaponBinoculars::UpdateXForm	()
-{
-	if (Device.dwFrame!=dwXF_Frame){
-		dwXF_Frame = Device.dwFrame;
-
-		if (hud_mode){
-			if (m_pHUD){
-				Fmatrix							trans;
-				Level().Cameras.affected_Matrix	(trans);
-				m_pHUD->UpdatePosition			(trans);
-			}
-		} else {
-			Fmatrix			mRes;
-			CKinematics* V	= PKinematics	(H_Parent()->Visual());
-			V->Calculate	();
-			Fmatrix& mL		= V->LL_GetTransform(m_pContainer->m_iACTboneL);
-			Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
-			
-			Fvector			R,D,N; 
-			D.sub			(mL.c,mR.c);	D.normalize_safe();
-			R.crossproduct	(mR.j,D);		R.normalize_safe();
-			N.crossproduct	(D,R);			N.normalize_safe();
-			mRes.set		(R,N,D,mR.c);
-			mRes.mulA_43	(H_Parent()->clXFORM());
-			UpdatePosition	(mRes);
-		}
-	}
-}
-
-void CWeaponBinoculars::UpdateFP		()
-{
-	if (Device.dwFrame!=dwFP_Frame) 
-	{
-		dwFP_Frame		= Device.dwFrame;
-
-		UpdateXForm		();
-
-		if (hud_mode)	
-		{
-			// 1st person view - skeletoned
-			CKinematics* V			= PKinematics(m_pHUD->Visual());
-			V->Calculate			();
-
-			// fire point&direction
-			Fmatrix& fire_mat		= V->LL_GetTransform(m_pHUD->iFireBone);
-			Fmatrix& parent			= m_pHUD->Transform	();
-			Fvector& fp				= m_pHUD->vFirePoint;
-			Fvector& sp				= m_pHUD->vShellPoint;
-			fire_mat.transform_tiny	(vLastFP,fp);
-			parent.transform_tiny	(vLastFP);
-			fire_mat.transform_tiny	(vLastSP,sp);
-			parent.transform_tiny	(vLastSP);
-			vLastFD.set				(0.f,0.f,1.f);
-			parent.transform_dir	(vLastFD);
-		} else {
-			// 3rd person
-			Fmatrix& parent			= svTransform;
-			Fvector& fp				= vFirePoint;
-			Fvector& sp				= vShellPoint;
-			parent.transform_tiny	(vLastFP,fp);
-			parent.transform_tiny	(vLastSP,sp);
-			vLastFD.set				(0.f,0.f,1.f);
-			parent.transform_dir	(vLastFD);
-		}
-	}
-}
-*/
 
 void CWeaponBinoculars::OnVisible	()
 {
@@ -158,12 +90,12 @@ void CWeaponBinoculars::OnVisible	()
 	}
 }
 
-void CWeaponBinoculars::Update			(DWORD T)
+void CWeaponBinoculars::UpdateCL	()
 {
-	inherited::Update	(T);
+	inherited::UpdateCL	();
 	VERIFY				(H_Parent());
 
-	float dt			= float(T)/1000.f;
+	float dt			= Device.fTimeDelta;
 	
 	// on state change
 	if (st_target!=st_current)

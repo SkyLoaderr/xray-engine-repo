@@ -376,13 +376,19 @@ void CWeapon::net_Import	(NET_Packet& P)
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
 	}
+
+	if (N.flags&M_UPDATE_WEAPON_wfWorking)
+	{
+		if (!IsWorking())	FireStart();
+	} else {
+		if (IsWorking())	FireEnd();
+	}
 }
 
 void CWeapon::Update		(DWORD dT)
 {
 	// Queue shrink
-	DWORD	dwTimeCL	= Level().timeServer()-NET_Latency;
-	// VERIFY				(!NET.empty());
+	DWORD	dwTimeCL		= Level().timeServer()-NET_Latency;
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
 	// Logic
@@ -401,6 +407,11 @@ void CWeapon::Update		(DWORD dT)
 
 	// Inherited
 	inherited::Update		(dT);
+}
+
+void CWeapon::UpdateCL		()
+{
+	inherited::UpdateCL		();
 }
 
 void CWeapon::OnVisible		()
@@ -489,20 +500,21 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 
 BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 {
-	Collide::ray_query	RQ;
+	Collide::ray_query		RQ;
 
 	// direct it by dispersion factor
-	Fvector				dir;
-	dir.random_dir		(D,(fireDispersionBase+fireDispersion*fireDispersion_Current)*GetPrecision(),Random);
+	Fvector					dir;
+	dir.random_dir			(D,(fireDispersionBase+fireDispersion*fireDispersion_Current)*GetPrecision(),Random);
+
 	// increase dispersion
 	fireDispersion_Current	+= fireDispersion_Inc;
-	clamp				(fireDispersion_Current,0.f,1.f);
+	clamp					(fireDispersion_Current,0.f,1.f);
 
 	// ...and trace line
-	H_Parent()->setEnabled(false);
-	BOOL bResult		= pCreator->ObjectSpace.RayPick( P, dir, fireDistance, RQ );
-	H_Parent()->setEnabled(true);
-	D					= dir;
+	H_Parent()->setEnabled	(false);
+	BOOL bResult			= pCreator->ObjectSpace.RayPick( P, dir, fireDistance, RQ );
+	H_Parent()->setEnabled	(true);
+	D						= dir;
 
 	// ...analyze
 	Fvector end_point; 
