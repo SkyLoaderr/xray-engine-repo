@@ -5,11 +5,15 @@
 
 #pragma comment(lib,"MagicFM.lib")
 
+BOOL	f_valid		(float f)
+{
+	return _finite(f) && !_isnan(f);
+}
+
 BOOL				SphereValid	(vector<Fvector>& geom, Fsphere& test)
 {
-	if (fis_gremlin(test.P.x) || fis_denormal(test.R))	{
-		clMsg	("*** Attention ***: Gremlin sphere: %f,%f,%f - %f",test.P.x,test.P.y,test.P.z,test.R);
-		return FALSE;
+	if (!f_valid(test.P.x) || !f_valid(test.R))	{
+		clMsg	("*** Attention ***: invalid sphere: %f,%f,%f - %f",test.P.x,test.P.y,test.P.z,test.R);
 	}
 
 	Fsphere	S	=	test;
@@ -27,7 +31,7 @@ void				OGF_Base::CalcBounds	()
 	V.reserve					(4096);
 	GetGeometry					(V);
 	FPU::m64					();
-	R_ASSERT					(V.size()>3);
+	R_ASSERT					(V.size()>=3);
 
 	// 1: calc first variation
 	Fsphere	S1;
