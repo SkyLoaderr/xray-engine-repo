@@ -11,7 +11,7 @@
     <!-------------------------------- Army ----------------------------->
 
     <article id="social_military_army" name="Army" group="Social/Military">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="768" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_military_army</text>
     </article>
 
@@ -19,7 +19,7 @@
     <!---------------------------- Milstalkers -------------------------->
 
     <article id="social_military_milstalkers" name="Milstalkers" group="Social/Military">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="256" y="256" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_military_milstalkers</text>
     </article>
 
@@ -35,7 +35,7 @@
     <!--------------------------- Mobile-labs --------------------------->
 
     <article id="social_scientists_mobile-labs" name="Mobile-labs" group="Social/Scientists">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="640" y="256" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_scientists_mobile-labs</text>
     </article>
 
@@ -43,7 +43,7 @@
     <!--------------------------- Res-groups --------------------------->
 
     <article id="social_scientists_res-groups" name="Res-groups" group="Social/Scientists">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="512" y="256" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_scientists_res-groups</text>
     </article>
 
@@ -58,7 +58,7 @@
     <!--------------------------- Bandits --------------------------->
 
     <article id="social_stalker-clans_bandits" name="Bandits" group="Social/Stalker-clans">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="896" y="256" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_bandits</text>
     </article>
 
@@ -66,7 +66,7 @@
     <!--------------------------- Clear-sky --------------------------->
 
     <article id="social_stalker-clans_clear-sky" name="Clear-sky" group="Social/Stalker-clans">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="512" y="0" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_сlear-sky</text>
     </article>
 
@@ -74,7 +74,7 @@
     <!--------------------------- Duty --------------------------->
 
     <article id="social_stalker-clans_duty" name="Duty" group="Social/Stalker-clans">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="512" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_duty</text>
     </article>
 
@@ -82,7 +82,7 @@
     <!--------------------------- Freedom --------------------------->
 
     <article id="social_stalker-clans_freedom" name="Freedom" group="Social/Stalker-clans">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="640" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_freedom</text>
     </article>
 
@@ -90,7 +90,7 @@
     <!--------------------------- Gunslinger-clan --------------------------->
 
     <article id="social_stalker-clans_gunslinger-clan" name="Gunslinger-clan" group="Social/Stalker-clans">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="512" y="0" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_gunslinger-clan</text>
     </article>
 
@@ -98,7 +98,7 @@
     <!--------------------------- Monolith --------------------------->
 
     <article id="social_stalker-clans_monolith" name="Monolith" group="Social/Stalker-clans">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="384" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_monolith</text>
     </article>
 
@@ -106,7 +106,7 @@
     <!--------------------------- Sin --------------------------->
 
     <article id="social_stalker-clans_sin" name="Sin" group="Social/Stalker-clans">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="256" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_sin</text>
     </article>
 
@@ -122,7 +122,7 @@
     <!--------------------------- Phantom --------------------------->
 
     <article id="social_stalkers_phantom" name="Phantom" group="Social/Stalkers">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="512" y="0" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalkers_phantom</text>
     </article>
 
@@ -147,7 +147,7 @@
     <!--------------------------- Trader --------------------------->
 
     <article id="social_traders_trader" name="Trader" group="Social/Traders">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="128" y="0" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_traders_trader</text>
     </article>
 
@@ -155,7 +155,7 @@
     <!--------------------------- Barman --------------------------->
 
     <article id="social_traders_barman" name="Barman" group="Social/Traders">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="0" y="0" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_traders_barman</text>
     </article>
 
