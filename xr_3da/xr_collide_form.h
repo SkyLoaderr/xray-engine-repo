@@ -196,8 +196,10 @@ public:
 	virtual BOOL	_clRayTest		( RayQuery& Q);
 	virtual BOOL	_svRayTest		( RayQuery& Q);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
-	
-	BOOL			Contact			( CObject* O );
+
+	void			add_sphere		( Fsphere& S	);
+	void			add_box			( Fbox& B		);
+	BOOL			Contact			( CObject* O	);
 };
 
 #endif //__XR_COLLIDE_FORM_H__
