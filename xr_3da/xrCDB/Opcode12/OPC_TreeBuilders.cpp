@@ -135,9 +135,9 @@ float AABBTreeOfTrianglesBuilder::GetSplittingValue(udword index, udword axis) c
 	return Center[axis];*/
 
 	// Compute correct component from center of triangle
-	return	(((float*)mVerts[mTriList[index].mVRef[0]])[axis]
-			+((float*)mVerts[mTriList[index].mVRef[1]])[axis]
-			+((float*)mVerts[mTriList[index].mVRef[2]])[axis])*INV3;
+	return	(((const float*)mVerts[mTriList[index].mVRef[0]])[axis]
+			+((const float*)mVerts[mTriList[index].mVRef[1]])[axis]
+			+((const float*)mVerts[mTriList[index].mVRef[2]])[axis])*INV3;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,9 +163,9 @@ float AABBTreeOfTrianglesBuilder::GetSplittingValue(const udword* primitives, ud
 			const Point& p1 = mVerts[mTriList[primitives[i]].mVRef[1]];
 			const Point& p2 = mVerts[mTriList[primitives[i]].mVRef[2]];
 			// Update split value
-			SplitValue += ((float*)p0)[axis];
-			SplitValue += ((float*)p1)[axis];
-			SplitValue += ((float*)p2)[axis];
+			SplitValue += ((const float*)p0)[axis];
+			SplitValue += ((const float*)p1)[axis];
+			SplitValue += ((const float*)p2)[axis];
 		}
 		return SplitValue / float(nb_prims*3);
 	}

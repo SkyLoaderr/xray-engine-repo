@@ -78,9 +78,9 @@ BOOL CoplanarTriTri(const Point& n, const Point& v0, const Point& v1, const Poin
 	short i0,i1;
 	/* first project onto an axis-aligned plane, that maximizes the area */
 	/* of the triangles, compute indices: i0,i1. */
-	A[0] = _abs(((float*)n)[0]);
-	A[1] = _abs(((float*)n)[1]);
-	A[2] = _abs(((float*)n)[2]);
+	A[0] = _abs(((const float*)n)[0]);
+	A[1] = _abs(((const float*)n)[1]);
+	A[2] = _abs(((const float*)n)[2]);
 	if(A[0]>A[1])
 	{
 		if(A[0]>A[2])
