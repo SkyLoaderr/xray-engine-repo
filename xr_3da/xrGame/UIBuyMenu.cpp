@@ -83,10 +83,11 @@ bool CUIBuyMenu::OnKeyboardPress(int dik)
 	}
 	if (menu_active&&(id>0)){
 		CCustomMenuItem* menu	= menu_active->GetItem(id);
-		R_ASSERT(menu);
-		if (menu->HasChildren())menu_active = menu;
-		else menu->Execute();
-		return true;
+		if (menu){
+			if (menu->HasChildren())menu_active = menu;
+			else menu->Execute();
+			return true;
+		}
 	}
 	return false;
 }
