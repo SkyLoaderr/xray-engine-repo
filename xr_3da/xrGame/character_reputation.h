@@ -40,7 +40,7 @@ public:
 	int							index			() const;
 	CHARACTER_REPUTATION_VALUE	value			() const;
 
-	int							ValueToIndex    (CHARACTER_REPUTATION_VALUE);
+	static int					ValueToIndex    (CHARACTER_REPUTATION_VALUE);
 
 private:
 	CHARACTER_REPUTATION_VALUE	m_current_value;

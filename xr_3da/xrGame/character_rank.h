@@ -40,7 +40,7 @@ public:
 	int							index			() const;
 	CHARACTER_RANK_VALUE		value			() const;
 
-	int							ValueToIndex    (CHARACTER_RANK_VALUE);
+	static int					ValueToIndex    (CHARACTER_RANK_VALUE);
 
 private:
 	CHARACTER_RANK_VALUE		m_current_value;
