@@ -309,6 +309,11 @@ void CSound::Load		(LPCSTR name, BOOL ctrl_freq)
 		pBuffer				= LoadWaveAs2D( fn, _Freq );
 		if (!pBuffer)		THROW;
 	}
+
+	if (dwTimeTotal<200)
+	{
+		Msg	("! WARNING: Invalid wave length (must be at least 200ms), file: %s",fn);
+	}
 }
 
 void CSound::Load		(const CSound *pOriginal)
