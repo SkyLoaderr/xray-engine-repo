@@ -122,7 +122,7 @@ bool CLevelPathManager::level_path_actual() const
 	return				(true);
 }
 
-bool CLevelPathManager::game_path_completed() const
+bool CLevelPathManager::level_path_completed() const
 {
 	return				(true);
 }

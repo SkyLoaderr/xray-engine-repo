@@ -258,7 +258,7 @@ void CMovementManager::process_level_path()
 			break;
 		}
 		case ePathStateBuildDetailPath : {
-			build_detail_path	();
+			build_detail_path	(m_level_path);
 			m_path_state		= ePathStatePathVerification;
 			break;
 		}
@@ -312,7 +312,7 @@ void CMovementManager::process_enemy_search()
 			break;
 		}
 		case ePathStateBuildDetailPath : {
-			build_detail_path	();
+			build_detail_path	(m_level_path);
 			m_path_state		= ePathStatePathVerification;
 			break;
 		}

@@ -160,7 +160,7 @@ bool CDetailPathManager::detail_path_actual() const
 	return				(true);
 }
 
-bool CDetailPathManager::game_path_completed() const
+bool CDetailPathManager::detail_path_completed() const
 {
 	return				(true);
 }

@@ -17,11 +17,15 @@ CEnemyLocationPredictor::~CEnemyLocationPredictor		()
 {
 }
 
-void CEnemyLocationPredictor::predict_enemy_location	()
+void CEnemyLocationPredictor::predict_enemy_locations	()
 {
 }
 
 bool CEnemyLocationPredictor::enemy_prediction_actual	() const
 {
 	return				(true);
+}
+
+void CEnemyLocationPredictor::select_enemy_location		()
+{
 }
