@@ -373,15 +373,13 @@ void CStalkerActionGetEnemySeen::execute	()
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	Fvector							direction;
-	direction.sub					(mem_object.m_object_params.m_position,m_object->Position());
-	m_object->setup					(SightManager::eSightTypeFirePosition,&mem_object.m_object_params.m_position);
+	m_object->setup					(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
 		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 
 	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {
-		if (m_object->Position().similar(mem_object.m_object_params.m_position,.5f))
+		if (m_object->Position().distance_to_xz(mem_object.m_object_params.m_position) <=.5f)
 			m_object->CMemoryManager::enable	(m_object->enemy(),false);
 	}
 	else
@@ -1571,7 +1569,7 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 				m_object->set_desired_position	(&desired_position);
 			}
 			m_object->set_movement_type		(eMovementTypeWalk);
-			if (m_object->Position().similar(mem_object.m_object_params.m_position,.1f))
+			if (m_object->Position().distance_to_xz(mem_object.m_object_params.m_position) <= .1f)
 				m_object->CMemoryManager::enable(m_object->enemy(),false);
 		}
 		else {
@@ -1607,15 +1605,13 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 	}
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	Fvector							direction;
-	direction.sub					(mem_object.m_object_params.m_position,m_object->Position());
-	m_object->setup					(SightManager::eSightTypeFirePosition,&mem_object.m_object_params.m_position);
+	m_object->setup					(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
 		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 
 	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {
-		if (m_object->Position().similar(mem_object.m_object_params.m_position,.5f))
+		if (m_object->Position().distance_to_xz(mem_object.m_object_params.m_position) <=.5f)
 			m_object->CMemoryManager::enable	(m_object->enemy(),false);
 	}
 	else
@@ -1686,11 +1682,9 @@ void CStalkerActionKillEnemyLostModerate::execute		()
 	if (!m_object->visible_now(m_object->enemy()))
 		return;
 
-	Fvector							position;
-	m_object->enemy()->Center		(position);
-	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
+	m_object->setup					(CSightAction(m_object->enemy(),true));
 
-	position						= mem_object.m_object_params.m_position;
+	Fvector							position = mem_object.m_object_params.m_position;
 	m_object->m_ce_best->setup		(position,10.f,170.f,10.f);
 	CCoverPoint						*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best,CMovementRestrictor(m_object));
 	if (!point)
@@ -1765,11 +1759,9 @@ void CStalkerActionTakeCover::execute	()
 	if (!mem_object.m_object)
 		return;
 
-	Fvector							position;
-	m_object->enemy()->Center		(position);
-	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
+	m_object->setup					(CSightAction(m_object->enemy(),true));
 
-	position						= mem_object.m_object_params.m_position;
+	Fvector position				= mem_object.m_object_params.m_position;
 	m_object->m_ce_best->setup		(position,10.f,170.f,10.f);
 	CCoverPoint						*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best,CMovementRestrictor(m_object));
 	if (!point)
