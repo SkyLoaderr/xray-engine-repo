@@ -39,7 +39,8 @@ public:
 	R_dsgraph::mapLOD_T											mapLOD;
 
 #if RENDER==R_R2
-	R_dsgraph::mapEmissive_T									mapEmissive;
+	R_dsgraph::mapSorted_T										mapEmissive;
+	R_dsgraph::mapSorted_T										mapDistort;
 #endif
 
 	// Runtime structures 
@@ -101,6 +102,7 @@ public:
 	void		r_dsgraph_render_lods							();
 	void		r_dsgraph_render_sorted							();
 	void		r_dsgraph_render_emissive						();
+	void		r_dsgraph_render_distort						();
 	void		r_dsgraph_render_subspace						(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	);
 	void		r_dsgraph_render_R1_box							(IRender_Sector* _sector, Fbox& _bb, int _element);
 };

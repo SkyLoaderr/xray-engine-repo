@@ -43,8 +43,9 @@ void	CRenderTarget::phase_combine	()
 		g_pGamePersistent->Environment.RenderFirst	();
 	}
 
-	// Perform blooming filter
+	// Perform blooming filter and distortion if needed
 	phase_bloom			( );
+	if (RImplementation.b_distortion)	phase_distortion	();
 
 	// Combine everything + perform AA
 	u_setrt				( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);

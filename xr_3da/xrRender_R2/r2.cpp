@@ -206,6 +206,7 @@ CRender::CRender()
 	b_noshadows			= (strstr(Core.Params,"-noshadows"))?TRUE:FALSE;
 	b_fp16				= (strstr(Core.Params,"-fp16"))?TRUE:FALSE;
 	b_emap				= (strstr(Core.Params,"-emap"))?TRUE:FALSE;
+	b_distortion		= (strstr(Core.Params,"-distort"))?TRUE:FALSE;
 }
 
 CRender::~CRender()
@@ -274,6 +275,12 @@ HRESULT	CRender::CompileShader			(
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
+	if (b_distortion)	{
+		defines[def_it].Name		=	"USE_DISTORT";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	
 	// finish
 	defines[def_it].Name			=	0;
 	defines[def_it].Definition		=	0;

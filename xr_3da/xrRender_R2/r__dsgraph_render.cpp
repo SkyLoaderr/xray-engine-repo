@@ -438,6 +438,17 @@ void	R_dsgraph_structure::r_dsgraph_render_emissive	()
 }
 
 //////////////////////////////////////////////////////////////////////////
+// strict-sorted render
+void	R_dsgraph_structure::r_dsgraph_render_distort	()
+{
+#if	RENDER==R_R2
+	// Sorted (back to front)
+	mapDistort.traverseLR	(sorted_L1);
+	mapDistort.clear		();
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////
 // sub-space rendering
 void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
 {

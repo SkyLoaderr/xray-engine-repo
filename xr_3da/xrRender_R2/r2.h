@@ -31,12 +31,13 @@ public:
 		PHASE_EMAP		= 4,	// E[4]
 	};
 
-	BOOL														b_mrt;
-	BOOL                                                        b_fp16;
-	BOOL														b_nv3x;
-	BOOL														b_HW_smap;
-	BOOL														b_noshadows;
-	BOOL														b_emap;
+	BOOL						b_mrt;
+	BOOL                        b_fp16;
+	BOOL						b_nv3x;
+	BOOL						b_HW_smap;
+	BOOL						b_noshadows;
+	BOOL						b_emap;
+	BOOL						b_distortion;
 public:
 	struct		_stats
 	{
