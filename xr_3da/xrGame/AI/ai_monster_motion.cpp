@@ -431,13 +431,9 @@ void CMotionManager::SelectVelocities()
 	SMotionVel	path_vel;	path_vel.set(0.f,0.f);
 	SMotionVel	anim_vel;	anim_vel.set(0.f,0.f);
 
-	//Msg("----- [Time: %u] -----", Level().timeServer());
-
 	if (b_moving) {
 
 		u32 cur_point_velocity_index = pMonster->CDetailPathManager::path()[pMonster->curr_travel_point_index()].velocity;
-
-	//	Msg("PRE :: Cur point Vel index [%u]", cur_point_velocity_index);
 
 		u32 next_point_velocity_index = u32(-1);
 		if (pMonster->CDetailPathManager::path().size() > pMonster->curr_travel_point_index() + 1) 
@@ -454,8 +450,6 @@ void CMotionManager::SelectVelocities()
 		VERIFY(it != pMonster->m_movement_params.end());
 
 		path_vel.set(_abs((*it).second.linear_velocity), (*it).second.angular_velocity);
-	//	Msg("AFT :: Cur point Vel index [%u]", cur_point_velocity_index);
-	//	Msg("Path Vel[L: %f][A: %f]", path_vel.linear, path_vel.angular);
 	}
 
 	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim);
@@ -463,7 +457,6 @@ void CMotionManager::SelectVelocities()
 
 	// получить скорости движения по анимации
 	anim_vel.set(item_it->second.velocity->velocity.linear, item_it->second.velocity->velocity.angular);
-//	Msg("Anim Vel[L: %f][A: %f]", anim_vel.linear, anim_vel.angular);
 
 //	// проверить на совпадение
 //	R_ASSERT(fsimilar(path_vel.linear,	anim_vel.linear));
@@ -504,8 +497,6 @@ void CMotionManager::SelectVelocities()
 	if (cur_anim != prev_anim) ForceAnimSelect();		
 
 	prev_anim	= cur_anim;
-
-//	Msg("Result Vel :: Current [L: %f][A: %f] : Target [L: %f][A: %f]", pMonster->m_velocity_linear.current, pMonster->m_velocity_angular.current,pMonster->m_velocity_linear.target, pMonster->m_velocity_angular.target);
 }
 
 EAction CMotionManager::VelocityIndex2Action(u32 velocity_index)
@@ -743,7 +734,6 @@ void CMotionManager::CheckAnimWithPath()
 	//if (pMonster->IsMovingOnPath()) {
 	//	
 	//	u32 cur_point_velocity_index = pMonster->CDetailPathManager::path()[pMonster->curr_travel_point_index()].velocity;		
-
 	//	if ((cur_point_velocity_index == pMonster->eVelocityParameterStand) && !fis_zero(pMonster->m_velocity_linear.current) && !zero) {
 	//		Msg("ZEROED:: cur_point[%u] cur_speed[%f]", cur_point_velocity_index, pMonster->m_velocity_linear.current);
 	//		pMonster->m_velocity_linear.current = pMonster->m_velocity_linear.target = 0.f;	
@@ -752,7 +742,6 @@ void CMotionManager::CheckAnimWithPath()
 
 	//	if (cur_point_velocity_index != pMonster->eVelocityParameterStand) zero = false;
 	//}
-
 	//Msg("cur_speed[%f]", pMonster->m_velocity_linear.current);
 
 	//if (pMonster->ps_Size() < 2) return;

@@ -69,6 +69,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	// определить целевую точку
 	Fvector				target;
 	
+	u32 prev_cur_point_index = CDetailPathManager::curr_travel_point_index();
+
 	// обновить CDetailPathManager::m_current_travel_point в соответствие с текущей позицией
 	while (CDetailPathManager::m_current_travel_point < CDetailPathManager::path().size() - 2) {
 
@@ -104,6 +106,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		}
 	}
 	
+	if (prev_cur_point_index != CDetailPathManager::curr_travel_point_index()) on_travel_point_change();
+
 	if (dist_to_target < EPS_L) {
 		CDetailPathManager::m_current_travel_point = CDetailPathManager::path().size() - 1;
 		m_speed			= 0.f;

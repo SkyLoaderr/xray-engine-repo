@@ -137,6 +137,7 @@ public:
 			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 			float	speed					() const;
 
+	virtual void	on_travel_point_change	() {}
 };
 
 #include "movement_manager_inline.h"

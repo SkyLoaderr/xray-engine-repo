@@ -100,6 +100,7 @@ void CAI_Biting::reinit()
 
 	bone_part						= PSkeletonAnimated(Visual())->LL_PartID("default");
 
+	b_velocity_reset				= false;
 
 #ifdef 	DEEP_TEST_SPEED	
 	time_next_update				= 0;
@@ -356,11 +357,10 @@ void CAI_Biting::UpdateCL()
 
 	m_pPhysics_support->in_UpdateCL();
 
-	MotionMan.CheckAnimWithPath();
-
 	// ќбновить угловую и линейную скорости движени€
 	CMonsterMovement::update_velocity();
 	m_fCurSpeed		= m_velocity_linear.current;
+	set_desirable_speed(m_fCurSpeed);
 
 	if (!fis_zero(m_velocity_linear.current) && !fis_zero(m_velocity_linear.target))
 		m_body.speed	= m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);

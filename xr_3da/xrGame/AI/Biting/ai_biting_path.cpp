@@ -74,6 +74,18 @@ void CAI_Biting::FaceTarget(const Fvector &position)
 	m_body.target.yaw = yaw;
 }
 
+void CAI_Biting::on_travel_point_change()
+{
+	if (IsMovingOnPath()) {
+		u32 cur_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;		
+		if ((cur_point_velocity_index == eVelocityParameterStand) && !fis_zero(m_velocity_linear.current) && !b_velocity_reset) {
+			m_velocity_linear.current = m_velocity_linear.target = 0.f;	
+			b_velocity_reset = true;
+		}
+		if (cur_point_velocity_index != eVelocityParameterStand) b_velocity_reset = false;
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Covers
 //////////////////////////////////////////////////////////////////////////

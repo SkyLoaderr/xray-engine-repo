@@ -163,6 +163,8 @@ public:
 
 	virtual bool			CanExecRotationJump				() {return false;}
 
+	virtual void			on_travel_point_change			();
+		
 	// ---------------------------------------------------------------------------------
 	// Abilities
 
@@ -313,6 +315,9 @@ public:
 
 
 	u16						bone_part;
+	
+	bool					b_velocity_reset;
+
 
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;
