@@ -10,7 +10,8 @@
 #include "game_sv_event_queue.h"
 #include "../XR_IOConsole.h"
 
-#define		MAPROT_LIST				"maprot_list.ltx"
+//#define		MAPROT_LIST				"maprot_list.ltx"
+string64		MAPROT_LIST	= "";
 // Main
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 {
@@ -296,8 +297,12 @@ void game_sv_GameState::Create					(shared_str &options)
 	else m_fFriendlyFireModifier = 0.000001f;
 
 	m_RPointFreezeTime = get_option_i(*options, "rpfrz", 1) * 1000;
-
-	Console->ExecuteScript(MAPROT_LIST);
+	
+	strcpy( MAPROT_LIST, get_option_s(*options, "maprot"));
+	if (MAPROT_LIST[0])
+	{
+		Console->ExecuteScript(MAPROT_LIST);
+	};
 }
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E)
