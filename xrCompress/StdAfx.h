@@ -17,6 +17,7 @@
 #include <math.h>
 #include <windows.h>
 #include <mmsystem.h>
+#include <io.h>
 
 #include "limits"
 #include "list"
