@@ -1517,7 +1517,7 @@ xrSE_PhysicObject::~xrSE_PhysicObject()
 }
 void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size) 
 {
-	if (m_wVersion < 14)
+	if (m_wVersion >= 14)
 		inherited::STATE_Read	(P,size);
 	visual_read				(P);
 	P.r_u32					(type);
