@@ -23,7 +23,10 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		{
 			// Switch our "ready" status
 			NET_Packet			P;
-			u_EventGen			(P,GEG_PLAYER_READY,ID());
+//			u_EventGen			(P,GEG_PLAYER_READY,ID());
+			u_EventGen		(P,GE_GAME_EVENT,ID()	);
+			P.w_u16(GAME_EVENT_PLAYER_READY);
+
 			u_EventSend			(P);
 		}
 		return;

@@ -264,11 +264,12 @@ bool CALifeUpdateManager::load_game		(LPCSTR game_name, bool no_assert)
 			return				(false);
 		}
 	}
-	string64					S;
-	strcpy						(S,*m_server_command_line);
+	string512					S,S1;
+	strcpy						(S,**m_server_command_line);
 	LPSTR						temp = strchr(S,'/');
 	R_ASSERT2					(temp,"Invalid server options!");
-	strconcat					(*m_server_command_line,game_name,temp);
+	strconcat					(S1,game_name,temp);
+	*m_server_command_line		= S1;
 	return						(true);
 }
 

@@ -13,7 +13,7 @@
 
 LPCSTR alife_section = "alife";
 
-CALifeSimulator::CALifeSimulator		(xrServer *server, LPSTR *command_line) :
+CALifeSimulator::CALifeSimulator		(xrServer *server, ref_str* command_line) :
 	CALifeUpdateManager			(server,alife_section),
 	CALifeInteractionManager	(server,alife_section),
 	CALifeSimulatorBase			(server,alife_section)
@@ -23,7 +23,7 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, LPSTR *command_line) :
 	setup_command_line			(*command_line);
 
 	string64					saved_game;
-	strcpy						(saved_game,*command_line);
+	strcpy						(saved_game,**command_line);
 	LPSTR						temp = strchr(saved_game,'/');
 	R_ASSERT2					(temp,"Invalid server options!");
 	*temp						= 0;

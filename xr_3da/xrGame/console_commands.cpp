@@ -86,7 +86,10 @@ public:
 		CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
 		if(l_pPlayer) {
 			NET_Packet		P;
-			l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
+		//	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
+			l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
+			P.w_u16(GAME_EVENT_PLAYER_CHANGE_TEAM);
+
 			P.w_u16			(u16(l_pPlayer->ID())	);
 			P.w_s16			(s16(l_team));
 			P.w_s16			((s16)0);
@@ -108,7 +111,10 @@ public:
 		CActor *l_pPlayer = dynamic_cast<CActor*>(l_pObj);
 		if(l_pPlayer) {
 			NET_Packet		P;
-			l_pPlayer->u_EventGen		(P,GEG_PLAYER_KILL,l_pPlayer->ID()	);
+//			l_pPlayer->u_EventGen		(P,GEG_PLAYER_KILL,l_pPlayer->ID()	);
+			l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
+			P.w_u16(GAME_EVENT_PLAYER_KILL);
+
 			P.w_u16			(u16(l_pPlayer->ID())	);
 			//			P.w_s16			(s16(l_team));
 			//			P.w_s16			((s16)0);

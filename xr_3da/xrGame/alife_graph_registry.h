@@ -52,14 +52,14 @@ protected:
 	CALifeLevelRegistry					*m_level;
 	CSE_ALifeCreatureActor				*m_actor;
 	u64									m_process_time;
-	LPSTR								*m_server_command_line;
+	ref_str								*m_server_command_line;
 	xr_vector<CSE_ALifeDynamicObject*>	m_temp;
 
 protected:
 			void						setup_current_level		();
 
 public:
-										CALifeGraphRegistry		(LPSTR *server_command_line);
+										CALifeGraphRegistry		(ref_str *server_command_line);
 	virtual								~CALifeGraphRegistry	();
 			void						update					(CSE_ALifeDynamicObject		*object);
 	IC		void						attach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			ALife::_GRAPH_ID	game_vertex_id,				bool alife_query = true);

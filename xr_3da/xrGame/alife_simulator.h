@@ -24,7 +24,7 @@ protected:
 	virtual void	reload				(LPCSTR section);
 
 public:
-					CALifeSimulator		(xrServer *server, LPSTR *command_line);
+					CALifeSimulator		(xrServer *server, ref_str* command_line);
 	virtual			~CALifeSimulator	();
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
