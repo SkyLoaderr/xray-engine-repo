@@ -7,7 +7,7 @@
 #include "../stalker/ai_stalker.h"
 #include "pseudodog_state_growling.h"
 #include "../../../CameraBase.h"
-#include "../../../xr_level_controller.h"
+#include "../../xr_level_controller.h"
 
 
 CAI_PseudoDog::CAI_PseudoDog()
