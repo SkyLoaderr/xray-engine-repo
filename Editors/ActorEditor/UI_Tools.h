@@ -111,9 +111,6 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	void __fastcall 	RotateOnDraw			(PropValue* sender, LPVOID draw_val);
 	void __fastcall 	OnChangeTransform		(PropValue* sender);
 	void __fastcall 	OnChangeShader			(PropValue* sender);
-	void __fastcall 	NameOnAfterEdit			(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnBeforeEdit		(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnDraw				(PropValue* sender, LPVOID draw_val);
 	void __fastcall 	BPOnAfterEdit			(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	BPOnBeforeEdit			(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);

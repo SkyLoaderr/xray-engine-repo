@@ -54,7 +54,7 @@ void __fastcall TfrmBonePart::FillBoneParts()
 	for (BPIt it=m_BoneParts->begin(); it!=m_BoneParts->end(); it++){
         E[it-m_BoneParts->begin()]->Text = it->alias;
         for (IntIt w_it=it->bones.begin(); w_it!=it->bones.end(); w_it++)
-        	FOLDER::AppendObject(T[it-m_BoneParts->begin()],m_EditObject->BoneNameByID(*w_it));
+        	FHelper.AppendObject(T[it-m_BoneParts->begin()],m_EditObject->BoneNameByID(*w_it));
     }
     for (k=0; k<4; k++) T[k]->IsUpdating = false;
 }
@@ -79,7 +79,7 @@ void __fastcall TfrmBonePart::tvPartDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
 	for (int k=0; k<FDragItems.size(); k++){
-		FOLDER::AppendObject(((TElTree*)Sender),AnsiString(FDragItems[k]->Text).c_str());
+		FHelper.AppendObject(((TElTree*)Sender),AnsiString(FDragItems[k]->Text).c_str());
         if (ebMoveMode->Down) FDragItems[k]->Delete();
     }
     FDragItems.clear();

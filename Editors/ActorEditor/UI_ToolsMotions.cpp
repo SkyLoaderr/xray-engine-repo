@@ -178,22 +178,6 @@ void CActorTools::MotionOnChange(PropValue* sender)
 	    m_pCycleNode->Hidden	= false;
     }
 }
-
-//------------------------------------------------------------------------------
-void __fastcall CActorTools::NameOnAfterEdit(PropValue* sender, LPVOID edit_val)
-{
-	FOLDER::AfterTextEdit(fraLeftBar->tvMotions->Selected,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
-}
-//------------------------------------------------------------------------------
-void __fastcall CActorTools::NameOnBeforeEdit(PropValue* sender, LPVOID edit_val)
-{
-	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
-}
-//------------------------------------------------------------------------------
-void __fastcall CActorTools::NameOnDraw(PropValue* sender, LPVOID draw_val)
-{
-	FOLDER::TextDraw(((TextValue*)sender)->GetValue(),*(AnsiString*)draw_val);
-}
 //------------------------------------------------------------------------------
                         
 //------------------------------------------------------------------------------
@@ -221,7 +205,9 @@ void CActorTools::FillMotionProperties()
 	CSMotion* SM = m_pEditObject->GetActiveSMotion();
     if (SM){
 		PropValueVec values;
-    	FILL_PROP(values, "Name",		&SM->Name(),  	PHelper.CreateText	(sizeof(SM->Name()),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+        PropValue* P=0;
+    	FILL_PROP(values, "Name",		&SM->Name(),  	P=PHelper.CreateText	(sizeof(SM->Name()),FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
+        P->tag			= (int)FHelper.FindObject(fraLeftBar->tvMotions,SM->Name()); VERIFY(P->tag);
     	FILL_PROP(values, "Speed",		&SM->fSpeed,   	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
     	FILL_PROP(values, "Accrue",		&SM->fAccrue,  	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
     	FILL_PROP(values, "Falloff", 	&SM->fFalloff, 	PHelper.CreateFloat	(0.f,20.f,0.01f,2));

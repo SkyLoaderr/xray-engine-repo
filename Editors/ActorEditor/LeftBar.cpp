@@ -213,35 +213,35 @@ void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 void __fastcall TfraLeftBar::ebActorMotionsFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmMotionsFile,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmMotionsFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmSceneFile,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmSceneFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneCommands1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebPreviewObjectClickMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmPreviewObject,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmPreviewObject,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::tvMotionsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	if (Button==mbRight)	FOLDER::ShowPPMenu(pmShaderList,dynamic_cast<TExtBtn*>(Sender));
+	if (Button==mbRight)	FHelper.ShowPPMenu(pmShaderList,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -251,7 +251,7 @@ void TfraLeftBar::ClearMotionList(){
 //---------------------------------------------------------------------------
 
 void TfraLeftBar::AddMotion(LPCSTR full_name, bool bLoadMode){
-	TElTreeItem* node = FOLDER::AppendObject(tvMotions,full_name);
+	TElTreeItem* node = FHelper.AppendObject(tvMotions,full_name);
     if (!bLoadMode){
 	    if (node&&node->Parent) node->Parent->Expand(false);
     	node->Selected = true;
@@ -264,10 +264,10 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 {
 	AnsiString folder;
     AnsiString start_folder;
-    FOLDER::MakeName(tvMotions->Selected,0,start_folder,true);
-    FOLDER::GenerateFolderName(tvMotions,tvMotions->Selected,folder);
+    FHelper.MakeName(tvMotions->Selected,0,start_folder,true);
+    FHelper.GenerateFolderName(tvMotions,tvMotions->Selected,folder);
     folder = start_folder+folder;
-	TElTreeItem* node = FOLDER::AppendFolder(tvMotions,folder.c_str());
+	TElTreeItem* node = FHelper.AppendFolder(tvMotions,folder.c_str());
     if (tvMotions->Selected) tvMotions->Selected->Expand(false);
     tvMotions->EditItem(node,-1);
 	Tools.MotionModified();
@@ -291,20 +291,20 @@ void __fastcall TfraLeftBar::ebMotionsRemoveClick(TObject *Sender)
     TElTreeItem* pNode = tvMotions->Selected;
     if (pNode){
 		AnsiString full_name;
-    	if (FOLDER::IsFolder(pNode)){
+    	if (FHelper.IsFolder(pNode)){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
 		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
-                    FOLDER::MakeName(item,0,full_name,false);
-                	if (FOLDER::IsObject(item)) Tools.RemoveMotion(full_name.c_str());
+                    FHelper.MakeName(item,0,full_name,false);
+                	if (FHelper.IsObject(item)) Tools.RemoveMotion(full_name.c_str());
                 }
 //				Tools.ResetCurrentPS();
 	            pNode->Delete();
                 Tools.MotionModified();
         	}
         }
-    	if (FOLDER::IsObject(pNode)){
+    	if (FHelper.IsObject(pNode)){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
-				FOLDER::MakeName(pNode,0,full_name,false);
+				FHelper.MakeName(pNode,0,full_name,false);
 	            Tools.RemoveMotion(full_name.c_str());
 //				Tools.ResetCurrentPS();
 	            pNode->Delete();
@@ -333,7 +333,7 @@ void __fastcall TfraLeftBar::ebMotionsClearClick(TObject *Sender)
 void __fastcall TfraLeftBar::tvMotionsItemFocused(TObject *Sender)
 {
 	AnsiString name;
-    FOLDER::MakeName(tvMotions->Selected, 0, name, false);
+    FHelper.MakeName(tvMotions->Selected, 0, name, false);
 	Tools.SetCurrentMotion(name.c_str());
 	UpdateMotionProperties();
 }
@@ -370,15 +370,15 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
         }
     }
     AnsiString full_name;
-    if (FOLDER::IsFolder(node)){
+    if (FHelper.IsFolder(node)){
         for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
-            if (FOLDER::IsObject(item)){
-                FOLDER::MakeName(item,0,full_name,false);
+            if (FHelper.IsObject(item)){
+                FHelper.MakeName(item,0,full_name,false);
                 Tools.RenameMotion(full_name.c_str(),new_text.c_str());//,node->Level);
             }
         }
-    }else if (FOLDER::IsObject(node)){
-        FOLDER::MakeName(node,0,full_name,false);
+    }else if (FHelper.IsObject(node)){
+        FHelper.MakeName(node,0,full_name,false);
         Tools.RenameMotion(full_name.c_str(),new_text.c_str());//,node->Level);
     }
 	Tools.MotionModified();
@@ -394,13 +394,13 @@ void __fastcall TfraLeftBar::ebMotionsAppendClick(TObject *Sender)
         tvMotions->IsUpdating = true;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             TElTreeItem* node=0;
-            if (tvMotions->Selected&&FOLDER::IsFolder(tvMotions->Selected))
+            if (tvMotions->Selected&&FHelper.IsFolder(tvMotions->Selected))
                 node = tvMotions->Selected;
-            FOLDER::MakeName(node,0,folder,true);
-            FOLDER::GenerateObjectName(tvMotions,node,nm,ChangeFileExt(ExtractFileName(*it),"").c_str());
+            FHelper.MakeName(node,0,folder,true);
+            FHelper.GenerateObjectName(tvMotions,node,nm,ChangeFileExt(ExtractFileName(*it),"").c_str());
             full_name = folder+nm;
             if (Tools.AppendMotion(full_name.c_str(),it->c_str())){
-                tvMotions->Selected = FOLDER::AppendObject(tvMotions,full_name.c_str());
+                tvMotions->Selected = FHelper.AppendObject(tvMotions,full_name.c_str());
                 Tools.MotionModified();
             }
         }
@@ -414,14 +414,14 @@ void __fastcall TfraLeftBar::ebMotionsAppendClick(TObject *Sender)
 void __fastcall TfraLeftBar::tvMotionsStartDrag(TObject *Sender,
       TDragObject *&DragObject)
 {
-	FOLDER::StartDrag(Sender,DragObject);
+	FHelper.StartDrag(Sender,DragObject);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::tvMotionsDragOver(TObject *Sender,
       TObject *Source, int X, int Y, TDragState State, bool &Accept)
 {
-	FOLDER::DragOver(Sender,Source,X,Y,State,Accept);
+	FHelper.DragOver(Sender,Source,X,Y,State,Accept);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1)
@@ -433,7 +433,7 @@ void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1)
 void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-	FOLDER::DragDrop(Sender,Source,X,Y,RenameItem);
+	FHelper.DragDrop(Sender,Source,X,Y,RenameItem);
 }
 //---------------------------------------------------------------------------
 
@@ -443,7 +443,7 @@ void TfraLeftBar::UpdateMotionList()
     if (Tools.CurrentObject()){
 		SMotionVec&	lst=Tools.CurrentObject()->SMotions();
     	for (SMotionIt it=lst.begin(); it!=lst.end(); it++)
-        	FOLDER::AppendObject(tvMotions,(*it)->Name());
+        	FHelper.AppendObject(tvMotions,(*it)->Name());
     }
     UpdateProperties();
 	lbMotionCount->Caption = tvMotions->Items->Count;	
