@@ -16,7 +16,7 @@
 	+ TODO: NET: Migrate
 	+ TODO: NET: Ownership
 	+ TODO: Disable VS on Ge4 MX
-	. TODO: Weapons take
+	+ TODO: Weapons take
 	. TODO: Weapons ammo eject
 	. TODO: Weapons drop
 	. TODO: NET: Weapons drop/take
