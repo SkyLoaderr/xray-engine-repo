@@ -144,7 +144,7 @@ public:
 	IC  u32							get_CullMode		(){return cull_mode;}
 	void							set_ClipPlanes		(u32 _enable, Fplane*	_planes=NULL, u32 count=0);
 	void							set_ClipPlanes		(u32 _enable, Fmatrix*	_xform =NULL, u32 fmask=0xff);
-	IC	void						set_Scissor			(u32 _enable, Irect&	rect);
+	IC	void						set_Scissor			(u32 _enable, Irect*	rect=NULL);
 
 	// constants
 	ICF	R_constant*					get_c				(LPCSTR			n)													{ if (ctable)	return ctable->get(n);else return 0;}

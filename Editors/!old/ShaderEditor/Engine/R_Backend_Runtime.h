@@ -238,11 +238,11 @@ IC void CBackend::set_Geometry			(SGeometry* _geom)
 }
 
 
-IC void	CBackend::set_Scissor			(u32 _enable, Irect&	R)
+IC void	CBackend::set_Scissor			(u32 _enable, Irect*	R)
 {
 	CHK_DX			(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,_enable));
 	if (_enable)	{
-		RECT	*	clip	= (RECT	*)(&R);
+		RECT	*	clip	= (RECT	*)R;
 		CHK_DX		(HW.pDevice->SetScissorRect(clip));
 	}
 }
