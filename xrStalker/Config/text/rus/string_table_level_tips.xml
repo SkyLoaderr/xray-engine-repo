@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <string_table>
+	<string id="general_help">
+		<text>Срочно нужна аптечка, помираю!!!</text>
+	</string>
+
 	<string id="tips_esc_trader_how_to_talk">
 		<text>Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
 	</string>
