@@ -86,6 +86,26 @@
 					!is_same<T1,T2>::value
 			};
 		};
+
+		template <typename T>
+		struct has_iterator {
+			template <typename P> static detail::yes	select(typename P::iterator*);
+			template <typename P> static detail::no		select(...);
+
+			enum { 
+				value = sizeof(detail::yes) == sizeof(select<T>(0))
+			};
+		};
+
+		template <typename T>
+		struct has_const_iterator {
+			template <typename P> static detail::yes	select(typename P::const_iterator*);
+			template <typename P> static detail::no		select(...);
+
+			enum { 
+				value = sizeof(detail::yes) == sizeof(select<T>(0))
+			};
+		};
 	};
 #endif
 #endif
