@@ -10,7 +10,7 @@
 
 #pragma once
 
-/**/
+/**
 #pragma pack(push,4)
 typedef struct tagSNode {
 	int			ucOpenCloseMask:8;
@@ -134,8 +134,8 @@ public:
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					// check if this node is already in the opened list
+					tpTemp = tpIndexes[iNodeIndex].tpNode;
 					if (tpTemp->ucOpenCloseMask) {
-						tpTemp = tpIndexes[iNodeIndex].tpNode;
 						// initialize node
 						float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
 						if (tpTemp->g > dG) {
@@ -161,10 +161,8 @@ public:
 									}
 							}
 						}
-						continue;
 					}
-					else
-						continue;
+					continue;
 				}
 				else {
 					//!!!
@@ -216,7 +214,7 @@ public:
 		Device.Statistic.AI_Path.End();
 	}
 };
-/**
+/**/
 #pragma pack(push,4)
 typedef struct tagSNode {
 	int			ucOpenCloseMask:8;
@@ -226,6 +224,7 @@ typedef struct tagSNode {
 	float		h;
 	tagSNode	*tpForward;
 	tagSNode	*tpBack;
+	tagSNode	**tpIndex;
 } SNode;
 
 typedef struct tagSIndexNode {
@@ -244,26 +243,95 @@ public:
 
 template<class CTemplateNode, class SData> class CAStarSearch {
 private:
-	u32				m_dwMaxNodeCount;
-	vector<SNode *>	m_tppHeap;
+	u32						m_dwMaxNodeCount;
+	u32						m_dwHeapSize;
+	SNode					**m_tppHeap;
 public:
+	u32						m_dwExtractMinimum;
+	u32						m_dwDecreaseValue;
+	u32						m_dwInsert;
 	CAStarSearch(u32 dwMaxNodeCount)
 	{
-		m_dwMaxNodeCount = dwMaxNodeCount;
-		m_tppHeap.reserve(dwMaxNodeCount);
+		m_dwMaxNodeCount	= dwMaxNodeCount;
+		m_tppHeap			= (SNode **)xr_malloc((dwMaxNodeCount + 1)*sizeof(SNode *));
+		m_dwExtractMinimum  = m_dwDecreaseValue = m_dwInsert = 0;
+	}
+	
+	~CAStarSearch()
+	{
+		_FREE(m_tppHeap);
+	}
+
+	IC void vfHeapify(u32 dwIndex)
+	{
+		do {
+			u32 dwLeft  = dwIndex << 1, dwRight = dwLeft + 1, dwSmallest;
+			if ((dwLeft <= m_dwHeapSize) && (m_tppHeap[dwLeft]->f < m_tppHeap[dwIndex]->f))
+				dwSmallest = dwLeft;
+			else
+				dwSmallest = dwIndex;
+			if ((dwRight <= m_dwHeapSize) && (m_tppHeap[dwRight]->f < m_tppHeap[dwSmallest]->f))
+				dwSmallest = dwRight;
+			if (dwSmallest != dwIndex) {
+				SNode *tpTemp = m_tppHeap[dwIndex];
+				m_tppHeap[dwIndex] = m_tppHeap[dwSmallest];
+				m_tppHeap[dwSmallest] = tpTemp;
+				
+				m_tppHeap[dwIndex]->tpIndex = m_tppHeap + dwIndex;
+				m_tppHeap[dwSmallest]->tpIndex = m_tppHeap + dwSmallest;
+				
+				dwIndex = dwSmallest;
+			}
+			else 
+				break;
+		}
+		while (true);
+	}
+	
+	IC void vfExtractMinimum()
+	{
+		m_tppHeap[1] = m_tppHeap[m_dwHeapSize--];
+		if (m_dwHeapSize)
+			vfHeapify(1);
+	}
+	
+	IC void vfFloat(SNode *tpNode, u32 dwIndex)
+	{
+		float	fKey = tpNode->f;
+		while ((dwIndex > 1) && (m_tppHeap[dwIndex >> 1]->f > fKey)) {
+			m_tppHeap[dwIndex] = m_tppHeap[dwIndex >> 1];
+			
+			m_tppHeap[dwIndex]->tpIndex = m_tppHeap + dwIndex;
+			
+			dwIndex >>= 1;
+		}
+		m_tppHeap[dwIndex] = tpNode;
+		m_tppHeap[dwIndex]->tpIndex = m_tppHeap + dwIndex;
+	}
+	
+	IC void vfInsert(SNode *tpNode)
+	{
+		vfFloat(tpNode,++m_dwHeapSize);
+	}
+	
+	IC void vfDecreaseValue(SNode *tpNode)
+	{
+		//for (SNode **tpIndex = m_tppHeap + 1; *tpIndex != tpNode; tpIndex++);
+		//vfFloat(tpNode,tpIndex - m_tppHeap);
+		vfFloat(tpNode,tpNode->tpIndex - m_tppHeap);
 	}
 	
 	void vfFindOptimalPath(
-			SNode		*tpHeap,
-			SIndexNode	*tpIndexes,
-			u32			&dwAStarStaticCounter,
-			SData		&tData,
-			u32			dwStartNode, 
-			u32			dwGoalNode, 
-			float		fMaxValue, 
-			float		&fValue, 
-			vector<u32> &tpaNodes,
-			bool		bUseMarks)
+			SNode			*tpHeap,
+			SIndexNode		*tpIndexes,
+			u32				&dwAStarStaticCounter,
+			SData			&tData,
+			u32				dwStartNode, 
+			u32				dwGoalNode, 
+			float			fMaxValue, 
+			float			&fValue, 
+			vector<u32>		&tpaNodes,
+			bool			bUseMarks)
 	{
 		Device.Statistic.AI_Path.Begin();
 		
@@ -273,12 +341,11 @@ public:
 		u32					dwHeap = 0;
 		CTemplateNode		tTemplateNode(tData);
 
-		SNode	*tpTemp       = tpIndexes[dwStartNode].tpNode = tpHeap + dwHeap++,
-				*tpTemp1,
-				*tpTemp2,
-				*tpBestNode;
+		SNode				*tpTemp = tpIndexes[dwStartNode].tpNode = tpHeap + dwHeap++,
+							*tpTemp1,
+							*tpTemp2,
+							*tpBestNode;
 		
-		m_tppHeap.clear();
 		memset(tpTemp,0,sizeof(SNode));
 		
 		tpIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
@@ -288,15 +355,15 @@ public:
 		tpTemp->h = tTemplateNode.ffAnticipate(dwStartNode);
 		tpTemp->ucOpenCloseMask = 1;
 		tpTemp->f = tpTemp->g + tpTemp->h;
-		m_tppHeap.push_back(tpTemp);
-		push_heap(m_tppHeap.begin(),m_tppHeap.end(),CComparePredicate());
+		m_tppHeap[m_dwHeapSize = 1] = tpTemp;
+		tpTemp->tpIndex = m_tppHeap + 1;
 		
 		//!!!
-		while (!m_tppHeap.empty()) {
+		while (m_dwHeapSize) {
 			
 			// finding the node being estimated as the cheapest among the opened ones
 			//!!!
-			tpBestNode = m_tppHeap[0];
+			tpBestNode = m_tppHeap[1];
 			
 			// checking if the distance is not too large
 			if (tpBestNode->f >= fMaxValue) {
@@ -330,8 +397,9 @@ public:
 			//!!!
 			// remove that node from the opened list and put that node to the closed list
 			tpBestNode->ucOpenCloseMask = 0;
-			pop_heap(m_tppHeap.begin(),m_tppHeap.end(),CComparePredicate());
-			m_tppHeap.pop_back();
+			vfExtractMinimum();
+			//m_dwExtractMinimum++;
+			//pop_heap(m_tppHeap + 1,m_tppHeap + m_dwHeapSize-- + 1,CComparePredicate());
 
 			// iterating on children/neighbours
 			CTemplateNode::iterator tIterator;
@@ -346,21 +414,21 @@ public:
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					// check if this node is already in the opened list
+					tpTemp = tpIndexes[iNodeIndex].tpNode;
 					if (tpTemp->ucOpenCloseMask) {
-						tpTemp = tpIndexes[iNodeIndex].tpNode;
 						// initialize node
 						float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
 						if (tpTemp->g > dG) {
 							tpTemp->g = dG;
 							tpTemp->f = tpTemp->g + tpTemp->h;
 							tpTemp->tpBack = tpBestNode;
-							//!!!
-							make_heap(m_tppHeap.begin(),m_tppHeap.end(),CComparePredicate());
+							vfDecreaseValue(tpTemp);
+							//m_dwDecreaseValue++;
+							//for (SNode **tpIndex = m_tppHeap + 1; *tpIndex != tpTemp; tpIndex++);
+							//push_heap(m_tppHeap + 1,tpIndex + 1,CComparePredicate());
 						}
-						continue;
 					}
-					else
-						continue;
+					continue;
 				}
 				else {
 					tpTemp2 = tpIndexes[iNodeIndex].tpNode = tpHeap + dwHeap++;
@@ -382,8 +450,10 @@ public:
 					tpBestNode->tpForward = tpTemp2;
 					
 					//!!!
-					m_tppHeap.push_back(tpTemp2);
-					push_heap(m_tppHeap.begin(),m_tppHeap.end(),CComparePredicate());
+					vfInsert(tpTemp2);
+					//m_dwInsert++;
+					//m_tppHeap[++m_dwHeapSize] = tpTemp2;
+					//push_heap(m_tppHeap + 1,m_tppHeap + m_dwHeapSize + 1,CComparePredicate());
 				}
 			}
 			if (dwHeap > m_dwMaxNodeCount)
