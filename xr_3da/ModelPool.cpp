@@ -12,6 +12,7 @@
 #include "PSVisual.h"
 #include "fcached.h"
 #include "flod.h"
+#include "ftreevisual.h"
 
 #include "x_ray.h"
 
@@ -47,6 +48,9 @@ CVisual*	CModelPool::Instance_Create(u32 type)
 		break;
 	case MT_LOD:
 		V	= xr_new<FLOD> ();
+		break;
+	case MT_TREE:
+		V	= xr_new<FTreeVisual> ();
 		break;
 	default:
 		R_ASSERT2(0,"Unknown visual type");
