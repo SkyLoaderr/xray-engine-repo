@@ -739,8 +739,11 @@ void CAI_Soldier::OnRecharge()
 	if (Weapons->ActiveWeapon())
 		Weapons->ActiveWeapon()->Reload();
 
-	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
-	//vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
+	//vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
+	if (m_cBodyState != BODY_STATE_STAND)
+        vfSetMovementType(m_cBodyState,m_fMinSpeed);
+	else
+        vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 }
 
 void CAI_Soldier::OnLookingOver()
@@ -1256,7 +1259,7 @@ void CAI_Soldier::OnAttackFireAlone()
 	else
 		vfSetMovementType(BODY_STATE_CROUCH,0);
 	/**/
-	vfSetMovementType(BODY_STATE_STAND,0);
+	vfSetMovementType(BODY_STATE_CROUCH,0);
 }
 
 void CAI_Soldier::Think()
