@@ -241,6 +241,8 @@ public:
 	virtual	float			ffGetFov			(){return eye_fov;}	
 	virtual	float			ffGetRange			(){return eye_range;}
 	CWeaponList			*	tpfGetWeapons		(){return Weapons;}
+	virtual	void			feel_touch_new		(CObject* O);
+	virtual	void			OnEvent				(NET_Packet& P, u16 type);
 };
 
 namespace AI{

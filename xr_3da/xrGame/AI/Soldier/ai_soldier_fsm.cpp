@@ -284,7 +284,7 @@ void CAI_Soldier::OnFindAloneFire()
  		if (!m_bActionStarted) {
 			if (m_bStateChanged) {
 				if (!Group.m_tpaSuspiciousNodes.size()) {
-					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,max(30.f,min(1*8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,60.f)),Group);
+					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,max(20.f,min(1*8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,60.f)),Group);
 					vfClasterizeSuspiciousNodes(Group);
 				}
 			}

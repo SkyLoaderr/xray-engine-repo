@@ -256,10 +256,10 @@ BOOL CLevel::Load_GameSpecific_Before()
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_NAME));
 				OBJ->RstringZ(sName);
 
-				DWORD dwType;
-				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_TYPE));
-				dwType = OBJ->Rdword();
-
+//				DWORD dwType;
+//				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_TYPE));
+//				dwType = OBJ->Rdword();
+//
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_POINTS));
 				DWORD dwCount = OBJ->Rword();
 				tPatrolPath.tpaWayPoints.resize(dwCount);
@@ -279,33 +279,53 @@ BOOL CLevel::Load_GameSpecific_Before()
 
 				OBJ->Close();
 
-				switch (dwType) {
-					case wtPatrolPath : {
-						// sorting links
-						bool bOk;
-						do {
-							bOk = true;
-							for ( i=1; i<(int)dwCountL; i++)
-								if ((tPatrolPath.tpaWayLinks[i - 1].wFrom > tPatrolPath.tpaWayLinks[i].wFrom) || ((tPatrolPath.tpaWayLinks[i - 1].wFrom == tPatrolPath.tpaWayLinks[i].wFrom) && (tPatrolPath.tpaWayLinks[i - 1].wTo > tPatrolPath.tpaWayLinks[i].wTo))) {
-									WORD wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
-									tPatrolPath.tpaWayLinks[i - 1].wFrom = tPatrolPath.tpaWayLinks[i].wFrom;
-									tPatrolPath.tpaWayLinks[i].wFrom = wTemp;
-									wTemp = tPatrolPath.tpaWayLinks[i - 1].wTo;
-									tPatrolPath.tpaWayLinks[i - 1].wTo = tPatrolPath.tpaWayLinks[i].wTo;
-									tPatrolPath.tpaWayLinks[i].wTo = wTemp;
-									bOk = false;
-								}
+//				switch (dwType) {
+//					case wtPatrolPath : {
+//						// sorting links
+//						bool bOk;
+//						do {
+//							bOk = true;
+//							for ( i=1; i<(int)dwCountL; i++)
+//								if ((tPatrolPath.tpaWayLinks[i - 1].wFrom > tPatrolPath.tpaWayLinks[i].wFrom) || ((tPatrolPath.tpaWayLinks[i - 1].wFrom == tPatrolPath.tpaWayLinks[i].wFrom) && (tPatrolPath.tpaWayLinks[i - 1].wTo > tPatrolPath.tpaWayLinks[i].wTo))) {
+//									WORD wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
+//									tPatrolPath.tpaWayLinks[i - 1].wFrom = tPatrolPath.tpaWayLinks[i].wFrom;
+//									tPatrolPath.tpaWayLinks[i].wFrom = wTemp;
+//									wTemp = tPatrolPath.tpaWayLinks[i - 1].wTo;
+//									tPatrolPath.tpaWayLinks[i - 1].wTo = tPatrolPath.tpaWayLinks[i].wTo;
+//									tPatrolPath.tpaWayLinks[i].wTo = wTemp;
+//									bOk = false;
+//								}
+//						}
+//						while (!bOk);
+//
+//						m_PatrolPaths[sName] = tPatrolPath;
+//						
+//						vfCreateAllPossiblePaths(sName, m_PatrolPaths[sName]);
+//						break;
+//					}
+//					default :
+//						THROW;
+//				}
+				// sorting links
+				bool bOk;
+				do {
+					bOk = true;
+					for ( i=1; i<(int)dwCountL; i++)
+						if ((tPatrolPath.tpaWayLinks[i - 1].wFrom > tPatrolPath.tpaWayLinks[i].wFrom) || ((tPatrolPath.tpaWayLinks[i - 1].wFrom == tPatrolPath.tpaWayLinks[i].wFrom) && (tPatrolPath.tpaWayLinks[i - 1].wTo > tPatrolPath.tpaWayLinks[i].wTo))) {
+							WORD wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
+							tPatrolPath.tpaWayLinks[i - 1].wFrom = tPatrolPath.tpaWayLinks[i].wFrom;
+							tPatrolPath.tpaWayLinks[i].wFrom = wTemp;
+							wTemp = tPatrolPath.tpaWayLinks[i - 1].wTo;
+							tPatrolPath.tpaWayLinks[i - 1].wTo = tPatrolPath.tpaWayLinks[i].wTo;
+							tPatrolPath.tpaWayLinks[i].wTo = wTemp;
+							bOk = false;
 						}
-						while (!bOk);
-
-						m_PatrolPaths[sName] = tPatrolPath;
-						
-						vfCreateAllPossiblePaths(sName, m_PatrolPaths[sName]);
-						break;
-					}
-					default :
-						THROW;
 				}
+				while (!bOk);
+
+				m_PatrolPaths[sName] = tPatrolPath;
+				
+				vfCreateAllPossiblePaths(sName, m_PatrolPaths[sName]);
 			}
 			O->Close();
 		}
