@@ -56,14 +56,14 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 
 	// make N pixel border
 	L->X.S.view.build_camera_dir	(L_pos,L_dir,L_up);
-	float	n			= 3.6f						;
+	float	n			= 2.f						;
 	float	x			= float(L->X.S.size)		;
 	float	alpha		= L->cone/2					;
 	float	tan_beta	= (x+2*n)*tanf(alpha) / x	;
 	//float	g_alpha		= 2*rad2deg		(alpha);
 	//float	g_beta		= 2*rad2deg		(atanf(tan_beta));
 	//Msg				("x(%f) : a(%f), b(%f)",x,g_alpha,g_beta);
-	L->X.S.project.build_projection		(L->cone + deg2rad(3.6f), 1.f,SMAP_near_plane,L->range+EPS_S);
+	L->X.S.project.build_projection		(L->cone + deg2rad(2.f), 1.f,SMAP_near_plane,L->range+EPS_S);
 	L->X.S.combine.mul					(L->X.S.project,L->X.S.view);
 }
 
