@@ -1,6 +1,6 @@
 #pragma once
 #include "missile.h"
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 
 #define SND_RIC_COUNT 5
 

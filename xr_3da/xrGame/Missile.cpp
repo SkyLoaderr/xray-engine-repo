@@ -401,7 +401,7 @@ bool CMissile::Action(s32 cmd, u32 flags)
 }
 
 void CMissile::SoundCreate(ref_sound& dest, LPCSTR s_name, 
-						   int iType, BOOL bCtrlFreq) 
+						   int iType, BOOL /**bCtrlFreq/**/) 
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\",Name(),"_",s_name,".ogg");
