@@ -1,7 +1,7 @@
 // Do NOT build this file seperately. It is included in dTriList.cpp automatically.
 
 
-#include "..\..\cl_intersect.h"
+#include "../../cl_intersect.h"
 
 
 dcTriListCollider::dcTriListCollider(dxGeom* Geometry)
@@ -133,7 +133,7 @@ extern "C" int dSortTriBoxCollide (
 
 	*/
 
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
 		//tri.v0=(dReal*)T->verts[0];
@@ -184,7 +184,7 @@ extern "C" int dSortTriBoxCollide (
 
 						}
 					else{
-						b_count++;
+						++b_count;
 						if(b_neg_depth>tri.depth){
 							b_neg_depth=tri.depth;
 							(*b_neg_tri)=tri;
@@ -211,7 +211,7 @@ extern "C" int dSortTriBoxCollide (
 	if(neg_depth<dInfinity&&ret==0){
 		bool include = true;
 /*
-		for(i=pos_tries.begin();i!=pos_tries.end();i++){
+		for(i=pos_tries.begin();pos_tries.end() != i;++i){
 			if(TriContainPoint(
 				//i->v0,i->v1,i->v2,
 				(dReal*)i->T->verts[0],(dReal*)i->T->verts[1],(dReal*)i->T->verts[2],
@@ -241,7 +241,7 @@ extern "C" int dSortTriBoxCollide (
 
 	//(*pushing_b_neg)=(*pushing_b_neg)&&(!ret);
 	//if(ret==0)
-	for(i=pos_tries.begin();i!=pos_tries.end();i++){
+	for(i=pos_tries.begin();pos_tries.end() != i;++i){
 		
 		ret+=dTriBox (
 		//i->v0,i->v1,i->v2,
@@ -251,7 +251,7 @@ extern "C" int dSortTriBoxCollide (
 		3,
 		CONTACT(contact, ret * skip),   skip);
 	
-		//for(int i=0;i<add;i++)
+		//for(int i=0;i<add;++i)
 				
 		//ret+=add;
 	}
@@ -260,7 +260,7 @@ extern "C" int dSortTriBoxCollide (
 	if(b_neg_depth<dInfinity&&ret==0){
 		bool include = true;
 		
-		for(i=pos_tries.begin();i!=pos_tries.end();i++){
+		for(i=pos_tries.begin();pos_tries.end() != i;++i){
 			if((((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[0])-b_neg_tri->pos)<0.f)||
 				((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[1])-b_neg_tri->pos)<0.f)||
 				((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[2])-b_neg_tri->pos)<0.f))
@@ -345,7 +345,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 		);
 
 	/*
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 	CDB::TRI* T = T_array + Res->id;
 	//
@@ -416,7 +416,7 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 
 	///@slipch
 
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
 		OutTriCount+=dTriCyl (
@@ -458,7 +458,7 @@ const dReal* v2=(dReal*)T->verts[2];
 		bool isPC=false;
 		float Depth=0;
 		/*
-		for(int i=0;i<3;i++){
+		for(int i=0;i<3;++i){
 
 			Depth=FragmentonSphereTest(dGeomGetPosition(Sphere),
 				dGeomSphereGetRadius(Sphere),
@@ -488,7 +488,7 @@ const dReal* v2=(dReal*)T->verts[2];
 		}
 /*
 		if(!isLC)
-			for(int i=0;i<3;i++){
+			for(int i=0;i<3;++i){
 
 				Depth=PointSphereTest(dGeomGetPosition(Sphere),
 					dGeomSphereGetRadius(Sphere),
@@ -574,7 +574,7 @@ const dReal* v2=(dReal*)T->verts[2];
 					SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
 					SURFACE(Contacts,0)->mode=GMLib.GetMaterial(T->material)->Flags.get();
 					//////////////////////////////////
-				//	OutTriCount++;
+				//	++OutTriCount;
 					return 1;
 
 
@@ -634,7 +634,7 @@ const float SphereRadius = dGeomSphereGetRadius(Sphere);
 					//SURFACE(Contacts,0)->mode=GMLib.GetMaterial(T->material)->Flags.is(SGameMtl::flClimbable);
 					SURFACE(Contacts,0)->mode=GMLib.GetMaterial(T->material)->Flags.get();
 					//////////////////////////////////
-				//	OutTriCount++;
+				//	++OutTriCount;
 					return 1;
 
 
@@ -709,7 +709,7 @@ extern "C" int dSortTriSphereCollide (
 	}
 
 
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
 		//tri.v0=(dReal*)T->verts[0];
@@ -738,7 +738,7 @@ extern "C" int dSortTriSphereCollide (
 		tri.depth=sidePr-tri.dist;
 		Point vertices[3]={Point((dReal*)T->verts[0]),Point((dReal*)T->verts[1]),Point((dReal*)T->verts[2])};
 		if(tri.dist<0.f){
-			if( (!(dDOT(last_pos,tri.norm)-tri.pos<0.f)&& last_pos[0]!=-dInfinity) ||*pushing_neg||*pushing_b_neg)
+			if( (!(dDOT(last_pos,tri.norm)-tri.pos<0.f)&& -dInfinity != last_pos[0]) ||*pushing_neg||*pushing_b_neg)
 				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 				{
 					if(TriContainPoint((dReal*)tri.T->verts[0],(dReal*)tri.T->verts[1],(dReal*)tri.T->verts[2],
@@ -756,7 +756,7 @@ extern "C" int dSortTriSphereCollide (
 
 						}
 					else{
-						b_count++;
+						++b_count;
 						if(b_neg_depth>tri.depth){
 							b_neg_depth=tri.depth;
 							(*b_neg_tri)=tri;
@@ -783,7 +783,7 @@ extern "C" int dSortTriSphereCollide (
 	if(neg_depth<dInfinity&&ret==0){
 		bool include = true;
 /*
-		for(i=pos_tries.begin();i!=pos_tries.end();i++){
+		for(i=pos_tries.begin();pos_tries.end() != i;++i){
 			if(TriContainPoint((dReal*)i->T->verts[0],(dReal*)i->T->verts[1],(dReal*)i->T->verts[2],
 				i->norm,i->side0,
 				i->side1,p))
@@ -812,7 +812,7 @@ extern "C" int dSortTriSphereCollide (
 
 	//(*pushing_b_neg)=(*pushing_b_neg)&&(!ret);
 	//if(ret==0)
-	for(i=pos_tries.begin();i!=pos_tries.end();i++)
+	for(i=pos_tries.begin();pos_tries.end()!=i;++i)
 		
 		ret+=dTriSphere (
 		//i->v0,i->v1,i->v2,
@@ -825,7 +825,7 @@ extern "C" int dSortTriSphereCollide (
 	//((b_count>1)||(*pushing_b_neg))&&
 	if(b_neg_depth<dInfinity&&ret==0){
 		bool include = true;
-		for(i=pos_tries.begin();i!=pos_tries.end();i++){
+		for(i=pos_tries.begin();pos_tries.end()!=i;++i){
 			if((((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[0])-b_neg_tri->pos)<0.f)||
 				((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[1])-b_neg_tri->pos)<0.f)||
 				((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[2])-b_neg_tri->pos)<0.f))
@@ -889,14 +889,14 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 
 	// 
 //	int count                                       = (int)XRC.r_count   ();
-//	count++;
-//	count--;
+//	++count;
+//	--count;
 	CDB::RESULT*    R_begin                         = XRC.r_begin();
 	CDB::RESULT*    R_end                           = XRC.r_end();
 	CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
 	return dSortTriSphereCollide(Sphere,Geometry,Flags,Contacts,Stride,R_begin,R_end,T_array,AABB);
     /*
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
 
@@ -952,7 +952,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 	CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
 
 
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
 	
@@ -987,7 +987,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 		bool isLC=false;
 		bool isPC=false;
 		float Depth=0;
-		for(int i=0;i<3;i++){
+		for(int i=0;i<3;++i){
 
 			Depth=FragmentonSphereTest(dGeomGetPosition(Sphere),
 				dGeomSphereGetRadius(Sphere),
@@ -1002,7 +1002,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 
 		}
 		if(!isLC)
-			for(int i=0;i<3;i++){
+			for(int i=0;i<3;++i){
 
 				Depth=PointSphereTest(dGeomGetPosition(Sphere),
 					dGeomSphereGetRadius(Sphere),
@@ -1068,7 +1068,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 					Contact->g1 = Geometry;
 					Contact->g2 = Sphere;
 					//////////////////////////////////
-					OutTriCount++;
+					++OutTriCount;
 
 
 
