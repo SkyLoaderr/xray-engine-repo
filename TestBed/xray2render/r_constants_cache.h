@@ -158,6 +158,14 @@ public:
 			if (a_vertex.b_dirty)
 			{
 				// fp
+				R_constant_array::t_f&	F	= a_vertex.c_f;
+				{
+					u32		count		= F.r_hi()-F.r_lo();
+					if (count)			{
+						D->SetVertexShaderConstantF	(F.r_lo(), F.access(F.r_lo()),count);
+						F.flush			();
+					}
+				}
 			}
 		}
 	}
