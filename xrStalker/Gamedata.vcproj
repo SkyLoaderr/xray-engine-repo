@@ -4,6 +4,7 @@
 	Version="7.10"
 	Name="Gamedata"
 	ProjectGUID="{AF284CB7-F030-4BBA-AA46-059A0E79DAAF}"
+	RootNamespace="Gamedata"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
 	SccLocalPath="SAK"
