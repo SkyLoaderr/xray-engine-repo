@@ -234,7 +234,7 @@ GroupControlSection	= spawn_group
 $spawn 				= "physics\object"
 $prefetch 			= 8
 class				= O_PHYSIC
-remove_time			= 120; after this time  unbreaked removable bone will be removed
+remove_time			= 1;20; after this time  unbreaked removable bone will be removed
 script_binding      = physic_object.init
 
 [search_light]
@@ -810,7 +810,7 @@ attach_bone_name		= bip01_r_hand
 
 [breakable_object]
 class						= O_BRKBL
-remove_time					= 30	;after remove_time seconds object will be removed after it is breaked
+remove_time					= 1;30	;after remove_time seconds object will be removed after it is breaked
 hit_break_threthhold		= 0.	;weapon impact can stand breakable_object
 collision_break_threthhold	=1000.f	;collision impact can stand breakable_object
 
