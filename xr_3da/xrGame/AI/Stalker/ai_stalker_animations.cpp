@@ -117,9 +117,6 @@ void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
-//	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->r_current.yaw - A->r_torso_current.yaw));
-//	float					pitch	= angle_normalize_signed(-pitch_factor * (A->r_current.pitch - A->r_torso_current.pitch));
-//	Msg						("Head    [%6d] : %f(%f - %f)",Level().timeServer(),R2D(yaw),R2D(A->r_current.yaw),R2D(A->r_torso_current.yaw));
 	spin.setXYZ				(pitch, yaw, 0);
 	B->mTransform.mulA_43	(spin);
 	B->mTransform.c			= c;
@@ -149,9 +146,6 @@ void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
-//	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->r_current.yaw - A->r_torso_current.yaw));
-//	float					pitch	= angle_normalize_signed(-pitch_factor * (A->r_current.pitch - A->r_torso_current.pitch));
-//	Msg						("Shoulder[%6d] : %f",Level().timeServer(),R2D(yaw));
 	spin.setXYZ				(pitch, yaw, 0);
 	B->mTransform.mulA_43	(spin);
 	B->mTransform.c			= c;
@@ -181,9 +175,6 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
-//	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->r_current.yaw - A->r_torso_current.yaw));
-//	float					pitch	= angle_normalize_signed(-pitch_factor * (A->r_current.pitch - A->r_torso_current.pitch));
-//	Msg						("Spin    [%6d] : %f",Level().timeServer(),R2D(yaw));
 	spin.setXYZ				(pitch, yaw, 0);
 	B->mTransform.mulA_43	(spin);
 	B->mTransform.c			= c;
@@ -262,17 +253,9 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	yaw						= angle_normalize_signed(-yaw);
 //	float					fAngleDifference = _abs(angle_normalize_signed(r_torso_current.yaw - r_current.yaw));
 	float					fAnimationSwitchFactor = 1.f;//fAngleDifference < PI_DIV_2 ? 1.f : 1.f - (fAngleDifference - PI_DIV_2)/(PI - PI_DIV_2);
-	if	(
-		(
-		(m_tDesirableDirection == eMovementDirectionForward) && 
-		(m_tMovementDirection == eMovementDirectionBack)
-		)
-		||
-		(
-		(m_tDesirableDirection == eMovementDirectionBack) && 
-		(m_tMovementDirection == eMovementDirectionForward)
-		)
-		)
+	if	(((m_tDesirableDirection == eMovementDirectionForward) && (m_tMovementDirection == eMovementDirectionBack))	||	((m_tDesirableDirection == eMovementDirectionBack) && (m_tMovementDirection == eMovementDirectionForward)))
+		fAnimationSwitchFactor = .3f;
+	if	(((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight))	||	((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight)))
 		fAnimationSwitchFactor = .3f;
 
 	if (getAI().bfTooSmallAngle(yaw,r_current.yaw,MAX_HEAD_TURN_ANGLE)) {

@@ -220,6 +220,7 @@ void CAI_Space::Render()
 		}
 	}
 
+#ifdef DEBUG
 	if (psAI_Flags.test(aiMotion)) {
 		CObjectList::OBJ_IT	I = Level().Objects.objects.begin();
 		CObjectList::OBJ_IT	E = Level().Objects.objects.end();
@@ -229,6 +230,7 @@ void CAI_Space::Render()
 				tpCustomMonster->OnRender();
 		}
 	}
+#endif
 	
 	if (!bDebug)	return;
 
@@ -333,6 +335,7 @@ void CAI_Space::Render()
 		}
 	}
 	
+#ifdef DEBUG
 	CObjectList::OBJ_IT	I = Level().Objects.objects.begin();
 	CObjectList::OBJ_IT	E = Level().Objects.objects.end();
 	for ( ; I != E; I++) {
@@ -340,6 +343,7 @@ void CAI_Space::Render()
 		if (tpCustomMonster)
 			tpCustomMonster->OnRender();
 	}
+#endif
 }
 
 int	CAI_Space::q_LoadSearch(const Fvector& pos)
