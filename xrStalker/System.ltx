@@ -1049,7 +1049,7 @@ $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .03
 sound			= zone_mosquito_bald
-postprocess		= postprocess_new
+postprocess		= postprocess_electra
 hit_effect		= explosions\expl_02_sparks
 effects			= anomaly\marevo2		;anomaly\marevo, anomaly\storm_01
 artefacts		= af_magnet,0.7
@@ -1225,7 +1225,7 @@ $prefetch 		= 16
 class			= Z_GALANT
 hit_impulse_scale	= .03
 sound			= zone_mosquito_bald
-postprocess		= postprocess_new
+postprocess		= postprocess_gravi
 hit_effect		= explosions\expl_02_sparks
 
 artefacts		= af_magnet,0.7
@@ -2353,10 +2353,38 @@ gray			= 0.5
 noise_intensity = 1.5
 noise_grain		= 5
 noise_fps		= 15
-color_base		= 1.4,1,1
+color_base		= 1.2,1.4,1
 color_gray		= 0.333,0.333,0.333
 color_add		= 0.28,0.32,0.2
-radius_min		= 0.1
+radius_min		= 0.5
+radius_max		= 1.1
+
+[postprocess_gravi]
+duality_h		= 0.025
+duality_v		= 0.25
+blur			= 0.1
+gray			= 0.5
+noise_intensity = 1.5
+noise_grain		= 5
+noise_fps		= 15
+color_base		= 0.6,0.8,0.6
+color_gray		= 0.333,0.5,0.333
+color_add		= 0.28,0.32,0.2
+radius_min		= 0.8
+radius_max		= 1.1
+
+[postprocess_electra]
+duality_h		= 0.005
+duality_v		= 0.025
+blur			= 0.2
+gray			= 1
+noise_intensity = 0.5
+noise_grain		= 5
+noise_fps		= 25
+color_base		= 1.2,1.4,1.5
+color_gray		= 0.333,0.333,0.5
+color_add		= 0.28,0.32,0.5
+radius_min		= 0.8
 radius_max		= 1.1
 
 
@@ -2371,8 +2399,8 @@ noise_fps		= 30
 color_base		= 0.5,0.5,0.5
 color_gray		= 1,1,1
 color_add		= 0.0,0.0,0.0
-radius_min		= 0.5
-radius_max		= 1
+radius_min		= 0.8
+radius_max		= 1.1
 ;---------------------------------------------------------------------
 
 [postprocess_anomaly1]
