@@ -180,7 +180,7 @@ Device.Statistic.TEST0.End		();
 			float c_f		=	Interpolate		(gray255,x,z,d_size)+.5f;
 			int c_dw		=	iFloor			(c_f);
 			clamp			(c_dw,0,255);
-			Item.C_dw		=	D3DCOLOR_RGBA		(c_dw,c_dw,c_dw,255);
+			Item.C_dw		=	color_rgba		(c_dw,c_dw,c_dw,255);
 			Item.C			=	c_f/255.f;
 
 			// Vis-sorting

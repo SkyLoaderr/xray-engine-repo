@@ -399,7 +399,7 @@ void CGameObject::OnRender()
 		Fvector bc,bd; 
 		Visual()->vis.box.get_CD	(bc,bd);
 		Fmatrix	M = XFORM();		M.c.add (bc);
-		RCache.dbg_DrawOBB			(M,bd,D3DCOLOR_RGBA(0,0,255,255));
+		RCache.dbg_DrawOBB			(M,bd,color_rgba(0,0,255,255));
 	}
 }
 #endif

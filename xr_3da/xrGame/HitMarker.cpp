@@ -43,7 +43,7 @@ void CHitMarker::Render()
 		for (int i=0; i<4; i++){
 			if (fHitMarks[i]>0){
 				u32 Alpha = iFloor((fHitMarks[i]/float(fShowTime))*255.f);
-				u32 Color = D3DCOLOR_RGBA(255,255,255,Alpha);
+				u32 Color = color_rgba(255,255,255,Alpha);
 				const u32* idx = as_id+i*3;
 				
 				const Fvector2& P1 = as_PC[idx[0]]; const Fvector2& T1 = as_TC[idx[0]]; D->set((P1.x+1)*w_2,(P1.y+1)*h_2,.0001f,.9999f, Color, T1.x, T1.y); D++;

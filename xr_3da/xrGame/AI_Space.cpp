@@ -354,7 +354,7 @@ void CAI_Space::Render()
 	Fvector	DUP;	DUP.set(0,1,0);
 
 	RCache.set_Shader(sh_debug);
-	F->SetColor		(D3DCOLOR_RGBA(255,255,255,255));
+	F->SetColor		(color_rgba(255,255,255,255));
 
 	for (u32 Nid=0; Nid<m_header.count; Nid++)
 	{

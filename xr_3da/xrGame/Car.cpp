@@ -145,7 +145,7 @@ void	CCar::UpdateCL				( )
 		m_pPhysicsShell->get_LinearVel(v);
 		string32 s;
 		sprintf(s,"speed, %f km/hour",v.magnitude()/1000.f*3600.f);
-		HUD().pFontSmall->SetColor(D3DCOLOR_RGBA(0xff,0xff,0xff,0xff));
+		HUD().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
 		HUD().pFontSmall->OutSet	(120,530);
 		HUD().pFontSmall->OutNext(s);
 		HUD().pFontSmall->OutNext("Transmission num:      [%d]",m_current_transmission_num);

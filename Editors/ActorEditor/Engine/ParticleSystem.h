@@ -408,7 +408,7 @@ namespace PS
 		int g = iFloor(P->m_Color.start.g*k_inv+P->m_Color.end.g*k);				clamp(g,0,255);
 		int b = iFloor(P->m_Color.start.b*k_inv+P->m_Color.end.b*k);				clamp(b,0,255);
 		int a = iFloor((P->m_Color.start.a*k_inv+P->m_Color.end.a*k)*alpha_factor);	clamp(a,0,255);
-		C = D3DCOLOR_RGBA(r,g,b,a);
+		C = color_rgba(r,g,b,a);
 	}
 	IC void SimulateSize(float& sz, const SParticle* P, float k, float k_inv)
 	{

@@ -88,7 +88,7 @@ void CConsole::OnRender	()
 	strcat(buf,editor);
 	if (bCursor) strcat(buf,"|");
 
-	pFont->SetColor( D3DCOLOR_RGBA(128  ,128  ,255, 255) );
+	pFont->SetColor( color_rgba(128  ,128  ,255, 255) );
 	pFont->Out	( -1.f, fMaxY-LDIST, "%s", buf );
 
 	float ypos=fMaxY-LDIST-LDIST;
@@ -97,23 +97,23 @@ void CConsole::OnRender	()
 		if (ypos<-1.f) break;
 		switch (LogFile[i][0]) {
 		case '~':
-			pFont->SetColor(D3DCOLOR_RGBA(0  ,0  ,255, 255));
+			pFont->SetColor(color_rgba(0  ,0  ,255, 255));
 			pFont->Out  (-1.f,ypos,"%s",&(LogFile[i][2]));
 			break;
 		case '!':
-			pFont->SetColor(D3DCOLOR_RGBA(255,0  ,0  , 255));
+			pFont->SetColor(color_rgba(255,0  ,0  , 255));
 			pFont->Out  (-1.f,ypos,"%s",&(LogFile[i][2]));
 			break;
 		case '*':
-			pFont->SetColor(D3DCOLOR_RGBA(128,128,128, 255));
+			pFont->SetColor(color_rgba(128,128,128, 255));
 			pFont->Out  (-1.f,ypos,"%s",&(LogFile[i][2]));
 			break;
 		case '-':
-			pFont->SetColor(D3DCOLOR_RGBA(0  ,255,0  , 255));
+			pFont->SetColor(color_rgba(0  ,255,0  , 255));
 			pFont->Out  (-1.f,ypos,"%s",&(LogFile[i][2]));
 			break;
 		default:
-			pFont->SetColor(D3DCOLOR_RGBA(255,255,255, 255));
+			pFont->SetColor(color_rgba(255,255,255, 255));
 			pFont->Out  (-1.f,ypos,"%s",LogFile[i]);
 		}
 	}

@@ -138,7 +138,7 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 			if ((Device.dwTimeGlobal/500)%2==0) {
 				pApp->pFontSystem->SetSize	(0.02f);
 				pApp->pFontSystem->SetAligment(CGameFont::alCenter);
-				pApp->pFontSystem->SetColor	(D3DCOLOR_RGBA(255,0,0,255));
+				pApp->pFontSystem->SetColor	(color_rgba(255,0,0,255));
 				pApp->pFontSystem->OutSet	(0,+.05f);
 				pApp->pFontSystem->OutNext	("%s","RECORDING");
 				pApp->pFontSystem->OutNext	("Key frames count: %d",iCount);

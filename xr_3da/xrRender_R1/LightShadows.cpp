@@ -310,7 +310,7 @@ void CLightShadows::calculate	()
 	RCache.set_xform_view		(Device.mView);
 }
 
-#define CLS(a) D3DCOLOR_RGBA(a,a,a,a)
+#define CLS(a) color_rgba(a,a,a,a)
 void CLightShadows::render	()
 {
 	Device.Statistic.RenderDUMP_Srender.Begin	();

@@ -160,7 +160,7 @@ void CLightProjector::calculate	()
 		// Clear color to ambience
 		float	c_a				=	((CLightTrack*)C.O->renderable.ROS)->ambient;
 		int		c_i				=	iFloor(c_a)/2;
-		CHK_DX					(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, D3DCOLOR_RGBA(c_i,c_i,c_i,c_i), 1, 0 ));
+		CHK_DX					(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
 		
 		// Build bbox and render
 		Fvector	min,max;
@@ -213,7 +213,7 @@ void CLightProjector::calculate	()
 void CLightProjector::render	()
 {
 	/*
-	#define CLS(a) D3DCOLOR_RGBA(a,a,a,a)
+	#define CLS(a) color_rgba(a,a,a,a)
 	RCache.set_xform_world		(Fidentity);
 	Device.Resources->OnFrameEnd	();
 	for (u32 it=0; it<boxes.size(); it++)

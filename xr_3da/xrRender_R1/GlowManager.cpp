@@ -165,7 +165,7 @@ void CGlowManager::Render()
 				float cy        = (1+TL.p.y)*_height_2;
 				float dist		= Device.vCameraPosition.distance_to_sqr(G.spatial.center);
 				u32 C			= iFloor(G.fade*(1-(dist/dlim2)));
-				u32 clr			= D3DCOLOR_RGBA(C,C,C,C);
+				u32 clr			= color_rgba(C,C,C,C);
 				
 				pv->set(cx - size, cy + size, TL.p.z, TL.p.w, clr, 0, 1); pv++;
 				pv->set(cx - size, cy - size, TL.p.z, TL.p.w, clr, 0, 0); pv++;

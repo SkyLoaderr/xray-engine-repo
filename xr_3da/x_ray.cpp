@@ -331,7 +331,7 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	Log			(S,S2);
 	R_ASSERT	(pFontSystem);
 	pFontSystem->Clear();
-	pFontSystem->SetColor(D3DCOLOR_RGBA(192,192,192,255));
+	pFontSystem->SetColor(color_rgba(192,192,192,255));
 	pFontSystem->SetAligment(CGameFont::alCenter);
 	char *F = "%s";
 	if (S2) F="%s%s";

@@ -68,7 +68,7 @@ void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
 {
 	float		a	= 1-(W->ttl/W_TTL);
 	int			aC	= iFloor	( a * 255.f);	clamp	(aC,0,255);
-	u32		C	= D3DCOLOR_RGBA(128,128,128,aC);
+	u32			C	= color_rgba(128,128,128,aC);
 
 	FVF::LIT*	S	= &*W->verts.begin	();
 	FVF::LIT*	E	= &*W->verts.end	();

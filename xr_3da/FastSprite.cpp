@@ -46,7 +46,7 @@ void CFastSprite::Render(float L)
 		if (i->alpha < (3.f/255.f) ) continue;
 
 		BYTE C			= BYTE(i->alpha*255.f);
-		u32 clr		= D3DCOLOR_RGBA(C,C,C,C);
+		u32 clr			= color_rgba(C,C,C,C);
 		PT.transform	( i->pos, mSpriteTransform );
 		float size		= Device.dwWidth * i->size/PT.p.w;
 

@@ -11,7 +11,7 @@ extern float r_ssaLOD_B;
 
 IC u32	color		(u32 Base, u32 Alpha)
 {
-	return D3DCOLOR_RGBA(RGBA_GETRED(Base),RGBA_GETGREEN(Base),RGBA_GETBLUE(Base),Alpha);
+	return color_rgba(RGBA_GETRED(Base),RGBA_GETGREEN(Base),RGBA_GETBLUE(Base),Alpha);
 }
 
 void CRender::flush_LODs()

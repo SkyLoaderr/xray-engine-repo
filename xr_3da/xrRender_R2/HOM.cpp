@@ -213,7 +213,7 @@ void CHOM::Render_ZB	()
 	xr_vector<u32>::iterator	I		= m_ZB.begin	();
 	xr_vector<u32>::iterator	E		= m_ZB.end		();
 
-	u32 C							= D3DCOLOR_RGBA	(0xff,0,0,0xff);
+	u32 C							= color_rgba	(0xff,0,0,0xff);
 	for (; I!=E; I++)
 	{
 		CDB::TRI& t					= m_pModel->get_tris() [*I];

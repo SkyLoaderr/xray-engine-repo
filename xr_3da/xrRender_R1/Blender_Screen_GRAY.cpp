@@ -41,7 +41,7 @@ void	CBlender_Screen_GRAY::Compile	(CBlender_Compile& C)
 		
 		if (HW.Caps.pixel.op_DP3 && !strstr(Core.Params,"-no_dp3"))	
 		{
-			C.R().SetRS		(D3DRS_TEXTUREFACTOR,D3DCOLOR_RGBA(76+105,150+105,29+105,0));
+			C.R().SetRS		(D3DRS_TEXTUREFACTOR,color_rgba(76+105,150+105,29+105,0));
 
 			// Stage0 - Base texture
 			C.StageBegin		();
