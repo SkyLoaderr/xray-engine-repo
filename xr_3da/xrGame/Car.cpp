@@ -84,7 +84,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	CSE_Abstract					*e = (CSE_Abstract*)(DC);
 	CSE_ALifeItemCar				*po = dynamic_cast<CSE_ALifeItemCar*>(e);
 	R_ASSERT						(po);
-	BOOL							R = inherited::net_Spawn(DC) && CScriptMonster::net_Spawn(DC);
+	BOOL							R = CScriptMonster::net_Spawn(DC) && inherited::net_Spawn(DC);
 
 	setEnabled						(TRUE);
 	setVisible						(TRUE);
