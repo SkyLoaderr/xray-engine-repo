@@ -67,6 +67,13 @@ protected:
 	template <cell_type color_to_move>
 	IC		bool			can_move				() const;
 
+protected:
+	template <int increment, cell_type _color_to_move, cell_type opponent_color>
+	IC		void			compute_direction		(cell_type *start_cell, int &difference);
+	
+	template <cell_type color_to_move>
+	IC		void			compute_difference		(const cell_index &index, int &result);
+
 public:
 	IC						CBoardClassicOthello	();
 			void			start_position			();
@@ -95,6 +102,10 @@ public:
 			bool			can_move				() const;
 			bool			can_move				(const cell_index &index) const;
 	IC		bool			can_move				(const cell_index &index0, const cell_index &index1) const;
+
+public:
+			int				compute_difference		(const cell_index &index) const;
+	IC		int				compute_difference		(const cell_index &index0, const cell_index &index1) const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -1629,6 +1629,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\board_classic_othello_compute_difference.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\board_classic_othello_do_move.cpp"
 							>
 						</File>

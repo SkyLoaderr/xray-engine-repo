@@ -30,6 +30,14 @@
 			__asm int 3\
 		}\
 	}
+
+	#define VERIFY2(expr,str)	{\
+		if (!(expr)) {\
+			ui().log("\n\nAssertion failed!\nexpression : \"%s\"\ndescription : \"%s\"\nfile       : %s\nline       : %d\n",#expr,str,__FILE__, __LINE__);\
+			ui().flush();\
+			__asm int 3\
+		}\
+	}
 #else
 	#ifdef __BORLANDC__
 		#define NODEFAULT
@@ -38,4 +46,5 @@
     #endif
 
 	#define VERIFY(expr)
+	#define VERIFY2(expr)
 #endif

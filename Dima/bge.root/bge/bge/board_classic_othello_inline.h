@@ -90,3 +90,8 @@ IC	bool CBoardClassicOthello::can_move			(const cell_index &index0, const cell_i
 {
 	return							(can_move(index(index0,index1)));
 }
+
+IC	int	 CBoardClassicOthello::compute_difference	(const cell_index &index0, const cell_index &index1) const
+{
+	return							(compute_difference(index0,index1));
+}
