@@ -101,7 +101,7 @@ CInifile::CInifile(LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd)
 
 CInifile::~CInifile( )
 {
- 	if (!bReadOnly&&bSaveAtEnd) save_as();
+ 	if (!bReadOnly&&bSaveAtEnd) if (!save_as()) Log("!Can't save inifile:",fName);
 	xr_free	(fName);
 }
 
@@ -187,54 +187,56 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 	}
 }
 
-void	CInifile::save_as( LPCSTR new_fname )
+bool	CInifile::save_as( LPCSTR new_fname )
 {
 	// save if needed
-    if (new_fname&&new_fname[0])
-	{
-        xr_free(fName);
-        fName		= xr_strdup(new_fname);
+    if (new_fname&&new_fname[0]){
+        xr_free			(fName);
+        fName			= xr_strdup(new_fname);
     }
-    R_ASSERT		(fName&&fName[0]);
-    IWriter* F		= FS.w_open(fName);
-    char			temp[512],val[512];
-    for (RootIt r_it=DATA.begin(); r_it!=DATA.end(); r_it++)
-    {
-        sprintf		(temp,"[%s]",*r_it->Name);
-        F->w_string	(temp);
-        for (SectIt s_it=r_it->begin(); s_it!=r_it->end(); s_it++)
-        {
-            Item&	I = *s_it;
-            if (*I.first) {
-                if (*I.second) {
-                    _decorate	(val,*I.second);
-                    if (*I.comment) {
-                        // name, value and comment
-                        sprintf	(temp,"%8s%-32s = %-32s ;%s"," ",*I.first,val,*I.comment);
+    R_ASSERT			(fName&&fName[0]);
+    IWriter* F			= FS.w_open(fName);
+    if (F){
+        string512		temp,val;
+        for (RootIt r_it=DATA.begin(); r_it!=DATA.end(); r_it++){
+            sprintf		(temp,"[%s]",*r_it->Name);
+            F->w_string	(temp);
+            for (SectIt s_it=r_it->begin(); s_it!=r_it->end(); s_it++)
+            {
+                Item&	I = *s_it;
+                if (*I.first) {
+                    if (*I.second) {
+                        _decorate	(val,*I.second);
+                        if (*I.comment) {
+                            // name, value and comment
+                            sprintf	(temp,"%8s%-32s = %-32s ;%s"," ",*I.first,val,*I.comment);
+                        } else {
+                            // only name and value
+                            sprintf	(temp,"%8s%-32s = %-32s"," ",*I.first,val);
+                        }
                     } else {
-                        // only name and value
-                        sprintf	(temp,"%8s%-32s = %-32s"," ",*I.first,val);
+                        if (*I.comment) {
+                            // name and comment
+                            sprintf(temp,"%8s%-32s = ;%s"," ",*I.first,*I.comment);
+                        } else {
+                            // only name
+                            sprintf(temp,"%8s%-32s = "," ",*I.first);
+                        }
                     }
                 } else {
-                    if (*I.comment) {
-                        // name and comment
-                        sprintf(temp,"%8s%-32s = ;%s"," ",*I.first,*I.comment);
-                    } else {
-                        // only name
-                        sprintf(temp,"%8s%-32s = "," ",*I.first);
-                    }
+                    // no name, so no value
+                    if (*I.comment)	sprintf		(temp,"%8s;%s"," ",*I.comment);
+                    else			temp[0] = 0;
                 }
-            } else {
-                // no name, so no value
-                if (*I.comment)	sprintf		(temp,"%8s;%s"," ",*I.comment);
-                else			temp[0] = 0;
+                _TrimRight			(temp);
+                if (temp[0])		F->w_string	(temp);
             }
-            _TrimRight			(temp);
-            if (temp[0])		F->w_string	(temp);
+            F->w_string		(" ");
         }
-        F->w_string		(" ");
+        FS.w_close			(F);
+	    return true;
     }
-    FS.w_close			(F);
+    return false;
 }
 
 BOOL	CInifile::section_exist( LPCSTR S )

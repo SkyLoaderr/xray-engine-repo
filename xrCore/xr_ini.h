@@ -51,7 +51,7 @@ public:
 				CInifile		( IReader* F, LPCSTR path=0 );
 				CInifile		( LPCSTR szFileName, BOOL ReadOnly=TRUE, BOOL bLoadAtStart=TRUE, BOOL SaveAtEnd=TRUE);
 	virtual 	~CInifile		( );
-    void		save_as         ( LPCSTR new_fname=0 );
+    bool		save_as         ( LPCSTR new_fname=0 );
 
 	LPCSTR		fname			( ) { return fName; };
 

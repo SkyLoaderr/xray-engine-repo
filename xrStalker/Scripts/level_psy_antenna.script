@@ -1,19 +1,147 @@
+class "PsyAntennaPP" (effector)
+
+function PsyAntennaPP:__init() super(1001,10000000)
+	self.params							= effector_params();
+end
+
+function PsyAntennaPP:process(pp)
+	pp:assign		(self.params);
+    effector.process(self,pp);
+    return          true;
+end
+
 class "PsyAntenna"
 
-function PsyAntenna:__init()
-	self.generators			= {};
+pa_phase={
+	phIdle 								= 0,
+	phStarting 							= 1,
+	phWorking 							= 2,
+	phStopping							= 3
+}
+
+function PsyAntenna:__init				()
+	self.phase 							= pa_phase.phIdle;
+	self.power_factor					= fcolor();
+	self.eff_time						= 0;
+	self.starting_anim					= color_animator			("levels\\psy_antenna\\starting");
+	self.starting_time					= self.starting_anim:length	();
+	self.working_anim					= color_animator			("levels\\psy_antenna\\working");
+	self.stopping_anim					= color_animator			("levels\\psy_antenna\\stopping");
+	self.stopping_time					= self.stopping_anim:length();
+	self.idle_time						= {};
+	self.idle_time[20]					= 21;
+	self.pp 							= PsyAntennaPP();
+	self.pp:start						();
+end
+function PsyAntenna:__finalize			()
+	self.pp:finish 						();
+end;
+
+g_PsyAntenna	 						= PsyAntenna();
+
+function PsyAntenna:construct			()
 end
 
-g_PsyAntenna	 			= PsyAntenna();
-
-class "WindGenerator"		(object_binder)
-function WindGenerator:__init(obj) super(obj)
-	g_PsyAntenna:add_generator(self);
+function PsyAntenna:load				(F)
+	self.phase 							= F:r_u32();
 end
-function WindGenerator:net_destroy()
-	g_PsyAntenna:remove_generator(self);
+function PsyAntenna:save				(F)
+	F:r_u32								(self.phase);
 end
 
+function PsyAntenna:is_idle_time		(tm)
+	local is_idle 						= false;
+	if tm>=13 and tm<14 then 
+		is_idle 						= true;
+	elseif tm>=20 and tm<21 then 
+		is_idle 						= true; 
+	end;
+	return is_idle;
+end
+
+function PsyAntenna:switch_to_phase		(ph)
+	self.phase							= ph;
+	self.eff_time		 				= 0;
+	self.power_factor:set				(0,0,0,0);
+end
+function PsyAntenna:phase_starting		()
+	if self.eff_time>self.starting_time then
+		self:switch_to_phase			(pa_phase.phWorking);
+	else
+		self.power_factor:set 			(self.starting_anim:calculate(self.eff_time/1000));
+	end;
+end
+function PsyAntenna:phase_working		()
+	local h								= level.get_time_hours();
+	if self:is_idle_time(h) then 				
+		self:switch_to_phase			(pa_phase.phStopping);
+	else
+		self.power_factor:set 			(self.working_anim:calculate(self.eff_time/1000));
+	end;
+end
+function PsyAntenna:phase_stopping		()
+	if self.eff_time>self.starting_time then
+		self:switch_to_phase			(pa_phase.phIdle);
+	else
+		self.power_factor:set			(self.stopping_anim:calculate(self.eff_time/1000));
+	end;
+end
+function PsyAntenna:phase_idle			()
+	local h								= level.get_time_hours();
+	if false==self:is_idle_time(h) then 				
+		self:switch_to_phase			(pa_phase.phStarting);
+	end;
+end
+function PsyAntenna:update_postprocess	()
+	local add       					= color();
+	add.r 								= self.power_factor.r;
+	add.g 								= self.power_factor.g;
+	add.b 								= self.power_factor.b;
+	self.pp.params.color_add 			= color():set(self.power_factor.r,self.power_factor.g,self.power_factor.b);
+end
+function PsyAntenna:update_psy_hit		(dt)
+	if self.power_factor.a>0.001 then
+		local psy_hit 					= hit();
+		psy_hit.power 					= self.power_factor.a*1;
+		psy_hit.direction 				= vector():set( 0, 0, 0 );
+		psy_hit.impulse 				= 0;
+		psy_hit.draftsman 				= db.actor; 
+		psy_hit.type 					= hit.telepatic;
+		db.actor:hit					(psy_hit);
+	end;
+end
+function PsyAntenna:spawn_phantom 		()
+
+end
+function PsyAntenna:update_phantoms 	()
+	
+end
+function PsyAntenna:update				(dt)
+	self.eff_time						= self.eff_time + dt;
+	if self.phase==pa_phase.phStarting 		then self:phase_starting	();
+	elseif self.phase==pa_phase.phWorking	then self:phase_working		();
+	elseif self.phase==pa_phase.phStopping	then self:phase_stopping	();
+	elseif self.phase==pa_phase.phIdle 		then self:phase_idle		(); end;
+	self:update_postprocess 			();
+	self:update_psy_hit					(dt);
+	self:update_phantoms 				();
+end
+
+function main()
+	while db.actor==nil do wait(); end;
+	if false==db.actor:has_info("psy_antenna_off") then
+		g_PsyAntenna:construct			();
+		local prev_time					= device():time_global();
+		while 1 do
+			wait						();
+			local dt					= device():time_global()-prev_time;
+			prev_time					= device():time_global();
+			g_PsyAntenna:update			(dt);
+		end
+	end
+end
+
+--[[
 function PsyAntenna:add_generator(generator)
 	self.generators[generator.object:id()] = generator;
 end
@@ -22,10 +150,15 @@ function PsyAntenna:remove_generator(generator)
 	self.generators[generator.object:id()] = nil;
 end
 
+class "WindGenerator"		(object_binder)
+function WindGenerator:__init(obj) super(obj)
+	g_PsyAntenna:add_generator(self);
+end
+function WindGenerator:net_destroy()
+	g_PsyAntenna:remove_generator(self);
+end
 function init(obj)
 	if obj:spawn_ini():line_exist
 	obj:bind_object			(WindGenerator(obj))
 end
-
-function main()
-end
+]]--
