@@ -8,7 +8,11 @@
 
 #pragma once
 
-class CScriptValue;
+#ifdef XRSE_FACTORY_EXPORTS
+	class CScriptValue;
+#else
+	class CScriptValue {virtual ~CScriptValue(){}};
+#endif
 
 class CScriptValueContainer {
 protected:
