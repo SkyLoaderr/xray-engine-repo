@@ -1369,8 +1369,8 @@ void CActor::shedule_Update	(u32 DT)
 	setVisible				(!HUDview	());
 
 	//установить режим показа HUD для текущего активного слота
-	CHudItem* pHudItem = dynamic_cast<CHudItem*>(inventory().ActiveItem());
-	if(pHudItem) pHudItem->SetHUDmode(HUDview());
+	CHudItem* pHudItem = dynamic_cast<CHudItem*>(inventory().ActiveItem());	
+	if(pHudItem && !pHudItem->getDestroy()) pHudItem->SetHUDmode(HUDview());
 	
 //	R_ASSERT(GAMEMTL_NONE!=last_material_id());
 //	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_material_id(),last_material_id());

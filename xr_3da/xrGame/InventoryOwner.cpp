@@ -137,6 +137,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 void CInventoryOwner::net_Destroy()
 {
 	CAttachmentOwner::net_Destroy();
+	m_inventory->SetActiveSlot(NO_ACTIVE_SLOT);
 }
 
 void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
