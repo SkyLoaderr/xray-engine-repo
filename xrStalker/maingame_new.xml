@@ -118,8 +118,8 @@
 		<text x="100" y="5" font="small" r="255" g="255" b="255" a="130">money</text>
 		<texture>ui\ui_mn_weapons</texture>
 		
-		<phrase x="70" y="25" font="graffiti50" r="238" g="155" b="23" a="255"></phrase>
-		<phrase x="70" y="105" font="graffiti32" r="238" g="155" b="23" a="255">
+		<phrase x="30" y="10" font="graffiti50" r="238" g="155" b="23" a="255"></phrase>
+		<phrase x="30" y="85" font="graffiti32" r="238" g="155" b="23" a="255">
 			<animation anim="fade" period="1" cyclic="0"></animation>
 		</phrase>
 	</money_mt_static>
