@@ -185,7 +185,7 @@ void CSector::Render(CFrustum &F)
 			float distSQ		=	dir2portal.square_magnitude();
 			float ssa			=	g_fSCREEN*R*R/distSQ;
 			dir2portal.div		(_sqrt(distSQ));
-			ssa					*=	PORTAL->P.n.dotproduct(dir2portal);
+			ssa					*=	fabsf(PORTAL->P.n.dotproduct(dir2portal));
 			if (ssa<ssaLIMIT)	continue;
 
 			// Clip by frustum
