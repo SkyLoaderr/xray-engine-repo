@@ -267,8 +267,8 @@ void CLuaView::OnInitialUpdate()
 void CLuaView::ToggleBreakPoint(int nLine)
 {
 	CMainFrame* pFrame = g_mainFrame;
-	if ( pFrame->GetMode() == CMainFrame::modeDebug ||
-		pFrame->GetMode() == CMainFrame::modeDebugBreak )
+//	if ( pFrame->GetMode() == CMainFrame::modeDebug ||
+//		pFrame->GetMode() == CMainFrame::modeDebugBreak )
 	{
 		nLine = GetDocument()->GetProjectFile()->GetNearestDebugLine(nLine);
 		if ( nLine==0 )
