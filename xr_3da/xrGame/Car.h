@@ -8,7 +8,7 @@ private:
 
 	void					cam_Update			(float dt, BOOL bZoom);
 
-	bool					HUDview				( ) { return IsFocused()&&(cam_active==eacFirstEye); }
+	bool					HUDview				( ) { return IsFocused(); }
 public:
 	// Core events
 	virtual void			Load				( CInifile* ini, const char *section );

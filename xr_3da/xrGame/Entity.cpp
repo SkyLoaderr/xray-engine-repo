@@ -130,7 +130,7 @@ void CEntity::Load(CInifile* ini, const char* section)
 
 BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	CGameObject::Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	inherited::Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 
 	// Read team & squad & group
 	u8					s_team,s_squad,s_group;
@@ -150,8 +150,6 @@ BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_ang
 	id_Group			= s_group;
 	iHealth				= 100;
 	iArmor				= 0;
-	Movement.SetPosition(o_pos.x,o_pos.y,o_pos.z);
-	Movement.SetVelocity(0,0,0);
 	
 	pCreator->Objects.sheduled.Unregister	(this);
 	pCreator->Objects.sheduled.Register		(this);
@@ -233,9 +231,8 @@ BOOL CEntityAlive::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& 
 }
 void CEntityAlive::HitImpulse	(Fvector& vWorldDir, Fvector& vLocalDir, float amount)
 {
-	float amount					=	2*float(amount)/Movement.GetMass();
-	dir.y							+=	0.1f;
-	Movement.vExternalImpulse.mad	(vWorldDir,amount/m);
+	float Q						=	2*float(amount)/Movement.GetMass();
+	Movement.vExternalImpulse.mad	(vWorldDir,Q);
 }
 
 CEntityAlive::CEntityAlive()

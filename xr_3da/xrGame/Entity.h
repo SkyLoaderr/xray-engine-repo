@@ -148,7 +148,7 @@ public:
 	virtual void			HitImpulse			(Fvector& vWorldDir, Fvector& vLocalDir, float amount);
 
 	// Visibility related
-	virtual void			GetVisible			(objVisible& R)	= 0;
+	virtual void			GetVisible			(objVisible& R)	{};
 	virtual	float			ffGetFov			()				= 0;	
 	virtual	float			ffGetRange			()				= 0;	
 };
