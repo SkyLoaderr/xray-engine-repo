@@ -445,7 +445,7 @@ void game_sv_GameState::Update		()
 		C->ps->ping				= u16(C->stats.getPing());
 	}
 	
-	if(ai().script_engine().script_process("game"))
+	if(ai().script_engine().script_process("game")&&(0!=Level().game))
 		ai().script_engine().script_process("game")->update();
 }
 
