@@ -176,12 +176,21 @@ public:
 
 template <const u64 qwFlags> class CAI_NodeEvaluatorTemplate : public IBaseAI_NodeEvaluator {
 private:
-	svector<float *,dwSelectorVarCount>	m_tpVarValues;
 	bool								m_bStopSearch;
 public:
 	
 					CAI_NodeEvaluatorTemplate()
 			{
+			}
+
+	virtual			~CAI_NodeEvaluatorTemplate()
+			{
+			}
+
+	IC		void	Load								(LPCSTR section, LPCSTR Name)
+			{
+				svector<float *,dwSelectorVarCount>	m_tpVarValues;
+				
 				m_tpVarValues.resize(dwSelectorVarCount);
 				m_tpVarValues[ 0] = &m_fSearchRange;
 				m_tpVarValues[ 1] = &m_fEnemySurround;
@@ -206,10 +215,7 @@ public:
 				m_tpVarValues[20] = &m_fMaxEnemyDistance;
 				m_tpVarValues[21] = &m_fMaxEnemyDistanceWeight;
 				m_tpVarValues[22] = &m_fEnemyViewDeviationWeight;
-			}
 
-	IC		void	Load								(LPCSTR section, LPCSTR Name)
-			{
 				LPCSTR		S = pSettings->r_string(section,Name);
 				string16	I;
 				for (u32 i=0, j=0; i<dwSelectorVarCount; i++)

@@ -269,8 +269,7 @@ private:
 	// загрузка MotionDef для определённого типа анимации 
 	void		Load					(LPCSTR pmt_name, ANIM_VECTOR	*pMotionVect);
 	// очистка и загрузка MotionDef для карты анимаций (выполнять на Monster::Spawn, после обновления Visual)
-	void		LoadVisualAnims			();
-	void		ClearVisualAnims		();
+	void		LoadVisualData			();
 
 	// работа с последовательностями
 	void		Seq_Init				();

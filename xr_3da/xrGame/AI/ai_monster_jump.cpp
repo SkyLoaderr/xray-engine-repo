@@ -172,3 +172,43 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, CObject *pO)
 	return true;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// JUMPS
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//// функция для UpdateCL
+//void CMotionManager::JMP_Update()
+//{
+//	if (!jump.active) return;
+//	
+//	TTime itime = TTime(jump.ph_time * 1000);
+//
+//	// проверить на завершение прыжка
+//	if ((jump.started + itime < pMonster->m_dwCurrentTime + TTime(itime/4)) && (jump.state == JS_JUMP)) {
+//		JMP_Finish();
+//	}else {
+//		// tracing enemy here
+//		if (jump.striked) return;
+//		if (!jump.entity) return;
+//		CEntity *pE = dynamic_cast<CEntity *>(jump.entity);
+//		if (!pE) return;
+//
+//		Fvector trace_from;
+//		pMonster->Center(trace_from);
+//		pMonster->setEnabled(false);
+//		Collide::ray_query	l_rq;
+//
+//		if (Level().ObjectSpace.RayPick(trace_from, pMonster->Direction(), jump.ptr_cur->trace_dist, l_rq)) {
+//			if ((l_rq.O == jump.entity) && (l_rq.range < jump.ptr_cur->trace_dist)) {
+//				pMonster->DoDamage(pE, pMonster->m_fHitPower,0,0);
+//				jump.striked = true;
+//			}
+//		}
+//		pMonster->setEnabled(true);			
+//	}
+//
+//	if ((jump.state == JS_JUMP) && (jump.entity)) {
+//		pMonster->LookPosition(jump.entity->Position());
+//	}
+//}
+

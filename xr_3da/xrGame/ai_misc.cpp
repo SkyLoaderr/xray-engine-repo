@@ -20,6 +20,8 @@ extern void	IntersectContours	(PSegment& Dest, PContour& C1, PContour& C2);
 #define	LI_INTERSECT		1
 #define LI_EQUAL	        2
 
+#pragma todo("Jim to Dima: IBaseAI_NodeEvaluator uses large amount of memory. Currently 372 bytes!!!")
+
 IC int lines_intersect( 
 			float x1, float y1,		/* First line segment */
 			float x2, float y2,

@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 
+#include "..\\ai_monster_jump.h"
+
 void CAI_Biting::Think()
 {
 	if (!g_Alive()) return;
