@@ -17,6 +17,8 @@ struct ZONE_TYPE
 struct ZONE_INFO
 {
 	u32 snd_time;
+	//текуща€ частота работы датчика
+	float cur_freq;
 };
 
 
@@ -56,7 +58,9 @@ protected:
 
 	float m_fRadius;
 	float m_fBuzzerRadius;
-	
+
+	//если хоз€ин текущий актер
+	CActor* m_pCurrentActor;
 
 	//информаци€ об онаруживаемых зонах
 	DEFINE_MAP(CLASS_ID, ZONE_TYPE, ZONE_TYPE_MAP, ZONE_TYPE_MAP_IT);

@@ -16,6 +16,8 @@ CCustomDetector::~CCustomDetector(void)
 
 BOOL CCustomDetector::net_Spawn(LPVOID DC) 
 {
+	m_pCurrentActor = NULL;
+
 	return		(inherited::net_Spawn(DC));
 }
 
@@ -85,65 +87,12 @@ void CCustomDetector::shedule_Update(u32 dt)
 
 	if(!H_Parent()) return;
 
-	//если не на поясе у актера то не издавать звук
-	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
-	if(pActor && !pActor->m_inventory->Get(ID(),false))
-		return;
-	bool sound_2d = pActor && pActor->HUDview();
-
-
 	Position().set(H_Parent()->Position());
 
 	Fvector					P; 
 	P.set					(H_Parent()->Position());
 	feel_touch_update		(P,m_fRadius);
 
-//	float fMaxPow = 0;
-//	BOOL l_buzzer = false;
-	ZONE_INFO_MAP_IT it;
-		
-	///////////////////////////////////
-	//звуки обнаружения аномальных зон
-	///////////////////////////////////
-	for(it = m_ZoneInfoMap.begin(); m_ZoneInfoMap.end() != it; ++it) 
-	{
-		CCustomZone *pZone = it->first;
-		ZONE_INFO& zone_info = it->second;
-
-		//такой тип зон не обнаруживается
-		if(m_ZoneTypeMap.find(pZone->SUB_CLS_ID) == m_ZoneTypeMap.end())
-			return;
-		
-		ZONE_TYPE& zone_type = m_ZoneTypeMap[pZone->SUB_CLS_ID];
-		
-		
-		float dist_to_zone = P.distance_to(pZone->Position()); 
-		//float fRelPow = pZone->Power(dist_to_zone) / pZone->GetMaxPower();
-		float fRelPow = 1.f - dist_to_zone / m_fRadius;
-		clamp(fRelPow, 0.f, 1.f);
-
-//		if(fRelPow > 0 && pZone->feel_touch_contact(this)) 
-//			l_buzzer = true;
-		//fMaxPow = _max(fMaxPow, fRelPow);
-		
-		//определить пришло ли время играть очередной звук щелчка детектора
-		float cur_freq = zone_type.min_freq + 
-			(zone_type.max_freq - zone_type.min_freq) * fRelPow* fRelPow* fRelPow;
-		
-		float current_snd_time = 1000.f*1.f/cur_freq;
-
-		//float current_snd_time = 50.f + 3000.f * fRelPow* fRelPow;
-		
-		if((float)zone_info.snd_time > current_snd_time)
-		{
-			zone_info.snd_time = 0;
-			//zone_type.detect_snd->play_at_pos(this,	P, sound_2d);
-			zone_type.detect_snd->play_at_pos(this, P, sound_2d?sm_2D:0);
-			//Sound->play_at_pos(*zone_type.detect_snd, this, P);
-		} 
-		else 
-			zone_info.snd_time += dt;
-	}
 	
 /*	if(l_buzzer) 
 	{
@@ -196,6 +145,52 @@ void CCustomDetector::shedule_Update(u32 dt)
 void CCustomDetector::UpdateCL() 
 {
 	inherited::UpdateCL();
+
+
+	if(!H_Parent()) return;
+
+	//если у актера, то только на поясе
+	if(m_pCurrentActor && !m_pCurrentActor->m_inventory->Get(ID(),false))
+		return;
+	bool sound_2d = m_pCurrentActor && m_pCurrentActor->HUDview();
+
+
+	///////////////////////////////////
+	//звуки обнаружения аномальных зон
+	///////////////////////////////////
+
+	ZONE_INFO_MAP_IT it;
+	for(it = m_ZoneInfoMap.begin(); m_ZoneInfoMap.end() != it; ++it) 
+	{
+		CCustomZone *pZone = it->first;
+		ZONE_INFO& zone_info = it->second;
+
+		
+		//такой тип зон не обнаруживается
+		if(m_ZoneTypeMap.find(pZone->SUB_CLS_ID) == m_ZoneTypeMap.end())
+			return;
+		ZONE_TYPE& zone_type = m_ZoneTypeMap[pZone->SUB_CLS_ID];
+
+		float dist_to_zone = H_Parent()->Position().distance_to(pZone->Position()) - 0.8f*pZone->Radius();
+		if(dist_to_zone<0) dist_to_zone = 0;
+		
+		float fRelPow = 1.f - dist_to_zone / m_fRadius;
+		clamp(fRelPow, 0.f, 1.f);
+
+		//определить текущую частоту срабатывания сигнала
+		zone_info.cur_freq = zone_type.min_freq + 
+			(zone_type.max_freq - zone_type.min_freq) * fRelPow* fRelPow* fRelPow* fRelPow;
+
+		float current_snd_time = 1000.f*1.f/zone_info.cur_freq;
+			
+		if((float)zone_info.snd_time > current_snd_time)
+		{
+			zone_info.snd_time = 0;
+			zone_type.detect_snd->play_at_pos(this, H_Parent()->Position(), sound_2d?sm_2D:0);
+		} 
+		else 
+			zone_info.snd_time += Device.dwTimeDelta;
+	}
 }
 
 void CCustomDetector::feel_touch_new(CObject* O) 
@@ -241,6 +236,7 @@ void CCustomDetector::SoundDestroy(ref_sound& dest)
 
 void CCustomDetector::OnH_A_Chield() 
 {
+	m_pCurrentActor = dynamic_cast<CActor*>(H_Parent());
 	inherited::OnH_A_Chield		();
 }
 
@@ -248,6 +244,8 @@ void CCustomDetector::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
 	
+	m_pCurrentActor = NULL;
+
 	//выключить
 	m_buzzer.stop				();
 	m_noise.stop				();
