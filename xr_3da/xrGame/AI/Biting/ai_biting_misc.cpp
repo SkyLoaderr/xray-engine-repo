@@ -218,12 +218,10 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	u32 vel_mask = 0;
 	u32 des_mask = 0;
 
+	set_path_type (CMovementManager::ePathTypeLevelPath);
 	SetupVelocityMasks();
 
 	if (bEnablePath) {
-		CDetailPathManager::set_velocity_mask(vel_mask);
-		CDetailPathManager::set_desirable_mask(des_mask);
-
 		CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
 		CDetailPathManager::set_try_min_time(true);
 		

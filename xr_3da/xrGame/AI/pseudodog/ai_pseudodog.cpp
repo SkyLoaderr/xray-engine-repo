@@ -79,11 +79,11 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimJumpGlide,		"jump_glide_",			-1, 0,									0,										PS_STAND);
 	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
 	
-	MotionMan.AddAnim(eAnimSitLieDown,		"sit_liedown_",			-1, 0,									0,										PS_SIT);
-	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sitdown_",		-1, 0,									0,										PS_STAND);	
-	MotionMan.AddAnim(eAnimSitStandUp,		"sit_standup_",			-1, 0,									0,										PS_SIT);
+	MotionMan.AddAnim(eAnimSitLieDown,		"sit_lie_down_",		-1, 0,									0,										PS_SIT);
+	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,									0,										PS_STAND);	
+	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,									0,										PS_SIT);
 	MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1,	0,									0,										PS_LIE);
-	MotionMan.AddAnim(eAnimSleepStandUp,	"lie_sleep_standup_",	-1, 0,									0,										PS_LIE);
+	MotionMan.AddAnim(eAnimSleepStandUp,	"lie_to_stand_up_",		-1, 0,									0,										PS_LIE);
 
 
 	// define transitions
