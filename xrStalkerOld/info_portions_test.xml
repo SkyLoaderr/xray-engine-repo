@@ -59,7 +59,10 @@
 	
 	<info_portion id="alert">
 	</info_portion>	
-	
+
+	<info_portion id="rat_swarm">
+	</info_portion>	
+
 	<info_portion id="location_test1">
 		<article>one</article>
 		<article>two</article>
