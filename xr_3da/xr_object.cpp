@@ -192,12 +192,11 @@ void CObject::Update	( DWORD T )
 
 	if (bUpdate)
 	{
-		// cfmodel
-		if (cfModel)	cfModel->OnMove();
-
 		// sector
 		if (SectorMode!=EPM_AT_LOAD)	Sector_Detect	();
 	}
+	// cfmodel
+	if (cfModel)	cfModel->OnMove();
 }
 
 CObject::SavedPosition CObject::ps_Element(DWORD ID)
