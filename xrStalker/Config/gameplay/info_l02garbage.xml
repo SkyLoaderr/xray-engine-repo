@@ -17,6 +17,8 @@
 		<disable>garbage_meetstalker_start</disable>
 	</info_portion>
 
+	<!-- атака сталкеров и бандитов -->
+	<info_portion id="gar_stalker_vs_bandit"></info_portion>
 
 	<!-- –аш монстров -->
 	<info_portion id="gar_dolg_help_kill_rush"></info_portion>

@@ -24,36 +24,20 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
-		t = { section = "logic@gar_bandits_walker4",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
+		
 		t = { section = "logic@gar_bandits_kamp1",
 			idle = 0,
 			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
-		t = { section = "logic@gar_bandits_kamp1",
+		t = { section = "logic@gar_bandits_kamp2",
 			idle = 0,
 			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
-		}
+		}		
 		table.insert(sj, t)		
-		t = { section = "logic@gar_bandits_kamp1",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "logic@gar_bandits_kamp1",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
+		
 		t = { section = "logic@gar_bandits_attack_walker1",
 			idle = 0,
 			prior = 5, state = {1},
@@ -134,7 +118,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
-		table.insert(sj, t)		
+		table.insert(sj, t)
 		t = { section = "logic@gar_stalkers_attack_walker1",
 			idle = 0,
 			prior = 5, state = {1},
@@ -296,22 +280,15 @@ function load_job(sj, gname, type, squad, groups)
 
 end
 
-function loadStates(gname, type)
+function load_states(gname, type)
 	if type == "gar_stalkers" or type == "gar_bandits" then
 		return function(gulag)
-			if gulag.state == 1 then return 1 end
-			
 			local actor = db.actor
---			local zone = level.object("gar_shooting")
---			if actor ~= nil and zone ~= nil then
---				if actor:position():distance_to(zone:position()) < 50 then
---					return 1
---				else
---					return 0
---				end
---			else
+			if actor ~= nil and actor:has_info("gar_stalker_vs_bandit") then
+				return 1
+			else
 				return 0
---			end
+			end
 		end
 	end
 

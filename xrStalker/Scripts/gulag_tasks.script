@@ -666,16 +666,6 @@ function loadStates(gname, type)
 		end
 	end
 
-	if type == "gar_maniac" then
-		return function(gulag)
-			if level.get_time_hours() >= 7 and level.get_time_hours() <= 22 then
-				return 0  -- день
-			else
-				return 1  -- ночь
-			end
-		end
-	end
-
 	if type == "agr_nii" then
 		return function(gulag)
 			if level.get_time_hours() >= 7 and level.get_time_hours() <= 22 then
@@ -721,38 +711,6 @@ function loadStates(gname, type)
 				end
 			else
 				return 2
-			end
-		end
-	end
-
-	if type == "gar_stalkers" or type == "gar_bandits" then
-		return function(gulag)
-			if gulag.state == 1 then return 1 end
-			
-			local actor = db.actor
---			local zone = level.object("gar_shooting")
---			if actor ~= nil and zone ~= nil then
---				if actor:position():distance_to(zone:position()) < 50 then
---					return 1
---				else
---					return 0
---				end
---			else
-				return 0
---			end
-		end
-	end
-	
-	if type == "gar_dolg" then
-		return function(gulag)
-			--if gulag.state == 1 then return 1 end
-			local actor = db.actor
-			if actor and actor:has_info ("gar_monsters_rush_wave1") then
-			   printf ("GARBAGE DOLG GULAG STATE 1") 
-               return 1
-			else
-			   printf ("GARBAGE DOLG GULAG STATE 0") 
-			   return 0
 			end
 		end
 	end

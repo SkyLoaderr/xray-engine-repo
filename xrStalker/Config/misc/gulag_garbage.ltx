@@ -27,13 +27,24 @@ meet_enabled = true
 path_walk = walk_3
 path_look = look_3
 
-
 [logic@gar_bandits_kamp1]
-active = kamp1@gar_bandits
+active = walker@gar_bandits_kamp1
 
-[kamp1@gar_bandits]
-meet_enabled = true
-center_point = camp1
+[walker@gar_bandits_kamp1]
+path_walk = kamp1_walk
+path_look = kamp1_look
+meet_talk_enabled = true
+meet_state = guard
+
+
+[logic@gar_bandits_kamp2]
+active = walker@gar_bandits_kamp2
+
+[walker@gar_bandits_kamp2]
+path_walk = kamp2_walk
+path_look = kamp2_look
+meet_talk_enabled = true
+meet_state = wait
 
 
 [logic@gar_bandits_attack_walker1]
@@ -216,6 +227,7 @@ path_walk = patrol_path
 path_look = patrol_look
 meet_dialog = gar_dolg_start
 meet_enabled = true
+on_signal = arrive | %=search_gulag_job%
 
 
 [logic@gar_dolg_follower1]
@@ -226,6 +238,7 @@ actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
 escape_path = patrol_look
 meet_dialog = gar_dolg_start
 meet_enabled = true
+on_signal = arrive | %=search_gulag_job%
 
 
 [logic@gar_dolg_zoneguard1]
