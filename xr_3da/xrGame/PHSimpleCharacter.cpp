@@ -8,7 +8,7 @@
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 #include "PHSimpleCharacter.h"
 #include "PHContactBodyEffector.h"
-
+#include "ui/uistatic.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 static u16 lastMaterial;
@@ -318,31 +318,8 @@ void		CPHSimpleCharacter::ApplyForce(const Fvector& dir,float force)
 
 void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	///////////////////
-
-	///////////////////////
-	b_external_impulse=false;
-	was_contact=is_contact;
-	was_control=is_control;
-	is_contact=false;
-	b_side_contact=false;
-	b_any_contacts=false;
-	b_valide_ground_contact=false;
-	b_valide_wall_contact=false;
-
-	b_climb=false;
-	b_pure_climb=true;
-	b_was_on_object=b_on_object;
-	b_on_object=false;
-
-	m_contact_count=0;
-
-
-
-
-
-
 	const dReal		*pos					=dBodyGetPosition(m_body);
-	
+
 	if(!dV_valid(pos))
 		dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
 		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
@@ -366,6 +343,29 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 
 		return;
 	}
+	///////////////////////
+	b_external_impulse=false;
+	was_contact=is_contact;
+	was_control=is_control;
+	is_contact=false;
+	b_side_contact=false;
+	b_any_contacts=false;
+	b_valide_ground_contact=false;
+	b_valide_wall_contact=false;
+
+	b_climb=false;
+	b_pure_climb=true;
+	b_was_on_object=b_on_object;
+	b_on_object=false;
+
+	m_contact_count=0;
+
+
+
+
+
+
+
 
 	dMatrix3 R;
 	dRSetIdentity (R);
@@ -602,12 +602,12 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 
 
-const float CHWON_ACCLEL_SHIFT=0.1f;
-const float CHWON_AABB_FACTOR =1.f;
+const float CHWON_ACCLEL_SHIFT=0.3f;
+const float CHWON_AABB_FACTOR =1.3f;
 const float CHWON_ANG_COS	  =M_SQRT1_2;
 const float CHWON_CALL_UP_SHIFT=0.05f;
 const float CHWON_CALL_FB_HIGHT=1.5f;
-const float CHWON_AABB_FB_FACTOR =1.f;
+const float CHWON_AABB_FB_FACTOR =0.7f;
 
 
 bool CPHSimpleCharacter::ValidateWalkOn()
@@ -883,7 +883,7 @@ void CPHSimpleCharacter::OnRender(){
 	Fvector pos;
 	GetPosition(pos);
 	pos.y+=m_radius;
-	RCache.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, 0xffffffff);
+	RCache.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, RGB_ALPHA(256,0,0,1));
 	RCache.dbg_DrawLINE(m,pos,n, 0xefffffff);
 
 
@@ -1023,7 +1023,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 const dReal def_spring_rate=0.5f;
 const dReal def_dumping_rate=20.1f;
 /////////////////////////////////////////////////////////////////
-void CPHSimpleCharacter::InitContact(dContact* c){
+void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
 	SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
 	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimbable);
@@ -1037,22 +1037,23 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	b_on_object=b_on_object||object;
 	*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
 	bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g1==m_hat_transform;
-	//if(object	&&	(c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform))
-	//{
-	//	///dNormalize3(m_control_force);
-	//	//Fvector2 f={m_control_force[0],m_control_force[2]},cn={c->geom.normal[0],c->geom.normal[2]};
-	//	//f.normalize(),cn.normalize();
-	//	//float product=f.x*cn.x+f.y*cn.y;
-	//	//if(is_control&& (bo1	?	product<-0.0f	:	product>0.0f))
-	//		b_side_contact=true;
+	if((c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform))
+	{
+		
+		Fvector2 f={m_control_force[0],m_control_force[2]},cn={c->geom.normal[0],c->geom.normal[2]};
+		f.normalize(),cn.normalize();
+		float product=f.x*cn.x+f.y*cn.y;
+		if(is_control&& (bo1	?	product<-M_SQRT1_2	:	product>M_SQRT1_2))
+			b_side_contact=true;
 
-	//	//c->surface.soft_cfm*=spring_rate;//0.01f;
-	//	//c->surface.soft_erp*=dumping_rate;//10.f;
-	//	MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
-	//	c->surface.mu		=0.00f;
-	//}
- 
-
+		//c->surface.soft_cfm*=spring_rate;//0.01f;
+		//c->surface.soft_erp*=dumping_rate;//10.f;
+		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
+		c->surface.mu		=0.00f;
+	}
+	
+	if(!do_collide) return;
+	
 	if(object){
 		spring_rate*=10.f;
 		const dReal* vel=dBodyGetLinearVel(m_body);
@@ -1218,8 +1219,8 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 			b_valide_ground_contact=true;
 		}
 		if(c->geom.normal[0]*m_acceleration.x+
-			c->geom.normal[2]*m_acceleration.z<
-			m_wall_contact_normal[0]*m_acceleration.x+
+			c->geom.normal[2]*m_acceleration.z>
+			-m_wall_contact_normal[0]*m_acceleration.x-
 			m_wall_contact_normal[2]*m_acceleration.z
 			||!b_valide_wall_contact)//
 		{

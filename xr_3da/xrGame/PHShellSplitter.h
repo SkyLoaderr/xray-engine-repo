@@ -38,7 +38,7 @@ virtual	void			PhTune(dReal step);						//call fractures PhTune for element spli
 virtual void			PhDataUpdate(dReal step);				//call fractures PhDataUpdate for element splitters m_pShell->m_elements[m_splitters[i]->m_element]->m_pFracturesHolder->PhDataUpdate()
 virtual void			Freeze		(){};
 virtual void			UnFreeze	(){};
-virtual void			InitContact(dContact* c){};
+virtual void			InitContact(dContact* c,bool &do_collide){};
 		bool			CheckSplitter(u16 aspl);		//
 		shell_root		SplitJoint(u16 aspl);		//create new shell moving into it departed elements and joints 
 		shell_root		ElementSingleSplit(const element_fracture &split_elem,const CPHElement* source_element);
