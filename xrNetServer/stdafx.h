@@ -15,14 +15,16 @@
 #include <dplay8.h>
 #pragma warning(default:4995)
 
-#define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
-#define _SHOW_REF(msg, x)   { if(x) { x->AddRef(); Log(msg,u32(x->Release()));}}
-
 IC u32 TimeGlobal(CTimer* timer)
 {
 	u64	qTime	= timer->GetElapsed_clk();
 	return		u32((qTime*u64(1000))/CPU::cycles_per_second);
 }
 #define TimerAsync TimeGlobal
+
+#include "NET_Shared.h"
+
+#define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
+#define _SHOW_REF(msg, x)   { if(x) { x->AddRef(); Log(msg,u32(x->Release()));}}
 
 #endif //stdafxH
