@@ -287,6 +287,9 @@
 			<File
 				RelativePath=".\FastDelegate.h">
 			</File>
+			<File
+				RelativePath=".\xrLevel.h">
+			</File>
 			<Filter
 				Name="IntrusivePtr"
 				Filter="">
