@@ -191,17 +191,20 @@ public:
 	IC	void	translate_over(T _x, T _y, T _z) // modify only translation
 	{	c.set	(_x,_y,_z);							}
 	IC	void	translate_add(const Tvector &Loc )	// combine translation
-	{	c.add	(Loc.x,Loc.y,Loc.z);				}
+	{	c.add	(Loc);								}
 	IC	void	scale		(T x, T y, T z )	// setup scale matrix
 	{	identity(); m[0][0]=x; m[1][1]=y; m[2][2]=z; }
 	IC	void	scale(const Tvector &v )			// setup scale matrix
 	{	scale(v.x,v.y,v.z); }
-	IC	void	scale_over(T x, T y, T z )// modify scaling
+
+	/*
+	IC	void	scale_over(T x, T y, T z )			// modify scaling
 	{   m[0][0]=x;	m[1][1]=y;	m[2][2]=z;	}
 	IC	void	scale_over(const Tvector &v )		// modify scaling
 	{	scale_over(v.x,v.y,v.z); }
 	IC	void	scale_add(const Tvector &v )		// combine scaling
 	{	m[0][0]*=v.x; m[1][1]*=v.y;	m[2][2]*=v.z; }
+	*/
 
 	IC	void	rotateX		(T Angle )				// rotation about X axis
 	{
