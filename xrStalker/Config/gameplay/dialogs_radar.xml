@@ -297,6 +297,7 @@
         </phrase_list>
     </dialog>
     <dialog id="rad_test">
+        <precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="1">
                 <text></text>
