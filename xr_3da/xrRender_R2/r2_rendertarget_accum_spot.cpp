@@ -147,4 +147,4 @@ void CRenderTarget::accum_spot	(light* L)
 			J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y, J.w, J.z);
 		}
 
- */
+*/
