@@ -366,7 +366,9 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)//, Face* skip)
 
 			b_material& M	= g_materials				[F.dwMaterial];
 			b_texture&	T	= g_textures				[M.surfidx];
-			Shader_xrLC& SH	= *g_shaders_xrlc->Get		(M.shader_xrlc);
+			Shader_xrLCVec&	L = 		g_shaders_xrlc->Library	();
+			if (M.shader_xrlc>=L.size())return			0;		//. hack
+			Shader_xrLC& SH	= L							(M.shader_xrlc);
 			if (!SH.flags.bLIGHT_CastShadow)			continue;
 
 			if (0==T.pSurface)	T.bHasAlpha = FALSE;
