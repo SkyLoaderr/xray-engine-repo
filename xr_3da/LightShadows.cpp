@@ -9,7 +9,7 @@
 #include "flightscontroller.h"
 #include "xr_creator.h"
 
-const	float	S_distance	= 32;
+const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 const	float	S_level		= .1f;
 const	int		S_size		= 32;
