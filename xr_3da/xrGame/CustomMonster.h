@@ -129,7 +129,7 @@ public:
 	virtual void		Update					( DWORD DT );
 	virtual void		UpdateCL				( );
 
-	virtual BOOL		TakeItem				( DWORD CID );
+//	virtual BOOL		TakeItem				( DWORD CID );
 
 	// Team visibility
 	virtual void		GetVisible				(objVisible& R);

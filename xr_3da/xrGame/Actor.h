@@ -189,7 +189,7 @@ public:
 	virtual void			net_Import			(NET_Packet* P);				// import from server
 	virtual BOOL			net_Relevant		()	{ return net_Local; };		// relevant for export to server
 	
-	virtual BOOL			TakeItem			( DWORD CID );
+//	virtual BOOL			TakeItem			( DWORD CID );
 
 	virtual void			OnMouseMove			(int x, int y);
 	virtual void			OnKeyboardPress		(int dik);

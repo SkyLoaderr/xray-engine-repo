@@ -142,6 +142,7 @@ void CCustomMonster::g_fireEnd	( )
 	Weapons->FireEnd	();
 }
 
+/*
 BOOL CCustomMonster::TakeItem	( DWORD CID )
 {
 	CCustomItem* O = (CCustomItem*) pCreator->Objects.GetObjectByCID(CID);
@@ -168,6 +169,7 @@ BOOL CCustomMonster::TakeItem	( DWORD CID )
 	}
 	return true;
 }
+*/
 
 void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
 {

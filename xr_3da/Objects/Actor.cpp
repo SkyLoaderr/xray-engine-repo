@@ -289,6 +289,7 @@ void CActor::Die	( )
 	mstate_real		&=~ mcAnyMove;
 }
 
+/*
 BOOL CActor::TakeItem		( DWORD CID )
 {
 	if (!bAlive) return FALSE;
@@ -320,6 +321,7 @@ BOOL CActor::TakeItem		( DWORD CID )
 	}
 	return true;
 }
+*/
 
 void CActor::g_Physics(Fvector& accel, float jump, float dt)
 {

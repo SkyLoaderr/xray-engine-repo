@@ -110,9 +110,13 @@ void CCustomItem::OnNear	( CObject* O )
 	if (O->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
 	{
 		if (state!=esShow) return;
-		if (((CActor *)O)->TakeItem(pCreator->Objects.GetObjectCID(this))){
+		CActor*	A = dynamic_cast<CActor*>(O);
+
+		/*
+		if (A && A->TakeItem(pCreator->Objects.GetObjectCID(this))){
 			SetState(esHidding);
 		}
+		*/
 		return;
 	}
 }
