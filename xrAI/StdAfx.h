@@ -88,10 +88,6 @@
 #include <limits>
 using namespace std;
 
-// MagicFM
-#define MAGICFMDLL_IMPORTS
-#include "MagicFMLibType.h"
-
 // Our headers
 #define RGBA_GETALPHA(rgb)      ((rgb) >> 24)
 #define RGBA_GETRED(rgb)        (((rgb) >> 16) & 0xff)

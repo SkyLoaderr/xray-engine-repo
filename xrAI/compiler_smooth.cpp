@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "compiler.h"
-#include "MgcAppr3DPlaneFit.h"
 #include "cl_intersect.h"
+
+// MagicFM
+#include "MgcAppr3DPlaneFit.h"
 
 const float	RCAST_DepthValid = 0.2f;
 
