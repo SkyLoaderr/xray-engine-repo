@@ -65,7 +65,8 @@ void	CRenderTarget::phase_decompress		()
 
 		// Decompress
 		Fmatrix		mUnwarp;
-		mUnwarp.invert				(Device.mProject);
+		D3DXMatrixInverse			((D3DXMATRIX*)&mUnwarp,0,(D3DXMATRIX*)&Device.mProject);
+		// mUnwarp.invert			(Device.mProject);
 		u_setrt						(rt_Position,rt_Normal,NULL,HW.pBaseZB);
 		RCache.set_Shader			(s_decompress);
 		RCache.set_c				("m_unwarp",mUnwarp);

@@ -15,6 +15,15 @@ void	CBlender_deffer_flat::Load	(	IReader& fs, u16 version )
 	IBlender::Load	(fs,version);
 }
 
+static struct cl_unwarp	: public R_constant_setup {
+	virtual		void setup (R_constant* C)	{	
+		Fmatrix			mUnwarp;
+		D3DXMatrixInverse((D3DXMATRIX*)&mUnwarp,0,(D3DXMATRIX*)&Device.mProject);
+		// mUnwarp.invert	(Device.mProject);
+		RCache.set_c	(C,mUnwarp);	
+	}
+}	cl_m_unwarp;
+
 void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 {
 	IBlender::Compile		(C);
@@ -36,6 +45,7 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 				C.r_Sampler		("s_encodeB",	r2_float2B,	false,D3DTADDRESS_WRAP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT);
 				if (ps_r2_ls_flags.test(R2FLAG_BUMP_AF))	C.r_Sampler		("s_bump",fname,false,D3DTADDRESS_WRAP,D3DTEXF_ANISOTROPIC);
 				else										C.r_Sampler		("s_bump",fname);
+				C.r_Constant	("m_unwarp",	&cl_m_unwarp);
 				C.r_End			();
 /*			} else {
 				// flat
