@@ -14,14 +14,13 @@
 void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 {
 	// generic
-	P.w_begin			(M_SPAWN		);
+	P.w_begin			(M_SPAWN);
 	P.w_string			(s_name			);
 	P.w_string			(s_name_replace	);
 	P.w_u8				(s_gameid		);
 	P.w_u8				(s_RP			);
 	P.w_vec3			(o_Position		);
 	P.w_vec3			(o_Angle		);
-//	P.w_u16				(m_tGraphID		);
 	P.w_u16				(RespawnTime	);
 	P.w_u16				(ID				);
 	P.w_u16				(ID_Parent		);
@@ -41,14 +40,15 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 {
 	u16					dummy16;
 	// generic
-	P.r_begin			(dummy16		);	R_ASSERT(M_SPAWN==dummy16);
+	P.r_begin			(dummy16		);	
+	R_ASSERT			(M_SPAWN==dummy16);
+	m_ucVersion			= u8(dummy16 >> 8);
 	P.r_string			(s_name			);
 	P.r_string			(s_name_replace	);
 	P.r_u8				(s_gameid		);
 	P.r_u8				(s_RP			);
 	P.r_vec3			(o_Position		);
 	P.r_vec3			(o_Angle		);
-//	P.r_u16				(m_tGraphID		);
 	P.r_u16				(RespawnTime	);
 	P.r_u16				(ID				);
 	P.r_u16				(ID_Parent		);

@@ -7,7 +7,7 @@
 #ifdef _EDITOR
 	#include "PropertiesListHelper.h"
 #endif
-//#include "ai_alife_space.h"
+#include "ai_alife_space.h"
 
 // refs
 class xrServerEntity;
@@ -21,16 +21,6 @@ struct	SRotation
 };
 
 // 
-#pragma pack(push,1)
-class xrServerEntity_DESC
-{
-public:
-	WORD	version;
-
-	xrServerEntity_DESC() : version(0) {};
-};
-#pragma pack(pop)
-
 //***** CFormed (Base)
 class xrSE_CFormed
 {
@@ -60,11 +50,10 @@ public:
 class xrServerEntity
 {
 public:
-	xrServerEntity_DESC		desc;
-public:
 	BOOL					net_Ready;
 	BOOL					net_Processed;	// Internal flag for connectivity-graph
 public:
+	u8						m_ucVersion;
 	u16						RespawnTime;
 
 	u16						ID;				// internal ID
@@ -83,7 +72,9 @@ public:
 	// update data
 	Fvector					o_Position;
 	Fvector					o_Angle;
-//	ALife::_GRAPH_ID		m_tGraphID;
+	// for ALife
+	ALife::_GRAPH_ID		m_tGraphID;
+	float					m_fDistance;
 
 	virtual void			UPDATE_Read		(NET_Packet& P)				= 0;
 	virtual void			UPDATE_Write	(NET_Packet& P)				= 0;
