@@ -11,6 +11,7 @@
 #include "..\\..\\..\\3dsound.h"
 #include "ai_zomby.h"
 #include "ai_zomby_selectors.h"
+#include "..\\..\\..\\bodyinstance.h"
 
 //#define WRITE_LOG
 
@@ -1135,3 +1136,96 @@ void CAI_Zomby::Think()
 	}
 	while (!bStopThinking);
 }
+
+void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+{
+	R_ASSERT(fsimilar(_view.magnitude(),1));
+	R_ASSERT(fsimilar(_move.magnitude(),1));
+
+	CMotionDef*	S=0;
+/**/
+	if (iHealth<=0)
+		S = m_death;
+	else {
+		if (speed<0.2f)
+			S = m_idle;
+		else {
+			Fvector view = _view; 
+			Fvector move = _move; 
+			view.y=0; 
+			move.y=0; 
+			view.normalize_safe();
+			move.normalize_safe();
+			float	dot  = view.dotproduct(move);
+			
+			SAnimState* AState = &m_walk;
+			AState = &m_walk;
+			
+			if (speed>2.f)
+				AState = &m_run;
+			
+			S = AState->fwd;
+		}
+	}
+/**/
+	if (S!=m_current){ 
+		m_current = S;
+		if (S) PKinematics(pVisual)->PlayCycle(S);
+	}
+}
+
+void CAI_Zomby::net_Export(NET_Packet* P)					// export to server
+{
+	R_ASSERT				(net_Local);
+
+	// export last known packet
+	R_ASSERT				(!NET.empty());
+	net_update& N			= NET.back();
+	P->w_u32				(N.dwTimeStamp);
+	P->w_u8					(0);
+	P->w_vec3				(N.p_pos);
+	P->w_angle8				(N.o_model);
+	P->w_angle8				(N.o_torso.yaw);
+	P->w_angle8				(N.o_torso.pitch);
+}
+
+void CAI_Zomby::net_Import(NET_Packet* P)
+{
+	R_ASSERT				(!net_Local);
+	net_update				N;
+
+	u8 flags;
+	P->r_u32				(N.dwTimeStamp);
+	P->r_u8					(flags);
+	P->r_vec3				(N.p_pos);
+	P->r_angle8				(N.o_model);
+	P->r_angle8				(N.o_torso.yaw);
+	P->r_angle8				(N.o_torso.pitch);
+
+	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
+		NET.push_back			(N);
+		NET_WasInterpolating	= TRUE;
+	}
+
+	bVisible				= TRUE;
+	bEnabled				= TRUE;
+}
+
+void CAI_Zomby::Exec_Action	( float dt )
+{
+	//*** process action commands
+	AI::C_Command* C	= &q_action;
+	AI::AIC_Action* L	= (AI::AIC_Action*)C;
+	switch (L->Command) {
+		case AI::AIC_Action::AttackBegin: {
+			break;
+		}
+		case AI::AIC_Action::AttackEnd: {
+			break;
+		}
+		default:
+			break;
+	}
+	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
+}
+

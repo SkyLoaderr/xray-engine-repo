@@ -104,7 +104,9 @@ namespace AI {
 			FireBegin,
 			FireEnd,
 			AttackJumpBegin,
-			AttackJumpEnd
+			AttackJumpEnd,
+			AttackBegin,
+			AttackEnd
 		};
 		float			o_PredictTime;	// 0.. - time of prediction
 	};
