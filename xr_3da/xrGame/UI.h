@@ -31,7 +31,7 @@ struct SUIMessage
 	{
 		sender		= xr_strdup(S);
 		msg			= xr_strdup(M);
-		life_time	= iFloor	(lt*1000);
+		life_time	= iFloor(lt*1000);
 		color		= clr;
 	}
 	~SUIMessage()

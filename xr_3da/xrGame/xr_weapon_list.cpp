@@ -72,7 +72,7 @@ BOOL CWeaponList::WeaponChange(int idx)
 {
 	// Analyze desired ID
 	if (idx==m_iActiveWeapon)											return false;
-	if ((idx<0) || (idx>=int(m_Weapons.size())) || (0==m_Weapons[idx]))	return false;
+	if ((idx<0) || (idx>=(int)(m_Weapons.size())) || (0==m_Weapons[idx]))	return false;
 
 	// Zoom - off
 	Zoom				(FALSE);
@@ -103,7 +103,7 @@ void CWeaponList::weapon_die		()
 {
 	NET_Packet		P;
 
-	for (int it=0; it<int(m_Weapons.size()); it++)
+	for (int it=0; it<(int)(m_Weapons.size()); it++)
 	{
 		CWeapon* W	= m_Weapons[it];
 		if (it==m_iActiveWeapon)

@@ -79,7 +79,7 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	u8					wpn;
 	P.r_u8				(wpn);
 	if (0xff==wpn)		N.weapon		= -1;
-	else				N.weapon		= int(wpn);
+	else				N.weapon		= (int)(wpn);
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);

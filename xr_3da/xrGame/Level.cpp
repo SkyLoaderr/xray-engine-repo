@@ -68,7 +68,7 @@ int	CLevel::get_RPID(LPCSTR name)
 
 	// Search respawn point
 	svector<Fvector4,maxRP>	&rp = Level().get_team(team).RespawnPoints;
-	for (int i=0; i<int(rp.size()); i++)
+	for (int i=0; i<(int)(rp.size()); i++)
 		if (pos.similar(rp[i],EPS_L))	return i;
 	return -1;
 }

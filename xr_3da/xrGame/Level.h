@@ -128,30 +128,30 @@ public:
 	// Misc
 	CTeam&						get_team				(int ID)
 	{
-		if (ID >= int(Teams.size()))	Teams.resize(ID+1);
+		if (ID >= (int)(Teams.size()))	Teams.resize(ID+1);
 		return Teams[ID];
 	}
 	CTeam&						acc_team				(int ID)
 	{
-		VERIFY(ID < int(Teams.size()));
+		VERIFY(ID < (int)(Teams.size()));
 		return Teams[ID];
 	}
 	CSquad&						get_squad				(int ID, int S)
 	{
 		CTeam&	T = get_team(ID);
-		if (S >= int(T.Squads.size()))	T.Squads.resize(S+1);
+		if (S >= (int)(T.Squads.size()))	T.Squads.resize(S+1);
 		return T.Squads[S];
 	}
 	CSquad&						acc_squad				(int ID, int S)
 	{
 		CTeam&	T = acc_team(ID);
-		VERIFY(S < int(T.Squads.size()));
+		VERIFY(S < (int)(T.Squads.size()));
 		return T.Squads[S];
 	}
 	CGroup&						get_group				(int ID, int S, int G)
 	{
 		CSquad&	SQ = get_squad(ID,S);
-		if (G >= int(SQ.Groups.size()))	SQ.Groups.resize(G+1);
+		if (G >= (int)(SQ.Groups.size()))	SQ.Groups.resize(G+1);
 		return SQ.Groups[G];
 	}
 	int							get_RPID				(LPCSTR name);

@@ -141,7 +141,7 @@ void CAI_Rat::AttackRun()
 	m_tVarGoal.set			(0,0,0);
 	m_fGoalChangeDelta		= .5f;
 	m_fSpeed				= m_fCurSpeed = m_fMaxSpeed;
-	//m_fASpeed				= .4f;
+	m_fASpeed				= .4f;
 	//vfChangeGoal();
 
 	if (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE)

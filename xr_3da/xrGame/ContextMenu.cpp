@@ -36,7 +36,7 @@ void CContextMenu::Render(CGameFont* F, DWORD cT, DWORD cI, float s)
 		F->OutNext("%d. %s", i, (char*)Items[i].Name);
 }
 void CContextMenu::Select(int I){
-	if (I>=0 && I<int(Items.size())){
+	if (I>=0 && I<(int)(Items.size())){
 		MenuItem& M = Items[I];
 		Engine.Event.Signal(M.Event, DWORD(M.Param));
 	}
