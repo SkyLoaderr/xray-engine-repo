@@ -56,7 +56,7 @@ IC	CMaterialManager &CCustomMonster::material	() const
 	return			(*m_material_manager);
 }
 
-IC	CSoundUserDataVisitor *CCustomMonster::sound_user_data_visitor	() const
+IC	CSound_UserDataVisitor *CCustomMonster::sound_user_data_visitor	() const
 {
 	VERIFY			(m_sound_user_data_visitor);
 	return			(m_sound_user_data_visitor);

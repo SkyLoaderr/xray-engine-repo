@@ -218,7 +218,7 @@ public:
 
 	IC		CMemoryManager		&memory					() const;
 	virtual float				feel_vision_mtl_transp	(u32 element);
-	virtual	void				feel_sound_new			(CObject* who, int type, CSoundUserDataPtr user_data, const Fvector &Position, float power);
+	virtual	void				feel_sound_new			(CObject* who, int type, CSound_UserDataPtr user_data, const Fvector &Position, float power);
 
 	virtual bool				useful					(const CItemManager *manager, const CGameObject *object) const;
 	virtual float				evaluate				(const CItemManager *manager, const CGameObject *object) const;
@@ -230,7 +230,7 @@ public:
 	virtual float				evaluate				(const CDangerManager *manager, const CDangerObject &object) const;
 
 private:
-	CSoundUserDataVisitor			*m_sound_user_data_visitor;
+	CSound_UserDataVisitor			*m_sound_user_data_visitor;
 
 protected:
 	virtual CSoundUserDataVisitor	*create_sound_visitor	();
