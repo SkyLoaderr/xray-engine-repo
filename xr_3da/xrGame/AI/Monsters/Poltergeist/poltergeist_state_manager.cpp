@@ -103,18 +103,6 @@ void CStateManagerPoltergeist::execute()
 	prev_substate = current_substate;
 }
 
-#define FLAME_DELAY_MIN			6000
-#define FLAME_DELAY_NORMAL		10000
-#define FLAME_DELAY_AGGRESSIVE  8000
-
-#define TELE_DELAY_MIN			500
-#define TELE_DELAY_NORMAL		2000
-#define TELE_DELAY_AGGRESSIVE	1000
-
-#define SCARE_DELAY_MIN			100
-#define SCARE_DELAY_NORMAL		1000
-#define SCARE_DELAY_AGGRESSIVE	500
-
 void CStateManagerPoltergeist::polter_attack()
 {
 	u32 cur_time = Device.dwTimeGlobal;
@@ -124,12 +112,12 @@ void CStateManagerPoltergeist::polter_attack()
 
 	if (time_next_flame_attack < cur_time) {
 		object->FireFlame(enemy);
-		time_next_flame_attack = cur_time + Random.randI(FLAME_DELAY_MIN, (b_aggressive) ? FLAME_DELAY_AGGRESSIVE : FLAME_DELAY_NORMAL);
+		time_next_flame_attack = cur_time + Random.randI(object->m_flame_delay.min, (b_aggressive) ? object->m_flame_delay.aggressive : object->m_flame_delay.normal);
 	}
 
 	if (time_next_tele_attack < cur_time) {
 		object->ProcessTelekinesis(enemy);
-		time_next_tele_attack = cur_time + Random.randI(TELE_DELAY_MIN, (b_aggressive) ? TELE_DELAY_AGGRESSIVE : TELE_DELAY_NORMAL);
+		time_next_tele_attack = cur_time + Random.randI(object->m_tele_delay.min, (b_aggressive) ? object->m_tele_delay.aggressive : object->m_tele_delay.normal);
 	}
 
 	if (time_next_scare_attack < cur_time) {
@@ -138,6 +126,6 @@ void CStateManagerPoltergeist::polter_attack()
 		else 
 			object->StrangeSounds(enemy->Position());
 		
-		time_next_scare_attack = cur_time + Random.randI(SCARE_DELAY_MIN, (b_aggressive) ? SCARE_DELAY_AGGRESSIVE : SCARE_DELAY_NORMAL);
+		time_next_scare_attack = cur_time + Random.randI(object->m_scare_delay.min, (b_aggressive) ? object->m_scare_delay.aggressive : object->m_scare_delay.normal);
 	}
 }

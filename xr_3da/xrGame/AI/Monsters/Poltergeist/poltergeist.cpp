@@ -6,6 +6,8 @@
 #include "../ai_monster_utils.h"
 #include "../../../ai_debug.h"
 #include "poltergeist_movement.h"
+#include "../../../detail_path_manager.h"
+
 
 
 #define HEIGHT_CHANGE_VELOCITY	0.5f
@@ -18,9 +20,11 @@
 CPoltergeist::CPoltergeist()
 {
 	m_particles_object	= 0;
-	m_hidden			= false;
+	state_invisible		= false;
 
 	StateMan = xr_new<CStateManagerPoltergeist>(this);
+
+	invisible_vel.set	(0.1f, 0.1f);
 }
 
 CPoltergeist::~CPoltergeist()
@@ -39,6 +43,9 @@ void CPoltergeist::Load(LPCSTR section)
 
 	m_particles_hidden		= pSettings->r_string(section,"Hidden_Particles");
 	m_particles_hide		= pSettings->r_string(section,"Hide_Particles");
+
+	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
+	movement().detail().add_velocity(eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
 
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd, eAnimWalkDamaged);
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,	 eAnimRunDamaged);
@@ -85,6 +92,17 @@ void CPoltergeist::Load(LPCSTR section)
 #endif
 
 
+	m_flame_delay.min			= pSettings->r_float(section,"Delay_Flame_Min");
+	m_flame_delay.normal		= pSettings->r_float(section,"Delay_Flame_Normal");
+	m_flame_delay.aggressive	= pSettings->r_float(section,"Delay_Flame_Aggressive");
+
+	m_tele_delay.min			= pSettings->r_float(section,"Delay_Tele_Min");
+	m_tele_delay.normal			= pSettings->r_float(section,"Delay_Tele_Normal");
+	m_tele_delay.aggressive		= pSettings->r_float(section,"Delay_Tele_Aggressive");
+
+	m_scare_delay.min			= pSettings->r_float(section,"Delay_Scare_Min");
+	m_scare_delay.normal		= pSettings->r_float(section,"Delay_Scare_Normal");
+	m_scare_delay.aggressive	= pSettings->r_float(section,"Delay_Scare_Aggressive");
 }
 
 void CPoltergeist::reload(LPCSTR section)
@@ -115,9 +133,9 @@ void CPoltergeist::reinit()
 
 void CPoltergeist::Hide()
 {
-	if (m_hidden) return;
+	if (state_invisible) return;
 	
-	m_hidden   = true;	
+	state_invisible   = true;	
 
 	setVisible(false);
 	
@@ -132,9 +150,9 @@ void CPoltergeist::Hide()
 
 void CPoltergeist::Show()
 {
-	if (!m_hidden) return;
+	if (!state_invisible) return;
 
-	m_hidden = false;
+	state_invisible = false;
 	
 	setVisible(TRUE);
 
@@ -159,7 +177,7 @@ void CPoltergeist::UpdateCL()
 
 void CPoltergeist::ForceFinalAnimation()
 {
-	if (m_hidden) 
+	if (state_invisible) 
 		MotionMan.SetCurAnim(eAnimMiscAction_01);
 }
 
@@ -184,7 +202,7 @@ void CPoltergeist::net_Destroy()
 
 void CPoltergeist::Die(CObject* who)
 {
-	if (m_hidden) {
+	if (state_invisible) {
 		setVisible(true);
 		Position() = m_current_position;
 		CParticlesPlayer::StopParticles(m_particles_hidden);
@@ -196,7 +214,7 @@ void CPoltergeist::Die(CObject* who)
 
 void CPoltergeist::UpdateHeight()
 {
-	if (!m_hidden) return;
+	if (!state_invisible) return;
 	
 	u32 cur_time = Device.dwTimeGlobal;
 	
@@ -209,8 +227,6 @@ void CPoltergeist::UpdateHeight()
 void CPoltergeist::on_activate()
 {
 	if (m_disable_hide) return;
-	//if (!m_disable_hide) return;
-	
 
 	Hide();
 	
@@ -230,4 +246,18 @@ CMovementManager *CPoltergeist::create_movement_manager	()
 	return		(m_movement_manager = xr_new<CPoltergeisMovementManager>(this));
 }
 
+#ifdef DEBUG
+CBaseMonster::SDebugInfo CPoltergeist::show_debug_info()
+{
+	CBaseMonster::SDebugInfo info = inherited::show_debug_info();
+	if (!info.active) return CBaseMonster::SDebugInfo();
+
+	string128 text;
+	sprintf(text, "Invisibility Value = [%f]", Energy::get_value());
+	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
+	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
+
+	return CBaseMonster::SDebugInfo();
+}
+#endif
 

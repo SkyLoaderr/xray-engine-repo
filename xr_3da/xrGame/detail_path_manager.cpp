@@ -10,6 +10,7 @@
 #include "detail_path_manager.h"
 #include "ai_space.h"
 #include "ai_object_location.h"
+#include "level_navigation_graph.h"
 
 CDetailPathManager::CDetailPathManager	(CRestrictedObject *object)
 {
@@ -88,8 +89,8 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 			}
 			default : NODEFAULT;
 		}
-		if (failed())
-			Msg						("! DetailPathManager has failed!");
+		if (failed()) 
+			Msg						("! DetailPathManager has failed! :: from [%f,%f,%f] to [%f,%f,%f]", VPUSH(ai().level_graph().vertex_position(level_path.front())), VPUSH(ai().level_graph().vertex_position(level_path.back())));
 
 		if (valid()) {
 			m_actuality				= true;

@@ -5,7 +5,7 @@
 
 void CPoltergeisMovementManager::move_along_path(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
-	if (!m_monster->m_hidden) {
+	if (!m_monster->is_hidden()) {
 		inherited::move_along_path(movement_control, dest_position, time_delta);
 		return;
 	}

@@ -28,8 +28,10 @@ void CStatePoltergeistAttackHiddenAbstract::execute()
 		if (object->movement().IsPathEnd(DIST_TO_PATH_END)) select_target_point();
 	}
 	
-	object->movement().set_target_point			(m_target.point, m_target.node);
-	object->movement().set_generic_parameters	();
+	object->movement().set_target_point		(m_target.point, m_target.node);
+	object->movement().set_rebuild_time		(5000);
+	object->movement().set_distance_to_end	(3.f);
+	object->movement().set_use_covers		(false);
 
 	object->MotionMan.m_tAction			= ACT_RUN;
 	object->MotionMan.accel_activate	(eAT_Aggressive);

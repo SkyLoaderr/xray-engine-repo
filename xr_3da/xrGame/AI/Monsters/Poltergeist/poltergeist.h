@@ -21,15 +21,18 @@ class CPoltergeist :	public CBaseMonster ,
 	CParticlesObject	*m_particles_object;
 
 	float				m_height;
-	bool				m_hidden;
 
 	LPCSTR				m_particles_hidden;
 	LPCSTR				m_particles_hide;
 
 	bool				m_disable_hide;
 
-//private:
-//	CPoltergeisMovementManager *m_movement_manager;
+	SMotionVel			invisible_vel;
+
+public:
+	struct SDelay {
+		float min, normal, aggressive;
+	} m_flame_delay, m_tele_delay, m_scare_delay;
 
 public:
 					CPoltergeist		();
@@ -53,7 +56,7 @@ public:
 	virtual	void	on_deactivate		();
 
 
-			bool	is_hidden			() {return m_hidden;}
+			bool	is_hidden			() {return state_invisible;}
 
 	// FireBall
 
@@ -117,6 +120,13 @@ public:
 private:
 			void	Hide					();
 			void	Show					();
+
+
+public:
+#ifdef DEBUG
+			virtual CBaseMonster::SDebugInfo show_debug_info();
+#endif
+
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

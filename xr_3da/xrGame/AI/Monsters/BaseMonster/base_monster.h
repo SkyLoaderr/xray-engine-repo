@@ -68,7 +68,7 @@ public:
 		eVelocityParamsAttackNorm		= eVelocityParameterStand		| eVelocityParameterWalkNormal	| eVelocityParameterRunNormal,
 		eVelocityParamsAttackDamaged	= eVelocityParameterStand		| eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
 		eVelocityParamsSteal			= eVelocityParameterStand		| eVelocityParameterSteal,
-		eVelocityParamsInvisible		= eVelocityParameterInvisible	| eVelocityParamsRun,
+		eVelocityParamsInvisible		= eVelocityParameterInvisible	| eVelocityParameterStand,
 		eVelocityParamsRunAttack		= eVelocityParameterRunAttack	| eVelocityParameterStand, 
 
 		eVelocityParameterCustom		= u32(1) <<	 12,
