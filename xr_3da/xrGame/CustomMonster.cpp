@@ -53,9 +53,9 @@ CCustomMonster::CCustomMonster()
 {
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
 
-	Weapons	= 0;
-	tWatchDirection.x = 1.f;
-	tWatchDirection.y = tWatchDirection.z = 0.f;
+	Weapons				= 0;
+	tWatchDirection.x	= 1.f;
+	tWatchDirection.y	= tWatchDirection.z = 0.f;
 }
 
 CCustomMonster::~CCustomMonster()
@@ -63,14 +63,6 @@ CCustomMonster::~CCustomMonster()
 	_DELETE		(Weapons);
 
 	Device.seqRender.Remove	(this);
-
-	/**
-	State_Pop	();
-	State_Pop	();
-	State_Pop	();
-	State_Pop	();
-	State_Pop	();
-	/**/
 }
 
 void CCustomMonster::Load(CInifile* ini, const char* section)
@@ -117,7 +109,6 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 		LPCSTR S1 = ini->ReadSTRING(section,"bone_torso_weapon"),S2 = ini->ReadSTRING(section,"bone_head_weapon");
 		Weapons->Init			(S1,S2);
 		Weapons->TakeItem		(CLSID_OBJECT_W_M134_en,0);
-		//Weapons->TakeItem		(CLSID_OBJECT_W_LR300,0);
 	}
 
 	// take index spine bone
