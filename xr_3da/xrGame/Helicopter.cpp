@@ -648,7 +648,8 @@ if(who==this)
 	
 	if (who){
 		switch (who->SUB_CLS_ID){
-			case CLSID_OBJECT_ACTOR: {
+			case CLSID_OBJECT_ACTOR:
+			case CLSID_AI_STALKER:{
 
 			NET_Packet P_;
 			P_.write_start();
