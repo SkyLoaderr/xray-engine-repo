@@ -9,7 +9,7 @@
 #define EOBJ_OMOTION_VERSION   	0x0003
 #define EOBJ_SMOTION_VERSION   	0x0004
 
-#ifdef _LWO_EXPORT
+#ifdef _LW_EXPORT
 	extern char* ReplaceSpace(char* s);
 #endif
 //------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ CCustomMotion::~CCustomMotion(){
 }
 
 void CCustomMotion::Save(CFS_Base& F){
-#ifdef _LWO_EXPORT
+#ifdef _LW_EXPORT
 	ReplaceSpace(name);			strlwr(name);
 #endif
 	F.WstringZ	(name);

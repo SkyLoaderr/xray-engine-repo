@@ -2,7 +2,7 @@
 #ifndef _Motion_H_
 #define _Motion_H_
 
-#ifdef _LWO_EXPORT
+#ifdef _LW_EXPORT
 #include <lwrender.h>
 #include <lwhost.h>
 #endif
@@ -67,7 +67,7 @@ public:
 	virtual void	SaveMotion		(const char* buf)=0;
 	virtual bool	LoadMotion		(const char* buf)=0;
 
-#ifdef _LWO_EXPORT
+#ifdef _LW_EXPORT
 	CEnvelope*		CreateEnvelope	(LWChannelID chan, LWChannelID* chan_parent=0);
 #endif
 };
@@ -87,7 +87,7 @@ public:
 	virtual void	SaveMotion		(const char* buf);
 	virtual bool	LoadMotion		(const char* buf);
 
-#ifdef _LWO_EXPORT
+#ifdef _LW_EXPORT
 	void			ParseObjectMotion(LWItemID object);
 #endif
 };
@@ -123,7 +123,7 @@ public:
 
 	virtual void	SaveMotion		(const char* buf);
 	virtual bool	LoadMotion		(const char* buf);
-#ifdef _LWO_EXPORT
+#ifdef _LW_EXPORT
 	void			ParseBoneMotion	(LWItemID bone);
 #endif
 };

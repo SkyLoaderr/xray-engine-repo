@@ -318,7 +318,7 @@ public:
 	LPCSTR			GenerateSurfaceName		(const char* base_name);
 #endif
 	
-#ifdef _LWO_EXPORT
+#ifdef _LW_EXPORT
 		// import routines
 	bool			Import_LWO				(st_ObjectDB *I);
 #endif
