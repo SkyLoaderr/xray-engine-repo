@@ -284,11 +284,11 @@ public:
 				}
 			}
 			else {
-				random_shuffle									(l_tpaStack.begin(),l_tpaStack.end());
+				//random_shuffle									(l_tpaStack.begin(),l_tpaStack.end());
 				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
 				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
 				xr_vector<SLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<SLevelPoint>::iterator				E = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_wArtefactSpawnCount;
+				xr_vector<SLevelPoint>::iterator				E = m_tpLevelPoints.end();
 				xr_vector<u32>::iterator						i = l_tpaStack.begin();
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
