@@ -43,7 +43,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					ref_shader pWallmarkShader = mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];
 
 					//добавить отметку на материале
-					::Render->add_Wallmark(pWallmarkShader, *((Fvector*)c->pos), 
+					::Render->add_StaticWallmark(pWallmarkShader, *((Fvector*)c->pos), 
 						0.09f, T,
 						Level().ObjectSpace.GetStaticVerts());
 

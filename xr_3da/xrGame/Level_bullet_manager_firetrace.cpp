@@ -133,7 +133,7 @@ NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
 		if (pWallmarkShader)
 		{
 			//добавить отметку на материале
-			::Render->add_Wallmark	(*pWallmarkShader, vEnd,
+			::Render->add_StaticWallmark	(*pWallmarkShader, vEnd,
 				bullet->wallmark_size, pTri, pVerts);
 		}
 	}		

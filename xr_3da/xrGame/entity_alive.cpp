@@ -355,7 +355,7 @@ void CEntityAlive::PlaceBloodWallmark(const Fvector& dir, const Fvector& start_p
 			if (pWallmarkShader)
 			{
 				//добавить отметку на материале
-				::Render->add_Wallmark(*pWallmarkShader, end_point,
+				::Render->add_StaticWallmark(*pWallmarkShader, end_point,
 					wallmark_size, pTri, pVerts);
 			}
 		}
