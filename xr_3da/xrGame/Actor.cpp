@@ -321,8 +321,10 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	Fvector				p = Position();
 	P.w_vec3			(p);//Position());
 	P.w_angle8			(r_model_yaw);
-	P.w_angle8			(r_torso.yaw);
-	P.w_angle8			(r_torso.pitch);
+	P.w_angle8			(unaffected_r_torso_yaw	);//(r_torso.yaw);
+	P.w_angle8			(unaffected_r_torso_pitch);//(r_torso.pitch);
+//	unaffected_r_torso_yaw	 = r_torso.yaw;
+//	unaffected_r_torso_pitch = r_torso.pitch;
 
 	P.w_float			(inventory().TotalWeight());
 	P.w_u32				(0);
@@ -402,6 +404,8 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_angle8			(N.o_model		);
 	P.r_angle8			(N.o_torso.yaw	);
 	P.r_angle8			(N.o_torso.pitch);
+	unaffected_r_torso_yaw	 = N.o_torso.yaw;
+	unaffected_r_torso_pitch = N.o_torso.pitch;
 
 	P.r_float			(fDummy);
 	P.r_u32				(dwDummy);
@@ -436,13 +440,18 @@ void	CActor::net_Import_Base_proceed		( )
 
 	if (pStatGraph) 
 	{
-		pStatGraph->SetMinMax(0, 1.0f, 300);
-		pStatGraph->SetGrid(0, 0.0f, 10, 0.2f, 0xff808080, 0xffffffff);
+		pStatGraph->SetMinMax(0, 100.0f, 300);
+		pStatGraph->SetGrid(0, 0.0f, 10, 20.0f, 0xff808080, 0xffffffff);
 		pStatGraph->SetStyle(CStatGraph::stBar);
 		pStatGraph->SetStyle(CStatGraph::stCurve, 1);
 		pStatGraph->SetStyle(CStatGraph::stCurve, 2);
 
-		pStatGraph->AppendItem(g_fMaxDesyncLen, 0xffff00ff, 1);
+		u32 dTime = 0;
+		if (Level().timeServer() < N.dwTimeStamp) dTime = 0;
+		else
+			dTime = Level().timeServer() - N.dwTimeStamp;
+
+		pStatGraph->AppendItem(float(dTime)/*g_fMaxDesyncLen*/, 0xffff00ff, 0);
 	};
 	//---------------------------------------------
 	SMemoryPos* pMemPos = FindMemoryPos(N.dwTimeStamp);
@@ -454,13 +463,13 @@ void	CActor::net_Import_Base_proceed		( )
 		rPos.lerp(pMemPos->SState.previous_position, pMemPos->SState.position, factor);
 		dDesyncVec.sub(rPos, N.p_pos);
 
-		if (pStatGraph)pStatGraph->AppendItem(dDesyncVec.magnitude(), 0xff00ff00);
+//		if (pStatGraph)pStatGraph->AppendItem(dDesyncVec.magnitude(), 0xff00ff00);
 	}
 	else
 	{
 		dDesyncVec.sub(Position(), N.p_pos);
 
-		if (pStatGraph)pStatGraph->AppendItem(dDesyncVec.magnitude(), 0xffff0000);
+//		if (pStatGraph)pStatGraph->AppendItem(dDesyncVec.magnitude(), 0xffff0000);
 	};
 	//---------------------------------------------
 	if (dDesyncVec.magnitude() >= g_fMaxDesyncLen)
@@ -1569,12 +1578,6 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 		r_torso.pitch	=	unaffected_r_torso_pitch + dangle.x;
 	}
 
-/*	Fvector dangle;
-	EffectorManager().vDirection.getHP(dangle.y, dangle.x);
-	r_torso.yaw		=	unaffected_r_torso_yaw - dangle.y;
-	r_torso.pitch	=	unaffected_r_torso_pitch - dangle.x;
-*/
-
 
 	// если есть движение - выровнять модель по камере
 	if (mstate_rl&mcAnyMove)	{
@@ -1604,8 +1607,17 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 	r_torso.yaw		= NET_Last.o_torso.yaw;
 	r_torso.pitch	= NET_Last.o_torso.pitch;
 
-	unaffected_r_torso_yaw	 = r_torso.yaw;
-	unaffected_r_torso_pitch = r_torso.pitch;
+	CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
+		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
+
+	if(pWeapon) 
+	{
+		Fvector dangle;
+		dangle = pWeapon->GetRecoilDeltaAngle();
+		r_torso.yaw		=	unaffected_r_torso_yaw + dangle.y;
+		r_torso.pitch	=	unaffected_r_torso_pitch + dangle.x;
+	}
+
 }
 
 void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
@@ -2040,7 +2052,7 @@ void CActor::make_Interpolation	()
 
 				g_Orientate					(NET_Last.mstate,0			);
 
-				cam_Active()->Set		(-r_torso.yaw,r_torso.pitch,0);		// set's camera orientation
+				cam_Active()->Set		(-unaffected_r_torso_yaw,unaffected_r_torso_pitch,0);		// set's camera orientation
 			};
 		};
 	};
