@@ -137,7 +137,7 @@ function save_dialog:InitControls()
 	message_box = CUIMessageBox()
 	message_box:Init(message_rect.x, message_rect.y, message_rect.width, message_rect.height)
 	message_box:AutoCenter()
-	message_box:SetStyle(STYLE_OK)
+	message_box:SetStyle(0)
 end
 
 function save_dialog:InitCallBacks()
