@@ -185,6 +185,8 @@ void CWeaponAutoRifle::Update		(float dt, BOOL bHUDView)
 {
 	// sound fire loop
 	inherited::Update			(dt,bHUDView);
-	if (sndFireLoop.feedback)	sndFireLoop.feedback->SetPosition(vLastFP);
-	if (sndReload.feedback)		sndReload.feedback->SetPosition(vLastFP);
+	UpdateFP					(bHUDView);
+	if (sndFireLoop.feedback)	sndFireLoop.feedback->SetPosition	(vLastFP);
+	if (sndReload.feedback)		sndReload.feedback->SetPosition		(vLastFP);
+	if (sndEmptyClick.feedback)	sndEmptyClick.feedback->SetPosition	(vLastFP);
 }
