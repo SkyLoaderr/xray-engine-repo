@@ -288,6 +288,7 @@ CHelicopter::UpdateCL()
 
 	m_left_rocket_bone_xform	= K->LL_GetTransform(m_left_rocket_bone);
 	m_left_rocket_bone_xform.mulA(XFORM());
+
 	m_right_rocket_bone_xform	= K->LL_GetTransform(m_right_rocket_bone);
 	m_right_rocket_bone_xform.mulA(XFORM());
 

@@ -46,8 +46,6 @@ protected:
 
 	u16								m_left_rocket_bone;
 	u16								m_right_rocket_bone;
-	Fmatrix							m_left_rocket_bone_xform;
-	Fmatrix							m_right_rocket_bone_xform;
 
 	Fvector							m_fire_pos;
 	Fvector							m_fire_dir;
@@ -80,6 +78,9 @@ protected:
 
 	typedef xr_map<s16,float>::iterator bonesIt;
 public:
+	Fmatrix							m_left_rocket_bone_xform;
+	Fmatrix							m_right_rocket_bone_xform;
+
 	float							m_attack_altitude;
 	float							m_min_rocket_dist;
 	float							m_max_rocket_dist;

@@ -23,12 +23,19 @@ CHelicopterMovementManager::~CHelicopterMovementManager()
 void 
 CHelicopterMovementManager::OnRender()
 {
-	return;
+/*
+float path_box_size = .105f;
+Fvector pos=helicopter()->m_left_rocket_bone_xform.c;
+RCache.dbg_DrawAABB  (pos,path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
+
+pos=helicopter()->m_right_rocket_bone_xform.c;
+RCache.dbg_DrawAABB  (pos,path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
+*/
+/*	return;
 	Fvector pos, prev_pos;
 
 	RCache.OnFrameEnd	();
 
-	float path_box_size = .105f;
 
 	for(u32 i=0;i<m_path.size();++i)
 	{
@@ -43,7 +50,7 @@ CHelicopterMovementManager::OnRender()
 		RCache.dbg_DrawLINE  (Fidentity,prev_pos,pos,D3DCOLOR_XRGB(0,255,0));
 
 	}
-
+*/
 /*	for(u32 i=0;i<m_keyTrajectory.size();++i)
 	{
 		pos = m_keyTrajectory[i].position;
