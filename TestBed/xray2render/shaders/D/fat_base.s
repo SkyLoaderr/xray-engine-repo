@@ -1,3 +1,5 @@
+#define LAST c256
+
 struct 	a2v
 {
   float4 Position: 	POSITION;	// Object-space position
@@ -30,11 +32,12 @@ struct 	p2f
 //////////////////////////////////////////////////////////////////////////////////////////
 uniform float3x4 	m_model2view;
 uniform float4x4 	m_model2view2projection;
+uniform float4		m_a[256] : register(clast);
 uniform sampler2D 	s_texture;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Vertex
-v2p_out v_main	( a2v  	IN, uniform float4 a[])
+v2p_out v_main	( a2v  	IN )
 {
   // Calculate eye-space position and normal vectors.
   float3 Pe 	= mul	(m_model2view, 		 IN.Position	);
@@ -43,8 +46,8 @@ v2p_out v_main	( a2v  	IN, uniform float4 a[])
   // Write output registers.
   v2p_out 	OUT;
   OUT.HPos 	= mul	(m_model2view2projection,IN.Position	);
-  OUT.Pe 	= float4(Pe.x,Pe.y,Pe.z,a[IN.Texcoord.x]);
-  OUT.Ne 	= float4(Ne.x,Ne.y,Ne.z,a[IN.Texcoord.y]);
+  OUT.Pe 	= float4(Pe.x,Pe.y,Pe.z,2*m_a[IN.TexCoords.x].x);
+  OUT.Ne 	= float4(Ne.x,Ne.y,Ne.z,3*m_a[IN.TexCoords.y].y);
   OUT.Tex0 	= IN.TexCoords;
 
   return OUT;
