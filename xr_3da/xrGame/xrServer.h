@@ -78,30 +78,11 @@ public:
 	IC void					clients_Lock		()			{	csPlayers.Enter();	}
 	IC void					clients_Unlock		()			{   csPlayers.Leave();	}
 
-	IC xrClientData*		ID_to_client		(DPNID ID)
-	{
-		if (0==ID)			return 0;
-		csPlayers.Enter		();
-		for (DWORD client=0; client<net_Players.size(); client++)
-		{
-			if (net_Players[client]->ID==ID)	{
-				csPlayers.Leave		();
-				return (xrClientData*)net_Players[client];
-			}
-		}
-		csPlayers.Leave		();
-		return 0;
-	}
-
-	IC xrServerEntity*		ID_to_entity		(u16 ID)
-	{
-		if (0xffff==ID)				return 0;
-		xrS_entities::iterator	I	= entities.find	(ID);
-		if (I!=entities.end())		return I->second;
-		else						return 0;
-	}
+	xrClientData*			ID_to_client		(DPNID ID);
+	xrServerEntity*			ID_to_entity		(u16 ID);
 
 	// main
+	virtual BOOL			Connect				(LPCSTR		session_name);
 	void					Update				();
 	void					SLS_Default			();
 	void					SLS_Save			(CFS_Base& FS);

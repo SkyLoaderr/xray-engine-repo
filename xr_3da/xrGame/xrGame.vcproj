@@ -1168,6 +1168,9 @@
 				RelativePath="xrServer_perform_IDgen.cpp">
 			</File>
 			<File
+				RelativePath="xrServer_perform_RPgen.cpp">
+			</File>
+			<File
 				RelativePath="xrServer_perform_migration.cpp">
 			</File>
 			<File
