@@ -87,7 +87,7 @@ void CWeaponRail::OnMove()
 					SetRail		(p1,d,RQ,TRUE);
 					if (RQ.O)	{
 						if (RQ.O->CLS_ID == CLSID_ENTITY)
-							((CEntity*)RQ.O)->Hit(iHitPower,d,m_pParent);
+							dynamic_cast<CEntity*>(RQ.O)->Hit(iHitPower,d,m_pParent);
 					}
 				}
 			} else {

@@ -54,7 +54,7 @@ void CHUDCursor::Render()
 {
 	Fvector		p1,p2,dir;
 
-	int cur_team = ((CEntity*)pCreator->CurrentEntity())->id_Team;
+	int			cur_team = (dynamic_cast<CEntity*>(pCreator->CurrentEntity()))->g_Team();
 
 	p1	= Device.vCameraPosition;
 	dir = Device.vCameraDirection;

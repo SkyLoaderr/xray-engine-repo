@@ -58,7 +58,8 @@ void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Fvector2
 }
 //--------------------------------------------------------------------
 
-void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team){
+void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
+{
 	entity.Clear();
 	Fvector2 P;
 
@@ -72,7 +73,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team){
 	entity.Out		(P.x,P.y,COLOR_SELF,alLeft|alTop);
 	// render enemy
 	for (DWORD i=0; i<Team.KnownEnemys.size(); i++){
-		CEntity* E = (CEntity*)Team.KnownEnemys[i].key;
+		CEntity* E = dynamic_cast<CEntity*>(Team.KnownEnemys[i].key);
 		ConvertToLocal(LM,E->Position(),P);
 		entity.Out	(P.x,P.y,COLOR_ENEMY,alLeft|alTop);
 	}

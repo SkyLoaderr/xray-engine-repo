@@ -51,7 +51,7 @@ bool CUI::Render(){
 	UIWeapon.Render();
 	UIHealth.Render();
 
-	CEntity* m_Actor = (CEntity*)Level().CurrentEntity();
+	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor&&m_Actor->net_Local)
 		UISquad.Render(Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad],bSelGroups,bActive);
 
@@ -70,7 +70,7 @@ DWORD ScaleAlpha(DWORD val, float factor){
 }
 
 void CUI::OnMove(){
-	CEntity* m_Actor = (CEntity*)Level().CurrentEntity();
+	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor&&m_Actor->net_Local)
 		UIZoneMap.UpdateRadar(m_Actor,Level().Teams[m_Actor->id_Team]);
 
@@ -109,7 +109,7 @@ void CUI::OnMove(){
 //--------------------------------------------------------------------
 
 bool CUI::FindGroup(int idx){
-	CEntity* m_Actor = (CEntity*)Level().CurrentEntity();
+	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if ((idx<0)||(idx>9)) return false;
 	if (m_Actor&&m_Actor->net_Local){
 		CSquad& S = Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad];
@@ -191,7 +191,7 @@ bool CUI::OnMouseMove	(int dx, int dy)
 //--------------------------------------------------------------------
 
 void CUI::SetState(EGroupState st){
-	CEntity* m_Actor = (CEntity*)Level().CurrentEntity();
+	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if (!m_Actor||!m_Actor->net_Local) return;
 	for (int i=0; i<MAX_GROUPS; i++)
 		if (bSelGroups[i]) Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad].Groups[i].SetState(st);
@@ -199,7 +199,7 @@ void CUI::SetState(EGroupState st){
 //--------------------------------------------------------------------
 
 void CUI::SetFlag(EGroupTriggers tr, BOOL f){
-	CEntity* m_Actor = (CEntity*)Level().CurrentEntity();
+	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if (!m_Actor||!m_Actor->net_Local) return;
 	for (int i=0; i<MAX_GROUPS; i++)
 		if (bSelGroups[i]) Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad].Groups[i].SetFlag(tr,f);
@@ -207,7 +207,7 @@ void CUI::SetFlag(EGroupTriggers tr, BOOL f){
 //--------------------------------------------------------------------
 
 void CUI::InvertFlag(EGroupTriggers tr){
-	CEntity* m_Actor = (CEntity*)Level().CurrentEntity();
+	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if (!m_Actor||!m_Actor->net_Local) return;
 	for (int i=0; i<MAX_GROUPS; i++)
 		if (bSelGroups[i]) Level().Teams[m_Actor->id_Team].Squads[m_Actor->id_Squad].Groups[i].InvertFlag(tr);

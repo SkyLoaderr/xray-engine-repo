@@ -384,7 +384,7 @@ void CCustomMonster::UpdateCL	()
 BOOL __fastcall	Qualifier				(CObject* O, void* P)
 {
 	if (O->CLS_ID!=CLSID_ENTITY)			return FALSE;
-	CEntity* E = (CEntity*)O;
+	CEntity* E = dynamic_cast<CEntity*>		(O);
 	if (E->g_Team() == int(*LPDWORD(P)))	return FALSE;
 	return TRUE;
 }

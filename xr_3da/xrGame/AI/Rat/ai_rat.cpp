@@ -148,7 +148,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	// Iterate on known
 	for (DWORD i=0; i<Known.size(); i++)
 	{
-		CEntity*	E = (CEntity*)Known[i].key;
+		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
 			// Calculate local visibility

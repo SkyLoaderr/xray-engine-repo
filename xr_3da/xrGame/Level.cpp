@@ -286,11 +286,11 @@ void CLevel::ClientReceive()
 				if (O)	{
 					u16			ID2;
 					P->r_u16	(ID2);
-					CEntity*	WHO = (CEntity*)Objects.net_Find(ID2);
+					CEntity*	WHO = dynamic_cast<CEntity*>(Objects.net_Find(ID2));
 					u8			perc;	P->r_u8		(perc);
 					Fvector		dir;	P->r_dir	(dir);
 
-					CEntity*	E	= (CEntity*)O;
+					CEntity*	E	= dynamic_cast<CEntity*>(O);
 					E->Hit		(u32(perc),dir,WHO);
 				}
 			}
@@ -300,7 +300,7 @@ void CLevel::ClientReceive()
 				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find	(ID);
 				if (O) {
-					CEntity*	E	= (CEntity*)O;
+					CEntity*	E	= dynamic_cast<CEntity*>(O);
 					E->g_sv_fireStart	(P);
 				}
 			}
@@ -310,7 +310,7 @@ void CLevel::ClientReceive()
 				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find	(ID);
 				if (O) {
-					CEntity*	E	= (CEntity*)O;
+					CEntity*	E	= dynamic_cast<CEntity*>(O);
 					E->g_fireEnd	();
 				}
 			}

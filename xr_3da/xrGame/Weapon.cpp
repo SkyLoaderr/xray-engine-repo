@@ -216,7 +216,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 		if (RQ.O) {
 			if (m_pParent->Local() && (RQ.O->CLS_ID==CLSID_ENTITY))
 			{
-				CEntity* E =	(CEntity*)RQ.O;
+				CEntity* E =	dynamic_cast<CEntity*>(RQ.O);
 				E->Hit			(iHitPower,D,m_pParent);
 			}
 		}
