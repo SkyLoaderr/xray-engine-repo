@@ -21,7 +21,7 @@ CRenderTarget::CRenderTarget()
 BOOL CRenderTarget::Create	()
 {
 	// 
-	RT			= Device.Shader._CreateRT		(RTname,Device.dwWidth,Device.dwHeight);
+	RT			= Device.Shader._CreateRT		(RTname,512/*Device.dwWidth*/,512/*Device.dwHeight*/);
 	
 	// Shaders and stream
 	pStream		= Device.Streams.Create			(FVF::F_TL,8);
@@ -34,7 +34,7 @@ BOOL CRenderTarget::Create	()
 void CRenderTarget::OnDeviceCreate	()
 {
 	hPS			= Device.Shader._CreatePS		("transfer");
-	hTex		= Device.Shader._CreateTexture	("transfer");
+	hTex		= Device.Shader._CreateTexture	("transfer3");
 
 	bAvailable	= Create	();
 }
@@ -72,8 +72,8 @@ void CRenderTarget::End		()
 	DWORD	Cgray	= D3DCOLOR_RGBA	(90,90,90,0);
 	int		A		= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
 	DWORD	Calpha	= D3DCOLOR_RGBA	(255,255,255,A);
-	float	tw		= float(Device.dwWidth);
-	float	th		= float(Device.dwHeight);
+	float	tw		= 512; //float(Device.dwWidth);
+	float	th		= 512; //float(Device.dwHeight);
 	DWORD	_w		= Device.dwWidth;
 	DWORD	_h		= Device.dwHeight;
 	
@@ -112,15 +112,19 @@ void CRenderTarget::End		()
 		}
 	} else {
 		// Draw COLOR
-/*
+
 		Device.Shader.set_Shader	(pShaderSet);
 		Device.Primitive.Draw		(pStream,4,2,Offset+4,Device.Streams_QuadIB);
-*/
+
 		
+/*
 		Device.Shader.set_Shader			(pShaderSet);
-		HW.pDevice->SetPixelShader			(hPS->dwHandle);
 		hTex->Apply							(1);
+		HW.pDevice->SetPixelShader			(hPS->dwHandle);
+		HW.pDevice->SetTextureStageState	(1,D3DTSS_ADDRESSU,				D3DTADDRESS_CLAMP	);
+		HW.pDevice->SetTextureStageState	(1,D3DTSS_ADDRESSV,				D3DTADDRESS_CLAMP	);
 		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
 		HW.pDevice->SetPixelShader			(0);
+*/
 	}
 }
