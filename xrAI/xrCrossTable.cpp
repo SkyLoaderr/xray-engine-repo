@@ -167,7 +167,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 			for (int j=0; j<iVertexCount; j++)
 				if ((tGraph.m_tpaGraph[j].tNodeID == i) && (tCrossTableCell.tGraphIndex != j)) {
 					Msg("! Warning : graph points are too close, therefore cross table is automatically validated");
-					Msg("%d : %d[%f] -> %d[%f]",i,tCrossTableCell.tGraphIndex,tCrossTableCell.fDistance,j,tDistances[j][i]);
+					Msg("%d : [%f][%f][%f] %d[%f] -> %d[%f]",i,VPUSH(tGraph.m_tpaGraph[j].tLocalPoint),tCrossTableCell.tGraphIndex,tCrossTableCell.fDistance,j,tDistances[j][i]);
 					tCrossTableCell.fDistance	= tDistances[j][i];
 					tCrossTableCell.tGraphIndex = j;
 				}
