@@ -348,17 +348,11 @@ void CALifeItem::STATE_Read(NET_Packet &tNetPacket, u16 size)
 void CALifeItem::UPDATE_Write(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
-	tNetPacket.w_float			(m_fMass);
-	tNetPacket.w_u32			(m_dwCost);
-	tNetPacket.w_u32			(m_iHealthValue);
 };
 
 void CALifeItem::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-	tNetPacket.r_float			(m_fMass);
-	tNetPacket.r_u32			(m_dwCost);
-	tNetPacket.r_s32			(m_iHealthValue);
 };
 
 // CALifeAnomalousZone

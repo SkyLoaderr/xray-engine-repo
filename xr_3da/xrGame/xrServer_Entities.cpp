@@ -5,7 +5,7 @@
 #include "clsid_game.h"
 #include "xrServer_Entities.h"
 
-xrSE_Weapon::xrSE_Weapon(LPCSTR caSection) : CALifeDynamicObject(caSection)
+xrSE_Weapon::xrSE_Weapon(LPCSTR caSection) : CALifeItem(caSection)
 {
 	a_current			= 90;
 	a_elapsed			= 0;
@@ -97,7 +97,7 @@ void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** WeaponAmmo
-xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeDynamicObject(caSection)
+xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeItem(caSection)
 {
 	a_elapsed = m_boxSize = pSettings->r_s32(caSection, "box_size");
 }
@@ -241,7 +241,7 @@ void	xrSE_Dummy::FillProp			(LPCSTR pref, PropItemVec& values)
 #endif
 
 //***** MercuryBall
-xrSE_MercuryBall::xrSE_MercuryBall(LPCSTR caSection) : CALifeDynamicObject(caSection)
+xrSE_MercuryBall::xrSE_MercuryBall(LPCSTR caSection) : CALifeItem(caSection)
 {
 	s_Model[0]	=	0;
 }

@@ -102,7 +102,7 @@ xrSE_DECLARE_END
 /////////////////////////////////////////////////////////////////////
 
 //***** Weapon
-xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeDynamicObject)
+xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeItem)
 	u32								timestamp;
 	u8								flags;
 	u8								state;
@@ -122,7 +122,7 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeDynamicObject)
 xrSE_DECLARE_END
 
 //***** WeaponAmmo
-xrSE_DECLARE_BEGIN(xrSE_WeaponAmmo,CALifeDynamicObject)
+xrSE_DECLARE_BEGIN(xrSE_WeaponAmmo,CALifeItem)
 	u16								a_elapsed;
 	u16								m_boxSize;
 							
@@ -161,7 +161,7 @@ xrSE_DECLARE_BEGIN(xrSE_Dummy,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** MercuryBall
-xrSE_DECLARE_BEGIN(xrSE_MercuryBall,CALifeDynamicObject)
+xrSE_DECLARE_BEGIN(xrSE_MercuryBall,CALifeItem)
 	string64						s_Model;
 									xrSE_MercuryBall(LPCSTR caSection);
 xrSE_DECLARE_END
@@ -181,9 +181,9 @@ xrSE_DECLARE_BEGIN(xrSE_Crow,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** Health
-xrSE_DECLARE_BEGIN(xrSE_Health,CALifeDynamicObject)
+xrSE_DECLARE_BEGIN(xrSE_Health,CALifeItem)
 	u8								amount;
-									xrSE_Health		(LPCSTR caSection) : CALifeDynamicObject(caSection)
+									xrSE_Health		(LPCSTR caSection) : CALifeItem(caSection)
 	{
 	};
 xrSE_DECLARE_END
