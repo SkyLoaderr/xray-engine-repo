@@ -51,18 +51,7 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 
 	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
 
-	RECT rect;
-
-	// Ok and Cancel buttons
-	AttachChild(&UIOkBtn);
-	xml_init.InitButton(xml_doc, "button", 0, &UIOkBtn);
-	rect = UIOkBtn.GetWndRect();
-	UIOkBtn.MoveWindow(Device.dwWidth / 2 - static_cast<int>((rect.right - rect.left) * 1.5) , Device.dwHeight - 100);
-
-	AttachChild(&UICancelBtn);
-	xml_init.InitButton(xml_doc, "button", 1, &UICancelBtn);
-	rect = UICancelBtn.GetWndRect();
-	UICancelBtn.MoveWindow(Device.dwWidth / 2 + static_cast<int>((rect.right - rect.left) * 0.5), Device.dwHeight - 100);
+	RECT rect, r;
 
 	// Читаем из xml файла параметры окна и контролов
 
@@ -123,6 +112,22 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 
 	// Тут происходит инициализация изображений скинов 
 	InitializeSkins();
+
+	// Ok and Cancel buttons
+	r		= m_vSkinWindows[0].UIBackground.GetWndRect();
+
+	AttachChild(&UIOkBtn);
+	xml_init.InitButton(xml_doc, "button", 0, &UIOkBtn);
+	rect	= UIOkBtn.GetWndRect();
+
+	UIOkBtn.MoveWindow(Device.dwWidth / 2 - static_cast<int>((rect.right - rect.left) * 1.5),
+		r.bottom + r.top / 2 - UIOkBtn.GetHeight());
+
+	AttachChild(&UICancelBtn);
+	xml_init.InitButton(xml_doc, "button", 1, &UICancelBtn);
+	rect	= UICancelBtn.GetWndRect();
+	UICancelBtn.MoveWindow(Device.dwWidth / 2 + static_cast<int>((rect.right - rect.left) * 0.5),
+		r.bottom + r.top / 2 - UICancelBtn.GetHeight());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -132,11 +137,13 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	if (&UIOkBtn == pWnd && CUIButton::BUTTON_CLICKED == msg)
 	{
 		// Нажали ОК.
+		HUD().GetUI()->UIGame()->StartStopMenu(this);
 //		HUD().GetUI()->UIGame()->OnSkinMenu_Ok();
 	}
 	else if (&UICancelBtn == pWnd && CUIButton::BUTTON_CLICKED == msg)
 	{
 		// Нажали Cancel.
+		HUD().GetUI()->UIGame()->StartStopMenu(this);
 //		HUD().GetUI()->UIGame()->OnSkinMenu_Cancel();
 	}
 
@@ -194,6 +201,9 @@ void CUISkinSelectorWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 void CUISkinSelectorWnd::InitializeSkins()
 {
+	// Бордюр - 30 пикселов
+	const int border = 30;
+
 	std::string skin_names[4];
 	
 	skin_names[0] = "without_outfit";
@@ -205,21 +215,63 @@ void CUISkinSelectorWnd::InitializeSkins()
 	{
 		
 		AttachChild(&m_vSkinWindows[i].UIHighlight);
-		RECT r = m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
-		m_vSkinWindows[i].UIHighlight.Init(r.left + 30, r.top + 30, r.right - r.left, r.bottom - r.top - 60);
+		RECT r	= m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
+
+		// Координаты бекграунда
+		r.bottom	-= border;
+		r.left		+= border;
+		r.top		+= border;
+		r.right		-= border;
+
+		int bkWidth				= r.right	- r.left, 
+			bkHeight			= r.bottom	- r.top,
+			// Координаты текстуры
+			texWidth			= 128,
+			texHeight			= 341;
+
+		// Коеффициент сжатия
+		float stretchKoeff = 1.0f;
+
+		// Проверяем какое из отношений меньше
+		float dW = static_cast<float>(bkWidth)	/ texWidth;
+		float dH = static_cast<float>(bkHeight)	/ texHeight;
+
+		(dW < dH) ? stretchKoeff = dW : stretchKoeff = dH;
+
+		texWidth	= static_cast<int>(texWidth		* stretchKoeff);
+		texHeight	= static_cast<int>(texHeight	* stretchKoeff);
+
+		if (dW < dH)
+		{
+			float f		 = (bkHeight - texHeight) / 2.0f;
+			r.top		+= static_cast<long>(f);
+			r.bottom	-= static_cast<long>(f);
+		}
+		else
+		{
+			float f		 = (bkWidth - texWidth) / 2.0f;
+			r.left		+= static_cast<long>(f);
+			r.right		-= static_cast<long>(f);
+		}
+
+		m_vSkinWindows[i].UIHighlight.Init(r.left,
+										   r.top,
+										   r.right - r.left,
+										   r.bottom - r.top);
 		m_vSkinWindows[i].UIHighlight.SetShader(GetCharIconsShader());
 		m_vSkinWindows[i].UIHighlight.GetUIStaticItem().SetColor(clInactive);
 
 		int m_iSkinX = pSettings->r_u32(skin_names[i].c_str(), "full_scale_icon_x");
 		int m_iSkinY = pSettings->r_u32(skin_names[i].c_str(), "full_scale_icon_y");
 
+		// Размеры иконки персонажа : 128х341
 		m_vSkinWindows[i].UIHighlight.GetUIStaticItem().SetOriginalRect(
 			m_iSkinX*ICON_GRID_WIDTH,
 			m_iSkinY*ICON_GRID_HEIGHT,
-			m_iSkinX+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
-			m_iSkinY+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+			m_iSkinY+CHAR_ICON_FULL_WIDTH*ICON_GRID_HEIGHT,
+			m_iSkinX+static_cast<int>(5.328f*ICON_GRID_WIDTH));
 		m_vSkinWindows[i].UIHighlight.ClipperOn();
-		m_vSkinWindows[i].UIHighlight.SetTextureScale(static_cast<float>(r.bottom - r.top) / (6*ICON_GRID_HEIGHT));
+		m_vSkinWindows[i].UIHighlight.SetTextureScale(stretchKoeff);
 	}
 
 	m_vSkinWindows[0].UIHighlight.GetUIStaticItem().SetColor(clActive);
@@ -235,7 +287,16 @@ bool CUISkinSelectorWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 		SwitchSkin(static_cast<u8>(dik - 2));
 		return true;
 	}
-
+	if (DIK_RETURN == dik && KEY_PRESSED == keyboard_action)
+	{
+		SendMessage(&UIOkBtn, CUIButton::BUTTON_CLICKED, NULL);
+		return true;
+	}
+	if (DIK_ESCAPE == dik && KEY_PRESSED == keyboard_action)
+	{
+		SendMessage(&UICancelBtn, CUIButton::BUTTON_CLICKED, NULL);
+		return true;
+	}
 	return false;
 }
 
