@@ -1245,31 +1245,6 @@
                 <has_info>mil_leader_quest1_start</has_info>
                 <next>2001</next>
             </phrase>
-            <phrase id="2001">
-                <text>mil_leader_start_dialog_2001</text>
-            </phrase>
-            <phrase id="3002">
-                <text>mil_leader_start_dialog_3002</text>
-                <next>3003</next>
-            </phrase>
-            <phrase id="3003">
-                <text>mil_leader_start_dialog_3003</text>
-            </phrase>
-            <phrase id="3000">
-                <text></text>
-                <dont_has_info>mil_leader_quest2_start</dont_has_info>
-                <dont_has_info>mil_leader_quest2_complete</dont_has_info>
-                <give_info>mil_leader_quest2_start</give_info>
-                <give_info>mil_lukash_arrive</give_info>
-                <give_info>mil_courier_start</give_info>
-                <has_info>mil_leader_quest1_complete</has_info>
-                <next>3001</next>
-            </phrase>
-            <phrase id="3001">
-                <text>mil_leader_start_dialog_3001</text>
-                <action>dialogs_military.set_task3_complete</action>
-                <next>3002</next>
-            </phrase>
             <phrase id="1001">
                 <text>mil_leader_start_dialog_1001</text>
                 <next>1100</next>
@@ -1319,10 +1294,6 @@
             <phrase id="6001">
                 <text>mil_leader_start_dialog_6001</text>
             </phrase>
-            <phrase id="5001">
-                <text>mil_leader_start_dialog_5001</text>
-                <next>5002</next>
-            </phrase>
             <phrase id="5000">
                 <text></text>
                 <dont_has_info>mil_leader_attach_community</dont_has_info>
@@ -1360,6 +1331,35 @@
             </phrase>
             <phrase id="5003">
                 <text>mil_leader_start_dialog_5003</text>
+            </phrase>
+            <phrase id="5001">
+                <text>mil_leader_start_dialog_5001</text>
+                <next>5002</next>
+            </phrase>
+            <phrase id="2001">
+                <text>mil_leader_start_dialog_2001</text>
+            </phrase>
+            <phrase id="3000">
+                <text></text>
+                <dont_has_info>mil_leader_quest2_start</dont_has_info>
+                <dont_has_info>mil_leader_quest2_complete</dont_has_info>
+                <give_info>mil_leader_quest2_start</give_info>
+                <give_info>mil_lukash_arrive</give_info>
+                <give_info>mil_courier_start</give_info>
+                <has_info>mil_leader_quest1_complete</has_info>
+                <next>3001</next>
+            </phrase>
+            <phrase id="3001">
+                <text>mil_leader_start_dialog_3001</text>
+                <action>dialogs_military.set_task3_complete</action>
+                <next>3002</next>
+            </phrase>
+            <phrase id="3002">
+                <text>mil_leader_start_dialog_3002</text>
+                <next>3003</next>
+            </phrase>
+            <phrase id="3003">
+                <text>mil_leader_start_dialog_3003</text>
             </phrase>
         </phrase_list>
     </dialog>
