@@ -30,6 +30,7 @@ public:
 	IC	u32				level_vertex_id		(u32 index) const;
 	IC	u32				point				(LPCSTR name) const;
 	IC	u32				point				(const Fvector &point) const;
+	IC	LPCSTR			name				(u32 index) const;	
 	IC	bool			flag				(u32 index, u8 flag_index) const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

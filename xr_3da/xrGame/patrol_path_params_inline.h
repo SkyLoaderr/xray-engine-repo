@@ -58,3 +58,11 @@ IC	bool CPatrolPathParams::flag			(u32 index, u8 flag_index) const
 	VERIFY				(m_path->vertex(index));
 	return				(!!(m_path->vertex(index)->data().flags() & (u32(1) << flag_index)));
 }
+
+IC	LPCSTR	CPatrolPathParams::name	(u32 index) const
+{
+	VERIFY				(m_path->vertex(index));
+	return				(*m_path->vertex(index)->data().name());
+}
+
+
