@@ -314,6 +314,7 @@ IC	void					wake_up				(){m_bSleep = false;}
 
 	virtual void			on_first_update		();
 
+
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;
 	virtual void	OnRender();

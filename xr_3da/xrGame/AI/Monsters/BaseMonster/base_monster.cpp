@@ -69,8 +69,6 @@ CBaseMonster::CBaseMonster()
 	Morale.init_external			(this);
 
 	m_jumping						= 0;
-
-	m_first_update_initialized		= false;
 }
 
 
@@ -126,15 +124,15 @@ void CBaseMonster::UpdateCL()
 
 void CBaseMonster::shedule_Update(u32 dt)
 {
-	inherited::shedule_Update	(dt);
-	Morale.update_schedule		(dt);
-	
-	m_pPhysics_support->in_shedule_Update(dt);
-
 	if (!m_first_update_initialized) {
 		on_first_update();
 		m_first_update_initialized	= true;
 	}
+
+	inherited::shedule_Update	(dt);
+	Morale.update_schedule		(dt);
+	
+	m_pPhysics_support->in_shedule_Update(dt);
 }
 
 

@@ -71,6 +71,7 @@ void CBaseMonster::reinit()
 	force_real_speed				= false;
 	script_processing_active		= false;
 
+	m_first_update_initialized		= false;
 }
 
 void CBaseMonster::Load(LPCSTR section)
