@@ -74,7 +74,7 @@ void	CRender::render_lights	(light_Package& LP)
 	//	if (left_some_lights_that_doesn't cast shadows)
 	//		accumulate them
 	HOM.Disable	();
-	while		(LP.v_shadowed.size() || LP.v_shadowed.size() )
+	while		(LP.v_shadowed.size() )
 	{
 		// if (has_spot_shadowed)
 		xr_vector<light*>	L_spot_s;
