@@ -3,6 +3,20 @@
 #include "HUDManager.h"
 #include "stdafx.h"
 
+cs_money::cs_money() {
+	string256 fn;
+	if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
+		CInifile* ini = CInifile::Create(fn);
+		startup = ini->ReadINT("cs_money","startup");
+		win = ini->ReadINT("cs_money","win");
+		lose = ini->ReadINT("cs_money","lose");
+		draw = ini->ReadINT("cs_money","draw");
+		kill = ini->ReadINT("cs_money","kill");
+		mission = ini->ReadINT("cs_money","mission");
+		CInifile::Destroy	(ini);
+	}
+}
+
 void	game_sv_CS::Create			(LPCSTR options)
 {
 	__super::Create					(options);
@@ -157,10 +171,11 @@ void game_sv_CS::OnRoundStart() {
 
 	// Обновляем состаяние всех игроков и команд
 	if(round == 0) {
+		teams[0].score = teams[1].score = 0;
 		for(u32 i = 0; i < l_cnt; i++) {
 			game_PlayerState *l_pPS = get_it(i);
 			if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;		// Наблюдателей это не касается
-			l_pPS->money_total = 1000;
+			l_pPS->money_total = money.startup;
 			l_pPS->money_for_round = 0;
 			l_pPS->flags = 0;
 			l_pPS->deaths = 0;
@@ -356,12 +371,13 @@ void	game_sv_CS::OnTeamScore		(u32 team)
 {
 	if(GAME_PHASE_INPROGRESS != phase) return;
 
+	teams[team].score++;
 	// Increment/decrement money
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; it++)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
-		ps->money_for_round		+=	(s32(team)==ps->team)?+2000:+500;
+		ps->money_for_round = ps->money_for_round + (s32(team)==ps->team)?(s16)money.win:(s16)money.lose;
 	}
 	phase = u16(team?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
 }
@@ -375,7 +391,7 @@ void	game_sv_CS::OnTeamsInDraw	()
 	for		(u32 it=0; it<cnt; it++)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
-		ps->money_for_round		+=	+1000;
+		ps->money_for_round = ps->money_for_round + (s16)money.draw;
 	}
 	phase = GAME_PHASE_TEAMS_IN_A_DRAW;
 }
@@ -390,11 +406,11 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	{
 		// Teammate killed - no frag, chop money
 //		ps_killer->money_for_round	-=	500;
-		ps_killer->money_total	-=	500; if(ps_killer->money_total < 0) ps_killer->money_total = 0;
+		ps_killer->money_total	-=	money.kill; if(ps_killer->money_total < 0) ps_killer->money_total = 0;
 	} else {
 		// Opponent killed - frag + money
 //		ps_killer->money_for_round	+=	500;
-		ps_killer->money_total	+=	500;
+		ps_killer->money_total	+=	money.kill;
 		ps_killer->kills			+=	1;
 
 	}
@@ -532,7 +548,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 					u32	cnt = get_count();						// Доп. бонус за выполнение задания
 					for(u32 it=0; it<cnt; it++)	{
 						game_PlayerState* ps = get_it(it);
-						if(ps->team == ps_who->team) ps->money_for_round += 1000;
+						if(ps->team == ps_who->team) ps->money_for_round = ps->money_for_round + (s16)money.mission;
 					}											//
 					OnDelayedRoundEnd("MISSION_complete");
 				}
@@ -665,7 +681,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 
 	LPCSTR	options			=	get_name_id	(id_who);
 	game_PlayerState*	ps_who	=	get_id	(id_who);
-	ps_who->money_total		= 1000;
+	ps_who->money_total		= money.startup;
 	ps_who->flags |= GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 	ps_who->team			= u8(get_option_i(options,"team",AutoTeam()));
 	ps_who->kills				=	0;

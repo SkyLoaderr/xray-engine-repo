@@ -42,7 +42,7 @@ void CUICSFragList::OnFrame()
 	float x4			= x3+50;
 	// global info
 	H->SetColor			(0xf0ffa0a0); 
-	H->Out				(x0,y,"Team 1: %d", Game().teams[0].num_targets);
+	H->Out				(x0,y,"Team 1: %d %d", Game().teams[0].num_targets, Game().teams[0].score);
 	H->Out				(x0,y,"__________________________________________________________");
 	y+=1*h;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
@@ -60,7 +60,7 @@ void CUICSFragList::OnFrame()
 	}
 	y+=2*h;
 	H->SetColor			(0xf0a0a0ff); 
-	H->Out				(x0,y,"Team 2: %d", Game().teams[1].num_targets);
+	H->Out				(x0,y,"Team 2: %d %d", Game().teams[1].num_targets, Game().teams[1].score);
 	H->Out				(x0,y,"__________________________________________________________");
 	y+=1*h;
 	k=1;

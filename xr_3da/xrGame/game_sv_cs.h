@@ -2,10 +2,17 @@
 
 #include "game_sv_base.h"
 
+class cs_money {
+public:
+	cs_money();
+	s32 startup, win, lose, draw, kill, mission;
+};
+
 class	game_sv_CS					: public game_sv_GameState
 {
 protected:
 public:
+	game_sv_CS(){}
 	virtual		void				Create					(LPCSTR options);
 
 	// Events
@@ -40,4 +47,5 @@ public:
 
 	BOOL m_delayedRoundEnd;
 	u32 m_roundEndDelay;
+	cs_money money;
 };
