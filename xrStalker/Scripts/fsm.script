@@ -86,8 +86,10 @@ function main()
 
 	local a = {[0]=1}
 	printf("a %d", a[0])
-	a[0] = 2
-	a[1] = 3
+	a[0] = 1
+	a[1] = 2
+	a[2] = 3
+	a[4] = 5
 	printf("a %d", a[0])
 	table.foreach(a, print)
 
