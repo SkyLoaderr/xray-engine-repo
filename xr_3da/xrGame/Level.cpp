@@ -152,7 +152,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		while (!isCompleted_Connect()) Sleep(5);
 
 		// Signal main actor spawn
-		g_cl_Spawn	("actor", 0, 0, 0);
+		g_cl_Spawn	("actor", -1, 0, 0, 0);
 
 		// And receiving spawn information (game-state)
 		BOOL bFinished	= FALSE;
