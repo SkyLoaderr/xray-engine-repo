@@ -95,35 +95,6 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
 	V->LL_GetBoneInstance(V->LL_BoneID(grenade_bone_name)).set_callback(GrenadeCallback, this);
 
-/*	CSE_ALifeObject *l_tpALifeObject = (CSE_ALifeObject*)(DC);
-	m_bHideGrenade = !iAmmoElapsed;
-	
-	if(iAmmoElapsed && !m_pGrenade) 
-	{
-		CSE_Abstract*		D	= F_entity_Create("wpn_fake_missile");
-		R_ASSERT			(D);
-		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT					(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= l_tpALifeObject->m_tNodeID;
-		// Fill
-		strcpy				(D->s_name,"wpn_fake_missile");
-		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	(u16)ID();
-		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
-	}
-*/
-
 	m_bPending = false;
 
 	return l_res;
@@ -136,9 +107,8 @@ void CWeaponMagazinedWGrenade::switch2_Reload()
 {
 	if(m_bGrenadeMode) 
 	{
-		///if (sndReloadG.feedback) sndReloadG.feedback->set_volume(.2f);
 		UpdateFP();
-		Sound->play_at_pos		(sndReloadG,H_Root(),vLastFP2);
+		sndReloadG.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
 		m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
 		m_bPending = true;
 	}
@@ -151,7 +121,8 @@ void CWeaponMagazinedWGrenade::OnShot		()
 	if(m_bGrenadeMode)
 	{
 		UpdateFP();
-		Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
+		sndShot.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+
 		if(hud_mode) 
 		{
 			CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
@@ -164,25 +135,13 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		
 		//партиклы огня вылета гранаты из подствольника
 		StartFlameParticles2();
-		/*CParticlesObject* pStaticPG;
-		pStaticPG = xr_new<CParticlesObject>(m_sGrenadeFlameParticles,Sector());
-		Fmatrix pos; 
-		pos.set(XFORM()); 
-		pos.c.set(vLastFP2);
-		
-		Fvector vel; 
-		PHGetLinearVell(vel);
-		//vel.sub(Position(),ps_Element(0).vPosition); 
-		//vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-		pStaticPG->UpdateParent(pos, vel); 
-		pStaticPG->Play();*/
 	} 
 	else inherited::OnShot();
 }
 //переход в режим подствольника или выход из него
 void CWeaponMagazinedWGrenade::SwitchMode() 
 {
-	if(!IsGrenadeLauncherAttached() || eIdle != STATE || m_bPending)
+	if(!IsGrenadeLauncherAttached() || eIdle != STATE || IsPending())
 	{
 		return;
 	}
@@ -252,7 +211,6 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 			// Ammo
 			if(Local()) 
 			{
-				//m_abrasion		= _max(0.f, m_abrasion - l_cartridge.m_impair);
 				m_magazine.pop	();
 				if(!(--iAmmoElapsed)) OnMagazineEmpty();
 			}
@@ -437,10 +395,7 @@ void CWeaponMagazinedWGrenade::SpawFakeGrenade(const char* grenade_section_name)
 		CSE_Abstract*		D	= F_entity_Create(grenade_section_name);
 		R_ASSERT			(D);
 	
-		/*CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT					(l_tpALifeDynamicObject);
-		l_tpALifeDynamicObject->m_tNodeID	= l_tpALifeObject->m_tNodeID;*/
-		
+	
 		// Fill
 		strcpy				(D->s_name, grenade_section_name);
 		strcpy				(D->s_name_replace,"");

@@ -153,12 +153,12 @@ protected:
 	//трассирование полета пули
 	virtual BOOL			FireTrace			(const Fvector& P, const Fvector& Peff,	Fvector& D);
 
-protected:
 	// Utilities
 	void					ShaderCreate		(ref_shader&	dest, LPCSTR S, LPCSTR T);
 	void					ShaderDestroy		(ref_shader&	dest);
 
 public:
+
 	enum EWeaponStates {
 		eIdle		= 0,
 		eFire,
@@ -172,25 +172,20 @@ public:
 		eSwitch,
 	};
 
-
-	// Events/States
-	u32						STATE, NEXT_STATE;
 	
-
-	float					m_fMinRadius;
-	float					m_fMaxRadius;
-
-	virtual void			SwitchState			(u32 S);
-
-	virtual void			OnMagazineEmpty		();
-	virtual void			OnAnimationEnd		()			{};
-	
+	//для режима приближения и снайперского прицела
 	virtual void			OnZoomIn			();
 	virtual void			OnZoomOut			();
 	virtual bool			IsZoomed			()			{return m_bZoomMode;}
 	CUIStaticItem*			ZoomTexture			();
 
+
+	//функции общие для всего оружия
+	virtual void			OnMagazineEmpty		();
+	virtual void			OnAnimationEnd		()			{};
 	
+
+	////////////////////////////////////////////////
 	//общие функции для работы с партиклами оружия
 	virtual void			StartParticles		(CParticlesObject*& pParticles, LPCSTR particles_name, const Fvector& pos, const Fvector& vel = zero_vel, bool auto_remove_flag = false);
 	virtual void			StopParticles		(CParticlesObject*& pParticles);
@@ -206,28 +201,30 @@ public:
 	virtual void			StopFlameParticles2	();
 	virtual void			UpdateFlameParticles2();
 
-
 	//партиклы дыма
 	virtual void			StartSmokeParticles	();
 	//партиклы гильз
 	virtual void			OnShellDrop		();
-	
-	virtual void			OnStateSwitch		(u32 /**S/**/)		{};
 public:
 							CWeapon				(LPCSTR name);
 	virtual					~CWeapon			();
 
 	// Generic
 	virtual void			Load				(LPCSTR section);
+	
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 	virtual void			net_Export			(NET_Packet& P);	// export to server
 	virtual void			net_Import			(NET_Packet& P);	// import from server
+	
 	virtual void			UpdateCL			();
 	virtual void			shedule_Update		(u32 dt);
+	
 	virtual void			renderable_Render	();
+	
 	virtual void			OnH_B_Chield		();
 	virtual void			OnH_B_Independent	();
+	virtual void			OnEvent				(NET_Packet& P, u16 type) {inherited::OnEvent(P,type);}
 
 	virtual	void			Hit					(float P, Fvector &dir,	
 												 CObject* who, s16 element,
@@ -237,8 +234,7 @@ public:
 
 	// logic & effects
 	virtual void			SetDefaults			();
-	virtual void			Ammo_add			(int iValue);
-	virtual int				Ammo_eject			();
+	
 	virtual void			FireStart			();
 	virtual void			FireEnd				();
 	virtual void			Fire2Start			();
@@ -247,9 +243,6 @@ public:
 	// обработка визуализации выстрела
 	virtual void			OnShot				(){};
 	
-	virtual void			Hide				()				= 0;
-	virtual void			Show				()				= 0;
-
 	   BOOL					IsMisfire			() const;
 	   BOOL					CheckForMisfire		();
 
@@ -272,18 +265,17 @@ public:
 	float					GetConditionMisfireProbability	();
 
 	int						GetAmmoCurrent		();
-
-
 	IC ref_shader			GetUIIcon			()				{	return hUIIcon;								}
-	virtual void			OnEvent				(NET_Packet& P, u16 type);
-
 	
 	void					animGet	(MotionSVec& lst, LPCSTR prefix);
 
 	// Inventory
-	virtual bool Activate();
-	virtual void Deactivate();
 	virtual bool Action(s32 cmd, u32 flags);
+	
+	///////////////////////////////////////////
+	// работа с аддонами к оружию
+	//////////////////////////////////////////
+
 	virtual bool Attach(PIItem pIItem);
 	virtual bool Detach(const char* item_section_name);
 
@@ -319,8 +311,15 @@ public:
 	xr_vector<ref_str>	m_ammoTypes;
 	u32					m_ammoType;
 	ref_str				m_ammoName;
-	f32					m_resource, m_abrasion;
 	string64			m_tmpName;
+
+	// Multitype ammo support
+	xr_stack<CCartridge> m_magazine;
+
+
+	//////////////////////////////////
+	// партикловая система
+	/////////////////////////////////
 
 	//имя пратиклов для огня
 	LPCSTR				m_sFlameParticles;
@@ -346,8 +345,10 @@ public:
 	LPCSTR				m_sShellParticles;
 
 
-	// Multitype ammo support
-	xr_stack<CCartridge> m_magazine;
+	//для сталкеров, чтоб они знали эффективные границы использования 
+	//оружия
+	float					m_fMinRadius;
+	float					m_fMaxRadius;
 
 public:
 	virtual void			make_Interpolation	();

@@ -3,6 +3,8 @@
 #include "entity.h"
 #include "entitycondition.h"
 
+DEFINE_VECTOR(ref_shader, SHADER_VECTOR, SHADER_VECTOR_IT);
+
 class CEntityAlive			: public CEntity, 
 							  virtual public CEntityCondition
 {
@@ -33,9 +35,8 @@ public:
 
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 	virtual	void			Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
+	
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
-
-//	virtual float&			GetEntityHealth()		{ return m_fHealth; }
 	
 	virtual float GetfHealth() const { return m_fHealth*100.f; }
 	virtual float SetfHealth(float value) {m_fHealth = value/100.f; return value;}
@@ -70,5 +71,16 @@ IC	CPHMovementControl* PMovement()
 	virtual void			PHUnFreeze			();
 	virtual void			PHFreeze			();
 ///////////////////////////////////////////////////////////////////////
-};
 
+protected:
+	virtual void			BloodyWallmarks			(float P, Fvector &dir,	s16 element,Fvector position_in_object_space);
+	virtual void			LoadBloodyWallmarks		(LPCSTR section);
+
+	//информация о кровавых отметках на стенах, общая для всех CEntityAlive
+	static SHADER_VECTOR m_BloodMarksVector;
+	static float m_fBloodMarkSizeMax;
+	static float m_fBloodMarkSizeMin;
+	static float m_fBloodMarkDistance;
+	static float m_fBloodMarkDispersion;
+	static float m_fNominalHit;
+};

@@ -28,12 +28,14 @@ public:
 	
 	virtual bool Activate();
 	virtual void Deactivate();
+	virtual bool IsHidden() {return m_state == MS_HIDDEN;}
+
 	virtual void Throw();
 	virtual void Destroy();
 	
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Useful();
-	virtual u32 State(u32 state);
+	virtual u32  State(u32 state);
 
 	virtual void						net_Import			(NET_Packet& P);					// import from server
 	virtual void						net_Export			(NET_Packet& P);					// export to server
@@ -41,7 +43,6 @@ public:
 	virtual void OnH_A_Chield() {inherited::OnH_A_Chield();}
 	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
 
-	virtual bool IsHidden() {return inherited::IsHidden();}
 	virtual bool IsPending() {return inherited::IsPending();}
 
 	virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,

@@ -16,7 +16,7 @@ class CWeaponHUD;
 
 class CMissile : public CHudItem
 {
-	typedef CInventoryItem inherited;
+	typedef CHudItem inherited;
 public:
 	CMissile(void);
 	virtual ~CMissile(void);
@@ -34,14 +34,12 @@ public:
 	virtual void OnH_A_Chield();
 	virtual void OnH_B_Independent();
 
-	virtual void OnEvent			(NET_Packet& P, u16 type);
+	virtual void OnEvent(NET_Packet& P, u16 type);
 
 	virtual void OnAnimationEnd();
 
 	virtual void Show();
 	virtual void Hide();
-	virtual bool IsHidden() {return MS_HIDDEN == m_state;}
-	virtual bool IsPending() {return m_bPending;}
 
 	virtual void Throw();
 	virtual void Destroy();
@@ -50,7 +48,7 @@ public:
 
 	u32 State();
 	virtual u32 State(u32 state);
-
+	virtual void OnStateSwitch	(u32 S);
 protected:
 	virtual void UpdateFP();
 	virtual void UpdateXForm();
@@ -61,7 +59,7 @@ protected:
 
 	u32 m_state;
 	bool m_throw;
-	u32 m_destroyTime, m_stateTime;
+	u32 m_dwDestroyTime;
 
 	Fmatrix					m_offset;
 
@@ -70,8 +68,8 @@ protected:
 	CMissile				*m_fake_missile;
 
 	//параметры броска
-	float m_force;
-	float m_minForce, m_maxForce, m_forceGrowSpeed;
+	float m_fThrowForce;
+	float m_fMinForce, m_fMaxForce, m_fForceGrowSpeed;
 
 	//относительная точка и направление вылета гранаты
 	Fvector m_vThrowPoint;

@@ -868,7 +868,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 #include "bolt.h"
 #include "medkit.h"
 #include "antirad.h"
-#include "bread.h"
+#include "fooditem.h"
 #include "infodocument.h"
 
 #include "ScientificOutfit.h"
@@ -997,7 +997,8 @@ extern "C" {
 			case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;
 			case CLSID_IITEM_MEDKIT:		P = xr_new<CMedkit>();				break;
 			case CLSID_IITEM_ANTIRAD:		P = xr_new<CAntirad>();				break;
-			case CLSID_IITEM_BREAD:			P = xr_new<CBread>();				break;
+			case CLSID_IITEM_FOOD:			P = xr_new<CFoodItem>();			break;
+			case CLSID_IITEM_BOTTLE:		P = xr_new<CFoodItem>();			break;
 			//Info Document
 			case CLSID_IITEM_DOCUMENT:		P = xr_new<CInfoDocument>();		break;
 

@@ -45,7 +45,8 @@ u32 CGrenade::State(u32 state)
 {
 	if(state == MS_THREATEN) 
 	{
-		Sound->play_at_pos(sndCheckout, 0, Position(), false);
+		UpdateFP();
+		sndCheckout.play_at_pos(H_Root(),Position(),hud_mode?sm_2D:0);
 	}
 	return inherited::State(state);
 }
@@ -70,7 +71,7 @@ void CGrenade::Throw()
 	VERIFY						(pGrenade);
 	
 	if (pGrenade) {
-		pGrenade->m_destroyTime = 3500;
+		pGrenade->m_dwDestroyTime = 3500;
 		//установить ID того кто кинул гранату
 		pGrenade->m_iCurrentParentID = H_Parent()->ID();
 	}
@@ -94,7 +95,7 @@ void CGrenade::Destroy()
 bool CGrenade::Useful() 
 {
 	// Если IItem еще не полностью использованый, вернуть true
-	return m_destroyTime == 0xffffffff;
+	return m_dwDestroyTime == 0xffffffff;
 }
 
 void CGrenade::OnEvent(NET_Packet& P, u16 type) 
@@ -122,7 +123,7 @@ void CGrenade::OnAnimationEnd()
 			
 			//выкинуть гранату из инвентаря
 			m_pInventory->Ruck(this); 
-			m_destroyTime = 0;
+			m_dwDestroyTime = 0;
 			
 			if (Local())
 			{
@@ -141,8 +142,8 @@ void CGrenade::OnAnimationEnd()
 
 				if(pNext) 
 				{ 
-					m_pInventory->Slot(pNext); 
-					m_pInventory->Activate(pNext->m_slot); 
+					m_pInventory->Slot(pNext, false); 
+					//m_pInventory->Activate(pNext->m_slot); 
 				}
 			}
 		}

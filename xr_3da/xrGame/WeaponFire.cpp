@@ -90,7 +90,6 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	// Ammo
 	if(Local()) 
 	{
-		m_abrasion		= _max(0.f, m_abrasion - l_cartridge.m_impair);
 		m_magazine.pop	();
 		--iAmmoElapsed;
 		if(iAmmoElapsed==0) 

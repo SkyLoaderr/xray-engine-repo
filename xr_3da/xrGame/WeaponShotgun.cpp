@@ -43,7 +43,7 @@ void CWeaponShotgun::OnShot ()
 {
 	std::swap(m_pHUD->vFirePoint, m_pHUD->vFirePoint2);
 	std::swap(vFirePoint, vFirePoint2);
-	std::swap(m_pFlameParticles, m_pFlameParticles2);
+	//std::swap(m_pFlameParticles, m_pFlameParticles2);
 
 	UpdateFP();
 	inherited::OnShot();
@@ -105,6 +105,7 @@ void CWeaponShotgun::OnShotBoth()
 	}
 
 	//звук выстрела дуплетом
+	UpdateFP();
 	Sound->play_at_pos			(sndShotBoth,H_Root(),vLastFP);
 
 	// Camera
@@ -199,6 +200,10 @@ void CWeaponShotgun::UpdateSounds()
 bool CWeaponShotgun::Action(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
+	
+	//если оружие чем-то занято, то ничего не делать
+	if(IsPending()) return false;
+
 	switch(cmd) 
 	{
 		case kWPN_ZOOM : 

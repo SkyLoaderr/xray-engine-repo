@@ -6,6 +6,9 @@
 #include "actor.h"
 #include "../CameraBase.h"
 
+
+#define PLAYING_ANIM_TIME 10000
+
 CMissile::CMissile(void) 
 {
 	m_pHUD				= xr_new<CWeaponHUD>();
@@ -21,12 +24,11 @@ void CMissile::reinit		()
 {
 	m_state				= MS_HIDDEN;
 	m_throw				= false;
-	m_force				= 0;
-	m_minForce			= 20.f;
-	m_maxForce			= 200.f;
-	m_forceGrowSpeed	= 50.f;
-	m_destroyTime		= 0xffffffff;
-	m_stateTime			= 0;
+	m_fThrowForce				= 0;
+	m_fMinForce			= 20.f;
+	m_fMaxForce			= 200.f;
+	m_fForceGrowSpeed	= 50.f;
+	m_dwDestroyTime		= 0xffffffff;
 	m_pInventory		= 0;
 	m_bPending			= false;
 	m_fake_missile		= NULL;
@@ -38,9 +40,9 @@ void CMissile::Load(LPCSTR section)
 	inherited::Load		(section);
 	LPCSTR hud_sect		= pSettings->r_string(section,"hud");
 	m_pHUD->Load		(hud_sect);
-	m_minForce			= pSettings->r_float(section,"force_min");
-	m_maxForce			= pSettings->r_float(section,"force_max");
-	m_forceGrowSpeed	= pSettings->r_float(section,"force_grow_speed");
+	m_fMinForce			= pSettings->r_float(section,"force_min");
+	m_fMaxForce			= pSettings->r_float(section,"force_max");
+	m_fForceGrowSpeed	= pSettings->r_float(section,"force_grow_speed");
 	
 	Fvector				position_offset, angle_offset;
 	position_offset		= pSettings->r_fvector3(section,"position_offset");
@@ -66,12 +68,10 @@ void CMissile::Load(LPCSTR section)
 BOOL CMissile::net_Spawn(LPVOID DC) 
 {
 #pragma todo("Dima to Yura : find out why m_pInventory != NULL on net_spawn after net_destroy")
-	//R_ASSERT(!m_pInventory);
-	m_pInventory = 0;
+	R_ASSERT(!m_pInventory);
+	//m_pInventory = 0;
 	BOOL l_res = inherited::net_Spawn(DC);
 
-//	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
-//	if(V) V->PlayCycle("idle");
 	CSkeletonRigid* V = PSkeletonRigid(Visual());
 	R_ASSERT(V);
 
@@ -120,9 +120,6 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 		m_pPhysicsShell->SetAirResistance();
-		//CKinematics* pKinematics=PKinematics(Visual());
-		//if(pKinematics) 
-		//	m_pPhysicsShell->set_M
 	}
 	return l_res;
 }
@@ -135,17 +132,6 @@ void CMissile::net_Destroy()
 	inherited::net_Destroy();
 	m_pInventory = 0;
 }
-
-//void CMissile::OnDeviceCreate() {
-//	inherited::OnDeviceCreate();
-//}
-//
-//void CMissile::OnDeviceDestroy() {
-//	inherited::OnDeviceDestroy	();
-//	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
-//	xr_delete					(m_pPhysicsShell);
-//}
-
 void CMissile::OnH_B_Chield() 
 {
 	inherited::OnH_B_Chield		();
@@ -196,7 +182,7 @@ void CMissile::OnH_B_Independent()
 
 	m_pHUD->Hide();
 
-	if(!m_destroyTime && Local()) 
+	if(!m_dwDestroyTime && Local()) 
 	{
 		NET_Packet			P;
 		u_EventGen			(P,GE_DESTROY,ID());
@@ -211,7 +197,8 @@ void CMissile::OnH_B_Independent()
 	R_ASSERT		(E);
 	XFORM().set(E->XFORM());
 	
-	if(m_pPhysicsShell) {
+	if(m_pPhysicsShell) 
+	{
 		/*Fvector		D;
 		D			= m_throw_direction;
 		D.normalize	();
@@ -225,7 +212,7 @@ void CMissile::OnH_B_Independent()
 		
 		Fmatrix		l_p1, l_p2;
 		l_p1.set	(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f);
-		l_p2.set	(XFORM()); l_p2.c.add(l_up); l_fw.mul(1.f+m_force); l_p2.c.add(l_fw);
+		l_p2.set	(XFORM()); l_p2.c.add(l_up); l_fw.mul(1.f+m_fThrowForce); l_p2.c.add(l_fw);
 		
 		Fvector		l_vel,a_vel;
 		float		fi,teta,r;
@@ -238,45 +225,47 @@ void CMissile::OnH_B_Independent()
 
 		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
 		
-		XFORM().set	(l_p1);*/
-
-		Fvector vel;
-		vel.set(m_throw_direction);
-		vel.normalize();
-		vel.mul(m_force);
-		m_pPhysicsShell->Activate(XFORM(), vel, zero_vel);
-		XFORM().c.set(m_throw_point);
+		XFORM().set	(l_p1);
+				
 
 //		}
 //		else {
 //			Fvector						linear_velocity = m_throw_direction;
 //			VERIFY						(linear_velocity.square_magnitude() > EPS_L);
 //			linear_velocity.normalize	();
-//			linear_velocity.mul			(m_force);
+//			linear_velocity.mul			(m_fThrowForce);
 //			m_pPhysicsShell->Activate	(H_Parent()->XFORM(), linear_velocity, zero_vel);
 //			XFORM().set					(m_pPhysicsShell->mXFORM);
 //		}
+*/
+
+		Fvector vel;
+		vel.set(m_throw_direction);
+		vel.normalize();
+		vel.mul(m_fThrowForce);
+		XFORM().c.set(m_throw_point);
+		m_pPhysicsShell->Activate(XFORM(), vel, zero_vel);
 	}
 }
 
 void CMissile::UpdateCL() 
 {
 	inherited::UpdateCL();
+		
+	if(State() == MS_IDLE && m_dwStateTime > PLAYING_ANIM_TIME) 
+		OnStateSwitch(MS_PLAYING);
 	
-
-	m_stateTime += Device.dwTimeDelta;
-	if(State() == MS_IDLE && m_stateTime > 10000) State(MS_PLAYING);
 	if(State() == MS_READY) 
 	{
 		if(m_throw) 
-			State(MS_THROW);
+			SwitchState(MS_THROW);
 		else 
 		{
 			CActor	*actor = dynamic_cast<CActor*>(H_Parent());
 			if (actor) {
-				m_force		+= (m_forceGrowSpeed * Device.dwTimeDelta) * .001f;
-				if (m_force > m_maxForce)
-					m_force = m_maxForce;
+				m_fThrowForce		+= (m_fForceGrowSpeed * Device.dwTimeDelta) * .001f;
+				if (m_fThrowForce > m_fMaxForce)
+					m_fThrowForce = m_fMaxForce;
 			}
 		}
 	}
@@ -284,25 +273,19 @@ void CMissile::UpdateCL()
 	
 	if(!H_Parent() && getVisible() && m_pPhysicsShell) 
 	{
-		if(m_destroyTime <= Device.dwTimeDelta) 
+		if(m_dwDestroyTime <= Device.dwTimeDelta) 
 		{
-			m_destroyTime = 0xffffffff;
+			m_dwDestroyTime = 0xffffffff;
 			R_ASSERT(!m_pInventory);
 			Destroy();
 			return;
 		}
-		if(m_destroyTime < 0xffffffff) m_destroyTime -= Device.dwTimeDelta;
+		if(m_dwDestroyTime < 0xffffffff) m_dwDestroyTime -= Device.dwTimeDelta;
 		m_pPhysicsShell->Update	();
 		XFORM().set	(m_pPhysicsShell->mXFORM);
 		Position().set(m_pPhysicsShell->mXFORM.c);
 	} 
 	else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
-
-	if (m_pHUD)
-	{
-		CSkeletonAnimated* pSA = PSkeletonAnimated(m_pHUD->Visual());
-		if (pSA) pSA->Update();
-	};
 }
 
 u32 CMissile::State() 
@@ -313,7 +296,6 @@ u32 CMissile::State()
 u32 CMissile::State(u32 state) 
 {
 	m_state = state;
-	m_stateTime = 0;
 	
 	switch(State()) 
 	{
@@ -324,8 +306,6 @@ u32 CMissile::State(u32 state)
 		} break;
 	case MS_IDLE:
 		{
-			//setVisible(true);
-			//setEnabled(true);
 			m_bPending = false;
 			m_pHUD->animPlay(m_pHUD->animGet("idle_0"));
 		} break;
@@ -342,7 +322,7 @@ u32 CMissile::State(u32 state)
 		} break;
 	case MS_THREATEN:
 		{
-			m_force = m_minForce;
+			m_fThrowForce = m_fMinForce;
 			m_pHUD->animPlay(m_pHUD->animGet("attack_0_begin"), true, this);
 		} break;
 	case MS_READY:
@@ -366,6 +346,48 @@ u32 CMissile::State(u32 state)
 	}
 	return State();
 }
+
+void CMissile::OnStateSwitch	(u32 S)
+{
+	State(S);
+	inherited::OnStateSwitch(S);
+}
+
+
+void CMissile::OnAnimationEnd() 
+{
+	switch(State()) 
+	{
+	case MS_HIDING:
+		{
+			setVisible(FALSE);
+			OnStateSwitch(MS_HIDDEN);
+		} break;
+	case MS_SHOWING:
+		{
+			setVisible(TRUE);
+			OnStateSwitch(MS_IDLE);
+		} break;
+	case MS_THREATEN:
+		{
+			if(m_throw) SwitchState(MS_THROW); else OnStateSwitch(MS_READY);
+		} break;
+	case MS_THROW:
+		{
+			Throw();
+			OnStateSwitch(MS_END);
+		} break;
+	case MS_END:
+		{
+			OnStateSwitch(MS_SHOWING);
+		} break;
+	case MS_PLAYING:
+		{
+			OnStateSwitch(MS_IDLE);
+		} break;
+	}
+}
+
 
 void CMissile::UpdatePosition(const Fmatrix& trans)
 {
@@ -413,49 +435,19 @@ void CMissile::UpdateXForm()
 void CMissile::renderable_Render() 
 {
 	inherited::renderable_Render();
+
 	UpdateXForm();
 	UpdateFP();
-
-	if(m_pHUD && H_Parent() && dynamic_cast<CActor*>(H_Parent())) 
-	{
-		Fmatrix trans;
-		Level().Cameras.affected_Matrix(trans);
-		m_pHUD->UpdatePosition(trans);
-
-		PSkeletonAnimated(m_pHUD->Visual())->Update();
-		if(hud_mode) 
-		{
-			if(!m_pHUD->IsHidden())
-			{
-				::Render->set_Transform		(&m_pHUD->Transform());
-				::Render->add_Visual		(m_pHUD->Visual());
-			}
-		} 
-		else {
-			::Render->set_Transform		(&XFORM());
-			::Render->add_Visual		(Visual());
-		}
-	}
-	else {
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-	}
-	
-	if(getVisible() && !H_Parent()) 
-	{
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-	}
 }
 
 void CMissile::Show() 
 {
-	State(MS_SHOWING);
+	SwitchState(MS_SHOWING);
 }
 
 void CMissile::Hide() 
 {
-	State(MS_HIDING);
+	SwitchState(MS_HIDING);
 }
 
 void CMissile::Throw() 
@@ -469,8 +461,8 @@ void CMissile::Throw()
 	m_fake_missile->m_throw_point		= m_throw_point;
 	m_fake_missile->m_throw_direction	= m_throw_direction;
 	
-	m_fake_missile->m_force				= m_force; 
-	m_force								= m_minForce;
+	m_fake_missile->m_fThrowForce				= m_fThrowForce; 
+	m_fThrowForce								= m_fMinForce;
 	
 	if (Local()) {
 		NET_Packet						P;
@@ -512,40 +504,6 @@ void CMissile::Destroy()
 	if (Local()) u_EventSend			(P);
 }
 
-void CMissile::OnAnimationEnd() 
-{
-	switch(State()) 
-	{
-	case MS_HIDING:
-		{
-			setVisible(FALSE);
-			State(MS_HIDDEN);
-		} break;
-	case MS_SHOWING:
-		{
-			setVisible(TRUE);
-			State(MS_IDLE);
-		} break;
-	case MS_THREATEN:
-		{
-			if(m_throw) State(MS_THROW); else State(MS_READY);
-		} break;
-	case MS_THROW:
-		{
-			Throw();
-			State(MS_END);
-		} break;
-	case MS_END:
-		{
-			State(MS_SHOWING);
-		} break;
-	case MS_PLAYING:
-		{
-			State(MS_IDLE);
-		} break;
-	}
-}
-
 bool CMissile::Action(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
@@ -557,12 +515,12 @@ bool CMissile::Action(s32 cmd, u32 flags)
         	if(flags&CMD_START) 
 			{
 				 m_throw = false;
-				if(State() == MS_IDLE) State(MS_THREATEN);
+				if(State() == MS_IDLE) SwitchState(MS_THREATEN);
 			} 
 			else if(State() == MS_READY || State() == MS_THREATEN) 
 			{
 				m_throw = true; 
-				if(State() == MS_READY) State(MS_THROW);
+				if(State() == MS_READY) SwitchState(MS_THROW);
 			}
 		}
         return true;
@@ -578,9 +536,10 @@ void  CMissile::UpdateFP()
 	{
 		dwFP_Frame = Device.dwFrame;
 
-		UpdateXForm		();
+		UpdateXForm			();
+		UpdateHudPosition	();
 
-		if (hud_mode)
+		if (hud_mode && !IsHidden())
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= PKinematics(m_pHUD->Visual());

@@ -39,11 +39,6 @@ void CWeaponMagazined::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	//SoundDestroy		(sndShow		);
-	//SoundDestroy		(sndHide		);
-	//SoundDestroy		(sndShot		);
-	//SoundDestroy		(sndEmptyClick	);
-	//SoundDestroy		(sndReload		);
 	sndShow.destroy();
 	sndHide.destroy();
 	sndShot.destroy();
@@ -154,17 +149,6 @@ void CWeaponMagazined::TryReload()
 		}
 	}
 	SwitchState(eIdle);
-
-	////if(m_pInventory) for(PPIItem l_ppIItem = m_pInventory->m_belt.begin(); m_pInventory->m_belt.end() != l_ppIItem; ++l_ppIItem) {
-	////	//for(u32 i = 0; i < m_ammoTypes.size(); ++i) if(!strcmp((*l_ppIItem)->cName(), m_ammoTypes[i])) {
-	////	if(!strcmp((*l_ppIItem)->cName(), m_ammoTypes[m_ammoType])) {
-	////		SwitchState(eReload);
-	////		return;
-	////	}
-	////}
-	////SwitchState(eIdle);
-	//if(m_pAmmo && m_pAmmo->CanReload()) SwitchState(eReload);
-	//else SwitchState(eIdle);
 }
 
 bool CWeaponMagazined::IsAmmoAvailable()
@@ -321,8 +305,8 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 		switch2_Hidden	();
 		break;
 	}
-	STATE = S;
-	if(Remote()) NEXT_STATE = S;
+
+	inherited::OnStateSwitch(S);
 }
 
 void CWeaponMagazined::UpdateCL			()
@@ -336,7 +320,6 @@ void CWeaponMagazined::UpdateCL			()
 	case eShowing:
 	case eHiding:
 	case eReload:
-		PSkeletonAnimated		(m_pHUD->Visual())->Update();
 	case eIdle:
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
@@ -424,30 +407,11 @@ void CWeaponMagazined::renderable_Render	()
 {
 	inherited::renderable_Render();
 	UpdateXForm();
-	
-	CActor *pActor = dynamic_cast<CActor*>(H_Parent());
-	
-	if (pActor && pActor->HUDview() && m_pHUD)
-	{ 
-		// HUD render
-		if(!m_pHUD->IsHidden())
-		{
-			::Render->set_Transform		(&m_pHUD->Transform());
-			::Render->add_Visual		(m_pHUD->Visual());
-		}
-	}
-	else if(!pActor || !pActor->HUDview())
-	{
-		// Actor render
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-	}
 }
 
 void CWeaponMagazined::SetDefaults	()
 {
 	CWeapon::SetDefaults		();
-	////iAmmoElapsed				= 0;
 }
 
 void CWeaponMagazined::Hide		()
@@ -497,9 +461,7 @@ void CWeaponMagazined::OnShot		()
 void CWeaponMagazined::OnEmptyClick	()
 {
 	UpdateFP();
-	Sound->play_at_pos	(sndEmptyClick,H_Root(),vLastFP);
-	//if (sndEmptyClick.feedback)
-		//sndEmptyClick.feedback->set_volume(.2f);
+	sndEmptyClick.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
 }
 void CWeaponMagazined::OnAnimationEnd() 
 {
@@ -525,9 +487,7 @@ void CWeaponMagazined::switch2_Empty()
 void CWeaponMagazined::switch2_Reload()
 {
 	UpdateFP();
-	Sound->play_at_pos		(sndReload,H_Root(),vLastFP);
-	
-	///if (sndReload.feedback)	sndReload.feedback->set_volume(.2f);
+	sndReload.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
 	
 	PlayAnimReload();
 	m_bPending = true;
@@ -537,9 +497,7 @@ void CWeaponMagazined::switch2_Hiding()
 	CWeapon::FireEnd();
 	
 	UpdateFP();
-	Sound->play_at_pos(sndHide,H_Root(),vLastFP);
-	//if (sndHide.feedback) sndHide.feedback->set_volume(.2f);
-	
+	sndHide.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
 
 	PlayAnimHide();
 	m_bPending = true;
@@ -553,8 +511,7 @@ void CWeaponMagazined::switch2_Hidden()
 void CWeaponMagazined::switch2_Showing()
 {
 	UpdateFP();
-	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
-	//if (sndShow.feedback)	sndShow.feedback->set_volume(.3f);
+	sndShow.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
 
 	m_bPending = true;
 	PlayAnimShow();
@@ -563,7 +520,10 @@ void CWeaponMagazined::switch2_Showing()
 bool CWeaponMagazined::Action(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
-
+	
+	//если оружие чем-то занято, то ничего не делать
+	if(IsPending()) return false;
+	
 	switch(cmd) 
 	{
 	case kWPN_RELOAD:
@@ -571,8 +531,6 @@ bool CWeaponMagazined::Action(s32 cmd, u32 flags)
 			if(flags&CMD_START) 
 				if(iAmmoElapsed < iMagazineSize || IsMisfire()) 
 					Reload();
-					//TryReload();
-					//if(m_pAmmo && m_pAmmo->CanReload()) m_pAmmo->Reload();
 		} 
 		return true;
 	}

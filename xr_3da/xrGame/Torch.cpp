@@ -39,8 +39,11 @@ void CTorch::Switch()
 	light_render->set_active(bActive);
 	glow_render->set_active	(bActive);
 
-	CKinematics* pVisual = PKinematics(Visual()); R_ASSERT(pVisual);
-	pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(*light_trace_bone),bActive,TRUE);
+	if(*light_trace_bone)
+	{
+		CKinematics* pVisual = PKinematics(Visual()); R_ASSERT(pVisual);
+		pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(*light_trace_bone),bActive,TRUE);
+	}
 }
 
 void CTorch::Switch	(bool light_on)
@@ -48,8 +51,11 @@ void CTorch::Switch	(bool light_on)
 	light_render->set_active(light_on);
 	glow_render->set_active	(light_on);
 
-	CKinematics* pVisual = PKinematics(Visual()); R_ASSERT(pVisual);
-	pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(*light_trace_bone),light_on,TRUE);
+	if(*light_trace_bone)
+	{
+		CKinematics* pVisual = PKinematics(Visual()); R_ASSERT(pVisual);
+		pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(*light_trace_bone),light_on,TRUE);
+	}
 }
 
 BOOL CTorch::net_Spawn(LPVOID DC) 

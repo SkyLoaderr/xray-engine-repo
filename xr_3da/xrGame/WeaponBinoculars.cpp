@@ -231,7 +231,10 @@ void CWeaponBinoculars::switch2_Hiding	()
 {
 	FireEnd					();
 	m_bPending				= TRUE;
-	Sound->play_at_pos		(sndHide,H_Root(),vLastFP);
+	
+	UpdateFP();
+	sndHide.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
 
@@ -247,7 +250,9 @@ void CWeaponBinoculars::switch2_Hidden()
 void CWeaponBinoculars::switch2_Showing	()
 {
 	setVisible				(TRUE);
-	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
+	
+	UpdateFP();
+	sndShow.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
 
