@@ -60,6 +60,19 @@ p2f 	p_main	( v2p_in IN )
 	}
 	
 	// final weight
+	float3 final		= 
+		samples[0]	*weight[0].x + 
+		samples[1]	*weight[0].y + 
+		samples[2]	*weight[0].z + 
+		samples[3]	*weight[0].w + 
+		samples[4]	*weight[1].x + 
+		samples[5]	*weight[1].y + 
+		samples[6]	*weight[1].z + 
+		samples[7]	*weight[1].w + 
+		samples[8]	*weight[1].z + 
+		samples[9]	*weight[1].y + 
+		samples[10]	*weight[1].x + 
+		samples[11]	*weight[1].x + 
 
 	return OUT;
 }
