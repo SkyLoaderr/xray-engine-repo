@@ -561,6 +561,7 @@ function add_to_binder(object)
 	printf("KAMP BASE %d", xr_evaluators_id.stohe_kamp_base)
 
 	properties["state_end"]		= xr_evaluators_id.state_change
+	properties["event"] 		= xr_evaluators_id.stohe_reactions_base + 0
 	properties["kamp_end"]		= xr_evaluators_id.stohe_kamp_base + 1
 	properties["on_position"]	= xr_evaluators_id.stohe_kamp_base + 2
 	properties["need_select"]	= xr_evaluators_id.stohe_kamp_base + 3
@@ -604,6 +605,7 @@ function add_to_binder(object)
 	action:add_precondition		(world_property(stalker_ids.property_items,	false))
 	action:add_precondition		(world_property(properties["on_position"], 	true))
 	action:add_precondition		(world_property(properties["state_end"], 	true))
+	action:add_precondition		(world_property(properties["event"], 		false))
 	action:add_precondition		(world_property(properties["need_select"],	false))
 	action:add_precondition		(world_property(properties["need_patrol"],	false))
 	action:add_effect 		(world_property(properties["need_select"], 	true))

@@ -1,6 +1,5 @@
 ----------------------------------------------------------------------------------------------------------------------
 --  Айдишники эвалуаторов
---  последнее обновление: 25.05.2004
 ----------------------------------------------------------------------------------------------------------------------
 
 -- эвалуаторы Глобальные
@@ -8,7 +7,6 @@ global_evaluators       = stalker_ids.property_script
 final_trade_init        = stalker_ids.property_script + 1
 final_trade_processed   = stalker_ids.property_script + 2
 state_change		= stalker_ids.property_script + 3
-reactions		= stalker_ids.property_script + 4
 
 -- эвалуаторы Стохе
 stohe_evaluators 		= stalker_ids.property_script + 1000
