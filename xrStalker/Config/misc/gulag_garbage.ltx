@@ -1,0 +1,479 @@
+[actor_dialogs]
+id = bar_dolg_base_guard_acces
+
+[logic1@bar_dolg_general_guard_left]
+active = zoneguard1@bar_dolg_general_guard_left
+actor_dialogs = actor_dialogs
+
+[zoneguard1@bar_dolg_general_guard_left]
+path_walk = guard_left_walk
+path_look = guard_left_look
+team = bar_dolg_general_guard_team1
+zone_guard = kill_zone
+zone_warn = warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_base_guard_start
+on_info = {+bar_dolg_base_pass} zoneguard11@bar_dolg_general_guard_left_friend
+snd_greet = bar_dolg_base_guard_no_talk
+
+[zoneguard11@bar_dolg_general_guard_left_friend]
+path_walk = guard_left_walk
+path_look = guard_left_look
+team = bar_dolg_general_guard_team1
+zone_warn = warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_base_guard_start
+anim = guard
+
+
+[logic2@bar_dolg_general_guard_right]
+active = zoneguard2@bar_dolg_general_guard_right
+actor_dialogs = actor_dialogs
+
+[zoneguard2@bar_dolg_general_guard_right]
+path_walk = guard_right_walk
+path_look = guard_right_look
+team = bar_dolg_general_guard_team2
+zone_guard = kill_zone
+zone_warn = warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_base_guard_start
+on_info = {+bar_dolg_base_pass} zoneguard12@bar_dolg_general_guard_right_friend
+snd_greet = bar_dolg_base_guard_no_talk
+
+[zoneguard12@bar_dolg_general_guard_right_friend]
+path_walk = guard_right_walk
+path_look = guard_right_look
+team = bar_dolg_general_guard_team2
+zone_warn = warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_base_guard_start
+anim = guard
+
+
+
+[logic3@bar_dolg_general_guard_center]
+active = zoneguard3@bar_dolg_general_guard_center
+actor_dialogs = actor_dialogs
+
+[zoneguard3@bar_dolg_general_guard_center]
+path_walk = guard_center_walk
+path_look = guard_center_look
+team = bar_dolg_general_guard_team3
+zone_guard = kill_zone
+zone_warn = warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_base_guard_start
+on_info = {+bar_dolg_base_pass} zoneguard13@bar_dolg_general_guard_center
+snd_greet = bar_dolg_base_guard_backoff
+
+[zoneguard13@bar_dolg_general_guard_center]
+path_walk = guard_center_walk
+path_look = guard_center_look
+team = bar_dolg_general_guard_team3
+zone_warn = warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_base_guard_start
+anim = guard
+
+
+
+[logic4@bar_dolg_general_kamp]
+active = kamp1@bar_dolg_general_kamp
+
+[kamp1@bar_dolg_general_kamp]
+center_point = kamp_center
+
+
+[logic5@bar_dolg_general_patrol1]
+active = walker4@bar_dolg_general_patrol1
+
+[walker4@bar_dolg_general_patrol1]
+path_walk = patrol_1_walk
+path_look = patrol_1_look
+
+[logic6@bar_dolg_general_patrol2]
+active = walker5@bar_dolg_general_patrol2
+
+[walker5@bar_dolg_general_patrol2]
+path_walk = patrol_2_walk
+path_look = patrol_2_look
+
+
+[logic6@bar_dolg_general_camper]
+active = camper1@bar_dolg_general_camper
+
+[camper1@bar_dolg_general_camper]
+path_walk = camper_1_walk
+path_look = camper_1_look
+def_state_moving = assault
+def_state_moving_fire = assault_fire
+def_state_campering = hide
+def_state_campering_fire = hide_fire
+
+
+[logic7@bar_dolg_general_camper]
+active = camper2@bar_dolg_general_camper
+
+[camper2@bar_dolg_general_camper]
+path_walk = camper_2_walk
+path_look = camper_2_look
+def_state_moving = assault
+def_state_moving_fire = assault_fire
+def_state_campering = hide
+def_state_campering_fire = hide_fire
+
+
+[logic8@bar_dolg_general_camper]
+active = camper3@bar_dolg_general_camper
+
+[camper3@bar_dolg_general_camper]
+path_walk = camper_3_walk
+path_look = camper_3_look
+def_state_moving = assault
+def_state_moving_fire = assault_fire
+def_state_campering = hide
+def_state_campering_fire = hide_fire
+
+
+[logic9@bar_dolg_general_camper]
+active = camper4@bar_dolg_general_camper
+
+[camper4@bar_dolg_general_camper]
+path_walk = camper_4_walk
+path_look = camper_4_look
+def_state_moving = assault
+def_state_moving_fire = assault_fire
+def_state_campering = hide
+def_state_campering_fire = hide_fire
+
+
+[logic10@bar_dolg_general_camper]
+active = camper5@bar_dolg_general_camper
+
+[camper5@bar_dolg_general_camper]
+path_walk = camper_5_walk
+path_look = camper_5_look
+def_state_moving = assault
+def_state_moving_fire = assault_fire
+def_state_campering = hide
+def_state_campering_fire = hide_fire
+
+
+; ¬≈“≈–¿Õ€ ƒŒÀ√¿
+
+[logic1@bar_dolg_veterans_guard_bunker1]
+active = zoneguard4@bar_dolg_veterans_guard_bunker1
+actor_dialogs = actor_dialogs
+
+[zoneguard4@bar_dolg_veterans_guard_bunker1]
+path_walk = guard_bunker_1_walk
+path_look = guard_bunker_1_look
+team = bar_dolg_guard_bunker_team
+zone_guard = bunker_kill_zone
+zone_warn = bunker_warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_guard_bunker_start 
+on_info = {+bar_dolg_bunker_pass} zoneguard44@bar_dolg_veterans_guard_bunker1_friend
+snd_greet = bar_dolg_base_guard_backoff
+
+[zoneguard44@bar_dolg_veterans_guard_bunker1_friend]
+path_walk = guard_bunker_1_walk
+path_look = guard_bunker_1_look
+team = bar_dolg_guard_bunker_team
+zone_warn = bunker_warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_guard_bunker_start 
+anim = guard
+
+
+[logic2@bar_dolg_veterans_guard_bunker2]
+active = zoneguard5@bar_dolg_veterans_guard_bunker2
+actor_dialogs = actor_dialogs
+
+[zoneguard5@bar_dolg_veterans_guard_bunker2]
+path_walk = guard_bunker_2_walk
+path_look = guard_bunker_2_look
+team = bar_dolg_guard_bunker_team1
+zone_guard = bunker_kill_zone
+zone_warn = bunker_warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_guard_bunker_start
+on_info = {+bar_dolg_bunker_pass} zoneguard55@bar_dolg_veterans_guard_bunker2_friend
+snd_greet = bar_dolg_base_guard_no_talk
+
+[zoneguard55@bar_dolg_veterans_guard_bunker2_friend]
+path_walk = guard_bunker_2_walk
+path_look = guard_bunker_2_look
+team = bar_dolg_guard_bunker_team1
+zone_warn = bunker_warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_guard_bunker_start 
+anim = guard
+
+
+[logic7@bar_dolg_veterans_bunker]
+active = walker1@bar_dolg_veterans_bunker
+
+[walker1@bar_dolg_veterans_bunker]
+path_walk = guard_bunker
+path_look = look_bunker
+
+
+[logic3@bar_dolg_veterans_gates1]
+active = walker2@bar_dolg_veterans_gates1
+
+[walker2@bar_dolg_veterans_gates1]
+path_walk = guard_gates_walk1
+path_look = guard_gates_look1
+
+
+[logic4@bar_dolg_veterans_gates2]
+active = walker3@bar_dolg_veterans_gates2
+
+[walker3@bar_dolg_veterans_gates2]
+path_walk = guard_gates_walk2
+path_look = guard_gates_look2
+
+
+[logic5@bar_dolg_veterans_gates_alarm1]
+active = walker6@bar_dolg_veterans_gates_alarm1
+
+[walker6@bar_dolg_veterans_gates_alarm1]
+path_walk = guard_gates_walk1
+path_look = guard1_alarm
+
+
+[logic6@bar_dolg_veterans_gates_alarm2]
+active = walker7@bar_dolg_veterans_gates_alarm2
+
+[walker7@bar_dolg_veterans_gates_alarm2]
+path_walk = guard_gates_walk2
+path_look = guard2_alarm
+
+
+[logic8@bar_dolg_veterans_bunker_camper]
+active = camper1@bar_dolg_veterans_bunker_camper
+
+[camper1@bar_dolg_veterans_bunker_camper]
+path_walk = guard_bunker
+path_look = camper_look1
+radius = 4
+
+
+
+; ¡”Õ ≈– ƒŒÀ√¿
+
+[logic1@bar_dolg_bunker]
+active = walker1@bar_dolg_bunker
+
+[walker1@bar_dolg_bunker]
+path_walk = guard_1_walk
+path_look = guard_1_look
+
+
+[logic2@bar_dolg_bunker]
+active = walker2@bar_dolg_bunker
+
+[walker2@bar_dolg_bunker]
+path_walk = guard_2_walk
+path_look = guard_2_look
+
+
+[logic3@bar_dolg_bunker]
+active = walker3@bar_dolg_bunker
+
+[walker3@bar_dolg_bunker]
+path_walk = rest_2_walk
+path_look = rest_2_look
+
+
+[logic4@bar_dolg_bunker]
+active = walker4@bar_dolg_bunker
+
+[walker4@bar_dolg_bunker]
+path_walk = rest_1_walk
+path_look = rest_1_look
+
+
+[logic5@bar_dolg_bunker]
+active = sleeper1@bar_dolg_bunker
+
+[sleeper1@bar_dolg_bunker]
+path_main = sleeper_1
+
+
+; Õ≈’Œ–Œÿ»≈ —“¿À ≈–€ ¬≈“≈–¿Õ€
+
+[logic@bar_evil_veterans_walker1]
+active = walker@bar_evil_veterans_walker1
+
+[walker@bar_evil_veterans_walker1]
+path_walk = guard_1_walk
+
+
+[logic@bar_evil_veterans_walker2]
+active = walker@bar_evil_veterans_walker2
+
+[walker@bar_evil_veterans_walker2]
+path_walk = guard_2_walk
+
+
+[logic@bar_evil_veterans_walker3]
+active = walker@bar_evil_veterans_walker3
+
+[walker@bar_evil_veterans_walker3]
+path_walk = guard_3_walk
+
+
+[logic@bar_evil_veterans_kamp1]
+active = kamp@bar_evil_veterans_kamp1
+
+[kamp@bar_evil_veterans_kamp1]
+center_point = sit_point1
+
+
+[logic@bar_evil_veterans_kamp2]
+active = kamp@bar_evil_veterans_kamp2
+
+[kamp@bar_evil_veterans_kamp2]
+center_point = sit_point1
+
+
+[logic@bar_evil_veterans_kamp3]
+active = kamp@bar_evil_veterans_kamp3
+
+[kamp@bar_evil_veterans_kamp3]
+center_point = sit_point1
+
+
+[logic@bar_evil_veterans_alarm1]
+active = walker@bar_evil_veterans_alarm1
+
+[walker@bar_evil_veterans_alarm1]
+path_walk = alarm_1_walk
+path_look = alarm_1_look
+
+
+[logic@bar_evil_veterans_alarm2]
+active = walker@bar_evil_veterans_alarm2
+
+[walker@bar_evil_veterans_alarm2]
+path_walk = alarm_2_walk
+path_look = alarm_2_look
+
+
+[logic@bar_evil_veterans_alarm3]
+active = walker@bar_evil_veterans_alarm3
+
+[walker@bar_evil_veterans_alarm3]
+path_walk = alarm_3_walk
+path_look = alarm_3_look
+
+
+
+
+;*******************************************************************
+; —‚Ó·Ó‰‡, ‡Ú‡ÍÛ˛˘‡ˇ Û˜ÂÌÌ˚ı
+;*******************************************************************
+
+[logic@bar_freedom_attack_sniper_1]
+active = camper@bar_freedom_attack_sniper_1
+
+[camper@bar_freedom_attack_sniper_1]
+path_walk = camper_1_walk
+path_look = camper_1_look
+
+[logic@bar_freedom_attack_sniper_2]
+active = camper@bar_freedom_attack_sniper_2
+
+[camper@bar_freedom_attack_sniper_2]
+path_walk = camper_2_walk
+path_look = camper_2_look
+
+[logic@bar_freedom_attack_sniper_3]
+active = camper@bar_freedom_attack_sniper_3
+
+[camper@bar_freedom_attack_sniper_3]
+path_walk = camper_3_walk
+path_look = camper_3_look
+
+[logic@bar_freedom_attack_sniper_4]
+active = camper@bar_freedom_attack_sniper_4
+
+[camper@bar_freedom_attack_sniper_4]
+path_walk = camper_4_walk
+path_look = camper_4_look
+
+
+[logic@bar_freedom_attack_guard_1]
+active = camper@bar_freedom_attack_guard_1
+
+[camper@bar_freedom_attack_guard_1]
+path_walk = guard_1_walk
+path_look = guard_1_look
+
+[logic@bar_freedom_attack_guard_2]
+active = camper@bar_freedom_attack_guard_2
+
+[camper@bar_freedom_attack_guard_2]
+path_walk = guard_2_walk
+path_look = guard_2_look
+
+
+;*******************************************************************
+; ”˜ÂÌÌ˚Â
+;*******************************************************************
+
+[logic@bar_ecolog_crush_sniper_1]
+active = camper@bar_ecolog_crush_sniper_1
+
+[camper@bar_ecolog_crush_sniper_1]
+path_walk = sniper_1_walk
+path_look = sniper_1_look
+
+[logic@bar_ecolog_crush_sniper_2]
+active = camper@bar_ecolog_crush_sniper_2
+
+[camper@bar_ecolog_crush_sniper_2]
+path_walk = sniper_2_walk
+path_look = sniper_2_look
+
+[logic@bar_ecolog_crush_sniper_3]
+active = camper@bar_ecolog_crush_sniper_3
+
+[camper@bar_ecolog_crush_sniper_3]
+path_walk = sniper_3_walk
+path_look = sniper_3_look
+
+[logic@bar_ecolog_crush_sniper_4]
+active = camper@bar_ecolog_crush_sniper_4
+
+[camper@bar_ecolog_crush_sniper_4]
+path_walk = sniper_4_walk
+path_look = sniper_4_look
+
+[logic@bar_ecolog_crush_sniper_5]
+active = camper@bar_ecolog_crush_sniper_5
+
+[camper@bar_ecolog_crush_sniper_5]
+path_walk = sniper_5_walk
+path_look = sniper_5_look
+
+[logic@bar_ecolog_crush_sniper_6]
+active = camper@bar_ecolog_crush_sniper_6
+
+[camper@bar_ecolog_crush_sniper_6]
+path_walk = sniper_6_walk
+path_look = sniper_6_look
+
