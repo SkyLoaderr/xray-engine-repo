@@ -12,14 +12,14 @@ void				game_sv_GameState::Unlock					()
 	xrServer*		S	= Level().Server;
 	S->clients_Unlock	();
 }
-game_PlayerState*	game_sv_GameState::get_it					(DWORD it)
+game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 {
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->client_Get		(it);
 	if (0==C)			return 0;
 	else				return &C->ps;
 }
-game_PlayerState*	game_sv_GameState::get_id					(DWORD id)								// DPNID
+game_PlayerState*	game_sv_GameState::get_id					(u32 id)								// DPNID
 {
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
@@ -27,7 +27,7 @@ game_PlayerState*	game_sv_GameState::get_id					(DWORD id)								// DPNID
 	else				return &C->ps;
 }
 
-u32					game_sv_GameState::get_it_2_id				(DWORD it)
+u32					game_sv_GameState::get_it_2_id				(u32 it)
 {
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->client_Get		(it);
@@ -35,14 +35,14 @@ u32					game_sv_GameState::get_it_2_id				(DWORD it)
 	else				return C->ID;
 }
 
-string64*			game_sv_GameState::get_name_it				(DWORD it)
+string64*			game_sv_GameState::get_name_it				(u32 it)
 {
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->client_Get		(it);
 	if (0==C)			return 0;
 	else				return &C->Name;
 }
-string64*			game_sv_GameState::get_name_id				(DWORD id)								// DPNID
+string64*			game_sv_GameState::get_name_id				(u32 id)								// DPNID
 {
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
@@ -72,7 +72,7 @@ s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 
 
 // Network
-void game_sv_GameState::net_Export_State						(NET_Packet& P, DWORD to)
+void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 {
 	// Generic
 	P.w_s32			(type);
@@ -94,24 +94,35 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, DWORD to)
 	game_PlayerState*	Base	= get_id(to);
 	for (u32 p_it=0; p_it<p_count; p_it++)
 	{
-		string64*	p_name	=	get_name_it		(p_it);
-		game_PlayerState* A	=	get_it			(p_it);
+		string64*	p_name		=	get_name_it		(p_it);
+		game_PlayerState* A		=	get_it			(p_it);
+		game_PlayerState copy	=	*A;
+		if (Base==A)	
+		{
+			copy.flags	|=		GAME_PLAYER_FLAG_LOCAL;
+		}
+
 		P.w_u32					(get_it_2_id	(p_it));
-		P.w_u8					((Base==A) ? M_GAME_PLAYER_LOCAL : 0);
 		P.w_string				(*p_name);
-		P.w						(A,sizeof(*A));
+		P.w						(&copy,sizeof(game_PlayerState));
 	}
 	Unlock			();
 }
 
-void game_sv_GameState::net_Export_Update						(NET_Packet& P, DWORD id)
+void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id)
 {
 	Lock		();
 	game_PlayerState* A		= get_id		(id);
 	if (A)
 	{
+		game_PlayerState copy	=	*A;
+		if (id==id_to)	
+		{
+			copy.flags	|=		GAME_PLAYER_FLAG_LOCAL;
+		}
+
 		P.w_u32	(id);
-		P.w		(A,sizeof(*A));
+		P.w		(&copy,sizeof(game_PlayerState));
 	}
 	Unlock		();
 }

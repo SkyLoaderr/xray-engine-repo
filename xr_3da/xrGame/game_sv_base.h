@@ -2,18 +2,23 @@
 
 #include "game_base.h"
 
+// [OLES] Policy:
+// it_*		- means ordinal number of player
+// id_*		- means player-id
+// eid_*	- means entity-id
+
 class	game_sv_GameState	: public game_GameState
 {
 protected:
 public:
-	// Main
+	// Main accessors
 	virtual		void				Lock					();
 	virtual		void				Unlock					();
-	virtual		game_PlayerState*	get_it					(DWORD it);
-	virtual		game_PlayerState*	get_id					(DWORD id);								// DPNID
-	virtual		string64*			get_name_it				(DWORD it);
-	virtual		string64*			get_name_id				(DWORD id);								// DPNID
-	virtual		u32					get_it_2_id				(DWORD it);
+	virtual		game_PlayerState*	get_it					(u32 it);
+	virtual		game_PlayerState*	get_id					(u32 id);								// DPNID
+	virtual		string64*			get_name_it				(u32 it);
+	virtual		string64*			get_name_id				(u32 id);								// DPNID
+	virtual		u32					get_it_2_id				(u32 it);
 	virtual		u32					get_count				();
 
 	// Utilities
@@ -26,7 +31,7 @@ public:
 
 	virtual		void				OnTeamScore				(u32 team)						= 0;	// команда выиграла
 	virtual		void				OnTeamsInDraw			()								= 0;	// ничья
-	virtual		void				OnTargetTouched			(u32 id_who, u32 id_target)		= 0;
+	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	= 0;	// TRUE=allow ownership, FALSE=denie
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
 
 	virtual		void				OnFraglimitExceed		()								= 0;
@@ -34,6 +39,6 @@ public:
 
 	// Main
 	virtual		void				Update					()								= 0;
-	virtual		void				net_Export_State		(NET_Packet& P);						// full state
-	virtual		void				net_Export_Update		(NET_Packet& P, DWORD id);				// just incremental update for specific client
+	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state
+	virtual		void				net_Export_Update		(NET_Packet& P, u32 id_to, u32 id);		// just incremental update for specific client
 };
