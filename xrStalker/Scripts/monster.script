@@ -21,8 +21,8 @@ function main()
 
 	action(                                                                                                       
 	    obj1,                                                                                                      
-		move(move.act_walk_fwd, patrol("way0002")),
-	    cond(cond.time_end + cond.move_end,10000)                                                                                 
+		move(move.act_walk_fwd, patrol("way0000")),
+	    cond(cond.time_end,10000)                                                                                 
 	)                                                                                                             
 
 	action(                                                                                                       
