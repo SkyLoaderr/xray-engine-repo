@@ -15,7 +15,7 @@ function main()
 end
 
 
-class "options_dialog" (base_dialog)
+class "options_dialog" (ui_base_dialog.base_dialog)
 
 function options_dialog:__init() super()
    self:SetFont(GetFontMedium()) --set base font for dialog.
