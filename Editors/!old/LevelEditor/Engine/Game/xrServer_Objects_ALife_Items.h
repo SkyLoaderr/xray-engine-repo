@@ -143,4 +143,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemGrenade,CSE_ALifeItem)
 									CSE_ALifeItemGrenade(LPCSTR caSection);
 	virtual							~CSE_ALifeItemGrenade();
 SERVER_ENTITY_DECLARE_END
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItemBolt,CSE_ALifeDynamicObject,CSE_ALifeInventoryItem)
+									CSE_ALifeItemBolt(LPCSTR caSection);
+	virtual							~CSE_ALifeItemBolt();
+SERVER_ENTITY_DECLARE_END
 #endif

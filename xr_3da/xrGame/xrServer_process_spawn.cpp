@@ -87,7 +87,9 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 	if (!E->m_bALifeControl && (0xffff != E->ID_Parent)) {
 		CSE_Abstract*		e_parent	= ID_to_entity(E->ID_Parent);
 		R_ASSERT						(e_parent);
-		e_parent->children.push_back	(E->ID);
+
+		if (game->OnTouch(E->ID_Parent,E->ID))
+			e_parent->children.push_back(E->ID);
 	}
 
 	// create packet and broadcast packet to everybody

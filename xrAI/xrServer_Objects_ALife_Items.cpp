@@ -689,3 +689,47 @@ void CSE_ALifeItemGrenade::FillProp			(LPCSTR pref, PropItemVec& items)
 	inherited::FillProp			(pref,items);
 }
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemBolt
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemBolt::CSE_ALifeItemBolt		(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
+{
+}
+
+CSE_ALifeItemBolt::~CSE_ALifeItemBolt		()
+{
+}
+
+void CSE_ALifeItemBolt::STATE_Write			(NET_Packet &tNetPacket)
+{
+	inherited1::STATE_Write		(tNetPacket);
+	inherited2::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeItemBolt::STATE_Read			(NET_Packet &tNetPacket, u16 size)
+{
+	inherited1::STATE_Read		(tNetPacket, size);
+	if (m_wVersion > 50)
+		inherited2::STATE_Read	(tNetPacket, size);
+}
+
+void CSE_ALifeItemBolt::UPDATE_Write		(NET_Packet &tNetPacket)
+{
+	inherited1::UPDATE_Write	(tNetPacket);
+	inherited2::UPDATE_Write	(tNetPacket);
+};
+
+void CSE_ALifeItemBolt::UPDATE_Read			(NET_Packet &tNetPacket)
+{
+	inherited1::UPDATE_Read		(tNetPacket);
+	inherited2::UPDATE_Read		(tNetPacket);
+};
+
+#ifdef _EDITOR
+void CSE_ALifeItemBolt::FillProp			(LPCSTR pref, PropItemVec& values)
+{
+	inherited1::FillProp		(pref,	 values);
+	inherited2::FillProp		(pref,	 values);
+}
+#endif

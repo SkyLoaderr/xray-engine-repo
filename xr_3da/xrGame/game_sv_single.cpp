@@ -48,12 +48,28 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem	= dynamic_cast<CSE_ALifeInventoryItem*>	(e_what);
 		CSE_ALifeDynamicObject	*l_tpDynamicObject		= dynamic_cast<CSE_ALifeDynamicObject*>	(e_who);
 		
-		if (l_tpTraderParams && l_tpALifeInventoryItem && l_tpDynamicObject && (m_tpALife->m_tpCurrentLevel->find(l_tpALifeInventoryItem->ID) != m_tpALife->m_tpCurrentLevel->end()) && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(e_what->ID) != m_tpALife->m_tObjectRegistry.end()))
+		if	(
+				l_tpTraderParams && 
+				l_tpALifeInventoryItem && 
+				l_tpDynamicObject && 
+				(	
+					m_tpALife->m_tpCurrentLevel->find(l_tpALifeInventoryItem->ID) != 
+					m_tpALife->m_tpCurrentLevel->end()
+				) && 
+				(
+					m_tpALife->m_tObjectRegistry.find(e_who->ID) != 
+					m_tpALife->m_tObjectRegistry.end()
+				) && 
+				(
+					m_tpALife->m_tObjectRegistry.find(e_what->ID) != 
+					m_tpALife->m_tObjectRegistry.end()
+				)
+			)
 			m_tpALife->vfAttachItem(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
 #ifdef DEBUG
 		else
 			if (psAI_Flags.test(aiALife)) {
-				Msg				("Cannot attach object [%s][%d] to object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->ID);
+				Msg				("Cannot attach object [%s][%s][%d] to object [%s][%s][%d]",e_what->s_name_replace,e_what->s_name,e_what->ID,e_who->s_name_replace,e_who->s_name,e_who->ID);
 			}
 #endif
 	}
