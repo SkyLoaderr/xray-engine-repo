@@ -1205,6 +1205,8 @@ void CSE_ALifeCar::FillProps				(LPCSTR pref, PropItemVec& values)
 CSE_ALifeObjectBreakable::CSE_ALifeObjectBreakable	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
 {
 	m_health					= 100.f;
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
 }
 
 CSE_ALifeObjectBreakable::~CSE_ALifeObjectBreakable	()
