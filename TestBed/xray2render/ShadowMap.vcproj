@@ -353,6 +353,9 @@
 				RelativePath="shaders\D\filter_bloom.s">
 			</File>
 			<File
+				RelativePath="shaders\D\hom_filter.s">
+			</File>
+			<File
 				RelativePath="shaders\D\light_direct.s">
 			</File>
 			<File
