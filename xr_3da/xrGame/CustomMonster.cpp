@@ -292,10 +292,12 @@ void CCustomMonster::Update	( DWORD DT )
 		}
 		// Look and action streams
 		if (iHealth>0) {
-			Exec_Look		(dt);
-			Exec_Movement	(dt);
-			Exec_Visibility	(dt);
-			Exec_Physics	(dt);
+			Device.Statistic.TEST.Begin	();
+			Exec_Look			(dt);
+			Exec_Movement		(dt);
+			Device.Statistic.TEST.Begin	();
+			Exec_Visibility		(dt);
+			Exec_Physics		(dt);
 			
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
@@ -307,7 +309,7 @@ void CCustomMonster::Update	( DWORD DT )
 		else {
 			Exec_Physics	(dt);
 			if (bfExecMovement()) {
-				Exec_Movement(dt);
+				Exec_Movement	(dt);
 				net_update			uNext;
 				uNext.dwTimeStamp	= Level().timeServer();
 				uNext.o_model		= r_torso_current.yaw;

@@ -65,7 +65,10 @@ public:
 	CStatTimer	netClient;
 	CStatTimer	netServer;
 	
-	CStatTimer	TEST;				// debug counter
+	CStatTimer	TEST0;				// debug counter
+	CStatTimer	TEST1;				// debug counter
+	CStatTimer	TEST2;				// debug counter
+	CStatTimer	TEST3;				// debug counter
 
 	void		Show			(void);
 	void		OnDeviceCreate	(void);
