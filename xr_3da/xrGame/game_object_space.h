@@ -21,7 +21,8 @@ namespace GameObject {
 		eActionTypeAnimation,
 		eActionTypeSound,
 		eActionTypeParticle,
-		eActionTypeObject,	
+		eActionTypeObject,
+		eActorSleep,
 	};
 	
 };
