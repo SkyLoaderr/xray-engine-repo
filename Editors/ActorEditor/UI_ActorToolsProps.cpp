@@ -400,12 +400,14 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
         case jtRigid: 
         break; 
         case jtCloth:{ 
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Spring Factor"),	&data.spring_factor, 	0.f, 1000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Damping Factor"),	&data.damping_factor, 	0.f, 1000.f);
+	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Friction"),	 		&data.friction, 	0.f, 1000000000.f);
+	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Spring Factor"),		&data.spring_factor, 	0.f, 1000.f);
+	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Damping Factor"),		&data.damping_factor, 	0.f, 1000.f);
         }break; 
         case jtJoint:{
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Spring Factor"),	&data.spring_factor, 	0.f, 1000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Damping Factor"),	&data.damping_factor, 	0.f, 1000.f);
+	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Friction"),	 		&data.friction, 	0.f, 1000000000.f);
+	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Spring Factor"),		&data.spring_factor, 	0.f, 1000.f);
+	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Damping Factor"),		&data.damping_factor, 	0.f, 1000.f);
             for (int k=0; k<3; k++){
 		        V=PHelper.CreateAngle	(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Min"),			&data.limits[k].limit.x, 		-M_PI, 0.f);
                 V->OnChangeEvent	= OnBoneLimitsChange;
@@ -427,6 +429,7 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
         {
 //	        int idx = (data.type-jtWheelXZ)/2;
 	        int idx = (data.type-jtWheel)/2;
+	        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Friction"),	 			&data.friction, 	0.f, 1000000000.f);
 	        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Spring Factor"),			&data.spring_factor, 0.f, 1000.f);
 	        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Damping Factor"),			&data.damping_factor, 0.f, 1000.f);
             V=PHelper.CreateAngle	(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Steer\\Limits Min"),		&data.limits[idx].limit.x, -PI_DIV_2, 0.f);
