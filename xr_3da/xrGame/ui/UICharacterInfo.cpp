@@ -218,7 +218,7 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 	CEntityAlive	*entity_alive = smart_cast<CEntityAlive*>(Level().CurrentEntity());
 	VERIFY			(entity_alive);
 
-	CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(pInvOwner);
+//	CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(pInvOwner);
 //	SetRelation(ContactEA->tfGetRelationType(entity_alive));
 }
 
