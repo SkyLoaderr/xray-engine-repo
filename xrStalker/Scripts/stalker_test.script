@@ -3,7 +3,7 @@ function main()
     stalker				= get_level_object ("m_stalker_e0000")
     f1					= get_level_object ("grenade_f0000")
     
-    f1:explode			(time() + 10000)
+    f1:explode			(device():time_global() + 10000)
     
     stalker:script		(true,stalker_test:script_name());
     
