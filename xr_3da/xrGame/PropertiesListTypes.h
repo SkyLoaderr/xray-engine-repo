@@ -371,6 +371,7 @@ public:
     void				AppendChooseItem	(LPCSTR name, LPCSTR hint){VERIFY(m_Items); m_Items->push_back(SChooseItem(name,hint));}
 public:
 						ChooseValue			(ref_str* val, u32 cid, LPCSTR path, void* param):RTextValue(val),m_ChooseID(cid),m_StartPath(path),m_Items(0),m_FillParam(param),OnChooseFillEvent(0){}
+	void				SetSubItemCount		(u32 cnt){Owner()->subitem=cnt;}                        
 };
 
 typedef CustomValue<BOOL>		BOOLValue;
