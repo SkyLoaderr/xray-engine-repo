@@ -36,6 +36,7 @@ BOOL CRestrictedObject::net_Spawn			(LPVOID data)
 
 u32	CRestrictedObject::accessible_nearest	(const Fvector &position, Fvector &result) const
 {
+	VERIFY						(!accessible(position));
 	return						(Level().space_restriction_manager().accessible_nearest(ID(),position,result));
 }
 
