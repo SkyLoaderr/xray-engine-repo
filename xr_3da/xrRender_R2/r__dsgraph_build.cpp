@@ -115,6 +115,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 		N->val.pObject				= NULL;
 		N->val.pVisual				= pVisual;
 		N->val.Matrix				= Fidentity;
+		N->val.se					= sh;
 	} else {
 		SPass&						pass	= *sh->Passes.front	();
 		mapNormal_T&				map		= mapNormal			[sh->Flags.iPriority/2];
