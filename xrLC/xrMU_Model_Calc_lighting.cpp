@@ -264,7 +264,7 @@ void xrMU_Reference::calc_lighting	()
 	model->calc_lighting	(color,xform,RCAST_Model,0);
 
 	// A*C + D = B
-/**
+/**/
 	clMsg("-----------------");
 	{
 		vector<vector<REAL> >	A;
@@ -311,13 +311,49 @@ void xrMU_Reference::calc_lighting	()
 			B[it].push_back		(__B.b);
 		}
 		vfOptimizeParameters	(A,B,C,D);
-		c_scale.z			= C[0];
-		c_bias.z			= D[0];
-
+		c_scale.z				= C[0];
+		c_bias.z				= D[0];
 
 		c_scale.w			= 0;
 		c_bias.w			= 1;
-		clMsg				("scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",
+		
+		//
+		
+		REAL dResult			= 0.0;
+		u32 dwTestCount			= B.size();
+		u32 dwParameterCount	= 3;
+		A.clear();	A.resize	(color.size());
+		B.clear();	B.resize	(color.size());
+		for (u32 it=0; it<color.size(); it++)
+		{
+			Fcolor&		__A		= model->color	[it];
+			A[it].push_back		(__A.r);
+			A[it].push_back		(__A.g);
+			A[it].push_back		(__A.b);
+
+			Fcolor&		__B		= color			[it];
+			B[it].push_back		(__B.r);
+			B[it].push_back		(__B.g);
+			B[it].push_back		(__B.b);
+		}
+		C.resize				(3);
+		D.resize				(3);
+		C[0]					= c_scale.x	;
+		C[1]					= c_scale.y	;
+		C[2]					= c_scale.z	;
+		D[0]					= c_bias.x	;
+		D[1]					= c_bias.y	;
+		D[2]					= c_bias.z	;
+
+		for (u32 i=0; i<dwTestCount; i++) {
+			for (u32 j=0; j<dwParameterCount; j++) {
+
+				REAL d = A[i][j]*C[j]+D[j];
+				REAL dTemp			= B[i][j] - d;
+				dResult				+= dTemp*dTemp;
+			}
+		}
+		clMsg				("%f : scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",dResult/dwTestCount,
 			c_scale.x,c_scale.y,c_scale.z,
 			c_bias.x,c_bias.y,c_bias.z
 			);
@@ -362,7 +398,7 @@ void xrMU_Reference::calc_lighting	()
 			c_bias.x,c_bias.y,c_bias.z
 			);
 	}
-/**/
+/**
 	// build data
 	clMsg("-----------------");
 	{
