@@ -5,42 +5,37 @@ function main()
 
 	local actor   	= get_actor()
 
-	wait		(5000)
+	wait		(1000)
 
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
 
-			printf("script 1!")
-			flush()
-
 
  	action(                                                                                                       
 	    stalker1,
-	  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-		cond	(cond.time_end, 120000)
+	  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+
+		cond	(cond.time_end, 10000)
 	)
-			printf("script 11!")
-			flush()
 
 	action(                                                                                                       
 	    stalker2,
 	  	move	(move.standing, move.walk,move.line,patrol("way0001")),
 		cond	(cond.time_end, 120000)
 	)
-			printf("script 12!")
-			flush()
-	
+
+ 	action(                                                                                                       
+	    stalker1,
+	  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+
+		cond	(cond.time_end, 10000)
+	)
+
 	while stalker1:action() and stalker2:action() do
 
-			printf("script 13!")
-			flush()
 	    wait	()
 
-			printf("script 14!")
-			flush()
 	end
-			printf("script 15!")
-			flush()
 
 	stalker1:script	(false, script_01.script_name())
 	stalker2:script	(false, script_01.script_name())
