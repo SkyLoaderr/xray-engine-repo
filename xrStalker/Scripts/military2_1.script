@@ -154,9 +154,9 @@ function main ()
 
     action (stalker1, move (move.standing, move.run, move.line, patrol ("waybase2")),
             anim (anim.danger), look (look.search), cond (cond.move_end))
-    action (stalker2, move (move.standing, move.run, move.line, patrol ("way_base")),
+    action (stalker2, move (move.standing, move.run, move.line, patrol ("waybase2")),
             anim (anim.danger), look (look.search), cond (cond.move_end))
-    action (stalker3, move (move.standing, move.run, move.line, patrol ("waybase2")),
+    action (stalker3, move (move.standing, move.run, move.line, patrol ("way_base")),
             anim (anim.danger), look (look.search), cond (cond.move_end))
 
     while stalker1:action () do wait () end
