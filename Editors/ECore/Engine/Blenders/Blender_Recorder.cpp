@@ -75,6 +75,7 @@ void	CBlender_Compile::SetParams		(int iPriority, bool bStrictB2F)
 {
 	SH->flags.iPriority		= iPriority;
 	SH->flags.bStrictB2F	= bStrictB2F;
+	if (bStrictB2F)			VERIFY(1==(flags.iPriority/2));
 	//SH->Flags.bLighting		= FALSE;
 }
 

@@ -79,7 +79,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	if (RI.val_bInvisible)		return;
 
 	// strict-sorting selection
-	if (sh->flags.bStrictB2F) {
+	if (sh->flags.bStrictB2F)	{
 		mapSorted_Node* N		= mapSorted.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= RI.val_pObject;
