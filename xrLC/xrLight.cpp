@@ -126,7 +126,7 @@ public:
 	virtual void		Execute	()
 	{
 		CDB::COLLIDER	DB;
-		DB.ray_options	(CDB::OPT_CULL);
+		DB.ray_options	(0);
 		
 		vector<R_Light>	Lights = pBuild->L_layers.front().lights;
 		if (Lights.empty())		return;

@@ -86,7 +86,7 @@ public:
 	virtual void		Execute()
 	{
 		CDB::COLLIDER DB;
-		DB.ray_options	(CDB::OPT_ONLYFIRST|CDB::OPT_CULL);
+		DB.ray_options	(CDB::OPT_ONLYFIRST);
 
 		vector<R_Light>	Lights = g_lights;
 

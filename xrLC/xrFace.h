@@ -116,6 +116,7 @@ public:
 	union			{
 		bool				bSplitted;		//
 		bool				bOpaque;		// For ray-tracing speedup
+		bool				bProcessed;
 	};
 
 	Shader_xrLC&	Shader			();
