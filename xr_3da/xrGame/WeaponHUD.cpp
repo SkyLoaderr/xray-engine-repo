@@ -136,15 +136,12 @@ void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 	if(M->flags&esmStopAtEnd)
 	{
 		//если предыдущая анимация еще не доигралась, то остановить ее
-//		if(m_bStopAtEndAnimIsRunning)
-//			StopCurrentAnim	();
-
 		m_bStopAtEndAnimIsRunning = true;
 
 		CBoneData			&bone_data = PKinematics(Visual())->LL_GetData(PKinematics(Visual())->LL_GetBoneRoot());
 		CBoneDataAnimated	*bone_anim = dynamic_cast<CBoneDataAnimated *>(&bone_data);
 		CMotion& motion = bone_anim->Motions[M->motion];
-		u32 anim_time = iFloor(0.5f + M->Dequantize(M->speed)* motion.GetLength() * 1000.f);
+		u32 anim_time = iFloor(0.5f + 1000.f*motion.GetLength()/ M->Dequantize(M->speed));
 		m_pCallbackItem = W;
 		m_dwAnimEndTime = Device.dwTimeGlobal + anim_time;
 	}
