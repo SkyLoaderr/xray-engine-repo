@@ -36,7 +36,7 @@ void CAI_Stalker::vfUpdateSearchPosition()
 		}
 	}
 	else {
-		Msg("%s : %d -> %d (%d)",cName(),m_tCurGP,m_tNextGP,m_dwTimeToChange);
+		//Msg("%s : %d -> %d (%d)",cName(),m_tCurGP,m_tNextGP,m_dwTimeToChange);
 		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
 			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 			vfChooseNextGraphPoint		();
