@@ -1,10 +1,10 @@
-local distance_to_enemy      = 15
+local distance_to_enemy		= 15
 
-local time_to_rest        = 15000              --Время отдыха
-local time_to_look        = 10000              --Сколько времени смотрим, когда останавливаемся в idle
-local time_walk_near_mnstr      = 40000              --Видит монстра, но на него не реагирует, после этого времени начинает стрелять в монстра
-local time_to_camper      = 20000              --Сколько времени сидим в укрытии и ждем
-local time_camper_look      = 7000              --Сколько приглядываемся, когда кемперим и ползем по маршруту
+local time_to_rest			= 15000              --Время отдыха
+local time_to_look			= 10000              --Сколько времени смотрим, когда останавливаемся в idle
+local time_walk_near_mnstr	= 40000              --Видит монстра, но на него не реагирует, после этого времени начинает стрелять в монстра
+local time_to_camper		= 20000              --Сколько времени сидим в укрытии и ждем
+local time_camper_look		= 7000              --Сколько приглядываемся, когда кемперим и ползем по маршруту
 
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -47,12 +47,19 @@ end
 class "see_enemy_evaluator" (property_evaluator)
 function see_enemy_evaluator:__init (name, storage) super ()
     self.a       = storage
+    self.time	 = device():time_global()
 end
 
 function see_enemy_evaluator:evaluate()
     if(object_type(self.object:best_enemy()) == "stalker") then
         if(self.object:see(self.object:best_enemy())) then
+            self.time = device():time_global()
             return true
+        else
+			if(device():time_global() < self.time + 4000) then
+				//'Недавно видели, теперь не видим
+				return true
+			end
         end
     end
     return false
