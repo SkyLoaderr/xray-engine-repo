@@ -49,6 +49,8 @@ BOOL CSpaceRestrictor::net_Spawn		(LPVOID data)
 	setEnabled						(false);
 	setVisible						(false);
 
+	Level().space_restrictor_manager().add(this);
+
 	return							(result);
 }
 

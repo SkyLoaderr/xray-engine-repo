@@ -12,3 +12,7 @@
 CSpaceRestrictorManager::~CSpaceRestrictorManager	()
 {
 }
+
+void CSpaceRestrictorManager::add					(CSpaceRestrictor *space_restrictor)
+{
+}

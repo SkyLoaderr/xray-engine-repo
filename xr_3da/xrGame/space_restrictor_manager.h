@@ -14,6 +14,7 @@ protected:
 public:
 	IC				CSpaceRestrictorManager		();
 	virtual			~CSpaceRestrictorManager	();
+			void	add							(CSpaceRestrictor *space_restrictor);
 };
 
 #include "space_restrictor_manager_inline.h"
