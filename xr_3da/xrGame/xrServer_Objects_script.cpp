@@ -48,10 +48,11 @@ void CSE_Abstract::script_register(lua_State *L)
 			("cse_abstract")
 			.def_readonly	("id",				&CSE_Abstract::ID)
 			.def_readonly	("parent_id",		&CSE_Abstract::ID_Parent)
+			.def_readwrite	("position",		&CSE_Abstract::o_Position)
 			.def			("section_name",	&get_section_name)
 			.def			("name",			&get_name)
 			.def			("clsid",			&CSE_Abstract::script_clsid)
-			.def_readwrite	("position",		&CSE_Abstract::o_Position)
+			.def			("spawn_ini",		&CSE_Abstract::spawn_ini)
 //			.def(		constructor<LPCSTR>())
 	];
 }

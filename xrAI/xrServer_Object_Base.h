@@ -71,6 +71,7 @@ public:
 	CLASS_ID						m_tClassID;
 	int								m_script_clsid;
 	shared_str						m_ini_string;
+	CInifile						*m_ini_file;
 
 	// for ALife control
 	bool							m_bALifeControl;
@@ -119,6 +120,7 @@ public:
 	virtual CSE_Abstract			*init			();
 	// end of the virtual inheritance dependant code
 	IC		int						script_clsid	() const					{VERIFY(m_script_clsid >= 0); return (m_script_clsid);}
+			CInifile				&spawn_ini		();
 };
 add_to_type_list(CSE_Abstract)
 #define script_type_list save_type_list(CSE_Abstract)

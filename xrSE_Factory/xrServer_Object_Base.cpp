@@ -100,6 +100,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	m_last_spawn_time			= 0;
 	m_min_spawn_interval		= 0;
 	m_max_spawn_interval		= 0;
+	m_ini_file					= 0;
 
 #ifndef AI_COMPILER
 	m_script_clsid				= object_factory().script_clsid(m_tClassID);
@@ -111,6 +112,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 CSE_Abstract::~CSE_Abstract					()
 {
 	xr_free						(s_name_replace);
+	xr_delete					(m_ini_file);
 }
 
 CSE_Visual* CSE_Abstract::visual			()
@@ -126,6 +128,21 @@ ISE_Shape*  CSE_Abstract::shape				()
 CSE_Motion* CSE_Abstract::motion			()
 {
 	return						(0);
+}
+
+CInifile &CSE_Abstract::spawn_ini			()
+{
+	if (!m_ini_file) 
+#pragma warning(push)
+#pragma warning(disable:4238)
+		m_ini_file			= xr_new<CInifile>(
+			&IReader			(
+				(void*)(*(m_ini_string)),
+				m_ini_string.size()
+			)
+		);
+#pragma warning(pop)
+	return						(*m_ini_file);
 }
 	
 void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
