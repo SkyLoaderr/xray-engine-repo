@@ -17,7 +17,8 @@ void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& 
 	int	du		= iCeil(_abs(size.u)/texel_size);
 	int	dv		= iCeil(_abs(size.v)/texel_size);
 	int steps	= _max(du,dv);
-	R_ASSERT	(steps);
+	if (0==steps)	return;
+
 	for (int I=0; I<=steps; I++)
 	{
 		float	time = float(I)/float(steps);
