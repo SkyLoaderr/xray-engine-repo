@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 	<!-- ICONS OF TRADING CHARACTERS -->	
-	<static_icon x="27" y="22" width="256" height="256">
+	<static_icon x="27" y="22" width="143" height="199">
 		<texture>ui\ui_trade_character</texture>
 	</static_icon>
 	<static_icon x="843" y="22" width="143" height="199">
