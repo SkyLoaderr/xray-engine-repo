@@ -105,6 +105,15 @@ SOURCE=.\occRasterizer.h
 # Begin Source File
 
 SOURCE=.\occRasterizer_core.cpp
+
+!IF  "$(CFG)" == "Occlusion - Win32 Release"
+
+# ADD CPP /FAs
+
+!ELSEIF  "$(CFG)" == "Occlusion - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

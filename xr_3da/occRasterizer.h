@@ -25,6 +25,7 @@ public:
 
 class occRasterizer  
 {
+	enum			Sections	{BOTTOM, TOP};
 private:
 	occTri*			bufFrame	[occ_dim0][occ_dim0];
 	float			bufDepth0	[occ_dim0][occ_dim0];

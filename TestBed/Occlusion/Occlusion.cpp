@@ -3,7 +3,7 @@
 
 #include	"stdafx.h"
 
-int main	(int argc, char* argv[])
+int __cdecl main	(int argc, char* argv[])
 {
 	printf("Hello World!\n");
 	return 0;

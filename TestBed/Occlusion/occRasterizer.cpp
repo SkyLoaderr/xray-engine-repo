@@ -5,8 +5,6 @@
 #include "stdafx.h"
 #include "occRasterizer.h"
 
-enum Sections {BOTTOM, TOP};
-
 void __stdcall fillDW_8x	(LPDWORD ptr, DWORD size, DWORD value)
 {
 	LPDWORD end = ptr+size;
