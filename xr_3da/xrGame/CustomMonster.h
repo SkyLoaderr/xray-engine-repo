@@ -192,7 +192,6 @@ public:
 	virtual void		net_Export				(NET_Packet& P);				// export to server
 	virtual void		net_Import				(NET_Packet& P);				// import from server
 
-	virtual	bool		bfScriptAnimation		();
 	virtual void		SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
 
 	// debug

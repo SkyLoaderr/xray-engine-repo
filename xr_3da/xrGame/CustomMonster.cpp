@@ -11,9 +11,9 @@
 #ifdef IGNORE_ACTOR
 	#include "actor.h"
 #endif
-#include "ai_script_actions.h"
-#include "ai/rat/ai_rat.h"
 
+//#include "ai_script_actions.h"
+#include "ai/rat/ai_rat.h"
 #include "ai/biting/ai_biting.h"
 
 Flags32		psAI_Flags	= {0};
@@ -777,37 +777,6 @@ void CCustomMonster::net_Destroy()
 	inherited::net_Destroy	();
 	CScriptMonster::net_Destroy();
 	Init					();
-}
-
-void ScriptCallBack(CBlend* B)
-{
-	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
-	R_ASSERT		(l_tpScriptMonster);
-	if (l_tpScriptMonster->GetCurrentAction()) {
-		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
-			l_tpScriptMonster->callback(CScriptMonster::eActionTypeAnimation);
-		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
-	}
-}
-
-bool CCustomMonster::bfScriptAnimation()
-{
-	if (
-		GetScriptControl() && 
-		GetCurrentAction() && 
-		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
-		xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
-
-		CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
-		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
-		if (m_tpScriptAnimation != l_tpMotionDef)
-			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,ScriptCallBack,this);
-		return		(true);
-	}
-	else {
-		m_tpScriptAnimation	= 0;
-		return		(false);
-	}
 }
 
 BOOL CCustomMonster::UsedAI_Locations()

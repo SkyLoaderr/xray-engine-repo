@@ -343,8 +343,9 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			break;
 		}
 		default : {
-			l_tpMovementManager->set_path_type	(CMovementManager::ePathTypeNoPath);
-			return								(l_tMovementAction.m_bCompleted = true);
+			if (l_tpMovementManager)
+				l_tpMovementManager->set_path_type	(CMovementManager::ePathTypeNoPath);
+			return									(l_tMovementAction.m_bCompleted = true);
 		}
 	}
 
@@ -437,4 +438,45 @@ BOOL CScriptMonster::net_Spawn		(LPVOID DC)
 BOOL CScriptMonster::UsedAI_Locations()
 {
 	return							(FALSE);
+}
+
+void CScriptMonster::shedule_Update	(u32 DT)
+{
+	ProcessScripts					();
+}
+
+void ScriptCallBack(CBlend* B)
+{
+	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
+	R_ASSERT		(l_tpScriptMonster);
+	if (l_tpScriptMonster->GetCurrentAction()) {
+		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
+			l_tpScriptMonster->callback(CScriptMonster::eActionTypeAnimation);
+		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
+	}
+}
+
+bool CScriptMonster::bfScriptAnimation()
+{
+	if (
+		GetScriptControl() && 
+		GetCurrentAction() && 
+		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
+		xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
+
+			CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
+			CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
+			if (m_tpScriptAnimation != l_tpMotionDef)
+				tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,ScriptCallBack,this);
+			return		(true);
+		}
+	else {
+		m_tpScriptAnimation	= 0;
+		return		(false);
+	}
+}
+
+void CScriptMonster::UpdateCL		()
+{
+	bfScriptAnimation				();
 }
