@@ -79,7 +79,7 @@ IC	_dist_type CSolverPathManager::estimate			(const _index_type &vertex_id) cons
 {
 	VERIFY					(graph);
 //	return					((_dist_type)graph->get_edge_weight(vertex_id,start_node_index,m_iterator));
-	return					(2*(_dist_type)vertex_id.conditions().size());
+	return					(0*(_dist_type)vertex_id.conditions().size());
 }
 
 TEMPLATE_SPECIALIZATION
