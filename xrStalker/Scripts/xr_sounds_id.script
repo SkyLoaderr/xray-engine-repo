@@ -53,7 +53,7 @@ chugai_escape_factory_bandits_base = chugai_sounds + 40
 -- Jon
 jon_sounds              = global_sounds + 5000
 
-zombe_walk_speak        = jon_sounds + 0
-zombe_stand_speak       = jon_sounds + 1
+zombie_walk_speak       = jon_sounds + 0
+zombie_stand_speak      = jon_sounds + 1
 novice_speak            = jon_sounds + 10
 

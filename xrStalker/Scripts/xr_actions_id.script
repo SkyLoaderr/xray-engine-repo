@@ -63,7 +63,7 @@ zmey_talker_base       = zmey_actions + 600
 -- Æåíÿ
 jon_actions = zmey_actions + 1024
 
-jon_stalker_zombe      = jon_actions + 0
+jon_stalker_zombie     = jon_actions + 0
 jon_stalker_novice     = jon_actions + 1
 jon_stalker_novice2    = jon_actions + 2
 jon_stalker_novice3    = jon_actions + 3

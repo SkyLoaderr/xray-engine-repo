@@ -119,6 +119,23 @@ xr_motivator.storage[object:id()].escape_factory_bandit = {
         xr_motivator.storage[object:id()].escape_factory_bandit.enabled = true
     end
 
+--Настройка сталкера зомби
+xr_motivator.storage[object:id()].zombie =
+ 						{
+                            path     = nil,         --Путь, по которому ходить
+                            curState = 1,
+                            time     = 0,
+                            stand    = false,
+                            enabled  = false
+						}
+    if( char_ini:section_exist ("zombie") == true ) then
+        if( char_ini:line_exist("zombie", "path") == true ) then
+            xr_motivator.storage[object:id()].zombie.path = char_ini:r_string("zombie", "path")
+        end
+        xr_motivator.storage[object:id()].zombie.enabled = true
+        xr_trivial.add_zombie(object)
+	end
+
     xr_robbers.add_to_binder  (object)
     xr_trivial.add_novice     (object)
     xr_trivial.add_novice2    (object)
