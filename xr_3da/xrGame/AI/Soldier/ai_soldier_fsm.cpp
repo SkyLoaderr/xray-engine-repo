@@ -737,11 +737,11 @@ void CAI_Soldier::OnLookingOver()
 	
 	SelectEnemy(Enemy);
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFireAlone)
 	
 	DWORD dwCurTime = Level().timeServer();
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
 	
 	INIT_SQUAD_AND_LEADER;
 	
@@ -753,19 +753,16 @@ void CAI_Soldier::OnLookingOver()
 		CHECK_IF_SWITCH_TO_NEW_STATE(this == Leader,aiSoldierPatrolRoute)
 	else
 		SWITCH_TO_NEW_STATE(aiSoldierFollowLeaderPatrol);
-	/**
-	for (int i=0; i<tpaDynamicSounds.size(); i++)
-		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
-			SelectSound(m_iSoundIndex);
-			AI_Path.TravelPath.clear();
-			SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
-		}
-	/**/
+
+	SelectSound(m_iSoundIndex);
+	if (m_iSoundIndex >= 0) {
+		AI_Path.TravelPath.clear();
+		SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
+	}
 
 	vfSetLookAndFireMovement(false, WALK_NO,1.0f,Group,dwCurTime);
 
-	//r_torso_target.yaw = r_torso_target.yaw + PI - PI/180;
-	r_torso_target.pitch = -PI_DIV_4*0;
+	r_torso_target.pitch = 0;
 	r_torso_speed = PI_DIV_4;
 }
 
@@ -1195,7 +1192,7 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
-	if (!m_bFiring)
+	//if (!m_bFiring)
 		vfAimAtEnemy();
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiSoldierTurnOver)

@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_soldier.h"
 #include "..\\..\\xr_weapon_list.h"
+#include "..\\..\\actor.h"
+#include "..\\..\\hudmanager.h"
 
 #define	FIRE_SAFETY_ANGLE				PI/10
 
@@ -151,6 +153,13 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	INIT_SQUAD_AND_LEADER;
 	CGroup &Group = Squad.Groups[g_Group()];
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// this code is dummy
+	// only for fitting light coefficients
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	bool bActorInCamera = false;
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	// Iterate on known
 	for (DWORD i=0; i<Known.size(); i++)
 	{
@@ -158,8 +167,33 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
 			if (!Group.m_bEnemyNoticed)
-				if (!bfCheckForVisibility(E))
-					continue;
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				// this code is dummy
+				// only for fitting light coefficients
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if (g_Squad() == 33) {
+					bool bB = bfCheckForVisibility(E);
+					CActor *tpActor = dynamic_cast<CActor *>(E);
+					if (tpActor) {
+						Level().HUD()->outMessage(0xffffffff,cName(),bB ? "I see you" : "I don't see you");
+						bActorInCamera = true;
+						continue;
+					}
+					else
+						if (!bB)
+							continue;
+				}
+				else
+					if (!bfCheckForVisibility(E))
+						continue;
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				// this code is correct
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				//if (!bfCheckForVisibility(E))
+				//	continue;
+				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 				// Calculate local visibility
 				CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
 				bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
@@ -172,4 +206,11 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 				}
 		}
 	}
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// this code is dummy
+	// only for fitting light coefficients
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	if (!bActorInCamera && (g_Squad() == 33))
+		Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
