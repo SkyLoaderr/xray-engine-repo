@@ -49,7 +49,7 @@ BOOL CLevelChanger::net_Spawn	(LPVOID DC)
 	CSE_ALifeLevelChanger		*l_tpALifeLevelChanger = dynamic_cast<CSE_ALifeLevelChanger*>(l_tpAbstract);
 	R_ASSERT					(l_tpALifeLevelChanger);
 
-	m_caLevelToChange			= l_tpALifeLevelChanger->m_caLevelToChange;
+	m_caLevelToChange			= *l_tpALifeLevelChanger->m_caLevelToChange;
 
 	feel_touch.clear			();
 	

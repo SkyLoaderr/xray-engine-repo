@@ -711,8 +711,8 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 	if (Ini)
 		xr_delete				(Ini);
 	
-	PHelper.CreateList			(items,FHelper.PrepareKey(pref,s_name,"Level to change"),		m_caLevelToChange,			sizeof(m_caLevelToChange),	&level_ids);
-	PHelper.CreateText			(items,FHelper.PrepareKey(pref,s_name,"Level point to change"),	m_caLevelPointToChange,		sizeof(m_caLevelPointToChange));
+	PHelper.CreateRList			(items,FHelper.PrepareKey(pref,s_name,"Level to change"),		&m_caLevelToChange,		&level_ids);
+	PHelper.CreateRText			(items,FHelper.PrepareKey(pref,s_name,"Level point to change"),	&m_caLevelPointToChange);
 }
 #endif
 

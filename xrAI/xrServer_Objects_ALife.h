@@ -221,8 +221,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeScriptZone)
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;
 	float							m_fAngle;
-	string32						m_caLevelToChange;
-	string32						m_caLevelPointToChange;
+	ref_str							m_caLevelToChange;
+	ref_str							m_caLevelPointToChange;
 
 									CSE_ALifeLevelChanger	(LPCSTR caSection);
 	virtual							~CSE_ALifeLevelChanger	();
