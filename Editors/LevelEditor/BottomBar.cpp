@@ -229,8 +229,8 @@ void TfraBottomBar::RedrawBar()
             paStatus->Caption		= "";
             paStatus->Repaint		();
 	        // progress
-	        cgProgress->Progress	= 0;
         	cgProgress->Visible 	= false;
+	        cgProgress->Progress	= 0;
         }
     }
 }
