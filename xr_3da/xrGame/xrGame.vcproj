@@ -1639,6 +1639,9 @@
 					RelativePath="ai_alife.h">
 				</File>
 				<File
+					RelativePath="ai_alife_a_star.h">
+				</File>
+				<File
 					RelativePath="ai_alife_console.cpp">
 				</File>
 				<File

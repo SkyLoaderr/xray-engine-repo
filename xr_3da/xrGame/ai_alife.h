@@ -37,6 +37,7 @@ private:
 	TASK_VECTOR						m_tpBufferTaskIDs;
 	xrServer						*m_tpServer;
 	CAI_DDD							*m_tpAI_DDD;
+
 	// comnmon
 	void							vfUpdateDynamicData			(CALifeDynamicObject *tpALifeDynamicObject);
 	void							vfUpdateDynamicData			();

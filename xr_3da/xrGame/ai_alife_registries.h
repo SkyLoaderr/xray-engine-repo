@@ -10,7 +10,7 @@
 
 #include "ai_alife_server_objects.h"
 #include "ai_alife_predicates.h"
-#include "ai_alife_graph.h"
+#include "ai_alife_a_star.h"
 
 using namespace ALife;
 
@@ -197,9 +197,9 @@ public:
 	};
 };
 
-class CALifeGraphRegistry : public CALifeGraph {
+class CALifeGraphRegistry : public CALifeAStar {
 public:
-	typedef CALifeGraph	inherited;
+	typedef CALifeAStar inherited;
 	ALIFE_ENTITY_P_VECTOR_MAP		m_tLevelMap;
 	CALifeDynamicObject				*m_tpActor;
 	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
@@ -210,27 +210,25 @@ public:
 
 	void							Init()
 	{
-		FILE_NAME					caFileName;
-		strconcat					(caFileName,::Path.GameData,GRAPH_NAME);
-		inherited::Load				(caFileName);
+		inherited::Init				();
 
-		m_tpTerrain.resize(LOCATION_COUNT);
+		m_tpTerrain.resize			(LOCATION_COUNT);
 		{
-			GRAPH_VECTOR_IT		I = m_tpTerrain.begin();
-			GRAPH_VECTOR_IT		E = m_tpTerrain.end();
+			GRAPH_VECTOR_IT			I = m_tpTerrain.begin();
+			GRAPH_VECTOR_IT			E = m_tpTerrain.end();
 			for ( ; I != E; I++)
-				(*I).clear();
+				(*I).clear			();
 		}
 		for (_GRAPH_ID i=0; i<(_GRAPH_ID)CALifeGraph::Header().dwVertexCount; i++)
 			m_tpTerrain[m_tpaGraph[i].tVertexType].push_back(i);
 
 		m_tpGraphObjects.resize		(CALifeGraph::Header().dwVertexCount);
 		{
-			GRAPH_POINT_IT				I = m_tpGraphObjects.begin();
-			GRAPH_POINT_IT				E = m_tpGraphObjects.end();
+			GRAPH_POINT_IT			I = m_tpGraphObjects.begin();
+			GRAPH_POINT_IT			E = m_tpGraphObjects.end();
 			for ( ; I != E; I++) {
 				(*I).tpObjects.clear();
-				(*I).tpEvents.clear();
+				(*I).tpEvents.clear	();
 			}
 		}
 		m_tpCurrentLevel			= 0;
