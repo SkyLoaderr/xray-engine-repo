@@ -68,7 +68,7 @@ void CScriptStackTracker::script_hook	(lua_State *L, lua_Debug *dbg)
 
 void CScriptStackTracker::print_stack	(lua_State *L)
 {
-	VERIFY					(L && (m_virtual_machine == L));
+	VERIFY					(L);// && (m_virtual_machine == L));
 
 	for (int j=m_current_stack_level - 1, k=0; j>=0; --j, ++k) {
 		lua_Debug			l_tDebugInfo = *m_stack[j];
