@@ -27,6 +27,7 @@ module ("xr_reactions")
 module ("xr_state")
 module ("xr_position")
 module ("xr_sound")
+module ("mob_sound")
 module ("xr_dialogs")
 module ("xr_replics")
 
@@ -59,7 +60,6 @@ module ("xr_chaser")
 module ("xr_formation")
 module ("xr_sos")
 module ("xr_assistance")
-module ("xr_death")
 
 module ("bar_stalker")
 module ("barman")
@@ -85,9 +85,8 @@ module ("small_script")
 module ("monster")
 
 ----------------------------------------------------------------------
--- Загрузка модулей:
+-- Загрузка модулей сталкеров:
 ----------------------------------------------------------------------
-
 load_scheme("xr_walker",      "walker")
 load_scheme("xr_remark",      "remark")
 load_scheme("xr_sleeper",     "sleeper")
@@ -98,3 +97,14 @@ load_scheme("xr_follower",    "follower")
 load_scheme("xr_test",        "test")
 load_scheme("xr_heli_hunter", "heli_hunter")
 load_scheme("xr_zoneguard",   "zoneguard")
+
+----------------------------------------------------------------------
+-- Загрузка модулей монстров:
+----------------------------------------------------------------------
+load_scheme("mob_remark",     "mob_remark")
+
+----------------------------------------------------------------------
+-- Загрузка модулей физических объектов:
+----------------------------------------------------------------------
+load_scheme("ph_door",     "ph_door")
+

@@ -1,19 +1,35 @@
-// Место, где биндятся все монстры.
+----------------------------------------------------------------------------------------------------
+-- Monster binding
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
+-- Доработки: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
 
-
-module("bloodsucker")
-module("monster_bind")
-module("pripyat_football")
-module("monster_gameplay")
+--odule("bloodsucker")
+--odule("monster_bind")
+--odule("pripyat_football")
+--odule("monster_gameplay")
 
 function bind(obj)
-	local char_ini	= obj:spawn_ini()
-	
-	if(char_ini == nil) then return end
-	
+	xr_motivator.storage[obj:id()] = { }
+
+	local char_ini = obj:spawn_ini()
+	if not char_ini then
+		return
+	end
+
+	if (char_ini:section_exist("old_trader")) then
+		trader.bind()
+		return
+	end
+
 	// Для спауна
 	xr_spawner.spawn_client(obj)
-	
+
+	----------------------------------------------------------------------------------------
+	-- Старые схемы
+	----------------------------------------------------------------------------------------
+
 	// Читер на ростке(кровосос)
 	if(char_ini:section_exist("rostok_bloodsuceker")) then
 		obj:bind_object(bloodsucker.CRostokBloodSucker(obj))
@@ -44,6 +60,11 @@ function bind(obj)
 		monster_gameplay.bind(obj, char_ini)
 	end
 
+	----------------------------------------------------------------------------------------
+	-- Новые схемы
+	----------------------------------------------------------------------------------------
+
+	xr_logic.stalker_enable_scripts(obj, char_ini)
 end
 	
 

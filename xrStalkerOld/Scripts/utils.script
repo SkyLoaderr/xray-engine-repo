@@ -80,7 +80,7 @@ function cfg_get_bool(char_ini, section, field, object, mandatory, default_val)
 		utils.abort("section '%s': wrong arguments order in call to cfg_get_bool", section)
 	end
 	
-	printf("DEBUG: conf_get_bool: section='%s', field='%s'", section, field)
+	--printf("DEBUG: conf_get_bool: section='%s', field='%s'", section, field)
 	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		local ret = char_ini:r_bool(section, field)
 		return ret
@@ -105,7 +105,7 @@ function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name,
 	end
 
 
-	printf("DEBUG: conf_get_string: section='%s', field='%s'", section, field)
+	--printf("DEBUG: conf_get_string: section='%s', field='%s'", section, field)
 	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		if gulag_name and gulag_name ~= "" then
 			return gulag_name .. "_" .. char_ini:r_string(section, field)
@@ -126,7 +126,7 @@ function cfg_get_number(char_ini, section, field, object, mandatory, default_val
 		utils.abort("section '%s': wrong arguments order in call to cfg_get_number", section)
 	end
 
-	printf("DEBUG: conf_get_number: section='%s', field='%s'", section, field)
+	--printf("DEBUG: conf_get_number: section='%s', field='%s'", section, field)
 	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		return char_ini:r_s32(section, field)
 	end
@@ -380,7 +380,7 @@ end
 
 -- a | b | c  ==>  { 1 = "a", 2 = "b", 3 = "c" }
 function parse_params(params)
-	printf("_bp: parse_params: params=%s", params)
+	--printf("_bp: parse_params: params=%s", params)
 	local rslt = {}
 	local n = 1
 	for fld in string.gfind(params, "%s*([^|]+)%s*") do

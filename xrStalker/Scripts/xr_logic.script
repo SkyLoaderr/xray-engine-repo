@@ -20,6 +20,8 @@ end
 
 function stalker_enable_scripts(npc, ini)
 	printf("DEBUG: stalker_enable_scripts")
+	printf("_bp: physic_object: obj:name()=%s, obj:id()=%s", npc:name(), npc:id())
+
 	local npc_id = npc:id()
 
 	xr_motivator.storage[npc_id]["active_section"] = nil
@@ -50,6 +52,8 @@ function activate_by_section(npc, ini, section)
 			section, npc:name(), xr_motivator.storage[npc_id]["active_section"])
 	end
 
+	xr_motivator.storage[npc_id].activation_time = device():time_global()
+
 	if section == "nil" then
 		xr_motivator.storage[npc_id].overrides = nil
 		return
@@ -67,6 +71,12 @@ function activate_by_section(npc, ini, section)
 
 		-- schemes[scheme] даст имя файла (модуля), в котором реализована схема
 		-- _G[] даст указатель на неймспейс (таблицу) этого модуля
+		if not schemes[scheme] then
+			utils.abort("ERROR: xr_logic: scheme '%s' is not registered in modules.script", scheme)
+		end
+		if not _G[schemes[scheme]] then
+			utils.abort("ERROR: xr_logic: can't call %s.set_scheme() - a nil value", schemes[scheme])
+		end
 		_G[schemes[scheme]].set_scheme(npc, ini, scheme, section, xr_motivator.storage[npc_id]["gulag_name"])
 		printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)
 		xr_motivator.storage[npc_id]["active_section"] = section
@@ -120,20 +130,44 @@ function reset_actions(st)
 end
 
 function pick_section_from_condlist(actor, npc, condlist)
+	local rval = math.random(100)
+	--printf("_bp: pick_section_from_condlist: rval = %d", rval)
+
 	local newsect = nil
 	local infop_conditions_met
 	for n, cond in pairs(condlist) do
 		infop_conditions_met = true -- изначально считаем, что все условия переключения удовлетворены
 		for inum, infop in pairs(cond.infop_check) do
-			if actor:has_info(infop.name) then
+			if infop.prob then
+				if infop.prob < rval then
+					infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
+					break
+				end
+			elseif infop.func then
+				if not infop.func then
+					utils.abort("object '%s': pick_section_from_condlist: function '%s' does not exist",
+						npc:name(), infop.func)
+				end
+				if infop.func() then
+					if not infop.expected then
+						infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
+						break
+					end
+				else
+					if infop.expected then
+						infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
+						break
+					end
+				end
+			elseif actor:has_info(infop.name) then
 				if not infop.required then
-					printf("FAILED: actor has infop '%s', which is NOT needed", infop.name)
+					--printf("FAILED: actor has infop '%s', which is NOT needed", infop.name)
 					infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
 					break
 				end
 			else
 				if infop.required then
-					printf("FAILED: actor has NO infop '%s', which is needed", infop.name)
+					--printf("FAILED: actor has NO infop '%s', which is needed", infop.name)
 					infop_conditions_met = false -- инфопоршена нет, но он нужен
 					break
 				end
@@ -159,7 +193,7 @@ function pick_section_from_condlist(actor, npc, condlist)
 		end
 	end
 
-	printf("_bp: pick_section_from_condlist: nil")
+	--printf("_bp: pick_section_from_condlist: nil")
 	return nil
 end
 
@@ -209,6 +243,12 @@ function try_switch_to_another_section(npc, st)
 			end
 		elseif c.name == "on_info" then
 			switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+		elseif c.name == "on_timer" then
+			--printf("_bp: on_timer: %d >= %d", device():time_global(),
+			--	xr_motivator.storage[npc_id].activation_time + c.v1)
+			if device():time_global() >= xr_motivator.storage[npc_id].activation_time + c.v1 then
+				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+			end
 		else
 			printf("WARNING: object '%s': try_switch_to_another_section: unknown condition '%s' encountered",
 				npc:name(), c.name)
@@ -235,18 +275,24 @@ end
 -- Заполнить массив:
 -- { "infop_name" = true/false }.
 function parse_infop(rslt, str) 
-	printf("_bp: parse_infop: %s", utils.to_str(str))
+	--printf("_bp: parse_infop: %s", utils.to_str(str))
 	if str then
 		local infop_name, sign
 		local infop_n = 1
-		for s in string.gfind(str, "%s*([%-%+][^%-%+%s]+)%s*") do
-			printf("_bp: parse_infop: s=%s", utils.to_str(s))
+		for s in string.gfind(str, "%s*([%-%+%~][^%-%+%~%s]+)%s*") do
+			--printf("_bp: parse_infop: s=%s", utils.to_str(s))
 			sign = string.sub(s, 1, 1)
 			infop_name = string.sub(s, 2)
 			if sign == "+" then
 				rslt[infop_n] = { name = infop_name, required = true }
 			elseif sign == "-" then
 				rslt[infop_n] = { name = infop_name, required = false }
+			elseif sign == "~" then
+				rslt[infop_n] = { prob = tonumber(infop_name) }
+			elseif sign == "=" then
+				rslt[infop_n] = { func = infop_name, expected = true }
+			elseif sign == "!" then
+				rslt[infop_n] = { func = infop_name, expected = false }
 			else
 				abort_syntax_error_in_cond(npc, section, field)
 			end
@@ -268,18 +314,18 @@ function parse_condlist(npc, section, field, src)
 	-- 1) Разбиваем на разделенные запятыми части:
 	local at, to, infop_check_lst, remainings, infop_set_lst, newsect
 
-	printf("_bp: src = %s", src)
+	--printf("_bp: src = %s", src)
 
 	local n = 1
 	for fld in string.gfind(src, "%s*([^,]+)%s*") do
 		-- Здесь fld это набор infoportions в {} и имя секции, на которую переключиться.
 		lst[n] = {}
-		printf("_bp: iter %d: fld = %s", n, fld)
+		--printf("_bp: iter %d: fld = %s", n, fld)
 
 		-- Выделяем список infoportions для проверки:	
 		at, to, infop_check_lst = string.find(fld, "{%s*(.*)%s*}")
 		if infop_check_lst then
-			printf("_bp: infop_check_lst: [%s]", infop_check_lst)
+			--printf("_bp: infop_check_lst: [%s]", infop_check_lst)
 
 			-- Выделяем оставшуюся часть поля, т.е. имя секции плюс список infoportions для установки:
 			remainings = string.sub(fld, 1, at - 1) .. string.sub(fld, to + 1)
@@ -287,7 +333,7 @@ function parse_condlist(npc, section, field, src)
 			-- Список infoportions для проверки не был задан, следовательно, ничего не удаляем:
 			remainings = fld
 		end
-		printf("_bp: remainings: %s", remainings)
+		--printf("_bp: remainings: %s", remainings)
 
 		-- Выделяем список infoportions для установки из remainings:	
 		at, to, infop_set_lst = string.find(remainings, "%%%s*(.*)%s*%%")
@@ -298,7 +344,7 @@ function parse_condlist(npc, section, field, src)
 			-- Список infoportions для установки не был задан, следовательно, remainings и есть имя секции.
 			newsect = remainings
 		end
-		printf("_bp: newsect: %s", newsect)
+		--printf("_bp: newsect: %s", newsect)
 
 		-- И сразу trim имя секции:
 		at, to, newsect = string.find(newsect, "%s*(.*)%s*")
@@ -401,6 +447,7 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_le_nvis",  npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal",              npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info",                npc))
+	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer",               npc))
 
 	return l
 end

@@ -1,0 +1,155 @@
+----------------------------------------------------------------------------------------------------
+-- Mob remarks
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+-- Исходный скрипт (trader): Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
+----------------------------------------------------------------------------------------------------
+
+class "mob_remark" (object_binder)
+
+function mob_remark:__init(obj, storage) super(obj)
+	self.st = storage
+end
+
+function mob_remark:reload(section)
+	object_binder.reload(self, section)
+
+	printf("_bp: mob_remark:reload")
+end
+
+function mob_remark:reset_scheme(delta)
+	printf("_bp: mob_remark:reset_scheme")
+	self.initialized = false
+
+	self.st.signals = {}
+	self.action_end_signalled = false
+end
+
+function mob_remark:initialize()
+	if not self.st.enable_dialog then
+		self.object:disable_talk()
+	else
+		self.object:enable_talk()
+	end
+
+	if not self.st.no_reset then
+		reset_action(self.object, script_name())
+	else
+		if not self.object:get_script() then
+			self.object:script(true, script_name())
+		end
+	end
+
+	local anims = parse_names(self.st.anim)
+	
+	local snds
+	if self.st.snd then
+		snds = parse_names(self.st.snd)
+	else
+		snds = {}
+	end
+	local sndset
+
+	local times
+	if self.st.time then
+		times = parse_names(self.st.time)
+	else
+		times = {}
+	end
+	local tm
+	
+	local cnd
+	for num, an in pairs(anims) do
+		sndset = snds[num]
+		if times[num] then
+			tm = tonumber(times[num])
+		else
+			tm = 0
+		end
+		if sndset and an then
+			local snd = mob_sound.pick_sound_from_set(self.object, sndset, {})
+			if not snd then
+				utils.abort("mobile '%s': section '%s': sound set '%s' does not exist",
+					self.object:name(), self.st.section, sndset)
+			end
+			
+			if tm == 0 then
+				cnd = cond(cond.sound_end)
+			else
+				cnd = cond(cond.time_end, tm)
+			end
+			if self.st.anim_head then
+				action(self.object, anim(an), sound(snd, "bip01_head",
+					MonsterSpace[self.st.anim_head]), cnd)
+			else
+				action(self.object, anim(an), sound(snd, "bip01_head"), cnd)
+			end
+		elseif an then
+			if tm == 0 then
+				cnd = cond(cond.anim_end)
+			else
+				cnd = cond(cond.time_end, tm)
+			end
+			action(self.object, anim(an), cnd)
+		--else
+		--	if npc:get_script() then
+		--		npc:script(false, script_name())
+		--	end
+		end
+	end
+
+	self.initialized = true
+	return true
+end
+
+function mob_remark:update(delta)
+	object_binder.update(self, delta)
+
+	if not xr_logic.is_active(self.object, self.st) then
+		return
+	end
+
+	if not self.initialized and not self:initialize() then
+		return
+	end
+
+	--printf("_bp: mob_remark:update [%s]", self.object:name())
+	
+	if self.object:get_script() and not self.object:action() then
+		self.object:script(false, script_name())
+
+		if not self.action_end_signalled then
+			self.action_end_signalled = true
+			self.st.signals["action_end"] = true
+			printf("mob_remark: signalling action_end")
+		end
+	end
+
+	xr_logic.try_switch_to_another_section(self.object, self.st)
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+
+	local new_binder = mob_remark(npc, storage)
+	npc:bind_object(new_binder)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(storage, new_binder)
+end
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+
+	st.enable_dialog = utils.cfg_get_bool(ini, section, "enable_dialog", npc, false)
+	st.no_reset      = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
+	st.anim          = utils.cfg_get_string(ini, section, "anim", npc, false, "")
+	st.anim_head     = utils.cfg_get_string(ini, section, "anim_head", npc, false, "")
+	st.snd           = utils.cfg_get_string(ini, section, "snd", npc, false, "")
+	st.time          = utils.cfg_get_string(ini, section, "time", npc, false, "")
+
+	xr_logic.reset_actions(st)
+end
