@@ -78,26 +78,33 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		g_faces.reserve			(f_count);
 		for (i=0; i<f_count; i++)
 		{
-			Face*	_F			= new Face;
-			b_face	B;
-			F->Read				(&B,sizeof(B));
-
-			_F->dwMaterial		= WORD(B.dwMaterial);
-
-			// Vertices and adjacement info
-			for (DWORD it=0; it<3; it++)
+			try 
 			{
-				int id			= B.v[it];
-				R_ASSERT		(id<(int)g_vertices.size());
-				_F->SetVertex	(it,g_vertices[id]);
-			}
+				Face*	_F			= new Face;
+				b_face	B;
+				F->Read				(&B,sizeof(B));
 
-			// transfer TC
-			UVpoint				uv1,uv2,uv3;
-			uv1.set				(B.t[0].x,B.t[0].y);
-			uv2.set				(B.t[1].x,B.t[1].y);
-			uv3.set				(B.t[2].x,B.t[2].y);
-			_F->AddChannel		( uv1, uv2, uv3 );
+				_F->dwMaterial		= WORD(B.dwMaterial);
+
+				// Vertices and adjacement info
+				for (DWORD it=0; it<3; it++)
+				{
+					int id			= B.v[it];
+					R_ASSERT		(id<(int)g_vertices.size());
+					_F->SetVertex	(it,g_vertices[id]);
+				}
+
+				// transfer TC
+				UVpoint				uv1,uv2,uv3;
+				uv1.set				(B.t[0].x,B.t[0].y);
+				uv2.set				(B.t[1].x,B.t[1].y);
+				uv3.set				(B.t[2].x,B.t[2].y);
+				_F->AddChannel		( uv1, uv2, uv3 );
+			} catch (...)
+			{
+				Msg			("* ERROR: Can't process face #%d",i);
+				R_ASSERT	(0);
+			}
 		}
 		Progress			(p_total+=p_cost);
 		Msg					("* %16s: %d","faces",g_faces.size());
