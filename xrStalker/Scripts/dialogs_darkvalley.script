@@ -1,0 +1,15 @@
+-------------------------------------------------------------------------
+--	created:	2005/02/28
+--	created:	28:2:2005   16:08
+--	filename: 	x:\gamedata\scripts\dialogs_darkvalley.script
+--	file path:	x:\gamedata\scripts
+--	file base:	dialogs_darkvalley
+--	file ext:	script
+--	author:		Andrey Fidrya aka Zmey
+--	
+--	purpose:	dialog support for Dark Valley
+-------------------------------------------------------------------------
+
+function val_rob_actor_has_money(first_speaker, second_speaker)
+	return first_speaker:money() >= 2000
+end
