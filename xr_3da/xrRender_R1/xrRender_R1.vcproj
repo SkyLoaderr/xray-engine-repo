@@ -388,16 +388,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Sector/Portal"
-			Filter="">
-			<File
-				RelativePath="Portal.cpp">
-			</File>
-			<File
-				RelativePath="Portal.h">
-			</File>
-		</Filter>
-		<Filter
 			Name="Shading templates"
 			Filter="">
 			<File
@@ -528,25 +518,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="HOM Occlusion"
-			Filter="">
-			<File
-				RelativePath="HOM.cpp">
-			</File>
-			<File
-				RelativePath="HOM.h">
-			</File>
-			<File
-				RelativePath="occRasterizer.cpp">
-			</File>
-			<File
-				RelativePath="occRasterizer.h">
-			</File>
-			<File
-				RelativePath="occRasterizer_core.cpp">
-			</File>
-		</Filter>
-		<Filter
 			Name="Models"
 			Filter="">
 			<File
@@ -555,6 +526,39 @@
 			<File
 				RelativePath="ModelPool.h">
 			</File>
+		</Filter>
+		<Filter
+			Name="Visibility"
+			Filter="">
+			<Filter
+				Name="Sector/Portal"
+				Filter="">
+				<File
+					RelativePath="Portal.cpp">
+				</File>
+				<File
+					RelativePath="Portal.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="HOM Occlusion"
+				Filter="">
+				<File
+					RelativePath="HOM.cpp">
+				</File>
+				<File
+					RelativePath="HOM.h">
+				</File>
+				<File
+					RelativePath="occRasterizer.cpp">
+				</File>
+				<File
+					RelativePath="occRasterizer.h">
+				</File>
+				<File
+					RelativePath="occRasterizer_core.cpp">
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
