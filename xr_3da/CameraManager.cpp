@@ -201,20 +201,20 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 
 	// EffectorPP
 	if(m_EffectorsPP.size()) {
-		affected_PP = pp_zero;
+		pp_affected = pp_zero;
 		//Log("e-count:",m_EffectorsPP.size());
 		for(int i = m_EffectorsPP.size()-1; i >= 0; i--) {
 			CEffectorPP* eff	= m_EffectorsPP[i];
 			SPPInfo l_PPInf		= pp_zero;
 			//Log					("camMMGR_gray_unf:",l_PPInf.gray);
 			if((eff->fLifeTime>0)&&eff->Process(l_PPInf)) {
-				affected_PP += l_PPInf;
+				pp_affected += l_PPInf;
 			} else RemoveEffector(eff->eType);
-			//Log					("camMMGR_gray_aff:",affected_PP.gray);
+			//Log					("camMMGR_gray_aff:",pp_affected.gray);
 		}
-		affected_PP.normalize();
+		pp_affected.normalize();
 	} else {
-		affected_PP		=	pp_identity;
+		pp_affected		=	pp_identity;
 	}
 	
 	// Device params
@@ -232,17 +232,17 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 
 	// postprocess
 	IRender_Target*		T	= ::Render->getTarget();
-	T->set_duality_h		(affected_PP.duality.h);
-	T->set_duality_v		(affected_PP.duality.v);
-	T->set_blur				(affected_PP.blur);
-	T->set_gray				(affected_PP.gray);
-	//Log						("camMMGR_gray_set:",affected_PP.gray);
-	T->set_noise			(affected_PP.noise.intensity);
-	T->set_noise_scale		(affected_PP.noise.grain);
-	T->set_noise_fps		(affected_PP.noise.fps);
-	T->set_color_base		(affected_PP.color_base);
-	T->set_color_gray		(affected_PP.color_gray);
-	T->set_color_add		(affected_PP.color_add);
+	T->set_duality_h		(pp_affected.duality.h);
+	T->set_duality_v		(pp_affected.duality.v);
+	T->set_blur				(pp_affected.blur);
+	T->set_gray				(pp_affected.gray);
+	//Log						("camMMGR_gray_set:",pp_affected.gray);
+	T->set_noise			(pp_affected.noise.intensity);
+	T->set_noise_scale		(pp_affected.noise.grain);
+	T->set_noise_fps		(pp_affected.noise.fps);
+	T->set_color_base		(pp_affected.color_base);
+	T->set_color_gray		(pp_affected.color_gray);
+	T->set_color_add		(pp_affected.color_add);
 }
 
 void CCameraManager::Dump()
