@@ -12,6 +12,7 @@
 #include "xrLevel.h"
 #include "Etextureparams.h"
 #include "shader_xrlc.h"
+#include "xrMU_Model.h"
 
 #pragma comment(lib,"x:\\dxt.lib")
 extern "C" __declspec(dllimport) bool __cdecl DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch, STextureParams* fmt, DWORD depth);
@@ -74,6 +75,8 @@ public:
 	vector<b_light_dynamic>	L_dynamic;
 	
 	vector<BYTE>			L_control_data;
+	
+	vector<xrMU_Model*>		mu_models;
 
 	Shader_xrLC_LIB			shaders;
 	string					path;

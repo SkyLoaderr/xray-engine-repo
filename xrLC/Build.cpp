@@ -119,6 +119,14 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	{
 		F = FS.OpenChunk		(EB_MU_models);
 		R_ASSERT				(F);
+	
+		while (!F->Eof())
+		{
+			mu_models.push_back		(xr_new<xrMU_Model>());
+			mu_models.back()->Load	(*F);
+		}
+
+		F->Close				();
 	}
 
 	//*******
