@@ -5,6 +5,7 @@
 #include "GameMtlLib.h"
 #include "xr_trims.h"
 #include "PropertiesListTypes.h"
+#include "PropertiesListHelper.h"
 #include "FolderLib.h"
 #include "LeftBar.h"
 #include "ChoseForm.h"
@@ -107,7 +108,7 @@ void __fastcall SGameMtlPair::OnFlagChange(PropValue* sender)
     OwnProps.set				(mask,bChecked);
     sender->Owner()->m_Flags.set(PropItem::flDisabled,!bChecked);
 
-    UI.Command					(COMMAND_UPDATE_PROPERTIES);
+    UI->Command					(COMMAND_UPDATE_PROPERTIES);
 }
 
 IC u32 SetMask(u32 mask, Flags32 flags, u32 flag )
@@ -141,11 +142,12 @@ BOOL SGameMtlPair::SetParent(int parent)
         }
     }
     // all right
-//	OwnProps.set(flBreakingSounds,	!BreakingSounds.IsEmpty());
-//	OwnProps.set(flStepSounds,		!StepSounds.IsEmpty());
-//	OwnProps.set(flCollideSounds,	!CollideSounds.IsEmpty());
-//	OwnProps.set(flCollideParticles,!CollideParticles.IsEmpty());
-//	OwnProps.set(flCollideMarks,	!CollideMarks.IsEmpty());
+    OwnProps.zero();
+	OwnProps.set(flBreakingSounds,	!BreakingSounds.IsEmpty());
+	OwnProps.set(flStepSounds,		!StepSounds.IsEmpty());
+	OwnProps.set(flCollideSounds,	!CollideSounds.IsEmpty());
+	OwnProps.set(flCollideParticles,!CollideParticles.IsEmpty());
+	OwnProps.set(flCollideMarks,	!CollideMarks.IsEmpty());
     return TRUE;
 }
 
@@ -177,12 +179,12 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif)
                 	ELog.DlgMsg(mtError,"Pair can't inherit from self.");
                 }else{
 			    	bModif 		= true;
-	                UI.Command	(COMMAND_UPDATE_PROPERTIES);
+	                UI->Command	(COMMAND_UPDATE_PROPERTIES);
                 }
             }else{
             	SetParent		(GAMEMTL_NONE);
 			    bModif 			= true;
-                UI.Command		(COMMAND_UPDATE_PROPERTIES);
+                UI->Command		(COMMAND_UPDATE_PROPERTIES);
             }
         }
     }break;
@@ -222,7 +224,7 @@ void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif)
                         bModif 		= true;
                     }
                 }
-                if (bModif)		UI.Command(COMMAND_UPDATE_PROPERTIES);
+                if (bModif)		UI->Command(COMMAND_UPDATE_PROPERTIES);
             }
         }
     }break;
@@ -245,11 +247,11 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     B					= PHelper.CreateButton(items,		"Parent", 			P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION,0);
     B->OnBtnClickEvent	= OnParentClick;
     
-	propBreakingSounds	= PHelper.CreateChoose	(items,	"Breaking Sounds",	&BreakingSounds, 	smSoundSource);
-	propStepSounds		= PHelper.CreateChoose	(items,	"Step Sounds",		&StepSounds, 		smSoundSource);
-	propCollideSounds	= PHelper.CreateChoose	(items,	"Collide Sounds",	&CollideSounds, 	smSoundSource);
-	propCollideParticles= PHelper.CreateChoose	(items,	"Collide Particles",&CollideParticles, 	smParticles);
-	propCollideMarks	= PHelper.CreateChoose	(items,	"Collide Marks",	&CollideMarks,		smTexture);
+    propBreakingSounds	= PHelper.CreateChoose	(items,	"Breaking Sounds",	&BreakingSounds, 	smSoundSource);
+    propStepSounds		= PHelper.CreateChoose	(items,	"Step Sounds",		&StepSounds, 		smSoundSource);
+    propCollideSounds	= PHelper.CreateChoose	(items,	"Collide Sounds",	&CollideSounds, 	smSoundSource);
+    propCollideParticles= PHelper.CreateChoose	(items,	"Collide Particles",&CollideParticles, 	smParticles);
+    propCollideMarks	= PHelper.CreateChoose	(items,	"Collide Marks",	&CollideMarks,		smTexture);
 
     propBreakingSounds->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flBreakingSounds));
     propStepSounds->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flStepSounds));
@@ -268,8 +270,9 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     propCollideSounds->Owner()->subitem			= GAMEMTL_SUBITEM_COUNT;
     propCollideParticles->Owner()->subitem		= GAMEMTL_SUBITEM_COUNT;
     propCollideMarks->Owner()->subitem			= GAMEMTL_SUBITEM_COUNT;
-    
-    if (show_CB){
+
+    if (show_CB)
+    {
 		SGameMtlPair* O; 
     	if (0!=(O=GetLastParentValue(this,flBreakingSounds)))	BreakingSounds	= O->BreakingSounds;
     	if (0!=(O=GetLastParentValue(this,flStepSounds))) 		StepSounds		= O->StepSounds;
@@ -282,8 +285,8 @@ void SGameMtlPair::FillProp(PropItemVec& items)
 void SGameMtlPair::TransferFromParent(SGameMtlPair* parent)
 {
     R_ASSERT(parent);
-    if (!OwnProps.is(flStepSounds))			BreakingSounds  = parent->BreakingSounds;
-    if (!OwnProps.is(flBreakingSounds))		StepSounds		= parent->StepSounds;
+    if (!OwnProps.is(flBreakingSounds))		BreakingSounds  = parent->BreakingSounds;
+    if (!OwnProps.is(flStepSounds))			StepSounds		= parent->StepSounds;
     if (!OwnProps.is(flCollideSounds))		CollideSounds	= parent->CollideSounds;
     if (!OwnProps.is(flCollideParticles))	CollideParticles= parent->CollideParticles;
     if (!OwnProps.is(flCollideMarks))		CollideMarks	= parent->CollideMarks;
@@ -505,7 +508,16 @@ void SGameMtlPair::Save(IWriter& fs)
         if ((0!=(P=GetLastParentValue(this,flCollideMarks)))&&(P!=this)) 	
             CollideMarks	= P->CollideMarks;
     }
-    
+/*
+    else{
+    	OwnProps.zero();
+        if (!BreakingSounds.IsEmpty())	OwnProps.set(flBreakingSounds,TRUE);
+        if (!StepSounds.IsEmpty())		OwnProps.set(flStepSounds,TRUE);
+        if (!CollideSounds.IsEmpty())	OwnProps.set(flCollideSounds,TRUE);
+        if (!CollideParticles.IsEmpty())OwnProps.set(flCollideParticles,TRUE);
+        if (!CollideMarks.IsEmpty())	OwnProps.set(flCollideMarks,TRUE);
+    }
+*/    
 // save    
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_BREAKING);
     fs.w_stringZ		(BreakingSounds.c_str());

@@ -147,7 +147,7 @@ void CSHCompilerTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 	Shader_xrLC* S = FindItem(old_full_name); R_ASSERT(S);
     strcpy(S->Name,new_full_name);
 	if (S==m_Shader)
-	    UI.Command(COMMAND_UPDATE_PROPERTIES);
+	    UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CSHCompilerTools::RemoveItem(LPCSTR name)
@@ -164,7 +164,7 @@ void CSHCompilerTools::SetCurrentItem(LPCSTR name)
     // load shader
 	if (m_Shader!=S){
         m_Shader = S;
-	    UI.Command(COMMAND_UPDATE_PROPERTIES);
+	    UI->Command(COMMAND_UPDATE_PROPERTIES);
     }
 	ViewSetCurrentItem(name);
 }

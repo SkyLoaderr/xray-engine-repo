@@ -176,7 +176,7 @@ void __fastcall ESoundSource::OnControlClick(PropValue* sender, bool& bModif)
     case 0: Play();	break;
     case 1: Stop();	break;
 	}
-    UI.RedrawScene();
+    UI->RedrawScene();
     bModif = false;
 }
 

@@ -4,7 +4,7 @@
                                                                
 #include "SHEngineTools.h"
 #include "Blender.h"
-#include "UI_Tools.h"
+#include "UI_ShaderTools.h"
 #include "ui_main.h"
 #include "LeftBar.h"
 #include "xr_trims.h"
@@ -118,7 +118,7 @@ void CSHEngineTools::OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val)
         m_PreviewObject->UpdateTransform(true);
         ZoomObject			(false);
         UpdateObjectShader	();
-        UI.RedrawScene		();
+        UI->RedrawScene		();
     }
 }
 
@@ -649,7 +649,7 @@ void CSHEngineTools::UpdateStreamFromObject()
     m_BlenderStream.clear();
     if (m_CurrentBlender) m_CurrentBlender->Save(m_BlenderStream);
 	// init properties
-    UI.Command(COMMAND_UPDATE_PROPERTIES);
+    UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CSHEngineTools::UpdateObjectFromStream()
@@ -807,7 +807,7 @@ void CSHEngineTools::UpdateObjectShader()
 //        for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
         if (m_CurrentBlender)	surf->SetShader(m_CurrentBlender->getName());
         else					surf->SetShader("editor\\wire");
-        UI.RedrawScene();
+        UI->RedrawScene();
 		E->OnDeviceDestroy();
     }
 }
@@ -816,9 +816,9 @@ void CSHEngineTools::OnShowHint(AStringVec& ss)
 {
 	if (m_PreviewObject->GetReference()){
 	    Fvector p;
-        float dist=UI.ZFar();
+        float dist=UI->ZFar();
         SRayPickInfo pinf;
-    	if (m_PreviewObject->GetReference()->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf)){
+    	if (m_PreviewObject->GetReference()->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,Fidentity,&pinf)){
         	R_ASSERT(pinf.e_mesh);
             CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
             ss.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));

@@ -136,7 +136,7 @@ void CSceneObject::Render(int priority, bool strictB2F)
             }else{
                 if (m_iBlinkTime>(int)Device.dwTimeGlobal){
     	            RenderSelection(D3DCOLOR_ARGB(iFloor(sqrtf(float(m_iBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*48),255,255,255));
-        	        UI.RedrawScene();
+        	        UI->RedrawScene();
             	}
             }
         }

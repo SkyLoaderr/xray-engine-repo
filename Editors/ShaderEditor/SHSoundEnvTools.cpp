@@ -192,7 +192,7 @@ void CSHSoundEnvTools::SetCurrentItem(LPCSTR name)
 	CSoundRender_Environment* S = FindItem(name);
 	if (m_Env!=S){
         m_Env = S;
-	    UI.Command(COMMAND_UPDATE_PROPERTIES);
+	    UI->Command(COMMAND_UPDATE_PROPERTIES);
     }
 	ViewSetCurrentItem(name);
 	UseEnvironment	();

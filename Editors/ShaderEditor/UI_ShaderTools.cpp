@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_Tools.h"
+#include "UI_ShaderTools.h"
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "leftbar.h"
@@ -12,7 +12,7 @@
 #include "GameMtlLib.h"
 
 //------------------------------------------------------------------------------
-CShaderTools Tools;
+CShaderTools*&	STools=(CShaderTools*)Tools;
 //------------------------------------------------------------------------------
 
 CShaderTools::CShaderTools()
@@ -21,7 +21,7 @@ CShaderTools::CShaderTools()
     m_PreviewProps		= 0;
     fFogness			= 0.9f;
     dwFogColor			= 0xffffffff;
-    m_RTFlags.zero		();
+    m_Flags.zero		();
 }
 //---------------------------------------------------------------------------
 
@@ -35,8 +35,8 @@ void CShaderTools::OnChangeEditor(ISHTools* tools)
 	if (m_Current) m_Current->OnDeactivate();
 	m_Current = tools; R_ASSERT(m_Current);
 	m_Current->OnActivate();
-    UI.Command(COMMAND_UPDATE_PROPERTIES);
-	UI.Command(COMMAND_UPDATE_CAPTION);
+    UI->Command(COMMAND_UPDATE_PROPERTIES);
+	UI->Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -121,7 +121,7 @@ void CShaderTools::Render()
 void CShaderTools::OnFrame()
 {
 	Current()->OnFrame();
-	if (m_RTFlags.is(flRT_UpdateProperties)) 
+	if (m_Flags.is(flRefreshProps)) 
     	RealUpdateProperties();
 }
 
@@ -186,13 +186,6 @@ void CShaderTools::ShowProperties()
 	m_ItemProps->ShowProperties();
 }
 
-void CShaderTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
-{
-    s_fog				= psDeviceFlags.is(rsFog)?(1.0f - fFogness)* 0.85f * UI.ZFar():0.99f*UI.ZFar();
-    e_fog				= psDeviceFlags.is(rsFog)?0.91f * UI.ZFar():UI.ZFar();
-    fog_color 			= dwFogColor;
-}
-
 LPCSTR CShaderTools::CurrentToolsName()
 {
 	return Current()?Current()->ToolsName():"";
@@ -216,10 +209,16 @@ ISHTools* CShaderTools::FindTools(TElTabSheet* sheet)
     return 0;
 }
 
-void CShaderTools::Save()
+bool CShaderTools::Load(LPCSTR path, LPCSTR name)
+{
+	return true;
+}
+
+bool CShaderTools::Save(LPCSTR path, LPCSTR name, bool bInternal)
 {
     for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
         it->second->Save();
+	return true;
 }
 
 void CShaderTools::Reload()
@@ -288,7 +287,7 @@ bool CShaderTools::RayPick(const Fvector& start, const Fvector& dir, float& dist
 void CShaderTools::RealUpdateProperties()
 {
     Current()->RealUpdateProperties();
-	m_RTFlags.set(flRT_UpdateProperties,FALSE);
+	m_Flags.set(flRefreshProps,FALSE);
 }
 
 

@@ -3,11 +3,11 @@
 
 #include "LeftBar.h"
 #include "BottomBar.h"
-#include "UI_Main.h"
 #include "main.h"
 #include "Blender.h"
 #include "xr_trims.h"
-#include "UI_Tools.h"
+#include "UI_ShaderTools.h"
+#include "UI_ShaderMain.h"
 #include "FolderLib.h"
 #include "PropertiesList.h"
 #include "ChoseForm.h"
@@ -96,19 +96,19 @@ void TfraLeftBar::MaximizeAllFrames()
 
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
-	UI.Command( COMMAND_SAVE );
+	UI->Command( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebReloadClick(TObject *Sender)
 {
-	UI.Command( COMMAND_RELOAD );
+	UI->Command( COMMAND_RELOAD );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebRefreshTexturesClick(TObject *Sender)
 {
-	UI.Command( COMMAND_REFRESH_TEXTURES );
+	UI->Command( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
@@ -128,13 +128,13 @@ void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 {
-	UI.Command(COMMAND_EDITOR_PREF);
+	UI->Command(COMMAND_EDITOR_PREF);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 {
-	UI.Command( COMMAND_RESET_ANIMATION );
+	UI->Command( COMMAND_RESET_ANIMATION );
 }
 //---------------------------------------------------------------------------
 
@@ -156,7 +156,7 @@ void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
 void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	if (Shift.Contains(ssRight)&&Tools.Current()->PopupMenu()) FHelper.ShowPPMenu(Tools.Current()->PopupMenu(),dynamic_cast<TExtBtn*>(Sender));
+	if (Shift.Contains(ssRight)&&STools->Current()->PopupMenu()) FHelper.ShowPPMenu(STools->Current()->PopupMenu(),dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -164,38 +164,38 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 {
     AnsiString 	folder;
     AnsiString 	start_folder;
-    FHelper.MakeName(Tools.Current()->View()->Selected,0,start_folder,true);
-    FHelper.GenerateFolderName(Tools.Current()->View(),Tools.Current()->View()->Selected,folder);
+    FHelper.MakeName(STools->Current()->View()->Selected,0,start_folder,true);
+    FHelper.GenerateFolderName(STools->Current()->View(),STools->Current()->View()->Selected,folder);
     folder = start_folder+folder;
-    TElTreeItem* node = FHelper.AppendFolder(Tools.Current()->View(),folder.c_str());
-    if (Tools.Current()->View()->Selected) Tools.Current()->View()->Selected->Expand(false);
-    Tools.Current()->View()->EditItem(node,-1);
-    Tools.Modified();
+    TElTreeItem* node = FHelper.AppendFolder(STools->Current()->View(),folder.c_str());
+    if (STools->Current()->View()->Selected) STools->Current()->View()->Selected->Expand(false);
+    STools->Current()->View()->EditItem(node,-1);
+    STools->Modified();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExpandAll1Click(TObject *Sender)
 {
-	Tools.Current()->View()->FullExpand();
+	STools->Current()->View()->FullExpand();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 {
-	Tools.Current()->View()->FullCollapse();
+	STools->Current()->View()->FullCollapse();
 }
 //---------------------------------------------------------------------------
 
 BOOL __fastcall TfraLeftBar::RemoveItem(LPCSTR p0, EItemType type)
 {
-	Tools.Current()->RemoveItem(p0);
+	STools->Current()->RemoveItem(p0);
     return TRUE;
 }
 //---------------------------------------------------------------------------
 void TfraLeftBar::AfterRemoveItem()
 {
-	Tools.Current()->ResetCurrentItem();
-	Tools.Current()->Modified();
+	STools->Current()->ResetCurrentItem();
+	STools->Current()->Modified();
 }
 //---------------------------------------------------------------------------
 
@@ -203,8 +203,8 @@ void __fastcall TfraLeftBar::tvItemFocused(TObject *Sender)
 {
 	if (!bFocusedAffected) return;
    	AnsiString name;
-   	FHelper.MakeName(Tools.Current()->View()->Selected, 0, name, false);
-	Tools.Current()->SetCurrentItem(name.c_str());
+   	FHelper.MakeName(STools->Current()->View()->Selected, 0, name, false);
+	STools->Current()->SetCurrentItem(name.c_str());
 }
 //---------------------------------------------------------------------------
 
@@ -217,8 +217,8 @@ void __fastcall TfraLeftBar::tvEngineKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
 {
-	TElTreeItem* node = Tools.Current()->View()->Selected;
-    if (node) Tools.Current()->View()->EditItem(node,-1);
+	TElTreeItem* node = STools->Current()->View()->Selected;
+    if (node) STools->Current()->View()->EditItem(node,-1);
 }
 //---------------------------------------------------------------------------
 
@@ -241,50 +241,50 @@ void __fastcall TfraLeftBar::InplaceEditValidateResult(TObject *Sender, bool &In
         for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
             if (FHelper.IsObject(item)){
                 FHelper.MakeName(item,0,full_name,false);
-                Tools.Current()->RenameItem	(full_name.c_str(),new_text.c_str(),node->Level);
+                STools->Current()->RenameItem	(full_name.c_str(),new_text.c_str(),node->Level);
             }
         }
     }else if (FHelper.IsObject(node)){
         FHelper.MakeName(node,0,full_name,false);
-        Tools.Current()->RenameItem	(full_name.c_str(),new_text.c_str(),node->Level);
+        STools->Current()->RenameItem	(full_name.c_str(),new_text.c_str(),node->Level);
     }
-    Tools.Current()->View()->Selected=node;
-	Tools.Current()->Modified();
+    STools->Current()->View()->Selected=node;
+	STools->Current()->Modified();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebCreateItemClick(TObject *Sender)
 {
     AnsiString folder;
-	FHelper.MakeName(Tools.Current()->View()->Selected,0,folder,true);
-    Tools.Current()->AppendItem(folder.c_str());
+	FHelper.MakeName(STools->Current()->View()->Selected,0,folder,true);
+    STools->Current()->AppendItem(folder.c_str());
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::pcShadersChange(TObject *Sender)
 {
     InplaceEdit->Tree = 0;
-	Tools.OnChangeEditor(Tools.FindTools(pcShaders->ActivePage));
+	STools->OnChangeEditor(STools->FindTools(pcShaders->ActivePage));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebRemoveItemClick(TObject* Sender)
 {
 //	bFocusedAffected = false;
-	TElTree* tv = Tools.Current()->View(); VERIFY(tv);
+	TElTree* tv = STools->Current()->View(); VERIFY(tv);
 	FHelper.RemoveItem(tv,tv->Selected,RemoveItem,AfterRemoveItem);
 //	bFocusedAffected = true;
-//	Tools.Modified();
+//	STools->Modified();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebCloneItemClick(TObject *Sender)
 {
-    TElTreeItem* pNode = Tools.Current()->View()->Selected;
+    TElTreeItem* pNode = STools->Current()->View()->Selected;
     if (pNode&&FHelper.IsObject(pNode)){
 		AnsiString full_name;
 		FHelper.MakeName(pNode,0,full_name,false);
-        Tools.Current()->AppendItem(0,full_name.c_str());
+        STools->Current()->AppendItem(0,full_name.c_str());
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
     }
@@ -293,8 +293,8 @@ void __fastcall TfraLeftBar::ebCloneItemClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1, EItemType type)
 {
-	Tools.Current()->RenameItem(p0,p1);
-	Tools.Current()->Modified();
+	STools->Current()->RenameItem(p0,p1);
+	STools->Current()->Modified();
 }
 //---------------------------------------------------------------------------
 
@@ -307,38 +307,38 @@ void __fastcall TfraLeftBar::OnDragDrop(TObject *Sender,
 
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
-	Tools.m_ItemProps->RestoreParams(fsStorage);
-	Tools.m_PreviewProps->RestoreParams(fsStorage);
+	STools->m_ItemProps->RestoreParams(fsStorage);
+	STools->m_PreviewProps->RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 {
-	Tools.m_ItemProps->SaveParams(fsStorage);
-	Tools.m_PreviewProps->SaveParams(fsStorage);
+	STools->m_ItemProps->SaveParams(fsStorage);
+	STools->m_PreviewProps->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_IMAGE_EDITOR );
+	UI->Command( COMMAND_IMAGE_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Refresh1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_REFRESH_TEXTURES );
+	UI->Command( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_CHECK_TEXTURES );
+	UI->Command( COMMAND_CHECK_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
-//.#include "SHEngineTools.h"
-//	CSHEngineTools* tools = (CSHEngineTools*)Tools.FindTools(aeEngine); R_ASSERT(tools);
+//.#include "SHEngineSTools->h"
+//	CSHEngineTools* tools = (CSHEngineTools*)STools->FindTools(aeEngine); R_ASSERT(tools);
 //    tools->PreviewObjClick(Sender);
 
 
@@ -351,13 +351,13 @@ void __fastcall TfraLeftBar::ExtBtn10MouseDown(TObject *Sender,
 
 void __fastcall TfraLeftBar::MenuItem5Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SOUND_EDITOR );
+	UI->Command( COMMAND_SOUND_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MenuItem7Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SYNC_SOUNDS );
+	UI->Command( COMMAND_SYNC_SOUNDS );
 }
 //---------------------------------------------------------------------------
 

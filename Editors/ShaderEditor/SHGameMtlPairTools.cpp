@@ -3,7 +3,7 @@
 #pragma hdrstop
 
 #include "SHGameMtlPairTools.h"
-#include "UI_Tools.h"
+#include "UI_ShaderTools.h"
 #include "folderlib.h"
 #include "ChoseForm.h"
 #include "UI_Main.h"
@@ -28,7 +28,7 @@ void CSHGameMtlPairTools::OnFrame()
 
 bool CSHGameMtlPairTools::OnCreate()
 {
-	m_GameMtlTools		= Tools.FindTools(aeMtl); R_ASSERT(m_GameMtlTools);
+	m_GameMtlTools		= STools->FindTools(aeMtl); R_ASSERT(m_GameMtlTools);
     Load();
     return true;
 }
@@ -166,7 +166,7 @@ void CSHGameMtlPairTools::SetCurrentItem(LPCSTR name)
     // set material
 	if (m_MtlPair!=S){
         m_MtlPair = S;
-	    UI.Command(COMMAND_UPDATE_PROPERTIES);
+	    UI->Command(COMMAND_UPDATE_PROPERTIES);
     }
 	ViewSetCurrentItem(name);
 }

@@ -34,7 +34,7 @@ void ISHTools::ViewClearItemList()
 void ISHTools::Modified()
 {
 	m_bModified=TRUE;
-	UI.Command(COMMAND_UPDATE_CAPTION);
+	UI->Command(COMMAND_UPDATE_CAPTION);
     ApplyChanges();
 }
 //---------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 #include "PropertiesListHelper.h"
 #include "ui_main.h"
 #include "folderlib.h"
-#include "UI_Tools.h"
+#include "UI_ShaderTools.h"
 #include "ChoseForm.h"
 #include "leftbar.h"
 //------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ void CSHGameMtlTools::OnFrame()
 
 bool CSHGameMtlTools::OnCreate()
 {
-	m_GameMtlPairTools	= Tools.FindTools(aeMtlPair); R_ASSERT(m_GameMtlPairTools);
+	m_GameMtlPairTools	= STools->FindTools(aeMtlPair); R_ASSERT(m_GameMtlPairTools);
     Load();
     return true;
 }
@@ -148,7 +148,7 @@ void CSHGameMtlTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 	SGameMtl* S = FindItem(old_full_name); R_ASSERT(S);
     S->m_Name		= new_full_name;
 	if (S==m_Mtl)
-	    UI.Command(COMMAND_UPDATE_PROPERTIES);
+	    UI->Command(COMMAND_UPDATE_PROPERTIES);
 
     // нужно переинициализировать лист пар
 	m_GameMtlPairTools->FillItemList();
@@ -170,7 +170,7 @@ void CSHGameMtlTools::SetCurrentItem(LPCSTR name)
     // load material
 	if (m_Mtl!=S){
         m_Mtl = S;
-	    UI.Command(COMMAND_UPDATE_PROPERTIES);
+	    UI->Command(COMMAND_UPDATE_PROPERTIES);
     }
 	ViewSetCurrentItem(name);
 }

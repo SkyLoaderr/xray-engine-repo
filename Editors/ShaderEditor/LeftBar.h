@@ -15,8 +15,8 @@
 #include "mxPlacemnt.hpp"
 #include "ElTree.hpp"
 #include "ElXPThemedControl.hpp"
+#include "FolderLib.h"
 
-#include "UI_Tools.h"
 #include "ElTreeAdvEdit.hpp"
 #include "ElPgCtl.hpp"
 
@@ -159,6 +159,7 @@ public:		// User declarations
     void 			OnTimer				();
     void 			MinimizeAllFrames	();
     void 			MaximizeAllFrames	();
+    void			RefreshBar			(){;}
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

@@ -1,8 +1,9 @@
 //---------------------------------------------------------------------------
-#ifndef UI_ToolsH
-#define UI_ToolsH
+#ifndef UI_ShaderToolsH
+#define UI_ShaderToolsH
 
 #include "SHToolsInterface.h"
+#include "UI_ToolsCustom.h"
 
 // refs
 class CEditableObject;
@@ -10,37 +11,16 @@ class CLibObject;
 class IBlender;
 class TProperties;
 
-enum EAction{
-    eaSelect=0,
-    eaAdd,
-    eaMove,
-    eaRotate,
-    eaScale,
-    eaMaxActions
-};
-
-enum EAxis{
-    eAxisX=0,
-	eAxisY,
-    eAxisZ,
-    eAxisZX
-};
-
-class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
+class CShaderTools: public CToolsCustom
 {
-    EAction 			m_Action;
-
     void				RegisterTools		();
     void				UnregisterTools		();
     void				RealUpdateProperties();
 
     enum{
-    	flRT_UpdateProperties = (1ul<<0ul),
+    	flRefreshProps 	= (1ul<<0ul),
     };
-    Flags32				m_RTFlags;
-public:
-    float 				fFogness;
-    u32					dwFogColor;
+    Flags32				m_Flags;
 public:
     TProperties*		m_ItemProps;
     TProperties*		m_PreviewProps;
@@ -53,59 +33,52 @@ public:
 						CShaderTools		();
     virtual 			~CShaderTools		();
 
-    void				Render				();
-    void				RenderEnvironment	(){;}
-    void				OnFrame				();
+    virtual void		Render				();
+	virtual void		RenderEnvironment	(){;}
+    virtual void		OnFrame				();
 
-    bool				OnCreate			();
-    void				OnDestroy			();
+    virtual bool		OnCreate			();
+    virtual void		OnDestroy			();
 
-    bool				IfModified			();
-    bool				IsModified			();
-    void				Modified			();
+    virtual bool		IfModified			();
+    virtual bool		IsModified			();
+    virtual void		Modified			(); 
 
-    void				ZoomObject			(bool bOnlySel=false);
+    virtual LPCSTR		GetInfo				();
+    
+    virtual void		ZoomObject			(bool bSelOnly);
 
+    virtual bool		Load				(LPCSTR path, LPCSTR name);
+    virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false);
+    virtual void		Reload				();
+    
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();
 
-    void				SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
-    void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
-    LPCSTR				GetInfo				();
+    virtual void		Clear				(){;}
+
+    virtual void		OnShowHint			(AStringVec& SS);
+
+    virtual bool __fastcall 	MouseStart  		(TShiftState Shift){return false;}
+    virtual bool __fastcall 	MouseEnd    		(TShiftState Shift){return false;}
+    virtual void __fastcall 	MouseMove   		(TShiftState Shift){;}
+
+    virtual bool		Pick				(TShiftState Shift){return false;}
+	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
+
+    virtual void		ShowProperties		();
+    virtual void		UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
+    virtual void		RefreshProperties	(){;}
+
     LPCSTR				CurrentToolsName	();
 
     void				OnChangeEditor		(ISHTools* tools);
 
-    void				OnShowHint			(AStringVec& ss);
-
-    void				ChangeAction		(EAction action){m_Action=action;}
     void				ApplyChanges		();
-
-    bool __fastcall 	MouseStart  		(TShiftState Shift){return false;}
-    bool __fastcall 	MouseEnd    		(TShiftState Shift){return false;}
-    void __fastcall 	MouseMove   		(TShiftState Shift){;}
-	bool __fastcall 	HiddenMode  		(){return false;}
-    bool __fastcall 	KeyDown     		(WORD Key, TShiftState Shift){return false;}
-    bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
-    bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
-
-    bool				Pick				(TShiftState Shift){return false;}
-    bool				RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt=0, Fvector* n=0);
-
-    void				ShowProperties		();
-    void				UpdateProperties	(bool bForced=false){m_RTFlags.set(flRT_UpdateProperties,TRUE); if(bForced) RealUpdateProperties(); }
-    void				RefreshProperties	(){;}
-
-	void				SetNumPosition		(CCustomObject* p1){;}
-	void				SetNumRotation		(CCustomObject* p1){;}
-	void				SetNumScale			(CCustomObject* p1){;}
 
     ISHTools*			FindTools			(EToolsID id);
     ISHTools*			FindTools			(TElTabSheet* sheet);
-
-    void				Save				();
-	void 				Reload				();
 };
-extern CShaderTools	Tools;
+extern CShaderTools*&	STools;
 //---------------------------------------------------------------------------
 #endif

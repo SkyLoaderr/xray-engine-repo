@@ -16,7 +16,7 @@ void CCustomObject::FillProp(LPCSTR pref, PropItemVec& values)
 void CCustomObject::Move(Fvector& amount)
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
     Fvector v=PPosition;
 	v.add(amount);
     PPosition = v;
@@ -25,7 +25,7 @@ void CCustomObject::Move(Fvector& amount)
 void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up)
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
     PPosition = pos;
 }
 
@@ -44,7 +44,7 @@ void CCustomObject::PivotRotateParent(const Fmatrix& prev_inv, const Fmatrix& cu
 void CCustomObject::PivotRotateLocal(const Fmatrix& parent, Fvector& center, Fvector& axis, float angle)
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
 
 	Fmatrix m;
     // rotation
@@ -68,7 +68,7 @@ void CCustomObject::PivotRotateLocal(const Fmatrix& parent, Fvector& center, Fve
 void CCustomObject::RotateParent(Fvector& axis, float angle)
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
     Fvector r	= PRotation;
     r.mad		(axis,angle);
     PRotation		= r;
@@ -87,7 +87,7 @@ void CCustomObject::RotateLocal(Fvector& axis, float angle)
 void CCustomObject::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount )
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
     Fvector p	= PPosition;
     Fvector s	= PScale;
 	s.add(amount);
@@ -106,7 +106,7 @@ void CCustomObject::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current,
 void CCustomObject::Scale( Fvector& amount )
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();                                                       
+    UI->UpdateScene();                                                       
     Fvector s	= PScale;
 	s.add(amount);
     if (s.x<EPS) s.x=EPS;

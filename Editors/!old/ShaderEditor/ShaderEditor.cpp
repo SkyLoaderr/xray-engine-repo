@@ -1,52 +1,47 @@
 #include "stdafx.h"
 #pragma hdrstop
-#include "main.h"
 #include "splash.h"
-#include "UI_Main.h"
 #include "LogForm.h"
+#include "main.h"
+#include "ui_shadermain.h"
+#include "UI_shadertools.h"
 //---------------------------------------------------------------------------
-USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
-USEFORM("Editor\ImageEditor.cpp", frmImageLib);
-USEFORM("Editor\ItemList.cpp", ItemList);
-USEFORM("Editor\NumericVector.cpp", frmNumericVector);
-USEFORM("Editor\PropertiesList.cpp", Properties);
-USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
-USEFORM("Editor\TextForm.cpp", frmText);
-USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEFORM("BottomBar.cpp", fraBottomBar); /* TFrame: File Type */
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
-USEFORM("LogForm.cpp", frmLog);
 USEFORM("main.cpp", frmMain);
 USEFORM("Splash.cpp", frmSplash);
-USEFORM("Editor\SoundEditor.cpp", frmSoundLib);
+USEFORM("TopBar.cpp", fraTopBar); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
-        frmSplash = xr_new<TfrmSplash>((TComponent*)0);
-        frmSplash->Show();
-        frmSplash->Repaint();
-
+        frmSplash 				= xr_new<TfrmSplash>((TComponent*)0);
+        frmSplash->Show			();
+        frmSplash->Repaint		();
         frmSplash->SetStatus	("Core initializing...");
 
-		Core._initialize		(_EDITOR_FILE_NAME_,ELogCallback);
-        TfrmLog::CreateLog();
+    	Core._initialize		("editor",ELogCallback);
 
         Application->Initialize	();
-
+                                       
         frmSplash->SetStatus	("Loading...");
 
 // startup create
-		Application->Title 		= _EDITOR_NAME_;
+        Tools					= xr_new<CShaderTools>();
+        UI						= xr_new<CShaderMain>();
+		Application->Title 		= UI->EditorDesc();
+        TfrmLog::CreateLog		();
+
+		xr_delete(frmSplash);
+
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		frmMain->SetHInst(hInst);
+		frmMain->SetHInst		(hInst);
 
-        xr_delete(frmSplash);
+		Application->Run		();
 
-        Application->Run();
 
         TfrmLog::DestroyLog		();
-        Core._destroy			();
+    	Core._destroy			();
 //    }
 //    catch (Exception &exception)
 //    {
@@ -55,6 +50,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
     return 0;
 }
 //---------------------------------------------------------------------------
+
 
 
 
