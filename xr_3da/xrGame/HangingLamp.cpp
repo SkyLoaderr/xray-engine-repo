@@ -95,7 +95,7 @@ void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector 
 	//inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
 	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 	if (element==light_bone_idx)	fHealth = 0.f;
-	else							fHealth -= P*0.2f;
+	else							fHealth -= P*0.5f;
 	if (!Alive())
 		light_render->set_active(false);
 }

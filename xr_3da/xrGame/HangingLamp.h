@@ -23,7 +23,7 @@ private:
 
 	void			AddElement		(CPhysicsElement* root_e, int id);
 	void			CreateBody		();
-	bool			Alive			(){return fHealth>=0.f;}
+	bool			Alive			(){return fHealth>0.f;}
 public:
 					CHangingLamp	();
 	virtual			~CHangingLamp	();
