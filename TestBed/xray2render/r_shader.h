@@ -8,5 +8,5 @@ class	R_shader
 	IDirect3DVertexShader9*		vs;
 	R_constant_table			constants;
 public:
-	BOOL						compile		(LPCSTR name);
+	BOOL						compile		(LPDIRECT3DDEVICE9 D, LPCSTR name);
 };
