@@ -35,7 +35,6 @@ FHierrarhyVisual::~FHierrarhyVisual()
 
 void FHierrarhyVisual::Load(const char* N, CStream *data, u32 dwFlags)
 {
-	Log("!!! node !!!");
 	CVisual::Load(N,data,dwFlags);
 	if (data->FindChunk(OGF_CHIELDS_L)) 
 	{
@@ -51,20 +50,6 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, u32 dwFlags)
 #endif
 		}
 		bDontDelete = TRUE;
-
-		// Correct BBs
-		{
-			bv_BBox.invalidate		();
-			for (u32 i=0; i<cnt; i++) 
-			{
-				bv_BBox.merge	(children[i]->bv_BBox);
-			}
-			bv_Position.sub	(bv_BBox.max,bv_BBox.min);
-			bv_Position.div	(2);
-			bv_Radius		= bv_Position.magnitude();
-			bv_Position.add	(bv_BBox.min);
-			bv_BBox.grow	(EPS_S);
-		}
 	}
 	else
 	{	

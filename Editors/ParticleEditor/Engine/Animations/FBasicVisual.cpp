@@ -64,9 +64,6 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	} else {
 		THROW;
 	}
-	Log	("---");
-	Log	("pos",bv_Position);
-	Log	("r  ",bv_Radius);
 
 	// Sphere (if exists)
 	if (data->FindChunk(OGF_BSPHERE))
@@ -74,18 +71,6 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 		data->Read(&bv_Position,3*sizeof(float));
 		data->Read(&bv_Radius,sizeof(float));
 	}
-
-	if ((*LPDWORD(&bv_Radius) == 0xffc00000)||fis_gremlin(bv_Radius)||fis_denormal(bv_Radius))
-	{
-		bv_Position.sub	(bbox.max,bbox.min);
-		bv_Position.div	(2);
-		bv_Radius		= bv_Position.magnitude();
-		bv_Position.add	(bbox.min);
-	}
-
-	Log	("---2n");
-	Log	("pos",bv_Position);
-	Log	("r  ",bv_Radius);
 
 	// textures
 	if (data->FindChunk(OGF_TEXTURE_L)) {
