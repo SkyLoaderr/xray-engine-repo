@@ -534,12 +534,22 @@ void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObje
 	R_ASSERT2					(m_tpScheduledObjects.end() != I,"Specified object hasn't been found in the scheduled objects registry!");
 	
 	if (m_tNextFirstProcessObjectID == l_tpALifeSchedulable->ID) {
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg							("[LSS] Changing next schedulable object (%d)",m_tNextFirstProcessObjectID);
+		}
+#endif
 		if (m_tpScheduledObjects.end() == ++J)
 			J = m_tpScheduledObjects.begin();
-		if (m_tpScheduledObjects.end() != J)
+		if ((m_tpScheduledObjects.end() != J) && ((*J).second->ID != m_tNextFirstProcessObjectID))
 			m_tNextFirstProcessObjectID	= (*J).second->ID;
 		else
 			m_tNextFirstProcessObjectID	= _OBJECT_ID(-1);
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg							("[LSS] Changing next schedulable object (%d)",m_tNextFirstProcessObjectID);
+		}
+#endif
 	}
 	
 	m_tpScheduledObjects.erase	(I);
