@@ -194,7 +194,9 @@ void	CSoundRender_Core::destroy(sound& S )
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
 		E->stop					();
 	}
+	R_ASSERT			(0==S.feedback);
 	i_destroy_source	((CSoundRender_Source*)S.handle);
+	S.handle			= NULL;
 }
 
 CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )

@@ -24,6 +24,11 @@ void CSoundRender_Emitter::start(
 void CSoundRender_Emitter::stop	()
 {
 	if (target)	SoundRender.i_stop		(this);
+	if (owner)	
+	{
+		owner->feedback			= NULL;
+		owner					= NULL;
+	}
 	state = stStopped;
 }
 
