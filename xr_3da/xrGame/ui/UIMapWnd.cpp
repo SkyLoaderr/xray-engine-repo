@@ -264,8 +264,8 @@ void CUIMapWnd::InitLocalMapObjectives()
 		map_spot->GetUIStaticItem().SetOriginalRect(
 			map_location.icon_x*MAP_ICON_GRID_WIDTH,
 			map_location.icon_y*MAP_ICON_GRID_HEIGHT,
-			map_location.icon_width*MAP_ICON_GRID_WIDTH + MAP_ICON_WIDTH,
-			map_location.icon_height*MAP_ICON_GRID_HEIGHT + MAP_ICON_HEIGHT);
+			map_location.icon_width*(MAP_ICON_GRID_WIDTH + MAP_ICON_WIDTH),
+			map_location.icon_height*(MAP_ICON_GRID_HEIGHT + MAP_ICON_HEIGHT));
 
 		map_spot->m_eAlign = CUIMapSpot::eCenter;
 		map_spot->m_sDescText.SetText("");
