@@ -10,7 +10,6 @@ class CUIString
 {
 public:
 	CUIString();
-#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 	~CUIString();
 
 	void SetText(LPSTR str);
