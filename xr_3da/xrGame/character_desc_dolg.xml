@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+<!---------------------------DOLG NOVICE----------------------->
+	<specific_character id="dolg_novice_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
+
+		<team>Dolg_novice</team>
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\dolg\stalker_do_mask</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------DOLG GENERAL---------------------->
+	<specific_character id="dolg_general_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
+
+		<team>Dolg_general</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\dolg\stalker_do_antigas</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------DOLG VETERAN---------------------->
+	<specific_character id="dolg_veteran_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
+
+		<team>Dolg_veteran</team>
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\dolg\stalker_do_exoskeleton</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------DOLG MASTER----------------------->
+	<specific_character id="dolg_master_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
+
+		<team>Dolg_master</team>
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\dolg\stalker_do_nauchaniy</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	
+</xml>

@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+<!---------------------------KILLER NOVICE----------------------->
+	<specific_character id="killer_novice_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере ничего не известно.</bio>
+
+		<team>Killer_novice</team>
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\killer\stalker_ki_mask</visual>
+	</specific_character>
+
+<!---------------------------KILLER GENERAL---------------------->
+	<specific_character id="killer_general_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере ничего не известно.</bio>
+
+		<team>Killer_general</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\killer\stalker_ki_antigas</visual>
+	</specific_character>
+
+<!---------------------------KILLER VETERAN---------------------->
+	<specific_character id="killer_veteran_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере ничего не известно.</bio>
+
+		<team>Killer_veteran</team>
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+	</specific_character>
+
+<!---------------------------KILLER MASTER----------------------->
+	<specific_character id="killer_master_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере ничего не известно.</bio>
+
+		<team>Killer_master</team>
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\killer\stalker_ki_nauchniy</visual>
+	</specific_character>
+	
+</xml>
