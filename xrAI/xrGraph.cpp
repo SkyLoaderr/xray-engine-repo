@@ -319,20 +319,20 @@ void vfRemoveIncoherentGraphPoints(CLevelGraph *tpAI_Map, u32 &dwVertexCount)
 {
 	xr_vector<bool>		tMarks;
 	xr_vector<bool>		tDisconnected;
-	tDisconnected.assign(tpaGraph.size(),true);
+	tDisconnected.assign(tpaGraph.size(),false);
 	for (int k=0, j=0, n=(int)tpaGraph.size(); k<n; k++) {
 		tMarks.assign	(tpAI_Map->header().vertex_count(),false);
 		vfRecurseMark	(*tpAI_Map,tMarks,tpaGraph[k].tNodeID);
 		for (int i=0; i<n; i++)
 			if (!tMarks[tpaGraph[i].tNodeID]) {
-				tDisconnected[k] = false;
+				tDisconnected[k] = true;
 				Msg		("Graph point %d [%f][%f][%f] is disconnected",k,VPUSH(tpaGraph[k].tLocalPoint));
 				j++;
 				break;
 			}
 	}
 	for (int i=0, k=0; i<n; i++, k++)
-		if (!tDisconnected[k]) {
+		if (tDisconnected[k]) {
 			tpaGraph.erase(tpaGraph.begin() + i);
 			i--;
 			n--;

@@ -28,7 +28,7 @@ void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CLevelGraph& tMap, xr_vector<
 	tMarks[dwStartNodeID] = true;
 	for ( ; I != E; I++) {
 		u32				dwNexNodeID = tpNode->link(I);
-		if (!tMarks[dwNexNodeID])
+		if (tMap.valid_vertex_id(dwNexNodeID) && !tMarks[dwNexNodeID])
 			vfRecurseUpdate(tDistances,tMap,tMarks,dwNexNodeID,fValue + tMap.distance(dwStartNodeID,dwNexNodeID));
 	}
 	tMarks[dwStartNodeID] = false;

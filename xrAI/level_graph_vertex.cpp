@@ -216,7 +216,7 @@ float CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvecto
 		}
 
 		if (saved_index > -1) {
-			fCurDistance	= start_point.distance_to(temp_point);
+			fCurDistance	= start_point.distance_to_xz(temp_point);
 			iPrevIndex		= dwCurNode;
 			dwCurNode		= saved_index;
 		}
@@ -225,7 +225,7 @@ float CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvecto
 	}
 
 	if (inside(vertex(dwCurNode),finish_position) && (_abs(vertex_plane_y(*vertex(dwCurNode),finish_position.x,finish_position.z) - finish_position.y) < .5f))
-		return				(start_point.distance_to(finish_position));
+		return				(start_point.distance_to_xz(finish_position));
 	else
 		return				(max_distance);
 }
