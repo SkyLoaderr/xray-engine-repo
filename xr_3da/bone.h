@@ -12,6 +12,8 @@ class CBone;
 
 const	u16		BI_NONE				=	u16(-1);
 
+#define OGF_IKDATA_VERSION		0x0001
+
 #pragma pack( push,1 )
 enum EJointType
 {
@@ -90,6 +92,8 @@ struct ECORE_API SJointIKData
     Flags32			ik_flags;
     float			break_force;	// [0..+INF]
     float			break_torque;	// [0..+INF]
+
+    float			friction;
     			
     SJointIKData	(){ Reset();}
     void			Reset	()
@@ -104,7 +108,39 @@ struct ECORE_API SJointIKData
     	break_force		= 0.f;
     	break_torque	= 0.f;
     }
-    void			clamp_by_limits(Fvector& dest_xyz);
+    void				clamp_by_limits(Fvector& dest_xyz);
+    void				Export(IWriter& F)
+    {
+        F.w_u32			(type);
+        for (int k=0; k<3; k++){
+            F.w_float	(_min(-limits[k].limit.x,-limits[k].limit.y)); // min (swap special for ODE)
+            F.w_float	(_max(-limits[k].limit.x,-limits[k].limit.y)); // max (swap special for ODE)
+            F.w_float	(limits[k].spring_factor);
+            F.w_float	(limits[k].damping_factor);
+        }
+        F.w_float		(spring_factor);
+        F.w_float		(damping_factor);
+
+        F.w_u32			(ik_flags.get());
+        F.w_float		(break_force);
+        F.w_float		(break_torque);
+
+        F.w_float		(friction);
+    }
+    bool				Import(IReader& F, u16 vers)
+    {
+        type			= (EJointType)F.r_u32();
+        F.r				(limits,sizeof(SJointLimit)*3);
+        spring_factor	= F.r_float();
+        damping_factor	= F.r_float();
+        ik_flags.flags	= F.r_u32();
+        break_force		= F.r_float();
+        break_torque	= F.r_float();
+        if (vers>0){
+	        friction	= F.r_float();
+        }
+        return true;
+    }
 };
 #pragma pack( pop )
 

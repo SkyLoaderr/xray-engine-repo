@@ -393,7 +393,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
     bool bRes = true;
                     
-    F.open_chunk(OGF_IKDATA);
+    F.open_chunk(OGF_IKDATA2);
     for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++)
         if (!(*bone_it)->ExportOGF(F)) bRes=false; 
     F.close_chunk();

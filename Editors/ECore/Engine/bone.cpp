@@ -4,17 +4,18 @@
 #include "bone.h"
 #include "envelope.h"
 
-#define BONE_VERSION				0x0002
+#define BONE_VERSION					0x0002
 //------------------------------------------------------------------------------
-#define BONE_CHUNK_VERSION			0x0001
-#define BONE_CHUNK_DEF				0x0002
-#define BONE_CHUNK_BIND_POSE		0x0003
-#define BONE_CHUNK_MATERIAL			0x0004
-#define BONE_CHUNK_SHAPE			0x0005
-#define BONE_CHUNK_IK_JOINT			0x0006
-#define BONE_CHUNK_MASS				0x0007
-#define BONE_CHUNK_FLAGS			0x0008
-#define BONE_CHUNK_IK_JOINT_BREAK	0x0009
+#define BONE_CHUNK_VERSION				0x0001
+#define BONE_CHUNK_DEF					0x0002
+#define BONE_CHUNK_BIND_POSE			0x0003
+#define BONE_CHUNK_MATERIAL				0x0004
+#define BONE_CHUNK_SHAPE				0x0005
+#define BONE_CHUNK_IK_JOINT				0x0006
+#define BONE_CHUNK_MASS					0x0007
+#define BONE_CHUNK_FLAGS				0x0008
+#define BONE_CHUNK_IK_JOINT_BREAK		0x0009
+#define BONE_CHUNK_IK_JOINT_FRICTION	0x0010
 
 CBone::CBone()
 {
@@ -135,6 +136,10 @@ void CBone::SaveData(IWriter& F)
     F.w_float		(IK_data.break_torque);
     F.close_chunk	();
 
+    F.open_chunk	(BONE_CHUNK_IK_JOINT_FRICTION);
+    F.w_float		(IK_data.friction);
+    F.close_chunk	();
+
     F.open_chunk	(BONE_CHUNK_MASS);
     F.w_float		(mass);
 	F.w_fvector3	(center_of_mass);
@@ -164,6 +169,10 @@ void CBone::LoadData(IReader& F)
     if (F.find_chunk(BONE_CHUNK_IK_JOINT_BREAK)){
 	    IK_data.break_force	= F.r_float();
     	IK_data.break_torque= F.r_float();
+    }
+
+    if (F.find_chunk(BONE_CHUNK_IK_JOINT_FRICTION)){
+	    IK_data.friction	= F.r_float();
     }
 
     if (F.find_chunk(BONE_CHUNK_MASS)){
