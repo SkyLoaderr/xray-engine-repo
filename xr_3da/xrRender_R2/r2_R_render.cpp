@@ -37,7 +37,6 @@ void CRender::Render	()
 	Device.Statistic.RenderDUMP.End			();
 
 	//******* Direct lighting+shadow		::: Calculate
-	/*
 	Device.Statistic.RenderCALC.Begin		();
 	{
 		marker									++;
@@ -65,7 +64,6 @@ void CRender::Render	()
 		Target.phase_accumulator				();
 	}
 	Device.Statistic.RenderDUMP.End			();
-	*/
 
 	// Postprocess
 	Target.phase_combine					();
