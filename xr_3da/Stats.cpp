@@ -335,7 +335,7 @@ void	__stdcall _LogCallback		(LPCSTR string)
 
 void CStats::OnDeviceCreate			()
 {
-	g_bDisableRedText				= strstr(Core.Params,"-clearscreen")?TRUE:FALSE;
+	g_bDisableRedText				= strstr(Core.Params,"-cls")?TRUE:FALSE;
 
 	pFont	= xr_new<CGameFont>		("stat_font");
 	
