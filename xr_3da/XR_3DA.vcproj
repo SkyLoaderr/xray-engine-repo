@@ -540,8 +540,14 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Devices"
+			Name="Interfaces"
 			Filter="">
+			<File
+				RelativePath=".\Render.h">
+			</File>
+			<File
+				RelativePath="Sound.h">
+			</File>
 			<File
 				RelativePath=".\xrSyncronize.h">
 			</File>
@@ -899,112 +905,6 @@
 							RelativePath=".\xr_avi.h">
 						</File>
 					</Filter>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="Sound"
-				Filter="">
-				<File
-					RelativePath=".\xr_cda.cpp">
-				</File>
-				<File
-					RelativePath=".\xr_cda.h">
-				</File>
-				<File
-					RelativePath=".\xr_snd_defs.h">
-				</File>
-				<File
-					RelativePath=".\xr_sndman.cpp">
-				</File>
-				<File
-					RelativePath=".\xr_sndman.h">
-				</File>
-				<Filter
-					Name="2D"
-					Filter="">
-					<File
-						RelativePath=".\2DSound.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\2DSound.h">
-					</File>
-					<File
-						RelativePath=".\2DSoundRender.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\2DSoundRender.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="3D"
-					Filter="">
-					<File
-						RelativePath=".\3DSound.cpp">
-					</File>
-					<File
-						RelativePath=".\3DSound.h">
-					</File>
-					<File
-						RelativePath=".\3DSoundRender.cpp">
-					</File>
-					<File
-						RelativePath=".\3DSoundRender.h">
-					</File>
-					<File
-						RelativePath=".\3DSound_Loader.cpp">
-					</File>
-				</Filter>
-				<Filter
-					Name="2D streamed"
-					Filter="">
-					<File
-						RelativePath=".\MusicStream.cpp">
-					</File>
-					<File
-						RelativePath=".\MusicStream.h">
-					</File>
-					<File
-						RelativePath=".\xr_streamsnd.cpp">
-					</File>
-					<File
-						RelativePath=".\xr_streamsnd.h">
-					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -1607,9 +1507,6 @@
 			</File>
 			<File
 				RelativePath="FStaticRender_Volume.cpp">
-			</File>
-			<File
-				RelativePath=".\Render.h">
 			</File>
 			<File
 				RelativePath=".\SceneGraph.h">
@@ -2267,6 +2164,112 @@
 			<File
 				RelativePath=".\XR_Quit.h">
 			</File>
+		</Filter>
+		<Filter
+			Name="Sound"
+			Filter="">
+			<File
+				RelativePath="xrSound.cpp">
+			</File>
+			<File
+				RelativePath="xrSound.h">
+			</File>
+			<File
+				RelativePath="xrSound_Initialize.cpp">
+			</File>
+			<File
+				RelativePath=".\xr_cda.cpp">
+			</File>
+			<File
+				RelativePath=".\xr_cda.h">
+			</File>
+			<Filter
+				Name="2D streamed"
+				Filter="">
+				<File
+					RelativePath=".\MusicStream.cpp">
+				</File>
+				<File
+					RelativePath=".\MusicStream.h">
+				</File>
+				<File
+					RelativePath=".\xr_streamsnd.cpp">
+				</File>
+				<File
+					RelativePath=".\xr_streamsnd.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="2D"
+				Filter="">
+				<File
+					RelativePath=".\2DSound.cpp">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\2DSound.h">
+				</File>
+				<File
+					RelativePath=".\2DSoundRender.cpp">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\2DSoundRender.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="3D"
+				Filter="">
+				<File
+					RelativePath=".\3DSound.cpp">
+				</File>
+				<File
+					RelativePath=".\3DSound.h">
+				</File>
+				<File
+					RelativePath=".\3DSoundRender.cpp">
+				</File>
+				<File
+					RelativePath=".\3DSoundRender.h">
+				</File>
+				<File
+					RelativePath=".\3DSound_Loader.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ClientServer.txt">

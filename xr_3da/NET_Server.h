@@ -78,7 +78,7 @@ public:
 	const IServerStatistic*	GetStatistic		() { return &stats; }
 
 	// extended functionality
-	virtual u32			OnMessage			(NET_Packet& P, DPNID sender);	// Non-Zero means broadcasting with "flags" as returned
+	virtual u32				OnMessage			(NET_Packet& P, DPNID sender);	// Non-Zero means broadcasting with "flags" as returned
 	virtual void			OnCL_Connected		(IClient* C);
 	virtual void			OnCL_Disconnected	(IClient* C);
 
@@ -86,7 +86,7 @@ public:
 	virtual void			client_Replicate	()				= 0;			// replicate current state to client
 	virtual void			client_Destroy		(IClient* C)	= 0;			// destroy client info
 
-	IC u32				client_Count		()	{ return net_Players.size(); }
+	IC u32					client_Count		()			{ return net_Players.size(); }
 	IC IClient*				client_Get			(u32 num)	{ return net_Players[num]; }
 	
 	BOOL					HasBandwidth		(IClient* C);

@@ -8,6 +8,15 @@
 
 #include "xr_snd_defs.h"
 
+struct 	sound_defer
+{
+	LPVOID 							P;
+	u32								F;
+
+	sound_defer(LPVOID _P, u32 _F) : P(_P), F(_F) {};
+};
+
+
 // refs
 class ENGINE_API CSound;
 class ENGINE_API CInifile;
