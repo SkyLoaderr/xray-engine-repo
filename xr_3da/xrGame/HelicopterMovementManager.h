@@ -38,7 +38,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 	void	createLevelPatrolTrajectory(u32 keyCount, const Fvector& fromPos, xr_vector<Fvector>& keys );
 	void	createHuntPathTrajectory(float from_time, const Fvector& fromPos, const Fvector& enemyPos, xr_vector<Fvector>& keys );
 	void	createStayPathTrajectory(const Fvector& fromPos, xr_vector<Fvector>& keys );
-	void	createRocking			(const Fvector& fromPos, const Fvector& dir, xr_vector<Fvector>& keys );
+	void	createRocking			(const Fvector& fromPos, const Fvector& dir, xr_vector<Fvector>& keys, float time_ );
 
 	void	fixateKeyPath			(float from_time);
 	void	buildHuntPath			(const Fvector& enemyPos);
@@ -46,7 +46,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 	void	onTime					(float t);
 	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys, float velocity, bool updateHPB=true);
 	void	updatePathHPB			(float from_time);
-	void	buildHPB				(const Fvector& p_prev, const Fvector& p_prev_phb, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res);
+	void	buildHPB				(const Fvector& p_prev, const Fvector& p_prev_phb, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res, float time);
 	void	addPartolPath			(float from_time);
 	void	updatePatrolPath		(float from_time);
 	void	addHuntPath				(float from_time, const Fvector& enemyPos);

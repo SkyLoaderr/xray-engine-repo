@@ -56,7 +56,7 @@ void	CHelicopterMovManager::load(LPCSTR		section)
 			m_boundingVolume.min.add(b);
 		};
 
-	m_pitch_k *= -1.0f;
+//	m_pitch_k *= -1.0f;
 
 	m_hunt_dist = 20.0f;
 	m_hunt_time = 5.0f;
@@ -305,22 +305,33 @@ void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPo
 	vAddedKeys.push_back(dstPos2);*/
 
 	vAddedKeys.clear();
-	createRocking(dstPos, dir, vAddedKeys);
-	insertKeyPoints(m_endTime, vAddedKeys, 1.0f/m_hunt_time, false);
+	createRocking(dstPos, dir, vAddedKeys, m_hunt_time);
+	insertKeyPoints(m_endTime, vAddedKeys, 0.1f, false);
 	updatePathHPB(safe_time);
 
 }
 
-void CHelicopterMovManager::createRocking(const Fvector& fromPos, const Fvector& dir, xr_vector<Fvector>& keys )
+void CHelicopterMovManager::createRocking(const Fvector& fromPos, const Fvector& dir, xr_vector<Fvector>& keys, float time_ )
 {
 	Fvector p;
 	Fvector r_dir;
 	keys.push_back(fromPos);
-	for(float i=0.3f; i<1.0f; i+=0.3f){
+
+	float d = 0.0f;
+	float r_vel = 0.2f;
+	
+	for(; d<time_*r_vel; d+=r_vel){
+		r_dir.random_dir(dir,(PI_DIV_6/2.0f));
+		
+		p.mad(fromPos, r_dir, d );
+		keys.push_back(p);
+	}
+
+/*	for(float i=0.3f; i<1.0f; i+=0.3f){
 		r_dir.random_dir(dir,(PI_DIV_6/2.0f));
 		p.mad(fromPos, r_dir, i );
 		keys.push_back(p);
-	}
+	}*/
 
 }
 
@@ -410,8 +421,8 @@ void CHelicopterMovManager::addGoToPointPath(float from_time)
 	dir.sub(dstPos,T).normalize_safe();
 
 	vAddedKeys.clear();
-	createRocking(dstPos, dir, vAddedKeys);
-	insertKeyPoints(m_endTime, vAddedKeys, 1.0f/m_wait_in_point, false);
+	createRocking(dstPos, dir, vAddedKeys, m_wait_in_point);
+	insertKeyPoints(m_endTime, vAddedKeys, 0.1f, false);
 	updatePathHPB(safe_time);
 
 }
@@ -458,15 +469,16 @@ void	CHelicopterMovManager::updatePathHPB(float from_time)
 	u32 i;
 	//(minIdx == maxIdx)
 	Fvector p_prev, p_prev_hpb, p0, p_next, p0_phb_res;
-	float p0_time;
+	float p0_time, p_prev_time;
 
 	for(i=minIdx; i<sz-2 ;++i) {
 		CHelicopterMotion::GetKey(i, p_prev, p_prev_hpb);
 		CHelicopterMotion::GetKeyT(i+1, p0);
 		CHelicopterMotion::GetKeyT(i+2, p_next);
 		CHelicopterMotion::GetKeyTime(i+1, p0_time);
+		CHelicopterMotion::GetKeyTime(i, p_prev_time);
 
-		buildHPB(p_prev, p_prev_hpb, p0, p_next, p0_phb_res);
+		buildHPB(p_prev, p_prev_hpb, p0, p_next, p0_phb_res, p0_time-p_prev_time);
 
 		CHelicopterMotion::CreateKey(p0_time, p0, p0_phb_res);
 	}
@@ -477,7 +489,8 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 									 const Fvector& p_prev_phb,
 									 const Fvector& p0, 
 									 const Fvector& p_next, 
-									 Fvector& p0_phb_res)
+									 Fvector& p0_phb_res,
+									 float time)
 {
 	float s1 = p_prev.distance_to (p0);
 	float s2 = p0.distance_to (p_next);
@@ -520,8 +533,13 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 	p0_phb_res.z = ang_diff*sign*0.4f;
 
 	//x
-	p0_phb_res.x = -p1+m_pitch_k*m_basePatrolSpeed;
+//	p0_phb_res.x = p1+m_pitch_k*m_basePatrolSpeed;
+
+	float speed_on_section = s1/time;
+
+	p0_phb_res.x = (p1*speed_on_section)/m_basePatrolSpeed + m_pitch_k*speed_on_section;
 	clamp(p0_phb_res.x, -PI_DIV_8, PI_DIV_8);
+	p0_phb_res.x *= -1.0f;
 
 }
 

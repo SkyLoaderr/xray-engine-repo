@@ -478,6 +478,7 @@ void CHelicopter::gotoStayPoint(float time, Fvector* pos)
 {
 	if( !fis_zero(time) )
 		m_movMngr.m_time_delay_between_patrol = time;
+		
 
 	if(pos)
 		m_movMngr.m_stayPoint = *pos;
@@ -498,6 +499,11 @@ void CHelicopter::goToPoint(Fvector* to, Fvector* via, float time)
 	m_movMngr.m_to_point = *to;
 	m_movMngr.m_via_point = *via;
 	m_movMngr.m_wait_in_point = time;
+
+	if(time>61.0f)	{
+		m_movMngr.m_wait_in_point = 60.0f;
+		Msg("---CHelicopter::too big <time> value(%f) for <goToPoint> function. max is 60",time);
+	};
 
 	setState(CHelicopter::eInitiateGoToPoint);
 }
