@@ -56,9 +56,11 @@ void CBuild::xrPhase_AdaptiveHT	()
 			for (u32 vh=0; vh<3; vh++)
 			{
 				Vertex* V				= F->v	[vh];
-				if (V->C._tmp_ > EPS)	continue;
-				LightPoint				(&DB, RCAST_Model, V->C, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun+LP_UseFaceDisable, F);
-				V->C._tmp_				= 1;	// use as marker
+				base_color_c	vC;		V->C._get	(vC);
+				if (vC._tmp_ > EPS)		continue;
+				LightPoint				(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun+LP_UseFaceDisable, F);
+				vC._tmp_				= 1;	// use as marker
+				V->C._set				(vC);
 			}
 
 			// Iterate on edges - select longest
