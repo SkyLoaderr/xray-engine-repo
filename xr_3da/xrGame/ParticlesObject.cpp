@@ -5,8 +5,8 @@
 #pragma hdrstop
 
 #include "ParticlesObject.h"
-#include "..\ParticleCustom.h"
-#include "..\render.h"
+#include "../ParticleCustom.h"
+#include "../render.h"
 
 CParticlesObject::CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove)
 {

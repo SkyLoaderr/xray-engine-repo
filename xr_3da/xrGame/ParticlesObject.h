@@ -1,7 +1,7 @@
 #ifndef ParticlesObjectH
 #define ParticlesObjectH
 
-#include "..\PS_instance.h"
+#include "../PS_instance.h"
 
 class CParticlesObject		:	public CPS_Instance
 {

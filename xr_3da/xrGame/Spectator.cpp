@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "spectator.h"
-#include "..\effectorfall.h"
+#include "../effectorfall.h"
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
 #include "actor.h"
@@ -29,7 +29,7 @@ CSpectator::CSpectator() : CGameObject()
 
 CSpectator::~CSpectator()
 {
-	for (int i=0; i<eacMaxCam; i++) xr_delete(cameras[i]);
+	for (int i=0; i<eacMaxCam; ++i) xr_delete(cameras[i]);
 }
 
 void CSpectator::UpdateCL()
@@ -41,18 +41,18 @@ void CSpectator::UpdateCL()
 			game_cl_GameState::Player* P = Game().local_player;
 			if (P&&(P->team>=0)&&(P->team<(int)Level().Teams.size())){
 				CTeam& T		= Level().Teams[P->team];
-				for (u32 i=0; i<T.Squads.size(); i++){
+				for (u32 i=0; i<T.Squads.size(); ++i){
 					CSquad& S = T.Squads[i];
-					for (u32 j=0; j<S.Groups.size(); j++){
+					for (u32 j=0; j<S.Groups.size(); ++j){
 						CGroup& G = S.Groups[j];
-						for (u32 k=0; k<G.Members.size(); k++){
+						for (u32 k=0; k<G.Members.size(); ++k){
 							CActor* A = dynamic_cast<CActor*>(G.Members[k]);
 							if (A/*&&A->g_Alive()*/){
 								if(idx==look_idx){
 									cam_Update	(A);
 									return;
 								}
-								idx++;
+								++idx;
 							}
 						}
 					}
@@ -93,11 +93,11 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 	case kCAM_4:	cam_Set			(eacFreeFly);				break;
-	case kWPN_FIRE:	look_idx++;									break;
+	case kWPN_FIRE:	++look_idx;									break;
 	}
 }
 
-void CSpectator::IR_OnKeyboardRelease(int cmd)
+void CSpectator::IR_OnKeyboardRelease(int /**cmd/**/)
 {
 }
 
@@ -116,7 +116,7 @@ void CSpectator::IR_OnKeyboardHold(int cmd)
 			cameras[cam_active]->Move(cmd); break;
 		case kLEFT:
 		case kRIGHT:
-			if (cam_active!=eacFreeLook) cameras[cam_active]->Move(cmd); break;
+			if (eacFreeLook!=cam_active) cameras[cam_active]->Move(cmd); break;
 		case kFWD:			
 			vmove.mad( C->vDirection, 4.f*Device.fTimeDelta );
 			break;

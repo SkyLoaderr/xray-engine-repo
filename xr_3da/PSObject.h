@@ -1,7 +1,7 @@
 #ifndef _INCDEF_PSObject_H_
 #define _INCDEF_PSObject_H_
 
-#include "..\PS_instance.h"
+#include "../PS_instance.h"
 
 class CPSObject			: public CPS_Instance
 {
