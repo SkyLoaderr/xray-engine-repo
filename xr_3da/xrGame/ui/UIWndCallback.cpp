@@ -1,20 +1,8 @@
 #include "stdafx.h"
-
 #include "UIWndCallback.h"
-
-//#include <luabind/operator.hpp>
-#include "../object_broker.h"
-#include "../script_callback.h"
-
 #include "UIWindow.h"
-
-struct SCallbackInfo{
-	CScriptCallback			m_callback;
-	boost::function<void()>	m_cpp_callback;
-	shared_str				m_controlName;
-	s16						m_event;
-	SCallbackInfo():m_controlName(""),m_event(-1){};
-};
+#include "../object_broker.h"
+#include "../callback_info.h"
 
 struct event_comparer{
 	shared_str			name;
@@ -44,11 +32,10 @@ void CUIWndCallback::OnEvent(CUIWindow* pWnd, s16 msg, void* pData)
 	if(it==m_callbacks.end())
 		return ;
 
-	if ((*it)->m_callback.assigned()) {
-		SCRIPT_CALLBACK_EXECUTE_0((*it)->m_callback );
-	}else 
-		if ( (*it)->m_cpp_callback )	
-			(*it)->m_cpp_callback();
+	(*it)->m_callback();
+	
+	if ((*it)->m_cpp_callback)	
+		(*it)->m_cpp_callback();
 }
 
 
@@ -75,7 +62,7 @@ void CUIWndCallback::AddCallback (LPCSTR control_id, s16 event, const luabind::o
 	c->m_event			= event;
 }
 */
-void CUIWndCallback::AddCallback(LPCSTR control_id, s16 event, boost::function<void()> f)
+void CUIWndCallback::AddCallback(LPCSTR control_id, s16 event, const void_function &f)
 {
 	SCallbackInfo* c	= NewCallback ();
 	c->m_cpp_callback	= f;

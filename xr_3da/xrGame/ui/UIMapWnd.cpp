@@ -16,6 +16,8 @@
 #include "UIMapWnd.h"
 #include "../alife_registry_wrappers.h"
 #include "../game_graph.h"
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 
 const				SCROLLBARS_SHIFT			= 5;
 const				VSCROLLBAR_STEP				= 20; // В пикселях

@@ -4,15 +4,7 @@
 #include "../script_space.h"
 #include <luabind/operator.hpp>
 #include "../object_broker.h"
-#include "../script_callback_ex.h"
-
-struct SCallbackInfo{
-	CScriptCallbackEx<void>	m_callback;
-	boost::function<void()>	m_cpp_callback;
-	shared_str				m_controlName;
-	s16						m_event;
-	SCallbackInfo():m_controlName(""),m_event(-1){}
-};
+#include "../callback_info.h"
 
 struct event_comparer{
 	shared_str			name;
@@ -84,7 +76,7 @@ void CUIDialogWndEx::AddCallback (LPCSTR control_id, s16 event, const luabind::f
 	c->m_event			= event;
 }
 
-void CUIDialogWndEx::AddCallback(LPCSTR control_id, s16 event, boost::function<void()> f)
+void CUIDialogWndEx::AddCallback(LPCSTR control_id, s16 event, const void_function &f)
 {
 	SCallbackInfo* c	= NewCallback ();
 	c->m_cpp_callback	= f;
