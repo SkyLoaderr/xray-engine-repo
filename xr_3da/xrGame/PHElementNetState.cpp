@@ -25,7 +25,8 @@ void CPHElement::get_State(SPHNetState& state)
 }
 void CPHElement::set_State(const SPHNetState& state)
 {
-	bUpdate=true;
+	//bUpdate=true;
+	m_flags.set(flUpdate,TRUE);
 	SetGlobalPositionDynamic(state.position);
 	setQuaternion(state.quaternion);
 	m_body_interpolation.SetPosition(state.previous_position,0);

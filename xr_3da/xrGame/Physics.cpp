@@ -454,11 +454,6 @@ void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* t
 	dInvertPDMatrix (m.I, invI, 3);
 	dMULTIPLY1_333(ang_accel,invI, torque);
 }
-
-void FixBody(dBodyID body)
-{
-	FixBody(body,10000000.f,10000000000000.f);
-}
 void FixBody(dBodyID body,float ext_param,float mass_param)
 {
 	dMass m;
@@ -467,6 +462,11 @@ void FixBody(dBodyID body,float ext_param,float mass_param)
 	dBodySetMass(body,&m);
 	dBodySetGravityMode(body,0);
 }
+void FixBody(dBodyID body)
+{
+	FixBody(body,fix_ext_param,fix_mass_param);
+}
+
 
 void BodyCutForce(dBodyID body,float l_limit,float w_limit)
 {

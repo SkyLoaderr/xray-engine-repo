@@ -32,7 +32,7 @@ class CPHElement	:
 	CPHShell					*m_shell;					//e					//bl
 	CPHInterpolation			m_body_interpolation;		//e					//bl
 	CPHFracturesHolder			*m_fratures_holder;			//e					//bl
-	bool						was_enabled_before_freeze;
+
 	dReal						m_w_limit ;					//->to shell ??		//bl
 	dReal						m_l_limit ;					//->to shell ??		//bl
 	dVector3					m_safe_position;			//e					//st
@@ -43,8 +43,17 @@ class CPHElement	:
 	dReal						k_l;						//->to shell ??		//st
 	ObjectContactCallbackFun*	temp_for_push_out;			//->to shell ??		//aux
 	u32							push_untill;				//->to shell ??		//st
-	bool						bUpdate;					//->to shell ??		//st
-	bool						b_enabled_onstep;
+	Flags8						m_flags;					//
+	enum				
+	{
+		flUpdate				=	1<<0,
+		flWasEnabledBeforeFreeze=	1<<1,
+		flEnabledOnStep			=	1<<2,
+		flFixed					=	1<<3
+	};
+//	bool						was_enabled_before_freeze;
+//	bool						bUpdate;					//->to shell ??		//st
+//	bool						b_enabled_onstep;
 private:
 ////////////////////////////////////////////Interpolation/////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,14 +61,16 @@ private:
 	{
 		m_body_interpolation.ResetPositions();
 		m_body_interpolation.ResetRotations();
-		bUpdate=true;
+		//bUpdate=true;
+		m_flags.set(flUpdate,TRUE);
 	}
 IC	void					UpdateInterpolation				()																				//interpolation called from ph update visual influent
 	{
 		///VERIFY(dBodyStateValide(m_body));
 		m_body_interpolation.UpdatePositions();
 		m_body_interpolation.UpdateRotations();
-		bUpdate=true;
+		//bUpdate=true;
+		m_flags.set(flUpdate,TRUE);
 	}
 public:
 ////////////////////////////////////////////////Geometry/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,7 +130,7 @@ public:																																				//
 	virtual bool			isEnabled								()	{return bActive&&dBodyIsEnabled(m_body);}
 	virtual void			Freeze									()	;																			//
 	virtual void			UnFreeze								()	;																			//
-	virtual bool			EnabledStateOnStep						()  {return dBodyIsEnabled(m_body)||b_enabled_onstep;}							//
+	virtual bool			EnabledStateOnStep						()  {return dBodyIsEnabled(m_body)||m_flags.test(flEnabledOnStep);}							//
 ////////////////////////////////////////////////Updates///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			void			BonesCallBack							(CBoneInstance* B);																//called from updateCL visual influent
@@ -143,6 +154,8 @@ public:																																				//
 	virtual	void			set_DisableParams				(const SAllDDOParams& params)										;					//
 	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);							//aux (may not be)
 	virtual void			set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);							//aux (may not be)
+	virtual	void			Fix								();
+	virtual bool			isFixed							(){return !!(m_flags.test(flFixed));}
 	virtual void			applyForce						(const Fvector& dir, float val);															//aux
 	virtual void			applyForce						(float x,float y,float z);																//called anywhere ph state influent
 	virtual void			applyImpulse					(const Fvector& dir, float val);														//aux

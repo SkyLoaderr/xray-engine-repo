@@ -121,7 +121,8 @@ public:
 	virtual	dMass*			getMassTensor			()												= 0;
 	virtual void			get_Extensions			(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)=0;
 	virtual	void			get_MaxAreaDir			(Fvector& dir)									= 0;
-
+	virtual	void			Fix						()												= 0;
+	virtual bool			isFixed					()												= 0;
 
 	virtual ~CPhysicsElement						()												{};
 };
