@@ -280,50 +280,51 @@ public:
 			m_tpSpawnPoints[i]->m_tGraphID	= dwBest;
 			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
 		}
-		thProgress				= .5f;
-		{
-			xr_vector<CSE_ALifeLevelChanger*>::iterator i = m_level_changers->begin();
-			xr_vector<CSE_ALifeLevelChanger*>::iterator e = m_level_changers->end();
-			for (u32 i=0, n=m_level_changers->size(); i<n; ++i) {
-				if (dwfGetIDByLevelName(m_ini,(*m_level_changers)[i]->m_caLevelToChange) != m_dwLevelID)
-					continue;
-
-				bool found = false;
-				xr_vector<CSE_ALifeGraphPoint*>::const_iterator I = m_graph_points.begin();
-				xr_vector<CSE_ALifeGraphPoint*>::const_iterator E = m_graph_points.end();
-				for ( ; I != E; ++I)
-					if (!xr_strcmp((*m_level_changers)[i]->m_caLevelPointToChange,(*I)->s_name_replace)) {
-						
-						bool ok = false;
-						for (u32 ii=0, nn = tpGraph->header().vertex_count(); ii<nn; ++ii) {
-							if ((tpGraph->vertex(ii)->level_id() != m_dwLevelID) || !tpGraph->vertex(ii)->level_point().similar((*I)->o_Position,.001f))
-								continue;
-							(*m_level_changers)[i]->m_tNextGraphID	= ii;
-							(*m_level_changers)[i]->m_tNextPosition	= (*I)->o_Position;
-							(*m_level_changers)[i]->m_tAngles		= (*I)->o_Angle;
-							(*m_level_changers)[i]->m_dwNextNodeID	= tpGraph->vertex(ii)->level_vertex_id();
-							ok = true;
-							break;
-						}
-
-						VERIFY		(ok);
-
-						m_level_changers->erase	(m_level_changers->begin() + i);
-						--i;
-						--n;
-						found		= true;
-						break;
-					}
-				if (!found) {
-					Msg				("Graph point %s not found (level changer %s)",(*m_level_changers)[i]->m_caLevelPointToChange,(*m_level_changers)[i]->s_name_replace);
-					VERIFY			(false);
-				}
-			}
-		}
 		thProgress				= .75f;
 		vfGenerateArtefactSpawnPositions();
 		thProgress				= 1.0f;
 	};
+
+	void						fill_level_changers	()
+	{
+		xr_vector<CSE_ALifeLevelChanger*>::iterator i = m_level_changers->begin();
+		xr_vector<CSE_ALifeLevelChanger*>::iterator e = m_level_changers->end();
+		for (u32 i=0, n=m_level_changers->size(); i<n; ++i) {
+			if (dwfGetIDByLevelName(m_ini,(*m_level_changers)[i]->m_caLevelToChange) != m_dwLevelID)
+				continue;
+
+			bool found = false;
+			xr_vector<CSE_ALifeGraphPoint*>::const_iterator I = m_graph_points.begin();
+			xr_vector<CSE_ALifeGraphPoint*>::const_iterator E = m_graph_points.end();
+			for ( ; I != E; ++I)
+				if (!xr_strcmp((*m_level_changers)[i]->m_caLevelPointToChange,(*I)->s_name_replace)) {
+
+					bool ok = false;
+					for (u32 ii=0, nn = tpGraph->header().vertex_count(); ii<nn; ++ii) {
+						if ((tpGraph->vertex(ii)->level_id() != m_dwLevelID) || !tpGraph->vertex(ii)->level_point().similar((*I)->o_Position,.001f))
+							continue;
+						(*m_level_changers)[i]->m_tNextGraphID	= ii;
+						(*m_level_changers)[i]->m_tNextPosition	= (*I)->o_Position;
+						(*m_level_changers)[i]->m_tAngles		= (*I)->o_Angle;
+						(*m_level_changers)[i]->m_dwNextNodeID	= tpGraph->vertex(ii)->level_vertex_id();
+						ok = true;
+						break;
+					}
+
+					VERIFY		(ok);
+
+					m_level_changers->erase	(m_level_changers->begin() + i);
+					--i;
+					--n;
+					found		= true;
+					break;
+				}
+				if (!found) {
+					Msg				("Graph point %s not found (level changer %s)",(*m_level_changers)[i]->m_caLevelPointToChange,(*m_level_changers)[i]->s_name_replace);
+					VERIFY			(false);
+				}
+		}
+	}
 
 	void						vfGenerateArtefactSpawnPositions()
 	{
@@ -501,6 +502,18 @@ public:
 //			tThreadManager.start	(tpLevels[i]);
 			tpLevels[i]->Execute	();
 //		tThreadManager.wait			();
+		for (u32 i=0, N = tpLevels.size(); i<N; i++)
+			tpLevels[i]->fill_level_changers();
+
+		{
+			xr_vector<CSE_ALifeLevelChanger*>::const_iterator	I = level_changers.begin();
+			xr_vector<CSE_ALifeLevelChanger*>::const_iterator	E = level_changers.end();
+			if (I != E)
+				Msg					("List of the level changers which are invalid for some reasons");
+			for ( ; I != E; ++I)
+				Msg					("%s",(*I)->s_name_replace);
+		}
+
 		VERIFY2						(level_changers.empty(),"Some of the level changers setup incorrectly");
 
 		Phase						("Merging spawn files");
