@@ -31,8 +31,8 @@ void	Compress	(NodeCompressed& Dest, NodeMerged& Src, hdrNODES& H)
 	CompressPos	(Dest.p1,Src.P1,H);
 	
 	// Sector
-	R_ASSERT(Src.sector<=255);
-	Dest.sector = BYTE(Src.sector);
+	// R_ASSERT(Src.sector<=255);
+	// Dest.sector = BYTE(Src.sector);
 
 	// Light & Cover
 	Dest.light		= Src.light;
@@ -42,8 +42,8 @@ void	Compress	(NodeCompressed& Dest, NodeMerged& Src, hdrNODES& H)
 	Dest.cover[3]	= CompressCover(Src.cover[3]);
 
 	// Compress links
-	R_ASSERT	(Src.neighbours.size()<256);
-	Dest.link_count	= BYTE(Src.neighbours.size());
+	R_ASSERT	(Src.neighbours.size()<64);
+	Dest.links	= BYTE(Src.neighbours.size());
 }
 
 float	CalculateHeight(Fbox& BB)

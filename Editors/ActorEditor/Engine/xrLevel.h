@@ -68,15 +68,17 @@ struct NodeCompressed
 	WORD			plane;			// 2
 	NodePosition	p0;				// 2+2+2 = 6
 	NodePosition	p1;				// 2+2+2 = 6
-	BYTE			sector;			// 1
 	BYTE			light;			// 1
-	BYTE			cover[4];		// 4
-	BYTE			link_count;		// 1		
-};									// 2+6+6+1+1+4+1 = 21b + links
-#pragma warning(default:4200)
-#pragma pack(pop)
+
+	u8				cover	[4];	// 4
+	u8				links	: 6;	// 1		
+	u8				flag0	: 1;	// .
+	u8				flag1	: 1;	// .
+};									// 2+6+6+1+4+1 = 20b + links
+#pragma warning	(default:4200)
+#pragma pack	(pop)
 
 #define XRCL_CURRENT_VERSION	11
 #define XRCL_PRODUCTION_VERSION	8
 #define CFORM_CURRENT_VERSION	2
-#define XRAI_CURRENT_VERSION	2
+#define XRAI_CURRENT_VERSION	3
