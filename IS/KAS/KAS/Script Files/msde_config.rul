@@ -1,0 +1,184 @@
+ 
+//---------------------------------------------------------------------------
+// The Installed event is sent after the feature ServerFeature\New MSDE 2000 Object 1
+// is installed.
+//---------------------------------------------------------------------------
+#include "ifx.h"
+ 
+export prototype 	NewMSDE2000Object1_Installed();
+prototype 			CheckSQLServerRunning	();
+prototype 			ParseSerialNumber		(byval string, byref string, byref string);
+
+prototype CDECL BOOL SQL_CONFIG.initLibrary();
+prototype CDECL BOOL SQL_CONFIG.deInitLibrary();
+prototype CDECL BOOL SQL_CONFIG.tuneServer(byval string, byval string, byval string);
+prototype CDECL BOOL SQL_CONFIG.attachDatabase(byval string, byval string, byval string, byval string, byval string);
+prototype CDECL BOOL SQL_CONFIG.runSQLString(byval string, byval string, byval string, byval string, byval string);
+
+#define DLL_FILE  				"SQL_CONFIG.dll"
+#define SQL_USER_NAME_ 			"sa"
+#define SQL_USER_PASS_ 			"KAStorka40"
+#define SQL_SERVER_HOST_ 		"localhost"    
+#define SQL_STORED_PROC_DLL_   	"xp_indexing.dll"
+
+#define SETUP_INI_FILE      	SRCDIR^"setupMSDE.ini"
+#define INI_MAIN_SECTION_ID  	"main"
+#define INI_UPDATE_DATE_ID    	"updateDate"
+#define INI_VERSION_ID			"version"
+#define INI_BUILD_ID			"build"  
+#define INI_SERVER_ID			"server"
+
+/* Function declaration - place this before the event handler function that calls CheckObjectStatus: */
+prototype BOOL CheckMSDEStatus();
+                                
+function BOOL CheckMSDEStatus()
+    object oObject, oStatus;
+    string szStatus;
+    BOOL res;
+begin        
+	res = FALSE;
+    try
+        set oObject = GetObject("MSDE_2000_Object");
+        if (!IsObject(oObject)) then
+            MessageBoxEx( "Ошибка при установке MSDE.", "", INFORMATION );
+        endif;
+        set oStatus = oObject.Status;
+        if (!(oStatus.Number = OBJ_STATUS_SUCCESS ||
+              oStatus.Number = MSI_ERROR_SUCCESS_REBOOT_REQUIRED)) then
+            Sprintf( szStatus, "MSDE 2000 Object\n\nNumber:\t\t%d\n" +
+                "Description:\t%s\nFile:\t\t%s\nLine:\t\t%d\nScript Error:\t%d", 
+                oStatus.Number, oStatus.Description, oStatus.szScriptFile, 
+                oStatus.nScriptLine, oStatus.nScriptError );
+            MessageBoxEx( szStatus, "", SEVERE );
+		else            
+	        res = TRUE;
+        endif; 
+    catch    
+        Sprintf( szStatus, "Unexpected Exception\n\nNumber: 0X%X\nDescription:" +
+            "%s\nSource: %s\nHelp File: %s\nHelp Context: %d", Err.Number, 
+            Err.Description, Err.Source, Err.HelpFile, Err.HelpContext);
+        MessageBoxEx( szStatus, "", SEVERE );
+    endcatch;
+    return res;
+end;
+
+function ParseSerialNumber(src, tgt0, tgt1)
+    LIST   listID;
+begin
+    listID 		= ListCreate (STRINGLIST);
+
+    // Get each path from the search path into the list.
+    if (StrGetTokens (listID, src, "-") = 0) then
+    	if (ListCount(listID)==2) then
+    		ListGetFirstString(listID,tgt0);
+    		ListGetNextString (listID,tgt1);
+    	endif;
+    endif;
+
+    // Remove the list from memory.
+    ListDestroy (listID);
+end;
+            
+            
+function CheckSQLServerRunning()
+begin
+	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 1 -Silent 1 -Service mssqlserver", WAIT);
+end;
+
+function NewMSDE2000Object1_Installed()
+	number 	nResult,nRootKey;
+	BOOL 	bRes;
+	string 	sTmp,db_files,sInsertSQL,sServerName;
+	string 	sPrimReg,sSecReg,sVersion,sBuild,sLastUpdate;
+begin
+	bRes = CheckMSDEStatus();    
+	if (TRUE=bRes) then
+	    nResult 	= UseDLL (DLL_FILE);
+	    if (nResult != 0) then
+	        MessageBox ("Невозможно загрузить: "+DLL_FILE, SEVERE);
+	        abort;
+	    endif;                  
+	    
+	    SQL_CONFIG.initLibrary();
+	    
+	    CheckSQLServerRunning();
+	    
+	    bRes = SQL_CONFIG.tuneServer(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
+	    if(bRes != 0) then
+	        MessageBox ("Ошибка конфигурации сервера БД.", SEVERE);
+	        abort;
+	    endif;
+	    
+	    db_files = "["+TARGETDIR^"DATA\\KAS_Data.MDF] "+"["+TARGETDIR^"DATA\\KAS_Log.LDF]";
+	    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"KAS",db_files);
+	    if(bRes != 0) then
+	        MessageBox ("Ошибка при подключении базы 'KAS'.", SEVERE);
+	        abort;
+	    endif;
+	
+	    db_files = "["+TARGETDIR^"DATA\\client_repl_Data.MDF] "+"["+TARGETDIR^"DATA\\client_repl_Log.LDF]";
+	    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"client_repl",db_files);
+	    if(bRes != 0) then
+	        MessageBox ("Ошибка при подключении базы 'client_repl'.", SEVERE);
+	        abort;
+	    endif;
+	
+	    db_files = "["+TARGETDIR^"DATA\\searchdb_Data.MDF] "+"["+TARGETDIR^"DATA\\searchdb_Log.LDF]";
+	    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"searchdb",db_files);
+	    if(bRes != 0) then
+	        MessageBox ("Ошибка при подключении базы 'searchdb'.", SEVERE);
+	        abort;
+	    endif;
+	 
+	 	// copy stored proc dll  
+//.		XCopyFile(SRCDIR^SQL_STORED_PROC_DLL_,PROGRAMFILES^"Microsoft SQL Server\\MSSQL\\Binn\\", COMP_NORMAL);
+		                        
+		// register it in DB
+	    bRes = SQL_CONFIG.runSQLString	(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
+	    								"master",
+	    								"EXEC sp_addextendedproc xp_check, '"+SQL_STORED_PROC_DLL_+"'");
+	    if(bRes != 0) then
+	        MessageBox ("Ошибка при регистрации внешней хранимой процедуры.", SEVERE);
+	        abort;
+	    endif;
+	
+		GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_UPDATE_DATE_ID, 	sLastUpdate);
+		GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_ID, 		sVersion);
+		GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_BUILD_ID, 		sBuild);
+		GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_SERVER_ID, 		sServerName);
+	
+		// parse serial number      
+		sPrimReg		= "";
+		sSecReg			= "";	
+		ParseSerialNumber(g_sSerial,sPrimReg,sSecReg);
+	                           
+		// prepare sql string
+		sInsertSQL = "insert into Summary (primary_reg_id, secondary_reg_id, version_id, build, unique_id, last_update)";
+		sInsertSQL = sInsertSQL+"values('"+sPrimReg+"','"+sSecReg+"','"+sVersion+"','"+sBuild+"',newId(),'"+sLastUpdate+"')"; 
+	    bRes = SQL_CONFIG.runSQLString	(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
+	    								"KAS",
+	    								sInsertSQL);
+	    if(bRes != 0) then
+	        MessageBox ("Ошибка при выполнении SQL запроса.", SEVERE);
+	        abort;
+	    endif;
+	
+		// insert registry keys
+		nRootKey 			= HKEY_LOCAL_MACHINE;
+		RegDBSetDefaultRoot		(nRootKey);
+	//.	RegDBCreateKeyEx 		("Software\\KASClient\\Settings", "");
+		if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "VersionDB", REGDB_STRING, sVersion,-1) < 0) then
+		    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+		endif;
+		if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "Main_ServerName", REGDB_STRING, sServerName,-1) < 0) then
+		    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+		endif;
+	
+	    SQL_CONFIG.deInitLibrary();
+	
+		// free dll
+	    UnUseDLL (DLL_FILE);
+	endif;
+end;
+
+

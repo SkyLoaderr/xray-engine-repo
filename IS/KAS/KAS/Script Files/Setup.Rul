@@ -12,8 +12,10 @@
 
 // Included header files ----------------------------------------------------
 #include "ifx.h"
+#include "featureevents.rul"
 
-
+string g_sSerial;
+            
 #define DEF_FOLDER "KAC"
 //---------------------------------------------------------------------------                                                                        
 // OnFirstUIBefore
@@ -31,7 +33,7 @@ function OnFirstUIBefore()
     number  nResult, nLevel, nSize, nSetupType, nUser;
     string  sTitle, sMsg, sOpt1, sOpt2, sLicenseFile;
     string  sName, sCompany, sTargetPath, sDir, sFeatures, sTargetdir;
-    string  sSetupType, sSerial, sMainDir;
+    string  sSetupType, sMainDir;
     BOOL    bLicenseAccepted;	
     LIST 	listStartCopy;
 begin	
@@ -109,8 +111,8 @@ Dlg_SdCustomerInformation:
 	endif;
 
 Dlg_SdCustomerInformationServer:
-	sSerial 	="demo-kharkiv";
-	nResult 	= SdCustomerInformationEx(sTitle, sName, sCompany, sSerial,nUser);
+	g_sSerial 	="demo-kharkiv";
+	nResult 	= SdCustomerInformationEx(sTitle, sName, sCompany, g_sSerial,nUser);
 	if (nResult = BACK) then
 		goto Dlg_SetupType;
 	else
@@ -132,8 +134,8 @@ Dlg_SdSelectedFolder:
 	if (nResult = BACK) then
 		goto Dlg_SdCustomerInformation;
 	endif;
-	if (sSerial ="demo-demo" ) then 
-		sSerial ="";
+	if (g_sSerial ="demo-demo" ) then 
+		g_sSerial ="";
 	endif;
 
 Dlg_SdAskDestPath2:
@@ -275,5 +277,5 @@ Dlg_ObjDialogs:
             endif;
 
     endswitch;
- 
 end;
+
