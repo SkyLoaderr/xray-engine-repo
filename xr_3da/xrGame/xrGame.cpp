@@ -566,28 +566,34 @@ public:
 		_GetItem(args,0,param1,' ');
 		_GetItem(args,1,param2,' ');
 		if (strcmp(param1,"show_items") == 0) {
-			pActor->m_trade->pPartner.inv_owner->m_trade->ShowItems();
+			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->pPartner.inv_owner->m_trade->ShowItems();
 		} else if (strcmp(param1,"show_my_items") == 0) {
-			pActor->m_trade->ShowItems();
+			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->ShowItems();
 		} else if (strcmp(param1,"show_money") == 0) {
-			pActor->m_trade->ShowMoney();
+			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->ShowMoney();
 		} else if (strcmp(param1,"show_your_money") == 0) {
-			pActor->m_trade->pPartner.inv_owner->m_trade->ShowMoney();
+			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->pPartner.inv_owner->m_trade->ShowMoney();
 		} else if (strcmp(param1,"show_artifact_prices") == 0) {
-			pActor->m_trade->pPartner.inv_owner->m_trade->ShowArtifactPrices();
+			if (pActor->m_trade->IsInTradeState()) pActor->m_trade->pPartner.inv_owner->m_trade->ShowArtifactPrices();
 		} else if (strcmp(param1,"show_all") == 0) {
-			pActor->m_trade->ShowItems();
-			pActor->m_trade->ShowMoney();
-			pActor->m_trade->pPartner.inv_owner->m_trade->ShowItems();
-			pActor->m_trade->pPartner.inv_owner->m_trade->ShowArtifactPrices();
+			if (pActor->m_trade->IsInTradeState()) {
+				pActor->m_trade->ShowItems();
+				pActor->m_trade->ShowMoney();
+				pActor->m_trade->pPartner.inv_owner->m_trade->ShowItems();
+				pActor->m_trade->pPartner.inv_owner->m_trade->ShowArtifactPrices();
+			}
 		} else if (strcmp(param1,"sell") == 0) {
-			int id = 0;
-			sscanf(param2 ,"%d",&id);
-			pActor->m_trade->SellItem(id);
+			if (pActor->m_trade->IsInTradeState()) {
+				int id = 0;
+				sscanf(param2 ,"%d",&id);
+				pActor->m_trade->SellItem(id);
+			}
 		} else if (strcmp(param1,"buy") == 0) {
-			int id = 0;
-			sscanf(param2 ,"%d",&id);
-			pActor->m_trade->pPartner.inv_owner->m_trade->SellItem(id);
+			if (pActor->m_trade->IsInTradeState()) {
+				int id = 0;
+				sscanf(param2 ,"%d",&id);
+				pActor->m_trade->pPartner.inv_owner->m_trade->SellItem(id);
+			}
 		} else if (strcmp(param1,"help") == 0) {
 			Msg("	show_all");		Msg("	show_items");		Msg("	show_my_items"); 
 			Msg("	show_money");	Msg("	show_your_money");	Msg("	show_artifact_prices");

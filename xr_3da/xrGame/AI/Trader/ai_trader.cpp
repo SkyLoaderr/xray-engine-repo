@@ -173,6 +173,7 @@ void CAI_Trader::shedule_Update	(u32 dt)
 {
 	inherited::shedule_Update	(dt);
 	m_inventory.Update			(dt);
+	m_trade->UpdateTrade		();
 
 	Think();
 

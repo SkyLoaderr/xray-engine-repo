@@ -107,10 +107,10 @@ CActor::CActor() : CEntityAlive()
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
 
-	m_trade = xr_new<CTrade>(this);
-
 	ISpatial*		self			=	dynamic_cast<ISpatial*> (this);
 	if (self)	self->spatial.type	|=	STYPE_VISIBLEFORAI;
+
+	m_trade = xr_new<CTrade>(this);
 }
 
 CActor::~CActor()
@@ -976,6 +976,7 @@ void CActor::shedule_Update	(u32 DT)
 	}
 
 	m_inventory.Update(DT);
+	m_trade->UpdateTrade();
 }
 
 void CActor::renderable_Render	()

@@ -14,6 +14,7 @@ TradeFactors CTrade::m_tTradeFactors;
 CTrade::CTrade(CInventoryOwner	*p_io) 
 {
 	TradeState = false;
+	m_dwLastTradeTime	= 0;
 	pPartner.Set(TT_NONE,0,0);
 
 	// Заполнить pThis
@@ -62,12 +63,15 @@ bool CTrade::CanTrade()
 			if (SetPartner(pEntity)) break;
 		}
 	} 
-
+	
 	if (!pPartner.base) return false;
 
 	// Объект рядом
 	float dist = pPartner.base->Position().distance_to(pThis.base->Position());
-	if (dist < 0.5f || dist > 1.5f) return false;
+	if (dist < 0.5f || dist > 1.5f)  {
+		RemovePartner();
+		return false;
+	}
 
 	// Объект смотрит на меня
 	float yaw, pitch;
@@ -79,12 +83,19 @@ bool CTrade::CanTrade()
 	yaw2 = angle_normalize(yaw2);
 
 	float Res = R2D(_abs(yaw - yaw2) < PI ? _abs(yaw - yaw2) : PI_MUL_2 - _abs(yaw - yaw2));
-	if (Res < 165.f || Res > 195.f) return false;
+	if (Res < 165.f || Res > 195.f) {
+		RemovePartner();
+		return false;
+	}
 
 	return true;
 }
 
-
+void CTrade::RemovePartner()
+{
+	pPartner.Set(TT_NONE,0,0);
+}
+// предложение торговли
 void CTrade::Communicate() 
 {
 	// Вывести приветствие
@@ -95,8 +106,7 @@ void CTrade::Communicate()
 	Msg("--TRADE::   Wanna trade with me?" );
 
 	if (pPartner.inv_owner->m_trade->OfferTrade(pThis)) { 
-		//StartTrade();
-		//pPartner.inv_owner->m_trade->StartTrade();
+		StartTrade();
 	}
 
 }
@@ -122,10 +132,13 @@ bool CTrade::SetPartner(CEntity *p)
 
 }
 
+
 // Man предлагает торговать 
 // возвращает true, если данный trader готов торговать с man
+// т.е. принятие торговли
 bool CTrade::OfferTrade(SInventoryOwner man)
 {
+	StartTrade();
 	pPartner.Set(man.type,man.base,man.inv_owner); 
 	Msg("--TRADE:: - My name is [%s]", pThis.base->cName());
 	Msg("--TRADE:: [%s]: I know smth about you...", pThis.base->cName());
@@ -162,16 +175,33 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 void CTrade::StartTrade()
 {
 	TradeState = true;
+	m_dwLastTradeTime =  Level().timeServer();
 }
 
 void CTrade::StopTrade()
 {
 	TradeState = false;
+	m_dwLastTradeTime = 0;
+	RemovePartner();
+	Msg("--TRADE:: [%s]: Trade stopped...",pThis.base->cName());
 }
 
+void CTrade::UpdateTrade()
+{
+	if (TradeState) {
+		u32 cur_time = Level().timeServer();
+		if (m_dwLastTradeTime + 20000 < cur_time) { // если через 10 сек нет команды - прервать
+			StopTrade();
+		}
+	}
+}
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+// Commands
 void CTrade::ShowItems()
 {
+	if (TradeState) m_dwLastTradeTime = Level().timeServer();
+	else { Msg("I'm not ready to trade"); return;}
 
 	Msg("--TRADE:: ----------------------------------------------");
 	Msg("--TRADE:: [%s]: Here are my items: ",pThis.base->cName());
@@ -210,28 +240,35 @@ void CTrade::ShowItems()
 			if (num != 0) {
 				Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",pThis.base->cName(),++i,CurName,l_dwCost, num);
 			} 
+			l_dwCost = (int)(((float) (*I)->Cost()) * factor );
 			num = 1;
 			strcpy(CurName,(*I)->Name());
 		} else {
-			l_dwCost = (int)(((float) (*I)->Cost()) * factor );
 			num ++;
 		}
 	}
 
 	// Вывести последний item
-	if (B != E)
+	if (B != E) 
 		Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",pThis.base->cName(),++i,CurName,l_dwCost, num);
+		
 ////
 	
 }
 
 void CTrade::ShowMoney()
 {
+	if (TradeState) m_dwLastTradeTime = Level().timeServer();
+	else { Msg("I'm not ready to trade"); return;}
+
 	Msg("--TRADE:: [%s]: Money = %i ",pThis.base->cName(),pThis.inv_owner->m_dwMoney);
 }
 
 void CTrade::ShowArtifactPrices()
 {
+	if (TradeState) m_dwLastTradeTime = Level().timeServer();
+	else { Msg("I'm not ready to trade"); return;}
+
 	if (pThis.type == TT_TRADER) {
 		CAI_Trader					*l_pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
 		R_ASSERT					(l_pTrader);
@@ -259,6 +296,9 @@ void CTrade::ShowArtifactPrices()
 
 void CTrade::SellItem(int id)
 {
+	if (TradeState) m_dwLastTradeTime = Level().timeServer();
+	else { Msg("I'm not ready to trade"); return;}
+
 	PIItem	l_pIItem;
 	int i=1;
 
@@ -290,6 +330,12 @@ void CTrade::SellItem(int id)
 					break;
 				}
 				
+				if (pThis.type != TT_TRADER) {
+					if (l_pIItem == l_pIItem->m_pInventory->ActiveItem()) {
+						Msg("Cannot sell active weapon!");
+						break;
+					}
+				}
 
 				// удалить у себя
 				CInventory *inv = &pThis.inv_owner->m_inventory;

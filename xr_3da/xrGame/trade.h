@@ -19,6 +19,7 @@ struct TradeFactors {
 
 class CTrade {
 	bool	TradeState;					// режим торговли. true - включен
+	u32		m_dwLastTradeTime;			
 
 	typedef enum tagTraderType {
 		TT_NONE,
@@ -50,10 +51,11 @@ public:
 	
 
 	bool		CanTrade();								// Проверяет, может ли данный объект торговать и устанавливает pPartner
-	bool		IsInTradeState() {return TradeState;}
-
+	
 	void		StartTrade();
 	void		StopTrade();
+	bool		IsInTradeState() {return TradeState;}
+
 	void		Communicate();
 	
 	bool		OfferTrade(SInventoryOwner man);					// man предлагает торговать
@@ -63,8 +65,10 @@ public:
 	void		ShowArtifactPrices();
 	void		SellItem(int id);
 
+	void		UpdateTrade();
 private:
 	bool		SetPartner(CEntity *p);
+	void		RemovePartner();
 
 
 };

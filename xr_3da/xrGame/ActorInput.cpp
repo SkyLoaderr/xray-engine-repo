@@ -24,13 +24,13 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	if (!g_Alive())												return;
 
 	if (cmd == kUSE) {
-		if (m_trade->CanTrade()) {
-			m_trade->Communicate();		
-			return;
+		if (!m_trade->IsInTradeState()) {
+			if (m_trade->CanTrade()) {
+				m_trade->Communicate();		
+				return;
+			}
 		}
 	}
-
-
 
 	if(m_vehicle)
 	{
