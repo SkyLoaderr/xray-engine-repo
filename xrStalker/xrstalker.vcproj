@@ -1204,51 +1204,6 @@
 				RelativePath=".\scripts\trader_job.script">
 			</File>
 			<File
-				RelativePath=".\scripts\ui_base_dialog.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_load_dialog.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_main_menu.script">
-			</File>
-			<File
-				RelativePath=".\Scripts\ui_multiplayer_dialog.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_new_game_dialog.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_options_base_tab.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_options_controls_tab.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_options_dialog.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_options_game_tab.script">
-			</File>
-			<File
-				RelativePath=".\Scripts\ui_options_profiles_tab.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_options_sound_tab.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_options_video_tab.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_registrator.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_save_dialog.script">
-			</File>
-			<File
-				RelativePath=".\scripts\ui_tab_test.script">
-			</File>
-			<File
 				RelativePath=".\scripts\utils.script">
 			</File>
 			<File
@@ -1472,6 +1427,58 @@
 				</File>
 				<File
 					RelativePath=".\scripts\!Doc\Настройка скриптов Джона.doc">
+				</File>
+			</Filter>
+			<Filter
+				Name="UI"
+				Filter="">
+				<File
+					RelativePath=".\scripts\ui_base_dialog.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_load_dialog.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_main_menu.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\ui_multiplayer_dialog.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\ui_multiplayer_find.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_new_game_dialog.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_options_base_tab.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_options_controls_tab.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_options_dialog.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_options_game_tab.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\ui_options_profiles_tab.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_options_sound_tab.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_options_video_tab.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_registrator.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_save_dialog.script">
+				</File>
+				<File
+					RelativePath=".\scripts\ui_tab_test.script">
 				</File>
 			</Filter>
 		</Filter>
