@@ -296,7 +296,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		local so_id = so:clsid()
 		local continue = true
 		local stime = s.level_time
-	
+
 		if self.hear[so:id()] ~= nil then
 			if stime - self.hear[so:id()] < self.time_reaction then
 				continue = false
@@ -307,7 +307,13 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			continue = false
 		end
 
-		if self.npc:position():distance_to(so:position()) > 30 then
+		if continue and alife() ~= nil then
+			if alife():object(so:id()).online ~= true then
+				continue = false
+			end
+		end
+
+		if continue and self.npc:position():distance_to(so:position()) > 50 then
 			continue = false
 		end
 
@@ -394,6 +400,12 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 
 		if pers_visio < self.visio then
 			continue = false
+		end
+
+		if continue and alife() ~= nil then
+			if alife():object(vo:id()).online ~= true then
+				continue = false
+			end
 		end
 
 		if continue then
