@@ -4,7 +4,6 @@ function loadJob(sj, gname, type)
 --'-----------------------------------------------------------------------------------------
 	if type == "blockpost" then	
 		--' STATE 0
---[[		
 		t = { name = "patrol",
 			object = nil, begin = nil, idle = 6*60*60*1000,
 			prior = 8, state = 0,
@@ -28,13 +27,12 @@ function loadJob(sj, gname, type)
 			in_rest = "", out_rest = "",
 			leader_name = nil,
 			escape_path = gname.."_escape_0" }
-		table.insert(sj, t)			
-]]		
+		table.insert(sj, t)	
 		t = { name = "guard",
 			object = nil, begin = nil, idle = 0,
 			prior = 10, state = 0,
 			squad = 0, group = 0,
-			in_rest = gname.."_zone", out_rest = "",
+			in_rest = "", out_rest = gname.."_zone",
 			running = false, search_light = nil,
 			path_main = gname.."_guard_house",
 			path_hideout = gname.."_guard_house" }
@@ -43,7 +41,7 @@ function loadJob(sj, gname, type)
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = 0,
 			squad = 0, group = 0,
-			in_rest = gname.."_zone", out_rest = "",
+			in_rest = "", out_rest = gname.."_zone",
 			running = false, search_light = nil,
 			path_main = gname.."_guard_left",
 			path_hideout = gname.."_guard_left" }
@@ -52,7 +50,7 @@ function loadJob(sj, gname, type)
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = 0,
 			squad = 0, group = 0,
-			in_rest = gname.."_zone", out_rest = "",
+			in_rest = "", out_rest = gname.."_zone",
 			running = false, search_light = nil,
 			path_main = gname.."_guard_right",
 			path_hideout = gname.."_guard_right" }
