@@ -83,7 +83,7 @@ void CBitingAttack::Init()
 #define BUILD_FULL_PATH_MAX_DIST			10.0f		// макс дистанция до врага, при которой будет строится полный путь
 #define BUILD_HALF_PATH_DIST				5.f			// дистанция не полного пути
 
-#define THREATEN_DISTANCE					2.5f
+#define THREATEN_DISTANCE					3.0f
 
 void CBitingAttack::Run()
 {
@@ -326,7 +326,7 @@ bool CBitingAttack::CheckStartThreaten()
 	}
 
 	// проверка дистанции
-	if ((dist < m_fDistMin) || (dist > THREATEN_DISTANCE)) {
+	if ((dist < m_fDistMax) || (dist > THREATEN_DISTANCE)) {
 		return false;
 	}
 
