@@ -229,7 +229,7 @@ virtual		dMass*			getMassTensor			()																						//aux
 		m_shell=NULL;
 		m_group=NULL;
 		m_phys_ref_object=NULL;
-		ul_material=GMLib.GetMaterialIdx("objects\\box_default");
+		ul_material=GMLib.GetMaterialIdx("objects\\small_box");
 		k_w=default_k_w;
 		k_l=default_k_l;//1.8f;
 		m_fratures_holder=NULL;

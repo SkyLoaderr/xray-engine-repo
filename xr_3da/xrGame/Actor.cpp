@@ -258,7 +258,7 @@ void CActor::Load		(LPCSTR section )
 	shedule.t_min		= shedule.t_max = 1;
 
 	// get self game material id
-	self_gmtl_id		= GMLib.GetMaterialIdx("actor");
+	self_gmtl_id		= GMLib.GetMaterialIdx("creatures\\human"); 
 	last_gmtl_id		= GMLib.GetMaterialIdx("default");
 }
 
@@ -1090,8 +1090,10 @@ void CActor::shedule_Update	(u32 DT)
 			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
 			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 			m_fTimeToStep		= tm;
-			sndStep[bStep].clone		(mtl_pair->StepSounds[bStep]);
-			sndStep[bStep].play_at_pos	(this,Position());
+			if (mtl_pair->StepSounds.size()>=2){
+				sndStep[bStep].clone		(mtl_pair->StepSounds[bStep]);
+				sndStep[bStep].play_at_pos	(this,Position());
+			}
 		}
 		m_fTimeToStep -= dt;
 	}
@@ -1113,9 +1115,11 @@ void CActor::shedule_Update	(u32 DT)
 
 	// landing sounds
 	if (mtl_pair&&!sndLanding.feedback&&(mstate_real&(mcLanding|mcLanding2))){
-		sndLanding.clone	(mtl_pair->CollideSounds[0]);
-		::Sound->play_at_pos	(sndLanding,this,s_pos);
-		sndLanding.feedback->set_volume(.2f);
+		if (!mtl_pair->CollideSounds.empty()){
+			sndLanding.clone	(mtl_pair->CollideSounds[0]);
+			::Sound->play_at_pos	(sndLanding,this,s_pos);
+			sndLanding.feedback->set_volume(.2f);
+		}
 	}
 
 
