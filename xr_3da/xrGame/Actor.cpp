@@ -861,47 +861,10 @@ void CActor::shedule_Update	(u32 DT)
 	// generic stuff
 	inherited::shedule_Update	(DT);
 	//------------------------------------------------
-	if (OnServer() && (m_iCurWeaponNextState != 0))
+	if (OnServer())
 	{
-		switch (m_iCurWeaponNextState)
-		{
-		case 1:	//hide
-			{
-//				if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
-//					inventory().m_slots[InventorySlot].m_pIItem)
-				if (inventory().ActiveItem()&& !inventory().ActiveItem()->IsSingleHanded())
-				{
-					u32 InventorySlot = inventory().GetActiveSlot();
-					if (inventory().Activate(NO_ACTIVE_SLOT))
-					{
-						inventory().SetPrevActiveSlot(InventorySlot);
-						m_iCurWeaponNextState = 0;
-					}
-				}
-				else
-				{
-					m_iCurWeaponNextState = 0;
-				}
-			}break;
-		case 2:	//restore
-			{
-				u32 InventorySlot = inventory().GetPrevActiveSlot();
-				if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
-					inventory().m_slots[InventorySlot].m_pIItem)
-				{
-					if (inventory().Activate(InventorySlot))
-					{
-						inventory().SetPrevActiveSlot(NO_ACTIVE_SLOT);
-						m_iCurWeaponNextState = 0;
-					}
-				}
-				else
-				{
-					m_iCurWeaponNextState = 0;
-				}
-			}break;
-		}
-	}
+		Check_Weapon_ShowHideState();
+	};	
 	//------------------------------------------------
 	//эффектор включаемый при ходьбе
 	if (!pCamBobbing)
