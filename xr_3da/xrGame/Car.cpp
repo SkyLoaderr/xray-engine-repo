@@ -347,7 +347,7 @@ void	CCar::OnKeyboardPress		(int cmd)
 	case kCAM_1:	OnCameraChange(ectFirst);	break;
 	case kCAM_2:	OnCameraChange(ectChase);	break;
 	case kCAM_3:	OnCameraChange(ectFree);	break;
-	case kACCEL:	m_jeep.DriveVelocity=car_drive_speed;
+	case kACCEL:	m_jeep.DriveVelocity=car_drive_speed_accel;
 		m_jeep.Drive();
 		break;
 	case kRIGHT:	m_jeep.Steer(1);
@@ -383,7 +383,7 @@ void	CCar::OnKeyboardRelease		(int cmd)
 	if (Remote())					return;
 	switch (cmd)	
 	{
-	case kACCEL:	m_jeep.DriveVelocity=car_drive_speed_accel;
+	case kACCEL:	m_jeep.DriveVelocity=car_drive_speed;
 		m_jeep.Drive();
 		break;
 	case kLEFT:	
@@ -511,6 +511,7 @@ void CCar::ActivateJeep()
 	m_jeep.SetPhRefObject(this);
 	ph_world->AddObject((CPHObject*)this);
 	m_jeep.SetPosition				(vPosition);
+	m_jeep.DriveVelocity			=car_drive_speed;
 	dMatrix3						Rot;
 	Fmatrix							ry,mr;
 	ry.rotateY						(deg2rad(90.f));

@@ -237,7 +237,7 @@ void CPHWorld::Step(dReal step)
 
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 const ULONG N = 300;
-dContact contacts[N];
+static dContact contacts[N];
 
 		// get the contacts up to a maximum of N contacts
 		ULONG n;
@@ -816,3 +816,27 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c)
 		dBodyAddForce(body2,-force.x,-force.y,-force.z);
 	}
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+union a {
+float f;
+int i;
+a(int _i){i=_i;}
+a(float _f){f=_f;}
+a(){}
+};
+
+struct b
+{
+	a c;
+	float j;
+	b(float _a,float _j)
+			{a c(_a);j=_j;}
+	
+};
+
+b aaa[] = {
+	b(0.f,1.f),
+	b(1.,2.)
+};
+*/
