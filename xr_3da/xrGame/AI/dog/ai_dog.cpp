@@ -110,8 +110,6 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AddTransition(PS_LIE,		PS_SIT,		eAnimLieSitUp,			false);
 	MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
 
-	
-
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
@@ -130,9 +128,9 @@ void CAI_Dog::Load(LPCSTR section)
 	Fvector center;
 	center.set		(0.f,1.f,0.f);
 
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 700,	800,	center,		2.0f, inherited::_sd->m_fHitPower, 0.f, 0.f);
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, inherited::_sd->m_fHitPower, 0.f, 0.f);
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, inherited::_sd->m_fHitPower, 0.f, 0.f);
+	//MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 700,	800,	center,		2.0f, inherited::_sd->m_fHitPower, 0.f, 0.f);
+	//MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, inherited::_sd->m_fHitPower, 0.f, 0.f);
+	//MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, inherited::_sd->m_fHitPower, 0.f, 0.f);
 
 	END_LOAD_SHARED_MOTION_DATA();
 }

@@ -200,6 +200,8 @@ void CTrade::StartTrade(CInventoryOwner* pInvOwner)
 {
 	SetPartner(dynamic_cast<CEntity*>(pInvOwner));
 	StartTrade();
+
+	if (pThis.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pThis.base)->OnStartTrade();
 }
 
 void CTrade::StopTrade()
@@ -208,6 +210,8 @@ void CTrade::StopTrade()
 	m_dwLastTradeTime = 0;
 	RemovePartner();
 	Msg("--TRADE:: [%s]: Trade stopped...",pThis.base->cName());
+
+	if (pThis.type == TT_TRADER) dynamic_cast<CAI_Trader*>(pThis.base)->OnStopTrade();
 }
 
 void CTrade::UpdateTrade()

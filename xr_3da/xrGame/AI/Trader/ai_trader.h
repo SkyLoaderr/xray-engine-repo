@@ -14,8 +14,10 @@
 #include "../script/ai_script_monster.h"
 #include "../ai_monster_bones.h"
 
-class CAI_Trader : public CEntityAlive, public CInventoryOwner, public CScriptMonster 
-{
+class CAI_Trader : public CEntityAlive, public CInventoryOwner, public CScriptMonster {
+	luabind::functor<void>	*m_tpOnStart;
+	luabind::functor<void>	*m_tpOnStop;
+
 public:
 	typedef CEntityAlive inherited;
 	CMotionDef*			m_tAnimation;
@@ -69,6 +71,13 @@ public:
 	///////////////////////////////////////////////////////////////////////
 
 	static	void __stdcall	BoneCallback			(CBoneInstance *B);
-	void					LookAtActor				(CBoneInstance *B);
+			void			LookAtActor				(CBoneInstance *B);
+
+
+			void			set_callback			(const luabind::functor<void> &tpTradeCallback, bool bOnStart);
+			void			clear_callback			(bool bOnStart);
+
+			void			OnStartTrade			();
+			void			OnStopTrade				();
 
 };

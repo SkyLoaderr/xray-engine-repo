@@ -18,13 +18,18 @@ CAI_Trader::CAI_Trader()
 	m_bPlaying						= false;
 
 	InitTrade();
-
 	Init();
+
+	m_tpOnStart = m_tpOnStop = 0;
+
 } 
 
 CAI_Trader::~CAI_Trader()
 {
 	//xr_delete(m_trade);
+
+	if (m_tpOnStart)	xr_delete(m_tpOnStart);
+	if (m_tpOnStop)		xr_delete(m_tpOnStop);
 }
 
 void CAI_Trader::Load(LPCSTR section)
@@ -302,3 +307,35 @@ BOOL CAI_Trader::UsedAI_Locations()
 {
 	return					(TRUE);
 }
+
+
+//////////////////////////////////////////////////////////////////////////
+void CAI_Trader::set_callback(const luabind::functor<void> &tpTradeCallback, bool bOnStart)
+{
+	if (bOnStart) {
+		xr_delete		(m_tpOnStart);
+		if (tpTradeCallback.is_valid())	 m_tpOnStart	= xr_new<luabind::functor<void> >(tpTradeCallback);
+	} else {
+		xr_delete				(m_tpOnStop);
+		if (tpTradeCallback.is_valid()) m_tpOnStop		= xr_new<luabind::functor<void> >(tpTradeCallback);
+	}
+}
+
+void CAI_Trader::clear_callback(bool bOnStart)
+{
+	(bOnStart) ? m_tpOnStart = 0 : m_tpOnStop = 0;
+}
+
+void CAI_Trader::OnStartTrade()
+{
+	if (m_tpOnStart) (*m_tpOnStart)();
+
+}
+
+void CAI_Trader::OnStopTrade()
+{
+	if (m_tpOnStop) (*m_tpOnStop)();
+}
+
+
+

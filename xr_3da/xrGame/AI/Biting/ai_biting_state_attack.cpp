@@ -140,19 +140,6 @@ void CBitingAttack::Run()
 	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
 
 	// ѕроверить, достижим ли противник
-//	if (pMonster->ObjectNotReachable(m_tEnemy.obj) && (m_tAction != ACTION_ATTACK_MELEE)) {
-//		if (!bAngrySubStateActive) {
-//			m_tSubAction = ACTION_WALK_END_PATH;
-//			bAngrySubStateActive = true;
-//		}
-//		
-//		m_tAction = ACTION_THREATEN2;
-//		WalkAngrySubState();
-//	} else {
-//		bAngrySubStateActive = false;
-//		LOG_EX2("Object Not Reachable = [%u]", *"*/ pMonster->ObjectNotReachable(m_tEnemy.obj) /*"*);
-//		LOG_EX2("Action != ACTION_ATTACK_MELEE = [%u]", *"*/ (m_tAction != ACTION_ATTACK_MELEE) /*"*);
-//	}
 	if (pMonster->ObjectNotReachable(m_tEnemy.obj) && (m_tAction != ACTION_ATTACK_MELEE)) {
 		
 		// Try to find best node nearest to the point
@@ -179,8 +166,6 @@ void CBitingAttack::Run()
 		}
 	}
 
-	//bool bNeedRebuildPath = false;
-	
 	if (m_tAction != ACTION_ATTACK_MELEE) bEnableBackAttack = true;
 
 //	// -------------------------------------------------------------------------------------------
@@ -218,17 +203,22 @@ void CBitingAttack::Run()
 //	}
 //	// -------------------------------------------------------------------------------------------
 
+	bool bNeedRebuild = false;
+
 
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {	
 		case ACTION_RUN:		 // бежать на врага
 			LOG_EX("ATTACK: RUN");
-			pMonster->MotionMan.m_tAction = ACT_RUN;
+			 pMonster->MotionMan.m_tAction = ACT_RUN;
 
-			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500);
-				pMonster->MoveToTarget(m_tEnemy.obj);
+			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500 + 50.f * dist);
+				bNeedRebuild = true; 
 			DO_IN_TIME_INTERVAL_END();
 			
+			if (IS_NEED_REBUILD()) bNeedRebuild = true;
+			if (bNeedRebuild) pMonster->MoveToTarget(m_tEnemy.obj);
+
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
 			LOG_EX("ATTACK: ATTACK_MELEE");
@@ -313,10 +303,7 @@ void CBitingAttack::Run()
 //
 //			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 //			break;
-
 	}
-
-
 
 	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
 

@@ -12,6 +12,7 @@
 #include "../effectorpp.h"
 #include "ai/stalker/ai_stalker.h"
 #include "script_zone.h"
+#include "ai/trader/ai_trader.h"
 
 class CLuaEffector : public CEffectorPP {
 public:
@@ -527,19 +528,23 @@ public:
 	void SetCallback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter)
 	{
 		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
-		if (!l_tpScriptZone)
+		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
+
+		if (!l_tpScriptZone && !l_tpTrader)
 			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
-		else
-			l_tpScriptZone->set_callback(tpZoneCallback,bOnEnter);
+		else if (l_tpScriptZone) l_tpScriptZone->set_callback(tpZoneCallback,bOnEnter);
+		else l_tpTrader->set_callback(tpZoneCallback,bOnEnter);
 	}
 
 	void ClearCallback(bool bOnEnter)
 	{
 		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
-		if (!l_tpScriptZone)
+		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
+
+		if (!l_tpScriptZone && !l_tpTrader)
 			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
-		else
-			l_tpScriptZone->clear_callback(bOnEnter);
+		else if (l_tpScriptZone)l_tpScriptZone->clear_callback(bOnEnter);
+		else l_tpTrader->clear_callback(bOnEnter);
 	}
 
 	BIND_FUNCTION10	(m_tpGameObject,	GetPatrolPathName,		CScriptMonster,	GetPatrolPathName,		LPCSTR,								"");

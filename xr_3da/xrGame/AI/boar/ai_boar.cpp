@@ -93,9 +93,9 @@ void CAI_Boar::Load(LPCSTR section)
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
 
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower, PI_DIV_6,	PI_DIV_6);
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	center,		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower, -PI_DIV_6,	PI_DIV_6);
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		Fvector().set(0.f,0.f,3.0f), inherited::_sd->m_fHitPower, 0,			PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,3.0f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
 
 	END_LOAD_SHARED_MOTION_DATA();
 }
@@ -150,6 +150,5 @@ void CAI_Boar::LookPosition(Fvector to_point, float angular_speed)
 void CAI_Boar::ProcessTurn()
 {
 }
-
 
 
