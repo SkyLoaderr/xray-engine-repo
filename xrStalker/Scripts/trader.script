@@ -40,17 +40,14 @@ local snd =   {
 				},
 
 	monolog1 = {
-				//"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_1",
 				"\characters_voice\\human_01\\scenario\\trader\\trader_monolog1"
 				},
 
 	monolog2 = {
-				//"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_3",
 				"\characters_voice\\human_01\\scenario\\trader\\trader_monolog2"
 				},
 
 	monolog3 = {
-				//"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_4",
 				"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_1"
 				}
 
