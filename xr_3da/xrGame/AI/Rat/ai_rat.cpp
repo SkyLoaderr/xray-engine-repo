@@ -142,7 +142,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
 	xrSE_Rat *tpSE_Rat = (xrSE_Rat *)DC;
-	m_dwActionRefreshRate = tpSE_Rat->u32ActionRefreshRate;
+	m_dwActionRefreshRate = tpSE_Rat->u16ActionRefreshRate;
 
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());

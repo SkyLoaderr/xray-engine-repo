@@ -488,6 +488,7 @@ public:
 xrSE_Rat::xrSE_Rat()
 {
 	u16ActionRefreshRate = 1000;
+	caModel = 0;
 }
 
 void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
