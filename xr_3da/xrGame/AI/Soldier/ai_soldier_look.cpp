@@ -342,7 +342,7 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 	
 	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
 	if (tpCustomMonster) {
-		tMonsterDirection.setHP(tpCustomMonster->r_torso_current.yaw,0);
+		tMonsterDirection.setHP(-tpCustomMonster->r_torso_current.yaw,0);
 	}
 	else {
 		CActor *tpActor = dynamic_cast<CActor *>(tpEntity);

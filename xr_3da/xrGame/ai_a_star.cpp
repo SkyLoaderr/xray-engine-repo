@@ -17,7 +17,7 @@
 #define mNodeStructure(x)		(*(this->Node(x)))
 #define mNode(x)				(this->Node(x))
 #define MAX_VALUE				100000.0
-#define MAX_NODES				65536
+#define MAX_NODES				4096
 
 float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 

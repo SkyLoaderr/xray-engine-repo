@@ -88,7 +88,9 @@ void CAI_Zombie::FreeHunting()
 	
 	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
+	/**
 	if ((AI_Path.TravelPath.empty()) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 2) || (!AI_Path.fSpeed)) {
+	//if (vPosition.distance_to(tSavedEnemyPosition) < .40f) {
 		if (ps_Size() > 1)
 			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500)
 				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
@@ -105,14 +107,26 @@ void CAI_Zombie::FreeHunting()
 		SelectorFreeHunting.m_tDirection.normalize_safe();
 		vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
 		vfBuildPathToDestinationPoint(0);
+//		Fvector tTemp0,tTemp1;
+//		Level().AI.UnpackPosition(tTemp0,Level().AI.Node(AI_Path.DestNode)->p0);
+//		Level().AI.UnpackPosition(tTemp1,Level().AI.Node(AI_Path.DestNode)->p1);
+//		tSavedEnemyPosition.add(tTemp0,tTemp1);
+//		tSavedEnemyPosition.mul(.5f);
+//		GoToPointViaSubnodes(tSavedEnemyPosition);
 	}
 	else
 		if (ps_Size() > 1)
-			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 500) {
+			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 0) {
 				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 				SelectorFreeHunting.m_tDirection.normalize_safe();
 				vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
-				vfBuildPathToDestinationPoint(0);
+				Fvector tTemp0,tTemp1;
+				Level().AI.UnpackPosition(tTemp0,Level().AI.Node(AI_Path.DestNode)->p0);
+				Level().AI.UnpackPosition(tTemp1,Level().AI.Node(AI_Path.DestNode)->p1);
+				tSavedEnemyPosition.add(tTemp0,tTemp1);
+				tSavedEnemyPosition.mul(.5f);
+				GoToPointViaSubnodes(tSavedEnemyPosition);
+				//vfBuildPathToDestinationPoint(0);
 			}
 			else {
 				Fvector tDistance;
@@ -121,14 +135,43 @@ void CAI_Zombie::FreeHunting()
 					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 					SelectorFreeHunting.m_tDirection.normalize_safe();
 					vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
-					vfBuildPathToDestinationPoint(0);
+					Fvector tTemp0,tTemp1;
+					Level().AI.UnpackPosition(tTemp0,Level().AI.Node(AI_Path.DestNode)->p0);
+					Level().AI.UnpackPosition(tTemp1,Level().AI.Node(AI_Path.DestNode)->p1);
+					tSavedEnemyPosition.add(tTemp0,tTemp1);
+					tSavedEnemyPosition.mul(.5f);
+					GoToPointViaSubnodes(tSavedEnemyPosition);
+					//vfBuildPathToDestinationPoint(0);
 				}
 			}
+		else
+			tSavedEnemyPosition = vPosition;
+	/**/
+	if (ps_Size() > 1)
+		if ((m_bStateChanged) || (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500))
+			tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+		else {
+			Fvector tDistance;
+			tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+			if (tDistance.magnitude() < .05f)
+				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+			else
+				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+			//tSavedEnemyPosition.set(::Random.randF(0,1),0,::Random.randF(0,1));
+		}
+	else
+		tSavedEnemyPosition.set(::Random.randF(0,1),0,::Random.randF(0,1));
+
+	tSavedEnemyPosition.normalize();
+	tSavedEnemyPosition.mul(7.f);
+	tSavedEnemyPosition.add(vPosition);
+
+	GoToPointViaSubnodes(tSavedEnemyPosition);
 
 	if (!m_bStateChanged)
 		SetDirectionLook();
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
+	//CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
 
 	vfSetFire(false,Group);
 
@@ -145,7 +188,7 @@ void CAI_Zombie::FreeHunting()
 			if (m_tpSoundBeingPlayed->feedback)			
 				return;
 
-			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,vPosition);
+			//pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,vPosition);
 		}
 	}
 

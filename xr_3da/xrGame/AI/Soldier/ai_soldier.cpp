@@ -158,6 +158,7 @@ void CAI_Soldier::Load	(LPCSTR section)
 BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	tSavedEnemyPosition = vPosition;
 	eCurrentState = aiSoldierLookingOver;
 	return TRUE;
 }
