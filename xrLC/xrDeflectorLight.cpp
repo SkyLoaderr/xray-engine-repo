@@ -343,7 +343,7 @@ BOOL	compress_Zero			(b_texture& lm, u32 rms)
 		u32		c_y			= BORDER*2;
 		u32		c_size		= c_x*c_y;
 		u32*	compressed	= (u32*)(xr_malloc(c_size*4));
-		u32	c_fill		= RGBA_MAKE	(_r,_g,_b,255);
+		u32	c_fill			= color_rgba	(_r,_g,_b,255);
 		for (u32 p=0; p<c_size; p++)	compressed[p]=c_fill;
 		
 		lm.pSurface			= compressed;

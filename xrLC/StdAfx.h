@@ -15,11 +15,6 @@
 #include <fcntl.h>
 #include <sys\stat.h>
 
-#define RGBA_GETALPHA(rgb)      ((rgb) >> 24)
-#define RGBA_GETRED(rgb)        (((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      (((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       ((rgb) & 0xff)
-
 #ifndef	NDEBUG
 #define X_TRY 
 #define X_CATCH if (0)

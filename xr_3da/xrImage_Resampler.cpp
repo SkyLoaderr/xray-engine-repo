@@ -14,7 +14,7 @@
 #define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
 #define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
 #define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
-#define RGBA_MAKE(r,g,b,a)		D3DCOLOR_ARGB(a,r,g,b)
+#define color_rgba(r,g,b,a)		D3DCOLOR_ARGB(a,r,g,b)
 #endif
 #ifndef D3DCOLOR_ARGB
 #define D3DCOLOR_ARGB(a,r,g,b) \
@@ -445,7 +445,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 					w_b			+=	W*double(RGBA_GETBLUE(P));
 					w_a			+=	W*double(RGBA_GETALPHA(P));
 				}
-				put_pixel(&dst, k, i, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
+				put_pixel(&dst, k, i, color_rgba(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
 			}
 
 		}
