@@ -357,6 +357,10 @@
 		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
 		<mini_map  spot="heli_mini_spot"  pointer="actor_pointer"></mini_map>
 	</heli_location>
+
+	<hit_sector_location hint="helicopter" ttl="10" pos_to_actor="1">
+		<mini_map  spot="hit_sector_mini_spot"></mini_map>
+	</hit_sector_location>
 <!-- test -->
 	
 	
@@ -393,12 +397,18 @@
 		<texture x="0" y="0" width="32" height="32"> ui\ui_map_arrow_02</texture>
 	</actor_level_spot>
 
-<!--	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" light_anim="ui_pda_contacts" alignment="c">  -->
+<!--test -->
+
+	<hit_sector_mini_spot x="0" y="0" width="64" height="64" heading="1" alignment="c"> 
+		<texture x="0" y="0" width="64" height="64"> ui\ui_minimap_hit_sector</texture>
+	</heli_mini_spot>
+
 	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" alignment="c"> 
 		<texture x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture>
 		<texture_above x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture_above>
 		<texture_below x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture_below>
 	</heli_mini_spot>
+<!--test -->
 	
 	<enemy_mini_spot width="3" height="3" alignment="c"> 
 		<texture r="255" g="0" b="0">ui\hud_map_point</texture>
