@@ -116,7 +116,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who)
 	// If Local() - perform some logic
 	if (Local())
 	{
-		if (lost_health>fHealth)	
+		if ((fHealth>0) && (lost_health>fHealth))	
 		{
 			// die
 			NET_Packet		P;

@@ -8,7 +8,7 @@
 
 #include "xrServer_Entities.h"
 
-const u32	NET_Latency		= 150;		// time in (ms)
+const u32	NET_Latency		= 100;		// time in (ms)
 
 // t-defs
 typedef std::map<u16,xrServerEntity*>	xrS_entities;
