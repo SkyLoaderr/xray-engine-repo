@@ -231,7 +231,7 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 	}
 	else
 	{
-		inherited::InitContact(c,do_collide,material_1,material_2);
+		
 		dxGeomUserData* D1=retrieveGeomUserData(c->geom.g1);
 		dxGeomUserData* D2=retrieveGeomUserData(c->geom.g2);
 		if(D1&&D2)
@@ -243,5 +243,6 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 				do_collide=(A1->PPhysicsShell()==0)==(A2->PPhysicsShell()==0);
 			}
 		}
+		if(do_collide)inherited::InitContact(c,do_collide,material_1,material_2);
 	}
 }
