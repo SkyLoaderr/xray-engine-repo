@@ -6,10 +6,7 @@
 #pragma hdrstop
 
 #include "EditMesh.h"
-#include "cl_Collector.h"
-#include "UI_Main.h"
 #include "EditObject.h"
-#include "Bone.h"
 
 CEditableMesh::~CEditableMesh(){
 	Clear();
@@ -19,9 +16,11 @@ void CEditableMesh::Construct(){
 	m_Box.set	(0,0,0,0,0,0);
     m_Visible	= 1;
     m_Locked	= 0;
-    m_CFModel	= 0;
     m_Name[0]	= 0;
     m_LoadState	= 0;
+#ifdef _EDITOR
+    m_CFModel	= 0;
+#endif
 }
 
 void CEditableMesh::Clear(){
@@ -38,7 +37,9 @@ void CEditableMesh::Clear(){
 }
 
 void CEditableMesh::UnloadCForm     (){
-    _DELETE(m_CFModel);
+#ifdef _EDITOR
+	_DELETE(m_CFModel);
+#endif
     m_LoadState &=~ EMESH_LS_CF_MODEL;
 }
 
@@ -65,40 +66,6 @@ void CEditableMesh::RecomputeBBox(){
 	m_Box.set( m_Points[0], m_Points[0] );
 	for(FvectorIt pt=m_Points.begin()+1; pt!=m_Points.end(); pt++)
 		m_Box.modify(*pt);
-}
-//----------------------------------------------------
-// номер face должен соответствовать списку
-//----------------------------------------------------
-void CEditableMesh::GenerateCFModel(){
-	UnloadCForm();
-
-    m_CFModel = new RAPID::Model();    VERIFY(m_CFModel);
-	// Collect faces
-	RAPID::Collector CL;
-
-    // double sided
-/*	не корректно работает с сурфейсами
-    for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
-		INTVec& face_lst = sp_it->second;
-        for (INTIt it=face_lst.begin(); it!=face_lst.end(); it++){
-			st_Face&	F = m_Faces[*it];
-			CL.add_face(m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex], 0,0,0, 0,0,0);
-	        if (sp_it->first->sideflag)
-				CL.add_face(m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], 0,0,0, 0,0,0);
-        }
-	}
-*/
-	// without double sided
-	for (FaceIt P = m_Faces.begin(); P!=m_Faces.end(); P++){
-		st_Face&	F = *P;
-		CL.add_face(
-        	m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex],
-            0,0,0,
-			0,0,0 );
-	}
-
-    m_CFModel->BuildModel(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
-    m_LoadState |= EMESH_LS_CF_MODEL;
 }
 
 void CEditableMesh::GenerateFNormals(){
@@ -147,6 +114,8 @@ void CEditableMesh::GeneratePNormals(){
     m_LoadState |= EMESH_LS_PNORMALS;
 }
 
+#ifdef _EDITOR
+#include "Bone.h"
 void CEditableMesh::GenerateSVertices(){
 	if (!m_Parent->IsSkeleton()) return;
 
@@ -195,11 +164,12 @@ void CEditableMesh::GenerateSVertices(){
 
     m_LoadState |= EMESH_LS_SVERTICES;
 }
+#endif
 
 CSurface*	CEditableMesh::GetSurfaceByFaceID(int fid){
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		INTVec& face_lst = sp_it->second;
-        if (find(face_lst.begin(),face_lst.end(),fid)!=face_lst.end()) return sp_it->first;
+        if (std::find(face_lst.begin(),face_lst.end(),fid)!=face_lst.end()) return sp_it->first;
 	}
     return 0;
 }
@@ -252,8 +222,9 @@ void CEditableMesh::DumpAdjacency(){
 	ELog.Msg(mtInformation,"------------------------------------------------------------------------");
     for (DWORD i=0; i<m_Adjs.size(); i++){
         INTVec& a_lst	= m_Adjs[i];
-        AnsiString s; s.sprintf("Point #%d:",i);
-        for (DWORD j=0; j<a_lst.size(); j++) s+=" "+AnsiString(a_lst[j]);
+        AnsiString s; s = "Point "; s+=i; s+=":";
+        AnsiString s1; 
+        for (DWORD j=0; j<a_lst.size(); j++){ s1=a_lst[j]; s+=" "+s1; }
 		ELog.Msg(mtInformation,s.c_str());
     }
 }
