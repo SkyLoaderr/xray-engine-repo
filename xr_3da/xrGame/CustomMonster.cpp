@@ -815,8 +815,9 @@ void CCustomMonster::OnEvent(NET_Packet& P, u16 type)
 
 void CCustomMonster::net_Destroy()
 {
-	inherited::net_Destroy			();
-	CScriptEntity::net_Destroy		();
+	inherited::net_Destroy		();
+	CScriptEntity::net_Destroy	();
+	sound().unload				();
 }
 
 BOOL CCustomMonster::UsedAI_Locations()
