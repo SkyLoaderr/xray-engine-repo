@@ -1,3 +1,4 @@
+--[
 -- define class const evaluator
 class "const_evaluator"		(property_evaluator)
 
@@ -25,8 +26,10 @@ function custom_action:execute()
 	action.execute			()
 	printf					("action %s is executed!",self.name)
 end
+]--
 
 function main()
+	--[
 	-- define world properties
 	property_id0			= 0
 	property_id1			= 1
@@ -48,7 +51,6 @@ function main()
 	return
 	
 	-- define actions
-	--[
 	action0					= custom_action(1,nil,"action0")
 	action1					= custom_action(1,nil,"action1")
 	action2					= custom_action(1,nil,"action2")
