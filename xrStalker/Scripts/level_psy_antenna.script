@@ -16,9 +16,11 @@ pa_phase={
 	phStopping							= 3
 }
 function PsyAntenna:__init				()
+// ----------------------------------------------------------------------------------------
 // settings
+// ----------------------------------------------------------------------------------------
 	// phantom gen
-	self.phantom_max 					= 5;	// max phantoms
+	self.phantom_max 					= 10;	// max phantoms
 	self.phantom_spawn_probability		= 0.1;	// spawn probability (0..1)
 	self.phantom_spawn_radius			= 30.0;	// average radius 30.0m +-15m
 	self.phantom_spawn_height			= 3.0;	// average height from actor pos +-1.5m
@@ -27,6 +29,7 @@ function PsyAntenna:__init				()
 	// pause time [from]=to
 	self.idle_time						= {};
 	self.idle_time[20]					= 21;
+// ----------------------------------------------------------------------------------------
 // class variables initialize
 	self.phase 							= pa_phase.phIdle;
 	self.power_factor					= fcolor();
