@@ -72,7 +72,7 @@ struct NodeCompressed
 
 const u32 XRCL_CURRENT_VERSION		=	15;	// input
 const u32 XRCL_PRODUCTION_VERSION	=	11;	// output
-const u32 CFORM_CURRENT_VERSION		=	4;
+const u32 CFORM_CURRENT_VERSION		=	5;
 const u32 XRAI_CURRENT_VERSION		=	3;
 
 #endif // xrLevelH
