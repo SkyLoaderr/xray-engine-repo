@@ -20,6 +20,7 @@ public:
 	virtual void OnH_B_Independent();
 
 	virtual void Update(u32 dt);
+	virtual void UpdateCL();
 
 	virtual void feel_touch_new(CObject* O);
 	virtual void feel_touch_delete(CObject* O);
@@ -28,10 +29,11 @@ public:
 	void SoundCreate(sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy(sound& dest);
 
-	FLOAT m_radius;
+	FLOAT m_radius, m_buzzer_radius;
 	list<CCustomZone*> m_zones;
 	map<CLASS_ID, sound*> m_sounds;
 	map<CCustomZone*, u32> m_times;
-	sound m_noise;
+	sound m_noise, m_buzzer;
 
+	virtual void		OnRender				( );
 };

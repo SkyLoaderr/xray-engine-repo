@@ -627,7 +627,7 @@ void	game_sv_CS::Update			()
 			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
 		} break;
 		case GAME_PHASE_PENDING : {
-			if ((Device.TimerAsync()-start_time)>u32(20*1000)) OnRoundStart();
+			if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
 		} break;
 	}
 }

@@ -69,6 +69,15 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
+			// Test for Detector
+			CCustomDetector* D	= dynamic_cast<CCustomDetector*>	(O);
+			if (D) 
+			{
+				D->H_SetParent						(0);
+				feel_touch_deny						(D,1000);
+				return;
+			}
+
 			// Test for weapon
 			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 			if (W) 

@@ -25,16 +25,19 @@ void CCustomDetector::Load(LPCSTR section) {
 	inherited::Load(section);
 
 	m_radius = pSettings->ReadFLOAT(section,"radius");
-	//CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
-	//cfModel						= shape;
-	//Fsphere S;	S.P.set			(0,0,0); S.R = l_radius;
-	//shape->add_sphere			(S);
-	//shape->ComputeBounds						();
-	//pCreator->ObjectSpace.Object_Register		(this);
-	//cfModel->OnMove								();
+	m_buzzer_radius = pSettings->ReadFLOAT(section,"buzzer_radius");
+	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
+	cfModel						= shape;
+	Fsphere S;	S.P.set			(0,0,0); S.R = m_buzzer_radius;
+	shape->add_sphere			(S);
+	shape->ComputeBounds						();
+	pCreator->ObjectSpace.Object_Register		(this);
+	cfModel->OnMove								();
 
 	LPCSTR l_soundName = pSettings->ReadSTRING(section,"noise");
 	SoundCreate(m_noise, l_soundName);
+	l_soundName = pSettings->ReadSTRING(section,"buzzer");
+	SoundCreate(m_buzzer, l_soundName);
 	u32 i = 1;
 	string256 temp;
 	do {
@@ -65,6 +68,9 @@ void CCustomDetector::Update(u32 dt) {
 
 	if(!H_Parent()) return;
 
+	vPosition.set(H_Parent()->Position());
+	UpdateTransform();
+
 	//const Fsphere& s		= cfModel->getSphere();
 	Fvector					P; P.set(H_Parent()->Position());
 	//H_Parent()->clXFORM().transform_tiny(P,P);
@@ -72,9 +78,13 @@ void CCustomDetector::Update(u32 dt) {
 
 	if(H_Parent()) {
 		f32 l_maxPow = 0;
+		BOOL l_buzzer = false;
 		list<CCustomZone*>::iterator l_it;
 		for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) {
 			CCustomZone *l_pZ = *l_it;
+			if(l_pZ->feel_touch_contact(this)) {
+				l_buzzer = true;
+			}
 			u32 &l_time = m_times[l_pZ];
 			//Fvector ZP; ZP.set(0,0,0); l_pZ->clXFORM().transform_tiny(ZP,ZP);
 			f32 l_dst = P.distance_to(l_pZ->Position()); if(l_dst > m_radius) l_dst -= m_radius; else l_dst = 0;
@@ -88,6 +98,10 @@ void CCustomDetector::Update(u32 dt) {
 				}
 			} else l_time += dt;
 		}
+		if(l_buzzer)  {
+			if(!m_buzzer.feedback) Sound->PlayAtPos(m_buzzer, this, P, true);
+			if(m_buzzer.feedback) m_buzzer.feedback->SetPosition(P);
+		} else if(m_buzzer.feedback) m_buzzer.feedback->Stop();
 		if(l_maxPow > 0) {
 			if(!m_noise.feedback) Sound->PlayAtPos(m_noise, this, P, true);
 			if(m_noise.feedback) {
@@ -95,7 +109,17 @@ void CCustomDetector::Update(u32 dt) {
 				m_noise.feedback->SetPosition(P);
 			}
 		} else if(m_noise.feedback) m_noise.feedback->Stop();
+		
 	}
+}
+
+void CCustomDetector::UpdateCL() {
+	f32 l_zonePow = 0;
+	list<CCustomZone*>::iterator l_it;
+	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(vPosition)));
+	CGameFont* H		= Level().HUD()->pFontMedium;
+	H->SetColor			(0xf0ffffff); 
+	H->Out				(550,500,"Anomaly force: %.0f", l_zonePow);
 }
 
 void CCustomDetector::feel_touch_new(CObject* O) {
@@ -142,4 +166,19 @@ void CCustomDetector::OnH_B_Independent() {
 	inherited::OnH_B_Independent();
 //	setVisible					(true);
 	setEnabled					(false);
+	if(m_buzzer.feedback) m_buzzer.feedback->Stop();
+	if(m_noise.feedback) m_noise.feedback->Stop();
+	//NET_Packet			P;
+	//u_EventGen			(P,GE_DESTROY,ID());
+	//u_EventSend			(P);
+}
+
+void CCustomDetector::OnRender() {
+	if(!bDebug) return;
+	Device.Shader.OnFrameEnd();
+	Fmatrix l_ball;
+	l_ball.scale(m_buzzer_radius, m_buzzer_radius, m_buzzer_radius);
+	Fvector l_p; l_p.set(0, 0, 0); clTransform.transform(l_p, l_p);
+	l_ball.translate_add(l_p);
+	Device.Primitive.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(255,0,255));
 }

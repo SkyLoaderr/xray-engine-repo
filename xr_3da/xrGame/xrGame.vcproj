@@ -1275,6 +1275,10 @@
 							RelativePath="Mincer.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="AcidFog"
+						Filter="">
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
