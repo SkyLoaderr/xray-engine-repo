@@ -152,8 +152,6 @@ void CSheduler::Pop					()
 
 void CSheduler::ProcessStep			()
 {
-	internal_Registration			();
-
 	// Normal priority
 	u32		dwTime					= Device.dwTimeGlobal;
 	CTimer							eTimer;
@@ -226,7 +224,6 @@ void CSheduler::ProcessStep			()
 		Push	(ItemsProcessed.back())	;
 		ItemsProcessed.pop_back		()	;
 	}
-	internal_Registration			();
 
 	// always try to decrease target
 	psShedulerTarget	-= psShedulerReaction;
@@ -243,11 +240,14 @@ void CSheduler::Switch				()
 */
 void CSheduler::Update				()
 {
-	u32	dwTime						= Device.dwTimeGlobal;
-
-	// Log				("------------- CSheduler::Update: ",u32(Device.dwFrame));
+	// Initialize
+	Device.Statistic.Sheduler.Begin	();
+	cycles_start					= CPU::GetCycleCount			();
+	cycles_limit					= CPU::cycles_per_milisec * u64	(iCeil(psShedulerCurrent)) + cycles_start;
+	internal_Registration			();
 
 	// Realtime priority
+	u32	dwTime						= Device.dwTimeGlobal;
 	for (u32 it=0; it<ItemsRT.size(); it++)
 	{
 		Item&	T						= ItemsRT[it];
@@ -260,12 +260,12 @@ void CSheduler::Update				()
 	}
 
 	// Normal (sheduled)
-	Device.Statistic.Sheduler.Begin	();
-	cycles_start					= CPU::GetCycleCount			();
-	cycles_limit					= CPU::cycles_per_milisec * u64	(iCeil(psShedulerCurrent)) + cycles_start;
 	ProcessStep						();
 	clamp							(psShedulerTarget,3.f,66.f);
 	psShedulerCurrent				= 0.9f*psShedulerCurrent + 0.1f*psShedulerTarget;
 	Device.Statistic.fShedulerLoad	= psShedulerCurrent;
+
+	// Finalize
+	internal_Registration			();
 	Device.Statistic.Sheduler.End	();
 }
