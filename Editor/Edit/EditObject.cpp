@@ -38,18 +38,11 @@ CEditObject::CEditObject(CEditObject* source){
 }
 
 void CEditObject::Construct(){
-	mTransform.identity();
-    vScale.set(1,1,1);
-    vRotate.set(0,0,0);
-    vPosition.set(0,0,0);
-
 	m_DynamicObject = false;
 
     m_ObjVer.reset();
 
 	m_Box.set( 0,0,0, 0,0,0 );
-    m_Center.set(0,0,0);
-    m_fRadius = 0;
 
     m_LoadState = 0;
 
@@ -62,24 +55,6 @@ CEditObject::~CEditObject(){
 }
 
 //----------------------------------------------------
-
-void CEditObject::CloneFrom(CEditObject* source, bool bSetPlacement){
-    VERIFY(source);
-	m_DynamicObject= source->m_DynamicObject;
-    if (bSetPlacement){
-	    vPosition.set(source->vPosition);
-    	vRotate.set(source->vRotate);
-	    vScale.set(source->vScale);
-		mTransform.set(source->mTransform);
-    }
-	m_Box.set(source->m_Box);
-    m_fRadius = source->m_fRadius;
-    m_Center.set(source->m_Center);
-    m_ClassScript = source->m_ClassScript;
-
-    ClearGeometry();
-    CopyGeometry(source);
-}
 
 void CEditObject::VerifyMeshNames(){
 	int idx=0;
@@ -179,104 +154,60 @@ int CEditObject::GetVertexCount(){
 	return cnt;
 }
 
-void CEditObject::UpdateTransform(const Fvector& T, const Fvector& R, const Fvector& S){
-    // update transform matrix
-	Fmatrix	mScale,mTranslate,mRotate;
-	mRotate.setHPB			(R.y, R.x, R.z);
-
-	mScale.scale			(S);
-	mTranslate.translate	(T);
-	mTransform.mul			(mTranslate,mRotate);
-	mTransform.mul			(mScale);
-
-    // update bounding volume
-    Fbox BB; GetBox			(BB);
-    BB.getsphere			(m_Center,m_fRadius);
-}
-
-void CEditObject::UpdateTransform( ){
-	UpdateTransform			(vPosition,vRotate,vScale);
-}
-
 void CEditObject::UpdateBox(){
-    UI->RedrawScene();
-///    if(!bLibItem) UpdateTransform();
-    if(m_Meshes.empty()){
-        m_Box.set( vPosition, vPosition );
-        m_Box.grow( g_MinBoxSize );
-    }else{
-        Fvector pt;
-        bool boxdefined = false;
-        EditMeshIt m = m_Meshes.begin();
-        for(;m!=m_Meshes.end();m++){
-            Fbox meshbox;
-            (*m)->GetBox(meshbox);
-            if(boxdefined){
-                for(int i=0; i<8; i++){
-                    Fvector pt;
-                    meshbox.getpoint(i, pt);
-                    m_Box.modify(pt);
-                }
-            }else{
-                meshbox.getpoint( 0, pt );
-                m_Box.set(pt,pt);
-                boxdefined = true;
-                for(int i=1; i<8; i++){
-                    meshbox.getpoint( i, pt );
-                    m_Box.modify(pt);
-                }
+	VERIFY(!m_Meshes.empty());
+    Fvector pt;
+    bool boxdefined = false;
+    EditMeshIt m = m_Meshes.begin();
+    for(;m!=m_Meshes.end();m++){
+        Fbox meshbox;
+        (*m)->GetBox(meshbox);
+        if(boxdefined){
+            for(int i=0; i<8; i++){
+                Fvector pt;
+                meshbox.getpoint(i, pt);
+                m_Box.modify(pt);
+            }
+        }else{
+            meshbox.getpoint( 0, pt );
+            m_Box.set(pt,pt);
+            boxdefined = true;
+            for(int i=1; i<8; i++){
+                meshbox.getpoint( i, pt );
+                m_Box.modify(pt);
             }
         }
     }
-    // update transform matrix
-///    if (!bLibItem) UpdateTransform();
 }
 //----------------------------------------------------
-
-bool CEditObject::GetBox( Fbox& box ){
-    box.transform(m_Box,mTransform);
-	return true;
-}
-/*
-bool __inline CEditObject::IsRender(Fmatrix& parent){
-    bool bRes = Device.m_Frustum.testSphere(m_Center,m_fRadius);
-    if(bRes&&fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation(precalc_identity);
-    return bRes;
-}
-*/
 void CEditObject::Render(Fmatrix& parent, ERenderPriority flag){
     Scene->TurnLightsForObject(this);
 
     if(flag==rpNormal){
-    	Fmatrix matrix; matrix.mul(parent,mTransform);
-		if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(matrix);
-		if (fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation(matrix);
+		if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(parent);
+		if (fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation(parent);
     }
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
-    Fmatrix matrix;
-    matrix.mul(parent,mTransform);
-
     if(UI->bRenderEdgedFaces&&(flag==rpNormal))
-        RenderEdge(matrix);
+        RenderEdge(parent);
 
-    Device.SetTransform(D3DTS_WORLD,matrix);
+    Device.SetTransform(D3DTS_WORLD,parent);
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
         if ((flag==rpAlphaNormal)&&((*s_it)->RenderPriority()==rpAlphaNormal)){
             Device.Shader.Set((*s_it)->shader);
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                (*_M)->Render(matrix,*s_it);
+                (*_M)->Render(parent,*s_it);
         }
         if ((flag==rpAlphaLast)&&((*s_it)->RenderPriority()==rpAlphaLast)){
             Device.Shader.Set((*s_it)->shader);
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                (*_M)->Render(matrix,*s_it);
+                (*_M)->Render(parent,*s_it);
         }
         if ((flag==rpNormal)&&((*s_it)->RenderPriority()==rpNormal)){
             Device.Shader.Set((*s_it)->shader);
-            // Now iterate on passes
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                (*_M)->Render(matrix,*s_it);
+                (*_M)->Render(parent,*s_it);
         }
     }
 }
@@ -302,16 +233,15 @@ void CEditObject::RenderAnimation(const Fmatrix& parent){
         }
 
         // update transform matrix
-        Fmatrix	M,mScale,mTranslate,mRotate;
-        mRotate.setHPB			(vRotate.y, vRotate.x, vRotate.z);
-
-        mScale.scale			(vScale);
-        mTranslate.translate	(vPosition);
-        M.mul					(mTranslate,mRotate);
-        M.mul					(mScale);
+//        Fmatrix	M,mScale,mTranslate,mRotate;
+//        mRotate.setHPB			(vRotate.y, vRotate.x, vRotate.z);
+//        mScale.scale			(vScale);
+//        mTranslate.translate	(vPosition);
+//        M.mul					(mTranslate,mRotate);
+//        M.mul					(mScale);
 
         Device.Shader.Set		(Device.m_WireShader);
-        Device.SetTransform		(D3DTS_WORLD,M);
+        Device.SetTransform		(D3DTS_WORLD,parent);
         DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
     }
 }
@@ -348,29 +278,14 @@ void CEditObject::RenderBones(const Fmatrix& parent){
             DU::DrawRomboid	(p1,0.025,c);
         }
     }
-/*
-    CEditMesh* M = m_Meshes[0];
-    if (!(M->m_LoadState&EMESH_LS_SVERTICES)) M->GenerateSVertices();
-
-    for (SVertIt sv_it=M->m_SVertices.begin(); sv_it!=M->m_SVertices.end(); sv_it++){
-        Fmatrix& T = m_Bones[sv_it->bone]->LTransform();
-        Fvector v;
-        Fcolor c;
-        c.set(1,0,0,0);
-        T.transform_tiny(v,sv_it->offs);
-        DU_DrawRomboid	(v,0.025,c);
-    }
-*/
 }
 
 void CEditObject::RenderEdge(Fmatrix& parent, CEditMesh* mesh){
-    if (Device.m_Frustum.testSphere(m_Center,m_fRadius)){
-		Device.Shader.Set(Device.m_WireShader);
-        DWORD c=D3DCOLOR_RGBA(192,192,192,255);
-        if(mesh) mesh->RenderEdge(parent, c);
-        else for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
-				(*_M)->RenderEdge(parent, c);
-    }
+    Device.Shader.Set(Device.m_WireShader);
+    DWORD c=D3DCOLOR_RGBA(192,192,192,255);
+    if(mesh) mesh->RenderEdge(parent, c);
+    else for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
+            (*_M)->RenderEdge(parent, c);
 }
 
 void CEditObject::RenderSelection(Fmatrix& parent){
@@ -384,40 +299,24 @@ void CEditObject::RenderSelection(Fmatrix& parent){
 }
 
 bool CEditObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
-    if(!Device.m_Frustum.testSphere(m_Center,m_fRadius))return false;
-    Fmatrix matrix;
-    matrix.mul(parent, mTransform);
 	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-		if((*m)->FrustumPick(frustum, matrix))	return true;
+		if((*m)->FrustumPick(frustum, parent))	return true;
 	return false;
 }
 
-bool CEditObject::SpherePick(const Fvector& center, float radius, const Fmatrix& parent){
-	float R=radius+m_fRadius;
-    float dist_sqr=center.distance_to_sqr(m_Center);
-    if (dist_sqr<R*R) return true;
-    return false;
-}
-
 bool CEditObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
-    if (!Device.m_Frustum.testSphere(m_Center,m_fRadius)) return false;
-
 	bool picked = false;
 
-    Fmatrix matrix;
-    matrix.mul(parent, mTransform);
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-        if( (*m)->RayPick( dist, S, D, matrix, pinf ) )
+        if( (*m)->RayPick( dist, S, D, parent, pinf ) )
             picked = true;
 
 	return picked;
 }
 
 void CEditObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
-    Fmatrix matrix;
-    matrix.mul(parent, mTransform);
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-        (*m)->BoxPick(box, matrix, pinf);
+        (*m)->BoxPick(box, parent, pinf);
 }
 
 void CEditObject::ClearRenderBuffers(){
@@ -442,27 +341,11 @@ void CEditObject::RemoveMesh(CEditMesh* mesh){
     _DELETE(mesh);
 }
 
-void CEditObject::TranslateToWorld() {
+void CEditObject::TranslateToWorld(const Fmatrix& parent) {
 	EditMeshIt m = m_Meshes.begin();
-	for(;m!=m_Meshes.end();m++) (*m)->Transform( mTransform );
-
-    // reset placement
-    vPosition.set(0,0,0);
-    vScale.set(1,1,1);
-    vRotate.set(0,0,0);
-    UpdateTransform();
-
+	for(;m!=m_Meshes.end();m++) (*m)->Transform( parent );
     ClearRenderBuffers();
-
 	UpdateBox();
-}
-
-void CEditObject::GetFullTransformToWorld( Fmatrix& m ){
-    m.set( mTransform );
-}
-
-void CEditObject::GetFullTransformToLocal( Fmatrix& m ){
-    m.invert(mTransform);
 }
 
 st_Surface*	CEditObject::FindSurfaceByName(const char* surf_name, int* s_id){

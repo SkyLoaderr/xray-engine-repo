@@ -29,7 +29,7 @@ CLibObject::~CLibObject(){
 
 bool CLibObject::ImportFrom(const char* name){
     _DELETE(m_EditObject);
-    m_EditObject = new CEditObject(true);
+    m_EditObject = new CEditObject();
     if (FS.Exist(name, true))
         if (m_EditObject->Load(name)){
         	m_FileName = ExtractFileName(AnsiString(name));
@@ -43,7 +43,7 @@ bool CLibObject::ImportFrom(const char* name){
 void CLibObject::LoadObject(){
 	if (!m_EditObject){
 		m_bLoadingError = true;
-    	m_EditObject = new CEditObject(true);
+    	m_EditObject = new CEditObject();
         AnsiString fn=m_RefName;
         fn += ".object";
 		FS.m_Objects.Update(fn);

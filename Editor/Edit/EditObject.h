@@ -47,6 +47,7 @@ struct st_AnimParam{
 };
 
 class CEditObject{
+	friend class CSceneObject;
 	friend class CEditMesh;
     friend class TfrmPropertiesObject;
     friend class CSector;
@@ -71,37 +72,10 @@ protected:
 	// options
 	int 			m_DynamicObject;
 
-    // orientation
-    Fvector 		vScale;
-    Fvector 		vRotate;
-    Fvector 		vPosition;
-	Fmatrix 		mTransform;
-
-    Fvector 		vMotRotate;
-    Fvector 		vMotPosition;
-
 	// bounding volume
 	Fbox 			m_Box;
-    // internal use
-    float 			m_fRadius;
-    Fvector 		m_Center; 			// центр в мировых координатах
-
-public:
-    struct st_ObjVer{
-        union{
-            struct{
-                int f_age;
-                int res0;
-            };
-            __int64 ver;
-        };
-        st_ObjVer   (){reset();}
-        int size	(){return sizeof(st_ObjVer);}
-        bool operator == (st_ObjVer& v)	{return v.f_age==f_age;}
-        void reset	(){ver=0;}
-    };
 protected:
-    st_ObjVer		m_ObjVer;
+    st_Version		m_ObjVer;
 
     void 			CopyGeometry			(CEditObject* source);
     void 			ClearGeometry			();
@@ -112,8 +86,6 @@ protected:
     void			UpdateRenderBuffers		();
 
 	void 			UpdateBoneParenting		();
-
-    void			UpdateTransform			(const Fvector& T, const Fvector& R, const Fvector& S);
 public:
     DWORD			m_LoadState;
 public:
@@ -147,7 +119,8 @@ public:
     // get object properties methods
 	IC bool 		IsDynamic     			()	{return (m_DynamicObject!=0); }
     IC void			SetDynamic				(bool bDynamic){m_DynamicObject=bDynamic;}
-	IC AnsiString&	GetClassScript			()	{return m_ClassScript; }
+	IC AnsiString&	GetClassScript			()	{return m_ClassScript;}
+    IC const Fbox&	GetBox					() 	{return m_Box;}
 
     // animation
     IC bool			IsOMotionable			()	{return !!m_OMotions.size();}
@@ -188,21 +161,7 @@ public:
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
 
     // change position/orientation methods
-	void 			TranslateToWorld		();
-
-    // get orintation/bounding volume methods
-	bool 			GetBox					(Fbox& box);
-    void 			GetFullTransformToWorld	(Fmatrix& m);
-    void 			GetFullTransformToLocal	(Fmatrix& m);
-    IC const Fvector& GetCenter				(){return m_Center;}
-    IC float		GetRadius				(){return m_fRadius;}
-    IC const Fmatrix& GetTransform			(){return mTransform;}
-    IC const Fvector& GetPosition			(){return vPosition;}
-    IC const Fvector& GetRotate				(){return vRotate;}
-    IC const Fvector& GetScale				(){return vScale;}
-    IC Fvector& 	Position				(){return vPosition;}
-    IC Fvector& 	Rotate					(){return vRotate;}
-    IC Fvector& 	Scale					(){return vScale;}
+	void 			TranslateToWorld		(const Fmatrix& parent);
 
     // clone/copy methods
     void			RemoveMesh				(CEditMesh* mesh);
@@ -228,8 +187,8 @@ public:
 	void 			SaveObject				(const char* fname);
     CSMotion*		LoadSMotion				(const char* fname);
     COMotion*		LoadOMotion				(const char* fname);
-  	virtual bool 	Load					(CStream&);
-	virtual void 	Save					(CFS_Base&);
+  	bool 			Load					(CStream&);
+	void 			Save					(CFS_Base&);
 
     // contains methods
     CEditMesh* 		FindMeshByName			(const char* name, CEditMesh* Ignore=0);

@@ -177,6 +177,20 @@ extern ENGINE_API Fmatrix precalc_identity;;
 extern ENGINE_API Fbox box_identity;
 extern bool g_ErrorMode;
 
+struct st_Version{
+    union{
+        struct{
+            int f_age;
+            int res0;
+        };
+        __int64 ver;
+    };
+    st_Version   (){reset();}
+    int size	(){return sizeof(st_Version);}
+    bool operator == (st_Version& v)	{return v.f_age==f_age;}
+    void reset	(){ver=0;}
+};
+
 #endif /*_INCDEF_STDAFX_H_*/
 
 

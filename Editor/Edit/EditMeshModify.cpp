@@ -28,7 +28,7 @@ void CEditMesh::CloneFrom(CEditMesh *source){
 }
 
 //----------------------------------------------------
-void CEditMesh::Transform(Fmatrix& parent){
+void CEditMesh::Transform(const Fmatrix& parent){
 	// transform position
 	for(FvectorIt pt=m_Points.begin(); pt!=m_Points.end(); pt++)
 		parent.transform_tiny(*pt);

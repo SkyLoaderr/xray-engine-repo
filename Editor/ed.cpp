@@ -180,6 +180,7 @@ USELIB("lib\DX\dinput.lib");
 USEUNIT("lib\DX\c_dinput.cpp");
 USEUNIT("shared\pure.cpp");
 USEUNIT("edit\CustomObject.cpp");
+USEUNIT("edit\SceneObject.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

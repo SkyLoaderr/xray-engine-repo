@@ -20,7 +20,6 @@
 #define EOBJ_CHUNK_VERSION		  	0x0900
 #define EOBJ_CHUNK_REFERENCE     	0x0902
 #define EOBJ_CHUNK_FLAG           	0x0903
-#define EOBJ_CHUNK_PLACEMENT     	0x0904
 #define EOBJ_CHUNK_SURFACES			0x0905
 #define EOBJ_CHUNK_EDITMESHES      	0x0910
 #define EOBJ_CHUNK_LIB_VERSION     	0x0911
@@ -82,11 +81,6 @@ bool CEditObject::Load(CStream& F){
             bRes = false;
             break;
         }
-
-        R_ASSERT(F.FindChunk(EOBJ_CHUNK_PLACEMENT));
-        F.Rvector(vPosition);
-        F.Rvector(vRotate);
-        F.Rvector(vScale);
 
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_FLAG, &m_DynamicObject));
 
@@ -200,12 +194,6 @@ bool CEditObject::Load(CStream& F){
 void CEditObject::Save(CFS_Base& F){
 	F.open_chunk	(EOBJ_CHUNK_VERSION);
 	F.Wword			(EOBJ_CURRENT_VERSION);
-	F.close_chunk	();
-
-	F.open_chunk	(EOBJ_CHUNK_PLACEMENT);
-    F.Wvector		(vPosition);
-    F.Wvector		(vRotate);
-    F.Wvector		(vScale);
 	F.close_chunk	();
 
 	F.open_chunk	(EOBJ_CHUNK_CLASSSCRIPT);

@@ -169,7 +169,8 @@ void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
 	    mesh->UnloadFNormals();
     }
     // массив фейсов с указанием к какому сектору он принадлежит
-    int sect_num = mesh->m_Sector?mesh->m_Sector->sector_num:m_iDefaultSectorNum;
+	CSector* S = PortalUtils.FindSector(parent,mesh);
+    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
 
     // fill faces
     for (SurfFacesPairIt sp_it=mesh->m_SurfFaces.begin(); sp_it!=mesh->m_SurfFaces.end(); sp_it++){

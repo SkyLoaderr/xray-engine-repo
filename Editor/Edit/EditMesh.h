@@ -111,7 +111,6 @@ class CEditMesh {
 	char m_Name[MAX_OBJ_NAME];
 
     CEditObject*	m_Parent;
-    CSector*		m_Sector;
 
     RAPID::Model*	m_CFModel;
 
@@ -174,7 +173,7 @@ public:
 
     // mesh modify routine
 	void            CloneFrom				(CEditMesh *source);
-	void            Transform				(Fmatrix& parent);
+	void            Transform				(const Fmatrix& parent);
 
     // pick routine
 	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf = NULL);
@@ -201,8 +200,6 @@ public:
 
     // debug
     void			DumpAdjacency			();
-
-	void 			OnSynchronize			();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_StaticMesh_H_*/
