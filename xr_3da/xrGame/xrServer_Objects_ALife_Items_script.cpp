@@ -25,7 +25,8 @@ void CSE_ALifeInventoryItem::script_register(lua_State *L)
 void CSE_ALifeItem::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_item2(
+//		luabind_class_item2(
+		luabind_class_abstract2(
 			CSE_ALifeItem,
 			"cse_alife_item",
 			CSE_ALifeDynamicObjectVisual,

@@ -153,3 +153,48 @@
 		{																				\
 			return ptr->self_type::inherited::v_func_name(p1,p2,p3,p4);					\
 		}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+#define DEFINE_LUA_WRAPPER_METHOD_R2P1_V1(v_func_name,t1)								\
+		virtual void v_func_name(t1& p1)												\
+		{																				\
+			call_member<void>(#v_func_name,&p1);										\
+		}                                   											\
+		static  void v_func_name##_static(inherited* ptr, t1* p1)						\
+		{																				\
+			ptr->self_type::inherited::v_func_name(*p1);								\
+		}
+
+#define DEFINE_LUA_WRAPPER_METHOD_R2P1_V2(v_func_name,t1,t2)							\
+		virtual void v_func_name(t1& p1, t2 p2)											\
+		{																				\
+			call_member<void>(#v_func_name,&p1,p2);										\
+		}                                   											\
+		static  void v_func_name##_static(inherited* ptr, t1* p1, t2 p2)				\
+		{																				\
+			ptr->self_type::inherited::v_func_name(*p1,p2);								\
+		}
+
+#define DEFINE_LUA_WRAPPER_METHOD_R2P2_V2(v_func_name,t1,t2)							\
+		virtual void v_func_name(t1 p1, t2& p2)											\
+		{																				\
+			call_member<void>(#v_func_name,p1,&p2);										\
+		}                                   											\
+		static  void v_func_name##_static(inherited* ptr, t1 p1, t2* p2)				\
+		{																				\
+			ptr->self_type::inherited::v_func_name(p1,*p2);								\
+		}
+
+#define DEFINE_LUA_WRAPPER_METHOD_R2P1_V4(v_func_name,t1,t2,t3,t4)						\
+		virtual void v_func_name(t1& p1, t2 p2, t3 p3, t4 p4)							\
+		{																				\
+			call_member<void>(#v_func_name,&p1,p2,p3,p4);								\
+		}                                   											\
+		static  void v_func_name##_static(inherited* ptr, t1* p1, t2 p2, t3 p3, t4 p4)	\
+		{																				\
+			ptr->self_type::inherited::v_func_name(*p1,p2,p3,p4);						\
+		}
