@@ -32,7 +32,7 @@ void ComputeFrustum				(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fvecto
 	_F[5].mad			(camP, camD,		p_FAR);
 }
 
-void	CLight_Render_Direct::compute_xfd_1	(u32 m_phase, light* L)
+void	CLight_Render_Direct::compute_xf_direct	(u32 m_phase, light* L)
 {
 	float p_FOV				= Device.fFOV;
 	float p_DIST			= g_pGamePersistent->Environment.CurrentEnv.far_plane;
@@ -87,8 +87,4 @@ void	CLight_Render_Direct::compute_xfd_1	(u32 m_phase, light* L)
 
 	// 
 	L->X.D.combine.mul		(L->X.D.project,L->X.D.view);
-}
-
-void CLight_Render_Direct::compute_xfd_2(u32 m_phase, light* L)
-{
 }

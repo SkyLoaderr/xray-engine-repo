@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "light_render_direct.h"
 
-void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
+void CLight_Render_Direct::compute_xf_spot	(u32 m_phase, light* L)
 {
 	// Build EYE-space xform
 	Fvector						L_dir,L_up,L_right,L_pos;
@@ -45,7 +45,7 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	// factors
 	float	factor0				= powf	(ssa,		1.f/2.f);		// ssa is quadratic
 	float	factor1				= powf	(intensity, 1.f/8.f);		// less perceptually important?
-	float	factor2				= powf	(duel_dot,	1.f/4.f);		// difficult to change here -> visible
+	float	factor2				= powf	(duel_dot,	1.f/4.f);		// difficult to fast-change this -> visible
 	float	factor3				= powf	(sizefactor,1.f/4.f);		// this shouldn't make much difference
 	float	factor				= ps_r2_ls_squality * factor0 * factor1 * factor2 * factor3;
 	
@@ -66,4 +66,3 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	L->X.S.project.build_projection		(L->cone + deg2rad(3.5f), 1.f,SMAP_near_plane,L->range+EPS_S);
 	L->X.S.combine.mul					(L->X.S.project,L->X.S.view);
 }
-

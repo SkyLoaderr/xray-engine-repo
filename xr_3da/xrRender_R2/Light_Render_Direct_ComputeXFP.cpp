@@ -9,7 +9,7 @@ static	Fvector cmDir[6]	= {{1.f,0.f,0.f}, {-1.f,0.f,0.f},{0.f,1.f,0.f}, {0.f,-1.
 
 extern	void ComputeFrustum	(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fvector& camD, Fvector& camN, Fvector& camR, Fvector& camP);
 
-BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
+BOOL CLight_Render_Direct::compute_xf_omni	(u32 m_phase, light* L)
 {
 	Fmatrix						m_ViewROT, m_invViewROT,m_invLET;
 	Fvector						t;
@@ -70,8 +70,4 @@ BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 	}
 
 	return FALSE;
-}
-
-void CLight_Render_Direct::compute_xfp_2	(u32 m_phase, light* L)
-{
 }

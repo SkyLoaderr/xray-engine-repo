@@ -23,7 +23,7 @@ void	CRender::render_lights	(light_Package& LP)
 				source.erase		(source.begin()+it);
 				it--;
 			} else {
-				LR.compute_xfs		(0, L);
+				LR.compute_xf_spot	(0, L);
 			}
 		}
 	}
@@ -116,6 +116,8 @@ void	CRender::render_lights	(light_Package& LP)
 					r_dsgraph_render_graph				(1);			// normal level, secondary priority
 					r_dsgraph_render_sorted				( );			// strict-sorted geoms
 				}
+			} else {
+				stats.s_finalclip					++;
 			}
 			L->svis.end								();
 			r_pmask									(true,false);
