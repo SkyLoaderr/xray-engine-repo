@@ -13,6 +13,7 @@
 
 #include "ImageEditor.h"
 #include "SoundEditor.h"
+#include "ChoseForm.h"
 
 TUI* 	UI		= 0;
 
@@ -426,6 +427,7 @@ void TUI::Idle()
     // OnFrame
     TfrmImageLib::OnFrame();
     TfrmSoundLib::OnFrame();
+    TfrmChoseItem::OnFrame();
     // Progress
     ProgressDraw	();
     // test quit

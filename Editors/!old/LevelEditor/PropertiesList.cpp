@@ -608,7 +608,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                     R.top			+=	tvProperties->LineHeight-4;
                     R.left 			= 	R.Right-(R.bottom-R.top);
                     if (!V->OnDrawThumbnailEvent.empty())
-                    	V->OnDrawThumbnailEvent(prop->GetDrawText().c_str(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom),false);
+                    	V->OnDrawThumbnailEvent(prop->GetDrawText().c_str(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
                 }
             }break;
             case PROP_TEXTURE2:{
@@ -618,7 +618,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                     R.left 			= 	R.Right-(R.bottom-R.top);
                     SChooseEvents* E= TfrmChoseItem::GetEvents(smTexture); 
                     if (E&&!E->on_thm.empty())
-                    	E->on_thm(prop->GetDrawText().c_str(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom),false);
+                    	E->on_thm(prop->GetDrawText().c_str(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
                 }
             }break;
             case PROP_WAVE:

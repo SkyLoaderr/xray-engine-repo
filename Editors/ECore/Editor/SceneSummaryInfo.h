@@ -39,6 +39,30 @@ private:
     };
     DEFINE_SET	(STextureInfo,TISet,TISetIt);
     TISet		textures;
+    struct SPairInfo{
+    	xr_string			first;
+    	xr_string			second;
+    };
+    DEFINE_VECTOR(SPairInfo,PIVec,PIVecIt);
+	struct SObjectInfo{      
+    	shared_str 			object_name;
+        PIVec				info;
+        u32					ref_count;
+    public:
+    	SObjectInfo(const shared_str& name)
+        {
+        	object_name		= name;
+        	ref_count		= 0;
+        }
+        void		Prepare	();
+        void		FillProp(PropItemVec& items, LPCSTR pref);   
+        void		Export	(IWriter* F);
+		bool operator < (const SObjectInfo& other)	const{return xr_strcmp(object_name,other.object_name)<0;};
+		bool operator < (const shared_str& fn)		const{return xr_strcmp(object_name,fn)<0;};
+		bool operator ==(const shared_str& fn)		const{return object_name.equal(fn);};
+    };
+    DEFINE_SET	(SObjectInfo,OISet,OISetIt);
+    OISet		objects;
 public:    
 	RStringSet	lod_objects;
 	RStringSet	mu_objects;
@@ -76,6 +100,16 @@ public:
         }
         STextureInfo* info	= (STextureInfo*)(&(*it));
         info->effective_area+=area;
+    }
+    void 		AppendObject		(shared_str name)
+    {
+        OISetIt it 			= std::find(objects.begin(),objects.end(),name);
+        if (it==objects.end()){
+            std::pair<OISetIt,bool> res	= objects.insert		(SObjectInfo(name));
+            it 				= res.first;
+        }
+        SObjectInfo* info	= (SObjectInfo*)(&(*it));
+        info->ref_count++;
     }
     void		ExportSummaryInfo	(LPCSTR fn);
     void		FillProp			(PropItemVec& items);

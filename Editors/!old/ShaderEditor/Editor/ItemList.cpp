@@ -446,7 +446,7 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
             R.top			+=	tvItems->LineHeight-4;
             R.left 			= 	R.Right-(R.bottom-R.top);
             if (!prop->OnDrawThumbnail.empty())
-            	prop->OnDrawThumbnail(prop->Key(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom),false);
+            	prop->OnDrawThumbnail(prop->Key(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
         }
     }else{
     	Surface->Font->Color= Item->MainStyle->TextColor;
