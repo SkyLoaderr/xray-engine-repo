@@ -51,9 +51,9 @@ void CGlowManager::Load(CStream* fs)
 
 	// glows itself
 	DWORD size  = fs->Length();
-	R_ASSERT(size);
+	R_ASSERT	(size);
 	DWORD one	= 4*sizeof(float)+2*sizeof(DWORD);
-	R_ASSERT(size%one == 0);
+	R_ASSERT	(size%one == 0);
 	DWORD count	= size/one;
 	Glows.reserve(count);
 
@@ -184,7 +184,7 @@ void CGlowManager::Render()
 				if (G.fade<=1.f)	continue;
 				
 				TL.transform	(G.C,Device.mFullTransform);
-				float size		= fov_scale * Device.dwWidth * G.R /TL.p.w;
+				float size		= fov_scale * G.R /TL.p.w;
 				
 				// Convert to screen coords
 				float cx        = Device._x2real(TL.p.x);
