@@ -96,16 +96,18 @@ void CBuild::xrPhase_MergeLM()
 			string256	phase_name;
 			sprintf		(phase_name,"Building lightmap %d...",g_lightmaps.size());
 			Phase		(phase_name);
-			Status		("Selection...");
 			
 			// Sort layer by similarity (state changes)
+			Status		("Selection 1...");
 			std::sort	(Layer.begin(),Layer.end(),compare1_defl);
 
 			// Sort layer (by material and distance from "base" deflector)
+			Status		("Selection 2...");
 			Deflector	= Layer[0];
 			std::sort	(Layer.begin()+1,Layer.end(),compare2_defl);
 
 			// Select first deflectors which can fit
+			Status		("Selection 3...");
 			int maxarea		= lmap_size*lmap_size*5;	// Max up to 6 lm selected
 			int curarea		= 0;
 			int merge_count	= 0;
@@ -118,10 +120,12 @@ void CBuild::xrPhase_MergeLM()
 			}
 
 			// Sort part of layer by size decreasing
+			Status		("Selection 4...");
 			compare_layer	= L_base;
 			std::sort	(Layer.begin(),Layer.begin()+merge_count,compare3_defl);
 
 			// Startup
+			Status		("Selection 5...");
 			_InitSurface			();
 			CLightmap*	lmap		= new CLightmap;
 			g_lightmaps.push_back	(lmap);
