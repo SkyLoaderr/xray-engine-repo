@@ -100,6 +100,7 @@ void CShaderTools::Update(){
 	if (m_EditObject)
     	m_EditObject->RTL_Update(Device.fTimeDelta);
     SEngine.Update();
+    SCompiler.Update();
 }
 
 void CShaderTools::ZoomObject(){

@@ -132,13 +132,15 @@ void CSHEngineTools::Update()
     }
 }
 
-void CSHEngineTools::RealResetShaders()
+void CSHEngineTools::RealResetShaders() 
 {
 	Tools.m_Props->IsUpdating(true);
 	// disable props vis update
     m_bFreezeUpdate 	= TRUE;
 	// mem current blender
-    LPCSTR name			= m_CurrentBlender?m_CurrentBlender->getName():0;
+    AnsiString name;
+    FOLDER::MakeFullName(fraLeftBar->tvEngine->Selected,0,name);
+
 	Tools.UpdateObjectShader(true);
 	ResetCurrentBlender	();
     // save to temp file
@@ -150,7 +152,7 @@ void CSHEngineTools::RealResetShaders()
     m_bFreezeUpdate 	= FALSE;
 
 	// restore current shader
-	SetCurrentBlender	(name);
+	SetCurrentBlender	(name.c_str());
 
 	Tools.m_Props->IsUpdating(false);
 
@@ -179,6 +181,7 @@ void CSHEngineTools::Load(){
     m_bFreezeUpdate		= TRUE;
     m_bUpdateCurrent	= false;
 
+    fraLeftBar->tvEngine->IsUpdating = true;
     if (Engine.FS.Exist(fn.c_str())){
         CCompressedStream		FS(fn.c_str(),"shENGINE");
         char					name[256];
@@ -240,6 +243,7 @@ void CSHEngineTools::Load(){
     }else{
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
     }
+    fraLeftBar->tvEngine->IsUpdating = false;
 	m_bUpdateCurrent			= true;
     m_bFreezeUpdate				= FALSE;
 }
@@ -462,7 +466,7 @@ void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR new_full_name){
 	// apply chages (forced)
     ApplyChanges();//true);
     ResetShaders();
-    SetCurrentBlender(B);
+    if (B==m_CurrentBlender) SetCurrentBlender(B);
 }
 
 void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR ren_part, int level){
@@ -560,6 +564,7 @@ void CSHEngineTools::UpdateObjectFromStream(){
 }
 
 void CSHEngineTools::SetCurrentBlender(CBlender* B){
+	if (Tools.ActiveEditor()!=aeEngine) return;
     if (!m_bUpdateCurrent) return;
 
 	if (m_CurrentBlender!=B){

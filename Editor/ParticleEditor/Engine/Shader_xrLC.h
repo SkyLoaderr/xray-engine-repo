@@ -91,7 +91,10 @@ public:
 	void					Remove	(LPCSTR name)
 	{
 		for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++)
-			if (0==stricmp(name,it->Name)) library.erase(it);
+			if (0==stricmp(name,it->Name)){
+            	library.erase(it);
+                break;
+            }
 	}
 	void					Remove	(int id)
 	{

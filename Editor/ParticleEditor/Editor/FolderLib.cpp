@@ -55,7 +55,8 @@ bool FOLDER::MakeFullName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiSt
 {
 	if (begin_item){
     	TElTreeItem* node = begin_item;
-        name = "";
+        name = node->Text;
+		node = node->Parent;
         while (node){
 			name.Insert(node->Text+AnsiString('\\'),0);
         	if (node==end_item) break;

@@ -86,7 +86,6 @@ friend class TfrmShaderProperties;
 	void __fastcall 	NameOnDraw			(PropValue* sender, LPVOID draw_val);
 
     void				RealResetShaders	();
-	void				RemoteRenameBlender	();
 public:
 	CFS_Memory 			m_RenderShaders;
 

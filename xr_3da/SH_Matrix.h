@@ -50,21 +50,23 @@ public:
 				Fmatrix		T;
 				float		sU=1,sV=1,t=Device.fTimeGlobal;
 				tc_trans	(xform,.5f,.5f);
+				if (tcm&tcmRotate) {
+					T.rotateZ		(rotate.Calculate(t)*t);
+					xform.mul2_43	(T);
+				}
 				if (tcm&tcmScale) {
 					sU				= scaleU.Calculate(t);
 					sV				= scaleV.Calculate(t);
 					T.scale			(sU,sV,1);
 					xform.mul2_43	(T);
 				}
-				if (tcm&tcmRotate) {
-					T.rotateZ		(rotate.Calculate(t)*t);
-					xform.mul2_43	(T);
-				}
 				if (tcm&tcmScroll) {
 					float u = scrollU.Calculate(t)*t; 
-					float v = scrollV.Calculate(t)*t; 
-					u-=floorf(u)/sU;
-					v-=floorf(v)/sV;
+					float v = scrollV.Calculate(t)*t;
+                    u*=sU;
+                    v*=sV;
+//S					u-=floorf(u)/sU;
+//S					v-=floorf(v)/sV;
 					tc_trans	(T, u, v );
 					xform.mul2_43(T);
 				}

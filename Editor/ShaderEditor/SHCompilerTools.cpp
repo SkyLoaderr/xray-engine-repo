@@ -3,13 +3,13 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "SHEngineTools.h"
+#include "SHCompilerTools.h"
 #include "Blender.h"
 #include "UI_Tools.h"
 #include "ui_main.h"
 #include "LeftBar.h"
-#include "PropertiesShader.h"
 #include "xr_trims.h"
+#include "folderlib.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -17,7 +17,6 @@ CSHCompilerTools::CSHCompilerTools(){
     m_bModified 		= FALSE;
     m_LibShader 		= 0;
     m_bUpdateCurrent	= false;
-    m_bFreezeUpdate		= FALSE;
 }
 
 CSHCompilerTools::~CSHCompilerTools(){
@@ -31,42 +30,17 @@ void CSHCompilerTools::Modified(){
 }
 //---------------------------------------------------------------------------
 
+void CSHCompilerTools::Update()
+{
+}
+//---------------------------------------------------------------------------
+
 void CSHCompilerTools::OnCreate(){
     Load();
 }
 
 void CSHCompilerTools::OnDestroy(){
-    ClearData();
-
-    // hide properties window
-	TfrmShaderProperties::HideProperties();
     m_bModified = FALSE;
-}
-
-void CSHCompilerTools::ClearData(){
-    // free constants, matrices, blenders
-/*	// Shader
-	for (ShaderPairIt b=m_Shaders.begin(); b!=m_Shaders.end(); b++)
-	{
-		free		(b->first);
-		delete		b->second;
-	}
-	m_Shaders.clear	();
-
-	// Matrices
-	for (MatrixPairIt m=m_Matrices.begin(); m!=m_Matrices.end(); m++){
-		free		(m->first);
-		delete		m->second;
-	}
-	m_Matrices.clear	();
-
-	// Constants
-	for (ConstantPairIt c=m_Constants.begin(); c!=m_Constants.end(); c++){
-		free		(c->first);
-		delete		c->second;
-	}
-	m_Constants.clear	();
-*/
 }
 
 bool CSHCompilerTools::IfModified(){
@@ -82,16 +56,12 @@ bool CSHCompilerTools::IfModified(){
 }
 
 void CSHCompilerTools::ApplyChanges(){
-    if (m_LibShader){
-		*m_LibShader = m_EditShader;
-		Modified();
-    }
+    if (m_LibShader) *m_LibShader = m_EditShader;
 }
 
 void CSHCompilerTools::Reload(){
 	fraLeftBar->ClearCShaderList();
     ResetCurrentShader();
-    ClearData();
     Load();
 }
 
@@ -100,6 +70,7 @@ void CSHCompilerTools::Load(){
     Engine.FS.m_GameRoot.Update(fn);
 
     m_bUpdateCurrent	= false;
+    fraLeftBar->tvCompiler->IsUpdating = true;
 
     if (Engine.FS.Exist(fn.c_str())){
     	m_Library.Load(fn.c_str());
@@ -113,12 +84,14 @@ void CSHCompilerTools::Load(){
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
     }
 
+    fraLeftBar->tvCompiler->IsUpdating = false;
 	m_bUpdateCurrent			= true;
 }
 
 void CSHCompilerTools::Save(){
     ApplyChanges();
-    LPCSTR name					= m_LibShader?m_LibShader->Name:0;
+    AnsiString name;
+    FOLDER::MakeFullName		(fraLeftBar->tvCompiler->Selected,0,name);
 	ResetCurrentShader			();
 	m_bUpdateCurrent			= false;
 
@@ -134,7 +107,7 @@ void CSHCompilerTools::Save(){
     m_Library.Save			(fn.c_str());
     Engine.FS.LockFile		(0,fn.c_str(),false);
 	m_bUpdateCurrent		= true;
-	SetCurrentShader		(name);
+	SetCurrentShader		(name.c_str());
 
     m_bModified	= FALSE;
 }
@@ -195,6 +168,7 @@ void CSHCompilerTools::RemoveShader(LPCSTR name){
 }
 
 void CSHCompilerTools::SetCurrentShader(Shader_xrLC* S){
+	if (Tools.ActiveEditor()!=aeCompiler) return;
     if (!m_bUpdateCurrent) return;
 
     // save changes
@@ -206,7 +180,7 @@ void CSHCompilerTools::SetCurrentShader(Shader_xrLC* S){
         if (m_LibShader) m_EditShader = *m_LibShader;
         UpdateProperties();
     }
-	fraLeftBar->SetCurrentCShader(S?S->Name:0);
+	if (S) fraLeftBar->SetCurrentCShader(S->Name);
 }
 
 void CSHCompilerTools::ResetCurrentShader(){
@@ -214,12 +188,8 @@ void CSHCompilerTools::ResetCurrentShader(){
 }
 
 void CSHCompilerTools::SetCurrentShader(LPCSTR name){
-	SetCurrentShader(FindShader(name));
-}
-
-void CSHCompilerTools::UpdateProperties()
-{
-	if (m_bFreezeUpdate) return;
-	TfrmShaderProperties::InitProperties();
+	Shader_xrLC* S=FindShader(name);
+	SetCurrentShader(S);
+	if (!S) fraLeftBar->SetCurrentCShader(name);
 }
 

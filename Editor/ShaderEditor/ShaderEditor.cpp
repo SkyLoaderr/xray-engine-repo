@@ -125,6 +125,7 @@ USEUNIT("Engine\xrXRC.cpp");
 USEUNIT("Editor\Engine.cpp");
 USEFORM("Editor\PropertiesList.cpp", frmProperties);
 USEUNIT("SHEngineToolsProperties.cpp");
+USEUNIT("SHCompilerToolsProperties.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

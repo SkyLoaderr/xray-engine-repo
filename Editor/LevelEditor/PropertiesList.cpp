@@ -630,7 +630,7 @@ void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
 		seNumber->MinValue 	= V->lim_mn;
         seNumber->MaxValue 	= V->lim_mx;
 	    seNumber->Increment	= V->inc;
-        seNumber->LWSensitivity=float(V->inc)/100;
+        seNumber->LWSensitivity=0.01f;
 	    seNumber->Decimal  	= 0;
     	seNumber->ValueType	= vtInt;
 	    seNumber->Value 	= edit_val;
@@ -642,7 +642,7 @@ void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
 		seNumber->MinValue 	= V->lim_mn;
         seNumber->MaxValue 	= V->lim_mx;
 	    seNumber->Increment	= V->inc;
-        seNumber->LWSensitivity=V->inc/100;
+        seNumber->LWSensitivity=0.1f;
 	    seNumber->Decimal  	= V->dec;
     	seNumber->ValueType	= vtFloat;
 	    seNumber->Value 	= edit_val;

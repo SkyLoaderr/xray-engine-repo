@@ -3,12 +3,13 @@
 #define SHCompilerToolsH
 
 #include "Shader_xrLC.h"
+#include "ElTree.hpp"
+
 // refs
-struct Shader_xrLC;
+class PropValue;
 
 class CSHCompilerTools
 {
-	BOOL				m_bFreezeUpdate;
 	BOOL				m_bModified;
 
 	Shader_xrLC*		FindShader			(LPCSTR name);
@@ -16,6 +17,10 @@ class CSHCompilerTools
 
     Shader_xrLC_LIB		m_Library;
     bool 				m_bUpdateCurrent;	// если менялся объект непосредственно  Update____From___()
+    // name
+	void __fastcall 	NameOnAfterEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnBeforeEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnDraw			(PropValue* sender, LPVOID draw_val);
 public:
     Shader_xrLC*		m_LibShader;
     Shader_xrLC			m_EditShader;
@@ -24,8 +29,6 @@ public:
     void				RemoveShader		(LPCSTR name);
 	void				RenameShader		(LPCSTR old_full_name, LPCSTR ren_part, int level);
 	void				RenameShader		(LPCSTR old_full_name, LPCSTR new_full_name);
-
-    void 				ClearData			();
 public:
 						CSHCompilerTools 	();
     virtual 			~CSHCompilerTools	();
@@ -48,6 +51,7 @@ public:
     void				ApplyChanges		();
 
 	void 				UpdateProperties	();
+	void 				Update				();
 };
 //---------------------------------------------------------------------------
 #endif
