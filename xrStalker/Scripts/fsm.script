@@ -84,7 +84,8 @@ function main()
 
 	local fsm_stalker = fsm.FSM(stalker00)
 
-	local a = {[0]={}}
+--	local a = {[0]={}}
+	local a = {}
 
 	if a[0] == nil then
 		a[0] = {1,2,3}
