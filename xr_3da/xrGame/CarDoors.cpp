@@ -145,8 +145,9 @@ void CCar::SDoor::Init()
 		closed_angle-=2.f*M_PI/180.f;
 	}
 	Fvector shoulder;
+
 	shoulder.sub(door_transform.c,joint->PSecond_element()->mass_Center());
-	torque=shoulder.magnitude()*joint->PSecond_element()->getMass()*2.f*10.f;
+	torque=shoulder.magnitude()*joint->PSecond_element()->getMass()*pcar->m_doors_torque_factor*10.f;
 	state=opened;
 //	Close();
 }

@@ -51,6 +51,7 @@ CCar::CCar(void)
 	//у машины слотов в инвентаре нет
 	inventory			= xr_new<CInventory>();
 	inventory->SetSlotsUseful(false);
+	m_doors_torque_factor = 2.f;
 }
 
 CCar::~CCar(void)
@@ -492,6 +493,12 @@ void CCar::ParseDefinitions()
 	if(ini->section_exist("animations"))
 	{
 		m_driver_anim_type=ini->r_u16("animations","driver_animation_type");
+	}
+
+	
+	if(ini->section_exist("doors"))
+	{
+		m_doors_torque_factor=ini->r_u16("doors","open_torque_factor");
 	}
 
 }

@@ -16,7 +16,27 @@
 					else		{on_z;}\
 				}
 
+#define  MIN_OF(x,on_x,y,on_y,z,on_z)\
+	if(x<y){\
+					if	(x<z)	{on_x;}\
+					else		{on_z;}\
+				}\
+				else\
+				{\
+					if	(y<z)	{on_y;}\
+					else		{on_z;}\
+				}
 
+//#define  NON_MIN_OF(x,on_x1,on_x2,y,on_y1,on_y2,z,on_z1,on_z1)\
+//					if(x>y){\
+//							if	(x>z)	{on_x;}\
+//							else		{on_z;}\
+//							}\
+//					else\
+//							{\
+//							if	(y>z)	{on_y;}\
+//							else		{on_z;}\
+//							}
 
 class CPHLeaderGeomShell: public CPHStaticGeomShell
 {
