@@ -35,6 +35,7 @@ module ("xr_wounded")
 module ("xr_scout")
 module ("xr_trivial")
 module ("xr_report")
+module ("xr_rest")
 
 module ("escape")
 
