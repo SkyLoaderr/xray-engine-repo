@@ -253,6 +253,8 @@ void CHOM::Render_ZB	()
 
 void CHOM::Debug		()
 {
+	if (0==dbg_surf)	return;
+
 	// Texture
 	D3DLOCKED_RECT		R;
 	R_CHK				(dbg_surf->LockRect(0,&R,0,0));
