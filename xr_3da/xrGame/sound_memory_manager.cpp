@@ -86,7 +86,7 @@ void CSoundMemoryManager::enable		(const CObject *object, bool enable)
 	(*J).m_enabled		= enable;
 }
 
-void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const Fvector &position, float sound_power)
+void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSoundUserDataPtr user_data, const Fvector &position, float sound_power)
 {
 	if (!m_sounds)
 		return;

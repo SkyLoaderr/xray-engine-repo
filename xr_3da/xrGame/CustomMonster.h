@@ -211,7 +211,7 @@ public:
 
 	IC		CMemoryManager		&memory					() const;
 	virtual float				feel_vision_mtl_transp	(u32 element);
-	virtual	void				feel_sound_new			(CObject* who, int type, const Fvector &Position, float power);
+	virtual	void				feel_sound_new			(CObject* who, int type, CSoundUserDataPtr user_data, const Fvector &Position, float power);
 	virtual bool				useful					(const CGameObject *object) const;
 	virtual float				evaluate				(const CGameObject *object) const;
 	virtual bool				useful					(const CEntityAlive *object) const;

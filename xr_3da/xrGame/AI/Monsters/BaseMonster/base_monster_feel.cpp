@@ -18,7 +18,7 @@
 #include "../../../sound_player.h"
 #include "../../../level.h"
 
-void CBaseMonster::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
+void CBaseMonster::feel_sound_new(CObject* who, int eType, CSoundUserDataPtr user_data, const Fvector &Position, float power)
 {
 	if (!g_Alive())		return;
 
@@ -103,7 +103,7 @@ void CBaseMonster::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16
 {
 	if (!g_Alive()) return;
 	
-	feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
+	feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,0,who->Position(),1.f);
 	if (g_Alive()) sound().play(MonsterSpace::eMonsterSoundTakeDamage);
 
 	if (element < 0) return;

@@ -287,7 +287,7 @@ public:
 	virtual void				Think					();
 	virtual void				SelectAnimation			(const Fvector& _view, const Fvector& _move, float speed );
 	virtual void				Exec_Action				(float dt);
-	virtual	void				feel_sound_new			(CObject* who, int type, const Fvector &Position, float power);
+	virtual	void				feel_sound_new			(CObject* who, int type, CSoundUserDataPtr user_data, const Fvector &Position, float power);
 	virtual void				feel_touch_new			(CObject* O);
 	virtual BOOL				feel_touch_on_contact	(CObject* O);
 	virtual BOOL				feel_vision_isRelevant	(CObject*);

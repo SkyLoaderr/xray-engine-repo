@@ -861,9 +861,9 @@ float CCustomMonster::feel_vision_mtl_transp(u32 element)
 	return	(memory().visual().feel_vision_mtl_transp(element));
 }
 
-void CCustomMonster::feel_sound_new	(CObject* who, int type, const Fvector &position, float power)
+void CCustomMonster::feel_sound_new	(CObject* who, int type, CSoundUserDataPtr user_data, const Fvector &position, float power)
 {
-	memory().sound().feel_sound_new(who,type,position,power);
+	memory().sound().feel_sound_new(who,type,user_data,position,power);
 }
 
 bool CCustomMonster::useful			(const CGameObject *object) const
