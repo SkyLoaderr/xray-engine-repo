@@ -192,6 +192,7 @@ void CExplosive::Explode()
 			m_fCurrentHitPower,
 			m_fCurrentHitImpulse,
 			(u16)m_iCurrentParentID,
+			(u16)ID(),
 			m_fCurrentHitType,
 			m_fCurrentFireDist,
 			cartridge);

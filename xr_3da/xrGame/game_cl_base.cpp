@@ -116,8 +116,8 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			P.r_u16 (KillerID);
 			P.r_u16 (WeaponID);
 
-			CObject* pPlayer = Level().Objects.net_Find(PlayerID);
-			CObject* pKiller = Level().Objects.net_Find(KillerID);
+//			CObject* pPlayer = Level().Objects.net_Find(PlayerID);
+//			CObject* pKiller = Level().Objects.net_Find(KillerID);
 			CObject* pWeapon = Level().Objects.net_Find(WeaponID);
 
 			if (pWeapon)

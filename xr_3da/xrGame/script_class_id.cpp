@@ -54,7 +54,7 @@ void CLSID_Holder::init		()
 	add					("trader",				CLSID_AI_TRADER				);
 	add					("boar",				CLSID_AI_BOAR				);
 	add					("idol",				CLSID_AI_IDOL				);
-	add					("car_niva",			CLSID_CAR_NIVA				);
+	add					("car_niva",			CLSID_CAR					);
 	add					("helicopter",			CLSID_VEHICLE_HELICOPTER	);
 	add					("event",				CLSID_EVENT					);
 	add					("flyer",				CLSID_OBJECT_FLYER			);

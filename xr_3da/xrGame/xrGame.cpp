@@ -1065,7 +1065,7 @@ extern "C" {
 			case CLSID_AI_TRADER:			P = xr_new<CAI_Trader>();			break;
 
 			case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
-			case CLSID_CAR_NIVA:			P = xr_new<CCar>();					break;
+			case CLSID_CAR:					P = xr_new<CCar>();					break;
 
 			case CLSID_VEHICLE_HELICOPTER:	P = xr_new<CVehicleHelicopter>();	break;
 

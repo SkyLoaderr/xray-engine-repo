@@ -1302,7 +1302,7 @@ void CStalkerActionCamp::execute	()
 //		return;
 	}
 
-	Fvector							position = mem_object.m_object_params.m_position;
+//	Fvector							position = mem_object.m_object_params.m_position;
 	CCoverPoint						*point = m_object->best_cover_point(
 		mem_object.m_self_params.m_position,
 		mem_object.m_self_params.m_position,
