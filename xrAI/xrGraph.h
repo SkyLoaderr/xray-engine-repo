@@ -51,6 +51,7 @@ DEFINE_VECTOR(SGraphVertex,	GRAPH_VERTEX_VECTOR,	GRAPH_VERTEX_IT);
 DEFINE_VECTOR(SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
 
 extern vector<SGraphVertex>	tpaGraph;		// graph
+extern SGraphHeader			tGraphHeader;
 
 void xrBuildGraph(LPCSTR name);
 void xrMergeSpawns();

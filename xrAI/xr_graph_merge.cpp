@@ -108,7 +108,6 @@ void xrMergeGraphs()
 	if (!pSettings->SectionExists("game_levels"))
 		THROW;
 	GRAPH_P_VECTOR					tpGraphs;
-	SGraphHeader					tGraphHeader;
 	string256						S1, S2;
 	SLevel							tLevel;
 	u32								dwOffset = 0;
