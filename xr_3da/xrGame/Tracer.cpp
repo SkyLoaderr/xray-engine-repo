@@ -7,7 +7,7 @@
 #include "Tracer.h"
 
 const u32	MAX_TRACERS	= (1024*5);
-const float TRACER_SIZE = 0.2f;
+const float TRACER_SIZE = 0.13f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
