@@ -129,7 +129,7 @@ void CDemoRecord::MakeLevelMapProcess()
 		m_bOverlapped				= FALSE;
 		string_path tmp;
 		Fbox bb						= g_pGameLevel->ObjectSpace.GetBoundingVolume();
-		sprintf(tmp,"%s_[%3.3f x %3.3f]",*g_pGameLevel->name(),bb.max.x-bb.min.x,bb.max.z-bb.min.z);
+		sprintf(tmp,"%s_[%3.3f, %3.3f]-[%3.3f, %3.3f]",*g_pGameLevel->name(),bb.min.x,bb.min.z,bb.max.x,bb.max.z);
 		Render->Screenshot			(IRender_interface::SM_FOR_LEVELMAP,tmp);
 		psHUD_Flags.assign			(s_hud_flag);
 		BOOL bDevReset				= !psDeviceFlags.equal(s_dev_flags,rsFullscreen);
