@@ -78,7 +78,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 		}
 	}
  
-	Irect clip_rect			= {bp.x,bp.y,iFloor(bp.x+fw*iTileX+iRemX),iFloor(bp.y+fh*iTileY+iRemY)};
+	Irect clip_rect			= {iPos.x,iPos.y,iFloor(iPos.x+iVisRect.x2*iTileX+iRemX),iFloor(iPos.y+iVisRect.y2*iTileY+iRemY)};
 	UI()->PushScissor		(clip_rect);
 
 	// unlock VB and Render it as triangle LIST

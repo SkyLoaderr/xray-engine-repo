@@ -262,7 +262,7 @@ CUIGlobalMap::CUIGlobalMap(CUIMapWnd*	pMapWnd)
 	m_MinimizedSize.set		(0,0);
 	m_NormalSize.set		(0,0);
 	m_State					= stNone;
-	Show					(true);
+	Show					(false);
 }
 
 
@@ -404,6 +404,7 @@ void CUIGlobalMap::Draw					()
 CUILevelMap::CUILevelMap()
 :m_globalMapSpot(this)
 {
+	Show(false);
 }
 
 CUILevelMap::~CUILevelMap()
@@ -554,12 +555,14 @@ void CUIMapWnd::Show(bool status)
 {
 	if (status)
 	{
+		m_GlobalMap->Show(true);
 		InitGlobalMapObjectives			();
 		InitLocalMapObjectives			();
 		if(m_activeLevelMap==NULL)
 			SetActiveMap				(Level().name());
 			SetActivePoint				( Level().CurrentEntity()->Position() );
 	}else{
+		m_GlobalMap->Show(false);
 		GetUICursor()->HoldMode(false);
 		m_flags.set(lmMouseHold,FALSE);
 	}
@@ -583,7 +586,7 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 		m_activeLevelMap						= it->second;
 		m_UILevelFrame.AttachChild				(m_activeLevelMap);
 	};
-
+	m_activeLevelMap->Show(true);
 	m_UILevelFrame.BringToTop	(m_GlobalMap);
 
 	// set scroll range 
