@@ -413,8 +413,6 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 void CUIListWnd::Draw()
 {
-	CUIWindow::Draw();
-
 	WINDOW_LIST_it it;
 
 	if(m_iFocusedItem != -1 && m_bActiveBackgroundEnable)
@@ -435,6 +433,8 @@ void CUIListWnd::Draw()
 			}
 		}
 	}
+
+	CUIWindow::Draw();
 }
 
 int CUIListWnd::GetSize()

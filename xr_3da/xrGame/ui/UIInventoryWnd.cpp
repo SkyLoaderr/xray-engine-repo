@@ -239,6 +239,10 @@ void CUIInventoryWnd::InitInventory()
 	//инициализировать информацию о персонаже
 	UICharacterInfo.InitCharacter(pInvOwner);
 
+	if (GAME_SINGLE != Game().type)
+	{
+		UIOutfitSlot.SetMPOutfit();
+	}
 	
 	//очистить после предыдущего запуска
 	UITopList[0].DropAll();
