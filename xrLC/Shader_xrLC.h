@@ -75,9 +75,9 @@ public:
 	{
 		return &library[id];
 	}
-	Shader_xrLC*			Append	()
+	Shader_xrLC*			Append	(Shader_xrLC* parent=0)
 	{
-		library.push_back(Shader_xrLC());
+		library.push_back(parent?Shader_xrLC(*parent):Shader_xrLC());
 		return &library.back();
 	}
 	void					Remove	(LPCSTR name)
