@@ -96,9 +96,16 @@ BOOL  CBaseMonster::feel_vision_isRelevant(CObject* O)
 	// если спит, то ничего не видит
 	if (m_bSleep) return FALSE;
 	
-	// если не враг, не видит
+	// если не враг - не видит
 	CEntityAlive* entity = smart_cast<CEntityAlive*> (O);
-	if (entity && entity->g_Alive() && !EnemyMan.is_enemy(entity)) return FALSE;
+	if (entity && entity->g_Alive()) {
+		if (!EnemyMan.is_enemy(entity)) {
+			// если видит друга - проверить наличие у него врагов
+			CBaseMonster *monster = smart_cast<CBaseMonster *>(entity);
+			if (monster) EnemyMan.transfer_enemy(monster);
+			return FALSE;
+		}
+	}
 
 	return TRUE;
 }

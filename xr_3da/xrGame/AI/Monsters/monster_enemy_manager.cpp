@@ -198,6 +198,16 @@ bool CMonsterEnemyManager::is_enemy(const CEntityAlive *obj)
 	return ((monster->g_Team() != obj->g_Team()) && ((monster->tfGetRelationType(obj) == ALife::eRelationTypeEnemy) || (monster->tfGetRelationType(obj) == ALife::eRelationTypeWorstEnemy)) && obj->g_Alive());
 }
 
+void CMonsterEnemyManager::transfer_enemy(CBaseMonster *friend_monster)
+{
+	// если у friend_monster нет врага
+	if (!friend_monster->EnemyMan.get_enemy()) return;
 
-
+	monster->EnemyMemory.add_enemy(
+		friend_monster->EnemyMan.get_enemy(), 
+		friend_monster->EnemyMan.get_enemy_position(),
+		friend_monster->EnemyMan.get_enemy_vertex(),
+		friend_monster->EnemyMan.get_enemy_time_last_seen()
+	);
+}
 

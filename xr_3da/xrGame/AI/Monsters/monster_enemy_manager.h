@@ -51,4 +51,7 @@ public:
 	bool				is_faced				(const CEntityAlive *object0, const CEntityAlive *object1);
 	
 	bool				is_enemy				(const CEntityAlive *obj);
+
+	// обновить врага в соответствии с врагом у monster
+	void				transfer_enemy			(CBaseMonster *friend_monster);
 };
