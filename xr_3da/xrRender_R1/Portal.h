@@ -97,7 +97,7 @@ public:
 #if RENDER==R_R2
 	void					lightAdd	(light* O)
 	{	tempLights.push_back	(O); }
-	void					lightRemove	(CTempObject* O)
+	void					lightRemove	(light* O)
 	{
 		vector<light*>::iterator I = find(tempLights.begin(),tempLights.end(),O);
 		if (I!=tempLights.end()) tempLights.erase(I);

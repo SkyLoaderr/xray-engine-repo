@@ -224,14 +224,14 @@ void CSector::Render			(CFrustum &F)
 				{
 				case IRender_Light::POINT:
 					if (F.testSphere_dirty(O->position,O->range))
-						RImplementation.L_DB.add_sector_dlight(O);
+						RImplementation.Lights.add_sector_dlight(O);
 					break;
 				case IRender_Light::SPOT:
 					{
 						Fvector P;
 						P.mad	(O->position,O->direction,O->range/2);
 						if (F.testSphere_dirty(P,O->range/2))
-							RImplementation.L_DB.add_sector_dlight(O);
+							RImplementation.Lights.add_sector_dlight(O);
 					}
 					break;
 				}

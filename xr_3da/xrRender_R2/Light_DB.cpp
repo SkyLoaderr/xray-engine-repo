@@ -185,56 +185,6 @@ void			CLight_DB::Update()
 	v_selected_shadowed.clear	();
 	v_selected_unshadowed.clear	();
 
-	// Select dynamic lights
-	for (set<light*>::iterator it=v_dynamic_active.begin(); it!=v_dynamic_active.end(); it++)
-	{
-		light* T = *it;
-		if (RImplementation.ViewBase.testSphere_dirty	(T->position, T->range))
-		{
-			T->dwFrame				=Device.dwFrame;
-			if (T->flags.bShadow)	
-			{
-				//$$$ nv3x codepath doesn't implement shadowed point lights
-				if (RImplementation.b_nv3x && (IRender_Light::POINT==T->flags.type))
-					v_selected_unshadowed.push_back	(T);
-				else
-					v_selected_shadowed.push_back	(T);
-			}
-			else					v_selected_unshadowed.push_back	(T);
-		}
-	}
-
-	// Light direction
-	/*
-	u32 t					= Device.TimerAsync();
-	if (t>sun_tm_next) 
-	{
-		sun_tm_base				= t;
-		sun_tm_next				= t+5000;
-
-		sun_dir_0.set			(sun_dir_1);
-		sun_dir_1.random_dir	();
-		sun_dir_1.add			(sun_dir_base);
-		sun_dir_1.normalize		();
-
-		u32							rnd		= ::Random.randI(0,20000)*838;
-		sun_color_0.set				(sun_color_1);
-		sun_color_1.set				(color_get_R(rnd),color_get_G(rnd),color_get_B(rnd));
-		sun_color_1.normalize_safe	();
-		sun_color_1.mul				(::Random.randF(.5f,2.0f));
-	}
-	
-	float f					= float(t-sun_tm_base)/float(sun_tm_next-sun_tm_base);
-
-	sun_dir.lerp			(sun_dir_0,sun_dir_1,f);
-	sun_dir.normalize		();
-	sun_dir.lerp			(sun_dir,sun_dir_base,.6f);
-	sun_dir.normalize		();
-
-	sun_color.lerp			(sun_color_0,sun_color_1,f);
-//	sun_color.lerp			(sun_color,sun_color_base,.5f);
-	*/
-
 	// move point/spot lights
 	{
 		static float t		=	0;
