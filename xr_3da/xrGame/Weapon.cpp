@@ -414,12 +414,6 @@ void CWeapon::Update		(DWORD dT)
 	DWORD	dwTimeCL		= Level().timeServer()-NET_Latency;
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
-	// Logic
-	float dt				= float(dT)/1000.f;
-	fireDispersion_Current	-=	fireDispersion_Dec*dt;
-	clamp					(fireDispersion_Current,0.f,1.f);
-	if (light_time>0)		light_time -= dt;
-
 	// Inherited
 	inherited::Update		(dT);
 }
@@ -479,6 +473,12 @@ void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, f
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
+
+	// Logic
+	float dt				= Device.fTimeDelta;
+	fireDispersion_Current	-=	fireDispersion_Dec*dt;
+	clamp					(fireDispersion_Current,0.f,1.f);
+	if (light_time>0)		light_time -= dt;
 
 	if (Remote() && NET.size())
 	{
