@@ -78,9 +78,9 @@ function dialog_mgr:finalize()
 end
 
 -- включить возможность начала диалога
-function dialog_mgr:enable( ... )
+function dialog_mgr:enable( dlgs )
 	if self.team then
-		self.a.dlgs = arg
+		self.a.dlgs = dlgs
 	end
 end
 
@@ -99,8 +99,8 @@ end
 -- начало нового диалога
 function dialog_mgr:new_dialog()
 	-- выбор нового диалога
-	if self.a.dlgs.n > 1 then
-		local r = math.random( 1, self.a.dlgs.n - 1 )
+	if table.getn( self.a.dlgs ) > 1 then
+		local r = math.random( 1, table.getn( self.a.dlgs ) - 1 )
 		if self.a.dlgs[r] == self.a.last_dlg then
 			r = r + 1
 		end
@@ -141,7 +141,6 @@ function dialog_mgr:new_phrase()
 
 	-- если диалог уже был начат (т.е. есть текущий говорящий)
 	if self.a.cur_npc then
---		printf( "1     %d", table.getn( self.a.npcs ) )
 		-- выбрать того, кто ответит. он должен быть недалеко от предыдущего говорящего
 		for i, v in self.a.npcs do
 			if v:id() ~= self.a.cur_npc:id() and self.a.cur_npc:position():distance_to_sqr( v:position() ) <= dist_max then
@@ -151,15 +150,12 @@ function dialog_mgr:new_phrase()
 
 		if table.getn( avail ) == 0 then
 			-- если отвечать некому, то фраза не выбрана
-			printf( "nobody to answer" )
 			return false
 		end
 
 		-- выбор нового говорящего
 		self.a.cur_npc = avail[math.random( 1, table.getn( avail ) )]
 	else
---		printf( "2" )
-
 		-- попытка выбора нового говорящего
 		self.a.cur_npc = self.a.npcs[math.random( 1, table.getn( self.a.npcs ) )]
 
@@ -181,6 +177,7 @@ function dialog_mgr:new_phrase()
 
 	-- выбор новой фразы
 	if not self.a.cur_phrase then
+		printf( self.a.cur_dlg )
 		self.a.cur_phrase = dialogs[self.a.cur_dlg][1]
 	else
 		local p = self.a.cur_phrase.next
@@ -200,7 +197,7 @@ function dialog_mgr:new_phrase()
 	self.a.phrase_delay_end = device():time_global() + math.random( pause_min, pause_max ) * 1000
 	self.a.phrase_playing   = false
 
-	printf( "phrase selected" )
+--	printf( "phrase selected" )
 	return true
 end
 
@@ -209,6 +206,12 @@ function dialog_mgr:update()
 	-- если сталкер не состоит в команде для диалогов
 	if not self.team then
 		return
+	end
+
+	if self.a.dlgs then
+		printf( self.a.dlgs[1] )
+	else
+		printf( "no dlgs " )
 	end
 
 	if self.a.cur_dlg then	-- активен ли диалог?
