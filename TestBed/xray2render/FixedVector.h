@@ -40,7 +40,7 @@ public:
 		for (u32 i=id; i<count; i++)
 			array[i] = array[i+1];
 	}
-	IC void		erase(T* it)		{ erase(it-begin());	}
+	IC void		erase(T* it)		{ erase(u32(it-begin()));	}
 
 	IC void		insert(u32 id, T& V)
 	{
