@@ -580,11 +580,11 @@ static void	GlobalPlayCallback(CBlend *B)
 
 static void	ScriptPlayCallback(CBlend *B)
 {
-#ifdef DEBUG
 	CAI_Stalker							*stalker = (CAI_Stalker*)B->CallbackParam;
+#ifdef DEBUG
 	VERIFY								(stalker);
-#endif
 	VERIFY								(!stalker->m_current_script_animation || stalker->m_current_script_animation == stalker->m_script_animations.front().m_motion);
+#endif
 	stalker->m_script_animations.pop_front();
 	stalker->m_current_script_animation	= 0;
 }
