@@ -1027,7 +1027,8 @@ void CRender::render_sun_near	()
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
 			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
-			r_dsgraph_render_graph				(0);
+			r_dsgraph_render_graph				(0)	;
+			Details->Render						()	;	//.
 			fuckingsun->X.D.transluent			= FALSE;
 			if (bSpecial)						{
 				fuckingsun->X.D.transluent			= TRUE;
