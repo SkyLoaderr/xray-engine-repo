@@ -15,6 +15,9 @@
 
 #include "inventory.h"
 #include "missile.h"
+#include "weapon.h"
+#include "object_handler_planner.h"
+#include "object_handler_space.h"
 
 void CStalkerAnimationManager::reinit				()
 {
@@ -156,6 +159,116 @@ void CStalkerAnimationManager::update						()
 		Msg					("stalker name is %s",*m_object->cName());
 		Msg					("stalker section is %s",*m_object->cNameSect());
 		Msg					("stalker visual is %s",*m_object->cNameVisual());
+
+		if (m_weapon) {
+			switch (m_weapon->STATE) {
+				case CWeapon::eReload :
+					Msg		("norm_torso_%d_reload_0",object_slot());
+					break;
+				case CWeapon::eShowing :
+					Msg		("norm_torso_%d_draw_0",object_slot());
+					break;
+				case CWeapon::eHiding :
+					Msg		("norm_torso_%d_holster_0",object_slot());
+					break;
+				case CWeapon::eFire:
+					if ((body_state() == eBodyStateStand) && !fis_zero(object().movement().speed()))
+						Msg		("norm_torso_%d_attack_2",object_slot());
+					else
+						Msg		("norm_torso_%d_attack_0",object_slot());
+					break;
+				case CWeapon::eFire2 :
+					if ((body_state() == eBodyStateStand) && !fis_zero(object().movement().speed()))
+						Msg		("norm_torso_%d_attack_2",object_slot());
+					else
+						Msg		("norm_torso_%d_attack_0",object_slot());
+					break;
+				default : {
+					switch (object().CObjectHandler::planner().current_action_state_id()) {
+						case ObjectHandlerSpace::eWorldOperatorAim1 :
+						case ObjectHandlerSpace::eWorldOperatorAim2 :
+						case ObjectHandlerSpace::eWorldOperatorAimingReady1 :
+						case ObjectHandlerSpace::eWorldOperatorAimingReady2 :
+						case ObjectHandlerSpace::eWorldOperatorFire1 :
+						case ObjectHandlerSpace::eWorldOperatorFire2 :
+						case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
+						case ObjectHandlerSpace::eWorldOperatorQueueWait2 : {
+							if ((body_state() == eBodyStateStand) && !fis_zero(object().movement().speed()))
+								if (body_state() == eBodyStateStandDamaged)
+									Msg	("norm_torso_%d_idle_1",object_slot());
+								else
+									Msg	("norm_torso_%d_aim_1",object_slot());
+							else
+								if (body_state() == eBodyStateStandDamaged)
+									Msg	("norm_torso_%d_idle_0",object_slot());
+								else
+									Msg	("norm_torso_%d_aim_0",object_slot());
+							break;
+						}
+						case ObjectHandlerSpace::eWorldOperatorStrapping :
+							Msg		("norm_torso_%d_strap_0",object_slot());
+							break;
+						case ObjectHandlerSpace::eWorldOperatorUnstrapping :
+							Msg		("norm_torso_%d_unstrap_0",object_slot());
+							break;
+						case ObjectHandlerSpace::eWorldOperatorStrapping2Idle :
+							Msg		("norm_torso_%d_strap_1",object_slot());
+							break;
+						case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle :
+							Msg		("norm_torso_%d_unstrap_1",object_slot());
+							break;
+						default : {
+							if (eMentalStateFree == object().movement().mental_state()) {
+								//. hack
+								R_ASSERT2	(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!");
+								if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed()))
+									Msg		("norm_torso_%d_idle_1",object_slot());
+								else
+									if (object().conditions().IsLimping())
+										Msg	("norm_torso_%d_idle_1",object_slot());
+									else
+										if (object().movement().movement_type() == eMovementTypeWalk)
+											Msg	("norm_torso_%d_walk_1",object_slot());
+										else
+											Msg	("norm_torso_%d_run_1",object_slot());
+							}
+							else {
+								if (fis_zero(object().movement().speed())) {
+									if (object().conditions().IsLimping())
+										Msg	("norm_torso_%d_idle_0",object_slot());
+									else
+										Msg	("norm_torso_%d_aim_0",object_slot());
+								}
+								switch (object().movement().movement_type()) {
+									case eMovementTypeStand :
+										if (object().conditions().IsLimping())
+											Msg	("norm_torso_%d_idle_0",object_slot());
+										else
+											Msg	("norm_torso_%d_aim_0",object_slot());
+										break;
+									case eMovementTypeWalk :
+										if (object().movement().body_state() == eBodyStateStand)
+											Msg	("norm_torso_%d_walk_0",object_slot());
+										else
+											Msg	("norm_torso_%d_aim_0",object_slot());
+										break;
+									case eMovementTypeRun :
+										if (object().movement().body_state() == eBodyStateStand)
+											if (object().conditions().IsLimping())
+												Msg	("norm_torso_%d_walk_0",object_slot());
+											else
+												Msg	("norm_torso_%d_run_0",object_slot());
+										else
+											Msg	("norm_torso_%d_aim_0",object_slot());
+										break;
+									default : NODEFAULT;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
 		if (m_missile) {
 			switch (m_missile->State()) {
