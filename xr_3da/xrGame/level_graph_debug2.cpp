@@ -504,7 +504,7 @@ IC	bool compute_tangent(
 
 	start_yaw			= direction.getH();
 	start_yaw			= start_yaw >= 0.f ? start_yaw : start_yaw + PI_MUL_2;
-	start_cp			= start.direction.cross_product(direction);
+	start_cp			= start.direction.crossproduct(direction);
 	
 	// computing 2D cross product for dest point
 	direction.sub		(dest.position,dest_circle.center);
@@ -513,7 +513,7 @@ IC	bool compute_tangent(
 
 	dest_yaw			= direction.getH();
 	dest_yaw			= dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2;
-	dest_cp				= dest.direction.cross_product(direction);
+	dest_cp				= dest.direction.crossproduct(direction);
 
 	// direction from the first circle to the second one
 	direction.sub		(dest_circle.center,start_circle.center);
@@ -586,7 +586,7 @@ IC	bool compute_tangent(
 
 	direction.sub		(tangents[1].point,tangents[0].point);
 	temp.sub			(tangents[0].point,start_circle.center);
-	float				tangent_cp = direction.cross_product(temp);
+	float				tangent_cp = direction.crossproduct(temp);
 	if (start_cp*tangent_cp >= 0) {
 		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0,direction_type);
 		assign_angle	(tangents[1].angle,dest_yaw, yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2,dest_cp  >= 0,direction_type,false);

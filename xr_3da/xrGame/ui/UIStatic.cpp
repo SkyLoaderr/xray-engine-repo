@@ -89,25 +89,21 @@ void CUIStatic::Init(int x, int y, int width, int height)
 
 void  CUIStatic::Draw()
 {
-	if(m_bClipper)
-	{
+	if(m_bClipper){
 		Irect clip_rect;
-		if (-1 == m_ClipRect.left && -1 == m_ClipRect.right && -1 == m_ClipRect.top && -1 == m_ClipRect.left)
-		{
-				Irect our_rect	= GetAbsoluteRect();
-				clip_rect		= our_rect;
-				if(GetParent())
-					clip_rect.intersection(our_rect,GetParent()->GetAbsoluteRect());			
-		}
-		else				
-			clip_rect = m_ClipRect;
+		if (-1 == m_ClipRect.left && -1 == m_ClipRect.right && -1 == m_ClipRect.top && -1 == m_ClipRect.left){
+			Irect our_rect	= GetAbsoluteRect();
+			clip_rect		= our_rect;
+			if(GetParent())	clip_rect.intersection(our_rect,GetParent()->GetAbsoluteRect());			
+		}else				
+			clip_rect		= m_ClipRect;
 
 		UI()->PushScissor	(clip_rect);
 	}
 
-	DrawTexture();	
-	inherited::Draw();
-	DrawText();
+	DrawTexture				();	
+	inherited::Draw			();
+	DrawText				();
 
 	if(m_bClipper)	UI()->PopScissor();
 }
@@ -123,16 +119,13 @@ void CUIStatic::DrawText(){
 
 void CUIStatic::DrawTexture(){
 
-	if(m_bAvailableTexture && m_bTextureEnable)
-	{
-
+	if(m_bAvailableTexture && m_bTextureEnable){
 		Irect rect = GetAbsoluteRect();
 		m_UIStaticItem.SetPos	(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
 		if(m_bStretchTexture)
 			m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
-		else
-		{
+		else{
 			Irect r={0,0,
 				m_UIStaticItem.GetOriginalRectScaled().width(),
 				m_UIStaticItem.GetOriginalRectScaled().height()};

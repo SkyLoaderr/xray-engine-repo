@@ -11,7 +11,83 @@
 extern CUICursor*	GetUICursor(){return UI()->GetUICursor();};
 extern CMainUI*		UI(){return (CMainUI*)(g_pGamePersistent->m_pMainUI);};
 
+//----------------------------------------------------------------------------------
+void S2DVert::rotate_pt(const Fvector2& pivot, float cosA, float sinA)
+{
+	Fvector2 t		= pt;
+	t.sub			(pivot);
+	pt.x			= t.x*cosA+t.y*sinA;
+	pt.y			= t.y*cosA-t.x*sinA;
+	pt.add			(pivot);
+}
+void C2DFrustum::CreateFromRect(const Irect& rect)
+{
+	planes.resize	(4);
+	planes[0].build(Fvector2().set(rect.lt.x,rect.lt.y),Fvector2().set(-1, 0));
+	planes[1].build(Fvector2().set(rect.lt.x,rect.lt.y),Fvector2().set( 0,-1));
+	planes[2].build(Fvector2().set(rect.rb.x,rect.rb.y),Fvector2().set(+1, 0));
+	planes[3].build(Fvector2().set(rect.rb.x,rect.rb.y),Fvector2().set( 0,+1));
+}
 
+sPoly2D* C2DFrustum::ClipPoly(sPoly2D& S, sPoly2D& D) const
+{
+	sPoly2D*	src		= &D;
+	sPoly2D*	dest	= &S;
+	for (u32 i=0; i<planes.size(); i++){
+		// cache plane and swap lists
+		const Fplane2 &P= planes[i];
+		std::swap		(src,dest);
+		dest->clear		();
+
+		// classify all points relative to plane #i
+		float cls[UI_FRUSTUM_SAFE];
+		for (u32 j=0; j<src->size(); j++) cls[j]=P.classify((*src)[j].pt);
+
+		// clip everything to this plane
+		cls[src->size()] = cls[0];
+		src->push_back((*src)[0]);
+		Fvector2 dir_pt,dir_uv; float denum,t;
+		for (j=0; j<src->size()-1; j++){
+			if ((*src)[j].pt.similar((*src)[j+1].pt,EPS_S)) continue;
+			if (negative(cls[j])){
+				dest->push_back((*src)[j]);
+				if (positive(cls[j+1])){
+					// segment intersects plane
+					dir_pt.sub((*src)[j+1].pt,(*src)[j].pt);
+					dir_uv.sub((*src)[j+1].uv,(*src)[j].uv);
+					denum = P.n.dotproduct(dir_pt);
+					if (denum!=0) {
+						t = -cls[j]/denum; //VERIFY(t<=1.f && t>=0);
+						dest->last().pt.mad((*src)[j].pt,dir_pt,t);
+						dest->last().uv.mad((*src)[j].uv,dir_uv,t);
+						dest->inc();
+					}
+				}
+			} else {
+				// J - outside
+				if (negative(cls[j+1])){
+					// J+1  - inside
+					// segment intersects plane
+					dir_pt.sub((*src)[j+1].pt,(*src)[j].pt);
+					dir_uv.sub((*src)[j+1].uv,(*src)[j].uv);
+					denum = P.n.dotproduct(dir_pt);
+					if (denum!=0){
+						t = -cls[j]/denum; //VERIFY(t<=1.f && t>=0);
+						dest->last().pt.mad((*src)[j].pt,dir_pt,t);
+						dest->last().uv.mad((*src)[j].uv,dir_uv,t);
+						dest->inc();
+					}
+				}
+			}
+		}
+
+		// here we end up with complete polygon in 'dest' which is inside plane #i
+		if (dest->size()<3) return 0;
+	}
+	return dest;
+}
+
+//----------------------------------------------------------------------------------
 CMainUI::CMainUI	()
 {
 	m_Flags.zero				();
@@ -157,6 +233,7 @@ void	CMainUI::OnRender		(void)
 //pureFrame
 void	CMainUI::OnFrame		(void)
 {
+	m_2DFrustum.CreateFromRect	(Irect().set(0,0,Device.dwWidth,Device.dwHeight));
 	if(!IsActive() && m_startDialog){
 //		Device.seqFrame.Remove		(this);
 //		Device.seqRender.Remove		(this);
@@ -168,13 +245,8 @@ void	CMainUI::OnFrame		(void)
 		if (m_Flags.is(flActive))	IR_Capture();
 		else						IR_Release();
 	}
-	CDialogHolder::OnFrame();
+	CDialogHolder::OnFrame		();
 }
-
-
-
-
-
 
 void CMainUI::OnDeviceCreate()
 {

@@ -336,28 +336,27 @@ void CUIMainIngameWnd::Draw()
 	for(CUSTOM_TEXTURE_IT it = m_CustomTextures.begin(); m_CustomTextures.end() != it; it++)
 	{
 		CUSTOM_TEXTURE& custom_texture = *it;
-		custom_texture.static_item->SetPos(0,0);
-		custom_texture.static_item->Render(custom_texture.x1, custom_texture.y1,
-									custom_texture.x2, custom_texture.y2);
+#pragma todo("ALEXMX -> ANDY")
+		custom_texture.static_item->SetPos	(custom_texture.x1, custom_texture.y1);
+		custom_texture.static_item->SetRect	(0,0,custom_texture.x2-custom_texture.x1, custom_texture.y2-custom_texture.y1);
+		custom_texture.static_item->Render	();
+//.		custom_texture.static_item->Render(custom_texture.x1, custom_texture.y1, custom_texture.x2, custom_texture.y2);
 	}
 	m_CustomTextures.clear();
 
 	//отрендерить текстуру объектива снайперского прицела или бинокля
-	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && 
-		m_pWeapon->ZoomHideCrosshair())
-	{
+	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomHideCrosshair()){
 		zoom_mode = true;
-
-		if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom())
-		{
-			m_pWeapon->ZoomTexture()->SetPos(0,0);
-			m_pWeapon->ZoomTexture()->Render(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
-
+		if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom()){
+			m_pWeapon->ZoomTexture()->SetPos	(0,0);
+			m_pWeapon->ZoomTexture()->SetRect	(0,0,UI_BASE_WIDTH, UI_BASE_HEIGHT);
+			m_pWeapon->ZoomTexture()->Render	();
+#pragma todo("ALEXMX -> ANDY")
+//.			m_pWeapon->ZoomTexture()->Render(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 			scope_mode = true;
 		}
 
-		if(psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT))
-		{
+		if(psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT)){
 			psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
 			m_bShowHudCrosshair = true;
 		}

@@ -41,13 +41,13 @@ IC	bool coincide_directions	(
 	if (fis_zero(start_cross_product)) {
 		Fvector2		circle_tangent_point_direction = Fvector2().sub(dest_tangent_point,dest_circle_center);
 		Fvector2		start_tangent_dest_tangent_direction = Fvector2().sub(dest_tangent_point,start_tangent_point);
-		float			cp1 = start_tangent_dest_tangent_direction.cross_product(circle_tangent_point_direction);
+		float			cp1 = start_tangent_dest_tangent_direction.crossproduct(circle_tangent_point_direction);
 		return			(dest_cross_product*cp1 >= 0.f);
 	}
 
 	Fvector2			circle_tangent_point_direction = Fvector2().sub(start_tangent_point,start_circle_center);
 	Fvector2			start_tangent_dest_tangent_direction = Fvector2().sub(dest_tangent_point,start_tangent_point);
-	float				cp1 = start_tangent_dest_tangent_direction.cross_product(circle_tangent_point_direction);
+	float				cp1 = start_tangent_dest_tangent_direction.crossproduct(circle_tangent_point_direction);
 	return				(start_cross_product*cp1 >= 0.f);
 }
 
@@ -70,7 +70,7 @@ bool CDetailPathManager::compute_tangent(
 
 	start_yaw			= direction.getH();
 	start_yaw			= start_yaw >= 0.f ? start_yaw : start_yaw + PI_MUL_2;
-	start_cp			= start.direction.cross_product(direction);
+	start_cp			= start.direction.crossproduct(direction);
 	
 	// computing 2D cross product for dest point
 	direction.sub		(dest.position,dest_circle.center);
@@ -79,7 +79,7 @@ bool CDetailPathManager::compute_tangent(
 
 	dest_yaw			= direction.getH();
 	dest_yaw			= dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2;
-	dest_cp				= dest.direction.cross_product(direction);
+	dest_cp				= dest.direction.crossproduct(direction);
 
 	// direction from the first circle to the second one
 	direction.sub		(dest_circle.center,start_circle.center);

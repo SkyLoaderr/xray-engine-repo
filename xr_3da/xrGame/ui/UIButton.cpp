@@ -200,7 +200,8 @@ void  CUIButton::Draw()
 	DrawText();	
 }
 
-void CUIButton::DrawTexture(){
+void CUIButton::DrawTexture()
+{
 	Irect rect = GetAbsoluteRect();
 
 	if(m_bAvailableTexture && m_bTextureEnable)
@@ -215,10 +216,11 @@ void CUIButton::DrawTexture(){
 				rect.top + m_iPushOffsetY + m_iTexOffsetY);
 		}
 
-		if(m_bStretchTexture)
-			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
-			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
-		else
+//.		if(m_bStretchTexture)
+//.			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
+#pragma todo("ALEXMX -> SATAN")
+//.			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
+//.		else
 			m_UIStaticItem.Render();
 	}
 }

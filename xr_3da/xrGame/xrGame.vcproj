@@ -7781,12 +7781,6 @@
 					<File
 						RelativePath="GamePersistent.h">
 					</File>
-					<File
-						RelativePath=".\MainUI.cpp">
-					</File>
-					<File
-						RelativePath=".\MainUI.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="LevelController"
@@ -9411,6 +9405,12 @@
 			</File>
 			<File
 				RelativePath=".\HitMarker.h">
+			</File>
+			<File
+				RelativePath=".\MainUI.cpp">
+			</File>
+			<File
+				RelativePath=".\MainUI.h">
 			</File>
 			<File
 				RelativePath=".\UI.cpp">

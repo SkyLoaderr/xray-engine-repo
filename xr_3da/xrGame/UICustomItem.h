@@ -22,8 +22,7 @@ protected:
 	enum {
 		flValidRect				=0x0001,
 		flValidOriginalRect		=0x0002,
-		flValidTextureRect		=0x0004,
-		flValidHeadingPivot		=0x0008,
+		flValidHeadingPivot		=0x0004,
 	};
 
 	//пр€моугольник(в пиксел€х) 
@@ -33,9 +32,6 @@ protected:
 	//фрейм текстуры в пиксел€х отн. 0/0
 	Irect			iOriginalRect;
 
-	//полный размер текстуры в пиксел€х
-	Irect			iTextureRect;
-	
 	// точка, относительно которой примен€ем поворот
 	Ivector2		iHeadingPivot;
 
@@ -67,12 +63,6 @@ public:
 	
 	void			Render					(FVF::TL*& Pointer, const Ivector2& pos, u32 color);
 	void			Render					(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle);
-
-	void			RenderTexPart			(FVF::TL*& Pointer, const Ivector2& pos, u32 color,  
-														float x1, float y1,  
-														float x2, float y2,
-														float x3, float y3,
-														float x4, float y4);
 
 	IC void			SetAlign				(u32 align)					{uAlign=align;};
 	IC u32			GetAlign				()							{return uAlign;}

@@ -9,6 +9,30 @@ class CUICursor;
 #include "UIDialogHolder.h"
 #include "UI.h"
 
+//---------------------------------------------------------------------------------------
+// 2D Frustum & 2D Vertex
+//---------------------------------------------------------------------------------------
+struct S2DVert{
+	Fvector2	pt;
+	Fvector2	uv;
+				S2DVert		(){}
+				S2DVert		(float pX, float pY, float tU, float tV){pt.set(pX,pY);uv.set(tU,tV);}
+	void		set			(float pt_x, float pt_y, float uv_x, float uv_y){pt.set(pt_x,pt_y);uv.set(uv_x,uv_y);}
+	void		set			(const Fvector2& _pt, const Fvector2& _uv){pt.set(_pt);uv.set(_uv);}
+	void		rotate_pt	(const Fvector2& pivot, float cosA, float sinA);
+};
+#define UI_FRUSTUM_MAXPLANES	12
+#define UI_FRUSTUM_SAFE			(UI_FRUSTUM_MAXPLANES*4)
+typedef svector<S2DVert,UI_FRUSTUM_SAFE>		sPoly2D;
+
+class C2DFrustum{
+	svector<Fplane2,FRUSTUM_MAXPLANES> planes;
+public:
+	void		CreateFromRect	(const Irect& rect);
+	sPoly2D*	ClipPoly		(sPoly2D& S, sPoly2D& D) const;
+};
+//---------------------------------------------------------------------------------------
+
 class CMainUI :
 	public IMainUI,
 	public IInputReceiver,
@@ -16,13 +40,13 @@ class CMainUI :
 	public CDialogHolder
 
 {
-	CFontManager*									m_pFontManager;
-	CUICursor*										m_pUICursor;
+	CFontManager*	m_pFontManager;
+	CUICursor*		m_pUICursor;
 
-	CUIDialogWnd*									m_startDialog;
+	CUIDialogWnd*	m_startDialog;
 
-//	float											m_fDevScaleX;
-//	float											m_fDevScaleY;
+//	float			m_fDevScaleX;
+//	float			m_fDevScaleY;
 
 	enum{
 		flRestoreConsole	= (1<<0),
@@ -30,8 +54,9 @@ class CMainUI :
 		flActive			= (1<<2),
 		flNeedChangeCapture	= (1<<3),
 	};
-	Flags8											m_Flags;
+	Flags8			m_Flags;
 	xr_stack<Irect> m_Scissors;
+	C2DFrustum		m_2DFrustum;
 public:
 					CMainUI							();
 	virtual			~CMainUI						();
@@ -80,6 +105,7 @@ public:
 	int				ClientToScreenY					(int top, u32 align);
 
 	Irect			ScreenRect						();
+	const C2DFrustum& ScreenFrustum					(){return m_2DFrustum;}
 	void			PushScissor						(const Irect& r, bool overlapped=false);
 	void			PopScissor						();
 };

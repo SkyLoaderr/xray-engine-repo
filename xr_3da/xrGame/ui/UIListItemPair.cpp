@@ -58,14 +58,13 @@ void CUIListItemPair::Draw(){
 	//CUIListItemEx::Draw();
 	Irect rect = GetAbsoluteRect();
 
-	if(m_bAvailableTexture && m_bTextureEnable)
-	{		
+	if(m_bAvailableTexture && m_bTextureEnable){		
 		m_UIStaticItem.SetPos(rect.left, rect.top);		
-
-		if(m_bStretchTexture)
-			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
-			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
-		else
+#pragma todo("ALEXMX -> SATAN")
+//.		if(m_bStretchTexture)
+//.			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
+//.			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
+//.		else
 			m_UIStaticItem.Render();
 	}
 
