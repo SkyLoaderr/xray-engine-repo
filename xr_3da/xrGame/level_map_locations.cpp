@@ -19,14 +19,17 @@ void CLevel::AddMapLocation(const SMapLocation& map_location, EMapLocationFlags 
 	if(!pMapLocation)
 	{
 		pMapLocation = xr_new<SMapLocation>(map_location);
+		m_MapLocationVector.push_back(pMapLocation);
 	}
 
 	pMapLocation->type_flags.set(location_type, TRUE);
-	m_MapLocationVector.push_back(pMapLocation);
 }
 
 void CLevel::RemoveMapLocations			()
 {
+	for(std::size_t i = 0; i < m_MapLocationVector.size(); i++)
+		xr_delete(m_MapLocationVector[i]);
+	
 	m_MapLocationVector.clear();
 }
 

@@ -27,6 +27,12 @@ SMapLocation::SMapLocation():animation(&icon_color)
 	animation.Cyclic			(false);
 }
 
+SMapLocation::SMapLocation(const SMapLocation& map_location)
+{
+	*this  = map_location;
+	animation.SetColorToModify(&icon_color);
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 shared_str SMapLocation::LevelName()
@@ -41,7 +47,7 @@ shared_str SMapLocation::LevelName()
 			CSE_ALifeObject* AO = smart_cast<CSE_ALifeObject*>(E);
 			if(AO)	
 				return  ai().game_graph().header().level(ai().game_graph().vertex(AO->m_tGraphID)->level_id()).name();
-			else 
+			else	
 				return Level().name();
 		}
 		else

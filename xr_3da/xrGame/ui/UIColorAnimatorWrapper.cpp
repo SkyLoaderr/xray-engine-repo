@@ -88,7 +88,7 @@ void CUIColorAnimatorWrapper::Update()
 			if (animationTime < (colorAnimation->iFrameCount / colorAnimation->fFPS))
 			{
 				currColor		= colorAnimation->CalculateBGR(std::abs(animationTime - kRev), currFrame);
-//				Msg("frame: %i", dummy);
+				//Msg("name: %s, color: %x, frame: %d", *colorAnimation->cName,currColor, currFrame);
 				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
 				// обновим время
 				animationTime	+= Device.fTimeGlobal - prevGlobalTime;

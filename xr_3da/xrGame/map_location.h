@@ -23,6 +23,7 @@ enum EMapLocationFlags
 struct SMapLocation
 {
 	SMapLocation();
+	SMapLocation(const SMapLocation&);
 
 	shared_str LevelName();
 
