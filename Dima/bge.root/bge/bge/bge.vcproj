@@ -203,10 +203,38 @@
 				<Filter
 					Name="cpu"
 					>
+					<File
+						RelativePath=".\cpu.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\cpu.h"
+						>
+					</File>
+					<File
+						RelativePath=".\processor_info.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\processor_info.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="video"
 					>
+				</Filter>
+				<Filter
+					Name="fpu"
+					>
+					<File
+						RelativePath=".\fpu.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\fpu.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
