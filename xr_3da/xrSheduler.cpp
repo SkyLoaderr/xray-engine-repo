@@ -75,6 +75,8 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 	u64		cycles_limit			= CPU::cycles_per_microsec * u64(mcs);
 	u64		cycles_start			= CPU::GetCycleCount();
 	u64		cycles_elapsed			= 0; 
+	float	A_Limit_F				= float(mcs)/3.f;
+	int		A_Limit_I				= mcs/3;
 
 	while ((cycles_elapsed<cycles_limit) && (Top(Priority).dwTimeForExecute < dwTime))
 	{
@@ -108,10 +110,10 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 			cycles_elapsed			= CPU::GetCycleCount()-cycles_start;
 			float PMON				= float(u64(cycles_elapsed-cycles_save))*CPU::cycles2microsec;
 			T.Object->shedule_PMON	= .7f * T.Object->shedule_PMON + .3f * PMON;
-			if (PMON>1000.f)	
+			if (PMON>A_Limit_F)	
 			{
 				Msg	("! SHEDULER: thread '%s' exceeds time limit. [%d/%d] mcs",
-					T.Object->cName(),iFloor(PMON),1000);
+					T.Object->cName(),iFloor(PMON),A_Limit_I);
 			}
 		}
 	}
@@ -119,7 +121,7 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 
 void CSheduler::Update				()
 {
-	UpdateLevel		(0, 500);	// LOW
-	UpdateLevel		(1,3000);	// NORMAL
 	UpdateLevel		(2,3000);	// HIGH
+	UpdateLevel		(1,3000);	// NORMAL
+	UpdateLevel		(0, 500);	// LOW
 }
