@@ -193,9 +193,9 @@ function action_commander:execute()
                                    [walk_inside]  = 30,
                                    [walk_outside] = 10,
                                    [look_map]     = 10,
-                                   [look_outside] = 15,
+                                   [look_outside] = 20,
                                    [radio_talk]   = 10,
-                                   [drink_vodka]  = 25 }
+                                   [drink_vodka]  = 20 }
                 else
                     self.act = random_choice_weighted{
                                    [walk_inside]  = 60,
@@ -203,7 +203,8 @@ function action_commander:execute()
                                    [look_outside] = 10,
                                    [drink_vodka]  = 20 }
                 end
-            until self.act == walk_inside or self.act ~= self.last_act
+            --until self.act == walk_inside or self.act ~= self.last_act
+            until self.act ~= self.last_act
         else
             self.act = random_choice_weighted{
                            [look_outside] = 10,
@@ -368,7 +369,8 @@ function action_commander:exec_look_box()
         else
             self:stop()
 --            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
-            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ), 0 )
+--            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ), 0 )
+            self.object:set_sight( look.point, self.box:position(), 0 )
             self.object:set_mental_state( anim.free )
 
             self.time_end = device():time_global() + 3000
