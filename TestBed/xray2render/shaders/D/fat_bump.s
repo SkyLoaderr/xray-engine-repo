@@ -4,7 +4,7 @@ struct 	a2v
   float3 N: 		NORMAL;		// Object-space normal
   float2 tc0:		TEXCOORD0;	// Texture coordinates
   float3 T:			TANGENT;	// tangent
-  float3 B:			BINORMAL;	// binormal
+  float3 B:			BINORMAL;	// binormal	(calculate in vs??? or even ps???)
 };
 
 struct 	v2p_out

@@ -50,6 +50,7 @@ v2p_out v_main	( a2v  	IN )
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Pixel
+// Note - approximated result, correct version commented below
 p2f 	p_main	( v2p_in IN )
 {
 	p2f		OUT;

@@ -43,12 +43,12 @@ p2f 	p_main	( v2p_in IN )
 {
   p2f		OUT;
 
-  half4 D	= tex2D		(s_diffuse,		IN.tc0);
-  half4 L 	= tex2D		(s_accumulator, IN.tc0);
-  half4 B	= tex2D		(s_bloom,		IN.tc0);
+  half4 D	= tex2D		(s_diffuse,		IN.tc0);	// rgb.gloss
+  half4 L 	= tex2D		(s_accumulator, IN.tc0);	// diffuse.specular
+  half4 B	= tex2D		(s_bloom,		IN.tc0);	// diffuse glow / specular bloom
   
-  half4 C	= D*L;							// rgb.gloss * light(rgb.specular)
-  half4 S	= half4		(C.w,C.w,C.w,C.w);	// replicated specular
-  OUT.C 	= C + S + B;
+  half4 C	= D*L;									// rgb.gloss * light(diffuse.specular)
+  half4 S	= half4		(C.w,C.w,C.w,C.w);			// replicated specular
+  OUT.C 	= C + S + B;							// sum everything
   return OUT;
 }
