@@ -335,6 +335,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 	iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
+	
 	OnStateSwitch					(E->state);
 
 	setVisible						(true);
@@ -427,6 +428,8 @@ void CWeapon::OnH_B_Chield		()
 	setVisible					(false);
 	setEnabled					(false);
 	if (m_pPhysicsShell)		m_pPhysicsShell->Deactivate	();
+
+	OnStateSwitch(eShowing);
 
 	if (Local() && (0xffff!=respawnPhantom)) 
 	{
