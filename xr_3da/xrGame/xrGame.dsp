@@ -276,10 +276,12 @@ SOURCE=.\WeaponGroza.h
 # Begin Source File
 
 SOURCE=.\WeaponRail.cpp
+# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
 SOURCE=.\WeaponRail.h
+# PROP Exclude_From_Build 1
 # End Source File
 # End Group
 # Begin Group "Weapon Protecta"
