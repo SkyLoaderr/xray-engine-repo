@@ -17,17 +17,16 @@ void CBuild::xrPhase_AdaptiveHT	()
 	CDB::COLLIDER	DB;
 	DB.ray_options	(0);
 
-	//for (u32 pass=0; pass<16; pass++)
-	//{
+	{
 		// Build model
 		FPU::m64r					();
-		Phase						("Building hemisphere-RayCast model...");
+		Status						("Building hemisphere-RayCast model...");
 		mem_Compact					();
 		BuildRapid					(FALSE);
 
 		// Prepare
 		FPU::m64r					();
-		Phase						("Adaptive HT...");
+		Status						("Precalculating...");
 		mem_Compact					();
 		Light_prepare				();
 
@@ -55,6 +54,8 @@ void CBuild::xrPhase_AdaptiveHT	()
 		}
 
 		// main process
+		FPU::m64r					();
+		Status						("Working...");
 		g_bUnregister		= FALSE;
 		xr_vector<Face*>	adjacent;	adjacent.reserve(6*2*3);
 		for (u32 I=0; I<g_faces.size(); I++)
@@ -115,7 +116,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 			counter_create		++;
 			if (0==(counter_create%10000))	{
 				for (u32 I=0; I<g_vertices.size(); I++)	if (0==g_vertices[I]->adjacent.size())	VertexPool.destroy	(g_vertices[I]);
-				Status				("%d verts created, %d(now) / %d(was)",counter_create,g_vertices.size(),cnt_verts);
+				Status				("Working: %d verts created, %d(now) / %d(was) ...",counter_create,g_vertices.size(),cnt_verts);
 				FlushLog			();
 			}
 
@@ -191,6 +192,6 @@ void CBuild::xrPhase_AdaptiveHT	()
 		u32				cnt_faces2	= g_faces.size		();
 		clMsg			("* faces:    was(%d), become(%d)",cnt_faces,cnt_faces2);
 		clMsg			("* vertices: was(%d), become(%d)",cnt_verts,cnt_verts2);
-	//	if (cnt_faces2 == cnt_faces)	break;			// nothing was tesselated - exit
-	//}
+	}
+	Status				("Gathering lighting information...");
 }
