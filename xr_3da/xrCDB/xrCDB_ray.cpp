@@ -103,7 +103,7 @@ public:
 		*/
 	}
 	
-	IC bool			_tri		(Fvector** p, float& u, float& v, float& range)
+	IC bool			_tri		(u32* p, float& u, float& v, float& range)
 	{
 		Fvector edge1, edge2, tvec, pvec, qvec;
 		float det,inv_det;
