@@ -1267,6 +1267,9 @@
 							RelativePath=".\scripts\xr_death.script">
 						</File>
 						<File
+							RelativePath=".\Scripts\xr_hit.script">
+						</File>
+						<File
 							RelativePath=".\scripts\xr_light.script">
 						</File>
 						<File
@@ -1302,6 +1305,9 @@
 					Filter="">
 					<File
 						RelativePath=".\scripts\level_tips.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\mob_alife_mgr.script">
 					</File>
 					<File
 						RelativePath=".\scripts\mob_sound.script">
