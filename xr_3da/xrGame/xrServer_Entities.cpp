@@ -47,7 +47,8 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	P.r_vec3			(o_Angle		);
 	P.r_u16				(ID				);
 	P.r_u16				(ID_Parent		);
-	P.r_u16				(s_flags		); s_flags&=~M_SPAWN_OBJECT_LOCAL;
+	P.r_u16				(s_flags		); 
+	s_flags				&= ~M_SPAWN_OBJECT_LOCAL;
 
 	// read specific data
 	u16					size;
