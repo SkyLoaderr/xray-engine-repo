@@ -286,7 +286,7 @@ function t_OnStart:sound()
     if( self.mem.entered == false ) then return end
 
     if( self.curState == waiting_come ) then
-        if( device():time_global() > self.mem.time + 8000 ) then
+        if( device():time_global() > self.mem.time + 3000 ) then
 //'            printf( "Device time %d   need_time %d", device():time_global(), self.mem.time + 10000)
             self.mem.anim_snd  =  Come_To_Mee2
             self.mem.time      = device():time_global() + math.random(2000, 5000)
