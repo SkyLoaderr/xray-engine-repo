@@ -32,7 +32,7 @@ private:
 	float			fHealth;
 	float			fBrightness;
 	CPHElement*		guid_physic_bone;
-	//Fmatrix			guid_bone_offset;
+	Fmatrix			m_guid_bone_offset;
 	void			CreateBody		(CSE_ALifeObjectHangingLamp	*lamp);
 	void			Init();
 	void			RespawnInit		();

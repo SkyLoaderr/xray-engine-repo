@@ -197,8 +197,9 @@ void CHangingLamp::UpdateCL	()
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-		if(guid_physic_bone)guid_physic_bone->BonesCallBack(&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID)));
-
+		CBoneInstance* bi=&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID));
+		if(guid_physic_bone)guid_physic_bone->BonesCallBack(bi);
+		bi->mTransform.set(guid_physic_bone->mXFORM);
 	}
 
 	if (Alive() && light_render->get_active())
@@ -206,8 +207,9 @@ void CHangingLamp::UpdateCL	()
 		Fmatrix xf;
 		if (guid_bone!=BI_NONE)
 		{
-			Fmatrix& M = smart_cast<CKinematics*>(Visual())->LL_GetTransform(u16(guid_bone));
+			Fmatrix& M = smart_cast<CKinematics*>(Visual())->LL_GetTransform(u16(guid_physic_bone->m_SelfID));
 			xf.mul		(XFORM(),M);
+			xf.mulB(m_guid_bone_offset);
 			VERIFY(!fis_zero(DET(xf)));
 		}
 		else 
@@ -329,13 +331,17 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 	BONE_P_PAIR_IT g_i= bone_map.find(guid_bone);
 	guid_physic_bone=smart_cast<CPHElement*>(g_i->second.element);
 	bone_map.erase(g_i);
-
-	//if(!lanim)pKinematics->Calculate();
-	//Fmatrix InvET;
-	//InvET.set(pKinematics->LL_GetTransform(guid_physic_bone->m_SelfID));
-	//InvET.invert();
-	//guid_bone_offset.mul(InvET,pKinematics->LL_GetTransform(guid_bone));
-
+////////////////////////////////////////////////////////////////////////////
+	if(!lanim)
+	{
+		pKinematics->CalculateBones_Invalidate();
+		pKinematics->CalculateBones();
+	}
+	Fmatrix InvET;
+	InvET.set(pKinematics->LL_GetTransform(guid_physic_bone->m_SelfID));
+	InvET.invert();
+	m_guid_bone_offset.mul(InvET,pKinematics->LL_GetTransform(guid_bone));
+/////////////////////////////////////////////////////////////////////////////
 	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();
 	for(;i!=e;i++)
 	{
