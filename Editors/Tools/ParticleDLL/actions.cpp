@@ -1513,11 +1513,13 @@ void PAFrame::Execute(ParticleGroup *group)
 	for(int i = 0; i < group->p_count; i++){
 		Particle &m = group->list[i];
 		if (0xffff == m.frame){// first init
-			if (random_frame)	m.frame	= drand48()*frame_count;
-			if (random_playback) m.flags |= drand48()>=0.5f?Particle::FRAME_CCW:0;
+			m.frame	= 0;
+//			if (random_frame)	m.frame	= drand48()*frame_count;
+//			if (random_playback) m.flags |= drand48()>=0.5f?Particle::FRAME_CCW:0;
 		}else{
 			if (animated){
-				m.frame += ((m.flags&Particle::FRAME_CCW)?-1:1)*speedFac;
+//				m.frame += ((m.flags&Particle::FRAME_CCW)?-1:1)*speedFac;
+				m.frame += speed * dt;
 				m.frame %= frame_count;
 			}
 		}

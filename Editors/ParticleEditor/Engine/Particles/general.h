@@ -31,8 +31,8 @@ struct Particle
 	pVector color;	// Color must be next to alpha so glColor4fv works.
 	float alpha;	// This is both cunning and scary.
 	float age;
-	WORD frame;
-	WORD flags;
+	float frame;
+	DWORD flags;
 };
 
 // A group of particles - Info and an array of Particles
