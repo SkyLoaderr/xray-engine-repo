@@ -435,4 +435,23 @@ void PAVortex::Save			(IWriter& F)
 	F.w_float		(max_radius);
 }
 
+void PATurbulence::Load		(IReader& F)
+{
+	ParticleAction::Load  	(F);
+	frequency		= F.r_float();
+	octaves			= F.r_float();
+	magnitude		= F.r_float();
+	epsilon			= F.r_float();
+    F.r				(&movement,sizeof(pDomain));
+}
+void PATurbulence::Save		(IWriter& F)
+{
+	ParticleAction::Save 	(F);
+	F.w_float		(frequency);
+	F.w_float		(octaves);
+	F.w_float		(magnitude);
+	F.w_float		(epsilon);
+    F.w				(&movement,sizeof(pDomain));
+}
+
 

@@ -215,6 +215,7 @@ ParticleAction* CParticleManager::CreateAction(PActionEnum type)
     case PATargetVelocityID:    pa = xr_new<PATargetVelocity>(); 	break;
     case PATargetVelocityDID:   pa = xr_new<PATargetVelocity>();	break;
     case PAVortexID:    		pa = xr_new<PAVortex>();			break;
+    case PATurbulenceID:		pa = xr_new<PATurbulence>();		break;
     default: NODEFAULT;
     }
     pa->type					= type;
