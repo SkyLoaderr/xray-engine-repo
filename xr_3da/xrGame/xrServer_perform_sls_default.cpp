@@ -1,8 +1,5 @@
 #include "stdafx.h"
 #include "xrserver.h"
-#include "game_sv_single.h"
-#include "alife_simulator.h"
-#include "ai_space.h"
 #include "xrmessages.h"
 
 void xrServer::SLS_Default	()
