@@ -266,7 +266,7 @@ IC	u16	CLevelGraph::CVertex::plane() const
 
 IC	u32	CLevelGraph::CVertex::link(int i) const
 {
-	return		(NodeCompressed::link(i));
+	return		(NodeCompressed::link(u8(i)));
 }
 
 IC	const CLevelGraph::CPosition &CLevelGraph::CVertex::position() const
