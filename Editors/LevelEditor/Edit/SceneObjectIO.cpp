@@ -20,6 +20,7 @@
 #define SCENEOBJ_CHUNK_REFERENCE     	0x0902
 #define SCENEOBJ_CHUNK_PLACEMENT     	0x0904
 #define SCENEOBJ_CHUNK_OMOTIONS			0xF914
+#define SCENEOBJ_CHUNK_ACTIVE_OMOTIONS	0xF915
 //----------------------------------------------------
 COMotion* CSceneObject::LoadOMotion(const char* fname){
 	if (Engine.FS.Exist(fname)){
@@ -77,6 +78,10 @@ bool CSceneObject::Load(CStream& F){
                     break;
                 }
             }
+            if (F.FindChunk(SCENEOBJ_CHUNK_ACTIVE_OMOTIONS)){
+            	string256 buf; F.RstringZ(buf);
+                SetActiveOMotion(FindOMotionByName(buf));
+            }
         }
 
         if (!bRes) break;
@@ -99,11 +104,17 @@ void CSceneObject::Save(CFS_Base& F){
     F.close_chunk	();
 
     // object motions
-    if (!m_OMotions.empty()){
+    if (IsOMotionable()){
 	    F.open_chunk	(SCENEOBJ_CHUNK_OMOTIONS);
     	F.Wdword		(m_OMotions.size());
 	    for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++) (*o_it)->Save(F);
     	F.close_chunk	();
+
+        if (IsOMotionActive()){
+	        F.open_chunk	(SCENEOBJ_CHUNK_ACTIVE_OMOTIONS);
+    	    F.WstringZ		(m_ActiveOMotion->Name());
+    		F.close_chunk	();
+        }
     }
 
 }

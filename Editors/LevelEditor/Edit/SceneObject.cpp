@@ -37,6 +37,8 @@ void CSceneObject::Construct(){
     m_iBlinkTime = 0;
 
     m_ActiveOMotion = 0;
+    m_vMotionPosition.set(0,0,0);
+    m_vMotionRotation.set(0,0,0);
 }
 
 CSceneObject::~CSceneObject(){
@@ -96,9 +98,8 @@ bool CSceneObject::GetUTBox( Fbox& box ){
 
 bool __inline CSceneObject::IsRender(){
 	if (!m_pRefs) return false;
-    bool bRes = Device.m_Frustum.testSphere(m_Center,m_fRadius);
-    if(bRes&&fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation();
-    return bRes;
+    if (fraBottomBar->miDrawObjectAnimPath->Checked&&IsDynamic()&&IsOMotionActive()) RenderAnimation();
+    return Device.m_Frustum.testSphere(m_Center,m_fRadius);
 }
 
 void CSceneObject::Render(int priority, bool strictB2F){
@@ -127,8 +128,25 @@ void CSceneObject::RenderSingle(){
 }
 
 void CSceneObject::RenderAnimation(){
-	if (!m_pRefs) return;
-	m_pRefs->RenderAnimation(_Transform());
+    // motion path
+    {
+        float fps = m_ActiveOMotion->FPS();
+        float min_t=(float)m_ActiveOMotion->FrameStart()/fps;
+        float max_t=(float)m_ActiveOMotion->FrameEnd()/fps;
+
+        Fvector T,r;
+        FvectorVec v;
+        DWORD clr=0xffffffff;
+        for (float t=min_t; t<max_t; t+=0.1f){
+            m_ActiveOMotion->Evaluate(t,T,r);
+            T.add(FPosition);
+            v.push_back(T);
+        }
+
+        Device.SetShader		(Device.m_WireShader);
+        Device.SetTransform		(D3DTS_WORLD,Fidentity);
+        DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
+    }
 }
 
 void CSceneObject::RenderBones(){
@@ -213,44 +231,36 @@ void CSceneObject::OnFrame(){
 	inherited::OnFrame();
 	if (!m_pRefs) return;
 	if (m_pRefs) m_pRefs->OnFrame();
-/*
-	if (IsOMotionActive()){
-    	float fps = m_ActiveOMotion->FPS();
-	    float min_t=(float)m_ActiveOMotion->FrameStart()/fps;
-    	float max_t=(float)m_ActiveOMotion->FrameEnd()/fps;
-
-        Fvector T,r;
-        FvectorVec v;
-        DWORD clr=0xffffffff;
-        for (float t=min_t; t<max_t; t+=0.1f){
-	        m_ActiveOMotion->Evaluate(t,T,r);
-            v.push_back(T);
-        }
-
-        Device.SetShader		(Device.m_WireShader);
-        Device.SetTransform		(D3DTS_WORLD,parent);
-        DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
-    }
-    if (IsOMotionActive()){
-///    	ELog.DlgMsg(mtError,"TODO: CEditableObject::RTL_Update");
-        Fvector R,T,r;
-        m_ActiveOMotion->Evaluate(m_OMParam.Frame(),T,r);
-        R.set(r.y,r.x,r.z);
-        T.add(vPosition);
-        R.add(vRotate);
-        UpdateTransform(T, R, vScale);
-        m_OMParam.Update(dT);
-    }
-*/
+                         
+    if (IsDynamic()&&IsOMotionActive()){
+        Fvector R,P,r;
+		m_ActiveOMotion->Evaluate(m_OMParam.Frame(),P,r);
+        R.set(-r.y,-r.x,-r.z);
+        P.add(FPosition);
+        R.add(FRotation);
+        PPosition = P;
+        PRotation = R;
+        m_OMParam.Update(Device.fTimeDelta);
+        UpdateTransform(true);
+	}
 }
 //S	SetActiveOMotion(0,false);
 
 //----------------------------------------------------
 // Object motion
 //----------------------------------------------------
-void CSceneObject::SetActiveOMotion(COMotion* mot, bool upd_t){
+void CSceneObject::ResetAnimation(bool upd_t)
+{
+	ResetActiveOMotion();
+}
+
+void CSceneObject::SetActiveOMotion(COMotion* mot){
+	if (mot){
+    	m_OMParam.Set(mot,true);
+        m_OMParam.Play();
+    }
 	m_ActiveOMotion=mot;
-    if (m_ActiveOMotion) m_OMParam.Set(m_ActiveOMotion,true);
+    UpdateTransform();
     UI.RedrawScene();
 }
 
@@ -272,7 +282,8 @@ void CSceneObject::RemoveOMotion(const char* name){
         }
 }
 
-bool CSceneObject::RenameOMotion(const char* old_name, const char* new_name){
+bool CSceneObject::RenameOMotion(const char* old_name, const char* new_name)
+{
 	if (stricmp(old_name,new_name)==0) return true;
     if (FindOMotionByName(new_name)) return false;
 	COMotion* M = FindOMotionByName(old_name); VERIFY(M);

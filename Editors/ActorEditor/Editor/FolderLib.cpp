@@ -291,7 +291,7 @@ LPCSTR FOLDER::ReplacePart(LPCSTR old_name, LPCSTR ren_part, int level, LPSTR de
 //---------------------------------------------------------------------------
 // Drag'n'Drop
 //---------------------------------------------------------------------------
-void FOLDER::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOnAfterDrag after_drag)
+void FOLDER::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOnRenameItem after_drag)
 {
 	R_ASSERT(after_drag);
 
@@ -415,6 +415,87 @@ void FOLDER::TextDraw(LPSTR value, AnsiString& N)
 {
 	int cnt=_GetItemCount(N.c_str(),'\\');
 	N = _SetPos(N.c_str(),cnt-1,'\\');
+}
+//------------------------------------------------------------------------------
+
+bool FOLDER::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnRenameItem OnRename){
+    new_text = new_text.LowerCase();
+
+    // find item with some name
+    for (TElTreeItem* item=node->GetFirstSibling(); item; item=item->GetNextSibling()){
+        if ((item->Text==new_text)&&(item!=node))
+            return false;
+    }
+    AnsiString full_name;
+    if (FOLDER::IsFolder(node)){
+    	// is folder - rename all folder items
+        for (TElTreeItem* item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
+            if (FOLDER::IsObject(item)){
+                FOLDER::MakeName(item,0,full_name,false);
+                VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
+                string256 new_full_name;
+                _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
+                OnRename(full_name.c_str(),new_full_name);
+            }
+        }
+    }else if (FOLDER::IsObject(node)){
+    	// is object - rename only this item
+        FOLDER::MakeName(node,0,full_name,false);
+        VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
+        string256 new_full_name;
+        _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
+		OnRename(full_name.c_str(),new_full_name);
+    }
+    tv->Selected=node;
+}
+//------------------------------------------------------------------------------
+
+void FOLDER::CreateNewFolder(TElTree* tv, bool bEditAfterCreate)
+{
+	AnsiString folder;
+    AnsiString start_folder;
+    FOLDER::MakeName(tv->Selected,0,start_folder,true);
+    FOLDER::GenerateFolderName(tv,tv->Selected,folder);
+    folder = start_folder+folder;
+	TElTreeItem* node = FOLDER::AppendFolder(tv,folder.c_str());
+    if (tv->Selected) tv->Selected->Expand(false);
+    if (bEditAfterCreate) tv->EditItem(node,-1);
+}
+//------------------------------------------------------------------------------
+
+bool FOLDER::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem)
+{
+	bool bRes = false;
+    if (pNode){
+		tv->IsUpdating = true;
+	    TElTreeItem* pSelNode = pNode->GetPrevSibling();
+	    if (!pSelNode) pSelNode = pNode->GetNextSibling();
+		AnsiString full_name;
+    	if (FOLDER::IsFolder(pNode)){
+	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
+		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
+                    FOLDER::MakeName(item,0,full_name,false);
+                	if (FOLDER::IsObject(item)) OnRemoveItem(full_name.c_str());
+                }
+	            pNode->Delete();
+                bRes = true;
+        	}
+        }
+    	if (FOLDER::IsObject(pNode)){
+	        if (ELog.DlgMsg(mtConfirmation, "Delete selected blender?") == mrYes){
+				FOLDER::MakeName(pNode,0,full_name,false);
+                OnRemoveItem(full_name.c_str());
+	            pNode->Delete();
+                bRes = true;
+        	}
+        }
+        tv->Selected	= pSelNode;
+		tv->IsUpdating 	= false;
+        tv->SetFocus();
+    }else{
+		ELog.DlgMsg(mtInformation, "At first select item.");
+    }
+    return bRes;
 }
 //------------------------------------------------------------------------------
 

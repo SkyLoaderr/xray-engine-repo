@@ -437,7 +437,7 @@ void __fastcall TfrmEditLightAnim::sePointerExit(TObject *Sender)
 void __fastcall TfrmEditLightAnim::tvItemsDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-	FOLDER::DragDrop(Sender,Source,X,Y,RenameItem);
+	FOLDER::DragDrop(Sender,Source,X,Y,OnRenameItem);
 }
 //---------------------------------------------------------------------------
 
@@ -455,9 +455,9 @@ void __fastcall TfrmEditLightAnim::tvItemsStartDrag(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLightAnim::RenameItem(LPVOID p0, LPVOID p1)
+void __fastcall TfrmEditLightAnim::OnRenameItem(LPCSTR p0, LPCSTR p1)
 {
-	LALib.RenameItem((LPCSTR)p0,(LPCSTR)p1);
+	LALib.RenameItem(p0,p1);
 	OnModified();
 }
 //---------------------------------------------------------------------------

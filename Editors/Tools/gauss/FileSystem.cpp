@@ -281,11 +281,13 @@ void CFileSystem::DeleteFileByName(const char* nm){
 //----------------------------------------------------
 
 void CFileSystem::CopyFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
+	VerifyPath(dest);
 	CopyFile(src,dest,!bOverwrite);
 }
 //----------------------------------------------------
 
 void CFileSystem::MoveFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
+	VerifyPath(dest);
 	MoveFileEx(src,dest,bOverwrite?MOVEFILE_REPLACE_EXISTING:0);
 }
 //----------------------------------------------------

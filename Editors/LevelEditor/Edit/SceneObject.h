@@ -11,11 +11,14 @@
 class CSceneObject : public CCustomObject {
 	CEditableObject*m_pRefs;
     st_Version		m_ObjVer;
-
+public:
+	// motions
     st_AnimParam	m_OMParam;
 	OMotionVec		m_OMotions;
     COMotion*		m_ActiveOMotion;
-public:
+    Fvector			m_vMotionPosition;
+    Fvector			m_vMotionRotation;
+
     COMotion* 		FindOMotionByName		(const char* name, const COMotion* Ignore=0);
     void			GenerateOMotionName		(char* buffer, const char* start_name, const COMotion* M);
     void			RemoveOMotion			(const char* name);
@@ -25,6 +28,21 @@ public:
     void			LoadOMotions			(const char* fname);
     void			SaveOMotions			(const char* fname);
     COMotion*		LoadOMotion				(const char* fname);
+
+    // object motions
+    IC OMotionIt	FirstOMotion			()	{return m_OMotions.begin();}
+    IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
+    IC int			OMotionCount 			()	{return m_OMotions.size();}
+    IC bool			IsOMotionable			()	{return !m_OMotions.empty();}
+    IC bool			IsOMotionActive			()	{return IsOMotionable()&&m_ActiveOMotion; }
+
+	void			SetActiveOMotion		(COMotion* mot);
+	void			ResetActiveOMotion		(){SetActiveOMotion(0);}
+
+    virtual Fvector& GetPosition			()	{return m_ActiveOMotion?m_vMotionPosition:FPosition; }
+    virtual Fvector& GetRotation			()	{return m_ActiveOMotion?m_vMotionRotation:FRotation; }
+    virtual void 	SetPosition				(Fvector& pos)	{ if (m_ActiveOMotion) m_vMotionPosition.set(pos); else FPosition.set(pos);	UpdateTransform();}
+	virtual void 	SetRotation				(Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
 protected:
 	typedef CCustomObject inherited;
     int				m_iBlinkTime;           
@@ -70,8 +88,9 @@ public:
 	virtual void 	OnFrame					();
     virtual void	OnUpdateTransform		();
 
-    // 
+    // misc
 	void		    LightenObject			();
+    virtual void 	ResetAnimation			(bool upd_t=true);
 
     // pick methods
     bool 			BoxPick					(const Fbox& box, SBoxPickInfoVec& pinf);
@@ -94,14 +113,6 @@ public:
     // load/save methods
   	virtual bool 	Load					(CStream&);
 	virtual void 	Save					(CFS_Base&);
-
-    // object motions
-    IC OMotionIt	FirstOMotion			()	{return m_OMotions.begin();}
-    IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
-    IC int			OMotionCount 			()	{return m_OMotions.size();}
-    IC bool			IsOMotionable			()	{return !!m_OMotions.size();}
-    IC bool			IsOMotionActive			()	{return IsOMotionable()&&m_ActiveOMotion; }
-	void			SetActiveOMotion		(COMotion* mot, bool upd_t=true);
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditObject_H_*/

@@ -49,6 +49,7 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 		form->modif_map.clear();
         form->m_Thm = 0;
         form->m_SelectedName = "";
+        form->ebCancel->Enabled = !bCheck;
 
         form->paTextureCount->Caption = AnsiString(" Images in list: ")+AnsiString(texture_map.size());
     }
