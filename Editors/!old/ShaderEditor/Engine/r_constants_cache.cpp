@@ -28,6 +28,7 @@ void R_constants::flush_cache()
 		// fp
 		R_constant_array::t_f&	F	= a_vertex.c_f;
 		{
+			VERIFY				(F.r_hi() < HW.Caps.geometry.dwRegisters);
 			u32		count		= F.r_hi()-F.r_lo();
 			if (count)			{
 				PGO		(Msg("PGO:V_CONST:%d",count));
