@@ -88,6 +88,7 @@ void	light::set_range		(float R)			{
 
 void	light::set_cone			(float angle)		{
 	if (fsimilar(cone,angle))	return;
+	VERIFY						(cone < deg2rad(120.f));
 	cone						= angle;
 	spatial_move				();
 }

@@ -10,7 +10,6 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_Stencil	( FALSE );
 
 	// Draw full-screen quad textured with our scene image
-	if (1)	// combine
 	{
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 		float	_w					= float(Device.dwWidth);
@@ -89,8 +88,18 @@ void	CRenderTarget::phase_combine	()
 		float	_w					= float(Device.dwWidth)/2;
 		float	_h					= float(Device.dwHeight)/2;
 
+		// draw light-spheres
+		for (u32 it=0; it<dbg_spheres.size(); it++)
+		{
+			Fsphere&			S	= dbg_spheres[it];
+			Fmatrix				M;
+			M.scale					(S.R,S.R,S.R);
+			M.translate_over		(S.P);
+			RCache.dbg_DrawEllipse	(M,C);
+		}
+
 		// Draw quater-screen quad textured with our direct-shadow-map-image
-		if (1) //.
+		if (0) //.
 		{
 			u32							IX=0,IY=1;
 			p0.set						(.5f/_w, .5f/_h);
@@ -109,8 +118,9 @@ void	CRenderTarget::phase_combine	()
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
+
 		// Draw quater-screen quad textured with our accumulator
-		if (1)
+		if (0)
 		{
 			u32							IX=1,IY=1;
 			p0.set						(.5f/_w, .5f/_h);
@@ -130,4 +140,6 @@ void	CRenderTarget::phase_combine	()
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 	}
+
+	dbg_spheres.clear	();
 }

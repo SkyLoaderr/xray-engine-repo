@@ -27,6 +27,12 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 		near_intersect					= (p_dist<=0);
 	}
 
+	if (1)
+	{
+		Fsphere		S;	S.set	(L->spatial.center,L->spatial.radius);
+		dbg_spheres.push_back	(S);
+	}
+
 	// Scissor
 	if (!HW.Caps.bScissor)	return		near_intersect;
 
