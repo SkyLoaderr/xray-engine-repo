@@ -457,7 +457,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			-- Ќашли точку с нужными флагами, но поскольку в пути могут быть еще такие-же
 			-- точки, возьмем текущую только с некоторой веро€тностью:
 			-- Ўанс, с которым на точку посмотрит персонаж:
-			local point_look_weight = self.path_look_info[index]["prob"]
+			local point_look_weight = self.path_look_info[look_idx]["prob"]
 			if point_look_weight then
 				point_look_weight = tonumber(point_look_weight)
 			else
@@ -487,9 +487,9 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 		printf("[%s] pt_chosen_idx == %d", self.object:name(), pt_chosen_idx)
 		if not suggested_snd then -- в path_walk звук не задан, проверить, задан ли он на точке
-			suggested_snd = self.path_look_info[index]["snd"]
+			suggested_snd = self.path_look_info[pt_chosen_idx]["snd"]
 			if suggested_snd then
-				local snd_prob = self.path_look_info[index]["snd_prob"]
+				local snd_prob = self.path_look_info[pt_chosen_idx]["snd_prob"]
 				if snd_prob then
 					snd_prob = tonumber(snd_prob)
 				else
