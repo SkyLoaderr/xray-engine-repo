@@ -57,9 +57,9 @@ namespace std
 };
 
 template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocator_t<T> >								{ public: 
-	explicit xr_vector			()															{}
-	explicit xr_vector			(size_t _count, T& _value)	: std::vector(_count,_value)	{}
-	explicit xr_vector			(size_t _count)				: std::vector(_count)			{}
+			xr_vector	()									: std::vector<T,xr_allocator_t<T> >	()				{}
+			xr_vector	(size_t _count, const T& _value)	: std::vector<T,xr_allocator_t<T> >	(_count,_value)	{}
+	explicit xr_vector	(size_t _count)						: std::vector<T,xr_allocator_t<T> > (_count)		{}
 	u32		size() const									{ return (u32)__super::size(); } 
 	void	clear()											{ erase(begin(),end());} 
 #ifdef _M_AMD64
