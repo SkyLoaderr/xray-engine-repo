@@ -123,7 +123,7 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 	if (h<1)	h=1;
 }
 
-ENGINE_API IDirect3DBaseTexture9*	TW_LoadTextureFromTexture
+ENGINE_API IDirect3DTexture9*	TW_LoadTextureFromTexture
 (
 	IDirect3DTexture9*		t_from,
 	D3DFORMAT&				t_dest_fmt,
@@ -133,7 +133,7 @@ ENGINE_API IDirect3DBaseTexture9*	TW_LoadTextureFromTexture
 )
 {
 	// Calculate levels & dimensions
-	IDirect3DBaseTexture9*	t_dest			= NULL;
+	IDirect3DTexture9*		t_dest			= NULL;
 	D3DSURFACE_DESC			t_from_desc0	;
 	R_CHK					(t_from->GetLevelDesc	(0,&t_from_desc0));
 	int levels_exist		= t_from->GetLevelCount();
@@ -142,7 +142,7 @@ ENGINE_API IDirect3DBaseTexture9*	TW_LoadTextureFromTexture
 	Reduce					(top_width,top_height,levels_exist,levels_2_skip);
 
 	// Create HW-surface
-	if (D3DX_DEFAULT==t_dest_fmt)	t_dest_fmt = T_sysmem_desc0.Format;
+	if (D3DX_DEFAULT==t_dest_fmt)	t_dest_fmt = t_from_desc0.Format;
 	R_CHK					(D3DXCreateTexture(
 		HW.pDevice,
 		top_width,top_height,
