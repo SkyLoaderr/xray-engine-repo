@@ -113,6 +113,7 @@ void CCar::SDoor::Init()
 		break;
 	default: NODEFAULT;
 	}
+	//door_dir_in_door.transform();
 	///////////////////////////define positive open///////////////////////////////////
    	Fvector door_dir,door_test;
 	door_transform.transform_dir(door_dir,door_dir_in_door);
@@ -352,8 +353,13 @@ bool CCar::SDoor::IsInArea(const Fvector& pos)
 	Fvector closed_door_dir,door_dir,anchor_to_pos,door_axis;
 	joint->GetAxisDirDynamic(0,door_axis);
 	joint->PSecond_element()->InterpolateGlobalTransform(&door_form);
+
 	closed_door_form.mul(pcar->XFORM(),closed_door_form_in_object);
 	closed_door_form.transform_dir(closed_door_dir,door_dir_in_door);
+	//closed_door_form_in_object.transform_dir(closed_door_dir,door_dir_in_door);
+	//pcar->XFORM().transform_dir(closed_door_dir);
+
+
 	door_form.transform_dir(door_dir,door_dir_in_door);
 	door_dir.normalize();
 	closed_door_dir.normalize();
@@ -399,12 +405,14 @@ void CCar::SDoor::GetExitPosition(Fvector& pos)
 	joint->GetAxisDirDynamic(0,door_axis);
 	joint->GetAnchorDynamic(door_pos);
 
-	Fmatrix door_form,closed_door_form,root_form;
+	Fmatrix door_form,root_form;
 	root_form.mul(pcar->m_root_transform,pcar->XFORM());
 	joint->PSecond_element()->InterpolateGlobalTransform(&door_form);
 	door_form.transform_dir(door_dir,door_dir_in_door);
-	closed_door_form.mul(closed_door_form_in_object,pcar->XFORM());
-	closed_door_form.transform_dir(closed_door_dir,door_dir_in_door);
+
+	
+	closed_door_form_in_object.transform_dir(closed_door_dir,door_dir_in_door);
+	pcar->XFORM().transform_dir(closed_door_dir);
 
 
 	pos.set(door_pos);
@@ -420,7 +428,8 @@ void CCar::SDoor::GetExitPosition(Fvector& pos)
 	center_prg=door_pos.dotproduct(door_dir);
 	joint->PSecond_element()->get_Extensions(door_dir,center_prg,lo_ext,hi_ext);
 	closed_door_dir.normalize();
-	add.set(closed_door_dir);
+	add.add(closed_door_dir,door_dir);
+	add.normalize();
 	if(hi_ext>-lo_ext)add.mul(hi_ext);
 	else			  add.mul(lo_ext);
 	pos.add(add);
@@ -435,13 +444,13 @@ bool CCar::SDoor::TestPass(const Fvector& pos,const Fvector& dir)
 	joint->GetAxisDirDynamic(0,door_axis);
 	joint->GetAnchorDynamic(door_pos);
 
-	Fmatrix door_form,closed_door_form,root_form;
+	Fmatrix door_form,root_form;
 	root_form.mul(pcar->m_root_transform,pcar->XFORM());
 	joint->PSecond_element()->InterpolateGlobalTransform(&door_form);
 	door_form.transform_dir(door_dir,door_dir_in_door);
-	closed_door_form.mul(closed_door_form_in_object,pcar->XFORM());
-	closed_door_form.transform_dir(closed_door_dir,door_dir_in_door);
-
+//	closed_door_form.mul(closed_door_form_in_object,pcar->XFORM());
+	closed_door_form_in_object.transform_dir(closed_door_dir,door_dir_in_door);
+	pcar->XFORM().transform_dir(closed_door_dir);
 	door_axis.normalize();
 
 	door_dir.normalize();

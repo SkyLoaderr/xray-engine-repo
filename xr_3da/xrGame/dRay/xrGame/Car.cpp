@@ -152,7 +152,7 @@ void	CCar::UpdateCL				( )
 {
 	inherited::UpdateCL();
 
-	//#ifdef DEBUG
+	#ifdef DEBUG
 	if(m_pPhysicsShell&&Owner())
 	{
 		Fvector v;
@@ -172,7 +172,7 @@ void	CCar::UpdateCL				( )
 		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl->GetVelocityMagnitude());
 		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
 	}
-	//#endif
+	#endif
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
 	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
