@@ -716,7 +716,11 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 			if (iBestI < 0)
 				if (dwTime - m_dwLastUpdate > 3000) {
 					m_dwLastUpdate = dwTime;
-					iBestI = ::Random.randI(0,tpSubNodes.size());
+					if (tpSubNodes.size() > 1)
+						do
+							iBestI = ::Random.randI(0,tpSubNodes.size());
+						while (iBestI == iMySubNode);
+
 				}
 				//else
 				//	m_bMobility
@@ -768,7 +772,6 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 			tFinishPosition.x = (tpSubNodes[iMySubNode].tLeftDown.x + tpSubNodes[iMySubNode].tRightUp.x)/2.f;
 			tFinishPosition.y = (tpSubNodes[iMySubNode].tLeftDown.y + tpSubNodes[iMySubNode].tRightUp.y)/2.f;
 			tFinishPosition.z = (tpSubNodes[iMySubNode].tLeftDown.z + tpSubNodes[iMySubNode].tRightUp.z)/2.f;
-			VERIFY(tFinishPosition.x < 1000000.f);
 			CTravelNode	tCurrentPoint,tFinishPoint;
 			tCurrentPoint.P.set(tCurrentPosition);
 			tCurrentPoint.floating = FALSE;
