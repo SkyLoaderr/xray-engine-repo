@@ -23,6 +23,7 @@ public:
 
 	virtual void		initialize				();
 	virtual	void		execute					();
-
+	
+			void		squad_notify			(u32 cur_state);
 	
 };

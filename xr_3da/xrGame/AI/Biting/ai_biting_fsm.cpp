@@ -9,7 +9,8 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "../ai_monster_debug.h"
-#include "../ai_monster_group.h"
+#include "../ai_monster_squad.h"
+#include "../ai_monster_squad_manager.h"
 #include "../../profiler.h"
 
 
@@ -37,15 +38,11 @@ void CAI_Biting::Think()
 
 	CMonsterMovement::Frame_Init();
 
-	// Squad calculations
-	CMonsterSquad	*pSquad = monster_squad().get_squad(this);
-	if (pSquad && pSquad->SquadActive()) {
-		pSquad->UpdateMonsterData(this,const_cast<CEntityAlive *>(EnemyMan.get_enemy()));
-		if ((pSquad->GetLeader() == this)) {
-			pSquad->UpdateDecentralized();
-		} 
-	}
-
+	
+	START_PROFILE("AI/Base Monster/Think/Update Squad");
+	monster_squad().update(this);
+	STOP_PROFILE;
+	
 	MotionMan.accel_deactivate			();
 	
 	START_PROFILE("AI/Base Monster/Think/FSM");

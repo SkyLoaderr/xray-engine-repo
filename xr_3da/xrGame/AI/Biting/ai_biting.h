@@ -21,7 +21,7 @@
 #include "../monster_enemy_manager.h"
 #include "../monster_corpse_manager.h"
 
-#include "../ai_monster_group.h"
+//#include "../ai_monster_group.h"
 
 #include "ai_biting_state.h"
 

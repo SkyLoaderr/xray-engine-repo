@@ -47,10 +47,30 @@ void CStateZombieAttackRunAbstract::execute()
 	}
 	if (object->IsPathEnd(2,0.5f)) b_need_rebuild = true;
 
-	if (b_need_rebuild)	object->MoveToTarget(object->EnemyMan.get_enemy());
+	
+	//////////////////////////////////////////////////////////////////////////
+	// обработать squad-данные
+	//////////////////////////////////////////////////////////////////////////
+	CMonsterSquad *squad	= monster_squad().get_squad(object);
+	bool squad_active		= squad && squad->SquadActive();
+	
+	// Получить команду
+	SSquadCommand command;
+	if (squad_active) squad->GetCommand(object, command);
+	if (!squad_active || (command.type != SC_ATTACK)) squad_active = false;
+	//////////////////////////////////////////////////////////////////////////
 
+	
+	if (b_need_rebuild)	{
+		object->MoveToTarget(object->EnemyMan.get_enemy());
+		if (squad_active) object->set_dest_direction(command.direction);
+	}
+
+	if (squad_active)
+		object->set_use_dest_orient	(true);
+	
+	
 	// установка параметров функциональных блоков
-
 	object->MotionMan.m_tAction					= action;	
 	if (action == ACT_RUN) 
 		object->CMonsterMovement::set_try_min_time	(true);

@@ -10,7 +10,7 @@
 #include "../ai_monster_jump.h"
 #include "../ai_monster_utils.h"
 #include "../ai_monster_debug.h"
-#include "../ai_monster_group.h"
+#include "../ai_monster_squad_manager.h"
 #include "../corpse_cover.h"
 #include "../../cover_evaluators.h"
 

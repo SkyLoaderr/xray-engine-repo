@@ -2,7 +2,7 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 #include "../ai_monster_utils.h"
-#include "../ai_monster_group.h"
+//#include "../ai_monster_group.h"
 #include "../../phmovementcontrol.h"
 
 CBitingSquadTask::CBitingSquadTask(CAI_Biting *p)

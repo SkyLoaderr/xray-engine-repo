@@ -2043,17 +2043,33 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="Group"
+								Name="Squad"
 								Filter="">
 								<File
-									RelativePath=".\Ai\ai_monster_group.cpp">
+									RelativePath=".\ai\ai_monster_squad.cpp">
 								</File>
 								<File
-									RelativePath=".\Ai\ai_monster_group.h">
+									RelativePath=".\ai\ai_monster_squad.h">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_group_inline.h">
+									RelativePath=".\ai\ai_monster_squad_attack.cpp">
 								</File>
+								<File
+									RelativePath=".\ai\ai_monster_squad_rest.cpp">
+								</File>
+								<Filter
+									Name="Squad Manager"
+									Filter="">
+									<File
+										RelativePath=".\ai\ai_monster_squad_manager.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\ai_monster_squad_manager.h">
+									</File>
+									<File
+										RelativePath=".\ai\ai_monster_squad_manager_inline.h">
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
 								Name="Motion Stats"

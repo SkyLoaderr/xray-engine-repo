@@ -6,7 +6,8 @@
 #include "../bloodsucker/ai_bloodsucker.h"
 #include "../../actor.h"
 #include "../ai_monster_jump.h"
-#include "../ai_monster_group.h"
+#include "../ai_monster_squad.h"
+#include "../ai_monster_squad_manager.h"
 #include "../ai_monster_utils.h"
 
 #include "../../WeaponMagazined.h"
@@ -182,8 +183,8 @@ void CBitingAttack::Run()
 				// Получить позицию, определённую груп. интелл.
 				if (squad_active) {
 					TTime			squad_ai_last_updated;
-					Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
-					pMonster->set_dest_direction	(target);
+					//Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
+					//pMonster->set_dest_direction	(target);
 				}
 				
 				pMonster->MoveToTarget(enemy);

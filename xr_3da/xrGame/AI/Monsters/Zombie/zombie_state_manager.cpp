@@ -1,12 +1,15 @@
 #include "stdafx.h"
 #include "zombie.h"
 #include "zombie_state_manager.h"
+#include "../../ai_monster_squad.h"
+#include "../../ai_monster_squad_manager.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_attack.h"
 #include "../states/monster_state_eat.h"
 #include "../states/monster_state_hear_int_sound.h"
 #include "zombie_state_attack_run.h"
 #include "../../ai_monster_debug.h"
+
 
 CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
 {
@@ -57,6 +60,10 @@ void CStateManagerZombie::execute()
 		else state_id = eStateRest;
 	}
 	
+	// информировать squad о своих целях
+	squad_notify(state_id);
+
+	// установить текущее состояние
 	select_state(state_id); 
 
 	// выполнить текущее состояние
@@ -65,3 +72,16 @@ void CStateManagerZombie::execute()
 	prev_substate = current_substate;
 }
 
+
+void CStateManagerZombie::squad_notify(u32 cur_state)
+{
+	CMonsterSquad	*squad = monster_squad().get_squad(object);
+	SMemberGoal		goal;
+	if (cur_state == eStateAttack) {
+		goal.type	= MG_AttackEnemy;
+		goal.entity	= const_cast<CEntityAlive*>(object->EnemyMan.get_enemy());
+	} else {
+		goal.type	= MG_None;
+	}
+	squad->UpdateGoal(object, goal);
+}

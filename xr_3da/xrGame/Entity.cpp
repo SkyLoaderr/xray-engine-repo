@@ -9,7 +9,7 @@
 #include "xrserver_objects_alife_monsters.h"
 #include "entity.h"
 #include "level.h"
-#include "ai/ai_monster_group.h"
+//#include "ai/ai_monster_group.h"
 
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100
