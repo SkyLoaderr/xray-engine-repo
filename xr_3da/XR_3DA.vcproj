@@ -391,6 +391,9 @@
 					RelativePath=".\IRenderable.h">
 				</File>
 				<File
+					RelativePath=".\IRenderDetailModel.h">
+				</File>
+				<File
 					RelativePath="Render.cpp">
 				</File>
 				<File
