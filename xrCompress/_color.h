@@ -22,7 +22,6 @@ public:
 public:
 	T r,g,b,a;
 
-    IC 	T*		asDATA	(void) { return (T*)this; };
 	IC	SelfRef	set		(u32 dw)
 	{
 		const T f = T(1.0) / T(255.0);
@@ -50,7 +49,7 @@ public:
 		int	 _a = iFloor(a*255.f); clamp(_a,0,255);
 		return color_rgba(_r,_g,_b,_a);
 	};
-	IC	u32	get_windows( ) const
+	IC	u32		get_windows( ) const
 	{
 		BYTE _a, _r, _g, _b;
 		_a = (BYTE)(a*255.f);
@@ -191,18 +190,16 @@ public:
 	};
 	
 	// SQ magnitude
-	IC	T	magnitude_sqr_rgb(void) 
-	{
+	IC	T	magnitude_sqr_rgb(void)		const	{
 		return r*r + g*g + b*b;
 	}
 	// magnitude
-	IC	T	magnitude_rgb(void) {
+	IC	T	magnitude_rgb(void) 		const	{
 		return sqrtf(magnitude_sqr_rgb());
 	}
 
 	// Normalize
-	IC	SelfRef	normalize_rgb(void) 
-	{
+	IC	SelfRef	normalize_rgb(void)				{
 		VERIFY(magnitude_sqr_rgb()>EPS_S);
 		return mul_rgb(1.f/magnitude_rgb());
 	}
@@ -237,6 +234,6 @@ typedef _color<float>	Fcolor;
 typedef _color<double>	Dcolor;
 
 template <class T>
-BOOL	_valid			(const _color<T>& c)	{ return _valid(r) && _valid(g) && _valid(b) && _valid(a); }
+BOOL	_valid			(const _color<T>& c)	{ return _valid(c.r) && _valid(c.g) && _valid(c.b) && _valid(c.a); }
 
 #endif
