@@ -15,6 +15,7 @@ class CPropertyStorage {
 public:
 	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 	typedef GraphEngineSpace::_solver_value_type		_value_type;
+	typedef GraphEngineSpace::CSolverConditionValue		CConditionValue;
 	typedef GraphEngineSpace::CSolverConditionStorage	CConditionStorage;
 
 public:

@@ -89,10 +89,23 @@ namespace GraphEngineSpace {
 	typedef u32			_solver_condition_type;
 	typedef bool		_solver_value_type;
 
-	typedef xr_map<
-				_solver_condition_type,
-				_solver_value_type
-			>			CSolverConditionStorage;
+	struct CSolverConditionValue {
+		_solver_condition_type	m_condition;
+		_solver_value_type		m_value;
+
+		IC				CSolverConditionValue	(const _solver_condition_type &condition, const _solver_value_type &value)
+		{
+			m_condition			= condition;
+			m_value				= value;
+		}
+
+		IC		bool	operator==				(const _solver_condition_type &condition) const
+		{
+			return				(condition == m_condition);
+		}
+	};
+
+	typedef xr_vector<CSolverConditionValue>	CSolverConditionStorage;
 
 	typedef COperatorConditionAbstract<
 				_solver_condition_type,
