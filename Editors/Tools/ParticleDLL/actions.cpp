@@ -1009,8 +1009,6 @@ void PAMove::Execute(ParticleGroup *group)
 		
 		m.age	+= dt;
 		m.pos	+= m.vel * dt;
-
-		m.flags	&=!Particle::BIRTH;
 	}
 }
 
