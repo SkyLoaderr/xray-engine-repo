@@ -51,7 +51,7 @@ p2f 	p_main	( v2p_in IN )
 
   // Normal, vector2eye, vector2light
   float3 N		= float3	(_N.x,_N.y,_N.z);
-  float3 V 		= -normalize(float3(_P.x,_P.y,_P.z));
+  float3 V 		= -normalize(float3(_P.x,_P.y,_P.z));	// texCUBE	(s_NCM, -(float3(_P.x,_P.y,_P.z)));
   float3 L 		= -float3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
@@ -59,7 +59,7 @@ p2f 	p_main	( v2p_in IN )
   // clip		(l_D);
 
   // Specular = (H • N)^m
-  float3 H		= texCUBE	(s_NCM, L + V);
+  float3 H		= normalize	(L+V);						// texCUBE	(s_NCM, L + V);
   float l_S 	= tex1D		(s_power,	saturate(dot(H, N)));
   
   // Final color
