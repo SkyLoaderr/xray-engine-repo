@@ -394,7 +394,10 @@ void CMissile::UpdateCL()
 		XFORM().set	(m_pPhysicsShell->mXFORM);
 		Position().set(m_pPhysicsShell->mXFORM.c);
 	} 
-	else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
+	else
+		if (H_Parent())
+			UpdateXForm();
+			//XFORM().set(H_Parent()->XFORM());
 }
 
 u32 CMissile::State() 
@@ -585,8 +588,8 @@ void CMissile::Throw()
 	}
 	else
 	{
-		m_throw_direction.set(H_Parent()->XFORM().k);
-
+		m_throw_direction.set	(H_Parent()->XFORM().k);
+		m_throw_matrix			= XFORM();
 	}
 
 	
