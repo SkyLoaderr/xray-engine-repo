@@ -24,16 +24,12 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		StartStopMenu(&InventoryMenu);
 		return true;
 		break;
-	case DIK_P:
+/*	case DIK_P:
 		StartStopMenu(&PdaMenu);
 		return true;
-		break;
+		break;*/
 	case DIK_M:
 		StartStopMenu(&MapMenu);
-		return true;
-		break;
-	case DIK_N:
-		StartStopMenu(&DiaryMenu);
 		return true;
 		break;
 	case DIK_ESCAPE:
