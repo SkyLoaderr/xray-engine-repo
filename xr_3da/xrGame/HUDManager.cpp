@@ -154,7 +154,7 @@ void CHUDManager::OnDeviceCreate(){
 void CHUDManager::OnDeviceDestroy(){
 }
 //--------------------------------------------------------------------
-void CHUDManager::outMessage(DWORD C, LPCSTR from, LPCSTR msg, ...)
+void __cdecl CHUDManager::outMessage(DWORD C, LPCSTR from, LPCSTR msg, ...)
 {
 	char		buffer[128];
 
