@@ -83,7 +83,7 @@ void CBreakableObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
 		else
 		{
 			//. hack: slipch ???
-			if ((impulse<EPS)||(0xffff!=element))
+			if ((impulse<EPS)&&(0xffff!=element))
 				m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 		}
 	}
