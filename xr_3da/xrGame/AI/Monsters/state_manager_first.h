@@ -29,7 +29,7 @@ protected:
 	virtual	void	add_state					(EGlobalStates id, IState *p_state);
 	virtual void	remove_all					();
 	virtual void	set_state					(EGlobalStates state);
-
+	virtual void	execute						();
 
 			IState	*get_state					(EGlobalStates state_id);
 };

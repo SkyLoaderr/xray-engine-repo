@@ -28,6 +28,11 @@ void CStateManagerFirst::force_script_state(EGlobalStates state)
 
 void CStateManagerFirst::execute_script_state()
 {
+	execute();
+}
+
+void CStateManagerFirst::execute()
+{
 	STATE_MAP_IT state_it = m_states.find(m_current_state);
 	VERIFY(state_it != m_states.end());
 
@@ -58,17 +63,19 @@ IState *CStateManagerFirst::get_state(EGlobalStates state_id)
 
 void CStateManagerFirst::set_state(EGlobalStates state)
 {
-	if (m_current_state == state) return;
+	if (m_current_state != state) {
+		STATE_MAP_IT state_it_prev = m_states.find(m_current_state);
+		VERIFY(state_it_prev != m_states.end());
 
-	STATE_MAP_IT state_it_prev = m_states.find(m_current_state);
-	VERIFY(state_it_prev != m_states.end());
+		STATE_MAP_IT state_it_new = m_states.find(state);
+		VERIFY(state_it_new != m_states.end());
 
-	STATE_MAP_IT state_it_new = m_states.find(state);
-	VERIFY(state_it_new != m_states.end());
-
-	state_it_prev->second->Done		();
-	state_it_prev->second->Reset	();
-	state_it_new->second->Activate	();		
-	m_current_state					= state;
+		state_it_prev->second->Done		();
+		state_it_prev->second->Reset	();
+		state_it_new->second->Activate	();		
+		m_current_state					= state;
+	}
+	
+	execute();
 }
 
