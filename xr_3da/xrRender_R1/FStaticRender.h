@@ -41,7 +41,8 @@ public:
 	xr_vector<SceneGraph::mapNormalVB::TNode*>				lstVB;
 	xr_vector<SceneGraph::mapNormalMatrices::TNode*>		lstMatrices;
 	xr_vector<SceneGraph::_LodItem>							lstLODs;
-	xr_vector<IRender_Visual*>										lstVisuals;
+	xr_vector<IRender_Visual*>								lstVisuals;
+	xr_vector<ISpatial*>									lstRenderables;
 
 	SGeometry*												hGeomPatches;
 

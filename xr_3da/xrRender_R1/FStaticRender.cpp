@@ -201,6 +201,20 @@ void CRender::Calculate()
 {
 	Device.Statistic.RenderCALC.Begin();
 
+	float	aX		= ::Random.randF(PI_MUL_2);
+	float	aY		= ::Random.randF(PI_MUL_2);
+	float	aZ		= ::Random.randF(PI_MUL_2);
+
+	Fmatrix	mX,mY,mZ,temp,res1,res2;
+	mX.rotateX		(aX);
+	mY.rotateY		(aY);
+	mZ.rotateZ		(aZ);
+
+	temp.mul		(mX,mZ);
+	res1.mul		(mY,temp);
+
+	res2.setXYZ		(-aX,-aY,-aZ);
+
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
 	g_fFarSq						=	75.f;
@@ -288,14 +302,15 @@ void CRender::Calculate()
 			);
 
 		// Exact sorting order (front-to-back)
-		std::sort		(g_SpatialSpace.q_result.begin(),g_SpatialSpace.q_result.end(),pred_sp_sort);
+		lstRenderables.swap	(g_SpatialSpace.q_result);
+		std::sort			(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
 
 		// Determine visibility for dynamic part of scene
 		set_Object							(0);
 		g_pGameLevel->pHUD->Render_First	( );
-		for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
+		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 		{
-			ISpatial*	spatial		= g_SpatialSpace.q_result[o_it];
+			ISpatial*	spatial		= lstRenderables[o_it];
 			CSector*	sector		= (CSector*)spatial->spatial.sector;
 			if	(0==sector)										continue;	// disassociated from S/P structure
 			if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
