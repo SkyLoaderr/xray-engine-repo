@@ -103,6 +103,8 @@ void CStateManagerPoltergeist::execute()
 	prev_substate = current_substate;
 }
 
+#define TIME_SEEN_FOR_FIRE 5000
+
 void CStateManagerPoltergeist::polter_attack()
 {
 	u32 cur_time = Device.dwTimeGlobal;
@@ -110,7 +112,9 @@ void CStateManagerPoltergeist::polter_attack()
 	
 	bool b_aggressive = object->conditions().GetHealth() < 0.5f;
 
-	if (time_next_flame_attack < cur_time) {
+	if ((time_next_flame_attack < cur_time) && (object->EnemyMan.get_enemy_time_last_seen() + TIME_SEEN_FOR_FIRE > cur_time)) {
+		
+
 		object->FireFlame(enemy);
 		time_next_flame_attack = cur_time + Random.randI(object->m_flame_delay.min, (b_aggressive) ? object->m_flame_delay.aggressive : object->m_flame_delay.normal);
 	}
