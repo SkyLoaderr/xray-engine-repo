@@ -641,7 +641,8 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 							} else {
 								// Msg		("copy: db[%X],cache[%X] - '%s', ",fc.modif,desc.modif,fname);
 								// copy & use
-								bCopy	= TRUE;
+								fc.modif	= desc.modif;
+								bCopy		= TRUE;
 							}
 						} else {
 							// copy & use
@@ -659,7 +660,6 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 							xr_delete			(_dst);
 							xr_delete			(_src);
 							set_file_age		(fname_in_cache,desc.modif);
-							fc.modif			= desc.modif;
 						}
 
 						// Use
