@@ -102,7 +102,9 @@ namespace AI {
 		enum {
 			Sleep		=0,
 			FireBegin,
-			FireEnd
+			FireEnd,
+			AttackJumpBegin,
+			AttackJumpEnd
 		};
 		float			o_PredictTime;	// 0.. - time of prediction
 	};

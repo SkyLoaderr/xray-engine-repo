@@ -1,41 +1,41 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier.h
-//	Created 	: 25.04.2002
-//  Modified 	: 25.04.2002
+//	Module 		: ai_zomby.h
+//	Created 	: 07.05.2002
+//  Modified 	: 07.05.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Soldier"
+//	Description : AI Behaviour for monster "ßùüèí"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_SOLDIER__
-#define __XRAY_AI_SOLDIER__
+#ifndef __XRAY_AI_ZOMBY__
+#define __XRAY_AI_ZOMBY__
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
-#include "ai_soldier_selectors.h"
+#include "ai_zomby_selectors.h"
 
-class CAI_Soldier : public CCustomMonster  
+class CAI_Zomby : public CCustomMonster  
 {
 	enum ESoundCcount {
 		SND_HIT_COUNT=8,
 		SND_DIE_COUNT=4
 	};
 
-	enum ESoldierStates 	{
-		aiSoldierDie = 0,
-		aiSoldierUnderFire,
-		aiSoldierSenseSomething,
-		aiSoldierGoInThisDirection,
-		aiSoldierGoToThisPosition,
-		aiSoldierWaitOnPosition,
-		aiSoldierHoldThisPosition,
-		aiSoldierHoldPositionUnderFire,
-		aiSoldierFreeHunting,
-		aiSoldierFollowMe,
-		aiSoldierAttack,
-		aiSoldierDefend,
-		aiSoldierPursuit,
-		aiSoldierRetreat,
-		aiSoldierCover,
+	enum EZombyStates 	{
+		aiZombyDie = 0,
+		aiZombyUnderFire,
+		aiZombySenseSomething,
+		aiZombyGoInThisDirection,
+		aiZombyGoToThisPosition,
+		aiZombyWaitOnPosition,
+		aiZombyHoldThisPosition,
+		aiZombyHoldPositionUnderFire,
+		aiZombyFreeHunting,
+		aiZombyFollowMe,
+		aiZombyAttack,
+		aiZombyDefend,
+		aiZombyPursuit,
+		aiZombyRetreat,
+		aiZombyCover,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -45,7 +45,7 @@ class CAI_Soldier : public CCustomMonster
 		sound3D			sndHit[SND_HIT_COUNT];
 		sound3D			sndDie[SND_DIE_COUNT];
 		// ai
-		ESoldierStates		eCurrentState;
+		EZombyStates		eCurrentState;
 		bool			bStopThinking;
 		// hit data
 		DWORD			dwHitTime;
@@ -61,7 +61,7 @@ class CAI_Soldier : public CCustomMonster
 		DWORD			dwSavedEnemyNodeID;
 		bool			bBuildPathToLostEnemy;
 		// finite state machine
-		stack<ESoldierStates>	tStateStack;
+		stack<EZombyStates>	tStateStack;
 		void Die();
 		void UnderFire();
 		void SenseSomething();
@@ -80,16 +80,16 @@ class CAI_Soldier : public CCustomMonster
 		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 	
-		CSoldierSelectorAttack		SelectorAttack;
-		CSoldierSelectorFreeHunting SelectorFreeHunting;
-		CSoldierSelectorFollow		SelectorFollow;
-		CSoldierSelectorPursuit		SelectorPursuit;
-		CSoldierSelectorUnderFire	SelectorUnderFire;
+		CZombySelectorAttack		SelectorAttack;
+		CZombySelectorFreeHunting SelectorFreeHunting;
+		CZombySelectorFollow		SelectorFollow;
+		CZombySelectorPursuit		SelectorPursuit;
+		CZombySelectorUnderFire	SelectorUnderFire;
 
 		void SetLessCoverLook(NodeCompressed *tNode);
 	public:
-					   CAI_Soldier();
-		virtual		  ~CAI_Soldier();
+					   CAI_Zomby();
+		virtual		  ~CAI_Zomby();
 		virtual void  Update(DWORD DT);
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);

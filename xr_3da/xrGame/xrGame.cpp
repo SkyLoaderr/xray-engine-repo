@@ -10,6 +10,7 @@
 #include "ai\\hen\\ai_hen.h"
 #include "ai\\rat\\ai_rat.h"
 #include "ai\\soldier\\ai_soldier.h"
+#include "ai\\zomby\\ai_zomby.h"
     
 extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
@@ -112,8 +113,9 @@ extern "C" {
 		case CLSID_OBJECT_DACTOR:	P = new CDemoActor();		break;
 		//case CLSID_AI_HUMAN:		P = new CAI_Human();		break;
 		case CLSID_AI_HEN:			P = new CAI_Hen();			break;
-		case CLSID_AI_SOLDIER:		P =	new CAI_Soldier();		break;
 		case CLSID_AI_RAT:			P = new CAI_Rat();			break;
+		case CLSID_AI_SOLDIER:		P =	new CAI_Soldier();		break;
+		case CLSID_AI_ZOMBY:		P = new CAI_Zomby();		break;
 		}
 		R_ASSERT(P);
 		P->SUB_CLS_ID = cls;

@@ -1509,8 +1509,8 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 	R_ASSERT(fsimilar(_view.magnitude(),1));
 	R_ASSERT(fsimilar(_move.magnitude(),1));
 
-	CMotionDef*	S=m_walk.fwd;//0;
-/**
+	CMotionDef*	S=0;
+/**/
 	if (iHealth<=0)
 		S = m_death;
 	else {
@@ -1577,3 +1577,22 @@ void CAI_Rat::net_Import(NET_Packet* P)
 	bVisible				= TRUE;
 	bEnabled				= TRUE;
 }
+
+void CAI_Rat::Exec_Action	( float dt )
+{
+	//*** process action commands
+	AI::C_Command* C	= &q_action;
+	AI::AIC_Action* L	= (AI::AIC_Action*)C;
+	switch (L->Command) {
+		case AI::AIC_Action::AttackJumpBegin: {
+			break;
+		}
+		case AI::AIC_Action::AttackJumpEnd: {
+			break;
+		}
+		default:
+			break;
+	}
+	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
+}
+

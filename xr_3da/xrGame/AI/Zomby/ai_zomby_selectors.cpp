@@ -1,22 +1,22 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier_selectors.cpp
-//	Created 	: 25.04.2002
-//  Modified 	: 25.04.2002
+//	Module 		: ai_zomby_selectors.cpp
+//	Created 	: 07.05.2002
+//  Modified 	: 07.05.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Soldier"
+//	Description : AI Behaviour for monster "Zomby"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "..\\..\\entity.h"
 #include "..\\..\\CustomMonster.h"
-#include "ai_soldier_selectors.h"
+#include "ai_zomby_selectors.h"
 
-CSoldierSelectorAttack::CSoldierSelectorAttack()
+CZombySelectorAttack::CZombySelectorAttack()
 { 
 	Name = "selector_attack"; 
 }
 
-float CSoldierSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CZombySelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -54,12 +54,12 @@ float CSoldierSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, B
 	return(m_fResult);
 }
 
-CSoldierSelectorFreeHunting::CSoldierSelectorFreeHunting()
+CZombySelectorFreeHunting::CZombySelectorFreeHunting()
 { 
 	Name = "selector_free_hunting"; 
 }
 
-float CSoldierSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CZombySelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -94,12 +94,12 @@ float CSoldierSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistan
 	return(m_fResult);
 }
 
-CSoldierSelectorFollow::CSoldierSelectorFollow()
+CZombySelectorFollow::CZombySelectorFollow()
 { 
 	Name = "selector_follow"; 
 }
 
-float CSoldierSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CZombySelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -134,12 +134,12 @@ float CSoldierSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, B
 	return(m_fResult);
 }
 
-CSoldierSelectorPursuit::CSoldierSelectorPursuit()
+CZombySelectorPursuit::CZombySelectorPursuit()
 { 
 	Name = "selector_pursuit"; 
 }
 
-float CSoldierSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CZombySelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
 	// initialization
 	m_tpCurrentNode = tNode;
@@ -174,12 +174,12 @@ float CSoldierSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, 
 	return(m_fResult);
 }
 
-CSoldierSelectorUnderFire::CSoldierSelectorUnderFire()
+CZombySelectorUnderFire::CZombySelectorUnderFire()
 { 
 	Name = "selector_under_fire"; 
 }
 
-float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
+float CZombySelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
 {
 	// initialization
 	m_tpCurrentNode = tNode;

@@ -113,7 +113,6 @@ public:
 	// stream executors
 	void				Exec_Look				( float dt );
 	void				Exec_Movement			( float dt );
-	void				Exec_Action				( float dt );
 	void				Exec_Visibility			( float dt );
 
 	void				BuildCamera				( );
@@ -121,6 +120,7 @@ public:
 						CCustomMonster			( );
 	virtual				~CCustomMonster			( );
 
+	virtual void		Exec_Action				( float dt );
 	virtual BOOL		Spawn					( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 	virtual void		Death					( );
 	virtual void		HitSignal				( int iHitAmount, Fvector& vLocalDir, CEntity* who);

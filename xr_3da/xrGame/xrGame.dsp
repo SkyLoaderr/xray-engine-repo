@@ -562,6 +562,26 @@ SOURCE=.\AI\Soldier\ai_soldier_selectors.cpp
 SOURCE=.\AI\Soldier\ai_soldier_selectors.h
 # End Source File
 # End Group
+# Begin Group "ai_zomby"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\AI\Zomby\ai_zomby.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Zomby\ai_zomby.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Zomby\ai_zomby_selectors.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Zomby\ai_zomby_selectors.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\AI\ai_monsters.cpp

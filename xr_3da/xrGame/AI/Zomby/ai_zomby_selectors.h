@@ -1,49 +1,49 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier_selectors.h
-//	Created 	: 25.04.2002
-//  Modified 	: 25.04.2002
+//	Module 		: ai_zomby_selectors.h
+//	Created 	: 07.05.2002
+//  Modified 	: 07.05.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Soldier"
+//	Description : AI Behaviour for monster "Zomby"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_SOLDIER_SELECTORS__
-#define __XRAY_AI_SOLDIER_SELECTORS__
+#ifndef __XRAY_AI_ZOMBY_SELECTORS__
+#define __XRAY_AI_ZOMBY_SELECTORS__
 
 #include "..\\ai_monsters.h"
 
-class CSoldierSelectorAttack : public CAISelectorBase
+class CZombySelectorAttack : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorAttack();
+		CZombySelectorAttack();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorFreeHunting : public CAISelectorBase
+class CZombySelectorFreeHunting : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorFreeHunting();
+		CZombySelectorFreeHunting();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorFollow : public CAISelectorBase
+class CZombySelectorFollow : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorFollow	();
+		CZombySelectorFollow	();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 
 };
 
-class CSoldierSelectorPursuit : public CAISelectorBase
+class CZombySelectorPursuit : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorPursuit();
+		CZombySelectorPursuit();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CSoldierSelectorUnderFire : public CAISelectorBase
+class CZombySelectorUnderFire : public CAISelectorBase
 {
 	public:
-		CSoldierSelectorUnderFire();
+		CZombySelectorUnderFire();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 

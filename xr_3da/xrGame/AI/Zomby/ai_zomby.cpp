@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier.cpp
-//	Created 	: 25.04.2002
-//  Modified 	: 25.04.2002
+//	Module 		: ai_zomby.cpp
+//	Created 	: 07.05.2002
+//  Modified 	: 07.05.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Soldier"
+//	Description : AI Behaviour for monster "Zomby"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\..\\3dsound.h"
-#include "ai_soldier.h"
-#include "ai_soldier_selectors.h"
+#include "ai_zomby.h"
+#include "ai_zomby_selectors.h"
 
 //#define WRITE_LOG
 
-CAI_Soldier::CAI_Soldier()
+CAI_Zomby::CAI_Zomby()
 {
 	dwHitTime = 0;
 	tHitDir.set(0,0,1);
@@ -23,10 +23,10 @@ CAI_Soldier::CAI_Soldier()
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
 	dwLostEnemyTime = 0;
-	eCurrentState = aiSoldierFollowMe;
+	eCurrentState = aiZombyFollowMe;
 }
 
-CAI_Soldier::~CAI_Soldier()
+CAI_Zomby::~CAI_Zomby()
 {
 	// removing all data no more being neded 
 	int i;
@@ -34,7 +34,7 @@ CAI_Soldier::~CAI_Soldier()
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
 }
 
-void CAI_Soldier::Load(CInifile* ini, const char* section)
+void CAI_Zomby::Load(CInifile* ini, const char* section)
 { 
 	// load parameters from ".ini" file
 	inherited::Load	(ini,section);
@@ -64,8 +64,8 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	SelectorUnderFire.Load(ini,section);
 }
 
-// when someone hit soldier
-void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit zomby
+void CAI_Zomby::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -81,8 +81,8 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	pSounds->Play3DAtPos(S,vPosition);
 }
 
-// when someone hit soldier
-void CAI_Soldier::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
+// when someone hit zomby
+void CAI_Zomby::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
@@ -91,13 +91,13 @@ void CAI_Soldier::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	tSenseDir.set(D);
 }
 
-// when soldier is dead
-void CAI_Soldier::Death()
+// when zomby is dead
+void CAI_Zomby::Death()
 {
 	// perform death operations
 	inherited::Death( );
 	q_action.setup(AI::AIC_Action::FireEnd);
-	eCurrentState = aiSoldierDie;
+	eCurrentState = aiZombyDie;
 
 	// removing from group
 	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
@@ -110,13 +110,13 @@ void CAI_Soldier::Death()
 	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
 }
 
-// soldier update
-void CAI_Soldier::Update(DWORD DT)
+// zomby update
+void CAI_Zomby::Update(DWORD DT)
 {
 	inherited::Update(DT);
 }
 
-float CAI_Soldier::EnemyHeuristics(CEntity* E)
+float CAI_Zomby::EnemyHeuristics(CEntity* E)
 {
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
@@ -131,7 +131,7 @@ float CAI_Soldier::EnemyHeuristics(CEntity* E)
 	return  f1*f2;
 }
 
-void CAI_Soldier::SelectEnemy(SEnemySelected& S)
+void CAI_Zomby::SelectEnemy(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;
@@ -164,7 +164,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	}
 }
 
-IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
+IC bool CAI_Zomby::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
 	Fvector tMemberDirection;
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
@@ -173,7 +173,7 @@ IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, F
 	//return(false);
 }
 
-bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
+bool CAI_Zomby::bfCheckPath(AI::Path &Path) {
 	vector<BYTE> q_mark = Level().AI.tpfGetNodeMarks();
 	for (int i=1; i<Path.Nodes.size(); i++) 
 		if (q_mark[Path.Nodes[i]])
@@ -184,7 +184,7 @@ bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
 #define LEFT_NODE(Index)  ((Index + 3) & 3)
 #define RIGHT_NODE(Index) ((Index + 5) & 3)
 
-void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
+void CAI_Zomby::SetLessCoverLook(NodeCompressed *tNode)
 {
 	//Fvector tWatchDirection;
 	for (int i=1, iMaxOpenIndex=0, iMaxOpen = tNode->cover[0]; i<4; i++)
@@ -224,14 +224,14 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 	q_look.o_look_speed=_FB_look_speed;
 }
 
-void CAI_Soldier::Attack()
+void CAI_Zomby::Attack()
 {
-	// if no more health then soldier is dead
+	// if no more health then zomby is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Attack");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
+		eCurrentState = aiZombyDie;
 		return;
 	}
 	else {
@@ -248,7 +248,7 @@ void CAI_Soldier::Attack()
 			//  no, we lost him
 			else {
 				dwLostEnemyTime = Level().timeServer();
-				eCurrentState = aiSoldierPursuit;
+				eCurrentState = aiZombyPursuit;
 			}
 			return;
 		}
@@ -273,7 +273,7 @@ void CAI_Soldier::Attack()
 				bool bWatch = false;
 				// get pointer to the class of node estimator 
 				// for finding the best node in the area
-				CSoldierSelectorAttack S = SelectorAttack;
+				CZombySelectorAttack S = SelectorAttack;
 				// if i am not a leader then assign leader
 				if (Leader != this) {
 					S.m_tLeader = Leader;
@@ -393,7 +393,7 @@ void CAI_Soldier::Attack()
 					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
-					CSoldierSelectorAttack S = SelectorAttack;
+					CZombySelectorAttack S = SelectorAttack;
 					// if i am not a leader then assign leader
 					/**/
 					if (Leader != this) {
@@ -456,17 +456,17 @@ void CAI_Soldier::Attack()
 	}
 }
 
-void CAI_Soldier::Cover()
+void CAI_Zomby::Cover()
 {
 	bStopThinking = true;
 }
 
-void CAI_Soldier::Defend()
+void CAI_Zomby::Defend()
 {
 	bStopThinking = true;
 }
 
-void CAI_Soldier::Die()
+void CAI_Zomby::Die()
 {
 	q_look.setup(0,AI::t_None,0,0	);
 	q_action.setup(AI::AIC_Action::FireEnd);
@@ -479,14 +479,14 @@ void CAI_Soldier::Die()
 	bStopThinking = true;
 }
 
-void CAI_Soldier::FollowMe()
+void CAI_Zomby::FollowMe()
 {
-	// if no more health then soldier is dead
+	// if no more health then zomby is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Follow me");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
+		eCurrentState = aiZombyDie;
 		return;
 	}
 	else {
@@ -496,7 +496,7 @@ void CAI_Soldier::FollowMe()
 		// do I see the enemies?
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
-			eCurrentState = aiSoldierAttack;
+			eCurrentState = aiZombyAttack;
 			return;
 		}
 		else {
@@ -504,13 +504,13 @@ void CAI_Soldier::FollowMe()
 			DWORD dwCurTime = Level().timeServer();
 			if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
-				eCurrentState = aiSoldierUnderFire;
+				eCurrentState = aiZombyUnderFire;
 				return;
 			}
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiSoldierSenseSomething;
+					eCurrentState = aiZombySenseSomething;
 					return;
 				}
 				else {
@@ -525,14 +525,14 @@ void CAI_Soldier::FollowMe()
 						Leader = this;
 					// I am leader then go to state "Free Hunting"
 					if (Leader == this) {
-						eCurrentState = aiSoldierFreeHunting;
+						eCurrentState = aiZombyFreeHunting;
 						return;
 					}
 					else {
 						bool bWatch = false;
 						// get pointer to the class of node estimator 
 						// for finding the best node in the area
-						CSoldierSelectorFollow S = SelectorFollow;
+						CZombySelectorFollow S = SelectorFollow;
 						if (Leader != this) {
 							S.m_tLeader = Leader;
 							S.m_tLeaderPosition = Leader->Position();
@@ -583,7 +583,7 @@ void CAI_Soldier::FollowMe()
 							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
 							// if search has found new best node then 
 							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
-								// if old cost minus new cost is a little then soldier is too lazy
+								// if old cost minus new cost is a little then zomby is too lazy
 								// to move there
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
@@ -614,14 +614,14 @@ void CAI_Soldier::FollowMe()
 	}
 }
 
-void CAI_Soldier::FreeHunting()
+void CAI_Zomby::FreeHunting()
 {
-	// if no more health then soldier is dead
+	// if no more health then zomby is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Free hunting");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
+		eCurrentState = aiZombyDie;
 		return;
 	}
 	else {
@@ -631,20 +631,20 @@ void CAI_Soldier::FreeHunting()
 		// do I see the enemies?
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
-			eCurrentState = aiSoldierAttack;
+			eCurrentState = aiZombyAttack;
 			return;
 		}
 		else {
 			// checking if I am under fire
 			if (Level().timeServer() - dwHitTime < HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
-				eCurrentState = aiSoldierUnderFire;
+				eCurrentState = aiZombyUnderFire;
 				return;
 			}
 			else {
 				if (Level().timeServer() - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiSoldierSenseSomething;
+					eCurrentState = aiZombySenseSomething;
 					return;
 				}
 				else {
@@ -661,7 +661,7 @@ void CAI_Soldier::FreeHunting()
 					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
-					CSoldierSelectorFreeHunting S = SelectorFreeHunting;
+					CZombySelectorFreeHunting S = SelectorFreeHunting;
 					// if i am not a leader then assign leader
 					if (Leader != this) {
 						S.m_tLeader = Leader;
@@ -736,32 +736,32 @@ void CAI_Soldier::FreeHunting()
 	}
 }
 
-void CAI_Soldier::GoInThisDirection()
+void CAI_Zomby::GoInThisDirection()
 {
 }
 
-void CAI_Soldier::GoToThisPosition()
+void CAI_Zomby::GoToThisPosition()
 {
 }
 
-void CAI_Soldier::HoldPositionUnderFire()
+void CAI_Zomby::HoldPositionUnderFire()
 {
 	bStopThinking = true;
 }
 
-void CAI_Soldier::HoldThisPosition()
+void CAI_Zomby::HoldThisPosition()
 {
 	bStopThinking = true;
 }
 
-void CAI_Soldier::Pursuit()
+void CAI_Zomby::Pursuit()
 {
-	// if no more health then soldier is dead
+	// if no more health then zomby is dead
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Pursuit");
 #endif
 	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
+		eCurrentState = aiZombyDie;
 		return;
 	}
 	else {
@@ -770,7 +770,7 @@ void CAI_Soldier::Pursuit()
 		SelectEnemy(Enemy);
 		// do the enemies exist?
 		if (Enemy.Enemy) {
-			eCurrentState = aiSoldierAttack;
+			eCurrentState = aiZombyAttack;
 			return;
 		}
 		else {
@@ -779,13 +779,13 @@ void CAI_Soldier::Pursuit()
 				// checking if I am under fire
 				if (dwCurrentTime - dwHitTime < HIT_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiSoldierUnderFire;
+					eCurrentState = aiZombyUnderFire;
 					return;
 				}
 				else {
 					if (dwCurrentTime - dwSenseTime < SENSE_JUMP_TIME) {
 						tStateStack.push(eCurrentState);
-						eCurrentState = aiSoldierSenseSomething;
+						eCurrentState = aiZombySenseSomething;
 						return;
 					}
 					else {
@@ -800,7 +800,7 @@ void CAI_Soldier::Pursuit()
 							Leader = this;
 						// get pointer to the class of node estimator 
 						// for finding the best node in the area
-						CSoldierSelectorPursuit S = SelectorPursuit;
+						CZombySelectorPursuit S = SelectorPursuit;
 						// if i am not a leader then assign leader
 						if (Leader != this) {
 							S.m_tLeader = Leader;
@@ -886,12 +886,12 @@ void CAI_Soldier::Pursuit()
 	}
 }
 
-void CAI_Soldier::Retreat()
+void CAI_Zomby::Retreat()
 {
 	bStopThinking = true;
 }
 
-void CAI_Soldier::SenseSomething()
+void CAI_Zomby::SenseSomething()
 {
 	//bStopThinking = true;
 	//dwSenseTime = 0;
@@ -905,7 +905,7 @@ void CAI_Soldier::SenseSomething()
 	bStopThinking = true;
 }
 
-void CAI_Soldier::UnderFire()
+void CAI_Zomby::UnderFire()
 {
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Under fire");
@@ -923,7 +923,7 @@ void CAI_Soldier::UnderFire()
 	bStopThinking = true;
 	/**/
 	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
+		eCurrentState = aiZombyDie;
 		return;
 	}
 	else {
@@ -933,7 +933,7 @@ void CAI_Soldier::UnderFire()
 		// do I see the enemies?
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
-			eCurrentState = aiSoldierAttack;
+			eCurrentState = aiZombyAttack;
 			return;
 		}
 		else {
@@ -947,7 +947,7 @@ void CAI_Soldier::UnderFire()
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
-					eCurrentState = aiSoldierSenseSomething;
+					eCurrentState = aiZombySenseSomething;
 					return;
 				}
 				else {
@@ -964,7 +964,7 @@ void CAI_Soldier::UnderFire()
 					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
-					CSoldierSelectorUnderFire S = SelectorUnderFire;
+					CZombySelectorUnderFire S = SelectorUnderFire;
 					if (Leader != this) {
 						S.m_tLeader = Leader;
 						S.m_tLeaderPosition = Leader->Position();
@@ -1061,73 +1061,73 @@ void CAI_Soldier::UnderFire()
 	}
 }
 
-void CAI_Soldier::WaitOnPosition()
+void CAI_Zomby::WaitOnPosition()
 {
 	bStopThinking = true;
 }
 
-void CAI_Soldier::Think()
+void CAI_Zomby::Think()
 {
 	bStopThinking = false;
 	do {
 		switch(eCurrentState) {
-			case aiSoldierDie : {
+			case aiZombyDie : {
 				Die();
 				break;
 			}
-			case aiSoldierUnderFire : {
+			case aiZombyUnderFire : {
 				UnderFire();
 				break;
 			}
-			case aiSoldierSenseSomething : {
+			case aiZombySenseSomething : {
 				SenseSomething();
 				break;
 			}
-			case aiSoldierGoInThisDirection : {
+			case aiZombyGoInThisDirection : {
 				GoInThisDirection();
 				break;
 			}
-			case aiSoldierGoToThisPosition : {
+			case aiZombyGoToThisPosition : {
 				GoToThisPosition();
 				break;
 			}
-			case aiSoldierWaitOnPosition : {
+			case aiZombyWaitOnPosition : {
 				WaitOnPosition();
 				break;
 			}
-			case aiSoldierHoldThisPosition : {
+			case aiZombyHoldThisPosition : {
 				HoldThisPosition();
 				break;
 			}
-			case aiSoldierHoldPositionUnderFire : {
+			case aiZombyHoldPositionUnderFire : {
 				HoldPositionUnderFire();
 				break;
 			}
-			case aiSoldierFreeHunting : {
+			case aiZombyFreeHunting : {
 				FreeHunting();
 				break;
 			}
-			case aiSoldierFollowMe : {
+			case aiZombyFollowMe : {
 				FollowMe();
 				break;
 			}
-			case aiSoldierAttack : {
+			case aiZombyAttack : {
 				Attack();
 				break;
 			}
-			case aiSoldierDefend : {
+			case aiZombyDefend : {
 				Defend();
 				break;
 			}
-			case aiSoldierPursuit : {
+			case aiZombyPursuit : {
 				Pursuit();
 				break;
 			}
-			case aiSoldierRetreat : {
+			case aiZombyRetreat : {
 				Retreat();
 				break;
 			}
-			case aiSoldierCover : {
+			case aiZombyCover : {
 				Cover();
 				break;
 			}
