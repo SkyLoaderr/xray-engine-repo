@@ -172,8 +172,8 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 
 BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 {
-	int idx = -1;
-	BOOL bTakeWeapon = false;
+	int idx				= -1;
+	BOOL bTakeWeapon	= false;
 	switch (cls){
 	case CLSID_OBJECT_A_M134:		idx = FindWeapon(CLSID_OBJECT_W_M134);		break;
 	case CLSID_OBJECT_A_GROZA:		idx = FindWeapon(CLSID_OBJECT_W_GROZA);		break;

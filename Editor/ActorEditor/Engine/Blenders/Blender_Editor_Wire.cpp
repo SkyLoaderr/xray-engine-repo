@@ -49,6 +49,7 @@ void CBlender_Editor_Wire::Compile	(CBlender_Recorder& RS, sh_list& L_textures, 
 			RS.Stage_Texture	("$null",	L_textures);
 			RS.Stage_Matrix		("$null",	L_matrices,	0);
 			RS.Stage_Constant	("$null",	L_constants);
+//			RS.Stage_Constant	("$base0",	"$user$wire");
 		}
 		RS.StageEnd			();
 	}
