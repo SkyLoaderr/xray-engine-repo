@@ -109,7 +109,7 @@ void CAI_Stalker::Die				()
 {
 	SelectAnimation					(XFORM().k,direction(),speed());
 
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskDie));
+	set_sound_mask					(u32(eStalkerSoundMaskDie));
 	play							(eStalkerSoundDie);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
