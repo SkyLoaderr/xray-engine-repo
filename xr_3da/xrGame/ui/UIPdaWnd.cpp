@@ -13,6 +13,8 @@
 #include "../HUDManager.h"
 #include "../level.h"
 
+//////////////////////////////////////////////////////////////////////////
+
 const char * const PDA_XML					= "pda.xml";
 const char * const ALL_PDA_HEADER_PREFIX	= "#root 15/FD-665#68";
 
@@ -26,12 +28,10 @@ CUIPdaWnd::CUIPdaWnd()
 
 	Hide();
 	
-//	m_pInvOwner = NULL;
-//	m_pPda = NULL;
-
-//	m_pActiveDialog = NULL;
 	SetFont(HUD().pFontMedium);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 CUIPdaWnd::~CUIPdaWnd()
 {
@@ -51,11 +51,6 @@ void CUIPdaWnd::Init()
 					CUIXmlInit::ApplyAlignY(0, alCenter),
 					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
-//	AttachChild(&UIStaticTop);
-//	UIStaticTop.Init("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
-//	AttachChild(&UIStaticBottom);
-//	UIStaticBottom.Init("ui\\ui_bottom_background", 0,UI_BASE_HEIGHT-32,UI_BASE_HEIGHT,32);
-	
 	AttachChild(&UIMainPdaFrame);
 	xml_init.InitStatic(uiXml, "background_static", 0, &UIMainPdaFrame);
 
@@ -93,6 +88,16 @@ void CUIPdaWnd::Init()
 	UIMainPdaFrame.AttachChild(&UITabControl);
 	xml_init.InitTabControl(uiXml, "tab", 0, &UITabControl);
 	UITabControl.SetMessageTarget(this);
+
+	// Off button
+	UIMainPdaFrame.AttachChild(&UIOffButton);
+	xml_init.InitButton(uiXml, "off_button", 0, &UIOffButton);
+	UIOffButton.SetPushOffsetX(0);
+	UIOffButton.SetPushOffsetY(0);
+	UIOffButton.TextureOff();
+	UIOffButton.SetMessageTarget(this);
+
+	Draw();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -130,6 +135,15 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	else if (PDA_MAP_SET_ACTIVE_POINT == msg)
 	{
 		UIMapWnd.SetActivePoint(*reinterpret_cast<Fvector*>(pData));
+	}
+	else if (&UIOffButton == pWnd)
+	{
+		if (CUIButton::BUTTON_FOCUS_RECEIVED == msg)
+			UIOffButton.TextureOn();
+		else if (CUIButton::BUTTON_FOCUS_LOST == msg)
+			UIOffButton.TextureOff();
+		else if (CUIButton::BUTTON_CLICKED == msg)
+			HUD().GetUI()->UIGame()->StartStopMenu(this);
 	}
 	else
 	{

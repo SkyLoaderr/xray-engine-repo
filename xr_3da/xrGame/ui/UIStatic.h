@@ -105,6 +105,10 @@ public:
 
 	void SetElipsis(EElipsisPosition pos, int indent);
 
+	// ¬ключть/выключить текстуру
+	void TextureOn()	{ m_bAvailableTexture = true; }
+	void TextureOff()	{ m_bAvailableTexture = false; }
+
 protected:
 	bool m_bClipper;
 	//раст€гивание текстуры в видимую область

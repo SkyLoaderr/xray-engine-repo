@@ -147,6 +147,9 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 			pTask->SetTextX(15);
 		}
 	}
+
+	// ƒобавл€ем пустую строчку-разделитель
+	UIList.AddItem<CUIListItem>("\n");
 }
 
 //////////////////////////////////////////////////////////////////////////

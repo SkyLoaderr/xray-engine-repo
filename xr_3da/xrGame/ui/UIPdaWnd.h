@@ -70,8 +70,8 @@ protected:
 	CUIFrameLineWnd		UIMainButtonsBackground;
 	CUIFrameLineWnd		UITimerBackground;
 
-//	//верхушка PDA для кнопочек переключения режима
-//	CUIStatic			UIPDAHeader;
+	// Кнопочка выключения ПДА
+	CUIButton			UIOffButton;
 
 	// кнопки PDA
 	CUITabControl		UITabControl;
