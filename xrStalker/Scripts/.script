@@ -929,10 +929,8 @@ function point_with_bit_id(patrol_path, bit, old_point)        -- old_point - ин
             --Добавляем точку если old_point == nil или новая точка не совпадает с old_point
             if(old_point == nil) then
                 table.insert(points, i)
-                printf("insert point %d", i)
             elseif(old_point ~= i) then
                 table.insert(points, i)
-                printf("insert point %d", i)
             end
         end
     end
