@@ -268,6 +268,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 //----------------------------------------------------
 
 void TUI::Redraw(){
+	if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // filter
@@ -287,8 +288,6 @@ void TUI::Redraw(){
     else                			Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
     try{
-	    if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
-
         Device.Begin();
         Device.UpdateView();
 		Device.ResetMaterial();
@@ -468,7 +467,7 @@ EObjClass TUI::CurrentClassID(){
 	return (fraLeftBar->ebIgnoreTarget->Down)?OBJCLASS_DUMMY:m_Tools->GetTargetClassID();
 }
 
-void TUI::OnMousePress(TShiftState state){
+void TUI::OnMousePress(int btn){
 	if(!g_bEditorValid) return;
     if(m_MouseCaptured) return;
 
@@ -480,8 +479,8 @@ void TUI::OnMousePress(TShiftState state){
 
     bMouseInUse = true;
 
-    if (state.Contains(ssLeft)) 	m_ShiftState << ssLeft;
-    if (state.Contains(ssRight)) 	m_ShiftState << ssRight;
+    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
 
     // camera activate
     if(!Device.m_Camera.MoveStart(m_ShiftState)){
@@ -522,11 +521,12 @@ void TUI::OnMousePress(TShiftState state){
     }
     RedrawScene();
 }
+
 void TUI::OnMouseRelease(int btn){
 	if(!g_bEditorValid) return;
 
-    if (iGetBtnState(0)) m_ShiftState << ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;
+    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
 
     if( Device.m_Camera.IsMoving() ){
         if (Device.m_Camera.MoveEnd(m_ShiftState)) bMouseInUse = false;
@@ -554,8 +554,8 @@ void TUI::OnMouseMove(int x, int y){
 	if(!g_bEditorValid) return;
     bool bRayUpdated = false;
 
-    if (iGetBtnState(0)) m_ShiftState << ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;
+    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
 
 	if (!Device.m_Camera.Process(m_ShiftState,x,y)){
         if( m_MouseCaptured || m_MouseMultiClickCaptured ){

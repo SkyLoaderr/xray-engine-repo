@@ -172,7 +172,7 @@ public:
     EObjClass CurrentClassID();
 
 	// direct input
-	void OnMousePress					(TShiftState State);
+	virtual void OnMousePress			(int btn);
 	virtual void OnMouseRelease			(int btn);
 	virtual void OnMouseMove			(int x, int y);
 

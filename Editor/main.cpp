@@ -392,13 +392,6 @@ void __fastcall TfrmMain::LockSelected1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::D3DWindowMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	UI->OnMousePress(Shift);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmMain::FormActivate(TObject *Sender)
 {
 	pInput->OnAppActivate();
