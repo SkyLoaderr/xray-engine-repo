@@ -7,6 +7,7 @@
 #include "../../../../skeletonanimated.h"
 #include "../../../sound_player.h"
 #include "../../../level.h"
+#include "../../../ai_monster_space.h"
 
 CBurer::CBurer()
 {

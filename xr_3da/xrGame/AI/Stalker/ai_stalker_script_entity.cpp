@@ -18,6 +18,7 @@
 #include "../../script_engine.h"
 #include "../../sight_manager.h"
 #include "../../stalker_movement_manager.h"
+#include "../../ai_space.h"
 
 void CAI_Stalker::UseObject(const CObject *tpObject)
 {

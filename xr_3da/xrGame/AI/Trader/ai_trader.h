@@ -16,6 +16,10 @@
 #include "../../AI_PhraseDialogManager.h"
 #include "../../script_task.h"
 
+namespace MonsterSpace {
+	enum EMonsterHeadAnimType;
+};
+
 class CInventoryItem;
 class CArtefact;
 class CMotionDef;

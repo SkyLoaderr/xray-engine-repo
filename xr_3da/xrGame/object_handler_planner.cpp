@@ -18,6 +18,7 @@
 #include "weaponmagazined.h"
 #include "missile.h"
 #include "fooditem.h"
+#include "ai_monster_space.h"
 
 #ifdef _DEBUG
 //#	define USE_LOG
@@ -224,7 +225,7 @@ void CObjectHandlerPlanner::setup(CAI_Stalker *object)
 	add_effect					(action,0xffff,eWorldPropertyIdle,	true);
 	add_operator				(u32(eWorldOperatorNoItemsIdle),action);
 
-	set_goal					(eObjectActionIdle);
+	set_goal					(MonsterSpace::eObjectActionIdle);
 
 #ifdef USE_LOG
 #	ifdef LOG_ACTION

@@ -5,6 +5,7 @@
 #include "../../../level_graph.h"
 #include "../../../level.h"
 #include "../../../net_utils.h"
+#include "../../../ai_space.h"
 
 #define FIND_POINT_ATTEMPT_COUNT	5
 #define MIN_FLAME_DIST				2.f

@@ -33,6 +33,9 @@
 #include "../../danger_cover_location.h"
 #include "../../object_handler_planner.h"
 #include "../../object_handler_space.h"
+#include "ai_stalker_space.h"
+
+using namespace StalkerSpace;
 
 const float DANGER_DISTANCE = 5.f;
 const u32	DANGER_INTERVAL = 30000;

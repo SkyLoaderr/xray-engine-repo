@@ -21,6 +21,9 @@
 #include "ai_object_location.h"
 #include "stalker_movement_manager.h"
 #include "sound_player.h"
+#include "ai/stalker/ai_stalker_space.h"
+
+using namespace StalkerSpace;
 
 #ifdef _DEBUG
 //#	define STALKER_DEBUG_MODE

@@ -3,6 +3,7 @@
 #include "burer.h"
 #include "burer_scan.h"
 #include "../../../sound_player.h"
+#include "../../../ai_monster_space.h"
 
 void CBurerScan::Run()
 {

@@ -1,6 +1,12 @@
 #pragma once
 
 #include "../state.h"
+#include "../../../ai_space.h"
+#include "../../../level_graph.h"
+#include "../../../ai_object_location.h"
+#include "state_custom_action.h"
+#include "state_move_to_point.h"
+#include "../../../restricted_object.h"
 
 template<typename _Object>
 class	CStateMonsterSquadRest : public CState<_Object> {

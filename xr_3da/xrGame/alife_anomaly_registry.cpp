@@ -9,6 +9,22 @@
 #include "stdafx.h"
 #include "alife_anomaly_registry.h"
 #include "object_broker.h"
+#include "ai_space.h"
+#include "game_graph.h"
+
+CALifeAnomalyRegistry::CALifeAnomalyRegistry	(LPCSTR section)
+{
+	m_anomalies.resize				(ai().game_graph().header().vertex_count());
+	m_anomaly_cross_table.resize	(ALife::eAnomalousZoneTypeDummy);
+}
+
+void CALifeAnomalyRegistry::clear				()
+{
+	delete_data						(m_anomalies);
+	delete_data						(m_anomaly_cross_table);
+	m_anomalies.resize				(ai().game_graph().header().vertex_count());
+	m_anomaly_cross_table.resize	(ALife::eAnomalousZoneTypeDummy);
+}
 
 CALifeAnomalyRegistry::~CALifeAnomalyRegistry	()
 {

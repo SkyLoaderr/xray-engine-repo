@@ -3,6 +3,7 @@
 #include "burer_attack_gravi.h"
 #include "burer.h"
 #include "../../../sound_player.h"
+#include "../../../ai_monster_space.h"
 
 #define GOOD_DISTANCE_FOR_GRAVI 6.f
 
@@ -135,7 +136,7 @@ void CBurerAttackGravi::ExecuteGraviFire()
 	pMonster->m_gravi_object.activate(enemy, from_pos, target_pos);
 	
 	pMonster->StopGraviPrepare();
-	pMonster->sound().play(eMonsterSoundGraviAttack);
+	pMonster->sound().play(MonsterSpace::eMonsterSoundGraviAttack);
 	pMonster->DeactivateShield();
 
 }

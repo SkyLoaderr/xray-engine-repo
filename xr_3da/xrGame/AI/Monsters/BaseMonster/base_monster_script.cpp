@@ -7,6 +7,9 @@
 #include "../../../ai_object_location.h"
 #include "../ai_monster_movement.h"
 #include "../../../sound_player.h"
+#include "../../../ai_monster_space.h"
+
+using namespace MonsterSpace;
 
 //////////////////////////////////////////////////////////////////////////
 bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)

@@ -26,7 +26,10 @@
 #include "sight_manager.h"
 #include "ai_object_location.h"
 #include "stalker_movement_manager.h"
+#include "ai/stalker/ai_stalker_space.h"
+#include "ai_space.h"
 
+using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
 
 //////////////////////////////////////////////////////////////////////////

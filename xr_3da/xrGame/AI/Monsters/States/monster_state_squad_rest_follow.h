@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../state.h"
+#include "state_custom_action.h"
+#include "state_move_to_point.h"
 
 template<typename _Object>
 class	CStateMonsterSquadRestFollow : public CState<_Object> {

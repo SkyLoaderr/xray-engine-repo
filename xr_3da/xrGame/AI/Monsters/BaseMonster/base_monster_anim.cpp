@@ -11,6 +11,7 @@
 #include "../ai_monster_utils.h"
 #include "../../../../skeletonanimated.h"
 #include "../../../sound_player.h"
+#include "../../../ai_monster_space.h"
 
 static void __stdcall vfPlayEndCallBack(CBlend* B)
 {

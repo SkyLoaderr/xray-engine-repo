@@ -23,6 +23,7 @@
 #include "../../sound_player.h"
 #include "ai_rat_impl.h"
 #include "../../net_utils.h"
+#include "../../ai_space.h"
 
 using namespace RatSpace;
 

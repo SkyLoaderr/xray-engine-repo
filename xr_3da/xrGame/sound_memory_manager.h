@@ -26,13 +26,12 @@ private:
 	CCustomMonster				*m_object;
 	CAI_Stalker					*m_stalker;
 	CSoundUserDataVisitor		*m_visitor;
-	// sound objects
+
 private:
 	SOUNDS						*m_sounds;
 	PRIORITIES					m_priorities;
 	u32							m_max_sound_count;
 	
-	// sound threshold
 private:
 	u32							m_last_sound_time;
 	u32							m_sound_decrease_quant;
@@ -41,7 +40,6 @@ private:
 	float						m_sound_threshold;
 	float						m_self_sound_factor;
 
-	// selected sound
 private:
 	const CSoundObject			*m_selected_sound;
 

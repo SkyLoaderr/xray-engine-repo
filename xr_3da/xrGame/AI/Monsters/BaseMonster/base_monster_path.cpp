@@ -15,6 +15,7 @@
 #include "../../../cover_point.h"
 #include "../../../detail_path_manager.h"
 #include "../ai_monster_movement.h"
+#include "../../../ai_space.h"
 
 // каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 void CBaseMonster::LookPosition(Fvector to_point, float angular_speed)

@@ -12,6 +12,7 @@
 #include "../corpse_cover.h"
 #include "../../../cover_evaluators.h"
 #include "../../../sound_player.h"
+#include "../../../ai_space.h"
 
 void CBaseMonster::reload	(LPCSTR section)
 {

@@ -11,6 +11,7 @@
 #include "../../../level_graph.h"
 #include "../ai_monster_movement.h"
 #include "../../../entitycondition.h"
+#include "../../../ai_space.h"
 
 #define		REST_AFTER_LUNCH_TIME			5000
 #define		DIST_SLOW_APPROACH_TO_CORPSE	5.0f

@@ -6,6 +6,7 @@
 #include "../../../inventory.h"
 #include "../../../actor.h"
 #include "../../../sound_player.h"
+#include "../../../ai_monster_space.h"
 
 CPseudodogGrowling::CPseudodogGrowling(CAI_PseudoDog *p)
 {

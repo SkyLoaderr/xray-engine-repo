@@ -19,6 +19,7 @@
 #include "../../../script_callback_ex.h"
 #include "../../../script_game_object.h"
 #include "../../../game_object_space.h"
+#include "../../../ai_monster_space.h"
 
 void CBaseMonster::feel_sound_new(CObject* who, int eType, CSoundUserDataPtr user_data, const Fvector &Position, float power)
 {

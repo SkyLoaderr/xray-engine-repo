@@ -19,6 +19,7 @@
 #include "../../location_manager.h"
 #include "../../level.h"
 #include "../../random32.h"
+#include "../../ai_space.h"
 
 IC bool CAI_Rat::bfCheckIfOutsideAIMap(Fvector &tTemp1)
 {

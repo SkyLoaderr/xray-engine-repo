@@ -101,6 +101,7 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 		hit_object.fill			(entity_alive,m_object,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
 		hit_object.m_first_level_time	= Device.dwTimeGlobal;
 		hit_object.m_first_game_time	= Level().GetGameTime();
+		hit_object.m_amount				= amount;
 
 		if (m_max_hit_count <= m_hits->size()) {
 			HITS::iterator		I = std::min_element(m_hits->begin(),m_hits->end(),SLevelTimePredicate<CEntityAlive>());
@@ -110,8 +111,10 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 		else
 			m_hits->push_back	(hit_object);
 	}
-	else
+	else {
 		(*J).fill				(entity_alive,m_object,!m_stalker ? (*J).m_squad_mask.get() : (*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker));
+		(*J).m_amount			= _max(amount,(*J).m_amount);
+	}
 }
 
 void CHitMemoryManager::add(const CHitObject &hit_object)

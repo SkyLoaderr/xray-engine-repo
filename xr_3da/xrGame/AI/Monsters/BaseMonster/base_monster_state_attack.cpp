@@ -15,6 +15,7 @@
 #include "../ai_monster_movement.h"
 #include "../../../entitycondition.h"
 #include "../../../sound_player.h"
+#include "../../../ai_object_location.h"
 
 
 /////////////////////////////////////////////////////////////////////////

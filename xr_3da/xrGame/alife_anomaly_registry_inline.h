@@ -11,20 +11,6 @@
 #include "ai_space.h"
 #include "game_graph.h"
 
-IC	CALifeAnomalyRegistry::CALifeAnomalyRegistry	(LPCSTR section)
-{
-	m_anomalies.resize				(ai().game_graph().header().vertex_count());
-	m_anomaly_cross_table.resize	(ALife::eAnomalousZoneTypeDummy);
-}
-
-IC	void CALifeAnomalyRegistry::clear				()
-{
-	delete_data						(m_anomalies);
-	delete_data						(m_anomaly_cross_table);
-	m_anomalies.resize				(ai().game_graph().header().vertex_count());
-	m_anomaly_cross_table.resize	(ALife::eAnomalousZoneTypeDummy);
-}
-
 IC	void CALifeAnomalyRegistry::add					(CALifeKnownAnomaly *anomaly)
 {
 	m_anomalies[anomaly->game_vertex_id()].push_back	(anomaly);

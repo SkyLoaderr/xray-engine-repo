@@ -11,6 +11,7 @@
 #include "../../../../skeletonanimated.h"
 #include "../../../level.h"
 #include "../../../sound_player.h"
+#include "../../../ai_monster_space.h"
 
 CController::CController()
 {
