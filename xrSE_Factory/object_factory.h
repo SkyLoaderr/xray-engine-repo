@@ -8,11 +8,7 @@
 
 #pragma once
 
-#ifdef _EDITOR
-#	define	NO_XR_GAME
-#endif
-
-#ifdef AI_COMPILER
+#ifndef XRGAME_EXPORTS
 #	define	NO_XR_GAME
 #endif
 

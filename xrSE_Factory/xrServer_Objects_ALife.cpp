@@ -10,15 +10,15 @@
 
 #pragma hdrstop
 
-#ifdef AI_COMPILER
-	#include "net_utils.h"
-	#include "bone.h"
+#ifndef XRGAME_EXPORTS
+#	include "net_utils.h"
+#	include "bone.h"
 #else
 	#include "..\bone.h"
 #endif
 
 #include "xrServer_Objects_ALife.h"
-#include "game_base.h"
+#include "game_base_space.h"
 #include "object_broker.h"
 
 #ifdef _EDITOR
@@ -158,21 +158,17 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_caGroupControl			= "";
 	m_flags.one					();
 	m_story_id					= INVALID_STORY_ID;
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 	m_alife_simulator			= 0;
-#endif
 #endif
 }
 
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 CALifeSimulator	&CSE_ALifeObject::alife	() const
 {
 	VERIFY						(m_alife_simulator);
 	return						(*m_alife_simulator);
 }
-#endif
 #endif
 
 CSE_ALifeObject::~CSE_ALifeObject			()

@@ -8,6 +8,14 @@
 
 #pragma once
 
+#include <xrCore.h>
+
 #define WIN32_LEAN_AND_MEAN
+
+#define ENGINE_API
+#define ECORE_API
 #define DLL_API					__declspec(dllimport)
-#define ENGINE_API				__declspec(dllexport)
+
+#include "clsid_game.h"
+
+#define BOOST_THROW_EXCEPTION_HPP_INCLUDED

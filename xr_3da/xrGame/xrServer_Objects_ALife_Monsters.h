@@ -23,13 +23,11 @@ public:
 	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeTraderAbstract();
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 			void					attach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
 			void					detach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);
 			void					vfInitInventory			();
 	virtual void					spawn_supplies			();
-#endif
 #endif
 SERVER_ENTITY_DECLARE_END
 
@@ -46,11 +44,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 	int 							supplies_count;
     void __fastcall   				OnSuppliesCountChange	(PropValue* sender);
 #endif    
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem);
 	virtual void					spawn_supplies			();
-#endif
 #endif
 SERVER_ENTITY_DECLARE_END
 
@@ -71,10 +67,7 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();
-#ifdef _EDITOR
-	virtual	void					update					()	{};
-#else
-#ifdef AI_COMPILER
+#ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else
 	virtual	void					update					();
@@ -82,7 +75,6 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int iGroupIndex, bool bMutualDetection);
 	virtual bool					bfActive				();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
-#endif
 #endif
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END
@@ -148,10 +140,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
 	virtual							~CSE_ALifeMonsterAbstract();
 	IC		float					g_MaxHealth				()	const									{ return m_fMaxHealthValue;	}
-#ifdef _EDITOR
-	virtual	void					update					()	{};
-#else
-#ifdef AI_COMPILER
+#ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else
 	virtual	void					update					();
@@ -161,7 +150,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				(bool					bFictitious = false) {};
 			void					vfCheckForPopulationChanges();
-#endif
 #endif
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END
@@ -181,10 +169,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 									CSE_ALifeCreatureActor	(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureActor	();
 
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies			();
-#endif
 #endif
 SERVER_ENTITY_DECLARE_END
 
@@ -270,8 +256,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 
 									CSE_ALifeHumanAbstract	(LPCSTR					caSection);
 	virtual							~CSE_ALifeHumanAbstract	();
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 	virtual	void					update					();
 			// FSM
 			void					vfChooseTask			();
@@ -322,7 +307,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			bool					bfChooseFast			();
 			void					vfChooseGroup			(CSE_ALifeGroupAbstract *tpALifeGroupAbstract);
 	virtual void					spawn_supplies			();
-#endif
 #endif
 SERVER_ENTITY_DECLARE_END
 

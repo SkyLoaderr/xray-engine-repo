@@ -1,7 +1,8 @@
 #ifndef  PHNETSTATE_H
 #define  PHNETSTATE_H
-#ifdef AI_COMPILER
-#include "net_utils.h"
+
+#ifndef XRGAME_EXPORTS
+#	include "net_utils.h"
 #endif
 
 struct SPHNetState
@@ -28,7 +29,9 @@ struct SPHNetState
 	void								net_Save			(		NET_Packet&		P,const Fvector& min,const Fvector& max);					
 	void								net_Load			(		NET_Packet&		P,const Fvector& min,const Fvector& max);
 };
+
 DEFINE_VECTOR(SPHNetState,PHNETSTATE_VECTOR,PHNETSTATE_I);
+
 struct SPHBonesData 
 {
 	u64				  bones_mask;

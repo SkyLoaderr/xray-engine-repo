@@ -16,32 +16,46 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory="Debug"
+			OutputDirectory="x:\"
+			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				EnableFiberSafeOptimizations="FALSE"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRSE_FACTORY_EXPORTS"
 				MinimalRebuild="TRUE"
+				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
+				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="1"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				WarningLevel="3"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\Debug/xrGame.pch"
+				AssemblerListingLocation="Debug\"
+				ObjectFile="Debug\"
+				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
+				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="3"
+				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrSE_Factory.dll"
+				IgnoreImportLibrary="TRUE"
+				OutputFile="x:\xrSE_Factory.dll"
 				LinkIncremental="2"
+				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/xrSE_Factory.pdb"
-				SubSystem="2"
-				ImportLibrary="$(OutDir)/xrSE_Factory.lib"
-				TargetMachine="1"/>
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="x:\xrSE_Factory.map"
+				SubSystem="0"
+				ImportLibrary="x:\xrGame.lib"
+				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -72,11 +86,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRSE_FACTORY_EXPORTS"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="0"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
-				WarningLevel="3"
+				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -118,6 +135,9 @@
 			Name="Core"
 			Filter="">
 			<File
+				RelativePath=".\clsid_game.h">
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -140,12 +160,334 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Script"
+			Name="ObjectFactory"
 			Filter="">
+			<File
+				RelativePath=".\object_factory.cpp">
+			</File>
+			<File
+				RelativePath=".\object_factory.h">
+			</File>
+			<File
+				RelativePath=".\object_factory_inline.h">
+			</File>
+			<File
+				RelativePath=".\object_factory_register.cpp">
+			</File>
 		</Filter>
 		<Filter
-			Name="ServerEntities"
+			Name="Scripts"
 			Filter="">
+			<Filter
+				Name="Luabind"
+				Filter="">
+				<File
+					RelativePath=".\luabind\class.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\class_info.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\class_registry.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\class_rep.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\create_class.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\error.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\find_best_match.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\function.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\implicit_cast.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\link_compatibility.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\object.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\object_rep.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\open.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\pcall.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\ref.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\scope.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\stack_content_by_name.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\weak_ref.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\luabind\wrapper_base.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="ScriptStorage"
+				Filter="">
+			</Filter>
+		</Filter>
+		<Filter
+			Name="ServerStuff"
+			Filter="">
+			<Filter
+				Name="Common"
+				Filter="">
+				<Filter
+					Name="ALifeStuff"
+					Filter="">
+					<File
+						RelativePath=".\alife_interfaces.h">
+					</File>
+					<File
+						RelativePath=".\alife_space.h">
+					</File>
+					<Filter
+						Name="PersonalEvent"
+						Filter="">
+						<File
+							RelativePath=".\alife_event_personal.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_event_personal.h">
+						</File>
+						<File
+							RelativePath=".\alife_event_personal_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ObjectBroker"
+						Filter="">
+						<File
+							RelativePath=".\object_broker.cpp">
+						</File>
+						<File
+							RelativePath=".\object_broker.h">
+						</File>
+						<File
+							RelativePath=".\object_broker_inline.h">
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="GameStuff"
+					Filter="">
+					<File
+						RelativePath=".\bone.h">
+					</File>
+					<File
+						RelativePath=".\game_base_space.h">
+					</File>
+					<File
+						RelativePath=".\inventory_space.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="NetworkStuff"
+					Filter="">
+					<File
+						RelativePath=".\NET_Compressor.h">
+					</File>
+					<File
+						RelativePath=".\NET_utils.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="PhysicsStuff"
+					Filter="">
+					<File
+						RelativePath=".\PHNetState.cpp">
+					</File>
+					<File
+						RelativePath=".\PHNetState.h">
+					</File>
+					<File
+						RelativePath=".\PHSynchronize.cpp">
+					</File>
+					<File
+						RelativePath=".\PHSynchronize.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ServerStuff"
+					Filter="">
+					<File
+						RelativePath=".\xrMessages.h">
+					</File>
+					<File
+						RelativePath=".\xrServer_Space.h">
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="ServerFactory"
+				Filter="">
+				<File
+					RelativePath=".\xrServer_Factory.cpp">
+				</File>
+			</Filter>
+			<Filter
+				Name="ServerEntities"
+				Filter="">
+				<File
+					RelativePath=".\xrServer_Objects.cpp">
+				</File>
+				<File
+					RelativePath=".\xrServer_Objects.h">
+				</File>
+				<File
+					RelativePath=".\xrServer_Objects_ALife.cpp">
+				</File>
+				<File
+					RelativePath=".\xrServer_Objects_ALife.h">
+				</File>
+				<File
+					RelativePath=".\xrServer_Objects_ALife_All.h">
+				</File>
+				<File
+					RelativePath=".\xrServer_Objects_ALife_Items.cpp">
+				</File>
+				<File
+					RelativePath=".\xrServer_Objects_ALife_Items.h">
+				</File>
+				<File
+					RelativePath=".\xrServer_Objects_ALife_Monsters.cpp">
+				</File>
+				<File
+					RelativePath=".\xrServer_Objects_ALife_Monsters.h">
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

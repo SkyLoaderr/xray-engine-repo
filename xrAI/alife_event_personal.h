@@ -11,7 +11,7 @@
 #include "alife_interfaces.h"
 #include "alife_space.h"
 
-#ifdef AI_COMPILER
+#ifndef XRGAME_EXPORTS
 #	include "net_utils.h"
 #endif
 

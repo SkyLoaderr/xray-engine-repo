@@ -9,20 +9,18 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifdef AI_COMPILER
-	#include "net_utils.h"
-	#include "xrServer_Objects_ALife_Items.h"
+#ifndef XRGAME_EXPORTS
+#	include "net_utils.h"
+#	include "xrServer_Objects_ALife_Items.h"
 #endif
 
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "object_broker.h"
 #include "alife_event_personal.h"
 
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 	#include "ai_space.h"
 	#include "ef_storage.h"
-#endif
 #endif
 
 using namespace ALife;
@@ -1077,12 +1075,10 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	m_tpKnownCustomers.clear	();
 	m_cpEquipmentPreferences.resize(5);
 	m_cpMainWeaponPreferences.resize(4);
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 	m_cpEquipmentPreferences.resize(iFloor(ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue() + .5f));
 	m_cpMainWeaponPreferences.resize(iFloor(ai().ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f));
 	R_ASSERT2					((iFloor(ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue() + .5f) == 5) && (iFloor(ai().ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f) == 4),"Recompile Level Editor and xrAI and rebuild file \"game.spawn\"!");
-#endif
 #endif
 	{
 		for (int i=0, n=m_cpEquipmentPreferences.size(); i<n; ++i)

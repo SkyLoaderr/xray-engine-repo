@@ -9,16 +9,16 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifdef AI_COMPILER
-	#include "net_utils.h"
+#ifndef XRGAME_EXPORTS
+#	include "net_utils.h"
 #endif
 
 #include "xrServer_Objects.h"
-#include "game_base.h"
+#include "game_base_space.h"
 
 #ifdef _EDITOR
-	#include "ui_main.h"
-	#include "SkeletonAnimated.h"
+#	include "ui_main.h"
+#	include "SkeletonAnimated.h"
 #endif
 
 ////////////////////////////////////////////////////////////////////////////

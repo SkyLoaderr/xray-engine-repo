@@ -12,11 +12,9 @@
 #include "xrServer_Objects.h"
 #include "alife_space.h"
 #include "phnetstate.h"
-#ifndef _EDITOR
-#	ifndef AI_COMPILER
 
-		class 	CALifeSimulator;
-#	endif
+#ifdef XRGAME_EXPORTS
+	class 	CALifeSimulator;
 #endif
 
 #ifdef _EDITOR
@@ -34,8 +32,7 @@ public:
 									CSE_ALifeSchedulable	(LPCSTR caSection);
 	virtual							~CSE_ALifeSchedulable	();
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,			float		&fHitPower) = 0;
 	virtual bool					bfPerformAttack			()											{return(true);};
 	virtual	void					vfUpdateWeaponAmmo		()											{};
@@ -44,7 +41,6 @@ public:
 	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection) = 0;
 	virtual bool					bfActive				()															= 0;
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		()															= 0;
-#endif
 #endif
 };
 
@@ -86,10 +82,8 @@ public:
 	ref_str							m_caGroupControl;
 	flags32							m_flags;
 	ALife::_STORY_ID				m_story_id;
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 	CALifeSimulator					*m_alife_simulator;
-#endif
 #endif
 
 #ifdef _EDITOR
@@ -105,11 +99,9 @@ public:
 			void					can_switch_online	(bool value);
 			void					can_switch_offline	(bool value);
 			void					interactive			(bool value);
-#ifndef _EDITOR
-#ifndef AI_COMPILER
+#ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies		();
 			CALifeSimulator			&alife				() const;
-#endif
 #endif
 SERVER_ENTITY_DECLARE_END
 

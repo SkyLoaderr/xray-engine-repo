@@ -9,9 +9,17 @@
 #include "stdafx.h"
 
 #pragma warning(disable:4530)
-#	include "xrCore.h"
 #	pragma comment(lib,"x:/xrCore.lib")
+#	pragma comment(lib,"x:/xrLUA.lib")
 #pragma warning(default:4530)
+
+// I need this because we have to exclude option /EHsc (exception handling) from the project
+namespace boost {
+	void __stdcall throw_exception(const exception &A)
+	{
+		Debug.fatal("Boost exception raised %s",A.what());
+	}
+};
 
 BOOL APIENTRY DllMain	(HANDLE module_handle, DWORD call_reason, LPVOID reserved)
 {
