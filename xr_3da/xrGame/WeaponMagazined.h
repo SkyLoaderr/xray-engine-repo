@@ -45,6 +45,8 @@ protected:
 	virtual void	OnEmptyClick	(BOOL bHUDView)	{};
 	virtual void	OnDrawFlame		(BOOL bHUDView)	{};
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) {};
+	virtual void	OnShow			();
+	virtual void	OnHide			();
 protected:
 	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);

@@ -258,7 +258,14 @@ void CWeaponMagazined::Show		()
 {
 	inherited::Show				();
 }
-
+void CWeaponMagazined::OnShow	()
+{
+	st_target	= eShowing;
+}
+void CWeaponMagazined::OnHide	()
+{
+	st_target	= eHiding;
+}
 void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::FireShotmark		(vDir, vEnd, R);
