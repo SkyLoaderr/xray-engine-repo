@@ -8,8 +8,8 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 {
 	inherited::Create					(options);
 
-	m_dwArtefactRespawnDelta = get_option_i		(options,"ArtefactRDelta",0);
-	m_dwArtefactsTotal	= get_option_i		(options,"NumberArtefacts",0);
+	m_dwArtefactRespawnDelta = get_option_i		(options,"artefactrdelta",0);
+	m_dwArtefactsTotal	= get_option_i		(options,"numberartefacts",0);
 	
 	if (m_dwArtefactsTotal%2 == 0) m_dwArtefactsTotal++;
 	m_dwArtefactsHalf = m_dwArtefactsTotal/2;
@@ -340,7 +340,9 @@ void		game_sv_ArtefactHunt::OnObjectEnterTeamBase	(u16 id, u16 id_zone)
 void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 id_zone)
 {
 	xrServer*			S		= Level().Server;
-	CSE_Abstract*		e_who	= S->ID_to_entity(id);		VERIFY(e_who	);
+	CSE_Abstract*		e_who	= S->ID_to_entity(id);		
+	if (!e_who)			return;
+
 	CSE_Abstract*		e_zone	= S->ID_to_entity(id_zone);	VERIFY(e_zone	);
 
 	CSE_ALifeCreatureActor* eActor = dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
@@ -380,11 +382,13 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	P.w_u16				(ps->team);
 	u_EventSend(P);
 	//-----------------------------------------------
+	m_dwArtefactSpawnTime = 0;
 	if (m_dwArtefactsTotal>0 && (teams[ps->team-1].score > m_dwArtefactsHalf)) 
 	{
 		OnTeamScore(ps->team-1);
 		phase = u16((ps->team-1)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
 		switch_Phase		(phase);
+		OnDelayedRoundEnd("Team Final Score");
 	};
 };
 
@@ -393,6 +397,8 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	if (OnClient()) return;
 	CSE_Abstract			*E	=	spawn_begin	("af_magnet");
 	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
+
+	Assign_Artefact_RPoint	(E);
 
 	spawn_end				(E,Level().Server->GetServer_client()->ID);
 };
@@ -405,14 +411,13 @@ void	game_sv_ArtefactHunt::Update			()
 		case GAME_PHASE_TEAM1_SCORES :
 		case GAME_PHASE_TEAM2_SCORES :
 		case GAME_PHASE_TEAMS_IN_A_DRAW :
-			//		case GAME_PHASE_INPROGRESS : 
 			{
-				if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
+//				if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
 				if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
 			} break;
 		case GAME_PHASE_PENDING : 
 			{
-				if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
+//				if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
 			} break;			
 		case GAME_PHASE_INPROGRESS:
 			{
@@ -446,4 +451,55 @@ void	game_sv_ArtefactHunt::OnCreate				(u16 id_who)
 	CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (pEntity);
 	if (pIArtefact)
 		m_dwArtefactID = pIArtefact->ID;
+};
+
+void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
+{
+	xr_vector<RPoint>&	rp	= Artefact_rpoints;
+	xr_deque<RPointData>	pRPDist;
+	RPoint				r;
+
+	xr_vector <u32>					pEnemies;
+
+	u32		cnt = get_count();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		// init
+		game_PlayerState*	ps	=	get_it	(it);
+		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
+		pEnemies.push_back(it);
+	};
+
+	if (!pEnemies.empty())
+	{
+		pRPDist.clear();
+
+		u32 NumRP = rp.size();
+		Fvector DistVect;
+		for (it=0; it < NumRP; it++)
+		{
+			RPoint&				r	= rp[it];
+			pRPDist.push_back(RPointData(it, 1000000.0f));
+
+			for (u32 p=0; p<get_count(); p++)
+			{
+				xrClientData* xrCData	=	Level().Server->ID_to_client(get_it_2_id(pEnemies[p]));
+				if (!xrCData || !xrCData->owner) continue;
+
+				CSE_Abstract* pOwner = xrCData->owner;
+				DistVect.sub(pOwner->o_Position, r.P);
+				float Dist = DistVect.square_magnitude();
+				if (pRPDist[it].MinEnemyDist > Dist) pRPDist[it].MinEnemyDist = Dist;
+			};
+		};
+		std::sort(pRPDist.begin(), pRPDist.end());
+		r	= rp[(pRPDist.back()).PointID];
+	}
+	else
+	{
+		r	= rp[::Random.randI((int)rp.size())];
+	};
+
+	E->o_Position.set	(r.P);
+	E->o_Angle.set		(r.A);
 };

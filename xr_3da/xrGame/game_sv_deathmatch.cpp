@@ -18,6 +18,8 @@ void	game_sv_Deathmatch::Create					(LPSTR &options)
 
 //	switch_Phase(GAME_PHASE_PENDING);
 	switch_Phase(GAME_PHASE_INPROGRESS);
+
+	::Random.seed(GetTickCount());
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
@@ -349,6 +351,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 		pA->s_team				=	u8(ps_who->team);
 		assign_RP				(pA);
 		SetSkin(E, pA->s_team, ps_who->m_skin);
+		ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 	}
 	else
 		if (pS)
@@ -366,7 +369,6 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 	Msg		("* %s respawned as %s",get_option_s(options,"name","Player"), (0 == pA) ? "spectator" : "actor");
 	spawn_end				(E,id);
 
-	ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 	ps_who->GameID = CL->owner->ID;
 
 	signal_Syncronize();

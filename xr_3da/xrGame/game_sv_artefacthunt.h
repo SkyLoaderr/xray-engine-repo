@@ -50,5 +50,6 @@ public:
 
 				void				OnDelayedRoundEnd		(LPCSTR /**reason/**/);
 				void				SpawnArtefact			();
+				void				Assign_Artefact_RPoint	(CSE_Abstract* E);
 
 };
