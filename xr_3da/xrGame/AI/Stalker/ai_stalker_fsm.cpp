@@ -93,6 +93,11 @@ void CAI_Stalker::ForwardCover()
 
 	float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) - 3.f;
 	
+	if (m_bStateChanged) {
+		m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+		m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+		m_dwLastRangeSearch = 0;
+	}
 //	if (Level().timeServer() >= m_dwActionEndTime) {
 //		m_dwActionStartTime = Level().timeServer();
 //		switch (m_tActionState) {
@@ -111,155 +116,58 @@ void CAI_Stalker::ForwardCover()
 //			}
 //		}
 //	}
-//	switch (m_tActionState) {
-//		case eActionStateRun : {
-//			if (m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L)) {
-//				if (m_tSelectorCover.m_fOptEnemyDistance < fDistance) {
-//					m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
-//					m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-//				}
-//				else {
-//					m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
-//					m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-//				}	
-//				m_dwLastRangeSearch = 0;
-//				//m_tActionState		= eActionStateStand;
-//			}
-//			
-//			Fvector						tPoint;
-//			m_tEnemy.Enemy->svCenter	(tPoint);
-//			tPoint.y					-= .5f;
-//			
-//			EBodyState					tBodyState;
-//			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-//			if (tpWeapon && (tpWeapon->STATE != CWeapon::eFire) && (tpWeapon->STATE != CWeapon::eFire2) && (tpWeapon->STATE != CWeapon::eIdle))
-//				tBodyState = m_tBodyState;
-//			else
-//				tBodyState = eBodyStateStand;
-//			vfSetParameters				(
-//				m_tSelectorCover,
-//				0,
-//				eWeaponStateIdle,
-//				ePathTypeCriteria,
-//				tBodyState,
-//				eMovementTypeRun,
-//				eLookTypeFirePoint,
-//				tPoint);
-//			break;
-//		}
-//		case eActionStateStand : {
-//			if (m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L)) {
-//				if (m_tSelectorCover.m_fOptEnemyDistance < fDistance) {
-//					m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
-//					m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-//				}
-//				else {
-//					m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
-//					m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-//				}	
-//				m_dwLastRangeSearch = 0;
-//			}
-//			
-//			Fvector						tPoint;
-//			m_tEnemy.Enemy->svCenter	(tPoint);
-//			tPoint.y					-= .5f;
-//
-//			EBodyState					tBodyState;
-//			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-//			if (tpWeapon && (tpWeapon->STATE != CWeapon::eFire) && (tpWeapon->STATE != CWeapon::eFire2) && (tpWeapon->STATE != CWeapon::eIdle))
-//				tBodyState = m_tBodyState;
-//			else
-//				tBodyState = eBodyStateCrouch;;
-//			vfSetParameters				(
-//				m_tSelectorCover,
-//				0,
-//				eWeaponStatePrimaryFire,
-//				ePathTypeCriteria,
-//				tBodyState,
-//				eMovementTypeStand,
-//				eLookTypeFirePoint,
-//				tPoint);
-//			if (m_inventory.ActiveItem() && dynamic_cast<CWeapon*>(m_inventory.ActiveItem()) && (dynamic_cast<CWeapon*>(m_inventory.ActiveItem())->STATE == CWeapon::eReload)) {
-//				m_dwActionStartTime = Level().timeServer();
-//				m_tActionState		= eActionStateRun;
-//				m_dwActionEndTime	= m_dwActionStartTime + ::Random.randI(2000,3000);
-//			}
-//			break;
-//		}
-//		default : NODEFAULT;
-//	}
-	if (m_bStateChanged) {
-		Msg("State CHANGED");
-		if (m_tSelectorCover.m_fOptEnemyDistance < fDistance) {
-			m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
-			m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-		}
-		else {
-			m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
-			m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-		}
-	}
-	if (m_bStateChanged || (AI_Path.fSpeed > EPS_L) || !m_bIfSearchFailed) {
-		Msg("State RUN");
-		vfSetParameters				(
-			m_tSelectorCover,
-			0,
-			eWeaponStateIdle,
-			ePathTypeCriteria,
-			eBodyStateStand,
-			eMovementTypeRun,
-			eLookTypeFirePoint,
-			tPoint);
-	}
-	else {
-		if (m_inventory.ActiveItem()) {
+	switch (m_tActionState) {
+		case eActionStateRun : {
+			Msg							("State RUN");
+			EBodyState					tBodyState;
 			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-			if (tpWeapon && (tpWeapon->GetAmmoElapsed() < tpWeapon->GetAmmoMagSize()/2)) {
-				Msg("State RUN 2");
-				m_bIfSearchFailed = false;
-				if (m_tSelectorCover.m_fOptEnemyDistance < fDistance) {
-					m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
-					m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - 1.f*m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
-				}
-				else {
-					m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
-					m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-				}
-				vfSetParameters				(
-					m_tSelectorCover,
-					0,
-					eWeaponStatePrimaryFire,
-					ePathTypeCriteria,
-					eBodyStateStand,
-					eMovementTypeRun,
-					eLookTypeFirePoint,
-					tPoint);
+			if (tpWeapon && (tpWeapon->STATE != CWeapon::eFire) && (tpWeapon->STATE != CWeapon::eFire2) && (tpWeapon->STATE != CWeapon::eIdle))
+				tBodyState = m_tBodyState;
+			else
+				tBodyState = eBodyStateStand;
+			if (tpWeapon && (tpWeapon->STATE == CWeapon::eIdle) && (!tpWeapon->GetAmmoElapsed())) {
+				m_inventory.Action(kWPN_FIRE, CMD_START);
+				m_inventory.Action(kWPN_FIRE, CMD_STOP);
 			}
-			else {
-				Msg("State STAND");
-				vfSetParameters				(
-					m_tSelectorCover,
-					0,
-					eWeaponStatePrimaryFire,
-					ePathTypeCriteria,
-					eBodyStateCrouch,
-					eMovementTypeStand,
-					eLookTypeFirePoint,
-					tPoint);
-			}
+			vfSetParameters				(
+				m_tSelectorCover,
+				0,
+				eWeaponStateIdle,
+				ePathTypeDodge,
+				tBodyState,
+				eMovementTypeRun,
+				eLookTypeFirePoint,
+				tPoint);
+			if (m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L))
+				m_tActionState = eActionStateStand;
+			break;
 		}
-		else {
-			Msg("State STAND");
+		case eActionStateStand : {
+			Msg							("State STAND");
+			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+			m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+			m_dwLastRangeSearch = 0;
+
+			EBodyState					tBodyState;
+			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+			if (tpWeapon && (tpWeapon->STATE != CWeapon::eFire) && (tpWeapon->STATE != CWeapon::eFire2) && (tpWeapon->STATE != CWeapon::eIdle))
+				tBodyState = m_tBodyState;
+			else
+				tBodyState = eBodyStateCrouch;;
 			vfSetParameters				(
 				m_tSelectorCover,
 				0,
 				eWeaponStatePrimaryFire,
-				ePathTypeCriteria,
-				eBodyStateCrouch,
+				ePathTypeDodge,
+				tBodyState,
 				eMovementTypeStand,
 				eLookTypeFirePoint,
 				tPoint);
+			if ((!m_inventory.ActiveItem() || !dynamic_cast<CWeapon*>(m_inventory.ActiveItem()) || (dynamic_cast<CWeapon*>(m_inventory.ActiveItem())->STATE != CWeapon::eFire)) && !m_bIfSearchFailed)
+				m_tActionState		= eActionStateRun;
+			break;
 		}
+		default : NODEFAULT;
 	}
 }
 

@@ -15,10 +15,53 @@
 void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
-		P = eye_matrix.c;
-		D.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+		clCenter(P);
+		D.setHP(-r_current.yaw,-r_current.pitch);
 		D.normalize_safe();
 	}
+}
+
+void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
+{
+	CKinematics *V	= PKinematics(Visual());
+	R1				= V->LL_BoneID("bip01_r_hand");
+	R2				= V->LL_BoneID("bip01_r_finger2");
+	L				= V->LL_BoneID("bip01_l_finger1");
+}
+
+bool CAI_Stalker::bfCheckIfCanKillTarget(Fvector fire_pos, Fvector target_pos, float yaw2, float pitch2) 
+{
+	if (!m_inventory.ActiveItem() || !dynamic_cast<CWeapon*>(m_inventory.ActiveItem()) || !dynamic_cast<CWeapon*>(m_inventory.ActiveItem())->GetAmmoElapsed())
+		return(false);
+
+	fire_pos.sub(target_pos,fire_pos);
+	float yaw1,pitch1;
+	fire_pos.getHP(yaw1,pitch1);
+	yaw1 = angle_normalize_signed(yaw1);
+	pitch1 = angle_normalize_signed(pitch1);
+	yaw2 = angle_normalize_signed(yaw2);
+	pitch2 = angle_normalize_signed(pitch2);
+	return(getAI().bfTooSmallAngle(yaw1,yaw2,FIRE_SAFETY_ANGLE) && getAI().bfTooSmallAngle(pitch1,pitch2,FIRE_SAFETY_ANGLE));
+}
+
+bool CAI_Stalker::bfCheckIfCanKillEnemy()
+{
+	return(m_tEnemy.Enemy && m_tEnemy.Enemy->g_Alive() && m_tEnemy.bVisible && bfCheckIfCanKillTarget(vPosition,m_tEnemy.Enemy->Position(),-r_current.yaw,-r_current.pitch));
+}
+
+bool CAI_Stalker::bfCheckIfCanKillMember()
+{
+	bool bCanKillMember = false;
+	
+	for (int i=0, iTeam = (int)g_Team(); i<(int)m_tpaVisibleObjects.size(); i++) {
+		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(m_tpaVisibleObjects[i]);
+		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
+			if (CustomMonster->g_Alive() && bfCheckIfCanKillTarget(vPosition,CustomMonster->Position(),-r_current.yaw,-r_current.pitch)) {
+				bCanKillMember = true;
+				break;
+			}
+	}
+	return(bCanKillMember);
 }
 
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
@@ -46,14 +89,6 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 //			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
 //				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
 //	}
-}
-
-void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
-{
-	CKinematics *V	= PKinematics(Visual());
-	R1				= V->LL_BoneID("bip01_r_hand");
-	R2				= V->LL_BoneID("bip01_r_finger2");
-	L				= V->LL_BoneID("bip01_l_finger1");
 }
 
 float CAI_Stalker::EnemyHeuristics(CEntity* E)
@@ -113,36 +148,6 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 		vfSaveEnemy();
 }
 
-bool CAI_Stalker::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
-{
-	Fvector tMemberDirection;
-	tMemberDirection.sub(tMemberPoint,tMyPoint);
-	vfNormalizeSafe(tMemberDirection);
-	float fAlpha = tFireVector.dotproduct(tMemberDirection);
-	clamp(fAlpha,-.99999f,+.99999f);
-	fAlpha = acosf(fAlpha);
-	return(fAlpha < FIRE_SAFETY_ANGLE);
-}
-
-bool CAI_Stalker::bfCheckIfCanKillMember()
-{
-	Fvector tFireVector, tMyPosition = Position();
-	tFireVector.setHP	(-r_torso_current.yaw - m_fAddWeaponAngle,-r_torso_current.pitch);
-	
-	bool bCanKillMember = false;
-	
-	for (int i=0, iTeam = (int)g_Team()/**, iSquad = (int)g_Squad(), iGroup = (int)g_Group()/**/; i<(int)m_tpaVisibleObjects.size(); i++) {
-		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(m_tpaVisibleObjects[i]);
-		//if ((CustomMonster) && (CustomMonster->g_Team() == iTeam) && (CustomMonster->g_Squad() == iSquad) && (CustomMonster->g_Group() == iGroup))
-		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
-			if ((CustomMonster->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,CustomMonster->Position()))) {
-				bCanKillMember = true;
-				break;
-			}
-	}
-	return(bCanKillMember);
-}
-
 bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 {
 	Fvector tDirection;
@@ -166,60 +171,38 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 	bool bSafeFire = m_bFiring;
 
 	if (tWeaponState == eWeaponStateIdle) {
-		m_inventory.Action(kWPN_FIRE, CMD_STOP);
-		m_inventory.Action(kWPN_ZOOM, CMD_STOP);
+		if (tpWeapon->STATE == CWeapon::eFire)
+			m_inventory.Action(kWPN_FIRE, CMD_STOP);
 	}
 	else
-		if (tWeaponState == eWeaponStatePrimaryFire) {
+		if (tWeaponState == eWeaponStatePrimaryFire)
 			if (tpWeapon->STATE == CWeapon::eFire)
-				if ((int)m_dwStartFireAmmo - (int)tpWeapon->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
+				if (bfCheckIfCanKillEnemy() && !bfCheckIfCanKillMember()) {
+					m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
+					m_inventory.Action(kWPN_FIRE, CMD_STOP);
+					if (m_dwStartFireAmmo) {
+						m_inventory.Action(kWPN_FIRE, CMD_START);
+						m_bFiring = true;
+					}
+				}
+				else {
 					m_inventory.Action(kWPN_FIRE, CMD_STOP);
 					m_bFiring = false;
 					m_dwNoFireTime = m_dwCurrentUpdate;
 				}
-				else {
-					if (bfCheckIfCanKillEnemy())
-						if (!bfCheckIfCanKillMember()) {
-							m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
-							m_inventory.Action(kWPN_FIRE, CMD_STOP);
+			else
+				if (tpWeapon->STATE == CWeapon::eIdle)
+					if (bfCheckIfCanKillEnemy() && !bfCheckIfCanKillMember()) {
+						m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
+						if (m_dwStartFireAmmo) {
 							m_inventory.Action(kWPN_FIRE, CMD_START);
 							m_bFiring = true;
 						}
-						else {
-							m_inventory.Action(kWPN_FIRE, CMD_STOP);
-							m_bFiring = false;
-							m_dwNoFireTime = m_dwCurrentUpdate;
-						}
-					else {
-						m_inventory.Action(kWPN_FIRE, CMD_STOP);
-						m_bFiring = false;
-						m_dwNoFireTime = m_dwCurrentUpdate;
 					}
-				}
-			else {
-				if (tpWeapon->STATE == CWeapon::eIdle) {
-					if ((int)m_dwCurrentUpdate - (int)m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
-						if (bfCheckIfCanKillEnemy())
-							if (!bfCheckIfCanKillMember()) {
-								m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
-								m_inventory.Action(kWPN_FIRE, CMD_STOP);
-								m_inventory.Action(kWPN_FIRE, CMD_START);
-								m_bFiring = true;
-							}
-							else
-								m_bFiring = false;
-						else
-							m_bFiring = false;
 					else
 						m_bFiring = false;
-				}
-				else {
-					if (tpWeapon->STATE == CWeapon::eFire)
-						m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+				else
 					m_bFiring = false;
-				}
-			}
-		}
 		else {
 			if (tpWeapon->STATE == CWeapon::eFire)
 				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
@@ -248,8 +231,8 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 		m_dwStartFireAmmo = tpWeaponMagazined->GetAmmoElapsed();
 		if ((!m_dwStartFireAmmo) && (tpWeapon->STATE != CWeapon::eReload))
 			if (tpWeaponMagazined->IsAmmoAvailable()) {
-				if (tpWeaponMagazined->STATE == CWeapon::eFire)
-					m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+				m_inventory.Action(kWPN_FIRE,	CMD_START);
+				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
 			}
 			else
 				if ((tpWeapon->STATE != CWeapon::eHidden) && (tpWeapon->STATE != CWeapon::eHiding)) {

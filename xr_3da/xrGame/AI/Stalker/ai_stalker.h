@@ -254,6 +254,7 @@ private:
 			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool			bfCheckIfCanKillEnemy			();
 			bool			bfCheckIfCanKillMember			();
+			bool			bfCheckIfCanKillTarget			(Fvector fire_pos, Fvector target_pos, float yaw2, float pitch2);
 			void			vfSetWeaponState				(EWeaponState tWeaponState);
 			void			vfCheckForItems					();
 			

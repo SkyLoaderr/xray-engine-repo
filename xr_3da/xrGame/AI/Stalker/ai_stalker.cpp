@@ -46,7 +46,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_tPathState					= ePathStateSearchNode;
 	m_tPathType						= ePathTypeDodge;
 
-	m_tActionState					= eActionStateStand;
+	m_tActionState					= eActionStateRun;
 	m_dwActionStartTime				= 0;
 	m_dwActionEndTime				= 0;
 	m_bHammerIsClutched				= false;
@@ -57,6 +57,7 @@ CAI_Stalker::CAI_Stalker			()
 	AI_Path.DestNode				= u32(-1);
 
 	m_bIfSearchFailed				= false;
+	m_bStateChanged					= true;
 	
 //	m_fAccuracy						= 0.f;
 //	m_fIntelligence					= 0.f;
