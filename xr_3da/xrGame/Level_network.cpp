@@ -14,11 +14,14 @@ void CLevel::net_Stop		()
 
 void CLevel::ClientSend	()
 {
+	if (!net_HasBandwidth())	return;
+	/*
 	if (!Level().Server->client_Count())
 	{
 		return;
 		if (!net_HasBandwidth())	return;
 	};
+	*/
 
 	NET_Packet				P;
 	P.w_begin				(M_UPDATE);
