@@ -63,6 +63,11 @@ public:
 	void					merge		(R_constant_table* C);
 	R_constant*				get			(LPCSTR name);
 
+	IC BOOL					empty		()
+	{
+		return 0==table.size();
+	}
+
 	IC BOOL					equal		(R_constant_table& C)
 	{
 		if (table.size() != C.table.size())	return FALSE;

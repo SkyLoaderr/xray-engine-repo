@@ -111,6 +111,7 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 
 void R_constant_table::merge(R_constant_table* T)
 {
+	if (0==T)	return;
 	for (u32 it=0; it<T->table.size(); it++)
 	{
 		R_constant*	src			=	T->table[it];
