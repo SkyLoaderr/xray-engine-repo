@@ -52,15 +52,18 @@ void CDetail::Optimize	()
 	int vt_old			= xrSimulate(vec_indices,cache);
 	xrStripify			(vec_indices,vec_permute,cache,0);
 	int vt_new			= xrSimulate(vec_indices,cache);
-	Msg					("DM: %d verts, %d indices, VT: %d/%d",number_vertices,number_indices,vt_old,vt_new);
+	if (vt_new<vt_old)	
+	{
+		Msg					("DM: %d verts, %d indices, VT: %d/%d",number_vertices,number_indices,vt_old,vt_new);
 
-	// Copy faces
-	PSGP.memCopy		(indices,vec_indices.begin(),vec_indices.size()*sizeof(WORD));
+		// Copy faces
+		PSGP.memCopy		(indices,vec_indices.begin(),vec_indices.size()*sizeof(WORD));
 
-	// Permute vertices
-	vector<fvfVertexIn>	verts	(vertices,vertices+number_vertices);
-	for(DWORD i=0; i<verts.size(); i++)
-		vertices[i]=verts[vec_permute[i]];
+		// Permute vertices
+		vector<fvfVertexIn>	verts	(vertices,vertices+number_vertices);
+		for(DWORD i=0; i<verts.size(); i++)
+			vertices[i]=verts[vec_permute[i]];
+	}
 }
 
 void CDetail::Unload	()
