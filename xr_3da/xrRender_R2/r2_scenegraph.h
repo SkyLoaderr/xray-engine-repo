@@ -1,5 +1,7 @@
 #pragma once
 
+#include "fixedmap.h"
+
 namespace SceneGraph
 {
 	// Low level
