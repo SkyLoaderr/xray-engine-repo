@@ -106,7 +106,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 {
     typedef std::xr_map< std::string, unsigned int > Mapping;
 	typedef std::xr_set< Edge > EdgeSet;
-    typedef std::xr_vector< std::xr_set< unsigned int > > IdenticalVertices;
+    typedef xr_vector< std::xr_set< unsigned int > > IdenticalVertices;
 
     IdenticalVertices IdenticalVertices_;
 
@@ -643,7 +643,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
         vec3* tex = (vec3*)&( output[ (*texIter).second ].floatVector_[ 0 ] );
 
-        typedef std::xr_vector< vec3 > VecVector;
+        typedef xr_vector< vec3 > VecVector;
 
         // create tangents
         want = outmap.find( "tangent" );

@@ -3,7 +3,7 @@
 /*
 int getCFormVID		(xrMU_Model::v_vertices& V,xrMU_Model::_vertex *F)
 {
-	xrMU_Model::v_vertices_it it	= lower_bound(V.begin(),V.end(),F);
+	xrMU_Model::v_vertices_it it	= std::lower_bound(V.begin(),V.end(),F);
 	return it-V.begin();
 }
 */
@@ -29,7 +29,7 @@ int getTriByEdge	(xrMU_Model::_vertex *V1, xrMU_Model::_vertex *V2, xrMU_Model::
 		pBuild->err_multiedge.w_fvector3(V2->P);
 	}
 	if (found) {
-		xrMU_Model::v_faces_it F = lower_bound(ids.begin(),ids.end(),found);
+		xrMU_Model::v_faces_it F = std::lower_bound(ids.begin(),ids.end(),found);
 		if (found == *F) return F-ids.begin();
 		else return -1;
 	} else {
@@ -58,7 +58,7 @@ void xrMU_Reference::export_cform_game(CDB::CollectorPacked& CL)
 
 				for (u32 vit=0; vit<3; vit++)
 				{
-					u32 g_id		=  lower_bound
+					u32 g_id		=  std::lower_bound
 						(
 							model->m_vertices.begin(),model->m_vertices.end(),F->v[vit]
 						) 

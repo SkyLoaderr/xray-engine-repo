@@ -31,16 +31,16 @@ Comments:
   Say you have positions & indices & normals, and want textures, and tangents, and binormals.
   and assume that positions, indices, and normals are in STL arrays: vpos, triIndices and vnor respectively.
 
-  std::xr_vector<float> vpos;
-  std::xr_vector<int> triIndices;
-  std::xr_vector<float> vnor; 
+  xr_vector<float> vpos;
+  xr_vector<int> triIndices;
+  xr_vector<float> vnor; 
   ...
 
   NVMeshMender aMender;
 
 
-  std::xr_vector<NVMeshMender::VertexAttribute> inputAtts;		// What you have
-  std::xr_vector<NVMeshMender::VertexAttribute> outputAtts;	// What you want.
+  xr_vector<NVMeshMender::VertexAttribute> inputAtts;		// What you have
+  xr_vector<NVMeshMender::VertexAttribute> outputAtts;	// What you want.
 
   NVMeshMender::VertexAttribute posAtt;
   posAtt.Name_ = "position";
@@ -54,7 +54,7 @@ Comments:
   norAtt.Name_ = "normal";
   norAtt.floatVector_ = vnor;
 
-  std::xr_vector<float> texCoords;
+  xr_vector<float> texCoords;
   NVMeshMender::VertexAttribute texCoordAtt;
   texCoordAtt.Name_ = "tex0";
   texCoordAtt.floatVector_;// = texCoords;
@@ -101,10 +101,10 @@ Comments:
   
   vpos = outputAtts[0].floatVector_; // Note that there may be more vertices than you sent in.
   vnor = outputAtts[2].floatVector_;
-  std::xr_vector<float> texCoords = outputAtts[3].floatVector_; // texcoords
-  std::xr_vector<float> vtgt = outputAtts[4].floatVector_;		 // tgts
+  xr_vector<float> texCoords = outputAtts[3].floatVector_; // texcoords
+  xr_vector<float> vtgt = outputAtts[4].floatVector_;		 // tgts
   triIndices = outputAtts[1].intVector_;					 // new indices.
-  std::xr_vector<float> vbin = outputAtts[5].floatVector_;      // binormals.
+  xr_vector<float> vbin = outputAtts[5].floatVector_;      // binormals.
 
   // Now the outputAtts may contain more vertex then you sent in !
   //  This is because in handling tangent space smoothing, and solving texture mirroring & 
@@ -129,7 +129,7 @@ class NVMeshMender
 {
     private :
 
-        mutable std::xr_vector< std::string > LastErrors_;
+        mutable xr_vector< std::string > LastErrors_;
 
 
 		struct Edge
@@ -183,11 +183,11 @@ class NVMeshMender
         {
             std::string  Name_;
 
-            typedef std::xr_vector< int > IntVector;
+            typedef xr_vector< int > IntVector;
             IntVector intVector_;
 
 
-            typedef std::xr_vector< float > FloatVector;
+            typedef xr_vector< float > FloatVector;
             FloatVector floatVector_;
 
             VertexAttribute& operator=( const VertexAttribute& rhs )
@@ -217,7 +217,7 @@ class NVMeshMender
 
         };
 
-        typedef std::xr_vector< VertexAttribute > VAVector;
+        typedef xr_vector< VertexAttribute > VAVector;
 
 		enum Option
 		{
