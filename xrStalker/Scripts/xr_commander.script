@@ -273,7 +273,7 @@ function action_commander:exec_walk_inside()
                     self.act = look_box
                     printf( "looking for a box" )
                 else
-                    self:add_inside_animations( 2 )
+                    self:add_inside_animations( 1 )
                 end
             end
         else
@@ -334,7 +334,7 @@ function action_commander:exec_look_box()
                     self.sub_act = nil
                 else
                     printf( "[commander] : ящик на месте" )
-                    self:add_inside_animations( 2 )
+                    self:add_inside_animations( 1 )
                     self.act = walk_inside
                 end
 
