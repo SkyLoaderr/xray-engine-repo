@@ -7,7 +7,6 @@
 void CShaderManager::xrStartUp()
 {
 	CCompressedStream		FS("shaders.xr","shENGINE");
-	char					name[256];
 
 	// Load blenders
 	{

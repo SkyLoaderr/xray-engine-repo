@@ -77,7 +77,6 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	case B_DEFAULT_AREF:	return new CBlender_default_aref;	break;
 	case B_VERT:			return new CBlender_Vertex;			break;
 	case B_VERT_AREF:		return new CBlender_Vertex_aref;	break;
-	case B_VERT_AREF:		return new CBlender_Vertex_aref;	break;
 	case B_SCREEN_SET:		return new CBlender_Screen_SET;		break;
 	default:				return 0;
 	}
