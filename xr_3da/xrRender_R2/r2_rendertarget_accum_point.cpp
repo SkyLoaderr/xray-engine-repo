@@ -74,7 +74,6 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	}
 
 	// 2D texgen (texture adjustment matrix)
-	Fvector2						p0,p1;
 	float	_w						= float(Device.dwWidth);
 	float	_h						= float(Device.dwHeight);
 	float	o_w						= (.5f / _w);
