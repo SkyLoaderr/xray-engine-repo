@@ -8,6 +8,8 @@ input:
 		sun_dir		-	vector
 		lmap_color	-	vector	(other lights)
 	vertex:
+		tc0			-	base	()
+		tc1			-	lmap	()
 		diffuse.rgb	-	???
 		diffuse.a	-	hemi-occlusion	- COLOR_0
 		normal		-	for lighting	- COLOR_1

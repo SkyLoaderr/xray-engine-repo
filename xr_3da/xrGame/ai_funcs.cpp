@@ -125,7 +125,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	
 	_splitpath		(caPath,0,0,m_caName,0);
 
-	Msg				("* Evaluation function \"%s\" is successfully loaded",m_caName);
+	// Msg			("* Evaluation function \"%s\" is successfully loaded",m_caName);
 }
 
 float CPatternFunction::ffEvaluate()
