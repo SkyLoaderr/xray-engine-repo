@@ -58,7 +58,7 @@ void CSkeletonX_PM::Render	(float LOD)
 	SetLOD		(LOD);
 	if			(RM_SINGLE==RenderMode)	{
 		VERIFY					(pVertices);
-		Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->bone_instances[RMS_boneid]->mTransform);
+		Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->LL_GetTransform(RMS_boneid));
 		RCache.set_xform_world	(W);
 		RCache.set_Geometry		(hGeom);
 		RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,0,I_Current/3);
@@ -70,7 +70,7 @@ void CSkeletonX_ST::Render	(float LOD)
 {
 	if			(RM_SINGLE==RenderMode)	{
 		VERIFY					(pVertices);
-		Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->bone_instances[RMS_boneid]->mTransform);
+		Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->LL_GetTransform(RMS_boneid));
 		RCache.set_xform_world	(W);
 		RCache.set_Geometry		(hGeom);
 		RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,0,dwPrimitives);
