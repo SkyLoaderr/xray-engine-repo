@@ -23,25 +23,25 @@ void CMovementManager::process_level_path()
 
 			//Msg("* Path::SelectLevelVertex...");
 
-			CLevelLocationSelector::select_location(level_vertex_id(), path_completed());
+			CLevelLocationSelector::select_location(level_vertex_id(), true);
 			if (CLevelLocationSelector::failed()) {
 			//	Msg("* Path::SelectLevelVertex :: [failed]");
 				break;
 			} else {
 			//	Msg("* Path::SelectLevelVertex :: [success]");
-				const xr_vector<u32> &m_path = CLevelPathManager::path();
-				
-				for (u32 i = 0; i<m_path.size(); i++) {
-					if (i == 0) {
-				//		Msg("* Path:: Selector choose path: P[%i] = [%u]", i, m_path[i]);
-					} else {
-						float dist = ai().level_graph().vertex_position(m_path[i-1]).distance_to(ai().level_graph().vertex_position(m_path[i]));
-						float dist2 = ai().level_graph().vertex_position(m_path[0]).distance_to(ai().level_graph().vertex_position(m_path[i]));
-
-				//		Msg("* Path:: Selector choose: P[%i] = [%u]  DTP = [%f] DTF = [%f]", i, m_path[i], dist, dist2);
-					}
-					
-				}
+//				const xr_vector<u32> &m_path = CLevelPathManager::path();
+//				
+//				for (u32 i = 0; i<m_path.size(); i++) {
+//					if (i == 0) {
+//				//		Msg("* Path:: Selector choose path: P[%i] = [%u]", i, m_path[i]);
+//					} else {
+//						float dist = ai().level_graph().vertex_position(m_path[i-1]).distance_to(ai().level_graph().vertex_position(m_path[i]));
+//						float dist2 = ai().level_graph().vertex_position(m_path[0]).distance_to(ai().level_graph().vertex_position(m_path[i]));
+//
+//				//		Msg("* Path:: Selector choose: P[%i] = [%u]  DTP = [%f] DTF = [%f]", i, m_path[i], dist, dist2);
+//					}
+//					
+//				}
 			}
 			//	Msg("* Path:: Selector choose CLevelPathManager::m_dest_vertex_id = [%u]", CLevelPathManager::m_dest_vertex_id);
 
