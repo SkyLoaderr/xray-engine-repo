@@ -14,6 +14,7 @@ class	XRSOUND_API					CSound_params;
 class	XRSOUND_API					CSound_source;
 class	XRSOUND_API					CSound_interface;
 class	XRSOUND_API					CSound_stream_interface;
+class	XRSOUND_API					CSound_environment;
 
 //
 XRSOUND_API extern u32				psSoundFreq				;
@@ -130,6 +131,7 @@ public:
 	virtual void					play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
 	virtual void					set_geometry			( CDB::MODEL* M )																		= 0;
 	virtual void					set_handler				( sound_event* E )																		= 0;
+	virtual void					set_environment_mode	( BOOL bUseSpecified, CSound_environment* E)											= 0;
 
 	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
 };
