@@ -6,12 +6,34 @@ VBContainer				g_VB;
 IBContainer				g_IB;
 vector<string>			g_Strings;
 
-int	RegisterString(string &T) 
+u32						g_batch_count;
+u32						g_batch_verts;
+u32						g_batch_faces;
+
+u32						g_batch_50;
+u32						g_batch_100;
+u32						g_batch_500;
+u32						g_batch_1000;
+u32						g_batch_5000;
+
+int		RegisterString		(string &T) 
 {
 	vector<string>::iterator W = find(g_Strings.begin(), g_Strings.end(), T);
 	if (W!=g_Strings.end()) return W-g_Strings.begin();
 	g_Strings.push_back(T);
 	return g_Strings.size()-1;
+}
+void	geom_batch_average	(u32 verts, u32 faces)
+{
+	g_batch_count	++;
+	g_batch_verts	+=	verts;
+	g_batch_faces	+=	faces;
+
+	if (faces<=50)				g_batch_50	++;
+	else if (faces<=100)		g_batch_100	++;
+	else if (faces<=500)		g_batch_500	++;
+	else if (faces<=1000)		g_batch_1000++;
+	else if (faces<=5000)		g_batch_5000++;
 }
 
 void CBuild::SaveTREE(CFS_Base &fs)
@@ -31,6 +53,16 @@ void CBuild::SaveTREE(CFS_Base &fs)
 	}
 	fs.write_compressed	(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
+	clMsg				("Average: %d verts/%d faces, 50(%2.1f), 100(%2.1f), 500(%2.1f), 1000(%2.1f), 5000(%2.1f)",
+		g_batch_verts/g_batch_count,
+		g_batch_faces/g_batch_count,
+		100.f * float(g_batch_50)/float(g_batch_count),
+		100.f * float(g_batch_100)/float(g_batch_count),
+		100.f * float(g_batch_500)/float(g_batch_count),
+		100.f * float(g_batch_1000)/float(g_batch_count),
+		100.f * float(g_batch_5000)/float(g_batch_count)
+		);
+
 	mem_Compact			();
 
 	Status				("Geometry : vertices ...");

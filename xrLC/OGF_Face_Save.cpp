@@ -5,13 +5,15 @@
 #include "fs.h"
 #include "fmesh.h"
 
-extern int	RegisterString	(string &T);
+extern int	RegisterString		(string &T);
+extern void	geom_batch_average	(u32 verts, u32 faces);
 
-void OGF::Save(CFS_Base &fs)
+void OGF::Save			(CFS_Base &fs)
 {
 	OGF_Base::Save		(fs);
 
 	clMsg				("%3d: %d faces",treeID,faces.size());
+	geom_batch_average	(vertices.size(),faces.size());
 
 	// Create header
 	ogf_header H;
