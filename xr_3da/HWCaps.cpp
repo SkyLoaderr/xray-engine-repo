@@ -19,7 +19,7 @@ void CHWCaps::Update()
 	// Detect if stencil available
 	IDirect3DSurface8*	surfZS=0;
 	D3DSURFACE_DESC		surfDESC;
-	CHK_DX		(HW->pDevice->GetDepthStencilSurface(&surfZS));
+	CHK_DX		(HW.pDevice->GetDepthStencilSurface(&surfZS));
 	R_ASSERT	(surfZS);
 	CHK_DX		(surfZS->GetDesc(&surfDESC));
 	_RELEASE	(surfZS);
