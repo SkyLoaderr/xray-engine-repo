@@ -85,7 +85,7 @@ public:
 		R_ASSERT(hSrcMap!=INVALID_HANDLE_VALUE);
 
 		data = (char*)MapViewOfFile (hSrcMap, FILE_MAP_READ, 0, 0, 0);
-		R_ASSERT(data);
+		R_ASSERT2(data,cFileName);
 	}
 	virtual ~CVirtualFileReader() {
         UnmapViewOfFile ((void*)data);
