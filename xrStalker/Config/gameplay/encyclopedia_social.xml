@@ -130,7 +130,7 @@
     <!--------------------------- Gunslinger --------------------------->
 
     <article id="social_stalkers_gunslinger" name="Gunslinger" group="Social/Stalkers">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
         <text>enc_social_stalkers_gunslinger</text>
     </article>
 
