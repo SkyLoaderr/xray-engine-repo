@@ -440,8 +440,9 @@ namespace PAPI
 	struct PARTICLEDLL_API PASource : public ParticleAction
 	{
 		enum{
-			flVertexB_tracks	= (1ul<<31ul),// True to get positionB from position.
+			flSingleSize		= (1ul<<29ul),// True to get positionB from position.
 			flSilent			= (1ul<<30ul),
+			flVertexB_tracks	= (1ul<<31ul),// True to get positionB from position.
 			fl_FORCEDWORD		= u32(-1)
 		};
 		pDomain positionL;	// Choose a position in this domain. (local_space)
@@ -559,8 +560,7 @@ namespace PAPI
 	PARTICLEDLL_API		PAVec*			_GetListPtr		(int action_list_num);
 	#pragma pack( pop ) // push 4
 
-	PARTICLEDLL_API ParticleAction* pCreateAction	(PActionEnum type);
-	PARTICLEDLL_API ParticleAction* pCreateAction	(ParticleAction* src);
+	PARTICLEDLL_API ParticleAction* pCreateAction	(PActionEnum type, ParticleAction* src=0);
 
 	// State setting calls
 	PARTICLEDLL_API void pResetState();
@@ -586,7 +586,7 @@ namespace PAPI
 	PARTICLEDLL_API void pSizeD(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL single_size=TRUE);
 
 	PARTICLEDLL_API void pStartingAge(float age, float sigma = 1.0f);
 

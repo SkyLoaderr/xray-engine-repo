@@ -53,7 +53,7 @@ void _ParticleState::ResetState()
 	Vel				= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
 	VertexB			= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
 	Color			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
-	Rot				= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
+	Rot				= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
 	Alpha			= 1.0f;
 	Age				= 0.0f;
 	AgeSigma		= 0.0f;
@@ -132,7 +132,7 @@ int _ParticleState::GenerateLists(int list_count)
 	return first_empty;
 }
 
-ParticleAction* pCreateAction(PActionEnum type)
+ParticleAction* pCreateAction(PActionEnum type, ParticleAction* src)
 {
 	ParticleAction* pa			= 0;
     switch(type){
@@ -169,48 +169,44 @@ ParticleAction* pCreateAction(PActionEnum type)
     default: NODEFAULT;
     }
     pa->type					= type;
-	return pa;
-}
-
-ParticleAction* pCreateAction(ParticleAction* src)
-{
-	VERIFY(src);
-	ParticleAction* pa			= pCreateAction(src->type);
-    switch(src->type){
-    case PAAvoidID:				*dynamic_cast<PAAvoid*			>(pa) = *dynamic_cast<PAAvoid*			>(src);break;
-    case PABounceID:    		*dynamic_cast<PABounce*			>(pa) = *dynamic_cast<PABounce*			>(src);break;
-    case PACallActionListID:    *dynamic_cast<PACallActionList*	>(pa) = *dynamic_cast<PACallActionList*	>(src);break;
-    case PACopyVertexBID:    	*dynamic_cast<PACopyVertexB*   	>(pa) = *dynamic_cast<PACopyVertexB*  	>(src);break;
-    case PADampingID:    		*dynamic_cast<PADamping*	   	>(pa) = *dynamic_cast<PADamping*	  	>(src);break;
-    case PAExplosionID:    		*dynamic_cast<PAExplosion*		>(pa) = *dynamic_cast<PAExplosion*		>(src);break;
-    case PAFollowID:    		*dynamic_cast<PAFollow*			>(pa) = *dynamic_cast<PAFollow*			>(src);break;
-    case PAGravitateID:    		*dynamic_cast<PAGravitate*		>(pa) = *dynamic_cast<PAGravitate*		>(src);break;
-    case PAGravityID:    		*dynamic_cast<PAGravity*	   	>(pa) = *dynamic_cast<PAGravity*	  	>(src);break;
-    case PAJetID:    			*dynamic_cast<PAJet*		   	>(pa) = *dynamic_cast<PAJet*		   	>(src);break;
-    case PAKillOldID:    		*dynamic_cast<PAKillOld*	   	>(pa) = *dynamic_cast<PAKillOld*	  	>(src);break;
-    case PAMatchVelocityID:    	*dynamic_cast<PAMatchVelocity*	>(pa) = *dynamic_cast<PAMatchVelocity*	>(src);break;
-    case PAMoveID:    			*dynamic_cast<PAMove*		   	>(pa) = *dynamic_cast<PAMove*		  	>(src);break;
-    case PAOrbitLineID:    		*dynamic_cast<PAOrbitLine*		>(pa) = *dynamic_cast<PAOrbitLine*		>(src);break;
-    case PAOrbitPointID:    	*dynamic_cast<PAOrbitPoint*		>(pa) = *dynamic_cast<PAOrbitPoint*		>(src);break;
-    case PARandomAccelID:    	*dynamic_cast<PARandomAccel*   	>(pa) = *dynamic_cast<PARandomAccel*   	>(src);break;
-    case PARandomDisplaceID:    *dynamic_cast<PARandomDisplace*	>(pa) = *dynamic_cast<PARandomDisplace*	>(src);break;
-    case PARandomVelocityID:    *dynamic_cast<PARandomVelocity*	>(pa) = *dynamic_cast<PARandomVelocity*	>(src);break;
-    case PARestoreID:    		*dynamic_cast<PARestore*	   	>(pa) = *dynamic_cast<PARestore*	   	>(src);break;
-    case PASinkID:    			*dynamic_cast<PASink*		   	>(pa) = *dynamic_cast<PASink*		   	>(src);break;
-    case PASinkVelocityID:    	*dynamic_cast<PASinkVelocity*  	>(pa) = *dynamic_cast<PASinkVelocity* 	>(src);break;
-    case PASourceID:    		*dynamic_cast<PASource*		   	>(pa) = *dynamic_cast<PASource*			>(src);break;
-    case PASpeedLimitID:    	*dynamic_cast<PASpeedLimit*		>(pa) = *dynamic_cast<PASpeedLimit*		>(src);break;
-    case PATargetColorID:    	*dynamic_cast<PATargetColor*	>(pa) = *dynamic_cast<PATargetColor*   	>(src);break;
-    case PATargetSizeID:    	*dynamic_cast<PATargetSize*		>(pa) = *dynamic_cast<PATargetSize*		>(src);break;
-    case PATargetRotateID:    	*dynamic_cast<PATargetRotate*	>(pa) = *dynamic_cast<PATargetRotate* 	>(src);break;
-    case PATargetRotateDID:    	*dynamic_cast<PATargetRotate*	>(pa) = *dynamic_cast<PATargetRotate* 	>(src);break;
-    case PATargetVelocityID:    *dynamic_cast<PATargetVelocity*	>(pa) = *dynamic_cast<PATargetVelocity*	>(src);break;
-    case PATargetVelocityDID:   *dynamic_cast<PATargetVelocity*	>(pa) = *dynamic_cast<PATargetVelocity*	>(src);break;
-    case PAVortexID:    		*dynamic_cast<PAVortex*			>(pa) = *dynamic_cast<PAVortex*			>(src);break;
-    default: NODEFAULT;
+    if (src){
+        switch(src->type){
+        case PAAvoidID:				*dynamic_cast<PAAvoid*			>(pa) = *dynamic_cast<PAAvoid*			>(src);break;
+        case PABounceID:    		*dynamic_cast<PABounce*			>(pa) = *dynamic_cast<PABounce*			>(src);break;
+        case PACallActionListID:    *dynamic_cast<PACallActionList*	>(pa) = *dynamic_cast<PACallActionList*	>(src);break;
+        case PACopyVertexBID:    	*dynamic_cast<PACopyVertexB*   	>(pa) = *dynamic_cast<PACopyVertexB*  	>(src);break;
+        case PADampingID:    		*dynamic_cast<PADamping*	   	>(pa) = *dynamic_cast<PADamping*	  	>(src);break;
+        case PAExplosionID:    		*dynamic_cast<PAExplosion*		>(pa) = *dynamic_cast<PAExplosion*		>(src);break;
+        case PAFollowID:    		*dynamic_cast<PAFollow*			>(pa) = *dynamic_cast<PAFollow*			>(src);break;
+        case PAGravitateID:    		*dynamic_cast<PAGravitate*		>(pa) = *dynamic_cast<PAGravitate*		>(src);break;
+        case PAGravityID:    		*dynamic_cast<PAGravity*	   	>(pa) = *dynamic_cast<PAGravity*	  	>(src);break;
+        case PAJetID:    			*dynamic_cast<PAJet*		   	>(pa) = *dynamic_cast<PAJet*		   	>(src);break;
+        case PAKillOldID:    		*dynamic_cast<PAKillOld*	   	>(pa) = *dynamic_cast<PAKillOld*	  	>(src);break;
+        case PAMatchVelocityID:    	*dynamic_cast<PAMatchVelocity*	>(pa) = *dynamic_cast<PAMatchVelocity*	>(src);break;
+        case PAMoveID:    			*dynamic_cast<PAMove*		   	>(pa) = *dynamic_cast<PAMove*		  	>(src);break;
+        case PAOrbitLineID:    		*dynamic_cast<PAOrbitLine*		>(pa) = *dynamic_cast<PAOrbitLine*		>(src);break;
+        case PAOrbitPointID:    	*dynamic_cast<PAOrbitPoint*		>(pa) = *dynamic_cast<PAOrbitPoint*		>(src);break;
+        case PARandomAccelID:    	*dynamic_cast<PARandomAccel*   	>(pa) = *dynamic_cast<PARandomAccel*   	>(src);break;
+        case PARandomDisplaceID:    *dynamic_cast<PARandomDisplace*	>(pa) = *dynamic_cast<PARandomDisplace*	>(src);break;
+        case PARandomVelocityID:    *dynamic_cast<PARandomVelocity*	>(pa) = *dynamic_cast<PARandomVelocity*	>(src);break;
+        case PARestoreID:    		*dynamic_cast<PARestore*	   	>(pa) = *dynamic_cast<PARestore*	   	>(src);break;
+        case PASinkID:    			*dynamic_cast<PASink*		   	>(pa) = *dynamic_cast<PASink*		   	>(src);break;
+        case PASinkVelocityID:    	*dynamic_cast<PASinkVelocity*  	>(pa) = *dynamic_cast<PASinkVelocity* 	>(src);break;
+        case PASourceID:    		*dynamic_cast<PASource*		   	>(pa) = *dynamic_cast<PASource*			>(src);break;
+        case PASpeedLimitID:    	*dynamic_cast<PASpeedLimit*		>(pa) = *dynamic_cast<PASpeedLimit*		>(src);break;
+        case PATargetColorID:    	*dynamic_cast<PATargetColor*	>(pa) = *dynamic_cast<PATargetColor*   	>(src);break;
+        case PATargetSizeID:    	*dynamic_cast<PATargetSize*		>(pa) = *dynamic_cast<PATargetSize*		>(src);break;
+        case PATargetRotateID:    	*dynamic_cast<PATargetRotate*	>(pa) = *dynamic_cast<PATargetRotate* 	>(src);break;
+        case PATargetRotateDID:    	*dynamic_cast<PATargetRotate*	>(pa) = *dynamic_cast<PATargetRotate* 	>(src);break;
+        case PATargetVelocityID:    *dynamic_cast<PATargetVelocity*	>(pa) = *dynamic_cast<PATargetVelocity*	>(src);break;
+        case PATargetVelocityDID:   *dynamic_cast<PATargetVelocity*	>(pa) = *dynamic_cast<PATargetVelocity*	>(src);break;
+        case PAVortexID:    		*dynamic_cast<PAVortex*			>(pa) = *dynamic_cast<PAVortex*			>(src);break;
+        default: NODEFAULT;
+        }
     }
 	return pa;
 }
+
 ////////////////////////////////////////////////////////
 // Auxiliary calls
 void _pCallActionList(PAVec* pa, ParticleEffect *pe)
@@ -248,7 +244,7 @@ void _pAddActionToList(ParticleAction *S)
 
 PARTICLEDLL_API void pAddActionToList(ParticleAction* S)
 {
-	_pAddActionToList(pCreateAction(S));
+	_pAddActionToList(pCreateAction(S->type,S));
 }
 
 ////////////////////////////////////////////////////////
@@ -337,10 +333,11 @@ PARTICLEDLL_API void pSize(float size_x, float size_y, float size_z)
 PARTICLEDLL_API void pSizeD(PDomainEnum dtype,
 			   float a0, float a1, float a2,
 			   float a3, float a4, float a5,
-			   float a6, float a7, float a8)
+			   float a6, float a7, float a8, BOOL single_size)
 {
 	_ParticleState &_ps = _GetPState();
 
+	_ps.flags.set(u32(PASource::flSingleSize),single_size);
 	_ps.Size = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 

@@ -1378,22 +1378,22 @@ void PASource::Execute(ParticleEffect *effect)
 	if(m_Flags.is(flVertexB_tracks)){
 		for(int i = 0; i < rate; i++){
 			position.Generate(pos);
-			size.Generate(siz);
-			rot.Generate(rt);
-			velocity.Generate(vel);	vel += parent_vel;
-			color.Generate(col);
-			float ag = age + NRand(age_sigma);
+			size.Generate		(siz); 	if (m_Flags.is(flSingleSize)) siz.set(siz.x,siz.x,siz.x);
+			rot.Generate		(rt);
+			velocity.Generate	(vel);	vel += parent_vel;
+			color.Generate		(col);
+			float ag 			= age + NRand(age_sigma);
 
 			effect->Add(pos, pos, siz, rt, vel, color_argb_f(alpha, col.x, col.y, col.z), ag);
 		}
 	}else{
 		for(int i = 0; i < rate; i++){
 			position.Generate(pos);
-			size.Generate(siz);
-			rot.Generate(rt);
-			velocity.Generate(vel);	vel += parent_vel;
-			color.Generate(col);
-			float ag = age + NRand(age_sigma);
+			size.Generate		(siz); 	if (m_Flags.is(flSingleSize)) siz.set(siz.x,siz.x,siz.x);
+			rot.Generate		(rt);
+			velocity.Generate	(vel);	vel += parent_vel;
+			color.Generate		(col);
+			float ag 			= age + NRand(age_sigma);
 
 			effect->Add(pos, posB, siz, rt, vel, color_argb_f(alpha, col.x, col.y, col.z), ag);
 		}
