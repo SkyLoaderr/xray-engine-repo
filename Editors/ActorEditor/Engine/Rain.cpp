@@ -88,7 +88,7 @@ BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range)
 	#ifdef _LEVEL_EDITOR
         SRayPickInfo pinf;
         pinf.inf.range	= range;
-        bRes	 		= !!Scene.RayPickObject(s,d,OBJCLASS_SCENEOBJECT,&pinf,0);
+        bRes	 		= !!Scene.RayPickObject(pinf.inf.range, s,d,OBJCLASS_SCENEOBJECT,&pinf,0);
         if (bRes) range	= pinf.inf.range;
     #endif
 #else

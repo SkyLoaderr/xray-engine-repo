@@ -208,7 +208,7 @@ void CLensFlare::lerp(int a, int b, float f)
 
 #ifdef _EDITOR
 	#ifdef _LEVEL_EDITOR
-    if (Scene.RayPickObject(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0,0))
+    if (Scene.RayPickObject(flt_max,Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0,0))
     #else
     if (0)
     #endif
