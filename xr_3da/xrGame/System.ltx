@@ -104,6 +104,43 @@ orientation         = 0,0,0
 position            = 0,0,0
 visual              = weapon\grenade\wpn_f_1_hud.ogf
 
+[grenade_rgd5]
+$spawn 			= on
+class				= G_RGD5
+cform				= skeleton
+visual				= weapon\grenade\wpn_rgd_5.ogf
+inv_name			= RGD5
+inv_name_short		= 
+inv_weight			= .1
+slot				= 3
+hud					= grenade_rgd5_hud
+force_min			= 25
+force_max			= 100
+force_grow_speed	= 25
+
+blast				= 200
+blast_r				= 20
+frags				= 0
+frags_r				= 50
+frag_hit			= 50
+
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+
+effects				= explosions\expl_02_flame, explosions\expl_02_smoke, explosions\expl_02_sparks, explosions\expl_02_dust
+
+light_color		         = 0.17,0.13,0.12
+light_range		         = 30.0
+light_time 		         = 200
+
+[grenade_rgd5_hud]
+shell_point			= 0.0, 0.0, 0.0
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = grenade_0
+orientation         = 0,0,0
+position            = 0,0,0
+visual              = weapon\grenade\wpn_rgd_5_hud.ogf
+
 [zone_mosquito_bald]
 $spawn 			= on
 $prefetch 		= 16
