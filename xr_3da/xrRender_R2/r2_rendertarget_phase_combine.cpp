@@ -100,8 +100,8 @@ void	CRenderTarget::phase_combine	()
 	// ********************* Debug
 	if (1)		{
 		u32		C					= color_rgba	(255,255,255,255);
-		float	_w					= float(Device.dwWidth)/2;
-		float	_h					= float(Device.dwHeight)/2;
+		float	_w					= float(Device.dwWidth)/3;
+		float	_h					= float(Device.dwHeight)/3;
 
 		// draw light-spheres
 #ifdef DEBUG

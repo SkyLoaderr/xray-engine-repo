@@ -150,7 +150,7 @@ void			CLight_DB::Update			()
 		Fvector						OD,OP,AD,AP;
 		OD.set						(E.sun_dir).normalize	();
 		OP.mad						(Device.vCameraPosition,OD,-500.f);
-		AD.set(0,-1,0).add			(E.sun_dir).normalize	();
+		AD.set(0,-1,0).normalize	();	//.add			(E.sun_dir).normalize	();
 		AP.mad						(Device.vCameraPosition,AD,-500.f);
 		sun_original->set_rotation	(OD,sun_original->right	);
 		sun_original->set_position	(OP);

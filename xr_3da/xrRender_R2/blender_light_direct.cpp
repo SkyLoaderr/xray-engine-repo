@@ -11,10 +11,10 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 	IBlender::Compile		(C);
 
 	BOOL	b_HW_smap	= RImplementation.o.HW_smap;
-	C.r_Pass			("null",		"accum_sun",	false,	FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
-	C.r_Sampler_rtf		("s_position",	r2_RT_P			);
-	C.r_Sampler_rtf		("s_normal",	r2_RT_N			);
-	C.r_Sampler_clf		("s_material",	r2_material		);
+	C.r_Pass			("null",			"accum_sun",	false,	FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
+	C.r_Sampler_rtf		("s_position",		r2_RT_P			);
+	C.r_Sampler_rtf		("s_normal",		r2_RT_N			);
+	C.r_Sampler_clf		("s_material",		r2_material		);
 	if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 	else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
 	jitter				(C);
