@@ -11,17 +11,17 @@
 #include "misc.h"
 
 // common parameters
-#define MEGABYTE						((double)1048576.0)
-#define MIN_LINE_LENGTH					256
-#define DOUBLE_DATA_FORMAT				0
-#define FLOAT_DATA_FORMAT				1
-#define EFC_VERSION						1
+#define MEGABYTE							((double)1048576.0)
+#define MIN_LINE_LENGTH						256
+#define DOUBLE_DATA_FORMAT					0
+#define FLOAT_DATA_FORMAT					1
+#define EFC_VERSION							1
 
-const unsigned __int32 __c0				= 0x55555555;
-const unsigned __int32 __c1				= 0x33333333;
-const unsigned __int32 __c2				= 0x0f0f0f0f;
-const unsigned __int32 __c3				= 0x00ff00ff;
-const unsigned __int32 __c4				= 0x0000003f;
+const unsigned __int32 __c0					= 0x55555555;
+const unsigned __int32 __c1					= 0x33333333;
+const unsigned __int32 __c2					= 0x0f0f0f0f;
+const unsigned __int32 __c3					= 0x00ff00ff;
+const unsigned __int32 __c4					= 0x0000003f;
 
 #define ADD_BIT_COUNT(b,x) {\
 	uint a = b;\
@@ -32,17 +32,17 @@ const unsigned __int32 __c4				= 0x0000003f;
 	x += (a + (a >> 16)) & __c4;\
 }
 
-double dEpsilon							= EPSILON;
-double dAlphaCoefficient				= ALPHA;
-double dBetaCoefficient					= BETA;
-uint   uiMaxIterationCount				= MAX_ITERATION;
-uint   uiRandomFactor					= RANDOM_FACTOR;
-uint   uiRandomProbability				= RANDOM_PROBABILITY;
-uint   uiRandomUpdate					= RANDOM_UPDATE;
-uint   uiRandomStartSeed				= RANDOM_START_SEED;
-uint   uiMatchThreshold					= MATCH_THRESHOLD;
-uint   uiMaxCardinalityCount			= MAX_CARDINALITY;
-double dPatternsExistanceCoefficient	= PATTERN_EXISTANCE_COEFFICIENT;
+double		dEpsilon						= EPSILON;
+double		dAlphaCoefficient				= ALPHA;
+double		dBetaCoefficient				= BETA;
+uint		uiMaxIterationCount				= MAX_ITERATION;
+uint		uiRandomFactor					= RANDOM_FACTOR;
+uint		uiRandomProbability				= RANDOM_PROBABILITY;
+uint		uiRandomUpdate					= RANDOM_UPDATE;
+uint		uiRandomStartSeed				= RANDOM_START_SEED;
+uint		uiMatchThreshold				= MATCH_THRESHOLD;
+uint		uiMaxCardinalityCount			= MAX_CARDINALITY;
+double		dPatternsExistanceCoefficient	= PATTERN_EXISTANCE_COEFFICIENT;
 
 uint		**uiaTestParameters;
 uint		*uiaPatternConfigUsageCount;
@@ -60,7 +60,7 @@ uint		*uiaPatternIndexes;
 SPattern	*tpPatterns;
 uint		*uiaVariableTypes;
 
-uint		uiRandSeed = 0;
+uint		uiRandSeed						= 0;
 uint		uiVariableCount;
 uint		uiPatternCount;
 uint		uiParameterCount;
@@ -362,7 +362,27 @@ void vfOptimizeParameters(char *caFileName, char *caResultFileName, bool bRandom
 	vfPrintFunctionFooter("Fitting pattern configuration weights");
 }
 
-void vfShowTestData(char *caTestDataFileName, char *caPatternDataFileName, bool bShowSimpleStats, bool bShowSortedStats, bool bShowPatternStats)
+void vfGenerateAllValidConfigurations(uint uiCurrentPattern, uint uiPatternCount, uint *uipPatternValues, uint *uipPatternRanges, uint *uipConfigCount = 0)
+{
+	uint uiConfigCount = 0;
+	if (!uiCurrentPattern)
+		uipConfigCount = &uiConfigCount;
+	for (int i=0; i<(int)uipPatternRanges[uiCurrentPattern]; i++) {
+		uipPatternValues[uiCurrentPattern] = i;
+		if (uiCurrentPattern < uiPatternCount - 1)
+			vfGenerateAllValidConfigurations(uiCurrentPattern + 1,uiPatternCount,uipPatternValues, uipPatternRanges, uipConfigCount);
+		else {
+			vfDualPrintF("%5d : ",*uipConfigCount);
+			++*uipConfigCount;
+			for (int j=0; j<(int)uiPatternCount; j++)
+				vfDualPrintF("%6d",uipPatternValues[j] + 1);
+			double dEval = dfEvaluation(uipPatternValues);
+			vfDualPrintF("%10.2f\n",dEval);
+		}
+	}
+}
+
+void vfShowTestData(char *caTestDataFileName, char *caPatternDataFileName, bool bShowSimpleStats, bool bShowSortedStats, bool bShowPatternStats, bool bShowValidSimpleStats)
 {
 	vfPrintFunctionHeader("Listing statistics");
 	// initializing test data
@@ -387,16 +407,21 @@ void vfShowTestData(char *caTestDataFileName, char *caPatternDataFileName, bool 
 			vfDualPrintF("Value %d: %6.2f\n",j - uiaPatternIndexes[i] + 1,daParameters[j]);
 	}
 
-	if (bShowSimpleStats) {
-		vfDualPrintF("\nTest examples evaluation:\n");
-		for (int i=0; i<(int)uiTestCount; i++) {
-			vfDualPrintF("%5d : ",i + 1);
-			for (int j=0; j<(int)uiVariableCount; j++)
-				vfDualPrintF("%6d",uiaTestParameters[i][j] + 1);
-			double dEval = dfEvaluation(uiaTestParameters[i]);
-			vfDualPrintF("%8.2f  -> %6.2f (%6.2f)\n",daTestResults[i],dEval,dEval - daTestResults[i]);
+	if (bShowSimpleStats)
+		if (!bShowValidSimpleStats) {
+			vfDualPrintF("\nTest examples evaluation:\n");
+			for (int i=0; i<(int)uiTestCount; i++) {
+				vfDualPrintF("%5d : ",i + 1);
+				for (int j=0; j<(int)uiVariableCount; j++)
+					vfDualPrintF("%6d",uiaTestParameters[i][j] + 1);
+				double dEval = dfEvaluation(uiaTestParameters[i]);
+				vfDualPrintF("%8.2f  -> %6.2f (%6.2f)\n",daTestResults[i],dEval,dEval - daTestResults[i]);
+			}
 		}
-	}
+		else {
+			vfDualPrintF("\nAll the valid examples evaluation:\n");
+			vfGenerateAllValidConfigurations(0,uiVariableCount,uiaTestParameters[0],uiaAtomicFeatureRange);
+		}
 	
 	if (bShowSortedStats) {
 		double *daDiffs = (double *)malloc(uiTestCount*sizeof(double));

@@ -34,7 +34,8 @@ void vfShowHelpScreen()
 	vfDualPrintF(" -f[p,u]  fit weights of pattern configurations\n");
 	vfDualPrintF("    p     force to use probabilistic weight fitting algorithm\n");
 	vfDualPrintF("    u     force to use previous parameters if exist\n\n");
-	vfDualPrintF(" -l       list stats on test data\n");
+	vfDualPrintF(" -l[a]    list stats on test data\n");
+	vfDualPrintF("    a     list stats on all the valid data\n");
 	vfDualPrintF(" -s       list sorted stats on test data\n");
 	vfDualPrintF(" -w       list pattern configuration weights\n\n");
 	vfDualPrintF(" -b[f]    build evaluation function\n");
@@ -101,7 +102,7 @@ void vfPerformOperations( int argc, char *argv[], char *caProjectFolder, bool bS
 		if (bfCheckForSwitch(argc, argv,"f"))
 			vfOptimizeParameters(caCoreData,caParametersData,bfCheckForSwitch(argc, argv,"fp"),bfCheckForSwitch(argc, argv,"fu"));
 		if (bfCheckForSwitch(argc, argv,"l") || bfCheckForSwitch(argc, argv,"s") || bfCheckForSwitch(argc, argv,"w"))
-			vfShowTestData(caCoreData,caParametersData,bfCheckForSwitch(argc, argv,"l"),bfCheckForSwitch(argc, argv,"s"),bfCheckForSwitch(argc, argv,"w"));
+			vfShowTestData(caCoreData,caParametersData,bfCheckForSwitch(argc, argv,"l"),bfCheckForSwitch(argc, argv,"s"),bfCheckForSwitch(argc, argv,"w"),bfCheckForSwitch(argc, argv,"la"));
 		if (bfCheckForSwitch(argc, argv,"b"))
 			vfBuildEvaluationFunction(caCoreData,caParametersData,caEFData,bfCheckForSwitch(argc, argv,"bf"));
 		if (bShowHeader && bfCheckForSwitch(argc, argv,"v"))

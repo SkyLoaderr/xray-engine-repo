@@ -71,6 +71,6 @@ extern void vfGenerateComplexConfigurations(char *caTestFileName, char *caConfig
 extern void vfGeneratePatterns(char *caTestDataFileName, char *caCCFileName, char *caPatternFileName, bool bShowConfigurations = true);
 extern void vfGeneratePatternBasis(char *caBinaryDataFileName, char *caPatternDataFileName, char *caCoreDataFileName);
 extern void vfOptimizeParameters(char *caFileName, char *caResultFileName, bool bRandom = true, bool bUseParameters = true);
-extern void vfShowTestData(char *caTestDataFileName, char *caPatternDataFileName, bool bShowSimpleStats = true, bool bShowSortedStats = true, bool bShowPatternStats = true);
+extern void vfShowTestData(char *caTestDataFileName, char *caPatternDataFileName, bool bShowSimpleStats = true, bool bShowSortedStats = true, bool bShowPatternStats = true, bool bShowValidSimpleStats = false);
 extern void vfBuildEvaluationFunction(char *caCoreDataFileName, char *caParametersDataFileName, char *caEFDataFileName, bool bConvertToFloat);
 extern void vfValidateTestData(char *caEFDataFileName);
