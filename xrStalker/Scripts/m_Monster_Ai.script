@@ -160,8 +160,8 @@ end
 
 --==============================================================================
 --===Ѕобик. Ќа врагов гавкает, на опасный звук смотрит, живет возле некоторой точки=====================
-class "m_MonsterBobic" ( m_Monster )
-function m_MonsterBobic:__init( mnstr, script_name, point_o, radius_o ) super( mnstr, script_name )
+class "m_MonsterBobik" ( m_Monster )
+function m_MonsterBobik:__init( mnstr, script_name, point_o, radius_o ) super( mnstr, script_name )
     self.Rest           = m_rest.stateRestPoint                    ( self.scr_name, self.memory, point_o, radius_o )
     self.DangerSound    = m_dangersound.stateDangerSoundLookAround ( self.scr_name, self.memory )
     self.NotDangerSound = m_dangersound.stateDangerSoundLookAround ( self.scr_name, self.memory )
