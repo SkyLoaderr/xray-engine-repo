@@ -393,7 +393,7 @@ void CAI_Crow::CreateSkeleton()
 	m_pPhysicsShell->setMass(0.3f);
 	m_pPhysicsShell->SetMaterial(PKinematics(Visual())->LL_GetData(PKinematics(Visual())->LL_GetBoneRoot()).game_mtl_idx);
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-	m_pPhysicsShell->Update();
+
 }
 
 void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
