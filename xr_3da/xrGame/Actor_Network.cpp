@@ -70,8 +70,10 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 
 	/////////////////////////////////////////////////
 	u16 NumItems		= PHGetSyncItemsNumber();
-	if (H_Parent() || GameID() == 1 || (!g_Alive() && (NumItems<2 || OnClient()))) 
+	
+	if (H_Parent() || GameID() == GAME_SINGLE || (NumItems > 1 && OnClient()))
 		NumItems = 0;
+	
 	if (!g_Alive()) NumItems = 0;
 	
 	P.w_u16				(NumItems);
