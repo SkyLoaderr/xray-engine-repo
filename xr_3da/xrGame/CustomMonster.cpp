@@ -425,7 +425,7 @@ void CCustomMonster::GetVisible			(objVisible& R)
 {
 	R.clear		();
 	vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
-	for (; I!=E; I++)	if (positive(I->fuzzy)) R.push_back(I->O);
+	for (; I!=E; I++)	if (positive(I->fuzzy)) R.insert(I->O);
 }
 
 void CCustomMonster::eye_pp_s0			( )
