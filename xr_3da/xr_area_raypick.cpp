@@ -202,7 +202,7 @@ BOOL CObjectSpace::RayPick( const Fvector &start, const Fvector &dir, float rang
 		{
 			Fsphere	S	= M.getSphere();
 			M.Owner()->clXFORM().transform_tiny(S.P);
-			dbg_S.push_back(make_pair(S,C));
+			dbg_S.push_back(mk_pair(S,C));
 		}
 	}
 	return (R.element>=0);

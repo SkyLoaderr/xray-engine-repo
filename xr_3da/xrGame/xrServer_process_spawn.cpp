@@ -39,7 +39,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 		Phantom->ID				=	PerformIDgen	(0xffff);
 		Phantom->ID_Phantom		=	Phantom->ID;						// Self-linked to avoid phantom-breeding
 		Phantom->owner			=	NULL;
-		entities.insert			(make_pair(Phantom->ID,Phantom));
+		entities.insert			(mk_pair(Phantom->ID,Phantom));
 
 		Phantom->s_flags.set	(M_SPAWN_OBJECT_PHANTOM,TRUE);
 
@@ -47,7 +47,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 		E->ID					=	PerformIDgen(E->ID);
 		E->ID_Phantom			=	Phantom->ID;
 		E->owner				=	CL;
-		entities.insert			(make_pair(E->ID,E));
+		entities.insert			(mk_pair(E->ID,E));
 	} else {
 		if (E->s_flags.is(M_SPAWN_OBJECT_PHANTOM))
 		{
@@ -55,7 +55,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 			E->ID					=	PerformIDgen(0xffff);
 			E->owner				=	CL;//		= SelectBestClientToMigrateTo	(E);
 			E->s_flags.set			(M_SPAWN_OBJECT_PHANTOM,FALSE);
-			entities.insert			(make_pair(E->ID,E));
+			entities.insert			(mk_pair(E->ID,E));
 		} else {
 			// Simple spawn
 			if (bSpawnWithClientsMainEntityAsParent)
@@ -67,7 +67,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 			}
 			E->ID					=	PerformIDgen(E->ID);
 			E->owner				=	CL;
-			entities.insert			(make_pair(E->ID,E));
+			entities.insert			(mk_pair(E->ID,E));
 		}
 	}
 

@@ -111,7 +111,7 @@ void CPlayers::add(NET_Packet& P)
 	Item			I;
 	P.r_string		(I.name);
 	P.r_s16			(I.score);
-	items.insert	(make_pair(ID,I));
+	items.insert	(mk_pair(ID,I));
 }
 
 void CPlayers::remove(NET_Packet& P)

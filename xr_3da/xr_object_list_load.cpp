@@ -26,7 +26,7 @@ void CObjectList::Load()
 			{
 				CObject* pObject	= (CObject*) NEW_INSTANCE(CLS);
 				pObject->Load		(S->Name);
-				map_POOL.insert		(make_pair(pObject->cNameSect(),pObject));
+				map_POOL.insert		(mk_pair(pObject->cNameSect(),pObject));
 			}
 		}
 	}

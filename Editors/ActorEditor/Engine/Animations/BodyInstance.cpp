@@ -599,7 +599,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 		data->r_stringZ(buf);	strlwr(buf);
 		CBoneData*	pBone = xr_new<CBoneData> (ID);
 		bones->push_back(pBone);
-		bone_map->insert(make_pair(xr_strdup(buf),ID));
+		bone_map->insert(mk_pair(xr_strdup(buf),ID));
 
 		// It's parent
 		data->r_stringZ(buf);	strlwr(buf);
@@ -639,7 +639,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 		R_ASSERT(MS->find_chunk(M+1));
         char mname[128];
 		MS->r_stringZ(mname);
-		motion_map->insert(make_pair(xr_strdup(strlwr(mname)),M));
+		motion_map->insert(mk_pair(xr_strdup(strlwr(mname)),M));
 
 		u32 dwLen = MS->r_u32();
 		for (i=0; i<bones->size(); i++)
@@ -683,8 +683,8 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
             MP->r_stringZ(buf);
 	        u32 dwFlags		= MP->r_u32();
             CMotionDef	D;		D.Load(this,MP,dwFlags);
-            if (dwFlags&esmFX)	m_fx->insert(make_pair(_strlwr(xr_strdup(buf)),D));
-            else				m_cycle->insert(make_pair(_strlwr(xr_strdup(buf)),D));
+            if (dwFlags&esmFX)	m_fx->insert(mk_pair(_strlwr(xr_strdup(buf)),D));
+            else				m_cycle->insert(mk_pair(_strlwr(xr_strdup(buf)),D));
         }
         MP->close();
     }else{
@@ -713,8 +713,8 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 				CMotionDef	D;		D.Load(this,MP,bCycle?0:esmFX);
 				BYTE bNoLoop		=	MP->r_u8();
 				D.flags				|=	(bNoLoop?esmStopAtEnd:0);
-                if (bCycle)			m_cycle->insert(make_pair(_strlwr(xr_strdup(buf)),D));
-                else				m_fx->insert(make_pair(_strlwr(xr_strdup(buf)),D));
+                if (bCycle)			m_cycle->insert(mk_pair(_strlwr(xr_strdup(buf)),D));
+                else				m_fx->insert(mk_pair(_strlwr(xr_strdup(buf)),D));
             }
             MP->close();
         }else{
@@ -758,7 +758,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
                 {
                     CMotionDef	D;
                     D.Load(this,&DEF,I->first, true);
-                    m_cycle->insert(make_pair(_strlwr(xr_strdup(I->first)),D));
+                    m_cycle->insert(mk_pair(_strlwr(xr_strdup(I->first)),D));
                 }
             }
 
@@ -769,7 +769,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
                 {
                     CMotionDef	D;
                     D.Load(this,&DEF,I->first, false);
-                    m_fx->insert(make_pair(_strlwr(xr_strdup(I->first)),D));
+                    m_fx->insert(mk_pair(_strlwr(xr_strdup(I->first)),D));
                 }
             }
         }

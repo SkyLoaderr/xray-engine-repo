@@ -269,7 +269,7 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy, LPCSTR root_path)
         FS_Path* P	= xr_new<FS_Path>((p_it!=pathes.end())?p_it->second->m_Path:root,lp_add,lp_def,lp_capt,fl);
         bNoRecurse	= !(fl&FS_Path::flRecurse);
 		Recurse		(P->m_Path);
-		I			= pathes.insert(std::make_pair(xr_strdup(id),P));
+		I			= pathes.insert(mk_pair(xr_strdup(id),P));
         R_ASSERT	(I.second);
 	}
 	r_close			(F);

@@ -31,5 +31,5 @@ void		CObjectList::Destroy			( CObject*	O		)
 	net_Unregister			(O);
 	OBJ_IT it				=	find		(objects.begin(),objects.end(),O);
 	if (it!=objects.end())	objects.erase	(it);
-	map_POOL.insert			(make_pair(O->cNameSect(),O));
+	map_POOL.insert			(mk_pair(O->cNameSect(),O));
 }

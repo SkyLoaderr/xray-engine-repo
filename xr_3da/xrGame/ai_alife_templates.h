@@ -143,7 +143,7 @@ void load_map(xr_map<T1,T2 *> &tpMap, NET_Packet &tNetPacket, T1 tfGetKey(const 
 	for (int i=0 ; i<(int)dwCount; i++) {
 		T2						*T = xr_new<T2>();
 		T->Load					(tFileStream);
-		tpMap.insert			(make_pair(tfGetKey(T),T));
+		tpMap.insert			(mk_pair(tfGetKey(T),T));
 	}
 };
 #endif

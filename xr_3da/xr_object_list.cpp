@@ -94,7 +94,7 @@ void CObjectList::Update		()
 void CObjectList::net_Register	(CObject* O)
 {
 	R_ASSERT		(O);
-	map_NETID.insert(make_pair(O->ID(),O));
+	map_NETID.insert(mk_pair(O->ID(),O));
 	//Msg			("-------------------------------- Register: %s",O->cName());
 }
 

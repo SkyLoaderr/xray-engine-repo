@@ -43,7 +43,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 		P.r_u32			(ID);
 		P.r_string		(IP.name);
 		P.r				(&IP,sizeof(game_PlayerState));
-		I				= players.insert(make_pair(ID,IP));
+		I				= players.insert(mk_pair(ID,IP));
 		if (IP.flags&GAME_PLAYER_FLAG_LOCAL) local_player = &I.first->second;
 	}
 	R_ASSERT(local_player);

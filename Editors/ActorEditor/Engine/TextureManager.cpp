@@ -136,7 +136,7 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 	else
 	{
 		SVS*	_vs					= xr_new<SVS>	();
-		m_vs.insert					(make_pair(xr_strdup(name),_vs));
+		m_vs.insert					(mk_pair(xr_strdup(name),_vs));
 		if (0==stricmp(name,"null"))	{
 			_vs->dwReference	= 1;
 			_vs->vs				= NULL;
@@ -204,7 +204,7 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 	else
 	{
 		SPS*	_ps					= xr_new<SPS>	();
-		m_ps.insert					(make_pair(xr_strdup(name),_ps));
+		m_ps.insert					(mk_pair(xr_strdup(name),_ps));
 		if (0==stricmp(name,"null"))	{
 			_ps->dwReference	= 1;
 			_ps->ps				= NULL;
@@ -290,7 +290,7 @@ CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	{
 		CRT *RT				=	xr_new<CRT>();
 		RT->dwReference		=	1;
-		m_rtargets.insert		(make_pair(xr_strdup(Name),RT));
+		m_rtargets.insert		(mk_pair(xr_strdup(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,w,h,f);
 		return				RT;
 	}
@@ -326,7 +326,7 @@ CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 	{
 		CRTC *RT			=	xr_new<CRTC>();
 		RT->dwReference		=	1;
-		m_rtargets_c.insert	(make_pair(xr_strdup(Name),RT));
+		m_rtargets_c.insert	(mk_pair(xr_strdup(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,size,f);
 		return				RT;
 	}
@@ -431,7 +431,7 @@ CPS*	CShaderManager::_CreatePS		(LPCSTR cName)
 	{
 		CPS *PS			=	xr_new<CPS>();
 		PS->dwReference	=	1;
-		ps.insert		(make_pair(xr_strdup(Name),PS));
+		ps.insert		(mk_pair(xr_strdup(Name),PS));
 
 		// Load vertex shader
 		string256		fname;
@@ -476,7 +476,7 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	{
 		CTexture *T		= xr_new<CTexture>();
 		T->dwReference	= 1;
-		m_textures.insert	(make_pair(xr_strdup(Name),T));
+		m_textures.insert	(mk_pair(xr_strdup(Name),T));
 		if (Device.bReady && !bDeferredLoad) T->Load(Name);
 		return		T;
 	}
@@ -512,7 +512,7 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	{
 		CMatrix* M		=	xr_new<CMatrix>();
 		M->dwReference	=	1;
-		m_matrices.insert	(make_pair(xr_strdup(Name),M));
+		m_matrices.insert	(mk_pair(xr_strdup(Name),M));
 		return	M;
 	}
 }
@@ -554,7 +554,7 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	{
 		CConstant* C	=	xr_new<CConstant>();
 		C->dwReference	=	1;
-		m_constants.insert	(make_pair(xr_strdup(Name),C));
+		m_constants.insert	(mk_pair(xr_strdup(Name),C));
 		return	C;
 	}
 }
@@ -612,7 +612,7 @@ void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, CBlender* data)
 		xr_delete	(I->second);
 		I->second	= data;
 	} else {
-		m_blenders.insert	(make_pair(xr_strdup(Name),data));
+		m_blenders.insert	(mk_pair(xr_strdup(Name),data));
 	}
 }
 

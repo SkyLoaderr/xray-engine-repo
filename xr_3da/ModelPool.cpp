@@ -204,11 +204,11 @@ IVisual* CModelPool::Create(const char* name)
 		{
 			// 2. If found - return (cloned) reference
 			Model			= Instance_Duplicate(Base);
-			Registry.insert	(make_pair(Model,xr_strdup(low_name)));
+			Registry.insert	(mk_pair(Model,xr_strdup(low_name)));
 		} else {
 			// 3. If not found
 			Model			= Instance_Duplicate(Instance_Load(low_name));
-			Registry.insert	(make_pair(Model,xr_strdup(low_name)));
+			Registry.insert	(mk_pair(Model,xr_strdup(low_name)));
 		}
 	}
 
@@ -236,7 +236,7 @@ void	CModelPool::Delete(IVisual* &V)
 	if (it!=Registry.end())
 	{
 		// Registry entry found - move it to pool
-		Pool.insert			(make_pair(it->second,V));
+		Pool.insert			(mk_pair(it->second,V));
 	} else {
 		// Registry entry not-found - just special type of visual / particles / etc.
 		xr_delete			(V);

@@ -82,7 +82,7 @@ public:
 			tpALifeDynamicObject->UPDATE_Read(tNetPacket);
 			tpALifeDynamicObject->Init(tpALifeDynamicObject->s_name);
 
-			m_tObjectRegistry.insert(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
+			m_tObjectRegistry.insert(mk_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
 		}
 	};
 
@@ -157,7 +157,7 @@ public:
 	
 	virtual	void					Add	(CALifeEvent	*tpEvent)
 	{
-		m_tEventRegistry.insert		(make_pair(tpEvent->m_tEventID = m_tEventID++,tpEvent));
+		m_tEventRegistry.insert		(mk_pair(tpEvent->m_tEventID = m_tEventID++,tpEvent));
 	};
 };
 
@@ -194,7 +194,7 @@ public:
 	 
 	virtual	void					Add	(CALifeTask	*tpTask)
 	{
-		m_tTaskRegistry.insert		(make_pair(tpTask->m_tTaskID = m_tTaskID++,tpTask));
+		m_tTaskRegistry.insert		(mk_pair(tpTask->m_tTaskID = m_tTaskID++,tpTask));
 	};
 };
 
@@ -258,7 +258,7 @@ public:
 		if (I == m_tLevelMap.end()) {
 			ALIFE_ENTITY_P_VECTOR *tpTemp = xr_new<ALIFE_ENTITY_P_VECTOR>();
 			tpTemp->push_back(tpALifeDynamicObject);
-			m_tLevelMap.insert(make_pair(dwLevelID,tpTemp));
+			m_tLevelMap.insert(mk_pair(dwLevelID,tpTemp));
 		}
 		else
 			(*I).second->push_back(tpALifeDynamicObject);

@@ -179,7 +179,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* F)
 			fs->r_stringZ	(name);
 			CConstant*		C = xr_new<CConstant>();
 			C->Load			(fs);
-			m_constants.insert(make_pair(xr_strdup(name),C));
+			m_constants.insert(mk_pair(xr_strdup(name),C));
 		}
 		fs->close();
 	}
@@ -191,7 +191,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* F)
 			fs->r_stringZ	(name);
 			CMatrix*		M	= xr_new<CMatrix>();
 			M->Load				(fs);
-			m_matrices.insert	(make_pair(xr_strdup(name),M));
+			m_matrices.insert	(mk_pair(xr_strdup(name),M));
 		}
 		fs->close();
 	}
@@ -221,7 +221,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* F)
 				chunk->seek		(0);
 				B->Load			(*chunk,desc.version);
 
-				pair<map_BlenderIt, bool> I =  m_blenders.insert	(make_pair(xr_strdup(desc.cName),B));
+				pair<map_BlenderIt, bool> I =  m_blenders.insert	(mk_pair(xr_strdup(desc.cName),B));
 				R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
 			}
 			chunk->close	();
@@ -272,7 +272,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* F)
                 D.T				= xr_strdup	(T);
                 D.M				= xr_strdup	(M);
                 LPSTR N			= xr_strdup	(item.first);
-                m_td.insert		(make_pair(N,D));
+                m_td.insert		(mk_pair(N,D));
             }
         }
 	}

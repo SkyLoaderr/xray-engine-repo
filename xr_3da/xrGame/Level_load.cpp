@@ -310,11 +310,11 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 
 	// 2. Build mapping
 	xr_map<u32,u16>		translator;
-	translator.insert	(make_pair(u32(-1),default_id));
+	translator.insert	(mk_pair(u32(-1),default_id));
 	u16 idx				= 0;
 	for (GameMtlIt I=GMLib.FirstMaterial(); I!=GMLib.LastMaterial(); I++)
 	{
-		translator.insert(make_pair((*I)->GetID(),idx++));
+		translator.insert(mk_pair((*I)->GetID(),idx++));
 	}
 
 	// 3.
