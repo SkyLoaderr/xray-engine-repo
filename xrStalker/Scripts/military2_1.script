@@ -66,7 +66,7 @@ function main ()
     while stalker2:action () do wait () end
     reset_action (stalker2, military2_1.script_name ())
     action (stalker2, anim ("stalker_2_1"), cond (cond.time_end, 100000000))
-    wait (1000)
+    wait (500)
 
 	--phrase 2		--пока вы добивали охрану...
 	reset_action (stalker3, military2_1.script_name ())
@@ -74,7 +74,7 @@ function main ()
 	while stalker3:action () do wait () end
 	reset_action (stalker3, military2_1.script_name ())
     action (stalker3, anim ("stalker_3_2"), cond (cond.time_end, 100000000))
-    wait (1500)
+    wait (500)
 
     --phrase 3		--наконец он у нас...
 	reset_action (stalker1, military2_1.script_name ())
@@ -82,7 +82,7 @@ function main ()
 	while stalker1:action () do wait () end
 	reset_action (stalker1, military2_1.script_name ())
     action (stalker1, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
-    wait (3000)
+    wait (2000)
 
     --phrase 4		--надо быстро добраться до военной базы
 	reset_action (stalker1, military2_1.script_name ())
@@ -90,7 +90,7 @@ function main ()
 	while stalker1:action () do wait () end
 	reset_action (stalker1, military2_1.script_name ())
     action (stalker1, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
-    wait (1500)
+    wait (500)
 
     --phrase 5		--предлагаю кому-то остаться
 	reset_action (stalker2, military2_1.script_name ())
@@ -98,7 +98,7 @@ function main ()
 	while stalker2:action () do wait () end
 	reset_action (stalker2, military2_1.script_name ())
 	action (stalker2, anim ("stalker_2_1"), cond (cond.anim_end))
-    wait (5000)
+    wait (3000)
 
     --phrase 6		--здесь кто-то есть
 	reset_action (stalker1, military2_1.script_name ())
@@ -106,7 +106,7 @@ function main ()
 	while stalker1:action () do wait () end
 	reset_action (stalker1, military2_1.script_name ())
 	action (stalker1, anim ("stalker_1_2"), cond (cond.anim_end))
-    wait (1000)
+    wait (500)
 
     --test
     local pos = testway:point (0) 
@@ -139,13 +139,13 @@ function main ()
     reset_action (stalker2, military2_1.script_name ())
     reset_action (stalker3, military2_1.script_name ())
 
-    action (stalker3, move (move.standing, move.walk, move.line, testway),  anim (anim.danger), look (look.search), cond (cond.move_end))
+    action (stalker3, move (move.standing, move.walk, move.line, testway),  anim (anim.free), look (look.search), cond (cond.move_end))
     action (stalker1, anim ("stalker_2_up"), cond (cond.anim_end))
     action (stalker2, anim ("stalker_1_up"), cond (cond.anim_end))
     action (stalker1, move (move.standing, move.walk, move.line, patrol ("way_test")), object (weapon1, object.activate), 
-            anim (anim.danger), look (look.search), cond (cond.move_end))
+            anim (anim.free), look (look.search), cond (cond.move_end))
     action (stalker2, move (move.standing, move.walk, move.line, patrol ("way_test")), object (weapon2, object.activate), 
-            anim (anim.danger), look (look.search), cond (cond.move_end))
+            anim (anim.free), look (look.search), cond (cond.move_end))
 
 	while true do 
 	      if distance_between (stalker3, stalker1) <= 4 and distance_between (stalker3, stalker2) <= 4 then
