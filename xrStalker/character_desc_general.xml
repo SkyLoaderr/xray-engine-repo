@@ -24,14 +24,14 @@
 		<actor_dialog>escape_trader_jobs</actor_dialog>
 	</specific_character>
 
-	<specific_character id="rostok_barman">
+	<specific_character id="rostok_barman" team_default = "1">
 		<name>Панас Федорович</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
 		<bio>Просто хороший алкаголик. Сидел, выдвигался в президенты Украины.</bio>
 
 		<class>Trader</class>
-		<team>Trader</team>
+		<team>Barman</team>
 		
 		<rank>50</rank>
 		<reputation>50</reputation>

@@ -121,7 +121,7 @@
 	</character>
 
 	<character id="rostok_barman">
-		<team>Trader</team>
+		<team>Barman</team>
 		<specific_character>rostok_barman</specific_character>
 	</character>
 		
