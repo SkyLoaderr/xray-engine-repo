@@ -863,6 +863,9 @@
 					<File
 						RelativePath=".\xrServer_Objects_script.cpp">
 					</File>
+					<File
+						RelativePath=".\xrServer_Objects_script2.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="objects_alife"
