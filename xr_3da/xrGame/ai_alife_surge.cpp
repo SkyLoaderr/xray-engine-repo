@@ -803,7 +803,7 @@ void CSE_ALifeSimulator::vfAssignStalkerCustomers()
 //				R_ASSERT3			(bOk,"There is no customer for the stalker ",l_tpALifeHumanAbstract->s_name_replace);
 //			}
 			l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back(tpfGetNearestSuitableTrader(l_tpALifeHumanAbstract)->ID);
-			l_tpALifeHumanAbstract->m_caKnownCustomers[0] = 0;
+			l_tpALifeHumanAbstract->m_caKnownCustomers = 0;
 		}
 	}
 }
