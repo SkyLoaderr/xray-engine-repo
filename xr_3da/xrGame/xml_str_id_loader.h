@@ -88,8 +88,8 @@ const typename CSXML_IdToIndex::ITEM_DATA& CSXML_IdToIndex::GetById (const T_ID&
 	for(T_VECTOR::iterator it = ItemDataVector().begin();
 		ItemDataVector().end() != it; it++)
 	{
-#pragma todo("Oles to Yura: Really dumb and slow code. 'shared_str' designed for sharing only!!!")
-		if(shared_str((*it).id) == shared_str(str_id))
+#pragma todo("Oles to Yura: Really dumb and slow code. 'ref_str' designed for sharing only!!!")
+		if((*it).id == str_id)
 			break;
 	}
 
@@ -122,7 +122,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 		VERIFY(file_str);
 		VERIFY(tag_name);
 
-		string128	xml_file;
+		string_path	xml_file;
 		int			count = _GetItemCount	(file_str);
 		T_INDEX		index = 0;
 		for (int it=0; it<count; ++it)	
@@ -130,10 +130,12 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 			_GetItem	(file_str, it, xml_file);
 
 			CUIXml uiXml;
-			string128 xml_file_full;
-			strconcat(xml_file_full, *shared_str(xml_file), ".xml");
-			bool xml_result = uiXml.Init("$game_data$", xml_file_full);
-			R_ASSERT3(xml_result, "xml file not found", xml_file_full);
+			std::string xml_file_full;
+			xml_file_full = xml_file;
+			xml_file_full += ".xml";
+			//strconcat(xml_file_full, *ref_str(xml_file), ".xml");
+			bool xml_result = uiXml.Init("$game_data$", xml_file_full.c_str());
+			R_ASSERT3(xml_result, "xml file not found", xml_file_full.c_str());
 
 			//общий список
 			int items_num = uiXml.GetNodesNum(uiXml.GetRoot(), tag_name);
