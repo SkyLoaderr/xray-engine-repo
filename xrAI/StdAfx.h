@@ -19,8 +19,7 @@
 
 #include "clsid.h"
 #include "defines.h"
-#include "log.h"
-#include "fs.h"
+#include "cl_log.h"
 #include "xrCDB.h"
 #include "_d3d_extensions.h"
 

@@ -29,8 +29,7 @@
 #define ENGINE_API				// fake, to enable sharing with engine
 #include "clsid.h"
 #include "defines.h"
-#include "log.h"
-#include "fs.h"
+#include "cl_log.h"
 
 #include "_d3d_extensions.h"
 #include "communicate.h"
