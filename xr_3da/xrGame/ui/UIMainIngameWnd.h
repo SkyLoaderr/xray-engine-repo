@@ -33,17 +33,19 @@ class					CUIPdaMsgListItem;
 
 struct CUSTOM_TEXTURE
 {
-	CUSTOM_TEXTURE(CUIStaticItem* si, int left, int top, int right, int bottom)
+	CUSTOM_TEXTURE(CUIStaticItem* si, int left, int top, int right, int bottom, int priority = 0)
 	{
-		static_item = si;
-		x1 = left;
-		y1 = top;
-		x2 = right;
-		y2 = bottom;	
+		static_item		= si;
+		x1				= left;
+		y1				= top;
+		x2				= right;
+		y2				= bottom;
+		texPriority		= priority;
 	};
 		
-	CUIStaticItem* static_item;
-	int x1, y1, x2, y2;
+	CUIStaticItem*	static_item;
+	int				x1, y1, x2, y2;
+	int				texPriority;
 };
 
 DEFINE_VECTOR(CUSTOM_TEXTURE, CUSTOM_TEXTURE_VECTOR, CUSTOM_TEXTURE_IT);
@@ -68,7 +70,7 @@ public:
 	CUIPdaMsgListItem * AddGameMessage	(LPCSTR message);
 	void AddPersonalizedGameMessage		(CInventoryOwner* pSender, LPCSTR TextMessage);
 	void AddIconedGameMessage			(LPCSTR textureName, RECT originalRect, LPCSTR message);
-	void AddStaticItem					(CUIStaticItem* si, int left, int top, int right, int bottom);
+	void AddStaticItem					(CUIStaticItem* si, int left, int top, int right, int bottom, int priority = 0);
 	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
 	// "рюкзак переполнен", и т.д. Возвращаем указатель на добавленный элемент
 	void AddInfoMessage	(LPCSTR message);

@@ -342,7 +342,7 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 	}
 
 	
-	m_bCursorOverButton = cursor_on_button;
+	m_bCursorOverWindow = cursor_on_button;
 
 
 	m_bButtonClicked = false;
@@ -382,11 +382,11 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 		}
 	}
 
-	if(mouse_action == WINDOW_LBUTTON_DB_CLICK && m_bCursorOverButton)
+	if(mouse_action == WINDOW_LBUTTON_DB_CLICK && m_bCursorOverWindow)
 	{
 		GetParent()->SetCapture(this, false);
 	}
-	else if(mouse_action == WINDOW_RBUTTON_DOWN && m_bCursorOverButton)
+	else if(mouse_action == WINDOW_RBUTTON_DOWN && m_bCursorOverWindow)
 	{
 //		GetTop()->SendMessage(this, ITEM_RBUTTON_CLICK);
 	}

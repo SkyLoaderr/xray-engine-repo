@@ -43,7 +43,7 @@ CUIStatic:: CUIStatic()
 	m_ClipRect.left			= -1;
 	m_ClipRect.right		= -1;
 
-	m_bCursorOverButton		= false;
+	m_bCursorOverWindow		= false;
 
 }
 
@@ -815,26 +815,30 @@ void CUIStatic::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	//проверить попадает ли курсор на кнопку
 	//координаты заданы относительно самой кнопки
-	bool cursor_on_button;
+	bool cursor_on_window;
 
 	if(x>=0 && x<GetWidth() && y>=0 && y<GetHeight())
 	{
-		cursor_on_button = true;
+		cursor_on_window = true;
 	}
 	else
 	{
-		cursor_on_button = false;
+		cursor_on_window = false;
 	}
 
 
-	if(m_bCursorOverButton != cursor_on_button)
+	if(m_bCursorOverWindow != cursor_on_window)
 	{
-		if(cursor_on_button)
+		if(cursor_on_window)
+		{
 			GetMessageTarget()->SendMessage(this, STATIC_FOCUS_RECEIVED, NULL);
+		}
 		else
+		{
 			GetMessageTarget()->SendMessage(this, STATIC_FOCUS_LOST, NULL);
+		}
 	}
-	m_bCursorOverButton = cursor_on_button;
+	m_bCursorOverWindow = cursor_on_window;
 
 	inherited::OnMouse(x, y, mouse_action);
 }

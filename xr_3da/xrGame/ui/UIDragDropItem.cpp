@@ -22,7 +22,7 @@ CUIDragDropItem:: CUIDragDropItem()
 	m_str = "";
 
 	m_bButtonClicked = false;
-	m_bCursorOverButton = false;
+	m_bCursorOverWindow = false;
 
 
 	m_bDDEnabled = true;
@@ -99,7 +99,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 	}
 
 	
-	m_bCursorOverButton = cursor_on_button;
+	m_bCursorOverWindow = cursor_on_button;
 
 
 	m_bButtonClicked = false;
@@ -108,12 +108,12 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
 			GetParent()->SetCapture(this, cursor_on_button);
 
-	if(mouse_action == WINDOW_LBUTTON_DB_CLICK && m_bCursorOverButton)
+	if(mouse_action == WINDOW_LBUTTON_DB_CLICK && m_bCursorOverWindow)
 	{
 		GetTop()->SendMessage(this, DRAG_DROP_ITEM_DB_CLICK);
 		GetParent()->SetCapture(this, false);
 	}
-	else if(mouse_action == WINDOW_RBUTTON_DOWN && m_bCursorOverButton)
+	else if(mouse_action == WINDOW_RBUTTON_DOWN && m_bCursorOverWindow)
 	{
 		GetTop()->SendMessage(this, DRAG_DROP_ITEM_RBUTTON_CLICK);
 	}

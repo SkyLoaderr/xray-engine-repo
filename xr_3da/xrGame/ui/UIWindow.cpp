@@ -11,23 +11,24 @@
 
 CUIWindow::CUIWindow()
 {
-	m_pFont = NULL;
+	m_pFont					= NULL;
 
-	m_pParentWnd =  NULL;
+	m_pParentWnd			=  NULL;
 	
-	m_pMouseCapturer =  NULL;
-	m_pOrignMouseCapturer = NULL;
-	m_pMessageTarget = NULL;
+	m_pMouseCapturer		=  NULL;
+	m_pOrignMouseCapturer	= NULL;
+	m_pMessageTarget		= NULL;
 
 
-	m_pKeyboardCapturer =  NULL;
-	SetRect(&m_WndRect, 0,0,0,0);
+	m_pKeyboardCapturer		=  NULL;
+	SetRect					(&m_WndRect, 0,0,0,0);
 
-	m_bAutoDelete = false;
+	m_bAutoDelete			= false;
 
-    Show(true);
-	Enable(true);
-	EnableDoubleClick(true);
+    Show					(true);
+	Enable					(true);
+	EnableDoubleClick		(true);
+	m_bCursorOverWindow		= false;
 }
 
 CUIWindow::~CUIWindow()
@@ -211,6 +212,11 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 							   cursor_pos.y -(*it)->GetWndRect().top, mouse_action);
 				return;
 			}
+		}
+		else if ((*it)->IsEnabled() && (*it)->CursorOverWindow())
+		{
+			(*it)->OnMouse(cursor_pos.x -(*it)->GetWndRect().left, 
+						   cursor_pos.y -(*it)->GetWndRect().top, mouse_action);
 		}
 	}
 }

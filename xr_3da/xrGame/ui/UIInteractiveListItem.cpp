@@ -127,7 +127,7 @@ void CUIInteractiveListItem::Draw()
 	RECT rect = GetAbsoluteSubRect();
 
 	// Подсвечиваем интерактивный элемент
-	if (itCurrIItem != vPositions.end() && m_bCursorOverButton && m_bInteractiveBahaviour)
+	if (itCurrIItem != vPositions.end() && m_bCursorOverWindow && m_bInteractiveBahaviour)
 	{
 		UpdateTextAlign();
 		GetFont()->SetAligment(GetTextAlign());

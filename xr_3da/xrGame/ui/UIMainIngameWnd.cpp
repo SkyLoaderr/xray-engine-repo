@@ -1107,11 +1107,25 @@ void CUIMainIngameWnd::DisplayMoneyChange(ref_str deltaMoney)
 	sp->effect.ResetAnimation(CUITextBanner::tbsFade);
 }
 
+//-----------------------------------------------------------------------------/
+// Local compare functor 
+//-----------------------------------------------------------------------------/
+
+struct priority_greater : public std::binary_function<CUSTOM_TEXTURE, CUSTOM_TEXTURE, bool>
+{	// functor for operator>
+	bool operator()(const CUSTOM_TEXTURE& Left, const CUSTOM_TEXTURE& Right) const
+	{	// apply operator> to operands
+		return (Left.texPriority > Right.texPriority);
+	}
+} priority_greater_functor;
+
 //////////////////////////////////////////////////////////////////////////
 
-void  CUIMainIngameWnd::AddStaticItem (CUIStaticItem* si, int left, int top, int right, int bottom)
+void  CUIMainIngameWnd::AddStaticItem (CUIStaticItem* si, int left, int top, int right, int bottom, int priority)
 {
-	m_CustomTextures.push_back(CUSTOM_TEXTURE(si, left, top, right, bottom));
+	m_CustomTextures.push_back(CUSTOM_TEXTURE(si, left, top, right, bottom, priority));
+
+	std::sort(m_CustomTextures.begin(), m_CustomTextures.end(), priority_greater_functor);
 }
 
 //////////////////////////////////////////////////////////////////////////

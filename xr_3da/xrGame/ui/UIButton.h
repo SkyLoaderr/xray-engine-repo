@@ -60,7 +60,7 @@ public:
 	//подсвечен ли текст на кнопке
 	virtual bool	IsHighlightText();
 	// принудительна€ подсветка
-	virtual void	HighlightItem(bool bHighlight) { m_bCursorOverButton = bHighlight; }
+	virtual void	HighlightItem(bool bHighlight) { m_bCursorOverWindow = bHighlight; }
 	// ÷вет подсветки
 	virtual void	SetHighlightColor(const u32 uColor)	{ m_HighlightColor = uColor; }
 	void			EnableTextHighlighting(bool value)		{ m_bEnableTextHighlighting = value; }

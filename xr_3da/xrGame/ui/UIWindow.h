@@ -220,7 +220,11 @@ protected:
 	// Флаг разрешающий/запрещающий генерацию даблклика
 	bool m_bDoubleClickEnabled;
 
+	// Если курсор над окном
+	bool			m_bCursorOverWindow;
+
 public:
+	bool			CursorOverWindow() const { return m_bCursorOverWindow; }
 	// Последняя позиция мышки
 	POINT cursor_pos;
 	DECLARE_SCRIPT_REGISTER_FUNCTION

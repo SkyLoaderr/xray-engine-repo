@@ -182,9 +182,6 @@ protected:
 	// Clip rect
 	RECT	m_ClipRect;
 
-	// если курсор над статиком
-	bool			m_bCursorOverButton;
-
 public:
 	static void Elipsis(STRING &str, const RECT &rect, EElipsisPosition elipsisPos, CGameFont *pFont);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
