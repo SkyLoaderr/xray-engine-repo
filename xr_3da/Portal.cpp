@@ -196,7 +196,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 				CFrustum Clip;
 				Clip.CreateFromPortal		(P,vBase,mFullXFORM);
 				Portals[I]->dwFrameObject	= oQuery.dwMark;
-				Portals[I]->getSector(this)->ll_GetObjects(Clip);
+				Portals[I]->getSector(this)->ll_GetObjects(Clip,vBase,mFullXFORM);
 			}
 		}
 	}
