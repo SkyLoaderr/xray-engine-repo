@@ -210,6 +210,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				SmoothElementsInertia	(float k)											= 0;
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
+	virtual CPhysicsElement*	get_ElementByStoreOrder (u16 num)											= 0;
 	virtual CPhysicsElement*	NearestToPoint			(const Fvector& point)								= 0;
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
 	virtual void				UpdateRoot				()													= 0;
