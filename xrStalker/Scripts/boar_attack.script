@@ -31,7 +31,7 @@ function main ()
 	local oldtime = game.time ()
 	local wait_time = math.random (1000, 2000)
 
-	while boar:action do 
+	while boar:action () do 
 		if game.time () - oldtime >= wait_time then
 		   oldtime = game.time ()
 		   wait_time = math.random (1000, 2000)	
