@@ -5,7 +5,6 @@
 #include "progmesh.h"
 #include "xrSpherical.h"
 
-#include "ArbitraryList.h"
 #include "PropSlimTools.h"
 
 struct OGF_Texture
