@@ -199,8 +199,8 @@ namespace RAPID {
 									min_raypick_id	= RayContact.size();
 									rmodel_range	= rp_inf.range;
 									rmodel_range_sq	= rp_inf.range*rp_inf.range;
+									RayContact.push_back(rp_inf);
 								}
-								RayContact.push_back(rp_inf);
 							}
 						}
 					}
