@@ -102,7 +102,7 @@ public:
 		b_min.sub	(C,E);
 		b_max.add	(C,E);
 	}
-	IC	bool		_box		(const Fvector& C, const Fvector& E)
+	ICF	bool		_box		(const Fvector& C, const Fvector& E)
 	{
 		if( b_max.x < C.x-E.x )	return false;
 		if( b_max.y < C.y-E.y )	return false;
