@@ -15,21 +15,13 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual)
 	float							m_fMass;
 	u32								m_dwCost;
 	s32								m_iHealthValue;
+	float							m_fDeteriorationValue;
 	
-									CSE_ALifeItem	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
-	{
-		m_fMass						= pSettings->r_float(caSection, "inv_weight");
-		m_dwCost					= pSettings->r_u32(caSection, "cost");
-		if (pSettings->line_exist(caSection, "health_value"))
-			m_iHealthValue			= pSettings->r_s32(caSection, "health_value");
-		else
-			m_iHealthValue			= 0;
-	};
-
-	bool							bfAttached		()
+									CSE_ALifeItem	(LPCSTR caSection);
+	IC	bool						bfAttached		()
 	{
 		return						(ID_Parent < 0xffff);
-	};
+	}
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)

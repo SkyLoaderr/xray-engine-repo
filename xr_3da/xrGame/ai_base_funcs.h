@@ -34,18 +34,28 @@ public:
 
 	virtual float	ffGetValue() = 0;
 
-	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue)
+	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue = 2)
 	{
 		float fTemp = ffGetValue();
 		if (fTemp <= m_fMinResultValue)
 			return(0);
 		else
 			if (fTemp >= m_fMaxResultValue)
-				return(dwDiscretizationValue - 1);
+				return(iFloor(m_fMaxResultValue/dwDiscretizationValue));
 			else {
 				float fDummy = (m_fMaxResultValue - m_fMinResultValue)/float(dwDiscretizationValue);
 				fDummy = (fTemp - m_fMinResultValue)/fDummy;
 				return(iFloor(fDummy));
 			}
+	}
+
+	IC		float	ffGetMaxResultValue()
+	{
+		return	(m_fMaxResultValue);
+	}
+
+	IC		float	ffGetMinResultValue()
+	{
+		return	(m_fMinResultValue);
 	}
 };

@@ -322,5 +322,110 @@ public:
 	};
 
 	virtual float	ffGetValue();
-	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue);
+	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue = 1);
+};
+
+class CEquipmentType : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CEquipmentType()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 1000.0;
+		strcat(m_caName,"EquipmentType");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+};
+
+class CItemDeterioration : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CItemDeterioration()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 1000.0;
+		strcat(m_caName,"ItemDeterioration");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+};
+
+class CEquipmentPreference : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CEquipmentPreference()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 1000.0;
+		strcat(m_caName,"EquipmentPreference");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+};
+
+class CMainWeaponType : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CMainWeaponType()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 1000.0;
+		strcat(m_caName,"MainWeaponType");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+};
+
+class CMainWeaponPreference : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CMainWeaponPreference()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 1000.0;
+		strcat(m_caName,"MainWeaponPreference");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+};
+
+class CItemValue : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CItemValue()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 1000.0;
+		strcat(m_caName,"ItemValue");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
+};
+
+class CWeaponAmmoCount : public CBaseFunction {
+public:
+	typedef CBaseFunction inherited;
+
+	CWeaponAmmoCount()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 1000.0;
+		strcat(m_caName,"WeaponAmmoCount");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float	ffGetValue();
 };

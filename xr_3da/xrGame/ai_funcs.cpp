@@ -155,6 +155,7 @@ float CPatternFunction::ffGetValue()
 
 CAI_DDD::CAI_DDD()
 {	
+	m_tpGameObject						= 0;
 	m_tpCurrentMember					= 0;
 	m_tpCurrentEnemy					= 0;
 	m_tpCurrentALifeObject				= 0;
@@ -166,6 +167,13 @@ CAI_DDD::CAI_DDD()
 	
 	m_fpaBaseFunctions[0]				= m_pfDistance				= xr_new<CDistanceFunction>				();
 	m_fpaBaseFunctions[1]				= m_pfGraphPointType0		= xr_new<CGraphPointType0>				();
+	m_fpaBaseFunctions[2]				= m_pfEquipmentType			= xr_new<CEquipmentType>				();
+	m_fpaBaseFunctions[3]				= m_pfItemDeterioration		= xr_new<CItemDeterioration>			();
+	m_fpaBaseFunctions[4]				= m_pfEquipmentPreference	= xr_new<CEquipmentPreference>			();
+	m_fpaBaseFunctions[5]				= m_pfMainWeaponType		= xr_new<CMainWeaponType>				();
+	m_fpaBaseFunctions[6]				= m_pfMainWeaponPreference	= xr_new<CMainWeaponPreference>			();
+	m_fpaBaseFunctions[7]				= m_pfItemValue				= xr_new<CItemValue>					();
+	m_fpaBaseFunctions[8]				= m_pfWeaponAmmoCount		= xr_new<CWeaponAmmoCount>				();
 										  
 	m_fpaBaseFunctions[21]				= m_pfPersonalHealth		= xr_new<CPersonalHealthFunction>		();
 	m_fpaBaseFunctions[22]				= m_pfPersonalMorale		= xr_new<CPersonalMoraleFunction>		();			
@@ -201,6 +209,9 @@ CAI_DDD::CAI_DDD()
 	m_pfRetreatProbability				= xr_new<CPatternFunction>	("alife\\RetreatProbability.efd",		this);
 	m_pfWeaponAttackTimes				= xr_new<CPatternFunction>	("alife\\WeaponAttackTimes.efd",		this);
 	m_pfWeaponSuccessProbability		= xr_new<CPatternFunction>	("alife\\WeaponSuccessProbability.efd",	this);
+	m_pfEquipmentValue					= xr_new<CPatternFunction>	("common\\EquipmentValue.efd",			this);
+	m_pfMainWeaponValue					= xr_new<CPatternFunction>	("common\\MainWeaponValue.efd",			this);
+	m_pfSmallWeaponValue				= xr_new<CPatternFunction>	("common\\SmallWeaponValue.efd",		this);
 }
 
 CAI_DDD::~CAI_DDD()

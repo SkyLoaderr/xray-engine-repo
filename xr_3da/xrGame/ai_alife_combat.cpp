@@ -73,14 +73,14 @@ bool CSE_ALifeSimulator::bfCheckForCombat(CSE_ALifeMonsterAbstract *tpALifeMonst
 	if ((tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team()) && randI(2)) {
 		getAI().m_tpCurrentALifeMember = tpALifeMonsterAbstract1;
 		getAI().m_tpCurrentALifeEnemy = tpALifeMonsterAbstract2;
-		if (randI(100) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue(100)) {
+		if (randI(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue())) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue()) {
 			iCombatGroupIndex	= 0;
 			return				(true);
 		}
 		else {
 			getAI().m_tpCurrentALifeMember = tpALifeMonsterAbstract2;
 			getAI().m_tpCurrentALifeEnemy = tpALifeMonsterAbstract1;
-			if (randI(100) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue(100)) {
+			if (randI(iFloor(getAI().m_pfNoticeProbability->ffGetMaxResultValue())) < (int)getAI().m_pfNoticeProbability->dwfGetDiscreteValue()) {
 				iCombatGroupIndex	= 1;
 				return				(true);
 			}
@@ -93,7 +93,7 @@ bool CSE_ALifeSimulator::bfCheckIfRetreated(int iCombatGroupIndex)
 {
 	getAI().m_tpCurrentALifeMember	= m_tpaCombatGroups[iCombatGroupIndex][0];
 	getAI().m_tpCurrentALifeEnemy	= m_tpaCombatGroups[iCombatGroupIndex ^ 1][0];
-	return(randI(100) < (int)getAI().m_pfRetreatProbability->dwfGetDiscreteValue(100));
+	return(randI(iFloor(getAI().m_pfRetreatProbability->ffGetMaxResultValue())) < (int)getAI().m_pfRetreatProbability->dwfGetDiscreteValue());
 }
 
 void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
@@ -112,7 +112,7 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 		
 		getAI().m_tpCurrentALifeMember = *I;
 		for (int i=0, n=iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue()); i<n; i++) {
-			if (randI(100) < (int)getAI().m_pfWeaponSuccessProbability->dwfGetDiscreteValue(100)) {
+			if (randI(iFloor(getAI().m_pfWeaponSuccessProbability->ffGetMaxResultValue())) < (int)getAI().m_pfWeaponSuccessProbability->dwfGetDiscreteValue()) {
 				// choose random enemy group member and perform hit with random power
 				// multiplied by immunity factor
 				int							l_iIndex = randI(m_tpaCombatGroups[iCombatGroupIndex ^ 1].size());

@@ -493,19 +493,171 @@ u32 CMaxMonsterHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
 			return(dwDiscretizationValue - 1);
 		else {
 			if (fTemp >= 30)
-				return(_min(2,dwDiscretizationValue - 1));
+				return(_min(2,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
 			if (fTemp >= 50)
-				return(_min(3,dwDiscretizationValue - 1));
+				return(_min(3,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
 			if (fTemp >= 80)
-				return(_min(4,dwDiscretizationValue - 1));
+				return(_min(4,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
 			if (fTemp >= 100)
-				return(_min(5,dwDiscretizationValue - 1));
+				return(_min(5,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
 			if (fTemp >= 150)
-				return(_min(6,dwDiscretizationValue - 1));
+				return(_min(6,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
 			if (fTemp >= 250)
-				return(_min(7,dwDiscretizationValue - 1));
+				return(_min(7,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
 			if (fTemp >= 500)
-				return(_min(8,dwDiscretizationValue - 1));
-			return(_min(9,dwDiscretizationValue - 1));
+				return(_min(8,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
+			return(_min(9,iFloor(m_fMaxResultValue) - 1)/dwDiscretizationValue);
 		}
+}
+
+float CEquipmentType::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+	
+	if (getAI().m_tpGameObject) {
+#pragma todo("Append EquipmentType with non-ALife branch")
+		return					(m_fLastValue);
+	}
+	else {
+		R_ASSERT2				(getAI().m_tpCurrentALifeObject,"No object specified for EquipmentType evaluation function");
+		switch (getAI().m_tpCurrentALifeObject->m_tClassID) {
+			case CLSID_EQUIPMENT_SIMPLE		: {
+				m_fLastValue = 1;
+				break;
+			}
+			case CLSID_EQUIPMENT_SCIENTIFIC	: {
+				m_fLastValue = 2;
+				break;
+			}
+			case CLSID_EQUIPMENT_STALKER	: {	
+				m_fLastValue = 3;
+				break;
+			}
+			case CLSID_EQUIPMENT_MILITARY	: {
+				m_fLastValue = 4;
+				break;
+			}
+			case CLSID_EQUIPMENT_EXO		: {	
+				m_fLastValue = 5;
+				break;
+			}
+			default							: NODEFAULT;
+		}
+		return					(m_fLastValue);
+	}
+}
+
+float CItemDeterioration::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+	if (getAI().m_tpGameObject) {
+#pragma todo("Append ItemDeterioration with non-ALife branch")
+		return					(m_fLastValue);
+	}
+	else {
+		CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(getAI().m_tpCurrentALifeObject);
+		R_ASSERT2				(l_tpALifeItem,"Non-item object specified for the ItemDeterioration evaluation function");
+		return					(m_fLastValue = l_tpALifeItem->m_fDeteriorationValue);
+	}
+}
+
+float CEquipmentPreference::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+	if (getAI().m_tpCurrentMember) {
+#pragma todo("Append EquipmentPreference with non-ALife branch")
+		return					(m_fLastValue);
+	}
+	else {
+		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(getAI().m_tpCurrentALifeMember);
+		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in EquipmentPreference evaluation function");
+		return					(m_fLastValue = l_tpALifeHumanAbstract->m_cpEquipmentPreferences[getAI().m_pfEquipmentType->dwfGetDiscreteValue()]);
+	}
+}
+
+float CMainWeaponType::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+	if (getAI().m_tpCurrentMember) {
+#pragma todo("Append MainWeaponType with non-ALife branch")
+		return					(m_fLastValue);
+	}
+	else {
+		R_ASSERT2				(getAI().m_tpCurrentALifeObject,"No object specified for MainWeaponType evaluation function");
+		switch (getAI().m_tpCurrentALifeObject->m_tClassID) {
+			case CLSID_OBJECT_W_SHOTGUN: {
+				m_fLastValue	= 1;
+				break;
+			}
+			case CLSID_OBJECT_W_AK74:
+			case CLSID_OBJECT_W_VAL:
+			case CLSID_OBJECT_W_LR300: {
+				m_fLastValue	= 2.f;
+				break;
+			}
+			case CLSID_OBJECT_W_FN2000:
+			case CLSID_OBJECT_W_SVD:
+			case CLSID_OBJECT_W_SVU:
+			case CLSID_OBJECT_W_VINTOREZ: {
+				m_fLastValue	= 3.f;
+				break;
+			}
+			case CLSID_OBJECT_W_RPG7:
+			case CLSID_OBJECT_W_M134: {
+				m_fLastValue	= 4;
+				break;
+			}
+			default				: NODEFAULT;
+		}
+		return					(m_fLastValue);
+	}
+}
+
+float CMainWeaponPreference::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+	if (getAI().m_tpCurrentMember) {
+#pragma todo("Append MainWeaponPreference with non-ALife branch")
+		return					(m_fLastValue);
+	}
+	else {
+		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(getAI().m_tpCurrentALifeMember);
+		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in EquipmentPreference evaluation function");
+		return					(m_fLastValue = l_tpALifeHumanAbstract->m_cpMainWeaponPreferences[getAI().m_pfMainWeaponType->dwfGetDiscreteValue()]);
+	}
+}
+
+float CItemValue::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+	if (getAI().m_tpCurrentMember) {
+#pragma todo("Append ItemValue with non-ALife branch")
+		return					(m_fLastValue);
+	}
+	else {
+		CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(getAI().m_tpCurrentALifeObject);
+		R_ASSERT2				(l_tpALifeItem,"Non-item object specified for the ItemDeterioration evaluation function");
+		return					(m_fLastValue = float(l_tpALifeItem->m_dwCost));
+	}
+}
+
+float CWeaponAmmoCount::ffGetValue()
+{
+	if (bfCheckForCachedResult())
+		return(m_fLastValue);
+	if (getAI().m_tpCurrentMember) {
+#pragma todo("Append WeaponAmmoCount with non-ALife branch")
+		return					(m_fLastValue);
+	}
+	else {
+		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(getAI().m_tpCurrentALifeMember);
+		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in WeaponAmmoCount evaluation function");
+		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<CSE_ALifeItemWeapon*>(getAI().m_tpCurrentALifeObject)));
+	}
 }

@@ -31,6 +31,13 @@ class CEnemyRukzakWeightFunction;
 class CEnemyAnomalityFunction;
 class CEyeRange;
 class CMaxMonsterHealth;
+class CEquipmentType;
+class CItemDeterioration;
+class CEquipmentPreference;
+class CMainWeaponType;
+class CMainWeaponPreference;
+class CItemValue;
+class CWeaponAmmoCount;
 
 class CAI_DDD;
 
@@ -85,6 +92,7 @@ public:
 class CAI_DDD {
 
 public:
+	CGameObject								*m_tpGameObject;
 	CEntityAlive							*m_tpCurrentMember;
 	CEntityAlive							*m_tpCurrentEnemy;
 	CSE_ALifeObject							*m_tpCurrentALifeObject;
@@ -96,6 +104,13 @@ public:
 
 	CDistanceFunction						*m_pfDistance;
 	CGraphPointType0						*m_pfGraphPointType0;
+	CEquipmentType							*m_pfEquipmentType;
+	CItemDeterioration						*m_pfItemDeterioration;
+	CEquipmentPreference					*m_pfEquipmentPreference;
+	CMainWeaponType							*m_pfMainWeaponType;
+	CMainWeaponPreference					*m_pfMainWeaponPreference;
+	CItemValue								*m_pfItemValue;
+	CWeaponAmmoCount						*m_pfWeaponAmmoCount;
 
 	CPersonalHealthFunction					*m_pfPersonalHealth;
 	CPersonalMoraleFunction					*m_pfPersonalMorale;
@@ -132,6 +147,9 @@ public:
 	CPatternFunction						*m_pfRetreatProbability;
 	CPatternFunction						*m_pfWeaponAttackTimes;
 	CPatternFunction						*m_pfWeaponSuccessProbability;
+	CPatternFunction						*m_pfEquipmentValue;
+	CPatternFunction						*m_pfMainWeaponValue;
+	CPatternFunction						*m_pfSmallWeaponValue;
 
 											CAI_DDD();
 	virtual									~CAI_DDD();

@@ -19,6 +19,17 @@
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItem
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItem::CSE_ALifeItem(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+{
+	m_fMass						= pSettings->r_float(caSection, "inv_weight");
+	m_dwCost					= pSettings->r_u32(caSection, "cost");
+	if (pSettings->line_exist(caSection, "health_value"))
+		m_iHealthValue			= pSettings->r_s32(caSection, "health_value");
+	else
+		m_iHealthValue			= 0;
+	m_fDeteriorationValue		= 0;
+}
+
 void CSE_ALifeItem::STATE_Write				(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
