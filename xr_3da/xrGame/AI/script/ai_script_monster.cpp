@@ -372,7 +372,7 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 //				Msg									("%6d Starting sound %s",Level().timeServer(),*l_tSoundAction.m_caSoundToPlay);
 #endif
 				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles);
-				m_current_sound->play_at_pos(this,l_tMatrix.c,l_tSoundAction.m_bLooped ? TRUE : FALSE);
+				m_current_sound->play_at_pos(this,l_tMatrix.c,l_tSoundAction.m_bLooped ? sm_Looped : 0);
 				l_tSoundAction.m_bStartedToPlay = true;
 			}
 			else {
