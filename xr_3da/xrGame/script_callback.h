@@ -22,6 +22,7 @@ public:
 	virtual							~CScriptCallback	();
 			void					set					(const luabind::functor<void> &lua_function);
 			void					set					(const luabind::object &lua_object, LPCSTR method);
+	IC		void					init				();
 			void					clear				();
 			void					clear				(bool member);
 	IC		luabind::functor<void>	*get_function		();

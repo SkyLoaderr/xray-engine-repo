@@ -124,6 +124,7 @@ int CScriptStorage::vscript_log			(ScriptStorage::ELuaMessageType tLuaMessageTyp
 	vsprintf(S1,caFormat,marker);
 
 #ifndef ENGINE_BUILD
+	ai().script_engine().m_output.w_stringZ("\n");
 	ai().script_engine().m_output.w_stringZ(S2);
 #endif
 

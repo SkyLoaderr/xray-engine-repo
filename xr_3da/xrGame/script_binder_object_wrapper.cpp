@@ -23,7 +23,11 @@ CScriptBinderObjectWrapper::~CScriptBinderObjectWrapper ()
 
 void CScriptBinderObjectWrapper::reinit					()
 {
-	luabind::call_member<void>		(this,"reinit");
+	try {
+		luabind::call_member<void>		(this,"reinit");
+	}
+	catch(...) {
+	}
 }
 
 void CScriptBinderObjectWrapper::reinit_static			(CScriptBinderObject *script_binder_object)
@@ -33,7 +37,11 @@ void CScriptBinderObjectWrapper::reinit_static			(CScriptBinderObject *script_bi
 
 void CScriptBinderObjectWrapper::reload					(LPCSTR section)
 {
-	luabind::call_member<void>		(this,"reload",section);
+	try {
+		luabind::call_member<void>		(this,"reload",section);
+	}
+	catch(...) {
+	}
 }
 
 void CScriptBinderObjectWrapper::reload_static			(CScriptBinderObject *script_binder_object, LPCSTR section)
@@ -43,7 +51,12 @@ void CScriptBinderObjectWrapper::reload_static			(CScriptBinderObject *script_bi
 
 bool CScriptBinderObjectWrapper::net_Spawn				(SpawnType DC)
 {
-	return							(luabind::call_member<bool>(this,"net_spawn",DC));
+	try {
+		return							(luabind::call_member<bool>(this,"net_spawn",DC));
+	}
+	catch(...) {
+		return							(false);
+	}
 }
 
 bool CScriptBinderObjectWrapper::net_Spawn_static		(CScriptBinderObject *script_binder_object, SpawnType DC)
@@ -53,7 +66,11 @@ bool CScriptBinderObjectWrapper::net_Spawn_static		(CScriptBinderObject *script_
 
 void CScriptBinderObjectWrapper::net_Destroy			()
 {
-	luabind::call_member<void>		(this,"net_destroy");
+	try {
+		luabind::call_member<void>		(this,"net_destroy");
+	}
+	catch(...) {
+	}
 }
 
 void CScriptBinderObjectWrapper::net_Destroy_static		(CScriptBinderObject *script_binder_object)
@@ -63,7 +80,11 @@ void CScriptBinderObjectWrapper::net_Destroy_static		(CScriptBinderObject *scrip
 
 void CScriptBinderObjectWrapper::net_Import				(NET_Packet *net_packet)
 {
-	luabind::call_member<void>		(this,"net_import",net_packet);
+	try {
+		luabind::call_member<void>		(this,"net_import",net_packet);
+	}
+	catch(...) {
+	}
 }
 
 void CScriptBinderObjectWrapper::net_Import_static		(CScriptBinderObject *script_binder_object, NET_Packet *net_packet)
@@ -73,7 +94,11 @@ void CScriptBinderObjectWrapper::net_Import_static		(CScriptBinderObject *script
 
 void CScriptBinderObjectWrapper::net_Export				(NET_Packet *net_packet)
 {
-	luabind::call_member<void>		(this,"net_export",net_packet);
+	try {
+		luabind::call_member<void>		(this,"net_export",net_packet);
+	}
+	catch(...) {
+	}
 }
 
 void CScriptBinderObjectWrapper::net_Export_static		(CScriptBinderObject *script_binder_object, NET_Packet *net_packet)
@@ -83,7 +108,11 @@ void CScriptBinderObjectWrapper::net_Export_static		(CScriptBinderObject *script
 
 void CScriptBinderObjectWrapper::shedule_Update			(u32 time_delta)
 {
-	luabind::call_member<void>		(this,"update",time_delta);
+	try {
+		luabind::call_member<void>		(this,"update",time_delta);
+	}
+	catch(...) {
+	}
 }
 
 void CScriptBinderObjectWrapper::shedule_Update_static	(CScriptBinderObject *script_binder_object, u32 time_delta)
@@ -93,7 +122,11 @@ void CScriptBinderObjectWrapper::shedule_Update_static	(CScriptBinderObject *scr
 
 void CScriptBinderObjectWrapper::save					(NET_Packet *output_packet)
 {
-	luabind::call_member<void>		(this,"save",output_packet);
+	try {
+		luabind::call_member<void>		(this,"save",output_packet);
+	}
+	catch(...) {
+	}
 }
 
 void CScriptBinderObjectWrapper::save_static			(CScriptBinderObject *script_binder_object, NET_Packet *output_packet)
@@ -103,7 +136,11 @@ void CScriptBinderObjectWrapper::save_static			(CScriptBinderObject *script_bind
 
 void CScriptBinderObjectWrapper::load					(IReader *input_packet)
 {
-	luabind::call_member<void>		(this,"load",*input_packet);
+	try {
+		luabind::call_member<void>		(this,"load",*input_packet);
+	}
+	catch(...) {
+	}
 }
 
 void CScriptBinderObjectWrapper::load_static			(CScriptBinderObject *script_binder_object, IReader *input_packet)
@@ -113,7 +150,12 @@ void CScriptBinderObjectWrapper::load_static			(CScriptBinderObject *script_bind
 
 bool CScriptBinderObjectWrapper::net_SaveRelevant		()
 {
-	return							(luabind::call_member<bool>(this,"net_save_relevant"));
+	try {
+		return							(luabind::call_member<bool>(this,"net_save_relevant"));
+	}
+	catch(...) {
+		return							(false);
+	}
 }
 
 bool CScriptBinderObjectWrapper::net_SaveRelevant_static(CScriptBinderObject *script_binder_object)
