@@ -414,6 +414,13 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.phase_z= ::Random.randF	(phase_range);
 				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));
 				
+				// X-Form BBox
+				Fmatrix		mScale,mXform;
+				mScale.scale					(Item.scale,Item.scale,Item.scale);
+				mXform.mul_43					(Item.mRotY,mScale);
+				mXform.translate_over			(Item.P);
+
+				
 				// Color
 				DetailPalette*	c_pal	= (DetailPalette*)&DS.color;
 				float gray255	[4];
