@@ -135,12 +135,12 @@ void CLightR_Manager::add			(light* L)
 
 CLightR_Manager::CLightR_Manager	()
 {
-	hShader.create				("effects\\light","effects\\light,effects\\light");
-	hGeom.create				(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
+	hShader.create					("effects\\light","effects\\light,effects\\light");
+	hGeom.create					(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
 }
 
 CLightR_Manager::~CLightR_Manager	()
 {
-	hGeom.destroy				();
-	hShader.destroy				();
+	hGeom.destroy					();
+	hShader.destroy					();
 }
