@@ -10,7 +10,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	}
 
 	// *** assume accumulator setted up ***
-	light*			fuckingsun			= RImplementation.Lights.sun_adapted	;
+	light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
 
 	// Common calc for quad-rendering
 	u32		Offset;
@@ -170,7 +170,7 @@ void CRenderTarget::accum_direct_f		(u32 sub_phase)
 	u_setrt								(rt_Generic_0,NULL,NULL,HW.pBaseZB);
 
 	// *** assume accumulator setted up ***
-	light*			fuckingsun			= RImplementation.Lights.sun_adapted	;
+	light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
 
 	// Common calc for quad-rendering
 	u32		Offset;
@@ -297,7 +297,7 @@ void CRenderTarget::accum_direct_lum	()
 	phase_accumulator					();
 
 	// *** assume accumulator setted up ***
-	light*			fuckingsun			= RImplementation.Lights.sun_adapted	;
+	light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
 
 	// Common calc for quad-rendering
 	u32		Offset;
