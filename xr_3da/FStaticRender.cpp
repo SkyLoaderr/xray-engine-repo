@@ -120,7 +120,7 @@ IC		void		gm_SetLighting		(CObject* O)
 		CLightTrack& LT		= *O->Lights	();
 		
 		// ambience
-		gm_SetAmbient		(iFloor(LT.ambient));
+		gm_SetAmbient		(iFloor(LT.ambient)/2);
 
 		// set up to 8 lights to device
 		int			 max	= _min	(int(LT.lights.size()),8);
