@@ -255,6 +255,11 @@ function action_guard_activity:execute()
 			self.st.enabled = false
 			xr_motivator.storage[self.object:id()].guide.enabled = true
 		end
+		if self.st.switch_to_robber_guard_distance and
+		   distance_between(self.object, actor) <= self.st.switch_to_robber_guard_distance then
+			self.st.enabled = false
+			xr_motivator.storage[self.object:id()].robber_guard.enabled = true
+		end
 		if self.object:see(actor) then
 			self.last_seen_actor = device():time_global()
 		end
@@ -488,7 +493,9 @@ end
 -- 30 - начиная с этой точки и дальше охранник идет спокойно
 -- 31 - начиная с этой точки и дальше охранник побежит
 function set_guard(object, enable, path_main, path_hideout, running, search_light, path_camp, loudspeaker_name,
-	anim_set_1, anim_set_2, anim_set_3, sound_set_1, sound_set_2, sound_set_3, switch_to_guide_distance)
+	anim_set_1, anim_set_2, anim_set_3, sound_set_1, sound_set_2, sound_set_3, switch_to_guide_distance,
+	switch_to_robber_guard_distance)
+
 	utils.trace(script_name(), "set_guard called: object:name()='%s', path_main='%s', path_hideout='%s', " ..
 		"running='%s', search_light='%s', path_camp='%s', loudspeaker='%s'",
 		utils.to_str(object:name()),
@@ -516,7 +523,8 @@ function set_guard(object, enable, path_main, path_hideout, running, search_ligh
 	st.sound_set_2 = utils.conf_get_string(char_ini, "guard", "sound_set_2", sound_set_2, object, false)
 	st.sound_set_3 = utils.conf_get_string(char_ini, "guard", "sound_set_3", sound_set_3, object, false)
 	st.switch_to_guide_distance = utils.conf_get_number(char_ini, "guard", "switch_to_guide_distance",
-		switch_to_guide_distance, object, false)
+	st.switch_to_robber_guard_distance = utils.conf_get_number(char_ini, "guard", "switch_to_robber_guard_distance",
+		switch_to_robber_guard_distance, object, false)
 
 	if st.action ~= nil then
 		st.action.reset_scheme(st.action)
