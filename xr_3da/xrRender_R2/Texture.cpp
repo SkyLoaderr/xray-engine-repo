@@ -191,13 +191,11 @@ IC u32 it_height_rev	(u32 d, u32 s)	{	return	color_rgba	(
 }
 
 IDirect3DBaseTexture9*	CRender::texture_load(LPCSTR fRName)
-(
-	const char *		fRName
- )
 {
 	IDirect3DTexture9*		pTexture2D		= NULL;
 	IDirect3DCubeTexture9*	pTextureCUBE	= NULL;
 	string256				fn;
+	u32						dwWidth,dwHeight;
 
 	// validation
 	R_ASSERT				(fRName);
@@ -222,8 +220,8 @@ _DDS:
 	{
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
-		IReader* S				= FS.r_open	(fn);
-		mem						= S->length	();
+		IReader*	S			= FS.r_open	(fn);
+		u32			mem			= S->length	();
 		R_ASSERT				(S);
 		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG));
 		if (IMG.ResourceType	== D3DRTYPE_CUBETEXTURE)			goto _DDS_CUBE;
