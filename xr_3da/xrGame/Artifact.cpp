@@ -124,7 +124,6 @@ void CArtifact::OnH_B_Independent()
 	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT		(E);
 	XFORM().set(E->XFORM());
-	Position().set(XFORM().c);
 	
 	if(m_pPhysicsShell) 
 	{
@@ -150,7 +149,6 @@ void CArtifact::OnH_B_Independent()
 
 		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
 		XFORM().set(l_p1);
-		Position().set(XFORM().c);
 	}
 }
 

@@ -312,7 +312,11 @@ public:
 		virtual bool				useful					(const CGameObject *object) const;
 		virtual	float				evaluate				(const CGameObject *object) const;
 		virtual	void				reinit					();
-		virtual void				reload					(LPCSTR	section);				
+		virtual void				reload					(LPCSTR	section);
+		virtual const SRotation		Orientation				() const
+		{
+			return					(inherited::Orientation());
+		};
 };
 
 #include "ai_rat_inline.h"

@@ -71,7 +71,6 @@ void CTargetCS::OnH_B_Independent() {
 	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT		(E);
 	XFORM().set(E->XFORM());
-	Position().set(XFORM().c);
 	if(m_pPhysicsShell) {
 		Fvector l_fw; l_fw.set(XFORM().k); l_fw.mul(2.f);
 		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
@@ -82,7 +81,6 @@ void CTargetCS::OnH_B_Independent() {
 		//Log("bbb",l_p2.c);
 		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
 		XFORM().set(l_p1);
-		Position().set(XFORM().c);
 	}
 }
 

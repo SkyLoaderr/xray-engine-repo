@@ -5,6 +5,8 @@
 #include "PhysicsShell.h"
 const float TIME_2_HIDE		= 5.f;
 
+const void *blin = 0;
+
 CTorch::CTorch(void) 
 {
 	m_weight				= .5f;
@@ -26,6 +28,7 @@ CTorch::~CTorch(void)
 void CTorch::Load(LPCSTR section) 
 {
 	inherited::Load(section);
+	blin		= dynamic_cast<void*>(this);
 	m_pos		= pSettings->r_fvector3(section,"position");
 }
 
@@ -114,20 +117,17 @@ void CTorch::OnH_A_Chield()
 	XFORM().c.set			(Position());
 	m_focus.set				(Position());
 	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
-	CInventoryOwner			*inventory_owner = dynamic_cast<CInventoryOwner*>(H_Parent());
+	const CInventoryOwner	*inventory_owner = dynamic_cast<const CInventoryOwner*>(H_Parent());
 	VERIFY					(inventory_owner);
-	if (inventory_owner->use_torch()) {
+	if (inventory_owner->use_torch())
 		setVisible			(true);
-		setEnabled			(true);
-	}
 }
 
 void CTorch::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
-	CObject* E = dynamic_cast<CObject*>(H_Parent()); R_ASSERT(E);
+	const CObject* E = dynamic_cast<const CObject*>(H_Parent()); R_ASSERT(E);
 	XFORM().set(E->XFORM());
-	Position().set(XFORM().c);
 	if(m_pPhysicsShell) {
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
@@ -138,7 +138,6 @@ void CTorch::OnH_B_Independent()
 		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
 		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
 		XFORM().set(l_p1);
-		Position().set(XFORM().c);
 	}
 	time2hide				= TIME_2_HIDE;
 }

@@ -99,6 +99,11 @@ public:
 		rotation.pitch		= p;
 		return				(rotation);
 	};
+
+	virtual bool			use_parent_ai_locations	() const
+	{
+		return				(true);
+	}
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

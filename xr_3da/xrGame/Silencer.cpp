@@ -100,7 +100,6 @@ void CSilencer::OnH_B_Independent()
 	R_ASSERT(E);
 	
 	XFORM().set(E->XFORM());
-	Position().set(XFORM().c);
 
 	if(m_pPhysicsShell) 
 	{
@@ -113,7 +112,6 @@ void CSilencer::OnH_B_Independent()
 		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
 		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
 		XFORM().set(l_p1);
-		Position().set(XFORM().c);
 	}
 }
 

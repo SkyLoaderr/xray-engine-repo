@@ -647,7 +647,6 @@ void CWeapon::OnH_B_Independent	()
 		l_p2.set(XFORM()); l_fw.mul(2.f); l_p2.c.add(l_fw);
 		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
 		XFORM().set(l_p1);
-		Position().set(XFORM().c);
 	}
 }
 

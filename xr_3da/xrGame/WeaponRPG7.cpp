@@ -501,7 +501,6 @@ void CWeaponRPG7Grenade::OnH_B_Independent()
 	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT		(E);
 	XFORM().set(E->XFORM()); XFORM().c.set(m_pos);
-	Position().set(XFORM().c);
 	if(m_pPhysicsShell) 
 	{
 		Fmatrix trans;

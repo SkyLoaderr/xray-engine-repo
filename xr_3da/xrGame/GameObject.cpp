@@ -198,7 +198,8 @@ void CGameObject::setup_parent_ai_locations()
 	CGameObject				*l_tpGameObject	= dynamic_cast<CGameObject*>(H_Root());
 	VERIFY					(l_tpGameObject);
 	// get parent's position
-	Position().set			(l_tpGameObject->Position());
+	if (use_parent_ai_locations())
+		Position().set		(l_tpGameObject->Position());
 	// setup its ai locations
 	if (ai().get_level_graph() && ai().level_graph().valid_vertex_id(l_tpGameObject->level_vertex_id()))
 		set_level_vertex		(l_tpGameObject->level_vertex_id());

@@ -154,7 +154,6 @@ void CMissile::OnH_B_Independent()
 	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT		(E);
 	XFORM().set(E->XFORM());
-	Position().set(XFORM().c);
 	
 	if(m_pPhysicsShell) 
 	{
@@ -201,7 +200,6 @@ void CMissile::OnH_B_Independent()
 	
 		//dBodySetMass(m_pPhysicsShell->get_ElementByStoreOrder(0)->get_body(),&m);
 		XFORM().set(l_p1);
-		Position().set(XFORM().c);
 	}
 }
 

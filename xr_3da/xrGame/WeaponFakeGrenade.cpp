@@ -427,7 +427,6 @@ void CWeaponFakeGrenade::OnH_B_Independent()
 	CObject*	 E = dynamic_cast<CObject*>(H_Parent());
 	R_ASSERT	(E);
 	XFORM().set(E->XFORM());
-	Position().set(XFORM().c);
 	
 	if(m_pPhysicsShell) 
 	{

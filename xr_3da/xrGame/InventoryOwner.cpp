@@ -303,18 +303,15 @@ void __stdcall VisualCallback(CKinematics *tpKinematics)
 	if (!game_object)
 		return;
 
-	Fmatrix				matrix;
-
-	matrix.setHPB		(VPUSH(inventory_owner->torch_angle_offset()));
-	matrix.c			= inventory_owner->torch_position_offset();
-
 	if (xr_strlen(inventory_owner->torch_bone_name())) {
+		Fmatrix			matrix;
+		matrix.setHPB	(VPUSH(inventory_owner->torch_angle_offset()));
+		matrix.c		= inventory_owner->torch_position_offset();
 		CBoneInstance	&l_tBoneInstance = PKinematics(game_object->Visual())->LL_GetBoneInstance(PKinematics(game_object->Visual())->LL_BoneID(inventory_owner->torch_bone_name()));
 		matrix.mulA		(l_tBoneInstance.mTransform);
 		matrix.mulA		(game_object->XFORM());
+		torch->XFORM()	= matrix;
 	}
-
-	torch->XFORM()		= matrix;
 }
 
 void CInventoryOwner::renderable_Render		()
