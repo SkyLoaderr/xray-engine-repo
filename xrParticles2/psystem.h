@@ -132,6 +132,6 @@ namespace PAPI{
         virtual void				SaveActions			(int alist_id, IWriter& W)=0;
     };
 
-    PARTICLES_API IParticleManager*	ParticleManager		();
+    PARTICLES_API IParticleManager* ParticleManager		();
 };
 #endif //PSystemH
