@@ -71,7 +71,7 @@ end
 
 function conf_get_string(char_ini, section, field, override, object, mandatory)
 	if override ~= nil then
-		return override ~= nil
+		return override
 	end
 	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		return char_ini:r_string(section, field)
