@@ -112,13 +112,12 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             }
 			Command( COMMAND_CLEAR );
 	    	if (!Tools.Load(fn.c_str())){
-            	ELog.DlgMsg(mtError,"Can't load file '%s'",fn.c_str());
             	bRes=false;
             	break;
             }
 			strcpy(m_LastFileName,ExtractFileName(fn).c_str());
 			if (Command( COMMAND_SAVEAS )){
-	            Engine.FS.MarkFile(fn.c_str());
+	            Engine.FS.MarkFile(fn.c_str(),true);
 			    fraLeftBar->UpdateMotionList();
             }else{
             	Command( COMMAND_CLEAR );
@@ -155,7 +154,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             }
 			Command( COMMAND_CLEAR );
 	    	if (!Tools.Load(fn.c_str())){
-            	ELog.DlgMsg(mtError,"Can't load file '%s'",fn.c_str());
             	bRes=false;
             	break;
             }

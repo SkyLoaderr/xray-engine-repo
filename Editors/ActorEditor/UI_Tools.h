@@ -104,19 +104,18 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 
     TElTreeItem*		m_pCycleNode;
     TElTreeItem*		m_pFXNode;
-	void __fastcall		MotionOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall		MotionOnChange			(PropValue* sender);
 
-	void __fastcall 	RotateOnAfterEdit	 	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	RotateOnBeforeEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	RotateOnAfterEdit	 	(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	RotateOnBeforeEdit		(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	RotateOnDraw			(PropValue* sender, LPVOID draw_val);
-	void __fastcall 	OnAfterTransformation	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	OnAfterShaderEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	OnAfterTextureEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnAfterEdit			(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnBeforeEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	OnChangeTransform		(PropValue* sender);
+	void __fastcall 	OnChangeShader			(PropValue* sender);
+	void __fastcall 	NameOnAfterEdit			(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnBeforeEdit		(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	NameOnDraw				(PropValue* sender, LPVOID draw_val);
-	void __fastcall 	BPOnAfterEdit			(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
-	void __fastcall 	BPOnBeforeEdit			(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	BPOnAfterEdit			(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	BPOnBeforeEdit			(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);
 public:
 	EngineModel			m_RenderObject;

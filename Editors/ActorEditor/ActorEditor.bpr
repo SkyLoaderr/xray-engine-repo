@@ -6,11 +6,11 @@
     <PROJECT value="x:\ActorEditor.exe"/>
     <OBJFILES value="Intermediate\ActorEditor.obj Intermediate\stdafx.obj 
       Intermediate\FileSystem.obj Intermediate\D3DUtils.obj Intermediate\Log.obj 
-      Intermediate\frustum.obj Intermediate\EditMesh.obj 
-      Intermediate\EditObjectImport.obj Intermediate\EditMeshIO.obj 
-      Intermediate\EditMeshModify.obj Intermediate\Device.obj 
-      Intermediate\EditMeshRender.obj Intermediate\BottomBar.obj 
-      Intermediate\EditorPref.obj Intermediate\Splash.obj Intermediate\main.obj 
+      Intermediate\EditMesh.obj Intermediate\EditObjectImport.obj 
+      Intermediate\EditMeshIO.obj Intermediate\EditMeshModify.obj 
+      Intermediate\Device.obj Intermediate\EditMeshRender.obj 
+      Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
+      Intermediate\Splash.obj Intermediate\main.obj 
       Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
       Intermediate\_quaternion.obj Intermediate\_compressed_normal.obj 
       Intermediate\xr_trims.obj Intermediate\interp.obj 
@@ -62,7 +62,8 @@
       Intermediate\TextForm.obj Intermediate\ExportObjectOGF.obj 
       Intermediate\ImageEditor.obj Intermediate\ETextureParams.obj 
       Intermediate\ShaderFunction.obj Intermediate\PropertiesListTypes.obj 
-      Intermediate\LightAnimLibrary.obj"/>
+      Intermediate\LightAnimLibrary.obj Intermediate\render.obj 
+      Intermediate\Frustum.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -123,7 +124,6 @@
       <FILE FILENAME="editor\D3DUtils.cpp" FORMNAME="" UNITNAME="D3DUtils" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\Log.cpp" FORMNAME="" UNITNAME="Log" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\std_classes.h" FORMNAME="" UNITNAME="std_classes" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\frustum.cpp" FORMNAME="" UNITNAME="frustum" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\LWO.lib" FORMNAME="" UNITNAME="LWO" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\EditMesh.cpp" FORMNAME="" UNITNAME="EditMesh" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\EditObjectImport.cpp" FORMNAME="" UNITNAME="EditObjectImport" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -251,6 +251,8 @@
       <FILE FILENAME="Editor\SceneClassList.h" FORMNAME="" UNITNAME="SceneClassList.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\render.cpp" FORMNAME="" UNITNAME="render" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Frustum.cpp" FORMNAME="" UNITNAME="Frustum" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

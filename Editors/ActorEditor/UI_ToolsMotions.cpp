@@ -165,10 +165,10 @@ void CActorTools::MakePreview()
     }
 }
 
-void CActorTools::MotionOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void CActorTools::MotionOnChange(PropValue* sender)
 {
-	R_ASSERT(edit_val);
-    if (*(BOOL*)edit_val){
+	FlagValue* V = (FlagValue*)sender;
+    if (V->GetValue()){
 	    m_pCycleNode->Hidden	= true;
     	m_pFXNode->Hidden		= false;
     }else{
@@ -178,12 +178,12 @@ void CActorTools::MotionOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID
 }
 
 //------------------------------------------------------------------------------
-void __fastcall CActorTools::NameOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::NameOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
 	FOLDER::AfterTextEdit(fraLeftBar->tvMotions->Selected,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //------------------------------------------------------------------------------
-void __fastcall CActorTools::NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::NameOnBeforeEdit(PropValue* sender, LPVOID edit_val)
 {
 	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
@@ -195,13 +195,13 @@ void __fastcall CActorTools::NameOnDraw(PropValue* sender, LPVOID draw_val)
 //------------------------------------------------------------------------------
                         
 //------------------------------------------------------------------------------
-void __fastcall CActorTools::BPOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::BPOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
 	TokenValue2* V = dynamic_cast<TokenValue2*>(sender); R_ASSERT(V);
     (*((DWORD*)edit_val))--;
 }
 //------------------------------------------------------------------------------
-void __fastcall CActorTools::BPOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::BPOnBeforeEdit(PropValue* sender, LPVOID edit_val)
 {
 	TokenValue2* V = dynamic_cast<TokenValue2*>(sender); R_ASSERT(V);
     (*((DWORD*)edit_val))++;
@@ -219,26 +219,26 @@ void CActorTools::FillMotionProperties()
 	CSMotion* SM = m_pEditObject->GetActiveSMotion();
     if (SM){
 		PropValueVec values;
-    	FILL_PROP(values, "Name",		&SM->Name(),  	PROP::CreateTextValue	(sizeof(SM->Name()),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
-    	FILL_PROP(values, "Speed",		&SM->fSpeed,   	PROP::CreateFloatValue	(0.f,20.f,0.01f,2));
-    	FILL_PROP(values, "Accrue",		&SM->fAccrue,  	PROP::CreateFloatValue	(0.f,20.f,0.01f,2));
-    	FILL_PROP(values, "Falloff", 	&SM->fFalloff, 	PROP::CreateFloatValue	(0.f,20.f,0.01f,2));
+    	FILL_PROP(values, "Name",		&SM->Name(),  	PROP::CreateText	(sizeof(SM->Name()),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+    	FILL_PROP(values, "Speed",		&SM->fSpeed,   	PROP::CreateFloat	(0.f,20.f,0.01f,2));
+    	FILL_PROP(values, "Accrue",		&SM->fAccrue,  	PROP::CreateFloat	(0.f,20.f,0.01f,2));
+    	FILL_PROP(values, "Falloff", 	&SM->fFalloff, 	PROP::CreateFloat	(0.f,20.f,0.01f,2));
 
-        FlagValue* TV = PROP::CreateFlagValue(esmFX,MotionOnAfterEdit);
+        FlagValue* TV = PROP::CreateFlag(esmFX,0,0,0,MotionOnChange);
         FILL_PROP(values, "Type FX", 	&SM->m_dwFlags, TV);
         {
             AStringVec lst;
             lst.push_back("--none--");
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
-            FILL_PROP(values, "Cycle\\Bone part",	&SM->iBoneOrPart,	PROP::CreateTokenValue2(&lst,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
-            FILL_PROP(values, "Cycle\\Stop at end",	&SM->m_dwFlags,		PROP::CreateFlagValue(esmStopAtEnd));
-            FILL_PROP(values, "Cycle\\No mix",		&SM->m_dwFlags,		PROP::CreateFlagValue(esmNoMix));
+            FILL_PROP(values, "Cycle\\Bone part",	&SM->iBoneOrPart,	PROP::CreateToken2(&lst,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
+            FILL_PROP(values, "Cycle\\Stop at end",	&SM->m_dwFlags,		PROP::CreateFlag(esmStopAtEnd));
+            FILL_PROP(values, "Cycle\\No mix",		&SM->m_dwFlags,		PROP::CreateFlag(esmNoMix));
         }
         {
             AStringVec lst;
             for (BoneIt it=m_pEditObject->FirstBone(); it!=m_pEditObject->LastBone(); it++) lst.push_back((*it)->Name());
-            FILL_PROP(values, "FX\\Start bone",		&SM->iBoneOrPart,	PROP::CreateTokenValue2(&lst));
-	    	FILL_PROP(values, "FX\\Power",			&SM->fPower,   		PROP::CreateFloatValue	(0.f,20.f,0.01f,2));
+            FILL_PROP(values, "FX\\Start bone",		&SM->iBoneOrPart,	PROP::CreateToken2(&lst));
+	    	FILL_PROP(values, "FX\\Power",			&SM->fPower,   		PROP::CreateFloat	(0.f,20.f,0.01f,2));
         }
         // fill values
         m_MotionProps->AssignValues(values,true);
@@ -248,8 +248,7 @@ void CActorTools::FillMotionProperties()
 	    PropValue* F 	= PROP::FindProp(values,"FX\\Start bone");		R_ASSERT(F&&F->item);
         m_pFXNode 		= F->item->Parent; R_ASSERT(m_pFXNode); 
 		// first init node
-        BOOL val = TV->GetValue();
-        MotionOnAfterEdit(0,TV,&val);
+        MotionOnChange(TV);
     }else{
     	m_MotionProps->ClearProperties();	
 		m_pCycleNode=0;

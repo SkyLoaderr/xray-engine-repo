@@ -12,7 +12,7 @@
 #include "topbar.h"
 #include "xr_trims.h"
 #include "xr_tokens.h"
-#include "PropertiesList.h"
+#include "PropertiesList.h"               
 #include "motion.h"
 #include "bone.h"
 #include "library.h"
@@ -83,10 +83,10 @@ xr_token		sa_token					[ ]={
 void CActorTools::PreviewModel::SetPreferences()
 {
 	PropValueVec values;
-	FILL_PROP(values,	"Scroll",		&m_dwFlags,		PROP::CreateFlagValue	(pmScroll));
-	FILL_PROP(values,	"Speed (m/c)",	&m_fSpeed,		PROP::CreateFloatValue	(-10000.f,10000.f,0.01f,2));
-	FILL_PROP(values,	"Segment (m)",	&m_fSegment,	PROP::CreateFloatValue	(-10000.f,10000.f,0.01f,2));
-	FILL_PROP(values,	"Scroll axis",	&m_ScrollAxis,	PROP::CreateTokenValue	(sa_token));
+	FILL_PROP(values,	"Scroll",		&m_dwFlags,		PROP::CreateFlag	(pmScroll));
+	FILL_PROP(values,	"Speed (m/c)",	&m_fSpeed,		PROP::CreateFloat	(-10000.f,10000.f,0.01f,2));
+	FILL_PROP(values,	"Segment (m)",	&m_fSegment,	PROP::CreateFloat	(-10000.f,10000.f,0.01f,2));
+	FILL_PROP(values,	"Scroll axis",	&m_ScrollAxis,	PROP::CreateToken	(sa_token));
 	m_Props->AssignValues(values,true,"Preview prefs");
     m_Props->ShowProperties();
 }
@@ -257,7 +257,7 @@ void CActorTools::Update(){
     	m_pEditObject->OnFrame();
     }
     if (m_bNeedRefreshShaders){
-        m_pEditObject->RefreshShaders();
+        m_pEditObject->OnDeviceDestroy();
         m_bNeedRefreshShaders= false;
     }
 }
@@ -333,15 +333,20 @@ bool CActorTools::Load(LPCSTR name)
 {
 	VERIFY(m_bReady);
 	CEditableObject* O = new CEditableObject(name);
-	if (O->Load(name)&&O->IsFlag(CEditableObject::eoDynamic)){
-//    	O->SetFlag(CEditableObject::eoDynamic);
-    	_DELETE(m_pEditObject);
-        m_pEditObject = O;
-        // delete visual
-        m_RenderObject.Clear();
-        fraLeftBar->SetRenderStyle(false);
-		fraLeftBar->SkeletonPartEnabled(m_pEditObject->IsSkeleton());
-        return true;
+	if (O->Load(name)){
+    	if (O->IsFlag(CEditableObject::eoDynamic)){
+            _DELETE(m_pEditObject);
+            m_pEditObject = O;
+            // delete visual
+            m_RenderObject.Clear();
+            fraLeftBar->SetRenderStyle(false);
+            fraLeftBar->SkeletonPartEnabled(m_pEditObject->IsSkeleton());
+            return true;
+        }else{
+        	ELog.DlgMsg(mtError,"Can't load non dynamic object '%s'.",name);
+        }
+    }else{
+       	ELog.DlgMsg(mtError,"Can't load object file '%s'.",name);
     }
     _DELETE(O);
 
@@ -513,7 +518,7 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
     }
 }
 
-void __fastcall CActorTools::RotateOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::RotateOnAfterEdit(PropValue* sender, LPVOID edit_val)
 {
 	Fvector* V = (Fvector*)edit_val;
 	V->x = deg2rad(V->x);
@@ -522,7 +527,7 @@ void __fastcall CActorTools::RotateOnAfterEdit(TElTreeItem* item, PropValue* sen
 	UI.RedrawScene();
 }
 
-void __fastcall CActorTools::RotateOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::RotateOnBeforeEdit(PropValue* sender, LPVOID edit_val)
 {
 	Fvector* V = (Fvector*)edit_val;
 	V->x = rad2deg(V->x);
@@ -537,33 +542,28 @@ void __fastcall CActorTools::RotateOnDraw(PropValue* sender, LPVOID draw_val)
 	V->y = rad2deg(V->y);
 	V->z = rad2deg(V->z);
 }
-void __fastcall CActorTools::OnAfterTransformation(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::OnChangeTransform(PropValue* sender)
 {
 	UI.RedrawScene();
 }
 
-void __fastcall CActorTools::OnAfterShaderEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::OnChangeShader(PropValue* sender)
 {
 	RefreshShaders();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CActorTools::OnAfterTextureEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
-{
-	RefreshShaders();
-}
-//---------------------------------------------------------------------------
 void CActorTools::FillObjectProperties()
 {
 	R_ASSERT(m_pEditObject);
 
 	PropValueVec values;
 
-    FILL_PROP(values, "Make Progressive",		&m_pEditObject->GetFlags(),  	PROP::CreateFlagValue(CEditableObject::eoDynamic));
-    FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PROP::CreateVectorValue(-10000,	10000,0.01,2,OnAfterTransformation));
-    FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PROP::CreateVectorValue(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
+    FILL_PROP(values, "Make Progressive",		&m_pEditObject->GetFlags(),  	PROP::CreateFlag	(CEditableObject::eoProgressive));
+    FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PROP::CreateVector	(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
+    FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PROP::CreateVector	(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
 
-    m_pEditObject->FillPropSurf		(values,OnAfterShaderEdit,OnAfterTextureEdit);
+    m_pEditObject->FillPropSurf		(values,OnChangeShader);
     m_pEditObject->FillPropSummary	(values);
     
 	m_ObjectProps->AssignValues(values,false);
