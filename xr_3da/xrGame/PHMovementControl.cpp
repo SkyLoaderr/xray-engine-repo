@@ -226,6 +226,10 @@ void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPo
 			travel_point=(u32)index;
 			m_start_index=index;
 			dir.y=0.f;
+
+#pragma TODO ("this must be done on the funnction start!!")
+			if(fis_zero(speed)) dir.set(0,0,0);
+
 			m_character->SetMaximumVelocity(speed);
 			m_character->SetAcceleration(dir);
 		}

@@ -28,6 +28,7 @@ void CDetailPathManager::Init			()
 	m_dest_position			= Fvector().set(0,0,0);
 	m_current_travel_point	= u32(-1);
 	m_path_type				= eDetailPathTypeSmooth;
+	m_path.clear			();
 }
 
 bool CDetailPathManager::valid			() const
