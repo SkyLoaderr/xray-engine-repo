@@ -19,6 +19,8 @@ public:
 
 	CHWCaps					Caps;
 
+	D3DDEVTYPE				DevT;
+
 	CHW()
 	{
 		pD3D		= NULL;

@@ -34,11 +34,11 @@ D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)
 
 	for (int it = 0; it<fDS_Cnt; it++){
 		if (SUCCEEDED(pD3D->CheckDeviceFormat(
-			D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,
+			D3DADAPTER_DEFAULT,DevT,fTarget,
 			D3DUSAGE_DEPTHSTENCIL,D3DRTYPE_SURFACE,fDS_Try[it])))
 		{
             if( SUCCEEDED( pD3D->CheckDepthStencilMatch(
-				D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,
+				D3DADAPTER_DEFAULT,DevT,
                 fTarget, fTarget, fDS_Try[it]) ) )
             {
 				return fDS_Try[it];
@@ -65,6 +65,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 
 	// General
 	BOOL  bWindowed			= !psDeviceFlags.is(rsFullscreen);
+	DevT					= Caps.bForceGPU_REF?D3DDEVTYPE_REF:D3DDEVTYPE_HAL;
 
 	u32 dwWindowStyle=0;
 #ifndef _EDITOR
@@ -99,29 +100,29 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	if (bWindowed)
 	{
 		fTarget = mWindowed.Format;
-		R_CHK(pD3D->CheckDeviceType	(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,fTarget,TRUE));
+		R_CHK(pD3D->CheckDeviceType	(D3DADAPTER_DEFAULT,DevT,fTarget,fTarget,TRUE));
 		fDepth  = selectDepthStencil(fTarget);
 	} else {
 		switch (psCurrentBPP) {
 		case 32:
 			fTarget = D3DFMT_X8R8G8B8;
-			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,fTarget,FALSE)))
+			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,DevT,fTarget,fTarget,FALSE)))
 				break;
 			fTarget = D3DFMT_R8G8B8;
-			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,fTarget,FALSE)))
+			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,DevT,fTarget,fTarget,FALSE)))
 				break;
 			fTarget = D3DFMT_UNKNOWN;
 			break;
 		case 16:
 		default:
 			fTarget = D3DFMT_R5G6B5;
-			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,fTarget,FALSE)))
+			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,DevT,fTarget,fTarget,FALSE)))
 				break;
 			fTarget = D3DFMT_X1R5G5B5;
-			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,fTarget,FALSE)))
+			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,DevT,fTarget,fTarget,FALSE)))
 				break;
 			fTarget = D3DFMT_X4R4G4B4;
-			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,fTarget,FALSE)))
+			if (SUCCEEDED(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,DevT,fTarget,fTarget,FALSE)))
 				break;
 			fTarget = D3DFMT_UNKNOWN;
 			break;
@@ -169,7 +170,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
     // Create the device
 	u32 GPU = selectGPU();
     R_CHK(HW.pD3D->CreateDevice(D3DADAPTER_DEFAULT,
-								D3DDEVTYPE_HAL,
+								DevT,
                                 m_hWnd,
 								GPU,
 								&P,
@@ -205,7 +206,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 u32	CHW::selectPresentInterval	()
 {
 	D3DCAPS9	caps;
-	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,&caps);
+	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,DevT,&caps);
 
 	if (psDeviceFlags.is(rsNoVSync)) {
 		if (caps.PresentationIntervals & D3DPRESENT_INTERVAL_IMMEDIATE)
@@ -221,7 +222,7 @@ u32 CHW::selectGPU ()
 	if (Caps.bForceGPU_SW) return D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 
 	D3DCAPS9	caps;
-	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,&caps);
+	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,DevT,&caps);
 
     if(caps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT)
 	{

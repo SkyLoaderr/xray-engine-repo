@@ -32,6 +32,7 @@ public:
 	// force flags
 	BOOL			bForceVertexFog;
 	BOOL			bForceMultipass;
+	BOOL			bForceGPU_REF;
 	BOOL			bForceGPU_SW;
 	BOOL			bForceGPU_NonPure;
 	BOOL			SceneMode;
