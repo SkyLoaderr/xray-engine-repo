@@ -445,8 +445,8 @@ SPHAxis(){
 	erp=world_erp;
 	cfm=world_cfm;
 #else
-	erp=world_erp;
-	cfm=world_cfm;
+	erp=0.3f;
+	cfm=0.000001f;
 #endif
 	direction.set(0,0,1);
 	vs=vs_first;

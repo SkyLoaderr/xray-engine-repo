@@ -1966,7 +1966,7 @@ void	CPHElement::Disabling(){
 					deviation/=dis_count_f;
 					if(mag_v<0.005f* dis_frames && deviation<0.00005f*dis_frames)
 						Disable();//dBodyDisable(m_body);//
-					if((!(previous_dev<deviation)&&!(previous_v<mag_v))//
+					if((!(previous_dev<deviation+0.00003f)&&!(previous_v<mag_v+0.003f))//
 					  ) 
 					{
 					dis_count_f++;

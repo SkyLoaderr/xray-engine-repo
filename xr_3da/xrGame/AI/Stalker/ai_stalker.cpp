@@ -1054,12 +1054,19 @@ void CAI_Stalker::Update	( u32 DT )
 
 		if(skel_ddelay==0)
 		{
-		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);
+		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
 		//m_pPhysicsShell->SetAirResistance()
 		
 		}
-		skel_ddelay--;
+		if(skel_ddelay==-10)
+		{
+			m_pPhysicsShell->set_JointResistance(0.f);//5.f*hinge_force_factor1
+			//m_pPhysicsShell->SetAirResistance()
 
+		}
+
+		skel_ddelay--;
+		
 		mRotate.set(m_pPhysicsShell->mXFORM);
 		mRotate.c.set(0,0,0);
 		UpdateTransform					();
