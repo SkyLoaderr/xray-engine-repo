@@ -622,11 +622,11 @@ SOURCE=.\AI\Soldier\ai_soldier_fire.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AI\Soldier\ai_soldier_look.cpp
+SOURCE=.\AI\Soldier\ai_soldier_fsm.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AI\Soldier\ai_soldier_misc.cpp
+SOURCE=.\AI\Soldier\ai_soldier_look.cpp
 # End Source File
 # Begin Source File
 
