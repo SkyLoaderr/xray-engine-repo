@@ -1,10 +1,32 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
+
+    <info_portion id="agroprom_military_case">
+    </info_portion>
+    <info_portion id="agroprom_military_case_have">
+    </info_portion>
+    <info_portion id="agroprom_military_case_done">
+    </info_portion>
+
+
+
     <info_portion id="agroprom_factory_combat">
     </info_portion>
 
     <info_portion id="agroprom_find_stalker_ghost">
     </info_portion>
 
+	
+	<!-- infoportions для ситуации на заводе на агропроме -->
+	<info_portion id="agr_factory_combat_start">
+	</info_portion>
+
+	<info_portion id="agr_factory_combat_proceed">
+	</info_portion>
+
+	<info_portion id="agr_factory_need_help">
+	</info_portion>
+	
+	
 </game_information_portions>

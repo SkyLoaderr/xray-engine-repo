@@ -748,27 +748,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_fox_hello_dialog">
-        <phrase_list>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_fox_hello_dialog_2</text>
-                <has_info>escape_stalker_meet</has_info>
-            </phrase>
-            <phrase id="3">
-                <text>escape_fox_hello_dialog_3</text>
-                <dont_has_info>escape_stalker_meet</dont_has_info>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_jobs" priority="5">
         <phrase_list>
             <phrase id="15">
@@ -874,65 +853,93 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_fox_flame_dialog">
+    <dialog id="escape_trader_start_dialog">
         <phrase_list>
-            <phrase id="1">
-                <text>escape_fox_flame_dialog_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
+            <phrase id="211">
                 <text />
-                <next>111</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_fox_flame_dialog_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_fox_flame_dialog_2</text>
-                <next>21</next>
+                <give_info>esc_trader_tutorial_choice</give_info>
+                <next>1</next>
             </phrase>
             <phrase id="21">
-                <text>escape_fox_flame_dialog_21</text>
+                <text>escape_trader_start_dialog_21</text>
+                <give_info>esc_trader_tutorial_choice</give_info>
                 <next>211</next>
             </phrase>
-            <phrase id="211">
-                <text>escape_fox_flame_dialog_211</text>
-                <next>2111</next>
+            <phrase id="2">
+                <text>escape_trader_start_dialog_2</text>
+                <dont_has_info>esc_trader_tutorial_choice</dont_has_info>
+                <next>21</next>
             </phrase>
-            <phrase id="10">
-                <text>escape_fox_flame_dialog_10</text>
+            <phrase id="3">
+                <text>escape_trader_start_dialog_3</text>
+                <dont_has_info>esc_trader_tutorial_chosen</dont_has_info>
+                <has_info>esc_trader_tutorial_choice</has_info>
+                <next>31</next>
+                <next>32</next>
             </phrase>
-            <phrase id="111">
+            <phrase id="0">
                 <text />
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
+                <next>1</next>
+            </phrase>
+            <phrase id="5">
+                <text>escape_trader_start_dialog_5</text>
+                <precondition>escape_dialog.trader_alredy_give_job</precondition>
+                <has_info>esc_trader_tutorial_chosen</has_info>
+                <has_info>esc_trader_can_leave</has_info>
+            </phrase>
+            <phrase id="4">
+                <text>escape_trader_start_dialog_4</text>
+                <precondition>escape_dialog.trader_dont_give_job</precondition>
+                <has_info>esc_trader_tutorial_chosen</has_info>
+                <has_info>esc_trader_can_leave</has_info>
             </phrase>
             <phrase id="31">
-                <text>escape_fox_flame_dialog_31</text>
-                <next>11</next>
+                <text>escape_trader_start_dialog_31</text>
+                <give_info>esc_trader_newbie</give_info>
+                <next>311</next>
             </phrase>
-            <phrase id="2111">
-                <text>escape_fox_flame_dialog_2111</text>
-                <next>11</next>
+            <phrase id="311">
+                <text />
+                <action>dialogs.break_dialog</action>
+                <action>dialogs.disable_talk_self</action>
+                <give_info>esc_trader_tutorial_chosen</give_info>
             </phrase>
-            <phrase id="0">
-                <text>escape_fox_flame_dialog_0</text>
+            <phrase id="32">
+                <text>escape_trader_start_dialog_32</text>
+                <give_info>esc_trader_experienced</give_info>
+                <give_info>tutorial_artefact_start</give_info>
+                <next>322</next>
+            </phrase>
+            <phrase id="322">
+                <text />
+                <give_info>esc_trader_tutorial_chosen</give_info>
                 <next>1</next>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_fox_flash_dialog">
-        <has_info>escape_stalker_meet</has_info>
-        <phrase_list>
             <phrase id="1">
-                <text>escape_fox_flash_dialog_1</text>
-                <action>escape_dialog.give_flash_to_actor</action>
+                <text />
+                <give_info>esc_trader_monolog_1</give_info>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>321</next>
             </phrase>
-            <phrase id="0">
-                <text>escape_fox_flash_dialog_0</text>
-                <next>1</next>
+            <phrase id="3211">
+                <text>escape_trader_start_dialog_3211</text>
+                <give_info>esc_trader_can_leave</give_info>
+                <next>32111</next>
+            </phrase>
+            <phrase id="32111">
+                <text />
+                <action>dialogs.break_dialog</action>
+                <action>dialogs.disable_talk_self</action>
+                <give_info>esc_trader_can_leave</give_info>
+            </phrase>
+            <phrase id="321">
+                <text>escape_trader_start_dialog_321</text>
+                <dont_has_info>esc_trader_can_leave</dont_has_info>
+                <has_info>esc_trader_tutorial_chosen</has_info>
+                <next>3211</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -955,93 +962,87 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_trader_start_dialog">
+    <dialog id="escape_fox_hello_dialog">
         <phrase_list>
-            <phrase id="211">
+            <phrase id="1">
                 <text></text>
-                <give_info>esc_trader_tutorial_choice</give_info>
-                <next>1</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_trader_start_dialog_21</text>
-                <give_info>esc_trader_tutorial_choice</give_info>
-                <next>211</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_trader_start_dialog_2</text>
-                <dont_has_info>esc_trader_tutorial_choice</dont_has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_trader_start_dialog_3</text>
-                <dont_has_info>esc_trader_tutorial_chosen</dont_has_info>
-                <has_info>esc_trader_tutorial_choice</has_info>
-                <next>31</next>
-                <next>32</next>
+                <next>2</next>
+                <next>3</next>
             </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1</next>
             </phrase>
-            <phrase id="5">
-                <text>escape_trader_start_dialog_5</text>
-                <precondition>escape_dialog.trader_alredy_give_job</precondition>
-                <has_info>esc_trader_tutorial_chosen</has_info>
-                <has_info>esc_trader_can_leave</has_info>
+            <phrase id="2">
+                <text>escape_fox_hello_dialog_2</text>
+                <has_info>escape_stalker_meet</has_info>
             </phrase>
-            <phrase id="4">
-                <text>escape_trader_start_dialog_4</text>
-                <precondition>escape_dialog.trader_dont_give_job</precondition>
-                <has_info>esc_trader_tutorial_chosen</has_info>
-                <has_info>esc_trader_can_leave</has_info>
+            <phrase id="3">
+                <text>escape_fox_hello_dialog_3</text>
+                <dont_has_info>escape_stalker_meet</dont_has_info>
             </phrase>
-            <phrase id="31">
-                <text>escape_trader_start_dialog_31</text>
-                <give_info>esc_trader_newbie</give_info>
-                <next>311</next>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_fox_flash_dialog">
+        <has_info>escape_stalker_meet</has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>escape_fox_flash_dialog_1</text>
+                <action>escape_dialog.give_flash_to_actor</action>
             </phrase>
-            <phrase id="311">
-                <text></text>
-                <action>dialogs.break_dialog</action>
-                <action>dialogs.disable_talk_self</action>
-                <give_info>esc_trader_tutorial_chosen</give_info>
-            </phrase>
-            <phrase id="32">
-                <text>escape_trader_start_dialog_32</text>
-                <give_info>esc_trader_experienced</give_info>
-                <give_info>tutorial_artefact_start</give_info>
-                <next>322</next>
-            </phrase>
-            <phrase id="322">
-                <text></text>
-                <give_info>esc_trader_tutorial_chosen</give_info>
+            <phrase id="0">
+                <text>escape_fox_flash_dialog_0</text>
                 <next>1</next>
             </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_fox_flame_dialog">
+        <phrase_list>
             <phrase id="1">
+                <text>escape_fox_flame_dialog_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
                 <text></text>
-                <give_info>esc_trader_monolog_1</give_info>
+                <next>111</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_fox_flame_dialog_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_fox_flame_dialog_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text>escape_fox_flame_dialog_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="10">
+                <text>escape_fox_flame_dialog_10</text>
+            </phrase>
+            <phrase id="111">
+                <text></text>
                 <next>2</next>
                 <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>321</next>
+                <next>10</next>
             </phrase>
-            <phrase id="3211">
-                <text>escape_trader_start_dialog_3211</text>
-                <give_info>esc_trader_can_leave</give_info>
-                <next>32111</next>
+            <phrase id="2111">
+                <text>escape_fox_flame_dialog_2111</text>
+                <next>11</next>
             </phrase>
-            <phrase id="32111">
-                <text></text>
-                <action>dialogs.break_dialog</action>
-                <action>dialogs.disable_talk_self</action>
-                <give_info>esc_trader_can_leave</give_info>
+            <phrase id="0">
+                <text>escape_fox_flame_dialog_0</text>
+                <next>1</next>
             </phrase>
-            <phrase id="321">
-                <text>escape_trader_start_dialog_321</text>
-                <dont_has_info>esc_trader_can_leave</dont_has_info>
-                <has_info>esc_trader_tutorial_chosen</has_info>
-                <next>3211</next>
+            <phrase id="31">
+                <text>escape_fox_flame_dialog_31</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_fox_flame_dialog_3</text>
+                <give_info>garbage_meetstalker_start</give_info>
+                <next>31</next>
             </phrase>
         </phrase_list>
     </dialog>

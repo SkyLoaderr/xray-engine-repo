@@ -2,6 +2,7 @@
 
 <game_information_portions>
   <info_portion id="garbage_meetstalker_start">
+	<task>garbage_meet_stalker</task>
   </info_portion>
 
   <!-- Драм-момент -->
