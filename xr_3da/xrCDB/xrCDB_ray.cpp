@@ -164,13 +164,13 @@ public:
 			dest->r_add	(prim,r,u,v);
 		}
 	}
-	void			_stab		(AABBNoLeafNode* node)
+	void			_stab		(const AABBNoLeafNode* node)
 	{
 		Fvector	P;
 		
 		// Actual ray/aabb test
-		if (!_box(node->mAABB.mCenter,node->mAABB.mExtents,P))	return;
-		if (P.distance_to_sqr(rC)>rRange2)						return;
+		if (!_box((Fvector&)node->mAABB.mCenter,(Fvector&)node->mAABB.mExtents,P))	return;
+		if (P.distance_to_sqr(rC)>rRange2)											return;
 		
 		// 1st chield
 		if (node->HasLeaf())	_prim	(node->GetPrimitive());
