@@ -1007,3 +1007,12 @@ void CWeapon::create_physic_shell()
 {
 	CGameObject::create_physic_shell();
 }
+void CWeapon::activate_physic_shell()
+{
+	CGameObject::create_physic_shell();
+}
+
+void CWeapon::setup_physic_shell()
+{
+	CGameObject::setup_physic_shell();
+}

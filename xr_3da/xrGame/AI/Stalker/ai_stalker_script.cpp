@@ -60,8 +60,8 @@ void CAI_Stalker::ResetScriptData(void *P)
 	inherited::ResetScriptData	(P);
 	CMemoryManager::Init		();
 	set_desirable_speed			(0.f);
-//	if (P)
-//		vfSetParameters			(0,0,false,MonsterSpace::eObjectActionIdle,ePathTypeNoPath,eDetailPathTypeSmooth,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
+	if (P)
+		vfSetParameters			(0,0,false,MonsterSpace::eObjectActionIdle,ePathTypeNoPath,eDetailPathTypeSmooth,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
 }
 
 bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)

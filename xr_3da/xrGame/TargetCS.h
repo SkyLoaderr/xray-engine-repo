@@ -38,4 +38,6 @@ public:
 	Fmatrix					m_pos;
 
 	virtual void			create_physic_shell	();
+	virtual void			activate_physic_shell();
+	virtual void			setup_physic_shell	();
 };

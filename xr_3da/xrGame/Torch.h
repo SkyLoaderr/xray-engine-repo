@@ -41,5 +41,7 @@ public:
 	{
 		return				(!H_Parent());
 	}
-	virtual void	create_physic_shell	();
+	virtual void	create_physic_shell		();
+	virtual void	activate_physic_shell	();
+	virtual void	setup_physic_shell		();
 };

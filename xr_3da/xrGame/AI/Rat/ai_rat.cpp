@@ -450,3 +450,8 @@ void CAI_Rat::setup_physic_shell()
 {
 	// do not delete!!!
 }
+
+void CAI_Rat::activate_physic_shell	()
+{
+	CEatableItem::activate_physic_shell();
+}

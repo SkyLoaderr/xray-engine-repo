@@ -325,6 +325,7 @@ public:
 		virtual void				OnH_A_Chield		();
 		virtual void				create_physic_shell	();
 		virtual void				setup_physic_shell	();
+		virtual void				activate_physic_shell();
 };
 
 #include "ai_rat_inline.h"

@@ -363,6 +363,8 @@ public:
 	virtual void			reinit				();
 	virtual void			reload				(LPCSTR section);
 	virtual void			create_physic_shell	();
+	virtual void			activate_physic_shell();
+	virtual void			setup_physic_shell	();
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

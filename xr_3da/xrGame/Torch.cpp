@@ -181,3 +181,13 @@ void CTorch::create_physic_shell()
 {
 	CGameObject::create_physic_shell();
 }
+
+void CTorch::activate_physic_shell()
+{
+	CGameObject::create_physic_shell();
+}
+
+void CTorch::setup_physic_shell	()
+{
+	CGameObject::setup_physic_shell();
+}

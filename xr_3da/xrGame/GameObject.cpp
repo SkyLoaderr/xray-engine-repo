@@ -494,3 +494,25 @@ bool CGameObject::frame_check(u32 &frame)
 	return			(true);
 }
 
+void CGameObject::activate_physic_shell()
+{
+	Fvector						l_fw, l_up;
+	l_fw.set					(XFORM().k);
+	l_up.set					(XFORM().j);
+	l_fw.mul					(2.f);
+	l_up.mul					(2.f);
+	
+	Fmatrix						l_p1, l_p2;
+	l_p1.set					(XFORM());
+	l_p2.set					(XFORM());
+	l_fw.mul					(2.f);
+	l_p2.c.add					(l_fw);
+	
+	m_pPhysicsShell->Activate	(l_p1, 0, l_p2);
+	XFORM().set					(l_p1);
+}
+
+void CGameObject::setup_physic_shell	()
+{
+	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
+}

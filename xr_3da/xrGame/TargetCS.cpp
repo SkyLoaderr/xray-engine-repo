@@ -93,3 +93,13 @@ void CTargetCS::create_physic_shell	()
 {
 	CPhysicItem::create_physic_shell();
 }
+
+void CTargetCS::activate_physic_shell	()
+{
+	inherited::activate_physic_shell();
+}
+
+void CTargetCS::setup_physic_shell		()
+{
+	inherited::setup_physic_shell();
+}

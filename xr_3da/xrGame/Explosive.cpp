@@ -324,5 +324,15 @@ void CExplosive::reload				(LPCSTR section)
 
 void CExplosive::create_physic_shell	()
 {
-	CInventoryItem::create_physic_shell();
+	inherited::create_physic_shell();
+}
+
+void CExplosive::activate_physic_shell	()
+{
+	inherited::activate_physic_shell();
+}
+
+void CExplosive::setup_physic_shell		()
+{
+	inherited::setup_physic_shell();
 }

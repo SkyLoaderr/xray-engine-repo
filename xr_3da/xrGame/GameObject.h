@@ -136,7 +136,9 @@ public:
 	{
 		return				(m_visual_callback);
 	}
-	virtual void			create_physic_shell	();
+	virtual void			create_physic_shell		();
+	virtual void			activate_physic_shell	();
+	virtual void			setup_physic_shell		();
 
 private:
 	CLuaGameObject			*m_lua_game_object;
