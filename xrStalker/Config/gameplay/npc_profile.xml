@@ -277,21 +277,20 @@
 	<character id="bar_dolg_ivancov">
 		<class>stalker_bar_ivancov</class>
 	</character>
-
 	<character id="svoboda_zombi_stalker">
 		<class>Svoboda_zombi_stalker</class>
 	</character>
-
 	<character id="bar_dolg_leader">
 		<class>stalker_bar_leader</class>
 	</character>
-
 	<character id="bar_bar_osvedomitel">
 		<class>stalker_bar_osvedomitel</class>
 	</character>
-
 	<character id="bar_bar_hunter">
 		<class>stalker_bar_hunter</class>
+	</character>
+	<character id="bar_bar_drunk_dolg">
+		<class>stalker_bar_drunk_dolg</class>
 	</character>
 
 </xml>

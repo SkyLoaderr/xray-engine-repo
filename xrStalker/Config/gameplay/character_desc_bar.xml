@@ -268,6 +268,31 @@
 		<actor_dialog>bar_bar_hunter_quest_finish</actor_dialog>
 	</specific_character>	
 
+<!---------------------------BAR DRUNK DOLG---------------------->
+	<specific_character id="bar_bar_drunk_dolg" team_default = "1">
+		<name>Пьяный ветеран</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Постоянно пьяный член группировки Долга. Долг дал ему последнюю возможность остаться в Долге, выполнив задание, но он пьян и не может его выполнить.</bio>
+
+		<class>stalker_bar_drunk_dolg</class>
+		<community>dolg</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_spas12 \n
+			ammo_12x70_buck \n
+		</supplies>
+		
+		<start_dialog>bar_bar_drunk_dolg_start</start_dialog>
+		<actor_dialog>bar_bar_drunk_dolg_quest_start</actor_dialog>
+		<actor_dialog>bar_bar_drunk_dolg_quest_finish</actor_dialog>
+	</specific_character>	
+
 
 </xml>
 
