@@ -940,8 +940,9 @@ function loadJob(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 	
-	gulag_military.load_job (sj, gname, type, squad, groups)
-	gulag_dark_valley.load_job (sj, gname, type, squad, groups)
+	gulag_dark_valley.load_job(sj, gname, type, squad, groups)
+	gulag_bar.load_job(sj, gname, type, squad, groups)
+	gulag_military.load_job(sj, gname, type, squad, groups)	
 end
 
 function loadStates(gname, type)
@@ -1064,17 +1065,17 @@ function loadStates(gname, type)
 
 	local f
 
-	f = gulag_military.load_states (gname, type)
+	f = gulag_dark_valley.load_states(gname, type)
 	if f then
 		return f
 	end
-	--if db.actor and db.actor:has_info ("gar_monsters_rush_wave1") then
-		--return 1
-	--else
-		--return 0
-	--end
 
-	f = gulag_dark_valley.load_states (gname, type)
+	f = gulag_bar.load_states(gname, type)
+	if f then
+		return f
+	end
+
+	f = gulag_military.load_states(gname, type)
 	if f then
 		return f
 	end

@@ -1,1 +1,44 @@
-dcf
+local t = {}
+
+function load_job(sj, gname, type, squad, groups)
+	-- Гулаг ламеров Долга внутри базы Долга
+	if type == "bar_dolg_general" then
+		t = { section = "logic1@bar_dolg_general_guard_left",
+			idle = 0,
+			prior = 8, state = {0,1,2}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+
+	end
+end
+
+function load_states(gname, type)
+	return function (gulag)
+			for k,v in gulag.Object do
+				enemy = v:best_enemy()
+				if enemy ~= nil then
+   					gulag.alarm_start = game.get_game_time()
+   					return 2 -- тревога
+				end
+			end		
+		
+			if gulag.alarm_start == nil or
+				game.get_game_time():diffSec(gulag.alarm_start) > 300 then
+				if level.get_time_hours() >= 6 and level.get_time_hours() <= 22 then
+					return 0  -- день
+				else
+					return 1  -- ночь
+				end
+			else
+				return 2
+			end
+        end
+end
+
+function checkStalker(npc_community, gulag_type)
+	if gulag_type == "bar_dolg_general" then
+		return npc_community == "dolg"
+	end
+	return false
+end

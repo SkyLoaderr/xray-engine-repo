@@ -1,5 +1,4 @@
--- Автор:     Диденко Руслан (Stohe)
--- Доделка:   Чугай Александр (Chugai)
+-- Автор:     Диденко Руслан (Stohe), Чугай Александр (Chugai)
 
 fraction = {}
 restrictors = {}
@@ -93,11 +92,6 @@ function fract:calculate()
 	if self.calculateStates ~= nil then 
 		self:changeState(self.calculateStates(self))
 	end		
-
-	--' Апдейт матюгальника
-	if self.music ~= nil then
-		self.music:update()
-	end
 
 	self:updateJob()
 	self:print()
@@ -343,12 +337,12 @@ function isUnderFraction(npc)
 	return nil
 end
 
-function setGulagRelation (gulag_name, relation, object)
+function setGulagRelation(gulag_name, relation, object)
     if xr_gulag.fraction[gulag_name] == nil then return end
     xr_gulag.fraction[gulag_name]:set_relation (relation, object)
 end
 
-function setGulagGoodwill (gulag_name, goodwill, object)
+function setGulagGoodwill(gulag_name, goodwill, object)
     if xr_gulag.fraction[gulag_name] == nil then return end
     xr_gulag.fraction[gulag_name]:set_goodwill (goodwill, object)
 end
@@ -427,6 +421,10 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community == "monolith"
 	end
 
+	if gulag_bar.checkStalker(npc_community, gulag_type) then
+		return true
+	end
+	
 	return false
 end
 

@@ -301,7 +301,7 @@ function add_to_binder(object, char_ini)
 	manager:add_action (operators["wait"], action)
 
 	action = manager:action (xr_actions_id.alife)
-	action:add_precondition		(world_property(properties["event"],		false))
+	--action:add_precondition		(world_property(properties["event"],		false))
 
     if char_ini ~= nil and char_ini:section_exist ("reactions") == true then
         if char_ini:line_exist("reactions", "enabled") == true then
