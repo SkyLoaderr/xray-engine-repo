@@ -166,7 +166,7 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 					(float)(delta_goodwill+community_member_kill_goodwill));
 
 
-				if(community_goodwill)
+				if(delta_goodwill)
 				{
 					//изменить отношение ко всем членам группы (если такая есть)
 					//убитого, кроме него самого
@@ -174,8 +174,10 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 					for(std::size_t i = 0;  i < group.members().size(); i++)
 						if(stalker->ID() != group.members()[i]->ID())
 							ChangeGoodwill(group.members()[i]->ID(), actor->ID(), delta_goodwill);
+				}
 
-
+				if(community_goodwill)
+				{
 					ChangeCommunityGoodwill(stalker->Community(), actor->ID(), community_goodwill);
 				}
 
