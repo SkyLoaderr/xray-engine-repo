@@ -3,7 +3,7 @@
 
 extern Fvector du_cone_vertices			[DU_CONE_NUMVERTEX];
 
-bool	tri_vs_sphere_intersect			(Fvector& SC, float R, Fvector& v0, Fvector& v1, Fvector& v2)
+BOOL	tri_vs_sphere_intersect			(Fvector& SC, float R, Fvector& v0, Fvector& v1, Fvector& v2)
 {
 	Fvector	e0,e1;
 	return	CDB::TestSphereTri	(SC,R,v0,e0.sub(v1,v0),e1.sub(v2,v0));
