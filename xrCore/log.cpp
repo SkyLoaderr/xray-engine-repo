@@ -124,7 +124,7 @@ void Log(const char *msg, const Fmatrix &dop) {
 
 void LogWinErr(const char *msg, u32 err_code){
     LPVOID lpMsgBuf = NULL;
-    DWORD result 	= FormatMessage(
+    FormatMessage(
         FORMAT_MESSAGE_ALLOCATE_BUFFER |
         FORMAT_MESSAGE_FROM_SYSTEM |
         FORMAT_MESSAGE_IGNORE_INSERTS,
