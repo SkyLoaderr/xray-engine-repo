@@ -1,0 +1,265 @@
+local time_walk = 20000
+local time_rest = 20000
+
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluator
+---------------------------------------------------------------------------------------------------------------------
+class "enabled_evaluator" (property_evaluator)
+
+function enabled_evaluator:__init (storage) super ()
+    self.a = storage
+end
+
+function enabled_evaluator:evaluate()
+    return  self.a.enabled
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+class "stalker_zombe_action" (action_base)
+function stalker_zombe_action:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_zombe_action:initialize ()
+    action_base.initialize 			(self)
+
+    self.object:set_detail_path_type( move.line )
+    self.object:set_movement_type   ( move.walk )
+    self.object:set_body_state      ( move.standing )
+    self.object:set_mental_state	( anim.free )
+    self.object:set_patrol_path		( "way1", patrol.nearest, patrol.continue, true )
+    self.object:set_path_type		( game_object.patrol_path )
+    self.object:set_sight			( look.path_dir, nil, 0 )
+    self.object:set_item            ( object.idle, self.object:best_weapon() )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_zombe_action:execute ()
+    action_base.execute 			(self)
+    self.object:set_item            ( object.idle, self.object:best_weapon() )
+    self.object:set_mental_state    ( anim.free )
+    self.object:set_sight           ( look.path_dir, nil, 0 )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_zombe_action:finalize ()
+    action_base.finalize (self)
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+--patrol binder
+----------------------------------------------------------------------------------------------------------------------
+function add_zombe(obj)
+
+    local operators     = {}
+    local properties    = {}
+	local st			= {}
+
+    printf( "binding stalker zombe" )
+    --    obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
+
+    properties[ "complete" ]          = xr_evaluators_id.jon_stalker_zombe
+    operators [ "stalker_zombe" ]     = xr_actions_id.jon_stalker_zombe
+
+
+    local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator ( properties[ "complete" ], const_evaluator ( false ) )
+
+    local action = this.stalker_zombe_action ( "stalker_zombe_action", st )
+    action:add_precondition         ( world_property ( stalker_ids.property_alive,   true ) )
+    action:add_precondition         ( world_property ( stalker_ids.property_enemy,   false ) )
+    action:add_precondition         ( world_property ( properties[ "complete" ],     false ) )
+    action:add_effect               ( world_property ( properties[ "complete" ],     true ) )
+    manager:add_action              ( operators[ "stalker_zombe" ], action)
+
+    action = manager:action (stalker_ids.action_free_no_alife)
+    action:add_precondition         ( world_property (properties["complete"],  true ) )
+end
+
+-----------------------===========================------------------------------
+--============================================================================--
+--------------------------=====================---------------------------------
+
+local walk  	= 1
+local go_sit 	= 2
+local sit_down  = 3
+local stand_up  = 4
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+class "stalker_novice_action" (action_base)
+function stalker_novice_action:__init (name, storage) super (nil, name)
+    self.a 		  = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:initialize ()
+    action_base.initialize          ( self )
+
+    self.a.curState = walk
+    self.a.time     = device():time_global()
+	self:state_walk( "init" )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:execute ()
+    action_base.execute             ( self )
+    if( self.a.curState == walk ) then
+		self:state_walk()
+        if( device():time_global() > self.a.time + time_walk ) then
+        	self:state_sit_down( "init" )            	--Init state sit down
+        end
+    else
+        self:state_sit_down()
+		--Условие перехода в состояние walk
+        if( self.a.curState == stand_up ) then
+        	if( self.object:animation_count() == 0 ) then
+                self.a.time = device():time_global()
+           		self:state_walk( "init" )
+            end
+        end
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:state_walk( param )
+	if( param ) then                        --Init state walk
+        printf( "init state walk" )
+
+        self.object:set_desired_direction()
+        self.object:set_detail_path_type ( move.line )
+	    self.object:set_movement_type    ( move.walk )
+	    self.object:set_body_state       ( move.standing )
+	    self.object:set_mental_state     ( anim.free )
+	    self.object:set_patrol_path      ( self.a.path, patrol.nearest, patrol.continue, true )
+	    self.object:set_path_type        ( game_object.patrol_path )
+	    self.object:set_sight            ( look.path_dir, nil, 0 )
+	    self.object:set_item             ( object.idle, self.object:best_weapon() )
+
+        self.a.curState = walk
+        return
+    end
+
+    self.object:set_mental_state    ( anim.free )
+    if( device():time_global() > self.a.time + 3000 ) then
+        --Первые 3 секунды идем просто, потом начинаем что-то искать
+        printf( "Search" )
+        self.object:set_sight       ( look.search, nil, 0 )
+    else
+		self.object:set_sight       ( look.path_dir, nil, 0 )
+        printf( "Path dir" )
+    end
+    self.object:set_item            ( object.idle, self.object:best_weapon() )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:state_sit_down( param )
+	if( param )	then                        --Init state sit
+    	printf( "Init state sit_down" )
+        printf( "Numbet wayPoint %d", patrol( self.a.rest):count() )
+        self.a.index = math.random( 1, patrol( self.a.rest):count() - 1 )
+        self.object:set_dest_level_vertex_id( patrol( self.a.rest ):level_vertex_id( self.a.index ) )
+        self.object:set_path_type 			( game_object.level_path )
+		self.object:set_desired_direction	( patrol( self.a.rest ):point( 0 ):sub( patrol( self.a.rest ):point( self.a.index ) ) )
+        self.object:set_sight				( look.path_dir, nil, 0 )
+        self.a.curState     = go_sit
+    end
+
+    --Идем к точке сидения
+    if( self.a.curState == go_sit ) then
+        if( self.object:level_vertex_id() == patrol( self.a.rest ):level_vertex_id( self.a.index ) ) then
+			--Дошли
+        	printf( "New State sit_down" )
+            self.a.curState = sit_down
+            self.object:add_animation( "stalker_1_down", true )
+			self.object:add_animation( "stalker_1_2",    true )
+            self.object:set_movement_type	( move.stand )
+            self.a.time     = device():time_global()
+        end
+        self.object:set_mental_state		( anim.free )
+        self.object:set_path_type           ( game_object.level_path )
+        self.object:set_movement_type		( move.walk )
+    end
+
+    --Сидим
+    if( self.a.curState == sit_down ) then
+        if( self.object:animation_count() <= 1 ) then
+			self.object:add_animation( "stalker_1_2", 	true )
+            self.object:add_animation( "stalker_1_2",   true )
+            self.object:add_animation( "stalker_1_2",   true )
+        end
+        --Сидим уже больше, чем отведенно время на отдых, тогда начинаем вставать
+        if( device():time_global() > self.a.time + time_rest ) then
+            printf( "Device_time %d  need_time %d", device():time_global(), self.a.time + time_rest )
+            self.object:clear_animations()
+            self.a.curState = stand_up
+            self.object:add_animation( "stalker_1_up", true )
+        end
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:finalize ()
+    action_base.finalize (self)
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+--patrol binder
+----------------------------------------------------------------------------------------------------------------------
+function add_novice(obj)
+
+    local operators     = {}
+    local properties    = {}
+    local st            = {
+    					    path 	 = nil,			--Путь, по которому ходить
+                            rest	 = nil,         --Места для сидения
+                            curState = 1,
+                            time     = nil,
+                            index    = 0,			--Index точки, к которой идем, чтоб посидеть
+                            enabled  = true
+                          }
+    --Чтение данных из кастом даты
+    local char_ini = obj:spawn_ini()
+    if( char_ini:section_exist ("novice") == true ) then
+        if( char_ini:line_exist("novice", "way") == true ) then
+			st.path = char_ini:r_string("novice", "way")
+            printf( "Read path: %s", st.path )
+        end
+        if( char_ini:line_exist("novice", "rest") == true ) then
+            st.rest = char_ini:r_string("novice", "rest")
+            printf( "Read path: %s", st.path )
+        end
+
+    end
+
+    xr_motivator.storage[obj:id()] = { novice = {} }
+    xr_motivator.storage[obj:id()].novice = st
+
+    printf( "stalker_novice_action" )
+    --    obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
+
+    properties[ "work" ]              = xr_evaluators_id.jon_stalker_zombe
+    operators [ "stalker_novice" ]    = xr_actions_id.jon_stalker_zombe
+
+
+    local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator ( properties[ "work" ], this.enabled_evaluator( xr_motivator.storage[obj:id()].novice ) )
+
+    local action = this.stalker_novice_action ( "stalker_novice_action", xr_motivator.storage[obj:id()].novice )
+    action:add_precondition         ( world_property ( stalker_ids.property_alive,   true ) )
+    action:add_precondition         ( world_property ( stalker_ids.property_enemy,   false ) )
+    action:add_precondition         ( world_property ( properties[ "work" ],         true ) )
+    action:add_effect               ( world_property ( properties[ "work" ],         false ) )
+    manager:add_action              ( operators[ "stalker_novice" ], action)
+
+    action = manager:action (stalker_ids.action_free_no_alife)
+    action:add_precondition         ( world_property (properties["work"],  false ) )
+end
+
+
+
+function bind_object( obj, name )
+	if( name == "zombe" ) then
+    	this.add_zombe ( obj )
+    elseif( name == "novice" ) then
+    	this.add_novice( obj )
+    end
+end
