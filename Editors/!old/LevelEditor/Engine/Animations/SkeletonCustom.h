@@ -29,7 +29,8 @@ class ENGINE_API		CBoneInstance
 {
 public:
 	// data
-	Fmatrix				mTransform;							// final x-form matrix
+	Fmatrix				mATransform;						// final x-form matrix
+	Fmatrix				mBTransform;						// final x-form matrix
 	BoneCallback		Callback;
 	void*				Callback_Param;
 	BOOL				Callback_overwrite;					// performance hint - don't calc anims
@@ -53,6 +54,7 @@ public:
 	Fobb				obb;			
 
     Fmatrix				bind_transform;
+    Fmatrix				m2b_transform;	// model to bone conversion transform
     SBoneShape			shape;
     ref_str				game_mtl_name;
 	u16					game_mtl_idx;
@@ -68,6 +70,7 @@ public:
 #endif
 
 	// Calculation
+	void				CalculateM2B	(const Fmatrix& Parent);
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent)=0;
 };
 
@@ -122,7 +125,7 @@ public:
 	CBoneData&					LL_GetData			(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return *((*bones)[bone_id]);	}
 	u16							LL_BoneCount		()					{	return u16(bones->size());										}
 	u16							LL_VisibleBoneCount	()					{	u64 F=visimask.flags&((u64(1)<<u64(LL_BoneCount()))-1); return u16(btwCount1(F)); }
-	Fmatrix&					LL_GetTransform		(u16 bone_id)		{	return LL_GetBoneInstance(bone_id).mTransform;					}
+	Fmatrix&					LL_GetTransform		(u16 bone_id)		{	return LL_GetBoneInstance(bone_id).mATransform;					}
 	Fobb&						LL_GetBox			(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount());	return (*bones)[bone_id]->obb;	}
 	void						LL_GetBindTransform (xr_vector<Fmatrix>& matrices);
 

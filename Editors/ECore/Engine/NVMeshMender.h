@@ -1,5 +1,5 @@
-#ifndef _NVMeshMender_H_
-#define _NVMeshMender_H_
+#ifndef NVMeshMenderH
+#define NVMeshMenderH
 
 /*********************************************************************NVMH2****
 Copyright (C) 1999, 2000, 2001, 2002 NVIDIA Corporation

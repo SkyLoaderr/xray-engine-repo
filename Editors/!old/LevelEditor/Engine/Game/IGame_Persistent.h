@@ -41,7 +41,12 @@ public:
 
     virtual void					OnDeviceCreate		();
     virtual void					OnDeviceDestroy		();
-	virtual void					Statistics			(CGameFont* F)	= 0;
+	virtual void					Statistics			(CGameFont* F)
+#ifndef _EDITOR
+     = 0;
+#else
+	{}
+#endif
 };
 
 extern ENGINE_API	IGame_Persistent*	g_pGamePersistent;

@@ -51,7 +51,8 @@ enum OGF_Chuncks {
 	OGF_DESC		= 27,	// * 
 	OGF_IKDATA2		= 28,	// * For skeletons only
 	OGF_MOTION_REFS	= 29,	// * For skeletons only
-    OGF_forcedword	= 0xFFFFFFFF
+    OGF_VERTICES2	= 30,	// remove O1 & N1 (позиция и нормаль в координатах модели)
+    OGF_forcedword	= 0xFFFFFFFF         
 };
 
 const u16	xrOGF_SMParamsVersion	= 3;

@@ -13,8 +13,8 @@ Comments:
 
 ******************************************************************************/
 
-#ifndef _nv_algebra_h_
-#define _nv_algebra_h_
+#ifndef nv_algebraH
+#define nv_algebraH
 
 struct DECLSPEC_NV_MATH vec2
 {
@@ -155,10 +155,6 @@ struct vec3t
         return vec_array[i];
     }
 
-    const _T operator[](int i) const				{
-        return vec_array[i];
-    }
-
     union {
         struct {
             _T x,y,z;        // standard names for components
@@ -168,6 +164,10 @@ struct vec3t
         };
         _T vec_array[3];     // array access
     };
+
+    const _T operator[](int i) const				{
+        return vec_array[i];
+    }
 };
 
 template<class _T>			inline const vec3t<_T> operator+(const vec3t<_T>& u, const vec3t<_T>& v)	{
@@ -723,4 +723,4 @@ nv_scalar det(const mat3 & A);
 extern void nv_is_valid(const vec3& v);
 extern void nv_is_valid(nv_scalar lambda);
 
-#endif //_nv_algebra_h_
+#endif //nv_algebraH

@@ -93,6 +93,8 @@ Comments:
 ******************************************************************************/
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "NVMeshMender.h"
 #include "nv_math.h"
 
