@@ -31,6 +31,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
+				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="4"
@@ -126,7 +127,7 @@
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
-				EnableCOMDATFolding="1"
+				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/ode.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -182,6 +183,7 @@
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
+				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories="../../../include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;dSINGLE;MSVC;dNODEBUG"
@@ -192,8 +194,9 @@
 				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="FALSE"
+				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
+				WarningLevel="4"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
@@ -203,11 +206,13 @@
 				IgnoreImportLibrary="TRUE"
 				OutputFile="$(OutDir)/ode.dll"
 				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
 				ModuleDefinitionFile="..\..\..\config\msvcdefs.def"
-				GenerateDebugInformation="FALSE"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
-				EnableCOMDATFolding="1"
+				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/ode.lib"
 				TargetMachine="1"/>
 			<Tool

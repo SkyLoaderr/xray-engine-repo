@@ -198,6 +198,7 @@
 				OutputFile="$(OutDir)/xrCore.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
