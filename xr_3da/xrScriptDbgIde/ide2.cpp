@@ -127,8 +127,11 @@ BOOL CIdeApp::InitInstance()
 	LoadIcon(IDR_MAINFRAME);
 
 CString ss_ini  = 	GetProfileString("options","sSafeIniFile", "" );
-	if(ss_ini.GetLength()>0)
-		m_ssConnection.b_Connect("","",ss_ini);
+if(ss_ini.GetLength()>0){
+		CString ss_username  = 	GetProfileString("options","sSafeUserName", "" );
+		CString ss_userpass  = 	GetProfileString("options","sSafeUserPassword", "" );
+		m_ssConnection.b_Connect(ss_username,ss_userpass,ss_ini);
+}
 
 	m_comparerCmd = GetProfileString("options","fileComaprer", "" );
 	m_comparerFormat = GetProfileString("options","fileComparerFormat", "" );
@@ -249,11 +252,22 @@ const char *g_rSSafeIniName             = "sSafeIniFile";
 const char *g_rSSafeFolder				= "sSafeFolder";
 const char *g_rComparerCmd				= "fileComaprer";
 const char *g_rComparerFormat			= "fileComparerFormat";
+const char *g_rSSUserName				= "sSafeUserName";
+const char *g_rSSUserPass				= "sSafeUserPassword";
+
+//CString ss_username  = 	GetProfileString("options","sSafeUserName", "" );
+//CString ss_userpass  = 	GetProfileString("options","sSafeUserPassword", "" );
 
 const char *g_rSSafeIniDefValue			    = "\\\\X-RAY\\VSS$\\srcsafe.ini";
 const char *g_rSSafeFolderDefValue          = "$/xrStalker/Scripts/";
 const char *g_rComparerCmdDef				= "x:\\wincmp.exe";
 const char *g_rComparerFormatDef			= " %s %s";
+	char g_rSSUserNameDef[128];
+	DWORD	sz_user		= sizeof(g_rSSUserNameDef);
+	GetUserName(g_rSSUserNameDef, &sz_user);
+
+
+const char *g_rSSUserPassDef				= "";
 
 HKEY hk;
 DWORD keytype = REG_SZ;
@@ -280,6 +294,14 @@ LONG res;
 			res = RegQueryValueEx(hk,g_rComparerFormat,0,&keytype,(LPBYTE)keyvalue, &keysize );
 			if(res == ERROR_FILE_NOT_FOUND)
 				RegSetValueEx(hk,g_rComparerFormat,0,REG_SZ,(LPBYTE)g_rComparerFormatDef,strlen(g_rComparerFormatDef)+1);
+
+			res = RegQueryValueEx(hk,g_rSSUserName,0,&keytype,(LPBYTE)keyvalue, &keysize );
+			if(res == ERROR_FILE_NOT_FOUND)
+				RegSetValueEx(hk,g_rSSUserName,0,REG_SZ,(LPBYTE)g_rSSUserNameDef,strlen(g_rSSUserNameDef)+1);
+
+			res = RegQueryValueEx(hk,g_rSSUserPass,0,&keytype,(LPBYTE)keyvalue, &keysize );
+			if(res == ERROR_FILE_NOT_FOUND)
+				RegSetValueEx(hk,g_rSSUserPass,0,REG_SZ,(LPBYTE)g_rSSUserPassDef,strlen(g_rSSUserPassDef)+1);
 
 			RegCloseKey( hk );
     }
