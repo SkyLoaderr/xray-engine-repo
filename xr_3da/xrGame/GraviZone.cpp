@@ -149,10 +149,10 @@ void CGraviZone::Affect(CObject* O)
 	float dist_to_radius = dist/Radius();
 	//---------------------------------------------------------
 	bool CanApplyPhisImpulse = GO->Local() == TRUE;
-	if (EA && EA->g_Alive())
+/*	if (EA && EA->g_Alive())
 	{
 		CanApplyPhisImpulse &= (Level().CurrentControlEntity() && Level().CurrentControlEntity() == EA);
-	};
+	};*/
 	//---------------------------------------------------------	
 	if(dist_to_radius>m_fBlowoutRadiusPercent && CanApplyPhisImpulse)
 	{
@@ -270,7 +270,7 @@ void CGraviZone::StopTeleParticles(CGameObject* pObject)
 float CGraviZone::RelativePower(float dist)
 {
 	float radius = Radius();
-	if(dist<radius*m_fBlowoutRadiusPercent) return 0.f;
+	if(dist>radius*m_fBlowoutRadiusPercent) return 0.f;
 
 	radius = Radius()*m_fThrowInAtten;
 	float power = radius < dist ? 0 : (1.f - m_fAttenuation*(dist/radius)*(dist/radius));
