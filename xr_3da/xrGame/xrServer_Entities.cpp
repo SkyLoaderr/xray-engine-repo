@@ -162,7 +162,7 @@ public:
 	{
 		dest.set			(p_pos.x,p_pos.y,p_pos.z,o_model);
 	};
-	virtual BOOL			Spawn			(xrS_entities& ent)
+	virtual BOOL			Spawn			(BYTE rp, xrS_entities& ent)
 	{
 		// We need to select respawn point
 		// Get list of respawn points
