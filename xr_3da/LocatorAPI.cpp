@@ -57,6 +57,9 @@ void CLocatorAPI::ProcessArchive(const char* path)
 		Register		(full,vfs,ptr,size,bPacked);
 	}
 	hdr->Close			();
+
+	// Seek to zero for safety
+	A.vfs->Seek			(0);
 }
 
 void CLocatorAPI::ProcessOne	(const char* path, _finddata_t& F)
@@ -148,7 +151,7 @@ void CLocatorAPI::List			(vector<char*>& dest, const char* path, DWORD flags)
 	desc.name		= N;
 	set_files_it	I = files.find(desc);
 	if (I==files.end())	return;
-
+	
 	int base_len	= strlen(N);
 	for (++I; I!=files.end(); I++)
 	{
@@ -163,11 +166,46 @@ void CLocatorAPI::List			(vector<char*>& dest, const char* path, DWORD flags)
 			// folder
 			if ((flags&FS_ListFolders) == 0)continue;
 			const char* entry_begin = entry.name+base_len;
-
+			
 			if (strstr(entry_begin,"\\")!=end_symbol)	continue;	// folder in folder
-
+			
 			dest.push_back	(strdup(entry_begin));
 		}
 	}
 	return;
+}
+
+CStream* CLocatorAPI::Open	(const char* F)
+{
+	// Search entry
+	FILE_NAME		N;
+	strcpy			(N,F);
+	strlwr			(N);
+	file			desc_f;
+	desc_f.name		= N;
+	set_files_it	I = files.find(desc_f);
+	if (I == files.end()) return NULL;
+
+	// OK, analyse
+	file& desc		= *I;
+	if (0xffffffff == desc.vfs)
+	{
+		// Normal file
+		return new CFileStream	(F);
+	} else {
+		// Archived one
+		LPVOID	ptr	= LPVOID(LPBYTE(archives[desc.vfs].vfs->Pointer()) + desc.ptr);
+		if (desc.bCompressed)	
+		{
+			// Compressed
+			BYTE*		dest;
+			unsigned	size;
+
+			_decompressLZ	(&dest,&size,ptr,desc.size);
+			return new CTempStream	(dest,size);
+		} else {
+			// Plain (VFS)
+			return new CStream		(ptr,desc.size);
+		}
+	}
 }

@@ -9,8 +9,8 @@
 enum FS_List
 {
 	FS_ListFiles	=(1<<0),
-		FS_ListFolders	=(1<<1),
-		FS_forcedword	=DWORD(-1)
+	FS_ListFolders	=(1<<1),
+	FS_forcedword	=DWORD(-1)
 };
 
 class ENGINE_API CStream;

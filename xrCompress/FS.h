@@ -26,7 +26,8 @@ private:
 		} return 0;
 	}
 public:
-	virtual ~CFS_Base() {
+	virtual ~CFS_Base	()
+	{
 		while (!chunk_pos.empty())
 			close_chunk();
 	}
