@@ -41,7 +41,7 @@ void CActor::feel_touch_delete	(CObject* O)
 		// Generate event
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16			(u16(T->ID()));
+		P.w_u16			(u16(O->ID()));
 		u_EventSend		(P);
 		return;
 	}
