@@ -69,12 +69,11 @@ u16 OGF::_BuildVertex	(OGF_Vertex& V1)
 void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 {
 	x_face	F;
-	u32		VertCount = (u32)x_vertices.size();
+	u32		VertCount	= (u32)x_vertices.size();
 	F.v[0]	= x_BuildVertex(x_vertex(V1));
 	F.v[1]	= x_BuildVertex(x_vertex(V2));
 	F.v[2]	= x_BuildVertex(x_vertex(V3));
 	if (!F.Degenerate()) {
-		//	for (itOGF_F I=x_faces.begin(); I!=x_faces.end(); I++)		if (I->Equal(F)) return;
 		x_faces.push_back(F);
 	} else {
 		if (x_vertices.size()>VertCount) 
@@ -84,7 +83,7 @@ void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 {
 	OGF_Face			F;
-	u32	VertCount = (u32)vertices.size();
+	u32		VertCount	= (u32)vertices.size();
 	F.v[0]	= _BuildVertex(V1);
 	F.v[1]	= _BuildVertex(V2);
 	F.v[2]	= _BuildVertex(V3);
