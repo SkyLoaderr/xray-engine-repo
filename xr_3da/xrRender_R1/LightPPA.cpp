@@ -4,10 +4,8 @@
 
 #include "stdafx.h"
 #include "LightPPA.h"
-#include "xr_creator.h"
-#include "render.h"
 
-const u32 MAX_POLYGONS=1024*8;
+const u32	MAX_POLYGONS=1024*8;
 const float MAX_DISTANCE=50.f;
 
 //////////////////////////////////////////////////////////////////////

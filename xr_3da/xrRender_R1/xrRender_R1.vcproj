@@ -328,6 +328,12 @@
 			Name="Lights"
 			Filter="">
 			<File
+				RelativePath="LightPPA.cpp">
+			</File>
+			<File
+				RelativePath="LightPPA.h">
+			</File>
+			<File
 				RelativePath="LightProjector.cpp">
 			</File>
 			<File

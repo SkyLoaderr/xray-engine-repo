@@ -9,7 +9,6 @@ class ENGINE_API	CVisual;
 class ENGINE_API	CTempObject;
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
-class ENGINE_API	CLightPPA;
 namespace PS	{ 
 	struct ENGINE_API SDef;
 	struct ENGINE_API SEmitter; 
@@ -45,8 +44,28 @@ public:
 	u16			*indices;
 	u32			number_indices;
 public:
-	virtual void	Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, u16* iDest, u32 iOffset)	= 0;
+	virtual void					transfer			(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, u16* iDest, u32 iOffset)	= 0;
 	virtual ~IRender_DetailModel()	{};
+};
+
+// definition (Dynamic Light)
+class	ENGINE_API	IRender_Light
+{
+public:
+	enum	mode
+	{
+		LIGHT_DISABLED				= 0,
+		LIGHT_ENABLED,
+		LIGHT_ENABLED_SHADOWED,
+		LIGHT_forcedword			= u32(-1)
+	};
+public:
+	virtual void					set_mode			(mode M)							= 0;
+	virtual void					set_position		(const Fvector& P)					= 0;
+	virtual void					set_range			(float R)							= 0;
+	virtual void					set_color			(const Fcolor& C)					= 0;
+	virtual void					set_color			(float r, float g, float b)			= 0;
+	virtual ~IRender_Light()		{};
 };
 
 // definition (Portal)
@@ -60,29 +79,30 @@ public:
 class	ENGINE_API	IRender_Sector
 {
 public:
-	virtual void					tempAdd				(CTempObject*)	= 0;
-	virtual void					tempRemove			(CTempObject*)	= 0;
-	virtual void					objectAdd			(CObject*)		= 0;
-	virtual void					objectRemove		(CObject*)		= 0;
+	virtual void					tempAdd				(CTempObject*)						= 0;
+	virtual void					tempRemove			(CTempObject*)						= 0;
+	virtual void					objectAdd			(CObject*)							= 0;
+	virtual void					objectRemove		(CObject*)							= 0;
 	virtual void					get_objects			(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P)	= 0;
 	virtual ~IRender_Sector()		{};
 };
 
 // definition (Target)
-class	ENGINE_API	IRender_target
+class	ENGINE_API	IRender_Target
 {
 public:
-	virtual void					eff_load			(LPCSTR n)		= 0;
-	virtual	void					set_blur			(float f)		= 0;
-	virtual	void					set_gray			(float f)		= 0;
-	virtual void					set_duality_h		(float f)		= 0;
-	virtual void					set_duality_v		(float f)		= 0;
-	virtual void					set_noise			(float f)		= 0;
-	virtual void					set_noise_scale		(float f)		= 0;
-	virtual void					set_noise_color		(u32 f)			= 0;
-	virtual void					set_noise_fps		(float f)		= 0;
-	virtual u32						get_width			()				= 0;
-	virtual u32						get_height			()				= 0;
+	virtual void					eff_load			(LPCSTR n)							= 0;
+	virtual	void					set_blur			(float f)							= 0;
+	virtual	void					set_gray			(float f)							= 0;
+	virtual void					set_duality_h		(float f)							= 0;
+	virtual void					set_duality_v		(float f)							= 0;
+	virtual void					set_noise			(float f)							= 0;
+	virtual void					set_noise_scale		(float f)							= 0;
+	virtual void					set_noise_color		(u32 f)								= 0;
+	virtual void					set_noise_fps		(float f)							= 0;
+	virtual u32						get_width			()									= 0;
+	virtual u32						get_height			()									= 0;
+	virtual ~IRender_Target()		{};
 };
 
 // definition (Renderer)
@@ -140,6 +160,9 @@ public:
 	virtual CVisual*				model_Duplicate			(CVisual*	V)							= 0;
 	virtual void					model_Delete			(CVisual* &	V)							= 0;
 	virtual void 					model_Delete			(IRender_DetailModel* & F)				= 0;
+
+	virtual IRender_Light*			light_create			()										= 0;
+	virtual void					light_destroy			(IRender_Light*)						= 0;
 
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V)							= 0;
