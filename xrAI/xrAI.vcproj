@@ -1240,7 +1240,7 @@
 					RelativePath="clsid_game.h">
 				</File>
 				<File
-					RelativePath="game_base.h">
+					RelativePath=".\game_base_space.h">
 				</File>
 				<File
 					RelativePath=".\game_level_cross_table.h">
