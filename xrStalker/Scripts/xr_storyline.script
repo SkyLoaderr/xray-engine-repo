@@ -43,13 +43,6 @@ function set_storyline(object, char_ini)
 
 
 
-
-
-
-
-
-
-
 xr_motivator.storage[object:id()].robber = {
         enabled = false,
     leader = false,
@@ -95,6 +88,7 @@ xr_motivator.storage[object:id()].novice = {
         if( char_ini:line_exist("novice", "rest") == true ) then
             xr_motivator.storage[object:id()].novice.rest_w = patrol(char_ini:r_string("novice", "rest"))
         end
+	    xr_trivial.add_novice     (object)
     end
 --Настройка схемы реакции новичка2 - новичок возле аномалии
 xr_motivator.storage[object:id()].novice2 = {
@@ -119,9 +113,19 @@ xr_motivator.storage[object:id()].novice2 = {
             xr_motivator.storage[object:id()].novice2.zone     = char_ini:r_string("novice2", "zone")
         end
         if( char_ini:line_exist("novice2", "radius") == true ) then
-            xr_motivator.storage[object:id()].novice2.radius   = char_ini:r_float("novice2", "radius")
+            local way = patrol(char_ini:r_string("novice2", "radius") )
+            xr_motivator.storage[object:id()].novice2.radius   = way:point(0):distance_to(way:point(1))
         end
+        xr_trivial.add_novice2    (object)
     end
+-- Настройка бандитов на заводе (escape)
+xr_motivator.storage[object:id()].escape_factory_bandit = {
+        enabled  = false
+}
+    if( char_ini:section_exist ("escape_factory_bandit") ) then
+        xr_motivator.storage[object:id()].escape_factory_bandit.enabled = true
+    end
+
 --Настройка сталкера зомби
 xr_motivator.storage[object:id()].zombie =
  						{
