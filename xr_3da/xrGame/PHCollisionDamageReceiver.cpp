@@ -9,6 +9,12 @@
 #include "Physics.h"
 #include "net_utils.h"
 #include "xrMessages.h"
+
+void CPHCollisionDamageReceiver::BoneInsert(u16 id,float k)
+{
+	R_ASSERT2(FindBone(id)==m_controled_bones.end(),"duplicate bone!");
+	m_controled_bones.push_back(SControledBone(id,k));
+}
 void CPHCollisionDamageReceiver::Init()
 {
 	CPhysicsShellHolder *sh	=PPhysicsShellHolder	();
@@ -22,7 +28,7 @@ void CPHCollisionDamageReceiver::Init()
 			CInifile::Item& item	= *I;
 			u16 index				= K->LL_BoneID(*item.first); 
 			R_ASSERT3(index != BI_NONE, "Wrong bone name", *item.first);
-			m_controled_bones.insert(std::pair<u16,float>(index,float(atof(*item.second))));
+			BoneInsert(index,float(atof(*item.second)));
 			CODEGeom* og= sh->PPhysicsShell()->get_GeomByID(index);
 			//R_ASSERT3(og, "collision damage bone has no physics collision", *item.first);
 			if(og)og->set_obj_contact_cb(CollisionCallback);
@@ -88,7 +94,7 @@ const static float hit_threthhold=5.f;
 void CPHCollisionDamageReceiver::Hit(u16 source_id,u16 bone_id,float power,const Fvector& dir,Fvector &pos )
 {
 
-	xr_map<u16,float>::iterator i=m_controled_bones.find(bone_id);
+	DAMAGE_BONES_I i=FindBone(bone_id);
 	if(i==m_controled_bones.end())return;
 	power*=i->second;
 	if(power<hit_threthhold)return;
