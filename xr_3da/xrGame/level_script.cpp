@@ -253,5 +253,3 @@ void CLevel::script_register(lua_State *L)
 		def("present",							is_level_present)
 	];
 }
-
-
