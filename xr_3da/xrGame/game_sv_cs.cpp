@@ -170,7 +170,7 @@ void	game_sv_CS::OnRoundStart	()
 
 void	game_sv_CS::OnRoundEnd		(LPCSTR reason)
 {
-//	__super::OnRoundEnd(reason);
+	__super::OnRoundEnd(reason);
 }
 
 void	game_sv_CS::OnTeamScore		(u32 team)
