@@ -125,7 +125,7 @@ void CAI_Biting::Init()
 	m_dwEnemyMemoryTime				= 5000;  
 	m_dwEnemyLastMemoryTime			= 0;
 
-	Mem.Init(5000,5000,this);
+	Mem.Init(5000,10000,this);
 }
 
 void CAI_Biting::Die()
