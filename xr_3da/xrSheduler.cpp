@@ -228,7 +228,7 @@ void CSheduler::ProcessStep			()
 
 #ifdef DEBUG
 		u32	execTime				= eTimer.GetElapsed_ms		();
-		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", _obj_name );
+		// VERIFY3					(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", _obj_name );
 		if (delta_ms> 3*dwUpdate)	{
 			//Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",	_obj_name, delta_ms	);
 		}
