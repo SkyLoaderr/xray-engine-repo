@@ -188,12 +188,18 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_s32	(m_iSpecificCharacter);
 		if (m_wVersion > 77)
 			m_trader_flags.assign(tNetPacket.r_u32());
-		if ( (m_wVersion > 81)&&(m_wVersion < 96) ){
+
+		if ((m_wVersion > 81) && (m_wVersion < 96)) {
 			int tmp;		
 			tNetPacket.r_s32	(tmp);
-			m_sCharacterProfile=CCharacterInfo::IndexToId(tmp);
-			VERIFY(xr_strlen(m_sCharacterProfile));
-		}else
+#ifdef XRGAME_EXPORTS
+			m_sCharacterProfile	= CCharacterInfo::IndexToId(tmp);
+#else
+			m_sCharacterProfile	= "default";
+#endif
+			VERIFY				(xr_strlen(m_sCharacterProfile));
+		}
+		else
 			if(m_wVersion > 95)
 				tNetPacket.r_stringZ	(m_sCharacterProfile);
 
