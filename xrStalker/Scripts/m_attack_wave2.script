@@ -234,6 +234,7 @@ function Monster:callback (obj, action_type, index)
 
     if ptr:flag (index, 1) == true then self.moving = false end
 
+	printf ("Callback called for object %s", self.npc:name ())
 	self.npc:clear_callback (game_object.movement)
 
 end
