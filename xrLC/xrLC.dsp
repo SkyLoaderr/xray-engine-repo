@@ -579,7 +579,10 @@ SOURCE=.\xrDeflectorLight.cpp
 # Begin Source File
 
 SOURCE=.\xrImage_Resampler.cpp
-# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrImage_Resampler.h
 # End Source File
 # End Group
 # Begin Group "Shaders"
