@@ -79,11 +79,11 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 			}
 		}
 		if (bIntersect)				{
-			RCache.set_Element(s_accum_point_s->E[2]);	// back
+			RCache.set_Element(shader->E[2]);	// back
 			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW		)); 	
 		}
 		else							{
-			RCache.set_Element(s_accum_point_s->E[1]);	// front
+			RCache.set_Element(shader->E[1]);	// front
 			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
 		}
 	}
@@ -128,7 +128,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		m_Shadow.mulA					(xf_project	);
 	}
 
-	// Draw full-screen quad textured with our scene image
+	// Draw volume
 	{
 		// Constants
 		Fvector		L_dir,L_clr,L_pos;	float L_spec;
