@@ -178,6 +178,14 @@ struct TGAHeader
 };
 #pragma pack(pop)
 
+extern u32 *Surface_Load(char*,u32&,u32&);
+
+void CImage::Load	(LPCSTR name)
+{
+	VERIFY		(!pData);
+	pData		= Surface_Load((LPSTR)name,dwWidth,dwHeight);
+}
+
 bool CImage::LoadTGA(LPCSTR name)
 {
 	destructor<IReader>	TGA(FS.r_open(name));

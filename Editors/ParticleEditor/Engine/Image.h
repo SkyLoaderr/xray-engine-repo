@@ -19,7 +19,7 @@ public:
 
 	void	Create		(u32 w, u32 h);
 	void	Create		(u32 w, u32 h, u32* data);
-	void	LoadT		(LPCSTR name);
+	void	Load		(LPCSTR name);
 	bool	LoadTGA		(LPCSTR name);
 	void	SaveTGA		(LPCSTR name, BOOL b24=FALSE);
 
