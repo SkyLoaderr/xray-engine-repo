@@ -25,10 +25,14 @@ BOOL APIENTRY	DllMain(	HANDLE hModule,
 
 void xrCore::_initialize	(const char* _ApplicationName)
 {
+	static BOOL				bInitialized	= FALSE;
+
+	strcpy					(ApplicationName,_ApplicationName);
+	if (bInitialized)		return;
+
 	// Parameters
 	strcpy					(Params,GetCommandLine());
 	strlwr					(Params);
-	strcpy					(ApplicationName,_ApplicationName);
 
 	// User/Comp Name
 	DWORD	sz_user			= sizeof(UserName);
@@ -42,4 +46,6 @@ void xrCore::_initialize	(const char* _ApplicationName)
 
 	Debug._initialize		();
 	Memory._initialize		();
+
+	bInitialized			= TRUE;
 }
