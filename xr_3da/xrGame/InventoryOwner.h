@@ -83,10 +83,20 @@ public:
 	//персонаж получил новую порцию информации
 	virtual void OnReceiveInfo(int /**info_index/**/) {};
 
+	//игровые характеристики персонажа
+	virtual LPCSTR GetGameName();
+	virtual LPCSTR GetGameRank();
+	virtual LPCSTR GetGameCommunity();
+	virtual int GetIconX() {return m_iIconX;}
+	virtual int GetIconY() {return m_iIconY;}
+
 protected:
 	// торговля
 	CTrade*	m_pTrade;
 
 	bool m_bTalking; 
 	CInventoryOwner* m_pTalkPartner;
+
+	//координаты иконки персонажа на текстуре
+	int m_iIconX, m_iIconY;
 };

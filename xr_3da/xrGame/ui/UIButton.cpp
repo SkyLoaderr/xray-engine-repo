@@ -283,7 +283,7 @@ void  CUIButton::Update()
 
 	}
 
-	GetFont()->SetColor(0xFFEEEEEE);
+	GetFont()->SetColor(m_dwFontColor);
 
 	
 	if(m_str && xr_strlen(m_str)>0)

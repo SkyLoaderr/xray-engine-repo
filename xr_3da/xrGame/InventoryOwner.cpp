@@ -28,6 +28,8 @@ CInventoryOwner::CInventoryOwner()
 
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
+
+	m_iIconX = m_iIconY = 0;
 }
 CInventoryOwner::~CInventoryOwner() 
 {
@@ -228,4 +230,23 @@ bool CInventoryOwner::AskQuestion(SInfoQuestion& question, INFO_INDEX_LIST& inde
 	}
 
 	return result_answer;
+}
+
+LPCSTR CInventoryOwner::GetGameName()
+{
+	CObject* pObject = dynamic_cast<CObject*>(this);
+	
+	
+	if(pObject)
+		return pObject->cName();
+	else
+		return NULL;
+}
+LPCSTR CInventoryOwner::GetGameRank()
+{
+	return "Char Rank";
+}
+LPCSTR CInventoryOwner::GetGameCommunity()
+{
+	return "Char Community";
 }

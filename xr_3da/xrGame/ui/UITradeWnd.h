@@ -19,6 +19,9 @@
 #include "UIListWnd.h"
 #include "UIMessageBox.h"
 
+#include "UICharacterInfo.h"
+#include "UIItemInfo.h"
+
 
 class CUITradeWnd: public CUIWindow
 {
@@ -58,21 +61,29 @@ protected:
 	CUIStatic			UIOurItemsPrice;
 	CUIStatic			UIOthersItemsPrice;
 	
-	CUIStatic			UIItemDescription;
-
 	CUIFrameWindow		UIOurBagWnd;
 	CUIFrameWindow		UIOthersBagWnd;
 	CUIDragDropList		UIOurBagList;
 	CUIDragDropList		UIOthersBagList;
 
-	CUIFrameWindow		UIOurTradeWnd;
-	CUIFrameWindow		UIOthersTradeWnd;
+	CUIStatic			UIOurTradeWnd;
+	CUIStatic			UIOthersTradeWnd;
 	CUIDragDropList		UIOurTradeList;
 	CUIDragDropList		UIOthersTradeList;
 
 	//кнопки
 	CUIButton			UIPerformTradeButton;
 	CUIButton			UIToTalkButton;
+
+	//информация о персонажах 
+	CUIStatic			UIOurIcon;
+	CUIStatic			UIOthersIcon;
+	CUICharacterInfo	UICharacterInfoLeft;
+	CUICharacterInfo	UICharacterInfoRight;
+
+	//информация о перетаскиваемом предмете
+	CUIFrameWindow		UIDescWnd;
+	CUIItemInfo			UIItemInfo;
 
 	
 	//функции, выполняющие согласование отображаемых окошек
@@ -132,4 +143,7 @@ protected:
 
 	//для сортировки вещей
 	TIItemList ruck_list;
+
+	//устанавливает текущий предмет
+	void SetCurrentItem(CInventoryItem* pItem);
 };

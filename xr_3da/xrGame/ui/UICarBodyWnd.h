@@ -22,6 +22,8 @@
 #include "UIListWnd.h"
 #include "UIMessageBox.h"
 
+#include "UICharacterInfo.h"
+#include "UIItemInfo.h"
 
 
 class CUICarBodyWnd: public CUIDialogWnd
@@ -60,14 +62,24 @@ protected:
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
 
-	//дл€ изображени€ предмета крупным планом	
+
+	//информаци€ о предмете
+	CUIFrameWindow		UIDescWnd;
 	CUIStatic			UIStaticDesc;
-	CUI3dStatic			UI3dStatic;
+	CUIItemInfo			UIItemInfo;
+
 
 	CUIFrameWindow		UIOurBagWnd;
 	CUIFrameWindow		UIOthersBagWnd;
 	CUIDragDropList		UIOurBagList;
 	CUIDragDropList		UIOthersBagList;
+
+	//информаци€ о персонажах 
+	CUIStatic			UIOurIcon;
+	CUIStatic			UIOthersIcon;
+	CUICharacterInfo	UICharacterInfoLeft;
+	CUICharacterInfo	UICharacterInfoRight;
+
 
 
 	//функции, выполн€ющие согласование отображаемых окошек
@@ -101,4 +113,7 @@ protected:
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
 	CUIDragDropItem* m_pCurrentDragDropItem;
+
+	//устанавливает текущий предмет
+	void SetCurrentItem(CInventoryItem* pItem);
 };

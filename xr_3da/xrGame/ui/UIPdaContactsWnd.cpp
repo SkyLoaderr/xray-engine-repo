@@ -37,12 +37,6 @@ void CUIPdaContactsWnd::Hide()
 void CUIPdaContactsWnd::Init(int x, int y, int width, int height)
 {
 	inherited::Init(x, y, width, height);
-
-	AttachChild(&UIListWnd);
-
-	UIListWnd.Init(10,10, width-10,height-10, PDA_CONTACT_HEIGHT);
-	UIListWnd.EnableActiveBackground(true);
-	UIListWnd.EnableScrollBar(true);
 }
 
 
@@ -59,14 +53,14 @@ void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &UIListWnd)
 	{
-			if(msg == CUIListWnd::LIST_ITEM_CLICKED)
-			{
-				CObject* pObject = (CObject*)((CUIListItem*)pData)->GetData();
-				R_ASSERT(pObject);
-				m_idContact = pObject->ID();
+		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
+		{
+			CObject* pObject = (CObject*)((CUIListItem*)pData)->GetData();
+			R_ASSERT(pObject);
+			m_idContact = pObject->ID();
 
-				GetTop()->SendMessage(this, CONTACT_SELECTED);
-			}
+			GetTop()->SendMessage(this, CONTACT_SELECTED);
+		}
 	}
 	inherited::SendMessage(pWnd, msg, pData);
 }
@@ -76,7 +70,7 @@ void CUIPdaContactsWnd::AddContact(CObject* pOwnerObject)
 	CUIPdaListItem* pItem = NULL;
 	pItem = xr_new<CUIPdaListItem>();
 	UIListWnd.AddItem(pItem); 
-	pItem->SetText(pOwnerObject->cName());
+	pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(pOwnerObject));
 	pItem->SetData(pOwnerObject);
 }
 

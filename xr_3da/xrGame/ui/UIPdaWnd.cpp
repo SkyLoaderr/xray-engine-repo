@@ -14,14 +14,6 @@
 #include "../HUDManager.h"
 
 
-#define YES_MSG "Yes"
-#define NO_MSG "No"
-#define GETLOST_MSG "Get Lost!"
-#define TRADE_MSG "Trade?"
-#define HELP_MSG "Need Help!"
-#define GETOUT_MSG "Get Out Of Here!"
-
-
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -36,7 +28,7 @@ CUIPdaWnd::CUIPdaWnd()
 	m_pInvOwner = NULL;
 	m_pPda = NULL;
 
-	SetFont(HUD().pFontHeaderRussian);
+	SetFont(HUD().pFontMedium);
 }
 
 CUIPdaWnd::~CUIPdaWnd()
@@ -56,19 +48,27 @@ void CUIPdaWnd::Init()
 	AttachChild(&UIStaticBottom);
 	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
 
-
 	AttachChild(&UIMainPdaFrame);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainPdaFrame);
-	//UIMainPdaFrame.Init("ui\\ui_frame", 100,100, 600, 400);
 
+	UIMainPdaFrame.AttachChild(&UIPDAHeader);
+	xml_init.InitStatic(uiXml, "static", 0, &UIPDAHeader);
+	
+	//окно разговора по PDA
 	UIMainPdaFrame.AttachChild(&UIPdaDialogWnd);
-	UIPdaDialogWnd.Init(10,10,550,350);
+	UIPdaDialogWnd.Init(0,0,GetWidth(),GetHeight());
 	UIPdaDialogWnd.Hide();
 	
 
+	//список контактов
 	UIMainPdaFrame.AttachChild(&UIPdaContactsWnd);
-	UIPdaContactsWnd.Init(10,10, 550, 350);
+	UIPdaContactsWnd.Init(0,0, GetWidth(), GetHeight());
 	UIPdaContactsWnd.Show();
+
+	UIPdaContactsWnd.AttachChild(&UIPdaContactsWnd.UIListWnd);
+	xml_init.InitListWnd(uiXml, "list", 0, &UIPdaContactsWnd.UIListWnd);
+	UIPdaContactsWnd.UIListWnd.EnableActiveBackground(true);
+	UIPdaContactsWnd.UIListWnd.EnableScrollBar(true);
 }
 
 void CUIPdaWnd::InitPDA()
@@ -100,65 +100,61 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if(pWnd == &UIPdaContactsWnd)
 	{
-			if(msg == CUIPdaContactsWnd::CONTACT_SELECTED)
-			{
-				UIPdaContactsWnd.Hide();
-				UIPdaDialogWnd.ContactRestore();
+		if(msg == CUIPdaContactsWnd::CONTACT_SELECTED)
+		{
+			UIPdaContactsWnd.Hide();
+			UIPdaDialogWnd.ContactRestore();
 
-				InitPdaDialog();
-				UIPdaDialogWnd.Show();
-			}
+			InitPdaDialog();
+			UIPdaDialogWnd.Show();
+		}
 	}
 	else if(pWnd == &UIPdaDialogWnd)
 	{
-			if(msg == CUIPdaDialogWnd::BACK_BUTTON_CLICKED)
-			{
-				UIPdaContactsWnd.Show();
-				UIPdaDialogWnd.Hide();
-			}
-			else if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
-			{
-				EPdaMsg pda_msg = ePdaMsgAccept;
-				u32 id_pda_contact = m_pContactInvOwner->GetPDA()->ID();
+		if(msg == CUIPdaDialogWnd::BACK_BUTTON_CLICKED)
+		{
+			UIPdaContactsWnd.Show();
+			UIPdaDialogWnd.Hide();
+		}
+		else if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
+		{
+			EPdaMsg pda_msg = ePdaMsgAccept;
+			u32 id_pda_contact = m_pContactInvOwner->GetPDA()->ID();
 				
-				if(m_pPda->NeedToAnswer(id_pda_contact))
+			if(m_pPda->NeedToAnswer(id_pda_contact))
+			{
+				switch(UIPdaDialogWnd.m_iMsgNum)
 				{
-					switch(UIPdaDialogWnd.m_iMsgNum)
-					{
-					case 0:
-						pda_msg = ePdaMsgAccept;
-						break;
-					case 1:
-						pda_msg = ePdaMsgDecline;
-						break;
-					case 2:
-						pda_msg = ePdaMsgDeclineRude;
-						break;
-					}
+				case 0:
+					pda_msg = ePdaMsgAccept;
+					break;
+				case 1:
+					pda_msg = ePdaMsgDecline;
+					break;
+				case 2:
+					pda_msg = ePdaMsgDeclineRude;
+					break;
 				}
-				else
-				{
-					switch(UIPdaDialogWnd.m_iMsgNum)
-					{
-					case 0:
-						pda_msg = ePdaMsgTrade;
-						break;
-					case 1:
-						pda_msg = ePdaMsgNeedHelp;
-						break;
-					case 2:
-						pda_msg = ePdaMsgGoAway;
-						break;
-					}
-				}
-
-
-				m_pPda->SendMessageID(id_pda_contact, pda_msg, ePdaMsgAngerNone);
-
-				UpdateMessageLog();
 			}
+			else
+			{
+				switch(UIPdaDialogWnd.m_iMsgNum)
+				{
+				case 0:
+					pda_msg = ePdaMsgTrade;
+					break;
+				case 1:
+					pda_msg = ePdaMsgNeedHelp;
+					break;
+				case 2:
+					pda_msg = ePdaMsgGoAway;
+					break;
+				}
+			}
+			m_pPda->SendMessageID(id_pda_contact, pda_msg, ePdaMsgAngerNone);
+			UpdateMessageLog();
+		}
 	}
-
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
@@ -264,6 +260,9 @@ void CUIPdaWnd::InitPdaDialog()
 	m_pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;
 	R_ASSERT2(m_pInvOwner, "wrong inventory owner");
 
+	//инициализировать окошко с информацие о собеседнике
+	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pInvOwner);
+
 
 	UpdateMessageLog();
 	UpdateMsgButtons();
@@ -286,29 +285,10 @@ void CUIPdaWnd::UpdateMessageLog()
 							      m_pPda->m_mapPdaLog[id_pda_contact].end() != it;
 							      ++it)
 	{
-		switch((*it).msg)
-		{
-		case ePdaMsgAccept:
-			UIPdaDialogWnd.UILogListWnd.AddItem(YES_MSG);
-			break;
-		case ePdaMsgDecline:
-			UIPdaDialogWnd.UILogListWnd.AddItem(NO_MSG);
-			break;
-		case ePdaMsgDeclineRude:
-			UIPdaDialogWnd.UILogListWnd.AddItem(GETLOST_MSG);
-			break;
-		case ePdaMsgTrade:
-			UIPdaDialogWnd.UILogListWnd.AddItem(TRADE_MSG);
-			break;
-		case ePdaMsgNeedHelp:
-			UIPdaDialogWnd.UILogListWnd.AddItem(HELP_MSG);
-			break;			
-		case ePdaMsgGoAway:
-			UIPdaDialogWnd.UILogListWnd.AddItem(GETOUT_MSG);
-			break;		
-		default:
-			UIPdaDialogWnd.UILogListWnd.AddItem("unknown message");
-		}
+		if((*it).receive)
+			UIPdaDialogWnd.AddOthersMessageToLog((*it).msg, m_pContactInvOwner);
+		else
+			UIPdaDialogWnd.AddOurMessageToLog((*it).msg, m_pInvOwner);
 	}
 }
 
@@ -337,14 +317,10 @@ void CUIPdaWnd::UpdateMsgButtons()
 
 	if(m_pPda->NeedToAnswer(id_pda_contact))
 	{
-		UIPdaDialogWnd.UIMsgButton1.SetText(YES_MSG);
-		UIPdaDialogWnd.UIMsgButton2.SetText(NO_MSG);
-		UIPdaDialogWnd.UIMsgButton3.SetText(GETLOST_MSG);
+		UIPdaDialogWnd.PhrasesAnswer();
 	}
 	else
 	{
-		UIPdaDialogWnd.UIMsgButton1.SetText(TRADE_MSG);
-		UIPdaDialogWnd.UIMsgButton2.SetText(HELP_MSG);
-		UIPdaDialogWnd.UIMsgButton3.SetText(GETOUT_MSG);
+		UIPdaDialogWnd.PhrasesAsk();
 	}
 }

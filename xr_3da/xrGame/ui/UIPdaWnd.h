@@ -56,17 +56,21 @@ protected:
 	CUIPdaDialogWnd		UIPdaDialogWnd;
 
 	//указатель на владельца инвентаря вызвавшего менюшку
-	CInventoryOwner* m_pInvOwner;
-	CPda* m_pPda;
+	CInventoryOwner*	m_pInvOwner;
+	CPda*				m_pPda;
 
 	//указатели на текущий контакт
-	u32 m_idContact;
-	CObject* m_pContactObject;
-	CInventoryOwner* m_pContactInvOwner;
+	u32					m_idContact;
+	CObject*			m_pContactObject;
+	CInventoryOwner*	m_pContactInvOwner;
+	
 	//потеря контакта во время диалога
 	bool m_bContactLoss;
 
 	//элементы декоративного интерфейса
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
+
+	//верхушка PDA для кнопочек переключения режима
+	CUIStatic			UIPDAHeader;
 };

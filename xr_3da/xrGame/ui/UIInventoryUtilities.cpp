@@ -17,6 +17,8 @@ static TIItemList ruck_list;
 
 
 static ref_shader g_EquipmentIconsShader = NULL;
+static ref_shader g_CharIconsShader = NULL;
+
 static CUIStatic*	GetUIStatic();
 
 //для надписей на иконках с оружием
@@ -151,3 +153,14 @@ ref_shader& InventoryUtilities::GetEquipmentIconsShader()
 
 	return g_EquipmentIconsShader;
 }
+
+ref_shader& InventoryUtilities::GetCharIconsShader()
+{
+	if(!g_CharIconsShader)
+	{
+		g_CharIconsShader.create("hud\\default",  "ui\\ui_icons_npc");
+	}
+
+	return g_CharIconsShader;
+}
+

@@ -26,8 +26,8 @@ public:
 	CUIListWnd(void);
 	virtual ~CUIListWnd(void);
 
-	virtual void Init(int x, int y, int width, int height,
-		              int item_height = DEFAULT_ITEM_HEIGHT);
+	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(int x, int y, int width, int height, int item_height);
 
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
@@ -59,6 +59,7 @@ public:
 
 	void EnableScrollBar(bool enable);
 	bool IsScrollBarEnabled() {return m_bScrollBarEnabled;}
+	void UpdateScrollBar();
 	
 	bool IsActiveBackgroundEnabled() {return m_bActiveBackgroundEnable;}
 	void EnableActiveBackground(bool enable) {m_bActiveBackgroundEnable = enable;}
@@ -67,6 +68,14 @@ public:
 	int GetLongestSignWidth();
 
 	virtual void SetWidth(int width);
+
+	void SetTextColor(u32 color) {m_dwFontColor = color;} 
+	u32 GetTextColor() {return m_dwFontColor;}
+
+	//делает активными (как кнопки) элементы списка
+	void ActivateList(bool activity);
+	bool IsListActive() {return m_bListActivity;}
+
 protected:
 
 	//полоса прокрутки
@@ -97,6 +106,11 @@ protected:
 	//подсветка активного элемента
 	CUIStaticItem m_StaticActiveBackground;
 	bool m_bActiveBackgroundEnable;
+
+	//текущий цвет текста
+	u32 m_dwFontColor;
+
+	bool m_bListActivity;
 };
 
 #endif //_UI_LIST_WND_H_

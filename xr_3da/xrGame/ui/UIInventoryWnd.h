@@ -15,12 +15,13 @@
 
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
-#include "UI3dStatic.h"
 
 #include "UIPropertiesBox.h"
 #include "UIOutfitSlot.h"
 #include "UIArtifactMergerWnd.h"
 
+#include "UICharacterInfo.h"
+#include "UIItemInfo.h"
 
 
 
@@ -78,13 +79,7 @@ protected:
 
 	CUIStatic			UIStaticDesc;
 	CUIStatic			UIStaticPersonal;
-
-	CUIStatic			UIStaticText;
 	
-	//для изображения предмета крупным планом
-	CUI3dStatic			UI3dStatic;
-	//для изображения персонажа
-	CUI3dStatic			UI3dCharacter;
 
 		
 	#define SLOTS_NUM 5
@@ -106,6 +101,10 @@ protected:
 	CUIPropertiesBox UIPropertiesBox;
 	//менюшка для работы с устройством производства артефактов
 	CUIArtifactMerger UIArtifactMergerWnd;
+	//информация о персонаже
+	CUICharacterInfo UICharacterInfo;
+	//информация о предмете
+	CUIItemInfo UIItemInfo;
 
 	
 	static const int MAX_ITEMS = 70;
@@ -164,7 +163,9 @@ protected:
 	void AttachAddon();
 	void DetachAddon(const char* addon_name);
 
-
+	//устанавливает текущий предмет
+	void SetCurrentItem(CInventoryItem* pItem);
+		
 
 	//дополнительные списки для сортировки вещей
 	TIItemList ruck_list;

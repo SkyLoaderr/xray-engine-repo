@@ -13,6 +13,9 @@
 
 #include "../InfoPortion.h"
 
+#include "UICharacterInfo.h"
+#include "UIItemInfo.h"
+
 class CUITalkDialogWnd: public CUIWindow
 {
 private:
@@ -23,6 +26,8 @@ public:
 	
 	typedef enum{TRADE_BUTTON_CLICKED,
 				 QUESTION_CLICKED} E_MESSAGE;
+
+	virtual void Init(int x, int y, int width, int height);
 	
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
@@ -41,10 +46,15 @@ public:
 	//элементы интерфейса диалога
 	CUIFrameWindow		UIQuestionFrame;
 	CUIFrameWindow		UIAnswerFrame;
+
+	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
 
-	CUIStatic			UIOurName;
-	CUIStatic			UIPartnerName;
-	
 	CUIButton			UIToTradeButton;
+
+	//информация о персонажах 
+	CUIStatic			UIOurIcon;
+	CUIStatic			UIOthersIcon;
+	CUICharacterInfo	UICharacterInfoLeft;
+	CUICharacterInfo	UICharacterInfoRight;
 };

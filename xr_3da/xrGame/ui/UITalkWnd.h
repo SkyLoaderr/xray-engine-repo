@@ -31,7 +31,6 @@ public:
 	virtual ~CUITalkWnd();
 
 	virtual void Init();
-//	virtual void InitTalk();
 
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
@@ -43,10 +42,10 @@ public:
 
 	void UpdateQuestions();
 protected:
+
 	//диалог
 	void InitTalkDialog();
 	void AskQuestion();
-
 
 	//для режима торговли
 	CUITradeWnd			UITradeWnd;

@@ -41,8 +41,8 @@ public:
 
 	bool IsInList(CObject* pOwnerObject);
 
+	//список контактов PDA
 	CUIListWnd UIListWnd;
-
 protected:
 	//ID выбранного контакта InventoryOwner
 	u32 m_idContact;

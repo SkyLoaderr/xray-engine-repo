@@ -7,9 +7,12 @@
 
 
 #include "uiwindow.h"
+#include "uistatic.h"
 
 #include "../uiframerect.h"
 #include "../uistaticitem.h"
+
+
 
 
 
@@ -40,6 +43,9 @@ public:
 	virtual void Draw();
 	
 
+	//текст заголовка
+	CUIStatic UITitleText;
+
 protected:
 
 	///////////////////////////////////////	
@@ -62,5 +68,4 @@ protected:
 
 	CUIStaticItem m_UIStaticOverLeftTop;
 	CUIStaticItem m_UIStaticOverLeftBottom;
-
 };

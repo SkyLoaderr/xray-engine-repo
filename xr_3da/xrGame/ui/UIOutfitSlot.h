@@ -4,6 +4,8 @@
 
 #include "uidragdroplist.h"
 
+#pragma once
+
 class CUIOutfitSlot: public CUIDragDropList
 {
 private:
@@ -11,4 +13,7 @@ private:
 public:
 	CUIOutfitSlot();
 	virtual ~CUIOutfitSlot();
+
+protected:
+	
 };

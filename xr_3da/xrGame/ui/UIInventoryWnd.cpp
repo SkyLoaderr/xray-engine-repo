@@ -48,7 +48,8 @@ CUIInventoryWnd::CUIInventoryWnd()
 	m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
 	Hide();
 
-	m_pCurrentItem = NULL;
+	SetCurrentItem(NULL);
+
 	m_pCurrentDragDropItem = NULL;
 	m_pItemToUpgrade = NULL;
 
@@ -66,7 +67,8 @@ CUIInventoryWnd::~CUIInventoryWnd()
 void CUIInventoryWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$","inventory.xml");
+	bool xml_result = uiXml.Init("$game_data$","inventory.xml");
+	R_ASSERT2(xml_result, "xml file not found");
 
 	CUIXmlInit xml_init;
 
@@ -77,8 +79,6 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIStaticBottom);
 	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
 
-//	AttachChild(&UIStaticBelt);
-//	UIStaticBelt.Init("ui\\ui_inv_belt", 0,140,1024,128);
 
 	AttachChild(&UIStaticBelt);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
@@ -86,38 +86,27 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIBagWnd);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIBagWnd);
 
-
+	////////////////////////////////////////
+	//окно с описанием активной вещи
+	
+	//для работы с артефактами
+	AttachChild(&UIArtifactMergerWnd);
+	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
+	UIArtifactMergerWnd.Hide();
+	
 	AttachChild(&UIDescWnd);
-	UIDescWnd.Init("ui\\ui_frame", 440, 260, 267, 500);
-	UIDescWnd.InitLeftTop("ui\\ui_inv_info_over_lt", 5,10);
-	
+	xml_init.InitFrameWindow(uiXml, "frame_window", 2, &UIDescWnd);
 	UIDescWnd.AttachChild(&UIStaticDesc);
-	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 
-						5, UIDescWnd.GetHeight() - 310 ,260,310);
-	
-	//UIStaticDesc.SetText("\\n\\n\\nYou say %c99,99,255Yes \\n  %c9,255,9I say no\\n%c255,255,255You say stop And I say\\nGo    go    go.................../\nYou say goodbye and I say hello..");
+	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 5, UIDescWnd.GetHeight() - 310 ,260,310);
 
+	//информация о предмете
+	UIStaticDesc.AttachChild(&UIItemInfo);
+	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), "inventory_item.xml");
 
-	UIDescWnd.AttachChild(&UIStaticText);
-	UIStaticText.Init(30, 197 ,250,50);
-
-	UIDescWnd.AttachChild(&UI3dStatic);
-	UI3dStatic.Init(5,10, 250,190);
-
-
-//	AttachChild(&UI3dStatic);
-//	UI3dStatic.Init(800, 160, 260, 130);
-
-
-	//UIStaticText.SetText("Weapon Description");
-
+	////////////////////////////////////
+	//Окно с информации о персонаже
 	AttachChild(&UIPersonalWnd);
-	UIPersonalWnd.Init("ui\\ui_frame", 730, 260, 268, 490);
-	UIPersonalWnd.InitLeftTop("ui\\ui_inv_personal_over_t", 5,10);
-
-	UIPersonalWnd.AttachChild(&UI3dCharacter);
-	UI3dCharacter.Init(120,10, 170,380);
-
+	xml_init.InitFrameWindow(uiXml, "frame_window", 3, &UIPersonalWnd);
 
 	//Полосы прогресса
 	UIPersonalWnd.AttachChild(&UIProgressBarHealth);
@@ -136,6 +125,11 @@ void CUIInventoryWnd::Init()
 	UIPersonalWnd.AttachChild(&UIStaticPersonal);
 	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", 
 						-3,UIPersonalWnd.GetHeight() - 209 ,260,260);
+
+	//информация о персонаже
+	UIStaticPersonal.AttachChild(&UICharacterInfo);
+	UICharacterInfo.Init(0,0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), "inventory_character.xml");
+	
 
 
 	//кнопки внизу
@@ -203,12 +197,6 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_pop_up",0,0,300,300);
 	UIPropertiesBox.Hide();
-
-	//для работы с артефактами
-	AttachChild(&UIArtifactMergerWnd);
-	//UIArtifactMergerWnd.Init(0,0,300,300);
-	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
-	UIArtifactMergerWnd.Hide();
 }
 
 void CUIInventoryWnd::InitInventory() 
@@ -217,21 +205,22 @@ void CUIInventoryWnd::InitInventory()
 
 	if(!pInvOwner) return;
 
-	CEntityAlive *pCharacter = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
-	UI3dCharacter.SetGameObject(pCharacter);
 
 	CInventory* pInv = &pInvOwner->m_inventory;
 	
 	m_pMouseCapturer = NULL;
 
-	m_pCurrentItem = NULL;
-	UIStaticText.SetText(NULL);
-
+	SetCurrentItem(NULL);
+	
 	UIPropertiesBox.Hide();
 	UIArtifactMergerWnd.Hide();
 
 	m_pInv = pInv;
 
+	//инициализировать информацию о персонаже
+	UICharacterInfo.InitCharacter(pInvOwner);
+
+	
 	//очистить после предыдущего запуска
 	UITopList[0].DropAll();
 	UITopList[1].DropAll();
@@ -514,17 +503,15 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	if(msg == CUIDragDropItem::ITEM_DRAG)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
-		UIStaticText.SetText(pInvItem->NameComplex());
-		
-		m_pCurrentItem = pInvItem;
+				
+		SetCurrentItem(pInvItem);
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
-		UIStaticText.SetText(pInvItem->NameComplex());
-
-		m_pCurrentItem = pInvItem;
+		
+		SetCurrentItem(pInvItem);
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 
 		//попытаться закинуть элемент в слот, рюкзак или на пояс
@@ -543,9 +530,8 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	else if(msg == CUIDragDropItem::ITEM_RBUTTON_CLICK)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
-		UIStaticText.SetText(pInvItem->NameComplex());
-		
-		m_pCurrentItem = pInvItem;
+				
+		SetCurrentItem(pInvItem);
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		
 		ActivatePropertiesBox();
@@ -682,14 +668,6 @@ void CUIInventoryWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 void CUIInventoryWnd::Draw()
 {
-	static float y_rotate_angle = 0;
-
-	y_rotate_angle += -0.01f;
-   	if(y_rotate_angle>2*PI) y_rotate_angle = 0;
-
-	UI3dStatic.SetGameObject(m_pCurrentItem);
-	UI3dStatic.SetRotate(0,y_rotate_angle,0);
-	
 	CUIWindow::Draw();
 }
 
@@ -719,7 +697,7 @@ void CUIInventoryWnd::Update()
 				
 				if(m_pCurrentItem == pItem)
 				{	
-					m_pCurrentItem = NULL;
+					SetCurrentItem(NULL);
 					m_pCurrentDragDropItem = NULL;
 				}
 			}
@@ -740,7 +718,7 @@ void CUIInventoryWnd::DropItem()
 	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 										DetachChild(m_pCurrentDragDropItem);
 
-	m_pCurrentItem = NULL;
+	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
 }
 
@@ -755,7 +733,7 @@ void CUIInventoryWnd::EatItem()
 	{
 		(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 												DetachChild(m_pCurrentDragDropItem);
-		m_pCurrentItem = NULL;
+		SetCurrentItem(NULL);
 		m_pCurrentDragDropItem = NULL;
 	}
 
@@ -1072,7 +1050,7 @@ void CUIInventoryWnd::AttachAddon()
 
 	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 									DetachChild(m_pCurrentDragDropItem);
-	m_pCurrentItem = NULL;
+	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
 
 	m_pItemToUpgrade = NULL;
@@ -1092,4 +1070,10 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 			pActor->m_inventory.Activate(NO_ACTIVE_SLOT);
 		}
 	}
+}
+
+void CUIInventoryWnd::SetCurrentItem(CInventoryItem* pItem)
+{
+	m_pCurrentItem = pItem;
+	UIItemInfo.InitItem(m_pCurrentItem);
 }

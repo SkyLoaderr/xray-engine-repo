@@ -15,8 +15,11 @@ CUIListWnd::CUIListWnd(void)
 {
 	m_bScrollBarEnabled = false;
 	m_bActiveBackgroundEnable = false;
+	m_bListActivity = true;
 
 	m_iFocusedItem = -1;
+	
+	m_dwFontColor = 0xFFFFFFFF;
 
 	SetItemHeight(DEFAULT_ITEM_HEIGHT);
 }
@@ -31,6 +34,11 @@ CUIListWnd::~CUIListWnd(void)
 	}
 
 	m_ItemList.clear();
+}
+
+void CUIListWnd::Init(int x, int y, int width, int height)
+{
+	Init(x, y, width, height, DEFAULT_ITEM_HEIGHT);
 }
 
 void CUIListWnd::Init(int x, int y, int width, int height, int item_height)
@@ -96,6 +104,8 @@ bool CUIListWnd::AddItem(CUIListItem* pItem)
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
 
 
+	UpdateScrollBar();
+
 	return true;
 }
 
@@ -107,11 +117,13 @@ bool CUIListWnd::AddItem(const char*  str, void* pData, int value)
 
     if(!pItem) return false;
 
+
 	pItem->Init(str, 0, GetSize()* m_iItemHeight, 
 					m_iItemWidth, m_iItemHeight);
 
 	pItem->SetData(pData);
 	pItem->SetValue(value);
+	pItem->SetTextColor(m_dwFontColor);
 
 	return AddItem(pItem);
 }
@@ -212,7 +224,11 @@ void CUIListWnd::UpdateList()
 		(*it)->SetWndRect(0, (i-m_iFirstShownIndex)* m_iItemHeight, 
 							m_iItemWidth, m_iItemHeight);
 		(*it)->Show(true);
-		(*it)->Enable(true);
+		
+		if(m_bListActivity) 
+			(*it)->Enable(true);
+		else
+			(*it)->Enable(false);
 	}
 
 	--it;
@@ -224,6 +240,9 @@ void CUIListWnd::UpdateList()
 		(*it)->Show(false);
 		(*it)->Enable(false);
 	}
+
+
+	UpdateScrollBar();
 }
 
 
@@ -327,6 +346,29 @@ void CUIListWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	inherited::OnMouse(x, y, mouse_action);
 }
 
+int CUIListWnd::GetLongestSignWidth()
+{
+	int max_width = m_ItemList.front()->GetSignWidht();
+	
+	LIST_ITEM_LIST_it it=m_ItemList.begin();
+	++it;
+	for(;  m_ItemList.end() != it; ++it)
+	{
+		if((*it)->GetSignWidht()>max_width) max_width = (*it)->GetSignWidht();
+	}
+
+	return max_width;
+}
+
+void CUIListWnd::UpdateScrollBar()
+{
+	//спрятать скорлинг, если он не нужен
+	if(m_bScrollBarEnabled && m_ItemList.size()<=m_ScrollBar.GetPageSize())
+		m_ScrollBar.Show(false);
+	else
+		m_ScrollBar.Show(true);
+}
+
 void CUIListWnd::EnableScrollBar(bool enable)
 {
 	m_bScrollBarEnabled = enable;
@@ -342,18 +384,10 @@ void CUIListWnd::EnableScrollBar(bool enable)
 		m_ScrollBar.Show(false);
 	}
 
+	UpdateScrollBar();
 }
 
-int CUIListWnd::GetLongestSignWidth()
+void CUIListWnd::ActivateList(bool activity)
 {
-	int max_width = m_ItemList.front()->GetSignWidht();
-	
-	LIST_ITEM_LIST_it it=m_ItemList.begin();
-	++it;
-	for(;  m_ItemList.end() != it; ++it)
-	{
-		if((*it)->GetSignWidht()>max_width) max_width = (*it)->GetSignWidht();
-	}
-
-	return max_width;
+	m_bListActivity = activity;
 }

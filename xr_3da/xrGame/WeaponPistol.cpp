@@ -69,9 +69,9 @@ void CWeaponPistol::Load	(LPCSTR section)
 
 	SoundCreate			(sndClose,		"close"  ,m_eSoundClose);
 
-	animGet				(mhud_empty,	"empty");
-	animGet				(mhud_shot_l,	"shoot_last");
-	animGet				(mhud_close,	"close");
+	animGet				(mhud_empty,	pSettings->r_string(*hud_sect, "anim_empty"));
+	animGet				(mhud_shot_l,	pSettings->r_string(*hud_sect, "anim_shot_last"));
+	animGet				(mhud_close,	pSettings->r_string(*hud_sect, "anim_close"));
 }
 
 void CWeaponPistol::OnShot		()

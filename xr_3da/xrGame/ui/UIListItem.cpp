@@ -46,8 +46,8 @@ void CUIListItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 {
 	CUIButton::OnMouse(x, y, mouse_action);
 
-	if(m_bButtonClicked)
-		GetParent()->SendMessage(this, BUTTON_CLICKED);
+/*	if(m_bButtonClicked)
+		GetParent()->SendMessage(this, BUTTON_CLICKED);*/
 }	
 
 

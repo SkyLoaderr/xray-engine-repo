@@ -17,6 +17,7 @@
 #include "UIButton.h"
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
+#include "UIListWnd.h"
 
 
 class CUIXmlInit
@@ -40,6 +41,9 @@ public:
 
 	bool InitDragDropList(CUIXml& xml_doc, const char* path, 
 						int index, CUIDragDropList* pWnd);
+
+	bool InitListWnd(CUIXml& xml_doc, const char* path, 
+								   int index, CUIListWnd* pWnd);
 
 	bool InitProgressBar(CUIXml& xml_doc, const char* path, 
 						int index, CUIProgressBar* pWnd);

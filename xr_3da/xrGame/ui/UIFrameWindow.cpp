@@ -32,7 +32,9 @@ void CUIFrameWindow::Init(LPCSTR base_name, int x, int y, int width, int height)
 {
 	m_UIWndFrame.Init(base_name,x,y,width, height - BOTTOM_OFFSET,alNone);
 	
-	
+	AttachChild(&UITitleText);
+	UITitleText.Init(0,0, width, 50);
+		
 	inherited::Init(x,y, width, height);
 }
 

@@ -3232,10 +3232,10 @@
 						RelativePath=".\ui\UIArtifactMergerWnd.h">
 					</File>
 					<File
-						RelativePath="UIInventory.cpp">
+						RelativePath=".\ui\UICharacterInfo.cpp">
 					</File>
 					<File
-						RelativePath="UIInventory.h">
+						RelativePath=".\ui\UICharacterInfo.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIInventoryUtilities.cpp">
@@ -3248,6 +3248,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIInventoryWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIItemInfo.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIItemInfo.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIOutfitSlot.cpp">
@@ -3321,34 +3327,6 @@
 					<File
 						RelativePath=".\ui\UIMapWnd.h">
 					</File>
-					<Filter
-						Name="MainIngame"
-						Filter="">
-						<File
-							RelativePath=".\UIHealth.cpp">
-						</File>
-						<File
-							RelativePath=".\UIHealth.h">
-						</File>
-						<File
-							RelativePath=".\ui\UIMainIngameWnd.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIMainIngameWnd.h">
-						</File>
-						<File
-							RelativePath=".\UIWeapon.cpp">
-						</File>
-						<File
-							RelativePath=".\UIWeapon.h">
-						</File>
-						<File
-							RelativePath=".\UIZoneMap.cpp">
-						</File>
-						<File
-							RelativePath=".\UIZoneMap.h">
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="TalkWnd"
@@ -3384,6 +3362,34 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIDiaryWnd.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="MainIngame"
+					Filter="">
+					<File
+						RelativePath=".\UIHealth.cpp">
+					</File>
+					<File
+						RelativePath=".\UIHealth.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIMainIngameWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMainIngameWnd.h">
+					</File>
+					<File
+						RelativePath=".\UIWeapon.cpp">
+					</File>
+					<File
+						RelativePath=".\UIWeapon.h">
+					</File>
+					<File
+						RelativePath=".\UIZoneMap.cpp">
+					</File>
+					<File
+						RelativePath=".\UIZoneMap.h">
 					</File>
 				</Filter>
 			</Filter>

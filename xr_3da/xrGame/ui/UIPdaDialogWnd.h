@@ -12,6 +12,7 @@
 #include "UIButton.h"
 #include "UIEditBox.h"
 #include "UIListWnd.h"
+#include "UICharacterInfo.h"
 
 
 
@@ -38,13 +39,17 @@ public:
 	void ContactRestore();
 	void ContactWaitForReply();
 
+	//добавление сообщений в лог
+	void AddOurMessageToLog		(EPdaMsg msg, CInventoryOwner* pInvOwner);
+	void AddOthersMessageToLog	(EPdaMsg msg, CInventoryOwner* pInvOwner);
+	void AddMessageToLog		(EPdaMsg msg, u32 color);
 
-	//номер отправленного сообщения
-	int m_iMsgNum;
+	//Режима задания вопроса и ответа на него
+	void PhrasesAnswer();
+	void PhrasesAsk();
 
-	CUIListWnd			UILogListWnd;
 	CUIButton			UIBackButton;
-	
+
 	CUIButton			UIMsgButton1;
 	CUIButton			UIMsgButton2;
 	CUIButton			UIMsgButton3;
@@ -52,8 +57,16 @@ public:
 	CUIStatic			UIStaticContactName;
 	CUIStatic			UIStaticContactStatus;
 
+	//номер отправленного сообщения
+	EPdaMsg m_iMsgNum;
 
-	char m_sContactName[100];
+	//лог сообщений
+	CUIListWnd UILogListWnd;
+	//список фраз которые может говорить игрок
+	CUIListWnd UIPhrasesListWnd;
+
+
+	//информация о персонаже
+	CUIWindow		 UICharacterWindow;
+	CUICharacterInfo UICharacterInfo;
 };
-
-

@@ -6,9 +6,6 @@
 #include "stdafx.h"
 #include "UITalkWnd.h"
 
-#include "xrXMLParser.h"
-#include "UIXmlInit.h"
-
 #include "../actor.h"
 #include "../HUDManager.h"
 #include "../UIGameSP.h"
@@ -37,58 +34,12 @@ CUITalkWnd::~CUITalkWnd()
 
 void CUITalkWnd::Init()
 {
-
-
-	CUIXml uiXml;
-	uiXml.Init("$game_data$","talk.xml");
-	CUIXmlInit xml_init;
-
 	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
-
-
 
 	/////////////////////////
 	//Меню разговора
-
 	AttachChild(&UITalkDialogWnd);
 	UITalkDialogWnd.Init(0,0, Device.dwWidth, Device.dwHeight);
-	
-	
-	UITalkDialogWnd.AttachChild(&UITalkDialogWnd.UIStaticBottom);
-	UITalkDialogWnd.UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
-
-	//Вопросы
-	UITalkDialogWnd.AttachChild(&UITalkDialogWnd.UIQuestionFrame);
-	UITalkDialogWnd.UIQuestionFrame.Init("ui\\ui_frame", 200, 20, 600, 300);
-	UITalkDialogWnd.AttachChild(&UITalkDialogWnd.UIQuestionsList);
-	UITalkDialogWnd.UIQuestionsList.Init(200, 20, 600, 300);
-
-	//Ответы
-	UITalkDialogWnd.AttachChild(&UITalkDialogWnd.UIAnswerFrame);
-	UITalkDialogWnd.UIAnswerFrame.Init("ui\\ui_frame", 200, 350,  600, 370);
-
-	UITalkDialogWnd.AttachChild(&UITalkDialogWnd.UIAnswer);
-	UITalkDialogWnd.UIAnswer.Init(200, 350,  600, 370);
-	
-	
-
-	UITalkDialogWnd.AttachChild(&UITalkDialogWnd.UIOurName);
-	UITalkDialogWnd.UIOurName.Init(10,10, 300, 50);
-	UITalkDialogWnd.UIOurName.SetText("Our Name");
-
-	UITalkDialogWnd.AttachChild(&UITalkDialogWnd.UIPartnerName);
-	UITalkDialogWnd.UIPartnerName.Init(800, 10, 300, 50);
-	UITalkDialogWnd.UIPartnerName.SetText("Partner Name");
-
-
-	
-	
-
-	//кнопка перехода в режим торговли
-	UITalkDialogWnd.AttachChild(&UITalkDialogWnd.UIToTradeButton);
-	xml_init.InitButton(uiXml, "button", 0, &UITalkDialogWnd.UIToTradeButton);
-
-
 
 	/////////////////////////
 	//Меню торговли
@@ -108,8 +59,8 @@ void CUITalkWnd::InitTalkDialog()
 	m_pOthersInvOwner = dynamic_cast<CInventoryOwner*>(pActor->GetTalkPartner());
 
 	//имена собеседников
-	UITalkDialogWnd.UIOurName.SetText((LPSTR)pActor->cName());
-	UITalkDialogWnd.UIPartnerName.SetText((LPSTR)dynamic_cast<CObject*>(pActor->GetTalkPartner())->cName());
+	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
+	UITalkDialogWnd.UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
 
 	UITalkDialogWnd.UIAnswer.SetText("...");
 	

@@ -16,6 +16,7 @@
 #include "../HUDManager.h"
 #include "../WeaponAmmo.h"
 #include "../Actor.h"
+#include "../Car.h"
 #include "../Trade.h"
 #include "../UIGameSP.h"
 #include "../gameobject.h"
@@ -52,10 +53,21 @@ void CUICarBodyWnd::Init()
 	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
 
 	//статические элементы интерфейса
-	//AttachChild(&UIStaticTop);
-	//UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,1024,128);
+	AttachChild(&UIStaticTop);
+	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
 	AttachChild(&UIStaticBottom);
 	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
+
+	//иконки с изображение нас и партнера по торговле
+	AttachChild(&UIOurIcon);
+	xml_init.InitStatic(uiXml, "static_icon", 0, &UIOurIcon);
+	AttachChild(&UIOthersIcon);
+	xml_init.InitStatic(uiXml, "static_icon", 1, &UIOthersIcon);
+	UIOurIcon.AttachChild(&UICharacterInfoLeft);
+	UICharacterInfoLeft.Init(0,0, UIOurIcon.GetWidth(), UIOurIcon.GetHeight(), "trade_character.xml");
+	UIOthersIcon.AttachChild(&UICharacterInfoRight);
+	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), "trade_character.xml");
+
 
 	//Списки торговли
 	AttachChild(&UIOurBagWnd);
@@ -70,6 +82,17 @@ void CUICarBodyWnd::Init()
 	UIOthersBagWnd.AttachChild(&UIOthersBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, &UIOthersBagList);
 
+
+	//информация о предмете
+	AttachChild(&UIDescWnd);
+	xml_init.InitFrameWindow(uiXml, "frame_window", 2, &UIDescWnd);
+	UIDescWnd.AttachChild(&UIStaticDesc);
+	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 5, UIDescWnd.GetHeight() - 310 ,260,310);
+	UIStaticDesc.AttachChild(&UIItemInfo);
+	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), "inventory_item.xml");
+
+
+
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
 	UIPropertiesBox.Hide();
@@ -83,7 +106,8 @@ void CUICarBodyWnd::Init()
 	UIOurBagList.SetCheckProc(OurBagProc);
 	UIOthersBagList.SetCheckProc(OthersBagProc);
 
-	m_pCurrentItem = NULL;
+
+	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
 	UIStaticDesc.SetText(NULL);
 }
@@ -97,7 +121,15 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 
 	m_pInv = pOurInv;
 	m_pOthersInv = pOthersInv;
+
 	
+	CInventoryOwner* pOurInvOwner = dynamic_cast<CInventoryOwner*>(pOurObject);
+	UICharacterInfoLeft.InitCharacter(pOurInvOwner);
+	CInventoryOwner* pOthersInvOwner = dynamic_cast<CInventoryOwner*>(pOthersObject);
+	if(pOthersInvOwner)	UICharacterInfoRight.InitCharacter(pOthersInvOwner);
+	//CCar* pOthersCar = dynamic_cast<CCar*>(pOthersObject);	
+	
+
 	m_pMouseCapturer = NULL;
 	UIPropertiesBox.Hide();
 	UIMessageBox.Hide();
@@ -220,16 +252,15 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-		m_pCurrentItem = pInvItem;
-		UIStaticDesc.SetText(pInvItem->NameComplex());
+
+		SetCurrentItem(pInvItem);
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-		m_pCurrentItem = pInvItem;
-		UIStaticDesc.SetText(pInvItem->NameComplex());
 		
+		SetCurrentItem(pInvItem);
 
 		if(m_pCurrentDragDropItem->GetParent() == &UIOurBagList)
 			ToOthersBag();
@@ -245,13 +276,6 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 void CUICarBodyWnd::Draw()
 {
-	static float y_rotate_angle = 0;
-	y_rotate_angle += -0.01f;
-   	if(y_rotate_angle>2*PI) y_rotate_angle = 0;
-	UI3dStatic.SetGameObject(m_pCurrentItem);
-	UI3dStatic.SetRotate(0,y_rotate_angle,0);
-
-
 	inherited::Draw();
 }
 
@@ -419,4 +443,10 @@ void CUICarBodyWnd::EnableAll()
 {
 	UIOurBagWnd.Enable(true);
 	UIOthersBagWnd.Enable(true);
+}
+
+void CUICarBodyWnd::SetCurrentItem(CInventoryItem* pItem)
+{
+	m_pCurrentItem = pItem;
+	UIItemInfo.InitItem(m_pCurrentItem);
 }

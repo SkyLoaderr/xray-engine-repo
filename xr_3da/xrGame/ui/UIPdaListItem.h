@@ -5,6 +5,8 @@
 
 #pragma once
 #include "UIListItem.h"
+#include "UICharacterInfo.h"
+#include "..\InventoryOwner.h"
 
 class CUIPdaListItem : public CUIListItem
 {
@@ -15,11 +17,12 @@ public:
 	virtual ~CUIPdaListItem(void);
 
 	virtual void Init(int x, int y, int width, int height);
+	virtual void InitCharacter(CInventoryOwner* pInvOwner);
 	
 	virtual void Draw();
 	virtual void Update();
 
 protected:
-	CUIStatic m_UIStaticIcon;
-	CUIStatic m_UIStaticText;
+	//информация о персонаже
+	CUICharacterInfo UICharacterInfo;
 };

@@ -20,11 +20,8 @@ void CUIPdaListItem::Init(int x, int y, int width, int height)
 {
 	inherited::Init(x, y, width, height);
 
-//	AttachChild(&m_UIStaticIcon);
-//	m_UIStaticIcon.Init(0,0,100,100);
-//	m_UIStaticIcon.SetText("a texty");
-
-
+	AttachChild(&UICharacterInfo);
+	UICharacterInfo.Init(0,0,width, height, "pda_character.xml");
 }
 void CUIPdaListItem::Update()
 {
@@ -34,4 +31,9 @@ void CUIPdaListItem::Update()
 void CUIPdaListItem::Draw()
 {
 	inherited::Draw();
+}
+
+void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
+{
+	UICharacterInfo.InitCharacter(pInvOwner);
 }

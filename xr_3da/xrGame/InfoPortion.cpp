@@ -25,7 +25,9 @@ static void LoadAllToMemory()
 	g_InfoPortionMap.clear();
 
 	CUIXml uiXml;
-	uiXml.Init("$game_data$","info_portions.xml");
+	bool xml_result = uiXml.Init("$game_data$","info_portions.xml");
+	R_ASSERT2(xml_result, "xml file not found");
+
 
 	//загрузить все части информации
 	int info_num = uiXml.GetNodesNum(uiXml.GetRoot(), "info_portion");

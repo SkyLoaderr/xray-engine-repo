@@ -11,8 +11,19 @@
 
 
 #define HEADER_FONT_NAME		"header"
-#define NORMAL_FONT_NAME		"normal"
 #define ARIAL_FONT_NAME			"arial"
+
+#define BIG_FONT_NAME			"big"
+#define NORMAL_FONT_NAME		"normal"
+#define MEDIUM_FONT_NAME		"medium"
+#define SMALL_FONT_NAME			"small"
+
+#define GRAFFITI19_FONT_NAME	"graffiti19"
+#define GRAFFITI22_FONT_NAME	"graffiti22"
+
+#define LETTERICA16_FONT_NAME	"letterica16"
+#define LETTERICA18_FONT_NAME	"letterica18"
+
 
 CUIXmlInit::CUIXmlInit()
 {
@@ -24,6 +35,8 @@ CUIXmlInit::~CUIXmlInit()
 bool CUIXmlInit::InitWindow(CUIXml& xml_doc, const char* path, 	
 							int index, CUIWindow* pWnd)
 {
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
 	int width = xml_doc.ReadAttribInt(path, index, "width");
@@ -34,6 +47,8 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, const char* path,
 bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, const char* path, 
 									int index, CUIFrameWindow* pWnd)
 {
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
 	string256 buf;
 
 	int x = xml_doc.ReadAttribInt(path, index, "x");
@@ -64,7 +79,10 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, const char* path,
 
 	if(*tex_name) pWnd->InitLeftBottom(*tex_name, x,y);
 
-	pWnd->InitLeftBottom(*tex_name, x,y);
+	//инициализировать заголовок окна
+	strconcat(buf,path,":title");
+	if(xml_doc.NavigateToNode(buf,index)) InitStatic(xml_doc, buf, index, &pWnd->UITitleText);
+
 
 	return true;
 }
@@ -73,6 +91,8 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, const char* path,
 bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path, 
 									int index, CUIStatic* pWnd)
 {
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
 	string256 buf;
 
 	int x = xml_doc.ReadAttribInt(path, index, "x");
@@ -117,13 +137,37 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path,
 		{
 			pWnd->SetFont(HUD().pFontHeaderRussian);
 		}
-		else if(!strcmp(*font_name, NORMAL_FONT_NAME))
+		else if(!strcmp(*font_name, NORMAL_FONT_NAME) || !strcmp(*font_name, GRAFFITI19_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pFontGraffiti19Russian);
+		}
+		else if(!strcmp(*font_name, GRAFFITI22_FONT_NAME))
+		{
+			pWnd->SetFont(HUD().pFontGraffiti22Russian);
 		}
 		else if(!strcmp(*font_name, ARIAL_FONT_NAME))
 		{
 			pWnd->SetFont(HUD().pArialN21Russian);
+		}
+		else if(!strcmp(*font_name, BIG_FONT_NAME))
+		{
+			pWnd->SetFont(HUD().pFontBigDigit);
+		}
+		else if(!strcmp(*font_name, MEDIUM_FONT_NAME))
+		{
+			pWnd->SetFont(HUD().pFontMedium);
+		}
+		else if(!strcmp(*font_name, SMALL_FONT_NAME))
+		{
+			pWnd->SetFont(HUD().pFontSmall);
+		}
+		else if(!strcmp(*font_name, LETTERICA16_FONT_NAME))
+		{
+			pWnd->SetFont(HUD().pFontLetterica16Russian);
+		}
+		else if(!strcmp(*font_name, LETTERICA18_FONT_NAME))
+		{
+			pWnd->SetFont(HUD().pFontLetterica18Russian);
 		}
 	}
 
@@ -137,6 +181,8 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path,
 bool CUIXmlInit::InitButton(CUIXml& xml_doc, const char* path, 
 						int index, CUIButton* pWnd)
 {
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
 	string256 buf;
 
 	int x = xml_doc.ReadAttribInt(path, index, "x");
@@ -159,6 +205,8 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, const char* path,
 bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, const char* path, 
 						int index, CUIDragDropList* pWnd)
 {
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
 	int width = xml_doc.ReadAttribInt(path, index, "width");
@@ -181,12 +229,29 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, const char* path,
 	return true;
 }
 
+bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, const char* path, 
+										   int index, CUIListWnd* pWnd)
+{
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "Node not found");
+	
+	int x = xml_doc.ReadAttribInt(path, index, "x");
+	int y = xml_doc.ReadAttribInt(path, index, "y");
+	int width = xml_doc.ReadAttribInt(path, index, "width");
+	int height = xml_doc.ReadAttribInt(path, index, "height");
+	int item_height = xml_doc.ReadAttribInt(path, index, "item_height");
+
+	pWnd->Init(x,y, width,height,item_height);
+
+	return true;
+}
+
 bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, const char* path, 
 						int index, CUIProgressBar* pWnd)
 {
+	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+
 	string256 buf;
 	
-
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
 	int width = xml_doc.ReadAttribInt(path, index, "length");

@@ -43,19 +43,30 @@ CUITradeWnd::~CUITradeWnd()
 void CUITradeWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$","trade.xml");
-	
+	bool xml_result = uiXml.Init("$game_data$","trade.xml");
+	R_ASSERT2(xml_result, "xml file not found");
 	CUIXmlInit xml_init;
-
+	
 	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
 
 	//статические элементы интерфейса
-	//AttachChild(&UIStaticTop);
-	//UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,1024,128);
+	AttachChild(&UIStaticTop);
+	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
 	AttachChild(&UIStaticBottom);
 	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
 
+	//иконки с изображение нас и партнера по торговле
+	AttachChild(&UIOurIcon);
+	xml_init.InitStatic(uiXml, "static_icon", 0, &UIOurIcon);
+	AttachChild(&UIOthersIcon);
+	xml_init.InitStatic(uiXml, "static_icon", 1, &UIOthersIcon);
+	UIOurIcon.AttachChild(&UICharacterInfoLeft);
+	UICharacterInfoLeft.Init(0,0, UIOurIcon.GetWidth(), UIOurIcon.GetHeight(), "trade_character.xml");
+	UIOthersIcon.AttachChild(&UICharacterInfoRight);
+	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), "trade_character.xml");
 
+
+	//надписи	
 	AttachChild(&UIOurMoneySign);
 	UIOurMoneySign.Init(40,265,150,30);
 	UIOurMoneySign.SetText("our money");
@@ -78,11 +89,6 @@ void CUITradeWnd::Init()
 	AttachChild(&UIOthersItemsPrice);
 	UIOthersItemsPrice.Init(360,515,150,30);
 
-	AttachChild(&UIItemDescription);
-	UIItemDescription.Init(350,55,250,40);
-
-
-
 
 
 	//Списки торговли
@@ -92,9 +98,9 @@ void CUITradeWnd::Init()
 	xml_init.InitFrameWindow(uiXml, "frame_window", 1, &UIOthersBagWnd);
 
 	AttachChild(&UIOurTradeWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 2, &UIOurTradeWnd);
+	xml_init.InitStatic(uiXml, "static", 0, &UIOurTradeWnd);
 	AttachChild(&UIOthersTradeWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 3, &UIOthersTradeWnd);
+	xml_init.InitStatic(uiXml, "static", 1, &UIOthersTradeWnd);
 
 
 	//Списки Drag&Drop
@@ -109,6 +115,13 @@ void CUITradeWnd::Init()
 
 	UIOthersTradeWnd.AttachChild(&UIOthersTradeList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 3, &UIOthersTradeList);
+
+	
+	//информация о предмете
+	AttachChild(&UIDescWnd);
+	xml_init.InitFrameWindow(uiXml, "desc_frame_window", 0, &UIDescWnd);
+	UIDescWnd.AttachChild(&UIItemInfo);
+	UIItemInfo.Init(0,0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), "trade_item.xml");
 
 
 	AttachChild(&UIPropertiesBox);
@@ -141,7 +154,10 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 {
 	m_pInvOwner = pOur;
 	m_pOthersInvOwner = pOthers;
-	
+
+	UICharacterInfoLeft.InitCharacter(m_pInvOwner);
+	UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
+
 	m_pInv = &m_pInvOwner->m_inventory;
 	m_pOthersInv = pOur->GetTrade()->GetPartnerInventory();
 	
@@ -182,18 +198,15 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-		m_pCurrentItem = pInvItem;
-//		UIStaticText.SetText(pInvItem->NameComplex());
-		UIItemDescription.SetText((LPSTR)m_pCurrentItem->cName());
+		SetCurrentItem(pInvItem);
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-		m_pCurrentItem = pInvItem;
-		//UIStaticText.SetText(pInvItem->NameComplex());
-		UIItemDescription.SetText((LPSTR)m_pCurrentItem->cName());
-
+		
+		SetCurrentItem(pInvItem);
+		
 		if(m_pCurrentDragDropItem->GetParent() == &UIOurBagList)
 			ToOurTrade();
 		else if(m_pCurrentDragDropItem->GetParent() == &UIOurTradeList)
@@ -226,14 +239,6 @@ void CUITradeWnd::Draw()
 
 void CUITradeWnd::Update()
 {
-	//остановить торговлю, если нужно
-	/*CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
-
-	if (pActor && !pActor->GetTrade()->IsInTradeState())
-	{
-		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(pGameSP)pGameSP->StartStopMenu(this);
-	}*/
 	//убрать объект drag&drop для уже использованной вещи
 	for(int i = 0; i <m_iUsedItems; ++i) 
 	{
@@ -245,10 +250,8 @@ void CUITradeWnd::Update()
 			m_vDragDropItems[i].SetCustomUpdate(NULL);
 
 			UpdatePrices();
-
 		}
 	}
-
 
 	inherited::Update();
 }
@@ -266,14 +269,6 @@ void CUITradeWnd::Hide()
 	inherited::Show(false);
 	inherited::Enable(false);
 
-
-	/*CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
-	if(!pActor) return;
-
-	if (pActor->GetTrade()->IsInTradeState())
-	{
-		pActor->GetTrade()->StopTrade();
-	}*/
 }
 
 
@@ -327,26 +322,6 @@ bool CUITradeWnd::IsEnoughtOurRoom(CUIDragDropItem* pItem)
 	//та вещь, что переноситься
 	ruck_list.push_back((PIItem)pItem->GetData());
 	
-/*	for(WINDOW_LIST_it it = UIOurBagWnd.GetChildWndList().begin(); 
- 	  				   UIOurBagWnd.GetChildWndList().end() != it; ++it)
-	{
-		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
-		if(pDragDropItem)
-		{
-			ruck_list.push_back((PIItem)pDragDropItem->GetData());
-		}
-	}
-
-
-	for(WINDOW_LIST_it it = UIOthersTradeWnd.GetChildWndList().begin(); 
- 	  				   UIOthersTradeWnd.GetChildWndList().end() != it; ++it)
-	{
-		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
-		if(pDragDropItem)
-		{
-			ruck_list.push_back((PIItem)pDragDropItem->GetData());
-		}
-	}*/
 	for(DRAG_DROP_LIST_it it = UIOurBagList.GetDragDropItemsList().begin(); 
  						  UIOurBagList.GetDragDropItemsList().end() != it; 
 						  ++it)
@@ -364,7 +339,6 @@ bool CUITradeWnd::IsEnoughtOurRoom(CUIDragDropItem* pItem)
 	}
 
 	return FreeRoom(ruck_list,RUCK_WIDTH,RUCK_HEIGHT);
-//	return true;
 }
 
 bool CUITradeWnd::IsEnoughtOthersRoom(CUIDragDropItem* pItem)
@@ -391,26 +365,6 @@ bool CUITradeWnd::IsEnoughtOthersRoom(CUIDragDropItem* pItem)
 		ruck_list.push_back((PIItem)pDragDropItem->GetData());
 	}
 
-
-	/*for(WINDOW_LIST_it it = UIOthersBagList.GetChildWndList().begin(); 
- 	  				   UIOthersBagList.GetChildWndList().end() != it; ++it)
-	{
-		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
-		if(pDragDropItem)
-		{
-			ruck_list.push_back((PIItem)pDragDropItem->GetData());
-		}
-	}
-
-	for(WINDOW_LIST_it it = UIOurTradeList.GetChildWndList().begin(); 
- 	  				   UIOurTradeList.GetChildWndList().end() != it; ++it)
-	{
-		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
-		if(pDragDropItem)
-		{
-			ruck_list.push_back((PIItem)pDragDropItem->GetData());
-		}
-	}*/
 
 	return FreeRoom(ruck_list, RUCK_WIDTH, RUCK_HEIGHT);
 }
@@ -465,15 +419,6 @@ u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 {
 	u32 iPrice = 0;
 	
-	/*for(WINDOW_LIST_it it = pList->GetChildWndList().begin(); 
- 	  				   pList->GetChildWndList().end() != it; ++it)
-	{
-		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
-		if(pDragDropItem)
-		{
-			iPrice += pTrade->GetItemPrice((PIItem)pDragDropItem->GetData());
-		}
-	}*/
 	for(DRAG_DROP_LIST_it it = pList->GetDragDropItemsList().begin(); 
  			  			  pList->GetDragDropItemsList().end() != it; 
 						  ++it)
@@ -561,23 +506,16 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 	for(DRAG_DROP_LIST_it it = pSellList->GetDragDropItemsList().begin(); 
  			  			  pSellList->GetDragDropItemsList().end() != it; 
 						  ++it)
-//	for(WINDOW_LIST_it it = pSellList->GetChildWndList().begin(); 
- //				   pSellList->GetChildWndList().end() != it; ++it)
 	{	
-//		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
-//		if(pDragDropItem)
-//		{
-			CUIDragDropItem* pDragDropItem = *it;
-			pTrade->SellItem((PIItem)pDragDropItem->GetData());
+		CUIDragDropItem* pDragDropItem = *it;
+		pTrade->SellItem((PIItem)pDragDropItem->GetData());
 			
-			//заносим в списко того, кто покупает товар
-			//если это простой сталкер, то 
-			//вещь обязана появиться у него,
-			//а с  торговцем надо решать.
-			pBuyList->AttachChild(pDragDropItem);
-//		}
+		//заносим в списко того, кто покупает товар
+		//если это простой сталкер, то 
+		//вещь обязана появиться у него,
+		//а с  торговцем надо решать.
+		pBuyList->AttachChild(pDragDropItem);
 	}
-
 	pSellList->DropAll();
 }
 
@@ -615,41 +553,37 @@ void CUITradeWnd::UpdateLists()
 	PPIItem it;
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
-			if((*it)) 
-			{
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+		if((*it)) 
+		{
+			CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 
-				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
-				UIDragDropItem.SetShader(GetEquipmentIconsShader());
-				UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
-				UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+			UIDragDropItem.SetShader(GetEquipmentIconsShader());
+			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
+			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
 
+			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+									(*it)->GetXPos()*INV_GRID_WIDTH,
+									(*it)->GetYPos()*INV_GRID_HEIGHT,
+									(*it)->GetGridWidth()*INV_GRID_WIDTH,
+									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 
-				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										(*it)->GetXPos()*INV_GRID_WIDTH,
-										(*it)->GetYPos()*INV_GRID_HEIGHT,
-										(*it)->GetGridWidth()*INV_GRID_WIDTH,
-										(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+			UIDragDropItem.SetData((*it));
 
-				UIDragDropItem.SetData((*it));
+			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
-				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
-				CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
-				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
-
-
-				//установить коэффициент масштабирования
-				UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
+			//установить коэффициент масштабирования
+			UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
 				
-				UIOurBagList.AttachChild(&UIDragDropItem);
-				++m_iUsedItems;
-			}
+			UIOurBagList.AttachChild(&UIDragDropItem);
+			++m_iUsedItems;
+		}
 	}
 
-
-	//ruck_list = m_pOthersInv->m_ruck;
 	ruck_list.clear();
 	ruck_list.insert(ruck_list.begin(),
 					 m_pOthersInvOwner->m_inventory.m_ruck.begin(),
@@ -658,46 +592,47 @@ void CUITradeWnd::UpdateLists()
 					 m_pOthersInvOwner->m_inventory.m_belt.begin(),
 					 m_pOthersInvOwner->m_inventory.m_belt.end());
 
-					 /*m_pOthersInv->m_ruck.begin(),
-					 m_pOthersInv->m_ruck.end());*/
-
 	ruck_list.sort(GreaterRoomInRuck);
-
 
 
 	//Чужой рюкзак
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
-			if((*it)) 
-			{
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+		if((*it)) 
+		{
+			CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 				
-				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
-				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+			UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
-				UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
-				UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
+			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
-				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										(*it)->GetXPos()*INV_GRID_WIDTH,
-										(*it)->GetYPos()*INV_GRID_HEIGHT,
-										(*it)->GetGridWidth()*INV_GRID_WIDTH,
-										(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+									(*it)->GetXPos()*INV_GRID_WIDTH,
+									(*it)->GetYPos()*INV_GRID_HEIGHT,
+									(*it)->GetGridWidth()*INV_GRID_WIDTH,
+									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 
-				UIDragDropItem.SetData((*it));
+			UIDragDropItem.SetData((*it));
 
-				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
-				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-				CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
-				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
-
-				//установить коэффициент масштабирования
-				UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
+			//установить коэффициент масштабирования
+			UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
 				
-				UIOthersBagList.AttachChild(&UIDragDropItem);
-				++m_iUsedItems;
-			}
+			UIOthersBagList.AttachChild(&UIDragDropItem);
+			++m_iUsedItems;
+		}
 	}
+}
+
+void CUITradeWnd::SetCurrentItem(CInventoryItem* pItem)
+{
+	m_pCurrentItem = pItem;
+	UIItemInfo.InitItem(m_pCurrentItem);
 }
