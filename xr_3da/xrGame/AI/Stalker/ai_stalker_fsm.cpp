@@ -237,7 +237,7 @@ void CAI_Stalker::ForwardCover()
 	WRITE_TO_LOG("Forward cover");
 	
 	if (!m_tEnemy.Enemy) {
-		if (Level().timeServer() - m_dwLostEnemyTime > 6000)
+		if (Level().timeServer() - m_dwLostEnemyTime > 0*6000)
 			SearchEnemy();
 		else
 			Camp(true);
@@ -326,7 +326,7 @@ void CAI_Stalker::SearchEnemy()
 			&m_tSavedEnemyPosition,
 			true,
 			eWeaponStateIdle,
-			ePathTypeCriteria,
+			ePathTypeStraight,
 			eBodyStateStand,
 			eMovementTypeWalk,
 			eStateTypeDanger,
@@ -562,7 +562,7 @@ void CAI_Stalker::Think()
 		// going via graph nodes
 		vfUpdateSearchPosition	();
 		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
+		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
 	}
 	
 	m_bStateChanged			= m_ePreviousState != m_eCurrentState;

@@ -30,6 +30,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 
 	m_fCurSpeed		= 1.f;
 
+	r_torso_speed	= PI_MUL_2;
+	r_head_speed	= 3*PI_DIV_2;
 	if (AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart)) {
 		switch (m_tBodyState) {
 			case eBodyStateCrouch : {
