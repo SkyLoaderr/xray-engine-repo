@@ -175,7 +175,7 @@ function main()
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			rainbow_mojet_sidet_stalker:play_at_pos	(stalker2,stalker2:position(),0);
-			wait(5000)			
+			wait(4000)			
 		end
 		break
 	end
@@ -183,7 +183,7 @@ function main()
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
-			wait(3000)			
+			wait(2000)			
 		end
 		break
 	end
@@ -191,7 +191,7 @@ function main()
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_blin_tochno:play_at_pos	(stalker1,stalker1:position(),0);
-			wait(4000)			
+			wait(3000)			
 		end
 		break
 	end
