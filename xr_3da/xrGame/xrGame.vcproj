@@ -1597,6 +1597,9 @@
 				RelativePath="ai_alife_registries.h">
 			</File>
 			<File
+				RelativePath="ai_alife_space.h">
+			</File>
+			<File
 				RelativePath="ai_misc.cpp">
 			</File>
 		</Filter>
