@@ -292,9 +292,10 @@ void CScriptGameObject::script_register(lua_State *L)
 //		class_<CGameObject>("game_object_class")
 //			.def(								constructor<>()),
 
-		class_<DLL_Pure>("dll_pure"),
+//		class_<DLL_Pure>("dll_pure"),
 
-		class_<CAttachableItem,DLL_Pure>("attachable_item")
+//		class_<CAttachableItem,DLL_Pure>("attachable_item")
+		class_<CAttachableItem>("attachable_item")
 			.def(								constructor<>())
 	];
 }
