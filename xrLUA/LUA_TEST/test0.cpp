@@ -1055,8 +1055,27 @@ struct CMemCallbackHolder {
 extern void script_test();
 extern void delegate_test();
 
+struct A_ {
+};
+
+struct B_ : public A_{
+	int a;
+private:
+	typedef A_ inherited;
+};
+
+struct C_ : public B_{
+	typedef B_ inherited;
+	static void cc(C_ *c_)
+	{
+		printf("%d\n",c_->inherited::a);
+	}
+};
+
 void test1()
 {
+	C_	cc;
+	C_::cc(&cc);
 //	script_test();
 ////	printf	("%s\n",typeid(final::Head).name());
 ////	printf	("%s\n",typeid(final::Tail::Head).name());
