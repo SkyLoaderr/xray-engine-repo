@@ -145,3 +145,22 @@ void CAI_ALife::vfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 		}
 	}
 }
+
+CALifeHuman *CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
+{
+	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
+	CALifeHuman *	tpBestTrader = 0;
+	HUMAN_P_IT		I = m_tpTraders.begin();
+	HUMAN_P_IT		E = m_tpTraders.end();
+	Fvector			&tPoint = Level().AI.m_tpaGraph[tpALifeHuman->m_tGraphID].tPoint;
+	for ( ; I != E; I++) {
+		if ((*I)->m_tHumanParams.m_tRank != tpALifeHuman->m_tHumanParams.m_tRank)
+			break;
+		float fCurDistance = Level().AI.m_tpaGraph[(*I)->m_tGraphID].tPoint.distance_to(tPoint);
+		if (fCurDistance < fBestDistance) {
+			fBestDistance = fCurDistance;
+			tpBestTrader = *I;
+		}
+	}
+	return(tpBestTrader);
+}

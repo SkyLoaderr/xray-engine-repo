@@ -107,6 +107,7 @@ public:
 		m_tObjectRegistry.Add(tpALifeDynamicObject);
 	};
 
+	CALifeHuman *					tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman);
 	void							vfUpdateMonster			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfUpdateTrader			(CALifeHuman			*tpALifeHuman);
 	void							vfUpdateHumanGroup		(CALifeHumanGroup		*tpALifeHumanGroup);

@@ -71,8 +71,8 @@ void CAI_ALife::vfUpdateHumanGroup(CALifeHumanGroup *tpALifeHumanGroup)
 void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 {
 	if (tpALifeHuman->m_dwCurTask == u32(-1)) {
-//		CALifeHuman *tpTrader = dwGetNearestSuitableTrader(tpALifeHuman);
-//		Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tpTrader->m_tGraphID,tpALifeHuman->m_tpaVertices);
+		CALifeHuman *tpTrader = tpfGetNearestSuitableTrader(tpALifeHuman);
+		Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tpTrader->m_tGraphID,tpALifeHuman->m_tpaVertices);
 	}
 	else
 		switch (tpALifeHuman->m_tTaskState) {
