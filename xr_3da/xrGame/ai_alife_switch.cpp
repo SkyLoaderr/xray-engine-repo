@@ -98,7 +98,7 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 {
 	I->m_tNodeID = getAI().q_Node(I->m_tNodeID,I->o_Position);
 	if (!I->m_tNodeID)
-		Msg("Corresponding node hasn't been found for monster %s",I->s_name_replace);
+		Msg("! ALife : Corresponding node hasn't been found for monster %s",I->s_name_replace);
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {
