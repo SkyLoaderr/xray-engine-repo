@@ -44,8 +44,9 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	local lst_rect     = {x = info_rect.x,
 						  y = info_rect.y + info_rect.height + self.indent,
 						  width = 0,
-						  height = 200}
-	lst_rect.width = self.main_rect.width - lst_rect.x - edit_rect.width - self.indent*2
+						  height = 0}
+	lst_rect.width  = self.main_rect.width - lst_rect.x - edit_rect.width - self.indent*2
+	lst_rect.height = self.main_rect.height - lst_rect.x - self.indent
 	
 	-- INIT DATA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
