@@ -11,7 +11,8 @@
 
 #define CStateBloodsuckerVampireAbstract CStateBloodsuckerVampire<_Object>
 
-#define RUN_AWAY_DISTANCE	50.f
+#define RUN_AWAY_DISTANCE			50.f
+#define TIME_VAMPIRE_STATE_DELAY	50000
 
 TEMPLATE_SPECIALIZATION
 CStateBloodsuckerVampireAbstract::CStateBloodsuckerVampire(_Object *obj) : inherited(obj)
@@ -21,6 +22,13 @@ CStateBloodsuckerVampireAbstract::CStateBloodsuckerVampire(_Object *obj) : inher
 	add_state	(eStateRunAway,			xr_new<CStateMonsterHideFromPoint<_Object> >		(obj));
 }
 
+TEMPLATE_SPECIALIZATION
+void CStateBloodsuckerVampireAbstract::reinit()
+{
+	inherited::reinit	();
+	
+	m_time_last_vampire	= 0;
+}
 
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireAbstract::initialize()
@@ -73,6 +81,7 @@ void CStateBloodsuckerVampireAbstract::finalize()
 	inherited::finalize();
 
 	object->CInvisibility::set_manual_switch	(false);
+	m_time_last_vampire							= Device.dwTimeGlobal;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -81,6 +90,7 @@ void CStateBloodsuckerVampireAbstract::critical_finalize()
 	inherited::critical_finalize();
 	
 	object->CInvisibility::set_manual_switch	(false);
+	m_time_last_vampire							= Device.dwTimeGlobal;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -88,8 +98,10 @@ bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 {
 	// является ли враг актером
 	const CEntityAlive *enemy = object->EnemyMan.get_enemy();
-	if (enemy->CLS_ID != CLSID_OBJECT_ACTOR) return false;
-	if (object->CControlledActor::is_controlled()) return false;
+	if (enemy->CLS_ID != CLSID_OBJECT_ACTOR)		return false;
+	if (!object->EnemyMan.see_enemy_now())			return false;
+	if (object->CControlledActor::is_controlled())	return false;
+	if (m_time_last_vampire + TIME_VAMPIRE_STATE_DELAY > Device.dwTimeGlobal) return false;
 
 	return true;
 }

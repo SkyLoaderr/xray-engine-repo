@@ -32,11 +32,11 @@ void CStateManagerBloodsucker::execute()
 	if (enemy) {
 		
 		bool set_vampire = false;
-		//if (prev_substate == eStateVampire) {
-		//	if (!get_state_current()->check_completion())			set_vampire = true;
-		//} else {
-		//	if (get_state(eStateVampire)->check_start_conditions()) set_vampire = true;
-		//}
+		if (prev_substate == eStateVampire) {
+			if (!get_state_current()->check_completion())			set_vampire = true;
+		} else {
+			if (get_state(eStateVampire)->check_start_conditions()) set_vampire = true;
+		}
 		
 		if (set_vampire) {
 			state_id = eStateVampire;

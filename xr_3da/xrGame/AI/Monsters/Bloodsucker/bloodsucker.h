@@ -56,10 +56,10 @@ public:
 			
 	// PP Effector		
 	
-			void			LoadEffector			(LPCSTR section);	
-			void			ActivateEffector		(float life_time);
+			void			LoadVampirePPEffector	(LPCSTR section);	
+			void			ActivateVampireEffector	(float max_dist);
 			
-			SPPInfo			pp_effector;
+			SPPInfo			pp_vampire_effector;
 
 
 	virtual	void			on_activate				();

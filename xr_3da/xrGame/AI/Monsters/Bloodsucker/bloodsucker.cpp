@@ -42,6 +42,8 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 	invisible_particle_name = pSettings->r_string(section,"Particle_Invisible");
 
+	LoadVampirePPEffector			(pSettings->r_string(section,"vampire_effector"));
+	
 	if (MotionMan.start_load_shared(CLS_ID)) {
 
 		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
@@ -130,20 +132,20 @@ void CAI_Bloodsucker::reload(LPCSTR section)
 }
 
 
-void CAI_Bloodsucker::LoadEffector(LPCSTR section)
+void CAI_Bloodsucker::LoadVampirePPEffector(LPCSTR section)
 {
-	pp_effector.duality.h			= pSettings->r_float(section,"duality_h");
-	pp_effector.duality.v			= pSettings->r_float(section,"duality_v");
-	pp_effector.gray				= pSettings->r_float(section,"gray");
-	pp_effector.blur				= pSettings->r_float(section,"blur");
-	pp_effector.noise.intensity		= pSettings->r_float(section,"noise_intensity");
-	pp_effector.noise.grain			= pSettings->r_float(section,"noise_grain");
-	pp_effector.noise.fps			= pSettings->r_float(section,"noise_fps");
-	VERIFY(!fis_zero(pp_effector.noise.fps));
+	pp_vampire_effector.duality.h			= pSettings->r_float(section,"duality_h");
+	pp_vampire_effector.duality.v			= pSettings->r_float(section,"duality_v");
+	pp_vampire_effector.gray				= pSettings->r_float(section,"gray");
+	pp_vampire_effector.blur				= pSettings->r_float(section,"blur");
+	pp_vampire_effector.noise.intensity		= pSettings->r_float(section,"noise_intensity");
+	pp_vampire_effector.noise.grain			= pSettings->r_float(section,"noise_grain");
+	pp_vampire_effector.noise.fps			= pSettings->r_float(section,"noise_fps");
+	VERIFY(!fis_zero(pp_vampire_effector.noise.fps));
 
-	sscanf(pSettings->r_string(section,"color_base"),	"%f,%f,%f", &pp_effector.color_base.r, &pp_effector.color_base.g, &pp_effector.color_base.b);
-	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &pp_effector.color_gray.r, &pp_effector.color_gray.g, &pp_effector.color_gray.b);
-	sscanf(pSettings->r_string(section,"color_add"),	"%f,%f,%f", &pp_effector.color_add.r,  &pp_effector.color_add.g,  &pp_effector.color_add.b);
+	sscanf(pSettings->r_string(section,"color_base"),	"%f,%f,%f", &pp_vampire_effector.color_base.r, &pp_vampire_effector.color_base.g, &pp_vampire_effector.color_base.b);
+	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &pp_vampire_effector.color_gray.r, &pp_vampire_effector.color_gray.g, &pp_vampire_effector.color_gray.b);
+	sscanf(pSettings->r_string(section,"color_add"),	"%f,%f,%f", &pp_vampire_effector.color_add.r,  &pp_vampire_effector.color_add.g,  &pp_vampire_effector.color_add.b);
 }
 
 
@@ -216,13 +218,12 @@ void CAI_Bloodsucker::LookPosition(Fvector to_point, float angular_speed)
 	LookDirection(dir,angular_speed);
 }
 
-void CAI_Bloodsucker::ActivateEffector(float life_time)
+void CAI_Bloodsucker::ActivateVampireEffector(float max_dist)
 {
-	//Level().Cameras.AddEffector(xr_new<CMonsterEffector>(pp_effector, life_time, 0.3f, 0.9f));
-
 	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
 	if (pA) {
-		pA->EffectorManager().AddEffector(xr_new<CVampireCameraEffector>(5.f, 5.f, life_time));
+		pA->EffectorManager().AddEffector(xr_new<CVampireCameraEffector>(6.0f, 5.f, max_dist));
+		Level().Cameras.AddEffector(xr_new<CVampirePPEffector>(pp_vampire_effector, 6.0f));
 	}
 }
 

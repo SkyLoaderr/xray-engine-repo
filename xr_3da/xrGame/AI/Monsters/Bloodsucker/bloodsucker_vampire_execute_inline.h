@@ -13,7 +13,7 @@
 #define VAMPIRE_TIME_HOLD		4000
 #define VAMPIRE_HIT_IMPULSE		400.f
 #define VAMPIRE_MIN_DIST		0.5f
-#define VAMPIRE_MAX_DIST		1.f
+#define VAMPIRE_MAX_DIST		1.5f
 
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::initialize()
@@ -37,7 +37,7 @@ void CStateBloodsuckerVampireExecuteAbstract::initialize()
 
 	object->CInvisibility::manual_deactivate();
 
-	m_effector_activated		= false;
+	m_effector_activated			= false;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -46,8 +46,8 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
 	if (!object->CControlledActor::is_turning() && !m_effector_activated) {
 		float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
 
-		object->ActivateEffector	(dist - 0.6f);
-		m_effector_activated		= true;
+		object->ActivateVampireEffector	(_abs(dist - 0.6f));
+		m_effector_activated			= true;
 	}
 	
 	
@@ -59,7 +59,8 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
 	global_transform.set(object->XFORM());
 	global_transform.mulB(bone_transform);
 
-	object->CControlledActor::update_look_point(global_transform.c);
+	if (object->CControlledActor::is_controlled())
+		object->CControlledActor::update_look_point(global_transform.c);
 
 	switch (m_action) {
 		case eActionPrepare:
@@ -158,25 +159,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_continue()
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 {
-	object->MotionMan.TA_PointBreak();
-
-	//// apply impulse
-	//const CEntityAlive *enemy = object->EnemyMan.get_enemy();
-
-	//Fvector				dir;
-	//dir.sub				(enemy->Position(), object->Position());
-
-	//float				h,p;
-	//dir.getHP			(h,p);
-	//p					+= PI_DIV_6;
-	//dir.setHP			(h,p);
-	//dir.normalize_safe	();
-
-	//CEntityAlive	*entity		= const_cast<CEntityAlive*>(enemy);
-	//Fvector			position_in_bone_space;
-	//position_in_bone_space.set	(0.f,0.f,0.f);
-	//s16 element					= smart_cast<CKinematics*>(entity->Visual())->LL_GetBoneRoot();
-	//entity->Hit					(0.01f, dir, object, element, position_in_bone_space,VAMPIRE_HIT_IMPULSE);
+	object->MotionMan.TA_PointBreak				();
 }
 
 //////////////////////////////////////////////////////////////////////////

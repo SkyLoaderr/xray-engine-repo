@@ -12,9 +12,13 @@ class	CStateBloodsuckerVampire : public CState<_Object> {
 		eStateRunAway
 	};
 
+	u32					m_time_last_vampire;
+
 public:
 						CStateBloodsuckerVampire		(_Object *obj);
-
+	
+	virtual void		reinit							();
+	
 	virtual void		initialize						();
 	virtual	void		execute							();
 	virtual	void		finalize						();
