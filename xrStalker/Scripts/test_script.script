@@ -16,10 +16,12 @@ end
 
 
 function main()
-printf("----------------------main----")
-
-	get_console():execute("test")
-	get_console():execute("pause")
+for i in 1,100000	do
+		printf("spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh")
+	end
+return	0
+//	get_console():execute("test")
+//	get_console():execute("pause")
 	
 	local dt = game.CTime()
 	dt:setHMSms(3,4,5,67)
