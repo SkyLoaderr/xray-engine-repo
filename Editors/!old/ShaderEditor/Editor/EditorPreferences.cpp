@@ -99,52 +99,47 @@ void CEditorPreferences::Edit()
     // fill prop
 	PropItemVec props;
 
-    PHelper().CreateFloat	(props,"View\\Near Plane",				&view_np, 			0.01f,	10.f);
-    PHelper().CreateFloat	(props,"View\\Far Plane", 				&view_fp,			10.f, 	10000.f);
-    PHelper().CreateAngle	(props,"View\\FOV",		  				&view_fov,			deg2rad(0.1f), deg2rad(170.f));
-
-    PHelper().CreateColor	(props,"Fog\\Color",					&fog_color	);
-    PHelper().CreateFloat	(props,"Fog\\Fogness",					&fog_fogness, 		0.f, 	100.f);
-
-    PHelper().CreateFloat	(props,"Camera\\Sensetivity\\Move",		&cam_sens_move);
-    PHelper().CreateFloat	(props,"Camera\\Sensetivity\\Rotate",	&cam_sens_rot);
-    PHelper().CreateFloat	(props,"Camera\\Fly\\Speed",			&cam_fly_speed, 	0.01f, 	100.f);
-    PHelper().CreateFloat	(props,"Camera\\Fly\\Altitude",			&cam_fly_alt, 		0.f, 	1000.f);
-
-    PHelper().CreateFloat	(props,"Tools\\Sensetivity\\Move",		&tools_sens_move);
-    PHelper().CreateFloat	(props,"Tools\\Sensetivity\\Rotate",	&tools_sens_rot);
-    PHelper().CreateFloat	(props,"Tools\\Sensetivity\\Scale",		&tools_sens_scale);
-
-    PHelper().CreateBOOL	(props,"Box Pick\\Limited Depth",		&bp_lim_depth);
-    PHelper().CreateBOOL	(props,"Box Pick\\Back Face Culling",	&bp_cull);
-    PHelper().CreateFloat	(props,"Box Pick\\Depth Tolerance",		&bp_depth_tolerance,0.f, 	10000.f);
-
-    PHelper().CreateAngle	(props,"Snap\\Angle",					&snap_angle,		0, 		PI_MUL_2);
-    PHelper().CreateFloat	(props,"Snap\\Move",					&snap_move, 		0.01f,	1000.f);
-    PHelper().CreateFloat	(props,"Snap\\Move To", 				&snap_moveto,		0.01f,	1000.f);
-
-    PHelper().CreateFloat	(props,"Grid\\Cell Size", 				&grid_cell_size,	0.1f,	10.f);
-    PHelper().CreateU32		(props,"Grid\\Cell Count", 				&grid_cell_count,	10, 	1000);
-
-    PHelper().CreateColor	(props,"Scene\\Clear Color",			&scene_clear_color	);
-    PHelper().CreateU32		(props,"Scene\\Undo Level", 			&scene_undo_level,	0, 		125);
-    PHelper().CreateU32		(props,"Scene\\Recent Count", 			&scene_recent_count,0, 		25);
-
-    PHelper().CreateFloat	(props,"Sounds\\Rolloff Factor",		&sound_rolloff, 	0.f,	10.f);
-    PHelper().CreateFlag32	(props,"Sounds\\Use Hardware",					&psSoundFlags, 	ssHardware);
-    PHelper().CreateFlag32	(props,"Sounds\\Use EAX",						&psSoundFlags, 	ssEAX);        
-
-    PHelper().CreateFlag32	(props,"Objects\\Discard Instance",				&object_flags, 	epoDiscardInstance);
-    PHelper().CreateFlag32	(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
-    PHelper().CreateFlag32	(props,"Objects\\Draw Pivot",					&object_flags, 	epoDrawPivot);
-    PHelper().CreateFlag32	(props,"Objects\\Draw Animation Path",			&object_flags, 	epoDrawAnimPath);
-    PHelper().CreateFlag32	(props,"Objects\\Draw LOD",						&object_flags, 	epoDrawLOD);
+    PHelper().CreateFlag32	(props,"Objects\\Library\\Discard Instance",	&object_flags, 	epoDiscardInstance);
     PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Joints",		&object_flags, 	epoDrawJoints);
     PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Bone Axis",		&object_flags, 	epoDrawBoneAxis);
     PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Bone Names",	&object_flags, 	epoDrawBoneNames);
     PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Bone Shapes",	&object_flags, 	epoDrawBoneShapes);
+    PHelper().CreateFlag32	(props,"Objects\\Show\\Hint",					&object_flags, 	epoShowHint);
+    PHelper().CreateFlag32	(props,"Objects\\Show\\Pivot",					&object_flags, 	epoDrawPivot);
+    PHelper().CreateFlag32	(props,"Objects\\Show\\Animation Path",			&object_flags, 	epoDrawAnimPath);
+    PHelper().CreateFlag32	(props,"Objects\\Show\\LOD",					&object_flags, 	epoDrawLOD);
+
+    PHelper().CreateU32		(props,"Scene\\Common\\Recent Count", 		    &scene_recent_count,0, 		25);
+    PHelper().CreateU32		(props,"Scene\\Common\\Undo Level", 		    &scene_undo_level,	0, 		125);
+    PHelper().CreateFloat	(props,"Scene\\Grid\\Cell Size", 	           	&grid_cell_size,	0.1f,	10.f);
+    PHelper().CreateU32		(props,"Scene\\Grid\\Cell Count", 	           	&grid_cell_count,	10, 	1000);
+
+    PHelper().CreateBOOL	(props,"Tools\\Box Pick\\Limited Depth",		&bp_lim_depth);
+    PHelper().CreateBOOL	(props,"Tools\\Box Pick\\Back Face Culling",	&bp_cull);
+    PHelper().CreateFloat	(props,"Tools\\Box Pick\\Depth Tolerance",		&bp_depth_tolerance,0.f, 	10000.f);
+    PHelper().CreateFloat	(props,"Tools\\Sens\\Move",			          	&tools_sens_move);
+    PHelper().CreateFloat	(props,"Tools\\Sens\\Rotate",		          	&tools_sens_rot);
+    PHelper().CreateFloat	(props,"Tools\\Sens\\Scale",		          	&tools_sens_scale);
+    PHelper().CreateAngle	(props,"Tools\\Snap\\Angle",		          	&snap_angle,		0, 		PI_MUL_2);
+    PHelper().CreateFloat	(props,"Tools\\Snap\\Move",			          	&snap_move, 		0.01f,	1000.f);
+    PHelper().CreateFloat	(props,"Tools\\Snap\\Move To", 		          	&snap_moveto,		0.01f,	1000.f);
+
+    PHelper().CreateFloat	(props,"Sounds\\Params\\Rolloff",				&sound_rolloff, 	0.f,	10.f);
+    PHelper().CreateFlag32	(props,"Sounds\\Use\\Hardware",					&psSoundFlags, 	ssHardware);
+    PHelper().CreateFlag32	(props,"Sounds\\Use\\EAX",						&psSoundFlags, 	ssEAX);        
+
+    PHelper().CreateFloat	(props,"Viewport\\Camera\\Move Sens",		    &cam_sens_move);
+    PHelper().CreateFloat	(props,"Viewport\\Camera\\Rotate Sens",		    &cam_sens_rot);
+    PHelper().CreateFloat	(props,"Viewport\\Camera\\Fly Speed",		    &cam_fly_speed, 	0.01f, 	100.f);
+    PHelper().CreateFloat	(props,"Viewport\\Camera\\Fly Altitude",	    &cam_fly_alt, 		0.f, 	1000.f);
+    PHelper().CreateColor	(props,"Viewport\\Fog\\Color",				    &fog_color	);
+    PHelper().CreateFloat	(props,"Viewport\\Fog\\Fogness",			    &fog_fogness, 		0.f, 	100.f);
+    PHelper().CreateFloat	(props,"Viewport\\Near Plane",				    &view_np, 			0.01f,	10.f);
+    PHelper().CreateFloat	(props,"Viewport\\Far Plane", 				    &view_fp,			10.f, 	10000.f);
+    PHelper().CreateAngle	(props,"Viewport\\FOV",		  				    &view_fov,			deg2rad(0.1f), deg2rad(170.f));
+    PHelper().CreateColor	(props,"Viewport\\Clear Color",		           	&scene_clear_color	);
     
-    PHelper().CreateButton	(props,"Keyboard\\File",	 					"Load,Save", 0);
+    PHelper().CreateButton	(props,"Keyboard\\Common\\File",				"Load,Save", 0);
     ECommandVec& cmds		= GetEditorCommands();
     for (u32 cmd_idx=0; cmd_idx<cmds.size(); cmd_idx++){
     	SECommand*& CMD		= cmds[cmd_idx];
@@ -225,7 +220,7 @@ void CEditorPreferences::OnCreate()
 
     ApplyValues			();
 
-	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,TOnCloseEvent(this,&CEditorPreferences::OnClose),TProperties::plNoClearStore|TProperties::plFolderStore|TProperties::plItemFolders|TProperties::plFullSort);
+	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,TOnCloseEvent(this,&CEditorPreferences::OnClose),TProperties::plItemFolders|TProperties::plFullExpand); //|TProperties::plFullSortTProperties::plNoClearStore|TProperties::plFolderStore|
 }
 //---------------------------------------------------------------------------
 
