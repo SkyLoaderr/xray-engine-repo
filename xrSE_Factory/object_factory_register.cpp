@@ -41,6 +41,7 @@
 #	include "ai/monsters/zombie/zombie.h"
 #	include "ai/monsters/fracture/fracture.h"
 #	include "ai/monsters/snork/snork.h"
+#	include "ai/monsters/cat/cat.h"
 
 #	include "ai/trader/ai_trader.h"
 
@@ -213,6 +214,7 @@ void CObjectFactory::register_classes	()
 	ADD(CZombie					,CSE_ALifeMonsterBase			,CLSID_AI_ZOMBIE				,"zombie");
 	ADD(CFracture				,CSE_ALifeMonsterBase			,CLSID_AI_FRACTURE				,"fracture");
 	ADD(CSnork					,CSE_ALifeMonsterBase			,CLSID_AI_SNORK					,"snork");
+	ADD(CCat					,CSE_ALifeMonsterBase			,CLSID_AI_CAT					,"cat");
 
 	// Trader
 	ADD(CAI_Trader				,CSE_ALifeTrader				,CLSID_AI_TRADER				,"trader");
