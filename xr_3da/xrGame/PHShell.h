@@ -162,8 +162,8 @@ virtual ~CPHShell				()
 			dSpaceSetCleanup (m_space, 0);
 		}
 	}
-	void PassEndElements(u16 from,CPHShell *dest,u16 position);
-	void PassEndJoints(u16 from,CPHShell *dest);
+	void PassEndElements(u16 from,u16 to,CPHShell *dest);
+	void PassEndJoints(u16 from,u16 to,CPHShell *dest);
 	void DeleteElement(u16 element);
 	void DeleteJoint(u16 joint);
 	void SetTransform(Fmatrix m);

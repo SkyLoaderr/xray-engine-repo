@@ -477,5 +477,5 @@ bool CCar::SDoor::TestPass(const Fvector& pos,const Fvector& dir)
 bool CCar::SDoor::CanEnter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
 	if(!joint) return true;//temp for fake doors
-	return state==opened && IsInArea(pos) && TestPass(foot_pos,dir);
+	return state==opened && TestPass(foot_pos,dir);//&& IsInArea(pos) 
 }

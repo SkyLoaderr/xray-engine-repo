@@ -110,7 +110,7 @@ public:
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
-	virtual void			setEndGeomFracturable	(CPHFracture &fracture)							= 0;
+	virtual CPHFracture&	setEndGeomFracturable	(CPHFracture &fracture)							= 0;
 	virtual	dBodyID			get_body				()												= 0;
 	virtual const Fvector&	mass_Center				()												= 0;
 	virtual float			getRadius				()												= 0;

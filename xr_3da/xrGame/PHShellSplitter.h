@@ -17,7 +17,6 @@ private:
 	EType					   m_type;
 	u16						   m_element;
 	u16						   m_joint;
-
 	CPHShellSplitter(CPHShellSplitter::EType type,u16 element,u16 joint);
 
 };
@@ -34,9 +33,10 @@ virtual void			PhDataUpdate(dReal step);				//call fractures PhDataUpdate for el
 virtual void			InitContact(dContact* c){};
 		bool			CheckSplitter(u16 aspl);		//
 		shell_root		SplitJoint(u16 aspl);		//create new shell moving into it departed elements and joints 
+		shell_root		ElementSingleSplit(const element_fracture &split_elem);
 		void			SplitElement(u16 aspl,PHSHELL_PAIR_VECTOR &out_shels);//
 
-		void			PassEndSplitters(u16 from,CPHShell* dest,u16 position,u16 shift_elements,u16 shift_joints);
+		void			PassEndSplitters(const CShellSplitInfo& spl_inf,CPHShell* dest,u16 jt_add_shift,u16 el_add_shift);
 		void			InitNewShell(CPHShell* shell);			//inits new active shell
 public:
 						CPHShellSplitterHolder(CPHShell* shell);

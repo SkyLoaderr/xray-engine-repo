@@ -765,7 +765,7 @@ void CPHSimpleCharacter::SetPosition(Fvector pos){
 	m_safe_position[2]=pos.z;
 
 	dBodySetPosition(m_body,pos.x,pos.y+m_radius,pos.z);
-	m_body_interpolation.ResetPositions();
+	//m_body_interpolation.ResetPositions();
 }
 
 

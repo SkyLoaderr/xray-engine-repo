@@ -822,10 +822,10 @@ CPhysicsElement* CPHShell::NearestToPoint(const Fvector& point)
 	return nearest_element;
 }
 
-void CPHShell::PassEndElements(u16 from,CPHShell *dest,u16 position)
+void CPHShell::PassEndElements(u16 from,u16 to,CPHShell *dest)
 {
 
-	ELEMENT_I i_from=elements.begin()+from,e=elements.end();
+	ELEMENT_I i_from=elements.begin()+from,e=elements.begin()+to+1;
 	
 	for(ELEMENT_I i=i_from;i!=e;i++)
 	{
@@ -834,16 +834,16 @@ void CPHShell::PassEndElements(u16 from,CPHShell *dest,u16 position)
 		dSpaceAdd(dest->m_space,spaced_geom);
 		(*i)->SetShell(dest);
 	}
-	dest->elements.insert(dest->elements.begin()+position,i_from,e);
+	dest->elements.insert(dest->elements.end(),i_from,e);
 	elements.erase(i_from,e);
 	
 }
 
-void CPHShell::PassEndJoints(u16 from,CPHShell *dest)
+void CPHShell::PassEndJoints(u16 from,u16 to,CPHShell *dest)
 {
-	JOINT_I i_from=joints.begin()+from,e=joints.end();
+	JOINT_I i_from=joints.begin()+from,e=joints.begin()+to+1;
 
-	dest->joints.insert(dest->joints.begin(),i_from,e);
+	dest->joints.insert(dest->joints.end(),i_from,e);
 	joints.erase(i_from,e);
 }
 

@@ -13,42 +13,66 @@ CPHFracturesHolder::~CPHFracturesHolder()
 	m_impacts.clear();
 	m_feedbacks.clear();
 }
-element_breakbone CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fracture)
+element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fracture)
 {
-	FRACTURE_I fract_i=m_fractures.begin()+fracture;
-	u16 geom_num=fract_i->m_geom_num;
-	CPHElement* new_element=dynamic_cast<CPHElement*>(P_create_Element());
+	FRACTURE_I fract_i		=m_fractures.begin()+fracture;
+	u16 geom_num			=fract_i->m_start_geom_num;
+	u16 end_geom_num		=fract_i->m_end_geom_num;
+
+	CPHElement* new_element	=dynamic_cast<CPHElement*>(P_create_Element());
 	InitNewElement(new_element);
-	element->PassEndGeoms(geom_num,new_element);
-	element_breakbone ret=mk_pair(new_element,fract_i->m_bone_id);
-	m_fractures.erase(fract_i);
-	//fracture now points to next fracture
-	//if we have another fractures after this one pass them to the created element starting from fracture(next to argument fracture)
-	//shift geoms in fractures by number of geoms leaved in source element
+	element->PassEndGeoms(geom_num,end_geom_num,new_element);
+	element_fracture ret	=mk_pair(new_element,(CShellSplitInfo)(*fract_i));
+
 	if(m_fractures.size()-fracture>0) 
 	{	
 		if(new_element->m_fratures_holder==NULL)//create fractures holder if it was not created before
 		{
 			new_element->m_fratures_holder=xr_new<CPHFracturesHolder>();
 		}
-		PassEndFractures(fracture,new_element,geom_num+1);
+		PassEndFractures(fracture,new_element);
 	}
 	return ret;
 }
 
-void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest,u16 shift_geoms)
+void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest)
 {
-	FRACTURE_I i_from=m_fractures.begin()+from,e=m_fractures.end();
+	FRACTURE_I i=m_fractures.begin(),i_from=m_fractures.begin()+from,e=m_fractures.end();
+	u16 end_geom=i_from->m_end_geom_num;
+	u16 begin_geom_num=i_from->m_start_geom_num;
+	u16 leaved_geoms=begin_geom_num+1;
+	u16 passed_geoms=end_geom-begin_geom_num+1;
 	if(i_from==e) return;
 	CPHFracturesHolder* &dest_fract_holder=dest->m_fratures_holder;
 	if(!dest_fract_holder) dest_fract_holder=xr_new<CPHFracturesHolder>();
-	for(FRACTURE_I i=i_from;i!=e;i++)
+	for(;i!=i_from;i++)//correct end geoms for fractures leaved in source
 	{
-		i->m_geom_num=i->m_geom_num-shift_geoms;
+		u16& cur_end_geom=i->m_end_geom_num;
+		if(cur_end_geom>begin_geom_num) cur_end_geom=cur_end_geom-passed_geoms;
 	}
 
-	dest_fract_holder->m_fractures.insert(dest_fract_holder->m_fractures.begin(),i_from,e);
-	m_fractures.erase(i_from,e);
+	i++; // omit used fracture;
+
+	for(;i!=e;i++)//itterate antil a fracture where geom num > end geom num
+	{
+		u16 &cur_end_geom	=i->m_end_geom_num;
+		u16 &cur_geom		=i->m_end_geom_num;
+		if(cur_geom>end_geom) break;
+		cur_end_geom=cur_end_geom-leaved_geoms;
+		cur_geom=cur_geom-leaved_geoms;
+	}
+	FRACTURE_I i_to=i;
+	for(;i!=e;i++)//correct data in the rest leaved fractures
+	{
+		u16 &cur_end_geom	=i->m_end_geom_num;
+		u16 &cur_geom		=i->m_end_geom_num;
+		cur_end_geom		=cur_end_geom-passed_geoms;
+		cur_geom			=cur_end_geom-passed_geoms;
+	}
+	//pass fractures not including end fracture
+	dest_fract_holder->m_fractures.insert(dest_fract_holder->m_fractures.end(),i_from+1,i_to);
+	//erase passed fracture allong whith used fracture
+	m_fractures.erase(i_from,i_to);
 }
 
 void CPHFracturesHolder::SplitProcess(CPHElement* element,ELEMENT_PAIR_VECTOR &new_elements)
@@ -58,7 +82,7 @@ void CPHFracturesHolder::SplitProcess(CPHElement* element,ELEMENT_PAIR_VECTOR &n
 	{
 		if(i->Breaked())
 		{
-			new_elements.push_back(SplitFromEnd(element,i->m_geom_num));
+			new_elements.push_back(SplitFromEnd(element,i->m_start_geom_num));
 		}
 	}
 }
@@ -116,9 +140,10 @@ void CPHFracturesHolder::AddImpact(const Fvector& force,const Fvector& point)
 {
 	m_impacts.push_back(SPHImpact(force,point));
 }
-void CPHFracturesHolder::AddFracture(const CPHFracture& fracture)
+CPHFracture& CPHFracturesHolder::AddFracture(const CPHFracture& fracture)
 {
 	m_fractures.push_back(fracture);
+	return m_fractures.back();
 }
 CPHFracture::CPHFracture(u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)
 {

@@ -27,86 +27,216 @@ InitNewShell(new_shell_desc);//this called before adding elements because existi
 SPLITTER_I splitter=m_splitters.begin()+aspl;
 u16 start_element=splitter->m_element;
 u16 start_joint=splitter->m_joint;
-m_pShell->PassEndElements(start_element,new_shell_desc,0);
-m_pShell->PassEndJoints(start_joint+1,new_shell_desc);
+
+u16 end_element=m_pShell->joints[start_joint]->JointDestroyInfo()->m_end_element;
+u16 end_joint=m_pShell->joints[start_joint]->JointDestroyInfo()->m_end_joint;
+
+m_pShell->PassEndElements(start_element,end_element,new_shell_desc);
+m_pShell->PassEndJoints(start_joint+1,end_joint,new_shell_desc);
 shell_root ret = mk_pair(new_shell,(m_pShell->joints[start_joint])->JointDestroyInfo()->BoneID());
 m_pShell->DeleteJoint(start_joint);
-m_splitters.erase(splitter);
+//m_splitters.erase(splitter);
 //aslp points to the next splitter after this was allready delleted
-PassEndSplitters(aspl,new_shell_desc,0,start_element+1,start_joint+1);
+CShellSplitInfo split_inf;
+split_inf.m_bone_id=m_pShell->joints[start_joint]->JointDestroyInfo()->BoneID();
+split_inf.m_start_el_num=start_element;
+split_inf.m_end_el_num=end_element;
+split_inf.m_start_jt_num=start_joint;
+split_inf.m_end_jt_num=end_joint;
+
+PassEndSplitters(split_inf,new_shell_desc,1,0);
 
 //start_element+1 the number of elements leaved in source shell
 //start_joint+1 the number of joints leaved in source shell and the destroyed joint
 return ret;
 }
 
-void CPHShellSplitterHolder::PassEndSplitters(u16 from,CPHShell* dest,u16 position,u16 shift_elements,u16 shift_joints)
+void CPHShellSplitterHolder::PassEndSplitters(const CShellSplitInfo& spl_inf,CPHShell* dest,u16 jt_add_shift,u16 el_add_shift)
 {
-	SPLITTER_I i_from=m_splitters.begin()+from,e=m_splitters.end();
+
+	
 	CPHShellSplitterHolder*	&dest_holder=dest->m_spliter_holder;
 	if(!dest_holder)dest_holder=xr_new<CPHShellSplitterHolder>(dest);
+	
+	ELEMENT_STORAGE &source_elements=m_pShell->elements;
+	ELEMENT_I i_elem=source_elements.begin(),e_elem=source_elements.begin()+spl_inf.m_start_el_num;
+	u16 shift_e=spl_inf.m_end_el_num-spl_inf.m_start_el_num+1;
+	u16 shift_j=spl_inf.m_end_jt_num-spl_inf.m_start_jt_num+1;
 
-	for(SPLITTER_I i=i_from;i!=e;i++)
+	for(;i_elem!=e_elem;i_elem++)	//until start elem in both joint or elem split fractures 
+									//end elems have to be corrected 
+									//if grater then end elem in moving diapason
 	{
-		i->m_element	= i->m_element	- shift_elements;
-		i->m_joint		= i->m_joint	- shift_joints;
+		FRACTURE_I f_i=(*i_elem)->FracturesHolder()->m_fractures.begin(),f_e=(*i_elem)->FracturesHolder()->m_fractures.end();
+		for(;f_i!=f_e;f_i++)
+		{
+			u16	&end_el_num=f_i->m_end_el_num;
+			if(end_el_num>spl_inf.m_end_el_num)		end_el_num=end_el_num-shift_e;
+			u16	&end_jt_num=f_i->m_end_jt_num;
+			if(end_jt_num>spl_inf.m_end_jt_num)		end_jt_num=end_jt_num-shift_j;
+		}
 	}
-	dest_holder->m_splitters.insert(dest_holder->m_splitters.begin()+position,i_from,e);
-	m_splitters.erase(i_from,e);
+
+	//same for joints
+	JOINT_STORAGE	&source_joints=m_pShell->joints;
+	JOINT_I i_joint=source_joints.begin(), e_joint=source_joints.begin()+spl_inf.m_start_jt_num;
+	
+	for(;i_joint!=e_joint;i_joint++)	
+	{
+		u16 &end_element	=		(*i_joint)->JointDestroyInfo()->m_end_element;
+		u16	&end_joint		=		(*i_joint)->JointDestroyInfo()->m_end_joint;
+		if(end_element>spl_inf.m_end_el_num) end_element=end_element-shift_e;
+		if(end_joint>spl_inf.m_end_jt_num)		end_joint=end_joint-shift_j;
+	}
+
+
+
+//now process diapason that tobe unsplited
+
+	e_elem=source_elements.begin()+spl_inf.m_end_el_num+1;
+	u16 passed_shift_e=spl_inf.m_start_el_num-el_add_shift;
+	u16 passed_shift_j=spl_inf.m_end_jt_num-jt_add_shift;
+	for(;i_elem!=e_elem;i_elem++)	
+
+	{
+		FRACTURE_I f_i=(*i_elem)->FracturesHolder()->m_fractures.begin(),f_e=(*i_elem)->FracturesHolder()->m_fractures.end();
+		for(;f_i!=f_e;f_i++)
+		{
+			u16	&end_el_num=f_i->m_end_el_num;
+			u16	&start_el_num=f_i->m_start_el_num;
+				end_el_num=end_el_num-passed_shift_e;
+				start_el_num=start_el_num-passed_shift_e;
+
+			u16	&end_jt_num=f_i->m_end_jt_num;
+			u16	&start_jt_num=f_i->m_start_jt_num;
+				end_jt_num=end_jt_num-passed_shift_j;
+				start_jt_num=start_jt_num-passed_shift_j;
+		}
+	}
+	
+	e_joint=source_joints.begin()+spl_inf.m_end_jt_num+1;
+	for(;i_joint!=e_joint;i_joint++)	
+	{
+		u16 &end_element	=		(*i_joint)->JointDestroyInfo()->m_end_element;
+		u16	&end_joint		=		(*i_joint)->JointDestroyInfo()->m_end_joint;
+		if(end_element>spl_inf.m_end_el_num) end_element=end_element-passed_shift_e;
+		if(end_joint>spl_inf.m_end_jt_num)		end_joint=end_joint-passed_shift_j;
+	}
+
+//the rest unconditionaly shift end & begin
+	e_elem=source_elements.end();
+	for(;i_elem!=e_elem;i_elem++)	
+
+	{
+		FRACTURE_I f_i=(*i_elem)->FracturesHolder()->m_fractures.begin(),f_e=(*i_elem)->FracturesHolder()->m_fractures.end();
+		for(;f_i!=f_e;f_i++)
+		{
+			u16	&end_el_num=f_i->m_end_el_num;
+			u16	&start_el_num=f_i->m_start_el_num;
+			end_el_num=end_el_num-shift_e;
+			start_el_num=start_el_num-shift_e;
+
+			u16	&end_jt_num=f_i->m_end_jt_num;
+			u16	&start_jt_num=f_i->m_start_jt_num;
+			end_jt_num=end_jt_num-shift_j;
+			start_jt_num=start_jt_num-shift_j;
+		}
+	}
+
+	e_joint=source_joints.end();
+	for(;i_joint!=e_joint;i_joint++)	
+	{
+		u16 &end_element	=		(*i_joint)->JointDestroyInfo()->m_end_element;
+		u16	&end_joint		=		(*i_joint)->JointDestroyInfo()->m_end_joint;
+		if(end_element>spl_inf.m_end_el_num) end_element=end_element-shift_e;
+		if(end_joint>spl_inf.m_end_jt_num)	 end_joint=end_joint-shift_j;
+	}
+// at rest!! pass splitters it is very similar passing fractures
+// correct data for splitters before passed and find start splitter to pass
+	SPLITTER_I spl_e=m_splitters.end(),spl_i=m_splitters.begin();
+	for(;spl_i!=spl_e;spl_i++)
+	{
+		u16	&elem	= spl_i->m_element;
+		u16 &joint  = spl_i->m_joint;
+		if(spl_i->m_type==CPHShellSplitter::splElement) 
+		{
+			if(elem>=spl_inf.m_start_el_num) break;//we at begining
+		}
+		else
+		{
+			if(joint>=spl_inf.m_start_jt_num) break;//we at begining
+		}
+		if(elem>spl_inf.m_end_el_num) elem=elem-shift_e;
+		if(joint>spl_inf.m_end_jt_num) joint=joint-shift_j;
+	}
+SPLITTER_I i_from = spl_i;
+//correct data for passing splitters and find last splitter to pass
+	for(;spl_i!=spl_e;spl_i++)
+	{
+		u16	&elem	= spl_i->m_element;
+		u16 &joint  = spl_i->m_joint;
+		if(spl_i->m_type==CPHShellSplitter::splElement) 
+		{
+			if(elem>=spl_inf.m_end_el_num) break;//we after begining
+		}
+		else
+		{
+			if(joint>=spl_inf.m_end_jt_num) break;//we after begining
+		}
+		if(elem>spl_inf.m_end_el_num) elem=elem-spl_inf.m_start_el_num;
+		if(joint>spl_inf.m_end_jt_num) joint=joint-spl_inf.m_start_jt_num;
+	}
+	SPLITTER_I i_to = spl_i;
+	dest_holder->m_splitters.insert(dest_holder->m_splitters.end(),i_from,i_to);
+	m_splitters.erase(i_from,i_to);
 }
 
 static ELEMENT_PAIR_VECTOR new_elements;
+shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &split_elem)
+{
+
+	//const CPHShellSplitter& splitter=m_splitters[aspl];
+	//CPHElement* element=m_pShell->elements[splitter.m_element];
+	CPhysicsShell *new_shell_last=P_create_Shell();
+	CPHShell	  *new_shell_last_desc=dynamic_cast<CPHShell*>(new_shell_last);
+	new_shell_last->mXFORM.set(m_pShell->mXFORM);
+	
+	
+	m_pShell->joints[split_elem.second.m_start_jt_num]->ReattachFirstElement(split_elem.first);
+	//the last new shell will have all splitted old elements end joints and one new element reattached to old joint
+
+	m_pShell->add_Element(split_elem.first);
+	m_pShell->PassEndElements(split_elem.second.m_start_el_num,split_elem.second.m_end_el_num,new_shell_last_desc);
+
+	InitNewShell(new_shell_last_desc);//this cretes space for the shell and add elements to it,place elements to attach joints.....
+
+	m_pShell->PassEndJoints(split_elem.second.m_end_jt_num,split_elem.second.m_end_jt_num,new_shell_last_desc);
+	//m_splitters.erase(m_splitters.begin()+aspl);
+	//now aspl points to the next splitter
+	if((split_elem.first)->FracturesHolder())//if this element can be splitted add a splitter for it
+			new_shell_last_desc->m_spliter_holder->m_splitters.push_back(CPHShellSplitter(CPHShellSplitter::splElement,0,0));//
+
+	//pass splitters taking into account that one element was olready added
+	PassEndSplitters(split_elem.second,new_shell_last_desc,1,0);
+
+
+	return mk_pair(new_shell_last,split_elem.second.m_bone_id);
+
+}
 void CPHShellSplitterHolder::SplitElement(u16 aspl,PHSHELL_PAIR_VECTOR &out_shels)
 {
 
 	new_elements.clear();
-	const CPHShellSplitter& splitter=m_splitters[aspl];
-	CPHElement* element=m_pShell->elements[splitter.m_element];
-	CPhysicsShell *new_shell_last=P_create_Shell();
-	CPHShell	  *new_shell_last_desc=dynamic_cast<CPHShell*>(new_shell_last);
-	new_shell_last->mXFORM.set(m_pShell->mXFORM);
 
-	element->SplitProcess(new_elements);
-	ELEMENT_PAIR_RI i=new_elements.rbegin(),e=new_elements.rend();
-	m_pShell->joints[splitter.m_joint]->ReattachFirstElement(i->first);
-	//the last new shell will have all splitted old elements end joints and one new element reattached to old joint
-
-	m_pShell->add_Element(i->first);
-	m_pShell->PassEndElements(splitter.m_element+1,new_shell_last_desc,1);
 	
-	InitNewShell(new_shell_last_desc);//this cretes space for the shell and add elements to it,place elements to attach joints.....
+	m_pShell->elements[(m_splitters.begin()+aspl)->m_element]->SplitProcess(new_elements);
 
-	m_pShell->PassEndJoints(splitter.m_joint,new_shell_last_desc);
-	m_splitters.erase(m_splitters.begin()+aspl);
-	//now aspl points to the next splitter
-	if((i->first)->FracturesHolder())//if this element can be splitted add a splitter for it
-	{
-		new_shell_last_desc->m_spliter_holder->m_splitters.push_back(CPHShellSplitter(CPHShellSplitter::splElement,0,0));//
-		//pass splitters taking into account that one was olready added
-		PassEndSplitters(aspl,new_shell_last_desc,1,splitter.m_element,splitter.m_joint);
-	}
-	else
-	{
-		PassEndSplitters(aspl,new_shell_last_desc,0,splitter.m_element,splitter.m_joint);
-	}
 
-	//splitter.m_element the num of els leaved in old shell minus one new element added
-	//start_joint the number of joints leaved in source shell (no destroied joints)
-	out_shels.push_back(mk_pair(new_shell_last,i->second));
-	i++;
+	ELEMENT_PAIR_RI i=new_elements.rbegin(),e=new_elements.rend();
 
-		//create shells containing one element
 		for(;i!=e;i++)
 		{
-			CPhysicsShell *new_shell=P_create_Shell();
-			CPHShell	  *new_shell_desc=dynamic_cast<CPHShell*>(new_shell);
-			InitNewShell(new_shell_desc);
-			new_shell->add_Element(i->first);
-			if((i->first)->FracturesHolder())//if this element can be splitted add a splitter for it
-			{
-				new_shell_desc->m_spliter_holder->m_splitters.push_back(CPHShellSplitter(CPHShellSplitter::splElement,0,0));//
-			}
-			out_shels.push_back(mk_pair(new_shell,i->second));
+			out_shels.push_back(ElementSingleSplit(*i));
 		}
 }
 

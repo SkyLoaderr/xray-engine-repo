@@ -199,10 +199,10 @@ dMass CPHElement::recursive_mass_summ(u16 start_geom,FRACTURE_I cur_fracture)
 {
 	dMass end_mass;
 	dMassSetZero(&end_mass);
-	GEOM_I i_geom=m_geoms.begin()+start_geom,	e=m_geoms.begin()+cur_fracture->m_geom_num;
+	GEOM_I i_geom=m_geoms.begin()+start_geom,	e=m_geoms.begin()+cur_fracture->m_start_geom_num;
 	for(;i_geom!=e;i_geom++)(*i_geom)->add_self_mass(end_mass,m_mass_center,static_dencity);
 	dMassAdd(&m_mass,&end_mass);
-	start_geom=cur_fracture->m_geom_num;
+	start_geom=cur_fracture->m_start_geom_num;
 	cur_fracture++;
 	if(cur_fracture!=m_fratures_holder->m_fractures.end())
 				cur_fracture->SetMassParts(m_mass,recursive_mass_summ(start_geom,cur_fracture));
@@ -1248,9 +1248,9 @@ dGeomID CPHElement::dSpacedGeometry()
 	else return (*m_geoms.begin())->geometry_transform();
 }
 
-void CPHElement::PassEndGeoms(u16 from,CPHElement* dest)
+void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 {
-	GEOM_I i_from=m_geoms.begin()+from,e=m_geoms.end();
+	GEOM_I i_from=m_geoms.begin()+from,e=m_geoms.begin()+to+1;
 
 	for(GEOM_I i=i_from;i!=e;i++)
 	{
@@ -1259,7 +1259,7 @@ void CPHElement::PassEndGeoms(u16 from,CPHElement* dest)
 		//(*i)->set_body(dest->m_body);
 		(*i)->set_body(0);
 	}
-	dest->m_geoms.insert(dest->m_geoms.begin(),i_from,e);
+	dest->m_geoms.insert(dest->m_geoms.end(),i_from,e);
 	m_geoms.erase(i_from,e);
 }
 void CPHElement::SplitProcess(ELEMENT_PAIR_VECTOR &new_elements)
@@ -1332,9 +1332,8 @@ void CPHElement::PresetActive()
 	
 }
 
-void	CPHElement::setEndGeomFracturable(CPHFracture& fracture)
+CPHFracture&	CPHElement::setEndGeomFracturable(CPHFracture& fracture)
 {
 	if(!m_fratures_holder) m_fratures_holder=xr_new<CPHFracturesHolder>();
-	fracture.SetGeomNum(u16(m_geoms.size()-1));
-	m_fratures_holder->AddFracture(fracture);
+	return m_fratures_holder->AddFracture(fracture);
 }
