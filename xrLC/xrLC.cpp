@@ -133,7 +133,7 @@ int APIENTRY WinMain(HINSTANCE hInst,
 	// Initialize debugging
 	Core._initialize	("xrLC");
 	Startup				(lpCmdLine);
-	// Core._destroy	();
+	Core._destroy		();
 	
 	return 0;
 }
