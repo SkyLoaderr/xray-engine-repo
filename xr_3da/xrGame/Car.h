@@ -8,6 +8,8 @@ class ENGINE_API			CBoneInstance;
 class CCar :				public CEntity
 {
 private:
+	typedef CEntity			inherited;
+private:
 	CCameraBase*			camera;
 
 	void					cam_Update			(float dt);

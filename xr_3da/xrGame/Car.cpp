@@ -1,15 +1,18 @@
 #include "stdafx.h"
 #include "car.h"
 #include "..\camerabase.h"
+#include "..\cameralook.h"
 #include "..\bodyinstance.h"
 #include "..\xr_level_controller.h"
 
 CCar::CCar(void)
 {
+	camera		= new CCameraLook		(this, pSettings, "actor_look_cam",		false);
 }
 
 CCar::~CCar(void)
 {
+	_DELETE		(camera);
 }
 
 void __stdcall CCar::cb_WheelFL	(CBoneInstance* B)
@@ -59,7 +62,9 @@ void	CCar::Load					( CInifile* ini, const char *section )
 
 BOOL	CCar::Spawn					( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
 {
-	return inherited::Spawn			(bLocal,server_id,o_pos,o_angle,P,flags);
+	BOOL R = inherited::Spawn		(bLocal,server_id,o_pos,o_angle,P,flags);
+	bVisible						= TRUE;
+	return R;
 }
 
 void	CCar::Update				( DWORD T )
@@ -87,10 +92,13 @@ void	CCar::net_Import			(NET_Packet* P)
 
 void	CCar::OnMouseMove			(int x, int y)
 {
+	if (Remote())					return;
 }
 
 void	CCar::OnKeyboardPress		(int cmd)
 {
+	if (Remote())					return;
+
 	switch (cmd)	
 	{
 	case kACCEL:	break;
@@ -103,10 +111,24 @@ void	CCar::OnKeyboardPress		(int cmd)
 
 void	CCar::OnKeyboardRelease		(int cmd)
 {
+	if (Remote())					return;
 }
 
 void	CCar::OnKeyboardHold		(int cmd)
 {
+	if (Remote())					return;
+
+	switch(cmd)
+	{
+	case kUP:
+	case kDOWN: 
+	case kCAM_ZOOM_IN: 
+	case kCAM_ZOOM_OUT: 
+		camera->Move(cmd); break;
+	case kLEFT:
+	case kRIGHT:
+		camera->Move(cmd); break;
+	}
 }
 
 void	CCar::OnHUDDraw				(CCustomHUD* hud)
