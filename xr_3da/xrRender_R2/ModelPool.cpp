@@ -12,6 +12,7 @@
 #include "..\bodyinstance.h"
 #include "..\fcached.h"
 #include "..\flod.h"
+#include "..\skeletonx.h"
 #include "ftreevisual.h"
 #include "PSVisual.h"
 #include "ParticleGroup.h"
