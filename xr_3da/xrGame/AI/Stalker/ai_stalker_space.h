@@ -43,6 +43,8 @@ namespace StalkerSpace {
 		eStalkerSoundHumming,
 		eStalkerSoundAlarm,
 		eStalkerSoundSurrender,
+		eStalkerSoundBackup,
+		eStalkerSoundAttack,
 
 		eStalkerSoundScript,
 		eStalkerSoundDummy = u32(-1),
@@ -56,6 +58,8 @@ namespace StalkerSpace {
 		eStalkerSoundMaskNoHumming	= u32(1 << 31),
 		eStalkerSoundMaskAlarm		= u32(1 << 30) | 1,
 		eStalkerSoundMaskSurrender	= u32(1 << 30) | 2,
+		eStalkerSoundMaskBackup		= u32(1 << 30) | 4,
+		eStalkerSoundMaskAttack		= u32(1 << 30) | 8,
 		eStalkerSoundMaskDummy		= u32(-1),
 	};
 
