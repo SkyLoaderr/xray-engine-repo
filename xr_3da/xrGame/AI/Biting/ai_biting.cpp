@@ -13,8 +13,8 @@ using namespace AI_Biting;
 
 CAI_Biting::CAI_Biting()
 {
-//	shedule.t_min	=	200;
-//	shedule.t_max	=	450;
+	shedule.t_min	=	200;
+	shedule.t_max	=	350;
 	
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
@@ -143,10 +143,11 @@ void CAI_Biting::Die()
 	DeinitMemory();
 
 	Fvector	dir;
-	AI_Path.Direction(dir);
+//	AI_Path.Direction(dir);
 	
 	bShowDeath = true;
-	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
+//	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
+	SelectAnimation(dir,dir,0.f);
 
 	::Sound->play_at_pos(m_tpaSoundDie[::Random.randI(SND_DIE_COUNT)],this,eye_matrix.c);
 }

@@ -253,12 +253,12 @@ void CChimeraAttack::Run()
 	if (bAttackMelee && m_tAction == ACTION_RUN) {
 		nStartStop++;
 	}
-	if (nStartStop > nDoDamage*2) {
-		if (nDoDamage != 0) {
-			nStartStop = nDoDamage = 0;
-			m_fDistMin -= 0.3f;
-		} else nDoDamage = 1;
-	}
+//	if (nStartStop > nDoDamage*2) {
+//		if (nDoDamage != 0) {
+//			nStartStop = nDoDamage = 0;
+//			m_fDistMin -= 0.3f;
+//		} else nDoDamage = 1;
+//	}
 	
 	// задержка для построения пути
 

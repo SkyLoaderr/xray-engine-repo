@@ -88,11 +88,15 @@ void CAI_Chimera::Die()
 
 	DeinitMemory();
 
+//	Fvector	dir;
+//	AI_Path.Direction(dir);
+//
+//	bShowDeath = true;
+//	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);	
+
 	Fvector	dir;
-	AI_Path.Direction(dir);
-	
 	bShowDeath = true;
-	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
+	SelectAnimation(dir,dir,0.f);	
 }
 
 void CAI_Chimera::Load(LPCSTR section)
