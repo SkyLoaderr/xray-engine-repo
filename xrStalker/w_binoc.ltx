@@ -36,8 +36,12 @@ cost					 = 200
 cam_relax_speed          = 5.5
 cam_dispersion           = 2
 cam_max_angle			 = 5
-cam_horz_prob			 = 0.25	;веро€тность отклонени€ по горизонтали эффектора во врем€ стрельбы (1 - всегда отклон€етс€)
-cam_horz_factor			 = 1		;импирический коэффициент отклонени€ по горизонтали (чем больше, тем сильнее разброс)
+cam_max_angle_horz	= 5.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz	= 0.5	;(degree) size of step camera moved in horizontal position while shooting
+
+;;;destroy it
+cam_horz_prob = 1			;probability of the horizontal deviation of effector while shooting (1 Ц always deviates)
+cam_horz_factor = 1.5		; empirically determined coefficient  of the horizontal deviation (if raises Ц dispersal raises) 
 
 
 disp_vel_factor		 = 0.1
