@@ -37,22 +37,28 @@ namespace FPU
 	u16			_64	=0;
 	u16			_64r=0;
 
-	XRCORE_API void __stdcall	m24		(u16 p)	{
+	XRCORE_API void __stdcall	m24		()	{
+		u16		p	= _24;
 		__asm fldcw p;	
 	}
-	XRCORE_API void __stdcall	m24r	(u16 p)	{
+	XRCORE_API void __stdcall	m24r	()	{
+		u16		p	= _24r;
 		__asm fldcw p;  
 	}
-	XRCORE_API void __stdcall	m53		(u16 p)	{
+	XRCORE_API void __stdcall	m53		()	{
+		u16		p	= _53;
 		__asm fldcw p;	
 	}
-	XRCORE_API void __stdcall	m53r	(u16 p)	{
+	XRCORE_API void __stdcall	m53r	()	{
+		u16		p	= _53r;
 		__asm fldcw p;	
 	}
-	XRCORE_API void __stdcall	m64		(u16 p)	{ 
+	XRCORE_API void __stdcall	m64		()	{ 
+		u16		p	= _64;
 		__asm fldcw p;	
 	}
-	XRCORE_API void __stdcall	m64r	(u16 p)	{
+	XRCORE_API void __stdcall	m64r	()	{
+		u16		p	= _64r;
 		__asm fldcw p;  
 	}
 
