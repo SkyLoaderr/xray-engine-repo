@@ -208,6 +208,7 @@ void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		tNetPacket.r_float		(fHealth);
 	if (m_wVersion < 32)
 		visual_read				(tNetPacket);
+	o_model						= o_torso.yaw;
 }
 
 void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)

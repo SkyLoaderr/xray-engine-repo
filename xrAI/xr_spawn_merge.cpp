@@ -137,41 +137,33 @@ public:
 			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator	E = l_tpSpawnGroupObjectsMap.end();
 			
 			for ( ; I != E; I++) {
+				R_ASSERT(strlen((*I).first));
+				
 				xr_map<LPCSTR,CSE_SpawnGroup*,pred_str>::iterator			J = l_tpSpawnGroupControlsMap.find((*I).first);
 
 				R_ASSERT(J != l_tpSpawnGroupControlsMap.end());
+				R_ASSERT((*I).second);
+				
+				ALIFE_OBJECT_P_IT	i = (*I).second->begin();
+				ALIFE_OBJECT_P_IT	e = (*I).second->end();
+				float				fSum = 0.f;
+				for ( ; i != e; i++)
+					fSum += (*i)->m_fProbability;
 
-				if (strlen((*I).first)) {
-					R_ASSERT((*I).second);
-					ALIFE_OBJECT_P_IT	i = (*I).second->begin();
-					ALIFE_OBJECT_P_IT	e = (*I).second->end();
-					float				fSum = 0.f;
-					for ( ; i != e; i++)
-						fSum += (*i)->m_fProbability;
+				fSum /= (*J).second->m_fGroupProbability;
 
-					fSum /= (*J).second->m_fGroupProbability;
-
-					i = (*I).second->begin();
-					for ( ; i != e; i++) {
-						(*i)->m_fProbability /= fSum;
-						(*i)->m_dwSpawnGroup = (*J).second->m_dwSpawnGroup;
-						CSE_ALifeAnomalousZone *l_tpAnomalousZone =dynamic_cast<CSE_ALifeAnomalousZone*>(*i);
-						if (l_tpAnomalousZone) {
-							float l_fSum = 0.f;
-							for (int ii=0; ii<l_tpAnomalousZone->m_wItemCount; ii++)
-								l_fSum += l_tpAnomalousZone->m_faWeights[ii];
-							l_fSum /= l_tpAnomalousZone->m_fBirthProbability;
-							for (int ii=0; ii<l_tpAnomalousZone->m_wItemCount; ii++)
-								l_tpAnomalousZone->m_faWeights[ii] /= l_fSum;
-						}
-					}
-				}
-				else {
-					ALIFE_OBJECT_P_IT	i = (*I).second->begin();
-					ALIFE_OBJECT_P_IT	e = (*I).second->end();
-					for ( ; i != e; i++) {
-						(*i)->m_dwSpawnGroup = *dwGroupOffset++;
-						(*i)->m_fProbability = 1.f;
+				i = (*I).second->begin();
+				for ( ; i != e; i++) {
+					(*i)->m_fProbability /= fSum;
+					(*i)->m_dwSpawnGroup = (*J).second->m_dwSpawnGroup;
+					CSE_ALifeAnomalousZone *l_tpAnomalousZone =dynamic_cast<CSE_ALifeAnomalousZone*>(*i);
+					if (l_tpAnomalousZone) {
+						float l_fSum = 0.f;
+						for (int ii=0; ii<l_tpAnomalousZone->m_wItemCount; ii++)
+							l_fSum += l_tpAnomalousZone->m_faWeights[ii];
+						l_fSum /= l_tpAnomalousZone->m_fBirthProbability;
+						for (int ii=0; ii<l_tpAnomalousZone->m_wItemCount; ii++)
+							l_tpAnomalousZone->m_faWeights[ii] /= l_fSum;
 					}
 				}
 			}
