@@ -9,6 +9,11 @@ end
 
 
 --Бармен в комнате
+function give_agroprom_documents(first_speaker, second_speaker)
+	local agroprom_documents = first_speaker:object("quest_case_02")
+	dialogs.relocate_item(second_speaker, agroprom_documents, "out")
+end
+
 function give_extra_task(actor, npc)
 	if barman_darklab_documents_given(actor,npc) or
 	   barman_need_decoding_given(actor,npc)
