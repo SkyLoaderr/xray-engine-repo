@@ -22,35 +22,40 @@ extern ENGINE_API FS_Defs	Path;
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
 #define _FREE(x)			{ if(x) { free(x);              (x)=NULL; } }
 #define THROW				throw 123456789
-#define _SHOW_REF(msg, x)   { if(x){ x->AddRef(); Log(msg,x->Release());}}
+#define _SHOW_REF(msg, x)   { if(x) { x->AddRef(); Log(msg,x->Release());}}
 
 // Sound
-enum ESndFreq{
+enum {
+	ssWaveTrace			= (1ul<<0ul),
+	ssEAX				= (1ul<<1ul),
+	ss_forcedword		= DWORD(-1)
+};
+enum {
 	sf_11K,
 	sf_22K,
 	sf_44K,
 	sf_forcedword = DWORD(-1)
 };
-enum ESndQuality{
+enum {
 	sq_DEFAULT,
 	sq_NOVIRT,
 	sq_LIGHT,
 	sq_HIGH,
 	sq_forcedword = DWORD(-1)
 };
-ENGINE_API extern DWORD	psSoundFreq		;
-ENGINE_API extern DWORD	psSoundModel	;
-ENGINE_API extern float	psSoundVMaster	;
-ENGINE_API extern float	psSoundVEffects	;
-ENGINE_API extern float	psSoundVMusic	;
-ENGINE_API extern float psSoundRolloff	;
+ENGINE_API extern DWORD	psSoundFreq				;
+ENGINE_API extern DWORD	psSoundModel			;
+ENGINE_API extern float	psSoundVMaster			;
+ENGINE_API extern float	psSoundVEffects			;
+ENGINE_API extern float	psSoundVMusic			;
+ENGINE_API extern float psSoundRolloff			;
+ENGINE_API extern DWORD psSoundFlags			;
 
 // textures
 enum {
 	TF_ShowMipmaps		= 1<<0,
 	TF_forcedword		= DWORD(-1)
 };
-ENGINE_API extern	DWORD	psTextureMipFilter	;
 ENGINE_API extern	int		psTextureLOD		;
 ENGINE_API extern	DWORD	psTextureFlags		;
 
@@ -74,13 +79,5 @@ enum {
 ENGINE_API extern	DWORD	psCurrentMode		;
 ENGINE_API extern	DWORD	psCurrentBPP		;
 ENGINE_API extern	DWORD	psDeviceFlags		;
-
-// Network
-#define MAX_PLAYER_NAME			14
-#define MAX_SESSION_NAME		256
-extern struct _GUID g_AppGUID;
-ENGINE_API extern	DWORD	psNetProtocol		;
-ENGINE_API extern	char	psName[12]			;
-
 
 #endif

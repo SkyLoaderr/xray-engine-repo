@@ -208,44 +208,23 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-/*
-class CCC_Health : public CConsoleCommand
-{
-public:
-	CCC_Health(LPCSTR N) : CConsoleCommand(N) {};
-	virtual void Execute(LPCSTR args) {
-		pCreator->CurrentEntity()->Cure(atoi(args.c_str()));
-	}
-};
-//-----------------------------------------------------------------------
-class CCC_Respawn: public CConsoleCommand
-{
-public:
-	CCC_Respawn(LPCSTR N) : CConsoleCommand(N) {bEmptyArgsHandled = TRUE;};
-	virtual void Execute(LPCSTR args) {
-		pCreator->CurrentEntity()->Respawn();
-	}
-};
-*/
-//-----------------------------------------------------------------------
 ENGINE_API float	psHUD_FOV=0.5f;
 
-extern float	psOSSR;
-extern int		psSkeletonUpdate;
-extern int		psPhysicsFPS;
-extern int		psGlowsPerFrame;
-extern int		rsDVB_Size;
-extern int		rsDIB_Size;
-extern int		psNET_ClientUpdate;
-extern int		psNET_ClientPending;
-extern int		psNET_ServerUpdate;
-extern int		psNET_ServerPending;
-extern char		psNET_Name[32];
-extern int		psNET_Port;
-extern float	ssaLIMIT;
-extern float	ssaDONTSORT;
-extern float	psDetailDensity;
-
+extern float		psOSSR;
+extern int			psSkeletonUpdate;
+extern int			psPhysicsFPS;
+extern int			psGlowsPerFrame;
+extern int			rsDVB_Size;
+extern int			rsDIB_Size;
+extern int			psNET_ClientUpdate;
+extern int			psNET_ClientPending;
+extern int			psNET_ServerUpdate;
+extern int			psNET_ServerPending;
+extern char			psNET_Name[32];
+extern int			psNET_Port;
+extern float		ssaLIMIT;
+extern float		ssaDONTSORT;
+extern float		psDetailDensity;
 
 void CCC_Register()
 {
