@@ -16,8 +16,8 @@
 
 #if XRAY_EXCEPTIONS
 #	define	THROW(xpr)				if (!(xpr)) {throw __FILE__LINE__"\""#xpr"\"";}
-#	define	THROW2(xpr,msg0)		if (!(xpr)) {throw std::string(__FILE__LINE__"\""#xpr"\" : ") + std::string(msg0);}
-#	define	THROW3(xpr,msg0,msg1)	if (!(xpr)) {throw std::string(__FILE__LINE__"\""#xpr"\" : ") + std::string(msg0) + std::string(", ") + std::string(msg1);}
+#	define	THROW2(xpr,msg0)		if (!(xpr)) {throw *shared_str().sprintf("%s \"%s\" : %s",__FILE__LINE__,#xpr,msg0 ? msg0 : "");}
+#	define	THROW3(xpr,msg0,msg1)	if (!(xpr)) {throw *shared_str().sprintf("%s \"%s\" : %s, %s",__FILE__LINE__,#xpr,msg0 ? msg0 : "",msg1 ? msg1 : "");}
 #else
 #	define	THROW					VERIFY
 #	define	THROW2					VERIFY2
