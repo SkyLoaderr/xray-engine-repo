@@ -852,8 +852,8 @@ void CPHJoint::CalcAxis(int ax_num,Fvector& axis, float& lo,float& hi,const Fmat
 	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
 	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
 
-	lo=axes[ax_num].low+shift_angle;
-	hi=axes[ax_num].high+shift_angle;
+	lo=axes[ax_num].low;//+shift_angle;
+	hi=axes[ax_num].high;//+shift_angle;
 
 
 	if(lo<-M_PI){ 

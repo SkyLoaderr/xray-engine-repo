@@ -370,7 +370,7 @@ void CCar::ParseDefinitions()
 	fill_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","steering_wheels"),m_steering_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","breaking_wheels"),m_breaking_wheels);
-	fill_exhaust_vector			(ini->r_string	("car_definition","exhausts"),m_exhausts);
+	//fill_exhaust_vector			(ini->r_string	("car_definition","exhausts"),m_exhausts);
 	fill_doors_map				(ini->r_string	("car_definition","doors"),m_doors);
 	m_power				=		ini->r_float("car_definition","engine_power");
 	m_power				*=		(0.8f*1000.f);

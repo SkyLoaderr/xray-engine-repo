@@ -442,7 +442,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 								if(joint_data.limits[1].limit.y-joint_data.limits[1].limit.x<M_PI*2.f)
 								{
 									J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,0);
-									J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,1);
+									J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,0);
 								}
 								break;
 							}
