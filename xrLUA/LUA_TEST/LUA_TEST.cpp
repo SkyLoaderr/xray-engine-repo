@@ -1365,6 +1365,13 @@ struct SSS {
 ////	X.X			= &X;
 //	return		(0);
 
+lua_State		*L = 0;
+
+luabind::object lua_this()
+{
+	return		(luabind::get_globals(L)["test_this"]);
+}
+
 int __cdecl main(int argc, char* argv[])
 {
 	printf	("xrLuaCompiler v0.1\n");
@@ -1377,7 +1384,8 @@ int __cdecl main(int argc, char* argv[])
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
 
-	lua_State		*L = lua_open();
+	L = lua_open();
+
 	if (!L)
 		lua_error	(L);
 
@@ -1387,6 +1395,11 @@ int __cdecl main(int argc, char* argv[])
 	luaopen_table	(L);
 
 	lua_pop			(L,4);
+
+	module(L)
+	[
+		def("this",	&lua_this)
+	];
 
 	open			(L);
 
