@@ -97,7 +97,7 @@ BOOL CAI_Boar::net_Spawn (LPVOID DC)
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
-	s.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
