@@ -6,6 +6,7 @@ public:
 	Fmatrix							D_view;
 	Fmatrix							D_project;
 	Fmatrix							D_combine;
+	Fmatrix							P_world;
 	Fmatrix							P_view;
 	Fmatrix							P_project;
 	Fmatrix							P_combine;

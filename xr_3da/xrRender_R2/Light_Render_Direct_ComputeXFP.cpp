@@ -12,12 +12,11 @@ extern	void ComputeFrustum	(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fv
 BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 {
 	// Build EYE-space xform
-	Fmatrix						mxform;
-	mxform.invert				(Device.mView);
+	P_world.invert				(Device.mView);
 	Fvector						L_dir,L_up,L_right,L_pos;
-	mxform.transform_dir		(L_dir,cmDir	[m_phase]);			L_dir.normalize		();
-	mxform.transform_dir		(L_up,cmNorm	[m_phase]);			L_up.normalize		();
-	L_right.crossproduct		(L_up,L_dir);						L_right.normalize	();
+	L_dir=cmDir	[m_phase];							L_dir.normalize		();
+	L_up=cmNorm	[m_phase];							L_up.normalize		();
+	L_right.crossproduct		(L_up,L_dir);		L_right.normalize	();
 	L_pos.set					(L->position);
 	P_view.build_camera_dir		(L_pos,L_dir,L_up);
 	P_project.build_projection	(deg2rad(90.f),1.f,PSM_near_plane,L->range+EPS_S);
