@@ -35,6 +35,7 @@ CSpawn* CSpawn::Create		(CLASS_ID cls)
 	case CLSID_SPAWN_EVENT:		return 0;
 	case CLSID_SPAWN_ZONE:		return 0;
 	case CLSID_SPAWN_ENTITY:	return 0;
+	default:					return 0;
 	}
 }
 
