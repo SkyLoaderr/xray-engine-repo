@@ -359,6 +359,12 @@
 				<File
 					RelativePath="game_sv_deathmatch.h">
 				</File>
+				<File
+					RelativePath="game_sv_single.cpp">
+				</File>
+				<File
+					RelativePath="game_sv_single.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="Objects"

@@ -115,8 +115,13 @@ void IPureServer::Reparse	()
 	SendBroadcast_LL	(0,&msgConfig,sizeof(msgConfig));
 }
 
-BOOL IPureServer::Connect(LPCSTR session_name)
+BOOL IPureServer::Connect(LPCSTR options)
 {
+	// Parse options
+	string256				session_name;
+	strcpy					(session_name,options);
+	if (strchr(session_name,'|'))	*strchr(session_name,'|')=0;
+
     // Create the IDirectPlay8Client object.
     CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET));
 	
@@ -160,17 +165,20 @@ BOOL IPureServer::Connect(LPCSTR session_name)
     dpAppDesc.pwszSessionName	= SessionNameUNICODE;
 	
     // We are now ready to host the app
-	CHK_DX(NET->Host			(&dpAppDesc,			// AppDesc
+	CHK_DX(NET->Host			
+		(
+		&dpAppDesc,				// AppDesc
 		&net_Address_device, 1, // Device Address
 		NULL, NULL,             // Reserved
 		NULL,                   // Player Context
-		0 ) );					// dwFlags
+		0 ) 
+		);					// dwFlags
 	
 	config_Load		();
 	return	TRUE;
 }
 
-void IPureServer::Disconnect()
+void IPureServer::Disconnect	()
 {
 	config_Save		();
 

@@ -44,4 +44,5 @@ public:
 	u32								timelimit;
 	vector<game_TeamState>			teams;
 public:
+	virtual		void				Create					(LPCSTR options)	=	0;
 };

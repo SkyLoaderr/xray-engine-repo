@@ -11,4 +11,5 @@ public:
 	};
 	map<DWORD,Player>		players;
 public:
+	virtual		void				Create					(LPCSTR options);
 };
