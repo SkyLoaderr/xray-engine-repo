@@ -421,6 +421,7 @@ public:
 
 	// Multitype ammo support
 	xr_stack<CCartridge>	m_magazine;
+	CCartridge				m_DefaultCartridge;
 	float					m_fCurrentCartirdgeDisp;
 
 	IC	bool				can_be_strapped	() const {return m_can_be_strapped;};

@@ -403,14 +403,19 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 	m_ammoType						= E->ammo_type;
 	STATE = NEXT_STATE				= E->state;
 	
+	m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType]);
 	if(iAmmoElapsed) 
 	{
-		CCartridge l_cartridge; 
-		l_cartridge.Load(*m_ammoTypes[m_ammoType]);
-		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
+//		CCartridge l_cartridge; 
+//		l_cartridge.Load(*m_ammoTypes[m_ammoType]);
+//		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
+//		for(int i = 0; i < iAmmoElapsed; ++i) 
+//			m_magazine.push(l_cartridge);
+		m_fCurrentCartirdgeDisp = m_DefaultCartridge.m_kDisp;
 		for(int i = 0; i < iAmmoElapsed; ++i) 
-			m_magazine.push(l_cartridge);
+			m_magazine.push(m_DefaultCartridge);
 	}
+	
 	
 	Light_Create		();
 

@@ -310,13 +310,7 @@ void CWeaponMagazined::ReloadMagazine()
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	
-	CCartridge l_cartridge;
-	//---------------------------------------------------
-	if (psActorFlags.test(AF_UNLIMITEDAMMO))
-	{
-		l_cartridge.Load(*(m_ammoTypes[0]));
-	}
-	//---------------------------------------------------
+	CCartridge l_cartridge = m_DefaultCartridge;
 	while(iAmmoElapsed < iMagazineSize)
 	{
 		if (!psActorFlags.test(AF_UNLIMITEDAMMO))
