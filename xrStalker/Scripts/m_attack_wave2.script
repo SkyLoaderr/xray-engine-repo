@@ -69,7 +69,11 @@ function Defender:find_enemy ()
 		   end	  
 		end
 	end
-	printf ("Defender %s find enemy %s", self.npc:name (), enemy.npc:name ())	
+
+	if enemy ~= nil then
+       printf ("Defender %s find enemy %s", self.npc:name (), enemy.npc:name ())	
+	end
+
 	return enemy		
 end
 
@@ -181,7 +185,10 @@ function Monster:find_enemy ()
         end
 	end
 	if enemy ~= nil then enemy.attacker = self end
-	printf ("Attacker %s find enemy %s", self.npc:name (), enemy.npc:name ())	
+	
+	if enemy ~= nil then
+  	   printf ("Attacker %s find enemy %s", self.npc:name (), enemy.npc:name ())	
+	end
 	return enemy
 end
 
