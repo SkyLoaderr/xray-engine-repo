@@ -1,15 +1,26 @@
 -- скрипт для сталкеров, которые стоят на вышках
 
+local anims = {"stoya_ruje_ 0"}
+local num_anims = {1}
+
 class "Guardian"
 
-function Guardian:__init (npc_object, script_name)
+function Guardian:__init (npc_object, script_name, path_name)
     self.npc = npc_object
     self.script_name = script_name
-	self.position = npc:position ()
+	self.path_name = path_name
+	self.position = npc_object:position ()
+	self.current_state = 0
+	self.curr_anim = math.random (1, table.getn (anims))
+	self.num_repeats = math.random (1, num_anims[self.curr_anim])
+	printf ("Current animation %d for object %s. Path %s", self.curr_anim, self.npc:name (), self.path_name)
 end
 
 function Guardian:start ()
     self.npc:script (true, self.script_name)
+	action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)), 
+			look (), anim (anims[self.curr_anim]), cond (cond.anim_end))
+	printf ("Start for object %s called", self.npc:name ())
 end
 
 
@@ -17,25 +28,65 @@ function Guardian:stop ()
   self.npc:script (false, self.script_name)
 end
 
+function Guardian:setmove ()
+	local vec = vector ():set (math.random (-1000, 1000) / 1000, 0, math.random (-1000, 1000) / 1000)
+	vec:normalize ()
+	local newpos = vector():set (self.position.x + vec.x, self.position.y + vec.y, self.position.z + vec.z);
+	self:reset ()
+	action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)), look (look.search), anim (anim.free), cond (cond.move_end))
+end
+
+function Guardian:setanim ()
+	self.curr_anim = math.random (1, table.getn (anims))
+	self.num_repeats = math.random (1, num_anims[self.curr_anim])
+	printf ("Current animation %d for object %s", self.curr_anim, self.npc:name ())
+    self:reset ()
+	action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)), 
+			look (), anim (anims[self.curr_anim]), cond (cond.anim_end))
+	printf ("Set anim called")
+end
+
+function Guardian:reset ()
+	self.npc:script (false, self.script_name)
+	self.npc:script (true, self.script_name)
+end
+
+function Guardian:process ()
+
+	if self.npc:action () then return end
+
+	   if self.current_state == 0 then
+		  self.num_repeats = self.num_repeats - 1
+		  if self.num_repeats > 0 then
+			 self:reset ()
+			 action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+					 look (), anim (anims[self.curr_anim]), cond (cond.anim_end))
+			 return
+			 end
+ 		  self.current_state = 1
+		  self:setmove ()	
+	   else
+		  self.current_state = 0
+		  self:setanim ()
+		  end
+end
+
 
 function main ()
 
-	local guard1 = Guardian (get_level_object ("stalker_tower1"), military3_1.script_name ())
-	local guard2 = Guardian (get_level_object ("stalker_tower2"), military3_1.script_name ())
+	local guard1 = military3_1.Guardian (get_level_object ("stalker_tower1"), military3_1.script_name (), "way_tower1")
+	local guard2 = military3_1.Guardian (get_level_object ("stalker_tower2"), military3_1.script_name (), "way_tower2")
 
 	guard1:start ()
 	guard2:start ()
 
---	action (stalker1, move (move.standing, move.stand, move.line, patrol ("simple_way")), 
---			look (look.search), anim (anim.free), cond (cond.time_end, 1000000))
---	action (stalker2, move (move.standing, move.stand, move.line, patrol ("simple_way")), 
---			look (look.search), anim (anim.free), cond (cond.time_end, 1000000))
-
-	while true do wait () end
+	while true do 
+		  guard2:process ()
+		  guard1:process ()
+	  	  wait () 
+		  end
 
 	guard1:stop ()
 	guard2:stop ()
---	stalker1:script (false, military3_1.script_name ())
---	stalker2:script (false, military3_1.script_name ())
 
 end
