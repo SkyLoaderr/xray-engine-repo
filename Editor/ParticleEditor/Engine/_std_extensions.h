@@ -46,8 +46,9 @@ IC u32		_abs	(u32 x)			{ return x; }
 IC u32		_sqrt	(u32 x)			{ return u32(iFloor(_sqrt(float(x))));  }
 
 // generic
-template <class T>	IC T	_min	(T a, T b)	{ return a<b?a:b;	}
-template <class T>	IC T	_max	(T a, T b)	{ return a>b?a:b;	}
+template <class T>	IC T		_min	(T a, T b)	{ return a<b?a:b;	}
+template <class T>	IC T		_max	(T a, T b)	{ return a>b?a:b;	}
+template <class T>	IC T		_sqr	(T a)		{ return a*a;		}
 
 // string management
 IC char*						strconcat				( char* dest, const char* S1, const char* S2)
