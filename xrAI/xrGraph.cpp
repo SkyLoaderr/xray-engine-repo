@@ -375,6 +375,8 @@ void xrBuildGraph(LPCSTR name)
 	Phase("Removing incoherent graph points");
 	vfRemoveIncoherentGraphPoints(tpAI_Map,dwGraphPoints);
 
+	R_ASSERT2	(tpaGraph.size(), "There are no graph points!");
+	
 	Phase("Allocating memory");
 	vfAllocateMemory();
 
