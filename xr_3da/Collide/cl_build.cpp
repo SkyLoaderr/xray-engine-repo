@@ -26,9 +26,13 @@ namespace RAPID {
 			tris[i].convert_I2P(verts,tris);
 
 		// build hierrarhy
+    #ifdef M_BORLAND
+		int myrc = build_hierarchy();
+    #else
 		FPU::m64r();
 		int myrc = build_hierarchy();
 		FPU::m24r();
+    #endif
 		R_ASSERT	(myrc);
 	}
 
