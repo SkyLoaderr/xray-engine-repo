@@ -319,3 +319,26 @@ void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )
 	
 	bInit			= true;
 }
+
+void CLensFlare::DDUnload	()
+{
+	// VS
+	VS				= Device.Shader._CreateVS	(FVF::F_LIT);
+
+	// shaders
+	m_Gradient.hShader	= CreateFlareShader		(m_Gradient.texture);
+	m_Source.hShader	= CreateSourceShader	(m_Source.texture);
+    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateFlareShader(it->texture);
+}
+
+void CLensFlare::DDLoad()
+{
+	// shaders
+	Device.Shader.Delete	(m_Gradient.hShader);
+	Device.Shader.Delete	(m_Source.hShader);
+    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) Device.Shader.Delete(it->hShader);
+
+	// VS
+	Device.Shader._DeleteVS						(VS);
+}
+

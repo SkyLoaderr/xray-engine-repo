@@ -1,5 +1,5 @@
-#ifndef __CLENSFLARE_HPP
-#define __CLENSFLARE_HPP
+#ifndef xr_efflensflareH
+#define xr_efflensflareH
 
 class ENGINE_API CInifile;
 
@@ -57,6 +57,8 @@ public:
 	void			Load		( CInifile* pIni, LPCSTR section );
     void __fastcall	Render		( BOOL bSun, BOOL bFlares, BOOL bGradient );
 	void			Update		( Fvector& sun_dir, Fcolor& color );
+	void 			DDUnload	();
+	void 			DDLoad		();
 };
 
-#endif // __CLENSFLARE_HPP
+#endif // xr_efflensflareH
