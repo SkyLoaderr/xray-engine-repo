@@ -1,7 +1,9 @@
-local time_walk 	= 20000
+local time_walk 	= 30000
 local time_rest 	= 15000         --Сколько анимаций сидения сидим
 
-local time_to_speak = 20000     --Через какое время примерно зомби произносит фразы
+local time_to_speak = 15000     --Через какое время примерно зомби произносит фразы
+
+local time_walk2    = 10000     --Время ходьбы для навичка номер2
 
 local walk_speak	= xr_sounds_id.zombe_walk_speak
 local stand_speak   = xr_sounds_id.zombe_stand_speak
@@ -147,8 +149,6 @@ function stalker_novice_action:__init (name, storage) super (nil, name)
     self.a 		  	= storage
     self.a.curState = walk
     self.a.time     = device():time_global()
-    self.count      = 0
-
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice_action:initialize ()
@@ -184,7 +184,6 @@ function stalker_novice_action:state_walk( param )
 	if( param ) then                        --Init state walk
         printf( "init state walk" )
         self.a.curState = walk
-        self.count   = 0
 		self.a.time = device():time_global()
 
         if( xr_motivator.storage[self.object:id()].state.body_state ~= 0 ) then
@@ -227,7 +226,6 @@ function stalker_novice_action:state_sit_down( param )
     if( xr_motivator.storage[self.object:id()].state.body_state == 1 ) then           --Уже сидим
         if( self.object:animation_count() <= 1 ) then
             self.object:add_animation( "stalker_1_2",   true )
-            self.count 	= self.count + 1
 			self.a.time = device():time_global()
         end
     else
@@ -299,10 +297,166 @@ function add_novice(obj)
     action:add_precondition         ( world_property (properties["work"],  false ) )
 end
 
+-----------------------===========================------------------------------
+--============================================================================--
+--------------------------=====================---------------------------------
+--1 - ходим вокруг аномалии
+--2 - смотрим на артефакт и говорм фразу
+--3 - кидаем в аномалию болт
+class "stalker_novice2_action" (action_base)
+function stalker_novice2_action:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:initialize ()
+    action_base.initialize          (self)
+
+    self:walk( "init" )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:execute ()
+    --Ходим, изредка произносим фразы
+    action_base.execute             (self)
+
+	if( self.a.curState == 1 ) then          --Walk
+    	if( device():time_global() > self.a.time ) then
+        	self:action( "init" )
+        else
+        	self:walk()
+        end
+    else
+        if( device():time_global() > self.a.time ) then
+           	self:walk( "init" )
+        else
+        	self:action()
+        end
+    end
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:walk( param )
+
+    if( param ) then
+        printf( "2 init walk" )
+        self.a.curState 				= 1
+        self:new_time					()
+
+	    self.object:clear_animations    ()
+	    self.object:set_detail_path_type( move.line )
+	    self.object:set_movement_type   ( move.walk )
+	    self.object:set_body_state      ( move.standing )
+	    self.object:set_patrol_path     ( self.a.path, patrol.nearest, patrol.continue, true )
+	    self.object:set_path_type       ( game_object.patrol_path )
+	    self.object:set_item            ( object.activate, self.object:best_weapon() )
+	    self.object:set_sight           ( look.path_dir, nil, 0 )
+--        self.object:set_sight           ( look.point, patrol( self.a.path ):point( 0 ), 0 )
+    end
+
+    self.object:set_item            	( object.activate, self.object:best_weapon() )
+    self.object:set_mental_state    	( anim.free )
+    self.object:set_sight           	( look.path_dir, nil, 0 )
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:action( param )
+	if( param ) then
+    	self.a.curState		= 2
+		self.a.time 		= device():time_global() + 10000
+        self.object:set_sight           ( look.point, patrol( self.a.path ):point( 0 ), 0 )
+        self.object:set_movement_type   ( move.stand )
+    end
+
+  	if( self.a.curState == 2 and device():time_global() > self.a.time -8300 )then --Поворачиваемся уже 2 секунды
+    	printf( "Play sound" )
+        self.object:play_sound		( walk_speak, 3000, 2000, 1, 0, math.random( 0, 8 ) )
+		self.object:add_animation   ( "prisluh_8_0", true )
+        self.object:add_animation   ( "prisluh_8_2", true )
+        self.a.curState = 3
+        self.a.time = self.a.time + 20000
+    end
+
+    if( self.a.curState == 3 ) then
+    	if(  self.object:animation_count() == 0 ) then
+        	self.object:set_sight       ( look.path_dir, nil, 0 )
+            self.a.time = device():time_global() + 700
+            self.a.curState = 4
+        end
+	end
+    self.object:set_mental_state        ( anim.free )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:new_time()
+	self.a.time = device():time_global() + time_walk2 * ( 0.5 + math.random() )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:finalize ()
+    action_base.finalize (self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--patrol binder
+----------------------------------------------------------------------------------------------------------------------
+function add_novice2(obj)
+    local operators     = {}
+    local properties    = {}
+    local st            = {
+                            path     = nil,         --Путь, по которому ходить
+                            curState = 1,
+                            time     = 0,
+                            stand    = false,
+                            enabled  = true
+                          }
+    --Чтение данных из кастом даты
+    local char_ini = obj:spawn_ini()
+    if( char_ini:section_exist ("novice2") == true ) then
+        if( char_ini:line_exist("novice2", "path") == true ) then
+            st.path = char_ini:r_string("novice2", "path")
+        else
+            printf( "________Error.    Section novice2/path not found" )
+        end
+    else
+        printf( "________Error.    Section novice2 not found" )
+    end
+
+    xr_motivator.storage[obj:id()]         = { novice2 = {} }
+    xr_motivator.storage[obj:id()].novice2 = st
+
+    printf( "binding stalker novice2" )
+
+--    obj:add_sound ( "Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, stand_speak )
+    obj:add_sound ( "script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, walk_speak )
+
+    properties[ "novice2_alife" ]      = xr_evaluators_id.jon_stalker_novice2
+    operators [ "stalker_novice2" ]    = xr_actions_id.jon_stalker_novice2
+
+
+    local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator ( properties[ "novice2_alife" ], this.enabled_evaluator( xr_motivator.storage[obj:id()].novice2 )  )
+
+    local action = this.stalker_novice2_action ( "stalker_novice2_action", xr_motivator.storage[obj:id()].novice2 )
+
+    action:add_precondition         ( world_property ( stalker_ids.property_alive,    true ) )
+    action:add_precondition         ( world_property ( stalker_ids.property_enemy,    false ) )
+    action:add_precondition         ( world_property ( properties[ "novice2_alife" ], true ) )
+    action:add_effect               ( world_property ( properties[ "novice2_alife" ], false ) )
+    manager:add_action              ( operators[ "stalker_novice2" ], action)
+
+    action = manager:action (stalker_ids.action_free_no_alife)
+    action:add_precondition         ( world_property (properties["novice2_alife"],   false ) )
+end
+
+-----------------------===========================------------------------------
+--============================================================================--
+--------------------------=====================---------------------------------
+
+
 function bind_object( obj, name )
+	printf( "Name == %s", name )
     if( name == "zombe" ) then
     	this.add_zombe ( obj )
     elseif( name == "novice" ) then
     	this.add_novice( obj )
+    elseif( name == "novice2" ) then
+        this.add_novice2( obj )
     end
 end
