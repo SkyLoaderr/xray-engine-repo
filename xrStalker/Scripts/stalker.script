@@ -174,8 +174,8 @@ end
 function init		(obj)
     local name, command, group = str_split (obj:name ())
     if name == "patrol" then 
-      printf ("Bind object %s, command %d, group %d", name, command, group)
-      obj:bind_object (xr_patrol.patrol_binder (obj)) 
+       printf ("Bind object %s, command %d, group %d", name, command, group)
+       obj:bind_object (patrol_binder (obj)) 
     end
 	obj:bind_object	(this.stalker_binder(obj))
 end
