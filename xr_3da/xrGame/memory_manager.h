@@ -25,6 +25,7 @@ class CMemoryManager :
 {
 protected:
 	CAI_Stalker				*m_object;
+	CEntityAlive			*m_self;
 
 protected:
 	template <typename T>

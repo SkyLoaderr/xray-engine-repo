@@ -32,6 +32,8 @@ void CMemoryManager::Load			(LPCSTR section)
 	CEnemyManager::Load				(section);
 	CItemManager::Load				(section);
 	m_object						= dynamic_cast<CAI_Stalker*>(this);
+	m_self							= dynamic_cast<CEntityAlive*>(this);
+	VERIFY							(m_self);
 }
 
 void CMemoryManager::reinit			()
@@ -94,7 +96,7 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 {
 	CMemoryInfo						result;
 	result.m_object					= 0;
-	if (!m_object->g_Alive())
+	if (!m_self->g_Alive())
 		return						(result);
 
 	ALife::_TIME_ID					game_time = 0;
