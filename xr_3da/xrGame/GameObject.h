@@ -29,7 +29,7 @@ class IInputReceiver;
 class CArtefact;
 class CCustomMonster;
 class CAI_Stalker;
-class CScriptMonster;
+class CScriptEntity;
 class CAI_ObjectLocation;
 
 class CGameObject : 
@@ -70,7 +70,7 @@ public:
 	virtual CArtefact*					cast_artefact				()						{return NULL;}
 	virtual CCustomMonster*				cast_custom_monster			()						{return NULL;}
 	virtual CAI_Stalker*				cast_stalker				()						{return NULL;}
-	virtual CScriptMonster*				cast_script_monster			()						{return NULL;}
+	virtual CScriptEntity*				cast_script_entity			()						{return NULL;}
 
 public:
 	virtual BOOL						feel_touch_on_contact	(CObject *)				{return TRUE;}

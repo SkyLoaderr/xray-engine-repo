@@ -10,7 +10,7 @@
 #include "entity_alive.h"
 
 #include "ai_space.h"
-#include "AI/script/ai_script_monster.h"
+#include "script_entity.h"
 #include "ai_monster_space.h"
 
 #include "damage_manager.h"
@@ -29,7 +29,7 @@ class CMovementManager;
 
 class CCustomMonster : 
 	public CEntityAlive, 
-	public CScriptMonster,
+	public CScriptEntity,
 	public Feel::Vision,
 	public Feel::Sound,
 	public Feel::Touch,
@@ -207,7 +207,7 @@ public:
 	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
 	virtual CParticlesPlayer*	cast_particles_player	()	{return this;}
 	virtual CCustomMonster*		cast_custom_monster		()	{return this;}
-	virtual CScriptMonster*		cast_script_monster		()	{return this;}
+	virtual CScriptEntity*		cast_script_entity		()	{return this;}
 
 			void				load_killer_clsids		(LPCSTR section);
 			bool				is_special_killer		(CObject *obj);

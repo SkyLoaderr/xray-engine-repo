@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ai/script/ai_script_monster.h"
+#include "script_object.h"
 
-class CFryupZone : public CScriptMonster {
-	typedef	CScriptMonster	inherited;
+class CFryupZone : public CScriptObject {
+	typedef	CScriptObject	inherited;
 
 public:
 					CFryupZone	();

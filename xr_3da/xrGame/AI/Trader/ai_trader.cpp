@@ -34,6 +34,7 @@ CAI_Trader::~CAI_Trader()
 
 void CAI_Trader::Load(LPCSTR section)
 {
+	CScriptEntity::Load				(section);
 	setEnabled						(false);
 	inherited::Load					(section);
 
@@ -52,7 +53,7 @@ void CAI_Trader::init()
 
 void CAI_Trader::reinit	()
 {
-	CScriptMonster::reinit	();
+	CScriptEntity::reinit	();
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	CSoundPlayer::reinit	();
@@ -71,7 +72,6 @@ void CAI_Trader::reload	(LPCSTR section)
 {
 	CEntityAlive::reload	(section);
 	CInventoryOwner::reload	(section);
-	CScriptMonster::reload	(section);
 	CSoundPlayer::reload	(section);
 
 	head_anims.clear		();	
@@ -169,7 +169,7 @@ void CAI_Trader::AssignHeadAnimation()
 
 bool CAI_Trader::bfAssignSound(CScriptEntityAction *tpEntityAction)
 {
-	if (!CScriptMonster::bfAssignSound(tpEntityAction))
+	if (!CScriptEntity::bfAssignSound(tpEntityAction))
 		return			(false);
 
 	CScriptSoundAction	&l_tAction	= tpEntityAction->m_tSoundAction;
@@ -220,7 +220,7 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
-	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))	return FALSE;
+	if (!inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))	return FALSE;
 
 	//m_body.current.yaw			= m_body.target.yaw	= -tpTrader->o_Angle.y;
 	//m_body.current.pitch			= m_body.target.pitch	= 0;
@@ -367,7 +367,7 @@ void CAI_Trader::Die (CObject* who)
 void CAI_Trader::net_Destroy()
 {
 	inherited::net_Destroy		();
-	CScriptMonster::net_Destroy ();
+	CScriptEntity::net_Destroy ();
 	m_OnStartCallback.clear		();
 	m_OnStopCallback.clear		();
 	m_OnTradeCallback.clear		();

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ai/script/ai_script_monster.h"
 #include "level.h"
 #include "script_engine.h"
 #include "patrol_path_storage.h"
@@ -16,6 +15,7 @@
 #include "patrol_path_manager_space.h"
 
 class CRestrictedObject;
+class CScriptCallback;
 
 using namespace PatrolPathManager;
 

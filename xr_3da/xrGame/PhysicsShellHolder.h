@@ -8,8 +8,8 @@
 class CPHDestroyable;
 class CPHCollisionDamageReceiver;
 
-class CPhysicsShellHolder:  virtual public CGameObject,
-									public CParticlesPlayer
+class CPhysicsShellHolder:  public CGameObject,
+							public CParticlesPlayer
 	
 {
 private:

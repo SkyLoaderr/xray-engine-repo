@@ -64,7 +64,7 @@ CScriptGameObject *CScriptGameObject::best_weapon()
 {
 	CObjectHandler	*object_handler = smart_cast<CObjectHandler*>(&object());
 	if (!object_handler) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member best_weapon!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member best_weapon!");
 		return			(0);
 	}
 	else {
@@ -205,7 +205,7 @@ MemorySpace::CMemoryInfo *CScriptGameObject::memory(const CScriptGameObject &lua
 {
 	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member memory!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptEntity : cannot access class member memory!");
 		return			(0);
 	}
 	else

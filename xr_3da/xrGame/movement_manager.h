@@ -66,7 +66,7 @@ namespace DetailPathManager {
 };
 
 class CMovementManager {
-	friend class CScriptMonster;
+	friend class CScriptEntity;
 	friend class CGroup;
 	friend class CPoltergeist;
 

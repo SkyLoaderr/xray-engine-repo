@@ -29,7 +29,6 @@ CProjector::~CProjector()
 void CProjector::Load(LPCSTR section)
 {
 	inherited::Load(section);
-
 }
 
 

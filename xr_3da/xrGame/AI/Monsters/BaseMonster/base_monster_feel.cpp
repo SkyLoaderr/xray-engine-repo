@@ -36,7 +36,7 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, const Fvector &Positi
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) power = 1.f;
 
 	// execute callback
-	CScriptMonster	*script_monster = this;
+	CScriptEntity	*script_monster = this;
 	if (script_monster)
 		script_monster->sound_callback(who,eType,Position,power);
 	
@@ -123,7 +123,7 @@ void CBaseMonster::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16
 
 	Morale.on_hit		();
 
-	CScriptMonster	*script_monster = this;
+	CScriptEntity	*script_monster = this;
 	if (script_monster)	script_monster->hit_callback(amount,vLocalDir,who,element);
 
 	// если нейтрал - добавить как врага

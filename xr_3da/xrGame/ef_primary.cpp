@@ -132,7 +132,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 		case CLSID_AI_CHIMERA			: return 20;
 		case CLSID_AI_FRACTURE			:
 		case CLSID_AI_DOG_BLACK			: return 21;
-		case CLSID_AI_TRADER			: 
+		case CLSID_AI_TRADER			: return 1;
 		default							: NODEFAULT; return 0;
 	}
 }
@@ -244,7 +244,7 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 		case CLSID_Z_BFUZZ				: return 18;
 		case CLSID_Z_RUSTYH				: return 19;
 		case CLSID_Z_FRYUP				: return 20;
-		case CLSID_AI_TRADER			: 
+		case CLSID_AI_TRADER			: return 1;
 		default							: NODEFAULT; return(0);
 	}
 }

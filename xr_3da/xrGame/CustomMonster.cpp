@@ -69,11 +69,11 @@ CCustomMonster::~CCustomMonster	()
 
 void CCustomMonster::Load		(LPCSTR section)
 {
+	CScriptEntity::Load			(section);
 	m_memory_manager			= xr_new<CMemoryManager>(this);
 	m_movement_manager			= create_movement_manager();
 
 	inherited::Load				(section);
-	CScriptMonster::Load		(section);
 	CLocationManager::Load		(section);
 	CMaterialManager::Load		(section);
 	memory().Load				(section);
@@ -153,7 +153,7 @@ void CCustomMonster::Load		(LPCSTR section)
 
 void CCustomMonster::reinit()
 {
-	CScriptMonster::reinit		();
+	CScriptEntity::reinit		();
 	CEntityAlive::reinit		();
 	CLocationManager::reinit	();
 	CMaterialManager::reinit	();
@@ -171,7 +171,6 @@ void CCustomMonster::reinit()
 void CCustomMonster::reload		(LPCSTR section)
 {
 	CSoundPlayer::reload		(section);
-	CScriptMonster::reload		(section);
 	CEntityAlive::reload		(section);
 	CLocationManager::reload	(section);
 	CMaterialManager::reload	(section);
@@ -344,7 +343,7 @@ void CCustomMonster::UpdateCL	()
 { 
 	inherited::UpdateCL					();
 
-	CScriptMonster::process_sound_callbacks();
+	CScriptEntity::process_sound_callbacks();
 	CSoundPlayer::update				(Device.fTimeDelta);
 	if	(NET.empty())	return;
 
@@ -659,7 +658,7 @@ void CCustomMonster::Die	(CObject* who)
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
-	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !movement().net_Spawn(DC))
+	if (!inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC) || !movement().net_Spawn(DC))
 		return					(FALSE);
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
@@ -764,7 +763,7 @@ void CCustomMonster::OnEvent(NET_Packet& P, u16 type)
 void CCustomMonster::net_Destroy()
 {
 	inherited::net_Destroy			();
-	CScriptMonster::net_Destroy		();
+	CScriptEntity::net_Destroy		();
 }
 
 BOOL CCustomMonster::UsedAI_Locations()

@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "gameobject.h"
 #include "patrol_path_manager.h"
 #include "script_game_object.h"
 #include "script_space.h"
@@ -14,6 +15,7 @@
 #include "ai_space.h"
 #include "script_engine.h"
 #include "ai_object_location.h"
+#include "script_entity_space.h"
 
 void CPatrolPathManager::reinit				(CRestrictedObject *object)
 {
@@ -119,7 +121,7 @@ default			: NODEFAULT;
 	VERIFY					(m_path->vertex(m_curr_point_index));
 
 	if (m_callback)
-		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), m_object->object().lua_game_object(),u32(ScriptMonster::eActionTypeMovement),m_curr_point_index);
+		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), m_object->object().lua_game_object(),u32(ScriptEntity::eActionTypeMovement),m_curr_point_index);
 
 	u32							count = 0;		// количество разветвлений
 	float						sum = 0.f;		// сумма весов разветвления

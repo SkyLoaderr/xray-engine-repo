@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "PHDynamicData.h"
 #include "PhysicsShell.h"
-#include "ai/script/ai_script_monster.h"
+#include "script_entity.h"
 #include "CarLights.h"
 #include "phobject.h"
 #include "holder_custom.h"
@@ -26,7 +26,7 @@ class CScriptEntityAction;
 
 class CCar : 
 	public CEntity, 
-	public CScriptMonster,
+	public CScriptEntity,
 	public CPHUpdateObject,
 	public CHolderCustom,
 	public CPHSkeleton,
@@ -531,5 +531,5 @@ private:
 	virtual	void reload			(LPCSTR section);
 	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
 	virtual CParticlesPlayer*	cast_particles_player		()	{return this;}
-	virtual CScriptMonster*		cast_script_monster			()	{return this;}
+	virtual CScriptEntity*		cast_script_entity			()	{return this;}
 };

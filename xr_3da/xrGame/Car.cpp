@@ -79,13 +79,12 @@ CCar::~CCar(void)
 void CCar::reinit		()
 {
 	CEntity::reinit			();
-	CScriptMonster::reinit	();
+	CScriptEntity::reinit	();
 }
 
 void CCar::reload		(LPCSTR section)
 {
 	CEntity::reload			(section);
-	CScriptMonster::reload	(section);
 }
 
 
@@ -103,6 +102,7 @@ void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 // Core events
 void	CCar::Load					( LPCSTR section )
 {
+	CScriptEntity::Load				(section);
 	inherited::Load					(section);
 	//CPHSkeleton::Load(section);
 	ISpatial*		self				=	smart_cast<ISpatial*> (this);
@@ -120,7 +120,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	setEnabled						(TRUE);
 	setVisible						(TRUE);
 	m_fSaveMaxRPM					= m_max_rpm;
-	return							(CScriptMonster::net_Spawn(DC) && R);
+	return							(CScriptEntity::net_Spawn(DC) && R);
 }
 
 void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
@@ -140,7 +140,7 @@ void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 void	CCar::net_Destroy()
 {
 	inherited::net_Destroy();
-	CScriptMonster::net_Destroy();
+	CScriptEntity::net_Destroy();
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->Deactivate();
@@ -1459,7 +1459,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 
 void CCar::ResetScriptData(void	*P)
 {
-	CScriptMonster::ResetScriptData(P);
+	CScriptEntity::ResetScriptData(P);
 	if (PPhysicsShell())
 	{
 		CScriptEntityAction	l_tpEntityAction;

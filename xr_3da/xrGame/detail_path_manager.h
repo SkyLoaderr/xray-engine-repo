@@ -135,7 +135,7 @@ private:
 protected:
 			void	build_path					(const xr_vector<u32> &level_path, u32 intermediate_index);
 
-	friend class CScriptMonster;
+	friend class CScriptEntity;
 	friend class CMovementManager;
 	friend class CPoltergeist;
 #ifdef DEBUG

@@ -284,7 +284,7 @@ void CBaseMonster::SetScriptControl(const bool bScriptControl, shared_str caScri
 {
 	//if (CurrentState) CurrentState->Done();
 
-	CScriptMonster::SetScriptControl(bScriptControl, caScriptName);
+	CScriptEntity::SetScriptControl(bScriptControl, caScriptName);
 }
 
 

@@ -15,7 +15,7 @@
 #include "script_game_object.h"
 
 #include "alife_space.h"
-#include "script_monster_space.h"
+#include "script_entity_space.h"
 #include "movement_manager_space.h"
 #include "pda_space.h"
 #include "memory_space.h"
@@ -48,13 +48,13 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		]
 		.enum_("action_types")
 		[
-			value("movement",				int(ScriptMonster::eActionTypeMovement)),
-			value("watch",					int(ScriptMonster::eActionTypeWatch)),
-			value("animation",				int(ScriptMonster::eActionTypeAnimation)),
-			value("sound",					int(ScriptMonster::eActionTypeSound)),
-			value("particle",				int(ScriptMonster::eActionTypeParticle)),
-			value("object",					int(ScriptMonster::eActionTypeObject)),
-			value("action_type_count",		int(ScriptMonster::eActionTypeCount))
+			value("movement",				int(ScriptEntity::eActionTypeMovement)),
+			value("watch",					int(ScriptEntity::eActionTypeWatch)),
+			value("animation",				int(ScriptEntity::eActionTypeAnimation)),
+			value("sound",					int(ScriptEntity::eActionTypeSound)),
+			value("particle",				int(ScriptEntity::eActionTypeParticle)),
+			value("object",					int(ScriptEntity::eActionTypeObject)),
+			value("action_type_count",		int(ScriptEntity::eActionTypeCount))
 		]
 		.enum_("EPathType")
 		[
@@ -119,10 +119,10 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("active_item",					&CScriptGameObject::GetActiveItem)
 		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, bool))(CScriptGameObject::SetCallback))
 		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, bool))(CScriptGameObject::SetCallback))
-		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, const ScriptMonster::EActionType))(CScriptGameObject::SetCallback))
-		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, const ScriptMonster::EActionType))(CScriptGameObject::SetCallback))
+		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::object &, LPCSTR, const ScriptEntity::EActionType))(CScriptGameObject::SetCallback))
+		.def("set_callback",				(void (CScriptGameObject::*)(const luabind::functor<void> &, const ScriptEntity::EActionType))(CScriptGameObject::SetCallback))
 		.def("clear_callback",				(void (CScriptGameObject::*)(bool))(CScriptGameObject::ClearCallback))
-		.def("clear_callback",				(void (CScriptGameObject::*)(const ScriptMonster::EActionType))(CScriptGameObject::ClearCallback))
+		.def("clear_callback",				(void (CScriptGameObject::*)(const ScriptEntity::EActionType))(CScriptGameObject::ClearCallback))
 		.def("patrol",						&CScriptGameObject::GetPatrolPathName)
 
 		.def("get_ammo_in_magazine",		&CScriptGameObject::GetAmmoElapsed)

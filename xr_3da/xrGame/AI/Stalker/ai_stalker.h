@@ -135,7 +135,7 @@ public:
 	virtual	Feel::Sound*				dcast_FeelSound				()						{return this;}
 	virtual CAI_Stalker*				cast_stalker				()						{return this;}
 	virtual CCustomMonster*				cast_custom_monster			()						{return this;}
-	virtual CScriptMonster*				cast_script_monster			()						{return this;}
+	virtual CScriptEntity*				cast_script_entity			()						{return this;}
 
 public:
 			void						init								();

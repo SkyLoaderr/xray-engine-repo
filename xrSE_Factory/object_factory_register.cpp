@@ -128,7 +128,7 @@
 
 #	include "HangingLamp.h"
 #	include "physicobject.h"
-#	include "ai/script/ai_script_monster.h"
+#	include "script_object.h"
 #	include "BreakableObject.h"
 #	include "PhysicsSkeletonObject.h"
 #	include "DestroyablePhysicsObject.h"
@@ -322,7 +322,7 @@ void CObjectFactory::register_classes	()
 	// entity
 	ADD(CHangingLamp			,CSE_ALifeObjectHangingLamp		,CLSID_OBJECT_HLAMP				,"hanging_lamp");
 	ADD(CPhysicObject			,CSE_ALifeObjectPhysic			,CLSID_OBJECT_PHYSIC			,"obj_physic");
-	ADD(CScriptMonster			,CSE_ALifeDynamicObjectVisual	,CLSID_SCRIPT_OBJECT			,"script_object");
+	ADD(CScriptObject			,CSE_ALifeDynamicObjectVisual	,CLSID_SCRIPT_OBJECT			,"script_object");
 	ADD(CBreakableObject		,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE			,"obj_breakable");
 	ADD(CClimableObject			,CSE_ALifeObjectClimable		,CLSID_OBJECT_CLIMABLE			,"obj_climable");
 	ADD(CPhysicsSkeletonObject	,CSE_ALifePHSkeletonObject		,CLSID_PH_SKELETON_OBJECT		,"obj_phskeleton");

@@ -10,7 +10,7 @@
 
 #include "../../CustomMonster.h"
 #include "../../inventoryowner.h"
-#include "../script/ai_script_monster.h"
+#include "../../script_entity.h"
 #include "../monsters/ai_monster_bones.h"
 #include "../../script_callback.h"
 #include "../../sound_player.h"
@@ -24,7 +24,7 @@ class CBlend;
 
 class CAI_Trader : public CEntityAlive, 
 				   public CInventoryOwner, 
-				   public CScriptMonster,
+				   public CScriptEntity,
 				   public CAI_PhraseDialogManager,
 				   public CSoundPlayer
 {
@@ -61,7 +61,7 @@ public:
 	virtual CGameObject*				cast_game_object		()						{return this;}
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()					{return this;}
 	virtual CParticlesPlayer*			cast_particles_player	()						{return this;}
-	virtual CScriptMonster*				cast_script_monster		()						{return this;}
+	virtual CScriptEntity*				cast_script_entity		()						{return this;}
 
 public:
 

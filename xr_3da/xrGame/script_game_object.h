@@ -20,7 +20,7 @@ enum ESoundTypes;
 enum ETaskState;
 
 namespace ALife {enum ERelationType;};
-namespace ScriptMonster {enum EActionType;};
+namespace ScriptEntity {enum EActionType;};
 namespace MovementManager { enum EPathType;};
 namespace DetailPathManager { enum EDetailPathType;};
 namespace SightManager {enum ESightType;};
@@ -145,7 +145,7 @@ public:
 			bool				Alive				() const;
 			ALife::ERelationType	GetRelationType	(CScriptGameObject* who);
 
-	// CScriptMonster
+	// CScriptEntity
 	
 	_DECLARE_FUNCTION12	(SetScriptControl,	void, bool,				LPCSTR);
 	_DECLARE_FUNCTION10	(GetScriptControl	,			bool	);
@@ -280,9 +280,9 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 			LPCSTR				GetPatrolPathName	();
-			void				SetCallback			(const luabind::object &lua_object, LPCSTR method, const ScriptMonster::EActionType tActionType);
-			void				SetCallback			(const luabind::functor<void> &lua_function, const ScriptMonster::EActionType tActionType);
-			void				ClearCallback		(const ScriptMonster::EActionType tActionType);
+			void				SetCallback			(const luabind::object &lua_object, LPCSTR method, const ScriptEntity::EActionType tActionType);
+			void				SetCallback			(const luabind::functor<void> &lua_function, const ScriptEntity::EActionType tActionType);
+			void				ClearCallback		(const ScriptEntity::EActionType tActionType);
 			u32					GetAmmoElapsed		();
 			void				SetAmmoElapsed		(int ammo_elapsed);
 			u32					GetAmmoCurrent		() const;

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ai/script/ai_script_monster.h"
+#include "script_object.h"
 
 class CLAItem;
 
-class CProjector: public CScriptMonster {
-	typedef	CScriptMonster		inherited;
+class CProjector: public CScriptObject {
+	typedef	CScriptObject		inherited;
 
 	friend void __stdcall BoneCallbackX(CBoneInstance *B);
 	friend void __stdcall BoneCallbackY(CBoneInstance *B);

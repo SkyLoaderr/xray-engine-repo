@@ -97,7 +97,7 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	Msg						("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),Level().timeServer(),sound_type,object ? *object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 #endif
 
-	CScriptMonster			*script_monster = m_object;
+	CScriptEntity			*script_monster = m_object;
 	script_monster->sound_callback(object,sound_type,position,sound_power);
 		
 	update_sound_threshold	();

@@ -266,7 +266,7 @@ public:
 	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
 	virtual CParticlesPlayer*	cast_particles_player		()	{return this;}
 	virtual CCustomMonster*		cast_custom_monster			()	{return this;}
-	virtual CScriptMonster*		cast_script_monster			()	{return this;}
+	virtual CScriptEntity*		cast_script_entity			()	{return this;}
 	virtual CAI_Rat				*dcast_Rat					()	{return this;};
 
 public:
