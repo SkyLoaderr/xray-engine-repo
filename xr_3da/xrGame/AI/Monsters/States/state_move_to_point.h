@@ -1,21 +1,10 @@
 #pragma once
 #include "../../state.h"
-
-struct SStateDataMoveToPoint {
-	Fvector		point;
-	u32			vertex;
-	EAction		action;
-	bool		accelerated;
-	bool		braking;
-	u8			accel_type;
-};
-
+#include "state_data.h"
 
 template<typename _Object>
 class CStateMonsterMoveToPoint : public CState<_Object> {
 	typedef CState<_Object> inherited;
-
-public:
 	
 	SStateDataMoveToPoint data;
 

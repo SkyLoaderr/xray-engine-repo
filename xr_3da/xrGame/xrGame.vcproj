@@ -2442,6 +2442,9 @@
 						<Filter
 							Name="General"
 							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\States\state_data.h">
+							</File>
 							<Filter
 								Name="Movement"
 								Filter="">

@@ -1,19 +1,12 @@
 #pragma once
 #include "../../state.h"
-
-struct SStateDataLookToPoint {
-	Fvector		point;
-	EAction		action;
-};
-
+#include "state_data.h"
 
 template<typename _Object>
 class CStateMonsterLookToPoint : public CState<_Object> {
 	typedef CState<_Object> inherited;
 
-public:
-
-	SStateDataLookToPoint data;
+	SStateDataLookToPoint	data;
 
 public:
 						CStateMonsterLookToPoint	(_Object *obj);
@@ -25,4 +18,4 @@ public:
 	virtual bool		check_completion			();
 };
 
-#include "state_look_to_point_inline.h"
+#include "state_look_point_inline.h"

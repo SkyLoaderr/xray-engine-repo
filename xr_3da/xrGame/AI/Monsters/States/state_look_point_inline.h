@@ -7,7 +7,7 @@
 #define CStateMonsterLookToPointAbstract CStateMonsterLookToPoint<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterLookToPointAbstract::CStateMonsterLookToPoint(_Object *obj) : inherited(obj)
+CStateMonsterLookToPointAbstract::CStateMonsterLookToPoint(_Object *obj) : inherited(obj, &data)
 {
 	data.point.set		(0.f,0.f,0.f);
 	data.action			= ACT_STAND_IDLE; 

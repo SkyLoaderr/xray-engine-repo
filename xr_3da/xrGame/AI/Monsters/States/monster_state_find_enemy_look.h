@@ -22,10 +22,9 @@ public:
 	virtual				~CStateMonsterFindEnemyLook	();
 
 	virtual	void		reselect_state				();
-	
-	virtual void		initialize					();
-	virtual	void		execute						();
 	virtual bool		check_completion			();
+
+	virtual void		setup_substates				();
 };
 
 #include "monster_state_find_enemy_look_inline.h"

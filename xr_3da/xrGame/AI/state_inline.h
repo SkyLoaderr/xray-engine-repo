@@ -7,10 +7,11 @@
 #define CStateAbstract CState<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateAbstract::CState(_Object *obj) 
+CStateAbstract::CState(_Object *obj, void *data) 
 {
 	reset();
-	object = obj;
+	object	= obj;
+	_data	= data;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -89,6 +90,8 @@ void CStateAbstract::select_state(u32 new_state_id)
 	state = get_state(current_substate = new_state_id);
 	
 	// инициализировать новое состояние
+	setup_substates();
+
 	state->initialize();
 }
 
@@ -114,6 +117,15 @@ void CStateAbstract::free_mem()
 }
 
 TEMPLATE_SPECIALIZATION
+void CStateAbstract::fill_data_with	(void *ptr_src, u32 size)
+{
+	VERIFY(ptr_src);
+	VERIFY(_data);
+
+	CopyMemory(_data, ptr_src, size);
+}
+
+TEMPLATE_SPECIALIZATION
 CStateAbstract *CStateAbstract::get_state_current()
 {
 	STATE_MAP_IT it = substates.find(current_substate);
@@ -121,4 +133,5 @@ CStateAbstract *CStateAbstract::get_state_current()
 
 	return it->second;
 }
+
 

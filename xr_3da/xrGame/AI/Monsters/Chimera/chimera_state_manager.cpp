@@ -12,7 +12,9 @@
 #include "../states/monster_state_find_enemy_look.h"
 #include "../states/monster_state_find_enemy_angry.h"
 #include "../states/monster_state_find_enemy_walk.h"
-
+#include "../states/state_move_to_point.h"
+#include "../states/state_look_point.h"
+#include "../states/state_custom_action.h"
 
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {
@@ -31,15 +33,18 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 		)
 	);
 
-//	add_state(
-//		eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
-//			xr_new<CStateMonsterFindEnemyRun<CChimera> >(obj), 
-//			xr_new<CStateMonsterFindEnemyLook<CChimera> >(obj),
-//			xr_new<CStateMonsterFindEnemyAngry<CChimera> >(obj), 
-//			xr_new<CStateMonsterFindEnemyWalkAround<CChimera> >(obj)
-//		)
-//	);
-//	
+	add_state(
+		eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
+			xr_new<CStateMonsterFindEnemyRun<CChimera> >(obj), 
+			xr_new<CStateMonsterFindEnemyLook<CChimera> >(obj,
+				xr_new<CStateMonsterMoveToPoint<CChimera> >(obj), 
+				xr_new<CStateMonsterLookToPoint<CChimera> >(obj),
+				xr_new<CStateMonsterCustomAction<CChimera> >(obj)),
+			xr_new<CStateMonsterFindEnemyAngry<CChimera> >(obj), 
+			xr_new<CStateMonsterFindEnemyWalkAround<CChimera> >(obj)
+		)
+	);
+	
 	
 //	add_state(
 //		eStateThreaten, xr_new<CStateChimeraThreaten<CChimera> > (

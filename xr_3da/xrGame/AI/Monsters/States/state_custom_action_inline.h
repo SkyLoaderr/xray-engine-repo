@@ -7,7 +7,7 @@
 #define CStateMonsterCustomActionAbstract CStateMonsterCustomAction<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterCustomActionAbstract::CStateMonsterCustomAction(_Object *obj) : inherited(obj)
+CStateMonsterCustomActionAbstract::CStateMonsterCustomAction(_Object *obj) : inherited(obj, &data)
 {
 	data.action			= ACT_STAND_IDLE; 
 }
