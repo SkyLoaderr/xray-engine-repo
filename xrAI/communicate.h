@@ -1,7 +1,7 @@
 #ifndef _XR_COMM_
 #define _XR_COMM_
 
-#pragma pack(push,8)
+#pragma pack(push,4)
 
 const DWORD XR_MAX_UVMAPS		= 1;
 const DWORD XR_MAX_TEXTURES		= 32;
@@ -17,29 +17,29 @@ struct b_uvmap
 };
 struct b_face
 {
-	DWORD	v		[3];					// vertices
-	b_uvmap t		[3];					// TC
-	WORD	dwMaterial;						// index of material
+	DWORD				v[3];				// vertices
+	b_uvmap				t[3];				// TC
+	WORD				dwMaterial;			// index of material
 };
 struct b_material
 {
-	WORD	surfidx;						// indices of texture surfaces
-	WORD	shader;							// index of shader that combine them
-	WORD	shader_xrlc;					// compiler options
-	WORD	sector;							// ***
-	DWORD	reserved;
+	WORD				surfidx;			// indices of texture surfaces
+	WORD				shader;				// index of shader that combine them
+	WORD				shader_xrlc;		// compiler options
+	WORD				sector;				// ***
+	DWORD				reserved;
 };
 struct b_shader
 {
-	char	name	[128];
+	char				name		[128];
 };
 struct b_texture
 {
-	char	name	[128];
-	DWORD	dwWidth;
-	DWORD	dwHeight;
-	BOOL	bHasAlpha;
-	DWORD*	pSurface;
+	char				name		[128];
+	DWORD				dwWidth;
+	DWORD				dwHeight;
+	BOOL				bHasAlpha;
+	DWORD*				pSurface;
 };
 struct b_light : public Flight
 {
@@ -48,33 +48,32 @@ struct b_light : public Flight
 		DWORD			bAffectDynamic	: 1;
 		DWORD			bProcedural		: 1;
 	}					flags;
+	string64			name;
 	svector<WORD,16>	sectors;
 };
 struct b_glow
 {
-	Fvector			P;
-	float			size;
-	DWORD			dwMaterial;			// index of material
+	Fvector				P;
+	float				size;
+	DWORD				dwMaterial;			// index of material
 };
 struct b_particle
 {
-	Fvector			P;
-	Fvector			N;
-	float			size;
-	DWORD			dwMaterial;
+	Fvector				P;
+	Fvector				N;
+	float				size;
+	DWORD				dwMaterial;
 };
 struct b_occluder
 {
-	WORD			sector;			// ***
-	WORD			vert_count;
-	Fvector			vertices[XR_MAX_PORTAL_VERTS];
+	WORD				sector;				
+	svector<Fvector,XR_MAX_PORTAL_VERTS>	vertices;
 };
 struct b_portal
 {
-	WORD			sector_front;
-	WORD			sector_back;
-	DWORD			vert_count;
-	Fvector			vertices[XR_MAX_PORTAL_VERTS];
+	WORD				sector_front;
+	WORD				sector_back;
+	svector<Fvector,XR_MAX_PORTAL_VERTS>	vertices;
 };
 
 struct b_params
@@ -138,7 +137,8 @@ struct b_params
 	char		L_name[64];			// Level name
 	char		L_path[256];		// Path to level. Like "x:\game\data\try\"
 
-    void        Init(){
+    void        Init()
+	{
         m_bTesselate            = FALSE;
         m_maxedge               = 32;
 
@@ -201,7 +201,7 @@ struct b_params
 
 struct b_transfer
 {
-	DWORD		_version;		// XRCL_CURRENT_VERSION (4)
+	DWORD		_version;		// XRCL_CURRENT_VERSION
 	b_params	params;
 
 	b_vertex*	vertices;
@@ -217,7 +217,7 @@ struct b_transfer
 	b_light*	lights;
 	DWORD		light_count;
 	Flight*		light_keys;
-	DWORD		light_keys_count; // ***
+	DWORD		light_keys_count;
 	b_glow*		glows;
 	DWORD		glow_count;
 	b_particle*	particles;
@@ -227,6 +227,7 @@ struct b_transfer
 	b_portal*	portals;		
 	DWORD		portal_count;
 };
+
 #pragma pack(pop)
 
 #endif
