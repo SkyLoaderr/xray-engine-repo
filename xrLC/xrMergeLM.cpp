@@ -189,22 +189,6 @@ bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 }
 
 // Check for intersection
-/*
-bool Place(_rect &R, vecRIT CIT)
-{
-	if (R.b.x >= 512) return false;
-	if (R.b.y >= 512) return false;
-	
-	// Test next - major speedup
-	if (CIT!=collected.end()) {
-		if (R.Intersect(*(CIT+1))) return false;
-	}
-
-	// Degrade to surface testing
-	return Place_Perpixel(R);
-};
-*/
-
 BOOL _rect_place(_rect &r, CDeflector* D)
 {
 	// Normal
@@ -250,7 +234,6 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 };
 
 #pragma optimize( "g", off )
-//agpwy
 void CBuild::MergeLM()
 {
 	vecDefl		deflNew;
