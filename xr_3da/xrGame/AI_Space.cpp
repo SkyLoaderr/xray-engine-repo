@@ -93,8 +93,10 @@ void CAI_Space::Load(LPCSTR name)
 		{
 			vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
 			vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
-			for ( ; I != E; I++)
+			for ( ; I != E; I++) {
+				m_tpGraphVFS->RstringZ((*I).caLevelName);
 				m_tpGraphVFS->Rvector((*I).tOffset);
+			}
 		}
 		R_ASSERT				(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
 		m_tpaGraph				= (AI::SGraphVertex*)m_tpGraphVFS->Pointer();

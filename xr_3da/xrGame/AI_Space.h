@@ -31,6 +31,7 @@ namespace AI {
 	} SGraphVertex;
 
 	typedef struct tagSLevel {
+		string256	caLevelName;
 		Fvector		tOffset;
 	} SLevel;
 
