@@ -60,6 +60,7 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	}
 	Status		("Building base mesh : faces[%d]...",CL.getTS());
 	std::vector <_mesh::VertexHandle>	fhandles;
+	u32			fail_cnt	= 0;
 	for (u32 f_it=0; f_it<CL.getTS(); f_it++)		{
 		CDB::TRI&	f		= CL.getT()[f_it];
 		fhandles.clear		();
@@ -67,9 +68,10 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 		fhandles.push_back	(vhandles[f.IDvert(1)]);
 		fhandles.push_back	(vhandles[f.IDvert(2)]);
 		_mesh::FaceHandle	hface	= mesh.add_face		(fhandles);
-		if (hface != _mesh::InvalidFaceHandle)
-			mesh.face(hface).set_props	(f.dummy);
+		if (hface == _mesh::InvalidFaceHandle)	fail_cnt	+= 1;
+		else				mesh.face(hface).set_props	(f.dummy);
 	}
+	clMsg		("%d faces failed topology check",fail_cnt);
 	Status		("Building base mesh : normals...");
 	mesh.request_vertex_normals	();
 	mesh.update_vertex_normals	();
@@ -80,11 +82,14 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	Status		("Reconstructing mesh-topology...");
 	decimater.initialize	();      // let the decimater initialize the mesh and the modules
 
+	int		nf_before		= int	(mesh.n_faces());
 	int		nv_before		= int	(mesh.n_vertices());
 	int		nc				= decimater.decimate	(nv_before);	// do decimation, as large, as possible
 							mesh.garbage_collection	();
+	int		nf_after		= int	(mesh.n_faces());
 	int		nv_after		= int	(mesh.n_vertices());
-	clMsg					("was[%d], now[%d] => %f %% left",nv_before,nv_after, 100.f*float(nv_after)/float(nv_before) );
+	clMsg					("vertices: was[%d], now[%d] => %f %% left",nv_before,nv_after, 100.f*float(nv_after)/float(nv_before) );
+	clMsg					("   faces: was[%d], now[%d] => %f %% left",nf_before,nf_after, 100.f*float(nf_after)/float(nf_before) );
 
 	// Decimate
 	Status		("Refactoring CFORM...");
