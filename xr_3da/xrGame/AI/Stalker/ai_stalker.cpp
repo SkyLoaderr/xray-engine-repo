@@ -284,13 +284,15 @@ void CAI_Stalker::UpdateCL(){
 	m_pPhysics_support->in_UpdateCL();
 
 	if (g_Alive()) {
-		CObjectHandler::update			(Level().timeServer() - m_dwLastUpdateTime);
-		float							s_k		= ((eBodyStateCrouch == m_tBodyState) ? CROUCH_SOUND_FACTOR : 1.f);
-		float							s_vol	= s_k*((eMovementTypeRun == m_tMovementType) ? 1.f : ACCELERATED_SOUND_FACTOR);
-//		float							k		= (eBodyStateCrouch == m_tBodyState) ? 0.75f : 1.f;
-//		float							tm		= (eMovementTypeRun == m_tMovementType) ? (PI/(k*10.f)) : (PI/(k*7.f));
-		float							step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
-		CMaterialManager::update		(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
+		if ((Level().timeServer() - m_dwLastUpdateTime) > 0)  {
+			CObjectHandler::update			(Level().timeServer() - m_dwLastUpdateTime);
+			float							s_k		= ((eBodyStateCrouch == m_tBodyState) ? CROUCH_SOUND_FACTOR : 1.f);
+			float							s_vol	= s_k*((eMovementTypeRun == m_tMovementType) ? 1.f : ACCELERATED_SOUND_FACTOR);
+			//		float							k		= (eBodyStateCrouch == m_tBodyState) ? 0.75f : 1.f;
+			//		float							tm		= (eMovementTypeRun == m_tMovementType) ? (PI/(k*10.f)) : (PI/(k*7.f));
+			float							step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
+			CMaterialManager::update		(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
+		}
 	}
 
 	if (this == Level().CurrentViewEntity())
