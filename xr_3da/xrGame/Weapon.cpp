@@ -90,10 +90,12 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	tracerStartLength= ini->ReadFLOAT	(section,"tracer_start_length"	);
 	tracerWidth		= ini->ReadFLOAT	(section,"tracer_width"			);
 
-	iHitPower		= ini->ReadINT		(section,"hit_power"		);
+	light_base.SetColor	(ini->ReadCOLOR	(section,"light_color"		));
+	light_base.SetRange	(ini->ReadFLOAT	(section,"light_range"		));
+	light_var_color	= ini->ReadFLOAT	(section,"light_var_color"	);
+	light_var_range	= ini->ReadFLOAT	(section,"light_var_range"	);
 
-	light_base.SetColor	(.4f,.2f,.05f);
-	light_base.SetRange	(3.f);
+	iHitPower		= ini->ReadINT		(section,"hit_power"		);
 
 	bVisible		= FALSE;
 }
@@ -173,12 +175,9 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	{
 		light_frame		= Device.dwFrame;
 		
-		float	var_color = 0.05f;
-		float	var_range = 0.5f;
-
 		light_render.SetPosition	(Peff);
-		light_render.SetColor		(Random.randFs(var_color,light_base.color.r),Random.randFs(var_color,light_base.color.g),Random.randFs(var_color,light_base.color.b));
-		light_render.SetRange		(Random.randFs(var_range,light_base.sphere.R));
+		light_render.SetColor		(Random.randFs(light_var_color,light_base.color.r),Random.randFs(light_var_color,light_base.color.g),Random.randFs(light_var_color,light_base.color.b));
+		light_render.SetRange		(Random.randFs(light_var_range,light_base.sphere.R));
 
 		::Render.Lights_Dynamic.Add	(&light_render);
 	}

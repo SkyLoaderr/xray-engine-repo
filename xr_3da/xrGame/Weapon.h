@@ -49,6 +49,8 @@ protected:
 	
 	CLightPPA		light_base;
 	CLightPPA		light_render;
+	float			light_var_color;
+	float			light_var_range;
 	DWORD			light_frame;
 
 	BOOL			FireTrace		(const Fvector& P, const Fvector& Peff,	Fvector& D);
