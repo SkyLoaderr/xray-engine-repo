@@ -15,7 +15,7 @@ end
 function get_game_clsid(game_type_option)
 
 	if(game_type_option == "single") then 
-		return "GM_SINGLE" end
+		return "GM_SINGL" end
 
 	if(game_type_option == "deathmatch") then 
 		return "GM_DM" end
