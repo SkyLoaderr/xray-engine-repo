@@ -117,7 +117,7 @@ void EFS_Utils::RegisterAccess(LPCSTR fn, LPCSTR start_msg, bool bLog)
 	if (bLog) 	WriteAccessLog(fn,start_msg);
 }
 
-BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPCSTR fname, bool bOnlySelf, bool bMsg)
+BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPCSTR fname, bool bOnlySelf, bool bMsg, shared_str* owner)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(fn,initial,fn);
@@ -126,8 +126,10 @@ BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPCSTR fname, bool bOnlySelf, bool 
 	if (FS.exist(fn)){
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 		CloseHandle(handle);
-		if (bMsg&&(INVALID_HANDLE_VALUE==handle))
-			Msg("#!Access denied. File: '%s'currently locked by user: '%s'.",fn,GetLockOwner(0,fn));
+        if (INVALID_HANDLE_VALUE==handle){
+			if (bMsg)	Msg("#!Access denied. File: '%s'currently locked by user: '%s'.",fn,GetLockOwner(0,fn));
+            if (owner) 	*owner = GetLockOwner(0,fn);
+        }
 		return (INVALID_HANDLE_VALUE==handle);
 	}
     return FALSE;
@@ -168,7 +170,7 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 	return false;
 }
 
-LPCSTR EFS_Utils::GetLockOwner(LPCSTR initial, LPCSTR fname)
+shared_str EFS_Utils::GetLockOwner(LPCSTR initial, LPCSTR fname)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(fn,initial,fn);
