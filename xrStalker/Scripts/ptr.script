@@ -45,7 +45,7 @@ function SPatrol:process ()
           self.snd_len = 0
           self.snd_time = ctime
        else
-          if ctime - self.snd_time >= snd_interval then
+          if ctime - self.snd_time >= snd_interval and self.snd_len == 0 then
              local sname = self.sounds[math.random (1, table.getn (self.sounds))]
              local s = sound_object (sname)
              self.snd_len = s:length () + ctime
