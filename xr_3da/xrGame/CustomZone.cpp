@@ -5,17 +5,15 @@
 #include "..\xr_ioconsole.h"
 
 CCustomZone::CCustomZone(void) {
-	m_pA = NULL;
 	m_maxPower = 100.f;
 	m_attn = 1.f;
 	m_period = 1000;
-	m_time = 0;
+	m_ready = false;
 }
 
 CCustomZone::~CCustomZone(void) {}
 
-BOOL CCustomZone::net_Spawn		(LPVOID DC)
-{
+BOOL CCustomZone::net_Spawn		(LPVOID DC) {
 	BOOL res = inherited::net_Spawn(DC);
 
 	if(res) {
@@ -43,7 +41,17 @@ BOOL CCustomZone::net_Spawn		(LPVOID DC)
 	return res;
 }
 
-void CCustomZone::net_Destroy(){
+void CCustomZone::Load		(LPCSTR section) {
+	// verify class
+	LPCSTR Class = pSettings->ReadSTRING(section,"class");
+	CLASS_ID load_cls = TEXT2CLSID(Class);
+	R_ASSERT(load_cls==SUB_CLS_ID);
+
+	inherited::Load		(section);
+
+}
+
+void CCustomZone::net_Destroy() {
 	inherited::net_Destroy();
 }
 
@@ -55,51 +63,28 @@ void CCustomZone::Update(u32 dt) {
 	clXFORM().transform_tiny(P,s.P);
 	feel_touch_update		(P,s.R);
 
-	m_time += dt;
-	if(m_time > m_period) {
-		while(m_time > m_period) m_time -= m_period;
-		if(m_pA) {
-			char l_pow[255]; sprintf(l_pow, "zone hit. %.1f", Power(m_pA->Position().distance_to(P)));
-			Level().HUD()->outMessage(0xffffffff,m_pA->cName(), l_pow);
-			Fvector l_dir; l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(.0f,1.f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
-			m_pA->ph_Movement.ApplyImpulse(l_dir, 50.f*Power(m_pA->Position().distance_to(P)));
-			Fvector position_in_bone_space;
-			position_in_bone_space.set(0.f,0.f,0.f);
-			NET_Packet		l_P;
-			m_pA->u_EventGen		(l_P,GE_HIT,m_pA->ID());
-			l_P.w_u16			(u16(m_pA->ID()));
-			l_P.w_dir			(l_dir);
-			l_P.w_float		(.2f*Power(m_pA->Position().distance_to(P)));
-			l_P.w_s16			((s16)0);
-			l_P.w_vec3		(position_in_bone_space);
-			m_pA->u_EventSend		(l_P);
+	if(m_ready) {
+		set<CObject*>::iterator l_it;
+		for(l_it = m_inZone.begin(); l_it != m_inZone.end(); l_it++) {
+			Affect(*l_it);
 		}
+		m_ready = false;
 	}
 }
 
 
-void CCustomZone::feel_touch_new			(CObject* O) {
-	CActor *l_pA = dynamic_cast<CActor*>(O);
-	Level().HUD()->outMessage(0xffffffff,l_pA->cName(),"entering a zone.");//Log("I feel a zone!!!!");
-	//Console.Execute("rs_postprocess on");
-	//Console.Execute("rs_supersample 1");
-	::Render->getTarget()->set_blur(.5f);
-
-	m_pA = l_pA;
+void CCustomZone::feel_touch_new(CObject* O) {
+	Level().HUD()->outMessage(0xffffffff,O->cName(),"entering a zone.");
+	m_inZone.insert(O);
 }
 
-void CCustomZone::feel_touch_delete		(CObject* O) {
-	CActor *l_pA = dynamic_cast<CActor*>(O);
-	Level().HUD()->outMessage(0xffffffff,l_pA->cName(),"leaving a zone.");//Log("I've left a zone!!!!");
-	//Console.Execute("rs_postprocess off");
-	//Console.Execute("rs_supersample 0");
-	::Render->getTarget()->set_blur(1.f);
-
-	m_pA = NULL;
+void CCustomZone::feel_touch_delete(CObject* O) {
+	Level().HUD()->outMessage(0xffffffff,O->cName(),"leaving a zone.");
+	m_inZone.erase(O);
 }
 
-BOOL CCustomZone::feel_touch_contact	(CObject* O) {
-	CActor *l_pA = dynamic_cast<CActor*>(O); if(!l_pA || !l_pA->Local()) return false;
+BOOL CCustomZone::feel_touch_contact(CObject* O) {
+	if(!O->Local()) return false;
 	return ((CCF_Shape*)cfModel)->Contact(O);
 }
 
