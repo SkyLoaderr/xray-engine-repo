@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ftreevisual.h"
-
+#include "..\fmesh.h"
 #include "..\xr_creator.h"
 #include "..\xr_effsun.h"
 
