@@ -483,6 +483,12 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		E->o_torso.yaw = E->o_Angle.y;
 		E->o_torso.pitch = -E->o_Angle.x;
 	}
+/*	else
+	{
+		E->o_Angle.y = E->o_model;
+		E->o_Angle.y = E->o_torso.yaw;
+		E->o_Angle.x = -E->o_torso.pitch;
+	}*/
 
 	r_model_yaw				= E->o_model;
 	r_torso.yaw				= E->o_torso.yaw;
@@ -492,8 +498,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	unaffected_r_torso_pitch = r_torso.pitch;
 
 
-	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);		// set's camera orientation
+
 	cam_Set	(eacFirstEye);
+	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);		// set's camera orientation
 
 	// *** movement state - respawn
 	mstate_wishful			= 0;

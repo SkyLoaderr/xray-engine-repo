@@ -56,6 +56,13 @@ void CCameraFirstEye::Update(Fvector& point, Fvector& noise_dangle)
 
 void CCameraFirstEye::Move( int cmd, float val )
 {
+	if (bClampPitch)
+	{
+		while (pitch < lim_pitch[0])
+			pitch += PI_MUL_2;
+		while (pitch > lim_pitch[1])
+			pitch -= PI_MUL_2;
+	};
 	switch (cmd){
 	case kDOWN:		pitch	-= val?val:(rot_speed.y*Device.fTimeDelta);	break;
 	case kUP:		pitch	+= val?val:(rot_speed.y*Device.fTimeDelta);	break;

@@ -166,9 +166,10 @@ int	CLevel::get_RPID(LPCSTR /**name/**/)
 LPCSTR CLevel::Name		()
 {
 	if(!CurrentEntity()) return NULL;
-//	return  ai().game_graph().header().level(ai().game_graph().vertex(dynamic_cast<CGameObject*>(CurrentEntity())->game_vertex_id())->level_id()).name();
-
-	return NULL;
+	if(ai().get_alife() && ai().get_game_graph())
+		return  ai().game_graph().header().level(ai().game_graph().vertex(dynamic_cast<CGameObject*>(CurrentEntity())->game_vertex_id())->level_id()).name();
+	else
+		return NULL;
 }
 
 
