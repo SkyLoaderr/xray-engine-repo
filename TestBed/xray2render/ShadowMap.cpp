@@ -1370,6 +1370,17 @@ HRESULT CMyD3DApplication::RenderCombine_Normal	()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 {
+	LPDIRECT3DSURFACE9						pBaseTarget;
+	LPDIRECT3DSURFACE9						pBaseZB;
+
+	// Set new render targets
+	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget	);
+	m_pd3dDevice->GetDepthStencilSurface	(&pBaseZB			);
+
+	// Set Bloom 1
+	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_1_S		);
+	m_pd3dDevice->SetDepthStencilSurface	(NULL);
+
 	// samplers and texture (diffuse + gloss)
 	m_pd3dDevice->SetTexture				(0, d_Color);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
