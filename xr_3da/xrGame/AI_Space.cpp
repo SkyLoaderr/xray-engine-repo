@@ -274,6 +274,8 @@ void CAI_Space::Load(LPCSTR name)
 
 void CAI_Space::Render()
 {
+	if (!bDebug)	return;
+
 	// temporary
 	for (int i=0; i<3; i++) {
 		vector<Fvector> &tpaVector = Level().m_PatrolPaths["path02"].tpaVectors[i];

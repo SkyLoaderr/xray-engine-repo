@@ -1003,6 +1003,8 @@ void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 
 void CActor::OnRender()
 {
+	if (!bDebug)				return;
+
 	Movement.dbg_Draw			();
 
 	CCameraBase* C				= cameras	[cam_active];

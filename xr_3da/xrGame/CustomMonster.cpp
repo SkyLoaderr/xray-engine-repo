@@ -453,7 +453,8 @@ extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvecto
 #ifdef DEBUG
 void CCustomMonster::OnRender()
 {
-	if (0 == (psAI_Flags&aiDebug)) return;
+	if (!bDebug)					return;
+	if (0 == (psAI_Flags&aiDebug))	return;
 	
 	Device.Shader.OnFrameEnd	();
 	{

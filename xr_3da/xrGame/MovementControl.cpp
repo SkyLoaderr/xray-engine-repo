@@ -19,6 +19,7 @@
 
 void CMovementControl::dbg_Draw()
 {
+	if (!bDebug)		return;
 	/*
 	Fvector P2; P2.add(vPosition,vVelocity);
 	Device.Primitive.dbg_DrawLINE(Fidentity,vPosition,P2,D3DCOLOR_RGBA(255,255,255,255));

@@ -188,7 +188,7 @@ void CGameObject::u_EventSend(NET_Packet& P, BOOL sync)
 #ifdef DEBUG
 void CGameObject::OnRender()
 {
-	if (Visual()){
+	if (bDebug && Visual()){
 		Fvector bc,bd; 
 		Visual()->bv_BBox.get_CD(bc,bd);
 		Fmatrix	M = clXFORM();	M.c.add (bc);

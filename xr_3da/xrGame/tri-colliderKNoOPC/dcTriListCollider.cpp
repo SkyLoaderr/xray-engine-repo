@@ -581,7 +581,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 #ifdef DEBUG
 void dcTriListCollider::OnRender()
 {
-	if (BoxCenter){
+	if (!bDebug && BoxCenter){
 		Fvector C;
 		C.set(0,0,0);
 		Device.Primitive.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));

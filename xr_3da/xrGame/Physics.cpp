@@ -35,7 +35,7 @@ Msg("%s","rrr");
 
 void CPHWorld::Render()
 {
-	return;
+	if (!bDebug)	return;
 	/*
 	Device.Shader.OnFrameEnd		();
 	Device.set_xform_world			(Fidentity);

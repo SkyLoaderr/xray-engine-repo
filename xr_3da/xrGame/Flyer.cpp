@@ -263,8 +263,9 @@ void CFlyer::Update(u32 DT)
 }
 
 #ifdef DEBUG
-void CFlyer::OnRender()
+void CFlyer::OnRender	()
 {
-	Movement.dbg_Draw();
+	if (!bDebug)		return;
+	Movement.dbg_Draw	();
 }
 #endif
