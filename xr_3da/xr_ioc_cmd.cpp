@@ -60,6 +60,10 @@ public:
 	CCC_MemStat(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		Memory.mem_statistic();
+		Msg	("* ----- shared memory -----");
+		g_pSharedMemoryContainer->dump();
+		Msg	("* ----- string storage -----");
+		g_pStringContainer->dump();
 	}
 };
 //-----------------------------------------------------------------------
