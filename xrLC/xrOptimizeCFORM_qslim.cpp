@@ -5,8 +5,8 @@
 
 //#pragma comment (lib,"x:/xrQSlim.lib")
 
-#define MAX_DECIMATE_ERROR 0.01f
-#define COMPACTNESS_RATIO  0.5f
+#define MAX_DECIMATE_ERROR 0.00001f
+#define COMPACTNESS_RATIO  0.01f
 
 void SaveAsSMF			(LPCSTR fname, CDB::CollectorPacked& CL)
 {
@@ -65,10 +65,10 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 
 	// create and initialize qslim
 	MxEdgeQSlim* slim		= xr_new<MxEdgeQSlim>(mdl);
-	slim->boundary_weight	= 1000.f;
+	slim->boundary_weight	= 10000.f;
 	slim->compactness_ratio	= COMPACTNESS_RATIO;
-	slim->meshing_penalty	= 1000.f;
-	slim->placement_policy	= MX_PLACE_ENDORMID;//MX_PLACE_OPTIMAL;
+	slim->meshing_penalty	= 10000.f;
+	slim->placement_policy	= MX_PLACE_ENDPOINTS;//MX_PLACE_ENDPOINTS;//MX_PLACE_ENDORMID;//MX_PLACE_OPTIMAL;
 	slim->weighting_policy	= MX_WEIGHT_AREA_AVG;
 	slim->initialize		();
 
@@ -136,7 +136,7 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	// save source CDB
 	SaveAsSMF				(strconcat(fn,pBuild->path,"cform_optimized.smf"),CL);
 
-	xr_delete				(slim);
+ 	xr_delete				(slim);
 	xr_delete				(mdl);
 }
 
