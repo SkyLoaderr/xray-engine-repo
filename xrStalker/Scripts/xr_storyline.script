@@ -17,13 +17,19 @@ function set_storyline(object, char_ini)
     	if( char_ini:section_exist ("escape_factory_bandit") ) then
         	xr_motivator.storage[object:id()].escape_factory_bandit.enabled = true
     	end
+	if xr_motivator.storage[object:id()].escape_factory_bandit.enabled == true and
+	   actor ~= nil and
+	   actor:dont_has_info("escape_factory_bandits_dead")
+	then
+		escape_factory_bandits.add_to_binder(object)
+	end
 	--Настройка схемы реакции новичка3 - новичок которого ограбили
-		xr_motivator.storage[object:id()].novice3 = {
-                	path     = nil,         --Путь, по которому ходить
-                        enemy_path = nil,       --Нулевая точка пути, туда, куда надо бежать
-                        say_kill = false,       --Ни разу не говорил, что убьет бандитов
-                        enabled  = false
-                }
+	xr_motivator.storage[object:id()].novice3 = {
+               	path     = nil,         --Путь, по которому ходить
+                enemy_path = nil,       --Нулевая точка пути, туда, куда надо бежать
+                say_kill = false,       --Ни разу не говорил, что убьет бандитов
+                enabled  = false
+        }
     	if char_ini:section_exist ("novice3") == true and
 	   actor ~= nil and
 	   actor:dont_has_info("escape_factory_bandits_dead")	
@@ -67,6 +73,25 @@ function set_storyline(object, char_ini)
 	then
 		xr_robbers.add_to_binder  (object)
 	end
+	
+
+	--Настройка сталкера зомби
+	xr_motivator.storage[object:id()].zombie = {
+        	path     = nil,         --Путь, по которому ходить
+                curState = 1,
+                time     = 0,
+                stand    = false,
+                enabled  = false
+	}
+    	if( char_ini:section_exist ("zombie") == true ) then
+        	if( char_ini:line_exist("zombie", "path") == true ) then
+            		xr_motivator.storage[object:id()].zombie.path = char_ini:r_string("zombie", "path")
+        	end
+        	xr_motivator.storage[object:id()].zombie.enabled = true
+        	xr_trivial.add_zombie(object)
+	end
+
+
 
 
 
@@ -121,23 +146,5 @@ xr_motivator.storage[object:id()].novice2 = {
         xr_trivial.add_novice2    (object)
     end
 
---Настройка сталкера зомби
-xr_motivator.storage[object:id()].zombie =
- 						{
-                            path     = nil,         --Путь, по которому ходить
-                            curState = 1,
-                            time     = 0,
-                            stand    = false,
-                            enabled  = false
-						}
-    if( char_ini:section_exist ("zombie") == true ) then
-        if( char_ini:line_exist("zombie", "path") == true ) then
-            xr_motivator.storage[object:id()].zombie.path = char_ini:r_string("zombie", "path")
-        end
-        xr_motivator.storage[object:id()].zombie.enabled = true
-        xr_trivial.add_zombie(object)
-	end
-
-    escape_factory_bandits.add_to_binder(object)
 
 end
