@@ -83,7 +83,7 @@ function add_to_binder(object)
 
 	properties["position"]	= xr_evaluators_id.position
 	properties["state_end"]		= xr_evaluators_id.state_change
-	properties["event"] 		= xr_evaluators_id.stohe_reactions_base + 0
+	properties["event"] 		= xr_evaluators_id.reaction
 
 	operators["go_position"] = xr_actions_id.stohe_position + 1
 

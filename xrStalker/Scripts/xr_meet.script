@@ -444,7 +444,7 @@ function add_to_binder(object)
 	local manager = object:motivation_action_manager()
 
 	properties["trade_init"]	= xr_evaluators_id.final_trade_init         
-	properties["event"] 		= xr_evaluators_id.stohe_reactions_base + 0
+	properties["event"] 		= xr_evaluators_id.reaction
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1         
 	properties["wait_buyer"] 	= xr_evaluators_id.stohe_tradeseller_base + 1
 
