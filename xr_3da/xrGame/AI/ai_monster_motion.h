@@ -1,9 +1,12 @@
 #pragma once
 
 #include "ai_monster_defs.h"
+#include "ai_monster_share.h"
+
 
 class		CAI_Biting;
 class		CJumping;
+class		CSharedResource;
 
 typedef		ref_str			anim_string;
 
@@ -176,25 +179,38 @@ typedef struct {
 } SAttackAnimation;
 
 
-class CMotionManager {
+DEFINE_MAP		(EMotionAnim,		SAnimItem,				ANIM_ITEM_MAP,		ANIM_ITEM_MAP_IT);
+DEFINE_VECTOR	(STransition,		TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
+DEFINE_MAP		(EAction,			SMotionItem,			MOTION_ITEM_MAP,	MOTION_ITEM_MAP_IT);
+DEFINE_VECTOR	(EMotionAnim,		SEQ_VECTOR,				SEQ_VECTOR_IT);
+DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
+DEFINE_VECTOR	(SReplacedAnim,		REPLACED_ANIM,			REPLACED_ANIM_IT);
 
-	DEFINE_MAP		(EMotionAnim,		SAnimItem,				ANIM_ITEM_MAP,		ANIM_ITEM_MAP_IT);
-	DEFINE_VECTOR	(STransition,		TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
-	DEFINE_MAP		(EAction,			SMotionItem,			MOTION_ITEM_MAP,	MOTION_ITEM_MAP_IT);
-	DEFINE_VECTOR	(EMotionAnim,		SEQ_VECTOR,				SEQ_VECTOR_IT);
-	DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
-	DEFINE_VECTOR	(SReplacedAnim,		REPLACED_ANIM,			REPLACED_ANIM_IT);
 
+// specify shared data
+class _motion_shared : public CSharedResource {
+public:
 	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
 	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
 	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
 	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
+	ANIM_VECTOR				m_tHitFXs;
+	ATTACK_ANIM				aa_all;				// список атак
+};
+
+
+
+//////////////////////////////////////////////////////////////////////////
+class CMotionManager {
+
+	// sharing
+	_motion_shared				*_sd;
+	CSharedObj<_motion_shared>	*pSharedObj;
 
 	CAI_Biting				*pMonster;
 	CJumping				*pJumping;
 	IRender_Visual			*pVisual;
 
-	ANIM_VECTOR				m_tHitFXs;
 
 	// работа с последовательностями
 	SEQ_VECTOR				seq_states;
@@ -212,7 +228,6 @@ class CMotionManager {
 	// работа с анимациями атаки
 	TTime					aa_time_started;		// время начала анимации	
 	TTime					aa_time_last_attack;	// время последнего нанесения хита
-	ATTACK_ANIM				aa_all;					// список всех атак
 	ATTACK_ANIM				aa_stack;				// список атак для текущей анимации
 
 	u32						spec_params;			// дополнительные параметры
@@ -227,6 +242,7 @@ public:
 public:
 
 				CMotionManager			();
+				~CMotionManager			();
 	void		Init					(CAI_Biting	*pM);
 
 	// создание карты анимаций (выполнять на Monster::Load)
@@ -250,6 +266,10 @@ public:
 	void		AddReplacedAnim			(bool *b_flag, EMotionAnim pmt_cur_anim, EMotionAnim pmt_new_anim);
 	
 	// -------------------------------------
+
+	void		NotifyShareLoaded		() {_sd->SetLoad();}
+	// 	
+	
 	void		ApplyParams				();
 
 	// выполнить текущий m_tAction

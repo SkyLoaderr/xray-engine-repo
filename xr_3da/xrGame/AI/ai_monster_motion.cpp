@@ -3,9 +3,18 @@
 #include "ai_monster_jump.h"
 #include "biting\\ai_biting.h"
 
-CMotionManager::CMotionManager()
+#define CHECK_SHARED_LOADED() {if (_sd->IsLoaded()) return; }
+
+CMotionManager::CMotionManager() 
 {
+	pSharedObj	= CSharedObj<_motion_shared>::Instance();
 }
+
+CMotionManager::~CMotionManager()
+{
+	pSharedObj->FreeInst();
+}
+
 
 void CMotionManager::Init (CAI_Biting	*pM)
 {
@@ -26,11 +35,15 @@ void CMotionManager::Init (CAI_Biting	*pM)
 	Seq_Init				();
 
 	AA_Clear				();
+
+	_sd						= pSharedObj->get_shared(pMonster->CLS_ID);
 }
 
 // Загрузка параметров анимации. Вызывать необходимо на Monster::Load
 void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed, EPState p_s)
 {
+	CHECK_SHARED_LOADED();
+	
 	SAnimItem new_item;
 
 	new_item.target_name	= tn;
@@ -39,13 +52,13 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, 
 	new_item.speed.angular	= r_speed;
 	new_item.pos_state		= p_s;
 
-	m_tAnims.insert			(mk_pair(ma, new_item));
+	_sd->m_tAnims.insert			(mk_pair(ma, new_item));
 }
 
 // Загрузка анимаций. Необходимо вызывать на Monster::NetSpawn 
 void CMotionManager::LoadVisualData()
 {
-	for (ANIM_ITEM_MAP_IT item_it = m_tAnims.begin(); item_it != m_tAnims.end(); item_it++) {
+	for (ANIM_ITEM_MAP_IT item_it = _sd->m_tAnims.begin(); item_it != _sd->m_tAnims.end(); item_it++) {
 		// Очистка старых анимаций
 		if (!item_it->second.pMotionVect.empty()) item_it->second.pMotionVect.clear();
 		// Загрузка новых
@@ -55,6 +68,8 @@ void CMotionManager::LoadVisualData()
 
 void CMotionManager::AddTransition_A2A(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
+	CHECK_SHARED_LOADED();
+
 	STransition new_item;
 
 	new_item.from.state_used	= false;
@@ -66,12 +81,14 @@ void CMotionManager::AddTransition_A2A(EMotionAnim from, EMotionAnim to, EMotion
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
-	m_tTransitions.push_back(new_item);
+	_sd->m_tTransitions.push_back(new_item);
 }
 
 
 void CMotionManager::AddTransition_A2S(EMotionAnim from, EPState to, EMotionAnim trans, bool chain)
 {
+	CHECK_SHARED_LOADED();
+
 	STransition new_item;
 
 	new_item.from.state_used	= false;
@@ -83,11 +100,13 @@ void CMotionManager::AddTransition_A2S(EMotionAnim from, EPState to, EMotionAnim
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
-	m_tTransitions.push_back(new_item);
+	_sd->m_tTransitions.push_back(new_item);
 }
 
 void CMotionManager::AddTransition_S2A(EPState from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
+	CHECK_SHARED_LOADED();
+
 	STransition new_item;
 
 	new_item.from.state_used	= true;
@@ -100,11 +119,13 @@ void CMotionManager::AddTransition_S2A(EPState from, EMotionAnim to, EMotionAnim
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
-	m_tTransitions.push_back(new_item);
+	_sd->m_tTransitions.push_back(new_item);
 }
 
 void CMotionManager::AddTransition_S2S(EPState from, EPState to, EMotionAnim trans, bool chain)
 {
+	CHECK_SHARED_LOADED();
+	
 	STransition new_item;
 
 	new_item.from.state_used	= true;
@@ -116,11 +137,13 @@ void CMotionManager::AddTransition_S2S(EPState from, EPState to, EMotionAnim tra
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
-	m_tTransitions.push_back(new_item);
+	_sd->m_tTransitions.push_back(new_item);
 }
 
 void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle)
 {
+	CHECK_SHARED_LOADED();
+	
 	SMotionItem new_item;
 
 	new_item.anim				= pmt_motion;
@@ -129,28 +152,32 @@ void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion, EMotionAnim
 	new_item.turn.anim_right	= pmt_right;
 	new_item.turn.min_angle		= pmt_angle;
 
-	m_tMotions.insert	(mk_pair(act, new_item));
+	_sd->m_tMotions.insert	(mk_pair(act, new_item));
 }
 
 void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion)
 {
+	CHECK_SHARED_LOADED();
+
 	SMotionItem new_item;
 
 	new_item.anim				= pmt_motion;
 	new_item.is_turn_params		= false;
 
-	m_tMotions.insert	(mk_pair(act, new_item));
+	_sd->m_tMotions.insert	(mk_pair(act, new_item));
 }
 
 void CMotionManager::AddReplacedAnim(bool *b_flag, EMotionAnim pmt_cur_anim, EMotionAnim pmt_new_anim)
 {
+	CHECK_SHARED_LOADED();
+
 	SReplacedAnim ra;
 
 	ra.flag		= b_flag;
 	ra.cur_anim = pmt_cur_anim;
 	ra.new_anim = pmt_new_anim;
 
-	m_tReplacedAnims.push_back(ra);
+	_sd->m_tReplacedAnims.push_back(ra);
 }
 
 
@@ -177,13 +204,13 @@ bool CMotionManager::PrepareAnimation()
 	if (!pMonster->g_Alive()) 
 		if (should_play_die_anim) {
 			should_play_die_anim = false;  // отыграть анимацию смерти только раз
-			if (m_tAnims.find(eAnimDie) != m_tAnims.end()) cur_anim = eAnimDie;
+			if (_sd->m_tAnims.find(eAnimDie) != _sd->m_tAnims.end()) cur_anim = eAnimDie;
 			else return false;
 		} else return false;
 
 	// получить элемент SAnimItem соответствующий cur_anim
-	ANIM_ITEM_MAP_IT anim_it = m_tAnims.find(cur_anim);
-	R_ASSERT(anim_it != m_tAnims.end());
+	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(cur_anim);
+	R_ASSERT(anim_it != _sd->m_tAnims.end());
 
 	// определить необходимый индекс
 	int index;
@@ -215,8 +242,8 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 	EPState		state_from	= GetState(cur_from);
 	EPState		state_to	= GetState(to);
 
-	TRANSITION_ANIM_VECTOR_IT I = m_tTransitions.begin();
-	bool bVectEmpty = m_tTransitions.empty();
+	TRANSITION_ANIM_VECTOR_IT I = _sd->m_tTransitions.begin();
+	bool bVectEmpty = _sd->m_tTransitions.empty();
 
 	while (!bVectEmpty) {		// вход в цикл, если вектор переходов не пустой
 
@@ -232,11 +259,11 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 			if (I->chain) {
 				cur_from	= I->anim_transition;
 				state_from	= GetState(cur_from);
-				I = m_tTransitions.begin();			// начать сначала
+				I = _sd->m_tTransitions.begin();			// начать сначала
 				continue;
 			} else break;
 		}
-		if ((++I) == m_tTransitions.end()) break;
+		if ((++I) == _sd->m_tTransitions.end()) break;
 	}
 
 	if (bActivated) Seq_Switch();
@@ -251,7 +278,7 @@ void CMotionManager::ProcessAction()
 	if (!seq_playing) {
 
 		// преобразовать Action в Motion и получить новую анимацию
-		SMotionItem MI = m_tMotions[m_tAction];
+		SMotionItem MI = _sd->m_tMotions[m_tAction];
 		cur_anim = MI.anim;
 
 		// установить target.yaw
@@ -303,8 +330,8 @@ void CMotionManager::ProcessAction()
 // Установка линейной и угловой скоростей для cur_anim
 void CMotionManager::ApplyParams()
 {
-	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim);
-	R_ASSERT(item_it != m_tAnims.end());
+	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
+	R_ASSERT(item_it != _sd->m_tAnims.end());
 
 	pMonster->m_fCurSpeed		= item_it->second.speed.linear;
 	pMonster->r_torso_speed		= item_it->second.speed.angular;
@@ -353,7 +380,7 @@ void CMotionManager::FixBadState()
 
 void CMotionManager::CheckReplacedAnim()
 {
-	for (REPLACED_ANIM_IT it=m_tReplacedAnims.begin(); it!= m_tReplacedAnims.end();it++) 
+	for (REPLACED_ANIM_IT it=_sd->m_tReplacedAnims.begin(); it!= _sd->m_tReplacedAnims.end();it++) 
 		if ((cur_anim == it->cur_anim) && (*(it->flag) == true)) { 
 			cur_anim = it->new_anim;
 			return;
@@ -369,19 +396,19 @@ bool CMotionManager::IsMoving()
 // FX plaing stuff
 void CMotionManager::AddHitFX(LPCTSTR name)
 {
-	m_tHitFXs.push_back(PSkeletonAnimated(pVisual)->ID_FX_Safe(name));
+	_sd->m_tHitFXs.push_back(PSkeletonAnimated(pVisual)->ID_FX_Safe(name));
 }
 
 void CMotionManager::PlayHitFX(float amount)
 {
 	// info: check if function can be called more than once at a time
 
-	if (m_tHitFXs.empty()) return;
+	if (_sd->m_tHitFXs.empty()) return;
 
 	float power_factor = amount/100.f; 
 	clamp(power_factor,0.f,1.f);
 
-	//tpKinematics->PlayFX(m_tHitFXs[::Random.randI(m_tHitFXs.size())],power_factor);
+	//tpKinematics->PlayFX(_sd->m_tHitFXs[::Random.randI(_sd->m_tHitFXs.size())],power_factor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -418,11 +445,12 @@ void CMotionManager::Seq_Switch()
 	ApplyParams ();
 }
 
+
 void CMotionManager::Seq_Finish()
 {
 	Seq_Init(); 
 
-	prev_anim = cur_anim = m_tMotions[m_tAction].anim;
+	prev_anim = cur_anim = _sd->m_tMotions[m_tAction].anim;
 
 }
 
@@ -433,17 +461,18 @@ void CMotionManager::AA_Clear()
 { 
 	aa_time_started		= 0;
 	aa_time_last_attack	= 0;
-	aa_all.clear		(); 
 	aa_stack.clear		(); 
 }
 
 void CMotionManager::AA_PushAttackAnim(SAttackAnimation AttackAnim)
-{
-	aa_all.push_back(AttackAnim);
+{	
+	_sd->aa_all.push_back(AttackAnim);
 }
 
 void CMotionManager::AA_PushAttackAnim(EMotionAnim a, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, float yaw, float pitch, u32 flags)
 {
+	CHECK_SHARED_LOADED();	
+
 	SAttackAnimation anim;
 	anim.anim			= a;
 	anim.anim_i3		= i3;
@@ -468,8 +497,8 @@ void CMotionManager::AA_SwitchAnimation(EMotionAnim anim, u32 i3)
 	aa_stack.clear();
 
 	// найти в m_all анимации с параметрами (anim,i3) и заполнить m_stack
-	ATTACK_ANIM_IT I = aa_all.begin();
-	ATTACK_ANIM_IT E = aa_all.end();
+	ATTACK_ANIM_IT I = _sd->aa_all.begin();
+	ATTACK_ANIM_IT E = _sd->aa_all.end();
 
 	for (;I!=E; I++) {
 		if ((I->anim == anim) && (I->anim_i3 == i3)) {
@@ -500,8 +529,8 @@ bool CMotionManager::AA_CheckTime(TTime cur_time, SAttackAnimation &anim)
 EPState	CMotionManager::GetState (EMotionAnim a)
 {
 	// найти анимацию 
-	ANIM_ITEM_MAP_IT  item_it = m_tAnims.find(a);
-	R_ASSERT(item_it != m_tAnims.end());
+	ANIM_ITEM_MAP_IT  item_it = _sd->m_tAnims.find(a);
+	R_ASSERT(item_it != _sd->m_tAnims.end());
 
 	return item_it->second.pos_state;
 }

@@ -124,6 +124,7 @@ void CAI_Dog::Load(LPCSTR section)
 	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_1"), JT_GLIDE,	false,	0.f, m_fsRunAngular);
 //	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
 
+	MotionMan.NotifyShareLoaded();
 }
 
 void CAI_Dog::StateSelector()
