@@ -11,8 +11,8 @@ public:
 	void		RestoreGlobals				();
 	void		CoverGlobals				();
 	void		Describe					(char* szRet, int nIndex);
-	BOOL		Eval						(const char* szCode, char* szRet);
-	BOOL		GetCalltip					(const char *szWord, char *szCalltip);
+	bool		Eval						(const char* szCode, char* szRet);
+	bool		GetCalltip					(const char *szWord, char *szCalltip);
 	void		DrawGlobalVariables			();
 	void		DrawLocalVariables			();
 	const char* GetSource					();

@@ -24,7 +24,7 @@ extern "C" void PrintDebugString(const char* str)
 }
 
 #ifdef SCRIPT_FILE
-BOOL CDbgLuaHelper::LoadDebugLines(CScriptFile* pPF)
+bool CDbgLuaHelper::LoadDebugLines(CScriptFile* pPF)
 {
 	lua_State* L = lua_open();
 //	BOOL bOk = luaL_loadfile(L , pPF->GetOutputPathNameExt() )==0;
@@ -293,7 +293,7 @@ void CDbgLuaHelper::DrawGlobalVariables()
 	lua_pop(L, 1); // pop table of globals;
 };
 
-BOOL CDbgLuaHelper::GetCalltip(const char *szWord, char *szCalltip)
+bool CDbgLuaHelper::GetCalltip(const char *szWord, char *szCalltip)
 {
 	int nLevel = CScriptDebugger::GetDebugger()->GetStackTraceLevel();
 	lua_Debug ar;
@@ -308,7 +308,7 @@ BOOL CDbgLuaHelper::GetCalltip(const char *szWord, char *szCalltip)
 				Describe(szRet, -1);
 				sprintf(szCalltip, "local %s : %s ", name, szRet);
 				lua_pop(L, 1);  /* remove variable value */
-				return TRUE;
+				return true;
 			}
 
 			lua_pop(L, 1);  /* remove variable value */
@@ -329,18 +329,18 @@ BOOL CDbgLuaHelper::GetCalltip(const char *szWord, char *szCalltip)
 
 			lua_pop(L, 3);  /* remove table, key, value */
 
-			return TRUE;
+			return true;
 		}
 
 		lua_pop(L, 1); // pop value, keep key for next iteration;
 	}
 	lua_pop(L, 1); // pop table of globals;
 
-	return FALSE;
+	return false;
 }
 
 
-BOOL CDbgLuaHelper::Eval(const char *szCode, char* szRet)
+bool CDbgLuaHelper::Eval(const char *szCode, char* szRet)
 {
 	CoverGlobals();
 

@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "script_lua_helper.h"
 #include "script_debugger_threads.h"
 #include "script_CallStack.h"
@@ -36,6 +35,7 @@ struct SBreakPoint{
 	}
 
 };
+
 
 class CScriptDebugger
 {
