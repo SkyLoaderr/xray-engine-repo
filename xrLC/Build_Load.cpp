@@ -261,6 +261,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			char			th_name[256]; 
 			FS.update_path	(th_name,"$textures$",strconcat(th_name,N,".thm"));
 			IReader* THM	= FS.r_open(th_name);
+			R_ASSERT2		(THM,th_name);
 
 			// version
 			u32 version = 0;
