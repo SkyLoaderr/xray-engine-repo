@@ -326,6 +326,8 @@ void OGF::MakeProgressive	(float metric_limit)
 
 	//////////////////////////////////////////////////////////////////////////
 	// NORMAL
+	vecOGF_V	_saved_vertices		=	vertices	;
+	vecOGF_F	_saved_faces		=	faces		;
 	{
 		// prepare progressive geom
 		VIPM_Init				();
@@ -364,16 +366,11 @@ void OGF::MakeProgressive	(float metric_limit)
 			}
 
 			// OK
-			vecOGF_V				vertices_saved;
-			vecOGF_F				faces_saved;
-
 			// Permute vertices
-			vertices_saved			= vertices;
 			for(u32 i=0; i<vertices.size(); i++)
-				vertices[VR->permute_verts[i]]=vertices_saved[i];
+				vertices[VR->permute_verts[i]]=_saved_vertices[i];
 
 			// Fill indices
-			faces_saved				= faces;
 			faces.resize			(VR->indices.size()/3);
 			for (u32 f_idx=0; f_idx<faces.size(); f_idx++){
 				faces[f_idx].v[0]	= VR->indices[f_idx*3+0];
@@ -410,12 +407,16 @@ void OGF::MakeProgressive	(float metric_limit)
 		try						{
 			VR		= VIPM_Convert			(u32(25),1.f,1);
 		} catch (...)			{
+			faces				= _saved_faces		;
+			vertices			= _saved_vertices	;
 			progressive_clear	()		;
-			clMsg				("* mesh simplification failed: access violation");
+			clMsg				("* X-mesh simplification failed: access violation");
 		}
 		if (0==VR)				{
+			faces				= _saved_faces		;
+			vertices			= _saved_vertices	;
 			progressive_clear	()		;
-			clMsg				("* mesh simplification failed");
+			clMsg				("* X-mesh simplification failed");
 		} else {
 			// Convert
 			/*
@@ -432,7 +433,6 @@ void OGF::MakeProgressive	(float metric_limit)
 
 			// OK
 			vec_XV					vertices_saved;
-			vecOGF_F				faces_saved;
 
 			// Permute vertices
 			vertices_saved			= x_vertices;
@@ -440,7 +440,6 @@ void OGF::MakeProgressive	(float metric_limit)
 				x_vertices[VR->permute_verts[i]]=vertices_saved[i];
 
 			// Fill indices
-			faces_saved				= x_faces;
 			x_faces.resize			(VR->indices.size()/3);
 			for (u32 f_idx=0; f_idx<x_faces.size(); f_idx++){
 				x_faces[f_idx].v[0]	= VR->indices[f_idx*3+0];

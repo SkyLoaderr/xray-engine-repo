@@ -159,19 +159,21 @@ void CBuild::PreOptimize()
 	clMsg("%d faces removed. (%d left)",   Fcount-g_faces.size(),   g_faces.size());
 	
 	// -------------------------------------------------------------
+	/*
 	int		err_count	=0 ;
 	for (int _1=0; _1<g_faces.size(); _1++)
 	{
+		Progress(float(_1)/float(g_faces.size()));
 		for (int _2=0; _2<g_faces.size(); _2++)
 		{
 			if (_1==_2)		continue;
-			if (FaceEqual(g_faces[_1],g_faces[_2]))	{
+			if (FaceEqual(*g_faces[_1],*g_faces[_2]))	{
 				err_count	++;
 			}
 		}
 	}
-	clMsg		("! duplicate/same faces found:%d",err_count`);
-
+	clMsg		("! duplicate/same faces found:%d",err_count);
+	*/
 	// -------------------------------------------------------------
 	if (b_noise)	{
 		CRandom		rnd		(0x12071980);
