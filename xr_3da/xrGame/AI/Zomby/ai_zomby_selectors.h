@@ -25,21 +25,6 @@ class CZombySelectorFreeHunting : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CZombySelectorFollow : public CAISelectorBase
-{
-	public:
-		CZombySelectorFollow	();
-		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
-
-};
-
-class CZombySelectorPursuit : public CAISelectorBase
-{
-	public:
-		CZombySelectorPursuit();
-		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
-};
-
 class CZombySelectorUnderFire : public CAISelectorBase
 {
 	public:

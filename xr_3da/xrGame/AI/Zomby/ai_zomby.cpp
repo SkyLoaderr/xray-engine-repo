@@ -27,7 +27,7 @@ CAI_Zomby::CAI_Zomby()
 	dwLostEnemyTime = 0;
 	m_bAttackStart = false;
 	m_tpCurrentBlend = 0;
-	eCurrentState = aiZombyFollowMe;
+	eCurrentState = aiZombyFreeHunting;
 	m_bMobility = false;
 	/**
 	Fvector tWatchDirection;
@@ -72,9 +72,7 @@ void CAI_Zomby::Load(CInifile* ini, const char* section)
 	pSounds->Create3D(sndDie[3],"actor\\die3");
 
 	SelectorAttack.Load(ini,section);
-	SelectorFollow.Load(ini,section);
 	SelectorFreeHunting.Load(ini,section);
-	SelectorPursuit.Load(ini,section);
 	SelectorUnderFire.Load(ini,section);
 
 	m_fHitPower = ini->ReadFLOAT(section,"hit_power");
@@ -861,16 +859,6 @@ void CAI_Zomby::Attack()
 	}
 }
 
-void CAI_Zomby::Cover()
-{
-	bStopThinking = true;
-}
-
-void CAI_Zomby::Defend()
-{
-	bStopThinking = true;
-}
-
 void CAI_Zomby::Die()
 {
 	q_look.setup(0,AI::t_None,0,0	);
@@ -882,143 +870,6 @@ void CAI_Zomby::Die()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
 	bStopThinking = true;
-}
-
-void CAI_Zomby::FollowMe()
-{
-	// if no more health then zomby is dead
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Follow me");
-#endif
-	if (g_Health() <= 0) {
-		eCurrentState = aiZombyDie;
-		return;
-	}
-	else {
-		// selecting enemy if any
-		SEnemySelected	Enemy;
-		SelectEnemy(Enemy);
-		// do I see the enemies?
-		if (Enemy.Enemy)		{
-			tStateStack.push(eCurrentState);
-			eCurrentState = aiZombyAttack;
-			return;
-		}
-		else {
-			// checking if I am under fire
-			DWORD dwCurTime = Level().timeServer();
-			if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
-				tStateStack.push(eCurrentState);
-				eCurrentState = aiZombyUnderFire;
-				return;
-			}
-			else {
-				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
-					tStateStack.push(eCurrentState);
-					eCurrentState = aiZombySenseSomething;
-					return;
-				}
-				else {
-					// determining the team
-					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-					// determining who is leader
-					CEntity* Leader = Squad.Leader;
-					// checking if the leader exists
-					R_ASSERT (Leader);
-					// checking if leader is dead then make myself a leader
-					if (Leader->g_Health() <= 0)
-						Leader = this;
-					// I am leader then go to state "Free Hunting"
-					if (Leader == this) {
-						eCurrentState = aiZombyFreeHunting;
-						return;
-					}
-					else {
-						bool bWatch = false;
-						// get pointer to the class of node estimator 
-						// for finding the best node in the area
-						CZombySelectorFollow S = SelectorFollow;
-						if (Leader != this) {
-							S.m_tLeader = Leader;
-							S.m_tLeaderPosition = Leader->Position();
-							S.m_tpLeaderNode = Leader->AI_Node;
-							S.m_tLeaderNode = Leader->AI_NodeID;
-						}
-						// otherwise assign leader to null
-						else {
-							S.m_tLeader = 0;
-							S.m_tLeaderPosition.set(0,0,0);
-							S.m_tpLeaderNode = NULL;
-							S.m_tLeaderNode = -1;
-						}
-						S.m_tHitDir			= tHitDir;
-						S.m_dwHitTime		= dwHitTime;
-						
-						S.m_dwCurTime		= Level().timeServer();
-						
-						S.m_tMe				= this;
-						S.m_tpMyNode		= AI_Node;
-						S.m_tMyPosition		= Position();
-						
-						S.m_tEnemy			= 0;
-						S.m_tEnemyPosition.set(0,0,0);
-						S.m_tpEnemyNode		= NULL;
-						
-						S.taMembers = Squad.Groups[g_Group()].Members;
-						// checking if I need to rebuild the path i.e. previous search
-						// has found better destination node
-						if (AI_Path.bNeedRebuild) {
-							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-							if (AI_Path.Nodes.size() > 2) {
-							// if path is long enough then build travel line
-								AI_Path.BuildTravelLine(Position());
-								m_bMobility = true;
-							}
-							else {
-							// if path is too short then clear it (patch for ExecMove)
-								AI_Path.TravelPath.clear();
-								AI_Path.bNeedRebuild = FALSE;
-								m_bMobility = false;
-							}
-						} 
-						else {
-							// fill arrays of members and exclude myself
-							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-							// search for the best node according to the 
-							// SelectFollow evaluation function in the radius 35 meteres
-							float fOldCost;
-							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
-							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
-								// if old cost minus new cost is a little then zomby is too lazy
-								// to move there
-								AI_Path.DestNode		= S.BestNode;
-								AI_Path.bNeedRebuild	= TRUE;
-							}
-							else { 
-								// search hasn't found a better node we have to look around
-								bWatch = true;
-							}
-							
-							if (AI_Path.TravelPath.size() < 2)
-								AI_Path.bNeedRebuild	= TRUE;
-						}
-						// setting up a look
-						// getting my current node
-						NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
-						// if we are going somewhere
-						SetDirectionLook(tNode);
-						// setting up an action
-						q_action.setup(AI::AIC_Action::AttackEnd);
-						// checking flag to stop processing more states
-						m_fCurSpeed = m_fMinSpeed;
-						bStopThinking = true;
-						return;
-					}
-				}
-			}
-		}
-	}
 }
 
 void CAI_Zomby::FreeHunting()
@@ -1144,165 +995,6 @@ void CAI_Zomby::FreeHunting()
 			}
 		}
 	}
-}
-
-void CAI_Zomby::GoInThisDirection()
-{
-}
-
-void CAI_Zomby::GoToThisPosition()
-{
-}
-
-void CAI_Zomby::HoldPositionUnderFire()
-{
-	bStopThinking = true;
-}
-
-void CAI_Zomby::HoldThisPosition()
-{
-	bStopThinking = true;
-}
-
-/**
-void CAI_Zomby::Pursuit()
-{
-	// if no more health then zomby is dead
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Pursuit");
-#endif
-	if (g_Health() <= 0) {
-		eCurrentState = aiZombyDie;
-		return;
-	}
-	else {
-		// selecting enemy if any
-		SEnemySelected	Enemy;
-		SelectEnemy(Enemy);
-		// do the enemies exist?
-		if (Enemy.Enemy) {
-			eCurrentState = aiZombyAttack;
-			return;
-		}
-		else {
-			DWORD dwCurrentTime = Level().timeServer();
-			if (dwCurrentTime - dwLostEnemyTime < LOST_ENEMY_REACTION_TIME) {
-				// checking if I am under fire
-				if (dwCurrentTime - dwHitTime < HIT_JUMP_TIME) {
-					tStateStack.push(eCurrentState);
-					eCurrentState = aiZombyUnderFire;
-					return;
-				}
-				else {
-					if (dwCurrentTime - dwSenseTime < SENSE_JUMP_TIME) {
-						tStateStack.push(eCurrentState);
-						eCurrentState = aiZombySenseSomething;
-						return;
-					}
-					else {
-						// determining the team
-						CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-						// determining who is leader
-						CEntity* Leader = Squad.Leader;
-						// checking if the leader exists
-						R_ASSERT (Leader);
-						// checking if leader is dead then make myself a leader
-						if (Leader->g_Health() <= 0)
-							Leader = this;
-						// get pointer to the class of node estimator 
-						// for finding the best node in the area
-						CZombySelectorPursuit S = SelectorPursuit;
-						// if i am not a leader then assign leader
-						if (Leader != this) {
-							S.m_tLeader = Leader;
-							S.m_tLeaderPosition = Leader->Position();
-							S.m_tpLeaderNode = Leader->AI_Node;
-							S.m_tLeaderNode = Leader->AI_NodeID;
-						}
-						// otherwise assign leader to null
-						else {
-							S.m_tLeader = 0;
-							S.m_tLeaderPosition.set(0,0,0);
-							S.m_tpLeaderNode = NULL;
-							S.m_tLeaderNode = -1;
-						}
-						S.m_tHitDir			= tHitDir;
-						S.m_dwHitTime		= dwHitTime;
-						
-						S.m_dwCurTime		= Level().timeServer();
-						
-						S.m_tMe				= this;
-						S.m_tpMyNode		= AI_Node;
-						S.m_tMyPosition		= Position();
-						
-						S.m_tEnemy			= tSavedEnemy;
-						S.m_tEnemyPosition	= tSavedEnemyPosition;
-						S.m_tpEnemyNode		= tpSavedEnemyNode;
-						
-						S.taMembers = Squad.Groups[g_Group()].Members;
-						bool bWatch = false;
-						// checking if I need to rebuild the path i.e. previous search
-						// has found better destination node
-						if (AI_Path.bNeedRebuild) {
-							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-							if (AI_Path.Nodes.size() > 2) {
-							// if path is long enough then build travel line
-								AI_Path.BuildTravelLine(Position());
-								m_bMobility = true;
-							}
-							else {
-							// if path is too short then clear it (patch for ExecMove)
-								AI_Path.TravelPath.clear();
-								AI_Path.bNeedRebuild = FALSE;
-								m_bMobility = false;
-							}
-						} 
-						else {
-							// fill arrays of members and exclude myself
-							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-							// search for the best node according to the 
-							// SelectFollow evaluation function in the radius 35 meteres
-							float fOldCost;
-							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-								AI_Path.DestNode		= S.BestNode;
-								AI_Path.bNeedRebuild	= TRUE;
-							} 
-							else
-								// search hasn't found a better node we have to look around
-								bWatch = true;
-							if (AI_Path.TravelPath.size() < 2)
-								AI_Path.bNeedRebuild	= TRUE;
-						}
-						// setting up a look
-						// getting my current node
-						NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
-						SetLessCoverLook(tNode);
-						// checking flag to stop processing more states
-						q_action.setup(AI::AIC_Action::AttackEnd);
-						bStopThinking = true;
-						m_fCurSpeed = m_fMaxSpeed;
-						return;
-					}
-				}
-			}
-			else {
-				eCurrentState = tStateStack.top();
-				tStateStack.pop();
-				q_action.setup(AI::AIC_Action::AttackEnd);
-				m_fCurSpeed = m_fMaxSpeed;
-				bStopThinking = true;
-				return;
-			}
-		}
-	}
-}
-/**/
-
-void CAI_Zomby::Retreat()
-{
-	bStopThinking = true;
 }
 
 void CAI_Zomby::SenseSomething()
@@ -1467,11 +1159,6 @@ void CAI_Zomby::UnderFire()
 	}
 }
 
-void CAI_Zomby::WaitOnPosition()
-{
-	bStopThinking = true;
-}
-
 void CAI_Zomby::Think()
 {
 	bStopThinking = false;
@@ -1489,54 +1176,12 @@ void CAI_Zomby::Think()
 				SenseSomething();
 				break;
 			}
-			case aiZombyGoInThisDirection : {
-				GoInThisDirection();
-				break;
-			}
-			case aiZombyGoToThisPosition : {
-				GoToThisPosition();
-				break;
-			}
-			case aiZombyWaitOnPosition : {
-				WaitOnPosition();
-				break;
-			}
-			case aiZombyHoldThisPosition : {
-				HoldThisPosition();
-				break;
-			}
-			case aiZombyHoldPositionUnderFire : {
-				HoldPositionUnderFire();
-				break;
-			}
 			case aiZombyFreeHunting : {
 				FreeHunting();
 				break;
 			}
-			case aiZombyFollowMe : {
-				FollowMe();
-				break;
-			}
 			case aiZombyAttack : {
 				Attack();
-				break;
-			}
-			case aiZombyDefend : {
-				Defend();
-				break;
-			}
-			/**
-			case aiZombyPursuit : {
-				Pursuit();
-				break;
-			}
-			/**/
-			case aiZombyRetreat : {
-				Retreat();
-				break;
-			}
-			case aiZombyCover : {
-				Cover();
 				break;
 			}
 		}

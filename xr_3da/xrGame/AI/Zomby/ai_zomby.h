@@ -31,18 +31,8 @@ class CAI_Zomby : public CCustomMonster
 		aiZombyDie = 0,
 		aiZombyUnderFire,
 		aiZombySenseSomething,
-		aiZombyGoInThisDirection,
-		aiZombyGoToThisPosition,
-		aiZombyWaitOnPosition,
-		aiZombyHoldThisPosition,
-		aiZombyHoldPositionUnderFire,
 		aiZombyFreeHunting,
-		aiZombyFollowMe,
-		aiZombyAttack,
-		aiZombyDefend,
-		//aiZombyPursuit,
-		aiZombyRetreat,
-		aiZombyCover,
+		aiZombyAttack
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -86,18 +76,9 @@ class CAI_Zomby : public CCustomMonster
 		void Die();
 		void UnderFire();
 		void SenseSomething();
-		void GoInThisDirection();
-		void GoToThisPosition();
-		void WaitOnPosition();
-		void HoldThisPosition();
-		void HoldPositionUnderFire();
 		void FreeHunting();
-		void FollowMe();
 		void Attack();
-		void Defend();
-		//void Pursuit();
 		void Retreat();
-		void Cover();
 		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 			int	 ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
@@ -112,8 +93,6 @@ class CAI_Zomby : public CCustomMonster
 	
 		CZombySelectorAttack		SelectorAttack;
 		CZombySelectorFreeHunting SelectorFreeHunting;
-		CZombySelectorFollow		SelectorFollow;
-		CZombySelectorPursuit		SelectorPursuit;
 		CZombySelectorUnderFire	SelectorUnderFire;
 
 		void SetDirectionLook(NodeCompressed *tNode);
