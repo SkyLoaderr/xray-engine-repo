@@ -182,18 +182,19 @@ void	CCar::OnKeyboardPress		(int cmd)
 
 	switch (cmd)	
 	{
-	case kACCEL:	ph_world->Jeep.DriveVelocity=6*M_PI;
+	case kACCEL:	ph_world->Jeep.DriveVelocity=1*M_PI;
+					ph_world->Jeep.Drive();
 					break;
 	case kR_STRAFE:	ph_world->Jeep.Steer(1);//vPosition.x+=1; 
 					break;
 	case kL_STRAFE:	ph_world->Jeep.Steer(-1);//vPosition.x-=1;
 					break;
 	case kFWD:		ph_world->Jeep.DriveDirection=1;
-					ph_world->Jeep.DriveForce=500;
+					ph_world->Jeep.DriveForce=650;
 					ph_world->Jeep.Drive();//vPosition.z+=1; 
 					break;
 	case kBACK:		ph_world->Jeep.DriveDirection=-1;
-					ph_world->Jeep.DriveForce=500;
+					ph_world->Jeep.DriveForce=650;
 					ph_world->Jeep.Drive();//vPosition.z-=1; 
 					break;
 	case kJUMP:		ph_world->Jeep.Breaks=true;
@@ -210,6 +211,7 @@ void	CCar::OnKeyboardRelease		(int cmd)
 		switch (cmd)	
 	{
 	case kACCEL:	ph_world->Jeep.DriveVelocity=12*M_PI;
+					ph_world->Jeep.Drive();
 					break;
 	case kR_STRAFE:	ph_world->Jeep.Steer(0);//vPosition.x+=1; 
 					break;
@@ -217,12 +219,16 @@ void	CCar::OnKeyboardRelease		(int cmd)
 					break;
 					
 					
-	case kFWD:		ph_world->Jeep.NeutralDrive();
+	case kFWD:		//ph_world->Jeep.NeutralDrive();
+					ph_world->Jeep.DriveDirection=0;
 					ph_world->Jeep.DriveForce=0;
+					ph_world->Jeep.Drive();
 					//ph_world->Jeep.Drive();//vPosition.z+=1; 
 					break;
-	case kBACK:		ph_world->Jeep.NeutralDrive();
+	case kBACK:		//ph_world->Jeep.NeutralDrive();
+					ph_world->Jeep.DriveDirection=0;
 					ph_world->Jeep.DriveForce=0;
+					ph_world->Jeep.Drive();
 					//ph_world->Jeep.Drive();//vPosition.z-=1; 
 					break;
 	case kJUMP:		ph_world->Jeep.Breaks=false;

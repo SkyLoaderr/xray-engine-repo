@@ -465,6 +465,12 @@ if(!Breaks)
         for(i = 0; i < 4; ++i)
 			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? DriveVelocity : -DriveVelocity);
 		break;
+	case 0:
+		for(i = 0; i < 4; ++i){
+			dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
+			dJointSetHinge2Param(Joints[i], dParamFMax2, 100);
+		}
+		return;
 	}
 	else {
 		for(i = 0; i < 4; ++i){
