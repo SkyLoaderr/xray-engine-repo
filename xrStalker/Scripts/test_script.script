@@ -2,20 +2,25 @@ module("ui_save_dialog")
 module("ui_load_dialog")
 
 function dump_time(t)
-	printf(t:dateToString(game.CTime.DateToDay))
+/*	printf(t:dateToString(game.CTime.DateToDay))
 	printf(t:dateToString(game.CTime.DateToMonth))
 	printf(t:dateToString(game.CTime.DateToYear))
 	
 	printf(t:timeToString(game.CTime.TimeToHours))
 	printf(t:timeToString(game.CTime.TimeToMinutes))
 	printf(t:timeToString(game.CTime.TimeToSeconds))
-	
+*/	
 	printf(t:timeToString(game.CTime.TimeToMilisecs))
 printf("")
 end
 
+
 function main()
 printf("----------------------main----")
+
+	get_console():execute("test")
+	get_console():execute("pause")
+	
 	local dt = game.CTime()
 	dt:setHMSms(3,4,5,67)
 	dump_time(dt)
@@ -40,5 +45,5 @@ printf("----------------------main----")
 		printf("not equal")
 	end
 
-	
+
 end
