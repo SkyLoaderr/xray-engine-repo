@@ -1,6 +1,38 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
+    <info_portion id="escape_novice_need_weapon">
+        <location>
+            <level></level>
+            <object>trivial_novice3_0_1</object>
+            <icon name="unknown" x="2" y="3" width="1" height="1"></icon>
+            <text>Помочь ограбленному новичку</text>
+        </location>
+    </info_portion>
+    <info_portion id="escape_novice_has_weapon">
+        <disable>escape_novice_need_weapon</disable>
+    </info_portion>
+
+    <info_portion id="escape_factory_bandits_dead">
+    </info_portion>
+
+    <info_portion id="escape_need_blockpost_case">
+        <location>
+            <level></level>
+            <object>blockpost_case</object>
+	    <icon name="Case" x="2" y="8" width="1" height="1"></icon>
+            <text>Украсть ящик с блокпоста</text>
+        </location>
+	<dialog>escape_trader_done_blockpost_box</dialog>
+    </info_portion>
+    <info_portion id="escape_have_blockpost_case">
+        <disable>escape_need_blockpost_case</disable>
+    </info_portion>
+
+
+
+
+
     <info_portion id="garbage_robber_processed">
     </info_portion>
 
@@ -12,10 +44,12 @@
 	</info_portion>
 
 
-	<info_portion id="storyline_actor_start">
-		<task>storyline_eliminate_gunslinger</task>
+	<info_portion id="actor_start_dialogs">
+		<dialog>escape_trader_jobs</dialog>
+		<dialog>escape_trader_talk_flame</dialog>		
+		<dialog>escape_trader_talk_about</dialog>
+		<dialog>escape_trader_talk_level</dialog>
 		<dialog>actor_break_dialog</dialog>
-		<dialog>escape_talk_about_escape</dialog>
 	</info_portion>
 
 
@@ -44,15 +78,33 @@
 		<article>mutant_chimera_general</article>
 		<article>mutant_poltergeist_general</article>
 		<article>mutant_fracture_general</article>
-		<article>zone_artifact_grav</article>
-		<article>zone_artifact_bubl</article>
-		<article>zone_artifact_magnet</article>
-		<article>zone_artifact_cotton</article>
-		<article>zone_artifact_jelly</article>
-		<article>zone_artifact_mercury</article>
-		<article>zone_artifact_drops</article>
-		<article>zone_artifact_empty</article>
-		<article>zone_artifact_needles</article>
+		<article>zone_artifact_art-medusa</article>
+		<article>zone_artifact_art-flower</article>
+		<article>zone_artifact_art-star</article>
+		<article>zone_artifact_art-vyvert</article>
+		<article>zone_artifact_art-gravi</article>
+		<article>zone_artifact_art-fish</article>
+		<article>zone_artifact_art-drops</article>
+		<article>zone_artifact_art-fireball</article>
+		<article>zone_artifact_art-cristall</article>
+		<article>zone_artifact_art-blood</article>
+		<article>zone_artifact_art-meat</article>
+		<article>zone_artifact_art-soul</article>
+		<article>zone_artifact_art-sparkler</article>
+		<article>zone_artifact_art-flash</article>
+		<article>zone_artifact_art-moonlight</article>
+		<article>zone_artifact_art-slime</article>
+		<article>zone_artifact_art-slug</article>
+		<article>zone_artifact_art-mica</article>
+		<article>zone_artifact_art-spring</article>
+		<article>zone_artifact_art-dummy</article>
+		<article>zone_artifact_art-battery</article>
+		<article>zone_artifact_art-pellicle</article>
+		<article>zone_artifact_art-glassbeads</article>
+		<article>zone_artifact_art-thorn</article>
+		<article>zone_artifact_art-rustykristall</article>
+		<article>zone_artifact_art-sea-urchin</article>
+		<article>zone_artifact_art-kolobok</article>
 		<article>zone_anomalies_bald</article>
 		<article>zone_anomalies_meat</article>
 		<article>zone_anomalies_radiation</article>
