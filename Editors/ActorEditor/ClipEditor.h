@@ -13,11 +13,10 @@
 #include "ElXPThemedControl.hpp"
 #include "MxMenus.hpp"
 #include <Menus.hpp>
-#include "PropertiesList.h"
-#include "ElPanel.hpp"
-#include "ElSplit.hpp"
 #include <StdCtrls.hpp>
 #include "multi_edit.hpp"
+#include "PropertiesList.h"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 
 class TClipMaker: public TForm,
@@ -25,10 +24,6 @@ class TClipMaker: public TForm,
 {
 __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
-	TMxPopupMenu *pmClip;
-	TMenuItem *MenuItem1;
-	TMenuItem *MenuItem2;
-	TMenuItem *RemoveAll1;
 	TPanel *paB;
 	TPanel *paBase;
 	TPanel *paClipProps;
@@ -50,9 +45,6 @@ __published:	// IDE-managed Components
 	TMxLabel *lbBPName1;
 	TMxLabel *lbBPName2;
 	TMxLabel *lbBPName3;
-	TExtBtn *ebInsertClip;
-	TExtBtn *ebAppendClip;
-	TBevel *Bevel14;
 	TBevel *Bevel15;
 	TBevel *Bevel16;
 	TScrollBox *sbBase;
@@ -62,27 +54,29 @@ __published:	// IDE-managed Components
 	TBevel *Bevel8;
 	TBevel *Bevel1;
 	TBevel *Bevel3;
-	TPanel *paClips;
+	TMxPanel *paClips;
 	TBevel *Bevel9;
-	TGradient *gtClip;
-	TExtBtn *ebPlay;
-	TExtBtn *ebPause;
-	TExtBtn *ebStop;
-	TExtBtn *ebPrevClip;
-	TExtBtn *ebNextClip;
-	TBevel *Bevel17;
-	TExtBtn *ebClearAll;
-	TExtBtn *ebRemoveCurrent;
-	TMenuItem *N1;
-	TMenuItem *ClearMotions1;
-	TMenuItem *ClearAll1;
+	TMxPanel *gtClip;
 	TMxPanel *paBP3;
 	TMxPanel *paBP2;
 	TMxPanel *paBP1;
 	TMxPanel *paBP0;
+	TBevel *Bevel18;
+	TPanel *Panel2;
+	TExtBtn *ebPrevClip;
+	TExtBtn *ebPlay;
+	TExtBtn *ebPause;
+	TExtBtn *ebStop;
+	TExtBtn *ebNextClip;
+	TBevel *Bevel17;
+	TBevel *Bevel19;
+	TPanel *paClipList;
+	TPanel *Panel3;
+	TPanel *Panel4;
+	TExtBtn *ebInsertClip;
+	TExtBtn *ebAppendClip;
+	TExtBtn *ebTrash;
 	void __fastcall ebInsertClipClick(TObject *Sender);
-	void __fastcall MenuItem2Click(TObject *Sender);
-	void __fastcall RemoveAll1Click(TObject *Sender);
 	void __fastcall gtClipPaint(TObject *Sender);
 	void __fastcall ebAppendClipClick(TObject *Sender);
 	void __fastcall BPOnPaint(TObject *Sender);
@@ -96,10 +90,6 @@ __published:	// IDE-managed Components
           int Y);
 	void __fastcall ClipMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall ebRemoveAllClick(TObject *Sender);
-	void __fastcall ebRemoveCurrentClick(TObject *Sender);
-	void __fastcall ClearMotions1Click(TObject *Sender);
-	void __fastcall ClearAll1Click(TObject *Sender);
 	void __fastcall ebPrevClipClick(TObject *Sender);
 	void __fastcall ebNextClipClick(TObject *Sender);
 	void __fastcall ebPlayClick(TObject *Sender);
@@ -110,9 +100,22 @@ __published:	// IDE-managed Components
 	void __fastcall ClipMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall FormShow(TObject *Sender);
+	void __fastcall paBPStartDrag(TObject *Sender, TDragObject *&DragObject);
+	void __fastcall BPDragOver(TObject *Sender, TObject *Source, int X,
+          int Y, TDragState State, bool &Accept);
+	void __fastcall BPDragDrop(TObject *Sender, TObject *Source, int X,
+          int Y);
+	void __fastcall BPMouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
+	void __fastcall BPMouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
+	void __fastcall ebTrashClick(TObject *Sender);
+	void __fastcall ebTrashDragOver(TObject *Sender, TObject *Source, int X,
+          int Y, TDragState State, bool &Accept);
+	void __fastcall paClipsPaint(TObject *Sender);
 public:
 	struct SClip{
-    	TPanel*			panel;
+    	s32				idx;
         AnsiString		cycles[4];
         AStringVec		fxs;
         AnsiString		name;
@@ -142,37 +145,44 @@ protected:
     CEditableObject* 	m_CurrentObject;
 	DEFINE_VECTOR		(SClip*,ClipVec,ClipIt);
     ClipVec				clips;
-    SClip*				sel_clip;
-    SClip*				play_clip;
+    SClip*				sel_clip; 
+    u32					play_clip;
     TProperties*		m_ClipProps;
+    TItemList*			m_ClipList;
+
+    void				PlayAnimation	(SClip* clip);
+    
+	void 				RemoveAllClips	();
 	void 				InsertClip		();
 	void 				AppendClip		();
-	void 				RemoveAllClips	();
-	void				ClearCurrent	();
-	void				ClearAll		();
-	void				RemoveCurrent	();
+	void				RemoveClip		(SClip* clip);
     void				SelectClip		(SClip* clip);
 
+    SClip*				FindClip		(float t);
+    SClip*				FindClip		(int x);
+    
     void				RealRepaintClips();
     void				RepaintClips	(bool bForced=false){m_RTFlags.set(flRT_RepaintClips,TRUE); if(bForced) RealRepaintClips(); }
 	void 				RealUpdateProperties();
     void				UpdateProperties(bool bForced=false){m_RTFlags.set(flRT_UpdateProperties,TRUE); if(bForced) RealUpdateProperties(); }
 	void 				RealUpdateClips	();
-    void				UpdateClips		(bool bRepaint=true, bool bForced=false){m_RTFlags.set(flRT_UpdateClips,TRUE); m_RTFlags.set(flRT_RepaintClips,bRepaint); if(bForced) RealUpdateClips(); }
+    void				UpdateClips		(bool bForced=false, bool bRepaint=true){m_RTFlags.set(flRT_UpdateClips,TRUE); m_RTFlags.set(flRT_RepaintClips,bRepaint); if(bForced) RealUpdateClips(); }
 
     void				Clear			();
 
 	void __fastcall 	OnZoomChange		(PropValue* V);
     void __fastcall 	OnNameChange		(PropValue* V);
     void __fastcall 	OnClipLengthChange	(PropValue* V);
+
+    void __fastcall 	OnClipItemFocused	(ListItemsVec& items);
 public:
     float				m_CurrentPlayTime;
     float				m_TotalLength;
     float				m_Zoom;
 
-    void				Play			(){m_RTFlags.set(flRT_Playing,TRUE);}
-    void				Stop			(){m_RTFlags.set(flRT_Playing,FALSE);m_CurrentPlayTime=0.f;}
-    void				Pause			(){m_RTFlags.set(flRT_Playing,FALSE);}
+    void				Play			();
+    void				Stop			();
+    void				Pause			();
 public:		// User declarations
 	__fastcall 			TClipMaker		(TComponent* Owner);
 
