@@ -1,4 +1,4 @@
-local flesh_distance 	= 25
+local flesh_distance 	= 15
 
 
 // Плоть которая бежит в аномалию при приближении актера
