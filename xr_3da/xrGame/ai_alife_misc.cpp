@@ -105,9 +105,9 @@ void CAI_ALife::vfCheckForDeletedEvents(CALifeHumanAbstract	*tpALifeHuman)
 	tpALifeHuman->m_tpEvents.erase(I,tpALifeHuman->m_tpEvents.end());
 }
 
-bool CAI_ALife::bfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
+bool CAI_ALife::bfCheckForItems(xrSE_Human	*tpALifeHumanAbstract)
 {
-	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeHumanAbstract);
+	xrSE_Human *tpALifeHuman = dynamic_cast<xrSE_Human *>(tpALifeHumanAbstract);
 	if (tpALifeHuman)
 		return(bfProcessItems(*tpALifeHuman,tpALifeHuman->m_tGraphID,tpALifeHuman->m_fMaxItemMass,1.f));//tpALifeHuman->m_tTaskState == eTaskStateSearching ? .25f : .05f));
 	else {

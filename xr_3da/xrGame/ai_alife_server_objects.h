@@ -56,6 +56,7 @@ public:
 	float							m_fCumulativeItemMass;
 	u32								m_dwMoney;
 	EStalkerRank					m_tRank;
+	float							m_fMaxItemMass;
 	
 									CALifeTraderParams(LPCSTR caSection)
 	{
@@ -64,6 +65,7 @@ public:
 		if (pSettings->line_exist(caSection, "money"))
 			m_dwMoney 				= pSettings->r_u32(caSection, "money");
 		m_tRank						= EStalkerRank(pSettings->r_u32(caSection, "rank"));
+		m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	};
 
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
@@ -80,13 +82,11 @@ public:
 	typedef CALifeTraderParams inherited;
 	PERSONAL_EVENT_P_VECTOR			m_tpEvents;
 	TASK_VECTOR						m_tpTaskIDs;
-	float							m_fMaxItemMass;
 
 									CALifeTraderAbstract(LPCSTR caSection) : CALifeTraderParams(caSection)
 	{
 		m_tpEvents.clear			();
 		m_tpTaskIDs.clear			();
-		m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	};
 
 	virtual							~CALifeTraderAbstract()

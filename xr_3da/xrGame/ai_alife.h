@@ -54,9 +54,9 @@ private:
 	CALifeTrader *					tpfGetNearestSuitableTrader	(CALifeHuman			*tpALifeHuman);
 	void							vfCommunicateWithTrader		(CALifeHuman			*tpALifeHuman, CALifeTrader *tpTrader);
 	void							vfUpdateMonster				(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
-	void							vfUpdateHuman				(CALifeHuman			*tpALifeHuman);
+	void							vfUpdateHuman				(xrSE_Human				*tpALifeHuman);
 	bool							bfProcessItems				(xrServerEntity			&tServerEntity, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability);
-	bool							bfCheckForItems				(CALifeHumanAbstract	*tpALifeHumanAbstract);
+	bool							bfCheckForItems				(xrSE_Human				*tpALifeHumanAbstract);
 	void							vfCheckForDeletedEvents		(CALifeHumanAbstract	*tpALifeHumanAbstract);
 	void							vfCheckForTheBattle			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfChooseNextRoutePoint		(CALifeMonsterAbstract	*tpALifeMonsterAbstract);

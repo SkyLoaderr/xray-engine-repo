@@ -105,14 +105,12 @@ void CALifeTraderAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 {
 	save_vector					(m_tpEvents,tNetPacket);
 	save_base_vector			(m_tpTaskIDs,tNetPacket);
-	tNetPacket.w_float			(m_fMaxItemMass);
 };
 
 void CALifeTraderAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	load_vector					(m_tpEvents,tNetPacket);
 	load_base_vector			(m_tpTaskIDs,tNetPacket);
-	tNetPacket.r_float			(m_fMaxItemMass);
 };
 
 // CALifeEventGroup

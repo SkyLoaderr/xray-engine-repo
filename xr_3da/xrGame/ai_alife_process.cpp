@@ -100,11 +100,19 @@ void CAI_ALife::Update(u32 dt)
 
 void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
-	CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
-	if (tpALifeHumanAbstract) {
-		CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
-		if (tpALifeHuman)
-			vfUpdateHuman(tpALifeHuman);
+//	CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
+//	if (tpALifeHumanAbstract) {
+//		CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
+//		if (tpALifeHuman)
+//			vfUpdateHuman(tpALifeHuman);
+//		//else
+//		//	vfUpdateHumanGroup(dynamic_cast<CALifeHumanGroup *>(tpALifeMonsterAbstract));
+//	}
+//	else
+//		vfUpdateMonster(tpALifeMonsterAbstract);
+	xrSE_Human *tpHuman = dynamic_cast<xrSE_Human *>(tpALifeMonsterAbstract);
+	if (tpHuman) {
+		vfUpdateHuman(tpHuman);
 		//else
 		//	vfUpdateHumanGroup(dynamic_cast<CALifeHumanGroup *>(tpALifeMonsterAbstract));
 	}
@@ -119,7 +127,7 @@ void CAI_ALife::vfUpdateMonster(CALifeMonsterAbstract *tpALifeMonsterAbstract)
 	vfCheckForTheBattle		(tpALifeMonsterAbstract);
 }
 
-void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
+void CAI_ALife::vfUpdateHuman(xrSE_Human *tpALifeHuman)
 {
 //	switch (tpALifeHuman->m_tTaskState) {
 //		case eTaskStateNoTask : {
@@ -249,5 +257,6 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 //	};
 	vfChooseNextRoutePoint	(tpALifeHuman);
 	vfCheckForTheBattle		(tpALifeHuman);
-	vfCheckForDeletedEvents	(tpALifeHuman);
+	bfCheckForItems			(tpALifeHuman);
+//	vfCheckForDeletedEvents	(tpALifeHuman);
 }
