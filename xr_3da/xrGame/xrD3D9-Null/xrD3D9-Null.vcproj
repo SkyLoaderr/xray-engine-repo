@@ -178,6 +178,9 @@
 			<File
 				RelativePath=".\IDirect3DDevice9.h">
 			</File>
+			<File
+				RelativePath=".\IDirect3DDevice9_Caps.cpp">
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt">

@@ -5,6 +5,14 @@
 
 #define D3D_DEBUG_INFO
 #include "d3d9.h"
+
+extern void LogOut( const char *format, ... );
+
+#ifdef _DEBUG
+#define APIDEBUG(str) LogOut("---------------------"#str"-------------------------\n")
+#else
+#define APIDEBUG(str)
+#endif
 /*
 //---------------------------------
 #include "d3d9types.h"
@@ -29,10 +37,15 @@ extern "C" {
 
 	class xrIDirect3D9: public IDirect3D9
 	{
+	protected:
+		HRESULT		HRESULT_Proc(HRESULT ret);
+		ULONG		ULONG_Proc(ULONG ret);
+
+		ULONG		m_refCount;
 	public:
 		xrIDirect3D9();
 		/*** IUnknown methods ***/
-		virtual HRESULT		__stdcall	QueryInterface( REFIID riid, void** ppvObj);
+		HRESULT		__stdcall	QueryInterface( REFIID riid, void** ppvObj);
 		ULONG		__stdcall	AddRef();
 		ULONG		__stdcall	Release();
 
@@ -98,3 +111,5 @@ extern "C" {
 #ifdef __cplusplus
 };
 #endif
+
+
