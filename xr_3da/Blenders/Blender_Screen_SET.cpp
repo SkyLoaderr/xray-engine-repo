@@ -32,8 +32,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, s
 	RS.PassBegin		();
 	{
 		RS.PassSET_ZB		(FALSE,FALSE);
-//		RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-		RS.PassSET_Blend	(TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,32);
+		RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
 		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(FALSE));
 		

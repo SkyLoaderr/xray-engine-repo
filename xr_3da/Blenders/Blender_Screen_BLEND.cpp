@@ -1,39 +1,43 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Blender_Screen_SET.h"
+#include "Blender_Screen_BLEND.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_Screen_SET::CBlender_Screen_SET()
+CBlender_Screen_BLEND::CBlender_Screen_BLEND()
 {
-	description.CLS		= B_SCREEN_SET;
+	description.CLS		= B_SCREEN_BLEND;
+	oAREF.value			= 32;
+	oAREF.min			= 0;
+	oAREF.max			= 255;
 }
 
-CBlender_Screen_SET::~CBlender_Screen_SET()
+CBlender_Screen_BLEND::~CBlender_Screen_BLEND()
 {
 	
 }
 
-void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
+void	CBlender_Screen_BLEND::Save	( CFS_Base& FS	)
 {
 	CBlender::Save	(FS);
+	BP_WRITE		("Alpha ref",	BPID_INTEGER,	oAREF);
 }
 
-void	CBlender_Screen_SET::Load	( CStream& FS	)
+void	CBlender_Screen_BLEND::Load	( CStream& FS	)
 {
 	CBlender::Load	(FS);
+	BP_READ			(BPID_INTEGER,		oAREF);
 }
 
-void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices)
+void	CBlender_Screen_BLEND::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices)
 {
 	RS.PassBegin		();
 	{
 		RS.PassSET_ZB		(FALSE,FALSE);
-//		RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-		RS.PassSET_Blend	(TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,32);
+		RS.PassSET_Blend	(TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,oAREF.value);
 		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(FALSE));
 		

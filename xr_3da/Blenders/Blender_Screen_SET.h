@@ -11,7 +11,7 @@
 class ENGINE_API CBlender_Screen_SET : public CBlender  
 {
 public:
-	virtual		LPCSTR		getComment()	{ return "screen-space basic blender"; }
+	virtual		LPCSTR		getComment()	{ return "screen-space set"; }
 	
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);

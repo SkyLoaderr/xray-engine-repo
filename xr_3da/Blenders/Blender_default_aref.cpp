@@ -14,6 +14,9 @@
 CBlender_default_aref::CBlender_default_aref()
 {
 	description.CLS		= B_DEFAULT_AREF;
+	oAREF.value			= 32;
+	oAREF.min			= 0;
+	oAREF.max			= 255;
 }
 
 CBlender_default_aref::~CBlender_default_aref()

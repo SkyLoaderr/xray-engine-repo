@@ -11,7 +11,7 @@
 class ENGINE_API CBlender_Screen_GRAY : public CBlender  
 {
 public:
-	virtual		LPCSTR		getComment()	{ return "screen-space gray-scale blender"; }
+	virtual		LPCSTR		getComment()	{ return "screen-space gray-scale set"; }
 	
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);
