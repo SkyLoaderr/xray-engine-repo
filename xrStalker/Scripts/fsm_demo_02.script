@@ -12,6 +12,8 @@
 -- глобальная переменная, указываюшая на то что сталкер уже
 -- не первый раз видит актера
 stalker_already_saw_actor = false
+stalker_already_say_baran = false
+
 
 -- функция перехода в первое состояние из нулевого
 function if_see_actor_tell_warning(npc, fsm)
@@ -49,7 +51,7 @@ end
 
 function if_actor_is_dead(npc, fsm)
 		log("actor is not dead")
-	if actor.health <= 0 then
+	if actor.health <= 0 and not stalker_already_say_baran then
 		-- да, условие выполнено, FSM перейдет в состояние 
 		-- как только мы сделаем return true
 		-- при переходе из нулевого состояния всегда 
@@ -64,6 +66,7 @@ function if_actor_is_dead(npc, fsm)
 		-- "стрелять буду"	
 
 		sound_baran:play_at_pos		(npc,npc:position(),0);
+		stalker_already_say_baran = true
 
 		return true
 	end
