@@ -12,6 +12,7 @@
 #include "eventAPI.h"
 #include "locatorAPI.h"
 #include "xrCPU_Pipe.h"
+#include "xrSheduler.h"
 
 class ENGINE_API CEngine
 {
@@ -23,6 +24,7 @@ public:
 	CScriptAPI			Scripts;
 	CEventAPI			Event;
 	CLocatorAPI			FS;
+	CSheduler			Sheduler;
 
 	void				Initialize	();
 	void				Destroy		();

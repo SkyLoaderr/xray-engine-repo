@@ -17,8 +17,6 @@ public:
 	vector<CObject*>			objects;
 	map<u32,CObject*>			map_NETID;
 
-	CSheduler					sheduled;
-
 	// methods
 								CObjectList			( );
 								~CObjectList		( );

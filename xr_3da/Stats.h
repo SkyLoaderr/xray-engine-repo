@@ -26,7 +26,7 @@ public:
 	DWORD		dwSND_Played,dwSND_Allocated;	// Play/Alloc
 
 	CStatTimer	EngineTOTAL;		// 
-	CStatTimer	UpdateSheduled;		// 
+	CStatTimer	Sheduler;			// 
 	CStatTimer	UpdateClient;		// 
 	CStatTimer	Physics;			// movement+collision
 	CStatTimer	AI_Think;			// thinking

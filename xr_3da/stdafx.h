@@ -78,6 +78,7 @@
 #include <time.h>
 #include <string.h>
 #include <process.h>
+#include <assert.h>
 
 #ifndef DEBUG
 #pragma inline_depth	( 254 )
@@ -112,11 +113,26 @@ using namespace std;
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
 #define ALIGN(a)		__declspec(align(a))
 
+// you must define ENGINE_BUILD then building the engine itself
+// and not define it if you are about to build DLL
+#ifndef NO_ENGINE_API
+	#ifdef	ENGINE_BUILD
+		#define DLL_API			__declspec(dllimport)
+		#define ENGINE_API		__declspec(dllexport)
+	#else
+		#define DLL_API			__declspec(dllexport)
+		#define ENGINE_API		__declspec(dllimport)
+	#endif
+#else
+	#define ENGINE_API
+	#define DLL_API
+#endif // NO_ENGINE_API
+
 // Our headers
-#define NO_XR_NETWORK
-#define	NO_XR_VERTEX
-#include "engine.h"
+#define VERIFY assert
 #include "vector.h"
+#undef  VERIFY
+#include "engine.h"
 #ifndef NO_MMGR
 #include "fmemorymanager.h"
 #endif

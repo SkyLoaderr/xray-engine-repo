@@ -145,20 +145,17 @@ public:
 		// Check final candidate actually inside box
 		if(IR(MaxT[WhichPlane])&0x80000000) return false;
 		
-		switch (WhichPlane) {
-			case 0:
+		if (0==WhichPlane)
+		{
 				// 1
 				coord[1] = origin[1] + MaxT[0] * dir[1];
 				if((coord[1] < min[1]) || (coord[1] > max[1]))	return false;
 				return true;
-			case 1:
+		} else {
 				// 0
 				coord[0] = origin[0] + MaxT[1] * dir[0];
 				if((coord[0] < min[0]) || (coord[0] > max[0]))	return false;
 				return true;
-			default: 
-				NODEFAULT;
-				return false;
 		}
 	}
 	

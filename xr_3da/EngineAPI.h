@@ -8,22 +8,6 @@
 #define AFX_ENGINEAPI_H__CF21372B_C8B8_4891_82FC_D872C84E1DD4__INCLUDED_
 #pragma once
 
-#ifndef NO_ENGINE_API
-// you must define ENGINE_BUILD then building the engine itself
-// and not define it if you are about to build DLL
-#ifdef ENGINE_BUILD
-#define DLL_API			__declspec(dllimport)
-#define ENGINE_API		__declspec(dllexport)
-#else
-#define DLL_API			__declspec(dllexport)
-#define ENGINE_API		__declspec(dllimport)
-#endif
-
-#else
-#define ENGINE_API
-#define DLL_API
-#endif // NO_ENGINE_API
-
 #include "clsid.h"
 
 // Abstract 'Pure' class for DLL interface

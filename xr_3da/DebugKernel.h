@@ -29,7 +29,7 @@ extern CDebugKernel Debug;
 ENGINE_API void __fastcall _verify(const char *expr, char *file, int line);
 #define R_ASSERT(expr)			if (!(expr)) _verify(#expr, __FILE__, __LINE__)
 #define R_ASSERT2(expr,info)	if (!(expr)) { string256 buf; sprintf(buf,"%s, %s",#expr,info); _verify(buf, __FILE__, __LINE__);  }
-#define R_CHK(expr)		{ HRESULT hr = expr; if (FAILED(hr)) Device.Error(hr, __FILE__, __LINE__); }
+#define R_CHK(expr)				{ HRESULT hr = expr; if (FAILED(hr)) Device.Error(hr, __FILE__, __LINE__); }
 
 #ifdef DEBUG
 #define	NODEFAULT	VERIFY2(0,"nodefault: reached")

@@ -1,12 +1,5 @@
 #pragma once
 
-enum
-{
-	SHEDULE_LOW		= 0,
-	SHEDULE_NORMAL	= 1,
-	SHEDULE_HIGH	= 2
-};
-
 class	ENGINE_API	CSheduled
 {
 public:
@@ -18,11 +11,11 @@ public:
 	CSheduled			();
 	virtual ~CSheduled	();
 
-	void								shedule_Register	(DWORD priority=SHEDULE_NORMAL);
+	void								shedule_Register	();
 	void								shedule_Unregister	();
 
+	virtual float						shedule_Scale		()			= 0;
 	virtual void						Update				(DWORD dt)	{};
-	virtual Fvector&					Position			()			= 0;
 	virtual BOOL						Ready				()			= 0; 
 	virtual LPCSTR						cName				()			{ return "UNKNOWN"; }; 
 };
@@ -41,17 +34,32 @@ private:
 		{	return dwTimeForExecute > I.dwTimeForExecute; }
 	};
 private:
-	vector<Item>	Items	[3];
+	vector<Item>	Items;
 
-	IC void			Push	(DWORD P, Item& I);
-	IC void			Pop		(DWORD P);
-	IC Item&		Top		(DWORD P)
+	IC void			Push	(Item& I);
+	IC void			Pop		();
+	IC Item&		Top		()
 	{
-		return Items[P].front();
+		return Items.front();
 	}
-	void			UpdateLevel	(DWORD P, DWORD mcs);
 public:
-	void			Update		();
-	void			Register	(CSheduled* A, DWORD priority=SHEDULE_NORMAL);
-	void			Unregister	(CSheduled* A);
+	u64				cycles_start;
+	u64				cycles_limit;
+public:
+	void			ProcessStep	();
+	void			Process		();
+	void			Update		(DWORD mcs		);
+
+	void			Switch		();
+	void			Slice		()
+	{
+		if ((CPU::GetCycleCount()-cycles_start)>cycles_limit)
+			Switch();
+	}
+
+	void			Register	(CSheduled* A	);
+	void			Unregister	(CSheduled* A	);
+
+	void			Initialize	();
+	void			Destroy		();
 };

@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "xrSheduler.h"
-#include "xr_object.h"
-#include "xr_creator.h"
 
-ENGINE_API float		psUpdateFar	= 200.f;
+ENGINE_API float		psUpdateFar		= 200.f;
+LPVOID 					fiber_main		= 0;
+LPVOID					fiber_thread	= 0;
 
 CSheduled::CSheduled	()	
 {
@@ -18,79 +18,86 @@ CSheduled::~CSheduled	()
 {
 	shedule_Unregister	();
 }
+
 void	CSheduled::shedule_Register			(DWORD priority)
 {
-	pCreator->Objects.sheduled.Register		(this, priority);
+	Engine.Sheduler.Register	(this, priority);
 }
+
 void	CSheduled::shedule_Unregister		()
 {
-	pCreator->Objects.sheduled.Unregister	(this);
+	Engine.Sheduler.Unregister	(this);
 }
 
 //-------------------------------------------------------------------------------------
+VOID CALLBACK t_process			(LPVOID p)
+{
+	Engine.Sheduler.Process		();
+}
+
+void CSheduler::Initialize		()
+{
+	fiber_main			= ConvertThreadToFiber	(0);
+	fiber_thread		= CreateFiber			(0,t_process,0);
+}
+void CSheduler::Destroy			()
+{
+	R_ASSERT			(Items.empty());
+	DeleteFiber			(fiber_thread);
+	DeleteFiber			(fiber_main);
+}
+
 void CSheduler::Register		(CSheduled* O, DWORD priority)
 {
-
 	// Fill item structure
-	Item	TNext;
+	Item						TNext;
 	TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule_Min;
 	TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
 	TNext.Object				= O;
 	
 	// Insert into priority Queue
-	Push						(priority, TNext);
+	Push						(TNext);
 }
 
 void CSheduler::Unregister		(CSheduled* O)
 {
-	for (DWORD P=0; P<3; P++) 
+	for (DWORD i=0; i<Items.size(); i++)
 	{
-		for (DWORD i=0; i<Items[P].size(); i++)
-		{
-			if (Items[P][i].Object==O) {
-				Items[P].erase(Items[P].begin()+i);
-				return;
-			}
+		if (Items[i].Object==O) {
+			Items.erase(Items.begin()+i);
+			return;
 		}
 	}
 }
 
-void CSheduler::Push	(DWORD P, Item& I)
+void CSheduler::Push		(Item& I)
 {
-	Items[P].push_back(I);
-	push_heap	(Items[P].begin(), Items[P].end());
-}
-void CSheduler::Pop		(DWORD P)
-{
-	pop_heap	(Items[P].begin(), Items[P].end());
-	Items[P].pop_back();
+	Items.push_back	(I);
+	push_heap		(Items.begin(), Items.end());
 }
 
-void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
+void CSheduler::Pop		()
 {
+	pop_heap		(Items.begin(), Items.end());
+	Items.pop_back	();
+}
+
+void CSheduler::ProcessStep			()
+{
+	if (Items.empty())				return;
+
 	DWORD	dwTime					= Device.dwTimeGlobal;
-	DWORD	dwCount					= 0;
-	if (Items[Priority].empty())	return;
-
-	u64		cycles_limit			= CPU::cycles_per_microsec * u64(mcs);
-	u64		cycles_start			= CPU::GetCycleCount();
-	u64		cycles_elapsed			= 0; 
-	float	A_Limit_F				= float(mcs)/3.f;
-	int		A_Limit_I				= mcs/3;
-
-	while ((cycles_elapsed<cycles_limit) && (Top(Priority).dwTimeForExecute < dwTime))
+	while (Top().dwTimeForExecute < dwTime)
 	{
-		dwCount	++;
-
 		// Update
-		Item	T			= Top(Priority);
-		DWORD	Elapsed		= dwTime-T.dwTimeOfLastExecute;
+		Item	T					= Top	(Priority);
+		DWORD	Elapsed				= dwTime-T.dwTimeOfLastExecute;
 
 		// Calc next update interval
-		DWORD	dwMin		= T.Object->shedule_Min;
-		DWORD	dwMax		= T.Object->shedule_Max;
-		float	scale		= Device.vCameraPosition.distance_to(T.Object->Position())/psUpdateFar;
-		DWORD	dwUpdate	= dwMin+iFloor(float(dwMax-dwMin)*scale);
+		DWORD	dwMin				= T.Object->shedule_Min;
+		DWORD	dwMax				= T.Object->shedule_Max;
+		float	scale				= Device.vCameraPosition.distance_to(T.Object->Position())/psUpdateFar;
+		DWORD	dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
 		clamp	(dwUpdate,dwMin,dwMax);
 
 		// Fill item structure
@@ -104,25 +111,32 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 		Push						(Priority, TNext);
 
 		// Real update call
-		if (T.Object->Ready())		{
-			u64		cycles_save		= cycles_elapsed;
-			T.Object->Update		(Elapsed);
-			cycles_elapsed			= CPU::GetCycleCount()-cycles_start;
-			float PMON				= float(u64(cycles_elapsed-cycles_save))*CPU::cycles2microsec;
-			PMON					= .7f * T.Object->shedule_PMON + .3f * PMON;
-			T.Object->shedule_PMON	= PMON;
-			if (PMON > A_Limit_F)	
-			{
-				Msg	("! SHEDULER: thread '%s' exceeds time limit. [%d/%d] mcs",
-					T.Object->cName(),iFloor(PMON),A_Limit_I);
-			}
-		}
+		if (T.Object->Ready())		T.Object->Update		(Elapsed);
+
+		Slice						();
+		dwTime						= Device.dwTimeGlobal;
 	}
 }
 
-void CSheduler::Update				()
+void CSheduler::Switch				()
 {
-	UpdateLevel		(2,3000);	// HIGH
-	UpdateLevel		(1,3000);	// NORMAL
-	UpdateLevel		(0, 500);	// LOW
+	SwitchToFiber					(fiber_main);
+}
+
+void CSheduler::Update				(DWORD mcs)
+{
+	Device.Statistic.Sheduler.Begin	();
+	cycles_limit					= CPU::cycles_per_microsec * u64(mcs);
+	cycles_start					= CPU::GetCycleCount();
+	SwitchToFiber					(fiber_thread);
+	Device.Statistic.Sheduler.End	();
+}
+
+void CSheduler::Process				()
+{
+	for (;;)
+	{
+		ProcessStep	();
+		Switch		();
+	}
 }

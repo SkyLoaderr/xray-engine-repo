@@ -22,7 +22,6 @@ class	ENGINE_API				CCreator	:
 	public pureFrame,
 	public CEventBase
 {
-	friend class CRender;
 protected:
 	// Loader
 	typedef vector<char *>		vecC;
@@ -52,7 +51,7 @@ public:
 
 	BOOL						bReady;
 
-	CInifile *					pLevel;
+	CInifile*					pLevel;
 	CCustomHUD*					pHUD;
 public:
 	// Main, global functions
