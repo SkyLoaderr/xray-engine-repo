@@ -41,13 +41,13 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 	DWORD	sz_comp			= sizeof(CompName);
 	GetComputerName			(CompName,&sz_comp);
 
-	CreateLog				(cb);
-
 	// Mathematics & PSI detection
 	InitMath				();
 
 	Debug._initialize		();
 	Memory._initialize		();
+
+	CreateLog				(cb);
 
 	bInitialized			= TRUE;
 }
