@@ -127,7 +127,12 @@ BOOL	CSoundRender_Emitter::update_culling	(float dt)
 	float vol_occ		=	occluder_volume*(1.f-psSoundOcclusionScale)+psSoundOcclusionScale;
 	smooth_volume		=	.9f*smooth_volume + .1f*(p_source.volume*psSoundVEffects*vol_occ);
 	if (smooth_volume*att<psSoundCull)	return FALSE;
-	return TRUE;
+
+	// Here we has enought "PRIORITY" to be soundable
+	// If we are playing already, return OK
+	// --- else check availability of resources
+	if (target)			return	TRUE;
+	else				return	SoundRender.i_allow_play	(this);
 }
 
 void	CSoundRender_Emitter::update_environment	(float dt)

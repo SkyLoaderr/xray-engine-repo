@@ -69,10 +69,8 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	}
 
 	// Start rendering of pending targets
-	/*
 	for (it=0; it<s_targets_defer.size(); it++)
 		s_targets_defer[it]->render	();
-	*/
 }
 
 u32		CSoundRender_Core::stat_render	()

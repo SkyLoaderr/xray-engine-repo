@@ -81,6 +81,7 @@ public:
 	void								i_start					( CSoundRender_Emitter* E	);
 	void								i_stop					( CSoundRender_Emitter* E	);
 	void								i_rewind				( CSoundRender_Emitter* E	);
+	BOOL								i_allow_play			( CSoundRender_Emitter* E	);
 
 	BOOL								get_occlusion			( Fvector& P, float R, Fvector* occ );
 	CSoundRender_Environment*			get_environment			( Fvector& P );
