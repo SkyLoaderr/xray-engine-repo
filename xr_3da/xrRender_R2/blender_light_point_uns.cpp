@@ -16,7 +16,6 @@ void	CBlender_accum_point_uns::Compile(CBlender_Compile& C)
 		C.r2_Pass				(r2s("r2_accum_point_mask"),	r2s("r2_accum_point_mask"),TRUE,FALSE);
 		C.r2_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
-		C.r2_Sampler_rtf		("s_smap",			r2_RT_smap_p);
 		C.r2_End				();
 		break;
 	case 1:	// lighting/shadowing - front/back
