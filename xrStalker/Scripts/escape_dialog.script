@@ -6,14 +6,11 @@
 -- Trader
 --------------------------------------------------------------------------------------------------------
 function trader_alredy_give_job(first_speaker, second_speaker)
-	local actor = level.actor()
-    if actor ~= nil and
-	   actor:has_info("escape_trader_need_artefact") and
-	   actor:dont_has_info("escape_trader_have_artefact")	   
-	then
-		return true
-	end
 	return false
+end
+
+function trader_dont_give_job(first_speaker, second_speaker)
+	return not trader_alredy_give_job(first_speaker, second_speaker)
 end
 
 function trader_dont_has_job(first_speaker, second_speaker)
@@ -25,6 +22,44 @@ function trader_dont_has_job(first_speaker, second_speaker)
 	end
 	return false
 end
+
+--' Escape tutorial artefact
+function have_tutorial_artefact(first_speaker, second_speaker)
+  	return first_speaker:object("af_blood_tutorial") ~= nil
+end
+function give_medkit(first_speaker, second_speaker)
+	local medkit = first_speaker:object("medkit")
+	if medkit ~= nil then
+		first_speaker:transfer_item(medkit, second_speaker)
+	else
+		printf("ERROR: Escape trader dont has a medkit.")
+	end
+end
+function give_tutorial_artefact(first_speaker, second_speaker)
+	local artefact = first_speaker:object("af_blood_tutorial")
+	first_speaker:transfer_item(artefact, second_speaker)
+	first_speaker:set_task_state(task.completed, "tutorial_find_artefact", 2)
+	first_speaker:set_task_state(task.completed, "tutorial_find_artefact", 0)
+end
+
+
+--' Escape trader need meet fox
+function have_fox_info(first_speaker, second_speaker)
+  	return first_speaker:object("fox_info") ~= nil
+end
+function trader_need_fox_info(first_speaker, second_speaker)
+	local actor = level.actor()
+    if actor ~= nil and
+	   actor:has_info("escape_stalker_to_trader_done")
+	then
+		return true
+	end
+	return false
+end
+function give_fox_info(first_speaker, second_speaker)
+	return 
+end
+
 
 --' Escape blockpost box
 function have_blockpost_case(first_speaker, second_speaker)
@@ -94,7 +129,7 @@ function wounded_need_help(first_speaker, second_speaker)
 	return actor ~= nil and actor:dont_has_info( "tutorial_wounded_help" )
 end
 
---' Barman needs military documents
+--' trader needs military documents
 function trader_need_military_document(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
@@ -133,7 +168,6 @@ end
 function have_dynamite(first_speaker, second_speaker)
   	return first_speaker:object("dynamite") ~= nil
 end
-
 function give_dynamite(first_speaker, second_speaker)
 	local case = first_speaker:object("dynamite")
 	first_speaker:transfer_item (case, second_speaker)
