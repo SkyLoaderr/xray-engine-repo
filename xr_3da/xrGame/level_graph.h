@@ -187,6 +187,7 @@ public:
 			u32		check_position_in_direction_slow(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const;
 	IC		Fvector v3d							(const Fvector2 &vector2d) const;
 	IC		Fvector2 v2d						(const Fvector &vector3d) const;
+	IC		bool	valid_vertex_position		(const Fvector &position) const;
 #ifndef AI_COMPILER
 			void	find_game_point_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &tDirection, u32 &finish_vertex_id, ALife::_GRAPH_ID tGraphID) const;
 #endif
