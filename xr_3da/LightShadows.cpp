@@ -203,8 +203,11 @@ void CLightShadows::calculate	()
 			float		p_R		=	C.O->Radius();
 			float		p_hat	=	p_R/p_dist;
 			float		p_asp	=	1.f;
-			float		p_near	=	p_dist-p_R-eps;				if (p_near<eps)			p_near	= eps;
-			float		p_far	=	_min(Lrange,p_dist+S_fade);	if (p_far<(p_near+eps))	p_far	= p_near+eps;
+			float		p_near	=	p_dist-p_R-eps;									
+			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
+			if (p_near<eps)			p_near	= eps;
+			if (p_far<(p_near+eps))	p_far	= p_near+eps;
+
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
 			Device.set_xform_project		(mProject);
 			
