@@ -146,4 +146,5 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_SHADOW_WORLD));
 	palette.push_back(Create(B_BLUR));
 	palette.push_back(Create(B_MODEL));
+	palette.push_back(Create(B_MODEL_EbB));
 }
