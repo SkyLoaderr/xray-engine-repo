@@ -25,7 +25,7 @@ function main ()
 		  wait (500)
 		  local h = hit ()	
           h.power = 1
-          h.direction:set (-1, 0, 0)
+          h.direction = vector:set (-1, 0, 0)
           h:bone (bones[math.random (1, table.getn (bones))])
           h.draftsman = get_actor ()
           h.impulse = starthit
