@@ -70,12 +70,12 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
         if (vers==0x0001){
 			m_fMinDist		= F.r_float	();
 			m_fMaxDist		= F.r_float	();
-	        m_fStartVolume	= 1.f;
+	        m_fVolume		= 1.f;
 			m_uGameType		= F.r_u32	();
         }else if (vers==OGG_COMMENT_VERSION){
 			m_fMinDist		= F.r_float	();
 			m_fMaxDist		= F.r_float	();
-            m_fStartVolume	= F.r_float	();
+            m_fVolume		= F.r_float	();
 			m_uGameType		= F.r_u32	();
 		}else{
 			Log				("! Invalid ogg-comment version, file: ",pName);
