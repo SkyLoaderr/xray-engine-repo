@@ -351,11 +351,6 @@ public:
 	{
 		T Scale0,Scale1,sign;
 
-#ifdef DEBUG
-		if (!_valid(tm))
-			tm	= T(0);
-#endif
-		
 		VERIFY( ( T(0) <= tm ) && ( tm <= T(1) ) );
 		
 		T cosom =	(Q0.w * Q1.w) + (Q0.x * Q1.x) + (Q0.y * Q1.y) + (Q0.z * Q1.z);
