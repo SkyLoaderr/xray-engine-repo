@@ -33,7 +33,4 @@ void xrMU_Model::calc_materials	()
 	}
 	m_subdivs.push_back	(current);
 	clMsg	("model '%s' - %d subdivisions",m_name,m_subdivs.size());
-
-	for (u32 m=0; m<m_subdivs.size(); m++)
-		clMsg("*debug* LOD-ID = %d",pBuild->materials[m_subdivs[m].material].lod_id);
 }
