@@ -92,6 +92,8 @@ public:
 	virtual CSector*				getSector				(int id);
 	virtual CSector*				getSectorActive			();
 	virtual CVisual*				getVisual				(int id);
+	virtual DWORD					getFVF					(int id);
+	virtual IDirect3DVertexBuffer8*	getVB					(int id);
 	virtual void					getLights				(Fvector &pos, float fRadius, vector<xrLIGHT*>	dest);
 	virtual CSector*				detectSector			(Fvector& P);
 	
