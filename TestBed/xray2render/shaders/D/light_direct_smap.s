@@ -54,7 +54,7 @@ p2f 	p_main	( v2p_in IN )
   // Transform position to light/shadow space
   float4 PLS	= mul		(light_xform,float4(_P.x,_P.y,_P.z,1));
   float2 uv0	= float2	(PLS.x/PLS.w,PLS.y/PLS.w);
-  float  depth	= PLS.z		+ .001f;
+  float  depth	= PLS.z;
   
   // 1. Sample shadowmap 
   // 2. Compare (if (depth_pixel > depth_smap) then in shadow)

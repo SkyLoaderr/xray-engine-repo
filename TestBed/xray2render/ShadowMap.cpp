@@ -15,7 +15,7 @@ enum COMBINE_MODE
 //-----------------------------------------------------------------------------
 
 #define SHADOW_MAP_FORMAT	D3DFMT_R32F
-#define SHADOW_MAP_SIZE		256
+#define SHADOW_MAP_SIZE		64
 #define OVERLAY_SIZE		128
 #define DEPTH_RANGE			4.0f
 
