@@ -84,8 +84,9 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	Fvector		axis;	axis.set			(0,-1,0);
 	Fvector&	view	= Device.vCameraPosition;
 	float		angle	= ::Random.randF	(0,PI_MUL_2);
-	float		x		= radius*cosf		(angle);
-	float		z		= radius*sinf		(angle);
+	float		dist	= ::Random.randF	(0,radius);
+	float		x		= dist*cosf			(angle);
+	float		z		= dist*sinf			(angle);
 	dest.P.set			(x+view.x,height+view.y,z+view.z);
 	dest.D.random_dir	(axis,deg2rad(drop_angle));
 	dest.fSpeed			= ::Random.randF	(drop_speed_min,drop_speed_max);
@@ -168,12 +169,14 @@ void	CEffect_Rain::p_free(Particle* P)
 // startup new particle system
 void	CEffect_Rain::Hit		(Fvector& pos)
 {
+	/*
 	Particle*	P	= p_allocate();
 	if (0==P)	return;
 
 	P->dwNextUpdate				= Device.dwTimeGlobal+particles_update;
 	P->emitter.m_Position.set	(pos);
 	P->emitter.Play				();
+	*/
 }
 
 void	CEffect_Rain::Render	()
@@ -254,10 +257,10 @@ void	CEffect_Rain::Render	()
 		camDir.normalize	();
 		lineTop.crossproduct(camDir,lineD);
 		float	w = drop_width;
-		P.mad(pos_trail,lineTop,-w);	verts->set(P,0,0,1);	verts++;
-		P.mad(pos_trail,lineTop,w);		verts->set(P,0,0,0);	verts++;
-		P.mad(pos_head, lineTop,-w);	verts->set(P,0,1,1);	verts++;
-		P.mad(pos_head, lineTop,w);		verts->set(P,0,1,0);	verts++;
+		P.mad(pos_trail,lineTop,-w);	verts->set(P,0xffffffff,0,1);	verts++;
+		P.mad(pos_trail,lineTop,w);		verts->set(P,0xffffffff,0,0);	verts++;
+		P.mad(pos_head, lineTop,-w);	verts->set(P,0xffffffff,1,1);	verts++;
+		P.mad(pos_head, lineTop,w);		verts->set(P,0xffffffff,1,0);	verts++;
 	}
 	DWORD vCount			= verts-start;
 	VS->Unlock				(vCount);
@@ -272,6 +275,7 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Particles
+	/*
 	Particle*	P	= particle_active;
 	DWORD	dwTime	= Device.dwTimeGlobal;
 	if (P)	Device.Shader.set_Shader	(P->visual->hShader);
@@ -301,4 +305,5 @@ void	CEffect_Rain::Render	()
 		
 		P = next;
 	}
+	*/
 }
