@@ -76,7 +76,7 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 		if (SSA<=r_ssaDISCARD)		return;
 
 		// Select List and add to it
-		ShaderElement*		sh		= (((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
+		ShaderElement*		sh		= pVisual->hShader->E[2]._get(); //(((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
 		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pObject			= NULL;

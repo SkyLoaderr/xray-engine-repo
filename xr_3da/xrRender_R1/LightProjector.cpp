@@ -8,7 +8,7 @@
 #include "lighttrack.h"
 
 const	int			P_rt_size	= 512;
-const	int			P_o_size	= 56;
+const	int			P_o_size	= 512; //.56;
 const	int			P_o_line	= P_rt_size/P_o_size;
 const	int			P_o_count	= P_o_line*P_o_line;
 const	float		P_distance	= 48;
@@ -150,12 +150,16 @@ void CLightProjector::calculate	()
 		CHK_DX					(HW.pDevice->SetViewport(&VP));
 
 		// calculate uv-gen matrix
-		C.UVgen.mul_43			(mView,mInvView);
+		C.UVgen.set				(mView);
+		// C.UVgen.invert			();
+		/*
+		C.UVgen.set				(mView);
 		mTemp.scale				(1/p_R,1/p_R,0);
 		C.UVgen.mulA_43			(mTemp);
 		C.UVgen.mulA_43			(mXform2UV);
 		mTemp.translate			(float(s_x*P_o_size)/float(P_rt_size), float(s_y*P_o_size)/float(P_rt_size), 0);
 		C.UVgen.mulA_43			(mTemp);
+		*/
 
 		// Clear color to ambience
 		float	c_a				=	((CLightTrack*)C.O->renderable.ROS)->ambient;
