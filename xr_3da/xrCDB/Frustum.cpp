@@ -5,20 +5,20 @@
 
 //////////////////////////////////////////////////////////////////////
 void			CFrustum::fplane::cache	()	{
-	if(positive(N.x)) {
-		if(positive(N.y)) {
-			if(positive(N.z))	aabb_overlap_id	= 0;
+	if(positive(n.x)) {
+		if(positive(n.y)) {
+			if(positive(n.z))	aabb_overlap_id	= 0;
 			else				aabb_overlap_id	= 1;
 		} else {
-			if(positive(N.z))	aabb_overlap_id	= 2;
+			if(positive(n.z))	aabb_overlap_id	= 2;
 			else				aabb_overlap_id = 3;
 		}
 	} else {
-		if(positive(N.y)) {
-			if(positive(N.z))	aabb_overlap_id = 4;
+		if(positive(n.y)) {
+			if(positive(n.z))	aabb_overlap_id = 4;
 			else				aabb_overlap_id = 5;
 		} else {
-			if(positive(N.z))	aabb_overlap_id = 6;
+			if(positive(n.z))	aabb_overlap_id = 6;
 			else				aabb_overlap_id = 7;
 		}
 	}
@@ -43,7 +43,7 @@ EFC_Visible		CFrustum::AABB_OverlapPlane(const fplane& P, const Fvector &m, cons
 {
 	// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
 	Fvector			Neg, Pos;
-	switch			(aabb_overlap_id)
+	switch			(P.aabb_overlap_id)
 	{
 	case	0:		Pos.set(M.x,M.y,M.z); Neg.set(m.x,m.y,m.z); break;
 	case	1:		Pos.set(M.x,M.y,m.z); Neg.set(m.x,m.y,M.z); break;
