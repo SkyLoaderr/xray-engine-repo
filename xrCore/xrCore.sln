@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCore", "xrCore.vcproj", "{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {27C89272-142C-4EC6-9957-A40755C7E592}
+		SccProjectUniqueName1 = xrCore.vcproj
+		SccLocalPath1 = .
+		CanCheckoutShared = true
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Debug.ActiveCfg = Debug|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Debug.Build.0 = Debug|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Release.ActiveCfg = Release|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
