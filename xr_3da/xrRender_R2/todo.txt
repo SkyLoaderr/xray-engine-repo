@@ -26,6 +26,8 @@ same,occq-delay:	~25.9
 BUG:	optimized sphere around cone-shape
 BUG:	scissor	- reprojection
 BUG:	light - spanning multiple sectors -> connect to portals
+BUG:	particles
+BUG:	self-illum
 
 OPT:	clipping light volume by visibility frustum (or primary)
 		should minimize geometry/fill req
