@@ -10,6 +10,7 @@
 #define		B_VERT			MK_CLSID('V',' ',' ',' ',' ',' ',' ',' ')
 #define		B_VERT_AREF		MK_CLSID('V','_','A','R','E','F',' ',' ')
 #define		B_LmBmmD		MK_CLSID('L','m','B','m','m','D',' ',' ')
+#define		B_LaEmB			MK_CLSID('L','a','E','m','B',' ',' ',' ')
 
 // Screen space blenders
 #define		B_SCREEN_SET	MK_CLSID('S','_','S','E','T',' ',' ',' ')
