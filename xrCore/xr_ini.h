@@ -55,10 +55,14 @@ public:
 
 	LPCSTR		fname			( ) { return fName; };
 
-	Sect&		r_section		( LPCSTR S );
+	Sect&		r_section		( LPCSTR S			);
+	Sect&		r_section		( const ref_str& S	);
 	BOOL		line_exist		( LPCSTR S, LPCSTR L );
-	u32			line_count		( LPCSTR S );
-	BOOL		section_exist	( LPCSTR S );
+	BOOL		line_exist		( const ref_str& S, const ref_str& L );
+	u32			line_count		( LPCSTR S			);
+	u32			line_count		( const ref_str& S	);
+	BOOL		section_exist	( LPCSTR S			);
+	BOOL		section_exist	( const ref_str& S	);
 	Root&		sections		( ){return DATA;}
 
 	CLASS_ID	r_clsid			( LPCSTR S, LPCSTR L );

@@ -260,6 +260,13 @@ u32	CInifile::line_count(LPCSTR Sname)
 	return  C;
 }
 
+
+//--------------------------------------------------------------------------------------
+Sect&		r_section		( const ref_str& S	)					{ return	r_section(*S);		}
+BOOL		line_exist		( const ref_str& S, const ref_str& L )	{ return	line_exist(*S,*L);	}
+u32			line_count		( const ref_str& S	)					{ return	line_count(*S);		}
+BOOL		section_exist	( const ref_str& S	)					{ return	section_exist(*S);	}
+
 //--------------------------------------------------------------------------------------
 // Read functions
 //--------------------------------------------------------------------------------------
@@ -404,6 +411,7 @@ BOOL	CInifile::r_line( LPCSTR S, int L, const char** N, const char** V )
 		}
 	return FALSE;
 }
+
 //--------------------------------------------------------------------------------------------------------
 // Write functions
 //--------------------------------------------------------------------------------------
