@@ -179,6 +179,16 @@ CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 	else					return I->second;
 }
 
+CBlender* CShaderManager::_FindBlender		(LPCSTR Name)
+{
+	if (!(Name && Name[0])) return 0;
+
+	LPSTR N = LPSTR(Name);
+	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
+	if (I==blenders.end())	return 0;
+	else					return I->second;
+}
+
 void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, CBlender* data)
 {
 	LPSTR N = LPSTR(Name);

@@ -57,6 +57,7 @@ public:
 	// Miscelaneous
 	void							_ParseList			(sh_list& dest, LPCSTR names);
 	CBlender*						_GetBlender			(LPCSTR Name);
+	CBlender* 						_FindBlender		(LPCSTR Name);
 	DWORD							_GetMemoryUsage		();
 	
 	// Debug
