@@ -65,26 +65,29 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		C.PassBegin		();
+		if (2==C.iElement)
 		{
-			C.PassSET_ZB		(TRUE,TRUE);
-			C.PassSET_Blend_SET	();
-			C.PassSET_LightFog	(FALSE,TRUE);
-			
-			// Stage1 - Base texture
-			C.StageBegin		();
-			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.StageSET_TMC		(oT_Name,oT_xform,"$null",0);
-			C.StageEnd			();
-			
-			// Stage2 - Second texture
-			C.StageBegin		();
-			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
-			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
-			C.StageSET_TMC		(oT2_Name,oT2_xform,"$null",0);
-			C.StageEnd			();
+			// Lighting only
+			C.r_Pass	("r1_lmap_l","r1_lmap_l",FALSE);
+			C.r_Sampler	("s_base",C.L_textures[0]);
+			C.r_Sampler	("s_lmap",C.L_textures[1]);
+			C.r_End		();
+		} else {
+			// Level view
+			if (C.bDetail)
+			{
+				C.r_Pass	("r1_lmap_dt","r1_lmap_dt",TRUE);
+				C.r_Sampler	("s_base",	C.L_textures[0]);
+				C.r_Sampler	("s_lmap",	C.L_textures[1]);
+				C.r_Sampler	("s_detail",oT2_Name);
+				C.r_End		();
+			} else
+			{
+				C.r_Pass	("r1_lmap","r1_lmap",TRUE);
+				C.r_Sampler	("s_base",C.L_textures[0]);
+				C.r_Sampler	("s_lmap",C.L_textures[1]);
+				C.r_End		();
+			}
 		}
-		C.PassEnd			();
 	}
 }

@@ -13,7 +13,7 @@ public:
 	string64	oT2_xform;		// xform for secondary texture
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: Implicit**detail";	}
-	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
+	virtual		BOOL		canBeLMAPped()	{ return TRUE; }
 
 	virtual		void		Save			(IWriter&  fs);
 	virtual		void		Load			(IReader&	fs, u16 version);
