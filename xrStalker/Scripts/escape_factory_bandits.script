@@ -180,10 +180,10 @@ function action_stand:initialize()
     end
 
     if self.object:level_vertex_id() == self.positions[1] then
-        self.timer = device():time_global() + math.random( 10000, 15000 )
+        self.timer = device():time_global() + 15000
         self.next_pos = 2
     else
-        self.timer = device():time_global() + math.random( 10000, 15000 )
+        self.timer = device():time_global() + 15000
         self.next_pos = 1
     end
 

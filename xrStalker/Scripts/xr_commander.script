@@ -8,11 +8,11 @@
     - конфигураци€ веса path_talk
     - отдельна€ точка тревоги дл€ box_alarm при краже объекта
     - провер€ть не инвентарь игрока, а родительский объект €щика
+    - переименовать near_door
 
     - звук и пауза при обнаружении кражи, а потом бегом поднимать тревогу
     - оттестить звуки во сне
     - водка (ƒима)
-    - при сне и водке смотреть не на точку, а в направлении
     - звуки внутренней тревоги
 
 --------------------------------------------------------------------------------------------------------------------]]
@@ -221,8 +221,8 @@ function action_commander:execute()
                 else
                     self.act = random_choice_weighted( self.a.acts[2])
                 end                
-            --until self.act == walk_random or self.act ~= self.last_act
-            until self.act ~= self.last_act
+            until self.act == walk_random or self.act ~= self.last_act
+            --until self.act ~= self.last_act
         else
             self.act = random_choice_weighted( self.a.acts[3] )
         end
@@ -313,8 +313,10 @@ function action_commander:exec_walk_random()
             else
                 self:stop()
 
-                local look_point = self.a.way_random:point( self.last_walk_random_point + 1 ):add( vector():set( 0, 1.8, 0 ) )
-                self.object:set_sight( look.point, look_point, 0 )
+--                local look_point = self.a.way_random:point( self.last_walk_random_point + 1 ):add( vector():set( 0, 1.8, 0 ) )
+--                self.object:set_sight( look.point, look_point, 0 )
+                local dir = self.a.way_random:point( self.last_walk_random_point + 1 ):sub( self.object:position() )
+                self.object:set_sight( look.direction, dir, 0 )
 
                 self.time_end = device():time_global() + 2000
             end
@@ -381,8 +383,8 @@ function action_commander:exec_look_after()
             end
 
             self.time_end = nil
-            self.pos     = nil
-            self.sub_act = nil
+            self.pos      = nil
+            self.sub_act  = nil
         end
     else
         self:stop()
@@ -423,7 +425,7 @@ function action_commander:exec_alarm_look_after()
                     xr_sounds.play_sound( self.object, 0, self.a.snd_theme, 1, snd_lost_box )
                 end
 
-                xr_gulag.setFractionState( "blockpost", 2 )
+                xr_gulag.setFractionState( self.a.fraction, 2 )
 
                 self.sub_act = true
             end
@@ -732,7 +734,9 @@ function action_commander:exec_drink_vodka()
                 
             else
                 self:stop()
-                self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
+--                self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
+                local dir = self.a.way:point( self.a.way:index( "mattress_dir" ) ):sub( self.object:position() )
+                self.object:set_sight( look.direction, dir, 0 )
 
                 if xr_state.change_state( self.object, 2 ) then 
                     printf( "[commander] : Ќј„»Ќјё —јƒ»“№—я" )
@@ -785,7 +789,10 @@ function action_commander:exec_sleep()
                 end
             else
                 self:stop()
-                self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ), 0 )
+--                self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ), 0 )
+                local dir = self.a.way:point( self.a.way:index( "mattress_dir" ) ):sub( self.object:position() )
+                self.object:set_sight( look.direction, dir, 0 )
+
                 self.object:set_item ( object.idle, nil )
                 
                 if not xr_state.change_state( self.object, 4 ) then 
@@ -798,7 +805,6 @@ function action_commander:exec_sleep()
         else
             -- если сдвинулс€ с позиции, то уйти
             if self.time_end then
-                --self.object:clear_animations()
                 self.decision = true
                 self.time_end = nil
             end
@@ -851,7 +857,6 @@ function action_commander:move_callback( obj, action_type, index )
 end
 
 function action_commander:zone_callback( zone, obj )
-    printf( "CALLBACK" )
     if not self.already_alarm and obj:id() == self.object:id() and self.act ~= look_after then
         if not self.obj_look_after then
             self.obj_look_after = level.object( self.a.obj_look_after_name )
