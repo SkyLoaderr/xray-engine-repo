@@ -52,13 +52,13 @@ private:
 	IC int 							TransZ			( float d ) { return TransA(d+Static_Shift.z); }
 	IC void							InvTrans		( Fvector2& v, int x, int z)	{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
 	IC void							InvTrans		( Fvector& v, int x, int z)		{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,0.f,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
-public:
-	typedef svector<CObject*,256>	NL_TYPE;
-	typedef CObject**				NL_IT;
+public:	
+	typedef svector<CObject*,256>		NL_TYPE;
+	typedef CObject**					NL_IT;
 
 public:
-	NL_TYPE							q_nearest;
-	clQueryCollision				q_result;
+	NL_TYPE								q_nearest;
+	clQueryCollision					q_result;
 
 	clQueryCollision					q_debug;
 	xr_vector<Fmatrix>					dbg_E;
@@ -69,7 +69,7 @@ public:
 									CObjectSpace		( );
 									~CObjectSpace		( );
 
-	void							Load				( IReader  * );
+	void							Load				( );
 
 	void							Object_Register		( CObject *O );
 	void							Object_Move			( CObject *O );

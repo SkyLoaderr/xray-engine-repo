@@ -180,10 +180,12 @@ IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 	rect.y2				= TransZ(bb.max.z);
 }
 //----------------------------------------------------------------------
-void CObjectSpace::Load	(IReader *F)
+void CObjectSpace::Load	()
 {
 	R_ASSERT			(F);
 	int					x_count, z_count;
+
+	IReader *F			= FS.r_open	("$level$", "level.cform");
 
 	hdrCFORM			H;
 	F->r				(&H,sizeof(hdrCFORM));
@@ -211,8 +213,10 @@ void CObjectSpace::Load	(IReader *F)
 	Dynamic.SetSize			( x_count, z_count );
 
 	// Sound
-	Sound->set_geometry_occ		( &Static );
-	Sound->set_handler			( _sound_event );
+	Sound->set_geometry_occ	( &Static );
+	Sound->set_handler		( _sound_event );
+
+	FS.w_close				(F);
 }
 //----------------------------------------------------------------------
 void CObjectSpace::dbgRender()
