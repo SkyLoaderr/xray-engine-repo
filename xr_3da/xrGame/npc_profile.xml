@@ -59,6 +59,10 @@
 		<team>Soldier_private</team>
 		<class>Soldier_private</class>
 	</character>
+	<character id="soldier_sniper">
+		<team>Soldier_sniper</team>
+		<class>Soldier_sniper</class>
+	</character>
 	<character id="soldier_general">
 		<team>Soldier_sniper</team>
 		<class>Soldier_sniper</class>
