@@ -50,7 +50,8 @@ end
 function trader_need_fox_info(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
-	   actor:has_info("escape_stalker_to_trader_done")
+	   actor:has_info("escape_artefact_done") and
+	   actor:dont_has_info("escape_stalker_done")
 	then
 		return true
 	end

@@ -7,67 +7,193 @@
     <!------------------------------------------------------------------->
 
 
-    <!-------------------------------- Grav ----------------------------->
+    <!-------------------------------- af-medusa ----------------------------->
 
-    <article id="zone_artifact_grav" name="Grav" group="Zone/Artifacts">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_artifact_grav</text>
+    <article id="zone_artifact_af-medusa" name="af-medusa" group="Zone/Artifacts">
+        <ltx>af_medusa</ltx>
+        <text>enc_zone_artifact_af-medusa</text>
     </article>
 
-    <!-------------------------------- Bubl ----------------------------->
+    <!-------------------------------- af-cristall-flower ----------------------------->
 
-    <article id="zone_artifact_bubl" name="Bubl" group="Zone/Artifacts">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_artifact_bubl</text>
+    <article id="zone_artifact_af-cristall-flower" name="af-cristall-flower" group="Zone/Artifacts">
+        <ltx>af_cristall_flower</ltx>
+        <text>enc_zone_artifact_af-cristall-flower</text>
     </article>
 
-    <!-------------------------------- Magnet ----------------------------->
+    <!-------------------------------- af-night-star ----------------------------->
 
-    <article id="zone_artifact_magnet" name="Magnet" group="Zone/Artifacts">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_artifact_magnet</text>
+    <article id="zone_artifact_af-night-star" name="af-night-star" group="Zone/Artifacts">
+        <ltx>af_night_star</ltx>
+        <text>enc_zone_artifact_af-night-star</text>
     </article>
 
-    <!-------------------------------- Cotton ----------------------------->
+    <!-------------------------------- af-vyvert ----------------------------->
 
-    <article id="zone_artifact_cotton" name="Cotton" group="Zone/Artifacts">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_artifact_cotton</text>
+    <article id="zone_artifact_af-vyvert" name="af-vyvert" group="Zone/Artifacts">
+        <ltx>af_vyvert</ltx>
+        <text>enc_zone_artifact_af-vyvert</text>
     </article>
 
-    <!-------------------------------- Jelly ----------------------------->
+    <!-------------------------------- af-gravi ----------------------------->
 
-    <article id="zone_artifact_jelly" name="Jelly" group="Zone/Artifacts">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_artifact_jelly</text>
+    <article id="zone_artifact_af-gravi" name="af-gravi" group="Zone/Artifacts">
+        <ltx>af_gravi</ltx>
+        <text>enc_zone_artifact_af-gravi</text>
     </article>
 
-    <!-------------------------------- Mercury ----------------------------->
+    <!-------------------------------- af-gold-fish ----------------------------->
 
-    <article id="zone_artifact_mercury" name="Mercury" group="Zone/Artifacts">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_artifact_mercury</text>
+    <article id="zone_artifact_af-gold-fish" name="af-gold-fish" group="Zone/Artifacts">
+        <ltx>af_gold_fish</ltx>
+        <text>enc_zone_artifact_af-gold-fish</text>
     </article>
 
-    <!-------------------------------- Drops ----------------------------->
+    <!-------------------------------- af-blood ----------------------------->
 
-    <article id="zone_artifact_drops" name="Drops" group="Zone/Artifacts">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_artifact_drops</text>
+    <article id="zone_artifact_af-blood" name="af-blood" group="Zone/Artifacts">
+        <ltx>af_blood</ltx>
+        <text>enc_zone_artifact_af-blood</text>
     </article>
 
-    <!-------------------------------- Empty ----------------------------->
+    <!-------------------------------- af-mincer-meat ----------------------------->
 
-    <article id="zone_artifact_empty" name="Empty" group="Zone/Artifacts">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_artifact_empty</text>
+    <article id="zone_artifact_af-mincer-meat" name="af-mincer-meat" group="Zone/Artifacts">
+        <ltx>af_mincer_meat</ltx>
+        <text>enc_zone_artifact_af-mincer-meat</text>
     </article>
 
-    <!-------------------------------- Needles ----------------------------->
+    <!-------------------------------- af-soul ----------------------------->
 
-    <article id="zone_artifact_needles" name="Needles" group="Zone/Artifacts">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_artifact_needles</text>
+    <article id="zone_artifact_af-soul" name="af-soul" group="Zone/Artifacts">
+        <ltx>af_soul</ltx>
+        <text>enc_zone_artifact_af-soul</text>
+    </article>
+
+    <!-------------------------------- af-drops ----------------------------->
+
+    <article id="zone_artifact_af-drops" name="af-drops" group="Zone/Artifacts">
+        <ltx>af_drops</ltx>
+        <text>enc_zone_artifact_af-drops</text>
+    </article>
+
+    <!-------------------------------- af-fireball ----------------------------->
+
+    <article id="zone_artifact_af-fireball" name="af-fireball" group="Zone/Artifacts">
+        <ltx>af_fireball</ltx>
+        <text>enc_zone_artifact_af-fireball</text>
+    </article>
+
+    <!-------------------------------- af-cristall ----------------------------->
+
+    <article id="zone_artifact_af-cristall" name="af-cristall" group="Zone/Artifacts">
+        <ltx>af_cristall</ltx>
+        <text>enc_zone_artifact_af-cristall</text>
+    </article>
+
+    <!-------------------------------- af-electra-sparkler ----------------------------->
+
+    <article id="zone_artifact_af-electra-sparkler" name="af-electra-sparkler" group="Zone/Artifacts">
+        <ltx>af_electra_sparkler</ltx>
+        <text>enc_zone_artifact_af-electra-sparkler</text>
+    </article>
+
+    <!-------------------------------- af-electra-flash ----------------------------->
+
+    <article id="zone_artifact_af-electra-flash" name="af-electra-flash" group="Zone/Artifacts">
+        <ltx>af_electra_flash</ltx>
+        <text>enc_zone_artifact_af-electra-flash</text>
+    </article>
+
+    <!-------------------------------- af-electra-moonlight ----------------------------->
+
+    <article id="zone_artifact_af-electra-moonlight" name="af-electra-moonlight" group="Zone/Artifacts">
+        <ltx>af_electra_moonlight</ltx>
+        <text>enc_zone_artifact_af-electra-moonlight</text>
+    </article>
+
+    <!-------------------------------- af-rusty-thorn ----------------------------->
+
+    <article id="zone_artifact_af-rusty-thorn" name="af-rusty-thorn" group="Zone/Artifacts">
+        <ltx>af_rusty_thorn</ltx>
+        <text>enc_zone_artifact_af-rusty-thorn</text>
+    </article>
+
+    <!-------------------------------- af-rusty-kristall ----------------------------->
+
+    <article id="zone_artifact_af-rusty-kristall" name="af-rusty-kristall" group="Zone/Artifacts">
+        <ltx>af_rusty_kristall</ltx>
+        <text>enc_zone_artifact_af-rusty-kristall</text>
+    </article>
+
+    <!-------------------------------- af-rusty-sea-urchin ----------------------------->
+
+    <article id="zone_artifact_af-rusty-sea-urchin" name="af-rusty-sea-urchin" group="Zone/Artifacts">
+        <ltx>af_rusty_sea-urchin</ltx>
+        <text>enc_zone_artifact_af-rusty-sea-urchin</text>
+    </article>
+
+    <!-------------------------------- af-fuzz-kolobok ----------------------------->
+
+    <article id="zone_artifact_af-fuzz-kolobok" name="af-fuzz-kolobok" group="Zone/Artifacts">
+        <ltx>af_fuzz_kolobok</ltx>
+        <text>enc_zone_artifact_af-fuzz-kolobok</text>
+    </article>
+
+    <!-------------------------------- af-ameba-slime ----------------------------->
+
+    <article id="zone_artifact_af-ameba-slime" name="af-ameba-slime" group="Zone/Artifacts">
+        <ltx>af_ameba_slime</ltx>
+        <text>enc_zone_artifact_af-ameba-slime</text>
+    </article>
+
+    <!-------------------------------- af-ameba-slug ----------------------------->
+
+    <article id="zone_artifact_af-ameba-slug" name="af-ameba-slug" group="Zone/Artifacts">
+        <ltx>af_ameba_slug</ltx>
+        <text>enc_zone_artifact_af-ameba-slug</text>
+    </article>
+
+    <!-------------------------------- af-ameba-mica ----------------------------->
+
+    <article id="zone_artifact_af-ameba-mica" name="af-ameba-mica" group="Zone/Artifacts">
+        <ltx>af_ameba_mica</ltx>
+        <text>enc_zone_artifact_af-ameba-mica</text>
+    </article>
+
+    <!-------------------------------- af-dummy-glassbeads ----------------------------->
+
+    <article id="zone_artifact_af-dummy-glassbeads" name="af-dummy-glassbeads" group="Zone/Artifacts">
+        <ltx>af_dummy_glassbeads</ltx>
+        <text>enc_zone_artifact_af-dummy-glassbeads</text>
+    </article>
+
+    <!-------------------------------- af-dummy-pellicle ----------------------------->
+
+    <article id="zone_artifact_af-dummy-pellicle" name="af-dummy-pellicle" group="Zone/Artifacts">
+        <ltx>af_dummy_pellicle</ltx>
+        <text>enc_zone_artifact_af-dummy-pellicle</text>
+    </article>
+
+    <!-------------------------------- af-dummy-battery ----------------------------->
+
+    <article id="zone_artifact_af-dummy-battery" name="af-dummy-battery" group="Zone/Artifacts">
+        <ltx>af_dummy_battery</ltx>
+        <text>enc_zone_artifact_af-dummy-battery</text>
+    </article>
+
+    <!-------------------------------- af-dummy-dummy ----------------------------->
+
+    <article id="zone_artifact_af-dummy-dummy" name="af-dummy-dummy" group="Zone/Artifacts">
+        <ltx>af_dummy_dummy</ltx>
+        <text>enc_zone_artifact_af-dummy-dummy</text>
+    </article>
+
+    <!-------------------------------- af-dummy-spring ----------------------------->
+
+    <article id="zone_artifact_af-dummy-spring" name="af-dummy-spring" group="Zone/Artifacts">
+        <ltx>af_dummy_spring</ltx>
+        <text>enc_zone_artifact_af-dummy-spring</text>
     </article>
 
 
@@ -85,6 +211,13 @@
         <text>enc_zone_anomalies_bald</text>
     </article>
 
+    <!-------------------------------- Gravi ----------------------------->
+
+    <article id="zone_anomalies_gravi" name="Gravi" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_gravi</text>
+    </article>
+
     <!-------------------------------- Meat ----------------------------->
 
     <article id="zone_anomalies_meat" name="Meat" group="Zone/Anomalies">
@@ -92,25 +225,25 @@
         <text>enc_zone_anomalies_meat</text>
     </article>
 
-    <!-------------------------------- Radiation ----------------------------->
+    <!-------------------------------- Zharka ----------------------------->
 
-    <article id="zone_anomalies_radiation" name="Radiation" group="Zone/Anomalies">
+    <article id="zone_anomalies_zharka" name="Zharka" group="Zone/Anomalies">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_anomalies_radiation</text>
+        <text>enc_zone_anomalies_zharka</text>
     </article>
 
-    <!-------------------------------- Fog ----------------------------->
+    <!-------------------------------- Electra ----------------------------->
 
-    <article id="zone_anomalies_fog" name="Fog" group="Zone/Anomalies">
+    <article id="zone_anomalies_electra" name="Electra" group="Zone/Anomalies">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_anomalies_fog</text>
+        <text>enc_zone_anomalies_electra</text>
     </article>
 
-    <!------------------------------ Anomjelly --------------------------->
+    <!------------------------------ Rusty --------------------------->
 
-    <article id="zone_anomalies_anomjelly" name="Anomjelly" group="Zone/Anomalies">
+    <article id="zone_anomalies_rusty" name="Rusty" group="Zone/Anomalies">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_anomalies_anomjelly</text>
+        <text>enc_zone_anomalies_rusty</text>
     </article>
 
     <!-------------------------------- Fuzz ----------------------------->
@@ -120,25 +253,32 @@
         <text>enc_zone_anomalies_fuzz</text>
     </article>
 
-    <!-------------------------------- Hair ----------------------------->
+    <!-------------------------------- Radioactive ----------------------------->
 
-    <article id="zone_anomalies_hair" name="Hair" group="Zone/Anomalies">
+    <article id="zone_anomalies_radioactive" name="Radioactive" group="Zone/Anomalies">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_anomalies_hair</text>
+        <text>enc_zone_anomalies_radioactive</text>
     </article>
 
-    <!-------------------------------- Heat ----------------------------->
+    <!-------------------------------- Ameba ----------------------------->
 
-    <article id="zone_anomalies_heat" name="Heat" group="Zone/Anomalies">
+    <article id="zone_anomalies_ameba" name="Ameba" group="Zone/Anomalies">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_anomalies_heat</text>
+        <text>enc_zone_anomalies_ameba</text>
     </article>
 
-    <!-------------------------------- Deadzone ----------------------------->
+    <!-------------------------------- Time ----------------------------->
 
-    <article id="zone_anomalies_deadzone" name="Deadzone" group="Zone/Anomalies">
+    <article id="zone_anomalies_time" name="Time" group="Zone/Anomalies">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_zone_anomalies_deadzone</text>
+        <text>enc_zone_anomalies_time</text>
+    </article>
+
+    <!-------------------------------- Lift ----------------------------->
+
+    <article id="zone_anomalies_lift" name="Lift" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_lift</text>
     </article>
 
 
