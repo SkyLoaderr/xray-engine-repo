@@ -84,7 +84,7 @@ void CBuild::SaveTREE	(IWriter &fs)
 		if		(o)		remap.push_back(rid);
 	}
 	std::stable_sort	(remap.begin(),remap.end(),remap_order);
-	clMsg				("remap-size: %d",remap.size());
+	clMsg				("remap-size: %d / %d",remap.size(),g_tree.size());
 	for (u32 sid=0; sid<remap.size(); sid++)	{
 		u32				id	= remap[sid];
 		//clMsg			("%3d: subdiv: %d",sid,id);
