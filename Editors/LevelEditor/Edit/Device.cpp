@@ -68,13 +68,7 @@ void CRenderDevice::Initialize()
 	Surface_Init();
 
 	// game materials
-	AnsiString fn_gm;
-    FS.update_path(fn_gm,_game_data_,"gamemtl.xr");
-    if (FS.exist(fn_gm.c_str())){
-    	GMLib.Load(fn_gm.c_str());
-    }else{
-    	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn_gm.c_str());
-    }
+    GMLib.Load	();
 
 	// compiler shader
 	AnsiString fn;

@@ -1508,7 +1508,7 @@ void TProperties::ExecTextEditor(PropItem* prop)
             prop->OnBeforeEdit	(&edit_val);
             if (TfrmText::RunEditor(edit_val,AnsiString(prop->Item()->Text).c_str(),false)){
                 prop->OnAfterEdit	(&edit_val);
-                if (prop->ApplyValue(&edit_val))
+                if (prop->ApplyValue(edit_val.c_str()))
                     Modified();
                 prop->Item()->ColumnText->Strings[0] = prop->GetText();
             }
