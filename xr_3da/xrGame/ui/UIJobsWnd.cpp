@@ -119,8 +119,8 @@ void CUIJobsWnd::ReloadJobs()
 
 	if (!pActor) return;
 
-	for(KNOWN_INFO_VECTOR::const_iterator it = pActor->KnownInfo().begin();
-		pActor->KnownInfo().end() != it; ++it)
+	for(KNOWN_INFO_VECTOR::const_iterator it = pActor->known_info_registry.objects().begin();
+		pActor->known_info_registry.objects().end() != it; ++it)
 	{
 		//подгрузить кусочек информации с которым мы работаем
 		CInfoPortion info_portion;

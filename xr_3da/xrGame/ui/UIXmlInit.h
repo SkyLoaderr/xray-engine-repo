@@ -70,8 +70,7 @@ public:
 	bool InitAnimatedStatic		(CUIXml &xml_doc, const char *path,
 								int index, CUIAnimatedStatic *pWnd);
 
-	bool InitTexture			(CUIXml &xml_doc, const char *path,
-								int index, CUIStatic *pWnd);
+	bool InitTexture			(CUIXml &xml_doc, const char *path,	int index, CUIStatic *pWnd);
 
 	// јвтоматическа€ инициализаци€ статических элеменитов
 	// „тобы вернуть указатели на созданые статики (нам бывает необходимо пр€тать их, например)

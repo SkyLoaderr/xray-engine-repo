@@ -16,6 +16,8 @@
 #include "UIListWnd.h"
 #include "UITreeViewItem.h"
 
+#include "../encyclopedia_article_defs.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 class CUIEncyclopediaWnd: public CUIDialogWnd

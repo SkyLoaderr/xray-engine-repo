@@ -101,7 +101,21 @@ void CUIEncyclopediaWnd::Init()
 
 void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 {
-	static ref_str encyclopediaDB[] =
+
+/*	
+	CEncyclopediaArticle article;
+	article.Load(article_index);
+
+	article.name;
+	article.texture;
+	article.ltx
+	article.group
+	article.text
+
+	*/
+
+
+/*	static ref_str encyclopediaDB[] =
 	{
 		"encyclopedia_infos.xml"
 	};
@@ -251,6 +265,8 @@ void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 	pTVItem->SetValue(m_ArticlesDB.size() - 1);
 	pTVItemChilds->AddItem(pTVItem);
 //	}
+
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////
