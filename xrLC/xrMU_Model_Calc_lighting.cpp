@@ -83,16 +83,17 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 		vN.normalize			();
 
 		// multi-sample
-		const int n_samples		= 9;
+		const int n_samples		= 16;
 		for (u32 sample=0; sample<n_samples; sample++)
 		{
 			float					a	= 0.2f * float(sample) / float(n_samples);
-			Fvector					P;
-			P.mad					(vP,vN,a);
+			Fvector					P,N;
+			N.random_dir			(vN,deg2rad(45.f));
+			P.mad					(vP,N,a);
 
 			Fcolor					C;
 			C.set					(0,0,0,0);
-			LightPoint				(&DB, C, P, vN, Lights.begin(), Lights.end(), 0);
+			LightPoint				(&DB, C, P, N, Lights.begin(), Lights.end(), 0);
 			vC.r					+=	C.r;
 			vC.g					+=	C.g;
 			vC.b					+=	C.b;
