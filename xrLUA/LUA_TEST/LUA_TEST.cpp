@@ -393,62 +393,82 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	if (!luaVM)
 		lua_error	(luaVM);
 
-//	luaopen_base	(luaVM);
-	print_stack		(luaVM);
+////	luaopen_base	(luaVM);
+//	print_stack		(luaVM);
+//	luaopen_string	(luaVM);	// S = String
+//	print_stack		(luaVM);
+//	luaopen_math	(luaVM);	// S = Math, String
+//
+////	print_stack		(luaVM);
+////	lua_pop			(luaVM,2);
+//	print_stack		(luaVM);
+//	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
+//		lua_error	(luaVM);	// S = Extension, Math, String
+//	print_stack		(luaVM);
+//
+////	luaopen_base	(luaVM);
+////	luaopen_string	(luaVM);
+////	luaopen_math	(luaVM);
+//
+//	lua_newtable	(luaVM);	// S = NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//	lua_pushstring	(luaVM,"core");	// S = "core", NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//	lua_pushvalue	(luaVM,-2);	// S = NewTable, "core", NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//	lua_settable	(luaVM,LUA_GLOBALSINDEX);	// S = NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//
+//	lua_setfenv		(luaVM,-2);	// S = NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//
+//	lua_call		(luaVM,0,0);
+//	print_stack		(luaVM);
+//
+//	if (luaL_loadfile(luaVM, "x:\\test1.lua"))
+//		lua_error	(luaVM);	// S = Extension, Math, String
+//
+//	print_stack		(luaVM);
+////	luaopen_base	(luaVM);
+////	luaopen_string	(luaVM);
+////	luaopen_math	(luaVM);
+//
+//	lua_newtable	(luaVM);	// S = NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//	lua_pushstring	(luaVM,"test1");	// S = "core", NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//	lua_pushvalue	(luaVM,-2);	// S = NewTable, "core", NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//	lua_settable	(luaVM,LUA_GLOBALSINDEX);	// S = NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//
+//	lua_setfenv		(luaVM,-2);	// S = NewTable, Extension, Math, String
+//	print_stack		(luaVM);
+//
+//	lua_call		(luaVM,0,0);
+//	print_stack		(luaVM);
+//
+////	lua_dofile		(luaVM,"x:\\test1.lua");
+
+	luaopen_base	(luaVM);
 	luaopen_string	(luaVM);	// S = String
-	print_stack		(luaVM);
 	luaopen_math	(luaVM);	// S = Math, String
 
-//	print_stack		(luaVM);
-//	lua_pop			(luaVM,2);
-	print_stack		(luaVM);
+	open			(luaVM);
+
 	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
 		lua_error	(luaVM);	// S = Extension, Math, String
-	print_stack		(luaVM);
 
-//	luaopen_base	(luaVM);
-//	luaopen_string	(luaVM);
-//	luaopen_math	(luaVM);
-
-	lua_newtable	(luaVM);	// S = NewTable, Extension, Math, String
-	print_stack		(luaVM);
-	lua_pushstring	(luaVM,"core");	// S = "core", NewTable, Extension, Math, String
-	print_stack		(luaVM);
-	lua_pushvalue	(luaVM,-2);	// S = NewTable, "core", NewTable, Extension, Math, String
-	print_stack		(luaVM);
-	lua_settable	(luaVM,LUA_GLOBALSINDEX);	// S = NewTable, Extension, Math, String
-	print_stack		(luaVM);
-
-	lua_setfenv		(luaVM,-2);	// S = NewTable, Extension, Math, String
-	print_stack		(luaVM);
-
+	scope::init		(luaVM);
+	lua_newtable	(luaVM);
+	detail::getref	(luaVM, scope_stack::top(luaVM));
+	lua_pushstring	(luaVM, "core");
+	lua_pushvalue	(luaVM, -3);
+	lua_settable	(luaVM, -3);
 	lua_call		(luaVM,0,0);
-	print_stack		(luaVM);
+	lua_pop			(luaVM, 1);
 
-	if (luaL_loadfile(luaVM, "x:\\test1.lua"))
-		lua_error	(luaVM);	// S = Extension, Math, String
-
-	print_stack		(luaVM);
-//	luaopen_base	(luaVM);
-//	luaopen_string	(luaVM);
-//	luaopen_math	(luaVM);
-
-	lua_newtable	(luaVM);	// S = NewTable, Extension, Math, String
-	print_stack		(luaVM);
-	lua_pushstring	(luaVM,"test1");	// S = "core", NewTable, Extension, Math, String
-	print_stack		(luaVM);
-	lua_pushvalue	(luaVM,-2);	// S = NewTable, "core", NewTable, Extension, Math, String
-	print_stack		(luaVM);
-	lua_settable	(luaVM,LUA_GLOBALSINDEX);	// S = NewTable, Extension, Math, String
-	print_stack		(luaVM);
-
-	lua_setfenv		(luaVM,-2);	// S = NewTable, Extension, Math, String
-	print_stack		(luaVM);
-
-	lua_call		(luaVM,0,0);
-	print_stack		(luaVM);
-
-//	lua_dofile		(luaVM,"x:\\test1.lua");
+	lua_dofile		(luaVM,"x:\\test1.lua");
 
 	lua_close		(luaVM);
 }
