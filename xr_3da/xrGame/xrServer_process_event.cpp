@@ -131,7 +131,9 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Parse message
 			u16					id_dest		=	destination;
 			xrServerEntity*		e_dest		=	ID_to_entity	(id_dest);	// кто должен быть уничтожен
+			R_ASSERT			(e_dest			);
 			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
+			R_ASSERT			(c_dest			);
 			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
 			R_ASSERT			(c_dest == c_from);							// assure client ownership of event
 
