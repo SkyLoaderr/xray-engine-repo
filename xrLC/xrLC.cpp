@@ -74,22 +74,22 @@ void Startup(LPSTR     lpCmdLine)
 
 	string32	ID			= BUILD_PROJECT_MARK;
 	string32	id;
-	IReader*	F			= xr_new<CFileStream> (prjName.c_str());
+	IReader*	F			= xr_new<CFileReader> (prjName.c_str());
 	F->r		(&id,8);
 	if (0==strcmp(id,ID))	{
 		xr_delete		(F);
-		F				= xr_new<CCompressedStream> (prjName.c_str(),ID);
+		F				= xr_new<CCompressedReader> (prjName.c_str(),ID);
 	}
 	IReader&				FS	= *F;
 
 	// Version
 	DWORD version;
-	FS.ReadChunk			(EB_Version,&version);
+	FS.r_chunk			(EB_Version,&version);
 	R_ASSERT(XRCL_CURRENT_VERSION==version);
 
 	// Header
 	b_params				Params;
-	FS.ReadChunk			(EB_Parameters,&Params);
+	FS.r_chunk			(EB_Parameters,&Params);
 
 	// Show options if needed
 	if (bModifyOptions)		

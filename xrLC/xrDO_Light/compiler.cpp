@@ -138,7 +138,7 @@ void xrLoad(LPCSTR name)
 		Msg("* Level CFORM: %dK",RCAST_Model.memory()/1024);
 
 		g_rc_faces.resize	(H.facecount);
-		R_ASSERT(FS.FindChunk(1));
+		R_ASSERT(FS.find_chunk(1));
 		FS.r				(g_rc_faces.begin(),g_rc_faces.size()*sizeof(b_rc_face));
 
 		LevelBB.set			(H.aabb);
@@ -148,10 +148,10 @@ void xrLoad(LPCSTR name)
 	{
 		strconcat			(N,name,"level.details");
 		dtFS				= xr_new<CVirtualFileStreamRW> (N);
-		dtFS->ReadChunk		(0,&dtH);
+		dtFS->r_chunk		(0,&dtH);
 		R_ASSERT			(dtH.version==DETAIL_VERSION);
 
-		dtFS->FindChunk		(2);
+		dtFS->find_chunk		(2);
 		dtS					= (DetailSlot*)dtFS->Pointer();
 	}
 	
@@ -171,11 +171,11 @@ void xrLoad(LPCSTR name)
 
 		// Version
 		DWORD version;
-		FS.ReadChunk			(EB_Version,&version);
+		FS.r_chunk			(EB_Version,&version);
 		R_ASSERT(XRCL_CURRENT_VERSION==version);
 
 		// Header
-		FS.ReadChunk			(EB_Parameters,&g_params);
+		FS.r_chunk			(EB_Parameters,&g_params);
 
 
 		// Load lights
@@ -241,7 +241,7 @@ void xrLoad(LPCSTR name)
 				CCompressedStream THM	(th_name,THM_SIGN);
 
 				// analyze thumbnail information
-				R_ASSERT		(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+				R_ASSERT		(THM.r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
 				BOOL			bLOD=FALSE;
 				if (N[0]=='l' && N[1]=='o' && N[2]=='d' && N[3]=='\\') bLOD = TRUE;
 
