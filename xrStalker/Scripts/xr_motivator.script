@@ -253,7 +253,8 @@ xr_motivator.storage[self.object:id()].patrol = {
     patrol_path = nil,
     escape_path = nil,
     raid_enabled = false,
-    raid_path = nil
+    raid_path = nil,
+    raid_process = false
   }
       --if char_ini:section_exist ("patrol") == true then
 --         if char_ini:line_exist("patrol", "enabled") == true then
