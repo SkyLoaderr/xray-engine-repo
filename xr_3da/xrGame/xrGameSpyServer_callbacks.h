@@ -1,5 +1,6 @@
 #include "GameSpy/QR2/qr2.h"
 #include "GameSpy/CDKey/gcdkeys.h"
+#include "GameSpy/available.h"
 
 // Called when a server key needs to be reported
 void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata);

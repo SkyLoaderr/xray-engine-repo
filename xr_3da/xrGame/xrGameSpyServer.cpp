@@ -21,17 +21,29 @@ xrGameSpyServer::xrGameSpyServer()
 
 xrGameSpyServer::~xrGameSpyServer()
 {
-	QR2_ShutDown();
 	CDKey_ShutDown();
+	QR2_ShutDown();
 }
 
+//----------- xrGameSpyClientData -----------------------
+IClient*		xrGameSpyServer::client_Create		()
+{
+	return xr_new<xrGameSpyClientData> ();
+}
+xrGameSpyClientData::xrGameSpyClientData	():xrClientData()
+{
+	m_pChallengeString[0] = 0;
+}
+xrGameSpyClientData::~xrGameSpyClientData()
+{
+	m_pChallengeString[0] = 0;
+}
+//-------------------------------------------------------
 BOOL xrGameSpyServer::Connect(ref_str &session_name)
 {
 	BOOL res = inherited::Connect(session_name);
 	if (!res) return res;
 
-
-	
 	if ( 0 == *(game->get_option_s		(*session_name,"hname",NULL)))
 	{
 		string1024	CompName;
@@ -55,7 +67,13 @@ BOOL xrGameSpyServer::Connect(ref_str &session_name)
 	//--------------------------------------------//
 	if (game->Type() != GAME_SINGLE) 
 	{
+		//----- Check for Backend Services ---
+		CheckAvailableServices();
+
+		//------ Init of QR2 SDK -------------
 		QR2_Init();
+
+		//------ Init of CDKey SDK -----------
 		CDKey_Init();
 	};
 
@@ -86,8 +104,11 @@ int				xrGameSpyServer::GetPlayersCount()
 
 void			xrGameSpyServer::OnCL_Connected		(IClient* _CL)
 {
-	csPlayers.Enter					();
-	csPlayers.Leave					();
-
 	inherited::OnCL_Connected(_CL);
+
+	if (!m_bCDKey_Initialized) return;
+
+	csPlayers.Enter					();
+	SendChallengeString_2_Client(_CL);	
+	csPlayers.Leave					();	
 };

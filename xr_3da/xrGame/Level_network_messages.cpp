@@ -149,6 +149,11 @@ void CLevel::ClientReceive()
 			{
 				ClientSave			();
 			}break;
+		case M_GAMESPY_CHALLENGE:
+			{
+				int x=0;
+				x=x;
+			}break;
 		}
 
 		net_msg_Release();

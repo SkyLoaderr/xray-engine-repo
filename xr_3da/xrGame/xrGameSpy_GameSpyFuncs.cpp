@@ -2,6 +2,25 @@
 #include "xrGameSpyServer.h"
 #include "xrGameSpyServer_callbacks.h"
 
+#include "xrMessages.h"
+#include "level.h"
+
+//------------------------------ Available --------------------------
+void			xrGameSpyServer::CheckAvailableServices		()
+{
+	GSIACResult result;
+
+	// check that the game's backend is available
+	GSIStartAvailableCheck(GAMESPY_GAMENAME);
+	while((result = GSIAvailableCheckThink()) == GSIACWaiting)
+		msleep(5);
+	if(result != GSIACAvailable)
+	{
+		Msg("The backend is not available\n");
+		return;
+	}
+};
+
 /////////////////////// QR2 ///////////////////////////////////////
 void			xrGameSpyServer::QR2_Init			()
 {	
@@ -13,6 +32,7 @@ void			xrGameSpyServer::QR2_Init			()
 		callback_keylist, callback_count, callback_adderror, this) != e_qrnoerror)
 	{
 		//		_tprintf(_T("Error starting query sockets\n"));
+		Msg("GameSpy::QR2 : Failes to Initialize!");
 		return;
 	}
 
@@ -47,9 +67,47 @@ void			xrGameSpyServer::QR2_ShutDown()
 
 void			xrGameSpyServer::CDKey_Init			()
 {
-
+	int res = gcd_init_qr2(NULL, GAMESPY_PRODUCTID);
+	if (res == -1)
+	{
+		Msg("GameSpy::CDKey : Failes to Initialize!");
+		return;
+	};
+	Msg("GameSpy::CDKey : Initialized");
+	m_bCDKey_Initialized = TRUE;
 };
 
 void			xrGameSpyServer::CDKey_ShutDown()
 {
+	gcd_shutdown();
+	m_bCDKey_Initialized = FALSE;
 };
+
+//generate a rand nchar challenge
+void	xrGameSpyServer::CreateRandomChallenge(char* challenge, int nchars)
+{
+	if (nchars > GAMESPY_MAXCHALLANGESIZE) nchars = GAMESPY_MAXCHALLANGESIZE;
+	challenge[nchars] = 0;
+	while (nchars--)
+	{
+		challenge[nchars] = char('a' + ::Random.randI(26));
+	};
+}
+void			xrGameSpyServer::SendChallengeString_2_Client (IClient* C)
+{
+	if (!C) return;
+	xrGameSpyClientData* pClient = (xrGameSpyClientData*) C;
+
+//	if (pClient == GetServer_client()) return;
+
+    CreateRandomChallenge(pClient->m_pChallengeString, 8);
+	//--------- Send Respond ---------------------------------------------
+	NET_Packet P;
+//	u_EventGen			(P,M_GAMESPY_CHALLENGE,8);
+//	P.w_stringZ(pClient->m_pChallengeString);
+//	SendTo(pClient->ID, P);
+
+	P.w_begin	(M_GAMESPY_CHALLENGE);
+	P.w_stringZ(pClient->m_pChallengeString);
+	SendTo(pClient->ID, P);
+}

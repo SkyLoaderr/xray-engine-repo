@@ -16,7 +16,7 @@ devsupport@gamespy.com
  information
 
 ******/
-
+#define QR2CDKEY_INTEGRATION
 
 #ifndef _GOACDKEYS_H_
 #define _GOACDKEYS_H_

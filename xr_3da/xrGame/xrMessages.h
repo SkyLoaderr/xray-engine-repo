@@ -35,6 +35,11 @@ enum {
 	M_SWITCH_DISTANCE,
 	M_GAMEMESSAGE,					// Game Message
 	M_EVENT_PACK,					// Pack of M_EVENT
+
+	//-----------------------------------------------------
+	M_GAMESPY_CHALLENGE,
+	M_GAMESPY_CHALLENGE_RESPOND,
+	//-----------------------------------------------------
 	MSG_FORCEDWORD				= u32(-1)
 };
 
