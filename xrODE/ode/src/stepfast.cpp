@@ -49,7 +49,7 @@
 #define RANDOM_JOINT_ORDER
 //#define FAST_FACTOR	//use a factorization approximation to the LCP solver (fast, theoretically less accurate)
 #define SLOW_LCP      //use the old LCP solver
-//#define NO_ISLANDS    //does not perform island creation code (3~4% of simulation time), body disabling doesn't work
+#define NO_ISLANDS    //does not perform island creation code (3~4% of simulation time), body disabling doesn't work
 //#define TIMING
 
 
@@ -870,9 +870,14 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 
 	int nb = 0;
 	for (body = world->firstbody; body; body = (dxBody *) body->next)
+	{
+		body->flags &= ~dxBodyDisabled;
 		bodies[nb++] = body;
 
-	dInternalStepIslandFast (world, bodies, nb, joints, nj, stepsize, maxiterations);
+	}
+
+	if (nj>3)	dInternalStepIslandFast (world, bodies, nb, joints, nj, stepsize, maxiterations);
+	else			dInternalStepIsland		(world, bodies, nb, joints, nj, stepsize);		
 #	ifdef TIMING
 	dTimerEnd ();
 	dTimerReport (stdout, 1);

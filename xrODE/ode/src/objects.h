@@ -116,9 +116,9 @@ struct dxWorld : public dBase {
   static dReal global_erp;	// global error reduction parameter
   static dReal global_cfm;	// global costraint force mixing parameter
   static dxAutoDisable adis;// auto-disable parameters
-  int adis_flag;			// auto-disable flag for new bodies
-  dxQuickStepParameters qs;
-  dxContactParameters contactp;
+  static int adis_flag;			// auto-disable flag for new bodies
+  static dxQuickStepParameters qs;
+  static dxContactParameters contactp;
 };
 
 
