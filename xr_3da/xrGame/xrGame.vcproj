@@ -6802,16 +6802,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="cs"
-							Filter="">
-							<File
-								RelativePath="game_sv_cs.cpp">
-							</File>
-							<File
-								RelativePath="game_sv_cs.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="deathmatch"
 							Filter="">
 							<File
@@ -8108,28 +8098,6 @@
 					</File>
 					<File
 						RelativePath="UIGameDM.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="CS"
-					Filter="">
-					<File
-						RelativePath="UICSFragList.cpp">
-					</File>
-					<File
-						RelativePath="UICSFragList.h">
-					</File>
-					<File
-						RelativePath="UICSPlayerList.cpp">
-					</File>
-					<File
-						RelativePath="UICSPlayerList.h">
-					</File>
-					<File
-						RelativePath="UIGameCS.cpp">
-					</File>
-					<File
-						RelativePath="UIGameCS.h">
 					</File>
 				</Filter>
 				<Filter

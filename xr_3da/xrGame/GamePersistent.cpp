@@ -106,3 +106,7 @@ void CGamePersistent::OnEvent(EVENT E, u64 P1, u64 P2)
 	xr_free				(demo);
 	uTime2Change		= Device.TimerAsync() + u32(P2)*1000;
 }
+
+void CGamePersistent::Statistics	(CGameFont* F)
+{
+}
