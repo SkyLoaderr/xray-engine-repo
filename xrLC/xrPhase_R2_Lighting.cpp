@@ -23,7 +23,7 @@ void CBuild::xrPhase_R2_Lights	()
 	xrHemisphereBuild			(2,FALSE,1.f,1.f,hemi_callback,&RL);
 }
 
-#define NUM_THREADS	6
+#define NUM_THREADS	4
 class CR2Light : public CThread
 {
 public:
@@ -43,7 +43,6 @@ public:
 		vector<R_Light>	Lights = pBuild->L_hemi;
 		if (Lights.empty())		return;
 
-		clMsg			("thread[%d] started for [%d]",thID,vertEnd-vertStart);
 		for (DWORD I = vertStart; I<vertEnd; I++)
 		{
 			Vertex* V		= g_vertices[I];
@@ -56,7 +55,6 @@ public:
 			V->Color.a		= 1.f;
 			thProgress		= float(I - vertStart) / float(vertEnd-vertStart);
 		}
-		clMsg			("thread[%d] completed",thID,vertEnd-vertStart);
 	}
 };
 
