@@ -1,4 +1,4 @@
--- define class const evaluator
+  -- define class const evaluator
 class "const_evaluator"		(property_evaluator)
 
 function const_evaluator:__init(value) super()
