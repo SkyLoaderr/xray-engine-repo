@@ -36,6 +36,3 @@ const u32					TEX_material_LdotH	= 256;	// specular,	Y
 const u32					TEX_ds2_fade_size	= 256;
 const u32					TEX_float2rgb		= 256;
 const u32					TEX_NCM				= 512;
-
-#define						USE_PARALLAX
-#define						FP16_FILTER_AND_BLEND	1

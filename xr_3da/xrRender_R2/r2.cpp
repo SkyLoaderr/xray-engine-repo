@@ -175,15 +175,11 @@ void					CRender::rmNormal			()
 //////////////////////////////////////////////////////////////////////
 CRender::CRender()
 {
+	b_mrt				= TRUE;
 	b_nv3x				= (strstr(Core.Params,"-nv3x"))?TRUE:FALSE;
-	b_decompress_2pass	= (strstr(Core.Params,"-nv2pdec"))?TRUE:FALSE;
 	b_HW_smap			= (strstr(Core.Params,"-hw_smap"))?TRUE:FALSE;
 	b_noshadows			= (strstr(Core.Params,"-noshadows"))?TRUE:FALSE;
-
-	//  gk
-#if FP16_FILTER_AND_BLEND
-	b_fp16 = (strstr(Core.Params,"-fp16"))?TRUE:FALSE;  // this should be done using a Caps check...
-#endif
+	b_fp16				= (strstr(Core.Params,"-fp16"))?TRUE:FALSE;
 }
 
 CRender::~CRender()
@@ -203,10 +199,35 @@ HRESULT	CRender::CompileShader			(
 		void*							_ppErrorMsgs,
 		void*							_ppConstantTable)
 {
-        CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
-        LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
-        LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
-        LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
-        LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
-		return D3DXCompileShader		(pSrcData,SrcDataLen,pDefines,pInclude,pFunctionName,pTarget,9,ppShader,ppErrorMsgs,ppConstantTable);
+	D3DXMACRO						defines			[128];
+	int								def_it			= 0;
+    CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
+	if (pDefines)	{
+		// transfer existing defines
+		for (;;def_it++)	{
+			if (0==pDefines[def_it].Name)	break;
+			defines[def_it]			= pDefines[def_it];
+		}
+	}
+	// options
+	if (b_fp16)	{
+		defines[def_it].Name		=	"FP16_DEFFER";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	if (b_HW_smap) {
+		defines[def_it].Name		=	"USE_HWSMAP";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	// finish
+	defines[def_it].Name			=	0;
+	defines[def_it].Definition		=	0;
+	def_it							++;
+
+	LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
+    LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
+    LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
+    LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
+	return D3DXCompileShader		(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,9,ppShader,ppErrorMsgs,ppConstantTable);
 }
