@@ -67,24 +67,23 @@ enum {
 	sm_2D				= (1ul<<1ul),	//!< 2D mode
 	sm_forcedword		= u32(-1),
 };
-/*! \class ref_sound
-	\brief Sound source + control
-	
-	The main class respresenting source/emitter interface
-	This class infact just hides internals and redirect calls to 
-	specific sub-systems
-*/
-
 
 class CSoundUserDataVisitor;
-class CSoundUserData : public xr_resource
-{
+
+class CSoundUserData : public xr_resource{
 public:
-	virtual							~CSoundUserData()				{}
-	virtual void					accept(CSoundUserDataVisitor*)	= 0;
+	virtual							~CSoundUserData(){}
+	virtual void					accept(CSoundUserDataVisitor*)=0;
 };
 typedef resptr_core<CSoundUserData,resptr_base<CSoundUserData> >	CSoundUserDataPtr;
 
+/*! \class ref_sound
+\brief Sound source + control
+
+The main class respresenting source/emitter interface
+This class infact just hides internals and redirect calls to 
+specific sub-systems
+*/
 struct	ref_sound
 {
 	CSound_source*					handle;			//!< Pointer to wave-source interface
