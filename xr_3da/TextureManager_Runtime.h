@@ -40,6 +40,7 @@ IC void CShaderManager::set_Matrices	(SMatrixList* M)
 				CMatrix*	mat = (*M)[it];
 				if (mat && cache.matrices[it]!=mat)	{
 					cache.matrices[it]=mat;
+					mat->Calculate	();
 					CHK_DX(HW.pDevice->SetTransform(D3DTRANSFORMSTATETYPE(D3DTS_TEXTURE0+it),mat->xform.d3d()));
 				}
 			}
@@ -55,10 +56,16 @@ IC void CShaderManager::set_Constants	(SConstantList* C, BOOL bPS)
 			if (bPS)
 			{
 				svector<Fcolor,8>	data;
-				for (DWORD it=0; it<C->size(); it++)	data.push_back((*C)[it]->const_float);
+				for (DWORD it=0; it<C->size(); it++)	{
+					CConstant* c	= (*C)[it];
+					c->Calculate	();
+					data.push_back	(c->const_float);
+				}
 				CHK_DX(HW.pDevice->SetPixelShaderConstant(0,data.begin(),data.size()));
 			} else {
-				CHK_DX(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,(*C)[0]->const_dword))
+				CConstant* c	= (*C)[0];
+				c->Calculate	();
+				CHK_DX(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,c->const_dword))
 			}
 		}
 	}
