@@ -30,7 +30,7 @@ CAI_Soldier::CAI_Soldier()
 	m_fTimorousness = ::Random.randF(0,1);
 	m_bFiring = false;
 	m_bLessCoverLook = false;
-	q_look.o_look_speed = _FB_look_speed;
+	q_look.o_look_speed = r_spine_speed = r_torso_speed = PI_DIV_2;
 	m_tpCurrentGlobalAnimation = 
 	m_tpCurrentTorsoAnimation = 
 	m_tpCurrentLegsAnimation = 0;

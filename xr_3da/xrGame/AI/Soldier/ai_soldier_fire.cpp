@@ -234,3 +234,21 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #endif
 }
+
+bool CAI_Soldier::bfCheckForDanger()
+{
+	DWORD dwCurTime = Level().timeServer();
+
+	if (dwCurTime - dwHitTime < HIT_REACTION_TIME)
+		return(true);
+	
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	
+	if (dwCurTime - Group.m_dwLastHitTime < HIT_REACTION_TIME)
+		return(true);
+
+	SelectSound(m_iSoundIndex);
+	if (m_iSoundIndex > -1)
+		return(true);
+}
+

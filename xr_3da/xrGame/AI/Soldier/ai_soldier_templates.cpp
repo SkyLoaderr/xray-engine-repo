@@ -239,6 +239,16 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 					Group.m_dwFiring++;
 }
 
+void CAI_Soldier::vfStopFire()
+{
+	if (m_bFiring) {
+		q_action.setup(AI::AIC_Action::FireEnd);
+		m_bFiring = false;
+		m_dwNoFireTime = Level().timeServer();
+	}
+	m_bFiring = false;
+}
+
 void CAI_Soldier::vfSetMovementType(char cMovementType,float fMultplier)
 {
 	/**/
