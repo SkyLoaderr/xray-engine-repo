@@ -218,6 +218,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lapi.h">
@@ -236,6 +242,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -258,6 +270,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\ldebug.h">
@@ -276,6 +294,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -298,6 +322,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lfunc.c">
@@ -313,6 +343,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -335,6 +371,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lgc.h">
@@ -353,6 +395,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -378,6 +426,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lmem.h">
@@ -396,6 +450,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -418,6 +478,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lopcodes.h">
@@ -436,6 +502,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -458,6 +530,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lstate.h">
@@ -476,6 +554,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -498,6 +582,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\ltable.h">
@@ -516,6 +606,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -555,6 +651,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lundump.h">
@@ -575,6 +677,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lvm.h">
@@ -593,6 +701,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
