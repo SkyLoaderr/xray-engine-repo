@@ -52,26 +52,26 @@ void			INetQueue::Release	()
 }
 
 //
-const DWORD syncQueueSize	= 256;
+const u32 syncQueueSize	= 256;
 const int syncSamples		= 8;
 class ENGINE_API syncQueue
 {
-	DWORD				table[syncQueueSize];
-	DWORD				write;
-	DWORD				count;
+	u32				table[syncQueueSize];
+	u32				write;
+	u32				count;
 public:
 	syncQueue()			{ clear(); }
 
-	IC void			push	(DWORD value)
+	IC void			push	(u32 value)
 	{
 		table[write++]	= value;
 		if (write == syncQueueSize)	write = 0;
 
 		if (count <= syncQueueSize)	count++;
 	}
-	IC DWORD*		begin	()	{ return table;			}
-	IC DWORD*		end		()	{ return table+count;	}
-	IC DWORD		size	()	{ return count;			}
+	IC u32*		begin	()	{ return table;			}
+	IC u32*		end		()	{ return table+count;	}
+	IC u32		size	()	{ return count;			}
 	IC void         clear	()	{ write=0; count=0;		}
 } net_DeltaArray;
 
@@ -85,7 +85,7 @@ extern int			psNET_Port;
 static const GUID NET_GUID = 
 { 0x218fa8b, 0x515b, 0x4bf2, { 0x9a, 0x5f, 0x2f, 0x7, 0x9d, 0x17, 0x59, 0xf3 } };
 
-static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID pMessage)
+static HRESULT WINAPI Handler (PVOID pvUserContext, u32 dwMessageType, PVOID pMessage)
 {
 	IPureClient* C = (IPureClient*)pvUserContext;
 	return C->net_Handler(dwMessageType,pMessage);
@@ -119,7 +119,7 @@ BOOL IPureClient::Connect(LPCSTR server_name)
 
     // Create our IDirectPlay8Address Device Address, --- Set the SP for our Device Address
 	net_Address_device	= NULL;
-	DWORD c_port		= psNET_Port+1;
+	u32 c_port		= psNET_Port+1;
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_device )); 
     R_CHK(net_Address_device->SetSP(&CLSID_DP8SP_TCPIP ));
 	R_CHK(net_Address_device->AddComponent	(DPNA_KEY_PORT, &c_port, sizeof(c_port), DPNA_DATATYPE_DWORD ));
@@ -175,7 +175,7 @@ BOOL IPureClient::Connect(LPCSTR server_name)
 		char					desc[256];
 		ZeroMemory				(desc,sizeof(desc));
 		DPN_APPLICATION_DESC*	dpServerDesc=(DPN_APPLICATION_DESC*)desc;
-		DWORD					dpServerDescSize=sizeof(desc);
+		u32					dpServerDescSize=sizeof(desc);
 		dpServerDesc->dwSize	= sizeof(DPN_APPLICATION_DESC);
 		R_CHK					(NET->GetApplicationDesc(dpServerDesc,&dpServerDescSize,0));
 		if( dpServerDesc->pwszSessionName)
@@ -203,7 +203,7 @@ BOOL IPureClient::Connect(LPCSTR server_name)
 		
 		net_csEnumeration.Enter		();
 		// real connect
-		for (DWORD I=0; I<net_Hosts.size(); I++) 
+		for (u32 I=0; I<net_Hosts.size(); I++) 
 			Msg("* HOST #%d: %s\n",I+1,net_Hosts[I].dpSessionName);
 		
 		R_CHK(net_Hosts.front().pHostAddress->Duplicate(&pHostAddress ) );
@@ -244,7 +244,7 @@ void IPureClient::Disconnect()
 
     // Clean up Host list
 	net_csEnumeration.Enter			();
-	for (DWORD i=0; i<net_Hosts.size(); i++) {
+	for (u32 i=0; i<net_Hosts.size(); i++) {
 		HOST_NODE&	N = net_Hosts[i];
 		_RELEASE	(N.pHostAddress);
 	}
@@ -260,7 +260,7 @@ void IPureClient::Disconnect()
 	_RELEASE	(NET);
 }
 
-HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
+HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 {
 	// HRESULT     hr = S_OK;
 
@@ -279,7 +279,7 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 			// Insert each host response if it isn't already present
 			net_csEnumeration.Enter			();
 			BOOL	bHostRegistered			= FALSE;
-			for (DWORD I=0; I<net_Hosts.size(); I++)
+			for (u32 I=0; I<net_Hosts.size(); I++)
 			{
 				HOST_NODE&	N = net_Hosts	[I];
 				if	( pDesc->guidInstance == N.dpAppDesc.guidInstance)
@@ -319,22 +319,22 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 
 	case DPN_MSGID_RECEIVE:
 		{
-			DWORD			time	= Device.TimerAsync();
+			u32			time	= Device.TimerAsync();
 			PDPNMSG_RECEIVE	pMsg	= (PDPNMSG_RECEIVE) pMessage;
 			void*			m_data	= pMsg->pReceiveData;
-			DWORD			m_size	= pMsg->dwReceiveDataSize;
+			u32			m_size	= pMsg->dwReceiveDataSize;
 			MSYS_CONFIG*	cfg		= (MSYS_CONFIG*)m_data;
 
-			if ((m_size>2*sizeof(DWORD)) && (cfg->sign1==0x12071980) && (cfg->sign2==0x26111975))
+			if ((m_size>2*sizeof(u32)) && (cfg->sign1==0x12071980) && (cfg->sign2==0x26111975))
 			{
 				// Internal system message
 				if ((m_size == sizeof(MSYS_PING)))
 				{
 					// It is reverted(server) ping
-					DWORD		time	= Device.TimerAsync();
+					u32		time	= Device.TimerAsync();
 					MSYS_PING*	msg		= (MSYS_PING*)m_data;
-					DWORD		ping	= time - (msg->dwTime_ClientSend);
-					DWORD		delta	= msg->dwTime_Server + ping/2 - time;
+					u32		ping	= time - (msg->dwTime_ClientSend);
+					u32		delta	= msg->dwTime_Server + ping/2 - time;
 					net_DeltaArray.push	(delta);
 					Sync_Average		();
 				} else if ((m_size == sizeof(MSYS_CONFIG)))
@@ -396,15 +396,15 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 	return S_OK;
 }
 
-void	IPureClient::timeServer_Correct(DWORD sv_time, DWORD cl_time)
+void	IPureClient::timeServer_Correct(u32 sv_time, u32 cl_time)
 {
-	DWORD		ping	= net_Statistic.getPing();
-	DWORD		delta	= sv_time + ping/2 - cl_time;
+	u32		ping	= net_Statistic.getPing();
+	u32		delta	= sv_time + ping/2 - cl_time;
 	net_DeltaArray.push	(delta);
 	Sync_Average		();
 }
 
-void	IPureClient::Send(NET_Packet& P, DWORD dwFlags, DWORD dwTimeout)
+void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	if (net_Disconnected)	return;
 
@@ -433,8 +433,8 @@ void	IPureClient::Send(NET_Packet& P, DWORD dwFlags, DWORD dwTimeout)
 
 BOOL	IPureClient::net_HasBandwidth	()
 {
-	DWORD	dwTime				= Device.dwTimeGlobal;
-	DWORD	dwInterval			= 1000/psNET_ClientUpdate;
+	u32	dwTime				= Device.dwTimeGlobal;
+	u32	dwInterval			= 1000/psNET_ClientUpdate;
 	if		(net_Disconnected)	return FALSE;
 
 	HRESULT hr;
@@ -443,11 +443,11 @@ BOOL	IPureClient::net_HasBandwidth	()
 		R_ASSERT			(NET);
 		
 		// check queue for "empty" state
-		DWORD				dwPending=0;
+		u32				dwPending=0;
 		hr					= NET->GetSendQueueInfo(&dwPending,0,0);
 		if (FAILED(hr))		return FALSE;
 
-		if (dwPending > DWORD(psNET_ClientPending))	return FALSE;
+		if (dwPending > u32(psNET_ClientPending))	return FALSE;
 
 		// Query network statistic for this client
 		DPN_CONNECTION_INFO	CI;
@@ -477,7 +477,7 @@ void	IPureClient::Sync_Thread	()
 		// Waiting for queue empty state
 		if (net_Syncronised)	Sleep(3000);
 		else {
-			DWORD				dwPending=0;
+			u32				dwPending=0;
 			do {
 				Sleep			(1);
 				R_CHK			(NET->GetSendQueueInfo(&dwPending,0,0));
@@ -509,8 +509,8 @@ void	IPureClient::Sync_Thread	()
 		
 		// Waiting for reply-packet to arrive
 		if (!net_Syncronised)	{
-			DWORD	old_size	= net_DeltaArray.size();
-			DWORD	timeBegin	= Device.TimerAsync();
+			u32	old_size	= net_DeltaArray.size();
+			u32	timeBegin	= Device.TimerAsync();
 			while ((net_DeltaArray.size()==old_size)&&(Device.TimerAsync()-timeBegin<5000))		Sleep(1);
 			
 			if (net_DeltaArray.size()>=syncSamples)	{
@@ -526,8 +526,8 @@ void	IPureClient::Sync_Average	()
 	//***** Analyze results
 	s64		summary_delta	= 0;
 	s32		size			= net_DeltaArray.size();
-	DWORD*	I				= net_DeltaArray.begin();
-	DWORD*  E				= I+size;
+	u32*	I				= net_DeltaArray.begin();
+	u32*  E				= I+size;
 	for (; I!=E; I++)		summary_delta	+= *((int*)I);
 
 	s64 frac				=	s64(summary_delta) % s64(size);

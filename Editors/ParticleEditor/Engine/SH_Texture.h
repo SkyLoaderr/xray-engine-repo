@@ -7,13 +7,13 @@ class ENGINE_API CAviPlayerCustom;
 class ENGINE_API CTexture
 {
 public:
-	DWORD							dwReference;
+	u32							dwReference;
 	IDirect3DBaseTexture8*			pSurface;
 	CAviPlayerCustom*				pAVI;
-	DWORD							dwMemoryUsage;
+	u32							dwMemoryUsage;
 	
 	// Sequence data
-	DWORD							seqMSPF;	// milliseconds per frame
+	u32							seqMSPF;	// milliseconds per frame
 	vector<IDirect3DBaseTexture8*>	seqDATA;
 	BOOL							seqCycles;
 	
@@ -30,8 +30,8 @@ public:
 public:
 	void							Load		(LPCSTR Name);
 	void							Unload		(void);
-	void							Apply		(DWORD dwStage);
-	static DWORD					MemUsage	(IDirect3DBaseTexture8* T);
+	void							Apply		(u32 dwStage);
+	static u32					MemUsage	(IDirect3DBaseTexture8* T);
 	
 	void							surface_set	(IDirect3DBaseTexture8* surf);
 	IDirect3DBaseTexture8*			surface_get ();

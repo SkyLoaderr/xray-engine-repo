@@ -77,7 +77,7 @@ void __cdecl mt_Thread(void *ptr) {
 	}
 }
 
-void CRenderDevice::PreCache	(DWORD amount)
+void CRenderDevice::PreCache	(u32 amount)
 {
 	Msg				("* PCACHE: start for %d...",amount);
 	dwPrecacheFrame	= dwPrecacheTotal = amount;
@@ -96,10 +96,10 @@ void CRenderDevice::Run			()
 	dwTimeGlobal				= 0;
 	Timer_MM_Delta				= 0;
 	{
-		DWORD time_mm			= timeGetTime	();
+		u32 time_mm			= timeGetTime	();
 		while (timeGetTime()==time_mm);			// wait for next tick
-		DWORD time_system		= timeGetTime	();
-		DWORD time_local		= TimerAsync	();
+		u32 time_system		= timeGetTime	();
+		u32 time_local		= TimerAsync	();
 		Timer_MM_Delta			= time_system-time_local;
 	}
 
@@ -304,7 +304,7 @@ void CRenderDevice::FrameMove()
 	u64	qTime		= TimerGlobal.GetElapsed();
 	fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
 
-	dwTimeGlobal	= DWORD((qTime*u64(1000))/CPU::cycles_per_second);
+	dwTimeGlobal	= u32((qTime*u64(1000))/CPU::cycles_per_second);
 	dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
 
 	// Frame move

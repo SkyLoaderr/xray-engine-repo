@@ -29,23 +29,23 @@ extern ENGINE_API FS_Defs	Path;
 enum {
 	ssWaveTrace			= (1ul<<0ul),
 	ssEAX				= (1ul<<1ul),
-	ss_forcedword		= DWORD(-1)
+	ss_forcedword		= u32(-1)
 };
 enum {
 	sf_11K,
 	sf_22K,
 	sf_44K,
-	sf_forcedword = DWORD(-1)
+	sf_forcedword = u32(-1)
 };
 enum {
 	sq_DEFAULT,
 	sq_NOVIRT,
 	sq_LIGHT,
 	sq_HIGH,
-	sq_forcedword = DWORD(-1)
+	sq_forcedword = u32(-1)
 };
-ENGINE_API extern DWORD	psSoundFreq				;
-ENGINE_API extern DWORD	psSoundModel			;
+ENGINE_API extern u32	psSoundFreq				;
+ENGINE_API extern u32	psSoundModel			;
 ENGINE_API extern float	psSoundVMaster			;
 ENGINE_API extern float	psSoundVEffects			;
 ENGINE_API extern float	psSoundVMusic			;
@@ -53,16 +53,16 @@ ENGINE_API extern float psSoundRolloff			;
 ENGINE_API extern float psSoundDoppler			;
 ENGINE_API extern float psSoundOcclusionScale	;
 ENGINE_API extern float psSoundCull				;
-ENGINE_API extern DWORD psSoundFlags			;
+ENGINE_API extern u32 psSoundFlags			;
 ENGINE_API extern int	psSoundRelaxTime		;
 
 // textures
 enum {
 	TF_ShowMipmaps		= 1<<0,
-	TF_forcedword		= DWORD(-1)
+	TF_forcedword		= u32(-1)
 };
 ENGINE_API extern	int		psTextureLOD		;
-ENGINE_API extern	DWORD	psTextureFlags		;
+ENGINE_API extern	u32	psTextureFlags		;
 
 // video
 enum {
@@ -83,8 +83,8 @@ enum {
 	mtInput				= (1ul<<17ul),
 // 20-32 bit - defined in Editor
 };
-ENGINE_API extern	DWORD	psCurrentMode		;
-ENGINE_API extern	DWORD	psCurrentBPP		;
-ENGINE_API extern	DWORD	psDeviceFlags		;
+ENGINE_API extern	u32	psCurrentMode		;
+ENGINE_API extern	u32	psCurrentBPP		;
+ENGINE_API extern	u32	psDeviceFlags		;
 
 #endif

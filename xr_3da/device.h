@@ -22,11 +22,11 @@ class ENGINE_API CRenderDevice
 {
 private:
     // Main objects used for creating and rendering the 3D scene
-    DWORD									m_dwWindowStyle;
+    u32									m_dwWindowStyle;
     RECT									m_rcWindowBounds;
     RECT									m_rcWindowClient;
 
-	DWORD									Timer_MM_Delta;
+	u32									Timer_MM_Delta;
 	CTimer									Timer;
 	CTimer									TimerGlobal;
 	
@@ -36,11 +36,11 @@ public:
     HWND									m_hWnd;
 	LRESULT									MsgProc		(HWND,UINT,WPARAM,LPARAM);
 
-	DWORD									dwFrame;
-	DWORD									dwPrecacheFrame;
-	DWORD									dwPrecacheTotal;
+	u32									dwFrame;
+	u32									dwPrecacheFrame;
+	u32									dwPrecacheTotal;
 
-	DWORD									dwWidth, dwHeight;
+	u32									dwWidth, dwHeight;
 	float									fWidth_2, fHeight_2;
 	BOOL									bReady;
 	BOOL									bActive;
@@ -69,8 +69,8 @@ public:
 	// Engine flow-control
 	float									fTimeDelta;
 	float									fTimeGlobal;
-	DWORD									dwTimeDelta;
-	DWORD									dwTimeGlobal;
+	u32									dwTimeDelta;
+	u32									dwTimeGlobal;
 
 	// Cameras & projection
 	Fvector									vCameraPosition;
@@ -82,7 +82,7 @@ public:
 	Fmatrix									mFullTransform;
 	float									fFOV;
 	float									fASPECT;
-	IC void									set_xform			(DWORD ID, const Fmatrix& M);
+	IC void									set_xform			(u32 ID, const Fmatrix& M);
 	IC void									set_xform_world		(const Fmatrix& M)	{ set_xform(D3DTS_WORLD,M);			}
 	IC void									set_xform_view		(const Fmatrix& M)	{ set_xform(D3DTS_VIEW,M);			}
 	IC void									set_xform_project	(const Fmatrix& M)	{ set_xform(D3DTS_PROJECTION,M);	}
@@ -96,7 +96,7 @@ public:
 	};
 
 	// Scene control
-	void PreCache							(DWORD frames);
+	void PreCache							(u32 frames);
 	void Begin								(void);
 	void Clear								(void);
 	void End								(void);
@@ -138,7 +138,7 @@ public:
 
 extern ENGINE_API CRenderDevice Device;
 
-IC void	CRenderDevice::set_xform	(DWORD ID, const Fmatrix& M)
+IC void	CRenderDevice::set_xform	(u32 ID, const Fmatrix& M)
 {
 	Statistic.dwXFORMs++;
 	CHK_DX(HW.pDevice->SetTransform((D3DTRANSFORMSTATETYPE)ID,(D3DMATRIX*)&M));

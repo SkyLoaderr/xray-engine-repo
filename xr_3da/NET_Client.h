@@ -43,7 +43,7 @@ protected:
 	INetQueue				net_Queue;
 	IClientStatistic		net_Statistic;
 	
-	DWORD					net_Time_LastUpdate;
+	u32					net_Time_LastUpdate;
 	s32						net_TimeDelta;
 	s32						net_TimeDelta_Calculated;
 	
@@ -52,7 +52,7 @@ protected:
 public:
 	IPureClient				();
 	virtual ~IPureClient	();
-	HRESULT					net_Handler				(DWORD dwMessageType, PVOID pMessage);
+	HRESULT					net_Handler				(u32 dwMessageType, PVOID pMessage);
 	
 	BOOL					Connect					(LPCSTR server_name);
 	void					Disconnect				();
@@ -68,12 +68,12 @@ public:
 	IC void					net_msg_Release			()	{ net_Queue.Release();			}
 
 	// send
-	void					Send					(NET_Packet& P, DWORD dwFlags=DPNSEND_GUARANTEED, DWORD dwTimeout=0);
+	void					Send					(NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
 	BOOL					net_HasBandwidth		();
 	
 	// time management
-	IC DWORD	timeServer			()	{ return Device.dwTimeGlobal + net_TimeDelta; }
-	IC DWORD	timeServer_Async	()	{ return Device.TimerAsync() + net_TimeDelta; }
-	IC DWORD	timeServer_Delta	()	{ return net_TimeDelta; }
-	IC void		timeServer_Correct	(DWORD sv_time, DWORD cl_time);
+	IC u32	timeServer			()	{ return Device.dwTimeGlobal + net_TimeDelta; }
+	IC u32	timeServer_Async	()	{ return Device.TimerAsync() + net_TimeDelta; }
+	IC u32	timeServer_Delta	()	{ return net_TimeDelta; }
+	IC void		timeServer_Correct	(u32 sv_time, u32 cl_time);
 };

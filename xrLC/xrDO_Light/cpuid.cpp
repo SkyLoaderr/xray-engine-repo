@@ -223,19 +223,19 @@ void map_mname( int family, int model, const char * v_name, char *m_name)
 int _cpuid (_processor_info *pinfo)
 {
 
-    DWORD dwStandard = 0;
-    DWORD dwFeature = 0;
-    DWORD dwMax = 0;
-    DWORD dwExt = 0;
+    u32 dwStandard = 0;
+    u32 dwFeature = 0;
+    u32 dwMax = 0;
+    u32 dwExt = 0;
     int feature = 0, os_support = 0;
     union
     {
         char cBuf[12+1];
         struct
         {
-            DWORD dw0;
-            DWORD dw1;
-            DWORD dw2;
+            u32 dw0;
+            u32 dw1;
+            u32 dw2;
         };
     } Ident;
 

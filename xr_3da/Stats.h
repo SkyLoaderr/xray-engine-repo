@@ -16,12 +16,12 @@ public:
 	CGameFont*	font;
 
 	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
-	DWORD		dwShader_Codes;		// Number of times the shader-code changes
-	DWORD		dwShader_Textures;	// Number of times the shader-tex changes
-	DWORD		dwShader_Matrices;	// Number of times the shader-xform changes
-	DWORD		dwShader_Constants;	// Number of times the shader-consts changes
-	DWORD		dwXFORMs;
-	DWORD		dwSND_Played,dwSND_Allocated;	// Play/Alloc
+	u32		dwShader_Codes;		// Number of times the shader-code changes
+	u32		dwShader_Textures;	// Number of times the shader-tex changes
+	u32		dwShader_Matrices;	// Number of times the shader-xform changes
+	u32		dwShader_Constants;	// Number of times the shader-consts changes
+	u32		dwXFORMs;
+	u32		dwSND_Played,dwSND_Allocated;	// Play/Alloc
 
 	CStatTimer	EngineTOTAL;		// 
 	CStatTimer	Sheduler;			// 

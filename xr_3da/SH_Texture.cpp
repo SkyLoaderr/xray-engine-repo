@@ -42,7 +42,7 @@ IDirect3DBaseTexture8*	CTexture::surface_get	()
 	return pSurface;
 }
 
-void CTexture::Apply	(DWORD dwStage)
+void CTexture::Apply	(u32 dwStage)
 {
 	if (pAVI && pAVI->NeedUpdate())
 	{
@@ -57,14 +57,14 @@ void CTexture::Apply	(DWORD dwStage)
 		R_CHK	(T2D->UnlockRect(0));
 	} else if (!seqDATA.empty()) {
 		// SEQ
-		DWORD	frame		= Device.dwTimeGlobal/seqMSPF;
-		DWORD	frame_data	= seqDATA.size();
+		u32	frame		= Device.dwTimeGlobal/seqMSPF;
+		u32	frame_data	= seqDATA.size();
 		if (seqCycles)		{
-			DWORD	frame_id	= frame%(frame_data*2);
+			u32	frame_id	= frame%(frame_data*2);
 			if (frame_id>=frame_data)	frame_id = (frame_data-1) - (frame_id%frame_data);
 			pSurface 			= seqDATA[frame_id];
 		} else {
-			DWORD	frame_id	= frame%frame_data;
+			u32	frame_id	= frame%frame_data;
 			pSurface 			= seqDATA[frame_id];
 		}
 	}
@@ -139,7 +139,7 @@ void CTexture::Load(LPCSTR cName)
 			seqCycles		= TRUE;                    
 			fs().Rstring	(buffer);
 		}
-		DWORD fps	= atoi(buffer);
+		u32 fps	= atoi(buffer);
 		seqMSPF		= 1000/fps;
 
 		while (!fs().Eof())
@@ -149,7 +149,7 @@ void CTexture::Load(LPCSTR cName)
 			if (buffer[0])	
 			{
 				// Load another texture
-				D3DFORMAT f; DWORD W,H;
+				D3DFORMAT f; u32 W,H;
 				pSurface = TWLoader2D
 					(
 					buffer,
@@ -174,7 +174,7 @@ void CTexture::Load(LPCSTR cName)
 	} else 
 	{
 		// Normal texture
-		D3DFORMAT f; DWORD W,H;
+		D3DFORMAT f; u32 W,H;
 		pSurface = TWLoader2D
 			(
 			cName,
@@ -197,16 +197,16 @@ void CTexture::Load(LPCSTR cName)
 	}
 }
 
-DWORD CTexture::MemUsage	(IDirect3DBaseTexture8* pTexture)
+u32 CTexture::MemUsage	(IDirect3DBaseTexture8* pTexture)
 {
 	switch (pTexture->GetType())
 	{
 	case D3DRTYPE_TEXTURE:
 		{
 			IDirect3DTexture8*	T		= (IDirect3DTexture8*)pTexture;
-			DWORD dwMemory	= 0;
+			u32 dwMemory	= 0;
 			if (T) {
-				for (DWORD L=0; L<T->GetLevelCount(); L++)
+				for (u32 L=0; L<T->GetLevelCount(); L++)
 				{
 					D3DSURFACE_DESC	desc;
 					R_CHK			(T->GetLevelDesc(L,&desc));
@@ -224,7 +224,7 @@ void CTexture::Unload()
 {
 	if (!seqDATA.empty())
 	{
-		for (DWORD I=0; I<seqDATA.size(); I++)
+		for (u32 I=0; I<seqDATA.size(); I++)
 			_RELEASE(seqDATA[I]);
 		seqDATA.clear();
 		pSurface	= 0;

@@ -17,16 +17,16 @@ ENGINE_API FS_Defs		Path =
 struct _GUID g_AppGUID		= { 0xeb89097, 0x1520, 0x11d4, { 0xb4, 0xe3, 0x48, 0x54, 0xe8, 0x2a, 0x9, 0xd } };
 
 // Video
-DWORD	psCurrentMode		= 800;
-DWORD	psCurrentBPP		= 32;
-DWORD	psDeviceFlags		= rsFullscreen|rsNoVSync|mtSound;
+u32	psCurrentMode		= 800;
+u32	psCurrentBPP		= 32;
+u32	psDeviceFlags		= rsFullscreen|rsNoVSync|mtSound;
 
 // Network
 char	psName[12]			= "";
 
 // textures
 int		psTextureLOD		= 0;
-DWORD	psTextureFlags		= 0;
+u32	psTextureFlags		= 0;
 
 // users
 char	psUserName[64]		= "";

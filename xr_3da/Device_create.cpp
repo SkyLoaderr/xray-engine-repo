@@ -17,7 +17,7 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	vCameraRight.set		(1,0,0);
 
 	HW.Caps.Update			();
-	for (DWORD i=0; i<HW.Caps.pixel.dwStages; i++) 
+	for (u32 i=0; i<HW.Caps.pixel.dwStages; i++) 
 	{
 		if (psDeviceFlags&rsAnisotropic)	{
 			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC ));
@@ -45,7 +45,7 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_POSITIONORDER,		D3DORDER_CUBIC));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_NORMALORDER,		D3DORDER_CUBIC));
 	float tess = 3.f;
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_PATCHSEGMENTS,		*((DWORD*)&tess)));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_PATCHSEGMENTS,		*((u32*)&tess)));
 	*/
 
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL	));
@@ -86,7 +86,7 @@ void CRenderDevice::Create	()
 	if (bReady)	return;		// prevent double call
 	Log("Starting RENDER device...");
 
-	DWORD dwWindowStyle = HW.CreateDevice(m_hWnd,dwWidth,dwHeight);
+	u32 dwWindowStyle = HW.CreateDevice(m_hWnd,dwWidth,dwHeight);
 	fWidth_2	= float(dwWidth/2);
 	fHeight_2	= float(dwHeight/2);
 	fFOV		= 90.f;

@@ -4,7 +4,7 @@
 #ifndef NO_XR_LIGHT
 typedef struct _light {
 public:
-    DWORD           type;             /* Type of light source */
+    u32           type;             /* Type of light source */
     Fcolor          diffuse;          /* Diffuse color of light */
     Fcolor          specular;         /* Specular color of light */
     Fcolor          ambient;          /* Ambient color of light */
@@ -19,7 +19,7 @@ public:
     float	        phi;              /* Outer angle of spotlight cone */
 	
 	IC	D3DLIGHT8	*d3d() { return (D3DLIGHT8 *)this; };
-	IC	void	set(DWORD ltType, float x, float y, float z) {
+	IC	void	set(u32 ltType, float x, float y, float z) {
 		VERIFY(sizeof(_light)==sizeof(D3DLIGHT8));
 		ZeroMemory( this, sizeof(_light) );
 		type=ltType;
@@ -88,16 +88,16 @@ public:
 #ifndef NO_XR_3DBUFFER
 typedef struct _3dbuffer{
 public:
-    DWORD			dwSize;
+    u32			dwSize;
     Fvector			vPosition;
     Fvector			vVelocity;
-    DWORD			dwInsideConeAngle;
-    DWORD			dwOutsideConeAngle;
+    u32			dwInsideConeAngle;
+    u32			dwOutsideConeAngle;
     Fvector			vConeOrientation;
     int				lConeOutsideVolume;
     float			flMinDistance;
     float			flMaxDistance;
-    DWORD			dwMode;
+    u32			dwMode;
 	
 	IC	DS3DBUFFER *d3d(void) { return (DS3DBUFFER *)this; };
 	IC	void	Init( )

@@ -45,8 +45,8 @@ private:
 	
 	// shader code array
 	struct sh_Code {
-		DWORD				SB;
-		DWORD				Reference;
+		u32				SB;
+		u32				Reference;
 		SimulatorStates		Code;
 	};
 	vector<sh_Code>					codes;
@@ -86,7 +86,7 @@ public:
 	void							_ParseList			(sh_list& dest, LPCSTR names);
 	CBlender*						_GetBlender			(LPCSTR Name);
 	CBlender* 						_FindBlender		(LPCSTR Name);
-	DWORD							_GetMemoryUsage		();
+	u32							_GetMemoryUsage		();
 	BOOL							_GetDetailTexture	(LPCSTR Name, LPCSTR& T, LPCSTR& M);
 
     BlenderMap&						_GetBlenders		(){return blenders;}
@@ -111,17 +111,17 @@ public:
 	void							_DeleteMatrix		(CMatrix*  &M);
 	CConstant*						_CreateConstant		(LPCSTR Name);
 	void							_DeleteConstant		(CConstant* &C);
-	CRT*							_CreateRT			(LPCSTR Name, DWORD w, DWORD h);
+	CRT*							_CreateRT			(LPCSTR Name, u32 w, u32 h);
 	void							_DeleteRT			(CRT* &RT	);
-	CVS*							_CreateVS			(LPCSTR Name, LPDWORD decl, DWORD stride);
-	CVS*							_CreateVS			(DWORD FVF	);
+	CVS*							_CreateVS			(LPCSTR Name, LPDWORD decl, u32 stride);
+	CVS*							_CreateVS			(u32 FVF	);
 	void							_DeleteVS			(CVS* &VS	);
 	CPS*							_CreatePS			(LPCSTR Name);
 	void							_DeletePS			(CPS* &PS);
 	
 	// Shader compiling / optimizing
-	DWORD							_CreateCode			(SimulatorStates& Code);
-	void							_DeleteCode			(DWORD& SB);
+	u32							_CreateCode			(SimulatorStates& Code);
+	void							_DeleteCode			(u32& SB);
 	STextureList*					_CreateTextureList	(STextureList& L);
 	void							_DeleteTextureList	(STextureList* &L);
 	SMatrixList*					_CreateMatrixList	(SMatrixList& L);
@@ -155,11 +155,11 @@ public:
 	
 	// API
 	IC void set_RT			(IDirect3DSurface8* RT, IDirect3DSurface8* ZB);
-	IC void	set_Code		(DWORD dwCode);
+	IC void	set_Code		(u32 dwCode);
 	IC void set_Textures	(STextureList* T);
 	IC void set_Matrices	(SMatrixList* M);
 	IC void set_Constants	(SConstantList* C, BOOL		bPS);
-	IC void set_Element		(ShaderElement* S, DWORD	pass=0)
+	IC void set_Element		(ShaderElement* S, u32	pass=0)
 	{
 		CPass&	P		= S->Passes[pass];
 		set_Code		(P.dwStateBlock);
@@ -167,7 +167,7 @@ public:
 		set_Matrices	(P.M);
 		set_Constants	(P.C,S->Flags.bPixelShader);
 	}
-	IC void set_Shader		(Shader* S, DWORD pass=0)
+	IC void set_Shader		(Shader* S, u32 pass=0)
 	{
 		set_Element			(S->lod0,pass);
 	}

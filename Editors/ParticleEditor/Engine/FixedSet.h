@@ -17,15 +17,15 @@ public:
 	typedef void __fastcall callback(TNode*);
 private:
 	TNode*		nodes;
-	DWORD		pool;
-	DWORD		limit;
+	u32		pool;
+	u32		limit;
 
-	IC DWORD	Size(DWORD Count)
+	IC u32	Size(u32 Count)
 	{	return Count*sizeof(TNode);	}
 
 	void		Realloc()
 	{
-		DWORD	newLimit = limit + SG_REALLOC_ADVANCE;
+		u32	newLimit = limit + SG_REALLOC_ADVANCE;
 		VERIFY(newLimit%SG_REALLOC_ADVANCE == 0);
 		TNode*	newNodes = (TNode*) xr_malloc(Size(newLimit));
 		VERIFY(newNodes);
@@ -33,18 +33,18 @@ private:
 		ZeroMemory(newNodes, Size(newLimit));
 		if (limit) CopyMemory(newNodes, nodes, Size(limit));
 
-		for (DWORD I=0; I<pool; I++)
+		for (u32 I=0; I<pool; I++)
 		{
 			VERIFY(nodes);
 			TNode*	Nold	= nodes	+ I;
 			TNode*	Nnew	= newNodes + I;
 
 			if (Nold->left) {
-				DWORD	Lid		= Nold->left  - nodes;
+				u32	Lid		= Nold->left  - nodes;
 				Nnew->left		= newNodes + Lid;
 			}
 			if (Nold->right) {
-				DWORD	Rid		= Nold->right - nodes;
+				u32	Rid		= Nold->right - nodes;
 				Nnew->right		= newNodes + Rid;
 			}
 		}
@@ -64,7 +64,7 @@ private:
 	}
 	IC TNode*	CreateChild(TNode* &parent, const K& key)
 	{
-		DWORD PID	= parent-nodes;
+		u32 PID	= parent-nodes;
 		TNode*	N	= Alloc(key);
 		parent		= nodes+PID;
 		return	N;
@@ -152,7 +152,7 @@ public:
 	IC TNode*	begin() { return nodes;			}
 	IC TNode*	end()	{ return nodes+pool;	}
 	IC TNode*	last()	{ return nodes+limit;	}	// for setup only
-	IC DWORD	size()	{ return pool;			}
+	IC u32	size()	{ return pool;			}
 	IC TNode&	operator[] (int v) { return nodes[v]; }
 
 	IC void		traverseLR	(callback CB) 

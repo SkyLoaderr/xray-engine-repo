@@ -7,7 +7,7 @@
 
 ENGINE_API CHW HW;
 
-DWORD dwDebugSB = 0;
+u32 dwDebugSB = 0;
 
 void CHW::CreateD3D()
 {
@@ -59,14 +59,14 @@ void	CHW::DestroyDevice	()
 	DestroyD3D				();
 }
 
-DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
+u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 {
 	CreateD3D				();
 
 	// General 
 	BOOL  bWindowed	= !(psDeviceFlags&rsFullscreen);
 
-	DWORD dwWindowStyle=0;
+	u32 dwWindowStyle=0;
 #ifndef _EDITOR
 	// Set window properties depending on what mode were in.
 	if (bWindowed)	SetWindowLong( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_BORDER|WS_DLGFRAME|WS_VISIBLE) );
@@ -172,7 +172,7 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	}
 
     // Create the device
-	DWORD GPU = selectGPU();
+	u32 GPU = selectGPU();
     R_CHK(HW.pD3D->CreateDevice(D3DADAPTER_DEFAULT, 
 								D3DDEVTYPE_HAL,
                                 m_hWnd, 
@@ -201,12 +201,12 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	R_CHK	(pDevice->GetRenderTarget			(&pBaseRT));
 	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
 	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,&pTempZB));
-	DWORD	memory								= pDevice->GetAvailableTextureMem	();
+	u32	memory								= pDevice->GetAvailableTextureMem	();
 	Msg		("* Texture memory:     %d M",		memory/(1024*1024));
 	return dwWindowStyle;
 }
 
-DWORD	CHW::selectPresentInterval	()
+u32	CHW::selectPresentInterval	()
 {
 	D3DCAPS8	caps;
 	pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,&caps);
@@ -220,7 +220,7 @@ DWORD	CHW::selectPresentInterval	()
 	return D3DPRESENT_INTERVAL_DEFAULT;
 }
 
-DWORD CHW::selectGPU ()
+u32 CHW::selectGPU ()
 {
 	if (Caps.bForceGPU_SW) return D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 
@@ -238,13 +238,13 @@ DWORD CHW::selectGPU ()
 	} else return D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 }
 
-DWORD CHW::selectRefresh(DWORD dwWidth, DWORD dwHeight)
+u32 CHW::selectRefresh(u32 dwWidth, u32 dwHeight)
 {
 	// return D3DPRESENT_RATE_DEFAULT;
 
-	DWORD selected	= D3DPRESENT_RATE_DEFAULT;
-	DWORD count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT);
-	for (DWORD I=0; I<count; I++)
+	u32 selected	= D3DPRESENT_RATE_DEFAULT;
+	u32 count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT);
+	for (u32 I=0; I<count; I++)
 	{
 		D3DDISPLAYMODE	Mode;
 		pD3D->EnumAdapterModes(D3DADAPTER_DEFAULT,I,&Mode);

@@ -101,7 +101,7 @@ public:
 		return false;
 	};
 
-	IC DWORD& IR(float &x) { return (DWORD&)x; }
+	IC u32& IR(float &x) { return (u32&)x; }
 	IC BOOL Pick2(const Fvector2& origin, const Fvector2& dir, Fvector2& coord){
 		BOOL Inside = TRUE;
 		Fvector2	MaxT;
@@ -139,7 +139,7 @@ public:
 		}
 		
 		// Get largest of the maxT's for final choice of intersection
-		DWORD WhichPlane = 0;
+		u32 WhichPlane = 0;
 		if(MaxT[1] > MaxT[0])			WhichPlane = 1;
 		
 		// Check final candidate actually inside box

@@ -26,12 +26,12 @@ IC void set_positive(float &f)	{ (*LPDWORD(&f)) &= ~fdSGN;			}
  * that I discovered a few months ago.
  */
 IC	int		btwLowestBitMask(int v)		{	return (v & -v);	}
-IC	DWORD	btwLowestBitMask(DWORD x)	{   return x & ~(x-1);	}
+IC	u32	btwLowestBitMask(u32 x)	{   return x & ~(x-1);	}
 
 /* Ok, so now we are cooking on gass. Here we use this function for some */
 /* rather useful utility functions */
 IC	BOOL	btwIsPow2(int v)			{ return (btwLowestBitMask(v) == v); }
-IC	BOOL	btwIsPow2(DWORD v)			{ return (btwLowestBitMask(v) == v); }
+IC	BOOL	btwIsPow2(u32 v)			{ return (btwLowestBitMask(v) == v); }
 
 IC	int		btwPow2_Ceil(int v)
 {
@@ -39,9 +39,9 @@ IC	int		btwPow2_Ceil(int v)
 	while(i < v) i <<= 1;
 	return i;
 }
-IC	DWORD	btwPow2_Ceil(DWORD v)
+IC	u32	btwPow2_Ceil(u32 v)
 {
-	DWORD i = btwLowestBitMask(v);
+	u32 i = btwLowestBitMask(v);
 	while(i < v) i <<= 1;
 	return i;
 }
@@ -57,10 +57,10 @@ IC	BYTE	btwCount1(BYTE v)
 }
 
 //same for 32bit 
-IC	DWORD	btwCount1(DWORD v)
+IC	u32	btwCount1(u32 v)
 {
-	const DWORD g31 = 0x49249249ul;	// = 0100_1001_0010_0100_1001_0010_0100_1001
-	const DWORD g32 = 0x381c0e07ul;	// = 0011_1000_0001_1100_0000_1110_0000_0111
+	const u32 g31 = 0x49249249ul;	// = 0100_1001_0010_0100_1001_0010_0100_1001
+	const u32 g32 = 0x381c0e07ul;	// = 0011_1000_0001_1100_0000_1110_0000_0111
 	v = (v & g31) + ((v >> 1) & g31) + ((v >> 2) & g31);
 	v = ((v + (v >> 3)) & g32) + ((v >> 6) & g32);
 	return (v + (v >> 9) + (v >> 18) + (v >> 27)) & 0x3f;
@@ -70,7 +70,7 @@ IC int iFloor (float x)
 {
     int a			= *(const int*)(&x);
     int exponent	= (127 + 31) - ((a >> 23) & 0xFF);
-    int r			= (((DWORD)(a) << 8) | (1U << 31)) >> exponent;
+    int r			= (((u32)(a) << 8) | (1U << 31)) >> exponent;
     exponent		+= 31-127;
     {
         int imask	=	(!(((( (1<<(exponent)))-1)>>8)&a));
@@ -91,7 +91,7 @@ IC int iCeil (float x)
 {
     int a			= (*(const int*)(&x));
     int exponent	= (127 + 31) - ((a >> 23) & 0xFF);
-    int r			= (((DWORD)(a) << 8) | (1U << 31)) >> exponent;
+    int r			= (((u32)(a) << 8) | (1U << 31)) >> exponent;
     exponent		+= 31-127;
     {
         int imask	=	(!(((( (1<<(exponent)))-1)>>8)&a));

@@ -111,8 +111,8 @@ void InitMath(void)
 	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %d mhz, %d-clk 'rdtsc'",
 		CPU::ID.v_name,CPU::ID.model_name,
 		CPU::ID.family,CPU::ID.model,CPU::ID.stepping,
-		DWORD(CPU::cycles_per_second/__int64(1000000)),
-		DWORD(CPU::cycles_overhead)
+		u32(CPU::cycles_per_second/__int64(1000000)),
+		u32(CPU::cycles_overhead)
 		);
     if (CPU::ID.feature&_CPU_FEATURE_MMX)	strcat(features,", MMX");
     if (CPU::ID.feature&_CPU_FEATURE_3DNOW)	strcat(features,", 3DNow!");

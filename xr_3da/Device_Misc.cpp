@@ -30,7 +30,7 @@ void __cdecl CRenderDevice::Fatal(const char* F,...)
 //----------------------------- FLAGS
 static struct _DF {
 	char *	name;
-	DWORD	mask;
+	u32	mask;
 } DF[] = {
 	{"rsFullscreen",	rsFullscreen	},
 	{"rsTriplebuffer",	rsTriplebuffer  },

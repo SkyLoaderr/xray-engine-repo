@@ -7,7 +7,7 @@ public:
 
 	IC	D3DCOLOR	*d3d(void) { return (D3DCOLOR *)this;	};
     IC 	float*	asDATA(void) { return (float*)this; };
-	IC	void	set(DWORD dw)
+	IC	void	set(u32 dw)
 	{
 		const float f = 1.0f / 255.0f;
 		a = f * float((dw >> 24)& 0xff);
@@ -19,7 +19,7 @@ public:
 	{	r = _r; g = _g; b = _b; a = _a;		};
 	IC	void	set(_color dw)
 	{	r=dw.r; g=dw.g; b=dw.b; a = dw.a;	};
-	IC	DWORD	get( ) const
+	IC	u32	get( ) const
 	{
 		int	 _r = iFloor(r*255.f); clamp(_r,0,255);
 		int	 _g = iFloor(g*255.f); clamp(_g,0,255);
@@ -27,16 +27,16 @@ public:
 		int	 _a = iFloor(a*255.f); clamp(_a,0,255);
 		return D3DCOLOR_RGBA(_r,_g,_b,_a);
 	};
-	IC	DWORD	get_windows( ) const
+	IC	u32	get_windows( ) const
 	{
 		BYTE _a, _r, _g, _b;
 		_a = (BYTE)(a*255.f);
 		_r = (BYTE)(r*255.f);
 		_g = (BYTE)(g*255.f);
 		_b = (BYTE)(b*255.f);
-		return ((DWORD)(_a<<24) | (_b<<16) | (_g<<8) | (_r));
+		return ((u32)(_a<<24) | (_b<<16) | (_g<<8) | (_r));
 	};
-	IC	void	set_windows(DWORD dw)
+	IC	void	set_windows(u32 dw)
 	{
 		const float f = 1.0f / 255.0f;
 		a = f * (float) (BYTE) (dw >> 24);

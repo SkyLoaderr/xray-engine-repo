@@ -25,7 +25,7 @@ ENGINE_API	CCreator*		pCreator		= NULL;
 
 // externs
 extern void					InitMath			(void);
-extern BOOL					StartGame			(DWORD num);
+extern BOOL					StartGame			(u32 num);
 
 // startup point
 void Startup()
@@ -180,7 +180,7 @@ CApplication::~CApplication()
 }
 
 /*
-BOOL StartGame(DWORD num) 
+BOOL StartGame(u32 num) 
 {
 	R_ASSERT(pCreator==NULL);
 	pCreator = (CCreator*)NEW_INSTANCE(CLSID_LEVEL);
@@ -195,12 +195,12 @@ BOOL StartGame(DWORD num)
 }
 */
 
-void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
+void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 {
 	if (E==eQuit)	{
 		PostQuitMessage	(0);
 		
-		for (DWORD i=0; i<Levels.size(); i++)
+		for (u32 i=0; i<Levels.size(); i++)
 		{
 			_FREE(Levels[i].folder	);
 			_FREE(Levels[i].name	);
@@ -283,10 +283,10 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	Device.Begin();
 
 	// Draw logo
-	DWORD	Offset;
-	DWORD	C						= 0xffffffff;
-	DWORD	_w						= Device.dwWidth;
-	DWORD	_h						= Device.dwHeight;
+	u32	Offset;
+	u32	C						= 0xffffffff;
+	u32	_w						= Device.dwWidth;
+	u32	_h						= Device.dwHeight;
 	FVF::TL* pv						= (FVF::TL*) Device.Streams.Vertex.Lock(4,ll_hVS->dwStride,Offset);
 	pv->set(0, float(_h), 1, 1, C, 0, 1);			pv++;
 	pv->set(0, 0, 1, 1, C, 0, 0);					pv++;
@@ -328,7 +328,7 @@ void CApplication::Level_Scan()
 	vector<char*>	folder;
 	Engine.FS.List	(folder,Path.Levels,FS_ListFolders);
 	R_ASSERT		(!folder.empty());
-	for (DWORD i=0; i<folder.size(); i++)
+	for (u32 i=0; i<folder.size(); i++)
 	{
 		FILE_NAME	N,F;
 		strconcat	(N,Path.Levels,folder[i]);
@@ -350,7 +350,7 @@ void CApplication::Level_Scan()
 	}
 }
 
-void CApplication::Level_Set(DWORD L)
+void CApplication::Level_Set(u32 L)
 {
 	if (L>=Levels.size()) return;
 	Level_Current = L;
@@ -361,7 +361,7 @@ int CApplication::Level_ID(LPCSTR name)
 {
 	char buffer	[256];
 	strconcat	(buffer,name,"\\");
-	for (DWORD I=0; I<Levels.size(); I++)
+	for (u32 I=0; I<Levels.size(); I++)
 	{
 		if (0==stricmp(buffer,Levels[I].folder))	return int(I);
 	}

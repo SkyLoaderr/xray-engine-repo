@@ -17,7 +17,7 @@ void IClientStatistic::Update(DPN_CONNECTION_INFO& CI)
 		mps_recive		= CI.dwMessagesReceived - mps_receive_base;
 		mps_receive_base= CI.dwMessagesReceived;
 
-		DWORD	cur_msend	= CI.dwMessagesTransmittedHighPriority+CI.dwMessagesTransmittedNormalPriority+CI.dwMessagesTransmittedLowPriority;
+		u32	cur_msend	= CI.dwMessagesTransmittedHighPriority+CI.dwMessagesTransmittedNormalPriority+CI.dwMessagesTransmittedLowPriority;
 		mps_send		= cur_msend - mps_send_base;
 		mps_send_base	= cur_msend;
 	}
@@ -28,7 +28,7 @@ void IClientStatistic::Update(DPN_CONNECTION_INFO& CI)
 static const GUID NET_GUID = 
 { 0x218fa8b, 0x515b, 0x4bf2, { 0x9a, 0x5f, 0x2f, 0x7, 0x9d, 0x17, 0x59, 0xf3 } };
 
-static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID pMessage)
+static HRESULT WINAPI Handler (PVOID pvUserContext, u32 dwMessageType, PVOID pMessage)
 {
 	IPureServer* C = (IPureServer*)pvUserContext;
 	return C->net_Handler	(dwMessageType,pMessage);
@@ -57,7 +57,7 @@ void IPureServer::pCompress	(NET_Packet& D, NET_Packet& S)
 	stats.bytes_out			+= S.B.count;
 	stats.bytes_out_real	+= D.B.count;
 }
-void IPureServer::pDecompress(NET_Packet& D, void* m_data, DWORD m_size)
+void IPureServer::pDecompress(NET_Packet& D, void* m_data, u32 m_size)
 {
 	// Decompress data
 	D.B.count		=  net_Compressor.Decompress(D.B.data,LPBYTE(m_data),m_size);
@@ -92,7 +92,7 @@ void IPureServer::config_Load()
 	// build message
 	msgConfig.sign1				= 0x12071980;
 	msgConfig.sign2				= 0x26111975;
-	DWORD	I;
+	u32	I;
 	for (I=0; I<256; I++)		msgConfig.send[I]		= WORD(traffic_in[I]);
 	for (I=0; I<256; I++)		msgConfig.receive[I]	= WORD(traffic_out[I]);
 
@@ -189,7 +189,7 @@ void IPureServer::Disconnect	()
     _RELEASE	(NET);
 }
 
-HRESULT	IPureServer::net_Handler(DWORD dwMessageType, PVOID pMessage)
+HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 {
     // HRESULT     hr = S_OK;
 	
@@ -198,9 +198,9 @@ HRESULT	IPureServer::net_Handler(DWORD dwMessageType, PVOID pMessage)
 	case DPN_MSGID_CREATE_PLAYER :
         {
 			PDPNMSG_CREATE_PLAYER	msg = PDPNMSG_CREATE_PLAYER(pMessage);
-			const	DWORD			max_size = 1024;
+			const	u32			max_size = 1024;
 			char	bufferData		[max_size];
-            DWORD	bufferSize		= max_size;
+            u32	bufferSize		= max_size;
 			ZeroMemory				(bufferData,bufferSize);
 
 			// retreive info
@@ -233,7 +233,7 @@ HRESULT	IPureServer::net_Handler(DWORD dwMessageType, PVOID pMessage)
 			PDPNMSG_DESTROY_PLAYER	msg = PDPNMSG_DESTROY_PLAYER(pMessage);
 
 			csPlayers.Enter			();
-			for (DWORD I=0; I<net_Players.size(); I++)
+			for (u32 I=0; I<net_Players.size(); I++)
 				if (net_Players[I]->ID==msg->dpnidPlayer)
 				{
 					// gen message
@@ -251,11 +251,11 @@ HRESULT	IPureServer::net_Handler(DWORD dwMessageType, PVOID pMessage)
         {
             PDPNMSG_RECEIVE	msg = PDPNMSG_RECEIVE(pMessage);
 			void*	m_data		= msg->pReceiveData;
-			DWORD	m_size		= msg->dwReceiveDataSize;
+			u32	m_size		= msg->dwReceiveDataSize;
 			DPNID   m_sender	= msg->dpnidSender;
 
 			MSYS_PING*	m_ping	= (MSYS_PING*)m_data;
-			if ((m_size>2*sizeof(DWORD)) && (m_ping->sign1==0x12071980) && (m_ping->sign2==0x26111975))
+			if ((m_size>2*sizeof(u32)) && (m_ping->sign1==0x12071980) && (m_ping->sign2==0x26111975))
 			{
 				// this is system message
 				if (m_size==sizeof(MSYS_PING))
@@ -269,7 +269,7 @@ HRESULT	IPureServer::net_Handler(DWORD dwMessageType, PVOID pMessage)
 				NET_Packet P;
 				pDecompress		(P,m_data,m_size);
 				csMessage.Enter	();
-				DWORD	result	= OnMessage(P,m_sender);
+				u32	result	= OnMessage(P,m_sender);
 				csMessage.Leave	();
 				if (result)		SendBroadcast(m_sender,P,result);
 			}
@@ -280,7 +280,7 @@ HRESULT	IPureServer::net_Handler(DWORD dwMessageType, PVOID pMessage)
     return S_OK;
 }
 
-void	IPureServer::SendTo_LL(DPNID ID, void* data, DWORD size, DWORD dwFlags, DWORD dwTimeout)
+void	IPureServer::SendTo_LL(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 {
 	// send it
 	DPN_BUFFER_DESC	desc;
@@ -301,7 +301,7 @@ void	IPureServer::SendTo_LL(DPNID ID, void* data, DWORD size, DWORD dwFlags, DWO
 		));
 }
 
-void	IPureServer::SendTo		(DPNID ID, NET_Packet& P, DWORD dwFlags, DWORD dwTimeout)
+void	IPureServer::SendTo		(DPNID ID, NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	// first - compress message and setup buffer
 	NET_Packet	Compressed;
@@ -310,10 +310,10 @@ void	IPureServer::SendTo		(DPNID ID, NET_Packet& P, DWORD dwFlags, DWORD dwTimeo
 	SendTo_LL(ID,Compressed.B.data,Compressed.B.count,dwFlags,dwTimeout);
 }
 
-void	IPureServer::SendBroadcast_LL(DPNID exclude, void* data, DWORD size, DWORD dwFlags)
+void	IPureServer::SendBroadcast_LL(DPNID exclude, void* data, u32 size, u32 dwFlags)
 {
 	csPlayers.Enter	();
-	for (DWORD I=0; I<net_Players.size(); I++)
+	for (u32 I=0; I<net_Players.size(); I++)
 	{
 		IClient* PLAYER		= net_Players[I];
 		if (PLAYER->ID==exclude)		continue;
@@ -322,7 +322,7 @@ void	IPureServer::SendBroadcast_LL(DPNID exclude, void* data, DWORD size, DWORD 
 	csPlayers.Leave	();
 }
 
-void	IPureServer::SendBroadcast(DPNID exclude, NET_Packet& P, DWORD dwFlags)
+void	IPureServer::SendBroadcast(DPNID exclude, NET_Packet& P, u32 dwFlags)
 {
 	// Perform broadcasting
 	NET_Packet			BCast;
@@ -330,7 +330,7 @@ void	IPureServer::SendBroadcast(DPNID exclude, NET_Packet& P, DWORD dwFlags)
 	SendBroadcast_LL	(exclude, BCast.B.data, BCast.B.count, dwFlags);
 }
 
-DWORD	IPureServer::OnMessage	(NET_Packet& P, DPNID sender)	// Non-Zero means broadcasting with "flags" as returned
+u32	IPureServer::OnMessage	(NET_Packet& P, DPNID sender)	// Non-Zero means broadcasting with "flags" as returned
 {
 	/*
 	u16 m_type;
@@ -369,18 +369,18 @@ void IPureServer::client_link_aborted	(DPNID ID)
 
 BOOL IPureServer::HasBandwidth			(IClient* C)
 {
-	DWORD	dwTime			= Device.dwTimeGlobal;
-	DWORD	dwInterval		= 1000/psNET_ServerUpdate;
+	u32	dwTime			= Device.dwTimeGlobal;
+	u32	dwInterval		= 1000/psNET_ServerUpdate;
 
 	HRESULT hr;
 	if ((dwTime-C->dwTime_LastUpdate)>dwInterval)	
 	{
 		// check queue for "empty" state
-		DWORD				dwPending;
+		u32				dwPending;
 		hr					= NET->GetSendQueueInfo(C->ID,&dwPending,0,0);
 		if (FAILED(hr))		return FALSE;
 
-		if (dwPending > DWORD(psNET_ServerPending))	return FALSE;
+		if (dwPending > u32(psNET_ServerPending))	return FALSE;
 
 		// Query network statistic for this client
 		DPN_CONNECTION_INFO	CI;
