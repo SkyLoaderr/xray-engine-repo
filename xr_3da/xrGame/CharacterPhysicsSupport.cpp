@@ -79,6 +79,13 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 {
 	CPHDestroyable::Init();//this zerows colbacks !!;
+	if(!m_EntityAlife.g_Alive())
+	{
+		CSkeletonAnimated*ka= smart_cast<CSkeletonAnimated*>(m_EntityAlife.Visual());
+		ka->PlayCycle("death_init");
+		ka->CalculateBones_Invalidate();
+		ka->CalculateBones();
+	}
 	CPHSkeleton::Spawn(e);
 }
 
