@@ -17,6 +17,8 @@
 #include <map>
 #include <windows.h>
 
+using namespace std;
+
 // types
 typedef	signed		char	s8;
 typedef	unsigned	char	u8;
