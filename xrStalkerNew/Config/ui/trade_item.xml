@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!-- ITEM INFO IN THE INVENTORY MENU -->
+<window>
+	<!-- NAME -->
+	<static x="20" y="15" width="165" height="25">
+		<text x="0" y="0" font="letterica25" r="238" g="155" b="23"></text>
+	</static>
+
+	<!-- WEIGHT -->
+	<static x="190" y="15" width="140" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
+
+	<!-- COST -->
+	<static x="190" y="51" width="240" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
+	
+	<!-- CONDITION -->
+	<static x="190" y="33" width="240" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
+
+	<!-- DESCRIPTION -->
+	<descr_list x="20" y="70" width="289" height="130" item_height="15">
+		<font font="letterica16" r="240" g="217" b="182"/>
+	</descr_list>
+   indow>
+

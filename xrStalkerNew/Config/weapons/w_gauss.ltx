@@ -1,0 +1,145 @@
+[wpn_gauss]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                  = "weapons\gauss"	; option for Level Editor
+$npc			 		= on				; option for Level Editor
+$prefetch 		 		= 8
+scheduled               = off              	; option for ALife Simulator
+cform                   = skeleton
+class                   = W_SVD
+min_radius              = 0
+max_radius              = 50
+
+cost					= 3500
+weapon_class			= sniper_rifle
+description				= enc_mutant_rat_general;ak_74_desc
+
+ammo_limit				= 60
+ammo_current			= 10
+ammo_elapsed			= 0
+
+ammo_mag_size			= 10
+ammo_class				= ammo_gauss
+
+;-----------------------------------------------------------------------------------
+;базовая дисперсия
+fire_dispersion_base			= 0.002 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+
+;отдача
+cam_relax_speed         		= 4.0	;скорость возврата в исходное положение
+cam_dispersion          		= 3.0	;увеличения угла (в градусах) с каждым выстрелом
+cam_max_angle					= 4		;максимальный угол отдачи
+cam_max_angle_horz				= 5.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz				= 0.5	;(degree) size of step camera moved in horizontal position while shooting
+
+fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
+misfire_probability 			= 0.0001	;вероятность осечки при максимальном износе 
+condition_shot_dec 				= 0.00003	;увеличение износа при каждом выстреле
+;-----------------------------------------------------------------------------------
+
+hand_dependence 		= 1
+single_handed				= 0
+
+slot 					= 2		; // secondary
+animation_slot			= 2		; type of the animation that will be used
+
+inv_name				= Gauss Rifle;SVD
+inv_name_short			= Gauss Rifle;SVD
+inv_weight				= 5.
+
+inv_grid_width			= 5
+inv_grid_height			= 2
+inv_grid_x				= 10
+inv_grid_y				= 6
+
+immunities_sect			= weapon
+
+
+direction               = 0, 0, 1
+
+fire_point              = 0.0, 0.122, 0.694
+
+;flame_particles		= weapons\generic_weapon05
+;smoke_particles		= weapons\generic_weapon07
+shot_particles		   	= weapons\generic_weapon07
+
+
+rpm_empty_click 		= 120
+; ttc
+;shell_point		 		= 0.0, 0.122, 0.120
+;shell_dir		 		= 0.0, 0.0, 0.4
+;shell_particles	 		= weapons\generic_shells
+
+hit_power               = 250
+hit_impulse		 		= 300
+hit_type = fire_wound
+
+fire_distance           = 800
+bullet_speed		 	= 1500			;начальная скорость пули
+rpm                     = 30
+; end ttc
+hud                     = wpn_gauss_hud
+normal                  = 0, 1, 0
+position                = -0.026, -0.070, 0.0
+orientation             = 0, 0, 0
+startup_ammo            = 10
+visual                  = weapons\gauss\wpn_gauss.ogf
+
+tracer_head_speed	 	= 400
+tracer_trail_scale	 	= 0.75
+tracer_start_length	 	= 0
+tracer_width		 	= 0.00
+light_color		 		= 0.6,0.5,0.3
+light_range		 		= 4.0
+light_var_color		 	= 0.05
+light_var_range		 	= 0.5
+light_time 		 		= 0.2
+
+ph_mass			 		= 3
+;cost			 		= 900
+
+;addons
+scope_status			= 1
+silencer_status			= 0
+grenade_launcher_status	= 0
+
+zoom_enabled			= true
+scope_zoom_factor	    = 15		;ПСО-1 4X
+
+scope_texture			= wpn\wpn_crosshair
+
+scope_name 				= wpn_addon_scope
+scope_x 				= 60
+scope_y 				= -2
+
+;звуки
+snd_draw				= weapons\svd_draw
+snd_holster				= weapons\generic_holster
+snd_shoot				= weapons\gauss_shoot
+snd_empty				= weapons\gen_empty, 0.5
+snd_reload				= weapons\svd_reload
+
+ 
+[wpn_gauss_hud]
+
+;shell_point		 	= -0.05, -0.03, 0.05
+;shell_dir		 		= 0.0, 1.0, 0.0
+
+fire_point              = 0.2, 0.03, 0.73
+fire_bone               = wpn_body
+orientation             = 0, 0, 0
+position                = 0, 0, 0
+visual                  = weapons\gauss\wpn_gauss_hud.ogf
+
+anim_holster	= holster
+anim_idle		= idle
+anim_idle_aim	= idle
+anim_reload		= shoot
+anim_draw		= draw
+anim_shoot		= shoot
+
+;смещения HUD для режима приближения
+zoom_offset			= -0.020000,-0.030000,0.030000
+zoom_rotate_x		= 0.000000
+zoom_rotate_y		= -0.020000
+

@@ -1,0 +1,143 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_pm]
+GroupControlSection			= spawn_group
+discovery_dependency 		= 
+$spawn                   	= "weapons\pm"					; option for Level Editor
+$npc			 			= on		; option for Level Editor
+$prefetch 					= 8
+scheduled            		= off              ; option for ALife Simulator
+cform                    	= skeleton
+class                    	= W_PM
+min_radius               	= 0
+max_radius               	= 30
+
+cost					 	= 100
+
+ammo_limit		 			= 120
+ammo_current		 		= 96
+ammo_elapsed		 		= 8
+
+ammo_mag_size		 		= 8
+ammo_class		 			= ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+
+
+hand_dependence			 	= 1
+
+slot 				 		= 1
+animation_slot		 		= 1		; type of the animation that will be used
+single_handed				= 1
+
+inv_name					= PM
+inv_name_short				= PM
+inv_weight					= 1.0
+
+inv_grid_width				= 1
+inv_grid_height				= 1
+inv_grid_x					= 18
+inv_grid_y					= 6
+
+
+immunities_sect				= weapon
+
+;-----------------------------------------------------------------------------------
+;базовая дисперсия
+fire_dispersion_base		= 0.17 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+
+;отдача
+cam_relax_speed         	= 5.0	;скорость возврата в исходное положение
+cam_dispersion          	= 1.2	;увеличения угла (в градусах) с каждым выстрелом
+cam_max_angle				= 4		;максимальный угол отдачи
+cam_max_angle_horz	= 5.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz	= 0.5	;(degree) size of step camera moved in horizontal position while shooting
+
+fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
+misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
+condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+;-----------------------------------------------------------------------------------
+
+direction                	= 0, 0, 1
+fire_point               	= 0.0, 0.127, 0.117
+
+flame_particles				= weapons\generic_weapon05
+smoke_particles				= weapons\generic_shoot_00
+
+shell_point		 			= 0.00, 0.127, 0.03
+shell_dir		 			= 0.0, 0.0, 0.4
+shell_particles	 			= weapons\generic_shells
+
+rpm_empty_click 	 		= 100
+
+; ttc
+hit_power                	= 50
+hit_impulse		 		 	= 70
+hit_type = fire_wound
+
+fire_distance            	= 100
+bullet_speed			 	= 315			;начальная скорость пули
+rpm                      	= 300
+; end ttc
+
+hud                      	= wpn_PM_hud
+normal                   	= 0, 1, 0
+position                 	= -0.021, -0.09, 0.0
+orientation              	= 0, 0, 1
+;startup_ammo             	= 90
+visual                   	= weapons\pm\wpn_pm.ogf
+
+tracer_head_speed	 		= 315
+tracer_trail_scale	 		= 0.75
+tracer_start_length	 		= 1
+tracer_width		 		= 0.07
+light_color		 			= 0.6,0.5,0.3
+light_range		 			= 3.0
+light_var_color		 		= 0.05
+light_var_range		 		= 0.5
+light_time 		 			= 0.2
+
+ph_mass			 			= 1
+;cost			 			= 350
+
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
+
+zoom_enabled				= true
+scope_zoom_factor	    	= 55
+
+;звуки
+snd_draw					= weapons\pm_draw
+snd_holster					= weapons\generic_holster
+snd_shoot					= weapons\pm_shoot
+snd_empty					= weapons\pistol_empty
+snd_reload					= weapons\pm_reload, 0.8
+snd_close					= weapons\generic_close
+
+weapon_remove_time			= 3600000
+
+ 
+[wpn_pm_hud]
+shell_point		         	= -0.35, -0.06, 0.04
+fire_point               	= -0.13,0.0,0.087
+fire_bone                	= wpn_body
+orientation              	= 0,0,0
+position                 	= 0,0,0
+visual                   	= weapons\pm\wpn_pm_hud.ogf
+
+anim_holster				= holster
+anim_idle					= idle
+anim_empty					= empty
+anim_reload					= reload_full
+anim_reload_empty			= reload
+anim_draw					= draw
+anim_draw_empty				= draw_empty
+anim_shoot					= shoot1
+anim_shot_last				= shoot_last
+anim_close					= close
+anim_idle_aim				= idle_aim
+
+;смещения HUD для режима приближения
+zoom_offset					= -0.290800,0.114000,0.000000
+zoom_rotate_x				= 0.054000
+zoom_rotate_y				= 0.086000
+
