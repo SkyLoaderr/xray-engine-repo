@@ -82,7 +82,7 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 	FVF::TL			PT;
 
 	PT.transform	(pos, M);
-	float sz		= Device.dwWidth * radius/PT.p.w;
+	float sz		= Device.dwWidth * radius / PT.p.w;
 	// 'Cause D3D clipping have to clip Four points
 	// We can help him :)
 	if (sz<1.5f)	return;

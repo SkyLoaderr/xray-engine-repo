@@ -72,7 +72,7 @@ void CActor::cam_Update(float dt, BOOL bZoom)
 		break;
 	}
 	CCameraBase* C				= cameras	[cam_active];
-	C->f_fov					= bZoom?7.f:90.f;
+	C->f_fov					= bZoom?15.f:90.f;
 	C->Update					(point,dangle);
 	pCreator->Cameras.Update	(C);
 }
