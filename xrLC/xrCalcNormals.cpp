@@ -85,6 +85,7 @@ void CBuild::CalcNormals()
 			NV->normalFromAdj	();
 		}
 /*
+// old version
 		for (u32 AF = 0; AF < V->adjacent.size(); AF++)
 		{
 			Face*	F			= V->adjacent[AF];
