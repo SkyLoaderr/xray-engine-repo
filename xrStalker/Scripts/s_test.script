@@ -1,7 +1,6 @@
 class "Test1"
 
 function Test1:__init ()
-
     self.value = 0
     printf ("Constructor Test1 called")
 end
@@ -13,7 +12,6 @@ end
 
 function Test1:print ()
     printf ("Test1 value = %d", self.value)
-
 end
 
 
@@ -30,7 +28,7 @@ end
 
 function Test2:set_value (v)
     self.value = v
-    
+    s_test.Test1:set_value (v)
 end    
 
     
