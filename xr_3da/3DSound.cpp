@@ -64,15 +64,21 @@ BOOL C3DSound::Update_Volume()
 	float	dist		= Device.vCameraPosition.distance_to(ps.vPosition);
 	if (dist>ps.flMaxDistance)	return FALSE;
 	else {
-		Update_Occlusion	();
-		float base			= fBaseVolume*(1.f-psSoundOcclusionScale)+psSoundOcclusionScale;
-		fRealVolume			= .9f*fRealVolume + .1f*(fVolume*psSoundVEffects*base);
 		float att			= ps.flMinDistance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
-		float volume		= fRealVolume*att;
-		if (volume>psSoundCull)	{
-			int	hw_volume		= iFloor(float(DSBVOLUME_MIN)*(1-fRealVolume));
-			pBuffer->SetVolume	( hw_volume );
-			return TRUE;
+		if (att*fVolume*psSoundVEffects>psSoundCull)	
+		{
+			Update_Occlusion	();
+			
+			float vol_occ		= fBaseVolume*(1.f-psSoundOcclusionScale)+psSoundOcclusionScale;
+			fRealVolume			= .9f*fRealVolume + .1f*(fVolume*psSoundVEffects*vol_occ);
+			float volume		= fRealVolume*att;
+			if (volume>psSoundCull)	{
+				int	hw_volume		= iFloor(float(DSBVOLUME_MIN)*(1-fRealVolume));
+				pBuffer->SetVolume	( hw_volume );
+				return TRUE;
+			} else {
+				return FALSE;
+			}
 		} else {
 			return FALSE;
 		}
