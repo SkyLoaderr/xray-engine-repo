@@ -296,23 +296,16 @@ void CAI_Soldier::OnFindAloneFire()
 		if (iIndex != -1) {
 			if (this == Group.Members[0]) {
 				if (AI_Path.fSpeed < EPS_L) {
-					for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+					for (int i=0, iLastIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++)
 						if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
 							Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+							iLastIndex = i;
 							break;
 						}
-					float fMin = 1000;
-					int Index = -1;
-					for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-						if (Group.m_tpaSuspiciousNodes[i].dwSearched)
-							continue;
-						if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
-							fMin = Group.m_tpaSuspiciousNodes[i].fCost;
-							Index = i;
-						}
-					}
+					int Index = ifGetSuspiciousAvailableNode(iLastIndex,Group);
 					if (Index != -1) {
 						Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
+						Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[Index].dwGroup] = 1;
 						AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
 						vfBuildPathToDestinationPoint(0);
 					}
@@ -339,21 +332,13 @@ void CAI_Soldier::OnFindAloneFire()
 			else
 				if (this == Group.Members[1]) {
 					if (AI_Path.fSpeed < EPS_L) {
-						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+						for (int i=0, iLastIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++)
 							if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+								iLastIndex = i;
 								break;
 							}
-						float fMin = 1000;
-						int Index = -1;
-						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-							if (Group.m_tpaSuspiciousNodes[i].dwSearched)
-								continue;
-							if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
-								fMin = Group.m_tpaSuspiciousNodes[i].fCost;
-								Index = i;
-							}
-						}
+						int Index = ifGetSuspiciousAvailableNode(iLastIndex,Group);
 						if (Index != -1) {
 							Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
 							AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
@@ -381,21 +366,13 @@ void CAI_Soldier::OnFindAloneFire()
 				}
 				else { 
 					if (AI_Path.fSpeed < EPS_L) {
-						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+						for (int i=0, iLastIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++)
 							if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+								iLastIndex = i;
 								break;
 							}
-						float fMin = 1000;
-						int Index = -1;
-						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-							if (Group.m_tpaSuspiciousNodes[i].dwSearched)
-								continue;
-							if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
-								fMin = Group.m_tpaSuspiciousNodes[i].fCost;
-								Index = i;
-							}
-						}
+						int Index = ifGetSuspiciousAvailableNode(iLastIndex,Group);
 						if (Index != -1) {
 							Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
 							AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;

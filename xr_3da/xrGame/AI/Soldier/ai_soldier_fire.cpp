@@ -1156,4 +1156,43 @@ void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 	}
 	for ( i=0; i<N; i++)
 		Group.m_tpaSuspiciousNodes[i].dwGroup--;
+	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
+	for ( i=0; i<iGroupCounter; i++)
+		Group.m_tpaSuspiciousGroups[i] = 0;
+}
+
+int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
+{
+	int Index = -1;
+	float fMin = 1000;
+	if (iLastIndex >= 0) {
+		int iLastGroup = Group.m_tpaSuspiciousNodes[iLastIndex].dwGroup;
+		for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+			if (Group.m_tpaSuspiciousNodes[i].dwGroup != iLastGroup)
+				continue;
+			if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
+				Index = i;
+			}
+		}
+	}
+	for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+		if (Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[i].dwGroup])
+			continue;
+		if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+			fMin = Group.m_tpaSuspiciousNodes[i].fCost;
+			Index = i;
+		}
+	}
+	if (Index == -1) {
+		for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+			if (Group.m_tpaSuspiciousNodes[i].dwSearched)
+				continue;
+			if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
+				Index = i;
+			}
+		}
+	}
+	return(Index);
 }

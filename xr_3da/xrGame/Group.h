@@ -42,8 +42,7 @@ typedef struct tagSSearchGroup {
 typedef svector<Fvector,MAX_GROUP_SIZE>				MemberPlacement;
 typedef svector<DWORD,MAX_GROUP_SIZE>				MemberNodes;
 typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousNodes;
-typedef svector<SSearchGroup,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousGroups;
-typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousForces;
+typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousGroups;
 
 class CGroup
 {
@@ -70,7 +69,6 @@ public:
 	DWORD						m_dwLastViewChange;
 	SuspiciousNodes				m_tpaSuspiciousNodes;
 	SuspiciousGroups			m_tpaSuspiciousGroups;
-	SuspiciousForces			m_tpaSuspiciousForces;
 
 	// Constructor
 								CGroup				();
