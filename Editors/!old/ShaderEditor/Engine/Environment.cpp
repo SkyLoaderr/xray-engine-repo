@@ -163,20 +163,20 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvMo
 }
 void	CEnvModifier::load	(IReader* fs)
 {
-	position		= fs->r_fvector3();
+					fs->r_fvector3	(position);
 	radius			= fs->r_float	();
 	power			= fs->r_float	();
 	far_plane		= fs->r_float	();
-	fog_color		= fs->r_fvector3();
+					fs->r_fvector3	(fog_color);
 	fog_density		= fs->r_float	();
-	ambient			= fs->r_fvector3();
-	lmap_color		= fs->r_fvector3();
+					fs->r_fvector3	(ambient);
+					fs->r_fvector3	(lmap_color);
 }
 float	CEnvModifier::sum	(CEnvModifier& M, Fvector3& view)
 {
 	float	_dist_sq	=	view.distance_to_sqr(M.position);
 	if (_dist_sq>=(M.radius*M.radius))	return 0;
-	float	_att		=	1-_sqrt(_dist_sq)/M.radius;	[0..1];
+	float	_att		=	1-_sqrt(_dist_sq)/M.radius;	//[0..1];
 	float	_power		=	M.power*_att;
 	far_plane			+=	M.far_plane*_power;
 	fog_color.mad		(M.fog_color,_power);
@@ -293,7 +293,7 @@ void CEnvironment::SetWeather(ref_str name)
 {
 	if (*name && xr_strlen(name))	{
         WeatherPairIt it	= Weathers.find(name);
-        R_ASSERT3			(it!=Weathers.end(),"Invalid weather name.",name);
+        R_ASSERT3			(it!=Weathers.end(),"Invalid weather name.",*name);
         CurrentWeather		= &it->second;
         CurrentWeatherName	= it->first;
     }else{
@@ -391,10 +391,10 @@ void CEnvironment::OnFrame()
 	// modifiers
 	CEnvModifier			EM;
 	EM.far_plane			= 0;
-	EM.fog_color			= { 0,0,0 };
+	EM.fog_color.set		( 0,0,0 );
 	EM.fog_density			= 0;
-	EM.ambient				= { 0,0,0 };
-	EM.lmap_color			= { 0,0,0 };
+	EM.ambient.set			( 0,0,0 );
+	EM.lmap_color.set		( 0,0,0 );
 	Fvector	view			= Device.vCameraPosition;
 	float	mpower			= 0;
 	for (xr_vector<CEnvModifier>::iterator mit=Modifiers.begin(); mit!=Modifiers.end(); mit++)
@@ -458,7 +458,6 @@ void CEnvironment::RenderLast		()
     eff_Thunderbolt->Render			();
 }
 
-#ifdef _EDITOR
 void CEnvironment::OnDeviceCreate()
 {
 	sh_2sky.create			(&b_skybox,"skybox_2t");
@@ -471,6 +470,8 @@ void CEnvironment::OnDeviceDestroy()
 	sh_2sky.destroy			();
 	sh_2geom.destroy		();
 }
+
+#ifdef _EDITOR
 void CEnvironment::ED_Reload()
 {
 	OnDeviceDestroy			();

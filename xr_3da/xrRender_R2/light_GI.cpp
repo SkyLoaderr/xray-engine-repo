@@ -15,7 +15,7 @@ void	light::gi_generate	()
 	Fvector*	verts	= g_pGameLevel->ObjectSpace.GetStaticVerts	();
 	xrc.ray_options		(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
 
-	for (int it=0; it<indirect_photons; it++)	{
+	for (int it=0; it<int(indirect_photons); it++)	{
 		Fvector	dir,idir;
 		switch	(flags.type)		{
 		case IRender_Light::POINT	:	dir.random_dir(random);					break;

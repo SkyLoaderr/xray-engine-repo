@@ -94,6 +94,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 
 	// Objects
 	pApp->LoadTitle				("Loading game...");
+	g_pGamePersistent->Environment.mods_load	();
 	R_ASSERT					(Load_GameSpecific_Before());
 	Objects.Load				();
 	R_ASSERT					(Load_GameSpecific_After ());

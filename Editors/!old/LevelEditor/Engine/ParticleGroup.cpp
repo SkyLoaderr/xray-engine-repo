@@ -400,7 +400,7 @@ BOOL CParticleGroup::Compile(CPGDef* def)
         items.resize			(m_Def->m_Effects.size());
         for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++){
         	CParticleEffect* eff = (CParticleEffect*)RImplementation.model_CreatePE(*e_it->m_EffectName);
-            eff->SetBirthDeadCB	(OnGroupParticleBirth,OnGroupParticleDead,this,e_it-m_Def->m_Effects.begin());
+            eff->SetBirthDeadCB	(OnGroupParticleBirth,OnGroupParticleDead,this,u32(e_it-m_Def->m_Effects.begin()));
 			items[e_it-def->m_Effects.begin()].Set(eff);
         }
     }

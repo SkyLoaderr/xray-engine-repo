@@ -123,14 +123,15 @@ public:
     ref_str					GetWeather			()					{ return CurrentWeatherName;}
 	void					SetGameTime			(float game_time, float time_factor)	{ fGameTime = game_time;  fTimeFactor=time_factor;	}
 
+	void					OnDeviceCreate		();
+	void					OnDeviceDestroy		();
+
 	// editor-related
 #ifdef _EDITOR
 public:
 	float					ed_from_time;
 	float					ed_to_time;
 public:
-	void					OnDeviceCreate		();
-	void					OnDeviceDestroy		();
     void					ED_Reload			();
 #endif
 };

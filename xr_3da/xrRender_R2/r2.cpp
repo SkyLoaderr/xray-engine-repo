@@ -88,7 +88,6 @@ void					CRender::create					()
 	LR.Create					();
 
 	PSLibrary.OnCreate			();
-	PSLibrary.OnDeviceCreate	();
 	HWOCC.occq_create			(occq_size);
 
 	rmNormal					();
