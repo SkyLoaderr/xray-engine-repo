@@ -35,11 +35,11 @@ public:
 
 	vecAdj		adjacent;
 
+	Vertex*		CreateCopy_NOADJ	();
 	IC BOOL	similar(Vertex &V, float eps)
 	{
 		return P.similar(V.P,eps);
 	}
-	IC  Vertex*	CreateCopy_NOADJ();
 	IC	Vertex*	CreateCopy()
 	{
 		Vertex* V = CreateCopy_NOADJ();
