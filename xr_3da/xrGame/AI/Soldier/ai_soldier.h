@@ -252,6 +252,7 @@ class CAI_Soldier : public CCustomMonster
 		float				m_fMinRadioIinterval;
 		float				m_fMaxRadioIinterval;
 		float				m_fRadioRefreshRate;
+		DWORD				m_dwLastRadioTalk;
 
 		
 		// head turns
@@ -330,14 +331,6 @@ class CAI_Soldier : public CCustomMonster
 		float			m_fMinMissFactor;
 		float			m_fMaxMissDistance;
 		float			m_fMaxMissFactor;
-
-		
-		// patrol under fire constants
-		DWORD			m_dwPatrolShock;
-		DWORD			m_dwUnderFireShock;
-		DWORD			m_dwUnderFireReturn;
-		DWORD			m_dwLastRadioTalk;
-		// //
 
 		// patrol structures
 		vector<Fvector>			m_tpaPatrolPoints;

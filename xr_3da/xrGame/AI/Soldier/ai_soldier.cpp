@@ -143,12 +143,6 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_fMaxRadioIinterval = pSettings->ReadFLOAT(section,"MaxRadioIinterval");
 	m_fRadioRefreshRate	 = pSettings->ReadFLOAT(section,"RadioRefreshRate");
 	
-
-	// patrol under fire
-	m_dwPatrolShock = pSettings->ReadINT(section,"PatrolShock");
-	m_dwUnderFireShock = pSettings->ReadINT(section,"UnderFireShock");
-	m_dwUnderFireReturn = pSettings->ReadINT(section,"UnderFireReturn");
-
 	m_dwMaxDynamicObjectsCount = pSettings->ReadINT(section,"DynamicObjectsCount");
 	m_dwMaxDynamicSoundsCount = pSettings->ReadINT(section,"DynamicSoundsCount");
 
