@@ -587,47 +587,6 @@ SOURCE=.\Blenders\Blender_Recorder.cpp
 SOURCE=.\Blenders\Blender_Recorder.h
 # End Source File
 # End Group
-# Begin Source File
-
-SOURCE=.\SH_Constant.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\SH_Constant.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\SH_Matrix.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\SH_Matrix.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\SH_Texture.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\SH_Texture.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Shader.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Shader.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Shader_xrLC.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\WaveForm.h
-# End Source File
-# End Group
 # Begin Group "Textures"
 
 # PROP Default_Filter ""
@@ -680,6 +639,47 @@ SOURCE=.\xr_avi.cpp
 # Begin Source File
 
 SOURCE=.\xr_avi.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\SH_Constant.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\SH_Constant.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SH_Matrix.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\SH_Matrix.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SH_Texture.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\SH_Texture.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Shader.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Shader.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Shader_xrLC.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\WaveForm.h
 # End Source File
 # End Group
 # Begin Source File

@@ -15,13 +15,18 @@ void CShaderManager::xrStartUp()
 	// Load blenders
 	{
 		CStream*	fs		= FS.OpenChunk(2);
-		while (!fs->Eof())	{
+		CStream*	chunk	= NULL;
+		int			chunk_id= 0;
+
+		while ((chunk=fs->OpenChunk(chunk_id))!=NULL)	
+		{
 			CBlender_DESC	desc;
-			fs->Read		(&desc,sizeof(desc));
+			chunk->Read		(&desc,sizeof(desc));
 			CBlender*		B = CBlender::Create(desc.CLS);
-			fs->Seek		(fs->Tell()-sizeof(desc));
+			fs->Seek		(0);
 			B->Load			(*fs);
 			blenders.insert	(make_pair(strdup(desc.cName),B));
+			chunk->close	();
 		}
 		fs->Close();
 	}
