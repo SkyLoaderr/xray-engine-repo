@@ -75,8 +75,8 @@ function action_meat:initialize ()
        self.anims[1] = "drink_idle9"
        self.anims[2] = "drink_idle9"
     elseif self.a.pose == "hiccup" then
-       self.anims[1] = "drink_idle_5"
-       self.anims[2] = "drink_idle_5"
+       self.anims[1] = "drink_idle_5_0"
+       self.anims[2] = "drink_idle_5_1"
     elseif self.a.pose == "lie" then
        self.anims[1] = "drink_idle_7"
        self.anims[2] = "drink_idle_7"
@@ -98,6 +98,9 @@ function action_meat:execute ()
     if self.object:animation_count () < 2 then
        self.current = self.current + 1
        if self.current > 2 then self.current = 1 end
+       if self.a.pose == "hiccup" and self.current == 1 then
+          xr_sounds.play_sound (self.object, 0, "bar", 1, 2)
+       end  
        self.object:add_animation (self.anims[self.current], true)
     end
             
@@ -173,16 +176,19 @@ function action_bar_single:recreate_animations ()
        self.anims[1] = {name = "drink_idle_1_0", count = 1} 
        self.anims[2] = {name = "drink_idle_1_1", count = math.random (3, 10)} 
        self.anims[3] = {name = "drink_idle_1_2", count = 1} 
+       self.anims[4] = {name = "drink_idle_0_0", count = math.random (2, 5)} 
     elseif num == 2 then
        self.anims[1] = {name = "drink_idle_2_0", count = 1} 
        self.anims[2] = {name = "drink_idle_2_1", count = math.random (3, 10)} 
        self.anims[3] = {name = "drink_idle_2_2", count = 1} 
+       self.anims[4] = {name = "drink_idle_0_0", count = math.random (2, 5)} 
     else
        self.anims[1] = {name = "drink_idle_3_0", count = 1} 
        self.anims[2] = {name = "drink_idle_3_1", count = math.random (3, 10)} 
        self.anims[3] = {name = "drink_idle_3_2", count = 1} 
        self.anims[4] = {name = "drink_idle_3_3", count = 1} 
        self.anims[5] = {name = "drink_idle_3_4", count = 1} 
+       self.anims[6] = {name = "drink_idle_0_0", count = math.random (2, 5)} 
     end
     self.set = num
     self.current = 1    
@@ -191,12 +197,12 @@ end
 -------------------
 function action_bar_single:use_callback ()
     if self.a.talking == false then 
-       xr_sounds.play_sound (self.object, 0, "bar", 1)
+       xr_sounds.play_sound (self.object, 0, "bar", 1, 1)
        return 
     end
     
     if self.set == 3 and self.current < 4 then
-       xr_sounds.play_sound (self.object, 0, "bar", 1)
+       xr_sounds.play_sound (self.object, 0, "bar", 1, 1)
        return 
     end
     
