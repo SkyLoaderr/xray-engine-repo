@@ -26,7 +26,7 @@ function main ()
 	local pzone = get_level_object ("stalker_zone")
 	
 	boar:script (true, boar_attack.script_name ())
-	action (boar, move (move.act_walk_fwd, move.default, patrol ("boar_way1"), cond (cond.move_end))
+	action (boar, move (move.act_walk_fwd, move.default, patrol ("boar_way1")), cond (cond.move_end))
 	
 	local oldtime = game.time ()
 	local wait_time = math.random (1000, 2000)
@@ -36,7 +36,7 @@ function main ()
 		   oldtime = game.time ()
 		   wait_time = math.random (1000, 2000)	
 		   update_action (boar, boar_attack.script_name (), sound ("monsters\\boar\\Idle_1", "bip01_head", vector ():set (0, 0, 0), 
-		   				  vector ():set (0, 0, 0), false)
+		   				  vector ():set (0, 0, 0), false))
 		end   
 		wait ()
 	end	
