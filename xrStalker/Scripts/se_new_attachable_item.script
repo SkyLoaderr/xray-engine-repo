@@ -44,6 +44,26 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self._float_4				= 0.6
 	// bool
 	self._bool_0				= true
+	// vector
+	self._vector_0				= vector():set(0.0,0.0,0.0)
+	self._vector_1				= vector():set(0.1,0.1,0.1)
+	self._vector_2				= vector():set(0.2,0.2,0.2)
+	self._vector_3				= vector():set(0.3,0.3,0.3)
+	self._vector_4				= vector():set(0.4,0.4,0.4)
+	// vcolor
+	self._vcolor_0				= vector():set(0,0,0)
+	// vangle
+	self._vangle_0				= vector():set(0.0,0.0,0.0)
+	self._vangle_1				= vector():set(0.1,0.1,0.1)
+	self._vangle_2				= vector():set(0.2,0.2,0.2)
+	self._vangle_3				= vector():set(0.3,0.3,0.3)
+	self._vangle_4				= vector():set(0.4,0.4,0.4)
+	// flags16
+	self._flag16_0				= flags16()
+	self._flag16:zero			()
+	// flags32
+	self._flag32_0				= flags32()
+	self._flag32:zero			()
 end
 
 function CSE_NewAttachableItem:__finalize	()
@@ -91,6 +111,24 @@ function CSE_NewAttachableItem:STATE_Write	(packet)
 	packet:w_float				(self._float_4)
 	// bool
 	packet:w_bool				(self._bool_0)
+	// vector
+	packet:w_vec3				(self._vector_0)
+	packet:w_vec3				(self._vector_1)
+	packet:w_vec3				(self._vector_2)
+	packet:w_vec3				(self._vector_3)
+	packet:w_vec3				(self._vector_4)
+	// vcolor
+	packet:w_vec3				(self._vcolor_0)
+	// vangle
+	packet:w_vec3				(self._vangle_0)
+	packet:w_vec3				(self._vangle_1)
+	packet:w_vec3				(self._vangle_2)
+	packet:w_vec3				(self._vangle_3)
+	packet:w_vec3				(self._vangle_4)
+	// flags16
+	packet:w_u16				(self._flag16_0:get())
+    // flags32
+	packet:w_u32				(self._flag32_0:get())
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
@@ -134,6 +172,24 @@ function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	self._float_4				= packet:r_float()
 	// bool
 	self._bool_0				= packet:r_bool()
+	// vector
+	packet:r_vec3				(self._vector_0)
+	packet:r_vec3				(self._vector_1)
+	packet:r_vec3				(self._vector_2)
+	packet:r_vec3				(self._vector_3)
+	packet:r_vec3				(self._vector_4)
+	// vcolor
+	packet:r_vec3				(self._vcolor_0)
+	// vangle
+	packet:r_vec3				(self._vangle_0)
+	packet:r_vec3				(self._vangle_1)
+	packet:r_vec3				(self._vangle_2)
+	packet:r_vec3				(self._vangle_3)
+	packet:r_vec3				(self._vangle_4)
+	// flags16
+	self._flag16_0:assign		(packet:r_u16())
+	// flags32
+	self._flag32_1:assign		(packet:r_u32())
 end
 
 function CSE_NewAttachableItem:FillProps	(pref,items)
@@ -177,4 +233,28 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	properties_helper():create_float(items,"script\\float\\4",self,"_float_4",0,10,0.1,3)
 	// bool														   
 	properties_helper():create_bool	(items,"script\\bool\\0",self,"_bool_0")
+	// vector
+	properties_helper():create_vector(items,"script\\vector\\0",self,"_vector_0")
+	properties_helper():create_vector(items,"script\\vector\\1",self,"_vector_1",-1)
+	properties_helper():create_vector(items,"script\\vector\\2",self,"_vector_2",-10,10)
+	properties_helper():create_vector(items,"script\\vector\\3",self,"_vector_3",-10,10,0.5)
+	properties_helper():create_vector(items,"script\\vector\\4",self,"_vector_4",-10,10,0.5,4)
+	// vcolor
+	properties_helper():create_vcolor(items,"script\\vcolor\\0",self,"_vcolor_0")
+	// vector
+	properties_helper():create_vangle(items,"script\\vangle\\0",self,"_vangle_0")
+	properties_helper():create_vangle(items,"script\\vangle\\1",self,"_vangle_1",-1)
+	properties_helper():create_vangle(items,"script\\vangle\\2",self,"_vangle_2",-10,10)
+	properties_helper():create_vangle(items,"script\\vangle\\3",self,"_vangle_3",-10,10,0.5)
+	properties_helper():create_vangle(items,"script\\vangle\\4",self,"_vangle_4",-10,10,0.5,4)
+	// flags16
+	properties_helper():create_flag16(items,"script\\flags16\\0",self,"_flag16_0",1)
+	properties_helper():create_flag16(items,"script\\flags16\\1",self,"_flag16_0",2)
+	properties_helper():create_flag16(items,"script\\flags16\\2",self,"_flag16_0",4)
+	properties_helper():create_flag16(items,"script\\flags16\\3",self,"_flag16_0",8)
+	// flags32
+	properties_helper():create_flag32(items,"script\\flags32\\0",self,"_flag32_0",1)
+	properties_helper():create_flag32(items,"script\\flags32\\1",self,"_flag32_0",2)
+	properties_helper():create_flag32(items,"script\\flags32\\2",self,"_flag32_0",4)
+	properties_helper():create_flag32(items,"script\\flags32\\3",self,"_flag32_0",8)
 end
