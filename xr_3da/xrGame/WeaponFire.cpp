@@ -13,6 +13,7 @@
 #include "HUDManager.h"
 #include "entity.h"
 #include "actor.h"
+#include "actoreffector.h"
 
 
 #define FLAME_TIME 0.05f
@@ -305,23 +306,34 @@ void CWeapon::UpdateFlameParticles2	()
 // Для эффекта отдачи оружия
 void CWeapon::AddShotEffector		()
 {
-	if(!m_pWeaponRecoil)
+/*	if(!m_pWeaponRecoil)
 		m_pWeaponRecoil = xr_new<CWeaponRecoil> (camMaxAngle,camRelaxSpeed);
 	VERIFY(m_pWeaponRecoil);
 	m_pWeaponRecoil->Shot(camDispersion);
+	*/
 
 /*	if(!hud_mode) return;
+*/
 
-	CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
-	if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
-	R_ASSERT				(S);
-	S->Shot					(camDispersion);*/
+	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor)
+	{
+		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(cefShot)); 
+		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
+		R_ASSERT				(S);
+		S->Shot					(camDispersion);
+	}
 }
 
 void  CWeapon::RemoveShotEffector	()
 {
-	xr_delete(m_pWeaponRecoil);
+//	xr_delete(m_pWeaponRecoil);
 
 /*	if (Local()) 
 		Level().Cameras.RemoveEffector	(cefShot);*/
+	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+   	if(pActor)
+	{
+		pActor->EffectorManager().RemoveEffector	(cefShot);
+	}
 }

@@ -23,6 +23,8 @@
 #include "EffectorHit.h"
 #include "ShootingHitEffector.h"
 #include "SleepEffector.h"
+#include "ActorEffector.h"
+
 
 // breakpoints
 #include "../xr_input.h"
@@ -141,6 +143,8 @@ CActor::CActor() : CEntityAlive()
 	////////////////////////////////////
 	pStatGraph = NULL;
 	dDesyncVec.set(0, 0, 0);
+
+	m_pActorEffector = xr_new<CActorEffector>();
 }
 
 
@@ -165,7 +169,7 @@ CActor::~CActor()
 		xr_delete<CPhysicsShell>(m_pPhysicsShell);
 	}
 
-	//xr_delete(m_trade);
+	xr_delete(m_pActorEffector);
 }
 
 void CActor::reinit	()
@@ -1548,7 +1552,7 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 		unaffected_r_torso_pitch = r_torso.pitch;
 	}
 
-	CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
+	/*CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
 		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
 
 	if(pWeapon) 
@@ -1557,8 +1561,13 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 		dangle = pWeapon->GetRecoilDeltaAngle();
 		r_torso.yaw		=	unaffected_r_torso_yaw + dangle.y;
 		r_torso.pitch	=	unaffected_r_torso_pitch + dangle.x;
-	}
+	}*/
 
+/*	Fvector dangle;
+	EffectorManager().vDirection.getHP(dangle.y, dangle.x);
+	r_torso.yaw		=	unaffected_r_torso_yaw - dangle.y;
+	r_torso.pitch	=	unaffected_r_torso_pitch - dangle.x;
+*/
 
 
 	// если есть движение - выровнять модель по камере
@@ -1595,6 +1604,9 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 
 void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 {
+	fire_pos = EffectorManager().vPosition;
+	fire_dir = EffectorManager().vDirection;
+	return;
 	/*
 	if (Local()) {
 		if (HUDview()) 

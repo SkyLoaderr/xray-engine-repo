@@ -8,6 +8,7 @@
 
 #include "ShootingHitEffector.h"
 #include "SleepEffector.h"
+#include "ActorEffector.h"
 
 void CActor::cam_Set	(EActorCameras style)
 {
@@ -58,6 +59,9 @@ void CActor::cam_Update(float dt, float fFOV)
 		dangle.set			(0,0,0);
 		break;
 	}
+
+
+	/*
 	CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
 		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
 
@@ -65,14 +69,28 @@ void CActor::cam_Update(float dt, float fFOV)
 	{
 		dangle = pWeapon->GetRecoilDeltaAngle();
 	}
+	*/
 
 		
 	CCameraBase* C				= cam_Active();
 	C->Update					(point,dangle);
 	C->f_fov					= fFOV;
-	if (Level().CurrentEntity() == this)
-		Level().Cameras.Update	(C);
 
+	/*cameras[eacFirstEye]*/
+
+	cameras[eacFirstEye]->Update			(point,dangle);
+	cameras[eacFirstEye]->f_fov					= fFOV;
+	EffectorManager().Update	(cameras[eacFirstEye]);
+
+	if (Level().CurrentEntity() == this)
+	{
+		if(eacFirstEye == cam_active)
+			EffectorManager().Apply		(C);
+
+		Level().Cameras.Update	(C);
+	}
+
+		
 	// ::Render.Target.set_gray	(cam_gray);
 }
 

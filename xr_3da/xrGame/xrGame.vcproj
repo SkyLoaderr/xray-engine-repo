@@ -2904,6 +2904,12 @@
 							RelativePath=".\ActorCondition.h">
 						</File>
 						<File
+							RelativePath=".\ActorEffector.cpp">
+						</File>
+						<File
+							RelativePath=".\ActorEffector.h">
+						</File>
+						<File
 							RelativePath=".\ActorInput.cpp">
 						</File>
 						<File

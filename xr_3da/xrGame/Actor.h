@@ -32,6 +32,8 @@ struct SShootingEffector;
 struct SSleepEffector;
 class  CSleepEffectorPP;
 
+class  CActorEffector;
+
 class CActor: 
 	public CEntityAlive, 
 	public Feel::Touch,
@@ -252,6 +254,9 @@ private:
 	void					LoadSleepEffector		(LPCSTR section);
 	SSleepEffector*			m_pSleepEffector;
 	CSleepEffectorPP*		m_pSleepEffectorPP;
+
+	//менеджер эффекторов, есть у каждого актрера
+	CActorEffector*			m_pActorEffector;
 
 	//Sleep params
 	//время когда актера надо разбудить
@@ -502,6 +507,8 @@ public:
 
 	virtual f32 GetMass() { return g_Alive()?m_PhysicMovementControl->GetMass():m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
 	virtual float						Radius				() const;
+
+	CActorEffector&						EffectorManager		() 	{return *m_pActorEffector;}
 
 #ifdef DEBUG
 	virtual void						OnRender			();
