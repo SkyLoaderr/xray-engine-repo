@@ -146,7 +146,7 @@ IC		void		gm_SetAmbientLevel	(u32 C)
 
 	u32 Camb		= (C*3)/4;
 	gm_SetAmbient	(D3DCOLOR_XRGB(Camb,Camb,Camb));
-	u32 Clevel	= (C*4)/3;
+	u32 Clevel		= (C*4)/3;
 	gm_SetLevel		(Clevel);
 }
 IC		void		gm_SetNearer		(BOOL bNearer)
