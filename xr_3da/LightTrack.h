@@ -10,6 +10,7 @@
 
 const float					lt_inc			= 16.f;
 const float					lt_dec			= 4.f;
+const float					lt_smooth		= 4.f;
 
 class ENGINE_API CLightTrack  
 {
@@ -28,6 +29,8 @@ public:
 	};
 	vector<Item>			track;
 	vector<Light>			lights;
+	float					ambient;
+	DWORD					dwFrame;
 public:
 	void					add				(int id);
 	void					remove			(int id);

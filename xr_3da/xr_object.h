@@ -82,15 +82,16 @@ public:
 	IC const Fmatrix&					svXFORM			()			 const	{ return svTransform;	}
 	IC const Fmatrix&					clXFORM			()			 const	{ return clTransform;	}
 	
-	IC CSector*							Sector			()					{ return pSector;	}
-	IC CLightTrack*						Lights			()					{ return pLights;	}
+	IC CSector*							Sector			()					{ return pSector;		}
+	IC CLightTrack*						Lights			()					{ return pLights;		}
+	virtual float						Ambient			()					{ return 0.f;		 	}
 
 	virtual float						Radius			() const;
-	virtual Fvector&					Position		() 					{ return vPosition; }
-	IC Fvector&							Direction		() 					{ return mRotate.k; }
-	IC Fmatrix&							Rotation		()					{ return mRotate;	}
-	IC CVisual*							Visual			()					{ return pVisual;   }
-	IC CCFModel*						CFORM			() const			{ return cfModel;	}
+	virtual Fvector&					Position		() 					{ return vPosition;		}
+	IC Fvector&							Direction		() 					{ return mRotate.k;		}
+	IC Fmatrix&							Rotation		()					{ return mRotate;		}
+	IC CVisual*							Visual			()					{ return pVisual;		}
+	IC CCFModel*						CFORM			() const			{ return cfModel;		}
 
 	// Name management
 	IC LPCSTR							cName			()					{ return NameObject;	}
@@ -99,12 +100,12 @@ public:
 	void								cNameSect_set	(LPCSTR N);
 	
 	// Visible property
-	IC void								setVisible		(BOOL _visible)		{ bVisible = _visible; }
-	IC BOOL								getVisible		()					{ return bVisible;	}
+	IC void								setVisible		(BOOL _visible)		{ bVisible = _visible;	}
+	IC BOOL								getVisible		()					{ return bVisible;		}
 
 	// Enabled property
 	void								setEnabled		(BOOL _enabled);
-	IC BOOL								getEnabled		()					{ return bEnabled;	}
+	IC BOOL								getEnabled		()					{ return bEnabled;		}
 
 	//---------------------------------------------------------------------
 										CObject			();
