@@ -598,7 +598,7 @@ void CCustomMonster::OnRender()
 	
 	if (psAI_Flags.test(aiMotion)) 
 	{
-		Movement.dbg_Draw();
+		//Movement.dbg_Draw();
 	}
 	if (bDebug) PKinematics(pVisual)->DebugRender(clTransform);
 }

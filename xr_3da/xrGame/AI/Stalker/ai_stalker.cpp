@@ -17,7 +17,7 @@ CAI_Stalker::CAI_Stalker			()
 	
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;
-	m_tLookType						= eLookTypePatrol;
+	m_tLookType						= eLookTypeDirection;
 	m_tBodyState					= eBodyStateStand;
 	m_dwDirectionStartTime			= 0;
 	m_dwAnimationSwitchInterval		= 500;
@@ -40,6 +40,8 @@ CAI_Stalker::CAI_Stalker			()
 	m_bActionStarted				= false;
 	m_iSoundIndex					= -1;
 	m_dwSoundTime					= 0;
+
+	m_dwLastRangeSearch				= 0;
 	
 //	m_fAccuracy						= 0.f;
 //	m_fIntelligence					= 0.f;

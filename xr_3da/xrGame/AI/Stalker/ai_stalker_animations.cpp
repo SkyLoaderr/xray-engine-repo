@@ -85,6 +85,7 @@ LPCSTR caInPlaceNames		[] = {
 LPCSTR caGlobalNames		[] = {
 	"death_",
 	"damage_",
+	"escape_",
 	0
 };
 
@@ -149,7 +150,7 @@ void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
 			pitch_factor	= p_head_fire_factor;
 			break;
 		}
-		case eLookTypePatrol :
+		case eLookTypeDirection :
 		case eLookTypeSearch :
 		case eLookTypeDanger :
 		case eLookTypePoint : {
@@ -178,7 +179,7 @@ void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
 			pitch_factor	= p_shoulder_fire_factor;
 			break;
 		}
-		case eLookTypePatrol :
+		case eLookTypeDirection :
 		case eLookTypeSearch :
 		case eLookTypeDanger :
 		case eLookTypePoint : {
@@ -207,7 +208,7 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 			pitch_factor	= p_spin_fire_factor;
 			break;
 		}
-		case eLookTypePatrol :
+		case eLookTypeDirection :
 		case eLookTypeSearch :
 		case eLookTypeDanger :
 		case eLookTypePoint : {
@@ -228,6 +229,7 @@ void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
 	if (g_Health() <= 0)
 		tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[0];
+	tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[2].A[0];
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)

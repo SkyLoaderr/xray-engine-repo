@@ -151,13 +151,13 @@ u32 CAI_Space::q_Node(u32 PrevNode, const Fvector& BasePos, bool bShortSearch)
 	NodePosition	QueryPos;
 	PackPosition	(QueryPos,BasePos);
 
-	if (u_InsideNode(*m_nodes_ptr[PrevNode],QueryPos)) {
-	//if (bfInsideNode(BasePos,m_nodes_ptr[PrevNode])) {
-		Device.Statistic.AI_Node.End();
-		return PrevNode;
-	}
-	
 	if (PrevNode < m_header.size) {
+		if (u_InsideNode(*m_nodes_ptr[PrevNode],QueryPos)) {
+		//if (bfInsideNode(BasePos,m_nodes_ptr[PrevNode])) {
+			Device.Statistic.AI_Node.End();
+			return PrevNode;
+		}
+		
 		// Perform neibourhood search
 		CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode> tSearch;
 		tSearch.m_fSearchRange = m_header.size*3;

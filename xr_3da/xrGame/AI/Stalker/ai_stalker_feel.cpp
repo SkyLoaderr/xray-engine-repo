@@ -104,14 +104,9 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 
 void CAI_Stalker::SetDirectionLook()
 {
-	int i = ps_Size	();
-	if (i > 1) {
-		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		tWatchDirection.getHP(r_target.yaw,r_target.pitch);
-		r_target.yaw *= -1;
-		r_target.pitch *= -1;
-	}
+	GetDirectionAngles(r_target.yaw,r_target.pitch);
+	r_target.yaw *= -1;
+	r_target.pitch *= -1;
 }
 
 void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, bool bDifferenceLook)

@@ -64,11 +64,20 @@ private:
 	};
 
 	enum ELookType {
-		eLookTypePatrol = 0,
+		eLookTypeDirection = 0,
 		eLookTypeSearch,
 		eLookTypeDanger,
 		eLookTypePoint,
 		eLookTypeFirePoint,
+	};
+
+	enum EDirectionType {
+		eDirectionTypeForward = 0,
+		eDirectionTypeForwardDodge,
+		eDirectionTypeForwardCover,
+		eDirectionTypeBack,
+		eDirectionTypeBackDodge,
+		eDirectionTypeBackCover,
 	};
 
 	typedef struct tagSStalkerStates {
@@ -205,6 +214,8 @@ private:
 	float					m_fWalkFactor;
 	float					m_fRunFactor;
 
+	u32						m_dwLastRangeSearch;
+
 			// state machine
 			void			vfAddStateToList				(EStalkerStates eState);
 			// states
@@ -221,6 +232,8 @@ private:
 			void			HolsterItem						();
 			void			TakeItem						();
 			void			DropItem						();
+
+			void			BackDodge						();
 
 			// selectors
 			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *S, bool bCanStraighten = false, Fvector *tpDestinationPosition = 0);

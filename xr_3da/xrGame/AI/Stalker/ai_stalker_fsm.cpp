@@ -13,9 +13,9 @@
 #undef	WRITE_TO_LOG
 //#define WRITE_TO_LOG(s) m_bStopThinking = true;
 #define WRITE_TO_LOG(s) {\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	m_bStopThinking = true;\
 }
-// Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 
 #ifndef DEBUG
 	#undef	WRITE_TO_LOG
@@ -35,21 +35,6 @@ void CAI_Stalker::vfAddStateToList(EStalkerStates eState)
 	tStalkerStates.eState = eState;
 	m_tStateList.push_back(tStalkerStates);
 };
-
-void CAI_Stalker::Death()
-{
-	WRITE_TO_LOG("Death");
-	
-	DropItemSendMessage();
-	Fvector	dir;
-	AI_Path.Direction(dir);
-	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
-}
-
-void CAI_Stalker::RetreatUnknown()
-{
-	WRITE_TO_LOG("Retreating unknown");
-}
 
 void CAI_Stalker::vfUpdateSearchPosition()
 {
@@ -78,6 +63,21 @@ void CAI_Stalker::vfUpdateSearchPosition()
 			if (m_eCurrentState == eStalkerStateAccomplishingTask)
 				AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 	}
+}
+
+void CAI_Stalker::Death()
+{
+	WRITE_TO_LOG("Death");
+	
+	DropItemSendMessage();
+	Fvector	dir;
+	AI_Path.Direction(dir);
+	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+}
+
+void CAI_Stalker::RetreatUnknown()
+{
+	WRITE_TO_LOG("Retreating unknown");
 }
 
 void CAI_Stalker::SearchCorp()
@@ -162,7 +162,7 @@ void CAI_Stalker::DropItem()
 
 void CAI_Stalker::Recharge()
 {
-	WRITE_TO_LOG("Pursuiting known");
+	WRITE_TO_LOG("Recharge");
 	
 	vfStopFire();
 
@@ -338,7 +338,7 @@ void CAI_Stalker::PursuitKnown()
 
 	vfChooseSuspiciousNode		(m_tSelectorFreeHunting);
 	
-	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypePatrol);
+	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypeDirection);
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
@@ -369,71 +369,99 @@ void CAI_Stalker::Defend()
 		r_torso_target.yaw		= r_target.yaw;
 }
 
+void CAI_Stalker::BackDodge()
+{
+	WRITE_TO_LOG("Back dodging");
+	
+	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
+
+	vfChoosePointAndBuildPath	(m_tSelectorRetreat, true);
+
+	vfSetFire					(false,*getGroup());
+
+	Fvector						tPoint;
+	m_tEnemy.Enemy->svCenter	(tPoint);
+	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypeDirection,tPoint);
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
+}
+
 void CAI_Stalker::Think()
 {
 	vfUpdateDynamicObjects	();
-	vfUpdateSearchPosition	();
+//	vfUpdateSearchPosition	();
 	m_dwUpdateCount++;
 	m_dwLastUpdate			= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
 	m_bStopThinking			= false;
 	do {
 		m_ePreviousState	= m_eCurrentState;
-		switch (m_eCurrentState) {
-			case eStalkerStateDie : {
-				Death();
-				break;
-			}
-			case eStalkerStateAccomplishingTask : {
-				AccomplishTask();
-				break;
-			}
-			case eStalkerStateAttack : {
-				Attack();
-				break;
-			}
-			case eStalkerStateDefend : {
-				Defend();
-				break;
-			}
-			case eStalkerStateRetreatKnown : {
-				RetreatKnown();
-				break;
-			}
-			case eStalkerStateRetreatUnknown : {
-				RetreatUnknown();
-				break;
-			}
-			case eStalkerStatePursuitKnown : {
-				PursuitKnown();
-				break;
-			}
-			case eStalkerStatePursuitUnknown : {
-				PursuitUnknown();
-				break;
-			}
-			case eStalkerStateSearchCorp : {
-				SearchCorp();
-				break;
-			}
-			case eStalkerStateRecharge : {
-				Recharge();
-				break;
-			}
-			case eStalkerStateHolsterItem : {
-				HolsterItem();
-				break;
-			}
-			case eStalkerStateTakeItem : {
-				TakeItem();
-				break;
-			}
-			case eStalkerStateDropItem : {
-				DropItem();
-				break;
-			}
-		}
-		m_bStateChanged		= m_ePreviousState != m_eCurrentState;
+//		Fvector				tPoint;
+//		//					 fire	  body state	 movement type		look type     point to view
+//		SetStates			(
+//							false,
+//							eDirectionTypeBack,
+//							eBodyStateStand, 
+//							eMovementTypeRun, 
+//							eLookTypePoint, 
+//							tPoint);
+		BackDodge();
+//		switch (m_eCurrentState) {
+//			case eStalkerStateDie : {
+//				Death();
+//				break;
+//			}
+//			case eStalkerStateAccomplishingTask : {
+//				AccomplishTask();
+//				break;
+//			}
+//			case eStalkerStateAttack : {
+//				Attack();
+//				break;
+//			}
+//			case eStalkerStateDefend : {
+//				Defend();
+//				break;
+//			}
+//			case eStalkerStateRetreatKnown : {
+//				RetreatKnown();
+//				break;
+//			}
+//			case eStalkerStateRetreatUnknown : {
+//				RetreatUnknown();
+//				break;
+//			}
+//			case eStalkerStatePursuitKnown : {
+//				PursuitKnown();
+//				break;
+//			}
+//			case eStalkerStatePursuitUnknown : {
+//				PursuitUnknown();
+//				break;
+//			}
+//			case eStalkerStateSearchCorp : {
+//				SearchCorp();
+//				break;
+//			}
+//			case eStalkerStateRecharge : {
+//				Recharge();
+//				break;
+//			}
+//			case eStalkerStateHolsterItem : {
+//				HolsterItem();
+//				break;
+//			}
+//			case eStalkerStateTakeItem : {
+//				TakeItem();
+//				break;
+//			}
+//			case eStalkerStateDropItem : {
+//				DropItem();
+//				break;
+//			}
+//		}
+//		m_bStateChanged		= m_ePreviousState != m_eCurrentState;
 	}
 	while (!m_bStopThinking);
 };

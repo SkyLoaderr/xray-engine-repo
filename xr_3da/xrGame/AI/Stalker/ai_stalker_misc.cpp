@@ -11,7 +11,8 @@
 #include "..\\..\\a_star.h"
 #include "..\\ai_monsters_misc.h"
 
-#define TIME_TO_SEARCH 60000
+#define MIN_RANGE_SEARCH_TIME_INTERVAL	 2000
+#define TIME_TO_SEARCH					60000
 
 void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool bCanStraighten, Fvector *tpDestinationPosition)
 {
@@ -46,6 +47,7 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool b
 					AI_Path.TravelPath[AI_Path.TravelPath.size() - 2].P = *tpDestinationPosition;
 				}
 			}
+			AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
 		}
 		else {
 			vector<Fvector>		tpaPoints(0);
@@ -99,6 +101,31 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool b
 					AI_Path.Nodes.push_back(tpaNodes[j]);
 				}
 			}
+			N = AI_Path.TravelPath.size();
+			Fvector tLeft, tRight;
+			if (N) {
+				tStartPosition = AI_Path.TravelPath[N - 1].P;
+				tStartPosition.sub(vPosition);
+				float yaw, pitch;
+				tStartPosition.getHP(yaw,pitch);
+				yaw += PI_DIV_2;
+				tStartPosition.setHP(yaw,pitch);
+				tStartPosition.normalize_safe();
+				tStartPosition.mul(1.f);
+				tLeft = tStartPosition;
+				yaw += PI;
+				tStartPosition.setHP(yaw,pitch);
+				tStartPosition.normalize_safe();
+				tStartPosition.mul(1.f);
+				tRight = tStartPosition;
+			}
+			for ( i=1; i<N; i++) {
+				if ((i % 4) == 1)
+					AI_Path.TravelPath[i].P.add(tLeft);
+				else
+					if ((i % 4) == 3)
+						AI_Path.TravelPath[i].P.add(tRight);
+			}
 			AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
 	//		vector<Fvector>		tpaPoints(0);
 	//		vector<Fvector>		tpaDeviations(0);
@@ -143,10 +170,9 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool b
 
 void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
 {
-//	if ((!m_dwLastRangeSearch) || (AI_Path.fSpeed < EPS_L) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL) && (::Random.randF(0,1) < float(S.m_dwCurTime - m_dwLastRangeSearch)/MAX_TIME_RANGE_SEARCH))) 
-	{
+	if ((!m_dwLastRangeSearch) || (AI_Path.TravelStart > AI_Path.TravelPath.size() - 3) || (AI_Path.fSpeed < EPS_L) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL))) {
 		
-//		m_dwLastRangeSearch = S.m_dwCurTime;
+		m_dwLastRangeSearch = S.m_dwCurTime;
 		vfInitSelector(S,Squad,Leader);
 		
 		float fOldCost = MAX_NODE_ESTIMATION_COST;
@@ -154,7 +180,7 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &S, CSquad &Sq
 			S.m_tpCurrentNode		= getAI().Node(AI_Path.DestNode);
 			S.m_fDistance			= getAI().u_SqrDistance2Node(vPosition,S.m_tpCurrentNode);
 			fOldCost				= S.ffEvaluateNode();
-			Msg						("PrevNode : %d, cost : %f",AI_Path.DestNode,fOldCost);
+//			Msg						("PrevNode : %d, cost : %f",AI_Path.DestNode,fOldCost);
 		}
 		Device.Statistic.AI_Node.Begin();
 		Squad.Groups[g_Group()].GetAliveMemberInfo(S.m_taMemberPositions, S.m_taMemberNodes, S.m_taDestMemberPositions, S.m_taDestMemberNodes, this);
@@ -165,15 +191,15 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &S, CSquad &Sq
 		S.vfShallowGraphSearch(getAI().q_mark_bit);
 		// if search has found _new_ best node then 
 //		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.m_fLaziness))){
-		Msg("CurrNode : %d, cost %f",S.m_dwBestNode,S.m_fBestCost);
+//		Msg("CurrNode : %d, cost %f",S.m_dwBestNode,S.m_fBestCost);
 		if ((AI_Path.DestNode != S.m_dwBestNode) && (S.m_fBestCost < (fOldCost - S.m_fLaziness))){
-			Msg("ChooNode : %d, cost %f",S.m_dwBestNode,S.m_fBestCost);
+//			Msg("ChooNode : %d, cost %f",S.m_dwBestNode,S.m_fBestCost);
 			AI_Path.DestNode		= S.m_dwBestNode;
 			AI_Path.bNeedRebuild	= TRUE;
 			//vfAddToSearchList();
 		} 
-		else
-			Msg("ChooNode : %d, cost %f",AI_Path.DestNode,fOldCost);
+//		else
+//			Msg("ChooNode : %d, cost %f",AI_Path.DestNode,fOldCost);
 		
 //		if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart))
 //			AI_Path.bNeedRebuild = TRUE;
@@ -381,7 +407,7 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 		m_fCurSpeed = 0.f;
 	
 	switch (m_tLookType) {
-		case eLookTypePatrol : {
+		case eLookTypeDirection : {
 			SetDirectionLook();
 			break;
 		}
@@ -398,7 +424,7 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 			tTemp.sub	(tPointToLook,vPosition);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
 			r_target.yaw *= -1;
-			r_target.pitch *= 1;
+			r_target.pitch *= -1;
 			break;
 		}
 		case eLookTypeFirePoint : {
@@ -406,7 +432,7 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 			tTemp.sub	(tPointToLook,vPosition);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
 			r_target.yaw *= -1;
-			r_target.pitch *= 1;
+			r_target.pitch *= -1;
 			break;
 		}
 		default : NODEFAULT;
