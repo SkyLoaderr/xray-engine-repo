@@ -34,7 +34,7 @@ struct b_material
 	u16					shader;				// index of shader that combine them
 	u16					shader_xrlc;		// compiler options
 	u16					sector;				// ***
-	u16					reserved;			//
+	u32					internal_max_area;	//
 };
 
 struct b_shader

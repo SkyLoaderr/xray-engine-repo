@@ -17,63 +17,75 @@ IC int	compare_defl		(CDeflector* D1, CDeflector* D2)
 	return				2;	// equal
 }
 
-// by material / state changes
-bool	compare1_defl		(CDeflector* D1, CDeflector* D2)
+// should define LESS(D1<D2) behaviour
+// sorting - in increasing order
+IC int	sort_defl_analyze	(CDeflector* D1, CDeflector* D2)
 {
-	switch (compare_defl(D1,D2))	
+	// first  - get material index
+	WORD M1		= D1->GetBaseMaterial();
+	WORD M2		= D2->GetBaseMaterial();
+
+	// 1. material area
+	u32	 A1		= pBuild->materials[M1]->internal_max_area;
+	u32	 A2		= pBuild->materials[M2]->internal_max_area;
+	if (A1<A2)	return	2;	// A2 better
+	if (A1>A2)	return	1;	// A1 better
+
+	// 2. material sector (geom - locality)
+	u32	 s1		= pBuild->materials[M1]->sector;
+	u32	 s2		= pBuild->materials[M2]->sector;
+	if (s1<s2)	return	2;	// s2 better
+	if (s1>s2)	return	1;	// s1 better
+
+	// 3. just material index
+	if (M1<M2)	return	2;	// s2 better
+	if (M1>M2)	return	1;	// s1 better
+
+	// 4. deflector area
+	u32 da1		= D1->layer.Area();
+	u32 da2		= D2->layer.Area();
+	if (da1<da2)return	2;	// s2 better
+	if (da1>da2)return	1;	// s1 better
+
+	// 5. they are EQUAL
+	return				0;	// equal
+}
+
+// should define LESS(D1<D2) behaviour
+// sorting - in increasing order
+IC bool	sort_defl_complex	(CDeflector* D1, CDeflector* D2)
+{
+	switch (sort_defl_analyze(D1,D2))	
 	{
-	case 0:		return false;
-	case 1:		return true;
-	case 2:		return false;
+	case 1:		return false;	// 1st is better 
+	case 2:		return true;	// 2nd is better
+	case 0:		return false;	// none is better
 	default:	return false;
 	}
 }
 
-// as 1, but also by geometric locality
-bool	compare2_defl		(CDeflector* D1, CDeflector* D2)
-{
-	switch (compare_defl(D1,D2))	
-	{
-	case 0:		return false;
-	case 1:		return true;
-	case 2:		
-		{
-			float	dist1	= Deflector->Sphere.P.distance_to(D1->Sphere.P) - D1->Sphere.R;
-			float	dist2	= Deflector->Sphere.P.distance_to(D2->Sphere.P) - D2->Sphere.R;
-			return	dist1 < dist2;
-		}
-	default:	return false;
-	}
-}
-
-// by area of layer - reverse
-bool	compare3_defl		(CDeflector* D1, CDeflector* D2)
-{
-	return D1->layer.Area() > D2->layer.Area();
-}
 class	pred_remove { public: IC bool	operator() (CDeflector* D) { { if (0==D) return TRUE;}; if (D->bMerged) {D->bMerged=FALSE; return TRUE; } else return FALSE;  }; };
-
-// O(n*n) sorting
-void	dumb_sort	(vecDefl& L)
-{
-	for (int n1=0; n1<int(L.size()); n1++)
-	{
-		Progress(float(n1)/float(L.size()));
-		for (int n2=2; n2<int(L.size()); n2++)
-			if (compare2_defl(L[n2],L[n2-1]))	std::swap(L[n2],L[n2-1]);
-	}
-}
 
 void CBuild::xrPhase_MergeLM()
 {
 	vecDefl			Layer;
 
+	// **** calc material area
+	for (u32 it=0; it<materials.size(); it++) materials[it].internal_max_area	= 0;
+	for (u32 it=0; it<Layer.size(); it++)
+	{
+		CDeflector*	D		= Layer[it];
+		materials[D->GetBaseMaterial()]->internal_max_area	= _max(D->layer.Area(),materials[D->GetBaseMaterial()]->internal_max_area);
+	}
+
 	// **** Select all deflectors, which contain this light-layer
 	Layer.clear	();
-	for (int it=0; it<(int)g_deflectors.size(); it++)
+	for (u32 it=0; it<g_deflectors.size(); it++)
 	{
-		if (g_deflectors[it]->bMerged)					continue;
-		Layer.push_back	(g_deflectors[it]);
+		CDeflector*	D		= g_deflectors[it];
+		if (D->bMerged)		continue;
+		Layer.push_back		(D);
+		materials[D->GetBaseMaterial()]->internal_max_area	= _max(D->layer.Area(),materials[D->GetBaseMaterial()]->internal_max_area);
 	}
 
 	// Merge this layer
@@ -84,39 +96,23 @@ void CBuild::xrPhase_MergeLM()
 		Phase		(phase_name);
 
 		// Sort layer by similarity (state changes)
-		Status		("Selection 1...");
-		clMsg		("LS: %d",	Layer.size());
-		std::sort	(Layer.begin(),Layer.end(),compare1_defl);
-
-		// Sort layer (by material and distance from "base" deflector)
-		Status		("Selection 2...");
-		clMsg		("LS: %d",	Layer.size());
-		Deflector	= Layer[0];
-		R_ASSERT	(Deflector);
-		if (Layer.size()>2)	{
-			// dumb_sort	(Layer);
-			std::stable_sort(Layer.begin()+1,Layer.end(),compare2_defl);
-		}
+		Status		("Selection...");
+		std::stable_sort(Layer.begin(),Layer.end(),sort_defl_complex);
 
 		// Select first deflectors which can fit
-		Status		("Selection 3...");
+		Status		("Selection...");
 		int maxarea		= c_LMAP_size*c_LMAP_size*4;	// Max up to 4 lm selected
 		int curarea		= 0;
 		int merge_count	= 0;
-		for (it=0; it<(int)Layer.size(); it++)
-		{
+		for (it=0; it<(int)Layer.size(); it++)	{
 			int		defl_area	= Layer[it]->layer.Area();
 			if (curarea + defl_area > maxarea) break;
 			curarea		+=	defl_area;
 			merge_count ++;
 		}
 
-		// Sort part of layer by size decreasing
-		Status		("Selection 4...");
-		std::sort	(Layer.begin(),Layer.begin()+merge_count,compare3_defl);
-
 		// Startup
-		Status		("Selection 5...");
+		Status		("Processing...");
 		_InitSurface			();
 		CLightmap*	lmap		= xr_new<CLightmap> ();
 		g_lightmaps.push_back	(lmap);
@@ -150,13 +146,13 @@ void CBuild::xrPhase_MergeLM()
 		Progress	(1.f);
 
 		// Remove merged lightmaps
-		Status		("Cleanup...");
+		Status			("Cleanup...");
 		vecDeflIt last	= std::remove_if	(Layer.begin(),Layer.end(),pred_remove());
 		Layer.erase		(last,Layer.end());
 
 		// Save
-		Status		("Saving...");
-		lmap->Save	();
+		Status			("Saving...");
+		lmap->Save		();
 	}
 	clMsg	("%d lightmaps builded",g_lightmaps.size());
 
