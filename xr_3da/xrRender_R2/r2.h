@@ -12,6 +12,7 @@
 #include "modelpool.h"
 
 #include "light_db.h"
+#include "light_render_direct.h"
 
 // definition
 class CRender	:	public IRender_interface
@@ -52,6 +53,7 @@ public:
 
 	CRenderTarget											Target;			// Render-target
 	CLight_DB												Lights;
+	CLight_Render_Direct									LR_Direct;
 private:
 	// Loading / Unloading
 	void							LoadBuffers				(IReader	*fs);
