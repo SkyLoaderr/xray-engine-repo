@@ -147,7 +147,7 @@ public:
 	{
 		float	u,v,r;
 		if (!_tri(tris[prim].verts, u, v, r))	return;
-		if (r<0 || r>rRange)					return;
+		if (r<=0 || r>rRange)					return;
 		
 		if (bNearest)	
 		{
