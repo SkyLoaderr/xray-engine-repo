@@ -63,6 +63,8 @@ public:
 	void					DBG_TranslateTask			(const GTask *pTask);
 	bool					IsTaskMustFinished			();
 	void					ProcessSquad				();
+
+	IState					*pState; // временное состояние
 	// ---------------------------------------------------------------------------------
 
 };

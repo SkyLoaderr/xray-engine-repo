@@ -233,32 +233,38 @@ void CAI_Bloodsucker::StateSelector()
 {
 	VisionElem ve;
 
-	if (C && H && I)			SetState(statePanic);
-	else if (C && H && !I)		SetState(statePanic);
-	else if (C && !H && I)		SetState(statePanic);
-	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(stateAttack);
-	else if (D && !H && I)		SetState(statePanic);
-	else if (D && !H && !I) 	SetState(stateAttack);			// :: Hide
-	else if (D && H && !I)		SetState(stateAttack); 
-	else if (E && H && I)		SetState(stateAttack); 
-	else if (E && H && !I)  	SetState(stateAttack);  
-	else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
-	else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
-	else if (F && H && I) 		SetState(stateAttack); 		
-	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateAttack); 
-	else if (F && !H && !I) 	SetState(stateAttack);		
-	else if (A && !K)			SetState(stateExploreNDE); 
-	else if (B && !K)			SetState(stateExploreNDE); 
+	// save CurrentState
+	IState *pState;
+	
+
+	if (C && H && I)			pState = statePanic; 
+	else if (C && H && !I)		pState = statePanic;
+	else if (C && !H && I)		pState = statePanic;
+	else if (C && !H && !I) 	pState = statePanic;
+	else if (D && H && I)		pState = stateAttack;
+	else if (D && !H && I)		pState = statePanic;
+	else if (D && !H && !I) 	pState = stateAttack;			// :: Hide
+	else if (D && H && !I)		pState = stateAttack;
+	else if (E && H && I)		pState = stateAttack;
+	else if (E && H && !I)  	pState = stateAttack;
+	else if (E && !H && I) 		pState = stateAttack;			// :: Detour
+	else if (E && !H && !I)		pState = stateAttack;			// :: Detour 
+	else if (F && H && I) 		pState = stateAttack; 		
+	else if (F && H && !I)  	pState = stateAttack;
+	else if (F && !H && I)  	pState = stateAttack;
+	else if (F && !H && !I) 	pState = stateAttack;		
+	else if (A && !K)			pState = stateExploreNDE; 
+	else if (B && !K)			pState = stateExploreNDE; 
 	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
-		SetState(stateEat);	
-	else						SetState(stateRest);
+		pState= stateEat;	
+	else						pState = stateRest;
 
 	EMotionAnim anim = MotionMan.Seq_CurAnim();
 	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
 	
-	ProcessSquad();
+	//ProcessSquad();
+
+	SetState(pState);
 }
 
 
@@ -434,20 +440,5 @@ void CAI_Bloodsucker::ProcessTask(bool bInit)
 	//SetSquadState(stateSquadTask);
 }
 
-//void CAI_Biting::SetSquadState(IState *pS, bool bSkipInertiaCheck)
-//{
-//	if (CurrentState != pS) {
-//		// проверка инерций
-//		if (!bSkipInertiaCheck)
-//			if (CurrentState->IsInertia()) {
-//				if (CurrentState->GetPriority() >= pS->GetPriority()) return;
-//			}
-//
-//			CurrentState->Done();
-//			CurrentState->Reset();
-//			CurrentState = pS;
-//			CurrentState->Activate();
-//	}
-//}
  
 // ----------------------------------------------------------------------------------------------
