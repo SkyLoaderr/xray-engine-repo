@@ -1170,6 +1170,7 @@ void CAI_Soldier::UnderFire()
 					S.m_tMe				= this;
 					S.m_tpMyNode		= AI_Node;
 					S.m_tMyPosition		= Position();
+					S.m_tDirection		= tHitDir;
 					
 					S.m_tEnemy			= 0;
 					S.m_tEnemyPosition.set(0,0,0);

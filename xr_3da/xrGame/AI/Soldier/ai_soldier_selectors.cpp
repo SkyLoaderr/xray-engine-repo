@@ -218,6 +218,8 @@ float CSoldierSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance
 	CHECK_RESULT;
 	vfAddTotalCoverCost();
 	CHECK_RESULT;
+	vfAddDeviationFromPreviousDirectionCost();
+	CHECK_RESULT;
 	/**
 	if (m_tLeader) {
 		vfAddDistanceToLeaderCost();
