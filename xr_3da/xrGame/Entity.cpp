@@ -31,7 +31,7 @@ CEntity::~CEntity()
 	Engine.Event.Handler_Detach	(eHealthLost_End,	this);
 }
 
-void CEntity::OnEvent	(EVENT E, DWORD P1, DWORD P2)
+void CEntity::OnEvent		(EVENT E, DWORD P1, DWORD P2)
 {
 	if (E==eHealthLost_Begin)	
 	{
@@ -52,7 +52,27 @@ void CEntity::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 	}
 }
 
-BOOL CEntity::Hit			(int perc, Fvector &dir, CEntity* who) 
+void CEntity::OnEvent		(NET_Packet& P, u16 type)
+{
+	inherited::OnEvent		(P,type);
+
+	switch (type)
+	{
+	case GE_HIT:
+		{
+			u16			id;
+			Fvector		dir;
+			float		power;
+			P.r_u16		(id);
+			P.r_dir		(dir);
+			P.r_float	(power);
+			Hit			(power,dir,Level().Objects.net_Find(id));
+		}
+		break;
+	}
+}
+
+BOOL CEntity::Hit			(float perc, Fvector &dir, CEntity* who) 
 {
 	// *** process hit calculations
 	// Calc impulse
@@ -61,18 +81,18 @@ BOOL CEntity::Hit			(int perc, Fvector &dir, CEntity* who)
 	R_ASSERT				(m>EPS);
 	
 	// convert impulse into local coordinate system
-	Fmatrix mInvXForm;
-	mInvXForm.invert		(svTransform);
+	Fmatrix					mInvXForm;
+	mInvXForm.invert		(clTransform);
 	mInvXForm.transform_dir	(vLocalDir,dir);
 	vLocalDir.invert		();
 
 	// hit impulse
-	HitImpulse				(dir,vLocalDir,float(perc));
+	HitImpulse				(dir,vLocalDir,perc);
 	
 	// Calc HitAmount
 	if (Local()) 
 	{
-		int iHitAmount, iOldHealth=iHealth;
+		float iHitAmount, iOldHealth=iHealth;
 		if (iArmor)
 		{
 			iHealth		-=	(iMAX_Armor-iArmor)/iMAX_Armor*perc;

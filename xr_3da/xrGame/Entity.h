@@ -21,14 +21,13 @@ private:
 	typedef	CGameObject	inherited;			
 protected:
 	// health & shield
-	int					iHealth,	iMAX_Health;
-	int					iArmor,		iMAX_Armor;
+	float				fHealth,	fMAX_Health;
+	float				fArmor,		fMAX_Armor;
 	float				fAccuracy;
 protected:	
 	// EVENT: health lost 
 	EVENT				eHealthLost_Begin;
 	EVENT				eHealthLost_End;
-	
 	BOOL				eHealthLost_Enabled;
 	float				eHealthLost_speed;
 	float				eHealthLost_granularity;
@@ -109,10 +108,10 @@ public:
 	int						g_Group				()	{ return id_Group;	}
 
 	// Health calculations
-	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);				// TRUE if died
-	virtual void			HitSignal			(int HitAmount, Fvector& local_dir, CEntity* who)		= 0;
-	virtual void			HitImpulse			(Fvector& vWorldDir, Fvector& vLocalDir, float amount)	= 0;
-	virtual void			Die					()	= 0;
+	virtual	BOOL			Hit					(float P, Fvector &dir, CEntity* who);				// TRUE if died
+	virtual void			HitSignal			(float P, Fvector& local_dir, CEntity* who)			= 0;
+	virtual void			HitImpulse			(float P, Fvector& vWorldDir, Fvector& vLocalDir)	= 0;
+	virtual void			Die					()													= 0;
 
 	// Fire control
 	virtual void			g_fireParams		(Fvector& P, Fvector& D)			= 0;
@@ -122,7 +121,7 @@ public:
 
 	// Events
 	virtual void			OnEvent				( EVENT E, DWORD P1, DWORD P2	);
-	virtual BOOL			TakeItem			( DWORD CID ) { return FALSE; }
+	virtual void			OnEvent				( NET_Packet& P, u16 type		);
 
 	virtual BOOL			IsVisibleForAI		()	{return TRUE;}
 	virtual BOOL			IsVisibleForHUD		()	{return TRUE;}

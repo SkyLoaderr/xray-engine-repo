@@ -149,50 +149,6 @@ void CWeaponList::Reload()
 	if (W)		W->Reload		();
 }
 
-/*
-BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
-{
-	int idx				= -1;
-	BOOL bTakeWeapon	= false;
-	switch (cls)
-	{
-	case CLSID_OBJECT_A_M134:		idx = FindWeapon(CLSID_OBJECT_W_M134);		break;
-	case CLSID_OBJECT_A_FN2000:		idx = FindWeapon(CLSID_OBJECT_W_FN2000);	break;
-	case CLSID_OBJECT_A_AK74:		idx = FindWeapon(CLSID_OBJECT_W_AK74);		break;
-	case CLSID_OBJECT_A_LR300:		idx = FindWeapon(CLSID_OBJECT_W_LR300);		break;
-	case CLSID_OBJECT_A_HPSA:		idx = FindWeapon(CLSID_OBJECT_W_HPSA);		break;
-	case CLSID_OBJECT_A_PM:			idx = FindWeapon(CLSID_OBJECT_W_PM);		break;
-	case CLSID_OBJECT_A_FORT:		idx = FindWeapon(CLSID_OBJECT_W_FORT);		break;
-
-	case CLSID_OBJECT_W_M134:	
-	case CLSID_OBJECT_W_FN2000:	
-	case CLSID_OBJECT_W_AK74:
-	case CLSID_OBJECT_W_LR300:	
-	case CLSID_OBJECT_W_M134_en:	
-	case CLSID_OBJECT_W_HPSA:		
-	case CLSID_OBJECT_W_PM:		
-	case CLSID_OBJECT_W_FORT:		
-	case CLSID_OBJECT_W_BINOCULAR:	idx = FindWeapon(cls); bTakeWeapon = true; break;
-	}
-	if (idx>=0)
-	{
-		// add ammo
-		return m_Weapons[idx]->AddAmmo(iAmmoCount);
-	}else{
-		if (bTakeWeapon){
-			// add weapon
-			// wpn->AddAmmo(iAmmoCount);
-			if (m_Weapons.size()==1) ActivateWeapon(cls);
-			return true;
-		}
-	}
-	return false;
-}
-
-void CWeaponList::LeaveWeapon(CLASS_ID cls)
-{
-}
-*/
 
 CWeapon*	CWeaponList::getWeaponByWeapon(CWeapon* W)
 {
@@ -218,12 +174,6 @@ void CWeaponList::Update	(float dt, BOOL bHUDView)
 
 	// Setup HUD mode
 	if (m_iActiveWeapon>=0)		m_Weapons[m_iActiveWeapon]->SetHUDmode(bHUDView);
-
-	// Update all needed weapons
-	/*
-	for (DWORD it=0; it<m_Weapons.size(); it++)
-		if (m_Weapons[it]->IsUpdating())	m_Weapons[it]->Update();
-	*/
 }
 
 void CWeaponList::GetFireParams(Fvector &fire_pos, Fvector &fire_dir){

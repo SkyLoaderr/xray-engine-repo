@@ -215,7 +215,6 @@ GE_HIT									// попадание (пулей)
 {
 	u16			id_entity;				// кто попал
 	direction	dir;
-	float		impulse;
 	float		power;
 }
 GE_DIE

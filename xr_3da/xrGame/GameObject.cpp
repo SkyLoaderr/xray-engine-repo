@@ -24,7 +24,7 @@ CGameObject::~CGameObject()
 
 BOOL CGameObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	BOOL bResult		= CObject::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags);
+	BOOL bResult		= inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags);
 	
 	// AI-DB connectivity
 	Fvector				nPos = vPosition;
@@ -67,13 +67,13 @@ void CGameObject::Sector_Detect	()
 		}
 
 		// Perform sector detection
-		CObject::Sector_Detect	();
+		inherited::Sector_Detect	();
 	}
 }
 
 void CGameObject::OnVisible	()
 {
-	CObject::OnVisible			();
+	inherited::OnVisible			();
 	::Render->set_Transform		(&clTransform);
 	::Render->add_Visual		(Visual());
 }
@@ -83,10 +83,10 @@ float CGameObject::Ambient	()
 	return AI_Node?float(AI_Node->light):255;
 }
 
-CObject::SavedPosition CGameObject::ps_Element(DWORD ID)
+inherited::SavedPosition CGameObject::ps_Element(DWORD ID)
 {
 	VERIFY(ID<ps_Size());
-	CObject::SavedPosition	SP	=	PositionStack[ID];
+	inherited::SavedPosition	SP	=	PositionStack[ID];
 	SP.dwTime					+=	Level().timeServer_Delta();
 	return SP;
 }
@@ -94,6 +94,19 @@ CObject::SavedPosition CGameObject::ps_Element(DWORD ID)
 void CGameObject::net_Event	(NET_Packet& P)
 {
 	net_Events.insert		(P);
+}
+
+void CGameObject::UpdateCL	()
+{
+	inherited::UpdateCL	();
+
+	NET_Packet			P;
+	DWORD svT			= Level().timeServer()-NET_Latency;
+	while	(net_Events.available(svT))
+	{
+		u16	type		= net_Events.get(P);
+		OnEvent			(P,type);
+	}
 }
 
 void CGameObject::u_EventGen(NET_Packet& P, u16 type, u16 dest)
@@ -104,7 +117,7 @@ void CGameObject::u_EventGen(NET_Packet& P, u16 type, u16 dest)
 	P.w_u16		(dest);
 }
 
-void CGameObject::u_EventSend(NET_Packet& P)
+void CGameObject::u_EventSend(NET_Packet& P, BOOL sync)
 {
 	Level().Send(P,net_flags(TRUE,TRUE));
 }

@@ -10,6 +10,7 @@
 
 class CGameObject : public CObject  
 {
+	typedef CObject inherited;
 public:
 	// AI connection
 	DWORD										AI_NodeID;
@@ -17,21 +18,22 @@ public:
 	NET_Queue_Event								net_Events;
 
 	// Utilities
-	void					u_EventGen			(NET_Packet& P, u16 type, u16 dest);
-	void					u_EventSend			(NET_Packet& P);
+	void					u_EventGen			(NET_Packet& P, u16 type, u16 dest	);
+	void					u_EventSend			(NET_Packet& P, BOOL sync=TRUE		);
 	
 	// Methods
 	virtual BOOL			net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
 	virtual void			net_Event			(NET_Packet& P);
+	virtual BOOL			net_Relevant		()	{ return net_Local && getActive();	}	// send messages only if active and local
+
+	virtual BOOL			Ready				()	{ return net_Ready && getActive();	}	// update only if active and fully initialized by/for network
 	virtual void			Sector_Detect		();
-	virtual void			OnVisible			();
 	virtual float			Ambient				();
+
+	virtual void			OnVisible			();
+	virtual void			OnEvent				(NET_Packet& P, u16 type)	{};
 	virtual void			UpdateCL			();
 
-	// State flags
-	virtual BOOL			net_Relevant		()	{ return net_Local && getActive();	}	// send messages only if active and local
-	virtual BOOL			Ready				()	{ return net_Ready && getActive();	}	// update only if active and fully initialized by/for network
-	
 	// Position stack
 	virtual	SavedPosition	ps_Element			(DWORD ID);
 

@@ -10,6 +10,7 @@ IC BOOL BE	(BOOL A, BOOL B)
 	return a==b;
 }
 
+
 void CActor::g_ProcessEvents()
 {
 	NET_Packet		P;

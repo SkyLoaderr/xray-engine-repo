@@ -140,35 +140,6 @@ void CCustomMonster::g_fireEnd	( )
 	Weapons->FireEnd	();
 }
 
-/*
-BOOL CCustomMonster::TakeItem	( DWORD CID )
-{
-	CCustomItem* O = (CCustomItem*) pCreator->Objects.GetObjectByCID(CID);
-	int iValue = O->iValue;
-	switch (O->clsid_target) {
-	case CLSID_OBJECT_W_RAIL:
-	case CLSID_OBJECT_A_RAIL:
-		return Weapons->TakeItem(O->clsid_target,iValue);
-		break;
-	case CLSID_OBJECT_HEALTH:
-		if (iHealth<iMAX_Health){
-			iHealth += iValue;
-			if (iHealth>iMAX_Health) iHealth = iMAX_Health;
-		}else return false;
-		break;
-	case CLSID_OBJECT_ARMOR:
-		if (iArmor<iMAX_Armor){
-			iArmor += iValue;
-			if (iArmor>iMAX_Armor) iArmor = iMAX_Armor;
-		}else return false;
-		break;
-	default:
-		return false;
-	}
-	return true;
-}
-*/
-
 void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
 {
 	// orient only in XZ plane
