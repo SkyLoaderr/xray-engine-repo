@@ -1548,30 +1548,6 @@
 		<Filter
 			Name="AI Core"
 			Filter="">
-			<File
-				RelativePath=".\AI_Space.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\AI_Space.h">
-			</File>
-			<File
-				RelativePath=".\AI_Utilities.cpp">
-			</File>
-			<File
-				RelativePath=".\AI_qNode.cpp">
-			</File>
-			<File
-				RelativePath=".\AI_qRange.cpp">
-			</File>
-			<File
-				RelativePath="ai_misc.cpp">
-			</File>
 			<Filter
 				Name="ALife"
 				Filter="">
@@ -1608,6 +1584,34 @@
 				</File>
 				<File
 					RelativePath="a_star_template.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="Core"
+				Filter="">
+				<File
+					RelativePath=".\AI_Space.cpp">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AssemblerOutput="4"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\AI_Space.h">
+				</File>
+				<File
+					RelativePath=".\AI_Utilities.cpp">
+				</File>
+				<File
+					RelativePath=".\AI_qNode.cpp">
+				</File>
+				<File
+					RelativePath=".\AI_qRange.cpp">
+				</File>
+				<File
+					RelativePath="ai_misc.cpp">
 				</File>
 			</Filter>
 		</Filter>
