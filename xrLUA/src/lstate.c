@@ -3,15 +3,10 @@
 ** Global State
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-
-
-#include <stdlib.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lstate_c
-
-#include "lua.h"
 
 #include "ldebug.h"
 #include "ldo.h"

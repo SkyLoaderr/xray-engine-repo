@@ -3,20 +3,10 @@
 ** Interface from Lua to its debug API
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define ldblib_c
-
-#include "lua.h"
-
-#include "lauxlib.h"
-#include "lualib.h"
 
 
 

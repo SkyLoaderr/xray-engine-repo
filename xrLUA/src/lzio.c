@@ -3,15 +3,10 @@
 ** a generic input stream interface
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-
-
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lzio_c
-
-#include "lua.h"
 
 #include "llimits.h"
 #include "lmem.h"

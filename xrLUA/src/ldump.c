@@ -3,14 +3,10 @@
 ** save bytecodes
 ** See Copyright Notice in lua.h
 */
-
-#include <xrCore.h>
-
-#include <stddef.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define ldump_c
-
-#include "lua.h"
 
 #include "lobject.h"
 #include "lopcodes.h"

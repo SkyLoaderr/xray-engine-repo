@@ -3,20 +3,10 @@
 ** Lua virtual machine
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-
-
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
-
-/* needed only when `lua_number2str' uses `sprintf' */
-#include <stdio.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lvm_c
-
-#include "lua.h"
 
 #include "ldebug.h"
 #include "ldo.h"

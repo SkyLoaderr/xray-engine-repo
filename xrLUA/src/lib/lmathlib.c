@@ -3,19 +3,10 @@
 ** Standard mathematical library
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-
-
-#include <stdlib.h>
-#include <math.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lmathlib_c
-
-#include "lua.h"
-
-#include "lauxlib.h"
-#include "lualib.h"
 
 #pragma warning(disable:4244)
 #pragma warning(disable:4305)

@@ -3,12 +3,11 @@
 ** load pre-compiled Lua chunks
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 
 #define lundump_c
-
-#include "lua.h"
 
 #include "ldebug.h"
 #include "lfunc.h"

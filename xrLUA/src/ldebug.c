@@ -3,15 +3,10 @@
 ** Debug Interface
 ** See Copyright Notice in lua.h
 */
-
-#include <xrCore.h>
-
-#include <stdlib.h>
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define ldebug_c
-
-#include "lua.h"
 
 #include "lapi.h"
 #include "lcode.h"

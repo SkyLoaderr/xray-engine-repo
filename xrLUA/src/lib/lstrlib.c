@@ -3,21 +3,10 @@
 ** Standard library for string operations and pattern-matching
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-
-#include <ctype.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lstrlib_c
-
-#include "lua.h"
-
-#include "lauxlib.h"
-#include "lualib.h"
 
 
 /* macro to `unsign' a character */

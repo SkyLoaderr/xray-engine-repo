@@ -4,14 +4,10 @@
 ** See Copyright Notice in lua.h
 */
 
-#include <xrCore.h>
-
-
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define ltm_c
-
-#include "lua.h"
 
 #include "lobject.h"
 #include "lstate.h"

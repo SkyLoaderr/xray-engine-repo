@@ -63,8 +63,8 @@ typedef union {
 typedef struct lua_TObject {
   int tt;
   Value value;
-} TObject;
-
+} TLuaObject;
+#define  TObject TLuaObject
 
 /* Macros to test type */
 #define ttisnil(o)	(ttype(o) == LUA_TNIL)

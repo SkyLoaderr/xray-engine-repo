@@ -3,13 +3,10 @@
 ** Garbage Collector
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lgc_c
-
-#include "lua.h"
 
 #include "ldebug.h"
 #include "ldo.h"

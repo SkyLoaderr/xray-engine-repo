@@ -3,15 +3,10 @@
 ** Lua Parser
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-
-
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lparser_c
-
-#include "lua.h"
 
 #include "lcode.h"
 #include "ldebug.h"

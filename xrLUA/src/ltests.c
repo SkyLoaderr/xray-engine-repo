@@ -4,21 +4,12 @@
 ** See Copyright Notice in lua.h
 */
 
-#include <xrCore.h>
-
-
-#include <ctype.h>
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define ltests_c
 
-#include "lua.h"
-
 #include "lapi.h"
-#include "lauxlib.h"
 #include "lcode.h"
 #include "ldebug.h"
 #include "ldo.h"
@@ -28,7 +19,6 @@
 #include "lstate.h"
 #include "lstring.h"
 #include "ltable.h"
-#include "lualib.h"
 #include "xr_print.h"
 
 

@@ -3,15 +3,10 @@
 ** Auxiliary functions to manipulate prototypes and closures
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-
-
-#include <stdlib.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lfunc_c
-
-#include "lua.h"
 
 #include "lfunc.h"
 #include "lgc.h"

@@ -1,11 +1,9 @@
-#include <xrCore.h>
+#include "stdafx.h"
+#pragma hdrstop
 
-#pragma comment( lib, "x:\\xrCore.lib"	)
-
-#include <stdarg.h>
 #include "xr_print.h"
 
-char *g_ca_stdout	= 0;
+//char *g_ca_stdout	= 0;
 
 void __cdecl xr_printf(FILE *stream, const char *fmt, ...)
 {
@@ -13,8 +11,9 @@ void __cdecl xr_printf(FILE *stream, const char *fmt, ...)
 
 	va_start		(marker,fmt);
 
-	if (g_ca_stdout)
-		g_ca_stdout += vsprintf(g_ca_stdout,fmt,marker);
+//	if (g_ca_stdout)
+//		g_ca_stdout += vsprintf(g_ca_stdout,fmt,marker);
+	Msg				(fmt,marker);
 
 	va_end			(marker);              
 }

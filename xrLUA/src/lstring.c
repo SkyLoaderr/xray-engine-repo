@@ -3,15 +3,10 @@
 ** String table (keeps all strings handled by Lua)
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-
-
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lstring_c
-
-#include "lua.h"
 
 #include "lmem.h"
 #include "lobject.h"

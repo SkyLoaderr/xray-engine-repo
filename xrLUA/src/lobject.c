@@ -3,16 +3,10 @@
 ** Some generic functions over Lua objects
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
-
-#include <ctype.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lobject_c
-
-#include "lua.h"
 
 #include "ldo.h"
 #include "lmem.h"

@@ -25,12 +25,9 @@
 * on top of which loadlib could be implemented.
 *
 */
-#include <xrCore.h>
+#include "stdafx.h"
+#pragma hdrstop
 
-
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
 
 
 #undef LOADLIB

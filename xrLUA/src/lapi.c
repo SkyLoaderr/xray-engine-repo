@@ -3,15 +3,10 @@
 ** Lua API
 ** See Copyright Notice in lua.h
 */
-
-#include <xrCore.h>
-
-#include <assert.h>
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define lapi_c
-
-#include "lua.h"
 
 #include "lapi.h"
 #include "ldebug.h"

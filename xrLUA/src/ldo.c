@@ -3,18 +3,13 @@
 ** Stack and Call structure of Lua
 ** See Copyright Notice in lua.h
 */
-
-#include <xrCore.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #include <setjmp.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define ldo_c
 
-#include "lua.h"
-
-#include "lauxlib.h"
 
 #include "ldebug.h"
 #include "ldo.h"

@@ -20,14 +20,10 @@
 ** Because of that, the load factor of these tables can be 100% without
 ** performance penalties.
 */
-
-#include <xrCore.h>
-
-#include <string.h>
+#include "stdafx.h"
+#pragma hdrstop
 
 #define ltable_c
-
-#include "lua.h"
 
 #include "ldebug.h"
 #include "ldo.h"

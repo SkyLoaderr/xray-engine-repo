@@ -3,15 +3,9 @@
 ** Auxiliary functions for building Lua libraries
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
+#include "stdafx.h"
+#pragma hdrstop
 
-
-
-#include <ctype.h>
-#include <errno.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <string.h>
 #include "..\\src\\xr_print.h"
 
 
@@ -20,10 +14,6 @@
 */
 
 #define lauxlib_c
-
-#include "lua.h"
-
-#include "lauxlib.h"
 
 
 /* number of prereserved references (for internal use) */
