@@ -77,7 +77,7 @@ void CRender::Render	()
 	Target.accum_direct						();
 
 	// Point lighting (shadowed)
-	if (0)
+	if (1)
 	{
 		HOM.Disable								();
 		vector<light*>&	Lvec	= Lights.v_selected_shadowed;
