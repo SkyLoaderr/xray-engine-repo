@@ -22,7 +22,7 @@ public:
 		Fvector								tLocalPoint;
 		Fvector								tGlobalPoint;
 		u8									tLevelID;
-		u16									tVertexType;
+		u8									tVertexTypes[LOCATION_TYPE_COUNT];
 		u8									tNeighbourCount;
 		u32									dwEdgeOffset;
 	} SGraphVertex;

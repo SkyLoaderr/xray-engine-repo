@@ -204,7 +204,7 @@ public:
 	CALifeDynamicObject				*m_tpActor;
 	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
-	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
+	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];			// массив списков: по идетнификатору 
 															//	местности получить список точек 
 															//  графа
 
@@ -212,15 +212,17 @@ public:
 	{
 		inherited::Init				();
 
-		m_tpTerrain.resize			(LOCATION_COUNT);
-		{
-			GRAPH_VECTOR_IT			I = m_tpTerrain.begin();
-			GRAPH_VECTOR_IT			E = m_tpTerrain.end();
-			for ( ; I != E; I++)
-				(*I).clear			();
+		for (int i=0; i<LOCATION_TYPE_COUNT; i++) {
+			m_tpTerrain[i].resize	(LOCATION_COUNT);
+			{
+				GRAPH_VECTOR_IT			I = m_tpTerrain[i].begin();
+				GRAPH_VECTOR_IT			E = m_tpTerrain[i].end();
+				for ( ; I != E; I++)
+					(*I).clear			();
+			}
+			for (_GRAPH_ID j=0; j<(_GRAPH_ID)CALifeGraph::Header().dwVertexCount; j++)
+				m_tpTerrain[i][m_tpaGraph[j].tVertexTypes[i]].push_back(j);
 		}
-		for (_GRAPH_ID i=0; i<(_GRAPH_ID)CALifeGraph::Header().dwVertexCount; i++)
-			m_tpTerrain[m_tpaGraph[i].tVertexType].push_back(i);
 
 		m_tpGraphObjects.resize		(CALifeGraph::Header().dwVertexCount);
 		{

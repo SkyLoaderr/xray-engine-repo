@@ -23,23 +23,17 @@
 #define TASK_CHUNK_DATA				0x0003
 #define GAME_TIME_CHUNK_DATA		0x0004
 
-#define ALIFE_ITEM_ID				0x00
-#define ALIFE_MONSTER_ID			0x01
-#define ALIFE_MONSTER_GROUP_ID		0x02
-#define ALIFE_HUMAN_ID				0x03
-#define ALIFE_HUMAN_GROUP_ID		0x04
-#define ALIFE_TRADER_ID				0x05
-#define ALIFE_ANOMALOUS_ZONE_ID		0x06
+#define LOCATION_TYPE_COUNT			4
+
+#define SECTION_HEADER				"location_"
 
 #define SAVE_PATH					""//"SavedGames\\"
 #define SAVE_NAME					"game.sav"
 #define SPAWN_NAME					"game.spawn"
 
-class CALifeObject;
 class CALifeMonsterParams;
 class CALifeHumanParams;
 class CALifeEventGroup;
-class CALifeDynamicObject;
 class CALifeDynamicObject;
 class CALifeMonsterAbstract;
 class CALifeTrader;

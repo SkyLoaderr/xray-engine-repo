@@ -110,26 +110,28 @@ void CAI_ALife::vfListTasks()
 
 void CAI_ALife::vfListTerrain()
 {
-	GRAPH_VECTOR_IT	I = m_tpTerrain.begin();
-	GRAPH_VECTOR_IT	E = m_tpTerrain.end();
 	Msg("%s->Listing terrain locations :",cName());
 	char *S = (char *)xr_malloc(128*1024*sizeof(char));
-	for (int i=0; I != E; I++, i++) {
-		GRAPH_IT   it1 = (*I).begin();
-		GRAPH_IT   E1  = (*I).end();
-		S[0] = 0;
-		string16		S1;
-		for (int j=0; it1 != E1; it1++, j++) {
-			if (j)
-				strcat(S,",");
-			strcat(S,itoa(*it1,S1,10));
-		}
+	for (int j=0; j<LOCATION_TYPE_COUNT; j++) {
+		GRAPH_VECTOR_IT	I = m_tpTerrain[j].begin();
+		GRAPH_VECTOR_IT	E = m_tpTerrain[j].end();
+		for (int i=0; I != E; I++, i++) {
+			GRAPH_IT   it1 = (*I).begin();
+			GRAPH_IT   E1  = (*I).end();
+			S[0] = 0;
+			string16		S1;
+			for (int j=0; it1 != E1; it1++, j++) {
+				if (j)
+					strcat(S,",");
+				strcat(S,itoa(*it1,S1,10));
+			}
 
-		if (j)
-			vfPrintLargeString("Terrain location m_tObjectID",S,i,j,105);
+			if (j)
+				vfPrintLargeString("Terrain location m_tObjectID",S,i,j,105);
+		}
+		xr_free(S);
+		Msg("Total %d terrain locations",i);
 	}
-	xr_free(S);
-	Msg("Total %d terrain locations",i);
 }
 
 void CAI_ALife::vfListSpawnPoints()
@@ -490,7 +492,7 @@ void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
 	SGraphVertex &tGraphVertex = m_tpaGraph[tGraphID];
 	Msg("%s->Graph vertex information :",cName());
 	Msg("* Level point                : [%7.2f][%7.2f][%7.2f]",tGraphVertex.tGlobalPoint.x,tGraphVertex.tGlobalPoint.y,tGraphVertex.tGlobalPoint.z);
-	Msg("* Location m_tObjectID                : %d",tGraphVertex.tVertexType);
+//	Msg("* Location m_tObjectID                : %d",tGraphVertex.tVertexType);
 	Msg("* Neighbours                 :");
 	SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)m_tpaGraph + tGraphVertex.dwEdgeOffset);
 	for (int i=0; i<(int)tGraphVertex.tNeighbourCount; i++)

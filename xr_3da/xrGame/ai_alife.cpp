@@ -182,7 +182,7 @@ void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
 		if (tpALifeItem && !tpALifeItem->m_bAttached) {
 			CALifeTask					*tpTask = xr_new<CALifeTask>();
 			tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
-			tpTask->m_tLocationID		= _LOCATION_ID(m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType);
+			Memory.mem_copy				(tpTask->m_tLocationID,m_tpaGraph[tpALifeItem->m_tGraphID].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			tpTask->m_tObjectID			= tpALifeItem->m_tObjectID;
 			tpTask->m_tTimeID			= tfGetGameTime();
 			tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;

@@ -153,7 +153,7 @@ public:
 		_OBJECT_ID					m_tObjectID;
 	};
 	union {
-		_LOCATION_ID				m_tLocationID;
+		_LOCATION_ID				m_tLocationID[LOCATION_TYPE_COUNT];
 		_GRAPH_ID					m_tGraphID;
 	};
 
