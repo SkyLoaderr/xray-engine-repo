@@ -156,6 +156,7 @@ void TUI::Redraw(){
         // draw sky
 	    EEditorState est = GetEState();
         switch(est){
+        case esEditLightAnim:
         case esEditScene:		Scene.RenderSky(Device.m_Camera.GetTransform()); break;
         }
 
@@ -167,6 +168,7 @@ void TUI::Redraw(){
 
         switch(est){
         case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
+        case esEditLightAnim:
         case esEditScene:		Scene.Render(Device.m_Camera.GetTransform()); break;
         }
 
@@ -204,7 +206,7 @@ void TUI::Idle()
     Sleep(5);
 	Device.UpdateTimer();
     EEditorState est = GetEState();
-    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditImages)||(est==esEditLightAnim)){
+    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){
 	    if (bUpdateScene) RealUpdateScene();
     	if (bRedraw){
             Scene.Update(Device.fTimeDelta);

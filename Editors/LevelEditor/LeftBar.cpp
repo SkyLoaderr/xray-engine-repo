@@ -11,6 +11,7 @@
 #include "EditLibrary.h"
 #include "EditorPref.h"
 #include "UI_Tools.h"
+#include "folderlib.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -207,6 +208,18 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_IMAGE_EDITOR );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::MenuItem9Click(TObject *Sender)
+{
+	UI.Command( COMMAND_REFRESH_TEXTURES );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebObjectListClick(TObject *Sender)
 {
 	UI.Command( COMMAND_OBJECT_LIST );
@@ -363,70 +376,59 @@ void __fastcall TfraLeftBar::MakeDetailsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
-    POINT pt;
-    GetCursorPos(&pt);
-	M->Popup(pt.x,pt.y);
-    if (B){
-	    TExtBtn* btn = dynamic_cast<TExtBtn*>(B);
-        VERIFY(btn);
-        btn->MouseManualUp();
-    }
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmSceneFile,Sender);
+	FOLDER::ShowPPMenu(pmSceneFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneCompileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmSceneCompile,Sender);
+	FOLDER::ShowPPMenu(pmSceneCompile,dynamic_cast<TExtBtn*>(Sender));
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebImagesMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	FOLDER::ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmSceneCommands,Sender);
+	FOLDER::ShowPPMenu(pmSceneCommands,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn7MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmToolsEdit,Sender);
+	FOLDER::ShowPPMenu(pmToolsEdit,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn8MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmToolsSelection,Sender);
+	FOLDER::ShowPPMenu(pmToolsSelection,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn10MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmToolsVisibility,Sender);
+	FOLDER::ShowPPMenu(pmToolsVisibility,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn9MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmToolsLocking,Sender);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebImageEditorClick(TObject *Sender)
-{
-	UI.Command(COMMAND_IMAGE_EDITOR);
+	FOLDER::ShowPPMenu(pmToolsLocking,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -469,7 +471,7 @@ void __fastcall TfraLeftBar::UpdateSnapList()
 void __fastcall TfraLeftBar::ExtBtn1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmSnapListCommand,Sender);
+	FOLDER::ShowPPMenu(pmSnapListCommand,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 

@@ -234,27 +234,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = ebEditorPreferencesClick
       end
-      object ebImageEditor: TExtBtn
-        Left = 2
-        Top = 63
-        Width = 120
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        BtnColor = 10528425
-        CloseButton = False
-        Caption = 'Image Editor'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Margin = 13
-        ParentFont = False
-        OnClick = ebImageEditorClick
-      end
       object ebLightAnimationEditor: TExtBtn
         Left = 2
         Top = 78
@@ -275,6 +254,37 @@ object fraLeftBar: TfraLeftBar
         Margin = 13
         ParentFont = False
         OnClick = ebLightAnimationEditorClick
+      end
+      object ebImages: TExtBtn
+        Left = 2
+        Top = 63
+        Width = 120
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        CloseButton = False
+        Caption = 'Images'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          DE000000424DDE00000000000000360000002800000007000000070000000100
+          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+          000000000000000000000000FFFFFF0000000000000000000000000000000000
+          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        Margin = 3
+        ParentFont = False
+        Spacing = 3
+        OnMouseDown = ebImagesMouseDown
       end
     end
     object paEdit: TPanel
@@ -1548,18 +1558,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 98
-    object Refresh1: TMenuItem
-      Caption = 'Synchronize Textures'
-      OnClick = ebRefreshEditorClick
-    end
-    object Checknewtextures1: TMenuItem
-      Caption = 'Check New Textures'
-      OnClick = Checknewtextures1Click
-    end
-    object N8: TMenuItem
-      Caption = '-'
-    end
+    Top = 114
     object ResetAniamation1: TMenuItem
       Caption = 'Reset Animation'
       OnClick = ebResetAnimationClick
@@ -1861,6 +1860,37 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Properties...'
       GroupIndex = 1
       OnClick = miPropertiesClick
+    end
+  end
+  object pmImages: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 85
+    Top = 66
+    object ImageEditor1: TMenuItem
+      Caption = 'Image Editor'
+      OnClick = ImageEditor1Click
+    end
+    object MenuItem8: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem9: TMenuItem
+      Caption = 'Synchronize Textures'
+      OnClick = MenuItem9Click
+    end
+    object MenuItem10: TMenuItem
+      Caption = 'Check New Textures'
+      OnClick = Checknewtextures1Click
     end
   end
 end

@@ -11,6 +11,9 @@
 class CSceneObject : public CCustomObject {
 	CEditableObject*m_pRefs;
     st_Version		m_ObjVer;
+
+	OMotionVec		m_OMotions;
+    COMotion*		m_ActiveOMotion;
 protected:
 	typedef CCustomObject inherited;
     int				m_iBlinkTime;           

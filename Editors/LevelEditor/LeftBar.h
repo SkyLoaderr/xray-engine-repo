@@ -62,7 +62,6 @@ __published:	// IDE-managed Components
 	TMenuItem *MakeLTX1;
 	TMenuItem *Validate1;
 	TMxPopupMenu *pmSceneCommands;
-	TMenuItem *Refresh1;
 	TMenuItem *ResetAniamation1;
 	TMxPopupMenu *pmToolsEdit;
 	TMxPopupMenu *pmToolsSelection;
@@ -90,7 +89,6 @@ __published:	// IDE-managed Components
 	TMenuItem *UnlockSelected1;
 	TMenuItem *UnlockUnselected1;
 	TExtBtn *ebTargetPS;
-	TExtBtn *ebImageEditor;
 	TPanel *paSnapList;
 	TLabel *Label1;
 	TExtBtn *ExtBtn16;
@@ -103,7 +101,6 @@ __published:	// IDE-managed Components
 	TBevel *Bevel1;
 	TMenuItem *miAddSelectedToList;
 	TExtBtn *ebTargetDO;
-	TMenuItem *Checknewtextures1;
 	TMenuItem *RefreshObjects1;
 	TMenuItem *MakeDetails;
 	TMxPopupMenu *pmObjectContext;
@@ -139,7 +136,12 @@ __published:	// IDE-managed Components
 	TExtBtn *ebProperties;
 	TExtBtn *ebLightAnimationEditor;
 	TExtBtn *ebIgnoreMode;
-	TMenuItem *N8;
+	TExtBtn *ebImages;
+	TMxPopupMenu *pmImages;
+	TMenuItem *ImageEditor1;
+	TMenuItem *MenuItem8;
+	TMenuItem *MenuItem9;
+	TMenuItem *MenuItem10;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -191,7 +193,6 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall ExtBtn9MouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall ebImageEditorClick(TObject *Sender);
 	void __fastcall ebClearSnapClick(TObject *Sender);
 	void __fastcall ebSetSnapClick(TObject *Sender);
 	void __fastcall ExtBtn1MouseDown(TObject *Sender, TMouseButton Button,
@@ -211,6 +212,10 @@ __published:	// IDE-managed Components
 	void __fastcall Quit1Click(TObject *Sender);
 	void __fastcall ebPropertiesClick(TObject *Sender);
 	void __fastcall ebLightAnimationEditorClick(TObject *Sender);
+	void __fastcall ebImagesMouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
+	void __fastcall ImageEditor1Click(TObject *Sender);
+	void __fastcall MenuItem9Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);
@@ -219,7 +224,6 @@ public:		// User declarations
     void UpdateSnapList();
     void AppendRecentFile(LPCSTR name);
     LPCSTR FirstRecentFile();
-	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

@@ -24,6 +24,7 @@
 #include "PSLibrary.h"
 #include "Library.h"
 #include "UI_Tools.h"
+#include "folderlib.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
@@ -83,7 +84,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	switch(est){
         case esEditLightAnim: 	bRes = TfrmEditLightAnim::FinalClose(); break;
         case esEditLibrary: 	bRes = TfrmEditLibrary::FinalClose(); 	break;
-        case esEditImages:		bRes = TfrmImageLib::HideImageLib(); 	break;
         case esEditScene:		bRes = Scene.IfModified(); 				break;
         }
 		}break;
@@ -117,20 +117,20 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             TfrmEditLibrary::ShowEditor();
         }
         break;
-    case COMMAND_IMAGE_EDITOR:
-        if (Scene.ObjCount()||(GetEState()!=esEditScene)){
-        	if (GetEState()==esEditImages)	TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
-            else							ELog.DlgMsg(mtError, "Scene must be empty before editing images!");
-        }else{
-			TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
-        }
-    	break;
     case COMMAND_LANIM_EDITOR:
     	TfrmEditLightAnim::ShowEditor();
     	break;
-	case COMMAND_CHECK_TEXTURES:
-    	if (GetEState()==esEditScene) TfrmImageLib::CheckImageLib();
+
+    case COMMAND_IMAGE_EDITOR:
+    	TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
     	break;
+	case COMMAND_CHECK_TEXTURES:
+    	TfrmImageLib::CheckImageLib();
+    	break;
+	case COMMAND_REFRESH_TEXTURES:
+		Device.RefreshTextures(0);
+		break;
+
 	case COMMAND_CHANGE_AXIS:
     	fraTopBar->ChangeAxis(p1);
         break;
@@ -138,7 +138,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         ((TExtBtn*)p1)->Down = !((TExtBtn*)p1)->Down;
         break;
     case COMMAND_FILE_MENU:
-		fraLeftBar->ShowPPMenu(fraLeftBar->pmSceneFile,0);
+		FOLDER::ShowPPMenu(fraLeftBar->pmSceneFile,0);
     	break;
 	case COMMAND_LOAD:
 		if( !Scene.locked() ){
@@ -259,10 +259,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
-		break;
-
-	case COMMAND_REFRESH_TEXTURES:
-		Device.RefreshTextures(0);
 		break;
 
     case COMMAND_UNLOAD_TEXTURES:
