@@ -215,7 +215,7 @@ function main ()
 	local max = 19
 
 	while true do 
-		if called == false and device():time_global () - time > 6000 then
+		if called == false and device():time_global () - time > 4000 then
 		    max = 38
 			called = true
 			for b = 19, table.getn (t), 1 do
