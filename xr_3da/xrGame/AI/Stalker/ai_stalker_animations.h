@@ -53,11 +53,6 @@ template <class TYPE_NAME, LPCSTR caBaseNames[]> class CAniCollection {
 public:
 	vector<TYPE_NAME>	A;
 	
-	virtual			~CAniCollection()
-	{
-		//free_vector(A);
-	}
-
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
 		string256	S;
@@ -81,10 +76,6 @@ public:
 	CAniCollection<CMovementActions,caMovementNames>	m_tMoves;
 	CAniFVector	  <caInPlaceNames>						m_tInPlace;
 
-	virtual			~CStateAnimations()
-	{
-	};
-
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
 		string256		S;
@@ -97,10 +88,10 @@ public:
 
 class CStalkerAnimations {
 public:
-	CAniCollection<CStateAnimations,caStateNames>				m_tAnims;
-	CMotionDef*		m_tpCurrentGlobalAnimation;
-	CMotionDef*		m_tpCurrentTorsoAnimation;
-	CMotionDef*		m_tpCurrentLegsAnimation;
+	CAniCollection<CStateAnimations,caStateNames>	m_tAnims;
+	CMotionDef		*m_tpCurrentGlobalAnimation;
+	CMotionDef		*m_tpCurrentTorsoAnimation;
+	CMotionDef		*m_tpCurrentLegsAnimation;
 	
 					CStalkerAnimations()
 	{
@@ -109,10 +100,6 @@ public:
 		m_tpCurrentLegsAnimation = 0;
 	};
 	
-	virtual			~CStalkerAnimations()
-	{
-	};
-
 	virtual	void	Load(CKinematics *tpKinematics)
 	{
 		m_tAnims.Load	(tpKinematics,"");
