@@ -29,8 +29,8 @@ CObjectList::CObjectList	( )
 
 CObjectList::~CObjectList	( )
 {
-	Device.seqDevCreate.Remove	(this, REG_PRIORITY_LOW);
-	Device.seqDevDestroy.Remove	(this, REG_PRIORITY_LOW);
+	Device.seqDevCreate.Remove	(this);
+	Device.seqDevDestroy.Remove	(this);
 	R_ASSERT(objects.size()==0);
 }
 
