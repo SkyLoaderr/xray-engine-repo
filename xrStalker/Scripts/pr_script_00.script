@@ -73,6 +73,7 @@ function main()
 			printf("see = false!")
 			flush()
 		end
+	wait()
 	end
 
 	while true do
@@ -80,6 +81,7 @@ function main()
 			printf("see = true!")
 			flush()
 		end
+	wait()
 	end
 
 
