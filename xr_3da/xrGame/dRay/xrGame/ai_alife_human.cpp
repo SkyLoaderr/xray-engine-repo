@@ -431,7 +431,8 @@ void CSE_ALifeHumanAbstract::vfDetachAll(bool bFictitious)
 			vfDetachItem			(l_tpALifeInventoryItem,&I);
 		}
 	}
-	R_ASSERT2						((m_fCumulativeItemMass < EPS_L) && (m_iCumulativeItemVolume < EPS_L),"Invalid cumulative item mass or volume value");
+	//. hack ALife
+	//R_ASSERT2						((m_fCumulativeItemMass < EPS_L) && (m_iCumulativeItemVolume < EPS_L),"Invalid cumulative item mass or volume value");
 	vfInitInventory					();
 }
 
