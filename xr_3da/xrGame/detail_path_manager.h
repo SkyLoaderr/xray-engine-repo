@@ -57,7 +57,6 @@ protected:
 			void	build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 			void	build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
-	IC		void	set_dest_position		(const Fvector &dest_position);
 			const	Fvector &direction		();
 			bool	actual					() const;
 	IC		bool	failed					() const;
@@ -67,7 +66,12 @@ protected:
 	IC		const xr_vector<STravelPoint> &path() const;
 	IC		const STravelPoint &curr_travel_point() const;
 	IC		u32		curr_travel_point_index	() const;
+	IC		void	set_start_position		(const Fvector &start_position);
+	IC		void	set_dest_position		(const Fvector &dest_position);
+	IC		const Fvector &start_position	() const;
+	IC		const Fvector &dest_position	() const;
 
+	friend class CMovementManager;
 #ifdef DEBUG
 	friend class CLevelGraph;
 #endif

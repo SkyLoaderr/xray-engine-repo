@@ -38,6 +38,8 @@ class
 		_vertex_id_type,
 		_index_type
 	> inherited;
+public:
+	IC	virtual void	Init						(const CGameGraph *graph = 0);
 protected:
 	IC			bool	actual						() const;
 };

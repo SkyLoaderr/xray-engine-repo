@@ -54,7 +54,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 #ifndef NO_PHYSICS_IN_AI_MOVE
 		if(movement_control->IsCharacterEnabled()) {
 			motion.set	(0,0,0);
-			movement_control->Calculate(CDetailPathManager::path(),0.f,CDetailPathManager::curr_travel_point_index(),precision);
+			movement_control->Calculate(CDetailPathManager::path(),0.f,CDetailPathManager::m_current_travel_point,precision);
 			movement_control->GetPosition(dest_position);
 		}
 
@@ -188,7 +188,7 @@ void CMovementManager::process_game_path()
 {
 	switch (m_path_state) {
 		case ePathStateSelectGameVertex : {
-			CGameLocationSelector::select_location(game_vertex_id(),game_dest_vertex_id());
+			CGameLocationSelector::select_location(game_vertex_id(),CGamePathManager::m_dest_vertex_id);
 			if (CGameLocationSelector::failed())
 				break;
 			m_path_state	= ePathStateBuildGamePath;
@@ -264,13 +264,10 @@ void CMovementManager::process_game_path()
 			if (!CGameLocationSelector::actual(game_vertex_id()))
 				m_path_state	= ePathStateSelectGameVertex;
 			else
-			if (!CGamePathManager::actual(game_vertex_id(),game_dest_vertex_id()))
+			if (!CGamePathManager::actual())
 				m_path_state	= ePathStateBuildGamePath;
 			else
-				if (!CLevelPathManager::actual(
-						level_vertex_id(),
-						CGamePathManager::intermediate_vertex_id()
-					))
+				if (!CLevelPathManager::actual())
 				m_path_state	= ePathStateBuildLevelPath;
 			else
 			if (!CDetailPathManager::actual())
@@ -299,7 +296,7 @@ void CMovementManager::process_level_path()
 {
 	switch (m_path_state) {
 		case ePathStateSelectLevelVertex : {
-			CLevelLocationSelector::select_location(level_vertex_id(),level_dest_vertex_id());
+			CLevelLocationSelector::select_location(level_vertex_id(),CLevelPathManager::m_dest_vertex_id);
 			if (CLevelLocationSelector::failed())
 				break;
 			m_path_state		= ePathStateBuildLevelPath;
@@ -353,7 +350,7 @@ void CMovementManager::process_level_path()
 			if (!CLevelLocationSelector::actual(level_vertex_id()))
 				m_path_state	= ePathStateSelectLevelVertex;
 			else
-			if (!CLevelPathManager::actual(level_vertex_id(),level_dest_vertex_id()))
+			if (!CLevelPathManager::actual())
 				m_path_state	= ePathStateBuildLevelPath;
 			else
 			if (!CDetailPathManager::actual())
@@ -429,7 +426,7 @@ void CMovementManager::process_enemy_search()
 			if (!CEnemyLocationPredictor::enemy_prediction_actual())
 				m_path_state	= ePathStatePredictEnemyVertices;
 			else
-			if (!CLevelPathManager::actual(level_vertex_id(),level_dest_vertex_id()))
+			if (!CLevelPathManager::actual())
 				m_path_state	= ePathStateBuildLevelPath;
 			else
 			if (!CDetailPathManager::actual())

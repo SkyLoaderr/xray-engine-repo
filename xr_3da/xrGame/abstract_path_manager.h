@@ -46,6 +46,8 @@ public:
 	IC					CAbstractPathManager		();
 	IC	virtual			~CAbstractPathManager		();
 	IC	virtual void	Init						(const _Graph *graph = 0);
+
+	friend class CMovementManager;
 };
 
 #include "abstract_path_manager_inline.h"
