@@ -850,7 +850,7 @@ Shader*	CShaderManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_texture
 	}
 
 	// Create _new_ entry
-	Shader*		N		= xr_new<Shader>(S);
+	Shader*		N		= xr_new<Shader>	(S);
 	N->dwReference		= 1;
 	v_shaders.push_back	(N);
 	return N;
@@ -875,7 +875,7 @@ void CShaderManager::_DeleteElement(ShaderElement* &S)
 
 void CShaderManager::Delete(Shader* &S)
 {
-	if (0==S)	return;
+	if (0==S)		return;
 
 	_DeleteElement	(S->E[2]);
 	_DeleteElement	(S->E[1]);

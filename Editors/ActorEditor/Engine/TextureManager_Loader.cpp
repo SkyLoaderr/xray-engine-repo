@@ -294,5 +294,5 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 		Debug.fatal			("Unsupported blender library. Compressed?");
 	}
 	OnDeviceCreate			(F);
-    FS.r_close	(F);
+    FS.r_close				(F);
 }

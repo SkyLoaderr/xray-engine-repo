@@ -197,17 +197,17 @@ void			ISpatial_DB::insert		(ISpatial* S)
 	if (verify_sp(S,m_center,m_bounds))
 	{
 		// Object inside our DB
-		rt_insert_object	= S;
-		_insert				(m_root,m_center,m_bounds);
+		rt_insert_object			= S;
+		_insert						(m_root,m_center,m_bounds);
+		VERIFY						(S->spatial_inside());
 	} else {
 		// Object outside our DB, put it into root node and hack bounds
 		// Object will reinsert itself until fits into "real", "controlled" space
-		m_root->_insert								(S);
-		rt_insert_object->spatial.node_center.set	(m_center);
-		rt_insert_object->spatial.node_radius	=	m_bounds;
+		m_root->_insert				(S);
+		S->spatial.node_center.set	(m_center);
+		S->spatial.node_radius		=	m_bounds;
 	}
 	stat_insert.End		();
-	VERIFY				(S->spatial_inside());
 }
 
 void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
