@@ -152,7 +152,7 @@ void STextureParams::FillProp(PropItemVec& items)
         P->OnChangeEvent			= OnTypeChange;
         if (tbmUse==bump_mode)
         	PHelper.CreateChoose	(items, "Bump\\Texture",			&bump_name,			smTexture);
-        if (tbmAutogen!=bump_mode)
+        if (tbmAutogen==bump_mode)
             PHelper.CreateFloat		(items, "Bump\\Virtual Height (m)",	&bump_virtual_height, 0.f, 0.1f, 0.001f, 3);
         
         PHelper.CreateFlag<Flags32>	(items, "Details\\Use As Diffuse",	&flags,				flDiffuseDetail);
