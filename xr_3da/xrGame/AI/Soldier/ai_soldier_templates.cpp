@@ -241,11 +241,13 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 
 void CAI_Soldier::vfSetMovementType(char cMovementType,float fMultplier)
 {
+	/**/
 	m_fDistanceWent += m_fTimeUpdateDelta*AI_Path.fSpeed;
 	if (m_fDistanceWent >= DISTANCE_TO_STEP) {
 		pSounds->PlayAtPos(sndSteps[m_cStep ^= char(1)],this,vPosition);
 		m_fDistanceWent = 0.f;		
 	}
+	/**/
 
 	Fvector view = clTransform.k, move;
 	AI_Path.Direction(move); 

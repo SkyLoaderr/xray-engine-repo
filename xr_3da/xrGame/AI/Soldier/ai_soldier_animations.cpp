@@ -54,6 +54,8 @@ void CAI_Soldier::vfLoadSounds()
 	pSounds->Create(sndRadio[1],TRUE,"monsters\\Soldier\\Radio\\vo2",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
 	pSounds->Create(sndRadio[2],TRUE,"monsters\\Soldier\\Radio\\vo3",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
 	pSounds->Create(sndRadio[3],TRUE,"monsters\\Soldier\\Radio\\R1",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
+	pSounds->Create(sndSteps[0],TRUE,"monsters\\Soldier\\Radio\\StepL",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	pSounds->Create(sndSteps[1],TRUE,"monsters\\Actor\\StepR",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
 }
 
 // animations
