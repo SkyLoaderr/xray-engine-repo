@@ -68,10 +68,10 @@ public:
 	u32									dwFrame_UpdateCL;
 
 	// Network
-	IC BOOL								Local				()			const	{ return Props.net_Local;	}
-	IC BOOL								Remote				()			const	{ return !Props.net_Local;	}
-	IC u16								ID					()			const	{ return Props.net_ID;		}
-	IC void								setID				(u16 _ID)			{ Props.net_ID = _ID;		}
+	ICF BOOL							Local				()			const	{ return Props.net_Local;	}
+	ICF BOOL							Remote				()			const	{ return !Props.net_Local;	}
+	ICF u16								ID					()			const	{ return Props.net_ID;		}
+	ICF void							setID				(u16 _ID)			{ Props.net_ID = _ID;		}
 	virtual BOOL						Ready				()					{ return Props.net_Ready;	}
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 
@@ -84,8 +84,8 @@ public:
 
 	// Geometry xform
 	virtual void						Center				(Fvector& C) const;
-	IC const Fmatrix&					XFORM				()			 const	{ VERIFY(_valid(renderable.xform));	return renderable.xform;	}
-	IC Fmatrix&							XFORM				()					{ return renderable.xform;			}
+	ICF const Fmatrix&					XFORM				()			 const	{ VERIFY(_valid(renderable.xform));	return renderable.xform;	}
+	ICF Fmatrix&						XFORM				()					{ return renderable.xform;			}
 	virtual void						spatial_register	();
 	virtual void						spatial_unregister	();
 	virtual void						spatial_move		();
