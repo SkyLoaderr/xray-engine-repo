@@ -23,6 +23,8 @@ local snd_idle_4       = snd_base + 7
 local snd_idle_5       = snd_base + 8
 ]]
 
+local novice_name = "trivial_novice3_0_1"
+
 local rnd_phrases = {
 	maxidle = 8,
 	sumidle = 2,
@@ -53,7 +55,7 @@ function check_enemy( npc )
         --if actor and enemy:id() == actor:id() then
             --npc:play_sound( snd_on_actor, 1, 0 )
         --    xr_sound.sound_update( npc, snd_on_actor, true )
-        if enemy:name() == "trivial_novice3_0_1" then
+        if enemy:name() == novice_name then
             --npc:play_sound( snd_novice_again, 1, 0 )
             xr_sound.sound_update( npc, snd_novice_again, true )
         end
@@ -62,11 +64,11 @@ end
 
 function check_actor( npc1, a )
 	if npc1:see( the_actor ) then
-		a.enabled  = false
+		a.enabled = false
 		xr_motivator.storage[a.partner:id()].escape_factory_bandit.enabled = false
 
-		xr_motivator.storage[npc1:id()].robbers.enabled      = true
-		xr_motivator.storage[a.partner:id()].robbers.enabled = true
+		xr_motivator.storage[npc1:id()].robber.enabled      = true
+		xr_motivator.storage[a.partner:id()].robber.enabled = true
 	end
 end
 
@@ -148,6 +150,14 @@ function action_go_to_pos:initialize()
 
     if not the_actor then
     	the_actor = level.actor()
+    end
+
+    if not self.novice_enemy then
+	    local novice = level.object( novice_name )
+    	if novice then
+	    	self.object:set_relation( game_object.enemy, novice )
+	    	self.novice_enemy = true
+    	end
     end
 
     self.object:set_node_evaluator      ()
@@ -255,7 +265,15 @@ function action_stand:initialize()
     if not self.a.partner then
         self.a.partner = level.object( self.a.partner_name )
     end
-    
+
+    if not self.novice_enemy then
+	    local novice = level.object( novice_name )
+    	if novice then
+	    	self.object:set_relation( game_object.enemy, novice )
+	    	self.novice_enemy = true
+    	end
+    end
+ 
     self.object:set_node_evaluator      ()
     self.object:set_path_evaluator      ()
     self.object:set_desired_direction   ()
