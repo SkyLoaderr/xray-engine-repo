@@ -79,7 +79,7 @@ public:
 	}
 	IC void						Unlock(DWORD RealCount)
 	{
-		mPosition	+=	RealCount;
+		mPosition	+=	RealCount+3;
 
 		VERIFY(pVB);
 		pVB->Unlock();
