@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "build.h"
 
-vec2Face g_XMerge;
+// vec2Face g_XMerge;
 
 IC bool defl_compare(Face* F1, Face* F2)
 { return F1->pDeflector < F2->pDeflector; }
