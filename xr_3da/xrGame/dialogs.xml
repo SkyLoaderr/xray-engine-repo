@@ -102,6 +102,7 @@
 				<next>3</next>
 			</phrase>
 			<phrase id="2">
+				<dont_has_info>trader_start2</dont_has_info>
 				<goodwill>70</goodwill>
 				<text>Я возьмусь за ящик с блокпоста.</text>
 				<next>4</next>
