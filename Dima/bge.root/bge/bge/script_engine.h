@@ -8,8 +8,17 @@
 
 #pragma once
 
+struct lua_State;
+
 class CScriptEngine {
+private:
+	lua_State			*m_virtual_machine;
+
 public:
-				CScriptEngine	();
-		void	init			()
+						CScriptEngine	();
+	virtual				~CScriptEngine	();
+			void		init			();
+	IC		lua_State	*lua			() const;
 };
+
+#include "script_engine_inline.h"
