@@ -30,7 +30,7 @@ static const char* h_str =
 	"-? or -h   == this help\n"
 	"-f<NAME>   == compile level in gamedata\\levels\\<NAME>\\\n"
 	"-o         == modify build options\n"
-	"-g<NAME>   == build off-line AI graph in gamedata\\levels\\<NAME>\\\n"
+	"-g<NAME>   == build off-line AI graph and cross-table to ai-map in gamedata\\levels\\<NAME>\\\n"
 	"-m         == merge level graphs\n"
 	"-s         == build game spawn data\n"
 	"\n"
@@ -65,9 +65,6 @@ void Startup(LPSTR     lpCmdLine)
 	else
 		if (strstr(cmd,"-g"))
 			sscanf	(strstr(cmd,"-g")+2,"%s",name);
-		else
-			if (strstr(cmd,"-c"))
-				sscanf	(strstr(cmd,"-c")+2,"%s",name);
 
 	if (strlen(name))
 		strcat			(name,"\\");
@@ -85,19 +82,18 @@ void Startup(LPSTR     lpCmdLine)
 	if (strstr(cmd,"-f"))
 		xrCompiler			(prjName);
 	else
-		if (strstr(cmd,"-g"))
+		if (strstr(cmd,"-g")) {
 			xrBuildGraph		(prjName);
-		else
-			if (strstr(cmd,"-c"))
-				xrBuildCrossTable	(prjName);
-			else {
-				if (strstr(cmd,"-m")) {
-					xrMergeGraphs		(prjName);
+			xrBuildCrossTable	(prjName);
+		}
+		else {
+			if (strstr(cmd,"-m")) {
+				xrMergeGraphs		(prjName);
+			}
+			else
+				if (strstr(cmd,"-s")) {
+					xrMergeSpawns		(prjName);
 				}
-				else
-					if (strstr(cmd,"-s")) {
-						xrMergeSpawns		(prjName);
-					}
 		}
 	// Show statistic
 	char	stats[256];
