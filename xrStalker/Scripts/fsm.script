@@ -22,7 +22,9 @@ end
 -- 	добавление указателя на булеву
 -- 	функцию условия перехода
 function FSM:add_transition(from_state_num, to_state_num, cond_func)
-	printf("in add transition %d, %d", from_state_num, to_state_num)
+
+
+	printf("in add transition %d", from_state_num)
 
 	local transition_vector = self.transition_matrix[from_state_num] 
 	
@@ -80,7 +82,7 @@ function main()
 	actor = get_actor()
 
 	local fsm_stalker = fsm.FSM(stalker00)
-	fsm_stalker.add_transition(1, 2, fsm.if_see_actor)
+	fsm_stalker.add_transition(0, 1, fsm.if_see_actor)
 --	fsm_stalker.add_transition(0, 2, if_see_actor1)
 --	fsm_stalker.run()
 
