@@ -67,7 +67,6 @@ void CRenderTarget::phase_bloom	()
 	RCache.set_Stencil					(FALSE);
 	RImplementation.rmFar				();
 	pCreator->Environment.RenderFirst	();		// sky
-	RImplementation.rmNormal			();
 
 	// Transfer into Bloom1, use black/white mask stored in Bloom2
 	{
@@ -277,7 +276,6 @@ void CRenderTarget::phase_bloom	()
 		u_setrt								(rt_Bloom_2,NULL,NULL,rt_Bloom_ZB);		// No need for ZBuffer at all
 		RImplementation.rmFar				();
 		pCreator->Environment.RenderFirst	();
-		RImplementation.rmNormal			();
 	}
 
 	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,		TRUE				));
