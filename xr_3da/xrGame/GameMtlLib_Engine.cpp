@@ -6,18 +6,18 @@
 
 void DestroySounds(SoundSVec4& lst)
 {
-	for (SoundS4It it=lst.begin(); it!=lst.end(); it++)	it->destroy();
+	for (SoundS4It it=lst.begin(); lst.end() != it; ++it)	it->destroy();
 }
 
 void DestroyMarks(ShaderSVec4& lst)
 {
-	for (ShaderS4It it=lst.begin(); it!=lst.end(); it++)
+	for (ShaderS4It it=lst.begin(); lst.end() != it; ++it)
 		it->destroy();
 }
 
 void DestroyPSs(PSSVec4& lst)
 {
-//	for (ShaderS4It it=lst.begin(); it!=lst.end(); it++)
+//	for (ShaderS4It it=lst.begin(); lst.end() != it; ++it)
 //		Device.Resources->Delete(*it);
 }
 
@@ -25,7 +25,7 @@ void CreateSounds(SoundSVec4& lst, LPCSTR buf)
 {
 	string128 tmp;
 	int cnt=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
-	for (int k=0; k<cnt; k++){
+	for (int k=0; k<cnt; ++k){
 		lst.push_back		(ref_sound());
 		lst.back().create	(TRUE,	_GetItem(buf,k,tmp));
 	}
@@ -36,7 +36,7 @@ void CreateMarks(ShaderSVec4& lst, LPCSTR buf)
 	string128	tmp;
 	int cnt		=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
 	ref_shader	s;
-	for (int k=0; k<cnt; k++)
+	for (int k=0; k<cnt; ++k)
 	{
 		s.create		("effects\\wallmark",_GetItem(buf,k,tmp));
 		lst.push_back	(s);
@@ -47,7 +47,7 @@ void CreatePSs(PSSVec4& lst, LPCSTR buf)
 {
 	//	string128 tmp;
 	int cnt=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
-	for (int k=0; k<cnt; k++)
+	for (int k=0; k<cnt; ++k)
 		lst.push_back	(0);
 }
 

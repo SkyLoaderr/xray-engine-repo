@@ -73,7 +73,7 @@ void CGameMtlLibrary::Load(LPCSTR name)
 
     R_ASSERT(fs.find_chunk(GAMEMTLS_CHUNK_VERSION));
     u16 version			= fs.r_u16();
-    if (version!=GAMEMTL_CURRENT_VERSION){
+    if (GAMEMTL_CURRENT_VERSION!=version){
         Log				("CGameMtlLibrary: invalid version. Library can't load.");
     	return;
     }
@@ -88,7 +88,7 @@ void CGameMtlLibrary::Load(LPCSTR name)
     IReader* OBJ 		= fs.open_chunk(GAMEMTLS_CHUNK_MTLS);
     if (OBJ){
         IReader* O   	= OBJ->open_chunk(0);
-        for (int count=1; O; count++) {
+        for (int count=1; O; ++count) {
         	SGameMtl* M	= xr_new<SGameMtl> ();
 	        M->Load		(*O);
         	materials.push_back(M);
@@ -101,7 +101,7 @@ void CGameMtlLibrary::Load(LPCSTR name)
     OBJ 				= fs.open_chunk(GAMEMTLS_CHUNK_MTLS_PAIR);
     if (OBJ){
         IReader* O   	= OBJ->open_chunk(0);
-        for (int count=1; O; count++) {
+        for (int count=1; O; ++count) {
         	SGameMtlPair* M	= xr_new<SGameMtlPair> (this);
 	        M->Load		(*O);
         	material_pairs.push_back(M);
@@ -114,7 +114,7 @@ void CGameMtlLibrary::Load(LPCSTR name)
 #ifndef _EDITOR
 	material_count		= (u32)materials.size();
     material_pairs_rt.resize(material_count*material_count,0);
-    for (GameMtlPairIt p_it=material_pairs.begin(); p_it!=material_pairs.end(); p_it++){
+    for (GameMtlPairIt p_it=material_pairs.begin(); material_pairs.end() != p_it; ++p_it){
     	SGameMtlPair* S	= *p_it;
     	int idx0		= GetMaterialIdx(S->mtl0)*material_count+GetMaterialIdx(S->mtl1);
     	int idx1		= GetMaterialIdx(S->mtl1)*material_count+GetMaterialIdx(S->mtl0);

@@ -203,23 +203,23 @@ public:
 	{
 		material_count	= 0;
 		material_pairs_rt.clear();
-		for (GameMtlIt m_it=materials.begin(); m_it!=materials.end(); m_it++)
+		for (GameMtlIt m_it=materials.begin(); materials.end() != m_it; ++m_it)
 			xr_delete	(*m_it);
 		materials.clear();
-		for (GameMtlPairIt p_it=material_pairs.begin(); p_it!=material_pairs.end(); p_it++)
+		for (GameMtlPairIt p_it=material_pairs.begin(); material_pairs.end() != p_it; ++p_it)
 			xr_delete	(*p_it);
 		material_pairs.clear();
 	}
     // material routine
     IC GameMtlIt 		GetMaterialIt	(LPCSTR name)
     {
-        for (GameMtlIt it=materials.begin(); it!=materials.end(); it++)
+        for (GameMtlIt it=materials.begin(); materials.end() != it; ++it)
             if (0==strcmpi((*it)->name,name)) return it;
         return materials.end();
     }
     IC GameMtlIt 		GetMaterialItByID(int id)
     {
-        for (GameMtlIt it=materials.begin(); it!=materials.end(); it++)
+        for (GameMtlIt it=materials.begin(); materials.end() != it; ++it)
             if ((*it)->ID==id) return it;
         return materials.end();
     }
@@ -236,12 +236,12 @@ public:
 	IC SGameMtl*		GetMaterial		(LPCSTR name)
     {
 	    GameMtlIt it=GetMaterialIt(name);
-    	return it!=materials.end()?*it:0;
+    	return materials.end() != it?*it:0;
 	}
 #else
 	// game
-	IC u32				GetMaterialIdx	(int ID){GameMtlIt it=GetMaterialItByID(ID);R_ASSERT(it!=materials.end()); return (u32)(it-materials.begin());}
-	IC u32				GetMaterialIdx	(LPCSTR name){GameMtlIt it=GetMaterialIt(name);R_ASSERT(it!=materials.end()); return (u32)(it-materials.begin());}
+	IC u32				GetMaterialIdx	(int ID){GameMtlIt it=GetMaterialItByID(ID);R_ASSERT(materials.end() != it); return (u32)(it-materials.begin());}
+	IC u32				GetMaterialIdx	(LPCSTR name){GameMtlIt it=GetMaterialIt(name);R_ASSERT(materials.end() != it); return (u32)(it-materials.begin());}
 	IC SGameMtl*		GetMaterial		(u32 idx){R_ASSERT(idx<materials.size()); return materials[idx];}
 #endif
 
