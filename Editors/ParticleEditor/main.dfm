@@ -15,9 +15,11 @@ object frmMain: TfrmMain
   OldCreateOrder = False
   Position = poDefault
   Scaled = False
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
   OnResize = FormResize
   OnShow = FormShow
