@@ -84,8 +84,7 @@ void CAI_Stalker::reinit			()
 void CAI_Stalker::reload			(LPCSTR section)
 {
 	CCustomMonster::reload			(section);
-	CInventoryOwner::reload			(section);
-	CObjectHandler::reload		(section);
+	CObjectHandler::reload			(section);
 //	CSightManager::reload			(section);
 //	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);

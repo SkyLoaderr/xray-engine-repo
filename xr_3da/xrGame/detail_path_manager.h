@@ -127,11 +127,15 @@ private:
 	Fvector										m_dest_position;
 	Fvector										m_dest_direction;
 
+protected:
+	xr_vector<STravelPoint>						m_key_points;
+	xr_vector<STravelPoint>						m_key_points1;
+	xr_vector<STravelPathPoint>					m_path1;
+
 private:
 	xr_vector<STravelParamsIndex>				m_start_params;
 	xr_vector<STravelParamsIndex>				m_dest_params;
 	xr_vector<STravelPathPoint>					m_temp_path;
-	xr_vector<STravelPoint>						m_key_points;
 	u32											m_desirable_mask;
 	u32											m_velocity_mask;
 
@@ -158,8 +162,9 @@ private:
 			bool	init_build					(const xr_vector<u32>	&level_path,	  u32							intermediate_index,	  STrajectoryPoint				&start,					  STrajectoryPoint				&dest,					  u32							&straight_line_index,			  u32				&straight_line_index_negative);
 			bool	fill_key_points				(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest);
 			void	add_patrol_point			();
-			void	postprocess_key_points		(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest);
+			void	postprocess_key_points		(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest,xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
 			void	build_path_via_key_points	(STrajectoryPoint		&start,			  STrajectoryPoint				&dest,				  xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
+			void	build_path_via_key_points2	(STrajectoryPoint		&start,			  STrajectoryPoint				&dest,				  xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
 			void	build_smooth_path			(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
 
 protected:

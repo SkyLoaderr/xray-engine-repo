@@ -12,6 +12,7 @@
 
 CAttachableItem::~CAttachableItem	()
 {
+	init				();
 }
 
 void CAttachableItem::reinit		()
@@ -32,6 +33,7 @@ void CAttachableItem::reload		(LPCSTR section)
 	m_offset.setHPB		(VPUSH(angle_offset));
 	m_offset.c			= position_offset;
 	m_bone_name			= pSettings->r_string	(section,"attach_bone_name");
+	m_enabled			= true;
 }
 
 void CAttachableItem::OnH_A_Chield	() 
@@ -49,4 +51,21 @@ void CAttachableItem::renderable_Render()
 		::Render->set_Transform	(&XFORM());
 		::Render->add_Visual	(Visual());
 	}
+}
+
+void CAttachableItem::enable		(bool value)
+{
+	if (value && !enabled() && H_Parent()) {
+		CAttachmentOwner	*owner = dynamic_cast<CAttachmentOwner*>(H_Parent());
+		VERIFY				(owner);
+		owner->attach		(this);
+		setVisible			(true);
+	}
+	if (!value && enabled() && H_Parent()) {
+		CAttachmentOwner	*owner = dynamic_cast<CAttachmentOwner*>(H_Parent());
+		VERIFY				(owner);
+		owner->detach		(this);
+		setVisible			(false);
+	}
+	m_enabled				= value;
 }

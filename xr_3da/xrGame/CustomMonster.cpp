@@ -515,28 +515,42 @@ void CCustomMonster::OnRender()
 //	m_PhysicMovementControl->DBG_Render();
 
 	RCache.OnFrameEnd				();
-	{
-	for (u32 I=1; I<CDetailPathManager::path().size(); ++I) {
-		const CDetailPathManager::STravelPathPoint&	N1 = CDetailPathManager::path()[I-1];	Fvector	P1; P1.set(N1.position); P1.y+=0.1f;
-		const CDetailPathManager::STravelPathPoint&	N2 = CDetailPathManager::path()[I];		Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
-		RCache.dbg_DrawLINE			(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
-		if ((CDetailPathManager::path().size() - 1) == I) // песледний box?
-			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
-		else 
-			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
-		
-		/**
-		Fvector         T;
-        Fvector4        S;
-        
-        T.set			(CDetailPathManager::path()[I].position); T.y+=(Radius()*2);
-        Device.mFullTransform.transform (S,T);
-        
-//		pApp->pFont->Size       (0.07f/sqrtf(_abs(S.w)));
-//		pApp->pFont->Color      (color_rgba(0,255,0,(S.z<=0)?0:255));
-//		pApp->pFont->Out		(S.x,-S.y,"%d",I);
-		/**/
-	}
+	for (int i=0; i<1; ++i) {
+		const xr_vector<STravelPoint>		&keys	= !i ? m_key_points					: m_key_points1;
+		const xr_vector<STravelPathPoint>	&path	= !i ? CDetailPathManager::path()	: m_path1;
+		u32									color0	= !i ? D3DCOLOR_XRGB(0,255,0)		: D3DCOLOR_XRGB(0,0,255);
+		u32									color1	= !i ? D3DCOLOR_XRGB(255,0,0)		: D3DCOLOR_XRGB(255,255,0);
+		u32									color2	= !i ? D3DCOLOR_XRGB(0,0,255)		: D3DCOLOR_XRGB(0,255,255);
+		u32									color3	= !i ? D3DCOLOR_XRGB(255,255,255)	: D3DCOLOR_XRGB(255,0,255);
+		float								radius0 = !i ? .1f : .15f;
+		float								radius1 = !i ? .2f : .3f;
+		{
+			for (u32 I=1; I<path.size(); ++I) {
+				const CDetailPathManager::STravelPathPoint&	N1 = path[I-1];	Fvector	P1; P1.set(N1.position); P1.y+=0.1f;
+				const CDetailPathManager::STravelPathPoint&	N2 = path[I];	Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
+				RCache.dbg_DrawLINE			(Fidentity,P1,P2,color0);
+				if ((path.size() - 1) == I) // песледний box?
+					RCache.dbg_DrawAABB			(P1,radius0,radius0,radius0,color1);
+				else 
+					RCache.dbg_DrawAABB			(P1,radius0,radius0,radius0,color2);
+			}
+
+			for (u32 I=1; I<keys.size(); ++I) {
+				CDetailPathManager::STravelPoint	temp;
+				temp		= keys[I - 1]; 
+				Fvector		P1;
+				P1.set		(temp.position.x,ai().level_graph().vertex_plane_y(temp.vertex_id),temp.position.y);
+				P1.y		+= 0.1f;
+
+				temp		= keys[I]; 
+				Fvector		P2;
+				P2.set		(temp.position.x,ai().level_graph().vertex_plane_y(temp.vertex_id),temp.position.y);
+				P2.y		+= 0.1f;
+
+				RCache.dbg_DrawLINE			(Fidentity,P1,P2,color1);
+				RCache.dbg_DrawAABB			(P1,radius1,radius1,radius1,color3);
+			}
+		}
 	}
 	/*
 	{

@@ -17,6 +17,7 @@ IC	void CAttachableItem::init						()
 {
 	m_offset.identity	();
 	m_bone_name			= "";
+	m_enabled			= true;
 }
 
 IC	ref_str CAttachableItem::bone_name				() const
@@ -37,4 +38,9 @@ IC	u16	 CAttachableItem::bone_id					() const
 IC	void CAttachableItem::set_bone_id				(u16 bone_id)
 {
 	m_bone_id			= bone_id;
+}
+
+IC	bool CAttachableItem::enabled					() const
+{
+	return				(m_enabled);
 }

@@ -123,7 +123,8 @@ bool CAttachmentOwner::attached				(const CInventoryItem *inventory_item) const
 
 bool CAttachmentOwner::can_attach			(const CInventoryItem *inventory_item) const
 {
-	if (!dynamic_cast<const CAttachableItem*>(inventory_item))
+	const CAttachableItem	*item = dynamic_cast<const CAttachableItem*>(inventory_item);
+	if (!item || !item->enabled())
 		return			(false);
 
 	return				(std::binary_search(m_attach_item_sections.begin(),m_attach_item_sections.end(),inventory_item->cNameSect(),CStringPredicate()));

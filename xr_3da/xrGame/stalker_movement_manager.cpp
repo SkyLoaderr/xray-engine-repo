@@ -211,6 +211,9 @@ void CStalkerMovementManager::setup_movement_params	()
 
 void CStalkerMovementManager::setup_velocities		()
 {
+	// setup desirable velocities mask
+	// if we want to stand, do not setup velocity to prevent path rebuilding
+
 	if (movement_type() == eMovementTypeStand)
 		return;
 
@@ -268,9 +271,6 @@ void CStalkerMovementManager::setup_velocities		()
 			velocity_mask	&= u32(-1) ^ (eVelocityNegativeVelocity | eVelocityPositiveVelocity);
 		}
 	}
-
-	// setup desirable velocities mask
-	// if we want to stand, do not setup velocity to prevent path rebuilding
 
 	// setup all the possible velocities
 	if (velocity_mask & eVelocityDanger) {

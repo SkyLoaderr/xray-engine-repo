@@ -17,6 +17,8 @@ protected:
 	ref_str					m_bone_name;
 	Fmatrix					m_offset;
 	u16						m_bone_id;
+	bool					m_enabled;
+
 public:
 	IC						CAttachableItem		();
 	virtual					~CAttachableItem	();
@@ -30,6 +32,8 @@ public:
 	IC		u16				bone_id				() const;
 	IC		void			set_bone_id			(u16 bone_id);
 	IC		const Fmatrix	&offset				() const;
+	IC		bool			enabled				() const;
+			void			enable				(bool value);
 };
 
 #include "attachable_item_inline.h"
