@@ -33,11 +33,15 @@ function base_dialog:InitControls(caption)
 	self.screen    = {x = 0, y = 0, width = 1024, height = 768}
 	
 	-- rect of main window
+	
 	self.main_rect = {x = 0, y = 0,
-					  width  = 600,
-					  height = 400}
+					  width  = 521,
+					  height = 438}
 	self.main_rect.x = (self.screen.width  - self.main_rect.width )/2
 	self.main_rect.y = (self.screen.height - self.main_rect.height)/2
+	self.main_rect.x_ind = 29
+	self.main_rect.y_ind = 19
+	self.main_rect.height_ind = 100
 	-----------------------------------------------------------------
 	self.left_align_x   = self.indent
 	self.right_align_x  = self.main_rect.width - self.indent
@@ -48,9 +52,14 @@ function base_dialog:InitControls(caption)
 	-- button template
 	self.btn_rect  = {x = 0, 
 					  y = 0, 
-					  width = 135, 
-					  height = 40 }
+					  width = 147, 
+					  height = 60}
 	self.btn_rect.x = (self.main_rect.width - self.btn_rect.width)/2
+	
+	self.btn = {}
+	self.btn.texture_left   = "ui\\ui_btn_triple_left"
+	self.btn.texture_center = "ui\\ui_btn_triple_center"
+	self.btn.texture_right  = "ui\\ui_btn_triple_right"
 	--------------------------------------------------
 	-- special button aling
 	
@@ -92,14 +101,23 @@ function base_dialog:InitControls(caption)
 			  self.screen.height)
 	
 	-- MAIN FRAME WINDOW
-	self.main_frame = CUIFrameWindow()
+	local static =  CUIStatic()
+	static:SetAutoDelete(true)
+	static:SetWindowName("static")
+	static:Init("ui\\ui_options_menu_static", self.main_rect.x + self.main_rect.x_ind, 
+											  self.main_rect.y + self.main_rect.y_ind,
+											  self.main_rect.width,
+											  self.main_rect.height)
+	self:AttachChild(static)
+	
+	self.main_frame = CUIStatic()
 	self.main_frame:SetAutoDelete(true)
 	self.main_frame:SetWindowName("main_frame")
-	self.main_frame:Init("ui\\ui_frame", self.main_rect.x, 
-										 self.main_rect.y, 
-										 self.main_rect.width, 
-										 self.main_rect.height)
-	self.main_frame:InitLeftTop("ui\\ui_frame_over_lt", self.lt_frame_indent.x, self.lt_frame_indent.y)
+	self.main_frame:Init(self.main_rect.x, 
+						 self.main_rect.y, 
+						 self.main_rect.width, 
+						 self.main_rect.height + self.main_rect.height_ind)
+--	self.main_frame:InitLeftTop("ui\\ui_frame_over_lt", self.lt_frame_indent.x, self.lt_frame_indent.y)
 	self:AttachChild(self.main_frame)
 	
 	-- CAPTION --

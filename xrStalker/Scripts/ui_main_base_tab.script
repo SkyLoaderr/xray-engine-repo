@@ -29,6 +29,7 @@ function main_base_tab:InitControls(x, y)
 	self.btn.width = 256
 	self.btn.height = 33
 	self.btn.font = GetFontLetterica25()
+	self.btn.texture = "ui\\ui_btn_mm"
 	
 	-- CODE
 	self:Init(x, y, self.main_rect.width, self.main_rect.height)
