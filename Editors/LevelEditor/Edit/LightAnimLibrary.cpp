@@ -231,10 +231,10 @@ void ELightAnimLibrary::Reload()
 
 LAItemIt ELightAnimLibrary::FindItemI(LPCSTR name)
 {
-	if (0==name) return Items.end();
-	for (LAItemIt it=Items.begin(); it!=Items.end(); it++)
-    	if (0==strcmp((*it)->cName,name)) return it;
-    return Items.end();
+	if (name&&name[0])
+		for (LAItemIt it=Items.begin(); it!=Items.end(); it++)
+			if (0==strcmp((*it)->cName,name)) return it;
+	return Items.end();
 }
 
 CLAItem* ELightAnimLibrary::FindItem(LPCSTR name)
