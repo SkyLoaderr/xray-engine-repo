@@ -357,7 +357,6 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 	//котором он сейчас
 	RECT item_rect = pItem->GetAbsoluteRect();
 	RECT rect = GetAbsoluteRect();
-//	RECT wnd_rect = GetWndRect();
 
 	if(item_rect.left - rect.left<0)
 		place_col = 0;
@@ -376,14 +375,14 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 
 	if(place_col == -1)
 	{
-		place_col = item_center_x/GetCellWidth() - pItem->GetGridWidth()/2;
+		place_col = iFloor((float)item_center_x/GetCellWidth() - (float)pItem->GetGridWidth()/2  + .5f);
 	}
-
-
 	if(place_row == -1)
 	{
 		place_row = m_iCurrentFirstRow + 
-					item_center_y/GetCellHeight() - pItem->GetGridHeight()/2;
+					//item_center_y/GetCellHeight()
+					iFloor((float)item_center_y/GetCellHeight()
+					- (float)pItem->GetGridHeight()/2  + .5f);
 	}
 
 
@@ -396,11 +395,17 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 	if(place_row>=GetRows())
 		place_row = GetRows()- 1 - pItem->GetGridHeight()/2;
 
-	//m_bCustomPlacement = false;
+
 	if(m_bCustomPlacement && !m_bBlockCustomPlacement)
 	{
 		if(CanPlace(place_row, place_col, pItem))
 		{
+			found_place = true;
+		}
+		else if(CanPlace(place_row, place_col+1, pItem))
+		{
+			place_row;
+			place_col++;
 			found_place = true;
 		}
 		else if(CanPlace(place_row+1, place_col, pItem))
@@ -413,12 +418,6 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 		{
 			place_row--;
 			place_col;
-			found_place = true;
-		}
-		else if(CanPlace(place_row, place_col+1, pItem))
-		{
-			place_row;
-			place_col++;
 			found_place = true;
 		}
 		else if(CanPlace(place_row, place_col-1, pItem))
@@ -434,9 +433,6 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 
 	//проверить можно ли разместить элемент,
 	//проверяем последовательно каждую клеточку
-	
-	//found_place = false;
-		
 
 	for(i=0; (i<GetRows()-pItem->GetGridHeight()+1) && !found_place; i++)
 	{
