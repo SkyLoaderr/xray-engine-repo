@@ -525,6 +525,17 @@ void CSE_ALifeScheduleRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObj
 
 void CSE_ALifeScheduleRegistry::update					()
 {
+#ifdef _DEBUG
+	{
+		ALife::SCHEDULE_P_PAIR_IT	I = m_tpScheduledObjects.begin();
+		ALife::SCHEDULE_P_PAIR_IT	E = m_tpScheduledObjects.end();
+		for ( ; I != E; ++I) {
+			CSE_ALifeObject			*alife_object = dynamic_cast<CSE_ALifeObject*>((*I).second);
+			VERIFY					(alife_object);
+			VERIFY3					(!alife_object->m_bOnline,alife_object->s_name,alife_object->s_name_replace);
+		}
+	}
+#endif
 	++m_cycle_count;
 	_iterator					I = next();
 	for (u32 i=0; (I != m_tpScheduledObjects.end()) && ((*I).second->m_schedule_counter != m_cycle_count); ++i) {
