@@ -29,7 +29,8 @@
 
 #define GAMEMTL_SUBITEM_COUNT			4
 
-#define GAMEMTL_NONE					u32(-1)
+#define GAMEMTL_NONE_ID					u32(-1)
+#define GAMEMTL_NONE_IDX				u16(-1)
 #define GAMEMTL_FILENAME				"gamemtl.xr"
 
 #ifdef _EDITOR
@@ -256,7 +257,7 @@ public:
 	IC u32				GetMaterialID	(LPCSTR name)
     {
     	GameMtlIt it	= GetMaterialIt	(name);
-        return (it==materials.end())?GAMEMTL_NONE:(*it)->ID;
+        return (it==materials.end())?GAMEMTL_NONE_ID:(*it)->ID;
     }
 #ifdef _EDITOR
 	// editor

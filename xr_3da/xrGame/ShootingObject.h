@@ -23,7 +23,7 @@ protected: //чтоб нельзя было вызвать на прямую
 	virtual ~CShootingObject(void);
 public:
 	//материал для пули и осколков (инициализируется в CWeapon::Load)
-	static u16 bullet_material_id;
+	static u16 bullet_material_idx;
 protected:
 
 	//функция обработки хитов объектов

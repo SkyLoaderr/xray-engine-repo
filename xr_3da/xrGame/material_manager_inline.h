@@ -8,12 +8,12 @@
 
 #pragma once
 
-IC	u16	CMaterialManager::last_material_id		() const
+IC	u16	CMaterialManager::last_material_idx		() const
 {
-	return				(m_last_material_id);
+	return				(m_last_material_idx);
 }
 
-IC	u16	CMaterialManager::self_material_id		() const
+IC	u16	CMaterialManager::self_material_idx		() const
 {
-	return				(m_my_material_id);
+	return				(m_my_material_idx);
 }

@@ -15,7 +15,7 @@
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
 
-u16 CShootingObject::bullet_material_id = GAMEMTL_NONE;
+u16 CShootingObject::bullet_material_idx = GAMEMTL_NONE_IDX;
 
 CShootingObject::CShootingObject(void)
 {
@@ -60,7 +60,7 @@ void CShootingObject::LoadEffector()
 
 void CShootingObject::FireShotmark (const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material) 
 {
-	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet_material_id, target_material);
+	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet_material_idx, target_material);
 	
 	Fvector particle_dir;
 
@@ -137,7 +137,7 @@ BOOL __stdcall CShootingObject::firetrace_callback(Collide::rq_result& result, L
 	pThisWeapon->m_vEndPoint.mad(pThisWeapon->m_vCurrentShootPos,
 		pThisWeapon->m_vCurrentShootDir,result.range);
 
-	u16 hit_material_id = GAMEMTL_NONE;
+	u16 hit_material_idx = GAMEMTL_NONE_IDX;
 
 	//динамический объект
 	if(result.O)
@@ -147,22 +147,22 @@ BOOL __stdcall CShootingObject::firetrace_callback(Collide::rq_result& result, L
 		if (0!=(V=PKinematics(result.O->Visual())))
 		{
 			CBoneData& B = V->LL_GetData((u16)result.element);
-			hit_material_id = B.game_mtl_idx;
-			pThisWeapon->DynamicObjectHit(result, hit_material_id);
+			hit_material_idx = B.game_mtl_idx;
+			pThisWeapon->DynamicObjectHit(result, hit_material_idx);
 		}
 		else
 		{
-			hit_material_id = 0*GAMEMTL_NONE;
-			pThisWeapon->DynamicObjectHit(result, hit_material_id);
+			hit_material_idx = 0*GAMEMTL_NONE_IDX;
+			pThisWeapon->DynamicObjectHit(result, hit_material_idx);
 		}
 	}
 	//статический объект
 	else
 	{
 		//получить треугольник и узнать его материал
-		CDB::TRI* T		= Level().ObjectSpace.GetStaticTris()+result.element;
-		hit_material_id = T->material;
-		pThisWeapon->StaticObjectHit(result, hit_material_id);
+		CDB::TRI* T			= Level().ObjectSpace.GetStaticTris()+result.element;
+		hit_material_idx	= T->material;
+		pThisWeapon->StaticObjectHit(result, hit_material_idx);
 	}
 
 	//проверить достаточно ли силы хита, чтобы двигаться дальше

@@ -62,7 +62,7 @@ CLevel::CLevel()
 	m_dwLastNetUpdateTime		= 0;
 
 	//получить материал пули
-	CShootingObject::bullet_material_id  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
+	CShootingObject::bullet_material_idx  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 
 
 #ifdef DEBUG
