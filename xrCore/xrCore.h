@@ -17,9 +17,9 @@
 #define _WIN32_WINNT 0x0500        
 
 #ifdef __BORLANDC__
-#include <vcl.h>
-#include <mmsystem.h>
-#include <stdint.h>
+	#include <vcl.h>
+	#include <mmsystem.h>
+	#include <stdint.h>
 #endif
 
 #define NOGDICAPMASKS
@@ -63,9 +63,6 @@
 
 #include <mmreg.h>
 
-// #include <winbase.h>
-// #include <winnls.h>
-// #include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -89,7 +86,7 @@
 #ifdef __BORLANDC__
 	#include <utime.h>
 	#define _utimbuf utimbuf
-	#define MODULE_NAME 	"xrCoreB.dll"
+	#define MODULE_NAME 		"xrCoreB.dll"
     #ifndef DEBUG
     	#pragma inline_depth	( 254 )
 	    #pragma inline_recursion( on )
@@ -137,8 +134,21 @@
     #endif
 #endif
 
+// stl-config
+#ifdef __BORLANDC__
+	#define _STLP_NO_EXCEPTIONS			
+#else
+	#ifdef XRCORE_EXPORTS				// no exceptions, export allocator and common stuff
+		#define _STLP_NO_EXCEPTIONS		
+		#define _STLP_DESIGNATED_DLL 
+		#define _STLP_USE_DECLSPEC 
+	#else
+		#define _STLP_NO_EXCEPTIONS		// no exceptions, import allocator and common stuff
+		#define _STLP_USE_DECLSPEC 
+	#endif
+#endif
+
 // stl
-#define _STLP_NO_EXCEPTIONS
 #include <algorithm>
 #include <limits>
 #include <vector>
