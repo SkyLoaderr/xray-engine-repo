@@ -30,7 +30,6 @@ CAI_Rat::CAI_Rat()
 	m_tCurrentDir.set		(0,0,1);
 	m_tHPB.set				(0,0,0);
 	m_fDHeading				= 0;
-	m_fGoalChangeDelta		= 10.f;
 	m_fGoalChangeTime		= 0.f;
 	m_tLastSound.tpEntity	= 0;
 	m_tLastSound.dwTime		= 0;
