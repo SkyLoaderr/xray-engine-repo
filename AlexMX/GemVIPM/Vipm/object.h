@@ -11,32 +11,12 @@
 #define objectH
 
 #include "TomsD3DLib.h"
-
-#define STRICT
-#define D3D_OVERLOADS
-#include <windows.h>
-#include <tchar.h>
-#include <math.h>
-#include <stdio.h>
-#include <D3DX8.h>
-#include <DInput.h>
-#include "D3DApp.h"
-#include "D3DFont.h"
-#include "D3DUtil.h"
-#include "DXUtil.h"
-#include "resource.h"
-#include "commctrl.h"
-#include <list>
-
-
+#include "quad.h"
 
 extern LPDIRECT3DDEVICE8 g_pd3dDevice;
 
 
-
 // Incremented by the draw routs. Display + zero whenever you want.
-extern int g_iNumOfObjectTrisDrawn;
-extern int g_iNumOfObjectVertsDrawn;
 extern int g_iMaxNumTrisDrawn;
 extern BOOL g_bOptimiseVertexOrder;
 extern BOOL g_bShowVIPMInfo;
@@ -59,8 +39,6 @@ class MeshPt;
 class MeshEdge;
 class MeshTri;
 
-
-
 struct MyPt
 {
 	D3DXVECTOR3 vPos;
@@ -71,23 +49,16 @@ struct MyPt
 
 	// Temporary data.
 	MeshPt *pTempPt;	// Temporary data.
-
-	D3DXVECTOR4		v4ScrPos;		// Screen pos of this vert.
-	BOOL			bFrontFaced;	// TRUE if not backfaced.
-
 };
 
 struct MyEdge
 {
 	// Temporary data.
-	BOOL			bFrontFaced;	// TRUE if not backfaced.
 };
 
 struct MyTri
 {
 	// Temporary data.
-	BOOL			bFrontFaced;	// TRUE if not backfaced.
-
 	int iSlidingWindowLevel;			// Which sliding window level this tri belongs to.
 
 	DWORD dwIndex;
@@ -102,8 +73,6 @@ struct MyTri
 
 #include "mesh.h"
 
-
-
 struct GeneralTriInfo
 {
 	MeshPt		*ppt[3];
@@ -116,7 +85,7 @@ struct GeneralCollapseInfo
 	ArbitraryList<GeneralTriInfo>		TriOriginal;
 	ArbitraryList<GeneralTriInfo>		TriCollapsed;
 
-	int			iSlidingWindowLevel;			// Which sliding window level the binned tris will belong to.
+	int			iSlidingWindowLevel;					// Which sliding window level the binned tris will belong to.
 	ArbitraryList<GeneralTriInfo>		TriNextLevel;	// On collapses that change levels, lists the tris that were on the next level.
 
 	MeshPt		*pptBin;
@@ -125,9 +94,7 @@ struct GeneralCollapseInfo
 	float		fError;					// Error of this collapse.
 	int			iNumTris;				// Number of tris after this collapse has been made.
 
-
 	DlinkMethods(GeneralCollapseInfo,List);
-
 
 	GeneralCollapseInfo()
 	{
@@ -146,137 +113,6 @@ struct GeneralCollapseInfo
 	}
 };
 
-
-
-// This Quad only records the error due to the vertex positions.
-// A real implementation needs to use smarter QEMs that take account of
-// other vertex attrbiutes such as normals, texture coords, vertex colours,
-// etc. Hugues Hoppe's version of this looks like the most complete and simple
-// version.
-//  The algo also needs to do smarter things than just look at QEMs,
-// such as prevent normal-flipping, deal with degenerate collapses,
-// deal with non-manifold meshes, etc.
-//
-// But this will do for my purposes because:
-// (a) it's simple.
-// (b) it's flexible - all vertices have a position.
-// (c) it is good enough to give plausable collapse orders.
-
-struct Quad
-{
-	float A00, A01, A02;
-	float      A11, A12;
-	float           A22;
-	float B0, B1, B2;
-	float C;
-
-
-	Quad ( void )
-	{
-		A00 = A01 = A02 = A11 = A12 = A22 = 0.0f;
-		B0 = B1 = B2 = 0.0f;
-		C = 0.0f;
-	}
-
-	// Create a quad from a triangle (numbered clockwise).
-	Quad ( const D3DXVECTOR3 &vec1, const D3DXVECTOR3 &vec2, const D3DXVECTOR3 &vec3 )
-	{
-		D3DXVECTOR3 vec12 = vec2 - vec1;
-		D3DXVECTOR3 vec13 = vec3 - vec1;
-
-		D3DXVECTOR3 vNorm;
-		D3DXVec3Cross ( &vNorm, &vec12, &vec13 );
-		float fArea = D3DXVec3Length ( &vNorm );
-		vNorm = vNorm / fArea;
-		// Use the area of the tri, not the parallelogram.
-		fArea *= 0.5f;
-
-		// Find the distance of the origin from the plane, so that
-		// P*N + D = 0
-		// => D = -P*N
-		float fDist = - D3DXVec3Dot ( &vNorm, &vec1 );
-
-		// And now form the Quadric.
-		// A = NNt (and bin the lower half, since it is symmetrical).
-		// B = D*N
-		// C = D^2
-		// The quadric is weighted by the area of the tri.
-		A00 = fArea * vNorm.x * vNorm.x;
-		A01 = fArea * vNorm.x * vNorm.y;
-		A02 = fArea * vNorm.x * vNorm.z;
-		A11 = fArea * vNorm.y * vNorm.y;
-		A12 = fArea * vNorm.y * vNorm.z;
-		A22 = fArea * vNorm.z * vNorm.z;
-		B0  = fArea * vNorm.x * fDist;
-		B1  = fArea * vNorm.y * fDist;
-		B2  = fArea * vNorm.z * fDist;
-		C   = fArea * fDist   * fDist;
-	}
-
-	const float FindError ( const D3DXVECTOR3 &vec )
-	{
-		return (
-			A00 * vec.x * vec.x +
-			A01 * vec.x * vec.y * 2 +
-			A02 * vec.x * vec.z * 2 +
-			A11 * vec.y * vec.y +
-			A12 * vec.y * vec.z * 2 +
-			A22 * vec.z * vec.z +
-			B0  * vec.x * 2 +
-			B1  * vec.y * 2 +
-			B2  * vec.z * 2 +
-			C
-				);
-	}
-
-	Quad operator+ ( const Quad &q )
-	{
-		Quad rq;
-		rq.A00 = A00 + q.A00;
-		rq.A01 = A01 + q.A01;
-		rq.A02 = A02 + q.A02;
-		rq.A11 = A11 + q.A11;
-		rq.A12 = A12 + q.A12;
-		rq.A22 = A22 + q.A22;
-		rq.B0  = B0  + q.B0 ;
-		rq.B1  = B1  + q.B1 ;
-		rq.B2  = B2  + q.B2 ;
-		rq.C   = C   + q.C  ;
-		return rq;
-	}
-
-	Quad &operator+= ( const Quad &q )
-	{
-		A00 += q.A00;
-		A01 += q.A01;
-		A02 += q.A02;
-		A11 += q.A11;
-		A12 += q.A12;
-		A22 += q.A22;
-		B0  += q.B0 ;
-		B1  += q.B1 ;
-		B2  += q.B2 ;
-		C   += q.C  ;
-		return (*this);
-	}
-};
-
-
-
-
-
-
-// The various types of VIPM
-enum VIPMTypeEnum
-{
-	VIPMType_SlidingWindow,
-	VIPMType_Last,				// bogus one to show the end of the list.
-};
-
-char *VIPMTypeName ( VIPMTypeEnum type );
-
-
-
 struct ObjectInstance;
 struct Object;
 
@@ -292,13 +128,7 @@ protected:
 	BOOL bDirty;				// TRUE if dirty.
 	BOOL bWillGetInfo;
 public:
-	
-
-
 	virtual ~OptimisedMesh ( void ) = 0;
-
-	virtual VIPMTypeEnum GetType ( void ) = 0;
-	virtual char *GetTypeName ( void ) = 0;
 
 	// Tell this method that the underlying mesh has changed.
 	// bWillGetInfo = TRUE if you are going to call any of the Info* functions.
@@ -320,7 +150,7 @@ public:
 
 
 	// Creates the given type of optimised mesh, and returns the pointer to it.
-	static OptimisedMesh *Create ( VIPMTypeEnum type, Object *pObject );
+	static OptimisedMesh *Create ( Object *pObject );
 };
 
 
@@ -335,9 +165,6 @@ protected:
 
 public:
 	virtual ~OptimisedMeshInstance ( void ) = 0;
-
-	virtual VIPMTypeEnum GetType ( void ) = 0;
-	virtual char *GetTypeName ( void ) = 0;
 
 	// Renders the given material of the object with the given level of detail.
 	virtual void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iLoD ) = 0;
@@ -370,11 +197,6 @@ public:
 	virtual void Check ( void ) = 0;
 };
 
-
-
-
-
-
 struct Object
 {
 	// The permanent shape.
@@ -406,7 +228,7 @@ struct Object
 
 
 
-	OptimisedMesh		*pOptMesh[VIPMType_Last];
+	OptimisedMesh		*pOptMesh;
 
 
 	Object();
@@ -429,7 +251,7 @@ struct Object
 	// Set iSlidingWindowLevel to -1 if you don't care about level numbers.
 	void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iSlidingWindowLevel = -1 );
 
-	void RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev, BOOL bIgnoreBackFaced );
+	void RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev);
 
 	// Creates and performs a collapse of pptBinned to pptKept.
 	// Make sure they actually share an edge!
@@ -466,8 +288,6 @@ struct Object
 
 };
 
-
-
 struct ObjectInstance
 {
 	DlinkDefine(ObjectInstance,List);
@@ -477,11 +297,10 @@ struct ObjectInstance
 	// The parent object.
 	Object			*pObj;
 
-	int				iRenderMethod;		// -1 = naive, >=0 is an OptMesh type.
 	int				iCurCollapses;		// Current number of collapses done (from full-rez).
 
 
-	OptimisedMeshInstance		*pOptMeshInst[VIPMType_Last];
+	OptimisedMeshInstance		*pOptMeshInst;
 
 
 
@@ -495,9 +314,9 @@ struct ObjectInstance
 
 	void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iSlidingWindowLevel = -1, BOOL bShowOptiMesh = FALSE );
 
-	void RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev, BOOL bIgnoreBackFaced )
+	void RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev )
 	{
-		pObj->RenderCurrentEdges ( pd3ddev, bIgnoreBackFaced );
+		pObj->RenderCurrentEdges ( pd3ddev );
 	}
 
 	void SetNumCollapses ( int iNum );
@@ -508,17 +327,8 @@ struct ObjectInstance
 	// This shortcut breaks data-hiding. Careful.
 	OptimisedMeshInstance *GetOpiMeshInst ( void )
 	{
-		if ( iRenderMethod >= 0 )
-		{
-			return pOptMeshInst[iRenderMethod];
-		}
-		else
-		{
-			return NULL;
-		}
+		return pOptMeshInst;
 	}
-
-
 
 	// Call before D3D leaves.
 	void AboutToChangeDevice ( void );

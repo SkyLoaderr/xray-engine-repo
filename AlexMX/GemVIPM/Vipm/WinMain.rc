@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -31,7 +31,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_MAIN_ICON           ICON    DISCARDABLE     "DirectX.ico"
+IDI_MAIN_ICON           ICON                    "DirectX.ico"
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -39,12 +39,12 @@ IDI_MAIN_ICON           ICON    DISCARDABLE     "DirectX.ico"
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#define IDC_STATIC -1\r\n"
     "#include <windows.h>\r\n"
@@ -53,7 +53,7 @@ BEGIN
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
@@ -67,7 +67,7 @@ END
 // Accelerator
 //
 
-IDR_MAIN_ACCEL ACCELERATORS DISCARDABLE 
+IDR_MAIN_ACCEL ACCELERATORS 
 BEGIN
     ",",            IDM_CACHE_DISPLAY_DEC,  ASCII,  NOINVERT
     ".",            IDM_CACHE_DISPLAY_INC,  ASCII,  NOINVERT
@@ -110,7 +110,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO 
 BEGIN
     IDD_SELECTDEVICE, DIALOG
     BEGIN
@@ -135,8 +135,9 @@ END
 // Dialog
 //
 
-IDD_SELECTDEVICE DIALOG DISCARDABLE  0, 0, 267, 138
-STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_SELECTDEVICE DIALOG  0, 0, 267, 138
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
 CAPTION "Select Device"
 FONT 8, "MS Shell Dlg"
 BEGIN
@@ -163,15 +164,15 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,210,30,50,14
 END
 
-IDD_PROGRESS DIALOG DISCARDABLE  0, 0, 330, 55
-STYLE WS_POPUP | WS_CAPTION
+IDD_PROGRESS DIALOG  0, 0, 330, 55
+STYLE DS_SETFONT | WS_POPUP | WS_CAPTION
 CAPTION "Optimising vertex order..."
 FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,
                     7,5,315,16
-    CONTROL         "Progress1",IDC_PROGRESS2,"msctls_progress32",PBS_SMOOTH | 
-                    WS_BORDER,7,31,315,16
+    CONTROL         "Progress1",IDC_PROGRESS2,"msctls_progress32",WS_BORDER | 
+                    0x1,7,31,315,16
 END
 
 
@@ -180,7 +181,7 @@ END
 // Menu
 //
 
-IDR_MENU MENU DISCARDABLE 
+IDR_MENU MENU 
 BEGIN
     POPUP "&File"
     BEGIN
@@ -193,11 +194,6 @@ BEGIN
     END
     POPUP "&Options"
     BEGIN
-        MENUITEM "Ignore backfacing faces\tAlt+B", IDM_IGNORE_BACKFACING
-        MENUITEM "Create collapse mode\tAlt+M", IDM_CREATE_COLLAPSE_MODE
-        MENUITEM SEPARATOR
-        MENUITEM "Wireframe rendering\tAlt+W",  IDM_WIREFRAME
-        MENUITEM SEPARATOR
         MENUITEM "Show sliding window info\tAlt+S", IDM_SLIDING_WINDOW_SHOW
         MENUITEM "Sliding window tolerance up\t]", IDM_SLIDING_WINDOW_INC
         MENUITEM "Sliding window tolerance down\t[", IDM_SLIDING_WINDOW_DEC
@@ -246,7 +242,7 @@ END
 // String Table
 //
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDM_IGNORE_BACKFACING   "Toggles backfacing faces."
     IDM_VIPM_COLLAPSE_DEL   "Delete the last collapse in the sequence."
@@ -254,7 +250,7 @@ BEGIN
     IDM_VIPM_COLLAPSE_PREV  "Undo the previous collapse"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDM_VIPM_COLLAPSE_NEXT_10 "Do the next 10 collapses"
     IDM_VIPM_COLLAPSE_PREV_10 "Undo the previous 10 collapses"
@@ -274,7 +270,7 @@ BEGIN
     IDM_SHOW_VIPM_INFO      "Toggle info about the current VIPM mode on/off. Note! This lowers performance when enabled."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDM_CACHE_DISPLAY_ENABLE "Toggle the limited number of tris on/off."
     IDM_CACHE_DISPLAY_INC   "Show one more tri in the tri order."

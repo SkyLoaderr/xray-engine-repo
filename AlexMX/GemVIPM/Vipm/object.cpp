@@ -8,37 +8,13 @@
  * "Portions Copyright (C) Tom Forsyth, 2001"
  */
 
-
 #include "object.h"
 
-
-
-
-int g_iNumOfObjectTrisDrawn = 0;
-int g_iNumOfObjectVertsDrawn = 0;
-int g_iMaxNumTrisDrawn = -1;
-BOOL g_bOptimiseVertexOrder = FALSE;
-BOOL g_bShowVIPMInfo = FALSE;
-BOOL g_bUseFastButBadOptimise = TRUE;
-
-
-// Controls for skiplists.
-int g_iSkiplistMinCollapsesPerLevel = 10;
-float g_fSkiplistMinCollapseFraction = 0.25f;
-
-char *VIPMTypeName ( VIPMTypeEnum type )
-{
-	switch ( type )
-	{
-	case VIPMType_SlidingWindow:
-		return "sliding window";
-		break;
-	default:
-		ASSERT ( FALSE );
-		return "unknown";
-		break;
-	}
-}
+int		g_iNumOfObjectVertsDrawn	= 0;
+int		g_iMaxNumTrisDrawn			= -1;
+BOOL	g_bOptimiseVertexOrder		= FALSE;
+BOOL	g_bShowVIPMInfo				= FALSE;
+BOOL	g_bUseFastButBadOptimise	= TRUE;
 
 // Call this to reorder the tris in this trilist to get good vertex-cache coherency.
 // *pwList is modified (but obviously not changed in size or memory location).
@@ -52,10 +28,7 @@ Object::Object()
 	pNextCollapse = &CollapseRoot;
 	iCurSlidingWindowLevel = 0;
 
-	for ( int i = 0; i < VIPMType_Last; i++ )
-	{
-		pOptMesh[i] = OptimisedMesh::Create ( (VIPMTypeEnum)i, this );
-	}
+	pOptMesh = OptimisedMesh::Create ( this );
 }
 
 
@@ -64,15 +37,11 @@ Object::~Object()
 	BinCurrentObject();
 
 
-	for ( int i = 0; i < VIPMType_Last; i++ )
+	if ( pOptMesh != NULL )
 	{
-		if ( pOptMesh[i] != NULL )
-		{
-			delete pOptMesh[i];
-			pOptMesh[i] = NULL;
-		}
+		delete pOptMesh;
+		pOptMesh = NULL;
 	}
-
 
 	while ( CollapseRoot.ListNext() != NULL )
 	{
@@ -99,12 +68,9 @@ Object::~Object()
 void Object::AboutToChangeDevice ( void )
 {
 	// Not actually much to do.
-	for ( int i = 0; i < VIPMType_Last; i++ )
+	if ( pOptMesh != NULL )
 	{
-		if ( pOptMesh[i] != NULL )
-		{
-			pOptMesh[i]->AboutToChangeDevice();
-		}
+		pOptMesh->AboutToChangeDevice();
 	}
 
 	MarkAsDirty();
@@ -319,12 +285,9 @@ void Object::CheckObject ( void )
 		tri = tri->ListNext();
 	}
 
-	for ( int i = 0; i < VIPMType_Last; i++ )
+	if ( pOptMesh != NULL )
 	{
-		if ( pOptMesh[i] != NULL )
-		{
-			pOptMesh[i]->Check();
-		}
+		pOptMesh->Check();
 	}
 }
 
@@ -427,7 +390,7 @@ void Object::RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iSlidingWindow
 	}
 }
 
-void Object::RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev, BOOL bIgnoreBackFaced )
+void Object::RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev )
 {
 	STDVERTEX vert[2];
 
@@ -438,25 +401,19 @@ void Object::RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev, BOOL bIgnoreBackFac
 	MeshEdge *edge = CurEdgeRoot.ListNext();
 	while ( edge != NULL )
 	{
-		if ( edge->myedge.bFrontFaced || !bIgnoreBackFaced )
-		{
-			// Draw this one.
-			vert[0].v		= edge->pPt1->mypt.vPos;
-			vert[0].norm	= edge->pPt1->mypt.vNorm;
-			vert[0].tu		= edge->pPt1->mypt.fU;
-			vert[0].tv		= edge->pPt1->mypt.fV;
+		// Draw this one.
+		vert[0].v		= edge->pPt1->mypt.vPos;
+		vert[0].norm	= edge->pPt1->mypt.vNorm;
+		vert[0].tu		= edge->pPt1->mypt.fU;
+		vert[0].tv		= edge->pPt1->mypt.fV;
 
-			vert[1].v		= edge->pPt2->mypt.vPos;
-			vert[1].norm	= edge->pPt2->mypt.vNorm;
-			vert[1].tu		= edge->pPt2->mypt.fU;
-			vert[1].tv		= edge->pPt2->mypt.fV;
+		vert[1].v		= edge->pPt2->mypt.vPos;
+		vert[1].norm	= edge->pPt2->mypt.vNorm;
+		vert[1].tu		= edge->pPt2->mypt.fU;
+		vert[1].tv		= edge->pPt2->mypt.fV;
 
-			hres = pd3ddev->DrawPrimitiveUP ( D3DPT_LINELIST, 1, vert, sizeof(vert[0]) );
-		}
-		else
-		{
-			bIgnoreBackFaced = bIgnoreBackFaced;
-		}
+		hres = pd3ddev->DrawPrimitiveUP ( D3DPT_LINELIST, 1, vert, sizeof(vert[0]) );
+
 		edge = edge->ListNext();
 	}
 }
@@ -868,12 +825,9 @@ void Object::MarkAsDirty ( void )
 {
 	bSomethingHappened = TRUE;
 
-	for ( int i = 0; i < VIPMType_Last; i++ )
+	if ( pOptMesh != NULL )
 	{
-		if ( pOptMesh[i] != NULL )
-		{
-			pOptMesh[i]->MarkAsDirty ( g_bShowVIPMInfo );
-		}
+		pOptMesh->MarkAsDirty ( g_bShowVIPMInfo );
 	}
 }
 
@@ -890,27 +844,17 @@ ObjectInstance::ObjectInstance ( Object *pObject /*= NULL*/, ObjectInstance *pRo
 		ListAddAfter ( pRoot );
 	}
 
-	for ( int i = 0; i < VIPMType_Last; i++ )
-	{
-		pOptMeshInst[i] = NULL;
-	}
+	pOptMeshInst = NULL;
 
 	if ( pObj != NULL )
 	{
-		for ( int i = 0; i < VIPMType_Last; i++ )
+		if ( pObj->pOptMesh != NULL )
 		{
-			if ( pObj->pOptMesh[i] != NULL )
-			{
-				pOptMeshInst[i] = pObj->pOptMesh[i]->CreateInstance ( this );
-			}
+			pOptMeshInst = pObj->pOptMesh->CreateInstance ( this );
 		}
 	}
 
-	// Start with the naive method.
-	iRenderMethod = -1;
-
 	iCurCollapses = 0;
-
 }
 
 ObjectInstance::~ObjectInstance ( void )
@@ -919,27 +863,20 @@ ObjectInstance::~ObjectInstance ( void )
 
 	ListDel();
 
-	for ( int i = 0; i < VIPMType_Last; i++ )
+	if ( pOptMeshInst != NULL )
 	{
-		if ( pOptMeshInst[i] != NULL )
-		{
-			delete pOptMeshInst[i];
-			pOptMeshInst[i] = NULL;
-		}
+		delete pOptMeshInst;
+		pOptMeshInst = NULL;
 	}
-
 }
 
 
 
 void ObjectInstance::RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iSlidingWindowLevel /*= -1*/, BOOL bShowOptiMesh /*= FALSE*/ )
 {
-	ASSERT ( ( iRenderMethod >= -1 ) && ( iRenderMethod < VIPMType_Last ) );
-	if ( bShowOptiMesh &&
-		 ( iRenderMethod >= 0 ) &&
-		 ( pOptMeshInst[iRenderMethod] != NULL ) )
+	if ( bShowOptiMesh && ( pOptMeshInst != NULL ) )
 	{
-		pOptMeshInst[iRenderMethod]->RenderCurrentObject ( pd3ddev, iCurCollapses );
+		pOptMeshInst->RenderCurrentObject ( pd3ddev, iCurCollapses );
 	}
 	else
 	{
@@ -967,12 +904,9 @@ void ObjectInstance::AboutToChangeDevice ( void )
 	ASSERT ( pObj != NULL );
 	pObj->AboutToChangeDevice();
 
-	for ( int i = 0; i < VIPMType_Last; i++ )
+	if ( pOptMeshInst != NULL )
 	{
-		if ( pOptMeshInst[i] != NULL )
-		{
-			pOptMeshInst[i]->AboutToChangeDevice();
-		}
+		pOptMeshInst->AboutToChangeDevice();
 	}
 }
 
@@ -1024,81 +958,6 @@ OptimisedMeshInstance::OptimisedMeshInstance ( void )
 
 OptimisedMeshInstance::~OptimisedMeshInstance() {}
 
-
-
-
-
-
-
-///////// VANILLA VIPM ////////////
-
-
-
-
-// Trimmed-down, lean'n'mean vanilla collapse record.
-// bNumChanges = -1 means the end of the list (dummy last action).
-// bPrevNumChanges = -1 means the start of the list (no dummy first).
-// Note! This structure changes length! :-)
-struct VanillaCollapseRecord
-{
-	WORD	wKeptVert;			// The offset of the vertex that doesn't vanish/appear
-	BYTE	bNumOfTris;			// Number of tris removed/added.
-	BYTE	bNumChanges;		// How many entries in wIndexOffset[].
-	BYTE	bPrevNumChanges;	// How many entries in wIndexOffset[] in the previous action.
-	// Packing to get correct WORD alignment.
-	BYTE	bPadding[1];
-
-	// This will be of actual length bNumChanges,
-	// then immeditaely after in memory will be another record.
-	WORD	wIndexOffset[];		// The offsets of the indices to change.
-
-
-	// And some helpful list-scanners. These will return NULL if at the start/end of the list.
-
-	VanillaCollapseRecord *Prev ( void )
-	{
-		VanillaCollapseRecord *pRecord = this;
-		if ( pRecord->bPrevNumChanges == (BYTE)-1 )
-		{
-			// Start of the list.
-			return ( NULL );
-		}
-
-		int iPrevNumChanges = (int)( pRecord->bPrevNumChanges );
-		// Skip over the previous change list.
-		pRecord = (VanillaCollapseRecord *)((WORD *)pRecord - iPrevNumChanges );
-		// Skip over the previous record body.
-		pRecord--;
-
-		// A quick check - these need to agree up and down the list.
-		ASSERT ( iPrevNumChanges == (int)( pRecord->bNumChanges ) );
-
-		return ( pRecord );
-	}
-
-	VanillaCollapseRecord *Next ( void )
-	{
-		VanillaCollapseRecord *pRecord = this;
-		if ( pRecord->bNumChanges == (BYTE)-1 )
-		{
-			// End of the list.
-			return ( NULL );
-		}
-
-		int iNumChanges = (int)( pRecord->bNumChanges );
-		// Skip over the record body.
-		pRecord++;
-		// Skip over the change list.
-		pRecord = (VanillaCollapseRecord *)((WORD *)pRecord + iNumChanges );
-
-		// A quick check - these need to agree up and down the list.
-		ASSERT ( iNumChanges == (int)( pRecord->bPrevNumChanges ) );
-
-		return ( pRecord );
-	}
-
-};
-
 ///////// SLIDING WINDOW VIPM ////////////
 // A table of these exists, one per collapse.
 struct SlidingWindowRecord
@@ -1129,8 +988,6 @@ class OMSlidingWindow : public OptimisedMesh
 public:
 	OMSlidingWindow ( Object *pObject );
 	virtual ~OMSlidingWindow ( void );
-	virtual VIPMTypeEnum GetType ( void );
-	virtual char *GetTypeName ( void );
 	virtual OptimisedMeshInstance *CreateInstance ( ObjectInstance *pObjectInstance );
 	virtual void Check ( void );
 	virtual void Update ( void );
@@ -1154,8 +1011,6 @@ public:
 
 	OMISlidingWindow ( ObjectInstance *pObjectInstance, OMSlidingWindow *pOptimisedMesh );
 	virtual ~OMISlidingWindow ( void );
-	virtual VIPMTypeEnum GetType ( void );
-	virtual char *GetTypeName ( void );
 	virtual void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iLoD );
 	virtual BOOL bNeedsUpdate ( void );
 	virtual void Update ( void );
@@ -1181,16 +1036,6 @@ OMSlidingWindow::~OMSlidingWindow ( void )
 	pObj = NULL;
 	ASSERT ( pVB == NULL );
 	ASSERT ( pIB == NULL );
-}
-
-VIPMTypeEnum OMSlidingWindow::GetType ( void )
-{
-	return VIPMType_SlidingWindow;
-}
-
-char *OMSlidingWindow::GetTypeName ( void )
-{
-	return "Sliding Window";
 }
 
 void OMSlidingWindow::AboutToChangeDevice ( void )
@@ -1747,16 +1592,6 @@ const void OMISlidingWindow::InfoGetInstance ( DWORD *pdwMemoryUsed, DWORD *pdwO
 
 
 
-VIPMTypeEnum OMISlidingWindow::GetType ( void )
-{
-	return VIPMType_SlidingWindow;
-}
-
-char *OMISlidingWindow::GetTypeName ( void )
-{
-	return "SlidingWindow";
-}
-
 // Renders the given material of the object with the given level of detail.
 void OMISlidingWindow::RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iLoD )
 {
@@ -1820,10 +1655,6 @@ void OMISlidingWindow::RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iLoD
 												pswr->wNumTris );
 		ASSERT ( SUCCEEDED ( hres ) );
 	}
-
-	g_iNumOfObjectTrisDrawn += pswr->wNumTris;
-	g_iNumOfObjectVertsDrawn += pswr->wNumVerts;
-
 }
 
 BOOL OMISlidingWindow::bNeedsUpdate ( void )
@@ -1860,29 +1691,16 @@ void OMISlidingWindow::Check ( void )
 {
 	// Check my global data is the same type as me!
 	ASSERT ( pOptMesh != NULL );
-	ASSERT ( pOptMesh->GetType() == GetType() );
 	pOptMesh->Check();
-
 }
 
 
 ////////////////////////// Utility functions /////////////////////
 // Creates the given type of optimised mesh, and returns the pointer to it.
-/*static*/ OptimisedMesh *OptimisedMesh::Create ( VIPMTypeEnum type, Object *pObject )
+/*static*/ OptimisedMesh *OptimisedMesh::Create ( Object *pObject )
 {
-	switch ( type )
-	{
-	case VIPMType_SlidingWindow:
-		return new OMSlidingWindow ( pObject );
-		break;
-	default:
-		ASSERT ( FALSE );
-		return NULL;
-		break;
-	}
+	return new OMSlidingWindow ( pObject );
 }
-
-
 
 
 // Some functions for simulating a vertex cache.
@@ -2288,10 +2106,6 @@ bool CacheGetLastTri ( WORD pwIndices[3] )
 }
 
 
-
-
-
-
 struct ScoreTri
 {
 	WORD	wIndex[3];
@@ -2335,9 +2149,6 @@ float fValenceBoost[c_iMaxValenceBoost] =
 };
 
 
-
-
-
 int LOOKAHEAD = 5;
 // Limit the number of tris to lookahead with.
 int iLookaheadCutoff = 16;
@@ -2345,9 +2156,6 @@ int iLookaheadCutoff = 16;
 const float fCutoffFactor = 2.0f;
 // Another slightly different limit.
 const float fExpensiveFactor = 1.5f;
-
-
-
 
 
 float FindBestScoreLookahead ( int iCountdown, float fCurrentScore, float fInputBestSoFar, 
@@ -2838,13 +2646,6 @@ float FindBestScoreLookahead ( int iCountdown, float fCurrentScore, float fInput
 		return fNewBestScore;
 	}
 }
-
-
-
-
-
-
-
 
 float FindBestScore ( int iCountdown, float fCurrentScore, float fInputBestSoFar, 
 					 //WORD *pwIndices,
@@ -3379,10 +3180,6 @@ float FindBestScore ( int iCountdown, float fCurrentScore, float fInputBestSoFar
 		return fNewBestScore;
 	}
 }
-
-
-
-
 
 // Call this to reorder the tris in this trilist to get good vertex-cache coherency.
 // *pwList is modified (but obviously not changed in size or memory location).

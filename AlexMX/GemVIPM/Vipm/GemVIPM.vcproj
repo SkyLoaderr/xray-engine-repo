@@ -161,9 +161,6 @@
 			Name="MyInc"
 			Filter="">
 			<File
-				RelativePath=".\MyInc\mesh.h">
-			</File>
-			<File
 				RelativePath=".\MyInc\TomsD3DLib.cpp">
 			</File>
 			<File
@@ -249,6 +246,9 @@
 			Name="Geom"
 			Filter="">
 			<File
+				RelativePath=".\MyInc\mesh.h">
+			</File>
+			<File
 				RelativePath="object.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -271,6 +271,9 @@
 			</File>
 			<File
 				RelativePath="object.h">
+			</File>
+			<File
+				RelativePath=".\quad.h">
 			</File>
 		</Filter>
 	</Files>

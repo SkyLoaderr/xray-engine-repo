@@ -108,7 +108,7 @@ HRESULT CMyD3DApplication::Render()
 			// Render visible edges again in a different colour.
 			m_pd3dDevice->SetRenderState ( D3DRS_TEXTUREFACTOR, 0xffffff00 );
 			m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
-			pObjInst->RenderCurrentEdges ( m_pd3dDevice, m_bIgnoreBackFaced );
+			pObjInst->RenderCurrentEdges ( m_pd3dDevice );
 
 			// Output statistics
 			m_pFont->DrawText( 2,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats );

@@ -18,11 +18,9 @@ class CMyD3DApplication : public CD3DApplication
 {
 	CD3DFont*          m_pFont;
 
-	BOOL				m_bIgnoreBackFaced;
 	BOOL				m_bShowSlidingWindowInfo;
 	float				m_fSlidingWindowErrorTolerance;
 	int					m_iFindBestErrorCountdown;
-	VIPMTypeEnum		m_vteCurrentDisplayStyle;
 
 	int					m_iTargetNumCollapses;
 	float				m_fTargetErrorFactor;

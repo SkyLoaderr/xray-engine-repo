@@ -61,11 +61,9 @@ CMyD3DApplication::CMyD3DApplication()
 
     m_pFont                = new CD3DFont( _T("Arial"), 12, D3DFONT_BOLD );
 
-	m_bIgnoreBackFaced = TRUE;
 	m_bShowSlidingWindowInfo = TRUE;
 	m_fSlidingWindowErrorTolerance = 0.1f;	// 10%
 	m_iFindBestErrorCountdown = 0;
-	m_vteCurrentDisplayStyle = VIPMType_SlidingWindow;
 
 	m_iTargetNumCollapses = 0;
 	m_fTargetErrorFactor = 1.0f;
@@ -92,17 +90,16 @@ CMyD3DApplication::CMyD3DApplication()
 HRESULT CMyD3DApplication::OneTimeSceneInit()
 {
 
-	m_pObject = new Object;
-	ObjectInstance *pInst;
-	D3DXMATRIX mat;
-	D3DXMatrixIdentity ( &mat );
+	m_pObject				= new Object;
+	ObjectInstance			*pInst;
+	D3DXMATRIX				mat;
+	D3DXMatrixIdentity		( &mat );
 	
-	pInst = &m_ObjectInstRoot;
+	pInst					= &m_ObjectInstRoot;
 
 	// First one should always be at the origin - it's used for editing.
-	pInst = new ObjectInstance ( m_pObject, pInst );
-	pInst->matOrn = mat;
-	pInst->iRenderMethod = m_vteCurrentDisplayStyle;
+	pInst					= new ObjectInstance ( m_pObject, pInst );
+	pInst->matOrn			= mat;
 
     return S_OK;
 }
@@ -213,10 +210,6 @@ HRESULT CMyD3DApplication::FrameMove()
 // Sets menu items up correctly.
 void CMyD3DApplication::SetMenuItems()
 {
-	// Set menu states
-	CheckMenuItem( GetMenu(m_hWnd), IDM_IGNORE_BACKFACING,
-		   m_bIgnoreBackFaced ? MF_CHECKED : MF_UNCHECKED );
-
 	CheckMenuItem( GetMenu(m_hWnd), IDM_SLIDING_WINDOW_SHOW,
 		   m_bShowSlidingWindowInfo ? MF_CHECKED : MF_UNCHECKED );
 
@@ -308,9 +301,6 @@ LRESULT CMyD3DApplication::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
     {
         switch( LOWORD(wParam) )
         {
-		case IDM_IGNORE_BACKFACING:
-			m_bIgnoreBackFaced = !m_bIgnoreBackFaced;
-			break;
 		case IDM_VIPM_COLLAPSE_NEXT:
 			m_iCreateThisManyCollapses = 0;
 			m_iFindBestErrorCountdown = 1;
@@ -393,23 +383,6 @@ LRESULT CMyD3DApplication::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
 		case IDM_SLIDING_WINDOW_DEC:
 			m_fSlidingWindowErrorTolerance /= 1.1f;
 			break;
-
-		case IDM_VIPM_TYPE_NEXT:
-			{
-				m_vteCurrentDisplayStyle = (VIPMTypeEnum)( ((int)m_vteCurrentDisplayStyle) + 1 );
-				if ( m_vteCurrentDisplayStyle == VIPMType_Last )
-				{
-					m_vteCurrentDisplayStyle = VIPMType_SlidingWindow;
-				}
-
-				for ( ObjectInstance *pOI = m_ObjectInstRoot.ListNext(); pOI != NULL; pOI = pOI->ListNext() )
-				{
-					pOI->iRenderMethod = m_vteCurrentDisplayStyle;
-				}
-			}
-
-			break;
-
 
 		case IDM_TARGET_AUTO_TOGGLE:
 			m_bTargetErrorAutoGen = !m_bTargetErrorAutoGen;
