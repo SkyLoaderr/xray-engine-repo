@@ -324,7 +324,22 @@
 					RelativePath="game_base.h">
 				</File>
 				<File
-					RelativePath="game_type.h">
+					RelativePath="game_cl_base.cpp">
+				</File>
+				<File
+					RelativePath="game_cl_base.h">
+				</File>
+				<File
+					RelativePath="game_sv_base.cpp">
+				</File>
+				<File
+					RelativePath="game_sv_base.h">
+				</File>
+				<File
+					RelativePath="game_sv_deathmatch.cpp">
+				</File>
+				<File
+					RelativePath="game_sv_deathmatch.h">
 				</File>
 			</Filter>
 			<Filter
