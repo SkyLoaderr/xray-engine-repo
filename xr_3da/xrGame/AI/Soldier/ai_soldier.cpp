@@ -25,7 +25,7 @@
 #define	AMMO_NEED_RELOAD				6
 #define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
 #define VECTOR_DIRECTION(i)				(i == 0 ? tLeft : (i == 1 ? tForward : (i == 2 ? tRight : tBack)))
-#define EYE_WEAPON_DELTA				(-PI/30.f)
+#define EYE_WEAPON_DELTA				(PI/30.f)
 
 CAI_Soldier::CAI_Soldier()
 {
