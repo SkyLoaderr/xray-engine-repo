@@ -116,13 +116,21 @@ struct SExhaust
 	}
 	~SExhaust();
 };
-
+struct SDoor;
 struct SDoor 
 {
 int bone_id;
 CCar* pcar;
+xr_list<SDoor>::iterator list_iterator;
 CPhysicsJoint* joint;
+float			torque;
+float			a_vel;
+float			pos_open;
+void Use();
 void Init();
+void Open();
+void Close();
+void Update();
 enum eState
 {
 opening,
@@ -137,7 +145,10 @@ SDoor(CCar* acar)
 	pcar=acar;
 	joint=NULL;
 	state=closed;
+	torque=100.f;
+	a_vel=M_PI;
 }
+
 };
 private:
 	typedef CEntity			inherited;
@@ -149,13 +160,17 @@ private:
 	CActor*					m_owner;
 	Fvector					m_vCamDeltaHP;
 ////////////////////////////////////////////////////
+friend struct SWheel;
+friend struct SDoor;
+
 xr_map   <int,SWheel>	m_wheels_map;
 xr_vector <SWheelDrive> m_driving_wheels;
 xr_vector <SWheelSteer> m_steering_wheels;
 xr_vector <SWheelBreak> m_breaking_wheels;
 xr_vector <SExhaust>	m_exhausts;
 xr_map	  <int,SDoor>	m_doors;
-xr_vector <SDoor>		m_update_doors;
+xr_list	  <SDoor>		m_doors_update;
+xr_list   <SDoor>		m_doors_opened;
 xr_vector <float>		m_gear_ratious;
 xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 float					m_current_gear_ratio;
@@ -331,4 +346,6 @@ private:
 		}
 	}
 };
+
+
 

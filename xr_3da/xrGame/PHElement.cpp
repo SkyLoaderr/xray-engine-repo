@@ -943,14 +943,18 @@ void	CPHElement::Disabling(){
 					deviation_v[2]*deviation_v[2]);
 
 				deviation/=dis_count_f;
-				if(mag_v<0.16* dis_frames && deviation<0.06*dis_frames)
+				if(mag_v<0.32* dis_frames && deviation<0.24*dis_frames)//0.16,0.06
 					dis_count_f1++;
 				else{
 					Memory.mem_copy(previous_p1,current_p,sizeof(dVector3));
 					Memory.mem_copy(previous_r1,current_r,sizeof(dMatrix3));
 				}
 
-				if(dis_count_f1>10) dis_count_f*=10;
+				if(dis_count_f1>5) 
+				{
+					dis_count_f*=10;//10
+					dis_count_f1=0;
+				}
 
 			}
 
@@ -1007,7 +1011,7 @@ void CPHElement::Disable(){
 	else 
 		SaveContacts(ph_world->GetMeshGeom(),m_trans[0],m_saved_contacts);
 
-	xr_vector<CPHElement*>::iterator i;
+	xr_list<CPHElement*>::iterator i;
 	for(i=m_attached_elements.begin();i!=m_attached_elements.end();i++){
 
 
@@ -1122,6 +1126,7 @@ void CPHElement::DynamicAttach(CPHElement* E)
 		E->m_body_interpolation.SetBody(m_body);
 		E->attached=true;
 		m_attached_elements.push_back(E);
+		E->attached_list_i=(--m_attached_elements.end());
 		//E->m_body;
 
 }

@@ -136,12 +136,13 @@ protected:
 	bool bActive;
 
 //	CPhysicsJoint(CPhysicsElement* first,CPhysicsElement* second,enumType type){pFirst_element=first; pSecond_element=second; eType=type;bActive=false;}
-	IC CPhysicsElement* PFirst_element(){return pFirst_element;};
-	IC CPhysicsElement* PSecond_element(){return pSecond_element;};
+
 public:
 	virtual ~CPhysicsJoint	()																{};
 		
 	//virtual void SetAxis					(const SPHAxis& axis,const int axis_num)		=0;
+IC CPhysicsElement* PFirst_element			()												{return pFirst_element;};
+IC CPhysicsElement* PSecond_element			()												{return pSecond_element;};
 	virtual void Activate					()												=0;
 	virtual void SetAnchor					(const Fvector& position)						=0;
 	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num)=0;

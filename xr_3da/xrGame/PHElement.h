@@ -33,7 +33,9 @@ class CPHElement	:  public CPhysicsElement
 	dReal					m_disl_param;
 	CPhysicsRefObject*		m_phys_ref_object;
 	///////////////////////////////
-	xr_vector<CPHElement*>	m_attached_elements;
+	xr_list<CPHElement*>	m_attached_elements;
+	xr_list<CPHElement*>::iterator attached_list_i;
+	bool					attached;
 	CPHElement				*m_parent_element;
 	CPHShell				*m_shell;
 	CPHInterpolation		m_body_interpolation;
@@ -58,7 +60,7 @@ class CPHElement	:  public CPhysicsElement
 	UINT						dis_count_f1;
 	dReal						k_w;
 	dReal						k_l;//1.8f;
-	bool						attached;
+
 	bool						b_contacts_saved;
 	dJointGroupID				m_saved_contacts;
 	ContactCallbackFun*			contact_callback;

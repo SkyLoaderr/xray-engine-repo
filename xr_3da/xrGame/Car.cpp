@@ -1008,4 +1008,69 @@ void CCar::SExhaust::Stop()
 void CCar::SDoor::Init()
 {
 	joint=bone_map.find(bone_id)->second.joint;
+	if(!joint) return;
+	Fvector door_position,door_axis;
+	dJointGetHingeAnchor (joint->GetDJoint(),(float*) &door_position);
+	dJointGetHingeAxis (joint->GetDJoint(), (float*) &door_axis);
+	door_position.sub(pcar->m_root_transform.c);
+	pos_open=door_position.dotproduct(pcar->m_root_transform.i)*door_axis.dotproduct(pcar->m_root_transform.j);
+	pos_open=pos_open>0.f ? 1.f : -1.f;
+}
+
+void CCar::SDoor::Open()
+{
+
+if(!joint)
+{
+	state=opened;
+
+	return;
+}
+
+
+if(state!=closing)
+	{
+	pcar->m_doors_update.push_back(*this);
+	list_iterator=(--pcar->m_doors_update.end());
+	}
+else
+	{
+	
+	joint->PSecond_element();
+	joint->Activate();
+
+	}
+state=opening;
+dJointSetHingeParam(joint->GetDJoint(),dParamFMax,torque);
+dJointSetHingeParam(joint->GetDJoint(),dParamVel,a_vel*pos_open);
+}
+
+void CCar::SDoor::Close()
+{
+	if(!joint)
+	{
+		state=closed;
+		return;
+	}
+
+}
+
+void CCar::SDoor::Update()
+{
+
+}
+
+void CCar::SDoor::Use()
+{
+switch(state) {
+case opened:
+case opening: 
+	 Close();
+	break;
+case closed: 
+case closing:
+	 Open();
+	break;
+default:	return;
+}
 }
