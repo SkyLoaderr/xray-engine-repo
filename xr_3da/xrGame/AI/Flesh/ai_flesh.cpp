@@ -2,7 +2,7 @@
 #include "ai_flesh.h"
 #include "../../ai_space.h"
 
-//#define TEST_EAT_STATE
+#define TEST_EAT_STATE
 
 
 CAI_Flesh::CAI_Flesh()
@@ -130,7 +130,7 @@ void CAI_Flesh::Load(LPCSTR section)
 void CAI_Flesh::StateSelector()
 {
 	
-	HDebug->SetActive(false);  
+	HDebug->SetActive(true);  
 	
 	VisionElem ve;
 
