@@ -34,17 +34,17 @@ public:
 	
 	void			Allocate()
 	{
-		DWORD size	=Width()*Height();
-		lmap		= new ImplicitLumel[size];
-		temp		= new ImplicitLumel[size];
+		DWORD size	= Width()*Height();
+		lmap		= (ImplicitLumel*)HeapAlloc	(GetProcessHeap(),0,size);	R_ASSERT(lmap);
+		temp		= (ImplicitLumel*)HeapAlloc	(GetProcessHeap(),0,size);	R_ASSERT(temp);
 		size		*= sizeof(ImplicitLumel);
 		ZeroMemory	(lmap,size);
 		ZeroMemory	(temp,size);
 	}
 	void			Deallocate()
 	{
-		_DELETE		(temp);
-		_DELETE		(lmap);
+		HeapFree	(GetProcessHeap(),0,temp);
+		HeapFree	(GetProcessHeap(),0,lmap);
 	}
 	
 	DWORD	Width()	{ return texture->dwWidth; }
@@ -289,7 +289,8 @@ void CBuild::ImplicitLighting()
 	for (Implicit_it imp=calculator.begin(); imp!=calculator.end(); imp++)
 	{
 		ImplicitDeflector& defl = imp->second;
-		Status("Lighting implicit map '%s'...",defl.texture->name);
+		Status			("Lighting implicit map '%s'...",defl.texture->name);
+		Progress		(0);
 		defl.Allocate	();
 		
 		// Setup cache
