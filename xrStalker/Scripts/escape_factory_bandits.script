@@ -16,6 +16,11 @@ local snd_about_zone   = snd_base + 1
 local snd_hiding_place = snd_base + 2
 local snd_novice_again = snd_base + 3
 local snd_on_actor     = snd_base + 4
+local snd_idle_2       = snd_base + 5
+local snd_idle_3       = snd_base + 6
+local snd_idle_4       = snd_base + 7
+local snd_idle_5       = snd_base + 8
+
 
 local rnd_phrases = {
     idle    = 0,
@@ -109,6 +114,7 @@ class "action_go_to_pos" (action_base)
 function action_go_to_pos:__init( name, way_name, storage ) super( nil, name )
     self.a = storage
     self.way_name = way_name
+    self.context_snds = { themes = { "weather", "state" } }
 end
 
 function action_go_to_pos:initialize()
@@ -134,7 +140,7 @@ function action_go_to_pos:initialize()
     self.lp = nil
     self.object:set_callback( self, "move_callback", game_object.movement )
 
-    printf( "go_to_pos initialized" )
+--    printf( "go_to_pos initialized" )
 end
 
 function action_go_to_pos:execute()
@@ -190,7 +196,7 @@ function action_run_to_safe:initialize()
     self.object:set_path_type           ( game_object.level_path )
     self.object:set_dest_level_vertex_id( self.a.dest_vert_id )
 
-    printf( "run_to_safe initialized" )
+--    printf( "run_to_safe initialized" )
 end
 
 function action_run_to_safe:execute()
@@ -247,7 +253,7 @@ function action_stand:initialize()
         self.next_pos = 1
     end
 
-    printf( "look_around initialized" )
+--    printf( "look_around initialized" )
 end
 
 function action_stand:execute()
@@ -353,6 +359,11 @@ function add_to_binder( obj )
     obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_hiding_place_",  5, snd_type.talk, 2, 1, snd_hiding_place )
     obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_novice_again_",  5, snd_type.talk, 2, 1, snd_novice_again )
     obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_on_actor_",      5, snd_type.talk, 2, 1, snd_on_actor )
+    obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_2",            1, snd_type.talk, 2, 1, snd_idle_2 )
+    obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_3",            1, snd_type.talk, 2, 1, snd_idle_3 )
+    obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_4",            1, snd_type.talk, 2, 1, snd_idle_4 )
+    obj:add_sound( "script_replics\\bandit_1\\idle\\bandit_idle_5",            1, snd_type.talk, 2, 1, snd_idle_5 )
+    
 
     for i = 0, 1 do
         table.insert( rnd_phrases.sounds, { pack = snd_about_novice, id = i } )
@@ -362,6 +373,9 @@ function add_to_binder( obj )
     end
     for i = 0, 1 do
         table.insert( rnd_phrases.sounds, { pack = snd_hiding_place, id = i } )
+    end
+    for i = snd_idle_2, snd_idle_5 do
+        table.insert( rnd_phrases.sounds, { pack = i, id = 0 } )
     end
 
     -- GOAP
