@@ -33,6 +33,7 @@ class CAI_ObjectLocation;
 class CWeapon;
 class CExplosive;
 class CHolderCustom;
+class CAttachmentOwner;
 
 namespace GameObject {
 	enum ECallbackType;
@@ -58,6 +59,7 @@ protected:
 
 public:
 	//functions used for avoiding most of the smart_cast
+	virtual CAttachmentOwner*			cast_attachment_owner		()						{return NULL;}
 	virtual CInventoryOwner*			cast_inventory_owner		()						{return NULL;}
 	virtual CInventoryItem*				cast_inventory_item			()						{return NULL;}
 	virtual CEntity*					cast_entity					()						{return NULL;}
