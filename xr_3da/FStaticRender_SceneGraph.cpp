@@ -376,11 +376,12 @@ void CRender::add_Static(CVisual *pVisual, u32 planes)
 				// Add all children, perform tests
 				I = pV->children.begin	();
 				E = pV->children.end	();
+				/*
 				if (fcvPartial==VIS) {
 					for (; I!=E; I++)	add_Static			(*I,planes);
 				} else {
-					for (; I!=E; I++)	add_leafs_Static	(*I);
-				}
+				*/
+				for (; I!=E; I++)	add_leafs_Static	(*I);
 			}
 		}
 		break;
