@@ -155,6 +155,7 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 		CSoundObject			sound_object;
 
 		const CGameObject		*game_object = dynamic_cast<const CGameObject*>(object);
+		const CGameObject		*self = dynamic_cast<const CGameObject*>(this);
 
 		sound_object.fill		(game_object,self,ESoundTypes(sound_type),sound_power);
 		sound_object.m_first_level_time	= Level().timeServer();
