@@ -93,7 +93,7 @@ void CPEDef::pTimeLimit(float time_limit)
 void CPEDef::pFrameInitExecute(ParticleEffect *effect)
 {
 	for(int i = 0; i < effect->p_count; i++){
-		Particle &m = effect->list[i];
+		Particle &m = effect->particles[i];
         if (m.flags.is(Particle::BIRTH)){
             if (m_Flags.is(dfRandomFrame))
                 m.frame	= (u16)iFloor(Random.randI(m_Frame.m_iFrameCount)*255.f);
@@ -106,7 +106,7 @@ void CPEDef::pAnimateExecute(ParticleEffect *effect, float dt)
 {
 	float speedFac = m_Frame.m_fSpeed * dt;
 	for(int i = 0; i < effect->p_count; i++){
-		Particle &m = effect->list[i];
+		Particle &m = effect->particles[i];
         float f						= (float(m.frame)/255.f+((m.flags.is(Particle::ANIMATE_CCW))?-1.f:1.f)*speedFac);
 		if (f>m_Frame.m_iFrameCount)f-=m_Frame.m_iFrameCount;
 		if (f<0.f)					f+=m_Frame.m_iFrameCount;
@@ -119,7 +119,7 @@ void CPEDef::pCollisionExecute(PAPI::ParticleEffect *effect, float dt, CParticle
     pVector pt,n;
 	// Must traverse list in reverse order so Remove will work
 	for(int i = effect->p_count-1; i >= 0; i--){
-		Particle &m = effect->list[i];
+		Particle &m = effect->particles[i];
 
         bool pick_needed;
         int pick_cnt=0;
@@ -436,7 +436,7 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 				vis.box.invalidate	();
 				float p_size = 0.f;
 				for(int i = 0; i < pg->p_count; i++){
-					Particle &m 	= pg->list[i]; 
+					Particle &m 	= pg->particles[i]; 
 					if (m.flags.is(Particle::DYING)){if (m_DestroyCallback) m_DestroyCallback(this,m);}
 					if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
 					vis.box.modify((Fvector&)m.pos);
@@ -744,7 +744,7 @@ void CParticleEffect::Render(float LOD)
             FVF::TL* pv			= pv_start;
 
             for(int i = 0; i < pe->p_count; i++){
-                PAPI::Particle &m = pe->list[i];
+                PAPI::Particle &m = pe->particles[i];
 
                 Fvector2 lt,rb;
                 lt.set			(0.f,0.f);

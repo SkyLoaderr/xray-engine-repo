@@ -235,10 +235,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			//PKinematics	(Visual())->PlayCycle("x90",false);
 			////////////////////
 	
-//			PSkeletonAnimated(Visual())->LL_CloseCycle(0) ;
-//			PSkeletonAnimated(Visual())->LL_CloseCycle(1) ;
-//			PSkeletonAnimated(Visual())->LL_CloseCycle(2) ;
-//			PSkeletonAnimated(Visual())->LL_CloseCycle(3) ;
 			PSkeletonAnimated(Visual())->PlayCycle(m_anims.m_dead_stop);
 		}
 	}

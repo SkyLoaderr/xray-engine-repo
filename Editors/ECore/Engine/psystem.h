@@ -61,7 +61,7 @@ namespace PAPI
 		IC pVector operator^(const pVector& b) const	{	return pVector(y*b.z-z*b.y,z*b.x-x*b.z,x*b.y-y*b.x);		}
 	};
 
-	#pragma pack (push,1)
+	#pragma pack (push,4)
 	// A single particle
 	struct Particle
 	{
@@ -87,19 +87,62 @@ namespace PAPI
 	// A effect of particles - Info and an array of Particles
 	struct PARTICLEDLL_API ParticleEffect
 	{
-		int p_count;				// Number of particles currently existing.
-		int max_particles;			// Max particles allowed in effect.
-		int particles_allocated;	// Actual allocated size.
-		Particle list[1];			// Actually, num_particles in size
+		int			p_count;				// Number of particles currently existing.
+		int			max_particles;			// Max particles allowed in effect.
+		int			particles_allocated;	// Actual allocated size.
+		Particle*	particles;				// Actually, num_particles in size
 
-		IC void Remove(int i)
+					ParticleEffect	(int mp)
 		{
-			Particle& m = list[i];
-			if (m.flags.is(Particle::DYING))	m		 = list[--p_count];
+			p_count					= 0;
+			max_particles			= mp;
+			particles_allocated		= max_particles;
+			particles				= xr_alloc<Particle>(max_particles);
+		}
+					~ParticleEffect	()
+		{
+			xr_free					(particles);
+		}
+		IC int		Resize			(int max_count)
+		{
+			// Reducing max.
+			if(particles_allocated >= max_count)
+			{
+				max_particles		= max_count;
+
+				// May have to kill particles.
+				if(p_count > max_particles)
+					p_count			= max_particles;
+
+				return max_count;
+			}
+
+			// Allocate particles.
+			Particle* new_particles	= xr_alloc<Particle>(max_count);
+			if(new_particles == NULL){
+				// Not enough memory. Just give all we've got.
+				// ERROR
+				max_particles		= particles_allocated;
+				return max_particles;
+			}
+
+			Memory.mem_copy			(new_particles, particles, p_count * sizeof(Particle));
+
+			xr_free					(particles);
+			particles				= new_particles;
+
+			max_particles			= max_count;
+			particles_allocated		= max_count;
+			return max_count;
+		}
+		IC void		Remove			(int i)
+		{
+			Particle& m		= particles[i];
+			if (m.flags.is(Particle::DYING))	m		 = particles[--p_count];
 			else								m.flags.set(Particle::DYING,TRUE);
 		}
 
-		IC BOOL Add(const pVector &pos, const pVector &posB,
+		IC BOOL		Add(const pVector &pos, const pVector &posB,
 			const pVector &size, const pVector &rot, const pVector &vel, u32 color,
 			const float age = 0.0f, u16 frame=0, u16 flags=Particle::BIRTH)
 		{
@@ -107,7 +150,7 @@ namespace PAPI
 				return FALSE;
 			else
 			{
-				Particle& P = list[p_count];
+				Particle& P = particles[p_count];
 				P.pos = pos;
 				P.posB = posB;
 				P.size = size;

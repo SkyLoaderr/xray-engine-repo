@@ -522,15 +522,10 @@ PARTICLEDLL_API int pGenParticleEffects(int p_effect_count, int max_particles)
 	if(_ps.in_new_list)
 		return -1; // ERROR
 
-	int ind = _ps.GenerateEffects(p_effect_count);
+	int ind					= _ps.GenerateEffects(p_effect_count); VERIFY(ind>=0);
 	
 	for(int i=ind; i<ind+p_effect_count; i++)
-	{
-		_ps.effect_vec[i] = (ParticleEffect *)xr_alloc<Particle>(max_particles + 2);
-		_ps.effect_vec[i]->max_particles = max_particles;
-		_ps.effect_vec[i]->particles_allocated = max_particles;
-		_ps.effect_vec[i]->p_count = 0;
-	}
+		_ps.effect_vec[i]	= xr_new<ParticleEffect>(max_particles);
 	
 	return ind;
 }
@@ -547,7 +542,7 @@ PARTICLEDLL_API void pDeleteParticleEffects(int p_effect_num, int p_effect_count
 	
 	for(int i = p_effect_num; i < p_effect_num + p_effect_count; i++)
 	{
-		if(_ps.effect_vec[i])	xr_free(_ps.effect_vec[i]);
+		if(_ps.effect_vec[i])	xr_delete(_ps.effect_vec[i]);
 		else					return; // ERROR
 	}
 }
@@ -572,48 +567,14 @@ PARTICLEDLL_API int pSetMaxParticlesG(int effect_num, int max_count)
 {
 	_ParticleState &_ps = _GetPState();
 
-	if(_ps.in_new_list)
-		return 0; // ERROR
+	if(_ps.in_new_list)	return 0; // ERROR
 	
 	ParticleEffect *pe = _ps.GetEffectPtr(effect_num);
-	if(pe == NULL)
-		return 0; // ERROR
+	if(pe == NULL)		return 0; // ERROR
 	
-	if(max_count < 0)
-		return 0; // ERROR
+	if(max_count < 0)	return 0; // ERROR
 
-	// Reducing max.
-	if(pe->particles_allocated >= max_count)
-	{
-		pe->max_particles = max_count;
-
-		// May have to kill particles.
-		if(pe->p_count > pe->max_particles)
-			pe->p_count = pe->max_particles;
-
-		return max_count;
-	}
-
-	// Allocate particles.
-	ParticleEffect *pe2 =(ParticleEffect *)xr_alloc<Particle>(max_count + 2);
-	if(pe2 == NULL)
-	{
-		// Not enough memory. Just give all we've got.
-		// ERROR
-		pe->max_particles = pe->particles_allocated;
-		
-		return pe->max_particles;
-	}
-	
-	Memory.mem_copy(pe2, pe, (pe->p_count + 2) * sizeof(Particle));
-	
-	xr_free(pe);
-	
-	_ps.effect_vec[_ps.effect_id] = _ps.peff = pe2;
-	pe2->max_particles			= max_count;
-	pe2->particles_allocated	= max_count;
-
-	return max_count;
+	return pe->Resize	(max_count);
 }
 
 PARTICLEDLL_API int pSetMaxParticles(int max_count)
@@ -654,8 +615,8 @@ PARTICLEDLL_API void pCopyEffect(int p_src_effect_num, int index, int copy_count
 	// Directly copy the particles to the current list.
 	for(int i=0; i<ccount; i++)
 	{
-		desteff->list[desteff->p_count+i] =
-			srceff->list[index+i];
+		desteff->particles[desteff->p_count+i] =
+			srceff->particles[index+i];
 	}
 	desteff->p_count += ccount;
 }

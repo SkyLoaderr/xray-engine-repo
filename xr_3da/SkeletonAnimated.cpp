@@ -747,7 +747,10 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
             default:
                 {
                     int count = BLEND_INST.Blend.size();
-                    for (int i=0; i<count; i++)		S[i].set(R+i,BI[i]->blendAmount);
+					for (int i=0; i<count; i++){
+						LPCSTR m_nm = K->LL_MotionDefName_dbg(BI[i]->motionID);
+						S[i].set(R+i,BI[i]->blendAmount);
+					}
                     std::sort	(S,S+count);
                     KEY_Interp	(Result,*S[0].K, *S[1].K, clampr(S[1].w/(S[0].w+S[1].w),0.f,1.f) );
                 }

@@ -124,10 +124,12 @@ void CGrenade::OnAnimationEnd()
 				u_EventSend			(P);
 			};
 
+			Msg("grenade end anim");
+
 			//выкинуть гранату из инвентаря
 			if (m_pInventory)
 				m_pInventory->Ruck(this); 
-			
+		
 			if(dynamic_cast<CActor*>(H_Parent()))
 			{
 				//найти такую же гранату и положить в рюкзак
@@ -139,9 +141,13 @@ void CGrenade::OnAnimationEnd()
 
 				if(pNext) 
 				{ 
+					Msg("grenade activate next slot");
+
 					m_pInventory->Slot(pNext, false);
 					m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
 					m_pInventory->Activate(pNext->m_slot); 
+
+					Msg("grenade next slot activated");
 				}
 			}
 		}
