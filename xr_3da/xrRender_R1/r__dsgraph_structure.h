@@ -54,4 +54,5 @@ public:
 	void		r_dsgraph_render_graph							(u32			_priority);
 	void		r_dsgraph_render_hud							();
 	void		r_dsgraph_render_lods							();
+	void		r_dsgraph_render_sorted							();
 };

@@ -86,7 +86,7 @@ IRender_Target*			CRender::getTarget				()					{ return Target;										}
 IRender_Light*			CRender::light_create			()					{ return L_DB->Create();								}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_DB->Destroy((light*)L); L=0; }				}
 
-void					CRender::flush					()					{ r_dsgraph_render	(0);								}
+void					CRender::flush					()					{ r_dsgraph_render_graph	(0);						}
 
 BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);								}
 BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);								}
@@ -341,6 +341,7 @@ void	CRender::Render		()
 
 
 	///////////////////////////???????????????????????????????????????????????????????????????/
+	r_dsgraph_render_hud			();
 
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
@@ -368,11 +369,8 @@ void	CRender::Render		()
 	}
 
 	// LODs
-	flush_LODs				();
-
-	// Sorted (back to front)
-	mapSorted.traverseRL	(sorted_L1);
-	mapSorted.clear			();
+	r_dsgraph_render_lods	();
+	r_dsgraph_render_sorted	();
 
 	// Glows
 	L_Glows->Render			();

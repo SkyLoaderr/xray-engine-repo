@@ -402,3 +402,12 @@ void R_dsgraph_structure::r_dsgraph_render_hud	()
 	Device.mFullTransform		= FTold;
 	RCache.set_xform_project	(Device.mProject);
 }
+
+//////////////////////////////////////////////////////////////////////////
+// strict-sorted render
+void R_dsgraph_structure::r_dsgraph_render_sorted	()
+{
+	// Sorted (back to front)
+	mapSorted.traverseRL	(sorted_L1);
+	mapSorted.clear			();
+}

@@ -62,8 +62,6 @@ private:
 	void							add_leafs_Dynamic		(IRender_Visual	*pVisual);					// if detected node's full visibility
 	void							add_leafs_Static		(IRender_Visual	*pVisual);					// if detected node's full visibility
 
-	void							flush_LODs				();
-
 	void							calc_DetailTexturing	();
 	void							calc_FogPass			();
 public:
