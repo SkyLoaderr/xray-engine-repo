@@ -50,6 +50,7 @@ public:
 	LPCSTR		_update		(LPSTR dest, LPCSTR src) const;
 };
 
+#ifdef __BORLANDC__
 // query
 struct FS_QueryItem
 {
@@ -68,6 +69,7 @@ struct FS_QueryItem
     }
 };
 DEFINE_MAP(AnsiString,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
+#endif
 
 class XRCORE_API CLocatorAPI  
 {
@@ -140,7 +142,6 @@ public:
     void 						set_file_age	(LPCSTR nm, int age);
 
 	int							file_list		(LPSTRVec& dest, LPCSTR path, u32 flags=FS_ListFiles);
-	int							file_list		(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR ext_mask=0);
                                       
     bool						path_exist		(LPCSTR path);
     FS_Path*					get_path		(LPCSTR path);
@@ -148,7 +149,8 @@ public:
     LPCSTR						update_path		(LPSTR dest, LPCSTR initial, LPCSTR src);
 
 #ifdef __BORLANDC__
-   const AnsiString&			update_path		(LPCSTR initial, AnsiString& dest);
+	int							file_list		(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR ext_mask=0);
+	const AnsiString&			update_path		(LPCSTR initial, AnsiString& dest);
     const AnsiString&			update_path		(AnsiString& dest, LPCSTR initial, LPCSTR src);
 #endif    
 };

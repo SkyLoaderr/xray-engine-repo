@@ -352,67 +352,6 @@ int CLocatorAPI::file_list		(vector<char*>& dest, const char* initial, u32 flags
 	return dest.size();
 }
 
-int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR initial, u32 flags, LPCSTR ext_mask)
-{
-	VERIFY			(flags);
-	
-	string256		N;
-	if (initial&&initial[0]) update_path(N,initial,"");
-	
-	file			desc;
-	desc.name		= N;
-	files_it	I 	= files.find(desc);
-	if (I==files.end())	return 0;
-
-    LPSTRVec exts;
-    if (ext_mask){
-    	int cnt		= _GetItemCount(ext_mask);
-        string32	buf;
-        for (int k=0; k<cnt; k++)
-        	exts.push_back(xr_strdup(_GetItem(ext_mask,k,buf)));
-    }
-	
-	size_t base_len	= strlen(N);
-	for (++I; I!=files.end(); I++)
-	{
-		const file& entry = *I;
-		if (0!=strncmp(entry.name,N,base_len))	break;	// end of list
-		const char* end_symbol = entry.name+strlen(entry.name)-1;
-		if ((*end_symbol) !='\\')	{
-			// file
-			if ((flags&FS_ListFiles) == 0)	continue;
-			LPCSTR entry_begin 		= entry.name+base_len;
-			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\")!=end_symbol)	continue;	// folder in folder
-            // check extension
-            if (ext_mask){
-	            LPCSTR ext 			= strext(entry_begin);
-                if (ext){
-                    bool bFound			= false;
-                    for (LPSTRIt it=exts.begin(); it!=exts.end(); it++)
-                        if (0==strcmp(ext,*it)) bFound=true;
-                    if (!bFound)		continue;
-                }
-            }
-            AnsiString fn			= entry_begin;
-			// insert file entry
-            if (flags&FS_ClampExt)	fn = ChangeFileExt(fn,"");
-            u32 fl = (entry.vfs?FS_QueryItem::flVFS:0);
-            dest.insert(make_pair(fn,FS_QueryItem(entry.size,entry.modif,fl)));
-		} else {
-			// folder
-			if ((flags&FS_ListFolders) == 0)continue;
-			const char* entry_begin = entry.name+base_len;
-			
-			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\")!=end_symbol)	continue;	// folder in folder
-            u32 fl = FS_QueryItem::flSubDir|(entry.vfs?FS_QueryItem::flVFS:0);
-            dest.insert(make_pair(entry_begin,FS_QueryItem(entry.size,entry.modif,fl)));
-		}
-	}
-    for (LPSTRIt it=exts.begin(); it!=exts.end(); it++)
-    	xr_free(*it);
-	return dest.size();
-}
-
 IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 {
 	// correct path
@@ -591,10 +530,10 @@ void CLocatorAPI::set_file_age(LPCSTR nm, int age)
     	file& F		= (file&)*I;
     	F.modif		= age;
         // actual update
-        utimbuf 	tm;
+        _utimbuf	tm;
         tm.actime	= age;
         tm.modtime	= age;
-        _utime(nm,&tm);
+        _utime		(nm,&tm);
     }
 }
 

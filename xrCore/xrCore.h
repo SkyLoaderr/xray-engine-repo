@@ -79,7 +79,6 @@
 #include <io.h>
 #include <fcntl.h>
 #include <sys\stat.h>
-#include <utime.h>
 
 #ifndef DEBUG
 	#ifdef _DEBUG
@@ -88,6 +87,8 @@
 #endif
 
 #ifdef __BORLANDC__
+	#include <utime.h>
+	#define _utimbuf utimbuf
 	#define MODULE_NAME 	"xrCoreB.dll"
     #ifndef DEBUG
     	#pragma inline_depth	( 254 )
@@ -121,6 +122,7 @@
 	#define _RC_CHOP RC_CHOP
 	#define _RC_NEAR RC_NEAR
 #else
+	#include <sys\utime.h>
 	#define MODULE_NAME 	"xrCore.dll"
     #ifndef DEBUG
     #pragma inline_depth	( 254 )
