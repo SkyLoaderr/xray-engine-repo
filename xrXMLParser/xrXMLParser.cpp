@@ -328,11 +328,15 @@ XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node,
 	while (start_node)
 	{
 		TiXmlElement *el = start_node->ToElement();
-		if (el
-			&& 0 == xr_strcmp(el->Attribute(attrib), attrib_value_pattern)
-			&& 0 == xr_strcmp(el->Value(), tag_name))
+		if (el)
 		{
-			return el;
+			LPCSTR attribStr	= el->Attribute(attrib);
+			LPCSTR valueStr		= el->Value();
+			if (attribStr &&  0 == xr_strcmp(attribStr, attrib_value_pattern) &&
+				valueStr && 0 == xr_strcmp(valueStr, tag_name))
+			{
+				return el;
+			}
 		}
 
 		XML_NODE *newEl = start_node->FirstChild(tag_name);

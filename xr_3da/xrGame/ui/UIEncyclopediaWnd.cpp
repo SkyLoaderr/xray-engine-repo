@@ -102,6 +102,7 @@ void CUIEncyclopediaWnd::Init()
 
 	xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIEncyclopediaInfoBkg);
 	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UIEncyclopediaIdxBkg);
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -113,7 +114,13 @@ void CUIEncyclopediaWnd::DeleteArticles()
 		xr_delete(m_ArticlesDB[i]);
 	}
 	m_ArticlesDB.clear();
+
+	UIIdxList.RemoveAll();
+
+	m_pCurrArticle = NULL;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX article_index)
 {
@@ -336,6 +343,8 @@ void CUIEncyclopediaWnd::Draw()
 
 void CUIEncyclopediaWnd::Show()
 {
+	DeleteArticles();
+
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && pActor->encyclopedia_registry.objects_ptr())
 	{
