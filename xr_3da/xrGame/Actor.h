@@ -105,17 +105,17 @@ public:
 
 public:
 	//information receive & dialogs
-	virtual bool OnReceiveInfo		(INFO_INDEX info_index);
-	virtual void OnDisableInfo		(INFO_INDEX info_index);
+	virtual bool OnReceiveInfo		(INFO_INDEX info_index) const;
+	virtual void OnDisableInfo		(INFO_INDEX info_index) const;
 	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_INDEX info_index);
 
 	virtual void	 NewPdaContact		(CInventoryOwner*);
 	virtual void	 LostPdaContact		(CInventoryOwner*);
 
 protected:
-	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion);
-	virtual void AddEncyclopediaArticle	 (const CInfoPortion* info_portion);
-	virtual void AddGameTask			 (const CInfoPortion* info_portion);
+	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion) const;
+	virtual void AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const;
+	virtual void AddGameTask			 (const CInfoPortion* info_portion) const;
 public:	
 	virtual void AddGameNews			 (GAME_NEWS_DATA& news_data);
 	

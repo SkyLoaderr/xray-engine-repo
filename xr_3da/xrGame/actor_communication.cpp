@@ -33,7 +33,7 @@ static LPCSTR	m_sMapSpotAnimNeutral = NULL;
 static LPCSTR	m_sMapSpotAnimFriend = NULL;
 
 
-void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion)
+void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion) const
 {
 	VERIFY(info_portion);
 	//добавить отметки на карте
@@ -59,7 +59,7 @@ private:
 	ARTICLE_INDEX object_index;
 };
 
-void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
+void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 {
 	VERIFY(info_portion);
 	ARTICLE_VECTOR& article_vector = encyclopedia_registry->registry().objects();
@@ -86,7 +86,7 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
 	}
 }
 
-void CActor::AddGameTask			 (const CInfoPortion* info_portion)
+void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 {
 	VERIFY(info_portion);
 
@@ -141,7 +141,7 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 }
 
 
-bool CActor::OnReceiveInfo(INFO_INDEX info_index)
+bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -166,7 +166,7 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index)
 }
 
 
-void CActor::OnDisableInfo(INFO_INDEX info_index)
+void CActor::OnDisableInfo(INFO_INDEX info_index)  const
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());

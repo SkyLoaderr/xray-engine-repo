@@ -53,11 +53,6 @@ private:
 
 bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index) const
 {
-
-#ifdef DEBUG
-	Msg("[%s] CInventoryOwner::OnReceiveInfo info id %s", Name(), *CInfoPortion::IndexToId(info_index));
-#endif
-
 	//добавить запись в реестр
 	KNOWN_INFO_VECTOR& known_info = m_known_info_registry->registry().objects();
 	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));
@@ -65,6 +60,10 @@ bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index) const
 		known_info.push_back(INFO_DATA(info_index, Level().GetGameTime()));
 	else
 		return false;
+
+#ifdef DEBUG
+	Msg("[%s] CInventoryOwner::OnReceiveInfo info id %s", Name(), *CInfoPortion::IndexToId(info_index));
+#endif
 
 	//Запустить скриптовый callback
 	const CGameObject* pThisGameObject = smart_cast<const CGameObject*>(this);
