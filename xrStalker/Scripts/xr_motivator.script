@@ -357,7 +357,7 @@ xr_motivator.storage[self.object:id()].novice3 = {
                             path     = nil,         --Путь, по которому ходить
                             enemy_path = nil,       --Нулевая точка пути, туда, куда надо бежать
                             enemy    = nil,
-							say_kill = false,       --Ни разу не говорил, что убьет бандитов
+                            say_kill = false,       --Ни разу не говорил, что убьет бандитов
                             enabled  = false
                             }
     if( char_ini:section_exist ("novice3") == true ) then
@@ -494,7 +494,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_position.add_to_binder(self.object)
     xr_meet.add_to_binder(self.object)
 
-    -- модели поведения
+--[[    -- модели поведения
     xr_talker.add_to_binder(self.object)
     xr_patrol.add_to_binder (self.object)
     xr_follower.add_to_binder (self.object)
@@ -512,17 +512,92 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_trivial.add_novice2    (self.object)
     xr_trivial.add_novice3    (self.object)
     escape_factory_bandits.add_to_binder(self.object)
-    agroprom_military_commander.add_to_binder(self.object)
+    agroprom_military_commander.add_to_binder(self.object) ]]
+    
+    
+    
+    -- модели поведения
+    if char_ini:section_exist("talker") then
+        xr_talker.add_to_binder(self.object)
+    end
 
+    if char_ini:section_exist("patrol") then
+        xr_patrol.add_to_binder (self.object)
+    end
+
+    if char_ini:section_exist("follower") then
+        xr_follower.add_to_binder (self.object)
+    end
+
+    if char_ini:section_exist("report") then
+        xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
+    end
+
+    if char_ini:section_exist("kamp") then
+        xr_kamp.add_to_binder(self.object)
+    end
+
+    if char_ini:section_exist("commander") then
+        xr_commander.add_to_binder(self.object)
+    end
+
+    if char_ini:section_exist("guard") then
+        xr_guard.add_to_binder(self.object)
+    end
+
+    if char_ini:section_exist("camper") then
+        xr_camper2.add_to_binder(self.object)
+    end
+
+    if char_ini:section_exist("sleeper") then
+        xr_sleeper.add_to_binder(self.object)
+    end
+
+    if char_ini:section_exist("robber") then
+        xr_robbers.add_to_binder(self.object)
+    end
+
+    if char_ini:section_exist("scout") then
+        xr_scout.add_to_binder(self.object)
+    end
+    
+    -- сюжетные скрипты
+    if char_ini:section_exist("novice") then
+        xr_trivial.add_novice(self.object)
+    end
+
+    if char_ini:section_exist("novice2") then
+        xr_trivial.add_novice2(self.object)
+    end
+
+    if char_ini:section_exist("novice3") then
+        xr_trivial.add_novice3(self.object)
+    end
+
+    if char_ini:section_exist("escape_factory_bandit") then
+        escape_factory_bandits.add_to_binder(self.object)
+    end
+
+    if char_ini:section_exist("military_commander") then
+        agroprom_military_commander.add_to_binder(self.object)    
+    end
+    
+    
+    
     if char_ini:section_exist ("bobik") == true then
-	escape_bobic.add_to_binder(self.object)
+        escape_bobic.add_to_binder(self.object)
     end
 
     --Привязка к организации
     if char_ini:section_exist ("fraction") == true then
         if char_ini:line_exist("fraction", "name") == true then
             xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object)
-        xr_gulag.add_to_binder(self.object)
+            xr_gulag.add_to_binder(self.object)
+            
+            xr_patrol.add_to_binder  (self.object)
+            xr_follower.add_to_binder(self.object)
+            xr_guard.add_to_binder   (self.object)
+            xr_sleeper.add_to_binder (self.object)
         end
     else
         -- включение схем
