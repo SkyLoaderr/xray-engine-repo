@@ -75,7 +75,7 @@
     </dialog>
 
     <dialog id="escape_trader_done_blockpost_box">
-        <precondition>escape_dialog.have_blockpost_case</precondition>
+    <precondition>escape_dialog.have_blockpost_case</precondition>
 	<phrase_list>
 		<phrase id="0">
 			<text>Вот твой ящик.</text>

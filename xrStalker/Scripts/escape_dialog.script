@@ -28,10 +28,10 @@ end
 
 -- Trader
 function have_blockpost_case(first_speaker, second_speaker)
-	return( first_speaker:object("escape_blockpost_case") ~= nil )
+  	return first_speaker:object("quest_case_01") ~= nil
 end
 function give_blockpost_case(first_speaker, second_speaker)
-	local case = first_speaker:object("escape_blockpost_case")
+	local case = first_speaker:object("quest_case_01")
 	first_speaker:transfer_item (case, second_speaker)
 	second_speaker:transfer_money (500, first_speaker)
 	first_speaker:set_task_state(task.completed, "escape_blockpost_case", 0)
