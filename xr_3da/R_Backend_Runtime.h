@@ -82,7 +82,7 @@ IC void CBackend::set_Textures			(STextureList* _T)
 			}
 		}
 
-		// clear 
+		// clear remaining stages
 		u32 last				= T->size();
 		while (last<8 && textures[last])	{
 			textures[last]		= 0;
