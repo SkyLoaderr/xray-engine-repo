@@ -58,8 +58,10 @@
 		<font font="letterica16" r="45" g="250" b="200"></font>
 	</map_goals_list>
 	
-	<!-- Name of global map location frame !!!!OLD!!!! !!!!REMOVE!!!!-->
-	<map_location_frame>ui\ui_frame_very_small</map_location_frame>
+	<!-- Local map name -->
+	<local_map_name_static x="550" y="430" width="240" height="280">
+		<text x="0" y="0" font="letterica25" r="225" g="225" b="250">Karta Name</text>
+	</local_map_name_static>	
 
 </window>
 
