@@ -798,6 +798,8 @@ void CMotionManager::FrameUpdate()
 		velocity_lerp(m_cur_anim.speed.current, m_cur_anim.speed.target, ANIM_CHANGE_SPEED_VELOCITY, Device.fTimeDelta);
 	} else m_cur_anim.speed.current = -1.f;
 
-	Update				();	
-	ValidateAnimation	();
+	if (!seq_playing && !TA_IsActive() && (!pJumping || (pJumping && !pJumping->IsActive()))) {
+		Update				();	
+		ValidateAnimation	();
+	}
 }
