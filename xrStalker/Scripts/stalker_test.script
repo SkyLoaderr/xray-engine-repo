@@ -23,7 +23,7 @@ function random_evaluator:evaluate()
 	if (math.random() < 0.5) then
 		return				(true)
 	else
-		return				(true)
+		return				(false)
 	end
 end
 
