@@ -710,6 +710,8 @@ namespace PAPI{
 
 	PARTICLEDLL_API void pStopPlaying(int action_list_num);
 
+	PARTICLEDLL_API void pStartPlaying(int action_list_num);
+
 	// Particle Group Calls
 
 	PARTICLEDLL_API void pCopyGroup(int p_src_group_num, int index = 0, int copy_count = P_MAXINT);
