@@ -40,11 +40,15 @@ protected:
 	bool								m_bVotingActive;
 
 	virtual void			UpdateMapLocations		() {};
+//-----------------------------------------------------------------------------------
+	ref_shader				m_EquipmentIconsShader;
+	ref_shader				m_KillEventIconsShader;
 
+	virtual ref_shader		GetEquipmentIconsShader	();
+	virtual ref_shader		GetKillEventIconsShader	();
 	virtual void			OnPlayerKilled			(NET_Packet& P);
 
 public:
-public :
 									game_cl_mp();
 	virtual							~game_cl_mp();
 
