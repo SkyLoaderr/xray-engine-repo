@@ -219,7 +219,6 @@ void	CRender::Statistics	(CGameFont* _F)
 	F.OutNext	("    S(%2d)   | (%2d)NS   ",stats.l_shadowed,stats.l_unshadowed);
 	F.OutNext	(" omni(%2d)   | (%2d)omni ",stats.l_point_s,stats.l_point		);
 	F.OutNext	(" spot(%2d)   | (%2d)spot ",stats.l_spot_s,stats.l_spot		);
-	F.OutNext	(" spot(%2d)   | (%2d)spot ",stats.l_spot_s,stats.l_spot		);
 	F.OutNext	(" smap use[%2d], merge[%2d]",stats.s_used,stats.s_merged-stats.s_used);
 	stats.s_used = 0; stats.s_merged = 0;
 	F.OutSkip	();
