@@ -3,6 +3,7 @@
 Чугай Саша
 
 Сделать:
+	- если один вышел из офлайна, а другой нет !!!!!!!!!!!!!!!!!
 	- рассинхронизируются
     - стоит в бт
     - не смотрят друг на друга
@@ -279,7 +280,7 @@ function action_stand:initialize()
     self.object:set_item                ( object.idle, self.object:best_weapon() )
     self.object:set_movement_type       ( move.stand )
 
-    if self.a.partner:alive() then
+    if is_object_online( self.a.partner:id() ) and self.a.partner:alive() then
         self.object:set_sight       ( look.direction, vector():set( self.a.partner:position() ):sub( self.object:position() ), 0 )
         self.object:set_body_state  ( move.standing )
         self.object:set_mental_state( anim.free )
@@ -304,7 +305,7 @@ end
 function action_stand:execute()
     action_base.execute( self )
 
-    if self.a.partner:alive() then
+    if is_object_online( self.a.partner:id() ) and self.a.partner:alive() then
     	check_actor( self.object, self.a )
 
         --globals.set_sound( self.object, rnd_phrases, false )
@@ -351,7 +352,7 @@ function action_dead_hook:initialize()
     self.a.dead_hook = true
 
     -- отослать партнёра в безопасную точку и сделать актёра врагом
-    if self.a.partner and self.a.partner:alive() then
+    if self.a.partner and is_object_online( self.a.partner:id() ) and self.a.partner:alive() then
         local pa        = xr_motivator.storage[self.a.partner:id()].escape_factory_bandit
         pa.way_safe     = patrol( "way_factory_bandits_safe" )
         pa.dest_vert_id = pa.way_safe:level_vertex_id( 0 )
