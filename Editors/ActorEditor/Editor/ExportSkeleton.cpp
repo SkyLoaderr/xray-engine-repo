@@ -385,9 +385,11 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     }
     F.close_chunk();
     
-    F.open_chunk(OGF_USERDATA);
-    F.w(m_Source->GetClassScript().c_str(),m_Source->GetClassScript().Length());
-    F.close_chunk();
+    if (!m_Source->GetClassScript().IsEmpty()){
+        F.open_chunk(OGF_USERDATA);
+        F.w(m_Source->GetClassScript().c_str(),m_Source->GetClassScript().Length());
+        F.close_chunk();
+    }
 
 	UI.ProgressInc();
     UI.ProgressEnd();
