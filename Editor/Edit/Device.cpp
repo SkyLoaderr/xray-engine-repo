@@ -2,9 +2,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 #include "Device.h"
-#include "Scene.h"
 #include "ui_main.h"
-#include "library.h"
 #include "main.h"
 #include "xr_hudfont.h"
 
@@ -150,7 +148,7 @@ void CRenderDevice::OnDeviceCreate(){
 	Primitive.OnDeviceCreate	();
 //    Scene->OnDeviceCreate		();
 
-    UpdateFog();
+///    UpdateFog();
 
 	// Create TL-primitive
 	{
@@ -200,14 +198,18 @@ void CRenderDevice::OnDeviceDestroy(){
 	_RELEASE					(Streams_QuadIB);
 }
 
+#ifdef _EDITOR
+#include "scene.h"
 void CRenderDevice::UpdateFog(){
+	st_Environment& E	= Scene->m_LevelOp.m_Envs[Scene->m_LevelOp.m_CurEnv];
+    UpdateFog (E.m_FogColor,(psDeviceFlags&rsFog)?E.m_Fogness:0,(psDeviceFlags&rsFog)?E.m_ViewDist:UI->ZFar());
+}
+#endif
+
+void CRenderDevice::UpdateFog(const Fcolor& color, float fogness, float view_dist){
 	//Fog parameters
-    st_Environment& E	= Scene->m_LevelOp.m_Envs[Scene->m_LevelOp.m_CurEnv];
-    Fcolor& FogColor 	= E.m_FogColor;
-    float Fogness		= (psDeviceFlags&rsFog)?E.m_Fogness:0;
-    float view_dist		= (psDeviceFlags&rsFog)?E.m_ViewDist:UI->ZFar();
-	SetRS( D3DRS_FOGCOLOR,	FogColor.get());
-	float start	= (1.0f - Fogness)* 0.85f * view_dist;
+	SetRS( D3DRS_FOGCOLOR,	color.get());
+	float start	= (1.0f - fogness)* 0.85f * view_dist;
 	float end	= 0.91f * view_dist;
 	if (HW.Caps.bTableFog)	{
 		ELog.Msg(mtInformation,"* Using hardware fog...");

@@ -133,7 +133,10 @@ public:
     void					Validate		();
     void					UpdateView		();
 	void					UpdateTimer		();
-    void					UpdateFog		();
+    void					UpdateFog		(const Fcolor& color, float fogness, float view_dist);
+#ifdef _EDITOR
+	void 					UpdateFog		();
+#endif
 
     bool					MakeScreenshot	(DWORDVec& pixels, DWORD& width, DWORD& height);
 
