@@ -58,28 +58,20 @@ function load_dialog:InitControls()
 						     width = 148, 
 						     height = 148}
 							 
-	local btn_load_rect   = {x = self.left_align_x,
-							 y = self.btn_special_rect.y,
-							 width  = self.btn_rect.width,
-							 height = self.btn_rect.height}
-	
-	local btn_back_rect   = self.btn_special_rect
-	
-	local l = btn_load_rect.x + btn_load_rect.width
-	local r = btn_back_rect.x
-	local ind = (r - l)/2
-	
-	local btn_del_rect    = {x = l + self.indent,
-							 y = self.btn_special_rect.y,
-							 width = self.btn_rect.width,
-							 height = self.btn_rect.height}
-
-	local list_rect       = {x = self.left_align_x,
+	local list_rect_f     = {x = self.left_align_x,
 						     y = info_rect.y + info_rect.height + self.indent,
 						     width = 0,
 						     height = 0}
-	list_rect.width  = self.main_rect.width  - self.indent*2 
-	list_rect.height = self.main_rect.height - self.indent*2 - list_rect.y 
+	list_rect_f.width  = self.main_rect.width  - self.indent*2*2 
+	list_rect_f.height = self.main_rect.height - self.indent*2 - list_rect_f.y 
+	
+	local list_ind = 10
+	local list_rect       = {x = list_rect_f.x + list_ind,
+							 y = list_rect_f.y + list_ind,
+							 width = list_rect_f.width - list_ind*2,
+							 height = list_rect_f.height - list_ind*2}
+							 
+	
 	
 	----- CODE -------
 	
@@ -92,7 +84,7 @@ function load_dialog:InitControls()
 	------------LIST-----------------
     local txt_list   = CUIFrameWindow()  --background for ListView
     txt_list:SetAutoDelete(true)
-    txt_list:Init("ui\\ui_pop_up", list_rect.x, list_rect.y, list_rect.width, list_rect.height)
+    txt_list:Init(self.texture_list_frame, list_rect_f.x, list_rect_f.y, list_rect_f.width, list_rect_f.height)
     self.main_frame:AttachChild(txt_list) 
 
     local list_wnd = CUIListWndEx()
@@ -109,7 +101,7 @@ function load_dialog:InitControls()
     local btn   = CUI3tButton()
 	btn:SetAutoDelete(true) 
 	btn:SetWindowName("button_load") 
-	btn:Init(self.btn.texture_left,btn_load_rect.x, btn_load_rect.y, btn_load_rect.width, btn_load_rect.height)
+	btn:Init(self.btn_left.texture,self.btn_left.x, self.btn_left.y, self.btn_left.width, self.btn_left.height)
     btn:SetText("Load")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter) 
@@ -121,7 +113,7 @@ function load_dialog:InitControls()
     btn   = CUI3tButton()
 	btn:SetAutoDelete(true) 
 	btn:SetWindowName("button_del") 
-	btn:Init(self.btn.texture_center,btn_del_rect.x, btn_del_rect.y, btn_del_rect.width, btn_del_rect.height)
+	btn:Init(self.btn_center.texture, self.btn_center.x, self.btn_center.y, self.btn_center.width, self.btn_center.height)
     btn:SetText("Delete")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter) 
@@ -134,7 +126,7 @@ function load_dialog:InitControls()
     btn   = CUI3tButton()
     btn:SetAutoDelete(true)
     btn:SetWindowName("button_back")	
-	btn:Init(self.btn.texture_left,btn_back_rect.x, btn_back_rect.y, btn_back_rect.width, btn_back_rect.height) 	
+	btn:Init(self.btn_right.texture,self.btn_right.x, self.btn_right.y, self.btn_right.width, self.btn_right.height) 	
 	btn:SetText("Back")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
@@ -186,8 +178,12 @@ function load_dialog:OnButton_load_clicked()
 end
 
 function load_dialog:OnButton_back_clicked()
+<<<<<<< SourceSafe version
 --	level.start_stop_menu(self,true)
 	self:GetHolder():start_stop_menu(self,true)
+======= 
+	self:GetHolder():start_stop_menu(self,true)
+>>>>>>> Local version
 end
 
 function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
