@@ -128,7 +128,7 @@ C2DSound* C2DSoundRender::GetFreeSound(int hSound) {
 		if (!sounds[hSound][i]->isPlaying())
 			return sounds[hSound][i];
 	}
-	// free sound not found - create duplicate
+	// xr_free sound not found - create duplicate
 	C2DSound *pSnd = new C2DSound;
 	pSnd->Load(sounds[hSound][0]);
 	sounds[hSound].push_back(pSnd);

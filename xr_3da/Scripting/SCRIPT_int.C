@@ -333,10 +333,10 @@ scScript  SAPI scLoad_Script(char *s)
 	file=fopen(s,"rb");
 	if (!file)
 		return NULL;
-	script=malloc(size);
-	if (fread(script,size,1,file)==-1) {fclose(file);free(script);return NULL;};
+	script=xr_malloc(size);
+	if (fread(script,size,1,file)==-1) {fclose(file);xr_free(script);return NULL;};
 	fclose(file);
-	if (scGet_Script_Size(script)!=size) {free(script);return NULL;};
+	if (scGet_Script_Size(script)!=size) {xr_free(script);return NULL;};
 	return script;
 }
 #ifdef DEBUG

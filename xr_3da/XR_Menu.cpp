@@ -70,7 +70,7 @@ void CXR_Menu::AddToNames(char *name) {
 	n[0]=toupper(n[0]);
 	char *p = strchr(n,'.');
 	if (p) *p=0;
-	Names.Add(strdup(n));
+	Names.Add(xr_strdup(n));
 	if (stricmp(n,psUserName)==0) iCurrentUser = Names.count-1;
 }
 

@@ -54,7 +54,7 @@ ENGINE_API void _decorate(LPSTR dest, LPCSTR src)
 
 CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd )
 {
-	fName		= szFileName?strdup(szFileName):0;
+	fName		= szFileName?xr_strdup(szFileName):0;
     bReadOnly	= ReadOnly;
     bSaveAtEnd	= SaveAtEnd;
 
@@ -88,7 +88,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
             LPSTR comment	= 0;
             if (semi) {
                 *semi		= 0;
-                comment		= strdup(semi+1);
+                comment		= xr_strdup(semi+1);
             }
 
             if (str[0] && (str[0]=='['))
@@ -101,7 +101,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
                     Current.clear	();
                 }
                 int L = strlen(str); str[L-1] = 0;
-                Current.Name = strlwr(strdup(str+1));
+                Current.Name = strlwr(xr_strdup(str+1));
             } else {
                 if (0==Current.Name)	{
                     _FREE(comment);
@@ -117,8 +117,8 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
                     }
 
                     Item		I;
-                    I.first		= (name[0]?strdup(name):NULL);
-                    I.second	= (str2[0]?strdup(str2):NULL);
+                    I.first		= (name[0]?xr_strdup(name):NULL);
+                    I.second	= (str2[0]?xr_strdup(str2):NULL);
                     I.comment	= comment;
 
                     if (bReadOnly) {
@@ -171,7 +171,7 @@ void	CInifile::SaveAs( LPCSTR new_fname )
 	// save if needed
     if (new_fname&&new_fname[0]){
         _FREE(fName);
-        fName		= strdup(new_fname);
+        fName		= xr_strdup(new_fname);
     }
     R_ASSERT(fName&&fName[0]);
     CFS_Memory	F;
@@ -354,7 +354,7 @@ void	CInifile::WriteString	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 	if (!SectionExists(sect))	{
 		// create new section
 		Sect			NEW;
-		NEW.Name		= strdup(sect);
+		NEW.Name		= xr_strdup(sect);
 		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),NEW,sect_pred());
 		DATA.insert		(I,NEW);
 	}
@@ -366,9 +366,9 @@ void	CInifile::WriteString	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 	// duplicate & insert
 	Item	I;
 	Sect&	data	= ReadSection	(sect);
-	I.first			= (line[0]?strdup(line):0);
-	I.second		= (value[0]?strdup(value):0);
-	I.comment		= (comment?strdup(comment):0);
+	I.first			= (line[0]?xr_strdup(line):0);
+	I.second		= (value[0]?xr_strdup(value):0);
+	I.comment		= (comment?xr_strdup(comment):0);
 	SectIt	it		= std::lower_bound(data.begin(),data.end(),I,item_pred());
 
     if (it != data.end()) {

@@ -43,7 +43,7 @@ void CWeaponHUD::Load			(LPCSTR section)
 	m_Offset.translate_over		(pos);
 
 	// Visual
-	pVisualName					= strdup(pSettings->ReadSTRING(section, "visual"));
+	pVisualName					= xr_strdup(pSettings->ReadSTRING(section, "visual"));
 	pVisual						= ::Render->model_Create(pVisualName);
 	R_ASSERT					(pVisual->Type==MT_SKELETON);
 

@@ -13,7 +13,7 @@ void CImage::Create(DWORD w, DWORD h)
 	_FREE		(pData);
 	dwWidth		= w;
 	dwHeight	= h;
-	pData		= LPDWORD(malloc(w*h*sizeof(DWORD)));
+	pData		= LPDWORD(xr_malloc(w*h*sizeof(DWORD)));
 }
 
 void CImage::SaveTGA(LPCSTR name, BOOL b24)
@@ -123,10 +123,10 @@ void CImage::LoadT(char *name)
 	dwHeight= hdr->dwHeight;
 	bAlpha	= TUisAlphaPresents(hdr->fmt);
 
-	pData	= (DWORD*)malloc(dwWidth*dwHeight*4);
+	pData	= (DWORD*)xr_malloc(dwWidth*dwHeight*4);
 	// CopyMemory(pData,pixels,dwWidth*dwHeight*4);
 
-	free(data);
+	xr_free(data);
 }
 */
 
@@ -211,7 +211,7 @@ bool CImage::LoadTGA(LPCSTR name)
 	bAlpha 		= (hdr.pixsize==32);
 
 	// Alloc memory
-	pData		= (DWORD*)malloc(dwWidth*dwHeight*4);
+	pData		= (DWORD*)xr_malloc(dwWidth*dwHeight*4);
 
     DWORD pixel;
 	DWORD*	ptr	= pData;

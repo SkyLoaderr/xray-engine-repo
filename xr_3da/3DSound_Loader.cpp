@@ -24,7 +24,7 @@ void* ParseWave		(CStream *data, LPWAVEFORMATEX &wfx, DWORD &len)
         switch (dwType){
         case mmioFOURCC('f', 'm', 't', ' '):
 			if (!wfx) {
-				wfx = LPWAVEFORMATEX (malloc(dwLength));
+				wfx = LPWAVEFORMATEX (xr_malloc(dwLength));
 				data->Read(wfx,dwLength);
 			}
             break;
@@ -61,9 +61,9 @@ void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, DWORD
 	if (FAILED(acmStreamSize(hc,dwLen,&dwNewLen,ACM_STREAMSIZEF_SOURCE))) return NULL;
 	if (!dwNewLen) return NULL;
 
-	void *dest = malloc(dwNewLen);
+	void *dest		= xr_malloc(dwNewLen);
 	ACMSTREAMHEADER acmhdr;
-    acmhdr.cbStruct=sizeof(acmhdr);
+    acmhdr.cbStruct	=sizeof(acmhdr);
     acmhdr.fdwStatus=0;
     acmhdr.pbSrc=(BYTE *)data;
     acmhdr.cbSrcLength=dwLen;
@@ -72,13 +72,13 @@ void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, DWORD
 
 	if (FAILED(acmStreamPrepareHeader(hc,&acmhdr,0))) {
 		acmStreamClose			(hc,0);
-		free					(dest);
+		xr_free					(dest);
 		return			NULL;
 	}
 	if (FAILED(acmStreamConvert(hc,&acmhdr,ACM_STREAMCONVERTF_START|ACM_STREAMCONVERTF_END))) {
 		acmStreamUnprepareHeader(hc,&acmhdr,0);
 		acmStreamClose			(hc,0);
-		free					(dest);
+		xr_free					(dest);
 		return			NULL;
 	}
 	dwLen = acmhdr.cbDstLengthUsed;
@@ -127,7 +127,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 		converted				= ConvertWave(wfxdest, pFormat, conv, dwLen);
-		free					(conv);
+		xr_free					(conv);
 	} else {
 		// Wave has PCM format - so only one conversion
 		// Freq as in PrimaryBuf, Channels = ???, Bits as in source data if possible
@@ -168,7 +168,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 		return NULL;
 	}
 
-	// free memory
+	// xr_free memory
 	_FREE	(converted);
 	_FREE	(pFormat);
 	return pBuf;
@@ -226,7 +226,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 		converted				= ConvertWave(wfxdest, pFormat, conv, dwLen);
-		free					(conv);
+		xr_free					(conv);
 	} else {
 		// Wave has PCM format - so only one conversion
 		// Freq as in PrimaryBuf, Channels = 1, Bits as in source data if possible
@@ -268,7 +268,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 		return NULL;
 	}
 	
-	// free memory
+	// xr_free memory
 	_FREE	(converted);
 	_FREE	(pFormat);
 	return pBuf;
@@ -281,7 +281,7 @@ void CSound::Load		(LPCSTR name, BOOL ctrl_freq)
 	R_ASSERT			( pBuffer==0	);
 	
 	if (name){ 
-		fName			= strlwr	(strdup(name));
+		fName			= strlwr	(xr_strdup(name));
 		_Freq			= ctrl_freq;
 	}
 	
@@ -313,7 +313,7 @@ void CSound::Load		(LPCSTR name, BOOL ctrl_freq)
 
 void CSound::Load		(const CSound *pOriginal)
 {
-	fName				= strdup(pOriginal->fName);
+	fName				= xr_strdup(pOriginal->fName);
 	_3D					= pOriginal->_3D;
 	_Freq				= pOriginal->_Freq;
 	dwFreq				= pOriginal->dwFreq;
@@ -337,7 +337,7 @@ void CSound::Load		(CInifile *pIni, const char *pSection)
 {
 	VERIFY				(pIni&&pSection);
 	
-	fName				= strlwr(strdup(pIni->ReadSTRING(pSection,"fname")));
+	fName				= strlwr(xr_strdup(pIni->ReadSTRING(pSection,"fname")));
 	fBaseVolume			= pIni->ReadFLOAT	( pSection, "volume" );
 	ps.flMinDistance	= pIni->ReadFLOAT	( pSection, "mindist");
 	ps.flMaxDistance	= pIni->ReadFLOAT	( pSection, "maxdist");

@@ -16,16 +16,18 @@ extern "C" {
 #include <stdlib.h>
 #include <stdarg.h>
 
+// reassigned routines
+/*
 #ifdef DEBUG
 #include <crtdbg.h>
-// reassigned routines
 #define malloc(s)			_malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)
 #define calloc(c, s)		_calloc_dbg(c, s, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define realloc(p, s)		_realloc_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
+#define xr_realloc(p, s)		_realloc_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
 #define _expand(p, s)		_expand_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define free(p)				_free_dbg(p, _NORMAL_BLOCK)
+#define xr_free(p)				_free_dbg(p, _NORMAL_BLOCK)
 #define _msize(p)			_msize_dbg(p, _NORMAL_BLOCK)
 #endif
+*/
 
 #define EXTERN	extern
 #define SAPI	__cdecl
@@ -352,7 +354,7 @@ class seerScript{
     }
 
   ~seerScript()
-    {/*free();*/}
+    {/*xr_free();*/}
 
   int size(void) {return scGet_Script_Size(script);}
 
@@ -397,7 +399,7 @@ class seerInstance{
 //    {ins=scFork_Instance(i.ins);}
 
   ~seerInstance()
-    {/*free();*/}
+    {/*xr_free();*/}
 
   scInstance *get(void) {return ins;}
 

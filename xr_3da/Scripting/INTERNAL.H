@@ -477,7 +477,7 @@ typedef struct {
 typedef struct {
        int during;
        RegsTable registers;
-       int afterbp,dataused;//first free byte in data segment (used by global vars)
+       int afterbp,dataused;//first xr_free byte in data segment (used by global vars)
        int stacksize;
        int ip;//exact copy of code.pos
        int unreal;//the code generated may not apear on output!

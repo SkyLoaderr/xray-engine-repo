@@ -47,7 +47,7 @@ void C2DSound::Load		(CInifile *pIni, const char *pSection)
 {
 	VERIFY				(pIni && pSection);
 
-	fName				= strlwr(strdup(pIni->ReadSTRING(pSection, "fname")));
+	fName				= strlwr(xr_strdup(pIni->ReadSTRING(pSection, "fname")));
 	fBaseVolume			= pIni->ReadFLOAT	( pSection, "volume");
 	Load				( LPSTR(0) );
 }
@@ -56,7 +56,7 @@ void C2DSound::Load		(LPCSTR name)
 {
 	VERIFY				( pBuffer==0	);
 
-	if (name) fName		= strlwr(strdup(name));
+	if (name) fName		= strlwr(xr_strdup(name));
 
 	FILE_NAME			fn;
 	sprintf				(fn,"%s%s.wav",Path.Sounds,fName);
@@ -68,7 +68,7 @@ void C2DSound::Load		(LPCSTR name)
 
 void C2DSound::Load		(C2DSound *pOriginal)
 {
-	fName				= strdup(pOriginal->fName);
+	fName				= xr_strdup(pOriginal->fName);
 	fVolume				= 1.0f;
 	fRealVolume			= 1.0f;
 	dwStatus			= 0;

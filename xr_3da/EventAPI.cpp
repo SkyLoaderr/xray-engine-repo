@@ -41,7 +41,7 @@ public:
 //-----------------------------------------
 CEvent::CEvent(const char* S)
 {	
-	Name=strdup(S); 
+	Name=xr_strdup(S); 
 	_strupr(Name);
 	dwRefCount=1; 
 }

@@ -92,7 +92,7 @@ int CScript::VCall(scInstance* inst,int address,int paramc,int *params)
 	Register(inst)[regCP]=Register(inst)[regSP];
 	Executor(inst,-1);
 	// debprintf("Result:%d\n",Register(inst)[0]);
-	Register(inst)[regCP]=0;//free
+	Register(inst)[regCP]=0;//xr_free
 	return Register(inst)[0];
 scError_Exit:
 	*/

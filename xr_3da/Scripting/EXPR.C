@@ -1859,7 +1859,7 @@ static BOOL scsDoClassCast(scType *t1,_value *v,BOOL doTemporary)
           v->type=*t1;
           valx=*v;
           thisval=*v;
-//          scvalFreeValue(&thisval);//free register, where 'this' is stored
+//          scvalFreeValue(&thisval);//xr_free register, where 'this' is stored
 //          thisval=*v;
           scvalCallFunction(fsym,&valx,v->sym,&thisval,NULL,params,false);
           scvalPopUsedRegisters(regs);

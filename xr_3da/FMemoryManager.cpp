@@ -115,10 +115,10 @@ void mmgrDone(void)
 #ifdef TESTMEM
 	void *test;
 	mmgrMessage("**** Generating memory leak");
-	test = malloc(100);
-	test = malloc(50);
+	test = xr_malloc(100);
+	test = xr_malloc(50);
 	mmgrMessage("**** Generating memory damage");
-	free(test);
+	xr_free(test);
 	ZeroMemory(test,50);
 #endif
 //	mmgrMessage("**** Checking memory consistency...");
@@ -146,7 +146,7 @@ char * _STRDUP(const char * string)
 {
 	VERIFY	(string);
 	int		len		= strlen(string)+1;
-	char *	memory	= (char *) malloc( len );
+	char *	memory	= (char *) xr_malloc( len );
 	VERIFY	(memory);
 	if (PSGP.memCopy)	PSGP.memCopy	(memory,string,len);
 	else				CopyMemory		(memory,string,len);

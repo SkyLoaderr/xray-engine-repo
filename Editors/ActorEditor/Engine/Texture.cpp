@@ -190,7 +190,7 @@ ENGINE_API DWORD*	TUBuild32MipLevel(ETextureMipgen ALG, DWORD &_w, DWORD &_h, DW
 	R_ASSERT(ALG!=tmDisable);
 
 	DWORD	dwDestPitch	= (_w/2)*4;
-	DWORD*	pNewData	= (DWORD*)malloc( (_h/2)*dwDestPitch );
+	DWORD*	pNewData	= (DWORD*)xr_malloc( (_h/2)*dwDestPitch );
 	BYTE*	pDest		= (BYTE *)pNewData;
 	BYTE*	pSrc		= (BYTE *)pdwPixelSrc;
 
@@ -631,13 +631,13 @@ _TGA:
 		DWORD dwP			= Image.dwWidth*4;
 		DWORD dwW			= Image.dwWidth;
 		DWORD dwH			= Image.dwHeight;
-		DWORD *pImagePixels	= (DWORD *)malloc(dwH*dwP);
+		DWORD *pImagePixels	= (DWORD *)xr_malloc(dwH*dwP);
 		DWORD *pNewPixels	= NULL;
 
 		PSGP.memCopy		(pImagePixels,Image.pData,dwH*dwP);
 		while (dwWidth!=dwW) {
 			pNewPixels=TUBuild32MipLevel(Mipgen,dwW,dwH,dwP,pImagePixels);
-			free(pImagePixels); pImagePixels=pNewPixels; pNewPixels=NULL;
+			xr_free(pImagePixels); pImagePixels=pNewPixels; pNewPixels=NULL;
 		}
 
 		// NOW:
@@ -663,7 +663,7 @@ _TGA:
 			if  (dwW>1 && dwH>1) {
 				// not the last level
 				pNewPixels=TUBuild32MipLevel(Mipgen, dwW,dwH,dwP,pImagePixels);
-				free(pImagePixels); pImagePixels=pNewPixels; pNewPixels=NULL;
+				xr_free(pImagePixels); pImagePixels=pNewPixels; pNewPixels=NULL;
 			}
 		}
 		// in the most cases it is not freed now

@@ -51,7 +51,7 @@ void CQList<TYPE>::SetSize( int x, int z )
 	for (int i=0; i<x_count; i++)	_DELETEARRAY(data[i]);
 	_FREE						(data);
 
-	data						= (TYPE**) malloc(x * sizeof(TYPE*));
+	data						= (TYPE**) xr_malloc(x * sizeof(TYPE*));
 	VERIFY						( data );
 	ZeroMemory					( data, x*sizeof(TYPE*) );
 	for (i=0; i<x; i++){

@@ -10,8 +10,8 @@ namespace IQ {
 */
 
 #ifdef DEBUG
-#undef malloc
-#undef free
+#undef xr_malloc
+#undef xr_free
 #endif
 
 // Utility pack
@@ -51,7 +51,7 @@ void SAPI_Export()
 		"import DWORD dwNumTStages;\n"
 	);
 
-	xray_hdr_mem = strdup(xray_hdr);
+	xray_hdr_mem = xr_strdup(xray_hdr);
 	scAdd_Internal_Header  ("xray",xray_hdr_mem);
 
 	CScript::RegisterSymbol("fTimeDelta",	&Device.fTimeDelta);

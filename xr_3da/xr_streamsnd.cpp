@@ -83,7 +83,7 @@ void CSoundStream::Play	( BOOL loop, int cnt )
 	// alloc source data buffer
 	VERIFY(dwSrcBufSize);
 	_FREE(WaveSource);
-	WaveSource = (unsigned char *)malloc(dwSrcBufSize);
+	WaveSource = (unsigned char *)xr_malloc(dwSrcBufSize);
 
 	// seek to data start
 	lseek		(hf,DataPos,SEEK_SET);
@@ -292,8 +292,8 @@ void CSoundStream::LoadADPCM( )
         pos=_tell(hf);
         if (stricmp(buf, "fmt ")==0) {
 			dwFMT_Size = hdr.len;
-			psrc = (LPWAVEFORMATEX)malloc(dwFMT_Size);
-			pwfx = (LPWAVEFORMATEX)malloc(dwFMT_Size);
+			psrc = (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
+			pwfx = (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
 			_read(hf,psrc,dwFMT_Size);
 			PSGP.memCopy(pwfx,psrc,dwFMT_Size);
 			pwfx->wFormatTag = WAVE_FORMAT_PCM;
@@ -310,7 +310,7 @@ void CSoundStream::LoadADPCM( )
 	// dest format
 	CHK_DX(acmFormatSuggest(NULL,psrc,pwfx,dwFMT_Size,ACM_FORMATSUGGESTF_WFORMATTAG));
 	// dest buffer (const size)
-    WaveDest		= (unsigned char *)malloc(dwDestBufSize);
+    WaveDest		= (unsigned char *)xr_malloc(dwDestBufSize);
 	// wave source -- alloc on Play
 
     // DSound----------------------------------------------------------------

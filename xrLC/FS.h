@@ -79,11 +79,11 @@ public:
 	{
 		VERIFY(!chunk_pos.empty());
 
-		int pos  = tell();
-		seek	(chunk_pos.top());
-		Wdword	(pos-chunk_pos.top()-4-align_correction);
-		seek	(pos);
-		chunk_pos.pop();
+		int pos			= tell();
+		seek			(chunk_pos.top());
+		Wdword			(pos-chunk_pos.top()-4-align_correction);
+		seek			(pos);
+		chunk_pos.pop	();
 	}
 	IC void write_compressed(void* ptr, DWORD count)
 	{
@@ -92,7 +92,7 @@ public:
 		_compressLZ(&dest,&dest_sz,ptr,count);
 		if (dest && dest_sz)
 			write(dest,dest_sz);
-		free(dest);
+		xr_free		(dest);
 	}
 	IC void write_chunk(DWORD type, void* data, DWORD size)
 	{

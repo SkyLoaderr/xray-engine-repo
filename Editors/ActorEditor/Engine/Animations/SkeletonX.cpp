@@ -126,7 +126,7 @@ void CSkeletonX_PM::Load(const char* N, CStream *data, DWORD dwFlags)
 	R_ASSERT			(data->FindChunk(OGF_INDICES));
 	DWORD				dwCount = data->Rdword();
 	R_ASSERT			(dwCount%3 == 0);
-	indices				= LPWORD(malloc(dwCount*2));
+	indices				= LPWORD(xr_malloc(dwCount*2));
 	PSGP.memCopy		(indices,data->Pointer(),dwCount*2);
 	dwPrimitives		= dwCount/3;
 

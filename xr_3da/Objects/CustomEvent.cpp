@@ -77,7 +77,7 @@ void CCustomEvent::Parse		(DEF_EVENT& D, LPCSTR DEF_Base)
 		
 		// Create
 		D.E  = Engine.Event.Create(Event); 
-		D.P1 = strdup	(Parsed); 
+		D.P1 = xr_strdup	(Parsed); 
 	}
 }
 

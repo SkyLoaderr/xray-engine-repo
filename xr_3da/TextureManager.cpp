@@ -65,7 +65,7 @@ CRT* CShaderManager::_CreateRT		(LPCSTR Name, DWORD w, DWORD h)
 	{
 		CRT *RT			=	new CRT;
 		RT->dwReference	=	1;
-		rtargets.insert	(make_pair(strdup(Name),RT));
+		rtargets.insert	(make_pair(xr_strdup(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,w,h);
 		return		RT;
 	}
@@ -104,7 +104,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl)
 	{
 		CVS *VS			=	new CVS;
 		VS->dwReference	=	1;
-		vs.insert		(make_pair(strdup(Name),VS));
+		vs.insert		(make_pair(xr_strdup(Name),VS));
 		
 		// Load vertex shader
 		string256		fname;
@@ -156,7 +156,7 @@ CPS*	CShaderManager::_CreatePS		(LPCSTR cName)
 	{
 		CPS *PS			=	new CPS;
 		PS->dwReference	=	1;
-		ps.insert		(make_pair(strdup(Name),PS));
+		ps.insert		(make_pair(xr_strdup(Name),PS));
 		
 		// Load vertex shader
 		string256		fname;
@@ -198,7 +198,7 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	{
 		CTexture *T		= new CTexture;
 		T->dwReference	= 1;
-		textures.insert	(make_pair(strdup(Name),T));
+		textures.insert	(make_pair(xr_strdup(Name),T));
 		if (Device.bReady && !bDeferredLoad) T->Load(Name);
 		return		T;
 	}
@@ -234,7 +234,7 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	{
 		CMatrix* M		=	new CMatrix;
 		M->dwReference	=	1;
-		matrices.insert	(make_pair(strdup(Name),M));
+		matrices.insert	(make_pair(xr_strdup(Name),M));
 		return	M;
 	}
 }
@@ -276,7 +276,7 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	{
 		CConstant* C	=	new CConstant;
 		C->dwReference	=	1;
-		constants.insert	(make_pair(strdup(Name),C));
+		constants.insert	(make_pair(xr_strdup(Name),C));
 		return	C;
 	}
 }
@@ -334,7 +334,7 @@ void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, CBlender* data)
 		_DELETE		(I->second);
 		I->second	= data;
 	} else {
-		blenders.insert	(make_pair(strdup(Name),data));
+		blenders.insert	(make_pair(xr_strdup(Name),data));
 	}
 }
 

@@ -16,13 +16,13 @@ private:
 	{
 		if (_size)	_size		*=2;
 		else		_size		= XR_LIST_INITSIZE;
-		data					= (T *)realloc(data,_size*sizeof(T));
+		data					= (T *)xr_realloc(data,_size*sizeof(T));
 	}
 	IC void			_realloc	( int sz )
 	{
 		if (0==_size) _size		= XR_LIST_INITSIZE;
 		while (_size < sz)		_size*=2;
-		data					= (T *)realloc(data,_size*sizeof(T));
+		data					= (T *)xr_realloc(data,_size*sizeof(T));
 	}
 public:
 	typedef T*		iterator;
@@ -30,7 +30,7 @@ public:
 public:
 	CList					( int V = XR_LIST_INITSIZE )
 	{
-		data				= (T *)	malloc	(V*sizeof(T));
+		data				= (T *)	xr_malloc	(V*sizeof(T));
 		_size				= V;								// initial size
 		_count				= 0;								// initial count
 	}
@@ -38,7 +38,7 @@ public:
 	{
 		_size				= from._count;
 		_count				= from._count;
-		data				= (T *) malloc	(_size*sizeof(T));
+		data				= (T *) xr_malloc	(_size*sizeof(T));
 		for (int it=0; it<_count; it++)
 			(*this)[it] = from[it];
 	}
@@ -106,7 +106,7 @@ public:
 		if (_size==_count)	return;
 		_size				= _count;
 		if (0==_size)		{ _FREE	(data); }
-		else				{ data	= (T *) realloc(data,_size*sizeof(T)); }
+		else				{ data	= (T *) xr_realloc(data,_size*sizeof(T)); }
 	}
 
 	IC	T&			operator[]				( int i )	const	{ VERIFY(i>=0 && i<_count); return data[i]; };

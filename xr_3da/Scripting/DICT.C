@@ -51,7 +51,7 @@ void scdicAddSymbol(scDictionary *dict,char *nam,int addr,int typeflags,void *re
     }
  dict->first->adr.address=addr;
  dict->first->type.flags=typeflags;
- dict->first->name=scStrdup(nam);//malloc(strlen(nam)+1);
+ dict->first->name=scStrdup(nam);//xr_malloc(strlen(nam)+1);
  dict->first->reserved=reserved;
 }
 

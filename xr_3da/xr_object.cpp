@@ -29,12 +29,12 @@ void CObject::StatusBegin	()
 void CObject::cName_set			(LPCSTR N)
 { 
 	_FREE(NameObject);
-	NameObject=strdup(N); 
+	NameObject=xr_strdup(N); 
 }
 void CObject::cNameSect_set		(LPCSTR N)
 { 
 	_FREE(NameObject);
-	NameObject=strdup(N); 
+	NameObject=xr_strdup(N); 
 }
 void CObject::setEnabled		(BOOL _enabled)
 {
@@ -117,7 +117,7 @@ void CObject::Load				(LPCSTR section )
 	R_ASSERT					( pCreator );
 
 	// Visual
-	pVisualName					= strdup(pSettings->ReadSTRING(section,"visual"));
+	pVisualName					= xr_strdup(pSettings->ReadSTRING(section,"visual"));
 	OnDeviceCreate				();
 	
 	// Collision model

@@ -163,7 +163,7 @@ BOOL TestEaxPresent( void )
     HRESULT			hr;
 	ULONG			ulSupport = 0;
 
-	// if there is already a property set interface free it up before making a new one for the curent buffer
+	// if there is already a property set interface xr_free it up before making a new one for the curent buffer
 	_RELEASE		( lpPrimarySet );
 
 	// QI for the property set interface

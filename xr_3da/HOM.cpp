@@ -70,7 +70,7 @@ void CHOM::Load			()
 	CL.calc_adjacency	();
 
 	// Create RASTER-triangles
-	m_pTris				= (occTri*) malloc(CL.getTS()*sizeof(occTri));
+	m_pTris				= (occTri*) xr_malloc(CL.getTS()*sizeof(occTri));
 	for (DWORD it=0; it<CL.getTS(); it++)
 	{
 		CDB::TRI&	clT = CL.getT()[it];

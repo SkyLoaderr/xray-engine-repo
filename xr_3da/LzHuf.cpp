@@ -64,7 +64,7 @@ public:
 	IC void		_putb(int c) {
 		if (out_iterator==out_end) {
 			int			out_size	= out_end-out_start;
-			out_start	= (BYTE*) realloc(out_start,out_size+1024);
+			out_start	= (BYTE*) xr_realloc(out_start,out_size+1024);
 			out_iterator= out_start+out_size;
 			out_end		= out_iterator+1024;
 		}
@@ -87,7 +87,7 @@ public:
 	}
 	IC void		Init_Output(int _rsize) {
 		// output
-		out_start	= (BYTE*)malloc(_rsize);
+		out_start	= (BYTE*)xr_malloc(_rsize);
 		out_end		= out_start + _rsize;
 		out_iterator= out_start;
 	}
@@ -101,7 +101,7 @@ public:
 		return out_start;
 	}
 	IC void		OutRelease	() {
-		free(out_start);
+		xr_free		(out_start);
 		out_start	= 0; 
 		out_end		= 0; 
 		out_iterator= 0;
@@ -666,7 +666,7 @@ void _decompressLZ	(BYTE** dest, unsigned* dest_sz, void* src, unsigned src_sz)
 unsigned _readLZ	(int hf, void* &d, unsigned size)
 {
 	// Read file in memory
-	BYTE*	data	= (BYTE*)malloc(size);
+	BYTE*	data	= (BYTE*)xr_malloc(size);
 	_read	(hf,data,size);
 	
 	fs.Init_Input(data,data+size);
@@ -675,7 +675,7 @@ unsigned _readLZ	(int hf, void* &d, unsigned size)
     Decode();
 	
 	// Flush cache
-	free	(data);
-	d	= fs.OutPointer();
+	xr_free	(data);
+	d		= fs.OutPointer();
 	return fs.OutSize();
 }

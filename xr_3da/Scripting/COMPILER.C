@@ -873,7 +873,7 @@ static void scsReadOneStatement(scSymbol* deli)
     prev_symbols=scdicStoreDictionary(SC_symbols);
     scsReadStatement(prev_symbols);
     _fdFS=0;
-    //here will have to deallocate variables we want to free
+    //here will have to deallocate variables we want to xr_free
     scdicRestoreDictionary(SC_symbols,prev_symbols,scsymCountAndDestruct);
     if (_fdFS)
      {_value v1,v2;
@@ -1606,7 +1606,7 @@ scScript scCompile(Source_Text *ST_)
    ((int *)act.final.mem)[hdrAllSize]=act.final.pos;
 
   //To the script:
-  code=malloc(act.final.pos);
+  code=xr_malloc(act.final.pos);
   memcpy(code,act.final.mem,act.final.pos);
 
   free_pmem(&act.final);

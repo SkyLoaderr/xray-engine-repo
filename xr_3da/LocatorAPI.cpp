@@ -23,7 +23,7 @@ void CLocatorAPI::Register		(LPCSTR name, DWORD vfs, DWORD ptr, DWORD size, BOOL
 {
 	// Register file
 	file				desc;
-	desc.name			= strlwr(strdup(name));
+	desc.name			= strlwr(xr_strdup(name));
 	desc.vfs			= vfs;
 	desc.ptr			= ptr;
 	desc.size			= size;
@@ -38,7 +38,7 @@ void CLocatorAPI::Register		(LPCSTR name, DWORD vfs, DWORD ptr, DWORD size, BOOL
 		_splitpath			(temp, 0, folder, 0, 0 );
 		if (!Exist(folder))	
 		{
-			desc.name			= strdup(folder);
+			desc.name			= xr_strdup(folder);
 			desc.vfs			= 0xffffffff;
 			desc.ptr			= 0;
 			desc.size			= 0;
@@ -190,7 +190,7 @@ void CLocatorAPI::List			(vector<char*>& dest, const char* path, DWORD flags)
 			
 			if (strstr(entry_begin,"\\")!=end_symbol)	continue;	// folder in folder
 			
-			dest.push_back	(strdup(entry_begin));
+			dest.push_back	(xr_strdup(entry_begin));
 		}
 	}
 	return;

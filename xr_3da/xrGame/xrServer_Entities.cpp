@@ -62,25 +62,25 @@ public:
 			// Load animator
 			string256				fn;
 			P.r_string				(fn);
-			s_Animation				= strdup(fn);
+			s_Animation				= xr_strdup(fn);
 		}
 		if (s_style&esModel)			{
 			// Load model
 			string256				fn;
 			P.r_string				(fn);
-			s_Model					= strdup(fn);
+			s_Model					= xr_strdup(fn);
 		}
 		if (s_style&esParticles)		{
 			// Load model
 			string256				fn;
 			P.r_string				(fn);
-			s_Particles				= strdup(fn);
+			s_Particles				= xr_strdup(fn);
 		}
 		if (s_style&esSound)			{
 			// Load model
 			string256				fn;
 			P.r_string				(fn);
-			s_Sound					= strdup(fn);
+			s_Sound					= xr_strdup(fn);
 		}
 	}
 	virtual void			STATE_Write			(NET_Packet& P)
@@ -281,7 +281,7 @@ public:
 			P.r_u16		(A.count);
 			P.r_u64		(A.cls);
 			P.r_string	(str);
-			A.event		= strdup(str);
+			A.event		= xr_strdup(str);
 			Actions.push_back(A);
 			count--;
 		}

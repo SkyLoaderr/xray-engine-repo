@@ -687,7 +687,7 @@ void NvStripifier::RemoveSmallStrips(NvStripInfoVec& allStrips, NvStripInfoVec& 
 			for(int j = 0; j < allStrips[i]->m_faces.size(); j++)
 				tempFaceList.push_back(allStrips[i]->m_faces[j]);
 			
-			//and free memory
+			//and xr_free memory
 			delete allStrips[i];
 		}
 		else
@@ -997,7 +997,7 @@ void NvStripifier::SplitUpStripsAndOptimize(NvStripInfoVec &allStrips, NvStripIn
 		else
 		{
 			//we're not just doing a tempStrips.push_back(allBigStrips[i]) because
-			// this way we can delete allBigStrips later to free the memory
+			// this way we can delete allBigStrips later to xr_free the memory
 			currentStrip = new NvStripInfo(startInfo, 0, -1);
 			
 			for(int j = 0; j < allStrips[i]->m_faces.size(); j++)

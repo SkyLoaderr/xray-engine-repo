@@ -61,7 +61,7 @@ scInstance*  SAPI scCreate_Instance(scScript scrpt,char* vars,...)
 	inst->forks=inst->forked=inst->next_fork=NULL;
 	
 	//below:registers+DATA+STACK----------------
-	inst->data_stack=malloc(256*4+ToCodeINT(scrpt)[hdrDataSize]+ToCodeINT(scrpt)[hdrStackSize]);
+	inst->data_stack=xr_malloc(256*4+ToCodeINT(scrpt)[hdrDataSize]+ToCodeINT(scrpt)[hdrStackSize]);
 	//actualize REGISTERS:----------------------
 	Register(inst)[regCS]=ToCodeINT(scrpt)[hdrCodeOffset];//CS -offset only
 	Register(inst)[regDS]=ToCodeINT(scrpt)[hdrDataOffset]+(int)inst->data_stack+256*4;//DS -real pointer
@@ -189,8 +189,8 @@ void SAPI scFree_Instance(scInstance *sci)
 		//copy all registers:
 		memcpy(sci->data_stack,i->data_stack,240*4);//all not system regs.
 		Register(sci)[regSP]=Register(i)[regSP];//stack
-		free(i->data_stack);
-		free(i);
+		xr_free(i->data_stack);
+		xr_free(i);
 	}
 	else
 		if (sci->forked)
@@ -206,8 +206,8 @@ void SAPI scFree_Instance(scInstance *sci)
 				while (i->next_fork!=sci) i=i->next_fork;
 				i->next_fork=sci->next_fork;
 			}
-			free(sci->data_stack);
-			free(sci);
+			xr_free(sci->data_stack);
+			xr_free(sci);
 		}
 		else
 		{//neither forked nor has forked, so delete completely
@@ -215,8 +215,8 @@ void SAPI scFree_Instance(scInstance *sci)
 			sci->flags.paused=0;
 			sci->flags.speed=-1;
 			scsXCall_Instance(sci,ToCodeINT(sci->code)[hdrDestructOffset],0,NULL);
-			free(sci->data_stack);
-			free(sci);
+			xr_free(sci->data_stack);
+			xr_free(sci);
 		}
 }
 
@@ -241,7 +241,7 @@ static int scsXCall_Instance(scInstance* inst,int ip,int paramc,int *params)
 	Register(inst)[regCP]=Register(inst)[regSP];
 	Executor(inst,-1);
 	// debprintf("Result:%d\n",Register(inst)[0]);
-	Register(inst)[regCP]=0;//free
+	Register(inst)[regCP]=0;//xr_free
 	return Register(inst)[0];
 }
 
@@ -333,8 +333,8 @@ if (!scImportSymbols)//initialize dict
 scImportSymbols=scdicNewDictionary();
 if ((sym=scdicFoundSymbol(scImportSymbols->first,name)))
 {scdicRemoveSymbol(scImportSymbols,name);
-free(sym->name);
-free(sym);
+xr_free(sym->name);
+xr_free(sym);
 }
 scdicAddSymbol(scImportSymbols,name,(int)addr,0,NULL);
 }
@@ -349,8 +349,8 @@ if (!scInternalHeaders)//initialize dict
 scInternalHeaders=scdicNewDictionary();
 if ((sym=scdicFoundSymbol(scInternalHeaders->first,name)))
 {scdicRemoveSymbol(scInternalHeaders,name);
-free(sym->name);
-free(sym);
+xr_free(sym->name);
+xr_free(sym);
 }
 scdicAddSymbol(scInternalHeaders,name,(int)addr,0,NULL);
 }
@@ -531,7 +531,7 @@ scInstance*  SAPI scFork_Instance(scInstance* I)
 	nI->code=I->code;
 	
 	//below:registers+STACK,DATA is in parent-----------------------------
-	nI->data_stack=malloc(256*4+ToCodeINT(I->code)[hdrStackSize]);
+	nI->data_stack=xr_malloc(256*4+ToCodeINT(I->code)[hdrStackSize]);
 	memcpy(nI->data_stack,I->data_stack,256*4);//copy regs
 	memcpy(nI->data_stack+256*4,I->data_stack+256*4+ToCodeINT(I->code)[hdrDataSize],ToCodeINT(I->code)[hdrStackSize]);//copy stack
 	
@@ -623,21 +623,21 @@ BOOL  SAPI scAssignInstance(scScriptTypeHeader *script,scInstance *ins,char *typ
 	script->ins=NULL;
 	if (!typeinfo||!ins) return false;
 	deb1("\nAssigning instance:%s\n",typeinfo);
-	ti=strdup(typeinfo);
+	ti=xr_strdup(typeinfo);
 	t=strtok(ti,"{;}");
 	if (strcmp(t,"script"))
-    {free(ti);return false;}//not a script
+    {xr_free(ti);return false;}//not a script
 	for(t=strtok(NULL,"{;}");t;t=strtok(NULL,"{;}"))
 	{
 		((int*)script)[i]=scGet_Symbol(ins,t);
 		deb2(" member '%s' at %d\n",t,((int*)script)[i]);
 		if (!((int*)script)[i])
-		{free(ti);return false;}
+		{xr_free(ti);return false;}
 		i++;
 	}
 	script->regDS=Register(ins)[regDS];
 	script->ins=ins;
 	deb1("At exit typeinfo=%s\n",typeinfo);
-	free(ti);
+	xr_free(ti);
 	return true;
 }

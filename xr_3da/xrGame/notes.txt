@@ -92,7 +92,7 @@ Legs&Torso:
 	1 идти по направлению: "бесконечно" | go in this direction	|				|
 	2 идти в заданную позицию:			| go to that position	|				|
 	3 удерживать позицию				| hold position         |(snippers)		| стек(1,2)
-	4 свободная охота					| free hunting			|(kill'em all)	| стек(1,2)
+	4 свободная охота					| xr_free hunting			|(kill'em all)	| стек(1,2)
 	5 идти ко мне (нужна помощь)		| need backup/follow me	|(dog's :)		|
 //--------------------------------------+-----------------------+---------------+
 Тригеры:

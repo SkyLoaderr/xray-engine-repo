@@ -263,7 +263,7 @@ Source_Text* sc_prepro(Source_Text* ST,int until,int skip,char *temp,scDictionar
 			if (s[0]=='"')//erase "
 			{s++;s[strlen(s)-1]=0;
 			}
-			//        scScript_Title=strdup(s);
+			//        scScript_Title=xr_strdup(s);
 			strcpy(scScript_Title,s);
 			strcpy(ST->name,s);//????
 			}
@@ -276,7 +276,7 @@ Source_Text* sc_prepro(Source_Text* ST,int until,int skip,char *temp,scDictionar
 				{s++;s[strlen(s)-1]=0;
 				}
 				strcpy(scScript_Author,s);
-				//        scScript_Author=strdup(s);
+				//        scScript_Author=xr_strdup(s);
 				}
 				else
 					if (lexeq("define"))

@@ -16,7 +16,7 @@ void CFS_Memory::write	(const void* ptr, DWORD count)
 		// reallocate
 		if (mem_size==0)	mem_size=128;
 		while (mem_size <= (position+count)) mem_size*=2;
-		data = (BYTE*) realloc(data,mem_size);
+		data = (BYTE*) xr_realloc(data,mem_size);
 	}
 #ifdef ENGINE_BUILD	
 	PSGP.memCopy	(data+position,ptr,count);
@@ -89,7 +89,7 @@ ENGINE_API void *FileDownload(const char *fn, DWORD *pdwSize)
 	R_ASSERT(hFile>0);
 	size	= filelength(hFile);
 
-	buf		= malloc(size);
+	buf		= xr_malloc	(size);
 	_read	(hFile,buf,size);
 	_close	(hFile);
 	if (pdwSize) *pdwSize = size;

@@ -32,7 +32,7 @@ CObjectAnimator::CObjectAnimator()
 CObjectAnimator::~CObjectAnimator()
 {	
 	for(MotionPairIt m_it=m_Motions.begin(); m_it!=m_Motions.end(); m_it++){
-		free(m_it->first);
+		xr_free(m_it->first);
 		_DELETE(m_it->second);
 	}
 	m_Motions.clear		();
@@ -59,7 +59,7 @@ void CObjectAnimator::LoadMotions(const char* fname)
 		COMotion* M		= new COMotion();
 		bool bRes		= M->Load(*F);
 		if (!bRes)		Device.Fatal("ERROR: Can't load motion. Incorrect file version.");
-		m_Motions[strdup(M->Name())]=M;
+		m_Motions[xr_strdup(M->Name())]=M;
 	}
 	Engine.FS.Close		(F);
 }

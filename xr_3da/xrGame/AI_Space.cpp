@@ -187,7 +187,7 @@ void CAI_Space::Load(LPCSTR name)
 	m_nodes		= (BYTE*) vfs->Pointer();
 
 	// dispatch table
-	m_nodes_ptr	= (NodeCompressed**)malloc(m_header.count*sizeof(void*));
+	m_nodes_ptr	= (NodeCompressed**)xr_malloc(m_header.count*sizeof(void*));
 	for (DWORD I=0; I<m_header.count; I++)
 	{
 		m_nodes_ptr[I]	= (NodeCompressed*)vfs->Pointer();

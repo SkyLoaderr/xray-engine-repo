@@ -19,7 +19,7 @@ CLocalAllocator::CLocalAllocator(DWORD max_blocks, DWORD max_block_size)
 	VERIFY(dwCount<=LA_MAX_BLOCK_NUMBER);
 
 	// Preallocate memory
-	pMemory = (char *)malloc(dwCount*dwSize);
+	pMemory = (char *)xr_malloc(dwCount*dwSize);
 
 	// Mark all blocks as FREE
 	for (DWORD i=0; i<dwCount; i++)	bFree[i]=TRUE;
@@ -32,7 +32,7 @@ CLocalAllocator::~CLocalAllocator()
 		VERIFY(bFree[i]);
 	}
 #endif
-	free(pMemory);
+	xr_free(pMemory);
 }
 
 void*	CLocalAllocator::Alloc(DWORD _size) {
@@ -43,7 +43,7 @@ void*	CLocalAllocator::Alloc(DWORD _size) {
 			return (void *)( pMemory + i*dwSize );
 		}
 	}
-	// free block not not found
+	// xr_free block not not found
 	THROW;
 }
 

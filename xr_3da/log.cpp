@@ -58,14 +58,14 @@ void Log(const char *s) {
 		if (s[i]=='\n') {
 			split[j]=0;	// end of line
 			if (split[0]==0) { split[0]=' '; split[1]=0; }
-			AddOne(strdup(split));
+			AddOne(xr_strdup(split));
 			j=0;
 		} else {
 			split[j++]=s[i];
 		}
 	}
 	split[j]=0;
-	AddOne(strdup(split));
+	AddOne(xr_strdup(split));
 }
 
 void __cdecl Msg( const char *format, ...)

@@ -196,7 +196,7 @@ CEffect_Rain::Particle*	CEffect_Rain::p_allocate	()
 	return		P;
 }
 
-// free node
+// xr_free node
 void	CEffect_Rain::p_free(Particle* P)
 {
 	p_remove	(P,particle_active);

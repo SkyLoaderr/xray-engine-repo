@@ -27,7 +27,7 @@ private:
 	{
 		DWORD	newLimit = limit + SG_REALLOC_ADVANCE;
 		VERIFY(newLimit%SG_REALLOC_ADVANCE == 0);
-		TNode*	newNodes = (TNode*) malloc(Size(newLimit));
+		TNode*	newNodes = (TNode*) xr_malloc(Size(newLimit));
 		VERIFY(newNodes);
 
 		ZeroMemory(newNodes, Size(newLimit));
@@ -48,7 +48,7 @@ private:
 				Nnew->right		= newNodes + Rid;
 			}
 		}
-		if (nodes) free(nodes);
+		if (nodes) xr_free(nodes);
 
 		nodes = newNodes;
 		limit = newLimit;

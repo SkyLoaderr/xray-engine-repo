@@ -188,7 +188,7 @@ CSound* CSoundRender::GetFreeSound(int hSound)
 		if (!sounds[hSound][i]->isPlaying())
 			return sounds[hSound][i];
 	}
-	// free sound not found - create duplicate
+	// xr_free sound not found - create duplicate
 	CSound *pSnd = new CSound	(sounds[hSound].front()->_3D);
 	pSnd->Load						(sounds[hSound].front());
 	sounds[hSound].push_back		(pSnd);

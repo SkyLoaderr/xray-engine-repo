@@ -26,7 +26,7 @@ void scAddToHash(void *l)
  hash_Node* nd,*ac;
  i=hash_tab((unsigned int)l);
 
- ac=malloc(sizeof(hash_Node));
+ ac=xr_malloc(sizeof(hash_Node));
  ac->addr=l;
  nd=hash_table[i];
 /* {hash_Node* a=nd;
@@ -42,7 +42,7 @@ void scAddToHash(void *l)
 
 void* scAlloc(int size)
 {void *l;
- l=malloc(size);
+ l=xr_malloc(size);
  memset(l,0,size);
  scAddToHash(l);
  return l;
@@ -57,7 +57,7 @@ void scRemoveFromHash(void *x)
      {hash_Node *p;
       p=hash_table[i];
       hash_table[i]=hash_table[i]->next;
-      free(p);
+      xr_free(p);
      }
   else
      {hash_Node *n,*p;
@@ -65,7 +65,7 @@ void scRemoveFromHash(void *x)
       while (n->next&&n->next->addr!=x) n=n->next;
       if (n->next) {p=n->next;
                     n->next=p->next;
-                    free(p);
+                    xr_free(p);
                    }
                 else
                     deb1("Suspitious remove of %d !!!!\n",(int)x);
@@ -75,11 +75,11 @@ void scRemoveFromHash(void *x)
 void scFree(void *x)
 {
  scRemoveFromHash(x);
- free(x);
+ xr_free(x);
 }
 
 void *scRealloc(void *mem,int size)
-{void *l=realloc(mem,size);
+{void *l=xr_realloc(mem,size);
  scRemoveFromHash(mem);
  scAddToHash(l);
  return l;
@@ -104,9 +104,9 @@ void scCleanUp()
    {hash_Node* x=hash_table[i],*p;
     while (x)//(x&x->next)
      {p=x->next;
-      free(x->addr);
+      xr_free(x->addr);
       deb0(".");
-      free(x);
+      xr_free(x);
       x=p;
      }
     hash_table[i]=NULL;
@@ -128,7 +128,7 @@ void scmemTestUp()
      {p=x->next;
       o=*(char*)x->addr;
 //      deb0(".");
-      free(x);
+      xr_free(x);
       x=p;
      }
     hash_table[i]=NULL;

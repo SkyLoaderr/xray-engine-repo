@@ -25,8 +25,8 @@ struct SUIMessage{
 	DWORD color;
 	int life_time;
 	SUIMessage(LPCSTR S, LPCSTR M, DWORD clr, float lt){
-		sender		= strdup(S);
-		msg			= strdup(M);
+		sender		= xr_strdup(S);
+		msg			= xr_strdup(M);
 		life_time	= int(lt*1000);
 		color		= clr;
 	}
