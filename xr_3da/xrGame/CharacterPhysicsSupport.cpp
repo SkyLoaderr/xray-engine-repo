@@ -32,6 +32,7 @@ m_pPhysicsShell					= NULL;
 m_saved_impulse					= 0.f;
 m_physics_skeleton				= NULL;
 b_skeleton_in_shell				= false;
+m_shot_up_factor				=0.f;
 };
 
 void CCharacterPhysicsSupport::Activate()
@@ -62,6 +63,7 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	hinge_force_factor2				= pSettings->r_float(section,"ph_skeleton_hinger_factor2");
 	hinge_vel						= pSettings->r_float(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
+	if(pSettings->line_exist(section,"shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"shot_up_factor");
 }
 
 void CCharacterPhysicsSupport::in_NetSpawn()
@@ -156,6 +158,11 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 /**DT/**/)
 
 void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse,bool is_killing)
 {
+	if((!m_EntityAlife.g_Alive()||is_killing)&&!fis_zero(m_shot_up_factor))
+	{
+		dir.y+=m_shot_up_factor;
+		dir.normalize();
+	}
 	if(!m_pPhysicsShell&&is_killing)
 	{
 		ActivateShell();
@@ -264,6 +271,7 @@ void CCharacterPhysicsSupport::ActivateShell()
 	Fvector velocity;
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	m_PhysicMovementControl.GetCharacterVelocity(velocity);
+	velocity.mul(1.3f);
 	m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
 	m_PhysicMovementControl.DestroyCharacter();
 #else

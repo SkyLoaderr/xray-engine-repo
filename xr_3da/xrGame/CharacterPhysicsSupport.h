@@ -41,12 +41,14 @@ float					skel_fatal_impulse_factor;
 int						skel_ddelay;
 bool					b_death_anim_on;
 bool					b_skeleton_in_shell;
+///////////////////////////////////////////////////////
 float					m_saved_impulse;
 Fvector					m_saved_hit_position;
 Fvector					m_saved_hit_dir;
 s16						m_saved_element;
-//PHYS
-float					m_phMass;
+/////////////////////////////////////////////////////////
+float					m_shot_up_factor;
+
 public:
 EType Type()
 	{
