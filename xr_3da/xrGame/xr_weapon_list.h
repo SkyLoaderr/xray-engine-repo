@@ -50,7 +50,7 @@ public:
 	int				getAmmoLimit		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoLimit();	  else return 0; }
 	int				getAmmoMagazineSize	()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoMagSize(); else return 0; }
 	CWeapon*		getWeaponByWeapon	(CWeapon* W);
-	CWeapon*		getWeaponByIndex	(int iIndex)	{ return ((iIndex > -1) && (iIndex < m_Weapons.size())) ? m_Weapons[iIndex] : 0; }
+	CWeapon*		getWeaponByIndex	(int iIndex)	{ return ((iIndex > -1) && (iIndex < int(m_Weapons.size()))) ? m_Weapons[iIndex] : 0; }
 
 	void			FireStart			();
 	void			FireEnd				();

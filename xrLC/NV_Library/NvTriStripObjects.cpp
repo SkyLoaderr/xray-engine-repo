@@ -1013,9 +1013,9 @@ void NvStripifier::SplitUpStripsAndOptimize(NvStripInfoVec &allStrips, NvStripIn
 		//Optimize for the vertex cache
 		VertexCache* vcache = new VertexCache(cacheSize);
 		
-		float bestNumHits = -1.0f;
-		float numHits;
-		int bestIndex;
+		float bestNumHits	= -1.0f;
+		float numHits		= 0;
+		int bestIndex		= 0;
 		
 		int firstIndex = 0;
 		float minCost = 10000.0f;

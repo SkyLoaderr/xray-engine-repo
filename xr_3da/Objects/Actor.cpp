@@ -338,8 +338,8 @@ void CActor::g_sv_AnalyzeNeighbours	()
 				// We doesn't have similar weapon - pick up it
 				NET_Packet	P;
 				P.w_begin	(M_OWNERSHIP_TAKE);
-				P.w_u16		(ID());
-				P.w_u16		(W->ID());
+				P.w_u16		(u16(ID()));
+				P.w_u16		(u16(W->ID()));
 				Level().Send(P,net_flags(TRUE,TRUE,TRUE));
 			}
 		}
@@ -424,9 +424,9 @@ void CActor::ZoneEffect	(float z_amount)
 
 	// Calc shift func
 	float f_x			= Device.fTimeGlobal;
-	float f_sin4x		= sinf(4.f*f_x);
-	float f_sin4x_s		= sinf(PI/3.f + 4.f*f_x);
-	float f_sin4x_sa	= abs(f_sin4x_s);
+	float f_sin4x		= _sin(4.f*f_x);
+	float f_sin4x_s		= _sin(PI/3.f + 4.f*f_x);
+	float f_sin4x_sa	= _abs(f_sin4x_s);
 	float F				= (f_sin4x+f_sin4x_sa)+(1+f_sin4x*f_sin4x_sa)+ 0.3f*sinf(tanf(PI/(2.1f)*sinf(f_x)));
 
 	// Fov/Shift + Pulse
