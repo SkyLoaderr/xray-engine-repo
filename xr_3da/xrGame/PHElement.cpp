@@ -7,16 +7,16 @@
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
 
-#include "..\ode\src\collision_kernel.h"
+#include "../ode/src/collision_kernel.h"
 
 //for debug only
-//#include <..\ode\src\joint.h>
+//#include <../ode\src\joint.h>
 //struct dxSphere : public dxGeom {
 //	dReal radius;		// sphere radius
 //	dxSphere (dSpaceID space, dReal _radius);
 //	void computeAABB();
 //};
-//#include <..\ode\src\objects.h>
+//#include <../ode\src\objects.h>
 #pragma warning(default:4267)
 #pragma warning(default:4995)
 ///////////////////////////////////////////////////////////////////
@@ -97,9 +97,9 @@ void CPHElement::			build	(){
 	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
 	///////////////////////////////////////////////////////////////////////////////////////
 	//GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	//for(;i_geom!=e;i_geom++) build_Geom(**i_geom);
+	//for(;i_geom!=e;++i_geom) build_Geom(**i_geom);
 	u16 geoms_size=u16(m_geoms.size());
-	for(u16 i=0;i<geoms_size;i++) build_Geom(i);
+	for(u16 i=0;i<geoms_size;++i) build_Geom(i);
 }
 
 void CPHElement::RunSimulation()
@@ -120,7 +120,7 @@ void CPHElement::destroy	()
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 
 
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		(*i)->destroy();
 	}
@@ -143,7 +143,7 @@ Fvector CPHElement::			get_mc_data	(){
 	m_mass_center.set(0,0,0);
 	m_volume=0.f;
 	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	for(;i_geom!=e;i_geom++)
+	for(;i_geom!=e;++i_geom)
 	{
 		pv=(*i_geom)->volume();
 		s.mul((*i_geom)->local_center(),pv);
@@ -158,7 +158,7 @@ void CPHElement::			calc_volume_data	()
 {
 	m_volume=0.f;
 	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	for(;i_geom!=e;i_geom++)
+	for(;i_geom!=e;++i_geom)
 	{
 		m_volume+=(*i_geom)->volume();
 	}
@@ -194,7 +194,7 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density)
 {
 	dMassSetZero(&m_mass);
 	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	for(;i_geom!=e;i_geom++)(*i_geom)->add_self_mass(m_mass,mc,density);
+	for(;i_geom!=e;++i_geom)(*i_geom)->add_self_mass(m_mass,mc,density);
 }
 static float static_dencity;
 void CPHElement::calc_it_fract_data_use_density(const Fvector& mc,float density)
@@ -210,11 +210,11 @@ dMass CPHElement::recursive_mass_summ(u16 start_geom,FRACTURE_I cur_fracture)
 	dMass end_mass;
 	dMassSetZero(&end_mass);
 	GEOM_I i_geom=m_geoms.begin()+start_geom,	e=m_geoms.begin()+cur_fracture->m_start_geom_num;
-	for(;i_geom!=e;i_geom++)(*i_geom)->add_self_mass(end_mass,m_mass_center,static_dencity);
+	for(;i_geom!=e;++i_geom)(*i_geom)->add_self_mass(end_mass,m_mass_center,static_dencity);
 	dMassAdd(&m_mass,&end_mass);
 	start_geom=cur_fracture->m_start_geom_num;
-	cur_fracture++;
-	if(cur_fracture!=m_fratures_holder->m_fractures.end())
+	++cur_fracture;
+	if(m_fratures_holder->m_fractures.end() != cur_fracture)
 				cur_fracture->SetMassParts(m_mass,recursive_mass_summ(start_geom,cur_fracture));
 	return end_mass;
 }
@@ -284,7 +284,7 @@ CPHElement::~CPHElement	()
 {
 	Deactivate();
 	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	for(;i_geom!=e;i_geom++)xr_delete(*i_geom);
+	for(;i_geom!=e;++i_geom)xr_delete(*i_geom);
 	m_geoms.clear();
 }
 
@@ -407,7 +407,7 @@ void CPHElement::PhDataUpdate(dReal step){
 
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	if( !dBodyIsEnabled(m_body)) {
-			if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;//disable
+			if(dInfinity != previous_p[0]) previous_p[0]=dInfinity;//disable
 	//	UpdateInterpolation				();
 		return;
 	}
@@ -545,7 +545,7 @@ void	CPHElement::Disabling(){
 
 
 	if(ph_world->disable_count==dis_frames){	
-		if(previous_p[0]!=dInfinity){
+		if(dInfinity != previous_p[0]){
 			const dReal* current_p=dBodyGetPosition(m_body);
 			dVector3 velocity={current_p[0]-previous_p[0],
 				current_p[1]-previous_p[1],
@@ -575,7 +575,7 @@ void	CPHElement::Disabling(){
 			if((!(previous_dev<deviation)&&!(previous_v<mag_v))//
 				) 
 			{
-				dis_count_f++;
+				++dis_count_f;
 				previous_dev=deviation;
 				previous_v=mag_v;
 				//return;
@@ -614,7 +614,7 @@ void	CPHElement::Disabling(){
 
 				deviation/=dis_count_f;
 				if(mag_v<0.32* dis_frames && deviation<0.24*dis_frames)//0.16,0.06
-					dis_count_f1++;
+					++dis_count_f1;
 				else{
 					Memory.mem_copy(previous_p1,current_p,sizeof(dVector3));
 					Memory.mem_copy(previous_r1,current_r,sizeof(dMatrix3));
@@ -657,7 +657,7 @@ void CPHElement::Disable(){
 	/*
 	if(!b_contacts_saved){
 	int num=dBodyGetNumJoints(m_body);
-	for(int i=0;i<num;i++){
+	for(int i=0;i<num;++i){
 	dJointID joint=	dBodyGetJoint (m_body, i);
 	if(dJointGetType (joint)==dJointTypeContact){
 	dxJointContact* contact=(dxJointContact*) joint;
@@ -966,7 +966,7 @@ void CPHElement::set_PhysicsRefObject(CPhysicsRefObject* ref_object)
 	m_phys_ref_object=ref_object;
 	if(!bActive) return;
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;i++) (*i)->set_ref_object(ref_object);
+	for(;i!=e;++i) (*i)->set_ref_object(ref_object);
 }
 
 
@@ -975,7 +975,7 @@ void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 	object_contact_callback= callback;
 	if(!bActive)return;
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;i++) (*i)->set_obj_contact_cb(callback);
+	for(;i!=e;++i) (*i)->set_obj_contact_cb(callback);
 }
 
 void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
@@ -984,14 +984,14 @@ void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 	push_untill=0;
 	if(!bActive)return;
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;i++) (*i)->set_contact_cb(callback);
+	for(;i!=e;++i) (*i)->set_contact_cb(callback);
 }
 
 void CPHElement::SetPhObjectInGeomData(CPHObject* O)
 {
 	if(!bActive) return;
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;i++) (*i)->set_ph_object(O);
+	for(;i!=e;++i) (*i)->set_ph_object(O);
 }
 
 
@@ -1001,7 +1001,7 @@ void CPHElement::SetMaterial(u32 m)
 	ul_material=m;
 	if(!bActive) return;
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;i++) (*i)->set_material(m);
+	for(;i!=e;++i) (*i)->set_material(m);
 }
 
 
@@ -1207,7 +1207,7 @@ void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fv
 }
 float CPHElement::getRadius()
 {
-	if(m_geoms.size()!=0) return m_geoms.back()->radius();
+	if(!m_geoms.empty()) return m_geoms.back()->radius();
 	else				  return 0.f;
 }
 
@@ -1236,7 +1236,7 @@ void CPHElement::get_Extensions(const Fvector& axis,float center_prg,float& lo_e
 {
 	lo_ext=dInfinity;hi_ext=-dInfinity;
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		float temp_lo_ext,temp_hi_ext;
 		//GetTransformedGeometryExtensions((*i)->geometry_transform(),(float*)&axis,center_prg,&temp_lo_ext,&temp_hi_ext);
@@ -1269,7 +1269,7 @@ void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 	GEOM_I i_from=m_geoms.begin()+from,e=m_geoms.begin()+to;
 	u16 shift=to-from;
 	GEOM_I i=i_from;
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		(*i)->remove_from_space(m_group);
 		//(*i)->add_to_space(dest->m_group);
@@ -1279,7 +1279,7 @@ void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 		element_pos=element_pos-shift;
 	}
 	GEOM_I last=m_geoms.end();
-	for(;i!=last;i++)
+	for(;i!=last;++i)
 	{
 		u16& element_pos=(*i)->element_position();
 		element_pos=element_pos-shift;
@@ -1310,7 +1310,7 @@ void CPHElement::CreateSimulBase()
 void CPHElement::ReAdjustMassPositions(const Fmatrix &shift_pivot,float density)
 {
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		(*i)->move_local_basis(shift_pivot);
 	}
@@ -1341,7 +1341,7 @@ void CPHElement::ResetMass(float density)
 	bActivating = true;
 
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		(*i)->set_position(m_mass_center);
 	}
@@ -1350,7 +1350,7 @@ void CPHElement::ReInitDynamics(const Fmatrix &shift_pivot,float density)
 {
 	ReAdjustMassPositions(shift_pivot,density);
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 	{
 		(*i)->set_position(m_mass_center);
 		(*i)->set_body(m_body);
