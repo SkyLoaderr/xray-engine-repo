@@ -618,7 +618,8 @@ void CRender::render_sun				()
 			0.f,           0.f, 1.f, 0.f,
 			-centerOrig.x, -centerOrig.y, 0.f, 1.f );
 
-		float half_center_len = D3DXVec2Length( &D3DXVECTOR2(centerPts[1] - centerOrig) );
+		D3DXVECTOR2	center_dir(centerPts[1] - centerOrig)
+		float half_center_len = D3DXVec2Length( &center_dir);
 		float x_len = centerPts[1].x - centerOrig.x;
 		float y_len = centerPts[1].y - centerOrig.y;
 
@@ -983,7 +984,7 @@ void CRender::render_sun_near	()
 		cull_xform.mulA		(adjust);
 
 		// calculate scissor
-		Fbox		scissor				;
+		Fbox		scissor				;	scissor.invalidate();
 		Fmatrix		scissor_xf			;
 					scissor_xf.mul		(m_viewport,cull_xform);
 		for (int it=0; it<9; it++)	{
