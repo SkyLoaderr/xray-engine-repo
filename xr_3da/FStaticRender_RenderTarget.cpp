@@ -48,11 +48,13 @@ BOOL CRenderTarget::Create	()
 	R_CHK	(HW.pDevice->GetDepthStencilSurface	(&pBaseZB));
 	return	TRUE;
 }
+
 void CRenderTarget::OnDeviceCreate	()
 {
 	bAvailable	= FALSE;
 	if (psDeviceFlags&rsAntialiasBlurred)	bAvailable	= Create	();
 }
+
 void CRenderTarget::OnDeviceDestroy	()
 {
 	_RELEASE	(pBaseZB);
@@ -60,10 +62,12 @@ void CRenderTarget::OnDeviceDestroy	()
 	_RELEASE	(pRT);
 	_RELEASE	(pSurface);
 }
+
 void CRenderTarget::Begin	()
 {
 	R_CHK		(HW.pDevice->SetRenderTarget	(pRT,		pBaseZB));
 }
+
 void CRenderTarget::End		(float blur)
 {
 	R_CHK		(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
