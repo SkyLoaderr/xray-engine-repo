@@ -23,7 +23,7 @@ struct	game_PlayerState
 	u16			m_lasthitweapon;
 	u8			m_skin;
 	//---------------------------
-	u32				m_RespawnTime;
+	u32			m_RespawnTime;
 	//---------------------------
 	s16			money_delta;
 
