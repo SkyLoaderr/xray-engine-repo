@@ -58,8 +58,10 @@ public:
 protected:
 	IVisual*				pRoot;		// whole geometry of that sector
 	vector<CPortal*>		Portals;
+
 	vector<CObject*>		Objects;
 	vector<CTempObject*>	tempObjects;// временные псевдостатические объекты
+
 	vector<WORD>			Glows;
 	vector<WORD>			Lights;
 
