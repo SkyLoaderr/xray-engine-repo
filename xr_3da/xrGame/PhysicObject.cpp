@@ -107,7 +107,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	}
 
 	if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy)) 
-													CreateBody				(po);
+		CreateBody				(po);
 	else
 	{
 		CPhysicObject* source=dynamic_cast<CPhysicObject*>(Level().Objects.net_Find(po->source_id));
@@ -131,9 +131,9 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 			break;
 		default: NODEFAULT; 
 	}
-//PKinematics(Visual())->Calculate();
-if(m_flags.test(CSE_ALifeObjectPhysic::flSavedData))
-{
+	//PKinematics(Visual())->Calculate();
+	if(m_flags.test(CSE_ALifeObjectPhysic::flSavedData))
+	{
 		PHNETSTATE_VECTOR& saved_bones=po->saved_bones;
 		PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
 		for(u16 bone=0;e!=i;i++,bone++)
@@ -143,13 +143,13 @@ if(m_flags.test(CSE_ALifeObjectPhysic::flSavedData))
 		saved_bones.clear();
 		m_flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
 		po->flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
-}
+	}
 
-if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))
-{
-	setVisible(true);
-	setEnabled(true);
-}
+	if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))
+	{
+		setVisible(true);
+		setEnabled(true);
+	}
 	m_flags.set				(CSE_ALifeObjectPhysic::flSpawnCopy,FALSE);
 
 	return TRUE;
@@ -171,7 +171,7 @@ void CPhysicObject::UpdateCL	()
 	inherited::UpdateCL		();
 	if(m_pPhysicsShell)
 	{
-	
+
 
 		if(m_type==epotBox) 
 		{
@@ -236,41 +236,41 @@ void CPhysicObject::RecursiveBonesCheck(u16 id)
 	if(
 		mask.is(1ui64<<(u64)id)&& 
 		!(BD.shape.flags.is(SBoneShape::sfRemoveAfterBreak))
-	) {
-		removable = false;
-		return;
-	}
-	///////////////////////////////////////////////
-	for (vecBonesIt it=BD.children.begin(); BD.children.end() != it; ++it){
-		RecursiveBonesCheck		((*it)->SelfID);
-	}
+		) {
+			removable = false;
+			return;
+		}
+		///////////////////////////////////////////////
+		for (vecBonesIt it=BD.children.begin(); BD.children.end() != it; ++it){
+			RecursiveBonesCheck		((*it)->SelfID);
+		}
 }
 void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
-	
+
 	if(m_pPhysicsShell) return;
 	CKinematics* pKinematics=PKinematics(Visual());
 	switch(m_type) {
 		case epotBox : {
 			m_pPhysicsShell=P_build_SimpleShell(this,m_mass,!po->flags.test(CSE_ALifeObjectPhysic::flActive));
-		} break;
+					   } break;
 		case epotFixedChain : 
 		case epotFreeChain  :
 			{	
-			m_pPhysicsShell		= P_create_Shell();
-			m_pPhysicsShell->set_Kinematics(pKinematics);
-			AddElement(0,pKinematics->LL_GetBoneRoot());
-			m_pPhysicsShell->setMass1(m_mass);
-		} break;
+				m_pPhysicsShell		= P_create_Shell();
+				m_pPhysicsShell->set_Kinematics(pKinematics);
+				AddElement(0,pKinematics->LL_GetBoneRoot());
+				m_pPhysicsShell->setMass1(m_mass);
+			} break;
 
 		case   epotSkeleton: 
 			{
-			//pKinematics->LL_SetBoneRoot(0);
-			CreateSkeleton(po);
-		}break;
+				//pKinematics->LL_SetBoneRoot(0);
+				CreateSkeleton(po);
+			}break;
 
 		default : {
-		} break;
-	
+				  } break;
+
 	}
 
 	m_pPhysicsShell->mXFORM.set(XFORM());
@@ -283,24 +283,24 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 		m_pPhysicsShell->set_DisableParams(disable_params);
 	}
 	//m_pPhysicsShell->SetAirResistance(0.002f, 0.3f);
-	
+
 
 }
 
 
 void CPhysicObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
-										Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+						Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	if(m_pPhysicsShell){
 		switch(m_type) {
 		case epotBox :
 			inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
-		break;
+			break;
 		case epotFixedChain :
 		case epotFreeChain  :
 		case epotSkeleton   :
 			m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
-		break;
+			break;
 		default : NODEFAULT;
 		}
 	}
@@ -322,7 +322,7 @@ void CPhysicObject::net_Export(NET_Packet& P)
 	inherited::net_Export			(P);
 	R_ASSERT						(Local());
 
-//	
+	//	
 	//m_pPhysicsShell->net_Export(P);
 }
 
@@ -331,7 +331,7 @@ void CPhysicObject::net_Import(NET_Packet& P)
 	inherited::net_Import(P);
 	//m_pPhysicsShell->net_Import(P);
 	R_ASSERT						(Remote());
-//	m_flags.set						(P.r_u8());
+	//	m_flags.set						(P.r_u8());
 }
 
 
@@ -345,7 +345,7 @@ void CPhysicObject::shedule_Update(u32 dt)
 
 
 
-	
+
 	if(b_removing&&(Device.dwTimeGlobal-m_unsplit_time)*phTimefactor>remove_time) 
 	{
 		NET_Packet			P;
@@ -357,7 +357,7 @@ void CPhysicObject::shedule_Update(u32 dt)
 
 
 }
- 
+
 void CPhysicObject::net_Save(NET_Packet &P)
 {
 	inherited::net_Save(P);
@@ -377,7 +377,7 @@ void CPhysicObject::SpawnCopy()
 		R_ASSERT					(l_tpALifeDynamicObject);
 		CSE_ALifeObjectPhysic		*l_tpALifePhysicObject = dynamic_cast<CSE_ALifeObjectPhysic*>(D);
 		R_ASSERT					(l_tpALifePhysicObject);
-		
+
 		l_tpALifePhysicObject->m_tGraphID	= game_vertex_id();
 		l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
 		l_tpALifePhysicObject->set_visual	(*cNameVisual());
@@ -413,13 +413,13 @@ PHSHELL_PAIR_VECTOR new_shells;
 void CPhysicObject::PHSplit()
 {
 
-	
-		u16 spawned=u16(m_unsplited_shels.size());
-		m_pPhysicsShell->SplitProcess(m_unsplited_shels);
-		u16 i=u16(m_unsplited_shels.size())-spawned;
-		//	Msg("%o,spawned,%d",this,i);
-		for(;i;--i) SpawnCopy();
-	
+
+	u16 spawned=u16(m_unsplited_shels.size());
+	m_pPhysicsShell->SplitProcess(m_unsplited_shels);
+	u16 i=u16(m_unsplited_shels.size())-spawned;
+	//	Msg("%o,spawned,%d",this,i);
+	for(;i;--i) SpawnCopy();
+
 
 }
 
@@ -459,7 +459,7 @@ void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 	newKinematics->LL_SetBoneRoot		(split_bone);
 	VERIFY2(mask1.flags,"mask1 -Zero");
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
-		
+
 	newPhysicsShell->set_PhysicsRefObject(O);
 	//newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
@@ -471,7 +471,7 @@ void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 	O->CopySpawnInit		();
 	CopySpawnInit			();
 
-	
+
 }
 
 BOOL CPhysicObject::UsedAI_Locations()
@@ -512,15 +512,15 @@ JOINT_P_MAP			*l_tpJointMap = xr_new<JOINT_P_MAP>();
 l_tpJointMap->insert(mk_pair(bone_name,joint*));
 JOINT_P_PAIR_IT		I = l_tpJointMap->find(bone_name);
 if (l_tpJointMap->end()!=I){
-	//bone_name is found and is an pair_iterator
-	(*I).second
+//bone_name is found and is an pair_iterator
+(*I).second
 }
 
 JOINT_P_PAIR_IT		I = l_tpJointMap->begin();
 JOINT_P_PAIR_IT		E = l_tpJointMap->end();
 for ( ; I != E; ++I) {
-	(*I).second->joint_method();
-	Msg("%s",(*I).first);
+(*I).second->joint_method();
+Msg("%s",(*I).first);
 }
 
 */
