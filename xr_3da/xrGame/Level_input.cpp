@@ -31,7 +31,8 @@ void CLevel::IR_OnKeyboardPress(int key)
 		Render->Screenshot			();
 		return;
 	case DIK_BACK:
-		HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
+		if (Game().type == GAME_SINGLE)
+			HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
 	case DIK_F6:
 		if (Server->game->type == GAME_SINGLE) {
