@@ -19,15 +19,23 @@ _FpsController		QualityControl;
 static	float		g_fGLOD, g_fFarSq, g_fPOWER;
 float				g_fSCREEN;
 static	Fmaterial	gm_Data;
-static	int			gm_Level;
+static	int			gm_Level	= 0;
+static	DWORD		gm_Ambient	= 0;
 
-IC		void		gm_SetLevel(int iLevel)
+IC		void		gm_SetLevel		(int iLevel)
 {
 	if (_abs(gm_Level-s32(iLevel))>2) {
 		gm_Level	= iLevel;
 		float c		= 0.1f+float(gm_Level)/255.f;
 		gm_Data.diffuse.set		(c,c,c,c);
 		CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
+	}
+}
+IC		void		gm_SetAmbient	(DWORD C)
+{
+	if (C!=gm_Ambient)	{
+		gm_Ambient	= C;
+		CHK_DX(HW.pDevice->SetRenderState(D3DRS_AMBIENT, C));
 	}
 }
 
@@ -85,15 +93,17 @@ void CRender::Calculate()
 
 	// Build lights visibility & perform basic initialization
 	// Lights
-	Lights.UnselectAll			();
-	Lights.BuildSelection		();
-	gm_Data.diffuse.set			(1,1,1,1);
-	gm_Data.ambient.set			(1,1,1,1);
-	gm_Data.emissive.set		(0,0,0,0);
-	gm_Data.specular.set		(1,1,1,1);
-	gm_Data.power				= 15.f;
-	gm_Level					= 255;
+	Lights.UnselectAll				();
+	Lights.BuildSelection			();
+	gm_Data.diffuse.set				(1,1,1,1);
+	gm_Data.ambient.set				(1,1,1,1);
+	gm_Data.emissive.set			(0,0,0,0);
+	gm_Data.specular.set			(1,1,1,1);
+	gm_Data.power					= 15.f;
+	gm_Level						= 255;
+	gm_Ambient						= 0xffffffff;
 	CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
+	gm_SetAmbient					(0);
 
 	// Render current sector and beyond
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
@@ -348,6 +358,7 @@ void	CRender::Render()
 		mapNormal[pr].clear		();
 	}
 	
+	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
 	Details.Render			(Device.vCameraPosition);
 	
 	// NORMAL-matrix	*** actors and dyn. objects
