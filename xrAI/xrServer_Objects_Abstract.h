@@ -9,6 +9,7 @@
 #ifndef xrServer_Objects_AbstractH
 #define xrServer_Objects_AbstractH
 
+#pragma pack(push,4)
 #include "xrServer_Space.h"
 #include "xrCDB.h"
 #include "ShapeData.h"
@@ -98,4 +99,5 @@ public:
 
 #pragma warning(pop)
 
+#pragma pack(pop)
 #endif // xrServer_Objects_AbstractH

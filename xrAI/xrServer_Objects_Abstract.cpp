@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #pragma hdrstop
+#pragma pack(push,4)
 
 #include "net_utils.h"
 #include "xrServer_Objects_Abstract.h"
@@ -104,3 +105,5 @@ void CSE_Motion::FillProps(		LPCSTR pref, PropItemVec &items)
 	ChooseValue *V				= PHelper().CreateChoose(items, PrepareKey(pref,abstract->name(),"Motion"),&motion_name, smGameAnim);
 	V->OnChangeEvent.bind		(this,&CSE_Motion::OnChangeMotion);
 }
+
+#pragma pack(pop,4)
