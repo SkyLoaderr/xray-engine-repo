@@ -486,9 +486,14 @@ void CGrenade::UpdateCL()
 	if (Remote() && NET.size())
 	{
 		net_update N = NET.back();
-		NET.pop_back();
 		NET_Last = N;
 
+		if (NET.size() > 1)
+		{
+			NET.pop_front();
+		};
+
+		XFORM().setHPB(NET_Last.angles.x, NET_Last.angles.y, NET_Last.angles.z);
 		Position().set(NET_Last.pos);
 	};
 }
@@ -578,7 +583,7 @@ void CGrenade::net_Export			(NET_Packet& P)
 	P.w_vec3			(Position()	);
 
 	float					_x,_y,_z;
-	XFORM().getHPB			(_y,_x,_z);
+	XFORM().getHPB			(_x,_y,_z);
 	P.w_angle8				(_x);
 	P.w_angle8				(_y);
 	P.w_angle8				(_z);
