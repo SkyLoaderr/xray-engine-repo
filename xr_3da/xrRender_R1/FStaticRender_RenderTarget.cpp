@@ -36,19 +36,13 @@ BOOL CRenderTarget::Create	()
 	curHeight			= Device.dwHeight;
 
 	// Select mode to operate in
-	switch (ps_r__Supersample)
-	{
-	case	1:		rtWidth = 1*Device.dwWidth;					rtHeight=1*Device.dwHeight;					break;
-	case	2:		rtWidth = iFloor(1.414f*Device.dwWidth);	rtHeight=iFloor(1.414f*Device.dwHeight);	break;
-	case	3:		rtWidth = iFloor(1.732f*Device.dwWidth);	rtHeight=iFloor(1.732f*Device.dwHeight);	break;
-	case	4:		rtWidth = 2*Device.dwWidth;					rtHeight=2*Device.dwHeight;					break;
-	case	5:		rtWidth = iFloor(2.236f*Device.dwWidth);	rtHeight=iFloor(2.236f*Device.dwHeight);	break;
-	case	6:		rtWidth = iFloor(2.449f*Device.dwWidth);	rtHeight=iFloor(2.449f*Device.dwHeight);	break;
-	default:		rtWidth	= Device.dwWidth;					rtHeight=Device.dwHeight;					return FALSE;
-	}
-	while (rtWidth%2)	rtWidth--;
+	float	amount		= ps_r__Supersample?ps_r__Supersample:1	;
+	float	scale		= _sqrt	(amount);
+	rtWidth				= clampr(iFloor(scale*Device.dwWidth  + .5f), 128, 2048);
+	rtHeight			= clampr(iFloor(scale*Device.dwHeight + .5f), 128, 2048);
+	while (rtWidth%2)	rtWidth	--;
 	while (rtHeight%2)	rtHeight--;
-	Msg				("* SSample: %dx%d",rtWidth,rtHeight);
+	Msg					("* SSample: %dx%d",rtWidth,rtHeight);
 
 	// Bufferts
 	RT.create			(RTname,			rtWidth,rtHeight,HW.Caps.fTarget);
