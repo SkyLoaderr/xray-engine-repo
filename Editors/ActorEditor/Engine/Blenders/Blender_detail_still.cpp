@@ -58,46 +58,21 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 	} else {
 		switch (C.iElement)
 		{
-		case 0:
-		case 1:
-			C.PassBegin		();
-			{
-				C.PassSET_ZB		(TRUE,TRUE);
-				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
-				else				C.PassSET_Blend_SET		(TRUE, 200);
-				C.PassSET_LightFog	(FALSE,FALSE);
-
-				switch (C.iElement)	{
-				case 0:	C.PassSET_VS("r1_detail_wave");		break;
-				case 1:	C.PassSET_VS("r1_detail_still");	break;
-				}
-
-				// Stage1 - Base texture
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
-				C.StageSET_TMC		(oT_Name,"$null","$null",0);
-				C.StageEnd			();
-			}
-			C.PassEnd			();
+		case SE_R1_NORMAL_HQ:
+			C.r_Pass	("r1_detail_wave",	"r1_detail",FALSE,TRUE,TRUE,FALSE, D3DBLEND_ONE,D3DBLEND_ZERO,oBlend.value?TRUE:FALSE,oBlend.value?200:0);
+			C.r_Sampler	("s_base",	C.L_textures[0]);
+			C.r_End		();
 			break;
-		case 2:
-			C.PassBegin		();
-			{
-				C.PassSET_ZB		(TRUE,TRUE	);
-				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
-				else				C.PassSET_Blend_SET		(TRUE, 200);
-				C.PassSET_LightFog	(FALSE,FALSE);
-				C.PassSET_VS		("r1_detail_still");
-
-				// Stage1 - Base texture
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				C.StageSET_TMC		(oT_Name,"$null","$null",0);
-				C.StageEnd			();
-			}
-			C.PassEnd			();
+		case SE_R1_NORMAL_LQ:
+			C.r_Pass	("r1_detail_still",	"r1_detail",FALSE,TRUE,TRUE,FALSE, D3DBLEND_ONE,D3DBLEND_ZERO,oBlend.value?TRUE:FALSE,oBlend.value?200:0);
+			C.r_Sampler	("s_base",	C.L_textures[0]);
+			C.r_End		();
+			break;
+		case SE_R1_LPOINT:
+			break;
+		case SE_R1_LSPOT:
+			break;
+		case SE_R1_LMODELS:
 			break;
 		}
 	}

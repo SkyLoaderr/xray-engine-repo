@@ -91,9 +91,10 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		case SE_R1_LPOINT:
 			break;
 		case SE_R1_LSPOT:
-			C.r_Pass	("r1_impl","r1_impl",TRUE);
-			C.r_Sampler	("s_base",C.L_textures[0]);
-			C.r_Sampler	("s_lmap",C.L_textures[1]);
+			C.r_Pass	("r1_impl_spot","r1_add_spot",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE,4);
+			C.r_Sampler	("s_base",	C.L_textures[0]);
+			C.r_Sampler	("s_lmap",	"effects\\light");
+			C.r_Sampler	("s_att",	"internal\\internal_light_attclip");
 			C.r_End		();
 			break;
 		case SE_R1_LMODELS:
