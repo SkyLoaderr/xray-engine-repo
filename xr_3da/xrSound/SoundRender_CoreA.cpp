@@ -81,7 +81,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     A_CHK				        (alListener3f		(AL_VELOCITY,0.f,0.f,0.f));
     Fvector	orient[2]	        = {{0.f,0.f,1.f},{0.f,1.f,0.f}};
     A_CHK				        (alListenerfv		(AL_ORIENTATION,&orient[0].x));
-    A_CHK				        (alListenerf		(AL_GAIN,psSoundVMaster));
+    A_CHK				        (alListenerf		(AL_GAIN,1.f));
 
     // Check for EAX extension
     bEAX 				        = alIsExtensionPresent		((ALubyte*)"EAX");
@@ -127,6 +127,11 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 	}
 }
 
+void CSoundRender_CoreA::set_volume(float f )
+{
+    A_CHK				        (alListenerf	(AL_GAIN,f));
+}
+
 void CSoundRender_CoreA::_clear	()
 {
 	inherited::_clear			();
@@ -168,5 +173,4 @@ void CSoundRender_CoreA::update_listener		( const Fvector& P, const Fvector& D, 
 	A_CHK						(alListener3f	(AL_POSITION,Listener.position.x,Listener.position.y,-Listener.position.z));
     A_CHK						(alListener3f	(AL_VELOCITY,0.f,0.f,0.f));
     A_CHK						(alListenerfv	(AL_ORIENTATION,&Listener.orientation[0].x));
-    A_CHK				        (alListenerf	(AL_GAIN,psSoundVMaster));
 }
