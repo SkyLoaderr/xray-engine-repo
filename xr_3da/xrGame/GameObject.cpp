@@ -549,7 +549,7 @@ void CGameObject::shedule_Update	(u32 dt)
 
 BOOL CGameObject::net_SaveRelevant	()
 {
-	return						(false);
+	return						(CScriptBinder::net_SaveRelevant());
 }
 
 //игровое имя объекта
