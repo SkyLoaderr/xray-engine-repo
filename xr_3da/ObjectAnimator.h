@@ -10,6 +10,7 @@ struct ENGINE_API st_AnimParam{
     float				min_t;
     float				max_t;
 	bool				bLoop;
+	bool				bWrapped;
     void				Set		(COMotion* M, bool _loop);
     IC float			Frame	(){return t;}
     bool				Update	(float dt);

@@ -5,17 +5,20 @@
  
 bool st_AnimParam::Update(float dt){ 
 	t+=dt; 
+	bWrapped	= false;
 	if (t>max_t){ 
+		bWrapped= true;
 		if (bLoop){ t=min_t; return true; }
 		else	  { t=max_t; return false;}
 	}
 	return true;
 }
 void st_AnimParam::Set(COMotion* M, bool _loop){ 
-	t=0; 
-	bLoop = _loop;
-    min_t=(float)M->FrameStart()/M->FPS(); 
-    max_t=(float)M->FrameEnd()/M->FPS();
+	t			= 0; 
+	bLoop		= _loop;
+    min_t		= (float)M->FrameStart()/M->FPS(); 
+    max_t		= (float)M->FrameEnd()/M->FPS();
+	bWrapped	= false;
 }
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -42,17 +42,27 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 		_FREE		(data);
 		Log			("! Total frames: ",m_count);
 	}
-
-	timer.Start	();
-	dwFramesRendered=0;
+	stat_Start	();
 }
 
 CDemoPlay::~CDemoPlay()
 {
 	_DELETE(m_pMotion);
-	timer.Stop	();
-	Msg("-----");
-	Msg("* [DEMO] FPS archivied: %f",float(dwFramesRendered)/timer.Get());
+	stat_Stop	();
+}
+
+void CDemoPlay::stat_Start()
+{
+	dwStartTime				= Device.dwTimeGlobal;
+	dwStartFrame			= Device.dwFrame;
+}
+
+void CDemoPlay::stat_Stop()
+{
+	DWORD	dwFramesTotal	= Device.dwFrame-dwStartFrame;
+	DWORD	dwTimeTotal		= Device.dwTimeGlobal-dwStartTime;
+
+	Msg("* [DEMO] FPS archivied: %f",float(1000.0 * double(dwFramesTotal)/double(dwTimeTotal)));
 }
 
 #define FIX(a) while (a>=m_count) a-=m_count
@@ -60,25 +70,33 @@ CDemoPlay::~CDemoPlay()
 extern void spline1(float,Fvector*,Fvector*);
 void CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N)
 {
-	if (m_pMotion){
+	if (m_pMotion)
+	{
 		Fvector R;
 		Fmatrix mRotate;
 		m_pMotion->Evaluate(m_MParam.Frame(),P,R);
 		if (!m_MParam.Update(Device.fTimeDelta)) fLifeTime-=Device.fTimeDelta;
+		if (m_MParam.bWrapped)	{ stat_Stop(); stat_Start(); }
 		mRotate.setHPB	(-R.x,-R.y,R.z);
-		D.set(mRotate.k);
-		N.set(mRotate.j);
-	}else{
-		dwFramesRendered++;
-		fStartTime+=Device.fTimeDelta;
+		D.set			(mRotate.k);
+		N.set			(mRotate.j);
+	}
+	else
+	{
+		fStartTime		+=	Device.fTimeDelta;
 		
 		float	ip;
-		float	p		= fStartTime/fSpeed;
-		float	t		= modff(p, &ip);
-		int		frame	= iFloor(ip);
+		float	p		=	fStartTime/fSpeed;
+		float	t		=	modff(p, &ip);
+		int		frame	=	iFloor(ip);
 		VERIFY	(t>=0);
 		
-		if (frame>=m_count && !bCycle) { pCreator->Cameras.RemoveEffector(cefDemo); return; }
+		if (frame>=m_count)
+		{
+			if (!bCycle)	{ pCreator->Cameras.RemoveEffector(cefDemo); return; }
+			stat_Stop		();
+			stat_Start		();
+		}
 		
 		int f1=frame; FIX(f1);
 		int f2=f1+1;  FIX(f2);

@@ -24,8 +24,12 @@ class ENGINE_API CDemoPlay :
 	float				fStartTime;
 	float				fSpeed;
 	BOOL				bCycle;
-	CTimer				timer;
-	DWORD				dwFramesRendered;
+
+	DWORD				dwStartTime;
+	DWORD				dwStartFrame;
+	
+	void				stat_Start	();
+	void				stat_Stop	();
 public:
 	virtual	void		Process		(Fvector &p, Fvector &d, Fvector &n);
 
