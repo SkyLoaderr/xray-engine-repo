@@ -120,26 +120,27 @@ extern void		Surface_Init	();
 // 
 void xrLoad(LPCSTR name)
 {
-	g_shaders_xrlc.Load			("gamedata\\shaders_xrlc.xr");
+	g_shaders_xrlc.Load			("shaders_xrlc.xr");
+
 	// Load CFORM
 	string256			N;
 	{
 		strconcat			(N,name,"build.cform");
-		IReader*			FS(N);
+		IReader*			fs = FS.r_open(N);
 		
-		R_ASSERT			(FS.find_chunk(0));
+		R_ASSERT			(fs->find_chunk(0));
 		hdrCFORM			H;
-		FS.r				(&H,sizeof(hdrCFORM));
+		fs->r				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
-		Fvector*	verts	= (Fvector*)FS.pointer();
+		Fvector*	verts	= (Fvector*)fs->pointer();
 		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 		RCAST_Model.build	( verts, H.vertcount, tris, H.facecount );
 		Msg("* Level CFORM: %dK",RCAST_Model.memory()/1024);
 
 		g_rc_faces.resize	(H.facecount);
-		R_ASSERT(FS.find_chunk(1));
-		FS.r				(g_rc_faces.begin(),g_rc_faces.size()*sizeof(b_rc_face));
+		R_ASSERT(fs->find_chunk(1));
+		fs->r				(g_rc_faces.begin(),g_rc_faces.size()*sizeof(b_rc_face));
 
 		LevelBB.set			(H.aabb);
 	}
@@ -159,23 +160,16 @@ void xrLoad(LPCSTR name)
 	{
 		strconcat			(N,name,"build.prj");
 
-		string32	ID			= BUILD_PROJECT_MARK;
-		string32	id;
-		IReader*	F			= xr_new<IReader> (N);
-		F->r		(&id,8);
-		if (0==strcmp(id,ID))	{
-			xr_delete			(F);
-			F					= xr_new<IReader> (N,ID);
-		}
-		IReader&				FS	= *F;
+		IReader*	fs		= FS.r_open (N);
+		IReader*	F;
 
 		// Version
 		DWORD version;
-		FS.r_chunk			(EB_Version,&version);
+		fs->r_chunk			(EB_Version,&version);
 		R_ASSERT(XRCL_CURRENT_VERSION==version);
 
 		// Header
-		FS.r_chunk			(EB_Parameters,&g_params);
+		fs->r_chunk			(EB_Parameters,&g_params);
 
 
 		// Load lights
@@ -183,7 +177,7 @@ void xrLoad(LPCSTR name)
 		{
 			// Static
 			{
-				F = FS.open_chunk(EB_Light_static);
+				F = fs->open_chunk(EB_Light_static);
 				b_light_static	temp;
 				DWORD cnt		= F->length()/sizeof(temp);
 				for				(DWORD i=0; i<cnt; i++)
@@ -215,13 +209,13 @@ void xrLoad(LPCSTR name)
 				F->close		();
 			}
 		}
-		transfer("materials",	g_materials,			FS,		EB_Materials);
-		transfer("shaders_xrlc",g_shader_compile,		FS,		EB_Shaders_Compile);
+		transfer("materials",	g_materials,			*fs,		EB_Materials);
+		transfer("shaders_xrlc",g_shader_compile,		*fs,		EB_Shaders_Compile);
 		// process textures
 		Status			("Processing textures...");
 		{
 			Surface_Init		();
-			F = FS.open_chunk	(EB_Textures);
+			F = fs->open_chunk	(EB_Textures);
 			u32 tex_count	= F->length()/sizeof(b_texture);
 			for (u32 t=0; t<tex_count; t++)
 			{
@@ -238,10 +232,10 @@ void xrLoad(LPCSTR name)
 				if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 				strlwr			(N);
 				char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
-				IReader* THM	(th_name,THM_SIGN);
+				IReader* THM	= FS.r_open(th_name);
 
 				// analyze thumbnail information
-				R_ASSERT		(THM.r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+				R_ASSERT		(THM->r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
 				BOOL			bLOD=FALSE;
 				if (N[0]=='l' && N[1]=='o' && N[2]=='d' && N[3]=='\\') bLOD = TRUE;
 
