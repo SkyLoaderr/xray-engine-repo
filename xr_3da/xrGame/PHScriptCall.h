@@ -53,4 +53,29 @@ public:
 	virtual void 			run								()													;
 	virtual bool 			obsolete						()													;
 };
+//////////////////////////////////////////////////////////////////////////////////////////
+
+class CPHScriptObjectConditionN:
+	public CPHCondition
+{
+	CScriptCallbackEx<bool>			m_callback;
+public:
+	CPHScriptObjectConditionN		( const luabind::object &object,const luabind::functor<bool> &functor)	;
+	virtual					~CPHScriptObjectConditionN		()													;
+	virtual bool 			is_true							()													;
+	virtual bool 			obsolete						()													;
+
+};
+
+class CPHScriptObjectActionN :
+	public CPHAction
+{
+	bool	b_obsolete							   ;
+	CScriptCallbackEx<void>			m_callback;
+public:
+	CPHScriptObjectActionN			( const luabind::object &object,const luabind::functor<void> &functor);
+	virtual					~CPHScriptObjectActionN			()													;
+	virtual void 			run								()													;
+	virtual bool 			obsolete						()													;
+};
 

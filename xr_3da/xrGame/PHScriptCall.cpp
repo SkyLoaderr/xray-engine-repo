@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PHCommander.h"
 #include "script_space_forward.h"
+#include "script_callback_ex.h"
 #include "PHScriptCall.h"
 #include "script_space.h"
 #include <luabind/operator.hpp>
@@ -48,7 +49,7 @@ bool CPHScriptAction::obsolete()
 	return b_obsolete;
 }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 CPHScriptObjectAction::CPHScriptObjectAction(const luabind::object &lua_object, LPCSTR method)
 {
 	b_obsolete		= false;
@@ -92,3 +93,43 @@ bool CPHScriptObjectCondition::obsolete()
 	return false;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CPHScriptObjectActionN::CPHScriptObjectActionN( const luabind::object &object,const luabind::functor<void> &functor)
+{
+	m_callback.set(functor,object);
+}
+
+CPHScriptObjectActionN::~CPHScriptObjectActionN()
+{
+	m_callback.clear();
+}
+
+void CPHScriptObjectActionN::run()
+{
+	m_callback();
+	b_obsolete=true;
+}
+
+bool CPHScriptObjectActionN::obsolete()
+{
+	return b_obsolete;
+}
+
+CPHScriptObjectConditionN::CPHScriptObjectConditionN(const luabind::object &object,const luabind::functor<bool> &functor)
+{
+	m_callback.set(functor,object);
+}
+
+CPHScriptObjectConditionN::~CPHScriptObjectConditionN()
+{
+	m_callback.clear();
+}
+
+bool CPHScriptObjectConditionN::is_true()
+{
+	return m_callback();
+}
+bool CPHScriptObjectConditionN::obsolete()
+{
+	return false;
+}

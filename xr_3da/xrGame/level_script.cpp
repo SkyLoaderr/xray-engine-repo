@@ -229,6 +229,11 @@ void add_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
 	Level().ph_commander().add_call(xr_new<CPHScriptObjectCondition>(lua_object,condition),xr_new<CPHScriptObjectAction>(lua_object,action));
 }
 
+void add_call(const luabind::object &lua_object, const luabind::functor<bool> &condition,const luabind::functor<void> &action)
+{
+	Level().ph_commander().add_call(xr_new<CPHScriptObjectConditionN>(lua_object,condition),xr_new<CPHScriptObjectActionN>(lua_object,action));
+}
+
 CEnvironment *environment()
 {
 	return		(&g_pGamePersistent->Environment);
@@ -294,6 +299,7 @@ void CLevel::script_register(lua_State *L)
 		def("hide_indicators",					hide_indicators),
 		def("show_indicators",					show_indicators),
 		def("add_call",							((void (*) (const luabind::functor<bool> &,const luabind::functor<void> &)) &add_call)),
+		def("add_call",							((void (*) (const luabind::object &,const luabind::functor<bool> &,const luabind::functor<void> &)) &add_call)),
 		def("add_call",							((void (*) (const luabind::object &, LPCSTR, LPCSTR)) &add_call)),
 		def("present",							is_level_present)
 	];
