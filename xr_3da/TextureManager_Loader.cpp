@@ -14,7 +14,7 @@ void CShaderManager::xrStartUp()
 
 	// Load blenders
 	{
-		CStream*	fs		= FS.OpenChunk(2);
+		CStream*	fs		= FS.OpenChunk	(2);
 		CStream*	chunk	= NULL;
 		int			chunk_id= 0;
 
