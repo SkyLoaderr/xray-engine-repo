@@ -18,7 +18,7 @@ struct fl_mask{
 DEFINE_VECTOR(fl_mask,FLMaskVec,FLMaskVecIt);
 int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mask)
 {
-	R_ASSERT		(path&&path[0]);
+	R_ASSERT		(path);
 	VERIFY			(flags);
 	// проверить нужно ли пересканировать пути
     check_pathes	();
