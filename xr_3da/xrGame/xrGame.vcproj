@@ -2428,12 +2428,6 @@
 									Name="Invisibility"
 									Filter="">
 									<File
-										RelativePath=".\ai\Monsters\ai_monster_invisibility.cpp">
-									</File>
-									<File
-										RelativePath=".\ai\Monsters\ai_monster_invisibility.h">
-									</File>
-									<File
 										RelativePath=".\ai\Monsters\invisibility.cpp">
 									</File>
 									<File
