@@ -88,7 +88,7 @@ void CRender::Screenshot		(BOOL bSquare)
 		p.height	= Device.dwHeight;
 		p.data		= data;
 		p.maketga	(buf);
-		_FREE		(data);
+		xr_free		(data);
 	}else{
 		// 
 		p.scanlenght	= D.Pitch;
