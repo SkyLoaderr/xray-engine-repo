@@ -11,6 +11,9 @@ USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEFORM("Editor\TextForm.cpp", frmText);
+USEFORM("Editor\ImageEditor.cpp", frmImageLib);
+USEFORM("Editor\PropertiesList.cpp", frmProperties);
+USEFORM("Editor\NumericVector.cpp", frmNumericVector);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
