@@ -202,7 +202,7 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 	}
 	else {
 		strcpy					(m_caSaveName,caSaveName);
-		int						saved_age = FS.get_file_age(caSaveName);
+		int						saved_age = FS.get_file_age(caFileName);
 		VERIFY3					(saved_age >= spawn_age,"Delete saved game and try again ",caSaveName);
 		tpStream				= FS.r_open(caFileName);
 		if (!tpStream) {
