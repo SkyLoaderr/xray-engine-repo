@@ -1930,6 +1930,12 @@ selector_cover           =      20.0,            -1000.0,                30.0,  
 ;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
 selector_retreat         =      20.0,             -100.0,            1000.0,                 1000.0,                0.0,                   0.0,        100000.0,                 0.0,                   000.0
 
+;-------VISIBILITY----------------------------------------------------
+min_view_distance_danger =  .2				; коэффициент, который множится на eye_range, в зависимости от угла
+max_view_distance_danger =  1.0				; коэффициент, который множится на eye_range, в зависимости от угла
+min_view_distance_free   =  .2				; коэффициент, который множится на eye_range, в зависимости от угла
+max_view_distance_free	 =  1.0				; коэффициент, который множится на eye_range, в зависимости от угла
+;---------------------------------------------------------------------
 MovementIdleTime 	 	 =    1500			; время неподвижности объекта, после которого его скорость считается нулевой
 MaxInvisibleSpeed 	 	 =     1.0			; максимальная скорость, при которой объект невидимый
 MaxViewableSpeed 	 	 =    10.0			; скорость, при которой объект уже ничего не видит
@@ -1939,6 +1945,7 @@ SpeedWeight 			 =    -0.0			; вес скорости персонажа
 VisibilityThreshold 	 =     0.0			; порог видимости (если сумма весов больше него, то персонаж видит объект)
 LateralMultiplier	 	 =   1.5			; множитель бокового зрения персонажа
 ShadowWeight	 	 	 =  -5.0			; вес освещения объекта
+;---------------------------------------------------------------------
 
 CrouchFactor             =   0.2
 WalkFactor               =     2.15
@@ -2090,6 +2097,12 @@ selector_cover           =      20.0,            -1000.0,                30.0,  
 ;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
 selector_retreat         =      20.0,             -100.0,            1000.0,                 1000.0,                0.0,                   0.0,        100000.0,                 0.0,                   000.0
 
+;-------VISIBILITY----------------------------------------------------
+min_view_distance_danger =  .2				; коэффициент, который множится на eye_range, в зависимости от угла
+max_view_distance_danger =  1.0				; коэффициент, который множится на eye_range, в зависимости от угла
+min_view_distance_free   =  .2				; коэффициент, который множится на eye_range, в зависимости от угла
+max_view_distance_free	 =  1.0				; коэффициент, который множится на eye_range, в зависимости от угла
+;---------------------------------------------------------------------
 MovementIdleTime 	 	 =    1500			; время неподвижности объекта, после которого его скорость считается нулевой
 MaxInvisibleSpeed 	 	 =     1.0			; максимальная скорость, при которой объект невидимый
 MaxViewableSpeed 	 	 =    10.0			; скорость, при которой объект уже ничего не видит
