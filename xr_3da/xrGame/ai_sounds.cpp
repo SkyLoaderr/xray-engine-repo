@@ -7,9 +7,9 @@ float ffGetStartVolume(ESoundTypes eType)
 		if ((eType & SOUND_TYPE_WEAPON_RECHARGING) == SOUND_TYPE_WEAPON_RECHARGING)
 			return(.15f);
 		else if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-			return(.8f);
+			return(.0f);
 		else if ((eType & SOUND_TYPE_WEAPON_TAKING) == SOUND_TYPE_WEAPON_TAKING)
-			return(.1f);
+			return(.1f);																		
 		else if ((eType & SOUND_TYPE_WEAPON_HIDING) == SOUND_TYPE_WEAPON_HIDING)
 			return(.1f);
 		else if ((eType & SOUND_TYPE_WEAPON_CHANGING) == SOUND_TYPE_WEAPON_CHANGING)
@@ -17,7 +17,7 @@ float ffGetStartVolume(ESoundTypes eType)
 		else if ((eType & SOUND_TYPE_WEAPON_EMPTY_CLICKING) == SOUND_TYPE_WEAPON_EMPTY_CLICKING)
 			return(.1f);
 		else if ((eType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET)
-			return(.5f);
+			return(.1f);
 	}
 	else
 		if ((eType & SOUND_TYPE_MONSTER) == SOUND_TYPE_MONSTER) {

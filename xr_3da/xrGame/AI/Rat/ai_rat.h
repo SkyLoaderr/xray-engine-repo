@@ -49,6 +49,7 @@ class CAI_Rat : public CCustomMonster
 			aiRatAttackRun,
 			aiRatUnderFire,
 			aiRatRetreat,
+			aiRatPursuit,
 		};
 
 	
@@ -190,11 +191,12 @@ class CAI_Rat : public CCustomMonster
 			m_tGoalDir.z = vP.z+m_tVarGoal.z*::Random.randF(-0.5f,0.5f);
 		}
 		
-		IC bool bfCheckIfGoalChanged()
+		IC bool bfCheckIfGoalChanged(bool bForceChangeGoal = true)
 		{
 			if (m_fGoalChangeTime<=0){
 				m_fGoalChangeTime += m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
-				vfChangeGoal();
+				if (bForceChangeGoal)
+					vfChangeGoal();
 				return(true);
 			}
 			return(false);
@@ -299,6 +301,7 @@ class CAI_Rat : public CCustomMonster
 		void	Turn();
 		void	UnderFire();
 		void	Retreat();
+		void	Pursuit();
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();

@@ -63,16 +63,16 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float p
 
 	if (power >= 0.06f) {
 		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
-			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
-			if (tpEntity) {
-				m_tLastSound.eSoundType		= ESoundTypes(eType);
-				m_tLastSound.dwTime			= Level().timeServer();
-				m_tLastSound.fPower			= power;
-				m_tLastSound.tSavedPosition = Position;
-				m_tLastSound.tpEntity		= tpEntity;
-				if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
-					m_fMorale += m_fMoraleDecreaseQuant;
-			}
+			m_tLastSound.eSoundType		= ESoundTypes(eType);
+			m_tLastSound.dwTime			= Level().timeServer();
+			m_tLastSound.fPower			= power;
+			m_tLastSound.tSavedPosition = Position;
+			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
+			if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
+				m_fMorale += m_fMoraleDecreaseQuant;
+			else
+				if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
+					m_fMorale += m_fMoraleUESDecreaseQuant;
 		}
 	}
 }
