@@ -1094,13 +1094,15 @@ void CPHShell::set_ApplyByGravity(bool flag)
 
 void CPHShell::PlaceBindToElForms()
 {
-	//PlaceBindToElFormsRecursive(m_pKinematics->LL_GetData(m_pKinematics->LL_GetBoneRoot()));
+	Flags64 mask;
+	mask.set(m_pKinematics->LL_GetBonesVisible());
+	PlaceBindToElFormsRecursive(Fidentity,m_pKinematics->LL_GetBoneRoot(),0,mask);
 }
 
 void CPHShell::PlaceBindToElFormsRecursive(Fmatrix parent,u16 id,u16 element,Flags64 &mask)
 {
 	
-	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
+	
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 	SJointIKData& joint_data=bone_data.IK_data;
 
@@ -1119,7 +1121,7 @@ void CPHShell::PlaceBindToElFormsRecursive(Fmatrix parent,u16 id,u16 element,Fla
 			R_ASSERT2(element<elements.size(),"Out of elements!!");
 			//if(elements.size()==element)	return;
 			CPHElement* E=(elements[element]);
-			mXFORM.mul(parent,bone_data.bind_transform);
+			E->mXFORM.mul(parent,bone_data.bind_transform);
 			
 		}
 	}
