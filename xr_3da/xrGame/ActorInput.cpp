@@ -2,9 +2,6 @@
 #include "Actor.h"
 #include "Torch.h"
 #include "xr_weapon_list.h"
-#include "..\xr_input.h"
-#include "..\xr_creator.h"
-#include "..\CameraBase.h"
 #include "trade.h"
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-class CGamePersistent				: public g_pGameLevel
+class CGamePersistent				: public IGame_Persistant
 {
 public:
 					CGamePersistent	();

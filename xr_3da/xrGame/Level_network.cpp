@@ -3,7 +3,7 @@
 void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
-	CCreator::net_Stop			();
+	IGame_Level::net_Stop		();
 	IPureClient::Disconnect		();
 	if (Server)
 	{

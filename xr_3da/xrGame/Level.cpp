@@ -234,10 +234,10 @@ void CLevel::OnEvent(EVENT E, u64 P1, u64 P2)
 		Cameras.AddEffector(xr_new<CDemoPlay> (RealName,1.3f));
 	} else if (E==eChangeTrack && P1) {
 		int id = atoi((char*)P1);
-		Environment.Music_Play(id);
+		Environment->Music_Play(id);
 	} else if (E==eEnvironment) {
 		int id=0; float s=1;
 		sscanf((char*)P1,"%d,%f",&id,&s);
-		Environment.set_EnvMode(id,s);
+		Environment->set_EnvMode(id,s);
 	} else return;
 }
