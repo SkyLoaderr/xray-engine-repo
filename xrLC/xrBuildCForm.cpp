@@ -110,7 +110,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 	xr_delete		(cfVertices);
 
 	// Models
-	Status			("Models...")
+	Status			("Models...");
 	for (u32 ref=0; ref<mu_refs.size(); ref++)
 		mu_refs[ref]->export_cform_game(CL);
 
