@@ -29,7 +29,7 @@ void xrServer::Perform_connect_spawn(xrServerEntity* E, xrClientData* CL, NET_Pa
 		// Just inform
 		E->Spawn_Write	(P,FALSE);
 	}
-	SendTo				(CL->ID,P,mode);
+	SendTo				(CL->ID,P,net_flags(TRUE,TRUE));
 	E->net_Processed	= TRUE;
 }
 
