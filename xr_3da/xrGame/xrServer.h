@@ -54,8 +54,6 @@ public:
 	virtual u8				g_squad()		{ return 0;	}
 	virtual u8				g_group()		{ return 0;	}
 	
-	virtual BOOL			RelevantTo		(xrServerEntity* E)	= 0;
-
 	// utils
 	void					Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	{

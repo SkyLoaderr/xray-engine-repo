@@ -79,10 +79,6 @@ public:
 			P.w_dir			(f_dir);
 		}
 	};
-	virtual BOOL			RelevantTo			(xrServerEntity* E)
-	{
-		return TRUE;
-	};
 };
 
 //---------------------------------------------------------------------------------------------
@@ -114,10 +110,6 @@ public:
 		P.w_angle8			(o_torso.yaw	);
 		P.w_angle8			(o_torso.pitch	);
 	}
-	virtual BOOL			RelevantTo			(xrServerEntity* E)
-	{
-		return TRUE;
-	};
 };
 //---------------------------------------------------------------------------------------------
 class xrSE_CFormed
@@ -176,7 +168,7 @@ public:	// actions
 		u8		type;
 		u16		count;
 		u64		cls;
-		LPCSTR	event;
+		LPSTR	event;
 	};
 	vector<tAction>			Actions;
 
