@@ -87,7 +87,6 @@ void CUIColorAnimatorWrapper::Update()
 				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
 				// обновим время
 				animationTime	+= Device.fTimeGlobal - prevGlobalTime;
-				::Sleep(20);
 			}
 			else
 			{
