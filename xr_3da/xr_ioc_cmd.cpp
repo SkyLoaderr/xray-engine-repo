@@ -294,14 +294,15 @@ void CCC_Register()
 	CMD1(CCC_Disconnect,"disconnect"			);
 	CMD1(CCC_SaveCFG,	"cfg_save"				);
 	CMD1(CCC_LoadCFG,	"cfg_load"				);
+#ifdef DEBUG
 	CMD1(CCC_MemStat,	"stat_mem"				);
 
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,			mtSound);
-	CMD3(CCC_Mask,		"mt_input",				&psDeviceFlags,			mtInput);
 	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,			mtPhysics);
 	CMD3(CCC_Mask,		"mt_network",			&psDeviceFlags,			mtNetwork);
 	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,			1000,	100000	);
 	CMD4(CCC_Float,		"mt_sheduler_load",		&psShedulerLoadBalance,	.1f,	10.f	);
+#endif
 	
 	// Events
 	CMD1(CCC_E_Dump,	"e_list"				);
@@ -310,10 +311,7 @@ void CCC_Register()
 	// Render device states
 	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,		rsNoVSync);
 	CMD3(CCC_Mask,		"rs_wireframe",			&psDeviceFlags,		rsWireframe);
-	CMD3(CCC_Mask,		"rs_renormalize",		&psDeviceFlags,		rsNormalize);
-	CMD3(CCC_Mask,		"rs_antialias",			&psDeviceFlags,		rsAntialias);
 	CMD3(CCC_Mask,		"rs_warm_hzb",			&psDeviceFlags,		rsWarmHZB);
-	CMD3(CCC_Mask,		"rs_triplebuffer",		&psDeviceFlags,		rsTriplebuffer);
 	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,		rsFullscreen);
 	CMD3(CCC_Mask,		"rs_clear_bb",			&psDeviceFlags,		rsClearBB);
 	CMD3(CCC_Mask,		"rs_occlusion",			&psDeviceFlags,		rsOcclusion);

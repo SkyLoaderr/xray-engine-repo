@@ -42,6 +42,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		ph_world->Create					();
 
 		// Send network to single or multithreaded mode
+		// *note: release version always has "mt_*" enabled
 		Device.seqFrameMT.Remove			(g_pNetProcessor);
 		Device.seqFrame.Remove				(g_pNetProcessor);
 		if (psDeviceFlags.test(mtNetwork))	Device.seqFrameMT.Add	(g_pNetProcessor,REG_PRIORITY_HIGH	+ 2);
