@@ -15,22 +15,22 @@ end
 
 function CSE_NewAttachableItem:STATE_Write	(packet)
 	log							("CSE_NewAttachableItem::STATE_Write called!")
-	packet						= cse_alife_item.STATE_Write	(self,packet)
+	cse_alife_item.STATE_Write	(self,packet)
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	log							("CSE_NewAttachableItem::STATE_Read called!")
-	packet						= cse_alife_item.STATE_Read		(self,packet,size)
+	cse_alife_item.STATE_Read	(self,packet,size)
 end
 
 function CSE_NewAttachableItem:UPDATE_Write	(packet)
 	log							("CSE_NewAttachableItem::UPDATE_Write called!")
-	packet						= cse_alife_item.UPDATE_Write	(self,packet)
+	cse_alife_item.UPDATE_Write	(self,packet)
 end
 
 function CSE_NewAttachableItem:UPDATE_Read	(packet)
 	log							("CSE_NewAttachableItem::UPDATE_Read called!")
-	packet						= cse_alife_item.UPDATE_Read	(self,packet)
+	cse_alife_item.UPDATE_Read	(self,packet)
 end
 
 function CSE_NewAttachableItem:FillProps	(pref,items)
