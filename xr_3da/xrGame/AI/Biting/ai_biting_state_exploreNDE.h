@@ -15,6 +15,8 @@ class CBitingExploreNDE : public IState {
 
 	u32 flags;
 
+	Fvector target_pos;
+
 public:
 
 	CBitingExploreNDE	(CAI_Biting *p);

@@ -18,12 +18,10 @@ void CAI_Biting::Think()
 	
 //	CTimer T; 
 //	Msg("-----------------------------------------------------------------------------");
-//	Msg("Dog = [%s]", cName());
+//	Msg("Monster = [%s]", cName());
 //	Msg("-----------------------------------------------------------------------------");	
 
-//	T.Start();
 	MotionStats->update						();
-//	Msg("* MotionStats:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
 //	T.Start();
 	vfUpdateParameters						();
@@ -53,6 +51,15 @@ void CAI_Biting::Think()
 		pSquad->UpdateDecentralized();
 	} 
 //	Msg("* UpdateDecentralized:: Elapsed time (sec): %f",T.GetElapsed_sec());
+
+//	MotionMan.m_tAction = ACT_WALK_FWD;
+//	//Path_ApproachPoint(Level().CurrentEntity()->Position());
+//	set_path_type (CMovementManager::ePathTypeLevelPath);
+//	set_dest_position(Level().CurrentEntity()->Position());
+//	set_level_dest_vertex(dynamic_cast<CAI_ObjectLocation *>(Level().CurrentEntity())->level_vertex_id());
+
+
+	SetupVelocityMasks(false);
 
 	StateSelector							();
 	CurrentState->Execute					(m_current_update);

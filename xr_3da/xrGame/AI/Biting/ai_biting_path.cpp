@@ -82,7 +82,7 @@ void CAI_Biting::Path_ApproachPoint(Fvector position)
 
 	vfInitSelector(*m_tSelectorApproach, true);
 	m_tSelectorApproach->m_tEnemyPosition = position;
-	m_tSelectorApproach->m_tEnemy		  = 0;		
+	m_tSelectorApproach->m_tEnemy		  = 0;
 }
 
 void CAI_Biting::Path_WalkAroundObj(const CEntity *pE, Fvector position)
@@ -274,6 +274,11 @@ void CAI_Biting::SetPathParams(u32 dest_vertex_id, const Fvector &dest_pos)
 	SetupVelocityMasks(false);
 }
 
+void CAI_Biting::SetSelectorPathParams()
+{
+	set_path_type (CMovementManager::ePathTypeLevelPath);
+	SetupVelocityMasks(false);
+}
 
 void CAI_Biting::SetupVelocityMasks(bool force_real_speed)
 {
