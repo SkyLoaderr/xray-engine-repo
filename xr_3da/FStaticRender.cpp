@@ -71,6 +71,7 @@ static	Fmaterial	gm_Data;
 static	int			gm_Level	= 0;
 static	DWORD		gm_Ambient	= 0;
 static	BOOL		gm_Nearer	= 0;
+static	CObject*	gm_Object	= 0;
 
 IC		void		gm_SetLevel			(int iLevel)
 {
@@ -107,6 +108,9 @@ IC		void		gm_SetNearer		(BOOL bNearer)
 		if (gm_Nearer)	Render->rmNear	();
 		else			Render->rmNormal();
 	}
+}
+IC		void		gm_SetLighting		(CObject* O)
+{
 }
 
 //////////////////////////////////////////////////////////////////////
