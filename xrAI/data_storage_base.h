@@ -105,11 +105,22 @@ namespace DataStorageBaseIndex {
 			return				(_index);
 		}
 	};
-	#pragma pack(pop)
+	
+	template <
+		typename _GraphNode,
+		typename _path_id_type
+	>
+	struct SGraphIndexNode {
+		_GraphNode		*node;
+		_path_id_type	path_id;
+	};
+	
+#pragma pack(pop)
 };
 
 template <
 	typename	_GraphNode,
+	typename	_GraphIndexNode,
 	typename	_dist_type				= float, 
 	typename	_index_type				= u32, 
 	typename	_path_id_type			= u32, 
@@ -133,12 +144,7 @@ protected:
 		bEuclidianHeuristics
 	> inherited;
 
-	#pragma pack(push,4)
-	struct SGraphIndexNode {
-		_GraphNode		*node;
-		_path_id_type	path_id;
-	};
-	#pragma pack(pop)
+	typedef _GraphIndexNode SGraphIndexNode;
 
 	_path_id_type		cur_path_id;
 	SGraphIndexNode		*indexes;
@@ -241,6 +247,7 @@ public:
 
 template <
 	typename	_GraphNode,
+	typename	_GraphIndexNode,
 	typename	_dist_type				= float, 
 	typename	_index_type				= u32, 
 	typename	_path_id_type			= u32, 
@@ -251,6 +258,7 @@ template <
 class CDataStorageBaseIndexBlock : 
 	public CDataStorageBaseIndex <
 		_GraphNode,
+		_GraphIndexNode,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -266,6 +274,7 @@ class CDataStorageBaseIndexBlock :
 protected:
 	typedef CDataStorageBaseIndex <
 		_GraphNode,
+		_GraphIndexNode,
 		_dist_type,
 		_index_type,
 		_path_id_type,

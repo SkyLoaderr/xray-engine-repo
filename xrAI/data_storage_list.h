@@ -48,6 +48,15 @@ class CDataStorageSL :
 			index_bits,
 			mask_bits
 		>,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageList::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -70,6 +79,15 @@ public:
 protected:	
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageList::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -185,6 +203,15 @@ class CDataStorageUL :
 			index_bits,
 			mask_bits
 		>,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageList::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -207,6 +234,15 @@ public:
 protected:	
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageList::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -333,6 +369,15 @@ class CDataStorageDLSL :
 			index_bits,
 			mask_bits
 		>,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageListDoubleLinked::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -355,6 +400,15 @@ public:
 protected:	
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageListDoubleLinked::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -495,6 +549,15 @@ class CDataStorageDLUL :
 			index_bits,
 			mask_bits
 		>,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageListDoubleLinked::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -513,6 +576,15 @@ public:
 protected:	
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageListDoubleLinked::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -626,6 +698,15 @@ class CDataStorageCheapList :
 			index_bits,
 			mask_bits
 		>,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageListDoubleLinked::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -644,6 +725,15 @@ public:
 protected:	
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageListDoubleLinked::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -968,20 +1058,20 @@ public:
 };
 
 namespace DataStorageBucketList {
-//	#pragma pack(push,4)
-//	template <
-//		typename _GraphNode,
-//		typename _path_id_type
-//	>
-//	struct SGraphIndexNode : 
-//		DataStorageBaseIndex::SGraphIndexNode <
-//			_GraphNode,
-//			_path_id_type
-//		>
-//	{
-//		u32				bucket_id;
-//	};
-//	#pragma pack(pop)
+	#pragma pack(push,4)
+	template <
+		typename _GraphNode,
+		typename _path_id_type
+	>
+	struct SGraphIndexNode : 
+		DataStorageBaseIndex::SGraphIndexNode <
+			_GraphNode,
+			_path_id_type
+		>
+	{
+		u32				bucket_id;
+	};
+	#pragma pack(pop)
 };
 
 template <
@@ -1001,15 +1091,15 @@ class CDataStorageBucketList :
 			index_bits,
 			mask_bits
 		>,
-//		DataStorageBucketList::SGraphIndexNode<
-//			DataStorageDoubleLinkedList::SGraphNode<
-//				_dist_type,
-//				_index_type,
-//				index_bits,
-//				mask_bits
-//			>,
-//			_path_id_type
-//		>
+		DataStorageBucketList::SGraphIndexNode<
+			DataStorageListDoubleLinked::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -1026,20 +1116,20 @@ public:
 		mask_bits
 	> CGraphNode;
 
-//	typedef	DataStorageBucketList::SGraphIndexNode<
-//		DataStorageDoubleLinkedList::SGraphNode<
-//			_dist_type,
-//			_index_type,
-//			index_bits,
-//			mask_bits
-//		>,
-//		_path_id_type
-//	> SGraphIndexNode;
+	typedef	DataStorageBucketList::SGraphIndexNode<
+		DataStorageListDoubleLinked::SGraphNode<
+			_dist_type,
+			_index_type,
+			index_bits,
+			mask_bits
+		>,
+		_path_id_type
+	> SGraphIndexNode;
 
 protected:	
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
-//		SGraphIndexNode,
+		SGraphIndexNode,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -1135,10 +1225,10 @@ public:
 		if (bucket_id < min_bucket_id)
 			min_bucket_id		= bucket_id;
 
-//		u32						node_bucket_id = indexes[node.index()].bucket_id;
-//		if (buckets[node_bucket_id] && buckets[node_bucket_id]->index() == node.index())
-//			buckets[node_bucket_id] = 0;
-//		node.bucket_id			= bucket_id;
+		u32						node_bucket_id = indexes[node.index()].bucket_id;
+		if (buckets[node_bucket_id] && (buckets[node_bucket_id]->index() == node.index()))
+			buckets[node_bucket_id] = 0;
+		indexes[node.index()].bucket_id	= bucket_id;
 		
 		CGraphNode			*i = buckets[bucket_id];
 		if (!i || (indexes[i->index()].path_id != cur_path_id)) {

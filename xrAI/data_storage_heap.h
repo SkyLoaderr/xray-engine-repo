@@ -47,6 +47,15 @@ class CDataStorageBinaryHeap :
 			index_bits,
 			mask_bits
 		>,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageHeap::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -65,6 +74,15 @@ public:
 protected:	
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageHeap::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -174,6 +192,15 @@ class CDataStorageMultiBinaryHeap :
 			index_bits,
 			mask_bits
 		>,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageHeap::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
@@ -192,6 +219,15 @@ public:
 protected:	
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageHeap::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
 		_dist_type,
 		_index_type,
 		_path_id_type,
