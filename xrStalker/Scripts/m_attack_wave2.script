@@ -89,7 +89,7 @@ function Monster:process ()
        return
     end        	   
 	
-	if self.target ~= nil
+	if self.target ~= nil then
 	   local h = hit ()	
        h.power = 500
        h.direction = self.targetdir
