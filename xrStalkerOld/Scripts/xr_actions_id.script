@@ -19,6 +19,7 @@ stohe_state_base        = stohe_actions + 50
 stohe_position          = stohe_actions + 60
 stohe_gulag_base        = stohe_actions + 70
 stohe_bobik_base    = stohe_actions + 80
+stohe_camper_base    = stohe_actions + 90
 
 --Sidorovich
 sidor_actions = stohe_actions + 1024
@@ -37,6 +38,8 @@ sidor_act_bar           = sidor_actions + 90
 sidor_act_chaser        = sidor_actions + 100
 sidor_act_sos           = sidor_actions + 110
 sidor_act_ptr           = sidor_actions + 120  
+sidor_act_yantar        = sidor_actions + 200
+sidor_act_secret_lab    = sidor_actions + 220
 
 -- chugai
 chugai_actions                      = sidor_actions  + 1024
@@ -48,6 +51,7 @@ chugai_escape_factory_bandits_base  = chugai_actions + 50
 chugai_barman_base                  = chugai_actions + 60
 chugai_ambush_base                  = chugai_actions + 70
 chugai_formation_base               = chugai_actions + 80
+chugai_replics_base                 = chugai_actions + 90
 
 -- Змей
 zmey_actions = chugai_actions + 1024
@@ -84,3 +88,10 @@ jon_sniper_see_monster = jon_actions + 11
 jon_sniper_see_enemy   = jon_actions + 12
 jon_sniper_camper      = jon_actions + 13
 //+5 Занято
+
+jon_outcast			   = jon_actions + 20
+jon_outcast_replics    = jon_actions + 21
+
+--
+narrator_actions = jon_actions + 1024
+

@@ -452,6 +452,16 @@ function load_common (obj, sounds_base)
              obj:add_sound ("monsters\\stalker\\hiccup\\hic", 5, snd_type.talk, 2, 1, id ())
              }
              }
+   
+   themes["outcast"] =
+             {
+             {
+             sounds_base,
+             obj:add_sound ("script_replics\\trader\\trader_script1a_",           30, snd_type.talk, 2, 1, id ()),
+             obj:add_sound ("script_replics\\trader\\trader_monolog",             30, snd_type.talk, 2, 1, id ())
+             }
+             }
+			 
 
     return sounds_base
 end

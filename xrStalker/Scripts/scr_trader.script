@@ -65,6 +65,9 @@ local end_trade      = 3
 local box_with_post  = 1     		//'Коробка с блокпоста
 
 
+// Временно, из-за Lua-bind
+local self_curState	 = nil
+
 class "Trader"
 function Trader:__init( npc_o, zone_o, scr_name_o )
     self.npc_name	 = npc_o
@@ -93,7 +96,7 @@ function Trader:__init( npc_o, zone_o, scr_name_o )
                         need_reselect = true,
                         play_sound	  = false
                         }
-	self.curState    = nil
+	self_curState    = nil
 
     self.on_line     = false
 
@@ -178,14 +181,14 @@ function Trader:process()
                 self.mem.need_reselect = false
             end
 
-            self.curState:execute()
+            self_curState:execute()
 
             if( self.mem.need_reset ) then
                 reset_action( self.npc, self.script_name )
                 self.mem.need_reset = false
             end
 
-            if( self.curState:check_completed() ) then
+            if( self_curState:check_completed() ) then
             	self.mem.need_reselect = true
             end
             self:animation()
@@ -247,12 +250,12 @@ end
 
 function Trader:select_state()
 	if( monsters.ini.trader_start ) then
-    	self.curState = t_OnStart( self.mem, self.npc:position() )
+    	self_curState = t_OnStart( self.mem, self.npc:position() )
         return
     end
 
-    self.curState = nil
-    self.curState = t_Life( self.mem, self.npc:position() )
+    self_curState = nil
+    self_curState = t_Life( self.mem, self.npc:position() )
 end
 
 

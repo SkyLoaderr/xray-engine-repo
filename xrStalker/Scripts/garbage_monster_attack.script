@@ -1,11 +1,11 @@
 local zone_name		= "rush_zone"
 local zone_count	= "rush_zone_1"				// Скрипт срабатывает если пересекли первую зону и были во второй(этой)
-local path_pause 	= 2500						// Пауза между монстрома бегущими в одном забеге по одному пути
-local group_pause 	= 10000						// Пауза между набегами
+local path_pause 	= 3500						// Пауза между монстрома бегущими в одном забеге по одному пути
+local group_pause 	= 5000						// Пауза между набегами
 
 local ways	= {	
 				"way1",
-				"way2",
+				"way2",		
 				"way3",
 				"way4",
 				"way5",
@@ -70,18 +70,21 @@ local monster3	=
 
 local g_monsters 		= { monster1, monster2, monster3 }
 local g_monsters_id 	= {}
+local self_runs			= {}
+local GarbageTroop 		= nil			// Вынесенно сюда, чтоб можно было обратится к GarbageRaidManager
 
 function main()
 	
 	printf("___start garbage_monster_attack")
-	while(monster_on_line() == false) do
+	while(monster_on_line(g_monsters, g_monsters_id) == false) do
 		printf("wait monster...")
 		wait()
 	end
 	
 	printf("___start print")
-	Print(g_monsters_id)
-	local GarbageTroop = GarbageRaidManager(ways, g_monsters_id, zone_name, zone_count)
+	//Print(g_monsters_id)
+
+	GarbageTroop	= GarbageRaidManager(ways, g_monsters_id, zone_name, zone_count)
 	
 	GarbageTroop:Initialize()
 	printf("___initialize()")
@@ -91,38 +94,48 @@ function main()
 	end
 end
 
+function raid_proceed()
+	// рейд происходит, когда есть стая, она запушена, и количество бегущих членов больше 0
+	return (GarbageTroop ~= nil and GarbageTroop.start == true and table.getn(self_runs) ~= 0)
+end
 
-function monster_on_line()
+function monster_on_line(names, ids)
 	// Данная функция ждет пока все монстры g_monsters окажутся в онлайне, 
 	// потом берет их id.
+	
+	printf("nubmer members %d", table.getn(names))
 	
 	local npc	= nil
 	local sim	= alife()
 	
-	for i = 1, table.getn(g_monsters) do
-		for j = 1, table.getn(g_monsters[i]) do
-			if(level.object(g_monsters[i][j]) == nil) then
+	for i = 1, table.getn(names) do
+		for j = 1, table.getn(names[i]) do
+			if(level.object(names[i][j]) == nil) then
 				// Какой-то объект еще в офлайне
-				printf("not object %s", g_monsters[i][j])
+				printf("not object %s", names[i][j])
 				return false
 			end
 		end
 	end
 	
-	for i = 1, table.getn(g_monsters) do
+	for i = 1, table.getn(names) do
 		
-		table.insert(g_monsters_id, {})
+		table.insert(ids, {})
 		
-		for j = 1, table.getn(g_monsters[i]) do
-			npc		= level.object(g_monsters[i][j])
+		printf("in %d group %d members", i, table.getn(names[i]))
+		
+		for j = 1, table.getn(names[i]) do
+			npc		= level.object(names[i][j])
 			if(npc == nil) then return false end 	// Этого по идее не может быть
-			table.insert(g_monsters_id[i], npc:id())
-
+			table.insert(ids[i], npc:id())
+			printf("__%s", names[i][j])
 			//In offline
 			if(sim) then
 				sim:set_switch_online	(npc:id(), false)
 				sim:set_switch_offline	(npc:id(), true)
 				sim:set_interactive		(npc:id(), false)
+			else
+				printf("Error! Sim is nil")
 			end
 		end
 	end
@@ -155,7 +168,7 @@ function GarbageRaidManager:__init(_ways, _g_monsters_id, _zone_name, _zone_coun
 	self.start		= false
 	self.run		= false				// Все ли монстры бегут
 	self.was		= false				// Был ли игрок во второй зоне
-	self.runs		= {}
+	self_runs		= {}
 end
 
 function GarbageRaidManager:Initialize()
@@ -177,26 +190,26 @@ function GarbageRaidManager:Update()
 		//Запускаем следующую группу монстров
 		self:run_monster()
 		self.time	= device():time_global() + group_pause
-		//self.run	= true
+
 	end
 	
-	if(table.getn(self.runs) > 0) then
-		for i = table.getn(self.runs), 1, -1 do
+	if(table.getn(self_runs) > 0) then
+		for i = table.getn(self_runs), 1, -1 do
 			
 			// Update monsters
-			if(self.runs[i]) then
+			if(self_runs[i]) then
 				
-				self.runs[i]:update()
+				self_runs[i]:update()
 
-				if(self.runs[i]:completed()) then
+				if(self_runs[i]:completed()) then
 					
 					// Remove finished monsters
-					self.runs[i]:finalize()
-					table.remove(self.runs, i)
+					self_runs[i]:finalize()
+					table.remove(self_runs, i)
 				end
 			
 			else
-				table.remove(self.runs, i)
+				table.remove(self_runs, i)
 			end
 		end
 	end
@@ -221,9 +234,9 @@ function GarbageRaidManager:run_monster()
 			self.sim:set_switch_offline(self.monstrs[self.index][i], false)
 		end
 		
-		table.insert(self.runs, CGarbageRunMonster(self.monstrs[self.index][i], self.ways[self.path_index], self.start_time))
+		table.insert(self_runs, CGarbageRunMonster(self.monstrs[self.index][i], self.ways[self.path_index], self.start_time))
 		self.path_index	= self.path_index + 1
-		self.runs[table.getn(self.runs)]:initialize()
+		self_runs[table.getn(self_runs)]:initialize()
 		
 		if(self.path_index > table.getn(self.ways)) then
 			// Если закончились пути, по которы будут бежать монстры, то следующую партию запускаем через время
@@ -296,6 +309,11 @@ function CGarbageRunMonster:initialize()
 
 	self.object:script(true, script_name())
 	action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, 100000))
+	self.object:set_callback (self, "move_callback", game_object.movement)
+end
+
+function CGarbageRunMonster:move_callback()
+	printf("callback")
 end
 
 function CGarbageRunMonster:update()
@@ -334,7 +352,9 @@ function CGarbageRunMonster:update()
 	else
 		// Еще не начали бежать
 		reset_action(self.object, script_name())
-		action(self.object, move(move.run_fwd, self.way, 1), sound(sound.attack), cond(cond.move_end))
+		action(self.object, move(move.run_fwd, self.way), sound(sound.attack), cond(cond.move_end))
+		self.point_id 	= self.way:level_vertex_id(self.way:count() - 1)
+		action(self.object, move(move.walk_fwd, new_point(self.point_id, self.point_id, 10, 5), 1), sound(sound.idle), cond(cond.move_end))
 		self.started	= true
 	end
 end
@@ -374,7 +394,9 @@ function CGarbageRunMonster:actions()
 	if(self.attacked == false) then
 		//Если не атакуем, то надо бежать
 		if(self.object:action() == nil) then
-			action(self.object, move(move.run_fwd, self.way, 1), sound(sound.attack), cond(cond.move_end))
+			action(self.object, move(move.run_fwd, self.way), sound(sound.attack), cond(cond.move_end))
+			self.point_id 	= self.way:level_vertex_id(self.way:count() - 1)
+			action(self.object, move(move.walk_fwd, new_point(self.point_id, self.point_id, 10, 5), 1), sound(sound.idle), cond(cond.move_end))
 		end
 	end
 	

@@ -101,6 +101,7 @@ function zone_binder:net_destroy()
 	self.object:clear_callback( true )
 	self.object:clear_callback( false )
 
+	table.foreach( zones[self.object:id()], function( k, v ) if v.destroy then v:destroy() end end )
 	object_binder.net_destroy( self )
 end
 
@@ -130,38 +131,45 @@ function zone_binder:reload( section )
 
 	if zone_ini:section_exist( "gulag1" ) then
 		-- если управление галагами ещё не создано, то создать
-		if not z.zone_gulags then
+		//if not z.zone_gulags then
 			z.zone_gulags = zone_gulags( self.object, zone_ini )
 
 			-- если ошибка инициализации, то прибить
 			if not z.zone_gulags.ini_ok then
 				z.zone_gulags = nil
 			end
-		end
+		//end
 	end
 
 	if zone_ini:section_exist( "sound" ) then
 		-- если управление звуками ещё не создано, то создать
-		if not z.zone_sound then
+		//if not z.zone_sound then
 			z.zone_sound = zone_sound( self.object, zone_ini )
 
 			-- если ошибка инициализации, то прибить
 			if not z.zone_sound.ini_ok then
 				z.zone_sound = nil
 			end
-		end
+		//end
 	end
 	
    if zone_ini:section_exist( "monster" ) then
-		if not z.monster then
+		//if not z.monster then
 			z.monster = script_zone.monster_zone(self.object, zone_ini)
 
 			-- если ошибка инициализации, то прибить
 			if not z.monster.ini_ok then
 				z.monster = nil
 			end
-		end
+		//end
   end
+  
+	if zone_ini:section_exist("spawner") then
+		if zone_ini:line_exist("spawner", "id") == true then
+			xr_spawner.create_spawner(zone_ini:r_string("spawner", "id"))
+			z.spawner = xr_spawner.spawner [zone_ini:r_string("spawner", "id")]
+		end
+	end
 end
 
 -- callback на вход в зону
@@ -171,7 +179,7 @@ function zone_binder:on_enter( zone, obj )
 	zones_inside[zone:id()][obj:id()] = true
 
 	-- вызвать callback-и всех подключённых классов управления
-	table.foreach( zones[zone:id()], function( k, v ) v:on_enter( obj ) end )
+	table.foreach( zones[zone:id()], function( k, v ) if v.on_enter then v:on_enter( obj ) end end )
 end
 
 -- callback на выход из зоны

@@ -955,18 +955,23 @@ function CObjectHit:execute()
 	if(self.enter) then
     //'Наносим хит и проигруем звук
 		local snd     = sound_object(self.sound)
-        snd:play_at_pos(self.object1, self.object1:position(), 0, sound_object.s3d)
-        local h              = hit()
+        local actor   = get_actor()
+		if(actor) then 
+			printf("play_sound")
+			snd:play_at_pos(actor, actor:position(), 0, sound_object.s3d)
+        end
+		local h              = hit()
         h.power       = 100
         h.impulse     = self.impulse
         h.direction   = self.dir
-        h.bone        = self.bone
+        h:bone(self.bone)
         h.draftsman   = level.actor()
         h.type        = hit.wound
         self.object1:hit(h)
-
+	
         self.zone:clear_callback(true)
-        return false
+		wait(2000)
+		return false
     end
     return(self.enter == false)
 end

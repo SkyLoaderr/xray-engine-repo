@@ -16,7 +16,7 @@ function main()
 			work = false
 			if(hit) then
 				hit:finalize()
-				nit = nil
+				hit = nil
 			end
 		end
 		

@@ -19,6 +19,7 @@ stohe_reactions_base    = stohe_evaluators + 40
 stohe_state_base        = stohe_evaluators + 50
 stohe_gulag_base        = stohe_evaluators + 60
 stohe_bobik_base    = stohe_evaluators + 70
+stohe_camper_base    = stohe_evaluators + 80
 
 --эвалуаторы Сидоровича
 sidor_evaluator                     =   stalker_ids.property_script + 2000
@@ -36,6 +37,8 @@ sidor_bar                           =   sidor_evaluator + 90
 sidor_chaser                        =   sidor_evaluator + 100
 sidor_sos                           =   sidor_evaluator + 110
 sidor_ptr                           =   sidor_evaluator + 120
+sidor_yantar                        =   sidor_evaluator + 200
+sidor_secret_lab                    =   sidor_evaluator + 220
 
 -- эвалуаторы Чугай
 chugai_evaluators                   = stalker_ids.property_script + 3000
@@ -46,6 +49,7 @@ chugai_escape_factory_bandits_base  = chugai_evaluators + 50
 chugai_barman_base                  = chugai_evaluators + 60
 chugai_ambush_base                  = chugai_evaluators + 70
 chugai_formation_base               = chugai_evaluators + 80
+chugai_replics_base                 = chugai_evaluators + 90
 
 -- эвалуаторы Змея
 zmey_evaluators                     = stalker_ids.property_script + 4000
@@ -81,3 +85,9 @@ jon_sniper_see_enemy    = jon_evaluators + 12           --5031
 jon_sniper_enemy_near   = jon_evaluators + 13           --5034
 jon_sniper_enemy_is		= jon_evaluators + 14           --5035
 //+5 занято
+
+jon_outcast				= jon_evaluators  + 20
+jon_outcast_replics     = jon_evaluators  + 21
+
+--
+narrator_evaluators	= stalker_ids.property_script + 6000

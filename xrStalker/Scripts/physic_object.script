@@ -2,7 +2,7 @@ function init(obj)
 	local ini  = obj:spawn_ini()
 	
 	if(ini == nil) then return end
-	
+
 	if(ini:section_exist("door")) then
 		obj:bind_object(door_binder(obj))
 	end
@@ -18,6 +18,8 @@ function door_binder:__init(obj) super(obj)
 	self.low_limits			= 0
 	self.hi_limits			= 0
 	self.angel				= 0
+	self.run				= 0
+	self.bloceked			= false
 end
 
 function door_binder:initialize()
@@ -30,7 +32,11 @@ function door_binder:initialize()
     
     self.object:set_nonscript_usable(false)
     self.object:set_use_callback(self, "door_callback")
-    self.object:set_tip_text("press 'E' to open the door")
+    
+	local 		door_sign = string_table():get_by_id("doors_sign")
+	if(door_sign) then
+		self.object:set_tip_text(door_sign)
+	end
 
 	local variable = false
 
@@ -43,14 +49,10 @@ function door_binder:initialize()
 		else
 			self:close_door()
 		end
+	else
+		self:close_door()
 	end
 
-	if(ini:line_exist("door", "text")) then
-		//'Надпись, которая высвечивается, когда подходишь к двери
-		variable = ini:r_string("door", "text")
-		self.object:set_tip_text(variable)
-	end
-	
 	self.need_initialize	= false
 end
 
@@ -59,25 +61,39 @@ function door_binder:update(delta)
 	if(self.need_initialize) then
 		self:initialize()
 	end
-end
-
-function door_binder:close_door()
-	self.joint:set_max_force_and_velocity(200, 1, 0)
+	
+	if(self.blockade) then
+		// Закрываем, а потом будем блокировать
+		self.angel  = self.joint:get_axis_angle(90)
+		printf("angel %f limits %f, %f", self.angel, self.low_limits, self.hi_limits)
+		if(self.angel >= self.hi_limits) then
+			// Закрыли до предела, будем блокировать
+			self.joint:set_max_force_and_velocity(10000, 1, 1)
+			self.blockade	= false
+		end
+	end
 end
 
 function door_binder:open_door()
-	self.joint:set_max_force_and_velocity(200, -1, 1)
+	self.joint:set_max_force_and_velocity(300, -3, 0)
+	self.blockade	= false
+end
+
+function door_binder:close_door()
+	self.joint:set_max_force_and_velocity(300, 3, 1)
+	self.blockade	= true									// Закрываем и блокируем	
 end
 
 function door_binder:door_callback(door, actor)
 	self.angel  = self.joint:get_axis_angle(90)
 
-	self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
+	//self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
 
 	if(self.angel - self.low_limits > self.hi_limits - self.angel) then
-		self.joint:set_max_force_and_velocity(300, -2, 1)
+		self:open_door()
+		//printf("blockade")
 	else
-        self.joint:set_max_force_and_velocity(300, 2, 1)
+		self:close_door()
 	end
 end
 

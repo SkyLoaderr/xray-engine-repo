@@ -2,7 +2,7 @@
 //module("storage")
 
 local zombie_attack_time	= 10000
-
+local min_distance			= 5					// Дистанция, ближе которой зомби активизируются
 
 //-------------------------------------------------------------------------------------------------------
 // Зомби который притворяется мертвым и ждет, пока актер зайдет в скриптовую зону
@@ -39,7 +39,7 @@ function CZombieLie:update(delta)
 		return
 	end
 	
-	if(self.object:best_enemy() or self.object:get_monster_hit_info().time ~= 0) then
+	if(self.object:get_monster_hit_info().time ~= 0) then
 		
 		// Если появился враг, либо получили хит, то оканчиваем работу
 		self:finalize()
@@ -57,7 +57,7 @@ end
 
 function CZombieLie:set_zombie_actions()
 	if(self.zombie_lie == false) then
-		if(self.object:position():distance_to(self.point)) > 1 then
+		if(self.object:position():distance_to(self.point)) > 1.5 then
 		
 			// Точка где мы должны лежать далеко, подходим к ней
 			action(self.object, move(move.walk_fwd, self.point, 1), sound(sound.idle),
@@ -180,14 +180,18 @@ function CZombieLie2:update(delta)
 		return
 	end
 	
-	if(level.actor() and distance_between(self.object, level.actor()) < 2) then
+	if(level.actor() and distance_between(self.object, level.actor()) < min_distance) then
 		self:actor_enter()
 	end
 
-	if(self.object:best_enemy() or self.object:get_monster_hit_info().time ~= 0) then
-		
-		// Если появился враг, либо получили хит, то оканчиваем работу
-		self:finalize()
+	// Если появился враг  и он близко, либо получили хит, то оканчиваем работу
+	if(self.object:best_enemy() and distance_between(self.object, self.object:best_enemy()) < min_distance) then
+		self:actor_enter()
+		return
+	end
+
+	if(self.object:get_monster_hit_info().time ~= 0) then
+		self:actor_enter()
 		return
 	end
 	
@@ -202,7 +206,7 @@ end
 
 function CZombieLie2:set_zombie_actions()
 	if(self.zombie_lie == false) then
-		if(self.object:position():distance_to(self.point)) > 1 then
+		if(self.object:position():distance_to(self.point)) > 1.5 then
 		
 			// Точка где мы должны лежать далеко, подходим к ней
 			action(self.object, move(move.walk_fwd, self.point, 1), sound(sound.idle),
@@ -271,4 +275,59 @@ function CZombieLie2:finalize()
 		reset_action(self.object, script_name())
 		action(self.object, anim("fake_death_"..self.index.."_2"), cond(cond.anim_end))
 	end
+end
+
+//----------------------------------------------------------------------------------------------
+// Монстр гуляет, ждет пока не увидит актера, либо его не услышит рядом. Как его увидит, то отпускается
+//----------------------------------------------------------------------------------------------
+
+class "CMonsterWalk" (object_binder)
+function CMonsterWalk:__init(object, _path) super(object)
+	self.path			= patrol(_path)
+	self.end_work		= false
+	
+	if(self.object:get_script() == false) then
+		self.object:script(true, script_name())
+	end
+end
+
+function CMonsterWalk:update(delta)
+	object_binder.update(self, delta)
+
+	if(self.end_work) then return end
+	
+	if(//self.object:get_monster_hit_info().time ~= 0 or
+	  (level.actor() and self.object:see(level.actor()))
+	 )then
+		// Если видим актрера, либо получили хит, то оканчиваем работу
+		self:finalize()
+		return
+	end
+	
+	if(self.object:best_enemy() and self.object:best_enemy():id() == get_actor_id()) then
+		self:finalize()
+		return
+	end
+	
+	// отпускаем, если недалеко произошел звук, он от актера
+	if(self.object:get_sound_info().time ~= 0 and device():time_global() < self.object:get_sound_info().time + 3000 and self.object:get_sound_info().who and self.object:get_sound_info().who:id() == get_actor_id()) then
+		if(self.object:get_sound_info().position and self.object:get_sound_info().position:distance_to(self.object:position()) < 5) then
+			self:finalize()
+			return
+		end
+	end
+	
+	if(self.object:action() == nil) then
+		action(self.object, move(move.walk_fwd, self.path), sound(sound.idle), cond(cond.move_end))
+	end
+end
+
+function CMonsterWalk:finalize()
+	if(self.end_work) then return end
+	
+	if(self.object:get_script()) then
+		self.object:script(false, script_name())
+	end
+	
+	self.end_work	= true
 end

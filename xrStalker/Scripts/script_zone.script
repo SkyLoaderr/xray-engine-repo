@@ -1,10 +1,14 @@
 module("monsterAi")
 module("storage")
 module("script_zone_scene")
+module("dark_lab_burrers")
+module("pripyat_football")
 
 class "monster_zone"
 function monster_zone:__init(obj, ini)
 
+	self.object		= obj
+	
 	//' Читаем тип монстра в этой зоне
 	if(ini:line_exist("monster", "type") == true) then
 		self.type	= ini:r_string("monster", "type")
@@ -58,6 +62,12 @@ function monster_zone:on_enter(obj)
 	
 end
 
+function monster_zone:destroy(obj)
+	if(self.zone_manager) then
+		self.zone_manager:destroy()
+	end		
+end
+
 function monster_zone:read_custom_data(ini)
 
 	if(self.type == "zombie_walk") then
@@ -98,7 +108,8 @@ function monster_zone:read_custom_data(ini)
 		
 		self.ref_manager = CMonsterCamper
 	elseif(self.type == "zombie_sham") then
-		self.custom_data.path = ini:r_string("monster", "path")
+		self.custom_data.path 		= ini:r_string("monster", "path")
+		self.custom_data.zone_name 	= utils.conf_get_string(ini, "monster", "zone", nil, self.object, true)
 		printf("read path %s", self.custom_data.path)
 		
 		self.ref_manager = CZombieSham
@@ -107,6 +118,25 @@ function monster_zone:read_custom_data(ini)
 		printf("read path %s", self.custom_data.path)
 
 		self.ref_manager = CZombieShamActor
+	
+	elseif(self.type == "monster_wait_actor") then		
+		// Монстр ходит по маршрути и ждет появления актера
+		self.custom_data.path = {}
+		
+		for i = 1, 30 do
+			if(ini:line_exist("monster", "path"..i)) then
+				table.insert(self.custom_data.path, i, ini:r_string("monster", "path"..i))
+				printf("read way %s", "way"..i)
+			else
+				break
+			end
+		end
+
+		self.ref_manager = CMonsterWaitActor
+	elseif(self.type == "dark_lab_burrer") then
+		// Группа бюреров в темной лаборатории во главе с главным бюрером
+		
+		self.ref_manager = CBurrersManagerDarkLab
 	end
 	
 end
@@ -117,6 +147,7 @@ class "CBaseManager"
 function CBaseManager:__init(_custom_data)
 	self.custom_data	= _custom_data
 	self.members		= {} //{ {obj = nil, time = nil, id = 0 } }
+	printf("___________________")
 end
 
 function CBaseManager:add_member(obj)
@@ -127,9 +158,8 @@ function CBaseManager:update()
 	//printf("table size = %d", table.getn(self.members))
 	for i = table.getn(self.members), 1, -1 do
 		
-		
 		if(is_object_online(self.members[i].id) == false or
-		       (self.members[i].obj and self.members[i].obj:alive() == false) 
+		     (self.members[i].obj and self.members[i].obj:alive() == false) 
 		   ) then
 			//Удаляем объек, если он ушел в offline либо мертв
 			
@@ -146,10 +176,12 @@ function CBaseManager:update()
 end
 
 function CBaseManager:remove_member(obj_id)
-
 end
 
 function CBaseManager:actor_enter()
+end
+
+function CBaseManager:destroy()
 end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -313,6 +345,8 @@ end
 class "CZombieSham" (CBaseManager)
 function CZombieSham:__init(_custom_data) super(_custom_data)
 	self.storage	= storage.CStorage()
+	self.zone		= nil
+	self.enter		= false
 	
 	local points = patrol(_custom_data.path)
 	for i = 1, points:count() do
@@ -346,11 +380,29 @@ function CZombieSham:add_member(object)
 
 end	
 
-function CZombieSham:actor_enter()
-	printf("actor enter !!!!!!!!!!!!!!!!!!!!!!!")
-	for i = 1, table.getn(self.members) do
-		// сообщаем зомби, что актер зашел. Пора ставать и начинать атаковать
-		self.members[i].obj:binded_object():actor_enter()
+function CZombieSham:update()
+	CBaseManager.update(self)
+	
+	// Вещаем callback на дополнительную зону
+	if(self.zone == nil) then
+		self.zone = level.object(self.custom_data.zone_name)
+		if(self.zone) then
+			self.zone:set_callback(self, "on_enter", true)
+		end
+	end
+end
+
+function CZombieSham:on_enter(zone, obj)
+	if(on_enter) then return end				// Уже входил, сколько можно входить
+	
+	if(obj:id() == get_actor_id()) then 
+		printf("actor enter !!!!!!!!!!!!!!!!!!!!!!!")
+		for i = 1, table.getn(self.members) do
+			// сообщаем зомби, что актер зашел. Пора вставать и начинать атаковать
+			self.members[i].obj:binded_object():actor_enter()
+		end
+		
+		self.enter = true
 	end
 end
 
@@ -358,6 +410,14 @@ function CZombieSham:remove_member(obj_id)
 	self.storage:release_data(obj_id)
 end
 
+function CZombieSham:destroy()
+	// Если дополнительная зона в онлайне, то снимаем с нее callback
+	if(self.zone and level.object(self.custom_data.zone_name)) then
+		self.zone:clear_callback(true)
+	end
+	
+	printf("clear_callback _____________")
+end
 //////////////////////////////////////////////////////////////////////////////////////////
 // Зомби. Некоторое время притворяются, что спять. Когда актер подходит рядом они встают
 // и начинают атаковать.
@@ -400,4 +460,67 @@ end
 
 function CZombieShamActor:remove_member(obj_id)
 	self.storage:release_data(obj_id)
+end
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Монстр, который ходит по маршруту и ждет актера. Как только его увидит, то отпускается
+// из под скрипта
+class "CMonsterWaitActor" (CBaseManager)
+function CMonsterWaitActor:__init(_custom_data) super(_custom_data)
+	self.storage	= storage.CStorage()
+	
+	for i = 1, table.getn(_custom_data.path) do
+		self.storage:insert(_custom_data.path[i])
+	end
+end
+
+function CMonsterWaitActor:add_member(object)
+
+	if(object:binded_object()) then
+		return										// Объект уже прибинденный
+	end
+	
+	if(self.storage:empty()) then
+		printf("not free way for monster %s", object:name())
+		return
+	end
+
+	object:bind_object(script_zone_scene.CMonsterWalk(object, self.storage:get_data(object:id())) )
+												
+	table.insert(self.members, { obj = object, time = nil, id = object:id() }	)
+				
+	if(self.custom_data.work_time) then
+		self.members[table.getn(self.members)].time	= device():time_global() + self.custom_data.work_time
+	end
+end	
+
+function CMonsterWaitActor:remove_member(obj_id)
+	self.storage:release_data(obj_id)
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Бюреры, несколько охранников и один босс. 
+// 
+class "CBurrersManagerDarkLab" (CBaseManager)
+function CBurrersManagerDarkLab:__init(_custom_data) super(_custom_data)
+	dark_lab_burrers.manager():reinit()
+end
+
+function CBurrersManagerDarkLab:add_member(object)
+
+	if(object:binded_object()) then
+		return										// Объект уже прибинденный
+	end
+	
+	self.ini	= object:spawn_ini()
+	if(self.ini and self.ini:section_exist("burrer_security")) then
+		object:bind_object(dark_lab_burrers.CSecurityBurrer(object))
+	elseif(self.ini and self.ini:section_exist("burrer_boss")) then
+		object:bind_object(dark_lab_burrers.CBossBurrer(object))
+	end
+end	
+
+function CBurrersManagerDarkLab:actor_enter()
+	dark_lab_burrers.manager():actor_enter()
 end
