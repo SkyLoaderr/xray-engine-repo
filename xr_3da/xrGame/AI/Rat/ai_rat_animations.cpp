@@ -84,7 +84,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 				else
 					if (m_fSpeed < 0.2f) {
-						if ((ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > m_dwStandLookTime))
+						if ((ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > m_dwStandLookTime) && (eCurrentState == aiRatFreeHunting))
 							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[1];
 						else
 							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
@@ -102,7 +102,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
 				else
 					if (m_fSpeed < 0.2f) {
-						if ((ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > m_dwStandLookTime))
+						if ((ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > m_dwStandLookTime) && (eCurrentState == aiRatFreeHunting))
 							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[1];
 						else
 							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];

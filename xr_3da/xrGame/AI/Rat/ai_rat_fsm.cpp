@@ -215,14 +215,14 @@ void CAI_Rat::UnderFire()
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	vfComputeNewPosition();
-
-	SetDirectionLook();
-
 	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
 		m_fSpeed = EPS_S;
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+
+	vfComputeNewPosition();
+
+	SetDirectionLook();
 
 	AI_Path.TravelPath.clear();
 }
@@ -376,22 +376,23 @@ void CAI_Rat::Retreat()
 		}
 
 	m_tSpawnPosition.set(m_tSafeSpawnPosition);
-	m_fGoalChangeDelta		= 10.f;
+	m_fGoalChangeDelta		= 2.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);
 	m_fASpeed				= .2f;
 	
 	bfCheckIfGoalChanged();
 	
-	vfUpdateTime(m_fTimeUpdateDelta);
-
-	vfComputeNewPosition();
-
-	SetDirectionLook();
-
-	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
-		m_fSpeed = EPS_S;
-	else 
+	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay) {
+		m_fSpeed = 0.f;//EPS_S;
+		vfUpdateTime(m_fTimeUpdateDelta);
+		vfComputeNewPosition();
+	}
+	else {
 		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+		vfUpdateTime(m_fTimeUpdateDelta);
+		vfComputeNewPosition();
+		SetDirectionLook();
+	}
 
 	AI_Path.TravelPath.clear();
 }

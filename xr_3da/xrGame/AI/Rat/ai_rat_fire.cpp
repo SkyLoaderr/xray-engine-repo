@@ -110,7 +110,6 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
 				if (m_tpaVisibleObjects[i] == E) {
 					bVisible = true;
-					Msg("%5.2f",vPosition.distance_to(E->Position()));
 					break;
 				}
 			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);

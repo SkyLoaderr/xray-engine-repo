@@ -102,7 +102,7 @@ class CDistanceFunction : public CBaseFunction {
 
 public:
 	CDistanceFunction() {
-		m_fMinResultValue = 1.0;
+		m_fMinResultValue = 3.0;
 		m_fMaxResultValue = 20.0;
 		strcat(m_caName,"Distance");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
