@@ -300,6 +300,7 @@ private:
 			bool			bfAddEnemyToDynamicObjects		(CAI_Stalker *tpStalker);
 			bool			bfCheckIfSound					();
 			void			vfUpdateParameters				(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M);
+			void			vfUpdateVisibilityBySensitivity	();
 
 			// physics
 			void			CreateSkeleton					();

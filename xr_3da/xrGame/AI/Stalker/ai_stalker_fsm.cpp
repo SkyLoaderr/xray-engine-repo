@@ -334,7 +334,9 @@ void CAI_Stalker::ForwardCover()
 			}
 			break;
 		}
-		default : NODEFAULT;
+		default : {
+			m_tActionState = eActionStateWatchLook;
+		}
 	}
 }
 
@@ -678,6 +680,7 @@ void CAI_Stalker::Think()
 		G = _G;
 		H = _H;
 		I = _I;
+		vfUpdateVisibilityBySensitivity();
 	}
 
 	if (m_tEnemy.Enemy && (_K != K))
@@ -852,6 +855,10 @@ void CAI_Stalker::Think()
 	m_bStateChanged			= m_ePreviousState != m_eCurrentState;
 	if (m_bSearchedForEnemy)
 		m_dwLastEnemySearch		= m_dwCurrentUpdate;
+	else {
+		getGroup()->m_tpaSuspiciousNodes.clear();
+		m_iCurrentSuspiciousNodeIndex = 0;
+	}
 
 	_A	= A;
 	_B	= B;

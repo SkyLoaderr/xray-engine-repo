@@ -519,3 +519,21 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 		m_dwSoundUpdate = dwTime;
 	}
 }
+
+void CAI_Stalker::vfUpdateVisibilityBySensitivity()
+{
+	m_iSoundIndex = -1;
+	for (int i=0; i<(int)m_tpaDynamicSounds.size(); i++)
+		if (m_tpaDynamicSounds[i].tpEntity == m_tSavedEnemy) {
+			if (m_tpaDynamicSounds[i].dwTime > m_dwLostEnemyTime) {
+				m_iSoundIndex			= i;
+				m_dwLostEnemyTime		= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
+				m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+				m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+				m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
+				m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
+				m_dwLastEnemySearch		= 0;
+			}
+			break;
+		}
+}
