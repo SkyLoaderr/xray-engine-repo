@@ -77,7 +77,7 @@ public:
 
 	CPersonalCreatureTypeFunction()
 	{
-		m_fMinResultValue = 0.0;
+		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 21.0;
 		strcat(m_caName,"PersonalCreatureType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
@@ -232,7 +232,7 @@ public:
 
 	CEnemyCreatureTypeFunction()
 	{
-		m_fMinResultValue = 0.0;
+		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 21.0;
 		strcat(m_caName,"EnemyCreatureType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);

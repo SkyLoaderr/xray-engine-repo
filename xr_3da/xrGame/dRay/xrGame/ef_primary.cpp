@@ -183,6 +183,7 @@ u32 CPersonalWeaponTypeFunction::dwfGetWeaponType()
 		case CLSID_OBJECT_W_SHOTGUN:
 		case CLSID_OBJECT_W_AK74:
 		case CLSID_OBJECT_W_VAL:
+		case CLSID_OBJECT_W_GROZA:
 		case CLSID_OBJECT_W_LR300:
 			return(6);
 		case CLSID_OBJECT_W_HPSA:		
@@ -712,6 +713,7 @@ float CMainWeaponType::ffGetValue()
 			case CLSID_OBJECT_W_AK74:
 			case CLSID_OBJECT_W_VAL:
 			case CLSID_OBJECT_W_LR300: {
+			case CLSID_OBJECT_W_GROZA:
 				m_fLastValue	= 2.f;
 				break;
 			}
