@@ -61,7 +61,7 @@ function door_binder:update(delta)
 		return
 	end
 
-	--printf("_bp: door_binder:update [%s]", self.object:name())
+	printf("_bp: door_binder:update [%s] [%d]", self.object:name(), device():time_global())
 
 	xr_logic.try_switch_to_another_section(self.object, self.st)
 
