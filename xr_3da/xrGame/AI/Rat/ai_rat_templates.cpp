@@ -202,19 +202,19 @@ void CAI_Rat::vfSetMovementType(char cBodyState, float fSpeed)
 		case BODY_STATE_STAND : {
 			StandUp();
 			m_fCurSpeed = fSpeed;
-			r_torso_speed = PI;
+			//r_torso_speed = PI;
 			break;
 		}
 		case BODY_STATE_CROUCH : {
 			Squat();
 			m_fCurSpeed = m_fCrouchCoefficient*fSpeed;
-			r_torso_speed = 3*PI_DIV_4;
+			//r_torso_speed = 3*PI_DIV_4;
 			break;
 		}
 		case BODY_STATE_LIE : {
 			Lie();
 			m_fCurSpeed = 3*m_fCrouchCoefficient*fSpeed;
-			r_torso_speed = PI_DIV_2;
+			//r_torso_speed = PI_DIV_2;
 			break;
 		}
 	}
