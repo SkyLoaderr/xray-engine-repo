@@ -106,7 +106,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream)
 		}
 		CSE_Abstract			*E = F_entity_Create(s_name);
 
-		R_ASSERT2				(E,"Can't create entity.");
+		R_ASSERT3				(E,"Can't create entity.",s_name);
 		E->Spawn_Read			(tNetPacket);
 		// Update
 		tNetPacket.B.count		= S->r_u16();
