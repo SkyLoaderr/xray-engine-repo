@@ -60,19 +60,14 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
 	{
-		Fmatrix& M						= Device.mFullTransform;
-		Fvector4 plane;
-		plane.x							= -(M._14 + M._13);
-		plane.y							= -(M._24 + M._23);
-		plane.z							= -(M._34 + M._33);
-		plane.w							= -(M._44 + M._43);
-		float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
-		plane.mul						(denom);
-		Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
+		Fmatrix& M						= RCache.xforms.m_wvp;
 		BOOL	bIntersect				= FALSE;
 		for (u32 vit=0; vit<DU_CONE_NUMVERTEX; vit++)
 		{
-			if (P.classify(du_cone_vertices[vit])<=0) 
+			Fvector&	v	= du_cone_vertices[vit];
+			float _z = v.x*M._13 + v.y*M._23 + v.z*M._33 + M._43;
+			float _w = v.x*M._14 + v.y*M._24 + v.z*M._34 + M._44;
+			if (_z<=0 || _w<=0)
 			{
 				bIntersect	= TRUE;
 				break;
