@@ -17,7 +17,7 @@
 #include "../ai_monster_jump.h"
 #include "../ai_monster_utils.h"
 
-CAI_Biting::CAI_Biting() : CStateManagerBiting("Biting Manager")
+CAI_Biting::CAI_Biting()
 {
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
@@ -25,6 +25,9 @@ CAI_Biting::CAI_Biting() : CStateManagerBiting("Biting Manager")
 #ifdef DEBUG
 	HDebug							= xr_new<CMonsterDebug>(this, Fvector().set(0.0f,2.0f,0.0f), 20.f);
 #endif
+	
+	Init();
+
 }
 
 CAI_Biting::~CAI_Biting()
@@ -72,7 +75,6 @@ void CAI_Biting::reinit()
 	
 	inherited::reinit					();
 	CMonsterMovement::reinit			();
-	CStateManagerBiting::reinit			(this);
 
 #ifdef 	DEEP_TEST_SPEED	
 	time_next_update				= 0;
@@ -100,7 +102,6 @@ void CAI_Biting::Load(LPCSTR section)
 	// load parameters from ".ltx" file
 	inherited::Load					(section);
 	CMonsterMovement::Load			(section);
-	CStateManagerBiting::Load		(section);
 	
 	AS_Load							(section);
 
@@ -130,6 +131,7 @@ void CAI_Biting::Load(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_landing"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundLanding,		"bip01_head");
 	CSoundPlayer::add(pSettings->r_string(section,"sound_steal"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 5,	MonsterSpace::eMonsterSoundSteal,		"bip01_head");	
 	CSoundPlayer::add(pSettings->r_string(section,"sound_panic"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic,		"bip01_head");	
+
 }
 
 void CAI_Biting::LoadShared(LPCSTR section)
@@ -505,7 +507,6 @@ void CAI_Biting::reload	(LPCSTR section)
 {
 	CCustomMonster::reload		(section);
 	CMonsterMovement::reload	(section);
-	CStateManagerBiting::reload	(section);
 }
 
 
@@ -539,5 +540,20 @@ float CAI_Biting::get_custom_pitch_speed(float def_speed)
 	clamp(cur_speed, PI_DIV_6, 5 * PI_DIV_6);
 
 	return cur_speed;
+}
+
+#define REAL_DIST_THROUGH_TRACE_THRESHOLD	6.0f
+
+float CAI_Biting::GetEnemyDistances(float &min_dist, float &max_dist)
+{
+	// обновить минимальную и максимальную дистанции до врага
+	min_dist = m_fCurMinAttackDist;
+	max_dist = _sd->m_fMaxAttackDist - (_sd->m_fMinAttackDist - m_fCurMinAttackDist);
+
+	// определить расстояние до противника
+	float cur_dist = m_tEnemy.obj->Position().distance_to(Position()); 
+	if (cur_dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) cur_dist = GetRealDistToEnemy(m_tEnemy.obj); 
+
+	return cur_dist;
 }
 

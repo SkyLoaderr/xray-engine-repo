@@ -48,12 +48,15 @@ void CAI_Biting::Think()
 
 	MotionMan.accel_deactivate			();
 
+	
+	
 	if (!MotionMan.Seq_Active()) {
-		StateSelector						();
-		CurrentState->Execute				(m_current_update);
+		if (!UpdateStateManager()) {
+			StateSelector					();
+			CurrentState->Execute			(m_current_update);
+		}
 	} else disable_path();
-	//CStateManagerBiting::update			(m_current_update - m_dwLastUpdateTime);
-
+	
 	TranslateActionToPathParams				();
 
 	// построить путь

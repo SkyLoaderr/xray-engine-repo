@@ -1,7 +1,10 @@
 #pragma once
 #include "../../biting/ai_biting.h"
+#include "chimera_state_manager.h"
 
-class CChimera : public CAI_Biting {
+class CChimera : public CAI_Biting,
+				 public CStateManagerChimera {
+
 	typedef		CAI_Biting	inherited;
 
 public:
@@ -11,6 +14,13 @@ public:
 	virtual void	Load				(LPCSTR section);
 
 			void	Init				();
+	virtual void	reinit				();
 	virtual void	StateSelector		();
+
+	virtual	void	ProcessTurn			();
+
+	virtual bool	UpdateStateManager	();
+	virtual void	CheckSpecParams		(u32 spec_params);
+
 };
 

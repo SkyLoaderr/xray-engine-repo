@@ -1,21 +1,10 @@
-////////////////////////////////////////////////////////////////////////////
-//	Module 		: state_manager_stalker.h
-//	Created 	: 13.01.2004
-//  Modified 	: 13.01.2004
-//	Author		: Dmitriy Iassenev
-//	Description : Stalker state manager
-////////////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include "../../state_manager_state.h"
 
 class CAI_Biting;
 
-
-
 class CStateManagerBiting : public CStateManagerState<CAI_Biting> {
-protected:
 	typedef CStateManagerState<CAI_Biting> inherited;
 
 	enum EBitingStates {

@@ -1633,66 +1633,6 @@
 							Name="States"
 							Filter="">
 							<Filter
-								Name="State Rest"
-								Filter="">
-								<File
-									RelativePath=".\ai\biting\biting_state_rest.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_rest.h">
-								</File>
-								<Filter
-									Name="Sleep"
-									Filter="">
-									<File
-										RelativePath=".\ai\biting\biting_state_rest_sleep.cpp">
-									</File>
-									<File
-										RelativePath=".\ai\biting\biting_state_rest_sleep.h">
-									</File>
-								</Filter>
-								<Filter
-									Name="Walk Graph Point"
-									Filter="">
-									<File
-										RelativePath=".\ai\biting\biting_state_rest_wander.cpp">
-									</File>
-									<File
-										RelativePath=".\ai\biting\biting_state_rest_wander.h">
-									</File>
-								</Filter>
-							</Filter>
-							<Filter
-								Name="State Attack"
-								Filter="">
-								<File
-									RelativePath=".\ai\biting\biting_state_attack.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_attack.h">
-								</File>
-								<Filter
-									Name="Run"
-									Filter="">
-									<File
-										RelativePath=".\ai\biting\biting_state_attack_run.cpp">
-									</File>
-									<File
-										RelativePath=".\ai\biting\biting_state_attack_run.h">
-									</File>
-								</Filter>
-								<Filter
-									Name="Attack Melee"
-									Filter="">
-									<File
-										RelativePath=".\ai\biting\biting_state_attack_melee.cpp">
-									</File>
-									<File
-										RelativePath=".\ai\biting\biting_state_attack_melee.h">
-									</File>
-								</Filter>
-							</Filter>
-							<Filter
 								Name="State Eat"
 								Filter="">
 								<File
@@ -2237,6 +2177,12 @@
 					<File
 						RelativePath=".\ai\Monsters\Burer\burer.h">
 					</File>
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer_state_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer_state_manager.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Controller"
@@ -2257,6 +2203,108 @@
 					<File
 						RelativePath=".\ai\Monsters\Chimera\chimera.h">
 					</File>
+					<File
+						RelativePath=".\ai\Monsters\Chimera\chimera_state_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Chimera\chimera_state_manager.h">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten.h">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="MonsterStates"
+					Filter="">
+					<Filter
+						Name="Rest"
+						Filter="">
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_rest.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_rest_inline.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_rest_sleep.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_rest_sleep_inline.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_rest_walk_graph.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_rest_walk_graph_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Attack"
+						Filter="">
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_attack.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_attack_inline.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_attack_melee.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_attack_melee_inline.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_attack_run.h">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\States\monster_state_attack_run_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Panic"
+						Filter="">
+					</Filter>
+					<Filter
+						Name="Find Enemy"
+						Filter="">
+					</Filter>
+					<Filter
+						Name="Dangerous Sound"
+						Filter="">
+					</Filter>
+					<Filter
+						Name="Interesting Sound"
+						Filter="">
+						<Filter
+							Name="Threaten"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_threaten.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_threaten_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_threaten_threaten.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_threaten_threaten_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_threaten_walk.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_threaten_walk_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="Squad"
+						Filter="">
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

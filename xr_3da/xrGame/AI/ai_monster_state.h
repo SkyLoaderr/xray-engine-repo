@@ -10,16 +10,6 @@
 
 #include "ai_monster_defs.h"
 
-#define DO_ONCE_BEGIN(flag)	if (!flag) {flag = true;  
-#define DO_ONCE_END()		}
-
-#define TIME_OUT(a,b) a+b<m_dwCurrentTime
-
-#define DO_IN_TIME_INTERVAL_BEGIN(varLastTime, varTimeInterval)	if (TIME_OUT(varLastTime,varTimeInterval)) { varLastTime = m_dwCurrentTime;
-#define DO_IN_TIME_INTERVAL_END()								}
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IState class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

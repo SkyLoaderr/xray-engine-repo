@@ -20,8 +20,6 @@
 
 #include "../ai_monster_movement.h"
 
-#include "biting_state_manager.h"
-
 class CCharacterPhysicsSupport;
 
 typedef VisionElem SEnemy;
@@ -29,8 +27,7 @@ typedef VisionElem SEnemy;
 class CAI_Biting : public CCustomMonster, 
 				   public CMonsterMemory,
 				   virtual public CMonsterMovement,
-				   public CSharedClass<_biting_shared>,
-				   public CStateManagerBiting {
+				   public CSharedClass<_biting_shared> {
 
 	typedef	CCustomMonster					inherited;
 	typedef CSharedClass<_biting_shared>	_sd_biting;
@@ -103,7 +100,7 @@ public:
 	virtual void			shedule_Update					(u32 dt);
 
 	virtual void			Think							();
-	virtual	void			Init							();
+			void			Init							();
 	virtual	void			reinit							();
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
@@ -144,9 +141,12 @@ public:
 	virtual void			SetScriptControl				(const bool bScriptControl, ref_str caSciptName);
 
 
+	// ---------------------------------------------------------------------------------
+	// Process FSM
+	virtual bool			UpdateStateManager				() {return false;}
 
 	// ---------------------------------------------------------------------------------
-	
+
 	virtual void			ProcessTurn						() {}
 	virtual bool			AA_CheckHit						();
 	// установка специфических анимаций 
@@ -157,6 +157,7 @@ public:
 
 	// ---------------------------------------------------------------------------------
 
+	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist);
 	
 	// Other
 			void			vfUpdateParameters				();

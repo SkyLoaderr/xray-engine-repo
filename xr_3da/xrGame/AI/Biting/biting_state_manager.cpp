@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "ai_biting.h"
-#include "biting_state_rest.h"
+#include "biting_state_manager.h"
 #include "biting_state_panic.h"
-#include "biting_state_attack.h"
 
 CStateManagerBiting::CStateManagerBiting	(LPCSTR state_name) : inherited(state_name)
 {
@@ -19,13 +18,13 @@ void CStateManagerBiting::Init				()
 
 void CStateManagerBiting::Load				(LPCSTR section)
 {
-	add_state				(xr_new<CStateBitingRest>("Rest Manager"),		eStateRest,		0);
-	add_state				(xr_new<CStateBitingPanic>("Panic Manager"),	eStatePanic,	1);
-	add_state				(xr_new<CStateBitingAttack>("Attack Manager"),	eStateAttack,	0);	
-
-	add_transition			(eStateRest,	eStatePanic,	1, 1);
-	add_transition			(eStateRest,	eStateAttack,	1, 1);
-	add_transition			(eStatePanic,	eStateAttack,	1, 1);
+//	add_state				(xr_new<CStateBitingRest>("Rest Manager"),		eStateRest,		0);
+//	add_state				(xr_new<CStateBitingPanic>("Panic Manager"),	eStatePanic,	1);
+//	add_state				(xr_new<CStateBitingAttack>("Attack Manager"),	eStateAttack,	0);	
+//
+//	add_transition			(eStateRest,	eStatePanic,	1, 1);
+//	add_transition			(eStateRest,	eStateAttack,	1, 1);
+//	add_transition			(eStatePanic,	eStateAttack,	1, 1);
 
 	inherited::Load			(section);
 }

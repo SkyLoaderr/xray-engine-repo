@@ -2,7 +2,7 @@
 
 #include "../entity_alive.h"
 #include "../PhysicsShell.h"
-#include "../../PHObject.h"
+#include "../PHObject.h"
 
 enum ETelekineticState {
 	TS_None,

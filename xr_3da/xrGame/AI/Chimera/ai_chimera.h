@@ -21,7 +21,6 @@ public:
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 	float						m_fGoingSpeed;
 
-
 	CMotionDef					*cur_anim;
 public:
 							CAI_Chimera					();

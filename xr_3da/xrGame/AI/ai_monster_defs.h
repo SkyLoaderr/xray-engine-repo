@@ -204,6 +204,16 @@ enum EMotionAnim {
 
 	eAnimMiscAction_00,
 
+	eAnimUpperStandIdle,
+	eAnimUpperStandTurnLeft,
+	eAnimUpperStandTurnRight,
+
+	eAnimStandToUpperStand,
+	eAnimUppperStandToStand,
+
+	eAnimUpperWalkFwd,
+	eAnimUpperThreaten,
+	eAnimUpperAttack
 };
 
 // Generic actions
@@ -229,6 +239,7 @@ enum EPState {
 	PS_STAND,
 	PS_SIT, 
 	PS_LIE,
+	PS_STAND_UPPER
 };
 
 typedef		ref_str			anim_string;
@@ -340,6 +351,8 @@ DEFINE_MAP		(u16,				t_fx_index,				FX_MAP_U16,					FX_MAP_U16_IT);
 DEFINE_MAP		(ref_str,			t_fx_index,				FX_MAP_STRING,				FX_MAP_STRING_IT);
 
 
+//////////////////////////////////////////////////////////////////////////
+// Sharing
 #define BEGIN_LOAD_SHARED_MOTION_DATA() {MotionMan.PrepareSharing();}
 #define END_LOAD_SHARED_MOTION_DATA()	{MotionMan.NotifyShareLoaded();}
 
@@ -349,6 +362,8 @@ DEFINE_MAP		(ref_str,			t_fx_index,				FX_MAP_STRING,				FX_MAP_STRING_IT);
 	pmt::Finish();									\
 }
 
+#define CHECK_SHARED_LOADED() {if (CSharedClass<_motion_shared>::IsLoaded()) return; }
+//////////////////////////////////////////////////////////////////////////
 
 DEFINE_VECTOR	(SEQ_VECTOR, VELOCITY_CHAIN_VEC, VELOCITY_CHAIN_VEC_IT);
 
@@ -379,5 +394,18 @@ enum EAccelValue {
 
 #define deg(x) (x * PI / 180)
 
-#define CHECK_SHARED_LOADED() {if (CSharedClass<_motion_shared>::IsLoaded()) return; }
+
+///////////////////////////////////////////////////////////////////////////////
+// State Management
+#define DO_ONCE_BEGIN(flag)	if (!flag) {flag = true;  
+#define DO_ONCE_END()		}
+
+#define TIME_OUT(a,b) a+b<m_dwCurrentTime
+
+#define DO_IN_TIME_INTERVAL_BEGIN(varLastTime, varTimeInterval)	if (TIME_OUT(varLastTime,varTimeInterval)) { varLastTime = m_dwCurrentTime;
+#define DO_IN_TIME_INTERVAL_END()								}
+///////////////////////////////////////////////////////////////////////////////
+
+
+#define PATH_NEED_REBUILD() m_object->IsPathEnd(2,0.5f)
 

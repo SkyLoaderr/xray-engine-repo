@@ -86,7 +86,6 @@ void CBitingAttack::Init()
 }
 
 #define TIME_WALK_PATH						5000
-#define REAL_DIST_THROUGH_TRACE_THRESHOLD	6.0f
 #define PREDICT_POSITION_MIN_THRESHOLD		6.0f		// мин дистанция при которой 	
 #define BUILD_FULL_PATH_MAX_DIST			10.0f		// макс дистанция до врага, при которой будет строится полный путь
 #define BUILD_HALF_PATH_DIST				5.f			// дистанция не полного пути
@@ -105,17 +104,9 @@ void CBitingAttack::Run()
 	UpdateFrameFlags();
 	flags.or(frame_flags, init_flags.get());
 
-	
 	// обновить минимальную и максимальную дистанции до врага
-	if (!flags.is(AF_ATTACK_RAT)) {
-		m_fDistMin = pMonster->m_fCurMinAttackDist;
-		m_fDistMax = pMonster->_sd->m_fMaxAttackDist - (pMonster->_sd->m_fMinAttackDist - pMonster->m_fCurMinAttackDist);
-	}
+	dist = pMonster->GetEnemyDistances(m_fDistMin, m_fDistMax);
 
-	// определить расстояние до противника
-	dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
-	if (dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) dist = pMonster->GetRealDistToEnemy(m_tEnemy.obj);
-	
 	// определить переменные машины состояний
 	bool b_attack_melee		= false;
 	

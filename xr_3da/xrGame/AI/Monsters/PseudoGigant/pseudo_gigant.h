@@ -12,5 +12,6 @@ public:
 
 			void	Init				();
 	virtual void	StateSelector		();
+	virtual	void	ProcessTurn			();
 };
 
