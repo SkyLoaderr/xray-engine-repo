@@ -4,7 +4,7 @@
 #include "PHSynchronize.h"
 #include "PHDisabling.h"
 class CPhysicsShellHolder;
-typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
+
 class CGameObject;
  static enum EEnvironment
 			{

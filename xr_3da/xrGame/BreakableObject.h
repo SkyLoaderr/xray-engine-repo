@@ -5,7 +5,7 @@
 #ifndef BreakableObjectH
 #define BreakableObjectH
 #pragma once
-
+struct SGameMtl;
 #include "physicsshellholder.h"
 class CPHStaticGeomShell;
 
@@ -58,7 +58,7 @@ private:
 	void			CheckHitBreak		(float power,ALife::EHitType hit_type);
 	void			ProcessDamage		();
 	void			SendDestroy			();
-static 	void __stdcall ObjectContactCallback(bool& /**do_colide/**/,dContact& c);
+static 	void __stdcall ObjectContactCallback(bool& /**do_colide/**/,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 };
 
 #endif //BreakableObjectH

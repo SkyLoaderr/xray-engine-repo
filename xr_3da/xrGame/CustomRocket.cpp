@@ -102,7 +102,7 @@ void CCustomRocket::create_physic_shell	()
 //////////////////////////////////////////////////////////////////////////
 
 
-void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c) 
+void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c ,SGameMtl * material_1,SGameMtl * material_2) 
 {
 	do_colide = false;
 
@@ -119,18 +119,20 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c)
 		l_this = l_pUD2 ? dynamic_cast<CCustomRocket*>(l_pUD2->ph_ref_object) : NULL;
 		vUp.invert(*(Fvector*)&c.geom.normal);
 
-		if(dGeomGetClass(c.geom.g1)==dTriListClass)
-			material=GMLib.GetMaterialByIdx((u16)c.surface.mode);
-		else
-			material=GMLib.GetMaterialByIdx(l_pUD2->material);
+		//if(dGeomGetClass(c.geom.g1)==dTriListClass)
+		//	material=GMLib.GetMaterialByIdx((u16)c.surface.mode);
+		//else
+		//	material=GMLib.GetMaterialByIdx(l_pUD2->material);
+		material=material_2;
 
 	}else{
 		vUp.set(*(Fvector*)&c.geom.normal);	
 
-		if(dGeomGetClass(c.geom.g2)==dTriListClass)
-			material=GMLib.GetMaterialByIdx((u16)c.surface.mode);
-		else
-			material=GMLib.GetMaterialByIdx(l_pUD1->material);
+		//if(dGeomGetClass(c.geom.g2)==dTriListClass)
+		//	material=GMLib.GetMaterialByIdx((u16)c.surface.mode);
+		//else
+		//	material=GMLib.GetMaterialByIdx(l_pUD1->material);
+		material=material_1;
 
 	}
 	VERIFY(material);

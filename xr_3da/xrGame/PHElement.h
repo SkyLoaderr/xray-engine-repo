@@ -118,7 +118,7 @@ public:																																				//
 			void			ResetMass								(float density);																//aux
 ///////////////////////////////////////////////////PushOut///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void			set_PushOut								(u32 time,PushOutCallbackFun* push_out=PushOutCallback);						//ph state influent called anywhere
+	virtual void			set_PushOut								(u32 time,ObjectContactCallbackFun* push_out=PushOutCallback);						//ph state influent called anywhere
 private:																																			//
 			void			unset_Pushout							();																				//caled by ph upadate state influent
 public:																																				//

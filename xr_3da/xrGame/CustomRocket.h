@@ -97,7 +97,7 @@ protected:
 
 	//обработка столкновения
 	virtual void			Contact(const Fvector &pos, const Fvector &normal);
-	static	void __stdcall	ObjectContactCallback(bool& do_colide,dContact& c);
+	static	void __stdcall	ObjectContactCallback(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 
 
 	//////////////////////////////////////////////////////////////////////////

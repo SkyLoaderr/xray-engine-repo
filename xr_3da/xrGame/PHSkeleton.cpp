@@ -235,7 +235,7 @@ void CPHSkeleton::PHSplit()
 }
 
 
-void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
+ObjectContactCallbackFun PushOutCallback2;
 
 void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 {

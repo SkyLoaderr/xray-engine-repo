@@ -2,6 +2,7 @@
 #define EXTENDED_GEOM
 #include "PHObject.h"
 #include "ode_include.h"
+#include "physicscommon.h"
 class CPhysicsShellHolder;
 
 struct Triangle 
@@ -19,8 +20,7 @@ struct Triangle
 
 };
 
-typedef  void __stdcall ContactCallbackFun		(CDB::TRI* T,		dContactGeom* c);
-typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
+
 class CGameObject;
 struct dxGeomUserData
 {

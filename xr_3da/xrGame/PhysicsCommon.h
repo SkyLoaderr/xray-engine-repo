@@ -21,7 +21,7 @@ extern	int			phFPS;
 extern	int			phIterations;
 extern	float		phBreakCommonFactor;
 extern	float		phRigidBreakWeaponFactor;
-
+struct SGameMtl;
 #define ERP(k_p,k_d)		((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)))
 #define CFM(k_p,k_d)		(1.f / (((fixed_step)*(k_p)) + (k_d)))
 #define SPRING(cfm,erp)		((erp)/(cfm)/fixed_step)
@@ -37,15 +37,15 @@ IC void	 MulSprDmp(float &cfm,float	&erp,float mul_spring,float mul_damping)
 	erp*=(factor*mul_spring);
 }
 typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
-typedef	void __stdcall  ObjectContactCallbackFun(bool& do_colide,dContact& c);
-typedef void __stdcall  PushOutCallbackFun(bool& do_colide,dContact& c);
+typedef	void __stdcall  ObjectContactCallbackFun(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
+
 
 typedef void __stdcall  BoneCallbackFun(CBoneInstance* B);
 
 
-void __stdcall PushOutCallback(bool& do_colide,dContact& c);
-void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
-void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c);
+ObjectContactCallbackFun PushOutCallback;
+ObjectContactCallbackFun PushOutCallback1;
+ContactCallbackFun ContactShotMark;
 
 typedef	void	__stdcall	PhysicsStepTimeCallback(u32	step_start,u32	step_end);
 extern			PhysicsStepTimeCallback		*physics_step_time_callback;

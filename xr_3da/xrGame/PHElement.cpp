@@ -933,7 +933,7 @@ void	CPHElement::applyImpulse(const Fvector& dir, float val)//aux
 	applyForce(dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);
 }
 
-void CPHElement::set_PushOut(u32 time,PushOutCallbackFun* push_out)
+void CPHElement::set_PushOut(u32 time,ObjectContactCallbackFun* push_out)
 {
 	temp_for_push_out=object_contact_callback;
 

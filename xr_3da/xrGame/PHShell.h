@@ -115,7 +115,7 @@ public:
 	virtual void				set_ContactCallback		  (ContactCallbackFun* callback);
 	virtual void				set_ObjectContactCallback (ObjectContactCallbackFun* callback);
 	virtual void				set_PhysicsRefObject	  (CPhysicsShellHolder* ref_object);
-	virtual void				set_PushOut				  (u32 time,PushOutCallbackFun* push_out=PushOutCallback);
+	virtual void				set_PushOut				  (u32 time,ObjectContactCallbackFun* push_out=PushOutCallback);
 
 	//breabable interface
 	virtual bool				isBreakable				  ();
@@ -147,7 +147,7 @@ public:
 	virtual	void				PhDataUpdate				(dReal step);
 	virtual	void				PhTune						(dReal step);
 
-	virtual void				InitContact					(dContact* c,bool &do_collide){};
+	virtual void				InitContact					(dContact* c,bool &do_collide,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/){};
 	virtual void				FreezeContent				();
 	virtual void				UnFreezeContent				();
 	virtual void				Freeze						();

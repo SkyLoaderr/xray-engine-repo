@@ -7313,13 +7313,6 @@
 							<File
 								RelativePath=".\PHSimpleCharacter.cpp">
 							</File>
-						</Filter>
-						<Filter
-							Name="SipmpleCharacter"
-							Filter="">
-							<File
-								RelativePath=".\PHSimpleCharacter.h">
-							</File>
 							<File
 								RelativePath=".\PHSimpleCharacter.h">
 							</File>

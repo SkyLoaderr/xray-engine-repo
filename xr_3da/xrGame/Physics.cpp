@@ -161,6 +161,7 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 		SGameMtl* material_1=GMLib.GetMaterialByIdx(material_id_1);
 		SGameMtl* material_2=GMLib.GetMaterialByIdx(material_id_2);
 		////////////////params can be changed in callbacks//////////////////////////////////////////////////////////////////////////
+		surface.mode =dContactApprox1|dContactSoftERP|dContactSoftCFM;
 		float spring	=material_2->fPHSpring*material_1->fPHSpring*world_spring;
 		float damping	=material_2->fPHDamping*material_1->fPHDamping*world_damping;
 		surface.soft_erp=ERP(spring,damping);
@@ -168,11 +169,11 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 		surface.mu=material_2->fPHFriction*material_1->fPHFriction;
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		if(usr_data_2&&usr_data_2->object_callback){
-			usr_data_2->object_callback(do_collide,c);
+			usr_data_2->object_callback(do_collide,c,material_1,material_2);
 		}
 
 		if(usr_data_1&&usr_data_1->object_callback){
-			usr_data_1->object_callback(do_collide,c);
+			usr_data_1->object_callback(do_collide,c,material_1,material_2);
 		}
 
 		if(usr_data_2){
@@ -180,7 +181,7 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 			usr_data_2->pushing_neg		=	usr_data_2->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
 			pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
 			if(usr_data_2->ph_object){
-				usr_data_2->ph_object->InitContact(&c,do_collide);
+				usr_data_2->ph_object->InitContact(&c,do_collide,material_1,material_2);
 			}
 
 		}
@@ -190,7 +191,7 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 			usr_data_1->pushing_neg		=	usr_data_1->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
 			pushing_neg=usr_data_1->pushing_b_neg||usr_data_1->pushing_neg;
 			if(usr_data_1->ph_object){
-				usr_data_1->ph_object->InitContact(&c,do_collide);
+				usr_data_1->ph_object->InitContact(&c,do_collide,material_1,material_2);
 
 			}
 		}
@@ -227,9 +228,7 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 			if(material_2->Flags.is(SGameMtl::flPassable)) 
 				do_collide=false;
 		}
-		/////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////params can not be changed by calbacks/////////////////////////////////
-		surface.mode =dContactApprox1|dContactSoftERP|dContactSoftCFM;
+	
 		if(flags_1.is(SGameMtl::flBounceable)&&flags_2.is(SGameMtl::flBounceable))
 		{
 			surface.mode		|=	dContactBounce;
@@ -538,7 +537,7 @@ void dMassSub(dMass *a,const dMass *b)
 	for (i=0; i<12; ++i) a->I[i] -= b->I[i];
 }
 
-void __stdcall PushOutCallback(bool& do_colide,dContact& c)
+void __stdcall PushOutCallback(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 
 	dBodyID body1=dGeomGetBody(c.geom.g1);
@@ -601,7 +600,7 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c)
 
 
 
-void __stdcall PushOutCallback1(bool& do_colide,dContact& c)
+void __stdcall PushOutCallback1(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 
 	dBodyID body1=dGeomGetBody(c.geom.g1);
@@ -647,7 +646,7 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c)
 		dBodyAddForce(body2,-force.x,-force.y,-force.z);
 	}
 }
-void __stdcall PushOutCallback2(bool& do_colide,dContact& c)
+void __stdcall PushOutCallback2(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 
 	dBodyID body1=dGeomGetBody(c.geom.g1);

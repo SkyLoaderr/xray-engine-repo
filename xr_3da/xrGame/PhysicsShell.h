@@ -5,7 +5,7 @@
 #include "PHDefs.h"
 #include "PhysicsCommon.h"
 #include "alife_space.h"
-
+ObjectContactCallbackFun PushOutCallback;
 class CPhysicsJoint;
 class CPhysicsElement;
 class CPhysicsShell;
@@ -76,7 +76,7 @@ public:
 	virtual void			set_LinearVel			(const Fvector& velocity)								= 0;
 	virtual void			set_AngularVel			(const Fvector& velocity)								= 0;
 	virtual void			set_ApplyByGravity		(bool flag)												= 0;
-	virtual void			set_PushOut				(u32 time,PushOutCallbackFun* push_out=PushOutCallback)	= 0;
+	virtual void			set_PushOut				(u32 time,ObjectContactCallbackFun* push_out=PushOutCallback)	= 0;
 	virtual void			SetMaterial				(u16 m)													= 0;
 	virtual void			SetMaterial				(LPCSTR m)												= 0;
 	virtual void			set_DisableParams		(const SAllDDOParams& params)							= 0;

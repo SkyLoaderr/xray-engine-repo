@@ -84,7 +84,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 }
 
 
-void __stdcall TestPathCallback(bool& do_colide,dContact& c)
+void __stdcall TestPathCallback(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 	do_colide=false;
 }
@@ -727,6 +727,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	m_control_force[0]=0.f;
 	m_control_force[1]=0.f;
 	m_control_force[2]=0.f;
+	
 
 	//if(m_max_velocity<EPS) return;
 	dMass m;
@@ -1098,10 +1099,17 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 const dReal def_spring_rate=0.5f;
 const dReal def_dumping_rate=20.1f;
 /////////////////////////////////////////////////////////////////
-void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
+void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * material_1,SGameMtl * material_2){
 
-	
-	SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
+	bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g1==m_hat_transform;
+
+	//SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
+	SGameMtl* tri_material=0;
+	if(bo1)
+		tri_material=material_2;
+	else
+		tri_material=material_1;
+
 	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimbable);
 	if(is_control&&b_at_wall)
 	{
@@ -1118,7 +1126,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 	bool object=(dGeomGetBody(c->geom.g1)&&dGeomGetBody(c->geom.g2));
 	b_on_object=b_on_object||object;
 	*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
-	bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g1==m_hat_transform;
+
 	if((c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform))
 	{
 		
@@ -1169,12 +1177,14 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 		if(bo1)
 		{
 			b=dGeomGetBody(c->geom.g2);
-			obj_material=GMLib.GetMaterialByIdx(retrieveGeomUserData(c->geom.g2)->material);
+			//obj_material=GMLib.GetMaterialByIdx(retrieveGeomUserData(c->geom.g2)->material);
+			obj_material=material_2;
 		}
 		else
 		{
 			b=dGeomGetBody(c->geom.g1);
-			obj_material=GMLib.GetMaterialByIdx(retrieveGeomUserData(c->geom.g1)->material);
+			//obj_material=GMLib.GetMaterialByIdx(retrieveGeomUserData(c->geom.g1)->material);
+			obj_material=material_1;
 		}
 
 
@@ -1350,10 +1360,24 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
 
 	if(is_control&&!b_lose_control||b_jumping){
-		c->surface.mu = 0.00f;
+		if(c->geom.g1==m_wheel||c->geom.g2==m_wheel)
+		{
+			c->surface.mu = 0.f;//0.00f;
+			c->surface.mode|=dContactFDir1|dContactMotion1;
+			dReal mag=m_acceleration.magnitude();
+			c->surface.motion1=mag/10.f;
+			c->fdir1[0]=m_acceleration[0]/mag;
+			c->fdir1[1]=m_acceleration[1]/mag;
+			c->fdir1[2]=m_acceleration[2]/mag;
+		}
+		else{
+				c->surface.mu = 0.00f;
+			}
+		//dNormalize3(c->fdir1);
 		//c->surface.soft_cfm*=spring_rate;//0.01f;
 		//c->surface.soft_erp*=dumping_rate;//10.f;
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
+		
 	}
 	else
 	{
