@@ -65,20 +65,30 @@ public:
 		else
 			return		(0);
 	}
-			
+
 			void			Hit					(CLuaHit &tLuaHit);
 
 	// CGameObject
 	BIND_MEMBER		(m_tpGameObject,	ClassID,			CGameObject,	SUB_CLS_ID,			CLASS_ID,						CLASS_ID(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	Position,			CGameObject,	Position,			Fvector,						Fvector());
-	BIND_FUNCTION10	(m_tpGameObject,	Name,				CGameObject,	cName,				ref_str,						"");
-	BIND_FUNCTION10	(m_tpGameObject,	Section,			CGameObject,	cNameSect,			ref_str,						"");
 	BIND_FUNCTION10	(m_tpGameObject,	Mass,				CGameObject,	GetMass,			float,							float(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	ID,					CGameObject,	ID,					u32,							u32(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	getVisible,			CGameObject,	getVisible,			BOOL,							FALSE);
 	BIND_FUNCTION01	(m_tpGameObject,	setVisible,			CGameObject,	setVisible,			BOOL,							BOOL);
 	BIND_FUNCTION10	(m_tpGameObject,	getEnabled,			CGameObject,	getEnabled,			BOOL,							FALSE);
 	BIND_FUNCTION01	(m_tpGameObject,	setEnabled,			CGameObject,	setEnabled,			BOOL,							BOOL);
+	
+	IC		LPCSTR			Name				() const
+	{
+		VERIFY			(m_tpGameObject);
+		return			(*m_tpGameObject->cName());
+	}
+
+	IC		LPCSTR			Section				() const
+	{
+		VERIFY			(m_tpGameObject);
+		return			(*m_tpGameObject->cNameSect());
+	}
 
 	// CInventoryItem
 	u32				Cost			() const;
