@@ -7,9 +7,9 @@
 
 void CPHWorld::Render()
 {
-	Device.Shader.OnFrameEnd		();
-	Device.Primitive.dbg_DrawAABB	(vCenter,sx,sy,sz,0xffffffff);
-	Device.Primitive.dbg_DrawEllipse(M, 0xfffffff);
+//	Device.Shader.OnFrameEnd		();
+//	Device.Primitive.dbg_DrawAABB	(vCenter,sx,sy,sz,0xffffffff);
+//	Device.Primitive.dbg_DrawEllipse(M, 0xfffffff);
 }
 
 //////////////////////////////////////////////////////////////
