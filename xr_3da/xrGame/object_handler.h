@@ -37,26 +37,8 @@ protected:
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
 
 protected:
-	bool						m_bHammerIsClutched;
-	bool						m_infinite_ammo;
-
-private:
-	// firing
-	bool						m_bFiring;
-	u32							m_dwNoFireTime;
-	u32							m_dwStartFireTime;
-	bool						m_bCanFire;
-
-	// fire  constants
-	u32							m_dwFireRandomMin;
-	u32							m_dwFireRandomMax;
-	u32							m_dwNoFireTimeMin;
-	u32							m_dwNoFireTimeMax;
-	float						m_fMinMissDistance;
-	float						m_fMinMissFactor;
-	float						m_fMaxMissDistance;
-	float						m_fMaxMissFactor;
-	MonsterSpace::EObjectAction	m_tWeaponState;
+	bool					m_hammer_is_clutched;
+	bool					m_infinite_ammo;
 
 protected:
 			void			add_evaluators			(CWeapon		*weapon);
@@ -85,7 +67,6 @@ public:
 	virtual void			OnItemTake				(CInventoryItem *inventory_item);
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
 	virtual void			OnItemDropUpdate		();
-	IC		bool			firing					() const;
 	IC		_condition_type	uid						(const u32 id1, const u32 id0) const;
 	IC		bool			object_action			(_condition_type action_id, CObject *object);
 	IC		u32				current_action_object_id() const;
@@ -100,6 +81,7 @@ public:
 			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0, u32 queue_size = 0, u32 queue_interval = 300);
 	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
 	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
+	IC		bool			hammer_is_clutched		() const;
 };
 
 #include "object_handler_inline.h"

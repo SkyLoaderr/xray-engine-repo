@@ -146,7 +146,7 @@ void CAI_Stalker::Die				(CObject* who)
 	set_sound_mask					(0);
 	play							(eStalkerSoundDie);
 	inherited::Die					(who);
-	m_bHammerIsClutched				= !::Random.randI(0,2);
+	m_hammer_is_clutched			= !::Random.randI(0,2);
 
 	//запретить использование слотов в инвенторе
 	inventory().SetSlotsUseful		(false);
@@ -157,31 +157,10 @@ void CAI_Stalker::Load				(LPCSTR section)
 	setEnabled						(false);
 	
 	CCustomMonster::Load			(section);
-	CObjectHandler::Load		(section);
+	CObjectHandler::Load			(section);
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
 	CMotivationActionManagerStalker::Load	(section);
-
-	CSelectorManager::add<
-		CVertexEvaluator<
-			aiSearchRange | aiEnemyDistance
-		>
-	>								(section,"selector_free_hunting");
-	CSelectorManager::add<
-		CVertexEvaluator<
-			aiSearchRange | aiCoverFromEnemyWeight
-		>
-	>								(section,"selector_reload");
-	CSelectorManager::add<
-		CVertexEvaluator<
-			aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance
-		>
-	>								(section,"selector_retreat");
-	CSelectorManager::add<
-		CVertexEvaluator<
-			aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight
-		>
-	>								(section,"selector_cover");
 
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);
@@ -319,7 +298,6 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	net_update& N					= NET.back();
 	P.w_float						(inventory().TotalWeight());
 	P.w_u32							(m_dwMoney);
-	P.w_u32							(0);
 
 	P.w_float_q16					(fEntityHealth,-500,1000);
 
@@ -367,7 +345,6 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 	P.r_float						();
 	m_dwMoney						= P.r_u32();
-	P.r_u32							();
 
 	float health;
 	P.r_float_q16		(health,-500,1000);
@@ -522,7 +499,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	// inventory update
 	if (GetLevelDeathTime() && (inventory().TotalWeight() > 0)) {
 		CWeapon *tpWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());
-		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - GetLevelDeathTime() > 500)) {
+		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !hammer_is_clutched() || (Level().timeServer() - GetLevelDeathTime() > 500)) {
 			xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
 			for ( ; I != E; ++I)

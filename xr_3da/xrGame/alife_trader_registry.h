@@ -16,14 +16,6 @@ class CALifeTraderRegistry {
 public:
 	typedef xr_vector<CSE_ALifeTrader*> TRADER_REGISTRY;
 
-public:
-	struct CCompareTraderRanksPredicate {
-		IC	bool					operator()	(const CSE_ALifeTrader *tpALifeTrader1, const CSE_ALifeTrader *tpALifeTrader2) const
-		{
-			return					(tpALifeTrader1->m_tRank < tpALifeTrader2->m_tRank);
-		};
-	};
-
 protected:
 	TRADER_REGISTRY					m_traders;
 

@@ -46,14 +46,6 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 			value("enemy",					int(ALife::eRelationTypeEnemy)),
 			value("dummy",					int(ALife::eRelationTypeDummy))
 		]
-		.enum_("rank")
-		[
-			value("novice",					int(ALife::eStalkerRankNovice)),
-			value("experienced",			int(ALife::eStalkerRankExperienced)),
-			value("veteran",				int(ALife::eStalkerRankVeteran)),
-			value("master",					int(ALife::eStalkerRankMaster)),
-			value("dummy",					int(ALife::eStalkerRankDummy))
-		]
 		.enum_("action_types")
 		[
 			value("movement",				int(ScriptMonster::eActionTypeMovement)),

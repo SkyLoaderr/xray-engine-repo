@@ -59,9 +59,8 @@ public:
 	void		StopTrade();
 	bool		IsInTradeState() {return TradeState;}
 
-	void		Communicate();
-	
-	bool		OfferTrade(SInventoryOwner man);					// man предлагает торговать
+//	void		Communicate();
+//	bool		OfferTrade(SInventoryOwner man);					// man предлагает торговать
 	
 	void		SellItem(int id);
 	void		SellItem(CInventoryItem* pItem);

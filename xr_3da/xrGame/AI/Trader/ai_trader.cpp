@@ -229,7 +229,6 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	setEnabled						(TRUE);
 
 	m_dwMoney						= l_tpTrader->m_dwMoney;
-	m_tRank							= l_tpTrader->m_tRank;
 
 	// Установка callback на кости
 	CBoneInstance *bone_head =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
@@ -244,7 +243,6 @@ void CAI_Trader::net_Export		(NET_Packet& P)
 
 	P.w_float						(inventory().TotalWeight());
 	P.w_u32							(m_dwMoney);
-	P.w_u32							(0);
 }
 
 void CAI_Trader::net_Import		(NET_Packet& P)
@@ -252,16 +250,12 @@ void CAI_Trader::net_Import		(NET_Packet& P)
 	R_ASSERT						(Remote());
 
 	float							fDummy;
-	u32								dwDummy;
 	P.r_float						(fDummy);
 	m_dwMoney						= P.r_u32();
-	P.r_u32							(dwDummy);
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
 }
-
-
 
 void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 {

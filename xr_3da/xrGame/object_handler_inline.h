@@ -12,3 +12,8 @@ IC	bool CObjectHandler::goal_reached			() const
 {
 	return				(solution().size() < 2);
 }
+
+IC	bool CObjectHandler::hammer_is_clutched		() const
+{
+	return				(m_hammer_is_clutched);
+}

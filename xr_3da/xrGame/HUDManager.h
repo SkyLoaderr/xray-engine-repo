@@ -6,6 +6,9 @@
 #include "HitMarker.h"
 #include "UI.h"
 
+//namespace collide {
+//	struct rq_result;
+//};
 // refs
 class CContextMenu;
 class CHUDCursor;

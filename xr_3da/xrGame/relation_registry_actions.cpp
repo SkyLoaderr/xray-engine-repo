@@ -167,7 +167,7 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 					actor->ChangeReputation(delta_reputation);
 
 				CHARACTER_RANK_VALUE		delta_rank = 0;
-				delta_rank = CHARACTER_RANK::rank_kill_points(stalker->GetRank());
+				delta_rank = CHARACTER_RANK::rank_kill_points(stalker->Rank());
 				if(delta_rank)
 					actor->ChangeRank(delta_rank);
 			}

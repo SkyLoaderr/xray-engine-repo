@@ -11,7 +11,15 @@
 
 CSE_Abstract *F_entity_Create	(LPCSTR section)
 {
-	if (!pSettings->section_exist(section))
-		return	(0);
-	return		(object_factory().server_object(pSettings->r_clsid(section,"class"),section));
+	if (!pSettings->section_exist(section)) {
+		if	(
+				!xr_strcmp(section,"m_stalker_e") || 
+				!xr_strcmp(section,"m_stalker_wolf") || 
+				!xr_strcmp(section,"m_stalker_demo")
+			)
+			return	(object_factory().server_object(pSettings->r_clsid("stalker","class"),"stalker"));
+		else
+			return	(0);
+	}
+	return			(object_factory().server_object(pSettings->r_clsid(section,"class"),section));
 }

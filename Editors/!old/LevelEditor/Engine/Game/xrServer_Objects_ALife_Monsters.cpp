@@ -50,7 +50,6 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_dwMoney					= 0;
 	if (pSettings->line_exist(caSection, "money"))
 		m_dwMoney 				= pSettings->r_u32(caSection, "money");
-	m_tRank						= ALife::EStalkerRank(pSettings->r_u32(caSection, "rank"));
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	m_tpEvents.clear			();
 
@@ -348,19 +347,13 @@ CHARACTER_REPUTATION_VALUE	CSE_ALifeTraderAbstract::Reputation () const
 void CSE_ALifeTraderAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_float			(m_fCumulativeItemMass);
-//	tNetPacket.w_float			(m_iCumulativeItemVolume);
 	tNetPacket.w_u32			(m_dwMoney);
-	tNetPacket.w_u32			(m_tRank);
 };
 
 void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
 	tNetPacket.r_float			(m_fCumulativeItemMass);
-//	tNetPacket.r_float			(m_iCumulativeItemVolume);
 	tNetPacket.r_u32			(m_dwMoney);
-	u32							dwDummy;
-	tNetPacket.r_u32			(dwDummy);
-	m_tRank						= ALife::EStalkerRank(m_tRank);
 };
 
 

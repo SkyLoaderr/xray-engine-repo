@@ -13,6 +13,7 @@
 #include "script_export_space.h"
 #include "script_callback.h"
 #include "xr_time.h"
+#include "character_info_defs.h"
 
 enum EPdaMsg;
 enum ESoundTypes;
@@ -351,7 +352,7 @@ public:
 			void 				set_sight			(CScriptGameObject *object_to_look, bool torso_look);
 			void 				set_sight			(CScriptGameObject *object_to_look, bool torso_look, LPCSTR bone_name);
 			void 				set_sight			(const MemorySpace::CMemoryInfo *memory_object, bool	torso_look);
-			u32					GetRank				();
+			CHARACTER_RANK_VALUE GetRank			();
 			void				play_sound				(u32 internal_type);
 			void				play_sound				(u32 internal_type, u32 max_start_time);
 			void				play_sound				(u32 internal_type, u32 max_start_time, u32 min_start_time);

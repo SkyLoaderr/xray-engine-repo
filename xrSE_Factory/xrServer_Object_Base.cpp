@@ -206,6 +206,14 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	tNetPacket.r_begin			(dummy16);	
 	R_ASSERT					(M_SPAWN==dummy16);
 	tNetPacket.r_stringZ		(s_name			);
+	
+	if	(
+			!xr_strcmp(*s_name,"m_stalker_e") ||
+			!xr_strcmp(*s_name,"m_stalker_demo") ||
+			!xr_strcmp(*s_name,"m_stalker_wolf")
+		)
+		s_name					= "stalker";
+
 	string256					temp;
 	tNetPacket.r_stringZ		(temp);
 	set_name_replace			(temp);

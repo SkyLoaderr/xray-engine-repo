@@ -138,15 +138,6 @@ namespace ALife {
 		eTaskTypeDummy = u32(-1),
 	};
 
-	enum EStalkerRank {
-		eStalkerRankNone = u32(0),
-		eStalkerRankNovice,
-		eStalkerRankExperienced,
-		eStalkerRankVeteran,
-		eStalkerRankMaster,
-		eStalkerRankDummy = u32(-1),
-	};
-
 	enum EZoneState {
 		eZoneStateNone = u32(0),
 		eZoneStateSurge,

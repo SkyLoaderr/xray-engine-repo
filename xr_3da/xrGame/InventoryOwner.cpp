@@ -72,7 +72,6 @@ void CInventoryOwner::reload				(LPCSTR section)
 	inventory().SetSlotsUseful (true);
 
 	m_dwMoney					= 0;
-	m_tRank						= ALife::eStalkerRankNone;
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
 

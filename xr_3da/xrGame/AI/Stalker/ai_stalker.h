@@ -175,7 +175,6 @@ public:
 
 	// scripts
 	virtual void						UseObject				(const CObject			*tpObject);
-	virtual ALife::EStalkerRank			GetRank					() const;
 	virtual CWeapon						*GetCurrentWeapon		() const;
 	virtual u32							GetWeaponAmmo			() const;
 	virtual CInventoryItem				*GetCurrentEquipment	() const;

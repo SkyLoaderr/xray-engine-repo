@@ -21,12 +21,6 @@ void CAI_Stalker::UseObject(const CObject *tpObject)
 #pragma todo("Dima to Dima : Use object specified by script")
 }
 
-ALife::EStalkerRank	CAI_Stalker::GetRank() const
-{
-#pragma todo("Dima to Dima : Return correct stalker rank")
-	return			(ALife::eStalkerRankNovice);
-}
-
 CWeapon	*CAI_Stalker::GetCurrentWeapon() const
 {
 	return			(smart_cast<CWeapon*>(inventory().ActiveItem()));

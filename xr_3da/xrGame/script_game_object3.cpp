@@ -297,15 +297,15 @@ void CScriptGameObject::set_dest_level_vertex_id(u32 level_vertex_id)
 	}
 }
 
-u32 CScriptGameObject::GetRank		()
+CHARACTER_RANK_VALUE CScriptGameObject::GetRank		()
 {
 	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object());
 	if (!stalker) {
-		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetRank!");
-		return					(ALife::eStalkerRankNone);
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetRank!");
+		return					(CHARACTER_RANK_VALUE(0));
 	}
 	else
-		return					(stalker->GetRank());
+		return					(stalker->Rank());
 }
 
 void CScriptGameObject::set_desired_position	()

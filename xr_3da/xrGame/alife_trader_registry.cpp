@@ -24,8 +24,6 @@ CSE_ALifeTrader *CALifeTraderRegistry::trader_nearest(CSE_ALifeHumanAbstract *hu
 	TRADER_REGISTRY::const_iterator	I = traders().begin();
 	TRADER_REGISTRY::const_iterator	E = traders().end();
 	for ( ; I != E; ++I) {
-//		if ((*I)->m_tRank != human->m_tRank)
-//			break;
 		float					distance = ai().game_graph().vertex((*I)->m_tGraphID)->game_point().distance_to(position);
 		if (distance < best_distance) {
 			best_distance		= distance;
@@ -40,8 +38,6 @@ CSE_ALifeTrader *CALifeTraderRegistry::trader_nearest(CSE_ALifeHumanAbstract *hu
 void CALifeTraderRegistry::add	(CSE_ALifeDynamicObject *object)
 {
 	CSE_ALifeTrader			*trader = smart_cast<CSE_ALifeTrader*>(object);
-	if (trader) {
+	if (trader)
 		m_traders.push_back	(trader);
-		std::sort			(m_traders.begin(),m_traders.end(),CCompareTraderRanksPredicate());
-	}
 }

@@ -113,22 +113,22 @@ void CTrade::RemovePartner()
 {
 	pPartner.Set(TT_NONE,0,0);
 }
-// предложение торговли
-void CTrade::Communicate() 
-{
-	// Вывести приветствие
-//	Msg("--TRADE::----------------------------------------------");
-//	Msg("--TRADE::          TRADE ACIVATED                      ");
-//	Msg("--TRADE::----------------------------------------------");
-//	Msg("--TRADE:: - Hello, my name is [%s]", *pThis.base->cName());
-//	Msg("--TRADE::   Wanna trade with me?" );
-
-	if (pPartner.inv_owner->GetTrade()->OfferTrade(pThis)) { 
-		StartTrade();
-	}
-
-}
-
+//// предложение торговли
+//void CTrade::Communicate() 
+//{
+//	// Вывести приветствие
+////	Msg("--TRADE::----------------------------------------------");
+////	Msg("--TRADE::          TRADE ACIVATED                      ");
+////	Msg("--TRADE::----------------------------------------------");
+////	Msg("--TRADE:: - Hello, my name is [%s]", *pThis.base->cName());
+////	Msg("--TRADE::   Wanna trade with me?" );
+//
+//	if (pPartner.inv_owner->GetTrade()->OfferTrade(pThis)) { 
+//		StartTrade();
+//	}
+//
+//}
+//
 bool CTrade::SetPartner(CEntity *p)
 {
 	CAI_Trader *pTrader;
@@ -155,36 +155,36 @@ bool CTrade::SetPartner(CEntity *p)
 }
 
 
-// Man предлагает торговать 
-// возвращает true, если данный trader готов торговать с man
-// т.е. принятие торговли
-bool CTrade::OfferTrade(SInventoryOwner man)
-{
-	StartTrade();
-	pPartner.Set(man.type,man.base,man.inv_owner); 
-	
-	string64	s;
-	switch (pPartner.type) 
-	{
-		case TT_TRADER: strcpy(s, "trader"); break;
-		case TT_STALKER: 
-		case TT_ACTOR: strcpy(s, "stalker"); break;
-	}
-	
-	
-	switch (pPartner.inv_owner->m_tRank) 
-	{
-		case ALife::eStalkerRankNone: strcpy(s,"NO_RANK"); break;
-		case ALife::eStalkerRankNovice: strcpy(s,"NOVICE"); break;
-		case ALife::eStalkerRankExperienced: strcpy(s,"EXPERIENCED"); break;
-		case ALife::eStalkerRankVeteran: strcpy(s,"VETERAN"); break;
-		case ALife::eStalkerRankMaster: strcpy(s,"MASTER"); break;
-		case ALife::eStalkerRankDummy: strcpy(s,"DUMMY"); break;
-	}
-
-	return true;
-}
-
+//// Man предлагает торговать 
+//// возвращает true, если данный trader готов торговать с man
+//// т.е. принятие торговли
+//bool CTrade::OfferTrade(SInventoryOwner man)
+//{
+//	StartTrade();
+//	pPartner.Set(man.type,man.base,man.inv_owner); 
+//	
+//	string64	s;
+//	switch (pPartner.type) 
+//	{
+//		case TT_TRADER: strcpy(s, "trader"); break;
+//		case TT_STALKER: 
+//		case TT_ACTOR: strcpy(s, "stalker"); break;
+//	}
+//	
+//	
+//	switch (pPartner.inv_owner->m_tRank) 
+//	{
+//		case ALife::eStalkerRankNone: strcpy(s,"NO_RANK"); break;
+//		case ALife::eStalkerRankNovice: strcpy(s,"NOVICE"); break;
+//		case ALife::eStalkerRankExperienced: strcpy(s,"EXPERIENCED"); break;
+//		case ALife::eStalkerRankVeteran: strcpy(s,"VETERAN"); break;
+//		case ALife::eStalkerRankMaster: strcpy(s,"MASTER"); break;
+//		case ALife::eStalkerRankDummy: strcpy(s,"DUMMY"); break;
+//	}
+//
+//	return true;
+//}
+//
 
 void CTrade::StartTrade()
 {

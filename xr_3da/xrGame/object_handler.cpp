@@ -22,16 +22,16 @@
 
 using namespace ObjectHandlerSpace;
 
-CObjectHandler::CObjectHandler	()
+CObjectHandler::CObjectHandler		()
 {
 	init						();
 }
 
-CObjectHandler::~CObjectHandler	()
+CObjectHandler::~CObjectHandler		()
 {
 }
 
-void CObjectHandler::init		()
+void CObjectHandler::init			()
 {
 }
 
@@ -39,41 +39,30 @@ void CObjectHandler::Load			(LPCSTR section)
 {
 	inherited::Load				(section);
 	CInventoryOwner::Load		(section);
-	m_dwFireRandomMin  			= pSettings->r_s32(section,"FireRandomMin");
-	m_dwFireRandomMax  			= pSettings->r_s32(section,"FireRandomMax");
-	m_dwNoFireTimeMin  			= pSettings->r_s32(section,"NoFireTimeMin");
-	m_dwNoFireTimeMax  			= pSettings->r_s32(section,"NoFireTimeMax");
-	m_fMinMissDistance 			= pSettings->r_float(section,"MinMissDistance");
-	m_fMinMissFactor   			= pSettings->r_float(section,"MinMissFactor");
-	m_fMaxMissDistance 			= pSettings->r_float(section,"MaxMissDistance");
-	m_fMaxMissFactor			= pSettings->r_float(section,"MaxMissFactor");
-	m_bCanFire					= true;
-	m_bHammerIsClutched			= false;
-	m_dwNoFireTime				= 0;
-	m_dwStartFireTime			= 0;
+	m_hammer_is_clutched		= false;
 }
 
 void CObjectHandler::reinit			(CAI_Stalker *object)
 {
-	inherited::reinit				(object,true);
-	CInventoryOwner::reinit			();
-	CActionBase<CAI_Stalker>		*action;
+	inherited::reinit			(object,true);
+	CInventoryOwner::reinit		();
+	CActionBase<CAI_Stalker>	*action;
 
-	m_storage.set_property			(eWorldPropertyAimed1,false);
-	m_storage.set_property			(eWorldPropertyAimed2,false);
-	m_storage.set_property			(eWorldPropertyUseEnough,false);
+	m_storage.set_property		(eWorldPropertyAimed1,false);
+	m_storage.set_property		(eWorldPropertyAimed2,false);
+	m_storage.set_property		(eWorldPropertyUseEnough,false);
 	
-	add_evaluator					(u32(eWorldPropertyNoItems),			xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
-	add_evaluator					(u32(eWorldPropertyNoItemsIdle),		xr_new<CObjectPropertyEvaluatorConst>(false));
-	action							= xr_new<CSObjectActionBase>(m_object,m_object,&m_storage,"no items idle");
-	add_condition					(action,0xffff,eWorldPropertyItemID,true);
-	add_effect						(action,0xffff,eWorldPropertyIdle,	true);
-	add_operator					(u32(eWorldOperatorNoItemsIdle),action);
+	add_evaluator				(u32(eWorldPropertyNoItems),			xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
+	add_evaluator				(u32(eWorldPropertyNoItemsIdle),		xr_new<CObjectPropertyEvaluatorConst>(false));
+	action						= xr_new<CSObjectActionBase>(m_object,m_object,&m_storage,"no items idle");
+	add_condition				(action,0xffff,eWorldPropertyItemID,true);
+	add_effect					(action,0xffff,eWorldPropertyIdle,	true);
+	add_operator				(u32(eWorldOperatorNoItemsIdle),action);
 
-	set_goal						(eObjectActionIdle);
+	set_goal					(eObjectActionIdle);
 
 #ifdef LOG_ACTION
-//	m_use_log						= true;
+//	m_use_log					= true;
 #endif
 }
 
@@ -738,11 +727,6 @@ void CObjectHandler::add_operators		(CFoodItem *food_item)
 	add_condition		(action,id,eWorldPropertyUseEnough,	false);
 	add_effect			(action,id,eWorldPropertyUsed,		true);
 	add_operator		(uid(id,eWorldOperatorUse),			action);
-}
-
-IC	bool CObjectHandler::firing		() const
-{
-	return					(m_bFiring);
 }
 
 IC	CObjectHandler::_condition_type CObjectHandler::uid(const u32 id0, const u32 id1) const

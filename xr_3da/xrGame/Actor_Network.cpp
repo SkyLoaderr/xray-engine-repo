@@ -55,7 +55,6 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_float			(inventory().TotalWeight());
 
 	P.w_u32				(m_dwMoney);
-	P.w_u32				(m_tRank);
 
 	u16 ms	= (u16)(mstate_real & 0x0000ffff);
 	P.w_u16				(u16(ms));
@@ -325,7 +324,6 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 
 	P.r_float			(fDummy);
 	m_dwMoney =			P.r_u32();
-	m_tRank	  =			ALife::EStalkerRank(P.r_u32());
 
 	P.r_u16				(tmp			); N.mstate = u32(tmp);
 	P.r_sdir			(N.p_accel		);
@@ -658,7 +656,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(e);
 	m_dwMoney				= pTA->m_dwMoney;
-	m_tRank					= pTA->m_tRank;
 
 	OnChangeVisual();
 	//----------------------------------

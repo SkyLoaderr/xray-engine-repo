@@ -55,7 +55,6 @@ public:
 
 	// свойства
 	u32					m_dwMoney;
-	ALife::EStalkerRank	m_tRank;
 
 	CPda* GetPDA		() const;
 	bool IsActivePDA	() const;

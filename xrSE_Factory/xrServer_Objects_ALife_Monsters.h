@@ -25,7 +25,6 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	float							m_fCumulativeItemMass;
 	int								m_iCumulativeItemVolume;
 	u32								m_dwMoney;
-	ALife::EStalkerRank				m_tRank;
 	float							m_fMaxItemMass;
 	ALife::PERSONAL_EVENT_P_VECTOR	m_tpEvents;
 	Flags32							m_trader_flags;
