@@ -24,8 +24,8 @@ function get_tips(actor)
 				elseif v.type == "news" then
 					news_manager.send_news(actor, v.info)
 				end
+				tips[k] = nil				
 			end
-			tips[k] = nil
 		end
 	end 
 end
