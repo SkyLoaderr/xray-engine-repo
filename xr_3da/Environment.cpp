@@ -75,7 +75,7 @@ void CEnvironment::Load		(CInifile *pIni, char *section)
 		sprintf				(name,"%d",env);
 		if (!pSettings->line_exist	(sect,name))	continue;
 		CEnvDescriptor		D;
-		D.load				(pSettings->r_string(sect,name))
+		D.load				(pSettings->r_string(sect,name));
 		Palette.push_back	(D);
 	}
 	
@@ -169,8 +169,8 @@ void CEnvironment::OnFrame()
 	Current.lerp		(_A,_B,t_fact);
 
 	// ******************** Environment params (setting)
-	u32	_fog		= Current.fog_plane.get		();
-	CHK_DX			(HW.pDevice->SetRenderState	( D3DRS_FOGCOLOR, _fog )); 
+	Fcolor c_fog;	c_fog.set	(Current.fog_color.x,Current.fog_color.y,Current.fog_color.z,0);
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	c_fog.get	( ) )); 
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&Current.fog_near)	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&Current.fog_far)	));
 
