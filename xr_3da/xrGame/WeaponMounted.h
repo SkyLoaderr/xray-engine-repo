@@ -3,9 +3,11 @@
 #pragma once
 
 #include "holder_custom.h"
+#include "shootingobject.h"
 
 class CWeaponMounted :	public CGameObject, 
-						public CHolderCustom
+						public CHolderCustom,
+						public CShootingObject
 {
 private:
 	//////////////////////////////////////////////////////////////////////////
@@ -26,6 +28,11 @@ private:
 public:
 							CWeaponMounted		();
 	virtual					~CWeaponMounted		();
+
+	// for shooting object
+	virtual const Fmatrix&	XFORM()	 const		{return CGameObject::XFORM();}
+	virtual		  Fmatrix&	XFORM()				{return CGameObject::XFORM();}
+	virtual IRender_Sector*	Sector()			{return CGameObject::Sector();}
 
 	// Generic
 	virtual void			Load				(LPCSTR section);

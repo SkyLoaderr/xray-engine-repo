@@ -41,6 +41,8 @@ CWeaponMounted::~CWeaponMounted()
 void	CWeaponMounted::Load(LPCSTR section)
 {
 	inherited::Load(section);
+
+	CShootingObject::Load	(section);
 }
 
 BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
