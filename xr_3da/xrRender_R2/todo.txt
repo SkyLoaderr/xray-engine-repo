@@ -14,7 +14,8 @@ done, works OK			:	2*DXT5	bumpmaps + heightmaps	- lower quality, 8 bit, faster(?
 ----------------------------
 			
 smap_res:	fixed(36.0), adaptive(36.9), minus one RT-switch(37.5)
-433/1Ghz:	optimized spot-shadow-shaders + aref( 31.3 )
+433/1.08Ghz:optimized spot-shadow-shaders + aref( 31.3 )
+433/1.08Ghz:agressive scissoring				( 33.8 )
 ----------------------------
 Engine/Game:
 	* refactor/rebuild collision detection infrastructure (along with Slipch)	

@@ -5,6 +5,19 @@ void CRenderTarget::accum_point		(light* L)
 	ref_shader		shader			= L->s_point;
 	if (!shader)	shader			= s_accum_point;
 
+	// Scissor
+	{
+		CSector*	S				= (CSector*)L->spatial.sector;
+		Fbox2		bb				= S->r_scissor_merged;
+		RECT		R;
+		R.left		= clampr	(iFloor	(bb.min.x*Device.dwWidth),	int(0),int(Device.dwWidth));
+		R.right		= clampr	(iCeil	(bb.max.x*Device.dwWidth),	int(0),int(Device.dwWidth));
+		R.top		= clampr	(iFloor	(bb.min.y*Device.dwHeight),	int(0),int(Device.dwHeight));
+		R.bottom	= clampr	(iCeil	(bb.max.y*Device.dwHeight),	int(0),int(Device.dwHeight));
+		CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
+		CHK_DX		(HW.pDevice->SetScissorRect(&R));
+	}
+
 	// Common
 	Fvector		L_pos;
 	float		L_spec;
@@ -96,4 +109,6 @@ void CRenderTarget::accum_point		(light* L)
 	RCache.set_Geometry					(g_accum_point);
 	RCache.Render						(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
+
+	CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,FALSE));
 }

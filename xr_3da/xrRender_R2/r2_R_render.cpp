@@ -284,7 +284,7 @@ void CRender::Render		()
 	// Target.phase_bloom					();
 	Target.phase_combine					();
 	
-	PortalTraverser.dbg_draw				();
+	// PortalTraverser.dbg_draw				();
 
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();

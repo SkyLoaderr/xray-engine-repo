@@ -9,6 +9,19 @@ void CRenderTarget::accum_spot	(light* L)
 	ref_shader		shader		= L->s_spot;
 	if (!shader)	shader		= s_accum_spot;
 
+	// Scissor
+	{
+		CSector*	S				= (CSector*)L->spatial.sector;
+		Fbox2		bb				= S->r_scissor_merged;
+		RECT		R;
+		R.left		= clampr	(iFloor	(bb.min.x*Device.dwWidth),	int(0),int(Device.dwWidth));
+		R.right		= clampr	(iCeil	(bb.max.x*Device.dwWidth),	int(0),int(Device.dwWidth));
+		R.top		= clampr	(iFloor	(bb.min.y*Device.dwHeight),	int(0),int(Device.dwHeight));
+		R.bottom	= clampr	(iCeil	(bb.max.y*Device.dwHeight),	int(0),int(Device.dwHeight));
+		CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
+		CHK_DX		(HW.pDevice->SetScissorRect(&R));
+	}
+
 	if (1)
 	{
 		// scale to account range and angle
@@ -176,4 +189,5 @@ void CRenderTarget::accum_spot	(light* L)
 	//Msg		("%8X : fragments(%d), size(%d)",u32(L),pixels,RImplementation.LR.S_size);
 
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
+	CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,FALSE));
 }

@@ -22,7 +22,6 @@ public:
 
 #if RENDER==R_R2
 	BOOL			scissor_enable;
-	Fbox			scissor;
 #endif
 
 	u32				dwFrame;
