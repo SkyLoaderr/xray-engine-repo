@@ -174,9 +174,6 @@ void CStalkerAnimations::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
 	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
 	VERIFY					(stalker);
-	if (!stalker->g_Alive())
-		return;
-
 	if ((eMentalStatePanic == stalker->mental_state()) && (stalker->speed() > EPS_L)) {
 		tpGlobalAnimation	= m_tAnims.A[stalker->IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
 		return;
@@ -226,9 +223,6 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
 	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
 	VERIFY					(stalker);
-	if (!stalker->g_Alive())
-		return;
-
 	CWeapon					*tpWeapon	= dynamic_cast<CWeapon*>(stalker->inventory().ActiveItem());
 	CMissile				*missile	= dynamic_cast<CMissile*>(stalker->inventory().ActiveItem());
 	CLASS_ID				clsid = tpWeapon ? tpWeapon->SUB_CLS_ID : missile ? missile->SUB_CLS_ID : 0;
@@ -453,9 +447,8 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
 	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
 	VERIFY					(stalker);
-	if (!stalker->g_Alive())
-		return;
-	EBodyState l_tBodyState = (eBodyStateStand == stalker->body_state()) && stalker->IsLimping() ? eBodyStateStandDamaged : stalker->body_state();
+
+	EBodyState				l_tBodyState = (eBodyStateStand == stalker->body_state()) && stalker->IsLimping() ? eBodyStateStandDamaged : stalker->body_state();
 	if ((stalker->speed() < EPS_L) || (eMovementTypeStand == stalker->movement_type())) {
 		// standing
 		if ((angle_difference(stalker->body_orientation().target.yaw,stalker->body_orientation().current.yaw) <= PI_DIV_4) && 
@@ -610,6 +603,9 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 {
 	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
 	VERIFY					(stalker);
+	if (!stalker->g_Alive())
+		return;
+
 	CSkeletonAnimated		&tVisualObject		=	*(PSkeletonAnimated(stalker->Visual()));
 
 	if (!m_script_animations.empty()) {
