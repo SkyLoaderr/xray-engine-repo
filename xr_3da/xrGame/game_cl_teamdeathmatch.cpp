@@ -246,16 +246,16 @@ bool	game_cl_TeamDeathmatch::OnKeyboardPress			(int key)
 {
 	if (kTEAM == key )
 	{
-		StartStopMenu(pUITeamSelectWnd,true);
+		if (CanCallTeamSelectMenu())
+		{
+			StartStopMenu(pUITeamSelectWnd,true);
+		};
 
 		return true;
 	};
-
 	
 	return inherited::OnKeyboardPress(key);
 }
-
-
 
 void	game_cl_TeamDeathmatch::OnRender				()
 {
@@ -281,3 +281,46 @@ void	game_cl_TeamDeathmatch::OnRender				()
 		}
 	};
 }
+
+BOOL game_cl_TeamDeathmatch::CanCallBuyMenu			()
+{
+	if (pUITeamSelectWnd && pUITeamSelectWnd->IsShown())
+		return FALSE;
+
+	return inherited::CanCallBuyMenu();
+};
+
+BOOL game_cl_TeamDeathmatch::CanCallSkinMenu			()
+{
+	if (pUITeamSelectWnd && pUITeamSelectWnd->IsShown())
+		return FALSE;
+
+	return inherited::CanCallSkinMenu();
+};
+
+BOOL game_cl_TeamDeathmatch::CanCallInventoryMenu			()
+{
+	if (pUITeamSelectWnd && pUITeamSelectWnd->IsShown())
+		return FALSE;
+
+	return inherited::CanCallInventoryMenu();	
+};
+
+BOOL game_cl_TeamDeathmatch::CanCallTeamSelectMenu			()
+{
+	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
+	if (pInventoryMenu && pInventoryMenu->IsShown())
+	{
+		return FALSE;
+	};
+	if (pCurBuyMenu && pCurBuyMenu->IsShown())
+	{
+		return FALSE;
+	};
+	if (pCurSkinMenu && pCurSkinMenu->IsShown())
+	{
+		return FALSE;
+	};
+
+	return TRUE;	
+};

@@ -399,6 +399,20 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 BOOL game_cl_ArtefactHunt::CanCallBuyMenu			()
 {
 	if (!m_bBuyEnabled) return FALSE;
+	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
+	
+	if (pUITeamSelectWnd && pUITeamSelectWnd->IsShown())
+	{
+		return FALSE;
+	};
+	if (pCurSkinMenu && pCurSkinMenu->IsShown())
+	{
+		return FALSE;
+	};
+	if (pInventoryMenu && pInventoryMenu->IsShown())
+	{
+		return FALSE;
+	};
 
 	CActor* pCurActor = smart_cast<CActor*> (Level().CurrentEntity());
 	if (!pCurActor || !pCurActor->g_Alive()) return FALSE;

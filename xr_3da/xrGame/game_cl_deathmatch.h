@@ -59,6 +59,8 @@ protected:
 			void					SetBuyMenuItems			();
 	virtual bool					CanBeReady				();
 	virtual BOOL					CanCallBuyMenu			();
+	virtual BOOL					CanCallSkinMenu			();
+	virtual	BOOL					CanCallInventoryMenu	();
 
 	virtual		void				shedule_Update			(u32 dt);
 	virtual		bool				OnKeyboardPress			(int key);

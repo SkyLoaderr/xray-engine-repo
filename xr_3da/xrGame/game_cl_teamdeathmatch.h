@@ -17,6 +17,12 @@ public :
 	virtual			void				Init					();
 	virtual			CUIGameCustom*		createGameUI			();
 	virtual			void				GetMapEntities			(xr_vector<SZoneMapEntityData>& dst);
+	
+	virtual BOOL					CanCallBuyMenu			();
+	virtual BOOL					CanCallSkinMenu			();
+	virtual	BOOL					CanCallInventoryMenu	();
+	virtual	BOOL					CanCallTeamSelectMenu	();
+
 
 	virtual			void				OnTeamSelect			(int Result);
 	virtual			char*				getTeamSection			(int Team);

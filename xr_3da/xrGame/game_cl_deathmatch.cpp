@@ -140,11 +140,50 @@ void game_cl_Deathmatch::OnSkinMenu_Ok			()
 
 BOOL game_cl_Deathmatch::CanCallBuyMenu			()
 {
-	CSpectator* pCurPlayer = smart_cast<CSpectator*> (Level().CurrentEntity());
-	if (!pCurPlayer) return FALSE;
-
+	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
+	if (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID != CLSID_SPECTATOR)
+	{
+		return FALSE;
+	};
+	if (pCurSkinMenu && pCurSkinMenu->IsShown())
+	{
+		return FALSE;
+	};
+	if (pInventoryMenu && pInventoryMenu->IsShown())
+	{
+		return FALSE;
+	};
 	return m_bBuyEnabled;
 };
+
+BOOL game_cl_Deathmatch::CanCallSkinMenu			()
+{
+	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
+	if (pInventoryMenu && pInventoryMenu->IsShown())
+	{
+		return FALSE;
+	};
+	if (pCurBuyMenu && pCurBuyMenu->IsShown())
+	{
+		return FALSE;
+	};
+	return TRUE;
+};
+
+BOOL game_cl_Deathmatch::CanCallInventoryMenu			()
+{
+	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
+	if (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID != CLSID_OBJECT_ACTOR)
+	{
+		return FALSE;
+	}
+	if (pCurSkinMenu && pCurSkinMenu->IsShown())
+	{
+		return FALSE;
+	};
+	return TRUE;
+};
+
 
 void game_cl_Deathmatch::SetCurrentBuyMenu	()	
 {
@@ -302,13 +341,16 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 {
 	if (kSCORES == key )
 	{
-				m_game_ui->ShowFragList(true);
+		m_game_ui->ShowFragList(true);
 		return true;
 	};
 
 	if (kINVENTORY == key )
 	{
-		StartStopMenu(pInventoryMenu,true);
+		if (CanCallInventoryMenu())
+		{
+			StartStopMenu(pInventoryMenu,true);
+		};
 		return true;
 	};
 
@@ -327,9 +369,11 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 	
 	if (kSKIN == key )
 	{
-		SetCurrentSkinMenu();
-		StartStopMenu(pCurSkinMenu,true);
-
+		if (CanCallSkinMenu())
+		{
+			SetCurrentSkinMenu();
+			StartStopMenu(pCurSkinMenu,true);
+		}
 		return true;
 	};
 
