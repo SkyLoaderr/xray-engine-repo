@@ -47,11 +47,14 @@ void CStateWatchOver::initialize		()
 	inherited::initialize			();
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskHumming));
 	set_inertia_time				(::Random.randI(5,10)*1000);
-
+	m_start_yaw						= m_object->Orientation().yaw;
 }
 
 void CStateWatchOver::execute			()
 {
+	Fvector							direction;
+	direction.setHP					(m_start_yaw,0);
+	m_object->CSightManager::update	(eLookTypeDirection,&direction);
 	m_object->CStalkerMovementManager::update	(
 		0,
 		0,

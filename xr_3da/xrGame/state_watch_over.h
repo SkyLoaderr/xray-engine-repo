@@ -16,6 +16,9 @@ class CStateWatchOver : public CStateBase<CAI_Stalker> {
 protected:
 	typedef CStateBase<CAI_Stalker> inherited;
 
+private:
+	float				m_start_yaw;
+
 public:
 						CStateWatchOver		(LPCSTR state_name);
 	virtual				~CStateWatchOver	();
