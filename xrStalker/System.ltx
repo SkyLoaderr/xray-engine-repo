@@ -3943,40 +3943,53 @@ stalker_friend_sell_price_factor		= 1
 ;-----------------------------------------------------------------
 
 [spawn_group_zone]
-$spawn						= on			; option for Level Editor
+$spawn						= on											; option for Level Editor
 class						= AI_SPGRP
 
 [spawn_group]
-$spawn						= on			; option for Level Editor
+$spawn						= on											; option for Level Editor
 class						= AI_SPGRP
 
 [organizations]
 	agroprom
-	navy
+	militaries
 	scientists
 	
 [agroprom]
-	name					= "Agroprom"
-	artefacts				= af_magnet,discovery_magnet,0.2,0.2
+	name					= "Agroprom Research Institute"					; organization public name
+	discoveries				= discovery_magnet								; discoveries can be discovered
+	join_probability		= 0.3											; a probability to join zone investigations
+	left_probability		= 0.1											; a probability to left zone investigations
+	trader_rank				= 2												; rank of the trader to deal with
 
-[navy]
-	name					= "Agroprom"
-	artefacts				= af_magnet,discovery_magnet,0.2,0.2
+[militaries]
+	name					= "Ukrainian Army : Special Purpose Forces"		; organization public name
+	discoveries				= discovery_magnet								; discoveries can be discovered
+	join_probability		= 0.3											; a probability to join zone investigations
+	left_probability		= 0.1											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
 
 [scientists]
-	name					= "Agroprom"
-	artefacts				= af_magnet,discovery_magnet,0.2,0.2
+	name					= "Scientific Laboratory"						; organization public name
+	discoveries				= discovery_magnet								; discoveries can be discovered
+	join_probability		= 0.3											; a probability to join zone investigations
+	left_probability		= 0.1											; a probability to left zone investigations
+	trader_rank				= 2												; rank of the trader to deal with
 
 [discovery_magnet]
-	name					= "Super-puper-hyper-turbo force field"
-	probability				= 0.3
-	demand					= 
-	5
+	name					= "Super-puper-hyper-turbo force field"			; discovery public name
+	artefacts				= af_magnet,1,af_magnet,1						; artefacts to make a discovery
+	demand_on_success		= af_magnet,4,8,50,150,af_magnet,6,12,100,300	; artefacts per week (section, count, price)
+	success_probability		= 0.2											; a probability to make a discovery
+	destroy_probability		= 0.2											; a probability to make an excident during investigations
+	destroy_freeze_time		= 14											; discovery freeze time when excident occured in days
+	research_time			= 7												; discovery research time in days
 
 [alife]
-    schedule_min         = 1                ; milliseconds
-    schedule_max         = 999              ; milliseconds
-    process_time         = 900              ; microseconds
-    online_distance      = 15.0             ; metres
-    switch_delay         = 1000             ; milliseconds
-    time_factor          = 1.0              ; 
+    schedule_min			= 1												; milliseconds
+    schedule_max			= 999											; milliseconds
+    process_time			= 900											; microseconds
+    online_distance			= 15.0											; metres
+    switch_delay			= 1000											; milliseconds
+    time_factor				= 1.0											; 
+    preknown_artefacts		= af_magnet										; artefact sections
