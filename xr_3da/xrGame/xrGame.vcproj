@@ -1687,6 +1687,12 @@
 				<Filter
 					Name="UIWindows"
 					Filter="">
+					<File
+						RelativePath=".\ui\UIWindow.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIWindow.h">
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
