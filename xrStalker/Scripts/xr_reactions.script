@@ -16,6 +16,7 @@ function evaluator_new:__init(name, storage) super()
 end
 function evaluator_new:evaluate()
 	self.a.evn:calculate()
+	self.a.evn:print()
 	-- если мы щас никого не обрабатываем и есть раздражители - нужно заполнить пробел
 	if self.a.id == nil and self.a.evn:isEvents() then
 		self.a.evn:get_event(self.a)
@@ -89,7 +90,7 @@ function action_wait:initialize()
 
 end
 function action_wait:execute ()
-	printf("[ACT] Reactions: Wait")
+--	printf("[ACT] Reactions: Wait")
 
 	-- если мы обрабатываем новый раздражитель, то нужно сресетить значения времени ожидания
 	if self.a.evn:isEvents() then
@@ -99,7 +100,7 @@ function action_wait:execute ()
 	end
 
 	--идем проверять или стоим смотрим
-	if ((self.a.isVisual ~= nil and self.a.isVisual > 0.5) or self.a.watched == true) then
+	if ((self.a.isVisual ~= nil and self.a.isVisual > 0.75) or (self.a.isVisual == nil and self.a.watched == true)) then
 		--обработка проверки
 		if self.object:position():distance_to(level.vertex_position(self.a.position)) <= 3 then
 			-- если мы уже стоим в радиусе 5 метров от раздражителя - просто стоим и оглядываемся
@@ -652,8 +653,9 @@ function events:type(obj)
 		otype == clsid.obj_breakable or
 		otype == clsid.device_pda or
 		otype == clsid.device_torch or
+		otype == clsid.device_detector_simple or
 		otype == clsid.obj_bolt or
-		otype == clsid.obj_medikit or
+		otype == clsid.obj_medkit or
 		otype == clsid.obj_food or
 		otype == clsid.obj_bottle or
 		otype == clsid.obj_antirad or
@@ -664,7 +666,6 @@ function events:type(obj)
 		otype == clsid.wpn_grenade_rpg7 or
 		otype == clsid.wpn_grenade_rgd5 or
 		otype == clsid.wpn_grenade_fake or
-		otype == clsid.equ_simple or
 		otype == clsid.equ_scientific or
 		otype == clsid.equ_stalker or
 		otype == clsid.equ_military or
@@ -725,8 +726,9 @@ function events:item_power(obj)
 		otype == clsid.wpn_grenade_launcher or
 		otype == clsid.device_pda or
 		otype == clsid.device_torch or
-		otype == clsid.obj_medikit or
+		otype == clsid.device_detector_simple or
 		otype == clsid.obj_food or
+		otype == clsid.obj_medkit or
 		otype == clsid.obj_bottle or
 		otype == clsid.obj_antirad or
 		otype == clsid.obj_explosive or
@@ -736,7 +738,6 @@ function events:item_power(obj)
 		otype == clsid.wpn_grenade_rpg7 or
 		otype == clsid.wpn_grenade_rgd5 or
 		otype == clsid.wpn_grenade_fake or
-		otype == clsid.equ_simple or
 		otype == clsid.equ_scientific or
 		otype == clsid.equ_stalker or
 		otype == clsid.equ_military or
