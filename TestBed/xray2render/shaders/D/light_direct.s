@@ -62,7 +62,7 @@ p2f 	p_main	( v2p_in IN )
   float3 H 	= normalize	(L + V);
 
   // Specular = (H • N)^m
-  float S 	= pow		(max(0,dot(H, N)), 32);
+  float S 	= pow		(saturate(dot(H, N)), 32);
   
   // Final color
   float4 C	= light_color*D;
