@@ -6,7 +6,7 @@
 #define AFX_EFFECTORRECOIL_H__06AA79FB_8954_457B_B338_039EBF4EE94E__INCLUDED_
 #pragma once
 
-#include "..\Effector.h"
+#include "../Effector.h"
 
 #define Recoil_TIME .5f
 

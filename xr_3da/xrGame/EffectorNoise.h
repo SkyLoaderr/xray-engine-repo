@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "..\Effector.h"
+#include "../Effector.h"
 
 class CEffectorNoise : public CEffector
 {

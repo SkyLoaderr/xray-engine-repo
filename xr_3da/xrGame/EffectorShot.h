@@ -6,7 +6,7 @@
 #define AFX_EFFECTORSHOT_H__B8CC6918_45D6_485D_8BB4_5A94CEEEFC2E__INCLUDED_
 #pragma once
 
-#include "..\effector.h"
+#include "../effector.h"
 
 class CEffectorShot : public CEffector  
 {
