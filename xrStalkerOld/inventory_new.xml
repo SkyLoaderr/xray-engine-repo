@@ -113,8 +113,8 @@
 
     <!-- HEALTH BAR -->
     <progress_bar x="15" y="65" length="220" broad="20" horz="0" min="0" max="1000" pos="0">
-        <texture width="17" height="215" length="215" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
-        <background x="0" y="0" width="17" height="215" >ui\ui_inv_progress_blood_empty</background>
+        <texture width="17" height="220" length="220" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
+        <background x="0" y="0" width="17" height="220" >ui\ui_inv_progress_blood_empty</background>
     </progress_bar>
 
     <!-- SATIETY BAR -->
