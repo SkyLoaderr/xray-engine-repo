@@ -467,7 +467,6 @@ void CSE_ALifeEventGroup::UPDATE_Read		(NET_Packet &tNetPacket)
 CSE_ALifeDynamicObject::CSE_ALifeDynamicObject(LPCSTR caSection) : CSE_ALifeObject(caSection), CSE_Abstract(caSection)
 {
 	m_tTimeID					= 0;
-	m_dwLastSwitchTime			= 1;
 	m_qwSwitchCounter			= u64(-1);
 }
 

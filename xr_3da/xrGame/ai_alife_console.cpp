@@ -421,19 +421,22 @@ void CSE_ALifeSimulator::vfGraphVertexInfo(_GRAPH_ID tGraphID)
 		Msg("*   Vertex %d -> distance %7.2f",tpaEdges[i].dwVertexNumber, tpaEdges[i].fPathDistance);
 }
 
-void CSE_ALifeSimulator::vfSetOnlineDistance			(float	fNewDistance)
+void CSE_ALifeSimulator::vfSetSwitchDistance		(float	fNewDistance)
 {
-	m_fOnlineDistance = fNewDistance;
+	m_fSwitchDistance	= fNewDistance;
+	m_fOnlineDistance	= m_fSwitchDistance*m_fSwitchFactor;
+	m_fOfflineDistance	= m_fSwitchDistance/m_fSwitchFactor;
 }
 
 void CSE_ALifeSimulator::vfSetProcessTime			(int	iMicroSeconds)
 {
-	m_qwMaxProcessTime = iMicroSeconds*CPU::cycles_per_microsec;
+	m_qwMaxProcessTime	= iMicroSeconds*CPU::cycles_per_microsec;
 }
 
-void CSE_ALifeSimulator::vfSetSwitchDelay			(int	iMilliSeconds)
+void CSE_ALifeSimulator::vfSetSwitchFactor			(float	fSwitchFactor)
 {
-	m_dwSwitchDelay = (u32)iMilliSeconds;
+	m_fSwitchFactor		= fSwitchFactor;
+	vfSetSwitchDistance	(m_fSwitchDistance);
 }
 
 void CSE_ALifeSimulator::vfSetScheduleMin			(int	iMilliSeconds)

@@ -155,8 +155,6 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 	}
 	else
 		vfCreateOnlineObject		(tpALifeDynamicObject);
-	
-	tpALifeDynamicObject->m_dwLastSwitchTime = Device.TimerAsync();
 }
 
 void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -199,8 +197,6 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 	}
 	else
 		vfRemoveOnlineObject		(tpALifeDynamicObject);
-	
-	tpALifeDynamicObject->m_dwLastSwitchTime = Device.TimerAsync();
 }
 
 // switch object offline and check if it is a group of monsters then separate dead monsters from the group
@@ -290,16 +286,8 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
 			if (!tpALifeAbstractGroup) {
 				// checking if the object is ready to switch offline
-				if (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOnlineDistance) {
-					// checking if the object wants to switch offline during the given amount of time
-					if (Device.TimerAsync() -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
-						// switching the object offline
-						vfSwitchObjectOffline(I);
-				}
-				else
-					// object is not ready to switch offline, therefore
-					// set its start time to from which it wants to switch offline to the current time
-					I->m_dwLastSwitchTime = Device.TimerAsync();
+				if (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOfflineDistance)
+					vfSwitchObjectOffline(I);
 			}
 			else {
 				// so, we have a group of objects
@@ -332,7 +320,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 						else
 							// so, monster is not dead
 							// checking if the object is _not_ ready to switch offline
-							if (m_tpActor->o_Position.distance_to(tpGroupMember->o_Position) <= m_fOnlineDistance)
+							if (m_tpActor->o_Position.distance_to(tpGroupMember->o_Position) <= m_fOfflineDistance)
 								// so, it is not ready, breaking a cycle, because we can't 
 								// switch group offline since not all the group members are ready
 								// to switch offline
@@ -340,16 +328,8 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				}
 				// checking if group is not empty
 				if (tpALifeAbstractGroup->m_tpMembers.size()) {
-					if (i == N) {
-						// checking if the group wants to switch offline during the given amount of time
-						if (Device.TimerAsync() -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
-							// switching the group offline
-							vfSwitchObjectOffline(I);
-					}
-					else
-						// group is not ready to switch offline, therefore
-						// set its start time to from which it wants to switch offline to the current time
-						I->m_dwLastSwitchTime = Device.TimerAsync();
+					if (i == N)
+						vfSwitchObjectOffline(I);
 				}
 				else
 					vfReleaseObject(I);
@@ -387,16 +367,8 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			}
 			
 			// checking if the object is ready to switch online
-			if (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance) {
-				// checking if the object wants to switch online during the given amount of time
-				if (Device.TimerAsync() -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
-					// switch object online
-					vfSwitchObjectOnline(I);
-			}
-			else
-				// object is not ready to switch online, therefore
-				// set its start time to from which it wants to switch offline to the current time
-				I->m_dwLastSwitchTime = Device.TimerAsync();
+			if (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance)
+				vfSwitchObjectOnline(I);
 		}
 		else {
 			// so, object is attached

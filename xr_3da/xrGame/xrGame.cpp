@@ -403,9 +403,9 @@ public:
 	}
 };
 
-class CCC_ALifeOnlineDistance : public CConsoleCommand {
+class CCC_ALifeSwitchDistance : public CConsoleCommand {
 public:
-	CCC_ALifeOnlineDistance(LPCSTR N) : CConsoleCommand(N)  { };
+	CCC_ALifeSwitchDistance(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
@@ -415,7 +415,7 @@ public:
 				if (id1 < 2.0f)
 					Msg("Invalid online distance! (%.4f)",id1);
 				else
-					tpGame->m_tpALife->vfSetOnlineDistance(id1);
+					tpGame->m_tpALife->vfSetSwitchDistance(id1);
 			}
 			else
 				Log("!ALife simulator is not loaded!");
@@ -447,19 +447,17 @@ public:
 	}
 };
 
-class CCC_ALifeSwitchDelay : public CConsoleCommand {
+class CCC_ALifeSwitchFactor : public CConsoleCommand {
 public:
-	CCC_ALifeSwitchDelay(LPCSTR N) : CConsoleCommand(N)  { };
+	CCC_ALifeSwitchFactor(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
-				int id1 = 0;
-				sscanf(args ,"%d",&id1);
-				if (id1 < 0)
-					Msg("Invalid process time! (%d)",id1);
-				else
-					tpGame->m_tpALife->vfSetSwitchDelay(id1);
+				float id1 = 0;
+				sscanf(args ,"%f",&id1);
+				clamp(id1,.1f,1.f);
+				tpGame->m_tpALife->vfSetSwitchFactor(id1);
 			}
 			else
 				Log("!ALife simulator is not loaded!");
@@ -737,11 +735,11 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_ALifeSpawnInfo,	"al_is"					);		// spawn-point info
 		CMD1(CCC_ALifeGraphInfo,	"al_ig"					);		// graph-point info
 		CMD1(CCC_ALifeTimeFactor,	"al_time_factor"		);		// set time factor
-		CMD1(CCC_ALifeOnlineDistance,"al_online_distance"	);		// set time factor
-		CMD1(CCC_ALifeProcessTime,	"al_process_time"		);		// set time factor
-		CMD1(CCC_ALifeSwitchDelay,	"al_switch_delay"		);		// set time factor
-		CMD1(CCC_ALifeScheduleMin,	"al_schedule_min"		);		// set time factor
-		CMD1(CCC_ALifeScheduleMax,	"al_schedule_max"		);		// set time factor
+		CMD1(CCC_ALifeSwitchDistance,"al_switch_distance"	);		// set switch distance
+		CMD1(CCC_ALifeProcessTime,	"al_process_time"		);		// set process time
+		CMD1(CCC_ALifeSwitchFactor,	"al_switch_factor"		);		// set switch factor
+		CMD1(CCC_ALifeScheduleMin,	"al_schedule_min"		);		// set min schedule
+		CMD1(CCC_ALifeScheduleMax,	"al_schedule_max"		);		// set max schedule
 #endif
 		// temp
 		CMD1(CCC_Rain,				"rain"					);		// start rain

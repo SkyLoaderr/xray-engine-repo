@@ -26,7 +26,6 @@ class CSE_ALifeSimulator :
 	public CRandom 
 {
 	u64								m_qwMaxProcessTime;
-	u32								m_dwSwitchDelay;
 	xrServer						*m_tpServer;
 	bool							m_bActorEnabled;
 	string256						m_caSaveName;
@@ -90,7 +89,10 @@ public:
 	// members
 	bool							m_bLoaded;
 	LPSTR							*m_cppServerOptions;
+	float							m_fSwitchDistance;
+	float							m_fSwitchFactor;
 	float							m_fOnlineDistance;
+	float							m_fOfflineDistance;
 	u32								m_dwInventorySlotCount;
 	WEAPON_P_VECTOR					m_tpWeaponVector;	
 	BOOL_VECTOR						m_baMarks;
@@ -130,8 +132,9 @@ public:
 			void					vfTaskInfo					(_TASK_ID					tTaskID);
 			void					vfSpawnPointInfo			(_SPAWN_ID					tSpawnID);
 			void					vfGraphVertexInfo			(_GRAPH_ID					tGraphID);
-			void					vfSetOnlineDistance			(float						fNewDistance);
+			void					vfSetSwitchDistance			(float						fNewDistance);
 			void					vfSetProcessTime			(int						iMicroSeconds);
+			void					vfSetSwitchFactor			(float						fSwitchFactor);
 			void					vfSetSwitchDelay			(int						iMilliSeconds);
 			void					vfSetScheduleMin			(int						iMilliSeconds);
 			void					vfSetScheduleMax			(int						iMilliSeconds);

@@ -198,7 +198,6 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	_TIME_ID						m_tTimeID;
-	u32								m_dwLastSwitchTime;
 	u64								m_qwSwitchCounter;
 	
 									CSE_ALifeDynamicObject(LPCSTR caSection);

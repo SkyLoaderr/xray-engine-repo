@@ -154,10 +154,11 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 	shedule.t_min				= pSettings->r_s32	("alife","schedule_min");
 	shedule.t_max				= pSettings->r_s32	("alife","schedule_max");
 	m_qwMaxProcessTime			= pSettings->r_s32	("alife","process_time")*CPU::cycles_per_microsec;
-	m_fOnlineDistance			= pSettings->r_float("alife","online_distance");
-	m_dwSwitchDelay				= pSettings->r_s32	("alife","switch_delay");
+	m_fSwitchDistance			= pSettings->r_float("alife","switch_distance");
+	m_fSwitchFactor				= pSettings->r_float("alife","switch_factor");
 	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
 	m_dwMaxCombatIterationCount	= pSettings->r_u32	("alife","max_combat_iteration_count");
+	vfSetSwitchDistance			(m_fSwitchDistance);
 
 	string256					caFileName;
 	IReader						*tpStream;

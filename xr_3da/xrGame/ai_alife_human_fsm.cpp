@@ -66,7 +66,7 @@ void CSE_ALifeHumanAbstract::Update			()
 		m_tpALife->vfCheckForInteraction(this);
 		vfCheckForDeletedEvents	();
 	}
-	while (bOk && bfActive() && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fOnlineDistance));
+	while (bOk && bfActive() && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fSwitchDistance));
 #endif
 	m_tTimeID					= m_tpALife->tfGetGameTime();
 }

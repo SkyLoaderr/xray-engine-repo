@@ -89,7 +89,7 @@ void CSE_ALifeMonsterAbstract::Update		()
 		}
 		m_tpALife->vfCheckForInteraction(this);
 	}
-	while (bContinue && bfActive() && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fOnlineDistance));
+	while (bContinue && bfActive() && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fSwitchDistance));
 	m_tTimeID					= m_tpALife->tfGetGameTime();
 }
 
