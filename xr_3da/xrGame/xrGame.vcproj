@@ -354,6 +354,12 @@
 					RelativePath="game_sv_base.h">
 				</File>
 				<File
+					RelativePath="game_sv_cs.cpp">
+				</File>
+				<File
+					RelativePath="game_sv_cs.h">
+				</File>
+				<File
 					RelativePath="game_sv_deathmatch.cpp">
 				</File>
 				<File
