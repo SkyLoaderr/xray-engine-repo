@@ -15,7 +15,7 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 	{
 	case SE_L_FILL:			// masking
 		C.r_Pass			("null", 			"dumb_tcopy",				false,	FALSE,	FALSE);
-		C.r_Sampler_clf		("s_base",			C.L_textures[0]	);
+		C.r_Sampler			("s_base",			C.L_textures[0]	);
 		C.r_End				();
 		break;
 	case SE_L_UNSHADOWED:	// unshadowed
@@ -31,7 +31,7 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
 		C.r_Sampler_clf		("s_material",		r2_material);
-		C.r_Sampler_clf		("s_lmap",			C.L_textures[0]);
+		C.r_Sampler			("s_lmap",			C.L_textures[0]	);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
 		C.r_End				();
@@ -41,7 +41,7 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
 		C.r_Sampler_clf		("s_material",		r2_material);
-		C.r_Sampler_clf		("s_lmap",			C.L_textures[0]);
+		C.r_Sampler			("s_lmap",			C.L_textures[0]);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
 		C.r_End				();
