@@ -21,6 +21,7 @@ function set_sound(npc, sound, now)
 		db.sound[npc:id()].snd = parse_names(sound)
 		db.sound[npc:id()].last_snd = {}
 		if now == true then
+			stop_play_sound(npc)
 			db.sound[npc:id()].begin = nil
 		end
 	end
