@@ -15,9 +15,9 @@ public:
 	virtual			~CSingleton			()	{_self=NULL;}
 	
 	static			void DestroySingleton	()	{
+		if(!_self) return;
 		VERIFY(_on_self_delete == false); 
 		VERIFY(_refcount == 0);
-		VERIFY(_self);
 		xr_delete(_self);
 	};
 public:
