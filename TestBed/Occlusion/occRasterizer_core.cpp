@@ -75,8 +75,8 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	float	startR	= leftX-lhx;
 	float	endR	= rightX-rhx;
 	
-	float	startT=startR,endT=end_c;
-	float	startX=start_c,endX=endR;
+	float	startT	=startR,	endT	=end_c;
+	float	startX	=start_c,	endX	=endR;
 	if (start_c<startR)		{startT	= start_c;	startX	= startR;	}
 	if (end_c<endR)			{endT	= endR;		endX	= end_c;	}
 	
