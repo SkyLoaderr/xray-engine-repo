@@ -124,12 +124,21 @@ void CSoundRender_Core::_destroy	()
 {
 	env_unload					();
 
+    // remove sources
+	for (u32 sit=0; sit<s_sources.size(); sit++)
+    	xr_delete				(s_sources[sit]);
+    
+    // remove emmiters
+	for (u32 eit=0; eit<s_emitters.size(); eit++)
+    	xr_delete				(s_emitters[eit]);
+
+    // remove targets
 	CSoundRender_Target*	T	= 0;
 	for (u32 tit=0; tit<s_targets.size(); tit++)
 	{
-		T							= s_targets[tit];
-		T->_destroy					();
-        xr_delete					(T);
+		T						= s_targets[tit];
+		T->_destroy				();
+        xr_delete				(T);
 	}
     
 	_RELEASE		( pExtensions	);
