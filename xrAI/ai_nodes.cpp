@@ -19,6 +19,8 @@ typedef struct tagSSegment {
 	Fvector v1,v2;
 } SSegment;
 
+#define EPS_H				0.4f
+
 #define	LI_NONE				0
 #define LI_COLLINEAR        0
 #define	LI_INTERSECT		1
@@ -37,7 +39,7 @@ IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float 
 	r3 = a1 * x3 + b1 * y3 + c1;
 	r4 = a1 * x4 + b1 * y4 + c1;
 	
-	if ((r3*r4 > EPS) && (fabsf(r3) > EPS_L) && (fabsf(r4) > EPS_L))
+	if ((r3*r4 > EPS) && (fabsf(r3) > EPS_H) && (fabsf(r4) > EPS_H))
 		return(LI_NONE);
 	
 	a2 = y4 - y3;
@@ -47,7 +49,7 @@ IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float 
 	r1 = a2 * x1 + b2 * y1 + c2;
 	r2 = a2 * x2 + b2 * y2 + c2;
 	
-	if ((r1*r2 > EPS) && (fabsf(r1) > EPS_L) && (fabsf(r2) > EPS_L))
+	if ((r1*r2 > EPS) && (fabsf(r1) > EPS_H) && (fabsf(r2) > EPS_H))
 		return(LI_NONE);
 	
 	if ( _abs(r1*r2)<EPS_S && _abs(r3*r4)<EPS_S ) 
@@ -219,88 +221,6 @@ IC void vfIntersectContours(SSegment &tSegment, SContour &tContour0, SContour &t
 		Log("! AI_PathNodes: Can't find intersection segment");
 }
 
-void vfGetIntersectionPoints(SContour tCurContour, Fvector tStartPoint, Fvector tFinishPoint, Fvector &tPoint)
-{
-	u32 dwIntersect, dwCount = 0;
-	Fvector tTravelNode, tPoint1, tPoint2;
-	dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCurContour.v1.x,tCurContour.v1.z,tCurContour.v2.x,tCurContour.v2.z,&tTravelNode.x,&tTravelNode.z);
-	if (dwIntersect == LI_INTERSECT) {
-		tPoint1 = tTravelNode;
-		dwCount++;
-	}
-	else
-		if (dwIntersect == LI_EQUAL) {
-			tPoint1 = tCurContour.v1;
-			tPoint2 = tCurContour.v2;
-			dwCount = 2;
-		}
-
-	dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCurContour.v3.x,tCurContour.v3.z,tCurContour.v2.x,tCurContour.v2.z,&tTravelNode.x,&tTravelNode.z);
-	if (dwIntersect == LI_INTERSECT) {
-		if (!dwCount)
-			tPoint1 = tTravelNode;
-		else
-			tPoint2 = tTravelNode;
-		dwCount++;
-	}
-	else
-		if (dwIntersect == LI_EQUAL) {
-			tPoint1 = tCurContour.v3;
-			tPoint2 = tCurContour.v2;
-			dwCount = 2;
-		}
-	
-	if (dwCount < 2) {
-		dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCurContour.v3.x,tCurContour.v3.z,tCurContour.v4.x,tCurContour.v4.z,&tTravelNode.x,&tTravelNode.z);
-		if (dwIntersect == LI_INTERSECT) {
-			if (!dwCount)
-				tPoint1 = tTravelNode;
-			else
-				tPoint2 = tTravelNode;
-			dwCount++;
-		}
-		else
-			if (dwIntersect == LI_EQUAL) {
-				tPoint1 = tCurContour.v3;
-				tPoint2 = tCurContour.v4;
-				dwCount = 2;
-			}
-	}
-	
-	if (dwCount < 2) {
-		dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCurContour.v1.x,tCurContour.v1.z,tCurContour.v4.x,tCurContour.v4.z,&tTravelNode.x,&tTravelNode.z);
-		if (dwIntersect == LI_INTERSECT) {
-			if (!dwCount)
-				tPoint1 = tTravelNode;
-			else
-				tPoint2 = tTravelNode;
-			dwCount++;
-		}
-		else
-			if (dwIntersect == LI_EQUAL) {
-				tPoint1 = tCurContour.v1;
-				tPoint2 = tCurContour.v4;
-				dwCount = 2;
-			}
-	}
-	if (dwCount > 1)
-		if (tFinishPoint.distance_to(tPoint1) > tFinishPoint.distance_to(tPoint2))
-			tPoint = tPoint2;
-		else
-			tPoint = tPoint1;
-	else
-		if (dwCount)
-			tPoint = tPoint1;
-		else {
-			R_ASSERT(false);//tPoint = tStartPoint;
-		}
-}
-
-IC bool bfBetweenPoints(SSegment tSegment, Fvector tPoint)
-{
-	return(((tSegment.v1.x - EPS_L <= tPoint.x) && (tSegment.v1.z - EPS_L <= tPoint.z) && (tSegment.v2.x + EPS_L >= tPoint.x) && (tSegment.v2.z + EPS_L >= tPoint.z)) || ((tSegment.v2.x - EPS_L <= tPoint.x) && (tSegment.v2.z - EPS_L <= tPoint.z) && (tSegment.v1.x + EPS_L >= tPoint.x) && (tSegment.v1.z + EPS_L >= tPoint.z)));
-}
-
 IC float ffGetY(NodeCompressed &tNode, float X, float Z)
 {
 	Fvector	DUP, vNorm, v, v1, P0;
@@ -314,6 +234,115 @@ IC float ffGetY(NodeCompressed &tNode, float X, float Z)
 	return(v1.y);
 }
 
+void vfGetIntersectionPoints(NodeCompressed &Node, SContour tCurContour, Fvector tStartPoint, Fvector tFinishPoint, Fvector &tPoint)
+{
+	u32 dwIntersect, dwCount = 0;
+	Fvector tTravelNode, tPoints[4];
+	dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCurContour.v1.x,tCurContour.v1.z,tCurContour.v2.x,tCurContour.v2.z,&tTravelNode.x,&tTravelNode.z);
+	if (dwIntersect == LI_INTERSECT)
+		tPoints[dwCount++] = tTravelNode;
+	else
+		if (dwIntersect == LI_EQUAL) {
+			tPoints[dwCount++] = tCurContour.v1;
+			tPoints[dwCount++] = tCurContour.v2;
+		}
+
+	dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCurContour.v3.x,tCurContour.v3.z,tCurContour.v2.x,tCurContour.v2.z,&tTravelNode.x,&tTravelNode.z);
+	if (dwIntersect == LI_INTERSECT)
+		tPoints[dwCount++] = tTravelNode;
+	else
+		if (dwIntersect == LI_EQUAL) {
+			tPoints[dwCount++] = tCurContour.v3;
+			tPoints[dwCount++] = tCurContour.v2;
+		}
+	
+	if (dwCount < 4) {
+		dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCurContour.v3.x,tCurContour.v3.z,tCurContour.v4.x,tCurContour.v4.z,&tTravelNode.x,&tTravelNode.z);
+		if (dwIntersect == LI_INTERSECT)
+			tPoints[dwCount++] = tTravelNode;
+		else
+			if (dwIntersect == LI_EQUAL) {
+				tPoints[dwCount++] = tCurContour.v3;
+				tPoints[dwCount++] = tCurContour.v4;
+			}
+	}
+	
+	if (dwCount < 4) {
+		dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCurContour.v1.x,tCurContour.v1.z,tCurContour.v4.x,tCurContour.v4.z,&tTravelNode.x,&tTravelNode.z);
+		if (dwIntersect == LI_INTERSECT)
+			tPoints[dwCount++] = tTravelNode;
+		else
+			if (dwIntersect == LI_EQUAL) {
+				tPoints[dwCount++] = tCurContour.v1;
+				tPoints[dwCount++] = tCurContour.v4;
+			}
+	}
+	for (int i=0; i<(int)dwCount; i++)
+		tPoints[i].y = ffGetY(Node,tPoints[i].x,tPoints[i].z);
+
+	switch (dwCount) {
+		case 0 : {
+			R_ASSERT(false);
+			break;
+		}
+		case 1 : {
+			tPoint = tPoints[0];
+			break;
+		}
+		case 2 : {
+			if (tFinishPoint.distance_to(tPoints[0]) < tFinishPoint.distance_to(tPoints[1]))
+				tPoint = tPoints[0];
+			else
+				tPoint = tPoints[1];
+			break;
+		}
+		case 3 : {
+			if (tFinishPoint.distance_to(tPoints[0]) < tFinishPoint.distance_to(tPoints[1]))
+				if (tFinishPoint.distance_to(tPoints[0]) < tFinishPoint.distance_to(tPoints[2]))
+					tPoint = tPoints[0];
+				else
+					tPoint = tPoints[2];
+			else
+				if (tFinishPoint.distance_to(tPoints[1]) < tFinishPoint.distance_to(tPoints[2]))
+					tPoint = tPoints[1];
+				else
+					tPoint = tPoints[2];
+			break;
+		}
+		case 4 : {
+			if (tFinishPoint.distance_to(tPoints[0]) < tFinishPoint.distance_to(tPoints[1]))
+				if (tFinishPoint.distance_to(tPoints[0]) < tFinishPoint.distance_to(tPoints[2]))
+					if (tFinishPoint.distance_to(tPoints[0]) < tFinishPoint.distance_to(tPoints[3]))
+						tPoint = tPoints[0];
+					else
+						tPoint = tPoints[3];
+				else
+					if (tFinishPoint.distance_to(tPoints[2]) < tFinishPoint.distance_to(tPoints[3]))
+						tPoint = tPoints[2];
+					else
+						tPoint = tPoints[3];
+			else
+				if (tFinishPoint.distance_to(tPoints[1]) < tFinishPoint.distance_to(tPoints[2]))
+					if (tFinishPoint.distance_to(tPoints[1]) < tFinishPoint.distance_to(tPoints[3]))
+						tPoint = tPoints[1];
+					else
+						tPoint = tPoints[3];
+				else
+					if (tFinishPoint.distance_to(tPoints[2]) < tFinishPoint.distance_to(tPoints[3]))
+						tPoint = tPoints[2];
+					else
+						tPoint = tPoints[3];
+			break;
+		}
+		default : NODEFAULT;
+	}
+}
+
+IC bool bfBetweenPoints(SSegment tSegment, Fvector tPoint)
+{
+	return(((tSegment.v1.x - EPS_L <= tPoint.x) && (tSegment.v1.z - EPS_L <= tPoint.z) && (tSegment.v2.x + EPS_L >= tPoint.x) && (tSegment.v2.z + EPS_L >= tPoint.z)) || ((tSegment.v2.x - EPS_L <= tPoint.x) && (tSegment.v2.z - EPS_L <= tPoint.z) && (tSegment.v1.x + EPS_L >= tPoint.x) && (tSegment.v1.z + EPS_L >= tPoint.z)));
+}
+
 float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, float fMaxDistance)
 {
 	NodeCompressed *tpNode;
@@ -322,7 +351,7 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector t
 	SSegment tSegment;
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tPoint;
-	float fCurDistance = 0.f, fCumulativeDistance = 0.f;
+	float fCurDistance = 0.f, fCumulativeDistance = 0.f, fPrevDistance = m_header.size;
 	u32 dwCurNode, dwPrevNode = u32(-1);
 
 	dwCurNode = dwStartNode;
@@ -333,11 +362,10 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector t
 			return(fCumulativeDistance);
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
-		if (dwCurNode == 37451) {
+		if (dwCurNode == 7723) {
 			dwCurNode = dwCurNode;
 		}
-		vfGetIntersectionPoints(tCurContour,tStartPoint,tFinishPoint,tPoint);
-		tPoint.y = ffGetY(*tpNode,tPoint.x,tPoint.z);
+		vfGetIntersectionPoints(*tpNode,tCurContour,tStartPoint,tFinishPoint,tPoint);
 		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
 		iCount = tpNode->links;
 		iSavedIndex = -1;
