@@ -151,18 +151,14 @@ function main ()
           if stalker1.health <= 0 then  icount = icount + 1 end  
           if stalker2.health <= 0 then  icount = icount + 1 end  
           if icount == 2 then return end
-          if device ():time_global () - time  > 200 then
+          if device ():time_global () - time  > 500 then
              if ipoint == 0 then
-                update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (1)), 
-                               object (stalker1:best_weapon (), object.fire1))
-                update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (1)), 
-                               object (stalker2:best_weapon (), object.fire1))
+                update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (1)))
+                update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (1)))
                 ipoint = 1
              else   
-                update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (0)), 
-                               object (stalker1:best_weapon (), object.fire1))
-                update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (0)), 
-                               object (stalker2:best_weapon (), object.fire1))
+                update_action (stalker1, military2_1.script_name (), look (look.fire_point, fire1:point (0)))
+                update_action (stalker2, military2_1.script_name (), look (look.fire_point, fire2:point (0)))
                 ipoint = 0
              end    
              time = device():time_global ()
