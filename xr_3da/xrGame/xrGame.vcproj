@@ -979,7 +979,19 @@
 								RelativePath=".\detail_path_manager.h">
 							</File>
 							<File
+								RelativePath=".\detail_path_manager_criteria.cpp">
+							</File>
+							<File
+								RelativePath=".\detail_path_manager_dodge.cpp">
+							</File>
+							<File
 								RelativePath=".\detail_path_manager_inline.h">
+							</File>
+							<File
+								RelativePath=".\detail_path_manager_smooth.cpp">
+							</File>
+							<File
+								RelativePath=".\detail_path_manager_straight.cpp">
 							</File>
 						</Filter>
 						<Filter

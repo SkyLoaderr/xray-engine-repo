@@ -61,9 +61,10 @@ private:
 
 	friend class CScriptMonster;
 
+			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
+			void	build_straight_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
 			void	build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
 			void	build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
-			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
 
 protected:
 			void	build_path				(const xr_vector<u32> &level_path, u32 intermediate_index);
