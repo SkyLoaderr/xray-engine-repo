@@ -98,7 +98,7 @@ typedef	resptr_core<ShaderElement,resptr_base<ShaderElement> >								ref_seleme
 //////////////////////////////////////////////////////////////////////////
 struct ENGINE_API		Shader			: public xr_resource									{
 public:
-	ref_selement		E		[5];	// R1 - 0=norm_lod0(det),	1=norm_lod1(normal),	2=L_point,		3=L_spot,	4=L_for_models,	
+	ref_selement		E		[6];	// R1 - 0=norm_lod0(det),	1=norm_lod1(normal),	2=L_point,		3=L_spot,	4=L_for_models,	
 										// R2 - 0=deffer,			1=norm_lod1(normal),	2=psm,			3=ssm,		4=dsm
 						~Shader			();
 	BOOL				equal			(Shader& S);

@@ -37,5 +37,10 @@ void	CBlender_accum_direct_mask::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_base",			r2_RT_accum_temp	);
 		C.r_End				();
 		break;
+	case SE_MASK_ALBEDO:	// copy accumulator, 2D (for accum->color, albedo_wo)
+		C.r_Pass			("null",			"copy",				false,	FALSE,FALSE);
+		C.r_Sampler_rtf		("s_base",			r2_RT_accum_temp	);
+		C.r_End				();
+		break;
 	}
 }

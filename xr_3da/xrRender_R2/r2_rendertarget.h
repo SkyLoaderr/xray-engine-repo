@@ -13,7 +13,6 @@ private:
 	u32							dwWidth;
 	u32							dwHeight;
 	u32							dwAccumulatorClearMark;
-	u32							dwZBufferClearMark;
 public:
 	u32							dwLightMarkerID;
 	// 
@@ -41,7 +40,6 @@ public:
 	ref_rt						rt_Position;		// 64bit,	fat	(x,y,z,?)				(eye-space)
 	ref_rt						rt_Normal;			// 64bit,	fat	(x,y,z,hemi)			(eye-space)
 	ref_rt						rt_Color;			// 64/32bit,fat	(r,g,b,specular-gloss)	(or decompressed MET-8-8-8-8)
-	ref_rt						rt_Color_Blendable;	
 
 	// 
 	ref_rt						rt_Accumulator;		// 64bit		(r,g,b,specular)
@@ -144,7 +142,9 @@ public:
 	void						u_setrt					(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, IDirect3DSurface9* zb);
 	void						u_setrt					(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
 
-	void						phase_scene				();
+	void						phase_scene_prepare		();
+	void						phase_scene_begin		();
+	void						phase_scene_end			();
 	void						phase_occq				();
 	void						phase_wallmarks			();
 	void						phase_smap_direct		(light* L,	u32 sub_phase);
