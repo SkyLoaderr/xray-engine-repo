@@ -221,6 +221,17 @@ void CAI_Stalker::Load				(LPCSTR section)
 	
 	m_dwMyMaterialID				= GMLib.GetMaterialIdx("actor");
 	m_dwLastMaterialID				= GMLib.GetMaterialIdx("default");
+
+	// prefetching
+	cNameVisual_set					("actors\\different_stalkers\\stalker_black_mask");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_ecolog");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_hood_multiplayer");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_no_hood_singleplayer");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_scientist");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda2");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda3");
+	cNameVisual_set					("actors\\different_stalkers\\stalker_svoboda4");
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)

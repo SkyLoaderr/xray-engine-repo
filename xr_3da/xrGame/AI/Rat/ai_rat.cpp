@@ -154,6 +154,11 @@ void CAI_Rat::Load(LPCSTR section)
 		m_tpaTerrain.push_back(tTerrainPlace);
 	}
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
+
+	cNameVisual_set					("monsters\\rat\\rat_1");
+	cNameVisual_set					("monsters\\rat\\rat_2");
+	cNameVisual_set					("monsters\\rat\\rat_3");
+	cNameVisual_set					("monsters\\rat\\rat_3_");
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
