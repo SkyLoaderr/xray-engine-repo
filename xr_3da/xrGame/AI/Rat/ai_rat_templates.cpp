@@ -296,12 +296,12 @@ void CAI_Rat::vfChooseNextGraphPoint()
 	int					iBranches		= 0;
 	for (int i=0; i<wNeighbourCount; i++)
 		for (int j=0; j<iPointCount; j++)
-			if (bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tCurGP))
+			if (getAI().bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tCurGP))
 				iBranches++;
 	if (!iBranches) {
 		for (int i=0; i<wNeighbourCount; i++) {
 			for (int j=0; j<iPointCount; j++)
-				if (bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes)) {
+				if (getAI().bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes)) {
 					m_tCurGP	= m_tNextGP;
 					m_tNextGP	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
 					m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
@@ -314,7 +314,7 @@ void CAI_Rat::vfChooseNextGraphPoint()
 		iBranches = 0;
 		for (int i=0; i<wNeighbourCount; i++) {
 			for (int j=0; j<iPointCount; j++)
-				if (bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tCurGP)) {
+				if (getAI().bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tCurGP)) {
 					if (iBranches == iChosenBranch) {
 						m_tCurGP	= m_tNextGP;
 						m_tNextGP	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;

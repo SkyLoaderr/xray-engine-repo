@@ -60,6 +60,15 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 	if (tpALifeAbstractGroup) {
 		OBJECT_IT I = tpALifeAbstractGroup->m_tpMembers.begin();
 		OBJECT_IT E = tpALifeAbstractGroup->m_tpMembers.end();
+		if (I != E) {
+			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
+			VERIFY					(J != m_tObjectRegistry.end());
+			xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
+			if (tpEnemy)
+				tpALifeDynamicObject->o_Position = tpEnemy->o_Position;
+			vfReleaseObject			((*J).second);
+			I++;
+		}
 		for ( ; I != E; I++) {
 			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
 			VERIFY					(J != m_tObjectRegistry.end());
@@ -75,7 +84,6 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 
 void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 {
-	Msg("%s",I->s_name);
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {
@@ -96,18 +104,18 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 						xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
 						if (tpEnemy)
 							if (tpEnemy->fHealth <= 0) {
-								tpEnemy->m_bDirectControl = true;
-//								tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
-//								CALifeScheduleRegistry::Update(tpEnemy);
-//								i--;
-//								N--;
-//								continue;
+								tpEnemy->m_bDirectControl	= true;
+								tpEnemy->m_bOnline			= true;
+								tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
+								vfUpdateDynamicData(tpEnemy);
+								i--;
+								N--;
+								continue;
 							}
 							else
 								if (m_tpActor->o_Position.distance_to(tpEnemy->o_Position) > m_fOnlineDistance)
 									dwCount++;
 					}
-					Msg("%d",dwCount);
 					if (tpALifeAbstractGroup->m_tpMembers.size() && (dwCount == tpALifeAbstractGroup->m_tpMembers.size())) {
 						if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
 							vfSwitchObjectOffline(I);

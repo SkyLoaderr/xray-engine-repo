@@ -327,14 +327,6 @@ class CAI_Rat : public CCustomMonster
 			return(!dwNewNode || !getAI().u_InsideNode(*tpNewNode,QueryPos));
 		};
 
-		IC	bool bfCheckMask(svector<_LOCATION_ID,LOCATION_TYPE_COUNT> &M, _LOCATION_ID E[LOCATION_TYPE_COUNT])
-		{
-			for (int i=0; i<LOCATION_TYPE_COUNT; i++)
-				if ((M[i] != E[i]) && (M[i] != 255))
-					return(false);
-			return(true);
-		};
-		
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
