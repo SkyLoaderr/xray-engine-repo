@@ -16,7 +16,12 @@ enum EJointType
     jtRigid,
 	jtCloth,
 	jtJoint,
-    jtWheel,			// SJointLimit[0] = axis X(1,0,0) = steer; SJointLimit[2] = axis Z(0,0,1) = wheel; 
+    jtWheelXZ,
+    jtWheelXY,
+    jtWheelYX,
+    jtWheelYZ,
+    jtWheelZX,
+    jtWheelZY,
     jtForceU32 = u32(-1)
 };
 
@@ -54,8 +59,16 @@ struct SBoneShape
     {
     	type		= stNone;
         box.invalidate();
-        sphere.identity();
+        sphere.P.set(0.f,0.f,0.f); sphere.R = 0.f;
         cylinder.invalidate();
+    }
+    bool			Valid(){
+    	switch (type){
+        case stBox: 	return !fis_zero(box.m_halfsize.x)&&!fis_zero(box.m_halfsize.x)&&!fis_zero(box.m_halfsize.x);
+        case stSphere: 	return !fis_zero(sphere.R);
+        case stCylinder:return !fis_zero(cylinder.m_height)&&!fis_zero(cylinder.m_radius);
+        };
+        return true;
     }
 };
 
@@ -76,7 +89,7 @@ struct SJointIKData
         spring_factor	= 1.f;
         damping_factor	= 1.f;
     }
-    void			clamp_by_limits(const Fvector& basis_hpb, Fvector& dest_hpb);
+    void			clamp_by_limits(Fvector& dest_xyz);
 };
 #pragma pack( pop )
 
@@ -86,19 +99,18 @@ class CBone
 	string64			parent_name;
 	string64			wmap;
 	Fvector			    rest_offset;
-	Fvector			    rest_rotate;    // HPB format
+	Fvector			    rest_rotate;    // XYZ format (Game format)
 	float			    rest_length;
 
 	Fvector			    mot_offset;
-	Fvector			    mot_rotate;		// HPB format
+	Fvector			    mot_rotate;		// XYZ format (Game format)
 	float			    mot_length;
 
+    Fmatrix			    rest_transform;
     Fmatrix			    mot_transform;
+
     Fmatrix			    last_transform;
     Fmatrix			    last_i_transform;
-    
-    Fmatrix			    rest_transform;
-    Fmatrix			    rest_i_transform;
 public:
 	int				    index;
     CBone*			    parent;
@@ -127,21 +139,25 @@ public:
 	const char*		    Name			(){return name;}
 	const char*		    ParentName		(){return parent_name;}
 	const char*		    WMap			(){return wmap;}
-    const Fvector&      Offset			(){return mot_offset;}
-    const Fvector&      Rotate			(){return mot_rotate;}
-    float			    Length			(){return mot_length;}
-    IC Fmatrix&			RTransform		(){return rest_transform;}
-    IC Fmatrix&			RITransform		(){return rest_i_transform;}
-    IC Fmatrix&		    MTransform		(){return mot_transform;}
-    IC Fmatrix&		    LTransform		(){return last_transform;}
-    IC Fmatrix&		    LITransform		(){return last_i_transform;}
     IC int			    Index			(){return index;}
     IC CBone*		    Parent			(){return parent;}
     IC BOOL			    IsRoot			(){return (parent==0);}
 
-	void			    Update			(const Fvector& T, const Fvector& R){mot_offset.set(T); mot_rotate.set(R); mot_length=rest_length;}
+    // transformation
+    const Fvector&      _Offset			(){return mot_offset;}
+    const Fvector&      _Rotate			(){return mot_rotate;}
+    float			    _Length			(){return mot_length;}
+    IC Fmatrix&			_RTransform		(){return rest_transform;}
+    IC Fmatrix&		    _MTransform		(){return mot_transform;}
+    IC Fmatrix&		    _LTransform		(){return last_transform;}
+    IC Fmatrix&		    _LITransform	(){return last_i_transform;} 
+	IC const Fvector&	_RestOffset		(){return rest_offset;}
+	IC Fvector&		    _RestRotate		(){return rest_rotate;}
+    
+	void			    _Update			(const Fvector& T, const Fvector& R){mot_offset.set(T); mot_rotate.set(R); mot_length=rest_length;}
     void			    Reset			(){mot_offset.set(rest_offset); mot_rotate.set(rest_rotate); mot_length=rest_length;}
 
+    // IO
 	void			    Save			(IWriter& F);
 	void			    Load_0			(IReader& F);
 	void			    Load_1			(IReader& F);
@@ -156,10 +172,6 @@ public:
     void			    CopyData		(CBone* bone);
     
 #ifdef _EDITOR
-	Fvector&		    get_rest_offset	(){return rest_offset;}
-	Fvector&		    get_rest_rotate	(){return rest_rotate;}
-	float&			    get_rest_length	(){return rest_length;}
-
 	void			    ShapeScale		(const Fvector& amount);
 	void			    ShapeRotate		(const Fvector& amount);
 	void			    ShapeMove		(const Fvector& amount);
@@ -173,9 +185,7 @@ public:
 
     void			    ClampByLimits	();
 
-    const Fvector&      RestRotate		(){return rest_rotate;}
-
-    void 			    ExportOGF		(IWriter& F);
+    bool 			    ExportOGF		(IWriter& F);
 #endif
 };
 DEFINE_VECTOR		    (CBone*,BoneVec,BoneIt);

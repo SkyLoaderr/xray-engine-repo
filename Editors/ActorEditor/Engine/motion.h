@@ -87,7 +87,7 @@ public:
 					COMotion		(COMotion* src);
 	virtual			~COMotion		();
 
-	void			Evaluate		(float t, Fvector& T, Fvector& R);
+	void			_Evaluate		(float t, Fvector& T, Fvector& R);
 	virtual void	Save			(IWriter& F);
 	virtual bool	Load			(IReader& F);
 
@@ -123,7 +123,7 @@ public:
 					CSMotion		(CSMotion* src);
 	virtual			~CSMotion		();
 
-	void			Evaluate		(int bone_idx, float t, Fvector& T, Fvector& R);
+	void			_Evaluate		(int bone_idx, float t, Fvector& T, Fvector& R);
 
     void			CopyMotion		(CSMotion* src);
 

@@ -5,21 +5,34 @@
 #include "envelope.h"
 #include "topbar.h"
 
-void SJointIKData::clamp_by_limits(const Fvector& basis_hpb, Fvector& dest_hpb)
+void SJointIKData::clamp_by_limits(Fvector& dest_xyz)
 {
 	switch (type){
     case jtRigid:
-		dest_hpb.set(basis_hpb);
+		dest_xyz.set(0.f,0.f,0.f);
     break;
     case jtJoint:
-		clamp(dest_hpb.x,basis_hpb.x+limits[1].limit.x,basis_hpb.x+limits[1].limit.y);
-		clamp(dest_hpb.y,basis_hpb.y+limits[0].limit.x,basis_hpb.y+limits[0].limit.y);
-		clamp(dest_hpb.z,basis_hpb.z+limits[2].limit.x,basis_hpb.z+limits[2].limit.y);
+		clamp(dest_xyz.x,limits[0].limit.x,limits[0].limit.y);
+		clamp(dest_xyz.y,limits[1].limit.x,limits[1].limit.y);
+		clamp(dest_xyz.z,limits[2].limit.x,limits[2].limit.y);
     break;
-    case jtWheel:
-//		clamp(dest_hpb.x,basis_hpb.x+limits[0].limit.x,basis_hpb.x+limits[0].limit.y);
-		clamp(dest_hpb.y,basis_hpb.x+limits[0].limit.x,basis_hpb.y+limits[0].limit.y);
-		dest_hpb.y=basis_hpb.y;
+    case jtWheelXZ:
+		clamp(dest_xyz.x,limits[0].limit.x,limits[0].limit.y);		dest_xyz.y=0;
+    break;
+    case jtWheelXY:
+		clamp(dest_xyz.x,limits[0].limit.x,limits[0].limit.y);		dest_xyz.z=0;
+    break;
+    case jtWheelYX:
+		clamp(dest_xyz.y,limits[1].limit.x,limits[1].limit.y);		dest_xyz.z=0;
+    break;
+    case jtWheelYZ:
+		clamp(dest_xyz.y,limits[1].limit.x,limits[1].limit.y);		dest_xyz.x=0;
+    break;
+    case jtWheelZX:
+		clamp(dest_xyz.z,limits[2].limit.x,limits[2].limit.y);		dest_xyz.y=0;
+    break;
+    case jtWheelZY:
+		clamp(dest_xyz.z,limits[2].limit.x,limits[2].limit.y);		dest_xyz.x=0;
     break;
     }
 }
@@ -29,7 +42,7 @@ void CBone::ShapeScale(const Fvector& _amount)
 	switch (shape.type){
     case SBoneShape::stBox:{
         Fvector amount=_amount;
-        Fmatrix _IT;_IT.invert(LTransform());
+        Fmatrix _IT;_IT.invert(_LTransform());
         _IT.transform_dir(amount,_amount);
         if (fraTopBar->ebCSParent->Down) _IT.transform_dir(amount);
     	shape.box.m_halfsize.add(amount);		
@@ -50,7 +63,7 @@ void CBone::ShapeScale(const Fvector& _amount)
 void CBone::ShapeRotate(const Fvector& _amount)
 {
     Fvector amount=_amount;
-	Fmatrix _IT;_IT.invert(LTransform());
+	Fmatrix _IT;_IT.invert(_LTransform());
     if (fraTopBar->ebCSParent->Down) _IT.transform_dir(amount);
 	switch (shape.type){
     case SBoneShape::stBox:{
@@ -70,7 +83,7 @@ void CBone::ShapeRotate(const Fvector& _amount)
 void CBone::ShapeMove(const Fvector& _amount)
 {
     Fvector amount=_amount;
-	Fmatrix _IT;_IT.invert(LTransform());
+	Fmatrix _IT;_IT.invert(_LTransform());
     if (fraTopBar->ebCSParent->Down) _IT.transform_dir(amount);
 	switch (shape.type){
     case SBoneShape::stBox:
@@ -88,7 +101,7 @@ void CBone::ShapeMove(const Fvector& _amount)
 bool CBone::Pick(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent)
 {
 	Fvector start, dir;
-    Fmatrix M; M.mul(parent,LTransform());
+    Fmatrix M; M.mul(parent,_LTransform());
     M.invert();
     M.transform_tiny(start,S);
     M.transform_dir(dir,D);
@@ -108,80 +121,90 @@ void CBone::BoneRotate(const Fvector& _axis, float angle)
 {
     if (!fis_zero(angle)){
 		if (fraTopBar->ebCSParent->Down){	
-        // parent CS
-            mot_rotate.x += _axis.y*angle; 
-            mot_rotate.y += _axis.x*angle;
-            mot_rotate.z += _axis.z*angle;
-
-            // local clamp
-			Fvector mot;
-	    	Fmatrix C;
-            C.setHPB			(mot_rotate.x,mot_rotate.y,mot_rotate.z);
-			C.mulA				(RITransform());
-            C.getHPB			(mot);
-
-            Fvector zero		= {0,0,0};
-		    IK_data.clamp_by_limits(zero,mot);
-
-            if (fis_zero(_axis.x)) mot.y=0.f; 
-            if (fis_zero(_axis.y)) mot.x=0.f; 
-            if (fis_zero(_axis.z)) mot.z=0.f; 
-            
-            C.setHPB			(mot.x,mot.y,mot.z);
-            C.mulA				(RTransform());
-            
-            C.getHPB			(mot_rotate);
-        }else{								
-        // local CS
+        // bind pose CS
+			Fmatrix mBind,mBindI,mLocal,mRotate,mLocalBP;
+            mBind.setXYZi		(rest_rotate);
+            mBindI.invert		(mBind);
+            mLocal.setXYZi		(mot_rotate);
             Fvector axis;
-            MTransform().transform_dir(axis,_axis);
+            mBind.transform		(axis,_axis);
+            mRotate.rotation	(axis,angle);
+            mLocal.mulA			(mRotate);
+
+            mLocalBP.mul		(mBindI,mLocal);
+			Fvector mot;
+            mLocalBP.getXYZi	(mot);
+
+            IK_data.clamp_by_limits(mot);
+
+            mLocalBP.setXYZi	(mot);
+            mLocal.mul			(mBind,mLocalBP);
+            mLocal.getXYZi		(mot_rotate);
+        }else{
+        // local CS
+			Fmatrix mBind,mBindI,mRotate,mLocal,mLocalBP;
+            mBind.setXYZi		(rest_rotate);
+            mBindI.invert		(mBind);
+
+            Fvector axis;
+            _MTransform().transform_dir(axis,_axis);
     
             // rotation
-            Fmatrix m;	m.rotation(axis, angle);
-            Fmatrix tRP;
-            tRP.mul				(m,MTransform());
-            tRP.getHPB			(mot_rotate); 
-            mot_rotate.mul		(-1.f);
+            mRotate.rotation	(axis, angle);
+            mLocal.mul			(mRotate,_MTransform());
+            mLocal.getXYZi		(mot_rotate); 
 
             // local clamp
 			Fvector mot;
-	    	Fmatrix C;
-            C.setHPB			(mot_rotate.x,mot_rotate.y,mot_rotate.z);
-			C.mulA				(RITransform());
-            C.getHPB			(mot);
+            mLocalBP.mul		(mBindI,mLocal);
+            mLocalBP.getXYZi	(mot);
 
-			Fvector zero		= {0,0,0};
-		    IK_data.clamp_by_limits(zero,mot);
+		    IK_data.clamp_by_limits(mot);
 
-            C.setHPB			(mot.x,mot.y,mot.z);
-            C.mulA				(RTransform());
-            C.getHPB			(mot_rotate);
+            mLocalBP.setXYZi	(mot);
+            mLocal.mul			(mBind,mLocalBP);
+            mLocal.getXYZi		(mot_rotate);
         }
     }
 }
 
 void CBone::ClampByLimits()
 {
-    IK_data.clamp_by_limits(rest_rotate,mot_rotate);
+    Fmatrix mBind,mBindI,mLocal,mRotate,mLocalBP;
+    mBind.setXYZi		(rest_rotate);
+    mBindI.invert		(mBind);
+
+    mLocal.setXYZi		(mot_rotate);
+    mLocalBP.mul		(mBindI,mLocal);
+    Fvector mot;
+    mLocalBP.getXYZi	(mot);
+
+    IK_data.clamp_by_limits(mot);
+
+    mLocalBP.setXYZi	(mot);
+    mLocal.mul			(mBind,mLocalBP);
+    mLocal.getXYZi		(mot_rotate);
 }
 
-void CBone::ExportOGF(IWriter& F)
+bool CBone::ExportOGF(IWriter& F)
 {
+	if (!shape.Valid()) return false;
     F.w_stringZ	(game_mtl);
     F.w			(&shape,sizeof(SBoneShape));
 
     F.w_u32		(IK_data.type);
     for (int k=0; k<3; k++){
-    	F.w_float	(_min(-IK_data.limits[k].limit.x,-IK_data.limits[k].limit.y)); // min
-    	F.w_float	(_max(-IK_data.limits[k].limit.x,-IK_data.limits[k].limit.y)); // max
+    	F.w_float	(IK_data.limits[k].limit.x); // min
+    	F.w_float	(IK_data.limits[k].limit.y); // max
         F.w_float	(IK_data.limits[k].spring_factor);
         F.w_float	(IK_data.limits[k].damping_factor);
     }
     F.w_float	(IK_data.spring_factor);
     F.w_float	(IK_data.damping_factor);
-    Fvector hpb; LTransform().getHPB(hpb);
-    F.w_fvector3(hpb);
-    F.w_fvector3(LTransform().c);
+    Fvector xyz; _RTransform().getXYZi(xyz);
+    F.w_fvector3(xyz);
+    F.w_fvector3(_RTransform().c);
     F.w_float	(mass);
     F.w_fvector3(center_of_mass);
+    return true;
 }

@@ -4,7 +4,7 @@
 #include "bone.h"
 #include "envelope.h"
 
-#define BONE_VERSION			0x0001
+#define BONE_VERSION			0x0002
 //------------------------------------------------------------------------------
 #define BONE_CHUNK_VERSION		0x0001
 #define BONE_CHUNK_DEF			0x0002
@@ -75,6 +75,7 @@ void CBone::Load_0(IReader& F)
 	F.r_fvector3	(rest_offset);
 	F.r_fvector3	(rest_rotate);
 	rest_length		= F.r_float();
+   	std::swap		(rest_rotate.x,rest_rotate.y);
     Reset			();
 }
 
@@ -83,7 +84,7 @@ void CBone::Load_1(IReader& F)
 	R_ASSERT(F.find_chunk(BONE_CHUNK_VERSION));
 	u16	ver			= F.r_u16();
 
-    if (ver!=BONE_VERSION)
+    if ((ver!=0x0001)&&(ver!=BONE_VERSION))
     	return;
     
 	R_ASSERT(F.find_chunk(BONE_CHUNK_DEF));
@@ -96,6 +97,9 @@ void CBone::Load_1(IReader& F)
 	F.r_fvector3	(rest_rotate);
 	rest_length		= F.r_float();
 
+    if (ver==0x0001)
+    	std::swap	(rest_rotate.x,rest_rotate.y);
+    
     LoadData		(F);
 }
 

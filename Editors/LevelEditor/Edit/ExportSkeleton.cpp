@@ -365,12 +365,14 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         F.w			(&obb,sizeof(Fobb));
     }
     F.close_chunk();
-                     
+
+    bool bRes = true;
+                    
     F.open_chunk(OGF_IKDATA);
     for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++)
-        (*bone_it)->ExportOGF(F);
+        if (!(*bone_it)->ExportOGF(F)){ bRes=false; break;}
     F.close_chunk();
-    
+
     if (!m_Source->GetClassScript().IsEmpty()){
         F.open_chunk(OGF_USERDATA);
         F.w(m_Source->GetClassScript().c_str(),m_Source->GetClassScript().Length());
@@ -383,7 +385,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     // restore active motion
     m_Source->SetActiveSMotion(active_motion);
 
-    return true;
+    return bRes;
 }
 //----------------------------------------------------
 
@@ -425,10 +427,10 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                 float t = (float)frm/motion->FPS();
                 Fvector T,R;
                 Fquaternion q;
-                motion->Evaluate	(bone_id,t,T,R);
-                B->Update			(T,R);
+                motion->_Evaluate	(bone_id,t,T,R);
+                B->_Update			(T,R);
                 m_Source->CalculateAnimation(B,motion,true);
-                Fmatrix mat			= B->MTransform();
+                Fmatrix mat			= B->_MTransform();
                 if (flags.is(st_BoneMotion::flWorldOrient)){
                     Fmatrix 	parent;
                     Fmatrix 	inv_parent;
@@ -440,7 +442,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                         inv_parent	= Fidentity;
                     }
                     Fmatrix 	rot;
-                    rot.setHPB	(-R.x,-R.y,-R.z);
+                    rot.setXYZi	(R.x,R.y,R.z);
                     mat.mul		(inv_parent,rot);
                 }
                 // apply global transform

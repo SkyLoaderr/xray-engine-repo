@@ -282,8 +282,8 @@ void CEditableMesh::RenderSkeleton(const Fmatrix& parent, CSurface* S)
         for (int k=0; k<3; k++,pv++){
         	st_SVert& SV = m_SVertices[*i_it*3+k];
             if (SV.bone1!=-1){
-                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->LTransform();
-                Fmatrix& M1		= m_Parent->m_Bones[SV.bone1]->LTransform();
+                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->_LTransform();
+                Fmatrix& M1		= m_Parent->m_Bones[SV.bone1]->_LTransform();
                 M0.transform_tiny(P0,SV.offs0);
                 M0.transform_dir (N0,SV.norm0);
                 M1.transform_tiny(P1,SV.offs1);
@@ -292,7 +292,7 @@ void CEditableMesh::RenderSkeleton(const Fmatrix& parent, CSurface* S)
                 pv->N.lerp		(N0,N1,SV.w);
                 pv->uv.set		(SV.uv);
             }else{                 
-                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->LTransform();
+                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->_LTransform();
                 M0.transform_tiny(pv->P,SV.offs0);
                 M0.transform_dir (pv->N,SV.norm0);
                 pv->uv.set		(SV.uv);

@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "motion.h"
-#include "envelope.h"
+#include "envelope.h"      
 
 #define EOBJ_OMOTION   			0x1100
 #define EOBJ_SMOTION   			0x1200
@@ -65,13 +65,14 @@ COMotion::~COMotion(){
 	for (int ch=0; ch<ctMaxChannel; ch++) xr_delete(envs[ch]);
 }
 
-void COMotion::Evaluate(float t, Fvector& T, Fvector& R){
+void COMotion::_Evaluate(float t, Fvector& T, Fvector& R)
+{
 	T.x = envs[ctPositionX]->Evaluate(t);
 	T.y = envs[ctPositionY]->Evaluate(t);
 	T.z = envs[ctPositionZ]->Evaluate(t);
 
-	R.x = envs[ctRotationH]->Evaluate(t);
-	R.y = envs[ctRotationP]->Evaluate(t);
+	R.y = envs[ctRotationH]->Evaluate(t);
+	R.x = envs[ctRotationP]->Evaluate(t);
 	R.z = envs[ctRotationB]->Evaluate(t);
 }
 
@@ -180,7 +181,7 @@ void CSMotion::CopyMotion(CSMotion* source){
     }
 }
 
-void CSMotion::Evaluate(int bone_idx, float t, Fvector& T, Fvector& R)
+void CSMotion::_Evaluate(int bone_idx, float t, Fvector& T, Fvector& R)
 {
 	VERIFY(bone_idx<(int)bone_mots.size());
 	CEnvelope** envs = bone_mots[bone_idx].envs;
@@ -188,8 +189,8 @@ void CSMotion::Evaluate(int bone_idx, float t, Fvector& T, Fvector& R)
 	T.y = envs[ctPositionY]->Evaluate(t);
 	T.z = envs[ctPositionZ]->Evaluate(t);
 
-	R.x = envs[ctRotationH]->Evaluate(t);
-	R.y = envs[ctRotationP]->Evaluate(t);
+	R.y = envs[ctRotationH]->Evaluate(t);
+	R.x = envs[ctRotationP]->Evaluate(t);
 	R.z = envs[ctRotationB]->Evaluate(t);
 }
 

@@ -55,8 +55,8 @@ void CEditableObject::OnFrame()
             Fvector R,T;
             int i=0;
             for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++, i++){
-	            m_ActiveSMotion->Evaluate(i,m_SMParam.Frame(),T,R);
-                (*b_it)->Update(T,R);
+	            m_ActiveSMotion->_Evaluate(i,m_SMParam.Frame(),T,R);
+                (*b_it)->_Update(T,R);
             }
             m_SMParam.Update(Device.fTimeDelta,m_ActiveSMotion->fSpeed,!m_ActiveSMotion->m_Flags.is(esmStopAtEnd));
         }else{
@@ -98,35 +98,30 @@ static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRe
     if (parent_bone&&!parent_bone->flags.is(CBone::flCalculate))
 	    Calculate(parent_bone,motion,bCalcInv,bCalcRest); 
 
-    Fmatrix& M 		= bone->MTransform();
-    Fmatrix& L 		= bone->LTransform();
-    Fmatrix& parent = parent_bone?parent_bone->LTransform():Fidentity;
+    Fmatrix& M 		= bone->_MTransform();
+    Fmatrix& L 		= bone->_LTransform();
     
-    const Fvector& r = bone->Rotate();
+    const Fvector& r = bone->_Rotate();
     if (flags.is(st_BoneMotion::flWorldOrient)){
-        M.setHPB	(-r.x,-r.y,-r.z);
-        M.c.set		(bone->Offset());
-        L.mul		(parent,M);
+        M.setXYZi	(r.x,r.y,r.z);
+        M.c.set		(bone->_Offset());
+        L.mul		(parent_bone?parent_bone->_LTransform():Fidentity,M);
         L.i.set		(M.i);
         L.j.set		(M.j);
         L.k.set		(M.k);
-		if (parent_bone){ 
-            M.setHPB	(r.x,r.y,r.z);
-            M.c.set		(bone->Offset());
-        	M.mulA	(parent_bone->LITransform());
-        }
+		if (parent_bone) 
+        	M.mulA	(parent_bone->_LITransform());
     }else{
-        M.setHPB	(-r.x,-r.y,-r.z);
-        M.c.set		(bone->Offset());
-        L.mul		(parent,M);
+        M.setXYZi	(r.x,r.y,r.z);
+        M.c.set		(bone->_Offset());
+        L.mul		(parent_bone?parent_bone->_LTransform():Fidentity,M);
     }
-	if (bCalcInv) bone->LITransform().invert(L);
+	if (bCalcInv) bone->_LITransform().invert(L);
     if (bCalcRest){
-	    const Fvector& r 	= bone->get_rest_rotate();
-    	Fmatrix& R			= bone->RTransform();
-        R.setHPB			(r.x,r.y,r.z);
-        R.c.set				(bone->get_rest_rotate());
-    	bone->RITransform().invert(bone->RTransform());
+    	Fmatrix& R	= bone->_RTransform();
+        R.setXYZi	(bone->_RestRotate());
+        R.c.set		(bone->_RestOffset());
+        L.mul		(parent_bone?parent_bone->_RTransform():Fidentity,M);
     }
     bone->flags.set(CBone::flCalculate,TRUE);
 }
@@ -334,9 +329,9 @@ void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* mot
 	    Flags8 flags	= motion->GetMotionFlags(idx);
     	Fvector T,R;
         Fmatrix rot, mat;
-        motion->Evaluate(idx,t,T,R);
+        motion->_Evaluate(idx,t,T,R);
         if (flags.is(st_BoneMotion::flWorldOrient)){
-            rot.setHPB(-R.x,-R.y,-R.z);
+            rot.setXYZi(R.x,R.y,R.z);
             mat.identity();
             mat.c.set(T);
             mat.mulA(matrix);
@@ -344,7 +339,7 @@ void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* mot
             mat.j.set(rot.j);
             mat.k.set(rot.k);
         }else{
-            mat.setHPB(-R.x,-R.y,-R.z);
+            mat.setXYZi(R.x,R.y,R.z);
             mat.c.set(T);
             mat.mulA(matrix);
         }

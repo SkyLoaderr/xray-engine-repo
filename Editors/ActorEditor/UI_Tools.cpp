@@ -139,7 +139,8 @@ bool CActorTools::OnCreate()
     Device.seqDevDestroy.Add(this);
 
     // props
-    m_ObjectItems 	= TItemList::CreateForm(fraLeftBar->paObjectProps,alClient,OnObjectItemFocused);
+    m_ObjectItems 	= TItemList::CreateForm(fraLeftBar->paObjectProps,alClient);
+	m_ObjectItems->OnItemsFocused	= OnObjectItemFocused;
     m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnItemModified);
     m_PreviewObject.OnCreate();
 

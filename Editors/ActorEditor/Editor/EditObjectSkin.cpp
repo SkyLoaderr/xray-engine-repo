@@ -74,7 +74,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
         for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
 	        Device.SetShader(Device.m_WireShader);    
 	        RCache.set_xform_world(parent);
-            Fmatrix& M 		= (*b_it)->LTransform();
+            Fmatrix& M 		= (*b_it)->_LTransform();
             Fvector p1		= M.c;
             u32 c_joint		= (*b_it)->flags.is(CBone::flSelected)?color_bone_sel_color:color_bone_norm_color;
             Fvector p2,d; 	d.set	(0,0,1);
@@ -94,12 +94,12 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             }
             if (0){
 	            M.transform_dir	(d);
-    	        p2.mad			(p1,d,(*b_it)->Length());
+    	        p2.mad			(p1,d,(*b_it)->_Length());
         	    DU.DrawLine		(p1,p2,c_joint);
             }
             if ((*b_it)->Parent()){
 		        Device.SetShader(Device.m_SelectionShader);
-				Fvector& p2 = (*b_it)->Parent()->LTransform().c;
+				Fvector& p2 = (*b_it)->Parent()->_LTransform().c;
         	    DU.DrawLine	(p1,p2,color_bone_link_color);
             }
 			if (fraBottomBar->miDrawBoneAxis->Checked){ 
@@ -117,10 +117,12 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
                 Fmatrix mat	= M;
                 mat.mulA	(parent);
                 u32 c 		= (*b_it)->flags.is(CBone::flSelected)?0x80ffffff:0x300000ff;
-                switch ((*b_it)->shape.type){
-                case SBoneShape::stBox: 	DU.DrawOBB		(mat,(*b_it)->shape.box,c);	break;
-                case SBoneShape::stSphere:	DU.DrawSphere   (mat,(*b_it)->shape.sphere,c);break;
-                case SBoneShape::stCylinder:DU.DrawCylinder (mat,(*b_it)->shape.cylinder.m_center,(*b_it)->shape.cylinder.m_direction,(*b_it)->shape.cylinder.m_height,(*b_it)->shape.cylinder.m_radius,c);break;
+                if ((*b_it)->shape.Valid()){
+                    switch ((*b_it)->shape.type){
+                    case SBoneShape::stBox: 	DU.DrawOBB		(mat,(*b_it)->shape.box,c);	break;
+                    case SBoneShape::stSphere:	DU.DrawSphere   (mat,(*b_it)->shape.sphere,c);break;
+                    case SBoneShape::stCylinder:DU.DrawCylinder (mat,(*b_it)->shape.cylinder.m_center,(*b_it)->shape.cylinder.m_direction,(*b_it)->shape.cylinder.m_height,(*b_it)->shape.cylinder.m_radius,c);break;
+	                }
                 }
             }
         }

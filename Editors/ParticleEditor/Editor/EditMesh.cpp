@@ -195,19 +195,19 @@ void CEditableMesh::GenerateSVertices()
                     SV.bone1 	= -1;
                     SV.w	   	= 0.f;
                     CBone* B 	= m_Parent->m_Bones[SV.bone0];
-                    B->LITransform().transform_tiny(SV.offs0,P);
-                    B->LITransform().transform_dir(SV.norm0,N);
+                    B->_LITransform().transform_tiny(SV.offs0,P);
+                    B->_LITransform().transform_dir(SV.norm0,N);
                 }break;
                 case 2:{
                     SV.bone0 	= wb[0].bone;
                     SV.bone1 	= wb[1].bone;
                     SV.w	   	= wb[1].weight/(wb[0].weight+wb[1].weight);
                     B		 	= m_Parent->m_Bones[SV.bone0];
-                    B->LITransform().transform_tiny(SV.offs0,P);
-                    B->LITransform().transform_dir(SV.norm0,N);
+                    B->_LITransform().transform_tiny(SV.offs0,P);
+                    B->_LITransform().transform_dir(SV.norm0,N);
                     B		 	= m_Parent->m_Bones[SV.bone1];
-                    B->LITransform().transform_tiny(SV.offs1,P);
-                    B->LITransform().transform_dir(SV.norm1,N);
+                    B->_LITransform().transform_tiny(SV.offs1,P);
+                    B->_LITransform().transform_dir(SV.norm1,N);
                 }break;
                 default:
                     THROW2("More than 2 weight per vertex found!");
