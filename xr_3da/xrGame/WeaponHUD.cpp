@@ -99,8 +99,9 @@ static void __stdcall animCallback	(CBlend* B)
 
 void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 {
-	Show();
+	Show	();
 
+	// Msg	("- %s",PSkeletonAnimated(pVisual)->LL_MotionDefName_dbg(M));
 	PSkeletonAnimated(pVisual)->Update		();
 	if (W)	PSkeletonAnimated(pVisual)->PlayCycle	(M,bMixIn,animCallback,W);
 	else	PSkeletonAnimated(pVisual)->PlayCycle	(M,bMixIn);

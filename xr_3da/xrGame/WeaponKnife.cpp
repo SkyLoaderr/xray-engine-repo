@@ -129,7 +129,7 @@ void CWeaponKnife::OnAnimationEnd()
             if(m_attackStart) 
 			{
 				m_attackStart = false;
-				m_pHUD->animPlay(mhud_attack_e[Random.randI(mhud_attack_e.size())], FALSE, this);
+				m_pHUD->animPlay(mhud_attack_e[Random.randI(mhud_attack_e.size())], TRUE, this);
 				Fvector	p1, d; 
 				p1.set(vLastFP); 
 				d.set(vLastFD);
@@ -158,7 +158,7 @@ void CWeaponKnife::OnAnimationEnd()
             if(m_attackStart) 
 			{
 				m_attackStart = false;
-				m_pHUD->animPlay(mhud_attack2_e[Random.randI(mhud_attack2_e.size())], FALSE, this);
+				m_pHUD->animPlay(mhud_attack2_e[Random.randI(mhud_attack2_e.size())], TRUE, this);
 				
 				Fvector	p1, d; 
 				p1.set(vLastFP); 
@@ -179,9 +179,9 @@ void CWeaponKnife::OnAnimationEnd()
 
 				while(m_magazine.size() < 2) m_magazine.push(cartridge);
 				FireTrace(p1,vLastFP,d);
-		} else 
-			SwitchState(eIdle);
-	} break;
+			} else 
+				SwitchState(eIdle);
+		} break;
 	case eShowing:									// End of Show
 	case eIdle:	
 		SwitchState(eIdle);		break;	
@@ -205,7 +205,7 @@ void CWeaponKnife::switch2_Attacking2	()
 {
 	if(m_bPending) return;
 
-	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())], FALSE, this);
+	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())], FALSE, this);	//. mix=on????
 	m_attackStart = true;
 	m_bPending = true;
 }

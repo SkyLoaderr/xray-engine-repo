@@ -212,16 +212,33 @@ void	CSkeletonAnimated::LL_FadeCycle(u16 part, float falloff)
 	
 	for (u32 I=0; I<Blend.size(); I++)
 	{
-		CBlend& B		= *Blend[I];
-		B.blend			= CBlend::eFalloff;
-		B.blendFalloff	= falloff;
-//		if (!B.playing)	{
-		if (!B.playing&&!B.stop_at_end){ //.
+		CBlend& B			= *Blend[I];
+		B.blend				= CBlend::eFalloff;
+		B.blendFalloff		= falloff;
+		if (B.stop_at_end)  B.playing = FALSE;
+
+		/*
+		if (!B.playing)	{
+			// Stop @ End
+			B.playing		= TRUE;
+			B.stop_at_end	= FALSE;
+			B.blendAmount	= EPS_S;
+		}
+
+		if (!B.playing) {
+			// Stop @ End
+			B.playing		= FALSE;
+			B.stop_at_end	= TRUE;
+			B.blendAmount	= B.blendPower;
+		}
+
+		if (!B.playing&&!B.stop_at_end) {
 			B.playing		= TRUE;
 			B.stop_at_end	= FALSE;
 			B.blendAmount	= EPS_S;
 		}
         if (B.stop_at_end)  B.playing = FALSE;  //.
+		*/
 	}
 }
 
@@ -240,10 +257,12 @@ void	CSkeletonAnimated::LL_CloseCycle(u16 part)
 		CPartDef& P	= (*partition)[B.bone_or_part];
 		for (u32 i=0; i<P.bones.size(); i++)
 			((CBoneDataAnimated*)(*bones)[P.bones[i]])->Motion_Stop(this,*I);
-		
+		/*
 		blend_cycles[part].erase(I);
 		E=blend_cycles[part].end(); I--; 
+		*/
 	}
+	blend_cycles[part].clear	(); // ?
 }
 
 CBlend*	CSkeletonAnimated::LL_PlayCycle(u16 part, u16 motion, BOOL  bMixing,	float blendAccrue, float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID CallbackParam)
@@ -316,25 +335,32 @@ void CSkeletonAnimated::Update ()
 		{
 			CBlend& B = *(*I);
 //			if (!B.playing) continue;
-			if (!B.playing&&!B.stop_at_end)	continue; //.
+			// if (!B.playing&&!B.stop_at_end)	continue; //.
 			if (B.dwFrame==Device.dwFrame)	continue;
 			B.dwFrame		=	Device.dwFrame;
 //			B.timeCurrent += dt*B.speed;
-			if (B.playing) 	B.timeCurrent += dt*B.speed; //.
+			if (B.playing) 	B.timeCurrent += dt*B.speed; // stop@end - time is not going 
 			switch (B.blend) 
 			{
 			case CBlend::eFREE_SLOT: 
 				NODEFAULT;
 			case CBlend::eFixed:	
-				B.blendAmount 		= B.blendPower; 
+				B.blendAmount 		+= dt*B.blendAccrue*B.blendPower;
+				if (B.blendAmount>B.blendPower)	B.blendAmount = B.blendPower; 
 				if (B.stop_at_end && (B.timeCurrent > (B.timeTotal-SAMPLE_SPF) )) {
-					B.timeCurrent	= B.timeTotal-SAMPLE_SPF;
-					if (B.playing&&B.Callback)	B.Callback(&B);
+					B.timeCurrent	= B.timeTotal-SAMPLE_SPF;		// stop@end - time frozen at the end
+					if (B.playing&&B.Callback)	B.Callback(&B);		// callback only once
 					B.playing		= FALSE;
 				}
 				break;
 			case CBlend::eAccrue:	
 				B.blendAmount 		+= dt*B.blendAccrue*B.blendPower;
+				if (B.stop_at_end && (B.timeCurrent > (B.timeTotal-SAMPLE_SPF) )) {
+					B.timeCurrent	= B.timeTotal-SAMPLE_SPF;		// stop@end - time frozen at the end
+					if (B.playing&&B.Callback)	B.Callback(&B);		// callback only once
+					B.playing		= FALSE;
+					B.blend			= CBlend::eFixed;
+				} 
 				if (B.blendAmount>=B.blendPower) {
 					// switch to fixed
 					B.blendAmount	= B.blendPower;

@@ -90,7 +90,7 @@ public:
 
 //*** Bone Instance *******************************************************************************
 #pragma pack(push,8)
-class ENGINE_API		CBlendInstance
+class ENGINE_API		CBlendInstance	// Bone Instance Blend List (per-bone data)
 {
 public:
 	BlendList			Blend;
