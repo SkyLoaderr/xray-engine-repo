@@ -160,15 +160,16 @@ void CDetailManager::hw_Render()
 	hw_Render_dump			(hw_VS_wave,	visible[1], c_hdr );
 
 	// Wave1
+	VSC.set					(1,	1.f/3.f,	1.f/7.f,	1.f/5.f,	Device.fTimeGlobal*psDetail_w_speed);	// wave
 	VSC.set					(2,	dir2);																		// wind-dir
-	VSC.flush				(2,	1);
+	VSC.flush				(1,	1);
 	hw_Render_dump			(hw_VS_wave,	visible[2], c_hdr );
 
 	// Still
 	VSC.set					(0,scale,scale,scale,1.f);
 	VSC.set					(1,Device.mFullTransform);
 	VSC.flush				(0,c_hdr);
-	hw_Render_dump			(hw_VS_still,	visible[0], 2 );
+	hw_Render_dump			(hw_VS_still,	visible[0], c_hdr );
 }
 
 void	CDetailManager::hw_Render_dump	(CVS* vs, vis_list& list, DWORD c_offset)
