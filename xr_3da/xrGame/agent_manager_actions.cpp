@@ -10,6 +10,7 @@
 #include "agent_manager_actions.h"
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "sight_action.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CAgentManagerActionBase
@@ -64,6 +65,7 @@ void CAgentManagerActionNoOrders::execute			()
 //		(*I).order_type			(AgentManager::eOrderTypeAction);
 //		(*I).action				(CSetupAction(0.f,0));
 //		(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
+//		(*I).action().sight		(CSightAction(dynamic_cast<CGameObject*>(Level().CurrentEntity()),false,""));
 	}
 }
 

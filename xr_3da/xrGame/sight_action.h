@@ -35,7 +35,7 @@ public:
 	IC					CSightAction		(const ESightType &sight_type, const Fvector &vector3d, bool torso_look = false);
 	IC					CSightAction		(const ESightType &sight_type, const Fvector *vector3d);
 	IC					CSightAction		(const CGameObject *object_to_look, bool torso_look = false);
-	IC					CSightAction		(const CGameObject *object_to_look, bool torso_look = false, LPCSTR bone_name = "");
+	IC					CSightAction		(const CGameObject *object_to_look, bool torso_look, LPCSTR bone_name);
 	IC					CSightAction		(const CMemoryInfo *memory_object, bool	torso_look = false);
 			void		execute				();
 	IC		void		set_vector3d		(const Fvector &position);
