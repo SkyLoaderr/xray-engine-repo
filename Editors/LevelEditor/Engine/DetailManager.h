@@ -85,7 +85,7 @@ public:
 	virtual ObjectList* 			GetSnapList		()=0;
 #endif
 
-	IC bool							UseVS			()		{ return HW.Caps.geometry.dwVersion >= CAP_VERSION(1,1); }
+	IC bool							UseVS			()		{ return HW.Caps.geometry.dwVersion_major >= 1; }
 
 	// Software processor
     ref_geom						soft_Geom;

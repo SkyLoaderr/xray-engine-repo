@@ -10,13 +10,14 @@ void CHWCaps::Update()
 	HW.pDevice->GetDeviceCaps(&caps);
 
 	// ***************** GEOMETRY
-	geometry.dwVersion	= (caps.VertexShaderVersion&(0xf << 8ul))>>4 | (caps.VertexShaderVersion&0xf);
-	geometry.bSoftware	= (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)==0;
-	geometry.bPointSprites= FALSE;
-	geometry.bNPatches	= (caps.DevCaps & D3DDEVCAPS_NPATCHES)!=0;
-	geometry.bMPS			= (caps.DeclTypes & D3DDTCAPS_UBYTE4)!=0;
-	geometry.dwRegisters	= (caps.MaxVertexShaderConst);
-	geometry.dwClipPlanes	= _min(caps.MaxUserClipPlanes,15);
+	geometry.dwVersion_major	= (caps.VertexShaderVersion&(0xf << 8ul))>>8;
+	geometry.dwVersion_minor	= (caps.VertexShaderVersion&0xf);
+	geometry.bSoftware			= (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)==0;
+	geometry.bPointSprites		= FALSE;
+	geometry.bNPatches			= (caps.DevCaps & D3DDEVCAPS_NPATCHES)!=0;
+	geometry.bMPS				= (caps.DeclTypes & D3DDTCAPS_UBYTE4)!=0;
+	geometry.dwRegisters		= (caps.MaxVertexShaderConst);
+	geometry.dwClipPlanes		= _min(caps.MaxUserClipPlanes,15);
 	IDirect3DQuery9*	q_vc;
 	D3DDEVINFO_VCACHE	vc;
 	HRESULT _hr			= HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE,&q_vc);
@@ -35,14 +36,15 @@ void CHWCaps::Update()
 	Msg					("* GPU vertex cache: %s, %d",(1==vc.OptMethod)?"recognized":"unrecognized",u32(geometry.dwVertexCache));
 
 	// ***************** PIXEL processing
-	raster.dwVersion		= (caps.PixelShaderVersion&(0xf << 8ul))>>4 | (caps.PixelShaderVersion&0xf);
-	raster.dwStages		= caps.MaxSimultaneousTextures;
-	raster.bNonPow2		= ((caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL)!=0)  || ((caps.TextureCaps & D3DPTEXTURECAPS_POW2)==0);
-	raster.bCubemap		= (caps.TextureCaps & D3DPTEXTURECAPS_CUBEMAP)!=0;
-	raster.op_DP3		= (caps.TextureOpCaps & D3DTEXOPCAPS_DOTPRODUCT3)!=0;
-	raster.op_LERP		= (caps.TextureOpCaps & D3DTEXOPCAPS_LERP)!=0;
-	raster.op_MAD		= (caps.TextureOpCaps & D3DTEXOPCAPS_MULTIPLYADD)!=0;
-	raster.op_reg_TEMP	= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_TSSARGTEMP)!=0;
+	raster.dwVersion_major		= (caps.PixelShaderVersion&(0xf << 8ul))>>8;
+	raster.dwVersion_minor		= (caps.PixelShaderVersion&0xf);
+	raster.dwStages				= caps.MaxSimultaneousTextures;
+	raster.bNonPow2				= ((caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL)!=0)  || ((caps.TextureCaps & D3DPTEXTURECAPS_POW2)==0);
+	raster.bCubemap				= (caps.TextureCaps & D3DPTEXTURECAPS_CUBEMAP)!=0;
+	raster.op_DP3				= (caps.TextureOpCaps & D3DTEXOPCAPS_DOTPRODUCT3)!=0;
+	raster.op_LERP				= (caps.TextureOpCaps & D3DTEXOPCAPS_LERP)!=0;
+	raster.op_MAD				= (caps.TextureOpCaps & D3DTEXOPCAPS_MULTIPLYADD)!=0;
+	raster.op_reg_TEMP			= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_TSSARGTEMP)!=0;
 
 	// ***************** Compatibility : vertex shader
 	if (0==raster.dwVersion)	geometry.dwVersion=0;				// Disable VS if no PS
