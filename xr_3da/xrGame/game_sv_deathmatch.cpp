@@ -280,20 +280,9 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 #include "WeaponHUD.h"
 void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 {
-//	CObject* pNewObject =  Level().Objects.net_Find(ps->GameID);
 	if (!pNewObject || !m_bSpectatorMode) return;
 
-//	CObject* pOldObject = Level().CurrentViewEntity();
 	Level().SetEntity(pNewObject);
-	/*
-	if (pOldObject)
-	{
-		Engine.Sheduler.Unregister	(pOldObject);
-		Engine.Sheduler.Register	(pOldObject);
-	};
-	Engine.Sheduler.Unregister	(pNewObject);
-	Engine.Sheduler.Register	(pNewObject, TRUE);
-	*/
 	CActor* pActor = smart_cast<CActor*> (pNewObject);
 	if (pActor)
 	{
@@ -308,15 +297,10 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 		{
 			pWeapon->InitAddons();
 			pWeapon->UpdateAddonsVisibility();
-
-
-
 		}
 	}
 	m_dwSM_CurViewEntity = pNewObject->ID();
 	m_dwSM_LastSwitchTime = Level().timeServer() + m_dwSM_SwitchDelta;
-
-
 }
 
 
