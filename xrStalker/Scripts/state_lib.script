@@ -10,7 +10,7 @@ states = {
 				movement = nil,
 				mental = nil,
 				bodystate = nil,
-				direction = nil,
+--				direction = nil,
 				animstate = "stand",
 				animation = nil
 			},
@@ -20,7 +20,7 @@ states = {
 				movement = move.walk,
 				mental = anim.free,
 				bodystate = move.standing,
-				direction = nil,
+--				direction = nil,
 				animstate = "stand",
 				animation = nil
 			},
@@ -28,7 +28,7 @@ states = {
 				movement = move.walk,
 				mental = anim.free,
 				bodystate = move.standing,
-				direction = nil,
+--				direction = nil,
 				animstate = "stand",
 				animation = nil
 			},
@@ -39,7 +39,7 @@ states = {
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
-				direction = "object",
+--				direction = "object",
 				animstate = "stand",
 				animation = "idle"
 			},
@@ -48,7 +48,7 @@ states = {
 				movement = move.stand,
 				mental = anim.danger,
 				bodystate = move.standing,
-				direction = "object",
+--				direction = "object",
 				animstate = "stand",
 				animation = nil
 			},
@@ -59,7 +59,7 @@ states = {
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
-				direction = "position",
+--				direction = "position",
 				animstate = "sit",
 				animation = nil
 			}

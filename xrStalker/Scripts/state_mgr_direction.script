@@ -8,6 +8,88 @@ function eva_state_mgr_direction:__init(name, st) super (nil, name)
 	self.target_position = nil
 end
 function eva_state_mgr_direction:evaluate()
+	self.target_position = nil
+
+	if self.st.look_object ~= nil and
+	   self.object:see(self.st.look_object) == true
+	then
+		self.target_position = self.st.look_object:position()
+	end
+		
+	if self.target_position == nil and
+	   self.st.look_position ~= nil
+	then
+		self.target_position = self.st.look_position
+	end
+
+	if self.target_position == nil then
+		self.object:set_sight(look.search, nil, true)
+		return true
+	end
+	
+	if self.target_position ~= nil then
+		local dir = self.object:position():sub(self.target_position)
+--		printf("%s", utils.angle_diff(dir, self.object:head_orientation()))
+		if utils.angle_diff(dir, self.object:head_orientation()) > 5 then
+			return false
+		else
+			return true
+		end
+	end
+	
+	printf("ERROR: ILLEGAL STATE INITIALIZATION (state_mgr.direction)")
+	return true
+end
+
+--' Поворачиваемся ли мы сейчас
+class "eva_state_mgr_direction_turning" (property_evaluator)
+function eva_state_mgr_direction_turning:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_direction_turning:evaluate()
+--	printf("BODY TURN %s", utils.to_str(self.object:is_body_turning()))
+	return self.object:is_body_turning()
+end
+
+
+--' Включаем поворот
+class "act_state_mgr_direction_turn" (action_base)
+function act_state_mgr_direction_turn:__init(name, st) super (nil, name)
+	self.st = st
+	self.target_position = nil
+end
+function act_state_mgr_direction_turn:initialize()
+	action_base.initialize(self)
+end
+function act_state_mgr_direction_turn:execute()
+	action_base.execute(self)
+	if state_lib.states[self.st.target_state].direction == "object" and
+	   self.st.look_object ~= nil 
+	then
+		self.target_position = self.st.look_object:position()
+	end
+	if state_lib.states[self.st.target_state].direction == "position" and
+	   self.st.look_position ~= nil 
+	then
+		self.target_position = self.st.look_position
+	end
+	self.object:set_sight(look.direction, self.target_position:sub(self.object:position()), true)
+
+end
+function act_state_mgr_direction_turn:finalize()
+	action_base.finalize(self)
+end
+
+
+
+--' Повороты тела
+--' Смотрим ли мы сейчас туда, куда нужно или нет?
+class "eva_state_mgr_direction" (property_evaluator)
+function eva_state_mgr_direction:__init(name, st) super (nil, name)
+	self.st = st
+	self.target_position = nil
+end
+function eva_state_mgr_direction:evaluate()
 	if state_lib.states[self.st.target_state].direction == nil then return true end
 		
 	if state_lib.states[self.st.target_state].direction == "object" and
