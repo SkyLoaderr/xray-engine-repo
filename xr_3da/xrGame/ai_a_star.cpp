@@ -21,7 +21,9 @@
 
 float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 
-TNode  *taHeap,**tpaIndexes;
+static DWORD dwAStarStaticCounter = 0;
+TNode		*taHeap;
+TIndexNode	*tpaIndexes;
 
 #define OPTINAL_ENEMY_DISTANCE 40.f
 
@@ -122,8 +124,10 @@ void CAI_Space::vfLoadSearch()
 	fSize2		= _sqr(fSize = this->m_header.size)/4;
 	fYSize2		= _sqr(fYSize = (float)(this->m_header.size_y/32767.0))/4;
 
-	DWORD S1	= (this->m_header.count + 1) *	sizeof(TNode);	taHeap		= (TNode *) xr_malloc(S1); ZeroMemory(taHeap,S1);
-	DWORD S2	= (this->m_header.count)	 *	sizeof(TNode*);	tpaIndexes	= (TNode **)xr_malloc(S2); ZeroMemory(tpaIndexes,S2);
+	//DWORD S1	= (this->m_header.count + 1) *	sizeof(TNode);	taHeap		= (TNode *) xr_malloc(S1); ZeroMemory(taHeap,S1);
+	//DWORD S2	= (this->m_header.count)	 *	sizeof(TNode*);	tpaIndexes	= (TNode **)xr_malloc(S2); ZeroMemory(tpaIndexes,S2);
+	taHeap		= (TNode *)calloc((this->m_header.count + 1), sizeof(TNode));
+	tpaIndexes	= (TIndexNode *)calloc(this->m_header.count, sizeof(TIndexNode));
 }
 
 void CAI_Space::vfUnloadSearch()
@@ -136,20 +140,24 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
+	dwAStarStaticCounter++;
+
 	fCriteriaLightWeight = fLightWeight;
 	fCriteriaCoverWeight = fCoverWeight;
 	fCriteriaDistanceWeight = fDistanceWeight;
 
 	uint uiHeap = 0;
 
-	memset(taHeap,0,(this->m_header.count + 1)*sizeof(TNode));
-	memset(tpaIndexes,0,this->m_header.count*sizeof(TNode *));
-
 	TNode  *tpOpenedList = taHeap + uiHeap++,
-		   *tpTemp       = tpaIndexes[dwStartNode] = taHeap + uiHeap++,
+		   *tpTemp       = tpaIndexes[dwStartNode].tpNode = taHeap + uiHeap++,
 		   *tpTemp1,
 		   *tpTemp2,
 		   *tpBestNode;
+	
+	memset(tpOpenedList,0,sizeof(TNode));
+	memset(tpTemp,0,sizeof(TNode));
+	
+	tpaIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
 	tpOpenedList->tpOpenedNext = tpTemp;
 	tpTemp->iIndex = dwStartNode;
@@ -177,8 +185,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			float fDistance = 0.0;
 			tpTemp1 = tpBestNode;
 			tpTemp = tpTemp1->tpBack;
-			for (uint i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++)
-				fDistance += ffCriteria(mNodeStructure(tpTemp1->iIndex),mNodeStructure(tpTemp->iIndex));
+			for (uint i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
 
 			Result.Nodes.resize(i);
 
@@ -196,16 +203,15 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		int iCount = iCount = mNode(tpBestNode->iIndex)->links, iNodeIndex;
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
-			tpTemp = tpaIndexes[iNodeIndex];
 			for (int i=0; i<iCount; i++) {
-				// checking if that node is in the path of the BESTNODE ones
-				iNodeIndex = this->UnpackLink(taLinks[i]);
 				// checking if that node the node of the moving object 
 				if (q_mark[iNodeIndex])
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
-				if (tpTemp = tpaIndexes[iNodeIndex]) {
+				iNodeIndex = this->UnpackLink(taLinks[i]);
+				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
+					tpTemp = tpaIndexes[iNodeIndex].tpNode;
 					if (!(tpTemp->ucOpenCloseMask)) {
 						int iBestIndex = tpBestNode->iIndex;
 						tpTemp2 = tpTemp->tpForward;
@@ -260,7 +266,11 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 					}
 				}
 				else {
-					tpTemp2 = tpaIndexes[iNodeIndex] = taHeap + uiHeap++;
+					tpTemp2 = tpaIndexes[iNodeIndex].tpNode = taHeap + uiHeap++;
+					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
+					//*(DWORD *)(tpTemp2) = 0;
+					tpaIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
+
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;
 					tpTemp2->g = tpBestNode->g + ffCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex));
@@ -312,6 +322,8 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
+	dwAStarStaticCounter++;
+
 	fCriteriaLightWeight = fLightWeight;
 	fCriteriaCoverWeight = fCoverWeight;
 	fCriteriaDistanceWeight = fDistanceWeight;
@@ -319,14 +331,16 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 
 	uint uiHeap = 0;
 
-	memset(taHeap,0,(this->m_header.count + 1)*sizeof(TNode));
-	memset(tpaIndexes,0,this->m_header.count*sizeof(TNode *));
-
 	TNode  *tpOpenedList = taHeap + uiHeap++,
-		   *tpTemp       = tpaIndexes[dwStartNode] = taHeap + uiHeap++,
+		   *tpTemp       = tpaIndexes[dwStartNode].tpNode = taHeap + uiHeap++,
 		   *tpTemp1,
 		   *tpTemp2,
 		   *tpBestNode;
+	
+	memset(tpOpenedList,0,sizeof(TNode));
+	memset(tpTemp,0,sizeof(TNode));
+	
+	tpaIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
 	tpOpenedList->tpOpenedNext = tpTemp;
 	tpTemp->iIndex = dwStartNode;
@@ -354,9 +368,8 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			float fDistance = 0.0;
 			tpTemp1 = tpBestNode;
 			tpTemp = tpTemp1->tpBack;
-			for (uint i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++)
-				fDistance += ffCriteria(mNodeStructure(tpTemp1->iIndex),mNodeStructure(tpTemp->iIndex), tEnemyNode, fOptimalEnemyDistance);
-
+			for (uint i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
+				
 			Result.Nodes.resize(i);
 
 			tpTemp1 = tpBestNode;
@@ -373,15 +386,15 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		int iCount = iCount = mNode(tpBestNode->iIndex)->links, iNodeIndex;
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
-			tpTemp = tpaIndexes[iNodeIndex];
 			for (int i=0; i<iCount; i++) {
-				iNodeIndex = this->UnpackLink(taLinks[i]);
 				// checking if that node the node of the moving object 
 				if (q_mark[iNodeIndex])
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
-				if (tpTemp = tpaIndexes[iNodeIndex]) {
+				iNodeIndex = this->UnpackLink(taLinks[i]);
+				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
+					tpTemp = tpaIndexes[iNodeIndex].tpNode;
 					if (!(tpTemp->ucOpenCloseMask)) {
 						int iBestIndex = tpBestNode->iIndex;
 						tpTemp2 = tpTemp->tpForward;
@@ -436,7 +449,10 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 					}
 				}
 				else {
-					tpTemp2 = tpaIndexes[iNodeIndex] = taHeap + uiHeap++;
+					tpTemp2 = tpaIndexes[iNodeIndex].tpNode = taHeap + uiHeap++;
+					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
+					*(DWORD *)(tpTemp2) = 0;
+					tpaIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;
 					tpTemp2->g = tpBestNode->g + ffCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex), tEnemyNode, fOptimalEnemyDistance);
@@ -488,6 +504,8 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
+	dwAStarStaticCounter++;
+
 	fCriteriaLightWeight = fLightWeight;
 	fCriteriaCoverWeight = fCoverWeight;
 	fCriteriaDistanceWeight = fDistanceWeight;
@@ -495,14 +513,16 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 
 	uint uiHeap = 0;
 
-	memset(taHeap,0,(this->m_header.count + 1)*sizeof(TNode));
-	memset(tpaIndexes,0,this->m_header.count*sizeof(TNode *));
-
 	TNode  *tpOpenedList = taHeap + uiHeap++,
-		   *tpTemp       = tpaIndexes[dwStartNode] = taHeap + uiHeap++,
+		   *tpTemp       = tpaIndexes[dwStartNode].tpNode = taHeap + uiHeap++,
 		   *tpTemp1,
 		   *tpTemp2,
 		   *tpBestNode;
+	
+	memset(tpOpenedList,0,sizeof(TNode));
+	memset(tpTemp,0,sizeof(TNode));
+	
+	tpaIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
 	tpOpenedList->tpOpenedNext = tpTemp;
 	tpTemp->iIndex = dwStartNode;
@@ -530,8 +550,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			float fDistance = 0.0;
 			tpTemp1 = tpBestNode;
 			tpTemp = tpTemp1->tpBack;
-			for (uint i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++)
-				fDistance += ffCriteria(mNodeStructure(tpTemp1->iIndex),mNodeStructure(tpTemp->iIndex), tEnemyPosition, fOptimalEnemyDistance);
+			for (uint i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
 
 			Result.Nodes.resize(i);
 
@@ -549,15 +568,15 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		int iCount = iCount = mNode(tpBestNode->iIndex)->links, iNodeIndex;
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
-			tpTemp = tpaIndexes[iNodeIndex];
 			for (int i=0; i<iCount; i++) {
-				iNodeIndex = this->UnpackLink(taLinks[i]);
 				// checking if that node the node of the moving object 
 				if (q_mark[iNodeIndex])
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
-				if (tpTemp = tpaIndexes[iNodeIndex]) {
+				iNodeIndex = this->UnpackLink(taLinks[i]);
+				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
+					tpTemp = tpaIndexes[iNodeIndex].tpNode;
 					if (!(tpTemp->ucOpenCloseMask)) {
 						int iBestIndex = tpBestNode->iIndex;
 						tpTemp2 = tpTemp->tpForward;
@@ -612,7 +631,10 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 					}
 				}
 				else {
-					tpTemp2 = tpaIndexes[iNodeIndex] = taHeap + uiHeap++;
+					tpTemp2 = tpaIndexes[iNodeIndex].tpNode = taHeap + uiHeap++;
+					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
+					*(DWORD *)(tpTemp2) = 0;
+					tpaIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;
 					tpTemp2->g = tpBestNode->g + ffCriteria(mNodeStructure(tpBestNode->iIndex),mNodeStructure(iNodeIndex), tEnemyPosition, fOptimalEnemyDistance);
