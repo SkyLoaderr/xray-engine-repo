@@ -17,7 +17,7 @@ stalker_already_saw_actor = false
 
 
 -- функция перехода в первое состояние из нулевого
-function if_see_actor(npc, fsm)
+function if_see_actor_tell_warning(npc, fsm)
 	if npc:see(actor) == true and not stalker_already_saw_actor then
 		-- да, условие выполнено, FSM перейдет в состояние 
 		-- как только мы сделаем return true
@@ -51,8 +51,8 @@ function if_see_actor(npc, fsm)
 end
 
 -- функция перехода из первого состояние в нулевое
-function dont_see_actor(npc, fsm)
-	if npc:see(actor) == false or not npc:action() then
+function finished_talking(npc, fsm)
+	if not npc:action() then
 		log("i lost a trace of this fucking actor")
 		return true
 	end
@@ -71,8 +71,8 @@ function main()
 	local fsm_stalker = FSM(this.script_name(), stalker00)
 
 	-- установка функций перехода 
-	fsm_stalker:set_transition(0, 1, this.if_see_actor)
-	fsm_stalker:set_transition(1, 0, this.dont_see_actor)
+	fsm_stalker:set_transition(0, 1, this.if_see_actor_tell_warning)
+	fsm_stalker:set_transition(1, 0, this.finished_talking)
 
 	-- запуск бесконечного цикла для одного FSM
 	fsm_stalker:run_loop()
