@@ -771,6 +771,14 @@ SOURCE=.\Spawn.cpp
 
 SOURCE=.\Spawn.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\Spawn_Event.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Spawn_Event.h
+# End Source File
 # End Group
 # Begin Source File
 

@@ -21,6 +21,7 @@ enum	xrProperties
 	xrPID_FLOAT,
 	xrPID_BOOL,
 	xrPID_TOKEN,
+	xrPID_CLSID,
 	xrPID_OBJECT,		// really only name(stringZ) is written into stream
 	xrPID_FORCEDWORD=DWORD(-1)
 };
@@ -62,6 +63,12 @@ struct	xrP_TOKEN
 	//--- elements:		(ID,string64)
 
 	xrP_TOKEN()	: IDselected(0), Count(0)		{}
+};
+struct	xrP_CLSID
+{
+	CLASS_ID			Selected;
+	DWORD				Count;
+	//--- elements:		(...)
 };
 
 #pragma pack(pop)

@@ -25,7 +25,7 @@ void	EV_LIST::_CreateOne(const char* DEF)
 		// Create
 		EV_DEF	D;
 		D.E  = Engine.Event.Create(Event); 
-		D.P1 = strdup(Parsed); 
+		D.P1 = strdup	(Parsed); 
 		List.push_back	(D);
 	}
 }
@@ -108,7 +108,6 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	R_ASSERT					(section);
 	_FREE						(ObjectName);
 	ObjectName					= strdup(section);
-	SUB_CLS_ID					= CLSID_EVENT;
 	
 	// Geometry and transform
 	Fvector dir,norm;
