@@ -23,7 +23,7 @@ private:
 
 public:
 	typedef LevelNavigationGraph::CSector		CSector;
-	typedef CGraphAbstract<CSector,float,u32>	CSectorGraph;
+	typedef CGraphAbstract<CSector,u32,u32>		CSectorGraph;
 
 public:
 	typedef LevelNavigationGraph::CCellVertex	CCellVertex;

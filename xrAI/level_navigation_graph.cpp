@@ -276,7 +276,21 @@ IC	void CLevelNavigationGraph::build_edges		()
 			if (sector_vertex->edge(mark))
 				continue;
 
-			sectors().add_edge	(current_mark,mark,1.f);
+			CSectorGraph::CVertex	*sector_vertex1 = sectors().vertex(mark);
+
+			const CPosition		&min0 = vertex(sector_vertex->data().min_vertex_id())->position();
+			const CPosition		&max0 = vertex(sector_vertex->data().max_vertex_id())->position();
+			const CPosition		&min1 = vertex(sector_vertex1->data().min_vertex_id())->position();
+			const CPosition		&max1 = vertex(sector_vertex1->data().max_vertex_id())->position();
+
+			int					x0	 = (min0.x(row_length()) + max0.x(row_length())) >> 1;
+			int					z0	 = (min0.z(row_length()) + max0.z(row_length())) >> 1;
+			int					x1	 = (min1.x(row_length()) + max1.x(row_length())) >> 1;
+			int					z1	 = (min1.z(row_length()) + max1.z(row_length())) >> 1;
+
+			u32					edge_weight = _abs(x1 - x0) + _abs(z1 - z0);
+
+			sectors().add_edge	(current_mark,mark,edge_weight);
 		}
 		while (usage);
 	}

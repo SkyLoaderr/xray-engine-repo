@@ -14,7 +14,7 @@ const _use_type up		= 1 << 3;
 const _use_type right	= 1 << 2;
 const _use_type down	= 1 << 1;
 
-typedef CGraphAbstract<CSector,float,u32>	CSectorGraph;
+typedef CGraphAbstract<CSector,u32,u32>		CSectorGraph;
 typedef xr_vector<CCellVertex>				VERTEX_VECTOR;
 typedef xr_vector<VERTEX_VECTOR>			VERTEX_VECTOR1;
 typedef xr_vector<VERTEX_VECTOR1>			VERTEX_VECTOR2;
@@ -315,7 +315,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 				if (sector_vertex->edge(mark))
 					continue;
 
-				sector_graph.add_edge	(current_mark,mark,1.f);
+				sector_graph.add_edge	(current_mark,mark,1);
 			}
 			while (usage);
 		}
@@ -361,7 +361,7 @@ void test_hierarchy		(LPCSTR name)
 
 	Msg							("ai map : %d nodes",level_graph->header().vertex_count());
 
-#if 1
+#if 0
 	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
