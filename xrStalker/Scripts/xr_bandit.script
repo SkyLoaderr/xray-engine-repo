@@ -57,7 +57,7 @@ function bandit:update()
 		if game.time() - self.begin >= self.idle then
 			self.state = 2
 			self.begin = game.time()
-			self.idle = math_random(24*60*60*1000) + 24*60*60*1000
+			self.idle = math_random(2*60*60*1000) + 60*60*1000
 		end
 	end
 	if self.state == 2 then
@@ -74,7 +74,7 @@ function bandit:update()
 		if game.time() - self.begin >= self.idle then
 			self.state = 4
 			self.begin = game.time()
-			self.idle = math_random(24*60*60*1000) + 24*60*60*1000
+			self.idle = math_random(3*60*60*1000) + 2*60*60*1000
 		end
 	end
 	self:updateJob()
