@@ -492,12 +492,9 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	
 	if (WINDOW_LBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
-	{
 		if (UITopList[OUTFIT_SLOT].GetChildWndList().back())
-		{
 			UITopList[OUTFIT_SLOT].GetChildWndList().back()->Show(true);
-		}
-	}
+	
 	//else if (WINDOW_RBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
 	//{
 	//	if (UITopList[OUTFIT_SLOT].GetChildWndList().back())
@@ -662,9 +659,9 @@ void CUIBuyWeaponWnd::Update()
 	if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
 		flag = true;
 
-	// get current outfit
+	// update current outfit
 	CUIDragDropItemMP* pDDItemOutfit = NULL;
-	CUIDragDropItemMP* pOldDDItemOutfit = NULL;
+	static CUIDragDropItemMP* pOldDDItemOutfit = NULL;
 	shared_str section_name;
 	DRAG_DROP_LIST ddList = UITopList[OUTFIT_SLOT].GetDragDropItemsList();
 	if (!ddList.empty())

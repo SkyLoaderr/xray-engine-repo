@@ -241,7 +241,7 @@ void CUIBag::EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable){
 	pDDItem->EnableDragDrop(bEnable);
 }
 
-bool CUIBag::IsItemInBag(CUIDragDropItemMP* pDDItem){\
+bool CUIBag::IsItemInBag(CUIDragDropItemMP* pDDItem){
 	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 		if (m_groups[i].IsChild(pDDItem))
 			return true;
@@ -633,7 +633,7 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
 
 
 		pDDItem->SetSectionName(m_wpnSectStorage[group][j].c_str());		
-		pDDItem->SetMessageTarget(this);
+		pDDItem->SetMessageTarget(GetParent());
 		pDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
 		pDDItem->m_bIsInfinite = IsItemInfinite(pDDItem);
 }
