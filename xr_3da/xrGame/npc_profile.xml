@@ -57,19 +57,19 @@
 	</character>
 
 	<!-- Svoboda -->
-	<character id="Svoboda">
+	<character id="svoboda">
 		<team>Svoboda</team>
 	</character>
-	<character id="Svoboda_novice">
+	<character id="svoboda_novice">
 		<team>Svoboda_novice</team>
 	</character>
-	<character id="Svoboda_general">
+	<character id="svoboda_general">
 		<team>Svoboda_general</team>
 	</character>
-	<character id="Svoboda_veteran">
+	<character id="svoboda_veteran">
 		<team>Svoboda_veteran</team>
 	</character>
-	<character id="Svoboda_master">
+	<character id="svoboda_master">
 		<team>Svoboda_master</team>
 	</character>
 
