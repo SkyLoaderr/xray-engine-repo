@@ -41,6 +41,7 @@ protected:
 	}
 
 				void			Disabling					()												;
+				void			Reinit						()												;
 	virtual		void			Disable						()							=0					;																				
 	virtual		void			ReEnable					()							=0					;																				
 	virtual		void			UpdateL1					()							=0					;

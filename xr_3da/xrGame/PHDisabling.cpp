@@ -7,11 +7,7 @@ SDisableVector::SDisableVector()
 	Init();
 }
 
-CBaseDisableData::CBaseDisableData()
-{
-	m_count		=0													;
-	m_frames	=worldDisablingParams.objects_params.L2frames		;
-}
+
 
 void	SDisableVector::Reset()
 {
@@ -43,6 +39,8 @@ SDisableUpdateState::SDisableUpdateState()
 	Reset();
 }
 
+
+
 void	SDisableUpdateState::Reset()
 {
 	disable	=	false				;
@@ -56,6 +54,19 @@ SDisableUpdateState& SDisableUpdateState::operator &=	(SDisableUpdateState& lsta
 	return *this;
 }
 
+CBaseDisableData::CBaseDisableData()
+{
+
+	m_frames	=worldDisablingParams.objects_params.L2frames		;
+	Reinit();
+}
+
+void	CBaseDisableData::Reinit()
+{
+	m_count		=0													;
+	m_stateL1.Reset()												;
+	m_stateL2.Reset()												;	
+}
 void	CBaseDisableData::Disabling()
 {
 	
@@ -85,6 +96,7 @@ void	CPHDisablingBase::Reinit()
 {
 	m_mean_velocity.Init();
 	m_mean_acceleration.Init();
+	CBaseDisableData::Reinit();
 }
 
 void	CPHDisablingBase::UpdateL2()
