@@ -436,10 +436,32 @@ BOOL CCF_Shape::Contact		( CObject* O )
 				Fmatrix		Q;
 				Fmatrix&	T		= shapes[el].data.box;
 				Q.mul_43			(XF,T);
-				F.CreateFromMatrix	(Q,FRUSTUM_P_ALL);
 
+				// Build points
+				Fvector A[8],B[8];
+				Fplane  P;
+				A[0].set( -.5f, -.5f, -.5f); A[0].mul(2.f);	Q.transform_tiny	(B[0],A[0]);
+				A[1].set( -.5f, -.5f, +.5f); A[1].mul(2.f);	Q.transform_tiny	(B[1],A[1]);
+				A[2].set( -.5f, +.5f, +.5f); A[2].mul(2.f);	Q.transform_tiny	(B[2],A[2]);
+				A[3].set( -.5f, +.5f, -.5f); A[3].mul(2.f);	Q.transform_tiny	(B[3],A[3]);
+				A[4].set( +.5f, +.5f, +.5f); A[4].mul(2.f);	Q.transform_tiny	(B[4],A[4]);
+				A[5].set( +.5f, +.5f, -.5f); A[5].mul(2.f);	Q.transform_tiny	(B[5],A[5]);
+				A[6].set( +.5f, -.5f, +.5f); A[6].mul(2.f);	Q.transform_tiny	(B[6],A[6]);
+				A[7].set( +.5f, -.5f, -.5f); A[7].mul(2.f);	Q.transform_tiny	(B[7],A[7]);
+
+				P.build(B[0],B[3],B[5]);	if (P.classify(S.P)<S.R) break;
+				P.build(B[1],B[2],B[3]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[6],B[5],B[4]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[4],B[2],B[1]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[3],B[2],B[4]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[1],B[0],B[6]);	if (P.classify(S.P)>S.R) break;
+				return TRUE;
+
+				/*
 				// Build frustum
+				F.CreateFromMatrix	(Q,FRUSTUM_P_ALL);
 				if (F.testSphere_dirty(S.P,S.R))	return TRUE;
+				*/
 			}
 			break;
 		}
