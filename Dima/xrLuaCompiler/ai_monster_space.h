@@ -78,8 +78,8 @@ namespace MonsterSpace {
 	};
 
 	enum EMentalState {
-		eMentalStateFree = u32(0),
-		eMentalStateDanger,
+		eMentalStateDanger = u32(0),
+		eMentalStateFree,
 		eMentalStatePanic,
 		eMentalStateAsleep,
 		eMentalStateZombied,
