@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "HOM.h"
+#include "occRasterizer.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

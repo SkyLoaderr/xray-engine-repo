@@ -12,14 +12,14 @@ const int	occ_dim_2			= occ_dim_1/2;
 const int	occ_dim_3			= occ_dim_2/2;
 const int	occ_dim				= occ_dim_0+2;	// 1 pixel border around frame
 
-class occTri
+class ENGINE_API	occTri
 {
 public:	
 	occTri*			adjacent	[3];
 	Fvector			raster		[3];		
 };
 
-class occRasterizer  
+class ENGINE_API	occRasterizer  
 {
 private:
 	occTri*			bufFrame	[occ_dim][occ_dim];
@@ -55,6 +55,6 @@ public:
 	~occRasterizer	();
 };
 
-extern occRasterizer	Raster;
+ENGINE_API	extern occRasterizer	Raster;
 
 #endif // !defined(AFX_OCCRASTERIZER_H__3739AF97_E2A7_4740_B8C2_6EEB0F8CB66D__INCLUDED_)
