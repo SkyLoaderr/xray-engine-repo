@@ -94,7 +94,6 @@ class CRatSelectorBase : public AI::NodeEstimator
 		float			m_fResult;
 
 		virtual	void Load(CInifile* ini, const char* section);
-		virtual void Init();
 		
 		IC void vfAddTravelCost();
 		IC void vfAddLightCost();

@@ -60,13 +60,6 @@ CRatSelectorAttack::CRatSelectorAttack()
 	Name = "selector_attack"; 
 }
 
-void CRatSelectorBase::Init()
-{
-	for ( m_iCurrentMember = 0, m_iAliveMemberCount=0; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) 
-		if (taMembers[m_iCurrentMember]->g_Health() > 0)
-			m_iAliveMemberCount++;
-}
-
 IC void CRatSelectorBase::vfAddTravelCost()
 {
 	m_fResult += m_fDistance*fTravelWeight;
@@ -83,6 +76,7 @@ IC void CRatSelectorBase::vfComputeCurrentPosition()
 	Level().AI.UnpackPosition(tTemp0,m_tpCurrentNode->p0);
 	Level().AI.UnpackPosition(tTemp1,m_tpCurrentNode->p1);
 	m_tCurrentPosition.lerp(tTemp1,tTemp1,.5f);
+	m_iAliveMemberCount = taMembers.size();
 }
 
 IC void CRatSelectorBase::vfAddDistanceToEnemyCost()
