@@ -513,7 +513,7 @@ void CStalkerActionLookOut::execute		()
 	if (!mem_object.m_object)
 		return;
 
-	object().sight().setup		(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
+	object().sight().setup				(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
 	if (current_cover(m_object) >= 3.f) {
 		object().movement().set_nearest_accessible_position	();
@@ -521,7 +521,28 @@ void CStalkerActionLookOut::execute		()
 		return;
 	}
 
+#if 0
 	object().movement().set_nearest_accessible_position(mem_object.m_object_params.m_position,mem_object.m_object_params.m_level_vertex_id);
+#else
+	Fvector								position = mem_object.m_object_params.m_position;
+	object().m_ce_close->setup			(position,10.f,170.f,10.f);
+	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true));
+	if (!point) {
+		object().m_ce_close->setup		(position,10.f,170.f,10.f);
+		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true));
+	}
+
+	if (point) {
+		object().movement().set_level_dest_vertex	(point->level_vertex_id());
+		object().movement().set_desired_position	(&point->position());
+	}
+	else {
+		if (object().movement().path_completed()) {
+			m_storage->set_property			(eWorldPropertyLookedOut,true);
+			object().movement().set_nearest_accessible_position	();
+		}
+	}
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
