@@ -74,7 +74,6 @@ void					CRender::create					()
 	VERIFY2				(o.mrt&&o.HW_smap&&o.fp16_filter&&o.fp16_blend,"Hardware doesn't meet minimum feature-level");
 
 	// options (smap-pool-size)
-	if (strstr(Core.Params,"-smap1024"))	o.smapsize	= 1024;
 	if (strstr(Core.Params,"-smap1536"))	o.smapsize	= 1536;
 	if (strstr(Core.Params,"-smap2048"))	o.smapsize	= 2048;
 	if (strstr(Core.Params,"-smap2560"))	o.smapsize	= 2560;
