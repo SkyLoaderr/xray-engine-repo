@@ -54,46 +54,65 @@ D3DVERTEXELEMENT9 vertDecl[] =
 //-----------------------------------------------------------------------------
 class CMyD3DApplication : public CD3DApplication
 {
+	//  ************************
+	//	**** Generic stuff  ****
+	//  ************************
+
     // Font for drawing text
-    CD3DFont*					m_pFont;
-
-    CD3DArcBall					m_ArcBall;
-
-    // Transform matrices
-    D3DXMATRIX					m_matModelMVP;
-    D3DXMATRIX					m_matShadowModelMVP;
-    D3DXMATRIX					m_matShadowModelTex;
-
-    D3DXMATRIX					m_matFloorMVP;
-    D3DXMATRIX					m_matShadowFloorMVP;
-    D3DXMATRIX					m_matShadowFloorTex;
-
-	D3DXVECTOR4					m_vecLightDirModel;
-	D3DXVECTOR4					m_vecLightDirFloor;
+    CD3DFont*						m_pFont;
+    CD3DArcBall						m_ArcBall;
 
 	// Model
-    LPDIRECT3DVERTEXBUFFER9		m_pModelVB;
-    LPDIRECT3DINDEXBUFFER9		m_pModelIB;
-    DWORD						m_dwModelNumVerts;
-    DWORD						m_dwModelNumFaces;
-    LPDIRECT3DVERTEXBUFFER9		m_pFloorVB;
-	FLOAT						m_fModelSize;
+	LPDIRECT3DVERTEXBUFFER9			m_pModelVB;
+	LPDIRECT3DINDEXBUFFER9			m_pModelIB;
+	DWORD							m_dwModelNumVerts;
+	DWORD							m_dwModelNumFaces;
+	LPDIRECT3DVERTEXBUFFER9			m_pFloorVB;
+	FLOAT							m_fModelSize;
+
+	//  ************************
+	//	**** Deferred shading **
+	//  ************************
+
+	// Surfaces
+	LPDIRECT3DTEXTURE9				d_Position;		// 64bit, fat	(x,y,z,0)				(eye-space)
+	LPDIRECT3DSURFACE9				d_Position_S;
+	LPDIRECT3DTEXTURE9				d_Normal;		// 64bit, fat	(x,y,z,0)				(eye-space)
+	LPDIRECT3DSURFACE9				d_Normal_S;
+	LPDIRECT3DTEXTURE9				d_Color;		// 64bit, fat	(r,g,b,specular-gloss)
+	LPDIRECT3DSURFACE9				d_Color_S;
+	LPDIRECT3DTEXTURE9				d_Accumulator;	// 32bit		(r,g,b,specular)
+	LPDIRECT3DSURFACE9				d_Accumulator_S;
+
+	//  ************************
+	//	**** Shadow mapping ****
+	//  ************************
+
+    // Transform matrices
+    D3DXMATRIX						m_matModelMVP;
+    D3DXMATRIX						m_matShadowModelMVP;
+    D3DXMATRIX						m_matShadowModelTex;
+
+    D3DXMATRIX						m_matFloorMVP;
+    D3DXMATRIX						m_matShadowFloorMVP;
+    D3DXMATRIX						m_matShadowFloorTex;
+
+	D3DXVECTOR4						m_vecLightDirModel;
+	D3DXVECTOR4						m_vecLightDirFloor;
 
 	// Shadow map
-	LPDIRECT3DTEXTURE9			m_pShadowMap;
-	LPDIRECT3DSURFACE9			m_pShadowMapSurf;
-	LPDIRECT3DSURFACE9			m_pShadowMapZ;
-
-	// Overlay
-    LPDIRECT3DVERTEXBUFFER9		m_pOverlayVB;
+	LPDIRECT3DTEXTURE9				m_pShadowMap;
+	LPDIRECT3DSURFACE9				m_pShadowMapSurf;
+	LPDIRECT3DSURFACE9				m_pShadowMapZ;
+    LPDIRECT3DVERTEXBUFFER9			m_pOverlayVB;
 
 	// Shaders
-	LPDIRECT3DVERTEXSHADER9		m_pSceneVS;
-	LPDIRECT3DPIXELSHADER9		m_pScenePS;
-	LPDIRECT3DVERTEXDECLARATION9 m_pVertDecl;
-	LPDIRECT3DVERTEXSHADER9		m_pShadowMapVS;
-	LPDIRECT3DPIXELSHADER9		m_pShadowMapPS;
-	LPDIRECT3DPIXELSHADER9		m_pShowMapPS;
+	LPDIRECT3DVERTEXSHADER9			m_pSceneVS;
+	LPDIRECT3DPIXELSHADER9			m_pScenePS;
+	LPDIRECT3DVERTEXDECLARATION9	m_pVertDecl;
+	LPDIRECT3DVERTEXSHADER9			m_pShadowMapVS;
+	LPDIRECT3DPIXELSHADER9			m_pShadowMapPS;
+	LPDIRECT3DPIXELSHADER9			m_pShowMapPS;
 
 public:
     CMyD3DApplication();
@@ -140,29 +159,39 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 CMyD3DApplication::CMyD3DApplication()
 {
     // Override base class members
-    m_strWindowTitle					= _T("Shadow Map");
+	m_strWindowTitle					= _T("xray2 : render");
     m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
-	m_dwCreationWidth					= 800;
-	m_dwCreationHeight					= 600;
+	m_dwCreationWidth					= 512;
+	m_dwCreationHeight					= 512;
 
     m_pFont								= new CD3DFont(_T("Arial"), 12, D3DFONT_BOLD);
 
-    m_pModelVB	= NULL;
-    m_pModelIB	= NULL;
-    m_pFloorVB	= NULL;
+    m_pModelVB							= NULL;
+    m_pModelIB							= NULL;
+    m_pFloorVB							= NULL;
 
-	m_pSceneVS	= NULL;
-	m_pScenePS	= NULL;
+	m_pSceneVS							= NULL;
+	m_pScenePS							= NULL;
 
-	m_pShadowMap	 = NULL;
-	m_pShadowMapSurf = NULL;
-	m_pShadowMapZ	 = NULL;
+	m_pShadowMap						= NULL;
+	m_pShadowMapSurf					= NULL;
+	m_pShadowMapZ						= NULL;
 
-	m_pShadowMapVS = NULL;
-	m_pShadowMapPS = NULL;
-	m_pShowMapPS = NULL;
+	m_pShadowMapVS						= NULL;
+	m_pShadowMapPS						= NULL;
+	m_pShowMapPS						= NULL;
 
-    m_pOverlayVB = NULL;
+    m_pOverlayVB						= NULL;
+
+	// d-render
+	d_Position							= NULL;
+	d_Position_S						= NULL;
+	d_Normal							= NULL;
+	d_Normal_S							= NULL;
+	d_Color								= NULL;
+	d_Color_S							= NULL;
+	d_Accumulator						= NULL;
+	d_Accumulator_S						= NULL;
 }
 
 
