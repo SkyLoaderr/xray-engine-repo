@@ -646,6 +646,15 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 	end
 
+	local sig = self.path_walk_info[index]["sig"]
+	if sig then
+		-- HACK, fixme:
+		local npc_id = self.object:id()
+		local section = xr_motivator.storage[npc_id]["active_section"]
+		local signals = xr_motivator.storage[npc_id][get_scheme_by_section(section)].signals
+		signals[sig] = true
+	end
+
 	local new_path_walk = self.path_walk_info[index]["w"]
 	if new_path_walk then
 		self.path_walk = new_path_walk
