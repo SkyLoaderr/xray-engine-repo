@@ -404,15 +404,15 @@ void	CRender::Render		()
 
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
-	pCreator->pHUD->Render_Affected	();
+	pCreator->pHUD->Render_Affected			();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
 	// Postprocess
-	if (Target.Available())	Target.End		(.5f);
+	if (Target.Available())	Target.End		();
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
-	pCreator->pHUD->Render_Direct	();
+	pCreator->pHUD->Render_Direct			();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
 	// Patches
