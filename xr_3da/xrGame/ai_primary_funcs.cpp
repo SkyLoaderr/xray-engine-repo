@@ -108,7 +108,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 			m_fLastValue = 10;
 			break;
 		}
-		case CLSID_AI_SPONGER			: {
+		case CLSID_AI_BOAR				: {
 			m_fLastValue = 11;
 			break;
 		}
@@ -153,10 +153,6 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 		case CLSID_AI_DOG_RED	:
 		case CLSID_AI_DOG_BLACK	: {
 			m_fLastValue = 21;
-			break;
-		}
-		case CLSID_AI_BOAR : {
-			m_fLastValue = 22;
 			break;
 		}
 		case CLSID_AI_TRADER: break;
