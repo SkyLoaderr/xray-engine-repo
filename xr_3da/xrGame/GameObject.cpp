@@ -43,7 +43,7 @@ void CGameObject::OnEvent(NET_Packet& P, u16 type)
 	{
 	case GE_DESTROY:
 		{
-			Log			("----- destroy");
+			Log			("-CL_destroy",cName());
 			setDestroy	(TRUE);
 		}
 		break;
