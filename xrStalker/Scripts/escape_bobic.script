@@ -2,7 +2,6 @@ module("m_monster_ai")
 
 local sounds = {}
 
--- ÅéÅàä
 function main()
 	local dog = m_monster_ai.m_MonsterBobic("dog_bobic", this.script_name(), vector():set(10, 10, 10) )
 
@@ -10,6 +9,7 @@ function main()
     	wait()
     end
 
+    this.bobic_die()
     dog:finalize()
 end
 
@@ -39,7 +39,7 @@ function evaluator_bobik:evaluate ()
 		end
 		if continue then
 			printf("%s", so:name())
-			if so:name() ~= "escape_bobic" or 
+			if so:name() ~= "escape_bobic" or
 			   bit_and(s:type(), snd_type.attack) ~= snd_type.attack or
 			   bit_and(s:type(), snd_type.monster) ~= snd_type.monster
 			then
@@ -97,7 +97,7 @@ function add_to_binder(object)
 	action:add_effect		(world_property(properties["bobik"],		false))
 	manager:add_action (operators["bobik"], action)
 
-	action = manager:action (stalker_ids.action_puzzle_solver)	
+	action = manager:action (stalker_ids.action_puzzle_solver)
 	action:add_precondition		(world_property(properties["bobik"],		false))
 
 	object:set_hear_callback(this.bobik_callback)
@@ -105,10 +105,4 @@ end
 
 function bobik_callback(self, who, sound_type, sound_position, sound_power)
 	printf("BOBIK")
-end
-
-function bobik_alarm()
-end
-
-function bobik_die()
 end

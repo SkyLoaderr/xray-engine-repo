@@ -1,3 +1,4 @@
+module("escape_bobic")
 
 --------------------------------------------------------------------------------
 class "stateAttack"
@@ -83,7 +84,7 @@ end
 --==============================================================================
 
 class "stateCowardAttack" ( stateAttack )
-function stateCowardAttack:__init( mnstr, script_name, mem ) super( mnstr, script_name, mem )
+function stateCowardAttack:__init( script_name, mem ) super( script_name, mem )
 
 end
 
@@ -100,7 +101,7 @@ end
 --==============================================================================
 
 class "stateAttackThreaten" ( stateAttack )
-function stateAttackThreaten:__init( mnstr, script_name, mem ) super( mnstr, script_name, mem )
+function stateAttackThreaten:__init( script_name, mem ) super( script_name, mem )
 
 end
 
@@ -120,13 +121,17 @@ function stateAttackThreaten:execute()
 		--If enemy near, retreat
         	action(self.memory.npc, anim(anim.turn, 0), look(look.point, self.enemy:position()), cond(cond.look_end) )
         	action(self.memory.npc, anim(anim.attack, 0), look(look.point, self.enemy:position()), sound(sound.growling), cond(cond.time_end, 1000))
+			escape_bobic.bobik_alarm()
         else
 			local new_pos = self.memory.npc:position()
-            new_pos:sub( self.memory.enemy:position():sub(self.memory.npc:position()):mul(10) )
+            new_pos:sub( self.memory.enemy:position():sub(self.memory.npc:position()):mul(7) )
 			action(self.memory.npc, move(move.drag, new_pos), sound(sound.idle, 500), cond(cond.time_end, 2000))
         end
     end
 end
 
 
+--class "stateAttackArtful" ( stateAttack )
+--function stateAttackArtful:__init( script_name, mem ) super( script_name, mem )
+--end
 
