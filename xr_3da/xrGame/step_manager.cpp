@@ -187,7 +187,7 @@ void CStepManager::reload_foot_bones()
 			else if (xr_strcmp(*item.first, "back_right")== 0)		m_foot_bones[eBackRight]	= index;
 			else if (xr_strcmp(*item.first, "back_left")== 0)		m_foot_bones[eBackLeft]		= index;
 		}
-	} else VERIFY("section [foot_bones] not found in monster user_data");
+	} else VERIFY2(false,"section [foot_bones] not found in monster user_data");
 
 	// проверка на соответсвие
 	int count = 0;
