@@ -81,7 +81,7 @@ public:
 			xrServerEntity*	E	= F_entity_Create	(s_name);
 			if (!E) {
 				string4096		S;
-				sprintf			(S,"Can't create entity '%s' !\n",s_name);
+				sprintf			(S,"Can't create entity '%s' !\n",E->s_name_replace);
 				R_ASSERT2		(E,S);
 			}
 			E->Spawn_Read		(P);
@@ -162,7 +162,7 @@ public:
 			if ((m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) == -1) {
 				string4096 S1;
 				char *S = S1;
-				S += sprintf(S,"Can't find a corresponding NODE for the spawn-point %s\n",m_tpSpawnPoints[i]->s_name);
+				S += sprintf(S,"Can't find a corresponding NODE for the spawn-point %s\n",m_tpSpawnPoints[i]->s_name_replace);
 				S += sprintf(S,"Level ID    : %d\n",m_dwLevelID);
 				S += sprintf(S,"Spawn index : %d\n",i);
 				S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",VPUSH(m_tpSpawnPoints[i]->o_Position));
@@ -173,7 +173,7 @@ public:
 			if (dwBest == u32(-1)) {
 				string4096 S1;
 				char *S = S1;
-				S += sprintf(S,"Can't find a corresponding GRAPH VERTEX for the spawn-point %s\n",m_tpSpawnPoints[i]->s_name);
+				S += sprintf(S,"Can't find a corresponding GRAPH VERTEX for the spawn-point %s\n",m_tpSpawnPoints[i]->s_name_replace);
 				S += sprintf(S,"Level ID    : %d\n",m_dwLevelID);
 				S += sprintf(S,"Spawn index : %d\n",i);
 				S += sprintf(S,"Spawn node  : %d\n",m_tpSpawnPoints[i]->m_tNodeID);
