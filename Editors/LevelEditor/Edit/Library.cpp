@@ -153,7 +153,7 @@ void ELibrary::RemoveEditObject(CEditableObject*& object)
 	    object->m_RefCount--;
     	R_ASSERT(object->m_RefCount>=0);
 		if ((object->m_RefCount==0)&&!frmEditPrefs->cbLeaveEmptyRef->Checked)
-			UnloadEditObject(object->GetName());
+			if (!object->IsModified()) UnloadEditObject(object->GetName());
         object=0;
 	}
 }

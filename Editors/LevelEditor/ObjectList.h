@@ -47,7 +47,7 @@ private:	// User declarations
     void __fastcall InitListBox();
     TElTreeItem* FindObjectByType(int type, void *obj);
     TElTreeItem* FindFolderByType(int type);
-    TElTreeItem* AddFolder(int type);
+    TElTreeItem* AddFolder(EObjClass type);
     TElTreeItem* AddObject(TElTreeItem* node, LPSTR name, void* obj);
     void UpdateState();
     void UpdateSelection();

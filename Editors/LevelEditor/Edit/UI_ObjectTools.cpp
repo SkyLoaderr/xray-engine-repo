@@ -12,27 +12,10 @@
 #include "EditorPref.h"
 #include "ui_main.h"
 
-//----------------------------------------------------------------------
-TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_SCENEOBJECT,true){
-    AddControlCB(xr_new<TUI_ControlObjectAdd >(estDefault,eaAdd,		this));
-}
-
-void TUI_ObjectTools::OnActivate  ()
-{
-    pFrame = xr_new<TfraObject>((TComponent*)0);
-	TUI_CustomTools::OnActivate();
-    ((TfraObject*)pFrame)->OnEnter();
-}
-void TUI_ObjectTools::OnDeactivate()
-{
-    ((TfraObject*)pFrame)->OnExit();
-	TUI_CustomTools::OnDeactivate();
-    xr_delete(pFrame);
-}
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-__fastcall TUI_ControlObjectAdd::TUI_ControlObjectAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent)
+__fastcall TUI_ControlObjectAdd::TUI_ControlObjectAdd(int st, int act, ESceneCustomMTools* parent):TUI_CustomControl(st,act,parent)
 {
 }
 

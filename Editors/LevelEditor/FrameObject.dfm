@@ -1,21 +1,26 @@
 object fraObject: TfraObject
-  Left = 0
-  Top = 0
-  Width = 198
-  Height = 255
+  Left = 414
+  Top = 352
   VertScrollBar.Visible = False
   Align = alClient
-  Constraints.MaxWidth = 198
-  Constraints.MinWidth = 198
+  BorderStyle = bsNone
+  ClientHeight = 267
+  ClientWidth = 198
   Color = 10528425
+  Constraints.MaxWidth = 206
+  Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  ParentColor = False
-  ParentFont = False
-  TabOrder = 0
+  OldCreateOrder = True
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnHide = FormHide
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
   object paSelectObject: TPanel
     Left = 0
     Top = 33
@@ -244,7 +249,7 @@ object fraObject: TfraObject
     Left = 0
     Top = 80
     Width = 198
-    Height = 175
+    Height = 187
     Align = alClient
     Color = 10528425
     Constraints.MinHeight = 175
@@ -274,7 +279,7 @@ object fraObject: TfraObject
       Left = 1
       Top = 38
       Width = 196
-      Height = 136
+      Height = 148
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True

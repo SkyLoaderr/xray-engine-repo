@@ -5,12 +5,11 @@
 #include "ui_tools.h"
 #include "scene.h"
 #include "topbar.h"
-#include "ui_customtools.h"
 #include "bottombar.h"
 #include "ui_main.h"
 #include "leftbar.h"
 
-TUI_CustomControl::TUI_CustomControl(int st, int act, TUI_CustomTools* parent){
+TUI_CustomControl::TUI_CustomControl(int st, int act, ESceneCustomMTools* parent){
 	parent_tool		= parent; VERIFY(parent);
 	sub_target		= st;
     action			= act;

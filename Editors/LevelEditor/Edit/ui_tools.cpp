@@ -4,7 +4,6 @@
 #include "ui_tools.h"
 #include "ui_control.h"
 #include "cursor3d.h"
-#include "UI_CustomTools.h"
 #include "LeftBar.h"
 #include "TopBar.h"
 #include "Scene.h"
@@ -16,8 +15,8 @@
 
 #include "igame_persistent.h"
 
-#define DETACH_FRAME(a) if (a){ (a)->Parent = NULL;}
-#define ATTACH_FRAME(a,b) if (a){ (a)->Parent = (b);}
+#define DETACH_FRAME(a) 	if (a){ (a)->Hide(); 	(a)->Parent = NULL; }
+#define ATTACH_FRAME(a,b) 	if (a){ (a)->Parent=(b);(a)->Show(); 		}
 
 TUI_Tools Tools;
 
@@ -28,43 +27,19 @@ TUI_Tools::TUI_Tools()
     fFogness	= 0.9f;
     dwFogColor	= 0xffffffff;
     m_Flags.zero();
-    for (int i=0; i<OBJCLASS_COUNT; i++)
-        UITools.insert(mk_pair((EObjClass)i,(TUI_CustomTools*)NULL));
 }
 //---------------------------------------------------------------------------
 TUI_Tools::~TUI_Tools()
 {
-	UIToolsMapPairIt	_I = UITools.begin();
-	UIToolsMapPairIt	_E = UITools.end();
-    for (; _I!=_E; _I++) xr_delete(_I->second);
 }
 //---------------------------------------------------------------------------
 
-TFrame*	TUI_Tools::GetFrame()
+TForm*	TUI_Tools::GetFrame()
 {
 	if (pCurTools) return pCurTools->pFrame;
     return 0;
 }
 //---------------------------------------------------------------------------
-void TUI_Tools::RegisterTools(TUI_CustomTools* tools)
-{
-	UITools[tools->ClassID] = tools;
-}
-
-#include "UI_LightTools.h"
-#include "UI_ShapeTools.h"
-#include "UI_ObjectTools.h"
-#include "UI_SoundTools.h"
-#include "UI_GlowTools.h"
-#include "UI_RPointTools.h"
-#include "UI_WayPointTools.h"
-#include "UI_SectorTools.h"
-#include "UI_PortalTools.h"
-#include "UI_PSTools.h"
-#include "UI_DOTools.h"
-#include "UI_GroupTools.h"
-#include "UI_AIMapTools.h"
-
 bool TUI_Tools::OnCreate()
 {
     target          = OBJCLASS_DUMMY;//-1;
@@ -77,22 +52,6 @@ bool TUI_Tools::OnCreate()
     m_Flags.set(flChangeTarget,FALSE);
     // scene creating
 	Scene.OnCreate	();
-	// create tools
-	RegisterTools	(xr_new<TUI_CustomTools>(OBJCLASS_DUMMY,true));
-	RegisterTools	(xr_new<TUI_GroupTools>());
-    RegisterTools	(xr_new<TUI_LightTools>());
-    RegisterTools	(xr_new<TUI_ShapeTools>());
-    RegisterTools	(xr_new<TUI_ObjectTools>());
-    RegisterTools	(xr_new<TUI_SoundSrcTools>());
-    RegisterTools	(xr_new<TUI_SoundEnvTools>());
-    RegisterTools	(xr_new<TUI_GlowTools>());
-    RegisterTools	(xr_new<TUI_SpawnPointTools>());
-    RegisterTools	(xr_new<TUI_SectorTools>());
-    RegisterTools	(xr_new<TUI_PortalTools>());
-    RegisterTools	(xr_new<TUI_WayPointTools>());
-    RegisterTools	(xr_new<TUI_PSTools>());
-    RegisterTools	(xr_new<TUI_DOTools>());
-    RegisterTools	(xr_new<TUI_AIMapTools>());
     // change target to Object
 	UI.Command		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
 	m_Props 		= TProperties::CreateForm(0,alClient,OnPropsModified,0,OnPropsClose);
@@ -106,8 +65,8 @@ void TUI_Tools::OnDestroy()
     TfrmObjectList::DestroyForm(pObjectListForm);
 	TProperties::DestroyForm(m_Props);
     // scene destroing
+    if (pCurTools) 		pCurTools->OnDeactivate();
 	Scene.OnDestroy		();
-    pCurTools->OnDeactivate();
 }
 //---------------------------------------------------------------------------
 void TUI_Tools::Reset()
@@ -201,7 +160,7 @@ void __fastcall TUI_Tools::SetTarget   (EObjClass tgt,bool bForced)
             DETACH_FRAME(pCurTools->pFrame);
             pCurTools->OnDeactivate();
         }
-        pCurTools				= UITools[tgt]; VERIFY(pCurTools);
+        pCurTools				= Scene.GetMTools(tgt); VERIFY(pCurTools);
         pCurTools->OnActivate	();
         
         pCurTools->SetSubTarget	(sub_target);
@@ -239,15 +198,15 @@ void __fastcall TUI_Tools::ChangeTarget(EObjClass tgt, bool forced)
 }
 //---------------------------------------------------------------------------
 void __fastcall	TUI_Tools::SetNumPosition(CCustomObject* O){
-	if (pCurTools) pCurTools->SetNumPosition(O);
+//.	if (pCurTools) pCurTools->SetNumPosition(O);
 }
 //---------------------------------------------------------------------------
 void __fastcall	TUI_Tools::SetNumRotation(CCustomObject* O){
-	if (pCurTools) pCurTools->SetNumRotation(O);
+//.	if (pCurTools) pCurTools->SetNumRotation(O);
 }
 //---------------------------------------------------------------------------
 void __fastcall	TUI_Tools::SetNumScale(CCustomObject* O){
-	if (pCurTools) pCurTools->SetNumScale(O);
+//.	if (pCurTools) pCurTools->SetNumScale(O);
 }
 //---------------------------------------------------------------------------
 

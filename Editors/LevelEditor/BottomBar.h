@@ -34,12 +34,9 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawSectors;
 	TMenuItem *Portals1;
 	TMenuItem *miDrawPortalSimpleModel;
-	TMenuItem *Animations1;
-	TMenuItem *miDrawAnimateLight;
 	TMenuItem *Objects1;
 	TMenuItem *miDrawObjectBones;
 	TMenuItem *miObjectLoopedAnimation;
-	TMenuItem *miDrawSky;
 	TMenuItem *miDrawObjectAnimPath;
 	TMenuItem *Render1;
 	TMenuItem *FillMode1;
@@ -84,7 +81,6 @@ __published:	// IDE-managed Components
 	TCGauge *cgProgress;
 	TPanel *paSel;
 	TPanel *paGridSquareSize;
-	TMenuItem *miDrawHOM;
 	TPanel *paUICursor;
 	TPanel *paCamera;
 	TMenuItem *SpawnPoint1;

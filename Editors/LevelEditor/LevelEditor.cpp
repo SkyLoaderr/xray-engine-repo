@@ -16,12 +16,11 @@ USEFORM("EditLightAnim.cpp", frmEditLightAnim);
 USEFORM("EditorPref.cpp", frmEditPrefs);
 USEFORM("FrameAIMap.cpp", fraAIMap); /* TFrame: File Type */
 USEFORM("FrameDetObj.cpp", fraDetailObject); /* TFrame: File Type */
-USEFORM("FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
 USEFORM("FrameLight.cpp", fraLight); /* TFrame: File Type */
 USEFORM("FramePortal.cpp", fraPortal); /* TFrame: File Type */
 USEFORM("FramePS.cpp", fraPS); /* TFrame: File Type */
-USEFORM("FrameRPoint.cpp", fraSpawnPoint); /* TFrame: File Type */
+USEFORM("edit\FrameSpawn.cpp", fraSpawn); /* TFrame: File Type */
 USEFORM("FrameSector.cpp", fraSector); /* TFrame: File Type */
 USEFORM("FrameShape.cpp", fraShape); /* TFrame: File Type */
 USEFORM("FrameWayPoint.cpp", fraWayPoint); /* TFrame: File Type */

@@ -1,15 +1,22 @@
 object fraWayPoint: TfraWayPoint
-  Left = 0
-  Top = 0
-  Width = 198
-  Height = 277
+  Left = 512
+  Top = 391
   VertScrollBar.Visible = False
   Align = alClient
-  Constraints.MaxWidth = 198
-  Constraints.MinWidth = 198
+  BorderStyle = bsNone
+  ClientHeight = 250
+  ClientWidth = 198
   Color = 10528425
-  ParentColor = False
-  TabOrder = 0
+  Constraints.MaxWidth = 206
+  Constraints.MinWidth = 206
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
   object paCommands: TPanel
     Left = 0
     Top = 0

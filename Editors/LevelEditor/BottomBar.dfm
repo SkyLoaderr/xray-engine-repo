@@ -258,10 +258,8 @@ object fraBottomBar: TfraBottomBar
       'N25.Checked'
       'N50.Checked'
       'N75.Checked'
-      'miDrawAnimateLight.Checked'
       'miDrawObjectBones.Checked'
       'miObjectLoopedAnimation.Checked'
-      'miDrawSky.Checked'
       'miDrawObjectAnimPath.Checked'
       'miRenderFillPoint.Checked'
       'miRenderFillSolid.Checked'
@@ -278,7 +276,6 @@ object fraBottomBar: TfraBottomBar
       'miDrawObjectsPivot.Checked'
       'miDrawDOBaseTexture.Checked'
       'miDrawDOBlended.Checked'
-      'miDrawHOM.Checked'
       'miSpawnPointDrawText.Checked'
       'miDrawObjectLOD.Checked')
     StoredValues = <>
@@ -458,14 +455,6 @@ object fraBottomBar: TfraBottomBar
         OnClick = ClickOptionsMenuItem
       end
     end
-    object Animations1: TMenuItem
-      Caption = 'Light'
-      GroupIndex = 4
-      object miDrawAnimateLight: TMenuItem
-        Caption = 'Animate'
-        OnClick = ClickOptionsMenuItem
-      end
-    end
     object DetailObjects1: TMenuItem
       Caption = 'Detail Objects'
       GroupIndex = 4
@@ -524,18 +513,6 @@ object fraBottomBar: TfraBottomBar
     end
     object miDrawGrid: TMenuItem
       Caption = 'Draw Grid'
-      Checked = True
-      GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
-    end
-    object miDrawSky: TMenuItem
-      Caption = 'Draw Sky'
-      Checked = True
-      GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
-    end
-    object miDrawHOM: TMenuItem
-      Caption = 'Draw HOM'
       Checked = True
       GroupIndex = 4
       OnClick = ClickOptionsMenuItem

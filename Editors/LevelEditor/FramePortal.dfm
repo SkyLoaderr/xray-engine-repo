@@ -1,7 +1,7 @@
 object fraPortal: TfraPortal
-  Left = 0
-  Top = 0
-  Width = 198
+  Left = 414
+  Top = 271
+  Width = 206
   Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
@@ -9,18 +9,18 @@ object fraPortal: TfraPortal
   VertScrollBar.Style = ssFlat
   VertScrollBar.Visible = False
   Align = alClient
-  AutoScroll = False
-  Constraints.MaxWidth = 198
-  Constraints.MinWidth = 198
+  BorderStyle = bsNone
   Color = 10528425
+  Constraints.MaxWidth = 206
+  Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  ParentColor = False
-  ParentFont = False
-  TabOrder = 0
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
   object paCommands: TPanel
     Left = 0
     Top = 0
@@ -122,5 +122,14 @@ object fraPortal: TfraPortal
       ParentFont = False
       OnClick = ebComputeClick
     end
+  end
+  object fsStorage: TFormStorage
+    IniSection = 'FramePortal'
+    Options = []
+    Version = 1
+    StoredProps.Strings = (
+      'paCommands.Height'
+      'paCommands.Tag')
+    StoredValues = <>
   end
 end

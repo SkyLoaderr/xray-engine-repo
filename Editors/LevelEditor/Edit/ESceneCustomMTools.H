@@ -1,44 +1,58 @@
-#ifndef SceneCustomMToolsH
-#define SceneCustomMToolsH
+#ifndef ESceneCustomMToolsH
+#define ESceneCustomMToolsH
 
 // refs
 struct SSceneSummary;
+class TUI_CustomControl;
+class ESceneCustomMTools;
+
+DEFINE_VECTOR(TUI_CustomControl*,ControlsVec,ControlsIt);
 
 class ESceneCustomMTools
 {
 	EObjClass 			FClassID;
 protected:
-	int 				render_priority;
-    LPSTR				class_name;
-    LPSTR				class_desc;
+	// controls
+    ControlsVec 		m_Controls;
+    int             	action;
+    int					sub_target;
+public:
+    TUI_CustomControl* 	pCurControl;
+    TForm*				pFrame;
+protected:
+    void            	AddControl				(TUI_CustomControl* c);
+    TUI_CustomControl* 	FindControl				(int subtarget, int action);
+    void            	UpdateControl			();
+    void				CreateDefaultControls	();
+public:
+    void            	SetAction   			(int action);
+    void            	SetSubTarget			(int target);
+    void            	ResetSubTarget			();
+protected:
+    virtual void		CreateControls			();
+    virtual void		RemoveControls			();
+public:
+    virtual void    	OnActivate  			();
+    virtual void    	OnDeactivate			();
+    virtual void    	OnObjectsUpdate			(){;}
 public:
     PropertyGP			(FClassID,FClassID) 	EObjClass ClassID;
-    IC void				SetDefinition			(LPCSTR cls_name, LPCSTR cls_desc, int rp)
-    {
-        class_name		= xr_strdup(cls_name);
-        class_desc		= xr_strdup(cls_desc);
-        render_priority	= rp;
-    }
 	// definition
-    IC LPCSTR			ClassName				(){return class_name;}
-    IC LPCSTR			ClassDesc				(){return class_desc;}
-    IC int				RenderPriority			(){return render_priority;}
+    virtual LPCSTR		ClassName				()=0;
+    virtual LPCSTR		ClassDesc				()=0;
+    virtual int			RenderPriority			()=0;
 protected:
     enum{
     	flVisible		= (0<<1),
     };
     Flags32				m_Flags;
 public:
-						ESceneCustomMTools		(EObjClass cls)
-                        {
-                        	ClassID				= cls;
-                            class_name			= 0;
-                            class_desc			= 0;
-                            render_priority		= 0;
-                            m_Flags.set			(flVisible);
-                        }
-	virtual				~ESceneCustomMTools		(){xr_free(class_name);xr_free(class_desc);}
+						ESceneCustomMTools		(EObjClass cls);
+	virtual				~ESceneCustomMTools		();
 
+    virtual void		OnCreate				();
+    virtual void		OnDestroy				();
+    
     // snap 
 	virtual ObjectList* GetSnapList				()=0;
     virtual void		UpdateSnapList			()=0;
@@ -66,7 +80,11 @@ public:
 	virtual void		OnSceneUpdate			(){;}
     virtual void		OnObjectRemove			(CCustomObject* O)=0;
 	virtual void		OnFrame					()=0;
+
+    // render
+    virtual void		BeforeRender			(){;}
     virtual void		OnRender				(int priority, bool strictB2F)=0;
+    virtual void		AfterRender				(){;}
 
     // IO
     virtual bool   		IsNeedSave				()=0;
@@ -86,5 +104,5 @@ public:
 };
 
 DEFINE_MAP(EObjClass,ESceneCustomMTools*,SceneToolsMap,SceneToolsMapPairIt);
-#endif //SceneCustomMToolsH
+#endif //ESceneCustomMToolsH
  

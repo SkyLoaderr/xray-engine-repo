@@ -9,9 +9,6 @@
 class CLAItem;
 
 class CLight : public CCustomObject{
-	// d3d's light parameters (internal use)
-	int 			m_D3DIndex;
-    BOOL 			m_Enabled;
 protected:
 	typedef CCustomObject inherited;
 public:
@@ -135,9 +132,6 @@ public:
 	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);
 
     // render utility function
-	void 			Set				(int d3dindex);
-	void 			UnSet			();
-    void 			Enable			(BOOL flag);
     void 			AffectD3D		(BOOL flag);
 
 	virtual void 	Render			(int priority, bool strictB2F);

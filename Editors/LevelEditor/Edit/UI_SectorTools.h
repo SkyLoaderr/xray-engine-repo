@@ -2,19 +2,7 @@
 #define UI_SectorToolsH
 
 #include "ui_control.h"
-#include "ui_customtools.h"
 
-class CSector;
-
-//---------------------------------------------------------------------------
-class TUI_SectorTools:public TUI_CustomTools{
-public:
-                    TUI_SectorTools();
-    virtual         ~TUI_SectorTools(){;}
-	virtual void 	OnActivate();
-	virtual	void 	OnDeactivate();
-    virtual void    OnObjectsUpdate();
-};
 //---------------------------------------------------------------------------
 // refs
 class TfraSector;
@@ -32,7 +20,7 @@ class TUI_ControlSectorAdd: public TUI_CustomControl{
 	void 			AddMesh();
 	void 			DelMesh();
 public:
-    TUI_ControlSectorAdd(int st, int act, TUI_CustomTools* parent);
+    TUI_ControlSectorAdd(int st, int act, ESceneCustomMTools* parent);
     virtual ~TUI_ControlSectorAdd(){;}
 	virtual bool Start  (TShiftState _Shift);
 	virtual bool End    (TShiftState _Shift);
@@ -44,7 +32,7 @@ public:
 class TUI_ControlSectorSelect: public TUI_CustomControl{
     TfraSector*   	pFrame;
 public:
-    TUI_ControlSectorSelect(int st, int act, TUI_CustomTools* parent);
+    TUI_ControlSectorSelect(int st, int act, ESceneCustomMTools* parent);
 	virtual bool Start  (TShiftState _Shift);
 	virtual bool End    (TShiftState _Shift);
 	virtual void Move   (TShiftState _Shift);

@@ -10,26 +10,9 @@
 #include "ui_main.h"
 
 //----------------------------------------------------------------------
-TUI_PSTools::TUI_PSTools():TUI_CustomTools(OBJCLASS_PS,true)
-{
-    AddControlCB(xr_new<TUI_ControlPSAdd>(estDefault,eaAdd,		this));
-}
-void TUI_PSTools::OnActivate  ()
-{
-    pFrame = xr_new<TfraPS>((TComponent*)0);
-	TUI_CustomTools::OnActivate();
-    ((TfraPS*)pFrame)->OnEnter();
-}
-void TUI_PSTools::OnDeactivate()
-{
-    ((TfraPS*)pFrame)->OnExit();
-	TUI_CustomTools::OnDeactivate();
-    xr_delete(pFrame);
-}
-//------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-__fastcall TUI_ControlPSAdd::TUI_ControlPSAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
+__fastcall TUI_ControlPSAdd::TUI_ControlPSAdd(int st, int act, ESceneCustomMTools* parent):TUI_CustomControl(st,act,parent){
 }
 
 bool __fastcall TUI_ControlPSAdd::AfterAppendCallback(TShiftState Shift, CCustomObject* obj)

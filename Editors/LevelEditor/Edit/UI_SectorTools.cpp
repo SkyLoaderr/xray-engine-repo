@@ -13,39 +13,22 @@
 #include "ui_main.h"
 
 //---------------------------------------------------------------------------
-TUI_SectorTools::TUI_SectorTools():TUI_CustomTools(OBJCLASS_SECTOR,true){
-    AddControlCB(xr_new<TUI_ControlSectorSelect>(estDefault,eaSelect,	this));
-    AddControlCB(xr_new<TUI_ControlSectorAdd>(estDefault,eaAdd,		this));
-}
-void TUI_SectorTools::OnObjectsUpdate(){
-    TfraSector* fraSector = (TfraSector*)pFrame; VERIFY(fraSector);
-//    fraSector->OnChange();
-}
-void TUI_SectorTools::OnActivate  (){
-    pFrame = xr_new<TfraSector>((TComponent*)0);
-	TUI_CustomTools::OnActivate();
-}
-void TUI_SectorTools::OnDeactivate(){
-	TUI_CustomTools::OnDeactivate();
-    xr_delete(pFrame);
-}
-//------------------------------------------------------------------------------
 // add
 //------------------------------------------------------------------------------
-__fastcall TUI_ControlSectorAdd::TUI_ControlSectorAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
+__fastcall TUI_ControlSectorAdd::TUI_ControlSectorAdd(int st, int act, ESceneCustomMTools* parent):TUI_CustomControl(st,act,parent){
 }
 
 void __fastcall TUI_ControlSectorAdd::OnEnter()
 {
     m_Action = saNone;
     TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
-    fraSector->paSectorActions->Show();
+//    fraSector->paSectorActions->Show();
 }
 
 void __fastcall TUI_ControlSectorAdd::OnExit()
 {
     TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
-    fraSector->paSectorActions->Hide();
+//    fraSector->paSectorActions->Hide();
 	fraSector = 0;
 }
 
@@ -160,7 +143,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-__fastcall TUI_ControlSectorSelect::TUI_ControlSectorSelect(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
+__fastcall TUI_ControlSectorSelect::TUI_ControlSectorSelect(int st, int act, ESceneCustomMTools* parent):TUI_CustomControl(st,act,parent){
     pFrame 	= 0;
 }
 void TUI_ControlSectorSelect::OnEnter(){

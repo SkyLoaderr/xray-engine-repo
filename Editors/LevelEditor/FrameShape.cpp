@@ -12,7 +12,7 @@
 
 //---------------------------------------------------------------------------
 __fastcall TfraShape::TfraShape(TComponent* Owner)
-        : TFrame(Owner)
+        : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
 }

@@ -8,23 +8,7 @@
 #include "scene.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
-
-TUI_WayPointTools::TUI_WayPointTools():TUI_CustomTools(OBJCLASS_WAY,true){
-    AddControlCB(xr_new<TUI_ControlWayPointAdd>(estDefault,eaAdd,		this));
-}
-
-void TUI_WayPointTools::OnActivate(){
-    pFrame = xr_new<TfraWayPoint>((TComponent*)0);
-    ((TfraWayPoint*)pFrame)->fsStorage->RestoreFormPlacement();
-	TUI_CustomTools::OnActivate();
-}
-void TUI_WayPointTools::OnDeactivate(){
-    ((TfraWayPoint*)pFrame)->fsStorage->SaveFormPlacement();
-	TUI_CustomTools::OnDeactivate();
-    xr_delete(pFrame);
-}
-//--------------------------------------------------------------------------------------------------
-__fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
+__fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, ESceneCustomMTools* parent):TUI_CustomControl(st,act,parent){
 }
 
 bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift)

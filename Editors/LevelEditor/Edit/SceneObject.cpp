@@ -113,12 +113,17 @@ bool CSceneObject::IsRender()
     return inherited::IsRender();
 }
 
+#ifdef _LEVEL_EDITOR
+	#include "ESceneLightTools.h"
+#endif
+
 void CSceneObject::Render(int priority, bool strictB2F)
 {
 	inherited::Render(priority,strictB2F);
     if (!m_pReference) return;
 #ifdef _LEVEL_EDITOR
-    Scene.TurnLightsForObject(this);
+	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene.GetOTools(OBJCLASS_LIGHT)); VERIFY(lt);
+    lt->SelectLightsForObject(this);
 #endif
 	m_pReference->Render(_Transform(), priority, strictB2F);
     if (Selected()){

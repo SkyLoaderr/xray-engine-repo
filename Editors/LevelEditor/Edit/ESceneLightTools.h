@@ -21,26 +21,39 @@ class ESceneLightTools: public ESceneCustomOTools
     friend class 		CLight;
 protected:
 	enum{
-    	flShowSun		= (1<<0),
+    	flShowSun			= (1<<0),
+        flShowControlName	= (1<<1),
     };
 	Flags32				m_LFlags;
 	// hemisphere
 	u8					m_HemiQuality;
     // sun
-    u8					m_UseSunShadow;
     u8					m_SunShadowQuality;
     Fvector2			m_SunShadowDir;
+
+    // run time
+    xr_vector<CLight*> 	frame_light;
+	void 				AppendFrameLight		(CLight* L);
 protected:
     // light control
 	int					lcontrol_last_idx;
 	ATokenVec			lcontrols;
     void __fastcall 	OnControlAppendClick		(PropValue* sender, bool& bDataModified);
     void __fastcall 	OnControlRenameRemoveClick	(PropValue* sender, bool& bDataModified);
+protected:
+    // controls
+    virtual void 		CreateControls			();
+	virtual void 		RemoveControls			();
 public:
 						ESceneLightTools 	   	();
 	virtual        	 	~ESceneLightTools		();
 
     virtual void		Clear					(bool bSpecific=false);       
+
+	// definition
+    IC LPCSTR			ClassName				(){return "light";}
+    IC LPCSTR			ClassDesc				(){return "Light";}
+    IC int				RenderPriority			(){return 10;}
 
     // IO
     virtual bool   		Load            		(IReader&);
@@ -49,7 +62,11 @@ public:
     // utils
     virtual bool		Validate				();
     
+    virtual void		BeforeRender			();
     virtual void		OnRender				(int priority, bool strictB2F);
+    virtual void		AfterRender				();
+
+	void 				SelectLightsForObject	(CCustomObject* obj);
     
 	virtual void 		FillProp				(LPCSTR pref, PropItemVec& items);
 

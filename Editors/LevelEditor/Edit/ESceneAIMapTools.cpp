@@ -1,6 +1,3 @@
-//----------------------------------------------------
-// file: EParticlesObject.cpp
-//----------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
 
@@ -112,6 +109,7 @@ ESceneAIMapTools::~ESceneAIMapTools()
 {
 }
 //----------------------------------------------------
+
 
 void ESceneAIMapTools::Clear(bool bOnlyNodes)
 {

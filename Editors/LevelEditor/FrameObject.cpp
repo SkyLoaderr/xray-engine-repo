@@ -19,46 +19,15 @@
 
 //---------------------------------------------------------------------------
 __fastcall TfraObject::TfraObject(TComponent* Owner)
-        : TFrame(Owner)
+        : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
-    m_Current = 0;
+    m_Current 	= 0;
 }
 //---------------------------------------------------------------------------
 bool __fastcall TfraObject::OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R)
 {
 	return FHelper.DrawThumbnail(Surface,R,sender->Key(),EImageThumbnail::EITObject);
-}
-//---------------------------------------------------------------------------
-void __fastcall TfraObject::OnEnter()
-{
-    m_Items 				= TItemList::CreateForm(paItems, alClient, 0);
-    m_Items->OnItemsFocused	= OnItemFocused;
-    m_Items->LoadSelection	(fsStorage);
-    m_Items->LoadParams		(fsStorage);
-    ListItemsVec items;
-    
-    FS_QueryMap lst;
-    if (Lib.GetObjects(lst)){
-	    FS_QueryPairIt	it	= lst.begin();
-    	FS_QueryPairIt	_E	= lst.end();
-	    for (; it!=_E; it++){
-            AnsiString fn 	= ChangeFileExt(it->first.c_str(),".thm");
-            FS.update_path	(_objects_,fn);
-	    	ListItem* I=LHelper.CreateItem(items,it->first.c_str(),0,FS.exist(fn.c_str())?ListItem::flDrawThumbnail:0,0);
-            if (I->m_Flags.is(ListItem::flDrawThumbnail)) I->OnDrawThumbnail= OnDrawObjectThumbnail;
-        }
-    }
-    m_Items->AssignItems	(items,false,"Objects",true);
-	fsStorage->RestoreFormPlacement();
-}
-//---------------------------------------------------------------------------
-void __fastcall TfraObject::OnExit()
-{
-    m_Items->SaveSelection	(fsStorage);
-    m_Items->SaveParams		(fsStorage);
-	fsStorage->SaveFormPlacement();
-    TItemList::DestroyForm	(m_Items);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OnItemFocused(ListItemsVec& items)
@@ -222,5 +191,44 @@ void __fastcall TfraObject::paCurrentObjectResize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraObject::FormShow(TObject *Sender)
+{
+    m_Items->LoadSelection	(fsStorage);
+    m_Items->LoadParams		(fsStorage);
+    ListItemsVec items;
+    
+    FS_QueryMap lst;
+    if (Lib.GetObjects(lst)){
+	    FS_QueryPairIt	it	= lst.begin();
+    	FS_QueryPairIt	_E	= lst.end();
+	    for (; it!=_E; it++){
+            AnsiString fn 	= ChangeFileExt(it->first.c_str(),".thm");
+            FS.update_path	(_objects_,fn);
+	    	ListItem* I=LHelper.CreateItem(items,it->first.c_str(),0,FS.exist(fn.c_str())?ListItem::flDrawThumbnail:0,0);
+            if (I->m_Flags.is(ListItem::flDrawThumbnail)) I->OnDrawThumbnail= OnDrawObjectThumbnail;
+        }
+    }
+    m_Items->AssignItems	(items,false,"Objects",true);
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TfraObject::FormHide(TObject *Sender)
+{
+    m_Items->SaveSelection	(fsStorage);
+    m_Items->SaveParams		(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraObject::FormCreate(TObject *Sender)
+{
+    m_Items 				= TItemList::CreateForm(paItems, alClient, 0);
+    m_Items->OnItemsFocused	= OnItemFocused;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraObject::FormDestroy(TObject *Sender)
+{
+    TItemList::DestroyForm	(m_Items);
+}
+//---------------------------------------------------------------------------
 

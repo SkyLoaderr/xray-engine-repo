@@ -86,7 +86,7 @@ TElTreeItem* TfrmObjectList::FindObjectByType(int type, void *obj)
     return 0;
 }
 //---------------------------------------------------------------------------
-TElTreeItem* TfrmObjectList::AddFolder(int type)
+TElTreeItem* TfrmObjectList::AddFolder(EObjClass type)
 {
     AnsiString name;
     name.sprintf("%ss",Scene.GetMTools(type)->ClassDesc());

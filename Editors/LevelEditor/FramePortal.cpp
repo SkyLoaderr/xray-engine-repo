@@ -10,13 +10,13 @@
 #include "portalutils.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------
 __fastcall TfraPortal::TfraPortal(TComponent* Owner)
-        : TFrame(Owner)
+        : TForm(Owner)
 {
-	iPickSectors=0;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraPortal::PanelMinClick(TObject *Sender)

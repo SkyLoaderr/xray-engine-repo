@@ -9,12 +9,12 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "ui_customtools.h"
+#include "ESceneCustomMTools.h"
 #include "ExtBtn.hpp"
 // refs
 class CEditObject;
 //---------------------------------------------------------------------------
-class TfraLight : public TFrame
+class TfraLight : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *paCommands;

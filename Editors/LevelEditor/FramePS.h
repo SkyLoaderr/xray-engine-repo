@@ -13,10 +13,11 @@
 #include "ItemList.h"
 #include "mxPlacemnt.hpp"
 #include <ImgList.hpp>
+#include "ESceneCustomMTools.h"
 // refs
 class CEditObject;
 //---------------------------------------------------------------------------
-class TfraPS : public TFrame
+class TfraPS : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *paSelectObject;
@@ -40,6 +41,10 @@ __published:	// IDE-managed Components
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebCurrentPSPlayClick(TObject *Sender);
 	void __fastcall ebCurrentPSStopClick(TObject *Sender);
+	void __fastcall FormHide(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
     void __fastcall SelByRef		(bool flag);
     TItemList* m_Items;
@@ -47,8 +52,6 @@ private:	// User declarations
     LPCSTR m_Current;
 public:		// User declarations
 	__fastcall 		TfraPS	(TComponent* Owner);
-    void __fastcall OnEnter	();
-    void __fastcall OnExit	();
     LPCSTR 			Current	(){return m_Current;}
 };
 //---------------------------------------------------------------------------

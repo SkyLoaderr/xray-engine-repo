@@ -8,26 +8,7 @@
 #include "scene.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
-
-TUI_ShapeTools::TUI_ShapeTools():TUI_CustomTools(OBJCLASS_SHAPE,true)
-{
-    AddControlCB(xr_new<TUI_ControlShapeAdd>(estDefault,eaAdd,	this));
-}
-void TUI_ShapeTools::OnActivate  ()
-{
-    pFrame = xr_new<TfraShape>((TComponent*)0);
-    ((TfraShape*)pFrame)->fsStorage->RestoreFormPlacement();
-	TUI_CustomTools::OnActivate();
-}
-void TUI_ShapeTools::OnDeactivate()
-{
-    ((TfraShape*)pFrame)->fsStorage->SaveFormPlacement();
-	TUI_CustomTools::OnDeactivate();
-    xr_delete(pFrame);
-}
-
-//--------------------------------------------------------------------------------------------------
-__fastcall TUI_ControlShapeAdd::TUI_ControlShapeAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent)
+__fastcall TUI_ControlShapeAdd::TUI_ControlShapeAdd(int st, int act, ESceneCustomMTools* parent):TUI_CustomControl(st,act,parent)
 {
 }
 

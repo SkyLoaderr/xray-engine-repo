@@ -9,16 +9,16 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "ui_customtools.h"
 #include "multi_edit.hpp"
 #include "ExtBtn.hpp"
 #include "mxPlacemnt.hpp"
 #include "multi_color.hpp"
+#include "ESceneCustomMTools.h"
 // refs
 struct SDOClusterDef;
 class EDetailManager;
 //---------------------------------------------------------------------------
-class TfraDetailObject : public TFrame
+class TfraDetailObject : public TForm
 {
 __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
@@ -50,8 +50,6 @@ private:	// User declarations
 	EDetailManager* DM;
 public:		// User declarations
 	__fastcall TfraDetailObject(TComponent* Owner, EDetailManager* dm_tools);
-    void __fastcall OnEnter();
-    void __fastcall OnExit();
 };
 //---------------------------------------------------------------------------
 #endif

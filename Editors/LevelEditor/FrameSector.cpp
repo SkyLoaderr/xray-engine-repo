@@ -9,11 +9,12 @@
 #include "portalutils.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------
 __fastcall TfraSector::TfraSector(TComponent* Owner)
-        : TFrame(Owner)
+        : TForm(Owner)
 {
 }
 //---------------------------------------------------------------------------

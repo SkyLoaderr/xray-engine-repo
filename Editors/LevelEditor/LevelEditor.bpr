@@ -91,24 +91,20 @@
       intermediate\SoundManager.obj intermediate\SoundManager_LE.obj 
       intermediate\SpawnPoint.obj intermediate\TLSPRITE.obj 
       intermediate\UI_AIMapTools.obj intermediate\UI_Camera.obj 
-      intermediate\ui_control.obj intermediate\ui_customtools.obj 
-      intermediate\UI_DOTools.obj intermediate\UI_GlowTools.obj 
-      intermediate\UI_GroupTools.obj intermediate\UI_LightTools.obj 
-      intermediate\UI_Main.obj intermediate\UI_MainCommand.obj 
-      intermediate\UI_MainExtern.obj intermediate\UI_MainMail.obj 
-      intermediate\UI_ObjectTools.obj intermediate\UI_PortalTools.obj 
-      intermediate\UI_PSTools.obj intermediate\UI_RPointTools.obj 
+      intermediate\ui_control.obj intermediate\UI_Main.obj 
+      intermediate\UI_MainCommand.obj intermediate\UI_MainExtern.obj 
+      intermediate\UI_MainMail.obj intermediate\UI_ObjectTools.obj 
+      intermediate\UI_PSTools.obj intermediate\UI_SpawnTools.obj 
       intermediate\UI_SectorTools.obj intermediate\UI_ShapeTools.obj 
-      intermediate\UI_SoundTools.obj intermediate\ui_tools.obj 
-      intermediate\UI_WayPointTools.obj intermediate\TopBar.obj 
-      intermediate\BottomBar.obj intermediate\ChoseForm.obj 
-      intermediate\DOOneColor.obj intermediate\DOShuffle.obj 
-      intermediate\EditLibrary.obj intermediate\EditLightAnim.obj 
-      intermediate\EditorPref.obj intermediate\FrameAIMap.obj 
-      intermediate\FrameDetObj.obj intermediate\FrameEmitter.obj 
+      intermediate\ui_tools.obj intermediate\UI_WayPointTools.obj 
+      intermediate\TopBar.obj intermediate\BottomBar.obj 
+      intermediate\ChoseForm.obj intermediate\DOOneColor.obj 
+      intermediate\DOShuffle.obj intermediate\EditLibrary.obj 
+      intermediate\EditLightAnim.obj intermediate\EditorPref.obj 
+      intermediate\FrameAIMap.obj intermediate\FrameDetObj.obj 
       intermediate\FrameGroup.obj intermediate\FrameLight.obj 
       intermediate\FramePortal.obj intermediate\FramePS.obj 
-      intermediate\FrameRPoint.obj intermediate\FrameSector.obj 
+      intermediate\FrameSpawn.obj intermediate\FrameSector.obj 
       intermediate\FrameShape.obj intermediate\FrameWayPoint.obj 
       intermediate\ImageEditor.obj intermediate\LeftBar.obj 
       intermediate\LogForm.obj intermediate\main.obj 
@@ -129,15 +125,25 @@
       intermediate\SceneRender.obj intermediate\ESceneLightToolsIO.obj 
       intermediate\ESceneLightTools.obj intermediate\Environment.obj 
       intermediate\IGame_Persistent.obj intermediate\rain.obj 
-      intermediate\ESceneCustomOToolsFactory.obj"/>
+      intermediate\ESceneCustomOToolsFactory.obj 
+      intermediate\ESceneCustomMTools.obj 
+      intermediate\ESceneCustomMToolsControls.obj 
+      intermediate\ESceneAIMapTools_Controls.obj 
+      intermediate\DetailObjects_Controls.obj intermediate\ESceneGroupTools.obj 
+      intermediate\ESceneObjectTools.obj intermediate\EScenePortalTools.obj 
+      intermediate\EScenePSTools.obj intermediate\ESceneSpawnTools.obj 
+      intermediate\ESceneSectorTools.obj intermediate\ESceneShapeTools.obj 
+      intermediate\ESceneWayTools.obj intermediate\ESceneSoundEnvTools.obj 
+      intermediate\ESceneSoundSrcTools.obj intermediate\Scene_Tools.obj 
+      intermediate\ESceneGlowTools.obj intermediate\ESceneDummyTools.obj"/>
     <RESFILES value="resource.res LevelEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) edit\ItemList.dfm TopBar.dfm BottomBar.dfm ChoseForm.dfm 
       DOOneColor.dfm DOShuffle.dfm EditLibrary.dfm EditLightAnim.dfm 
-      EditorPref.dfm FrameAIMap.dfm FrameDetObj.dfm FrameEmitter.dfm 
-      FrameGroup.dfm FrameLight.dfm FramePortal.dfm FramePS.dfm FrameRPoint.dfm 
+      EditorPref.dfm FrameAIMap.dfm FrameDetObj.dfm FrameGroup.dfm 
+      FrameLight.dfm FramePortal.dfm FramePS.dfm edit\FrameSpawn.dfm 
       FrameSector.dfm FrameShape.dfm FrameWayPoint.dfm ImageEditor.dfm 
       LeftBar.dfm LogForm.dfm main.dfm NumericVector.dfm ObjectList.dfm 
       previewimage.dfm PropertiesEObject.dfm PropertiesList.dfm 
@@ -358,22 +364,15 @@
       <FILE FILENAME="edit\UI_AIMapTools.cpp" FORMNAME="" UNITNAME="UI_AIMapTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ui_control.cpp" FORMNAME="" UNITNAME="ui_control.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ui_customtools.cpp" FORMNAME="" UNITNAME="UI_CustomTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_DOTools.cpp" FORMNAME="" UNITNAME="UI_DOTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_GlowTools.cpp" FORMNAME="" UNITNAME="UI_GlowTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_GroupTools.cpp" FORMNAME="" UNITNAME="UI_GroupTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_LightTools.cpp" FORMNAME="" UNITNAME="UI_LightTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_Main.cpp" FORMNAME="" UNITNAME="UI_Main.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_MainExtern.cpp" FORMNAME="" UNITNAME="UI_MainExtern.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_MainMail.cpp" FORMNAME="" UNITNAME="UI_MainMail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_ObjectTools.cpp" FORMNAME="" UNITNAME="UI_ObjectTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_PortalTools.cpp" FORMNAME="" UNITNAME="UI_PortalTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_PSTools.cpp" FORMNAME="" UNITNAME="UI_PSTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_RPointTools.cpp" FORMNAME="" UNITNAME="UI_RPointTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_SpawnTools.cpp" FORMNAME="" UNITNAME="UI_SpawnTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_SectorTools.cpp" FORMNAME="" UNITNAME="UI_SectorTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_ShapeTools.cpp" FORMNAME="" UNITNAME="UI_ShapeTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_SoundTools.cpp" FORMNAME="" UNITNAME="UI_SoundTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ui_tools.cpp" FORMNAME="" UNITNAME="ui_tools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_WayPointTools.cpp" FORMNAME="" UNITNAME="UI_WayPointTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="TopBar.cpp" FORMNAME="fraTopBar" UNITNAME="TopBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
@@ -386,12 +385,11 @@
       <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditPrefs" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameAIMap.cpp" FORMNAME="fraAIMap" UNITNAME="FrameAIMap" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameDetObj.cpp" FORMNAME="fraDetailObject" UNITNAME="FrameDetObj" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameGroup.cpp" FORMNAME="fraGroup" UNITNAME="FrameGroup" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameLight.cpp" FORMNAME="fraLight" UNITNAME="FrameLight" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FramePortal.cpp" FORMNAME="fraPortal" UNITNAME="FramePortal" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FramePS.cpp" FORMNAME="fraPS" UNITNAME="FramePS" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameRPoint.cpp" FORMNAME="fraSpawnPoint" UNITNAME="FrameRPoint" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\FrameSpawn.cpp" FORMNAME="fraSpawn" UNITNAME="FrameSpawn" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameSector.cpp" FORMNAME="fraSector" UNITNAME="FrameSector" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameShape.cpp" FORMNAME="fraShape" UNITNAME="FrameShape" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameWayPoint.cpp" FORMNAME="fraWayPoint" UNITNAME="FrameWayPoint" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
@@ -434,6 +432,23 @@
       <FILE FILENAME="Engine\Game\IGame_Persistent.cpp" FORMNAME="" UNITNAME="IGame_Persistent" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\rain.cpp" FORMNAME="" UNITNAME="rain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ESceneCustomOToolsFactory.cpp" FORMNAME="" UNITNAME="ESceneCustomOToolsFactory" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneCustomMTools.cpp" FORMNAME="" UNITNAME="ESceneCustomMTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneCustomMToolsControls.cpp" FORMNAME="" UNITNAME="ESceneCustomMToolsControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneAIMapTools_Controls.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Controls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\DetailObjects_Controls.cpp" FORMNAME="" UNITNAME="DetailObjects_Controls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneGroupTools.cpp" FORMNAME="" UNITNAME="ESceneGroupTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneObjectTools.cpp" FORMNAME="" UNITNAME="ESceneObjectTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EScenePortalTools.cpp" FORMNAME="" UNITNAME="EScenePortalTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EScenePSTools.cpp" FORMNAME="" UNITNAME="EScenePSTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneSpawnTools.cpp" FORMNAME="" UNITNAME="ESceneSpawnTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneSectorTools.cpp" FORMNAME="" UNITNAME="ESceneSectorTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneShapeTools.cpp" FORMNAME="" UNITNAME="ESceneShapeTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneWayTools.cpp" FORMNAME="" UNITNAME="ESceneWayTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneSoundEnvTools.cpp" FORMNAME="" UNITNAME="ESceneSoundEnvTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneSoundSrcTools.cpp" FORMNAME="" UNITNAME="ESceneSoundSrcTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\Scene_Tools.cpp" FORMNAME="" UNITNAME="Scene_Tools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneGlowTools.cpp" FORMNAME="" UNITNAME="ESceneGlowTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESceneDummyTools.cpp" FORMNAME="" UNITNAME="ESceneDummyTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

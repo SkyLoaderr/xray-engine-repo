@@ -59,8 +59,6 @@ public:
 	mapObject_D						    	mapRenderObjects;
 public:
 	st_LevelOptions	m_LevelOp;
-
-    xr_vector<CLight*> frame_light;
 protected:
 	bool m_Valid;
 	int m_Locked;
@@ -122,7 +120,8 @@ protected:
     bool 			OnLoadAppendObject			(CCustomObject* O);
     bool 			OnLoadSelectionAppendObject(CCustomObject* O);
 protected:
-	void			RegisterSceneTools			(ESceneCustomMTools* mt, int rp, LPCSTR cls_name, LPCSTR cls_desc);
+	void			RegisterSceneTools			(ESceneCustomMTools* mt);
+	void			CreateSceneTools			();
 public:
 	enum{
     	flRT_Unsaved 	= (1<<0),
@@ -155,7 +154,7 @@ public:
 	IC void 		unlock				()          	{ m_Locked--; }
 	IC void 		waitlock			()        		{ while( locked() ) Sleep(0); }
 
-	IC ESceneCustomMTools* GetMTools	(EObjClass cat)	{ return ((cat>=0)&&(cat<OBJCLASS_COUNT))?m_SceneTools[cat]:0; }
+	IC ESceneCustomMTools* GetMTools	(EObjClass cat)	{ return m_SceneTools[cat]; }
 	IC ESceneCustomOTools* GetOTools	(EObjClass cat)	{ return dynamic_cast<ESceneCustomOTools*>(GetMTools(cat)); }
 	IC SceneToolsMapPairIt FirstTools	()				{ return m_SceneTools.begin(); }
 	IC SceneToolsMapPairIt LastTools	()				{ return m_SceneTools.end(); }
@@ -221,10 +220,6 @@ public:
 	void 			UndoSave			();
 	bool 			Undo				();
 	bool 			Redo				();
-
-	void 			SetLights			();
-	void 			ClearLights			();
-    void 			TurnLightsForObject	(CSceneObject* obj);
 
     bool 			GetBox				(Fbox& box, EObjClass classfilter);
     bool 			GetBox				(Fbox& box, ObjectList& lst);

@@ -20,7 +20,7 @@ const int	max_desired_items	= 2500;
 const float	drop_length			= 3.f;
 const float drop_width			= 0.04f;
 const float drop_angle			= 3.01f;
-const float drop_max_angle		= PI_DIV_4;
+const float drop_max_angle		= PI_DIV_8*0.5f;
 const float drop_max_wind_vel	= 20.0f;
 const float drop_speed_min		= 40.f;
 const float drop_speed_max		= 80.f;
@@ -81,43 +81,40 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	RayTest		(dest,height);
 }
 
-// Raytrace
-void	CEffect_Rain::RayTest	(Item& dest, float height)
+BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range)
 {
+	BOOL bRes 	= TRUE;
 #ifdef _EDITOR
 	#ifdef _LEVEL_EDITOR
         SRayPickInfo pinf;
-        pinf.inf.range		= height*2;
-        if (Scene.RayPickObject(dest.P,dest.D,OBJCLASS_SCENEOBJECT,&pinf,0)){
-            dest.fTime_Life	= pinf.inf.range/dest.fSpeed;
-            dest.fTime_Hit	= pinf.inf.range/dest.fSpeed;
-            dest.Phit.mad	(dest.P,dest.D,pinf.inf.range);
-        }else{
-            dest.fTime_Life	= (height*2)/dest.fSpeed;
-            dest.fTime_Hit	= (height*3)/dest.fSpeed;
-            dest.Phit.set	(dest.P);
-        }
-    #else
-        dest.fTime_Life	= 0.f;
-        dest.fTime_Hit	= 0.f;
-        dest.Phit.set	(dest.P);
+        pinf.inf.range	= range;
+        bRes	 		= !!Scene.RayPickObject(s,d,OBJCLASS_SCENEOBJECT,&pinf,0);
+        if (bRes) range	= pinf.inf.range;
     #endif
 #else
 	Collide::ray_query	RQ;
-	CObject* E = g_pGameLevel->CurrentViewEntity();
-	E->setEnabled	(FALSE);
-	if (g_pGameLevel->ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ))	
-	{
-		dest.fTime_Life	= RQ.range/dest.fSpeed;
-		dest.fTime_Hit	= RQ.range/dest.fSpeed;
-		dest.Phit.mad	(dest.P,dest.D,RQ.range);
-	} else {
-		dest.fTime_Life	= (height*2)/dest.fSpeed;
-		dest.fTime_Hit	= (height*3)/dest.fSpeed;
-		dest.Phit.set	(dest.P);
-	}
-	E->setEnabled	(TRUE);
+	CObject* E 			= g_pGameLevel->CurrentViewEntity();
+	E->setEnabled		(FALSE);
+	bRes 				= g_pGameLevel->ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ);	
+	E->setEnabled		(TRUE);
+    if (bRes) range 	= RQ.range;
 #endif
+    return bRes;
+}
+
+// Raytrace
+void CEffect_Rain::RayTest(Item& dest, float height)
+{
+	height *= 2.f;
+    if (RayPick(dest.P,dest.D,height)){
+		dest.fTime_Life	= height/dest.fSpeed;
+		dest.fTime_Hit	= height/dest.fSpeed;
+		dest.Phit.mad	(dest.P,dest.D,height);
+    }else{
+        dest.fTime_Life	= (height*2)/dest.fSpeed;
+        dest.fTime_Hit	= (height*3)/dest.fSpeed;
+        dest.Phit.set	(dest.P);
+    }
 }
 
 // initialize particles pool
@@ -260,6 +257,11 @@ void	CEffect_Rain::Render	()
 			items.push_back	(one);
 		}
 	}
+
+    Fplane src_plane;
+    Fvector norm	={0.f,-1.f,0.f};
+    Fvector pos; 	pos.set(Device.vCameraPosition.x,Device.vCameraPosition.y+b_height,Device.vCameraPosition.z);
+    src_plane.build(pos,norm);
 	
 	// Perform update
 	u32			vOffset;
@@ -282,10 +284,17 @@ void	CEffect_Rain::Render	()
 		float	wlen	=	wdir.magnitude();
 		if (wlen>b_radius_wrap)	{
 			// Perform wrapping
-			wdir.div	(wlen);
-			one.P.mad	(one.P, wdir, -(wlen+b_radius));
             if ((vCenter.y-one.P.y)>b_height) 	Born	(one,b_radius,b_height);
-			else								RayTest	(one,b_height);
+			else{
+                Fvector 	inv_dir, src_p;
+				wdir.div	(wlen);
+				one.P.mad	(one.P, wdir, -(wlen+b_radius));
+                inv_dir.invert(one.D);
+                src_plane.intersectRayPoint(one.P,inv_dir,src_p);
+                float dist	= one.P.distance_to(src_p);
+            	if (RayPick(src_p,one.D,dist))	Born	(one,b_radius,b_height);
+                else			            	RayTest	(one,b_height);
+            }
 		}
 
 		// Build line

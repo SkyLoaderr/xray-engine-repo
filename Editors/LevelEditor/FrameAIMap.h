@@ -9,7 +9,6 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "ui_customtools.h"
 #include "ExtBtn.hpp"
 #include "mxPlacemnt.hpp"
 #include "ElTree.hpp"
@@ -17,11 +16,12 @@
 #include "ElPanel.hpp"
 #include "ElSplit.hpp"
 #include "multi_edit.hpp"
+#include "ESceneCustomMTools.h"
 // refs
 class CEditObject;
 class ESceneAIMapTools;
 //---------------------------------------------------------------------------
-class TfraAIMap : public TFrame
+class TfraAIMap : public TForm
 {
 __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
@@ -61,7 +61,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebSelLinkClick(TObject *Sender);
 	void __fastcall ExtBtn6Click(TObject *Sender);
 private:	// User declarations
-	ESceneAIMapTools* tools;
+	ESceneAIMapTools* tools;               
 public:		// User declarations
         __fastcall 	TfraAIMap(TComponent* Owner, ESceneAIMapTools* _tools);
 };

@@ -9,13 +9,14 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "ui_customtools.h"
 #include "ExtBtn.hpp"
 #include "MXCtrls.hpp"
+#include "ESceneCustomMTools.h"
+#include "mxPlacemnt.hpp"
 //refs
 class CSector;
 //---------------------------------------------------------------------------
-class TfraPortal : public TFrame
+class TfraPortal : public TForm
 {
 __published:	// IDE-managed Components
 	TPanel *paCommands;
@@ -24,13 +25,13 @@ __published:	// IDE-managed Components
 	TExtBtn *ebInvertOrient;
 	TExtBtn *ebComputeAllPortals;
 	TExtBtn *ebComputeSelPortals;
+	TFormStorage *fsStorage;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall TopClick(TObject *Sender);
 	void __fastcall ebComputeClick(TObject *Sender);
 	void __fastcall ebComputeAllPortalsClick(TObject *Sender);
 	void __fastcall ebInvertOrientClick(TObject *Sender);
 private:	// User declarations
-	int iPickSectors;
 public:		// User declarations
         __fastcall TfraPortal(TComponent* Owner);
 };

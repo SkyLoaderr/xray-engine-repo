@@ -9,15 +9,15 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "ui_customtools.h"
 #include "multi_edit.hpp"
 #include "ExtBtn.hpp"
 #include "MXCtrls.hpp"
 #include "mxPlacemnt.hpp"
+#include "ESceneCustomMTools.h"
 // refs
 class CEditObject;
 //---------------------------------------------------------------------------
-class TfraShape : public TFrame
+class TfraShape : public TForm
 {
 __published:	// IDE-managed Components
 	TPanel *paAppend;

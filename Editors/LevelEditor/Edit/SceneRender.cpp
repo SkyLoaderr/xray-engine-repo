@@ -55,15 +55,15 @@ struct tools_rp_pred : public std::binary_function<ESceneCustomMTools*, ESceneCu
     {	return x->RenderPriority()<y->RenderPriority();	}
 };
 
-DEFINE_SET_PRED(ESceneCustomMTools*,SceneMToolsSet,SceneMToolsIt,tools_rp_pred);
-DEFINE_SET_PRED(ESceneCustomOTools*,SceneOToolsSet,SceneOToolsIt,tools_rp_pred);
+#define DEFINE_MSET_PRED(T,N,I,P)	typedef xr_multiset< T, P > N;		typedef N::iterator I;
+
+DEFINE_MSET_PRED(ESceneCustomMTools*,SceneMToolsSet,SceneMToolsIt,tools_rp_pred);
+DEFINE_MSET_PRED(ESceneCustomOTools*,SceneOToolsSet,SceneOToolsIt,tools_rp_pred);
 
 void EScene::Render( const Fmatrix& camera )
 {
 	if( !valid() )	return;
 //	if( locked() )	return;
-
-	SetLights();
 
     // extract and sort object tools
     SceneOToolsSet object_tools;
@@ -73,6 +73,9 @@ void EScene::Render( const Fmatrix& camera )
         SceneToolsMapPairIt t_end 	= m_SceneTools.end();
         for (; t_it!=t_end; t_it++)
             if (t_it->second){
+            	// before render
+            	t_it->second->BeforeRender(); 
+                // sort tools
                 ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(t_it->second);
                 if (mt)           	object_tools.insert(mt);
                 scene_tools.insert	(t_it->second);
@@ -134,7 +137,11 @@ void EScene::Render( const Fmatrix& camera )
 
     // clear
     mapRenderObjects.clear			();
-	ClearLights();
+
+
+    SceneMToolsIt s_it 	= scene_tools.begin();
+    SceneMToolsIt s_end	= scene_tools.end();
+    for (; s_it!=s_end; s_it++) (*s_it)->AfterRender();
 }
 //------------------------------------------------------------------------------
 

@@ -3,6 +3,7 @@
 
 #include "ESceneLightTools.h"
 #include "PropertiesListHelper.h"
+#include "IGame_Persistent.h"
 #include "d3dutils.h"
 #include "communicate.h"
 #include "ui_main.h"
@@ -35,6 +36,81 @@ void ESceneLightTools::Clear(bool bSpecific)
     AppendLightControl	(LCONTROL_STATIC);
     AppendLightControl	(LCONTROL_HEMI);
     AppendLightControl	(LCONTROL_SUN);
+}
+//------------------------------------------------------------------------------
+
+void ESceneLightTools::SelectLightsForObject(CCustomObject* obj)
+{
+    for (u32 i=0; i<frame_light.size(); i++){
+        CLight* l = frame_light[i];
+//        if (obj->IsDynamic()&&!l->m_Flags.is(CLight::flAffectDynamic)) continue;
+//        if (!obj->IsDynamic()&&!l->m_Flags.is(CLight::flAffectStatic)) continue;
+        Fbox bb; 	obj->GetBox(bb);
+        Fvector C; 	float R; bb.getsphere(C,R);
+        float d 	= C.distance_to(*((Fvector*)&l->m_D3D.position)) - l->m_D3D.range - R;
+        Device.LightEnable(i,(d<0));
+    }
+}
+
+void ESceneLightTools::AppendFrameLight(CLight* src)
+{
+    Flight L			= src->m_D3D;
+    L.diffuse.mul_rgb	(src->m_Brightness);
+    L.ambient.mul_rgb	(src->m_Brightness);
+    L.specular.mul_rgb	(src->m_Brightness);
+    Device.SetLight		(frame_light.size(),L);
+    frame_light.push_back(src);
+}
+
+void ESceneLightTools::BeforeRender()
+{
+    if (psDeviceFlags.is(rsLighting)){
+        int l_cnt		= 0;
+        // set scene lights
+        for(ObjectIt _F = m_Objects.begin();_F!=m_Objects.end();_F++){
+            CLight* l 		= (CLight*)(*_F);
+            l_cnt++;
+            if (l->Visible()&&l->m_UseInD3D&&l->m_Flags.is_any(CLight::flAffectDynamic|CLight::flAffectStatic))
+                if (::Render->ViewBase.testSphere_dirty(l->m_D3D.position,l->m_D3D.range))
+                	AppendFrameLight(l);
+        }
+    	// set sun
+		if (m_LFlags.is(flShowSun)){
+            Flight L;
+            Fvector C;
+            if (psDeviceFlags.is(rsEnvironment)){
+	            C			= g_pGamePersistent->Environment.Current.sun_color;
+            }else{
+            	C.set		(1.f,1.f,1.f);
+            }
+            L.direction.setHP(m_SunShadowDir.y,m_SunShadowDir.x);
+            L.diffuse.set	(C.x,C.y,C.z,1.f);
+            L.ambient.set	(0.f,0.f,0.f,0.f);
+            L.specular.set	(C.x,C.y,C.z,1.f);
+            L.type			= D3DLIGHT_DIRECTIONAL;
+            Device.SetLight	(frame_light.size(),L);
+            Device.LightEnable(frame_light.size(),TRUE);
+        }
+		// ambient
+        if (psDeviceFlags.is(rsEnvironment)){
+	        Fvector& V		= g_pGamePersistent->Environment.Current.ambient;
+            Fcolor C;		C.set(V.x,V.y,V.z,1.f);
+            Device.SetRS	(D3DRS_AMBIENT,C.get());
+        }else				Device.SetRS(D3DRS_AMBIENT,0x00000000);
+        
+        Device.Statistic.dwTotalLight 	= l_cnt;
+        Device.Statistic.dwLightInScene = frame_light.size();
+    }
+}
+//------------------------------------------------------------------------------
+
+void ESceneLightTools::AfterRender()
+{
+    if (m_LFlags.is(flShowSun))
+        Device.LightEnable(frame_light.size(),FALSE); // sun - last light!
+    for (u32 i=0; i<frame_light.size(); i++)
+		Device.LightEnable(i,FALSE);
+    frame_light.clear();
 }
 //------------------------------------------------------------------------------
 
@@ -99,10 +175,11 @@ void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
     PHelper.CreateAngle	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Altitude"),	&m_SunShadowDir.x,	-PI_DIV_2,0);
     PHelper.CreateAngle	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Longitude"),	&m_SunShadowDir.y,	0,PI_MUL_2);
     // light controls
-    PHelper.CreateCaption(items,	FHelper.PrepareKey(pref,"Common\\Controls\\Count"),		lcontrols.size());
+    PHelper.CreateFlag32(items, FHelper.PrepareKey(pref,"Common\\Controls\\Draw Name"),		&m_LFlags,		flShowControlName);
+    PHelper.CreateCaption(items,FHelper.PrepareKey(pref,"Common\\Controls\\Count"),			lcontrols.size());
     ButtonValue*	B 	= 0;
-    B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Common\\Controls\\Edit"),	"Append",	ButtonValue::flFirstOnly);
-	B->OnBtnClickEvent	= OnControlAppendClick;
+//	B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Common\\Controls\\Edit"),	"Append",	ButtonValue::flFirstOnly);
+//	B->OnBtnClickEvent	= OnControlAppendClick;
 	ATokenIt		_I 	= lcontrols.begin();
     ATokenIt		_E 	= lcontrols.end();
     for (;_I!=_E; _I++){
@@ -176,6 +253,23 @@ bool ESceneLightTools::Validate()
     return bRes;
 }
 //------------------------------------------------------------------------------
+
+
+#include "frameLight.h"
+
+void ESceneLightTools::CreateControls()
+{
+	inherited::CreateControls();
+	// frame
+    pFrame 			= xr_new<TfraLight>((TComponent*)0);
+}
+//----------------------------------------------------
+ 
+void ESceneLightTools::RemoveControls()
+{
+}
+//----------------------------------------------------
+
 
 /*
 	m_D3D.direction.setHP(PRotation.y,PRotation.x);

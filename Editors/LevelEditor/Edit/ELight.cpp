@@ -14,24 +14,20 @@
 #include "escenelighttools.h"
 #include "PropertiesListHelper.h"
 
-#define LIGHT_VERSION   				0x0011
+static const u32 LIGHT_VERSION   			= 0x0011;
 //----------------------------------------------------
-#define LIGHT_CHUNK_VERSION				0xB411
-#define LIGHT_CHUNK_FLAG				0xB413
-#define LIGHT_CHUNK_BRIGHTNESS			0xB425
-#define LIGHT_CHUNK_D3D_PARAMS         	0xB435
-#define LIGHT_CHUNK_USE_IN_D3D			0xB436
-#define LIGHT_CHUNK_ROTATE				0xB437
-#define LIGHT_CHUNK_ANIMREF				0xB438
-#define LIGHT_CHUNK_SPOT_TEXTURE		0xB439
-#define LIGHT_CHUNK_FUZZY_DATA			0xB440
-//----------------------------------------------------
-//----------------------------------------------------
-#define FLARE_CHUNK_FLAG				0x1002
-#define FLARE_CHUNK_SOURCE				0x1010
-#define FLARE_CHUNK_GRADIENT			0x1011
-#define FLARE_CHUNK_FLARES2				0x1013
-#define FLARE_CHUNK_GRADIENT2			0x1014
+enum{
+    LIGHT_CHUNK_VERSION			= 0xB411ul,
+    LIGHT_CHUNK_FLAG			= 0xB413ul,
+    LIGHT_CHUNK_BRIGHTNESS		= 0xB425ul,
+    LIGHT_CHUNK_D3D_PARAMS     	= 0xB435ul,
+    LIGHT_CHUNK_USE_IN_D3D		= 0xB436ul,
+    LIGHT_CHUNK_ROTATE			= 0xB437ul,
+    LIGHT_CHUNK_ANIMREF			= 0xB438ul,
+    LIGHT_CHUNK_SPOT_TEXTURE	= 0xB439ul,
+    LIGHT_CHUNK_FUZZY_DATA		= 0xB440ul,
+    LIGHT_CHUNK_LCONTROL		= 0xB441ul,
+};
 //----------------------------------------------------
 
 #define VIS_RADIUS 		0.25f
@@ -63,9 +59,6 @@ void CLight::Construct(LPVOID data)
 
     m_Brightness 	= 1;
     m_SunQuality	= 1;
-
-	m_D3DIndex 		= -1;
-    m_Enabled 		= TRUE;
 
     m_pAnimRef		= 0;
     m_LControl		= 0;
@@ -130,6 +123,8 @@ void CLight::Render(int priority, bool strictB2F)
         }break;
         default: THROW;
         }
+    	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
+        if (lt->m_LFlags.is(ESceneLightTools::flShowControlName)) DU.DrawText (PPosition,AnsiString().sprintf(" %s",GetLControlName()).c_str(),0xffffffff,0xff000000);
     }else if ((1==priority)&&(true==strictB2F)){
         Device.SetShader		(Device.m_SelectionShader);
         RCache.set_xform_world	(Fidentity);
@@ -154,29 +149,6 @@ void CLight::Render(int priority, bool strictB2F)
         default: THROW;
         }
 	}
-}
-
-void CLight::Enable( BOOL flag )
-{
-    if (m_UseInD3D){
-		Device.LightEnable(m_D3DIndex,flag);
-    	m_Enabled = flag;
-    }
-}
-
-void CLight::Set( int d3dindex ){
-	VERIFY( d3dindex>=0 );
-    m_D3DIndex = d3dindex;
-    Flight L=m_D3D;
-    L.diffuse.mul_rgb(m_Brightness);
-    L.ambient.mul_rgb(m_Brightness);
-    L.specular.mul_rgb(m_Brightness);
-    Device.SetLight(m_D3DIndex,L);
-}
-
-void CLight::UnSet(){
-	VERIFY( m_D3DIndex>=0 );
-	Device.LightEnable(m_D3DIndex,FALSE);
 }
 
 bool CLight::FrustumPick(const CFrustum& frustum)
@@ -259,7 +231,8 @@ bool CLight::Load(IReader& F)
         }
     }
 
-    if (F.find_chunk(LIGHT_CHUNK_FLAG)) F.r(&m_Flags.flags,sizeof(m_Flags));
+    if (F.find_chunk(LIGHT_CHUNK_FLAG)) 	F.r(&m_Flags.flags,sizeof(m_Flags));
+    if (F.find_chunk(LIGHT_CHUNK_LCONTROL))	F.r(&m_LControl,sizeof(m_LControl));
 
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type){
     	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
@@ -300,6 +273,7 @@ void CLight::Save(IWriter& F){
 	F.w_chunk		(LIGHT_CHUNK_D3D_PARAMS,&m_D3D,sizeof(m_D3D));
     F.w_chunk		(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D,sizeof(m_UseInD3D));
     F.w_chunk		(LIGHT_CHUNK_FLAG,&m_Flags,sizeof(m_Flags));
+    F.w_chunk		(LIGHT_CHUNK_LCONTROL,&m_LControl,sizeof(m_LControl));
 
     if (m_pAnimRef){
 		F.open_chunk(LIGHT_CHUNK_ANIMREF);

@@ -9,12 +9,13 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "ui_customtools.h"
 #include "multi_edit.hpp"
 #include "ExtBtn.hpp"
 #include "MXCtrls.hpp"
+#include "ESceneCustomMTools.h"
+#include "mxPlacemnt.hpp"
 //---------------------------------------------------------------------------
-class TfraSector : public TFrame
+class TfraSector : public TForm
 {
 __published:	// IDE-managed Components
 	TPanel *paSectorActions;
@@ -34,6 +35,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCreateDefault;
 	TExtBtn *ebRemoveDefault;
 	TBevel *Bevel2;
+	TFormStorage *fsStorage;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall TopClick(TObject *Sender);
 	void __fastcall ebCaptureInsideVolumeClick(TObject *Sender);

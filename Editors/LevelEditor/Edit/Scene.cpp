@@ -65,32 +65,13 @@ EScene::~EScene()
     m_ESO_SnapObjects.clear	();
 }
 
-void EScene::RegisterSceneTools(ESceneCustomMTools* mt, int rp, LPCSTR cls_name, LPCSTR cls_desc)
-{
-    m_SceneTools[mt->ClassID]=mt;
-    mt->SetDefinition		(cls_name,cls_desc,rp);
-}
-
 void EScene::OnCreate()
 {
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SCENEOBJECT),	0,"scene_object",	"Scene Object");
-    RegisterSceneTools	   	(xr_new<ESceneLightTools>	(),						1,"light",			"Light");
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SOUND_SRC),	2,"sound_source",	"Sound Source");
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SOUND_ENV),	3,"sound_env",		"Sound Environment");
-	RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_GROUP),		4,"group",			"Group");
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SHAPE),		5,"shape",			"Shape");
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_GLOW),		6,"glow",			"Glow");
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SPAWNPOINT),	7,"spawn_point",	"Spawn Point");
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_WAY),			8,"way",			"Way");
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SECTOR),		9,"sector",			"Sector");
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_PORTAL),		10,"portal",		"Portal");
-    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_PS),			11,"particle_system","Particle System");
-    RegisterSceneTools	   	(xr_new<EDetailManager>		(),						1,"detail_objects",	"Detail Objects");
-    RegisterSceneTools	   	(xr_new<ESceneAIMapTools>	(),						100,"ai_map",		"AI Map");
-
+    CreateSceneTools		();
+    
 	m_LastAvailObject 		= 0;
     m_LevelOp.Reset			();
 	ELog.Msg				( mtInformation, "Scene: initialized" );

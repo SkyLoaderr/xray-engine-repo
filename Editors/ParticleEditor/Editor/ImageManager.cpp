@@ -94,7 +94,10 @@ void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiStrin
 	if (bSetDefParam){
 		THM->m_Age 			= FS.get_file_age(base_name.c_str());
 		THM->m_TexParams.fmt= (a)?STextureParams::tfDXT3:STextureParams::tfDXT1;
-	    if ((h*6)==w) THM->m_TexParams.type	= STextureParams::ttCubeMap;
+	    if ((h*6)==w){ 
+        	THM->m_TexParams.type	= STextureParams::ttCubeMap;
+        	THM->m_TexParams.flags.set(STextureParams::flGenerateMipMaps,FALSE);
+        }
     }
 }
 //------------------------------------------------------------------------------

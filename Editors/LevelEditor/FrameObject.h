@@ -9,17 +9,17 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "ui_customtools.h"
 #include "ExtBtn.hpp"
 #include "multi_edit.hpp"
 #include "mxPlacemnt.hpp"
 
 #include "ItemList.h"
+#include "ESceneCustomMTools.h"
 
 // refs
 class CEditableObject;
 //---------------------------------------------------------------------------
-class TfraObject : public TFrame
+class TfraObject : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *paSelectObject;
@@ -54,6 +54,10 @@ __published:	// IDE-managed Components
 	void __fastcall seSelPercentKeyPress(TObject *Sender, char &Key);
 	void __fastcall ExtBtn4Click(TObject *Sender);
 	void __fastcall paCurrentObjectResize(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
+	void __fastcall FormHide(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
     void __fastcall MultiSelByRefObject ( bool clear_prev );
     void __fastcall SelByRefObject  	( bool flag );
@@ -63,8 +67,6 @@ private:	// User declarations
 	bool __fastcall OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R);
 public:		// User declarations
         __fastcall TfraObject(TComponent* Owner);
-    void __fastcall OnEnter	();
-    void __fastcall OnExit	();
     LPCSTR 			Current	(){return m_Current;}
 };
 //---------------------------------------------------------------------------

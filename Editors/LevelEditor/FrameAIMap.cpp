@@ -20,9 +20,13 @@
 
 //---------------------------------------------------------------------------
 __fastcall TfraAIMap::TfraAIMap(TComponent* Owner, ESceneAIMapTools* _tools)
-        : TFrame(Owner)
+        : TForm(Owner)
 {   
-	tools = _tools;  R_ASSERT(tools);
+/* TODO 5 -oAlexMX -cTODO: TEST text */
+/* DONE 5 -oAlexMX -cTODO: TEST text */
+//TODO 1 -oBoss: Resolve must fix bugs
+
+	tools = _tools;  R_ASSERT(tools);         
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraAIMap::PanelMinClick(TObject *Sender)

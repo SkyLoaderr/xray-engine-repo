@@ -11,7 +11,7 @@
 
 //---------------------------------------------------------------------------
 __fastcall TfraWayPoint::TfraWayPoint(TComponent* Owner)
-        : TFrame(Owner)
+        : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
 }

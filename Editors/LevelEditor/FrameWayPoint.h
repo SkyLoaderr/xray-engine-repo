@@ -9,13 +9,13 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "ui_customtools.h"
 #include "ExtBtn.hpp"
 #include "mxPlacemnt.hpp"
+#include "ESceneCustomMTools.h"
 // refs
 class CEditObject;
 //---------------------------------------------------------------------------
-class TfraWayPoint : public TFrame
+class TfraWayPoint : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *paCommands;

@@ -40,7 +40,7 @@ void CPortalUtils::RemoveSectorPortal(CSector* S)
     for (;_I!=_E;_I++){
     	CPortal* P=(CPortal*)(*_I);
         if((P->m_SectorFront==S)||(P->m_SectorBack==S))
-            xr_delete(P);
+            xr_delete(*_I);
     }
     _I = remove(lst.begin(),lst.end(),(CCustomObject*)0);
     lst.erase(_I,lst.end());

@@ -69,6 +69,7 @@ private:
 	void							Born			(Item& dest, float radius, float height);
 	void							RayTest			(Item& dest, float height);
 	void							Hit				(Fvector& pos);
+	BOOL							RayPick			(const Fvector& s, const Fvector& d, float& range);
 public:
 	void							Render			();
 

@@ -475,8 +475,8 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     if (!e->m_Flags.is_any(CLight::flAffectStatic|CLight::flAffectDynamic))
     	return FALSE;
 
-    if (e->GetLControlName()){
-    	ELog.Msg(mtError,"Invalid light control name: '%s'.",e->Name);
+    if (!e->GetLControlName()){
+    	ELog.Msg(mtError,"Invalid light control name: light '%s'.",e->Name);
     	return FALSE;
     }
         

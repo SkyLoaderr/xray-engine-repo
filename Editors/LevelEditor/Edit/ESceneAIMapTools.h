@@ -111,6 +111,10 @@ protected:
 	int 				RemoveOutOfBoundsNodes	();
 
     void				CalculateNodesBBox		(Fbox& bb);
+
+    // controls
+    virtual void 		CreateControls			();
+	virtual void 		RemoveControls			();
 public:
 	enum EMode{
     	mdAppend,
@@ -145,6 +149,11 @@ public:
 	virtual int 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true);
 
     virtual void		Clear					(bool bOnlyNodes=false); 
+
+	// definition
+    IC LPCSTR			ClassName				(){return "ai_map";}
+    IC LPCSTR			ClassDesc				(){return "AI Map";}
+    IC int				RenderPriority			(){return 10;}
 
     // validation
     virtual bool   		Valid					();

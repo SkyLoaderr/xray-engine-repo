@@ -105,11 +105,12 @@ CCustomObject *EScene::RayPickObject(const Fvector& start, const Fvector& direct
                 nearest_object = (*_F);
     }else{
         if (classfilter==OBJCLASS_DUMMY){
+			CCustomObject *obj = 0;
             SceneToolsMapPairIt _I = m_SceneTools.begin();
             SceneToolsMapPairIt _E = m_SceneTools.end();
             for (; _I!=_E; _I++){
                 ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(_I->second);
-                if (mt) mt->RayPick(nearest_object,nearest_dist,start,direction,pinf);
+                if (mt&&mt->RayPick(obj,nearest_dist,start,direction,pinf)) nearest_object = obj;
             }
         }else{
             ESceneCustomOTools* mt = GetOTools(classfilter); VERIFY(mt);

@@ -20,7 +20,7 @@
 
 //---------------------------------------------------------------------------
 __fastcall TfraDetailObject::TfraDetailObject(TComponent* Owner, EDetailManager* dm_tools)
-        : TFrame(Owner)
+        : TForm(Owner)
 {
 	DM = dm_tools; VERIFY(DM);
     DEFINE_INI(fsStorage);
@@ -102,15 +102,4 @@ void __fastcall TfraDetailObject::ExtBtn6Click(TObject *Sender)
 		Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TfraDetailObject::OnEnter()
-{
-	fsStorage->RestoreFormPlacement();
-}
-
-void __fastcall TfraDetailObject::OnExit()
-{
-	fsStorage->SaveFormPlacement();
-}
-
 

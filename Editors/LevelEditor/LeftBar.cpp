@@ -53,13 +53,13 @@ void UpdatePanel(TPanel* p){
 }
 //---------------------------------------------------------------------------
 
-void GetHeight(int& h, TFrame* f)
+void GetHeight(int& h, TForm* f)
 {
     if (f){
         TPanel* pa;
         for (int j=0; j<f->ControlCount; j++){
             TComponent* temp = f->Controls[j];
-            GetHeight(h,dynamic_cast<TFrame*>(temp));
+            GetHeight(h,dynamic_cast<TForm*>(temp));
             pa = dynamic_cast<TPanel*>(temp);
             if (pa&&pa->Visible){ h+=pa->Height; UpdatePanel(pa);}
         }
@@ -76,11 +76,11 @@ void TfraLeftBar::UpdateBar()
             ((TExtBtn*)temp)->UpdateMouseInControl();
     }
     for (i=0; i<paFrames->ControlCount; i++)
-        GetHeight(h,dynamic_cast<TFrame*>(paFrames->Controls[i]));
+        GetHeight(h,dynamic_cast<TForm*>(paFrames->Controls[i]));
     
     int hh = fraLeftBar->Height-(paLeftBar->Height+h);
     if (hh<=0) hh = 0; 
-    paFrames->Height = h+hh+2;
+    paFrames->Height = h+hh;
 
     h=0;
     for (j=0; j<paLeftBar->ControlCount; j++){
@@ -102,7 +102,7 @@ void __fastcall TfraLeftBar::splEmptyMoved(TObject *Sender)
 void TfraLeftBar::MinimizeAllFrames()
 {
     for (int i=0; i<paFrames->ControlCount; i++){
-		TFrame* f = dynamic_cast<TFrame*>(paFrames->Controls[i]);
+		TForm* f = dynamic_cast<TForm*>(paFrames->Controls[i]);
         if (f){
 	        for (int j=0; j<f->ControlCount; j++){
                 TPanel* pa = dynamic_cast<TPanel*>(f->Controls[j]);
@@ -125,7 +125,7 @@ void TfraLeftBar::MaximizeAllFrames()
 	    if (pa)	PanelMaximize(pa);
     }
     for (int i=0; i<paFrames->ControlCount; i++){
-		TFrame* f = dynamic_cast<TFrame*>(paFrames->Controls[i]);
+		TForm* f = dynamic_cast<TForm*>(paFrames->Controls[i]);
         if (f){
 	        for (int j=0; j<f->ControlCount; j++){
                 TPanel* pa = dynamic_cast<TPanel*>(f->Controls[j]);

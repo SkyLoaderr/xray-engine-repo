@@ -38,6 +38,7 @@ class EDetailManager:
 	public pureDeviceDestroy
 {
 	friend class TfrmDOShuffle;
+	typedef ESceneCustomMTools inherited;
 
     ObjectList			m_SnapObjects;
 
@@ -61,6 +62,10 @@ class EDetailManager:
     DetailSlot&			GetSlot			(u32 sx, u32 sz);
 
     void __fastcall		OnDensityChange	(PropValue* prop);
+protected:
+    // controls
+    virtual void 		CreateControls			();
+	virtual void 		RemoveControls			();
 public:
 // render part -----------------------------------------------------------------
     void 				InitRender				();
@@ -93,6 +98,11 @@ public:
 	virtual int 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true){return 0;};
 
     virtual void		Clear					(bool bSpecific=false);
+
+	// definition
+    IC LPCSTR			ClassName				(){return "detail_object";}
+    IC LPCSTR			ClassDesc				(){return "Detail Objects";}
+    IC int				RenderPriority			(){return 10;}
 
     // validation
     virtual bool		Valid					(){return dtSlots||objects.size();}

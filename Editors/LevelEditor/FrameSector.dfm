@@ -1,7 +1,7 @@
 object fraSector: TfraSector
-  Left = 0
-  Top = 0
-  Width = 198
+  Left = 522
+  Top = 383
+  Width = 206
   Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
@@ -9,18 +9,18 @@ object fraSector: TfraSector
   VertScrollBar.Style = ssFlat
   VertScrollBar.Visible = False
   Align = alClient
-  AutoScroll = False
-  Constraints.MaxWidth = 198
-  Constraints.MinWidth = 198
+  BorderStyle = bsNone
   Color = 10528425
+  Constraints.MaxWidth = 206
+  Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  ParentColor = False
-  ParentFont = False
-  TabOrder = 0
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
   object paSectorActions: TPanel
     Left = 0
     Top = 83
@@ -29,7 +29,6 @@ object fraSector: TfraSector
     Align = alTop
     Color = 10528425
     TabOrder = 1
-    Visible = False
     object ebAddMesh: TExtBtn
       Left = 87
       Top = 36
@@ -449,5 +448,16 @@ object fraSector: TfraSector
       Width = 196
       Height = 2
     end
+  end
+  object fsStorage: TFormStorage
+    IniSection = 'FrameSector'
+    Options = []
+    Version = 1
+    StoredProps.Strings = (
+      'paCommands.Height'
+      'paCommands.Tag'
+      'paSectorActions.Height'
+      'paSectorActions.Tag')
+    StoredValues = <>
   end
 end

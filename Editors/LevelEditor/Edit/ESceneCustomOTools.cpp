@@ -60,8 +60,8 @@ void ESceneCustomOTools::OnFrame()
 
 void ESceneCustomOTools::OnRender(int priority, bool strictB2F)
 {
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-    	(*it)->Render(priority,strictB2F);
+//	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+//    	(*it)->Render(priority,strictB2F);
 }
 //----------------------------------------------------
 

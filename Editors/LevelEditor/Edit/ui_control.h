@@ -3,6 +3,9 @@
 
 #include "customobject.h"
 //---------------------------------------------------------------------------
+// refs
+class ESceneCustomMTools;
+
 struct SBeforeAppendCallbackParams{
 	LPVOID 		data;
     AnsiString 	name_prefix;
@@ -17,7 +20,7 @@ typedef bool __fastcall (__closure *TAfterAppendCallback)(TShiftState _Shift, CC
 
 class TUI_CustomControl{
 protected:
-    friend class TUI_CustomTools;
+    friend class ESceneCustomMTools;
     int sub_target;
     int action;
 // select
@@ -52,9 +55,9 @@ protected:
     CCustomObject*		DefaultAddObject(TShiftState Shift, TBeforeAppendCallback before=0, TAfterAppendCallback after=0);
     bool				DefaultMovingProcess(TShiftState Shift, Fvector& amount);
 public:
-    TUI_CustomTools* 	parent_tool;
+    ESceneCustomMTools*	parent_tool;
 public:
-    				TUI_CustomControl	(int st, int act, TUI_CustomTools* parent);
+    				TUI_CustomControl	(int st, int act, ESceneCustomMTools* parent);
     virtual 		~TUI_CustomControl	(){;}
 	virtual bool 	Start  				(TShiftState _Shift);
 	virtual bool 	End    				(TShiftState _Shift);
