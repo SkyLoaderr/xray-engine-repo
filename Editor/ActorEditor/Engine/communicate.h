@@ -199,15 +199,19 @@ struct b_params
     }
 	void		setDebug()
 	{
+		m_bConvertProgressive	= FALSE;
 		m_lm_pixels_per_meter	= 4;
 		m_lm_jitter_samples		= 4;
 		area_quality			= 1;
+		fuzzy_enable			= FALSE;
 	}
 	void		setRelease()
 	{
+		m_bConvertProgressive	= FALSE;
 		m_lm_pixels_per_meter	= 14;
 		m_lm_jitter_samples		= 9;
 		area_quality			= 2;
+		fuzzy_enable			= FALSE;
 	}
 };
 
