@@ -90,6 +90,7 @@ public:
 	void	Load					(const b_params& P, const IReader&  FS);
 	void	Run						(string& path);
 
+	void	xrPhase_R2_Lights		();
 	void	Tesselate				();
 	void	PreOptimize				();
 	void	CorrectTJunctions		();

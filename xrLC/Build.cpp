@@ -116,6 +116,10 @@ void CBuild::Run	(string& P)
 	mem_Compact					();
 	BuildPortals				(*fs);
 
+	//****************************************** Modify lighting
+	// If it is R2 - leave just high quality identical hemisphere
+	if (b_R2)	xrPhase_R2_Lights();
+
 	//****************************************** Starting MU
 	FPU::m64r		();
 	Phase			("LIGHT: Starting MU...");

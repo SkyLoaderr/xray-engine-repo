@@ -681,6 +681,9 @@
 				RelativePath=".\xrPhase_MergeLM_Surface.cpp">
 			</File>
 			<File
+				RelativePath="xrPhase_R2_Lighting.cpp">
+			</File>
+			<File
 				RelativePath=".\xrPhase_ResolveMaterials.cpp">
 			</File>
 			<File
