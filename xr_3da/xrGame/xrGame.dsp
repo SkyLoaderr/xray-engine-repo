@@ -354,6 +354,18 @@ SOURCE=.\EffectorShot.cpp
 SOURCE=.\EffectorShot.h
 # End Source File
 # End Group
+# Begin Group "Weapon AK74"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\WeaponAK74.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\WeaponAK74.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\xr_weapon_list.cpp

@@ -16,9 +16,9 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
+CWeaponAK74::CWeaponAK74() : CWeapon("AK74")
 {
-	pSounds->Create3D(sndFireLoop,	 "weapons\\Groza_fire");
+	pSounds->Create3D(sndFireLoop,	 "weapons\\AK74_fire");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
 	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
 	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
@@ -35,7 +35,7 @@ CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
 	fTime			= 0;
 }
 
-CWeaponGroza::~CWeaponGroza()
+CWeaponAK74::~CWeaponAK74()
 {
 	FlameUNLOAD		();
 	
@@ -44,7 +44,7 @@ CWeaponGroza::~CWeaponGroza()
 	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 }
 
-void CWeaponGroza::Load(CInifile* ini, const char* section){
+void CWeaponAK74::Load(CInifile* ini, const char* section){
 	inherited::Load(ini, section);
 	R_ASSERT		(m_pHUD);
 	
@@ -56,7 +56,7 @@ void CWeaponGroza::Load(CInifile* ini, const char* section){
 	bFlame			= FALSE;
 }
 
-void CWeaponGroza::FlameLOAD()
+void CWeaponAK74::FlameLOAD()
 {
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
@@ -65,25 +65,27 @@ void CWeaponGroza::FlameLOAD()
 	for (DWORD i=0; i<scnt; i++)
 		hFlames.push_back(Device.Shader.Create("particles\\add",_GetItem(S,i,name),false));
 }
-void CWeaponGroza::FlameUNLOAD()
+void CWeaponAK74::FlameUNLOAD()
 {
 	for (DWORD i=0; i<hFlames.size(); i++)
 		Device.Shader.Delete(hFlames[i]);
 	hFlames.clear();
 }
-void CWeaponGroza::OnDeviceCreate()
+
+void CWeaponAK74::OnDeviceCreate()
 {
 	REQ_CREATE	();
 	inherited::OnDeviceCreate	();
 	FlameLOAD	();
 }
-void CWeaponGroza::OnDeviceDestroy()
+
+void CWeaponAK74::OnDeviceDestroy()
 {
 	inherited::OnDeviceDestroy	();
 	FlameUNLOAD	();
 }
 
-void CWeaponGroza::FireStart()
+void CWeaponAK74::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
@@ -91,7 +93,7 @@ void CWeaponGroza::FireStart()
 	}
 }
 
-void CWeaponGroza::FireEnd	()
+void CWeaponAK74::FireEnd	()
 {
 	if (IsWorking())
 	{
@@ -101,7 +103,7 @@ void CWeaponGroza::FireEnd	()
 	}
 }
 
-void CWeaponGroza::UpdateXForm(BOOL bHUDView)
+void CWeaponAK74::UpdateXForm(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwXF_Frame)
 	{
@@ -133,7 +135,7 @@ void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::UpdateFP(BOOL bHUDView)
+void CWeaponAK74::UpdateFP(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
@@ -149,7 +151,7 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 			
 			// fire point&direction
 			Fmatrix& fire_mat		= V->LL_GetTransform(m_pHUD->iFireBone);
-			Fmatrix& parent			= m_pHUD->Transform();
+			Fmatrix& parent			= m_pHUD->Transform	();
 			Fvector& fp				= m_pHUD->vFirePoint;
 			fire_mat.transform_tiny	(vLastFP,fp);
 			parent.transform_tiny	(vLastFP);
@@ -166,7 +168,7 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::Update(float dt, BOOL bHUDView)
+void CWeaponAK74::Update(float dt, BOOL bHUDView)
 {
 	BOOL bShot = false;
 
@@ -233,7 +235,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 	m_pHUD->UpdateAnimation();
 }
 
-void CWeaponGroza::Render(BOOL bHUDView)
+void CWeaponAK74::Render(BOOL bHUDView)
 {
 	UpdateXForm	(bHUDView);
 	if (bHUDView)
@@ -276,23 +278,23 @@ void CWeaponGroza::Render(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::SetDefaults	()
+void CWeaponAK74::SetDefaults	()
 {
 	CWeapon::SetDefaults		();
 	iAmmoElapsed				= 0;
 }
 
-void CWeaponGroza::Hide			()
+void CWeaponAK74::Hide			()
 {
 	inherited::Hide				();
 	signal_HideComplete			();
 }
-void CWeaponGroza::Show			()
+void CWeaponAK74::Show			()
 {
 	inherited::Show				();
 }
 
-void CWeaponGroza::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponAK74::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::FireShotmark	(vDir, vEnd, R);
 	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);

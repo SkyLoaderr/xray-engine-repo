@@ -8,9 +8,9 @@ class ENGINE_API C3DSound;
 
 #define SND_RIC_COUNT 5
 
-class CWeaponGroza: public CWeapon
+class CWeaponAK74: public CWeapon
 {
-	enum EGrozaState
+	enum EAK74State
 	{
 		eIdle,
 		eReload,
@@ -38,7 +38,7 @@ private:
 	float			fFlameLength;
 	float			fFlameSize;
 	
-	EGrozaState		st_current, st_target;
+	EAK74State		st_current, st_target;
 
 	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
 	void			UpdateFP		(BOOL bHUD);
@@ -50,8 +50,8 @@ protected:
 	
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
-					CWeaponGroza	();
-	virtual			~CWeaponGroza	();
+					CWeaponAK74		();
+	virtual			~CWeaponAK74	();
 
 	// misc
 	virtual void	Load			(CInifile* ini, const char* section);
@@ -59,7 +59,6 @@ public:
 	virtual void	SetDefaults		();
 	virtual void	FireStart		();
 	virtual void	FireEnd			();
-	virtual BOOL	HasOpticalAim	()				{ return TRUE; }
 
 	virtual void	Hide			();
 	virtual void	Show			();
