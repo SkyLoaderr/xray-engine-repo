@@ -18,6 +18,72 @@
 #define EQUIPMENT_FACTOR	.10f
 #define ARTEFACT_FACTOR		.20f
 
+FLOAT_VECTOR	fpFactors;
+
+const char *cpMonsterModels[] = {
+	// monsters
+	"ent_rat",
+	"ent_zombie",
+	"ent_dog",
+	"ent_controller",
+	0
+};
+const char *cpHumanModels[] = {
+	// human beings
+	"ent_soldier",
+	"ent_stalker",
+	"ent_trader",
+	0
+};
+const char *cpWeaponModels[] = {
+	// weapon
+	"wpn_fn2000",
+	"wpn_lr300",
+	"wpn_ak74",
+	"wpn_hpsa",
+	"wpn_pm",
+	"wpn_fort",
+	"wpn_binoc",
+	"wpn_toz34",
+	0
+};
+const char *cpWeaponChModels[] = {
+	// wepon charges
+	"wpn_fn2000_ch",
+	"wpn_lr300_ch",
+	"wpn_ak74_ch",
+	"wpn_hpsa_ch",
+	"wpn_pm_ch",
+	"wpn_fort_ch",
+	"wpn_toz34_ch",
+	0
+};
+const char *cpEquipmentModels[] = {
+	// equipment
+	"eq_radio",
+	"eq_life_saver",
+	"eq_capsule",
+	"eq_container",
+	"eq_psi_probe",
+	"eq_u_detector",
+	"eq_lf_detector",
+	"eq_medikit",
+	"eq_u_medikit",
+	"eq_p_suit",
+	"eq_st_suit",
+	"eq_sc_suit",
+	"eq_ar_suit",
+	0
+};
+const char *cpArtefactModels[] = {
+	// artefacts
+	"art_gravi",
+	"art_radio",
+	"art_magnet",
+	"art_mball",
+	"art_black_droplets",
+	0
+};
 
 CAI_ALife::CAI_ALife()
 {
@@ -85,157 +151,98 @@ IC bool	bfSpawnPointPredicate(SSpawnPoint v1, SSpawnPoint v2)
 	return(v1.wGroupID <= v2.wGroupID);
 }
 
-void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, const FLOAT_VECTOR &fpFactors)
+void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFactors)
 {
-//	vector<bool>				tpMarks;
-//	tpMarks.resize				(Level().AI.GraphHeader().dwVertexCount);
-//	tpMarks.assign				(tpMarks.size(),false);
-//	AI::SGraphVertex			*tpaGraph = Level().AI.m_tpaGraph;
-//	u32							uiModelCount;
-//	const char *cppModels[][] = {
-//		{
-//			// monsters
-//			"ent_rat",
-//			"ent_zombie",
-//			"ent_dog",
-//			"ent_controller",
-//			0
-//		},
-//		{
-//			// human beings
-//			"ent_soldier",
-//			"ent_stalker",
-//			"ent_trader",
-//			0
-//		},
-//		{
-//			// weapon
-//			"wpn_fn2000",
-//			"wpn_lr300",
-//			"wpn_ak74",
-//			"wpn_hpsa",
-//			"wpn_pm",
-//			"wpn_fort",
-//			"wpn_binoc",
-//			"wpn_toz34",
-//			0
-//		},
-//		{
-//			// wepon charges
-//			"wpn_fn2000_ch",
-//			"wpn_lr300_ch",
-//			"wpn_ak74_ch",
-//			"wpn_hpsa_ch",
-//			"wpn_pm_ch",
-//			"wpn_fort_ch",
-//			"wpn_toz34_ch",
-//			0
-//		},
-//		{
-//			// equipment
-//			"eq_radio",
-//			"eq_life_saver",
-//			"eq_capsule",
-//			"eq_container",
-//			"eq_psi_probe",
-//			"eq_u_detector",
-//			"eq_lf_detector",
-//			"eq_medikit",
-//			"eq_u_medikit",
-//			"eq_p_suit",
-//			"eq_st_suit",
-//			"eq_sc_suit",
-//			"eq_ar_suit",
-//			0
-//		},
-//		{
-//			// artefacts
-//			"art_gravi",
-//			"art_radio",
-//			"art_magnet",
-//			"art_mball",
-//			"art_black_droplets",
-//			0
-//		},
-//		0
-//	};
-//	
-//	
-//	DWORD_VECTOR dwpModelCounts;
-//	DWORD_VECTOR dwpSpawnCounts;
-//	for (u32 dwModelCount = 0; cppModels[dwModelCount]; dwModelCount++);
-//	dwpModelCounts.resize(dwModelCount);
-//	DWORD_IT						B = dwpModelCounts.begin();
-//	DWORD_IT						E = dwpModelCounts.end();
-//	DWORD_IT						I = B;
-//	for ( ; I != E; I++)
-//		for ( *I = 0; cppModels[I - B][*I]; ++*I);
-//
-//	B = dwpSpawnCounts.begin();
-//	E = dwpSpawnCounts.end();
-//	I = B;
-//	{
-//		FLOAT_IT						b = fpFactors.begin();
-//		FLOAT_IT						e = fpFactors.end();
-//		FLOAT_IT						i = b;
-//		for ( ; I != E; I++, i++)
-//			*I = *i*float(dwTotalCount);
-//	}
-//	dwpSpawnCounts[2] += dwpSpawnCounts[1];
-//	dwpSpawnCounts[3] += 2*dwpSpawnCounts[1];
-//	u32 dwSpawnCount = 0;
-//	for (I = B; I != E; I++, dwSpawnCount += *I);
-//
-//	m_tpSpawnPoints.resize		(dwSpawnCount);
-//	m_tSpawnHeader.dwCount		= dwSpawnCount;
-//	m_tSpawnHeader.dwVersion	= SPAWN_POINT_VERSION;
-//	u16 wGroupID				= 0;
-//	::Random.seed(0);
-////	for (I = B; I != E; I++)
-////		for (int i=0; i<(int)*I; i++) {
-////			m_tpSpawnPoints[i].tNearestGraphPointID		= (u16)::Random.randI(Level().AI.GraphHeader().dwVertexCount);
-////			bool bOk = false;
-////			for (int j=0; j<i; j++)
-////				if (m_tpSpawnPoints[j].tNearestGraphPointID == m_tpSpawnPoints[i].tNearestGraphPointID) {
-////					bOk = true;
-////					m_tpSpawnPoints[i].wGroupID = m_tpSpawnPoints[j].wGroupID;
-////					break;
-////				}
-////			if (!bOk)
-////				m_tpSpawnPoints[i].wGroupID = wGroupID++;
-////			j = ::Random.randI(0,uiModelCount);
-////			memcpy(m_tpSpawnPoints[i].caModel,caModels[j],(1 + strlen(caModels[j]))*sizeof(char));
-////			m_tpSpawnPoints[i].ucTeam					= (u8)::Random.randI(255);
-////			m_tpSpawnPoints[i].ucSquad					= (u8)::Random.randI(255);
-////			m_tpSpawnPoints[i].ucGroup					= (u8)::Random.randI(255);
-////			m_tpSpawnPoints[i].wCount					= (u16)::Random.randI(5,45);
-////			m_tpSpawnPoints[i].fBirthRadius				= 10.f;
-////			m_tpSpawnPoints[i].fBirthProbability		= 1.0f;
-////			m_tpSpawnPoints[i].fIncreaseCoefficient		= 1.01f;
-////			m_tpSpawnPoints[i].fAnomalyDeathProbability	= 0.0f;
-////			m_tpSpawnPoints[i].tpRouteGraphPoints.push_back(m_tpSpawnPoints[i].tNearestGraphPointID);
-////			u16				wPoint = m_tpSpawnPoints[i].tNearestGraphPointID;
-////			int				wCount = tpaGraph[wPoint].dwNeighbourCount;
-////			AI::SGraphEdge	*tpaEdges = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint].dwEdgeOffset);
-////			for ( j=0; j<(int)wCount; j++) {
-////				if (!tpMarks[tpaEdges[j].dwVertexNumber]) {
-////					m_tpSpawnPoints[i].tpRouteGraphPoints.push_back((u16)tpaEdges[j].dwVertexNumber);
-////					tpMarks[tpaEdges[j].dwVertexNumber] = true;
-////				}
-////				u32				wPoint1 = tpaEdges[j].dwVertexNumber;
-////				int				wCount1 = tpaGraph[wPoint1].dwNeighbourCount;
-////				AI::SGraphEdge	*tpaEdges1 = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint1].dwEdgeOffset);
-////				for (int k=0; k<wCount1; k++)
-////					if (!tpMarks[tpaEdges1[k].dwVertexNumber]) {
-////						m_tpSpawnPoints[i].tpRouteGraphPoints.push_back((u16)tpaEdges1[k].dwVertexNumber);
-////						tpMarks[tpaEdges1[k].dwVertexNumber] = true;
-////					}
-////			}
-////			m_tpSpawnPoints[i].ucRoutePointCount			= (u8)m_tpSpawnPoints[i].tpRouteGraphPoints.size();
-////			for ( j=0; j<(int)m_tpSpawnPoints[i].ucRoutePointCount; j++)
-////				tpMarks[m_tpSpawnPoints[i].tpRouteGraphPoints[j]] = false;
-////		}
-//	sort(m_tpSpawnPoints.begin(),m_tpSpawnPoints.end(),bfSpawnPointPredicate);
+	vector<bool>				tpMarks;
+	tpMarks.resize				(Level().AI.GraphHeader().dwVertexCount);
+	tpMarks.assign				(tpMarks.size(),false);
+	AI::SGraphVertex			*tpaGraph = Level().AI.m_tpaGraph;
+	const char					**cppModels[] = { cpMonsterModels, cpHumanModels, cpWeaponModels, cpWeaponChModels, cpEquipmentModels, cpArtefactModels, 0};
+	DWORD_VECTOR				dwpModelCounts;
+	DWORD_VECTOR				dwpSpawnCounts;
+	
+	for (u32 dwModelCount = 0; cppModels[dwModelCount]; dwModelCount++);
+	dwpModelCounts.resize		(dwModelCount);
+	dwpSpawnCounts.resize		(dwModelCount);
+	
+	DWORD_IT					B = dwpModelCounts.begin();
+	DWORD_IT					E = dwpModelCounts.end();
+	DWORD_IT					I = B;
+	
+	for ( ; I != E; I++)
+		for ( *I = 0; cppModels[I - B][*I]; ++*I);
+
+	B							= dwpSpawnCounts.begin();
+	E							= dwpSpawnCounts.end();
+	I							= B;
+	{
+		FLOAT_IT				i = fpFactors.begin();
+		for ( ; I != E; I++, i++)
+			*I = u32((*i)*float(dwTotalCount));
+	}
+	u32 dwSpawnCount = 0;
+	for (I = B; I != E; I++)
+		dwSpawnCount += *I;
+	
+	dwSpawnCount += 3*dwpSpawnCounts[1];
+	m_tpSpawnPoints.resize		(dwSpawnCount);
+	m_tSpawnHeader.dwCount		= dwSpawnCount;
+	m_tSpawnHeader.dwVersion	= SPAWN_POINT_VERSION;
+	u16 wGroupID				= 0;
+	::Random.seed				(0);
+	int							ii = 0;
+	for (I = B; I != E; I++)
+		for (int i=0; i<(int)*I; i++, ii++) {
+			m_tpSpawnPoints[ii].tNearestGraphPointID		= (u16)::Random.randI(Level().AI.GraphHeader().dwVertexCount);
+			bool bOk = false;
+			for (int j=0; j<ii; j++)
+				if (m_tpSpawnPoints[j].tNearestGraphPointID == m_tpSpawnPoints[ii].tNearestGraphPointID) {
+					bOk = true;
+					m_tpSpawnPoints[ii].wGroupID = m_tpSpawnPoints[j].wGroupID;
+					break;
+				}
+			if (!bOk)
+				m_tpSpawnPoints[ii].wGroupID = wGroupID++;
+			//j = ::Random.randI(dwpModelCounts[I - B]);
+			//memcpy(m_tpSpawnPoints[ii].caModel,cppModels[I - B][j],(1 + strlen(cppModels[I - B][j])))*sizeof(char));
+			m_tpSpawnPoints[ii].ucTeam					= (u8)::Random.randI(255);
+			m_tpSpawnPoints[ii].ucSquad					= (u8)::Random.randI(255);
+			m_tpSpawnPoints[ii].ucGroup					= (u8)::Random.randI(255);
+			if (I == B)
+				m_tpSpawnPoints[ii].wCount				= (u16)::Random.randI(5,45);
+			else
+				m_tpSpawnPoints[ii].wCount				= 1;
+			m_tpSpawnPoints[ii].fBirthRadius			= 10.f;
+			m_tpSpawnPoints[ii].fBirthProbability		= 1.0f;
+			m_tpSpawnPoints[ii].fIncreaseCoefficient	= 1.01f;
+			m_tpSpawnPoints[ii].fAnomalyDeathProbability= 0.0f;
+			m_tpSpawnPoints[ii].ucRoutePointCount		= 0;
+			m_tpSpawnPoints[ii].tpRouteGraphPoints.clear();
+			if (I == B) {
+				m_tpSpawnPoints[ii].tpRouteGraphPoints.push_back(m_tpSpawnPoints[ii].tNearestGraphPointID);
+				u16				wPoint = m_tpSpawnPoints[ii].tNearestGraphPointID;
+				int				wCount = tpaGraph[wPoint].dwNeighbourCount;
+				AI::SGraphEdge	*tpaEdges = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint].dwEdgeOffset);
+				for ( j=0; j<(int)wCount; j++) {
+					if (!tpMarks[tpaEdges[j].dwVertexNumber]) {
+						m_tpSpawnPoints[ii].tpRouteGraphPoints.push_back((u16)tpaEdges[j].dwVertexNumber);
+						tpMarks[tpaEdges[j].dwVertexNumber] = true;
+					}
+					u32				wPoint1 = tpaEdges[j].dwVertexNumber;
+					int				wCount1 = tpaGraph[wPoint1].dwNeighbourCount;
+					AI::SGraphEdge	*tpaEdges1 = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint1].dwEdgeOffset);
+					for (int k=0; k<wCount1; k++)
+						if (!tpMarks[tpaEdges1[k].dwVertexNumber]) {
+							m_tpSpawnPoints[ii].tpRouteGraphPoints.push_back((u16)tpaEdges1[k].dwVertexNumber);
+							tpMarks[tpaEdges1[k].dwVertexNumber] = true;
+						}
+				}
+				m_tpSpawnPoints[ii].ucRoutePointCount			= (u8)m_tpSpawnPoints[ii].tpRouteGraphPoints.size();
+				for ( j=0; j<(int)m_tpSpawnPoints[ii].ucRoutePointCount; j++)
+					tpMarks[m_tpSpawnPoints[ii].tpRouteGraphPoints[j]] = false;
+			}
+		}
+	sort(m_tpSpawnPoints.begin(),m_tpSpawnPoints.end(),bfSpawnPointPredicate);
 }
 
 void CAI_ALife::vfSaveSpawnPoints()
@@ -312,7 +319,13 @@ void CAI_ALife::Load()
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn")) {
 //		THROW;
 #ifdef DEBUG
-//		vfGenerateSpawnPoints(TOTAL_COUNT,MONSTER_FACTOR,HUMAN_FACTOR,WEAPON_FACTOR,WEAPON_CH_FACTOR,EQUIPMENT_FACTOR,ARTEFACT_FACTOR);
+		fpFactors.push_back(MONSTER_FACTOR);
+		fpFactors.push_back(HUMAN_FACTOR);
+		fpFactors.push_back(WEAPON_FACTOR);
+		fpFactors.push_back(WEAPON_CH_FACTOR);
+		fpFactors.push_back(EQUIPMENT_FACTOR);
+		fpFactors.push_back(ARTEFACT_FACTOR);
+		vfGenerateSpawnPoints(TOTAL_COUNT,fpFactors);
 		vfSaveSpawnPoints();
 #else
 		return;
