@@ -29,7 +29,7 @@
 	</specific_character>
 	
 <!---------------------------KILLER REGULAR----------------------->
-	<specific_character id="killer_regular_default1" team_default = "1">
+<!--	<specific_character id="killer_regular_default1" team_default = "1">
 		<name>Неизвестный наемник</name>
 		<icon x="18" y="4"></icon>
 		<map_icon x="2" y="0"></map_icon>
@@ -86,7 +86,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
-
+-->
 	<specific_character id="killer_regular_default3" team_default = "1">
 		<name>Неизвестный наемник</name>
 		<icon x="18" y="2"></icon>
