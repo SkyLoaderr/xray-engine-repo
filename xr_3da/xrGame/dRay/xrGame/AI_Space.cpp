@@ -99,6 +99,6 @@ void CAI_Space::validate			(const u32 level_id) const
 			Msg				("! Graph doesn't correspond to the cross table");
 			R_ASSERT2		(false,"Graph doesn't correspond to the cross table");
 		}
-	Msg						("* Graph corresponds to the cross table");
+//	Msg						("* Graph corresponds to the cross table");
 }
 #endif

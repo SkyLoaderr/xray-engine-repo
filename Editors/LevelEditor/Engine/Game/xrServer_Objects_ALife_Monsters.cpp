@@ -15,8 +15,7 @@
 #endif
 
 #include "xrServer_Objects_ALife_Monsters.h"
-#include "ai_alife_templates.h"
-#include "ai_alife_predicates.h"
+#include "object_broker.h"
 
 #ifndef _EDITOR
 #ifndef AI_COMPILER
@@ -372,7 +371,10 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
-
+bool CSE_ALifeAnomalousZone::need_update	(CSE_ALifeDynamicObject *object)
+{
+	return						(CSE_ALifeSchedulable::need_update(object) && !fis_zero(m_maxPower));
+}
 
 //-------------------------------------------------------------------------
 //
@@ -602,6 +604,11 @@ void CSE_ALifeMonsterAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
   	inherited1::FillProp		(pref,items);
 }
 #endif
+
+bool CSE_ALifeMonsterAbstract::need_update	(CSE_ALifeDynamicObject *object)
+{
+	return						(CSE_ALifeSchedulable::need_update(object) && (fHealth > EPS_L));
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureActor
@@ -1064,11 +1071,6 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	m_dwCurNode					= u32(-1);
 	m_caKnownCustomers			= "m_trader0000";
 	m_tpKnownCustomers.clear	();
-#ifndef _EDITOR
-#ifndef AI_COMPILER
-	m_tpALife					= 0;
-#endif
-#endif
 	m_cpEquipmentPreferences.resize(5);
 	m_cpMainWeaponPreferences.resize(4);
 #ifndef _EDITOR

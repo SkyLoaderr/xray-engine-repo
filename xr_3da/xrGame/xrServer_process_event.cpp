@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "xrServer.h"
 #include "game_sv_single.h"
-#include "ai_alife.h"
+#include "alife_simulator.h"
 #include "xrserver_objects.h"
 
 void xrServer::Process_event	(NET_Packet& P, DPNID sender)
@@ -269,10 +269,10 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			}
 
 			// Everything OK, so perform entity-destroy
-			if (e_dest->m_bALifeControl) {
-				game_sv_Single *tpGame = dynamic_cast<game_sv_Single*>(game);
-				if (tpGame && tpGame->m_tpALife)
-					tpGame->m_tpALife->vfReleaseObject(e_dest,false);
+			if (e_dest->m_bALifeControl && ai().get_alife()) {
+				game_sv_Single	*_game = dynamic_cast<game_sv_Single*>(game);
+				VERIFY			(_game);
+				_game->alife().release	(e_dest,false);
 			}
 
 			if (game) game->OnDestroyObject	(e_dest->ID);

@@ -11,7 +11,7 @@
 #include "ai_space.h"
 #include "entity_alive.h"
 #include "inventoryowner.h"
-#include "ai_alife.h"
+#include "alife_simulator.h"
 #include "ef_storage.h"
 #include "game_graph.h"
 #include "inventory.h"
@@ -779,7 +779,7 @@ float CWeaponAmmoCount::ffGetValue()
 	else {
 		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in WeaponAmmoCount evaluation function");
-		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<const CSE_ALifeItemWeapon*>(ai().ef_storage().m_tpCurrentALifeObject),ai().ef_storage().m_tpALife->m_tpItemVector));
+		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<const CSE_ALifeItemWeapon*>(ai().ef_storage().m_tpCurrentALifeObject),l_tpALifeHumanAbstract->alife().m_temp_item_vector));
 	}
 }
 

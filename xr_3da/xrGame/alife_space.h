@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_alife_space.h
+//	Module 		: alife_space.h
 //	Created 	: 08.01.2002
 //  Modified 	: 08.01.2003
 //	Author		: Dmitriy Iassenev
-//	Description : A-Life space
+//	Description : ALife space
 ////////////////////////////////////////////////////////////////////////////
 
 #ifndef XRAY_AI_ALIFE_SPACE
@@ -15,13 +15,14 @@
 // ALife objects, events and tasks
 #define ALIFE_VERSION				0x0001
 #define ALIFE_CHUNK_DATA			0x0000
-#define OBJECT_CHUNK_DATA			0x0001
-#define EVENT_CHUNK_DATA			0x0002
-#define TASK_CHUNK_DATA				0x0003
-#define GAME_TIME_CHUNK_DATA		0x0004
-#define ANOMALY_CHUNK_DATA			0x0005
-#define DISCOVERY_CHUNK_DATA		0x0006
-#define NEWS_CHUNK_DATA				0x0007
+#define SPAWN_CHUNK_DATA			0x0001
+#define OBJECT_CHUNK_DATA			0x0002
+#define EVENT_CHUNK_DATA			0x0003
+#define TASK_CHUNK_DATA				0x0004
+#define GAME_TIME_CHUNK_DATA		0x0005
+#define ANOMALY_CHUNK_DATA			0x0006
+#define DISCOVERY_CHUNK_DATA		0x0007
+#define NEWS_CHUNK_DATA				0x0008
 #define LOCATION_TYPE_COUNT			4
 #define SECTION_HEADER				"location_"
 #define SAVE_EXTENSION				".sav"
@@ -38,10 +39,11 @@ class CSE_ALifeTrader;
 class CSE_ALifeEvent;
 class CSE_ALifeTask;
 class CSE_ALifePersonalEvent;
-class CSE_ALifeKnownAnomaly;
-class CSE_ALifeDiscovery;
-class CSE_ALifeOrganization;
-class CSE_ALifeArtefactDemand;
+class CALifeKnownAnomaly;
+class CALifeDiscovery;
+class CALifeOrganization;
+class CALifeArtefactDemand;
+class CALifeNews;
 class CSE_ALifeArtefactNeed;
 class CSE_ALifeInventoryItem;
 class CSE_ALifeItemWeapon;
@@ -71,13 +73,13 @@ namespace ALife {
 	} STerrainPlace;
 
 	struct SArtefactOrder {
-		string64				m_caSection;
-		u32						m_dwCount;
-		u32						m_dwPrice;
+		string64				m_section;
+		u32						m_count;
+		u32						m_price;
 	};
 
 	struct SOrganizationOrder {
-		CSE_ALifeOrganization	*m_tpALifeOrganization;
+		CALifeOrganization		*m_tpALifeOrganization;
 		u32						m_dwCount;
 	};
 
@@ -321,25 +323,7 @@ namespace ALife {
 #endif
 	}
 
-	struct SGameNews {
-		_NEWS_ID				m_news_id;
-		_TIME_ID				m_game_time;
-		_GRAPH_ID				m_game_vertex_id;
-		ENewsType				m_news_type;
-		_OBJECT_ID				m_object_id[2];
-		_CLASS_ID				m_class_id;
-
-		void Load	(IReader &tFileStream)
-		{
-			tFileStream.r		(this,sizeof(*this));
-		}
-
-		void Save	(IWriter &tMemoryStream)
-		{
-			tMemoryStream.w		(this,sizeof(*this));
-		}
-	};
-	DEFINE_MAP		(_NEWS_ID,					SGameNews*,						NEWS_REGISTRY,				NEWS_REGISTRY_IT);
+	DEFINE_MAP		(_NEWS_ID,					CALifeNews*,					NEWS_REGISTRY,				NEWS_REGISTRY_IT);
 
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_MAP,				D_OBJECT_PAIR_IT);
 	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent*,				EVENT_MAP,					EVENT_PAIR_IT);
@@ -370,9 +354,9 @@ namespace ALife {
 	DEFINE_VECTOR	(CSE_ALifeTrader*,			TRADER_P_VECTOR,				TRADER_P_IT);
 	DEFINE_VECTOR	(CSE_ALifePersonalEvent*,	PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
 	DEFINE_VECTOR	(MONSTER_P_VECTOR,			MONSTER_P_VECTOR_VECTOR,		MONSTER_P_VECTOR_IT);
-	DEFINE_VECTOR	(CSE_ALifeKnownAnomaly*,	ANOMALY_P_VECTOR,				ANOMALY_P_IT);
+	DEFINE_VECTOR	(CALifeKnownAnomaly*,		ANOMALY_P_VECTOR,				ANOMALY_P_IT);
 	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
-	DEFINE_VECTOR	(CSE_ALifeArtefactDemand*,	DEMAND_P_VECTOR,				DEMAND_P_IT);
+	DEFINE_VECTOR	(CALifeArtefactDemand*,		DEMAND_P_VECTOR,				DEMAND_P_IT);
 	DEFINE_VECTOR	(STerrainPlace,				TERRAIN_VECTOR,					TERRAIN_IT);
 	DEFINE_VECTOR	(STraderSupply,				TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
 	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
@@ -393,8 +377,8 @@ namespace ALife {
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_P_MAP,				D_OBJECT_P_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeSchedulable*,			SCHEDULE_P_MAP,				SCHEDULE_P_PAIR_IT);
 
-	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,			pred_str);
-	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT,			pred_str);
+	DEFINE_MAP_PRED	(LPCSTR,					CALifeDiscovery*,				DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,			pred_str);
+	DEFINE_MAP_PRED	(LPCSTR,					CALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT,			pred_str);
 	DEFINE_MAP_PRED	(LPSTR,						u32,							ITEM_COUNT_MAP,				ITEM_COUNT_PAIR_IT,				pred_str);
 	DEFINE_MAP_PRED	(u32,						SOrganizationOrder,				ORGANIZATION_ORDER_MAP,		ORGANIZATION_ORDER_PAIR_IT,		std::greater<u32>);
 	DEFINE_MAP_PRED	(LPSTR,						bool,							LPSTR_BOOL_MAP,				LPSTR_BOOL_PAIR_IT,				pred_str);

@@ -19,7 +19,7 @@
 
 #include "xrServer_Objects_ALife.h"
 #include "game_base.h"
-#include "ai_alife_templates.h"
+#include "object_broker.h"
 
 #ifdef _EDITOR
 	#include "SkeletonAnimated.h"
@@ -343,7 +343,22 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_tNodeID					= u32(-1);
 	m_caGroupControl			= "";
 	m_flags.one					();
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+	m_alife_simulator			= 0;
+#endif
+#endif
 }
+
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+CALifeSimulator	&CSE_ALifeObject::alife	() const
+{
+	VERIFY						(m_alife_simulator);
+	return						(*m_alife_simulator);
+}
+#endif
+#endif
 
 CSE_ALifeObject::~CSE_ALifeObject			()
 {
@@ -1161,20 +1176,20 @@ bool CSE_ALifeObjectProjector::used_ai_locations() const
 // CSE_ALifeSchedulable
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeSchedulable::CSE_ALifeSchedulable(LPCSTR caSection) : CSE_Abstract(caSection)
+CSE_ALifeSchedulable::CSE_ALifeSchedulable	(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_tpCurrentBestWeapon		= 0;
-#ifndef _EDITOR
-#ifndef AI_COMPILER
-	m_tpALife					= 0;
-#endif
-#endif
 	m_tpBestDetector			= 0;
 	m_schedule_counter			= u64(-1);
 }
 
-CSE_ALifeSchedulable::~CSE_ALifeSchedulable()
+CSE_ALifeSchedulable::~CSE_ALifeSchedulable	()
 {
+}
+
+bool CSE_ALifeSchedulable::need_update		(CSE_ALifeDynamicObject *object)
+{
+	return						(!object || (object->m_bDirectControl && object->interactive() && object->used_ai_locations() && !object->m_bOnline));
 }
 
 ////////////////////////////////////////////////////////////////////////////

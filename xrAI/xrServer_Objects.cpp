@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////////////////////////////////
 // CPureServerObject
 ////////////////////////////////////////////////////////////////////////////
-void CPureServerObject::Save				(IWriter	&tMemoryStream)
+void CPureServerObject::save				(IWriter	&tMemoryStream)
 {
 	NET_Packet					l_tNetPacket;
 	l_tNetPacket.w_begin		(M_UPDATE);
@@ -33,7 +33,7 @@ void CPureServerObject::Save				(IWriter	&tMemoryStream)
 	tMemoryStream.w				(l_tNetPacket.B.data,l_tNetPacket.B.count);
 }
 
-void CPureServerObject::Load				(IReader	&tFileStream)
+void CPureServerObject::load				(IReader	&tFileStream)
 {
 	NET_Packet					l_tNetPacket;
 	u16							l_wType;
@@ -43,12 +43,12 @@ void CPureServerObject::Load				(IReader	&tFileStream)
 	UPDATE_Read					(l_tNetPacket);
 }
 
-void CPureServerObject::Load				(NET_Packet	&tNetPacket)
+void CPureServerObject::load				(NET_Packet	&tNetPacket)
 {
 	UPDATE_Read					(tNetPacket);
 }
 
-void CPureServerObject::Save				(NET_Packet	&tNetPacket)
+void CPureServerObject::save				(NET_Packet	&tNetPacket)
 {
 	UPDATE_Write				(tNetPacket);
 }

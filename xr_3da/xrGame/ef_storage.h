@@ -15,7 +15,6 @@
 
 class CGameObject;
 class CSE_ALifeSchedulable;
-class CSE_ALifeSimulator;
 
 class CEF_Storage {
 public:
@@ -25,7 +24,6 @@ public:
 	const CSE_ALifeObject					*m_tpCurrentALifeObject;
 	CSE_ALifeSchedulable					*m_tpCurrentALifeMember;
 	CSE_ALifeSchedulable					*m_tpCurrentALifeEnemy;
-	CSE_ALifeSimulator						*m_tpALife;
 	// primary functions
 	CBaseFunction							*m_fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
 

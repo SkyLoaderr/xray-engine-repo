@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_alife_cross_table.h
+//	Module 		: game_level_cross_table.h
 //	Created 	: 20.02.2003
 //  Modified 	: 13.11.2003
 //	Author		: Dmitriy Iassenev
@@ -14,7 +14,7 @@
 	#include "../xrLevel.h"
 #endif
 
-#include "ai_alife_space.h"
+#include "alife_space.h"
 
 #define CROSS_TABLE_NAME					"level.gct"
 

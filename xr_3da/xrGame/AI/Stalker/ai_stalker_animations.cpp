@@ -486,6 +486,9 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	if	(((eMovementDirectionRight == m_tDesirableDirection) && (eMovementDirectionLeft == m_tMovementDirection))	||	((eMovementDirectionLeft == m_tDesirableDirection) && (eMovementDirectionRight == m_tMovementDirection)))
 		fAnimationSwitchFactor = .0f;
 
+	if ((l_tBodyState != eBodyStateStand) && (eMentalStateDanger != m_object->mental_state()))
+		m_object->set_mental_state	(eMentalStateDanger);
+
 	if (eMentalStateDanger != m_object->mental_state())
 		if (angle_difference(m_object->body_orientation().current.yaw,yaw) <= PI_DIV_6) {
 			tpLegsAnimation = m_tAnims.A[l_tBodyState].m_tMoves.A[m_object->movement_type()].A[eMovementDirectionForward].A[m_object->mental_state()];

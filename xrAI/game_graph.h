@@ -14,7 +14,7 @@
 	#include "../xrLevel.h"
 #endif
 
-#include "ai_alife_space.h"
+#include "alife_space.h"
 
 #define GRAPH_NAME							"game.graph"
 

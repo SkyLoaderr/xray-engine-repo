@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_alife.h"
+//#include "ai_alife.h"
 #include "game_graph.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 using namespace ALife;

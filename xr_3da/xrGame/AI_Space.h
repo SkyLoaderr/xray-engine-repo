@@ -13,23 +13,28 @@ class	CGameLevelCrossTable;
 class	CLevelGraph;
 class	CGraphEngine;
 class	CEF_Storage;
-class	CSE_ALifeSimulator;
+class	CALifeSimulator;
 class	CCoverManager;
 class	CScriptEngine;
 
 class CAI_Space {
+private:
+	friend class CALifeSimulator;
+
+private:
 	CGameGraph				*m_game_graph;
 	CGameLevelCrossTable	*m_cross_table;
 	CLevelGraph				*m_level_graph;
 	CGraphEngine			*m_graph_engine;
 	CEF_Storage				*m_ef_storage;
-	CSE_ALifeSimulator		*m_alife_simulator;
+	CALifeSimulator			*m_alife_simulator;
 	CCoverManager			*m_cover_manager;
 	CScriptEngine			*m_script_engine;
 
+private:
 			void						unload			();
-	IC		void						set_alife		(CSE_ALifeSimulator *alife_simulator);
-			friend class CSE_ALifeSimulator;
+	IC		void						set_alife		(CALifeSimulator *alife_simulator);
+
 public:
 										CAI_Space		();
 	virtual								~CAI_Space		();
@@ -42,8 +47,8 @@ public:
 	IC		const CGameLevelCrossTable	*get_cross_table() const;
 	IC		CEF_Storage					&ef_storage		() const;
 	IC		CGraphEngine				&graph_engine	() const;
-	IC		CSE_ALifeSimulator			&alife			() const;
-	IC		const CSE_ALifeSimulator	*get_alife		() const;
+	IC		const CALifeSimulator		&alife			() const;
+	IC		const CALifeSimulator		*get_alife		() const;
 	IC		const CCoverManager			&cover_manager	() const;
 	IC		CScriptEngine				&script_engine	() const;
 

@@ -8,7 +8,8 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "../../ai_alife.h"
+#include "../../alife_simulator.h"
+#include "../../alife_task_registry.h"
 #include "../../graph_engine.h"
 #include "../../xrserver_objects_alife.h"
 
@@ -44,7 +45,7 @@ void CAI_Stalker::vfChooseTask()
 		else {
 			m_tDestGraphPointIndex	= ALife::_GRAPH_ID(-1);
 			vfChooseHumanTask		();
-			CSE_ALifeTask			*l_tpTask = m_tpALife->task(m_tTaskID);
+			CSE_ALifeTask			*l_tpTask = ai().alife().tasks().task(m_tTaskID);
 			switch (l_tpTask->m_tTaskType) {
 				case ALife::eTaskTypeSearchForItemCG :
 				case ALife::eTaskTypeSearchForItemOG : {
@@ -80,7 +81,7 @@ void CAI_Stalker::vfGoToCustomer()
 ////			CSE_ALifeTask			*l_tpTask = m_tpALife->task(m_tTaskID);
 ////			CSE_ALifeTrader			*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(m_tpALife->object(l_tpTask->m_tCustomerID));
 ////			if (l_tpTrader)
-////				m_tpALife->vfCommunicateWithCustomer(this,l_tpTrader);
+////				m_tpALife->communicate_with_customer(this,l_tpTrader);
 //		}
 //		m_tTaskState = eTaskStateChooseTask;
 //	}
@@ -106,7 +107,7 @@ void CAI_Stalker::vfFinishTask()
 	if (bfCheckIfTaskCompleted())
 		m_tTaskState		= ALife::eTaskStateGoToCustomer;
 	else {
-		CSE_ALifeTask		*l_tpALifeTask = m_tpALife->task(m_tTaskID);
+		CSE_ALifeTask		*l_tpALifeTask = ai().alife().tasks().task(m_tTaskID);
 		switch (l_tpALifeTask->m_tTaskType) {
 			case ALife::eTaskTypeSearchForItemCG :
 			case ALife::eTaskTypeSearchForItemOG : {
@@ -145,7 +146,7 @@ void CAI_Stalker::vfSendSOS()
 
 void CAI_Stalker::ALifeUpdate()
 {
-	if (!m_tpALife) {
+	if (!ai().get_alife()) {
 		vfContinueWithALifeGoals();
 		return;
 	}

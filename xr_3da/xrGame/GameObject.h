@@ -11,7 +11,7 @@
 #include "prefetch_manager.h"
 #include "ParticlesPlayer.h"
 #include "xrServer_Space.h"
-#include "ai_alife_space.h"
+#include "alife_space.h"
 
 class CPhysicsShell;
 class CSE_Abstract;
@@ -37,8 +37,6 @@ class CGameObject :
 	u32						m_dwFrameBeforeIndependent;
 
 protected:
-	CSE_ALifeSimulator		*m_tpALife;
-	
 	//время удаления объекта
 	bool					m_bObjectRemoved;
 

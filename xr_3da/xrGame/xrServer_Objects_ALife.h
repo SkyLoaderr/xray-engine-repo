@@ -10,24 +10,23 @@
 #define xrServer_Objects_ALifeH
 
 #include "xrServer_Objects.h"
-#include "ai_alife_space.h"
+#include "alife_space.h"
 
 #ifndef _EDITOR
-	#ifndef AI_COMPILER
-		class CSE_ALifeSimulator;
-	#endif
-#else
+#ifndef AI_COMPILER
+	class CALifeSimulator;
+#endif
+#endif
+
+#ifdef _EDITOR
 	class CSE_ALifeItemWeapon;
 #endif
+
+class CSE_ALifeDynamicObject;
 
 class CSE_ALifeSchedulable : public IPureSchedulableObject, virtual public CSE_Abstract {
 public:
 	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
-#ifndef _EDITOR
-#ifndef AI_COMPILER
-	CSE_ALifeSimulator				*m_tpALife;
-#endif
-#endif
 	CSE_ALifeDynamicObject			*m_tpBestDetector;
 	u64								m_schedule_counter;
 
@@ -43,6 +42,7 @@ public:
 	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection) = 0;
 	virtual bool					bfActive				()															= 0;
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		()															= 0;
+	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 #endif
 #endif
 };
@@ -106,7 +106,7 @@ public:
 	virtual							~CSE_ALifeGraphPoint();
 SERVER_ENTITY_DECLARE_END
 
-class CSE_ALifeObject : virtual public CSE_Abstract {
+class CSE_ALifeObject : virtual public CSE_Abstract, public CRandom {
 protected:
 	enum {
 		flUseSwitches	= u32(1) << 0,
@@ -127,6 +127,11 @@ public:
 	u32								m_tNodeID;
 	ref_str							m_caGroupControl;
 	flags32							m_flags;							
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+	CALifeSimulator					*m_alife_simulator;
+#endif
+#endif
 
 #ifdef _EDITOR
 	void __fastcall					OnChooseGroupControl(ChooseItemVec& lst);
@@ -141,6 +146,7 @@ public:
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	virtual void					spawn_supplies		();
+			CALifeSimulator			&alife				() const;
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

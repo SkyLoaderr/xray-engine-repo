@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "game_sv_single.h"
-#include "ai_alife.h"
+#include "alife_simulator.h"
 #include "xrServer_Objects.h"
 
 void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode, BOOL Recursive)
@@ -32,11 +32,8 @@ void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode, BOOL Recu
 void xrServer::SLS_Clear		()
 {
 	// Don't do anything if game in ALife mode
-	if (game->type == GAME_SINGLE) {
-		game_sv_Single *tpGame	= dynamic_cast<game_sv_Single*>(game);
-		if (tpGame && tpGame->m_tpALife)
-			return;
-	}
+	if ((game->type == GAME_SINGLE) && ai().get_alife())
+		return;
 
 	// Collect entities
 	u32					mode	= net_flags(TRUE,TRUE);

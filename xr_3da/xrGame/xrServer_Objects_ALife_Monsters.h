@@ -9,12 +9,6 @@
 #ifndef xrServer_Objects_ALife_MonstersH
 #define xrServer_Objects_ALife_MonstersH
 
-#ifndef _EDITOR
-#ifndef AI_COMPILER
-class CSE_ALifeObjectRegistry;
-#endif
-#endif
-
 #include "xrServer_Objects_ALife.h"
 #include "xrServer_Objects_ALife_Items.h"
 
@@ -31,8 +25,8 @@ public:
 	virtual							~CSE_ALifeTraderAbstract();
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-			void					vfAttachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
-			void					vfDetachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);
+			void					attach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
+			void					detach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);
 			void					vfInitInventory			();
 	virtual void					spawn_supplies			();
 #endif
@@ -54,7 +48,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 #endif    
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem, CSE_ALifeObjectRegistry *tpALifeObjectRegistry);
+			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem);
 	virtual void					spawn_supplies			();
 #endif
 #endif
@@ -78,18 +72,19 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();
 #ifdef _EDITOR
-	virtual	void					Update					()	{};
+	virtual	void					update					()	{};
 #else
 #ifdef AI_COMPILER
-	virtual	void					Update					()	{};
+	virtual	void					update					()	{};
 #else
-	virtual	void					Update					();
+	virtual	void					update					();
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,				float &fHitPower);
 	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int iGroupIndex, bool bMutualDetection);
 	virtual bool					bfActive				();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 #endif
 #endif
+	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END
 
 
@@ -154,12 +149,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual							~CSE_ALifeMonsterAbstract();
 	IC		float					g_MaxHealth				()	const									{ return m_fMaxHealthValue;	}
 #ifdef _EDITOR
-	virtual	void					Update					()	{};
+	virtual	void					update					()	{};
 #else
 #ifdef AI_COMPILER
-	virtual	void					Update					()	{};
+	virtual	void					update					()	{};
 #else
-	virtual	void					Update					();
+	virtual	void					update					();
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,				float	&fHitPower);
 	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int		iGroupIndex,	bool bMutualDetection);
 	virtual bool					bfActive				();
@@ -168,6 +163,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 			void					vfCheckForPopulationChanges();
 #endif
 #endif
+	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CSE_ALifeTraderAbstract)
@@ -276,7 +272,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual							~CSE_ALifeHumanAbstract	();
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-	virtual	void					Update					();
+	virtual	void					update					();
 			// FSM
 			void					vfChooseTask			();
 			void					vfHealthCare			();

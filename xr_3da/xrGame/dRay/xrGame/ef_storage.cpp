@@ -17,7 +17,6 @@ CEF_Storage::CEF_Storage()
 	m_tpCurrentALifeObject				= 0;
 	m_tpCurrentALifeMember				= 0;
 	m_tpCurrentALifeEnemy				= 0;
-	m_tpALife							= 0;
 
 	Memory.mem_fill						(m_fpaBaseFunctions,0,sizeof(CBaseFunction*)*AI_MAX_EVALUATION_FUNCTION_COUNT);
 	

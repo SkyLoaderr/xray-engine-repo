@@ -1,15 +1,12 @@
 #include "stdafx.h"
 #include "game_sv_single.h"
-#include "ai_alife.h"
+#include "alife_simulator.h"
 
 void xrServer::SLS_Default	()
 {
 	// Spawn all other objects
-	if (game->type == GAME_SINGLE) {
-		game_sv_Single *tpGame	= dynamic_cast<game_sv_Single*>(game);
-		if (tpGame && tpGame->m_tpALife)
-			return;
-	}
+	if ((game->type == GAME_SINGLE) && ai().get_alife())
+		return;
 	
 	string256				fn_spawn;
 	if (FS.exist(fn_spawn, "$level$", "level.spawn")) {

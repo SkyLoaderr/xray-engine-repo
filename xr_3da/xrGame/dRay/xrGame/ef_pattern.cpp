@@ -10,7 +10,7 @@
 #include "ef_pattern.h"
 #include "ef_primary.h"
 #include "ai_space.h"
-#include "ai_alife_templates.h"
+#include "object_broker.h"
 #include "ai_debug.h"
 #include "ef_storage.h"
 

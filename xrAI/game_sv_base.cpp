@@ -444,6 +444,14 @@ bool game_sv_GameState::change_level		(NET_Packet &net_packet, DPNID sender)
 	return						(true);
 }
 
+void game_sv_GameState::save_game			(NET_Packet &net_packet, DPNID sender)
+{
+}
+
+void game_sv_GameState::switch_distance		(NET_Packet &net_packet, DPNID sender)
+{
+}
+
 void game_sv_GameState::OnHit					(u16 id_hitter, u16 id_hitted, NET_Packet& P)
 {
 	CSE_Abstract*		e_hitter		= get_entity_from_eid	(id_hitter	);

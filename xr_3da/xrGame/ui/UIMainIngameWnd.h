@@ -17,7 +17,7 @@
 
 #include "../actor.h"
 #include "../weapon.h"
-#include "../ai_alife_space.h"
+#include "../alife_space.h"
 
 //для режима настройки HUD
 extern int				g_bHudAdjustMode;
@@ -125,7 +125,7 @@ protected:
 	NewsTemplates							m_NewsTemplates;
 
 	// Обработчик события получения новости
-	void OnNewsReceived(const ALife::SGameNews &newsItem);
+	void OnNewsReceived(const CALifeNews &newsItem);
 	// Проверяем не появились ли новые ньюсы
 	// Return:	true - новые новости есть
 	bool CheckForNewNews();

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game_base.h"
-#include "ai_alife_space.h"
+#include "alife_space.h"
 class CSE_Abstract;
 
 // [OLES] Policy:
@@ -91,5 +91,6 @@ public:
 	virtual		void				SetGameTime				(ALife::_TIME_ID GameTime);
 	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
 	virtual		bool				change_level			(NET_Packet &net_packet, DPNID sender);
-
+	virtual		void				save_game				(NET_Packet &net_packet, DPNID sender);
+	virtual		void				switch_distance			(NET_Packet &net_packet, DPNID sender);
 };

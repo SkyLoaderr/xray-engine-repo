@@ -8,7 +8,8 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "../../ai_alife.h"
+#include "../../alife_simulator.h"
+#include "../../alife_task_registry.h"
 #include "../../graph_engine.h"
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
@@ -72,7 +73,7 @@ bool CAI_Stalker::bfCheckIfTaskCompleted()
 	if (int(m_tTaskID) < 0)
 		return		(false);
 
-	CSE_ALifeTask	&tTask = *m_tpALife->task(m_tTaskID);
+	CSE_ALifeTask	&tTask = *ai().alife().tasks().task(m_tTaskID);
 	switch (tTask.m_tTaskType) {
 		case ALife::eTaskTypeSearchForItemCL :
 		case ALife::eTaskTypeSearchForItemCG : {
@@ -95,15 +96,15 @@ void CAI_Stalker::vfChooseHumanTask()
 	ALife::OBJECT_IT			I = m_tpKnownCustomers.begin();
 	ALife::OBJECT_IT			E = m_tpKnownCustomers.end();
 	for ( ; I != E; ++I) {
-		ALife::OBJECT_TASK_PAIR_IT	J = m_tpALife->m_tTaskCrossMap.find(*I);
-		R_ASSERT2				(m_tpALife->m_tTaskCrossMap.end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
+		ALife::OBJECT_TASK_MAP::const_iterator	J = ai().alife().tasks().cross().find(*I);
+		R_ASSERT2				(ai().alife().tasks().cross().end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
 
 		u32						l_dwMinTryCount = u32(-1);
 		ALife::_TASK_ID			l_tBestTaskID = ALife::_TASK_ID(-1);
-		ALife::TASK_SET_IT		i = (*J).second.begin();
-		ALife::TASK_SET_IT		e = (*J).second.end();
+		ALife::TASK_SET::const_iterator		i = (*J).second.begin();
+		ALife::TASK_SET::const_iterator		e = (*J).second.end();
 		for ( ; i != e; ++i) {
-			CSE_ALifeTask		*l_tpTask = m_tpALife->task(*i);
+			CSE_ALifeTask		*l_tpTask = ai().alife().tasks().task(*i);
 			if (!l_tpTask->m_dwTryCount) {
 				l_tBestTaskID = l_tpTask->m_tTaskID;
 				break;
@@ -124,13 +125,13 @@ void CAI_Stalker::vfChooseHumanTask()
 
 void CAI_Stalker::vfSetCurrentTask(ALife::_TASK_ID &tTaskID)
 {
-	m_tTaskID				= m_tpALife->task(tTaskID)->m_tTaskID;
+	m_tTaskID				= ai().alife().tasks().task(tTaskID)->m_tTaskID;
 }
 
 bool CAI_Stalker::bfAssignDestinationNode()
 {
 //	if ((level_vertex_id() == m_level_dest_vertex_id) && (ai().cross_table().vertex(level_vertex_id()) == game_dest_vertex_id())) {
-	if (m_tpALife)
+	if (ai().get_alife())
 		return				(!CMovementManager::path_completed());
 
 	if (ai().game_graph().vertex(game_dest_vertex_id())->level_vertex_id() != level_vertex_id()) {

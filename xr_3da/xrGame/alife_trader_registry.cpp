@@ -1,0 +1,36 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: alife_trader_registry.cpp
+//	Created 	: 15.01.2003
+//  Modified 	: 12.05.2004
+//	Author		: Dmitriy Iassenev
+//	Description : ALife trader registry
+////////////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "alife_trader_registry.h"
+
+CALifeTraderRegistry::~CALifeTraderRegistry	()
+{
+}
+
+CSE_ALifeTrader *CALifeTraderRegistry::trader_nearest(CSE_ALifeHumanAbstract *human)
+{
+	float						best_distance = flt_max;
+	CSE_ALifeTrader				*trader = 0;
+	const Fvector				&position = ai().game_graph().vertex(human->m_tGraphID)->game_point();
+	
+	TRADER_REGISTRY::const_iterator	I = traders().begin();
+	TRADER_REGISTRY::const_iterator	E = traders().end();
+	for ( ; I != E; ++I) {
+//		if ((*I)->m_tRank != human->m_tRank)
+//			break;
+		float					distance = ai().game_graph().vertex((*I)->m_tGraphID)->game_point().distance_to(position);
+		if (distance < best_distance) {
+			best_distance		= distance;
+			trader				= *I;
+		}
+	}
+	
+	R_ASSERT2					(trader,"There is no traders in the game");
+	return						(trader);
+}

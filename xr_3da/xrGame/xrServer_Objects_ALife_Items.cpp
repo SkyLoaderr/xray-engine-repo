@@ -56,6 +56,7 @@ CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection) : CSE_Abstract(
 
 	m_tPreviousParentID			= 0xffff;
 	m_can_switch_offline		= true;
+	m_eItemPlace				= eItemPlaceUndefined;
 }
 
 CSE_ALifeInventoryItem::~CSE_ALifeInventoryItem	()
@@ -773,7 +774,7 @@ bool CSE_ALifeItemBolt::can_switch_offline	() const
 
 bool CSE_ALifeItemBolt::can_save			() const
 {
-	return						(false);//!bfAttached());
+	return						(false);//!attached());
 }
 
 #ifdef _EDITOR

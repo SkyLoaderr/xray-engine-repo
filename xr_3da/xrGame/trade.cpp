@@ -313,11 +313,11 @@ void CTrade::ShowArtifactPrices()
 			ALife::ARTEFACT_ORDER_IT	iii = (*ii).second->m_tpOrders.begin();
 			ALife::ARTEFACT_ORDER_IT	eee = (*ii).second->m_tpOrders.end();
 			for ( ; iii != eee; ++iii)
-				if (l_dwAlreadyPurchased < (*iii).m_dwCount) {
-					Msg				("-       %d items for $%d for organization %s",(*iii).m_dwCount - l_dwAlreadyPurchased,(*iii).m_dwPrice,(*iii).m_caSection);
+				if (l_dwAlreadyPurchased < (*iii).m_count) {
+					Msg				("-       %d items for $%d for organization %s",(*iii).m_count - l_dwAlreadyPurchased,(*iii).m_price,(*iii).m_section);
 					l_dwAlreadyPurchased = 0;
 				}else
-					l_dwAlreadyPurchased -= (*iii).m_dwCount;
+					l_dwAlreadyPurchased -= (*iii).m_count;
 		}
 	}
 	else 

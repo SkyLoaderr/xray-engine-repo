@@ -27,7 +27,7 @@
 
 using namespace StalkerSpace;
 
-class CSE_ALifeSimulator;
+class CALifeSimulator;
 class CCharacterPhysicsSupport;
 class CWeapon;
 class CCoverPoint;

@@ -21,9 +21,12 @@
 
 #include "../inventory.h"
 #include "../UIGameSP.h"
-#include "../ai_alife_registries.h"
-#include "../ai_alife.h"
 #include "../weaponmagazined.h"
+
+#include "../xrServer_objects_ALife.h"
+#include "../alife_simulator.h"
+#include "../alife_news_registry.h"
+#include "../alife_object_registry.h"
 
 using namespace InventoryUtilities;
 
@@ -822,7 +825,7 @@ void CUIMainIngameWnd::RenderQuickInfos()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::OnNewsReceived(const ALife::SGameNews &newsItem)
+void CUIMainIngameWnd::OnNewsReceived(const CALifeNews &newsItem)
 {
 	string256	newsPhrase;
 	string128	time;
@@ -840,10 +843,10 @@ void CUIMainIngameWnd::OnNewsReceived(const ALife::SGameNews &newsItem)
 	}
 
 	// Substitute placeholders with real names
-	CSE_ALifeDynamicObject	*newsActorOne = ai().alife().object(newsItem.m_object_id[0]);
+	CSE_ALifeDynamicObject	*newsActorOne = ai().alife().objects().object(newsItem.m_object_id[0]);
 	if (newsItem.m_object_id[1] != static_cast<u16>(-1))
 	{
-		CSE_ALifeDynamicObject	*newsActorTwo = ai().alife().object(newsItem.m_object_id[1]);
+		CSE_ALifeDynamicObject	*newsActorTwo = ai().alife().objects().object(newsItem.m_object_id[1]);
 		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].str, newsActorTwo->s_name_replace, newsActorOne->s_name_replace);
 	}
 	else
@@ -918,19 +921,19 @@ bool CUIMainIngameWnd::CheckForNewNews()
 	static ALife::_NEWS_ID	lastKnownNewsID = 0;
 	static bool				emptyNewsQueue	= true;
 
-	CSE_ALifeNewsRegistry::NEWS_REGISTRY::const_iterator cit, cit_i;
-	cit = ai().alife().news().upper_bound(lastKnownNewsID);
+	ALife::NEWS_REGISTRY::const_iterator cit, cit_i;
+	cit = ai().alife().news().news().upper_bound(lastKnownNewsID);
 
-	if (emptyNewsQueue && ai().alife().news().size() > 0)
+	if (emptyNewsQueue && ai().alife().news().news().size() > 0)
 	{
-		cit = ai().alife().news().begin();
+		cit = ai().alife().news().news().begin();
 		emptyNewsQueue = false;
 	}
 
-	if (cit == ai().alife().news().end()) return false;
+	if (cit == ai().alife().news().news().end()) return false;
 
 	// Iterate through all new news and report to OnNewsReceived function
-	for (cit_i = cit; cit_i != ai().alife().news().end(); ++cit_i)
+	for (cit_i = cit; cit_i != ai().alife().news().news().end(); ++cit_i)
 	{
 		OnNewsReceived(*cit_i->second);
 		// Remember last known news id. Last remembering would last known news id

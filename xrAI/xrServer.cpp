@@ -186,6 +186,14 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 			if (game->change_level(P,sender))
 				SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
 		}break;
+	case M_SAVE_GAME:
+		{
+			game->save_game(P,sender);
+		}break;
+	case M_SWITCH_DISTANCE:
+		{
+			game->switch_distance(P,sender);
+		}break;
 	}
 	csPlayers.Leave				();
 

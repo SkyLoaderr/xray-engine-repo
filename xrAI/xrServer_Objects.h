@@ -10,7 +10,7 @@
 #define xrServer_ObjectsH
 
 #include "xrMessages.h"
-#include "ai_alife_interfaces.h"
+#include "alife_interfaces.h"
 #include "xrServer_Space.h"
 
 #ifdef _EDITOR
@@ -82,10 +82,10 @@
 class CPureServerObject : public IPureServerObject {
 public:
 	virtual							~CPureServerObject(){}
-	virtual void					Load(IReader	&tFileStream);
-	virtual void					Save(IWriter	&tMemoryStream);
-	virtual void					Load(NET_Packet	&tNetPacket);
-	virtual void					Save(NET_Packet	&tNetPacket);
+	virtual void					load(IReader	&tFileStream);
+	virtual void					save(IWriter	&tMemoryStream);
+	virtual void					load(NET_Packet	&tNetPacket);
+	virtual void					save(NET_Packet	&tNetPacket);
 };
 
 class xrClientData;

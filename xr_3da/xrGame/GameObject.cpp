@@ -77,7 +77,6 @@ void CGameObject::reinit	()
 
 	m_visual_callback.clear		();
 	CAI_ObjectLocation::reinit	();
-	m_tpALife					= 0;
 }
 
 void CGameObject::reload	(LPCSTR section)

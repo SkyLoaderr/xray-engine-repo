@@ -38,9 +38,13 @@ public:
 	//при переходе в offline и обратно)
 	EItemPlace						m_eItemPlace;
 
+	//положение вещи в инвенторе (используется актером 
+	//при переходе в offline и обратно)
+	EItemPlace						m_eItemPlace;
+
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
 	virtual							~CSE_ALifeInventoryItem	();
-	IC		bool					bfAttached		() const
+	IC		bool					attached	() const
 	{
 		return						(ID_Parent < 0xffff);
 	}

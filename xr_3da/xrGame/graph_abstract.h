@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ai_alife_templates.h"
+#include "object_broker.h"
 
 template <
 	typename _Data,

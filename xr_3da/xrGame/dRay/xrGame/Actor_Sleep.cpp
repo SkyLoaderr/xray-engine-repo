@@ -7,7 +7,7 @@
 #include "SleepEffector.h"
 
 #include "game_sv_single.h"
-#include "ai_alife.h"
+#include "alife_simulator.h"
 
 
 #define ONLINE_RADIUS 2.f
@@ -40,11 +40,13 @@ void CActor::Awoke()
 
 	Level().SetGameTimeFactor(m_fOldTimeFactor);
 
-	if (Level().game.type == GAME_SINGLE) 
-	{
-		game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-		if (tpGame && tpGame->m_tpALife && tpGame->m_tpALife->m_bLoaded) 
-			tpGame->m_tpALife->vfSetSwitchDistance(m_fOldOnlineRadius);
+	if ((Level().game.type == GAME_SINGLE)  &&ai().get_alife()) {
+		NET_Packet		P;
+		P.w_begin		(M_SWITCH_DISTANCE);
+		P.w_float		(m_fOldOnlineRadius);
+		Level().Send	(P,net_flags(TRUE,TRUE));
+
+//		ai().alife().set_switch_distance	(m_fOldOnlineRadius);
 	}
 
 
@@ -73,14 +75,13 @@ void CActor::UpdateSleep()
 		m_fOldTimeFactor = Level().GetGameTimeFactor();
 		Level().SetGameTimeFactor(m_fSleepTimeFactor*m_fOldTimeFactor);
 
-		if (Level().game.type == GAME_SINGLE) 
-		{
-			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tpALife && tpGame->m_tpALife->m_bLoaded) 
-			{
-				m_fOldOnlineRadius = tpGame->m_tpALife->ffGetSwitchDistance();
-				tpGame->m_tpALife->vfSetSwitchDistance(ONLINE_RADIUS);
-			}
+		if ((Level().game.type == GAME_SINGLE) && ai().get_alife()) {
+			m_fOldOnlineRadius = ai().alife().switch_distance();
+//			ai().alife().set_switch_distance(ONLINE_RADIUS);
+			NET_Packet		P;
+			P.w_begin		(M_SWITCH_DISTANCE);
+			P.w_float		(ONLINE_RADIUS);
+			Level().Send	(P,net_flags(TRUE,TRUE));
 		}
 
 		m_pSleepEffectorPP->m_eSleepState = CSleepEffectorPP::SLEEPING;

@@ -3,7 +3,7 @@
 #include "../xr_ioconsole.h"
 #include "entity_alive.h"
 #include "game_sv_single.h"
-#include "ai_alife.h"
+#include "alife_simulator.h"
 #include "level_graph.h"
 
 #include "ai/monsters/burer/burer.h"
@@ -34,23 +34,21 @@ void CLevel::IR_OnKeyboardPress(int key)
 		if (Game().type == GAME_SINGLE)
 			HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
-	case DIK_F6:
-		if (Server->game->type == GAME_SINGLE) {
-			game_sv_Single *tpGame	= dynamic_cast<game_sv_Single*>(Server->game);
-			if (tpGame && tpGame->m_tpALife)
-				tpGame->m_tpALife->Save("quick_save");
-			else
-				net_Save			("quick.save");
-		}
-		else
-			net_Save				("quick.save");
-		return;
-	case DIK_F7:
+	case DIK_F6: {
 		NET_Packet					net_packet;
-		net_packet.w_begin			(M_CHANGE_LEVEL);
-		net_packet.w_u32			(Level().timeServer());
+		net_packet.w_begin			(M_SAVE_GAME);
+		net_packet.w_u32			(timeServer());
+		net_packet.w_string			("quick_save");
 		Send						(net_packet,net_flags(TRUE));
 		return;
+	}
+	case DIK_F7: {
+		NET_Packet					net_packet;
+		net_packet.w_begin			(M_CHANGE_LEVEL);
+		net_packet.w_u32			(timeServer());
+		Send						(net_packet,net_flags(TRUE));
+		return;
+	}
 #ifdef DEBUG
 	case DIK_F5: {
 		if (Game().type != GAME_SINGLE) return;

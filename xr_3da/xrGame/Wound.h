@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "ai_alife_space.h"
+#include "alife_space.h"
 #include "EntityCondition.h"
 
 class CWound

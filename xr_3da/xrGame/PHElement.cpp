@@ -748,7 +748,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 	Fmatrix parent;
 	if(! bActive)return;
 	VERIFY(_valid(m_shell->mXFORM));
-	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback resive 0 matrix");
+	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback receive 0 matrix");
 	if(bActivating)
 	{
 		//if(!dBodyIsEnabled(m_body))
