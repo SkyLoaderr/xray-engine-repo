@@ -4,7 +4,7 @@
 #pragma hdrstop
 
 #include "SHSoundEnvTools.h"
-#include "ui_main.h"
+#include "ui_shadermain.h"
 #include "folderlib.h"
 #include "ChoseForm.h"
 #include "leftbar.h"
@@ -191,6 +191,7 @@ LPCSTR CSHSoundEnvTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     CSoundRender_Environment* S 	= m_Library.Append(parent);
     if (!parent)		S->set_default();
     S->name				= m_LastSelection.c_str();
+    ExecCommand			(COMMAND_UPDATE_LIST);
     ExecCommand			(COMMAND_UPDATE_PROPERTIES);
 	Modified			();
     return *S->name;
@@ -202,6 +203,8 @@ void CSHSoundEnvTools::OnRenameItem(LPCSTR old_full_name, LPCSTR new_full_name, 
         ApplyChanges	();
         CSoundRender_Environment* S = m_Library.Get(old_full_name); R_ASSERT(S);
         S->name			= new_full_name;
+        ExecCommand		(COMMAND_UPDATE_PROPERTIES);
+        ExecCommand		(COMMAND_UPDATE_LIST);
     }
 }
 
@@ -266,9 +269,14 @@ void __fastcall CSHSoundEnvTools::OnEnvChange(PropValue* sender)
     ExecCommand					(COMMAND_UPDATE_PROPERTIES);
 }
 
+void CSHSoundEnvTools::RealUpdateList()
+{
+	FillItemList			();
+}
+//------------------------------------------------------------------------------
+
 void CSHSoundEnvTools::RealUpdateProperties()
 {
-	FillItemList				();
 	PropItemVec items;
 	if (m_Env){
         // fill environment

@@ -45,6 +45,10 @@ void CShaderTools::CommandClear(u32 p1, u32 p2, u32& res)
     Device.m_Camera.Reset();
     ExecCommand		(COMMAND_UPDATE_CAPTION);
 }
+void CShaderTools::CommandUpdateList(u32 p1, u32 p2, u32& res)
+{
+	UpdateList		();
+}
 void CommandRefreshUIBar(u32 p1, u32 p2, u32& res)
 {
     fraTopBar->RefreshBar	();
@@ -72,6 +76,7 @@ void CommandUpdateCaption(u32 p1, u32 p2, u32& res)
     frmMain->UpdateCaption();
 }
 
+
 void CShaderMain::RegisterCommands()
 {
 	inherited::RegisterCommands();
@@ -80,6 +85,7 @@ void CShaderMain::RegisterCommands()
 	RegisterCommand(COMMAND_SAVE_BACKUP,		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandSaveBackup)));
 	RegisterCommand(COMMAND_RELOAD,				SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandReload)));
 	RegisterCommand(COMMAND_CLEAR,				SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandClear)));
+    RegisterCommand(COMMAND_UPDATE_LIST,	    SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(STools,CShaderTools::CommandUpdateList)));
     RegisterCommand(COMMAND_REFRESH_UI_BAR,		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
     RegisterCommand(COMMAND_RESTORE_UI_BAR,     SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
     RegisterCommand(COMMAND_SAVE_UI_BAR,        SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSaveUIBar)));

@@ -25,9 +25,14 @@ void CSHCompilerTools::FillItemList()
 }
 
 //------------------------------------------------------------------------------
+void CSHCompilerTools::RealUpdateList()
+{
+	FillItemList			();
+}
+//------------------------------------------------------------------------------
+
 void CSHCompilerTools::RealUpdateProperties()
 {
-	FillItemList	();
 	PropItemVec items;
 	if (m_Shader){
 		Shader_xrLC& L 		  	= *m_Shader;

@@ -88,6 +88,7 @@ public:
     virtual void			ApplyChanges		(bool bForced=false)=0;
 
 	virtual void 			RealUpdateProperties()=0;
+	virtual void 			RealUpdateList		()=0;
 
 	virtual void 			OnFrame				()=0;
 	virtual void 			OnRender			()=0;

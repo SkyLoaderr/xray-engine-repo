@@ -6,6 +6,7 @@
 
 enum {
 	COMMAND_EXTFIRST_EXT = COMMAND_MAIN_LAST-1,
+	COMMAND_UPDATE_LIST,
 };
 //------------------------------------------------------------------------------
 class CShaderMain: public TUI{

@@ -88,7 +88,7 @@ void ISHTools::OnFrame()
 	    SetCurrentItem				(m_LastSelection.c_str(),true);
         m_LastSelection				= "";
     }
-}
+}                
 void ISHTools::OnActivate()
 {
     SetCurrentItem					(m_LastSelection.c_str(),true);

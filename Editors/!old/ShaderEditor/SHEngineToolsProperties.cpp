@@ -97,12 +97,19 @@ void CSHEngineTools::ConstOnAfterEdit(PropValue* sender, ref_str& nm, bool& res)
 //------------------------------------------------------------------------------
 void CSHEngineTools::NameOnAfterEdit(PropValue* sender, ref_str& new_name, bool& res)
 {
-	RTextValue* V 			= dynamic_cast<RTextValue*>(sender); R_ASSERT(V);
+	CTextValue* V 			= dynamic_cast<CTextValue*>(sender); R_ASSERT(V);
     AnsiString nn			= *new_name;
 	if (FHelper.NameAfterEdit((TElTreeItem*)m_CurrentItem->Item(),*V->GetValue(),nn)){
     	new_name			= nn.c_str();
-    	RemoteRenameBlender(*V->GetValue(),*new_name);
+    	RemoteRenameBlender(V->GetValue(),*new_name);
     }
+}
+//------------------------------------------------------------------------------
+
+void CSHEngineTools::RealUpdateList()
+{
+	if (m_bFreezeUpdate) 	return;
+	FillItemList			();
 }
 //------------------------------------------------------------------------------
 
@@ -110,7 +117,6 @@ void CSHEngineTools::RealUpdateProperties()
 {
 	if (m_bFreezeUpdate) return;
 
-	FillItemList	();
 	PropItemVec 	items;
 	if (m_CurrentBlender){ // fill Tree
     	AnsiString marker_text="";

@@ -121,6 +121,8 @@ void CShaderTools::Render()
 
 void CShaderTools::OnFrame()
 {
+	if (m_Flags.is(flRefreshList)) 
+    	RealUpdateList();
 	if (m_Flags.is(flRefreshProps)) 
     	RealUpdateProperties();
 	Current()->OnFrame();
@@ -291,6 +293,12 @@ void CShaderTools::RealUpdateProperties()
 	m_Flags.set(flRefreshProps,FALSE);
 }
 
+void CShaderTools::RealUpdateList()
+{
+    Current()->RealUpdateList();
+	m_Flags.set(flRefreshList,FALSE);
+}
+
 void __fastcall CShaderTools::OnItemFocused(ListItemsVec& items)
 {
 	LPCSTR name				= 0;
@@ -302,6 +310,7 @@ void __fastcall CShaderTools::OnItemFocused(ListItemsVec& items)
         name						= Current()->m_CurrentItem->Key();
     }
     Current()->SetCurrentItem(name,false);
+    ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 }
 //------------------------------------------------------------------------------
 

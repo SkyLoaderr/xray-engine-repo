@@ -37,6 +37,7 @@ public:
     virtual void			SetCurrentItem		(LPCSTR name, bool bView);
 
 	virtual void 			RealUpdateProperties();
+	virtual void 			RealUpdateList		();
 
 	virtual void 			OnFrame				();
     virtual void			OnRender			(){;}

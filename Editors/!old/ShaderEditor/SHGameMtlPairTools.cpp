@@ -101,6 +101,12 @@ void CSHGameMtlPairTools::Save()
 }
 //---------------------------------------------------------------------------
 
+void CSHGameMtlPairTools::RealUpdateList()
+{
+	FillItemList			();
+}
+//------------------------------------------------------------------------------
+
 void CSHGameMtlPairTools::RealUpdateProperties()
 {
 	PropItemVec items;

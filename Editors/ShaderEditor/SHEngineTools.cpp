@@ -5,7 +5,7 @@
 #include "SHEngineTools.h"
 #include "Blender.h"
 #include "UI_ShaderTools.h"
-#include "ui_main.h"
+#include "ui_shadermain.h"
 #include "LeftBar.h"
 #include "xr_trims.h"
 #include "folderlib.h"
@@ -184,8 +184,10 @@ void CSHEngineTools::ClearData()
 
 void CSHEngineTools::OnFrame()
 {
-	if (m_bNeedResetShaders)
+	if (m_bNeedResetShaders){
     	RealResetShaders();
+        ExecCommand		(COMMAND_UPDATE_LIST);
+    }
     if (m_RemoteRenBlender){
     	RealRenameItem		(m_RenBlenderOldName.c_str(),m_RenBlenderNewName.c_str());
         m_RemoteRenBlender	= FALSE;
@@ -216,8 +218,8 @@ void CSHEngineTools::RealResetShaders()
 	// disable props vis update
     m_bFreezeUpdate 	= TRUE;
 
-	UpdateObjectShader	();
 	ResetCurrentItem	();
+	UpdateObjectShader	();
     // save to temp file
     PrepareRender		();
     // reset device shaders from temp file
@@ -550,7 +552,8 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 	std::pair<BlenderPairIt, bool> I = m_Blenders.insert(mk_pair(xr_strdup(m_LastSelection.c_str()),B));
 	R_ASSERT2 		(I.second,"shader.xr - found duplicate name!!!");
     // insert to TreeView
-    ExecCommand				(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand		(COMMAND_UPDATE_LIST);
+    ExecCommand		(COMMAND_UPDATE_PROPERTIES);
 
 	ResetShaders	(true);
     Modified		();
@@ -578,7 +581,9 @@ void CSHEngineTools::RealRenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
     if (B==m_CurrentBlender) SetCurrentItem(B->getName(),true);
 
 	m_LastSelection	= new_full_name;
-    RealUpdateProperties();
+    ExecCommand			(COMMAND_UPDATE_LIST);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES);
+//.    RealUpdateProperties();
 }
 
 void CSHEngineTools::AddMatrixRef(LPSTR name)
@@ -835,7 +840,7 @@ void CSHEngineTools::UpdateObjectShader()
     CEditableObject* E = m_PreviewObject;
 	if (E&&!m_bCustomEditObject){
     	CSurface* surf = *E->FirstSurface(); R_ASSERT(surf);
-
+/*
 		u32 cnt = _GetItemCount(surf->_Texture());
         string512 	tex; 
         string128 	elem;
@@ -847,7 +852,7 @@ void CSHEngineTools::UpdateObjectShader()
         strcpy		(tex,surf->_Texture());
         for (int i=cnt; i<8; i++){ strcat(tex,","); strcat(tex,elem);}
         surf->SetTexture(tex);
-
+*/
         if (m_CurrentBlender)	surf->SetShader(m_CurrentBlender->getName());
         else					surf->SetShader("editor\\wire");
         UI->RedrawScene();

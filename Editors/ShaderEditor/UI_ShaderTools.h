@@ -16,9 +16,11 @@ class CShaderTools: public CToolsCustom
     void				RegisterTools		();
     void				UnregisterTools		();
     void				RealUpdateProperties();
+    void				RealUpdateList		();
 
     enum{
     	flRefreshProps 	= (1ul<<0ul),
+    	flRefreshList 	= (1ul<<1ul),
     };
     Flags32				m_Flags;
 public:
@@ -72,6 +74,7 @@ public:
     virtual void		ShowProperties		();
     virtual void		UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
     virtual void		RefreshProperties	(){;}
+    virtual void		UpdateList			(bool bForced=false){m_Flags.set(flRefreshList,TRUE); if (bForced) RealUpdateList();}
 
     LPCSTR				CurrentToolsName	();
 
@@ -87,6 +90,8 @@ public:
     void 				CommandSaveBackup	(u32 p1, u32 p2, u32& res);
     void 				CommandReload		(u32 p1, u32 p2, u32& res);
     void 				CommandClear		(u32 p1, u32 p2, u32& res);
+
+    void 				CommandUpdateList	(u32 p1, u32 p2, u32& res);
 };
 extern CShaderTools*&	STools;
 //---------------------------------------------------------------------------

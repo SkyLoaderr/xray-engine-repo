@@ -4,7 +4,7 @@
 #pragma hdrstop
 
 #include "SHCompilerTools.h"
-#include "ui_main.h"
+#include "ui_shadermain.h"
 #include "folderlib.h"
 #include "leftbar.h"
 #include "ItemList.h"
@@ -105,6 +105,7 @@ LPCSTR CSHCompilerTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHCompilerTools::ItemExist),false);
     Shader_xrLC* S 			= m_Library.Append(parent);
     strcpy					(S->Name,m_LastSelection.c_str());
+    ExecCommand				(COMMAND_UPDATE_LIST);
     ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 	Modified				();
     return S->Name;
@@ -116,8 +117,10 @@ void CSHCompilerTools::OnRenameItem(LPCSTR old_full_name, LPCSTR new_full_name, 
         ApplyChanges();
         Shader_xrLC* S = FindItem(old_full_name); R_ASSERT(S);
         strcpy(S->Name,new_full_name);
-        if (S==m_Shader)
-            ExecCommand(COMMAND_UPDATE_PROPERTIES);
+        if (S==m_Shader){
+            ExecCommand	(COMMAND_UPDATE_PROPERTIES);
+            ExecCommand	(COMMAND_UPDATE_LIST);
+        }
     }
 }
 
