@@ -79,7 +79,7 @@ void CBitingAttack::Init()
 
 	once_flag_1 = once_flag_1 = false;
 
-	ThreatenTimes = 0;
+	ThreatenTimeStarted = 0;
 	// Test
 	LOG_EX("_ Attack Init _");
 }
@@ -129,17 +129,10 @@ void CBitingAttack::Run()
 	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
 
 	// Проверить, достижим ли противник
-	if (pMonster->ObjectNotReachable(m_tEnemy.obj)) {
-		m_tAction = ACTION_WALK_ANGRY_AROUND;
-		Msg("Bad Story");
 
-		// Log out Node Pos and My Pos
-		Fvector vf = ai().level_graph().vertex_position(m_tEnemy.obj->level_vertex_id());
-		float dist = vf.distance_to(m_tEnemy.obj->Position());
-
-		LOG_EX2("VPos = [%f,%f,%f], Pos= [%f,%f,%f] D = [%f]", *"*/ VPUSH(vf), VPUSH(m_tEnemy.obj->Position()), dist /*"*);
-		pMonster->ObjectNotReachable(m_tEnemy.obj);	
-	}
+//	if (pMonster->ObjectNotReachable(m_tEnemy.obj)) {
+//		m_tAction = ACTION_WALK_ANGRY_AROUND;
+//	}
 
 	// Выполнение состояния
 	switch (m_tAction) {	
@@ -199,7 +192,6 @@ void CBitingAttack::Run()
 	}
 
 	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
- 
 
 #pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
 	if (m_bInvisibility && ACTION_THREATEN != m_tAction) {
@@ -227,6 +219,8 @@ void CBitingAttack::Done()
 	pMonster->AS_Stop();
 }
 
+#define THREATEN_TIME  2300
+
 // Реализация пугания:
 // мораль - маленькая, расстояние - расстояние для аттаки
 // на протяжении N мин не был атакован этим монстром
@@ -234,9 +228,9 @@ void CBitingAttack::Done()
 // если состояния ATTACK_MELEE ещё не было
 bool CBitingAttack::CheckThreaten()
 {
-//	if (pMonster->GetEntityMorale() > 0.8f) {
-//		return false;
-//	}
+	if (pMonster->GetEntityMorale() > 0.8f) {
+		return false;
+	}
 
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) == FLAG_ENEMY_DOESNT_SEE_ME) || 
 		((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST)) {
@@ -254,8 +248,8 @@ bool CBitingAttack::CheckThreaten()
 		return false;
 	}
 
-	ThreatenTimes++;
-	if (ThreatenTimes > 2) return false;
+	if (ThreatenTimeStarted == 0) ThreatenTimeStarted = m_dwCurrentTime;
+	if (ThreatenTimeStarted + THREATEN_TIME < m_dwCurrentTime) return false;
 
 	return true;
 }

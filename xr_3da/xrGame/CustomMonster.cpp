@@ -283,8 +283,9 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		Device.Statistic.AI_Think.Begin	();
 		if (GetScriptControl())
 			ProcessScripts();
-		else
+		else {
 			Think						();
+		}
 		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();
 
@@ -347,7 +348,7 @@ void CCustomMonster::UpdateCL	()
 	if	(NET.empty())	return;
 	
 	m_dwCurrentTime	= Level().timeServer();
-
+	
 	// distinguish interpolation/extrapolation
 	u32	dwTime			= Level().timeServer()-NET_Latency;
 	net_update&	N		= NET.back();

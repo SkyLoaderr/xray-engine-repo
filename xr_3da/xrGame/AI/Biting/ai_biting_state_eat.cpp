@@ -162,6 +162,7 @@ void CBitingEat::Run()
 		if (m_dwTimeStartRest + REST_AFTER_LUNCH_TIME < m_dwCurrentTime) {
 			pMonster->flagEatNow	= false;
 			bRestAfterLunch			= false; 
+			pMonster->AddIgnoreObject(pCorpse);
 		}
 		break;
 

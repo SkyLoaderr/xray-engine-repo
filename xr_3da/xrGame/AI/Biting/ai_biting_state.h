@@ -150,7 +150,7 @@ class CBitingAttack : public IState {
 
 	TTime			time_start_walk_away;
 
-	u8				ThreatenTimes;
+	TTime			ThreatenTimeStarted;
 
 public:	
 					CBitingAttack	(CAI_Biting *p, bool bVisibility);
