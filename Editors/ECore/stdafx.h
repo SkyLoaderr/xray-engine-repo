@@ -146,7 +146,10 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 
 // external dependencies
 
-#pragma comment(lib,"ECoreB_static.lib")
+#ifndef _ECOREB
+#	pragma comment(lib,"ECoreB.lib")
+#endif
+
 #pragma comment(lib,"xrEPropsB.lib")
 
 #pragma comment(lib,"xrCoreB.lib")
