@@ -1,11 +1,10 @@
-[m_pseudodog_attack_params]
+[m_poltergeist_attack_params]
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 stand_attack_0	=	  	0.45,		25,		    200,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
-jump_glide_0	=		0.45,		10,		    300,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
 
-[m_pseudodog_step_params]                left             right            right           left
+[m_poltergeist_step_params]                left             right            right           left
 ;------------------------------------------------------------------------------------------------------------------
 ;	anim					cycles |	time1 | power1 |	time2 | power2 | time3 | power3 | time4     | power4 |
 ;-----------------------------------------------------------------------------------------------------------------
@@ -13,12 +12,10 @@ stand_walk_fwd_0		=   	1,		0.1,      1,	  	0.34,    1,		 0.6,	 1,			0.84,		1
 stand_walk_fwd_dmg_0	=   	1,		0.2,      1,	  	0.25,    1,		 0.5,	 1,			0.7,		1
 stand_run_0				=		1,		0.1,      1,	  	0.3,     1,		 0.5,	 1,			0.55,		1
 stand_run_dmg_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
-stand_drag_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
 
-
-[m_pseudodog_e]
+[m_poltergeist_e]
 GroupControlSection	= spawn_group
-$spawn               = "monsters\pseudodog"		; option for Level Editor
+$spawn               = "monsters\poltergeist"		; option for Level Editor
 $npc			     = on						; option for Level Editor
 ;$prefetch 			 = 16
 Scheduled		     = on						; option for ALife Simulator
@@ -28,12 +25,12 @@ MinSpeed		     = 1.0						; option for ALife Simulator
 MaxSpeed		     = 1.5						; option for ALife Simulator
 going_speed          = 1.0                      ; option for ALife Simulator
 search_speed         = .5                       ; option for ALife Simulator
-visual				 = monsters\pseudodog\pseudodog
-MaxHealthValue		     = 150			; range [0..200]
+visual				 = monsters\poltergeist\poltergeist
+MaxHealthValue		 = 150			; range [0..200]
 DynamicObjectsCount	 = 32
 
 cform                = skeleton					; collision class
-class                = AI_DOG_B					; AI class
+class                = AI_PHANT					; AI class
 
 bone_torso			 = bip01_spine1 			; bone name
 bone_head			 = bip01_head				; bone name
@@ -59,7 +56,6 @@ ph_skeleton_ddelay	     	 =20
 ph_skel_fatal_impulse_factor =3.0
 ph_after_death_velocity_factor=1.25
 ph_skel_shot_up_factor             =.8f
-
 
 SoundThreshold		 = 0.06						; range [0..1]a
 
@@ -94,12 +90,12 @@ as_step					= 0.1
 
 transparency_threshold  = 0.25
 
-DayTime_Begin		= 0	;6			; ýð¢ðûð ôý  ôû  üþý¸ª¨ð
-DayTime_End			= 21		; úþýõ¡ ôý  ôû  üþý¸ª¨ð
-Min_Satiety			= 0.95	;0.3	;0.6		; üøý. ýþ¨üð ¸vªþ¸ªø (üõý¹°õ - ºöõ óþûþôývù)
-Max_Satiety			= 1.0		; üðú¸. ýþ¨üð ¸vªþ¸ªø (ñþû¹°õ - þ¢õý¹ ¸vªvù)
+DayTime_Begin		= 0		
+DayTime_End			= 21	
+Min_Satiety			= 0.95	
+Max_Satiety			= 1.0	
 
-distance_to_corpse	= 1.8		; ôø¸ª. ôþ ª¨ºÿð, ÿ¨ø úþªþ¨þù þý ÿõ¨õ¿þôøª ò ¸þ¸ªþ ýøõ õôv
+distance_to_corpse	= 1.8	
 
 ;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
@@ -140,14 +136,14 @@ chemical_burn_immunity 	= 1.0
 explosion_immunity 	= 1.0
 fire_wound_immunity  	= 0.35	;0.45
 
-sleep_health = 1.0		;1.5				;úþ¤¯¯ø¡øõýªv ¸úþ¨þ¸ªõù ø÷üõýõýø  ÿð¨ðüõª¨þò òþ ò¨õü  ¸ýð
+sleep_health = 1.0		;1.5		
 sleep_power = 1.0		;1.5
 sleep_satiety = 1.0		;0.8
 sleep_radiation = 1.0	;1.1
 
-eat_freq			=	5.0		; ¢ð¸ªþªð ºúº¸þò ò ¸õú
-eat_slice			=	0.01	; ºòõûø¢õýøõ ¸vªþ¸ªø ÿ¨ø 1 ºúº¸õ
-eat_slice_weight	=	10.0	; ºüõý¹°õýøõ õôv º ª¨ºÿð
+eat_freq			=	5.0		
+eat_slice			=	0.01	
+eat_slice_weight	=	10.0	
 
 ; Morale
 MoraleSuccessAttackQuant	= 0.3;
@@ -169,45 +165,22 @@ sound_landing			= monsters\biting\def_
 sound_steal				= monsters\biting\def_
 sound_panic				= monsters\dog\hit_
 sound_growling			= monsters\dog\growling_
-sound_psy_attack		= monsters\pseudodog\psy_attack_
-
-sound_psy_effect		= monsters\pseudodog\psy_affect_0
 
 
 idle_sound_delay		= 20000
 eat_sound_delay			= 3000
 attack_sound_delay		= 4500
 
-jump_factor				= 1.7			;(¢õü ñþû¹°õ, ªõü òv°õ ÿ¨vöþú)
-jump_delay				= 5000	;3000	;4000	;6000	;(¢ð¸ªþªð ÿ¨vöúþò)
-jump_min_dist			= 2.0 
-jump_max_dist			= 7.0	;10.0	;5.0
-jump_max_angle			= 0.3	;0.5	;1.0	;1.8
-jump_trace_dist			= 1.0
-
-
 DamagedThreshold		= 0.5
 
 material				= creatures\medium
 DynamicObjectsCount		= 32
 
-step_snd_walk			= 0.3, 0.3
-step_snd_walk_dmg		= 0.3, 0.3
-step_snd_run			= 0.5, 0.2
-step_snd_run_dmg		= 0.5, 0.2
-step_snd_turn			= 0.3, 0.4
-step_snd_steal			= 0.2, 0.4
-step_snd_drag			= 0.3, 0.3
-
 squad_attack_algorithm	= 1
-
 attack_effector			= monster_attack_effector
 
-psi_effector			= pseudodog_psi_effector
-	
-
 attack_params			= m_pseudodog_attack_params
-step_params			= m_pseudodog_step_params
+step_params				= m_pseudodog_step_params
 
 anger_hunger_threshold	= 0.1
 anger_loud_threshold	= 0.7
