@@ -3,8 +3,10 @@
 
 #include "stdafx.h"
 
+#pragma warning(disable:4530)
 #include "xrCore.h"
 #pragma comment(lib,"x:\\xrCore.lib")
+#pragma warning(default:4530)
 
 // Lua
 extern "C"
@@ -785,7 +787,7 @@ void TestLua1()
 }
 
 // main
-int __cdecl _tmain(int argc, _TCHAR* argv[])
+int __cdecl main(int argc, char* argv[])
 {
 	TestLua0();
 //	TestLua1();
