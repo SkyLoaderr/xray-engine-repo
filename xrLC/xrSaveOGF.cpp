@@ -41,7 +41,7 @@ void CBuild::SaveTREE(IWriter &fs)
 	CMemoryWriter		MFS;
 
 	Status				("Visuals...");
-	mem_Compact			();
+	//mem_Compact			();
 	fs.open_chunk		(fsL_VISUALS | CFS_CompressMark);
 	for (vector<OGF_Base*>::iterator it = g_tree.begin(); it!=g_tree.end(); it++)
 	{
@@ -62,7 +62,7 @@ void CBuild::SaveTREE(IWriter &fs)
 		100.f * float(g_batch_1000)/float(g_batch_count),
 		100.f * float(g_batch_5000)/float(g_batch_count)
 		);
-	mem_Compact			();
+	//mem_Compact			();
 
 	Status				("Geometry : vertices ...");
 	MFS.clear			();
@@ -70,7 +70,7 @@ void CBuild::SaveTREE(IWriter &fs)
 	g_VB.Save			(MFS);
 	fs.w_compressed		(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
-	mem_Compact			();
+	//mem_Compact			();
 
 	Status				("Geometry : indices ...");
 	MFS.clear();
@@ -78,7 +78,7 @@ void CBuild::SaveTREE(IWriter &fs)
 	g_IB.Save			(MFS);
 	fs.w_compressed		(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
-	mem_Compact			();
+	//mem_Compact			();
 
 	Status				("String table...");
 	fs.open_chunk		(fsL_STRINGS);
@@ -86,5 +86,5 @@ void CBuild::SaveTREE(IWriter &fs)
 	for (vector<string>::iterator T=g_Strings.begin(); T!=g_Strings.end(); T++)
 		fs.w(T->c_str(),T->length()+1);
 	fs.close_chunk		();
-	mem_Compact			();
+	//mem_Compact			();
 }
