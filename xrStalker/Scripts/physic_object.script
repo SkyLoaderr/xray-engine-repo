@@ -102,7 +102,7 @@ function handing_lamp_binder:reload(section)
 		printf("read animation type: %s", self.type)
 	end
 	
-	if(self.type ~= "low" and self.type ~="midle" and self.type ~= "hight") then
+	if(self.type ~= "low" and self.type ~= "midle" and self.type ~= "hight") then
 		printf("WRONG TUNING HANDING LAMP")
 		self.type	= "low"
 	end
