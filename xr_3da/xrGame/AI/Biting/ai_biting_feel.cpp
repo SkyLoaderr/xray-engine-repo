@@ -20,6 +20,11 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	CEntityAlive* E = dynamic_cast<CEntityAlive*> (who);
 	if (E && (E->g_Team() == g_Team())) return;
 	
+	if (who)
+		LOG_EX2("%s Hear: %s type = %x", *"*/ cName(), who->cName(), eType /*"*);
+	else 
+		LOG_EX2("%s Hear: WORLD type = %x", *"*/ cName(), eType /*"*);
+
 	// ignore unknown sounds
 	if (eType == 0xffffffff) return;
 
@@ -29,10 +34,6 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if (power >= _sd->m_fSoundThreshold) {
 		if (this != who) {
 			HearSound(who,eType,Position,power,m_current_update);
-			if (who)
-				LOG_EX2("%s Hear: %s type = %x", *"*/ cName(), who->cName(), eType /*"*);
-			else 
-				LOG_EX2("%s Hear: WORLD type = %x", *"*/ cName(), eType /*"*);
 		}
  	}
 }
@@ -95,7 +96,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 
 	MotionMan.FX_Play(u16(element), is_front, amount / 4);	
 
-	AddDangerousEnemy(who,50000);
+	AddDangerousEnemy(who,20000);
 }
 
 bool CAI_Biting::RayPickEnemy(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks)
