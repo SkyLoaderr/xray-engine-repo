@@ -4,6 +4,7 @@ function set_storyline(object, char_ini)
 	-- подключение всей энциклопедии
 	if actor ~= nil then
 	       actor:give_info_portion("encyclopedy")
+	       actor:give_info_portion("actor_start_dialogs")
 	end
 
         -- Реакция на бобика

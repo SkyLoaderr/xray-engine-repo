@@ -23,21 +23,11 @@
 	    <icon name="Case" x="2" y="8" width="1" height="1"></icon>
             <text>Украсть ящик с блокпоста</text>
         </location>
+	<dialog>escape_trader_done_blockpost_box</dialog>
     </info_portion>
     <info_portion id="escape_have_blockpost_case">
         <disable>escape_need_blockpost_case</disable>
     </info_portion>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -52,6 +42,14 @@
 	<info_portion id="dolg_territory">
 		<text>Вы находитесь на территории группировки "Долг".</text>
 	</info_portion>
+
+
+	<info_portion id="actor_start_dialogs">
+		<dialog>actor_break_dialog</dialog>
+		<dialog>escape_trader_talk_about</dialog>
+		<dialog>escape_trader_jobs</dialog>
+	</info_portion>
+
 
 	<info_portion id="encyclopedy">
 		<article>mutant_flesh_evolution</article>

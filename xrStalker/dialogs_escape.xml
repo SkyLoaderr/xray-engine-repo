@@ -1,17 +1,32 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_dialogs>
+    <dialog id="actor_break_dialog">
+	<phrase_list>
+	    	<phrase id="0">
+			<text>До встречи.</text>
+			<action>dialogs.break_dialog</action>
+	    	</phrase>                                                                                               
+	</phrase_list>
+    </dialog>
+
     <dialog id="escape_trader_start_dialog">
 	<phrase_list>
 	    	<phrase id="0">
 			<text>Привет! Как здоровье? Надеюсь не прихворал.\n У меня для тебя есть работка на выходных.</text>
-			<next>1</next>
-			<next>10</next>
-			<next>14</next>
 	    	</phrase>                                                                                               
-		<phrase id="1">
+	</phrase_list>
+    </dialog>
+
+    <dialog id="escape_trader_jobs">
+	<phrase_list>
+	    	<phrase id="0">
 			<text>Какая у тебя есть работа?</text>
 			<next>2</next>
+		</phrase>
+	    	<phrase id="1">
+			<text>До встречи.</text>
+			<action>dialogs.break_dialog</action>
 		</phrase>
 		<phrase id="2">
 			<text>Все как обычно. Прежде всего мне нужны артефакты. Плачу обычную цену, ни больше, ни меньше.\n Ну и иногда мне нужны "особые" люди для "особой" работы.</text>
@@ -45,41 +60,45 @@
 		</phrase>
 		<phrase id="8">
 			<text>Ну принесешь ящик, тогда и рассчитаемся.</text>
-			<next>14</next>
+			<next>1</next>
 		</phrase>
 		<phrase id="9">
 			<text>Ну и хам же ты. Немудрено, что тебя даже на том свете не приняли.</text>
-			<next>14</next>
-		</phrase>
-		<phrase id="10">
-			<has_info>escape_need_blockpost_case</has_info>
-	                <precondition>escape.have_blockpost_case</precondition>
-			<text>Вот твой ящик.</text>
-	                <action>escape.give_blockpost_case</action>
-	                <give_info>escape_have_blockpost_case</give_info>
-			<next>11</next>			
-		</phrase>
-		<phrase id="11">
-			<text>Тааак, 1000 или нет, 500 рублей и мы в рассчете.</text>
-			<next>14</next>
+			<next>1</next>
 		</phrase>
 		<phrase id="12">
 	                <precondition>escape.trader_dont_has_job</precondition>
 			<text>Не, пока ничего нету.</text>
-			<next>14</next>
+			<next>1</next>
 		</phrase>
 		<phrase id="13">
 	                <precondition>escape.trader_alredy_give_job</precondition>
 			<text>Кажется ты уже что-то обещал мне сделать, и еще не сделал. Пока не сделаешь - никаких новых заданий.</text>
-			<next>14</next>
-		</phrase>
-		<phrase id="14">
-			<text>До встречи.</text>
-			<action>dialogs.break_dialog</action>
+			<next>1</next>
 		</phrase>
 		<phrase id="15">
 			<text>Ну вот и ладненько. Что нибудь еще?</text>
-			<next>14</next>
+			<next>1</next>
+		</phrase>
+	</phrase_list>
+    </dialog>
+
+    <dialog id="escape_trader_done_blockpost_box">
+        <precondition>escape.have_blockpost_case</precondition>
+	<phrase_list>
+		<phrase id="0">
+			<text>Вот твой ящик.</text>
+	                <action>escape.give_blockpost_case</action>
+	                <give_info>escape_have_blockpost_case</give_info>
+			<next>2</next>			
+		</phrase>
+	    	<phrase id="1">
+			<text>До встречи.</text>
+			<action>dialogs.break_dialog</action>
+		</phrase>
+		<phrase id="2">
+			<text>Тааак, 1000 или нет, 500 рублей и мы в рассчете.</text>
+			<next>1</next>
 		</phrase>
 	</phrase_list>
     </dialog>
@@ -87,8 +106,134 @@
     <dialog id="escape_trader_talk_about">
 	<phrase_list>
 	    	<phrase id="0">
-			<text>Привет! Как здоровье? Надеюсь не прихворал.\n У меня для тебя есть работка на выходных.</text>
+			<text>Расскажи мне о ...</text>
+			<next>1</next>			
 	    	</phrase>                                                                                               
+	    	<phrase id="1">
+			<text>Спрашивай, только я многого не знаю. Сам понимаешь, сижу тут целыми днями, а жизнь она вся там, снаружи.</text>
+			<next>2</next>
+			<next>3</next>
+			<next>4</next>
+			<next>5</next>
+			<next>6</next>
+			<next>7</next>
+			<next>8</next>
+	    	</phrase>                                                                                               
+	    	<phrase id="2">
+			<text>Что ты знаешь о Стрелке?</text>
+			<next>21</next>
+	    	</phrase>
+	    	<phrase id="21">
+			<text>Слухи разные ходят. Вроде местная знаменитость какая-то. Вроде в центр зоны ходил. 
+			Слышал, что о нем знает сталкер в гаражах. Спрашивай сталкеров, они больше знают.</text>
+			<next>22</next>
+	    	</phrase>
+	    	<phrase id="22">
+			<text>Как Стрелок прошел к центру Зоны?</text>
+			<next>221</next>
+	    	</phrase>
+	    	<phrase id="221">
+			<text>Не знаю. Возможно, знает бармен или кто-то из сталкеров ветеранов.</text>
+	    	</phrase>
+	    	<phrase id="3">
+			<text>Расскажи мне о военных сталкерах.</text>
+			<next>31</next>
+	    	</phrase>
+	    	<phrase id="31">
+			<text>Военные, что с них взять. Смотрят на всех свысока, как будто богами тут заделались. 
+			Обряды не чтят, на помощь никогда не прийдут, сколько не зови. Разве что пристрелят, но не из жалости, 
+			а потому что натура их такая - сперва стреляй, потом думай. Но я с ними нашел общий разговор. 
+			Водку, журнальчики там разные в обмен на спокойствие. Ну, ты понимаешь о чем я.</text>
+	    	</phrase>
+	    	<phrase id="4">
+			<text>Что в Зоне делают военные?</text>
+			<next>41</next>
+	    	</phrase>
+	    	<phrase id="41">
+			<text>Охраняют, что ж еще. То ли саму зону охраняют, то ли весь мир от зоны. Непонятно. Иногда 
+			в зону даже целые экспедиции военных проходят. Значит ищут что-то. Но я тебе вот что скажу. Военные 
+			зону не уважают, и зона их не любит. То и дело цинковые гробы увозят.</text>
+	    	</phrase>
+	    	<phrase id="5">
+			<text>Расскажи немного об этом месте.</text>
+<!-- Вставить добавление в энциклопедию сведение об эскейпе  -->
+			<next>51</next>
+	    	</phrase>
+	    	<phrase id="50">
+			<text>Ладно, спасибо.</text>
+	    	</phrase>
+	    	<phrase id="51">
+			<text>Предбанник Зоны, армейский кордон. На равнинах стаи слепых псов бродят. Иногда сюда забегают мутанты
+			Вообще тут почти всегда тихо и спокойно, вот только военные иногда развлекаются. Сталкеры тут только мимоходом. 
+			Только новички иногда задерживаются. Хорошего хабара здесь не сыщешь. Что еще сказать, Мост есть разрушенный, 
+			да фабрика заброшенная. Вроде все.</text>
+			<next>50</next>
+			<next>52</next>
+			<next>53</next>
+			<next>54</next>
+	    	</phrase>
+	    	<phrase id="52">
+			<text>Расскажи побольше о блокпосте.</text>
+			<next>521</next>
+	    	</phrase>
+	    	<phrase id="521">
+			<text>Несколько десятков солдат и приказ стрелять без предупреждения. Лучьше обходить стороной. Когда обижаются,
+			то зовут бравых спецназовцев. Те наверху такой шмон наводят, что у меня потом месяц клиентов нет. Так что ты их лучше
+			не обижай. Командира их знаю немного. Алкаголик полный. Благодаря ему и держусь здесь.</text>
+			<next>50</next>
+			<next>52</next>
+			<next>53</next>
+			<next>54</next>
+	    	</phrase>
+	    	<phrase id="53">
+			<text>Расскажи побольше о разрушенном мосте.</text>
+			<next>531</next>
+	    	</phrase>
+	    	<phrase id="531">
+			<text>Если идти по дороге вглубь зоны, то увидишь насыпь железнодорожную. Раньше там мост над дорогой был, а потом
+			взял и упал во время выброса. Военные там любят поджидать сталкеров, возвращающихся с хабаром.</text>
+			<next>50</next>
+			<next>52</next>
+			<next>53</next>
+			<next>54</next>
+	    	</phrase>
+	    	<phrase id="54">
+			<text>Расскажи побольше о заброшенной фабрике.</text>
+			<next>541</next>
+	    	</phrase>
+	    	<phrase id="541">
+			<text>Как дорогу перейдешь, там и увидишь ее. Белое такое здание. Что смогли украсть - давно украли, а что не смогли
+			то давно заржавело. Излюбленное место бандитов. Рядом с ней ложбинка есть, так вот там можно даже артефактами разжиться.</text>
+			<next>50</next>
+			<next>52</next>
+			<next>53</next>
+			<next>54</next>
+	    	</phrase>
+	    	<phrase id="6">
+			<text>Расскажи мне о Зоне.</text>
+			<next>61</next>
+	    	</phrase>
+	    	<phrase id="61">
+			<text>В Зоне без оружия опасно... а его завсегда сможешь прикупить у меня, для тебя почти по самым низким 
+			ценам: практически по самым... ну почти... В центре Зоны точно есть клондайк артефактов и тот, кто проберется 
+			туда, сказочно разбогатеет. Понимаешь куда клоню?</text>
+	    	</phrase>
+	    	<phrase id="7">
+			<text>Мне нужна экипировка, где я могу ее раздобыть? Тут вообще магазины какие-нибудь есть?</text>
+			<next>71</next>
+	    	</phrase>
+	    	<phrase id="71">
+			<text>Ну, ты прямо сейчас в одном из них и стоишь. Продаю все по самым низким ценам. С боеприпасами правда 
+			в зоне туговато, поэтому и стоят так дорого.</text>
+	    	</phrase>
+	    	<phrase id="8">
+			<text>Мне нужны деньги, как их можно заработать?</text>
+			<next>81</next>
+	    	</phrase>
+	    	<phrase id="81">
+			<text>Все очень просто. Делаешь другим услуги, если они тебя не убьют, то дадут денег. Можешь артефакты
+			мне продавать. Заплачу хорошую цену, не то что некоторые барыги.</text>
+	    	</phrase>
 	</phrase_list>
     </dialog>
 
