@@ -552,13 +552,13 @@ void CGameObject::shedule_Update	(u32 dt)
 
 BOOL CGameObject::net_SaveRelevant	()
 {
-	return						(CScriptBinder::net_SaveRelevant());
+	return	(CScriptBinder::net_SaveRelevant());
 }
 
 //игровое имя объекта
 LPCSTR CGameObject::Name () const
 {
-	return *cName();
+	return	(*cName());
 }
 
 void CGameObject::on_reguested_spawn	(CObject *object)

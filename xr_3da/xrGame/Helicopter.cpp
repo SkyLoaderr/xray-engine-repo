@@ -386,7 +386,7 @@ void	CHelicopter::net_Save			(NET_Packet& P)
 
 BOOL	CHelicopter::net_SaveRelevant	()
 {
-	return BOOL(PPhysicsShell()!=NULL);
+	return (inherited::net_SaveRelevant() || BOOL(PPhysicsShell()!=NULL));
 }
 
 void CHelicopter::net_Export(NET_Packet &P)

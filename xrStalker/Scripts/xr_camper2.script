@@ -1,0 +1,252 @@
+local sounds = {}
+
+function action2(obj,...)
+    local act = entity_action()
+    local i = 1
+    while true do
+        if (arg[i] ~= nil) then
+            act:set_action(arg[i])
+        else
+            break
+        end
+        i = i + 1
+    end
+    if (obj ~= nil) then
+        obj:command(act,false)
+    end
+    return  entity_action(act)
+end
+
+---------------------------------------------------------------------------------------------------------------------
+--Evaluators
+----------------------------------------------------------------------------------------------------------------------
+-- Константа
+class "evaluator_need_camper" (property_evaluator)
+function evaluator_need_camper:__init(storage) super ()
+  self.a = storage
+end
+function evaluator_need_camper:evaluate ()
+  local tt
+
+  tt = self.a.enabled == true
+
+      return tt
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Actions
+----------------------------------------------------------------------------------------------------------------------
+-- Обычное поведение
+class "action_camper_activity" (action_base)
+function action_camper_activity:__init (npc_name,action_name,storage) super (nil, action_name)
+  --printf("_bp: action_camper_activity: __init")
+    self.a = storage
+
+    self.state_none = 0
+    self.state_standing_before_anim = 1
+    self.state_anim_playing = 3
+    self.state_moving = 4
+
+    self.state = self.state_none
+
+    self.path_main = self.a.path_main
+
+  -- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
+    self.path_active = self.path_main
+
+    -- Флажок, включить если прибыли в путь, состоящий из одной точки
+    self.arrived_to_single_point_path = true
+
+    -- Точка, в которую смотрели в прошлый раз. Ее запоминаем для того, чтобы не делать паузу между анимациями,
+    -- если собираемся смотреть в ту же самую точку, не поворачиваясь никуда...
+    self.last_look_index = nil
+end
+
+function action_camper_activity:initialize()
+  --printf("_bp: action_camper_activity: initialize")
+    action_base.initialize(self)
+    self.object:set_node_evaluator()
+    self.object:set_path_evaluator()
+    self.object:set_desired_position()
+    self.object:set_desired_direction()
+
+    self.object:set_item(object.idle, self.object:best_weapon())
+    self.object:set_detail_path_type(move.line)
+    self.object:set_body_state(move.standing)
+    self.object:set_movement_type(move.walk)
+    self.object:set_path_type(game_object.patrol_path)
+    self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
+    --self.object:set_mental_state(anim.free)
+    --self.object:set_sight(look.search, nil, 0)
+    self.object:set_sight(look.danger, nil, 0)
+
+    self.state = self.state_moving
+
+    self.object:set_callback(self, "waypoint_callback", game_object.movement)
+end
+
+function action_camper_activity:waypoint_callback(obj, action_type, index)
+    -- Будет использоваться позже для вызова этой функции с целью иммитации коллбека (для путей, состоящих из одной точки):
+    self.last_action_type = action_type
+    self.last_index = index
+
+    if index == -1 then
+        return
+    end
+
+    local ptr = patrol(self.path_active)
+    self.arrived_to_single_point_path = true
+    self.object:set_movement_type(move.stand)
+
+    -- Выбрать случайно одну из точек, чтобы посмотреть в нее:
+    local pt_chosen = nil
+    local pt_found = 0
+
+    local num_points = ptr:count()
+    for i = 0, num_points - 1 do
+        if i ~= index then
+            pt_found = pt_found + 1
+            local r = math.random(1, pt_found)
+            if r == 1 then
+                pt_chosen = i
+            end
+        end
+    end
+
+    if pt_chosen then
+        if pt_chosen ~= self.last_look_index then
+            self.object:clear_animations () -- не играть анимацию во время поворота!
+            self.expiration_time = device():time_global() + 1500; -- дать 100 мс на поворот
+            self:look_at_waypoint(pt_chosen) -- поворачиваемся
+        else
+            self.expiration_time = 0 -- сразу же стартовать анимацию, уже смотрим в нужную сторону
+        end
+        self.state = self.state_standing_before_anim
+        self.object:set_movement_type(move.stand)
+    end
+end
+
+-- Посмотреть в направлении указанной точки текущего маршрута
+function action_camper_activity:look_at_waypoint(pt)
+    local way = patrol (self.object:patrol ())
+    local look_pt = this.vector_copy_by_val(way:point(pt)):sub (self.object:position ())
+    self.object:set_sight(look.direction, look_pt, 0)
+    self.last_look_index = pt
+
+  if self.projector_name then
+    if not self.projector then
+      self.projector = level.object(self.projector_name)
+      if not self.projector then
+        --printf("xr_camper: WARNING: unable to initialize projector")
+      end
+    end
+    if self.projector then
+      reset_action(self.projector, "xr_camper")
+--      action(self.projector, look(self.object:position(), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
+--      action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
+--        action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
+        this.action2(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
+    end
+  end
+end
+function action_camper_activity:execute()
+  --[[printf("_debug_camper [%s]: state [%d], animation_count [%d]",
+    self.object:name(), self.state, self.object:animation_count())]]
+
+    if self.state == self.state_standing_before_anim and self.expiration_time and device():time_global() >= self.expiration_time then
+    --printf("_debug_camper [%s]: adding animations", self.object:name())
+        while self.object:animation_count() <= 1 do
+            local animate = math.random(1, 10)
+            if animate == 1 then
+                            self.object:add_animation("stoya_ruje_ 0", true)
+                        elseif animate == 2 then
+                            self.object:add_animation("vishka_3", false)
+                        elseif animate == 3 then
+                            self.object:add_animation("norm_torso_2_idle_1", false)
+                        elseif animate == 4 then
+                            self.object:add_animation("norm_torso_2_idle_2", true)
+                        elseif animate == 5 then
+                            self.object:add_animation("norm_torso_2_idle_3", false)
+                        elseif animate == 6 then
+                            self.object:add_animation("chasovoy_0", true)
+                        elseif animate == 7 then
+                            self.object:add_animation("chasovoy_1", true)
+                        elseif animate == 8 then
+                            self.object:add_animation("chasovoy_2", true)
+                        elseif animate == 9 then
+                            self.object:add_animation("chasovoy_3", true)
+                        elseif animate == 10 then
+                            self.object:add_animation("chasovoy_4", true)
+                        end
+        end
+    self.state = self.state_anim_playing
+    end
+
+  --printf("_debug_camper [%s]: animation_count=%d", self.object:name(), self.object:animation_count())
+
+  if self.state == self.state_anim_playing and self.object:animation_count() <= 1 then
+        self.state = self.state_moving
+
+        self:waypoint_callback(self.object, self.last_action_type, self.last_index)
+    end
+end
+function action_camper_activity:finalize()
+  --printf("_bp: FINALIZE")
+  self.last_look_index = nil -- воможно уходим с точки, последнее неправление взгляда уже не актуально
+
+    self.object:clear_callback(game_object.movement)
+    self.object:clear_animations()
+
+    action_base.finalize(self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Guard binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc)
+  --printf("_bp: add_to_binder (camper)")
+  local operators    = {}
+  local properties  = {}
+
+  sounds["commander_snd"]     = xr_sounds_id.zmey_camper_base + 1
+  sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_camper_base + 2
+  sounds["soldiers_idle2_snd"]     = xr_sounds_id.zmey_camper_base + 3
+  sounds["soldiers_replics_snd"]     = xr_sounds_id.zmey_camper_base + 4
+  sounds["soldiers_hear_snd"]     = xr_sounds_id.zmey_camper_base + 5
+  sounds["soldier_alarm"]     = xr_sounds_id.zmey_camper_base + 6
+
+  npc:add_sound ("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, sounds["commander_snd"])
+     npc:add_sound ("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
+     npc:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_",     20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
+     npc:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_",     20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
+     npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
+    npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",     20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
+
+   local manager = npc:motivation_action_manager()
+
+  properties["need_camper"]   = xr_evaluators_id.zmey_camper_base + 1
+
+  operators["action_camper"]   = xr_actions_id.zmey_camper_base + 1
+
+   -- // evaluators
+    manager:add_evaluator (properties["need_camper"],   this.evaluator_need_camper  (xr_motivator.storage[npc:id()].camper))
+
+   local new_action = this.action_camper_activity(npc, "action_camper_activity", xr_motivator.storage[npc:id()].camper)
+    new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
+    new_action:add_precondition    (world_property(stalker_ids.property_enemy,   false))
+      new_action:add_precondition    (world_property(properties["need_camper"],   true))
+   new_action:add_effect(world_property(properties["need_camper"], false))
+    manager:add_action(operators["action_camper"], new_action)
+
+  new_action = manager:action(xr_actions_id.alife)
+    new_action:add_precondition(world_property(properties["need_camper"], false))
+end
+
+-- функции
+function vector_copy_by_val(vec)
+  local newvec = vector()
+  newvec.x = vec.x
+  newvec.y = vec.y
+  newvec.z = vec.z
+  return newvec
+end

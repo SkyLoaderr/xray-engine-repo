@@ -534,7 +534,7 @@ void CEntityAlive::load	(IReader &input_packet)
 
 BOOL	CEntityAlive::net_SaveRelevant		()
 {
-	return TRUE;
+	return		(TRUE);
 }
 
 CEntityCondition *CEntityAlive::create_entity_condition	()

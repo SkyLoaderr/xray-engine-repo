@@ -62,8 +62,6 @@ void game_GameState::script_register(lua_State *L)
 
 	module(L)
 		[
-			luabind::class_<DLL_Pure>("dll_pure"),
-
 			luabind::class_< game_GameState, DLL_Pure >("game_GameState")
 			.def(	constructor<>())
 

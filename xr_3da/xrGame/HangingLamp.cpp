@@ -177,7 +177,7 @@ void	CHangingLamp::net_Save			(NET_Packet& P)
 
 BOOL	CHangingLamp::net_SaveRelevant	()
 {
-	return BOOL(PPhysicsShell()!=NULL);
+	return (inherited::net_SaveRelevant() || BOOL(PPhysicsShell()!=NULL));
 }
 
 void CHangingLamp::shedule_Update	(u32 dt)

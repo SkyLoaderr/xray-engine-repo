@@ -1571,6 +1571,6 @@ void CActor::net_Save(NET_Packet& P)
 
 BOOL CActor::net_SaveRelevant()
 {
- return TRUE;
+	return TRUE;
 }
 

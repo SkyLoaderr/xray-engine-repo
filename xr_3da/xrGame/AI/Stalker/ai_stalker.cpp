@@ -298,8 +298,9 @@ void CAI_Stalker::net_Save			(NET_Packet& P)
 
 BOOL CAI_Stalker::net_SaveRelevant	()
 {
-	return BOOL(PPhysicsShell()!=NULL);
+	return (inherited::net_SaveRelevant() || BOOL(PPhysicsShell()!=NULL));
 }
+
 void CAI_Stalker::net_Export		(NET_Packet& P)
 {
 	R_ASSERT						(Local());
