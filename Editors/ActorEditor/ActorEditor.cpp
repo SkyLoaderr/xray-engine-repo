@@ -29,7 +29,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash 				= xr_new<TfrmSplash>((TComponent*)0);
         frmSplash->Show			();
         frmSplash->Repaint		();
-        frmSplash->SetStatus	("Core initialize...");
+        frmSplash->SetStatus	("Core initializing...");
 
     	Core._initialize		(_EDITOR_FILE_NAME_,ELogCallback);
         TfrmLog::CreateLog		();

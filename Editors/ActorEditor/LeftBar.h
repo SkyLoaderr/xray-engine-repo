@@ -129,6 +129,8 @@ public:		// User declarations
     void 			UpdateBar		();
 	void 			AddMotion		(LPCSTR full_name, bool bLoadMode);
     void			SetRenderStyle	(bool bEngineStyle);
+    void 			MinimizeAllFrames();
+    void 			MaximizeAllFrames();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

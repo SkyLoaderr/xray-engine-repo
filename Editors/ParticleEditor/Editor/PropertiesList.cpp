@@ -1073,8 +1073,9 @@ void TProperties::CancelLWNumber()
 
 void TProperties::HideLWNumber()
 {
-    if (seNumber->Visible&&Visible) 	tvProperties->SetFocus();
+	// последовательность важна (может быть 2 Apply)
     seNumber->Tag	= 0;
+    if (seNumber->Visible&&Visible) 	tvProperties->SetFocus();
     seNumber->Hide	();
 }
 //---------------------------------------------------------------------------
@@ -1296,8 +1297,9 @@ void TProperties::CancelLWText()
 
 void TProperties::HideLWText()
 {
-    if (edText->Visible&&Visible) 	tvProperties->SetFocus();
+	// последовательность важна (может быть 2 Apply)
     edText->Tag		= 0;
+    if (edText->Visible&&Visible) 	tvProperties->SetFocus();
     edText->Hide	();
 }
 //---------------------------------------------------------------------------
