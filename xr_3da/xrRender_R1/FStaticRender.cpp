@@ -576,19 +576,44 @@ void	CRender::Render		()
 				{
 					SceneGraph::mapNormalVS::TNode*		Nvs		= lstVS[vs_id];
 					RCache.set_VS						(Nvs->key);	
-					RCache.set_xform_world				(Fidentity);
 				
 					SceneGraph::mapNormalConstants&	cs			= Nvs->val;		cs.ssa	= 0;
 					cs.getANY_P		(lstCS);	if (sort)		std::sort	(lstCS.begin(),lstCS.end(),cmp_cs);
 					for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
 					{
 						SceneGraph::mapNormalConstants::TNode*	Ncs	= lstCS[cs_id];
+						RCache.set_xform_world					(Fidentity);
 						RCache.set_Constants					(Ncs->key);
 						
 						SceneGraph::mapNormalTextures&	tex			= Ncs->val;		tex.ssa	= 0;
 						sort_tlist		(lstTextures,lstTexturesTemp,tex,sort);
 						for (u32 tex_id=0; tex_id<lstCS.size(); tex_id++)
 						{
+							SceneGraph::mapNormalTextures::TNode*	Ntex = lstTextures[tex_id];
+							RCache.set_Textures						(Ntex->key);	
+
+							SceneGraph::mapNormalVB&	vb			= Ntex->val;		vb.ssa	= 0;
+							vb.getANY_P		(lstVB);	if (sort)	std::sort	(lstVB.begin(),lstVB.end(),cmp_vb);
+							for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
+							{
+								SceneGraph::mapNormalVB::TNode*		Nvb = lstVB[vb_id];
+								// RCache.set_Vertices					(Nvb->key);	
+
+								SceneGraph::mapNormalMatrices&	mat		= Nvb->val;			mat.ssa	= 0;
+								mat.getANY_P	(lstMatrices);	if (sort)	std::sort	(lstMatrices.begin(),lstMatrices.end(),cmp_matrices);
+								for (u32 mat_id=0; mat_id<lstMatrices.size(); mat_id++)
+								{
+									SceneGraph::mapNormalMatrices::TNode*	Nmat	= lstMatrices[mat_id];
+									RCache.set_Matrices						(Nmat->key);	
+
+									SceneGraph::mapNormalItems&				items	= Nmat->val;		items.ssa	= 0;
+									mapNormal_Render						(items);
+								}
+								lstMatrices.clear		();
+								mat.clear				();
+							}
+							lstVB.clear				();
+							vb.clear				();
 						}
 						lstTextures.clear		();
 						lstTexturesTemp.clear	();
