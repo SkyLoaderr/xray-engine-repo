@@ -142,6 +142,7 @@ void CSHEngineTools::RealUpdateProperties()
         char key[255];
 
         PHelper.CreateCaption(items,"Type",m_CurrentBlender->getComment());
+        PHelper.CreateCaption(items,"Owner",desc->cComputer);
 //. ListItem
 //.        PHelper.CreateName(items,"Name",desc->cName,sizeof(desc->cName),0);
         PropValue* V	= PHelper.CreateText(items,"Name",desc->cName,sizeof(desc->cName));
