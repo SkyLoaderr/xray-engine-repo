@@ -66,8 +66,8 @@ LINK32=link.exe
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRHEMISPHERE_EXPORTS" /Yu"stdafx.h" /FD /GZ  /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRHEMISPHERE_EXPORTS" /Yu"stdafx.h" /FD /GZ  /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRHEMISPHERE_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRHEMISPHERE_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -85,9 +85,6 @@ LINK32=link.exe
 
 # Name "xrHemisphere - Win32 Release"
 # Name "xrHemisphere - Win32 Debug"
-# Begin Group "Source Files"
-
-# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
 SOURCE=.\StdAfx.cpp
@@ -95,24 +92,11 @@ SOURCE=.\StdAfx.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\xrHemisphere.cpp
-# End Source File
-# End Group
-# Begin Group "Header Files"
-
-# PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
 SOURCE=.\StdAfx.h
 # End Source File
-# End Group
-# Begin Group "Resource Files"
-
-# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
-# End Group
 # Begin Source File
 
-SOURCE=.\ReadMe.txt
+SOURCE=.\xrHemisphere.cpp
 # End Source File
 # End Target
 # End Project
