@@ -118,7 +118,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 		void *conv				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
-		if (!conv)				{_FREE(pFormat); return NULL; }
+		if (!conv)				{xr_free(pFormat); return NULL; }
 
 		// Secondly convert to best format for 2D
 		PSGP.memCopy			(pFormat,&wfxdest,sizeof(wfxdest));
@@ -137,7 +137,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec	* wfxdest.nBlockAlign;
 		converted				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
 	}
-	if (!converted)				{ _FREE(pFormat); return NULL; }
+	if (!converted)				{ xr_free(pFormat); return NULL; }
 
 	dsBD.dwBufferBytes			= dwLen;
 	dsBD.lpwfxFormat			= &wfxdest;
@@ -158,20 +158,20 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 			dwTimeTotal		= 1000 * dwLen / wfxdest.nAvgBytesPerSec;
 			dwBytesPerMS	= wfxdest.nAvgBytesPerSec / 1000;
 		} else {
-			_FREE	(converted);
+			xr_free	(converted);
 			_RELEASE(pBuf);
-			_FREE	(pFormat);
+			xr_free	(pFormat);
 			return NULL;
 		}
 	}else{
-		_FREE	(converted);
-		_FREE	(pFormat);
+		xr_free	(converted);
+		xr_free	(pFormat);
 		return NULL;
 	}
 
 	// xr_free memory
-	_FREE	(converted);
-	_FREE	(pFormat);
+	xr_free	(converted);
+	xr_free	(pFormat);
 	return pBuf;
 }
 
@@ -195,7 +195,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 	}
 
 	// Load file into memory and parse WAV-format
-	R_ASSERT2		(Engine.FS.Exist(pName),pName);
+	R_ASSERT2			(Engine.FS.Exist(pName),pName);
 	destructor<CStream>	data(Engine.FS.Open(pName));
 	WAVEFORMATEX*	pFormat;
 	u32				dwLen;
@@ -218,7 +218,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 		void *conv				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
-		if (!conv)				{_FREE(pFormat); return NULL; }
+		if (!conv)				{xr_free(pFormat); return NULL; }
 
 		// Secondly convert to best format for 3D
 		PSGP.memCopy			(pFormat,&wfxdest,sizeof(wfxdest));
@@ -238,7 +238,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 		converted				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
 	}
-	if (!converted)				{_FREE(pFormat); return NULL; }
+	if (!converted)				{xr_free(pFormat); return NULL; }
 
 	dsBD.dwBufferBytes			= dwLen;
 	dsBD.lpwfxFormat			= &wfxdest;
@@ -259,20 +259,20 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 			dwTimeTotal		= 1000 * dwLen / wfxdest.nAvgBytesPerSec;
 			dwBytesPerMS	= wfxdest.nAvgBytesPerSec / 1000;
         } else {
-			_FREE	(converted);
+			xr_free	(converted);
 			_RELEASE(pBuf);
-			_FREE	(pFormat);
+			xr_free	(pFormat);
 			return NULL;
 		}
 	}else{
-		_FREE	(converted);
-		_FREE	(pFormat);
+		xr_free	(converted);
+		xr_free	(pFormat);
 		return NULL;
 	}
 	
 	// xr_free memory
-	_FREE	(converted);
-	_FREE	(pFormat);
+	xr_free	(converted);
+	xr_free	(pFormat);
 	return pBuf;
 }
 

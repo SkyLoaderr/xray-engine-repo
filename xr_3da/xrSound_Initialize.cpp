@@ -41,9 +41,9 @@ void CSoundManager::Initialize		()
 
 void CSoundManager::Destroy			()
 {
-	_DELETE			( pMusicStreams	);
-	_DELETE			( pSoundRender	);
-	_DELETE			( pCDA			);
+	xr_delete		( pMusicStreams	);
+	xr_delete		( pSoundRender	);
+	xr_delete		( pCDA			);
 
 	_RELEASE		( pBuffer		);
 	_RELEASE		( pDevice		);
@@ -109,7 +109,7 @@ void CSoundManager::InitDS3D	( )
 {
 	bPresent		= false;
 
-	if (strstr(Engine.Params,"-nosound"))	return;
+	if (strstr(Core.Params,"-nosound"))	return;
 
 	if( FAILED		( DirectSoundCreate( NULL, &pDevice, NULL ) ) )
 		return;

@@ -35,8 +35,8 @@ template <class TYPE>
 CQList<TYPE>::~CQList	( )
 {
 	if (!data) return;
-	for (int i=0; i<x_count; i++)	_DELETEARRAY(data[i]);
-	_FREE						(data);
+	for (int i=0; i<x_count; i++)	xr_free(data[i]);
+	xr_free							(data);
 }
 
 //----------------------------------------------------------------------
@@ -48,14 +48,15 @@ void CQList<TYPE>::SetSize( int x, int z )
 {
 	VERIFY						( (x > 0) && (z > 0) );
 
-	for (int i=0; i<x_count; i++)	_DELETEARRAY(data[i]);
-	_FREE						(data);
+	for (int i=0; i<x_count; i++)	xr_free(data[i]);
+	xr_free						(data);
 
 	data						= (TYPE**) xr_malloc(x * sizeof(TYPE*));
 	VERIFY						( data );
-	ZeroMemory					( data, x*sizeof(TYPE*) );
+	VERIFY						( 4==sizeof(TYPE*) );
+	Memory.mem_fill32			( data, 0, x);
 	for (i=0; i<x; i++){
-		data[i]					= new TYPE[z];
+		data[i]					= xr_alloc<TYPE>(z);
 		VERIFY					( data[i] );
 	}
 

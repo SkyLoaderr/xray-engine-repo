@@ -33,6 +33,51 @@ public:
 		
 		stFORCEDWORD	= u32(-1)
 	};
+	
+	struct Control 
+	{
+	public:
+		u32				dwSize;
+		Fvector			vPosition;
+		Fvector			vVelocity;
+		u32				dwInsideConeAngle;
+		u32				dwOutsideConeAngle;
+		Fvector			vConeOrientation;
+		int				lConeOutsideVolume;
+		float			flMinDistance;
+		float			flMaxDistance;
+		u32				dwMode;
+
+		IC	DS3DBUFFER *d3d(void) { return (DS3DBUFFER *)this; };
+
+		IC	void		init	( )
+		{
+			dwSize				= sizeof(DS3DBUFFER);
+			vPosition.set		( 0.0f, 0.0f, 0.0f );
+			vVelocity.set		( 0.0f, 0.0f, 0.0f );
+			vConeOrientation.set( 0.0f, 0.0f, 1.0f );
+			flMinDistance		= DS3D_DEFAULTMINDISTANCE;
+			flMaxDistance		= DS3D_DEFAULTMAXDISTANCE;
+			dwInsideConeAngle	= DS3D_DEFAULTCONEANGLE;
+			dwOutsideConeAngle	= DS3D_DEFAULTCONEANGLE;
+			lConeOutsideVolume	= DS3D_DEFAULTCONEOUTSIDEVOLUME;
+			dwMode				= DS3DMODE_NORMAL;
+		}
+		IC	void		set		( const Control& b )
+		{
+			dwSize				= b.dwSize;
+			vPosition.set		( b.vPosition );
+			vVelocity.set		( b.vVelocity);
+			vConeOrientation.set( b.vConeOrientation );
+			flMinDistance		= b.flMinDistance;
+			flMaxDistance		= b.flMaxDistance;
+			dwInsideConeAngle	= b.dwInsideConeAngle;
+			dwOutsideConeAngle	= b.dwOutsideConeAngle;
+			lConeOutsideVolume	= b.lConeOutsideVolume;
+			dwMode				= b.dwMode;
+		}
+	};
+
 public:
 	sound*					owner;
 
@@ -52,7 +97,7 @@ public:
     LPDIRECTSOUND3DBUFFER   pBuffer3D;
 	LPKSPROPERTYSET			pExtensions;
 	u32						dwBytesPerMS;
-	F3dbuffer				ps;						// property sets for the 3d-buffer
+	Control					ps;						// property sets for the 3d-buffer
 	BOOL					bNeedUpdate;
 
 	BOOL					bMustPlay;

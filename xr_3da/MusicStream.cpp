@@ -69,7 +69,7 @@ void	CMusicStream::DeleteSound	(CSoundStream* pSnd)
 	}
 
 	if (slot>=0){
-		_DELETE(streams[slot]);
+		xr_delete(streams[slot]);
 		pSnd = NULL;
 	}
 }

@@ -134,7 +134,7 @@ void CModelPool::Destroy()
 	for (I=Models.begin(); I!=Models.end(); I++) 
 	{
 		I->model->Release();
-		_DELETE(I->model);
+		xr_delete(I->model);
 	}
 	Models.clear();
 }
@@ -202,7 +202,7 @@ CVisual* CModelPool::Create(LPCSTR name, CStream* data)
 
 void	CModelPool::Delete(CVisual* &V)
 {
-	_DELETE			(V);
+	xr_delete			(V);
 }
 
 CVisual* CModelPool::CreatePS	(PS::SDef_RT* source, PS::SEmitter* E)

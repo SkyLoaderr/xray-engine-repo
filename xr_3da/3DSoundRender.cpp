@@ -61,7 +61,7 @@ void CSoundRender::OnMove()
 			} else {
 				if (j && (Device.dwTimeGlobal-pSnd->dwLastTimeActive) > u32(psSoundRelaxTime*1000))
 				{
-					_DELETE			(pSnd);
+					xr_delete		(pSnd);
 					sounds[i].erase	(sounds[i].begin()+j);
 					j--;
 				}
@@ -150,7 +150,7 @@ void CSoundRender::DeleteSound		(u32& hSound)
 		// all references destroyed - destroy sound as itself
 		for (u32 i=0; i<sounds[hSound].size(); i++)
 		{
-			_DELETE(sounds[hSound][i]);
+			xr_delete(sounds[hSound][i]);
 		}
 		sounds[hSound].clear();
 	}

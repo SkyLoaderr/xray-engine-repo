@@ -31,7 +31,7 @@ CSound::CSound	(BOOL b_3D)
 	pBuffer		= NULL;
 	pBuffer3D	= NULL;
 	pExtensions	= NULL;
-	ps.Init		();
+	ps.init		();
 	bNeedUpdate	= true;
 	bMustPlay	= false;
 	bMustLoop	= false;
@@ -48,7 +48,7 @@ CSound::~CSound	()
 	_RELEASE			( pExtensions	);
 	_RELEASE			( pBuffer3D		);
 	_RELEASE			( pBuffer		);
-	_FREE				( fName			);
+	xr_free				( fName			);
 }
 
 // Update params

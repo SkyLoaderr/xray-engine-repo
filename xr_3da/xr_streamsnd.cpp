@@ -48,10 +48,10 @@ CSoundStream::~CSoundStream	( )
 	Stop				( );
 	Engine.FS.Close		(hf);
 
-	_FREE				(WaveSource);
-	_FREE				(WaveDest);
-	_FREE				(pwfx);
-	_FREE				(psrc);
+	xr_free				(WaveSource);
+	xr_free				(WaveDest);
+	xr_free				(pwfx);
+	xr_free				(psrc);
 	_RELEASE			(pBuffer);
 }
 
@@ -81,7 +81,7 @@ void CSoundStream::Play	( BOOL loop, int cnt )
 	CHK_DX(acmStreamSize(hAcmStream,dwDestBufSize,LPDWORD(&dwSrcBufSize),ACM_STREAMSIZEF_DESTINATION));
 	// alloc source data buffer
 	VERIFY(dwSrcBufSize);
-	_FREE(WaveSource);
+	xr_free(WaveSource);
 	WaveSource = (unsigned char *)xr_malloc(dwSrcBufSize);
 
 	// seek to data start
@@ -98,7 +98,7 @@ void CSoundStream::Play	( BOOL loop, int cnt )
 void CSoundStream::Stop	( )
 {
 	int	code;
-	_FREE(WaveSource);
+	xr_free(WaveSource);
 	if (hAcmStream) {
 		code=acmStreamClose(hAcmStream,0);	 VERIFY2(code==0,"Can't close stream");
 	}
@@ -174,7 +174,7 @@ void CSoundStream::OnMove		( )
 void CSoundStream::Load( LPCSTR name )
 {
 	if (name)	{
-		_FREE	(fName);
+		xr_free	(fName);
 		fName	= xr_strdup(name);
 	}
 	LoadADPCM	( );
@@ -185,7 +185,7 @@ void CSoundStream::Load( CInifile* ini, LPCSTR section )
 {
 	VERIFY(ini && section);
 
-	_FREE	(fName);
+	xr_free	(fName);
 	fName	= xr_strdup			(ini->ReadSTRING( section, "fname" ));
 	fVolume	= ini->ReadFLOAT	( section, "volume");
 	Load	( LPSTR(0));
