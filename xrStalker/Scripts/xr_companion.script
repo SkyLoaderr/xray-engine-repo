@@ -5,7 +5,8 @@
 -- Доработки: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
-local desired_distance = 2
+local desired_distance = 3
+local min_distance = 1.5
 
 local mt_stand = 0
 local mt_walk = 1
@@ -48,6 +49,8 @@ function action_companion_activity:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
+	self.object:enable_talk()	
+
 	self.assist_point = nil
 	
 	self.move_type = mt_stand
@@ -62,7 +65,7 @@ function action_companion_activity:execute()
 	-- 1. Если мы находимся за большим радиусом - необходимо выбрать новую точку
 	if self.assist_point == nil or
 	   (self.object:position():distance_to(actor:position()) >= desired_distance and
-	   level.vertex_position(self.assist_point):distance_to(actor:position()) >= 2*desired_distance)
+	    level.vertex_position(self.assist_point):distance_to(actor:position()) >= 2*desired_distance)
 	then
 		self.assist_point = select_position(self.object, self.st)
 		if self.assist_point == nil then
