@@ -1,11 +1,7 @@
-// XR_SmallFont.cpp: implementation of the CFontSmall class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
-#include "x_ray.h"
+#pragma hdrstop
+
 #include "XR_SmallFont.h"
-#include "XR_ini.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

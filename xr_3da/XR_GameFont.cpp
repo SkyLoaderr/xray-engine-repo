@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "x_ray.h"
+#pragma hdrstop
+
 #include "XR_GameFont.h"
-#include "XR_ini.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
