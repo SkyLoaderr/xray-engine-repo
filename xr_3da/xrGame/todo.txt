@@ -108,7 +108,7 @@ Oles:
 	. TODO:	Shaders
 			. TODO: N-Patches + tesselation level
 			. TODO: PixelShaders
-			. TODO: Priority (sort order)
+			+ TODO: Priority (sort order)
 			. TODO: Disable optimize UV
 			. TODO: Conditions!!!	(scripts? - easy extendable) 
 			. TODO: Strip out every building params
