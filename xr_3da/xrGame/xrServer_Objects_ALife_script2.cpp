@@ -16,7 +16,7 @@ using namespace luabind;
 void CSE_ALifeCar::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife1(
+		luabind_class_alife2(
 			CSE_ALifeCar,
 			"cse_alife_car",
 			CSE_ALifeDynamicObjectVisual,

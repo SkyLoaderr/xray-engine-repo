@@ -188,7 +188,7 @@ void CScriptEngine::process	()
 void CScriptEngine::register_script_classes	()
 {
 	u32							n = _GetItemCount(*m_class_registrators);
-	string256					I, script_namespace, script_function;
+	string256					I;
 	for (u32 i=0; i<n; ++i) {
 		_GetItem				(*m_class_registrators,i,I);
 		luabind::functor<void>	result;
