@@ -20,7 +20,6 @@ function main ()
 		  bredun3:process ()		
 		  bredun4:process ()		
 		  bredun5:process ()		
-		  wait (5000)
 		  end
 
   bredun1:finish ()
