@@ -27,7 +27,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
     	Core._initialize	("LevelEditor");
         TfrmLog::CreateLog();
 
-        frmSplash = new TfrmSplash(0);
+        frmSplash = xr_new<TfrmSplash>((TComponent*)0);
         frmSplash->Show();
         frmSplash->Repaint();
 
