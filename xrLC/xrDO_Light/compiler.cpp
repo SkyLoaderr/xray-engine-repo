@@ -347,10 +347,10 @@ public:
 				
 				// calculation of luminocity
 				DetailPalette* dc = (DetailPalette*)&DS.color;	int LL;
-				LL				= iFloor(6.f*amount[0]/float(count[0]));	clamp(LL,0,15); dc->a0	= LL;
-				LL				= iFloor(6.f*amount[1]/float(count[1]));	clamp(LL,0,15); dc->a1	= LL;
-				LL				= iFloor(6.f*amount[2]/float(count[2]));	clamp(LL,0,15); dc->a2	= LL;
-				LL				= iFloor(6.f*amount[3]/float(count[3]));	clamp(LL,0,15); dc->a3	= LL;
+				LL				= iFloor(4.f*amount[0]/float(count[0]));	clamp(LL,0,15); dc->a0	= LL;
+				LL				= iFloor(4.f*amount[1]/float(count[1]));	clamp(LL,0,15); dc->a1	= LL;
+				LL				= iFloor(4.f*amount[2]/float(count[2]));	clamp(LL,0,15); dc->a2	= LL;
+				LL				= iFloor(4.f*amount[3]/float(count[3]));	clamp(LL,0,15); dc->a3	= LL;
 
 				thProgress		= float(_z-Nstart)/float(Nend-Nstart);
 			}
