@@ -14,45 +14,41 @@ void CRender::level_Load()
 {
 	if (0==pCreator)	return;
 
-	// shDEBUG			= Device.Shader.Create("debug\\wireframe");
-
 	// Begin
-	pApp->LoadBegin	();
-	CStream*	fs = pCreator->LL_Stream;
+	pApp->LoadBegin		();
+	CStream*	fs		= pCreator->LL_Stream;
 	CStream*	chunk;
 
 	// VB
-	pApp->LoadTitle("Loading vertex buffers...");
-	chunk = fs->OpenChunk(fsL_VBUFFERS);
-	LoadBuffers(chunk);
-	chunk->Close();
+	pApp->LoadTitle		("Loading geometry...");
+	LoadBuffers			(fs);
 	
 	// Visuals
-	pApp->LoadTitle("Loading subdivisions...");
-	chunk = fs->OpenChunk(fsL_VISUALS);
-	LoadVisuals(chunk);
-	chunk->Close();
+	pApp->LoadTitle		("Loading spatialization...");
+	chunk				= fs->OpenChunk(fsL_VISUALS);
+	LoadVisuals			(chunk);
+	chunk->Close		();
 	
 	// Lights
-	pApp->LoadTitle	("Loading lights...");
-	LoadLights		(fs);
+	pApp->LoadTitle		("Loading lights...");
+	LoadLights			(fs);
 	
 	// Sectors
-	pApp->LoadTitle("Loading sectors & portals...");
-	LoadSectors(fs);
+	pApp->LoadTitle		("Loading sectors & portals...");
+	LoadSectors			(fs);
 	
 	// Details
-	pApp->LoadTitle("Loading details...");
-	Details.Load();
+	pApp->LoadTitle		("Loading details...");
+	Details.Load		();
 
 	// Streams
-	vsPatches = Device.Streams.Create(FVF::F_TL,max_patches*4);
+	vsPatches			= Device.Streams.Create(FVF::F_TL,max_patches*4);
 	
 	// HOM
-	HOM.Load		();
+	HOM.Load			();
 	
 	// End
-	pApp->LoadEnd	();
+	pApp->LoadEnd		();
 }
 
 void CRender::level_Unload()
@@ -62,7 +58,7 @@ void CRender::level_Unload()
 	DWORD I;
 
 	// HOM
-	HOM.Unload		();
+	HOM.Unload			();
 
 	//*** Streams
 	vsPatches			= 0;
@@ -95,49 +91,66 @@ void CRender::level_Unload()
 	}
 	Visuals.clear		();
 
-	//*** VB
-	for (I=0; I<VB.size(); I++)
-	{
-		VB[I]->Release	();
-	}
+	//*** VB/IB
+	for (I=0; I<VB.size(); I++)	VB[I]->Release	();
+	for (I=0; I<IB.size(); I++)	IB[I]->Release	();
 	FVF.clear			();
 	VB.clear			();
+	IB.clear			();
 }
 
-void CRender::LoadBuffers(CStream *fs)
+void CRender::LoadBuffers	(CStream *base_fs)
 {
-	DWORD count = fs->Rdword();
-	FVF.resize(count);
-	VB.resize(count);
-
 	Device.Shader.Evict		();
-	
-	for (DWORD i=0; i<count; i++)
+	DWORD	dwUsage			= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
+	DWORD	dwPool			= HW.Caps.vertex.bSoftware?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
+
+	// Vertex buffers
 	{
-		DWORD vFVF	= fs->Rdword	();
-		DWORD vCount= fs->Rdword	();
-		DWORD vSize	= D3DXGetFVFVertexSize(vFVF);
-		Msg("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
+		destructor<CStream>		fs	(base_fs->OpenChunk(fsL_VBUFFERS));
+		DWORD count				= fs().Rdword();
+		FVF.resize				(count);
+		VB.resize				(count);
+		for (DWORD i=0; i<count; i++)
+		{
+			DWORD vFVF			= fs().Rdword	();
+			DWORD vCount		= fs().Rdword	();
+			DWORD vSize			= D3DXGetFVFVertexSize(vFVF);
+			Msg("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
-		FVF[i] = vFVF;
+			FVF[i]				= vFVF;
 
-		DWORD dwUsage = D3DUSAGE_WRITEONLY;
-		if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
-		R_CHK(HW.pDevice->CreateVertexBuffer(
-			vCount*vSize,
-			dwUsage,
-			vFVF,
-			(dwUsage&D3DUSAGE_SOFTWAREPROCESSING)?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT,
-			&VB[i]));
+			// Create and fill
+			BYTE*	pData		= 0;
+			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,vFVF,dwPool,&VB[i]));
+			R_CHK				(VB[i]->Lock(0,0,&pData,0));
+			PSGP.memCopy		(pData,fs().Pointer(),vCount*vSize);
+			VB[i]->Unlock		();
 
-		BYTE* pData;
-		R_CHK(VB[i]->Lock(0,0,&pData,0));
+			fs().Advance		(vSize*vCount);
+		}
+	}
 
-		PSGP.memCopy	(pData,fs->Pointer(),vCount*vSize);
+	// Index buffers
+	if (base_fs->FindChunk(fsL_IBUFFERS))
+	{
+		destructor<CStream>		fs	(base_fs->OpenChunk	(fsL_IBUFFERS));
+		DWORD count				= fs().Rdword();
+		IB.resize				(count);
+		for (DWORD i=0; i<count; i++)
+		{
+			DWORD iCount		= fs().Rdword	();
+			Msg("* [Loading IB] %d indices, %d Kb",iCount,(iCount*2)/1024);
 
-		VB[i]->Unlock();
+			// Create and fill
+			BYTE*	pData		= 0;
+			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&IB[i]));
+			R_CHK				(IB[i]->Lock(0,0,&pData,0));
+			PSGP.memCopy		(pData,fs().Pointer(),iCount*2);
+			IB[i]->Unlock		();
 
-		fs->Advance(vSize*vCount);
+			fs().Advance		(iSize*2);
+		}
 	}
 }
 
@@ -165,13 +178,6 @@ void CRender::LoadLights(CStream *fs)
 	CStream* chunk;
 
 	// keys
-	/*
-	chunk = fs->OpenChunk(fsL_LIGHT_KEYS);
-	if (chunk) {
-		Lights.LoadKeyframes(chunk);
-		chunk->Close();
-	}
-	*/
 
 	// lights
 	chunk = fs->OpenChunk(fsL_LIGHTS);

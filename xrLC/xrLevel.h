@@ -11,7 +11,7 @@ enum fsL_Chunks {
 	fsL_LIGHT_KEYS,		//*		- keyframes
 	fsL_GLOWS,			//*		- All glows inside level
 	fsL_SECTORS,		//*		- All sectors on level
-	fsL_VISIBILITY,		//*		- Relevance map
+	fsL_IBUFFERS,		//*		- Relevance map
     fsL_forcedword	= 0xFFFFFFFF
 };
 enum fsEVisChunks {

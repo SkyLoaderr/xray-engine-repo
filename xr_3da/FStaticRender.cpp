@@ -31,6 +31,7 @@ CSector*	CRender::getSectorActive	()					{ return pLastSector;									}
 CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
 DWORD		CRender::getFVF				(int id)			{ VERIFY(id<int(FVF.size()));		return FVF[id];		}
 IDirect3DVertexBuffer8*	CRender::getVB	(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
+IDirect3DIndexBuffer8*	CRender::getIB	(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 CRender_target* CRender::getTarget		()					{ return &Target;										}
 
 void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);						}

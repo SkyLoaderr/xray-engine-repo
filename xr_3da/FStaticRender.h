@@ -57,6 +57,7 @@ public:
 	// Global vertex-buffer container
 	vector<DWORD>									FVF;
 	vector<IDirect3DVertexBuffer8*>					VB;
+	vector<IDirect3DIndexBuffer8*>					IB;
 	vecGEO											Visuals;
 	CPSLibrary										PSystems;
 
