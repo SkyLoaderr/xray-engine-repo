@@ -39,6 +39,9 @@ static const char* h_str =
 void Help()
 {	MessageBox(0,h_str,"Command line options",MB_OK|MB_ICONINFORMATION); }
 
+char SYSTEM_LTX[256];
+char INI_FILE[256];
+
 void Startup(LPSTR     lpCmdLine)
 {
 	char cmd[512],name[256];
@@ -74,7 +77,10 @@ void Startup(LPSTR     lpCmdLine)
 
 	DWORD				dwStartupTime	= timeGetTime();
 	
-	pSettings = xr_new<CInifile>(SYSTEM_LTX);
+	FS.update_path		(SYSTEM_LTX,"$game_data$","system.ltx");
+	FS.update_path		(INI_FILE,"$game_data$","game.ltx");
+	
+	pSettings			= xr_new<CInifile>(SYSTEM_LTX);
 
 	if (strstr(cmd,"-f"))
 		xrCompiler			(prjName);
@@ -90,7 +96,7 @@ void Startup(LPSTR     lpCmdLine)
 				}
 				else
 					if (strstr(cmd,"-s")) {
-						pSettings	= xr_new<CInifile>(SYSTEM_LTX);
+						pSettings			= xr_new<CInifile>(INI_FILE);
 						xrMergeSpawns		(prjName);
 					}
 		}
