@@ -304,5 +304,5 @@ void CLuaView::OnGotoLineNumber()
 }
 void CLuaView::OnFind()
 {
-	m_editor.FindText("main");
+//	m_editor.FindText("main");
 }
