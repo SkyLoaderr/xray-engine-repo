@@ -5,9 +5,11 @@
 
 class CParticlesObject		:	public CPS_Instance
 {
+	Fmatrix				m_XFORM;
 	typedef CPS_Instance	inherited;
 	u32					dwLastTime;
 	void				Init				(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove);
+	void				UpdateSpatial		();
 public:
 						CParticlesObject	(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=true);
 						CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove);

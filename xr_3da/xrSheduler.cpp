@@ -156,8 +156,8 @@ void CSheduler::ProcessStep			()
 		{
 			LPCSTR		_class			= typeid(T.Object).name	();
 			CObject*	O				= dynamic_cast<CObject*> (T.Object);
-			if (O)						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%s / %dms)",_class,O->cName(),execTime);
-			else						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%x / %dms)",_class,T.Object,execTime);
+//			if (O)						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%s / %dms)",_class,O->cName(),execTime);
+//			else						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%x / %dms)",_class,T.Object,execTime);
 		}	
 #endif
 

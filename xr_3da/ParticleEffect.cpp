@@ -393,7 +393,7 @@ void CParticleEffect::ResetParticles()
 
 void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM)
 {
-	m_InitialPosition		= m.c;
+//	m_InitialPosition		= m.c;
     m_RT_Flags.set			(flRT_XFORM, bXFORM);
     if (bXFORM)				m_XFORM.set	(m);
     else					pSetActionListParenting	(m_HandleActionList,m,velocity);
@@ -446,7 +446,7 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 					if (m.size.z>p_size) p_size = m.size.z;
 				}
 				vis.box.grow		(p_size);
-				if (m_RT_Flags.is(flRT_XFORM))vis.box.xform(m_XFORM);
+//.				if (m_RT_Flags.is(flRT_XFORM))vis.box.xform(m_XFORM);
 				vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 			}
             if (m_RT_Flags.is(flRT_DefferedStop)&&(0==pg->p_count)){

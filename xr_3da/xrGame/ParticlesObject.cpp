@@ -57,6 +57,8 @@ void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 	shedule.t_max			= 50;
 	shedule_register		();
 
+	m_XFORM.identity		();
+
 	dwLastTime				= Device.dwTimeGlobal;
 }
 
@@ -65,17 +67,34 @@ CParticlesObject::~CParticlesObject()
 {
 }
 
+void CParticlesObject::UpdateSpatial()
+{
+	// spatial	(+ workaround occasional bug inside particle-system)
+	if (_valid(renderable.visual->vis.sphere))
+	{
+		renderable.xform.transform_tiny	(spatial.center,renderable.visual->vis.sphere.P);
+		spatial.radius					= renderable.visual->vis.sphere.R;
+		if (0==spatial.type)	{
+			// First 'valid' update - register
+			spatial.type						= STYPE_RENDERABLE;
+			spatial_register					();
+		} else {
+			spatial_move		();
+		}
+	}
+}
+
 LPCSTR CParticlesObject::dbg_ref_name()
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	return V->Name();
-	
 }
 //----------------------------------------------------
 void CParticlesObject::Play()
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->Play			();
+	UpdateSpatial	();
 }
 
 void CParticlesObject::Stop()
@@ -105,20 +124,7 @@ void CParticlesObject::shedule_Update	(u32 _dt)
 		dwLastTime			= Device.dwTimeGlobal;
 	}
 
-	// spatial	(+ workaround occasional bug inside particle-system)
-	if (_valid(renderable.visual->vis.sphere))
-	{
-		spatial.center		= renderable.visual->vis.sphere.P;
-		spatial.radius		= renderable.visual->vis.sphere.R;
-		if (0==spatial.type)	{
-			// First 'valid' update - register
-			spatial.type						= STYPE_RENDERABLE;
-			spatial_register					();
-		} else {
-			spatial_move		();
-		}
-	}
-
+	UpdateSpatial			();
 	// Msg	("update(%s): %3.1f,%3.1f,%3.1f,%3.1f",V->GetDefinition()->m_Name,VPUSH(spatial.center),spatial.radius);
 }
 
@@ -127,6 +133,8 @@ void CParticlesObject::SetXFORM		(const Fmatrix& m)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->UpdateParent		(m,zero_vel,TRUE);
+	renderable.xform.set(m);
+	UpdateSpatial		();
 }
 
 void CParticlesObject::UpdateParent		(const Fmatrix& m, const Fvector& vel)
@@ -148,7 +156,7 @@ void CParticlesObject::renderable_Render	()
 		V->OnFrame			(dt);
 		dwLastTime			= Device.dwTimeGlobal;
 	}
-	::Render->set_Transform			(&Fidentity);
+	::Render->set_Transform			(&renderable.xform);
 	::Render->add_Visual			(renderable.visual);
 }
 
