@@ -160,20 +160,16 @@ private:
 	BOOL					NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
 	DWORD					NET_Time;				// server time of last update
 	//------------------------------
-	vector<CObject*>		nearest;
-
-	//------------------------------
 	void					g_cl_CheckControls		(DWORD mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
 	void					g_cl_ValidateMState		(DWORD mstate_wf);
 	void					g_cl_Orientate			(DWORD mstate_rl, float dt);
 	void					g_sv_Orientate			(DWORD mstate_rl, float dt);
-	void					g_sv_AnalyzeNeighbours	();
 	void					g_Orientate				(DWORD mstate_rl, float dt);
 	void					g_Physics				(Fvector& accel, float jump, float dt);
 	void					g_SetAnimation			(DWORD mstate_rl);
 
-	void					g_near_new				(CObject* O);
-	void					g_near_delete			(CObject* O);
+	virtual void			g_near_new				(CObject* O);
+	virtual void			g_near_delete			(CObject* O);
 
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(float dt, float fFOV);

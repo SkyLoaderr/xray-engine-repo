@@ -61,21 +61,9 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_angle8			(r_torso.pitch);
 	P.w_sdir			(NET_SavedAccel);
 	P.w_sdir			(Movement.GetVelocity());
-
-//	int w_id = Weapons->SelectedWeaponID	();
-//	if (w_id<0)			P->w_u8(0xff);
-//	else				P->w_u8(u8(w_id));
-//
-//	if (flags&MF_FIREPARAMS)
-//	{
-//		Fvector			pos,dir;
-//		g_fireParams	(pos,dir);
-//		P->w_vec3		(pos);
-//		P->w_dir		(dir);
-//	}
 }
 
-void CActor::net_Import(NET_Packet& P)					// import from server
+void CActor::net_Import		(NET_Packet& P)					// import from server
 {
 	// import
 	R_ASSERT		(!net_Local);
@@ -91,16 +79,6 @@ void CActor::net_Import(NET_Packet& P)					// import from server
 	P.r_angle8		(N.o_torso.pitch);
 	P.r_sdir		(N.p_accel		);
 	P.r_sdir		(N.p_velocity	);
-
-//	P->r_u8			(wpn);
-//	if (0xff==wpn)	N.weapon		= -1;
-//	else			N.weapon		= int(wpn);
-//
-//	if (flags&MF_FIREPARAMS)
-//	{
-//		P->r_vec3	(N.f_pos);
-//		P->r_dir	(N.f_dir);
-//	}
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
@@ -139,12 +117,10 @@ CActor::CActor() : CEntityAlive()
 
 	m_fRunFactor			= 2.f;
 	m_fCrouchFactor			= 0.2f;
-//	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
 }
 
 CActor::~CActor()
 {
-//	Device.seqRender.Remove(this);
 	_DELETE(Weapons);
 	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);
 
@@ -298,41 +274,6 @@ void CActor::Die	( )
 	bAlive		= FALSE;
 	mstate_wishful	&= ~mcAnyMove;
 	mstate_real		&=~ mcAnyMove;
-}
-
-void CActor::g_sv_AnalyzeNeighbours	()
-{
-	// Find nearest objects
-	Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
-	Level().ObjectSpace.GetNearest						(C,R);
-	CObjectSpace::NL_IT		n_begin						= Level().ObjectSpace.q_nearest.begin	();
-	CObjectSpace::NL_IT		n_end						= Level().ObjectSpace.q_nearest.end		();
-	if (n_end==n_begin)		return;
-    
-	// Process results (NEW)
-	for (CObjectSpace::NL_IT it = n_begin; it!=n_end; it++)
-	{
-		CObject* O = *it;
-		if (find(nearest.begin(),nearest.end(),O) == nearest.end())
-		{
-			// new 
-			g_near_new			(O);
-			nearest.push_back	(O);
-		}
-	}
-
-	// Process results (DELETE)
-	for (int d = 0; d<int(nearest.size()); d++)
-	{
-		CObject* O	= nearest[d];
-		if (find(n_begin,n_end,O) == n_end)
-		{
-			// delete
-			g_near_delete		(O);
-			nearest.erase		(nearest.begin()+d);
-			d--;
-		}
-	}
 }
 
 void CActor::g_near_new				(CObject* O)

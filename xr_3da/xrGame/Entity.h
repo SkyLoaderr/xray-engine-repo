@@ -134,6 +134,7 @@ private:
 public:
 	// movement
 	CMovementControl		Movement;
+	vector<CObject*>		Nearest;
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
 public:
@@ -142,16 +143,19 @@ public:
 	virtual ~CEntityAlive	();
 
 	// Core events
-	virtual void			Load				(LPCSTR section);
-	virtual BOOL			net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
-	virtual void			HitImpulse			(Fvector& vWorldDir, Fvector& vLocalDir, float amount);
+	virtual void			Load					(LPCSTR section);
+	virtual BOOL			net_Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual void			HitImpulse				(Fvector& vWorldDir, Fvector& vLocalDir, float amount);
 
-	virtual void			g_WeaponBones		(int& L, int& R)										= 0;
+	virtual void			g_WeaponBones			(int& L, int& R)										= 0;
+	virtual void			g_sv_AnalyzeNeighbours	();
+	virtual void			g_near_new				(CObject* O) {};
+	virtual void			g_near_delete			(CObject* O) {};
 
 	// Visibility related
-	virtual void			GetVisible			(objVisible& R)	{};
-	virtual	float			ffGetFov			()				= 0;	
-	virtual	float			ffGetRange			()				= 0;	
+	virtual void			GetVisible				(objVisible& R)	{};
+	virtual	float			ffGetFov				()				= 0;	
+	virtual	float			ffGetRange				()				= 0;	
 };
 
 #endif // !defined(AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_)
