@@ -106,6 +106,8 @@ void __fastcall SGameMtlPair::OnFlagChange(PropValue* sender)
 
     OwnProps.set				(mask,bChecked);
     sender->Owner()->m_Flags.set(PropItem::flDisabled,!bChecked);
+
+    UI.Command					(COMMAND_UPDATE_PROPERTIES);
 }
 
 IC u32 SetMask(u32 mask, Flags32 flags, u32 flag )
@@ -139,11 +141,11 @@ BOOL SGameMtlPair::SetParent(int parent)
         }
     }
     // all right
-    OwnProps.set(flBreakingSounds,	!BreakingSounds.IsEmpty());
-    OwnProps.set(flStepSounds,		!StepSounds.IsEmpty());
-    OwnProps.set(flCollideSounds,	!CollideSounds.IsEmpty());
-    OwnProps.set(flCollideParticles,!CollideParticles.IsEmpty());
-    OwnProps.set(flCollideMarks,	!CollideMarks.IsEmpty());
+//	OwnProps.set(flBreakingSounds,	!BreakingSounds.IsEmpty());
+//	OwnProps.set(flStepSounds,		!StepSounds.IsEmpty());
+//	OwnProps.set(flCollideSounds,	!CollideSounds.IsEmpty());
+//	OwnProps.set(flCollideParticles,!CollideParticles.IsEmpty());
+//	OwnProps.set(flCollideMarks,	!CollideMarks.IsEmpty());
     return TRUE;
 }
 
@@ -232,7 +234,7 @@ void SGameMtlPair::FillProp(PropItemVec& items)
 	TOnChange OnChange	= 0;
     u32 show_CB			= 0;
     SGameMtlPair* P		= 0;
-    if (ID_parent!=-1){ 
+    if (ID_parent!=GAMEMTL_NONE){ 
        	OnChange 		= OnFlagChange;
         show_CB		    = PropItem::flShowCB;
 	    P				= m_Owner->GetMaterialPair(ID_parent);
@@ -489,6 +491,22 @@ void SGameMtlPair::Save(IWriter& fs)
     fs.w_u32			(OwnProps.get());
 	fs.close_chunk		();
 
+// copy from parent
+	if (ID_parent!=GAMEMTL_NONE){
+        SGameMtlPair* P; 
+        if ((0!=(P=GetLastParentValue(this,flBreakingSounds)))&&(P!=this))	
+            BreakingSounds	= P->BreakingSounds;
+        if ((0!=(P=GetLastParentValue(this,flStepSounds)))&&(P!=this)) 		
+            StepSounds		= P->StepSounds;
+        if ((0!=(P=GetLastParentValue(this,flCollideSounds)))&&(P!=this)) 	
+            CollideSounds	= P->CollideSounds;
+        if ((0!=(P=GetLastParentValue(this,flCollideParticles)))&&(P!=this)) 
+            CollideParticles= P->CollideParticles;
+        if ((0!=(P=GetLastParentValue(this,flCollideMarks)))&&(P!=this)) 	
+            CollideMarks	= P->CollideMarks;
+    }
+    
+// save    
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_BREAKING);
     fs.w_stringZ		(BreakingSounds.c_str());
 	fs.close_chunk		();
