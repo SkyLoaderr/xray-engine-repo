@@ -62,9 +62,12 @@ BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 	setEnabled						(false);
 	setVisible						(false);
 
+	if (!ai().get_level_graph())
+		return						(FALSE);
+
 	Level().space_restrictor_manager().add_restrictor(this);
 
-	return							(result);
+	return							(TRUE);
 }
 
 bool CCF_Shape_inside				(const CCF_Shape *self, const Fvector &position, float radius)
