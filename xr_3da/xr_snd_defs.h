@@ -26,4 +26,4 @@ struct	sound2D
 	C2DSound*	feedback;
 	sound2D()	{ handle = SND_UNDEFINED; feedback=0; }
 };
-
+typedef Fvector soundOccluder[3];
