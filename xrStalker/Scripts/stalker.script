@@ -1,3 +1,4 @@
+--[[
 class "stalker_script" (object_binder)
 
 function stalker_script:__init		(object) super(object)
@@ -24,8 +25,8 @@ end
 
 function stalker_script:net_import	(packet)
 end
-
+]]
 function init		(obj)
 	printf			("stalker.init is called with %s!",obj:name())
-	obj:set_object	(stalker.stalker_script(obj))
+--	obj:set_object	(stalker.stalker_script(obj))
 end
