@@ -8,6 +8,6 @@
 
 #pragma once
 
-#include <rpcdce.h>
+#include "xrLevel.h"
 
-extern GUID generate_guid();
+extern xrGUID generate_guid();

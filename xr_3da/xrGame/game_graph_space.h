@@ -30,26 +30,31 @@ namespace GameGraph {
 	class
 #endif
 		SLevel {
-		shared_str				caLevelName;
-		Fvector					tOffset;
-		_LEVEL_ID				tLevelID;
+		shared_str				m_name;
+		Fvector					m_offset;
+		_LEVEL_ID				m_id;
 		shared_str				m_section;
+		xrGUID					m_guid;
 
 	public:
 		IC shared_str name() const {
-			return				caLevelName;
+			return				(m_name);
 		}
 
 		IC const Fvector &offset() const {
-			return				(tOffset);
+			return				(m_offset);
 		}
 
 		IC _LEVEL_ID id() const {
-			return				(tLevelID);
+			return				(m_id);
 		}
 
 		IC shared_str section() const {
 			return				(m_section);
+		}
+
+		IC const xrGUID &guid() const {
+			return				(m_guid);
 		}
 
 		IC void load(IReader *reader);
@@ -113,6 +118,7 @@ namespace GameGraph {
 		u32							dwEdgeCount;
 		u32							dwDeathPointCount;
 		LEVEL_MAP					tpLevels;
+		xrGUID						m_guid;
 
 	public:
 		IC	u32						version				() const;
@@ -124,6 +130,7 @@ namespace GameGraph {
 		IC	const SLevel			&level				(const _LEVEL_ID &id) const;
 		IC	const SLevel			&level				(LPCSTR level_name) const;
 		IC	void					load				(IReader *reader);
+		IC	const xrGUID			&guid				() const;
 		friend class CGameGraph;
 	};
 #pragma pack(pop)

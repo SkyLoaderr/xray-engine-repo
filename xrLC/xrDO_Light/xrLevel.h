@@ -1,8 +1,21 @@
 #ifndef xrLevelH
 #define xrLevelH
+
 #pragma once
 
-//#define NODE_NEIGHBOUR_COUNT 4
+struct xrGUID {
+	u64	g[2];
+
+	ICF	bool operator==	(const xrGUID &o) const
+	{
+		return	((g[0] == o.g[0]) && (g[1] == o.g[1]));
+	}
+
+	ICF	bool operator!=	(const xrGUID &o) const
+	{
+		return	!(*this == o);
+	}
+};
 
 enum fsL_Chunks			{
 	fsL_HEADER			=1,		//*
@@ -49,6 +62,7 @@ struct	hdrNODES
 	float	size;
 	float	size_y;
 	Fbox	aabb;
+	xrGUID	guid;
 };
 #pragma pack(pop)
 
@@ -271,7 +285,7 @@ typedef	SNodePositionOld NodePosition;
 const u32 XRCL_CURRENT_VERSION		=	17;	// input
 const u32 XRCL_PRODUCTION_VERSION	=	13;	// output 
 const u32 CFORM_CURRENT_VERSION		=	4;
-const u32 XRAI_CURRENT_VERSION		=	7;
+const u32 XRAI_CURRENT_VERSION		=	8;
 const u32 MAX_NODE_BIT_COUNT		=	23;
 
 #endif // xrLevelH

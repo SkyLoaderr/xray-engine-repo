@@ -52,6 +52,8 @@ char INI_FILE[256];
 
 extern  HWND logWindow;
 
+extern LPCSTR GAME_CONFIG;
+
 void Startup(LPSTR     lpCmdLine)
 {
 	char cmd[512],name[256];
@@ -94,7 +96,7 @@ void Startup(LPSTR     lpCmdLine)
 
 	u32					dwStartupTime	= timeGetTime();
 	
-	FS.update_path		(INI_FILE,"$game_config$","game.ltx");
+	FS.update_path		(INI_FILE,"$game_config$",GAME_CONFIG);
 	
 	if (strstr(cmd,"-f"))
 		xrCompiler			(prjName,!!strstr(cmd,"-draft"));

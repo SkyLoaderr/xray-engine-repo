@@ -6,7 +6,7 @@
 #include "graph_abstract.h"
 
 typedef LevelNavigationGraph::CSector				CSector;
-typedef LevelNavigationGraph::CCellVertex			CCellVertex;
+typedef LevelNavigationGraph::CCellVertexEx			CCellVertex;
 typedef CCellVertex::_use_type						_use_type;
 
 const _use_type left	= 1 << 0;

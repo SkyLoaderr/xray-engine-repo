@@ -20,6 +20,8 @@
 #include "xrServer_Objects_ALife_All.h"
 #include "xrSE_Factory_import_export.h"
 #include "xrCrossTable.h"
+#include "guid_generator.h"
+
 using namespace ALife;
 
 #define THREAD_COUNT				6
@@ -238,7 +240,7 @@ public:
 	CGraphSaver(LPCSTR name, CLevelGraph *tpAI_Map)
 	{
 		string256					fName;
-		strconcat					(fName,name,"level.graph");
+		strconcat					(fName,name,GAME_LEVEL_GRAPH);
 		
 		CMemoryWriter				tGraph;
 		tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
@@ -252,13 +254,15 @@ public:
 		}
 		//
 		tGraphHeader.dwDeathPointCount = 0;
+		tGraphHeader.m_guid			= generate_guid();
 
 		CGameGraph::SLevel			tLevel;
-		tLevel.tOffset.set			(0,0,0);
-		tLevel.tLevelID				= 0;
-		tLevel.caLevelName			= name;
+		tLevel.m_offset.set			(0,0,0);
+		tLevel.m_id					= 0;
+		tLevel.m_name				= name;
 		tLevel.m_section			= "";
-		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
+		tLevel.m_guid				= tpAI_Map->header().guid();
+		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.m_id,tLevel));
 		tGraph.w_u32				(tGraphHeader.dwVersion);
 		tGraph.w_u32				(tGraphHeader.dwLevelCount);
 		tGraph.w_u32				(tGraphHeader.dwVertexCount);
@@ -267,10 +271,11 @@ public:
 		GameGraph::LEVEL_MAP::iterator	I = tGraphHeader.tpLevels.begin();
 		GameGraph::LEVEL_MAP::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
-			tGraph.w_stringZ		((*I).second.caLevelName);
-			tGraph.w_fvector3		((*I).second.tOffset);
-			tGraph.w_u32			((*I).second.tLevelID);
-			tGraph.w_stringZ		((*I).second.m_section);
+			tGraph.w_stringZ		((*I).second.name());
+			tGraph.w_fvector3		((*I).second.offset());
+			tGraph.w				(&(*I).second.m_id,sizeof((*I).second.m_id));
+			tGraph.w_stringZ		((*I).second.section());
+			tGraph.w				(&(*I).second.m_guid,sizeof((*I).second.m_guid));
 		}
 
 		u32							dwPosition = tGraph.size();
@@ -355,7 +360,7 @@ void vfRemoveIncoherentGraphPoints(CLevelGraph *tpAI_Map, u32 &dwVertexCount)
 //void vfSaveEmptyGraph			(LPCSTR name)
 //{
 //	string256					fName;
-//	strconcat					(fName,name,"level.graph");
+//	strconcat					(fName,name,GAME_LEVEL_GRAPH);
 //
 //	CMemoryWriter				tGraph;
 //	tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;

@@ -66,7 +66,7 @@ void CLevelSpawnConstructor::init								()
 {
 	// loading level graph
 	string256				file_name;
-	FS.update_path			(file_name,"$game_levels$",*m_level.caLevelName);
+	FS.update_path			(file_name,"$game_levels$",*m_level.name());
 	strcat					(file_name,"\\");
 	m_level_graph			= xr_new<CLevelNavigationGraph>(file_name);
 	
@@ -155,7 +155,7 @@ void CLevelSpawnConstructor::load_objects						()
 {
 	// loading spawn points
 	string256					file_name;
-	FS.update_path				(file_name,"$game_levels$",*m_level.caLevelName);
+	FS.update_path				(file_name,"$game_levels$",*m_level.name());
 	strcat						(file_name,"\\level.spawn");
 	IReader						*level_spawn = FS.r_open(file_name);
 	u32							id;

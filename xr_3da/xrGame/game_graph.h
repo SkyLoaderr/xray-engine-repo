@@ -10,7 +10,7 @@
 
 #include "game_graph_space.h"
 
-#define GRAPH_NAME			"game.graph"
+#define GRAPH_NAME			"game_new.graph"
 
 class CGameGraph {
 private:

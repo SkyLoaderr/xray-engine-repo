@@ -10,10 +10,12 @@
 #include "level_graph.h"
 #include "profiler.h"
 
-#ifndef AI_COMPILER
-CLevelGraph::CLevelGraph					()
+LPCSTR LEVEL_GRAPH_NAME = "level_new.ai";
+
+#ifdef AI_COMPILER
+CLevelGraph::CLevelGraph		(LPCSTR filename)
 #else
-CLevelGraph::CLevelGraph					(LPCSTR filename, u32 current_version)
+CLevelGraph::CLevelGraph		()
 #endif
 {
 #ifndef AI_COMPILER
@@ -22,23 +24,16 @@ CLevelGraph::CLevelGraph					(LPCSTR filename, u32 current_version)
 	m_best_point				= 0;
 #endif
 	string256					file_name;
-	FS.update_path				(file_name,"$level$","level.ai");
+	FS.update_path				(file_name,"$level$",LEVEL_GRAPH_NAME);
 #else
 	string256					file_name;
-	strconcat					(file_name,filename,"level.ai");
+	strconcat					(file_name,filename,LEVEL_GRAPH_NAME);
 #endif
 	m_reader					= FS.r_open	(file_name);
 
 	// m_header & data
 	m_header					= (CHeader*)m_reader->pointer();
-#ifndef AI_COMPILER
 	R_ASSERT					(header().version() == XRAI_CURRENT_VERSION);
-#else
-	if (XRAI_CURRENT_VERSION != current_version)
-		if (header().version() != current_version)
-			return;
-	R_ASSERT					(header().version() == current_version);
-#endif
 	m_reader->advance			(sizeof(CHeader));
 	m_nodes						= (CVertex*)m_reader->pointer();
 	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + 1.5f);

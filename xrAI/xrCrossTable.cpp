@@ -10,6 +10,8 @@
 #include "defines.h"
 #include "xrCrossTable.h"
 
+LPCSTR GAME_LEVEL_GRAPH = "level_new.graph";
+
 DEFINE_VECTOR			(u32,			FLOAT_VECTOR,			FLOAT_IT);
 DEFINE_VECTOR			(FLOAT_VECTOR,	FLOAT_VECTOR_VECTOR,	FLOAT_VECTOR_IT);
 
@@ -91,7 +93,7 @@ public:
 CCrossTableBuilder::CCrossTableBuilder(LPCSTR caProjectName)
 {
 	FILE_NAME			caFileName;
-	strconcat			(caFileName,caProjectName,"level.graph");
+	strconcat			(caFileName,caProjectName,GAME_LEVEL_GRAPH);
 	
 	Phase				("Loading level graph");
 	CGameGraph			tGraph(caFileName);
@@ -143,15 +145,17 @@ CCrossTableBuilder::CCrossTableBuilder(LPCSTR caProjectName)
 	CMemoryWriter					tMemoryStream;
 	CGameLevelCrossTable::CHeader	tCrossTableHeader;
 	
-	tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
-	tCrossTableHeader.dwNodeCount = iNodeCount;
+	tCrossTableHeader.dwVersion			= XRAI_CURRENT_VERSION;
+	tCrossTableHeader.dwNodeCount		= iNodeCount;
 	tCrossTableHeader.dwGraphPointCount = iVertexCount;
+	tCrossTableHeader.m_level_guid		= tMap.header().guid();
+	tCrossTableHeader.m_game_guid		= tGraph.header().guid();
 	
-	tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
-	tMemoryStream.w(&tCrossTableHeader,sizeof(tCrossTableHeader));
-	tMemoryStream.close_chunk();
+	tMemoryStream.open_chunk			(CROSS_TABLE_CHUNK_VERSION);
+	tMemoryStream.w						(&tCrossTableHeader,sizeof(tCrossTableHeader));
+	tMemoryStream.close_chunk			();
 	
-	tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
+	tMemoryStream.open_chunk			(CROSS_TABLE_CHUNK_DATA);
 	{
 		for (int i=0; i<iNodeCount; i++) {
 			FLOAT_VECTOR_IT		I = tDistances.begin(), B = I;

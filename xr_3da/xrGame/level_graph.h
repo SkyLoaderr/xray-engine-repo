@@ -73,7 +73,7 @@ public:
 #ifndef AI_COMPILER
 					CLevelGraph					();
 #else
-					CLevelGraph					(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
+					CLevelGraph					(LPCSTR file_name);
 #endif
 	virtual			~CLevelGraph				();
 	IC		const_vertex_iterator begin			() const;

@@ -10,21 +10,15 @@
 
 #include "level_graph.h"
 
-#ifdef AI_COMPILER
-//#	define OPTIMAL_GRAPH
-#endif
-
 namespace LevelNavigationGraph {
+#ifdef AI_COMPILER
 	struct CCellVertex;
-#ifdef OPTIMAL_GRAPH
-	struct CCellVertexEx;
 #endif
+	struct CCellVertexEx;
 	class  CSector;
 };
 
 template <typename, typename, typename> class CGraphAbstractSerialize;
-
-#ifndef OPTIMAL_GRAPH
 
 class CLevelNavigationGraph : public CLevelGraph {
 private:
@@ -36,87 +30,22 @@ public:
 
 public:
 	typedef LevelNavigationGraph::CCellVertex			CCellVertex;
-	typedef xr_vector<CCellVertex>						VERTEX_VECTOR;
-	typedef xr_vector<VERTEX_VECTOR>					LINE_VECTOR;
-	typedef xr_vector<LINE_VECTOR>						MARK_TABLE;
-
-public:
-	typedef xr_vector<CCellVertex*>						CROSS_TABLE;
-
-private:
-	CSectorGraph				*m_sectors;
+	typedef xr_vector<u16>								CROSS_TABLE;
 
 // temporary structures for building sector hierarchy
 private:
-	MARK_TABLE					m_marks;
-	CROSS_TABLE					m_cross;
-
-#ifdef DEBUG
-private:
-	u32							m_global_count;
-
-protected:
-	IC		void				check_vertices			();
-	IC		void				check_edges				();
-
-public:
-			void				render					();
-#endif
-
-public:
-#ifndef AI_COMPILER
-								CLevelNavigationGraph	();
-#else
-								CLevelNavigationGraph	(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
-#endif
-	virtual						~CLevelNavigationGraph	();
-
-protected:
-	IC		CCellVertex			&vertex_by_group_id		(VERTEX_VECTOR &vertices, u32 group_id);
-	IC		bool				connected				(CCellVertex &vertex, VERTEX_VECTOR &vertices, u32 group_id, u32 link, u32 use);
-	IC		bool				connected				(CCellVertex &vertex1, CCellVertex &vertex2, VERTEX_VECTOR &vertices, u32 group_id, u32 use);
-	IC		void				remove_marks			(VERTEX_VECTOR &vertices, u32 group_id);
-	IC		void				build_sectors			(u32 i, u32 j, CCellVertex &cell_vertex, u32 &group_id);
-	IC		void				init_marks				();
-	IC		void				fill_marks				();
-	IC		void				build_sectors			();
-	IC		void				build_edges				();
-
-public:
-	IC		const CSectorGraph	&sectors				() const;
-
-protected:
-	IC		CSectorGraph		&sectors				();
-};
-
-#else
-
-class CLevelNavigationGraph : public CLevelGraph {
-private:
-	typedef CLevelGraph									inherited;
-
-public:
-	typedef LevelNavigationGraph::CSector				CSector;
-	typedef CGraphAbstractSerialize<CSector,u32,u32>	CSectorGraph;
-
-public:
-	typedef LevelNavigationGraph::CCellVertexEx			CCellVertex;
-	typedef xr_vector<CCellVertex>						VERTEX_VECTOR;
-	typedef xr_vector<VERTEX_VECTOR>					LINE_VECTOR;
-	typedef xr_vector<LINE_VECTOR>						MARK_TABLE;
-
-public:
-	typedef xr_vector<CCellVertex>						CROSS_TABLE;
-	typedef xr_map<u64,CCellVertex*,std::greater<u64> >	CROSS_PTABLE;
-	typedef xr_vector<CCellVertex*>						TEMP_TABLE;
-
-private:
 	CSectorGraph				*m_sectors;
+	CROSS_TABLE					m_cross;
+	xrGUID						m_level_guid;
 
 // temporary structures for building sector hierarchy
+public:
+	typedef xr_vector<CCellVertex>						_CROSS_TABLE;
+	typedef xr_map<u64,CCellVertex*,std::greater<u64> >	_CROSS_PTABLE;
+
 private:
-	CROSS_TABLE					m_cross;
-	CROSS_PTABLE				m_temp;
+	_CROSS_TABLE				m_temp_cross;
+	_CROSS_PTABLE				m_temp;
 	
 #ifdef DEBUG
 private:
@@ -136,15 +65,15 @@ public:
 #ifndef AI_COMPILER
 								CLevelNavigationGraph	();
 #else
-								CLevelNavigationGraph	(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
+								CLevelNavigationGraph	(LPCSTR file_name);
 #endif
 	virtual						~CLevelNavigationGraph	();
 
 protected:
 	IC		u32					vertex_id				(const CCellVertex &vertex) const;
 	IC		u32					vertex_id				(const CCellVertex *vertex) const;
-	IC		u32					vertex_id				(const CROSS_TABLE::const_iterator &vertex) const;
-	IC		u32					vertex_id				(const CROSS_PTABLE::const_iterator &vertex) const;
+	IC		u32					vertex_id				(const _CROSS_TABLE::const_iterator &vertex) const;
+	IC		u32					vertex_id				(const _CROSS_PTABLE::const_iterator &vertex) const;
 	ICF		u64					cell_id					(CCellVertex *cell) const;
 	ICF		bool				check_left				(u32 vertex_id, u32 left_vertex_id) const;
 	IC		void				fill_cell				(u32 start_vertex_id, u32 link);
@@ -158,6 +87,9 @@ protected:
 	IC		void				build_sector			(u32 vertex_id, u32 right, u32 down, u32 group_id);
 	IC		void				generate_sectors		();
 	IC		void				generate_edges			();
+			void				generate_cross			();
+			bool				valid					(LPCSTR file_name);
+			void				generate				(LPCSTR file_name);
 
 public:
 	IC		const CSectorGraph	&sectors				() const;
@@ -165,7 +97,5 @@ public:
 protected:
 	IC		CSectorGraph		&sectors				();
 };
-
-#endif
 
 #include "level_navigation_graph_inline.h"

@@ -19,6 +19,7 @@ namespace LevelGraph {
 		ICF	float			cell_size				() const;
 		ICF	float			factor_y				() const;
 		ICF	const Fbox		&box					() const;
+		ICF const xrGUID	&guid					() const;
 	};
 
 	typedef NodePosition	CPosition;

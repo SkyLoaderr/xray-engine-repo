@@ -43,6 +43,8 @@
 #include "data_storage_binary_heap_list.h"
 #include "data_storage_multi_binary_heap.h"
 
+extern LPCSTR GAME_LEVEL_GRAPH;
+
 struct SPathParams{
 	SPathParams() {};
 	SPathParams(u32 x, u32 y) : x(x), y(y) {};
@@ -211,7 +213,7 @@ template <>
 void init_search<CGameGraph>(LPCSTR caLevelName, CGameGraph *&graph, xr_vector<SPathParams> &path_params, bool bRandom)
 {
 	string256				fName;
-	strconcat				(fName,caLevelName,"level.graph");
+	strconcat				(fName,caLevelName,GAME_LEVEL_GRAPH);
 	graph					= xr_new<CGameGraph>(fName);
 	u32						n = graph->header().vertex_count();
 	path_params.resize		(graph->header().vertex_count());

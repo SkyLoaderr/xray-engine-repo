@@ -11,7 +11,8 @@
 #include "object_interfaces.h"
 
 namespace LevelNavigationGraph {
-	struct CCellVertex {
+#ifdef AI_COMPILER
+	struct CCellVertexEx {
 		u32				m_vertex_id;
 		union {
 			typedef u8	_use_type;
@@ -23,20 +24,20 @@ namespace LevelNavigationGraph {
 			u32			m_data;
 		};
 
-		CCellVertex		()
+		CCellVertexEx	()
 		{
 		}
 
-		CCellVertex		(u32 vertex_id, u32 mark, u32 use) :
+		CCellVertexEx	(u32 vertex_id, u32 mark, u32 use) :
 			m_vertex_id	(vertex_id),
 			m_mark		(mark),
 			m_use		(use)
 		{
 		}
 	};
+#endif
 
-#ifdef OPTIMAL_GRAPH
-	struct CCellVertexEx {
+	struct CCellVertex {
 		union {
 			struct {
 				u16		m_right;
@@ -56,10 +57,10 @@ namespace LevelNavigationGraph {
 			u32			m_data;
 		};
 		
-		CCellVertexEx	*m_right_next;
+		CCellVertex		*m_right_next;
 		u32				m_down_left;
 
-		ICF CCellVertexEx	() :
+		ICF CCellVertex	() :
 			m_data		(0),
 			m_all_dirs	(0),
 			m_down_left	(0),
@@ -67,7 +68,6 @@ namespace LevelNavigationGraph {
 		{
 		}
 	};
-#endif
 	
 	class CSector : public IPureSerializeObject<IReader,IWriter> {
 	private:

@@ -21,13 +21,7 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name, u32 current_version)
 	m_reader					= FS.r_open(file_name);
 	VERIFY						(m_reader);
 	m_header.load				(m_reader);
-#ifndef AI_COMPILER
 	R_ASSERT2					(header().version() == XRAI_CURRENT_VERSION,"Graph version mismatch!");
-#else
-	if (XRAI_CURRENT_VERSION != current_version)
-		if (header().version() != current_version)
-			return;
-#endif
 	m_nodes						= (CVertex*)m_reader->pointer();
 	m_current_level_some_vertex_id = _GRAPH_ID(-1);
 }
@@ -153,6 +147,11 @@ IC	const GameGraph::SLevel &GameGraph::CHeader::level	(LPCSTR level_name) const
 #endif
 }
 
+IC	const xrGUID &CGameGraph::CHeader::guid	() const
+{
+	return						(m_guid);
+}
+
 IC	const Fvector &GameGraph::CVertex::level_point() const
 {
 	return		(tLocalPoint);
@@ -265,10 +264,11 @@ IC	const GameGraph::_GRAPH_ID	CGameGraph::current_level_vertex() const
 
 IC	void GameGraph::SLevel::load	(IReader *reader)
 {
-	reader->r_stringZ	(caLevelName);
-	reader->r_fvector3	(tOffset);
-	reader->r			(&tLevelID,sizeof(tLevelID));
+	reader->r_stringZ	(m_name);
+	reader->r_fvector3	(m_offset);
+	reader->r			(&m_id,sizeof(m_id));
 	reader->r_stringZ	(m_section);
+	reader->r			(&m_guid,sizeof(m_guid));
 }
 
 IC	void GameGraph::CHeader::load	(IReader *reader)
@@ -278,6 +278,7 @@ IC	void GameGraph::CHeader::load	(IReader *reader)
 	dwVertexCount		= reader->r_u32();
 	dwEdgeCount			= reader->r_u32();
 	dwDeathPointCount	= reader->r_u32();
+	reader->r			(&m_guid,sizeof(m_guid)); 
 	tpLevels.clear		();
 	for (u32 i=0; i<level_count(); ++i) {
 		SLevel				l_tLevel;

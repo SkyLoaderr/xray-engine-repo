@@ -33,7 +33,8 @@ public:
 private:
 	struct CSpawnHeader {
 		u32							m_version;
-		GUID						m_guid;
+		xrGUID						m_guid;
+		xrGUID						m_graph_guid;
 		u32							m_spawn_count;
 		u32							m_level_count;
 	};

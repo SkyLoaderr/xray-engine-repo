@@ -17,7 +17,7 @@
 #include "alife_space.h"
 #include "game_graph_space.h"
 
-#define CROSS_TABLE_NAME					"level.gct"
+#define CROSS_TABLE_NAME					"level_new.gct"
 
 #define CROSS_TABLE_CHUNK_VERSION			0
 #define CROSS_TABLE_CHUNK_DATA				1
@@ -29,10 +29,16 @@ public:
 		u32					dwVersion;
 		u32					dwNodeCount;
 		u32					dwGraphPointCount;
+		xrGUID				m_level_guid;
+		xrGUID				m_game_guid;
+
 	public:
 		IC	u32				version					() const;
 		IC	u32				level_vertex_count		() const;
 		IC	u32				game_vertex_count		() const;
+		IC	const xrGUID	&level_guid				() const;
+		IC	const xrGUID	&game_guid				() const;
+
 #ifdef AI_COMPILER		
 		friend class CLevelGameGraph;
 		friend class CCrossTableBuilder;
@@ -61,7 +67,7 @@ protected:
 
 public:
 #ifdef AI_COMPILER
-	IC						CGameLevelCrossTable	(LPCSTR fName, u32 current_version = XRAI_CURRENT_VERSION);
+	IC						CGameLevelCrossTable	(LPCSTR fName);
 #else
 	IC						CGameLevelCrossTable	();
 #endif

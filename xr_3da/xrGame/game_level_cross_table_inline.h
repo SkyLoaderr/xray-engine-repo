@@ -9,7 +9,7 @@
 #pragma once
 
 #ifdef AI_COMPILER
-IC CGameLevelCrossTable::CGameLevelCrossTable(LPCSTR fName, u32 current_version)
+IC CGameLevelCrossTable::CGameLevelCrossTable(LPCSTR fName)
 #else
 IC CGameLevelCrossTable::CGameLevelCrossTable()
 #endif
@@ -23,13 +23,7 @@ IC CGameLevelCrossTable::CGameLevelCrossTable()
 	R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION),"Can't find chunk CROSS_TABLE_CHUNK_VERSION!");
 	m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_VERSION);
 	m_tpCrossTableVFS->r				(&m_tCrossTableHeader,sizeof(m_tCrossTableHeader));
-#ifdef AI_COMPILER
-	if (XRAI_CURRENT_VERSION != current_version)
-		if (header().version() != current_version)
-			return;
-#else
 	R_ASSERT2							(m_tCrossTableHeader.version() == XRAI_CURRENT_VERSION,"Cross table version mismatch!");
-#endif
 	R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_DATA),"Can't find chunk CROSS_TABLE_CHUNK_DATA!");
 	m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_DATA);
 	m_tpaCrossTable						= (CCell*)m_tpCrossTableVFS->pointer();
@@ -58,6 +52,16 @@ IC	u32	CGameLevelCrossTable::CHeader::level_vertex_count() const
 IC	u32	CGameLevelCrossTable::CHeader::game_vertex_count() const
 {
 	return								(dwGraphPointCount);
+}
+
+IC	const xrGUID &CGameLevelCrossTable::CHeader::level_guid	() const
+{
+	return								(m_level_guid);
+}
+
+IC	const xrGUID &CGameLevelCrossTable::CHeader::game_guid	() const
+{
+	return								(m_game_guid);
 }
 
 IC	GameGraph::_GRAPH_ID CGameLevelCrossTable::CCell::game_vertex_id() const

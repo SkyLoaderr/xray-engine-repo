@@ -15,6 +15,8 @@
 #include "server_entity_wrapper.h"
 #include "graph_engine.h"
 
+extern LPCSTR GAME_CONFIG;
+
 #define NO_MULTITHREADING
 
 CGameSpawnConstructor::CGameSpawnConstructor	(LPCSTR name, LPCSTR output, LPCSTR start)
@@ -63,7 +65,7 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name)
 
 	// init game graph
 	string256							game_graph_name;
-	FS.update_path						(game_graph_name,"$game_data$","game.graph");
+	FS.update_path						(game_graph_name,"$game_data$",GRAPH_NAME);
 	m_game_graph						= xr_new<CGameGraph>(game_graph_name);
 
 	// fill level info
@@ -79,21 +81,23 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name)
 			u32							N = _GetItemCount(name);
 			bool						found = false;
 			for (u32 i=0; i<N; ++i)
-				if (!xr_strcmp(_GetItem(name,i,J),(*I).name)) {
+				if (!xr_strcmp(_GetItem(name,i,J),(*I).m_name)) {
 					found				= true;
 					break;
 				}
 			if (!found)
 				continue;
 		}
-		level.tOffset					= (*I).offset;
-		level.caLevelName				= (*I).name;
-		level.tLevelID					= (*I).id;
-		Msg								("%9s %2d %s","level",level.id(),(*I).name);
+		level.m_offset					= (*I).m_offset;
+		level.m_name					= (*I).m_name;
+		level.m_id						= (*I).m_id;
+		Msg								("%9s %2d %s","level",level.id(),(*I).m_name);
 		m_level_spawns.push_back		(xr_new<CLevelSpawnConstructor>(level,this));
 	}
 
-	R_ASSERT2							(!m_level_spawns.empty(),"There are no valid levels (with AI-map and graph) in the section 'levels' in the 'game.ltx' to build spawn file from!");
+	string256							temp;
+	sprintf								(temp,"There are no valid levels (with AI-map and graph) in the section 'levels' in the '%s' to build spawn file from!",GAME_CONFIG);
+	R_ASSERT2							(!m_level_spawns.empty(),temp);
 }
 
 void CGameSpawnConstructor::process_spawns	()
@@ -159,6 +163,7 @@ void CGameSpawnConstructor::save_spawn		(LPCSTR name, LPCSTR output)
 
 	m_spawn_header.m_version		= XRAI_CURRENT_VERSION;
 	m_spawn_header.m_guid			= generate_guid();
+	m_spawn_header.m_graph_guid		= game_graph().header().guid();
 	m_spawn_header.m_level_count	= (u32)m_level_spawns.size();
 	m_spawn_header.m_spawn_count	= spawn_graph().vertex_count();
 	

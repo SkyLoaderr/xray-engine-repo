@@ -19,6 +19,10 @@
 #include "object_broker.h"
 #include "xr_graph_merge.h"
 #include "spawn_constructor_space.h"
+#include "guid_generator.h"
+
+extern LPCSTR GAME_CONFIG;
+extern LPCSTR LEVEL_GRAPH_NAME;
 
 using namespace SpawnConstructorSpace;
 using namespace ALife;
@@ -67,16 +71,16 @@ public:
 	LEVEL_POINT_STORAGE			m_tpLevelPoints;
 	CGameGraph					*m_tpGraph;
 
-								CLevelGameGraph(const CGameGraph::SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, CInifile *Ini)
+								CLevelGameGraph(CGameGraph::SLevel *tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, CInifile *Ini)
 	{
-		m_tLevel				= tLevel;
+		m_tLevel				= *tLevel;
 		m_dwOffset				= dwOffset;
 		m_tpLevelPoints.clear	();
 		
 		FILE_NAME				caFileName;
 		
 		// loading graph
-		strconcat				(caFileName,S,"level.graph");
+		strconcat				(caFileName,S,GAME_LEVEL_GRAPH);
 		m_tpGraph				= xr_new<CGameGraph>(caFileName);
 
 		strconcat				(caFileName,S,CROSS_TABLE_NAME_RAW);
@@ -84,8 +88,14 @@ public:
 
 		CLevelGraph				*l_tpAI_Map = xr_new<CLevelGraph>(S);
 
+		VERIFY2					(l_tpCrossTable->header().level_guid() == l_tpAI_Map->header().guid(), "cross table doesn't correspond to the AI-map, rebuild graph!");
+		VERIFY2					(l_tpCrossTable->header().game_guid() == m_tpGraph->header().guid(), "cross table doesn't correspond to the graph, rebuild graph!");
+		VERIFY2					(m_tpGraph->header().level(u32(0)).guid() == l_tpAI_Map->header().guid(), "cross table doesn't correspond to the AI-map, rebuild graph!");
+
 		VERIFY					(l_tpAI_Map->header().vertex_count() == l_tpCrossTable->header().level_vertex_count());
 		VERIFY					(m_tpGraph->header().vertex_count() == l_tpCrossTable->header().game_vertex_count());
+
+		tLevel->m_guid			= l_tpAI_Map->header().guid();
 
 		{
 			for (GameGraph::_GRAPH_ID i=0, n = m_tpGraph->header().vertex_count(); i<n; ++i)
@@ -138,9 +148,11 @@ public:
 			CMemoryWriter					tMemoryStream;
 			CGameLevelCrossTable::CHeader	tCrossTableHeader;
 
-			tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
-			tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
+			tCrossTableHeader.dwVersion			= XRAI_CURRENT_VERSION;
+			tCrossTableHeader.dwNodeCount		= tpCrossTable->m_tCrossTableHeader.dwNodeCount;
 			tCrossTableHeader.dwGraphPointCount = tpCrossTable->m_tCrossTableHeader.dwGraphPointCount;
+			tCrossTableHeader.m_level_guid		= tpCrossTable->m_tCrossTableHeader.m_level_guid;
+			tCrossTableHeader.m_game_guid		= tGraphHeader.m_guid;
 
 			xr_delete			(tpCrossTable);
 
@@ -336,34 +348,6 @@ public:
 
 };
 
-//void send_message()
-//{
-//	LPCSTR							mailslot = 	"\\\\*\\mailslot\\game";
-//
-//	HANDLE							handle	= CreateFile(
-//		mailslot,
-//		GENERIC_WRITE,
-//		FILE_SHARE_READ,
-//		0,
-//		OPEN_EXISTING,
-//		FILE_ATTRIBUTE_NORMAL,
-//		0
-//		);
-//
-//	if (INVALID_HANDLE_VALUE != handle) {
-//		BOOL			result; 
-//		DWORD			bytes_written; 
-//
-//		result			= WriteFile(
-//			handle,
-//			"quit",
-//			(DWORD)xr_strlen("quit") + 1,
-//			&bytes_written,
-//			0
-//			);
-//	}
-//}
-
 class CGraphMerger {
 public:
 	CGraphMerger(LPCSTR name);
@@ -378,7 +362,7 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 		strlwr			(strcpy(N,_N));
 
 		if (!Ini->section_exist(N)) {
-			Msg			("! There is no section %s in the game.ltx!",N);
+			Msg			("! There is no section %s in the %s!",N,GAME_CONFIG);
 			continue;
 		}
 
@@ -407,17 +391,17 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 			xr_set<CLevelInfo>::const_iterator	E = levels.end();
 			for ( ; I != E; ++I) {
 				if (!xr_strcmp((*I).m_section,N)) {
-					Msg	("! Duplicated line %s in section \"levels\" in the game.ltx",N);
+					Msg	("! Duplicated line %s in section \"levels\" in the %s",N,GAME_CONFIG);
 					ok	= false;
 					break;
 				}
-				if (!xr_strcmp((*I).name,S)) {
-					Msg	("! Duplicated level name %s in the game.ltx, sections %s, %s",S,*(*I).m_section,N);
+				if (!xr_strcmp((*I).m_name,S)) {
+					Msg	("! Duplicated level name %s in the %s, sections %s, %s",S,GAME_CONFIG,*(*I).m_section,N);
 					ok	= false;
 					break;
 				}
-				if ((*I).id == id) {
-					Msg	("! Duplicated level id %d in the game.ltx, section %s, level %s",id,N,S);
+				if ((*I).m_id == id) {
+					Msg	("! Duplicated level id %d in the %s, section %s, level %s",id,GAME_CONFIG,N,S);
 					ok	= false;
 					break;
 				}
@@ -426,14 +410,14 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 				continue;
 		}
 		// ai
-		strconcat		(caFileName,S,"\\level.ai");
+		strconcat		(caFileName,S,"\\",LEVEL_GRAPH_NAME);
 		FS.update_path	(file_name,"$game_levels$",caFileName);
 		if (!FS.exist(file_name)) {
 			Msg			("! There is no ai-map for the level %s! (level is not included into the game graph)",S);
 			continue;
 		}
 		// graph
-		strconcat		(caFileName,S,"\\level.graph");
+		strconcat		(caFileName,S,"\\",GAME_LEVEL_GRAPH);
 		FS.update_path	(file_name,"$game_levels$",caFileName);
 		if (!FS.exist(file_name)) {
 			Msg			("! There is no graph for the level %s! (level is not included into the game graph)",S);
@@ -461,6 +445,8 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 		THROW(false);
 	R_ASSERT						(Ini->section_exist("levels"));
 
+	tGraphHeader.m_guid				= generate_guid();
+
 	GRAPH_P_MAP						tpGraphs;
 	string256						S1, S2;
 	CGameGraph::SLevel				tLevel;
@@ -475,37 +461,21 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	xr_set<CLevelInfo>::const_iterator	I = levels.begin();
 	xr_set<CLevelInfo>::const_iterator	E = levels.end();
 	for ( ; I != E; ++I) {
-		tLevel.tOffset				= (*I).offset;
-		tLevel.caLevelName			= (*I).name;
-		strcpy						(S1,(*I).name);
+		tLevel.m_offset				= (*I).m_offset;
+		tLevel.m_name				= (*I).m_name;
+		strcpy						(S1,*(*I).m_name);
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");
-		tLevel.tLevelID				= (*I).id;
+		tLevel.m_id					= (*I).m_id;
 		tLevel.m_section			= (*I).m_section;
-		Msg							("%9s %2d %s","level",tLevel.tLevelID,(*I).name);
-		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.id(), Ini);
+		Msg							("%9s %2d %s","level",tLevel.id(),*tLevel.m_name);
+		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(&tLevel,S1,dwOffset,tLevel.id(), Ini);
 		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
 		R_ASSERT2					(tpGraphs.find(tLevel.id()) == tpGraphs.end(),"Level ids _MUST_ be different!");
 		tpGraphs.insert				(mk_pair(tLevel.id(),tpLevelGraph));
 		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.id(),tLevel));
 	}
 	
-//	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-//		R_ASSERT					(Ini->section_exist(N));
-//		tLevel.tOffset				= Ini->r_fvector3(N,"offset");
-//		V							= Ini->r_string(N,"name");
-//		Memory.mem_copy				(tLevel.caLevelName,V,(u32)xr_strlen(V) + 1);
-//		Memory.mem_copy				(S1,V,(u32)xr_strlen(V) + 1);
-//		strconcat					(S2,name,S1);
-//		strconcat					(S1,S2,"\\");//level.graph");
-//		tLevel.tLevelID				= Ini->r_s32(N,"id");
-//		Msg							("%9s %2d %s","level",tLevel.tLevelID,V);
-//		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.id(), Ini);
-//		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
-//		R_ASSERT2					(tpGraphs.find(tLevel.id()) == tpGraphs.end(),"Level ids _MUST_ be different!");
-//		tpGraphs.insert				(mk_pair(tLevel.id(),tpLevelGraph));
-//		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.id(),tLevel));
-//    }
 	R_ASSERT(tpGraphs.size());
 	
 	Phase("Adding interconnection points");
@@ -567,6 +537,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	F.w_u32						(tGraphHeader.dwVertexCount);
 	F.w_u32						(tGraphHeader.dwEdgeCount);
 	F.w_u32						(tGraphHeader.dwDeathPointCount);
+	F.w							(&tGraphHeader.m_guid,sizeof(tGraphHeader.m_guid));
 	{
 		GameGraph::LEVEL_MAP::iterator	I = tGraphHeader.tpLevels.begin();
 		GameGraph::LEVEL_MAP::iterator	E = tGraphHeader.tpLevels.end();
@@ -575,6 +546,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 			F.w_fvector3((*I).second.offset());
 			F.w_u32		((*I).second.id());
 			F.w_stringZ	(*(*I).second.section());
+			F.w			(&(*I).second.guid(),sizeof((*I).second.guid()));
 		}
 	}
 
@@ -613,24 +585,8 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	}
 	
 	string256						l_caFileName;
-	FS.update_path					(l_caFileName,"$game_data$","game.graph");
+	FS.update_path					(l_caFileName,"$game_data$",GRAPH_NAME);
 
-//	send_message					();
-//
-//	while (!DeleteFile(l_caFileName)) {
-//		string512					S;
-//		sprintf						(S,"Cannot delete file\"%s\"!\nClose all the applications which are using it and press 'Retry'.\nIf you don't want to save the game graph (i.e. all the levels can be INVALID)- press 'Cancel'",l_caFileName);
-//		int							result = MessageBox(
-//			logWindow,
-//			S,
-//			"Error!",
-//			MB_RETRYCANCEL|MB_ICONWARNING
-//		);
-//		if (result == IDCANCEL)
-//			break;
-//		
-//		send_message				();
-//	}
 	F.save_to						(l_caFileName);
 
 	// free all the graphs
