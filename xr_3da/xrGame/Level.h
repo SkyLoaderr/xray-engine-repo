@@ -31,18 +31,27 @@ public:
 	xr_vector<CHitObject>		m_hit_objects;
 	u32							m_member_count;
 
-	CSquad() : Leader(0),m_member_count(0)		{};
+								CSquad() : 
+									Leader(0),
+									m_member_count(0)
+	{
+	}
+
+								~CSquad()
+	{
+	}
 
 	bool						Empty			(){return Groups.empty();}
 	int							Size			(){return Groups.size();}
 };
 
 const int maxTeams				= 32;
+const int maxSquads				= 32;
 const int maxRP					= 64;
 class CTeam
 {
 public:
-	xr_vector<CSquad>			Squads;
+	svector<CSquad,maxSquads>	Squads;
 };
 
 //by Dandy
