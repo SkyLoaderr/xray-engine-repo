@@ -215,7 +215,7 @@ void CBuild::LightVertex()
 		// Calc summary color
 		Fcolor		C;
 		C.set		(0,0,0,0);
-		for (int v=0; v<VL.size(); v++)
+		for (int v=0; v<int(VL.size()); v++)
 		{
 			C.r = _max(C.r,VL[v]->Color.r);
 			C.g = _max(C.g,VL[v]->Color.g);
@@ -223,7 +223,7 @@ void CBuild::LightVertex()
 		}
 
 		// Calculate final vertex color
-		for (v=0; v<VL.size(); v++)
+		for (v=0; v<int(VL.size()); v++)
 		{
 			// trans-level
 			float	level		= VL[v]->Color.a;
