@@ -13,7 +13,7 @@ void	CBlender_accum_point_uns::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case 0:	// masking
-		C.r_Pass			("accum_point_mask",	"null",FALSE,FALSE);
+		C.r_Pass			("accum_point_mask",	"null",			FALSE,FALSE);
 		C.r_Sampler_rtf		("s_position",			r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",			r2_RT_N_H);
 		C.r_End				();
@@ -25,6 +25,7 @@ void	CBlender_accum_point_uns::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_position",			r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",			r2_RT_N_H);
 		C.r_Sampler_clf		("s_material",			r2_material);
+		C.r_Sampler_clf		("s_attenuate",			r2_attenuate);
 		C.r_End				();
 		break;
 	}

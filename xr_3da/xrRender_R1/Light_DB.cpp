@@ -36,7 +36,7 @@ void CLight_DB::Load			(IReader *fs)
 #if RENDER==R_R1
 			L->set_shadow				(false);
 #else
-			L->set_shadow				(true);
+			L->set_shadow				(false);
 #endif
 			u32 controller				= 0;
 			F->r						(&controller,4);

@@ -21,8 +21,9 @@
 #define	r2_RT_smap_d_depth	"$user$smap_d_depth"	// ---	directional
 #define	r2_RT_smap_p		"$user$smap_p"			// ---	point
 
-#define r2_material			"$user$material"		// ---
-#define r2_ds2_fade			"$user$ds2_fade"		// ---
+#define r2_material			"$user$material"						// ---
+#define r2_attenuate		"internal\\internal_light_att_clip"		// ---
+#define r2_ds2_fade			"$user$ds2_fade"						// ---
 
 const u32					DSM_size			= 1024;
 const float					DSM_distance_1		= 15.f;
