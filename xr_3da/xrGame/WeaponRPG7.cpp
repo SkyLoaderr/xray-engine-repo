@@ -42,9 +42,11 @@ CWeaponRPG7Grenade::CWeaponRPG7Grenade() {
 CWeaponRPG7Grenade::~CWeaponRPG7Grenade() {
 	if(hWallmark) Device.Shader.Delete(hWallmark);
 	::Render->light_destroy(m_pLight);
+	xr_delete(m_pPhysicsShell);
 }
 
 void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContact& c) {
+	do_colide = false;
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
 	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass) {
@@ -64,7 +66,6 @@ void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContac
 	if(!l_pOwner || l_pOwner != l_this->m_pOwner) {
 		if(l_this->m_pOwner) l_this->Explode(*(Fvector*)&c.geom.normal);
 	} else {
-		do_colide = false;
 	}
 }
 
@@ -105,6 +106,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 }
 
 void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
+	m_engineTime = 0xffffffff;
 	m_expoldeTime = 500;
 	setVisible(false);
 	Sound->play_at_pos(sndExplode, 0, vPosition, false);
@@ -232,10 +234,11 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 		m_pPhysicsShell->add_Element		(E);
 		m_pPhysicsShell->setMass			(8000.f);
 		//m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->Activate			();
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 		m_pPhysicsShell->SetAirResistance(.000f, 0.f);
-		//m_pPhysicsShell->Deactivate();
+		m_pPhysicsShell->Deactivate();
 	}
 	return l_res;
 }
@@ -340,9 +343,10 @@ void CWeaponRPG7Grenade::UpdateCL() {
 		if(m_engineTime < 0xffffffff) {
 			m_engineTime -= Device.dwTimeDelta;
 			Fvector l_pos; l_pos.set(0, 0, 3.f);
-			m_pPhysicsShell->applyImpulseTrace(l_pos, svTransform.k, 45.f);
+			m_pPhysicsShell->applyImpulseTrace(l_pos, clTransform.k, 35.f);
 			Fvector l_dir; l_dir.set(0, 1.f, 0);
-			m_pPhysicsShell->applyForce(l_dir, 400.f);
+			//m_pPhysicsShell->applyForce(l_dir, 400.f);
+			//m_pPhysicsShell->applyImpulse(l_dir, 8.f);
 		}
 	} //else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
 }

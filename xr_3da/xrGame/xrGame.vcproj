@@ -1172,6 +1172,16 @@
 								RelativePath="F1.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="RGD5"
+							Filter="">
+							<File
+								RelativePath="RGD5.cpp">
+							</File>
+							<File
+								RelativePath="RGD5.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Target"

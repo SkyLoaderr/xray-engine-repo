@@ -114,7 +114,7 @@ bool CUIInventory::OnKeyboardPress(int dik) {
 					//l_pA->u_EventGen(P,GE_OWNERSHIP_REJECT,l_pA->ID());
 					//P.w_u16(u16(l_inv.m_slots[dik-DIK_1].m_pIItem->ID()));
 					//l_pA->u_EventSend(P);
-				} else l_inv.Ruck(l_inv.m_slots[dik-DIK_1].m_pIItem);
+				} else if(dik-DIK_1 < l_inv.m_slots.size()) l_inv.Ruck(l_inv.m_slots[dik-DIK_1].m_pIItem);
 				return true;
 			} else if(gs_DIK2CHR[dik] >= 'a' && gs_DIK2CHR[dik] <= 'z') {
 				char l_c = 'a'; TIItemList l_tmpSet;
