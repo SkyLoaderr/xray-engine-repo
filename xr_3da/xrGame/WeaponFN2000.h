@@ -11,6 +11,7 @@ private:
 public:
 	CWeaponFN2000	();
 	virtual			~CWeaponFN2000	();
+	virtual	BOOL	HasOpticalAim	()	{ return TRUE; }
 };
 
 
