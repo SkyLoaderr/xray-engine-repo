@@ -165,7 +165,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	xr_vector<u32>	bids;
 
 	// Load vertices
-	R_ASSERT	(data->find_chunk(OGF_VERTICES));
+	R_ASSERT	(data->find_chunk(OGF_VERTICES2));
 			
 	u32			hw_bones	= (HW.Caps.geometry.dwRegisters-22)/3;
 	u32			sw_bones	= 0;
@@ -181,7 +181,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	Render->shader_option_skinning	(0);
 	switch		(dwVertType)
 	{
-	case 1*0x12071980:
+	case 0: // 1-Link
 		{
 			size			= dwVertCount*sizeof(vertBoned1W);
 			vertBoned1W* VO = (vertBoned1W*)data->pointer();
@@ -207,7 +207,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 			}
 		}
 		break;
-	case 2*0x12071980:
+	case 1: // 2-Link
 		{
 			size			= dwVertCount*sizeof(vertBoned2W);
 			vertBoned2W* VO = (vertBoned2W*)data->pointer();
@@ -367,10 +367,10 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 	{
 	case RM_SKINNING_SOFT:
 		//Msg					("skinning: software");
-		V.hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), V.pIndices);
+		V.hGeom.create			(vertRenderFVF, RCache.Vertex.Buffer(), V.pIndices);
 		break;
 	case RM_SINGLE:
-		//Msg					("skinning: hw, 0-weight");
+/*		//Msg					("skinning: hw, 0-weight");
 		{
 			u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
 			BYTE*	bytes		= 0;
@@ -387,10 +387,10 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 			}
 			V.pVertices->Unlock	();
 			V.hGeom.create		(vertRenderFVF, V.pVertices, V.pIndices);
-		}
+		}*/
 		break;
 	case RM_SKINNING_1B:
-		//Msg					("skinning: hw, 1-weight");
+/*		//Msg					("skinning: hw, 1-weight");
 		{
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_1W,0);
 			VERIFY	(vStride==sizeof(vertHW_1W));
@@ -406,10 +406,10 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 			}
 			V.pVertices->Unlock	();
 			V.hGeom.create		(dwDecl_1W, V.pVertices, V.pIndices);
-		}
+		}    */
 		break;
 	case RM_SKINNING_2B:
-		//Msg					("skinning: hw, 2-weight");
+/*		//Msg					("skinning: hw, 2-weight");
 		{
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_2W,0);
 			VERIFY	(vStride==sizeof(vertHW_2W));
@@ -425,7 +425,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 			}
 			V.pVertices->Unlock	();
 			V.hGeom.create		(dwDecl_2W, V.pVertices, V.pIndices);
-		}
+		}*/
 		break;
 	}
 }

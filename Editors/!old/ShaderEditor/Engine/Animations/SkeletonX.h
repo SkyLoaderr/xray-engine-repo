@@ -13,10 +13,12 @@
 class ENGINE_API CKinematics;
 
 #pragma pack(push,4)
-struct vertBoned1W	// (3+3+2+1)*4 = 9*4 = 36 bytes
+struct vertBoned1W	// (3+3+3+3+2+1)*4 = 15*4 = 60 bytes
 {
 	Fvector	P;
 	Fvector	N;
+	Fvector	T;
+	Fvector	B;
 	float	u,v;
 	u32		matrix;
 };
@@ -24,10 +26,10 @@ struct vertBoned2W	// (1+3+3 + 1+3+3 + 2)*4 = 16*4 = 64 bytes
 {
 	u16		matrix0;
 	u16		matrix1;
-	Fvector	P0;
-	Fvector	N0;
-	Fvector	P1;
-	Fvector	N1;
+	Fvector	P;
+	Fvector	N;
+	Fvector	T;
+	Fvector	B;
 	float	w;
 	float	u,v;
 };
