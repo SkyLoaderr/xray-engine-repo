@@ -155,6 +155,15 @@
 	</quest_pointer>
 
 
+<!-- radar locations and spots-->
+	<rad_aerials_location hint="rad_aerials">
+		<level_map spot="rad_aerials_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="rad_aerials_spot" pointer="quest_pointer"></mini_map>
+	</rad_aerials_location>
+
+    <rad_aerials_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="64" y="128" width="32" height="32">ui\ui_icons_map</texture>
+	</rad_aerials_spot>
 
 
 
