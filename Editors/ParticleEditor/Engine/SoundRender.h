@@ -12,7 +12,7 @@ class CSoundRender_Target;
 class CSoundRender_Environment;
 class SoundEnvironment_LIB;
 
-const	u32		sdef_target_block		= 200;					// ms
+const	u32		sdef_target_block		= 100;					// ms
 const	u32		sdef_target_size		= 3*sdef_target_block;	// ms
 const	u32		sdef_source_footer		= 0;					// ms of silence after buffer data, just for rendering
 const	u32		sdef_env_version		= 1;					// current version of env-def
