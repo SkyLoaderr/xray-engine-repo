@@ -182,6 +182,8 @@ public:
 	{
 		return					(false);
 	}
+	
+	virtual void				ChangeTeam				(int team, int squad, int group);
 };
 
 #include "custommonster_inline.h"

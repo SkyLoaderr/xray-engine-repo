@@ -40,6 +40,10 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_angle8			(r_model_yaw);
 	P.w_angle8			(unaffected_r_torso_yaw	);//(r_torso.yaw);
 	P.w_angle8			(unaffected_r_torso_pitch);//(r_torso.pitch);
+	P.w_u8				(u8(g_Team()));
+	P.w_u8				(u8(g_Squad()));
+	P.w_u8				(u8(g_Group()));
+
 	//	unaffected_r_torso_yaw	 = r_torso.yaw;
 	//	unaffected_r_torso_pitch = r_torso.pitch;
 
@@ -170,6 +174,11 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_angle8			(N.o_model		);
 	P.r_angle8			(N.o_torso.yaw	);
 	P.r_angle8			(N.o_torso.pitch);
+	id_Team				= P.r_u8();
+	id_Squad			= P.r_u8();
+	id_Group			= P.r_u8();
+	
+	
 	//----------- for E3 -----------------------------
 	if (OnClient())
 	//------------------------------------------------

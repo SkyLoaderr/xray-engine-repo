@@ -78,6 +78,7 @@ public:
 	virtual void			reinit				();
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
+
 	virtual void			renderable_Render	();
 
 	bool					IsFocused			()const	{ return (dynamic_cast<const CEntity*>(g_pGameLevel->CurrentEntity())==this);		}

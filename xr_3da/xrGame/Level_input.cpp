@@ -235,7 +235,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	if (m_controller) {
 		switch (key) {
 		case DIK_1:
-			m_controller->Jump();
+			m_controller->control_hit();
 			break;
 		}
 	}

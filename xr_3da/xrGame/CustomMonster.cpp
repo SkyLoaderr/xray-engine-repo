@@ -202,6 +202,9 @@ void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 	P.w_angle8				(N.o_model);
 	P.w_angle8				(N.o_torso.yaw);
 	P.w_angle8				(N.o_torso.pitch);
+	P.w_u8					(u8(g_Team()));
+	P.w_u8					(u8(g_Squad()));
+	P.w_u8					(u8(g_Group()));
 }
 
 void CCustomMonster::net_Import(NET_Packet& P)
@@ -221,6 +224,10 @@ void CCustomMonster::net_Import(NET_Packet& P)
 	P.r_angle8				(N.o_model);
 	P.r_angle8				(N.o_torso.yaw);
 	P.r_angle8				(N.o_torso.pitch);
+	
+	id_Team					= P.r_u8();
+	id_Squad				= P.r_u8();
+	id_Group				= P.r_u8();
 	
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
@@ -746,4 +753,21 @@ BOOL CCustomMonster::UsedAI_Locations()
 bool CCustomMonster::use_model_pitch	() const
 {
 	return					(true);
+}
+
+void CCustomMonster::ChangeTeam(int team, int squad, int group)
+{
+	if ((team == g_Team()) && (squad == g_Squad()) && (group == g_Group())) return;
+
+	// remove from current team
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	Group.Member_Remove(this);
+
+	id_Team		= team;
+	id_Squad	= squad;
+	id_Group	= group;
+
+	// add to new team
+	Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	Group.Member_Add(this);
 }
