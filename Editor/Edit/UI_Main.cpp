@@ -5,12 +5,14 @@
 
 #include "UI_Main.h"
 #include "D3DUtils.h"
-#include "cursor3d.h"
 #include "leftbar.h"
 #include "main.h"
 #include "xr_input.h"
 #include "cl_rapid.h"
 #include "UI_Tools.h"
+#ifdef _LEVEL_EDITOR
+ 	#include "cursor3d.h"
+#endif
 
 TUI UI;
 
@@ -25,7 +27,9 @@ TUI::TUI()
 	m_CurrentRStart.set(0,0,0);
 	m_CurrentRNorm.set(0,0,0);
 
+#ifdef _LEVEL_EDITOR
     m_Cursor        = 0;
+#endif
 
 	DU::InitUtilLibrary();
 
