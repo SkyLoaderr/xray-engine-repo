@@ -173,7 +173,7 @@ int luabind::detail::class_rep::gettable(lua_State* L)
 	// a method that is not present in this class (but in a subclass)
 	const char* key = lua_tostring(L, 2);
 
-	if (key && !xr_strcmp(key, "__ok"))
+	if (key && !strcmp(key, "__ok"))
 	{
 		class_rep* crep = obj->crep();
 
