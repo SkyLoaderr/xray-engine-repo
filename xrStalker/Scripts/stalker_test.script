@@ -1,87 +1,17 @@
-function movement_callback(obj,action_type,index)
-	printf		("Patrol point %d (object %s, patrol path %s)",index,obj:name(),obj:patrol())
-end
-
-class "test_callback"
-
-function test_callback:__init()
-end
-
-function test_callback:callback(obj,action_type,index)
-	printf		("Patrol point %d (object %s, patrol path %s)",index,obj:name(),obj:patrol())
-	ptr			= patrol(obj:patrol())
-	pos			= ptr:point(ptr:index("wp06"))
-	printf		("[%f][%f][%f]",pos.x,pos.y,pos.z)
-end
-
 function main ()
---  object			= script_object("script_object0000",stalker_test:script_name(),anim("idle"),cond(cond.anim_end))
---	object1			= script_object("script_object0001",stalker_test:script_name(),anim("idle"),cond(cond.anim_end))
-    
     stalker			= get_level_object ("m_stalker_e0000")
-    stalker:script	(true,stalker_test:script_name());
     actor			= get_actor()
-    
---	action(                                                                                                       
---	    stalker,                                                                                                      
---	  	look		(look.point,get_level_object("localhost/dima")),
---	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
---		particle	("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
---		object		(wpn,object.activate),
---	    anim		(anim.danger),
---		move		(move.standing,move.run,move.line,get_level_object("localhost/dima")),
---		cond		(cond.move_end)
---	)
---	a				= patrol("way0000")
---	n				= a:count();
---	i				= 0;
---	while i<n do
---		c			= a:point(i);
---		printf		("[%f][%f][%f]",c.x,c.y,c.z)
---		i			= i + 1
---	end
---
---	c				= a:point(a:nearest(get_level_object("localhost/dima"):position()));
---	printf			("nearest : [%f][%f][%f]",c.x,c.y,c.z)
-	
---	action(
---	    stalker,                                                                                                      
---		move		(move.standing, move.walk, move.line, patrol ("way0000")),
---		look		(look.fire_point, get_level_object("localhost/dima")),
---		look		(look.path_dir),
---		anim		(anim.free),
---		cond		(cond.move_end)
---	)
 
---	stalker:set_callback(stalker_test.movement_callback,game_object.movement)
-	
---	local test		= stalker_test.test_callback()
---	stalker:set_callback(test,"callback",game_object.movement)
-	
+    stalker:script	(true,stalker_test:script_name());
+    
 	action (
 		stalker, 
-		move		(move.standing, move.walk, move.line, patrol ("way0000")),
-		look		(look.path_dir),
-		anim		(anim.free),
-		cond		(cond.move_end)
+		anim		("stalker_2_1"),
+		cond		(cond.time_end,1000000)
 	)
 	
---	wait			(2000)
-	
---	action_first (
---		stalker, 
---		move		(move.standing, move.stand, move.line, patrol ("way0000")),
---		anim		("stoya_ruje_ 0"),
---		cond		(cond.anim_end)
---	)
-	
 	while stalker:action() do
---		object:update()
---		object1:update()
 		wait		()
---		if (stalker:see(actor)) then
---			printf("[%6d] I see actor!",device().time_global)
---		end
 	end
 	
     stalker:script	(false,stalker_test:script_name());
