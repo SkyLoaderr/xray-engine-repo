@@ -164,7 +164,7 @@ void CMovementControl::CalcMaximumVelocity(Fvector& v, Fvector& a, float frictio
 void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, float dt, bool bLight)
 {
 	Fvector motion,vAccel;
-//	Fvector vOldVelocity	= vVelocity;
+	Fvector vOldVelocity	= vVelocity;
 	float	fOldFriction	= fFriction;
 	float	fOldActVelocity	= fActualVelocity;
 
@@ -226,14 +226,14 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	vLastMotion.set	(motion);
 	float s_res		= motion.magnitude();	// length of motion - dS - resulting
 
-/*
 	float src		= 20*dt;	clamp(src,0.f,1.f);
 	float dst		= 1-src;
+/*
 	fLastMotionMag			= dst*fLastMotionMag + src*s_res;
 	float	fAvgVelocity	= fLastMotionMag/dt;
 	fActualVelocity			= dst*fActualVelocity+ src*fAvgVelocity;
 */
-	fActualVelocity			= vVelocity.magnitude();
+	fActualVelocity			= dst*vVelocity.magnitude()+src*vOldVelocity.magnitude();
 
 	//	Don't allow new velocity to go against original velocity unless told otherwise
 	Fvector vel_dir;
