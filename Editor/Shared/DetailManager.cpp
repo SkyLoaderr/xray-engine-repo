@@ -491,7 +491,7 @@ void CDetailManager::UpdateCache	(int limit)
 		}
 		
 		// Prepare to selection
-		float		density		= 0.1f;
+		float		density		= 0.15f;
 		float		jitter		= density/2.f;
 		DWORD		d_size		= iCeil	(slot_size/density);
 		svector<int,dm_obj_in_slot>		selected;
