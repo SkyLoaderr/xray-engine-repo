@@ -45,7 +45,7 @@ void	CRenderTarget::phase_combine	()
 	}
 
 	// ********************* Debug
-	if (1)
+	if (0)
 	{
 		u32		Offset;
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
