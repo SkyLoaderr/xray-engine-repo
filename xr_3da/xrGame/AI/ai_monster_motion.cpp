@@ -95,9 +95,9 @@ bool CMotionManager::PrepareAnimation()
 
 	if (pJumping && pJumping->IsActive())  return pJumping->PrepareAnimation(&m_tpCurAnim);
 	
-	// :: TODO :: 
-	//CheckAnimWithPath();
+	ValidateAnimation();
 
+	
 	if (0 != m_tpCurAnim) return false;
 	
 	if (TA_IsActive() && pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
@@ -427,7 +427,7 @@ void CMotionManager::SelectAnimation()
 	if (Seq_Active()) return;
 
 	CheckReplacedAnim				();
-	
+
 	pMonster->ProcessTurn			();
 }
 
@@ -711,72 +711,43 @@ bool CMotionManager::TA_IsActive()
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void CMotionManager::CheckAnimWithPath()
+void CMotionManager::ValidateAnimation()
 {
-	//ANIM_ITEM_MAP_IT item_it = get_sd()->m_tAnims.find(pMonster->cur_anim.anim);
-	//VERIFY(get_sd()->m_tAnims.end() != item_it);
 
-	//bool is_moving_anim		= !fis_zero(item_it->second.velocity->velocity.linear);
-	//bool is_moving_on_path	= pMonster->IsMovingOnPath();
+#ifdef _DEBUG	
+	Fvector P1,P2;
+	P1 = pMonster->Position(); P1.y+=2.0f;
+ 	P2.mad(P1, pMonster->Direction(), 2.f);
+	pMonster->HDebug->L_Clear	();
+	pMonster->HDebug->L_AddLine	(P1, P2, D3DCOLOR_XRGB(255,255,0));
+#endif 
+	
+	ANIM_ITEM_MAP_IT item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
+	bool is_moving_anim		= !fis_zero(item_it->second.velocity->velocity.linear);
+	bool is_moving_on_path	= pMonster->IsMovingOnPath();
 
-	//if ( is_moving_on_path && is_moving_anim) {
-	//	pMonster->SetDirectionLook(item_it->first == eAnimDragCorpse);
-	//	return;
-	//}
+	if (is_moving_on_path && is_moving_anim) {
+		pMonster->SetDirectionLook(item_it->first == eAnimDragCorpse);
+		return;
+	}
 
-	//if (!is_moving_on_path && is_moving_anim) {
-	//	m_tpCurAnim = 0;
-	//	cur_anim = eAnimStandIdle;
-	//	pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target	= 0.f;
-	//	return;
-	//}
+	if (!is_moving_on_path && is_moving_anim) {
+		m_tpCurAnim							= 0;
+		cur_anim_info().motion				= eAnimStandIdle;
+		pMonster->m_velocity_linear.current	= pMonster->m_velocity_linear.target = 0.f;
+		return;
+	}
 
-	//if (is_moving_on_path && !is_moving_anim) {
-	//	pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target	= 0.f;
-	//	return;
-	//}
+	if (is_moving_on_path && !is_moving_anim) {
+		pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target	= 0.f;
+		return;
+	}
 
-#ifdef DEBUG
-	//if (pMonster->IsMovingOnPath()) {
-	//	pMonster->HDebug->L_Clear();
-	//	for (u32 i=0; i<pMonster->CDetailPathManager::path().size();i++) {
-	//		const CDetailPathManager::STravelParams &current_velocity = velocity(pMonster->CDetailPathManager::path()[i].velocity);
-	//		if (fis_zero(current_velocity.linear_velocity))
-	//			pMonster->HDebug->L_AddPoint(pMonster->CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(255,0,100));
-	//		else 
-	//			pMonster->HDebug->L_AddPoint(pMonster->CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(0,255,100));
-	//	}
-	//}
-#endif	
-
-	//static bool zero = false;
-
-	//if (pMonster->IsMovingOnPath()) {
-	//	
-	//	u32 cur_point_velocity_index = pMonster->CDetailPathManager::path()[pMonster->curr_travel_point_index()].velocity;		
-	//	if ((cur_point_velocity_index == pMonster->eVelocityParameterStand) && !fis_zero(pMonster->m_velocity_linear.current) && !zero) {
-	//		Msg("ZEROED:: cur_point[%u] cur_speed[%f]", cur_point_velocity_index, pMonster->m_velocity_linear.current);
-	//		pMonster->m_velocity_linear.current = pMonster->m_velocity_linear.target = 0.f;	
-	//		zero = true;
-	//	}
-
-	//	if (cur_point_velocity_index != pMonster->eVelocityParameterStand) zero = false;
-	//}
-	//Msg("cur_speed[%f]", pMonster->m_velocity_linear.current);
-
-	//if (pMonster->ps_Size() < 2) return;
-
-	//CObject::SavedPosition	pos0 = pMonster->ps_Element	(pMonster->ps_Size()-1);
-	//CObject::SavedPosition	pos1 = pMonster->ps_Element	(pMonster->ps_Size()-2);
-
-	//float h1,p1,h2,p2;
-	//pMonster->Direction().getHP(h1,p1);
-	//Fvector().sub(pos0.vPosition,pos1.vPosition).getHP(h2,p2);
-
-	//if ((angle_difference(h1,h2) > PI_DIV_6)  && (pMonster->m_PhysicMovementControl->GetVelocityMagnitude() > 0)) {
-	//	pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target = 0.f;
-	//	Msg("Velocity Fixed");
-	//}
+	float angle_diff = angle_difference(pMonster->m_body.target.yaw, pMonster->m_body.current.yaw);
+	if (angle_diff < deg(1) && ((item_it->first == eAnimStandTurnLeft) || (item_it->first == eAnimStandTurnRight))) {
+		m_tpCurAnim					= 0;
+		cur_anim_info().motion		= eAnimStandIdle;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

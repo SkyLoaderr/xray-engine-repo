@@ -176,8 +176,7 @@ public:
 
 	bool		IsStandCurAnim			();
 
-	// возвращает true - если конфликта нет, иначе false
-	void		CheckAnimWithPath		();
+	void		ValidateAnimation		();
 
 	//////////////////////////////////////////////////////////////////////////
 
