@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.00"
 	Name="xrHemisphere"
+	ProjectGUID="{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}"
 	SccProjectName="&quot;$/xrLC/xrHemisphere&quot;, BGFAAAAA"
 	SccAuxPath=""
 	SccLocalPath="."
