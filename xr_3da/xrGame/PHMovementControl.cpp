@@ -733,7 +733,8 @@ void CPHMovementControl::Jump(const Fvector &jump_velocity)
 
 void CPHMovementControl::Jump(const Fvector &end_point, u32 utime)
 {
-Jump(vPosition,end_point,utime);
+//vPosition
+Jump(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position(),end_point,utime);
 }
 void CPHMovementControl::Jump(const Fvector &start_point,const Fvector &end_point, u32 utime)
 {
