@@ -46,7 +46,7 @@ void CBuild::Light()
 				Status	("Calculating surface up to #%d...",N);
 			}
 		}
-		if ((0==threads[0])&&(0==threads[1])&&(0==threads[2])&&(0==threads[4]))	break;
+		if ((0==threads[0])&&(0==threads[1])&&(0==threads[2])&&(0==threads[3]))	break;
 		Sleep	(300);
 	}
 	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);
