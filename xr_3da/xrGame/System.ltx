@@ -14,6 +14,10 @@
 #include "helicopter.ltx"
 #include "external.ltx"
 
+#include "game_relations.ltx"
+
+
+
 ;Game types
 #include "deathmatch_game.ltx"
 #include "teamdeathmatch_game.ltx"
@@ -1507,11 +1511,6 @@ map_spots_friend			= ui_minimap_friend
 texture		= ui\ui_global_map							; Текстура глобальной карты
 width		= 1000										;размера карты (в условных единицах)
 height		= 2000
-
-[game_relations]
-rating			= novice, 10, veteran, 50, master, 100, super_master
-reputation		= bad, -20, neutral, 20, good, 40, very_good
-
 
 ;параметры показывания входящих сообщений PDA в главном меню
 [maingame_ui]
