@@ -369,8 +369,7 @@ function move_mgr:update(no_dialog_mgr_update)
 			self:reset_sl() -- отпустить прожектор
 			self.last_look_index = nil
 			self:update_movement_state() -- идти дальше
-			--self.object:set_sight(look.search, nil, 0)
-			self.object:set_sight(look.danger, nil, 0)
+			--self.object:set_sight(look.danger, nil, 0) -- делается в update_movement_state
 		end
 	end
 	
@@ -409,6 +408,8 @@ function move_mgr:update_movement_state()
 	self.object:set_body_state(if_then_else(self.crouch, move.crouch, move.standing))
 	self.object:set_mental_state(if_then_else(self.danger or self.crouch, anim.danger, anim.free))
 	self.object:set_movement_type(if_then_else(self.running, move.run, move.walk))
+
+	self.object:set_sight(look.danger, nil, 0)
 end
 
 function move_mgr:update_standing_state()
