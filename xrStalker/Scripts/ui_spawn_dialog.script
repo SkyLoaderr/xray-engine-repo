@@ -53,11 +53,6 @@ function spawn_dialog:InitControls()
 	ui_base_dialog.base_dialog.InitControls(self, "Load Spawn File")
 	
 	----- DATA ----	
---[[	local info_rect       = {x = self.left_align_x, 
-						     y = self.top_align_y,
-						     width = 148, 
-						     height = 148}
-	]]						 
 	local list_rect_f     = {x = self.left_align_x,
 						     y = self.top_align_y,
 						     width = 0,
@@ -74,13 +69,7 @@ function spawn_dialog:InitControls()
 	
 	
 	----- CODE -------
-	
-	-- INFO box --
---[[	local frame_info = CUIFrameWindow() 
-    frame_info:SetAutoDelete(true)
-    frame_info:Init("ui\\ui_frame_very_small", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
-    self.main_frame:AttachChild(frame_info)	
-]]
+
 	------------LIST-----------------
     local txt_list   = CUIFrameWindow()  --background for ListView
     txt_list:SetAutoDelete(true)

@@ -155,7 +155,7 @@ end
 
 function main_menu:OnButton_new_hard_game()
 	local console = get_console()
---	console:execute("start server( |||| /single/alife) client(localhost)")
+	console:execute("start server(stalker/single/alife) client(localhost)")
 end
 
 function main_menu:OnButton_load_spawn()
