@@ -116,9 +116,10 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fWallMinTurnValue				= pSettings->ReadFLOAT (section,"WallMinTurnValue")/180.f*PI;
 	m_fWallMaxTurnValue				= pSettings->ReadFLOAT (section,"WallMaxTurnValue")/180.f*PI;
 
-	m_fASpeed						= pSettings->ReadFLOAT (section,"AngleSpeed");
-	m_fGoalChangeDelta	 			= pSettings->ReadFLOAT (section,"GoalChangeDelta");
-	m_tVarGoal	  					= pSettings->ReadVECTOR(section,"GoalVariation");
+
+	m_fAngleSpeed					= pSettings->ReadFLOAT (section,"AngleSpeed");
+	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
+	m_tGoalVariation	  			= pSettings->ReadVECTOR(section,"GoalVariation");
 
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;

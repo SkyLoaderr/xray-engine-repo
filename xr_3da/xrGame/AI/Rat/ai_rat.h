@@ -129,6 +129,11 @@ class CAI_Rat : public CCustomMonster
 		float				m_fIdleSoundDelta;
 		Fvector				m_tSpawnPosition;
 		Fvector				m_tSafeSpawnPosition;
+		float				m_fAngleSpeed;
+		float				m_fSafeGoalChangeDelta;
+		Fvector				m_tGoalVariation;
+
+
 		// variables
 		float				m_fGoalChangeTime;
 		Fvector				m_tOldPosition;
