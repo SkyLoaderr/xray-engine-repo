@@ -191,11 +191,14 @@ void CSpaceRestriction::remove_border			()
 
 IC	bool CSpaceRestriction::accessible_neighbours	(u32 level_vertex_id)
 {
+	if (!accessible(level_vertex_id))
+		return				(false);
+
 	CLevelGraph::const_iterator	i,e;
 	ai().level_graph().begin(level_vertex_id,i,e);
 	for ( ; i != e; ++i) {
 		u32					neighbour_vertex_id = ai().level_graph().value(level_vertex_id,i);
-		if (!ai().level_graph().valid_vertex_id(neighbour_vertex_id) || !accessible(neighbour_vertex_id))
+		if (ai().level_graph().valid_vertex_id(neighbour_vertex_id) && !accessible(neighbour_vertex_id))
 			return			(false);
 	}
 	return					(true);
