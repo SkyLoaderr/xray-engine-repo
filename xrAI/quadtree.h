@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "profiler.h"
+
 template <typename _object_type>
 class CQuadTree {
 public:
