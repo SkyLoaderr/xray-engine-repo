@@ -235,37 +235,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_trader_tutorial">
-        <phrase_list>
-            <phrase id="1">
-                <text>escape_trader_tutorial_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>escape_trader_tutorial_11</text>
-                <next>112</next>
-                <next>111</next>
-            </phrase>
-            <phrase id="112">
-                <text>escape_trader_tutorial_112</text>
-                <next>1121</next>
-            </phrase>
-            <phrase id="1121">
-                <text>escape_trader_tutorial_1121</text>
-            </phrase>
-            <phrase id="111">
-                <text>escape_trader_tutorial_111</text>
-                <next>1111</next>
-            </phrase>
-            <phrase id="1111">
-                <text>escape_trader_tutorial_1111</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_tutorial_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_lager_volk_hello">
         <phrase_list>
             <phrase id="1">
@@ -282,29 +251,6 @@
             </phrase>
             <phrase id="12">
                 <text>escape_lager_volk_hello_12</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="tutorial_wounded">
-        <phrase_list>
-            <phrase id="0">
-                <text>Брат, поделись аптечкой, помираю!</text>
-                <next>1</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="1">
-                <precondition>dialogs.medikit_yes</precondition>
-                <text>Возьми, потом сочтемся</text>
-                <action>dialogs.transfer_medikit2</action>
-                <give_info>tutorial_wounded_help</give_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>Спасибо, браток. Волк с тобой расчитается.</text>
-            </phrase>
-            <phrase id="3">
-                <precondition>dialogs.medikit_no</precondition>
-                <text>Увы, нет у меня аптечки.</text>
             </phrase>
         </phrase_list>
     </dialog>
@@ -582,7 +528,7 @@
                 <next>6</next>
             </phrase>
         </phrase_list>
-    </dialog>    
+    </dialog>
     <dialog id="escape_factory_attackers">
         <phrase_list>
             <phrase id="1">
@@ -656,5 +602,71 @@
                 <next>1</next>
             </phrase>
         </phrase_list>
-    </dialog>    
+    </dialog>
+    <dialog id="tutorial_wounded">
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <precondition>dialogs.medikit_yes</precondition>
+                <action>dialogs.transfer_medikit2</action>
+                <give_info>tutorial_wounded_help</give_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <precondition>dialogs.medikit_no</precondition>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>3</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_tutorial">
+        <phrase_list>
+            <phrase id="1121">
+                <text>escape_trader_tutorial_1121</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <give_info>esc_trader_monolog_1</give_info>
+                <next>3</next>
+            </phrase>
+            <phrase id="11">
+                <text>escape_trader_tutorial_11</text>
+                <next>112</next>
+                <next>111</next>
+            </phrase>
+            <phrase id="1">
+                <text>escape_trader_tutorial_1</text>
+                <give_info>esc_trader_tutorial_choice</give_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_trader_tutorial_3</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1111">
+                <text>escape_trader_tutorial_1111</text>
+            </phrase>
+            <phrase id="112">
+                <text>escape_trader_tutorial_112</text>
+                <give_info>esc_trader_experienced</give_info>
+                <next>1121</next>
+            </phrase>
+            <phrase id="111">
+                <text>escape_trader_tutorial_111</text>
+                <give_info>esc_trader_newbie</give_info>
+                <next>1111</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>

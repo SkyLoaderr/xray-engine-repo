@@ -98,6 +98,15 @@
 	<info_portion id="escape_stalker_help">
 	</info_portion>
 
+	<info_portion id="esc_trader_monolog_1">
+	</info_portion>
+	<info_portion id="esc_trader_tutorial_choice">
+	</info_portion>
+	<info_portion id="esc_trader_experienced">
+	</info_portion>
+	<info_portion id="esc_trader_newbie">
+	</info_portion>
+
 	<info_portion id="tutorial_wounded_help">
 	</info_portion>
 
