@@ -15,6 +15,7 @@ bool	pred_mdbg	(const xrMemory::mdbg& A)	{
 }
 extern	u32		get_header		(void*	P);
 extern	u32		get_pool		(size_t size);
+BOOL	g_bDbgFillMemory		= true;
 
 void	dbg_header			(xrMemory::mdbg& dbg, bool _debug)
 {
@@ -66,7 +67,8 @@ void	xrMemory::dbg_unregister	(void* _p)
 		R_ASSERT2			(u32(-1)==*_shred, "Memory overrun error");
 
 		// fill free memory with random data
-		memset				(debug_info[_found]._p,'CD',debug_info[_found]._size);
+		if (g_bDbgFillMemory)
+			memset			(debug_info[_found]._p,'C',debug_info[_found]._size);
 
 		// clear record
 		debug_info[_found]._p		= NULL; 

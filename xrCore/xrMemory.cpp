@@ -71,6 +71,7 @@ void	xrMemory::_destroy()
 	xr_delete					(g_pStringContainer);
 
 	mem_initialized				= FALSE;
+	debug_mode					= FALSE;
 }
 
 void	xrMemory::mem_compact	()
