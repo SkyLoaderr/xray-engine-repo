@@ -56,5 +56,5 @@ function main ()
 	end
 	
     stalker:script	(false,stalker_test:script_name());
-    ]--
+    --]
 end
