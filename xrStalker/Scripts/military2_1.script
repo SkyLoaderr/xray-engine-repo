@@ -1,55 +1,145 @@
-local actor_entered = false
+class "Checker"
 
-function on_enter (zone, object)
-	printf ("Actor entered")
-    actor_entered = true
+function Checker:__init (npc, script_name)
+  self.npc = npc
+  self.script_name = script_name
+  self.finish = false
+end
+
+function Checker:callback (obj, action_type, index)
+
+    local ptr = patrol (obj:patrol ())
+
+    printf ("Callback called. Way : %s, index : %d", obj:patrol (), index);
+
+    local pos = obj:position ()
+    printf ("Player position : %f, %f, %f", pos.x, pos.y, pos.z)
+    pos = ptr:point (index)
+    printf ("Node position : %f, %f, %f", pos.x, pos.y, pos.z)
+
+    --обработаем развилку
+    if ptr:flag (index, 1) then
+       action_first (obj, move (move.standing, move.stand, move.line, ptr),
+                     anim ("uslishal"), cond (cond.anim_end))
+       printf ("node 1")
+       return
+       end
+    --обработаем конечную точку
+    if ptr:flag (index, 2) then
+       action_first (obj, move (move.standing, move.stand, move.line, ptr),
+                     anim ("proverka_dver"), cond (cond.anim_end))
+       printf ("node 2")
+       self.finish = true
+       return
+       end
+
+end
+
+
+function Checker:process ()
+
+    self.npc:set_callback (self, "callback", game_object.movement)
+
+    action (self.npc, move (move.standing, move.walk, move.line, patrol ("way_test")),
+            look (look.search), anim (anim.danger), cond (cond.move_end))
+    printf ("Wait for end")
+    while self.finish == false do wait () end
+
 end
 
 
 function main ()
 
-	local stalker1 = get_level_object ("stalker1")
-	local stalker2 = get_level_object ("stalker2")
-	local stalker3 = get_level_object ("stalker3")
+    local stalker1 = get_level_object ("stalker1")
+    local stalker2 = get_level_object ("stalker2")
+    local stalker3 = get_level_object ("stalker3")
 
-	stalker1:script (true, military2_1.script_name ())
-	stalker2:script (true, military2_1.script_name ())
-	stalker3:script (true, military2_1.script_name ())
+    local weapon = get_level_object ("ak74")
 
-	local zone = get_level_object ("script_zone")
+    local artefact = get_level_object ("artefact")
+    if artefact ~= nil then printf ("Getting artefact") end
 
-  	zone:clear_callback(true)
-    zone:clear_callback(false)
-    zone:set_callback (military2_1.on_enter, true)
+    local way = patrol ("way_test")
 
-	action (stalker1, move (move.standing, move.stand, move.line, patrol ("way_test")),
-			anim (anim.free), cond (cond.time_end, 100000000))		
-	action (stalker2, move (move.standing, move.stand, move.line, patrol ("way_test")),
-			anim (anim.free), cond (cond.time_end, 100000000))		
-	action (stalker3, move (move.standing, move.stand, move.line, patrol ("way_test")),
-			anim (anim.free), cond (cond.time_end, 100000000))		
+    local sound1_1 = sound_object ("scripts\\Rolik\\Stalker1_1")
+    local sound1_2 = sound_object ("scripts\\Rolik\\Stalker1_2")
+    local sound1_3 = sound_object ("scripts\\Rolik\\Stalker1_3")
+    local sound2_1 = sound_object ("scripts\\Rolik\\Stalker2_1")
+    local sound2_2 = sound_object ("scripts\\Rolik\\Stalker2_2")
+    local sound3_1 = sound_object ("scripts\\Rolik\\Stalker3_1")
+    local sound3_2 = sound_object ("scripts\\Rolik\\Stalker3_2")
 
-	while actor_entered == false do wait () end
+    stalker1:script (true, military2_1.script_name ())
+    stalker2:script (true, military2_1.script_name ())
+    stalker3:script (true, military2_1.script_name ())
 
-	printf ("actor entered")
+    action (stalker1, move (move.standing, move.stand, move.line, way),
+            anim (anim.free), cond (cond.time_end, 100000000))
+    action (stalker2, move (move.standing, move.stand, move.line, way),
+            anim (anim.free), cond (cond.time_end, 100000000))
+    action (stalker3, move (move.standing, move.stand, move.line, way),
+            anim (anim.free), cond (cond.time_end, 100000000))
 
-	reset_action (stalker1, military2_1.script_name ())
-	reset_action (stalker2, military2_1.script_name ())
-	reset_action (stalker3, military2_1.script_name ())
+    wait (5000)
 
-	printf ("Reset stalkers")
+    --phrase 1
+    reset_action (stalker1, military2_1.script_name ())
+    reset_action (stalker2, military2_1.script_name ())
+    reset_action (stalker3, military2_1.script_name ())
+    action (stalker1, move (move.standing, move.stand, move.line, way),
+            anim ("stalker_2_1"), cond (cond.time_end, 100000000))
+    action (stalker2, move (move.standing, move.stand, move.line, way),
+            anim ("stalker_1_1"), cond (cond.time_end, 100000000))
+    action (stalker3, move (move.standing, move.stand, move.line, way),
+            object (weapon, object.deactivate), anim ("stalker_3_2"), cond (cond.time_end, 100000000))
+    sound2_1:play_at_pos (stalker2, stalker2:position (), 0)
+    while sound2_1:playing () do wait () end
+    wait (1000)
 
-	action (stalker1, move (move.standing, move.stand, move.line, patrol ("way_test")),
-			anim ("stalker_1_1"), cond (cond.time_end, 100000000))		
-	action (stalker2, move (move.standing, move.stand, move.line, patrol ("way_test")),
-			anim ("stalker_2_1"), cond (cond.time_end, 100000000))		
-	action (stalker3, move (move.standing, move.stand, move.line, patrol ("way_test")),
-			anim ("stalker_3_1"), cond (cond.time_end, 100000000))		
+    --phrase 2
+    reset_action (stalker2, military2_1.script_name ())
+    action (stalker2, move (move.standing, move.stand, move.line, way),
+            anim ("stalker_1_2"), cond (cond.time_end, 100000000))
+    sound3_1:play_at_pos (stalker3, stalker3:position (), 0)
+    while sound3_1:playing () do wait () end
+    wait (500)
 
-	while true do wait () end
+    --phrase 3
+    sound1_1:play_at_pos (stalker1, stalker1:position (), 0)
+    while sound1_1:playing () do wait () end
+    wait (3000)
 
-	stalker1:script (false, military2_1.script_name ())
-	stalker2:script (false, military2_1.script_name ())
-	stalker3:script (false, military2_1.script_name ())
+    --phrase 4
+    sound1_2:play_at_pos (stalker1, stalker1:position (), 0)
+    while sound1_2:playing () do wait () end
+    wait (500)
+
+    --phrase 5
+    sound2_2:play_at_pos (stalker2, stalker2:position (), 0)
+    while sound2_2:playing () do wait () end
+    wait (5000)
+
+    --phrase 6
+    sound1_3:play_at_pos (stalker1, stalker1:position (), 0)
+    while sound1_3:playing () do wait () end
+    wait (1000)
+
+    --test
+    reset_action (stalker3, military2_1.script_name ())
+    action (stalker3, move (move.standing, move.stand, move.line, way),
+            anim ("stalker_1_up"), cond (cond.anim_end))
+    action (stalker3, move (move.standing, move.stand, move.line, way),
+            object (weapon, object.activate), look (look.direction, way:point (way:index ("wp00"))),
+            cond (cond.look_end))
+
+    while stalker3:action () do wait () end
+
+    local checker = military2_1.Checker (stalker3, military2_1.script_name ())
+    reset_action (stalker3, military2_1.script_name ())
+    checker:process ()
+
+    stalker1:script (false, military2_1.script_name ())
+    stalker2:script (false, military2_1.script_name ())
+    stalker3:script (false, military2_1.script_name ())
 
 end
