@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 786
+  Height = 682
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 786
+    Height = 682
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -33,7 +33,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 210
-      Height = 92
+      Height = 67
       Hint = 'Scene commands'
       Align = alTop
       Color = 10528425
@@ -157,52 +157,12 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnMouseDown = ebImageCommandsMouseDown
       end
-      object ExtBtn2: TExtBtn
-        Left = 2
-        Top = 64
-        Width = 207
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        CloseButton = False
-        Caption = '- Action List -'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Margin = 13
-        ParentFont = False
-        OnClick = ExtBtn2Click
-      end
-      object ExtBtn3: TExtBtn
-        Left = 2
-        Top = 77
-        Width = 207
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        CloseButton = False
-        Caption = '- Reset PS -'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Margin = 13
-        ParentFont = False
-        OnClick = ExtBtn3Click
-      end
     end
     object paParticles: TPanel
       Left = 1
-      Top = 93
+      Top = 68
       Width = 210
-      Height = 300
+      Height = 221
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -224,13 +184,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 269
+        Height = 189
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 267
+          Top = 187
           Width = 208
           Height = 2
           Align = alBottom
@@ -246,7 +206,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 231
+          Height = 151
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -283,6 +243,7 @@ object fraLeftBar: TfraLeftBar
           HorzScrollBarStyles.Width = 16
           HorzScrollBarStyles.ButtonSize = 16
           IgnoreEnabled = False
+          Images = ImageList1
           IncrementalSearch = False
           ItemIndent = 14
           KeepSelectionWithinLevel = False
@@ -316,6 +277,9 @@ object fraLeftBar: TfraLeftBar
           ShowLeafButton = False
           ShowLines = False
           StoragePath = '\Tree'
+          StripedOddColor = 8750469
+          StripedEvenColor = clGray
+          StripedItems = True
           TabOrder = 0
           TabStop = True
           Tracking = False
@@ -329,6 +293,7 @@ object fraLeftBar: TfraLeftBar
           OnItemFocused = tvParticlesItemFocused
           OnDragDrop = OnDragDrop
           OnMouseDown = tvParticlesMouseDown
+          OnDblClick = tvParticlesDblClick
           OnKeyDown = tvParticlesKeyDown
         end
         object Panel1: TPanel
@@ -341,9 +306,9 @@ object fraLeftBar: TfraLeftBar
           Color = 10528425
           TabOrder = 1
           object ebEngineShaderRemove: TExtBtn
-            Left = 69
+            Left = 93
             Top = 18
-            Width = 69
+            Width = 48
             Height = 15
             Align = alNone
             BevelShow = False
@@ -356,14 +321,14 @@ object fraLeftBar: TfraLeftBar
             Font.Height = -11
             Font.Name = 'MS Sans Serif'
             Font.Style = []
-            Margin = 13
             ParentFont = False
+            Spacing = -1
             OnClick = ebParticleRemoveClick
           end
           object ebEngineShaderClone: TExtBtn
-            Left = 138
+            Left = 151
             Top = 18
-            Width = 69
+            Width = 48
             Height = 15
             Align = alNone
             BevelShow = False
@@ -376,11 +341,11 @@ object fraLeftBar: TfraLeftBar
             Font.Height = -11
             Font.Name = 'MS Sans Serif'
             Font.Style = []
-            Margin = 13
             ParentFont = False
+            Spacing = -1
             OnClick = ebParticleCloneClick
           end
-          object ebEngineShaderFile: TExtBtn
+          object ebFile: TExtBtn
             Left = 1
             Top = 2
             Width = 205
@@ -410,12 +375,12 @@ object fraLeftBar: TfraLeftBar
             Margin = 3
             ParentFont = False
             Spacing = 3
-            OnMouseDown = ebEngineShaderFileMouseDown
+            OnMouseDown = ebFileMouseDown
           end
-          object ebCShaderCreate: TExtBtn
+          object ebCreate: TExtBtn
             Left = 1
             Top = 18
-            Width = 68
+            Width = 80
             Height = 15
             Align = alNone
             BevelShow = False
@@ -429,27 +394,36 @@ object fraLeftBar: TfraLeftBar
             Font.Height = -11
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            Glyph.Data = {
+              DE000000424DDE00000000000000360000002800000007000000070000000100
+              180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+              0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+              000000000000000000000000FFFFFF0000000000000000000000000000000000
+              00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+              0000}
             Kind = knMinimize
-            Margin = 13
+            Margin = 3
             ParentFont = False
             Spacing = 3
-            OnClick = ebPSCreateClick
+            OnMouseDown = ebCreateMouseDown
           end
         end
       end
       object paAction: TPanel
         Left = 1
-        Top = 283
+        Top = 203
         Width = 208
-        Height = 16
+        Height = 17
         Align = alBottom
         BevelOuter = bvNone
         Color = 10528425
         TabOrder = 1
         object ebEngineApplyChanges: TExtBtn
           Left = 1
-          Top = 0
-          Width = 202
+          Top = 1
+          Width = 96
           Height = 15
           Align = alNone
           BevelShow = False
@@ -466,11 +440,31 @@ object fraLeftBar: TfraLeftBar
           ParentFont = False
           OnClick = ebEngineApplyChangesClick
         end
+        object ebResetState: TExtBtn
+          Left = 105
+          Top = 1
+          Width = 96
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          HotTrack = True
+          HotColor = 15790320
+          CloseButton = False
+          Caption = 'Reset State'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          Margin = 13
+          ParentFont = False
+          OnClick = ExtBtn3Click
+        end
       end
     end
     object paProperties: TPanel
       Left = 1
-      Top = 435
+      Top = 331
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -528,7 +522,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 393
+      Top = 289
       Width = 210
       Height = 42
       Hint = 'Scene commands'
@@ -702,7 +696,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 6
+    Version = 7
     StoredProps.Strings = (
       'paScene.Tag'
       'paScene.Height'
@@ -729,6 +723,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 181
     Top = 80
+    object N4: TMenuItem
+      Caption = '-'
+    end
     object Save1: TMenuItem
       Caption = 'Save'
       OnClick = ebSaveClick
@@ -764,6 +761,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 181
     Top = 18
+    object N7: TMenuItem
+      Caption = '-'
+    end
     object Custom1: TMenuItem
       Tag = -1
       Caption = 'Custom...'
@@ -783,7 +783,10 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 34
-    Top = 138
+    Top = 146
+    object N8: TMenuItem
+      Caption = '-'
+    end
     object CreateFolder1: TMenuItem
       Caption = 'Create Folder'
       OnClick = CreateFolder1Click
@@ -809,7 +812,7 @@ object fraLeftBar: TfraLeftBar
     Types = [sftText]
     OnValidateResult = InplaceParticleEditValidateResult
     Left = 5
-    Top = 138
+    Top = 146
   end
   object pmImages: TMxPopupMenu
     Alignment = paCenter
@@ -826,6 +829,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 181
     Top = 34
+    object N5: TMenuItem
+      Caption = '-'
+    end
     object ImageEditor1: TMenuItem
       Caption = 'Image Editor'
       OnClick = ImageEditor1Click
@@ -841,5 +847,110 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Check New Textures'
       OnClick = Checknewtextures1Click
     end
+  end
+  object pmCreateMenu: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 13158600
+    MarginEndColor = 1644825
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 181
+    Top = 96
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem1: TMenuItem
+      Caption = 'Particle System'
+      OnClick = ebPSCreateClick
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Particle Group'
+      OnClick = ebPGCreateClick
+    end
+  end
+  object ImageList1: TImageList
+    Height = 14
+    Width = 9
+    Left = 96
+    Top = 104
+    Bitmap = {
+      494C010102000400040009000E00FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000240000000E0000000100200000000000E007
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000424D3E000000000000003E000000
+      28000000240000000E0000000100010000000000700000000000000000000000
+      000000000000000000000000FFFFFF00FFFFC00000000000FFFFC00000000000
+      FFFFC0000000000079BE0000000000007EBD8000000000001D8D000000000000
+      6BB5C000000000001C8E000000000000FFFFC00000000000FFFFC00000000000
+      FFFFC00000000000FFFFC00000000000FFFFC00000000000FFFFC00000000000}
   end
 end

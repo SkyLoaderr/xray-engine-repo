@@ -1,9 +1,8 @@
 object frmText: TfrmText
   Left = 401
   Top = 329
-  Width = 302
-  Height = 286
-  BorderStyle = bsSizeToolWin
+  Width = 443
+  Height = 283
   Caption = 'Text'
   Color = 10528425
   Constraints.MinHeight = 205
@@ -18,23 +17,26 @@ object frmText: TfrmText
   OldCreateOrder = False
   Position = poScreenCenter
   Scaled = False
+  OnActivate = FormActivate
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
+  OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object paBottomBar: TPanel
     Left = 0
-    Top = 239
-    Width = 294
+    Top = 0
+    Width = 435
     Height = 20
-    Align = alBottom
+    Align = alTop
     BevelOuter = bvNone
     Color = 10528425
     TabOrder = 0
     object ebOk: TExtBtn
       Left = 2
-      Top = 2
+      Top = 1
       Width = 50
       Height = 18
       Align = alNone
@@ -46,7 +48,7 @@ object frmText: TfrmText
     end
     object ebCancel: TExtBtn
       Left = 52
-      Top = 2
+      Top = 1
       Width = 50
       Height = 18
       Align = alNone
@@ -58,7 +60,7 @@ object frmText: TfrmText
     end
     object ebApply: TExtBtn
       Left = 107
-      Top = 2
+      Top = 1
       Width = 50
       Height = 18
       Align = alNone
@@ -70,7 +72,7 @@ object frmText: TfrmText
     end
     object ebLoad: TExtBtn
       Left = 214
-      Top = 2
+      Top = 1
       Width = 37
       Height = 18
       Align = alNone
@@ -82,7 +84,7 @@ object frmText: TfrmText
     end
     object ebSave: TExtBtn
       Left = 251
-      Top = 2
+      Top = 1
       Width = 37
       Height = 18
       Align = alNone
@@ -92,12 +94,24 @@ object frmText: TfrmText
       FlatAlwaysEdge = True
       OnClick = ebSaveClick
     end
+    object ebClear: TExtBtn
+      Left = 288
+      Top = 1
+      Width = 37
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = '&Clear'
+      FlatAlwaysEdge = True
+      OnClick = ebClearClick
+    end
   end
   object mmText: TElAdvancedMemo
     Left = 0
-    Top = 0
-    Width = 294
-    Height = 239
+    Top = 20
+    Width = 435
+    Height = 217
     Align = alClient
     Color = 10526880
     Font.Charset = RUSSIAN_CHARSET
@@ -111,18 +125,70 @@ object frmText: TfrmText
     TabOrder = 1
     WantTabs = True
     OnChange = mmTextChange
+    OnKeyUp = mmTextKeyUp
     Flat = True
     FlatFocusedScrollBars = True
     BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
     LineBorderActiveColor = clBlack
     LineBorderInactiveColor = clBlack
   end
+  object sbStatusPanel: TElStatusBar
+    Left = 0
+    Top = 237
+    Width = 435
+    Height = 19
+    Panels = <
+      item
+        Alignment = taLeftJustify
+        Width = 55
+        IsHTML = False
+      end
+      item
+        Alignment = taLeftJustify
+        IsHTML = False
+      end>
+    SimplePanel = False
+    SimpleTextIsHTML = False
+    SizeGrip = False
+    ResizablePanels = False
+    Bevel = epbNone
+    UseXPThemes = False
+    Align = alBottom
+    Color = clBtnFace
+    ParentColor = False
+    ParentShowHint = False
+    ShowHint = True
+    DockOrientation = doNoOrient
+    DoubleBuffered = False
+  end
   object fsStorage: TFormStorage
     IniSection = 'Text Form'
     RegistryRoot = prLocalMachine
     Version = 6
     StoredValues = <>
-    Left = 65529
-    Top = 65526
+    Left = 5
+    Top = 6
+  end
+  object pmTextMenu: TMxPopupMenu
+    Alignment = paCenter
+    AutoHotkeys = maManual
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 8
+    Top = 34
+  end
+  object tmIdle: TTimer
+    Interval = 250
+    OnTimer = tmIdleTimer
+    Left = 8
+    Top = 64
   end
 end

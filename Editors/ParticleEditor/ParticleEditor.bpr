@@ -68,7 +68,7 @@
       Intermediate\PropertiesListHelper.obj Intermediate\ParticleGroup.obj 
       Intermediate\ParticleGroupEditor.obj Intermediate\c_dinput.obj 
       Intermediate\UI_MainCommand.obj Intermediate\ParticleSystem.obj 
-      Intermediate\PSLibraryEditor.obj"/>
+      Intermediate\PSLibraryEditor.obj Intermediate\ParticleGroupParser.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -256,6 +256,7 @@
       <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleSystem.cpp" FORMNAME="" UNITNAME="ParticleSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PSLibraryEditor.cpp" FORMNAME="" UNITNAME="PSLibraryEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ParticleGroupParser.cpp" FORMNAME="" UNITNAME="ParticleGroupParser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -267,7 +268,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=0
-Build=45
+Build=47
 Debug=1
 PreRelease=0
 Special=0
@@ -279,7 +280,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=GSC Game World
 FileDescription=
-FileVersion=1.0.0.45
+FileVersion=1.0.0.47
 InternalName=
 LegalCopyright=
 LegalTrademarks=

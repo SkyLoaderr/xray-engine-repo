@@ -25,7 +25,7 @@ public:
     PS::CPGDef*			FindPG			(LPCSTR name);
     PS::PGIt			FindPGIt		(LPCSTR name);
 	// editor part
-    char*				GenerateName	(char* buffer, LPCSTR pref=0);
+    char*				GenerateName	(char* buffer, LPCSTR folder, LPCSTR pref);
 
     // get object properties methods
     IC PS::PSIt			FirstPS			()	{return m_PSs.begin();}

@@ -127,12 +127,7 @@ void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEngineShaderFileMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	ShowPPMenu(pmEngineShadersFile,Sender);
-}
-//---------------------------------------------------------------------------
+
 
 void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
@@ -172,8 +167,13 @@ void TfraLeftBar::ClearParticleList(){
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::AddPS(LPCSTR full_name, bool bLoadMode){
-	TElTreeItem* node = FHelper.AppendObject(tvParticles,full_name);
+void TfraLeftBar::AddItem(LPCSTR full_name, bool bLoadMode, bool bPS)
+{
+	TElTreeItem* node 	= FHelper.AppendObject(tvParticles,full_name);
+//    node->ParentColors	= false;
+//    node->Color			= bPS?0x005D0005:0x00005D05;
+//	node->UseBkColor	= false;
+	node->ImageIndex	= bPS?0:1;
     if (!bLoadMode){
 	    if (node&&node->Parent) node->Parent->Expand(false);
     	node->Selected = true;
@@ -217,7 +217,7 @@ BOOL __fastcall TfraLeftBar::RemoveItem(LPCSTR p0)
 
 void __fastcall TfraLeftBar::AfterRemoveItem()
 {
-	Tools.ResetCurrentPS();
+	Tools.ResetCurrent();
 	Tools.Modified();
 }
 
@@ -231,7 +231,13 @@ void __fastcall TfraLeftBar::tvParticlesItemFocused(TObject *Sender)
 {
 	AnsiString name;
     FHelper.MakeName(tvParticles->Selected, 0, name, false);
-	Tools.SetCurrentPS(name.c_str());
+	Tools.SetCurrent(name.c_str());
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::tvParticlesDblClick(TObject *Sender)
+{
+	Tools.EditActionList();	
 }
 //---------------------------------------------------------------------------
 
@@ -285,12 +291,12 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
         for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
             if (FHelper.IsObject(item)){
                 FHelper.MakeName(item,0,full_name,false);
-                Tools.RenamePS(full_name.c_str(),new_text.c_str(),node->Level);
+                Tools.Rename(full_name.c_str(),new_text.c_str(),node->Level);
             }
         }
     }else if (FHelper.IsObject(node)){
         FHelper.MakeName(node,0,full_name,false);
-        Tools.RenamePS(full_name.c_str(),new_text.c_str(),node->Level);
+        Tools.Rename(full_name.c_str(),new_text.c_str(),node->Level);
     }
 	Tools.Modified();
 }
@@ -306,9 +312,19 @@ void __fastcall TfraLeftBar::ebPSCreateClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebPGCreateClick(TObject *Sender)
+{
+    AnsiString folder;
+	FHelper.MakeName(tvParticles->Selected,0,folder,true);
+    PS::CPGDef* S = Tools.AppendPG(folder.IsEmpty()?0:folder.c_str(),0);
+	Tools.SetCurrentPG(S);
+	Tools.Modified();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1)
 {
-	Tools.RenamePS(p0,p1);
+	Tools.Rename(p0,p1);
 	Tools.Modified();
 }
 //---------------------------------------------------------------------------
@@ -322,13 +338,13 @@ void __fastcall TfraLeftBar::OnDragDrop(TObject *Sender,
 
 void __fastcall TfraLeftBar::ebCurrentPSPlayClick(TObject *Sender)
 {
-	Tools.PlayCurrentPS();
+	Tools.PlayCurrent();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebCurrentPSStopClick(TObject *Sender)
 {
-	Tools.StopCurrentPS();
+	Tools.StopCurrent();
 }
 //---------------------------------------------------------------------------
 
@@ -351,16 +367,23 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-void __fastcall TfraLeftBar::ExtBtn2Click(TObject *Sender)
-{
-	Tools.EditActionList();	
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ExtBtn3Click(TObject *Sender)
 {
 	Tools.ResetState();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebFileMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	ShowPPMenu(pmEngineShadersFile,Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebCreateMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	ShowPPMenu(pmCreateMenu,Sender);
 }
 //---------------------------------------------------------------------------
 

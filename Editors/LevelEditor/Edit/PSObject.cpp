@@ -286,7 +286,7 @@ bool CPSObject::Compile(PS::SDef* source){
 //----------------------------------------------------
 
 bool CPSObject::Compile(LPCSTR name){
-	PS::SDef* source = PSLib.FindUnsorted(name);
+	PS::SDef* source = PSLib.FindPS(name);
     return Compile(source);
 }
 //----------------------------------------------------

@@ -9,6 +9,7 @@
 #include "particles/general.h"
 
 using namespace PAPI;
+using namespace PS;
               
 xr_token					domain_token		[ ]={
 	{ "PDPoint",	  		PDPoint				},
@@ -147,9 +148,10 @@ void ErrMsg(int c, int l, int v, LPCSTR line)
     }
 }
 
+namespace PS{
 class PFunction{
 public:
-	CParticleGroup*		parent;
+	CPGDef*				parent;
 	// command
 	string64 			command;
     // type
@@ -162,15 +164,21 @@ public:
 	struct Param{
         PParamType		type;
         string64	    hint;
+        string64		s_data;
         var				data;
+        Param(){hint[0]=0;s_data[0]=0;data=0;}
     };
+    
     int 				req_params;
     DEFINE_VECTOR(Param,ParamVec,ParamIt);
     ParamVec			params;
+
+    LPCSTR				src;
 public:    
 						PFunction	(){req_params=-1;parent=0;}
 	bool				LoadTemplate(LPCSTR line)
     {
+    	src				= line;
         string256 		pms;
         _GetItem		(line,0,command,'(');
         _GetItem		(line,1,pms,'(');
@@ -178,7 +186,6 @@ public:
         bool bRes		= true;
         int p_cnt 		= _GetItemCount(pms);
         for (int k=0; k<p_cnt; k++){
-        	string64	d={0};
 	        string64 	pm={0},t={0},v={0};
         	params.push_back(Param());
             Param& P	= params.back();
@@ -189,25 +196,25 @@ public:
             _GetItems	(pm,1,1000,v,' ');
             if (_GetItemCount(v,'=')==2){
 	            _GetItem	(v,0,P.hint,'=');
-    	        _GetItem	(v,1,d,'=');
+    	        _GetItem	(v,1,P.s_data,'=');
             }else{
 	            strcpy	(P.hint,v);
             }
-            if (d&&d[0]){
+            if (P.s_data&&P.s_data[0]){
                 switch(P.type){
-                case ptDomain:	bRes=get_domain_type(d,P.data);	break;
-                case ptBOOL:    bRes=get_bool(d,P.data);  		break;
-                case ptFloat:	bRes=get_float(d,P.data); 		break;
+                case ptDomain:	bRes=get_domain_type(P.s_data,P.data);	break;
+                case ptBOOL:    bRes=get_bool(P.s_data,P.data);  		break;
+                case ptFloat:	bRes=get_float(P.s_data,P.data); 		break;
                 case ptInt:
                 case ptWORD:
-                case ptDWORD:	bRes=get_int(d,P.data);			break;
-                case ptString:	bRes=get_string(d,P.data);		break;
+                case ptDWORD:	bRes=get_int(P.s_data,P.data);			break;
+                case ptString:	bRes=get_string(P.s_data,P.data);		break;
                 }
             }else{
             	req_params = k+1;
             }
             if (!bRes){ 
-            	ErrMsg(BAD_PARAM,0,k,d);
+            	ErrMsg(BAD_PARAM,0,k,P.s_data);
             	break;
             }
         }
@@ -328,27 +335,18 @@ public:
         #undef P14
     }
 };
+}
 
 DEFINE_MAP_PRED(LPSTR,PFunction,PFuncMap,PFuncPairIt,str_pred);
 DEFINE_VECTOR(PFunction,PFuncVec,PFuncIt);
 
 static PFuncMap CommandTemplates;
 
-struct SPGAutoCall{
-    ~SPGAutoCall()
-    {
-        for (PFuncPairIt b=CommandTemplates.begin(); b!=CommandTemplates.end(); b++)
-            xr_free((char*)b->first);
-    }
-};
-
-static SPGAutoCall pg_auto;
-
 static LPCSTR PStateCommands[]={
 	"pResetState();",
 	"pColor(float red, float green, float blue, float alpha = 1.0f);",
 	"pColorD(float alpha, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pParentMotion(float scale);"
+	"pParentMotion(float scale);",
 	"pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);",
 	"pRotateD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pSize(float size_x, float size_y = 1.0f, float size_z = 1.0f);",
@@ -403,21 +401,22 @@ static LPCSTR PActionCommands[]={
     0
 };
 
-bool InitCommandTemplates(PFuncMap& ct)
+bool InitCommandTemplates()
 {
+	PFuncMap& ct = CommandTemplates;
     bool bRes=true;
     do{
     	int k;
         // load state commands
         for (k=0; PStateCommands[k]; k++){
-            PFunction F; F.type = PFunction::ftState;
+            PS::PFunction F; F.type = PFunction::ftState;
             if (!(bRes=F.LoadTemplate(PStateCommands[k]))) break;
             ct.insert(make_pair(xr_strdup(F.command),F));
         }
 	    if (!bRes) break;
 		// load action commands
         for (k=0; PActionCommands[k]; k++){
-            PFunction F; F.type = PFunction::ftAction;
+            PFunction F; F.type = PS::PFunction::ftAction;
             if (!(bRes=F.LoadTemplate(PActionCommands[k]))) break;
             ct.insert(make_pair(xr_strdup(F.command),F));
         }
@@ -426,14 +425,89 @@ bool InitCommandTemplates(PFuncMap& ct)
     return bRes;
 }
 
-void CParticleGroup::ParseCommandList(LPCSTR txt)
+struct SPGAutoCall{
+    ~SPGAutoCall()
+    {
+        for (PFuncPairIt b=CommandTemplates.begin(); b!=CommandTemplates.end(); b++)
+            xr_free((char*)b->first);
+    }
+};
+
+static SPGAutoCall pg_auto;
+
+#include <Menus.hpp>
+const AnsiString GetFunctionTemplate(const AnsiString& command)
+{
+	LPCSTR dest=0;
+	PFunction* F 	= CPGDef::FindCommandPrototype(command.c_str(),dest);
+	AnsiString text	= "";
+    if (F){
+        text.sprintf("%-16s(",F->command);
+        for (PFunction::ParamIt it=F->params.begin(); it!=F->params.end(); it++){
+        	text	+= it->s_data;
+            text	+= ", ";
+        }
+        text.Delete	(text.Length()-1,2);
+        text		+= ");";
+    }
+    return text;
+}
+
+void FillStateMenu(TMenuItem* root, TNotifyEvent on_click)
 {
 	// load templates
-	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates(CommandTemplates));
+	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
+
+    for (PFuncPairIt b=CommandTemplates.begin(); b!=CommandTemplates.end(); b++){
+    	if (b->second.type==PFunction::ftState){
+	        TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
+    	    mi->Caption 	= b->second.command;
+        	mi->OnClick 	= on_click;
+			root->Insert	(root->Count,mi);
+        }
+    }
+}
+void FillActionMenu(TMenuItem* root, TNotifyEvent on_click)
+{
+	// load templates
+	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
+
+    for (PFuncPairIt b=CommandTemplates.begin(); b!=CommandTemplates.end(); b++){
+    	if (b->second.type==PFunction::ftAction){
+	        TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
+    	    mi->Caption 	= b->second.command;
+        	mi->OnClick 	= on_click;
+			root->Insert	(root->Count,mi);
+        }
+    }
+}
+
+PFunction* CPGDef::FindCommandPrototype(LPCSTR src, LPCSTR& dest)
+{
+	// load templates
+	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
+
+    string64		command;
+    _GetItem		(src,0,command,'(');
+    // comment
+    if (command==strstr(command,"//")){ dest=0; return 0; }
+    // find command in templates
+    PFuncPairIt pfp_it = CommandTemplates.find(command);
+    if (pfp_it==CommandTemplates.end())	return 0;
+    else{								
+    	dest = pfp_it->second.src;
+    	return &pfp_it->second;
+    }
+}
+
+void CPGDef::Compile()
+{
+	// load templates
+	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
 
     // parse
     LPSTRVec 			lst;
-    _SequenceToList		(lst,txt,';');
+    _SequenceToList		(lst,m_SourceText.c_str(),';');
 
     // reset flags
 	m_Flags.zero		();
@@ -467,17 +541,38 @@ void CParticleGroup::ParseCommandList(LPCSTR txt)
     	xr_free(*it);
 
     if (!bRes) return;
+
+    // create temporary handles
+	int group_handle 		= pGenParticleGroups(1, 1);
+    int action_list_handle	= pGenActionLists();
+	pCurrentGroup			(group_handle);
+    
     // execute commands
     PFuncIt pf_it;
     // at first state commands
     for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
     	if (PFunction::ftState==pf_it->type) pf_it->Execute();             
     // at next action commands
-	pNewActionList	(m_HandleActionList);
+	pNewActionList			(action_list_handle);
     for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
     	if (PFunction::ftAction==pf_it->type) pf_it->Execute();             
-	pEndActionList	();
+	pEndActionList			();
 
+    // save group data
+	ParticleGroup *pg 		= _GetGroupPtr(group_handle); R_ASSERT(pg);
+    m_MaxParticles			= pg->max_particles;
+    
+    // save action list
+	PAPI::PAHeader *pa		= _GetListPtr(action_list_handle);	R_ASSERT(pa);
+	m_ActionCount	 		= pa->count-1;
+	PAPI::PAHeader *action	= pa+1;
+    xr_free					(m_ActionList);
+    m_ActionList			= xr_alloc<PAPI::PAHeader>(m_ActionCount);
+    Memory.mem_copy			(m_ActionList,action,m_ActionCount*sizeof(PAPI::PAHeader));
+
+    // destroy temporary handls
+	pDeleteParticleGroups	(group_handle);
+	pDeleteActionLists		(action_list_handle);
 }
 
 

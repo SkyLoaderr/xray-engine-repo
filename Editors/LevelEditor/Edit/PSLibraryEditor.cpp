@@ -16,18 +16,18 @@ PS::SDef* CPSLibrary::ChoosePS(bool bSetCurrent)
 }
 //------------------------------------------------------------------------------
 
-char* CPSLibrary::GenerateName(char* buffer, const char* pref )
+char* CPSLibrary::GenerateName(LPSTR buffer, LPCSTR folder, LPCSTR pref )
 {
     int cnt = 0;
     string128 prefix; prefix[0]=0;
     if (pref&&pref[0]){                
     	strcpy( prefix, pref );
         for (int i=strlen(prefix)-1; i>=0; i--) if (isdigit(prefix[i])) prefix[i]=0; else break;
-		sprintf( buffer, "%s%04d", prefix, cnt++);
-    }else        sprintf( buffer, "ps_%04d", cnt++ );
+		sprintf( buffer, "%s%s%04d", folder?folder:"", prefix, cnt++);
+    }else        sprintf( buffer, "%sps_%04d", folder?folder:"", cnt++ );
     while (FindPS(buffer)||FindPG(buffer)){
-        if (pref&&pref[0])	sprintf( buffer, "%s%04d", prefix, cnt++ );
-        else   	  			sprintf( buffer, "ps_%04d", cnt++ );
+        if (pref&&pref[0])	sprintf( buffer, "%s%s%04d", folder?folder:"", prefix, cnt++ );
+        else   	  			sprintf( buffer, "%sps_%04d", folder?folder:"", cnt++ );
 	}
     return buffer;
 }

@@ -1198,11 +1198,11 @@ void __fastcall TProperties::edTextDblClick(TObject *Sender)
     	case PROP_TEXT:{
 			TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 			AnsiString new_val	= edText->Text;
-			if (TfrmText::Run(new_val,AnsiString(item->Text).c_str(),false,V->lim)) edText->Text = new_val;
+			if (TfrmText::ShowModalEditor(new_val,AnsiString(item->Text).c_str(),false,V->lim)) edText->Text = new_val;
         }break;
     	case PROP_A_TEXT:{
 			AnsiString new_val	= edText->Text;
-			if (TfrmText::Run(new_val,AnsiString(item->Text).c_str())) edText->Text = new_val;
+			if (TfrmText::ShowModalEditor(new_val,AnsiString(item->Text).c_str())) edText->Text = new_val;
         }break;
     	}
     }

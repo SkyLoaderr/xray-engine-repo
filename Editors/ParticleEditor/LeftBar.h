@@ -20,6 +20,7 @@
 #include "MXCtrls.hpp"
 
 #include "UI_Tools.h"
+#include <ImgList.hpp>
 
 //---------------------------------------------------------------------------
 class TfraLeftBar : public TFrame
@@ -55,8 +56,7 @@ __published:	// IDE-managed Components
 	TPanel *Panel1;
 	TExtBtn *ebEngineShaderRemove;
 	TExtBtn *ebEngineShaderClone;
-	TExtBtn *ebEngineShaderFile;
-	TExtBtn *ebCShaderCreate;
+	TExtBtn *ebFile;
 	TBevel *Bevel1;
 	TPanel *paProperties;
 	TLabel *Label2;
@@ -79,16 +79,23 @@ __published:	// IDE-managed Components
 	TMenuItem *N6;
 	TMenuItem *Refresh1;
 	TMenuItem *Checknewtextures1;
-	TExtBtn *ExtBtn2;
-	TExtBtn *ExtBtn3;
+	TExtBtn *ebResetState;
+	TExtBtn *ebCreate;
+	TMxPopupMenu *pmCreateMenu;
+	TMenuItem *MenuItem1;
+	TMenuItem *MenuItem2;
+	TMenuItem *N3;
+	TMenuItem *N4;
+	TMenuItem *N5;
+	TMenuItem *N7;
+	TMenuItem *N8;
+	TImageList *ImageList1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
     void __fastcall ebEditorPreferencesClick(TObject *Sender);
     void __fastcall ebRefreshTexturesClick(TObject *Sender);
-	void __fastcall ebEngineShaderFileMouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
 	void __fastcall ebSceneCommandsMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall tvParticlesMouseDown(TObject *Sender, TMouseButton Button,
@@ -116,8 +123,13 @@ __published:	// IDE-managed Components
 	void __fastcall Checknewtextures1Click(TObject *Sender);
 	void __fastcall OnDragDrop(TObject *Sender, TObject *Source,
           int X, int Y);
-	void __fastcall ExtBtn2Click(TObject *Sender);
 	void __fastcall ExtBtn3Click(TObject *Sender);
+	void __fastcall ebPGCreateClick(TObject *Sender);
+	void __fastcall tvParticlesDblClick(TObject *Sender);
+	void __fastcall ebFileMouseDown(TObject *Sender,
+          TMouseButton Button, TShiftState Shift, int X, int Y);
+	void __fastcall ebCreateMouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void __fastcall RenameItem(LPCSTR p0, LPCSTR p1);
@@ -126,7 +138,7 @@ private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();
-	void 			AddPS			(LPCSTR full_name, bool bLoadMode);
+	void 			AddItem			(LPCSTR full_name, bool bLoadMode, bool bPS);
 	void 			ClearParticleList();
 };
 //---------------------------------------------------------------------------

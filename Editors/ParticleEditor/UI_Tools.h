@@ -11,6 +11,7 @@ class CPSObject;
 class SDef;
 class TfrmPropertiesPSDef;
 class CEditableObject;
+class TfrmText;
 
 enum EAction{
     eaSelect=0,
@@ -51,8 +52,14 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     Fvector				m_RotateVector;
     float				m_fRotateSnapAngle;
     
-    CParticleGroup*		m_EditGroup;
+    TfrmText*			m_TextPG;
+    PS::CPGDef*			m_LibPGD;
+    PS::CParticleGroup*	m_EditPG;
     void __fastcall		OnApplyClick		();
+    void __fastcall		OnCloseClick		(bool& can_close);
+	bool __fastcall 	OnCodeInsight		(const AnsiString& src_line, AnsiString& hint);
+
+    void __fastcall		OnPPMenuItemClick	(TObject* sender);
 public:
 	void				EditActionList		();
     void				ResetState			();
@@ -73,20 +80,26 @@ public:
     void				ZoomObject			(BOOL bObjectOnly);
     void				ChangeAction		(EAction action);
 
+    void				SetCurrent			(LPCSTR name);
+    void				PlayCurrent			();
+    void				StopCurrent			();
+
+    void				Rename				(LPCSTR src_name, LPCSTR part_name, int part_idx);
+    void				Rename				(LPCSTR src_name, LPCSTR dest_name);
+
+    // PS routine
     PS::SDef*			AppendPS			(LPCSTR folder_name, PS::SDef* src);
     void				RemovePS			(LPCSTR name);
-    void				ResetCurrentPS		();
-    void				SetCurrentPS		(LPCSTR name);
+    void				ResetCurrent		();
     void 				SetCurrentPS		(PS::SDef* P);
     PS::SDef*			ClonePS				(LPCSTR name);
-    void				RenamePS			(LPCSTR src_name, LPCSTR part_name, int part_idx);
-    void				RenamePS			(LPCSTR src_name, LPCSTR dest_name);
     PS::SDef*			GetCurrentPS		(){return m_LibPS?&m_EditPS:0;}
     void				UpdateCurrent		();
     void				UpdateEmitter		();
 
-    void				PlayCurrentPS		();
-    void				StopCurrentPS		();
+    // PG routine
+    PS::CPGDef*			AppendPG			(LPCSTR folder_name, PS::CPGDef* src);
+    void 				SetCurrentPG		(PS::CPGDef* P);
 
     void				Load				();
     void				Save				();

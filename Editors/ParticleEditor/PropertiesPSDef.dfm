@@ -6,7 +6,7 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
   Caption = 'Particle System'
   ClientHeight = 332
   ClientWidth = 203
-  Color = clBtnFace
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -37,7 +37,7 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
     RaggedRight = False
     ScrollOpposite = False
     Style = etsNetTabs
-    TabIndex = 4
+    TabIndex = 0
     TabPosition = etpTop
     TabWidth = 64
     HotTrackFont.Charset = DEFAULT_CHARSET
@@ -46,7 +46,7 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
     HotTrackFont.Name = 'MS Sans Serif'
     HotTrackFont.Style = []
     TabBkColor = 10528425
-    ActivePage = tsFrame
+    ActivePage = tsBase
     FlatTabBorderColor = clBtnShadow
     Align = alClient
     ParentColor = False
@@ -56,7 +56,6 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
       ImageIndex = -1
       TabVisible = True
       Caption = 'Base'
-      Visible = False
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -1554,6 +1553,7 @@ object frmPropertiesPSDef: TfrmPropertiesPSDef
       ImageIndex = -1
       TabVisible = True
       Caption = 'Frame'
+      Visible = False
       object Panel4: TPanel
         Left = 0
         Top = 0

@@ -280,7 +280,7 @@ void TUI::OnAppDeactivate()
 bool TUI::ShowHint(const AStringVec& SS){
 	VERIFY(m_bReady);
     if (SS.size()){
-        AnsiString S=ListToSequence2(SS);
+        AnsiString S=_ListToSequence2(SS);
         if (m_bHintShowing&&(S==m_LastHint)) return true;
         m_LastHint = S;
         m_bHintShowing = true;
@@ -300,7 +300,8 @@ bool TUI::ShowHint(const AStringVec& SS){
 }
 //---------------------------------------------------------------------------
 
-void TUI::HideHint(){
+void TUI::HideHint()
+{
 	VERIFY(m_bReady);
     m_bHintShowing = false;
     xr_delete(m_pHintWindow);
@@ -322,7 +323,7 @@ void TUI::ShowObjectHint(){
 
 	AStringVec SS;
 	Tools.OnShowHint(SS);
-    if (!ShowHint(SS)) HideHint();
+    if (!ShowHint(SS)&&m_pHintWindow) HideHint();
 }
 //---------------------------------------------------------------------------
 void TUI::SetStatus(LPSTR s){

@@ -4,6 +4,21 @@
 #include "xr_trims.h"
 #include "xr_tokens.h"
 
+LPSTR _TrimLeft( LPSTR str )
+{
+	LPSTR p = str;
+	while( *p && isspace(*p) ) p++;
+	u32	num1 = strlen( str );
+	u32	num2 = strlen( p );
+	if (num1 == num2) return str;
+	for (u32	i = 0; i < num1; i++)
+	{
+		if (i < num2) str[i] = p[i];
+			else str[i] = 0;
+	}
+	return str;
+}
+
 LPSTR _TrimRight( LPSTR str )
 {
 	u32	num = strlen( str ) - 1;
@@ -157,22 +172,12 @@ LPSTR _ChangeSymbol ( LPSTR name, char src, char dest )
 	return						name;
 }
 
-LPSTR _TrimLeft( LPSTR str )
+#ifdef M_BORLAND
+AnsiString& _Trim( AnsiString& str )
 {
-	LPSTR p = str;
-	while( *p && isspace(*p) ) p++;
-	u32	num1 = strlen( str );
-	u32	num2 = strlen( p );
-	if (num1 == num2) return str;
-	for (u32	i = 0; i < num1; i++)
-	{
-		if (i < num2) str[i] = p[i];
-			else str[i] = 0;
-	}
-	return str;
+	return str=str.Trim();
 }
 
-#ifdef M_BORLAND
 LPCSTR _CopyVal ( LPCSTR src, AnsiString& dst, char separator )
 {
 	LPCSTR	p;
@@ -206,7 +211,7 @@ LPCSTR _GetItem ( LPCSTR src, int index, AnsiString& dst, char separator, LPCSTR
 	return		dst.c_str();
 }
 
-AnsiString& ListToSequence(const AStringVec& lst)
+AnsiString& _ListToSequence(const AStringVec& lst)
 {
 	static AnsiString out;
 	out = "";
@@ -218,7 +223,7 @@ AnsiString& ListToSequence(const AStringVec& lst)
 	return out;
 }
 
-AnsiString& ListToSequence2(const AStringVec& lst)
+AnsiString& _ListToSequence2(const AStringVec& lst)
 {
 	static AnsiString out;
 	out = "";
@@ -231,17 +236,27 @@ AnsiString& ListToSequence2(const AStringVec& lst)
 	return out;
 }
 
-void SequenceToList(AStringVec& lst, LPCSTR in, char separator)
+void _SequenceToList(AStringVec& lst, LPCSTR in, char separator)
 {
 	lst.clear();
+	int t_cnt=_GetItemCount(in,separator);
+	AnsiString T;
+	for (int i=0; i<t_cnt; i++){
+		_GetItem(in,i,T,separator,0);
+        _Trim(T);
+        if (!T.IsEmpty()) lst.push_back(T);
+	}                  
+}
+#endif
+
+void _SequenceToList(LPSTRVec& lst, LPCSTR in, char separator)
+{
 	int t_cnt=_GetItemCount(in,separator);
 	string1024 T;
 	for (int i=0; i<t_cnt; i++){
 		_GetItem(in,i,T,separator,0);
         _Trim(T);
-        if (strlen(T)) lst.push_back(T);
+        if (strlen(T)) lst.push_back(xr_strdup(T));
 	}                  
 }
-#endif
-
 

@@ -2,8 +2,8 @@
 // file: rpoint.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_PSObject_H_
-#define _INCDEF_PSObject_H_
+#ifndef PSObjectH
+#define PSObjectH
 
 #include "ParticleSystem.h"
 #define PSOBJECT_SIZE 0.5f

@@ -116,12 +116,12 @@ void TfrmPropertiesPSDef::GetObjectsInfo(){
         cbAlignToPath->Checked			= m_PS->m_Flags.is(PS_ALIGNTOPATH);
         cbRandomInitAngle->Checked		= m_PS->m_Flags.is(PS_RND_INIT_ANGLE);
 
-        pcPS->Enabled					= true;
+        pcPS->Visible					= true;
 //        gbBase->Enabled					= true;
 //        gbParams->Enabled	  			= true;
 //        gbVariability->Enabled			= true;
     }else{
-        pcPS->Enabled					= false;
+        pcPS->Visible					= false;
 //        gbBase->Enabled					= false;
 //        gbParams->Enabled	  			= false;
 //        gbVariability->Enabled			= false;

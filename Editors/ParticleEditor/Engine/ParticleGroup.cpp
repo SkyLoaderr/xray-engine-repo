@@ -7,16 +7,166 @@
 #include "particles/general.h"
 
 using namespace PAPI;
+using namespace PS;
 
-CParticleGroup::CParticleGroup()
+//------------------------------------------------------------------------------
+// class CParticleGroupDef
+//------------------------------------------------------------------------------
+CPGDef::CPGDef()
 {
-	m_HandleGroup 		= pGenParticleGroups(1, 100);
-    m_HandleActionList	= pGenActionLists();
-    m_Shader			= 0;
+    strcpy				(m_Name,"unknown");
     m_ShaderName		= 0;
     m_TextureName		= 0;
-    strcpy(m_Name,"unknown");
-    m_Animation.InitDefault();
+    m_Frame.InitDefault	();
+    m_ActionCount		= 0;
+    m_ActionList		= 0;
+    m_MaxParticles		= 0;
+}
+CPGDef::~CPGDef()
+{
+    xr_free				(m_ShaderName);
+    xr_free				(m_TextureName);
+    xr_free				(m_ActionList);
+}
+void CPGDef::SetName(LPCSTR name)
+{
+    strcpy				(m_Name,name);
+}
+void CPGDef::pSprite(string64& sh_name, string64& tex_name)
+{
+    xr_free(m_ShaderName);	m_ShaderName		= xr_strdup(sh_name);
+    xr_free(m_TextureName);	m_TextureName	= xr_strdup(tex_name);
+	m_Flags.set	(flSprite,TRUE);
+}
+void CPGDef::pFrame(BOOL random_frame, u32 frame_count, u32 tex_width, u32 tex_height, u32 frame_width, u32 frame_height)
+{
+	m_Flags.set			(flFramed,TRUE);
+	m_Flags.set			(flRandomFrame,random_frame);
+	m_Frame.Set			(frame_count, tex_width, tex_height, frame_width, frame_height);
+}
+void CPGDef::pAnimate(float speed, BOOL random_playback)
+{
+	m_Frame.m_fSpeed	= speed;
+	m_Flags.set			(flAnimated,TRUE);
+	m_Flags.set			(flRandomPlayback,random_playback);
+}
+void CPGDef::pFrameInitExecute(ParticleGroup *group)
+{
+	for(int i = 0; i < group->p_count; i++){
+		Particle &m = group->list[i];
+        if (m_Flags.is(Particle::BIRTH)){
+            if (m_Flags.is(flRandomFrame))
+                m.frame	= Random.randI(m_Frame.m_iFrameCount);
+            if (m_Flags.is(flAnimated)&&m_Flags.is(flRandomPlayback)&&Random.randI(2))	
+                m.flags.set(Particle::ANIMATE_CCW,TRUE);
+        }
+    }
+}
+void CPGDef::pAnimateExecute(ParticleGroup *group)
+{
+	float speedFac = m_Frame.m_fSpeed * Device.fTimeDelta;
+	for(int i = 0; i < group->p_count; i++){
+		Particle &m = group->list[i];
+		m.frame						+= ((m.flags.is(Particle::ANIMATE_CCW))?-1.f:1.f)*speedFac;
+		if (m.frame>m_Frame.m_iFrameCount)	m.frame-=m_Frame.m_iFrameCount;
+		if (m.frame<0.f)					m.frame+=m_Frame.m_iFrameCount;
+	}
+}
+
+//------------------------------------------------------------------------------
+// I/O part
+//------------------------------------------------------------------------------
+BOOL CPGDef::Load(CStream& F)
+{
+	R_ASSERT		(F.FindChunk(PGD_CHUNK_VERSION));
+	u16 version		= F.Rword();
+
+    if (version!=PGD_VERSION)
+    	return FALSE;
+
+	R_ASSERT		(F.FindChunk(PGD_CHUNK_NAME));
+	F.RstringZ		(m_Name);
+
+	R_ASSERT		(F.FindChunk(PGD_CHUNK_GROUPDATA));
+    m_MaxParticles	= F.Rdword();
+    
+    R_ASSERT		(F.FindChunk(PGD_CHUNK_ACTIONLIST));
+    m_ActionCount	= F.Rdword();
+    m_ActionList	= xr_alloc<PAPI::PAHeader>(m_ActionCount);
+    F.Read			(m_ActionList,m_ActionCount*sizeof(PAPI::PAHeader));
+
+	F.ReadChunk		(PGD_CHUNK_FLAGS,&m_Flags);
+
+    string256		buf;
+    if (m_Flags.is(flSprite)){
+        R_ASSERT	(F.FindChunk(PGD_CHUNK_SPRITE));
+        F.RstringZ	(buf); m_ShaderName = xr_strdup(buf);
+        F.RstringZ	(buf); m_TextureName= xr_strdup(buf);
+    }
+
+    if (m_Flags.is(flFramed)){
+        R_ASSERT	(F.FindChunk(PGD_CHUNK_FRAME));
+        F.Read		(&m_Frame,sizeof(SFrame));
+    }
+
+#ifdef _EDITOR    
+	F.FindChunk		(PGD_CHUNK_SOURCETEXT);
+    F.RstringZ		(m_SourceText);
+#endif
+
+    return TRUE;
+}
+
+void CPGDef::Save(CFS_Base& F)
+{
+	F.open_chunk	(PGD_CHUNK_VERSION);
+	F.Wword			(PGD_VERSION);
+    F.close_chunk	();
+
+	F.open_chunk	(PGD_CHUNK_NAME);
+    F.WstringZ		(m_Name);
+    F.close_chunk	();
+
+	F.open_chunk	(PGD_CHUNK_GROUPDATA);
+    F.Wdword		(m_MaxParticles);
+    F.close_chunk	();
+    
+	F.open_chunk	(PGD_CHUNK_ACTIONLIST);
+    F.Wdword		(m_ActionCount);
+    F.write			(m_ActionList,m_ActionCount*sizeof(PAPI::PAHeader));
+    F.close_chunk	();
+
+	F.write_chunk	(PGD_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
+
+    if (m_Flags.is(flSprite)){
+        F.open_chunk	(PGD_CHUNK_SPRITE);
+        F.WstringZ		(m_ShaderName);
+        F.WstringZ		(m_TextureName);
+        F.close_chunk	();
+    }
+
+    if (m_Flags.is(flFramed)){
+        F.open_chunk	(PGD_CHUNK_FRAME);
+        F.write			(&m_Frame,sizeof(SFrame));
+        F.close_chunk	();
+    }
+
+#ifdef _EDITOR    
+	F.open_chunk	(PGD_CHUNK_SOURCETEXT);
+    F.WstringZ		(m_SourceText.c_str());
+	F.close_chunk	();
+#endif
+}
+//------------------------------------------------------------------------------
+// class CParticleGroup
+//------------------------------------------------------------------------------
+CParticleGroup::CParticleGroup()
+{
+	m_HandleGroup 		= pGenParticleGroups(1, 1);
+    m_HandleActionList	= pGenActionLists();
+    m_Shader			= 0;
+    m_bPlaying			= TRUE;//FALSE;
+    m_Def				= 0;
 }
 CParticleGroup::~CParticleGroup()
 {
@@ -25,15 +175,10 @@ CParticleGroup::~CParticleGroup()
 	pDeleteActionLists	(m_HandleActionList);
 }
 
-void CParticleGroup::SetName(LPCSTR name)
-{
-    strcpy				(m_Name,name);
-}
-
 void CParticleGroup::OnDeviceCreate()
 {
-	if (m_ShaderName&&m_TextureName)
-    	m_Shader 		= Device.Shader.Create(m_ShaderName,m_TextureName);
+	if (m_Def&&m_Def->m_ShaderName&&m_Def->m_TextureName)
+    	m_Shader 		= Device.Shader.Create(m_Def->m_ShaderName,m_Def->m_TextureName);
 }
 
 void CParticleGroup::OnDeviceDestroy()
@@ -47,51 +192,6 @@ void CParticleGroup::RefreshShader()
     OnDeviceCreate();
 }
 
-void CParticleGroup::pSprite(LPCSTR sh_name, LPCSTR tex_name)
-{
-	OnDeviceDestroy		();
-    xr_free(m_ShaderName);	m_ShaderName	= xr_strdup(sh_name);
-    xr_free(m_TextureName);	m_TextureName	= xr_strdup(tex_name);
-	OnDeviceCreate		();
-	m_Flags.set			(flSprite,TRUE);
-}
-
-// action
-void CParticleGroup::pFrame(BOOL random_frame, u32 frame_count, u32 tex_width, u32 tex_height, u32 frame_width, u32 frame_height)
-{
-	m_Flags.set			(flFramed,TRUE);
-	m_Flags.set			(flRandomFrame,random_frame);
-	m_Animation.Set		(frame_count, tex_width, tex_height, frame_width, frame_height);
-}
-void CParticleGroup::pAnimate(float speed, BOOL random_playback)
-{
-	m_Animation.m_fSpeed= speed;
-	m_Flags.set			(flAnimated,TRUE);
-	m_Flags.set			(flRandomPlayback,random_playback);
-}
-void CParticleGroup::pFrameInitExecute(ParticleGroup *group)
-{
-	for(int i = 0; i < group->p_count; i++){
-		Particle &m = group->list[i];
-        if (m_Flags.is(Particle::BIRTH)){
-            if (m_Flags.is(flRandomFrame))
-                m.frame	= Random.randI(m_Animation.m_iFrameCount);
-            if (m_Flags.is(flAnimated)&&m_Flags.is(flRandomPlayback)&&Random.randI(2))	
-                m.flags.set(Particle::ANIMATE_CCW,TRUE);
-        }
-    }
-}
-void CParticleGroup::pAnimateExecute(ParticleGroup *group)
-{
-	float speedFac = m_Animation.m_fSpeed * Device.fTimeDelta;
-	for(int i = 0; i < group->p_count; i++){
-		Particle &m = group->list[i];
-		m.frame						+= ((m.flags.is(Particle::ANIMATE_CCW))?-1.f:1.f)*speedFac;
-		if (m.frame>m_Animation.m_iFrameCount)	m.frame-=m_Animation.m_iFrameCount;
-		if (m.frame<0.f)						m.frame+=m_Animation.m_iFrameCount;
-	}
-}
-
 void CParticleGroup::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 {
     pSetActionListParenting(m_HandleActionList,m,velocity);
@@ -99,21 +199,23 @@ void CParticleGroup::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 
 void CParticleGroup::OnFrame()
 {
-    pTimeStep			(Device.fTimeDelta);
-	pCurrentGroup		(m_HandleGroup);
+	if (m_Def&&m_bPlaying){
+        pTimeStep			(Device.fTimeDelta);
+        pCurrentGroup		(m_HandleGroup);
     
-    // execute action list
-	pCallActionList		(m_HandleActionList);
-	ParticleGroup *pg 	= _GetGroupPtr(m_HandleGroup);
-    // our actions
-    if (m_Flags.is(flFramed))    						pFrameInitExecute	(pg);
-    if (m_Flags.is(flFramed)&&m_Flags.is(flAnimated))   pAnimateExecute		(pg);
-    //-move action
-	for(int i = 0; i < pg->p_count; i++){
-        Particle &m 	= pg->list[i];
-        if (m.flags.is(Particle::DYING)){}
-        if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
-	}
+        // execute action list
+        pCallActionList		(m_HandleActionList);
+        ParticleGroup *pg 	= _GetGroupPtr(m_HandleGroup);
+        // our actions
+        if (m_Def->m_Flags.is(CPGDef::flFramed))    		  		m_Def->pFrameInitExecute(pg);
+        if (m_Def->m_Flags.is(CPGDef::flFramed|CPGDef::flAnimated))	m_Def->pAnimateExecute	(pg);
+        //-move action
+        for(int i = 0; i < pg->p_count; i++){
+            Particle &m 	= pg->list[i];
+            if (m.flags.is(Particle::DYING)){}
+            if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
+        }
+    }
 }
           
 void CParticleGroup::Render()
@@ -146,80 +248,30 @@ void CParticleGroup::Render()
 */
 }
 
-//------------------------------------------------------------------------------
-// I/O part
-//------------------------------------------------------------------------------
-BOOL CParticleGroup::Load(CStream& F)
+BOOL CParticleGroup::Compile(CPGDef* def)
 {
-	pCurrentGroup	(m_HandleGroup);
+	m_Def 			= def;
+    if (m_Def){
+    	// reset old particles
+        pSetMaxParticlesG(m_HandleGroup,0);
+        // set current group for action
+        pCurrentGroup	(m_HandleGroup);
+        // refresh shader
+        RefreshShader	();
+        // set max particles
+        pSetMaxParticlesG(m_HandleGroup,m_Def->m_MaxParticles);
+        // load action list
+        // get pointer to specified action list.
+        PAPI::PAHeader* pa	= _GetListPtr(m_HandleActionList);
+        if(pa == NULL)	return FALSE; // ERROR
 
-	string256		buf;
-	R_ASSERT		(F.FindChunk(PG_CHUNK_VERSION));
-	u16 version		= F.Rword();
-
-    if (version!=PG_VERSION)
-    	return FALSE;
-
-	R_ASSERT		(F.FindChunk(PG_CHUNK_NAME));
-	F.RstringZ		(buf); SetName(buf);
-
-	R_ASSERT		(F.FindChunk(PG_CHUNK_GROUPDATA));
-    u32 max_part	= F.Rdword();
-    pSetMaxParticlesG(m_HandleGroup,max_part);
-    
-    CStream* O		= F.OpenChunk(PG_CHUNK_ACTIONLIST);	R_ASSERT(O);
-	if (!LoadActionList(*O))
-    	return FALSE;
-    O->Close		();
-
-	F.ReadChunk		(PG_CHUNK_FLAGS,&m_Flags);
-
-    if (m_Flags.is(flSprite)){
-        R_ASSERT	(F.FindChunk(PG_CHUNK_SPRITE));
-        F.RstringZ	(buf); m_ShaderName = xr_strdup(buf);
-        F.RstringZ	(buf); m_TextureName= xr_strdup(buf);
-	    RefreshShader();
+        // start append actions
+        pNewActionList(m_HandleActionList);
+        for (int k=0; k<m_Def->m_ActionCount; k++)
+            pAddActionToList	(m_Def->m_ActionList+k);
+        // end append action
+        pEndActionList();
     }
-
-    if (m_Flags.is(flFramed)){
-        R_ASSERT	(F.FindChunk(PG_CHUNK_FRAME));
-        F.Read		(&m_Animation,sizeof(SAnimation));
-    }
-
-	F.FindChunk		(PG_CHUNK_SOURCETEXT);
-    F.RstringZ		(m_SourceText);
-
-    return TRUE;
-}
-
-BOOL CParticleGroup::LoadActionList(CStream& F)
-{
-	// get pointer to specified action list.
-	PAPI::PAHeader *pa	= _GetListPtr(m_HandleActionList);
-
-	if(pa == NULL)
-		return FALSE; // ERROR
-
-	R_ASSERT(F.FindChunk(AL_CHUNK_VERSION));
-	u16 version		= F.Rword();
-
-	if (version!=ACTION_LIST_VERSION) 
-    	return FALSE;
-	
-	// load actions
-	R_ASSERT(F.FindChunk(AL_CHUNK_ACTIONS));
-	u32 a_count			=	F.Length()/sizeof(PAPI::PAHeader);
-
-	// start append actions
-	pNewActionList(m_HandleActionList);
-
-	PAPI::PAHeader S;
-	for (u32 k=0; k<a_count; k++){
-		F.Read				(&S,sizeof(PAPI::PAHeader));
-		pAddActionToList	(&S);
-	}
-	// end append action
-	pEndActionList();
 
 	return TRUE;
 }
