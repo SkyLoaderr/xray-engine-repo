@@ -58,7 +58,7 @@ public:
 
 	IC BOOL intersected(const SelfRef b){return !(x1>b.x2 || x2<b.x1 || y1>b.y2 ||  y2<b.y1);}
 
-	IC BOOL intersection(const SelfRef b, Irect &result){
+	IC BOOL intersection(const SelfRef b, SelfRef result){
 		if (!intersected(b0,b1))
 			return	(FALSE);
 
