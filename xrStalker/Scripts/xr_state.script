@@ -221,11 +221,11 @@ function body_state:__init(npc)
 						into	= nil,
 						out		= nil,
 						idle	= nil,
-						rnd		= {	[0]	= {	"uhodi_2_1" },
-									[1]	= {	"uhodi_2_1" },
+						rnd		= {	[0]	= {	"uhodi_1_1" },
+									[1]	= {	"uhodi_1_1" },
 									[2]	= {	"uhodi_2_1" },
-									[3]	= {	"uhodi_2_1" },
-									[4]	= {	"uhodi_2_1" }}}									
+									[3]	= {	"uhodi_3_1" },
+									[4]	= {	"uhodi_4_1" }}}									
 	}
 	--print_table(self.animations)
 end
