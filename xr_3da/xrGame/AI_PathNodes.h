@@ -28,10 +28,12 @@ public:
 	CList<PSegment>		Segments;
 
 	float				fSpeed;
+	bool				m_bCollision;
 
 	CPathNodes()	{
 		bNeedRebuild	= FALSE;
 		DestNode		= 0;
+		m_bCollision	= true;
 	}
 
 	void				BuildTravelLine	(const Fvector& current_pos);

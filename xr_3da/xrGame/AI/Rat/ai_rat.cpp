@@ -36,6 +36,7 @@ CAI_Rat::CAI_Rat()
 	m_dwLastUpdate = 0;
 	m_fSpin = 0.0;
 	m_fMultiplier = sinf(m_fSpin);
+	AI_Path.m_bCollision = false;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -606,9 +607,9 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 
 		/**/
 		// filling the subnodes with the moving objects
-		Level().ObjectSpace.GetNearest(tCurrentPosition,3.f);//20*(Level().AI.GetHeader().size));
-		CObjectSpace::NL_TYPE tpNearestList = Level().ObjectSpace.nearest_list;
-		//Msg("%d",tpNearestList.size());
+		Level().ObjectSpace.GetNearest(Position(),5.f);//20*(Level().AI.GetHeader().size));
+		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
+		Msg("%d",tpNearestList.size());
 		if (!(tpNearestList.empty())) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
@@ -616,7 +617,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 					continue;
 
 				CCustomMonster* M = dynamic_cast<CCustomMonster*>(tpCurrentObject);
-				if ((M) && (M->g_Health() < 0))
+				if ((M) && (M->g_Health() <= 0))
 					continue;
 
 				float fRadius = tpCurrentObject->Radius();
