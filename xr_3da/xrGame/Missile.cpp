@@ -211,22 +211,22 @@ u32 CMissile::State(u32 state)
 			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), TRUE, this);
 			
-			Msg("------------------");
-			Msg("Missile show begin");
+			//Msg("------------------");
+			//Msg("Missile show begin");
 		} break;
 	case MS_IDLE:
 		{
 			m_bPending = false;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle));
 			
-			Msg("Missile idle begin");
+			//Msg("Missile idle begin");
 		} break;
 	case MS_HIDING:
 		{
 			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), true, this);
 
-			Msg("Missile hide begin");
+			//Msg("Missile hide begin");
 		} break;
 	case MS_HIDDEN:
 		{
@@ -234,20 +234,20 @@ u32 CMissile::State(u32 state)
 			setVisible(false);
 			setEnabled(false);
 		
-			Msg("Missile hidden");
+			//Msg("Missile hidden");
 		} break;
 	case MS_THREATEN:
 		{
 			m_fThrowForce = m_fMinForce;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowBegin), true, this);
 
-			Msg("Missile throw begin");
+			//Msg("Missile throw begin");
 		} break;
 	case MS_READY:
 		{
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowIdle), true, this);
 
-			Msg("Missile throw idle");
+			//Msg("Missile throw idle");
 		} break;
 	case MS_THROW:
 		{
@@ -255,20 +255,20 @@ u32 CMissile::State(u32 state)
 			m_throw = false;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowAct), true, this);
 
-			Msg("Missile throw act");
+			//Msg("Missile throw act");
 		} break;
 	case MS_END:
 		{
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowEnd), true, this);
 
-			Msg("Missile throw finish");
+			//Msg("Missile throw finish");
 		} break;
 	case MS_PLAYING:
 		{
 			PlaySound(sndPlaying,Position());
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlaying), true, this);
 
-			Msg("Missile playing");
+			//Msg("Missile playing");
 		} break;
 	}
 	return State();
@@ -292,7 +292,7 @@ void CMissile::OnAnimationEnd()
 		} break;
 	case MS_SHOWING:
 		{
-			Msg("Missile show end");
+			//Msg("Missile show end");
 
 			setVisible(TRUE);
 			OnStateSwitch(MS_IDLE);
@@ -335,8 +335,9 @@ void CMissile::UpdateXForm()
 
 		// Get access to entity and its visual
 		CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
+        
+		if(!E/* || !E->g_Alive()*/) return;
 
-		if(!E) return;
 		R_ASSERT		(E);
 		CKinematics*	V		= PKinematics	(E->Visual());
 		VERIFY			(V);
