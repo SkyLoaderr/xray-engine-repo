@@ -59,7 +59,7 @@ Vertex::Vertex()
 Vertex::~Vertex()
 {
 	if (g_bUnregister) {
-		vecVertexIt F = find(g_vertices.begin(), g_vertices.end(), this);
+		vecVertexIt F = std::find(g_vertices.begin(), g_vertices.end(), this);
 		if (F!=g_vertices.end()) g_vertices.erase(F);
 		else clMsg("* ERROR: Unregistered VERTEX destroyed");
 	}
@@ -90,7 +90,7 @@ Face::Face()
 Face::~Face()
 {
 	if (g_bUnregister) {
-		vecFaceIt F = find(g_faces.begin(), g_faces.end(), this);
+		vecFaceIt F = std::find(g_faces.begin(), g_faces.end(), this);
 		if (F!=g_faces.end()) g_faces.erase(F);
 		else clMsg("* ERROR: Unregistered FACE destroyed");
 	}

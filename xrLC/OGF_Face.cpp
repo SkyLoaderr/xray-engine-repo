@@ -208,7 +208,7 @@ void OGF_Node::Save	(IWriter &fs)
 	fs.close_chunk		();
 }
 
-extern int	RegisterString	(string &T);
+extern int	RegisterString	(std::string &T);
 
 void OGF_LOD::Save		(IWriter &fs)
 {

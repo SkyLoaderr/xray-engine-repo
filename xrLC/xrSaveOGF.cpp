@@ -18,7 +18,7 @@ u32						g_batch_5000;
 
 int		RegisterString		(string &T) 
 {
-	xr_vector<string>::iterator W = find(g_Strings.begin(), g_Strings.end(), T);
+	xr_vector<string>::iterator W = std::find(g_Strings.begin(), g_Strings.end(), T);
 	if (W!=g_Strings.end()) return W-g_Strings.begin();
 	g_Strings.push_back(T);
 	return g_Strings.size()-1;

@@ -79,20 +79,20 @@ void vfOptimizeParameters(xr_vector<xr_vector<REAL> > &A, xr_vector<xr_vector<RE
 	do {
 		dPreviousFunctional = dFunctional;
 		dafGradient			(daEvalResults,			daGradient,			B,					dNormaFactor);
-		transform			(daGradient.begin(),	daGradient.end(),	daGradient.begin(),	bind2nd(multiplies<REAL>(), -dAlpha));
-		transform			(daDelta.begin(),		daDelta.end(),		daDelta.begin(),	bind2nd(multiplies<REAL>(), dBeta));
-		transform			(daGradient.begin(),	daGradient.end(),	daDelta.begin(),	daDelta.begin(),	plus<REAL>());
-		transform			(C.begin(),				C.end(),			daDelta.begin(),	C.begin(),			plus<REAL>());
-		transform			(D.begin(),				D.end(),			daDelta.begin(),	D.begin(),			plus<REAL>());
+		std::transform		(daGradient.begin(),	daGradient.end(),	daGradient.begin(),	std::bind2nd(std::multiplies<REAL>(), -dAlpha));
+		std::transform		(daDelta.begin(),		daDelta.end(),		daDelta.begin(),	std::bind2nd(std::multiplies<REAL>(), dBeta));
+		std::transform		(daGradient.begin(),	daGradient.end(),	daDelta.begin(),	daDelta.begin(),	std::plus<REAL>());
+		std::transform		(C.begin(),				C.end(),			daDelta.begin(),	C.begin(),			std::plus<REAL>());
+		std::transform		(D.begin(),				D.end(),			daDelta.begin(),	D.begin(),			std::plus<REAL>());
 		dFunctional			= dfComputeEvalResults(daEvalResults,A,B,C,D);
 		i++;
 	}
 	while ((((dPreviousFunctional - dFunctional)/dwTestCount) > dEpsilon) && (i <= dwMaxIterationCount));
 	
 	if (dPreviousFunctional < dFunctional) {
-		transform			(daDelta.begin(),		daDelta.end(),		daDelta.begin(),	bind2nd(multiplies<REAL>(), -1));
-		transform			(C.begin(),				C.end(),			daDelta.begin(),	C.begin(),			plus<REAL>());
-		transform			(D.begin(),				D.end(),			daDelta.begin(),	D.begin(),			plus<REAL>());
+		std::transform			(daDelta.begin(),		daDelta.end(),		daDelta.begin(),	std::bind2nd(std::multiplies<REAL>(), -1));
+		std::transform			(C.begin(),				C.end(),			daDelta.begin(),	C.begin(),			std::plus<REAL>());
+		std::transform			(D.begin(),				D.end(),			daDelta.begin(),	D.begin(),			std::plus<REAL>());
 	}
 	
 	dFunctional				= dfComputeEvalResults(daEvalResults,A,B,C,D);

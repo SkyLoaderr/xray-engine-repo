@@ -116,7 +116,7 @@ void	g_trans_register_internal	(Vertex* V)
 	
 	// Search
 	const float key		= V->P.x;
-	mapVertIt	it		= g_trans->lower_bound	(key);
+	mapVertIt	it		= g_trans->std::lower_bound	(key);
 	mapVertIt	it2		= it;
 
 	// Decrement to the start and inc to end

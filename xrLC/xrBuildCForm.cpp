@@ -5,13 +5,13 @@
 
 int GetVertexIndex(Vertex *F)
 {
-	vecVertexIt it = lower_bound(g_vertices.begin(),g_vertices.end(),F);
+	vecVertexIt it = std::lower_bound(g_vertices.begin(),g_vertices.end(),F);
 	return it-g_vertices.begin();
 }
 
 int getCFormVID(vecVertex& V,Vertex *F)
 {
-	vecVertexIt it = lower_bound(V.begin(),V.end(),F);
+	vecVertexIt it = std::lower_bound(V.begin(),V.end(),F);
 	return it-V.begin();
 }
 
@@ -36,7 +36,7 @@ int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 		pBuild->err_multiedge.w_fvector3(V2->P);
 	}
 	if (found) {
-		vecFaceIt F = lower_bound(ids.begin(),ids.end(),found);
+		vecFaceIt F = std::lower_bound(ids.begin(),ids.end(),found);
 		if (found == *F) return F-ids.begin();
 		else return -1;
 	} else {

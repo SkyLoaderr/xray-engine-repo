@@ -13,7 +13,7 @@ void	xrMU_Model::_vertex::prep_add				(_face* F)
 }
 void	xrMU_Model::_vertex::prep_remove			(_face* F)
 {
-	v_faces_it	I = find(adjacent.begin(),adjacent.end(),F);
+	v_faces_it	I = std::find(adjacent.begin(),adjacent.end(),F);
 	if (I!=adjacent.end())	adjacent.erase(I);
 }
 void	xrMU_Model::_vertex::calc_normal_adjacent	()

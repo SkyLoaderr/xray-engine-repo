@@ -3,7 +3,7 @@
 /*
 int getCFormVID		(xrMU_Model::v_vertices& V,xrMU_Model::_vertex *F)
 {
-	xrMU_Model::v_vertices_it it	= std::lower_bound(V.begin(),V.end(),F);
+	xrMU_Model::v_vertices_it it	= std::std::lower_bound(V.begin(),V.end(),F);
 	return it-V.begin();
 }
 */

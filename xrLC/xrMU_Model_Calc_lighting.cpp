@@ -115,7 +115,7 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 
 		// Search
 		const float key			= V->P.x;
-		mapVertIt	it			= g_trans.lower_bound	(key);
+		mapVertIt	it			= g_trans.std::lower_bound	(key);
 		mapVertIt	it2			= it;
 
 		// Decrement to the start and inc to end

@@ -40,7 +40,7 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		BOOL bWeld = FALSE;
 		
 		// check for duplicated errors
-		if (vE1>vE2)	swap(vE1,vE2);
+		if (vE1>vE2)	std::swap(vE1,vE2);
 		for (DWORD i=0; i<vecJunctions->size(); i++)
 		{
 			record&	rec = (*vecJunctions)[i];

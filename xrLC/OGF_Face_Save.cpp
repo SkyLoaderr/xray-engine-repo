@@ -5,7 +5,7 @@
 #include "fs.h"
 #include "fmesh.h"
 
-extern int	RegisterString		(string &T);
+extern int	RegisterString		(std::string &T);
 extern void	geom_batch_average	(u32 verts, u32 faces);
 
 D3DVERTEXELEMENT9		r2_decl[] =	// 36
@@ -237,7 +237,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 	}
 }
 
-extern	void xrStripify(std::xr_vector<WORD> &indices, std::xr_vector<WORD> &perturb, int iCacheSize, int iMinStripLength);
+extern	void xrStripify(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCacheSize, int iMinStripLength);
 
 void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {

@@ -40,7 +40,7 @@ void CBuild::xrPhase_TangentBasis()
 	u32 v_count_reserve			= iFloor(float(g_vertices.size())*1.33f);
 	u32 i_count_reserve			= 3*g_faces.size();
 
-	std::xr_vector<NVMeshMender::VertexAttribute> input,output;
+	xr_vector<NVMeshMender::VertexAttribute> input,output;
 	input.push_back	(NVMeshMender::VertexAttribute());	// pos
 	input.push_back	(NVMeshMender::VertexAttribute());	// norm
 	input.push_back	(NVMeshMender::VertexAttribute());	// tex0
@@ -77,7 +77,7 @@ void CBuild::xrPhase_TangentBasis()
 		{
 			Vertex*		V	= F->v[v];	
 			Fvector2	Ftc = F->tc.front().uv[v];
-			u32 ID			= lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin();
+			u32 ID			= std::lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin();
 			xr_vector<u32>& m	= remap[ID];
 
 			// Search
