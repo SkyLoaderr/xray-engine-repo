@@ -102,10 +102,6 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		}
 	}
 
-	if ((vCount==206)&&(iCount==426)&&(dwPrimitives==142)){
-		int y=0;
-	}
-
 	if (dwFlags&VLOAD_NOVERTICES || dwFlags&VLOAD_NOINDICES)	return;
 	else	hGeom.create		(vFormat,pVertices,pIndices);
 }
