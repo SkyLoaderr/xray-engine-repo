@@ -417,7 +417,7 @@ void CAI_Rat::OnRender()
 
 BOOL CAI_Rat::UsedAI_Locations()
 {
-	return					(TRUE);
+	return					(g_Alive());
 }
 
 void CAI_Rat::make_Interpolation ()
