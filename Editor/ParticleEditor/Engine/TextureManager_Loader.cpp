@@ -151,7 +151,10 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
                 continue;
             }
 #else
-			R_ASSERT		(B->getDescription().version == desc.version);
+			if	(B->getDescription().version != desc.version)	
+			{
+				Msg			("! Version conflict in shader '%s'",desc.cName);
+			}
 #endif
             chunk->Seek		(0);
             B->Load			(*chunk);

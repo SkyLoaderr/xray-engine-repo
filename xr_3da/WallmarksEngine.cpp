@@ -284,57 +284,36 @@ void CWallmarksEngine::Render()
 					clQueryTri& T	= L[i];
 					
 					// 1. Culling
-					Fvector	TN;
-					TN.mknormal(T.p[0],T.p[1],T.p[2]);
-					if (TN.dotproduct(sDir)>=0)		continue;
-					if (TN.dotproduct(cDIR)>0.3f)	continue;
-					
-					// 2. Clipping
-					sml_poly_src.clear		();
-					sml_poly_src.push_back	(T.p[0]);
-					sml_poly_src.push_back	(T.p[1]);
-					sml_poly_src.push_back	(T.p[2]);
-					sml_poly_dest.clear		();
-					sPoly* P = F.ClipPoly	(sml_poly_src, sml_poly_dest);
-					if (0==P) continue;
+					Fplane	TP;
+					TP.build						(T.p[0],T.p[1],T.p[2]);
+					if (TP.classify(cPOS)<=0)		continue;
 					
 					// 3. XForm and VB-fill
-					// Create vertices and triangulate poly (tri-fan style triangulation)
-					static CWallmark::Vertex	V0,V1,V2;
-					static Fvector				UV;
+					Fvector				UV;
 					
 					{	// 0
-						Fvector&	V	= (*P)[0];
+						Fvector&	V	= T.p[0];
 						float		a1	= sPOS.distance_to_sqr(V)*I_DIST_FADE_SQR;
 						float		a2	= cPOS.distance_to_sqr(V)*I_DIST_FADE_SQR;
 						int			a	= iFloor(255.f*(a1+a2)); clamp(a,0,255);
 						mView.transform_tiny(UV,V);
-						V0.set			(V,D3DCOLOR_RGBA(a,a,a,a),UV.x,UV.y);
+						VB->set		(V,D3DCOLOR_RGBA(a,a,a,a),UV.x,UV.y); VB++;
 					}
 					{	// 1
-						Fvector&	V	= (*P)[1];
+						Fvector&	V	= T.p[1];
 						float		a1	= sPOS.distance_to_sqr(V)*I_DIST_FADE_SQR;
 						float		a2	= cPOS.distance_to_sqr(V)*I_DIST_FADE_SQR;
 						int			a	= iFloor(255.f*(a1+a2)); clamp(a,0,255);
 						mView.transform_tiny(UV,V);
-						V1.set			(V,D3DCOLOR_RGBA(a,a,a,a),UV.x,UV.y);
+						VB->set		(V,D3DCOLOR_RGBA(a,a,a,a),UV.x,UV.y); VB++;
 					}
-					
-					// 2..n-1
-					for (DWORD j=2; j<P->size(); j++)
-					{
-						Fvector&	V = (*P)[j];
+					{	// 2
+						Fvector&	V	= T.p[2];
 						float		a1	= sPOS.distance_to_sqr(V)*I_DIST_FADE_SQR;
 						float		a2	= cPOS.distance_to_sqr(V)*I_DIST_FADE_SQR;
 						int			a	= iFloor(255.f*(a1+a2)); clamp(a,0,255);
 						mView.transform_tiny(UV,V);
-						V2.set			(V,D3DCOLOR_RGBA(a,a,a,a),UV.x,UV.y);
-						
-						*VB++			= V0;
-						*VB++			= V1;
-						*VB++			= V2;
-						
-						V1 = V2;
+						VB->set		(V,D3DCOLOR_RGBA(a,a,a,a),UV.x,UV.y); VB++;
 					}
 				}
 				DWORD vCount = VB-B;

@@ -22,6 +22,7 @@ CBlender_Screen_SET::CBlender_Screen_SET()
 	oZWrite.value		= FALSE;
 	oLighting.value		= FALSE;
 	oFog.value			= FALSE;
+	oClamp.value		= TRUE;
 }
 
 CBlender_Screen_SET::~CBlender_Screen_SET()
@@ -45,6 +46,7 @@ void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
 	I.ID = 6; strcpy(I.str,"MUL_2X (B^D)");FS.write	(&I,sizeof(I));
 	
 	// Params
+	xrPWRITE_PROP		(FS,"Texture clamp",xrPID_BOOL,		oClamp);
 	xrPWRITE_PROP		(FS,"Alpha ref",	xrPID_INTEGER,	oAREF);
 	xrPWRITE_PROP		(FS,"Z-test",		xrPID_BOOL,		oZTest);
 	xrPWRITE_PROP		(FS,"Z-write",		xrPID_BOOL,		oZWrite);

@@ -16,6 +16,7 @@ class ENGINE_API CBlender_Screen_SET : public CBlender
 	xrP_BOOL	oZWrite;
 	xrP_BOOL	oLighting;
 	xrP_BOOL	oFog;
+	xrP_BOOL	oClamp;
 public:
 	virtual		LPCSTR		getComment()	{ return "basic (simple)"; }
 	
