@@ -219,7 +219,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 				if (BT.bHasAlpha || (BT.THM.flag&STextureParams::flImplicitLighted))	
 				{
 					Msg			("- loading: %s",N);
-					DWORD w=0,	h=0;
+					u32			w=0, h=0;
 					BT.pSurface = Surface_Load(N,w,h);
 					BT.Vflip	();
 				} else {

@@ -17,7 +17,7 @@ struct UVtri : public _TCF
 
 struct R_Light
 {
-    DWORD           type;				// Type of light source		
+    u32           type;				// Type of light source		
     Fcolor          diffuse;			// Diffuse color of light	
     Fvector         position;			// Position in world space	
     Fvector         direction;			// Direction in world space	
@@ -50,7 +50,7 @@ public:
 		int				base_id;
 		b_texture		lm;
 		
-		DWORD			Area ()	{ return (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER); }
+		u32				Area ()	{ return (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER); }
 		
 		Layer()			{ ZeroMemory(this,sizeof(*this)); }
 	};
@@ -58,8 +58,8 @@ public:
 	
 	Fsphere				Sphere;
 	
-	DWORD				dwWidth;
-	DWORD				dwHeight;
+	u32				dwWidth;
+	u32				dwHeight;
 	BOOL				bMerged;
 public:
 	CDeflector					();
@@ -72,7 +72,7 @@ public:
 		
 	void	GetRect				(UVpoint &min, UVpoint &max);
 	Layer*	GetLayer			(int base_id);
-	DWORD	GetFaceCount()		{ return UVpolys.size();	};
+	u32		GetFaceCount()		{ return UVpolys.size();	};
 		
 	VOID	Light				(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H	);
 	VOID	L_Direct			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );
@@ -81,7 +81,7 @@ public:
 
 	WORD	GetBaseMaterial		() { return UVpolys.front().owner->dwMaterial;	}
 
-	void	Bounds				(DWORD ID, Fbox2& dest)
+	void	Bounds				(u32 ID, Fbox2& dest)
 	{
 		UVtri& TC		= UVpolys[ID];
 		dest.min.set	(TC.uv[0].conv());
@@ -92,20 +92,20 @@ public:
 	void	Bounds_Summary		(Fbox2& bounds)
 	{
 		bounds.invalidate();
-		for (DWORD I=0; I<UVpolys.size(); I++)
+		for (u32 I=0; I<UVpolys.size(); I++)
 		{
 			Fbox2	B;
 			Bounds	(I,B);
 			bounds.merge(B);
 		}
 	}
-	void	RemapUV				(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate);
-	void	RemapUV				(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate);
+	void	RemapUV				(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate);
+	void	RemapUV				(u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate);
 };
 
 typedef vector<UVtri>::iterator UVIt;
 
-extern void		Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
-extern void		blit			(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py, DWORD aREF);
-extern void		blit_r			(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py, DWORD aREF);
+extern void		Jitter_Select	(UVpoint* &Jitter, u32& Jcount);
+extern void		blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
+extern void		blit_r			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
 extern void		LightPoint		(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end, Face* skip);

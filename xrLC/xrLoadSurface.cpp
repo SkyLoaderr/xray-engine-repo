@@ -103,7 +103,7 @@ FIBITMAP*	Surface_Load(char* full_name)
  	return				map32;
 }
 
-DWORD*	Surface_Load(char* name, DWORD& w, DWORD& h)
+u32*	Surface_Load(char* name, u32& w, u32& h)
 {
 	if (strchr(name,'.')) *(strchr(name,'.')) = 0;
 

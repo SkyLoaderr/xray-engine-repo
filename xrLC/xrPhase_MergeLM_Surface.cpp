@@ -14,16 +14,16 @@ void _InitSurface	()
 // Rendering of rect
 void _rect_register	(L_rect &R, CDeflector::Layer* D, BOOL bRotate)
 {
-	LPDWORD lm	= D->lm.pSurface;
-	DWORD	s_x	= D->lm.dwWidth+2*BORDER;
-	DWORD	s_y = D->lm.dwHeight+2*BORDER;
+	u32*	lm	= D->lm.pSurface;
+	u32		s_x	= D->lm.dwWidth+2*BORDER;
+	u32		s_y = D->lm.dwHeight+2*BORDER;
 	
 	if (!bRotate) {
 		// Normal (and fastest way)
 		for (DWORD y=0; y<s_y; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
-			DWORD*	S = lm + y*s_x;
+			u32*	S = lm + y*s_x;
 			for (DWORD x=0; x<s_x; x++,P++) 
 			{
 				DWORD C = *S++;
@@ -49,7 +49,7 @@ void _rect_register	(L_rect &R, CDeflector::Layer* D, BOOL bRotate)
 // Test of per-pixel intersection (surface test)
 bool Place_Perpixel	(L_rect& R, CDeflector::Layer* D, BOOL bRotate)
 {
-	LPDWORD lm			= D->lm.pSurface;
+	u32*	lm			= D->lm.pSurface;
 	DWORD	s_x			= D->lm.dwWidth	+2*BORDER;
 	DWORD	s_y			= D->lm.dwHeight+2*BORDER;
 	
@@ -58,7 +58,7 @@ bool Place_Perpixel	(L_rect& R, CDeflector::Layer* D, BOOL bRotate)
 		for (DWORD y=0; y<s_y; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
-			DWORD*	S = lm + y*s_x;
+			u32*	S = lm + y*s_x;
 			for (DWORD x=0; x<s_x; x++,P++) 
 			{
 				DWORD C = *S++;

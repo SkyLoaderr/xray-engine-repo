@@ -4,30 +4,30 @@
 #include "xrIsect.h"
 #include "math.h"
 
-void blit	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py, DWORD aREF)
+void blit	(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF)
 {
 	R_ASSERT(ds_x>=(ss_x+px));
 	R_ASSERT(ds_y>=(ss_y+py));
-	for (DWORD y=0; y<ss_y; y++)
-		for (DWORD x=0; x<ss_x; x++)
+	for (u32 y=0; y<ss_y; y++)
+		for (u32 x=0; x<ss_x; x++)
 		{
-			DWORD dx = px+x;
-			DWORD dy = py+y;
-			DWORD sc = src[y*ss_x+x];
+			u32 dx = px+x;
+			u32 dy = py+y;
+			u32 sc = src[y*ss_x+x];
 			if (RGBA_GETALPHA(sc)>=aREF) dest[dy*ds_x+dx] = sc;
 		}
 }
 
-void blit_r	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py, DWORD aREF)
+void blit_r	(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF)
 {
 	R_ASSERT(ds_x>=(ss_y+px));
 	R_ASSERT(ds_y>=(ss_x+py));
-	for (DWORD y=0; y<ss_y; y++)
-		for (DWORD x=0; x<ss_x; x++)
+	for (u32 y=0; y<ss_y; y++)
+		for (u32 x=0; x<ss_x; x++)
 		{
-			DWORD dx = px+y;
-			DWORD dy = py+x;
-			DWORD sc = src[y*ss_x+x];
+			u32 dx = px+y;
+			u32 dy = py+x;
+			u32 sc = src[y*ss_x+x];
 			if (RGBA_GETALPHA(sc)>=aREF) dest[dy*ds_x+dx] = sc;
 		}
 }
@@ -56,7 +56,7 @@ CDeflector::CDeflector()
 }
 CDeflector::~CDeflector()
 {
-	for (DWORD I=0; I<layers.size(); I++)
+	for (u32 I=0; I<layers.size(); I++)
 		_FREE	(layers[I].lm.pSurface);
 	layers.clear();
 }
@@ -136,7 +136,7 @@ void CDeflector::OA_Place	(vecFace& lst)
 {
 	UVpolys.clear	();
 	UVpolys.reserve	(lst.size());
-	for (DWORD I=0; I<lst.size(); I++)
+	for (u32 I=0; I<lst.size(); I++)
 	{
 		UVtri T;
 		Face* F			= lst[I];
@@ -160,7 +160,7 @@ VOID CDeflector::GetRect	(UVpoint &min, UVpoint &max)
 	}
 }
 
-void CDeflector::RemapUV	(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
+void CDeflector::RemapUV	(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate)
 {
 	dest.clear	();
 	dest.reserve(UVpolys.size());
@@ -212,7 +212,7 @@ void CDeflector::RemapUV	(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD
 	}
 }
 
-void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
+void CDeflector::RemapUV(u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate)
 {
 	vector<UVtri>	tris_new;
 	RemapUV			(tris_new,base_u,base_v,size_u,size_v,lm_u,lm_v,bRotate);
@@ -221,7 +221,7 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 
 CDeflector::Layer* CDeflector::GetLayer(int base)
 {
-	for (DWORD I=0; I<layers.size(); I++)
+	for (u32 I=0; I<layers.size(); I++)
 		if (layers[I].base_id == base)	return &layers[I];
 	return 0;
 }
