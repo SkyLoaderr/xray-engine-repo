@@ -39,6 +39,7 @@ public:
 			ChooseValue*		CreateChoose	    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode);
 			ChooseValue*		CreateChoose	    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode, LPCSTR path);
 			ChooseValue*		CreateChoose	    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode, LPCSTR path, LPCSTR fill_param);
+			ChooseValue*		CreateChoose	    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode, LPCSTR path, LPCSTR fill_param, u32 sub_item_cnt);
 			
 //			S8Value* 			CreateS8		    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name);
 //			S8Value* 			CreateS8		    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, s8 mn);

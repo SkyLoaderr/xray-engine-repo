@@ -95,9 +95,10 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 			.def("create_canvas",&CScriptPropertiesListHelper::CreateCanvas)
 			.def("create_button",&CScriptPropertiesListHelper::CreateButton)
 			
-			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32))					(&CScriptPropertiesListHelper::CreateChoose))
-			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32, LPCSTR))			(&CScriptPropertiesListHelper::CreateChoose))
-			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32, LPCSTR, LPCSTR))	(&CScriptPropertiesListHelper::CreateChoose))
+			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32))						(&CScriptPropertiesListHelper::CreateChoose))
+			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32, LPCSTR))				(&CScriptPropertiesListHelper::CreateChoose))
+			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32, LPCSTR, LPCSTR))		(&CScriptPropertiesListHelper::CreateChoose))
+			.def("create_choose", (ChooseValue *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR , u32, LPCSTR, LPCSTR, u32))	(&CScriptPropertiesListHelper::CreateChoose))
 			
 //			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ))					(&CScriptPropertiesListHelper::CreateS8))
 //			.def("create_s8", (S8Value *(CScriptPropertiesListHelper::*)(PropItemVec*, LPCSTR,  luabind::object , LPCSTR ,  s8))				(&CScriptPropertiesListHelper::CreateS8))

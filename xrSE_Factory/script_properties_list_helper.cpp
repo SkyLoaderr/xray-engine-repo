@@ -132,6 +132,11 @@ ButtonValue*	CScriptPropertiesListHelper::CreateButton	(PropItemVec* items, LPCS
 	return		(PHelper().CreateButton(*items,key,val,flags));
 }
 
+ChooseValue*	CScriptPropertiesListHelper::CreateChoose	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode, LPCSTR path, LPCSTR fill_param, u32 sub_item_cnt)
+{
+	return		(PHelper().CreateChoose(*items,key,wrap_value<ref_str>(object,name),mode,path,(void*)fill_param,sub_item_cnt));
+}
+
 ChooseValue*	CScriptPropertiesListHelper::CreateChoose	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 mode, LPCSTR path, LPCSTR fill_param)
 {
 	return		(PHelper().CreateChoose(*items,key,wrap_value<ref_str>(object,name),mode,path,(void*)fill_param));
