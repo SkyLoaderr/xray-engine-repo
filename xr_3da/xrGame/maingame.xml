@@ -18,6 +18,8 @@
 	</static>
 	<!-- weapon icon -->
 	<static x="12" y="10" width="50" height="50"></static>
+	<!-- power bar static -->
+	<power_bar_static x="110" y="685" width="50" height="100"></power_bar_static>
 
 	<!-- pda online icon -->
 	<static x="1" y="187" width="200" height="32">
@@ -140,7 +142,7 @@
 	<motion_icon x="0" y="685" width="100" height="100" align="rb"></motion_icon>
 	
 	<!-- POWER BAR -->
-    <power_bar x="110" y="65" length="215" broad="20" horz="0" min="0" max="1000" pos="0">
+    <power_bar x="110" y="685" length="215" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture tile="0" length="215" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
         <background x="0" y="0">ui\ui_inv_progress_end_empty</background>
     </power_bar>
