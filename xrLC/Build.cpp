@@ -136,7 +136,7 @@ CBuild::CBuild(b_transfer * L)
 		BT.pSurface = 0;
 		if (BT.bHasAlpha || (BT.THM.flag&EF_IMPLICIT_LIGHTED))	
 		{
-			Msg("- loaded: %s",N);
+			Msg("- loading: %s",N);
 			// load & flip
 			DWORD		w=0,h=0;
 			BT.pSurface = Surface_Load(N,w,h);
