@@ -88,5 +88,20 @@ function val_enemy_captive(actor, npc)
 end    
 
 function actor_wears_bandit_outfit(actor, npc)
-	return actor:object("bandit_outfit") ~= nil
+	return xr_conditions_impl.actor_has_object(actor, "bandit_outfit") ~= nil
 end
+
+
+------------------------------------------------------------------------------------
+-- Special functions for LabX18
+------------------------------------------------------------------------------------
+function dar_actor_has_a_key1(actor,npc)
+	return xr_conditions_impl.actor_has_object(actor,"ugrum_flash")
+end
+
+function dar_actor_has_a_key2(actor,npc)
+	return xr_conditions_impl.actor_has_object(actor,"ugrum_flash")
+end
+------------------------------------------------------------------------------------
+
+

@@ -39,3 +39,8 @@ function gar_dm_nearest_bandit(actor, npc, which)
 
 	return i_am_the_one
 end
+
+function actor_has_object(actor, obj_name)
+	return actor:object(obj_name) ~= nil
+end
+

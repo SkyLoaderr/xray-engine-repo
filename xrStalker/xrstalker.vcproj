@@ -1030,6 +1030,19 @@
 						RelativePath=".\config\scripts\mil\mil_freedom_leader.ltx">
 					</File>
 				</Filter>
+				<Filter
+					Name="LabX18"
+					Filter="">
+					<File
+						RelativePath=".\config\scripts\dar\dar_burer_master.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\dar\dar_door1.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\dar\dar_door2.ltx">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
