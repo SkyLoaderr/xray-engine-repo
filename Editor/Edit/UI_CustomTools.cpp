@@ -97,7 +97,6 @@ void TUI_CustomTools::ShowProperties(){
 //	    case OBJCLASS_AITRAFFIC:   	TfrmPropertiesAITraffic::Run(&objset,bChange);break;	
     	case OBJCLASS_DPATCH:   	break;
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&objset,bChange);		break;
-//		case OBJCLASS_DOCLUSTER:	TfrmPropertiesDOCluster::Run(&objset,bChange);break;
     	default:{ Log->DlgMsg(mtError, "Can't find properties form."); throw -1;}
 	    }
         if (bChange) Scene->UndoSave();

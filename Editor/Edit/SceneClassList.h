@@ -46,7 +46,7 @@ enum EObjClass{
     OBJCLASS_PORTAL    	= 9,
     OBJCLASS_EVENT	   	= 10,
     OBJCLASS_PS		   	= 11,
-    OBJCLASS_DOCLUSTER	= 12,
+    OBJCLASS_DO			= 12,
     OBJCLASS_COUNT,
     OBJCLASS_force_dword = -1
 };

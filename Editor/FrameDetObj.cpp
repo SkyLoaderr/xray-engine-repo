@@ -24,6 +24,8 @@
 __fastcall TfraDetailObject::TfraDetailObject(TComponent* Owner)
         : TFrame(Owner)
 {
+    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
+    fsStorage->IniFileName = buf;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraDetailObject::PaneMinClick(TObject *Sender)
@@ -62,10 +64,10 @@ void __fastcall TfraDetailObject::ExtBtn4Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraDetailObject::ExtBtn6Click(TObject *Sender)
+void __fastcall TfraDetailObject::ebUpdateObjectsClick(TObject *Sender)
 {
-	Scene->m_DetailObjects->UpdateObjects(true);
-	Scene->UndoSave();
+	if (Scene->m_DetailObjects->UpdateObjects(true,false))
+		Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -74,6 +76,28 @@ void __fastcall TfraDetailObject::ebExportDetailsClick(TObject *Sender)
 	AnsiString fn;
 	if (FS.GetSaveName(&FS.m_GameDO,fn))
 	 	Scene->m_DetailObjects->Export(fn.c_str());
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraDetailObject::ebReinitializeSlotObjectsClick(
+      TObject *Sender)
+{
+	if (Scene->m_DetailObjects->UpdateObjects(false,true))
+		Scene->UndoSave();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraDetailObject::ebDORandomScaleClick(TObject *Sender)
+{
+	Scene->m_DetailObjects->RandomScale();
+	Scene->UndoSave();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraDetailObject::ebRandomRotateClick(TObject *Sender)
+{
+	Scene->m_DetailObjects->RandomRotate();
+	Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 

@@ -9,8 +9,8 @@
 #include "scene.h"
 //---------------------------------------------------------------------------
 
-TUI_DOTools::TUI_DOTools():TUI_CustomTools(OBJCLASS_DOCLUSTER){
-    AddControlCB(new TUI_ControlDOSelect(estSelf,eaSelect,	this));
+TUI_DOTools::TUI_DOTools():TUI_CustomTools(OBJCLASS_DO){
+    AddControlCB(new TUI_CustomControl	(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlDOAdd	(estSelf,eaAdd,		this));
     AddControlCB(new TUI_CustomControl	(estSelf,eaMove,	this));
 }
@@ -64,31 +64,4 @@ bool __fastcall TUI_ControlDOAdd::Start(TShiftState Shift){
     return false;
 }
 
-//--------------------------------------------------------------------------------------------------
-__fastcall TUI_ControlDOSelect::TUI_ControlDOSelect(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
-}
 
-void __fastcall TUI_ControlDOSelect::OnEnter()
-{
-    fraDO = (TfraDetailObject*)parent_tool->pFrame; VERIFY(fraDO);
-    fraDO->paSelect->Show();
-}
-
-void __fastcall TUI_ControlDOSelect::OnExit()
-{
-    fraDO->paSelect->Hide();
-	fraDO = 0;
-}
-
-bool __fastcall TUI_ControlDOSelect::Start(TShiftState Shift){
-/*	EObjClass cls = UI->CurrentClassID();
-    if (Shift==ssRBOnly){UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ObjClass()); return false;}
-    Scene->SelectObjects(false, cls);
-
-    CDOCluster *obj = (CDOCluster*)Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, true, false);
-    bBoxSelection    = (obj && Shift.Contains(ssCtrl)) || !obj;
-
-	if( obj ) obj->Select(obj->Selected()?false:true);
-*/
-    return false;
-}

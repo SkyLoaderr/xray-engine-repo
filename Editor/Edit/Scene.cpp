@@ -179,19 +179,22 @@ int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
 	CFrustum frustum;
     if (!UI->SelectionFrustum(frustum)) return 0;
 
+	if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_DO)) return m_DetailObjects->FrustumSelect(flag);
+    
 	int count = 0;
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
+        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
                 if((*_F)->Visible()){
                     if( (*_F)->FrustumPick(frustum, precalc_identity) ){
                         (*_F)->Select( flag );
-				        if((*_F)->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down) 
+				        if((*_F)->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down)
                         	Scene->GroupSelect((*_F)->GetGroupIndex(),flag,false);
                         count++;
                     }
                 }
+        }
     }
     UI->RedrawScene();
 	return count;
@@ -225,6 +228,8 @@ int EScene::SpherePick( const Fvector& center, float radius, EObjClass classfilt
 }
 
 int EScene::SelectObjects( bool flag, EObjClass classfilter ){
+	if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_DO)) return m_DetailObjects->SelectObjects(flag);
+
 	int count = 0;
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
@@ -281,10 +286,14 @@ int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
 }
 
 int EScene::InvertSelection( EObjClass classfilter ){
-    if (classfilter==OBJCLASS_DPATCH) return m_DetailPatches->InvertSelection();
+    if (classfilter==OBJCLASS_DPATCH) 	return m_DetailPatches->InvertSelection();
+    if (classfilter==OBJCLASS_DO)     	return m_DetailObjects->InvertSelection();
 
 	int count = 0;
-    if (classfilter==OBJCLASS_DUMMY) count += m_DetailPatches->InvertSelection();
+    if (classfilter==OBJCLASS_DUMMY){
+    	count += m_DetailPatches->InvertSelection();
+		count += m_DetailObjects->InvertSelection();
+    }
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
@@ -300,7 +309,7 @@ int EScene::InvertSelection( EObjClass classfilter ){
 }
 
 int EScene::RemoveSelection( EObjClass classfilter ){
-    if (classfilter==OBJCLASS_DPATCH) return m_DetailPatches->RemoveSelection();
+    if (classfilter==OBJCLASS_DPATCH) 	return m_DetailPatches->RemoveSelection();
 
 	int count = 0;
     if (classfilter==OBJCLASS_DUMMY) count += m_DetailPatches->RemoveSelection();
@@ -351,11 +360,15 @@ SceneObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EOb
 		    if (classfilter==OBJCLASS_DPATCH){
             	m_DetailPatches->RayPickSelect(nearest_dist,start,direction);
             }else{
-                for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
-                    if((*_F)->Visible()){
-                        if((classfilter==OBJCLASS_EDITOBJECT)&&!bDynamicTest&&((CEditObject*)(*_F))->IsDynamic()) continue;
-                        if((*_F)->RayPick(nearest_dist,start,direction,precalc_identity,pinf))
-                            nearest_object = (*_F);
+            	if (classfilter==OBJCLASS_DO){
+	            	m_DetailObjects->RayPickSelect(nearest_dist,start,direction);
+    	        }else{
+        	        for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
+            	        if((*_F)->Visible()){
+                	        if((classfilter==OBJCLASS_EDITOBJECT)&&!bDynamicTest&&((CEditObject*)(*_F))->IsDynamic()) continue;
+                    	    if((*_F)->RayPick(nearest_dist,start,direction,precalc_identity,pinf))
+                        	    nearest_object = (*_F);
+	                    }
                     }
                 }
             }
@@ -372,9 +385,14 @@ int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, bool bUseSnapList){
 }
 
 int EScene::SelectionCount(bool testflag, EObjClass classfilter){
-    if (classfilter==OBJCLASS_DPATCH) return m_DetailPatches->SelectionCount(testflag);
+    if (classfilter==OBJCLASS_DPATCH) 	return m_DetailPatches->SelectionCount(testflag);
+    if (classfilter==OBJCLASS_DO)     	return m_DetailObjects->SelectionCount(testflag);
+
 	int count = 0;
-    if (classfilter==OBJCLASS_DUMMY) count += m_DetailPatches->SelectionCount(testflag);
+    if (classfilter==OBJCLASS_DUMMY){
+    	count += m_DetailPatches->SelectionCount(testflag);
+		count += m_DetailObjects->SelectionCount(testflag);
+    }
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
@@ -439,7 +457,6 @@ void EScene::Render( Fmatrix *_Camera ){
     RENDER_CLASS_NORMAL(OBJCLASS_EVENT);
     RENDER_CLASS_NORMAL(OBJCLASS_SECTOR);
     RENDER_CLASS_NORMAL(OBJCLASS_PS);
-    RENDER_CLASS_NORMAL(OBJCLASS_DOCLUSTER);
 
 // draw objects
 	{
@@ -488,10 +505,6 @@ void EScene::Render( Fmatrix *_Camera ){
 	RENDER_CLASS_ALPHA(OBJCLASS_EVENT);
 	RENDER_CLASS_ALPHA(OBJCLASS_SECTOR);
 	RENDER_CLASS_ALPHA(OBJCLASS_PORTAL);
-
-	// draw alpha DO cluster
-    _E=LastObj(OBJCLASS_DOCLUSTER); _F=FirstObj(OBJCLASS_DOCLUSTER);
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(precalc_identity, rpAlphaLast);
 
     // render last alpha objects
     mapRenderObjects.traverseRL		(object_AlphaLast);

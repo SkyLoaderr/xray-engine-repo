@@ -30,7 +30,6 @@ const DWORD F_DOV = D3DFVF_XYZ | D3DFVF_TEX1;
 class CDetail{
 	friend class CDetailManager;
     friend class TfrmDOShuffle;
-    friend bool CompareIDFunc(CDetail* d0, CDetail* d1);
 
 	struct fvfVertexIn{
 		Fvector 		P;
@@ -40,8 +39,6 @@ class CDetail{
     DEFINE_VECTOR		(fvfVertexIn,DOVertVec,DOVertIt);
     float				m_fMinScale;
     float				m_fMaxScale;
-    // internal use
-	BYTE				m_ID;
 	// render
     DOVertVec			m_Vertices;
     WORDVec				m_Indices;
@@ -73,7 +70,8 @@ DEFINE_VECTOR(DetailSlot,DSVec,DSIt);
 
 DEFINE_MAP(DWORD,DOVec,ColorIndexMap,ColorIndexPairIt);
 
-#define DETAIL_SLOT_SIZE_2 DETAIL_SLOT_SIZE*0.5f
+#define DETAIL_SLOT_SIZE_2 	DETAIL_SLOT_SIZE*0.5f
+#define DETAIL_SLOT_RADIUS	DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f
 
 class CDetailManager{
 	friend class TfrmDOShuffle;
@@ -93,12 +91,10 @@ class CDetailManager{
 
     void				GetSlotRect		(Frect& rect, int sx, int sz);
     void				GetSlotTCRect	(Irect& rect, int sx, int sz);
-    BYTE				GetRandomObject	(DWORD color_index, CRandom& R);
+    BYTE				GetRandomObject	(DWORD color_index);
 
 	void 				CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best);
 	void 				FindClosestIndex(const Fcolor& C, SIndexDistVec& best);
-    void				SortObjectsByID	();
-    BYTE				FindEmptyID		();
 
 	bool 				GetColor		(DWORD& color, int U, int V);
 
@@ -146,47 +142,59 @@ public:
 	svector<Slot,dm_cache_size>					m_Cache;
 	svector<vector<SlotItem*>,dm_max_objects> 	m_Visible;
 
-    void 				InitRender		();
-	void				Decompress		(int sx, int sz, Slot& D);
-	Slot&				Query			(int sx, int sz);
-	DetailSlot&			QueryDB			(int sx, int sz);
-	void				UpdateCache		(int limit);
-	void				RenderObjects	(const Fvector& EYE);
-    void				RenderTexture	(float alpha);
-    void				InvalidateCache	();
+    void 				InitRender				();
+	void				Decompress				(int sx, int sz, Slot& D);
+	Slot&				Query					(int sx, int sz);
+	DetailSlot&			QueryDB					(int sx, int sz);
+	void				UpdateCache				(int limit);
+	void				RenderObjects			(const Fvector& EYE);
+    void				RenderTexture			(float alpha);
+    void				InvalidateCache			();
 // render part -----------------------------------------------------------------
 public:
     ColorIndexMap		m_ColorIndices;
-//	DetailSlot*			m_SelSlot;
+	BOOLVec				m_Selected;
 	Shader*				m_pBaseShader;
 	ETextureCore*		m_pBaseTexture;
 public:
-						CDetailManager	();
-    virtual 			~CDetailManager	();
+						CDetailManager			();
+    virtual 			~CDetailManager			();
 
-    bool				Load            (CStream&);
-    void				Save            (CFS_Base&);
-    void				Export          (LPCSTR fn);
+    bool				Load            		(CStream&);
+    void				Save            		(CFS_Base&);
+    void				Export          		(LPCSTR fn);
 
-    bool				UpdateBBox		();
-    bool				UpdateBaseTexture(LPCSTR tex_name=0);
-    bool				UpdateObjects	(bool bUpdateTex);
-    bool				GenerateSlots	(LPCSTR tex_name);
+    bool				UpdateBBox				();
+    bool				UpdateBaseTexture		(LPCSTR tex_name=0);
+    bool				UpdateSlotObjects		(int x, int z);
+    bool				UpdateObjects			(bool bUpdateTex, bool bUpdateSelectedOnly);
+    bool				GenerateSlots			(LPCSTR tex_name);
+    void				RandomizeSlotScale		(int x, int z);
+    void				RandomizeSlotRotate		(int x, int z);
+    void				RandomScale				();
+    void				RandomRotate			();
+    void				InvalidateSlots			();
 
-    CDetail*			AppendObject	(LPCSTR name, bool bTestUnique=true);
-    void				RemoveObjects	(bool bOnlyMarked=false);
-    CDetail*			FindObjectByName(LPCSTR name);
-    void				MarkAllObjectsAsDel();
+    CDetail*			AppendObject			(LPCSTR name, bool bTestUnique=true);
+    void				RemoveObjects			(bool bOnlyMarked=false);
+    CDetail*			FindObjectByName		(LPCSTR name);
+    void				MarkAllObjectsAsDel		();
 
-    void				RemoveColorIndices();
-	void				AppendIndexObject(DWORD color,LPCSTR name,bool bTestUnique=true);
+    void				RemoveColorIndices		();
+	void				AppendIndexObject		(DWORD color,LPCSTR name,bool bTestUnique=true);
     CDetail*			FindObjectInColorIndices(DWORD index, LPCSTR name);
 
-    int					ObjCount		(){return m_Slots.size();}
-    void				Render			(ERenderPriority flag);
-    void				Clear			();
+    int					ObjCount				(){return m_Slots.size();}
+    void				Render					(ERenderPriority flag);
+    void				Clear					();
 
-    bool				Valid			(){return !!m_Slots.size()||!!m_Objects.size();}
+	void				RayPickSelect			(float& distance, Fvector& start, Fvector& direction);
+	int					FrustumSelect			(bool flag);
+	int 				SelectObjects           (bool flag);
+	int 				InvertSelection         ();
+	int 				SelectionCount          (bool testflag);
+
+    bool				Valid					(){return !!m_Slots.size()||!!m_Objects.size();}
 };
 #endif /*_INCDEF_DetailObjects_H_*/
 

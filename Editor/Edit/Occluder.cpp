@@ -41,7 +41,7 @@ COccluder::~COccluder(){
 void COccluder::Construct(){
 	m_ClassID = OBJCLASS_OCCLUDER;
     m_vPlaneSize.set(1.f,1.f);
-    m_vRotate.set(0,0,0);
+    m_vRotate.set(PI_DIV_2,0,0);
     m_vCenter.set(0,0,0);
 
     m_Points.resize(4);

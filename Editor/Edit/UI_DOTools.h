@@ -15,15 +15,6 @@ public:
 	virtual	void 	OnDeactivate();
 };
 //---------------------------------------------------------------------------
-class TUI_ControlDOSelect: public TUI_CustomControl{
-	TfraDetailObject* fraDO;
-public:
-    TUI_ControlDOSelect(int st, int act, TUI_CustomTools* parent);
-	virtual bool Start  (TShiftState _Shift);
-    virtual void OnEnter();
-    virtual void OnExit ();
-};
-//---------------------------------------------------------------------------
 class TUI_ControlDOAdd: public TUI_CustomControl{
 	TfraDetailObject* fraDO;
 public:

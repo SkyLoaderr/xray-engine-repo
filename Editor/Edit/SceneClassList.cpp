@@ -35,7 +35,6 @@ SceneObject *NewObjectFromClassID( int _ClassID ){
         case OBJCLASS_PORTAL:	return new CPortal();
         case OBJCLASS_EVENT:	return new CEvent();
         case OBJCLASS_PS:		return new CPSObject();
-//        case OBJCLASS_DOCLUSTER:return new CDOCluster();
         default: throw -1;
 	}
 }
@@ -53,7 +52,7 @@ LPSTR GetNameByClassID(EObjClass cls_id){
     case OBJCLASS_PORTAL: 	return "Portal";
     case OBJCLASS_EVENT: 	return "Event";
     case OBJCLASS_PS:		return "PS";
-    case OBJCLASS_DOCLUSTER:return "DetailObject";
+    case OBJCLASS_DO:		return "DetailObject";
     default: return 0;
     }
 }
@@ -70,7 +69,7 @@ bool IsClassID(EObjClass cls_id){
     case OBJCLASS_PORTAL: 	return true;
     case OBJCLASS_EVENT: 	return true;
     case OBJCLASS_PS:		return true;
-    case OBJCLASS_DOCLUSTER:return true;
+    case OBJCLASS_DO:		return true;
     default: return 0;
     }
 }
@@ -88,7 +87,7 @@ EObjClass ClassIDFromTargetID( int cls_id ){
     case etPortal:	return OBJCLASS_PORTAL;
     case etEvent:	return OBJCLASS_EVENT;
     case etPS:		return OBJCLASS_PS;
-	case etDO: 		return OBJCLASS_DOCLUSTER;
+	case etDO: 		return OBJCLASS_DO;
     default: throw -1;
 	}
 }
@@ -105,7 +104,7 @@ bool IsObjectListClassID(EObjClass cls_id){
     case OBJCLASS_PORTAL:	return true;
     case OBJCLASS_EVENT:	return true;
     case OBJCLASS_PS:		return true;
-    case OBJCLASS_DOCLUSTER:return true;
+    case OBJCLASS_DO:		return true;
     default: return false;
     }
 }

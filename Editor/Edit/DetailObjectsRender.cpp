@@ -9,10 +9,11 @@
 #include "Scene.h"
 #include "cl_intersect.h"
 #include "D3DUtils.h"
+#include "bottombar.h"
 
 const DWORD	vs_size				= 3000;
 const float slot_size			= DETAIL_SLOT_SIZE;
-const float slot_radius			= DETAIL_SLOT_SIZE*0.70710678118654752440084436210485f;
+const float slot_radius			= DETAIL_SLOT_RADIUS;
 
 //--------------------------------------------------- Decompression
 static int magic4x4[4][4] =
@@ -50,19 +51,59 @@ void bwdithermap	(int levels, int magic[16][16] )
 //--------------------------------------------------- Decompression
 
 void CDetailManager::InvalidateCache(){
-	// ??????????
+	for (DWORD s=0; s<m_Cache.size(); s++)    	m_Cache[s].type 	= stInvalid;
 }
 
 void CDetailManager::InitRender(){
 	ZeroMemory(&m_Visible,sizeof(m_Visible));	m_Visible.resize	(dm_max_objects);
 	ZeroMemory(&m_Cache,sizeof(m_Cache));		m_Cache.resize		(dm_cache_size);
-	for (DWORD s=0; s<m_Cache.size(); s++)    	m_Cache[s].type 	= stInvalid;
-//    InvalidateCache();
+    InvalidateCache();
 
 	// Make dither matrix
 	bwdithermap		(2,m_Dither);
 }
 //------------------------------------------------------------------------------
+
+void CDetailManager::Render(ERenderPriority flag){
+	if (m_Slots.size()){
+    	switch (flag){
+		case rpNormal:{
+            UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
+            UI->Device.Shader.Set(UI->Device.m_WireShader);
+
+			Fvector			c;
+            Fbox			bbox;
+            DWORD			inactive = 0xff808080;
+            DWORD			selected = 0xffffffff;
+            for (DWORD z=0; z<m_Header.size_z; z++){
+                c.z			= fromSlotZ(z);
+                for (DWORD x=0; x<m_Header.size_x; x++){
+                    bool bSel = m_Selected[z*m_Header.size_x+x];
+                    if (bSel||fraBottomBar->miDrawDOSlotBoxes->Checked){
+                        DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
+                        c.x			= fromSlotX(x);
+                        c.y			= (slot->y_max+slot->y_min)*0.5f;
+                        bbox.min.set(c.x-DETAIL_SLOT_SIZE_2, slot->y_min, c.z-DETAIL_SLOT_SIZE_2);
+                        bbox.max.set(c.x+DETAIL_SLOT_SIZE_2, slot->y_max, c.z+DETAIL_SLOT_SIZE_2);
+                        bbox.shrink	(0.05f);
+
+                        if (UI->Device.m_Frustum.testSphere(c,DETAIL_SLOT_SIZE_2))
+	                        DU::DrawSelectionBox(bbox,bSel?&selected:&inactive);
+                    }
+                }
+            }
+        }break;
+		case rpAlphaNormal:{
+        	if (fraBottomBar->miDODrawObjects->Checked)
+	        	RenderObjects(UI->Device.m_Camera.GetPosition());
+        }break;
+		case rpAlphaLast:{
+        	if (fraBottomBar->miDrawDOBaseTexture->Checked)
+	        	RenderTexture(1.0f);
+        }break;
+        }
+    }
+}
 
 void CDetailManager::RenderTexture(float alpha){
 	FVF::LIT V[4];
@@ -86,8 +127,8 @@ float ssaLIMIT = 3;
 
 void CDetailManager::RenderObjects(const Fvector& EYE)
 {
-	int s_x	= iFloor			(EYE.x/DETAIL_SLOT_SIZE+.5f);
-	int s_z	= iFloor			(EYE.z/DETAIL_SLOT_SIZE+.5f);
+	int s_x	= iFloor			(EYE.x/DETAIL_SLOT_SIZE+0.5f);
+	int s_z	= iFloor			(EYE.z/DETAIL_SLOT_SIZE+0.5f);
 
 	UpdateCache					(3);
 
@@ -226,7 +267,7 @@ CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
 	for (DWORD I=0; I<m_Cache.size(); I++)
 	{
 		Slot&	S = m_Cache[I];
-		if ((S.sx==sx)&&(S.sz==sz))	return S;
+		if ((S.sx==sx)&&(S.sz==sz)&&(S.type!=stInvalid))	return S;
 		else {
 			if (S.dwFrameUsed < m_Cache[oldest].dwFrameUsed)	oldest = I;
 		}
@@ -349,7 +390,8 @@ void CDetailManager::UpdateCache	(int limit)
 				if (selected.size()==1)	index = selected[0];
 				else					index = selected[r_selection.randI(selected.size())];
 
-
+				BYTE ID 	= DS.items[index].id; // current object
+                
 				SlotItem	Item;
 
 				// Position (XZ)
@@ -377,7 +419,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.P.y	= y;
 
 				// Angles and scale
-				Item.scale	= r_scale.randF		(0.5f,1.8f);
+				Item.scale	= r_scale.randF		(m_Objects[ID]->m_fMinScale,m_Objects[ID]->m_fMaxScale);
 				Item.phase_x= ::Random.randFs	(phase_range);
 				Item.phase_z= ::Random.randF	(phase_range);
 				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));

@@ -271,7 +271,7 @@ bool __fastcall TUI_CustomControl::ScaleStart(TShiftState Shift)
 
 void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
 {
-	float dy = -UI->m_DeltaCpH.y * UI->m_MouseSS;
+	float dy = UI->m_DeltaCpH.x * UI->m_MouseSS;
     if (dy>1.f) dy=1.f; else if (dy<-1.f) dy=-1.f;
 
 	Fvector amount;

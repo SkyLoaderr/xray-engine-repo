@@ -26,11 +26,6 @@ __published:	// IDE-managed Components
 	TLabel *APHeadLabel1;
 	TExtBtn *ExtBtn2;
 	TExtBtn *ebRandomRotate;
-	TGroupBox *GroupBox2;
-	TRxLabel *RxLabel5;
-	TMultiObjSpinEdit *seScaleMinY;
-	TMultiObjSpinEdit *seScaleMaxY;
-	TRxLabel *RxLabel6;
 	TFormStorage *fsStorage;
 	TPanel *paCommand;
 	TLabel *Label1;
@@ -38,15 +33,19 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn1;
 	TExtBtn *ExtBtn4;
 	TExtBtn *ExtBtn5;
-	TExtBtn *ExtBtn6;
+	TExtBtn *ebUpdateObjects;
 	TExtBtn *ebExportDetails;
+	TExtBtn *ebReinitializeSlotObjects;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
 	void __fastcall ExtBtn5Click(TObject *Sender);
 	void __fastcall ExtBtn4Click(TObject *Sender);
-	void __fastcall ExtBtn6Click(TObject *Sender);
+	void __fastcall ebUpdateObjectsClick(TObject *Sender);
 	void __fastcall ebExportDetailsClick(TObject *Sender);
+	void __fastcall ebReinitializeSlotObjectsClick(TObject *Sender);
+	void __fastcall ebDORandomScaleClick(TObject *Sender);
+	void __fastcall ebRandomRotateClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TfraDetailObject(TComponent* Owner);
