@@ -1,11 +1,11 @@
 ----------------------------------------------------------------------------------------------------------------------
---  Общая схема принятия решений
 --  автор: Диденко Руслан (Stohe)
 --  TODO:
 ----------------------------------------------------------------------------------------------------------------------
 storage = {}
 memtsg = {} --' временная таблица
 lasthealth = 0
+lastime = nil
 
 ----------------------------------------------------------------------------------------------------------------------
 --Motivator binder
@@ -17,10 +17,17 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reinit()
 	object_binder.reinit(self)
+	
 	self.object:set_pda_callback(pda_callback)
-
 	self.object:set_hear_callback(hear_callback)
-
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:net_spawn(sobject)
+	local sim = alife()
+	if sim ~= nil then 
+		xr_spawner.spawn(sobject)
+	end
+	return object_binder.net_spawn(self, sobject)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
@@ -43,8 +50,13 @@ end
 
 --' Проверка потери жизни
 if false then
-	printf("%f * %f", self.object.health, self.object.health - lasthealth)
-	lasthealth = self.object.health
+	if lasttime == nil or
+	   game.get_game_time():diffSec(lasttime) > 1 
+	then
+		printf("%f * %f", self.object.health, self.object.health - lasthealth)
+		lasthealth = self.object.health
+		lasttime = game.get_game_time()
+	end
 end
 
 end
@@ -106,7 +118,14 @@ function motivator_binder:reload (section)
             distance = 15,			--' расстояние, в пределах которого мы реагируем
             shoot_distance = 5		--' расстояние, в пределах которого мы стреляем
         }  
-	xr_meet.add_to_binder(self.object, char_ini)	
+	xr_meet.add_to_binder(self.object, char_ini)
+	--' Компаньон
+	xr_motivator.storage[self.object:id()].assistance = {
+			actor = nil,
+			desired_distance = 5,
+			assist_point = nil,
+	}
+	xr_assistance.add_to_binder	(self.object)		
 	--' помощник, мля !!!
 	xr_motivator.storage[self.object:id ()].sos = {
 		enabled = false,
@@ -128,7 +147,7 @@ function motivator_binder:reload (section)
 		immediate = false
     }
 	xr_wounded.add_to_binder (self.object, char_ini)
-	xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
+	--xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Модели поведения
@@ -152,6 +171,13 @@ function motivator_binder:reload (section)
         body_state = 0,
         timer = { act1 = {begin = nil, time = 120},
 				act4 = {begin = nil, time = 60}}
+	}
+    --' кемпер
+    xr_motivator.storage[self.object:id()].camper = {
+		enabled = false,
+		radius = 20,
+		path_walk = nil,
+		path_look = nil
 	}
     --' спящий
     xr_motivator.storage[self.object:id()].sleeper = {
@@ -239,41 +265,39 @@ function motivator_binder:reload (section)
 		enemy		= nil,
         zone		= nil,
         enter       = false,
-        monster		= nil
+        monster		= nil,
+		camper_time = 0
 		}
  
 	--' Привязка к организации
 	if char_ini:section_exist("zones") == true then
 		xr_sleeper.add_to_binder	(self.object, nil)
+		xr_sniper.add_to_binder		(self.object, nil)
+		xr_camper.add_to_binder		(self.object, nil)
 		xr_walker.add_to_binder		(self.object, nil)
-		xr_assassin.add_to_binder	(self.object, nil)
-	--	xr_patrol.add_to_binder		(self.object, nil)
-        xr_comm_ptr.add_to_binder   (self.object, nil)
+		xr_comm_ptr.add_to_binder	(self.object, nil)
 		xr_follower.add_to_binder	(self.object, nil)
 		xr_bodyguard.add_to_binder	(self.object, nil)
 		xr_zoneguard.add_to_binder	(self.object, nil)
-		xr_sniper.add_to_binder		(self.object, nil)
 		xr_kamp.add_to_binder		(self.object, nil)
-		xr_robbers.add_to_binder		(self.object, nil)
+		xr_robbers.add_to_binder	(self.object, nil)
 		xr_formation.add_to_binder	(self.object)
 	else
+		xr_sleeper.add_to_binder		(self.object, char_ini)
 		xr_sniper.add_to_binder			(self.object, char_ini)
-		xr_ambush.add_to_binder			(self.object, char_ini)
-		xr_chaser.add_to_binder			(self.object, char_ini)
-	--	xr_patrol.add_to_binder			(self.object, char_ini)
-        xr_comm_ptr.add_to_binder       (self.object, char_ini)
+		xr_walker.add_to_binder			(self.object, char_ini)        
+		xr_comm_ptr.add_to_binder		(self.object, char_ini)
 		xr_follower.add_to_binder		(self.object, char_ini)
-		xr_commander.add_to_binder		(self.object, char_ini)
 		xr_bodyguard.add_to_binder		(self.object, char_ini)
 		xr_zoneguard.add_to_binder		(self.object, char_ini)
-		xr_walker.add_to_binder			(self.object, char_ini)
-		xr_assassin.add_to_binder		(self.object, char_ini)
-		xr_guard.add_to_binder			(self.object, char_ini)
-		xr_sleeper.add_to_binder		(self.object, char_ini)
 		xr_kamp.add_to_binder			(self.object, char_ini)
-		xr_robber_guard.add_to_binder	(self.object, char_ini)
-		xr_guide.add_to_binder			(self.object, char_ini)
+		xr_camper.add_to_binder			(self.object, char_ini)
 		xr_robbers.add_to_binder		(self.object, char_ini)
+
+		xr_ambush.add_to_binder			(self.object, char_ini)		
+		xr_assassin.add_to_binder		(self.object, char_ini)		
+		xr_commander.add_to_binder		(self.object, char_ini)		
+		xr_guide.add_to_binder			(self.object, char_ini)		
 	end        
     xr_storyline.set_storyline(self.object, char_ini)    
 end
@@ -297,7 +321,7 @@ function checkStorage(npc)
         if	k == "sleeper" or
 			k == "follower" or
 			k == "patrol" or
-			k == "guard" or
+			k == "camper" or
 			k == "walker" or
 			k == "assassin" or
 			k == "commander" or
@@ -318,7 +342,7 @@ function checkStorage(npc)
             if	k == "sleeper" or
 				k == "follower" or
 				k == "patrol" or
-				k == "guard" or
+				k == "camper" or
 				k == "walker" or
 				k == "assassin" or
 				k == "commander" or
