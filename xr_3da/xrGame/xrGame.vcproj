@@ -486,19 +486,14 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed|Win32">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\DummyObject.h">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCustomBuildTool"/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 			<Filter
@@ -529,22 +524,6 @@
 					RelativePath="ai_sounds.h">
 				</File>
 				<Filter
-					Name="ai_hen"
-					Filter="">
-					<File
-						RelativePath=".\AI\Hen\ai_hen.cpp">
-					</File>
-					<File
-						RelativePath=".\AI\Hen\ai_hen.h">
-					</File>
-					<File
-						RelativePath=".\AI\Hen\ai_hen_selectors.cpp">
-					</File>
-					<File
-						RelativePath=".\AI\Hen\ai_hen_selectors.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="ai_rat"
 					Filter="">
 					<File
@@ -564,12 +543,6 @@
 					</File>
 					<File
 						RelativePath="AI\Rat\ai_rat_look.cpp">
-					</File>
-					<File
-						RelativePath="AI\Rat\ai_rat_selectors.cpp">
-					</File>
-					<File
-						RelativePath="AI\Rat\ai_rat_selectors.h">
 					</File>
 					<File
 						RelativePath="AI\Rat\ai_rat_templates.cpp">

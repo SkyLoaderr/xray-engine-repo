@@ -5,9 +5,6 @@
 #define CLSID_OBJECT_DUMMY			MK_CLSID('O','_','D','U','M','M','Y',' ')
 #define CLSID_ENTITY				MK_CLSID('E','N','T','I','T','Y',' ',' ')
 
-// dummy monster
-#define CLSID_AI_HEN				MK_CLSID('A','I','_','H','E','N',' ',' ')
-
 // all the monsters
 #define CLSID_AI_CROW				MK_CLSID('A','I','_','C','R','O','W',' ')
 #define CLSID_AI_RAT				MK_CLSID('A','I','_','R','A','T',' ',' ')

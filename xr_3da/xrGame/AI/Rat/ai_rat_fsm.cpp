@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
-#include "ai_rat_selectors.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\hudmanager.h"
