@@ -100,15 +100,21 @@ void CCameraManager::RemoveEffector(EEffectorPPType type){
 
 void CCameraManager::Update(const CCameraBase* C)
 {	
-	Update(C->vPosition,C->vDirection,C->vNormal, C->f_fov, C->f_aspect, g_pGameLevel->Environment->Current.Far); 
+	Update(C->vPosition,C->vDirection,C->vNormal, C->f_fov, C->f_aspect, g_pGameLevel->Environment->Current.Far, C->bApplyInert); 
 }
 
-void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest)
+void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest, BOOL bApplyInert)
 {
 	// camera
-	vPosition.inertion		(P,	psCamInert);
-	vDirection.inertion		(D,	psCamInert);
-	vNormal.inertion		(N,	psCamInert);
+	if (bApplyInert){
+		vPosition.inertion	(P,	psCamInert);
+		vDirection.inertion	(D,	psCamInert);
+		vNormal.inertion	(N,	psCamInert);
+	}else{
+		vPosition.set		(P);
+		vDirection.set		(D);
+		vNormal.set			(N);
+	}
 	
 	// Normalize
 	vDirection.normalize	();

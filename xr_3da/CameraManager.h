@@ -97,7 +97,7 @@ public:
 	IC void					render_Matrix		(Fmatrix& M)	
 	{	M.set(vRight,vNormal,vDirection,vPosition);	}
 
-	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest);
+	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest, BOOL bApplyInert=TRUE);
 	void					Update				(const CCameraBase* C);
 
 	CCameraManager();
