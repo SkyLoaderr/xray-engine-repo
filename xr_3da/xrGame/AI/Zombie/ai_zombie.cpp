@@ -29,7 +29,6 @@ CAI_Zombie::CAI_Zombie()
 	m_tpSoundBeingPlayed	= 0;
 	m_dwLastSoundRefresh	= 0;
 	m_dwLastRangeSearch		= 0;
-	m_tGoalDir.set			(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
 	m_tCurrentDir.set		(0,0,1);
 	m_tHPB.set				(0,0,0);
 	m_fDHeading				= 0;
