@@ -5,7 +5,7 @@
 	<dialog id="trader_job">
 		<phrase_list>
 			<phrase id="0">
-				<text>.Артефакты?</text>
+				<text>Артефакты?</text>
 				<next>1</next>
 			</phrase>
 			<phrase id="1">
