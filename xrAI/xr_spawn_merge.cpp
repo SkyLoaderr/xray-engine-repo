@@ -279,6 +279,7 @@ void xrMergeSpawns()
 
 	Phase						("Searching for corresponding graph vertices");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
+//		tpLevels[i]->Execute();
 		tThreadManager.start	(tpLevels[i]);
 	tThreadManager.wait();
 	
