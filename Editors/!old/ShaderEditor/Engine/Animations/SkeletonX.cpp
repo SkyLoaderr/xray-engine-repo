@@ -88,7 +88,7 @@ void CSkeletonX::_Render		(ref_geom& hGeom, u32 vCount, u32 pCount)
 		{
 			// transfer matrices
 			R_constant*				array	= RCache.get_c				(sbones_array);
-			u32						count	= Parent->LL_BoneCount		();
+			u32						count	= RMS_bonecount;
 			for (u32 mid = 0; mid<count; mid++)	{
 				Fmatrix&	M				= Parent->LL_GetTransform	(mid);
 				u32			id				= mid*3;
@@ -182,8 +182,9 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		crc			= crc32	(data->pointer(),size);
 		Vertices1W.create	(crc,dwVertCount,(vertBoned1W*)data->pointer());
 		for (it=0; it<dwVertCount; it++)	{
-			bids.insert	(Vertices1W[it].matrix);
-			if (Vertices1W[it].matrix>sw_bones)	sw_bones = Vertices1W[it].matrix;
+			u32		mid = Vertices1W[it].matrix;
+			if		(bids.end() == std::find(bids.begin(),bids.end(),mid))	bids.push_back(mid);
+			if		(mid>sw_bones)	sw_bones = mid.matrix;
 		}
 		if	(1==bids.size())	{
 			RenderMode						= RM_SINGLE;
