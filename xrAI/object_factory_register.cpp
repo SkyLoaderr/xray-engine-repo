@@ -147,7 +147,7 @@
 
 #	include "UIGameSP.h"
 #	include "UIGameAHunt.h"
-
+#	include	"climableobject.h"
 #	include "space_restrictor.h"
 #endif
 
@@ -332,6 +332,7 @@ void CObjectFactory::register_classes	()
 	ADD(CPhysicObject			,CSE_ALifeObjectPhysic			,CLSID_OBJECT_PHYSIC		,"obj_physic");
 	ADD(CScriptMonster			,CSE_ALifeDynamicObjectVisual	,CLSID_SCRIPT_OBJECT		,"script_object");
 	ADD(CBreakableObject		,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE		,"obj_breakable");
+	ADD(CClimableObject			,CSE_ALifeObjectClimable		,CLSID_OBJECT_CLIMABLE		,"obj_climable");
 	ADD(CPhysicsSkeletonObject	,CSE_ALifePHSkeletonObject		,CLSID_PH_SKELETON_OBJECT	,"obj_phskeleton");
 
 }

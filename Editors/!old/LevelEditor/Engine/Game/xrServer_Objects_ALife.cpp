@@ -1266,6 +1266,58 @@ bool CSE_ALifeObjectBreakable::can_switch_offline	() const
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeObjectClimable
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeObjectClimable::CSE_ALifeObjectClimable	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
+{
+	m_health					= 100.f;
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
+}
+
+CSE_ALifeObjectClimable::~CSE_ALifeObjectClimable	()
+{
+}
+
+void CSE_ALifeObjectClimable::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+	tNetPacket.r_float			(m_health);
+}
+
+void CSE_ALifeObjectClimable::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+	tNetPacket.w_float			(m_health);
+}
+
+void CSE_ALifeObjectClimable::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeObjectClimable::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeObjectClimable::FillProps		(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProps			(pref,values);
+	//PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
+}
+
+bool CSE_ALifeObjectClimable::used_ai_locations	() const
+{
+	return						(false);
+}
+
+bool CSE_ALifeObjectClimable::can_switch_offline	() const
+{
+	return						(false);
+}
+
+////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMountedWeapon
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeMountedWeapon::CSE_ALifeMountedWeapon	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)

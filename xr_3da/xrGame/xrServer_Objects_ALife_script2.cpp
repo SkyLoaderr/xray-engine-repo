@@ -60,6 +60,17 @@ void CSE_ALifeObjectBreakable::script_register(lua_State *L)
 	];
 }
 
+void CSE_ALifeObjectClimable::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife1(
+			CSE_ALifeObjectClimable,
+			"cse_alife_object_climable",
+			CSE_ALifeDynamicObjectVisual
+			)
+	];
+}
+
 void CSE_ALifeMountedWeapon::script_register(lua_State *L)
 {
 	module(L)[

@@ -93,8 +93,9 @@
 // 74 -	CSE_AlifeMonsterAbstract		appended with property m_in_space_restrictors
 // 75 -	CSE_AlifeSpaceRestrictor		new class added, hierarchy changed
 // 76 - CSE_AlifeTraderAbstract			appended with m_iSpecificCharacter
+// 77 - CSE_AlifeTraderAbstract			added CSE_ObjectClimable
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(76)
+#define SPAWN_VERSION	u16(77)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

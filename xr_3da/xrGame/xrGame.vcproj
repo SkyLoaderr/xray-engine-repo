@@ -6733,6 +6733,16 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="Climable"
+						Filter="">
+						<File
+							RelativePath=".\ClimableObject.cpp">
+						</File>
+						<File
+							RelativePath=".\ClimableObject.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Game Materials"
