@@ -217,9 +217,9 @@ public:
 };
 
 //
-typedef poolSS<Vertex,4096>		poolVertices;
+typedef poolSS<Vertex,8*1024>	poolVertices;
 extern poolVertices				VertexPool;
-typedef poolSS<Face,4096>		poolFaces;
+typedef poolSS<Face,8*1024>		poolFaces;
 extern poolFaces				FacePool;
 
 extern bool						g_bUnregister;

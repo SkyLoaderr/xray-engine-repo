@@ -99,5 +99,5 @@ public:
 	void				export_ogf			();
 };
 
-extern	poolSS<xrMU_Model::_vertex,256>	mu_vertices;
-extern	poolSS<xrMU_Model::_face,256>	mu_faces;
+extern	poolSS<xrMU_Model::_vertex,8*1024>	mu_vertices;
+extern	poolSS<xrMU_Model::_face,8*1024>	mu_faces;
