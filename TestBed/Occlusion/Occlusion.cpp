@@ -74,7 +74,7 @@ float rad(float a) { return a*3.14159265358f / 180.f; }
 const float p_c		= 32.7f;
 const float p_r		= 25.4f;
 const float p_r2	= 30.4f;
-const float p_a		= 1.0f;
+const float p_a		= .1f;
 
 void edges(occTri& T)
 {
@@ -87,16 +87,15 @@ extern	void i_edge ( occRasterizer* OCC, float x1, float y1, float x2, float y2)
 
 int __cdecl main	(int argc, char* argv[])
 {
-	occRasterizer	occ;
 	CTimer			TM;
 	u64				total=0;
 	int				count=0;
 
 	InitMath		();
 	printf			("\n");
-	occ.clear		();
-	// SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	for (int test=0; test<=360; test++)
+	Raster.clear	();
+	SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	for (int test=0; test<=3600; test++)
 	{
 		float		a0	= rad(test*p_a);
 		float		a1	= rad(test*p_a + 60.f);
@@ -129,33 +128,31 @@ int __cdecl main	(int argc, char* argv[])
 		T2.raster[2].z	= 0.99f;
 		
 		// draw tri
-		// TM.Start		();
-		//for (int t=0; t<100; t++)
-		//{
-			occ.rasterize	(&T1);
-			occ.rasterize	(&T2);
-		//}
-		//total += TM.GetElapsed();
-		// count += 2; //*100;
+		TM.Start		();
+		for (int t=0; t<100; t++)
+		{
+			Raster.rasterize	(&T1);
+			Raster.rasterize	(&T2);
+		}
+		total += TM.GetElapsed();
+		count += 2*100;
 	}
-	/*
 	SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 	DWORD cycles_per_tri	= DWORD(u64(u64(total)/u64(count)));
 	DWORD tpms				= DWORD(u64(u64(CPU::cycles_per_second) / u64(cycles_per_tri)));
 	Msg("Cycles: %d\nTpMS:   %d\n",cycles_per_tri,tpms/1000);
-	*/
 	
 	// Propagade
-	occ.propagade	();
+	Raster.propagade	();
 	
 	// copy into surface
 	for (int y=0; y<occ_dim0; y++)
 	{
 		for (int x=0; x<occ_dim0; x++)
 		{
-			float	A	= *(occ.get_depth() + y*occ_dim0 + x);	if (A<0) A=0; else if (A>1) A=1;
+			float	A	= *(Raster.get_depth() + y*occ_dim0 + x);	if (A<0) A=0; else if (A>1) A=1;
 			DWORD  gray	= int(A*255.f);
-			DWORD  mask	= (*(occ.get_frame() + y*occ_dim0 + x)) ? 255 : 0;
+			DWORD  mask	= (*(Raster.get_frame() + y*occ_dim0 + x)) ? 255 : 0;
 			DWORD  C	= (mask << 24) | (gray << 16) | (gray << 8) | (gray << 0);
 			
 			for (int by=0; by<scale; by++)
