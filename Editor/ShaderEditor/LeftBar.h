@@ -77,8 +77,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn6;
 	TBevel *Bevel4;
 	TBevel *Bevel3;
-	TElTree *tvCompiler;
 	TElTreeInplaceAdvancedEdit *InplaceCompilerEdit;
+	TElTree *tvCompiler;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -132,9 +132,8 @@ public:		// User declarations
 	void 			ChangeTarget	(int tgt);
     void 			UpdateBar		();
     void 			InitPalette		(TemplateVec& lst);
-	void 			AddBlender		(LPCSTR full_name);
-	void 			AddCShader		(LPCSTR full_name);
-    void			SetCurrent		(LPCSTR full_name);
+	void 			AddBlender		(LPCSTR full_name, bool bLoadMode);
+	void 			AddCShader		(LPCSTR full_name, bool bLoadMode);
 	void 			ClearEShaderList();
     void			ClearCShaderList();
 };
