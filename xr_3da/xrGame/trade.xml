@@ -11,9 +11,11 @@
 
 	<!-- BUTTONS -->
 	<button x="330" y="705" width="138" height="30">
+		<texture>ui\ui_button_05</texture>
 		<text font="graffiti22" r="238" g="153" b="26">Trade</text>
 	</button>
 	<button x="560" y="705" width="138" height="30">
+		<texture>ui\ui_button_06</texture>
 		<text font="graffiti22" r="238" g="153" b="26">Leave</text>
 	</button>
 
