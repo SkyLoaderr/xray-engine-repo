@@ -57,6 +57,8 @@ namespace std
 };
 
 template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocator_t<T> >								{ public: 
+	xr_vector					(size_t _count, T& _value)	: std::vector(_count,_value)	{}
+	xr_vector					(size_t _count)				: std::vector(_count)			{}
 	u32		size() const									{ return (u32)__super::size(); } 
 	void	clear()											{ erase(begin(),end());} 
 #ifdef _M_AMD64
