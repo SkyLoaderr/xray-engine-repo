@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 657
   HorzScrollBar.ButtonSize = 1
   HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False
@@ -1831,6 +1831,10 @@ object fraLeftBar: TfraLeftBar
     object miSceneSummary: TMenuItem
       Caption = 'Summary Info'
       OnClick = miSceneSummaryClick
+    end
+    object miHightlightTexture: TMenuItem
+      Caption = 'Highlight Texture...'
+      OnClick = miHightlightTextureClick
     end
   end
   object pmToolsEdit: TMxPopupMenu

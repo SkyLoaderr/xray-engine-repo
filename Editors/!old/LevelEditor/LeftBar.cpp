@@ -205,6 +205,12 @@ void __fastcall TfraLeftBar::miSceneSummaryClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::miHightlightTextureClick(TObject *Sender)
+{
+	ExecCommand( COMMAND_SCENE_HIGHLIGHT_TEXTURE );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebOptionsClick(TObject *Sender)
 {
 	ExecCommand( COMMAND_OPTIONS );
@@ -688,6 +694,7 @@ void TfraLeftBar::RefreshBar()
     miRecentFiles->Enabled = miRecentFiles->Count;
 }
 //---------------------------------------------------------------------------
+
 
 
 

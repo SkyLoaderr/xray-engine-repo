@@ -13,6 +13,7 @@ protected:
     virtual void 		CreateControls			();
 	virtual void 		RemoveControls			();
 	enum{
+    	flDrawCross		= (1<<30),
     	flTestVisibility= (1<<31),
     };
     Flags32				m_Flags;

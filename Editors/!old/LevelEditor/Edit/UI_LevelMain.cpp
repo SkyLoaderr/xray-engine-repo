@@ -25,6 +25,7 @@
 #include "SoundManager_LE.h"
 #include "NumericVector.h"
 #include "EditorPreferences.h"
+#include "ChoseForm.h"
 
 #ifdef _LEVEL_EDITOR
 //.    if (m_Cursor->GetVisible()) RedrawScene();
@@ -221,7 +222,8 @@ void CommandLoadFirstRecent(u32 p1, u32 p2, u32& res)
 
 void CommandClearCompilerError(u32 p1, u32 p2, u32& res)
 {
-    Tools->ClearErrors();
+    Tools->ClearErrors	();
+    UI->RedrawScene		();
 }
 
 void CommandImportCompilerError(u32 p1, u32 p2, u32& res)
@@ -230,6 +232,7 @@ void CommandImportCompilerError(u32 p1, u32 p2, u32& res)
     if(EFS.GetOpenName("$logs$", fn, false, NULL, 0)){
         Scene->LoadCompilerError(fn.c_str());
     }
+    UI->RedrawScene		();
 }
 void CommandExportCompilerError(u32 p1, u32 p2, u32& res)
 {
@@ -362,6 +365,18 @@ void CommandSceneSummary(u32 p1, u32 p2, u32& res)
 {
     if( !Scene->locked() ){
         Scene->ShowSummaryInfo();
+    } else {
+        ELog.DlgMsg( mtError, "Scene sharing violation" );
+        res = FALSE;
+    }
+}
+
+void CommandSceneHighlightTexture(u32 p1, u32 p2, u32& res)
+{
+    if( !Scene->locked() ){
+        LPCSTR new_val 		 	= 0;
+		if (TfrmChoseItem::SelectItem(smTexture,new_val,1))
+	       	Scene->HighlightTexture(new_val);
     } else {
         ELog.DlgMsg( mtError, "Scene sharing violation" );
         res = FALSE;
@@ -686,6 +701,7 @@ void CLevelMain::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_UNDO,              		CommandUndo);
 	REGISTER_CMD_S	    (COMMAND_REDO,              		CommandRedo);
 	REGISTER_CMD_S	    (COMMAND_SCENE_SUMMARY,             CommandSceneSummary);
+	REGISTER_CMD_S	    (COMMAND_SCENE_HIGHLIGHT_TEXTURE,	CommandSceneHighlightTexture);
 	REGISTER_CMD_S	    (COMMAND_OPTIONS,              		CommandOptions);
 	REGISTER_CMD_S	    (COMMAND_BUILD,              		CommandBuild);
 	REGISTER_CMD_S	    (COMMAND_MAKE_AIMAP,              	CommandMakeAIMap);

@@ -170,7 +170,12 @@ bool CPortalUtils::Validate(bool bMsg)
         sector_def->CaptureAllUnusedMeshes();
         int f_cnt;
         sector_def->GetCounts(0,0,&f_cnt);
-		if (f_cnt!=0){	if (bMsg) ELog.DlgMsg(mtError,"*ERROR: Scene has '%d' non associated face!",f_cnt);
+		if (f_cnt!=0){
+        	if (bMsg){ 
+            	ELog.DlgMsg(mtError,"*ERROR: Scene has '%d' non associated face!",f_cnt);
+                for (SItemIt it=sector_def->sector_items.begin();it!=sector_def->sector_items.end();it++)
+                	Msg("! - scene object: '%s' [O:'%s', M:'%s']",it->object->Name,it->object->GetRefName(),it->mesh->GetName());
+            }
         }else{
 			if (bMsg) ELog.DlgMsg(mtInformation,"Validation OK!");
             bResult = true;

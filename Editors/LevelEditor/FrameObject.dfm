@@ -1,6 +1,6 @@
 object fraObject: TfraObject
-  Left = 540
-  Top = 351
+  Left = 331
+  Top = 409
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone

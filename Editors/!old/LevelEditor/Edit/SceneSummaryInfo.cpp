@@ -9,6 +9,7 @@
 #include "SceneObject.h"
 #include "ui_main.h"
 #include "PropertiesList.h"
+#include "Library.h"
 
 xr_token summary_texture_type_tokens[]={
 	{ "Base",			SSceneSummary::sttBase		},
@@ -21,9 +22,58 @@ xr_token summary_texture_type_tokens[]={
 
 void SSceneSummary::Prepare()
 {
-	for (TISetIt it=textures.begin(); it!=textures.end(); it++){
-        STextureInfo* info	= (STextureInfo*)(&(*it));
+	for (TISetIt t_it=textures.begin(); t_it!=textures.end(); t_it++){
+        STextureInfo* info	= (STextureInfo*)(&(*t_it));
     	info->Prepare		();
+    }
+	for (OISetIt o_it=objects.begin(); o_it!=objects.end(); o_it++){
+        SObjectInfo* info	= (SObjectInfo*)(&(*o_it));
+    	info->Prepare		();
+    }
+}
+
+xr_string _itoa(int val)
+{
+	string64 	tmp; 
+    return 		itoa(val,tmp,10);
+}
+void SSceneSummary::SObjectInfo::Prepare()
+{
+	if (object_name.size()){
+	    CEditableObject* O	= Lib.CreateEditObject(object_name.c_str());
+        xr_string pref		= object_name.c_str();
+        if (O){
+        	SPairInfo 		tmp;
+            tmp.first		= pref+"\\References"; 			
+            tmp.second 		= _itoa(ref_count);					
+            info.push_back	(tmp);
+            tmp.first		= pref+"\\Geometry\\Faces"; 	tmp.second = _itoa(O->GetFaceCount());			info.push_back	(tmp);
+            tmp.first		= pref+"\\Geometry\\Vertices"; 	tmp.second = _itoa(O->GetVertexCount());		info.push_back	(tmp);
+            SurfaceVec& surfaces = O->Surfaces();
+            for (SurfaceIt it=surfaces.begin(); it!=surfaces.end(); it++){
+            	xr_string pr= pref+xr_string("\\Materials\\")+(*it)->_Name();
+	            tmp.first	= pr+"\\Texture"; 		tmp.second = (*it)->_Texture();							info.push_back	(tmp);
+	            tmp.first	= pr+"\\Faces"; 		tmp.second = _itoa(O->GetSurfFaceCount((*it)->_Name()));info.push_back	(tmp);
+            }
+	    	Lib.RemoveEditObject(O);
+        }
+    }else{
+        Msg("!Empty object name found.");
+    }
+}
+void SSceneSummary::SObjectInfo::FillProp(PropItemVec& items, LPCSTR main_pref)
+{
+	if (object_name.size()){
+        for (PIVecIt it=info.begin(); it!=info.end(); it++)
+	        PHelper().CreateCaption(items,PrepareKey(main_pref,it->first.c_str()),	it->second.c_str());
+    }
+}
+void SSceneSummary::SObjectInfo::Export	(IWriter* F)
+{
+	string1024		tmp;
+    for (PIVecIt it=info.begin(); it!=info.end(); it++){
+        sprintf		(tmp,"%s=%s",it->first.c_str(),it->second.c_str());
+		F->w_string	(tmp);
     }
 }
 
@@ -44,7 +94,7 @@ void SSceneSummary::STextureInfo::Prepare	()
 
 void SSceneSummary::STextureInfo::FillProp	(PropItemVec& items, LPCSTR main_pref, u32& mem_use)
 {
-	if (0!=xr_strlen(file_name)){
+	if (file_name.size()){
         int tex_mem			= info.MemoryUsage(*file_name);
         mem_use				+= tex_mem;
         AnsiString pref		= PrepareKey(AnsiString(main_pref).c_str(),*file_name).c_str();
@@ -127,6 +177,11 @@ void SSceneSummary::ExportSummaryInfo(LPCSTR fn)
     }
     sprintf					(tmp,"Total mem usage - %d Kb",total_mem_usage);
     F->w_string				(tmp);
+    // objects
+    for (OISetIt o_it=objects.begin(); o_it!=objects.end(); o_it++){
+    	SObjectInfo* info= (SObjectInfo*)(&(*o_it));
+        info->Export		(F);
+    }
     FS.w_close				(F);
 }
 void SSceneSummary::FillProp(PropItemVec& items)
@@ -157,6 +212,11 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PHelper().CreateCaption(items,"Lights\\By Usage\\Breakable",shared_str().sprintf("%d",light_breakable_cnt));
     PHelper().CreateCaption(items,"Lights\\By Usage\\Procedural",shared_str().sprintf("%d",light_procedural_cnt));
     PHelper().CreateCaption(items,"Glows\\Count",				shared_str().sprintf("%d",glow_cnt));
+    // objects
+    for (OISetIt o_it=objects.begin(); o_it!=objects.end(); o_it++){
+    	SObjectInfo* info= (SObjectInfo*)(&(*o_it));
+        info->FillProp		(items,"Objects");
+    }
     // textures
     CaptionValue* total_count=PHelper().CreateCaption	(items,"Textures\\Count","");
     CaptionValue* total_mem	= PHelper().CreateCaption	(items,"Textures\\Memory Usage","");

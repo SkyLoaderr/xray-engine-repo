@@ -55,7 +55,7 @@ EScene::EScene()
 
     // first init scene graph for objects
     mapRenderObjects.init(MAX_VISUALS);
-// Build options
+// 	Build options
     m_SummaryInfo	= 0;
     //ClearSnapList	(false);
 }
@@ -282,10 +282,8 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
 
 	if (bTestPortal){
         if (Scene->ObjCount(OBJCLASS_SECTOR)||Scene->ObjCount(OBJCLASS_PORTAL))
-            if (!PortalUtils.Validate(false)){
-                ELog.Msg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
-                bRes = false;
-            }
+            if (!PortalUtils.Validate(true))
+				bRes = false;
     }
     if (bTestHOM){
         bool bHasHOM=false;
@@ -295,8 +293,9 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
             if (O->m_Flags.is(CEditableObject::eoHOM)){ bHasHOM = true; break; }
         }
         if (!bHasHOM)
-            if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))
-                return false;
+			Msg("!Level doesn't contain HOM objects!");
+//.			if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))
+//.				return false;
     }
     if (ObjCount(OBJCLASS_SPAWNPOINT)==0){
     	ELog.Msg(mtError,"*ERROR: Can't find any Spawn Object.");
@@ -386,3 +385,13 @@ void EScene::SelectLightsForObject(CCustomObject* obj)
 	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene->GetOTools(OBJCLASS_LIGHT)); VERIFY(lt);
     lt->SelectLightsForObject(obj);
 }
+
+void EScene::HighlightTexture(LPCSTR t_name)
+{
+    Tools->m_Errors.Clear		();
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->HighlightTexture(t_name);
+}
+

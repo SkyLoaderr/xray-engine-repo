@@ -105,6 +105,7 @@ public:
 	void 			Clear				();
 	void 			LoadCompilerError	(LPCSTR fn);
     void			SaveCompilerError	(LPCSTR fn);
+    void			HighlightTexture	(LPCSTR t_name);
 
 	IC bool 		valid				()           	{ return m_Valid; }
 

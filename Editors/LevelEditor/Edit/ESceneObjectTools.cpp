@@ -11,6 +11,8 @@
 #include "library.h"
 #include "Scene.h"
 #include "ui_main.h"
+#include "EditObject.h"
+#include "EditMesh.h"
 
 ESceneObjectTools::ESceneObjectTools():ESceneCustomOTools(OBJCLASS_SCENEOBJECT)
 {
@@ -145,6 +147,34 @@ CCustomObject* ESceneObjectTools::CreateObject(LPVOID data, LPCSTR name)
 	CCustomObject* O	= xr_new<CSceneObject>(data,name);
     O->ParentTools		= this;
     return O;
+}
+//----------------------------------------------------
+
+void ESceneObjectTools::HighlightTexture(LPCSTR tex_name)
+{
+	if (tex_name&&tex_name[0]){
+        for (ObjectIt a_it=m_Objects.begin(); a_it!=m_Objects.end(); a_it++){
+            CSceneObject* s_obj		= dynamic_cast<CSceneObject*>(*a_it);
+            CEditableObject* e_obj	= s_obj->GetReference(); VERIFY(e_obj);
+            SurfaceVec& s_vec		= e_obj->Surfaces();
+            for (SurfaceIt it=s_vec.begin(); it!=s_vec.end(); it++){
+                if (0==stricmp((*it)->_Texture(),tex_name)){
+					Fvector 		verts[3];
+					for (EditMeshIt mesh_it=e_obj->FirstMesh(); mesh_it!=e_obj->LastMesh(); mesh_it++){
+                    	SurfFaces& 		surf_faces	= (*mesh_it)->GetSurfFaces();
+                    	SurfFacesPairIt sf_it 		= surf_faces.find(*it);
+                        if (sf_it!=surf_faces.end()){
+                            IntVec& lst				= sf_it->second;
+                            for (IntIt i_it=lst.begin(); i_it!=lst.end(); i_it++){
+                                e_obj->GetFaceWorld	(s_obj->_Transform(),*mesh_it,*i_it,verts);
+                                Tools->m_Errors.AppendFace(verts[0],verts[1],verts[2]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 //----------------------------------------------------
 

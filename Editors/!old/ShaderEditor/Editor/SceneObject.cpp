@@ -271,6 +271,7 @@ bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)
 	inherited::GetSummaryInfo	(inf);
 	CEditableObject* E 	= GetReference(); R_ASSERT(E);
     E->GetSummaryInfo	(inf);
+    inf->AppendObject	(E->GetName());
 	return true;
 }
 

@@ -100,6 +100,7 @@ public:
 
     // utils
 	virtual bool 		GetSummaryInfo			(SSceneSummary* inf)=0;
+	virtual void 		HighlightTexture		(LPCSTR tex_name){}
 };
 
 DEFINE_MAP(EObjClass,ESceneCustomMTools*,SceneToolsMap,SceneToolsMapPairIt);

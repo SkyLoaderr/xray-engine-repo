@@ -67,6 +67,8 @@ public:
     virtual void		GetStaticDesc			(int& v_cnt, int& f_cnt);
 
     virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name);
+
+	virtual void 		HighlightTexture		(LPCSTR tex_name);
 };
 //---------------------------------------------------------------------------
 #endif
