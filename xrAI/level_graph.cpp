@@ -111,76 +111,115 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 		return				(id);
 	}
 
-	if (!valid_vertex_position(position) || !m_valid_nodes[vertex_position(position).xz()]) {
-		// so, our position is outside the level graph bounding box
-		// or
-		// there is no node for the current position
-		// try to search the nearest one iteratively
-
+	if (valid_vertex_position(position)) {
+		if (inside(vertex(current_node_id),position)) {
+			// so, our node corresponds to the position
 #ifdef _DEBUG
-		//Msg					("%6d Neighbour search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+			//Msg					("%6d No search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
 #endif
-		SContour			contour;
-		Fvector				point;
-		u32					best_vertex_id = current_node_id;
-		ai().level_graph().contour(contour,current_node_id);
-		ai().level_graph().nearest(point,position,contour);
-		float				best_distance_sqr = position.distance_to_sqr(point);
-		const_iterator		i,e;
-		begin				(current_node_id,i,e);
-		for ( ; i != e; ++i) {
-			u32				level_vertex_id = value(current_node_id,i);
-			if (!valid_vertex_id(level_vertex_id))
-				continue;
-
-			ai().level_graph().contour(contour,level_vertex_id);
-			ai().level_graph().nearest(point,position,contour);
-			float			distance_sqr = position.distance_to_sqr(point);
-			if (best_distance_sqr > distance_sqr) {
-				best_distance_sqr	= distance_sqr;
-				best_vertex_id		= level_vertex_id;
-			}
+			Device.Statistic.AI_Node.End();
+			return				(current_node_id);
 		}
 
-		Device.Statistic.AI_Node.End();
-		return				(best_vertex_id);
+		// so, our position is inside the level graph bounding box
+		// so, there is a node which corresponds with x and z to the position
+		// try to search it with O(logN) time algorithm
+#ifdef _DEBUG
+		//Msg						("%6d Logarithmic search search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+#endif
+		u32						_vertex_id = vertex_id(position);
+		if (valid_vertex_id(_vertex_id)) {
+			Device.Statistic.AI_Node.End();
+			return				(_vertex_id);
+		}
 	}
 
-	if (inside(vertex(current_node_id),position)) {
-		// so, our node corresponds to the position
+	// so, our position is outside the level graph bounding box
+	// or
+	// there is no node for the current position
+	// try to search the nearest one iteratively
+
 #ifdef _DEBUG
-		//Msg					("%6d No search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+	//Msg					("%6d Neighbour search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
 #endif
-		Device.Statistic.AI_Node.End();
-		return				(current_node_id);
+	SContour			contour;
+	Fvector				point;
+	u32					best_vertex_id = current_node_id;
+	ai().level_graph().contour(contour,current_node_id);
+	ai().level_graph().nearest(point,position,contour);
+	float				best_distance_sqr = position.distance_to_sqr(point);
+	const_iterator		i,e;
+	begin				(current_node_id,i,e);
+	for ( ; i != e; ++i) {
+		u32				level_vertex_id = value(current_node_id,i);
+		if (!valid_vertex_id(level_vertex_id))
+			continue;
+
+		ai().level_graph().contour(contour,level_vertex_id);
+		ai().level_graph().nearest(point,position,contour);
+		float			distance_sqr = position.distance_to_sqr(point);
+		if (best_distance_sqr > distance_sqr) {
+			best_distance_sqr	= distance_sqr;
+			best_vertex_id		= level_vertex_id;
+		}
 	}
 
-	// so, our position is inside the level graph bounding box
-	// so, there is a node which corresponds with x and z to the position
-	// try to search it with straight line via nodes
-	id						= check_position_in_direction(current_node_id,vertex_position(current_node_id),position);
-	if (valid_vertex_id(id) && inside(vertex(id),position)) {
-#ifdef _DEBUG
-		//Msg					("%6d Direction search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
-#endif
-		Device.Statistic.AI_Node.End();
-		return				(id);
-	}
-
-	// so, there is no straight line via nodes
-	// try to search it with straight line
-#ifdef _DEBUG
-	//Msg						("%6d A* search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
-#endif
-	CGraphEngine::CPositionParameters	position_params(position,1.f);
-	bool					search_result = ai().graph_engine().search(*this,current_node_id,current_node_id,0,position_params);
-	if (!search_result)
-		return				(current_node_id);
-	
-	VERIFY					(valid_vertex_id(position_params.m_vertex_id));
 	Device.Statistic.AI_Node.End();
-	return					(position_params.m_vertex_id);
+	return					(best_vertex_id);
 #else
 	return					(current_node_id);
 #endif
+}
+
+struct SSortNodesPredicate1 {
+	IC	bool	operator()			(const CLevelGraph::CVertex &vertex, u32 xz) const
+	{
+		return		(vertex.position().xz() < xz);
+	}
+};
+
+u32	CLevelGraph::vertex_id				(const Fvector &position) const
+{
+	CPosition			_vertex_position = vertex_position(position);
+	CVertex				*B = m_nodes;
+	CVertex				*E = m_nodes + header().vertex_count();
+	CVertex				*I = std::lower_bound	(B,E,_vertex_position.xz(),SSortNodesPredicate1());
+	if ((I == E) || ((*I).position().xz() != _vertex_position.xz()))
+		return			(u32(-1));
+
+	u32					best_vertex_id = u32(I - B);
+	float				y = vertex_plane_y(best_vertex_id,position.x,position.z);
+	for (++I ; I != E; ++I) {
+		if ((*I).position().xz() != _vertex_position.xz())
+			break;
+		u32				new_vertex_id = u32(I - B);
+		float			_y = vertex_plane_y(new_vertex_id,position.x,position.z);
+		if (y <= position.y) {
+			// so, current node is under the specified position
+			if (_y <= position.y) {
+				// so, new node is under the specified position
+				if (position.y - _y < position.y - y) {
+					// so, new node is closer to the specified position
+					y				= _y;
+					best_vertex_id	= new_vertex_id;
+				}
+			}
+		}
+		else
+			// so, current node is over the specified position
+			if (_y <= position.y) {
+				// so, new node is under the specified position
+				y				= _y;
+				best_vertex_id	= new_vertex_id;
+			}
+			else
+				// so, new node is over the specified position
+				if (_y - position.y  < y - position.y) {
+					// so, new node is closer to the specified position
+					y				= _y;
+					best_vertex_id	= new_vertex_id;
+				}
+	}
+
+	return			(best_vertex_id);
 }

@@ -41,6 +41,18 @@ public:
 		friend class CLevelGraph;
 	};
 
+	struct SSortNodesPredicate {
+		u32			m_xz;
+					SSortNodesPredicate	(u32 xz) :
+						m_xz(xz)
+		{
+		}
+
+		IC	bool	operator()			(const CVertex &vertex) const
+		{
+			return		(m_xz < vertex.position().xz());
+		}
+	};
 private:
 	enum ELineIntersections {
 		eLineIntersectionNone		= u32(0),
@@ -167,6 +179,7 @@ public:
 	IC		float	cover_in_direction			(float angle, u32 vertex_id) const;
 	IC		void	set_invalid_vertex			(u32 &vertex_id, CVertex **vertex = NULL) const;
 	IC		const u32 vertex_id					(const CLevelGraph::CVertex *vertex) const;
+			u32		vertex_id					(const Fvector &position) const;
 			u32		vertex						(const Fvector &position) const;
 			u32		vertex						(u32 current_vertex_id, const Fvector &position) const;
 			void	compute_circle				(const Fvector &position,	const Fvector &point0, const Fvector &point1, float &radius, Fvector &center, Fvector &final_position, float &beta) const;
