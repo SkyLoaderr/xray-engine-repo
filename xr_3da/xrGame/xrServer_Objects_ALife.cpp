@@ -544,7 +544,7 @@ void CSE_ALifePHSkeletonObject::FillProps(LPCSTR pref, PropItemVec& items)
 CSE_ALifeSpaceRestrictor::CSE_ALifeSpaceRestrictor	(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection)
 {
 	m_flags.set					(flUseSwitches,FALSE);
-	m_space_restrictor_type		= RestrictionSpace::eRestrictorTypeNone;
+	m_space_restrictor_type		= RestrictionSpace::eDefaultRestrictorTypeNone;
 }
 
 CSE_ALifeSpaceRestrictor::~CSE_ALifeSpaceRestrictor	()
@@ -587,7 +587,7 @@ void CSE_ALifeSpaceRestrictor::UPDATE_Write	(NET_Packet	&tNetPacket)
 }
 
 xr_token defaul_retrictor_types[]={
-	{ "NOT restrictor",				RestrictionSpace::eRestrictorTypeNone},
+	{ "NOT A restrictor",			RestrictionSpace::eRestrictorTypeNone},
 	{ "NONE default restrictor",	RestrictionSpace::eDefaultRestrictorTypeNone},
 	{ "OUT default restrictor",		RestrictionSpace::eDefaultRestrictorTypeOut	},
 	{ "IN default restrictor",		RestrictionSpace::eDefaultRestrictorTypeIn	},
