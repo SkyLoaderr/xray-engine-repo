@@ -78,7 +78,7 @@ namespace CDB
 		iz = iFloor(float(V.z-VMmin.z)/VMscale.z*clpMZ);
 
 //		R_ASSERT(ix<=clpMX && iy<=clpMY && iz<=clpMZ);
-		clamp(ix,0,clpMX);	clamp(iy,0,clpMY);	clamp(iz,0,clpMZ);
+		clamp(ix,(u32)0,clpMX);	clamp(iy,(u32)0,clpMY);	clamp(iz,(u32)0,clpMZ);
 		
 		{
 			DWORDList* vl; 
@@ -102,7 +102,7 @@ namespace CDB
 			izE = iFloor(float(V.z+VMeps.z-VMmin.z)/VMscale.z*clpMZ);
 			
 //			R_ASSERT(ixE<=clpMX && iyE<=clpMY && izE<=clpMZ);
-			clamp(ixE,0,clpMX);	clamp(iyE,0,clpMY);	clamp(izE,0,clpMZ);
+			clamp(ixE,(u32)0,clpMX);	clamp(iyE,(u32)0,clpMY);	clamp(izE,(u32)0,clpMZ);
 			
 			if (ixE!=ix)							VM[ixE][iy][iz].push_back	(P);
 			if (iyE!=iy)							VM[ix][iyE][iz].push_back	(P);

@@ -72,7 +72,7 @@ namespace CDB {
 		u32				getTS() { return faces.size();	}
 	};
 
-	const int clpMX = 28, clpMY=16, clpMZ=28;
+	const u32 clpMX = 28, clpMY=16, clpMZ=28;
 
 	class ENGINE_API CollectorPacked
 	{
