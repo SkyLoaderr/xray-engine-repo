@@ -34,7 +34,7 @@ IC const CLevelGraph::CHeader &CLevelGraph::header	() const
 	return				(*m_header);
 }
 
-IC bool CLevelGraph::valid_vertex_id	(u32 id) const
+ICF bool CLevelGraph::valid_vertex_id	(u32 id) const
 {
 	TIMER_START			(ValidVertexID)
 	bool				b = id < header().vertex_count();
@@ -42,19 +42,19 @@ IC bool CLevelGraph::valid_vertex_id	(u32 id) const
 	return				(b);
 }
 
-IC	CLevelGraph::CVertex	*CLevelGraph::vertex(const u32 vertex_id) const
+ICF	CLevelGraph::CVertex	*CLevelGraph::vertex(const u32 vertex_id) const
 {
 	VERIFY				(valid_vertex_id(vertex_id));
 	return				(m_nodes + vertex_id);
 }
 
-IC	u32	CLevelGraph::vertex	(const CVertex *vertex_p) const
+ICF	u32	CLevelGraph::vertex	(const CVertex *vertex_p) const
 {
 	VERIFY				((vertex_p > m_nodes) && valid_vertex_id(u32(vertex_p - m_nodes)));
 	return				(u32(vertex_p - m_nodes));
 }
 
-IC	u32	CLevelGraph::vertex	(const CVertex &vertex_r) const
+ICF	u32	CLevelGraph::vertex	(const CVertex &vertex_r) const
 {
 	return				(vertex(&vertex_r));
 }

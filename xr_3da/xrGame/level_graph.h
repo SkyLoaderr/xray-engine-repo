@@ -95,7 +95,7 @@ public:
 	IC		u32		value						(const CVertex *vertex, const_iterator &i) const;
 	IC		u32		value						(const u32 vertex_id,	const_iterator &i) const;
 	IC		const CHeader &header				() const;
-	IC		bool	valid_vertex_id				(u32 vertex_id) const;
+	ICF		bool	valid_vertex_id				(u32 vertex_id) const;
 	IC		u32		level_id					() const;
 	IC		void	unpack_xz					(const CLevelGraph::CPosition &vertex_position, u32 &x, u32 &z) const;
 	IC		void	unpack_xz					(const CLevelGraph::CPosition &vertex_position, int &x, int &z) const;
@@ -104,9 +104,9 @@ public:
 	IC		void	unpack_xz					(const CLevelGraph::CVertex &vertex, T &x, T &z) const;
 	template <typename T>
 	IC		void	unpack_xz					(const CLevelGraph::CVertex *vertex, T &x, T &z) const;
-	IC		CVertex	*vertex						(u32 vertex_id) const;
-	IC		u32		vertex						(const CVertex *vertex_p) const;
-	IC		u32		vertex						(const CVertex &vertex_r) const;
+	ICF		CVertex	*vertex						(u32 vertex_id) const;
+	ICF		u32		vertex						(const CVertex *vertex_p) const;
+	ICF		u32		vertex						(const CVertex &vertex_r) const;
 	IC		const	Fvector						vertex_position(const CLevelGraph::CPosition &source_position) const;
 	IC		const	Fvector						&vertex_position(Fvector &dest_position, const CLevelGraph::CPosition &source_position) const;
 	IC		const	CLevelGraph::CPosition		&vertex_position(CLevelGraph::CPosition &dest_position, const Fvector &source_position) const;
