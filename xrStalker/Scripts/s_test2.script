@@ -164,7 +164,7 @@ function Defender:process ()
 	if tdist > 30 then return end
     printf ("Stalker see enemy 2")
 	--стреляем
-    update_action (self.npc, self.script, object (self.npc:get_active_item (), object.fire1))
+    update_action (self.npc, self.script, object (self.npc:active_item (), object.fire1))
 	
 end
 
