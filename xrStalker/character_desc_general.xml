@@ -4,7 +4,7 @@
 
 <xml>
 	<specific_character id="default">
-		<name>Undefined Character</name>
+		<name>Undefined Novice</name>
 		<bio></bio>
 			
 		<team>none</team>
@@ -16,9 +16,24 @@
 
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
-
 	</specific_character>
-		<specific_character id="actor">
+
+	<specific_character id="veteran">
+		<name>Undefined Veteran</name>
+		<bio></bio>
+			
+		<team>none</team>
+		<reputation>80</reputation>
+		<rank>70</rank>
+		
+		<start_dialog></start_dialog>
+		<actor_dialog></actor_dialog>
+
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+	</specific_character>
+
+	<specific_character id="actor">
 		<name>Actor Character</name>
 		<team>none</team>
 		<reputation>30</reputation>
