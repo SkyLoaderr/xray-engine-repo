@@ -957,28 +957,6 @@
     </dialog>
     <dialog id="escape_trader_start_dialog">
         <phrase_list>
-            <phrase id="1">
-                <text></text>
-                <give_info>esc_trader_monolog_1</give_info>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-            </phrase>
-            <phrase id="4">
-                <text>escape_trader_start_dialog_4</text>
-                <precondition>escape_dialog.trader_dont_give_job</precondition>
-                <has_info>esc_trader_tutorial_chosen</has_info>
-            </phrase>
-            <phrase id="5">
-                <text>escape_trader_start_dialog_5</text>
-                <precondition>escape_dialog.trader_alredy_give_job</precondition>
-                <has_info>esc_trader_tutorial_chosen</has_info>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
             <phrase id="211">
                 <text></text>
                 <give_info>esc_trader_tutorial_choice</give_info>
@@ -1006,22 +984,35 @@
                 <give_info>esc_trader_newbie</give_info>
                 <next>311</next>
             </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
             <phrase id="311">
                 <text></text>
                 <action>dialogs.break_dialog</action>
                 <action>dialogs.disable_talk_self</action>
                 <give_info>esc_trader_tutorial_chosen</give_info>
             </phrase>
+            <phrase id="1">
+                <text></text>
+                <give_info>esc_trader_monolog_1</give_info>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>321</next>
+            </phrase>
             <phrase id="32">
                 <text>escape_trader_start_dialog_32</text>
                 <give_info>esc_trader_experienced</give_info>
                 <give_info>tutorial_artefact_start</give_info>
-                <next>321</next>
+                <next>322</next>
             </phrase>
-            <phrase id="321">
-                <text>escape_trader_start_dialog_321</text>
+            <phrase id="322">
+                <text></text>
                 <give_info>esc_trader_tutorial_chosen</give_info>
-                <next>3211</next>
+                <next>1</next>
             </phrase>
             <phrase id="32111">
                 <text></text>
@@ -1032,6 +1023,24 @@
                 <text>escape_trader_start_dialog_3211</text>
                 <give_info>esc_trader_can_leave</give_info>
                 <next>32111</next>
+            </phrase>
+            <phrase id="4">
+                <text>escape_trader_start_dialog_4</text>
+                <precondition>escape_dialog.trader_dont_give_job</precondition>
+                <has_info>esc_trader_tutorial_chosen</has_info>
+                <has_info>esc_trader_can_leave</has_info>
+            </phrase>
+            <phrase id="5">
+                <text>escape_trader_start_dialog_5</text>
+                <precondition>escape_dialog.trader_alredy_give_job</precondition>
+                <has_info>esc_trader_tutorial_chosen</has_info>
+                <has_info>esc_trader_can_leave</has_info>
+            </phrase>
+            <phrase id="321">
+                <text>escape_trader_start_dialog_321</text>
+                <dont_has_info>esc_trader_can_leave</dont_has_info>
+                <has_info>esc_trader_tutorial_chosen</has_info>
+                <next>3211</next>
             </phrase>
         </phrase_list>
     </dialog>
