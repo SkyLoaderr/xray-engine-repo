@@ -47,6 +47,16 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 				P->r_begin	(m_type);
 				switch (m_type)
 				{
+				case M_SV_CONFIG_GAME:		
+					{
+						u8				gametype;
+						u16				fraglimit;
+						u16				timelimit;
+						P->r_u8			(gametype);		GAME		= gametype;
+						P->r_u16		(fraglimit);	g_fraglimit	= fraglimit;
+						P->r_u16		(timelimit);	g_timelimit = timelimit;
+					}
+					break;
 				case M_SV_CONFIG_FINISHED:	bFinished = TRUE;	break;
 				case M_SPAWN:				g_sv_Spawn(P);		break;
 				}

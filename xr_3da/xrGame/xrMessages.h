@@ -10,7 +10,7 @@ enum {
 	M_UPDATE				=0,	// DUAL: Update state
 	M_SPAWN,					// DUAL: Spawning, full state
 	M_DESTROY,					// TO:   Destroying
-	M_SV_CONFIG,
+	M_SV_CONFIG_GAME,
 	M_SV_CONFIG_FINISHED,
 	M_MIGRATE_DEACTIVATE,		// TO:   Changing server, just deactivate
 	M_MIGRATE_ACTIVATE,			// TO:   Changing server, full state
@@ -46,6 +46,13 @@ enum
 };
 
 /*
+M_SV_CONFIG_GAME
+{
+	u8			gametype;
+	u16			fraglimit;
+	u16			timelimit;
+}
+
 M_EVENT
 {
 	u32			dwTimestamp;

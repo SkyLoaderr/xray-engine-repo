@@ -154,6 +154,13 @@ void xrServer::OnCL_Connected		(IClient* CL)
 {
 	Level().HUD()->outMessage		(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 	
+	// Game config
+	P.w_begin		(M_SV_CONFIG_GAME);
+	P.w_u8			(u8(GAME		));
+	P.w_u16			(u16(g_fraglimit));
+	P.w_u16			(u16(g_timelimit));
+	SendTo			(CL->ID,P,net_flags(TRUE,TRUE));
+
 	// Replicate current entities on to this client
 	NET_Packet		P;
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
@@ -171,12 +178,12 @@ void xrServer::OnCL_Connected		(IClient* CL)
 			// Just inform
 			Test->Spawn_Write	(P,FALSE);
 		}
-		SendTo				(CL->ID,P,net_flags(TRUE));
+		SendTo				(CL->ID,P,net_flags(TRUE,TRUE));
 	}
 
 	// Send "finished" signal
 	P.w_begin		(M_SV_CONFIG_FINISHED);
-	SendTo			(CL->ID,P,net_flags(TRUE));
+	SendTo			(CL->ID,P,net_flags(TRUE,TRUE));
 }
 
 void xrServer::OnCL_Disconnected	(IClient* CL)
