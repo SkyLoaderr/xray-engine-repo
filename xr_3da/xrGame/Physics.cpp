@@ -551,7 +551,7 @@ void CPHWorld::Create(){
 	Mesh.Create(Space,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	Gun.Create(Space);
-//	dCreatePlane(Space,0,1,0,0);
+	///dCreatePlane(Space,0,1,0,5);
 	dReal k_p=1000000.f;
 	dReal k_d=2000.f;
 	dReal h=0.02222f;
@@ -579,7 +579,7 @@ void CPHWorld::Destroy(){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-static dReal frame_time=0.f;
+//static dReal frame_time=0.f;
 const int dis_frames=11;
 void CPHWorld::Step(dReal step)
 {
@@ -596,7 +596,7 @@ void CPHWorld::Step(dReal step)
 	frame_time+=step;
 
 	if(!(frame_time<fixed_step)){
-	it_number=(UINT)(frame_time/step);
+	it_number=(UINT)(frame_time/fixed_step);
 	frame_time-=it_number*fixed_step;
 	}
 	else return;

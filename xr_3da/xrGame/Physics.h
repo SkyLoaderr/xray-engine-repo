@@ -120,7 +120,7 @@ public:
 ////////////////////////////////////////////////////////////////////////////
 class CPHWorld {
 	dSpaceID Space;
-
+	dReal frame_time;
 	CPHMesh Mesh;
 	list<CPHObject*> m_objects;
 public:
@@ -129,7 +129,7 @@ public:
 	//CPHJeep Jeep;
 	unsigned int disable_count;
 	//vector<CPHElement*> elements;
-	CPHWorld(){disable_count=0;};
+	CPHWorld(){disable_count=0;frame_time=0.f;};
 	~CPHWorld(){};
 
 	dSpaceID GetSpace(){return Space;};
