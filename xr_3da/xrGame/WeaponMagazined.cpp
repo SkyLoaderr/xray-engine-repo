@@ -486,52 +486,6 @@ void CWeaponMagazined::OnShot		()
 	StartSmokeParticles	();
 }
 
-void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R)
-{
-//	Device.Statistic.TEST3.Begin();
-//	Device.Statistic.TEST3.End();
-	
-	if (!R.O) 
-	{
-		// particles
-		Fvector N,D;
-		Fvector*	pVerts	= g_pGameLevel->ObjectSpace.GetStaticVerts();
-		CDB::TRI*	pTri	= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
-		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
-		D.reflect			(vDir,N);
-		
-#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
-		/*
-		IRender_Sector* S	= ::Render->getSector(pTri->sector);
-		
-		// smoke
-		LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
-		CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
-		PS->m_Emitter.m_ConeDirection.set(D);
-		PS->play_at_pos		(vEnd);
-		
-		// stones
-		PS					= xr_new<CPSObject> ("stones",S,true);
-		PS->m_Emitter.m_ConeDirection.set(D);
-		PS->play_at_pos		(vEnd);
-		*/
-//		IRender_Sector* S	= ::Render->getSector(pTri->sector);
-		
-		// smoke
-//		LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
-//		CParticlesObject* PS		= xr_new<CParticlesObject> (ps_gibs,S,true);
-		//PS->m_Emitter.m_ConeDirection.set(D);
-//		PS->SetTransform(XFORM());
-//		PS->play_at_pos		(vEnd);
-
-		// stones
-		//PS					= xr_new<CParticlesObject> ("stones",S,true);
-		//PS->m_Emitter.m_ConeDirection.set(D);
-		//PS->play_at_pos		(vEnd);
-
-		
-	}
-}
 
 void CWeaponMagazined::OnEmptyClick	()
 {

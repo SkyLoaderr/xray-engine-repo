@@ -52,7 +52,7 @@ protected:
 	virtual void	OnShot			();
 	
 	virtual void	OnEmptyClick	();
-	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R);
+
 	virtual void	OnAnimationEnd	();
 	virtual void	OnStateSwitch	(u32 S);
 
