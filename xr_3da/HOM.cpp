@@ -133,7 +133,7 @@ void CHOM::Render_DB	(CFrustum& base)
 
 	// Build frustum with near plane only
 	CFrustum	clip;
-	clip.CreateFromMatrix(XF,FRUSTUM_P_NEAR);
+	clip.CreateFromMatrix(XF,FRUSTUM_P_ALL);
 	sPoly		src,dst;
 	
 	// Perfrom selection, sorting, culling
