@@ -19,29 +19,6 @@
 	(c) = (e)[(f)].iCurrentSum;\
 }
 
-void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpTraderAbstract)
-{
-	// update items
-	if (tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID,true)) {
-		OBJECT_IT								I;
-		if (tpALifeHumanAbstract->bfCheckIfTaskCompleted(I)) {
-			D_OBJECT_PAIR_IT					J = m_tObjectRegistry.find(*I);
-			R_ASSERT2							(J != m_tObjectRegistry.end(), "Specified object hasn't been found in the Object registry!");
-			CSE_ALifeInventoryItem				*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*J).second);
-			R_ASSERT2							(l_tpALifeInventoryItem,"Non inventory item has a parent?!");
-			if (tpTraderAbstract->m_dwMoney >= l_tpALifeInventoryItem->m_dwCost) {
-				vfDetachItem					(*tpALifeHumanAbstract,l_tpALifeInventoryItem,tpALifeHumanAbstract->m_tGraphID);
-				vfAttachItem					(*tpTraderAbstract,l_tpALifeInventoryItem,tpALifeHumanAbstract->m_tGraphID);
-				// paying/receiving money
-				tpTraderAbstract->m_dwMoney		-= l_tpALifeInventoryItem->m_dwCost;
-				tpALifeHumanAbstract->m_dwMoney += l_tpALifeInventoryItem->m_dwCost;
-			}
-		}
-	}
-	// update events
-#pragma todo("Dima to Dima: Update events")
-}
-
 void CSE_ALifeSimulator::vfGenerateSums	(ITEM_P_VECTOR &tpTrader, INT_VECTOR &tpSums)
 {
 	int					l_iStackPointer = 0;
@@ -378,15 +355,13 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 		}
 		
 		if (l_iItemCount1*l_iItemCount2) {
-			OBJECT_IT			I = tpALifeHumanAbstract1->children.begin() + l_iItemCount1;
+			OBJECT_IT			I = tpALifeHumanAbstract1->children.begin() + l_iItemCount1, J;
 			OBJECT_IT			E = tpALifeHumanAbstract1->children.end();
 			for ( ; I != E; I++) {
-				OBJECT_IT		i = tpALifeHumanAbstract2->children.begin() + l_iItemCount2;
-				OBJECT_IT		e = tpALifeHumanAbstract2->children.end();
-				for ( ; i != e; i++)
-					if (*I == *i) {
+				J				= std::find(tpALifeHumanAbstract2->children.begin() + l_iItemCount2,tpALifeHumanAbstract2->children.end(),*I);
+				if (J != tpALifeHumanAbstract2->children.end()) {
 
-					}
+				}
 			}
 		}
 	}
@@ -422,4 +397,27 @@ void CSE_ALifeSimulator::vfPerformCommunication()
 #pragma todo("Dima to Dima: Update events")
 		}
 	}
+}
+
+void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpTraderAbstract)
+{
+	// update items
+	if (tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID,true)) {
+		OBJECT_IT								I;
+		if (tpALifeHumanAbstract->bfCheckIfTaskCompleted(I)) {
+			D_OBJECT_PAIR_IT					J = m_tObjectRegistry.find(*I);
+			R_ASSERT2							(J != m_tObjectRegistry.end(), "Specified object hasn't been found in the Object registry!");
+			CSE_ALifeInventoryItem				*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*J).second);
+			R_ASSERT2							(l_tpALifeInventoryItem,"Non inventory item has a parent?!");
+			if (tpTraderAbstract->m_dwMoney >= l_tpALifeInventoryItem->m_dwCost) {
+				vfDetachItem					(*tpALifeHumanAbstract,l_tpALifeInventoryItem,tpALifeHumanAbstract->m_tGraphID);
+				vfAttachItem					(*tpTraderAbstract,l_tpALifeInventoryItem,tpALifeHumanAbstract->m_tGraphID);
+				// paying/receiving money
+				tpTraderAbstract->m_dwMoney		-= l_tpALifeInventoryItem->m_dwCost;
+				tpALifeHumanAbstract->m_dwMoney += l_tpALifeInventoryItem->m_dwCost;
+			}
+		}
+	}
+	// update events
+#pragma todo("Dima to Dima: Update events")
 }
