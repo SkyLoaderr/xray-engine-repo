@@ -157,6 +157,9 @@ int __cdecl main	(int argc, char* argv[])
 				}
 		}
 	}
+	
+	DWORD cycles_per_tri	= DWORD(u64(u64(total)/u64(count)));
+	Msg("Cycles per tri: %d\n",cycles_per_tri);
 //	edges(T1);
 //	edges(T2);
 	
