@@ -119,7 +119,6 @@ void CDetailManager::hw_Load	()
 	hwc_consts			= T0.get("consts");
 	hwc_wave			= T0.get("wave");
 	hwc_wind			= T0.get("dir2D");
-	hwc_xform			= T0.get("xform");
 	hwc_array			= T0.get("array");
 	hwc_s_consts		= T1.get("consts");
 	hwc_s_xform			= T1.get("xform");
@@ -160,7 +159,6 @@ void CDetailManager::hw_Render()
 	RCache.set_c			(hwc_consts,	scale,		scale,		ps_r__Detail_l_aniso,	ps_r__Detail_l_ambient);				// consts
 	RCache.set_c			(hwc_wave,		1.f/5.f,	1.f/7.f,	1.f/3.f,			Device.fTimeGlobal*ps_r__Detail_w_speed);	// wave
 	RCache.set_c			(hwc_wind,		dir1);																					// wind-dir
-	RCache.set_c			(hwc_xform,		Device.mFullTransform);																	// xform
 	hw_Render_dump			(hwc_array,		1, 0, c_hdr );
 
 	// Wave1

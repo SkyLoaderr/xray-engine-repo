@@ -103,7 +103,6 @@ public:
 	R_constant*						hwc_consts;
 	R_constant*						hwc_wave;
 	R_constant*						hwc_wind;
-	R_constant*						hwc_xform;
 	R_constant*						hwc_array;
 	R_constant*						hwc_s_consts;
 	R_constant*						hwc_s_xform;
