@@ -44,16 +44,16 @@ function main_menu:InitControls()
 							 height = 600}	
 	main_rect.x = (screen.width - main_rect.width)/2
 	main_rect.y = (screen.height - main_rect.height)/2
-	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
-	local captiontxt_rect = {x = caption_rect.width/2,
-							 y = caption_rect.height/2,
+	--local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
+	local captiontxt_rect = {x = 60,
+							 y = -60,
 							 width = 0,
 							 height = 0}
 	     --->> BUTTONS
 	local btn_rect = {x = 0, y = 0, width = 135, height = 40}
 		  btn_rect.x = (main_rect.width - btn_rect.width)/2
 	local btn_new_rect    = {x = btn_rect.x,
-							 y = caption_rect.y + caption_rect.height + indent,
+							 y = indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 							 
@@ -96,12 +96,12 @@ function main_menu:InitControls()
 	self:AttachChild(main_frame)
 	
 	-- CAPTION frame --
-	local wnd_caption = CUIFrameWindow()
+--[[	local wnd_caption = CUIFrameWindow()
 	wnd_caption:SetAutoDelete(true)
 	wnd_caption:SetWindowName("wnd_caption")
 	wnd_caption:Init("ui\\ui_pop_up",caption_rect.x, caption_rect.y, caption_rect.width, caption_rect.height)
 	main_frame:AttachChild(wnd_caption)
-	
+	]]
 	local txt_caption = CUIStatic()
 	txt_caption:SetAutoDelete(true)
 	txt_caption:SetWindowName("txt_caption")
@@ -109,7 +109,7 @@ function main_menu:InitControls()
 	txt_caption:SetText("MAIN_MENU")
 
 	txt_caption:SetTextAlign(CGameFont.alCenter)
-	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
+	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, captiontxt_rect.width, captiontxt_rect.height)
 	main_frame:AttachChild(txt_caption)	
 
 -------- BUTTONS ------------------------------- 
