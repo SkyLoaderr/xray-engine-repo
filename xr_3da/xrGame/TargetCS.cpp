@@ -94,19 +94,23 @@ void CTargetCS::OnDeviceDestroy() {
 void CTargetCS::UpdateCL		()
 {
 	inherited::UpdateCL();
-	if (getEnabled() && m_pPhysicsShell)		
+	if(dynamic_cast<CTargetCSCask*>(H_Parent())) {
+		//svTransform.set			();
+		svTransform.mul			(H_Parent()->clXFORM(), m_pos);
+		vPosition.set			(svTransform.c);
+		setVisible				(true);
+		setEnabled				(true);
+	}
+	else if (getEnabled() && m_pPhysicsShell)		
 	{
 		m_pPhysicsShell->Update	();
 		svTransform.set			(m_pPhysicsShell->mXFORM);
 		vPosition.set			(svTransform.c);
 	}
-	else if(dynamic_cast<CTargetCSCask*>(H_Parent())) {
-		setVisible				(true);
-		setEnabled				(true);
-	}
 }
 
 void CTargetCS::SetPos(const Fmatrix& pos) {
-	svTransform.set(pos);
-	vPosition.set(svTransform.c);
+	m_pos.set(pos);
+	svTransform.set			(m_pos);
+	vPosition.set			(svTransform.c);
 }

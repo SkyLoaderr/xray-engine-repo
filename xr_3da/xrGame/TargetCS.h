@@ -23,4 +23,5 @@ public:
 	void SetPos(const Fmatrix& pos);
 
 	CPhysicsShell*						m_pPhysicsShell;
+	Fmatrix m_pos;
 };
