@@ -191,6 +191,7 @@ function action_follow:execute ()
        self:update_stage_2 ()
     elseif self.stage == 3 then
     end       
+    printf ("CURRENT STAGE = %d", self.stage)
 end    
 --------------
 function action_follow:finalize ()
