@@ -444,7 +444,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 
 	LPCSTR	options			=	get_name_id	(id_who);
 	game_PlayerState*	ps_who	=	get_id	(id_who);
-	ps_who->money_total = 1000;
+	ps_who->money_total		= 1000;
 
 	// Spawn "actor"
 	ps_who->team			= u8(get_option_i(options,"team",AutoTeam()));
