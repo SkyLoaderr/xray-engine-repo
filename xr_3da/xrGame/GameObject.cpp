@@ -30,8 +30,6 @@ CGameObject::CGameObject		()
 	//-----------------------------------------
 	m_bCrPr_Activated			= false;
 	m_dwCrPr_ActivationStep		= 0;
-	m_ini_file					= 0;
-	m_lua_game_object			= 0;
 }
 
 CGameObject::~CGameObject		()
