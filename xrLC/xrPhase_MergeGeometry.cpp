@@ -65,6 +65,7 @@ BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 
 void CBuild::xrPhase_MergeGeometry	()
 {
+	Status("Processing...");
 	for (DWORD split=0; split<g_XSplit.size(); split++)
 	{
 		vecFace&	subdiv	= g_XSplit[split];
@@ -97,4 +98,5 @@ void CBuild::xrPhase_MergeGeometry	()
 		}
 		Progress(float(split)/float(g_XSplit.size()));
 	}
+	Msg("%d subdivisions.",g_XSplit.size());
 }
