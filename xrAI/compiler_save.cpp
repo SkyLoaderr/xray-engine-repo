@@ -4,7 +4,8 @@
 IC void	CompressPos	(NodePosition& Pdest, Fvector& Psrc, hdrNODES& H)
 {
 	float sp = 1/g_params.fPatchSize;
-	int pxz	= iFloor((Psrc.x - H.aabb.min.x)*sp + EPS_L + .5f)*iFloor((Psrc.z - H.aabb.min.z)*sp   + EPS_L + .5f);
+	int row_length = iFloor((H.aabb.max.z - H.aabb.min.z)/H.size + EPS_L + .5f);
+	int pxz	= iFloor((Psrc.x - H.aabb.min.x)*sp + EPS_L + .5f)*row_length + iFloor((Psrc.z - H.aabb.min.z)*sp   + EPS_L + .5f);
 	int py	= iFloor(65535.f*(Psrc.y-H.aabb.min.y)/(H.size_y)+EPS_L);
 	clamp	(pxz,0,(1 << 24) - 1);	Pdest.xz = pxz;
 	clamp	(py,0,     65535);	Pdest.y = u16	(py);
@@ -52,7 +53,6 @@ float	CalculateHeight(Fbox& BB)
 	{
 		vertex&	N	= g_nodes[i];
 		BB.modify	(N.Pos);
-//		BB.modify	(N.P1);
 	}
 	return BB.max.y-BB.min.y+EPS_L;
 }

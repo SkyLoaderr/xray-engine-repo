@@ -9,13 +9,31 @@ IC	const Fvector vertex_position(const CLevelGraph::CPosition &Psrc, const Fbox 
 {
 	Fvector				Pdest;
 	int	x,z, row_length;
-	row_length			= iFloor((bb.max.z - bb.min.z)/params.fPatchSize + EPS_L + .5f) + 1;
+	row_length			= iFloor((bb.max.z - bb.min.z)/params.fPatchSize + EPS_L + .5f);
 	x					= Psrc.xz / row_length;
 	z					= Psrc.xz % row_length;
-	Pdest.x =			float(x)*params.fPatchSize;
+	Pdest.x =			float(x)*params.fPatchSize + bb.min.x;
 	Pdest.y =			(float(Psrc.y)/65535)*(bb.max.y-bb.min.y) + bb.min.y;
-	Pdest.z =			float(z)*params.fPatchSize;
+	Pdest.z =			float(z)*params.fPatchSize + bb.min.z;
 	return				(Pdest);
+}
+
+struct SNodePositionOld {
+	s16				x;
+	u16				y;
+	s16				z;
+};
+
+extern void	CompressPos	(NodePosition& Pdest, Fvector& Psrc, hdrNODES& H);
+
+void convert_node_position(const SNodePositionOld &Psrc, hdrNODES &m_header, NodePosition &np)
+{
+	Fvector		Pdest;
+	Pdest.x		= float(Psrc.x)*m_header.size;
+	Pdest.y		= (float(Psrc.y)/65535)*m_header.size_y + m_header.aabb.min.y;
+	Pdest.z		= float(Psrc.z)*m_header.size;
+	CompressPos	(np,Pdest,m_header);
+	np.y		= Psrc.y;
 }
 
 void xrLoad(LPCSTR name)
@@ -145,25 +163,34 @@ void xrLoad(LPCSTR name)
 		R_ASSERT			(F->open_chunk(E_AIMAP_CHUNK_NODES));
 		u32					N = F->r_u32();
 		g_nodes.resize		(N);
+
+		hdrNODES			H;
+		H.version			= XRAI_CURRENT_VERSION;
+		H.count				= N+1;
+		H.size				= g_params.fPatchSize;
+		H.size_y			= 1.f;
+		H.aabb				= LevelBB;
 		
 		typedef BYTE NodeLink[3];
 		for (u32 i=0; i<N; i++) {
-			NodeLink		id;
-			u16 			pl;
-			NodePosition 	np;
+			NodeLink			id;
+			u16 				pl;
+			SNodePositionOld 	_np;
+			NodePosition 		np;
 			
 			F->r			(&id,3);
-			g_nodes[i].n1	= id && 0x00ffffff;
+			g_nodes[i].n1	= (*LPDWORD(&id)) & 0x00ffffff;
 			F->r			(&id,3);
-			g_nodes[i].n2	= id && 0x00ffffff;
+			g_nodes[i].n2	= (*LPDWORD(&id)) & 0x00ffffff;
 			F->r			(&id,3);
-			g_nodes[i].n3	= id && 0x00ffffff;
+			g_nodes[i].n3	= (*LPDWORD(&id)) & 0x00ffffff;
 			F->r			(&id,3);
-			g_nodes[i].n4	= id && 0x00ffffff;
+			g_nodes[i].n4	= (*LPDWORD(&id)) & 0x00ffffff;
 
 			pl				= F->r_u16();
 			pvDecompress	(g_nodes[i].Plane.n,pl);
-			F->r			(&np,sizeof(np));
+			F->r			(&_np,sizeof(_np));
+			convert_node_position(_np,H,np);
 			g_nodes[i].Pos	= vertex_position(np,LevelBB,g_params);
 
 			g_nodes[i].Plane.build(g_nodes[i].Pos,g_nodes[i].Plane.n);
