@@ -1,0 +1,13 @@
+-- File:        UI_COMMON_DATA.SCRIPT
+-- Description: 
+-- Created:     16.11.2004
+-- Last Change: 16.11.2004
+-- Author:      Serhiy O. Vynnychenko
+-- Mail:        narrator@gsc-game.kiev.ua
+--
+-- Copyright:   2004 GSC Game World
+
+
+class "base_dialog" (CUIScriptWnd)
+
+
