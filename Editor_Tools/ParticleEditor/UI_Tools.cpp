@@ -66,6 +66,7 @@ bool CParticleTools::IfModified(){
 
 void CParticleTools::Modified(){
 	m_bModified = true;
+	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -158,6 +159,7 @@ void CParticleTools::Load()
 
 void CParticleTools::Save()
 {
+	m_bModified = false;
 	PSLib.Save();
 }
 

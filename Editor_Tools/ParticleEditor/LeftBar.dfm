@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 748
+  Height = 622
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 748
+    Height = 622
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -150,7 +150,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 328
+      Height = 202
       Align = alClient
       ParentShowHint = False
       ShowHint = True
@@ -171,13 +171,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 313
+        Height = 187
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 295
+          Top = 169
           Width = 208
           Height = 2
           Align = alBottom
@@ -191,7 +191,7 @@ object fraLeftBar: TfraLeftBar
         end
         object paAction: TPanel
           Left = 0
-          Top = 297
+          Top = 171
           Width = 208
           Height = 16
           Align = alBottom
@@ -221,7 +221,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 52
           Width = 208
-          Height = 243
+          Height = 117
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -416,7 +416,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 397
+      Top = 271
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -598,6 +598,7 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object InplaceParticleEdit: TElTreeInplaceAdvancedEdit
+    Tree = tvParticles
     Types = [sftText]
     OnValidateResult = InplaceParticleEditValidateResult
     Left = 5

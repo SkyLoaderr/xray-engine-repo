@@ -49,7 +49,7 @@ DWORD GetTokenValFromName(AnsiString& val, const xr_token *token_list){
 __fastcall TfrmShaderFunction::TfrmShaderFunction(TComponent* Owner)
     : TForm(Owner)
 {
-    char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
+    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName = buf;
 	FillMenuFromToken(pmFunction, function_token, stFunctionClick);
 }
