@@ -47,7 +47,6 @@ public:
 	virtual void					Initialize				( )																						= 0;
 	virtual void					Destroy					( )																						= 0;
 	virtual void					Restart					( )																						= 0;
-	virtual BOOL					isPresent				( )																						= 0;
 
 	// Sound interface
 	virtual void					Create					( sound& S, BOOL _3D,	LPCSTR fName,	BOOL bCtrlFreq=FALSE,	int		type=0)			= 0;
