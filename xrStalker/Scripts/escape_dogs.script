@@ -20,5 +20,7 @@ function main()
 			work_dog2	= false
 			dog2:finalize()
 		end
+		
+		wait()
 	end
 end
