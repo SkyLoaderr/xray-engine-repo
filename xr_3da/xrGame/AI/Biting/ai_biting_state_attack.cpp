@@ -224,10 +224,10 @@ void CBitingAttack::Run()
 						// squad_ai выбрал оптимальную позицию, соответствующую позиции врага	
 						
 						// использовать ли предсказание позиции
-						if (dist > PREDICT_POSITION_MIN_THRESHOLD) {
-							Fvector dir;
-							dir.sub(m_tEnemy.obj->Position(),EnemySavedPos);
+						Fvector dir;
+						dir.sub(m_tEnemy.obj->Position(),EnemySavedPos);
 
+						if ((dist > PREDICT_POSITION_MIN_THRESHOLD) && (dir.square_magnitude() > 1)) {
 							Fvector target_point;
 							target_point.add(m_tEnemy.obj->Position(),dir);
 							pMonster->Path_ApproachPoint(target_point);
