@@ -284,8 +284,8 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 				if (sqD > L->range2) continue;
 
 				// Dir
-				Ldir.sub	(L->position,P);
-				Ldir.normalize_safe();
+				Ldir.sub			(L->position,P);
+				Ldir.normalize_safe	();
 				float D		= Ldir.dotproduct( N );
 				if( D <=0 ) continue;
 
