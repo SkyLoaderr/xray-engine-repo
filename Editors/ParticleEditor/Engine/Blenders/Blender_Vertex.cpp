@@ -55,13 +55,10 @@ void CBlender_Vertex::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		if (2==C.iElement)	
+		switch (C.iElement)
 		{
-			// Lighting only
-			C.r_Pass	("r1_vert_l","r1_vert_l",FALSE);
-			C.r_Sampler	("s_base",C.L_textures[0]);
-			C.r_End		();
-		} else {
+		case SE_R1_NORMAL_HQ:
+		case SE_R1_NORMAL_LQ:
 			// Level view
 			if (C.bDetail)
 			{
@@ -75,6 +72,22 @@ void CBlender_Vertex::Compile	(CBlender_Compile& C)
 				C.r_Sampler	("s_base",C.L_textures[0]);
 				C.r_End		();
 			}
+			break;
+		case SE_R1_LPOINT:
+			break;
+		case SE_R1_LSPOT:
+			C.r_Pass		("r1_vert_spot","r1_add_spot",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
+			C.r_Sampler		("s_base",	C.L_textures[0]);
+			C.r_Sampler_clf	("s_lmap",	"effects\\light");
+			C.r_Sampler_clf	("s_att",	"internal\\internal_light_attclip");
+			C.r_End			();
+			break;
+		case SE_R1_LMODELS:
+			// Lighting only
+			C.r_Pass		("r1_vert_l","r1_vert_l",FALSE);
+			C.r_Sampler		("s_base",C.L_textures[0]);
+			C.r_End			();
+			break;
 		}
 	}
 }
