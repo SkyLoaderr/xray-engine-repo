@@ -109,7 +109,7 @@ void CPlanner::update				(u32 time_delta)
 
 	if (initialized() && (current_action_id() != solution().front())) {
 		current_action().finalize	();
-		set_current_action			(solution().front());
+		m_current_action_id			= solution().front();
 		current_action().initialize	();
 	}
 
