@@ -43,7 +43,7 @@ protected:
 	sound						Sounds_Ambience;
 	vector<sound>				Sounds;
 	vector<sound>				Sounds_Random;
-	u32						Sounds_dwNextTime;
+	u32							Sounds_dwNextTime;
 public:
 	CObjectList					Objects;
 	CEnvironment				Environment;
@@ -59,9 +59,9 @@ public:
 								CCreator				( );
 	virtual						~CCreator				( );
 
-	virtual BOOL				net_Start				( LPCSTR name, BOOL server	)	= 0;
-	virtual void				net_Load				( LPCSTR name )					= 0;
-	virtual void				net_Save				( LPCSTR name )					= 0;
+	virtual BOOL				net_Start				( LPCSTR op_server, LPCSTR op_client)	= 0;
+	virtual void				net_Load				( LPCSTR name )							= 0;
+	virtual void				net_Save				( LPCSTR name )							= 0;
 	virtual void				net_Stop				( );
 
 	virtual BOOL				Load					( u32 dwNum );

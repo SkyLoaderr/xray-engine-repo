@@ -80,10 +80,10 @@ public:
 	typedef vector<Fvector>			SPointVector;
 
 	typedef struct tagSPath {
-		u32						dwType;
+		u32							dwType;
 		vector<SWayPoint>			tpaWayPoints;
 		vector<SWayLink>			tpaWayLinks;
-		vector<u32>				tpaWayPointIndexes;
+		vector<u32>					tpaWayPointIndexes;
 		SPointVector				tpaVectors[3];
 	} SPath;
 
@@ -96,7 +96,7 @@ public:
 	SPathMap					m_PatrolPaths;
 
 	// Starting/Loading
-	virtual BOOL				net_Start				( LPCSTR name, BOOL server	);
+	virtual BOOL				net_Start				( LPCSTR op_server, LPCSTR op_client);
 	virtual void				net_Load				( LPCSTR name );
 	virtual void				net_Save				( LPCSTR name );
 	virtual void				net_Stop				( );
