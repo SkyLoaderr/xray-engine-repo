@@ -94,7 +94,7 @@ function action_wait:execute()
 
 	if self.a.obj.id ~= nil and
 	   self.a.obj.type ~= nil then
---	   printf("Process obj %d, type: %s",self.a.obj.id, self.a.obj.type)
+	   printf("Process obj %d, type: %s",self.a.obj.id, self.a.obj.type)
 	end
 
 	if self.a.obj.type == "watch" then
@@ -342,26 +342,19 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 	self.arhive = {}
 
 	-- удалять обработанные устаревшие раздражители
-	local dt = {}
 	for k,v in self.used do
 		if game.time() - v >= self.time_memory then
-			table.insert(dt, k)
+			self.used[k] = nil
 		end
-	end
-	for k,v in dt do
-		self:removeFromUsed(v) 
 	end
 
 	-- удалять из self.hear звуки старше x секунд
-	dt = {}
 	for k,v in self.hear do
 		if (game.time() - v) > 2*self.time_reaction then
-			table.insert(dt, k)
+			self.used[k] = nil
 		end
 	end
-	for k,v in dt do
-		table.remove(self.hear, v)
-	end
+
 --[[
 	--' определяем что нам известно о слышимости объекта
 	local stable = self.npc:memory_sound_objects()
@@ -662,16 +655,19 @@ end
 function events:isEvents()
 	for key,value in self.arhive do
 		local exst = false
-		for k,v in self.used do
-			if key == k then
-				exst = true
-				break
+		if value.object_type == "corpse" then
+			for k,v in self.corpse do
+				if key == k then
+					exst = true
+					break
+				end
 			end
-		end
-		for k,v in self.corpse do
-			if key == k then
-				exst = true
-				break
+		else
+			for k,v in self.used do
+				if key == k then
+					exst = true
+					break
+				end
 			end
 		end
 		if not exst then
@@ -729,7 +725,7 @@ function events:printid(key)
        	-- watched print
 	for k,v in self.watch do
 		if key == v then
-			printf("watch")
+			printf("watched")
 			break
 		end
 	end
