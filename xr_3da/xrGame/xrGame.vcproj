@@ -6585,6 +6585,31 @@
 					RelativePath="xrServer_Space.h">
 				</File>
 				<Filter
+					Name="EditorProperties"
+					Filter="">
+					<File
+						RelativePath=".\ChooseTypes.h">
+					</File>
+					<File
+						RelativePath=".\FastDelegate.h">
+					</File>
+					<File
+						RelativePath=".\ItemListTypes.h">
+					</File>
+					<File
+						RelativePath=".\PropertiesListHelper.h">
+					</File>
+					<File
+						RelativePath=".\WaveForm.h">
+					</File>
+					<File
+						RelativePath=".\xrCDB.h">
+					</File>
+					<File
+						RelativePath=".\xrEProps.h">
+					</File>
+				</Filter>
+				<Filter
 					Name="Games"
 					Filter="">
 					<File

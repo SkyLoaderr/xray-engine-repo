@@ -8,12 +8,13 @@
 
 #include "stdafx.h"
 #include "net_utils.h"
-#include "defines.h"
 #include "xrServer_Objects_ALife.h"
 #include "game_base_space.h"
 #include "object_broker.h"
+
 #ifndef XRGAME_EXPORTS
 #	include "bone.h"
+#	include "defines.h"
 #else
 #	include "..\bone.h"
 #endif
