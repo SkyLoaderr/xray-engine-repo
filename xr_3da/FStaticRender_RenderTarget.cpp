@@ -44,17 +44,20 @@ void CRenderTarget::OnDeviceDestroy	()
 
 void CRenderTarget::Begin	()
 {
-	if (!Available() || !NeedPostProcess())	return;
-
-	Device.Shader.set_RT	(RT->pRT,HW.pBaseZB);
-	if (psDeviceFlags&rsClearBB) CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,255,0),1,0));
+	if (!Available() || !NeedPostProcess())	
+	{
+		Device.Shader.set_RT	(HW.pBaseRT,HW.pBaseZB);
+	} else {
+		Device.Shader.set_RT	(RT->pRT,HW.pBaseZB);
+		if (psDeviceFlags&rsClearBB) CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,255,0),1,0));
+	}
 }
 
 void CRenderTarget::End		()
 {
-	if (!Available() || !NeedPostProcess())	return;
+	Device.Shader.set_RT		(HW.pBaseRT,HW.pBaseZB);
 	
-	Device.Shader.set_RT	(HW.pBaseRT,HW.pBaseZB);
+	if (!Available() || !NeedPostProcess())	return;
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
