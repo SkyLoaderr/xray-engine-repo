@@ -12,6 +12,9 @@ using std::swap;
 #define M_DONTDEFERCLEAR_EXT
 #endif
 
+#define	M_DONTDEFERCLEAR_EXT		//. for mem-debug only
+
+//--------	
 #ifdef	M_NOSTDCONTAINERS_EXT
 
 #define xr_list std::list
