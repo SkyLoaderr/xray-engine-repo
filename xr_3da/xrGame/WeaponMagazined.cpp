@@ -199,14 +199,14 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
 		break;
-	case eFire:			state_Fire		(bHUDView);	break;
-	case eMagEmpty:		state_MagEmpty	(bHUDView);	break;
+	case eFire:			state_Fire		(bHUDView,dt);	break;
+	case eMagEmpty:		state_MagEmpty	(bHUDView,dt);	break;
 	}
 	bVisible		= TRUE;
 	bPending		= FALSE;
 }
 
-void CWeaponMagazined::state_Fire	(BOOL bHUDView)
+void CWeaponMagazined::state_Fire	(BOOL bHUDView, float dt)
 {
 	UpdateFP				(bHUDView);
 	fTime					-=dt;
@@ -223,7 +223,7 @@ void CWeaponMagazined::state_Fire	(BOOL bHUDView)
 	}
 }
 
-void CWeaponMagazined::state_MagEmpty(BOOL bHUDView)
+void CWeaponMagazined::state_MagEmpty(BOOL bHUDView, float dt)
 {
 	UpdateFP	(bHUDView);
 	fTime		-=dt;

@@ -55,8 +55,8 @@ protected:
 	virtual void	UpdateXForm		(BOOL bHUD);
 	virtual void	ReloadMagazine	();
 
-	virtual void	state_Fire		(BOOL bHUD);
-	virtual void	state_MagEmpty	(BOOL bHUD);
+	virtual void	state_Fire		(BOOL bHUD, float dt);
+	virtual void	state_MagEmpty	(BOOL bHUD, float dt);
 public:
 					CWeaponMagazined	(LPCSTR name);
 	virtual			~CWeaponMagazined	();
