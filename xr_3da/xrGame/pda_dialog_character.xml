@@ -20,12 +20,12 @@
 	</rank_caption>
 
 	<!-- COMMUNITY -->
-	<community_static x="121" y="61" width="240" height="15">
+	<community_static x="121" y="59" width="240" height="15">
 		<text x="0" y="0" font="letterica18" r="150" g="150" b="180"></text>
 	</community_static>
 
 	<!-- COMMUNITY CAPTION -->
-	<community_caption x="121" y="46" width="240" height="15">
+	<community_caption x="121" y="44" width="240" height="15">
 		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">community</text>
 	</community_caption>
 
