@@ -8,7 +8,7 @@ function main ()
             h = hit()
             h.power      = 10
             h.direction:set  (1,0,0)
-            h.bone      ("bip01_head")
+            h:bone      ("bip01_head")
             h.draftsman    = actor
             h.impulse    = 10
             h.type      = hit.wound
