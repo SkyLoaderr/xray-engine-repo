@@ -21,9 +21,9 @@ function evaluator_new:evaluate()
 	end
 
 	self.a.evn:calculate()
-	self.a.evn:print()
+--	self.a.evn:print()
 	
-	return self.a.evn:isEvents()
+	return self.a.evn:isEvents() or self.a.obj.id ~= nil
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ function action_wait:initialize()
 					{pack = sounds["search"], id = 1},
 					{pack = sounds["search"], id = 2},
 					{pack = sounds["search"], id = 3} }}
-	self.sound_wait = {idle = 0,
+	self.sound_watch = {idle = 0,
 		     begin = nil,
 		     maxidle = 5, 
 		     sumidle = 3,
@@ -91,14 +91,20 @@ end
 function action_wait:execute()
 	self.a.evn:get_event(self.a.obj)
 
-	printf("!!!")
-	self.a.evn:printid(self.a.obj.id)
-
 	if self.a.obj.type == "watch" then
 		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
 			self.a.evn:markAsUsed(self.a.obj.id)
+			self.a.obj.id = nil
+			return
+		end
+
+		-- если прошло много времени, прекращаем
+		if device():time_global() - self.a.obj.time >= self.a.time_wait then
+			self:set_prisluh(false)
+			self.a.evn:removeFromWatch(self.a.obj.id)
+			self.a.obj.id = nil
 			return
 		end
 
@@ -109,7 +115,7 @@ function action_wait:execute()
 		self:set_prisluh(true)
 		-- озвучка на поиск
 		if self.a.evn:ruleExist("silence") ~= true then
-			globals.set_sound(self.object, self.sound_search, false)
+			globals.set_sound(self.object, self.sound_watch, false)
 		end
 	end
 
@@ -118,6 +124,7 @@ function action_wait:execute()
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
 			self.a.evn:markAsUsed(self.a.obj.id)
+			self.a.obj.id = nil
 			return
 		end
 	end
@@ -127,6 +134,7 @@ function action_wait:execute()
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
 			self.a.evn:markCorpse(self.a.obj.id)
+			self.a.obj.id = nil
 			return
 		end
 	end
@@ -136,6 +144,7 @@ function action_wait:execute()
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
 			self.a.evn:markCorpse(self.a.obj.id)
+			self.a.obj.id = nil
 			return
 		end
 	end
@@ -145,6 +154,7 @@ function action_wait:execute()
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
 			self.a.evn:markCorpse(self.a.obj.id)
+			self.a.obj.id = nil
 			return
 		end
 	end
@@ -154,6 +164,7 @@ function action_wait:execute()
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
 			self:set_prisluh(false)
 			self.a.evn:markCorpse(self.a.obj.id)
+			self.a.obj.id = nil
 			return
 		end
 	end
@@ -166,6 +177,10 @@ end
 function action_wait:set_prisluh(prisluh)
 	if prisluh == false then
 		-- действи€ по окончанию прислушивани€
+		if self.a.evn:ruleExist("silence") ~= true then
+			globals.set_sound(self.object, self.sound_relax, true)
+		end
+
 		self.object:clear_animations()
 		self.object:add_animation("prisluh_2_idle_7", true)
 		self.anim.begin = nil
@@ -347,6 +362,7 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 	for v in vtable do
 		local vo = v:object()
 		local continue = true
+		local type = nil
 
 		if self.used[vo:id()] ~= nil then
 			continue = false
@@ -365,7 +381,6 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 			continue = false
 		end
 
-
 		-- отсеивание по настройке
 		if continue and self:isRuled(vo) then
 			continue = false
@@ -375,12 +390,22 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 			continue = false
 		end
 		
-		if continue and (get_clsid(vo) == clsid.stalker or get_clsid(vo) == clsid.actor) then
-			if vo:squad() == self.npc:squad() and
-			   self:type(vo) ~= "corpse"
-			then
-				continue = false
-			end
+		type = self:type(vo)
+		
+		if continue and type == "item" then
+			continue = false
+		end
+
+		if continue and type == "stalker" and 
+                   vo:squad() == self.npc:squad() 
+		then
+		   	continue = false
+		end
+
+		if continue and type == "corpse" and
+		   v.value < self.npc:visibility_threshold()		
+		then
+			continue = false
 		end
 
 		if continue then
@@ -410,8 +435,6 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 					self.arhive[vo:id()].stalker.relation = self.npc:relation(vo)
 				elseif self.arhive[vo:id()].object_type == "monstr" then
 					self.arhive[vo:id()].monstr.power = self:monstr_power(vo)
-				elseif self.arhive[vo:id()].object_type == "item" then
-					self.arhive[vo:id()].item.power = self:item_power(vo)
 				elseif self.arhive[vo:id()].object_type == "corpse" then
 					self.arhive[vo:id()].corpse.type = self:corpseType(vo)
 					if self.arhive[vo:id()].corpse.type == "stalker" then
