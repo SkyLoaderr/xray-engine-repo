@@ -103,6 +103,7 @@ void CALifeSpawnRegistry::fill_new_spawns_single		(SPAWN_GRAPH::CVertex *vertex,
 	for ( ; I != E; ++I) {
 		accumulator				+= (*I).weight();
 		if (accumulator > probability) {
+			vertex->data()->object().m_spawn_count++;
 			fill_new_spawns		(m_spawns.vertex((*I).vertex_id()),spawns,game_time,objects);
 			return;
 		}
@@ -116,6 +117,7 @@ void CALifeSpawnRegistry::fill_new_spawns				(SPAWN_GRAPH::CVertex *vertex, xr_v
 		return;
 
 	if (vertex->edges().empty()) {
+		vertex->data()->object().m_spawn_count++;
 		spawns.push_back					(vertex->data()->object().m_tSpawnID);
 		return;
 	}
@@ -124,6 +126,8 @@ void CALifeSpawnRegistry::fill_new_spawns				(SPAWN_GRAPH::CVertex *vertex, xr_v
 		fill_new_spawns_single				(vertex,spawns,game_time,objects);
 		return;
 	}
+
+	vertex->data()->object().m_spawn_count++;
 
 	SPAWN_GRAPH::const_iterator				I = vertex->edges().begin();
 	SPAWN_GRAPH::const_iterator				E = vertex->edges().end();
