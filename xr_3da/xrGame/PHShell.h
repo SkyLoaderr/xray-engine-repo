@@ -148,6 +148,7 @@ public:
 	virtual void                ZeroCallbacks				();
 	virtual void				ResetCallbacks				(u16 id,Flags64 &mask);
 	virtual void				SetCallbacks				(BoneCallbackFun* callback);
+	virtual void				EnabledCallbacks			(BOOL val);
 	virtual void				set_DisableParams			(const SAllDDOParams& params);
 	virtual void				UpdateRoot					();
 	virtual void				SmoothElementsInertia		(float k);

@@ -247,6 +247,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void                ZeroCallbacks			()													= 0;
 	virtual void				ResetCallbacks			(u16 id,Flags64 &mask)								= 0;
 	virtual void				SetCallbacks			(BoneCallbackFun* callback)							= 0;
+	virtual void				EnabledCallbacks		(BOOL val)											= 0;
 	virtual Fmatrix&			ObjectInRoot			()													= 0;
 	virtual	void				ObjectToRootForm		(const Fmatrix& form)							    = 0;
 	virtual						~CPhysicsShell		    (){}
@@ -260,6 +261,7 @@ CPhysicsElement*			P_create_Element		();
 CPhysicsShell*				P_create_Shell			();
 CPhysicsShell*				P_create_splited_Shell	();
 CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,LPCSTR	fixed_bones);
+CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,U16Vec& fixed_bones);
 CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map,LPCSTR	fixed_bones);
 CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map=NULL);
 #endif // PhysicsShellH

@@ -838,6 +838,20 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 		ResetCallbacksRecursive((*it)->SelfID,element,mask);
 }
 
+void CPHShell::EnabledCallbacks(BOOL val)
+{
+	if (val){	
+		SetCallbacks(BonesCallback);
+		// set callback owervrite in used bones
+		ELEMENT_I i,e;
+		i=elements.begin(); e=elements.end();
+		for( ;i!=e;++i){
+			CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance((*i)->m_SelfID);
+			B.Callback_overwrite= TRUE;
+		}
+	}else		ZeroCallbacks();
+}
+
 static u16 element_position_in_set_calbacks=u16(-1);
 static BoneCallbackFun* bones_callback;//temp ror SetCallbacksRecursive
 void CPHShell::SetCallbacks(BoneCallbackFun* callback)
@@ -849,27 +863,20 @@ void CPHShell::SetCallbacks(BoneCallbackFun* callback)
 
 void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
 {
-
 	//if(elements.size()==element)	return;
 	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 	SJointIKData& joint_data=bone_data.IK_data;
 
-	if((bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid)	&& element!=u16(-1))
-	{
-
+	if((bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid)	&& element!=u16(-1)){
 		B.set_callback(0,dynamic_cast<CPhysicsElement*>(elements[element]));
-	}
-	else
-	{
-
+	}else{
 		element_position_in_set_calbacks++;
 		element=element_position_in_set_calbacks;
 		R_ASSERT2(element<elements.size(),"Out of elements!!");
 		//if(elements.size()==element)	return;
 		CPhysicsElement* E=dynamic_cast<CPhysicsElement*>(elements[element]);
 		B.set_callback(bones_callback,E);
-
 		//B.Callback_overwrite=TRUE;
 	}
 

@@ -35,13 +35,9 @@ CPhysicsJoint*				P_create_Joint			(CPhysicsJoint::enumType type ,CPhysicsElemen
 
 CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map)
 {
-
-
 	CKinematics* pKinematics=PKinematics(obj->Visual());
 
 	CPhysicsShell* pPhysicsShell		= P_create_Shell();
-
-
 
 	pPhysicsShell->build_FromKinematics(pKinematics,bone_map);
 
@@ -88,12 +84,41 @@ CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P
 		R_ASSERT2(fixed_element,"fixed bone has no physics");
 		FixBody(fixed_element->get_body());
 	}
-return pPhysicsShell;
+	return pPhysicsShell;
+}
+
+CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,LPCSTR	fixed_bones)
+{
+	U16Vec f_bones;
+	if(fixed_bones){
+		CKinematics* K		= PKinematics(obj->Visual());
+		int count =			_GetItemCount(fixed_bones);
+		for (int i=0 ;i<count; ++i){
+			string64		fixed_bone;
+			_GetItem		(fixed_bones,i,fixed_bone);
+			f_bones.push_back(K->LL_BoneID(fixed_bone));
+			R_ASSERT2(BI_NONE!=f_bones.back(),"wrong fixed bone")			;
+		}
+	}
+	return P_build_Shell	(obj,not_active_state,f_bones);
 }
 
 static BONE_P_MAP bone_map=BONE_P_MAP();
-CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,LPCSTR	fixed_bones)
+CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,U16Vec& fixed_bones)
 {
-	bone_map					.clear();
-	return P_build_Shell			(obj,not_active_state,&bone_map,fixed_bones);
+	bone_map.clear			();
+	CPhysicsShell*			pPhysicsShell;
+	if(!fixed_bones.empty())
+		for (U16It it=fixed_bones.begin(); it!=fixed_bones.end(); it++)
+			bone_map.insert(mk_pair(*it,physicsBone()));
+	pPhysicsShell=P_build_Shell(obj,not_active_state,&bone_map);
+
+	// fix bones
+	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();
+	for(;i!=e;i++){
+		CPhysicsElement* fixed_element=i->second.element;
+		R_ASSERT2(fixed_element,"fixed bone has no physics");
+		FixBody(fixed_element->get_body());
+	}
+	return pPhysicsShell;
 }
