@@ -1014,7 +1014,9 @@ void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fv
 	{
 		fracture->MassAddToSecond(m);
 	}
+	R_ASSERT2(dMass_valide(&m),"bad bone mass params");
 	dMassAdd(&m_mass,&m);
+	R_ASSERT2(dMass_valide(&m),"bad result mass params");
 	m_mass_center.set(new_mc);
 }
 

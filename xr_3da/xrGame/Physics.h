@@ -45,7 +45,12 @@ IC BOOL dQ_valid			(const dReal* q)
 {
 	return dV4_valid(q);
 }
-
+IC BOOL dMass_valide(const dMass* m)
+{
+	return	_valid(m->mass)&&
+			dV_valid(m->c)&&
+			dM_valid(m->I);
+}
 IC BOOL dBodyStateValide(const dBodyID body)
 {
 	return dM_valid(dBodyGetRotation(body)) &&
