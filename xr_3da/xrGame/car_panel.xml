@@ -14,7 +14,6 @@
 
 
 	<speedometer x="-100" y="0" width="150" height="100" align="rb">
-		<text x="0" y="0" font="small" r="255" g="255" b="255" a="130">vehicle</text>
 		<texture>ui\ui_mn_health</texture>
 	</speedometer>
 
