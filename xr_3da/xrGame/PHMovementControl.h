@@ -160,7 +160,7 @@ public:
 	void				EnableCharacter			()																		{m_character->Enable();}
 	void				GetDesiredPos			(Fvector& dpos)
 	{
-		CPHStalkerCharacter* pStalker_Character=dynamic_cast<CPHStalkerCharacter*>(m_character);
+		CPHAICharacter* pStalker_Character=dynamic_cast<CPHAICharacter*>(m_character);
 		pStalker_Character->GetDesiredPosition(dpos);
 	}
 	CPHMovementControl(void);

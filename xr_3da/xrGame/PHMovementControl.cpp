@@ -90,7 +90,7 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,fl
 void CPHMovementControl::Calculate(const Fvector& desired,float dt){
 
 	m_character->IPosition(vPosition);
-	CPHStalkerCharacter* pStalkerCharacter=dynamic_cast<CPHStalkerCharacter*>(m_character);
+	CPHAICharacter* pStalkerCharacter=dynamic_cast<CPHAICharacter*>(m_character);
 	
 	pStalkerCharacter->SetDesiredPosition(desired);
 	pStalkerCharacter->BringToDesired(dt);
@@ -194,7 +194,7 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 	switch(type)
 	{
 	case actor:			m_character = xr_new<CPHSimpleCharacter>	();break;
-	case ai_stalker:	m_character = xr_new<CPHStalkerCharacter>	();break;
+	case ai_stalker:	m_character = xr_new<CPHAICharacter>	();break;
 	}
 m_character->SetMas(fMass);
 m_character->SetPosition(vPosition);

@@ -463,7 +463,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 				dReal amag =m_acceleration.magnitude();
 				if(amag<1.f)amag=1.f;
 				//dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,vel[1]+JUMP_UP_VELOCITY,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
-				dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,vel[1]+jump_up_velocity,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
+				dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,jump_up_velocity,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);//vel[1]+
 				Memory.mem_copy(m_jump_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 				m_jump_accel=m_acceleration;
 				b_jump=false;
@@ -1344,7 +1344,7 @@ void	CPHSimpleCharacter::Disabling(){
 
 
 
-bool CPHStalkerCharacter::TryPosition(Fvector pos){
+bool CPHAICharacter::TryPosition(Fvector pos){
 	if(!b_exist) return false;
 	if(b_on_object) return false;
 	SetPosition(pos);
@@ -1354,14 +1354,14 @@ bool CPHStalkerCharacter::TryPosition(Fvector pos){
 	return true;
 }
 
-void CPHStalkerCharacter::		SetPosition							(Fvector pos)	
+void CPHAICharacter::		SetPosition							(Fvector pos)	
 {
 	m_vDesiredPosition.set(pos);
 	inherited::SetPosition(pos);
 
 }
 
-void CPHStalkerCharacter::BringToDesired(float time,float force)
+void CPHAICharacter::BringToDesired(float time,float force)
 {
 	Fvector pos,move;
 	GetPosition(pos);
@@ -1391,7 +1391,7 @@ void CPHStalkerCharacter::BringToDesired(float time,float force)
 	}
 }
 #ifdef DEBUG
-void	CPHStalkerCharacter::OnRender()	
+void	CPHAICharacter::OnRender()	
 {
 	inherited::OnRender();
 

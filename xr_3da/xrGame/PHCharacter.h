@@ -227,7 +227,7 @@ virtual		bool		TryPosition							(Fvector pos)	{return false;};
 virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object){};
 };
 
-class CPHStalkerCharacter : public CPHSimpleCharacter
+class CPHAICharacter : public CPHSimpleCharacter
 {
 typedef CPHSimpleCharacter	inherited;
 
