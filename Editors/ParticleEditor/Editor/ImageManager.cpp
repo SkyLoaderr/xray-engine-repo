@@ -21,7 +21,7 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
 {
     if (!Engine.FS.Exist(full_name,true)) return false;
 	AnsiString ext = ExtractFileExt(full_name).LowerCase();
-	if (ext==".tga"){
+	if (ext==".tga"){                     
     	CImage img;
         if (!img.LoadTGA	(full_name)) return false;
 		w 					= img.dwWidth;
@@ -117,7 +117,7 @@ void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, DWOR
     bool bRes 	= DXTCompress(game_name, (LPBYTE)load_data, w, h, w4, &THM->m_TexParams, 4);
     if (!bRes){
     	Engine.FS.DeleteFileByName(game_name);
-    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nCheck texture size.",game_name);
+    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nCheck texture size (%dx%d).",game_name,w,h);
 		return;
     }
     R_ASSERT(bRes&&Engine.FS.FileLength(game_name));
@@ -154,11 +154,31 @@ void CImageManager::SynchronizeThumbnail(EImageThumbnail* THM, LPCSTR src_name)
 	MakeThumbnail(THM,data.begin(),w,h,a);
 }
 //------------------------------------------------------------------------------
+// копирует обновленные текстуры с Import'a в Textures
+// files - список файлов для копирование
+//------------------------------------------------------------------------------
+void CImageManager::SafeCopyLocalToServer(FileMap& files)
+{
+    AnsiString p_import;
+    AnsiString p_textures;
+    AnsiString src_name,dest_name;
+    Engine.FS.m_Import.Update(p_import);
+    Engine.FS.m_Textures.Update(p_textures);
+
+    FilePairIt it	= files.begin();
+	FilePairIt _E 	= files.end();
+	for (; it!=_E; it++){
+		src_name 	= p_import	+ it->first;
+		dest_name 	= p_textures+ it->first;
+		Engine.FS.CopyFileTo(src_name.c_str(),dest_name.c_str(),true);
+    }
+}
+//------------------------------------------------------------------------------
 // возвращает список не синхронизированных (модифицированных) текстур
 // source_list - содержит список текстур с расширениями
 // sync_list - реально сохраненные файлы (после использования освободить)
 //------------------------------------------------------------------------------
-void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FileMap* source_list, LPSTRVec* sync_list)
+void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FileMap* source_list, LPSTRVec* sync_list, FileMap* modif_map)
 {
 	FileMap M_BASE;
 	FileMap M_THUM;
@@ -170,10 +190,10 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     Engine.FS.m_GameTextures.Update(p_game);
 
     if (source_list) M_BASE = *source_list;
-    else Engine.FS.GetFiles(p_base.c_str(),M_BASE,true,false,"*.tga,*.bmp");
+    else Engine.FS.GetFileList(p_base.c_str(),M_BASE,true,false,false,"*.tga,*.bmp");
     if (M_BASE.empty()) return;
-    if (sync_thm) Engine.FS.GetFiles(p_base.c_str(),M_THUM,true,true,"*.thm");
-    if (sync_game) Engine.FS.GetFiles(p_game.c_str(),M_GAME,true,true,"*.dds");
+    if (sync_thm) Engine.FS.GetFileList(p_base.c_str(),M_THUM,true,true,false,"*.thm");
+    if (sync_game) Engine.FS.GetFileList(p_game.c_str(),M_GAME,true,true,false,"*.dds");
 
     UI.ProgressStart(M_BASE.size(),"Synchronize textures...");
     FilePairIt it=M_BASE.begin();
@@ -206,11 +226,16 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     	if (bForceGame||(sync_game&&bGame)){
         	if (!THM) THM = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
             if (data.empty()){ bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);}
-            AnsiString game_name=AnsiString(base_name)+".dds";
-            Engine.FS.m_GameTextures.Update(game_name);
-            MakeGameTexture(THM,game_name.c_str(),data.begin());
-            Engine.FS.SetFileAge(game_name, it->second);
-            if (sync_list) sync_list->push_back(strdup(base_name));
+			if (btwIsPow2(w)&&btwIsPow2(h)){
+                AnsiString game_name=AnsiString(base_name)+".dds";
+                Engine.FS.m_GameTextures.Update(game_name);
+                MakeGameTexture(THM,game_name.c_str(),data.begin());
+                Engine.FS.SetFileAge(game_name, it->second);
+                if (sync_list) sync_list->push_back(strdup(base_name));
+                if (modif_map) (*modif_map)[it->first]=it->second;
+            }else{
+		    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nInvalid size (%dx%d).",fn.c_str(),w,h);
+            }
 		}
 		if (THM) _DELETE(THM);
 		if (UI.NeedAbort()) break;
@@ -218,7 +243,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     UI.ProgressEnd();
 }
 
-int	CImageManager::GetModifiedTextures(FileMap& files)
+int	CImageManager::GetServerModifiedTextures(FileMap& files)
 {
 	FileMap M_BASE;
 	FileMap M_THUM;
@@ -229,9 +254,9 @@ int	CImageManager::GetModifiedTextures(FileMap& files)
     Engine.FS.m_Textures.Update(p_base);
     Engine.FS.m_GameTextures.Update(p_game);
 
-    if (0==Engine.FS.GetFiles(p_base.c_str(),M_BASE,true,false,"*.tga,*.bmp")) return 0;
-    Engine.FS.GetFiles(p_base.c_str(),M_THUM,true,true,"*.thm");
-    Engine.FS.GetFiles(p_game.c_str(),M_GAME,true,true,"*.dds");
+    if (0==Engine.FS.GetFileList(p_base.c_str(),M_BASE,true,false,false,"*.tga,*.bmp")) return 0;
+    Engine.FS.GetFileList(p_base.c_str(),M_THUM,true,true,false,"*.thm");
+    Engine.FS.GetFileList(p_game.c_str(),M_GAME,true,true,false,"*.dds");
 
     FilePairIt it=M_BASE.begin();
 	FilePairIt _E = M_BASE.end();
@@ -260,7 +285,17 @@ int CImageManager::GetTextures(FileMap& files)
 {
     AnsiString p_base;
     Engine.FS.m_Textures.Update(p_base);
-    if (0==Engine.FS.GetFiles(p_base.c_str(),files,true,false,"*.tga,*.bmp")) return 0;
+    if (0==Engine.FS.GetFileList(p_base.c_str(),files,true,false,false,"*.tga,*.bmp")) return 0;
+    return files.size();
+}
+//------------------------------------------------------------------------------
+// возвращает список текстур, которые нужно обновить
+//------------------------------------------------------------------------------
+int CImageManager::GetLocalNewTextures(FileMap& files)
+{
+    AnsiString p_base;
+    Engine.FS.m_Import.Update(p_base);
+    if (0==Engine.FS.GetFileList(p_base.c_str(),files,true,false,true,"*.tga,*.bmp")) return 0;
     return files.size();
 }
 //------------------------------------------------------------------------------
@@ -295,7 +330,7 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
     // Analyze
     float 		difference	= 0;
     float 		maximal 	= 0;	
-    for (int p=0; p<data.size(); p++)
+    for (DWORD p=0; p<data.size(); p++)
     {
         Fcolor 		c1,c2;
     	c1.set		(data[p]);
@@ -313,7 +348,6 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
     compl			= 	iFloor(difference)*1000;
     maximal 		=	maximal/(a ? 2.f : sqrtf(3.f));
     maximal			=  	maximal*100.f;
-//    maximal 		*=	100.f;
     clamp 			(maximal,0.f,100.f);
     compl			+= 	iFloor(maximal);
 
@@ -328,13 +362,14 @@ void CImageManager::CheckCompliance(FileMap& files, FileMap& compl)
     FilePairIt it	= files.begin();
 	FilePairIt _E 	= files.end();
 	for (; it!=_E; it++){
-    	float val	= 0;
+    	int val	= 0;
         AnsiString 	fname=it->first.c_str();
         Engine.FS.m_Textures.Update(fname);
     	if (!CheckCompliance(fname.c_str(),val))
         	ELog.Msg(mtError,"Bad texture: '%s'",it->first.c_str());
     	compl[it->first] = iFloor(val);
     	UI.ProgressInc();
+		if (UI.NeedAbort()) break;
     }
 	UI.ProgressEnd();
 }

@@ -154,6 +154,21 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #include "engine\vector.h"
 #include "engine\FixedVector.h"
 #include "engine\xr_list.h"
+
+DEFINE_VECTOR(bool,boolVec,boolIt);
+DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);
+DEFINE_VECTOR(WORD,WORDVec,WORDIt);
+DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
+DEFINE_VECTOR(int,INTVec,INTIt);
+DEFINE_VECTOR(float,FloatVec,FloatIt);
+DEFINE_VECTOR(Fplane,PlaneVec,PlaneIt);
+DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);
+DEFINE_VECTOR(Fvector,FvectorVec,FvectorIt);
+DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
+DEFINE_VECTOR(LPSTR,LPSTRVec,LPSTRIt);
+DEFINE_VECTOR(LPCSTR,LPCSTRVec,LPCSTRIt);
+DEFINE_VECTOR(string64,string64Vec,string64It);
+
 #include "Log.h"
 #include "engine.h"
 
@@ -176,20 +191,6 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
     IC bool operator()(AnsiString& x, AnsiString& y) const
     {	return x<y;	}
 };
-
-DEFINE_VECTOR(bool,boolVec,boolIt);
-DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);
-DEFINE_VECTOR(WORD,WORDVec,WORDIt);
-DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
-DEFINE_VECTOR(int,INTVec,INTIt);
-DEFINE_VECTOR(float,FloatVec,FloatIt);
-DEFINE_VECTOR(Fplane,PlaneVec,PlaneIt);
-DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);
-DEFINE_VECTOR(Fvector,FvectorVec,FvectorIt);
-DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
-DEFINE_VECTOR(LPSTR,LPSTRVec,LPSTRIt);
-DEFINE_VECTOR(LPCSTR,LPCSTRVec,LPCSTRIt);
-DEFINE_VECTOR(string64,string64Vec,string64It);
 
 #ifdef _EDITOR
 	#include "device.h"

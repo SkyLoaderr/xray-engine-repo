@@ -23,6 +23,7 @@ FileMap TfrmImageLib::texture_map;
 FileMap TfrmImageLib::modif_map;
 FileMap TfrmImageLib::compl_map;
 AnsiString TfrmImageLib::m_LastSelection="";
+bool TfrmImageLib::bFormLocked=false;
 //---------------------------------------------------------------------------
 __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
     : TForm(Owner)
@@ -45,8 +46,7 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 	    form->bCheckMode = bCheck;
         compl_map.clear();
 
-        if (form->bCheckMode) 	form->ebClose->Caption = "Update&&Close";
-    	else        			ImageManager.GetTextures(texture_map);
+        if (!form->bCheckMode) 	ImageManager.GetTextures(texture_map);
 		form->modif_map.clear();
         form->m_Thm = 0;
         form->m_SelectedName = "";
@@ -57,17 +57,44 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
         Scene.lock();
     }
 
-    form->Show();
+    form->ShowModal();
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::CheckImageLib(){
 	texture_map.clear();
-    if (ImageManager.GetModifiedTextures(texture_map)){
-//		ImageManager.SynchronizeTextures(true,false,false,&texture_map,0);
-    	EditImageLib(AnsiString("Check image params"),true);
+    int new_cnt = ImageManager.GetLocalNewTextures(texture_map);
+    if (new_cnt){
+    	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Found %d new texture(s).\nAppend to library?",new_cnt)==mrYes){
+        	ImageManager.SafeCopyLocalToServer(texture_map);
+    		EditImageLib(AnsiString("Check image params"),true);
+    	}
     }
+}
+
+void __fastcall TfrmImageLib::UpdateImageLib(){
+    SaveTextureParams();
+    if (bCheckMode&&!texture_map.empty()){
+    	LPSTRVec modif;
+        FileMap modif2;
+        LockForm();
+		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif,&modif2);
+        UnlockForm();
+        Engine.FS.MarkFiles(&Engine.FS.m_Import,modif2);
+    	Device.RefreshTextures(&modif);
+		ImageManager.FreeModifVec(modif);
+    }else{
+	    // save game textures
+        if (modif_map.size()){
+            LPSTRVec modif;
+	        LockForm();
+            ImageManager.SynchronizeTextures(true,true,true,&modif_map,&modif);
+            UnlockForm();
+	        Device.RefreshTextures(&modif);
+            ImageManager.FreeModifVec(modif);
+        }
+	}
 }
 
 bool __fastcall TfrmImageLib::HideImageLib(){
@@ -82,38 +109,14 @@ bool __fastcall TfrmImageLib::HideImageLib(){
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 {
-    InitItemsList();
+    InitItemsList(m_LastSelection.IsEmpty()?0:m_LastSelection.c_str());
     UI.BeginEState(esEditImages);
-
-    TElTreeItem *node=0;
-    if (m_LastSelection.IsEmpty()) node = tvItems->Items->GetFirstNode();
-    else node = FOLDER::FindObject(tvItems,m_LastSelection.c_str());
-    if (node){
-        tvItems->Selected = node;
-        tvItems->EnsureVisible(node);
-    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	if (!form) return;
     form->Enabled = false;
-
-    SaveTextureParams();
-    if (bCheckMode&&!texture_map.empty()){
-    	LPSTRVec modif;
-		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif);
-    	Device.RefreshTextures(&modif);
-		ImageManager.FreeModifVec(modif);
-    }else{
-	    // save game textures
-        if (modif_map.size()){
-            LPSTRVec modif;
-            ImageManager.SynchronizeTextures(true,true,true,&modif_map,&modif);
-            Device.RefreshTextures(&modif);
-            ImageManager.FreeModifVec(modif);
-        }
-	}
 
 	_DELETE(m_Thm);
     m_SelectedName = "";
@@ -136,12 +139,32 @@ void TfrmImageLib::InitItemsList(const char* nm)
     // fill
 	FilePairIt it = texture_map.begin();
 	FilePairIt _E = texture_map.end();
-    for (; it!=_E; it++)
-        FOLDER::AppendObject(tvItems,it->first.c_str());
+    if (compl_map.size()){
+        for (; it!=_E; it++){
+            TElTreeItem* node = FOLDER::AppendObject(tvItems,it->first.c_str());
+            FilePairIt c_it = compl_map.find(it->first);
+            if (c_it!=compl_map.end()){
+                int A,M;
+                ExtractCompValue(c_it->second,A,M);
+                if ((A<2)&&(M<50)){
+                	node->ImageIndex = 0;
+                    if (node->Parent) node->Parent->Expand(false);
+                }
+            }
+        }
+    }else{
+        for (; it!=_E; it++)
+            FOLDER::AppendObject(tvItems,it->first.c_str());
+    }
 
     // redraw
-    if (nm)
-		tvItems->Selected = tvItems->Items->LookForItem(0,nm,0,0,false,true,false,false,true);
+    TElTreeItem *node=0;
+    if (!nm)	node = tvItems->Items->GetFirstNode();
+    else 		node = FOLDER::FindObject(tvItems,nm);
+    if (node){
+        tvItems->Selected = node;
+        tvItems->EnsureVisible(node);
+    }
 
 	tvItems->IsUpdating = false;
 }
@@ -151,8 +174,9 @@ void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Key==VK_ESCAPE){
-    	ebClose->Click();
-    	Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
+		if (bFormLocked) 	UI.Command(COMMAND_BREAK_LAST_OPERATION);
+        else				ebClose->Click();
+        Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
     }
 }
 //---------------------------------------------------------------------------
@@ -160,6 +184,20 @@ void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfrmImageLib::ebCloseClick(TObject *Sender)
 {
+	if (bFormLocked) return;
+
+	UpdateImageLib();
+    HideImageLib();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmImageLib::ebCancelClick(TObject *Sender)
+{
+	if (bFormLocked){
+		UI.Command(COMMAND_BREAK_LAST_OPERATION);
+    	return;
+    }
+
     HideImageLib();
 }
 //---------------------------------------------------------------------------
@@ -195,8 +233,8 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             if (!compl_map.empty()){
 				FilePairIt it = compl_map.find(m_SelectedName);
                 if (it!=compl_map.end()){
-	                int A			= it->second/1000;
-    	            int M			= it->second-A*1000;
+                	int A,M;
+	                ExtractCompValue(it->second,A,M);
 	    	        AnsiString t2; 	t2.sprintf(" [A:%d%% M:%d%%]",A,M);
             		temp			+= t2;
                 }
@@ -250,25 +288,6 @@ void __fastcall TfrmImageLib::pbImagePaint(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::ebConvertClick(TObject *Sender)
-{
-/*	if (!sel_tex) return;
-	SaveExportParams();
-	AnsiString fn = sel_tex->name();
-	if(FS.GetSaveName(&FS.m_GameTextures,fn)){
-    	UI.ProgressStart(2,"Convert texture...");
-        UI.ProgressInc();
-    	if(!sel_tex->SaveAsDDS(fn.c_str())){
-        	ELog.DlgMsg(mtError,"Can't save picture.");
-        }else{
-	        UI.ProgressInc();
-        	ELog.DlgMsg(mtInformation,"Picture %s succesfully converted.",sel_tex->name());
-        }
-        UI.ProgressEnd();
-    }
-*/
-}
-//---------------------------------------------------------------------------
 
 extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
 
@@ -305,13 +324,21 @@ void __fastcall TfrmImageLib::tvItemsKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfrmImageLib::ebCheckAllComplianceClick(TObject *Sender)
 {
+	if (bFormLocked) return;
+
+	LockForm();
     ImageManager.CheckCompliance(texture_map,compl_map);
-	tvItemsItemFocused(Sender);
+	UnlockForm();
+    AnsiString last_name = tvItems->Selected?AnsiString(tvItems->Selected->Text):AnsiString("");
+    InitItemsList(last_name.IsEmpty()?0:last_name.c_str());
+//	tvItemsItemFocused(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::ebCheckSelComplianceClick(TObject *Sender)
 {
+	if (bFormLocked) return;
+
 	if (tvItems->Selected){
     	int compl=0;
         AnsiString 	fname=m_SelectedName;
@@ -327,4 +354,5 @@ void __fastcall TfrmImageLib::ebCheckSelComplianceClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
 

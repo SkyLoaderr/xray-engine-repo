@@ -24,11 +24,10 @@ class TfrmImageLib : public TForm
 __published:	// IDE-managed Components
 	TPanel *paRight;
 	TFormStorage *fsStorage;
-	TPanel *Panel2;
+	TPanel *paCommand;
 	TExtBtn *ebClose;
 	TPanel *paImage;
 	TPaintBox *pbImage;
-	TExtBtn *ebConvert;
 	TBevel *Bevel1;
 	TPanel *Panel3;
 	TPanel *paProperties;
@@ -36,7 +35,7 @@ __published:	// IDE-managed Components
 	TLabel *RxLabel2;
 	TLabel *RxLabel3;
 	TLabel *lbInfo;
-	TPanel *Panel5;
+	TPanel *paLeft;
 	TPanel *paTextureCount;
 	TElTree *tvItems;
 	TSplitter *Splitter1;
@@ -44,13 +43,13 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCheckAllCompliance;
 	TImageList *ImageList1;
 	TExtBtn *ebCheckSelCompliance;
+	TExtBtn *ebCancel;
     void __fastcall ebCloseClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall pbImagePaint(TObject *Sender);
-	void __fastcall ebConvertClick(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvItemsItemFocused(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
@@ -60,6 +59,7 @@ __published:	// IDE-managed Components
           TShiftState Shift);
 	void __fastcall ebCheckAllComplianceClick(TObject *Sender);
 	void __fastcall ebCheckSelComplianceClick(TObject *Sender);
+	void __fastcall ebCancelClick(TObject *Sender);
 private:
 // list functions
     void InitItemsList(const char* nm=0);
@@ -79,6 +79,11 @@ private:	// User declarations
     bool bCheckMode;
     TfrmProperties* ImageProps;
     static AnsiString m_LastSelection;
+    void __fastcall UpdateImageLib();
+    void ExtractCompValue(int val, int& A, int& M){	A = val/1000; M = val-A*1000; }
+    static bool bFormLocked;
+    static void LockForm()	{ bFormLocked = true;	form->paProperties->Enabled = false; 	form->paLeft->Enabled = false; }
+    static void UnlockForm(){ bFormLocked = false;	form->paProperties->Enabled = true; 	form->paLeft->Enabled = true; 	}
 public:		// User declarations
     __fastcall TfrmImageLib(TComponent* Owner);
 // static function

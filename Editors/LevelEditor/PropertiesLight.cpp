@@ -172,12 +172,12 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 		M = m_Props->AddItem(0,PROP_MARKER,	"Source");
 			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flSource));
 			m_Props->AddItem(M,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&F.m_Source.fRadius,0.f,10.f));
-			m_Props->AddItem(M,PROP_TEXTURE,"Texture",	m_Props->MakeTextValue(&F.m_Source.texture));
+			m_Props->AddItem(M,PROP_TEXTURE,"Texture",	m_Props->MakeTextValue(&F.m_Source.texture,sizeof(F.m_Source.texture)));
 		M = m_Props->AddItem(0,PROP_MARKER,	"Gradient");
 			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flGradient));
 			m_Props->AddItem(M,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&F.m_Gradient.fRadius,0.f,100.f));
 			m_Props->AddItem(M,PROP_FLOAT,	"Opacity",	m_Props->MakeFloatValue(&F.m_Gradient.fOpacity,0.f,1.f));
-			m_Props->AddItem(M,PROP_TEXTURE,"Texture",	m_Props->MakeTextValue(&F.m_Gradient.texture));
+			m_Props->AddItem(M,PROP_TEXTURE,"Texture",	m_Props->MakeTextValue(&F.m_Gradient.texture,sizeof(F.m_Gradient.texture)));
 		M = m_Props->AddItem(0,PROP_MARKER,	"Flares");
 			m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flFlare));
 		for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
@@ -186,7 +186,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 			m_Props->AddItem(N,PROP_FLOAT,	"Radius", 	m_Props->MakeFloatValue(&it->fRadius,0.f,10.f));
 			m_Props->AddItem(N,PROP_FLOAT,	"Opacity", 	m_Props->MakeFloatValue(&it->fOpacity,0.f,1.f));
 			m_Props->AddItem(N,PROP_FLOAT,	"Position",	m_Props->MakeFloatValue(&it->fPosition,-10.f,10.f));
-			m_Props->AddItem(N,PROP_TEXTURE,"Texture",	m_Props->MakeTextValue(&it->texture));
+			m_Props->AddItem(N,PROP_TEXTURE,"Texture",	m_Props->MakeTextValue(&it->texture,sizeof(it->texture)));
 		}
 
 		m_Props->EndFillMode();
