@@ -22,6 +22,7 @@ public:
 	virtual void		OnEvent					(EVENT E, u64 P1, u64 P2);
 
 	virtual void		RegisterModel			(IRender_Visual* V);
+	virtual	void		Statistics				(CGameFont* F);
 };
 
 #endif //GamePersistentH
