@@ -91,7 +91,8 @@ function multiplayer_dialog:InitCallbacks()
 end
 
 function multiplayer_dialog:OnButton_find()
-	
+	local dlg = ui_multiplayer_find.multiplayer_find_dialog()
+	level.start_stop_menu(dlg, true)	
 end
 
 function multiplayer_dialog:OnButton_create()
