@@ -41,6 +41,7 @@ extern ECORE_API float			ps_r2_df_parallaxh;			// r2-only
 extern ECORE_API float			ps_r2_tonemap_middlegray;	// r2-only
 extern ECORE_API float			ps_r2_tonemap_adaptation;	// r2-only
 extern ECORE_API float			ps_r2_tonemap_low_lum;		// r2-only
+extern ECORE_API float			ps_r2_tonemap_bias_lum;		// r2-only
 extern ECORE_API float			ps_r2_ls_bloom_kernel_g;	// r2-only	// gauss
 extern ECORE_API float			ps_r2_ls_bloom_kernel_b;	// r2-only	// bilinear
 extern ECORE_API float			ps_r2_ls_bloom_threshold;	// r2-only
