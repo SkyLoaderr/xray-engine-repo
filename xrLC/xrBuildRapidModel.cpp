@@ -44,10 +44,10 @@ void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 				adjacent.push_back(V->adjacent[adj]);
 			}
 		}
-
-		// Unique
 		std::sort		(adjacent.begin(),adjacent.end());
 		adjacent.erase	(std::unique(adjacent.begin(),adjacent.end()),adjacent.end());
+
+		// Unique
 		BOOL			bAlready	= FALSE;
 		for (u32 ait=0; ait<adjacent.size(); ait++)
 		{

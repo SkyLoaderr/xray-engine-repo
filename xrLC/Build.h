@@ -78,6 +78,9 @@ public:
 	void	Tesselate				();
 	void	PreOptimize				();
 	void	CorrectTJunctions		();
+
+	void	xrPhase_AdaptiveHT		();
+
 	void	CalcNormals				();
 	void	xrPhase_TangentBasis	();
 

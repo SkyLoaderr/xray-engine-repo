@@ -120,6 +120,10 @@ void CBuild::Run	(LPCSTR P)
 	BuildRapid					(FALSE);
 
 	//****************************************** HEMI-Tesselate
+	FPU::m64r					();
+	Phase						("Adaptive HT...");
+	mem_Compact					();
+	xrPhase_AdaptiveHT			();
 
 	//****************************************** Building normals
 	FPU::m64r					();
@@ -135,6 +139,12 @@ void CBuild::Run	(LPCSTR P)
 		xrPhase_TangentBasis		();
 		mem_Compact					();
 	}
+
+	//****************************************** GLOBAL-RayCast model
+	FPU::m64r					();
+	Phase						("Building global-RayCast model...");
+	mem_Compact					();
+	BuildRapid					(TRUE);
 
 	//****************************************** Starting MU
 	FPU::m64r					();

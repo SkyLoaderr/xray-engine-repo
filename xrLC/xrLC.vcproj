@@ -696,6 +696,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\xrPhase_AdaptiveHT.cpp">
+			</File>
+			<File
 				RelativePath=".\xrPhase_MergeGeometry.cpp">
 			</File>
 			<File
