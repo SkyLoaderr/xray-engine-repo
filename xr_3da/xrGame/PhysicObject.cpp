@@ -56,8 +56,8 @@ void	CPhysicObject::SpawnInitPhysics	(CSE_Abstract* D)
 		pSkeletonAnimated	=PSkeletonAnimated(Visual());
 		if(pSkeletonAnimated)
 		{
-			R_ASSERT2					(*po->startup_animation,"no startup animation");
-			pSkeletonAnimated->PlayCycle(*po->startup_animation);
+			R_ASSERT2					(*D->startup_animation,"no startup animation");
+			pSkeletonAnimated->PlayCycle(*D->startup_animation);
 		}
 		PKinematics(Visual())->CalculateBones	();
 	}

@@ -30,8 +30,8 @@ public:
 	virtual				float					shedule_Scale		();
 	virtual				void					shedule_Update		(u32 dt);
 	
-						CUIGameCustom			()
-	virtual				~CUIGameCustom			()
+						CUIGameCustom			();
+	virtual				~CUIGameCustom			();
 
 			void		SetUI					(CUI* parent){m_Parent=parent;}
 	virtual	void		Init					()	{};

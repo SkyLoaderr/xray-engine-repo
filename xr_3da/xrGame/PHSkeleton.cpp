@@ -45,7 +45,7 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 	R_ASSERT				(po);
 
 	m_flags					= po->_flags;
-	m_startup_anim			= po->startup_animation;
+	m_startup_anim			= D->startup_animation;
 	
 
 
