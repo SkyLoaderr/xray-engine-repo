@@ -179,14 +179,23 @@ void CRender::Render		()
 	Target.phase_accumulator			();
 	// Target.accum_direct				();
 
+	// while (has_any_lights) {
+	//		if (has_point_shadowed)		->	generate point shadowmap
+	//		if (has_spot_shadowed)		->	generate spot shadowmap
+	//		switch-to-accumulator
+	//		if (has_point_unshadowed)	-> 	accum point unshadowed
+	//		if (has_spot_unshadowed)	-> 	accum spot unshadowed
+	//		if (was_point_shadowed)		->	accum point shadowed
+	//		if (was_spot_shadowed)		->	accum spot shadowed
+	//	}
+
 	// Point/spot lighting (unshadowed)
 	if (Lights.v_selected_unshadowed.size())
 	{
 		Target.phase_accumulator		();
 		HOM.Disable						();
-		xr_vector<light*>&	Lvec			= Lights.v_selected_unshadowed;
-		for	(u32 pid=0; pid<Lvec.size(); pid++)
-		{
+		xr_vector<light*>&	Lvec		= Lights.v_selected_unshadowed;
+		for	(u32 pid=0; pid<Lvec.size(); pid++)			{
 			light*	L	= Lvec[pid];
 			if (IRender_Light::POINT==L->flags.type)	Target.accum_point_unshadow	(L);
 			else										Target.accum_spot_unshadow	(L);
@@ -194,7 +203,7 @@ void CRender::Render		()
 	}
 
 	// Point/spot lighting (shadowed)
-	if (Lights.v_selected_shadowed.size	())
+	if (Lights.v_selected_shadowed.size	())		
 	{
 		HOM.Disable								();
 		xr_vector<light*>&	Lvec				= Lights.v_selected_shadowed;

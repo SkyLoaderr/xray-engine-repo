@@ -9,8 +9,10 @@ private:
 public:
 	light*					sun;
 	light*					sun_base;
-	xr_vector<light*>		v_selected_shadowed;
-	xr_vector<light*>		v_selected_unshadowed;
+	xr_vector<light*>		v_point;
+	xr_vector<light*>		v_point_s;
+	xr_vector<light*>		v_spot;
+	xr_vector<light*>		v_spot_s;
 public:
 	void					add_light			(light*		L);
 
