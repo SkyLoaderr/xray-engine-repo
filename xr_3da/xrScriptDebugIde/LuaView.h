@@ -113,6 +113,7 @@ protected:
 	afx_msg void OnEditReplace();
 	afx_msg void OnUpdateFind(CCmdUI* pCmdUI);
 	afx_msg void OnFunctionList();
+	afx_msg void OnCompleteWord();
 //}}AFX_MSG
 	afx_msg LRESULT OnFindReplaceCmd(WPARAM, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()

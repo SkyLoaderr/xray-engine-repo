@@ -83,8 +83,9 @@ public:
 	void	SetSel(long start, long end, BOOL bDirect = TRUE);
 	int		PointXFromPosition(long pos, BOOL bDirect = TRUE);
 	int		PointYFromPosition(long pos, BOOL bDirect = TRUE);
-
+	void	CompleteWord(const char* word);
 	void	createFunctionList(CMenu& mnu);
+	bool	createWordList(CMenu& mnu);
 //lexer
 	void	SetLexer(int lexer, BOOL bDirect = TRUE);
 	void	SetKeyWords(int keywordSet, const char* keyWords, BOOL bDirect = TRUE);

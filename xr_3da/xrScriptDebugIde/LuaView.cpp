@@ -54,6 +54,8 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_FINDNEXT, OnUpdateFind)
 
 	ON_COMMAND(ID_SHOW_FUNCTION_LIST, OnFunctionList)
+	ON_COMMAND(ID_EDIT_COMPLETEWORD, OnCompleteWord)
+	
 	
 	//}}AFX_MSG_MAP
 	ON_REGISTERED_MESSAGE(_ScintillaMsgFindReplace, OnFindReplaceCmd)
@@ -715,6 +717,27 @@ void CLuaView::_save()
 	Serialize(saveArchive);
 	}
 }
+void CLuaView::OnCompleteWord()
+{
+	CMenu mnu;
+	mnu.CreatePopupMenu();
+	if( !GetEditor()->createWordList(mnu) )
+		return;
+
+	RECT rct;
+	GetWindowRect(&rct);
+	rct.left += GetEditor()->PointXFromPosition( GetEditor()->GetSelectionEnd() );
+	rct.top  += GetEditor()->PointYFromPosition( GetEditor()->GetSelectionEnd() );
+
+	::SetForegroundWindow(m_hWnd);	
+	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD, rct.left, rct.top, this, NULL); 
+	if( 0 != idx ){
+		CString s;
+		mnu.GetMenuString(idx,s,MF_BYCOMMAND);
+		GetEditor()->CompleteWord(s.GetBuffer(0));
+	}
+
+}
 
 void CLuaView::OnFunctionList()
 {
@@ -722,9 +745,10 @@ void CLuaView::OnFunctionList()
 	mnu.CreatePopupMenu();
 	GetEditor()->createFunctionList(mnu);
 
-
 	POINT mouse;
-	GetCursorPos(&mouse);
+	//GetCursorPos(&mouse);
+	mouse.x = GetEditor()->PointXFromPosition( GetEditor()->GetSelectionEnd() );
+	mouse.y = GetEditor()->PointYFromPosition( GetEditor()->GetSelectionEnd() );
 	::SetForegroundWindow(m_hWnd);	
 	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD,mouse.x, mouse.y,this,NULL); 
 	if( 0 != idx ){
