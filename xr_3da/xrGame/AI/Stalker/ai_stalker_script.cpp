@@ -92,6 +92,9 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 		0
 	);
 
+//	if (l_tMovementAction.m_tGoalType == CMovementAction::eGoalTypeNoPathPosition)
+//		m_fCurSpeed	= l_tMovementAction.m_fSpeed;
+
 	return			(true);
 }
 
