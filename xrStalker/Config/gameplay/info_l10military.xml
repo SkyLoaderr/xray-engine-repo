@@ -24,6 +24,7 @@
 	<info_portion id="mil_sniper_get_job"><task>mil_kill_sniper</task></info_portion>
 	<info_portion id="mil_sniper_job_failed"></info_portion>
 	<info_portion id="mil_sniper_job_complete"></info_portion>
+	<info_portion id="mil_dolg_dead"></info_portion>
 	
 	<!-- Диалог с охранником у ворот-->
 	<info_portion id="mil_zoneguard_first"></info_portion>
