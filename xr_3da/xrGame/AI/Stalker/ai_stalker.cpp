@@ -241,8 +241,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		return						(FALSE);
 	Movement.SetPLastMaterial		(&m_dwLastMaterialID);
 
-	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeHumanAbstract						*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
+	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->get_visual());
 
