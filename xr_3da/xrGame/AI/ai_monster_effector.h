@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../effectorPP.h"
+#include "../../effectorPP.h"
 
 
 class CMonsterEffector : public CEffectorPP {
