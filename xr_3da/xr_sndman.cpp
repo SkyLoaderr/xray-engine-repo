@@ -238,7 +238,7 @@ void CSoundManager::GetDeviceInfo( )
 	Log("\n");
 }
 
-void CSoundManager::SetFreq( )
+void CSoundManager::SetFreq	()
 {
 	if (!bPresent)	return;
 	clamp			( psSoundFreq, DWORD(sf_11K), DWORD(sf_44K) );
@@ -256,20 +256,20 @@ void CSoundManager::SetFreq( )
 		case sf_44K:	wfm.nSamplesPerSec = 44100; break;
 	}
 	wfm.nAvgBytesPerSec	= wfm.nSamplesPerSec * wfm.nBlockAlign;
-	pBuffer->SetFormat(&wfm);
+	pBuffer->SetFormat		(&wfm);
 	pSoundRender->Reload	();
 	p2DSounds->Reload		();
 	pMusicStreams->Reload	();
 	Log("* Changing freq:", wfm.nSamplesPerSec);
 }
 
-void CSoundManager::SetModel( )
+void CSoundManager::SetModel()
 {
 	if ( !bPresent ) return;
 	clamp			( psSoundModel, DWORD(sq_DEFAULT), DWORD(sq_HIGH) );
 
 	dwModel			= psSoundModel;
-	pSoundRender->Reload();
+	pSoundRender->Reload	();
 }
 
 float CSoundManager::GetVMaster( )
