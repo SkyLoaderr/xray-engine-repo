@@ -74,7 +74,10 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1
 		news_data.texture_name = NULL;
 	}
 
-	R_ASSERT3(news_data.news_text != NO_STRING, "no entrance found for news in string table", news);
+	if (news_data.news_text != NO_STRING) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"no entrance found for news in string table", news);
+		return								false;
+	}
 	
 	if(delay==0)
 		pActor->AddGameNews(news_data);
@@ -209,8 +212,10 @@ bool CScriptGameObject::IsTradeEnabled		()
 void CScriptGameObject::ForEachInventoryItems(const luabind::functor<void> &functor)
 {
 	CInventoryOwner* owner = smart_cast<CInventoryOwner*>(&object());
-	if(!owner)
+	if(!owner){
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::ForEachInventoryItems non-CInventoryOwner object !!!");
+		return;
+	}
 	
 	CInventory* pInv = &owner->inventory();
 	TIItemContainer item_list;
@@ -231,8 +236,10 @@ void CScriptGameObject::DropItem(CScriptGameObject* pItem, Fvector pos)
 {
 	CInventoryOwner* owner = smart_cast<CInventoryOwner*>(&object());
 	CInventoryItem* item = smart_cast<CInventoryItem*>(&pItem->object());
-	if(!owner||!item)
+	if(!owner||!item){
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::DropItem non-CInventoryOwner object !!!");
+		return;
+	}
 
 	NET_Packet						P;
 	CGameObject::u_EventGen			(P,GE_OWNERSHIP_REJECT, object().ID());
@@ -259,11 +266,17 @@ void CScriptGameObject::DropItem(CScriptGameObject* pItem, Fvector pos)
 //передаче вещи из своего инвентаря в инвентарь партнера
 void CScriptGameObject::TransferItem(CScriptGameObject* pItem, CScriptGameObject* pForWho)
 {
-	R_ASSERT(pItem);
-	R_ASSERT(pForWho);
+	if (!pItem || !pForWho) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"cannot transfer NULL item");
+		return;
+	}
 
 	CInventoryItem* pIItem = smart_cast<CInventoryItem*>(&pItem->object());
-	VERIFY(pIItem);
+//	VERIFY(pIItem);
+	if (!pIItem) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Cannot transfer not CInventoryItem item");
+		return ;
+	}
 
 	// выбросить у себя 
 	NET_Packet						P;
@@ -285,11 +298,18 @@ u32 CScriptGameObject::Money	()
 
 void CScriptGameObject::TransferMoney(int money, CScriptGameObject* pForWho)
 {
-	R_ASSERT(pForWho);
+	if (!pForWho) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"cannot transfer money for NULL object");
+		return;
+	}
 	CInventoryOwner* pOurOwner		= smart_cast<CInventoryOwner*>(&object()); VERIFY(pOurOwner);
 	CInventoryOwner* pOtherOwner	= smart_cast<CInventoryOwner*>(&pForWho->object()); VERIFY(pOtherOwner);
 
-	R_ASSERT3(pOurOwner->m_dwMoney-money>=0, "Character does not have enought money", pOurOwner->CharacterInfo().Name());
+	if (pOurOwner->m_dwMoney-money<0) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Character does not have enought money");
+		return;
+	}
+//	R_ASSERT3(pOurOwner->m_dwMoney-money>=0, "Character does not have enought money", pOurOwner->CharacterInfo().Name());
 
 	pOurOwner->m_dwMoney	-= money;
 	pOtherOwner->m_dwMoney	+= money;
@@ -299,21 +319,33 @@ void CScriptGameObject::TransferMoney(int money, CScriptGameObject* pForWho)
 int	CScriptGameObject::GetGoodwill(CScriptGameObject* pToWho)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"GetGoodwill available only for InventoryOwner");
+		return 0;
+	}
 	return RELATION_REGISTRY().GetGoodwill(pInventoryOwner->object_id(), pToWho->object().ID());
 }
 
 void CScriptGameObject::SetGoodwill(int goodwill, CScriptGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetGoodwill available only for InventoryOwner");
+		return ;
+	}
 	return RELATION_REGISTRY().SetGoodwill(pInventoryOwner->object_id(), pWhoToSet->object().ID(), goodwill);
 }
 
 void CScriptGameObject::ChangeGoodwill(int delta_goodwill, CScriptGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ChangeGoodwill available only for InventoryOwner");
+		return ;
+	}
 	RELATION_REGISTRY().ChangeGoodwill(pInventoryOwner->object_id(), pWhoToSet->object().ID(), delta_goodwill);
 }
 
@@ -322,21 +354,32 @@ void CScriptGameObject::ChangeGoodwill(int delta_goodwill, CScriptGameObject* pW
 void CScriptGameObject::SetCommunityGoodwill(int goodwill, CScriptGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetCommunityGoodwill available only for InventoryOwner");
+		return ;
+	}
 	RELATION_REGISTRY().SetCommunityGoodwill(pInventoryOwner->object_id(), pWhoToSet->object().ID(), goodwill);
 }
 
 int	CScriptGameObject::GetCommunityGoodwill(CScriptGameObject* pToWho)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"GetCommunityGoodwill available only for InventoryOwner");
+		return 0;
+	}
 	return RELATION_REGISTRY().GetCommunityGoodwill(pInventoryOwner->object_id(), pToWho->object().ID());
 }
 
 void CScriptGameObject::ChangeCommunityGoodwill(int delta_goodwill, CScriptGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ChangeCommunityGoodwill available only for InventoryOwner");
+		return ;
+	}
 	RELATION_REGISTRY().ChangeCommunityGoodwill(pInventoryOwner->object_id(), pWhoToSet->object().ID(), delta_goodwill);
 }
 
@@ -345,9 +388,18 @@ void CScriptGameObject::ChangeCommunityGoodwill(int delta_goodwill, CScriptGameO
 void CScriptGameObject::SetRelation(ALife::ERelationType relation, CScriptGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetRelation available only for InventoryOwner");
+		return ;
+	}
+
 	CInventoryOwner* pOthersInventoryOwner = smart_cast<CInventoryOwner*>(&pWhoToSet->object());
 	VERIFY(pOthersInventoryOwner);
+	if (!pOthersInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetRelation available only for InventoryOwner");
+		return ;
+	}
 	RELATION_REGISTRY().SetRelationType(pInventoryOwner, pOthersInventoryOwner, relation);
 }
 
@@ -366,7 +418,10 @@ int	CScriptGameObject::GetAttitude			(CScriptGameObject* pToWho)
 LPCSTR CScriptGameObject::ProfileName			()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ProfileName available only for InventoryOwner");
+		return NULL;
+	}
 	
 	PROFILE_ID profile_id =  pInventoryOwner->CharacterInfo().Profile();
 	if(!profile_id || !profile_id.size() )
@@ -379,61 +434,96 @@ LPCSTR CScriptGameObject::ProfileName			()
 LPCSTR CScriptGameObject::CharacterName			()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CharacterName available only for InventoryOwner");
+		return NULL;
+	}
 	return pInventoryOwner->CharacterInfo().Name();
 }
 int CScriptGameObject::CharacterRank			()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CharacterRank available only for InventoryOwner");
+		return 0;
+	}
 	return pInventoryOwner->Rank();
 }
 void CScriptGameObject::SetCharacterRank			(int char_rank)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetCharacterRank available only for InventoryOwner");
+		return ;
+	}
 	return pInventoryOwner->SetRank(char_rank);
 }
 
 void CScriptGameObject::ChangeCharacterRank			(int char_rank)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ChangeCharacterRank available only for InventoryOwner");
+		return;
+	}
 	return pInventoryOwner->ChangeRank(char_rank);
 }
 
 int CScriptGameObject::CharacterReputation			()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CharacterReputation available only for InventoryOwner");
+		return 0;
+	}
 	return pInventoryOwner->Reputation();
 }
 
 void CScriptGameObject::SetCharacterReputation		(int char_rep)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetCharacterReputation available only for InventoryOwner");
+		return ;
+	}
 	pInventoryOwner->SetReputation(char_rep);
 }
 
 void CScriptGameObject::ChangeCharacterReputation		(int char_rep)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ChangeCharacterReputation available only for InventoryOwner");
+		return ;
+	}
 	pInventoryOwner->ChangeReputation(char_rep);
 }
 
 LPCSTR CScriptGameObject::CharacterCommunity	()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CharacterCommunity available only for InventoryOwner");
+		return NULL;
+	}
 	return *pInventoryOwner->CharacterInfo().Community().id();
 }
 
 void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetCharacterCommunity available only for InventoryOwner");
+		return;
+	}
 	CHARACTER_COMMUNITY	community;
 	community.set(comm);
 	return pInventoryOwner->SetCommunity(community.index());
@@ -442,7 +532,12 @@ void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm)
 LPCSTR CScriptGameObject::snd_character_profile_sect () const
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	VERIFY(pInventoryOwner);
+//	VERIFY(pInventoryOwner);
+	if (!pInventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"snd_character_profile_sect available only for InventoryOwner");
+		return NULL;
+	}
+
 	return pInventoryOwner->SpecificCharacter().SndConfigSect();
 }
 
@@ -461,7 +556,11 @@ CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_num)
 ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_num)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());
-	VERIFY(pActor);
+//	VERIFY(pActor);
+	if (!pActor) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"GetGameTaskState available only for actor");
+		return eTaskStateDummy;
+	}
 
 	const GAME_TASK_VECTOR* tasks =  pActor->game_task_registry->registry().objects_ptr();
 	if(!tasks) 
@@ -477,14 +576,23 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 	if(tasks->end() == it) 
 		return eTaskStateDummy;
 
-	R_ASSERT3((std::size_t)objective_num < (*it).states.size(), "wrong objective num", task_id);
+//	R_ASSERT3((std::size_t)objective_num < (*it).states.size(), "wrong objective num", task_id);
+	if ((std::size_t)objective_num > (*it).states.size()) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"wrong objective num", task_id);
+		return eTaskStateDummy;
+	}
+
 	return (*it).states[objective_num];
 }
 
 void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());
-	VERIFY(pActor);
+//	VERIFY(pActor);
+	if (!pActor) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetGameTaskState available only for actor");
+		return;
+	}
 
 //	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
 //	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
@@ -498,8 +606,17 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 			break;
 	}
 
-	R_ASSERT3(tasks.end() != it, "actor does not has task", task_id);
-	R_ASSERT3((std::size_t)objective_num < (*it).states.size(), "wrong objective num", task_id);
+	if (tasks.end() == it) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"actor does not has task", task_id);
+		return;
+	}
+	if ((std::size_t)objective_num > (*it).states.size()) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"wrong objective num", task_id);
+		return;
+	}
+
+//	R_ASSERT3(tasks.end() != it, "actor does not has task", task_id);
+//	R_ASSERT3((std::size_t)objective_num < (*it).states.size(), "wrong objective num", task_id);
 	(*it).states[objective_num] = state;
 	
 	if(0 == objective_num){//setState for task and all sub-tasks
@@ -549,7 +666,13 @@ void  CScriptGameObject::SwitchToTalk		()
 void  CScriptGameObject::RunTalkDialog			(CScriptGameObject* pToWho)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());	
-	R_ASSERT2(pActor, "RunTalkDialog applicable only for actor");
+//	R_ASSERT2(pActor, "RunTalkDialog applicable only for actor");
+
+	if (!pActor) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"RunTalkDialog applicable only for actor");
+		return;
+	}
+
 	CInventoryOwner* pPartner = smart_cast<CInventoryOwner*>(&pToWho->object());	VERIFY(pPartner);
 	pActor->RunTalkDialog(pPartner);
 }
