@@ -45,7 +45,12 @@ public:
 	u32					_count;
 	float				GetLength			(){ return float(_count)*SAMPLE_SPF; }
 
-	u32					mem_usage			(){ return sizeof(*this)+_keysR.size()*sizeof(CKeyQR)+_keysT.size()*sizeof(CKeyQT);}
+	u32					mem_usage			(){ 
+		u32 sz			= sizeof(*this);
+		if (_keysR.size()) sz += _keysR.size()*sizeof(CKeyQR)/_keysR.ref_count();
+		if (_keysT.size()) sz += _keysT.size()*sizeof(CKeyQT)/_keysT.ref_count();
+		return			sz;
+	}
 };
 class ENGINE_API		CMotionDef
 {

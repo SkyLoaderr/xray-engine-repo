@@ -88,6 +88,7 @@ public:
 	u32					size		()								{	if (0==p_) return 0; else return p_->dwLength/sizeof(T);	}
 	void				swap		(ref_smem<T> & rhs)				{	smem_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;			}
 	bool				equal		(ref_smem<T> & rhs)				{	return p_ == rhs.p_;										}
+	u32					ref_count	()								{	if (0==p_) return 0; else return p_->dwReference;			}
 };
 
 // res_ptr == res_ptr

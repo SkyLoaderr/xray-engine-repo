@@ -42,11 +42,6 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 	U16Vec rm_bones	(bones->size(),BI_NONE);
 	IReader* MP 	= data->open_chunk(OGF_S_SMPARAMS);
 
-	u32 p_c[4]={0,0,0,0};
-	u32 p_cnt=0;
-	u32 m_cnt=0;
-
-
 	if (MP){
 		u16 		vers 			= MP->r_u16();
 		u16 		part_bone_cnt	= 0;
@@ -97,14 +92,6 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 				CMotionDef	D;		D.Load			(MP,dwFlags);
 				if (dwFlags&esmFX)	m_fx.insert		(mk_pair(nm,D));
 				else				m_cycle.insert	(mk_pair(nm,D));
-				
-				if (!(dwFlags&esmFX)){
-					m_cnt++;
-					if (D.bone_or_part!=BI_NONE){
-						p_c[D.bone_or_part]++;
-						p_cnt++;
-					}
-				}
 			}
 		}
 		MP->close();
@@ -136,33 +123,19 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 		shared_str	m_key	= shared_str(strlwr(mname));
 		m_motion_map.insert	(mk_pair(m_key,m_idx));
 
-		CMotionDef* MD		= find_motiondef(&m_cycle,(u16)m_idx);
-
 		u32 dwLen			= MS->r_u32();
 		for (u32 i=0; i<bones->size(); i++){
 			u16 bone_id		= rm_bones[i];
 			VERIFY2			(bone_id!=BI_NONE,"Invalid remap index.");
-
-			bool bNeedLoad	= true;
-			if (MD){
-				if (MD->bone_or_part!=BI_NONE){
-					bNeedLoad= find_bone_in_part(&m_partition,MD->bone_or_part,bone_id);
-					m_r		++;
-				}
-			}
-
-			m_total			++;
-			m_load			+= bNeedLoad?1:0;
-
 			CMotion&		M	= m_motions[bones->at(bone_id)->name][m_idx];
 			M._count			= dwLen;
 			u8	t_present		= MS->r_u8	();
 			u32 crc_q			= MS->r_u32	();
-			if (bNeedLoad)		M._keysR.create		(crc_q,dwLen,(CKeyQR*)MS->pointer());
+			M._keysR.create		(crc_q,dwLen,(CKeyQR*)MS->pointer());
 			MS->advance			(dwLen * sizeof(CKeyQR));
 			if (t_present)	{
 				u32 crc_t		= MS->r_u32	();
-				if (bNeedLoad)	M._keysT.create		(crc_t,dwLen,(CKeyQT*)MS->pointer());
+				M._keysT.create		(crc_t,dwLen,(CKeyQT*)MS->pointer());
 				MS->advance		(dwLen * sizeof(CKeyQT));
 				MS->r_fvector3	(M._sizeT);
 				MS->r_fvector3	(M._initT);
@@ -171,7 +144,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 			}
 		}
 	}
-	Msg("Motions %d/%d %4d/%4d/%d, %s",p_cnt,m_cnt, m_load,m_total,m_r,N);
+//	Msg("Motions %d/%d %4d/%4d/%d, %s",p_cnt,m_cnt, m_load,m_total,m_r,N);
 	MS->close();
 	return bRes;
 }
