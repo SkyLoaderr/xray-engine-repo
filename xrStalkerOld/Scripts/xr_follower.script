@@ -22,17 +22,17 @@ end
 function evaluator_leader_present:evaluate ()
 
     if self.a.leader_name ~= nil then 
-       printf ("LEADER SID IS %s",  self.a.leader_name)
+       --printf ("LEADER SID IS %s",  self.a.leader_name)
        local sim = alife ()
        if sim then
-          printf ("GOT SIM")
+          --printf ("GOT SIM")
           local se_obj = sim:story_object (tonumber(self.a.leader_name))
           if se_obj then
-             printf ("LEADER ID %d FROM SID", self.a.leader_id)
+             --printf ("LEADER ID %d FROM SID", self.a.leader_id)
              self.a.leader_id = se_obj.id
              self.a.leader = db.obj_by_id[self.a.leader_id]
           else
-             printf ("OBJECT NOT FOUND")
+             --printf ("OBJECT NOT FOUND")
              return false
           end
        else
@@ -53,7 +53,7 @@ function evaluator_leader_present:evaluate ()
        end   
     end
     self.a.leader = db.obj_by_id[self.a.leader_id]
-    printf ("LEADER ID IS %d", self.a.leader_id) 
+    --printf ("LEADER ID IS %d", self.a.leader_id) 
     return true
 end
 --------------
@@ -62,13 +62,13 @@ function evaluator_leader_present:get_leader ()
     if gulag == nil then return -1 end
     local t = xr_gulag.fraction[gulag]:getJob (self.object)
     if t ~= nil and t.leader ~= nil then 
-       printf ("LEADER WORK IS %s", t.leader)
+       --printf ("LEADER WORK IS %s", t.leader)
        local id = xr_gulag.fraction[gulag]:idStalkerOnJob (t.leader)
        if id ~= nil then
-          printf ("LEADER ID IS %d", id) 
+          --printf ("LEADER ID IS %d", id) 
           return id
        end   
-       printf ("LEADER NOT FOUND")
+       --printf ("LEADER NOT FOUND")
     end
     if self.time == 0 then
        self.time = device ():time_global ()
