@@ -275,13 +275,11 @@ function motivator_binder:reload (section)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_callback(recepient, who, msg_type)
-    printf("pda prishlo")
     recepient:answer_pda ()
-    printf("pda ushlo")
 end
 ----------------------------------------------------------------------------------------------------------------------
 function hear_callback(self, who, sound_type, sound_position, sound_power)
---    printf("SOUNDCHECK")
+    printf("SOUNDCHECK %s, %f", who:name(), sound_power)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function AddToMotivator(npc)
