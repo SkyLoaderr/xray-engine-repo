@@ -1,4 +1,7 @@
 #include "stdafx.h"
+
+#ifdef SCRIPT_FILE
+
 #include "script_file.h"
 #include "script_lua_helper.h"
 
@@ -341,3 +344,4 @@ void CProjectFile::UpdateRelPathName()
 
 
 */
+#endif

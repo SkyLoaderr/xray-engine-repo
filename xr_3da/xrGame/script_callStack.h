@@ -15,7 +15,8 @@ public:
 
 //	virtual BOOL Create(CWnd* pParentWnd, UINT nID, LPCTSTR lpszWindowName = NULL, CSize sizeDefault = CSize(200,100), DWORD dwStyle = CBRS_LEFT);
 //	virtual int OnSci(CScintillaView* pView, SCNotification* pNotify);
-	int GetLevel() { return m_nCurrentLevel; };
+	int		GetLevel() { return m_nCurrentLevel; };
+	void	SetStackTraceLevel(int);
 protected:
 	int m_nCurrentLevel;
 	xr_vector<u32>	m_levels;

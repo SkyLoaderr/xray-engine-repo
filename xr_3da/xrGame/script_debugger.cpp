@@ -20,7 +20,6 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	switch( nMsg )
 	{
 	case DMSG_WRITE_DEBUG:
-//		VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_WRITE_DEBUG, wParam, lParam) == 1);
 		msg.w_int(DMSG_WRITE_DEBUG);
 		msg.w_string((char*)wParam);
 		SendMailslotMessage(IDE_MAIL_SLOT, msg);
@@ -30,9 +29,8 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		msg.w_int(DMSG_HAS_BREAKPOINT);
 		msg.w_string((char*)wParam);
 		msg.w_int((int)lParam);
-//		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-//		return WaitForReply(DMSG_HAS_BREAKPOINT);
-		return 0;
+		SendMailslotMessage(IDE_MAIL_SLOT, msg);
+		return WaitForReply(DMSG_HAS_BREAKPOINT);
 		break;
 
 	case DMSG_GOTO_FILELINE:
@@ -40,8 +38,6 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		msg.w_string((char*)wParam);
 		msg.w_int((int)lParam);
 		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-
-//		VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_GOTO_FILELINE, wParam, lParam) == 1);
 		break;
 
 	case DMSG_DEBUG_BREAK:{
@@ -49,9 +45,6 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		SendMailslotMessage(IDE_MAIL_SLOT, msg);
 		m_nMode = (int)WaitForReply(DMSG_SHOW_IDE);
 
-
-//		UINT r = (UINT)m_ide_wrapper.OnMessageToIDE(DMSG_SHOW_IDE, wParam, lParam);
-//		m_nMode = TranslateIdeMessage(r);
 		if(m_nMode == DMOD_SHOW_STACK_LEVEL){
 			msg.Reset();
 			msg.w_int(DMSG_GET_STACKTRACE_LEVEL);
@@ -61,12 +54,10 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			}
 		}break;
 
-
 	case DMSG_CLEAR_STACKTRACE:
 		m_callStack.Clear();
 		msg.w_int(DMSG_CLEAR_STACKTRACE);
 		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-//		return m_ide_wrapper.OnMessageToIDE(DMSG_CLEAR_STACKTRACE, wParam, lParam);
 		return 1;
 		break;
 
@@ -79,8 +70,6 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		msg.w_buff((StackTrace*)wParam, sizeof(StackTrace) );
 		SendMailslotMessage(IDE_MAIL_SLOT, msg);
 		return 1;
-//		return m_ide_wrapper.OnMessageToIDE(DMSG_ADD_STACKTRACE, wParam, lParam);
-
 		break;
 
 	case DMSG_GOTO_STACKTRACE_LEVEL:
@@ -92,16 +81,13 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	case DMSG_CLEAR_LOCALVARIABLES:
 		msg.w_int(DMSG_CLEAR_LOCALVARIABLES);
 		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-//		VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_CLEAR_LOCALVARIABLES, wParam, lParam) == 1);
 		return 1;
 		break;
 
 	case DMSG_ADD_LOCALVARIABLE:
-		msg.w_int(DMSG_CLEAR_LOCALVARIABLES);
+		msg.w_int(DMSG_ADD_LOCALVARIABLE);
 		msg.w_buff((void*)wParam,sizeof(Variable));
 		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-
-//	VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_ADD_LOCALVARIABLE, wParam, lParam) == 1);
 		return 1;
 		break;
 
@@ -116,16 +102,18 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 }
 
 
+BOOL CScriptDebugger::Active()
+{
+	return m_bIdePresent;
+}
 
 CScriptDebugger::CScriptDebugger()
 {
 	m_pDebugger = this;
 	m_nLevel = 0;
-//	m_pThread = NULL;
-//	VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_CREATE_IDE,0,0) == 1);
 	m_mailSlot = CreateMailSlotByName(DEBUGGER_MAIL_SLOT);
-	CreateIde();
-	
+
+	m_bIdePresent = CheckExisting(IDE_MAIL_SLOT);
 }
 
 CScriptDebugger::~CScriptDebugger()
@@ -133,17 +121,26 @@ CScriptDebugger::~CScriptDebugger()
 	CloseHandle(m_mailSlot);
 }
 
+void CScriptDebugger::UnPrepareLua(lua_State* l, int idx)
+{
+	if(idx == -1) return; // !Active()
+	m_lua.UnPrepareLua (l, idx);
+}
 
 int CScriptDebugger::PrepareLua(lua_State* l)
 {
 	// call this function immediatly before calling lua_pcall. 
 	//returns index in stack for errorFunc
+	if(!Active())return -1;
+
 	m_nMode = DMOD_NONE;
 	return m_lua.PrepareLua(l);
 }
 
 BOOL CScriptDebugger::PrepareLuaBind()
 {
+	if(!Active())return FALSE;
+
 	m_lua.PrepareLuaBind();
 	m_nMode = DMOD_NONE;
 
@@ -189,22 +186,29 @@ void CScriptDebugger::FunctionHook(const char *szFile, int nLine, BOOL bCall)
 
 void CScriptDebugger::DebugBreak(const char *szFile, int nLine)
 {
-	_SendMessage(DMSG_GOTO_STACKTRACE_LEVEL, 0, 0);
+	m_lua.DrawStackTrace();
+	m_callStack.SetStackTraceLevel(0);
 	do{
-		m_lua.DrawStackTrace();
 		m_lua.DrawGlobalVariables();
-		
-		StackLevelChanged();
+		_SendMessage(DMSG_GOTO_STACKTRACE_LEVEL, GetStackTraceLevel(), 0);
 
 		_SendMessage(DMSG_DEBUG_BREAK, 0, 0);
-	}while(m_nMode!=DMOD_SHOW_STACK_LEVEL);
+
+	}while(m_nMode==DMOD_SHOW_STACK_LEVEL);
 }
 
 void CScriptDebugger::ErrorBreak(const char* szFile, int nLine)
 {
-		_SendMessage(DMSG_DEBUG_BREAK, 0, 0);
+	DebugBreak(szFile, nLine);
+/*	m_lua.DrawStackTrace();
+	m_lua.DrawGlobalVariables();
 
-		m_nMode = DMOD_NONE;
+	StackLevelChanged();
+
+	_SendMessage(DMSG_DEBUG_BREAK, 0, 0);
+
+	m_nMode = DMOD_NONE;
+*/
 }
 
 void CScriptDebugger::ClearStackTrace()
@@ -215,14 +219,9 @@ void CScriptDebugger::ClearStackTrace()
 void CScriptDebugger::AddStackTrace(const char* szDesc, const char* szFile, int nLine)
 {
 	StackTrace st;
-//	st.szDesc = szDesc;
 	strcat(st.szDesc, szDesc);
-
-//	st.szFile = szFile;
 	strcat(st.szFile, szFile);
-
 	st.nLine = nLine;
-
 	_SendMessage(DMSG_ADD_STACKTRACE, (WPARAM)&st, 0);
 }
 
@@ -246,15 +245,9 @@ void CScriptDebugger::ClearLocalVariables()
 void CScriptDebugger::AddLocalVariable(const char *name, const char *type, const char *value)
 {
 	Variable var;
-//	var.szName = name;
 	strcat(var.szName, name );
-
-//	var.szType = type;
 	strcat(var.szType, type );
-
-//	var.szValue = value;
 	strcat(var.szValue, value );
-
 	_SendMessage(DMSG_ADD_LOCALVARIABLE, (WPARAM)&var, 0);
 }
 
@@ -266,27 +259,10 @@ void CScriptDebugger::ClearGlobalVariables()
 void CScriptDebugger::AddGlobalVariable(const char *name, const char *type, const char *value)
 {
 	Variable var;
-//	var.szName = name;
 	strcat(var.szName, name );
-
-//	var.szType = type;
 	strcat(var.szType, type );
-
-//	var.szValue = value;
 	strcat(var.szValue, value );
-
 	_SendMessage(DMSG_ADD_GLOBALVARIABLE, (WPARAM)&var, 0);
-}
-
-int CScriptDebugger::CheckResult(int res, lua_State* l)
-{
-	if(res==0)
-		return res;
-
-	m_lua.OutputTop(l);
-	
-	ErrorBreak();
-	return res;
 }
 
 
@@ -311,7 +287,7 @@ LRESULT CScriptDebugger::WaitForReply(UINT nMsg)
 	
 	int msgType;
 	msg.r_int(msgType);
-	R_ASSERT(msgType==(int)nMsg);
+	VERIFY(msgType==(int)nMsg);
 	switch(msgType) {
 	case DMSG_HAS_BREAKPOINT:{
 			int res;
@@ -342,10 +318,12 @@ int CScriptDebugger::TranslateIdeMessage (UINT msg)
 		break;
 
 	case DMSG_DEBUG_STEP_OVER:
+		m_nLevel=0;
 		return DMOD_STEP_OVER;
 		break;
 
 	case DMSG_DEBUG_STEP_OUT:
+		m_nLevel=0;
 		return DMOD_STEP_OUT;
 		break;
 
@@ -365,6 +343,7 @@ int CScriptDebugger::TranslateIdeMessage (UINT msg)
 		return DMOD_NONE;
 	}
 }
+/*
 void CScriptDebugger::CreateIde()
 {
     STARTUPINFO si;
@@ -386,4 +365,4 @@ void CScriptDebugger::CreateIde()
         &si,              // Pointer to STARTUPINFO structure.
         &pi ) ;            // Pointer to PROCESS_INFORMATION structure.
 }
-
+*/

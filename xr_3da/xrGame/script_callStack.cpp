@@ -48,6 +48,12 @@ void CScriptCallStack::Add(const char *szDesc, const char *szFile, int nLine)
 	strcat(m_files.back().path, szFile );
 }
 
+void CScriptCallStack::SetStackTraceLevel(int nLevel)
+{
+	m_nCurrentLevel = nLevel;
+	VERIFY( nLevel>=0 || (u32)nLevel < m_files.size() );
+}
+
 void CScriptCallStack::GotoStackTraceLevel(int nLevel)
 {
 	if ( nLevel<0 || (u32)nLevel >= m_files.size() )

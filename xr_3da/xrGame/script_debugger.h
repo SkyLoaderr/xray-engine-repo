@@ -53,9 +53,9 @@ public:
 	void			Write				(const char* szMsg);
 
 	int				PrepareLua			(lua_State* );
+	void			UnPrepareLua		(lua_State* l, int idx);
 	BOOL			PrepareLuaBind		();
 
-	int				CheckResult		(int, lua_State*);		
 	CScriptDebugger						();
 	virtual ~CScriptDebugger			();
 
@@ -68,7 +68,8 @@ public:
 	void			ClearStackTrace		();
 	void			AddStackTrace		(const char* strDesc, const char* strFile, int nLine);
 	int				GetStackTraceLevel	();
-
+	
+	BOOL			Active				();
 	static CScriptDebugger* GetDebugger	() { return m_pDebugger; };
 	static LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -78,19 +79,15 @@ protected:
 	int				TranslateIdeMessage (UINT);
 
 	UINT			StartDebugger		();	
-	void			CreateIde			();
 
-//	CScriptDeduggerIDE					m_ide_wrapper;
 	CDbgLuaHelper						m_lua;
 	CScriptCallStack					m_callStack;
 	static CScriptDebugger*				m_pDebugger;
-
 	int									m_nMode;
-
 	int									m_nLevel;  //for step into/over/out
-
 	string_path							m_strPathName;	//for run_to_line_number
 	int									m_nLine;		//for run_to_line_number
 
 	HANDLE								m_mailSlot;
+	BOOL								m_bIdePresent;
 };

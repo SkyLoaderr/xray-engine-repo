@@ -19,13 +19,16 @@ public:
 /*
 	static BOOL ErrorStringToFileLine(CString strError, CString &strPathName, int &nLine);
 */
+#ifdef SCRIPT_FILE
 	static BOOL LoadDebugLines(CScriptFile* pPF);
+#endif
 
 	CDbgLuaHelper							();
 	virtual ~CDbgLuaHelper					();
 
 	// debugger functions
 	int			PrepareLua					(lua_State* );
+	void		UnPrepareLua				(lua_State* ,int);
 	void		PrepareLuaBind				();
 
 
@@ -35,13 +38,14 @@ public:
 	static void hookLua						(lua_State *, lua_Debug *);
 	static int  hookLuaBind					(lua_State *);
 
-protected:
-	static		CDbgLuaHelper*				m_pThis;
-
 	static int	errormessageLua				(lua_State* );
 	static void errormessageLuaBind			(lua_State* );
 	static void line_hook					(lua_State *, lua_Debug *);
 	static void func_hook					(lua_State *, lua_Debug *);
+	int			CheckResult					(lua_State* l);
+protected:
+	static		CDbgLuaHelper*				m_pThis;
+
 
 	static lua_State*						L;
 	lua_Debug*								m_pAr;

@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef SCRIPT_FILE
+
 class CLuaEditor;
 
 class CScriptFile
@@ -54,3 +56,5 @@ protected:
 
 	typedef xr_map<int,BOOL>::iterator	uniIt;
 };
+
+#endif

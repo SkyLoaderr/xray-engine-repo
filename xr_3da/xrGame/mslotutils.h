@@ -151,7 +151,7 @@ inline BOOL CheckMailslotMessage(HANDLE hSlot, CMailSlotMsg& msg){
  
     if (cbMessage == MAILSLOT_NO_MESSAGE) return false; 
  
- 
+		msg.Reset();
         fResult = ReadFile(hSlot, 
             msg.GetBuffer(), 
             cbMessage, 
