@@ -200,7 +200,7 @@
 		}
 
 #define DEFINE_LUA_WRAPPER_METHOD_R2P3_V3(v_func_name,t1,t2,t3)							\
-		virtual void v_func_name(t1 p1, t2 p2, t3& p3, t4& p4)							\
+		virtual void v_func_name(t1 p1, t2 p2, t3& p3)									\
 		{																				\
 			call<void>(#v_func_name,p1,p2,&p3);											\
 		}                                   											\
