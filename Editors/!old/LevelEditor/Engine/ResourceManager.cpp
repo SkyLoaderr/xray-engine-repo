@@ -186,6 +186,15 @@ Shader*	CResourceManager::_cpp_Create	(IBlender* B, LPCSTR s_shader, LPCSTR s_te
 		S.E[4]				= _CreateElement	(E);
 	}
 
+	// Compile element
+	{
+		C.iElement			= 5;
+		C.bDetail			= FALSE;
+		ShaderElement		E;
+		C._cpp_Compile		(&E);
+		S.E[5]				= _CreateElement	(E);
+	}
+
 	// Search equal in shaders array
 	for (u32 it=0; it<v_shaders.size(); it++)
 		if (S.equal(v_shaders[it]))	return v_shaders[it];
