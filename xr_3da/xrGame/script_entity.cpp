@@ -60,6 +60,14 @@ DLL_Pure *CScriptEntity::_construct		()
 
 void CScriptEntity::ResetScriptData(void *pointer)
 {
+	ClearActionQueue	();
+	
+	m_caScriptName		= "";
+	m_bScriptControl	= false;
+}
+
+void CScriptEntity::ClearActionQueue()
+{
 	if (!m_tpActionQueue.empty())
 		vfFinishAction					(m_tpActionQueue.front());
 
@@ -68,8 +76,6 @@ void CScriptEntity::ResetScriptData(void *pointer)
 		m_tpActionQueue.erase			(m_tpActionQueue.begin());
 	}
 
-	m_caScriptName						= "";
-	m_bScriptControl					= false;
 	m_tpScriptAnimation					= 0;
 	m_tpCurrentEntityAction				= 0;
 	m_tpNextAnimation					= 0;

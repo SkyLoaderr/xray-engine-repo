@@ -84,6 +84,15 @@ CScriptIniFile *CScriptGameObject::spawn_ini			() const
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
+void CScriptGameObject::ResetActionQueue()
+{
+	CScriptEntity		*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
+	if (!l_tpScriptMonster)
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSciptMonster : cannot access class member ResetActionQueue!");
+	else
+		l_tpScriptMonster->ResetActionQueue();
+}
+
 CScriptEntityAction	*CScriptGameObject::GetCurrentAction	() const
 {
 	CScriptEntity		*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());

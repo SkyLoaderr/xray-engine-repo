@@ -372,7 +372,7 @@ void CAI_Trader::UpdateCL()
 	inherited::UpdateCL		();
 	CSoundPlayer::update	(Device.fTimeDelta);
 
-	if (!bfScriptAnimation()) {
+	if (!GetScriptControl() && !bfScriptAnimation()) {
 		SelectAnimation		(XFORM().k,XFORM().k,0.f);
 	}
 

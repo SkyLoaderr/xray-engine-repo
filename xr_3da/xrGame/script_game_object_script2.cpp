@@ -103,6 +103,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("script",						&CScriptGameObject::SetScriptControl)
 		.def("get_script",					&CScriptGameObject::GetScriptControl)
 		.def("get_script_name",				&CScriptGameObject::GetScriptControlName)
+		.def("reset_action_queue",			&CScriptGameObject::ResetActionQueue)
 		.def("see",							&CScriptGameObject::CheckObjectVisibility)
 		.def("see",							&CScriptGameObject::CheckTypeVisibility)
 

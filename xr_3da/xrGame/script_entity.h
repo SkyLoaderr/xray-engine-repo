@@ -93,6 +93,7 @@ public:
 	virtual void				UseObject				(const CObject		*tpObject);
 	virtual void				ProcessScripts			();
 	virtual	void				ResetScriptData			(void				*P = 0);
+	virtual void				ClearActionQueue		();
 	virtual	bool				bfAssignMovement		(CScriptEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignWatch			(CScriptEntityAction		*tpEntityAction);
 	virtual	bool				bfAssignAnimation		(CScriptEntityAction		*tpEntityAction);
