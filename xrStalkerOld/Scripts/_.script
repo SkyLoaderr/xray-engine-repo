@@ -2,7 +2,7 @@ foo()
 function myClass:getRect  ()
 ddd.foo ()
 /*foo()
-	
+//ssss	
 	foo(self)
 	fffo()
 	foo(self)
