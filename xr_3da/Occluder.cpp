@@ -41,12 +41,15 @@ void COccluderSystem::Load(CStream *fs)
 	occluders.resize(count);
 	for (DWORD I=0; I<count; I++)
 	{
-		b_occluder	L;
-		fs->Read	(&L,one);
+		b_occluder		L;
+		fs->Read		(&L,one);
 
 		// register
+		SOccluderDef	def;
 		for (int j=0; j<L.vertices.size(); j++)
-			occluders[I].push_back(L.vertices[j]);
+			def.verts.push_back	(L.vertices[j]);
+		def.sphere.compute		(def.verts.begin(),def.verts.size());
+		occluders[I].push_back	(def);
 	}
 }
 
@@ -75,9 +78,12 @@ void COccluderSystem::Select(CFrustum& F)
 		sPoly					poly_dest,poly_src;
 		for (DWORD I=0; I<occluders.size(); I++)
 		{
-			svector<Fvector,8>	&verts	= occluders[I];
+			SOccluderDef&		occ_def = occluders[I];
+			if (!F.testSphereDirty(occ_def.sphere.P,occ_def.sphere.R))	continue;
 			
-			poly_src.assign(verts.begin(),verts.size());
+			svector<Fvector,8>	&verts	= occ_def;
+			
+			poly_src.assign		(verts.begin(),verts.size());
 			
 			sPoly*		R = baseF->ClipPoly(poly_src,poly_dest);
 			if (R) {
@@ -119,7 +125,7 @@ void COccluderSystem::Select(CFrustum& F)
 					CFrustum &F = inside[I].F;
 					for (DWORD j=I+1; j<inside.size(); j++)
 					{
-						vector<Fvector> &poly = occluders[inside[j].id];
+						svector<Fvector,8> &poly = occluders[inside[j].id];
 						if (F.testPolyInside(poly.begin(),poly.size()))
 						{
 							// erase occluder #j
