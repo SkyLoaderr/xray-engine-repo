@@ -3,13 +3,15 @@
 Чугай Саша
 
 Сделать:
+	- сталкер в группировке?
+	- условия приёма во фракцию
+
 	- если нету такого типа
 	- fraction types->gulag
 
 	- если сталкер под фракцией заходит в зону другой фракции
 
 Идеи:
-	- для каждого типа фракции отдельный файл
 	- дополнительные условия начала, конца фракции. Например, ночь и день для sleepers
 	- возложить проверку условий освобождения мужиков на класс типа фракции
 	- специальные диалоги
@@ -25,6 +27,9 @@ local h2ms = 60 * 60 * 1000
 local check_period = 300000
 
 local zones = {}
+
+-- находится ли сталкер под управлением гулага в данной зоне
+--function is_
 
 -------------- помощники для чтения spawn_ini -------------------
 function r_str( spawn_ini, section, line, default )
@@ -311,6 +316,8 @@ function zone_fractions:free_stalker( obj )
 	local backup = self.stalkers[obj:id()]
 	obj:change_team( obj:team(), backup.squad, backup.group )
 
+--	self.stalkers[obj:id()] = nil
+
 	printf( "[zone %s] removing %s from fraction type=%s", self.zone:name(), obj:name(), self.fraction_type )
 end
 
@@ -384,6 +391,7 @@ function zone_fractions:update()
 				for id, obj in self.fraction.Object do
 					if self.stalkers[id].stay_end < game.time() then
 						self:free_stalker( obj )
+						printf( "del1" )
 					else
 						n = n + 1
 					end
@@ -392,6 +400,7 @@ function zone_fractions:update()
 				-- если мужиков в фракции больше не осталось, убрать фракцию
 				if n == 0 then
 					self:remove_fraction()
+					printf( "del2" )
 				else
 					self.fraction:calculate()
 				end
