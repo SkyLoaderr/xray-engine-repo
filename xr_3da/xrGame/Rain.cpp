@@ -1,4 +1,4 @@
-// Rain.cpp: implementation of the CRain class.
+// Rain.cpp: implementation of the CEffect_Rain class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -9,12 +9,13 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CRain::CRain()
+CEffect_Rain::CEffect_Rain()
 {
 
 }
 
-CRain::~CRain()
+CEffect_Rain::~CEffect_Rain()
 {
 
 }
+
