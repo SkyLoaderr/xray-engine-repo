@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "data_storage_path.h"
+#include "vertex_path.h"
 
 template <
 	typename	_edge_type,
