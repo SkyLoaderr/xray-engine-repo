@@ -93,9 +93,12 @@ void					CRender::create					()
 
 	rmNormal					();
 	marker						= 0;
+
+	R_CHK						(HW.pDevice->CreateQuery(D3DQUERYTYPE_EVENT,&q_sync_point));
 } 
 void					CRender::destroy				()
 {
+	_RELEASE					(q_sync_point);
 	HWOCC.occq_destroy			();
 	PSLibrary.OnDeviceDestroy	();
 	PSLibrary.OnDestroy			();

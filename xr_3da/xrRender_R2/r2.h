@@ -82,6 +82,8 @@ public:
 
 	ref_str														c_sbase;
 	ref_str														c_lmaterial;
+
+	IDirect3DQuery9*											q_sync_point;
 private:
 	// Loading / Unloading
 	void							LoadBuffers					(IReader	*fs);

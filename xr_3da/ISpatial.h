@@ -72,8 +72,8 @@ public:
 	virtual		void			spatial_move		();
 	virtual		Fvector			spatial_sector_point()	{ return spatial.center; }
 
-	ISpatial					();
-	~ISpatial					();
+				ISpatial		();
+	virtual		~ISpatial		();
 };
 
 //////////////////////////////////////////////////////////////////////////
