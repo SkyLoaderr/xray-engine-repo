@@ -2,6 +2,8 @@
 #include "physicobject.h"
 #include "PhysicsShell.h"
 #include "Physics.h"
+#include "xrserver_objects_alife.h"
+
 CPhysicObject::CPhysicObject(void) {
 	m_type = epotBox;
 	m_mass = 10.f;

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "xrServer.h"
+#include "xrServer_Objects.h"
 
 void xrServer::Process_update(NET_Packet& P, DPNID sender)
 {

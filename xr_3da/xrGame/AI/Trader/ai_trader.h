@@ -25,7 +25,7 @@ public:
 	typedef CEntityAlive inherited;
 	CMotionDef*			m_tAnimation;
 	bool				m_bPlaying;
-	ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
+	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
 
 
 						CAI_Trader		();
@@ -41,7 +41,7 @@ public:
 	virtual void		Think			();
 	virtual void		HitSignal		(float /**P/**/, Fvector &/**local_dir/**/,	CObject* /**who/**/, s16 /**element/**/){};
 	virtual void		HitImpulse		(float /**P/**/, Fvector &/**vWorldDir/**/, 	Fvector& /**vLocalDir/**/){};
-	virtual void		Hit				(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound) {
+	virtual void		Hit				(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound) {
 		inherited::Hit(P,dir,who,element,position_in_object_space,impulse,hit_type);
 	}
 	virtual void		SelectAnimation	(const Fvector& _view, const Fvector& _move, float speed);

@@ -281,31 +281,31 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
 
 	switch(hit_type)
 	{
-	case eHitTypeBurn:
+	case ALife::eHitTypeBurn:
 		hit_power *= pOutfit->m_fOutfitBurn;
 		break;
-	case eHitTypeStrike:
+	case ALife::eHitTypeStrike:
 		hit_power *= pOutfit->m_fOutfitStrike;
 		break;
-	case eHitTypeTelepatic:
+	case ALife::eHitTypeTelepatic:
 		hit_power *= pOutfit->m_fOutfitTelepatic;
 		break;
-	case eHitTypeShock:
+	case ALife::eHitTypeShock:
 		hit_power *= pOutfit->m_fOutfitShock;
 		break;
-	case eHitTypeWound:
+	case ALife::eHitTypeWound:
 		hit_power *= pOutfit->m_fOutfitWound;
 		break;
-	case eHitTypeRadiation:
+	case ALife::eHitTypeRadiation:
 		hit_power *= pOutfit->m_fOutfitRadiation;
 		break;
-	case eHitTypeChemicalBurn:
+	case ALife::eHitTypeChemicalBurn:
 		hit_power *= pOutfit->m_fOutfitChemicalBurn;
 		break;
-	case eHitTypeExplosion:
+	case ALife::eHitTypeExplosion:
 		hit_power *= pOutfit->m_fOutfitExplosion;
 		break;
-	case eHitTypeFireWound:
+	case ALife::eHitTypeFireWound:
 		hit_power *= pOutfit->m_fOutfitFireWound;
 		break;				
 	}
@@ -346,36 +346,36 @@ void CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitTy
 
 	switch(hit_type)
 	{
-	case eHitTypeBurn:
+	case ALife::eHitTypeBurn:
 		hit_power *= m_fK_Burn;
 		break;
-	case eHitTypeChemicalBurn:
+	case ALife::eHitTypeChemicalBurn:
 		hit_power *= m_fK_ChemicalBurn;
 		break;
-	case eHitTypeStrike:
+	case ALife::eHitTypeStrike:
 		hit_power *= m_fK_Strike;
 		break;
-	case eHitTypeTelepatic:
+	case ALife::eHitTypeTelepatic:
 		hit_power *= m_fK_Telepatic;
 		break;
-	case eHitTypeShock:
+	case ALife::eHitTypeShock:
 		hit_power *= m_fK_Shock;
 		break;
-	case eHitTypeExplosion:
+	case ALife::eHitTypeExplosion:
 		hit_power *= m_fK_Explosion;
 		m_fHealthLost = hit_power*m_fHealthHitPart;
 		m_fDeltaHealth -= m_fHealthLost;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		AddWound(hit_power, element);
 		break;
-	case eHitTypeFireWound:
+	case ALife::eHitTypeFireWound:
 		hit_power *= m_fK_FireWound;
 		m_fHealthLost = hit_power*m_fHealthHitPart;
 		m_fDeltaHealth -= m_fHealthLost;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		AddWound(hit_power, element);
 		break;
-	case eHitTypeWound:
+	case ALife::eHitTypeWound:
 		hit_power *= m_fK_Wound;
 		m_fHealthLost = hit_power*m_fHealthHitPart;
 		m_fDeltaHealth -= m_fHealthLost;

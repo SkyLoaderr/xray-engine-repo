@@ -11,10 +11,9 @@
 // refs
 class CLAItem;
 class CPhysicsElement;
+class CSE_ALifeObjectHangingLamp;
 
-class CHangingLamp: public CGameObject
-{
-private:
+class CHangingLamp: public CGameObject {
 	typedef	CGameObject		inherited;
 private:
 	u16				guid_bone;

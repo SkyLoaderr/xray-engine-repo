@@ -24,7 +24,6 @@
 
 #include "xrServer_Objects_ALife_Items.h"
 
-
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeInventoryItem
 ////////////////////////////////////////////////////////////////////////////
@@ -277,7 +276,7 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
 	ammo_type					= 0;
 
 	m_fHitPower					= pSettings->r_float(caSection,"hit_power");
-	m_tHitType					= g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
+	m_tHitType					= ALife::g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
 	m_caAmmoSections			= pSettings->r_string(caSection,"ammo_class");
 	m_dwSlot					= pSettings->r_u32(caSection,"slot");
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
@@ -451,6 +450,8 @@ CSE_ALifeItemCar::CSE_ALifeItemCar			(LPCSTR caSection) : CSE_ALifeItem(caSectio
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
+	m_flags.set					(flUseSwitches,false);
+	m_flags.set					(flSwitchOffline,false);
 }
 
 CSE_ALifeItemCar::~CSE_ALifeItemCar			()
@@ -484,6 +485,11 @@ void CSE_ALifeItemCar::FillProp				(LPCSTR pref, PropItemVec& values)
   	inherited::FillProp			(pref,values);
 }
 #endif
+
+bool CSE_ALifeItemCar::used_ai_locations() const
+{
+	return						(false);
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector

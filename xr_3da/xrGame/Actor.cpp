@@ -16,6 +16,7 @@
 #include "PDA.h"
 #include "Car.h"
 #include "UIGameSP.h"
+#include "xrserver_objects_alife_monsters.h"
 
 // breakpoints
 #include "../xr_input.h"
@@ -386,14 +387,14 @@ void CActor::net_ImportInput	(NET_Packet &P)
 	u8	CamMode;
 	P.r_u8				(CamMode);
 	cam_Set	(EActorCameras(CamMode));
-	
+
 	P.r_angle8		(cam_Active()->yaw);
 	P.r_angle8		(cam_Active()->pitch);
 	Fvector			rD;
 	P.r_vec3		(rD);
 
-//	Fvector			t;
-//	t.setHP			(-cam_Active()->yaw, cam_Active()->pitch);
+	//	Fvector			t;
+	//	t.setHP			(-cam_Active()->yaw, cam_Active()->pitch);
 	Fvector	vP, vD, vN;
 	cam_Active()->Get(vP, vD, vN);
 	cam_Active()->Set(vP, rD, vN);
@@ -412,10 +413,10 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
-	
-//	m_PhysicMovementControl->CreateCharacter();
-//	m_PhysicMovementControl->SetPhysicsRefObject(this);
-//	m_PhysicMovementControl->SetPLastMaterial(&m_last_material_id);
+
+	//	m_PhysicMovementControl->CreateCharacter();
+	//	m_PhysicMovementControl->SetPhysicsRefObject(this);
+	//	m_PhysicMovementControl->SetPLastMaterial(&m_last_material_id);
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
@@ -427,7 +428,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	r_torso.yaw				= E->o_torso.yaw;
 	r_torso.pitch			= E->o_torso.pitch;
 	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);		// set's camera orientation
-	
+
 	// *** movement state - respawn
 	mstate_wishful			= 0;
 	mstate_real				= 0;
@@ -456,7 +457,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	CSE_ALifeTraderAbstract	 *pTA	= dynamic_cast<CSE_ALifeTraderAbstract*>(e);
 	m_dwMoney				= pTA->m_dwMoney;
 	m_tRank					= pTA->m_tRank;
-	
+
 	// take index spine bone
 	CSkeletonAnimated* V= PSkeletonAnimated(Visual());
 	R_ASSERT			(V);
@@ -504,7 +505,7 @@ void CActor::net_Destroy	()
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float impulse, ALife::EHitType hit_type)
 {
 	if (g_Alive()<=0) return;
-	
+
 	Fvector position_in_bone_space;
 	position_in_bone_space.set(0.f,0.f,0.f);
 
@@ -516,7 +517,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 	}
 
 	//slow actor, only when he gets hit
-	if(hit_type == eHitTypeWound || hit_type == eHitTypeStrike)
+	if(hit_type == ALife::eHitTypeWound || hit_type == ALife::eHitTypeStrike)
 	{
 		hit_slowmo				= iLost/100.f;
 		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
@@ -547,7 +548,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
-	if (g_Alive() && (hit_type == eHitTypeWound || hit_type == eHitTypeStrike))
+	if (g_Alive() && (hit_type == ALife::eHitTypeWound || hit_type == ALife::eHitTypeStrike))
 	{
 		m_PhysicMovementControl->ApplyImpulse(dir,impulse);
 		m_saved_dir.set(dir);
@@ -579,7 +580,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 
 	
 	//slow actor, only when he gets hit
-	if(hit_type == eHitTypeWound || hit_type == eHitTypeStrike)
+	if(hit_type == ALife::eHitTypeWound || hit_type == ALife::eHitTypeStrike)
 	{
 		hit_slowmo				= iLost/100.f;
 		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
@@ -637,7 +638,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		}
 		
 		//slow actor, only when wound hit
-		/*if(hit_type == eHitTypeWound)
+		/*if(hit_type == ALife::eHitTypeWound)
 		{
 			hit_slowmo				= perc/100.f;
 			if (hit_slowmo>1.f)		hit_slowmo = 1.f;

@@ -4,6 +4,7 @@
 #include "actor.h"
 #include "../LightAnimLibrary.h"
 #include "PhysicsShell.h"
+#include "xrserver_objects_alife_items.h"
 const float TIME_2_HIDE		= 5.f;
 
 CTorch::CTorch(void) 

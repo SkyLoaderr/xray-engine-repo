@@ -36,7 +36,7 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection) : CSE_Abstrac
 	m_dwMoney					= 0;
 	if (pSettings->line_exist(caSection, "money"))
 		m_dwMoney 				= pSettings->r_u32(caSection, "money");
-	m_tRank						= EStalkerRank(pSettings->r_u32(caSection, "rank"));
+	m_tRank						= ALife::EStalkerRank(pSettings->r_u32(caSection, "rank"));
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	m_tpEvents.clear			();
 }
@@ -55,7 +55,7 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion > 19) {
 		load_data				(m_tpEvents,tNetPacket);
-		TASK_VECTOR				l_tpTaskIDs;
+		ALife::TASK_VECTOR		l_tpTaskIDs;
 		if (m_wVersion < 36)
 			load_data			(l_tpTaskIDs,tNetPacket);
 	}
@@ -76,7 +76,7 @@ void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_u32			(m_dwMoney);
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
-	m_tRank						= EStalkerRank(m_tRank);
+	m_tRank						= ALife::EStalkerRank(m_tRank);
 };
 
 #ifdef _EDITOR
@@ -112,8 +112,8 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_tOrgID,sizeof(m_tOrgID));
 	{
 		tNetPacket.w_u32		(m_tpOrderedArtefacts.size());
-		ARTEFACT_TRADER_ORDER_PAIR_IT	I = m_tpOrderedArtefacts.begin();
-		ARTEFACT_TRADER_ORDER_PAIR_IT	E = m_tpOrderedArtefacts.end();
+		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	I = m_tpOrderedArtefacts.begin();
+		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	E = m_tpOrderedArtefacts.end();
 		for ( ; I != E; ++I) {
 			tNetPacket.w_string	((*I).second->m_caSection);
 			tNetPacket.w_u32	((*I).second->m_dwTotalCount);
@@ -122,8 +122,8 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 	}
 	{
 		tNetPacket.w_u32		(m_tpSupplies.size());
-		TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
-		TRADER_SUPPLY_IT		E = m_tpSupplies.end();
+		ALife::TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
+		ALife::TRADER_SUPPLY_IT		E = m_tpSupplies.end();
 		for ( ; I != E; ++I) {
 			tNetPacket.w_string	((*I).m_caSections);
 			tNetPacket.w_u32	((*I).m_dwCount);
@@ -144,7 +144,7 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		m_tpOrderedArtefacts.clear();
 		u32							l_dwCount	= tNetPacket.r_u32();
 		for (int i=0 ; i<(int)l_dwCount; ++i) {
-			SArtefactTraderOrder	*l_tpArtefactOrder = xr_new<SArtefactTraderOrder>();
+			ALife::SArtefactTraderOrder	*l_tpArtefactOrder = xr_new<ALife::SArtefactTraderOrder>();
 			tNetPacket.r_string	(l_tpArtefactOrder->m_caSection);
 			tNetPacket.r_u32	(l_tpArtefactOrder->m_dwTotalCount);
 			load_data			(l_tpArtefactOrder->m_tpOrders,tNetPacket);
@@ -153,8 +153,8 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	}
 	if (m_wVersion > 30) {
 		m_tpSupplies.resize		(tNetPacket.r_u32());
-		TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
-		TRADER_SUPPLY_IT		E = m_tpSupplies.end();
+		ALife::TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
+		ALife::TRADER_SUPPLY_IT		E = m_tpSupplies.end();
 		for ( ; I != E; ++I) {
 			tNetPacket.r_string	((*I).m_caSections);
 			tNetPacket.r_u32	((*I).m_dwCount);
@@ -234,13 +234,13 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSche
 		m_faWeights[i]			= (float)atof(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
 	m_wArtefactSpawnCount		= 32;
-	m_tAnomalyType				= eAnomalousZoneTypeGravi;
+	m_tAnomalyType				= ALife::eAnomalousZoneTypeGravi;
 	m_fStartPower = m_maxPower	= 0.f;
 
 	if (pSettings->line_exist(caSection,"hit_type"))
-		m_tHitType				= g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
+		m_tHitType				= ALife::g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
 	else
-		m_tHitType				= eHitTypeMax;
+		m_tHitType				= ALife::eHitTypeMax;
 }
 
 CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone()
@@ -297,7 +297,7 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion > 27) {
 		u32						l_dwDummy;
 		tNetPacket.r_u32		(l_dwDummy);
-		m_tAnomalyType			= EAnomalousZoneType(l_dwDummy);
+		m_tAnomalyType			= ALife::EAnomalousZoneType(l_dwDummy);
 	}
 	if (m_wVersion > 38)
 		tNetPacket.r_float		(m_fStartPower);
@@ -482,6 +482,21 @@ void CSE_ALifeCreatureAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
+bool CSE_ALifeCreatureAbstract::used_ai_locations	() const
+{
+	return						(true);
+}
+
+bool CSE_ALifeCreatureAbstract::can_switch_online	() const
+{
+	return						(inherited::can_switch_online());
+}
+
+bool CSE_ALifeCreatureAbstract::can_switch_offline	() const
+{
+	return						(inherited::can_switch_offline() && (g_Health() > 0.f));
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterAbstract
 ////////////////////////////////////////////////////////////////////////////
@@ -497,20 +512,20 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_fMaxHealthValue	 		= pSettings->r_float	(caSection,"MaxHealthValue");
 	if (pSettings->line_exist(caSection,"hit_power")) {
 		m_fHitPower				= pSettings->r_float(caSection,"hit_power");
-		m_tHitType				= g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
+		m_tHitType				= ALife::g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
 	}
 	else {
 		m_fHitPower				= 0;
-		m_tHitType				= eHitTypeMax;
+		m_tHitType				= ALife::eHitTypeMax;
 	}
 
 	{
 		string64					S;
-		m_fpImmunityFactors.resize	(eHitTypeMax);
-		svector<float,eHitTypeMax>::iterator	B = m_fpImmunityFactors.begin(), I = B;
-		svector<float,eHitTypeMax>::iterator	E = m_fpImmunityFactors.end();
+		m_fpImmunityFactors.resize	(ALife::eHitTypeMax);
+		svector<float,ALife::eHitTypeMax>::iterator	B = m_fpImmunityFactors.begin(), I = B;
+		svector<float,ALife::eHitTypeMax>::iterator	E = m_fpImmunityFactors.end();
 		for ( ; I != E; ++I)
-			*I					= pSettings->r_float(caSection,strcat(strcpy(S,g_cafHitType2String(EHitType(I - B))),"_immunity"));
+			*I					= pSettings->r_float(caSection,strcat(strcpy(S,ALife::g_cafHitType2String(ALife::EHitType(I - B))),"_immunity"));
 	}
 
 	if (pSettings->line_exist(caSection,"retreat_threshold"))
@@ -523,12 +538,12 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	LPCSTR						S = pSettings->r_string(caSection,"terrain");
 	u32							N = _GetItemCount(S);
 	R_ASSERT					(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
-	STerrainPlace				tTerrainPlace;
+	ALife::STerrainPlace		tTerrainPlace;
 	tTerrainPlace.tMask.resize	(LOCATION_TYPE_COUNT);
 	string16					I;
 	for (u32 i=0; i<N;) {
 		for (u32 j=0; j<LOCATION_TYPE_COUNT; ++j, ++i)
-			tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
+			tTerrainPlace.tMask[j] = ALife::_LOCATION_ID(atoi(_GetItem(S,i,I)));
 		tTerrainPlace.dwMinTime	= atoi(_GetItem(S,i++,I))*1000;
 		tTerrainPlace.dwMaxTime	= atoi(_GetItem(S,i++,I))*1000;
 		m_tpaTerrain.push_back	(tTerrainPlace);
@@ -653,6 +668,8 @@ CSE_ALifeCreatureCrow::CSE_ALifeCreatureCrow(LPCSTR caSection) : CSE_ALifeCreatu
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
+	m_flags.set					(flUseSwitches,false);
+	m_flags.set					(flSwitchOffline,false);
 }
 
 CSE_ALifeCreatureCrow::~CSE_ALifeCreatureCrow()
@@ -689,6 +706,11 @@ void CSE_ALifeCreatureCrow::FillProp			(LPCSTR pref, PropItemVec& values)
   	inherited::FillProp			(pref,values);
 }
 #endif
+
+bool CSE_ALifeCreatureCrow::used_ai_locations	() const
+{
+	return						(false);
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterRat
@@ -975,8 +997,8 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 {
 	m_tpPath.clear				();
 	m_baVisitedVertices.clear	();
-	m_dwCurTaskID				= _TASK_ID(-1);
-	m_tTaskState				= eTaskStateChooseTask;
+	m_dwCurTaskID				= ALife::_TASK_ID(-1);
+	m_tTaskState				= ALife::eTaskStateChooseTask;
 	m_dwCurTaskLocation			= u32(-1);
 	m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
 	m_dwCurNode					= u32(-1);

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "level_changer.h"
 #include "actor.h"
+#include "xrserver_objects_alife.h"
 
 CLevelChanger::~CLevelChanger	()
 {

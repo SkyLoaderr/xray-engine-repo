@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "game_sv_single.h"
 #include "ai_alife.h"
+#include "xrserver_objects_alife_monsters.h"
 
 game_sv_Single::~game_sv_Single			()
 {
@@ -27,7 +28,7 @@ void	game_sv_Single::Create			(LPSTR &options)
 CSE_Abstract*		game_sv_Single::get_entity_from_eid		(u16 id)
 {
 	if (m_tpALife) {
-		D_OBJECT_PAIR_IT	I = m_tpALife->m_tObjectRegistry.find(id);
+		ALife::D_OBJECT_PAIR_IT	I = m_tpALife->m_tObjectRegistry.find(id);
 		if (m_tpALife->m_tObjectRegistry.end() != I)
 			return((*I).second);
 		else
@@ -105,7 +106,7 @@ void	game_sv_Single::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 {
 }
 
-_TIME_ID game_sv_Single::GetGameTime		()
+ALife::_TIME_ID game_sv_Single::GetGameTime		()
 {
 	if (m_tpALife && m_tpALife->m_bLoaded)
 		return(m_tpALife->tfGetGameTime());

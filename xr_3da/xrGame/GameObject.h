@@ -11,6 +11,8 @@
 #include "ai_object_location.h"
 #include "prefetch_manager.h"
 #include "ParticlesPlayer.h"
+#include "xrServer_Space.h"
+#include "ai_alife_space.h"
 
 class CPhysicsShell;
 class CSE_Abstract;
@@ -59,7 +61,7 @@ public:
 	
 	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
 												 s16 element,Fvector p_in_object_space, 
-												 float impulse, ALife::EHitType hit_type = eHitTypeWound);
+												 float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 
 	//для наследования CParticlesPlayer
 	virtual IRender_Sector*	Sector				()		{return inherited::Sector();}

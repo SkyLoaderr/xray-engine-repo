@@ -8,14 +8,14 @@
 
 #pragma once
 
-IC	ERelationType	CMemoryManager::get_relation(const CEntityAlive *tpEntityAlive) const
+IC	ALife::ERelationType CMemoryManager::get_relation(const CEntityAlive *tpEntityAlive) const
 {
 	const CEntityAlive		*self = dynamic_cast<const CEntityAlive*>(this);
 	VERIFY					(self);
 	if (tpEntityAlive->g_Team() != self->g_Team())
-		return				(eRelationTypeEnemy);
+		return				(ALife::eRelationTypeEnemy);
 	else
-		return				(eRelationTypeFriend);
+		return				(ALife::eRelationTypeFriend);
 }
 
 IC	bool CMemoryManager::visible	(const CObject *object) const

@@ -8,6 +8,7 @@
 #include "PhysicsShell.h"
 #include "PDA.h"
 #include "inventoryowner.h"
+#include "xrserver_objects_alife_items.h"
 
 CInfoDocument::CInfoDocument(void) 
 {

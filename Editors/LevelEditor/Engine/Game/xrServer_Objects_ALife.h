@@ -11,7 +11,6 @@
 
 #include "xrServer_Objects.h"
 #include "ai_alife_space.h"
-using namespace ALife;
 
 #ifndef _EDITOR
 	#ifndef AI_COMPILER
@@ -36,12 +35,12 @@ public:
 	virtual							~CSE_ALifeSchedulable	();
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float		&fHitPower) = 0;
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,			float		&fHitPower) = 0;
 	virtual bool					bfPerformAttack			()											{return(true);};
 	virtual	void					vfUpdateWeaponAmmo		()											{};
 	virtual	void					vfProcessItems			()											{};
-	virtual	void					vfAttachItems			(ETakeType				tTakeType = eTakeTypeAll)		{};
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection) = 0;
+	virtual	void					vfAttachItems			(ALife::ETakeType		tTakeType = ALife::eTakeTypeAll)		{};
+	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection) = 0;
 	virtual bool					bfActive				()															= 0;
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		()															= 0;
 #endif
@@ -49,10 +48,10 @@ public:
 };
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,CPureServerObject)
-	_EVENT_ID						m_tEventID;
-	_TIME_ID						m_tTimeID;
-	_GRAPH_ID						m_tGraphID;
-	ECombatResult					m_tCombatResult;
+	ALife::_EVENT_ID				m_tEventID;
+	ALife::_TIME_ID					m_tTimeID;
+	ALife::_GRAPH_ID				m_tGraphID;
+	ALife::ECombatResult			m_tCombatResult;
 	CSE_ALifeEventGroup				*m_tpMonsterGroup1;
 	CSE_ALifeEventGroup				*m_tpMonsterGroup2;
 
@@ -61,31 +60,31 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,CPureServerObject)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,CPureServerObject)
-	_EVENT_ID						m_tEventID;
-	_TIME_ID						m_tTimeID;
-	_TASK_ID						m_tTaskID;
+	ALife::_EVENT_ID				m_tEventID;
+	ALife::_TIME_ID					m_tTimeID;
+	ALife::_TASK_ID					m_tTaskID;
 	int								m_iHealth;
-	EEventRelationType				m_tEventRelationType;
-	OBJECT_VECTOR					m_tpItemIDs;
+	ALife::EEventRelationType		m_tEventRelationType;
+	ALife::OBJECT_VECTOR			m_tpItemIDs;
 
 									CSE_ALifePersonalEvent();
 	virtual							~CSE_ALifePersonalEvent();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
-	_TASK_ID						m_tTaskID;
-	_TIME_ID						m_tTimeID;
-	_OBJECT_ID						m_tCustomerID;
+	ALife::_TASK_ID					m_tTaskID;
+	ALife::_TIME_ID					m_tTimeID;
+	ALife::_OBJECT_ID				m_tCustomerID;
 	float							m_fCost;
-	ETaskType						m_tTaskType;
+	ALife::ETaskType				m_tTaskType;
 	u32								m_dwTryCount;
 	union {
 		string32					m_caSection;
-		_OBJECT_ID					m_tObjectID;
+		ALife::_OBJECT_ID			m_tObjectID;
 	};
 	union {
-		_LOCATION_ID				m_tLocationID[LOCATION_TYPE_COUNT];
-		_GRAPH_ID					m_tGraphID;
+		ALife::_LOCATION_ID			m_tLocationID[LOCATION_TYPE_COUNT];
+		ALife::_GRAPH_ID			m_tGraphID;
 	};
 
 									CSE_ALifeTask	();
@@ -108,11 +107,17 @@ public:
 SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeObject : virtual public CSE_Abstract {
+protected:
+	enum {
+		flUseSwitches	= u32(1) << 0,
+		flSwitchOnline  = u32(1) << 1,
+		flSwitchOffline = u32(1) << 2,
+	};
 public:
 	typedef CSE_Abstract inherited;
-	_CLASS_ID						m_tClassID;
-	_GRAPH_ID						m_tGraphID;
-	_SPAWN_ID						m_tSpawnID;
+	ALife::_CLASS_ID				m_tClassID;
+	ALife::_GRAPH_ID				m_tGraphID;
+	ALife::_SPAWN_ID				m_tSpawnID;
 	float							m_fDistance;
 	bool							m_bOnline;
 	float							m_fProbability;
@@ -120,17 +125,21 @@ public:
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
 	ref_str							m_caGroupControl;
+	flags32							m_flags;							
 
-									CSE_ALifeObject	(LPCSTR caSection);
-	virtual							~CSE_ALifeObject();
+									CSE_ALifeObject		(LPCSTR caSection);
+	virtual							~CSE_ALifeObject	();
+	virtual bool					used_ai_locations	() const;
+	virtual bool					can_switch_online	() const;
+	virtual bool					can_switch_offline	() const;
 SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeGroupAbstract : virtual public CSE_Abstract {
 public:
-	OBJECT_VECTOR					m_tpMembers;
+	ALife::OBJECT_VECTOR			m_tpMembers;
 	bool							m_bCreateSpawnPositions;
 	u16								m_wCount;
-	_TIME_ID						m_tNextBirthTime;
+	ALife::_TIME_ID					m_tNextBirthTime;
 
 									CSE_ALifeGroupAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeGroupAbstract();
@@ -190,7 +199,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEventGroup,CSE_ALifeObject)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
-	_TIME_ID						m_tTimeID;
+	ALife::_TIME_ID						m_tTimeID;
 	u64								m_qwSwitchCounter;
 	
 									CSE_ALifeDynamicObject(LPCSTR caSection);
@@ -208,7 +217,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shap
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeScriptZone)
-	_GRAPH_ID						m_tNextGraphID;
+	ALife::_GRAPH_ID				m_tNextGraphID;
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;
 	float							m_fAngle;
@@ -236,6 +245,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
     Flags8							flags;
 									CSE_ALifeObjectPhysic	(LPCSTR caSection);
     virtual 						~CSE_ALifeObjectPhysic	();
+	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual)
@@ -260,12 +270,14 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 
                                     CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
     virtual							~CSE_ALifeObjectHangingLamp	();
+	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectProjector,CSE_ALifeDynamicObjectVisual)
 									CSE_ALifeObjectProjector	(LPCSTR caSection);
 	virtual							~CSE_ALifeObjectProjector	();
+	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 
 
@@ -278,6 +290,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CS
 	ref_str							startup_animation;
 									CSE_ALifeHelicopter			(LPCSTR caSection);
 	virtual							~CSE_ALifeHelicopter		();
+	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 
 #endif

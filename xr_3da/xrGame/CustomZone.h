@@ -147,7 +147,7 @@ protected:
 					  CObject* who, s16 element,
 					  Fvector position_in_object_space, 
 					  float impulse, 
-					  ALife::EHitType hit_type = eHitTypeWound);
+					  ALife::EHitType hit_type = ALife::eHitTypeWound);
 
 
 	//для визуализации зоны

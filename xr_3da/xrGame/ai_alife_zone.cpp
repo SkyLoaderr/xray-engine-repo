@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 #include "ai_space.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 void CSE_ALifeAnomalousZone::Update()
 {
@@ -39,6 +41,9 @@ bool CSE_ALifeAnomalousZone::bfActive()
 
 CSE_ALifeDynamicObject *CSE_ALifeAnomalousZone::tpfGetBestDetector()
 {
-	R_ASSERT2					(false,"This function shouldn't be called");
-	__assume					(0);
+	VERIFY2						(false,"This function shouldn't be called");
+	NODEFAULT;
+#ifdef DEBUG
+	return						(0);
+#endif
 }

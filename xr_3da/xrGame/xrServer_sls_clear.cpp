@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "game_sv_single.h"
 #include "ai_alife.h"
+#include "xrServer_Objects.h"
 
 void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode, bool bErase)
 {

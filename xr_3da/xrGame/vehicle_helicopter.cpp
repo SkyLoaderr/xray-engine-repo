@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "vehicle_helicopter.h"
 #include "../objectanimator.h"
+#include "xrserver_objects_alife.h"
 
 CVehicleHelicopter::CVehicleHelicopter		()
 {

@@ -64,22 +64,22 @@ void CShootingObject::FireShotmark (const Fvector& vDir, const Fvector &vEnd, Co
 		{
 			//добавить отметку на материале
 			::Render->add_Wallmark	(*pWallmarkShader, vEnd,
-										m_fCurrentWallmarkSize, pTri, pVerts);
+				m_fCurrentWallmarkSize, pTri, pVerts);
 		}
 	}		
-	
+
 	ref_sound* pSound = (!mtl_pair || mtl_pair->CollideSounds.empty())?
-						 NULL:
-						 &mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
+NULL:
+	&mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
 	//проиграть звук
 	if(pSound)
 	{
 		pSound->play_at_pos_unlimited(this, vEnd, false);
 	}
-    
+
 	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
-						NULL:
-						*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+NULL:
+	*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 	if(ps_name)
 	{
 		//отыграть партиклы попадания в материал
@@ -106,11 +106,11 @@ void CShootingObject::FireShotmark (const Fvector& vDir, const Fvector &vEnd, Co
 //return TRUE-продолжить трассировку / FALSE-закончить трассировку
 BOOL __stdcall CShootingObject::firetrace_callback(Collide::rq_result& result, LPVOID params)
 {
-	
+
 	CShootingObject* pThisWeapon = (CShootingObject*)params;
 	//вычислить точку попадания
 	pThisWeapon->m_vEndPoint.mad(pThisWeapon->m_vCurrentShootPos,
-								 pThisWeapon->m_vCurrentShootDir,result.range);
+		pThisWeapon->m_vCurrentShootDir,result.range);
 
 	u16 hit_material_id = GAMEMTL_NONE;
 
@@ -156,13 +156,13 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 	float shoot_factor = mtl->fShootFactor;
 	float pierce = (m_pCurrentCartridge?m_pCurrentCartridge->m_kPierce:1.f);
 
-    //получить силу хита выстрела с учетом патрона
+	//получить силу хита выстрела с учетом патрона
 	float power = m_fCurrentHitPower * pierce *
-				  (m_pCurrentCartridge?m_pCurrentCartridge->m_kHit:1.f);
-				
+		(m_pCurrentCartridge?m_pCurrentCartridge->m_kHit:1.f);
+
 	//коэффициент уменьшение силы с расстоянием
 	float scale = 1-(R.range/(m_fCurrentFireDist*
-							  (m_pCurrentCartridge?m_pCurrentCartridge->m_kDist:1.f)));
+		(m_pCurrentCartridge?m_pCurrentCartridge->m_kDist:1.f)));
 	clamp(scale,0.f,1.f);
 	scale = _sqrt(scale);
 	power *= scale;
@@ -172,10 +172,10 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 	float material_pierce = 1.f - shoot_factor * pierce;
 	clamp(material_pierce, 0.f, 1.f);
 	float impulse = m_fCurrentHitImpulse*
-					material_pierce*
-					(m_pCurrentCartridge?m_pCurrentCartridge->m_kImpulse:1.f)
-					*scale;
-	
+		material_pierce*
+		(m_pCurrentCartridge?m_pCurrentCartridge->m_kImpulse:1.f)
+		*scale;
+
 	VERIFY(impulse>=0);
 
 	CEntity* E = dynamic_cast<CEntity*>(R.O);
@@ -191,7 +191,7 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 
 	// bone-space
 	CKinematics* V = PKinematics(R.O->Visual());
-		
+
 	if(V)
 	{
 		Fmatrix& m_bone = (V->LL_GetBoneInstance(u16(R.element))).mTransform;
@@ -215,7 +215,7 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 		P.w_s16			((s16)R.element);
 		P.w_vec3		(position_in_bone_space);
 		P.w_float		(impulse);
-		P.w_u16			(eHitTypeWound);
+		P.w_u16			(ALife::eHitTypeWound);
 		u_EventSend		(P);
 	}
 

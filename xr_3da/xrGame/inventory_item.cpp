@@ -10,6 +10,7 @@
 #include "inventory_item.h"
 #include "inventory.h"
 #include "Physics.h"
+#include "xrserver_objects_alife.h"
 
 CInventoryItem::CInventoryItem() 
 {
@@ -101,7 +102,7 @@ void CInventoryItem::Hit(float P, Fvector &dir,
 						 ALife::EHitType hit_type)
 {
 	inherited::Hit(P, dir, who, element, position_in_object_space, 
-					  impulse, hit_type);
+		impulse, hit_type);
 
 
 	if(!m_bUsingCondition) return;
@@ -110,28 +111,28 @@ void CInventoryItem::Hit(float P, Fvector &dir,
 
 	switch(hit_type)
 	{
-	case eHitTypeBurn:
+	case ALife::eHitTypeBurn:
 		hit_power *= m_fK_Burn;
 		break;
-	case eHitTypeChemicalBurn:
+	case ALife::eHitTypeChemicalBurn:
 		hit_power *= m_fK_ChemicalBurn;
 		break;
-	case eHitTypeStrike:
+	case ALife::eHitTypeStrike:
 		hit_power *= m_fK_Strike;
 		break;
-	case eHitTypeTelepatic:
+	case ALife::eHitTypeTelepatic:
 		hit_power *= m_fK_Telepatic;
 		break;
-	case eHitTypeShock:
+	case ALife::eHitTypeShock:
 		hit_power *= m_fK_Shock;
 		break;
-	case eHitTypeExplosion:
+	case ALife::eHitTypeExplosion:
 		hit_power *= m_fK_Explosion;
 		break;
-	case eHitTypeFireWound:
+	case ALife::eHitTypeFireWound:
 		hit_power *= m_fK_FireWound;
 		break;
-	case eHitTypeWound:
+	case ALife::eHitTypeWound:
 		hit_power *= m_fK_Wound;
 		break;
 	}

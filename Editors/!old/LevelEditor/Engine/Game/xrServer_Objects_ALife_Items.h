@@ -24,7 +24,7 @@ public:
 	int								m_iGridWidth;
 	int								m_iGridHeight;
 	u64								m_qwGridBitMask;
-	_OBJECT_ID						m_tPreviousParentID;
+	ALife::_OBJECT_ID				m_tPreviousParentID;
 
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
 	virtual							~CSE_ALifeInventoryItem	();
@@ -95,7 +95,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u16								a_current;
 	u16								a_elapsed;
 	float							m_fHitPower;
-	EHitType						m_tHitType;
+	ALife::EHitType					m_tHitType;
 	LPCSTR							m_caAmmoSections;
 	u32								m_dwAmmoAvailable;
 	u32								m_dwSlot;
@@ -112,8 +112,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemCar,CSE_ALifeItem)
-									CSE_ALifeItemCar(LPCSTR caSection);
-	virtual							~CSE_ALifeItemCar();
+									CSE_ALifeItemCar	(LPCSTR caSection);
+	virtual							~CSE_ALifeItemCar	();
+	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)

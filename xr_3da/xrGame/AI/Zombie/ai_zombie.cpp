@@ -7,9 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
 #include "ai_zombie.h"
 #include "../ai_monsters_misc.h"
+#include "../../xrserver_objects_alife_monsters.h"
 
 CAI_Zombie::CAI_Zombie()
 {
@@ -128,7 +128,7 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	
 	//////////////////////////////////////////////////////////////////////////
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterZombie						*tpSE_Zombie = dynamic_cast<CSE_ALifeMonsterZombie*>(e);
+	CSE_ALifeMonsterZombie			*tpSE_Zombie = dynamic_cast<CSE_ALifeMonsterZombie*>(e);
 	// model
 	// personal characteristics
 	m_body.current.yaw				= m_body.target.yaw	= -tpSE_Zombie->o_Angle.y;

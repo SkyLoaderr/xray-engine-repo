@@ -20,9 +20,9 @@ public:
 
 protected:
 	//время последнего обновления поведения шара
-	_TIME_ID m_timeLastUpdate;
+	ALife::_TIME_ID m_timeLastUpdate;
 	//время между апдейтами
-	_TIME_ID m_timeToUpdate;
+	ALife::_TIME_ID m_timeToUpdate;
 
 	//диапазон импульсов катания шара
 	float m_fImpulseMin;

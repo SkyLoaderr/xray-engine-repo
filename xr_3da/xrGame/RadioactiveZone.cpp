@@ -75,7 +75,7 @@ void CRadioactiveZone::Affect(CObject* O)
 			//l_P.w_s16			((s16)-1);  while not handle -1
 			l_P.w_vec3			(position_in_bone_space);
 			l_P.w_float			(impulse);
-			l_P.w_u16			(eHitTypeRadiation);
+			l_P.w_u16			(ALife::eHitTypeRadiation);
 			l_pO->u_EventSend	(l_P);
 
 //			CPGObject* pStaticPG = xr_new<CPGObject>(m_pHitEffect,l_pO->Sector()); 

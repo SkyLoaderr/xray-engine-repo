@@ -220,7 +220,7 @@ void CExplosive::Explode()
 				P.w_s16			(l_element);
 				P.w_vec3		(l_bs_pos);
 				P.w_float		(l_impuls);
-				P.w_u16			(u16(eHitTypeWound));
+				P.w_u16			(u16(ALife::eHitTypeWound));
 				u_EventSend		(P);
 				l_elements.pop_front();
 				l_bs_positions.pop_front();

@@ -12,6 +12,7 @@
 #include "actor.h"
 #include "trade.h"
 #include "inventory.h"
+#include "xrserver_objects_alife.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -51,7 +52,7 @@ void CInventoryOwner::reinit				()
 	m_trade_storage->m_pOwner	= this;
 
 	m_dwMoney					= 0;
-	m_tRank						= eStalkerRankNone;
+	m_tRank						= ALife::eStalkerRankNone;
 
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
@@ -67,8 +68,8 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	
 	if(!pThis->Local())  return TRUE;
     
-	if (ai().get_alife())
-		return			TRUE;
+//	if (ai().get_alife())
+//		return			TRUE;
 
 	CSE_Abstract			*E	= (CSE_Abstract*)(DC);
 	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(E);
@@ -226,7 +227,7 @@ bool CInventoryOwner::OfferTalk(CInventoryOwner* talk_partner)
 	
 	ALife::ERelationType relation = pOurEntityAlive->tfGetRelationType(pPartnerEntityAlive);
 
-	if(relation == eRelationTypeEnemy) return false;
+	if(relation == ALife::eRelationTypeEnemy) return false;
 
 	if(!pOurEntityAlive->g_Alive() || !pPartnerEntityAlive->g_Alive()) return false;
 

@@ -80,8 +80,8 @@ class CAI_Rat : public CCustomMonster, public CEatableItem
 		};
 
 		EZombieAction			m_tAction;
-		_GRAPH_ID				m_tCurGP;
-		_GRAPH_ID				m_tNextGP;
+		ALife::_GRAPH_ID		m_tCurGP;
+		ALife::_GRAPH_ID		m_tNextGP;
 		u32						m_dwTimeToChange;
 		float					m_fGoingSpeed;
 
@@ -288,7 +288,7 @@ public:
 		virtual void  feel_touch_new(CObject* O);
 		virtual void  shedule_Update(u32 dt);
 		virtual void  UpdateCL();
-		virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = eHitTypeWound);
+		virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 		virtual BOOL  feel_vision_isRelevant(CObject*);
 
 		/////////////////////////////////////

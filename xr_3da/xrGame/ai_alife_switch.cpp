@@ -13,6 +13,8 @@
 #include "level_graph.h"
 #include "game_graph.h"
 #include "game_level_cross_table.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALifeRequest)
 {
@@ -302,13 +304,15 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 
 	// checking if the object is online
 	if (I->m_bOnline) {
+		if (!I->can_switch_offline())
+			return;
 		// checking if the object is not attached
 		if (0xffff == I->ID_Parent) {
 			// checking if the object is not a group of objects
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (!tpALifeGroupAbstract) {
 				// checking if the object is ready to switch offline
-				if (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOfflineDistance)
+				if (!I->can_switch_online() || (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOfflineDistance))
 					vfSwitchObjectOffline(I);
 			}
 			else {
@@ -350,7 +354,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				}
 				// checking if group is not empty
 				if (tpALifeGroupAbstract->m_tpMembers.size()) {
-					if (i == N)
+					if (!I->can_switch_online() || (i == N))
 						vfSwitchObjectOffline(I);
 				}
 				else
@@ -373,13 +377,15 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 		}
 	}
 	else {
+		if (!I->can_switch_online())
+			return;
 		// so, the object is offline
 		// checking if the object is not attached
 		if (0xffff == I->ID_Parent) {
 			// checking if the object is not an empty group of objects
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (tpALifeGroupAbstract && tpALifeGroupAbstract->m_tpMembers.empty()) {
-				// relase empty group of objects
+				// release empty group of objects
 				vfReleaseObject(tpALifeGroupAbstract);
 				return;
 			}
@@ -391,7 +397,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			}
 			
 			// checking if the object is ready to switch online
-			if (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance)
+			if (!I->can_switch_offline() || (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance))
 				vfSwitchObjectOnline(I);
 		}
 		else {

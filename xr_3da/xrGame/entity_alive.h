@@ -34,7 +34,7 @@ public:
 	virtual void			shedule_Update			(u32 dt);
 
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
-	virtual	void			Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
+	virtual	void			Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
 	
@@ -51,12 +51,12 @@ public:
 	// Visibility related
 	virtual	float			ffGetFov				()	const			= 0;	
 	virtual	float			ffGetRange				()	const			= 0;	
-	virtual	ERelationType	tfGetRelationType		(CEntityAlive *tpEntityAlive)
+	virtual	ALife::ERelationType tfGetRelationType	(CEntityAlive *tpEntityAlive)
 	{
 		if (tpEntityAlive->g_Team() != g_Team())
-			return(eRelationTypeEnemy);
+			return(ALife::eRelationTypeEnemy);
 		else
-			return(eRelationTypeFriend);
+			return(ALife::eRelationTypeFriend);
 	};
 
 	virtual void			BuyItem					(LPCSTR buf);

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game_base.h"
+#include "ai_alife_space.h"
+class CSE_Abstract;
 
 // [OLES] Policy:
 // it_*		- means ordinal number of player
@@ -74,7 +76,7 @@ public:
 	virtual		void				Update					();
 	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state
 	virtual		void				net_Export_Update		(NET_Packet& P, u32 id_to, u32 id);		// just incremental update for specific client
-	virtual		_TIME_ID			GetGameTime				();
+	virtual		ALife::_TIME_ID		GetGameTime				();
 	virtual		float				GetGameTimeFactor		();
 	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
 };

@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "ai_alife_registries.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 void CSE_ALifeTraderAbstract::vfInitInventory()
 {
@@ -49,7 +51,7 @@ void CSE_ALifeTraderAbstract::vfDetachItem(CSE_ALifeInventoryItem *tpALifeInvent
 	if (bALifeRequest) {
 		if (!I) {
 			if (bRemoveChildren) {
-				OBJECT_IT						I = std::find	(children.begin(),children.end(),tpALifeInventoryItem->ID);
+				OBJECT_IT				I = std::find	(children.begin(),children.end(),tpALifeInventoryItem->ID);
 				R_ASSERT2						(children.end() != I,"Can't detach an item which is not on my own");
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
@@ -100,8 +102,8 @@ u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem
 	u32							l_dwPurchasedCount = 0;
 #pragma todo("Dima to Dima : optimize this cycle by keeping additional data structure with bought items")
 	{
-		OBJECT_IT				i = children.begin();
-		OBJECT_IT				e = children.end();
+		OBJECT_IT		i = children.begin();
+		OBJECT_IT		e = children.end();
 		for ( ; i != e; ++i)
 			if (!xr_strcmp(tpALifeObjectRegistry->tpfGetObjectByID(*i)->s_name,l_tpALifeItemArtefact->s_name))
 				++l_dwPurchasedCount;

@@ -102,13 +102,13 @@ public:
 				P.w_s16			((s16)0);
 				P.w_vec3		(position_in_bone_space);
 				P.w_float		(.0f);
-				P.w_u16			(eHitTypeWound);	//hit type
-			l_pActor->u_EventSend		(P);
-			//NET_Packet		P;
-			//l_pActor->u_EventGen		(P,GE_DIE,l_pActor->ID()	);
-			//P.w_u16			(u16(l_pActor->ID())	);
-			//P.w_u32			(0);
-			//l_pActor->u_EventSend		(P);
+				P.w_u16			(ALife::eHitTypeWound);	//hit type
+				l_pActor->u_EventSend		(P);
+				//NET_Packet		P;
+				//l_pActor->u_EventGen		(P,GE_DIE,l_pActor->ID()	);
+				//P.w_u16			(u16(l_pActor->ID())	);
+				//P.w_u32			(0);
+				//l_pActor->u_EventSend		(P);
 		}
 		CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
 		if(l_pPlayer) {
@@ -293,7 +293,7 @@ public:
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
 				int id1 = -1;
 				sscanf(args ,"%d",&id1);
-				tpGame->m_tpALife->vfObjectInfo(_OBJECT_ID(id1));
+				tpGame->m_tpALife->vfObjectInfo(ALife::_OBJECT_ID(id1));
 			}
 			else
 				Log("!ALife simulator is not loaded!");

@@ -57,10 +57,10 @@ private:
 	u32							m_dwUpdateCount;
 	bool						m_bStateChanged;
 	
-	ETaskState					m_tTaskState;
-	_GRAPH_ID					m_tDestGraphPointIndex;
-	_TASK_ID					m_tTaskID;
-	OBJECT_VECTOR				m_tpKnownCustomers;
+	ALife::ETaskState			m_tTaskState;
+	ALife::_GRAPH_ID			m_tDestGraphPointIndex;
+	ALife::_TASK_ID				m_tTaskID;
+	ALife::OBJECT_VECTOR		m_tpKnownCustomers;
 
 	int							m_r_hand;
 	int							m_r_finger1;
@@ -99,7 +99,7 @@ public:
 
 	virtual void				renderable_Render				();
 	virtual void				Exec_Look						(float dt);
-	virtual void				Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = eHitTypeWound);
+	virtual void				Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual BOOL				feel_vision_isRelevant			(CObject* who);
 	virtual float				Radius							() const;
 	virtual void				OnHUDDraw						(CCustomHUD* hud) {inherited::OnHUDDraw(hud);}
@@ -207,8 +207,8 @@ public:
 			bool				bfEnoughMoneyToEquip			();
 			void				vfChooseHumanTask				();
 			bool				bfCheckIfTaskCompleted			();
-			bool				bfCheckIfTaskCompleted			(OBJECT_IT		&I);
-			void				vfSetCurrentTask				(_TASK_ID		&tTaskID);
+			bool				bfCheckIfTaskCompleted			(ALife::OBJECT_IT	&I);
+			void				vfSetCurrentTask				(ALife::_TASK_ID	&tTaskID);
 			bool				bfAssignDestinationNode			();
 			void				vfFinishTask					();
 	virtual const SRotation		Orientation						() const

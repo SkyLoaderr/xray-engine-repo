@@ -573,7 +573,7 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 	return		(l_dwCount);
 }
 
-bool CInventory::bfCheckForObject(_OBJECT_ID tObjectID)
+bool CInventory::bfCheckForObject(ALife::_OBJECT_ID tObjectID)
 {
 	TIItemList	&l_list = m_ruck;
 	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 

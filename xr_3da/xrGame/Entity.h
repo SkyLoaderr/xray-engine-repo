@@ -97,7 +97,7 @@ public:
 	virtual CWeaponList*	GetItemList			()	{ return 0;			}
 
 	// Health calculations
-	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
+	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 	virtual	float			HitScale			(int /**element/**/){return 1.f;}
@@ -119,7 +119,7 @@ public:
 
 
 	//time of entity death
-	_TIME_ID				m_dwDeathTime;
+	ALife::_TIME_ID			m_dwDeathTime;
 };
 
 #endif // AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_

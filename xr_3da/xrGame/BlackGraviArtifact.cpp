@@ -200,7 +200,7 @@ void CBlackGraviArtifact::GraviStrike()
 				P.w_s16			(element);
 				P.w_vec3		(bone_pos);
 				P.w_float		(impulse);
-				P.w_u16			(u16(eHitTypeWound));
+				P.w_u16			(u16(ALife::eHitTypeWound));
 				u_EventSend		(P);
 				elements_list.pop_front();
 				bone_position_list.pop_front();

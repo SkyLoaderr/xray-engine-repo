@@ -117,7 +117,7 @@ void CMincer::Affect(CObject* O)
 			P.w_s16					((s16)0);
 			P.w_vec3				(position_in_bone_space);
 			P.w_float				(impulse);
-			P.w_u16					(eHitTypeWound);
+			P.w_u16					(ALife::eHitTypeWound);
 			pObject->u_EventSend	(P);
 		}
 	}
@@ -128,11 +128,11 @@ void CMincer::UpdateCL()
 {
 	u32 dt = Device.dwTimeDelta;
 	m_dwDeltaTime += dt;
-	
+
 	if(m_dwDeltaTime > m_dwPeriod) 
 	{
 		while(m_dwDeltaTime > m_dwPeriod) m_dwDeltaTime -= m_dwPeriod;
-//		m_bZoneReady = true;
+		//		m_bZoneReady = true;
 	}
 
 	if(m_fCurrentPower<m_fMaxPower && !m_bDischarging)

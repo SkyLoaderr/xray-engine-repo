@@ -14,9 +14,9 @@
 
 class CSE_ALifeGameTime : public IPureALifeLSObject {
 public:
-	_TIME_ID						m_tGameTime;
-	_TIME_ID						m_tLastSurgeTime;
-	_TIME_ID						m_tNextSurgeTime;
+	ALife::_TIME_ID						m_tGameTime;
+	ALife::_TIME_ID						m_tLastSurgeTime;
+	ALife::_TIME_ID						m_tNextSurgeTime;
 	float							m_fTimeFactor;
 	u32								m_dwStartTime;
 	u64								m_qwStartProcessorCycle;
@@ -55,7 +55,7 @@ public:
 	};
 //#endif
 
-	IC _TIME_ID						tfGetGameTime()
+	IC ALife::_TIME_ID						tfGetGameTime()
 	{
 		return						(m_tGameTime + iFloor(m_fTimeFactor*float(Device.TimerAsync() - m_dwStartTime)));
 	};
@@ -64,12 +64,12 @@ public:
 class CSE_ALifeHeader : public IPureALifeLSObject {
 public:
 	u32								m_tALifeVersion;
-	EZoneState						m_tZoneState;
+	ALife::EZoneState				m_tZoneState;
 	
 									CSE_ALifeHeader()
 	{
 		m_tALifeVersion				= ALIFE_VERSION;
-		m_tZoneState				= eZoneStateAfterSurge;
+		m_tZoneState				= ALife::eZoneStateAfterSurge;
 	}
 
 	virtual							~CSE_ALifeHeader(){};
@@ -103,10 +103,10 @@ public:
 
 class CSE_ALifeKnownAnomaly : public IPureALifeLSObject {
 public:
-	EAnomalousZoneType				m_tAnomalousZoneType;
+	ALife::EAnomalousZoneType		m_tAnomalousZoneType;
 	float							m_fAnomalyPower;
 	float							m_fDistance;
-	_GRAPH_ID						m_tGraphID;
+	ALife::_GRAPH_ID				m_tGraphID;
 
 									CSE_ALifeKnownAnomaly()
 	{
@@ -155,8 +155,8 @@ public:
 	float							m_fResultProbability;
 	float							m_fUnfreezeProbability;
 	bool							m_bAlreadyInvented;
-	DEMAND_P_VECTOR					m_tpArtefactDemand;
-	ARTEFACT_ORDER_VECTOR			m_tpArtefactNeed;
+	ALife::DEMAND_P_VECTOR			m_tpArtefactDemand;
+	ALife::ARTEFACT_ORDER_VECTOR	m_tpArtefactNeed;
 	LPSTR_VECTOR					m_tpDependency;
 
 
@@ -173,11 +173,11 @@ public:
 	LPSTR_VECTOR					m_tpPossibleDiscoveries;
 	float							m_fJoinProbability;
 	float							m_fLeftProbability;
-	_ORGANIZATION_ID				m_tOrgID;
-	EResearchState					m_tResearchState;
-	_TIME_ID						m_tTimeFinish;				// this member is usd for keeping time where some state finishes (research or freeze)
-	ARTEFACT_ORDER_VECTOR			m_tpOrderedArtefacts;
-	ITEM_COUNT_MAP					m_tpPurchasedArtefacts;
+	ALife::_ORGANIZATION_ID			m_tOrgID;
+	ALife::EResearchState			m_tResearchState;
+	ALife::_TIME_ID					m_tTimeFinish;				// this member is usd for keeping time where some state finishes (research or freeze)
+	ALife::ARTEFACT_ORDER_VECTOR	m_tpOrderedArtefacts;
+	ALife::ITEM_COUNT_MAP			m_tpPurchasedArtefacts;
 	string64						m_caDiscoveryToInvestigate;
 
 

@@ -10,14 +10,16 @@
 #define AI_ALIFE_PREDICATESH
 #pragma once
 #ifndef _EDITOR
-#ifndef AI_COMPILER
-#include "ai_alife_registries.h"
+	#ifndef AI_COMPILER
+		#include "ai_alife_registries.h"
+	#endif
 #endif
-#endif
+
+#include "xrserver_objects_alife_monsters.h"
 
 class CArtefactOrderPredicate {
 public:
-	bool							operator()							(const SArtefactOrder &tArtefactOrder1, const SArtefactOrder &tArtefactOrder2) const
+	bool							operator()							(const ALife::SArtefactOrder &tArtefactOrder1, const ALife::SArtefactOrder &tArtefactOrder2) const
 	{
 		return						(tArtefactOrder1.m_dwPrice > tArtefactOrder2.m_dwPrice);
 	};
@@ -25,7 +27,7 @@ public:
 
 class CArtefactPredicate {
 public:
-	bool							operator()							(const SArtefactTraderOrder tArtefactOrder1, const SArtefactTraderOrder tArtefactOrder2) const
+	bool							operator()							(const ALife::SArtefactTraderOrder tArtefactOrder1, const ALife::SArtefactTraderOrder tArtefactOrder2) const
 	{
 		return						(tArtefactOrder1.m_tpOrders[0].m_dwPrice > tArtefactOrder2.m_tpOrders[0].m_dwPrice);
 	};
@@ -100,9 +102,9 @@ class CRemoveSlotAndCellItemsPredicate {
 public:
 	u32								m_dwMaxCount;
 	u32								m_dwCurCount;
-	WEAPON_P_VECTOR					*m_tpWeaponVector;
+	ALife::WEAPON_P_VECTOR			*m_tpWeaponVector;
 
-									CRemoveSlotAndCellItemsPredicate	(WEAPON_P_VECTOR *tpWeaponVector, u32 dwMaxCount) : m_dwMaxCount(dwMaxCount), m_dwCurCount(0)
+	CRemoveSlotAndCellItemsPredicate	(ALife::WEAPON_P_VECTOR *tpWeaponVector, u32 dwMaxCount) : m_dwMaxCount(dwMaxCount), m_dwCurCount(0)
 	{
 		m_tpWeaponVector			= tpWeaponVector;
 	}
@@ -132,7 +134,7 @@ public:
 		m_tpALifeObjectRegistry		= tpALifeObjectRegistry;
 	}
 
-	IC bool							operator()							(const _OBJECT_ID tObjectID)
+	IC bool							operator()							(const ALife::_OBJECT_ID tObjectID)
 	{
 		return						(0xffff == m_tpALifeObjectRegistry->tpfGetObjectByID(tObjectID)->ID_Parent);
 	};
@@ -141,9 +143,9 @@ public:
 class CSortByOwnerPredicate {
 	CSE_ALifeObjectRegistry			*m_tpALifeObjectRegistry;
 public:
-	_OBJECT_ID						m_tParentID;
+	ALife::_OBJECT_ID				m_tParentID;
 	
-									CSortByOwnerPredicate	(CSE_ALifeObjectRegistry *tpALifeObjectRegistry, _OBJECT_ID tParentID)
+									CSortByOwnerPredicate	(CSE_ALifeObjectRegistry *tpALifeObjectRegistry, ALife::_OBJECT_ID tParentID)
 	{
 		m_tpALifeObjectRegistry		= tpALifeObjectRegistry;
 		m_tParentID					= tParentID;

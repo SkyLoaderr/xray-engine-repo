@@ -10,6 +10,8 @@
 #include "ai_alife.h"
 #include "ai_space.h"
 #include "graph_engine.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 //#define OLD_BEHAVIOUR
 

@@ -11,6 +11,8 @@
 #include "ai_space.h"
 #include "game_graph.h"
 #include "ef_storage.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 {

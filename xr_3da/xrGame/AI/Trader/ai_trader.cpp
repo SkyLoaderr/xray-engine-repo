@@ -13,6 +13,7 @@
 #include "../../ai_script_actions.h"
 #include "../../ai_script_classes.h"
 #include "../../inventory.h"
+#include "../../xrserver_objects_alife_monsters.h"
 
 CAI_Trader::CAI_Trader()
 {

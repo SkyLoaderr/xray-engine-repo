@@ -11,6 +11,7 @@
 #include "../../bolt.h"
 #include "../../inventory.h"
 #include "../../phmovementcontrol.h"
+#include "../../xrserver_objects_alife_monsters.h"
 
 CAI_Idol::CAI_Idol					()
 {

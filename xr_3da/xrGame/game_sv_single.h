@@ -38,7 +38,7 @@ public:
 
 	// Main
 	virtual		void				Update					();
-	virtual		_TIME_ID			GetGameTime				();
+	virtual		ALife::_TIME_ID			GetGameTime				();
 	virtual		float				GetGameTimeFactor		();
 	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
 };

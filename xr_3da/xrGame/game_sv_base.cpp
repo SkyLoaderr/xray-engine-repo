@@ -2,6 +2,7 @@
 #include "xrServer.h"
 #include "LevelGameDef.h"
 #include "ai_script_processor.h"
+#include "xrServer_Objects_ALife_Monsters.h"
 
 // Main
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
@@ -376,7 +377,7 @@ game_sv_GameState::~game_sv_GameState()
 	xr_delete					(m_tpScriptProcessor);
 }
 
-_TIME_ID game_sv_GameState::GetGameTime()
+ALife::_TIME_ID game_sv_GameState::GetGameTime()
 {
 	return			(m_qwStartGameTime + iFloor(m_fTimeFactor*float(CPU::GetCycleCount() - m_qwStartProcessorTime)*CPU::cycles2milisec));
 }

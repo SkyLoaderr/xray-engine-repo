@@ -10,6 +10,7 @@
 
 #include "inventory_space.h"
 #include "physic_item.h"
+#include "phsynchronize.h"
 
 class CInventoryItem : public CPhysicItem {
 	typedef CPhysicItem	inherited;
@@ -60,7 +61,7 @@ public:
 											CObject* who, s16 element,
 											Fvector position_in_object_space, 
 											float impulse, 
-											ALife::EHitType hit_type = eHitTypeWound);
+											ALife::EHitType hit_type = ALife::eHitTypeWound);
 
 			bool	DetachAll			();										// Разобрать иерархию объектов. Объект должен быть в рюкзаке
 			void	Drop				();										// Если объект в инвенторе, то он будет выброшен

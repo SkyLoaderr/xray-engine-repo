@@ -84,7 +84,7 @@ public:
 	// get all the items with the same section name
 	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	
 	// get all the items with the same object id
-	virtual bool	bfCheckForObject(_OBJECT_ID tObjectID);	
+	virtual bool	bfCheckForObject(ALife::_OBJECT_ID tObjectID);	
 			u32		dwfGetObjectCount();
 	CInventoryItem	*tpfGetObjectByIndex(int iIndex);
 	CInventoryItem	*GetItemFromInventory(LPCSTR caItemName);

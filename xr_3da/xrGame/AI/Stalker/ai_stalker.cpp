@@ -17,7 +17,7 @@
 #include "../../inventory.h"
 #include "../../artifact.h"
 #include "../../phmovementcontrol.h"
-
+#include "../../xrserver_objects_alife_monsters.h"
 
 CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
 {
@@ -58,7 +58,7 @@ void CAI_Stalker::reinit			()
 	_A=_B=_C=_D=_E=_F=_G=_H=_I=_J=_K=_L=_M=false;
 	m_dwLastSoundUpdate				= 0;
 	m_dwLastUpdate					= 0;
-	m_tTaskState					= eTaskStateChooseTask;
+	m_tTaskState					= ALife::eTaskStateChooseTask;
 
 	m_r_hand						= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
 	m_r_finger1						= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");

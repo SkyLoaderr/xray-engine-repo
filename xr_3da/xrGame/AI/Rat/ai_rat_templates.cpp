@@ -272,7 +272,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 
 void CAI_Rat::vfChooseNextGraphPoint()
 {
-	_GRAPH_ID			tGraphID		= m_tNextGP;
+	ALife::_GRAPH_ID	tGraphID		= m_tNextGP;
 	CGameGraph::const_iterator	i,e;
 	ai().game_graph().begin		(tGraphID,i,e);
 	int					iPointCount		= (int)vertex_types().size();

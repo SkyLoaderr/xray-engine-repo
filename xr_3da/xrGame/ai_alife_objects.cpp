@@ -10,6 +10,8 @@
 #include "ai_alife_objects.h"
 #include "ai_alife_registries.h"
 #include "ai_alife_templates.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 #ifdef AI_COMPILER
 	#include "xrLevel.h"

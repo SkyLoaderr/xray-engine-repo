@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "searchlight.h"
-
 #include "../LightAnimLibrary.h"
-
 #include "ai_script_actions.h"
+#include "xrServer_Objects_ALife.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

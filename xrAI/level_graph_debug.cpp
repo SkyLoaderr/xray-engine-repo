@@ -21,6 +21,7 @@
 #include "ai_alife.h"
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
+#include "xrserver_objects_alife_monsters.h"
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 #define DRAW_GRAPH_POINT(t0,c0,c1,c2) {\
@@ -211,7 +212,7 @@ void CLevelGraph::render()
 				game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 				if ((tpGame) && (tpGame->m_tpALife)) {
 					{
-						_LEVEL_ID	J = ai().game_graph().vertex(tpGame->m_tpALife->m_tpActor->m_tGraphID)->level_id();
+						ALife::_LEVEL_ID	J = ai().game_graph().vertex(tpGame->m_tpALife->m_tpActor->m_tGraphID)->level_id();
 						for (int i=0, n=(int)ai().game_graph().header().vertex_count(); i<n; ++i) {
 							if (ai().game_graph().vertex(i)->level_id() != J)
 								continue;
@@ -233,8 +234,8 @@ void CLevelGraph::render()
 						}
 					}
 
-					D_OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
-					D_OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
+					ALife::D_OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
+					ALife::D_OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
 					for ( ; I != E; ++I) {
 						{
 							CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>((*I).second);

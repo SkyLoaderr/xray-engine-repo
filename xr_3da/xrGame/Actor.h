@@ -347,8 +347,8 @@ public:
 	virtual void						net_Destroy			();
 
 	virtual void						Die					( );
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, float impulse,  ALife::EHitType hit_type = eHitTypeWound);
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = eHitTypeWound);
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void						HitSignal			(float P, Fvector &vLocalDir,	CObject* who, s16 element);
 	virtual	float						HitScale			(int element);
 

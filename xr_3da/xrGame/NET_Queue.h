@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xrMessages.h"
+
 class	NET_Event
 {
 public:

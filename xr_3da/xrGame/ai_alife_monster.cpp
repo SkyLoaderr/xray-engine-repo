@@ -12,6 +12,7 @@
 #include "ai_alife_predicates.h"
 #include "game_graph.h"
 #include "ef_storage.h"
+using namespace ALife;
 
 void CSE_ALifeMonsterAbstract::Update		()
 {
@@ -35,9 +36,9 @@ void CSE_ALifeMonsterAbstract::Update		()
 			}
 		}
 		if (m_tNextGraphID == m_tGraphID) {
-			_GRAPH_ID					tGraphID = m_tNextGraphID;
+			_GRAPH_ID			tGraphID = m_tNextGraphID;
 			CGameGraph::const_iterator	i,e;
-			TERRAIN_VECTOR				&tpaTerrain = m_tpaTerrain;
+			TERRAIN_VECTOR		&tpaTerrain = m_tpaTerrain;
 			int							iPointCount = (int)tpaTerrain.size();
 			int							iBranches = 0;
 			ai().game_graph().begin		(tGraphID,i,e);
@@ -106,7 +107,7 @@ EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeSchedulable *
 	if (eCombatTypeMonsterMonster == m_tpALife->m_tCombatType) {
 		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable);
 		R_ASSERT2					(l_tpALifeMonsterAbstract,"Inconsistent meet action type");
-		return						(eRelationTypeFriend == m_tpALife->tfGetRelationType(this,dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable)) ? eMeetActionTypeIgnore : ((bMutualDetection || m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
+		return						(eRelationTypeFriend == m_tpALife->tfGetRelationType(this,dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable)) ? eMeetActionTypeIgnore : ((bMutualDetection || m_tpALife->tfChooseCombatAction(iGroupIndex) == eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
 	}
 	else
 		return(eMeetActionTypeAttack);
@@ -145,8 +146,8 @@ void CSE_ALifeMonsterAbstract::vfCheckForPopulationChanges()
 			u32					l_dwBornCount = iFloor(float(l_tpALifeGroupAbstract->m_wCount)*m_tpALife->randF(.5f,1.5f)*ai().ef_storage().m_pfBirthPercentage->ffGetValue()/100.f + .5f);
 			if (l_dwBornCount) {
 				l_tpALifeGroupAbstract->m_tpMembers.resize(l_tpALifeGroupAbstract->m_wCount + l_dwBornCount);
-				OBJECT_IT				I = l_tpALifeGroupAbstract->m_tpMembers.begin() + l_tpALifeGroupAbstract->m_wCount;
-				OBJECT_IT				E = l_tpALifeGroupAbstract->m_tpMembers.end();
+				OBJECT_IT		I = l_tpALifeGroupAbstract->m_tpMembers.begin() + l_tpALifeGroupAbstract->m_wCount;
+				OBJECT_IT		E = l_tpALifeGroupAbstract->m_tpMembers.end();
 				for ( ; I != E; ++I) {
 					CSE_Abstract		*l_tpAbstract = m_tpALife->tpfCreateGroupMember	(l_tpALifeGroupAbstract,this);
 					*I					= l_tpAbstract->ID;

@@ -10,17 +10,18 @@
 #include "ai_stalker.h"
 #include "../../ai_alife.h"
 #include "../../graph_engine.h"
+#include "../../xrserver_objects_alife.h"
 
 void CAI_Stalker::vfChooseTask()
 {
 	if (!bfHealthIsGood()) {
 		if (!bfCanTreat()) {
 			if (!bfEnoughMoneyToTreat() || !bfEnoughTimeToTreat()) {
-				m_tTaskState = eTaskStateSendSOS;
+				m_tTaskState = ALife::eTaskStateSendSOS;
 				return;
 			}
 			else {
-				m_tTaskState = eTaskStateGoToCustomer;
+				m_tTaskState = ALife::eTaskStateGoToCustomer;
 				return;
 			}
 		}
@@ -32,26 +33,26 @@ void CAI_Stalker::vfChooseTask()
 	else {
 		if (!bfEnoughEquipmentToGo()) {
 			if (bfDistanceToTraderIsDanger() || !bfEnoughMoneyToEquip()) {
-				m_tTaskState = eTaskStateSendSOS;
+				m_tTaskState = ALife::eTaskStateSendSOS;
 				return;
 			}
 			else {
-				m_tTaskState = eTaskStateGoToCustomer;
+				m_tTaskState = ALife::eTaskStateGoToCustomer;
 				return;
 			}
 		}
 		else {
-			m_tDestGraphPointIndex	= _GRAPH_ID(-1);
+			m_tDestGraphPointIndex	= ALife::_GRAPH_ID(-1);
 			vfChooseHumanTask		();
 			CSE_ALifeTask			*l_tpTask = m_tpALife->tpfGetTaskByID(m_tTaskID);
 			switch (l_tpTask->m_tTaskType) {
-				case eTaskTypeSearchForItemCG :
-				case eTaskTypeSearchForItemOG : {
+				case ALife::eTaskTypeSearchForItemCG :
+				case ALife::eTaskTypeSearchForItemOG : {
 					m_tDestGraphPointIndex = l_tpTask->m_tGraphID;
 					break;
 				}
-				case eTaskTypeSearchForItemCL :
-				case eTaskTypeSearchForItemOL : {
+				case ALife::eTaskTypeSearchForItemCL :
+				case ALife::eTaskTypeSearchForItemOL : {
 #pragma todo("Dima to Dima : add graph point type item search")
 					//m_baVisitedVertices.assign(tpALife->m_tpTerrain[0][l_tpTask->m_tLocationID].size(),false);
 					//m_tDestGraphPointIndex = tpALife->m_tpTerrain[l_tpTask->m_tLocationID][m_dwCurTaskLocation = 0];
@@ -60,7 +61,7 @@ void CAI_Stalker::vfChooseTask()
 				}
 				default				: NODEFAULT;
 			};
-			m_tTaskState			= eTaskStateAccomplishTask;
+			m_tTaskState			= ALife::eTaskStateAccomplishTask;
 		}
 	}
 }
@@ -103,20 +104,20 @@ void CAI_Stalker::vfAccomplishTask()
 void CAI_Stalker::vfFinishTask()
 {
 	if (bfCheckIfTaskCompleted())
-		m_tTaskState		= eTaskStateGoToCustomer;
+		m_tTaskState		= ALife::eTaskStateGoToCustomer;
 	else {
 		CSE_ALifeTask		*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_tTaskID);
 		switch (l_tpALifeTask->m_tTaskType) {
-			case eTaskTypeSearchForItemCG :
-			case eTaskTypeSearchForItemOG : {
+			case ALife::eTaskTypeSearchForItemCG :
+			case ALife::eTaskTypeSearchForItemOG : {
 				if (CMovementManager::path_completed() && (game_vertex_id() == l_tpALifeTask->m_tGraphID)) {
 					++(l_tpALifeTask->m_dwTryCount);
-					m_tTaskState = eTaskStateChooseTask;
+					m_tTaskState = ALife::eTaskStateChooseTask;
 				}
 				break;
 			}
-			case eTaskTypeSearchForItemCL :
-			case eTaskTypeSearchForItemOL : {
+			case ALife::eTaskTypeSearchForItemCL :
+			case ALife::eTaskTypeSearchForItemOL : {
 //					++(tpALife->tpfGetTaskByID(m_tTaskID)->m_dwTryCount);
 //					m_tTaskState		= eTaskStateChooseTask;
 //					for (++m_dwCurTaskLocation; (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) && (m_baVisitedVertices[m_dwCurTaskLocation]); ++m_dwCurTaskLocation);
@@ -126,7 +127,7 @@ void CAI_Stalker::vfFinishTask()
 //						m_dwCurGraphPathNode = 0;
 //					}
 //					else
-				m_tTaskState	= eTaskStateChooseTask;
+				m_tTaskState	= ALife::eTaskStateChooseTask;
 				break;
 			}
 			default :				NODEFAULT;
@@ -149,32 +150,32 @@ void CAI_Stalker::ALifeUpdate()
 		return;
 	}
 	switch (m_tTaskState) {
-		case eTaskStateChooseTask : {
+		case ALife::eTaskStateChooseTask : {
 			vfChooseTask();
 			break;
 		}
-		case eTaskStateGoToCustomer : {
+		case ALife::eTaskStateGoToCustomer : {
 			vfGoToCustomer();
 			break;
 		}
-		case eTaskStateGoToSOS : {
+		case ALife::eTaskStateGoToSOS : {
 			vfGoToSOS();
 			break;
 		}
-		case eTaskStateSendSOS : {
+		case ALife::eTaskStateSendSOS : {
 			vfSendSOS();
 			break;
 		}
-		case eTaskStateAccomplishTask : {
+		case ALife::eTaskStateAccomplishTask : {
 			vfAccomplishTask();
 			break;
 		}
-		case eTaskStateSearchItem : {
+		case ALife::eTaskStateSearchItem : {
 			vfSearchObject();
 			break;
 		}
-		case eTaskStateGoingToCustomer :
-		case eTaskStateGoingToSearchItem : {
+		case ALife::eTaskStateGoingToCustomer :
+		case ALife::eTaskStateGoingToSearchItem : {
 			vfContinueWithALifeGoals();
 			break;
 		}

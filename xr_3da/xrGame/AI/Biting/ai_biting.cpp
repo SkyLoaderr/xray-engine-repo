@@ -13,6 +13,7 @@
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
 #include "../../phmovementcontrol.h"
+#include "../../xrserver_objects_alife_monsters.h"
 
 
 CAI_Biting::CAI_Biting()

@@ -13,6 +13,7 @@
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
 #include "../../inventory.h"
+#include "../../xrserver_objects_alife.h"
 
 bool CAI_Stalker::bfHealthIsGood			()
 {
@@ -73,14 +74,14 @@ bool CAI_Stalker::bfCheckIfTaskCompleted()
 
 	CSE_ALifeTask	&tTask = *m_tpALife->tpfGetTaskByID(m_tTaskID);
 	switch (tTask.m_tTaskType) {
-		case eTaskTypeSearchForItemCL :
-		case eTaskTypeSearchForItemCG : {
+		case ALife::eTaskTypeSearchForItemCL :
+		case ALife::eTaskTypeSearchForItemCG : {
 			if (inventory().dwfGetSameItemCount(tTask.m_caSection))
 				return(true);
 			break;
 		}
-		case eTaskTypeSearchForItemOL :
-		case eTaskTypeSearchForItemOG : {
+		case ALife::eTaskTypeSearchForItemOL :
+		case ALife::eTaskTypeSearchForItemOG : {
 			if (inventory().bfCheckForObject(tTask.m_tObjectID))
 				return(true);
 			break;
@@ -91,16 +92,16 @@ bool CAI_Stalker::bfCheckIfTaskCompleted()
 
 void CAI_Stalker::vfChooseHumanTask()
 {
-	OBJECT_IT					I = m_tpKnownCustomers.begin();
-	OBJECT_IT					E = m_tpKnownCustomers.end();
+	ALife::OBJECT_IT			I = m_tpKnownCustomers.begin();
+	ALife::OBJECT_IT			E = m_tpKnownCustomers.end();
 	for ( ; I != E; ++I) {
-		OBJECT_TASK_PAIR_IT		J = m_tpALife->m_tTaskCrossMap.find(*I);
+		ALife::OBJECT_TASK_PAIR_IT	J = m_tpALife->m_tTaskCrossMap.find(*I);
 		R_ASSERT2				(m_tpALife->m_tTaskCrossMap.end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
 
 		u32						l_dwMinTryCount = u32(-1);
-		_TASK_ID				l_tBestTaskID = _TASK_ID(-1);
-		TASK_SET_IT				i = (*J).second.begin();
-		TASK_SET_IT				e = (*J).second.end();
+		ALife::_TASK_ID			l_tBestTaskID = ALife::_TASK_ID(-1);
+		ALife::TASK_SET_IT		i = (*J).second.begin();
+		ALife::TASK_SET_IT		e = (*J).second.end();
 		for ( ; i != e; ++i) {
 			CSE_ALifeTask		*l_tpTask = m_tpALife->tpfGetTaskByID(*i);
 			if (!l_tpTask->m_dwTryCount) {
@@ -114,14 +115,14 @@ void CAI_Stalker::vfChooseHumanTask()
 				}
 		}
 
-		if (_TASK_ID(-1) != l_tBestTaskID) {
+		if (ALife::_TASK_ID(-1) != l_tBestTaskID) {
 			vfSetCurrentTask	(l_tBestTaskID);
 			break;
 		}
 	}
 }
 
-void CAI_Stalker::vfSetCurrentTask(_TASK_ID &tTaskID)
+void CAI_Stalker::vfSetCurrentTask(ALife::_TASK_ID &tTaskID)
 {
 	m_tTaskID				= m_tpALife->tpfGetTaskByID(tTaskID)->m_tTaskID;
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "targetcsbase.h"
 #include "targetcs.h"
+#include "xrserver_objects.h"
 
 CTargetCSBase::CTargetCSBase(void)
 {

@@ -6,9 +6,9 @@
 #define AFX_XRSERVER_H__65728A25_16FC_4A7B_8CCE_D798CA5EC64E__INCLUDED_
 #pragma once
 
-#include "xrServer_Objects_ALife_All.h"
 #include "game_sv_base.h"
 #include "id_generator.h"
+class CSE_Abstract;
 
 const u32	NET_Latency		= 75;		// time in (ms)
 

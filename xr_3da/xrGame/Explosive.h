@@ -39,7 +39,7 @@ public:
 	virtual void OnEvent (NET_Packet& P, u16 type) ;//{inherited::OnEvent( P, type);}
 	virtual	void Hit	(float P, Fvector &dir,	CObject* who, s16 element,
 						 Fvector position_in_object_space, float impulse, 
-						 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
+						 ALife::EHitType hit_type = ALife::eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
 	
 	virtual void renderable_Render() = 0;
 

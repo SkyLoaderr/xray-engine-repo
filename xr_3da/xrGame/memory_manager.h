@@ -29,7 +29,7 @@ public:
 	virtual	void			reinit					();
 	virtual	void			reload					(LPCSTR section);
 	virtual	void			update					();
-	IC		ERelationType	get_relation			(const CEntityAlive *tpEntityAlive) const;
+	IC		ALife::ERelationType get_relation		(const CEntityAlive *tpEntityAlive) const;
 	template <typename T>
 			void			update					(const xr_vector<T> &objects);
 	IC		bool			visible					(const CObject *object) const;

@@ -173,12 +173,12 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 	
 	switch (pPartner.inv_owner->m_tRank) 
 	{
-		case eStalkerRankNone: strcpy(s,"NO_RANK"); break;
-		case eStalkerRankNovice: strcpy(s,"NOVICE"); break;
-		case eStalkerRankExperienced: strcpy(s,"EXPERIENCED"); break;
-		case eStalkerRankVeteran: strcpy(s,"VETERAN"); break;
-		case eStalkerRankMaster: strcpy(s,"MASTER"); break;
-		case eStalkerRankDummy: strcpy(s,"DUMMY"); break;
+		case ALife::eStalkerRankNone: strcpy(s,"NO_RANK"); break;
+		case ALife::eStalkerRankNovice: strcpy(s,"NOVICE"); break;
+		case ALife::eStalkerRankExperienced: strcpy(s,"EXPERIENCED"); break;
+		case ALife::eStalkerRankVeteran: strcpy(s,"VETERAN"); break;
+		case ALife::eStalkerRankMaster: strcpy(s,"MASTER"); break;
+		case ALife::eStalkerRankDummy: strcpy(s,"DUMMY"); break;
 	}
 	
 	Msg("--TRADE:: [%s]: c. Your rank is %s", *pThis.base->cName(),s);
@@ -250,7 +250,7 @@ void CTrade::ShowItems()
 		} else if (pPartner.type == TT_STALKER) {
 			CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
 			CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
-			if (pEAThis->tfGetRelationType(pPAPartner) == eRelationTypeFriend) {
+			if (pEAThis->tfGetRelationType(pPAPartner) == ALife::eRelationTypeFriend) {
 				factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
 			} else factor = m_tTradeFactors.StalkerNeutralBuyPriceFactor;
 		}
@@ -304,14 +304,14 @@ void CTrade::ShowArtifactPrices()
 		CAI_Trader					*l_pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
 		R_ASSERT					(l_pTrader);
 		Msg							("--TRADE:: [%s]: I need the following artefacts :",*pThis.base->cName());
-		ARTEFACT_TRADER_ORDER_PAIR_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
-		ARTEFACT_TRADER_ORDER_PAIR_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
+		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
+		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
 		for ( ; ii != ee; ++ii) {
 			u32						l_dwAlreadyPurchased = GetTradeInv(pThis).dwfGetSameItemCount((*ii).second->m_caSection);
 			R_ASSERT				(l_dwAlreadyPurchased <= (*ii).second->m_dwTotalCount);
 			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).second->m_caSection,"inv_name"),(*ii).second->m_dwTotalCount - l_dwAlreadyPurchased);
-			ARTEFACT_ORDER_IT		iii = (*ii).second->m_tpOrders.begin();
-			ARTEFACT_ORDER_IT		eee = (*ii).second->m_tpOrders.end();
+			ALife::ARTEFACT_ORDER_IT	iii = (*ii).second->m_tpOrders.begin();
+			ALife::ARTEFACT_ORDER_IT	eee = (*ii).second->m_tpOrders.end();
 			for ( ; iii != eee; ++iii)
 				if (l_dwAlreadyPurchased < (*iii).m_dwCount) {
 					Msg				("-       %d items for $%d for organization %s",(*iii).m_dwCount - l_dwAlreadyPurchased,(*iii).m_dwPrice,(*iii).m_caSection);
@@ -464,7 +464,7 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 		{
 			CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
 			CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
-			if (pEAThis->tfGetRelationType(pPAPartner) == eRelationTypeFriend) 
+			if (pEAThis->tfGetRelationType(pPAPartner) == ALife::eRelationTypeFriend) 
 			{
 				factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
 			} 

@@ -40,6 +40,6 @@ typedef struct tagSPdaMessage
 	int info_index;
 
 	//время получения/отправки сообщения
-	_TIME_ID		time;
+	ALife::_TIME_ID	time;
 		
 } SPdaMessage;

@@ -751,20 +751,20 @@ public:
 		TIME_FLAG		= u32(1 << 6),
 	};
 	u32								m_dwFlags;
-	_TIME_ID						m_tLifeTime;
-	_TIME_ID						m_tStartTime;
+	ALife::_TIME_ID						m_tLifeTime;
+	ALife::_TIME_ID						m_tStartTime;
 							CActionCondition		()
 	{
 		m_dwFlags			= 0;
-		m_tLifeTime			= _TIME_ID(-1);
-		m_tStartTime		= _TIME_ID(-1);
+		m_tLifeTime			= ALife::_TIME_ID(-1);
+		m_tStartTime		= ALife::_TIME_ID(-1);
 	}
 
 							CActionCondition		(u32 dwFlags, double dTime = -1)
 	{
 		m_dwFlags			= dwFlags;
-		m_tLifeTime			= _TIME_ID(dTime);
-		m_tStartTime		= _TIME_ID(-1);
+		m_tLifeTime			= ALife::_TIME_ID(dTime);
+		m_tStartTime		= ALife::_TIME_ID(-1);
 	}
 
 	IC		void			initialize				()

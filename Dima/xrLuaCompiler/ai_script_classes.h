@@ -96,7 +96,7 @@ public:
 	float			GetCondition	() const;
 
 	// CEntity
-	BIND_MEMBER		(m_tpGameObject,	DeathTime,			CEntity,		m_dwDeathTime,		_TIME_ID,						_TIME_ID(-1));
+	BIND_MEMBER		(m_tpGameObject,	DeathTime,			CEntity,		m_dwDeathTime,		ALife::_TIME_ID,						ALife::_TIME_ID(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	Armor,				CEntity,		g_Armor,			float,							-1);
 	BIND_FUNCTION10	(m_tpGameObject,	MaxHealth,			CEntity,		g_MaxHealth,		float,							-1);
 	BIND_FUNCTION10	(m_tpGameObject,	Accuracy,			CEntity,		g_Accuracy,			float,							-1);
@@ -246,7 +246,7 @@ public:
 			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member UseObject!");
 	}
 
-	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								eStalkerRankDummy);
+	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								ALife::eStalkerRankDummy);
 	
 			CLuaGameObject	*GetCurrentWeapon	() const;
 			CLuaGameObject	*GetCurrentEquipment() const;

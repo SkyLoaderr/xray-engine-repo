@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "xrserver_objects.h"
 
 void xrServer::SLS_Save	(IWriter& fs)
 {

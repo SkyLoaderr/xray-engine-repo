@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "game_sv_deathmatch.h"
 #include "HUDmanager.h"
+#include "xrserver_objects_alife_monsters.h"
 
 void	game_sv_Deathmatch::Create					(LPSTR &options)
 {
@@ -26,7 +27,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		// spawn
 		LPCSTR					options	=	get_name_it	(it);
 		CSE_Abstract			*E		=	spawn_begin	("actor");													// create SE
-		CSE_ALifeCreatureActor				*A		=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
+		CSE_ALifeCreatureActor	*A		=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
 		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 		A->s_team				=	u8(0);																	// no-team
 		A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags

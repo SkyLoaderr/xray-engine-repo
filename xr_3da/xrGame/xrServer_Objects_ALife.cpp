@@ -148,22 +148,22 @@ void CSE_ALifeTask::UPDATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_float			(m_fCost);
 	tNetPacket.w				(&m_tTaskType,		sizeof(m_tTaskType));
 	switch (m_tTaskType) {
-		case eTaskTypeSearchForItemCL : {
+		case ALife::eTaskTypeSearchForItemCL : {
 			tNetPacket.w_string	(m_caSection);
 			tNetPacket.w		(&m_tLocationID,	sizeof(m_tLocationID));
 			break;
 		}
-		case eTaskTypeSearchForItemCG : {
+		case ALife::eTaskTypeSearchForItemCG : {
 			tNetPacket.w_string	(m_caSection);
 			tNetPacket.w		(&m_tGraphID,		sizeof(m_tGraphID));
 			break;
 		}
-		case eTaskTypeSearchForItemOL : {
+		case ALife::eTaskTypeSearchForItemOL : {
 			tNetPacket.w		(&m_tObjectID,		sizeof(m_tObjectID));
 			tNetPacket.w		(&m_tLocationID,	sizeof(m_tLocationID));
 			break;
 		}
-		case eTaskTypeSearchForItemOG : {
+		case ALife::eTaskTypeSearchForItemOG : {
 			tNetPacket.w		(&m_tObjectID,		sizeof(m_tObjectID));
 			tNetPacket.w		(&m_tGraphID,		sizeof(m_tGraphID));
 			break;
@@ -182,22 +182,22 @@ void CSE_ALifeTask::UPDATE_Read				(NET_Packet &tNetPacket)
 	tNetPacket.r_float			(m_fCost);
 	tNetPacket.r				(&m_tTaskType,	sizeof(m_tTaskType));
 	switch (m_tTaskType) {
-		case eTaskTypeSearchForItemCL : {
+		case ALife::eTaskTypeSearchForItemCL : {
 			tNetPacket.r_string	(m_caSection);
 			tNetPacket.r		(&m_tLocationID,sizeof(m_tLocationID));
 			break;
 		}
-		case eTaskTypeSearchForItemCG : {
+		case ALife::eTaskTypeSearchForItemCG : {
 			tNetPacket.r_string	(m_caSection);
 			tNetPacket.r		(&m_tGraphID,	sizeof(m_tGraphID));
 			break;
 		}
-		case eTaskTypeSearchForItemOL : {
+		case ALife::eTaskTypeSearchForItemOL : {
 			tNetPacket.r		(&m_tObjectID,	sizeof(m_tObjectID));
 			tNetPacket.r		(&m_tLocationID,sizeof(m_tLocationID));
 			break;
 		}
-		case eTaskTypeSearchForItemOG : {
+		case ALife::eTaskTypeSearchForItemOG : {
 			tNetPacket.r		(&m_tObjectID,	sizeof(m_tObjectID));
 			tNetPacket.r		(&m_tGraphID,	sizeof(m_tGraphID));
 			break;
@@ -333,15 +333,16 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_bOnline					= false;
 	m_fDistance					= 0.0f;
 	m_tClassID					= TEXT2CLSID(pSettings->r_string(caSection,"class"));	
-	ID							= _OBJECT_ID(-1);
-	m_tGraphID					= _GRAPH_ID(-1);
-	m_tGraphID					= _SPAWN_ID(-1);
+	ID							= ALife::_OBJECT_ID(-1);
+	m_tGraphID					= ALife::_GRAPH_ID(-1);
+	m_tGraphID					= ALife::_SPAWN_ID(-1);
 	m_fProbability				= 1.f;
 	m_dwSpawnGroup				= 0;
 	m_bDirectControl			= true;
 	m_bALifeControl				= true;
 	m_tNodeID					= u32(-1);
 	m_caGroupControl			= "";
+	m_flags.one					();
 }
 
 CSE_ALifeObject::~CSE_ALifeObject			()
@@ -358,6 +359,7 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_tNodeID);
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
 	tNetPacket.w_string			(*m_caGroupControl?*m_caGroupControl:"");
+	tNetPacket.w_u32			(m_flags.get());
 }
 
 void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
@@ -391,6 +393,9 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
     	string256 tmp;
 		tNetPacket.r_string		(tmp); m_caGroupControl=tmp;
     }
+	if (m_wVersion > 49) {
+		tNetPacket.r_u32		(m_flags.flags);
+	}
 }
 
 void CSE_ALifeObject::UPDATE_Write			(NET_Packet &tNetPacket)
@@ -404,11 +409,29 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp			(pref, items);
-	PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),	&m_fProbability,	0,100);
-//.	PHelper.CreateSceneItem		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
+	inherited::FillProp				(pref, items);
+	PHelper.CreateFloat				(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
+	if (m_flags.is(flUseSwitches)) {
+		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
+		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOnline);
+	}
 }
 #endif
+
+bool CSE_ALifeObject::used_ai_locations		() const
+{
+	return						(true);
+}
+
+bool CSE_ALifeObject::can_switch_online		() const
+{
+	return						(!!m_flags.is(flSwitchOnline));
+}
+
+bool CSE_ALifeObject::can_switch_offline	() const
+{
+	return						(!!m_flags.is(flSwitchOffline));
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGroupAbstract
@@ -611,7 +634,7 @@ void CSE_ALifeScriptZone::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeScriptZone(caSection), CSE_Abstract(caSection)
 {
-	m_tNextGraphID				= _GRAPH_ID(-1);
+	m_tNextGraphID				= ALife::_GRAPH_ID(-1);
 	m_dwNextNodeID				= u32(-1);
 	m_tNextPosition.set			(0.f,0.f,0.f);
 	m_fAngle					= 0.f;
@@ -703,6 +726,8 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
     flags.zero					();
+	m_flags.set					(flUseSwitches,false);
+	m_flags.set					(flSwitchOffline,false);
 }
 
 CSE_ALifeObjectPhysic::~CSE_ALifeObjectPhysic		() 
@@ -813,6 +838,11 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 }
 #endif
 
+bool CSE_ALifeObjectPhysic::used_ai_locations	() const
+{
+	return						(false);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectHangingLamp
 ////////////////////////////////////////////////////////////////////////////
@@ -823,6 +853,8 @@ CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_A
 	color						= 0xffffffff;
     brightness					= 1.f;
 	m_health					= 1.f;
+	m_flags.set					(flUseSwitches,false);
+	m_flags.set					(flSwitchOffline,false);
 }
 
 CSE_ALifeObjectHangingLamp::~CSE_ALifeObjectHangingLamp()
@@ -965,6 +997,10 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 }
 #endif
 
+bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
+{
+	return						(false);
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectSearchlight
@@ -972,6 +1008,8 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 
 CSE_ALifeObjectProjector::CSE_ALifeObjectProjector(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
 {
+	m_flags.set					(flUseSwitches,false);
+	m_flags.set					(flSwitchOffline,false);
 }
 
 CSE_ALifeObjectProjector::~CSE_ALifeObjectProjector()
@@ -1005,6 +1043,11 @@ void CSE_ALifeObjectProjector::FillProp			(LPCSTR pref, PropItemVec& values)
 }
 #endif
 
+bool CSE_ALifeObjectProjector::used_ai_locations() const
+{
+	return						(false);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeSchedulable
 ////////////////////////////////////////////////////////////////////////////
@@ -1031,6 +1074,8 @@ CSE_ALifeSchedulable::~CSE_ALifeSchedulable()
 
 CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection), CSE_Motion() 
 {
+	m_flags.set					(flUseSwitches,false);
+	m_flags.set					(flSwitchOffline,false);
 }
 
 CSE_ALifeHelicopter::~CSE_ALifeHelicopter	()
@@ -1101,3 +1146,7 @@ void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
 }
 #endif
 
+bool CSE_ALifeHelicopter::used_ai_locations	() const
+{
+	return						(false);
+}

@@ -3,11 +3,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
- 
 #include "hudmanager.h"
 #include "Entity.h"
-
 #include "actor.h"
+#include "xrserver_objects_alife_monsters.h"
 
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100

@@ -1,6 +1,9 @@
 #pragma once
 #include "gameobject.h"
 #include "PHDefs.h"
+
+class CSE_ALifeObjectPhysic;
+
 class CPhysicsElement;
 class CPhysicObject :
 	public CGameObject

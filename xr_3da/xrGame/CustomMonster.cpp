@@ -16,6 +16,7 @@
 #include "ai/rat/ai_rat.h"
 #include "ai/biting/ai_biting.h"
 #include "ai/stalker/ai_stalker.h"
+#include "xrserver_objects_alife_monsters.h"
 
 Flags32		psAI_Flags	= {0};
  

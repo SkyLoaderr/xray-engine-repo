@@ -12,6 +12,8 @@
 #include "ef_storage.h"
 #include "game_graph.h"
 #include "level_graph.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 void CSE_ALifeSimulator::vfFillCombatGroup(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex)
 {

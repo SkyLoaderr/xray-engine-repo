@@ -48,7 +48,7 @@ public:
 
 	virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,
 					 Fvector position_in_object_space, float impulse, 
-					 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
+					 ALife::EHitType hit_type = ALife::eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
 
 protected:
 	HUD_SOUND		sndCheckout;

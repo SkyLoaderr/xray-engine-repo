@@ -24,12 +24,12 @@ void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluato
 
 	if (!bfAssignDestinationNode()) {
 		switch (m_tTaskState) {
-			case eTaskStateGoingToSearchItem : {
-				m_tTaskState = eTaskStateAccomplishTask;
+			case ALife::eTaskStateGoingToSearchItem : {
+				m_tTaskState = ALife::eTaskStateAccomplishTask;
 				break;
 											   }
-			case eTaskStateGoingToCustomer : {
-				m_tTaskState = eTaskStateTradeWithCustomer;
+			case ALife::eTaskStateGoingToCustomer : {
+				m_tTaskState = ALife::eTaskStateTradeWithCustomer;
 				break;
 											 }
 			default : NODEFAULT;

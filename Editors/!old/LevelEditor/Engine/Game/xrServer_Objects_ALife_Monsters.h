@@ -9,10 +9,6 @@
 #ifndef xrServer_Objects_ALife_MonstersH
 #define xrServer_Objects_ALife_MonstersH
 
-#ifdef _EDITOR
-#include "xrServer_Objects_ALife_Items.h"
-#endif
-
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 class CSE_ALifeObjectRegistry;
@@ -20,31 +16,32 @@ class CSE_ALifeObjectRegistry;
 #endif
 
 #include "xrServer_Objects_ALife.h"
+#include "xrServer_Objects_ALife_Items.h"
 
 class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
 public:
 	float							m_fCumulativeItemMass;
 	int								m_iCumulativeItemVolume;
 	u32								m_dwMoney;
-	EStalkerRank					m_tRank;
+	ALife::EStalkerRank				m_tRank;
 	float							m_fMaxItemMass;
-	PERSONAL_EVENT_P_VECTOR			m_tpEvents;
+	ALife::PERSONAL_EVENT_P_VECTOR	m_tpEvents;
 	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeTraderAbstract();
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 			void					vfAttachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
-			void					vfDetachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	OBJECT_IT	*I = 0,			bool bALifeRequest = true,	bool bRemoveChildren = true);
+			void					vfDetachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);
 			void					vfInitInventory			();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
-	_ORGANIZATION_ID				m_tOrgID;
-	ARTEFACT_TRADER_ORDER_MAP		m_tpOrderedArtefacts;
-	TRADER_SUPPLY_VECTOR			m_tpSupplies;
+	ALife::_ORGANIZATION_ID				m_tOrgID;
+	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
+	ALife::TRADER_SUPPLY_VECTOR			m_tpSupplies;
 
 
 									CSE_ALifeTrader	(LPCSTR caSection);
@@ -71,8 +68,8 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 	string64						*m_cppArtefactSections;
 	u16								m_wArtefactSpawnCount;
 	u32								m_dwStartIndex;
-	EAnomalousZoneType				m_tAnomalyType;
-	EHitType						m_tHitType;
+	ALife::EAnomalousZoneType		m_tAnomalyType;
+	ALife::EHitType					m_tHitType;
 	float							m_fStartPower;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
@@ -84,8 +81,8 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 	virtual	void					Update					()	{};
 #else
 	virtual	void					Update					();
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,				float &fHitPower);
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int iGroupIndex, bool bMutualDetection);
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,				float &fHitPower);
+	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int iGroupIndex, bool bMutualDetection);
 	virtual bool					bfActive				();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 #endif
@@ -129,23 +126,26 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual u8						g_team					();
 	virtual u8						g_squad					();
 	virtual u8						g_group					();
-	IC		float					g_Health				()	const								{ return fHealth;}
+	IC		float					g_Health				() const								{ return fHealth;}
+	virtual bool					used_ai_locations		() const;
+	virtual bool					can_switch_online		() const;
+	virtual bool					can_switch_offline		() const;
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,CSE_ALifeSchedulable)
-	_GRAPH_ID						m_tNextGraphID;
-	_GRAPH_ID						m_tPrevGraphID;
+	ALife::_GRAPH_ID				m_tNextGraphID;
+	ALife::_GRAPH_ID				m_tPrevGraphID;
 	float							m_fGoingSpeed;
 	float							m_fCurSpeed;
 	float							m_fDistanceFromPoint;
 	float							m_fDistanceToPoint;
-	TERRAIN_VECTOR					m_tpaTerrain;
+	ALife::TERRAIN_VECTOR			m_tpaTerrain;
 	float							m_fMaxHealthValue;
 	float							m_fRetreatThreshold;
 	float							m_fEyeRange;
 	float							m_fHitPower;
-	EHitType						m_tHitType;
-	svector<float,eHitTypeMax>		m_fpImmunityFactors;
+	ALife::EHitType					m_tHitType;
+	svector<float,ALife::eHitTypeMax>	m_fpImmunityFactors;
 	
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
 	virtual							~CSE_ALifeMonsterAbstract();
@@ -157,8 +157,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual	void					Update					()	{};
 #else
 	virtual	void					Update					();
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,				float	&fHitPower);
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int		iGroupIndex,	bool bMutualDetection);
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,				float	&fHitPower);
+	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int		iGroupIndex,	bool bMutualDetection);
 	virtual bool					bfActive				();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				(bool					bFictitious = false) {};
@@ -180,6 +180,7 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureCrow,CSE_ALifeCreatureAbstract)
 									CSE_ALifeCreatureCrow	(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureCrow	();
+	virtual bool					used_ai_locations		() const;
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_ALifeInventoryItem)
@@ -241,14 +242,14 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 	DWORD_VECTOR					m_tpPath;
 	u32								m_dwCurNode;
-	_GRAPH_ID						m_tDestGraphPointIndex;								
+	ALife::_GRAPH_ID				m_tDestGraphPointIndex;								
 	xr_vector<bool>					m_baVisitedVertices;
-	ETaskState						m_tTaskState;
+	ALife::ETaskState				m_tTaskState;
 	u32								m_dwCurTaskLocation;
 	u32								m_dwCurTaskID;
 	float							m_fSearchSpeed;
 	ref_str							m_caKnownCustomers;
-	OBJECT_VECTOR					m_tpKnownCustomers;
+	ALife::OBJECT_VECTOR			m_tpKnownCustomers;
 	svector<char,5>					m_cpEquipmentPreferences;
 	svector<char,4>					m_cpMainWeaponPreferences;
 	u32								m_dwTotalMoney;
@@ -282,30 +283,30 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			bool					bfDistanceToTraderIsDanger();
 			bool					bfEnoughMoneyToEquip	();
 			// miscellanious
-			bool					bfCheckIfTaskCompleted	(OBJECT_IT				&I);
+			bool					bfCheckIfTaskCompleted	(ALife::OBJECT_IT		&I);
 			bool					bfCheckIfTaskCompleted	();
 			void					vfCheckForDeletedEvents	();
 			bool					bfChooseNextRoutePoint	();
-			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
-			u16						get_available_ammo_count(const CSE_ALifeItemWeapon	*tpALifeItemWeapon,			OBJECT_VECTOR	&tpObjectVector);
-			u16						get_available_ammo_count(const CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector,		OBJECT_VECTOR	*tpObjectVector = 0);
-			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector,		OBJECT_VECTOR	*tpObjectVector = 0);
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,					float			&fHitPower);
+			void					vfSetCurrentTask		(ALife::_TASK_ID		&tTaskID);
+			u16						get_available_ammo_count(const CSE_ALifeItemWeapon	*tpALifeItemWeapon,		ALife::OBJECT_VECTOR	&tpObjectVector);
+			u16						get_available_ammo_count(const CSE_ALifeItemWeapon	*tpALifeItemWeapon,		ALife::ITEM_P_VECTOR	&tpItemVector,		ALife::OBJECT_VECTOR	*tpObjectVector = 0);
+			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ALife::ITEM_P_VECTOR	&tpItemVector,		ALife::OBJECT_VECTOR	*tpObjectVector = 0);
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,					float					&fHitPower);
 	virtual bool					bfPerformAttack			();
 	virtual	void					vfUpdateWeaponAmmo		();
 	virtual	void					vfProcessItems			();
-	virtual	void					vfAttachItems			(ETakeType				tTakeType = eTakeTypeAll);
+	virtual	void					vfAttachItems			(ALife::ETakeType		tTakeType = ALife::eTakeTypeAll);
 			bool					bfCanGetItem			(CSE_ALifeInventoryItem	*tpALifeInventoryItem);
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,		int				iGroupIndex,		bool			bMutualDetection);
+	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,		int						iGroupIndex,		bool			bMutualDetection);
 			void					vfCollectAmmoBoxes		();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				(bool					bFictitious = false);
-			int						ifChooseEquipment		(OBJECT_VECTOR			*tpObjectVector = 0);
-			int						ifChooseWeapon			(EWeaponPriorityType	tWeaponPriorityType,		OBJECT_VECTOR	*tpObjectVector = 0);
-			int						ifChooseFood			(OBJECT_VECTOR			*tpObjectVector = 0);
-			int						ifChooseMedikit			(OBJECT_VECTOR			*tpObjectVector = 0);
-			int						ifChooseDetector		(OBJECT_VECTOR			*tpObjectVector = 0);
-			int						ifChooseValuables		(OBJECT_VECTOR			*tpObjectVector = 0);
+			int						ifChooseEquipment		(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
+			int						ifChooseWeapon			(ALife::EWeaponPriorityType	tWeaponPriorityType,	ALife::OBJECT_VECTOR	*tpObjectVector = 0);
+			int						ifChooseFood			(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
+			int						ifChooseMedikit			(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
+			int						ifChooseDetector		(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
+			int						ifChooseValuables		(ALife::OBJECT_VECTOR	*tpObjectVector = 0);
 			bool					bfChooseFast			();
 			void					vfChooseGroup			(CSE_ALifeGroupAbstract *tpALifeGroupAbstract);
 #endif

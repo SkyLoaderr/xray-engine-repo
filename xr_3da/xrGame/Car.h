@@ -365,7 +365,7 @@ private:
 	bool					HUDview				( ) { return IsFocused(); }
 
 	static void __stdcall	cb_Steer			(CBoneInstance* B);
-	virtual void Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = eHitTypeWound);
+	virtual void Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 public:
 	Fvector&				ExitPosition		(){return m_exit_position;}
 	void					GetVelocity			(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}

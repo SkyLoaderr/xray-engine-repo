@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(49)
+#define SPAWN_VERSION	u16(50)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -66,6 +66,7 @@
 // 47 - CSE_ALifeItemWeapon				appended with ammo type index
 // 48 - CSE_ALifeObjectSearchlight		appended with property 'cone_bone'
 // 49 - CSE_ALifeObjectHangingLamp		remove some property
+// 50 - CSE_ALifeObject					appended with ALife flags property
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

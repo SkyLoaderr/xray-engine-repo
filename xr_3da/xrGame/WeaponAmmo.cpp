@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "weaponammo.h"
 #include "PhysicsShell.h"
+#include "xrserver_objects_alife_items.h"
 
 CCartridge::CCartridge() 
 {

@@ -235,7 +235,7 @@ public:
 	//by Dandy
 	//gets the time from the game simulation
 	//receive game time
-	IC	_TIME_ID GetGameTime()
+	IC	ALife::_TIME_ID GetGameTime()
 	{
 		return			(Server->game->GetGameTime());
 	}

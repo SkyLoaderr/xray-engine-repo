@@ -12,6 +12,8 @@
 #include "ai_alife_predicates.h"
 #include "graph_engine.h"
 #include "ef_storage.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 CSE_Abstract *CSE_ALifeSimulator::tpfCreateGroupMember(CSE_ALifeGroupAbstract *tpALifeGroupAbstract, CSE_ALifeDynamicObject *j)
 {

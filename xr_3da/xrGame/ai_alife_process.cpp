@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 #include "graph_engine.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 #define SWITCH_TIME_FACTOR u64(10)
 

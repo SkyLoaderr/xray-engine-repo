@@ -12,6 +12,8 @@
 #include "ai_alife_predicates.h"
 #include "game_graph.h"
 #include "ef_storage.h"
+#include "xrserver_objects_alife_monsters.h"
+using namespace ALife;
 
 #define MAX_ITEM_FOOD_COUNT		3
 #define MAX_ITEM_MEDIKIT_COUNT	3
@@ -22,7 +24,7 @@ bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 	if (int(m_dwCurTaskID) < 0)
 		return		(false);
 	I				= children.begin();
-	OBJECT_IT		E = children.end();
+	OBJECT_IT E = children.end();
 	CSE_ALifeTask	&tTask = *m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
 	for ( ; I != E; ++I) {
 		switch (tTask.m_tTaskType) {
@@ -31,13 +33,13 @@ bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 				if (!xr_strcmp(m_tpALife->tpfGetObjectByID(*I)->s_name,tTask.m_caSection))
 					return(true);
 				break;
-											}
+			}
 			case eTaskTypeSearchForItemOL :
 			case eTaskTypeSearchForItemOG : {
 				if (m_tpALife->tpfGetObjectByID(*I)->ID == tTask.m_tObjectID)
 					return(true);
 				break;
-											}
+			}
 		}
 	}
 	return			(false);
@@ -45,7 +47,7 @@ bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 
 bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted()
 {
-	OBJECT_IT					I;
+	OBJECT_IT			I;
 	return						(bfCheckIfTaskCompleted(I));
 }
 
@@ -89,16 +91,16 @@ void CSE_ALifeHumanAbstract::vfCheckForDeletedEvents()
 
 void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 {
-	OBJECT_IT					I = m_tpKnownCustomers.begin();
-	OBJECT_IT					E = m_tpKnownCustomers.end();
+	OBJECT_IT			I = m_tpKnownCustomers.begin();
+	OBJECT_IT			E = m_tpKnownCustomers.end();
 	for ( ; I != E; ++I) {
-		OBJECT_TASK_PAIR_IT		J = m_tpALife->m_tTaskCrossMap.find(*I);
+		OBJECT_TASK_PAIR_IT	J = m_tpALife->m_tTaskCrossMap.find(*I);
 		R_ASSERT2				(m_tpALife->m_tTaskCrossMap.end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
 		
 		u32						l_dwMinTryCount = u32(-1);
-		_TASK_ID				l_tBestTaskID = _TASK_ID(-1);
-		TASK_SET_IT				i = (*J).second.begin();
-		TASK_SET_IT				e = (*J).second.end();
+		_TASK_ID			l_tBestTaskID = _TASK_ID(-1);
+		TASK_SET_IT		i = (*J).second.begin();
+		TASK_SET_IT		e = (*J).second.end();
 		for ( ; i != e; ++i) {
 			CSE_ALifeTask		*l_tpTask = m_tpALife->tpfGetTaskByID(*i);
 			if (!l_tpTask->m_dwTryCount) {
@@ -124,8 +126,8 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 	fHitPower					= 0.f;
 	m_tpCurrentBestWeapon		= 0;
 	u32							l_dwBestWeapon = 0;
-	OBJECT_IT					I = children.begin();
-	OBJECT_IT					E = children.end();
+	OBJECT_IT			I = children.begin();
+	OBJECT_IT			E = children.end();
 	for ( ; I != E; ++I) {
 		CSE_ALifeItemWeapon		*l_tpALifeItemWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(m_tpALife->tpfGetObjectByID(*I));
 		if (!l_tpALifeItemWeapon)
@@ -193,8 +195,8 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 			return						(true);
 		case 3 : {
 			bool						l_bOk = false;
-			OBJECT_IT					I = children.begin();
-			OBJECT_IT					E = children.end();
+			OBJECT_IT			I = children.begin();
+			OBJECT_IT			E = children.end();
 			for ( ; I != E; ++I)
 				if (*I == m_tpCurrentBestWeapon->ID) {
 					l_bOk				= true;

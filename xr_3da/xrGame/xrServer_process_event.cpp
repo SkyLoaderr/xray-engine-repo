@@ -2,6 +2,7 @@
 #include "xrServer.h"
 #include "game_sv_single.h"
 #include "ai_alife.h"
+#include "xrserver_objects.h"
 
 void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 {

@@ -5,7 +5,7 @@
 #include "effectorshot.h"
 #include "actor.h"
 #include "../CameraBase.h"
-
+#include "xrserver_objects_alife.h"
 
 #define PLAYING_ANIM_TIME 10000
 

@@ -4,6 +4,7 @@
 #include "actor.h"
 #include "hudmanager.h"
 #include "ParticlesObject.h"
+#include "xrserver_objects_alife_monsters.h"
 
 #define SMALL_OBJECT_RADIUS 0.6f
 
@@ -408,7 +409,7 @@ void CCustomZone::Affect(CObject* O)
 		l_P.w_s16	((s16)0);
 		l_P.w_vec3	(position_in_bone_space);
 		l_P.w_float	(impulse);
-		l_P.w_u16	(eHitTypeWound);
+		l_P.w_u16	(ALife::eHitTypeWound);
 		u_EventSend	(l_P);
 
 

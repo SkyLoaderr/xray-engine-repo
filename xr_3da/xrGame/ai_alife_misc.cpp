@@ -11,6 +11,7 @@
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
 #include "game_graph.h"
+using namespace ALife;
 
 void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSchedulable)
 {
@@ -18,7 +19,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 		return;
 	CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeSchedulable);
 	R_ASSERT2					(l_tpALifeDynamicObject,"Unknown schedulable object class");
-	_GRAPH_ID					l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
+	_GRAPH_ID			l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
 	vfCheckForInteraction		(tpALifeSchedulable,l_tGraphID);
 	CGameGraph::const_iterator	I, E;
 	ai().game_graph().begin		(l_tGraphID,I,E);
@@ -32,8 +33,8 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 #pragma todo("Dima to Dima : Instead of copying map to map we have to implement more complex and efficient data processing while adding and removing objects to/from graph point")
 	m_tpGraphPointObjects		= m_tpGraphObjects[tGraphID].tpObjects;
 
-	D_OBJECT_PAIR_IT			I = m_tpGraphPointObjects.begin();
-	D_OBJECT_PAIR_IT			E = m_tpGraphPointObjects.end();
+	D_OBJECT_PAIR_IT		I = m_tpGraphPointObjects.begin();
+	D_OBJECT_PAIR_IT		E = m_tpGraphPointObjects.end();
 	int							l_iGroupIndex;
 	bool						l_bFirstTime = true;
 	bool						l_bMutualDetection;
@@ -62,7 +63,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 					Msg("[LSS] %s started combat versus %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 				}
 #endif
-				ECombatResult			l_tCombatResult = eCombatResultRetreat12;
+				ECombatResult	l_tCombatResult = eCombatResultRetreat12;
 				bool					l_bDoNotContinue = false;
 				for (int i=0; i<2*int(m_dwMaxCombatIterationCount); ++i) {
 					if (eCombatActionAttack == tfChooseCombatAction(l_iGroupIndex)) {

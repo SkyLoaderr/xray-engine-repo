@@ -22,7 +22,7 @@ void CAI_Stalker::UseObject(const CObject *tpObject)
 ALife::EStalkerRank	CAI_Stalker::GetRank() const
 {
 #pragma todo("Dima to Dima : Return correct stalker rank")
-	return			(eStalkerRankNovice);
+	return			(ALife::eStalkerRankNovice);
 }
 
 CWeapon	*CAI_Stalker::GetCurrentWeapon() const

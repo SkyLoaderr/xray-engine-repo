@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "xrserver_objects.h"
 
 void xrServer::Perform_transfer(CSE_Abstract* what, CSE_Abstract* from, CSE_Abstract* to)
 {
