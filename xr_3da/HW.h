@@ -40,6 +40,7 @@ public:
 
 	void					Reset					();
 
+	void					selectResolution		(u32 &dwWidth, u32 &dwHeight);
 	D3DFORMAT				selectDepthStencil		(D3DFORMAT);
 	u32						selectPresentInterval	();
 	u32						selectGPU				();

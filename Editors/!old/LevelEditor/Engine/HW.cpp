@@ -24,10 +24,14 @@ void CHW::Reset		()
 	_RELEASE		(pBaseZB);
 	_RELEASE		(pBaseRT);
 
+#ifndef _EDITOR
+	selectResolution(DevPP.BackBufferWidth,DevPP.BackBufferHeight);
+#endif
+
 	while	(TRUE)	{
 		HRESULT _hr							= HW.pDevice->Reset	(&DevPP);
 		if (SUCCEEDED(_hr))					break;
-		Sleep								(1000);
+		Sleep								(100);
 	}
 
 	R_CHK			(pDevice->GetRenderTarget			(0,&pBaseRT));
@@ -96,7 +100,23 @@ void	CHW::DestroyDevice	()
 	DestroyD3D				();
 }
 
-u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
+void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight)
+{
+	// Select width/height
+	dwWidth	= psCurrentMode;
+	switch (dwWidth) {
+	case 320:	dwHeight = 240;		break;
+	case 512:	dwHeight = 384;		break;
+	case 640:	dwHeight = 480;		break;
+	case 800:	dwHeight = 600;		break;
+	case 1024:	dwHeight = 768;		break;
+	case 1280:	dwHeight = 960;		break;
+	case 1600:	dwHeight = 1200;	break;
+	default:	dwWidth  = 1024; dwHeight = 768; break;
+	}
+}
+
+u32		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 {
 	CreateD3D				();
 
@@ -127,17 +147,7 @@ u32 CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	else			SetWindowLong( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_POPUP|WS_VISIBLE) );
 
 	// Select width/height
-	dwWidth	= psCurrentMode;
-	switch (dwWidth) {
-	case 320:	dwHeight = 240;		break;
-	case 512:	dwHeight = 384;		break;
-	case 640:	dwHeight = 480;		break;
-	case 800:	dwHeight = 600;		break;
-	case 1024:	dwHeight = 768;		break;
-	case 1280:	dwHeight = 960;		break;
-	case 1600:	dwHeight = 1200;	break;
-	default:	dwWidth  = 1024; dwHeight = 768; break;
-	}
+	selectResolution	(dwWidth,dwHeight);
 #endif
 	// Display the name of video board
 	D3DADAPTER_IDENTIFIER9	adapterID;
