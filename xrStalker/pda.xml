@@ -5,10 +5,10 @@
 		<texture>ui\ui_pda_back_big</texture>
 	</background_static>
 
-	<!-- PDA STATIC HEADER -->
-<!--	<static x="0" y="0" width="940" height="128">
-		<texture>ui\ui_pda_frame_top</texture>
-	</static> -->
+	<!-- PDA OFF BUTTON -->
+	<off_button x="787" y="56" width="41" height="22">
+		<texture>ui\ui_pda_button</texture>
+	</off_button>
 	
 	<!-- Main buttons background -->
 	<mbbackground_frame_line x="76" y="546" width="591" height="32">
