@@ -107,7 +107,8 @@ namespace RAPID {
 	//------------------------------------------------------------------------------
 	// X-Ray Collision class
 	//------------------------------------------------------------------------------
-	class ENGINE_API XRCollide{
+	class ENGINE_API XRCollide
+	{
 		bool		Intersect_BBoxTri	(const bbox&,Fvector**);
 		
 		// internal use
