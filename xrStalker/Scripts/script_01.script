@@ -25,7 +25,7 @@ function main()
 	)
 
 	while stalker1:action() do		
-		if stalker1:cond.time_end == true then
+		if stalker1:cond.time_end == 0 then
 			printf("script 2!")
 			flush()
 			stalker1:script	(false, stalker_01.script_name())
