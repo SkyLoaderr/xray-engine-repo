@@ -105,7 +105,7 @@ void free_vector(vector<T *> &tpVector)
 	vector<T *>::iterator		I = tpVector.begin();
 	vector<T *>::iterator		E = tpVector.end();
 	for ( ; I != E; I++)
-		_DELETE					(*I);
+		xr_delete				(*I);
 };
 
 template <class T1, class T2>
@@ -135,6 +135,6 @@ void free_map(map<T1,T2 *> &tpMap)
 	map<T1,T2 *>::iterator		I = tpMap.begin();
 	map<T1,T2 *>::iterator		E = tpMap.end();
 	for ( ; I != E; I++)
-		_DELETE					((*I).second);
+		xr_delete					((*I).second);
 	tpMap.clear					();
 };
