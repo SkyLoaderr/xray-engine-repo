@@ -369,7 +369,7 @@ function checkNpc(npc_community, gulag_type)
 	end
 
 	if gulag_type == "gar_maniac" then
-		return true
+		return npc_community == "killer"
 	end
 
 	if gulag_type == "agr_nii" or gulag_type == "agr_factory" then
