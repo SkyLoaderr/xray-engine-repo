@@ -36,7 +36,7 @@ public:
 	// for ALife control
 	bool							m_bALifeControl;
 
-									xrServerEntity()
+									xrServerEntity(LPCSTR caSection)
 	{
 		RespawnTime					= 0;
 		net_Ready					= FALSE;
@@ -47,7 +47,7 @@ public:
 		s_gameid					= 0;
 		s_RP						= 0xFE;			// Use supplied coords
         s_flags.set					(M_SPAWN_OBJECT_ACTIVE);
-		ZeroMemory					(s_name,		sizeof(string64));
+		Memory.mem_copy				(s_name,caSection,(strlen(caSection) + 1)*sizeof(char));
 		ZeroMemory					(s_name_replace,sizeof(string64));
         o_Angle.set					(0.f,0.f,0.f);
         o_Position.set				(0.f,0.f,0.f);

@@ -29,7 +29,7 @@ public:
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
 
-									CALifeObject()
+									CALifeObject(LPCSTR caSection) : xrServerEntity(caSection)
 	{
 		m_bOnline					= false;
 		m_fDistance					= 0.0f;
@@ -51,50 +51,70 @@ public:
 #endif
 };
 
-class CALifeMonsterParams : public IPureServerInitObject {
+class CALifeMonsterParams : public IPureServerObject {
 public:
 	s32								m_iHealth;
 	u16								ID;
 	
+									CALifeMonsterParams(LPCSTR caSection)
+	{
+		ID	= u16(-1);
+		m_iHealth					= pSettings->r_s32(caSection, "health");
+	};
+
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
-									CALifeMonsterParams()
-	{
-		ID	= u16(-1);
-	};
 };
 
-class CALifeTraderParams : public IPureServerInitObject {
+class CALifeTraderParams : public IPureServerObject {
 public:
 	float							m_fCumulativeItemMass;
 	u32								m_dwMoney;
 	EStalkerRank					m_tRank;
 	OBJECT_VECTOR					m_tpItemIDs;
 	
+									CALifeTraderParams(LPCSTR caSection)
+	{
+		m_fCumulativeItemMass		= 0.0f;
+		m_dwMoney					= 0;
+		m_tpItemIDs.clear			();
+		if (pSettings->line_exist(caSection, "money"))
+			m_dwMoney 				= pSettings->r_u32(caSection, "money");
+		m_tRank						= EStalkerRank(pSettings->r_u32(caSection, "rank"));
+	};
+
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeHumanParams : public CALifeMonsterParams, public CALifeTraderParams {
 public:
+									CALifeHumanParams(LPCSTR caSection) : CALifeMonsterParams(caSection), CALifeTraderParams(caSection)
+	{
+	};
+
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
 };
 
-class CALifeTraderAbstract : public IPureServerInitObject {
+class CALifeTraderAbstract : public IPureServerObject {
 public:
 	PERSONAL_EVENT_P_VECTOR			m_tpEvents;
 	TASK_VECTOR						m_tpTaskIDs;
 	float							m_fMaxItemMass;
+
+									CALifeTraderAbstract(LPCSTR caSection)
+	{
+		m_tpEvents.clear			();
+		m_tpTaskIDs.clear			();
+		m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
+	};
 
 									~CALifeTraderAbstract()
 	{
@@ -105,7 +125,6 @@ public:
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeEventGroup : public CALifeObject {
@@ -114,11 +133,15 @@ public:
 	u16								m_wCountBefore;
 	u16								m_wCountAfter;
 	
+									CALifeEventGroup(LPCSTR caSection) : CALifeObject(caSection)
+	{
+		m_wCountAfter				= m_wCountBefore;
+	};
+
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeEvent : public IPureServerObject {
@@ -130,11 +153,11 @@ public:
 	CALifeEventGroup				*m_tpMonsterGroup1;
 	CALifeEventGroup				*m_tpMonsterGroup2;
 
+									CALifeEvent(LPCSTR caSection);
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifePersonalEvent : public IPureServerObject {
@@ -145,6 +168,10 @@ public:
 	int								m_iHealth;
 	ERelation						m_tRelation;
 	OBJECT_VECTOR					m_tpItemIDs;
+
+									CALifePersonalEvent()
+	{
+	};
 
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
@@ -168,6 +195,10 @@ public:
 		_GRAPH_ID					m_tGraphID;
 	};
 
+									CALifeTask()
+	{
+	};
+
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
@@ -179,7 +210,7 @@ public:
 	typedef CALifeTask inherited;
 	u32								m_dwTryCount;
 
-	CALifePersonalTask()
+									CALifePersonalTask()
 	{
 		m_dwTryCount = 0;
 	};
@@ -190,15 +221,18 @@ public:
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 };
 
-class CALifeZone : public IPureServerInitObject {
+class CALifeZone : public IPureServerObject {
 public:
 	EAnomalousZoneType				m_tAnomalousZone;
 
+									CALifeZone(LPCSTR caSection)
+	{
+		m_tAnomalousZone			= EAnomalousZoneType(pSettings->r_u32(caSection, "anomaly_type"));
+	};
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeDynamicObject : public CALifeObject {
@@ -208,7 +242,7 @@ public:
 	_TIME_ID						m_tTimeID;
 	u32								m_dwLastSwitchTime;
 	
-									CALifeDynamicObject()
+									CALifeDynamicObject(LPCSTR caSection) : CALifeObject(caSection)
 	{
 		m_tTimeID					= 0;
 		m_dwLastSwitchTime			= 1;
@@ -228,11 +262,20 @@ public:
 	u32								m_dwCost;
 	s32								m_iHealthValue;
 	
+									CALifeItem(LPCSTR caSection) : CALifeDynamicObject(caSection)
+	{
+		m_fMass						= pSettings->r_float(caSection, "ph_mass");
+		m_dwCost					= pSettings->r_u32(caSection, "cost");
+		if (pSettings->line_exist	(caSection, "health_value"))
+			m_iHealthValue			= pSettings->r_s32(caSection, "health_value");
+		else
+			m_iHealthValue			= 0;
+	};
+
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
 	IC		bool					bfAttached()
 	{
 		return(ID_Parent < 65534);
@@ -241,20 +284,26 @@ public:
 
 class CALifeAnomalousZone : public CALifeDynamicObject, public CALifeZone {
 public:
+									CALifeAnomalousZone(LPCSTR caSection) : CALifeDynamicObject(caSection), CALifeZone(caSection)
+	{
+	};
+
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeTrader : public CALifeDynamicObject, public CALifeTraderParams, public CALifeTraderAbstract {
 public:
+									CALifeTrader(LPCSTR caSection) : CALifeDynamicObject(caSection), CALifeTraderParams(caSection), CALifeTraderAbstract(caSection)
+	{
+	};
+
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeAbstractGroup : public IPureServerObject {
@@ -263,7 +312,7 @@ public:
 	bool						m_bCreateSpawnPositions;
 	u16							m_wCount;
 
-								CALifeAbstractGroup()
+								CALifeAbstractGroup(LPCSTR caSection)
 	{
 		m_tpMembers.clear		();
 		m_bCreateSpawnPositions	= true;
@@ -314,6 +363,10 @@ template<class __A> class CALifeGroupTemplate : public __A, public CALifeAbstrac
 	typedef __A					inherited1;
 	typedef CALifeAbstractGroup inherited2;
 public:
+								CALifeGroupTemplate(LPCSTR caSection) : __A(caSection), CALifeAbstractGroup(caSection)
+	{
+	};
+	
 	virtual						~CALifeGroupTemplate()
 	{
 	};

@@ -82,11 +82,6 @@ void CALifeMonsterParams::UPDATE_Read(NET_Packet &tNetPacket)
 	tNetPacket.r_u16			(ID);
 };
 
-void CALifeMonsterParams::Init(LPCSTR caSection)
-{
-	m_iHealth					= pSettings->r_s32(caSection, "health");
-};
-
 // CALifeTraderParams
 void CALifeTraderParams::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -114,16 +109,6 @@ void CALifeTraderParams::UPDATE_Read(NET_Packet &tNetPacket)
 	load_base_vector			(m_tpItemIDs,tNetPacket);
 };
 
-void CALifeTraderParams::Init(LPCSTR caSection)
-{
-	m_fCumulativeItemMass		= 0.0f;
-	m_dwMoney					= 0;
-	m_tpItemIDs.clear			();
-	if (pSettings->line_exist(caSection, "money"))
-		m_dwMoney 				= pSettings->r_u32(caSection, "money");
-	m_tRank						= EStalkerRank(pSettings->r_u32(caSection, "rank"));
-};
-
 // CALifeHumanParams
 void CALifeHumanParams::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -149,12 +134,6 @@ void CALifeHumanParams::UPDATE_Read(NET_Packet &tNetPacket)
 	CALifeTraderParams::UPDATE_Read(tNetPacket);
 };
 
-void CALifeHumanParams::Init(LPCSTR caSection)
-{
-	CALifeMonsterParams::Init	(caSection);
-	CALifeTraderParams::Init	(caSection);
-};
-
 // CALifeTraderAbstract
 void CALifeTraderAbstract::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -178,13 +157,6 @@ void CALifeTraderAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 	tNetPacket.r_float			(m_fMaxItemMass);
 };
 
-void CALifeTraderAbstract::Init(LPCSTR caSection)
-{
-	m_tpEvents.clear			();
-	m_tpTaskIDs.clear			();
-	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
-};
-
 // CALifeEventGroup
 void CALifeEventGroup::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -206,11 +178,6 @@ void CALifeEventGroup::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 	tNetPacket.r				(&m_wCountAfter,sizeof(m_wCountAfter));
-};
-
-void CALifeEventGroup::Init(LPCSTR caSection)
-{
-	m_wCountAfter				= m_wCountBefore;
 };
 
 // CALifeEvent
@@ -390,11 +357,6 @@ void CALifeZone::UPDATE_Read(NET_Packet &tNetPacket)
 	tNetPacket.r				(&m_tAnomalousZone,sizeof(m_tAnomalousZone));
 };
 
-void CALifeZone::Init(LPCSTR caSection)
-{
-	m_tAnomalousZone			= EAnomalousZoneType(pSettings->r_u32(caSection, "anomaly_type"));
-};
-
 // CALifeDynamicObject
 void CALifeDynamicObject::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -443,17 +405,6 @@ void CALifeItem::UPDATE_Read(NET_Packet &tNetPacket)
 	tNetPacket.r_s32			(m_iHealthValue);
 };
 
-void CALifeItem::Init(LPCSTR caSection)
-{
-	inherited::Init				(caSection);
-	m_fMass						= pSettings->r_float(caSection, "ph_mass");
-	m_dwCost					= pSettings->r_u32(caSection, "cost");
-	if (pSettings->line_exist	(caSection, "health_value"))
-		m_iHealthValue			= pSettings->r_s32(caSection, "health_value");
-	else
-		m_iHealthValue			= 0;
-};
-
 // CALifeAnomalousZone
 void CALifeAnomalousZone::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -477,12 +428,6 @@ void CALifeAnomalousZone::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	CALifeDynamicObject::UPDATE_Read(tNetPacket);
 	CALifeZone::UPDATE_Read	(tNetPacket);
-};
-
-void CALifeAnomalousZone::Init(LPCSTR caSection)
-{
-	CALifeDynamicObject::Init	(caSection);
-	CALifeZone::Init			(caSection);
 };
 
 // CALifeTrader
@@ -514,13 +459,6 @@ void CALifeTrader::UPDATE_Read(NET_Packet &tNetPacket)
 	CALifeTraderAbstract::UPDATE_Read(tNetPacket);
 };
 
-void CALifeTrader::Init(LPCSTR caSection)
-{
-	CALifeDynamicObject::Init	(caSection);
-	CALifeTraderParams::Init	(caSection);
-	CALifeTraderAbstract::Init	(caSection);
-};
-
 // CALifeDynamicAnomalousZone
 void CALifeDynamicAnomalousZone::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -546,12 +484,6 @@ void CALifeDynamicAnomalousZone::UPDATE_Read(NET_Packet &tNetPacket)
 	CALifeZone::UPDATE_Read		(tNetPacket);
 };
 
-void CALifeDynamicAnomalousZone::Init(LPCSTR caSection)
-{
-	CALifeMonsterAbstract::Init	(caSection);
-	CALifeZone::Init			(caSection);
-};
-
 // CALifeMonster
 void CALifeMonster::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -575,12 +507,6 @@ void CALifeMonster::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	CALifeMonsterAbstract::UPDATE_Read(tNetPacket);
 	CALifeMonsterParams::UPDATE_Read(tNetPacket);
-};
-
-void CALifeMonster::Init(LPCSTR caSection)
-{
-	CALifeMonsterAbstract::Init	(caSection);
-	CALifeMonsterParams::Init	(caSection);
 };
 
 // CALifeHumanAbstract
@@ -626,20 +552,6 @@ void CALifeHumanAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 	tNetPacket.r_float			(m_fSearchSpeed);
 };
 
-void CALifeHumanAbstract::Init(LPCSTR caSection)
-{
-	CALifeMonsterAbstract::Init	(caSection);
-	CALifeTraderAbstract::Init	(caSection);
-	m_tpaVertices.clear			();
-	m_baVisitedVertices.clear	();
-	m_tpTasks.clear				();
-	m_dwCurTask					= u32(-1);
-	m_tTaskState				= eTaskStateNoTask;
-	m_dwCurNode					= u32(-1);
-	m_dwCurTaskLocation			= u32(-1);
-	m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
-};
-
 // CALifeHuman
 void CALifeHuman::STATE_Write(NET_Packet &tNetPacket)
 {
@@ -663,10 +575,4 @@ void CALifeHuman::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	CALifeHumanAbstract::UPDATE_Read(tNetPacket);
 	CALifeHumanParams::UPDATE_Read(tNetPacket);
-};
-
-void CALifeHuman::Init(LPCSTR caSection)
-{
-	CALifeHumanAbstract::Init	(caSection);
-	CALifeHumanParams::Init		(caSection);
 };

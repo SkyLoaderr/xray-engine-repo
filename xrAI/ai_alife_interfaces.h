@@ -33,9 +33,4 @@ public:
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket)				= 0;
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket)				= 0;
 };
-
-interface IPureServerInitObject : public IPureServerObject {
-public:
-	virtual void					Init		(LPCSTR caSection)						= 0;
-};
 #endif

@@ -5,12 +5,13 @@
 #include "clsid_game.h"
 #include "xrServer_Entities.h"
 
-xrSE_Weapon::xrSE_Weapon()
+xrSE_Weapon::xrSE_Weapon(LPCSTR caSection) : CALifeDynamicObject(caSection)
 {
 	a_current			= 90;
 	a_elapsed			= 0;
 	state				= 0;
 }
+
 void xrSE_Weapon::UPDATE_Read		(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
@@ -96,16 +97,35 @@ void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** WeaponAmmo
-xrSE_WeaponAmmo::xrSE_WeaponAmmo() {
-}
-void xrSE_WeaponAmmo::Init(LPCSTR caSection) {
-	inherited::Init				(caSection);
+xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeObject(caSection)
+{
 	m_boxSize = pSettings->r_s32(caSection, "box_size");
 }
-void xrSE_WeaponAmmo::STATE_Read(NET_Packet& P, u16 size) {inherited::STATE_Read(P,size); P.r_u16(a_elapsed); };
-void xrSE_WeaponAmmo::STATE_Write(NET_Packet& P) {inherited::STATE_Write(P); P.w_u16(a_elapsed); };
-void xrSE_WeaponAmmo::UPDATE_Read(NET_Packet& P) {inherited::UPDATE_Read(P); P.r_u16(a_elapsed); };
-void xrSE_WeaponAmmo::UPDATE_Write(NET_Packet& P) {inherited::UPDATE_Write(P); P.w_u16(a_elapsed); };
+
+void xrSE_WeaponAmmo::STATE_Read(NET_Packet& P, u16 size)
+{
+	inherited::STATE_Read(P,size);
+	P.r_u16(a_elapsed);
+}
+
+void xrSE_WeaponAmmo::STATE_Write(NET_Packet& P)
+{
+	inherited::STATE_Write(P);
+	P.w_u16(a_elapsed);
+}
+
+void xrSE_WeaponAmmo::UPDATE_Read(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+	P.r_u16(a_elapsed);
+}
+
+void xrSE_WeaponAmmo::UPDATE_Write(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+	P.w_u16(a_elapsed);
+}
+
 #ifdef _EDITOR
 void xrSE_WeaponAmmo::FillProp(LPCSTR pref, PropItemVec& values) {
   	inherited::FillProp(pref,values);
@@ -114,7 +134,7 @@ void xrSE_WeaponAmmo::FillProp(LPCSTR pref, PropItemVec& values) {
 #endif
 
 //
-xrSE_Teamed::xrSE_Teamed()
+xrSE_Teamed::xrSE_Teamed(LPCSTR caSection) : CALifeDynamicObject(caSection)
 {
 	s_team = s_squad = s_group = 0;
 }
@@ -146,7 +166,7 @@ void	xrSE_Teamed::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** Dummy
-xrSE_Dummy::xrSE_Dummy()
+xrSE_Dummy::xrSE_Dummy(LPCSTR caSection) : xrServerEntity(caSection)
 {
 	s_Animation	= 0;
 	s_Model		= 0;
@@ -207,7 +227,7 @@ void	xrSE_Dummy::FillProp			(LPCSTR pref, PropItemVec& values)
 #endif
 
 //***** MercuryBall
-xrSE_MercuryBall::xrSE_MercuryBall()
+xrSE_MercuryBall::xrSE_MercuryBall(LPCSTR caSection) : CALifeDynamicObject(caSection)
 {
 	s_Model[0]	=	0;
 }
@@ -274,16 +294,33 @@ void xrSE_Target_Assault::FillProp			(LPCSTR pref, PropItemVec& values)
 #endif
 
 //***** Target CS Base
-xrSE_Target_CSBase::xrSE_Target_CSBase()
+xrSE_Target_CSBase::xrSE_Target_CSBase(LPCSTR caSection) : xrSE_Target(caSection)
 {
 	s_team									= 0;
 	radius									= 10.f;
     s_gameid								= GAME_CS;    
 };
-void xrSE_Target_CSBase::STATE_Read			(NET_Packet& P, u16 size)	{P.r_float(radius);P.r_u8(s_team);};
-void xrSE_Target_CSBase::STATE_Write		(NET_Packet& P)				{P.w_float(radius);P.w_u8(s_team);};
-void xrSE_Target_CSBase::UPDATE_Read		(NET_Packet& P)				{};
-void xrSE_Target_CSBase::UPDATE_Write		(NET_Packet& P)				{};
+
+void xrSE_Target_CSBase::STATE_Read			(NET_Packet& P, u16 size)
+{
+	P.r_float(radius);
+	P.r_u8(s_team);
+}
+
+void xrSE_Target_CSBase::STATE_Write		(NET_Packet& P)
+{
+	P.w_float(radius);
+	P.w_u8(s_team);
+}
+
+void xrSE_Target_CSBase::UPDATE_Read		(NET_Packet& P)
+{
+}
+
+void xrSE_Target_CSBase::UPDATE_Write		(NET_Packet& P)
+{
+}
+
 #ifdef _EDITOR
 void xrSE_Target_CSBase::FillProp			(LPCSTR pref, PropItemVec& items)
 {
@@ -294,14 +331,27 @@ void xrSE_Target_CSBase::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** Target CS Cask
-xrSE_Target_CSCask::xrSE_Target_CSCask()
+xrSE_Target_CSCask::xrSE_Target_CSCask(LPCSTR caSection) : xrSE_Target(caSection)
 {
 	s_Model[0]	=	0;
 }
-void	xrSE_Target_CSCask::UPDATE_Read		(NET_Packet& P)				{}
-void	xrSE_Target_CSCask::UPDATE_Write	(NET_Packet& P)				{}
-void	xrSE_Target_CSCask::STATE_Read		(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
-void	xrSE_Target_CSCask::STATE_Write		(NET_Packet& P)				{ P.w_string(s_Model); }
+void	xrSE_Target_CSCask::UPDATE_Read		(NET_Packet& P)
+{
+}
+
+void	xrSE_Target_CSCask::UPDATE_Write	(NET_Packet& P)
+{
+}
+
+void	xrSE_Target_CSCask::STATE_Read		(NET_Packet& P, u16 size)
+{
+	P.r_string(s_Model);
+}
+
+void	xrSE_Target_CSCask::STATE_Write		(NET_Packet& P)
+{
+	P.w_string(s_Model);
+}
 
 #ifdef _EDITOR
 void	xrSE_Target_CSCask::FillProp	(LPCSTR pref, PropItemVec& items)
@@ -312,14 +362,28 @@ void	xrSE_Target_CSCask::FillProp	(LPCSTR pref, PropItemVec& items)
 //
 
 //***** Target CS
-xrSE_Target_CS::xrSE_Target_CS()
+xrSE_Target_CS::xrSE_Target_CS(LPCSTR caSection) : xrSE_Target(caSection)
 {
 	s_Model[0]	=	0;
 }
-void	xrSE_Target_CS::UPDATE_Read	(NET_Packet& P)				{}
-void	xrSE_Target_CS::UPDATE_Write	(NET_Packet& P)			{}
-void	xrSE_Target_CS::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
-void	xrSE_Target_CS::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
+
+void	xrSE_Target_CS::UPDATE_Read	(NET_Packet& P)
+{
+}
+
+void	xrSE_Target_CS::UPDATE_Write(NET_Packet& P)
+{
+}
+
+void	xrSE_Target_CS::STATE_Read	(NET_Packet& P, u16 size)
+{
+	P.r_string(s_Model);
+}
+
+void	xrSE_Target_CS::STATE_Write	(NET_Packet& P)
+{
+	P.w_string(s_Model);
+}
 
 #ifdef _EDITOR
 void	xrSE_Target_CS::FillProp	(LPCSTR pref, PropItemVec& items)
@@ -330,10 +394,28 @@ void	xrSE_Target_CS::FillProp	(LPCSTR pref, PropItemVec& items)
 //
 
 //***** Health
-void xrSE_Health::STATE_Read		(NET_Packet& P, u16 size)	{inherited::STATE_Read(P, size);P.r_u8(amount); };
-void xrSE_Health::STATE_Write		(NET_Packet& P)				{inherited::STATE_Write(P);	P.w_u8(amount);	};
-void xrSE_Health::UPDATE_Read		(NET_Packet& P)				{inherited::UPDATE_Read(P);};
-void xrSE_Health::UPDATE_Write		(NET_Packet& P)				{inherited::UPDATE_Write(P);};
+void xrSE_Health::STATE_Read		(NET_Packet& P, u16 size)
+{
+	inherited::STATE_Read(P, size);
+	P.r_u8(amount);
+}
+
+void xrSE_Health::STATE_Write		(NET_Packet& P)
+{
+	inherited::STATE_Write(P);
+	P.w_u8(amount);
+}
+
+void xrSE_Health::UPDATE_Read		(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+}
+
+void xrSE_Health::UPDATE_Write		(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+}
+
 #ifdef _EDITOR
 void xrSE_Health::FillProp			(LPCSTR pref, PropItemVec& items)
 {
@@ -343,10 +425,22 @@ void xrSE_Health::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** Spectator
-void xrSE_Spectator::STATE_Read		(NET_Packet& P, u16 size)	{};
-void xrSE_Spectator::STATE_Write	(NET_Packet& P)				{};
-void xrSE_Spectator::UPDATE_Read	(NET_Packet& P)				{};
-void xrSE_Spectator::UPDATE_Write	(NET_Packet& P)				{};
+void xrSE_Spectator::STATE_Read		(NET_Packet& P, u16 size)
+{
+}
+
+void xrSE_Spectator::STATE_Write	(NET_Packet& P)
+{
+}
+
+void xrSE_Spectator::UPDATE_Read	(NET_Packet& P)
+{
+}
+
+void xrSE_Spectator::UPDATE_Write	(NET_Packet& P)
+{
+}
+
 #ifdef _EDITOR
 void xrSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 {
@@ -355,7 +449,7 @@ void xrSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** Actor
-xrSE_Actor::xrSE_Actor			()
+xrSE_Actor::xrSE_Actor			(LPCSTR caSection) : xrSE_Teamed(caSection)
 {
 	caModel[0]						= 0;
 	strcat(caModel,"actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
@@ -547,6 +641,10 @@ public:	// actions
 		Actions.clear	();
 	}
 public:	
+							xrSE_Event(LPCSTR caSection) : xrServerEntity(caSection), xrSE_CFormed()
+	{
+	};
+	
 	virtual void			UPDATE_Read			(NET_Packet& P)
 	{
 	}
@@ -626,39 +724,11 @@ void CALifeMonsterAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 	}
 };
 
-void CALifeMonsterAbstract::Init(LPCSTR caSection)
-{
-	inherited::Init				(caSection);
-	
-	m_tpaTerrain.clear				();
-	LPCSTR							S;
-	if (pSettings->line_exist		(caSection,"monster_section")) {
-		S							= pSettings->r_string	(pSettings->r_string(caSection,"monster_section"),"terrain");
-		m_fGoingSpeed				= pSettings->r_float	(pSettings->r_string(caSection,"monster_section"), "going_speed");
-	}
-	else {
-		S							= pSettings->r_string	(caSection,"terrain");
-		m_fGoingSpeed				= pSettings->r_float	(caSection, "going_speed");
-	}
-	u32								N = _GetItemCount(S);
-	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
-	STerrainPlace					tTerrainPlace;
-	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
-	string16						I;
-	for (u32 i=0; i<N;) {
-		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
-			tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
-		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
-		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
-		m_tpaTerrain.push_back(tTerrainPlace);
-	}
-};
-
 //////////////////////////////////////////////////////////////////////////
 // Rat
 //////////////////////////////////////////////////////////////////////////
 
-xrSE_Rat::xrSE_Rat()
+xrSE_Rat::xrSE_Rat(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
 	caModel[0]						= 0;
 	strcat(caModel,"monsters\\rat\\rat_1");
@@ -800,7 +870,7 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropItemVec& items)
 // Zombie
 //////////////////////////////////////////////////////////////////////////
 
-xrSE_Zombie::xrSE_Zombie()
+xrSE_Zombie::xrSE_Zombie(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
 	caModel[0]						= 0;
 	strcat(caModel,"monsters\\zombie\\zombie_1");
@@ -900,7 +970,7 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropItemVec& items)
 // Dog
 //////////////////////////////////////////////////////////////////////////
 
-xrSE_Dog::xrSE_Dog()
+xrSE_Dog::xrSE_Dog(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
 	caModel[0]						= 0;
 	strcat(caModel,"monsters\\dog\\dog_1");
@@ -1037,7 +1107,8 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 #endif
 
 // Zone
-xrSE_Zone::xrSE_Zone() {
+xrSE_Zone::xrSE_Zone(LPCSTR caSection) : CALifeDynamicObject(caSection)
+{
 	m_maxPower = 100.f;
 	m_attn = 1.f;
 	m_period = 1000;
@@ -1089,7 +1160,8 @@ void xrSE_Detector::FillProp		(LPCSTR pref, PropItemVec& items)
 	static TokenValue4::ItemVec	level_ids;
 #endif
 
-xrGraphPoint::xrGraphPoint() {
+xrGraphPoint::xrGraphPoint(LPCSTR caSection) : xrServerEntity(caSection)
+{
 	s_gameid					= GAME_DUMMY;
 	m_caConnectionPointName[0]	= 0;
 	m_tLevelID					= 0;
@@ -1175,7 +1247,7 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
-xrSE_Human::xrSE_Human()
+xrSE_Human::xrSE_Human(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
 	caModel[0]						= 0;
 	strcat(caModel,"actors\\Different_stalkers\\stalker_no_hood_singleplayer");
@@ -1229,57 +1301,57 @@ void xrSE_Human::FillProp(LPCSTR pref, PropItemVec& items)
 
 
 //--------------------------------------------------------------------
-xrServerEntity*	F_entity_Create		(LPCSTR name)
+xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 {
-	if (!pSettings->section_exist(name)) return 0;
+	if (!pSettings->section_exist(caSection)) return 0;
     
-	CLASS_ID cls = pSettings->r_clsid(name,"class");
+	CLASS_ID cls = pSettings->r_clsid(caSection,"class");
 
 	switch (cls){
-	case CLSID_OBJECT_ACTOR:		return xr_new<xrSE_Actor>			();
-	case CLSID_OBJECT_DUMMY:		return xr_new<xrSE_Dummy>			();
-	case CLSID_AI_GRAPH:			return xr_new<xrGraphPoint>			();
-	case CLSID_AI_CROW:				return xr_new<xrSE_Crow>			();
-	case CLSID_AI_RAT:				return xr_new<xrSE_Rat>				();
-	case CLSID_AI_RAT_GROUP:		return xr_new<CALifeGroupTemplate<xrSE_Rat> >();
-	case CLSID_AI_ZOMBIE:			return xr_new<xrSE_Zombie>			();
-	case CLSID_AI_DOG:				return xr_new<xrSE_Dog>				();
-	case CLSID_AI_SOLDIER:			return xr_new<xrSE_Enemy>			();
-	case CLSID_AI_STALKER:			return xr_new<xrSE_Human>			();
-	case CLSID_EVENT:				return xr_new<xrSE_Event>			();
-	case CLSID_CAR_NIVA:			return xr_new<xrSE_Car>				();
-	case CLSID_SPECTATOR:			return xr_new<xrSE_Spectator>		();
+	case CLSID_OBJECT_ACTOR:		return xr_new<xrSE_Actor>			(caSection);
+	case CLSID_OBJECT_DUMMY:		return xr_new<xrSE_Dummy>			(caSection);
+	case CLSID_AI_GRAPH:			return xr_new<xrGraphPoint>			(caSection);
+	case CLSID_AI_CROW:				return xr_new<xrSE_Crow>			(caSection);
+	case CLSID_AI_RAT:				return xr_new<xrSE_Rat>				(caSection);
+	case CLSID_AI_RAT_GROUP:		return xr_new<CALifeGroupTemplate<xrSE_Rat> >(caSection);
+	case CLSID_AI_ZOMBIE:			return xr_new<xrSE_Zombie>			(caSection);
+	case CLSID_AI_DOG:				return xr_new<xrSE_Dog>				(caSection);
+	case CLSID_AI_SOLDIER:			return xr_new<xrSE_Enemy>			(caSection);
+	case CLSID_AI_STALKER:			return xr_new<xrSE_Human>			(caSection);
+	case CLSID_EVENT:				return xr_new<xrSE_Event>			(caSection);
+	case CLSID_CAR_NIVA:			return xr_new<xrSE_Car>				(caSection);
+	case CLSID_SPECTATOR:			return xr_new<xrSE_Spectator>		(caSection);
 
 	// Artifacts
-	case CLSID_AF_MERCURY_BALL:		return xr_new<xrSE_MercuryBall>		();
+	case CLSID_AF_MERCURY_BALL:		return xr_new<xrSE_MercuryBall>		(caSection);
 
 	// Zones
-	case CLSID_ZONE:				return xr_new<xrSE_Zone>			();
-	case CLSID_Z_MBALD:				return xr_new<xrSE_Zone>			();
-	case CLSID_Z_MINCER:			return xr_new<xrSE_Zone>			();
+	case CLSID_ZONE:				return xr_new<xrSE_Zone>			(caSection);
+	case CLSID_Z_MBALD:				return xr_new<xrSE_Zone>			(caSection);
+	case CLSID_Z_MINCER:			return xr_new<xrSE_Zone>			(caSection);
 
 	// Detectors
-	case CLSID_DETECTOR_SIMPLE:		return xr_new<xrSE_Detector>		();
+	case CLSID_DETECTOR_SIMPLE:		return xr_new<xrSE_Detector>		(caSection);
 
-	case CLSID_OBJECT_W_M134:		return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_FN2000:		return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_AK74:		return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_LR300:		return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_HPSA:		return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_PM:			return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_A_PM:			return xr_new<xrSE_WeaponAmmo>		();
-	case CLSID_OBJECT_W_FORT:		return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_BINOCULAR:	return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_SHOTGUN:	return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_SVD:		return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_SVU:		return xr_new<xrSE_Weapon>			();
-	//case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_HEALTH:		return xr_new<xrSE_Health>			();
-	case CLSID_TARGET_ASSAULT:		return xr_new<xrSE_Target_Assault>	();
-	case CLSID_TARGET_CS_BASE:		return xr_new<xrSE_Target_CSBase>	();
-	case CLSID_TARGET_CS:			return xr_new<xrSE_Target_CS>		();
-	case CLSID_TARGET_CS_CASK:		return xr_new<xrSE_Target_CSCask>	();
-	case CLSID_IITEM_BOLT:			return xr_new<CALifeDynamicObject>	();
+	case CLSID_OBJECT_W_M134:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_FN2000:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_AK74:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_LR300:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_HPSA:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_PM:			return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_A_PM:			return xr_new<xrSE_WeaponAmmo>		(caSection);
+	case CLSID_OBJECT_W_FORT:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_BINOCULAR:	return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_SHOTGUN:	return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_SVD:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_W_SVU:		return xr_new<xrSE_Weapon>			(caSection);
+	//case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			(caSection);
+	case CLSID_OBJECT_HEALTH:		return xr_new<xrSE_Health>			(caSection);
+	case CLSID_TARGET_ASSAULT:		return xr_new<xrSE_Target_Assault>	(caSection);
+	case CLSID_TARGET_CS_BASE:		return xr_new<xrSE_Target_CSBase>	(caSection);
+	case CLSID_TARGET_CS:			return xr_new<xrSE_Target_CS>		(caSection);
+	case CLSID_TARGET_CS_CASK:		return xr_new<xrSE_Target_CSCask>	(caSection);
+	case CLSID_IITEM_BOLT:			return xr_new<CALifeDynamicObject>	(caSection);
 	}
 	return 0;
 }
