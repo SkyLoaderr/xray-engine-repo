@@ -10,6 +10,7 @@ ENGINE_API FS_Defs		Path =
 	"GameData\\sounds\\",
 	"GameData\\cforms\\",
 	"GameData\\meshes\\",
+	"ScreenShots\\",
 	""
 };
 
@@ -26,8 +27,8 @@ char	psName[12]			= "";
 
 // textures
 int		psTextureLOD		= 0;
-u32	psTextureFlags		= 0;
+u32		psTextureFlags		= 0;
 
 // users
-char	psUserName[64]		= "";
+string64 psSystemUserName	= "";
 BOOL	psUserLevelsDone	[128];

@@ -10,6 +10,8 @@
 #include "xr_creator.h"
 #include "xr_input.h"
 #include "xr_object.h"
+#include "render.h"
+#include "CustomHUD.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -52,6 +54,7 @@ CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(cefDemo,lif
 		
 		m_vT.set(0,0,0);
 		m_vR.set(0,0,0);
+		m_bMakeCubeMap = FALSE;
 	} else {
 		pCreator->Cameras.RemoveEffector(cefDemo);
 	}
@@ -65,68 +68,106 @@ CDemoRecord::~CDemoRecord()
 	}
 }
 
+//								+X,				-X,				+Y,				-Y,			+Z,				-Z
+static Fvector cmNorm[6]	= {{0.f,1.f,0.f}, {0.f,1.f,0.f}, {0.f,0.f,-1.f},{0.f,0.f,1.f}, {0.f,1.f,0.f}, {0.f,1.f,0.f}};
+static Fvector cmDir[6]		= {{1.f,0.f,0.f}, {-1.f,0.f,0.f},{0.f,1.f,0.f}, {0.f,-1.f,0.f},{0.f,0.f,1.f}, {0.f,0.f,-1.f}};
+
+static u32 s_hud_flag = 0;
+static u32 s_idx;
+
+void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
+{
+	switch (s_idx){
+	case 0:
+		N.set		(cmNorm[s_idx]);
+		D.set		(cmDir[s_idx]);
+		s_hud_flag	= psHUD_Flags;
+		psHUD_Flags	= 0;
+	break;
+	case 1: 
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+		N.set		(cmNorm[s_idx]);
+		D.set		(cmDir[s_idx]);
+		Render->Screenshot	();
+	break;
+	case 6:
+		Render->Screenshot	();
+		N.set		(m_Camera.j);
+		D.set		(m_Camera.k);
+		psHUD_Flags	= s_hud_flag;
+		m_bMakeCubeMap = FALSE;
+	break;
+	}
+	s_idx++;
+}
+
 BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 {
 	if (hFile<=0)	return TRUE;
 
-	if ((Device.dwTimeGlobal/500)%2==0) {
-		pApp->pFontSystem->SetSize	(0.02f);
-		pApp->pFontSystem->SetAligment(CGameFont::alCenter);
-		pApp->pFontSystem->SetColor	(D3DCOLOR_RGBA(255,0,0,255));
-		pApp->pFontSystem->OutSet	(0,+.05f);
-		pApp->pFontSystem->OutNext	("%s","RECORDING");
-		pApp->pFontSystem->OutNext	("Key frames count: %d",iCount);
-		pApp->pFontSystem->OutNext	("(SPACE=key-frame, BACK=CubeMap, ENTER=Place&Quit, ESC=Quit)");
+	if (m_bMakeCubeMap){
+		MakeCubeMapFace(D,N);
+		P.set(m_Camera.c);
+	}else{
+		if ((Device.dwTimeGlobal/500)%2==0) {
+			pApp->pFontSystem->SetSize	(0.02f);
+			pApp->pFontSystem->SetAligment(CGameFont::alCenter);
+			pApp->pFontSystem->SetColor	(D3DCOLOR_RGBA(255,0,0,255));
+			pApp->pFontSystem->OutSet	(0,+.05f);
+			pApp->pFontSystem->OutNext	("%s","RECORDING");
+			pApp->pFontSystem->OutNext	("Key frames count: %d",iCount);
+			pApp->pFontSystem->OutNext	("(SPACE=key-frame, BACK=CubeMap, ENTER=Place&Quit, ESC=Quit)");
+		}
+
+
+		m_vVelocity.lerp		(m_vVelocity,m_vT,0.3f);
+		m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.3f);
+
+		float acc = 1.f, acc_angle = 1.f;
+		if (Console.iGetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
+		else if (Console.iGetKeyState(DIK_LALT)) acc=4.0;
+		else if (Console.iGetKeyState(DIK_LCONTROL)) acc=10.0;
+		m_vT.mul				(m_vVelocity, Device.fTimeDelta * g_fSpeed * acc);
+		m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc_angle);
+
+		m_HPB.x -= m_vR.y;
+		m_HPB.y -= m_vR.x;
+		m_HPB.z += m_vR.z;
+
+		// move
+		Fvector vmove;
+
+		vmove.set				(m_Camera.k);
+		vmove.normalize_safe	();
+		vmove.mul				(m_vT.z);
+		m_Position.add			(vmove);
+
+		vmove.set				(m_Camera.i);
+		vmove.normalize_safe	();
+		vmove.mul				(m_vT.x);
+		m_Position.add			(vmove);
+
+		vmove.set				(m_Camera.j);
+		vmove.normalize_safe	();
+		vmove.mul				(m_vT.y);
+		m_Position.add			(vmove);
+
+		m_Camera.setHPB			(m_HPB.x,m_HPB.y,m_HPB.z);
+		m_Camera.translate_over	(m_Position);
+
+		// update camera
+		N.set(m_Camera.j);
+		D.set(m_Camera.k);
+		P.set(m_Camera.c);
+
+		fLifeTime-=Device.fTimeDelta;
+
+		m_vT.set(0,0,0);
+		m_vR.set(0,0,0);
 	}
-
-
-	m_vVelocity.lerp		(m_vVelocity,m_vT,0.3f);
-	m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.3f);
-
-	float acc = 1.f, acc_angle = 1.f;
-	if (Console.iGetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
-	else if (Console.iGetKeyState(DIK_LALT)) acc=4.0;
-	else if (Console.iGetKeyState(DIK_LCONTROL)) acc=10.0;
-    m_vT.mul				(m_vVelocity, Device.fTimeDelta * g_fSpeed * acc);
-    m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc_angle);
-
-	m_HPB.x -= m_vR.y;
-	m_HPB.y -= m_vR.x;
-	m_HPB.z += m_vR.z;
-
-	// move
-    Fvector vmove;
-
-    vmove.set				(m_Camera.k);
-    vmove.normalize_safe	();
-    vmove.mul				(m_vT.z);
-    m_Position.add			(vmove);
-
-    vmove.set				(m_Camera.i);
-    vmove.normalize_safe	();
-    vmove.mul				(m_vT.x);
-    m_Position.add			(vmove);
-	
-    vmove.set				(m_Camera.j);
-    vmove.normalize_safe	();
-    vmove.mul				(m_vT.y);
-    m_Position.add			(vmove);
-
-	m_Camera.setHPB			(m_HPB.x,m_HPB.y,m_HPB.z);
-    m_Camera.translate_over	(m_Position);
-
-	// update view
-	Device.mView.invert		(m_Camera);
-
-	// update camera
-	N.set(m_Camera.j);
-	D.set(m_Camera.k);
-	P.set(m_Camera.c);
-
-	fLifeTime-=Device.fTimeDelta;
-
-	m_vT.set(0,0,0);
-    m_vR.set(0,0,0);
 	return TRUE;
 }
 
@@ -199,4 +240,6 @@ void CDemoRecord::RecordKey			()
 
 void CDemoRecord::MakeCubemap		()
 {
+	m_bMakeCubeMap = TRUE;
+	s_idx = 0;
 }

@@ -82,7 +82,9 @@ void CRender::Screenshot		()
     p.height		= Device.dwHeight;
     p.data			= D.pBits;
 	
-    p.maketga		("sshot");
+	string64		buf,buf1;
+	strconcat		(buf,Path.SShot,"ss_",psSystemUserName,"_",itoa(timeGetTime(),buf1,10));
+    p.maketga		(buf);
 	
 	R_CHK(pFB->UnlockRect());
 	pFB->Release	();

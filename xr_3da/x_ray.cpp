@@ -29,6 +29,7 @@ extern BOOL					StartGame			(u32 num);
 // startup point
 void Startup()
 {
+	// initialization
 	Engine.Initialize			( );
 	Device.Initialize			( );
 
@@ -62,6 +63,7 @@ void Startup()
 
 	// Main cycle
 	Device.Run					( );
+
 	_DELETE						( pApp			);
 	Engine.Event.Dump			( );
 
@@ -89,6 +91,10 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 #ifdef DEBUG
 	bCaptureExceptions		= FALSE;
 #endif
+
+	// get system user name
+	DWORD	sz_user				= sizeof(psSystemUserName);
+	GetUserName					(psSystemUserName,&sz_user);
 	
 	CreateLog		(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
 	Debug.Start	();

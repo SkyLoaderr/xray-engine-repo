@@ -26,6 +26,9 @@ private:
 	Fvector		m_vVelocity;
 	Fvector		m_vAngularVelocity;
 
+	BOOL		m_bMakeCubeMap;
+
+	void		MakeCubeMapFace			(Fvector &D, Fvector &N);
 	void		RecordKey				();
 	void		MakeCubemap				();
 public:
