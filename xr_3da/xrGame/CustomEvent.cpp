@@ -77,12 +77,12 @@ void	EV_LIST::Signal	(DWORD P2)
 
 CCustomEvent::CCustomEvent()
 {
-	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
+//	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
 }
 
 CCustomEvent::~CCustomEvent()
 {
-	Device.seqRender.Remove(this);
+//	Device.seqRender.Remove(this);
 }
 
 void CCustomEvent::Load(CInifile* ini, const char * section)
@@ -119,7 +119,7 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	clsid_Target				= ini->ReadCLSID(section,"target_class");
 }
 
-void CCustomEvent::OnMove()
+void CCustomEvent::Update (DWORD dt)
 {
 	if (!Contacted.empty()) {
 		for (DWORD i=0; i<Contacted.size(); i++) {

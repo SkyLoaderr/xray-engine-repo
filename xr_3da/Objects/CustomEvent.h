@@ -38,7 +38,7 @@ public:
 	virtual void						Load					( CInifile* ini, const char * section );
 
 	// Update
-	virtual void						OnMove					( void );
+	virtual void						Update					( DWORD dt );
 
 	// Collision
 	virtual void						OnNear					( CObject* near   );
