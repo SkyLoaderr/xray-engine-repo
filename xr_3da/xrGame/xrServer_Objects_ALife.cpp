@@ -734,7 +734,7 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 		bFound					= false;
 
 		for (; _I!=_E; _I++) {
-			vec.push_back(_I->first);
+			vec.push_back(*_I->first);
 			if (!bFound && startup_animation[0] && (vec.back() == startup_animation))
 				bFound=true;
 		}
@@ -856,7 +856,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         bFound					= false;
         
 		for (; _I!=_E; _I++) {
-			vec.push_back(_I->first);
+			vec.push_back(*_I->first);
 			if (!bFound && startup_animation[0] && (vec.back() == startup_animation))
 				bFound=true;
 		}
@@ -871,7 +871,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         _E						= ll_bones->end();
         bFound					= false;
         for (; _I!=_E; _I++) {
-			vec.push_back(_I->first);
+			vec.push_back(*_I->first);
 			if (!bFound && spot_bone[0] && (vec.back() == spot_bone))
 				bFound=true;
 		}
