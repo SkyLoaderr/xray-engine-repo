@@ -324,7 +324,7 @@ void	IPureServer::SendTo_LL(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwT
 		);
 	if (SUCCEEDED(_hr) || (DPNERR_CONNECTIONLOST==_hr))	return;
 
-	R_CHK(_hr);
+	R_CHK		(_hr);
 }
 
 void	IPureServer::SendTo		(DPNID ID, NET_Packet& P, u32 dwFlags, u32 dwTimeout)

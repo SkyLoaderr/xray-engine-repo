@@ -112,7 +112,7 @@ public:
 	void					SLS_Save			(IWriter&	fs);
 	void					SLS_Load			(IReader&	fs);
 
-	xrClientData*			GetServer_client	()			{ return SV_Client; };
+	xrClientData*			GetServer_client	()			{ return (xrClientData*)	SV_Client; };
 };
 
 #endif // !defined(AFX_XRSERVER_H__65728A25_16FC_4A7B_8CCE_D798CA5EC64E__INCLUDED_)
