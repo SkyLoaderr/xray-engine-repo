@@ -1,0 +1,231 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_LOG DIALOG DISCARDABLE  0, 0, 225, 170
+STYLE DS_ABSALIGN | DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | 
+    WS_VISIBLE | WS_CAPTION
+CAPTION "Visibility tester"
+FONT 10, "Fixedsys"
+BEGIN
+    LISTBOX         IDC_LIST,0,0,225,70,NOT LBS_NOTIFY | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "%d",IDC_STAT_SPS,75,80,44,8
+    RTEXT           "Slots per second",IDC_STATIC,5,80,65,8
+    RTEXT           "Visuals Clipped",IDC_STATIC,5,90,65,8
+    LTEXT           "%d",IDC_STAT_VC,75,90,43,8
+    CONTROL         "Progress1",IDC_PB,"msctls_progress32",PBS_SMOOTH,0,155,
+                    120,14
+    LISTBOX         IDC_VIEW,120,70,105,100,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Time elapsed",IDC_STATIC,5,100,65,8
+    LTEXT           "%d",IDC_STAT_TIME,75,100,43,8
+END
+
+IDD_START DIALOG DISCARDABLE  0, 0, 247, 156
+STYLE DS_ABSALIGN | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | 
+    DS_NOFAILCREATE | DS_CENTER | WS_POPUP | WS_CAPTION
+CAPTION """Visibility Builder"" startup options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_LEVEL,75,5,150,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_LEVELSELECT,225,5,20,14,BS_FLAT
+    PUSHBUTTON      "Debug build",IDC_BDEBUG,5,30,65,15,BS_FLAT
+    PUSHBUTTON      "Release Build",IDC_BRELEASE,5,45,65,15,BS_FLAT
+    DEFPUSHBUTTON   "OK",IDOK,5,120,65,14,BS_FLAT
+    PUSHBUTTON      "Cancel",IDCANCEL,5,135,65,14,BS_FLAT
+    GROUPBOX        "Options",IDC_STATIC,75,25,170,125,BS_FLAT
+    CONTROL         "Full volume detection (6-8 times slower build)",
+                    IDC_FULLVOLUME,"Button",BS_AUTOCHECKBOX | BS_FLAT | 
+                    WS_TABSTOP,85,40,155,10
+    CONTROL         "Increase VIS resolution (4x slowdown)",
+                    IDC_INCRESOLUTION,"Button",BS_AUTOCHECKBOX | BS_FLAT | 
+                    WS_DISABLED | WS_TABSTOP,85,50,155,10
+    GROUPBOX        "VIS area options",IDC_STATIC,80,75,160,45,BS_FLAT
+    CONTROL         "1x",IDC_VA1,"Button",BS_AUTORADIOBUTTON | BS_FLAT,90,85,
+                    45,10
+    CONTROL         "2x",IDC_VA2,"Button",BS_AUTORADIOBUTTON | BS_FLAT,90,95,
+                    45,10
+    CONTROL         "4x",IDC_VA4,"Button",BS_AUTORADIOBUTTON | BS_FLAT,90,
+                    105,50,10
+    EDITTEXT        IDC_VISLEVELS,80,125,55,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin4",IDC_SPIN,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNLEFT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_HOTTRACK,80,130,11,15
+    LTEXT           "Visibility levels",IDC_STATIC,136,128,100,8
+    RTEXT           "Level folder",IDC_STATIC,0,7,70,10
+    CONTROL         "Rebuild hierrarhy",IDC_HREBUILD,"Button",
+                    BS_AUTOCHECKBOX | BS_FLAT | WS_DISABLED | WS_TABSTOP,85,
+                    60,155,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_LOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 163
+    END
+
+    IDD_START, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 240
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 149
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_APP_ICON            ICON    DISCARDABLE     "directx.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_APP_ACCELERATOR ACCELERATORS DISCARDABLE 
+BEGIN
+    VK_RETURN,      IDM_FULLSCREEN,         VIRTKEY, ALT, NOINVERT
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "Microsoft\0"
+            VALUE "FileDescription", "gravity\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "gravity\0"
+            VALUE "LegalCopyright", "Copyright © 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "gravity.rc\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "gravity\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
