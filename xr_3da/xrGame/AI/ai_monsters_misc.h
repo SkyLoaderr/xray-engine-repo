@@ -16,7 +16,7 @@
 	// Fuzzy State Machine
 	#define ASSIGN_PROPORTIONAL_POWER(a,b)	if ((eType & a) == a) power*=b;
 
-	#define WRITE_LOG
+	//#define WRITE_LOG
 
 	#ifdef WRITE_LOG
 		#define WRITE_TO_LOG(S) {\
