@@ -33,7 +33,7 @@ TEMPLATE_SPECIALIZATION
 IC	CSGraphVertex::~CVertex				()
 {
 	while (!edges().empty())
-		remove_edge			(edges().back().vertex()->vertex_id());
+		remove_edge			(edges().back().vertex_id());
 
 	while (!m_vertices.empty())
 		m_vertices.back()->remove_edge(vertex_id());

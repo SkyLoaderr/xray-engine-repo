@@ -135,8 +135,8 @@ void CGameSpawnConstructor::build_root_spawns		()
 			SPAWN_GRAPH::const_iterator	i = (*I).second->edges().begin();
 			SPAWN_GRAPH::const_iterator	e = (*I).second->edges().end();
 			for ( ; i != e; ++i) {
-				m_temp1.push_back			((*i).vertex()->vertex_id());
-				Msg							("%d -> %d",(*I).second->vertex_id(),(*i).vertex()->vertex_id());
+				m_temp1.push_back			((*i).vertex_id());
+				Msg							("%d -> %d",(*I).second->vertex_id(),(*i).vertex_id());
 			}
 		}
 	}
@@ -166,7 +166,7 @@ void CGameSpawnConstructor::verify_spawns			(ALife::_SPAWN_ID spawn_id)
 	SPAWN_GRAPH::const_iterator				I = vertex->edges().begin();
 	SPAWN_GRAPH::const_iterator				E = vertex->edges().end();
 	for ( ; I != E; ++I)
-		verify_spawns						((*I).vertex()->vertex_id());
+		verify_spawns						((*I).vertex_id());
 }
 
 void CGameSpawnConstructor::verify_spawns			()

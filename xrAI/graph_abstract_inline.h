@@ -187,7 +187,7 @@ IC	void CAbstractGraph::save			(IWriter &stream)
 			const_iterator		i = (*I).second->edges().begin();
 			const_iterator		e = (*I).second->edges().end();
 			for ( ; i != e; ++i) {
-				save_data		((*i).vertex()->vertex_id(),stream);
+				save_data		((*i).vertex_id(),stream);
 				save_data		((*i).weight(),stream);
 			}
 		}
