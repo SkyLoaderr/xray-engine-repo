@@ -52,28 +52,28 @@
 	<!-- SLOTS LISTS -->
 	<dragdrop_list x="37" y="40" width="120" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="1" cols_num="2" show_grid="1" />
+			rows_num="1" cols_num="2" show_grid="0" />
 
 	<dragdrop_list x="188" y="40" width="120" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="1" cols_num="2" show_grid="1" />
+			rows_num="1" cols_num="2" show_grid="0" />
 
 	<dragdrop_list x="333" y="14" width="320" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="6" show_grid="1" />
+			rows_num="2" cols_num="6" show_grid="0" />
 
 	<dragdrop_list x="712" y="40" width="100" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="1" cols_num="1" show_grid="1" />
+			rows_num="1" cols_num="1" show_grid="0" />
 
 	<dragdrop_list x="838" y="14" width="150" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="3" show_grid="1" />
+			rows_num="2" cols_num="3" show_grid="0" />
 
 	<!-- OUTFIT SLOT -->
 	<dragdrop_list x="828" y="300" width="150" height="220"
 			cell_width = "53" cell_height="53"
-			rows_num="4" cols_num="4" show_grid="1" />
+			rows_num="4" cols_num="4" show_grid="0" />
 
 	<!-- TOTAL MONEY AMOUNT -->
 	<total_money_header_static x="631" y="326" width="200" height="50">
