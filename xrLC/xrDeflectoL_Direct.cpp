@@ -106,7 +106,7 @@ public:
 	}
 };
 
-#define	NUM_THREADS	4
+#define	NUM_THREADS	6
 void CDeflector::L_Direct(float progress)
 {
 	// Main raytracing cycle
