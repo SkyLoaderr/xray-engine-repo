@@ -136,7 +136,7 @@ void CRenderTarget::End		()
 		if (param_gray>0.001f) {
 			// Draw GRAY
 			Device.Shader.set_Shader		(pShaderGray);
-			Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.getBuffer());
+			Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.Buffer());
 			Device.Primitive.setIndices		(Offset+0,Device.Streams_QuadIB);
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 			UPDATEC							(4,2,1);
@@ -144,7 +144,7 @@ void CRenderTarget::End		()
 			if (param_gray<0.999f) {
 				// Blend COLOR
 				Device.Shader.set_Shader		(pShaderBlend);
-				Device.Primitive.setVertices	(pVS->dwHandle, pVS->dwStride,Device.Streams.Vertex.getBuffer());
+				Device.Primitive.setVertices	(pVS->dwHandle, pVS->dwStride,Device.Streams.Vertex.Buffer());
 				Device.Primitive.setIndices		(Offset+4, Device.Streams_QuadIB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 				UPDATEC							(4,2,1);
@@ -152,7 +152,7 @@ void CRenderTarget::End		()
 		} else {
 			// Draw COLOR
 			Device.Shader.set_Shader		(pShaderSet);
-			Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.getBuffer());
+			Device.Primitive.setVertices	(pVS->dwHandle,pVS->dwStride,Device.Streams.Vertex.Buffer());
 			Device.Primitive.setIndices		(Offset+4,Device.Streams_QuadIB);
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 			UPDATEC							(4,2,1);

@@ -80,7 +80,7 @@ void CLightPPA::Render	(CVS* VS)
 	// Unlock and render
 	Device.Streams.Vertex.Unlock		(actual*3,VS->dwStride);
 	if (actual) {
-		Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.getBuffer());
+		Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
 		Device.Primitive.setIndices		(0,0);
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,vOffset,actual);
 		UPDATEC							(actual*3,actual,1);

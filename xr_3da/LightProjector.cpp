@@ -221,7 +221,7 @@ void CLightProjector::calculate	()
 		// Actual rendering (pass0, temp2real)
 		Device.Shader.set_RT			(RT->pRT,	0);
 		Device.Shader.set_Shader		(sh_BlurTR	);
-		Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.getBuffer());
+		Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.Buffer());
 		Device.Primitive.setIndices		(Offset,Device.Streams_QuadIB);
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 		UPDATEC							(4,2,1);

@@ -5,13 +5,14 @@
 const DWORD Lines_BatchSize = 64;
 void CDraw::OnDeviceCreate()
 {
-	vsTL = Device.Streams.Create(FVF::F_TL,Lines_BatchSize*4);
+//	vsTL = Device.Streams.Create(FVF::F_TL,Lines_BatchSize*4);
 }
 void CDraw::OnDeviceDestroy()
 {
 }
 
 // Lines
+/*
 void CDraw::Lines_Begin	(int count)
 {
 	pCurrent = pStart = (FVF::TL*)vsTL->Lock(count*4,dwLN_Offset);
@@ -38,6 +39,7 @@ void CDraw::Lines_End	()
 	vsTL->Unlock	(C);
 	if (C)			Draw(vsTL,C,C/2,dwLN_Offset,Device.Streams_QuadIB);
 }
+*/
 
 void CDraw::dbg_Draw(D3DPRIMITIVETYPE T, FVF::L* pVerts, int vcnt, WORD* pIdx, int pcnt)
 {

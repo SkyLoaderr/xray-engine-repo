@@ -283,7 +283,7 @@ void CLightShadows::calculate	()
 		// Actual rendering (pass0, temp2real)
 		Device.Shader.set_RT			(RT->pRT,HW.pTempZB);
 		Device.Shader.set_Shader		(sh_BlurTR	);
-		Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.getBuffer());
+		Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.Buffer());
 		Device.Primitive.setIndices		(Offset,Device.Streams_QuadIB);
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 		UPDATEC							(4,2,1);
@@ -293,7 +293,7 @@ void CLightShadows::calculate	()
 			// Actual rendering (pass1, real2temp)
 			Device.Shader.set_RT			(RT_temp->pRT,HW.pTempZB);
 			Device.Shader.set_Shader		(sh_BlurRT	);
-			Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.getBuffer());
+			Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.Buffer());
 			Device.Primitive.setIndices		(Offset+4,Device.Streams_QuadIB);
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 			UPDATEC							(4,2,1);
@@ -301,7 +301,7 @@ void CLightShadows::calculate	()
 			// Actual rendering (pass2, temp2real)
 			Device.Shader.set_RT			(RT->pRT,HW.pTempZB);
 			Device.Shader.set_Shader		(sh_BlurTR	);
-			Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.getBuffer());
+			Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.Buffer());
 			Device.Primitive.setIndices		(Offset,Device.Streams_QuadIB);
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 			UPDATEC							(4,2,1);
@@ -417,7 +417,7 @@ void CLightShadows::render	()
 				// Flush
 				Device.Streams.Vertex.Unlock	(batch*3,vs_World->dwStride);
 
-				Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.getBuffer());
+				Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.Buffer());
 				Device.Primitive.setIndices		(0,0);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,Offset,batch);
 				UPDATEC							(batch*3,batch,1);
@@ -432,7 +432,7 @@ void CLightShadows::render	()
 	Device.Streams.Vertex.Unlock	(batch*3,vs_World->dwStride);
 	if (batch)				
 	{
-		Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.getBuffer());
+		Device.Primitive.setVertices	(vs_World->dwHandle,vs_World->dwStride,Device.Streams.Vertex.Buffer());
 		Device.Primitive.setIndices		(0,0);
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,Offset,batch);
 		UPDATEC							(batch*3,batch,1);

@@ -258,13 +258,10 @@ void CWallmarksEngine::Render()
 						// Flush stream
 						Device.Streams.Vertex.Unlock	(w_count,VS->dwStride);
 						Device.Shader.set_Shader		(w_S);
-						Device.Primitive.Draw			(VS,w_count/3,w_offset);
-
-						Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.getBuffer());
+						Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
 						Device.Primitive.setIndices		(0,0);
-						Device.Primitive.Render			(D3DPT_TRIANGLELIST,dwBase,dwNumPrimitives);
-						UPDATEC							(dwNumPrimitives*3,dwNumPrimitives,1);
-
+						Device.Primitive.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+						UPDATEC							(w_count,w_count/3,1);
 
 						// Restart (re-lock/re-calc)
 						w_verts		= (FVF::LIT*)	Device.Streams.Vertex.Lock	(MAX_TRIS*3,VS->dwStride,w_offset);
@@ -283,8 +280,11 @@ void CWallmarksEngine::Render()
 	DWORD w_count			= w_verts-w_start;
 	Device.Streams.Vertex.Unlock	(w_count,VS->dwStride);
 	if (w_count)			{
-		Device.Shader.set_Shader(w_S);
-		Device.Primitive.Draw	(VS,w_count/3,w_offset);
+		Device.Shader.set_Shader		(w_S);
+		Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
+		Device.Primitive.setIndices		(0,0);
+		Device.Primitive.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+		UPDATEC							(w_count,w_count/3,1);
 	}
 
 	// Remove last used wallmarks

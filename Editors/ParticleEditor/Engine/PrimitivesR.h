@@ -14,11 +14,6 @@ class ENGINE_API CDraw
 {
 	friend class			CRender;
 	
-	CVertexStream*			vsTL;
-	FVF::TL*				pStart;
-	FVF::TL*				pCurrent;
-	DWORD					dwLN_Offset;
-	
 	IDirect3DVertexBuffer8*	pCurVB;
 	IDirect3DIndexBuffer8*	pCurIB;
 	DWORD					vCurShader;
@@ -56,17 +51,6 @@ public:
 		HW.pDevice->SetIndices(pCurIB=0,0);
 	}
 	
-	// The most used wrappers --- recomendation DON'T USE AT ALL :)
-	// IC void Draw			(CPrimitive& P,		DWORD dwNumVerts, DWORD dwNumPrimitives);
-	// IC void DrawSubset		(CPrimitive& P,		DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives);
-	// IC void Draw			(CVS* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB);
-	// IC void Draw			(CVS* S,	DWORD dwNumPrimitives, DWORD dwBase);
-	// IC void Draw			(CVS* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase);
-
-	void Lines_Begin		(int count);
-	void Lines_Draw			(Fvector& P1, Fvector& P2, float width, DWORD C);
-	void Lines_End			();
-
 	// Device create / destroy
 	void					OnDeviceCreate	();
 	void					OnDeviceDestroy	();

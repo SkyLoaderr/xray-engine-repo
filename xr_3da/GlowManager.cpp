@@ -202,7 +202,7 @@ void CGlowManager::Render()
 			Device.Streams.Vertex.Unlock		(vCount,VS->dwStride);
 			if (vCount) {
 				Device.Shader.set_Shader		(T);
-				Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.getBuffer());
+				Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
 				Device.Primitive.setIndices		(vOffset,Device.Streams_QuadIB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,0,vCount/2);
 				UPDATEC							(vCount,vCount/2,1);

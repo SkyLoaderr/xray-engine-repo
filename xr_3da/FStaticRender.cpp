@@ -323,7 +323,7 @@ void CRender::flush_Patches	()
 {
 	// *** Fill VB
 	DWORD						vOffset;
-	FVF::TL*					V = (FVF::TL*)vsPatches->Lock(vecPatches.size()*4,vOffset);
+	FVF::TL*					V = (FVF::TL*)Device.Streams.Vertex.Lock	(vecPatches.size()*4,vsPatches->dwStride, vOffset);
 	svector<int,max_patches>	groups;
 	ShaderElement*				cur_S=vecPatches[0].S;
 	int							cur_count=0;
