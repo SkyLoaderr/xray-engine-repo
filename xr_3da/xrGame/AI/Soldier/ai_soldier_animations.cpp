@@ -85,6 +85,7 @@ void CAI_Soldier::vfLoadAnimations()
 	
 	tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0] = tpVisualObject->ID_Cycle("norm_lie_down_0");
 	tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1] = tpVisualObject->ID_Cycle("norm_lie_down_1");
+	tSoldierAnimations.tNormal.tGlobal.tpaLieDown[2] = tpVisualObject->ID_Cycle("norm_lie_down_2");
 
 	tSoldierAnimations.tNormal.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle("norm_walk_ls");
 	tSoldierAnimations.tNormal.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle("norm_walk_rs");

@@ -121,7 +121,7 @@ class CAI_Soldier : public CCustomMonster
 			CMotionDef* tpaRunForward[4];
 			CMotionDef* tpaWalkForward[5];
 			CMotionDef* tpaWalkBack[3];
-			CMotionDef* tpaLieDown[2];
+			CMotionDef* tpaLieDown[3];
 			CMotionDef* tpWalkLeft;
 			CMotionDef* tpWalkRight;
 			CMotionDef* tpPointSign; // !
