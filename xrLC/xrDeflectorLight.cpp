@@ -286,21 +286,23 @@ VOID CDeflector::Light()
 	// Try to shrink lightmap in U & V direction to Zero-pixel LM (only border)
 	{
 		// Calculate average color
-		DWORD _r=0;	DWORD _g=0;	DWORD _b=0;
+		DWORD _r=0, _g=0, _b=0, _count=0;
 		{
 			for (DWORD y=0; y<s_y; y++)
 			{
 				for (DWORD x=0; x<s_x; x++)
 				{
 					DWORD pixel			= lm.pSurface[y*s_x+x];
-					_r += RGBA_GETRED	(pixel);
-					_g += RGBA_GETGREEN	(pixel);
-					_b += RGBA_GETBLUE	(pixel);
+					if (RGBA_GETALPHA(pixel)>=254)	{
+						_r		+= RGBA_GETRED	(pixel);
+						_g		+= RGBA_GETGREEN	(pixel);
+						_b		+= RGBA_GETBLUE	(pixel);
+						_count	++;
+					}
 				}
 			}
 		}
-		DWORD cnt = s_y*s_x;
-		_r	/= cnt;	_g	/= cnt;	_b	/= cnt;
+		_r	/= _count;	_g	/= _count;	_b	/= _count;
 		
 		// Test for equality
 		DWORD	bCompress	= TRUE;
@@ -311,13 +313,11 @@ VOID CDeflector::Light()
 				for (DWORD x=0; x<s_x; x++)
 				{
 					DWORD pixel	= lm.pSurface	[y*s_x+x];
-					DWORD r		= RGBA_GETRED	(pixel);
-					DWORD g		= RGBA_GETGREEN	(pixel);
-					DWORD b		= RGBA_GETBLUE	(pixel);
-
-					if (_abs(s32(r)-s32(_r))>rms)	{ bCompress=FALSE; break; }
-					if (_abs(s32(g)-s32(_g))>rms)	{ bCompress=FALSE; break; }
-					if (_abs(s32(b)-s32(_b))>rms)	{ bCompress=FALSE; break; }
+					if (RGBA_GETALPHA(pixel)>=254)	{
+						if (_abs(s32(RGBA_GETRED	(pixel))-s32(_r))>rms)	{ bCompress=FALSE; break; }
+						if (_abs(s32(RGBA_GETGREEN	(pixel))-s32(_g))>rms)	{ bCompress=FALSE; break; }
+						if (_abs(s32(RGBA_GETBLUE	(pixel))-s32(_b))>rms)	{ bCompress=FALSE; break; }
+					}
 				}
 				if (!bCompress) break;
 			}
