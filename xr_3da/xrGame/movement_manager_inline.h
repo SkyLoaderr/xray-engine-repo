@@ -30,8 +30,8 @@ IC	void CMovementManager::time_start()
 
 IC	bool CMovementManager::time_over() const
 {
-	return					(CPU::GetCycleCount() - m_start_time >= m_time_work);
-//	return					(false);
+///	return					(CPU::GetCycleCount() - m_start_time >= m_time_work);
+	return					(false);
 }
 
 IC	void CMovementManager::enable_movement(bool enabled)

@@ -75,8 +75,6 @@ void CBitingPanic::Run()
 		m_dwStayTime = 0;
 	} else if (0 == m_dwStayTime) m_dwStayTime = m_dwCurrentTime;
 
-	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj,m_tEnemy.position, 30);
-
 	if (!bFacedOpenArea) {
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 	} else {
@@ -96,6 +94,7 @@ void CBitingPanic::Run()
 		pMonster->eVelocityParamsRun,
 		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand | pMonster->eVelocityParameterRunNormal
 	); 
+	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj,m_tEnemy.position, 30);	
 
 	prev_pos = cur_pos;
 }

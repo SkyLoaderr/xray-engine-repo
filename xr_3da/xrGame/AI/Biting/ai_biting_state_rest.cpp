@@ -30,15 +30,13 @@ void CBitingRest::Reset()
 void CBitingRest::Init()
 {
 	IState::Init();
-
-	LOG_EX("-REST_INIT");
+	LOG_EX("REST_INIT");
 
 	// если есть путь - дойти до конца (последствия преследования врага)
 	if (!pMonster->path_completed()) {
 		m_bFollowPath = true;
 	} else m_bFollowPath = false;
 }
-
 
 void CBitingRest::Replanning()
 {
@@ -57,7 +55,10 @@ void CBitingRest::Replanning()
 			m_tAction = ACTION_WALK;
 
 			// Построить путь обхода точек графа, поиск пищи
-			u32 vertex_id = ::Random.randI(ai().level_graph().header().vertex_count());
+			float radius = 10.f;
+			xr_vector<u32> nodes;
+			ai().graph_engine().search( ai().level_graph(), pMonster->level_vertex_id(),pMonster->level_vertex_id(), &nodes, CGraphEngine::CFlooder(radius));
+			u32 vertex_id = nodes[::Random.randI(nodes.size())];
 
 			pMonster->SetPathParams(
 				CMovementManager::ePathTypeLevelPath, 
@@ -66,10 +67,6 @@ void CBitingRest::Replanning()
 				pMonster->eVelocityParamsWalk,
 				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
 			);						
-
-
-//			if (!pMonster->CDetailPathManager::valid()) {
-//			}
 			
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin;  dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
@@ -88,7 +85,11 @@ void CBitingRest::Replanning()
 
 			m_tAction = ACTION_WALK_CIRCUMSPECTION;
 
-			u32 vertex_id = ::Random.randI(ai().level_graph().header().vertex_count());
+			// Построить путь обхода точек графа, поиск пищи
+			float radius = 10.f;
+			xr_vector<u32> nodes;
+			ai().graph_engine().search( ai().level_graph(), pMonster->level_vertex_id(),pMonster->level_vertex_id(), &nodes, CGraphEngine::CFlooder(radius));
+			u32 vertex_id = nodes[::Random.randI(nodes.size())];
 
 			pMonster->SetPathParams(
 				CMovementManager::ePathTypeLevelPath, 
@@ -96,7 +97,7 @@ void CBitingRest::Replanning()
 				ai().level_graph().vertex_position(vertex_id),
 				pMonster->eVelocityParamsWalk,
 				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
-			);						
+				);						
 
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin; dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
@@ -144,7 +145,6 @@ void CBitingRest::Run()
 
 	pMonster->SetSound(SND_TYPE_IDLE, pMonster->_sd->m_dwIdleSndDelay);
 }
-
 
 TTime CBitingRest::UnlockState(TTime cur_time)
 {
