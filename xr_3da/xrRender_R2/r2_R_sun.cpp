@@ -7,6 +7,20 @@ const	float	tweak_ortho_xform_initial_offs	= 1000.f	;	//. ?
 const	float	tweak_guaranteed_range			= 20.f		;	//. ?
 
 //////////////////////////////////////////////////////////////////////////
+// tables to calculate view-frustum bounds in world space
+// note: D3D uses [0..1] range for Z
+static Fvector3		corners [8]			= {
+	{ -1, -1,  0 },		{ -1, -1, +1},
+	{ -1, +1, +1 },		{ -1, +1,  0},
+	{ +1, +1, +1 },		{ +1, +1,  0},
+	{ +1, -1, +1},		{ +1, -1,  0}
+};
+static int			facetable[6][4]		= {
+	{ 0, 3, 5, 7 },		{ 1, 2, 3, 0 },
+	{ 6, 7, 5, 4 },		{ 4, 2, 1, 6 },
+	{ 3, 2, 4, 5 },		{ 1, 0, 7, 6 },
+};
+//////////////////////////////////////////////////////////////////////////
 #define DW_AS_FLT(DW) (*(FLOAT*)&(DW))
 #define FLT_AS_DW(F) (*(DWORD*)&(F))
 #define FLT_SIGN(F) ((FLT_AS_DW(F) & 0x80000000L))
@@ -169,6 +183,7 @@ Frustum::Frustum(const D3DXMATRIX* matrix)
 //		 light source. really slow, but it works for our simple usage :)
 // note: normals points to 'outside'
 //////////////////////////////////////////////////////////////////////////
+template <bool _debug>
 class	DumbConvexVolume
 {
 public:
@@ -201,10 +216,26 @@ public:
 			t2.sub					(points[P.points[0]], points[P.points[2]]);
 			P.planeN.crossproduct	(t1,t2).normalize();
 			P.planeD			= -	P.planeN.dotproduct(points[P.points[0]]);
+
+			// verify
+			if (_debug)
+			{
+				Fvector&		p0	= points[P.points[0]];
+				Fvector&		p1	= points[P.points[1]];
+				Fvector&		p2	= points[P.points[2]];
+				Fvector&		p3	= points[P.points[3]];
+				Fplane	p012;	p012.build(p0,p1,p2);
+				Fplane	p123;	p123.build(p1,p2,p3);
+				Fplane	p230;	p230.build(p2,p3,p0);
+				Fplane	p301;	p301.build(p3,p0,p1);
+				VERIFY	(p012.n.similar(p123.n) && p012.n.similar(p230.n) && p012.n.similar(p301.n));
+			}
 		}
 	}
 	void				compute_caster_model	(xr_vector<Fplane>& dest, Fvector3 direction)
 	{
+		CRenderTarget&	T	= RImplementation.Target;
+
 		// COG
 		Fvector3	cog	= {0,0,0};
 		for			(int it=0; it<int(points.size()); it++)	cog.add	(points[it]);
@@ -223,7 +254,7 @@ public:
 		for (int it=0; it<int(polys.size()); it++)
 		{
 			_poly&	base		= polys	[it];
-			VERIFY	(base.classify(cog)<0);					// debug
+			VERIFY	(base.classify(cog)<0);								// debug
 
 			int		marker		= (base.planeN.dotproduct(direction)<=0)?-1:1;
 
@@ -234,11 +265,14 @@ public:
 				bool	found	= false;
 				for (int e=0; e<int(edges.size()); e++)	
 					if (edges[e].equal(E))	{ edges[e].counter += marker; found=true; break; }
-					if		(!found)	edges.push_back	(E);
+				if		(!found)	{
+					edges.push_back	(E);
+					if	(_debug)	T.dbg_addline(points[E.p0],points[E.p1],color_rgba(255,0,0,255));
+				}
 			}
 
 			// remove if unused
-			if (marker>0)	{
+			if (marker<0)	{
 				polys.erase	(polys.begin()+it);
 				it--;
 			}
@@ -249,6 +283,7 @@ public:
 		{
 			if	(edges[e].counter != 0)	continue;
 			_edge&		E		= edges[e];
+			if		(_debug)	T.dbg_addline(points[E.p0],points[E.p1],color_rgba(255,255,255,255));
 			Fvector3	point;
 			points.push_back	(point.sub(points[E.p0],direction));
 			points.push_back	(point.sub(points[E.p1],direction));
@@ -259,6 +294,8 @@ public:
 			P.points.push_back	(E.p1);
 			P.points.push_back	(pend-1);	//p1 mod
 			P.points.push_back	(pend-2);	//p0 mod
+			if		(_debug)	T.dbg_addline(points[E.p0],point.mad(points[E.p0],direction,-1000),color_rgba(0,255,0,255));
+			if		(_debug)	T.dbg_addline(points[E.p1],point.mad(points[E.p1],direction,-1000),color_rgba(0,255,0,255));
 		}
 
 		// Reorient planes (try to write more inefficient code :)
@@ -387,19 +424,6 @@ void CRender::render_sun				()
 	D3DXMATRIX		m_LightViewProj		;
 
 	// calculate view-frustum bounds in world space
-	// note: D3D uses [0..1] range for Z
-	static Fvector3		corners [8]			= {
-		{ -1, -1,  0 },		{ -1, -1, +1},
-		{ -1, +1, +1 },		{ -1, +1,  0},
-		{ +1, +1, +1 },		{ +1, +1,  0},
-		{ +1, -1, +1},		{ +1, -1,  0}
-	};
-	static int			facetable[6][4]		= {
-		{ 0, 3, 5, 7 },		{ 1, 2, 3, 0 },
-		{ 6, 7, 5, 4 },		{ 4, 2, 1, 6 },
-		{ 3, 2, 4, 5 },		{ 1, 0, 7, 6 },
-	};
-
 	Fmatrix	ex_project, ex_full, ex_full_inverse;
 	{
 		ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,ps_r2_sun_near,g_pGamePersistent->Environment.CurrentEnv.far_plane); 
@@ -418,7 +442,7 @@ void CRender::render_sun				()
 		FPU::m64r					();
 		// Lets begin from base frustum
 		Fmatrix		fullxform_inv	= ex_full_inverse;
-		DumbConvexVolume			hull;
+		DumbConvexVolume<false>		hull;
 		{
 			hull.points.reserve		(8);
 			for						(int p=0; p<8; p++)	{
@@ -426,7 +450,7 @@ void CRender::render_sun				()
 				hull.points.push_back	(xf);
 			}
 			for (int plane=0; plane<6; plane++)	{
-				hull.polys.push_back(DumbConvexVolume::_poly());
+				hull.polys.push_back(DumbConvexVolume<false>::_poly());
 				for (int pt=0; pt<4; pt++)	
 					hull.polys.back().points.push_back(facetable[plane][pt]);
 			}
@@ -835,19 +859,6 @@ void CRender::render_sun_near	()
 	D3DXMATRIX		m_LightViewProj		;
 
 	// calculate view-frustum bounds in world space
-	// note: D3D uses [0..1] range for Z
-	static Fvector3		corners [8]			= {
-		{ -1, -1,  0 },		{ -1, -1, +1},
-		{ -1, +1, +1 },		{ -1, +1,  0},
-		{ +1, +1, +1 },		{ +1, +1,  0},
-		{ +1, -1, +1},		{ +1, -1,  0}
-	};
-	static int			facetable[6][4]		= {
-		{ 0, 3, 5, 7 },		{ 1, 2, 3, 0 },
-		{ 6, 7, 5, 4 },		{ 4, 2, 1, 6 },
-		{ 3, 2, 4, 5 },		{ 1, 0, 7, 6 },
-	};
-
 	Fmatrix	ex_project, ex_full, ex_full_inverse;
 	{
 		ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,VIEWPORT_NEAR,ps_r2_sun_near); 
@@ -866,20 +877,29 @@ void CRender::render_sun_near	()
 		FPU::m64r					();
 		// Lets begin from base frustum
 		Fmatrix		fullxform_inv	= ex_full_inverse;
-		DumbConvexVolume			hull;
+#ifdef	DEBUG
+		typedef		DumbConvexVolume<true>	t_volume;
+#else
+		typedef		DumbConvexVolume<false>	t_volume;
+#endif
+		t_volume					hull;
 		{
 			hull.points.reserve		(9);
-			for						(int p=0; p<8; p++)	{
+			for	(int p=0; p<8; p++)	{
 				Fvector3				xf	= wform		(fullxform_inv,corners[p]);
 				hull.points.push_back	(xf);
 			}
 			for (int plane=0; plane<6; plane++)	{
-				hull.polys.push_back(DumbConvexVolume::_poly());
+				hull.polys.push_back(t_volume::_poly());
 				for (int pt=0; pt<4; pt++)	
 					hull.polys.back().points.push_back(facetable[plane][pt]);
 			}
 		}
 		hull.compute_caster_model	(cull_planes,fuckingsun->direction);
+#ifdef	DEBUG
+		for (u32 it=0; it<cull_planes.size(); it++)
+			RImplementation.Target.dbg_addplane(cull_planes[it],0xffffffff);
+#endif
 
 		// Search for default sector - assume "default" or "outdoor" sector is the largest one
 		//. hack: need to know real outdoor sector
@@ -917,7 +937,14 @@ void CRender::render_sun_near	()
 		mdir_View.build_camera_dir	(L_pos,L_dir,L_up);
 
 		// projection: box
-		float	sperical_range		= ps_r2_sun_near*1.414213562373f+EPS;	// sqrt(2)
+		float	_D					= ps_r2_sun_near;
+		float	a0					= deg2rad(Device.fFOV*Device.fASPECT)/2.f;
+		float	a1					= deg2rad(Device.fFOV)/2.f;
+		float	c0					= _D/_cos(a0);
+		float	c1					= _D/_cos(a1);
+		float	k0					= 2.f*c0*_sin(a0);
+		float	k1					= 2.f*c1*_sin(a1);
+		float	spherical_range		= _max(_max(c0,c1), _max(k0,k1)*1.414213562373f );
 		Fbox	frustum_bb;			frustum_bb.invalidate	();
 		hull.points.push_back		(Device.vCameraPosition);
 		for (int it=0; it<9; it++)	{
@@ -926,8 +953,8 @@ void CRender::render_sun_near	()
 		}
 		float	size_x				= frustum_bb.max.x - frustum_bb.min.x;
 		float	size_y				= frustum_bb.max.y - frustum_bb.min.y;
-		float	diff_x				= (sperical_range - size_x)/2.f;
-		float	diff_y				= (sperical_range - size_y)/2.f;
+		float	diff_x				= (spherical_range - size_x)/2.f;	VERIFY(diff_x>=0);
+		float	diff_y				= (spherical_range - size_y)/2.f;	VERIFY(diff_y>=0);
 		frustum_bb.min.x -= diff_x; frustum_bb.max.x += diff_x;
 		frustum_bb.min.y -= diff_y; frustum_bb.max.y += diff_y;
 		Fbox&	bb					= frustum_bb;

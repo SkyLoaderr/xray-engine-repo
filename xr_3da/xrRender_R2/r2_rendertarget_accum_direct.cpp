@@ -57,15 +57,15 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	d_Z							= center_pt.z	;
 
 	// nv-stencil recompression
-	if (RImplementation.o.nvstencil && (SE_SUN_NEAR==sub_phase))	u_stencil_optimize();
+	if (RImplementation.o.nvstencil && (SE_SUN_NEAR==sub_phase))	u_stencil_optimize();	//. driver bug?
 	RCache.set_ColorWriteEnable			();
 
 	// Perform lighting
 	{
 		// texture adjustment matrix
 		float			fTexelOffs			= (.5f / float(RImplementation.o.smapsize));
-		float			fRange				= ps_r2_sun_depth_scale;
-		float			fBias				= ps_r2_sun_depth_bias;
+		float			fRange				= (SE_SUN_NEAR==sub_phase)?ps_r2_sun_depth_near_scale:ps_r2_sun_depth_far_scale;
+		float			fBias				= (SE_SUN_NEAR==sub_phase)?ps_r2_sun_depth_near_bias:ps_r2_sun_depth_far_bias;
 		Fmatrix			m_TexelAdjust		= 
 		{
 			0.5f,				0.0f,				0.0f,			0.0f,

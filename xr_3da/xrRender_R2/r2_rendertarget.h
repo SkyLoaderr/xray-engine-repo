@@ -27,7 +27,13 @@ public:
 	IBlender*					b_luminance;
 	IBlender*					b_combine;
 #ifdef DEBUG
+	struct		dbg_line_t		{
+		Fvector	P0,P1;
+		u32		color;
+	};
 	xr_vector<std::pair<Fsphere,Fcolor> >		dbg_spheres;
+	xr_vector<dbg_line_t>						dbg_lines;
+	xr_vector<Fplane>							dbg_planes;
 #endif
 
 	// MRT-path
@@ -126,7 +132,7 @@ public:
 	void						accum_spot_geom_create	();
 	void						accum_spot_geom_destroy	();
 
-	void						u_stencil_optimize		(BOOL		bClearTo_0x1=FALSE);
+	void						u_stencil_optimize		();
 	void						u_compute_texgen_screen	(Fmatrix&	dest);
 	void						u_compute_texgen_jitter	(Fmatrix&	dest);
 	void						u_setrt					(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, IDirect3DSurface9* zb);
@@ -166,4 +172,19 @@ public:
 	virtual void				set_color_add			(u32	f)		{ param_color_add=f;				}
 	virtual u32					get_width				()				{ return dwWidth;					}
 	virtual u32					get_height				()				{ return dwHeight;					}
+
+#ifdef DEBUG
+	IC void						dbg_addline				(Fvector& P0, Fvector& P1, u32 c)					{
+		dbg_lines.push_back		(dbg_line_t());
+		dbg_lines.back().P0		= P0;
+		dbg_lines.back().P1		= P1;
+		dbg_lines.back().color	= c;
+	}
+	IC void						dbg_addplane			(Fplane& P0,  u32 c)								{
+		dbg_planes.push_back(P0);
+	}
+#else
+	IC void						dbg_addline				(Fvector& P0, Fvector& P1, u32 c)					{}
+	IC void						dbg_addplane			(Fplane& P0,  u32 c)								{}
+#endif
 };

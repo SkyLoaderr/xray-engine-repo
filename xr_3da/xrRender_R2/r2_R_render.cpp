@@ -107,7 +107,6 @@ void CRender::render_main	()
 	else
 	{
 		set_Object											(0);
-		g_pGameLevel->pHUD->Render_First					();	
 		g_pGameLevel->pHUD->Render_Last						();	
 	}
 	set_Recorder			(NULL);
