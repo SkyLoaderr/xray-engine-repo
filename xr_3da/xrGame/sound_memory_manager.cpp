@@ -48,9 +48,9 @@ void CSoundMemoryManager::reload				(LPCSTR section)
 {
 	m_min_sound_threshold	= 0.05f;
 	m_self_sound_factor		= 0.f;
-	if (!pSettings->line_exist(section,"sound_threshold"))
+	if (pSettings->line_exist(section,"sound_threshold"))
 		m_min_sound_threshold	= pSettings->r_float(section,"sound_threshold");
-	if (!pSettings->line_exist(section,"self_sound_factor"))
+	if (pSettings->line_exist(section,"self_sound_factor"))
 		m_self_sound_factor		= pSettings->r_float(section,"self_sound_factor");
 }
 
