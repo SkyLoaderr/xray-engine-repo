@@ -9,7 +9,9 @@
 #ifndef AI_ALIFE_PREDICATESH
 #define AI_ALIFE_PREDICATESH
 #pragma once
+#ifndef _EDITOR
 #include "ai_alife_registries.h"
+#endif
 
 class CArtefactOrderPredicate {
 public:
@@ -84,6 +86,7 @@ public:
 	};
 };
 
+#ifndef _EDITOR
 class CRemoveNonAttachedItemsPredicate {
 	CSE_ALifeObjectRegistry			*m_tpALifeObjectRegistry;
 public:
@@ -98,6 +101,7 @@ public:
 		return						(m_tpALifeObjectRegistry->tpfGetObjectByID(tObjectID)->ID_Parent == 0xffff);
 	};
 };
+#endif
 
 class CSortItemVolumePredicate {
 public:
@@ -132,6 +136,7 @@ public:
 	}
 };
 
+#ifndef _EDITOR
 class CSortByOwnerPredicate {
 	CSE_ALifeObjectRegistry			*m_tpALifeObjectRegistry;
 public:
@@ -160,5 +165,6 @@ public:
 			return						(tpALifeInventoryItem1->m_dwCost > tpALifeInventoryItem2->m_dwCost);
 	}
 };
+#endif
 
 #endif

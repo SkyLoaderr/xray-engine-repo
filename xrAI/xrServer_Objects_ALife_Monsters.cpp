@@ -80,9 +80,9 @@ void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-void CSE_ALifeTraderAbstract::FillProp	(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeTraderAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateU32			(items, FHelper.PrepareKey(_pref,s_name,"Money"), 	&m_dwMoney,	0, 65535);
+	PHelper.CreateU32			(items, FHelper.PrepareKey(pref,s_name,"Money"), 	&m_dwMoney,	0, 65535);
 }
 #endif
 
