@@ -13,6 +13,8 @@
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
 
+#define WEAPON_REMOVE_TIME		600000
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -426,6 +428,15 @@ void CWeapon::Load		(LPCSTR section)
 		m_iGrenadeLauncherX = pSettings->r_s32(section,"grenade_launcher_x");
 		m_iGrenadeLauncherY = pSettings->r_s32(section,"grenade_launcher_y");
 	}
+
+	//////////////////////////////////////
+	//время убирания оружия с уровня
+	if(pSettings->line_exist(section,"weapon_remove_time"))
+		m_dwWeaponRemoveTime = pSettings->r_u32(section,"weapon_remove_time");
+	else
+		m_dwWeaponRemoveTime = WEAPON_REMOVE_TIME;
+	//////////////////////////////////////
+
 }
 
 void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
@@ -482,6 +493,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 		m_iNextParticle = 0;
 	}*/
 
+	m_dwWeaponIndependencyTime = 0;
 	return bResult;
 }
 
@@ -571,6 +583,11 @@ void CWeapon::OnH_B_Independent	()
 	UpdateXForm					();
 }
 
+void CWeapon::OnH_A_Independent	()
+{
+	m_dwWeaponIndependencyTime = Level().GetGameTime();
+	inherited::OnH_A_Independent();
+};
 
 void CWeapon::OnH_A_Chield		()
 {
@@ -579,6 +596,7 @@ void CWeapon::OnH_A_Chield		()
 
 void CWeapon::OnH_B_Chield		()
 {
+	m_dwWeaponIndependencyTime = 0;
 	inherited::OnH_B_Chield		();
 
 	if (m_pHUD)
@@ -1034,4 +1052,21 @@ void CWeapon::AddShotEffector		()
 	if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
 	R_ASSERT				(S);
 	S->Shot					(camDispersion);
+}
+
+bool CWeapon::NeedToDestroyObject()	
+{
+	if (Game().type == GAME_SINGLE) return false;
+	if (TimePassedAfterIndependant() > m_dwWeaponRemoveTime)
+		return true;
+
+	return false;
+}
+
+ALife::_TIME_ID	 CWeapon::TimePassedAfterIndependant()	
+{
+	if(!H_Parent() && m_dwWeaponIndependencyTime != 0)
+		return Level().GetGameTime() - m_dwWeaponIndependencyTime;
+	else
+		return 0;
 }
