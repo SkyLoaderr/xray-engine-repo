@@ -418,7 +418,6 @@ BOOL CCF_Shape::Contact		( CObject* O )
 	
 	// Get our matrix
 	const Fmatrix& XF	= Owner()->svXFORM();
-	CFrustum			F;
 	
 	// Iterate
 	for (u32 el=0; el<shapes.size(); el++)
