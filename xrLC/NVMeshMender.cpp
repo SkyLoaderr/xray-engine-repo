@@ -686,11 +686,11 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 			vec3 s;
 			vec3 t;
 
-			if (2064==f)		__asm int 3;
+			// if (2064==f)	__asm int 3;
 
             // grap position & tex coords again in case they were reallocated
-            pPositions	= (vec3*)( &( positions[ 0 ] ) );
-            tex			= (vec3*)&( output[ (*texIter).second ].floatVector_[ 0 ] );
+            pPositions	= (vec3*)	( &( positions[ 0 ] ) );
+            tex			= (vec3*)	( &( output[ (*texIter).second ].floatVector_[ 0 ] ) );
 
 			nv_scalar	_eps	= type_epsilon	(nv_scalar)*10;
 			nv_scalar	a,b,c;
