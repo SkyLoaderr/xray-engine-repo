@@ -9,16 +9,34 @@
 #include "..\ispatial.h"
 #include "..\xr_collide_defs.h"
 
-class CGlow				: public ISpatial
+class CGlow				: public IRender_Glow, public ISpatial
 {
 public:
+	struct {
+		u32				bActive	:	1;
+	}					flags;
 	float				fade;
-	ref_shader			hShader;
+	ref_shader			shader;
 	u32					dwFrame;
+
+	Fvector				position;
+	float				range;
+	Fcolor				color;
 
 	// Ray-testing cache
 	BOOL				bTestResult;
 	Collide::ray_cache	RayCache;
+public:
+	CGlow();
+
+	virtual void					set_active			(bool);
+	virtual bool					get_active			();
+	virtual void					set_position		(const Fvector& P);
+	virtual void					set_range			(float R);
+	virtual void					set_texture			(LPCSTR name);
+	virtual void					set_color			(const Fcolor& C);
+	virtual void					set_color			(float r, float g, float b);
+	virtual void					spatial_move		();
 };
 
 #define MAX_GlowsPerFrame	64

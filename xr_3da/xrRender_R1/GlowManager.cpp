@@ -13,6 +13,57 @@
 #define MAX_GlowsDist1		float(g_pGamePersistent->Environment.CurrentEnv.far_plane)
 #define MAX_GlowsDist2		float(MAX_GlowsDist1*MAX_GlowsDist1)
 
+
+//////////////////////////////////////////////////////////////////////
+CGlow::CGlow()				{
+	flags.bActive	= false;
+	position.set	(0,0,0);
+	range			= 0.1f;
+	color.set		(1,1,1,1);
+}
+
+void	CGlow::set_active		(bool a)				
+{
+	if (a)
+	{
+		if (flags.bActive)					return;
+		flags.bActive						= true;
+		spatial_register					();
+	}
+	else
+	{
+		if (!flags.bActive)					return;
+		flags.bActive						= false;
+		spatial_unregister					();
+	}
+}
+
+bool	CGlow::get_active		()					{return flags.bActive;}
+void	CGlow::set_position		(const Fvector& P)	{
+	if (position.similar(P))	return;
+	position.set				(P);
+	spatial_move				();
+};
+void	CGlow::set_range		(float R)			{
+	if (fsimilar(range,R))		return;
+	range						= R;
+	spatial_move				();
+};
+void	CGlow::set_texture		(LPCSTR name)		{
+	shader						= Device->Resources->Create("effects\\glow",name);
+}
+void	CGlow::set_color		(const Fcolor& C)	{
+	color						= C;
+}
+void	CGlow::set_color		(float r, float g, float b)	{
+	color.set					(r,g,b);
+}
+void	CGlow::spatial_move		()
+{
+	spatial.center				= position;
+	spatial.radius				= range;
+	ISpatial::spatial_move		();
+}
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -49,7 +100,8 @@ void CGlowManager::Load		(IReader* fs)
 		G->bTestResult		= TRUE;
 
 		G->spatial.type		= STYPE_RENDERABLE;
-		G->spatial_register	();
+
+		G->set_active		(true);
 
 		Glows.push_back		(G);
 	}
@@ -66,7 +118,7 @@ void CGlowManager::Unload	()
 	for (; it!=end; it++)
 	{
 		CGlow*		G			= *it;
-		G->spatial_unregister	();
+		G->set_active			(false);
 		xr_delete				(G);
 	}
 	Glows.clear		();
@@ -74,11 +126,10 @@ void CGlowManager::Unload	()
 }
 
 IC bool glow_compare(CGlow* g1, CGlow *g2)
-{	return g1->hShader < g2->hShader; }
+{	return g1->shader < g2->shader; }
 
 void CGlowManager::add	(CGlow *G)
 {
-//	if (!psEnvFlags.test(effGlows))		return;
 	if (G->dwFrame	==Device.dwFrame)		return;
 	G->dwFrame		= Device.dwFrame;
 
@@ -93,10 +144,10 @@ void CGlowManager::add	(CGlow *G)
 		// 2. Use result of test
 		if (G->bTestResult) {
 			G->fade -= dt*FADE_SCALE;
-			if (G->fade<1.)	G->fade = 1;
+			if (G->fade<1.)		G->fade = 1;
 		} else {
 			G->fade	+= dt*FADE_SCALE;
-			if (G->fade>255.f) G->fade = 255.f;
+			if (G->fade>255.f)	G->fade = 255.f;
 		}
 
 		Selected.push_back(G);
