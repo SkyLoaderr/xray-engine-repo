@@ -177,6 +177,8 @@ public:
 	IC float ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 	{
 		if (m_dwLastBestNode != dwStartNode) {
+			m_dwLastBestNode = dwStartNode;
+
 			NodeCompressed &tNode0 = *Node(dwStartNode), &tNode1 = *Node(dwFinishNode);
 			
 			x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);

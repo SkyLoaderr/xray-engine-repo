@@ -111,6 +111,26 @@ void CAI_Space::Load(LPCSTR name)
 	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory				(m_tpIndexes,S2);
 	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
+
+	vector<u32>		tpPath2;
+	float			fDistance;
+	SAIMapData		tData;
+	tData.dwFinishNode = 2103;
+	tData.tpAI_Space = this;
+	m_tpMapPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,77,2103,1000.f,fDistance,tpPath2,false);
+	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	Sleep				(1);
+	u64 t1x = CPU::GetCycleCount();
+	{
+	for (int i=0; i<10000; i++)
+		m_tpMapPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,77,2103,1000.f,fDistance,tpPath2,false);
+	}
+	u64 t2x = CPU::GetCycleCount();
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+	t2x -= t1x;
+	Msg("A star time %11I64u",t2x);
 }
 
 void CAI_Space::Render()
@@ -319,6 +339,7 @@ IC bool CAIMapShortestPathNode::bfCheckIfAccessible(u32 dwNode)
 IC float CAIMapShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
 	if (m_dwLastBestNode != dwStartNode) {
+		m_dwLastBestNode = dwStartNode;
 		NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode), &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
 		
 		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
@@ -393,6 +414,7 @@ IC bool CAIMapLCDPathNode::bfCheckIfAccessible(u32 dwNode)
 IC float CAIMapLCDPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
 	if (m_dwLastBestNode != dwStartNode) {
+		m_dwLastBestNode = dwStartNode;
 		NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode), &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
 
 		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
@@ -481,6 +503,7 @@ IC bool CAIMapEnemyPathNode::bfCheckIfAccessible(u32 dwNode)
 IC float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
 	if (m_dwLastBestNode != dwStartNode) {
+		m_dwLastBestNode = dwStartNode;
 		NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode), &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
 		
 		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
@@ -568,6 +591,7 @@ IC bool CAIMapEnemyPositionPathNode::bfCheckIfAccessible(u32 dwNode)
 IC float CAIMapEnemyPositionPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
 	if (m_dwLastBestNode != dwStartNode) {
+		m_dwLastBestNode = dwStartNode;
 		NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode), &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
 		
 		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
