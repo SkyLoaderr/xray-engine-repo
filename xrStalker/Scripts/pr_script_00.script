@@ -75,40 +75,40 @@ function main()
 
 			action(
 				stalker1,
-			  	move	(move.standing, move.walk,move.line,patrol("way0003")),
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
 				look	(look.fire_point, stalker2),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
 				stalker2,
-			  	move	(move.standing, move.walk,move.line,patrol("way0003")),
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
 				stalker1,
-			  	move	(move.standing, move.walk,move.line,patrol("way0004")),
+			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
 				look	(look.fire_point, stalker2),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
 				stalker2,
-			  	move	(move.standing, move.walk,move.line,patrol("way0004")),
+			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
 				stalker1,
-			  	move	(move.standing, move.walk,move.line,patrol("way0005")),
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
 				look	(look.fire_point, stalker2),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
 			action(
 				stalker2,
-			  	move	(move.standing, move.walk,move.line,patrol("way0005")),
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
