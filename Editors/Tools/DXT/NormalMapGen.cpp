@@ -745,8 +745,24 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 			TW_Iterate_2OP	(w,h,pitch,T_normal_1D,T_normal_1,T_normal_1U,it_difference);
 			//tga_save		("x:\\4-normal_1D.tga",w,h,T_normal_1D,true);
 
+			// Rescale by virtual height
+			float	h_scale	= _sqrt(fmt->bump_virtual_height/0.05f);	// move towards 1.0f
+			if		(h_scale>1.f) h_scale = 1.f;
+			{
+				for (u32 y=0; y<h; y++)
+				{
+					for (u32 x=0; x<w; x++)
+					{
+						u32&	sh	= *	(((u32*)((u8*)T_height_gloss + (y * pitch)))+x);
+						u32		h	= 	color_get_R(sh);		// height -> R-channel
+								h	=	iFloor(float(h)*h_scale+EPS_S);
+								sh	=	color_rgba(h,color_get_G(sh),color_get_B(sh),color_get_A(sh));
+					}
+				}
+			}
+
 			// Calculate bounds for centering
-			u32	h_average=0, h_min=255, h_max=0;
+			u32		h_average=0, h_min=255, h_max=0;
 			{
 				for (u32 y=0; y<h; y++)
 				{
