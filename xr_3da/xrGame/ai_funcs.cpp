@@ -49,14 +49,14 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 {
 	FILE *fTestParameters = fopen(caFileName,"rb");
 	if (!fTestParameters) {
-		Msg("EvaluationFunction : File not found \"%s\"",caFileName);
+		Msg("Evaluation function : File not found \"%s\"",caFileName);
 		return;
 	}
 	
 	fread(&m_tEFHeader,1,sizeof(SEFHeader),fTestParameters);
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
 		fclose(fTestParameters);
-		Msg("EvaluationFunction (%s): Not supported version of the Evaluation Function Contructor",caFileName);
+		Msg("Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caFileName);
 		return;
 	}
 
