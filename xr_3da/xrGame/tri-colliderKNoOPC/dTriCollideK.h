@@ -173,24 +173,17 @@ inline dReal PointSphereTest(const dReal* center, const dReal radius,
 						   const dReal* pt,dReal* norm)
 {
 
-	dReal depth=-_sqrt(
-				 (pt[0]-center[0])*(pt[0]-center[0])+
-				 (pt[1]-center[1])*(pt[1]-center[1])+
-				 (pt[2]-center[2])*(pt[2]-center[2])
-				 )
-				+
-				radius;
+	norm[0]=center[0]-pt[0];
+	norm[1]=center[1]-pt[1];
+	norm[2]=center[2]-pt[2];
+	dVector3 to_center={norm[0],norm[1],norm[2]};
+	dNormalize3(norm);
+	dReal depth=radius-dDOT(to_center,norm);
 	
-	if(depth>0.f){
-		norm[0]=center[0]-pt[0];
-		norm[1]=center[1]-pt[1];
-		norm[2]=center[2]-pt[2];
-		return depth;
-	}
-	else return -1.f;
+	if(depth>0.f)	return depth;
+	else			return -1.f;
 	
-	
-	}
+}
 
 
 inline dReal PointBoxTest(const dReal* Pt,const dReal* BxP,const dReal* BxEx,const dReal* R,dReal* norm){

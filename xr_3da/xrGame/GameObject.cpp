@@ -383,6 +383,7 @@ void CGameObject::OnH_B_Chield()
 	PHSetPushOut();
 	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
 		ai().level_graph().ref_dec(level_vertex_id());
+	setup_parent_ai_locations	();
 }
 
 void CGameObject::OnH_B_Independent()
