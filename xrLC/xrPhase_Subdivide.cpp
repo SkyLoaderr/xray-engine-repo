@@ -66,52 +66,51 @@ void CBuild::xrPhase_Subdivide()
 					b2.min.z += size.z/2;
 				}
 				
-		// Process all faces and rearrange them
-		for (F=g_XSplit[X]->begin(); F!=g_XSplit[X]->end(); F++) 
-		{
-			Face *XF = *F;
-			Fvector C;
-			XF->CalcCenter(C);
-			if (b1.contains(C))	{ s1.push_back(XF); }
-			else				{ s2.push_back(XF); }
-		}
-		
-		if ((int(s1.size())<g_params.m_SS_Low) || (int(s2.size())<g_params.m_SS_Low))
-		{
-			// splitting failed
-		} else {
-			// split deflector into TWO
-			if (defl_base)	{
-				// delete old deflector
-				for (DWORD it=0; it<g_deflectors.size(); it++)
+				// Process all faces and rearrange them
+				for (F=g_XSplit[X]->begin(); F!=g_XSplit[X]->end(); F++) 
 				{
-					if (g_deflectors[it]==defl_base)	{
-						g_deflectors.erase	(g_deflectors.begin()+it);
-						_DELETE			(defl_base);
-						break;
-					}
+					Face *XF = *F;
+					Fvector C;
+					XF->CalcCenter(C);
+					if (b1.contains(C))	{ s1.push_back(XF); }
+					else				{ s2.push_back(XF); }
 				}
 				
-				// Create new deflectors
-				CDeflector*		D1	= new CDeflector; D1->OA_Place(s1); D1->OA_Export(); g_deflectors.push_back(D1);
-				CDeflector*		D2	= new CDeflector; D2->OA_Place(s2); D2->OA_Export(); g_deflectors.push_back(D2);
-			}
-
-			// Delete old SPLIT and push two new
-			_DELETE				(g_XSplit[X]);
-			g_XSplit.erase		(g_XSplit.begin()+X); X--;
-			g_XSplit.push_back	(new vecFace(s1));	Detach(&s1);
-			g_XSplit.push_back	(new vecFace(s2));	Detach(&s2);
-		}
-		s1.clear	();
-		s2.clear	();
+				if ((int(s1.size())<g_params.m_SS_Low) || (int(s2.size())<g_params.m_SS_Low))
+				{
+					// splitting failed
+				} else {
+					// split deflector into TWO
+					if (defl_base)	{
+						// delete old deflector
+						for (DWORD it=0; it<g_deflectors.size(); it++)
+						{
+							if (g_deflectors[it]==defl_base)	{
+								g_deflectors.erase	(g_deflectors.begin()+it);
+								_DELETE			(defl_base);
+								break;
+							}
+						}
+						
+						// Create new deflectors
+						CDeflector*		D1	= new CDeflector; D1->OA_Place(s1); D1->OA_Export(); g_deflectors.push_back(D1);
+						CDeflector*		D2	= new CDeflector; D2->OA_Place(s2); D2->OA_Export(); g_deflectors.push_back(D2);
+					}
+					
+					// Delete old SPLIT and push two new
+					_DELETE				(g_XSplit[X]);
+					g_XSplit.erase		(g_XSplit.begin()+X); X--;
+					g_XSplit.push_back	(new vecFace(s1));	Detach(&s1);
+					g_XSplit.push_back	(new vecFace(s2));	Detach(&s2);
+				}
+				s1.clear	();
+				s2.clear	();
 	}
 	Msg("%d subdivisions.",g_XSplit.size());
-
+	
 	Status				("Compacting memory...");
-	/*
-	for (u32 i=0; i<g_XSplit.size(); i++) 
-		Msg		("%d / %d",g_XSplit[i]->size(),g_XSplit[i]->capacity());
-	*/
+	DWORD M1			= mem_Usage();
 	mem_CompactSubdivs	();
+	DWORD M2			= mem_Usage();
+	Msg("Compact: %d / %d (%d)",M1,M2,M1-M2);
 }
