@@ -136,7 +136,7 @@ void CDetailManager::VS_Render()
 	DWORD		iOffset	=	0;
 	
 	// Iterate
-	Device.Primitive.setVerticesUC	(VS_Code,sizeof(vertHW),VS_VB);
+	Device.Primitive.setVerticesUC	(VS_Code->dwHandle,sizeof(vertHW),VS_VB);
 	for (DWORD O=0; O<objects.size(); O++)
 	{
 		CList<SlotItem*>&	vis = visible	[O];

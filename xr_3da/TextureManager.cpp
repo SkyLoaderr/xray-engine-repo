@@ -108,7 +108,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl)
 		
 		// Load vertex shader
 		string256		fname;
-		strcat			(fname,"data\\shaders\\",Name,".vs");
+		strconcat		(fname,"data\\shaders\\",Name,".vs");
 		LPD3DXBUFFER	code	= 0;
 		LPD3DXBUFFER	errors	= 0;
 		CStream*		fs		= Engine.FS.Open(fname);
@@ -131,7 +131,7 @@ void	CShaderManager::_DeleteVS	(CVS* &VS)
 LPCSTR	CShaderManager::DBG_GetVSName(CVS* T)
 {
 	R_ASSERT(T);
-	for (RTMap::iterator I=vs.begin(); I!=vs.end(); I++)
+	for (VSMap::iterator I=vs.begin(); I!=vs.end(); I++)
 		if (I->second == T)	return I->first;
 	return 0;
 }
