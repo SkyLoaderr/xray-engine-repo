@@ -102,7 +102,8 @@ public:
 enum ESMFlags{
     esmFX		= 1<<0,
     esmStopAtEnd= 1<<1,
-    esmNoMix	= 1<<2
+    esmNoMix	= 1<<2,
+    esmSyncPart	= 1<<3
 };
 
 class ENGINE_API CSMotion: public CCustomMotion{
