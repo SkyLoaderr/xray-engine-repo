@@ -21,6 +21,6 @@ public:
 	void						Unload		(void);
 	void						Apply		(DWORD dwStage);
 
-	CTexture					(LPCSTR Name, BOOL bMipmaps);
+	CTexture					();
 	~CTexture					();
 };

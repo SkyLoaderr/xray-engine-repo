@@ -86,9 +86,6 @@ public:
 	void	OnDeviceDestroy	(void);
 	void	OnDeviceCreate	(void);
 	void	OnFrameEnd		();
-	{
-		cache.Invalidate	();
-	}
 
 	// Creation/Destroying
 	Shader	Create			(LPCSTR s_shader="null", LPCSTR s_textures = "$null", LPCSTR s_constants = "", LPCSTR s_matrices = "");
@@ -102,7 +99,7 @@ public:
 		if (cache.pass.dwStateBlock!=dwCode)
 		{
 			cache.pass.dwStateBlock=dwCode;
-			CHK_DX(HW.pDevice->ApplyStateBlock(dwCode));
+			HW.pDevice->ApplyStateBlock(dwCode);
 		}
 	}
 	IC void set_Textures	(STextureList* T)
