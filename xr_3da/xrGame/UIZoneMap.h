@@ -41,11 +41,12 @@ public:
 
 	void			UpdateRadar		(CEntity* Actor, CTeam& Team);
 
-	void			SetScale(float scale) {m_fScale = scale;}
-	float			GetScale() {return m_fScale;}
+	void			SetScale		(float scale)						{m_fScale = scale;}
+	float			GetScale		()									{return m_fScale;}
 
-	bool			ZoomIn();
-	bool			ZoomOut();
+	bool			ZoomIn			();
+	bool			ZoomOut			();
+
 };
 
 #endif //__XR_UIZONEMAP_H__

@@ -89,12 +89,32 @@ void CTeamBaseZone::feel_touch_new	(CObject *tpObject)
 {
 	HUD().GetUI()->UIGame()->OnObjectEnterTeamBase(tpObject, this);
 	if (OnServer()) Level().Server->game->OnObjectEnterTeamBase(tpObject->ID(), ID());
+	
+/*	NET_Packet			P;
+	P.w_begin			(M_GAMEMESSAGE);
+	P.w_u32				(GMSG_TEAM_BASE);
+	P.w_u8				(1);
+	P.w_u8				( GetZoneTeam() );
+	P.w_u16				(tpObject->ID() );
+	u_EventSend			(P);
+*/
 }
 
 void CTeamBaseZone::feel_touch_delete	(CObject *tpObject)
 {
-	HUD().GetUI()->UIGame()->OnObjectLeaveTeamBase(tpObject, this);
+	HUD().GetUI()->UIGame()->OnObjectLeaveTeamBase(tpObject, this);		// 
 	if (OnServer()) Level().Server->game->OnObjectLeaveTeamBase(tpObject->ID(), ID());
+
+/*	
+if (OnServer())
+	NET_Packet			P;
+	P.w_begin			(M_GAMEMESSAGE);
+	P.w_u32				(GMSG_TEAM_BASE);
+	P.w_u8				(0);
+	P.w_u8				( GetZoneTeam() );
+	P.w_u16				(tpObject->ID() );
+	u_EventSend			(P);
+*/
 }
 
 BOOL CTeamBaseZone::feel_touch_contact	(CObject* O)

@@ -35,31 +35,45 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	P.r_u16		(destination);
 
 	CSE_Abstract*	receiver	= game->get_entity_from_eid	(destination);
-	if (receiver)	receiver->OnEvent						(P,type,timestamp,sender);
+	if (receiver)	
+		receiver->OnEvent						(P,type,timestamp,sender);
 
 	switch		(type)
 	{
-	case GEG_PLAYER_CHANGE_TEAM:
+	case GE_GAME_EVENT:
+		{
+			u16		game_event_type;
+			P.r_u16(game_event_type);
+			game->OnEvent(P,game_event_type,timestamp,sender);
+		}
+/* // moved to game_sv_teamdeathmatch
+	case GEG_PLAYER_CHANGE_TEAM: //cs & TDM
 		{
 			xrClientData *l_pC = ID_to_client(sender);
 			s16 l_team; P.r_s16(l_team);
 			game->OnPlayerChangeTeam(l_pC->ID, l_team);
 //			VERIFY					(verify_entities());
 		}break;
-	case GEG_PLAYER_CHANGE_SKIN:
+*/
+
+/* // moved to game_sv_deathmatch
+	case GEG_PLAYER_CHANGE_SKIN: //dm only
 		{
 			xrClientData *l_pC = ID_to_client(sender);
 			u8 l_skin; P.r_u8(l_skin);
 			game->OnPlayerChangeSkin(l_pC->ID, l_skin);
 //			VERIFY					(verify_entities());
 		}break;
-	case GEG_PLAYER_KILL:
+	case GEG_PLAYER_KILL: //dm only
 		{
 			xrClientData *l_pC = ID_to_client(sender);
 			game->OnPlayerWantsDie(l_pC->ID);
 //			VERIFY					(verify_entities());
 		}break;
-	case GEG_PLAYER_READY:
+*/
+
+/* // moved to game_sv_deathmatch
+	case GEG_PLAYER_READY:// cs & dm
 		{
 			CSE_Abstract*		E			= game->get_entity_from_eid	(destination);
 			if (E) {
@@ -71,12 +85,16 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			}
 //			VERIFY					(verify_entities());
 		}break;
-	case GEG_PLAYER_BUY_FINISHED:
+*/
+
+/*	// moved to game_sv_deathmatch
+	case GEG_PLAYER_BUY_FINISHED: // dm only
 		{
 			xrClientData *l_pC = ID_to_client(sender);
 			game->OnPlayerBuyFinished(l_pC->ID, P);
 //			VERIFY					(verify_entities());
 		}break;
+*/
 	case GE_INFO_TRANSFER:
 		SendBroadcast			(0xffffffff,P,MODE);
 //		VERIFY					(verify_entities());
@@ -92,7 +110,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			if (SV_Client) SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
 //			VERIFY					(verify_entities());
 		}break;
-	case GE_BUY:
+	case GE_BUY: //cs & dm
 		{
 			string64			i_name;
 			P.r_stringZ			(i_name);

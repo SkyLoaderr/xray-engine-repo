@@ -12,6 +12,7 @@
 #include "Inventory.h"
 #include "xrserver_objects_alife_items.h"
 
+#include "game_cl_Deathmatch.h"
 
 #define MSGS_OFFS 510
 
@@ -20,6 +21,7 @@
 //--------------------------------------------------------------------
 CUIGameDM::CUIGameDM()
 {
+	m_game			= NULL; 
 	ClearLists ();
 	
 	pBuyMenuTeam0	= NULL;
@@ -46,6 +48,13 @@ CUIGameDM::CUIGameDM()
 	m_iCurrentPlayersMoney = 0;
 }
 //--------------------------------------------------------------------
+void CUIGameDM::SetClGame (game_cl_GameState* g)
+{
+	inherited::SetClGame(g);
+	m_game = dynamic_cast<game_cl_Deathmatch*>(g);
+	R_ASSERT(m_game);
+}
+
 void	CUIGameDM::Init				()
 {
 
@@ -111,7 +120,7 @@ void CUIGameDM::OnFrame()
 {
 	inherited::OnFrame();
 
-	switch (Game().phase){
+	switch (m_game->phase){
 	case GAME_PHASE_PENDING: 
 		for (u32 i=0; i<m_aPlayersLists.size(); ++i)
 		{
@@ -132,11 +141,11 @@ void CUIGameDM::OnFrame()
 				};
 				//			pFragList->Update();
 			};
-			if (Game().timelimit)
+			if (m_game->timelimit)
 			{
-				if (Level().timeServer()<(Game().start_time + Game().timelimit))
+				if (Level().timeServer()<(m_game->start_time + m_game->timelimit))
 				{
-					u32 Rest = (Game().start_time + Game().timelimit) - Level().timeServer();
+					u32 Rest = (m_game->start_time + m_game->timelimit) - Level().timeServer();
 
 					u32 RHour = Rest / 3600000;
 					Rest %= 3600000;
@@ -160,7 +169,7 @@ void CUIGameDM::OnFrame()
 					StartStopMenu(pCurSkinMenu);
 			}
 			//-----------------------------------------------------------
-			game_cl_GameState::Player* P = Game().local_player;
+			game_cl_GameState::Player* P = m_game->local_player;
 			if (!P) break;
 
 			string16	tmp;
@@ -197,7 +206,7 @@ void CUIGameDM::Render()
 {
 	inherited::Render();
 
-	switch (Game().phase){
+	switch (m_game->phase){
 	case GAME_PHASE_PENDING:
 		for (u32 i=0; i<m_aPlayersLists.size(); i++)
 		{
@@ -237,7 +246,7 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 		break;
 	}
 
-	if (Game().phase==GAME_PHASE_INPROGRESS){
+	if (m_game->phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys
 		switch (dik){
 			case DIK_1:
@@ -287,7 +296,7 @@ bool CUIGameDM::IR_OnKeyboardRelease(int dik)
 {
 	if(inherited::IR_OnKeyboardRelease(dik)) return true;
 
-	if (Game().phase==GAME_PHASE_INPROGRESS){
+	if (m_game->phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys
 		switch (dik){
 		case DIK_TAB:
@@ -319,11 +328,13 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
 	if(!l_pPlayer) return;
 
-	game_cl_GameState::Player* Pl = Game().local_player;
+	game_cl_GameState::Player* Pl = m_game->local_player;
 	if (!Pl) return;
 
 	NET_Packet		P;
-	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
+//	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
+	l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
+	P.w_u16(GAME_EVENT_PLAYER_BUY_FINISHED);
 	//-------------------------------------------------------------------------------
 	pCurPresetItems->clear();
 
@@ -412,7 +423,7 @@ CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
 {
 	if (Team == -1)
 	{
-		Team = Game().local_player->team;
+		Team = m_game->local_player->team;
 	};
 
 	std::string *pTeamSect = &m_aTeamSections[ModifyTeam(Team)];
@@ -436,7 +447,7 @@ CUISkinSelectorWnd*		CUIGameDM::InitSkinMenu			(s16 Team)
 {
 	if (Team == -1)
 	{
-		Team = Game().local_player->team;
+		Team = m_game->local_player->team;
 	};
 
 	std::string *pTeamSect = &m_aTeamSections[ModifyTeam(Team)];
@@ -454,14 +465,20 @@ void		CUIGameDM::OnSkinMenu_Ok			()
 	if(!l_pPlayer) return;
 
 	NET_Packet		P;
-	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_SKIN,l_pPlayer->ID()	);
+//	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_SKIN,l_pPlayer->ID()	);
+
+	l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
+	P.w_u16(GAME_EVENT_PLAYER_CHANGE_SKIN);
+
 	P.w_u8			(pCurSkinMenu->GetActiveIndex());
 	l_pPlayer->u_EventSend		(P);
 	//-----------------------------------------------------------------
 	m_bSkinSelected = TRUE;
 
-	if (pCurBuyMenu) pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
+	if (pCurBuyMenu) 
+		pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
 };
+
 BOOL		CUIGameDM::CanCallBuyMenu			()
 {
 	CSpectator* pCurPlayer = dynamic_cast<CSpectator*> (Level().CurrentEntity());
@@ -475,7 +492,7 @@ void		CUIGameDM::SetCurrentBuyMenu	()
 	pCurBuyMenu = pBuyMenuTeam0; 
 	pCurPresetItems	= &PresetItemsTeam0;
 
-	game_cl_GameState::Player* P = Game().local_player;
+	game_cl_GameState::Player* P = m_game->local_player;
 	if (!P) return;
 };
 
@@ -563,7 +580,7 @@ void		CUIGameDM::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 
 void		CUIGameDM::SetBuyMenuItems		()
 {
-	game_cl_GameState::Player* P = Game().local_player;
+	game_cl_GameState::Player* P = m_game->local_player;
 	if (!P) return;
 	//---------------------------------------------------------
 	xr_vector <s16>			TmpPresetItems;

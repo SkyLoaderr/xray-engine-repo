@@ -65,6 +65,7 @@ add_to_type_list(game_TeamState)
 #undef script_type_list
 #define script_type_list save_type_list(game_TeamState)
 
+
 #pragma pack(pop)
 
 class	game_GameState : public DLL_Pure
@@ -74,20 +75,20 @@ public:
 	u16								phase;
 	s32								round;
 	u32								start_time;
-	u32								buy_time;
-	s32								fraglimit;
-	s32								timelimit;
-	u32								damageblocklimit;
-	xr_vector<game_TeamState>		teams;
+//	u32								buy_time;
+//	s32								fraglimit; //dm,tdm,ah
+//	s32								timelimit; //dm
+//	u32								damageblocklimit;//dm,tdm
+//	xr_vector<game_TeamState>		teams;//dm,tdm,ah
 	// for Artefact Hunt
-	u8								artefactsNum;
-	u16								artefactBearerID;
-	u8								teamInPossession;
+//	u8								artefactsNum;//ah
+//	u16								artefactBearerID;//ah,ZoneMap
+//	u8								teamInPossession;//ah,ZoneMap
 
 public:
 	game_GameState();
 
-	virtual		void				Create					(LPSTR &options){};
+	virtual		void				Create					(ref_str& options){};
 	virtual		LPCSTR				type_name				() const {return "base game";};
 //for scripting enhancement
 	static		CLASS_ID			getCLASS_ID(LPCSTR game_type_name, bool bServer);

@@ -13,16 +13,18 @@
 //#include "ui/UISpawnWnd.h"
 //#include "ui/UIStatsWnd.h"
 
-
+class game_cl_Single;
 
 class CUIGameSP : public CUIGameCustom
 {
 private:
+	game_cl_Single*		m_game;
 	typedef CUIGameCustom inherited;
 public:
 	CUIGameSP									();
 	virtual				~CUIGameSP				();
 
+	virtual void		SetClGame				(game_cl_GameState* g);
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);
 
@@ -33,7 +35,6 @@ public:
 	CUIInventoryWnd		InventoryMenu;
 	CUITradeWnd			TradeMenu;
 	CUIPdaWnd			PdaMenu;
-	CUIMapWnd			MapMenu;
 	CUIDiaryWnd			DiaryMenu;
 	CUITalkWnd			TalkMenu;
 	CUICarBodyWnd		UICarBodyMenu;

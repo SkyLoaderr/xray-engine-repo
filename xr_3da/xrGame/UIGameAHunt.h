@@ -17,11 +17,14 @@
 class CUIAHuntFragList;
 class CUIAHuntPlayerList;
 class CUIBuyWeaponWnd;
+class game_cl_ArtefactHunt;
 
 class CUIGameAHunt: public CUIGameTDM
 {
 private:
+	game_cl_ArtefactHunt * m_game;
 	typedef CUIGameTDM inherited;
+
 protected:
 	/*
 	CUIAHuntFragList*		pFragListT1;
@@ -34,6 +37,7 @@ protected:
 	CUIBuyWeaponWnd*	pBuyMenu;
 	*/
 public:
+	virtual void		SetClGame				(game_cl_GameState* g);
 	CUIGameAHunt								();
 	virtual 			~CUIGameAHunt			();
 
@@ -61,9 +65,13 @@ public:
 	virtual bool		CanBeReady				();
 
 protected:
+	ref_str				m_score_caption;		
+	ref_str				m_round_result_caption;		
+	ref_str				m_todo_caption;			
+	ref_str				m_buy_msg_caption;		
+
 	/////////
 	CUIInventoryWnd		InventoryMenu;
-	CUIMapWnd			MapMenu;
-	CUITextBanner		StaticMsg, BuyMsg, WarningMsg, WarningMsg2;
+//	CUITextBanner		StaticMsg, BuyMsg, WarningMsg, WarningMsg2;
 };
 #endif // __XR_UIGAMEAHUNT_H__

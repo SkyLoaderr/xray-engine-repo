@@ -161,6 +161,20 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	T.translate_over	(Actor->Position());
 	LM.invert			(T);
 
+
+	xr_vector<SZoneMapEntityData> vEnt;
+	Level().game->GetMapEntities(vEnt);
+	xr_vector<SZoneMapEntityData>::iterator it = vEnt.begin();
+	for(; it !=vEnt.end(); ++it){
+		float diff = 0.0f;
+		Ivector2 pt;
+		ConvertToLocal(LM, (*it).pos, pt);
+		diff = (*it).pos.y - Actor->Position().y;
+		EntityOut(diff, (*it).color, pt);
+	};
+
+/*
+
 	// render friend
 	BOOL	bRender = FALSE;
 	switch (GameID())
@@ -244,7 +258,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 				};
 			};
 	};
-
+*/
 	if(!pActor->g_Alive())return;
 #pragma todo(" ост€ то ёра : € вставил здесь проверку, чтобы не вылетало при смерти актера - надо разобратьс€ ...............")
 	////////////////////////////////////////////
@@ -411,3 +425,4 @@ bool CUIZoneMap::ZoomOut()
 	}
 	return false;
 }
+

@@ -8,6 +8,8 @@
 #include "game_cl_base.h"
 #include "level.h"
 
+#include "game_cl_TeamDeathmatch.h"
+
 #define MSGS_OFFS 510
 
 #define	TEAM1_MENU		"teamdeathmatch_team1"
@@ -16,20 +18,28 @@
 //--------------------------------------------------------------------
 CUIGameTDM::CUIGameTDM()
 {
-	pUITeamSelectWnd = xr_new<CUISpawnWnd>	();
-	pBuyMenuTeam1 = NULL;
-	pBuyMenuTeam2 = NULL;
+	m_game				= NULL;
+	pUITeamSelectWnd	= xr_new<CUISpawnWnd>	();
+	pBuyMenuTeam1		= NULL;
+	pBuyMenuTeam2		= NULL;
 
 	PresetItemsTeam1.clear();
 	PresetItemsTeam2.clear();
 
-	pSkinMenuTeam1 = NULL;
-	pSkinMenuTeam2 = NULL;
+	pSkinMenuTeam1		= NULL;
+	pSkinMenuTeam2		= NULL;
 
-	m_bTeamSelected	= TRUE;
+	m_bTeamSelected		= TRUE;
 }
 //--------------------------------------------------------------------
-void		CUIGameTDM::Init ()
+void CUIGameTDM::SetClGame (game_cl_GameState* g)
+{
+	inherited::SetClGame(g);
+	m_game = dynamic_cast<game_cl_TeamDeathmatch*>(g);
+	R_ASSERT(m_game);
+}
+
+void CUIGameTDM::Init ()
 {
 	//-----------------------------------------------------------
 	CUITDMFragList* pFragListT1	= xr_new<CUITDMFragList>	();
@@ -103,7 +113,7 @@ CUIGameTDM::~CUIGameTDM()
 //--------------------------------------------------------------------
 bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 {
-	if (Game().phase==GAME_PHASE_INPROGRESS){
+	if (m_game->phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys
 		switch (dik){
 		case DIK_M:
@@ -120,7 +130,7 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 //--------------------------------------------------------------------
 void CUIGameTDM::OnTeamSelect(int Team)
 {
-	if (Team+1 != Game().local_player->team) 
+	if (Team+1 != m_game->local_player->team) 
 	{
 		CObject *l_pObj = Level().CurrentEntity();
 
@@ -128,7 +138,10 @@ void CUIGameTDM::OnTeamSelect(int Team)
 		if(!l_pPlayer) return;
 
 		NET_Packet		P;
-		l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
+//		l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
+		l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
+		P.w_u16(GAME_EVENT_PLAYER_CHANGE_TEAM);
+		
 		P.w_s16			(s16(Team+1));
 		//P.w_u32			(0);
 		l_pPlayer->u_EventSend		(P);
@@ -143,7 +156,7 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 {
 	if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 	{
-		if (Game().local_player->team == 1) 
+		if (m_game->local_player->team == 1) 
 		{
 			pCurBuyMenu = pBuyMenuTeam1;
 			pCurPresetItems = &PresetItemsTeam1;
@@ -158,7 +171,7 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 	if (pCurBuyMenu) pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
 	if (!pCurBuyMenu) return;
 
-	game_cl_GameState::Player* P = Game().local_player;
+	game_cl_GameState::Player* P = m_game->local_player;
 	if (!P) return;
 //	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 };
@@ -166,7 +179,7 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 void		CUIGameTDM::SetCurrentSkinMenu	()
 {
 	CUISkinSelectorWnd* pNewSkinMenu;
-	if (Game().local_player->team == 1) pNewSkinMenu = pSkinMenuTeam1;
+	if (m_game->local_player->team == 1) pNewSkinMenu = pSkinMenuTeam1;
 	else pNewSkinMenu = pSkinMenuTeam2;
 
 	if (pNewSkinMenu != pCurSkinMenu)

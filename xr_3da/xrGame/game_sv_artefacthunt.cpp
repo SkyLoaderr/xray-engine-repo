@@ -6,13 +6,13 @@
 #include "Level.h"
 #include "LevelGameDef.h"
 
-void	game_sv_ArtefactHunt::Create					(LPSTR &options)
+void	game_sv_ArtefactHunt::Create					(ref_str& options)
 {
 	inherited::Create					(options);
 
-	m_dwArtefactRespawnDelta = get_option_i		(options,"ardelta",0)*1000;
-	artefactsNum	= u8(get_option_i		(options,"anum",1));
-	m_dwArtefactStayTime	= get_option_i		(options,"astime",5)*60000;
+	m_dwArtefactRespawnDelta			= get_option_i(*options,"ardelta",0)*1000;
+	artefactsNum						= u8(get_option_i(*options,"anum",1));
+	m_dwArtefactStayTime				= get_option_i(*options,"astime",5)*60000;
 	fraglimit = 0;	
 
 	m_delayedRoundEnd = false;
@@ -277,9 +277,8 @@ void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 */
 BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 {
-	xrServer*			S		= Level().Server;
-	CSE_Abstract*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
-	CSE_Abstract*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+	CSE_Abstract*		e_who	= m_server->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CSE_Abstract*		e_what	= m_server->ID_to_entity(eid_what);	VERIFY(e_what	);
 
 	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
 	if (A)
@@ -320,9 +319,8 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 
 BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 {
-	xrServer*			S		= Level().Server;
-	CSE_Abstract*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
-	CSE_Abstract*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+	CSE_Abstract*		e_who	= m_server->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CSE_Abstract*		e_what	= m_server->ID_to_entity(eid_what);	VERIFY(e_what	);
 
 	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
 	if (A)
@@ -356,9 +354,8 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 
 void		game_sv_ArtefactHunt::OnObjectEnterTeamBase	(u16 id, u16 id_zone)
 {
-	xrServer*			S		= Level().Server;
-	CSE_Abstract*		e_who	= S->ID_to_entity(id);		VERIFY(e_who	);
-	CSE_Abstract*		e_zone	= S->ID_to_entity(id_zone);	VERIFY(e_zone	);
+	CSE_Abstract*		e_who	= m_server->ID_to_entity(id);		VERIFY(e_who	);
+	CSE_Abstract*		e_zone	= m_server->ID_to_entity(id_zone);	VERIFY(e_zone	);
 
 	CSE_ALifeCreatureActor* eActor = dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
 	CSE_ALifeTeamBaseZone*	eZoneBase = dynamic_cast<CSE_ALifeTeamBaseZone*> (e_zone);
@@ -381,11 +378,10 @@ void		game_sv_ArtefactHunt::OnObjectEnterTeamBase	(u16 id, u16 id_zone)
 
 void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 id_zone)
 {
-	xrServer*			S		= Level().Server;
-	CSE_Abstract*		e_who	= S->ID_to_entity(id);		
+	CSE_Abstract*		e_who	= m_server->ID_to_entity(id);		
 	if (!e_who)			return;
 
-	CSE_Abstract*		e_zone	= S->ID_to_entity(id_zone);	VERIFY(e_zone	);
+	CSE_Abstract*		e_zone	= m_server->ID_to_entity(id_zone);	VERIFY(e_zone	);
 
 	CSE_ALifeCreatureActor* eActor = dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
 	CSE_ALifeTeamBaseZone*	eZoneBase = dynamic_cast<CSE_ALifeTeamBaseZone*> (e_zone);
@@ -425,7 +421,8 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 		}
 	}
 
-	teams[ps->team-1].score++;
+//	teams[ps->team-1].score++;
+	SetTeamScore( ps->team-1, GetTeamScore(ps->team-1)+1 );
 	//-----------------------------------------------
 	//remove artefact from player
 	NET_Packet			P;
@@ -452,7 +449,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	//-----------------------------------------------
 	Artefact_PrepareForSpawn();
 
-	if (teams[ps->team-1].score >= artefactsNum) 
+	if ( GetTeamScore(ps->team-1) >= artefactsNum) 
 	{
 		OnTeamScore(ps->team-1);
 		phase = u16((ps->team-1)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
@@ -463,14 +460,14 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 
 void	game_sv_ArtefactHunt::SpawnArtefact			()
 {
-	if (OnClient()) return;
+//	if (OnClient()) return;
 	CSE_Abstract			*E	=	spawn_begin	("af_magnet");
 	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL);	// flags
 
 	Assign_Artefact_RPoint	(E);
 
-	spawn_end				(E,Level().Server->GetServer_client()->ID);
-
+	CSE_Abstract*  af =  spawn_end				(E, m_server->GetServer_client()->ID);
+	m_dwArtefactID = af->ID;
 	//-----------------------------------------------
 	NET_Packet P;
 	P.w_begin			(M_GAMEMESSAGE);
@@ -524,7 +521,7 @@ void	game_sv_ArtefactHunt::Update			()
 }
 bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()	
 {
-///	return true;
+	return true;
 	// Check if all players ready
 	u32		cnt		= get_count	();
 	
@@ -625,8 +622,8 @@ void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
 
 void				game_sv_ArtefactHunt::OnTimelimitExceed		()
 {
-	if (teams[0].score == teams[1].score) return;
-	u8 winning_team = (teams[0].score < teams[1].score)? 1 : 0;
+	if ( GetTeamScore(0) == GetTeamScore(1) ) return;
+	u8 winning_team = (GetTeamScore(0) < GetTeamScore(1))? 1 : 0;
 	OnTeamScore(winning_team);
 	phase = u16((winning_team)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
 	switch_Phase		(phase);
@@ -639,6 +636,7 @@ void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, u32 id_to)
 	P.w_u8			(artefactsNum);
 	P.w_u16			(artefactBearerID);
 	P.w_u8			(teamInPossession);
+	P.w_u16			(m_dwArtefactID);
 };
 
 void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()

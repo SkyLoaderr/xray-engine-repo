@@ -5,26 +5,23 @@
 #include "xrserver.h"
 #include "level.h"
 
-void	game_sv_TeamDeathmatch::Create					(LPSTR &options)
+void	game_sv_TeamDeathmatch::Create					(ref_str& options)
 {
-	__super::Create					(options);
-	fraglimit	= get_option_i		(options,"fraglimit",0);
-	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
-	int iFF = get_option_i(options,"ffire",100);
+	inherited::Create					(options);
+//	fraglimit	= get_option_i		(*options,"fraglimit",0);
+//	timelimit	= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
+	int iFF = get_option_i(*options,"ffire",100);
 	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
 	else m_fFriendlyFireModifier = 0.000001f;
 	
 	switch_Phase(GAME_PHASE_PENDING);
 ///	switch_Phase(GAME_PHASE_INPROGRESS);
 	
-	teams.push_back(game_TeamState());
-	teams.push_back(game_TeamState());
-
-	teams[0].score			= 0;
-	teams[0].num_targets	= 0;
-
-	teams[1].score			= 0;
-	teams[1].num_targets	= 0;
+	game_TeamState td;
+	td.score		= 0;
+	td.num_targets	= 0;
+	teams.push_back(td);
+	teams.push_back(td);
 }
 
 u8 game_sv_TeamDeathmatch::AutoTeam() 
@@ -43,13 +40,13 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(u32 id_who)
 	inherited::OnPlayerConnect	(id_who);
 
 	game_PlayerState*	ps_who	=	get_id	(id_who);
-	LPCSTR	options			=	get_name_id	(id_who);
+	LPCSTR	options				=	get_name_id	(id_who);
 
 	if (ps_who->Skip) return;
 
 	ps_who->team				=	u8(get_option_i(options,"team",AutoTeam()));
 
-	xrClientData* xrCData	=	Level().Server->ID_to_client(id_who);
+	xrClientData* xrCData		=	m_server->ID_to_client(id_who);
 	// Send Message About Client join Team
 	if (xrCData)
 	{
@@ -68,7 +65,7 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(u32 id_who)
 void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team) 
 {
 	game_PlayerState*	ps_who	=	get_id	(id_who);
-	if (!team) team = AutoTeam();
+	if (!team) team				= AutoTeam();
 	if (!ps_who || ps_who->team == team) return;
 	
 	if (OnServer())
@@ -129,7 +126,8 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 			ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillRival;
 	}
 	
-	teams[ps_killer->team-1].score = 0;
+//	teams[ps_killer->team-1].score = 0;
+	SetTeamScore(ps_killer->team-1, 0);
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; ++it)	
 	{
@@ -137,13 +135,14 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		game_PlayerState*	ps	=	get_it	(it);
 		if (ps->team != ps_killer->team) continue;
 
-		teams[ps_killer->team-1].score += ps->kills;
+//		teams[ps_killer->team-1].score += ps->kills;
+		SetTeamScore(ps_killer->team-1, GetTeamScore(ps_killer->team-1)+ps->kills );
 	};	
 
 	// Send Message About Player Killed
 	SendPlayerKilledMessage(id_killer, id_killed);
 
-	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit) )OnFraglimitExceed();
+	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit ) )OnFraglimitExceed();
 
 	if (pTeam)
 		if (ps_killer->money_for_round < pTeam->m_iM_Min) ps_killer->money_for_round = pTeam->m_iM_Min;

@@ -3,7 +3,7 @@
 #include "hudmanager.h"
 #include "xrserver_objects.h"
 
-void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent, CSE_Abstract* tpExistedEntity)
+CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent, CSE_Abstract* tpExistedEntity)
 {
 	// create server entity
 	xrClientData* CL	= ID_to_client	(sender);
@@ -18,7 +18,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 		if (!((game->type==E->s_gameid)||(GAME_ANY==E->s_gameid))){
 			// Msg			("- SERVER: Entity [%s] incompatible with current game type.",E->s_name);
 			F_entity_Destroy(E);
-			return;
+			return NULL;
 		}
 //		E->m_bALifeControl = false;
 	}
@@ -124,6 +124,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 
 	// log
 	//Msg		("- SERVER: Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->g_team(), E->g_squad(), E->g_group(), E->ID, CL?CL->Name:"*SERVER*");
+	return E;
 }
 
 /*

@@ -8,6 +8,7 @@ typedef game_cl_Deathmatch inherited;
 protected:
 	virtual			void				TranslateGameMessage	(u32 msg, NET_Packet& P);
 public :
-		virtual		LPCSTR				type_name				() const {return "teamdeathmatch";};
+	virtual			CUIGameCustom*		createGameUI			();
+	virtual			void				GetMapEntities(xr_vector<SZoneMapEntityData>& dst);
 
 };

@@ -88,7 +88,17 @@ protected:
 
 	ref_str							m_sBaseWeaponCostSection;
 
+	s32								fraglimit; //dm,tdm,ah
+	s32								timelimit; //dm
+	u32								damageblocklimit;//dm,tdm
+	xr_vector<game_TeamState>		teams;//dm,tdm,ah
+
 protected:
+	virtual		void				OnPlayerChangeSkin		(u32 id_who, u8 skin);
+	virtual		void				OnPlayerWantsDie		(u32 id_who);
+	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P);
+
+
 	void							AllowDeadBodyRemove		(u32 id);
 	void							SpawnActor				(u32 id, LPCSTR N);
 	bool							GetPosAngleFromActor	(u32 id, Fvector& Pos, Fvector &Angle);
@@ -101,9 +111,12 @@ protected:
 	virtual	void					CheckItem				(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete);
 public:
 									game_sv_Deathmatch		(){type = GAME_DEATHMATCH;};
-	virtual		void				Create					(LPSTR &options);
+	virtual		void				Create					(ref_str &options);
 
-	virtual		LPCSTR				type_name		() const { return "deathmatch";};
+	virtual		LPCSTR				type_name				() const { return "deathmatch";};
+	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);
+
+	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender );
 
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда
@@ -120,10 +133,6 @@ public:
 	virtual		void				OnPlayerDisconnect		(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
-	virtual		void				OnPlayerWantsDie		(u32 id_who);
-	virtual		void				OnPlayerChangeSkin		(u32 id_who, u8 skin);
-
-	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P);
 	
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();
@@ -155,6 +164,8 @@ public:
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(u32	id_who);
 //	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
+				int					GetTeamScore(u32 idx);
+				void				SetTeamScore(u32 idx, int val);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_sv_Deathmatch)

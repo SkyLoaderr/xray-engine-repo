@@ -9,6 +9,12 @@ protected:
 	virtual			void				TranslateGameMessage	(u32 msg, NET_Packet& P);
 
 public :
-		virtual		LPCSTR				type_name				() const {return "deathmatch";};
+	s32								fraglimit; //dm,tdm,ah
+	s32								timelimit; //dm
+	u32								damageblocklimit;//dm,tdm
+	xr_vector<game_TeamState>		teams;//dm,tdm,ah
+
+	virtual		CUIGameCustom*		createGameUI			();
+	virtual		void				net_import_state	(NET_Packet& P);
 
 };

@@ -11,7 +11,6 @@ private:
 	typedef game_sv_GameState inherited;
 
 protected:
-	xrServer						*m_server;
 	CALifeSimulator					*m_alife_simulator;
 
 public:
@@ -19,7 +18,7 @@ public:
 	virtual							~game_sv_Single			();
 
 	virtual		LPCSTR				type_name		() const { return "single";};
-	virtual		void				Create					(LPSTR &options);
+	virtual		void				Create					(ref_str& options);
 	virtual		CSE_Abstract*		get_entity_from_eid		(u16 id);
 
 	// Events

@@ -3,6 +3,7 @@
 #include "xrMessages.h"
 #include "hudmanager.h"
 #include "level.h"
+#include "UIGameTDM.h"
 
 void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
@@ -25,7 +26,7 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 							Color_Main,
 							Color_Teams[Team],
 							TeamsNames[Team]);
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
 		}break;
 
 	case GMSG_PLAYER_SWITCH_TEAM://tdm
@@ -44,10 +45,43 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 							Color_Main, 
 							Color_Teams[NewTeam], 
 							TeamsNames[NewTeam]);
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
 		}break;
 
 	default:
 		inherited::TranslateGameMessage(msg,P);
 	};
+}
+
+CUIGameCustom* game_cl_TeamDeathmatch::createGameUI()
+{
+	CLASS_ID clsid			= CLSID_GAME_UI_TEAMDEATHMATCH;
+	CUIGameTDM*			pUIGame	= dynamic_cast<CUIGameTDM*> ( NEW_INSTANCE ( clsid ) );
+	R_ASSERT(pUIGame);
+	pUIGame->SetClGame(this);
+	pUIGame->Init();
+	return pUIGame;
+}
+
+
+void game_cl_TeamDeathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
+{
+	SZoneMapEntityData D;
+	u32 color_self_team		=		0xff00ff00;
+	D.color					=		color_self_team;
+
+	s16 local_team			=		local_player->team;
+
+	u32 s = players.size();
+	xr_map<u32,Player>::iterator it = players.begin();
+	for(;it!=players.end();++it){
+		if(local_team == it->second.team){
+			u16 id = it->second.GameID;
+			CObject* pObject = Level().Objects.net_Find(id);
+			VERIFY(pObject);
+			D.pos = pObject->Position();
+			dst.push_back(D);
+		}
+
+	}
 }

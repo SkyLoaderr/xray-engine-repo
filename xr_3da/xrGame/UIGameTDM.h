@@ -18,11 +18,14 @@ class CUITDMFragList;
 class CUITDMPlayerList;
 class CUIBuyWeaponWnd;
 class CUISkinSelectorWnd;
+class game_cl_TeamDeathmatch;
 
 class CUIGameTDM: public CUIGameDM
 {
 private:
+	game_cl_TeamDeathmatch * m_game;
 	typedef CUIGameDM inherited;
+
 protected:
 	CUISpawnWnd*		pUITeamSelectWnd;
 
@@ -41,19 +44,18 @@ protected:
 public:
 	CUIGameTDM			();
 	virtual 			~CUIGameTDM			();
-
+	virtual void		SetClGame			(game_cl_GameState* g);
 	virtual	void		Init				();
 	virtual	void		SetCurrentBuyMenu	();
 	virtual	void		SetCurrentSkinMenu	();
 
-	virtual bool		IR_OnKeyboardPress		(int dik);
+	virtual bool		IR_OnKeyboardPress	(int dik);
 
-	virtual void		OnTeamSelect			(int Result);
+	virtual void		OnTeamSelect		(int Result);
 
-	virtual bool		CanBeReady				();
+	virtual bool		CanBeReady			();
 protected:
 	/////////
 	CUIInventoryWnd		InventoryMenu;
-	CUIMapWnd			MapMenu;
 };
 #endif // __XR_UIGAMETDM_H__

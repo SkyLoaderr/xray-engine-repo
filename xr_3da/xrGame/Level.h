@@ -104,8 +104,8 @@ public:
 	xr_vector<ref_sound*>		static_Sounds;
 
 	// startup options
-	LPSTR						m_caServerOptions;
-	LPSTR						m_caClientOptions;
+	ref_str						m_caServerOptions;
+	ref_str						m_caClientOptions;
 
 	// Starting/Loading
 	virtual BOOL				net_Start				( LPCSTR op_server, LPCSTR op_client);

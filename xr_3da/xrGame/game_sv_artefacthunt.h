@@ -36,6 +36,9 @@ protected:
 	xr_vector<u8>					ArtefactsRPoints_ID;
 	u8								m_LastRespawnPointID;
 
+	u8								artefactsNum;//ah
+	u16								artefactBearerID;//ah,ZoneMap
+	u8								teamInPossession;//ah,ZoneMap
 
 	void							Artefact_PrepareForSpawn	();
 	void							Artefact_PrepareForRemove	();
@@ -45,8 +48,9 @@ protected:
 	bool							Artefact_MissCheck		();
     	
 public:
+
 									game_sv_ArtefactHunt	(){type = GAME_ARTEFACTHUNT;}
-	virtual		void				Create					(LPSTR &options);
+	virtual		void				Create					(ref_str& options);
 
 	virtual		LPCSTR				type_name			() const { return "artefacthunt";};
 	// Events	

@@ -6838,6 +6838,9 @@
 								RelativePath="game_sv_deathmatch.h">
 							</File>
 							<File
+								RelativePath=".\game_sv_deathmatch_process_event.cpp">
+							</File>
+							<File
 								RelativePath=".\game_sv_deathmatch_script.cpp">
 							</File>
 						</Filter>
@@ -6859,6 +6862,9 @@
 							</File>
 							<File
 								RelativePath=".\game_sv_teamdeathmatch.h">
+							</File>
+							<File
+								RelativePath=".\game_sv_teamdeathmatch_process_event.cpp">
 							</File>
 						</Filter>
 					</Filter>

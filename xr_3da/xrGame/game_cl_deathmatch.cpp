@@ -3,6 +3,7 @@
 #include "xrMessages.h"
 #include "hudmanager.h"
 #include "level.h"
+#include "UIGameDM.h"
 
 void game_cl_Deathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
@@ -43,9 +44,39 @@ void game_cl_Deathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 								Color_Teams[pKiller->team],
 								pKiller->name);
 
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
 		}break;
 	default:
 		inherited::TranslateGameMessage(msg,P);
 	}
+}
+
+CUIGameCustom* game_cl_Deathmatch::createGameUI()
+{
+	CLASS_ID clsid			= CLSID_GAME_UI_DEATHMATCH;
+	CUIGameDM*			pUIGame	= dynamic_cast<CUIGameDM*> ( NEW_INSTANCE ( clsid ) );
+	R_ASSERT(pUIGame);
+	pUIGame->SetClGame(this);
+	pUIGame->Init();
+	return pUIGame;
+}
+
+void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
+{
+	inherited::net_import_state	(P);
+
+	P.r_s32			(fraglimit);
+	P.r_s32			(timelimit);
+	// Teams
+	// Teams
+	u16				t_count;
+	P.r_u16			(t_count);
+	teams.clear	();
+	for (u16 t_it=0; t_it<t_count; ++t_it)
+	{
+		game_TeamState	ts;
+		P.r				(&ts,sizeof(game_TeamState));
+		teams.push_back	(ts);
+	}
+	
 }

@@ -143,7 +143,7 @@ void CLevel::ClientReceive()
 		case M_CHANGE_LEVEL:
 			{
 				Engine.Event.Defer	("KERNEL:disconnect");
-				Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup(m_caServerOptions)),size_t(xr_strdup(m_caClientOptions)));
+				Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup(*m_caServerOptions)),size_t(xr_strdup(*m_caClientOptions)));
 			}break;
 		case M_SAVE_GAME:
 			{

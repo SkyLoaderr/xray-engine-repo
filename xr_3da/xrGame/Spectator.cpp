@@ -91,7 +91,11 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 			(GAME_PHASE_INPROGRESS	== Game().phase && HUD().GetUI()->UIGame()->CanBeReady()))
 		{
 			NET_Packet			P;
-			u_EventGen			(P,GEG_PLAYER_READY,ID());
+//			u_EventGen			(P,GEG_PLAYER_READY,ID());
+
+			u_EventGen		(P,GE_GAME_EVENT,ID()	);
+			P.w_u16(GAME_EVENT_PLAYER_READY);
+
 			u_EventSend			(P);
 			return;
 		}

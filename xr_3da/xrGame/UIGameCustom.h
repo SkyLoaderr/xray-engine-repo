@@ -6,26 +6,23 @@
 //класс абстрактного диалога
 #include "ui/UIDialogWnd.h"
 
+#include "ui/UIMultiTextStatic.h"
+
 // refs
 class CUI;
 class CTeamBaseZone;
-
+class game_cl_GameState;
 
 class CUIGameCustom :public DLL_Pure, public ISheduled
 {
 	typedef ISheduled inherited;
 protected:
 	u32					uFlags;
-	CUI*				m_Parent;
+	
+	CUICaption			m_gameCaptions;
 public:
-	enum{
-		flShowFragList	= (1<<1),
 
-		fl_force_dword	= u32(-1)
-	};
-	void				SetFlag					(u32 mask, BOOL flag){if (flag) uFlags|=mask; else uFlags&=~mask; }
-	void				InvertFlag				(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
-	BOOL				GetFlag					(u32 mask){return uFlags&mask;}
+	virtual void		SetClGame				(game_cl_GameState* g){};
 
 	virtual				float					shedule_Scale		();
 	virtual				void					shedule_Update		(u32 dt);
@@ -33,7 +30,6 @@ public:
 						CUIGameCustom			();
 	virtual				~CUIGameCustom			();
 
-			void		SetUI					(CUI* parent){m_Parent=parent;}
 	virtual	void		Init					()	{};
 	
 	virtual void		Render					();
@@ -67,6 +63,6 @@ public:
 };
 
 //by Dandy
-#include "ui.h"
+//#include "ui.h"
 
 #endif // __XR_UIGAMECUSTOM_H__

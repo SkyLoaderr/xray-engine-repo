@@ -3,15 +3,25 @@
 #include "actor.h"
 #include "level.h"
 
+#include "game_cl_Single.h"
+
 CUIGameSP::CUIGameSP()
 {
-	m_pUserMenu = NULL;
+	m_game			= NULL;
+	m_pUserMenu		= NULL;
 	pUIBuyWeaponWnd = xr_new<CUIBuyWeaponWnd>	((char*)"artefacthunt_team1", (char*)"artefacthunt_base_cost");
 }
 
 CUIGameSP::~CUIGameSP() 
 {
 	xr_delete(pUIBuyWeaponWnd);
+}
+
+void CUIGameSP::SetClGame (game_cl_GameState* g)
+{
+	inherited::SetClGame(g);
+	m_game = dynamic_cast<game_cl_Single*>(g);
+	R_ASSERT(m_game);
 }
 
 

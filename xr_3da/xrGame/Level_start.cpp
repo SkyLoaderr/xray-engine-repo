@@ -12,20 +12,30 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 
 	pApp->LoadBegin				();
 
+	//make Client Name if options doesn't have it
+	if (!strstr(op_client,"/name="))
+	{
+		string512 tmp;
+		strcpy(tmp, op_client);
+		strcat(tmp, "/name=");
+		strcat(tmp, Core.CompName);
+		m_caClientOptions			= tmp;
+	} else {
+		m_caClientOptions			= op_client;
+	};
+	m_caServerOptions			    = op_server;
+
 	// Start client and server if need it
 	if (op_server)
 	{
 		pApp->LoadTitle			("SERVER: Starting...");
 
-		strcpy					(m_caServerOptions,op_server);
-		strcpy					(m_caClientOptions,op_client);
-		
 		// Connect
 		Server					= xr_new<xrServer>();
 
-		if (!strstr(m_caServerOptions,"/alife")) {
+		if (!strstr(*m_caServerOptions,"/alife")) {
 			string64			l_name;
-			strcpy				(l_name,m_caServerOptions);
+			strcpy				(l_name,*m_caServerOptions);
 			// Activate level
 			if (strchr(l_name,'/'))
 				*strchr(l_name,'/')	= 0;
@@ -43,23 +53,11 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		Server->Connect			(m_caServerOptions);	
 		Server->SLS_Default		();
 		
-		strcpy					(m_caServerOptions,op_server);
+		m_caServerOptions		= op_server;
 	}
 
-	//make Client Name if options doesn't have it
-	if (!strstr(m_caClientOptions,"/name="))
-	{
-		char Text[MAX_COMPUTERNAME_LENGTH + 1]; 
-		u32 size = MAX_COMPUTERNAME_LENGTH + 1;
-		GetComputerName(Text, (LPDWORD)&size);
-		if ((xr_strlen(m_caClientOptions)+xr_strlen(Text)+xr_strlen("/name= ")) < 256)
-		{
-			strcat(m_caClientOptions, "/name=");
-			strcat(m_caClientOptions, Text);
-		};
-	};
 	// Start client
-	bResult						= net_Start_client(m_caClientOptions);
+	bResult						= net_Start_client(*m_caClientOptions);
 	// Send Ready message to server
 	if (bResult && Game().type != GAME_SINGLE) 
 	{
@@ -90,5 +88,6 @@ void CLevel::InitializeClientGame	(NET_Packet& P)
 	xr_delete(game);
 	CLASS_ID clsid			= game_GameState::getCLASS_ID(game_type_name,false);
 	game					= dynamic_cast<game_cl_GameState*> ( NEW_INSTANCE ( clsid ) );
+	game->set_type_name(game_type_name);
 }
 

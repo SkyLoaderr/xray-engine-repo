@@ -19,12 +19,22 @@ class CUIDMFragList;
 class CUIDMPlayerList;
 class CUIBuyWeaponWnd;
 class CUISkinSelectorWnd;
+class game_cl_Deathmatch;
 
 class CUIGameDM: public CUIGameCustom
 {
 private:
+	game_cl_Deathmatch *	m_game;
 	typedef CUIGameCustom inherited;
 protected:
+	enum{
+		flShowFragList	= (1<<1),
+		fl_force_dword	= u32(-1)	};
+
+	void				SetFlag					(u32 mask, BOOL flag){if (flag) uFlags|=mask; else uFlags&=~mask; }
+	void				InvertFlag				(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
+	BOOL				GetFlag					(u32 mask){return uFlags&mask;}
+
 	DEF_VECTOR			(FRAGS_LISTS, CUIDMFragList*);
 	DEF_VECTOR			(PLAYERS_LISTS, CUIDMPlayerList*);
 	DEF_VECTOR			(TEAMS_LIST, std::string);
@@ -64,6 +74,7 @@ public:
 									CUIGameDM				();
 	virtual 						~CUIGameDM				();
 
+	virtual void					SetClGame				(game_cl_GameState* g);
 	virtual	void					Init					();
 
 	virtual	void					SetCurrentBuyMenu		()	;//{pCurBuyMenu = pBuyMenuTeam0; };

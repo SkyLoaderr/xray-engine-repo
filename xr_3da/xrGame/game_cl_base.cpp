@@ -9,16 +9,13 @@
 game_cl_GameState::game_cl_GameState()
 {
 	local_player				= 0;
-
+	m_game_type_name[0]			= 0;
 }
 
 game_cl_GameState::~game_cl_GameState()
 {
 }
 
-void	game_cl_GameState::Create(LPSTR &options)
-{
-}
 
 void	game_cl_GameState::net_import_state	(NET_Packet& P)
 {
@@ -28,20 +25,20 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	P.r_u16			(phase);
 	P.r_s32			(round);
 	P.r_u32			(start_time);
-	P.r_s32			(fraglimit);
-	P.r_s32			(timelimit);
-	P.r_u32			(buy_time);
+//	P.r_s32			(fraglimit);
+//	P.r_s32			(timelimit);
+//	P.r_u32			(buy_time);
 
-	// Teams
-	u16				t_count;
-	P.r_u16			(t_count);
-	teams.clear		();
-	for (u16 t_it=0; t_it<t_count; ++t_it)
-	{
-		game_TeamState	ts;
-		P.r				(&ts,sizeof(game_TeamState));
-		teams.push_back	(ts);
-	}
+//	// Teams
+//	u16				t_count;
+//	P.r_u16			(t_count);
+//	teams.clear		();
+//	for (u16 t_it=0; t_it<t_count; ++t_it)
+//	{
+//		game_TeamState	ts;
+//		P.r				(&ts,sizeof(game_TeamState));
+//		teams.push_back	(ts);
+//	}
 
 	// Players
 	u16	p_count;
@@ -60,18 +57,6 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 		if (IP.flags&GAME_PLAYER_FLAG_LOCAL) local_player = &I.first->second;
 	}
 	
-//	R_ASSERT(local_player);
-/*
-	switch (type)
-	{
-	case GAME_ARTEFACTHUNT:
-		{
-			P.r_u8	(artefactsNum);
-			P.r_u16	(artefactBearerID);
-			P.r_u8	(teamInPosession);
-		}break;
-	};
-*/
 }
 
 void	game_cl_GameState::net_import_update(NET_Packet& P)
@@ -125,7 +110,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			P.r_stringZ(PlayerName);
 			
 			sprintf(Text, "%sPlayer %s%s %sconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
 		}break;
 	case GMSG_PLAYER_DISCONNECTED:
 		{
@@ -133,7 +118,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			P.r_stringZ(PlayerName);
 
 			sprintf(Text, "%sPlayer %s%s %sdisconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
 		}break;
 	default:
 		{
@@ -210,6 +195,12 @@ char*	game_cl_GameState::getTeamSection(int Team)
 };
 
 
+void game_cl_GameState::UIMessageOut (LPCSTR msg)
+{
+		HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, msg);
+}
+
+/*
 CLASS_ID game_cl_GameState::getGameUICLASS_ID(LPCSTR game_type_name)
 {
 	string256		S;
@@ -230,12 +221,14 @@ CLASS_ID game_cl_GameState::getGameUICLASS_ID(LPCSTR game_type_name)
 
 }
 
-CUIGameCustom*		game_cl_GameState::createGameUI	(CUI* parent)
+CUIGameCustom*		game_cl_GameState::createGameUI	()
 {
+	return 0;
 	CLASS_ID clsid			= getGameUICLASS_ID( type_name() );
 	CUIGameCustom*			pUIGame	= dynamic_cast<CUIGameCustom*> ( NEW_INSTANCE ( clsid ) );
 
-	pUIGame->SetUI(parent);
+	pUIGame->SetClGame(this);
 	pUIGame->Init();
 	return pUIGame;
 }
+*/

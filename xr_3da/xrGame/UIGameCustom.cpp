@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "UIGameCustom.h"
+#include "ui.h"
 
 CUIGameCustom::CUIGameCustom()
 {
-	m_Parent=NULL;
-	uFlags=0;
-	m_pUserMenu=NULL;
+	uFlags			= 0;
+	m_pUserMenu		= NULL;
 
-	shedule.t_min = 5;
-	shedule.t_max = 20;
+	shedule.t_min	= 5;
+	shedule.t_max	= 20;
 	shedule_register();
 }
 
@@ -68,7 +68,7 @@ void CUIGameCustom::OnFrame()
 	{
 	//	m_pUserMenu->Update();
 	}
-
+	
 }
 
 void CUIGameCustom::Render()
@@ -77,6 +77,8 @@ void CUIGameCustom::Render()
 	{
 		m_pUserMenu->Draw();
 	}
+
+	m_gameCaptions.Draw();
 }
 
 bool CUIGameCustom::IR_OnKeyboardPress(int dik) 

@@ -3,6 +3,7 @@
 #include "xrMessages.h"
 #include "hudmanager.h"
 #include "level.h"
+#include "UIGameAHunt.h"
 
 game_cl_ArtefactHunt::game_cl_ArtefactHunt()
 {
@@ -34,10 +35,11 @@ game_cl_ArtefactHunt::~game_cl_ArtefactHunt()
 void game_cl_ArtefactHunt::net_import_state	(NET_Packet& P)
 {
 	inherited::net_import_state	(P);
-
+	
 	P.r_u8	(artefactsNum);
 	P.r_u16	(artefactBearerID);
 	P.r_u8	(teamInPossession);
+	P.r_u16	(artefactID);
 }
 
 
@@ -64,7 +66,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				pPlayer->name, 
 				Color_Main,
 				Color_Artefact);
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
 						
 			CActor* pActor = dynamic_cast<CActor*> (Level().CurrentEntity());
 			if (!pActor) break;
@@ -90,7 +92,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				pPlayer->name, 
 				Color_Main,
 				Color_Artefact);
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
 
 			pMessageSounds[0].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
@@ -107,7 +109,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				Color_Teams[Team], 
 				TeamsNames[Team], 
 				Color_Main);
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
 
 			CActor* pActor = dynamic_cast<CActor*> (Level().CurrentEntity());
 			if (!pActor) break;
@@ -129,18 +131,73 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		{
 			sprintf(Text, "%sArtefact has been spawned. Bring it to your base to score.", 
 				Color_Main);
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
+
 			pMessageSounds[5].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
 	case GMSG_ARTEFACT_DESTROYED:  //ahunt
 		{
 			sprintf(Text, "%sArtefact has been destroyed.", 
 				Color_Main);
-			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+			UIMessageOut(Text);
+
 		}break;
 	
 
 	default:
 		inherited::TranslateGameMessage(msg,P);
 	}
+}
+
+CUIGameCustom* game_cl_ArtefactHunt::createGameUI()
+{
+	CLASS_ID clsid			= CLSID_GAME_UI_ARTEFACTHUNT;
+	CUIGameAHunt*			pUIGame	= dynamic_cast<CUIGameAHunt*> ( NEW_INSTANCE ( clsid ) );
+	R_ASSERT(pUIGame);
+	pUIGame->SetClGame(this);
+	pUIGame->Init();
+	return pUIGame;
+}
+
+void game_cl_ArtefactHunt::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
+{
+	inherited::GetMapEntities(dst);
+
+	SZoneMapEntityData D;
+	u32 color_enemy_with_artefact		=		0xffff0000;
+	u32 color_artefact					=		0xffffffff;
+	u32 color_friend_with_artefact		=		0xffffff00;
+
+
+	s16 local_team						=		local_player->team;
+
+
+	CObject* pObject = Level().Objects.net_Find(artefactID);
+	if(!pObject)
+		return;
+
+	CArtifact* pArtefact = dynamic_cast<CArtifact*>(pObject);
+	VERIFY(pArtefact);
+
+	CObject* pParent = pArtefact->H_Parent();
+	if(!pParent){// Artefact alone
+		D.color	= color_artefact;
+		D.pos	= pArtefact->Position();
+		dst.push_back(D);
+		return;
+	};
+
+	if (pParent && pParent->ID() == artefactBearerID){
+		CObject* pBearer = Level().Objects.net_Find(artefactBearerID);
+		VERIFY(pBearer);
+		D.pos	= pBearer->Position();
+
+		Player*	ps  =	GetPlayerByGameID		(artefactBearerID);
+		(ps->team==local_team)? D.color=color_friend_with_artefact:D.color=color_enemy_with_artefact;
+		
+		//remove previous record about this actor !!!
+		dst.push_back(D);
+		return;
+	}
+
 }

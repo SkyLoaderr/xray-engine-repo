@@ -10,12 +10,12 @@
 int		SkinID = -1;
 u32		g_dwMaxCorpses = 10;
 
-void	game_sv_Deathmatch::Create					(LPSTR &options)
+void	game_sv_Deathmatch::Create					(ref_str& options)
 {
 	inherited::Create						(options);
-	fraglimit			= get_option_i		(options,"fraglimit",0);
-	timelimit			= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
-	damageblocklimit	= get_option_i		(options,"timelimit",5)*1000;	// in (ms)
+	fraglimit			= get_option_i		(*options,"fraglimit",0);
+	timelimit			= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
+	damageblocklimit	= get_option_i		(*options,"timelimit",5)*1000;	// in (ms)
 
 	/////////////////////////////////////////////////////////////////////////
 	LoadTeams();
@@ -31,7 +31,12 @@ void	game_sv_Deathmatch::Create					(LPSTR &options)
 
 void	game_sv_Deathmatch::OnRoundStart			()
 {
-//	__super::OnRoundStart	();
+	for (u32 i=0; i<teams.size(); ++i)
+	{
+		teams[i].score			= 0;
+		teams[i].num_targets		= 0;
+	}
+
 	inherited::OnRoundStart	();
 
 	// Respawn all players and some info
@@ -150,9 +155,8 @@ BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 	
 BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 {
-	xrServer*			S		= Level().Server;
-	CSE_Abstract*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
-	CSE_Abstract*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+	CSE_Abstract*		e_who	= m_server->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CSE_Abstract*		e_what	= m_server->ID_to_entity(eid_what);	VERIFY(e_what	);
 
 	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
 	if (A)
@@ -166,7 +170,7 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			u8 slot						=	W->get_slot	();
 			for (u32 it=0; it<C.size(); ++it)
 			{
-				CSE_Abstract*		Et	= S->ID_to_entity				(C[it]);
+				CSE_Abstract*		Et	= m_server->ID_to_entity				(C[it]);
 				if (0==Et)				continue;
 				CSE_ALifeItemWeapon*		T	= dynamic_cast<CSE_ALifeItemWeapon*>	(Et);
 				if (0==T)				continue;
@@ -247,7 +251,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 			if (ps->Skip) break;
 			
 			//------------------------------------------------------------
-			xrClientData* xrCData	=	Level().Server->ID_to_client(id);
+			xrClientData* xrCData	=	m_server->ID_to_client(id);
 			if (!xrCData || !xrCData->owner) break;
 			CSE_Abstract* pOwner = xrCData->owner;
 			CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
@@ -269,9 +273,9 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 				if (pS)
 				{
 					//------------------------------------------------------------
-					if (pS->owner != Level().Server->GetServer_client())
+					if (pS->owner != m_server->GetServer_client())
 					{
-						pS->owner = Level().Server->GetServer_client();
+						pS->owner = m_server->GetServer_client();
 					};
 					//------------------------------------------------------------
 					//remove spectator entity
@@ -295,13 +299,13 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 //	__super::OnPlayerConnect	(id_who);
 	inherited::OnPlayerConnect	(id_who);
 
-	xrClientData* xrCData	=	Level().Server->ID_to_client(id_who);
+	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 
 	ClearPlayerState(ps_who);
 	ps_who->team				=	0;	
 	
-	if (g_pGamePersistent->bDedicatedServer && (xrCData == Level().Server->GetServer_client()) )
+	if (g_pGamePersistent->bDedicatedServer && (xrCData == m_server->GetServer_client()) )
 	{
 		ps_who->Skip = true;
 		return;
@@ -336,11 +340,10 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	Name = get_option_s(Name,"name",Name);
 
 
-	xrServer*	S					=	Level().Server;
 	
 	// Remove everything	
-	xrClientData* xrCData	=	S->ID_to_client(id_who);
-	xrClientData* xrSCData	=	S->GetServer_client();	
+	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
+	xrClientData* xrSCData	=	m_server->GetServer_client();	
 
 	if (xrCData != xrSCData)
 	{
@@ -361,20 +364,20 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	else
 	{	
 
-		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
-		if (from) S->Perform_destroy				(from,net_flags(TRUE, TRUE), FALSE);
+		CSE_Abstract*		from		= m_server->ID_to_entity(get_id_2_eid(id_who));
+		if (from) m_server->Perform_destroy				(from,net_flags(TRUE, TRUE), FALSE);
 	};
 };
 
 void	game_sv_Deathmatch::AllowDeadBodyRemove		(u32 id)
 {
-	xrClientData* xrCData	=	Level().Server->ID_to_client(id);
+	xrClientData* xrCData	=	m_server->ID_to_client(id);
 	if (!xrCData) return;
 	if (!xrCData->owner) return;
 	
-	if (xrCData->owner->owner != Level().Server->GetServer_client())
+	if (xrCData->owner->owner != m_server->GetServer_client())
 	{
-		xrCData->owner->owner = Level().Server->GetServer_client();
+		xrCData->owner->owner = m_server->GetServer_client();
 	};
 
 	CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
@@ -394,7 +397,7 @@ void	game_sv_Deathmatch::AllowDeadBodyRemove		(u32 id)
 
 void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 {
-	xrClientData* CL	= Level().Server->ID_to_client(id);
+	xrClientData* CL	= m_server->ID_to_client(id);
 	game_PlayerState*	ps_who	=	&CL->ps;//get_id	(id);
 	ps_who->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 	
@@ -443,7 +446,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 
 bool	game_sv_Deathmatch::GetPosAngleFromActor				(u32 id, Fvector& Pos, Fvector &Angle)
 {
-	xrClientData* xrCData	=	Level().Server->ID_to_client(id);
+	xrClientData* xrCData	=	m_server->ID_to_client(id);
 	if (!xrCData || !xrCData->owner) return false;
 	
 	CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
@@ -461,10 +464,9 @@ bool	game_sv_Deathmatch::GetPosAngleFromActor				(u32 id, Fvector& Pos, Fvector 
 
 void	game_sv_Deathmatch::KillPlayer				(u32 id_who)
 {
-	xrServer*	S					=	Level().Server;
 
 	// Remove everything	
-	xrClientData* xrCData	=	S->ID_to_client(id_who);
+	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
 	if (!xrCData) return;
 	// Kill Player on all clients
 	NET_Packet			P;
@@ -474,7 +476,7 @@ void	game_sv_Deathmatch::KillPlayer				(u32 id_who)
 	P.w_u16				(xrCData->owner->ID);
 	P.w_u16				(0);
 	P.w_u32				(xrCData->ID);
-	S->SendBroadcast	(0xffffffff,P,net_flags(TRUE, TRUE, TRUE));
+	m_server->SendBroadcast	(0xffffffff,P,net_flags(TRUE, TRUE, TRUE));
 
 };
 
@@ -497,14 +499,14 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 	CSE_Spectator		*pSpectator = dynamic_cast<CSE_Spectator*>(E);
 	if (pSpectator)
 	{
-		game_sv_GameState::assign_RP(E);
+		inherited::assign_RP(E);
 		return;
 	};
 
 	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
 	if (!pA)
 	{
-		game_sv_GameState::assign_RP(E);
+		inherited::assign_RP(E);
 		return;
 	};
 //-------------------------------------------------------------------------------
@@ -526,7 +528,7 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 	{
 		u8 OldTeam = pA->s_team;
 		pA->s_team = u8(Team);
-		game_sv_GameState::assign_RP(E);
+		inherited::assign_RP(E);
 		pA->s_team = OldTeam;
 		return;
 	};
@@ -544,7 +546,7 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 
 		for (u32 p=0; p<pEnemies.size(); p++)
 		{
-			xrClientData* xrCData	=	Level().Server->ID_to_client(get_it_2_id(pEnemies[p]));
+			xrClientData* xrCData	=	m_server->ID_to_client(get_it_2_id(pEnemies[p]));
 			if (!xrCData || !xrCData->owner) continue;
 
 			CSE_Abstract* pOwner = xrCData->owner;
@@ -600,7 +602,7 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 			u8 NewAddons  = u8(ItemID&0x00ff)>>0x05;
 			if (OldAddons != NewAddons)
 			{
-				CSE_ALifeItemWeapon* pSWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(Level().Server->game->get_entity_from_eid(pWeapon->ID()));
+				CSE_ALifeItemWeapon* pSWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(get_entity_from_eid(pWeapon->ID()));
 				if (pSWeapon)
 				{
 					pSWeapon->m_addon_flags.zero();
@@ -639,7 +641,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 		ItemsDesired.push_back(ItemID);
 	};
 
-	CSE_ALifeCreatureActor*		e_Actor	= dynamic_cast<CSE_ALifeCreatureActor*>(Level().Server->game->get_entity_from_eid	(ps->GameID));
+	CSE_ALifeCreatureActor*		e_Actor	= dynamic_cast<CSE_ALifeCreatureActor*>(get_entity_from_eid	(ps->GameID));
 /*	
 	if (e_Actor)
 	{
@@ -772,7 +774,7 @@ void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons)
 	};
 	/////////////////////////////////////////////////////////////////////////////////
 
-	spawn_end				(E,Level().Server->GetServer_client()->ID);
+	spawn_end				(E,m_server->GetServer_client()->ID);
 };
 
 void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState*	ps)
@@ -1052,7 +1054,7 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 	LoadSkinsForTeam	(caSection, &NewTeam.aSkins);
 	LoadDefItemsForTeam	(caSection, &NewTeam.aWeapons, &NewTeam.aDefaultItems);	
 	//-------------------------------------------------------------
-	if (pSettings->section_exist(caSection))
+	if( pSettings->section_exist(caSection) )//money
 	{
 		NewTeam.m_iM_Start				= pSettings->r_s16(caSection, "money_start");
 		NewTeam.m_iM_Min				= pSettings->r_s16(caSection, "money_min");
@@ -1080,10 +1082,7 @@ void game_sv_Deathmatch::OnPlayerChangeSkin(u32 id_who, u8 skin)
 	if (!ps_who) return;
 	ps_who->skin = skin;
 
-	if (OnServer())
-	{
-		KillPlayer(id_who);
-	};
+	KillPlayer(id_who);
 	signal_Syncronize();
 }
 
@@ -1202,4 +1201,30 @@ void	game_sv_Deathmatch::OnTeamScore	(u32 Team)
 		else
 			ps->money_for_round = ps->money_for_round + pTeam->m_iM_RoundLoose;
 	}
+}
+void game_sv_Deathmatch::net_Export_State		(NET_Packet& P, u32 id_to)
+{
+	inherited::net_Export_State(P, id_to);
+
+	P.w_s32			(fraglimit);
+	P.w_s32			(timelimit);
+	// Teams
+	P.w_u16			(u16(teams.size()));
+	for (u32 t_it=0; t_it<teams.size(); ++t_it)
+	{
+		P.w				(&teams[t_it],sizeof(game_TeamState));
+	}
+
+}
+
+int game_sv_Deathmatch::GetTeamScore(u32 idx)
+{
+	VERIFY( (idx>=0) && (idx<teams.size()) );
+	return teams[idx].score;
+}
+
+void game_sv_Deathmatch::SetTeamScore(u32 idx, int val)
+{
+	VERIFY( (idx>=0) && (idx<teams.size()) );
+	teams[idx].score = val;
 }

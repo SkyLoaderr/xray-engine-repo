@@ -11,7 +11,9 @@ protected:
 	float		m_fFriendlyFireModifier;
 public:	
 									game_sv_TeamDeathmatch	(){type = GAME_TEAMDEATHMATCH;}
-	virtual		void				Create					(LPSTR &options);
+	virtual		void				Create					(ref_str& options);
+
+	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender );
 
 	virtual		LPCSTR				type_name			() const { return "teamdeathmatch";};
 

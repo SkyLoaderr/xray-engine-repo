@@ -78,7 +78,7 @@ public:
 	void					Perform_reject			(CSE_Abstract* what, CSE_Abstract* from);
 	void					Perform_destroy			(CSE_Abstract* tpSE_Abstract, u32 mode, BOOL Recursive = TRUE);
 
-	void					Process_spawn			(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent=FALSE, CSE_Abstract* tpExistedEntity=0);
+	CSE_Abstract*			Process_spawn			(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent=FALSE, CSE_Abstract* tpExistedEntity=0);
 	void					Process_update			(NET_Packet& P, DPNID sender);
 	void					Process_save			(NET_Packet& P, DPNID sender);
 	void					Process_event			(NET_Packet& P, DPNID sender);
@@ -119,7 +119,7 @@ public:
 	CSE_Abstract*			ID_to_entity		(u16 ID);
 
 	// main
-	virtual BOOL			Connect				(LPSTR		&session_name);
+	virtual BOOL			Connect				(ref_str& session_name);
 	virtual void			Disconnect			();
 	void					Update				();
 	void					SLS_Default			();

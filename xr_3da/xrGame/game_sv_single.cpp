@@ -9,7 +9,6 @@
 
 game_sv_Single::game_sv_Single()
 {
-	m_server					= Level().Server;
 	m_alife_simulator			= NULL;
 	type						= GAME_SINGLE;
 };
@@ -19,10 +18,10 @@ game_sv_Single::~game_sv_Single			()
 	xr_delete							(m_alife_simulator);
 }
 
-void	game_sv_Single::Create			(LPSTR &options)
+void	game_sv_Single::Create			(ref_str& options)
 {
 	inherited::Create					(options);
-	if (strstr(options,"/alife"))
+	if (strstr(*options,"/alife"))
 		m_alife_simulator				= xr_new<CALifeSimulator>(&server(),&options);
 
 	switch_Phase		(GAME_PHASE_PENDING);

@@ -63,11 +63,6 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 	eEntitySpawn				= Engine.Event.Handler_Attach	("LEVEL:spawn",this);
 
-	m_caServerOptions			= (LPSTR)xr_malloc(256*sizeof(char));
-	m_caClientOptions			= (LPSTR)xr_malloc(256*sizeof(char));
-	m_caServerOptions[0]		= 0;
-	m_caClientOptions[0]		= 0;
-
 	//by Dandy
 	m_pFogOfWar					= NULL;
 	m_pFogOfWar					= xr_new<CFogOfWar>();
@@ -130,9 +125,6 @@ CLevel::~CLevel()
 	xr_delete					(m_patrol_path_storage);
 	
 	ai().script_engine().remove_script_process("level");
-
-	xr_free						(m_caServerOptions);
-	xr_free						(m_caClientOptions);
 
 	xr_delete					(game);
 	xr_delete					(game_events);

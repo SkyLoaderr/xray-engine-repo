@@ -5,7 +5,6 @@
 #include "HUDManager.h"
 #include "Group.h"
 #include "UIGameSP.h"
-#include "UIGameCS.h"
 #include "UIGameDM.h"
 #include "UIGameTDM.h"
 #include "UIGameAHunt.h"
@@ -48,7 +47,7 @@ CUI::~CUI()
 
 void CUI::Load()
 {
-	pUIGame = Game().createGameUI(this);
+	pUIGame = Game().createGameUI();
 	R_ASSERT(pUIGame);
 }
 //--------------------------------------------------------------------

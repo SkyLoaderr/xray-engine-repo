@@ -67,13 +67,16 @@ enum {
 	GE_GRENADE_EXPLODE,
 	GE_INV_ACTION,				//a action beign taken on inventory
 
+
+	GE_GAME_EVENT,
+/*
 	GEG_SIGNAL,
 	GEG_PLAYER_READY,
 	GEG_PLAYER_CHANGE_TEAM,
 	GEG_PLAYER_KILL,			//player wants to die
 	GEG_PLAYER_BUY_FINISHED,	//player end to buy items
 	GEG_PLAYER_CHANGE_SKIN,
-	
+*/	
 	GEG_PLAYER_ITEM2SLOT,
 	GEG_PLAYER_ITEM2BELT,
 	GEG_PLAYER_ITEM2RUCK,
@@ -86,6 +89,17 @@ enum {
 
 
 	GE_FORCEDWORD				= u32(-1)
+};
+
+
+enum{
+	GAME_EVENT_PLAYER_READY,
+	GAME_EVENT_PLAYER_CHANGE_TEAM,
+	GAME_EVENT_PLAYER_KILL,			//player wants to die
+	GAME_EVENT_PLAYER_BUY_FINISHED,	//player end to buy items
+	GAME_EVENT_PLAYER_CHANGE_SKIN,
+
+	GAME_EVENT_FORCEDWORD				= u32(-1)
 };
 
 enum
@@ -109,7 +123,7 @@ enum
 };
 
 enum
-{
+{	//game-specific UI-messagess
 	GMSG_PLAYER_CONNECTED		= 0,
 	GMSG_PLAYER_DISCONNECTED	,
 	
@@ -124,7 +138,7 @@ enum
 	GMSG_ARTEFACT_TAKEN			,
 	GMSG_ARTEFACT_DROPPED		,
 	GMSG_ARTEFACT_ONBASE		,
-
+	GMSG_TEAM_BASE,
 
 	GMSG_FORCEDWORD	= u32(-1)
 };
