@@ -278,6 +278,7 @@ end
 
 function get_megafone(type, name, music)
 	if type == "blockpost" then
+		printf("%s",name.."_rupor")
 		music = gramofon.m_gramofon(name.."_rupor")
 	end
 	return nil
