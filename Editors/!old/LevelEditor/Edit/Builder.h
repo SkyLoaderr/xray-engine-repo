@@ -133,6 +133,7 @@ protected:
 
     BOOL	BuildSceneStat			();
     bool 	BuildHOMModel			();
+    bool 	BuildSOMModel			();
     bool	BuildAIMap				();
     bool	BuildWallmarks			();
     BOOL 	CompileStatic		   	();
@@ -147,6 +148,7 @@ public:
 	BOOL 	MakeGame				();
     BOOL 	MakeDetails				();
     BOOL 	MakeHOM					();
+	BOOL 	MakeSOM					();
     BOOL	MakeAIMap				();
 
     void	OnRender				();

@@ -465,6 +465,11 @@ void __fastcall TfraLeftBar::MakeHOM1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::MakeSoundOccluder1Click(TObject *Sender)
+{
+	ExecCommand( COMMAND_MAKE_SOM );
+}
+//---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MakeAIMap1Click(TObject *Sender)
 {
@@ -694,6 +699,7 @@ void TfraLeftBar::RefreshBar()
     miRecentFiles->Enabled = miRecentFiles->Count;
 }
 //---------------------------------------------------------------------------
+
 
 
 

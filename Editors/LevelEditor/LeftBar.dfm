@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 657
+  Height = 277
   HorzScrollBar.ButtonSize = 1
   HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False
@@ -2179,6 +2179,10 @@ object fraLeftBar: TfraLeftBar
     object MenuItem27: TMenuItem
       Caption = 'Make HOM'
       OnClick = MakeHOM1Click
+    end
+    object MakeSoundOccluder1: TMenuItem
+      Caption = 'Make Sound Occluder'
+      OnClick = MakeSoundOccluder1Click
     end
     object MenuItem29: TMenuItem
       Caption = 'Make AI-Map'

@@ -58,7 +58,7 @@ BOOL SceneBuilder::Compile()
     UI->BeginEState(esBuildLevel);
     try{
         do{
-//.             ExecCommand( COMMAND_RESET_ANIMATION );
+//.			ExecCommand( COMMAND_RESET_ANIMATION );
 	        // check debug
             bool bTestPortal = Scene->ObjCount(OBJCLASS_SECTOR)||Scene->ObjCount(OBJCLASS_PORTAL);
 	        // validate scene
@@ -67,17 +67,18 @@ BOOL SceneBuilder::Compile()
             simple_hemi.clear	();
 	        xrHemisphereBuild	(1,2.f,simple_hemi_callback,&simple_hemi);
         	// build
-            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path","");
-            VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders","");
-            VERIFY_COMPILE(EvictResource(),				"Failed to evict resource","");
-            VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume","");
-            VERIFY_COMPILE(RenumerateSectors(),			"Failed to renumerate sectors","");
-            VERIFY_COMPILE(CompileStatic(),				"Failed static remote build","");
-            VERIFY_COMPILE(EvictResource(),				"Failed to evict resource","");
-            VERIFY_COMPILE(BuildLTX(),					"Failed to build level description","");
-            VERIFY_COMPILE(BuildGame(),					"Failed to build game","");
-            VERIFY_COMPILE(BuildSceneStat(),			"Failed to build scene statistic","");
-            BuildHOMModel	();
+            VERIFY_COMPILE		(PreparePath(),				"Failed to prepare level path","");
+            VERIFY_COMPILE		(PrepareFolders(),			"Failed to prepare level folders","");
+            VERIFY_COMPILE		(EvictResource(),	  		"Failed to evict resource","");
+            VERIFY_COMPILE		(GetBounding(),				"Failed to acquire level bounding volume","");
+            VERIFY_COMPILE		(RenumerateSectors(), 		"Failed to renumerate sectors","");
+            VERIFY_COMPILE		(CompileStatic(),	  		"Failed static remote build","");
+            VERIFY_COMPILE		(EvictResource(),	  		"Failed to evict resource","");
+            VERIFY_COMPILE		(BuildLTX(),		  		"Failed to build level description","");
+            VERIFY_COMPILE		(BuildGame(),		  		"Failed to build game","");
+            VERIFY_COMPILE		(BuildSceneStat(),			"Failed to build scene statistic","");
+            BuildHOMModel		();
+            BuildSOMModel		();
     	    // build tools
             SceneToolsMapPairIt _I 	= Scene->FirstTools();
             SceneToolsMapPairIt _E	= Scene->LastTools();
@@ -200,6 +201,33 @@ BOOL SceneBuilder::MakeHOM( )
 }
 //------------------------------------------------------------------------------
 
+BOOL SceneBuilder::MakeSOM( )
+{
+	AnsiString error_text="";
+	UI->ResetBreak();
+	if(UI->ContainEState(esBuildLevel)) return false;
+	ELog.Msg( mtInformation, "Making started..." );
+
+    UI->BeginEState(esBuildLevel);
+    try{
+        do{
+        	// build
+            VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.","");
+            VERIFY_COMPILE(BuildSOMModel(),				"Failed to build SOM model.","");
+        } while(0);
+
+        if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
+        else if (UI->NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated...");
+        else						ELog.DlgMsg(mtInformation,"Building OK...");
+    }catch(...){
+    	ELog.DlgMsg(mtError,"Error has occured in builder routine. Editor aborted.");
+        abort();
+    }
+    UI->EndEState();
+
+	return error_text.IsEmpty();
+}
+//------------------------------------------------------------------------------
 #include "EditObject.h"
 void SceneBuilder::OnRender()
 {

@@ -444,6 +444,16 @@ void CommandMakeHOM(u32 p1, u32 p2, u32& res)
         res = FALSE;
     }
 }
+void CommandMakeSOM(u32 p1, u32 p2, u32& res)
+{
+    if( !Scene->locked() ){
+        if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export Sound Occlusion Model?"))
+            Builder.MakeSOM();
+    }else{
+        ELog.DlgMsg( mtError, "Scene sharing violation" );
+        res = FALSE;
+    }
+}
 void CommandInvertSelectionAll(u32 p1, u32 p2, u32& res)
 {
     if( !Scene->locked() ){
@@ -708,6 +718,7 @@ void CLevelMain::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_MAKE_GAME,              	CommandMakeGame);
 	REGISTER_CMD_S	    (COMMAND_MAKE_DETAILS,              CommandMakeDetails);
 	REGISTER_CMD_S	    (COMMAND_MAKE_HOM,              	CommandMakeHOM);
+	REGISTER_CMD_S	    (COMMAND_MAKE_SOM,              	CommandMakeSOM);
 	REGISTER_CMD_S	    (COMMAND_INVERT_SELECTION_ALL,      CommandInvertSelectionAll);
 	REGISTER_CMD_S	    (COMMAND_SELECT_ALL,              	CommandSelectAll);
 	REGISTER_CMD_S	    (COMMAND_DESELECT_ALL,              CommandDeselectAll);
