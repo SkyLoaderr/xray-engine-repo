@@ -133,5 +133,6 @@ namespace PAPI{
     };
 
     PARTICLES_API IParticleManager* ParticleManager		();
+    PARTICLES_API int Counter		();
 };
 #endif //PSystemH
