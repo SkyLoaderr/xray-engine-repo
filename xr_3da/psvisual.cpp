@@ -19,13 +19,11 @@ CPSVisual::CPSVisual():FBasicVisual(){
     m_Particles.clear();
 
 	dwPCNT++;
-	Log("dwPCNT",dwPCNT);
 }
 //----------------------------------------------------
 
 CPSVisual::~CPSVisual(){
 	dwPCNT--;
-	Log("dwPCNT",dwPCNT);
 	m_Particles.clear();
 	m_Stream	= 0;
 }
