@@ -738,7 +738,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		mstate_real		&=		~mcAnyMove;
 		CSkeletonAnimated* K= smart_cast<CSkeletonAnimated*>(Visual());
 		K->PlayCycle("death_init");
-		create_Skeleton();
+
 		
 		//остановить звук тяжелого дыхания
 		m_HeavyBreathSnd.stop();

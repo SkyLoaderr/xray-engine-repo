@@ -206,15 +206,15 @@ void CPHCapture::CapturedUpdate()
 		return;
 	}
 
-	//float mag=dSqrt(dDOT(m_joint_feedback.f1,m_joint_feedback.f1));
+	float mag=dSqrt(dDOT(m_joint_feedback.f1,m_joint_feedback.f1));
 
 	//m_back_force=m_back_force*0.999f+ ((mag<m_capture_force/5.f) ? mag : (m_capture_force/5.f))*0.001f;
 	//
-	//if(mag>m_capture_force/2.2f)
-	//{
-	//	float f=mag/(m_capture_force/15.f);
-	//	m_character->ApplyForce(m_joint_feedback.f1[0]/f,m_joint_feedback.f1[1]/f,m_joint_feedback.f1[2]/f);
-	//}
+	if(mag>m_capture_force/2.2f)
+	{
+		float f=mag/(m_capture_force/15.f);
+		m_character->ApplyForce(m_joint_feedback.f1[0]/f,m_joint_feedback.f1[1]/f,m_joint_feedback.f1[2]/f);
+	}
 
 	Fvector capture_bone_position;
 	CObject* object=smart_cast<CObject*>(m_character->PhysicsRefObject());

@@ -5208,9 +5208,6 @@
 							RelativePath=".\ActorMountedWeapon.cpp">
 						</File>
 						<File
-							RelativePath="ActorPhySkeleton.cpp">
-						</File>
-						<File
 							RelativePath="ActorVehicle.cpp">
 						</File>
 					</Filter>

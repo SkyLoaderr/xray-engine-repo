@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "../cl_intersect.h"
+#include "alife_space.h"
 #include "phmovementcontrol.h"
 #include "entity.h"
 #include "PHDynamicData.h"
@@ -924,4 +925,10 @@ void CPHMovementControl::ActivateBox		(DWORD id, BOOL Check/*false*/)
 	CreateCharacter();	
 	m_character->SetVelocity(v);
 	m_character->SetPosition(vPosition);	
+}
+
+void CPHMovementControl::ApplyHit(const Fvector& dir,const dReal P,ALife::EHitType hit_type)
+{
+	if(hit_type==ALife::eHitTypeExplosion||ALife::eHitTypeWound)
+																ApplyImpulse(dir,P);
 }

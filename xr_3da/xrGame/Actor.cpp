@@ -561,7 +561,7 @@ void CActor::Die	(CObject* who)
 
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
-	create_Skeleton();
+
 
 	//остановить звук тяжелого дыхания
 	m_HeavyBreathSnd.stop();
@@ -736,6 +736,7 @@ void CActor::UpdateCL()
 			HUD().ShowCrosshair(false);
 		}
 	}
+
 //*/
 	//-------------------------------------------------------------------
 }

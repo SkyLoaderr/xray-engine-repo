@@ -271,7 +271,7 @@ protected:
 	float					r_model_yaw;			// orientation of model
 	float					r_model_yaw_delta;		// effect on multiple "strafe"+"something"
 
-	void					create_Skeleton			();
+
 public:
 	SActorMotions*			m_anims;
 	SActorVehicleAnims*		m_vehicle_anims;

@@ -158,7 +158,7 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir,s16 element,Fvector p
 		m_saved_hit_position.set(p_in_object_space);
 
 		if(!is_killing&&m_EntityAlife.g_Alive())
-			m_PhysicMovementControl.ApplyImpulse(dir,impulse);
+			m_PhysicMovementControl.ApplyHit(dir,impulse,hit_type);
 
 	}
 	else {
