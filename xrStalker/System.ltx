@@ -282,8 +282,8 @@ nominal_hit			= 0.5			;величина номинального хита, при котором разлетается макси
 ;капли крови
 
 blood_drops			= wm\wm_blood_drop_1,wm\wm_blood_drop_2,wm\wm_blood_drop_3,wm\wm_blood_drop_4
-start_blood_size	= 0.00005		;размер раны чтоб начала капать кровь
-stop_blood_size		= 0.00004		;размер раны чтоб кровь остановилась (должно быть меньше start_blood_size)
+start_blood_size	= 0.4			;размер раны чтоб начала капать кровь
+stop_blood_size		= 0.025			;размер раны чтоб кровь остановилась (должно быть меньше start_blood_size)
 
 blood_drop_time     = 0.1			;OBSOLETE
 blood_drop_time_min = 0.3			;
@@ -1766,7 +1766,7 @@ stalker_sci_svoboda		= 640,705
 
 [main_ingame_indicators_thresholds]
 radiation				= 0.1,0.3,0.5,0.7,0.9
-wounds					= 0.005,0.01,0.02,0.03,0.04
+wounds					= 0.025,0.1,0.2,0.3,0.4
 jammed					= 0.6,0.65,0.70,0.75,0.8
 starvation				= 0.5,0.6,0.7,0.8,0.9
 fatigue					= 0.5,0.6,0.7,0.8,0.9
