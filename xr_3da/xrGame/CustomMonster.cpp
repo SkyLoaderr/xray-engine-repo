@@ -294,6 +294,15 @@ void CCustomMonster::Update	( u32 DT )
 				uNext.fHealth		= fHealth;
 				NET.push_back		(uNext);
 			}
+			else {
+				net_update			uNext;
+				uNext.dwTimeStamp	= Level().timeServer();
+				uNext.o_model		= r_torso_current.yaw;
+				uNext.o_torso		= r_torso_current;
+				uNext.p_pos			= vPosition;
+				uNext.fHealth		= fHealth;
+				NET.push_back		(uNext);
+			}
 		}
 		Exec_Action				(dt);
 	}
