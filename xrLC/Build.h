@@ -60,6 +60,7 @@ public:
 	void	Run();
 
 	void	PreOptimize		();
+	void	CorrectTJunctions();
 	void	CalcNormals		();
 	void	Tesselate		();
 

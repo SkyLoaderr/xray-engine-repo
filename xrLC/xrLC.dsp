@@ -713,6 +713,10 @@ SOURCE=.\xrSoftenLights.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\xrT_Junction.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrTesselate.cpp
 # PROP Exclude_From_Build 1
 # End Source File
