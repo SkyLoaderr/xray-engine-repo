@@ -103,6 +103,7 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	UpdateTransform				();
 	
 	// General stuff
+	pVisualName					= NULL;
 	pVisual						= NULL;
 	rbVisible					= FALSE;
 	
@@ -117,6 +118,13 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	
 	// Target
 	clsid_Target				= ini->ReadCLSID(section,"target_class");
+
+	// ********************* Spawn
+	// Net params
+	net_Local					= TRUE;
+	net_ID						= 0xffff;
+	net_Ready					= FALSE;
+	DetectSector				();
 }
 
 void CCustomEvent::Update (DWORD dt)

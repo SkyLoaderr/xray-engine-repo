@@ -40,6 +40,7 @@ CObject::CObject		( )
 	cfModel						= NULL;
 	pVisual						= NULL;
 	sh_Shader					= NULL;
+	pVisualName					= NULL;
 
 	bEnabled					= true;
 	bVisible					= true;
