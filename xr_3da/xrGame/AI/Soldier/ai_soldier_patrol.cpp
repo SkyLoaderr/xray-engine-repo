@@ -701,6 +701,13 @@ void CAI_Soldier::PatrolUnderFire()
 	}
 	/**/
 	
+	if (dwCurTime - dwHitTime < m_dwPatrolShock) {
+		eCurrentState = aiSoldierPatrolHurt;
+		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
+		return;
+	}
+	
 	/**
 	if (m_cBodyState != BODY_STATE_LIE) {
 		tStateStack.push(eCurrentState);
@@ -726,7 +733,7 @@ void CAI_Soldier::PatrolUnderFire()
 
 	Fvector tTemp = tHitDir;
 	tTemp.mul(40.f);
-	SelectorUnderFire.m_tEnemyPosition.sub(Position(),tTemp);
+	SelectorUnderFire.m_tEnemyPosition.sub(Group.m_tHitPosition,tTemp);
 
 	/**
 	if (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1) {
@@ -739,7 +746,7 @@ void CAI_Soldier::PatrolUnderFire()
 	/**/
 
 	/**/
-	if (dwCurTime - dwHitTime >= 1*1000) {
+	if (dwCurTime - Group.m_dwLastHitTime >= m_dwUnderFireShock) {
 		if (AI_Path.bNeedRebuild)
 			vfBuildPathToDestinationPoint(0);
 		else
@@ -757,7 +764,10 @@ void CAI_Soldier::PatrolUnderFire()
 		//r_torso_target.pitch = r_target.pitch = 0;
 		/**/
 		SetLessCoverLook(AI_Node);
-		vfSetMovementType(BODY_STATE_CROUCH,m_fMaxSpeed);
+		if (AI_Path.fSpeed)
+			vfSetMovementType(BODY_STATE_CROUCH,m_fMaxSpeed);
+		else
+			vfSetMovementType(BODY_STATE_CROUCH,m_fMaxSpeed);
 	}
 	else {
 		SetLessCoverLook(AI_Node);
@@ -787,15 +797,22 @@ void CAI_Soldier::PatrolHurtAggressiveUnderFire()
 
 	DWORD dwCurTime = Level().timeServer();
 	
-	if ((Enemy.Enemy) && (dwCurTime - dwHitTime >= 12000)) {
+	if ((Enemy.Enemy) && (dwCurTime - dwHitTime >= m_dwPatrolShock + m_dwUnderFireShock)) {
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
 		bStopThinking = true;
 		return;
 	}
 	
-	if (dwCurTime - dwHitTime >= 12000) {
+	if (dwCurTime - dwHitTime >= m_dwPatrolShock + m_dwUnderFireShock) {
 		eCurrentState = aiSoldierPatrolUnderFire;
+		m_dwLastRangeSearch = 0;
+		bStopThinking = true;
+		return;
+	}
+	
+	if (dwCurTime - dwHitTime < m_dwPatrolShock) {
+		eCurrentState = aiSoldierPatrolHurt;
 		m_dwLastRangeSearch = 0;
 		bStopThinking = true;
 		return;
@@ -902,7 +919,7 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 	/**/
 
 	/**/
-	if (dwCurTime - dwHitTime >= 1*1000) {
+	if (dwCurTime - dwHitTime >= m_dwUnderFireShock) {
 		if (AI_Path.bNeedRebuild)
 			vfBuildPathToDestinationPoint(0);
 		else
@@ -958,7 +975,7 @@ void CAI_Soldier::PatrolHurt()
 	
 	DWORD dwCurTime = Level().timeServer();
 
-	if (dwCurTime - dwHitTime >= 2000) {
+	if (dwCurTime - dwHitTime >= m_dwPatrolShock) {
 		if (iHealth < 0)
 			eCurrentState = aiSoldierPatrolHurtNonAggressiveUnderFire;
 		else

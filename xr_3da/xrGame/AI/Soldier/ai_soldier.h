@@ -55,7 +55,7 @@ class CAI_Soldier : public CCustomMonster
 	protected:
 		
 		// macroses
-		#define WRITE_LOG
+//		#define WRITE_LOG
 		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 		#define MAX_TIME_RANGE_SEARCH			150000.f
 		#define	FIRE_ANGLE						PI/10
@@ -129,10 +129,7 @@ class CAI_Soldier : public CCustomMonster
 			CGroup &Group = Squad.Groups[g_Group()];\
 			\
 			if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {\
-			tHitDir = Group.m_tLastHitDirection;\
-			dwHitTime = Group.m_dwLastHitTime;\
-			tHitPosition = Group.m_tHitPosition;\
-			tStateStack.push(eCurrentState);\
+				tStateStack.push(eCurrentState);\
 				eCurrentState = aiSoldierPatrolUnderFire;\
 				m_dwLastRangeSearch = 0;\
 				bStopThinking = true;\
@@ -328,13 +325,40 @@ class CAI_Soldier : public CCustomMonster
 		// performance data
 		DWORD			m_dwLastRangeSearch;
 		DWORD			m_dwLastSuccessfullSearch;
-
+		
 		// characteristics
 		float			m_fAggressiveness;
 		float			m_fTimorousness;
-
+		
 		// firing
 		bool			m_bFiring;
+		DWORD			m_dwStartFireAmmo;
+		DWORD			m_dwNoFireTime;
+		
+		// visibility constants
+		DWORD			m_dwMovementIdleTime;
+		float			m_fMaxInvisibleSpeed;
+		float			m_fMaxViewableSpeed;
+		float			m_fMovementSpeedWeight;
+		float			m_fDistanceWeight;
+		float			m_fSpeedWeight;
+		float			m_fCrouchVisibilityMultiplier;
+		float			m_fLieVisibilityMultiplier;
+		float			m_fVisibilityThreshold;
+		
+		// fire  constants
+		DWORD			m_dwFireRandomMin;
+		DWORD			m_dwFireRandomMax;
+		DWORD			m_dwNoFireTimeMin;
+		DWORD			m_dwNoFireTimeMax;
+		
+		// patrol under fire constants
+		DWORD			m_dwPatrolShock;
+		DWORD			m_dwUnderFireShock;
+		DWORD			m_dwUnderFireReturn;
+		// //
+
+
 
 		// patrol structures
 		vector<Fvector>			m_tpaPatrolPoints;
