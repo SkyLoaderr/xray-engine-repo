@@ -64,7 +64,7 @@ int mini_max(u8 ucDepth, u8 ucEmpties, TBoardCell tColor, char cCurrentValue)
 		for ( i=0; i<MAX_MOVE_COUNT; i++, tpCurMove++) {
 			if (bfCheckIfAvailable(tOpponentColor,*tpCurMove)) {
 				tBest = -mini_max(
-					ucDepth,
+					ucDepth - 1,
 					ucEmpties,
 					tOpponentColor,
 					-cCurrentValue
