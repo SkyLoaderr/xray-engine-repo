@@ -24,6 +24,7 @@ public:
 	u64								m_qwStartProcessorTime;
 	u64								m_qwStartGameTime;
 	float							m_fTimeFactor;
+
 public:
 									game_sv_GameState		();
 	virtual							~game_sv_GameState		();

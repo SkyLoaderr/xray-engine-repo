@@ -59,6 +59,8 @@ struct	game_PlayerState
 	u8			m_skin;
 	//---------------------------
 	u32				m_RespawnTime;
+	//---------------------------
+	s16			money_delta;
 
 	game_PlayerState();
 	~game_PlayerState();
@@ -84,6 +86,10 @@ struct	game_PlayerState
 	DEF_VECTOR	(BELT_ITEMS_LIST, BeltItem);
 
 	BELT_ITEMS_LIST	BeltItems;
+	//---------------------------------------
+	DEF_VECTOR(PLAYER_ITEMS_LIST, s16);
+	
+	PLAYER_ITEMS_LIST	pItemList;
 };
 
 struct	game_TeamState

@@ -45,12 +45,14 @@ protected:
 
 	virtual	void		ClearLists ();
 	
-	virtual CUIBuyWeaponWnd*		InitBuyMenu			(s16 Team = -1);
+	virtual CUIBuyWeaponWnd*		InitBuyMenu			(LPCSTR BasePriceSection, s16 Team = -1);
 	virtual void					FillDefItems		(const char* caSection, CUIBuyWeaponWnd* pMenu);
 
 	virtual CUISkinSelectorWnd*		InitSkinMenu		(s16 Team = -1);
 
 	virtual s16			ModifyTeam			(s16 Team)	{return Team;};
+	//-----------------------------------------------------------------------------
+	s16					m_iCurrentPlayersMoney;
 
 public:
 						CUIGameDM			(CUI* parent);
@@ -58,7 +60,7 @@ public:
 
 	virtual	void		Init				();
 
-	virtual	void		SetCurrentBuyMenu	()	{pCurBuyMenu = pBuyMenuTeam0; };
+	virtual	void		SetCurrentBuyMenu	()	;//{pCurBuyMenu = pBuyMenuTeam0; };
 	virtual	void		SetCurrentSkinMenu	()	{pCurSkinMenu = pSkinMenuTeam0; };
 
 	virtual void		Render				();

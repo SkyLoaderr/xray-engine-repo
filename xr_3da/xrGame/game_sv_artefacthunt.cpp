@@ -122,6 +122,13 @@ u32		game_sv_ArtefactHunt::RP_2_Use				(CSE_Abstract* E)
 
 void	game_sv_ArtefactHunt::LoadTeams			()
 {
+	m_sBaseWeaponCostSection._set("artefacthunt_base_cost");
+	if (!pSettings->section_exist(m_sBaseWeaponCostSection))
+	{
+		R_ASSERT2(0, "No section for base weapon cost for this type of the Game!");
+		return;
+	};
+
 	LoadTeamData("artefacthunt_team0");
 	LoadTeamData("artefacthunt_team1");
 	LoadTeamData("artefacthunt_team2");
@@ -232,6 +239,7 @@ void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 		for ( ; II != EI; ++II) 
 		{
 			game_PlayerState::BeltItem	DItem = *II; 
+			
 			const char* Name = GetItemForSlot(DItem.SlotID, DItem.ItemID, ps);
 			if (!Name) continue;
 			if (!xr_strcmp(Name, pItem->s_name))

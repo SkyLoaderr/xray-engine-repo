@@ -8,6 +8,7 @@
 #include "HUDManager.h"
 #include "level.h"
 #include "game_cl_base.h"
+#include "Spectator.h"
 
 #define MSGS_OFFS 510
 
@@ -35,6 +36,8 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 	TimeMsgDyn.SetFont				(HUD().pFontDI);
 	TimeMsgDyn.SetStyleParams		(CUITextBanner::tbsFade)->fPeriod = 0.5f;
 	TimeMsgDyn.SetTextColor			(0xffff0000);
+	//-----------------------------------------------------------------------
+	m_iCurrentPlayersMoney = 0;
 }
 //--------------------------------------------------------------------
 void	CUIGameDM::Init				()
@@ -64,7 +67,7 @@ void	CUIGameDM::Init				()
 	std::strcpy(Team0, TEAM0_MENU);
 	m_aTeamSections.push_back(Team0);
 	//-----------------------------------------------------------
-	pBuyMenuTeam0	= InitBuyMenu(0);
+	pBuyMenuTeam0	= InitBuyMenu("deathmatch_base_cost", 0);
 	pCurBuyMenu		= pBuyMenuTeam0;
 	//-----------------------------------------------------------
 	pSkinMenuTeam0	= InitSkinMenu(0);
@@ -99,7 +102,7 @@ CUIGameDM::~CUIGameDM()
 
 void CUIGameDM::OnFrame()
 {
-	inherited::OnFrame();	
+	inherited::OnFrame();
 
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
@@ -149,6 +152,30 @@ void CUIGameDM::OnFrame()
 				if (!pCurSkinMenu->IsShown())
 					StartStopMenu(pCurSkinMenu);
 			}
+			//-----------------------------------------------------------
+			game_cl_GameState::Player* P = Game().local_player;
+			if (!P) break;
+
+			string16	tmp;
+			_itoa(P->money_for_round, tmp, 10);
+			ref_str PMoney(tmp);
+			HUD().GetUI()->UIMainIngameWnd.ChangeTotalMoneyIndicator(PMoney);
+
+			if (P->money_for_round != m_iCurrentPlayersMoney)
+			{
+				s16 dMoney = P->money_for_round - m_iCurrentPlayersMoney;
+				if (dMoney > 0)
+					sprintf(tmp,"+%d", dMoney);
+				else
+					sprintf(tmp,"%d", dMoney);				
+				
+				PMoney._set(tmp);
+
+				HUD().GetUI()->UIMainIngameWnd.DisplayMoneyChange(PMoney);
+
+				m_iCurrentPlayersMoney = P->money_for_round;
+			};
+			//-----------------------------------------------------------
 		}break;
 	}
 
@@ -265,8 +292,18 @@ bool CUIGameDM::IR_OnKeyboardRelease(int dik)
 	return false;
 }
 //--------------------------------------------------------------------
+static	u16 SlotsToCheck [] = {
+	KNIFE_SLOT		,			// 0
+		PISTOL_SLOT		,		// 1
+		RIFLE_SLOT		,		// 2
+		GRENADE_SLOT	,		// 3
+		APPARATUS_SLOT	,		// 4
+		OUTFIT_SLOT		,		// 5
+};
+
 void CUIGameDM::OnBuyMenu_Ok	()
 {
+	if (!m_bBuyEnabled) return;
 	CObject *l_pObj = Level().CurrentEntity();
 
 	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
@@ -274,6 +311,53 @@ void CUIGameDM::OnBuyMenu_Ok	()
 
 	NET_Packet		P;
 	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
+	//-------------------------------------------------------------------------------
+	u8 NumItems = pCurBuyMenu->GetBeltSize();
+	for (u8 s =0; s<6; s++)
+	{
+		if (pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]) != 0xff) NumItems++;
+	}
+
+	//-------------------------------------------------------------------------------
+	P.w_u8		(NumItems);
+	//-------------------------------------------------------------------------------
+	for (s =0; s<6; s++)
+	{
+		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
+		if (ItemID == 0xff) continue;
+		u16 SlotID = SlotsToCheck[s];
+		if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
+//		P.w_u8	(SlotsToCheck[s]);
+//		P.w_u8	(ItemID);
+		u16	ID = SlotID << 8 | s16(ItemID);
+		P.w_s16(ID);
+	}
+
+	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
+	{
+		u8 SectID, ItemID;
+		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
+//		P.w_u8	(SectID);
+//		P.w_u8	(ItemID);
+		u16	ID = (s16(SectID) << 0x08) | s16(ItemID);
+		P.w_s16(ID);
+
+	};	
+	//-------------------------------------------------------------------------------
+	l_pPlayer->u_EventSend		(P);
+
+	/*
+	CObject *l_pObj = Level().CurrentEntity();
+
+	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	if(!l_pPlayer) return;
+
+	NET_Packet		P;
+	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
+
+	game_cl_GameState::Player* pPlayer = Game().local_player;
+	VERIFY(pPlayer);
+//	P.w_s16		(s16(pCurBuyMenu->GetMoneyAmount()) - pPlayer->money_for_round);
 	
 	P.w_u8		(pCurBuyMenu->GetWeaponIndex(KNIFE_SLOT));
 	P.w_u8		(pCurBuyMenu->GetWeaponIndex(PISTOL_SLOT));
@@ -292,6 +376,7 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	};	
 
 	l_pPlayer->u_EventSend		(P);
+	*/
 };
 
 bool		CUIGameDM::CanBeReady				()
@@ -343,7 +428,7 @@ void		CUIGameDM::FillDefItems		(const char* caSection, CUIBuyWeaponWnd* pMenu)
 	};
 };
 //--------------------------------------------------------------------
-CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(s16 Team)
+CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
 {
 	if (Team == -1)
 	{
@@ -353,7 +438,7 @@ CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(s16 Team)
 	std::string *pTeamSect = &m_aTeamSections[ModifyTeam(Team)];
 
 	
-	CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((char*)pTeamSect->c_str());
+	CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((LPCSTR)pTeamSect->c_str(), BasePriceSection);
 		/*
 	}
 	else
@@ -399,5 +484,17 @@ void		CUIGameDM::OnSkinMenu_Ok			()
 };
 BOOL		CUIGameDM::CanCallBuyMenu			()
 {
+	CSpectator* pCurPlayer = dynamic_cast<CSpectator*> (Level().CurrentEntity());
+	if (!pCurPlayer) return FALSE;
+
 	return m_bBuyEnabled;
+};
+
+void		CUIGameDM::SetCurrentBuyMenu	()	
+{
+	pCurBuyMenu = pBuyMenuTeam0; 
+
+	game_cl_GameState::Player* P = Game().local_player;
+	if (!P) return;
+	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 };

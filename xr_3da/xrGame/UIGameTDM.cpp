@@ -80,8 +80,8 @@ void		CUIGameTDM::Init				()
 	m_aTeamSections.push_back(Team1);
 	m_aTeamSections.push_back(Team2);
 	//-----------------------------------------------------------
-	pBuyMenuTeam1 = InitBuyMenu(1);
-	pBuyMenuTeam2 = InitBuyMenu(2);
+	pBuyMenuTeam1 = InitBuyMenu("teamdeathmatch_base_cost", 1);
+	pBuyMenuTeam2 = InitBuyMenu("teamdeathmatch_base_cost", 2);
 	//-----------------------------------------------------------
 	pSkinMenuTeam1 = InitSkinMenu(1);
 	pSkinMenuTeam2 = InitSkinMenu(2);
@@ -145,6 +145,11 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 	};
 
 	if (pCurBuyMenu) pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
+	if (!pCurBuyMenu) return;
+
+	game_cl_GameState::Player* P = Game().local_player;
+	if (!P) return;
+//	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 };
 
 void		CUIGameTDM::SetCurrentSkinMenu	()

@@ -354,10 +354,6 @@ protected:
 
 	// Количество
 	int			m_iMoneyAmount;
-	// Получаем количество денег
-	int			GetMoneyAmount() const			{ return m_iMoneyAmount; }
-	// Устанавливам количество денег
-	void		SetMoneyAmount(int moneyAmount)	{ m_iMoneyAmount = moneyAmount; CheckBuyAvailabilityInShop(); }
 	// Проверка всех вещей на возможность покупки (достаточно ли денег?)
 	// Если вещь невозможно купить, то помечаем ее красным и запрещаем ее перетаскивание
 	// проверяем только в листах с доступным оружием
@@ -381,6 +377,10 @@ protected:
 	// Координаты дефолтного скина на текстуре с иконками сталкеров.
 	int			m_iIconTextureX, m_iIconTextureY;
 public:
+	// Получаем количество денег
+	int			GetMoneyAmount() const			{ return m_iMoneyAmount; }
+	// Устанавливам количество денег
+	void		SetMoneyAmount(int moneyAmount)	{ m_iMoneyAmount = moneyAmount; CheckBuyAvailabilityInShop(); }
 
 	// Процедура запоминания индекса скина в списке skins типа сетевой игры, после выбора его игроком
 	void		SetSkin			(u8 SkinID);	

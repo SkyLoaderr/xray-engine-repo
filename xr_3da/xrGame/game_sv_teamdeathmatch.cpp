@@ -60,6 +60,8 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(u32 id_who)
 		P.w_u16				(ps_who->team);
 		u_EventSend(P);
 	};
+
+	Money_SetStart(id_who);
 }
 
 void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team) 
@@ -102,13 +104,27 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 
 	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 	ps_killed->deaths				+=	1;
+
+	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
+
 	if (ps_killer == ps_killed || ps_killed->team == ps_killer->team)	
 	{
 		// By himself
 		ps_killer->kills			-=	1;
+
+		if (pTeam)
+		{
+			if (ps_killer == ps_killed)
+				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillSelf;
+			else
+				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillTeam;
+		}
 	} else {
 		// Opponent killed - frag 
 		ps_killer->kills			+=	1;
+
+		if (pTeam)
+			ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillRival;
 	}
 	
 	teams[ps_killer->team-1].score = 0;
@@ -122,10 +138,13 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		teams[ps_killer->team-1].score += ps->kills;
 	};	
 
-	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit) )OnFraglimitExceed();
-
 	// Send Message About Player Killed
 	SendPlayerKilledMessage(id_killer, id_killed);
+
+	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit) )OnFraglimitExceed();
+
+	if (pTeam)
+		if (ps_killer->money_for_round < pTeam->m_iM_Min) ps_killer->money_for_round = pTeam->m_iM_Min;
 
 	signal_Syncronize();
 }

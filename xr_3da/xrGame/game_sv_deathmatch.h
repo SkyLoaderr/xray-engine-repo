@@ -22,10 +22,29 @@ protected:
 		};
 	};
 
-	// массив в котором хратн€тс€ названи€ секций дл€ оружи€  в слоте
-	DEF_VECTOR(WPN_SLOT_NAMES, std::string);
+	//
+//	typedef	std::pair<std::string, s16>					WPN_DATA;
+	// массив в котором хран€тс€ названи€ секций дл€ оружи€  в слоте
+//	DEF_MAP(WPN_SLOT_NAMES, s16, WPN_DATA);
+//	typedef xr_map<s16, std::pair<std::string, s16> >	WPN_SLOT_NAMES;
 	// ¬ектор массивов с именами оружи€ в слотах
-	DEF_VECTOR(TEAM_WPN_LIST, WPN_SLOT_NAMES);	
+//	DEF_VECTOR(TEAM_WPN_LIST, WPN_SLOT_NAMES);	
+
+	//структура данных по оружию
+	struct		WeaponDataStruct
+	{
+		u16				SlotItem_ID		;    //SlotID << 8 | ItemID;
+		std::string		WeaponName		;
+
+		u16				Cost			;
+
+		bool			operator	==		(s16 ID)
+		{
+			return		(SlotItem_ID == ID);
+		}
+	};
+
+	DEF_VECTOR(TEAM_WPN_LIST, WeaponDataStruct);
 
 	// ¬ектор имен скинов комманды
 	DEF_VECTOR(TEAM_SKINS_NAMES, std::string);	
@@ -36,7 +55,23 @@ protected:
 		string256			caSection;		// им€ секции комманды
 		TEAM_SKINS_NAMES	aSkins;			// список скинов дл€ команды
 		TEAM_WPN_LIST		aWeapons;		// список оружи€ дл€ команды
-		WPN_SLOT_NAMES		aDefaultItems;	// предметы по умолчанию
+//		WPN_SLOT_NAMES		aDefaultItems;	// предметы по умолчанию
+
+		//---- Money -------------------
+		s16					m_iM_Start			;
+		s16					m_iM_Min			;
+		
+		s16					m_iM_KillRival		;
+		s16					m_iM_KillSelf		;
+		s16					m_iM_KillTeam		;
+
+		s16					m_iM_TargetRival	;
+		s16					m_iM_TargetTeam		;
+		s16					m_iM_TargetSucceed	;
+
+		s16					m_iM_RoundWin		;
+		s16					m_iM_RoundLoose		;
+		s16					m_iM_RoundDraw		;		
 	};
 
 	//массив данных по командам
@@ -49,14 +84,19 @@ protected:
 
 	CORPSE_LIST		m_CorpseList;
 
+	ref_str			m_sBaseWeaponCostSection;
+
 protected:
 	void							AllowDeadBodyRemove		(u32 id);
 	void							SpawnActor				(u32 id, LPCSTR N);
 	bool							GetPosAngleFromActor	(u32 id, Fvector& Pos, Fvector &Angle);
-	void							SpawnItem4Actor			(u32 actorId, LPCSTR N);
-	void							SpawnWeapon4Actor		(u32 actorId, LPCSTR N, u8 Addons = 0);
+//	void							SpawnItem4Actor			(u32 actorId, LPCSTR N);
+	void							SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons = 0);
 	void							KillPlayer				(u32 id_who);
+
+	game_sv_Deathmatch::TeamStruct*	GetTeamData				(u8 Team);
 public:
+
 	virtual		void				Create					(LPSTR &options);
 
 	// Events
@@ -95,14 +135,17 @@ public:
 	virtual		void				ClearPlayerItems		(game_PlayerState* ps);
 
 	virtual		void				SpawnWeaponsForActor	(CSE_Abstract* pE, game_PlayerState*	ps);
-	virtual		const char * 		GetItemForSlot			(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
+	virtual		const char *		GetItemForSlot			(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
 	virtual		u8 					GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
 
 	virtual		void				LoadTeams				();
 	virtual		void				LoadTeamData			(char* caSection);
 	virtual		void				LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList);
 	virtual		void				LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins);
-	virtual		void				LoadDefItemsForTeam		(char* caSection, WPN_SLOT_NAMES* pDefItems);
+//	virtual		void				LoadDefItemsForTeam		(char* caSection, WPN_SLOT_NAMES* pDefItems);
 
 	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
+	//----- Money routines -----------------------------------------------------------------
+	virtual		void				Money_SetStart			(u32	id_who);
+	virtual		bool				PayForItem				(u32 id_who, s16 ItemID);
 };

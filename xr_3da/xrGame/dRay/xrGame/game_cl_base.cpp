@@ -91,18 +91,21 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 {
 	// Read
 	u32					ID;
-	game_PlayerState	PS;
 	P.r_u32				(ID);
-//	P.r					(&PS,sizeof(game_PlayerState));
-	PS.net_Import		(P);
 
 	// Update
 	xr_map<u32,Player>::iterator I	= players.find(ID);
 	if (players.end()!=I)
 	{
 		Player& IP		= I->second;
-		Memory.mem_copy	(&IP,&PS,sizeof(PS));
+//		Memory.mem_copy	(&IP,&PS,sizeof(PS));
+		IP.net_Import		(P);
 	}
+	else
+	{
+		game_PlayerState	PS;
+		PS.net_Import		(P);
+	};
 
 	if (OnServer())		return;
 
