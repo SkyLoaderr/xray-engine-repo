@@ -142,6 +142,11 @@ void CBuild::BuildCForm	()
 	// Simplification
 	SimplifyCFORM	(CL);
 
+	// bb?
+	Fbox BB; BB.invalidate();
+	for (int it = 0; it<CL.getVS(); it++)
+		BB.modify( CL.getV()[it] );
+
 	// Saving
 	string512		fn;
 	IWriter*		MFS	= FS.w_open	(strconcat(fn,pBuild->path,"level.cform"));
