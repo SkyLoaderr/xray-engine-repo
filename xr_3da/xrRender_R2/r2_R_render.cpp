@@ -123,8 +123,8 @@ void CRender::Render		()
 	{
 		// level
 		Target.phase_scene						();
-		render_hud								();
-		render_scenegraph						();
+		r_dsgraph_render_hud					();
+		r_dsgraph_render_graph					();
 		Details.Render							(Device.vCameraPosition);
 		// mapSorted.traverseRL					(sorted_L1);
 		mapSorted.clear							();		// unsupported
@@ -158,7 +158,7 @@ void CRender::Render		()
 				RCache.set_xform_world					(Fidentity);
 				RCache.set_xform_view					(LR.L_view);
 				RCache.set_xform_project				(LR.L_project);
-				render_scenegraph						();
+				r_dsgraph_render_graph					();
 			}
 
 			//******* Direct lighting+shadow		::: Accumulate
@@ -221,7 +221,7 @@ void CRender::Render		()
 						RCache.set_xform_world				(Fidentity);			// ???
 						RCache.set_xform_view				(LR.L_view);
 						RCache.set_xform_project			(LR.L_project);
-						render_scenegraph					();
+						r_dsgraph_render_graph					();
 					}
 				}
 
@@ -246,7 +246,7 @@ void CRender::Render		()
 					RCache.set_xform_world				(Fidentity);			// ???
 					RCache.set_xform_view				(LR.L_view);
 					RCache.set_xform_project			(LR.L_project);
-					render_scenegraph					();
+					r_dsgraph_render_graph					();
 				}
 
 				// Render light
