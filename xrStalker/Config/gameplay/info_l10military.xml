@@ -25,7 +25,8 @@
 	<info_portion id="mil_dolg_mission_complete"></info_portion>
 	<info_portion id="mil_sniper_i_think"></info_portion>
 	<info_portion id="mil_sniper_dead"></info_portion>
-	<info_portion id="mil_sniper_get_job"></info_portion>
+	<info_portion id="mil_sniper_get_job"><task>mil_kill_sniper</task></info_portion>
+	<info_portion id="mil_sniper_job_failed"></info_portion>
 	
 	
 </game_information_portions>

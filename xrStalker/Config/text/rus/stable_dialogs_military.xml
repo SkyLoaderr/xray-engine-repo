@@ -24,6 +24,12 @@
     <string id="mil_dolg_dialog_10040">
         <text>А какого ты вообще по Зоне ходишь ?</text>
     </string>
+    <string id="mil_dolg_dialog_1005">
+        <text>Я его уже грохнул :)</text>
+    </string>
+    <string id="mil_dolg_dialog_10050">
+        <text>Ну, ты крут. Возьми награду за труды свои праведные.</text>
+    </string>
     <string id="mil_dolg_dialog_2000">
         <text>Я подумал.</text>
     </string>
@@ -77,6 +83,27 @@
     </string>
     <string id="mil_dolg_dialog_40030">
         <text>Как знаешь.</text>
+    </string>
+    <string id="mil_dolg_dialog_5001">
+        <text>Чего тебе ?</text>
+    </string>
+    <string id="mil_dolg_dialog_50010">
+        <text>А можно вопрос ?</text>
+    </string>
+    <string id="mil_dolg_dialog_500100">
+        <text>Иди, иди. Я по пятницам не подаю.</text>
+    </string>
+    <string id="mil_dolg_dialog_6000">
+        <text>Я думал, думал и додумался. Грохнул я твоего мужика.</text>
+    </string>
+    <string id="mil_dolg_dialog_6001">
+        <text>Странный у тебя образ мышления. Ну да ладно, вот твоя награда.</text>
+    </string>
+    <string id="mil_dolg_dialog_60010">
+        <text>Заходите еще.</text>
+    </string>
+    <string id="mil_dolg_dialog_600100">
+        <text>Не премину :)</text>
     </string>
     <string id="mil_dolg_job_0">
         <text>Сталкер, ты именно тот, кто нам нужен.</text>

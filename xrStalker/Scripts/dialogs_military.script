@@ -1,0 +1,33 @@
+-------------------------------------------------------------------------
+--	created:	2005/02/12
+--	created:	12:2:2005   12:59
+--	filename: 	x:\gamedata\scripts\dialogs_military.script
+--	file path:	x:\gamedata\scripts
+--	file base:	dialogs_military
+--	file ext:	script
+--	author:		Tunduk Vladimir aka Sidorovich
+--	
+--	purpose:	dialog support for military
+-------------------------------------------------------------------------
+
+-- Оплата долговцем наших услуг по устранению снайпера
+function mil_dolg_payment (stalker, player)
+    printf ("Stalker_Name %s", stalker:name ())
+    printf ("Money before %d", player:money ())
+    stalker:transfer_money (stalker:money () / 2, player)
+    printf ("Money after %d", player:money ())
+end
+
+-- Отмечаем провал задачи
+function mil_dolg_sniper_failed (stalker, player)
+    db.actor:set_task_state (task.fail, "mil_kill_sniper", 0)
+    db.actor:set_task_state (task.fail, "mil_kill_sniper", 1)
+    db.actor:set_task_state (task.fail, "mil_kill_sniper", 2)
+end
+
+-- отмечаем выполнение задачи
+function mil_dolg_sniper_complete (stalker, player)
+    printf ("Task completed")
+    db.actor:set_task_state (task.completed, "mil_kill_sniper", 0)
+    db.actor:set_task_state (task.completed, "mil_kill_sniper", 2)
+end

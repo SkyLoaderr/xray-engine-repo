@@ -169,3 +169,18 @@ function test_hit_in_actor_dir(actor, npc)
 	pshell:apply_force (constant * dir.x, constant * dir.y, constant * dir.z)
 --]]
 end
+
+function military_sniper_dead (actor, npc)
+
+    local st = db.storage[npc:id ()]
+    if st.death.killer == -1 then return end
+    if actor == nil or actor:id () ~= st.death.killer then 
+       return 
+    end
+    
+    db.actor:give_info_portion ("mil_sniper_dead")
+    if db.actor:has_info ("mil_sniper_get_job") then
+       db.actor:set_task_state (task.completed, "mil_kill_sniper", 1)
+    end   
+       
+end
