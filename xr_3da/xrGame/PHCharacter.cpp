@@ -674,6 +674,7 @@ dBodySetMass(m_body,&m);
 }
 #ifdef DEBUG
 void CPHSimpleCharacter::OnRender(){
+	if(!b_exist) return;
 	Fmatrix m;
 	m.identity();
 	Fvector n=*(Fvector*)m_ground_contact_normal;

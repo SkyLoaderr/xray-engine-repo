@@ -38,6 +38,7 @@ CPHMovementControl::CPHMovementControl(void)
 	m_fGroundDelayFactor= 1.f;
 	gcontact_HealthLost = 0;
 	fContactSpeed		= 0.f;
+
 	
 }
 
