@@ -6,17 +6,12 @@
 --				raciya_1
 --				raciya_2	-	базар (scripts\\rolik\\hurry_up_minus1)
 --				raciya_3	
---	скриптовые зоны:
---				init_zone	-	зона, при пересечении которой срабатывает болтовня хероя :)	
 
 
 function main ()
 
 	local hero = get_level_object ("hero")
-	local trigger = get_level_object ("init_zone")
-    trigger:clear_callback (true)
-    trigger:set_callback (military2_3.on_enter, true)
-	hero:script (true, military2_3.script_name ())
+	hero:script (true, military2_4.script_name ())
 	action (hero, anim ("raciya_idle"), cond (cond.anim_end))
 	
 	local t = device():time_global()
@@ -24,13 +19,13 @@ function main ()
 	while true do
 		  if hero:action () == nil then	
   		     if device():time_global() - t > 10000 then break end
-		     reset_action (hero, military2_3.script_name ())
+		     reset_action (hero, military2_4.script_name ())
 		     action (hero, anim ("raciya_idle"), cond (cond.anim_end))
 		  end
 		  wait ()
 	end
 
-	reset_action (hero, military2_3.script_name ())
+	reset_action (hero, military2_4.script_name ())
 	action (hero, anim ("raciya_0"), cond (cond.anim_end))
 	action (hero, anim ("raciya_1"), cond (cond.anim_end))
 	action (hero, anim ("raciya_2"), sound ("scripts\\Rolik\\they_got_the_artifact", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
@@ -38,12 +33,12 @@ function main ()
 	
 	while hero:action () do wait () end
 
-	reset_action (hero, military2_3.script_name ())
+	reset_action (hero, military2_4.script_name ())
 	action (hero, anim ("raciya_idle"), cond (cond.anim_end))
 
 	while true do
 		  if hero:action () == nil then	
-		     reset_action (hero, military2_3.script_name ())
+		     reset_action (hero, military2_4.script_name ())
 		     action (hero, anim ("raciya_idle"), cond (cond.anim_end))
 		  end
 		  wait ()
