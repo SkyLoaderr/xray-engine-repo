@@ -537,6 +537,7 @@ void CActor::Die	( )
 
 	//остановить звук тяжелого дыхания
 	m_HeavyBreathSnd.stop();
+	m_bHeavyBreathSndPlaying = false;
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
@@ -766,6 +767,7 @@ void CActor::shedule_Update	(u32 DT)
 	float	Jump	= 0;
 	//----------- for E3 -----------------------------
 	if (Local() && (OnClient() || Level().CurrentEntity()==this))
+//	if (Level().CurrentControlEntity() == this)
 	//------------------------------------------------
 	{
 		//-----------------------------------
@@ -836,7 +838,7 @@ void CActor::shedule_Update	(u32 DT)
 	pCamBobbing->SetState						(mstate_real, IsLimping());
 
 	//звук тяжелого дыхания при уталости и хромании
-	if(IsLimping())
+	if(IsLimping() && g_Alive())
 	{
 		if(!m_bHeavyBreathSndPlaying)
 		{
