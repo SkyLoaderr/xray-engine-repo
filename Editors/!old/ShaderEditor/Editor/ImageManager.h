@@ -9,7 +9,7 @@
 class ECORE_API CImageManager{
     void		MakeThumbnailImage	(ETextureThumbnail* THM, u32* data, u32 w, u32 h, u32 a);
     bool		MakeGameTexture		(ETextureThumbnail* THM, LPCSTR game_name, u32* data);
-    bool		MakeGameTexture		(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, bool bGenMipMap);
+    bool		MakeGameTexture		(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, STextureParams::ETType, u32 flags=0);
 public:
 				CImageManager		(){;}
 				~CImageManager		(){;}

@@ -132,18 +132,17 @@ void CImageManager::CreateGameTexture(LPCSTR src_name, ETextureThumbnail* thumb)
 //------------------------------------------------------------------------------
 // создает игровую текстуру
 //------------------------------------------------------------------------------
-bool CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, bool bGenMipMap)
+bool CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, u32 w, u32 h, STextureParams::ETFormat fmt, STextureParams::ETType type, u32 flags)
 {
 	VerifyPath(game_name);
     // fill texture params
     STextureParams TP;
     TP.fmt 			= fmt;
     TP.mip_filter   = STextureParams::kMIPFilterBox;
-    TP.type			= STextureParams::ttImage;
+    TP.type			= type; //STextureParams::ttImage
     TP.width		= w;
     TP.height		= h;
-    TP.flags.set	(STextureParams::flGenerateMipMaps,bGenMipMap);
-    TP.flags.set	(STextureParams::flDitherColor,TRUE);
+    TP.flags.assign	(flags);
 	// compress
     u32 w4= w*4;
     bool bRes 		= DXTCompress(game_name, (u8*)data, w, h, w4, &TP, 4);
@@ -896,9 +895,10 @@ BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
         }
         // generate smaller
 	    U32Vec sm_data	(sm_wf*sm_h,0);
-        cm.scale_map	(data,w,h,sm_data,sm_w,sm_h,3.f);
+        cm.scale_map	(data,w,h,sm_data,sm_w,sm_h,2.f);
         // write texture
         std::string out_name;
+/*
         FS.update_path	(out_name,_textures_,dst_name);
         out_name		+= ".tga";
         CImage* I 		= xr_new<CImage>();
@@ -906,8 +906,11 @@ BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
 //        I->Vflip		();
         I->SaveTGA		(out_name.c_str());
         xr_delete		(I);
-//		if (!MakeGameTexture	(dst_name,data,w,h,STextureParams::ttCubeMap,false))
-//        	return FALSE;
+*/
+        FS.update_path	(out_name,_game_textures_,dst_name);
+        out_name		+= ".dds";
+		if (!MakeGameTexture(out_name.c_str(),&*sm_data.begin(),sm_wf,sm_h,STextureParams::tfRGBA,STextureParams::ttCubeMap,false))
+        	return FALSE;
         return TRUE;
     }else{
         ELog.Msg(mtError,"Can't load texture '%s'.",src_name);
