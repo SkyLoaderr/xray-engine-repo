@@ -315,10 +315,11 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	R_ASSERT	(pFontSystem);
 	pFontSystem->Clear();
 	pFontSystem->SetColor(D3DCOLOR_RGBA(192,192,192,255));
-	char *F = "~%s";
-	if (S2) F="~%s%s";
-	pFontSystem->Out	(0.f,0.93f,F,S,S2);
-	pFontSystem->OnRender();
+	pFontSystem->SetAligment(CGameFont::alCenter);
+	char *F = "%s";
+	if (S2) F="%s%s";
+	pFontSystem->Out		(0.f,0.93f,F,S,S2);
+	pFontSystem->OnRender	();
 
 	Device.End	();
 }

@@ -223,14 +223,8 @@ void __cdecl CGameFont::Out(float _x, float _y, char *fmt,...)
 
 	va_list p;
 	va_start(p,fmt);
-	if (fmt[0]=='~') {
-		vsprintf(rs.string,&(fmt[1]),p);
-		VERIFY(strlen(rs.string)<127);
-		rs.x-=SizeOf(rs.string)*.5f;
-	} else {
-		vsprintf(rs.string,fmt,p);
-		VERIFY(strlen(rs.string)<127);
-	}
+	vsprintf(rs.string,fmt,p);
+	VERIFY(strlen(rs.string)<127);
 	va_end(p);
 
 	strings.push_back(rs);
@@ -246,14 +240,8 @@ void __cdecl CGameFont::OutNext(char *fmt,...)
 
 	va_list p;
 	va_start(p,fmt);
-	if (fmt[0]=='~') {
-		vsprintf(rs.string,&(fmt[1]),p);
-		VERIFY(strlen(rs.string)<127);
-		rs.x-=SizeOf(rs.string)*.5f;
-	} else {
-		vsprintf(rs.string,fmt,p);
-		VERIFY(strlen(rs.string)<127);
-	}
+	vsprintf(rs.string,fmt,p);
+	VERIFY(strlen(rs.string)<127);
 	va_end(p);
 
 	strings.push_back(rs);
@@ -270,14 +258,8 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 
 	va_list p;
 	va_start(p,fmt);
-	if (fmt[0]=='~') {
-		vsprintf(rs.string,&(fmt[1]),p);
-		VERIFY(strlen(rs.string)<127);
-		rs.x-=SizeOf(rs.string)*.5f;
-	} else {
-		vsprintf(rs.string,fmt,p);
-		VERIFY(strlen(rs.string)<127);
-	}
+	vsprintf(rs.string,fmt,p);
+	VERIFY(strlen(rs.string)<127);
 	va_end(p);
 
 	strings.push_back(rs);
@@ -294,7 +276,5 @@ float CGameFont::SizeOf(char *s)
 	int		len			= strlen(s);
 	float	X			= 0;
 	if (len) for (int j=0; j<len; j++) X+=TCMap[s[j]].z;
-	X					= X*ConvertSize(fCurrentSize)/fHeight*vInterval.x*vTS.x;
-	if (uFlags&fsDeviceIndependent)		return (2*X)/Device.dwWidth;
-	else								return X;
+	return				X*ConvertSize(fCurrentSize)/fHeight*vInterval.x*vTS.x;
 }
