@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "GameObject.h"
 #include "..\render.h"
+#include "..\fbasicvisual.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -52,8 +53,7 @@ void CGameObject::Sector_Detect	()
 	// We was moved - so find new AI-Node
 	if (AI_Node)
 	{
-		Fvector		Pos;
-		pVisual->bv_BBox.getcenter	(Pos);
+		Fvector		Pos	= pVisual->bv_Position;
 		Pos.add		(vPosition);
 		CAI_Space&	AI = Level().AI;
 
