@@ -30,16 +30,16 @@
 #define MAX_TEAM 8
 const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0x7f0000,0x007f00,0x00007f};
 
-CRPoint::CRPoint( char *name ):CCustomObject(){
+CSpawnPoint::CSpawnPoint( char *name ):CCustomObject(){
 	Construct();
     Name		= name;
 }
 
-CRPoint::CRPoint():CCustomObject(){
+CSpawnPoint::CSpawnPoint():CCustomObject(){
 	Construct();
 }
 
-void CRPoint::Construct(){
+void CSpawnPoint::Construct(){
 	ClassID		= OBJCLASS_RPOINT;
     m_dwTeamID	= 0;
     m_dwSquadID	= 0;
@@ -49,11 +49,11 @@ void CRPoint::Construct(){
     m_EntityRefs[0]=0;
 }
 
-CRPoint::~CRPoint(){
+CSpawnPoint::~CSpawnPoint(){
 }
 
 //----------------------------------------------------
-bool CRPoint::GetBox( Fbox& box ){
+bool CSpawnPoint::GetBox( Fbox& box ){
 	box.set( PPosition, PPosition );
 	box.min.x -= RPOINT_SIZE;
 	box.min.y -= 0;
@@ -66,7 +66,7 @@ bool CRPoint::GetBox( Fbox& box ){
 	return true;
 }
 
-void CRPoint::Render( int priority, bool strictB2F ){
+void CSpawnPoint::Render( int priority, bool strictB2F ){
     if ((1==priority)&&(false==strictB2F)){
         if (Device.m_Frustum.testSphere(PPosition,RPOINT_SIZE)){
 		    DU::DrawFlag(PPosition,PRotation.y,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID],etEntity==m_Type);
@@ -79,11 +79,11 @@ void CRPoint::Render( int priority, bool strictB2F ){
     }
 }
 
-bool CRPoint::FrustumPick(const CFrustum& frustum){
+bool CSpawnPoint::FrustumPick(const CFrustum& frustum){
     return (frustum.testSphere(PPosition,RPOINT_SIZE))?true:false;
 }
 
-bool CRPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
+bool CSpawnPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector pos,ray2;
     pos.set(PPosition.x,PPosition.y+RPOINT_SIZE,PPosition.z);
 	ray2.sub( pos, start );
@@ -102,7 +102,7 @@ bool CRPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayP
 }
 //----------------------------------------------------
 
-bool CRPoint::Load(CStream& F){
+bool CSpawnPoint::Load(CStream& F){
 	DWORD version = 0;
 
     R_ASSERT(F.ReadChunk(RPOINT_CHUNK_VERSION,&version));
@@ -130,7 +130,7 @@ bool CRPoint::Load(CStream& F){
     return true;
 }
 
-void CRPoint::Save(CFS_Base& F){
+void CSpawnPoint::Save(CFS_Base& F){
 	CCustomObject::Save(F);
 
 	F.open_chunk	(RPOINT_CHUNK_VERSION);
@@ -146,9 +146,9 @@ void CRPoint::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-bool CRPoint::ExportSpawn( CFS_Base& F, int chunk_id )
+bool CSpawnPoint::ExportSpawn( CFS_Base& F, int chunk_id )
 {
-    if (CRPoint::etEntity==m_Type){
+    if (CSpawnPoint::etEntity==m_Type){
         NET_Packet Packet;
         Packet.w_begin		(M_SPAWN);
         Packet.w_string		(m_EntityRefs);

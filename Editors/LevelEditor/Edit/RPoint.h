@@ -11,7 +11,7 @@
 
 class CFrustum;
 
-class CRPoint : public CCustomObject {
+class CSpawnPoint : public CCustomObject {
     friend class    SceneBuilder;
 public:
 	enum EType{
@@ -23,17 +23,15 @@ public:
     	DWORD		bActive:1;
     };
 public:
-    DWORD			m_dwTeamID;
-    DWORD			m_dwSquadID;
-    DWORD			m_dwGroupID;
+	xrServerEntity*	m_GameData;
     Flags			m_Flags;
     EType			m_Type;
     string64		m_EntityRefs;
 public:
-	                CRPoint     	();
-	                CRPoint     	( char *name );
+	                CSpawnPoint    	();
+	                CSpawnPoint    	( char *name );
     void            Construct   	();
-	virtual         ~CRPoint    	();
+	virtual         ~CSpawnPoint   	();
 
 	virtual void    Render      	( int priority, bool strictB2F );
 	virtual bool    RayPick     	( float& distance,	Fvector& start,	Fvector& direction,
