@@ -409,7 +409,7 @@ void CDeflector::Save()
 	p.scanlenght	= lm.dwWidth*4;
 	p.width			= lm.dwWidth;
 	p.height		= lm.dwHeight;
-	p.data			= surf;
+	p.data			= lm.pSurface;
 	p.maketga		(lm.name);
 	
 	// Borders correction
