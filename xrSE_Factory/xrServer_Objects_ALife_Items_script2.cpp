@@ -13,6 +13,28 @@
 
 using namespace luabind;
 
+void CSE_ALifeItemPDA::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_item1(
+			CSE_ALifeItemPDA,
+			"cse_alife_item_pda",
+			CSE_ALifeItem
+		)
+	];
+}
+
+void CSE_ALifeItemDocument::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_item1(
+			CSE_ALifeItemDocument,
+			"cse_alife_item_document",
+			CSE_ALifeItem
+		)
+	];
+}
+
 void CSE_ALifeItemGrenade::script_register(lua_State *L)
 {
 	module(L)[

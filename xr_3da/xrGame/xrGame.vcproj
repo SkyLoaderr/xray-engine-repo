@@ -6404,6 +6404,9 @@
 							<File
 								RelativePath="trade.h">
 							</File>
+							<File
+								RelativePath=".\trade2.cpp">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -6981,6 +6984,9 @@
 								</File>
 								<File
 									RelativePath=".\ArtifactMerger.h">
+								</File>
+								<File
+									RelativePath=".\ArtifactMerger2.cpp">
 								</File>
 							</Filter>
 						</Filter>
