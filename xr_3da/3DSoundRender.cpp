@@ -200,24 +200,6 @@ void C3DSoundRender::Play(int hSound, C3DSound** P, BOOL bLoop, int iLoopCnt)
 	(*P)->Play			(P, bLoop, iLoopCnt);
 }
 
-void C3DSoundRender::LoadClipPlanes(CInifile *pIni, LPCSTR section) {
-	clip_planes.clear();
-
-	CInifile::Sect&	S		= pIni->ReadSection(section);
-	for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
-		Fvector				p1,p2,p3;
-		FIntersectionQuad	IQ;
-
-		sscanf(I->second, "[%f,%f,%f],[%f,%f,%f],[%f,%f,%f]",
-			&p1.x,&p1.y,&p1.z,
-			&p2.x,&p2.y,&p2.z,
-			&p3.x,&p3.y,&p3.z
-			);
-		IQ.build(p1,p2,p3);
-		clip_planes.push_back(IQ);
-	}
-}
-
 void C3DSoundRender::Reload()
 {
 	for (DWORD i=0; i<sounds.size(); i++) {

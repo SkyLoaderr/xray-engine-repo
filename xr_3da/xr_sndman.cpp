@@ -411,16 +411,6 @@ void	CSoundManager::Delete3D			( sound3D& S )
 	if (S.feedback)	S.feedback->Stop();
 	pSoundRender->DeleteSound(S.handle);
 }
-void	CSoundManager::LoadEnvironment	( CInifile* ini, LPCSTR section )
-{
-	if (!bPresent)	return;
-	pSoundRender->LoadClipPlanes(ini,section);
-}
-void	CSoundManager::UnloadEnvironment	( )
-{
-	if (!bPresent)	return;
-	pSoundRender->UnloadClipPlanes();
-}
 //-----------------------------------------------------------------------------
 int		CSoundManager::Create2D				( CInifile* ini, LPCSTR section )
 {

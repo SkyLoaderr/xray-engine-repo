@@ -78,8 +78,6 @@ public:
 	void					Play3DAtPos				( sound3D& S, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
 	void					Play3DAtPos_Unlimited	( sound3D& S, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
 	void					Delete3D				( sound3D& S);
-	void					LoadEnvironment			( CInifile* ini, LPCSTR section );
-	void					UnloadEnvironment		( );
 	
 	// Stream interface
 	CSoundStream*			CreateStream			( CInifile* ini, LPCSTR section );
