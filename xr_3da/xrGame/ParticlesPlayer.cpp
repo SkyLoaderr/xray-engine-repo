@@ -37,7 +37,6 @@ void CParticlesPlayer::SBoneInfo::StopParticles(u16 sender_id)
 
 CParticlesPlayer::CParticlesPlayer ()
 {
-	m_Bones.push_back	(SBoneInfo(0,Fvector().set(0,0,0)));
 	bone_mask			= u64(1)<<u64(0);
 	
 	m_bActiveBones = false;
@@ -52,6 +51,9 @@ CParticlesPlayer::~CParticlesPlayer ()
 void CParticlesPlayer::LoadParticles(CKinematics* K)
 {
 	VERIFY				(K);
+
+	m_Bones.push_back	(SBoneInfo(K->LL_GetBoneRoot(),Fvector().set(0,0,0)));
+
 	//считать список косточек и соответствующих
 	//офсетов  куда можно вешать партиклы
 	CInifile* ini		= K->LL_UserData();
