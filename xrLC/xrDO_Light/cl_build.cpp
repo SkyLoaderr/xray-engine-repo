@@ -13,12 +13,12 @@ namespace RAPID {
 
 		// verts
 		num_verts	= Vcnt;
-		verts		= new Fvector	[num_verts];
+		verts		= cl_alloc<Fvector>	(num_verts);
 		CopyMemory	(verts,V,num_verts*sizeof(Fvector));
 
 		// tris
 		num_tris	= Tcnt;
-		tris		= new tri		[num_tris];
+		tris		= cl_alloc<tri>		(num_tris);
 		CopyMemory	(tris,T,num_tris*sizeof(tri));
 
 		// convert tris to 'pointer' form
@@ -125,7 +125,7 @@ namespace RAPID {
 	{
 		// allocate the boxes and set the box list globals
 		num_boxes_alloced	= num_tris * 4 / build_opt_num_tris_per_leaf;
-		RAPID_boxes			= b = new box[num_boxes_alloced];
+		RAPID_boxes			= b = cl_alloc<box> (num_boxes_alloced);
 		RAPID_boxes_inited	= 1;      // we are in process of initializing b[0].
 		RAPID_building_model= this;   // this is the model under construction
 		ZeroMemory			(b,sizeof(box)*num_boxes_alloced);
@@ -136,7 +136,7 @@ namespace RAPID {
 		
 		Fmatrix33	C;
 		
-		RAPID_moment		= new moment[num_tris];
+		RAPID_moment		= cl_alloc<moment>	(num_tris);
 		compute_moments		(RAPID_moment, tris, num_tris);
 		
 		clear_accum			(M);
@@ -149,7 +149,7 @@ namespace RAPID {
 		eigen_and_sort1		(b[0].pR, C);
 		
 		// create the index list
-		tri_index = new int[num_tris];
+		tri_index			= cl_alloc<int>		(num_tris);
 		for(i=0; i<num_tris; i++) tri_index[i] = i;
 		
 		// set the tri pointer
@@ -160,10 +160,10 @@ namespace RAPID {
 		R_ASSERT(rc);
 		
 		// free the moment list
-		_DELETEARRAY(RAPID_moment);
+		cl_free<moment>		(RAPID_moment);
 		
 		// null the tri pointer
-		RAPID_tri = 0;
+		RAPID_tri			= 0;
 		
 		// null the model pointer
 		RAPID_building_model = 0;

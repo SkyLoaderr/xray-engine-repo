@@ -2,7 +2,19 @@
 #define CL_DEFS_H
 #pragma once
 
-namespace RAPID {
+namespace RAPID 
+{
+	template <class T>
+	IC T*	cl_alloc	(u32 count)
+	{
+		return (T*) HeapAlloc	(GetCurrentProcess(),HEAP_GENERATE_EXCEPTIONS,count*sizeof(T));
+	}
+	template <class T>
+	IC void cl_free		(T* P)
+	{
+		HeapFree	(GetCurrentProcess(),0,P);
+	}
+
 #pragma pack(push,4)
 	struct ENGINE_API tri {
 		Fvector*	verts	[3];	// 3*4 = 12b
