@@ -1339,6 +1339,7 @@ void CStalkerActionGetEnemySeenModerate::finalize	()
 	if (m_object->enemy() && m_object->visible(m_object->enemy()))
 		m_storage->set_property		(eWorldPropertyEnemyAimed,true);
 	m_object->set_sound_mask(0);
+	m_start_standing_time	= Level().timeServer();
 }
 
 void CStalkerActionGetEnemySeenModerate::execute	()
@@ -1358,16 +1359,28 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 
 	if (m_object->enemy()) {
 		CMemoryInfo					mem_object = m_object->memory(m_object->enemy());
-		Fvector						position = mem_object.m_object_params.m_position;
-		m_object->m_ce_angle->setup	(position,10.f,170.f,mem_object.m_object_params.m_level_vertex_id);
-		CCoverPoint					*point = m_object->best_cover(m_object->Position(),10.f,*m_object->m_ce_angle);
-		if (point) {
-			m_object->set_level_dest_vertex	(point->level_vertex_id());
-			m_object->set_desired_position	(&point->position());
-			m_object->set_movement_type		(eMovementTypeRun);
+
+		if (Level().timeServer() >= m_start_standing_time + 10000) {
+			m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+			m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+			m_object->set_movement_type		(eMovementTypeWalk);
+			if (m_object->Position().similar(mem_object.m_object_params.m_position,.1f))
+				m_object->CMemoryManager::enable(m_object->enemy(),false);
 		}
-		else
-			m_object->set_movement_type	(eMovementTypeStand);
+		else {
+			Fvector						position = mem_object.m_object_params.m_position;
+			m_object->m_ce_angle->setup	(position,10.f,170.f,mem_object.m_object_params.m_level_vertex_id);
+			CCoverPoint					*point = m_object->best_cover(m_object->Position(),30.f,*m_object->m_ce_angle);
+			if (point) {
+				m_object->set_level_dest_vertex	(point->level_vertex_id());
+				m_object->set_desired_position	(&point->position());
+				m_object->set_movement_type		(eMovementTypeRun);
+				if (!m_object->Position().similar(point->position(),.1f))
+					m_start_standing_time	= Level().timeServer();
+			}
+			else
+				m_object->set_movement_type	(eMovementTypeStand);
+		}
 	}
 	else
 		m_object->set_movement_type	(eMovementTypeStand);

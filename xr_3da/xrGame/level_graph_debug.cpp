@@ -24,6 +24,7 @@
 #include "xrserver_objects_alife_monsters.h"
 #include "cover_point.h"
 #include "cover_manager.h"
+#include "cover_evaluators.h"
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 #define DRAW_GRAPH_POINT(t0,c0,c1,c2) {\
@@ -384,6 +385,52 @@ void CLevelGraph::render()
 					RCache.dbg_DrawAABB(temp,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
 				}
 			}
+			CAI_Stalker		*stalker = dynamic_cast<CAI_Stalker*>(*I);
+			if (!stalker || !stalker->enemy())
+				continue;
+
+			CMemoryInfo					mem_object = stalker->memory(stalker->enemy());
+			if (!mem_object.m_object)
+				continue;
+			Fvector						position = mem_object.m_object_params.m_position;
+			stalker->m_ce_angle->setup	(position,10.f,170.f,mem_object.m_object_params.m_level_vertex_id);
+			CCoverPoint					*point = stalker->best_cover(stalker->Position(),10.f,*stalker->m_ce_angle);
+			if (!point)
+				continue;
+			position					= point->position();
+			position.y					+= 1.f;
+			float						half_size = header().cell_size()*.5f;
+			RCache.dbg_DrawAABB			(position,half_size - .01f,1.f,half_size-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
+			float						best_value = -1.f;
+			float						m_best_angle = 0.f;
+			for (float alpha = 0.f, step = PI_MUL_2/360.f; alpha < PI_MUL_2; alpha += step) {
+				float					value = compute_square(alpha,PI,mem_object.m_object_params.m_level_vertex_id);
+				if (value > best_value) {
+					best_value			= value;
+					m_best_angle		= alpha;
+				}
+			}
+			CVertex						*v = vertex(mem_object.m_object_params.m_level_vertex_id);
+			position					= vertex_position(mem_object.m_object_params.m_level_vertex_id);
+			RCache.dbg_DrawAABB			(position,half_size - .01f,1.f,half_size-.01f,D3DCOLOR_XRGB(255,0*255,0*255));
+			
+			Fvector						direction;
+			direction.set				(position.x - half_size*float(v->cover(0))/15.f,position.y,position.z);
+			RCache.dbg_DrawLINE			(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set				(position.x,position.y,position.z + half_size*float(v->cover(1))/15.f);
+			RCache.dbg_DrawLINE			(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set				(position.x + half_size*float(v->cover(2))/15.f,position.y,position.z);
+			RCache.dbg_DrawLINE			(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.set				(position.x,position.y,position.z - half_size*float(v->cover(3))/15.f);
+			RCache.dbg_DrawLINE			(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+
+			direction.setHP				(m_best_angle + PI,0.f);
+			direction.mul				(half_size);
+			direction.add				(position);
+			RCache.dbg_DrawLINE			(Fidentity,position,direction,D3DCOLOR_XRGB(255,255,255));
 		}
 	}
 

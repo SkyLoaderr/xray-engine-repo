@@ -364,6 +364,9 @@ class CStalkerActionGetEnemySeenModerate : public CStalkerActionBase {
 protected:
 	typedef CStalkerActionBase inherited;
 
+protected:
+	u32					m_start_standing_time;
+
 public:
 						CStalkerActionGetEnemySeenModerate			(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();

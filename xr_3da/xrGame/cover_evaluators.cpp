@@ -117,13 +117,13 @@ void CCoverEvaluatorAngle::initialize		(const Fvector &start_position)
 			m_best_angle		= alpha;
 		}
 	}
-	m_best_direction.setHP		(m_best_angle + PI,0.f);
+	m_best_direction.setHP		(m_best_angle + 0*PI,0.f);
 }
 
 void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point)
 {
 	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
-//	float					my_distance		= m_start_position.distance_to(cover_point->position());
+	float					my_distance		= m_start_position.distance_to(cover_point->position());
 
 	if (enemy_distance <= m_min_distance)
 		return;
@@ -140,7 +140,7 @@ void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point)
 		return;
 
 	direction.normalize_safe();
-	float					cos_a = direction.dotproduct(m_direction);
+	float					cos_a = direction.dotproduct(m_best_direction);
 	clamp					(cos_a,-0.99999f,0.99999f);
 	float					alpha = _abs(acosf(cos_a));
 	if (alpha <= m_best_alpha)
