@@ -8,6 +8,7 @@
 
 u64		g_qwStartGameTime		= 12*60*60*1000;
 float	g_fTimeFactor			= pSettings->r_float("alife","time_factor");
+u64		g_qwEStartGameTime		= 12*60*60*1000;
 
 game_PlayerState::game_PlayerState()
 {
@@ -129,7 +130,7 @@ game_GameState::game_GameState()
 	m_fTimeFactor				= g_fTimeFactor;
 	//-------------------------------------------------------
 	m_qwEStartProcessorTime		= m_qwStartProcessorTime;	
-	m_qwEStartGameTime			= m_qwStartGameTime		;
+	m_qwEStartGameTime			= g_qwEStartGameTime	;
 	m_fETimeFactor				= m_fTimeFactor			;
 	//-------------------------------------------------------
 }

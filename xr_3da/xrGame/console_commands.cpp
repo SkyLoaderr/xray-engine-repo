@@ -1649,7 +1649,7 @@ struct CCC_StartTimeEnvironment: public IConsole_Command {
 	{
 		u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
 		sscanf				(args,"%d:%d:%d.%d",&hours,&mins,&secs,&milisecs);
-		g_qwStartGameTime	= generate_time	(year,month,day,hours,mins,secs,milisecs);
+		g_qwEStartGameTime	= generate_time	(year,month,day,hours,mins,secs,milisecs);
 
 		if (!g_pGameLevel)
 			return;
@@ -1660,7 +1660,7 @@ struct CCC_StartTimeEnvironment: public IConsole_Command {
 		if (!Level().Server->game)
 			return;
 
-		Level().Server->game->SetEnvironmentGameTimeFactor(g_qwStartGameTime,g_fTimeFactor);
+		Level().Server->game->SetEnvironmentGameTimeFactor(g_qwEStartGameTime,g_fTimeFactor);
 	}
 };
 
