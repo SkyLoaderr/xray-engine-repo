@@ -44,16 +44,22 @@ struct ECORE_API SBoneShape
         stBox,
         stSphere,
         stCylinder,
-        stForceU32 = u32(-1)
+        stForceU32 = u16(-1)
     };
 
-	EShapeType		type;
+	enum EShapeFlags{
+		sfNoPickable= (1<<0),
+	};
+
+	u16				type;		// 2
+	Flags16			flags;		// 2
   	Fobb			box;      	// 15*4
     Fsphere			sphere;		// 4*4
     Fcylinder		cylinder;	// 8*4
     SBoneShape		(){Reset();}
     void			Reset()
     {
+		flags.zero	();
     	type		= stNone;
         box.invalidate();
         sphere.P.set(0.f,0.f,0.f); sphere.R = 0.f;
