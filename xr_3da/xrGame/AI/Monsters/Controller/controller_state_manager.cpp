@@ -3,9 +3,9 @@
 #include "controller_state_manager.h"
 #include "../../controlled_entity.h"
 
-//#include "../../phmovementcontrol.h"
-#include "../../../PhysicsShell.h"
-#include "../../../phcapture.h"
+//#include "../../../phmovementcontrol.h"
+//#include "../../../PhysicsShell.h"
+//#include "../../../phcapture.h"
 
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_rest_sleep.h"
@@ -13,8 +13,8 @@
 #include "controller_state_attack.h"
 #include "../states/monster_state_attack_melee.h"
 #include "../states/monster_state_attack_run.h"
-#include "../states/monster_state_eat.h"
-#include "../states/monster_state_eat_eat.h"
+//#include "../states/monster_state_eat.h"
+//#include "../states/monster_state_eat_eat.h"
 
 //#include "../states/monster_state_find_enemy.h"
 //#include "../states/monster_state_find_enemy_run.h"
@@ -44,12 +44,12 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 	);
 
 
-	add_state(
-		eStateEat,
-		xr_new<CStateMonsterEat<CController> >(obj,
-			xr_new<CStateMonsterEating<CController> >(obj)
-		)
-	);
+	//add_state(
+	//	eStateEat,
+	//	xr_new<CStateMonsterEat<CController> >(obj,
+	//		xr_new<CStateMonsterEating<CController> >(obj)
+	//	)
+	//);
 
 	//add_state(
 	//	eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
