@@ -4,9 +4,9 @@
 static DWORD dwDecl[] =
 {
     D3DVSD_STREAM	(0),
-	D3DVSD_REG		(0,	D3DVSDT_FLOAT3),		// pos
-	D3DVSD_REG		(1,	D3DVSDT_D3DCOLOR),		// matrix id
-	D3DVSD_REG		(2,	D3DVSDT_FLOAT2),		// uv
+	D3DVSD_REG		(D3DVSDE_POSITION,	D3DVSDT_FLOAT3),	// pos
+	D3DVSD_REG		(D3DVSDE_DIFFUSE,	D3DVSDT_D3DCOLOR),	// matrix id
+	D3DVSD_REG		(D3DVSDE_TEXCOORD0,	D3DVSDT_FLOAT2),	// uv
 	D3DVSD_END		()
 };
 #pragma pack(push,1)
@@ -40,7 +40,7 @@ void CDetailManager::VS_Load()
 		dwVerts		+=	D.number_vertices*VS_BatchSize;
 		dwIndices	+=	D.number_indices*VS_BatchSize;
 	}
-	DWORD			vSize		= (3+1+2)*4;
+	DWORD			vSize		= sizeof(vertHW);
 	Msg("* [DETAILS] %d v, %d p",dwVerts,dwIndices/3);
 
 	// Determine POOL & USAGE
@@ -171,7 +171,7 @@ void CDetailManager::VS_Render()
 					VSC.flush						(1,dwBatch*5);
 					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
-					Device.Primitive.setVerticesUC	(VS_Code,(3+1+2)*4,VS_VB);
+					Device.Primitive.setVerticesUC	(VS_Code,sizeof(vertHW),VS_VB);
 					Device.Primitive.setIndicesUC	(vOffset, VS_IB);
 					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 					UPDATEC							(dwCNT_verts,dwCNT_prims,2);
@@ -187,7 +187,7 @@ void CDetailManager::VS_Render()
 				VSC.flush						(1,dwBatch*5);
 				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
-				Device.Primitive.setVerticesUC	(VS_Code,(3+1+2)*4,VS_VB);
+				Device.Primitive.setVerticesUC	(VS_Code,sizeof(vertHW),VS_VB);
 				Device.Primitive.setIndicesUC	(vOffset, VS_IB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 				UPDATEC							(dwCNT_verts,dwCNT_prims,2);

@@ -27,6 +27,10 @@ void CDetail::Load		(CStream* S)
 	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
 	S->Read			(indices,size_indices);
 	
+	// Validate indices
+	for (u32 idx = 0; idx<number_indices; idx++)
+		R_ASSERT	(indices[idx]<number_vertices);
+	
 	// Calc BB & SphereRadius
 	Fbox bb;
 	bb.invalidate	();
