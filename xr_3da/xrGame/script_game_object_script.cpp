@@ -275,8 +275,8 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("heli_goto_stay_point",        (void (CScriptGameObject::*)(float))(CScriptGameObject::heli_goto_stay_point))
 			.def("heli_goto_stay_point",        (void (CScriptGameObject::*)(Fvector&,float))(CScriptGameObject::heli_goto_stay_point))
 			.def("heli_go_patrol",				&CScriptGameObject::heli_go_patrol)
-			.def("heli_go_to_point",			&CScriptGameObject::heli_go_to_point),
-			.def("heli_last_point_time,			&CScriptGameObject::heli_last_point_time")
+			.def("heli_go_to_point",			&CScriptGameObject::heli_go_to_point)
+			.def("heli_last_point_time",		&CScriptGameObject::heli_last_point_time),
 
 //		class_<CObject>("base_client_class")
 //			.def(								constructor<>()),
