@@ -2,7 +2,7 @@
 
 namespace GameObject {
 	enum ECallbackType {
-		eTradeStart,
+		eTradeStart = u32(0),
 		eTradeStop,
 		eTradeSellBuyItem,
 		eTradePerformTradeOperation,
@@ -39,5 +39,7 @@ namespace GameObject {
 		eOnItemDrop,
 
 		eScriptAnimation,
+
+		eDummy = u32(-1),
 	};
 };
