@@ -107,53 +107,7 @@ void CCharacterPhysicsSupport::in_Init()
 
 void CCharacterPhysicsSupport::in_shedule_Update(u32 /**DT/**/)
 {
-	if(m_pPhysicsShell)
-	{	
-		if(m_pPhysicsShell->bActive)
-		{
-			if(!m_pPhysicsShell->bActivating&&!b_death_anim_on)
-			{
-				if(m_eType==etStalker)
-				{
-					PSkeletonAnimated(m_EntityAlife.Visual())->LL_CloseCycle(0) ;
-					PSkeletonAnimated(m_EntityAlife.Visual())->LL_CloseCycle(1) ;
-					PSkeletonAnimated(m_EntityAlife.Visual())->LL_CloseCycle(2) ;
-					PSkeletonAnimated(m_EntityAlife.Visual())->LL_CloseCycle(3) ;
-					PSkeletonAnimated(m_EntityAlife.Visual())->PlayCycle("death_init");
-				}
-				b_death_anim_on=true;
-			}
 
-			if(!fsimilar(0.f,m_saved_impulse) && !m_pPhysicsShell->bActivating)
-			{
-				m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
-				m_saved_impulse=0.f;
-			}
-
-			if(skel_ddelay==0)
-			{
-				m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
-				//m_pPhysicsShell->SetAirResistance()
-
-			}
-			--skel_ddelay;
-		}
-
-	}
-	else if (!m_EntityAlife.g_Alive())
-	{
-
-		//Log("mem use %d",Memory.mem_usage());
-
-		ActivateShell();
-		//CreateSkeleton();
-		//Log("mem use %d",Memory.mem_usage());
-#ifndef NO_PHYSICS_IN_AI_MOVE
-
-		m_PhysicMovementControl.DestroyCharacter();
-		m_EntityAlife.PHSetPushOut();
-#endif
-	}
 }
 
 void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse,bool is_killing)
@@ -202,6 +156,50 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 
 		//XFORM().set(m_pPhysicsShell->mXFORM);
 		m_pPhysicsShell->InterpolateGlobalTransform(&mXFORM);
+	}
+
+	if(m_pPhysicsShell)
+	{	
+		if(m_pPhysicsShell->bActive)
+		{
+			if(!m_pPhysicsShell->bActivating&&!b_death_anim_on)
+			{
+				if(m_eType==etStalker)
+				{
+						PSkeletonAnimated(m_EntityAlife.Visual())->PlayCycle("death_init");
+				}
+				b_death_anim_on=true;
+			}
+
+			if(!fsimilar(0.f,m_saved_impulse) && !m_pPhysicsShell->bActivating)
+			{
+				m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
+				m_saved_impulse=0.f;
+			}
+
+			if(skel_ddelay==0)
+			{
+				m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
+				//m_pPhysicsShell->SetAirResistance()
+
+			}
+			--skel_ddelay;
+		}
+
+	}
+	else if (!m_EntityAlife.g_Alive())
+	{
+
+		//Log("mem use %d",Memory.mem_usage());
+
+		ActivateShell();
+		//CreateSkeleton();
+		//Log("mem use %d",Memory.mem_usage());
+#ifndef NO_PHYSICS_IN_AI_MOVE
+
+		m_PhysicMovementControl.DestroyCharacter();
+		m_EntityAlife.PHSetPushOut();
+#endif
 	}
 }
 
