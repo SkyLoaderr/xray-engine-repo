@@ -85,7 +85,6 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrServerEntity*		e_entity	= ID_to_entity	(id_entity);	// кто отдает
 			if (0xffff != e_entity->ID_Parent)	break;						// this item already taken
 			xrClientData*		c_parent	= e_parent->owner;
-			xrClientData*		c_entity	= e_entity->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);
 			R_ASSERT			(c_from == c_parent);						// assure client ownership of event
 
@@ -106,7 +105,6 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			P.r_u16				(id_src);
 			xrServerEntity*		e_dest		= ID_to_entity	(id_dest);		// кто повредился
 			xrServerEntity*		e_src		= ID_to_entity	(id_src	);		// благодаря кому
-			xrClientData*		c_dest		= e_dest->owner;
 			xrClientData*		c_src		= e_src->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);
 			R_ASSERT			(c_src == c_from);							// assure client ownership of event
