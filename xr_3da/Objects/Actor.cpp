@@ -221,8 +221,6 @@ void CActor::Load(CInifile* ini, const char* section )
 
 	// sheduler
 	dwMinUpdate			= dwMaxUpdate = 1;
-	iHealth				= 100;
-
 }
 
 BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
