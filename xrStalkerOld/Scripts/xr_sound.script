@@ -8,7 +8,7 @@ local nstl = 10
 theme = {}
 
 snd_files = {
-	weather_bad_stalker            = "characters_voice\\human_01\\weather\\bad_weather\\stalker\\bad_weather__",
+	weather_bad_stalker            = "characters_voice\\human_01\\weather\\bad_weather\\stalker\\bad_weather_",
 	weather_good_stalker           = "characters_voice\\human_01\\weather\\good_weather\\stalker\\good_weather_",
 	
 	state_idle_stalker             = "characters_voice\\human_01\\states\\idle\\stalker\\idle_",
