@@ -182,7 +182,7 @@ void CSMotion::Save(CFS_Base& F){
 	CCustomMotion::Save(F);
 #ifdef LWO_EXPORTS
 	ReplaceSpace(cStartBone);	strlwr(cStartBone);
-	ReplaceSpace(cDirectBone);	strlwr(cDirectBone);
+	ReplaceSpace(cBonePart);	strlwr(cBonePart);
 #endif
 	F.Wword		(EOBJ_SMOTION_VERSION);
 	F.WstringZ	(cStartBone);
