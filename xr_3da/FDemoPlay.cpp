@@ -15,6 +15,7 @@
 CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEffector(cefDemo,life_time)
 {
 	Msg("! Playing demo: %s",name);
+	Console.ExecuteCommand("hud_weapon 0");
 	fStartTime	= 0;
 	fSpeed		= ms;
 	bCycle      = bc;
@@ -49,6 +50,7 @@ CDemoPlay::~CDemoPlay()
 {
 	_DELETE(m_pMotion);
 	stat_Stop	();
+	Console.ExecuteCommand("hud_weapon 1");
 }
 
 void CDemoPlay::stat_Start()
