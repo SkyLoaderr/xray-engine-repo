@@ -117,15 +117,12 @@ class CEditableObject{
 	SurfaceVec		m_Surfaces;
 	EditMeshVec		m_Meshes;
 
-	OMotionVec		m_OMotions;
-    COMotion*		m_ActiveOMotion;
 	// skeleton
 	BoneVec			m_Bones;
 	SMotionVec		m_SMotions;
     BPVec			m_BoneParts;
     CSMotion*		m_ActiveSMotion;
 public:
-    st_AnimParam	m_OMParam;
     st_AnimParam	m_SMParam;
 public:
 	enum{
@@ -184,9 +181,6 @@ public:
     IC SurfaceIt	FirstSurface			()	{return m_Surfaces.begin();}
     IC SurfaceIt	LastSurface				()	{return m_Surfaces.end();}
     IC int			SurfaceCount			()	{return m_Surfaces.size();}
-    IC OMotionIt	FirstOMotion			()	{return m_OMotions.begin();}
-    IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
-    IC int			OMotionCount 			()	{return m_OMotions.size();}
 
     // skeleton
     IC BPIt			FirstBonePart			()	{return m_BoneParts.begin();}
@@ -222,9 +216,6 @@ public:
     IC const Fbox&	GetBox					() 	{return m_Box;}
 
     // animation
-    IC bool			IsOMotionable			()	{return !!m_OMotions.size();}
-    IC bool			IsOMotionActive			()	{return IsOMotionable()&&m_ActiveOMotion; }
-	void			SetActiveOMotion		(COMotion* mot, bool upd_t=true);
     IC bool			IsSkeleton				()	{return !!m_Bones.size();}
     IC bool			IsSMotionActive			()	{return IsSkeleton()&&m_ActiveSMotion; }
     CSMotion*		GetActiveSMotion		()	{return m_ActiveSMotion; }
@@ -266,12 +257,6 @@ public:
 
     // clone/copy methods
     void			RemoveMesh				(CEditableMesh* mesh);
-    void			RemoveOMotion			(const char* name);
-    bool			RenameOMotion			(const char* old_name, const char* new_name);
-    COMotion*		AppendOMotion			(const char* fname);
-    void			ClearOMotions			();
-    void			LoadOMotions			(const char* fname);
-    void			SaveOMotions			(const char* fname);
 
     bool			RemoveSMotion			(const char* name);
     bool			RenameSMotion			(const char* old_name, const char* new_name);
@@ -288,7 +273,6 @@ public:
 	bool 			LoadObject				(const char* fname);
 	void 			SaveObject				(const char* fname);
     CSMotion*		LoadSMotion				(const char* fname);
-    COMotion*		LoadOMotion				(const char* fname);
   	bool 			Load					(CStream&);
 	void 			Save					(CFS_Base&);
 
@@ -300,9 +284,7 @@ public:
 	CSurface*		FindSurfaceByName		(const char* surf_name, int* s_id=0);
     CBone*			FindBoneByName			(const char* name);
     int				GetBoneIndexByWMap		(const char* wm_name);
-    COMotion* 		FindOMotionByName		(const char* name, const COMotion* Ignore=0);
     CSMotion* 		FindSMotionByName		(const char* name, const CSMotion* Ignore=0);
-    void			GenerateOMotionName		(char* buffer, const char* start_name, const COMotion* M);
     void			GenerateSMotionName		(char* buffer, const char* start_name, const CSMotion* M);
 
     // device dependent routine
@@ -345,7 +327,7 @@ public:
 #define EOBJ_CHUNK_LIB_VERSION     	0x0911
 #define EOBJ_CHUNK_CLASSSCRIPT     	0x0912
 #define EOBJ_CHUNK_BONES			0x0913
-#define EOBJ_CHUNK_OMOTIONS			0x0914
+//#define EOBJ_CHUNK_OMOTIONS			0x0914
 #define EOBJ_CHUNK_SMOTIONS			0x0916
 #define EOBJ_CHUNK_SURFACES_XRLC	0x0918
 #define EOBJ_CHUNK_BONEPARTS		0x0919

@@ -86,23 +86,6 @@ void CEditableObject::RenderSingle(Fmatrix& parent)
 }
 
 void CEditableObject::RenderAnimation(const Fmatrix& parent){
-	if (IsOMotionActive()){
-    	float fps = m_ActiveOMotion->FPS();
-	    float min_t=(float)m_ActiveOMotion->FrameStart()/fps;
-    	float max_t=(float)m_ActiveOMotion->FrameEnd()/fps;
-
-        Fvector T,r;
-        FvectorVec v;
-        DWORD clr=0xffffffff;
-        for (float t=min_t; t<max_t; t+=0.1f){
-	        m_ActiveOMotion->Evaluate(t,T,r);
-            v.push_back(T);
-        }
-
-        Device.SetShader		(Device.m_WireShader);
-        Device.SetTransform		(D3DTS_WORLD,parent);
-        DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
-    }
 }
 
 void CEditableObject::RenderBones(const Fmatrix& parent){

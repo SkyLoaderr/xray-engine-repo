@@ -12,8 +12,19 @@ class CSceneObject : public CCustomObject {
 	CEditableObject*m_pRefs;
     st_Version		m_ObjVer;
 
+    st_AnimParam	m_OMParam;
 	OMotionVec		m_OMotions;
     COMotion*		m_ActiveOMotion;
+public:
+    COMotion* 		FindOMotionByName		(const char* name, const COMotion* Ignore=0);
+    void			GenerateOMotionName		(char* buffer, const char* start_name, const COMotion* M);
+    void			RemoveOMotion			(const char* name);
+    bool			RenameOMotion			(const char* old_name, const char* new_name);
+    COMotion*		AppendOMotion			(const char* fname);
+    void			ClearOMotions			();
+    void			LoadOMotions			(const char* fname);
+    void			SaveOMotions			(const char* fname);
+    COMotion*		LoadOMotion				(const char* fname);
 protected:
 	typedef CCustomObject inherited;
     int				m_iBlinkTime;           
@@ -83,6 +94,14 @@ public:
     // load/save methods
   	virtual bool 	Load					(CStream&);
 	virtual void 	Save					(CFS_Base&);
+
+    // object motions
+    IC OMotionIt	FirstOMotion			()	{return m_OMotions.begin();}
+    IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
+    IC int			OMotionCount 			()	{return m_OMotions.size();}
+    IC bool			IsOMotionable			()	{return !!m_OMotions.size();}
+    IC bool			IsOMotionActive			()	{return IsOMotionable()&&m_ActiveOMotion; }
+	void			SetActiveOMotion		(COMotion* mot, bool upd_t=true);
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditObject_H_*/

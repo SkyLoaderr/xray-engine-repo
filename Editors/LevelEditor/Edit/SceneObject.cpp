@@ -12,6 +12,7 @@
 #include "d3dutils.h"
 #include "library.h"
 #include "EditMesh.h"
+#include "motion.h"
 
 #define BLINK_TIME 300.f
 
@@ -34,10 +35,16 @@ void CSceneObject::Construct(){
     m_Center.set(0,0,0);
     m_fRadius = 0;
     m_iBlinkTime = 0;
+
+    m_ActiveOMotion = 0;
 }
 
 CSceneObject::~CSceneObject(){
 	Lib.RemoveEditObject(m_pRefs);
+    // object motions
+    for(OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end();o_it++)_DELETE(*o_it);
+    m_OMotions.clear();
+    m_ActiveOMotion = 0;
 }
 
 //----------------------------------------------------
@@ -194,11 +201,6 @@ void CSceneObject::GetFullTransformToLocal( Fmatrix& m ){
     m.invert(_Transform());
 }
 
-void CSceneObject::OnFrame(){
-	inherited::OnFrame();
-	if (!m_pRefs) return;
-	if (m_pRefs) m_pRefs->OnFrame();
-}
 
 CEditableObject* CSceneObject::SetReference(LPCSTR ref_name)
 {
@@ -206,3 +208,117 @@ CEditableObject* CSceneObject::SetReference(LPCSTR ref_name)
 	m_pRefs	= (ref_name&&ref_name[0])?Lib.CreateEditObject(ref_name):0;
     return m_pRefs;
 }
+
+void CSceneObject::OnFrame(){
+	inherited::OnFrame();
+	if (!m_pRefs) return;
+	if (m_pRefs) m_pRefs->OnFrame();
+/*
+	if (IsOMotionActive()){
+    	float fps = m_ActiveOMotion->FPS();
+	    float min_t=(float)m_ActiveOMotion->FrameStart()/fps;
+    	float max_t=(float)m_ActiveOMotion->FrameEnd()/fps;
+
+        Fvector T,r;
+        FvectorVec v;
+        DWORD clr=0xffffffff;
+        for (float t=min_t; t<max_t; t+=0.1f){
+	        m_ActiveOMotion->Evaluate(t,T,r);
+            v.push_back(T);
+        }
+
+        Device.SetShader		(Device.m_WireShader);
+        Device.SetTransform		(D3DTS_WORLD,parent);
+        DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
+    }
+    if (IsOMotionActive()){
+///    	ELog.DlgMsg(mtError,"TODO: CEditableObject::RTL_Update");
+        Fvector R,T,r;
+        m_ActiveOMotion->Evaluate(m_OMParam.Frame(),T,r);
+        R.set(r.y,r.x,r.z);
+        T.add(vPosition);
+        R.add(vRotate);
+        UpdateTransform(T, R, vScale);
+        m_OMParam.Update(dT);
+    }
+*/
+}
+//S	SetActiveOMotion(0,false);
+
+//----------------------------------------------------
+// Object motion
+//----------------------------------------------------
+void CSceneObject::SetActiveOMotion(COMotion* mot, bool upd_t){
+	m_ActiveOMotion=mot;
+    if (m_ActiveOMotion) m_OMParam.Set(m_ActiveOMotion,true);
+    UI.RedrawScene();
+}
+
+COMotion* CSceneObject::FindOMotionByName	(const char* name, const COMotion* Ignore){
+    OMotionVec& lst = m_OMotions;
+    for(OMotionIt m=lst.begin(); m!=lst.end(); m++)
+        if ((Ignore!=(*m))&&(stricmp((*m)->Name(),name)==0)) return (*m);
+    return 0;
+}
+
+void CSceneObject::RemoveOMotion(const char* name){
+    OMotionVec& lst = m_OMotions;
+    for(OMotionIt m=lst.begin(); m!=lst.end(); m++)
+        if ((stricmp((*m)->Name(),name)==0)){
+        	if (m_ActiveOMotion==*m) SetActiveOMotion(0);
+            _DELETE(*m);
+        	lst.erase(m);
+            break;
+        }
+}
+
+bool CSceneObject::RenameOMotion(const char* old_name, const char* new_name){
+	if (stricmp(old_name,new_name)==0) return true;
+    if (FindOMotionByName(new_name)) return false;
+	COMotion* M = FindOMotionByName(old_name); VERIFY(M);
+    M->SetName(new_name);
+    return true;
+}
+
+void CSceneObject::GenerateOMotionName(char* buffer, const char* start_name, const COMotion* M){
+	strcpy(buffer,start_name);
+    int idx = 0;
+	while(FindOMotionByName(buffer,M)){
+		sprintf( buffer, "%s_%d", start_name, idx );
+    	idx++;
+    }
+    strlwr(buffer);
+}
+
+COMotion* CSceneObject::AppendOMotion(const char* fname){
+	COMotion* M = LoadOMotion(fname);
+    if (M) m_OMotions.push_back(M);
+    return M;
+}
+
+void CSceneObject::ClearOMotions(){
+	SetActiveOMotion(0);
+    for(OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end();m_it++)_DELETE(*m_it);
+    m_OMotions.clear();
+}
+
+void CSceneObject::LoadOMotions(const char* fname){
+	CFileStream F(fname);
+    ClearOMotions();
+    // object motions
+    m_OMotions.resize(F.Rdword());
+	SetActiveOMotion(0);
+    for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++){
+        *m_it = new COMotion();
+        (*m_it)->Load(F);
+    }
+}
+
+void CSceneObject::SaveOMotions(const char* fname){
+	CFS_Memory F;
+    F.Wdword		(m_OMotions.size());
+    for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++) (*m_it)->Save(F);
+    F.SaveTo		(fname,0);
+}
+
+

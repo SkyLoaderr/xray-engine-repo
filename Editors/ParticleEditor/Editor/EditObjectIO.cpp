@@ -157,19 +157,6 @@ bool CEditableObject::Load(CStream& F){
             UpdateBoneParenting();
         }
 
-        // object motions
-        if (F.FindChunk(EOBJ_CHUNK_OMOTIONS)){
-            m_OMotions.resize(F.Rdword());
-            for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++){
-                *o_it = new COMotion();
-                if (!(*o_it)->Load(F)){
-                    ELog.Msg(mtError,"Motions has different version. Load failed.");
-                    _DELETE(*o_it);
-                    m_OMotions.clear();
-                    break;
-                }
-            }
-        }
         // skeleton motions
         if (F.FindChunk(EOBJ_CHUNK_SMOTIONS)){
             m_SMotions.resize(F.Rdword());
@@ -258,14 +245,6 @@ void CEditableObject::Save(CFS_Base& F){
     	F.close_chunk	();
     }
 
-    // object motions
-    if (!m_OMotions.empty()){
-	    F.open_chunk	(EOBJ_CHUNK_OMOTIONS);
-    	F.Wdword		(m_OMotions.size());
-	    for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++) (*o_it)->Save(F);
-    	F.close_chunk	();
-    }
-
     // skeleton motions
     if (!m_SMotions.empty()){
         F.open_chunk	(EOBJ_CHUNK_SMOTIONS);
@@ -307,18 +286,6 @@ CSMotion* CEditableObject::LoadSMotion(const char* fname){
 	return 0;
 }
 //------------------------------------------------------------------------------
-COMotion* CEditableObject::LoadOMotion(const char* fname){
-	if (Engine.FS.Exist(fname)){
-    	COMotion* M = new COMotion();
-        if (!M->LoadMotion(fname)){
-        	_DELETE(M);
-        }
-        return M;
-    }
-	return 0;
-}
-//------------------------------------------------------------------------------
-
 #ifdef _EDITOR
 bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
 	CFS_Memory F;
