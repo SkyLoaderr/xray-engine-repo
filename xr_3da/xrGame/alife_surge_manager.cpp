@@ -274,11 +274,6 @@ void CALifeSurgeManager::ballance_creatures()
 					if (l_tpALifeAnomalousZone)
 						continue;
 
-#pragma todo("Dima to Dima : Decide where to spawn an actor!")
-//					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract	= smart_cast<CSE_ALifeCreatureAbstract*>(*j);
-//					if (l_tpALifeCreatureAbstract)
-//						continue;
-
 					CSE_ALifeDynamicObject		*l_tpALifeDynamicObject;
 					create(l_tpALifeDynamicObject,*j,_SPAWN_ID(j - B));
 				}
