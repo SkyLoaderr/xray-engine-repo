@@ -55,6 +55,7 @@ shell_root CPHShellSplitterHolder::SplitJoint(u16 aspl)
 	new_shell_desc->PresetActive();
 	m_pShell->PassEndElements(start_element,end_element,new_shell_desc);
 	m_pShell->PassEndJoints(start_joint+1,end_joint,new_shell_desc);
+	new_shell_desc->set_PhysicsRefObject(0);
 	new_shell_desc->PureActivate();
 	//new_shell_desc->ObjectInRoot().identity();
 	m_pShell->DeleteJoint(start_joint);
@@ -337,7 +338,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	//InitNewShell(new_shell_last_desc);//this cretes space for the shell and add elements to it,place elements to attach joints.....
 
 	m_pShell->PassEndJoints(split_elem.second.m_start_jt_num,split_elem.second.m_end_jt_num,new_shell_last_desc);
-
+	new_shell_last_desc->set_PhysicsRefObject(0);
 ///////////////////temporary for initialization set old Kinematics in new shell/////////////////
 	new_shell_last->set_Kinematics(m_pShell->PKinematics());
 	new_shell_last_desc->AfterSetActive();

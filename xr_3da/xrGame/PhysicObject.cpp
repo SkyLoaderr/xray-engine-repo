@@ -485,9 +485,9 @@ void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 	newKinematics->LL_SetBoneRoot		(split_bone);
 	VERIFY2(mask1.flags,"mask1 -Zero");
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
-	
+	if(!newPhysicsShell->isEnabled())O->processing_deactivate();
 	newPhysicsShell->set_PhysicsRefObject(O);
-	//newPhysicsShell->set_PushOut(5000,PushOutCallback2);
+	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
 	O->setVisible(true);
 	O->setEnabled(true);
