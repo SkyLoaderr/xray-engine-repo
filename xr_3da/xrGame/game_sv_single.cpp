@@ -282,5 +282,5 @@ void game_sv_Single::remove_restriction	(NET_Packet &packet, u16 id)
 
 void game_sv_Single::sls_default		()
 {
-	alife().shedule_Update	(0);
+	alife().update			(true,false,false);
 }

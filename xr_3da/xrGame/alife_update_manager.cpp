@@ -162,7 +162,7 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	return							(true);
 }
 
-void CALifeUpdateManager::update(bool switch_objects)
+void CALifeUpdateManager::update(bool switch_objects, bool spawn_update, bool scheduled_update)
 {
 	init_ef_storage						();
 
@@ -198,11 +198,13 @@ void CALifeUpdateManager::update(bool switch_objects)
 			STOP_PROFILE
 
 			START_PROFILE("AI/ALife/spawn");
-			spawns().update				();
+			if (spawn_update)
+				spawns().update			();
 			STOP_PROFILE
 
 			START_PROFILE("AI/ALife/scheduled");
-			scheduled().update			();
+			if (scheduled_update)
+				scheduled().update		();
 			STOP_PROFILE
 
 			break;

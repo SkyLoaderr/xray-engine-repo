@@ -30,7 +30,7 @@ protected:
 protected:
 			void		new_game				(LPCSTR	save_name);
 			void		init_ef_storage			() const;
-			void		update					(bool switch_objects);
+			void		update					(bool switch_objects, bool spawn_update = true, bool scheduled_update = true);
 	virtual	void		reload					(LPCSTR section);
 
 public:
