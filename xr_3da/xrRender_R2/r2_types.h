@@ -34,7 +34,7 @@ const float					DSM_distance_2		= 100.f;
 const float					DSM_d_range			= 100.f;
 const float					SSM_near_plane		= .1f;
 
-const u32					PSM_size			= 256;
+const u32					PSM_size			= 512;
 const float					PSM_near_plane		= .1f;
 
 const u32					TEX_material_LdotN	= 128;	// diffuse,		X
