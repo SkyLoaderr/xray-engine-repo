@@ -209,56 +209,6 @@ void xrMU_Model::calc_lighting		()
 	color.assign		(m_vertices.size(),ref);
 }
 
-float	simple_optimize				(vector<float>& A, vector<float>& B, float& scale, float& bias)
-{
-	float	accum;
-	u32		it;
-
-	float	error	= flt_max;
-	float	elements= float(A.size());
-	u32		count	= 0;
-	clMsg	("---");
-	for (;;)
-	{
-		clMsg			("%d : %f",count,error);
-
-		count++;
-		if (count>64)	return error;
-
-		float	old_scale	= scale;
-		float	old_bias	= bias;
-
-		//1. scale
-		for (accum=0, it=0; it<A.size(); it++)
-			accum	+= (B[it]-bias)/A[it];
-		float	s	= accum	/ elements;
-
-		//2. bias
-		for (accum=0, it=0; it<A.size(); it++)
-			accum	+= B[it]-A[it]/scale;
-		float	b	= accum	/ elements;
-
-		// mix
-		float	conv	= float(count+11.f)*2.f;
-		scale			= ((conv-1)*scale+s)/conv;
-		bias			= ((conv-1)*bias +b)/conv;
-
-		// error
-		for (accum=0, it=0; it<A.size(); it++)
-			accum	+= _sqr(B[it] - (A[it]*scale + bias));
-		float	err	= _sqrt(accum)/elements;
-
-		if (err<error)	error = err;
-		else 
-		{
-			// exit
-			scale	= old_scale;
-			bias	= old_bias;
-			return	error;
-		}
-	}
-}
-
 void xrMU_Reference::calc_lighting	()
 {
 	model->calc_lighting	(color,xform,RCAST_Model,0);
