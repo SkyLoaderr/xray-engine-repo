@@ -30,6 +30,8 @@ function main()
 
 	actor01.GiveInfo(actor, 1)	
 
+	level.set_artifact_merge(artifact_merge)
+
 	while true do
 		wait()
 	end
