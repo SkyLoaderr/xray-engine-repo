@@ -19,7 +19,7 @@ end
 ------------------------------------------------------------------------------------------
 -- Property's
 ------------------------------------------------------------------------------------------
- 
+
 ------------------------------------------------------------------------------------------
 class "evaluator_enable" (property_evaluator) 
 ------------
@@ -31,8 +31,6 @@ function evaluator_enable:evaluate ()
     return true 
 end    
 ------------------------------------------------------------------------------------------
-
-
 
 ------------------------------------------------------------------------------------------
 class "evaluator_medikit" (property_evaluator)
@@ -46,8 +44,6 @@ function evaluator_medikit:evaluate ()
 end
 ------------------------------------------------------------------------------------------
 
-
-
 ------------------------------------------------------------------------------------------
 class "evaluator_wound" (property_evaluator) 
 ------------
@@ -60,26 +56,14 @@ function evaluator_wound:evaluate ()
 	if overrides ~= nil and overrides.wounded_enabled == false then
   	   return false
 	end
-    -- self.a.enabled added by Zmey
-    return self.a.enabled and this.is_wounded(self.object, self.a.hp_max)   
+	
+	self.wound = self.a.enabled and this.is_wounded(self.object, self.a.hp_max)
+    this.process_map_spot(self.object, self.wound, self.a)
+	
+    return self.wound
 end
 ------------------------------------------------------------------------------------------
 
-
-
-------------------------------------------------------------------------------------------
-class "evaluator_sit" (property_evaluator) 
-------------
-function evaluator_sit:__init (name, storage) super (nil, name)
-    self.a = storage
-end
-------------
-function evaluator_sit:evaluate ()
-    return self.a.sit
-end
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
 class "evaluator_final" (property_evaluator) 
 ------------
 function evaluator_final:__init (name, storage) super (nil, name)
@@ -102,6 +86,9 @@ function evaluator_cover:__init (name, storage) super (nil, name)
 end
 ------------
 function evaluator_cover:evaluate ()
+	if not (self.a.enabled and this.is_wounded(self.object, self.a.hp_max)) then
+		self.a.cover = false
+	end
     return self.a.cover
 end
 ------------------------------------------------------------------------------------------
@@ -223,7 +210,6 @@ end
 ------------
 function action_idle:execute ()
     action_base.execute (self)
-   
     if self.object:is_talking () == false then
        xr_sound.sound_update(self.object, self.sounds)		
     end   
@@ -299,7 +285,6 @@ function action_help:execute ()
 --    else
 --       state_mgr.set_state(self.object, "wounded")
 --    end
-        
     if self.object:is_talking () == false then
        if self.object:active_sound_count() == 0 and self.first_sound == true then 
 	      xr_sound.sound_update(self.object, self.sounds, true)
@@ -358,22 +343,15 @@ function action_stand:execute ()
     action_base.execute (self)
     
     if self.stage == 0 then
-       printf ("STAGE 0")
        xr_sound.sound_update (self.object, self.sounds, true)
        return
     end
     
     if self.stage == 1 then
-       printf ("STAGE 2")
        self.stage = 2
-       local act = db.actor
-       if act ~= nil and  act:alive () == true and self.object:relation (act) ~= game_object.enemy then
-          this.hide_yourself(self.object)
-       end 
     end    
     
     if self.object:is_talking () == true then
-       printf ("STAGE 3")
     end   
 end    
 ------------
@@ -410,7 +388,7 @@ end
 ------------
 function action_enemy:execute ()
     action_base.execute (self)
-    
+
     local enemy = self.object:best_enemy ()
     state_mgr.set_state(self.object, "hide", nil,nil, {look_object = enemy})
 	
@@ -455,7 +433,7 @@ function action_medkit:execute ()
        self.object:eat (self.object:object ("medkit"))
     elseif self.object:object ("bandage") ~= nil then
        self.object:eat (self.object:object ("bandage"))
-    end   
+    end
 end
 ------------
 function action_medkit:finalize ()    
@@ -464,11 +442,22 @@ end
     
 
 ------------------------------------------------------------------------------------------
+function process_map_spot(npc, wound, st)
+	if wound and npc:alive() and st.cover then
+		this.show_yourself(npc)
+	else
+		this.hide_yourself(npc)
+	end
+end
 function show_yourself(npc)
-	--level.map_add_object_icon(npc, "wounded", "Need a medikit !!! Help !!!", 7, 2)
+	if npc and not level.map_has_object_spot(npc:id(), "general_wounded_location") then
+		level.map_add_object_spot(npc:id(), "general_wounded_location", "")
+	end		
 end
 function hide_yourself(npc)
-	--level.map_remove_object_icon(npc)
+	if npc and level.map_has_object_spot(npc:id(), "general_wounded_location") then
+		level.map_remove_object_spot(npc:id(), "general_wounded_location")
+	end		
 end
 
 ------------------------------------------------------------------------------------------
@@ -499,24 +488,22 @@ function add_to_binder (object, ini, scheme, section, st)
     local manager = object:motivation_action_manager ()
     manager:add_evaluator (properties["enable"],    this.evaluator_enable       ("wounded_enabled", st))
     manager:add_evaluator (properties["wound"],     this.evaluator_wound        ("wounded_wound", st))
-    manager:add_evaluator (properties["sit"],       this.evaluator_sit          ("wounded_sit_down", st))
     manager:add_evaluator (properties["friend"],    this.evaluator_friend       ("wounded_see_friend", st))
     manager:add_evaluator (properties["cover"],     this.evaluator_cover        ("wounded_in_cover", st))
     manager:add_evaluator (properties["medikit"],   this.evaluator_medikit      ("wounded_medikit", st))
 
-    local action = this.action_cover ("action_cover", st)
+    local action = this.action_cover ("wounded_action_cover", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
     action:add_precondition (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["medikit"],         false))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           false))
-    --action:add_precondition (world_property (properties["sit"],             false))
 	action:add_precondition (world_property(properties["contact"],	        false))
     action:add_effect       (world_property (properties["cover"],           true))
    	manager:add_action      (operators["cover"], action)
    
-    action = this.action_idle ("action_idle", st)
+    action = this.action_idle ("wounded_action_idle", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
     action:add_precondition (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition (world_property (properties["enable"],          true))
@@ -524,11 +511,10 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["medikit"],         false))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["friend"],          false))
-    --action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (properties["medikit"],         true))
    	manager:add_action      (operators["idle"], action)
 
-    action = this.action_help ("action_help", st)
+    action = this.action_help ("wounded_action_help", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
     action:add_precondition (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition (world_property (properties["enable"],          true))
@@ -536,38 +522,33 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["medikit"],         false))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["friend"],          true))
-    --action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (properties["medikit"],         true))
    	manager:add_action      (operators["help"], action)
 
-    action = this.action_stand ("action_stand", st)
+    action = this.action_stand ("wounded_action_stand", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
     action:add_precondition (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["medikit"],         true))
     action:add_precondition (world_property (properties["cover"],           true))
-    --action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["stand"], action)
 
-    action = this.action_enemy ("action_enemy", st)
+    action = this.action_enemy ("wounded_action_enemy", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
     action:add_precondition (world_property (stalker_ids.property_enemy,    true))
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           true))
-    --action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (stalker_ids.property_enemy,    false))
    	manager:add_action      (operators["enemy"], action)
    	
-   	action = this.action_medkit ("action_medkit", st)
+   	action = this.action_medkit ("wounded_action_medkit", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
-    --action:add_precondition (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["medikit"],         true))
-    --action:add_precondition (world_property (properties["sit"],             false))
     action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["medkit"], action)
     
@@ -619,4 +600,3 @@ function disable_scheme(npc, scheme)
 		st.enabled = false
 	end
 end
-
