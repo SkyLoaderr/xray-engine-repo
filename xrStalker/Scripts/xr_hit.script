@@ -34,11 +34,10 @@ end
 function set_hit_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-	npc:set_hit_callback(st.action, "hit_callback")
+	--npc:set_callback(game_object.hit, "hit_callback", st.action)
 end
 
 function disable_scheme(npc, scheme)
-	npc:clear_hit_callback(true);
-	npc:clear_hit_callback(false);
+	--npc:clear_callback(game_object.hit);
 end
 
