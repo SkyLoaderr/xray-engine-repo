@@ -13,35 +13,31 @@
 
 XRXMLPARSER_API void XML_DisableStringCaching()
 {
-	CkSettings::disableStringCaching();
+//	CkSettings::disableStringCaching();
 }
 
 XRXMLPARSER_API void XML_CleanUpMemory()
 {
-	CkSettings::cleanupMemory();
+//	CkSettings::cleanupMemory();
 }
 
 
 XRXMLPARSER_API CUIXml::CUIXml()
+	:	m_root			(NULL),
+		m_pLocalRoot	(NULL)
+//		m_Doc			("x:\\Memory.xml")
 {
-	// The Chilkat library can keep internal caches of string or other objects
-	// and these may seem like memory leaks.  Call this to disable string
-	// object caching, and call CkSettings::cleanupMemory to delete other
-	// internal caches before checking for memory leaks.
 }
 
 XRXMLPARSER_API CUIXml::~CUIXml()
 {
-	//and call CkSettings::cleanupMemory to delete other
-	// internal caches before checking for memory leaks.
+	m_Doc.Clear();
 }
-
 
 //инициализаци€ и загрузка XML файла
 bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 {
-	//if(!m_root.LoadXmlFile(xml_filename))
-	//	return false;
+	// Load and parse xml file
 
 	IReader *F = FS.r_open(path, xml_filename);
 	if(F==NULL) return false;
@@ -49,12 +45,11 @@ bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 	CMemoryWriter W;
 	W.w(F->pointer(),F->length());
 	W.w_stringZ("");
-	if(!m_root.LoadXml((LPCSTR )W.pointer()))
-		return false;
-		
-	F->close();
 
-	m_pLocalRoot = NULL;
+	m_Doc.Parse((LPCSTR )W.pointer());
+	if (m_Doc.Error()) R_ASSERT3(false, m_Doc.Value(), m_Doc.ErrorDesc());
+
+	m_root = m_Doc.FirstChildElement();
 
 	return true;
 }
@@ -69,14 +64,22 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 
 	char*		buf_str			= xr_strdup(path);
 
-	char seps[]   = ":";
+	char seps[]		= ":";
     char *token;
+	int tmp			= 0;
 
     //разбить путь на отдельные подпути
 	token = strtok( buf_str, seps );
 
 	if( token != NULL )
-			node = start_node->GetNthChildWithTag(token, node_index);
+	{
+		node = start_node->FirstChild(token);
+
+		while (tmp++ < node_index && node)
+		{
+			node = start_node->IterateChildren(token, node);
+		}
+	}
 	
     while( token != NULL )
     {
@@ -87,8 +90,7 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 			if(node != 0) 
 			{
 				node_parent = node;
-				node = node_parent->GetChildWithTag(token);
-				delete(node_parent);
+				node = node_parent->FirstChild(token);
 			}
 
     }
@@ -110,7 +112,8 @@ XML_NODE* CUIXml::NavigateToNodeWithAttribute(LPCSTR tag_name, LPCSTR attrib_nam
 
 	for (int i = 0; i < tabsCount; ++i)
 	{
-		if (xr_strcmp(ReadAttrib(root, tag_name, i, attrib_name, ""), attrib_value) == 0)
+		LPCSTR result = ReadAttrib(root, tag_name, i, attrib_name, "");
+		if (result && xr_strcmp(result, attrib_value) == 0)
 		{
 			return NavigateToNode(root, tag_name, i);
 		}
@@ -124,7 +127,6 @@ LPCSTR CUIXml::Read(LPCSTR path, int index, LPCSTR   default_str_val)
 {
 	XML_NODE* node = NavigateToNode(path, index);
 	LPCSTR result = Read(node,  default_str_val);
-	delete	(node);
 	return	result;
 }
 
@@ -134,7 +136,6 @@ LPCSTR CUIXml::Read(XML_NODE* start_node,  LPCSTR path, int index, LPCSTR   defa
 {
 	XML_NODE* node = NavigateToNode(start_node, path, index);
 	LPCSTR result = Read(node,  default_str_val);
-	delete	(node);
 	return	result;
 }
 
@@ -144,7 +145,14 @@ LPCSTR CUIXml::Read(XML_NODE* node,  LPCSTR   default_str_val)
 	if(node == NULL)
 		return default_str_val;
 	else
-		return node->get_Content();
+	{
+		node = node->FirstChild();
+		if (!node) return default_str_val;
+
+		TiXmlText *text = node->ToText();
+		if (text) return text->Value();
+		else return default_str_val;
+	}
 }
 
 
@@ -186,7 +194,6 @@ LPCSTR CUIXml::ReadAttrib(XML_NODE* start_node, LPCSTR path,  int index,
 {
 	XML_NODE* node = NavigateToNode(start_node, path, index);
 	LPCSTR result = ReadAttrib(node, attrib, default_str_val);
-	delete	(node);
 
 	return	result;
 }
@@ -197,7 +204,6 @@ LPCSTR CUIXml::ReadAttrib(LPCSTR path,  int index,
 {
 	XML_NODE* node = NavigateToNode(path, index);
 	LPCSTR result = ReadAttrib(node, attrib, default_str_val);
-	delete	(node);
 	return	result;
 }
 LPCSTR CUIXml::ReadAttrib(XML_NODE* node, LPCSTR attrib, LPCSTR   default_str_val)
@@ -206,17 +212,21 @@ LPCSTR CUIXml::ReadAttrib(XML_NODE* node, LPCSTR attrib, LPCSTR   default_str_va
 		return default_str_val;
 	else
 	{
-		CkString str;
 		//об€зательно делаем ref_str, а то 
 		//не сможем запомнить строку и return вернет левый указатель
 		ref_str result_str;
 
-		bool result = node->GetAttrValue(attrib, str); 
+		//  астаем ниже по иерархии
+
+		TiXmlElement *el = node->ToElement(); 
 		
-		if(result)
+		if(el)
 		{
-			result_str = str.getString();
-			return *result_str;
+			result_str = el->Attribute(attrib);
+			if (result_str != "")
+				return *result_str;
+			else
+				return default_str_val;
 		}
 		else
 		{
@@ -272,21 +282,30 @@ int CUIXml::GetNodesNum(LPCSTR path, int index, LPCSTR  tag_name)
 	{
 		node = NavigateToNode(path, index);
 
-		if(node==NULL) node = &m_root;
+		if(node==NULL) node = m_root;
 	}
 	else
-		node = &m_root;
+		node = m_root;
 	
 	if(node == NULL) return 0;
-	int result =  node->NumChildrenHavingTag(tag_name);
-	if(GetRoot()!=node) delete		(node);
-	return result;
+
+	return GetNodesNum(node, tag_name);
 }
 
 int CUIXml::GetNodesNum(XML_NODE* node, LPCSTR  tag_name)
 {
 	if(node == NULL) return 0;
-	return node->NumChildrenHavingTag(tag_name);
+
+	XML_NODE *el = node->FirstChild(tag_name);
+	int result = 0;
+
+	while (el)
+	{
+		++result;
+		el = el->NextSibling(tag_name);
+	}
+	
+	return result;
 }
 
 //нахождение элемнета по его атрибуту
@@ -298,7 +317,6 @@ XML_NODE* CUIXml::SearchForAttribute(LPCSTR path, int index,
 {
 	XML_NODE* start_node = NavigateToNode(path, index);
 	XML_NODE* result =  SearchForAttribute(start_node, tag_name, attrib, attrib_value_pattern);
-	delete	(start_node);
 	return	result;
 }
 
@@ -307,8 +325,23 @@ XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node,
 									LPCSTR attrib, 
 									LPCSTR attrib_value_pattern)
 {
-	return m_root.SearchForAttribute(start_node, tag_name, 
-									 attrib, attrib_value_pattern);
+	while (start_node)
+	{
+		TiXmlElement *el = start_node->ToElement();
+		if (el
+			&& 0 == xr_strcmp(el->Attribute(attrib), attrib_value_pattern)
+			&& 0 == xr_strcmp(el->Value(), tag_name))
+		{
+			return el;
+		}
+
+		XML_NODE *newEl = start_node->FirstChild(tag_name);
+		newEl = SearchForAttribute(newEl, tag_name, attrib, attrib_value_pattern);
+		if (newEl) return newEl;
+		start_node = start_node->NextSibling(tag_name);
+	}
+
+	return NULL;
 }
 
 
@@ -343,11 +376,11 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH: {
-		CkSettings::disableStringCaching();
+//		CkSettings::disableStringCaching();
 		break;
 	}
 	case DLL_PROCESS_DETACH:
-		CkSettings::cleanupMemory();
+//		CkSettings::cleanupMemory();
 		break;
 	}
     return TRUE;

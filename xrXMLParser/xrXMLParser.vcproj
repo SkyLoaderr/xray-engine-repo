@@ -295,81 +295,60 @@
 			Name="Parser"
 			Filter="">
 			<File
-				RelativePath=".\CkSettings.h">
-			</File>
-			<File
-				RelativePath=".\CkString.h">
-			</File>
-			<File
-				RelativePath=".\CkXml.h">
-			</File>
-			<File
 				RelativePath=".\xrXMLParser.cpp">
 			</File>
 			<File
 				RelativePath=".\xrXMLParser.h">
 			</File>
+			<Filter
+				Name="TinyXML"
+				Filter="">
+				<File
+					RelativePath=".\tinystr.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderFile=""/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\tinystr.h">
+				</File>
+				<File
+					RelativePath=".\tinyxml.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="3"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\tinyxml.h">
+				</File>
+				<File
+					RelativePath=".\tinyxmlerror.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderFile=""/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\tinyxmlparser.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="3"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\ChilkatDbgDll.lib">
-			<FileConfiguration
-				Name="Release|Win32"
-				ExcludedFromBuild="TRUE">
-				<Tool
-					Name="VCCustomBuildTool"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				ExcludedFromBuild="TRUE">
-				<Tool
-					Name="VCCustomBuildTool"/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\ChilkatRelDll.lib">
-			<FileConfiguration
-				Name="Release|Win32"
-				ExcludedFromBuild="TRUE">
-				<Tool
-					Name="VCCustomBuildTool"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				ExcludedFromBuild="TRUE">
-				<Tool
-					Name="VCCustomBuildTool"/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\CkBaseDbgDll.lib">
-			<FileConfiguration
-				Name="Release|Win32"
-				ExcludedFromBuild="TRUE">
-				<Tool
-					Name="VCCustomBuildTool"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				ExcludedFromBuild="TRUE">
-				<Tool
-					Name="VCCustomBuildTool"/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\CkBaseRelDll.lib">
-			<FileConfiguration
-				Name="Release|Win32"
-				ExcludedFromBuild="TRUE">
-				<Tool
-					Name="VCCustomBuildTool"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				ExcludedFromBuild="TRUE">
-				<Tool
-					Name="VCCustomBuildTool"/>
-			</FileConfiguration>
-		</File>
 	</Files>
 	<Globals>
 		<Global

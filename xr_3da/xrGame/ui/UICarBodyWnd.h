@@ -48,28 +48,23 @@ public:
 	void DisableAll();
 	void EnableAll();
 
-
 	//указатели на инвентари
 	CInventory*		m_pInv;
 	CInventory*		m_pOthersInv;
 	CGameObject*	m_pOurObject;
 	CGameObject*	m_pOthersObject;
 
-
-
 protected:
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
-
 
 	//информаци€ о предмете
 	CUIFrameWindow		UIDescWnd;
 	CUIStatic			UIStaticDesc;
 	CUIItemInfo			UIItemInfo;
 
-
-	CUIFrameWindow		UIOurBagWnd;
-	CUIFrameWindow		UIOthersBagWnd;
+	CUIStatic			UIOurBagWnd;
+	CUIStatic			UIOthersBagWnd;
 	CUIDragDropList		UIOurBagList;
 	CUIDragDropList		UIOthersBagList;
 
@@ -78,8 +73,6 @@ protected:
 	CUIStatic			UIOthersIcon;
 	CUICharacterInfo	UICharacterInfoLeft;
 	CUICharacterInfo	UICharacterInfoRight;
-
-
 
 	//функции, выполн€ющие согласование отображаемых окошек
 	//с реальным инвентарем

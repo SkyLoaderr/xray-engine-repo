@@ -47,12 +47,12 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIDialogFrame);
 
 	// поле отображения имени актра-игрока
-	AttachChild(&UICharacterName);
+	UIDialogFrame.AttachChild(&UICharacterName);
 	xml_init.InitStatic(uiXml, "static", 0, &UICharacterName);
 
 	//Вопросы
 	//UIDialogFrame.AttachChild(&UIQuestionsList);
-	AttachChild(&UIQuestionsList);
+	UIDialogFrame.AttachChild(&UIQuestionsList);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIQuestionsList);
 
 	//Ответы

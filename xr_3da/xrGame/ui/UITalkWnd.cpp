@@ -314,7 +314,7 @@ void CUITalkWnd::AddAnswer(const CUIString &str, const CUIString &SpeakerName)
 	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(str, MessageShift, UITalkDialogWnd.UIAnswersList.GetTextColor());
 
 	CUIString Local;
-	Local.SetText("----------------");
+	Local.SetText(" ");
 	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(Local, 0, UITalkDialogWnd.UIAnswersList.GetTextColor());
 	UITalkDialogWnd.UIAnswersList.ScrollToEnd();
 }

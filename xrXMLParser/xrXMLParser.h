@@ -26,15 +26,11 @@ XRXMLPARSER_API void FunctionSampleExport();
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "CkXml.h"
-#include "CkString.h"
-#include "CkSettings.h"
+#include "tinyxml.h"
 
 #pragma once
 
-
-typedef CkXml XML_NODE;
-
+typedef TiXmlNode XML_NODE;
 
 class XRXMLPARSER_API CUIXml  
 {
@@ -102,17 +98,19 @@ public:
 	XML_NODE* NavigateToNodeWithAttribute(LPCSTR tag_name,
 										  LPCSTR attrib_name, LPCSTR attrib_value);
 
-	void		SetLocalRoot(XML_NODE* pLocalRoot)			{m_pLocalRoot = pLocalRoot;}
-	XML_NODE*	GetLocalRoot()								{return m_pLocalRoot;}
+	void		SetLocalRoot(XML_NODE* pLocalRoot)		 	{m_pLocalRoot = pLocalRoot;}
+	XML_NODE*	GetLocalRoot()							 	{return m_pLocalRoot;}
 
-	XML_NODE* GetRoot() {return &m_root;}
+	XML_NODE*	GetRoot() {return m_root;}
 
 protected:
-	XML_NODE m_root;
+	XML_NODE* m_root;
 	XML_NODE* m_pLocalRoot;
 
 	//буфферный вектор для проверки уникальность аттрибутов
 	std::vector<ref_str> m_AttribValues;
+private:
+	TiXmlDocument	m_Doc;
 };
 
 #endif //xrXMLParserH

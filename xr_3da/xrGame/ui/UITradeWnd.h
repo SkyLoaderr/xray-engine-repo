@@ -68,7 +68,6 @@ protected:
 	//кнопки
 	CUIButton			UIPerformTradeButton;
 	CUIButton			UIToTalkButton;
-	CUIButton			UIDropButton;
 
 	//информация о персонажах 
 	CUIStatic			UIOurIcon;

@@ -111,7 +111,7 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path, 
 									int index, CUIStatic* pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	string256 buf;
 

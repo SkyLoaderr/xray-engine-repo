@@ -22,7 +22,8 @@
 
 using namespace InventoryUtilities;
 
-const char * const CAR_BODY_XML	= "carbody.xml";
+const char * const CAR_BODY_XML		= "carbody_new.xml";
+const char * const CARBODY_ITEM_XML	= "carbody_item.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -66,12 +67,11 @@ void CUICarBodyWnd::Init()
 	UIOthersIcon.AttachChild(&UICharacterInfoRight);
 	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), "trade_character.xml");
 
-
 	//Списки торговли
 	AttachChild(&UIOurBagWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIOurBagWnd);
+	xml_init.InitStatic(uiXml, "our_bag_static", 0, &UIOurBagWnd);
 	AttachChild(&UIOthersBagWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 1, &UIOthersBagWnd);
+	xml_init.InitStatic(uiXml, "others_bag_static", 0, &UIOthersBagWnd);
 
 	//Списки Drag&Drop
 	UIOurBagWnd.AttachChild(&UIOurBagList);	
@@ -85,17 +85,15 @@ void CUICarBodyWnd::Init()
 
 	//информация о предмете
 	AttachChild(&UIDescWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 2, &UIDescWnd);
+	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIDescWnd);
 	UIDescWnd.AttachChild(&UIStaticDesc);
-	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 5, UIDescWnd.GetHeight() - 310 ,260,310);
+	xml_init.InitStatic(uiXml, "descr_static", 0, &UIStaticDesc);
 	UIStaticDesc.AttachChild(&UIItemInfo);
-	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), "inventory_item.xml");
+	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), CARBODY_ITEM_XML);
 
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
-
-
 
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
@@ -109,7 +107,6 @@ void CUICarBodyWnd::Init()
 	//////
 	UIOurBagList.SetCheckProc(OurBagProc);
 	UIOthersBagList.SetCheckProc(OthersBagProc);
-
 
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
@@ -179,6 +176,8 @@ void CUICarBodyWnd::UpdateLists()
 									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 
 			UIDragDropItem.SetData((*it));
+
+			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
 			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
 			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);

@@ -27,7 +27,7 @@ using namespace InventoryUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const	TRADE_XML	= "trade_new.xml";
+const char * const	TRADE_XML	= "trade.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -144,12 +144,6 @@ void CUITradeWnd::Init()
 
 	AttachChild(&UIToTalkButton);
 	xml_init.InitButton(uiXml, "button", 1, &UIToTalkButton);
-
-	AttachChild(&UIDropButton);
-	xml_init.InitButton(uiXml, "drop_button", 0, &UIDropButton);
-	UIDropButton.SetTextureOffset(5, 0);
-	UIDropButton.SetTextAlign(CGameFont::alLeft);
-
 }
 
 void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
@@ -234,22 +228,6 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		else
 			R_ASSERT2(false, "wrong parent for trade wnd");
 	}
-	else if (&UIDropButton == pWnd)
-	{
-		switch (msg)
-		{
-		case CUIButton::BUTTON_FOCUS_RECEIVED:
-			UIDropButton.SetColor(0xffffffff);
-			break;
-		case CUIButton::BUTTON_FOCUS_LOST:
-			UIDropButton.SetColor(0xc0c8c8c8);
-			break;
-		case CUIButton::BUTTON_CLICKED:
-			if (m_pCurrentDragDropItem && m_pCurrentItem) DropCurrentItem();
-			break;
-		}
-	}
-
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
 

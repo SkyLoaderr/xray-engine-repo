@@ -7903,13 +7903,10 @@
 					Name="XML"
 					Filter="">
 					<File
-						RelativePath=".\ui\CkSettings.h">
+						RelativePath=".\ui\tinystr.h">
 					</File>
 					<File
-						RelativePath=".\ui\CkString.h">
-					</File>
-					<File
-						RelativePath=".\ui\CkXml.h">
+						RelativePath=".\ui\tinyxml.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIXmlInit.cpp">
