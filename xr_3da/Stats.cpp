@@ -29,6 +29,7 @@ void CStats::Show()
 		UpdateClient.FrameEnd		();	
 		Physics.FrameEnd			();	
 		Animation.FrameEnd			();	
+		AI_Think.FrameEnd			();
 		AI_Range.FrameEnd			();
 		AI_Path.FrameEnd			();
 		AI_Node.FrameEnd			();
@@ -105,9 +106,10 @@ void CStats::Show()
 		F.OutNext	("uSheduled:   %2.2fms",UpdateSheduled.result);
 		F.OutNext	("uClients:    %2.2fms",UpdateClient.result);
 		F.OutNext	("Physics:     %2.2fms, %d",Physics.result,Physics.count);	
-		F.OutNext	("aiRange:     %2.2fms, %d",AI_Range.result,AI_Range.count);
-		F.OutNext	("aiPath:      %2.2fms, %d",AI_Path.result,AI_Path.count);
-		F.OutNext	("aiNode:      %2.2fms, %d",AI_Node.result,AI_Node.count);
+		F.OutNext	("aiThink:     %2.2fms, %d",AI_Think.result,AI_Think.count);	
+		F.OutNext	("  aiRange:   %2.2fms, %d",AI_Range.result,AI_Range.count);
+		F.OutNext	("  aiPath:    %2.2fms, %d",AI_Path.result,AI_Path.count);
+		F.OutNext	("  aiNode:    %2.2fms, %d",AI_Node.result,AI_Node.count);
 		F.OutNext	("aiVision:    %2.2fms, %d",AI_Vis.result,AI_Vis.count);
 		F.OutNext	("  Query:     %2.2fms",	AI_Vis_Query.result);
 		F.OutNext	("  RayCast:   %2.2fms",	AI_Vis_RayTests.result);
@@ -155,6 +157,7 @@ void CStats::Show()
 		UpdateClient.FrameStart		();	
 		Physics.FrameStart			();	
 		Animation.FrameStart		();	
+		AI_Think.FrameStart			();
 		AI_Range.FrameStart			();
 		AI_Path.FrameStart			();
 		AI_Node.FrameStart			();

@@ -267,9 +267,9 @@ void CCustomMonster::Exec_Physics( float dt )
 {
 	// Test nearest object
 	Fvector C; float R;	
-	svCenter(C);
-	R = Radius();
-	Level().ObjectSpace.TestNearestObject(cfModel, C, R);
+	svCenter	(C);
+	R = Radius	();
+	Level().ObjectSpace.TestNearestObject	(cfModel, C, R);
 }
 
 void CCustomMonster::Update	( DWORD DT )
@@ -285,12 +285,15 @@ void CCustomMonster::Update	( DWORD DT )
 	if (Remote())		{
 	} else {
 		// here is monster AI call
-		m_fTimeUpdateDelta = dt;
+		m_fTimeUpdateDelta				= dt;
+		Device.Statistic.AI_Think.Begin	();
 		Think();
+		Device.Statistic.AI_Think.End	();
 		if (m_fCurSpeed < EPS_L) {
 			AI_Path.TravelPath.clear();
 			AI_Path.TravelStart = 0;
 		}
+
 		// Look and action streams
 		if (iHealth>0) {
 			Exec_Look			(dt);

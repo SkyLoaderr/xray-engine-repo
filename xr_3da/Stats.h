@@ -29,6 +29,7 @@ public:
 	CStatTimer	UpdateSheduled;		// 
 	CStatTimer	UpdateClient;		// 
 	CStatTimer	Physics;			// movement+collision
+	CStatTimer	AI_Think;			// thinking
 	CStatTimer	AI_Range;			// query: range
 	CStatTimer	AI_Path;			// query: path
 	CStatTimer	AI_Node;			// query: node
