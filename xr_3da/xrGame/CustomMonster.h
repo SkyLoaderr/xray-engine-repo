@@ -217,12 +217,19 @@ public:
 	virtual bool				useful					(const CEntityAlive *object) const;
 	virtual float				evaluate				(const CEntityAlive *object) const;
 
+private:
+	CSoundUserDataVisitor			*m_sound_user_data_visitor;
+
 protected:
-	virtual CMovementManager	*create_movement_manager();
+	virtual CSoundUserDataVisitor	*create_sound_visitor	();
+	virtual CMemoryManager			*create_memory_manager	();
+	virtual CMovementManager		*create_movement_manager();
+
 public:
-	IC		CMovementManager	&movement				() const;
-	IC		CSoundPlayer		&sound					() const;
-	IC		CMaterialManager	&material				() const;
+	IC		CMovementManager		&movement				() const;
+	IC		CSoundPlayer			&sound					() const;
+	IC		CMaterialManager		&material				() const;
+	IC		CSoundUserDataVisitor	*sound_user_data_visitor() const;
 };
 
 #include "custommonster_inline.h"

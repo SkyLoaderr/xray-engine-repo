@@ -31,6 +31,7 @@
 #include "sound_player.h"
 #include "level.h"
 #include "material_manager.h"
+#include "sound_user_data_visitor.h"
 
 extern int g_AI_inactive_time;
 
@@ -62,6 +63,7 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 
 CCustomMonster::CCustomMonster()
 {
+	m_sound_user_data_visitor	= 0;
 	m_memory_manager			= 0;
 	m_movement_manager			= 0;
 	m_sound_player				= 0;
@@ -70,6 +72,7 @@ CCustomMonster::CCustomMonster()
 
 CCustomMonster::~CCustomMonster	()
 {
+	xr_delete					(m_sound_user_data_visitor);
 	xr_delete					(m_memory_manager);
 	xr_delete					(m_movement_manager);
 	xr_delete					(m_sound_player);
@@ -891,6 +894,16 @@ CMovementManager *CCustomMonster::create_movement_manager	()
 	return	(xr_new<CMovementManager>(this));
 }
 
+CSoundUserDataVisitor *CCustomMonster::create_sound_visitor		()
+{
+	return	(m_sound_user_data_visitor	= xr_new<CSoundUserDataVisitor>());
+}
+
+CMemoryManager *CCustomMonster::create_memory_manager		()
+{
+	return	(xr_new<CMemoryManager>(this,create_sound_visitor()));
+}
+
 const SRotation CCustomMonster::Orientation	() const
 {
 	return					(movement().m_body.current);
@@ -903,7 +916,7 @@ const MonsterSpace::SBoneRotation &CCustomMonster::head_orientation	() const
 
 DLL_Pure *CCustomMonster::_construct()
 {
-	m_memory_manager			= xr_new<CMemoryManager>(this);
+	m_memory_manager			= create_memory_manager();
 	m_movement_manager			= create_movement_manager();
 	m_sound_player				= xr_new<CSoundPlayer>(this);
 	m_material_manager			= xr_new<CMaterialManager>(this,m_PhysicMovementControl);

@@ -75,7 +75,7 @@ public:
 	CEntity					();
 	virtual ~CEntity		();
 public:
-	virtual CEntity*					cast_entity				()						{return this;}
+	virtual CEntity*		cast_entity			()						{return this;}
 public:
 
 	// Core events
@@ -85,6 +85,8 @@ public:
 	virtual void			reload				(LPCSTR section);
 	virtual BOOL			net_Spawn			(CSE_Abstract* DC);
 	virtual void			net_Destroy			();
+	
+	virtual void			shedule_Update		(u32 dt);
 
 	virtual void			renderable_Render	();
 
@@ -137,6 +139,12 @@ public:
 
 			void			set_death_time		();
 	virtual	void			set_ready_to_save	();
+
+private:
+	ALife::_OBJECT_ID		m_killer_id;
+
+public:
+	IC		u16				killer_id			() const {return m_killer_id;};
 };
 
 #endif // AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_

@@ -53,9 +53,8 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 			u32				cl;
 			P.r_u16			(id);
 			P.r_u32			(cl);
-			CObject* who	= Level().Objects.net_Find	(id);
-			if (who)
-			{
+			CObject			*who = Level().Objects.net_Find	(id);
+			if (who) {
 				if (this!=who)	if(bDebug) HUD().outMessage	(0xffffffff,cName(),"Killed by '%s'...",who->cName());
 				else			if(bDebug) HUD().outMessage	(0xffffffff,cName(),"Crashed...");
 			};
@@ -221,10 +220,12 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 
 
 	// Initialize variables
-	if(E)
-		fEntityHealth			= E->fHealth;
+	if(E) {
+		fEntityHealth		= E->fHealth;
+		m_killer_id			= E->m_killer_id;
+	}
 	else
-		fEntityHealth			= 100.f;
+		fEntityHealth		= 100.f;
 
 	fArmor					= 0;
 
@@ -232,6 +233,10 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 	if (fEntityHealth > 0.f) {
 		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
 		++Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwAliveCount;
+	}
+	else {
+		m_level_death_time		= Device.dwTimeGlobal;
+		m_game_death_time		= Level().GetGameTime();
 	}
 	
 	Engine.Sheduler.Unregister	(this);
@@ -278,6 +283,11 @@ void CEntity::renderable_Render()
 
 void CEntity::KillEntity(CObject* who)
 {
+	if (who && (who->ID() != ID())) {
+		VERIFY		(m_killer_id == ALife::_OBJECT_ID(-1));
+		m_killer_id	= who->ID();
+	}
+
 	NET_Packet		P;
 	u_EventGen		(P,GE_DIE,ID());
 	P.w_u16			(u16(who->ID()));
@@ -294,6 +304,7 @@ void CEntity::reinit			()
 
 	m_level_death_time			= 0;
 	m_game_death_time			= 0;
+	m_killer_id					= ALife::_OBJECT_ID(-1);
 }
 
 
@@ -321,4 +332,20 @@ DLL_Pure *CEntity::_construct	()
 	inherited::_construct		();
 	CDamageManager::_construct	();
 	return						(this);
+}
+
+const u32 FORGET_KILLER_TIME = 180000;
+
+void CEntity::shedule_Update	(u32 dt)
+{
+	inherited::shedule_Update	(dt);
+	if (!g_Alive() && (m_killer_id != u16(-1))) {
+		if (Device.dwTimeGlobal > m_level_death_time + FORGET_KILLER_TIME) {
+			m_killer_id			= u16(-1);
+			NET_Packet			P;
+			u_EventGen			(P,GE_ASSIGN_KILLER,ID());
+			P.w_u16				(u16(-1));
+			u_EventSend			(P);
+		}
+	}
 }

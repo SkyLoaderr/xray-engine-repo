@@ -16,9 +16,9 @@
 #include "script_callback.h"
 #include "script_game_object.h"
 #include "CharacterPhysicsSupport.h"
+
 #define SMALL_ENTITY_RADIUS		0.6f
 #define BLOOD_MARKS_SECT		"bloody_marks"
-
 
 //отметки крови на стенах 
 SHADER_VECTOR* CEntityAlive::m_pBloodMarksVector = NULL;
@@ -216,7 +216,7 @@ void CEntityAlive::shedule_Update(u32 dt)
 		}
 		else {
 //			Msg			("%6d : KillEntity from CEntityAlive for object %s",Device.dwTimeGlobal,*cName());
-			KillEntity(this);
+			KillEntity	(this);
 		}
 	}
 }
@@ -227,21 +227,20 @@ BOOL CEntityAlive::net_Spawn	(CSE_Abstract* DC)
 /*	if(monster_community->team() != 255)
 		id_Team = monster_community->team();*/
 
-	inherited::net_Spawn	(DC);
+	inherited::net_Spawn		(DC);
 
-	m_BloodWounds.clear();
-	m_ParticleWounds.clear();
+	m_BloodWounds.clear			();
+	m_ParticleWounds.clear		();
 
 	//добавить кровь и огонь на партиклы, если нужно
 	for(WOUND_VECTOR::const_iterator it = conditions().wounds().begin(); conditions().wounds().end() != it; ++it)
 	{
-		CWound* pWound = *it;
-		StartFireParticles(pWound);
-		StartBloodDrops(pWound);
+		CWound					*pWound = *it;
+		StartFireParticles		(pWound);
+		StartBloodDrops			(pWound);
 	}
 
-
-	return					TRUE;
+	return						(TRUE);
 }
 
 void CEntityAlive::net_Destroy	()
@@ -289,6 +288,11 @@ void CEntityAlive::Die	(CObject* who)
 	inherited::Die(who);
 
 	death_callback(who);
+
+	NET_Packet		P;
+	u_EventGen		(P,GE_ASSIGN_KILLER,ID());
+	P.w_u16			(u16(who->ID()));
+	u_EventSend		(P);
 }
 
 //вывзывает при подсчете хита
