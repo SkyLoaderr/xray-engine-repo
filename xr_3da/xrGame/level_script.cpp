@@ -23,6 +23,8 @@
 #include "PHCommander.h"
 #include "PHScriptCall.h"
 #include "HUDManager.h"
+#include "script_engine.h"
+
 using namespace luabind;
 
 CScriptGameObject *tpfGetActor()
