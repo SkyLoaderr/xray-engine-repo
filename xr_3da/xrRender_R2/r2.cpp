@@ -17,6 +17,7 @@ public:
 	virtual void					set_active			(bool)						{ bActive=TRUE;		}
 	virtual bool					get_active			()							{ return bActive;	}
 	virtual void					set_position		(const Fvector& P)			{ }
+	virtual void					set_direction		(const Fvector& D)			{ }
 	virtual void					set_radius			(float R)					{ }
 	virtual void					set_texture			(LPCSTR name)				{ }
 	virtual void					set_color			(const Fcolor& C)			{ }
