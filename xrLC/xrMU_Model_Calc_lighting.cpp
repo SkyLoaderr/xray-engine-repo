@@ -366,10 +366,11 @@ void xrMU_Reference::calc_lighting	()
 	// build data
 	clMsg("-----------------");
 	{
-		vector<vector<REAL> >	A;
-		vector<vector<REAL> >	B;
+		vector<vector<REAL> >	A(color.size());
+		vector<vector<REAL> >	B(color.size());
 		vector<REAL>			C;
 		vector<REAL>			D;
+
 		for (u32 it=0; it<color.size(); it++)
 		{
 			Fcolor&		__A		= model->color	[it];

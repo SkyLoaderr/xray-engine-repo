@@ -42,7 +42,7 @@ vector<REAL> &dafGradient(vector<vector<REAL> >	&daEvalResults, vector<REAL> &da
 	for (u32 i=0; i<dwParameterCount; i++) {
 		for (u32 j=0; j<dwTestCount; j++)
 			daResult[i]		-= B[j][i] - daEvalResults[j][i];
-		dNorma				+= _abs(daResult[i]);
+		dNorma				+= daResult[i]*daResult[i];
 	}
 	dNorma					= _sqrt(dNorma);
 
