@@ -72,7 +72,6 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 		R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
 		CSE_ALifeDynamicObject	*tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 		R_ASSERT2				(tpALifeDynamicObject,"Non-ALife object in the saved game!");
-		Msg						("Loading %s (%x)",s_name,size_t(tpSE_Abstract));
 		tpALifeDynamicObject->Spawn_Read(tNetPacket);
 
 		// Update

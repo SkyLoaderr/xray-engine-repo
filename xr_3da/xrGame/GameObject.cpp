@@ -40,7 +40,7 @@ void CGameObject::net_Destroy	()
 	g_pGameLevel->Objects.net_Unregister		(this);
 	if (this == Level().CurrentEntity())		Level().SetEntity(0);
 	if (!H_Parent()) {
-		Msg										("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
+//		Msg										("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
 		getAI().ref_dec							(AI_NodeID);
 	}
 	AI_NodeID									= u32(-1);
@@ -121,7 +121,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			}
 			else {
 				AI_Node				=	AI.Node		(AI_NodeID);
-				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+//				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 				getAI().ref_add		(AI_NodeID);
 			}
 		}
@@ -136,7 +136,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			} else {
 				AI_NodeID			= u32(node);
 				AI_Node				= getAI().Node(AI_NodeID);
-				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+//				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 				getAI().ref_add		(AI_NodeID);
 			}
 		}
@@ -181,14 +181,14 @@ void CGameObject::spatial_move		()
 			Pos.add		(Position());
 			CAI_Space&	AI = getAI();
 
-			Msg						("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
+//			Msg						("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
 			AI.ref_dec  (AI_NodeID);
 			AI_NodeID	= AI.q_Node	(AI_NodeID,Position());
 			
 			if (!AI_NodeID)
 				Msg("! GameObject::spatial_move : Corresponding node hasn't been found for monster %s",cName());
 
-			Msg						("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+//			Msg						("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 			AI.ref_add				(AI_NodeID);
 			AI_Node					= AI.Node(AI_NodeID);
 		}
