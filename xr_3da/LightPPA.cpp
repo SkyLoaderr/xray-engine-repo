@@ -103,7 +103,7 @@ void CLightPPA_Manager::Render()
 	RCache.set_xform_project	(Device.mProject);
 
 	RCache.set_Shader	(hShader);
-	for (u32 L=0; L<container.size(); L++)
+	for (u32 L=0; L<active.size(); L++)
 	{
 		CLightPPA&	PPL = *container[L];
 		float	alpha	= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;
@@ -131,7 +131,12 @@ void CLightPPA_Manager::Render()
 
 CLightPPA*		CLightPPA_Manager::Create			()
 {
+	CLightPPA*	L	= xr_new<CLightPPA>	();
+	incative.insert	(L);
+	return L;
 }
-void			CLightPPA_Manager::Destroy			(CLightPPA*)
+void			CLightPPA_Manager::Destroy			(CLightPPA* L)
 {
+
+	xr_delete	(L);
 }

@@ -33,8 +33,8 @@ public:
 
 class CLightPPA_Manager
 {
-	vector<CLightPPA*>				active;
-	vector<CLightPPA*>				incative;
+	set<CLightPPA*>					active;
+	set<CLightPPA*>					incative;
 	
 	Shader*							hShader;
 	SGeometry*						hGeom;
@@ -45,6 +45,7 @@ public:
 	CLightPPA*		Create			();
 	void			Destroy			(CLightPPA*);
 
+	/*
 	IC void			Add				(CLightPPA* L)	
 	{ 
 		const float	clip	= 8.f / 255.f;
@@ -54,6 +55,8 @@ public:
 		if (L->color.b<clip)		return;
 		container.push_back	(L);	
 	}
+	*/
+
 	void			Render			();
 };
 
