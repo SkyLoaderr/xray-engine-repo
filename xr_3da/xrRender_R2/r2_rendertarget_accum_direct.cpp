@@ -38,15 +38,20 @@ void CRenderTarget::accum_direct	(u32 dls_phase)
 		float	d_Z	= EPS_S, d_W = 1.f;
 		if (0==dls_phase)
 		{
-			
+			Fvector3				pt;
+			Fvector4				pt_hpos;
+			pt.mad					(Device.vCameraPosition,Device.vCameraDirection,DSM_distance_1);
+			Device.mFullTransform.transform(pt_hpos,pt);
+			d_Z						= pt_hpos.z;
+			d_W						= pt_hpos.w;
 		}
 
 		// Fill vertex buffer
 		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
-		pv->set						(EPS,			float(_h+EPS),	EPS,	1.f, C, p0.x, p1.y);	pv++;
-		pv->set						(EPS,			EPS,			EPS,	1.f, C, p0.x, p0.y);	pv++;
-		pv->set						(float(_w+EPS),	float(_h+EPS),	EPS,	1.f, C, p1.x, p1.y);	pv++;
-		pv->set						(float(_w+EPS),	EPS,			EPS,	1.f, C, p1.x, p0.y);	pv++;
+		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
+		pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
+		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
+		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 		RCache.set_Geometry			(g_combine);
 

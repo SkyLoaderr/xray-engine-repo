@@ -14,6 +14,7 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 	{
 	case 0:		// near pass
 		C.r2_Pass				("null",		"r2_accum_direct_1",TRUE,FALSE,TRUE,	D3DBLEND_INVSRCALPHA,	D3DBLEND_ZERO);
+		C.RS.SetRS				(D3DRS_ZFUNC,	D3DCMP_GREATEREQUAL);
 		C.r2_Sampler			("s_position",	r2_RT_P);
 		C.r2_Sampler			("s_smap",		r2_RT_smap_d);
 		C.r2_End				();
