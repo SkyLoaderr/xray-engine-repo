@@ -23,6 +23,7 @@ CAI_Trader::CAI_Trader()
 
 CAI_Trader::~CAI_Trader()
 {
+	delete_data						(m_tpOrderedArtefacts);
 }
 
 void CAI_Trader::Load(LPCSTR section)
@@ -208,7 +209,7 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeTrader					*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(e);
 	
-	m_tpOrderedArtefacts			= l_tpTrader->m_tpOrderedArtefacts;
+	clone							(l_tpTrader->m_tpOrderedArtefacts,m_tpOrderedArtefacts);
 	
 	R_ASSERT						(l_tpTrader);
 	
@@ -387,6 +388,7 @@ void CAI_Trader::net_Destroy()
 	m_OnStartCallback.clear		();
 	m_OnStopCallback.clear		();
 	m_OnTradeCallback.clear		();
+	delete_data					(m_tpOrderedArtefacts);
 }
 
 void TraderScriptCallBack(CBlend* B)
