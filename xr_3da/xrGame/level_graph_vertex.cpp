@@ -454,3 +454,91 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 	TIMER_STOP(CheckVertexInDirection)
 }
 
+IC  Fvector v3d(const Fvector2 &vector2d)
+{
+	return			(Fvector().set(vector2d.x,0.f,vector2d.y));
+}
+
+IC  Fvector2 v2d(const Fvector &vector3d)
+{
+	return			(Fvector2().set(vector3d.x,vector3d.z));
+}
+
+bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector2 &start_point, const Fvector2 &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath) const
+{
+	TIMER_START(CreateStraightPath)
+	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = start_vertex_id;
+	Fbox2					box;
+	Fvector2				identity, start, dest, dir;
+
+	identity.x = identity.y	= header().cell_size()/2.f;
+	start					= start_point;
+	dest					= finish_point;
+	dir.sub					(dest,start);
+	Fvector2				temp;
+	Fvector					pos3d;
+	SContour				_contour;
+	unpack_xz				(vertex(start_vertex_id),temp.x,temp.y);
+
+	if (bClearPath) {
+		tpaOutputPoints.clear	();
+		tpaOutputNodes.clear	();
+	}
+	if (bAddFirstPoint) {
+		pos3d				= v3d(start_point);
+		pos3d.y				= vertex_plane_y(start_vertex_id,start_point.x,start_point.y);
+		tpaOutputPoints.push_back(pos3d);
+		tpaOutputNodes.push_back(start_vertex_id);
+	}
+
+	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
+	for (;;) {
+		const_iterator		I,E;
+		begin				(cur_vertex_id,I,E);
+		bool				found = false;
+		for ( ; I != E; ++I) {
+			u32				next_vertex_id = value(cur_vertex_id,I);
+			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
+				continue;
+			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
+			box.min			= box.max = temp;
+			box.grow		(identity);
+			if (box.pick_exact(start,dir)) {
+				Fvector2		temp;
+				temp.add		(box.min,box.max);
+				temp.mul		(.5f);
+				float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
+				if (dist > cur_sqr)
+					continue;
+				cur_sqr			= dist;
+
+				SContour		tNextContour;
+				SSegment		tNextSegment;
+				Fvector			tIntersectPoint;
+				contour			(tNextContour,cur_vertex_id);
+				contour			(_contour,next_vertex_id);
+				intersect		(tNextSegment,tNextContour,_contour);
+				u32				dwIntersect = intersect(start_point.x,start_point.y,finish_point.x,finish_point.y,tNextSegment.v1.x,tNextSegment.v1.z,tNextSegment.v2.x,tNextSegment.v2.z,&tIntersectPoint.x,&tIntersectPoint.z);
+				VERIFY			(dwIntersect);
+				tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
+
+				tpaOutputPoints.push_back(tIntersectPoint);
+				tpaOutputNodes.push_back(cur_vertex_id);
+
+				if (box.contains(dest)) {
+					TIMER_STOP(CreateStraightPath)
+					return		(true);
+				}
+				found			= true;
+				prev_vertex_id	= cur_vertex_id;
+				cur_vertex_id	= next_vertex_id;
+				break;
+			}
+		}
+		if (!found) {
+			TIMER_STOP(CreateStraightPath)
+			return			(false);
+		}
+	}
+}
+
