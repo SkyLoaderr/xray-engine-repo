@@ -1,0 +1,38 @@
+local entered = false
+
+function on_enter (zone, object)
+  entered = true
+  printf ("Actor entered")
+end
+
+
+function main ()
+
+  local zone = get_level_object ("hero_zone")
+  local hero = get_level_object ("hero")
+  local pos = patrol ("freeway"):point (0)
+
+  zone:clear_callback (true)
+  zone:set_callback (s_test.on_enter, true)
+  hero:script (true, s_test.script_name ())
+    action (hero, anim ("mashina_0"), cond (cond.time_end, 1000000))
+
+  while entered == false do wait () end
+
+  reset_action (hero, s_test.script_name ())
+
+    action (hero, anim ("mashina_1"), cond (cond.anim_end))
+    action (hero, move (pos, 1.0), anim ("mashina_2"), cond (cond.anim_end))
+    action (hero, move (pos, 1.0), anim ("mashina_3"), cond (cond.anim_end))
+    action (hero, anim ("mashina_4"), cond (cond.anim_end))
+    action (hero, anim ("mashina_5"), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
+      cond (cond.anim_end))
+
+    while hero:action () do wait () end
+
+
+    hero:script (false, s_test.script_name ())
+
+
+
+ end
