@@ -692,8 +692,8 @@ void test_smooth_path(LPCSTR name)
 
 	RESET_ALL_TIMERS;
 
-//	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
 	
 	for (int i=0; i<TEST_COUNT; ++i) {

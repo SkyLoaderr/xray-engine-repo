@@ -361,9 +361,10 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 	start					= start_position;
 	dest					= finish_position;
 	dir.sub					(dest,start);
-	Fvector					temp = vertex_position(cur_vertex_id);//, t = temp;
+	Fvector2				temp;
+	unpack_xz				(vertex(start_vertex_id),temp.x,temp.y);
 
-	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.z - dest.y);
+	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
 	for (;;) {
 		const_iterator		I,E;
 		begin				(cur_vertex_id,I,E);
@@ -372,8 +373,8 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 			u32				next_vertex_id = value(cur_vertex_id,I);
 			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
 				continue;
-			temp			= vertex_position(next_vertex_id);
-			box.min			= box.max = Fvector2().set(temp.x,temp.z);
+			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
+			box.min			= box.max = temp;
 			box.grow		(identity);
 			if (box.pick_exact(start,dir)) {
 				if (box.contains(dest)) {
@@ -412,9 +413,10 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 	start					= start_position;
 	dest.set				(finish_position.x,finish_position.z);
 	dir.sub					(dest,start);
-	Fvector					temp = vertex_position(cur_vertex_id);//, t = temp;
+	Fvector2				temp;
+	unpack_xz				(vertex(start_vertex_id),temp.x,temp.y);
 
-	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.z - dest.y);
+	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
 	for (;;) {
 		const_iterator		I,E;
 		begin				(cur_vertex_id,I,E);
@@ -423,8 +425,8 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 			u32				next_vertex_id = value(cur_vertex_id,I);
 			if ((next_vertex_id == prev_vertex_id) || !valid_vertex_id(next_vertex_id))
 				continue;
-			temp			= vertex_position(next_vertex_id);
-			box.min			= box.max = Fvector2().set(temp.x,temp.z);
+			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
+			box.min			= box.max = temp;
 			box.grow		(identity);
 			if (box.pick_exact(start,dir)) {
 				if (next_vertex_id == finish_vertex_id) {

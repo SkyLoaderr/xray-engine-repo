@@ -67,6 +67,7 @@ IC u8	CLevelGraph::ref_dec		(u32 id)
 
 IC void CLevelGraph::unpack_xz(const CLevelGraph::CPosition &vertex_position, int &x, int &z) const
 {
+	VERIFY				(vertex_position.xz() < (1 << 21) - 1);
 	x					= vertex_position.xz() / m_row_length;
 	z					= vertex_position.xz() % m_row_length;
 }
@@ -107,9 +108,11 @@ IC const Fvector &CLevelGraph::vertex_position	(Fvector &dest_position, const CL
 IC const CLevelGraph::CPosition &CLevelGraph::vertex_position	(CLevelGraph::CPosition &dest_position, const Fvector &source_position) const
 {
 	float				sp = 1/header().cell_size();
-	int					pxz	= iFloor(((source_position.x - header().box().min.x)*sp + EPS_S + .5f))*m_row_length + iFloor((source_position.z - header().box().min.z)*sp   + EPS_S + .5f);
+	VERIFY				(iFloor(((source_position.x - header().box().min.x)*sp + EPS_S + .5f)) < m_row_length);
+	VERIFY				(iFloor((source_position.z - header().box().min.z)*sp  + EPS_S + .5f) < m_row_length);
+	int					pxz	= iFloor(((source_position.x - header().box().min.x)*sp + EPS_S + .5f))*m_row_length + iFloor((source_position.z - header().box().min.z)*sp + EPS_S + .5f);
 	int					py	= iFloor(65535.f*(source_position.y - header().box().min.y)/header().factor_y() + EPS_S);
-	clamp				(pxz,0,(1 << 21) - 1);
+	VERIFY				(pxz < (1 << 21) - 1);
 	dest_position.xz	(u32(pxz));
 	clamp				(py,0,65535);
 	dest_position.y		(u16(py));
@@ -210,7 +213,7 @@ IC bool	CLevelGraph::inside				(const u32 vertex_id,	const Fvector2 &position) c
 	TIMER_START			(Inside)
 	float				sp = 1/header().cell_size();
 	int					pxz	= iFloor(((position.x - header().box().min.x)*sp + EPS_S + .5f))*m_row_length + iFloor((position.y - header().box().min.z)*sp + EPS_S + .5f);
-	clamp				(pxz,0,(1 << 21) - 1);
+	VERIFY				(pxz < (1 << 21) - 1);
 	bool				b = vertex(vertex_id)->position().xz() == u32(pxz);
 	TIMER_STOP			(Inside)
 	return				(b);
