@@ -118,14 +118,15 @@ end
 function action_sniper_idle:init_state_sit_down  ()
      printf("2")
     if( self.object:level_vertex_id() ~= self.rest_point ) then
-      //printf("rest point __________%d", self.rest_point)
-      self.object:set_dest_level_vertex_id(self.rest_point)
-        self.object:set_movement_type      (move.walk)
-        self.object:set_path_type          (game_object.level_path)
-      self.object:set_detail_path_type    (move.line)
+		//printf("rest point __________%d", self.rest_point)
+		self.object:set_dest_level_vertex_id(self.rest_point)
+		self.object:set_body_state			(move.standing)
+        self.object:set_movement_type		(move.walk)
+        self.object:set_path_type			(game_object.level_path)
+		self.object:set_detail_path_type	(move.line)
         self.object:set_sight               (look.danger, nil, 0)
         self.object:set_item                (object.activate, self.object:best_weapon())
-        self.object:set_desired_direction    (point_with_bit(self.a.point_path, 2):sub(level.vertex_position(self.rest_point)) )
+        self.object:set_desired_direction	(point_with_bit(self.a.point_path, 2):sub(level.vertex_position(self.rest_point)) )
     end
 
     self.object:set_mental_state            (anim.free)
@@ -142,14 +143,14 @@ function action_sniper_idle:init_state_walk()
     if(xr_state.change_state(self.object, 0)) then  return true  end    --≈сли будем мен€ть положение тела, то больше ничего не делаем
 
     self.object:set_mental_state        (anim.free)
-    self.object:set_body_state        (move.standing)
+    self.object:set_body_state			(move.standing)
     self.object:set_detail_path_type    (move.line)
     self.object:set_path_type           (game_object.patrol_path)
-    self.object:set_patrol_path        (self.a.rest_path, patrol.start, patrol.continue, true)
+    self.object:set_patrol_path			(self.a.rest_path, patrol.start, patrol.continue, true)
     self.object:set_movement_type       (move.walk)
-    self.object:set_sight            (look.path_dir, nil, 0)
+    self.object:set_sight				(look.path_dir, nil, 0)
 
-    self.object:set_item            (object.activate, self.object:best_weapon())
+    self.object:set_item				(object.activate, self.object:best_weapon())
 
 
 end
@@ -160,10 +161,10 @@ function action_sniper_idle:state_sit_down    ()
     if(self.object:level_vertex_id() == self.rest_point) then
 
         printf("_1")
-        self.object:set_movement_type  (move.stand)
+        self.object:set_movement_type	(move.stand)
 
 		if(xr_state.change_state(self.object, 2) == false) then
-			//self.animation:update    ("idle")
+			//self.animation:update		("idle")
 			printf("_2")
             if(self.time == 0) then
 				--«апоминаем врем€, когда присели
@@ -172,15 +173,15 @@ function action_sniper_idle:state_sit_down    ()
 
             if( self.time ~= 0 and device():time_global() > (self.time + time_to_rest) and self.object:animation_count() <= 1 )then
 				-- огда насиделись, встаем и идем
-				//self.animation:update  (nil)
+				//self.animation:update (nil)
 				printf("_3")
-				self:init_state_walk  ()
+				self:init_state_walk	()
 				printf("_4")
 				end
 		else
 			-- огда садимс€, убераем оружие
 			printf("_5")
-			//self.object:set_item            (object.deactivate, self.object:best_weapon())
+			self.object:set_item            (object.deactivate, self.object:best_weapon())
 			printf("_6")
 		end
 
@@ -198,6 +199,7 @@ function action_sniper_idle:state_walk      ()
             self.object:set_path_type           (game_object.patrol_path)
             self.object:set_patrol_path         (self.a.rest_path, patrol.nearest, patrol.continue, true)
             self.object:set_movement_type       (move.walk)
+			self.object:set_body_state			(move.standing)
             self.object:set_sight               (look.path_dir, nil, 0)
             self.object:set_mental_state        (anim.free)
             self.state  = walk
@@ -215,10 +217,11 @@ function action_sniper_idle:execute       ()
     action_base.execute             (self)
 
     if(self.state == sit_idle) then
-        self:state_sit_down     ()
+        self:state_sit_down		()
     else
-        self:state_walk          ()
+        self:state_walk			()
     end
+    printf("10")
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:move_callback(obj, action_type, index)
@@ -230,8 +233,9 @@ function action_sniper_idle:move_callback(obj, action_type, index)
 
     if(index == self.prev_point) then return end
 
-    self.object:set_movement_type    (move.stand)
-    self.object:set_sight          (look.fire_point, point_with_bit(self.a.point_path, 2), 0)
+    self.object:set_movement_type	(move.stand)
+	self.object:set_body_state		(move.standing)
+    self.object:set_sight			(look.fire_point, point_with_bit(self.a.point_path, 2), 0)
     self.state       = LOOK
     self.time      = device():time_global() + time_to_look
     self.time_sight = device():time_global() + 1000
