@@ -234,7 +234,10 @@ function action_single_patrol:process_radio ()
           table.remove (self.phrases, 1)
     end      
     
-    return true
+    self:set_animation ()
+    self.stage = 1
+    
+    return false
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:radio ()
