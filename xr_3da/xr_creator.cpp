@@ -53,7 +53,7 @@ void CCreator::net_Stop			()
 //-------------------------------------------------------------------------------------------
 extern CStatTimer				tscreate;
 
-BOOL CCreator::Load(u32 dwNum) 
+BOOL CCreator::Load				(u32 dwNum) 
 {
 //	Device.Reset				();
 
@@ -62,7 +62,6 @@ BOOL CCreator::Load(u32 dwNum)
 	string256					temp;
 	if (!FS.exist(temp, "$level$", "level.ltx"))
 		Debug.fatal	("Can't find level configuration file '%s'.",temp);
-
 	pLevel						= xr_new<CInifile>	( temp );
 
 	// Read Environment
@@ -76,7 +75,7 @@ BOOL CCreator::Load(u32 dwNum)
 	Environment.Load			(pLevel, "environment");
 	
 	// Header
-	hdrLEVEL H;
+	hdrLEVEL					H;
 	fs.r_chunk_safe				(fsL_HEADER,&H,sizeof(H));
 	R_ASSERT2					(XRCL_PRODUCTION_VERSION==H.XRLC_version,"Incompatible level version.");
 	pApp->LoadTitle				("Description string: ",H.name);
