@@ -123,7 +123,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 	// ...and trace line
 	m_pParent->bEnabled = false;
-	BOOL bResult		= pCreator->ObjectSpace.RayPick( P, dir, fireDistance, R );
+	BOOL bResult		= pCreator->ObjectSpace.RayPick( P, dir, fireDistance, RQ );
 	m_pParent->bEnabled = true;
 	D					= dir;
 

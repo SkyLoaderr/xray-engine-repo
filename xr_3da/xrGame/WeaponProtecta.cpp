@@ -177,7 +177,7 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 					Fvector p1=p1_base, d=d_base;
 					bHit |=		FireTrace(p1,vLastFP,d);
 				}
-				if (bHit)		pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
+//				if (bHit)		pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
 				iAmmoElapsed	--;
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
 				m_pHUD->Shoot	();
