@@ -56,3 +56,6 @@ function actor_has_weapon (actor, npc)
     return true
 end
 
+function is_day (actor, npc)
+    return utils.is_day ()
+end    
