@@ -1310,13 +1310,7 @@ walk_accel              = 17 ;40 ;17  ;54 ;40
 pickup_info_radius		= 5
 
 ; attach params
-attachable_items		= device_torch,walkietalkie
-
-;old
-; torch params
-torch_angle_offset	  = 0, -3.14, 1.6
-torch_position_offset = 0.105, 0.00, 0.085
-torch_bone_name		  = bip01_head
+attachable_items		= device_torch,attachable_item
 
 ph_box0_center 			= 0.0,  0.9,  0.0
 ph_box0_size 			= 0.35, 0.9,  0.35
@@ -1564,13 +1558,7 @@ max_item_mass		 = 40.0
 MaxHealthValue		 = 100			; range [0..200]
 
 ; attach params
-attachable_items		= device_torch
-
-;old
-; torch params
-torch_angle_offset	  = 0, -3.14, 1.6
-torch_position_offset = 0.105, 0.00, 0.085
-torch_bone_name		  = bip01_head
+attachable_items		= device_torch,attachable_item
 
 ; State                = 7
 ; 0 - бежать прямо на врага
@@ -1728,11 +1716,7 @@ max_item_mass				 = 40.0
 MaxHealthValue		     = 100			; range [0..200]
 
 ; attach params
-attachable_items		= device_torch
-; torch params
-torch_angle_offset	  = 0, -3.14, 1.6
-torch_position_offset = 0.105, 0.00, 0.085
-torch_bone_name		  = bip01_head
+attachable_items		= device_torch,attachable_item
 
 State                = 7
 ; 0 - бежать прямо на врага
@@ -2661,7 +2645,7 @@ local_map_width_meters	= 300			;сколько метров в ширину в локальной карте
 [pda_maingame]
 max_show_time = 20000
 
-[walkietalkie]
+[attachable_item]
 GroupControlSection		= spawn_group
 discovery_dependency	= 
 $spawn					= "equipment\attachable_item"
