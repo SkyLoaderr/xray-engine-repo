@@ -100,8 +100,8 @@ function SinglePatrol:process ()
 
     reset_action (self.npc, self.script_name)
 
-    action (self.npc, move (move.standing, move.stand, move.line, patrol ("way_ptr30")),
-		 	anim (self.animations::get_animation ()), cond (cond.anim_end))
+    action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+		 	anim (self.animations:get_animation ()), cond (cond.anim_end))
 
 end
 
