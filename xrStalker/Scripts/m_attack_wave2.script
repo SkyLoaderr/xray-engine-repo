@@ -39,170 +39,6 @@ local already		=	1	--мутант уже атакует данного сталкера
 local added			=	2	--мутант добавлен в список атакующих
 
 -------------------------------------------------------------------------------------------------------------------------------------
---  ласс защитника
--------------------------------------------------------------------------------------------------------------------------------------
-class "Defender"
-
-function Defender:__init (npc, patrol_way, script_name, monsters, available, stand)
-	self.npc = npc
-	self.patrol_way = way
-	self.script_name = script_name
-	self.monsters = monsters
-	self.setdown = false
-	self.pre_state = true
-	self.enemy = nil
-	self.waiting = 1
-	self.available = available
-	self.attackers = {}					-- монстры, которые атакуют сталкера.
-	self.weapon = nil
-	if stand == true then 
-	   self.stand = move.standing 
-	else 
-       self.stand = move.crouch 
-	end
-end
-
-function Defender:initialize ()
-	self.npc:script (true, self.script_name)
-	action (self.npc, anim (anim.free), cond (cond.time_end, time_infinite))	
-end
-
-function Defender:find_enemy ()
-	if table.getn (self.monsters) == 0 then return nil end
-	local distance = 10000000.0
-	local enemy = nil
-	for a = 1, table.getn (self.monsters), 1 do
-		local tmonster = self.monsters[a]
-		if tmonster ~= nil then
-		   local tdist = distance_between (self.npc, tmonster.npc)
-		   if tdist < distance and self.npc:see (tmonster.npc) == true then
-		   	  distance = tdist
-		   	  enemy = tmonster
-		   end	  
-		end
-	end
-
-	if enemy ~= nil then
-       --printf ("Defender %s find enemy %s", self.npc:name (), enemy.npc:name ())	
-	   if distance_between (enemy.npc, self.npc) > 30 then enemy = nil end
-	end
-
-	return enemy		
-end
-
-function Defender:get_num_attackers ()
-	return table.getn (self.attackers)
-end
-
-function Defender:add_attacker (mutant)
-
-	local num = table.getn (self.attackers)
-	if num > max_attackers then 
-	   return too_many
-	end
-	for a = 1, num, 1 do
-		if self.attackers[a] == mutant then 
-		   return already 
-        end
-	end
-
-	table.insert (self.attackers, mutant)
-	return added
-end
-
-function Defender:attacker_present (mutant)
-	for a = 1, num, 1 do
-		if self.attackers[a] == mutant then 
-		   return true 
-        end
-	end
-	return false
-end
-
-function Defender:is_alive ()
-	if self.npc ~= nil and self.npc:alive () == true then return true end
-	return false
-end
-
-function Defender:prestate ()
-	if self.patrol_way == nil then 
-	   self.pre_state = false 
-	   return true
-	end
-	if npc:action () then 
-	   return false 
-	end
-	self.pre_state = false
-	self.patrol_way = nil
-	return true
-end
-
-
-function Defender:process ()
-
---	printf ("Process object %s : ", self.npc:name ())
-
-	--если npc помер, то выйдем
-	if self.npc == nil or self.npc:alive () == false then 
-	   return 
-    end
-	
-	--если мы еще не на позиции, то выйдем на нее
-	if self.pre_state == true and self:prestate () == false then 
-	   return 
-    end
-
-	if self.weapon == nil then
-  	   self.weapon = self.npc:active_item ()
-	   if self.weapon ~= nil then
-	      --printf ("Object %s have weapon %s", self.npc:name (), self.weapon:name ())	
-	   end
-	end
-
-	--если мы еще не сидим, то с€дем 
-	if self.setdown == false then
-	   reset_action (self.npc, self.script_name)
-	   action (self.npc, move (self.stand, move.stand, move.line, vector ():set (0, 0, 0)), 
-			   look (look.search), anim (anim.danger), cond (cond.time_end, time_infinite))
-	   self.setdown = true
-    end
-	
-	
-	-- или, если не нашли достойного врага
-	local enemy = self:find_enemy ()
-	if enemy == nil then 
-	   self.enemy = nil	
-	   return 
-	end
-	
-	if self.enemy ~= enemy then
-  	   reset_action (self.npc, self.script_name)
-	   action (self.npc, move (self.stand, move.stand, move.line, self.npc:position ()), 
-			   look (look.fire_point, enemy.npc), object (self.weapon, object.fire1),
-			   cond (cond.time_end, time_infinite))
-	   self.enemy = enemy
-    end	
---	else
---  	   reset_action (self.npc, self.script_name)
---	   action (self.npc, move (self.stand, move.stand, move.line, vector():set (0, 0, 0)), look (look.fire_point, enemy.npc), cond (cond.time_end, time_infinite))	
---	end
- 
---	if self.waiting > 0 then
---	   self.waiting = self.waiting - game.time ()
---	   if self.waiting <= 0 then
---		  reset_action (self.npc, self.script_name)
---		  printf ("Attack %s target %s", self.npc:name (), enemy.npc:name ())
---		  action (self.npc, move (self.stand, move.stand, move.line, vector ():set (0, 0, 0)), 
---				  look (look.fire_point, enemy.npc), object (self.weapon, object.fire1),
---				  cond (cond.time_end, time_infinite))	
---		  self.waiting = game.time () + math.random (2000, 3000)
---	   end
---	end		
-		
-end         		  
-	   	  				
-
--------------------------------------------------------------------------------------------------------------------------------------
 --  ласс монстра
 -------------------------------------------------------------------------------------------------------------------------------------
 class "Monster"
@@ -251,9 +87,122 @@ function Monster:process ()
     
 	self.freemove = true
 	self.npc:script (false, self.script)
-	printf ("Monster %s freed from our control", self.npc:name ())
 	
+	--printf ("%s if freed from our control", self.npc:name ())	
 end	
+
+function Monster:validate ()
+    if self.npc ~= nil and self.npc:alive () == true then return true end
+    return false
+end
+
+-------------------------------------------------------------------------------------------------------------------------------------
+--  ласс защитника
+-------------------------------------------------------------------------------------------------------------------------------------
+class "Defender"
+
+local on_ready = 0
+local on_move = 1
+local on_free = 2
+
+function Defender:__init (npc, script, way, monsters, has_freed)
+	self.npc = npc
+	self.script = script
+	self.way = way
+	self.monsters = monsters
+	self.state = on_ready
+	self.has_freed = has_freed
+	self.freed = false
+	
+	self.npc:script (true, self.script)
+	action (self.npc, anim (anim.free), cond (cond.time_end, time_infinite))
+end
+
+function Defender:initialize ()
+
+    reset_action (self.npc, self.script)
+     
+    if self.way == nil then
+	   action (self.npc, move (move.crouch, move.stand, move.line, self.npc:position ()), anim (anim.danger), 
+	   		   cond (cond.time_end, time_infinite))	
+	   self.state = on_ready		   
+	else
+	   action (self.npc, move (move.standing, move.run, move.line, self.way), anim (anim.danger), cond (cond.move_end))
+	   self.state = on_move		   		   
+	end	   		   
+	
+	
+end
+
+function Defender:process ()
+    if self.npc:alive () == false then self.freed = true end
+	if self.npc == nil or self.npc:alive () == false or self.freed == true then return end
+	
+	--если еще идем, то вперед
+	if self.state == on_move then
+	   if self.npc:action () then 
+	   	  return
+	   else 
+	      reset_action (self.npc, self.script)   
+	      action (self.npc, move (move.crouch, move.stand, move.line, self.way), anim (anim.danger), cond (cond.time_end, time_infinite))	
+	      self.state = on_ready 
+	   end
+	end   
+	
+	--если сталкер должен быть отпущен, то отпускаем
+	if self.has_freed == true then
+	   self.npc:script (false, self.script)
+	   self.freed = true
+	   return
+	end
+	
+	--если таблица монстров не задана или в ней нет элементов, то отпускаем нпц       
+    if self.monsters == nil or table.getn (self.monsters) == 0 then
+	   self.npc:script (false, self.script)
+	   self.freed = true
+	   printf ("Stalker freed 2")
+	   return
+	end
+	
+	--найдем врага
+	local dist = 10000000
+	local enemy = nil
+	local tdist
+	for a = 1, table.getn (self.monsters), 1 do
+	    local monster = self.monsters[a]
+	    printf ("Monster : %s", monster.npc:name ())
+	    if monster.npc:alive () == true then
+	       tdist = distance_between (monster.npc, self.npc)
+	       printf ("Distance from stalker to monster - %f", tdist)
+	       if tdist < dist then
+	          printf ("tdist less then dist")
+              if self.npc:see(monster.npc) then
+    	          printf ("Monster found")
+    	          dist = tdist
+    	          enemy = monster
+    	      end
+    	   end
+	    end      
+	end    
+	
+	--если нет врагов, то отпускаем мужика
+    if enemy == nil then
+	   self.npc:script (false, self.script)
+	   self.freed = true
+	   printf ("Stalker freed 3")
+	   return
+    end	   
+	
+	--целимс€ во врага
+	update_action (self.npc, self.script, look (look.fire_point, enemy.npc))
+    printf ("Stalker see enemy 1")
+	--если дистанци€ более 30 метров, то ничего не делаем
+	if tdist > 30 then return end
+    printf ("Stalker see enemy 2")
+	--стрел€ем
+    update_action (self.npc, self.script, object (self.npc:active_item (), object.fire1))
+	
+end
 
 -------------------------------------------------------------------------------------------------------------------------------------
 -- ¬се остальное
@@ -266,6 +215,11 @@ function boar_callback (monster)
 	printf ("Callback called")      		
 end      		
 
+local entered = false
+function on_zone_enter (zone, obj)
+    zone:clear_callback (true)
+    entered = true
+end
 
 function main ()
 
@@ -288,31 +242,40 @@ function main ()
                       m_attack_wave2.Monster (get_level_object ("m_flesh_e0000"),  patrol ("way0013"), scrname)
 					  }
 					  
-	monsters[1]:set_callback (m_attack_wave2.boar_callback)					  
-
+	--monsters[1]:set_callback (m_attack_wave2.boar_callback)					  
+    
 	local stalkers = {
-					 m_attack_wave2.Defender (get_level_object ("stalker_young"), patrol ("way_young"), scrname, monsters, true, true),
-					 m_attack_wave2.Defender (get_level_object ("stalker_veteran"), patrol ("way_veteran"), scrname, monsters, true, false),
-					 m_attack_wave2.Defender (get_level_object ("defender1"), patrol ("way_defender1"), scrname, monsters, true, false),
-					 m_attack_wave2.Defender (get_level_object ("defender2"), patrol ("way_defender2"), scrname, monsters, true, true),
-					 m_attack_wave2.Defender (get_level_object ("defender3"), patrol ("way_defender2"), scrname, monsters, true, true),
-					 m_attack_wave2.Defender (get_level_object ("defender4"), nil, scrname, monsters, true, false),
-					 m_attack_wave2.Defender (get_level_object ("defender5"), nil, scrname, monsters, true, false),
-					 m_attack_wave2.Defender (get_level_object ("tower1"), nil, scrname, monsters, false, false),
-					 m_attack_wave2.Defender (get_level_object ("tower2"), nil, scrname, monsters, false, true),
-					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), nil, scrname, monsters, true, true)
+					 m_attack_wave2.Defender (get_level_object ("stalker_young"), scrname, patrol ("way_young"), monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("stalker_veteran"), scrname, patrol ("way_veteran"), monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender1"), scrname, patrol ("way_defender1"), monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender2"), scrname, patrol ("way_defender2"),monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender3"), scrname, patrol ("way_defender2"), monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender4"), scrname, nil, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("defender5"), scrname, nil, monsters, true),
+					 m_attack_wave2.Defender (get_level_object ("tower1"), scrname, nil, monsters, false),
+					 m_attack_wave2.Defender (get_level_object ("tower2"), scrname, nil, monsters, false),
+					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), scrname, nil, monsters, true)
 					 }
 
 	for a = 1, table.getn (monsters), 1 do
 		monsters[a]:initialize ()
-	    if a <= table.getn (stalkers) then
-		   stalkers[a]:initialize ()
 		end
 	end
 	
 
     wait (20000)
 
+	while entered == false do
+	      for a = 1, table.getn (monsters), 1 do   
+		      monsters[a]:process ()
+		  end
+          wait ()
+	end
+
+
+	for a = 1, table.getn (stalkers), 1 do
+	    stalkers[a]:initialize ()
+    end	    
 
 	while true do 
    		  for a = 1, table.getn (monsters), 1 do
@@ -321,7 +284,7 @@ function main ()
 		         stalkers[a]:process ()
   		      end
 		  end	
-		  wait (200)
+		  wait ()
 	end
 
 
