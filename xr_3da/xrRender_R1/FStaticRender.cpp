@@ -307,7 +307,7 @@ void CRender::Calculate				()
 		u32 uID_LTRACK						= 0xffffffff;
 		if (phase==PHASE_NORMAL)			{
 			uLastLTRACK	++;
-			uID_LTRACK	= uLastLTRACK%lstRenderables.size();
+			if (lstRenderables.size())		uID_LTRACK	= uLastLTRACK%lstRenderables.size();
 		}
 		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 		{
