@@ -225,7 +225,7 @@ void CActor::Load(CInifile* ini, const char* section )
 	dwMinUpdate			= dwMaxUpdate = 1;
 }
 
-BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle, NET_Packet& P )
+BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::Spawn(bLocal,sid,team,squad,group,o_pos,o_angle,P))	return FALSE;
 	r_model_yaw			= o_angle.y;

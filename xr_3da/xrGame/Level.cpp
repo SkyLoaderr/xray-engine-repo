@@ -59,16 +59,16 @@ void CLevel::g_cl_Spawn		(LPCSTR name, int rp, int team, int squad, int group)
 	P.w_begin	(M_SPAWN);
 	P.w_string	(name);
 	P.w_string	("");
-	P.w_u8		(team);
-	P.w_u8		(squad);
-	P.w_u8		(group);
 	P.w_u8		((rp>=0)?u8(rp):0xff);
 	P.w_vec3	(dummyPos);
 	P.w_vec3	(dummyAngle);
 	P.w_u16		(0);		// srv-id	| by server
 	P.w_u8		(0);		// local	| by server
-	P.w_u16		(2);		// data size
-	P.w_u16		(M_SPAWN_OBJECT_ACTIVE);
+	P.w_u16		(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL);
+	P.w_u16		(3);		// data size
+	P.w_u8		(team);
+	P.w_u8		(squad);
+	P.w_u8		(group);
 	Send		(P,net_flags(TRUE));
 }
 
@@ -88,20 +88,16 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	Fvector		o_pos,o_angle;
 	P.r_string	(s_name);
 	P.r_string	(s_replace);
-	P.r_u8		(s_team);
-	P.r_u8		(s_squad);
-	P.r_u8		(s_group);
 	P.r_u8		(s_rp);
 	P.r_vec3	(o_pos);
 	P.r_vec3	(o_angle);
 	P.r_u16		(s_server_id);
-	P.r_u8		(s_local);
-	P.r_u16		(s_data_size);
 	P.r_u16		(s_flags);
-	
+	P.r_u16		(s_data_size);
+
 	// Real spawn
 	CEntity* E = (CEntity*) Objects.LoadOne	(pSettings,s_name);
-	if (0==E || (!E->Spawn(s_local,s_server_id,o_pos,o_angle,P,s_team,s_squad,s_group))) 
+	if (0==E || (!E->Spawn(s_local,s_server_id,o_pos,o_angle,P,s_flags))) 
 	{
 		Objects.DestroyObject(E);
 		Msg("! Failed to spawn entity '%s'",s_name);

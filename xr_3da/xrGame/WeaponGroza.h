@@ -24,7 +24,7 @@ private:
 	BOOL			bFlame;
 
 	sound3D			sndFireLoop;
-	sound3D			sndRicochet[SND_RIC_COUNT];
+	sound3D			sndRicochet		[SND_RIC_COUNT];
 
 	vector<Shader*>	hFlames;
 
