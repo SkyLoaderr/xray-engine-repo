@@ -27,8 +27,6 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 
 	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition);
 
-	vfSetWeaponState(tWeaponState);
-
 	m_fCurSpeed		= 1.f;
 
 	if (AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart)) {
@@ -94,6 +92,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 	if (m_fCurSpeed < EPS_L)
 		if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_target.yaw,2*PI_DIV_6))
 			r_torso_target.yaw = r_target.yaw;
+	
+	vfSetWeaponState(tWeaponState);
 }
 
 void CAI_Stalker::vfCheckForItems()

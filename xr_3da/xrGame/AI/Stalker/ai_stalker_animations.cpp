@@ -193,7 +193,6 @@ void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
 	if (g_Health() <= 0)
 		tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[0];
-	//tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[2].A[0];
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)

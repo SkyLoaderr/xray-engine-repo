@@ -31,6 +31,7 @@ void CAI_Stalker::Think()
 	m_dwCurrentUpdate		= Level().timeServer();
 	m_bStopThinking			= false;
 	
+	m_tEnemy.Enemy			= 0;
 	vfUpdateDynamicObjects	();
 	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
 	Msg("[A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",A,B,C,D,E,F,G,H,I,J,K,L,M);

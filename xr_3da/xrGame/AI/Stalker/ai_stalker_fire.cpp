@@ -170,6 +170,108 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 
 	bool bSafeFire = m_bFiring;
 
+	u32 dwStartFireAmmo, dwFireDelayMin, dwFireDelayMax;
+	CWeaponMagazined *tpWeaponMagazined = dynamic_cast<CWeaponMagazined*>(tpWeapon);
+	if (tpWeaponMagazined && m_tEnemy.Enemy) {
+		float fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());
+		float fDistance1 = tpWeaponMagazined->m_fMaxRadius, fDistance2 = (tpWeaponMagazined->m_fMaxRadius + 0*tpWeaponMagazined->m_fMinRadius)/2,fDistance3 = 0*tpWeaponMagazined->m_fMinRadius;
+		u32 dwFuzzyDistance;
+		if (_abs(fDistance - fDistance1) <	_abs(fDistance - fDistance2))
+			dwFuzzyDistance = 0;
+		else
+			if (_abs(fDistance - fDistance2) <	_abs(fDistance - fDistance3))
+				dwFuzzyDistance = 1;
+			else
+				dwFuzzyDistance = 2;
+		
+		u32	dwMinQueueSize = 0, dwMaxQueueSize = 0;
+		switch (m_tMovementType) {
+			case eMovementTypeRun : {
+				switch (dwFuzzyDistance) {
+					case 0 : {
+						dwMinQueueSize	= 1;
+						dwMaxQueueSize	= 3;
+						dwFireDelayMin	= 2000;
+						dwFireDelayMax	= 4000;
+						break;
+					}
+					case 1 : {
+						dwMinQueueSize	= 2;
+						dwMaxQueueSize	= 3;
+						dwFireDelayMin	= 1000;
+						dwFireDelayMax	= 2000;
+						break;
+					}
+					case 2 : {
+						dwMinQueueSize	= 3;
+						dwMaxQueueSize	= 7;
+						dwFireDelayMin	= 700;
+						dwFireDelayMax	= 1500;
+						break;
+					}
+					default : NODEFAULT;
+				}
+				break;
+			}
+			case eMovementTypeWalk : {
+				switch (dwFuzzyDistance) {
+					case 0 : {
+						dwMinQueueSize	= 1;
+						dwMaxQueueSize	= 3;
+						dwFireDelayMin	= 1000;
+						dwFireDelayMax	= 3000;
+						break;
+					}
+					case 1 : {
+						dwMinQueueSize	= 2;
+						dwMaxQueueSize	= 4;
+						dwFireDelayMin	= 900;
+						dwFireDelayMax	= 2000;
+						break;
+					}
+					case 2 : {
+						dwMinQueueSize	= 5;
+						dwMaxQueueSize	= 10;
+						dwFireDelayMin	= 700;
+						dwFireDelayMax	= 1200;
+						break;
+					}
+					default : NODEFAULT;
+				}
+				break;
+			}
+			case eMovementTypeStand : {
+				switch (dwFuzzyDistance) {
+					case 0 : {
+						dwMinQueueSize	= 1;
+						dwMaxQueueSize	= 3;
+						dwFireDelayMin	= 1500;
+						dwFireDelayMax	= 2500;
+						break;
+					}
+					case 1 : {
+						dwMinQueueSize	= 3;
+						dwMaxQueueSize	= 5;
+						dwFireDelayMin	= 1000;
+						dwFireDelayMax	= 1800;
+						break;
+					}
+					case 2 : {
+						dwMinQueueSize	= 10;
+						dwMaxQueueSize	= 15;
+						dwFireDelayMin	= 500;
+						dwFireDelayMax	= 1000;
+						break;
+					}
+					default : NODEFAULT;
+				}
+				break;
+			}
+			default : NODEFAULT;
+		}
+		tpWeaponMagazined->SetQueueSize(::Random.randI(iFloor(float(dwMinQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize())),iFloor(float(dwMaxQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize()))));
+	}
+
 	if (tWeaponState == eWeaponStateIdle) {
 		if (tpWeapon->STATE == CWeapon::eFire)
 			m_inventory.Action(kWPN_FIRE, CMD_STOP);
@@ -178,11 +280,14 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 		if (tWeaponState == eWeaponStatePrimaryFire)
 			if (tpWeapon->STATE == CWeapon::eFire)
 				if (bfCheckIfCanKillEnemy() && !bfCheckIfCanKillMember()) {
-					m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
-					m_inventory.Action(kWPN_FIRE, CMD_STOP);
-					if (m_dwStartFireAmmo) {
-						m_inventory.Action(kWPN_FIRE, CMD_START);
+					u32 dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
+					if (dwStartFireAmmo) {
 						m_bFiring = true;
+						m_dwNoFireTime = Level().timeServer() + ::Random.randI(dwFireDelayMin,dwFireDelayMax);
+					}
+					else {
+						m_inventory.Action(kWPN_FIRE, CMD_STOP);
+						m_bFiring = false;
 					}
 				}
 				else {
@@ -193,8 +298,8 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 			else
 				if (tpWeapon->STATE == CWeapon::eIdle)
 					if (bfCheckIfCanKillEnemy() && !bfCheckIfCanKillMember()) {
-						m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
-						if (m_dwStartFireAmmo) {
+						dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
+						if (dwStartFireAmmo && (Level().timeServer() > m_dwNoFireTime)) {
 							m_inventory.Action(kWPN_FIRE, CMD_START);
 							m_bFiring = true;
 						}
@@ -226,10 +331,9 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 //			break;
 //	}
 	
-	CWeaponMagazined *tpWeaponMagazined = dynamic_cast<CWeaponMagazined*>(tpWeapon);
 	if (tpWeaponMagazined) {
-		m_dwStartFireAmmo = tpWeaponMagazined->GetAmmoElapsed();
-		if ((!m_dwStartFireAmmo) && (tpWeapon->STATE != CWeapon::eReload))
+		dwStartFireAmmo = tpWeaponMagazined->GetAmmoElapsed();
+		if ((!dwStartFireAmmo) && (tpWeapon->STATE != CWeapon::eReload))
 			if (tpWeaponMagazined->IsAmmoAvailable()) {
 				m_inventory.Action(kWPN_FIRE,	CMD_START);
 				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
@@ -246,6 +350,10 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 							best_slot = I - B;
 					if (best_slot != -1)														   
 						m_inventory.Activate(best_slot);
+//					else {
+//						m_inventory.Ruck(tpWeaponMagazined);
+//						tpWeaponMagazined->Drop();
+//					}
 				}
 	}
 
