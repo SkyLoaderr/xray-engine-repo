@@ -37,7 +37,7 @@ end
 
 function val_suicide_give_artefact(npc, actor)
 	printf("_bp: val_suicide_give_artefact: npc='%s'", npc:name())
-	local obj = helper:object("af_electra_moonlight")
+	local obj = npc:object("af_electra_moonlight")
 	if obj then
 		dialogs.relocate_item(npc, obj, "in")   
 	end
