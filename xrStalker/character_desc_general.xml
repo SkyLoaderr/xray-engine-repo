@@ -55,7 +55,8 @@
 		[spawn]wpn_svu
 		ammo_7.62x54_7h15 = 5
 		ammo_7.62x54_ap = 5
-		ammo_7.62x54_7h1 = 5</supplies>
+		ammo_7.62x54_7h1 = 5
+		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
