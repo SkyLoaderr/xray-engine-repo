@@ -206,6 +206,8 @@ private:
 
 	CStream*			m_tpGraphVFS;			// virtual file
 	AI::SGraphHeader	m_tGraphHeader;			// graph header
+	CStream*			m_tpGraphVFS1;			// virtual file
+	AI::SGraphHeader	m_tGraphHeader1;			// graph header
 public:
 	// Query
 	vector<bool>		q_mark_bit;		// temporal usage mark for queries
@@ -227,6 +229,7 @@ public:
 	void			q_Range_Bit_X	(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
 
 	AI::SGraphVertex	*m_tpaGraph;			// graph
+	AI::SGraphVertex	*m_tpaGraph1;			// graph
 	SNode				*m_tpHeap;
 	SIndexNode			*m_tpIndexes;
 	u32					m_dwAStarStaticCounter;
