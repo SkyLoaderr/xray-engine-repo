@@ -69,12 +69,12 @@ void CAI_Chimera::OnAnimationEnd()
 
 void CAI_Chimera::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-//	if (bShowDeath)	{
-//		m_tpCurrentGlobalAnimation = m_tAnimations.A[ePostureStand].A[eActionDie].A[::Random.randI((int)m_tAnimations.A[ePostureStand].A[eActionDie].A.size())];
-//		PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
-//		bShowDeath  = false;
-//		return;
-//	}
+	if (bShowDeath)	{
+		m_tpCurrentGlobalAnimation = m_tAnimations.A[0].A[9].A[2];
+		PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+		bShowDeath  = false;
+		return;
+	}
 	
 	if (g_Alive())
 		if (!m_tpCurrentGlobalAnimation) {
