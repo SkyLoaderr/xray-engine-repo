@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+<!---------------------------STALKER------------------------------>
+	<specific_character id="svoboda_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
+
+		<team>Svoboda</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------STALKER NOVICE----------------------->
+	<specific_character id="svoboda_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
+
+		<team>Svoboda</team>
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\svoboda\stalker_sv_hood_9</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------STALKER GENERAL---------------------->
+	<specific_character id="svoboda_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
+
+		<team>Svoboda</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------STALKER VETERAN---------------------->
+	<specific_character id="svoboda_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
+
+		<team>Svoboda</team>
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------STALKER MASTER----------------------->
+	<specific_character id="svoboda_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
+
+		<team>Svoboda</team>
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	
+</xml>
