@@ -255,15 +255,17 @@ void game_cl_Deathmatch::Check_Invincible_Players()
 
 void game_cl_Deathmatch::shedule_Update			(u32 dt)
 {
-	if(m_game_ui)
-		m_game_ui->SetTimeMsgCaption("");
-	m_game_ui->SetRoundResultCaption("");
-	m_game_ui->SetSpectatorMsgCaption("");
-	m_game_ui->SetPressJumpMsgCaption("");
-	m_game_ui->SetPressBuyMsgCaption("");
-
 	//fake
 	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameDM*>( HUD().GetUI()->UIGame() );
+	if(m_game_ui)
+	{
+		m_game_ui->SetTimeMsgCaption("");
+		m_game_ui->SetRoundResultCaption("");
+		m_game_ui->SetSpectatorMsgCaption("");
+		m_game_ui->SetPressJumpMsgCaption("");
+		m_game_ui->SetPressBuyMsgCaption("");
+	};
+
 	switch (Phase())
 	{
 	case GAME_PHASE_INPROGRESS:

@@ -103,12 +103,12 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 CUIGameCustom* game_cl_TeamDeathmatch::createGameUI()
 {
 	game_cl_mp::createGameUI();
-
 	CLASS_ID clsid			= CLSID_GAME_UI_TEAMDEATHMATCH;
-	CUIGameTDM*			pUIGame	= smart_cast<CUIGameTDM*> ( NEW_INSTANCE ( clsid ) );
-	R_ASSERT(pUIGame);
-	pUIGame->SetClGame(this);
-	pUIGame->Init();
+	m_game_ui	= smart_cast<CUIGameTDM*> ( NEW_INSTANCE ( clsid ) );
+	R_ASSERT(m_game_ui);
+	m_game_ui->SetClGame(this);
+	m_game_ui->Init();
+
 
 	//-----------------------------------------------------------
 	pBuyMenuTeam1 = InitBuyMenu("teamdeathmatch_base_cost", 1);
@@ -121,7 +121,7 @@ CUIGameCustom* game_cl_TeamDeathmatch::createGameUI()
 
 	pInventoryMenu = xr_new<CUIInventoryWnd>();
 
-	return pUIGame;
+	return m_game_ui;
 }
 
 
