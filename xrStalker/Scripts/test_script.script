@@ -10,4 +10,5 @@ function main()
 	local t = game.time()
 	wait(10000)
 	local dt = game.time() - t
+	wait(10000)
 end
