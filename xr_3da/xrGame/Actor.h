@@ -97,6 +97,9 @@ protected:
 	float					r_model_yaw;			// orientation of model
 	float					r_model_yaw_delta;		// effect on multiple "strafe"+"something"
 
+	DWORD					patch_frame;
+	Fvector					patch_position;
+
 	static void	__stdcall SpinCallback(CBoneInstance*);
 private:
 	BOOL					bAlive;

@@ -246,6 +246,9 @@ BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angl
 
 	bActive				= TRUE;
 
+	patch_frame			= 0;
+	patch_position.set	(vPosition);
+
 	return				TRUE;
 }
 
@@ -401,6 +404,11 @@ void CActor::ZoneEffect	(float z_amount)
 void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
+
+	if (patch_frame<100)	{
+		vPosition.set		(patch_position);
+		patch_frame			+= 1;
+	}
 
 /*
 	// zone test
