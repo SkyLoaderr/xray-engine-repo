@@ -165,35 +165,36 @@ void CBitingAttack::Run()
 			DO_IN_TIME_INTERVAL_END();
 			if (IS_NEED_REBUILD()) bNeedRebuild = true;
 			
-			
 			if (bNeedRebuild) {
 				// Получить позицию, определённую груп. интелл.
 				CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
-				TTime			squad_ai_last_updated;
-				Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
-				ESquadAttackAlg alg_type = pSquad->GetAlgType();
-				
 				bool squad_target_selected = false;
-				
-				if (alg_type == SAA_DEVIATION) {
-					if (squad_ai_last_updated !=0 ) {		// новая позиция
-						pMonster->Path_ApproachPoint(target);
-						pMonster->SetSelectorPathParams();
-						squad_target_selected = true;
-						pMonster->set_use_dest_orientation	(false);
-					}
-				} else {
-					pMonster->set_dest_direction		(target);
-					pMonster->set_use_dest_orientation	(true);
 
-					pMonster->MoveToTarget(m_tEnemy.obj);
-					squad_target_selected = true;
-				}
+				if (pSquad && pSquad->SquadActive()) {
+				 
+					TTime			squad_ai_last_updated;
+					Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
+					ESquadAttackAlg alg_type = pSquad->GetAlgType();
 				
+					// выбор алгоритма
+					if (alg_type == SAA_DEVIATION) {
+						if (squad_ai_last_updated !=0 ) {		// новая позиция
+							pMonster->MoveToTarget(target);
+							squad_target_selected = true;
+							pMonster->set_use_dest_orientation	(false);
+						}
+					} else {
+						pMonster->set_dest_direction		(target);
+						pMonster->set_use_dest_orientation	(true);
+
+						pMonster->MoveToTarget(m_tEnemy.obj);
+						squad_target_selected = true;
+					}
+				}
+
 				if (!squad_target_selected) {
 					pMonster->set_use_dest_orientation	(false);
 					pMonster->MoveToTarget(m_tEnemy.obj);
-
 				}
 			}
 			
@@ -273,8 +274,7 @@ void CBitingAttack::Run()
 			LOG_EX("ATTACK: ENEMY_POSITION_APPROACH");
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 
-			pMonster->Path_ApproachPoint(m_tEnemy.obj->Position());
-			pMonster->SetSelectorPathParams();
+			pMonster->MoveToTarget(m_tEnemy.obj->Position());
 			pMonster->set_use_dest_orientation	(false);
 			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
@@ -287,8 +287,7 @@ void CBitingAttack::Run()
 			LOG_EX("ATTACK: ENEMY_WALK_AWAY");
 
 			pMonster->MotionMan.m_tAction		= ACT_WALK_FWD;
-			pMonster->Path_GetAwayFromPoint		(random_position(m_tEnemy.position, 2.f), 20);
-			pMonster->SetSelectorPathParams		();
+			pMonster->MoveAwayFromTarget		(random_position(m_tEnemy.position, 2.f));
 			pMonster->set_use_dest_orientation	(false);
 			pMonster->CSoundPlayer::play		(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 		

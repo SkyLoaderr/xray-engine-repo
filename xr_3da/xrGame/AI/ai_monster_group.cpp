@@ -48,6 +48,7 @@ CMonsterSquad *CSquadManager::GetSquad(u8 squad_id)
 	return pSquad;
 }
 
+
 void CSquadManager::Dump()
 {
 	for (SQUADS_MAP_IT it=squads.begin(); it != squads.end(); it++) {
@@ -654,4 +655,16 @@ void CMonsterSquad::SetupMemeberPositions_Deviation(MEMBER_ENEMY_VEC &members, C
 	}
 }
 
+bool CMonsterSquad::SquadActive()
+{
+	if (!leader || (squad.size() <= 1)) return false;
+
+	u32 alive_num = 0;
+	for (SQUAD_MAP_IT it = squad.begin(); it != squad.end(); it++) 
+		if (it->first->g_Alive()) alive_num++;
+
+	if (alive_num <= 1) return false;
+
+	return true;	
+}
 

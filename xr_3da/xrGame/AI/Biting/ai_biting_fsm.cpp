@@ -10,45 +10,69 @@
 #include "ai_biting.h"
 #include "../../phmovementcontrol.h"
 
+
 void CAI_Biting::Think()
 {
 	if (!g_Alive()) return;
+		
+#ifdef DEEP_TEST_SPEED	
+	if (time_next_update > Level().timeServer()) return;
+	time_next_update = Level().timeServer() + 1000 / UPS;
+#endif
+
 
 	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
 	
 	MotionStats->update						();
-
+	
+	Msg("----------------------------------------");
+	LOG_EX2("-- New frame :: Time = [%u]", *"*/ Level().timeServer() /*"*);
+	LOG_EX("----------------------------------------");
+	
+	CTimer T; T.Start();
 	vfUpdateParameters						();
+	Msg("ST :: UpdateParameters = [%f s]", T.GetElapsed_sec());
 
 	if (m_PhysicMovementControl->JumpState()) enable_movement(false);
 
 	CMonsterMovement::Frame_Init();
 
-	// fix off-line displa`cement
+	// fix off-line displacement
 	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
 		CurrentState->Reset					();
 		SetState							(stateRest);
 	}
 
+	
+	T.Start();
 	// Squad calculations
 	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
-	pSquad->UpdateMonsterData(this,const_cast<CEntity *>(m_tEnemy.obj));
-	if ((pSquad->GetLeader() == this)) {
-		pSquad->UpdateDecentralized();
-	} 
+	if (pSquad && pSquad->SquadActive()) {
+		pSquad->UpdateMonsterData(this,const_cast<CEntity *>(m_tEnemy.obj));
+		if ((pSquad->GetLeader() == this)) {
+			pSquad->UpdateDecentralized();
+		} 
+	}
+	Msg("ST :: Squad = [%f s]",T.GetElapsed_sec());
 
+	
+	T.Start();	
 	if (MotionMan.Seq_Active()) disable_path();
 	else {
 		// ¬ыбор текущего состо€ни€
 		StateSelector						();
-		CurrentState->Execute				(m_current_update);
+//		CurrentState->Execute				(m_current_update);
 		UpdatePathWithAction					();
 	}
-	
-	// построить путь
-	CMonsterMovement::Frame_Update			();
+	Msg("ST :: State Execute = [%f s]", T.GetElapsed_sec());
 
+	// построить путь
+	T.Start();
+	CMonsterMovement::Frame_Update			();
+	Msg("ST :: Path Build = [%f s]", T.GetElapsed_sec());
+
+	T.Start();
 	// в зависимости от маршрута установить action
 	UpdateActionWithPath					();
 
@@ -60,6 +84,7 @@ void CAI_Biting::Think()
 	
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize		();
+	Msg("ST :: Finalization = [%f s]", T.GetElapsed_sec());
 
 	// Debuging
 #ifdef DEBUG

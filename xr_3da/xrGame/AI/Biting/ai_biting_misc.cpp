@@ -13,17 +13,6 @@
 
 #include "../ai_monster_jump.h"
 
-// A - я слышу опасный звук
-// B - я слышу неопасный звук
-// С - я вижу очень опасного врага
-// D - я вижу опасного врага
-// E - я вижу равного врага
-// F - я вижу слабого врага
-// H - враг выгодный
-// I - враг видит меня
-// J - A | B
-// K - C | D | E | F 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Входные воздействия 
 // Зрение, слух, вероятность победы, выгодность противника
@@ -62,22 +51,17 @@ void CAI_Biting::vfUpdateParameters()
 	
 	if (ve.obj) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability[0],m_fAttackSuccessProbability[1],m_fAttackSuccessProbability[2],m_fAttackSuccessProbability[3],g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
-			case 4 : 
-				C = true;
-				break;
-			case 3 : 
-				D = true;
-				break;
-			case 2 : 
-				E = true;
-				break;
+			case 4 : 	C = true;	break;
+			case 3 : 	D = true;	break;
+			case 2 : 	E = true;	break;
 			case 1 : 
-			case 0 : 
-				F = true;
-				break;
+			case 0 : 	F = true;	break;
 		}
 	}
 	K					= C | D | E | F;
+	
+	Msg("Time = %u :: M[%s] = [%u]", Level().timeServer(), *cName(), K);
+
 
 	// K должно быть true, только если корректный ve.obj
 	R_ASSERT(ve.obj || !K);
@@ -129,37 +113,8 @@ void CAI_Biting::vfUpdateParameters()
 	if (m_tEnemy.obj)
 		m_tEnemyPrevFrame = m_tEnemy;
 
-	// update standing
-	cur_pos			= Position();
-
-	bStanding		= !!prev_pos.similar(cur_pos);
-	if (bStanding && (0 == time_start_stand)) time_start_stand = m_dwCurrentTime;		// только начинаем стоять на месте
-	if (!bStanding) time_start_stand = 0; 
-
-	prev_pos	= cur_pos;
-	
 	// Setup is own additional flags
 	m_bDamaged = ((GetHealth() < _sd->m_fDamagedThreshold) ? true : false);
 	
-	// update speed checking
-	Fvector vec;
-	m_PhysicMovementControl->GetCharacterVelocity(vec);
-	float ph_speed = vec.magnitude();
-
-	bSpeedDiffer = ((ph_speed * 2.f) < m_fCurSpeed) && (m_fCurSpeed > 0.f);
-	if (bSpeedDiffer && (0 == time_start_speed_differ)) time_start_speed_differ = m_dwCurrentTime;
-	if (!bSpeedDiffer) time_start_speed_differ = 0;
-
 }
 
-bool CAI_Biting::IsStanding (TTime time)
-{
-	return (bStanding && (time_start_stand + time < m_dwCurrentTime));
-}
-
-bool CAI_Biting::IsObstacle(TTime time)
-{
-	LOG_EX2("IsObstacle: %u", *"*/ bSpeedDiffer && (time_start_speed_differ + time < m_dwCurrentTime) /*"*);
-	
-	return (bSpeedDiffer && (time_start_speed_differ + time < m_dwCurrentTime));
-}

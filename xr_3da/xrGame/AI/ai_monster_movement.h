@@ -19,33 +19,30 @@ class CMonsterMovement : virtual public CMovementManager {
 
 public:
 
+		PathManagers::CAbstractVertexEvaluator	*m_tSelectorApproach;
 
-	PathManagers::CAbstractVertexEvaluator	*m_tSelectorGetAway;
-	PathManagers::CAbstractVertexEvaluator	*m_tSelectorApproach;
-
-	CMotionStats		*MotionStats;
+		CMotionStats		*MotionStats;
 
 	// -------------------------------------------------------------------
-	void	MoveToTarget			(const CEntity *entity); 
-	void	MoveToTarget			(const Fvector &pos, u32 node_id);
-	void	MoveToTarget			(const Fvector &pos);
+		void	MoveToTarget			(const CEntity *entity); 
+		void	MoveToTarget			(const Fvector &pos, u32 node_id);
+		void	MoveToTarget			(const Fvector &position);
+		void	MoveAwayFromTarget		(const Fvector &position, float dist = 10.f);
 	// -------------------------------------------------------------------
 
-	bool	IsMoveAlongPathFinished();
-	bool	IsMovingOnPath			();
-	bool	ObjectNotReachable		(const CEntity *entity);
-
-	// -------------------------------------------------------------------
-
-	bool	NeedRebuildPath		(u32 n_points);
-	bool	NeedRebuildPath		(float dist_to_end);
-	bool	NeedRebuildPath		(u32 n_points, float dist_to_end);
+		bool	IsMoveAlongPathFinished	();
+		bool	IsMovingOnPath			();
+		bool	ObjectNotReachable		(const CEntity *entity);
 
 	// -------------------------------------------------------------------
 
-	IC	void	set_try_min_time	(bool new_val) {b_try_min_time = new_val;}
-	IC	void	disable_path		() {b_enable_movement = false;}
-	IC	void	enable_path			() {b_enable_movement = true;}
+		bool	IsPathEnd				(u32 n_points, float dist_to_end);
+			
+	// -------------------------------------------------------------------
+
+	IC	void	set_try_min_time		(bool new_val) {b_try_min_time = new_val;}
+	IC	void	disable_path			() {b_enable_movement = false;}
+	IC	void	enable_path				() {b_enable_movement = true;}
 
 	// -------------------------------------------------------------------
 
@@ -53,23 +50,23 @@ public:
 				CMonsterMovement		();
 				~CMonsterMovement		();
 
-			void	Init			();
-	virtual void	Load			(LPCSTR section);
-			
-	void		Frame_Init				();
-	void		Frame_Update			();
-	void		Frame_Finalize			();
+		void		Init				();
+				
+		void		Frame_Init			();
+		void		Frame_Update		();
+		void		Frame_Finalize		();
 	
 
-public:	
+		void		WalkNextGraphPoint	();
+
+private:
 	
-	void		InitSelector					(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos);
-	void		Path_GetAwayFromPoint			(Fvector position, float dist);
-	void		Path_ApproachPoint				(Fvector position);
+		// проверка на завершение пути
+		bool		IsPathEnd				(u32 n_points);
+		bool		IsPathEnd				(float dist_to_end);
 
-	void		SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
-	void		SetSelectorPathParams			();
-
-	void		WalkNextGraphPoint();
+		void		InitSelector			(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos);
+		void		SetPathParams			(u32 dest_vertex_id, const Fvector &dest_pos);
+		void		SetSelectorPathParams	();
 
 };

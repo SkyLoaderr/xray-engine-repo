@@ -227,14 +227,6 @@ public:
 	SEnemy					m_tEnemy;				// Current frame enemy 
 	SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 
 	
-	// local standing params
-	Fvector					cur_pos, prev_pos;
-	bool					bStanding;				// true - позиция с предыдущего апдейта соответствует позиции на этом апдейте
-	TTime					time_start_stand;			
-
-	bool					bSpeedDiffer;
-	TTime					time_start_speed_differ;
-		
 
 	float					m_fCurMinAttackDist;		// according to attack stops
 
@@ -281,13 +273,14 @@ public:
 	void FaceTarget				(const Fvector &position);
 	
 
-	bool			IsObstacle						(TTime time);
-	bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
-
 	void	UpdateVelocities	(STravelParams cur_velocity);
 
 	xr_vector<STravelParams> velocities;
-	
+
+
+#ifdef 	DEEP_TEST_SPEED
+	TTime	time_next_update;
+#endif
 };
 
 #include "ai_biting_inline.h"

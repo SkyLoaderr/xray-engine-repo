@@ -65,7 +65,7 @@ void CBitingExploreDNE::Run()
 	case ACTION_RUN_AWAY: // убегать на N метров от звука
 		
 		pMonster->MotionMan.m_tAction = ACT_RUN;
-		pMonster->Path_GetAwayFromPoint (m_tSound.position, m_fRunAwayDist);
+		pMonster->MoveAwayFromTarget (m_tSound.position);
 
 		// каждую минуту сохранять текущую позицию, а затем развернуться и посмотреть в последнюю позицию
 		// т.е. развернуться назад
@@ -97,8 +97,6 @@ void CBitingExploreDNE::Run()
 		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
 		break;
 	}
-	
-	pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 	
 	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 }

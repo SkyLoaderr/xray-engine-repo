@@ -116,6 +116,11 @@ public:
 	void		SetupAlgType		(ESquadAttackAlg new_alg) {squad_attack_algorithm = new_alg;}
 	ESquadAttackAlg	GetAlgType		() {return squad_attack_algorithm;}
 
+
+
+	// Проверить, стоит активность группы
+	bool			SquadActive		();
+
 	// -----------------------------------------------------------------
 
 	// Получить задачу для NPC
@@ -166,7 +171,7 @@ public:
 	//-------------------------------------------------------------------
 
 	CMonsterSquad	*GetSquad		(u8 squad_id);
-
+	
 	//-------------------------------------------------------------------
 	// Utilities
 	

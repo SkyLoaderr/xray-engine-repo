@@ -22,18 +22,16 @@ void CBitingExploreNDE::Init()
 	LOG_EX("nde init");
 	inherited::Init();
 
-	pMonster->GetSound(m_tSound);
-	target_pos = m_tSound.position;
+	m_tSound	= pMonster->GetSound();
+	target_pos	= m_tSound.position;
 
 	m_tAction = ACTION_LOOK_DESTINATION;
 }
 
 void CBitingExploreNDE::Run()
 {
-
 	// обновить позицию звука
-	SoundElem se;
-	pMonster->GetSound(se);
+	SoundElem se = pMonster->GetSound();
 	if ((se.who != m_tSound.who) || (se.position.distance_to(m_tSound.position) > 5.f)) Init();
 	else m_tSound = se;
 
@@ -53,8 +51,7 @@ void CBitingExploreNDE::Run()
 		LOG_EX("nde: GOTO_SOUND_SOURCE");
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
-		pMonster->Path_ApproachPoint(m_tSound.position);
-		pMonster->SetSelectorPathParams();
+		pMonster->MoveToTarget(m_tSound.position);
 
 		// если монстр дошел до позиции звука, перейти к следующему заданию
 		if (m_tSound.position.distance_to(pMonster->Position()) < 1.0f) m_tAction = ACTION_LOOK_AROUND; 
@@ -67,4 +64,5 @@ void CBitingExploreNDE::Run()
 	}
 
 	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
+
 }

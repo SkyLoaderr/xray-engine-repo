@@ -67,7 +67,7 @@ typedef struct tagSoundElement
 		who = 0; type = NONE_DANGEROUS_SOUND; position.set(0,0,0); power = 0.f; time = 0; value = 0;
 	}
 	bool operator < (const tagSoundElement &s) const  { 
-		return (value > s.value);
+		return (value < s.value);
 	}
 	IC void SetConvert(const CObject* who, int eType, const Fvector &position, float power, TTime time) {
 		this->who = who; type = ConvertSoundType((ESoundTypes)eType); this->position = position; this->power = power; this->time = time;
@@ -75,7 +75,7 @@ typedef struct tagSoundElement
 	TSoundDangerValue ConvertSoundType(ESoundTypes stype);
 	
 	void CalcValue(TTime cur_time, Fvector cur_pos) {
-		value = FACTOR_SOUND_TYPE * u32(NONE_DANGEROUS_SOUND - WEAPON_SHOOTING) - FACTOR_DISTANCE * iFloor(cur_pos.distance_to(position)) - FACTOR_DELTA_TIME * iFloor(float((cur_time - time) / 1000)) + FACTOR_SOUND_POWER * iFloor(power);
+		value = FACTOR_SOUND_TYPE * u32(NONE_DANGEROUS_SOUND - WEAPON_SHOOTING) - iFloor(FACTOR_DISTANCE * cur_pos.distance_to(position)) - FACTOR_DELTA_TIME * iFloor(float((cur_time - time) / 1000)) + FACTOR_SOUND_POWER * iFloor(power);
 	}
 
 } SoundElem;
@@ -101,8 +101,7 @@ public:
 		void	HearSound				(const CObject* who, int eType, const Fvector &Position, float power, TTime time);
 	IC	bool	IsRememberSound			() {return (!Sounds.empty());}		
 		void	GetSound				(SoundElem &s, bool &bDangerous);	// возвращает самый опасный звук
-	IC	void	GetSound				(SoundElem &s) {s = Sounds.front();}
-		const xr_vector<SoundElem>	&GetSoundData() {return Sounds;}
+	SoundElem	&GetSound				();
 
 protected:
 		void	Init					(TTime mem_time);
@@ -140,53 +139,6 @@ typedef struct tagVisionElem
 	}
 
 } VisionElem;
-
-
-// предикат удаления 'старых' объектов
-struct predicate_remove_old_objects {
-
-	TTime new_time;
-	predicate_remove_old_objects(TTime time) { new_time = time; }
-	bool operator() (const VisionElem &x) { return (x.time < new_time); }
-
-};
-
-// предикат удаления 'старых' врагов
-struct predicate_remove_old_enemies {
-
-	TTime	cur_time;
-	TTime	mem_time;
-	Fvector monster_pos;
-	float	eye_range;
-
-	predicate_remove_old_enemies(TTime c_time, TTime m_time, Fvector m_pos, float range) { 
-		cur_time = c_time;	mem_time = m_time;	monster_pos = m_pos; eye_range = range;
-	}
-	bool operator() (const VisionElem &x) { 
-		return ((x.time + mem_time < cur_time) || (!x.obj) || (!x.obj->g_Alive()) || 
-			    ((x.obj->Position().distance_to(monster_pos) > 30) && (x.time != cur_time)) || 
-				 (x.obj->Position().distance_to(monster_pos) > eye_range)); 
-	}
-};
-
-
-// предикат удаления 'старых' врагов
-struct predicate_remove_ignore_objects {
-	const CEntity *pObj;
-
-	predicate_remove_ignore_objects(const CEntity *p) { pObj = p; }
-	
-	bool operator() (const VisionElem &x) { 
-		return (pObj == x.obj); 
-	}
-};
-
-
-// предикат удаления старых объектов, перешедших в оффлайн
-struct predicate_remove_offline {
-	bool operator() (const VisionElem &x) { return (x.obj && x.obj->getDestroy()); }
-};
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // CVisionMemory class
@@ -248,17 +200,8 @@ private:
 
 		VisionElem	&GetNearestObject(EObjectType obj_type = ENEMY);
 		
-		// удалить 'старые' объекты и врагов
-		void		RemoveOldElems	();
 		
-		// удалить объекты которые не прошли тест на getDestroyed(), т.е. ушли в оффлайн
-		void		CheckValidObjects();
-
-		// удаление старых игнор-объектов 
-		void		RemoveOldIgnoreObjects();
-		
-		// удалить все объекты которые также занесены в массив игнорируемых объектов
-		void		UpdateWithIgnoreObjects();		
+		void		RemoveNonactualElems();
 };
 
 //---------------------------------------------------------------------------------------------------------

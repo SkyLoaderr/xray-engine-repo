@@ -38,7 +38,7 @@ void CBitingTest::Run()
 		vertex_id = dynamic_cast<CEntity*>(Level().CurrentEntity())->level_vertex_id();
 	}
 
-	pMonster->SetPathParams(vertex_id, ai().level_graph().vertex_position(vertex_id));
+	//pMonster->SetPathParams(vertex_id, ai().level_graph().vertex_position(vertex_id));
 }
 
 //////////////////////////////////////////////////////////////////////////

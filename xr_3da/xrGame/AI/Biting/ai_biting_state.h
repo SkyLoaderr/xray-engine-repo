@@ -13,7 +13,7 @@
 
 class CAI_Biting;
 
-#define IS_NEED_REBUILD() pMonster->NeedRebuildPath(2,0.5f)
+#define IS_NEED_REBUILD() pMonster->IsPathEnd(2,0.5f)
 
 
 #include "ai_biting_state_attack.h"

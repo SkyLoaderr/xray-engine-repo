@@ -79,8 +79,14 @@ void CBitingEat::Run()
 	if (!pMonster->GetCorpse(ve) || (!pCorpse->m_pPhysicsShell)) {Done(); return;}
 	if (pCorpse != ve.obj) Init();
 
+	
+	Fvector nearest_bone_pos;
 	// Определить позицию ближайшей боны у трупа
-	Fvector nearest_bone_pos = pMonster->m_PhysicMovementControl->PHCaptureGetNearestElemPos(const_cast<CEntity*>(pCorpse));
+	if (dynamic_cast<CGameObject *>(pCorpse)->m_pPhysicsShell == NULL) {
+		bCanDrag			= false;
+		nearest_bone_pos	= pCorpse->Position(); 
+	} else nearest_bone_pos = pMonster->m_PhysicMovementControl->PHCaptureGetNearestElemPos(const_cast<CEntity*>(pCorpse));
+	
 	float cur_dist = nearest_bone_pos.distance_to(pMonster->Position());
 
 	if (bHideAfterLunch) m_tAction = ACTION_GET_HIDE;
@@ -174,8 +180,7 @@ void CBitingEat::Run()
 		
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;		
 
-		pMonster->Path_GetAwayFromPoint	(pCorpse->Position(), 20);
-		pMonster->SetSelectorPathParams ();
+		pMonster->MoveAwayFromTarget	(pCorpse->Position());
 
 		if (cur_dist > 10.f || (IS_NEED_REBUILD() && (cur_dist > 3.f))) {
 			m_tAction = ACTION_LITTLE_REST;
@@ -232,8 +237,7 @@ void CBitingEat::Run()
 		pMonster->MotionMan.m_tAction = ACT_DRAG; 
 		pMonster->MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 		
-		pMonster->Path_GetAwayFromPoint	(pCorpse->Position(), 20);
-		pMonster->SetSelectorPathParams ();
+		pMonster->MoveAwayFromTarget	(pCorpse->Position());
 
 		// если не может тащить
 		if (0 == pMonster->m_PhysicMovementControl->PHCapture()) m_tAction = ACTION_EAT; 
