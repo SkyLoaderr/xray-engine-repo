@@ -189,7 +189,9 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	tNetPacket.r_begin			(dummy16);	
 	R_ASSERT					(M_SPAWN==dummy16);
 	tNetPacket.r_stringZ		(s_name			);
-	tNetPacket.r_stringZ		(s_name_replace	);
+	string256					temp;
+	tNetPacket.r_stringZ		(temp);
+	set_name_replace			(s_name_replace);
 	tNetPacket.r_u8				(s_gameid		);
 	tNetPacket.r_u8				(s_RP			);
 	tNetPacket.r_vec3			(o_Position		);
