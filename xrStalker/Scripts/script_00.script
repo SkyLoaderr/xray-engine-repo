@@ -37,7 +37,7 @@ function main()
 	local prof_nashel_taynik_a = sound_object("scripts\\stalker_prof\\prof_nashel_taynik_a") 
 	local prof_kgm3 = sound_object("scripts\\stalker_prof\\prof_kgm3")
 	local prof_nashel_taynik_b = sound_object("scripts\\stalker_prof\\prof_nashel_taynik_b")
-
+ 
 	local rainbow_ya_bi_pomalkival = sound_object("scripts\\stalker_rainbow\\rainbow_ya_bi_pomalkival")
 	local rainbow_v_vagone_mojet_bit_stalker = sound_object("scripts\\stalker_rainbow\\rainbow_v_vagone_mojet_bit_stalker")
 
