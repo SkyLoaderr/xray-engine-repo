@@ -23,7 +23,16 @@ class CHM_Static
 		int			x,z;
 
 		IC			void		set(int _x, int _z)	{ x=_x; z=_z; }
+		Slot()
+		{
+			for (DWORD i=0; i<dhm_precision; i++)
+				for (DWORD j=0; j<dhm_precision; j++)
+					data	[i][j]	= flt_min;
+			bReady = TRUE;
+			x = z = 0;
+		}
 	};
+	Slot						pool	[dhm_matrix*dhm_matrix];			// pool 
 	Slot*						data	[dhm_matrix][dhm_matrix];			// database
 	int							c_x,c_z;									// center of heighmap
 	svector<Slot*,dhm_total>	task;

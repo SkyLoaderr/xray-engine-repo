@@ -14,6 +14,18 @@ const float limit_down		= 20.f;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+CHM_Static::CHM_Static()
+{
+	// Initialize slots
+	Slot*	slt = pool;
+	for (DWORD i=0; i<dhm_matrix; i++)
+		for (DWORD j=0; j<dhm_matrix; j++, slt++)
+			data	[i][j]	= slt;
+
+	// Center
+	c_x=c_z=0;
+}
+
 void CHM_Static::Update	()
 {
 	Fvector&	view	= Device.vCameraPosition;
