@@ -3,6 +3,9 @@
 #include "../CameraBase.h"
 #include "Car.h"
 
+#include "Weapon.h"
+#include "Inventory.h"
+
 #include "ShootingHitEffector.h"
 #include "SleepEffector.h"
 
@@ -28,7 +31,7 @@ void CActor::cam_Update(float dt, float fFOV)
 	Fvector						R;
 	m_PhysicMovementControl->Box().getsize		(R);
 	point.set					(0.f,m_fCamHeightFactor*R.y,0.f);
-	XFORM().transform_tiny	(point);
+	XFORM().transform_tiny		(point);
 
 	// soft crouch
 	float dS = point.y-fPrevCamPos;
@@ -55,11 +58,20 @@ void CActor::cam_Update(float dt, float fFOV)
 		dangle.set			(0,0,0);
 		break;
 	}
-	CCameraBase* C				= cameras	[cam_active];
+	CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
+		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
+
+	if(pWeapon) 
+	{
+		dangle = pWeapon->GetRecoilDeltaAngle();
+	}
+
+		
+	CCameraBase* C				= cam_Active();
 	C->Update					(point,dangle);
 	C->f_fov					= fFOV;
 	if (Level().CurrentEntity() == this)
-		g_pGameLevel->Cameras.Update	(C);
+		Level().Cameras.Update	(C);
 
 	// ::Render.Target.set_gray	(cam_gray);
 }

@@ -519,12 +519,12 @@ void CWeaponMagazined::switch2_Hiding()
 
 	PlayAnimHide();
 	m_bPending = true;
-
-	RemoveShotEffector();
 }
+
 void CWeaponMagazined::switch2_Hidden()
 {
 	signal_HideComplete		();
+	RemoveShotEffector		();
 }
 void CWeaponMagazined::switch2_Showing()
 {

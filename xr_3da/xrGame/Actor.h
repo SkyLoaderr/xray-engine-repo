@@ -190,8 +190,13 @@ protected:
 	Fvector					m_saved_position;
 	float					m_saved_impulse;
 	s16						m_saved_element;
+
 	// Rotation
 	SRotation				r_torso;
+	//положение без воздействия эффекта отдачи оружия
+	float					unaffected_r_torso_yaw;
+	float					unaffected_r_torso_pitch;
+
 	float					r_model_yaw_dest;
 	float					r_model_yaw;			// orientation of model
 	float					r_model_yaw_delta;		// effect on multiple "strafe"+"something"

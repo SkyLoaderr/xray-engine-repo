@@ -714,6 +714,11 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	r_model_yaw				= E->o_model;
 	r_torso.yaw				= E->o_torso.yaw;
 	r_torso.pitch			= E->o_torso.pitch;
+
+	unaffected_r_torso_yaw	 = r_torso.yaw;
+	unaffected_r_torso_pitch = r_torso.pitch;
+
+
 	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);		// set's camera orientation
 	cam_Set	(eacFirstEye);
 
@@ -1198,26 +1203,16 @@ void CActor::shedule_Update	(u32 DT)
 	if (!getEnabled())	return;
 	if (!Ready())		return;
 
-	// patch
-	/*
-	if (patch_frame<patch_frames)	{
-		Position().set		(patch_position);
-		if(!m_pPhysicsShell)
-			m_PhysicMovementControl->SetPosition(patch_position);
-		patch_frame			+= 1;
-	}
-	*/
 	cam_shift				= 0.f;
 	cam_gray				= 0.f;
 
 	// 
 	clamp					(DT,0u,100u);
-	float	dt				= float(DT)/1000.f;
+	float	dt	 	=  float(DT)/1000.f;
 
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
 	if (Local())	
-//	if (this == Level().CurrentEntity())
 	{
 		//-----------------------------------
 		NetInput_Save			( );
@@ -1261,78 +1256,6 @@ void CActor::shedule_Update	(u32 DT)
 			g_cl_ValidateMState			(dt,mstate_wishful);
 			g_SetAnimation				(NET_Last.mstate);
 		};
-//------------------------------------
-/*	
-		// distinguish interpolation/extrapolation
-		u32	dwTime			= Level().timeServer()-NET_Latency;
-		u32 size			= NET.size();
-		if (size)
-		{
-		net_update&	N		= NET.back();
-		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
-		{
-			// BAD.	extrapolation
-			if (NET_WasInterpolating)
-			{
-				NET_WasInterpolating	= FALSE;
-				NET_Last				= N;
-
-				// Setup last known data
-				m_PhysicMovementControl->SetVelocity	(NET_Last.p_velocity);
-				m_PhysicMovementControl->SetVelocity	(NET_Last.p_velocity);
-				Position().set			(NET_Last.p_pos);
-				if(!m_pPhysicsShell)
-					m_PhysicMovementControl->SetPosition	(NET_Last.p_pos);
-			}
-
-			g_sv_Orientate				(NET_Last.mstate,dt			);
-			g_Orientate					(NET_Last.mstate,dt			);
-			g_Physics					(NET_Last.p_accel,Jump,dt	);
-			g_SetAnimation				(NET_Last.mstate			);
-		} else {
-			// OK.	interpolation
-
-			// Search 2 keyframes for interpolation
-			int select		= -1;
-			for (u32 id=0; id<NET.size()-1; ++id)
-			{
-				if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
-			}
-			if (select>=0)	
-			{
-				if (select>0)	NET.erase(NET.begin(),NET.begin()+select);
-
-				// Interpolate state
-				net_update&	A	= NET[0];
-				net_update&	B	= NET[1];
-				u32	d1		= dwTime-A.dwTimeStamp;
-				u32	d2		= B.dwTimeStamp - A.dwTimeStamp;
-				float	factor	= (float(d1)/float(d2));
-				NET_Last.lerp	(A,B,factor);
-
-				// Use interpolated state
-				g_sv_Orientate	(NET_Last.mstate,dt);
-				g_Orientate		(NET_Last.mstate,dt);
-				Position().set	(NET_Last.p_pos);		// physics :)
-				if(!m_pPhysicsShell)
-					m_PhysicMovementControl->SetPosition(NET_Last.p_pos);
-				g_SetAnimation	(NET_Last.mstate);
-
-				// Change weapon if needed
-				//if (NET_Last.weapon!=Weapons->ActiveWeaponID())
-				//{
-				//	Weapons->ActivateWeaponID(NET_Last.weapon);
-				//}
-
-				// Signal, that last time we used interpolation
-				NET_WasInterpolating	= TRUE;
-				NET_Time				= dwTime;
-			}
-		}
-		};
-
-		mstate_real			= NET_Last.mstate;
-*/
 	}
 	make_Interpolation();
 
@@ -1353,16 +1276,22 @@ void CActor::shedule_Update	(u32 DT)
 		}
 		pCamBobbing->SetState					(mstate_real);
 		//cam_Update								(dt,Weapons->getZoomFactor());
-		CWeapon *l_pW = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() < 0xffffff ? 
+		CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
 					inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
-		cam_Update(dt,l_pW?l_pW->GetZoomFactor():DEFAULT_FOV);
+		
+		cam_Update(dt,pWeapon?pWeapon->GetZoomFactor():DEFAULT_FOV);
 	}
 	else 
 	{
-		if (pCamBobbing)	{Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
-		CWeapon *l_pW = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() < 0xffffff ? 
+		if (pCamBobbing)	
+		{
+			Level().Cameras.RemoveEffector(cefBobbing); 
+			pCamBobbing = NULL;
+		}
+
+		CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
 			inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
-		cam_Update(dt,l_pW?l_pW->GetZoomFactor():DEFAULT_FOV);
+		cam_Update(dt,pWeapon?pWeapon->GetZoomFactor():DEFAULT_FOV);
 	}
 
 	//если в режиме HUD, то сама модель актера не рисуется
@@ -1372,47 +1301,7 @@ void CActor::shedule_Update	(u32 DT)
 	CHudItem* pHudItem = dynamic_cast<CHudItem*>(inventory().ActiveItem());	
 	if(pHudItem && !pHudItem->getDestroy()) pHudItem->SetHUDmode(HUDview());
 	
-//	R_ASSERT(GAMEMTL_NONE!=last_material_id());
-//	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_material_id(),last_material_id());
-//
-//	//R_ASSERT3(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterial(last_gmtl_id)->m_Name);
-//	// ref_sound step
-//	if (mtl_pair&&(mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
-//		if(m_fTimeToStep<0){
-//			bStep				= !bStep;
-//			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
-//			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
-//			m_fTimeToStep		= tm;
-//			if (mtl_pair->StepSounds.size()>=2){
-//				sndStep[bStep].clone		(mtl_pair->StepSounds[bStep]);
-//				sndStep[bStep].play_at_pos	(this,Position());
-//			}
-//		}
-//		m_fTimeToStep -= dt;
-//	}
-//
-//	// sounds update
-//	// Дима. Было 1.0(начальная громкость) и 0.85(если сидя), стало 0.2 и 0.5 соответственно
-//	float	s_k			=	((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
-//	float	s_vol		=	s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
-//	Fvector	s_pos		=	Position	();
-//	s_pos.y				+=	.15f;
-//	if (sndStep[0].feedback)		{
-//		sndStep[0].set_position(s_pos);
-//		sndStep[0].set_volume	(s_vol);
-//	}
-//	if (sndStep[1].feedback)		{
-//		sndStep[1].set_position(s_pos);
-//		sndStep[1].set_volume	(s_vol);
-//	}
-
-
-	// Кто-то или что-то, на что мы смотрим
-//	setEnabled(false);
-//	Collide::rq_result l_rq;
-//	if(g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, 
-//										 Device.vCameraDirection, 
-//							
+	//что актер видит перед собой
 	Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 	
 	if(RQ.O &&  RQ.range<inventory().GetTakeDist()) 
@@ -1651,9 +1540,26 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 {
 	// capture camera into torso (only for FirstEye & LookAt cameras)
 	if (eacFreeLook!=cam_active){
+
 		r_torso.yaw		=	cam_Active()->GetWorldYaw	();
 		r_torso.pitch	=	cam_Active()->GetWorldPitch	();
+
+		unaffected_r_torso_yaw	 = r_torso.yaw;
+		unaffected_r_torso_pitch = r_torso.pitch;
 	}
+
+	CWeapon *pWeapon = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
+		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
+
+	if(pWeapon) 
+	{
+		Fvector dangle;
+		dangle = pWeapon->GetRecoilDeltaAngle();
+		r_torso.yaw		=	unaffected_r_torso_yaw + dangle.y;
+		r_torso.pitch	=	unaffected_r_torso_pitch + dangle.x;
+	}
+
+
 
 	// если есть движение - выровнять модель по камере
 	if (mstate_rl&mcAnyMove)	{
@@ -1682,6 +1588,9 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 	r_model_yaw		= NET_Last.o_model;
 	r_torso.yaw		= NET_Last.o_torso.yaw;
 	r_torso.pitch	= NET_Last.o_torso.pitch;
+
+	unaffected_r_torso_yaw	 = r_torso.yaw;
+	unaffected_r_torso_pitch = r_torso.pitch;
 }
 
 void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)

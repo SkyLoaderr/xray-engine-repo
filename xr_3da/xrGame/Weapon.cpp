@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "effectorshot.h"
+
 #include "Weapon.h"
 #include "ParticlesObject.h"
 #include "HUDManager.h"
@@ -12,6 +12,9 @@
 #include "actor.h"
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
+
+#include "effectorshot.h"
+#include "WeaponRecoil.h"
 
 #define WEAPON_REMOVE_TIME		600000
 
@@ -79,6 +82,8 @@ CWeapon::CWeapon(LPCSTR name)
 	m_sFlameParticlesCurrent = m_sFlameParticles = m_sFlameParticles2 = NULL;
 	m_sSmokeParticlesCurrent = m_sSmokeParticles = NULL;
 	m_sShellParticles = NULL;
+
+	m_pWeaponRecoil = NULL;
 }
 
 CWeapon::~CWeapon		()
@@ -581,6 +586,8 @@ void CWeapon::OnH_B_Independent	()
 
 	hud_mode					= FALSE;
 	UpdateXForm					();
+
+	RemoveShotEffector			();
 }
 
 void CWeapon::OnH_A_Independent	()
@@ -612,11 +619,20 @@ void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
 
-	// Logic
+	//текущая дисперсия
 	float dt				= Device.fTimeDelta;
 	fireDispersion_Current	-=	fireDispersion_Dec*dt;
 	clamp					(fireDispersion_Current,0.f,1.f);
-	if (m_bShotLight && light_time>0)		{
+
+	//просчитать эффект отдачи
+	if(m_pWeaponRecoil)
+	{
+		m_pWeaponRecoil->Process(m_vRecoilDeltaAngle);
+	}
+	
+	//подсветка от выстрела
+	if (m_bShotLight && light_time>0)		
+	{
 		light_time -= dt;
 		if (light_time<=0)
 			light_render->set_active(false);
@@ -627,8 +643,9 @@ void CWeapon::UpdateCL		()
 	if(m_pFlameParticles)UpdateFlameParticles();
 	if(m_pFlameParticles2) UpdateFlameParticles2();
 
-	make_Interpolation();
+	
 
+	make_Interpolation();
 }
 
 
@@ -1041,23 +1058,6 @@ void CWeapon::activate_physic_shell()
 void CWeapon::setup_physic_shell()
 {
 	CGameObject::setup_physic_shell();
-}
-
-
-void CWeapon::AddShotEffector		()
-{
-	if(!hud_mode) return;
-
-	CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
-	if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
-	R_ASSERT				(S);
-	S->Shot					(camDispersion);
-}
-
-void  CWeapon::RemoveShotEffector	()
-{
-	if (Local()) 
-		Level().Cameras.RemoveEffector	(cefShot);
 }
 
 bool CWeapon::NeedToDestroyObject()	

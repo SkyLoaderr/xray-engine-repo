@@ -6,6 +6,7 @@
 #include "effectorshot.h"
 #include "Weapon.h"
 #include "WeaponHUD.h"
+#include "WeaponRecoil.h"
 
 #include "ParticlesObject.h"
 
@@ -298,4 +299,29 @@ void CWeapon::StopFlameParticles2	()
 void CWeapon::UpdateFlameParticles2	()
 {
 	UpdateParticles (m_pFlameParticles2, vLastFP2);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Для эффекта отдачи оружия
+void CWeapon::AddShotEffector		()
+{
+	if(!m_pWeaponRecoil)
+		m_pWeaponRecoil = xr_new<CWeaponRecoil> (camMaxAngle,camRelaxSpeed);
+	VERIFY(m_pWeaponRecoil);
+	m_pWeaponRecoil->Shot(camDispersion);
+
+/*	if(!hud_mode) return;
+
+	CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
+	if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
+	R_ASSERT				(S);
+	S->Shot					(camDispersion);*/
+}
+
+void  CWeapon::RemoveShotEffector	()
+{
+	xr_delete(m_pWeaponRecoil);
+
+/*	if (Local()) 
+		Level().Cameras.RemoveEffector	(cefShot);*/
 }

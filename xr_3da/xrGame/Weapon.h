@@ -15,11 +15,13 @@
 #include "ShootingObject.h"
 #include "HudItem.h"
 
+
 // refs
 class CEntity;
 class ENGINE_API CMotionDef;
 class CSE_ALifeItemWeapon;
 class CSE_ALifeItemWeaponAmmo;
+class CWeaponRecoil;
 
 class CWeapon : public CHudItem,
 				public CShootingObject
@@ -310,11 +312,11 @@ public:
 	int	GetGrenadeLauncherX() {return m_iGrenadeLauncherX;}
 	int	GetGrenadeLauncherY() {return m_iGrenadeLauncherY;}
 
-	virtual ref_str GetGrenadeLauncherName() {return m_sGrenadeLauncherName;}
-	virtual ref_str GetScopeName() {return  m_sScopeName;}
-	virtual ref_str GetSilencerName() {return m_sSilencerName;}
+	virtual const ref_str& GetGrenadeLauncherName() {return m_sGrenadeLauncherName;}
+	virtual const ref_str& GetScopeName()			{return  m_sScopeName;}
+	virtual const ref_str& GetSilencerName()		{return m_sSilencerName;}
 
-	virtual const char* Name();
+	virtual LPCSTR	Name();
 
 	void SpawnAmmo		(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL);
 
@@ -327,6 +329,11 @@ public:
 	// Multitype ammo support
 	xr_stack<CCartridge> m_magazine;
 
+	//для отдачи оружия
+	CWeaponRecoil*		m_pWeaponRecoil;
+	Fvector				m_vRecoilDeltaAngle;
+	
+	const Fvector&		GetRecoilDeltaAngle() {return m_vRecoilDeltaAngle;}
 
 	//////////////////////////////////
 	// партикловая система

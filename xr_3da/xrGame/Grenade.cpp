@@ -126,8 +126,6 @@ void CGrenade::OnAnimationEnd()
 				u_EventSend			(P);
 			};
 
-			Msg("grenade end anim");
-
 			//выкинуть гранату из инвентаря
 			if (m_pInventory)
 			{
@@ -145,14 +143,7 @@ void CGrenade::OnAnimationEnd()
 				R_ASSERT(pNext != this);
 
 				if(pNext) 
-				{ 
-					Msg("grenade activate next slot");
-
 					m_pInventory->Slot(pNext);
-					//m_pInventory->Activate(pNext->m_slot); 
-
-					Msg("grenade next slot activated");
-				}
 			}
 		}
 		break;
