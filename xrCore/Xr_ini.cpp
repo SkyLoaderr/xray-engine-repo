@@ -88,7 +88,7 @@ CInifile::CInifile(LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd)
     bSaveAtEnd	= SaveAtEnd;
 	if (bLoad)
 	{	
-    	string256 	path,folder; 
+    	string_path	path,folder; 
 		_splitpath	(fName, path, folder, 0, 0 );
         strcat		(path,folder);
 		IReader* R 	= FS.r_open(szFileName);
@@ -127,10 +127,12 @@ void	CInifile::Load(IReader* F, LPCSTR path)
         	string64	inc_name;	
 			R_ASSERT	(path&&path[0]);
         	if (_GetItem	(str,1,inc_name,'"')){
-            	string256 	fn;
+            	string_path	fn,inc_path,folder;
                 strconcat	(fn,path,inc_name);
+				_splitpath	(fn,inc_path,folder, 0, 0 );
+				strcat		(inc_path,folder);
             	IReader* I 	= FS.r_open(fn); R_ASSERT3(I,"Can't find include file:",inc_name);
-            	Load		(I,path);
+            	Load		(I,inc_path);
                 FS.r_close	(I);
             }
         }else if (str[0] && (str[0]=='[')){

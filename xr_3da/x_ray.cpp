@@ -53,8 +53,8 @@ void InitEngine()
 
 void InitSettings()
 {
-	string256					fname; 
-	FS.update_path				(fname,"$game_data$","system.ltx");
+	string_path					fname; 
+	FS.update_path				(fname,"$game_config$","system.ltx");
 	pSettings					= xr_new<CInifile>	(fname,TRUE);
 }
 void InitConsole()
