@@ -291,6 +291,7 @@ namespace ALife {
 			case eHitTypeFireWound		: return("fire_wound");
 			case eHitTypeChemicalBurn	: return("chemical_burn");
 			case eHitTypeExplosion		: return("explosion");
+			case eHitTypeWound_2		: return("wound_2");
 			default						: NODEFAULT;
 		}
 #ifdef DEBUG
