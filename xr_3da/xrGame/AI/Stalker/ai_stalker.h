@@ -18,15 +18,8 @@
 #include "../../object_handler.h"
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
-
 #include "../../AI_PhraseDialogManager.h"
-
-
-#ifdef OLD_DECISION_BLOCK
-	#include "../../state_manager_stalker.h"
-#else
-	#include "../../motivation_action_manager_stalker.h"
-#endif
+#include "../../motivation_action_manager_stalker.h"
 
 using namespace StalkerSpace;
 
@@ -52,11 +45,7 @@ class CAI_Stalker :
 	public CSightManager,
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,
-#ifdef OLD_DECISION_BLOCK
-	public CStateManagerStalker,
-#else
 	public CMotivationActionManagerStalker,
-#endif
 	public CScriptBinder,
 	public CSetupManager<CSetupAction,CAI_Stalker,u32>,
 	public CAI_PhraseDialogManager

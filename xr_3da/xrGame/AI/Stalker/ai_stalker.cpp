@@ -23,11 +23,7 @@
 #include "../../xrserver.h"
 #include "../../xr_level_controller.h"
 
-#ifdef OLD_DECISION_BLOCK
-CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
-#else
 CAI_Stalker::CAI_Stalker			()
-#endif
 {
 	Init							();
 	InitTrade						();
@@ -55,11 +51,7 @@ void CAI_Stalker::reinit			()
 	CSightManager::reinit			(this);
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
-#ifdef OLD_DECISION_BLOCK
-	CStateManagerStalker::reinit	(this);
-#else
 	CMotivationActionManagerStalker::reinit(this,false);
-#endif
 	CScriptBinder::reinit			();
 	CSSetupManager::reinit			(this);
 
@@ -95,11 +87,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 //	CSightManager::reload			(section);
 //	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);
-#ifdef OLD_DECISION_BLOCK
-	CStateManagerStalker::reload	(section);
-#else
 	CMotivationActionManagerStalker::reload(section);
-#endif
 	CScriptBinder::reload			(section);
 
 	m_disp_walk_stand				= pSettings->r_float(section,"disp_walk_stand");
@@ -130,11 +118,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CObjectHandler::Load		(section);
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
-#ifdef OLD_DECISION_BLOCK
-	CStateManagerStalker::Load		(section);
-#else
 	CMotivationActionManagerStalker::Load	(section);
-#endif
 	CScriptBinder::Load				(section);
 
 	CSelectorManager::add<

@@ -1157,11 +1157,7 @@ void CAI_Stalker::Think()
 //	_K	= K;
 //	_L	= L;
 //	_M	= M;
-#ifdef OLD_DECISION_BLOCK
-	CStateManagerStalker::update	(Level().timeServer() - m_dwLastUpdateTime);
-#else
 	CMotivationActionManagerStalker::update(Level().timeServer() - m_dwLastUpdateTime);
-#endif
 	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
 //	CSightManager::update			(Level().timeServer() - m_dwLastUpdateTime);
 	CSSetupManager::update			(Level().timeServer() - m_dwLastUpdateTime);
