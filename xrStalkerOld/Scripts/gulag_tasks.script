@@ -866,7 +866,7 @@ function loadStates(gname, type)
 		return function(gulag)
 			if gulag.state == 1 then return 1 end
 			local actor = level.actor()
-			if actor and actor:has_info ("gar_monsters_rush_wave2") then
+			if actor and actor:has_info ("gar_monsters_rush_wave1") then
                return 1
 			else
 			   return 0
