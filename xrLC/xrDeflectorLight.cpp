@@ -184,6 +184,7 @@ float rayTrace(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float R
 	} catch (...)
 	{
 		Msg("* ERROR: rayTrace");
+		return 0;
 	}
 }
 
