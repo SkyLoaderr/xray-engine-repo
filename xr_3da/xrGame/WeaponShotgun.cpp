@@ -107,8 +107,8 @@ void CWeaponShotgun::OnShotBoth()
 	
 	// Shell Drop
 	Fvector vel; 
-	PHGetLinearVell(vel);
-	OnShellDrop					(vLastSP, vel);
+	PHGetLinearVell		(vel);
+	OnShellDrop			(vLastSP, vel);
 
 	//огонь из 2х стволов
 	StartFlameParticles			();

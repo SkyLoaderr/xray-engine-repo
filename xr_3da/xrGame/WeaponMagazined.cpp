@@ -487,9 +487,8 @@ void CWeaponMagazined::Show		()
 void CWeaponMagazined::OnShot		()
 {
 	// Sound
-	UpdateFP();
-
-	PlaySound(*m_pSndShotCurrent,vLastFP);
+	UpdateFP			();
+	PlaySound			(*m_pSndShotCurrent,vLastFP);
 
 	// Camera
 	AddShotEffector		();
@@ -512,8 +511,8 @@ void CWeaponMagazined::OnShot		()
 
 void CWeaponMagazined::OnEmptyClick	()
 {
-	UpdateFP();
-	PlaySound(sndEmptyClick,vLastFP);
+	UpdateFP	();
+	PlaySound	(sndEmptyClick,vLastFP);
 }
 void CWeaponMagazined::OnAnimationEnd() 
 {
@@ -562,8 +561,8 @@ void CWeaponMagazined::switch2_Empty()
 }
 void CWeaponMagazined::switch2_Reload()
 {
-	UpdateFP();
-	PlaySound(sndReload,vLastFP);
+	UpdateFP	();
+	PlaySound	(sndReload,vLastFP);
 	
 	PlayAnimReload();
 	m_bPending = true;
@@ -572,8 +571,8 @@ void CWeaponMagazined::switch2_Hiding()
 {
 	CWeapon::FireEnd();
 	
-	UpdateFP();
-	PlaySound(sndHide,vLastFP);
+	UpdateFP	();
+	PlaySound	(sndHide,vLastFP);
 
 	PlayAnimHide();
 	m_bPending = true;
@@ -586,8 +585,8 @@ void CWeaponMagazined::switch2_Hidden()
 }
 void CWeaponMagazined::switch2_Showing()
 {
-	UpdateFP();
-	PlaySound(sndShow,vLastFP);
+	UpdateFP	();
+	PlaySound	(sndShow,vLastFP);
 
 	m_bPending = true;
 	PlayAnimShow();
@@ -861,5 +860,5 @@ void CWeaponMagazined::SwitchMode			()
 	else
 		m_iQueueSize = 1;
 	
-	PlaySound(sndEmptyClick, vLastFP);
+	PlaySound	(sndEmptyClick, vLastFP);
 }

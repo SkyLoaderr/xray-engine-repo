@@ -160,8 +160,8 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 
 	PerformSwitch();
 	
-	UpdateFP();
-	PlaySound(sndSwitch,vLastFP);
+	UpdateFP	();
+	PlaySound	(sndSwitch,vLastFP);
 
 	PlayAnimModeSwitch();
 
