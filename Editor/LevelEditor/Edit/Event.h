@@ -16,8 +16,8 @@ class CEvent: public CCustomObject {
     void			RenderBox	(bool bAlpha);
 public:
 	enum EFormType{
-    	efBox=0,
-        efSphere,
+        efSphere=0,
+    	efBox,
     	ef_force_dword = -1
     };
 

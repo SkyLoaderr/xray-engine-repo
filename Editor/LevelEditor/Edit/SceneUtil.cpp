@@ -56,9 +56,9 @@ void EScene::GenObjectName( EObjClass cls_id, char *buffer, const char* prefix )
     m_LastAvailObject = ListObj(cls_id).size();
 	do{
         if (prefix)
-       		sprintf( buffer, "%s_%02d", prefix, m_LastAvailObject );
+       		sprintf( buffer, "%s_%04x", prefix, m_LastAvailObject );
         else
-       		sprintf( buffer, "%s_%02d", GetNameByClassID(cls_id), m_LastAvailObject );
+       		sprintf( buffer, "%s_%04x", GetNameByClassID(cls_id), m_LastAvailObject );
 		m_LastAvailObject++;
 	} while( FindObjectByName( buffer, 0 ) );
 }

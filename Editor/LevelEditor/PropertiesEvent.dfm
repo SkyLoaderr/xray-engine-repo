@@ -1,6 +1,6 @@
 object frmPropertiesEvent: TfrmPropertiesEvent
-  Left = 422
-  Top = 237
+  Left = 675
+  Top = 404
   BorderStyle = bsDialog
   Caption = 'Event properties'
   ClientHeight = 367
