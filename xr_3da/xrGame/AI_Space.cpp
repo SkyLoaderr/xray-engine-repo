@@ -9,6 +9,7 @@
 #include "ai_console.h"
 #include "a_star.h"
 #include "game_sv_single.h"
+using namespace AI;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_alife.h"
+using namespace AI;
 
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 #define NORMALIZE_VARIABLE(a,b,c,d) a = u32(b % c) + d, b /= c;

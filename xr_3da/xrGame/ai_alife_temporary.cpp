@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "ai_alife.h"
+using namespace AI;
+using namespace ALife;
 
 const char *cpMonsterModels[] = {
 	// monsters
@@ -79,7 +81,7 @@ const char *cpArtefactModels[] = {
 //	return(v1->m_wGroupID <= v2->m_wGroupID);
 //}
 //
-void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFactors)
+void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, AI::FLOAT_VECTOR &fpFactors)
 {
 	/**
 	vector<bool>				tpMarks;

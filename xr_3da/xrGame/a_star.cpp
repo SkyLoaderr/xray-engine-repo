@@ -62,7 +62,7 @@ float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::DWORD_VECTO
 	return									(fDistance);
 }
 
-float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, NodePath& Result, bool bUseMarks)
+float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& Result, bool bUseMarks)
 {
 	float									fDistance;
 	m_tAIMapData.dwFinishNode				= dwGoalNode;
@@ -70,7 +70,7 @@ float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, NodePath& Resul
 	return									(fDistance);
 }
 
-float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, NodePath& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight, bool bUseMarks)
+float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight, bool bUseMarks)
 {
 	float									fDistance;
 	m_tAIMapDataL.dwFinishNode				= dwGoalNode;
@@ -81,7 +81,7 @@ float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, NodePath& Resul
 	return									(fDistance);
 }
 
-float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, NodePath& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
+float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
 {
 	float									fDistance;
 	m_tAIMapDataE.dwFinishNode				= dwGoalNode;
@@ -95,7 +95,7 @@ float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, NodePath& Resul
 	return									(fDistance);
 }
 
-float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, NodePath& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
+float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
 {
 	float									fDistance;
 	m_tAIMapDataF.fLight					= fLightWeight;
