@@ -433,7 +433,7 @@ void CRender::OnDeviceCreate()
 }
 void CRender::OnDeviceDestroy()
 {
-	REQ_DESTROY				();
+//	REQ_DESTROY				();
 	level_Unload			();
 	Target.OnDeviceDestroy	();
 }
