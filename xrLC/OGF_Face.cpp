@@ -103,7 +103,7 @@ void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _tc_)
 BOOL OGF::dbg_SphereContainsVertex(Fvector& c, float R)
 {
 	Fsphere	S;	S.set(c,R);
-	for (int it=0; it<vertices.size(); it++)
+	for (u32 it=0; it<vertices.size(); it++)
 		if (S.contains(vertices[it].P))	return	TRUE;
 	return FALSE	;
 }
@@ -112,69 +112,94 @@ void OGF::Optimize	()
 	// Real optimization
 	//////////////////////////////////////////////////////////////////////////
 	// x-vertices
-	if (x_vertices.size() && x_faces.size())
-	{
-		VERIFY	(x_vertices.size()	<= vertices.size()	);
-		VERIFY	(x_faces.size()		== faces.size()		);
-
-		// Optimize texture coordinates
-		// 1. Calc bounds
-		Fvector2 Tdelta;
-		Fvector2 Tmin,Tmax;
-		Tmin.set(flt_max,flt_max);
-		Tmax.set(flt_min,flt_min);
-		for (u32 j=0; j<x_vertices.size(); j++)
+	try {
+		if (x_vertices.size() && x_faces.size())
 		{
-			x_vertex& V = x_vertices[j];
-			Tmin.min	(V.UV);
-			Tmax.max	(V.UV);
-		}
-		Tdelta.x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
-		Tdelta.y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
+			try {
+				VERIFY	(x_vertices.size()	<= vertices.size()	);
+				VERIFY	(x_faces.size()		== faces.size()		);
+			} catch(...) {
+				Msg	("* ERROR: optimize: x-geom : verify: failed");
+			}
 
-		// 2. Recalc UV mapping
-		for (u32 i=0; i<x_vertices.size(); i++)
-			x_vertices[i].UV.sub	(Tdelta[j]);
+			// Optimize texture coordinates
+			Fvector2 Tdelta;
+			try {
+				// 1. Calc bounds
+				Fvector2 Tmin,Tmax;
+				Tmin.set(flt_max,flt_max);
+				Tmax.set(flt_min,flt_min);
+				for (u32 j=0; j<x_vertices.size(); j++)			{
+					x_vertex& V = x_vertices[j];
+					Tmin.min	(V.UV);
+					Tmax.max	(V.UV);
+				}
+				Tdelta.x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
+				Tdelta.y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
+			} catch(...) {
+				Msg	("* ERROR: optimize: x-geom : bounds: failed");
+			}
+
+			// 2. Recalc UV mapping
+			try {
+				for (u32 i=0; i<x_vertices.size(); i++)
+					x_vertices[i].UV.sub	(Tdelta);
+			} catch(...) {
+				Msg	("* ERROR: optimize: x-geom : recalc : failed");
+			}
+		}
+	} catch(...) {
+		Msg	("* ERROR: optimize: x-geom : failed");
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	// Detect relevant number of UV pairs
-	R_ASSERT			(vertices.size());
-	dwRelevantUV		= vertices.front().UV.size();
-	dwRelevantUVMASK	= 0;
-	for (u32 t=0; t<dwRelevantUV; t++) dwRelevantUVMASK |= 1<<t;
-
-	Shader_xrLC*	SH	= pBuild->shaders.Get(pBuild->materials[material].reserved);
-	if (!SH->flags.bOptimizeUV)		return;
+	try {
+		R_ASSERT			(vertices.size());
+		dwRelevantUV		= vertices.front().UV.size();
+		dwRelevantUVMASK	= 0;
+		for (u32 t=0; t<dwRelevantUV; t++) dwRelevantUVMASK |= 1<<t;
+		Shader_xrLC*	SH	= pBuild->shaders.Get(pBuild->materials[material].reserved);
+		if (!SH->flags.bOptimizeUV)		return;
+	} catch(...) {
+		Msg	("* ERROR: optimize: std-geom : find relevant UV");
+	}
 
 	// Optimize texture coordinates
 	// 1. Calc bounds
 	Fvector2 Tdelta[8];
-	for (u32 i=0; i<8; i++)
-	{
-		if (0==(dwRelevantUVMASK&(1<<i))) continue;	// skip unneeded UV
-		Fvector2 Tmin,Tmax;
-		Tmin.set(flt_max,flt_max);
-		Tmax.set(flt_min,flt_min);
-		for (u32 j=0; j<vertices.size(); j++)
+	try {
+		for (u32 i=0; i<8; i++)
 		{
-			OGF_Vertex& V = vertices[j];
-			Tmin.min(V.UV[i]);
-			Tmax.max(V.UV[i]);
+			if (0==(dwRelevantUVMASK&(1<<i))) continue;	// skip unneeded UV
+			Fvector2 Tmin,Tmax;
+			Tmin.set(flt_max,flt_max);
+			Tmax.set(flt_min,flt_min);
+			for (u32 j=0; j<vertices.size(); j++)
+			{
+				OGF_Vertex& V = vertices[j];
+				Tmin.min(V.UV[i]);
+				Tmax.max(V.UV[i]);
+			}
+			Tdelta[i].x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
+			Tdelta[i].y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
 		}
-		Tdelta[i].x = floorf((Tmax.x-Tmin.x)/2+Tmin.x);
-		Tdelta[i].y = floorf((Tmax.y-Tmin.y)/2+Tmin.y);
+	} catch(...) {
+		Msg	("* ERROR: optimize: std-geom : delta UV");
 	}
 
 	// 2. Recalc UV mapping
-	for (u32 i=0; i<vertices.size(); i++)
-	{
-		svector<Fvector2,2>& UV = vertices[i].UV;
-		for (int j=0; j<2; j++)
+	try {
+		for (u32 i=0; i<vertices.size(); i++)
 		{
-			if (dwRelevantUVMASK&(1<<j))	UV[j].sub(Tdelta[j]);
-			// else							UV[j].set(0,0 );
+			svector<Fvector2,2>& UV = vertices[i].UV;
+			for (int j=0; j<2; j++)	{
+				if (dwRelevantUVMASK&(1<<j))	UV[j].sub(Tdelta[j]);
+				// else							UV[j].set(0,0 );
+			}
 		}
+	} catch(...) {
+		Msg	("* ERROR: optimize: std-geom : recalc UV");
 	}
 }
 
