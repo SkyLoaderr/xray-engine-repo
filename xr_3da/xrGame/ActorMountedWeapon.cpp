@@ -23,6 +23,7 @@ bool CActor::use_MountedWeapon(CPhysicsShellHolder* object)
 				if(wpn->attach_Actor(this)){
 					// destroy actor character
 					m_PhysicMovementControl->DestroyCharacter();
+					PickupModeOff();
 					m_holder=wpn;
 					if (pCamBobbing){
 						EffectorManager().RemoveEffector(eCEBobbing);

@@ -18,7 +18,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	if(!vehicle) return;
 
 	if(m_holder) return;
-
+	PickupModeOff		();
 	m_holder=vehicle;
 
 	CSkeletonAnimated* V		= smart_cast<CSkeletonAnimated*>(Visual()); R_ASSERT(V);
