@@ -29,6 +29,11 @@ protected:
 	typedef vecC::iterator		vecCIT;
 	CStream*					LL_Stream;
 	vecC						LL_strings;
+	LPCSTR						getString	(int id)	{
+		if (id<0)	return 0;
+		R_ASSERT	(id<LL_strings.size());
+		return LL_strings[id];
+	}
 
 	// Network interface
 	CObject*					pCurrentEntity;
@@ -70,7 +75,7 @@ public:
 	void						SetEntity				( CObject* O  ) { VERIFY(O); pCurrentEntity=pCurrentViewEntity=O; }
 
 	// Loader interface
-	Shader*						LL_CreateShader			(DWORD S, DWORD T, DWORD M, DWORD C);
+	Shader*						LL_CreateShader			(int S, int T, int M, int C);
 };
 
 extern ENGINE_API	CCreator*	pCreator;

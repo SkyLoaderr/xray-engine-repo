@@ -76,7 +76,7 @@ void FBasicVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 	if (data->FindChunk(OGF_TEXTURE_L)) {
 		DWORD T = data->Rdword();
 		DWORD S = data->Rdword();
-		hShader = pCreator->LL_CreateShader(S,T);
+		hShader = pCreator->LL_CreateShader(S,T,-1,-1);
 	} else {
 		if (data->FindChunk(OGF_TEXTURE)) {
 			FILE_NAME fnT,fnS;
