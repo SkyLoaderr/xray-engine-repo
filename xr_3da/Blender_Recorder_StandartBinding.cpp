@@ -108,5 +108,5 @@ void	CBlender_Compile::SetMapping	()
 
 	// detail
 	if (bDetail	&& detail_scaler)
-		r_Constant			("dt_scaler",		detail_scaler);
+		r_Constant			("dt_params",		detail_scaler);
 }
