@@ -134,7 +134,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			Command	(COMMAND_UPDATE_CAPTION);
 	        Command	(COMMAND_UPDATE_PROPERTIES);
 		    Tools.UndoClear();
-		    Tools.UndoSave();
 		}
 		break;
     case COMMAND_PREVIEW_OBJ_PREF:
