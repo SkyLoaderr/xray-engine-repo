@@ -77,7 +77,9 @@ namespace Collide
 					R.O				=_who;
 					R.range			=_range;
 					R.element		=_element;
-				}else return FALSE;
+					return			TRUE;
+				}
+				return				FALSE;
 			}
 			results.push_back		(rq_result());
 			rq_result& rq			= results.back();

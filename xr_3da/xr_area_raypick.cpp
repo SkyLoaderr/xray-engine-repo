@@ -144,14 +144,16 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 				CObject*	collidable		= dynamic_cast<CObject*>	(g_SpatialSpace->q_result[o_it]);
 				if			(0==collidable)	continue;
 				ICollisionForm*	cform		= collidable->collidable.model;
-				if (cform->_RayQuery(d_rd,r_temp)){
-					rq_result& d_res = *r_temp.r_begin();
-					d_rd.range	-= (d_res.range+EPS_L);
-					d_rd.start.mad(d_rd.dir,d_res.range+EPS_L);
-					d_res.range	= R.range-d_rd.range-EPS_L;
-				}
+				cform->_RayQuery(d_rd,r_temp);
 			}
-			if (!r_temp.r_count()) sd_test.set(rqtDynamic,FALSE);
+			if (r_temp.r_count()){
+				rq_result& d_res = *r_temp.r_begin();
+				d_rd.range	-= (d_res.range+EPS_L);
+				d_rd.start.mad(d_rd.dir,d_res.range+EPS_L);
+				d_res.range	= R.range-d_rd.range-EPS_L;
+			}else{
+				sd_test.set(rqtDynamic,FALSE);
+			}
 		}
 		if (s_res.valid()&&r_temp.r_count()){
 			if	(s_res.range<r_temp.r_begin()->range){
