@@ -43,7 +43,7 @@ end
 function object_spawner:check_spawn(npc_id)
 	---' !!! Тут вставить проверку по кондлисту
 	local actor = level.actor()
-	print_table(self.list)
+	--print_table(self.list)
 	if actor ~= nil then
 		if xr_logic.pick_section_from_condlist(actor,nil,self.list[npc_id].cond.condlist) ~= nil then
 			self:restore(npc_id)
