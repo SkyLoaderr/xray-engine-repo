@@ -1,5 +1,113 @@
 
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_const" (property_evaluator)
+----------------------
+function evaluator_const:__init (name) super ()
+    self.value = false
+end
+----------------------
+function evaluator_const:evaluate ()
+    return self.value
+end
+----------------------------------------------------------------------------------------------------------------------
 
 
-function add_to_binder (obj)
+----------------------------------------------------------------------------------------------------------------------
+class "action_move" (action_base)
+----------------------
+function action_move:__init (name) super (nil, name)
+    self.path = nil
+end
+----------------------
+function action_move:initialize ()
+    action_base.initialize (self)
+    
+    if self.path == nil then
+       local ini = self.object:spawn_ini ()
+       if ini:line_exist ("report", "path") then
+          self.path = ini:r_string ("report", "path")
+       end
+    end      
+    
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.walk)
+    self.object:set_path_type             (game_object.patrol_path)
+    self.object:set_patrol_path           (self.path, patrol.nearest, patrol.continue, true)
+    self.object:set_mental_state          (anim.free)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+end    
+----------------------
+function action_move:execute ()
+    action_base.execute (self)
+end    
+----------------------
+function action_base:finalize ()
+    action_base.finalize (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+function SetScheme (obj)
+	local operators		= {}
+	local properties	= {}
+	
+	properties["timeout_leader"]            = xr_evaluators_id.sidor_report_leader      + 0
+	properties["timeout_soldier"]           = xr_evaluators_id.sidor_report_soldier     + 0
+	properties["complete"]                  = xr_evaluators_id.sidor_report_leader      + 1
+ 	operators["report_leader"]              = xr_actions_id.sidor_act_report_leader     + 0
+ 	operators["report_soldier"]             = xr_actions_id.sidor_act_report_soldier    + 0  
+ 	operators["action_move"]                = xr_actions_id.sidor_act_report_soldier    + 1
+    
+	local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator (properties["complete"], this.evaluator_const ("evaluator_complete"))
+    
+    local action = this.action_move ("action_move")
+   	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     	(world_property (properties["complete"],        false))
+   	action:add_effect           	(world_property (properties["complete"],        true))
+   	manager:add_action              (operators["action_move"], action)
+
+   	action = manager:action (stalker_ids.action_free_no_alife)
+   	action:add_precondition (world_property (properties["complete"],  true))
+    
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "report_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function report_binder:__init (obj) super(obj)
+end
+----------------------------------------------------------------------------------------------------------------------
+function report_binder:reinit ()
+    object_binder.reinit (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function report_binder:reload (section)
+    object_binder.reload  (self, section)
+    this.SetScheme (self.object)
+end
+----------------------------------------------------------------------------------------------------------------------
+function report_binder:net_spawn  (server_object)
+  if (object_binder.net_spawn (self, server_object) == false) then
+     return false
+  end
+  return true
+end
+----------------------------------------------------------------------------------------------------------------------
+function report_binder:net_destroy  ()
+  object_binder.net_destroy  (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+function add_to_binder (npc)
+    npc:bind_object  (this.report_binder (npc))
+    return true
 end
