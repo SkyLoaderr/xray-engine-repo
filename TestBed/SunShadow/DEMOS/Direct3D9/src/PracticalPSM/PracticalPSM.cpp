@@ -496,7 +496,7 @@ void CPracticalPSM::ComputeVirtualCameraParameters( )
                 m_ShadowCasterObjects.push_back(instance);
                 m_ShadowReceiverObjects.push_back(instance);
                 const std::vector<BoundingBox>& boxen = *instance->aaBoxen;
-                for (int box=0; box<boxen.size(); box++)
+                for (int box=0; box<int(boxen.size()); box++)	//. OLES:
                 {
                     BoundingBox smallBox = boxen[box];
                     smallBox.minPt += instance->translation;
