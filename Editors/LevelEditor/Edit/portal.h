@@ -10,6 +10,7 @@ class CPortal: public CCustomObject {
     friend class TfraPortal;
     friend class SceneBuilder;
     friend class CPortalUtils;
+	typedef CCustomObject inherited ;
 
 	FvectorVec		m_Vertices;
 	FvectorVec		m_SimplifyVertices;

@@ -475,6 +475,7 @@ void CPortal::Save(IWriter& F){
 
 bool CPortal::GetSummaryInfo(SSceneSummary* inf)
 {
+	inherited::GetSummaryInfo	(inf);
 	inf->portal_cnt++;
 	return true;
 }

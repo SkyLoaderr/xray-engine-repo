@@ -116,6 +116,7 @@ void CShaderTools::OnDestroy()
 
 void CShaderTools::Render()
 {
+    PrepareLighting		();
 	Current()->OnRender();
 }
 
@@ -133,7 +134,7 @@ void CShaderTools::ZoomObject(bool bOnlySel)
 	Current()->ZoomObject(bOnlySel);
 }
 
-void CShaderTools::OnDeviceCreate()
+void CShaderTools::PrepareLighting()
 {
     // add directional light
     Flight L;
@@ -163,7 +164,10 @@ void CShaderTools::OnDeviceCreate()
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
+}
 
+void CShaderTools::OnDeviceCreate()
+{
 	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
     	if (it->second) it->second->OnDeviceCreate();
 }

@@ -145,6 +145,8 @@ void CParticleTools::Render()
 {
 	if (!m_bReady) return;
 
+    PrepareLighting		();
+    
 	if (m_EditObject)	m_EditObject->RenderSingle(Fidentity);
 	// draw parent axis
     DU.DrawObjectAxis			(m_Transform,0.05f,true);
@@ -252,7 +254,7 @@ void CParticleTools::ZoomObject(bool bSelOnly)
     }
 }
 
-void CParticleTools::OnDeviceCreate()
+void CParticleTools::PrepareLighting()
 {
     // add directional light
     Flight L;
@@ -282,6 +284,10 @@ void CParticleTools::OnDeviceCreate()
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
+}
+
+void CParticleTools::OnDeviceCreate()
+{
 }
 
 void CParticleTools::OnDeviceDestroy()

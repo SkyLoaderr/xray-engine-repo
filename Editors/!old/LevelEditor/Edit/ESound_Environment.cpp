@@ -100,6 +100,7 @@ void ESoundEnvironment::FillProp(LPCSTR pref, PropItemVec& values)
 
 bool ESoundEnvironment::GetSummaryInfo(SSceneSummary* inf)
 {
+	inherited::GetSummaryInfo	(inf);
 	return true;
 }
 

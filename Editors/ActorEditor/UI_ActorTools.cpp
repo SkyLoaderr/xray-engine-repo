@@ -254,7 +254,8 @@ void CActorTools::GetStatTime(float& a, float& b, float& c)
 void CActorTools::Render()
 {
 	if (!m_bReady) return;
-    m_PreviewObject.Render();
+	PrepareLighting			();
+    m_PreviewObject.Render	();
 	if (m_pEditObject){
         if (m_RenderObject.IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down){
         	::Render->model_RenderSingle(m_RenderObject.m_pVisual,Fidentity,m_RenderObject.m_fLOD);
@@ -303,7 +304,7 @@ void CActorTools::ZoomObject(bool bSelOnly)
         Device.m_Camera.ZoomExtents(m_pEditObject->GetBox());
 }
 
-void CActorTools::OnDeviceCreate()
+void CActorTools::PrepareLighting()
 {
     // add directional light
     Flight L;
@@ -333,7 +334,10 @@ void CActorTools::OnDeviceCreate()
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
+}
 
+void CActorTools::OnDeviceCreate()
+{
     if (m_pEditObject){
     	m_pEditObject->OnDeviceCreate();
         MakePreview();
@@ -393,6 +397,13 @@ bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
 
 bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
 {
+	Device.LightEnable(0,true);
+	Device.LightEnable(1,true);
+	Device.LightEnable(2,true);
+	Device.LightEnable(3,true);
+	Device.LightEnable(4,true);
+
+
     std::string 	full_name;
     if (initial)	FS.update_path	(full_name,initial,obj_name);
     else			full_name		= obj_name;

@@ -105,18 +105,12 @@ bool CSceneObject::IsRender()
     return inherited::IsRender();
 }
 
-#ifdef _LEVEL_EDITOR
-	#include "ESceneLightTools.h"
-#endif
 
 void CSceneObject::Render(int priority, bool strictB2F)
 {
 	inherited::Render(priority,strictB2F);
     if (!m_pReference) return;
-#ifdef _LEVEL_EDITOR
-	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene->GetOTools(OBJCLASS_LIGHT)); VERIFY(lt);
-    lt->SelectLightsForObject(this);
-#endif
+    Scene->SelectLightsForObject(this);
 	m_pReference->Render(_Transform(), priority, strictB2F);
     if (Selected()){
     	if (1==priority){
@@ -272,6 +266,7 @@ void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 
 bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)
 {
+	inherited::GetSummaryInfo	(inf);
 	CEditableObject* E 	= GetReference(); R_ASSERT(E);
     E->GetSummaryInfo	(inf);
 	return true;

@@ -23,11 +23,6 @@ struct UndoItem {
 };
 #pragma pack( pop )
 
-class CLight;
-class CSceneObject;
-class EDetailManager;
-class ESceneAIMapTools;
-class CInifile;
 class TProperties;
 /*
 int __cdecl _CompareByDist( const void *a, const void *b)
@@ -209,6 +204,8 @@ public:
 	void 			CutSelection        (EObjClass classfilter);
 	void			CopySelection       (EObjClass classfilter);
 	void			PasteSelection      ();
+
+	void 			SelectLightsForObject(CCustomObject* obj);
 
     void 			ZoomExtents			(EObjClass cls, BOOL bSelectedOnly);
 

@@ -205,6 +205,7 @@ void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
 
 bool ESoundSource::GetSummaryInfo(SSceneSummary* inf)
 {
+	inherited::GetSummaryInfo	(inf);
 	if (m_WAVName.size()) inf->waves.insert(*m_WAVName);
     inf->sound_source_cnt++;
 	return true;

@@ -74,6 +74,8 @@ public:
 protected:
 	void __stdcall		OnChangeMotion		(PropValue* sender);
 	CObjectAnimator*	m_ParentAnimator;
+
+    void 				PrepareLighting		();
 public:
 						CParticleTools		();
     virtual 			~CParticleTools		();

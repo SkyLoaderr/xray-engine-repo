@@ -113,7 +113,7 @@ public:
 
 	virtual void		OnSynchronize			();
 
-	virtual bool 		GetSummaryInfo			(SSceneSummary* inf){return false;}
+	virtual bool 		GetSummaryInfo			(SSceneSummary* inf){return false;} 
 
 	// properties
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items);

@@ -206,6 +206,7 @@ void CLight::OnNeedUpdate(PropValue* value)
 
 bool CLight::GetSummaryInfo(SSceneSummary* inf)
 {
+	inherited::GetSummaryInfo	(inf);
     switch (m_Type){
     case ELight::ltPoint:		inf->light_point_cnt++; break;
     case ELight::ltSpot:		inf->light_spot_cnt++; 	break;

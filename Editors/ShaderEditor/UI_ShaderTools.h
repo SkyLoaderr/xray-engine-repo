@@ -23,6 +23,8 @@ class CShaderTools: public CToolsCustom
     	flRefreshList 	= (1ul<<1ul),
     };
     Flags32				m_Flags;
+
+    void 				PrepareLighting		();
 public:
 	TItemList*			m_Items;
     TProperties*		m_ItemProps;

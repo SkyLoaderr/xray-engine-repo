@@ -152,6 +152,8 @@ protected:
     void __stdcall  	PMMotionItemClick		(TObject *Sender);
     
     void				RealUpdateProperties	();
+
+    void				PrepareLighting			();
 public:
 	EngineModel			m_RenderObject;
     PreviewModel		m_PreviewObject;

@@ -456,6 +456,7 @@ void CSector::FillProp(LPCSTR pref, PropItemVec& items)
 
 bool CSector::GetSummaryInfo(SSceneSummary* inf)
 {
+	inherited::GetSummaryInfo	(inf);
 	inf->sector_cnt++;
 	return true;
 }

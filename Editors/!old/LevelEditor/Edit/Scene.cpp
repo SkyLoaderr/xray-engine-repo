@@ -376,4 +376,9 @@ std::string EScene::LevelPath()
     return path;
 }
 
-
+#include "ESceneLightTools.h"
+void EScene::SelectLightsForObject(CCustomObject* obj)
+{
+	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene->GetOTools(OBJCLASS_LIGHT)); VERIFY(lt);
+    lt->SelectLightsForObject(obj);
+}

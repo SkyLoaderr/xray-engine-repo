@@ -254,6 +254,7 @@ void EParticlesObject::FillProp(LPCSTR pref, PropItemVec& items)
 
 bool EParticlesObject::GetSummaryInfo(SSceneSummary* inf)
 {
+	inherited::GetSummaryInfo	(inf);
 /*
 	if (!m_RefName.IsEmpty()&&m_PE.GetDefinition()){ 
     	inf->pe_static.insert(m_PE.GetDefinition()->m_Name);
