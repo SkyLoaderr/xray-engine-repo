@@ -19,6 +19,27 @@ CPhysicObject::~CPhysicObject(void)
 {
 	ClearUnsplited();
 }
+
+
+void CPhysicObject::RespawnInit()
+{
+	CKinematics*	K	=	PKinematics(Visual());
+	if(K)
+	{
+		K->LL_SetBoneRoot(0);
+		K->LL_SetBonesVisible(0xffffffffffffffffL);
+	}
+	Init();
+	ClearUnsplited();
+}
+
+void CPhysicObject::Init()
+{
+	m_unsplit_time = u32(-1);
+	b_removing=false;
+	m_startup_anim=NULL;
+}
+
 void CPhysicObject::SaveNetState(NET_Packet& P)
 {
 
@@ -93,24 +114,17 @@ void CPhysicObject::LoadNetState(NET_Packet& P)
 		PHGetSyncItem(i)->set_State(state);
 	}
 }
-
-void CPhysicObject::RespawnInit()
+void CPhysicObject::RestoreNetState(PHNETSTATE_VECTOR& saved_bones)
 {
-	CKinematics*	K	=	PKinematics(Visual());
-	if(K)
+	PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
+	for(u16 bone=0;e!=i;i++,bone++)
 	{
-		K->LL_SetBoneRoot(0);
-		K->LL_SetBonesVisible(0xffffffffffffffffL);
+		R_ASSERT(bone<PHGetSyncItemsNumber());
+		PHGetSyncItem(bone)->set_State(*i);
 	}
-	Init();
-	ClearUnsplited();
+	saved_bones.clear();
 }
-void CPhysicObject::Init()
-{
-	m_unsplit_time = u32(-1);
-	b_removing=false;
-	m_startup_anim=NULL;
-}
+
 
 void CPhysicObject::ClearUnsplited()
 {
@@ -130,8 +144,8 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	inherited::net_Spawn	(DC);
 
 	m_flags					= po->flags;
-	m_type = EPOType(po->type);
-	m_mass = po->mass;
+	m_type					= EPOType(po->type);
+	m_mass					= po->mass;
 	m_startup_anim=po->startup_animation;
 	xr_delete(collidable.model);
 	switch(m_type) {
@@ -166,17 +180,10 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 			break;
 		default: NODEFAULT; 
 	}
-	//PKinematics(Visual())->Calculate();
+
 	if(m_flags.test(CSE_ALifeObjectPhysic::flSavedData))
 	{
-		PHNETSTATE_VECTOR& saved_bones=po->saved_bones.bones;
-		PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
-		for(u16 bone=0;e!=i;i++,bone++)
-		{
-			R_ASSERT(bone<PHGetSyncItemsNumber());
-			PHGetSyncItem(bone)->set_State(*i);
-		}
-		saved_bones.clear();
+		RestoreNetState(po->saved_bones.bones);
 		m_flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
 		po->flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
 	}

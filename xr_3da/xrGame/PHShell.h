@@ -185,9 +185,10 @@ public:
 protected:
 	virtual		void		get_spatial_params			()																				;
 	virtual		dGeomID		dSpacedGeom					()																	{return (dGeomID)m_space;}
+	virtual		void		DisableObject				()																	;
 private:
 	//breakable
-	void setEndElementSplitter	  			()																							;
+	void setEndElementSplitter	  			()																				;
 	void setElementSplitter		  			(u16 element_number,u16 splitter_position)										;
 	void setEndJointSplitter	  			()																				;
 	void AddSplitter			  			(CPHShellSplitter::EType type,u16 element,u16 joint)							;
@@ -203,7 +204,7 @@ private:
 	void ResetCallbacksRecursive			(u16 id,u16 element,Flags64 &mask)												;
 	void SetJointRootGeom					(CPhysicsElement* root_e,CPhysicsJoint* J)										;
 
-	void DisableObject						()																				;
+
 	void ReanableObject						()																				;
 	void ExplosionHit						(const Fvector& pos, const Fvector& dir, float val,const u16 id)				;
 };

@@ -722,7 +722,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 
 	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
-	if( !m_shell->is_active() && !bUpdate) return;
+	if( !m_shell->is_active() && !bUpdate ) return;
 
 	{
 		InterpolateGlobalTransform(&mXFORM);

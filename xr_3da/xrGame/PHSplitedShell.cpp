@@ -22,3 +22,7 @@ void CPHSplitedShell::get_spatial_params()
 		if(spatial.radius>m_max_AABBradius) spatial.radius=m_max_AABBradius;
 }
 
+void CPHSplitedShell::DisableObject()
+{
+	CPHObject::deactivate();
+}

@@ -11,6 +11,7 @@ class CPHSplitedShell:
 protected:
 	virtual		void		Collide				()										;
 	virtual		void		get_spatial_params	()										;
+	virtual		void		DisableObject		()										;
 private:
 public:
 	CPHSplitedShell								(){m_max_AABBradius=dInfinity;}

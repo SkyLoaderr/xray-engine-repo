@@ -2,6 +2,7 @@
 #include "gameobject.h"
 #include "PHDefs.h"
 #include "physicsshellholder.h"
+#include "phnetstate.h"
 class CSE_ALifeObjectPhysic;
 
 class CPhysicsElement;
@@ -35,6 +36,7 @@ private:
 			void	SetAutoRemove		()																				;
 			void	SaveNetState		(NET_Packet& P)																	;
 			void	LoadNetState		(NET_Packet& P)																	;
+			void	RestoreNetState		(PHNETSTATE_VECTOR& saved_bones);
 public:
 	CPhysicObject(void);
 	virtual ~CPhysicObject(void);
