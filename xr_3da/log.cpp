@@ -8,10 +8,10 @@ static const char *		logFName		= "engine.log";
 static HWND				logWindow		= NULL;
 static HWND				logoWindow		= NULL;
 static HWND				logControl		= NULL;
-static CCriticalSection	logCS			= 0;
-std::vector <char *>	LogFile;
+static CCriticalSection	logCS;
+std::vector <LPCSTR>	LogFile;
 
-void AddOne				(char *split) 
+void AddOne				(const char *split) 
 {
 	logCS.Enter			();
 
@@ -20,9 +20,9 @@ void AddOne				(char *split)
 	OutputDebugString	("\n");
 #endif
 
-	f = fopen			(logFName, "at");
+	FILE	*f = fopen	(logFName, "at");
 	if (f) {
-		fprintf				(f, "%s\n", s);
+		fprintf				(f, "%s\n", split);
 		fclose				(f);
 	}
 
@@ -41,7 +41,6 @@ void AddOne				(char *split)
 
 void Log(const char *s) 
 {
-	FILE	*f;
 	int		i,j;
 	char	split[1024];
 
