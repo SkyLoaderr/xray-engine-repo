@@ -5,7 +5,7 @@
 	<icon_static x="7" y="30" width="130" height="108"></icon_static>
 
 	<!-- NAME -->
-	<static x="5" y="5" width="130" height="22">
+	<static x="7" y="7" width="130" height="22">
 		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
 	</static>
 
