@@ -176,10 +176,10 @@ default:		axis.set(axes[0].direction);
 		dJointSetHingeParam(m_joint,dParamFMax ,axes[0].force);
 		dJointSetHingeParam(m_joint,dParamVel ,axes[0].velocity);
 	}
-	dJointSetAMotorParam(m_joint,dParamStopERP ,axes[0].erp);
-	dJointSetAMotorParam(m_joint,dParamStopCFM ,axes[0].cfm);
+	dJointSetHingeParam(m_joint,dParamStopERP ,axes[0].erp);
+	dJointSetHingeParam(m_joint,dParamStopCFM ,axes[0].cfm);
 
-	dJointSetAMotorParam(m_joint,dParamCFM ,cfm);
+	dJointSetHingeParam(m_joint,dParamCFM ,cfm);
 }
 
 
