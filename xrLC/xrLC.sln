@@ -1,13 +1,23 @@
-Microsoft Visual Studio Solution File, Format Version 7.00
+Microsoft Visual Studio Solution File, Format Version 8.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrAI", "xrAI\xrAI.vcproj", "{4E9E2169-B88E-44A8-978E-C6DBF32DE074}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrDO_Light", "xrDO_Light\xrDO_Light.vcproj", "{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrHemisphere", "xrHemisphere\xrHemisphere.vcproj", "{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC", "xrLC.vcproj", "{25B60978-8467-4263-A6EB-CB3BB108F8BF}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "close", "close\close.vcproj", "{2996B2B8-B3A1-4785-97BD-56F4398C2E97}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
@@ -38,11 +48,9 @@ Global
 		SccProjectFilePathRelativizedFromConnection5 = close\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Mixed
-		ConfigName.2 = Release
-	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
+		Debug = Debug
+		Mixed = Mixed
+		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Debug.ActiveCfg = Debug|Win32
