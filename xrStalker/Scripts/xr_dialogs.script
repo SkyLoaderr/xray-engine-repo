@@ -214,12 +214,6 @@ function dialog_mgr:update()
 		return
 	end
 
-	if self.a.dlgs then
-		printf( self.a.dlgs[1] )
-	else
-		printf( "no dlgs " )
-	end
-
 	if self.a.cur_dlg then	-- активен ли диалог?
 		if self.object:id() == self.a.cur_npc:id() then	-- обновление текущего говорящего?
 			if self.a.phrase_delay_end < device():time_global() then -- окончилась ли необходимая задержка перед фразой?
