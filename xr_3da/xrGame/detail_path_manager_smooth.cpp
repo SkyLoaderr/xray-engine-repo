@@ -426,32 +426,18 @@ void CDetailPathManager::build_smooth_path		(
 
 	// filling velocity parameters
 	m_start_params.clear					();
-	if (m_try_desirable_speed) {
-		xr_map<u32,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
-		xr_map<u32,STravelParams>::const_iterator E = m_movement_params.end();
-		for ( ; I != E; ++I) {
-			if (!check_mask(m_velocity_mask,(*I).first))
-				continue;
-			STravelParamsIndex					temp;
-			(STravelParams&)temp				= (*I).second;
-			temp.index							= (*I).first;
-			if (check_mask(m_desirable_mask,(*I).first))
-				m_start_params.insert			(m_start_params.begin(),temp);
-			else
-				m_start_params.push_back		(temp);
-		}
-	}
-	else {
-		xr_map<u32,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
-		xr_map<u32,STravelParams>::const_iterator E = m_movement_params.end();
-		for ( ; I != E; ++I) {
-			if (!check_mask(m_velocity_mask,(*I).first))
-				continue;
-			STravelParamsIndex					temp;
-			(STravelParams&)temp				= (*I).second;
-			temp.index							= (*I).first;
-			m_start_params.push_back			(temp);
-		}
+	xr_map<u32,STravelParams>::const_iterator I = m_movement_params.begin(), B = I;
+	xr_map<u32,STravelParams>::const_iterator E = m_movement_params.end();
+	for ( ; I != E; ++I) {
+		if (!check_mask(m_velocity_mask,(*I).first))
+			continue;
+		STravelParamsIndex					temp;
+		(STravelParams&)temp				= (*I).second;
+		temp.index							= (*I).first;
+		if (check_mask(m_desirable_mask,(*I).first))
+			m_start_params.insert			(m_start_params.begin(),temp);
+		else
+			m_start_params.push_back		(temp);
 	}
 	
 	if (m_start_params.empty())

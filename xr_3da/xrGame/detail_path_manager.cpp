@@ -33,7 +33,6 @@ void CDetailPathManager::Init			()
 	m_desirable_mask		= u32(-1);
 	m_velocity_mask			= 0;
 	m_try_min_time			= false;
-	m_try_desirable_speed	= false;
 	m_use_dest_orientation	= false;
 }
 

@@ -118,26 +118,6 @@ void CAI_Stalker::Init()
 
 	m_tTaskState					= eTaskStateChooseTask;
 	m_bCanFire						= true;
-
-	m_movement_params.insert		(std::make_pair(eMovementParameterStand						,STravelParams(0.f									,PI_MUL_2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFree					,STravelParams(m_fWalkFreeFactor					,PI_DIV_8	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunFree					,STravelParams(m_fRunFreeFactor						,PI_DIV_8/2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStand			,STravelParams(m_fWalkFactor						,PI			)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouch			,STravelParams(m_fWalkFactor*m_fCrouchFactor		,3*PI_DIV_2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStand			,STravelParams(m_fRunFactor							,PI_DIV_2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouch			,STravelParams(m_fRunFactor*m_fCrouchFactor			,PI			)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterPanic						,STravelParams(m_fPanicFactor						,PI_DIV_8/2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFreeDamaged			,STravelParams(m_fDamagedWalkFreeFactor				,PI_DIV_8	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunFreeDamaged			,STravelParams(m_fDamagedRunFreeFactor				,PI_DIV_8/2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStandDamaged	,STravelParams(m_fDamagedWalkFactor					,PI			)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouchDamaged	,STravelParams(m_fWalkFactor*m_fCrouchFactor		,3*PI_DIV_2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStandDamaged		,STravelParams(m_fDamagedRunFactor					,PI_DIV_2	)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouchDamaged	,STravelParams(m_fRunFactor*m_fCrouchFactor			,PI			)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterPanicDamaged				,STravelParams(m_fDamagedPanicFactor				,PI_DIV_8/2	)));
-	set_velocity_mask				(eMovementParameterWalkFree);
-	set_desirable_mask				(eMovementParameterWalkFree);
-//	set_velocity_mask				(eMovementParameterWalkDangerStand);
-//	set_desirable_mask				(eMovementParameterWalkDangerStand);
 }
 
 void CAI_Stalker::Die				()
@@ -257,7 +237,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return						(FALSE);
-	Init							();
 
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
@@ -319,6 +298,25 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	}
 
 	m_tpKnownCustomers				= tpHuman->m_tpKnownCustomers;
+
+	m_movement_params.insert		(std::make_pair(eMovementParameterStand						,STravelParams(0.f									,PI_MUL_2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFree					,STravelParams(m_fWalkFreeFactor					,PI_DIV_8	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunFree					,STravelParams(m_fRunFreeFactor						,PI_DIV_8/2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStand			,STravelParams(m_fWalkFactor						,PI			)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouch			,STravelParams(m_fWalkFactor*m_fCrouchFactor		,3*PI_DIV_2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStand			,STravelParams(m_fRunFactor							,PI_DIV_2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouch			,STravelParams(m_fRunFactor*m_fCrouchFactor			,PI			)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterPanic						,STravelParams(m_fPanicFactor						,PI_DIV_8/2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFreeDamaged			,STravelParams(m_fDamagedWalkFreeFactor				,PI_DIV_8	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunFreeDamaged			,STravelParams(m_fDamagedRunFreeFactor				,PI_DIV_8/2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStandDamaged	,STravelParams(m_fDamagedWalkFactor					,PI			)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouchDamaged	,STravelParams(m_fWalkFactor*m_fCrouchFactor		,3*PI_DIV_2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerStandDamaged		,STravelParams(m_fDamagedRunFactor					,PI_DIV_2	)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterRunDangerCrouchDamaged	,STravelParams(m_fRunFactor*m_fCrouchFactor			,PI			)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterPanicDamaged				,STravelParams(m_fDamagedPanicFactor				,PI_DIV_8/2	)));
+	set_velocity_mask				(eMovementParameterWalkFree | eMovementParameterStand);
+	set_desirable_mask				(eMovementParameterWalkFree);
+	set_use_dest_orientation		(true);
 
 	return							(TRUE);
 }

@@ -171,17 +171,6 @@ IC	const bool CDetailPathManager::try_min_time			() const
 	return					(m_try_min_time);
 }
 
-IC	void CDetailPathManager::set_try_desirable_speed	(const bool try_desirable_speed)
-{
-	m_actuality				= m_actuality && (try_desirable_speed == m_try_desirable_speed);
-	m_try_desirable_speed	= try_desirable_speed;
-}
-
-IC	const bool CDetailPathManager::try_desirable_speed	() const
-{
-	return					(m_try_desirable_speed);
-}
-
 IC	void CDetailPathManager::set_use_dest_orientation	(const bool use_dest_orientation)
 {
 	m_actuality				= m_actuality && (use_dest_orientation == m_use_dest_orientation);

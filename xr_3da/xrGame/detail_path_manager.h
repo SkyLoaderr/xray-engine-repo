@@ -108,7 +108,6 @@ private:
 	u32											m_desirable_mask;
 	u32											m_velocity_mask;
 	bool										m_try_min_time;
-	bool										m_try_desirable_speed;
 	bool										m_use_dest_orientation;
 
 	// old heritage
@@ -145,7 +144,6 @@ protected:
 	IC		void	set_velocity_mask		(const u32 mask);
 	IC		void	set_desirable_mask		(const u32 mask);
 	IC		void	set_try_min_time		(const bool try_min_time);
-	IC		void	set_try_desirable_speed	(const bool try_desirable_speed);
 	IC		void	set_use_dest_orientation(const bool use_dest_orientation);
 
 	friend class CScriptMonster;
@@ -175,7 +173,6 @@ public:
 	IC		const u32							velocity_mask			() const;
 	IC		const u32							desirable_mask			() const;
 	IC		const bool							try_min_time			() const;
-	IC		const bool							try_desirable_speed		() const;
 	IC		const bool							use_dest_orientation	() const;
 };
 
