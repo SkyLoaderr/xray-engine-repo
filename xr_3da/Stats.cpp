@@ -3,6 +3,7 @@
 #pragma hdrstop
 
 #include "ISpatial.h"
+#include "IGame_Persistent.h"
 #include "render.h"
 
 //////////////////////////////////////////////////////////////////////
