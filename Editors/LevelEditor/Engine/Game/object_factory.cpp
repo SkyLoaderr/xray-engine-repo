@@ -7,6 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "object_factory.h"
 #include "object_broker.h"
 

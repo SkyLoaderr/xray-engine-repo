@@ -7,6 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "object_factory.h"
 
 // server entities includes
