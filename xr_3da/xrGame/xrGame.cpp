@@ -67,6 +67,14 @@ extern "C" {
 	}
 };
 
+void clear_singletons ()
+{
+	// destroy ai space
+	xr_delete(g_ai_space);
+	// destroy monster squad global var
+	xr_delete(g_monster_squad);
+}
+
 // console commands
 class CCC_Spawn : public IConsole_Command
 {
@@ -998,8 +1006,8 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 		case DLL_PROCESS_DETACH: {
 			// xml parser options
 			XML_CleanUpMemory			();
-			// destroy ai space
-			xr_delete					(g_ai_space);
+			// clear memory under singletons
+			clear_singletons			();			
 			break;
 		}
 	}
