@@ -94,15 +94,13 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 				break;
 			}
 			case eMeetActionTypeInteract : {
-				if (l_tpALifeHumanAbstract)	{
-					CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract2 = dynamic_cast<CSE_ALifeHumanAbstract*>(l_tpALifeSchedulable);
-					if (l_tpALifeHumanAbstract2) {
+				R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human objects ñannot communicate with each other");
+				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract2 = dynamic_cast<CSE_ALifeHumanAbstract*>(l_tpALifeSchedulable);
+				R_ASSERT2				(l_tpALifeHumanAbstract2,"Non-human objects ñannot communicate with each other");
 #ifdef OFFLINE_LOG
-						Msg("[LSS] %s interacted with ",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
+				Msg						("[LSS] %s interacted with ",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
-						vfPerformCommunication(l_tpALifeHumanAbstract,l_tpALifeHumanAbstract2);
-					}
-				}
+				vfPerformCommunication	(l_tpALifeHumanAbstract,l_tpALifeHumanAbstract2);
 				break;
 			}
 			case eMeetActionTypeIgnore : {
