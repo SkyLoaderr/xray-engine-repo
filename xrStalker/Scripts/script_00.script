@@ -37,7 +37,7 @@ function main()
 	local prof_nashel_taynik_a = sound_object("scripts\\stalker_prof\\prof_nashel_taynik_a") 
 	local prof_kgm3 = sound_object("scripts\\stalker_prof\\prof_kgm3")
 	local prof_nashel_taynik_b = sound_object("scripts\\stalker_prof\\prof_nashel_taynik_b")
- 
+
 	local rainbow_ya_bi_pomalkival = sound_object("scripts\\stalker_rainbow\\rainbow_ya_bi_pomalkival")
 	local rainbow_v_vagone_mojet_bit_stalker = sound_object("scripts\\stalker_rainbow\\rainbow_v_vagone_mojet_bit_stalker")
 
@@ -66,6 +66,8 @@ function main()
 	local prof_stoyat_pristrelu = sound_object("scripts\\stalker_prof\\prof_stoyat_pristrelu")
 	local prof_tupie_novichki = sound_object("scripts\\stalker_prof\\prof_tupie_novichki")
 	local prof_uviju_pristrelu = sound_object("scripts\\stalker_prof\\prof_uviju_pristrelu")
+	local prof_sam_naprosilsya = sound_object("scripts\\stalker_prof\\prof_sam_naprosilsya")
+
 
 	local rainbow_mochi_ego = sound_object("scripts\\stalker_rainbow\\rainbow_mochi_ego")
 	local rainbow_otpusti_ego = sound_object("scripts\\stalker_rainbow\\rainbow_otpusti_ego")
@@ -189,19 +191,37 @@ function main()
 			)
 
 
-			prof_padla_podslushivala:play_at_pos				(stalker1,stalker1:position(),0);
-			wait(2000)			
+			prof_stoyat_pristrelu:play_at_pos		(stalker1,stalker1:position(),0);
+			wait(3000)			
 			prof_padla_podslushivala:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
-			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
+
+			rainbow_tak_i_znal_ktoto_pryatalsya:play_at_pos		(stalker2,stalker2:position(),0);
 			wait(2000)			
 
-			printf("entered")
-			flush()
-			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
+			prof_siviy_che_delat_budem:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 
+			rainbow_otpusti_ego:play_at_pos		(stalker2,stalker2:position(),0);
+			wait(2000)			
+			rainbow_suchenok_s_pistoletikom:play_at_pos		(stalker2,stalker2:position(),0);
+			wait(2000)			
 
+			prof_luche_ne_privlekat_vnimanie:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(3000)			
+			prof_mi_tebya_otpuskaem:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_kgm4:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(1500)			
+			prof_blin:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(1000)			
+			prof_uviju_pristrelu:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(5000)			
+			prof_sam_naprosilsya:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
+
+			rainbow_mochi_ego:play_at_pos		(stalker2,stalker2:position(),0);
+			wait(2000)			
 			)
 			break
 		end
@@ -232,4 +252,3 @@ function main()
 	end
 
 end
-
