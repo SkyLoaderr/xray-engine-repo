@@ -4,7 +4,7 @@
 
 #include "tga.h"
 
-VOID TGAdesc::maketga( IWriter& fs ){
+void TGAdesc::maketga( IWriter& fs ){
 	R_ASSERT(data);
 	R_ASSERT(width);
 	R_ASSERT(height);
@@ -54,7 +54,7 @@ VOID TGAdesc::maketga( IWriter& fs ){
 }
 
 #ifdef XRLC
-VOID TGAdesc::maketga( char *fname )
+void TGAdesc::maketga( char *fname )
 {
 	char FN[_MAX_PATH];
 	sprintf(FN,(string(g_params.L_path)+"%s.tga").c_str(),fname);

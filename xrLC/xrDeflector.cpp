@@ -229,7 +229,7 @@ void CDeflector::OA_Place	(vecFace& lst)
 	}
 }
 
-VOID CDeflector::GetRect	(Fvector2 &min, Fvector2 &max)
+void CDeflector::GetRect	(Fvector2 &min, Fvector2 &max)
 {
 	// Calculate bounds
 	xr_vector<UVtri>::iterator it=UVpolys.begin();

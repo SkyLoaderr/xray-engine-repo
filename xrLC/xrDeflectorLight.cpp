@@ -456,7 +456,7 @@ BOOL	compress_RMS		(lm_layer& lm, u32 rms, u32& w, u32& h)
 	return FALSE;
 }
 
-VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H)
+void CDeflector::L_Calculate(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H)
 {
 	try {
 		lm_layer&		lm	= layer;
@@ -484,7 +484,7 @@ VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, base_lighting* LightsSelected, H
 	}
 }
 
-VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H)
+void CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H)
 {
 	// Geometrical bounds
 	Fbox bb;		bb.invalidate	();

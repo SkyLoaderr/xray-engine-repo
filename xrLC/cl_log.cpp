@@ -44,7 +44,7 @@ static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 	}
 	return TRUE;
 }
-static VOID _process_messages(VOID)
+static void _process_messages(void)
 {
 	MSG msg;
 	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) 

@@ -58,10 +58,10 @@ public:
 	void	GetRect				(Fvector2 &min, Fvector2 &max);
 	u32		GetFaceCount()		{ return (u32)UVpolys.size();	};
 		
-	VOID	Light				(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H	);
-	VOID	L_Direct			(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H  );
-	VOID	L_Direct_Edge		(CDB::COLLIDER* DB, base_lighting* LightsSelected, Fvector2& p1, Fvector2& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip);
-	VOID	L_Calculate			(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H  );
+	void	Light				(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H	);
+	void	L_Direct			(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H  );
+	void	L_Direct_Edge		(CDB::COLLIDER* DB, base_lighting* LightsSelected, Fvector2& p1, Fvector2& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip);
+	void	L_Calculate			(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H  );
 
 	WORD	GetBaseMaterial		() { return UVpolys.front().owner->dwMaterial;	}
 

@@ -363,7 +363,7 @@ const double hemi_2F[HEMI2_LIGHTS_F][3] =
 extern "C"
 {
 	// Returns TRUE only if everything O},K.
-	XRHS_API VOID	xrHemisphereBuild
+	XRHS_API void	xrHemisphereBuild
 		(
 		int						quality,
 		BOOL					ground,

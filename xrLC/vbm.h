@@ -30,7 +30,7 @@ public:
 		R_ASSERT		(R_DATA.empty());
 		R_DCL.set		(D);
 	}
-	void	Add				(VOID* PTR, u32 cnt)
+	void	Add				(void* PTR, u32 cnt)
 	{
 		R_ASSERT		(R_DCL.size());
 		BYTE*	P		= (BYTE*) PTR;

@@ -36,7 +36,7 @@ public:
 	TGAdesc()	{ data = 0; };
 	~TGAdesc()	{};
 
-	VOID maketga( IWriter &fs );
+	void maketga( IWriter &fs );
 };
 
 #endif /*_INCDEF_TARGASAVER_H_*/

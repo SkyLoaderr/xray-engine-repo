@@ -35,7 +35,7 @@ LRESULT CALLBACK disp_proc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 	return TRUE;
 }
 
-VOID disp_point(int x, int y)
+void disp_point(int x, int y)
 {
 	HDC				hdc;
 	
