@@ -276,7 +276,7 @@ void CActor::Die	( )
 	mstate_real		&=~ mcAnyMove;
 }
 
-void CActor::g_sv_Feel_near_new				(CObject* O)
+void CActor::feel_touch_new				(CObject* O)
 {
 	// Test for weapon
 	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
@@ -306,7 +306,7 @@ void CActor::g_sv_Feel_near_new				(CObject* O)
 	// 
 }
 
-void CActor::g_sv_Feel_near_delete		(CObject* O)
+void CActor::feel_touch_delete		(CObject* O)
 {
 }
 

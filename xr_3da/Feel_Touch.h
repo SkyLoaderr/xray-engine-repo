@@ -4,7 +4,7 @@ class ENGINE_API CObject;
 
 namespace Feel
 {
-	class Touch
+	class ENGINE_API Touch
 	{
 	public:
 		vector<CObject*>		feel_touch;

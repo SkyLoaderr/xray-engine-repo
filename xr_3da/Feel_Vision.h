@@ -12,7 +12,7 @@ namespace Feel
 	const float fuzzy_guaranteed	= 1.f;			// distance which is supposed 100% visible
 	const float lr_granularity		= 0.1f;			// assume similar positions
 
-	class Vision
+	class ENGINE_API Vision
 	{
 	private:
 		objSET						query;

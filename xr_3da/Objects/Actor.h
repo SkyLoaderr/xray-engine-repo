@@ -172,8 +172,8 @@ private:
 	void					g_Physics				(Fvector& accel, float jump, float dt);
 	void					g_SetAnimation			(DWORD mstate_rl);
 
-	virtual void			g_sv_Feel_near_new		(CObject* O);
-	virtual void			g_sv_Feel_near_delete	(CObject* O);
+	virtual void			feel_touch_new			(CObject* O);
+	virtual void			feel_touch_delete		(CObject* O);
 
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(float dt, float fFOV);
