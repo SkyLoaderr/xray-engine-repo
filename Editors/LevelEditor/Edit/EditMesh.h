@@ -24,9 +24,11 @@ enum EVMType{
 struct st_WB{
 	int 	bone;
 	float 	weight;
-	st_WB	(int b, float w):bone(b),weight(w){;}
+			st_WB	():bone(-1),weight(0){;}
+			st_WB	(int b, float w):bone(b),weight(w){;}
+	void	set		(int b, float w){bone=b;weight=w;}
 };
-bool operator < (const st_WB& x, const st_WB& y){ return x.weight < y.weight; }
+IC bool operator < (const st_WB& x, const st_WB& y){ return x.weight > y.weight; } // отсортировать по убыванию
 DEFINE_VECTOR(st_WB,WBVec,WBIt);
 
 struct st_VMapPt{
