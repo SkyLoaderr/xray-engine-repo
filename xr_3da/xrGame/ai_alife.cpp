@@ -140,7 +140,7 @@ void CAI_ALife::Generate()
 void CAI_ALife::Update(u32 dt)
 {
 	inherited::Update(dt);
-	Msg("* %7.2fs",Level().timeServer()/1000.f);
+	//Msg("* %7.2fs",Level().timeServer()/1000.f);
 	u64	qwStartTime = CPU::GetCycleCount();
 	if (m_tNPCHeader.dwCount)
 		for (int i=1; ; i++, m_dwNPCBeingProcessed = (m_dwNPCBeingProcessed + 1) % m_tNPCHeader.dwCount) {
@@ -149,7 +149,7 @@ void CAI_ALife::Update(u32 dt)
 				break;
 		}
 	u64 t2x = CPU::GetCycleCount() - qwStartTime;
-	Msg("* %.3f microseconds",CPU::cycles2microsec*t2x);
+	//Msg("* %.3f microseconds",CPU::cycles2microsec*t2x);
 }
 
 void CAI_ALife::vfProcessNPC(u32 dwNPCIndex)
