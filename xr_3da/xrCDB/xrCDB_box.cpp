@@ -189,7 +189,8 @@ public:
 		Fvector& v1	= *T.verts[1];	mLeafVerts[1].x = v1.x;	mLeafVerts[1].y = v1.y;	mLeafVerts[1].z = v1.z;
 		Fvector& v2	= *T.verts[2];	mLeafVerts[2].x = v2.x;	mLeafVerts[2].y = v2.y;	mLeafVerts[2].z = v2.z;
 		if (!_tri())			return;
-		dest->r_add	(prim,0,0,0);
+		RESULT& R	= dest->r_add();
+		R.id		= prim;
 	}
 	void			_stab		(const AABBNoLeafNode* node)
 	{

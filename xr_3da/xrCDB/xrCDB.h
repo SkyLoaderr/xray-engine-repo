@@ -114,10 +114,10 @@ namespace CDB
 		IC void			frustum_options	(DWORD f)	{	frustum_mode = f;	}
 		void			frustum_query	(const MODEL *m_def, const CFrustum& F);
 		
-		void			r_add			(int id, float range, float u, float v);
-		void			r_free			();
 		IC RESULT*		r_begin			()	{	return rd_ptr;				};
 		IC RESULT*		r_end			()	{	return rd_ptr + rd_count;	};
+		RESULT&			r_add			();
+		void			r_free			();
 		IC int			r_count			()	{	return rd_count;			};
 		IC void			r_clear			()	{	rd_count = 0;				};
 	};

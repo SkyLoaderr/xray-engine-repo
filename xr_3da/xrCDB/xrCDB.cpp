@@ -126,7 +126,7 @@ COLLIDER::~COLLIDER()
 	r_free			();
 }
 
-void COLLIDER::r_add	(int id, float range, float u, float v)
+RESULT& COLLIDER::r_add	()
 {
 	if (rd_count>=rd_size)	
 	{
@@ -134,11 +134,7 @@ void COLLIDER::r_add	(int id, float range, float u, float v)
 		else			rd_size	=	32;
 		rd_ptr			= (RESULT*) realloc(rd_ptr,rd_size*sizeof(RESULT));
 	}
-	rd_ptr[rd_count].id		= id;
-	rd_ptr[rd_count].range	= range;
-	rd_ptr[rd_count].u		= u;
-	rd_ptr[rd_count].v		= v;
-	rd_count++;
+	return rd_ptr[rd_count++];
 }
 
 void COLLIDER::r_free	()

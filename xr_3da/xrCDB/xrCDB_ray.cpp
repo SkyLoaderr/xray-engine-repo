@@ -135,13 +135,13 @@ public:
 		}
 		return true;
 	}
-
+	
 	void			_prim		(DWORD prim)
 	{
 		float	u,v,r;
 		if (!_tri(tris[prim].verts, u, v, r))	return;
 		if (r<0 || r>rRange)					return;
-
+		
 		if (bNearest)	
 		{
 			if (dest->r_count())	
@@ -156,12 +156,20 @@ public:
 					rRange2	= r*r;
 				}
 			} else {
+				RESULT& R	= dest->r_add();
+				R.id		= prim;
+				R.range		= r;
+				R.u			= u;
+				R.v			= v;
 				rRange		= r;
 				rRange2		= r*r;
-				dest->r_add	(prim,r,u,v);
 			}
 		} else {
-			dest->r_add	(prim,r,u,v);
+			RESULT& R	= dest->r_add();
+			R.id		= prim;
+			R.range		= r;
+			R.u			= u;
+			R.v			= v;
 		}
 	}
 	void			_stab		(const AABBNoLeafNode* node)
