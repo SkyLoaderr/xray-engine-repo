@@ -85,7 +85,11 @@ public:
 			return;
 		case modeC_refl:
 			{
-				xform.invert	(Device.mView);	
+				Fmatrix	M	= Device.mView;
+				M._41		= 0.f;
+				M._42		= 0.f;
+				M._43		= 0.f;
+				xform.invert(M);	
 			}
 			return;
 		default:
