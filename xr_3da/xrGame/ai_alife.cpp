@@ -49,18 +49,19 @@ void CSE_ALifeSimulator::vfNewGame()
 	ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin();
 	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
 	for (ALIFE_ENTITY_P_IT I = B ; I != E; ) {
-		u32						wGroupID	= (*I)->m_dwSpawnGroup;
-		float					fSum		= (*I)->m_fProbability;
+		u32						l_dwGroupID	= (*I)->m_dwSpawnGroup;
 		
-		for (ALIFE_ENTITY_P_IT j= I + 1; (j != E) && ((*j)->m_dwSpawnGroup == wGroupID); j++)
-			fSum += (*j)->m_fProbability;
+		float					fSum = 0;
+		for (ALIFE_ENTITY_P_IT m= I + 1; (m != E) && ((*m)->m_dwSpawnGroup == l_dwGroupID); m++)
+			fSum += (*m)->m_fProbability;
 
-		float					fProbability = ::Random.randF(0,fSum);
-		fSum					= (*I)->m_fProbability;
-		ALIFE_ENTITY_P_IT		m = j;
-		ALIFE_ENTITY_P_IT		k = I;
-
-		for ( j= I + 1; (j != E) && ((*j)->m_dwSpawnGroup == wGroupID); j++) {
+		R_ASSERT2				(fSum > 1 + EPS_L,"Group probability more than 1!");
+		float					fProbability = ::Random.randF(0,1.f);
+		fSum					= 0;
+		
+		ALIFE_ENTITY_P_IT		j;
+		ALIFE_ENTITY_P_IT		k;
+		for ( j= I; (j != E) && ((*j)->m_dwSpawnGroup == l_dwGroupID); j++) {
 			fSum += (*j)->m_fProbability;
 			if (fSum > fProbability) {
 				k = j;
