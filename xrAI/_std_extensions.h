@@ -5,6 +5,9 @@
 #ifndef DEBUG
 #undef  BREAK_AT_STRCMP
 #endif
+#ifdef  _EDITOR
+#undef  BREAK_AT_STRCMP
+#endif
 
 #ifdef abs
 #undef abs
