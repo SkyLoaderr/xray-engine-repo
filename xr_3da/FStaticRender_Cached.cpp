@@ -90,7 +90,7 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 	CIndexStream*			is	= Device.Streams.Get_IB();
 	DWORD dwPassesRequired		= Device.Shader.dwPassesRequired;
 
-	for (DWORD Start=0; Start<cache.size(); )
+	for (DWORD Start=0; Start<cache.size(); Start++)
 	{
 		FCached& V		=	*(cache[Start]);
 		vs				=	V.VS;
@@ -115,7 +115,7 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		for (DWORD dwPass = 0; dwPass<dwPassesRequired; dwPass++)
 		{
 			Device.Shader.SetupPass		(dwPass);
-			Device.Primitive.Render		(D3DPT_TRIANGLELIST,0,v_count,iBase,dwNumPrimitives);
+			Device.Primitive.Render		(D3DPT_TRIANGLELIST,0,V.vCount,iBase,dwNumPrimitives);
 		}
 		UPDATEC(V.vCount,dwNumPrimitives,dwPassesRequired);
 	}
