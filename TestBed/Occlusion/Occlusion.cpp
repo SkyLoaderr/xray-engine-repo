@@ -91,6 +91,7 @@ extern	void i_edge ( occRasterizer* OCC, float x1, float y1, float x2, float y2)
 
 CTimer	TM;
 
+/*
 class	AAA
 {
 private:
@@ -103,6 +104,7 @@ public:
 		
 	}
 };
+*/
 
 __interface	BBB
 {
@@ -122,9 +124,26 @@ public:
 	virtual void	a(float x, const int& z)	{ printf("2"); }
 };
 
+template <int a>			int f()				{	return a*f<a-1>();								}
+template <>					int f<1> ()			{	return 1;										}
+
+template <int N>			struct factorial	{	enum { value = N * factorial<N-1>::value };		};
+template <>					struct factorial<1>	{	enum { value = 1 };								};
+
+template <class T, int N>	struct ptest		{	static const T value = N * ptest<T,N-1>::value;	};
+template <class T>			struct ptest<T,1>	{	static const T value = 1;						};
+
+template <class T, int N>	T	ptest2			()	{	return N * ptest2<T,N-1>();						};
+template <class T>			T	ptest2<T,1>		()	{	return 1;										};
+
 extern void t_test	();
 int __cdecl main	(int argc, char* argv[])
 {
+	int xf			= f<10>();
+	int x			= factorial<10>::value;
+	u32 a			= ptest<u32,10>::value;
+	u32 b			= ptest2<u32,10> ();
+
 	DDD				t;
 	t.a				(1);
 	t.a				(1,1);
@@ -133,6 +152,7 @@ int __cdecl main	(int argc, char* argv[])
 	tc->a			(1);
 	tc->a			(1,1);
 
+	/*
 	CTimer			TM;
 	AAA				A;
 	
@@ -140,7 +160,7 @@ int __cdecl main	(int argc, char* argv[])
 
 	void*	p1		= &::TM;
 	void*	p2		= &TM;
-	
+	*/
 
 	u64				total=0;
 	int				count=0;
