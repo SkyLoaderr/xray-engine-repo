@@ -421,6 +421,13 @@ void CWeaponRPG7::switch2_Fire	()
 		FireTrace					(p1,vLastFP,d);
 		fTime						+= fTimeToFire;
 
+		CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+		pStaticPG = xr_new<CPGObject>("weapons\\rpg_shoot_01",Sector());
+		Fmatrix l_pos; l_pos.set(svTransform); //l_pos.c.set(p1);
+		pStaticPG->UpdateParent(l_pos); pStaticPG->Play();
+	//for(s32 i = 0; i < l_c; i++) {
+	//}
+
 		// Patch for "previous frame position" :)))
 		dwFP_Frame					= 0xffffffff;
 		dwXF_Frame					= 0xffffffff;
