@@ -10,6 +10,9 @@
 
 u64	generate_time	(u32 years, u32 months, u32 days, u32 hours, u32 minutes, u32 seconds, u32 milliseconds)
 {
+	VERIFY					(years > 0);
+	VERIFY					(months > 0);
+	VERIFY					(days > 0);
 	u64						t1,t2,t3,t4;
 	t1						= years/400;
 	t2						= years/100;

@@ -46,7 +46,7 @@ void CALifeSurgeManager::surge		()
 	generate_anomalies					();
 	generate_anomaly_map				();
 	kill_creatures						();
-	//ballance_creatures					();
+	ballance_creatures					();
 	{
 		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	I = traders().traders().begin();
 		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	E = traders().traders().end();
@@ -65,8 +65,6 @@ void CALifeSurgeManager::surge		()
 	}
 	update_tasks						();
 	assign_stalker_customers			();
-
-	time_manager().next_surge_time		(time_manager().last_surge_time());
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
