@@ -88,7 +88,7 @@ void HUD_SOUND::DestroySound	(HUD_SOUND& hud_snd)
 	for(;it!=hud_snd.sounds.end();++it)
 		(*it).snd.destroy();
 	
-	m_activeSnd = NULL;
+	hud_snd.m_activeSnd = NULL;
 }
 
 void HUD_SOUND::PlaySound	(HUD_SOUND&		hud_snd,
@@ -97,7 +97,7 @@ void HUD_SOUND::PlaySound	(HUD_SOUND&		hud_snd,
 							bool			hud_mode,
 							bool			looped)
 {
-	m_activeSnd				= NULL;
+	hud_snd.m_activeSnd				= NULL;
 	if(!hud_snd.enable)		return;
 	StopSound(hud_snd);
 
@@ -108,18 +108,18 @@ void HUD_SOUND::PlaySound	(HUD_SOUND&		hud_snd,
 		flags |= sm_Looped;
 
 	
-	m_activeSnd = &hud_snd.sounds[ Random.randI(hud_snd.sounds.size()) ];
+	hud_snd.m_activeSnd = &hud_snd.sounds[ Random.randI(hud_snd.sounds.size()) ];
 
-	m_activeSnd->snd.play_at_pos	(const_cast<CObject*>(parent),
+	hud_snd.m_activeSnd->snd.play_at_pos	(const_cast<CObject*>(parent),
 									position,
 									flags,
-									s.delay);
-	m_activeSnd->snd.set_volume		(s.volume);
+									hud_snd.m_activeSnd->delay);
+	hud_snd.m_activeSnd->snd.set_volume		(hud_snd.m_activeSnd->volume);
 }
 
 void HUD_SOUND::StopSound	(HUD_SOUND& hud_snd)
 {
-	m_activeSnd				= NULL;
+	hud_snd.m_activeSnd				= NULL;
 	if(!hud_snd.enable)		return;
 	
 	xr_vector<SSnd>::iterator it = hud_snd.sounds.begin();
@@ -127,5 +127,5 @@ void HUD_SOUND::StopSound	(HUD_SOUND& hud_snd)
 		VERIFY2					((*it).snd.handle,"Trying to stop non-existant or destroyed sound");
 		(*it).snd.stop();
 	}
-	m_activeSnd = NULL;
+	hud_snd.m_activeSnd = NULL;
 }
