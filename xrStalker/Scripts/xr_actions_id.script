@@ -54,6 +54,7 @@ zmey_guard_base        = zmey_actions + 200
 zmey_robber_base       = zmey_actions + 300
 zmey_camper_base       = zmey_actions + 400
 zmey_sleeper_base      = zmey_actions + 500
+zmey_talker_base       = zmey_actions + 600
 
 -- Æåíÿ
 jon_actions = zmey_actions + 1024
