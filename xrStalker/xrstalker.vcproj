@@ -780,6 +780,28 @@
 					RelativePath=".\Config\weathers\environment.ltx">
 				</File>
 			</Filter>
+			<Filter
+				Name="scripts"
+				Filter="">
+				<File
+					RelativePath=".\Config\scripts\esc_trader.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\esc_trader_door.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\gar_dm_bandit1.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\gar_dm_bandit2.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\gar_dm_bandit3.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\gar_dm_novice.ltx">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="scripts"
