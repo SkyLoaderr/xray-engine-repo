@@ -277,7 +277,7 @@ struct	vertHW_1W
 	s16			_tc		[2];
 	void set(Fvector3& P, Fvector3 N, Fvector2& tc, int index)
 	{
-		N.normalize	();
+		N.normalize_safe();
 		_P[0]		= q_P(P.x);
 		_P[1]		= q_P(P.y);
 		_P[2]		= q_P(P.z);
@@ -308,8 +308,8 @@ struct	vertHW_2W
 	s16			_tc_i	[4];
 	void set(Fvector3& P0, Fvector3& P1, Fvector3 N0, Fvector3 N1, Fvector2& tc, int index0, int index1, float w)
 	{
-		N0.normalize	();
-		N1.normalize	();
+		N0.normalize_safe();
+		N1.normalize_safe();
 		_P0[0]		= q_P(P0.x);
 		_P0[1]		= q_P(P0.y);
 		_P0[2]		= q_P(P0.z);
