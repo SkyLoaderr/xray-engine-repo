@@ -8,6 +8,7 @@
 #include "..\x_ray.h"
 #include "..\GameFont.h"
 #include "GlowManager.h"
+#include "..\xr_object.h"
 
 #define FADE_SCALE			1024.f
 #define MAX_GlowsDist1		float(g_pGamePersistent->Environment.CurrentEnv.far_plane)
@@ -20,6 +21,10 @@ CGlow::CGlow()				{
 	position.set	(0,0,0);
 	radius			= 0.1f;
 	color.set		(1,1,1,1);
+	bTestResult		= FALSE;
+	fade			= 1.f;
+	dwFrame			= 0;
+	spatial.type	= STYPE_RENDERABLE;
 }
 
 void	CGlow::set_active		(bool a)				
@@ -169,6 +174,14 @@ void CGlowManager::Render()
 	float	_height_2	= float(RImplementation.getTarget()->get_height())/2.f;
 	float	fov_scale	= _width / (Device.fFOV/90.f);
 	{
+		// 0. save main view and disable
+		CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
+		BOOL		o_enable	= FALSE;
+		if (o_main){
+			o_enable		=	o_main->getEnabled();
+			o_main->setEnabled	(FALSE);
+		}
+
 		// 1. Test some number of glows
 		Fvector &start	= Device.vCameraPosition;
 		for (int i=0; i<ps_r1_GlowsPerFrame; i++,dwTestID++)
@@ -178,11 +191,14 @@ void CGlowManager::Render()
 			if (G.dwFrame=='test')	break;
 
 			G.dwFrame	=	'test';
-			Fvector dir;
-			dir.sub(G.spatial.center,start); float range = dir.magnitude();
-			dir.div(range);
+			Fvector		dir;
+			dir.sub		(G.spatial.center,start); float range = dir.magnitude();
+			dir.div		(range);
 			G.bTestResult = g_pGameLevel->ObjectSpace.RayTest(start,dir,range,Collide::rqtBoth,&G.RayCache);
 		}
+		
+		// 1.5 restore main view
+		if (o_main)				o_main->setEnabled	(o_enable);
 
 		// 2. Sort by shader
 		std::sort	(Selected.begin(),Selected.end(),glow_compare);
