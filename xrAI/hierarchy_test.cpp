@@ -146,43 +146,11 @@ IC	void fill_mark(
 {
 	++group_id;
 	cell_vertex.m_mark			= group_id;
-	cross[cell_vertex.m_vertex_id].m_cell	= &cell_vertex;
-	cross[cell_vertex.m_vertex_id].m_use	= left | up;
+	CCellInfo					&ci = cross[cell_vertex.m_vertex_id];
+	ci.m_cell					= &cell_vertex;
+	ci.m_use					= left | up;
 	CCellVertex					v = cell_vertex, v1;
 
-#if 0
-	{
-		struct s_test {
-			Fvector					pos;
-			u32						x;
-			u32						z;
-		};
-
-		s_test						test[5];
-
-		for (u32 I=0; I<level_graph.header().vertex_count(); ++I) {
-			bool					ok = true;
-			u32						index = I;
-			for (int i=0; i<4; ++i) {
-				if (!level_graph.valid_vertex_id(level_graph.vertex(index)->link(i))) {
-					ok				= false;
-					break;
-				}
-				test[i].pos			= level_graph.vertex_position(level_graph.vertex(index)->link(i));
-				test[i].x			= level_graph.vertex(level_graph.vertex(index)->link(i))->position().x(level_graph.row_length());
-				test[i].z			= level_graph.vertex(level_graph.vertex(index)->link(i))->position().z(level_graph.row_length());
-			}
-
-			if (!ok)
-				continue;
-
-			test[4].pos				= level_graph.vertex_position(index);
-			test[4].x				= level_graph.vertex(index)->position().x(level_graph.row_length());
-			test[4].z				= level_graph.vertex(index)->position().z(level_graph.row_length());
-		}
-	}
-#endif
-	
 	VERTEX_VECTOR1				&vi = table[i];
 	for (u32 j2 = j + 1; j2<=max_x; ++j2)
 		if (vi[j2].empty() || !connect(level_graph,v,vi[j2],group_id,2,cross,up)) {
@@ -323,9 +291,6 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 				for ( ; II != EE; ++II) {
 					if ((*II).m_mark)
 						continue;
-//					if ((*II).m_vertex_id == 340891) {
-//						II = II;
-//					}
 					fill_mark		(level_graph,sector_graph,table,u32(I - B),u32(i - b),*II,group_id,min_z,max_z,min_x,max_x,cross);
 				}
 			}
@@ -380,16 +345,10 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 
 				CCellVertex				*cell = cross[vertex_id].m_cell; VERIFY(cell);
 				u32						mark = cell->m_mark - 1;
-//				if (mark == current_mark)
-//					continue;
 				VERIFY					(mark != current_mark);
 
 				if (sector_vertex->edge(mark))
 					continue;
-
-//				if (!(u8(1 << I) & c.m_use)) {
-//					I = I;
-//				}
 
 				sector_graph.add_edge	(current_mark,mark,1.f);
 			}
