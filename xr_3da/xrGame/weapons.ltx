@@ -1205,6 +1205,125 @@ anim_draw		= draw
 anim_holster	= holster
 anim_shoot		= shoot
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_pb]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn          = "weapons\pb"					; option for Level Editor
+$npc			= on		; option for Level Editor
+$prefetch 		= 8
+scheduled            	= off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_PM
+min_radius               = 0
+max_radius               = 30
+
+cost					 = 250
+
+ammo_limit		 = 120
+ammo_current		 = 96
+ammo_elapsed		 = 12
+
+ammo_mag_size		 = 12
+ammo_class		 = ammo_9x18_fmj, ammo_9x18_pbp, ammo_9x18_pmm
+
+resource		= 6000
+
+hand_dependence		 = 1
+
+slot 			 = 1
+inv_name		= PB
+inv_name_short		= PB
+inv_weight		= .5
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 18
+inv_grid_y			= 6
+
+cam_relax_speed          = 5.5
+cam_dispersion           = 2
+cam_max_angle		 = 5
+
+fire_dispersion          = 1
+fire_dispersion_add      = 3
+fire_dispersion_relax    = 3
+fire_dispersion_base	 = 1.5
+disp_vel_factor		 = 0.1
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.5
+condition_shot_dec = 0.0003
+
+;cam_relax                = 0.37
+;cam_dispersion           = 2
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.04, 0.2
+flame_div                = 5
+flame_length             = .1
+flame_size               = 0.09
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+flame_particles		   = weapons\generic_weapon
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 30
+hit_impulse		 		 = 80
+hit_type = wound
+
+fire_distance            = 120
+rpm                      = 120
+; end ttc
+
+hud                      = wpn_PB_hud
+normal                   = 0, 1, 0
+position                 = 0.00, -0.25, 0.35
+orientation              = 0, 5, 0
+;startup_ammo             = 90
+visual                   = weapon\pb\wpn_pb.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 1
+cost			 = 350
+
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
+
+ 
+[wpn_pb_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.05, 0.07, 0.05
+fire_bone                = wpn_body
+orientation              = 0,0,0
+position                 = 0,0,0
+visual                   = weapon\pb\wpn_pb_hud.ogf
+
+anim_holster	= holster
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_walther]
 GroupControlSection	= spawn_group
