@@ -17,31 +17,38 @@ void CHenSelectorBase::Load(CInifile* ini, const char* section)
 		
 		fLightWeight,
 		
-		fCoverFromLeaderWeight,
-		
-		fCoverFromMembersWeight,
-		
-		fCoverFromEnemyWeight,
-
-		fOptimalLeaderDistance,
-		fLeaderDistanceWeight,
-		
-		fOptimalMemberDistance,
-		fMemberDistanceWeight,
-		
-		fOptimalEnemyDistance,
-		fEnemyDistanceWeight,
-		
-		fMaxHeightDistance,
-		fMaxHeightDistanceWeight,
-
-		fMemberViewDeviationWeight,
-		
-		fEnemyViewDeviationWeight,
+		fLaziness,
 
 		fTotalViewVectorWeight,
 
-		fLaziness
+		fCoverFromLeaderWeight,
+		fOptLeaderDistance,
+		fOptLeaderDistanceWeight,
+		fMinLeaderDistance,
+		fMinLeaderDistanceWeight,
+		fMaxLeaderDistance,
+		fMaxLeaderDistanceWeight,
+		fLeaderViewDeviationWeight,
+		fMaxLeaderHeightDistance,
+		fMaxLeaderHeightDistanceWeight,
+		
+		fCoverFromMemberWeight,
+		fOptMemberDistance,
+		fOptMemberDistanceWeight,
+		fMinMemberDistance,
+		fMinMemberDistanceWeight,
+		fMaxMemberDistance,
+		fMaxMemberDistanceWeight,
+		fMemberViewDeviationWeight,
+		
+		fCoverFromEnemyWeight,
+		fOptEnemyDistance,
+		fOptEnemyDistanceWeight,
+		fMinEnemyDistance,
+		fMinEnemyDistanceWeight,
+		fMaxEnemyDistance,
+		fMaxEnemyDistanceWeight,
+		fEnemyViewDeviationWeight
 	);
 };
 
@@ -155,88 +162,92 @@ CHenSelectorFreeHunting::CHenSelectorFreeHunting()
 
 float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
-	/**
 	// distance to node
-	float fResult = 0.0;//*fDistance*costTravel;
+	float fResult = fDistance*fTravelWeight;
+	if (fResult>BestCost)
+		return(fResult);
+	
 	// node lighting
 	fResult += ((float)(tNode->light)/255.f)*fLightWeight;
 	if (fResult>BestCost)
 		return(fResult);
-	// leader relationship
-	Fvector		P,P1,P2;
-	Level().AI.UnpackPosition	(P1,tNode->p0);
-	Level().AI.UnpackPosition	(P2,tNode->p1);
-	P.lerp						(P1,P2,.5f);
-	float						fDistanceToPlayer = P.distance_to(posTarget);
 	
-	if (fDistanceToPlayer < MIN_PLAYER_DISTANCE)
-		fResult += MIN_PLAYER_PENALTY*costTarget;
+	// leader relationship
+	Fvector	P,P1,P2;
+	Level().AI.UnpackPosition(P1,tNode->p0);
+	Level().AI.UnpackPosition(P2,tNode->p1);
+	P.lerp(P1,P2,.5f);
+	float fDistanceToLeader = P.distance_to(tLeaderPosition);
+	
+	if (fDistanceToLeader < fMinLeaderDistance)
+		fResult += fMinLeaderDistanceWeight;
 	else
-		if (fDistanceToPlayer > MAX_PLAYER_DISTANCE)
-			fResult += MAX_PLAYER_PENALTY*costTarget;
+		if (fDistanceToLeader > fMaxLeaderDistance)
+			fResult += fMaxLeaderDistanceWeight;
 		else
-			fResult += (fDistanceToPlayer - OPTIMAL_PLAYER_DISTANCE)/OPTIMAL_PLAYER_DISTANCE;
+			fResult += (fDistanceToLeader - fOptLeaderDistance)/fOptLeaderDistance;
+	
 	if (fResult>BestCost)
 		return(fResult);
 	
 	// cover from leader
 	Fvector tDirection;
-	tDirection.x = posTarget.x - P.x;
-	tDirection.y = fabs(posTarget.y - P.y);
-	tDirection.z = posTarget.z - P.z;
+	tDirection.x = tLeaderPosition.x - P.x;
+	tDirection.y = fabs(tLeaderPosition.y - P.y);
+	tDirection.z = tLeaderPosition.z - P.z;
 
 	if (tDirection.x < 0.0)
-		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
+		fResult += fCoverFromLeaderWeight*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
 	else
-		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
+		fResult += fCoverFromLeaderWeight*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
 	
 	if (tDirection.z < 0.0)
-		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
+		fResult += fCoverFromLeaderWeight*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
 	else
-		fResult += COVER_PENALTY*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+		fResult += fCoverFromLeaderWeight*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+	
 	if (fResult>BestCost)
 		return(fResult);
 	
-	if (tDirection.y > 2.0)
-		fResult += tDirection.y*Y_PENALTY;
+	if (tDirection.y > fMaxLeaderHeightDistance)
+		fResult += tDirection.y*fMaxLeaderHeightDistanceWeight;
+
 	if (fResult>BestCost)
 		return(fResult);
 
 	// cost of members relationship
-	if (Members.size()) {
-		for (DWORD it=0; it<Members.size(); it++)
-		{
-			float fDistanceToMember	= P.distance_to	(Members[it]);
-			if (fDistanceToMember < MIN_MEMBER_DISTANCE)
-				fResult += MIN_MEMBER_PENALTY*costMembers;
+	if (taMemberPositions.size()) {
+		for (DWORD it=0; it<taMemberPositions.size(); it++) {
+			float fDistanceToMember	= P.distance_to	(taMemberPositions[it]);
+			
+			if (fDistanceToMember < fMinMemberDistance)
+				fResult += fMinMemberDistanceWeight;
 			else
-				if (fDistanceToMember > MAX_MEMBER_DISTANCE)
-					fResult += MAX_MEMBER_PENALTY*costMembers;
+				if (fDistanceToMember > fMaxMemberDistance)
+					fResult += fMaxMemberDistanceWeight;
 				else
-					fResult += (fDistanceToMember - OPTIMAL_MEMBER_DISTANCE)/OPTIMAL_MEMBER_DISTANCE;
-			tDirection.x = Members[it].x - P.x;
-			tDirection.y = fabs(Members[it].y - P.y);
-			tDirection.z = Members[it].z - P.z;
+					fResult += fOptMemberDistanceWeight*(fDistanceToMember - fOptMemberDistance)/fOptMemberDistance;
+			
+			tDirection.x = taMemberPositions[it].x - P.x;
+			tDirection.y = fabs(taMemberPositions[it].y - P.y);
+			tDirection.z = taMemberPositions[it].z - P.z;
 
 			if (tDirection.x < 0.0)
-				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
+				fResult += fCoverFromMemberWeight*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
 			else
-				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
+				fResult += fCoverFromMemberWeight*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
 			
 			if (tDirection.z < 0.0)
-				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
+				fResult += fCoverFromMemberWeight*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
 			else
-				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+				fResult += fCoverFromMemberWeight*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
 			
 			if (fResult>BestCost)
 				return(fResult);
 		}
 	}
-	// exit
 	//if (fResult<EPS)	bStop = TRUE;
 	return	fResult;
-	/**/
-	return(0);
 }
 
 CHenSelectorFollow::CHenSelectorFollow()
@@ -246,91 +257,92 @@ CHenSelectorFollow::CHenSelectorFollow()
 
 float CHenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
-	/**
 	// distance to node
-	float fResult = 0.0;//*fDistance*costTravel;
+	float fResult = fDistance*fTravelWeight;
+	if (fResult>BestCost)
+		return(fResult);
+	
 	// node lighting
 	fResult += ((float)(tNode->light)/255.f)*fLightWeight;
 	if (fResult>BestCost)
 		return(fResult);
-	// leader relationship
-	Fvector		P,P1,P2;
-	Level().AI.UnpackPosition	(P1,tNode->p0);
-	Level().AI.UnpackPosition	(P2,tNode->p1);
-	P.lerp						(P1,P2,.5f);
-	float						fDistanceToPlayer = P.distance_to(posTarget);
 	
-	if (fDistanceToPlayer < MIN_PLAYER_DISTANCE)
-		fResult += MIN_PLAYER_PENALTY*costTarget;
+	// leader relationship
+	Fvector	P,P1,P2;
+	Level().AI.UnpackPosition(P1,tNode->p0);
+	Level().AI.UnpackPosition(P2,tNode->p1);
+	P.lerp(P1,P2,.5f);
+	float fDistanceToLeader = P.distance_to(tLeaderPosition);
+	
+	if (fDistanceToLeader < fMinLeaderDistance)
+		fResult += fMinLeaderDistanceWeight;
 	else
-		if (fDistanceToPlayer > MAX_PLAYER_DISTANCE)
-			fResult += MAX_PLAYER_PENALTY*costTarget;
+		if (fDistanceToLeader > fMaxLeaderDistance)
+			fResult += fMaxLeaderDistanceWeight;
 		else
-			fResult += (fDistanceToPlayer - OPTIMAL_PLAYER_DISTANCE)/OPTIMAL_PLAYER_DISTANCE;
+			fResult += (fDistanceToLeader - fOptLeaderDistance)/fOptLeaderDistance;
+	
 	if (fResult>BestCost)
 		return(fResult);
 	
 	// cover from leader
 	Fvector tDirection;
-	tDirection.x = posTarget.x - P.x;
-	tDirection.y = fabs(posTarget.y - P.y);
-	tDirection.z = posTarget.z - P.z;
+	tDirection.x = tLeaderPosition.x - P.x;
+	tDirection.y = fabs(tLeaderPosition.y - P.y);
+	tDirection.z = tLeaderPosition.z - P.z;
 
 	if (tDirection.x < 0.0)
-		fResult += costCover*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
+		fResult += fCoverFromLeaderWeight*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
 	else
-		fResult += costCover*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
+		fResult += fCoverFromLeaderWeight*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
 	
 	if (tDirection.z < 0.0)
-		fResult += costCover*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
+		fResult += fCoverFromLeaderWeight*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
 	else
-		fResult += costCover*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+		fResult += fCoverFromLeaderWeight*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+	
 	if (fResult>BestCost)
 		return(fResult);
 	
-	if (tDirection.y > 2.0)
-		fResult += tDirection.y*Y_PENALTY;
+	if (tDirection.y > fMaxLeaderHeightDistance)
+		fResult += tDirection.y*fMaxLeaderHeightDistanceWeight;
+
 	if (fResult>BestCost)
 		return(fResult);
 
 	// cost of members relationship
-	if (Members.size()) {
-		for (DWORD it=0; it<Members.size(); it++)
-		{
-			float fDistanceToMember	= P.distance_to	(Members[it]);
-			if (fDistanceToMember < MIN_MEMBER_DISTANCE)
-				fResult += MIN_MEMBER_PENALTY*costMembers;
+	if (taMemberPositions.size()) {
+		for (DWORD it=0; it<taMemberPositions.size(); it++) {
+			float fDistanceToMember	= P.distance_to	(taMemberPositions[it]);
+			
+			if (fDistanceToMember < fMinMemberDistance)
+				fResult += fMinMemberDistanceWeight;
 			else
-				if (fDistanceToMember > MAX_MEMBER_DISTANCE)
-					fResult += MAX_MEMBER_PENALTY*costMembers;
+				if (fDistanceToMember > fMaxMemberDistance)
+					fResult += fMaxMemberDistanceWeight;
 				else
-					fResult += (fDistanceToMember - OPTIMAL_MEMBER_DISTANCE)/OPTIMAL_MEMBER_DISTANCE;
-			tDirection.x = Members[it].x - P.x;
-			tDirection.y = fabs(Members[it].y - P.y);
-			tDirection.z = Members[it].z - P.z;
+					fResult += fOptMemberDistanceWeight*(fDistanceToMember - fOptMemberDistance)/fOptMemberDistance;
+			
+			tDirection.x = taMemberPositions[it].x - P.x;
+			tDirection.y = fabs(taMemberPositions[it].y - P.y);
+			tDirection.z = taMemberPositions[it].z - P.z;
 
 			if (tDirection.x < 0.0)
-				fResult += 0.5*costCover*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
+				fResult += fCoverFromMemberWeight*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
 			else
-				fResult += 0.5*costCover*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
+				fResult += fCoverFromMemberWeight*(1.0 - float(tNode->cover[2])/255.f + float(tNode->cover[0])/255.f);
 			
 			if (tDirection.z < 0.0)
-				fResult += 0.5*costCover*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
+				fResult += fCoverFromMemberWeight*(1.0 - float(tNode->cover[3])/255.f + float(tNode->cover[1])/255.f);
 			else
-				fResult += 0.5*costCover*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
+				fResult += fCoverFromMemberWeight*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
 			
 			if (fResult>BestCost)
 				return(fResult);
-			
-			//if (tDirection.y > 2.0)
-			//	fResult += tDirection.y*Y_MEMBER_PENALTY;
 		}
 	}
-	// exit
 	//if (fResult<EPS)	bStop = TRUE;
 	return	fResult;
-	/**/
-	return(0);
 }
 
 CHenSelectorPursuit::CHenSelectorPursuit()

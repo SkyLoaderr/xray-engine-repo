@@ -56,5 +56,6 @@ public:
 	void						GetMemberDedication	(MemberPlacement& P, CEntity* Me);
 	void						GetMemberPlacementN	(MemberNodes& P, CEntity* Me);
 	void						GetMemberDedicationN(MemberNodes& P, CEntity* Me);
+	void						GetMemberInfo		(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me);
 	const Fvector&				GetCentroid			();
 };

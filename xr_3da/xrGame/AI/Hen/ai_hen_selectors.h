@@ -9,31 +9,49 @@
 #ifndef __XRAY_AI_HEN_SELECTORS__
 #define __XRAY_AI_HEN_SELECTORS__
 
+#include "ai_hen.h"
+
 class CHenSelectorBase : public AI::NodeEstimator 
 {
 	public:
 		LPSTR		Name;
 		float		fTravelWeight,
 					fLightWeight,
-					fCoverFromLeaderWeight,
-					fCoverFromMembersWeight,
-					fCoverFromEnemyWeight,
-					fOptimalLeaderDistance,
-					fLeaderDistanceWeight,
-					fOptimalMemberDistance,
-					fMemberDistanceWeight,
-					fOptimalEnemyDistance,
-					fEnemyDistanceWeight,
-					fMaxHeightDistance,
-					fMaxHeightDistanceWeight,
-					fMemberViewDeviationWeight,
-					fEnemyViewDeviationWeight,
+					fLaziness,
 					fTotalViewVectorWeight,
-					fLaziness;
+					fCoverFromLeaderWeight,
+					fOptLeaderDistance,
+					fOptLeaderDistanceWeight,
+					fMinLeaderDistance,
+					fMinLeaderDistanceWeight,
+					fMaxLeaderDistance,
+					fMaxLeaderDistanceWeight,
+					fLeaderViewDeviationWeight,
+					fMaxLeaderHeightDistance,
+					fMaxLeaderHeightDistanceWeight,
+					fCoverFromMemberWeight,
+					fOptMemberDistance,
+					fOptMemberDistanceWeight,
+					fMinMemberDistance,
+					fMinMemberDistanceWeight,
+					fMaxMemberDistance,
+					fMaxMemberDistanceWeight,
+					fMemberViewDeviationWeight,
+					fCoverFromEnemyWeight,
+					fOptEnemyDistance,
+					fOptEnemyDistanceWeight,
+					fMinEnemyDistance,
+					fMinEnemyDistanceWeight,
+					fMaxEnemyDistance,
+					fMaxEnemyDistanceWeight,
+					fEnemyViewDeviationWeight;
 
-		CEntity		*tMe;
-		EntityVec	taMembers;
+		CAI_Hen		*tMe;
+		CEntity		*tLeader;
 		CEntity		*tEnemy;
+		Fvector		tMyPosition;
+		Fvector		tLeaderPosition;
+		Fvector		tEnemyPosition;
 
 		virtual	void Load(CInifile* ini, const char* section);
 };

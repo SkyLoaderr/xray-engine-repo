@@ -80,7 +80,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "flyer.h"
 #include "customevent.h"
 #include "dummyobject.h"
-#include "ai\\hen\\ai_hen.h"
 #include "customdoor.h"
 #include "customlift.h"
 #include "demoactor.h"

@@ -76,6 +76,31 @@ void CGroup::GetMemberDedicationN(MemberNodes& MP, CEntity* Me)
 	}
 }
 
+void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me)
+{
+	R_ASSERT(Members.size()<16);
+	P0.clear();
+	P1.clear();
+	P2.clear();
+	P3.clear();
+	for (DWORD I=0; I<Members.size(); I++) {
+		CEntity*		E = Members[I];
+		if (E!=Me) {
+			CCustomMonster* M = (CCustomMonster*)E;
+			const Fvector&	P = E->Position();
+			Fvector	_P1,_P2,C;
+			NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
+			Level().AI.UnpackPosition(_P1,NC->p0);
+			Level().AI.UnpackPosition(_P2,NC->p1);
+			C.lerp(_P1,_P2,.5f);
+			P0.push_back(P);
+			P1.push_back(M->AI_NodeID);
+			P2.push_back(C);
+			P3.push_back(M->AI_Path.DestNode);
+		}
+	}
+}
+
 const Fvector& CGroup::GetCentroid()
 {
 	vCentroid.set	(0,0,0);
