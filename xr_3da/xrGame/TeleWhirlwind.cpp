@@ -142,7 +142,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			{
 				accel=k/mag_eps/mag_eps/mag_eps;
 				Fvector zer;zer.set(0,0,0);
-				E->set_LinearVel(zer);
+				//E->set_LinearVel(zer);
 				dir.set(0.f,-1.f,0.f);
 			}
 			else
