@@ -314,6 +314,7 @@ void CLightShadows::render	()
 	// Gain access to collision-DB
 	CDB::MODEL*		DB		= g_pGameLevel->ObjectSpace.GetStaticModel();
 	CDB::TRI*		TRIS	= DB->get_tris();
+	Fvector*		VERTS	= DB->get_verts();
 
 	int slot_line	= S_rt_size/S_size;
 	
@@ -359,9 +360,9 @@ void CLightShadows::render	()
 			// 
 			CDB::TRI&	t		= TRIS[p->id];
 			sPoly		A,B;
-			A.push_back			(*t.verts[0]);
-			A.push_back			(*t.verts[1]);
-			A.push_back			(*t.verts[2]);
+			A.push_back			(VERTS[t.verts[0]]);
+			A.push_back			(VERTS[t.verts[1]]);
+			A.push_back			(VERTS[t.verts[2]]);
 
 			// Calc plane
 			Fplane		P;
