@@ -115,7 +115,7 @@ IC	void CDetailPathManager::assign_angle(
 			angle		= dest_yaw - start_yaw - PI_MUL_2;
 
 	if (!start && ((direction_type == eDirectionTypePP) || (direction_type == eDirectionTypeNN)))
-		if (angle < 0.f)
+		if (angle <= 0.f)
 			angle = angle + PI_MUL_2;
 		else
 			angle = angle - PI_MUL_2;
