@@ -65,6 +65,7 @@ void Startup()
 	}
 
 	// Main cycle
+	Sleep						(1000);
 	Device.Run					( );
 	_DELETE						( pApp			);
 	Engine.Event.Dump			( );
@@ -91,7 +92,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	CreateLog	(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
 	Debug.Start	();
-	Sleep		(500);
 
 #ifndef DEBUG
 	__try {
