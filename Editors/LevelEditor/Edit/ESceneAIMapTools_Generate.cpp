@@ -57,8 +57,8 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
         
         if (R->e_obj&&R->e_mesh){
             CSurface* surf		= R->e_mesh->GetSurfaceByFaceID(R->tag);
-            SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
-            if (mtl->Flags.is(SGameMtl::flPassable))continue;
+//.			SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
+//.			if (mtl->Flags.is(SGameMtl::flPassable))continue;
             Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
             if (!c_sh->flags.bCollision) 			continue;
         }
@@ -593,8 +593,8 @@ bool ESceneAIMapTools::GenerateMap()
                 for (SurfFacesPairIt sp_it=_sfaces.begin(); sp_it!=_sfaces.end(); sp_it++){
                 	CSurface* surf		= sp_it->first;
                     // test passable
-			        SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
-                    if (mtl->Flags.is(SGameMtl::flPassable))continue;
+//.			        SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
+//.					if (mtl->Flags.is(SGameMtl::flPassable))continue;
                     Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
                     if (!c_sh->flags.bCollision) 			continue;
                     // collect tris

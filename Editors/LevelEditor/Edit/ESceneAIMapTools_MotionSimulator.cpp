@@ -504,8 +504,8 @@ void ESceneAIMapTools::MotionSimulate(Fvector& result, Fvector& start, Fvector& 
             SPickQuery::SResult* R = PQ.r_begin()+i_t;
             if (R->e_obj&&R->e_mesh){
                 CSurface* surf		= R->e_mesh->GetSurfaceByFaceID(R->tag);
-                SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
-                if (mtl->Flags.is(SGameMtl::flPassable))continue;
+//.				SGameMtl* mtl 		= GMLib.GetMaterialByID(surf->_GameMtl());
+//.				if (mtl->Flags.is(SGameMtl::flPassable))continue;
                 Shader_xrLC* c_sh	= Device.ShaderXRLC.Get(surf->_ShaderXRLCName());
                 if (!c_sh->flags.bCollision) 			continue;
             }
