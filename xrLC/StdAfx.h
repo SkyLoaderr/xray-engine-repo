@@ -135,7 +135,6 @@ using namespace boost;
 #include "vector.h"
 #include "log.h"
 #include "fs.h"
-#include "xr_list.h"
 #include "fixedvector.h"
 
 #include "communicate.h"
