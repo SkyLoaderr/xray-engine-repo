@@ -263,6 +263,12 @@
 	<info_portion id="esc_trader_can_leave">
 	</info_portion>
 
+	<!-- Приветствия торговца -->
+	<info_portion id="esc_trader_hello_played">
+	</info_portion>
+	<info_portion id="esc_trader_bye_played">
+	</info_portion>
+
 	
 	<info_portion id="tutorial_volk_acquainted">
 	</info_portion>
