@@ -17,7 +17,7 @@ DEFINE_VECTOR(CScriptThread*,SCRIPT_VECTOR,SCRIPT_IT);
 class CScriptProcess {
 protected:
 	SCRIPT_VECTOR			m_tpScripts;
-	string4096				m_caOutput;
+	u32						m_iterator;				// Oles: iterative update
 	xr_vector<LPSTR>		m_scripts_to_run;
 	xr_vector<LPSTR>		m_strings_to_run;
 	string256				m_name;

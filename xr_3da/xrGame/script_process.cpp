@@ -25,6 +25,7 @@ CScriptProcess::CScriptProcess(LPCSTR caCaption, LPCSTR caScriptString)
 	string256		I;
 	for (u32 i=0; i<N; ++i)
 		add_script	(_GetItem(caScriptString,i,I));
+	m_iterator		= 0;
 }
 
 CScriptProcess::~CScriptProcess()
@@ -69,6 +70,10 @@ void CScriptProcess::run_strings()
 	}
 }
 
+
+// Oles: 
+//		changed to process one script per-frame
+//		changed log-output to stack-based buffer (avoid persistant 4K storage)
 void CScriptProcess::update()
 {
 #ifdef DBG_DISABLE_SCRIPTS
@@ -76,26 +81,33 @@ void CScriptProcess::update()
 	m_strings_to_run.clear();
 	return;
 #endif
+
 	run_scripts			();
 	run_strings			();
-	LPSTR	S = g_ca_stdout;
-	for (int i=0, n=(int)m_tpScripts.size(); i<n; ++i) {
-		strcpy	(m_caOutput,"");
-		g_ca_stdout = m_caOutput;
-		if (!m_tpScripts[i]->Update()) {
-			xr_delete	(m_tpScripts[i]);
-			m_tpScripts.erase(m_tpScripts.begin() + i);
-			--i;
-			--n;
-			continue;
-		}
-		if (xr_strlen(m_caOutput))
-			ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeInfo,"%s",m_caOutput);
+	if (m_tpScripts.empty())	return;
+
+	// prepare output
+	LPSTR	   _save	= g_ca_stdout;
+	string4096 _; _	[0] = 0;
+	g_ca_stdout			= _;
+	g_ca_stdout[0]		= 0;
+
+	// update script
+	u32		_id			= (++m_iterator)%m_tpScripts.size();
+	if (!m_tpScripts[_id]->Update()) {
+			xr_delete			(m_tpScripts[_id]);
+			m_tpScripts.erase	(m_tpScripts.begin() + _id);
+			--m_iterator;		// try to avoid skipping
 	}
-#ifdef DEBUG
+	if (xr_strlen(_))
+		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeInfo,"%s",_);
+
+#ifdef _DEBUG
 	lua_setgcthreshold	(ai().script_engine().lua(),0);
 #endif
-	g_ca_stdout			= S;
+
+	// restore output
+	g_ca_stdout			= _save;
 }
 
 void CScriptProcess::add_script	(LPCSTR	script_name)
