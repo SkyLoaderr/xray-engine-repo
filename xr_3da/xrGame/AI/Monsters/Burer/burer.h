@@ -50,6 +50,8 @@ public:
 	LPCSTR	 particle_gravi_wave;
 	LPCSTR   particle_gravi_prepare;
 
+	ref_sound	sound_gravi_wave;
+
 public:
 					CBurer				();
 	virtual			~CBurer				();	

@@ -150,6 +150,7 @@ namespace MonsterSpace {
 		eMonsterSoundPanic,
 		eMonsterSoundGrowling,
 		eMonsterSoundPsyAttack,
+		eMonsterSoundGraviAttack,
 		eMonsterSoundDummy		= u32(-1),
 	};
 

@@ -2201,6 +2201,12 @@
 						RelativePath=".\ai\Monsters\Burer\burer_attack.h">
 					</File>
 					<File
+						RelativePath=".\ai\Monsters\Burer\burer_attack_gravi.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\Burer\burer_attack_tele.cpp">
+					</File>
+					<File
 						RelativePath=".\ai\Monsters\Burer\burer_states.h">
 					</File>
 					<Filter

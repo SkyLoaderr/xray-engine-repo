@@ -145,6 +145,9 @@ void CBurer::Load(LPCSTR section)
 
 	particle_gravi_wave		= pSettings->r_string(section,"Particle_Gravi_Wave");
 	particle_gravi_prepare	= pSettings->r_string(section,"Particle_Gravi_Prepare");
+
+	CSoundPlayer::add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
+	::Sound->create(sound_gravi_wave,TRUE, pSettings->r_string(section,"sound_gravi_wave"), SOUND_TYPE_WORLD);
 }
 
 void CBurer::StateSelector()
@@ -273,7 +276,7 @@ void CBurer::UpdateGraviObject()
 				float	hit_impulse		= 2000;
 				Fvector impulse_dir;
 
-				impulse_dir.sub(m_gravi_object.enemy->Position(), Position());
+				impulse_dir.set(0.0f,1.0f,1.0f);
 				impulse_dir.normalize();
 
 				HitEntity(m_gravi_object.enemy, hit_power, hit_impulse, impulse_dir);
@@ -314,6 +317,14 @@ void CBurer::UpdateGraviObject()
 		dir.normalize();
 		obj->m_pPhysicsShell->applyImpulse(dir,GRAVI_IMPULSE * obj->m_pPhysicsShell->getMass());
 	}
+
+	// играть звук
+
+	Fvector snd_pos = m_gravi_object.cur_pos;
+	snd_pos.y += 0.5f;
+	if (sound_gravi_wave.feedback) {
+		sound_gravi_wave.set_position(snd_pos);
+	} else ::Sound->play_at_pos(sound_gravi_wave,0,snd_pos);
 }
 
 void CBurer::UpdateCL()
