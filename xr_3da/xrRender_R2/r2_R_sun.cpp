@@ -402,7 +402,7 @@ void CRender::render_sun				()
 
 	Fmatrix	ex_project, ex_full, ex_full_inverse;
 	{
-		ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,tweak_guaranteed_range,g_pGamePersistent->Environment.CurrentEnv.far_plane); 
+		ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,ps_r2_sun_near,g_pGamePersistent->Environment.CurrentEnv.far_plane); 
 		ex_full.mul					(ex_project,Device.mView);
 		D3DXMatrixInverse			((D3DXMATRIX*)&ex_full_inverse,0,(D3DXMATRIX*)&ex_full);
 	}
@@ -714,7 +714,7 @@ void CRender::render_sun				()
 		// create clipper
 		DumbClipper	view_clipper;
 		Fmatrix&	xform		= *((Fmatrix*)&m_LightViewProj);
-		CFrustum	view_planes	; view_planes.CreateFromMatrix(Device.mFullTransform,FRUSTUM_P_ALL);
+		CFrustum	view_planes	; view_planes.CreateFromMatrix(ex_full,FRUSTUM_P_ALL);
 		for		(u32 p=0; p<view_planes.p_count; p++)
 		{
 			Fplane&		P	= view_planes.planes	[p];
@@ -739,15 +739,15 @@ void CRender::render_sun				()
 		// receivers
 		b_receivers.invalidate	();
 		b_receivers		= view_clipper.clipped_AABB	(s_receivers,xform);
-		Fmatrix	ex_project, ex_full, ex_full_inverse;
+		Fmatrix	x_project, x_full, x_full_inverse;
 		{
-			ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,VIEWPORT_NEAR,tweak_guaranteed_range); 
-			ex_full.mul					(ex_project,Device.mView);
-			D3DXMatrixInverse			((D3DXMATRIX*)&ex_full_inverse,0,(D3DXMATRIX*)&ex_full);
+			x_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,ps_r2_sun_near,ps_r2_sun_near+tweak_guaranteed_range);
+			x_full.mul					(x_project,Device.mView);
+			D3DXMatrixInverse			((D3DXMATRIX*)&x_full_inverse,0,(D3DXMATRIX*)&x_full);
 		}
 		for		(int e=0; e<8; e++)
 		{
-			pt				= wform	(ex_full_inverse,corners[e]);	// world space
+			pt				= wform	(x_full_inverse,corners[e]);	// world space
 			pt				= wform	(xform,pt);						// trapezoid space
 			b_receivers.modify		(pt);
 		}
@@ -969,16 +969,10 @@ void CRender::render_sun_near	()
 	}
 
 	// Fill the database
-	xr_vector<Fbox3>&		s_receivers			= main_coarse_structure;
-	s_casters.reserve							(s_receivers.size());
-	set_Recorder								(&s_casters);
-	r_dsgraph_render_subspace					(cull_sector, &cull_frustum, cull_xform, cull_COP, TRUE);
-	set_Recorder								(NULL);
+	r_dsgraph_render_subspace				(cull_sector, &cull_frustum, cull_xform, cull_COP, TRUE);
 
 	// Finalize & Cleanup
-	fuckingsun->X.D.combine			= cull_xform;	//*((Fmatrix*)&m_LightViewProj);
-	s_receivers.clear				();
-	s_casters.clear					();
+	fuckingsun->X.D.combine					= cull_xform;	//*((Fmatrix*)&m_LightViewProj);
 
 	// Render shadow-map
 	//. !!! We should clip based on shrinked frustum (again)

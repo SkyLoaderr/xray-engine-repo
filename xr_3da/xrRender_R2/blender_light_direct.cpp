@@ -25,7 +25,7 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 		C.r_End				();
 		break;
 	case SE_SUN_FAR:		// far pass, only stencil clipping performed
-		C.r_Pass			("null",			"accum_sun",	false,	FALSE,	FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
+		C.r_Pass			("null",			"accum_sun",	false,	TRUE,	FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		C.r_Sampler_rtf		("s_position",		r2_RT_P			);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N			);
 		C.r_Sampler_clf		("s_material",		r2_material		);

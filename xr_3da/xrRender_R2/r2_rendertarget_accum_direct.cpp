@@ -26,7 +26,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	L_dir.normalize				();
 
 	// Perform masking (only once - on the first/near phase)
-	if (SE_SUN_NEAR==sub_phase)
+	if (SE_SUN_NEAR==sub_phase)	//.
 	{
 		// Fill vertex buffer
 		FVF::TL* pv					= (FVF::TL*)	RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
@@ -49,15 +49,15 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		RCache.set_CullMode			(CULL_NONE	);
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-
-		// recalculate d_Z, to perform depth-clipping
-		Fvector	center_pt;			center_pt.mad	(Device.vCameraPosition,Device.vCameraDirection,ps_r2_sun_near);
-		Device.mFullTransform.transform(center_pt)	;
-		d_Z							= center_pt.z	;
 	}
 
+	// recalculate d_Z, to perform depth-clipping
+	Fvector	center_pt;			center_pt.mad	(Device.vCameraPosition,Device.vCameraDirection,ps_r2_sun_near);
+	Device.mFullTransform.transform(center_pt)	;
+	d_Z							= center_pt.z	;
+
 	// nv-stencil recompression
-	if (RImplementation.o.nvstencil)	u_stencil_optimize((SE_SUN_NEAR==sub_phase)?TRUE:FALSE);
+	//. if (RImplementation.o.nvstencil)	u_stencil_optimize((SE_SUN_NEAR==sub_phase)?TRUE:FALSE);
 	RCache.set_ColorWriteEnable			();
 
 	// Perform lighting
@@ -81,6 +81,14 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 			Fmatrix			xf_invview;		xf_invview.invert	(Device.mView)	;
 			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,fuckingsun->X.D.combine);
 			m_shadow.mul	(xf_project,	xf_invview);
+
+			// tsm-bias
+			if (SE_SUN_FAR == sub_phase)
+			{
+				Fvector		bias;	bias.mul		(L_dir,ps_r2_sun_tsm_bias);
+				Fmatrix		bias_t;	bias_t.translate(bias);
+				m_shadow.mulB		(bias_t);
+			}
 			FPU::m24r		();
 		}
 

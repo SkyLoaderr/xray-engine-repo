@@ -60,7 +60,8 @@ float		ps_r2_GI_refl				= .9f;				// .9f
 float		ps_r2_ls_depth_scale		= 1.00001f;			// 1.00001f
 float		ps_r2_ls_depth_bias			= -0.0001f;			// -0.0001f
 float		ps_r2_ls_squality			= 1.0f;				// 1.00f
-float		ps_r2_sun_projection		= 0.2f;				// 0.3f
+float		ps_r2_sun_tsm_projection	= 0.2f;				// 0.2f
+float		ps_r2_sun_tsm_bias			= 0.0f;				// 
 float		ps_r2_sun_near				= 10.f;				// 10.0f
 float		ps_r2_sun_depth_scale		= 1.00000f;			// 1.00001f
 float		ps_r2_sun_depth_bias		= -0.0005f;			// -0.0005f
@@ -140,7 +141,8 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN		);
 	CMD3(CCC_Mask,		"r2_sun_focus",			&ps_r2_ls_flags,			R2FLAG_SUN_FOCUS);
 	CMD3(CCC_Mask,		"r2_sun_tsm",			&ps_r2_ls_flags,			R2FLAG_SUN_TSM	);
-	CMD4(CCC_Float,		"r2_sun_proj",			&ps_r2_sun_projection,		.001f,	0.8f	);
+	CMD4(CCC_Float,		"r2_sun_tsm_proj",		&ps_r2_sun_tsm_projection,	.001f,	0.8f	);
+	CMD4(CCC_Float,		"r2_sun_tsm_bias",		&ps_r2_sun_tsm_bias,		-0.5,	+0.5	);
 	CMD4(CCC_Float,		"r2_sun_near",			&ps_r2_sun_near,			1.f,	50.f	);
 	CMD4(CCC_Float,		"r2_sun_depth_scale",	&ps_r2_sun_depth_scale,		0.5,	1.5		);
 	CMD4(CCC_Float,		"r2_sun_depth_bias",	&ps_r2_sun_depth_bias,		-0.5,	+0.5	);
