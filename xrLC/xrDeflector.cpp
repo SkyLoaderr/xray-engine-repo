@@ -171,7 +171,7 @@ VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BO
 	UVpoint half;	half.set	(.5f/512.f, .5f/512.f);
 	UVpoint guard;	guard.set	(BORDER/512.f, BORDER/512.f);
 	UVpoint scale;  scale.set	(float(s_u-2*BORDER)/512.f, float(s_v-2*BORDER)/512.f);	// take in mind border
-	UVpoint base;	base.set	(float(b_u+BORDER)/512.f, float(b_v+BORDER)/512.f);		// offset in UV space
+	UVpoint base;	base.set	(float(b_u)/512.f, float(b_v)/512.f);					// offset in UV space
 
 	if (!bRotated) 
 	{
@@ -181,9 +181,9 @@ VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BO
 			UVtri	P;
 			Face	*F = T->owner;
 			
-			P.uv[0].set(T->uv[0]); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); P.uv[0].add(half);
-			P.uv[1].set(T->uv[1]); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); P.uv[1].add(half);
-			P.uv[2].set(T->uv[2]); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); P.uv[2].add(half); 
+			P.uv[0].set(T->uv[0]); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); // P.uv[0].add(half);
+			P.uv[1].set(T->uv[1]); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); // P.uv[1].add(half);
+			P.uv[2].set(T->uv[2]); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); // P.uv[2].add(half); 
 			
 			P.owner			= F;
 			F->pDeflector	= this;
@@ -202,9 +202,9 @@ VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BO
 			UVtri	P;
 			Face	*F = T->owner;
 			
-			P.uv[0].set(T->uv[0]); swap(P.uv[0].u,P.uv[0].v); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); P.uv[0].add(half);
-			P.uv[1].set(T->uv[1]); swap(P.uv[1].u,P.uv[1].v); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); P.uv[1].add(half);
-			P.uv[2].set(T->uv[2]); swap(P.uv[2].u,P.uv[2].v); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); P.uv[2].add(half); 
+			P.uv[0].set(T->uv[0]); swap(P.uv[0].u,P.uv[0].v); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); // P.uv[0].add(half);
+			P.uv[1].set(T->uv[1]); swap(P.uv[1].u,P.uv[1].v); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); // P.uv[1].add(half);
+			P.uv[2].set(T->uv[2]); swap(P.uv[2].u,P.uv[2].v); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); // P.uv[2].add(half); 
 			
 			P.owner			= F;
 			F->pDeflector	= this;

@@ -285,6 +285,8 @@ VOID CDeflector::Light()
 	ApplyBorders(lm,252);
 	lm.dwWidth	= o_x;	lm.dwHeight	= o_y;
 	
+	// return;
+
 	// Try to shrink lightmap in U & V direction to ONE pixel
 	{
 		// Calculate average color
@@ -402,7 +404,7 @@ IC DWORD convert(float a)
 	else if (a>=1)	return 255;
 	else			return iFloor(a*255.f);
 }
-IC void pixel(int x, int y,  b_texture* T)
+IC void pixel(int x, int y,  b_texture* T, DWORD C=RGBA_MAKE(0,255,0,0))
 {
 	// wrap pixels
 	if (x<0) return;
@@ -410,7 +412,7 @@ IC void pixel(int x, int y,  b_texture* T)
 	if (y<0) return;
 	else if (y>=(int)T->dwHeight)	return;
 
-	T->pSurface[y*T->dwWidth+x]	= RGBA_MAKE(0,255,0,0);
+	T->pSurface[y*T->dwWidth+x]	= C;
 }
 
 void line ( int x1, int y1, int x2, int y2, b_texture* T )
@@ -510,15 +512,59 @@ void CDeflector::Save()
 		_FREE(lm_rad);
 	}
 
-	// Saving
-	sprintf			(lm.name,"L#%d_base",deflNameID);
-	TGAdesc			p;
-	p.format		= IMG_32B;
-	p.scanlenght	= lm.dwWidth*4;
-	p.width			= lm.dwWidth;
-	p.height		= lm.dwHeight;
-	p.data			= lm.pSurface;
-	p.maketga		(lm.name);
+	// DEBUG: Saving
+	{
+		sprintf			(lm.name,"L#%d_base",deflNameID);
+		TGAdesc			p;
+		p.format		= IMG_32B;
+		p.scanlenght	= lm.dwWidth*4;
+		p.width			= lm.dwWidth;
+		p.height		= lm.dwHeight;
+		p.data			= lm.pSurface;
+		p.maketga		(lm.name);
+	}
+
+	// DEBUG: Lines
+	{
+		// 3x expand
+		b_texture		temp;
+		temp.dwHeight	= lm.dwHeight*3;
+		temp.dwWidth	= lm.dwWidth *3;
+		temp.pSurface	= LPDWORD(malloc(temp.dwHeight*temp.dwWidth*4));
+		for (DWORD y=0; y<lm.dwHeight; y++)
+		{
+			for (DWORD x=0; x<lm.dwWidth; x++)
+			{
+				DWORD C = lm.pSurface[y*lm.dwWidth+x];
+				if (RGBA_GETALPHA(C)!=255)	C=0;
+				pixel(x*3+0,y*3+0,&temp,C); pixel(x*3+1,y*3+0,&temp,C); pixel(x*3+2,y*3+0,&temp,C);
+				pixel(x*3+0,y*3+1,&temp,C); pixel(x*3+1,y*3+1,&temp,C); pixel(x*3+2,y*3+1,&temp,C);
+				pixel(x*3+0,y*3+2,&temp,C); pixel(x*3+1,y*3+2,&temp,C); pixel(x*3+2,y*3+2,&temp,C);
+			}
+		}
+
+		// Render polygons
+		for (DWORD t=0; t<tris.size(); t++)
+		{
+			UVtri&		T	= tris[t];
+			UVpoint&	p1	= T.uv[0]; int x1=iFloor(p1.u*float(temp.dwWidth)+.5f); int y1=iFloor(p1.v*float(temp.dwHeight)+.5f);
+			UVpoint&	p2	= T.uv[1]; int x2=iFloor(p2.u*float(temp.dwWidth)+.5f); int y2=iFloor(p2.v*float(temp.dwHeight)+.5f);
+			UVpoint&	p3	= T.uv[2]; int x3=iFloor(p3.u*float(temp.dwWidth)+.5f); int y3=iFloor(p3.v*float(temp.dwHeight)+.5f);
+			line		(x1,y1,x2,y2,&temp);
+			line		(x2,y2,x3,y3,&temp);
+			line		(x3,y3,x1,y1,&temp);
+		}
+
+		// Save picture
+		sprintf			(temp.name,"L#%d_debug",deflNameID);
+		TGAdesc			p;
+		p.format		= IMG_32B;
+		p.scanlenght	= temp.dwWidth*4;
+		p.width			= temp.dwWidth;
+		p.height		= temp.dwHeight;
+		p.data			= temp.pSurface;
+		p.maketga		(temp.name);
+	}
 	
 	// Borders correction
 	for (DWORD ref=253/*-BORDER*/; ref>0; ref--)
