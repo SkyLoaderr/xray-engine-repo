@@ -21,6 +21,8 @@ class CPsyAuraController : public CPsyAura {
 
 	float				m_current_radius;
 
+	float				power_down_vel;
+
 public:
 					CPsyAuraController		();
 	virtual			~CPsyAuraController		();

@@ -1,10 +1,12 @@
 #pragma once
 #include "../../feel_touch.h"
 
+class CGameObject;
+
 class CPsyAura : public Feel::Touch {
 
 	// владелец поля
-	CObject		*object;
+	CGameObject	*object;
 
 	// энергия поля
 	struct {
@@ -29,7 +31,7 @@ public:
 					CPsyAura				();
 	virtual			~CPsyAura				();
 	
-			void	init_external			(CObject *obj) {object = obj;}
+			void	init_external			(CGameObject *obj) {object = obj;}
 	virtual	void	reinit					();
 	virtual	void	reload					(LPCSTR section);
 	
@@ -54,7 +56,7 @@ public:
 			void	set_radius				(float R) {m_radius = R;}
 			float	get_radius				(){return m_radius;}
 
-			CObject	*get_object				(){return object;}
+		CGameObject	*get_object				(){return object;}
 
 private:
 			void	update_power			();

@@ -2,6 +2,7 @@
 #include "controller_psy_aura.h"
 #include "../../../actor.h"
 #include "../../../ai_sounds.h"
+#include "../../../xrmessages.h"
 
 CPsyAuraController::CPsyAuraController()
 {
@@ -19,6 +20,8 @@ void CPsyAuraController::reload(LPCSTR section)
 	inherited::reload(section);
 	m_effector.Load(pSettings->r_string(section,"PsyAura_Postprocess_Section"));
 	::Sound->create(m_sound,TRUE, pSettings->r_string(section,"PsyAura_HeadSound"), SOUND_TYPE_WORLD);
+
+	power_down_vel = pSettings->r_float(section,"PsyAura_Power_Down_Velocity");
 }
 
 void CPsyAuraController::reinit()
@@ -30,6 +33,7 @@ void CPsyAuraController::reinit()
 
 void CPsyAuraController::on_activate()
 {
+	if (m_actor) m_current_radius = m_actor->Position().distance_to(get_object()->Position());
 }
 
 void CPsyAuraController::on_deactivate()
@@ -40,15 +44,28 @@ void CPsyAuraController::on_deactivate()
 void CPsyAuraController::schedule_update()
 {
 	inherited::schedule_update();
+	if (m_actor && is_active() && !m_sound.feedback) m_sound.play_at_pos(m_actor,m_actor->Position(), sm_2D);
+	
+	// Падение энергии у игрока
+	if (m_actor && is_active()) {
+		float power_percent = m_actor->Position().distance_to(get_object()->Position()) / get_radius();
+		
+		Fvector hit_dir;
+		hit_dir.sub(get_object()->Position(), m_actor->Position());
+		hit_dir.normalize();
 
-	if (m_actor) {
-		Fvector pos = m_actor->Position();
-		pos.y += 1.8f;
-
-		if (m_sound.feedback) m_sound.set_position(pos);
-		else ::Sound->play_at_pos(m_sound,m_actor,pos);
+		NET_Packet		P;
+		get_object()->u_EventGen(P,GE_HIT, m_actor->ID());
+		P.w_u16			(get_object()->ID());
+		P.w_u16			(get_object()->ID());
+		P.w_dir			(hit_dir);
+		P.w_float		(power_down_vel * power_percent);
+		P.w_s16			(BI_NONE);
+		P.w_vec3		(Fvector().set(0.f,0.f,0.f));
+		P.w_float		(0.f);
+		P.w_u16			(u16(ALife::eHitTypeTelepatic));
+		get_object()->u_EventSend(P);
 	}
-
 }
 
 void CPsyAuraController::frame_update() 
@@ -66,7 +83,7 @@ void CPsyAuraController::frame_update()
 		// реализация плавного увядания, если энергия поля закончилась, а актер находится в радиусе
 		if (m_actor) {
 			m_effector.Update(m_current_radius);
-			m_current_radius += Device.fTimeDelta * 2.f;
+			m_current_radius += Device.fTimeDelta * 1.2f;
 			b_updated = true;
 		}
 	}

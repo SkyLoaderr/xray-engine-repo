@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "psy_aura.h"
 #include "../level.h"
+#include "../gameobject.h"
 
 CPsyAura::CPsyAura()
 {
