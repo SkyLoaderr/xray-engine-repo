@@ -2,6 +2,9 @@
 #define soundrender_environmentH
 #pragma once
 
+// refs
+struct  EAXLISTENERPROPERTIES;
+
 class XRSOUND_EDITOR_API		CSoundRender_Environment		: public CSound_environment
 {
 public:

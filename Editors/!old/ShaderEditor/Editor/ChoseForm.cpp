@@ -507,8 +507,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                 const CLocatorAPI::file* file	= FS.exist(_game_sounds_,fn.c_str());
                 if (file){
                     m_Snd.create		(TRUE,fn.c_str());
-                    m_Snd.play			(0,FALSE);
-                    m_Snd.set_position	(Device.m_Camera.GetPosition());
+                    m_Snd.play			(0,sm_2D);
                 }
             }
 			lbItemName->Caption 	= "\""+Item->Text+"\"";

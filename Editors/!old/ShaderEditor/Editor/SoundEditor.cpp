@@ -299,8 +299,8 @@ void __fastcall TfrmSoundLib::OnControlClick(PropValue* sender, bool& bModif)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
-    case 0: m_Snd.play_at_pos(0,Device.m_Camera.GetPosition(),FALSE); 	break;
-    case 1: m_Snd.stop(); 												break;
+    case 0: m_Snd.play(0,sm_2D); 	break;
+    case 1: m_Snd.stop();			break;
     case 2:{ 
     	ButtonValue* B = dynamic_cast<ButtonValue*>(sender); VERIFY(B);
     	bAutoPlay=!bAutoPlay; 
@@ -376,8 +376,7 @@ void TfrmSoundLib::PlaySound(LPCSTR name, u32& size, u32& time)
     const CLocatorAPI::file* file	= FS.exist(_game_sounds_,ChangeFileExt(name,".ogg").c_str());
     if (file){
         m_Snd.create		(TRUE,name);
-        m_Snd.play			(0,FALSE);
-        m_Snd.set_position	(Device.m_Camera.GetPosition());
+        m_Snd.play			(0,sm_2D);
         CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
         size				= file->size_real;
         time				= src->dwTimeTotal;
