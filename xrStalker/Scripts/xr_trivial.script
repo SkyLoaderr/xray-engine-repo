@@ -699,7 +699,6 @@ end
 function novice3_attack:initialize ()
     action_base.initialize          (self)
 
-    local enemy = level.object(self.a.enemy)
     self.object:clear_animations()
     self.object:set_desired_direction()
     self.object:set_desired_position ()
@@ -768,10 +767,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:finalize ()
     action_base.finalize (self)
-
---    if(level.object(self.a.enemy):alive() == false) then
---        self.a.enabled = false
---    end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
