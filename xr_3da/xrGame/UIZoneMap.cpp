@@ -38,7 +38,7 @@ void CUIZoneMap::Init()
 	entity.Init	("ui\\hud_map_point",	"hud\\default",4,4);
 	entity.SetRect(0,0,3,3);
 
-	Level().HUD()->ClientToScreen(MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,map_center,align);
+	Level().HUD()->ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);
 	map_radius = MAP_RADIUS*Level().HUD()->GetScale();
 }
 //--------------------------------------------------------------------
@@ -65,7 +65,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	Fvector2 P;
 
 	Fmatrix LM,T;
-	T.rotateY			(-heading);
+	T.rotateY			(heading);
 	T.translate_over	(Actor->Position());
 	LM.invert			(T);
 
