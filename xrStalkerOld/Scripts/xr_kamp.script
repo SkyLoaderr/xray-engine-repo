@@ -56,7 +56,7 @@ function evaluator_on_position:evaluate()
 end
 --' Необходимо ли нам идти вокруг лагеря
 class "evaluator_need_patrol" (property_evaluator)
-function evaluator_need_patrol:__init((name, storage) super (nil, name)
+function evaluator_need_patrol:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_need_patrol:evaluate()
