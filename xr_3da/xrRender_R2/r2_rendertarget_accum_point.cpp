@@ -85,7 +85,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 
 	// Constants
 	RCache.set_c					("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
-	RCache.set_c					("light_color",		L_clr.r,L_clr.g,L_clr.b,.15f*L_clr.magnitude_rgb());
+	RCache.set_c					("light_color",		L_clr.r,L_clr.g,L_clr.b,L_clr.magnitude_rgb()/_sqrt(3.f));
 	RCache.set_c					("m_tex",			m_TexelAdjust);
 	R_constant* _C					= RCache.get_c		("jitter");
 	if (_C)
