@@ -134,31 +134,48 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 		N->val.pVisual				= pVisual;
 		N->val.Matrix				= Fidentity;
 		N->val.se					= sh;
-	} else {
-		SPass&						pass	= *sh->Passes.front	();
-		mapNormal_T&				map		= mapNormal			[sh->Flags.iPriority/2];
-		mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
-		mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
-		mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
-		mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
-		mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
-		mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
-		mapNormalItems&				items	= Nvb->val;
-		_NormalItem					item	= {SSA,pVisual};
-		items.push_back						(item);
-
-		// Need to sort for HZB efficient use
-		if (SSA>Nvb->val.ssa)		{ Nvb->val.ssa = SSA;
-		if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
-		if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
-		if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
-		if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
-		if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
-		} } } } } }
-#if		RENDER==R_R2	
-		if (val_bRecordMP && ( (_sqrt(distSQ)-pVisual->vis.sphere.R) < ps_r2_emap_range))	lstRecorded.push_back	(pVisual);
-#endif
+		return;
 	}
+
+#if RENDER==R_R2
+	// Emissive geometry should be marked and R2 special-cases it
+	// a) Allow to skeep already lit pixels
+	// b) Allow to make them 100% lit and really bright
+	// c) Should not cast shadows
+	// d) Should be rendered to accumulation buffer in the second pass
+	if (sh->Flags.bEmissive) {
+		mapEmissive_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
+		N->val.ssa				= SSA;
+		N->val.pObject			= RI.val_pObject;
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= Fidentity;
+		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
+	}
+#endif
+
+	SPass&						pass	= *sh->Passes.front	();
+	mapNormal_T&				map		= mapNormal			[sh->Flags.iPriority/2];
+	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
+	mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+	mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+	mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
+	mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
+	mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+	mapNormalItems&				items	= Nvb->val;
+	_NormalItem					item	= {SSA,pVisual};
+	items.push_back						(item);
+
+	// Need to sort for HZB efficient use
+	if (SSA>Nvb->val.ssa)		{ Nvb->val.ssa = SSA;
+	if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
+	if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
+	if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
+	if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
+	if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
+	} } } } } }
+#if		RENDER==R_R2	
+	if (val_bRecordMP && ( (_sqrt(distSQ)-pVisual->vis.sphere.R) < ps_r2_emap_range))	lstRecorded.push_back	(pVisual);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
