@@ -329,7 +329,7 @@ void TUI_Tools::ZoomObject(bool bSelectedOnly)
 void TUI_Tools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
 	st_Environment& E 	= Scene.m_LevelOp.m_Envs[Scene.m_LevelOp.m_CurEnv];
-	s_fog				= psDeviceFlags.is(rsFog)?(1.0f - E.m_Fogness)* 0.85f * E.m_ViewDist:UI.ZFar();
+	s_fog				= psDeviceFlags.is(rsFog)?(1.0f - E.m_Fogness)* 0.85f * E.m_ViewDist:0.99f*UI.ZFar();
 	e_fog				= psDeviceFlags.is(rsFog)?0.91f * E.m_ViewDist:UI.ZFar();
 	fog_color 			=  E.m_FogColor.get();
 }
