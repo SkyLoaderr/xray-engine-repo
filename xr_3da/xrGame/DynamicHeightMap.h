@@ -54,9 +54,6 @@ class CHM_Dynamic
 public:
 	void						Update		();
 	float						Query		(float x, float z);				// 2D query
-	
-	CHM_Dynamic					();
-	~CHM_Dynamic				();
 };
 
 //
