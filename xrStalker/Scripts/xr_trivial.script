@@ -746,6 +746,7 @@ function novice3_attack:initialize ()
 	if actor ~= nil then
 		actor:give_info_portion("escape_novice_has_weapon")
 	end
+	self.object:set_start_dialog("escape_novice_thank_actor")
 	--Отключаем реакции
     xr_reactions.add_rule(self.object, "ignore")
 end
