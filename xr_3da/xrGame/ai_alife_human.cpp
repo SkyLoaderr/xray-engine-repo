@@ -442,10 +442,11 @@ CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 
 bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInventoryItem)
 {
-	if ((m_fCumulativeItemMass + tpALifeInventoryItem->m_fMass > m_fMaxItemMass) || (m_iCumulativeItemVolume + tpALifeInventoryItem->m_iVolume > MAX_ITEM_VOLUME))
+	if (tpALifeInventoryItem && (m_fCumulativeItemMass + tpALifeInventoryItem->m_fMass > m_fMaxItemMass) || (m_iCumulativeItemVolume + tpALifeInventoryItem->m_iVolume > MAX_ITEM_VOLUME))
 		return		(false);
 	
-	m_tpTempItemBuffer.resize(children.size() + 1);
+	if (tpALifeInventoryItem)
+		m_tpTempItemBuffer.resize(children.size() + 1);
 	
 	{
 		OBJECT_IT	i = children.begin();
@@ -453,7 +454,8 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 		ITEM_P_IT	I = m_tpTempItemBuffer.begin();
 		for ( ; i != e; i++, I++)
 			*I		= dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*i));
-		*I			= tpALifeInventoryItem;
+		if (tpALifeInventoryItem)
+			*I		= tpALifeInventoryItem;
 	}
 
 	m_tpALife->m_tpWeaponVector.assign(m_tpALife->m_tpWeaponVector.size(),0);
