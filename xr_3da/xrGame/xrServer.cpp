@@ -49,11 +49,11 @@ void xrServer::Update	()
 	{
 		// get
 		svs_respawn	R		= *q_respawn.begin();
-		queue.erase			(queue.begin());
+		q_respawn.erase		(q_respawn.begin());
 
 		// 
 		xrServerEntity* E	= ID_to_entity(R.phantom);
-		E->Spawn_Write		(Packet);
+		E->Spawn_Write		(Packet,FALSE);
 		Process_spawn		(Packet,0);
 	}
 

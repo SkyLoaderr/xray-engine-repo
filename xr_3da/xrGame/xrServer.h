@@ -28,16 +28,15 @@ public:
 
 
 // main
+struct	svs_respawn
+{
+	u32		timestamp;
+	u16		phantom;
+};
+IC bool operator < (const svs_respawn& A, const svs_respawn& B)	{ return A.timestamp<B.timestamp; }
+
 class xrServer	: public IPureServer  
 {
-private:
-	struct	svs_respawn
-	{
-		u32		timestamp;
-		u16		phantom;
-
-		IC bool operator < (const svs_respawn& B)	{ return timestamp<B.timestamp; }
-	};
 private:
 	xrS_entities			entities;
 	vector<bool>			ids_used;
