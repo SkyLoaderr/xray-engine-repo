@@ -150,7 +150,7 @@ function main_main_tab:InitControls(x, y, handler)
 	
 	btn:Enable(false)
 	
---[[	
+	
 	btn = CUIComboBox()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("combo")
@@ -162,5 +162,5 @@ function main_main_tab:InitControls(x, y, handler)
 	btn:AddItem("item super", true)
 	handler:Register(btn)
 	self:AttachChild(btn)
-]]
+
 end

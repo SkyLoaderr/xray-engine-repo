@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+
+<string_table>
+	<string id="events">
+		<text>Events</text>
+	</string>
+	<string id="contacts">
+		<text>Contacts</text>
+	</string>
+	<string id="map">
+		<text>Map</text>
+	</string>
+	<string id="encyclopedia">
+		<text>Encyclopedia</text>
+	</string>
+	<string id="statistics">
+		<text>Statistics</text>
+	</string>
+	<string id="rankings">
+		<text>Rankings</text>
+	</string>	
+</string_table>
+

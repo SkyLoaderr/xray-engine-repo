@@ -8,7 +8,7 @@
     </bag_static>
     
     <!-- MONEY INDICATOR ... it will be attached to BAG window. 
-			So it's cordinates is relative to left up corner of BAG window-->
+			So its cordinates is relative to left up corner of BAG window-->
     <money_static x="220" y="0" width="117" height="40">
 		<texture>ui\ui_button_05</texture>
 		<text x="20" y="8" font="graffiti22" r="238" g="153" b="26"></text>
@@ -27,7 +27,7 @@
     <!-- DESCRIPTION WINDOW -->
     <descr_static x="370" y="260" width="335" height="475">
         <texture> ui\ui_dg_info</texture>
-        <text x="25" y="196" font="graffiti22" r="255" g="255" b="255" a="125">Description</text>
+        <text x="25" y="196" font="graffiti22" r="255" g="255" b="255" a="125"></text>
     </descr_static>
 
     <!-- CHARACTER WINDOW -->
@@ -36,6 +36,8 @@
         <left_top_texture x="5" y="10">ui\ui_inv_personal_over_t</left_top_texture>
         <title x="100" y="0" width="240" height="60"><text font="graffiti22" r="255" g="255" b="255" a="130">Personal</text></title>
     </frame_window>
+    
+    <outfit_info_window x="10" y="15" width="268" height="460"/>
 
     <!-- BELT STATIC BACKGROUND -->
     <static x="10" y="140" width="1014" height="128">
@@ -59,7 +61,7 @@
 	<!-- Sleep button OLD!!! OLD!!! OLD!!! REMOVE ME!!! -->
     <sleep_button x="800" y="715" width="150" height="40">
         <texture>ui\ui_button_01</texture>
-        <text align="c">Sleep</text>
+        <text align="c"></text>
     </sleep_button>
 
 	<!-- Drop button -->
@@ -130,8 +132,7 @@
         <background x="0" y="0">ui\ui_inv_progress_rad_empty</background>
     </progress_bar>
 
-    <time_static x="15" y="730" width="200" height="30">
-        <texture> ui\ui_dg_time</texture>
+    <time_static x="15" y="730" width="200" height="30">        
         <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255"></text>
 	</time_static>
 
@@ -143,7 +144,7 @@
 	<!-- Exit button -->
     <exit_button x="885" y="725" width="110" height="40" hR="0" hB="0" hG="0">
         <texture>ui\ui_button_06</texture>
-        <text align="c" font="graffiti22" r="238" g="153" b="26">Exit</text>
+        <text align="c" font="graffiti22" r="238" g="153" b="26"></text>
     </exit_button>
 
 </window>

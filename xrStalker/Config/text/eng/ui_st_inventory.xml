@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+	<string id="belt">
+		<text>Belt</text>
+	</string>
+	<string id="weight">
+		<text>Weight</text>
+	</string>
+	<string id="description">
+		<text>Description</text>
+	</string>
+	<string id="rest">
+		<text>Rest</text>
+	</string>
+	<string id="drop">
+		<text>Drop</text>
+	</string>
+	<string id="personal">
+		<text>Personal</text>
+	</string>
+	<string id="time">
+		<text>Current Time</text>
+	</string>
+	<string id="outfit_params">
+		<text>Outfit's characteristics</text>
+	</string>
+	<string id="outfit_burn_protection">
+		<text>burn protection</text>
+	</string>
+	<string id="outfit_strike_protection">
+		<text>strike protection</text>
+	</string>
+	<string id="outfit_shock_protection">
+		<text>shock protection</text>
+	</string>
+	<string id="outfit_chemical_burn_protection">
+		<text>chemical protection</text>
+	</string>
+	<string id="outfit_explosion_protection">
+		<text>explosion protection</text>
+	</string>
+	<string id="outfit_fire_wound_protection">
+		<text>fire wound protection</text>
+	</string>
+	<string id="exit">
+		<text>Exit</text>
+	</string>
+</string_table>
+

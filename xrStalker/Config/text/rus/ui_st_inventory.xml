@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+	<string id="belt">
+		<text>Пояс</text>
+	</string>
+	<string id="weight">
+		<text>Вес</text>
+	</string>
+	<string id="description">
+		<text>Описание</text>
+	</string>
+	<string id="rest">
+		<text>Отдохнуть</text>
+	</string>
+	<string id="drop">
+		<text>Выложить</text>
+	</string>
+	<string id="personal">
+		<text>Персонально</text>
+	</string>
+	<string id="time">
+		<text>Время</text>
+	</string>
+	<string id="outfit_params">
+		<text>Характеристики Костюма</text>
+	</string>
+	<string id="outfit_burn_protection">
+		<text>защита от ожога</text>
+	</string>
+	<string id="outfit_strike_protection">
+		<text>защита от удара</text>
+	</string>
+	<string id="outfit_shock_protection">
+		<text>защита от шока</text>
+	</string>
+	<string id="outfit_chemical_burn_protection">
+		<text>защита от химического ожога</text>
+	</string>
+	<string id="outfit_explosion_protection">
+		<text>защита от взрыва</text>
+	</string>
+	<string id="outfit_fire_wound_protection">
+		<text>защита от огнестрельного ранения</text>
+	</string>
+	<string id="exit">
+		<text>Выход</text>
+	</string>
+</string_table>
+
