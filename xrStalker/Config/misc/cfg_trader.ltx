@@ -13,6 +13,7 @@ dialog_enabled = true
 anim = spinka
 on_info = {=talking_or_tutor} mob_remark@spinka_to_talking
 on_signal = action_end | mob_remark@before_first_phrase
+on_timer = 1000 | mob_remark@before_first_phrase
 
 ; Пододвигаемся к игроку
 [mob_remark@before_first_phrase]
