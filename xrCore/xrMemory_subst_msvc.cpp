@@ -38,7 +38,6 @@ void*	xrMemory::mem_alloc		(size_t size)
 	}
 
 	//	accelerated
-	cs.Enter					();
 	u32	pool					= get_pool	(size);
 	if (mem_generic==pool)		
 	{
@@ -52,14 +51,12 @@ void*	xrMemory::mem_alloc		(size_t size)
 		_ptr					= (void*)(((u8*)_real)+1);
 		*acc_header(_ptr)		= (u8)pool;
 	}
-	cs.Leave					();
 	return	_ptr;
 }
 
 void	xrMemory::mem_free		(void* P)
 {
 	stat_calls++;
-	cs.Enter					();
 	u32	pool					= get_header(P);
 	void* _real					= (void*)(((u8*)P)-1);
 	if (mem_generic==pool)		
@@ -71,7 +68,6 @@ void	xrMemory::mem_free		(void* P)
 		R_ASSERT2					(pool<mem_pools_count,"Memory corruption");
 		mem_pools[pool].destroy		(_real);
 	}
-	cs.Leave					();
 }
 
 void*	xrMemory::mem_realloc	(void* P, size_t size)
@@ -79,7 +75,6 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	if (0==P)					return mem_alloc(size);
 
 	stat_calls++;
-	cs.Enter					();
 	u32		p_current			= get_header(P);
 	void*	_real				= (void*)(((u8*)P)-1);
 	void*	_ptr				= NULL;
@@ -98,7 +93,6 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 		mem_free				(p_old);
 		_ptr					= p_new;
 	}
-	cs.Leave					();
 	return	_ptr;
 }
 

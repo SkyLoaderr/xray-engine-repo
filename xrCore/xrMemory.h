@@ -7,8 +7,6 @@
 
 class XRCORE_API	xrMemory
 {
-private:
-	xrCriticalSection	cs;
 public:
 	void				_initialize	();
 	void				_destroy	();
