@@ -81,12 +81,13 @@ void	CBlender_Compile::PassSET_LightFog	(BOOL bLight, BOOL bFog)
 //
 void	CBlender_Compile::StageBegin	()
 {
+	StageSET_Address	(D3DTADDRESS_WRAP);	// Wrapping enabled by default
 }
 void	CBlender_Compile::StageEnd		()
 {
 	dwStage	++;
 }
-void	CBlender_Compile::StageSET_Address(DWORD adr)
+void	CBlender_Compile::StageSET_Address	(DWORD adr)
 {
 	RS.SetTSS	(Stage(),D3DTSS_ADDRESSU,	adr);
 	RS.SetTSS	(Stage(),D3DTSS_ADDRESSV,	adr);
