@@ -116,6 +116,7 @@ void CLightShadows::set_object	(IRenderable* O)
 void CLightShadows::add_element	(NODE& N)
 {
 	if (0==current)	return;
+	VERIFY2	(casters.back()->nodes.size()<16,"Object exceeds limit of 16 renderable parts/materials");
 	casters.back()->nodes.push_back	(N);
 }
 

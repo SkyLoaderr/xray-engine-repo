@@ -20,7 +20,7 @@ private:
 		IRenderable*		O;
 		Fvector				C;
 		float				D;
-		svector<NODE,16>	nodes;
+		xr_vector<NODE>		nodes;
 	};
 	struct	shadow 
 	{
