@@ -10,17 +10,16 @@ class CWeaponCustomPistol: public CWeaponMagazined
 {
 private:
 	typedef CWeaponMagazined inherited;
-protected:
-	virtual void	switch2_Fire		();
-//	virtual void	switch2_Empty		();
-//	virtual void	OnEmptyClick		();
-	virtual void	state_Fire			(float dt);
-	virtual void	state_MagEmpty		(float dt);
-	virtual void	OnAnimationEnd	();
 public:
 					CWeaponCustomPistol	(LPCSTR name);
 	virtual			~CWeaponCustomPistol();
-	virtual void	FireEnd			();
+protected:
+	virtual void	FireEnd				();
+	virtual void	switch2_Fire		();
+	virtual void	state_Fire			(float dt);
+	virtual void	state_MagEmpty		(float dt);
+	virtual void	OnAnimationEnd		();
+
 };
 
 #endif //__XR_WEAPON_PISTOL_H__

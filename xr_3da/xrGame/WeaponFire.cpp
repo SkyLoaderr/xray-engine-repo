@@ -107,10 +107,6 @@ void CWeapon::FireStart	()
 }
 void CWeapon::FireEnd	()				
 { 
-	//принудительно останавливать зацикленные партиклы
-	if(m_pFlameParticles && m_pFlameParticles->IsLooped()) 
-		StopFlameParticles	();
-
 	bWorking=false;	
 }
 void CWeapon::Fire2Start()				
@@ -292,4 +288,15 @@ void CWeapon::StopFlameParticles2	()
 void CWeapon::UpdateFlameParticles2	()
 {
 	UpdateParticles (m_pFlameParticles2, vLastFP2);
+}
+
+void CWeapon::StopShooting		()
+{
+	m_bPending = true;
+
+	//принудительно останавливать зацикленные партиклы
+	if(m_pFlameParticles && m_pFlameParticles->IsLooped()) 
+		StopFlameParticles	();
+
+	SwitchState(eIdle);
 }

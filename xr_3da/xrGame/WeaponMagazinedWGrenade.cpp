@@ -145,9 +145,8 @@ void CWeaponMagazinedWGrenade::OnShot		()
 void CWeaponMagazinedWGrenade::SwitchMode() 
 {
 	if(!IsGrenadeLauncherAttached() || eIdle != STATE || IsPending())
-	{
 		return;
-	}
+
 	m_bPending = true;
 
 	PerformSwitch();
@@ -208,7 +207,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 		else 
 			return;
 		
-		while (fTime<0)
+		while (fTime<=0 && (IsWorking() || m_bFireSingleShot))
 		{
 
 			fTime			+=	fTimeToFire;

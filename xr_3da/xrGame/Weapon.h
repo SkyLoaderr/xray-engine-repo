@@ -273,7 +273,8 @@ protected:
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();
 	virtual void			Reload				();
-
+	virtual void			StopShooting		();
+    
 
 	// обработка визуализации выстрела
 	virtual void			OnShot				(){};

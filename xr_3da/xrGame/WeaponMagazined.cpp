@@ -16,6 +16,8 @@
 #include "ActorEffector.h"
 #include "EffectorZoomInertion.h"
 
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -32,6 +34,8 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 
 	m_pSndShotCurrent = NULL;
 	m_sSilencerFlameParticles = m_sSilencerSmokeParticles = NULL;
+
+	m_bFireSingleShot = false;
 }
 
 CWeaponMagazined::~CWeaponMagazined()
@@ -118,12 +122,8 @@ void CWeaponMagazined::FireStart		()
 void CWeaponMagazined::FireEnd() 
 {
 	m_shotNum = 0;
-	
-	if(IsWorking()) 
-	{
-		CWeapon::FireEnd();
-		SwitchState(eIdle);
-	}
+
+	inherited::FireEnd();
 
 	CActor	*actor = dynamic_cast<CActor*>(H_Parent());
 	if(!iAmmoElapsed && actor) Reload();
@@ -331,23 +331,31 @@ void CWeaponMagazined::UpdateCL			()
 	inherited::UpdateCL	();
 	float dt = Device.fTimeDelta;
 
+	
 	// cycle update
-	switch (NEXT_STATE)
+	switch (STATE)
 	{
 	case eShowing:
 	case eHiding:
 	case eReload:
 	case eIdle:
 		fTime			-=	dt;
-		if (fTime<0)	fTime = 0;
+		if (fTime<0)	
+			fTime = 0;
 		break;
-	case eFire:			state_Fire		(dt);	break;
+	case eFire:			
+		state_Fire		(dt);	
+        if(fTime<=0)
+			StopShooting();
+		break;
 	case eMisfire:		state_Misfire	(dt);	break;
 	case eMagEmpty:		state_MagEmpty	(dt);	break;
 	case eHidden:		break;
 	}
 
 	UpdateSounds		();
+
+
 }
 
 void CWeaponMagazined::UpdateSounds	()
@@ -376,9 +384,12 @@ void CWeaponMagazined::UpdateSounds	()
 
 void CWeaponMagazined::state_Fire	(float dt)
 {
-	UpdateFP				();
 
 	fTime					-=dt;
+
+	UpdateFP				();
+
+
 	Fvector					p1, d; 
 	p1.set(vLastFP);
 	d.set(vLastFD);
@@ -388,8 +399,10 @@ void CWeaponMagazined::state_Fire	(float dt)
 	else 
 		return;
 	
-	while (fTime<0)
+	while (fTime<=0 && (IsWorking() || m_bFireSingleShot))
 	{
+		m_bFireSingleShot = false;
+
 		fTime			+=	fTimeToFire;
 
 		++m_shotNum;
@@ -401,7 +414,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 
 	//для стрельбы очередями сталкеров, 
 	//к которым апдейты приходят редко
-	if(m_shotNum == m_queueSize) FireEnd();
+	//if(m_shotNum == m_queueSize) FireEnd();
 }
 
 void CWeaponMagazined::state_Misfire	(float /**dt/**/)
@@ -490,8 +503,11 @@ void CWeaponMagazined::switch2_Idle	()
 	m_bPending = false;
 	PlayAnimIdle();
 }
+
+
 void CWeaponMagazined::switch2_Fire	()
 {
+	m_bFireSingleShot = true;
 }
 void CWeaponMagazined::switch2_Empty()
 {

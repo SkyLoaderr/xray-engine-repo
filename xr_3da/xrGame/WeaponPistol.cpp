@@ -104,7 +104,7 @@ void CWeaponPistol::PlayAnimShoot	()
 void CWeaponPistol::switch2_Fire()
 {
 	inherited::switch2_Fire();
-	m_bPending = false;
+	///m_bPending = false;
 }
 
 

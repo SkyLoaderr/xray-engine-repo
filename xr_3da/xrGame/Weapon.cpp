@@ -589,8 +589,6 @@ void CWeapon::UpdateCL		()
 	if(m_pFlameParticles)UpdateFlameParticles();
 	if(m_pFlameParticles2) UpdateFlameParticles2();
 
-	
-
 	make_Interpolation();
 }
 
@@ -670,12 +668,18 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 
 	//если оружие чем-то занято, то ничего не делать
 	if(IsPending()) return false;
-	
+
+
+
 	switch(cmd) 
 	{
 		case kWPN_FIRE: 
 			{
-                if(flags&CMD_START) 
+				//если оружие чем-то занято, то ничего не делать
+				if(IsPending()) return false;
+
+
+	            if(flags&CMD_START) 
 					FireStart();
 				else 
 					FireEnd();
@@ -683,6 +687,10 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 			return true;
 		case kWPN_NEXT: 
 			{
+				//если оружие чем-то занято, то ничего не делать
+				if(IsPending()) return false;
+
+					
 				if(flags&CMD_START) 
 				{
 					u32 l_newType = m_ammoType;
@@ -705,9 +713,9 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 		case kWPN_ZOOM:
 			if(IsZoomEnabled())
 			{
-                if(flags&CMD_START)
+                if(flags&CMD_START && !IsPending())
 					OnZoomIn();
-                else 
+                else  if(IsZoomed())
 					OnZoomOut();
 				return true;
 			} 

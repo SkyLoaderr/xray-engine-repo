@@ -49,6 +49,7 @@
 
 #include "ui/UIMainIngameWnd.h"
 
+
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
 
