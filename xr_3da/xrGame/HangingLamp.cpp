@@ -121,7 +121,10 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	if(PKinematics(Visual()))		PKinematics			(Visual())->Calculate();
 	
 	if (Alive())			TurnOn	();
-	else					TurnOff	();
+	else					{
+		processing_activate		();	// temporal enable
+		TurnOff					();	// -> and here is disable :)
+	}
 	
 	if (Visual())setVisible	(TRUE);
 	setEnabled				(TRUE);
@@ -211,12 +214,14 @@ void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
 					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	//inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+	BOOL	bWasAlive		= Alive		();
+
 	if(m_pPhysicsShell) m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 
 	if (element==guid_bone)	fHealth =	0.f;
 	else					fHealth -=	P*0.1f;
 
-	if (!Alive())	TurnOff	();
+	if (bWasAlive && (!Alive()))		TurnOff	();
 }
 
 static BONE_P_MAP bone_map=BONE_P_MAP();
