@@ -40,11 +40,6 @@ CWeapon::CWeapon(LPCSTR name)
 	m_StrapOffset.identity	();
 	m_strapped_mode		= false;
 
-	vLastFP.set			(0,0,0);
-	vLastFP2.set		(0,0,0);
-	vLastFD.set			(0,0,0);
-	vLastSP.set			(0,0,0);
-
 	iAmmoCurrent		= -1;
 	m_dwAmmoCurrentCalcFrame = 0;
 
@@ -146,11 +141,11 @@ void CWeapon::UpdateXForm	()
 	}
 }
 
-void CWeapon::UpdateFP		()
+void CWeapon::UpdateFireDependencies_internal()
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
-		dwFP_Frame = Device.dwFrame;
+		dwFP_Frame			= Device.dwFrame;
 
 		UpdateXForm			();
 
@@ -168,25 +163,25 @@ void CWeapon::UpdateFP		()
 			Fvector& fp2			= m_pHUD->FirePoint2();
 			Fvector& sp				= m_pHUD->ShellPoint();
 
-			fire_mat.transform_tiny	(vLastFP,fp);
-			parent.transform_tiny	(vLastFP);
-			fire_mat.transform_tiny	(vLastFP2,fp2);
-			parent.transform_tiny	(vLastFP2);
+			fire_mat.transform_tiny	(m_firedeps.vLastFP,fp);
+			parent.transform_tiny	(m_firedeps.vLastFP);
+			fire_mat.transform_tiny	(m_firedeps.vLastFP2,fp2);
+			parent.transform_tiny	(m_firedeps.vLastFP2);
 		
-			fire_mat.transform_tiny	(vLastSP,sp);
-			parent.transform_tiny	(vLastSP);
+			fire_mat.transform_tiny	(m_firedeps.vLastSP,sp);
+			parent.transform_tiny	(m_firedeps.vLastSP);
 
-			vLastSD.set				(0.f,0.f,1.f);
-			parent.transform_dir	(vLastSD);
+			m_firedeps.vLastSD.set	(0.f,0.f,1.f);
+			parent.transform_dir	(m_firedeps.vLastSD);
 
 			
-			vLastFD.set				(0.f,0.f,1.f);
-			parent.transform_dir	(vLastFD);
+			m_firedeps.vLastFD.set	(0.f,0.f,1.f);
+			parent.transform_dir	(m_firedeps.vLastFD);
 
-			m_FireParticlesXForm.identity();
-			m_FireParticlesXForm.k.set(vLastFD);
-			Fvector::generate_orthonormal_basis(m_FireParticlesXForm.k,
-									m_FireParticlesXForm.j, m_FireParticlesXForm.i);
+			m_firedeps.m_FireParticlesXForm.identity();
+			m_firedeps.m_FireParticlesXForm.k.set(m_firedeps.vLastFD);
+			Fvector::generate_orthonormal_basis(m_firedeps.m_FireParticlesXForm.k,
+									m_firedeps.m_FireParticlesXForm.j, m_firedeps.m_FireParticlesXForm.i);
 		} else {
 			// 3rd person or no parent
 			Fmatrix& parent			= XFORM();
@@ -194,18 +189,18 @@ void CWeapon::UpdateFP		()
 			Fvector& fp2			= vLoadedFirePoint2;
 			Fvector& sp				= vLoadedShellPoint;
 
-			parent.transform_tiny	(vLastFP,fp);
-			parent.transform_tiny	(vLastFP2,fp2);
-			parent.transform_tiny	(vLastSP,sp);
+			parent.transform_tiny	(m_firedeps.vLastFP,fp);
+			parent.transform_tiny	(m_firedeps.vLastFP2,fp2);
+			parent.transform_tiny	(m_firedeps.vLastSP,sp);
 			
-			vLastFD.set				(0.f,0.f,1.f);
-			parent.transform_dir	(vLastFD);
+			m_firedeps.vLastFD.set	(0.f,0.f,1.f);
+			parent.transform_dir	(m_firedeps.vLastFD);
 
 			//vLastSD = sd;
-			vLastSD.set				(0.f,0.f,1.f);
-			parent.transform_dir	(vLastSD);
+			m_firedeps.vLastSD.set	(0.f,0.f,1.f);
+			parent.transform_dir	(m_firedeps.vLastSD);
 
-			m_FireParticlesXForm.set(parent);
+			m_firedeps.m_FireParticlesXForm.set(parent);
 		}
 	}
 }
@@ -616,27 +611,23 @@ void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
 
-	UpdateFP();
-
 	//подсветка от выстрела
-	UpdateLight();
+	UpdateLight				();
 
 	//нарисовать партиклы
-	UpdateFlameParticles();
-	UpdateFlameParticles2();
+	UpdateFlameParticles	();
+	UpdateFlameParticles2	();
 
-	make_Interpolation();
+	make_Interpolation		();
 }
 
 
 void CWeapon::renderable_Render		()
 {
-	UpdateFP();
-	
-	//нарисовать подсветку
-	RenderLight();	
+	UpdateXForm				();
 
-	UpdateXForm();
+	//нарисовать подсветку
+	RenderLight				();	
 
 	//если мы в режиме снайперки, то сам HUD рисовать не надо
 	if(IsZoomed() && !IsRotatingToZoom() && ZoomTexture())
@@ -1205,11 +1196,6 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 
 
 
-const Fmatrix&	CWeapon::ParticlesXFORM() const	
-{
-	return m_FireParticlesXForm;
-//	return inherited::XFORM();
-}
 IRender_Sector*	CWeapon::Sector()
 {
 	return inherited::Sector();

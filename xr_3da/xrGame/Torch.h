@@ -25,6 +25,7 @@ protected:
 	ref_light		light_render;
 	ref_glow		glow_render;
 	Fvector			m_focus;
+	float			m_range;
 
 public:
 					CTorch				(void);

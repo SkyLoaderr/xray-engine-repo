@@ -201,9 +201,9 @@ BOOL CTorch::net_Spawn(CSE_Abstract* DC)
 	guid_bone				= K->LL_BoneID	(pUserData->r_string("torch_definition","guide_bone"));	VERIFY(guid_bone!=BI_NONE);
 	Fcolor clr				= pUserData->r_fcolor				("torch_definition","color");
 	fBrightness				= clr.intensity();
-	float range				= pUserData->r_float				("torch_definition","range");
+	m_range					= pUserData->r_float				("torch_definition","range");
 	light_render->set_color	(clr);
-	light_render->set_range	(range);
+	light_render->set_range	(m_range);
 	light_render->set_cone	(deg2rad(pUserData->r_float			("torch_definition","spot_angle")));
 	light_render->set_texture(pUserData->r_string				("torch_definition","spot_texture"));
 
@@ -217,7 +217,7 @@ BOOL CTorch::net_Spawn(CSE_Abstract* DC)
 	
 	SwitchNightVision		(false);
 
-	m_delta_h				= PI_DIV_2-atan((range*0.5f)/_abs(TORCH_OFFSET.x));
+	m_delta_h				= PI_DIV_2-atan((m_range*0.5f)/_abs(TORCH_OFFSET.x));
 
 	return					(TRUE);
 }
@@ -242,42 +242,46 @@ void CTorch::OnH_A_Chield()
 	// end of comments
 }
 
-void CTorch::OnH_B_Independent() 
+void CTorch::OnH_B_Independent	() 
 {
 	inherited::OnH_B_Independent	();
 	time2hide						= TIME_2_HIDE;
 
-	Switch					(false);
-	SwitchNightVision		(false);
+	Switch						(false);
+	SwitchNightVision			(false);
 
-	HUD_SOUND::StopSound(m_NightVisionOnSnd);
-	HUD_SOUND::StopSound(m_NightVisionOffSnd);
-	HUD_SOUND::StopSound(m_NightVisionIdleSnd);
+	HUD_SOUND::StopSound		(m_NightVisionOnSnd);
+	HUD_SOUND::StopSound		(m_NightVisionOffSnd);
+	HUD_SOUND::StopSound		(m_NightVisionIdleSnd);
 
-	m_NightVisionChargeTime = m_NightVisionRechargeTime;
+	m_NightVisionChargeTime		= m_NightVisionRechargeTime;
 }
 
-void CTorch::UpdateCL	() 
+void CTorch::UpdateCL			() 
 {
-	inherited::UpdateCL	();
-
-	UpdateSwitchNightVision   ();
+	inherited::UpdateCL			();
+	UpdateSwitchNightVision		();
 
 	if (light_render->get_active()){
 		CBoneInstance& BI = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(guid_bone);
 		Fmatrix M;
 
 		if (H_Parent()) {
-			CActor* actor = smart_cast<CActor*>(H_Parent());
+			CActor* actor	= smart_cast<CActor*>(H_Parent());
+			if (actor)		smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
 
-			if(actor)
-				smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
+			if (H_Parent()->XFORM().c.distance_to_sqr(Device.vCameraPosition)<_sqr(m_range))
+			{
+				// near camera
+				smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
+				M.mul_43				(XFORM(),BI.mTransform);
+			} else {
+				// approximately the same
+				M	= H_Parent()->XFORM	();
+				H_Parent()->Center		(M.c);
+			}
 
-			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
-						
-			M.mul				(XFORM(),BI.mTransform);
-
-			if(actor){
+			if(actor)	{
 				m_prev_hp.x		= angle_inertion_var(m_prev_hp.x,-actor->cam_FirstEye()->yaw,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
 				m_prev_hp.y		= angle_inertion_var(m_prev_hp.y,-actor->cam_FirstEye()->pitch,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
 
@@ -308,7 +312,7 @@ void CTorch::UpdateCL	()
 			if(getVisible() && m_pPhysicsShell) {
 				M.mul					(XFORM(),BI.mTransform);
 
-				if (light_render->get_active()){
+				if (light_render->get_active())	{
 					light_render->set_rotation	(M.k,M.i);
 					light_render->set_position	(M.c);
 					glow_render->set_position	(M.c);

@@ -48,10 +48,8 @@ void CAttachableItem::OnH_A_Chield	()
 
 void CAttachableItem::renderable_Render()
 {
-	if (getVisible()) {
-		::Render->set_Transform	(&XFORM());
-		::Render->add_Visual	(Visual());
-	}
+	::Render->set_Transform	(&XFORM());
+	::Render->add_Visual	(Visual());
 }
 void CAttachableItem::OnH_A_Independent	()
 {

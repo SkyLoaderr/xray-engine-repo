@@ -172,22 +172,20 @@ void CShootingObject::StopParticles (CParticlesObject*&	pParticles)
 void CShootingObject::UpdateParticles (CParticlesObject*& pParticles, 
 							   const Fvector& pos, const Fvector& vel)
 {
-	if(!pParticles) return;
+	if(!pParticles)		return;
 
 	Fmatrix particles_pos; 
-	particles_pos.set(ParticlesXFORM());
-	particles_pos.c.set(pos);
+	particles_pos.set	(get_ParticlesXFORM());
+	particles_pos.c.set	(pos);
 	
-	//pParticles->UpdateParent(particles_pos,vel);
 	pParticles->SetXFORM(particles_pos);
 
-	
 	if(!pParticles->IsAutoRemove() && !pParticles->IsLooped() 
 		&& !pParticles->PSI_alive())
 	{
-		pParticles->Stop();
-		pParticles->PSI_destroy();
-		pParticles = NULL;
+		pParticles->Stop		();
+		pParticles->PSI_destroy	();
+		pParticles				= NULL;
 	}
 }
 
@@ -237,14 +235,14 @@ void CShootingObject::OnShellDrop	(const Fvector& play_pos,
 {
 	if(!m_sShellParticles) return;
 
-	CParticlesObject* pShellParticles = xr_new<CParticlesObject>(*m_sShellParticles,Sector());
+	CParticlesObject* pShellParticles	= xr_new<CParticlesObject>(*m_sShellParticles,Sector());
 
 	Fmatrix particles_pos; 
-	particles_pos.set(ParticlesXFORM());
-	particles_pos.c.set(play_pos);
+	particles_pos.set		(get_ParticlesXFORM());
+	particles_pos.c.set		(play_pos);
 
-	pShellParticles->UpdateParent(particles_pos, parent_vel); 
-	pShellParticles->Play();
+	pShellParticles->UpdateParent		(particles_pos, parent_vel); 
+	pShellParticles->Play				();
 }
 
 
@@ -287,15 +285,14 @@ void CShootingObject::StopFlameParticles	()
 
 void CShootingObject::UpdateFlameParticles	()
 {
-	if(!m_sFlameParticlesCurrent) return;
-	if(!m_pFlameParticles) return;
+	if(!m_sFlameParticlesCurrent)		return;
+	if(!m_pFlameParticles)				return;
 
-	Fmatrix pos; 
-	pos.set(ParticlesXFORM()); 
-	pos.c.set(CurrentFirePoint());
+	Fmatrix		pos; 
+	pos.set		(get_ParticlesXFORM()	); 
+	pos.c.set	(get_CurrentFirePoint()	);
 
-	m_pFlameParticles->SetXFORM(pos);
-
+	m_pFlameParticles->SetXFORM			(pos);
 
 	if(!m_pFlameParticles->IsLooped() && 
 		!m_pFlameParticles->IsPlaying() &&
@@ -325,7 +322,7 @@ void CShootingObject::StopLight			()
 void CShootingObject::RenderLight()
 {
 	if (m_bShotLight && light_time>0) 
-		Light_Render(CurrentFirePoint());
+		Light_Render(get_CurrentFirePoint());
 }
 
 bool CShootingObject::SendHitAllowed		(CObject* pUser)

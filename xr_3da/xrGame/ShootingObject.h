@@ -119,10 +119,9 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 protected:
 	//функции родительского объекта
-	virtual const Fmatrix&	ParticlesXFORM()	 const = 0;
-	virtual IRender_Sector*	Sector() = 0;
-	virtual const Fvector&	CurrentFirePoint()	= 0;
-	
+	virtual IRender_Sector*	Sector()					= 0;
+	virtual const Fvector&	get_CurrentFirePoint()		= 0;
+	virtual const Fmatrix&	get_ParticlesXFORM()		= 0;
 
 	////////////////////////////////////////////////
 	//общие функции для работы с партиклами оружия

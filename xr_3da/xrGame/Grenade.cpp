@@ -98,7 +98,6 @@ u32 CGrenade::State(u32 state)
 	{
 	case MS_THREATEN:
 		{
-			//UpdateFP();
 			//#pragma todo("Oles to Yura: position can be under level, use 'Center' instead")
 			Fvector		C;
 			Center		(C);

@@ -18,12 +18,11 @@ protected: //чтоб нельзя было вызвать на прямую
 	virtual ~CHudItem(void);
 	virtual DLL_Pure*_construct			();
 public:
-	virtual void	Load		(LPCSTR section);
-	virtual CHudItem*cast_hud_item		()	{return this;}
+	virtual void	Load				(LPCSTR section);
+	virtual CHudItem*cast_hud_item		()	 { return this; }
 
 
-		   void		PlaySound	(HUD_SOUND& snd,
-								 const Fvector& position);
+	virtual void	PlaySound			(HUD_SOUND& snd, const Fvector& position);
 										
 	///////////////////////////////////////////////
 	// общие функции HUD

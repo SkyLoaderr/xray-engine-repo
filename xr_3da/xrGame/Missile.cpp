@@ -385,7 +385,7 @@ void CMissile::UpdatePosition(const Fmatrix& trans)
 	XFORM().mul		(trans,m_offset);
 }
 
-void CMissile::UpdateXForm()
+void CMissile::UpdateXForm	()
 {
 	if (Device.dwFrame!=dwXF_Frame)
 	{
@@ -446,7 +446,6 @@ void CMissile::setup_throw_params()
 	MSG1("setup throw pars");
 	if(pActor)// && pActor->HUDview())
 	{
-//		UpdateFP();
 //		pActor->EffectorManager().affected_Matrix(trans);
 		Fmatrix trans;
 		trans.identity();
@@ -592,9 +591,9 @@ bool CMissile::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-void  CMissile::UpdateFP()
+void  CMissile::UpdateFireDependencies_internal	()
 {
-	if (0==H_Parent())	return;
+	if (0==H_Parent())		return;
 
     if (Device.dwFrame!=dwFP_Frame) 
 	{
@@ -625,8 +624,7 @@ void  CMissile::UpdateFP()
 
 void CMissile::activate_physic_shell()
 {
-	
-	MSG1("start activ shell");
+	MSG1	("start activ shell");
 
 	if (!smart_cast<CMissile*>(H_Parent())) {
 		inherited::activate_physic_shell();

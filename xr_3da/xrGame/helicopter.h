@@ -238,17 +238,16 @@ public:
 
 protected:
 	//CShootingObject
-	virtual const Fmatrix&	ParticlesXFORM		()const;
-	virtual IRender_Sector*	Sector				();
-	virtual const Fvector&	CurrentFirePoint	();
+	virtual IRender_Sector*	Sector					();
+	virtual const Fvector&	get_CurrentFirePoint	();
+	virtual const Fmatrix&	get_ParticlesXFORM		();
 
-	void					MGunFireStart		();
-	void					MGunFireEnd			();
-	void					MGunUpdateFire		();
-	virtual	void			OnShot				();
+	void					MGunFireStart			();
+	void					MGunFireEnd				();
+	void					MGunUpdateFire			();
+	virtual	void			OnShot					();
 
-	void					updateMGunDir		();
-
+	void					updateMGunDir			();
 public:
 	//for scripting
 	bool					isVisible			(CScriptGameObject* O);

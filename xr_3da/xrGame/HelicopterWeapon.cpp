@@ -23,7 +23,7 @@ CHelicopter::BoneMGunCallbackY(CBoneInstance *B)
 }
 
 
-const Fmatrix& CHelicopter::ParticlesXFORM() const
+const Fmatrix& CHelicopter::get_ParticlesXFORM()
 {
 	return m_fire_bone_xform;
 }
@@ -33,7 +33,7 @@ IRender_Sector* CHelicopter::Sector()
 	return 0;
 }
 
-const Fvector&	CHelicopter::CurrentFirePoint()
+const Fvector&	CHelicopter::get_CurrentFirePoint()
 {
 	return m_fire_pos;
 }
@@ -61,7 +61,7 @@ void CHelicopter::MGunUpdateFire()
 }
 void CHelicopter::OnShot		()
 {
-	FireBullet(CurrentFirePoint(),m_fire_dir, 
+	FireBullet(get_CurrentFirePoint(),m_fire_dir, 
 		fireDispersionBase,
 		m_CurrentAmmo, 
 		ID(),
@@ -70,7 +70,6 @@ void CHelicopter::OnShot		()
 
 	StartShotParticles	();
 	if(m_bShotLight) Light_Start();
-
 
 	StartFlameParticles();
 	StartSmokeParticles(m_fire_pos, zero_vel);

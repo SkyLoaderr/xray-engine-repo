@@ -56,10 +56,10 @@ public:
 	virtual u32	 State			(u32 state);
 	virtual void OnStateSwitch	(u32 S);
 protected:
-	virtual void UpdateFP();
-	virtual void UpdateXForm();
-	void UpdatePosition(const Fmatrix& trans);
-	void spawn_fake_missile	();
+	virtual void	UpdateFireDependencies_internal	();
+	virtual void	UpdateXForm						();
+	void			UpdatePosition					(const Fmatrix& trans);
+	void			spawn_fake_missile				();
 
 	//инициализация если вещь в активном слоте или спрятана на OnH_B_Chield
 	virtual void	OnActiveItem		();
