@@ -89,13 +89,11 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 
 	switch(C.iElement) 
 	{
-	case 0: 					// deffer
-		uber_deffer				(C,"detail","base",true);
+	case 0: 					// deffer wave
+		uber_deffer				(C,"detail_s","base",true);
 		break;
-	case CRender::PHASE_SMAP_D:	// smap-direct
-	case CRender::PHASE_SMAP_P:	// smap-point
-	case CRender::PHASE_SMAP_S:	// smap-spot
-	case 4: 					// deffer-EMAP
+	case 1: 					// deffer still
+		uber_deffer				(C,"detail_s","base",true);
 		break;
 	}
 }
