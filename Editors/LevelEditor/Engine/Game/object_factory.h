@@ -94,21 +94,21 @@ protected:
     {
     };
 
-	template <typename a, typename b, typename c>
-	struct CType {
-		template <bool value>
-		struct CInternalType {
-			typedef b type;
-		};
-
-		template <>
-		struct CInternalType<true> {
-			typedef a type;
-		};
-
-		typedef typename CInternalType<boost::is_base_and_derived<c,a>::value>::type type;
-	};
-
+//	template <typename a, typename b, typename c>
+//	struct CType {
+//		template <bool value>
+//		struct CInternalType {
+//			typedef b type;
+//		};
+//
+//		template <>
+//		struct CInternalType<true> {
+//			typedef a type;
+//		};
+//
+//		typedef typename CInternalType<boost::is_base_and_derived<c,a>::value>::type type;
+//	};
+//
 #endif
 
 
