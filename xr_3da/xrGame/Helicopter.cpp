@@ -616,6 +616,7 @@ void CHelicopter::Hit(	float P,
 						float impulse,  
 						ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
+	inherited::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type);
 if(state() == CHelicopter::eDead ) return;
 
 if(who==this)
@@ -716,11 +717,11 @@ void CHelicopter::Die()
 {
 	if ( state() == CHelicopter::eDead )
 		return;
-
+	CKinematics* K		= smart_cast<CKinematics*>(Visual());
 	if(true /*!PPhysicsShell()*/){
 		string256						I;
 		LPCSTR bone;
-		CKinematics* K		= smart_cast<CKinematics*>(Visual());
+		
 		u16 bone_id;
 		for (u32 i=0, n=_GetItemCount(*m_death_bones_to_hide); i<n; ++i){
 			bone = _GetItem(*m_death_bones_to_hide,i,I);
@@ -741,7 +742,9 @@ void CHelicopter::Die()
 	lin_vel.mul(m_death_lin_vel_k);
 	PPhysicsShell()->set_LinearVel(lin_vel);
 	PPhysicsShell()->set_AngularVel(m_death_ang_vel);
-
+	PPhysicsShell()->Enable();
+	K->CalculateBones_Invalidate();
+	K->CalculateBones();
 	setState(CHelicopter::eDead);
 	m_engineSound.stop();
 	processing_deactivate();
