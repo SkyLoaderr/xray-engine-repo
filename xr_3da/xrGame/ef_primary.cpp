@@ -870,6 +870,15 @@ float CDetectorType::ffGetValue()
 	if (bfCheckForCachedResult())
 		return					(m_fLastValue);
 
+	if (ai().ef_storage().m_tpCurrentMember) {
+		if (!ai().ef_storage().m_tpGameObject)
+			return				(m_fLastValue = 0);
+	}
+	else {
+		if (!ai().ef_storage().m_tpCurrentALifeObject)
+			return				(m_fLastValue = 0);
+	}
+
 	switch (clsid_object()) {
 		case CLSID_AI_RAT				: 
 		case CLSID_AI_RAT_WOLF			: 
