@@ -81,9 +81,6 @@ antirad = 0.3					;временно! вместо антирада
 material						= creatures\human
 camera_height_factor			= 0.85
 
-limping_health = 0.1			;порог здоровья меньше которого актер начинает хромать
-limping_power = 0.99			;порог силы меньше которого актер начинает хромать
-
 
 ;дисперсия стрельбы с учетом ходьбы и бега
 disp_base			 = 1.2	;угол (в градусах) разлета пуль, когда актер стоит на месте
@@ -99,8 +96,14 @@ body_remove_time = 60000	;время уничтожения трупа (с учетом TimeFactor)
 
 sleep_time_factor = 400		;во сколько раз время идет быстрее, когда актер спит
 
-;звук тяжелого дыхания при усталости
-heavy_breath_snd = weapons\generic_draw	
+
+;хромата
+
+heavy_breath_snd = weapons\generic_draw	;звук тяжелого дыхания при усталости	
+
+limping_health = 0.1			;порог здоровья меньше которого актер начинает хромать
+limping_power = 0.2				;порог силы меньше которого актер начинает хромать
+
 
 [actor_damage]
 ;bone_name		 = <hit_scale>,<fwd_damage_anim_index> 
