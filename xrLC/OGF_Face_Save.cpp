@@ -106,14 +106,14 @@ void OGF_Reference::Save	(IWriter &fs)
 
 	// Special
 	fs.open_chunk		(OGF_TREEDEF);
-	fs.write			(&xform,sizeof(xform));
-	fs.write			(&c_scale,sizeof(c_scale));
-	fs.write			(&c_bias,sizeof(c_bias));
+	fs.w			(&xform,sizeof(xform));
+	fs.w			(&c_scale,sizeof(c_scale));
+	fs.w			(&c_bias,sizeof(c_bias));
 	fs.close_chunk		();
 
 	// Header
 	fs.open_chunk		(OGF_HEADER);
-	fs.write			(&H,sizeof(H));
+	fs.w			(&H,sizeof(H));
 	fs.close_chunk		();
 }
 
@@ -125,18 +125,18 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOO
 	fs.w_u32		(vertices.size());
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
-		if (bNeedNormals)	fs.write(V,6*sizeof(float));	// Position & normal
-		else				fs.write(V,3*sizeof(float));	// Position only
-		if (bColors)		fs.write(&(V->Color),4);
+		if (bNeedNormals)	fs.w(V,6*sizeof(float));	// Position & normal
+		else				fs.w(V,3*sizeof(float));	// Position only
+		if (bColors)		fs.w(&(V->Color),4);
 		for (DWORD uv=0; uv<dwRelevantUV; uv++)
-			fs.write(V->UV.begin()+uv,2*sizeof(float));
+			fs.w(V->UV.begin()+uv,2*sizeof(float));
 	}
 	fs.close_chunk	();
 	
 	// Faces
 	fs.open_chunk(OGF_INDICES);
 	fs.w_u32	(faces.size()*3);
-	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.write(F,3*sizeof(WORD));
+	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.w(F,3*sizeof(WORD));
 	fs.close_chunk();
 }
 
@@ -183,13 +183,13 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 		}
 		{
 			fs.open_chunk	(0x2);
-			fs.write		(pmap_vsplit.begin(),pmap_vsplit.size()*sizeof(Vsplit));
+			fs.w			(pmap_vsplit.begin(),pmap_vsplit.size()*sizeof(Vsplit));
 			fs.close_chunk	();
 		}
 		{
 			fs.open_chunk	(0x3);
 			fs.w_u32		(pmap_faces.size());
-			fs.write		(pmap_faces.begin(),pmap_faces.size()*sizeof(WORD));
+			fs.w			(pmap_faces.begin(),pmap_faces.size()*sizeof(WORD));
 			fs.close_chunk	();
 		}
 		fs.close_chunk();
@@ -330,7 +330,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 					// Faces
 					fs.open_chunk	(OGF_INDICES);
 					fs.w_u32		(strip_indices.size());
-					fs.write		(strip_indices.begin(),strip_indices.size()*sizeof(WORD));
+					fs.w		(strip_indices.begin(),strip_indices.size()*sizeof(WORD));
 					fs.close_chunk	();
 				}
 				fs.close_chunk		();
