@@ -84,7 +84,7 @@ const	float	_eps	= 0.000001f;
 struct	DumbClipper
 {
 	vector<D3DXPLANE>	planes;
-	BOOL				clip (vector3& p0, vector3& p1)		// returns TRUE if result meaningfull
+	BOOL				clip	(vector3& p0, vector3& p1)		// returns TRUE if result meaningfull
 	{
 		float	t,denum;
 		vector3	D;
@@ -106,6 +106,24 @@ struct	DumbClipper
 				D			= p0-p1;
 				denum		= D3DXPlaneDotNormal(&P,&D);
 				if (denum!=0) p1 = - D * cls1 / denum;
+			}
+		}
+	}
+	void				clipboxes(vector<vector3>& dst, vector<BoundingBox>& src, matrix& xf)
+	{
+		static	int		edgetable [12][2]	= { 0,1, 0,3, 1,2, 2,3, 2,4, 3,5, 1,6, 0,7, 4,6, 4,5, 5,7, 7,6 };
+
+		dst.clear		();
+		dst.reserve		(src.size()*12*2);
+		for (int it=0; it<src.size(); it++)	{
+			BoundingBox&	bb		= src[it];
+			for (int e=0; e<12; e++)	{
+				vector3		p0		= xform(bb.point(edgetable[e][0]),xf);
+				vector3		p1		= xform(bb.point(edgetable[e][1]),xf);
+				if (clip(p0,p1))	{
+					dst.push_back	(p0);
+					dst.push_back	(p1);
+				}
 			}
 		}
 	}
@@ -150,7 +168,17 @@ public:
 			P.planeD			= -D3DXVec3Dot(&P.planeN,&points[P.points[0]]);
 		}
 	}
-	void				compute_model	(DumbClipper& dest, vector3 direction)
+	void				compute_receiver_model	(DumbClipper& dest)
+	{
+		// Planes and Export
+		compute_planes	();
+		for (int it=0; it<polys.size(); it++)
+		{
+			_poly&			P	= polys[it];
+			dest.planes.push_back(D3DXPLANE(P.planeN.x,P.planeN.y,P.planeN.z,P.planeD));
+		}
+	}
+	void				compute_caster_model	(DumbClipper& dest, vector3 direction)
 	{
 		// COG
 		vector3	cog(0,0,0);
@@ -241,25 +269,25 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 	// calculate view-frustum bounds in world space
 	// note: D3D uses [0..1] range for Z
 	vector3		A[8];
-	A[0]		= vector3( -1, -1,  0);
-	A[1]		= vector3( -1, -1, +1);
-	A[2]		= vector3( -1, +1, +1);
-	A[3]		= vector3( -1, +1,  0);
-	A[4]		= vector3( +1, +1, +1);
-	A[5]		= vector3( +1, +1,  0);
-	A[6]		= vector3( +1, -1, +1);
-	A[7]		= vector3( +1, -1,  0);
+	A[0]= vector3( -1, -1,  0);	A[1]= vector3( -1, -1, +1);
+	A[2]= vector3( -1, +1, +1);	A[3]= vector3( -1, +1,  0);
+	A[4]= vector3( +1, +1, +1);	A[5]= vector3( +1, +1,  0);
+	A[6]= vector3( +1, -1, +1);	A[7]= vector3( +1, -1,  0);
 
-	std::vector<vector3>	points;
-	points.resize			(8);
-	xform_array				(&*points.begin(),A,modelViewProjection_inv,8);
+	std::vector<vector3>	points_receivers;
+	std::vector<vector3>	points_casters;
 
 	// Perform approximate clipping if requisted
 	// This is similar to focusing shadowmap to the interesting parts only
-	if (m_bUnitCubeClip)			{
+	if (!m_bUnitCubeClip)			{
+		points_receivers.resize		(8);
+		xform_array					(&*points_receivers.begin(),A,modelViewProjection_inv,8);
+		points_casters				= points_receivers;		//. !!!!!!!!! totaly incorrect. Anyone willing to fix? :)
+	} else {
 		// Create convex volume enclosing the primary frustum and extended up to infinity
-		// in the direction inverse to light's direction. Create simple clipper;
-		DumbClipper				clipper;
+		// in the direction inverse to light's direction. Create simple clippers;
+		DumbClipper				clipper_receivers;
+		DumbClipper				clipper_casters;
 		{
 			// Lets begin from base frustum
 			DumbConvexVolume		hull;
@@ -272,40 +300,27 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 				{ 3, 2, 4, 5 },
 				{ 1, 0, 7, 6 },
 			};
-			hull.points		= points;
+			hull.points.resize		(8);
+			xform_array				(&*hull.points.begin(),A,modelViewProjection_inv,8);
 			for (int plane=0; plane<6; plane++)
 			{
 				hull.polys.push_back(DumbConvexVolume::_poly());
 				for (int pt=0; pt<4; pt++)	hull.polys.back().points.push_back(facetable[plane][pt]);
 			}
 
-			// Compute volume
-			hull.compute_model(clipper,m_lightDir);
+			// Compute volume(s)
+			hull.compute_receiver_model	(clipper_receivers);
+			hull.compute_caster_model	(clipper_casters,m_lightDir);
 		}
 
-		// use shadow casters, clip them agains our volume
-		// approximately linear time
+		// Searching for extreme points  (approximately linear time)
 		// note: Gary stores points in eye-space, we will convert them back to world :)
-		static	int					edgetable [12][2]	= 
-		{
-			0,1, 0,3, 1,2, 2,3, 2,4, 3,5, 1,6, 0,7, 4,6, 4,5, 5,7, 7,6
-		};
-		points.clear				();
-		points.reserve				(m_ShadowCasterPoints.size()*12*2);
-		for (int it=0; it<m_ShadowCasterPoints.size(); it++)
-		{
-			BoundingBox&	bb		= m_ShadowCasterPoints[it];
-			// for (int e=0; e<8; e++)	points.push_back( xform(bb.point(e),modelView_inv) );
-			for (int e=0; e<12; e++)
-			{
-				vector3		p0		= xform(bb.point(edgetable[e][0]),modelView_inv);
-				vector3		p1		= xform(bb.point(edgetable[e][1]),modelView_inv);
-				if (clipper.clip(p0,p1))	{
-					points.push_back(p0);
-					points.push_back(p1);
-				}
-			}
-		}
+		// 
+		// 1. receivers. clip them agains our volume
+		clipper_receivers.clipboxes	(points_receivers,m_ShadowReceiverPoints,modelView_inv);
+
+		// 2. use shadow casters, clip them agains our volume
+		clipper_casters.clipboxes	(points_casters,m_ShadowCasterPoints,modelView_inv);
 	}
 
 	// this is the algorithm discussed in the paper
@@ -338,40 +353,30 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 		float	dotProd		= D3DXVec3Dot	(&dir_light,&dir_view);
 		float	cosGamma	= sqrt			(1.0f-dotProd*dotProd);
 
-		// temporal light View
-		// look from position(eyePos)
-		// into direction(lightDir) 
-		// with up vector(up)
+		// temporal light view
 		matrix		lightview;
 		D3DXMatrixLookAtLH		(&lightview,&pos_view,&(pos_view+dir_light),&up);
 
 		//transform the light volume points from world into light space
-		//calculate the cubic hull (an AABB) 
-		//of the light space extents of the intersection body B
+		//calculate the AABB of the light space extents of the intersection body
 		//and save the two extreme points min and max
 		vector3			min,max;
-		calc_xaabb		(min,max,&*points.begin(),lightview,points.size());
+		calc_xaabb		(min,max,&*points_receivers.begin(),lightview,points_receivers.size());
 
 		{
-			float	_z_near			=	ZNEAR_MIN;	//m_bUnitCubeClip?min.y:ZNEAR_MIN;
-			float	_z_far			=	ZFAR_MAX;	//m_bUnitCubeClip?max.y:ZFAR_MAX;
-					//_z_near			= max(_z_near,ZNEAR_MIN);
-					//_z_far			= min(_z_far, ZFAR_MAX);
-
-					// _z_far			= (_z_far-_z_near) + ZNEAR_MIN;
-					// _z_near			= ZNEAR_MIN; 
-
-			//use the formulas of the paper to get n (and f)
-			const float factor		= 1.0f/cosGamma;
-			const float z_n			= factor*_z_near;			//often 1 
-			const float d			= fabsf(max[1]-min[1]);		//(max[1]-min[1]), perspective transform depth //light space y extents
-			const float z_f			= z_n + d*cosGamma;
-			const float n			= m_fBiasLiSPSM * (z_n+sqrt(z_f*z_n))/cosGamma;
-			const float f			= n+d;
-			m_fLiSPSM_N				= n;
+			float	_z_near			=	m_bUnitCubeClip?min.y:ZNEAR_MIN;
+			float	_z_far			=	m_bUnitCubeClip?max.y:ZFAR_MAX;
+					_z_near			=	max(_z_near,ZNEAR_MIN);	//??? unnecessary?
+					_z_far			=	min(_z_far, ZFAR_MAX);	//??? unnecessary?
+			float	factor			=	1.0f/cosGamma;
+			float	z_n				=	factor*_z_near;			//often 1 
+			float	d				=	fabsf(_z_far-_z_near);	//perspective transform depth - light space y extents
+			float	z_f				=	z_n + d*cosGamma;
+			float	n = m_fLiSPSM_N =	m_fBiasLiSPSM * (z_n+sqrt(z_f*z_n))/cosGamma;	// m_fLiSPSM_N - for display purposes only
+			float	f				=	n+d;
 
 			//new observer point n-1 behind eye position
-			vector3		pos			= pos_view - up * (n-ZNEAR_MIN);
+			vector3		pos			= pos_view - up * (n-_z_near);
 			D3DXMatrixLookAtLH		(&lightview,&pos,&(pos+dir_light),&up);
 
 			//one possibility for a simple perspective transformation matrix
@@ -384,13 +389,18 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 			D3DXMatrixTranspose	(&lispsm,&lispsm);
 
 			//temporal arrangement for the transformation of the points to post-perspective space
-			D3DXMatrixMultiply	(&lispsm, &lightview, &lispsm);	// ligthProjection = lispMtx*lightView
+			D3DXMatrixMultiply	(&lispsm, &lightview, &lispsm);
 
 			//transform the light volume points from world into the distorted light space
-			//calculate the cubic hull (an AABB) 
-			//of the light space extents of the intersection body B
-			//and save the two extreme points min and max
-			calc_xaabb			(min,max,&*points.begin(),lispsm,points.size());
+			//calculate the AABB of the light space extents of the intersection body
+			calc_xaabb			(min,max,&*points_receivers.begin(),lispsm,points_receivers.size());
+
+			//and then find the casters depth bounds, of course in the painfully slow way :)
+			//replace receciver bounds depth with casters
+			vector3				minz,maxz;
+			calc_xaabb			(minz,maxz,&*points_casters.begin(),lispsm,points_casters.size());
+			min.z				= minz.z;
+			max.z				= maxz.z;
 		}
 
 		// refit to unit cube (in D3D way :)
