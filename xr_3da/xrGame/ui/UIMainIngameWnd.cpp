@@ -456,7 +456,7 @@ void CUIMainIngameWnd::Update()
 			// then no need to update info
 			static u32			prevAmmoID		= static_cast<u32>(-1);
 
-			if(active_item_changed || prevAmmoID != m_pWeapon->m_ammoType)
+			if(active_item_changed || !m_pWeapon || prevAmmoID != m_pWeapon->m_ammoType)
 			{
 				m_pWeapon = pWeapon;
 
