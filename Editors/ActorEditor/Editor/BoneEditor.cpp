@@ -209,8 +209,12 @@ bool CBone::ExportOGF(IWriter& F)
     F.w_float	(IK_data.spring_factor);
     F.w_float	(IK_data.damping_factor);
 
-//    Fvector xyz;
-//    Fmatrix& R	= _RTransform();
+    F.w_u32		(IK_data.ik_flags.get());
+    F.w_float	(IK_data.break_force);
+    F.w_float	(IK_data.break_torque);
+
+//	Fvector xyz;
+//	Fmatrix& R	= _RTransform();
 //	R.getXYZi	(xyz);
 
     F.w_fvector3(rest_rotate);

@@ -82,7 +82,7 @@ struct SJointIKData
     enum{
     	flBreakable	= (1<<0),
     };
-    Flags32			flags;
+    Flags32			ik_flags;
     float			break_force;	// [0..+INF]
     float			break_torque;	// [0..+INF]
     			
@@ -95,7 +95,7 @@ struct SJointIKData
         type			= jtRigid;
         spring_factor	= 1.f;
         damping_factor	= 1.f;
-        flags.zero		();
+        ik_flags.zero	();
     	break_force		= 0.f;
     	break_torque	= 0.f;
     }
