@@ -32,6 +32,23 @@
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
+
+	<game_task id="bar_dolg_test_quest">
+		<title>bar_dolg_test_quest</title>
+		<objective>
+			<text>bar_dolg_bring_document</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_dolg_find_document</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_dolg_return_document</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
 	
 
 </game_tasks_data>
