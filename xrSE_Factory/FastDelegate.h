@@ -3,6 +3,9 @@
 
 #pragma pack(push,4)
 
+#define xr_stdcall 
+//#define xr_stdcall __stdcall
+
 //						FastDelegate.h 
 //	Efficient delegates in C++ that generate only two lines of asm code!
 //  Documentation is found at http://www.codeproject.com/cpp/FastDelegate.asp
@@ -673,17 +676,17 @@ public:																			\
 				return !m_Closure.IsEqual(this, x.m_Closure, &x);};				\
 	/* Binding to non-const member functions */									\
 	template < class X, class Y >												\
-	FastDelegate##NUM(Y *pthis, void (__stdcall X::* function_to_bind)FUNCLIST ) {		\
+	FastDelegate##NUM(Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST ) {		\
 	m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);}	\
 	template < class X, class Y >												\
-	inline void bind(Y *pthis, void (__stdcall X::* function_to_bind)FUNCLIST ) {			\
+	inline void bind(Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST ) {			\
 		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}	\
 	/* Binding to const member functions. */									\
 	template < class X, class Y >												\
-	FastDelegate##NUM(const Y *pthis, void (X::* function_to_bind)FUNCLIST const) {	\
+	FastDelegate##NUM(const Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST const) {	\
 		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}	\
 	template < class X, class Y >												\
-	inline void bind(const Y *pthis, void (X::* function_to_bind)FUNCLIST const) {	\
+	inline void bind(const Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST const) {	\
 		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}	\
 	/* Static functions. We convert them into a member function call. */		\
 	/* Note that this also provides a conversion from static functions. */		\
@@ -767,82 +770,82 @@ DLGT_DECLAREDELEGATE(8,
 // This code is extremely simple, but extremely tedious.
 
 template <class X, class Y>
-FastDelegate0 MakeDelegate(Y* x, void (X::*func)()) { 
+FastDelegate0 MakeDelegate(Y* x, void (xr_stdcall X::*func)()) { 
 	return FastDelegate0(x, func); }
 template <class X, class Y>
-FastDelegate0 MakeDelegate(Y* x, void (X::*func)() const) { 
+FastDelegate0 MakeDelegate(Y* x, void (xr_stdcall X::*func)() const) { 
 	return FastDelegate0(x, func); }
 
 template <class X, class Y, class Param1>
-FastDelegate1<Param1> MakeDelegate(Y* x, void (X::*func)(Param1)) { 
+FastDelegate1<Param1> MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1)) { 
 	return FastDelegate1<Param1>(x, func); }
 template <class X, class Y, class Param1>
-FastDelegate1<Param1> MakeDelegate(Y* x, void (X::*func)(Param1) const) { 
+FastDelegate1<Param1> MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1) const) { 
 	return FastDelegate1<Param1>(x, func); }
 
 template <class X, class Y, class Param1, class Param2>
-FastDelegate2<Param1, Param2> MakeDelegate(Y* x, void (X::*func)(Param1, Param2)) { 
+FastDelegate2<Param1, Param2> MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2)) { 
 	return FastDelegate2<Param1, Param2>(x, func); }
 template <class X, class Y, class Param1, class Param2>
-FastDelegate2<Param1, Param2> MakeDelegate(Y* x, void (X::*func)(Param1, Param2) const) { 
+FastDelegate2<Param1, Param2> MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2) const) { 
 	return FastDelegate2<Param1, Param2>(x, func); }
 
 template <class X, class Y, class Param1, class Param2, class Param3>
-FastDelegate3<Param1, Param2, Param3> MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3)) { 
+FastDelegate3<Param1, Param2, Param3> MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3)) { 
 	return FastDelegate3<Param1, Param2, Param3>(x, func); }
 template <class X, class Y, class Param1, class Param2, class Param3>
-FastDelegate3<Param1, Param2, Param3> MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3) const) { 
+FastDelegate3<Param1, Param2, Param3> MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3) const) { 
 	return FastDelegate3<Param1, Param2, Param3>(x, func); }
 
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4>
 FastDelegate4<Param1, Param2, Param3, Param4> 
-	MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4)) { 
+	MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4)) { 
 		return FastDelegate4<Param1, Param2, Param3, Param4>(x, func); }
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4>
 FastDelegate4<Param1, Param2, Param3, Param4> 
-	MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4) const) { 
+	MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4) const) { 
 		return FastDelegate4<Param1, Param2, Param3, Param4>(x, func); }
 
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4, class Param5>
 FastDelegate5<Param1, Param2, Param3, Param4, Param5> 
-	MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4, Param5)) { 
+	MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4, Param5)) { 
 		return FastDelegate5<Param1, Param2, Param3, Param4, Param5>(x, func); }
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4, class Param5>
 FastDelegate5<Param1, Param2, Param3, Param4, Param5> 
-	MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4, Param5) const) { 
+	MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4, Param5) const) { 
 		return FastDelegate5<Param1, Param2, Param3, Param4, Param5>(x, func); }
 
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4, 
 	class Param5, class Param6>
 FastDelegate6<Param1, Param2, Param3, Param4, Param5, Param6> 
-	MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4, Param5, Param6)) { 
+	MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4, Param5, Param6)) { 
 		return FastDelegate6<Param1, Param2, Param3, Param4, Param5, Param6>(x, func); }
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4, 
 	class Param5, class Param6>
 FastDelegate6<Param1, Param2, Param3, Param4, Param5, Param6> 
-	MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4, Param5, Param6) const) { 
+	MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4, Param5, Param6) const) { 
 		return FastDelegate6<Param1, Param2, Param3, Param4, Param5, Param6>(x, func); }
 
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4, 
 	class Param5, class Param6, class Param7>
 FastDelegate7<Param1, Param2, Param3, Param4, Param5, Param6, Param7> 
-	MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4, Param5, Param6, Param7)) { 
+	MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4, Param5, Param6, Param7)) { 
 		return FastDelegate7<Param1, Param2, Param3, Param4, Param5, Param6, Param7>(x, func); }
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4, 
 	class Param5, class Param6, class Param7>
 FastDelegate7<Param1, Param2, Param3, Param4, Param5, Param6, Param7> 
-	MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4, Param5, Param6, Param7) const) { 
+	MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4, Param5, Param6, Param7) const) { 
 		return FastDelegate7<Param1, Param2, Param3, Param4, Param5, Param6, Param7>(x, func); }
 
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4, 
 	class Param5, class Param6, class Param7, class Param8>
 FastDelegate8<Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8> 
-	MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8)) { 
+	MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8)) { 
 		return FastDelegate8<Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8>(x, func); }
 template <class X, class Y, class Param1, class Param2, class Param3, class Param4, 
 	class Param5, class Param6, class Param7, class Param8>
 FastDelegate8<Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8> 
-  MakeDelegate(Y* x, void (X::*func)(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8) const)
+  MakeDelegate(Y* x, void (xr_stdcall X::*func)(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8) const)
 { return FastDelegate8<Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8>(x, func); 
 }
 

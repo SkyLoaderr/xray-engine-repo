@@ -22,8 +22,8 @@ extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 
 class DLL_API CTestImpl:public CTestInterface{
 private:
-			void __stdcall	test_0			(LPCSTR);
-			void __stdcall	test_1			(int);
+			void test_0			(LPCSTR);
+			void test_1			(int);
 public:
 							CTestImpl		();
 	virtual void __stdcall	test_test0		();
@@ -69,7 +69,7 @@ void CTestImpl::test_test1	()
 //	CTestImpl*			self;
 //	__asm mov [self],eax;
 //	self->test_1		(1);
-	test_1				(1);
+	test1				(1);
 }
 
 //////////////////////////////////////////////////////////////////////////
