@@ -27,7 +27,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	Fvector4	J;
 	Fvector		L_pos;
 	Fcolor		L_clr			= L->color;
-	float		scale			= 1.f/100.f;
+	float		scale			= 1.f/50.f;
 	Device.mView.transform_tiny	(L_pos,L->sphere.P);
 	RCache.set_c				("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L->sphere.R);
 	RCache.set_c				("light_color",		L_clr.r,L_clr.g,L_clr.b,.15f*L_clr.magnitude_rgb());
