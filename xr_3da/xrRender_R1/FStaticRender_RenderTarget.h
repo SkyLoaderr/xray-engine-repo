@@ -56,9 +56,11 @@ public:
 	virtual void		set_duality_v		(float	f)		{ param_duality_v=_abs(f);}
 	virtual void		set_noise			(float	f)		{ param_noise=f;		}
 	virtual void		set_noise_scale		(float	f)		{ param_noise_scale=f;	}
-	virtual void		set_noise_color		(u32	f)		{ param_noise_color=f;	}
 	virtual void		set_noise_fps		(float	f)		{ param_noise_fps=_abs(f)+EPS_S;	}
-	virtual void		set_blend_color		(u32	f)		{ param_blend_color=f;	}
+
+	virtual void		set_color_base		(u32	f)		{ param_color_base=f;	}
+	virtual void		set_color_gray		(u32	f)		{ param_color_gray=f;	}
+	virtual void		set_color_add		(u32	f)		{ param_color_add=f;	}
 
 	virtual u32			get_width			()				{ return curWidth;	}
 	virtual u32			get_height			()				{ return curHeight;	}
