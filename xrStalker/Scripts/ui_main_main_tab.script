@@ -54,7 +54,6 @@ function main_main_tab:InitControls(x, y, handler)
 -------- BUTTONS ------------------------------- 
 	--------->> NEW GAME
 	btn = CUI3tButton()	
---	btn = CUITabButton()	
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_new_game")
 	btn:Init("ui\\ui_btn_main_menu", btn_new_rect.x, btn_new_rect.y, btn_new_rect.width, btn_new_rect.height)
@@ -64,11 +63,9 @@ function main_main_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)
---	tab:AddItem(btn)
 		
 	--------->> LOAD Game	
 	btn = CUI3tButton()
---	btn = CUITabButton()	
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_load")
 	btn:Init("ui\\ui_btn_main_menu", btn_load_rect.x, btn_load_rect.y, btn_load_rect.width, btn_load_rect.height)
@@ -78,12 +75,9 @@ function main_main_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)	
---	tab:AddItem(btn)
-	
 		
 	--------->> MULTIPLAYER
 	btn = CUI3tButton()
---	btn = CUITabButton()	
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_multiplayer")
 	btn:Init("ui\\ui_btn_main_menu", btn_multi_rect.x, btn_multi_rect.y, btn_multi_rect.width, btn_multi_rect.height)
@@ -93,8 +87,6 @@ function main_main_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)
---	tab:AddItem(btn)
-	
 	
 	--------->> OPTIONS
 	btn = CUI3tButton()
@@ -120,7 +112,7 @@ function main_main_tab:InitControls(x, y, handler)
 	handler:Register(btn)
 	self:AttachChild(btn)
 	
-		--------->> BONUS
+	--------->> BONUS
 	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_bonus")
@@ -133,8 +125,3 @@ function main_main_tab:InitControls(x, y, handler)
 	self:AttachChild(btn)
 
 end
-
-function main_main_tab:InitCallbacks()
-
-end
-
