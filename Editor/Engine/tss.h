@@ -77,10 +77,10 @@ class ENGINE_API CSimulator
 public:
 	CSimulatorTSS		TSS;
 	CSimulatorRS		RS;
-	SimulatorStates*	container;
+	SimulatorStates		container;
 public:
-	CSimulator(SimulatorStates* ST)		{ Invalidate();	container=ST; }
-	IC void Invalidate	()	{ TSS.Invalidate(); RS.Invalidate(); }
-	IC void SetTSS		(DWORD S, DWORD N, DWORD V) { TSS.Set(*container,S,N,V);	}
-	IC void SetRS		(DWORD N, DWORD V)			{ RS.Set(*container,N,V);		}
-};
+						CSimulator	()							{ Invalidate(); }
+	IC void				Invalidate	()							{ TSS.Invalidate(); RS.Invalidate(); container.clear(); }
+	IC void				SetTSS		(DWORD S, DWORD N, DWORD V) { TSS.Set(*container,S,N,V);	}
+	IC void				SetRS		(DWORD N, DWORD V)			{ RS.Set(*container,N,V);		}
+	IC SimulatorStates&	GetContainer()							{ return container; };

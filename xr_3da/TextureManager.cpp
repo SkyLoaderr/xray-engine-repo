@@ -76,6 +76,7 @@ void	CShaderManager::_DeleteTexture		(CTexture* &T)
 CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name) 
 {
 	R_ASSERT(Name && Name[0]);
+	if (0==stricmp(Name,"$null"))	return NULL;
 
 	map<LPSTR,CMatrix*,str_pred>::iterator I = matrices.find	(Name);
 	if (I!=matrices.end())	
@@ -102,7 +103,8 @@ void	CShaderManager::_DeleteMatrix		(CMatrix* &M)
 CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name) 
 {
 	R_ASSERT(Name && Name[0]);
-
+	if (0==stricmp(Name,"$null"))	return NULL;
+	
 	map<LPSTR,CConstant*,str_pred>::iterator I = constants.find	(Name);
 	if (I!=constants.end())	
 	{
