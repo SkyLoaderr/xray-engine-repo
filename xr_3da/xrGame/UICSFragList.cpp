@@ -34,9 +34,6 @@ void CUICSFragList::OnFrame()
 	CGameFont* H		= Level().HUD()->pFontMedium;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	// global info
-	if (Game().timelimit)	H->OutNext	("Time remain: %3d (sec)",(Game().timelimit-(Level().timeServer()-Game().start_time))/1000);
-	else					H->OutNext	("Time remain: unlimited");
-	H->OutSkip			(1.5f);
 	H->SetColor(0xf0ffa0a0); H->OutNext("Team 1: %d", Game().teams[0].num_targets);
 	int k=1;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
