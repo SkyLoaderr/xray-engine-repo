@@ -18,8 +18,9 @@ end
 
 function main()
 	for i=1,10000 do
-		printf("spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh")
+		printf("%d spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh",i)
 	end
+	
 end
 --[[
 function main_()
