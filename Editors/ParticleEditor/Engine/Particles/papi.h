@@ -8,14 +8,10 @@
 #ifndef _particle_api_h
 #define _particle_api_h
 
-#include <stdlib.h>
-
 // This is the major and minor version number of this release of the API.
 #define P_VERSION 120
 
 #ifdef WIN32
-#include <windows.h>
-
 #ifdef PARTICLEDLL_EXPORTS
 #define PARTICLEDLL_API __declspec(dllexport)
 #else
@@ -36,6 +32,9 @@
 #endif
 
 #define P_EPS 1e-3f
+
+// refs
+struct ParticleAction;
 
 extern "C"{
 	namespace PAPI{
@@ -111,10 +110,8 @@ extern "C"{
 		PARTICLEDLL_API void pNewActionList(int action_list_num);
 
 		PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix& m, const Fvector& velocity);
-		// I/O
-		PARTICLEDLL_API BOOL pSaveActionList(int action_list_num, CFS_Base& F);
 
-		PARTICLEDLL_API BOOL pLoadActionList(int action_list_num, CStream& F);
+		PARTICLEDLL_API void pAddActionToList(ParticleAction *S);
 
 		// Particle Group Calls
 

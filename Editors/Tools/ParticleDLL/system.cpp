@@ -440,6 +440,11 @@ void _pAddActionToList(ParticleAction *S, int size)
 	alist->count++;
 }
 
+PARTICLEDLL_API void pAddActionToList(ParticleAction *S)
+{
+	_pAddActionToList(S,sizeof(PAHeader));
+}
+
 ////////////////////////////////////////////////////////
 // State setting calls
 PARTICLEDLL_API void pResetState()
@@ -764,75 +769,6 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 			break;
 		}
 	}
-}
-
-#define ACTION_LIST_VERSION		0x0001
-//----------------------------------------------------
-#define AL_CHUNK_VERSION		0x0001
-#define AL_CHUNK_ACTIONS		0x0002
-
-PARTICLEDLL_API BOOL pSaveActionList(int action_list_num, CFS_Base& F)
-{
-	_ParticleState &_ps = _GetPState();
-
-	if(_ps.in_new_list)
-		return FALSE; // ERROR
-
-	// get pointer to specified action list.
-	PAHeader *pa	= _ps.GetListPtr(action_list_num);
-
-	if(pa == NULL)
-		return FALSE; // ERROR
-
-	int num_actions = pa->count-1;
-	PAHeader *action= pa+1;
-
-	// save actions
-	F.open_chunk	(AL_CHUNK_VERSION);
-	F.Wword			(ACTION_LIST_VERSION);
-	F.close_chunk	();
-
-	F.open_chunk	(AL_CHUNK_ACTIONS);
-	F.write			(action,num_actions*sizeof(PAHeader));
-	F.close_chunk	();
-
-	return TRUE;
-}
-
-PARTICLEDLL_API BOOL pLoadActionList(int action_list_num, CStream& F)
-{
-	_ParticleState &_ps = _GetPState();
-
-	if(_ps.in_new_list)
-		return FALSE; // ERROR
-
-	// get pointer to specified action list.
-	PAHeader *pa	= _ps.GetListPtr(action_list_num);
-
-	if(pa == NULL)
-		return FALSE; // ERROR
-
-	R_ASSERT(F.FindChunk(AL_CHUNK_VERSION));
-	u16 version		= F.Rword();
-
-	if (version!=ACTION_LIST_VERSION) return FALSE;
-	
-	// load actions
-	R_ASSERT(F.FindChunk(AL_CHUNK_ACTIONS));
-	u32 a_count			=	F.Length()/sizeof(PAHeader);
-
-	// start append actions
-	pNewActionList(action_list_num);
-
-	PAHeader S;
-	for (u32 k=0; k<a_count; k++){
-		F.Read				(&S,sizeof(PAHeader));
-		_pAddActionToList	(&S,sizeof(PAHeader));
-	}
-	// end append action
-	pEndActionList();
-
-	return TRUE;
 }
 
 
