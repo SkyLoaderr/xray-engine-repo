@@ -187,4 +187,32 @@ public:
 
 void	COLLIDER::ray_query	(const MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range)
 {
+	if (ray_mode&OPT_CULL)
+	{
+		if (ray_mode&OPT_ONLYFIRST)
+		{
+			if (ray_mode&OPT_ONLYNEAREST)
+			{
+			} else {
+			}
+		} else {
+			if (ray_mode&OPT_ONLYNEAREST)
+			{
+			} else {
+			}
+		}
+	} else {
+		if (ray_mode&OPT_ONLYFIRST)
+		{
+			if (ray_mode&OPT_ONLYNEAREST)
+			{
+			} else {
+			}
+		} else {
+			if (ray_mode&OPT_ONLYNEAREST)
+			{
+			} else {
+			}
+		}
+	}
 }
