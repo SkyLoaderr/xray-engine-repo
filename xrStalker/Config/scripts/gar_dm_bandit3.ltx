@@ -12,4 +12,12 @@ on_info = nil %=gar_bandits_fight%
 [walker1]
 path_walk = bandit3_walk
 path_look = bandit3_look
+on_info = {+gar_dm_novice_asked_for_help -gar_dm_bandit_warned_plr} remark1 %+gar_dm_bandit_warned_plr%
 on_info2 = {+gar_dm_novice_dead} nil
+
+[remark1]
+no_move = true
+snd = weather
+anim = hide
+on_signal = sound_end | walker1
+on_info = {+gar_dm_novice_dead} nil
