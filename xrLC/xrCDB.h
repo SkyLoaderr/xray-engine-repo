@@ -48,7 +48,9 @@ namespace CDB
 	{
 		friend class COLLIDER;	
 	private:
-		HANDLE					hHeap;
+		HANDLE					heapHandle;
+		BOOL					heapPrivate;
+
 		Opcode::OPCODE_Model*	tree;
 
 		// tris
@@ -62,8 +64,7 @@ namespace CDB
 
 		IC TRI*			get_tris	()	{ return tris;	}
 
-		virtual void	setheap		(HANDLE H);
-		virtual DWORD	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		virtual DWORD	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap=FALSE);
 		virtual DWORD	memory		();
 	};
 

@@ -62,7 +62,8 @@ void	TRI::convert_P2I	(Fvector* pBaseV, TRI* pBaseTri)
 // Model building
 MODEL::MODEL()
 {
-	hHeap		= GetProcessHeap();
+	heapHandle	= GetProcessHeap();
+	heapPrivate	= FALSE;
 	tree		= 0;
 	tris		= 0;
 	tris_count	= 0;
@@ -72,37 +73,47 @@ MODEL::MODEL()
 MODEL::~MODEL()
 {
 	delete		tree;	tree = 0;
-	if (tris)	{ cl_free(tris,hHeap);	tris=0;		tris_count=0;	}
-	if (verts)	{ cl_free(verts,hHeap);	verts=0;	verts_count=0;	}
+	if (tris)	{ cl_free(tris,heapHandle);		tris=0;		tris_count=0;	}
+	if (verts)	{ cl_free(verts,heapHandle);	verts=0;	verts_count=0;	}
+
+	if (heapPrivate)
+	{
+		HeapDestroy	(heapHandle);
+	}
 }
 
-void	MODEL::setheap(HANDLE H)
+DWORD	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt, BOOL bPrivateHeap)
 {
-	hHeap		= H;
-}
+	if (bPrivateHeap)
+	{
+		DWORD V		= verts_count*sizeof(Fvector);
+		DWORD T		= tris_count *sizeof(TRI);
+		DWORD T3	= tris_count*3*sizeof(DWORD);
 
-DWORD	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
-{
+		heapPrivate	= TRUE;
+		heapHandle	= HeapCreate(0,V+T+T3,0);
+	}
+
 	// verts
 	verts_count	= Vcnt;
-	verts		= cl_alloc<Fvector>	(verts_count,hHeap);
+	verts		= cl_alloc<Fvector>	(verts_count,heapHandle);
 	if (0==verts)	return err_memory_0;
 	CopyMemory	(verts,V,verts_count*sizeof(Fvector));
 	
 	// tris
 	tris_count	= Tcnt;
-	tris		= cl_alloc<TRI>		(tris_count,hHeap);
+	tris		= cl_alloc<TRI>		(tris_count,heapHandle);
 	if (0==tris)	{
-		cl_free		(verts,hHeap);
+		cl_free		(verts,heapHandle);
 		return		err_memory_1;
 	}
 	CopyMemory	(tris,T,tris_count*sizeof(TRI));
 	
 	// Allocate temporary "OPCODE" tris + convert tris to 'pointer' form
-	DWORD*		temp_tris	= cl_alloc<DWORD>	(tris_count*3,hHeap);
+	DWORD*		temp_tris	= cl_alloc<DWORD>	(tris_count*3,heapHandle);
 	if (0==temp_tris)	{
-		cl_free		(verts,hHeap);
-		cl_free		(tris,hHeap);
+		cl_free		(verts,heapHandle);
+		cl_free		(tris,heapHandle);
 		return		err_memory_2;
 	}
 	DWORD*		temp_ptr	= temp_tris;
@@ -126,15 +137,15 @@ DWORD	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 	tree			= new OPCODE_Model;
 	if (!tree->Build(OPCC)) 
 	{
-		cl_free		(verts,hHeap);
-		cl_free		(tris,hHeap);
-		cl_free		(temp_tris,hHeap);
+		cl_free		(verts,heapHandle);
+		cl_free		(tris,heapHandle);
+		cl_free		(temp_tris,heapHandle);
 		return		err_build;
 	};
 
 
 	// Free temporary tris
-	cl_free			(temp_tris,hHeap);
+	cl_free			(temp_tris,heapHandle);
 	return err_ok;
 }
 
