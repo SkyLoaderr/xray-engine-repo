@@ -6,6 +6,11 @@
 #include "UIMapSpot.h"
 
 #include "../actor.h"
+#include "../level.h"
+
+
+#include "../xrserver.h"
+#include "../xrServer_Objects_ALife.h"
 
 const char * const	ARROW_TEX			= "ui\\ui_map_arrow_04";
 const int			ARROW_DIMENTIONS	= 32;
@@ -14,7 +19,8 @@ CUIMapSpot::CUIMapSpot()
 	:	m_bArrowEnabled		(false),
 		m_bArrowVisible		(false)
 {
-	m_pObject = NULL;
+	m_our_level_id = 0xffff;
+	m_object_id = 0xffff;
 	m_vWorldPos.set(0,0,0);
 
 	m_eAlign = eNone;
@@ -35,11 +41,6 @@ CUIMapSpot::~CUIMapSpot()
 
 void CUIMapSpot::Draw()
 {
-	if(dynamic_cast<CActor*>(this->m_pObject))
-	{
-		int a =0;
-		a++;
-	}
 	if(m_bHeading)
 	{
 		RECT rect = GetAbsoluteRect();
@@ -106,4 +107,52 @@ void CUIMapSpot::Draw()
 void CUIMapSpot::Update()
 {
 	CUIStatic::Update();
+}
+
+Fvector CUIMapSpot::MapPos()
+{
+	if(0xffff == m_object_id)
+		return m_vWorldPos;
+
+	Fvector src = {0,0,0};
+
+	CSE_Abstract* E = Level().Server->game->get_entity_from_eid(m_object_id);
+	CSE_ALifeObject* O = NULL;
+	if(E) O = dynamic_cast<CSE_ALifeObject*>(E);
+	if(O)
+	{
+		//объект в оффлайне на нашем уровне
+		if(m_our_level_id ==
+			ai().game_graph().vertex(O->m_tGraphID)->level_id())
+		{
+			src.x = O->position().x;
+			src.y = 0;
+			src.z = O->position().z;
+		}
+	}
+
+
+/*	CObject* pObject =  Level().Objects.net_Find(m_object_id);
+	//объект в онлайне
+	if(pObject)
+	{
+		float dx = src.x - pObject->Position().x;
+		float dz = src.z - pObject->Position().z;
+
+		dx = dx;
+		dz = dz;
+		
+		src.x = pObject->Position().x;
+		src.y = 0;
+		src.z = pObject->Position().z;
+	}
+*/
+
+	return src;
+}	
+
+void CUIMapSpot::SetObjectID(u16 id)
+{
+	m_object_id = id;
+	m_our_level_id = ai().game_graph().vertex(dynamic_cast<CGameObject*>(Level().CurrentEntity())->game_vertex_id())->level_id();
 }

@@ -1,4 +1,4 @@
-// CUIMapWnd.h:  диалог итерактивной карты
+// CUIMapWnd.cpp:  диалог итерактивной карты
 // 
 //////////////////////////////////////////////////////////////////////
 
@@ -189,16 +189,12 @@ void CUIMapWnd::InitLocalMap()
 	{
 		CUIMapSpot * map_spot;
 		map_spot = xr_new<CUIMapSpot>();
-
 		SMapLocation& map_location = *(*it);
 
 		if(map_location.attached_to_object)
 		{
-			map_spot->m_pObject = Level().Objects.net_Find	(map_location.object_id);
-
-			src.x = map_spot->m_pObject->Position().x;
-			src.y = 0;
-			src.z = map_spot->m_pObject->Position().z;
+			map_spot->SetObjectID(map_location.object_id);
+			src = map_spot->MapPos();
 		}
 		else
 		{
@@ -206,21 +202,21 @@ void CUIMapWnd::InitLocalMap()
 			src.y = 0;
 			src.z = map_location.y;
 
-			map_spot->m_pObject = NULL;
+			map_spot->SetObjectID(0xffff);
 			map_spot->m_vWorldPos.set(map_location.x,0.f,map_location.y);
 		}
 
 		UILocalMapBackground.ConvertToLocal(src,P);
 
-		map_spot->SetShader(GetCharIconsShader());
+		map_spot->SetShader(GetMapIconsShader());
 		map_spot->MoveWindow(P.x + left, P.y + top);
 		map_spot->SetWidth(MAP_ICON_WIDTH);
 		map_spot->SetHeight(MAP_ICON_HEIGHT);
 		map_spot->GetUIStaticItem().SetOriginalRect(
-			map_location.icon_x*ICON_GRID_WIDTH + MAP_ICON_WIDTH / 2,
-			map_location.icon_y*ICON_GRID_HEIGHT + MAP_ICON_HEIGHT,
-			map_location.icon_width*ICON_GRID_WIDTH,
-			map_location.icon_height*ICON_GRID_HEIGHT);
+			map_location.icon_x*MAP_ICON_GRID_WIDTH,
+			map_location.icon_y*MAP_ICON_GRID_HEIGHT,
+			map_location.icon_width*MAP_ICON_GRID_WIDTH + MAP_ICON_WIDTH,
+			map_location.icon_height*MAP_ICON_GRID_HEIGHT + MAP_ICON_HEIGHT);
 
 		map_spot->m_eAlign = CUIMapSpot::eCenter;
 		map_spot->m_sDescText.SetText("");
@@ -245,7 +241,7 @@ void CUIMapWnd::InitLocalMap()
 	CUIMapSpot* map_spot;
 
 	map_spot = xr_new<CUIMapSpot>();
-	map_spot->m_pObject = pActor;
+	map_spot->SetObjectID(pActor->ID());
 
 	// viewport
 	float h,p;
@@ -297,6 +293,12 @@ void CUIMapWnd::InitGlobalMap()
 	{
 		LPCSTR name, value;
 		pSettings->r_line(GLOBAL_MAP_LOCATIONS_LTX, i, &name, &value);
+
+#ifndef DEBUG
+		//проверка на существование уровня с заданым именем
+		if(ai().get_alife() && ai().get_game_graph())
+			ai().game_graph().header().level(name);
+#endif
 
 		// Если для карты уже есть задания, то инициализируем ее.
 		// Если нет, то удаляем ее вместе с заданиями
@@ -360,7 +362,7 @@ void CUIMapWnd::InitMaps()
 
 void CUIMapWnd::AddObjectSpot(CGameObject* pGameObject)
 {	
-	//!!! пока только для CEntity
+	//!!! пока только для CEntity (чтоб было откуда брать иконку)
 	CEntity* pEntity = dynamic_cast<CEntity*>(pGameObject);
 	if(!pEntity) return;
 
@@ -373,7 +375,7 @@ void CUIMapWnd::AddObjectSpot(CGameObject* pGameObject)
 	
 	CUIMapSpot* map_spot;
 	map_spot = xr_new<CUIMapSpot>();
-	map_spot->m_pObject = pEntity;
+	map_spot->SetObjectID(pEntity->ID());
 	
 	map_spot->SetShader(GetCharIconsShader());
 	map_spot->SetWidth(MAP_ICON_WIDTH);
@@ -406,7 +408,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			{
 				UIStaticInfo.Show(true);
 				
-				CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_pCurrentMap->m_pActiveMapSpot->m_pObject);
+				//CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_pCurrentMap->m_pActiveMapSpot->m_pObject);
 
 				if(xr_strlen(m_pCurrentMap->m_pActiveMapSpot->m_sDescText.GetBuf())>1)
 				{
@@ -420,13 +422,13 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				else
 				{
 					UICharacterInfo.ResetAllStrings();
-					if(pInvOwner)
+/*					if(pInvOwner)
 					{
 						UICharacterInfo.InitCharacter(pInvOwner);
 						UICharacterInfo.Show(true);
 					}
-					else
-						UICharacterInfo.Show(false);
+					else*/
+					UICharacterInfo.Show(false);
 				}
             }
 		}

@@ -44,12 +44,17 @@ void AmmoUpdateProc(CUIDragDropItem* pItem);
 //для надписей на иконках с едой
 void FoodUpdateProc(CUIDragDropItem* pItem);
 
+
 //получить shader на иконки инвенторя
 ref_shader& GetEquipmentIconsShader();
 //shader на иконки персонажей
 ref_shader& GetCharIconsShader();
+//shader на иконки карты
+ref_shader& GetMapIconsShader();
 // shader на иконки персонажей в мультиплеере
 ref_shader&	GetMPCharIconsShader();
+//удаляем все шейдеры
+void DestroyShaders();
 
 void ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector);
 

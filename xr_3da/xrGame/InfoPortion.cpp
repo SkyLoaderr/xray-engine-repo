@@ -9,6 +9,11 @@
 #include "gameobject.h"
 #include "encyclopedia_article.h"
 
+#include "ai_space.h"
+#include "alife_simulator.h"
+#include "alife_story_registry.h"
+#include "xrServer_Objects_ALife.h"
+
 //////////////////////////////////////////////////////////////////////////
 // SInfoPortionData: данные для InfoProtion
 
@@ -129,6 +134,14 @@ void CInfoPortion::load_shared	(LPCSTR)
 			map_location.info_portion_id = m_InfoIndex;
 
 			map_location.level_name = uiXml.Read(pMapNode,"level",0);
+
+#ifndef DEBUG
+			//проверка на существование уровня с заданым именем
+			if(ai().get_alife() && ai().get_game_graph() && xr_strlen(*map_location.level_name)>0)
+				ai().game_graph().header().level(*map_location.level_name);
+#endif
+
+
 			map_location.x = (float)atof(uiXml.Read(pMapNode,"x",0));
 			map_location.y = (float)atof(uiXml.Read(pMapNode,"y",0));
 
@@ -143,15 +156,15 @@ void CInfoPortion::load_shared	(LPCSTR)
 			//присоединить к объекту на уровне, если тот задан
 			if(uiXml.NavigateToNode(pMapNode,"object",0))
 			{
-				ref_str object_name = uiXml.Read(pMapNode, "object", 0, "name");
-				CGameObject *pGameObject = NULL;
-				if(*object_name)
-					pGameObject = dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(*object_name));
-
-				if (pGameObject)
+				int story_id = uiXml.ReadAttribInt(pMapNode, "object", -1, "story_id");
+				
+				if (story_id != -1 && ai().get_alife())
 				{
+					CSE_ALifeDynamicObject	*object	= ai().alife().story_objects().object(ALife::_STORY_ID(story_id));
+					VERIFY(object);
+
 					map_location.attached_to_object = true;
-					map_location.object_id = (u16)pGameObject->ID();
+					map_location.object_id = object->ID;
 				}
 				else
 				{

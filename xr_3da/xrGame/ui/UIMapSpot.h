@@ -12,6 +12,9 @@
 #define MAP_ICON_WIDTH  32
 #define MAP_ICON_HEIGHT 32
 
+#define MAP_ICON_GRID_WIDTH		32
+#define MAP_ICON_GRID_HEIGHT	32
+
 extern const int			ARROW_DIMENTIONS;
 
 
@@ -25,11 +28,20 @@ public:
 
 	virtual void Draw();
 	virtual void Update();
-	
-	//указатель на объект, который показывается
-	//на карте,
-	//если такого нет то NULL
-	CObject* m_pObject;
+
+	//возвращает позицию отметки на карте в мировых координатах
+	virtual Fvector MapPos();
+
+	virtual void SetObjectID(u16 id);
+
+private:
+	//id текущего уровня
+	ALife::_LEVEL_ID	m_our_level_id;
+	//id объекта, который показывается
+	//на карте, если такого нет то 0xffff
+	u16		 m_object_id;
+
+public:
 	//позиция точки в мировой системе координат,
 	//нужно если m_pObject NULL
 	Fvector m_vWorldPos;

@@ -6,6 +6,7 @@
 #include "InfoPortion.h"
 #include "entity_alive.h"
 #include "profiler.h"
+#include "ui/UIInventoryUtilities.h"
 
 void clean_memory_global()
 {
@@ -19,6 +20,8 @@ void clean_memory_global()
 	// destroy monster squad global var
 	xr_delete							(g_monster_squad);
 
+
+	InventoryUtilities::DestroyShaders();
 
 	//info portions static data
 	CInfoPortion::DeleteIdToIndexData	();

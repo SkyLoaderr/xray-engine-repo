@@ -14,12 +14,26 @@
 #include "../Level.h"
 #include "../HUDManager.h"
 
-//буферный список для сортировки
+#define EQUIPMENT_ICONS "ui\\ui_icon_equipment"
+#define CHAR_ICONS		"ui\\ui_icons_npc"
+#define MAP_ICONS		"ui\\ui_icons_map"
+#define MP_CHAR_ICONS	"ui\\ui_models_multiplayer"
+
+
 static ref_shader g_EquipmentIconsShader	= NULL;
 static ref_shader g_CharIconsShader			= NULL;
+static ref_shader g_MapIconsShader			= NULL;
 static ref_shader g_MPCharIconsShader		= NULL;
 static CUIStatic*	GetUIStatic();
 
+
+void InventoryUtilities::DestroyShaders()
+{
+	g_EquipmentIconsShader.destroy();
+	g_CharIconsShader.destroy();	
+	g_MapIconsShader.destroy();
+	g_MPCharIconsShader.destroy();
+}
 
 
 //для надписей на иконках с оружием
@@ -160,8 +174,7 @@ ref_shader& InventoryUtilities::GetEquipmentIconsShader()
 {	
 	if(!g_EquipmentIconsShader)
 	{
-		g_EquipmentIconsShader.create("hud\\default", 
-									  "ui\\ui_icon_equipment");
+		g_EquipmentIconsShader.create("hud\\default", EQUIPMENT_ICONS);
 	}
 
 	return g_EquipmentIconsShader;
@@ -171,10 +184,20 @@ ref_shader& InventoryUtilities::GetCharIconsShader()
 {
 	if(!g_CharIconsShader)
 	{
-		g_CharIconsShader.create("hud\\default",  "ui\\ui_icons_npc");
+		g_CharIconsShader.create("hud\\default", CHAR_ICONS);
 	}
 
 	return g_CharIconsShader;
+}
+
+ref_shader&  InventoryUtilities::GetMapIconsShader()
+{
+	if(!g_MapIconsShader)
+	{
+		g_MapIconsShader.create("hud\\default",  MAP_ICONS);
+	}
+
+	return g_MapIconsShader;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -184,7 +207,7 @@ ref_shader&	InventoryUtilities::GetMPCharIconsShader()
 {
 	if(!g_MPCharIconsShader)
 	{
-		g_MPCharIconsShader.create("hud\\default",  "ui\\ui_models_multiplayer");
+		g_MPCharIconsShader.create("hud\\default",  MP_CHAR_ICONS);
 	}
 
 	return g_MPCharIconsShader;

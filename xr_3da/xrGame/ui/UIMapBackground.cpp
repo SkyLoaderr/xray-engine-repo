@@ -454,15 +454,7 @@ void CUIMapBackground::UpdateMapSpots()
 	
 	for(u32 i = 0; i<m_vMapSpots.size(); ++i)
 	{
-		if(m_vMapSpots[i]->m_pObject)
-		{
-			ConvertToLocal(m_vMapSpots[i]->m_pObject->Position(), pos);
-		}
-		else
-		{
-			ConvertToLocal(m_vMapSpots[i]->m_vWorldPos, pos);
-		}
-
+		ConvertToLocal(m_vMapSpots[i]->MapPos(), pos);
 		
 		switch(m_vMapSpots[i]->m_eAlign) {
 		case CUIMapSpot::eBottom:
