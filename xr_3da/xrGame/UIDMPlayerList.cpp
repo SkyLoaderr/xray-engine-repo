@@ -17,9 +17,7 @@ void CUIDMPlayerList::Init()
 //--------------------------------------------------------------------
 IC bool	pred_player		(LPVOID v1, LPVOID v2)
 {
-	game_cl_GameState::Player* P1 = (game_cl_GameState::Player*)v1;
-	game_cl_GameState::Player* P2 = (game_cl_GameState::Player*)v2;
-	return P1->kills>P2->kills;
+	return (game_cl_GameState::Player*)v1->kills>(game_cl_GameState::Player*)v2->kills;
 }
 void CUIDMPlayerList::OnFrame()
 {
