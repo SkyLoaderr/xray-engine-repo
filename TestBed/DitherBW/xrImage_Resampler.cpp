@@ -56,18 +56,8 @@ void	free_image(Image* image)
 
 Pixel	get_pixel	(Image* image, int x, int y)
 {
-	static Image *	im	= NULL;
-	static int		yy	= -1;
-	static Pixel *	p	= NULL;
-
 	if((x < 0) || (x >= image->xsize) || (y < 0) || (y >= image->ysize)) return 0;
-
-	if((im != image) || (yy != y)) {
-		im = image;
-		yy = y;
-		p = image->data + (y * image->span);
-	}
-	return p[x];
+	return image->data[(y * image->span) + x];
 }
 
 void	get_row		(Pixel* row, Image* image, int y)
@@ -91,18 +81,8 @@ void	get_column	(Pixel* column, Image* image, int x)
 
 Pixel	put_pixel	(Image* image, int x, int y, Pixel data)
 {
-	static Image *	im	= NULL;
-	static int		yy	= -1;
-	static Pixel *	p	= NULL;
-
 	if((x < 0) || (x >= image->xsize) || (y < 0) || (y >= image->ysize)) return 0;
-
-	if((im != image) || (yy != y)) {
-		im = image;
-		yy = y;
-		p = image->data + (y * image->span);
-	}
-	return	(p[x] = data);
+	return	image->data[(y * image->span)+x] = data;
 }
 
 
