@@ -6,6 +6,7 @@ module ("xr_evaluators_id")
 module ("xr_sounds_id")
 module ("xr_evaluators")
 module ("xr_storyline")
+module ("xr_door")
 
 module ("debug_info")
 module ("utils")
