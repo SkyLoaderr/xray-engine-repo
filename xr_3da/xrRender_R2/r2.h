@@ -77,94 +77,94 @@ public:
 	cl_binders													Binders;
 private:
 	// Loading / Unloading
-	void							LoadBuffers				(IReader	*fs);
-	void							LoadVisuals				(IReader	*fs);
-	void							LoadLights				(IReader	*fs);
-	void							LoadPortals				(IReader	*fs);
-	void							LoadSectors				(IReader	*fs);
-	void							LoadTrees				(IReader	*fs);
+	void							LoadBuffers					(IReader	*fs);
+	void							LoadVisuals					(IReader	*fs);
+	void							LoadLights					(IReader	*fs);
+	void							LoadPortals					(IReader	*fs);
+	void							LoadSectors					(IReader	*fs);
+	void							LoadTrees					(IReader	*fs);
 
-	BOOL							add_Dynamic				(IRender_Visual	*pVisual, u32 planes);		// normal processing
-	void							add_Static				(IRender_Visual	*pVisual, u32 planes);
-	void							add_leafs_Dynamic		(IRender_Visual	*pVisual);					// if detected node's full visibility
-	void							add_leafs_Static		(IRender_Visual	*pVisual);					// if detected node's full visibility
-	void							InsertSG_Dynamic		(IRender_Visual	*pVisual, Fvector& Center);
-	void							InsertSG_Static			(IRender_Visual	*pVisual);
+	BOOL							add_Dynamic					(IRender_Visual	*pVisual, u32 planes);		// normal processing
+	void							add_Static					(IRender_Visual	*pVisual, u32 planes);
+	void							add_leafs_Dynamic			(IRender_Visual	*pVisual);					// if detected node's full visibility
+	void							add_leafs_Static			(IRender_Visual	*pVisual);					// if detected node's full visibility
+	void							InsertSG_Dynamic			(IRender_Visual	*pVisual, Fvector& Center);
+	void							InsertSG_Static				(IRender_Visual	*pVisual);
 
-	void							flush_Models			();
-	void							flush_LODs				();
+	void							flush_Models				();
+	void							flush_LODs					();
 
 public:
-	void							render_scenegraph		();
-	void							render_hud				();
-	void							render_smap_direct		(Fmatrix& mCombined);
-	void							render_smap_sector		(CSector* S, Fmatrix& mCombined, Fvector& C);
+	void							render_scenegraph			();
+	void							render_hud					();
+	void							render_smap_direct			(Fmatrix& mCombined);
+	void							render_smap_sector			(CSector* S, Fmatrix& mCombined, Fvector& C);
 public:
 	// Loading / Unloading
-	virtual	void					level_Load				();
-	virtual void					level_Unload			();
+	virtual	void					level_Load					();
+	virtual void					level_Unload				();
 
 	// Information
-	virtual int						getVisualsCount			();
-	virtual IRender_Portal*			getPortal				(int id);
-	virtual IRender_Sector*			getSector				(int id);
-	virtual IRender_Sector*			getSectorActive			();
-	virtual IRender_Visual*			getVisual				(int id);
-	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id);
-	virtual IDirect3DVertexBuffer9*	getVB					(int id);
-	virtual IDirect3DIndexBuffer9*	getIB					(int id);
-	virtual IRender_Sector*			detectSector			(Fvector& P);
-	virtual IRender_Target*			getTarget				();
+	virtual int						getVisualsCount				();
+	virtual IRender_Portal*			getPortal					(int id);
+	virtual IRender_Sector*			getSector					(int id);
+	virtual IRender_Sector*			getSectorActive				();
+	virtual IRender_Visual*			getVisual					(int id);
+	virtual D3DVERTEXELEMENT9*		getVB_Format				(int id);
+	virtual IDirect3DVertexBuffer9*	getVB						(int id);
+	virtual IDirect3DIndexBuffer9*	getIB						(int id);
+	virtual IRender_Sector*			detectSector				(Fvector& P);
+	virtual IRender_Target*			getTarget					();
 
 	// Main 
-	virtual void					flush					();
-	virtual void					set_Object				(IRenderable*		O	);
-	virtual void					add_Visual				(IRender_Visual*	V	);			// add visual leaf	(no culling performed at all)
-	virtual void					add_Geometry			(IRender_Visual*	V	);			// add visual(s)	(all culling performed)
-	virtual void					add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer);
-	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T);
+	virtual void					flush						();
+	virtual void					set_Object					(IRenderable*		O	);
+	virtual void					add_Visual					(IRender_Visual*	V	);			// add visual leaf	(no culling performed at all)
+	virtual void					add_Geometry				(IRender_Visual*	V	);			// add visual(s)	(all culling performed)
+	virtual void					add_Patch					(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer);
+	virtual void					add_Wallmark				(Shader* S, const Fvector& P, float s, CDB::TRI* T);
 
 	//
-	virtual IBlender*				blender_create			(CLASS_ID cls);
-	virtual void					blender_destroy			(IBlender* &);
+	virtual IBlender*				blender_create				(CLASS_ID cls);
+	virtual void					blender_destroy				(IBlender* &);
 
 	//
-	virtual IRender_ObjectSpecific*	ros_create				(IRenderable*		parent);
-	virtual void					ros_destroy				(IRender_ObjectSpecific* &);
+	virtual IRender_ObjectSpecific*	ros_create					(IRenderable*		parent);
+	virtual void					ros_destroy					(IRender_ObjectSpecific* &);
 
 	// Lighting
-	virtual IRender_Light*			light_create			();
-	virtual void					light_destroy			(IRender_Light* &);
+	virtual IRender_Light*			light_create				();
+	virtual void					light_destroy				(IRender_Light* &);
 
 	// Models
-	virtual IRender_Visual*			model_CreatePS			(LPCSTR name, PS::SEmitter* E);
-	virtual IRender_Visual*			model_CreatePE			(LPCSTR	name);
-	virtual IRender_DetailModel*	model_CreateDM			(IReader* F);
-	virtual IRender_Visual*			model_Create			(LPCSTR name);
-	virtual IRender_Visual*			model_Create			(LPCSTR name, IReader* data);
-	virtual IRender_Visual*			model_Duplicate			(IRender_Visual*	V);
-	virtual void					model_Delete			(IRender_Visual* &	V);
-	virtual void 					model_Delete			(IRender_DetailModel* & F);
+	virtual IRender_Visual*			model_CreatePS				(LPCSTR name, PS::SEmitter* E);
+	virtual IRender_Visual*			model_CreatePE				(LPCSTR	name);
+	virtual IRender_DetailModel*	model_CreateDM				(IReader* F);
+	virtual IRender_Visual*			model_Create				(LPCSTR name);
+	virtual IRender_Visual*			model_Create				(LPCSTR name, IReader* data);
+	virtual IRender_Visual*			model_Duplicate				(IRender_Visual*	V);
+	virtual void					model_Delete				(IRender_Visual* &	V);
+	virtual void 					model_Delete				(IRender_DetailModel* & F);
 
 	// Occlusion culling
-	virtual BOOL					occ_visible				(vis_data&	V);
-	virtual BOOL					occ_visible				(Fbox&		B);
-	virtual BOOL					occ_visible				(sPoly&		P);
+	virtual BOOL					occ_visible					(vis_data&	V);
+	virtual BOOL					occ_visible					(Fbox&		B);
+	virtual BOOL					occ_visible					(sPoly&		P);
 
 	// Main
-	virtual void					Calculate				();
-	virtual void					Render					();
-	virtual void					RenderBox				(IRender_Sector* S, Fbox& BB, int sh);
-	virtual void					Screenshot				(LPCSTR postfix, BOOL bSquare=FALSE);
+	virtual void					Calculate					();
+	virtual void					Render						();
+	virtual void					RenderBox					(IRender_Sector* S, Fbox& BB, int sh);
+	virtual void					Screenshot					(LPCSTR postfix, BOOL bSquare=FALSE);
 
 	// Render mode
-	virtual void					rmNear					();
-	virtual void					rmFar					();
-	virtual void					rmNormal				();
+	virtual void					rmNear						();
+	virtual void					rmFar						();
+	virtual void					rmNormal					();
 
 	// Device dependance
-	virtual void					OnDeviceDestroy			();
-	virtual void					OnDeviceCreate			();
+	virtual void					OnDeviceDestroy				();
+	virtual void					OnDeviceCreate				();
 
 	// Constructor/destructor/loader
 	CRender							();
