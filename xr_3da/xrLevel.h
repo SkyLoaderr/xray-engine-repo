@@ -58,19 +58,19 @@ struct	hdrNODES
 class NodePosition {
 	u8	data[5];
 	
-	IC	void xz	(u32 value)	{ Memory.mem_copy	(data,&value,3);		}
-	IC	void y	(u16 value)	{ Memory.mem_copy	(data + 3,&value,2);	}
+	ICF	void xz	(u32 value)	{ Memory.mem_copy	(data,&value,3);		}
+	ICF	void y	(u16 value)	{ Memory.mem_copy	(data + 3,&value,2);	}
 public:
-	IC	u32	xz	() const	{
+	ICF	u32	xz	() const	{
 		return			((*((u32*)data)) & 0x00ffffff);
 	}
-	IC	u32	x	(u32 row) const		{
+	ICF	u32	x	(u32 row) const		{
 		return			(xz() / row);
 	}
-	IC	u32	z	(u32 row) const		{
+	ICF	u32	z	(u32 row) const		{
 		return			(xz() % row);
 	}
-	IC	u32	y	() const			{
+	ICF	u32	y	() const			{
 		return			(*((u16*)(data + 3)));
 	}
 
@@ -84,7 +84,7 @@ public:
 	u8				data[12];
 private:
 	
-	IC	void link(u8 link_index, u32 value)
+	ICF	void link(u8 link_index, u32 value)
 	{
 		value			&= 0x007fffff;
 		switch (link_index) {
@@ -114,7 +114,7 @@ private:
 		}
 	}
 	
-	IC	void light(u8 value)
+	ICF	void light(u8 value)
 	{
 		data[11]		&= 0x0f;
 		data[11]		|= value << 4;
@@ -129,7 +129,7 @@ public:
 	NodePosition	p;
 	// 4 + 4 + 4 + 4 + 16 + 40 + 96 = 168 bits = 21 byte
 
-	IC	u32	link(u8 index) const
+	ICF	u32	link(u8 index) const
 	{
 		switch (index) {
 			case 0 :	return	((*(u32*)data) & 0x007fffff);
@@ -143,12 +143,12 @@ public:
 #endif
 	}
 	
-	IC	u8	light() const
+	ICF	u8	light() const
 	{
 		return			(data[11] >> 4);
 	}
 	
-	IC	u16	cover(u8 index) const
+	ICF	u16	cover(u8 index) const
 	{
 		switch (index) {
 			case 0 : return(cover0);
@@ -175,7 +175,7 @@ public:
 	u8				data[11];
 private:
 	
-	IC	void link(u8 link_index, u32 value)
+	ICF	void link(u8 link_index, u32 value)
 	{
 		value			&= 0x001fffff;
 		switch (link_index) {
@@ -205,7 +205,7 @@ private:
 		}
 	}
 	
-	IC	void light(u8 value)
+	ICF	void light(u8 value)
 	{
 		data[10]		|= value << 4;
 	}
@@ -218,7 +218,7 @@ public:
 	u16				plane;
 	NodePosition	p;
 
-	IC	u32	link(u8 index) const
+	ICF	u32	link(u8 index) const
 	{
 		switch (index) {
 			case 0 :	return	((*(u32*)data) & 0x001fffff);
@@ -232,12 +232,12 @@ public:
 #endif
 	}
 	
-	IC	u8	light() const
+	ICF	u8	light() const
 	{
 		return			(data[10] >> 4);
 	}
 	
-	IC	u16	cover(u8 index) const
+	ICF	u16	cover(u8 index) const
 	{
 		switch (index) {
 			case 0 : return(cover0);
