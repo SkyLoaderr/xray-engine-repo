@@ -26,8 +26,8 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	P.w_u16				(ID				);
 	P.w_u16				(ID_Parent		);
 	P.w_u16				(ID_Phantom		);
-	if (bLocal)			P.w_u16(u16(s_flags|M_SPAWN_OBJECT_LOCAL) );
-	else				P.w_u16(u16(s_flags&~(M_SPAWN_OBJECT_LOCAL|M_SPAWN_OBJECT_ASPLAYER)));
+	if (bLocal)			P.w_u16(u16(s_flags.flags|M_SPAWN_OBJECT_LOCAL) );
+	else				P.w_u16(u16(s_flags.flags&~(M_SPAWN_OBJECT_LOCAL|M_SPAWN_OBJECT_ASPLAYER)));
 
 	// write specific data
 	u32	position		= P.w_tell		();
@@ -52,7 +52,7 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	P.r_u16				(ID				);
 	P.r_u16				(ID_Parent		);
 	P.r_u16				(ID_Phantom		);
-	P.r_u16				(s_flags		); 
+	P.r_u16				(s_flags.flags	); 
 
 	// read specific data
 	u16					size;
@@ -70,11 +70,11 @@ xr_token game_types[]={
 	{ "Counter Strike",	GAME_CS			},
 	{ 0,				0				}
 };
-void	xrServerEntity::FillProp	(LPCSTR pref, PropValueVec& values)
+void	xrServerEntity::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-	FILL_PROP_EX(values,	pref, "Game Type",		&s_gameid, 		PHelper.CreateToken(game_types,1));
-	FILL_PROP_EX(values,	pref, "Active",			&s_flags, 		PHelper.CreateFlag(M_SPAWN_OBJECT_ACTIVE));
-	FILL_PROP_EX(values,	pref, "Respawn Time (s)",&RespawnTime,	PHelper.CreateU16(0,43200));
+	PHelper.CreateToken	(items,	PHelper.PrepareKey(pref,"Game Type"),			&s_gameid,		game_types, 1);
+    PHelper.CreateFlag16(items,	PHelper.PrepareKey(pref, "Active"),				&s_flags, 		M_SPAWN_OBJECT_ACTIVE);
+    PHelper.CreateU16	(items,	PHelper.PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
 }
 #endif
 
@@ -156,11 +156,11 @@ u16		xrSE_Weapon::get_ammo_magsize()
 }
 
 #ifdef _EDITOR
-void	xrSE_Weapon::FillProp		(LPCSTR pref, PropValueVec& values)
+void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
     {
-    	inherited::FillProp(pref, values);
-      	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Ammo: total",			&a_current, PHelper.CreateU16(0,1000,1));
-        FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Ammo: in magazine",	&a_elapsed, PHelper.CreateU16(0,30,1));
+    	inherited::FillProp(pref, items);
+        PHelper.CreateU16(items,PHelper.PrepareKey(pref,s_name,"Ammo: total"),			&a_current,0,1000,1);
+        PHelper.CreateU16(items,PHelper.PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
     }
 #endif
 
@@ -185,12 +185,12 @@ void	xrSE_Teamed::STATE_Write		(NET_Packet& P)
 void	xrSE_Teamed::UPDATE_Read		(NET_Packet& P)	{};
 void	xrSE_Teamed::UPDATE_Write		(NET_Packet& P)	{};
 #ifdef _EDITOR
-void	xrSE_Teamed::FillProp			(LPCSTR pref, PropValueVec& values)
+void	xrSE_Teamed::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-  	inherited::FillProp(pref,values);
-   	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Team",	&s_team, 	PHelper.CreateU8(0,64,1));
-    FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Squad",	&s_squad, 	PHelper.CreateU8(0,64,1));
-    FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Group",	&s_group, 	PHelper.CreateU8(0,64,1));
+  	inherited::FillProp(pref,items);
+    PHelper.CreateU8(items,PHelper.PrepareKey(pref,s_name, "Team"),		&s_team, 	0,64,1);
+    PHelper.CreateU8(items,PHelper.PrepareKey(pref,s_name, "Squad"),	&s_squad, 	0,64,1);
+    PHelper.CreateU8(items,PHelper.PrepareKey(pref,s_name, "Group"),	&s_group, 	0,64,1);
 }
 #endif
 
@@ -249,7 +249,7 @@ void xrSE_Dummy::STATE_Write		(NET_Packet& P)
 void xrSE_Dummy::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_Dummy::UPDATE_Write		(NET_Packet& P)	{};
 #ifdef _EDITOR
-void	xrSE_Dummy::FillProp			(LPCSTR pref, PropValueVec& values)
+void	xrSE_Dummy::FillProp			(LPCSTR pref, PropItemVec& values)
 {
   	inherited::FillProp(pref,values);
 }
@@ -266,9 +266,9 @@ void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model
 void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
 
 #ifdef _EDITOR
-void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropValueVec& values)
+void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateGameObject(sizeof(s_Model)));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,s_name,"Model"),	s_Model,sizeof(s_Model));
 }
 #endif
 //
@@ -280,7 +280,7 @@ void xrSE_Car::STATE_Write			(NET_Packet& P)				{inherited::STATE_Write(P);		};
 void xrSE_Car::UPDATE_Read			(NET_Packet& P)	{};
 void xrSE_Car::UPDATE_Write			(NET_Packet& P)	{};
 #ifdef _EDITOR
-void xrSE_Car::FillProp				(LPCSTR pref, PropValueVec& values)
+void xrSE_Car::FillProp				(LPCSTR pref, PropItemVec& values)
 {
   	inherited::FillProp(pref,values);
 }
@@ -292,7 +292,7 @@ void xrSE_Crow::STATE_Write			(NET_Packet& P)				{};
 void xrSE_Crow::UPDATE_Read			(NET_Packet& P)				{};
 void xrSE_Crow::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
-void xrSE_Crow::FillProp			(LPCSTR pref, PropValueVec& values)
+void xrSE_Crow::FillProp			(LPCSTR pref, PropItemVec& values)
 {
   	inherited::FillProp(pref,values);
 }
@@ -304,7 +304,7 @@ void xrSE_Target::STATE_Write		(NET_Packet& P)				{};
 void xrSE_Target::UPDATE_Read		(NET_Packet& P)				{};
 void xrSE_Target::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
-void xrSE_Target::FillProp			(LPCSTR pref, PropValueVec& values)
+void xrSE_Target::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp(pref,values);
 }
@@ -316,7 +316,7 @@ void xrSE_Target_Assault::STATE_Write		(NET_Packet& P)				{};
 void xrSE_Target_Assault::UPDATE_Read		(NET_Packet& P)				{};
 void xrSE_Target_Assault::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
-void xrSE_Target_Assault::FillProp			(LPCSTR pref, PropValueVec& values)
+void xrSE_Target_Assault::FillProp			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp(pref,values);
 }
@@ -334,11 +334,11 @@ void xrSE_Target_CSBase::STATE_Write		(NET_Packet& P)				{P.w_float(radius);P.w_
 void xrSE_Target_CSBase::UPDATE_Read		(NET_Packet& P)				{};
 void xrSE_Target_CSBase::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
-void xrSE_Target_CSBase::FillProp			(LPCSTR pref, PropValueVec& values)
+void xrSE_Target_CSBase::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp(pref,values);
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Radius",		&radius, 	 PHelper.CreateFloat(1.f,100.f));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Team",		&s_team, 	 PHelper.CreateU8(0,1));
+	inherited::FillProp	(pref,items);
+    PHelper.CreateFloat	(items,PHelper.PrepareKey(pref,s_name,"Radius"),	&radius,1.f,100.f);
+    PHelper.CreateU8	(items,PHelper.PrepareKey(pref,s_name,"Team"),		&s_team,0,1);
 }
 #endif
 
@@ -353,9 +353,9 @@ void	xrSE_Target_CSCask::STATE_Read		(NET_Packet& P, u16 size)	{ P.r_string(s_Mo
 void	xrSE_Target_CSCask::STATE_Write		(NET_Packet& P)				{ P.w_string(s_Model); }
 
 #ifdef _EDITOR
-void	xrSE_Target_CSCask::FillProp	(LPCSTR pref, PropValueVec& values)
+void	xrSE_Target_CSCask::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateGameObject(sizeof(s_Model)));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
 }
 #endif
 //
@@ -371,9 +371,9 @@ void	xrSE_Target_CS::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model);
 void	xrSE_Target_CS::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
 
 #ifdef _EDITOR
-void	xrSE_Target_CS::FillProp	(LPCSTR pref, PropValueVec& values)
+void	xrSE_Target_CS::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateGameObject(sizeof(s_Model)));
+	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model));
 }
 #endif
 //
@@ -384,10 +384,10 @@ void xrSE_Health::STATE_Write		(NET_Packet& P)				{	P.w_u8(amount);	};
 void xrSE_Health::UPDATE_Read		(NET_Packet& P)				{};
 void xrSE_Health::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
-void xrSE_Health::FillProp			(LPCSTR pref, PropValueVec& values)
+void xrSE_Health::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp(pref,values);
-	FILL_PROP_EX(values,	PHelper.PrepareKey(pref,s_name), "Health amount",	&amount,	PHelper.CreateU8(0,255));
+	inherited::FillProp(pref,items);
+    PHelper.CreateU8(items,	PHelper.PrepareKey(pref,s_name,"Health amount"),	&amount,0,255);
 }
 #endif
 
@@ -397,9 +397,9 @@ void xrSE_Spectator::STATE_Write	(NET_Packet& P)				{};
 void xrSE_Spectator::UPDATE_Read	(NET_Packet& P)				{};
 void xrSE_Spectator::UPDATE_Write	(NET_Packet& P)				{};
 #ifdef _EDITOR
-void xrSE_Spectator::FillProp		(LPCSTR pref, PropValueVec& values)
+void xrSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 {
-  	inherited::FillProp(pref,values);
+  	inherited::FillProp(pref,items);
 }
 #endif
 
@@ -437,9 +437,9 @@ void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 	P.w_u8				(weapon		);
 }
 #ifdef _EDITOR
-void	xrSE_Actor::FillProp			(LPCSTR pref, PropValueVec& values)
+void	xrSE_Actor::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-  	inherited::FillProp(pref,values);
+  	inherited::FillProp(pref,items);
 }
 #endif
 
@@ -465,9 +465,9 @@ void xrSE_Enemy::UPDATE_Write		(NET_Packet& P)
 	P.w_angle8			(o_torso.pitch	);
 }
 #ifdef _EDITOR
-void	xrSE_Enemy::FillProp			(LPCSTR pref, PropValueVec& values)
+void	xrSE_Enemy::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-  	inherited::FillProp(pref,values);
+  	inherited::FillProp(pref,items);
 }
 #endif
 
@@ -692,11 +692,12 @@ void xrSE_Rat::UPDATE_Write(NET_Packet& P)
 }
 
 #ifdef _EDITOR
-void xrSE_Rat::FillProp(LPCSTR pref, PropValueVec& values)
+void xrSE_Rat::FillProp(LPCSTR pref, PropItemVec& items)
 {
-   	inherited::FillProp(pref, values);
+   	inherited::FillProp(pref, items);
 	// model
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
+    PHelper.CreateGameObject(items,PHelper.PrepareKey(pref,s_name,"Model"), &caModel, sizeof(caModel));
+/*	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
 	// personal characteristics
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
@@ -721,6 +722,7 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropValueVec& values)
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Distance",				&fAttackDistance,				PHelper.CreateFloat(0,300,10));
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Maximum angle",		&fAttackAngle,					PHelper.CreateFloat(0,180,10));
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Success probability",	&fAttackSuccessProbability,		PHelper.CreateFloat(0,100,1));
+*/    
 }
 #endif
 
@@ -803,11 +805,11 @@ void xrSE_Zombie::UPDATE_Write(NET_Packet& P)
 }
 
 #ifdef _EDITOR
-void xrSE_Zombie::FillProp(LPCSTR pref, PropValueVec& values)
+void xrSE_Zombie::FillProp(LPCSTR pref, PropItemVec& items)
 {
-   	inherited::FillProp(pref, values);
+   	inherited::FillProp(pref, items);
 	// model
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
+/*	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
 	// personal characteristics
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
@@ -822,6 +824,7 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropValueVec& values)
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Hit interval",			&u16HitInterval,				PHelper.CreateU16  (0,65535,500));
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Distance",				&fAttackDistance,				PHelper.CreateFloat(0,300,10));
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Maximum angle",		&fAttackAngle,					PHelper.CreateFloat(0,180,10));
+*/
 }
 #endif
 
@@ -934,11 +937,11 @@ void xrSE_Dog::UPDATE_Write(NET_Packet& P)
 }
 
 #ifdef _EDITOR
-void xrSE_Dog::FillProp(LPCSTR pref, PropValueVec& values)
+void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 {
-   	inherited::FillProp(pref, values);
+   	inherited::FillProp(pref, items);
 	// model
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
+/*	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
 	// personal characteristics
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Eye range",			&fEyeRange,						PHelper.CreateFloat(0,300,10));
@@ -963,6 +966,7 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropValueVec& values)
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Distance",				&fAttackDistance,				PHelper.CreateFloat(0,300,10));
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Maximum angle",		&fAttackAngle,					PHelper.CreateFloat(0,180,10));
 	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Attack")),	"Success probability",	&fAttackSuccessProbability,		PHelper.CreateFloat(0,100,1));
+*/
 }
 #endif
 

@@ -51,7 +51,7 @@ public:
 	string64				s_name_replace;
 	u8						s_gameid;
 	u8						s_RP;
-	u16						s_flags;		// state flags
+	Flags16					s_flags;		// state flags
 
 	// update data
 	Fvector					o_Position;
@@ -73,7 +73,7 @@ public:
 
 	// editor integration
 #ifdef _EDITOR
-    virtual void			FillProp		(LPCSTR pref, PropValueVec& values);
+    virtual void			FillProp		(LPCSTR pref, PropItemVec& values);
 #endif
 
 	xrServerEntity			()
@@ -86,7 +86,7 @@ public:
 		owner				= 0;
 		s_gameid			= 0;
 		s_RP				= 0xFE;			// Use supplied coords
-        s_flags				= M_SPAWN_OBJECT_ACTIVE;
+        s_flags.set			(M_SPAWN_OBJECT_ACTIVE,TRUE);
 		ZeroMemory			(s_name,		sizeof(string64));
 		ZeroMemory			(s_name_replace,sizeof(string64));
         o_Angle.set			(0.f,0.f,0.f);
@@ -99,7 +99,7 @@ public:
 
 // Some preprocessor help
 #ifdef _EDITOR
-#define xrSE_EDITOR_METHODS	virtual void FillProp(LPCSTR pref, PropValueVec& values);
+#define xrSE_EDITOR_METHODS	virtual void FillProp(LPCSTR pref, PropItemVec& values);
 #else
 #define xrSE_EDITOR_METHODS	
 #endif
