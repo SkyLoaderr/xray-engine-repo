@@ -43,5 +43,5 @@ void xrMU_Model::calc_materials	()
 		it--;
 	}
 
-	clMsg	("model '%s' - %d subdivisions",m_name,m_subdivs.size());
+	clMsg	("model '%s' - %d subdivisions",*m_name,m_subdivs.size());
 }

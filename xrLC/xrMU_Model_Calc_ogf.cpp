@@ -63,10 +63,10 @@ void xrMU_Model::calc_ogf()
 					TRY				(pOGF->_BuildFace(V0,V1,V2));
 					V0.UV.clear();	V1.UV.clear();	V2.UV.clear();
 				}
-			} catch (...) {  clMsg("* ERROR: MU2OGF, model %s, *faces*",m_name); }
+			} catch (...) {  clMsg("* ERROR: MU2OGF, model %s, *faces*",*m_name); }
 		} catch (...)
 		{
-			clMsg("* ERROR: MU2OGF, 1st part, model %s",m_name);
+			clMsg("* ERROR: MU2OGF, 1st part, model %s",*m_name);
 		}
 
 		try {
@@ -75,7 +75,7 @@ void xrMU_Model::calc_ogf()
 			pOGF->Stripify		();
 		} catch (...)
 		{
-			clMsg	("* ERROR: MU2OGF, 2nd part, model %s",m_name);
+			clMsg	("* ERROR: MU2OGF, 2nd part, model %s",*m_name);
 		}
 
 		it->ogf		=	pOGF;
