@@ -75,13 +75,13 @@ void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
 
     UI->Command(COMMAND_DESTROY);
 
-//	fraTopBar->Parent       = 0;
-//	fraLeftBar->Parent      = 0;
-//	fraBottomBar->Parent    = 0;
+	fraTopBar->Parent       = 0;
+	fraLeftBar->Parent      = 0;
+	fraBottomBar->Parent    = 0;
 
-	xr_delete(fraLeftBar);
     xr_delete(fraTopBar);
     xr_delete(fraBottomBar);
+	xr_delete(fraLeftBar);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
