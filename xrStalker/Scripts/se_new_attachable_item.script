@@ -7,7 +7,11 @@ class "CSE_NewAttachableItem"				(cse_alife_item)
 function CSE_NewAttachableItem:__init		(section) super(section)
 	log							("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	// vector
-	self._vector				= vector():set(0,0,0)
+	self._vector0				= vector():set(0,0,0)
+	self._vector1				= vector():set(0,0,0)
+	self._vector2				= vector():set(0,0,0)
+	self._vector3				= vector():set(0,0,0)
+	self._vector4				= vector():set(0,0,0)
 	// flags16
 	self._flag16				= flags16()
 	self._flag16:zero			()
@@ -24,7 +28,11 @@ function CSE_NewAttachableItem:STATE_Write	(packet)
 	log							("CSE_NewAttachableItem::STATE_Write called!")
 	cse_alife_item.STATE_Write	(self,packet)
 	// vector
-	packet:w_vec3				(self._vector)
+	packet:w_vec3				(self._vector0)
+	packet:w_vec3				(self._vector1)
+	packet:w_vec3				(self._vector2)
+	packet:w_vec3				(self._vector3)
+	packet:w_vec3				(self._vector4)
 	// flags16
 	packet:w_u16				(self._flag16:get())
     // flags32
@@ -35,7 +43,11 @@ function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	log							("CSE_NewAttachableItem::STATE_Read called!")
 	cse_alife_item.STATE_Read	(self,packet,size)
 	// vector
-	packet:r_vec3				(self._vector)
+	packet:r_vec3				(self._vector0)
+	packet:r_vec3				(self._vector1)
+	packet:r_vec3				(self._vector2)
+	packet:r_vec3				(self._vector3)
+	packet:r_vec3				(self._vector4)
 	// flags16
 	self._flag16:assign			(packet:r_u16())
 	// flags32
@@ -46,7 +58,11 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	log							("CSE_NewAttachableItem::FillProps called!")
 	cse_alife_item.FillProps	(self,pref,items)
 	// vector
-	properties_helper():create_vector(items,"script\\vector\\0",self._vector)
+	properties_helper():create_vector(items,"script\\vector\\0",self._vector0)
+	properties_helper():create_vector(items,"script\\vector\\1",self._vector1,-1)
+	properties_helper():create_vector(items,"script\\vector\\2",self._vector2,-10,10)
+	properties_helper():create_vector(items,"script\\vector\\3",self._vector3,-10,10,0.5)
+	properties_helper():create_vector(items,"script\\vector\\4",self._vector4,-10,10,0.5,4)
 	// flags16
 	properties_helper():create_flag16(items,"script\\flags16\\0",self._flag16,1)
 	properties_helper():create_flag16(items,"script\\flags16\\1",self._flag16,2)
