@@ -78,8 +78,13 @@ void	CRenderTarget::phase_accumulator()
 	float		L_mag			= L_clr.magnitude()/_sqrt(3.f);
 	float		L_gray			= (L_clr.x + L_clr.y + L_clr.z)/3.f;
 	float		L_brightness	= (L_max+L_mag+L_gray)/3.f;		// maximal brightness at dot(L,N)=1
-	float		L_clip			= (4.f / 255.f) / (L_brightness);
-	s32			A_clip			= _max(4,iFloor(L_clip*255.f));
+	s32			A_clip;
+	if (L_brightness<EPS_S)		A_clip	= 254;
+	else						
+	{
+		float		L_clip			= 4.f / L_brightness;
+		A_clip						= _max(4,iFloor(L_clip));
+	}
 
 	// Render
 	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_ALPHAREF,			A_clip	));
