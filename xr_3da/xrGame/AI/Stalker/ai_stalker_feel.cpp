@@ -576,7 +576,7 @@ void CAI_Stalker::vfUpdateVisibilityBySensitivity()
 				m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
 				m_dwLastEnemySearch		= 0;
 				int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
-				if (iIndex == -1) {
+				if (iIndex != -1) {
 					m_tpaDynamicObjects[iIndex].tSavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 					m_tpaDynamicObjects[iIndex].dwNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 					m_tpaDynamicObjects[iIndex].tMySavedPosition	= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
