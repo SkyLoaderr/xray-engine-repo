@@ -83,7 +83,7 @@ void			ISpatial_DB::initialize(Fbox& BB)
 	f_bounds				= _max(_max(bbd.x,bbd.y),bbd.z);
 	rt_insert_object		= NULL;
 	m_root					= _node_create();
-	m_root->_init			(NULL,BB);
+	m_root->_init			(NULL);
 }
 ISpatial_NODE*	ISpatial_DB::_node_create		()
 {
