@@ -1,0 +1,22 @@
+-- File:        UI_MULTIPLAYER_CREATE_MAP_TAB.SCRIPT
+-- Description: Map Tab for Multiplayer Create Server dialog
+-- Created:     02.12.2004
+-- Author:      Serhiy 0. Vynnychenk0
+-- Mail         narrator@gsc-game.com
+--
+
+class "create_map_tab" (ui_multiplayer_create_base_tab.multiplayer_create_base_tab)
+
+function create_map_tab:__init() super()
+	self:InitControls()
+	self:InitCallbacks()
+end
+
+function create_map_tab:__finalize()
+end
+
+function create_map_tab:InitConrols()
+end
+
+function create_map_tab:InitCallbacks()
+end

@@ -1,0 +1,23 @@
+-- File:        UI_MULTIPLAYER_CREATE_BASE_TAB.SCRIPT
+-- Description: Base tab for Multiplayer Create Server Dialog
+-- Created:     02.12.2004
+-- Author:      Serhiy 0. Vynnychenk0
+-- Mail:        narrator@gsc-game.com
+--
+-- Copyright 2004 GSC Game World
+--
+
+class "multiplayer_crate_base_tab" (CUIScriptWnd)
+
+function multiplayer_create_base_tab:__init() super()
+
+end
+
+function multiplayer_create_base_tab:__finalize()
+end
+
+function multiplayer_create_base_tab:InitConrols(x_pos, y_pos, caption)
+end
+
+function multiplayer_create_base_tab:InitCallbacks()
+end
