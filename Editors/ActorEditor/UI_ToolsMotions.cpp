@@ -90,13 +90,14 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
         	if (-1==idx)	for (int k=0; k<MAX_PARTS; k++) m_BPPlayCache[k] = M->Name();
             else			m_BPPlayCache[idx] = M->Name();
             m_pBlend		= 0;
+
 			for (int k=0; k<MAX_PARTS; k++){
             	if (!m_BPPlayCache[k].IsEmpty()){
                 	CMotionDef* D = PKinematics(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
                     CBlend* B=0;
                     if (D){
-                    	B = D->PlayCycle(PKinematics(m_pVisual),k,(idx==k)?true:false,0,0);
-                        if (idx==k) m_pBlend = B;
+                    	B = D->PlayCycle(PKinematics(m_pVisual),k,(idx==k)?!(D->flags&esmNoMix):FALSE,0,0);
+						if (idx==k) m_pBlend = B;
                     }
     	    	}
             }        

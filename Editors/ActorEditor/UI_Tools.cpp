@@ -213,6 +213,7 @@ void CActorTools::SelectPreviewObject(bool bClear){
 
 void CActorTools::GetStatTime(float& a, float& b, float& c)
 {
+/*
 	if (m_RenderObject.IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down&&m_RenderObject.m_pBlend){
     	a = 0;
 		b = m_RenderObject.m_pBlend->timeTotal/m_RenderObject.m_pBlend->speed;
@@ -233,6 +234,7 @@ void CActorTools::GetStatTime(float& a, float& b, float& c)
             c = 0;
         }
     }
+*/
 }
 //---------------------------------------------------------------------------
 
