@@ -315,11 +315,11 @@ VOID CDeflector::Light()
 				{
 					DWORD pixel	= lm.pSurface	[y*s_x+x];
 					DWORD r		= RGBA_GETRED	(pixel);
-					if (_abs(s32(r)-s32(_r))>1)	{ bCompress=FALSE; break; }
+					if (_abs(s32(r)-s32(_r))>2)	{ bCompress=FALSE; break; }
 					DWORD g		= RGBA_GETGREEN	(pixel);
-					if (_abs(s32(g)-s32(_g))>1)	{ bCompress=FALSE; break; }
+					if (_abs(s32(g)-s32(_g))>2)	{ bCompress=FALSE; break; }
 					DWORD b		= RGBA_GETBLUE	(pixel);
-					if (_abs(s32(b)-s32(_b))>1)	{ bCompress=FALSE; break; }
+					if (_abs(s32(b)-s32(_b))>2)	{ bCompress=FALSE; break; }
 				}
 				if (!bCompress) break;
 			}
