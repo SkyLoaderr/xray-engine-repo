@@ -52,8 +52,8 @@ void	CRenderTarget::phase_combine	()
 	{
 		u32		Offset;
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
-		float	_w					= float(Device.dwWidth)/4;
-		float	_h					= float(Device.dwHeight)/4;
+		float	_w					= float(Device.dwWidth)/2;
+		float	_h					= float(Device.dwHeight)/2;
 
 		// Draw quater-screen quad textured with our direct-shadow-map-image
 		{
