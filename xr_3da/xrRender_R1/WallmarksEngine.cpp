@@ -94,7 +94,7 @@ void AddTri(CDB::TRI* pTri, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
 	}
 }
 
-void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallmark	&W, CFrustum &F)
+void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
 {
 	CDB::TRI*	T			= sml_collector.getT()+t;
 	if (T->dummy)			return;
@@ -109,7 +109,7 @@ void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallm
 	sml_poly_src.push_back	(v_data[v_ids[2]]);
 	sml_poly_dest.clear		();
 	
-	sPoly* P = F.ClipPoly	(sml_poly_src, sml_poly_dest);
+	sPoly* P = sml_clipper.ClipPoly	(sml_poly_src, sml_poly_dest);
 	
 	if (P) {
 		// Create vertices and triangulate poly (tri-fan style triangulation)
@@ -143,7 +143,7 @@ void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallm
 			test_normal.mknormal	(v_data[v_ids[0]],v_data[v_ids[1]],v_data[v_ids[2]]);
 			float cosa				= test_normal.dotproduct(sml_normal);
 			if (cosa<EPS)			continue;
-			RecurseTri				(adj,mView,W,F);
+			RecurseTri				(adj,mView,W);
 		}
 	}
 }
@@ -163,7 +163,7 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 	mView.mulA			(mScale);
 }
 
-void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, ref_shader hShader, float sz)
+void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector &contact_point, ref_shader hShader, float sz)
 {
 	// query for polygons in bounding box
 	// calculate adjacency
@@ -235,10 +235,20 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	marks.push_back			(W);
 }
 
+void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, ref_shader hShader, float sz)
+{
+	// Physics may add wallmarks in parallel with rendering
+	lock.Enter				();
+	AddWallmark_internal	(pTri,contact_point,hShader,sz);
+	lock.Leave				();
+}
+
 extern float r_ssaDISCARD;
 void CWallmarksEngine::Render()
 {
 	if (marks.empty())			return;
+
+	lock.Enter	();				// Physics may add wallmarks in parallel with rendering
 
 	// Projection and xform
 	float _43					= Device.mProject._43;
@@ -308,4 +318,6 @@ void CWallmarksEngine::Render()
 	// Projection
 	Device.mProject._43			= _43;
 	RCache.set_xform_project	(Device.mProject);
+
+	lock.Leave();	// Physics may add wallmarks in parallel with rendering
 }

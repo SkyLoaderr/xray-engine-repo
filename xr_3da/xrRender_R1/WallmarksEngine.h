@@ -27,9 +27,12 @@ private:
 	xrXRC							xrc;
 	CDB::Collector					sml_collector;
 	xr_vector<u32>					sml_adjacency;
+
+	xrCriticalSection				lock;
 private:
 	void		BuildMatrix			(Fmatrix &dest, float invsz, const Fvector& from);
 	void		RecurseTri			(u32 T,	Fmatrix &mView, wallmark	&W);
+	void		AddWallmark_internal(CDB::TRI* tri, const Fvector &contact_point, ref_shader hTexture, float sz);
 
 	wallmark*	wm_allocate			(ref_shader&	S	);
 	void		wm_render			(wallmark*	W, FVF::LIT* &V);
