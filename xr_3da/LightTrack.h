@@ -15,44 +15,44 @@ class	CROS_impl			: public IRender_ObjectSpecific
 {
 public:
 	struct	Item			{
-		u32					frame_touched	;	// to track creation & removal
-		light*				source			;	// 
-		collide::ray_cache	cache			;	//
-		float				test			;	// note range: (-1[no]..1[yes])
-		float				energy			;	//
+		u32					frame_touched		;	// to track creation & removal
+		light*				source				;	// 
+		collide::ray_cache	cache				;	//
+		float				test				;	// note range: (-1[no]..1[yes])
+		float				energy				;	//
 	};
 	struct	Light			{
-		light*				source			;
-		float				energy			;
-		Fcolor				color			;
+		light*				source				;
+		float				energy				;
+		Fcolor				color				;
 	};
 public:
 	// general
-	u32						MODE			;
-	u32						dwFrame			;
+	u32						MODE				;
+	u32						dwFrame				;
 
 	// 
-	xr_vector<Item>			track			;	// everything what touches
-	xr_vector<Light>		lights			;	// 
+	xr_vector<Item>			track				;	// everything what touches
+	xr_vector<Light>		lights				;	// 
 
-	bool					result			[lt_hemisamples];
-	collide::ray_cache		cache			[lt_hemisamples];
-	collide::ray_cache		cache_sun		;
-	u32		result_count		;
-	u32		result_iterator		;
-	u32		result_frame		;
-	s32		result_sun			;
+	bool					result				[lt_hemisamples];
+	collide::ray_cache		cache				[lt_hemisamples];
+	collide::ray_cache		cache_sun			;
+	s32						result_count		;
+	u32						result_iterator		;
+	u32						result_frame		;
+	s32						result_sun			;
 public:
-	u32		shadow_gen_frame	;
-	u32		shadow_recv_frame	;
-	int		shadow_recv_slot	;
+	u32						shadow_gen_frame	;
+	u32						shadow_recv_frame	;
+	int						shadow_recv_slot	;
 public:
-	float	hemi_value			;
-	float	hemi_smooth			;
-	float	sun_value			;
-	float	sun_smooth			;
+	float					hemi_value			;
+	float					hemi_smooth			;
+	float					sun_value			;
+	float					sun_smooth			;
 
-	Fvector	approximate			;
+	Fvector					approximate			;
 public:
 	virtual	void			force_mode			(u32 mode)	;
 	virtual float			get_luminocity		()			;
