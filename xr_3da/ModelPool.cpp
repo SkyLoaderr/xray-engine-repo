@@ -215,6 +215,9 @@ IRender_Visual* CModelPool::Instance_Find(LPCSTR N)
 
 IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 {
+#ifdef _EDITOR
+	if (!name||!name[0])	return 0;
+#endif
 	string1024 low_name;	R_ASSERT(xr_strlen(name)<sizeof(low_name));
 	strcpy(low_name,name);	strlwr(low_name);
 	if (strext(low_name))	*strext(low_name)=0;

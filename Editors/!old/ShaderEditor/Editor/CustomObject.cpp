@@ -212,8 +212,10 @@ bool CCustomObject::FrustumSelect(int flag, const CFrustum& frustum){
 bool CCustomObject::GetSummaryInfo(SSceneSummary* inf)
 {
 	Fbox bb; 
-    if (GetBox(bb))
-		inf->bbox.merge(bb);
+    if (GetBox(bb)){
+        inf->bbox.modify(bb.min);
+        inf->bbox.modify(bb.max);
+    }
     return true;
 }
 

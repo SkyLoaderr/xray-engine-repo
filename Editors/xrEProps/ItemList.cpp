@@ -443,7 +443,8 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
     	Surface->Font->Color= (TColor)prop->prop_color;
         DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
         if (miDrawThumbnails->Checked&&prop->m_Flags.is(ListItem::flDrawThumbnail)){ 
-            R.top			+= tvItems->LineHeight-4;
+            R.top			+=	tvItems->LineHeight-4;
+            R.left 			= 	R.Right-(R.bottom-R.top);
             if (!prop->OnDrawThumbnail.empty())
             	prop->OnDrawThumbnail(prop->Key(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
         }

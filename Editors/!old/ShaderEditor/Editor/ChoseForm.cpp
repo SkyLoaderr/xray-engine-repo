@@ -93,7 +93,7 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
 		int item_cnt				= _GetItemCount(select_item.c_str(),',');
     	dest 						= (select_item==NONE_CAPTION)?0:select_item.c_str();
 	    m_LastSelection				= select_item;
-        return 						item_cnt;
+        return 						item_cnt?item_cnt:1;
     }
     return 0;
 }
@@ -113,7 +113,7 @@ void __fastcall TfrmChoseItem::FillItems()
 {
 	form->tvItems->IsUpdating		= true;
     tvItems->Items->Clear			();
-    FHelper.AppendObject			(tvItems,NONE_CAPTION,false,true);
+    if (!bMultiSel) 				FHelper.AppendObject(tvItems,NONE_CAPTION,false,true);
     ChooseItemVecIt  it				= m_Items.begin();
     ChooseItemVecIt  _E				= m_Items.end();
     for (; it!=_E; it++)   			AppendItem(&(*it));
@@ -142,20 +142,10 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
     	    FHelper.MakeName(node,0,nm,false);
             select_item += nm+AnsiString(",");
         }
-        select_item.Delete(select_item.Length(),1);
+        if (!select_item.IsEmpty()) select_item.Delete(select_item.Length(),1);
 
-        if (select_item.IsEmpty()){
-            if (tvItems->Selected&&FHelper.IsObject(tvItems->Selected)){
-	    	    FHelper.MakeName(tvItems->Selected,0,select_item,false);
-                Close();
-                ModalResult = mrOk;
-            }else{
-				Msg		("#Select item first.");
-            }
-        }else{
-            Close();
-            ModalResult = mrOk;
-        }
+        Close();
+        ModalResult = mrOk;
     }else{
 	    if (tvItems->Selected&&FHelper.IsObject(tvItems->Selected)){
     	    FHelper.MakeName(tvItems->Selected,0,select_item,false);
