@@ -492,7 +492,7 @@ void CAI_Stalker::SearchEnemy()
 		m_bSearchedForEnemy		= true;
 		m_tPathState			= ePathStateBuildNodePath;
 		Group.m_tpaSuspiciousNodes.clear();
-		Msg						("[%d] : Updating search params",Level().timeServer());
+		//Msg						("[%d] : Updating search params",Level().timeServer());
 	}
 	m_bSearchedForEnemy			= true;
 
