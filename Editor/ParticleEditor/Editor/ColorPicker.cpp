@@ -4,7 +4,6 @@
 #pragma hdrstop
 
 #include "ColorPicker.h"
-#include "D3DUtils.h"
 
 class CTCD{
 public:

@@ -1,10 +1,10 @@
 USEUNIT("xrLC_OptionsEntry.cpp");
-USEFORM("SceneProperties.cpp", frmSceneProperties);
-USEUNIT("edit\FileSystem.cpp");
 USEUNIT("stdafx.cpp");
-USEUNIT("edit\log.cpp");
-USEFORM("LogForm.cpp", frmLog);
-USEUNIT("edit\ColorPicker.cpp");
+USEFORM("Editor\SceneProperties.cpp", frmSceneProperties);
+USEUNIT("Editor\ColorPicker.cpp");
+USEUNIT("Editor\FileSystem.cpp");
+USEUNIT("Editor\Log.cpp");
+USELIB("Lib\ETools.lib");
 //---------------------------------------------------------------------------
 This file is used by the project manager only and should be treated like the project file
 

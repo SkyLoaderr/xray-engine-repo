@@ -21,15 +21,17 @@ public:
 
 extern CLog ELog;
 
-void ENGINE_API __cdecl Msg	(LPCSTR format, ...);
-void ENGINE_API	Log	(LPCSTR msg);
-void ENGINE_API	Log	(LPCSTR msg);
-void ENGINE_API	Log	(LPCSTR msg, LPCSTR 		dop);
-void ENGINE_API	Log	(LPCSTR msg, DWORD			dop);
-void ENGINE_API	Log	(LPCSTR msg, int  			dop);
-void ENGINE_API	Log	(LPCSTR msg, float			dop);
-void ENGINE_API	Log (LPCSTR msg, const Fvector& dop);
-void ENGINE_API	Log	(LPCSTR msg, const Fmatrix& dop);
+#ifdef _EDITOR
+    void ENGINE_API __cdecl Msg	(LPCSTR format, ...);
+    void ENGINE_API	Log	(LPCSTR msg);
+    void ENGINE_API	Log	(LPCSTR msg);
+    void ENGINE_API	Log	(LPCSTR msg, LPCSTR 		dop);
+    void ENGINE_API	Log	(LPCSTR msg, DWORD			dop);
+    void ENGINE_API	Log	(LPCSTR msg, int  			dop);
+    void ENGINE_API	Log	(LPCSTR msg, float			dop);
+    void ENGINE_API	Log (LPCSTR msg, const Fvector& dop);
+    void ENGINE_API	Log	(LPCSTR msg, const Fmatrix& dop);
+#endif
 
 #endif /*_INCDEF_NETDEVICELOG_H_*/
 

@@ -2,9 +2,9 @@
 #pragma hdrstop
 
 #include "SceneProperties.h"
-#include "OneEnvironment.h"
 #include "xrLevel.h"
 #ifdef _LEVEL_EDITOR
+ #include "OneEnvironment.h"
  #include "Scene.h"
  #include "ui_main.h"
  #include "library.h"
@@ -12,7 +12,6 @@
  #include "EditObject.h"
 #else
  #include "Communicate.h"
- #include "library.h"
  #include "ColorPicker.h"
 #endif
 //---------------------------------------------------------------------------
