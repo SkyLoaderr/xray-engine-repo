@@ -16,7 +16,7 @@ enum EFC_Visible {
 
 #include "fixedvector.h"
 
-#define FRUSTUM_MAXPLANES	8
+#define FRUSTUM_MAXPLANES	12
 #define FRUSTUM_P_LEFT		(1<<0)
 #define FRUSTUM_P_RIGHT		(1<<1)
 #define FRUSTUM_P_TOP		(1<<2)
@@ -76,18 +76,18 @@ public:
 
 	u32				getMask				() const { return (1<<p_count)-1; }
 
-	EFC_Visible		testSphere			(Fvector& c, float r, u32& test_mask) const;
-	BOOL			testSphere_dirty	(Fvector& c, float r) const;
-	EFC_Visible		testAABB			(const float* mM, u32& test_mask) const;
-	EFC_Visible		testSAABB			(Fvector& c, float r, const float* mM, u32& test_mask) const;
-	BOOL			testPolyInside_dirty(Fvector* p, int count) const;
+	EFC_Visible		testSphere			(Fvector& c, float r, u32& test_mask)					const;
+	BOOL			testSphere_dirty	(Fvector& c, float r)									const;
+	EFC_Visible		testAABB			(const float* mM, u32& test_mask)						const;
+	EFC_Visible		testSAABB			(Fvector& c, float r, const float* mM, u32& test_mask)	const;
+	BOOL			testPolyInside_dirty(Fvector* p, int count)									const;
 
-	IC BOOL			testPolyInside		(sPoly& src)const
+	IC BOOL			testPolyInside		(sPoly& src)											const
     {
     	sPoly d;
         return !!ClipPoly(src,d);
     }
-   	IC BOOL			testPolyInside		(Fvector* p, int count)const
+   	IC BOOL			testPolyInside		(Fvector* p, int count)									const
     {
     	sPoly src(p,count);
         return testPolyInside(src);
