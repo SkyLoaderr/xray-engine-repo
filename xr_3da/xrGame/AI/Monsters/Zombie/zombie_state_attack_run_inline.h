@@ -38,7 +38,8 @@ void CStateZombieAttackRunAbstract::execute()
 	// проверить необходимость перестройки пути
 	bool b_need_rebuild = false;
 	
-	
+	object->CMonsterMovement::set_try_min_time	(false);
+
 	// check time interval
 	TTime time_current = Level().timeServer();
 	if (m_time_path_rebuild + 100 + 50.f * dist < time_current) {
