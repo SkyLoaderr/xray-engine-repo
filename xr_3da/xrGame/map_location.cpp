@@ -21,6 +21,7 @@ SMapLocation::SMapLocation():animation(&icon_color)
 	object_id					= 0xffff;
 	marker_show					= false;
 	big_icon					= false;
+	global_map_text				= false;
 	icon_color					= 0xffffffff;
 	dynamic_manifestation		= false;
 	type_flags.zero				();

@@ -46,8 +46,9 @@ const char * const	GLOBAL_MAP_W_LTX			= "width";
 const char * const	GLOBAL_MAP_H_LTX			= "height";
 const char * const	GLOBAL_MAP_LOCATIONS_LTX	= "global_map_locations";
 
-const u32			activeLocalMapColor			= 0xff00ff00;
-const u32			inactiveLocalMapColor		= 0xff0000ff;
+const u32			activeLocalMapColor			= 0xffc80000;
+const u32			inactiveLocalMapColor		= 0xff438cd1;
+const u32			inactiveSmallLocalMapColor	= 0x00000000;
 const u32			ourLevelMapColor			= 0xffffffff;
 const int			globalMapButtonWidth		= 128;
 const int			globalMapButtonHeight		= 256;
@@ -349,7 +350,7 @@ void CUIMapWnd::InitGlobalMapObjectives()
 		R_ASSERT				(l.mapSpot);
 		l.obj.clear				();
 		l.mapSpot->SetColor		(inactiveLocalMapColor);
-		l.smallFrame->SetColor	(inactiveLocalMapColor);
+		l.smallFrame->SetColor	(inactiveSmallLocalMapColor);
 	}
 
 	// Добавить отметки на карте, которые актер помнит в info_portions
@@ -370,8 +371,9 @@ void CUIMapWnd::InitGlobalMapObjectives()
 				{
 					mapIt = m_LocalMaps.find(map_location.level_name);
 					if (m_LocalMaps.end() != mapIt)
-					{
-						mapIt->second.obj.push_back(map_location.text);
+				 	{
+						if(map_location.global_map_text)
+							mapIt->second.obj.push_back(map_location.text);
 						RECT r	= mapIt->second.smallFrame->GetWndRect();
 						r.top	= globalMapButtonHeight - r.top;
 						mapIt->second.visible = !(r.left == m_rDefault.left && r.top == m_rDefault.top);
