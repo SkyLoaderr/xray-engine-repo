@@ -323,14 +323,9 @@ void CCar::ParseDefinitions()
 
 	///////////////////////////car properties///////////////////////////////
 
-	m_power_on_min_rpm  =		ini->r_float("car_definition","engine_min_power");
-	m_power_on_min_rpm	*=		(0.8f*1000.f);
 
 	m_max_power			=		ini->r_float("car_definition","engine_power");
 	m_max_power			*=		(0.8f*1000.f);
-
-	//m_max_power			/=		m_driving_wheels.size();
-	//m_power_on_min_rpm	/=		m_driving_wheels.size();
 
 	m_max_rpm			=		ini->r_float("car_definition","max_engine_rpm");
 	m_max_rpm			*=		(1.f/60.f*2.f*M_PI);
@@ -339,9 +334,12 @@ void CCar::ParseDefinitions()
 	m_min_rpm			=		ini->r_float("car_definition","idling_engine_rpm");
 	m_min_rpm			*=		(1.f/60.f*2.f*M_PI);
 
-	m_best_rpm			=		ini->r_float("car_definition","optimal_engine_rpm");
-	m_best_rpm			*=		(1.f/60.f*2.f*M_PI);//
+	m_power_rpm			=		ini->r_float("car_definition","max_power_rpm");
+	m_power_rpm			*=		(1.f/60.f*2.f*M_PI);//
 	
+	m_torque_rpm		=		ini->r_float("car_definition","max_torque_rpm");
+	m_torque_rpm		*=		(1.f/60.f*2.f*M_PI);//
+
 	b_auto_switch_transmission= !!ini->r_bool("car_definition","auto_transmission");
 	m_auto_switch_rpm.set(ini->r_fvector2("car_definition","auto_transmission_rpm"));
 	m_auto_switch_rpm.mul((1.f/60.f*2.f*M_PI));
@@ -772,10 +770,17 @@ void CCar::TransmisionDown()
 }
 void CCar::InitParabola()
 {
-	m_b=(m_power_on_min_rpm-m_max_power)/
-		(-1.f/2.f/m_best_rpm*m_min_rpm*m_min_rpm+m_min_rpm-m_best_rpm/2.f);
-	m_a=-m_b/m_best_rpm/2.f;
-	m_c=m_max_power-m_b*m_best_rpm/2.f;
+	float t1=(m_power_rpm-m_torque_rpm);
+	float t2=m_max_power/m_power_rpm;
+	m_c = t2* (3.f*m_power_rpm - 4.f*m_torque_rpm)/t1/2.f;
+	t2/=m_power_rpm;
+	m_a = -t2/t1/2.f;
+	m_b = t2*m_torque_rpm/t1;
+
+	//m_c = m_max_power* (3.f*m_power_rpm - 4.f*m_torque_rpm)/(m_power_rpm-m_torque_rpm)/2.f/m_power_rpm;
+	//m_a = -m_max_power/(m_power_rpm-m_torque_rpm)/m_power_rpm/m_power_rpm/2.f;
+	//m_b = m_max_power*m_torque_rpm/(m_power_rpm-m_torque_rpm)/m_power_rpm/m_power_rpm;
+
 }
 void CCar::PhTune(dReal step)
 {
@@ -876,7 +881,7 @@ return false;
 
 float CCar::Parabola(float rpm)
 {
-	float value=m_a*rpm*rpm+m_b*rpm+m_c;
+	float value=(m_a*rpm*rpm+m_b*rpm+m_c)*rpm;
 	if(value<0.f) return 0.f;
 	return value;
 }
@@ -886,7 +891,7 @@ float CCar::EnginePower()
 
 	if(m_current_rpm<m_min_rpm)
 	{
-		if(b_starting) return m_power_on_min_rpm;
+		if(b_starting) return Parabola(m_min_rpm);
 	
 	}
 	else

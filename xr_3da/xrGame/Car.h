@@ -217,7 +217,7 @@ private:
 	Fvector2				m_auto_switch_rpm;//lo,hi
 	/////////////////////////////////////////////////////////////
 
-	float					m_power_on_min_rpm;
+
 	float					m_max_power;//best rpm
 
 	/////////////////////porabola
@@ -229,7 +229,8 @@ private:
 
 	float					m_max_rpm;
 	float					m_min_rpm;
-	float					m_best_rpm;//max power
+	float					m_power_rpm;//max power
+	float					m_torque_rpm;//max torque
 
 
 	float					m_steering_speed;
