@@ -1413,6 +1413,9 @@
 					Name="Server"
 					Filter="">
 					<File
+						RelativePath=".\client_id.h">
+					</File>
+					<File
 						RelativePath=".\game_base_space.h">
 					</File>
 					<File
