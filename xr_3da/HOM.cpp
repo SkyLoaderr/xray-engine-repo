@@ -92,8 +92,8 @@ void CHOM::Load			()
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	m_ZB.clear			();
 
-	m_VS				= Device.Shader._CreateVS	(FVF::L	);
-	m_Shader			= Device.Shader.Create		("zfill");
+	m_VS				= Device.Shader._CreateVS	(FVF::F_L	);
+	m_Shader			= Device.Shader.Create		("zfill"	);
 	
 	// Debug
 /*
@@ -192,6 +192,7 @@ void CHOM::Render_DB	(CFrustum& base)
 		{
 			// Control skipping
 			occTri& T		= m_pTris	[it->id];
+			m_ZB.push_back	(it->id);
 
 			if (T.skip)		{ T.skip--; continue; }
 			DWORD	next	= ::Random.randI(7,30);
@@ -247,13 +248,13 @@ void CHOM::Render_ZB	()
 	DWORD							vOffset;
 	FVF::L*		V					= (FVF::L*) Device.Streams.Vertex.Lock	(vCount,m_VS->dwStride, vOffset);
 
-	vector<occTri*>::iterator	I	= m_ZB.begin	();
-	vector<occTri*>::iterator	E	= m_ZB.end		();
+	vector<DWORD>::iterator	I		= m_ZB.begin	();
+	vector<DWORD>::iterator	E		= m_ZB.end		();
 
 	DWORD C							= D3DCOLOR_RGBA	(0xff,0,0,0xff);
 	for (; I!=E; I++)
 	{
-		CDB::TRI& t					= m_pModel->get_tris() [(*I)->id];
+		CDB::TRI& t					= m_pModel->get_tris() [*I];
 		V->set	(*t.verts[0],C);	V++;
 		V->set	(*t.verts[1],C);	V++;
 		V->set	(*t.verts[2],C);	V++;
