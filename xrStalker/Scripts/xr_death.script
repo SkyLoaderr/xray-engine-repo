@@ -39,7 +39,7 @@ function action_process_death:death_callback(victim, who)
     else
         printf("[%s] killed by [Unknown]", victim:name())
     end
-	xr_logic.try_switch_to_another_section(self.object, self.a)
+	xr_logic.try_switch_to_another_section(victim, self.a)
 	self.a.logic = nil    
 end
 
