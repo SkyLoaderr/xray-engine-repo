@@ -30,17 +30,23 @@ void CLocatorAPI::Register		(LPCSTR name, DWORD vfs, DWORD ptr, DWORD size, BOOL
 	desc.bCompressed	= bCompressed;
 	files.insert		(desc); 
 	
-	// Try to register folder
+	// Try to register folder(s)
+	string256			temp;	strcpy(temp,desc.name);
 	string256			folder;
-	_splitpath			(desc.name, 0, folder, 0, 0 );
-	if (!Exist(folder))	
+	while (temp[0]) 
 	{
-		desc.name			= strdup(folder);
-		desc.vfs			= 0xffffffff;
-		desc.ptr			= 0;
-		desc.size			= 0;
-		desc.bCompressed	= FALSE;
-		files.insert		(desc); 
+		_splitpath			(temp, 0, folder, 0, 0 );
+		if (!Exist(folder))	
+		{
+			desc.name			= strdup(folder);
+			desc.vfs			= 0xffffffff;
+			desc.ptr			= 0;
+			desc.size			= 0;
+			desc.bCompressed	= FALSE;
+			files.insert		(desc); 
+		}
+		strcpy(temp,folder);
+		if (strlen(temp))		temp[strlen(temp)-1]=0;
 	}
 }
 

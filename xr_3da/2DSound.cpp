@@ -49,15 +49,15 @@ LPDIRECTSOUNDBUFFER C2DSound::LoadWaveAs2D(const char *pName)
 	LPDIRECTSOUNDBUFFER		pBuf = NULL;
 
 	// Fill caps structure
-    dsBD.dwSize		= sizeof(dsBD);
-    dsBD.dwFlags	= DSBCAPS_STATIC | DSBCAPS_CTRLVOLUME | DSBCAPS_LOCDEFER;
+    dsBD.dwSize				= sizeof(dsBD);
+    dsBD.dwFlags			= DSBCAPS_STATIC | DSBCAPS_CTRLVOLUME | DSBCAPS_LOCDEFER;
 
 	// Load file into memory and parse WAV-format
-	CFileStream		data	(pName);
-	WAVEFORMATEX*	pFormat;
-	DWORD			dwLen;
-	void *			wavedata = ParseWave(&data,pFormat,dwLen);
-	if (!wavedata)	return NULL;
+	destructor<CStream>		data	(Engine.FS.Open(pName));
+	WAVEFORMATEX*			pFormat;
+	DWORD					dwLen;
+	void *					wavedata = ParseWave(&data(),pFormat,dwLen);
+	if (!wavedata)			return NULL;
 
 	// Parsing OK, converting to best format
 	WAVEFORMATEX			wfxdest;
