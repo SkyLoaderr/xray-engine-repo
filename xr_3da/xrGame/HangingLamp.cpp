@@ -11,16 +11,16 @@
 
 CHangingLamp::CHangingLamp	()
 {
-
+	fHealth					= 100.f;
 	light_bone_idx			= -1;
 	lanim					= 0;
 	light_render			= ::Render->light_create();
+	light_render->set_type	(IRender_Light::SPOT);
 	light_render->set_shadow(true);
 }
 
 CHangingLamp::~CHangingLamp	()
 {
-	
 	::Render->light_destroy	(light_render);
 }
 
@@ -40,9 +40,9 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	light_bone_idx			= lamp->spot_bone[0]?PKinematics(pVisual)->LL_BoneID(lamp->spot_bone):-1;
 	light_render->set_range	(lamp->spot_range);
 	light_render->set_color	(color_get_R(lamp->color),color_get_G(lamp->color),color_get_B(lamp->color));
-	light_render->set_active(true);
 	light_render->set_cone	(lamp->spot_cone_angle);
 	light_render->set_texture(lamp->spot_texture[0]?lamp->spot_texture:0);
+	light_render->set_active(true);
 
 	R_ASSERT				(pVisual&&PKinematics(pVisual));
 	PKinematics(pVisual)->PlayCycle("idle");
@@ -78,13 +78,15 @@ void CHangingLamp::OnVisible()
 {
 	inherited::OnVisible	();
 
-	Fmatrix& M = (light_bone_idx>=0)?PKinematics(pVisual)->LL_GetTransform(light_bone_idx):clXFORM();
-	light_render->set_direction	(M.k);
-	light_render->set_position	(M.c);
-	if (lanim){
-		int frame;
-		u32 clr		= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
-		light_render->set_color(color_get_B(clr),color_get_G(clr),color_get_R(clr));
+	if (Alive()){
+		Fmatrix& M = (light_bone_idx>=0)?PKinematics(pVisual)->LL_GetTransform(light_bone_idx):clXFORM();
+		light_render->set_direction	(M.k);
+		light_render->set_position	(M.c);
+		if (lanim){
+			int frame;
+			u32 clr		= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
+			light_render->set_color(color_get_B(clr),color_get_G(clr),color_get_R(clr));
+		}
 	}
 }
 
@@ -92,7 +94,10 @@ void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector 
 {
 	//inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
 	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
-	light_render->set_active(false);
+	if (element==light_bone_idx)	fHealth = 0.f;
+	else							fHealth -= P*0.2f;
+	if (!Alive())
+		light_render->set_active(false);
 }
 
 void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
@@ -110,7 +115,6 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	B.set_callback		(m_pPhysicsShell->GetBonesCallback(),E);
 	m_pPhysicsShell->add_Element	(E);
 
-	//if (root_e)
 	{
 		CPhysicsJoint* J= P_create_Joint(CPhysicsJoint::full_control,root_e,E);
 		J->SetAnchorVsSecondElement	(0,0,0);
@@ -127,10 +131,9 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 
 void CHangingLamp::CreateBody()
 {
-	m_pPhysicsShell				= P_create_Shell();
+	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->set_Kinematics(PKinematics(pVisual));
 	AddElement			(0,PKinematics(pVisual)->LL_BoneRoot());
 	m_pPhysicsShell->mXFORM.set(svTransform);
-	m_pPhysicsShell->SetAirResistance(0.002f,
-		0.3f);
+	m_pPhysicsShell->SetAirResistance(0.002f, 0.3f);
 }

@@ -19,8 +19,11 @@ private:
 	IRender_Light*	light_render;
 	CLAItem*		lanim;
 	
+	float			fHealth;
+
 	void			AddElement		(CPhysicsElement* root_e, int id);
 	void			CreateBody		();
+	bool			Alive			(){return fHealth>=0.f;}
 public:
 					CHangingLamp	();
 	virtual			~CHangingLamp	();
