@@ -114,7 +114,8 @@ extern "C"{
 			return (-1);
 		
 
-		if ( !_Connect(pSQLServer,sName, user_name, pwd) ){
+		if ( !_Connect(pSQLServer,sName, user_name, pwd) )
+		{
 			pSQLServer->Release();
 			return (-1);
 		}
@@ -135,14 +136,15 @@ extern "C"{
 	{
 		USES_CONVERSION;
 
-
 		LPSQLDMOSERVER pSQLServer;
 		if (! GetSQLServer(&pSQLServer) )
 			return (-1);
 
 		if ( !_Connect(pSQLServer,sName, user_name, pwd) )
+		{
 			pSQLServer->Release();
 			return (-1);
+		}
 
 		BSTR sRes;
 		if( FAILED(pSQLServer->DetachDB(A2W(db_name),&sRes) ) )
@@ -165,7 +167,8 @@ extern "C"{
 		if ( !GetSQLServer(&pSQLServer) )
 			return (-1);
 
-		if ( !_Connect(pSQLServer, sName, user_name, pwd) ){
+		if ( !_Connect(pSQLServer, sName, user_name, pwd) )
+		{
 			pSQLServer->Release();
 			return (-1);
 		}
