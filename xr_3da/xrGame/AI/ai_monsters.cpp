@@ -87,10 +87,7 @@ void CAISelectorBase::vfInit()
 {
 	m_fResult = 0.f;
 	m_tEnemySurroundDirection.set(0,0,0);
-	Fvector tTemp0, tTemp1;
-	Level().AI.UnpackPosition(tTemp0,m_tpCurrentNode->p0);
-	Level().AI.UnpackPosition(tTemp1,m_tpCurrentNode->p1);
-	m_tCurrentPosition.lerp(tTemp1,tTemp1,.5f);
+	m_tCurrentPosition = Level().AI.tfGetNodeCenter(m_tpCurrentNode);
 	m_iAliveMemberCount = taMemberPositions.size();
 	m_fFireDispersionAngle = PI/10;
 }

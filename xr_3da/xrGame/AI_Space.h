@@ -130,6 +130,14 @@ public:
 		return 	((P.x>=N.p0.x)&&(P.x<=N.p1.x))&&	// X inside
 				((P.z>=N.p0.z)&&(P.z<=N.p1.z));		// Z inside
 	}
+	
+	Fvector	tfGetNodeCenter(DWORD dwNodeID);
+	Fvector	tfGetNodeCenter(NodeCompressed *tpNode);
+	
+	float ffGetDistanceBetweenNodeCenters(DWORD dwNodeID0, DWORD dwNodeID1);
+	float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, DWORD dwNodeID1);
+	float ffGetDistanceBetweenNodeCenters(DWORD dwNodeID0, NodeCompressed *tpNode1);
+	float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1);
 
 	// Device dependance
 	virtual void	OnDeviceCreate	();

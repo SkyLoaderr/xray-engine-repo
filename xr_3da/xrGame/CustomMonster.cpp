@@ -532,13 +532,7 @@ void CCustomMonster::OnRender()
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
 	{
-		DWORD dwNodeID = Group.m_tpaSuspiciousNodes[i].dwNodeID;
-		NodeCompressed *tpNode = Level().AI.Node(dwNodeID);
-		Fvector tP0, tP1;
-		Level().AI.UnpackPosition(tP0,tpNode->p0);
-		Level().AI.UnpackPosition(tP1,tpNode->p1);
-		tP0.add(tP1);
-		tP0.mul(.5f);
+		Fvector tP0 = Level().AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
 		tP0.y += .35f;
 		if (Group.m_tpaSuspiciousNodes[i].dwSearched == 0)		
 			Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));

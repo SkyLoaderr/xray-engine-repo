@@ -109,12 +109,7 @@ void CAI_Zombie::FreeHunting()
 		SelectorFreeHunting.m_tDirection.normalize_safe();
 		vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
 		vfBuildPathToDestinationPoint(0);
-//		Fvector tTemp0,tTemp1;
-//		Level().AI.UnpackPosition(tTemp0,Level().AI.Node(AI_Path.DestNode)->p0);
-//		Level().AI.UnpackPosition(tTemp1,Level().AI.Node(AI_Path.DestNode)->p1);
-//		tSavedEnemyPosition.add(tTemp0,tTemp1);
-//		tSavedEnemyPosition.mul(.5f);
-//		GoToPointViaSubnodes(tSavedEnemyPosition);
+//		GoToPointViaSubnodes(tSavedEnemyPosition = Level().Ai.tfGetNodeCenter(AI_Path.DestNode));
 	}
 	else
 		if (ps_Size() > 1)
@@ -122,12 +117,7 @@ void CAI_Zombie::FreeHunting()
 				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 				SelectorFreeHunting.m_tDirection.normalize_safe();
 				vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
-				Fvector tTemp0,tTemp1;
-				Level().AI.UnpackPosition(tTemp0,Level().AI.Node(AI_Path.DestNode)->p0);
-				Level().AI.UnpackPosition(tTemp1,Level().AI.Node(AI_Path.DestNode)->p1);
-				tSavedEnemyPosition.add(tTemp0,tTemp1);
-				tSavedEnemyPosition.mul(.5f);
-				GoToPointViaSubnodes(tSavedEnemyPosition);
+//				GoToPointViaSubnodes(tSavedEnemyPosition = Level().Ai.tfGetNodeCenter(AI_Path.DestNode));
 				//vfBuildPathToDestinationPoint(0);
 			}
 			else {
@@ -137,12 +127,7 @@ void CAI_Zombie::FreeHunting()
 					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 					SelectorFreeHunting.m_tDirection.normalize_safe();
 					vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
-					Fvector tTemp0,tTemp1;
-					Level().AI.UnpackPosition(tTemp0,Level().AI.Node(AI_Path.DestNode)->p0);
-					Level().AI.UnpackPosition(tTemp1,Level().AI.Node(AI_Path.DestNode)->p1);
-					tSavedEnemyPosition.add(tTemp0,tTemp1);
-					tSavedEnemyPosition.mul(.5f);
-					GoToPointViaSubnodes(tSavedEnemyPosition);
+//					GoToPointViaSubnodes(tSavedEnemyPosition = Level().Ai.tfGetNodeCenter(AI_Path.DestNode));
 					//vfBuildPathToDestinationPoint(0);
 				}
 			}

@@ -172,11 +172,7 @@ void CAI_Zombie::net_Import(NET_Packet* P)
 void CAI_Zombie::Exec_Movement	( float dt )
 {
 	if ((vPosition.x < -10000.f) || (vPosition.y < -10000.f) || (vPosition.z < -10000.f)) {
-		Fvector tTemp0,tTemp1;
-		Level().AI.UnpackPosition(tTemp0,AI_Node->p0);
-		Level().AI.UnpackPosition(tTemp1,AI_Node->p1);
-		vPosition.add(tTemp0,tTemp1);
-		vPosition.mul(.5f);
+		vPosition = Level().AI.tfGetNodeCenter(AI_Node);
 		Msg("%s",cName());
 	}
 	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);

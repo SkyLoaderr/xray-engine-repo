@@ -58,3 +58,37 @@ float	CAI_Space::u_SqrDistance2Node(const Fvector& P, const NodeCompressed* Node
 	return	best;
 }
 
+Fvector	CAI_Space::tfGetNodeCenter(DWORD dwNodeID)
+{
+	return(tfGetNodeCenter(Node(dwNodeID)));
+}
+
+Fvector	CAI_Space::tfGetNodeCenter(NodeCompressed *tpNode)
+{
+	Fvector tP0, tP1;
+	UnpackPosition(tP0, tpNode->p0);
+	UnpackPosition(tP1, tpNode->p1);
+	tP0.add(tP1);
+	tP0.mul(.5f);
+	return(tP0);
+}
+
+float CAI_Space::ffGetDistanceBetweenNodeCenters(DWORD dwNodeID0, DWORD dwNodeID1)
+{
+	return(ffGetDistanceBetweenNodeCenters(Node(dwNodeID0),Node(dwNodeID1)));
+}
+
+float CAI_Space::ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, DWORD dwNodeID1)
+{
+	return(ffGetDistanceBetweenNodeCenters(tpNode0,Node(dwNodeID1)));
+}
+
+float CAI_Space::ffGetDistanceBetweenNodeCenters(DWORD dwNodeID0, NodeCompressed *tpNode1)
+{
+	return(ffGetDistanceBetweenNodeCenters(Node(dwNodeID0),tpNode1));
+}
+
+float CAI_Space::ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1)
+{
+	return(tfGetNodeCenter(tpNode0).distance_to(tfGetNodeCenter(tpNode1)));
+}

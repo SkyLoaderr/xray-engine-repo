@@ -28,13 +28,23 @@ DEFINE_VECTOR(CEntity*,EntityVec,EntityIt);
 
 typedef struct tagSSearchPlace {
 	DWORD	dwNodeID:24;
-	DWORD	dwSearched:8;
+	DWORD	dwSearched:2;
+	DWORD	dwGroup:6;
 	float	fCost;
 } SSearchPlace;
+
+typedef struct tagSSearchGroup {
+	BYTE		cIndex;
+	Fvector		tPoint;
+	BYTE		cGroup;
+} SSearchGroup;
 
 typedef svector<Fvector,MAX_GROUP_SIZE>				MemberPlacement;
 typedef svector<DWORD,MAX_GROUP_SIZE>				MemberNodes;
 typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousNodes;
+typedef svector<SSearchGroup,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousGroups;
+typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousForces;
+
 class CGroup
 {
 public:
@@ -59,6 +69,9 @@ public:
 	bool						m_bLessCoverLook;
 	DWORD						m_dwLastViewChange;
 	SuspiciousNodes				m_tpaSuspiciousNodes;
+	SuspiciousGroups			m_tpaSuspiciousGroups;
+	SuspiciousForces			m_tpaSuspiciousForces;
+
 	// Constructor
 								CGroup				();
 	

@@ -566,16 +566,10 @@ bool CAI_Soldier::bfAddEnemyToDynamicObjects(CAI_Soldier *tpSoldier)
 
 bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, bool bRotation)
 {
-//	Fvector tDirection, tNodePosition, tMyDirection, tP0, tP1;
+//	Fvector tDirection, tNodePosition = Level().Ai.tfGetNodeCenter(iTestNode), tMyDirection, tP0, tP1;
 //	float fEyeFov = ffGetFov()*PI/180.f, fEyeRange = ffGetRange();
 //
 //	tMyDirection.setHP(r_torso_current.yaw,r_torso_current.pitch);
-//
-//	NodeCompressed *tpNode = Level().AI.Node(iTestNode);
-//	Level().AI.UnpackPosition(tP0,tpNode->p0);
-//	Level().AI.UnpackPosition(tP1,tpNode->p1);
-//	tNodePosition.add(tP0,tP1);
-//	tNodePosition.mul(.5f);
 //
 //	tDirection.sub(tNodePosition,vPosition);
 //	float fDistance = tDirection.magnitude();
@@ -589,14 +583,9 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //	bool bVisible = fAlpha <= fEyeFov/2.f + EPS_L;
 //	return(bVisible);
 
-	Fvector tDirection, tNodePosition, tP0, tP1;
+	Fvector tDirection, tNodePosition = Level().AI.tfGetNodeCenter(iTestNode);
 	float fEyeFov = ffGetFov()*PI/180.f, fEyeRange = ffGetRange();
-
 	NodeCompressed *tpNode = Level().AI.Node(iTestNode);
-	Level().AI.UnpackPosition(tP0,tpNode->p0);
-	Level().AI.UnpackPosition(tP1,tpNode->p1);
-	tNodePosition.add(tP0,tP1);
-	tNodePosition.mul(.5f);
 
 	tDirection.sub(vPosition,tNodePosition);
 	float fDistance = tDirection.magnitude();

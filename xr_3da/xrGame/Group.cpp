@@ -83,16 +83,8 @@ void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 			vCentroid.add	(P);
 			if (E!=Me)	{
 				CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
-				if (M) {
-					Fvector	P1,P2,C;
-
-					NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
-					Level().AI.UnpackPosition	(P1,NC->p0);
-					Level().AI.UnpackPosition	(P2,NC->p1);
-					C.lerp						(P1,P2,.5f);
-
-					MP.push_back				(C);
-				}
+				if (M)
+					MP.push_back				(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 			}
 		}
 	}
@@ -138,15 +130,9 @@ void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement
 			if (E!=Me) {
 				CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 				if (M) {
-					const Fvector&	P = E->Position();
-					Fvector	_P1,_P2,C;
-					NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
-					Level().AI.UnpackPosition(_P1,NC->p0);
-					Level().AI.UnpackPosition(_P2,NC->p1);
-					C.lerp(_P1,_P2,.5f);
-					P0.push_back(P);
+					P0.push_back(E->Position());
 					P1.push_back(M->AI_NodeID);
-					P2.push_back(C);
+					P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 					P3.push_back(M->AI_Path.DestNode);
 				}
 			}
@@ -198,16 +184,8 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 				vCentroid.add	(P);
 				if (E!=Me)	{
 					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
-					if (M) {
-						Fvector	P1,P2,C;
-
-						NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
-						Level().AI.UnpackPosition	(P1,NC->p0);
-						Level().AI.UnpackPosition	(P2,NC->p1);
-						C.lerp						(P1,P2,.5f);
-
-						MP.push_back				(C);
-					}
+					if (M)
+						MP.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 				}
 			}
 		}
@@ -255,15 +233,9 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 				if (E!=Me) {
 					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 					if (M) {
-						const Fvector&	P = E->Position();
-						Fvector	_P1,_P2,C;
-						NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
-						Level().AI.UnpackPosition(_P1,NC->p0);
-						Level().AI.UnpackPosition(_P2,NC->p1);
-						C.lerp(_P1,_P2,.5f);
-						P0.push_back(P);
+						P0.push_back(E->Position());
 						P1.push_back(M->AI_NodeID);
-						P2.push_back(C);
+						P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 						P3.push_back(M->AI_Path.DestNode);
 					}
 				}
@@ -324,16 +296,8 @@ void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me
 				vCentroid.add	(P);
 				if (E!=Me)	{
 					CCustomMonster* M			= dynamic_cast<CCustomMonster*>(E);
-					if (M) {
-						Fvector	P1,P2,C;
-
-						NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
-						Level().AI.UnpackPosition	(P1,NC->p0);
-						Level().AI.UnpackPosition	(P2,NC->p1);
-						C.lerp						(P1,P2,.5f);
-
-						MP.push_back				(C);
-					}
+					if (M)
+						MP.push_back				(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 				}
 			}
 		}
@@ -349,16 +313,8 @@ void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me
 			vCentroid.add	(P);
 			if (E!=Me)	{
 				CCustomMonster* M			= dynamic_cast<CCustomMonster*>(E);
-				if (M) {
-					Fvector	P1,P2,C;
-
-					NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
-					Level().AI.UnpackPosition	(P1,NC->p0);
-					Level().AI.UnpackPosition	(P2,NC->p1);
-					C.lerp						(P1,P2,.5f);
-
-					MP.push_back				(C);
-				}
+				if (M)
+					MP.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 			}
 		}
 	}
@@ -418,15 +374,9 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 				if (E!=Me) {
 					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 					if (M) {
-						const Fvector&	P = E->Position();
-						Fvector	_P1,_P2,C;
-						NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
-						Level().AI.UnpackPosition(_P1,NC->p0);
-						Level().AI.UnpackPosition(_P2,NC->p1);
-						C.lerp(_P1,_P2,.5f);
-						P0.push_back(P);
+						P0.push_back(E->Position());
 						P1.push_back(M->AI_NodeID);
-						P2.push_back(C);
+						P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 						P3.push_back(M->AI_Path.DestNode);
 					}
 				}
@@ -447,15 +397,9 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 			if (E!=Me) {
 				CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 				if (M) {
-					const Fvector&	P = E->Position();
-					Fvector	_P1,_P2,C;
-					NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
-					Level().AI.UnpackPosition(_P1,NC->p0);
-					Level().AI.UnpackPosition(_P2,NC->p1);
-					C.lerp(_P1,_P2,.5f);
-					P0.push_back(P);
+					P0.push_back(E->Position());
 					P1.push_back(M->AI_NodeID);
-					P2.push_back(C);
+					P2.push_back(Level().AI.tfGetNodeCenter(M->AI_Path.DestNode));
 					P3.push_back(M->AI_Path.DestNode);
 				}
 			}

@@ -331,11 +331,7 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 
 	// end point
 	CAI_Space&	AI			= Level().AI;
-	NodeCompressed* Node	= AI.Node(Nodes.back());
-	Fvector P0,P1;
-	AI.UnpackPosition		(P0,Node->p0);
-	AI.UnpackPosition		(P1,Node->p1);
-	Fvector Last; Last.lerp	(P0,P1,.5f);
+	Fvector		Last		= AI.tfGetNodeCenter(Nodes.back());
 
 	// segmentation
 	PContour					Ccur,Cnext;
