@@ -254,7 +254,7 @@ s16	q_P		(float v)
 }
 u8	q_N		(float v)
 {
-	int		_v	= clampr(iFloor(((v+1)*.5f)*255.f + .5f), 0, 255);
+	int		_v	= clampr(iFloor(((v+1.f)*.5f)*255.f + .5f), 0, 255);
 	return	u8	(_v);
 }
 s16	q_tc	(float v)
@@ -275,18 +275,19 @@ struct	vertHW_1W
 	s16			_P		[4];
 	u8			_N_I	[4];
 	s16			_tc		[2];
-	void set(Fvector3& P, Fvector3& N, Fvector2& tc, int index)
+	void set(Fvector3& P, Fvector3 N, Fvector2& tc, int index)
 	{
-		_P[0]	= q_P(P.x);
-		_P[1]	= q_P(P.y);
-		_P[2]	= q_P(P.z);
-		_P[3]	= q_P(1);
-		_N_I[0]	= q_N(N.x);
-		_N_I[1]	= q_N(N.y);
-		_N_I[2]	= q_N(N.z);
-		_N_I[3]	= u8(index);
-		_tc[0]	= q_tc(tc.x);
-		_tc[1]	= q_tc(tc.y);
+		N.normalize	();
+		_P[0]		= q_P(P.x);
+		_P[1]		= q_P(P.y);
+		_P[2]		= q_P(P.z);
+		_P[3]		= q_P(1);
+		_N_I[0]		= q_N(N.x);
+		_N_I[1]		= q_N(N.y);
+		_N_I[2]		= q_N(N.z);
+		_N_I[3]		= u8(index);
+		_tc[0]		= q_tc(tc.x);
+		_tc[1]		= q_tc(tc.y);
 	}
 };
 static	D3DVERTEXELEMENT9 dwDecl_2W	[] =	// 32bytes
@@ -305,8 +306,10 @@ struct	vertHW_2W
 	u8			_N0_w	[4];
 	u8			_N1		[4];
 	s16			_tc_i	[4];
-	void set(Fvector3& P0, Fvector3& P1, Fvector3& N0, Fvector3& N1, Fvector2& tc, int index0, int index1, float w)
+	void set(Fvector3& P0, Fvector3& P1, Fvector3 N0, Fvector3 N1, Fvector2& tc, int index0, int index1, float w)
 	{
+		N0.normalize	();
+		N1.normalize	();
 		_P0[0]		= q_P(P0.x);
 		_P0[1]		= q_P(P0.y);
 		_P0[2]		= q_P(P0.z);
