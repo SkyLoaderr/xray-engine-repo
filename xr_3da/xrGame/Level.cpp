@@ -55,6 +55,7 @@ CLevel::~CLevel()
 // Game interface ////////////////////////////////////////////////////
 int	CLevel::get_RPID(LPCSTR name)
 {
+	/*
 	// Gain access to string
 	LPCSTR	params = pLevel->ReadSTRING("respawn_point",name);
 	if (0==params)	return -1;
@@ -68,6 +69,7 @@ int	CLevel::get_RPID(LPCSTR name)
 	svector<Fvector4,maxRP>	&rp = Level().get_team(team).RespawnPoints;
 	for (int i=0; i<(int)(rp.size()); i++)
 		if (pos.similar(rp[i],EPS_L))	return i;
+	*/
 	return -1;
 }
 
