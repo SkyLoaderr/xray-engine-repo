@@ -133,7 +133,9 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 		}
 		break;
 	case DIK_GRAVE:
-		if (g_pGameLevel && !bHold) Hide();
+		if (bShift) strcat(editor,"~");
+		else
+			if (g_pGameLevel && !bHold) Hide();
 		break;
 	case DIK_PRIOR:
 		scroll_delta++;
@@ -168,25 +170,46 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_RSHIFT:
 		bShift = true;
 		break;
-	case DIK_0:
-		if (bShift) strcat(editor,")");
-		else		strcat(editor,"0");
+	case DIK_1:
+		if (bShift) strcat(editor,"!");
+		else		strcat(editor,"1");
+		break;
+	case DIK_2:
+		if (bShift) strcat(editor,"@");
+		else		strcat(editor,"2");
+		break;
+	case DIK_3:
+		if (bShift) strcat(editor,"#");
+		else		strcat(editor,"3");
+		break;
+	case DIK_4:
+		if (bShift) strcat(editor,"$");
+		else		strcat(editor,"4");
+		break;
+	case DIK_5:
+		if (bShift) strcat(editor,"%");
+		else		strcat(editor,"5");
+		break;
+	case DIK_6:
+		if (bShift) strcat(editor,"^");
+		else		strcat(editor,"6");
+		break;
+	case DIK_7:
+		if (bShift) strcat(editor,"&");
+		else		strcat(editor,"7");
+		break;
+	case DIK_8:
+		if (bShift) strcat(editor,"*");
+		else		strcat(editor,"8");
 		break;
 	case DIK_9:
 		if (bShift) strcat(editor,"(");
 		else		strcat(editor,"9");
 		break;
-	case DIK_1:	strcat(editor,"1");	break;
-	case DIK_2:	strcat(editor,"2");	break;
-	case DIK_3:	strcat(editor,"3");	break;
-	case DIK_4:	strcat(editor,"4");	break;
-	case DIK_5:
-		if (bShift) strcat(editor,"%");
-		else		strcat(editor,"5");
+	case DIK_0:
+		if (bShift) strcat(editor,")");
+		else		strcat(editor,"0");
 		break;
-	case DIK_6:	strcat(editor,"6");	break;
-	case DIK_7:	strcat(editor,"7");	break;
-	case DIK_8:	strcat(editor,"8");	break;
 	case DIK_A:	strcat(editor,"a");	break;
 	case DIK_B:	strcat(editor,"b");	break;
 	case DIK_C:	strcat(editor,"c");	break;
