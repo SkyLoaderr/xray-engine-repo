@@ -376,7 +376,7 @@ void xrMergeGraphs(LPCSTR name)
 	}
 
 	dwOffset					*= sizeof(CSE_ALifeGraph::SGraphVertex);
-	l_dwPointOffset				= F.size() + dwOffset + tGraphHeader.dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge) + sizeof(u32);
+	l_dwPointOffset				= F.size() + dwOffset + tGraphHeader.dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge);
 	u32							l_dwStartPointOffset = l_dwPointOffset;
 	{
 		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
@@ -396,7 +396,7 @@ void xrMergeGraphs(LPCSTR name)
 			(*i).second->vfSaveEdges(F);
 		}
 	}
-	R_ASSERT2						(l_dwStartPointOffset == F.size() + 4,"Graph file format is corrupted");
+	R_ASSERT2						(l_dwStartPointOffset == F.size(),"Graph file format is corrupted");
 	save_data						(l_tpLevelPoints,F,false);
 	
 	string256						l_caFileName;
