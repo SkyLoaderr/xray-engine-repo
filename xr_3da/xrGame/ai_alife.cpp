@@ -368,7 +368,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonster	*tpALifeMonster)
 		u16					wNeighbourCount = (u16)tpaGraph[tGraphID].dwNeighbourCount;
 		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tGraphID].dwEdgeOffset);
 		int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonster->m_tSpawnID].ucRoutePointCount;
-		vector<u16>			&wpaVertexes	= m_tpSpawnPoints[tpALifeMonster->m_tSpawnID].wpRouteGraphPoints;
+		GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonster->m_tSpawnID].wpRouteGraphPoints;
 		int					iBranches		= 0;
 		bool bOk = false;
 		for (int i=0; i<wNeighbourCount; i++)

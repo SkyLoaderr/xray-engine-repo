@@ -80,31 +80,45 @@ public:
 class CALifeCorp : public CALifeItem {
 public:
 	typedef	CALifeItem inherited;
-	
-	EInjureType					m_tInjureType;
+
+	CORP_VECTOR					m_tpCorps;
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save		(tMemoryStream);
-		tMemoryStream.write	(&m_tInjureType,	sizeof(m_tInjureType));
+		tMemoryStream.Wdword(m_tpCorps.size());
+		CORP_IT it			= m_tpCorps.begin();
+		CORP_IT E			= m_tpCorps.end();
+		for ( ; it != E; it++) {
+            tMemoryStream.write	(&((*it).tInjureType),	sizeof((*it).tInjureType));
+			tMemoryStream.Wvector((*it).tPosition);
+            tMemoryStream.Wvector((*it).tAngles);
+		}
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		inherited::Load		(tFileStream);
-		tFileStream.Read	(&m_tInjureType,	sizeof(m_tInjureType));
+		m_tpCorps.resize	(tFileStream.Rdword());
+		CORP_IT it			= m_tpCorps.begin();
+		CORP_IT E			= m_tpCorps.end();
+		for ( ; it != E; it++) {
+            tFileStream.Read	(&((*it).tInjureType),	sizeof((*it).tInjureType));
+            tFileStream.Rvector	((*it).tPosition);
+            tFileStream.Rvector	(((*it).tAngles));
+		}
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
-		m_tInjureType = eInjureTypeDummy;
+		m_tpCorps.clear();
 	}
 };
 
-class CALifeMonster : public CALifeCorp {
+class CALifeMonster : public CALifeItem {
 public:
-	typedef	CALifeCorp inherited;
+	typedef	CALifeItem inherited;
 	
 	_GRAPH_ID						m_tNextGraphID;
 	_GRAPH_ID						m_tPrevGraphID;
@@ -168,26 +182,38 @@ public:
 		// calling inherited
 		inherited::Save(tMemoryStream);
 		// saving items
-		tMemoryStream.Wdword	(m_tpItemIDs.size());
-		for (int i=0; i<(int)m_tpItemIDs.size(); i++)
-			tMemoryStream.write	(&(m_tpItemIDs[i]),sizeof(m_tpItemIDs[i]));
+		{
+			tMemoryStream.Wdword	(m_tpItemIDs.size());
+			OBJECT_IT it			= m_tpItemIDs.begin();
+			OBJECT_IT E				= m_tpItemIDs.end();
+			for ( ; it != E; it++)
+				tMemoryStream.write	(it,sizeof(*it));
+		}
 		// saving events
-		tMemoryStream.Wdword(m_tpEvents.size());
-		for (int i=0; i<(int)m_tpEvents.size(); i++) {
-			SPersonalEvent &tPersonalEvent = m_tpEvents[i];
-			tMemoryStream.write	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
-			tMemoryStream.write	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
-			tMemoryStream.write	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
-			tMemoryStream.Wdword(tPersonalEvent.tpItemIDs.size());
-			for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
-				tMemoryStream.write	(&(tPersonalEvent.tpItemIDs[j]),sizeof(tPersonalEvent.tpItemIDs[j]));
-			tMemoryStream.write	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
-			tMemoryStream.write	(&tPersonalEvent.tPerception,		sizeof(tPersonalEvent.tPerception));
+		{
+			tMemoryStream.Wdword(m_tpEvents.size());
+			PERSONAL_EVENT_IT it	= m_tpEvents.begin();
+			PERSONAL_EVENT_IT E		= m_tpEvents.end();
+			for ( ; it != E; it++) {
+				SPersonalEvent &tPersonalEvent = *it;
+				tMemoryStream.write	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
+				tMemoryStream.write	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
+				tMemoryStream.write	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
+				tMemoryStream.Wdword(tPersonalEvent.tpItemIDs.size());
+				for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
+					tMemoryStream.write	(&(tPersonalEvent.tpItemIDs[j]),sizeof(tPersonalEvent.tpItemIDs[j]));
+				tMemoryStream.write	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
+				tMemoryStream.write	(&tPersonalEvent.tPerception,		sizeof(tPersonalEvent.tPerception));
+			}
 		}
 		// saving tasks
-		tMemoryStream.Wdword(m_tpTaskIDs.size());
-		for (int i=0; i<(int)m_tpTaskIDs.size(); i++)
-			tMemoryStream.write	(&(m_tpTaskIDs[i]),sizeof(m_tpTaskIDs[i]));
+		{
+			tMemoryStream.Wdword(m_tpTaskIDs.size());
+			TASK_IT it				= m_tpTaskIDs.begin();
+			TASK_IT E				= m_tpTaskIDs.end();
+			for ( ; it != E; it++)
+				tMemoryStream.write	(it,sizeof(*it));
+		}
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
@@ -195,26 +221,38 @@ public:
 		// calling inherited
 		inherited::Load(tFileStream);
 		// loading items
-		m_tpItemIDs.resize(tFileStream.Rdword());
-		for (int i=0; i<(int)m_tpItemIDs.size(); i++)
-			tFileStream.Read	(&(m_tpItemIDs[i]),sizeof(m_tpItemIDs[i]));
+		{
+			m_tpItemIDs.resize(tFileStream.Rdword());
+			OBJECT_IT it			= m_tpItemIDs.begin();
+			OBJECT_IT E				= m_tpItemIDs.end();
+			for ( ; it != E; it++)
+				tFileStream.Read	(it,sizeof(*it));
+		}
 		// loading events
-		m_tpEvents.resize(tFileStream.Rdword());
-		for (int i=0; i<(int)m_tpEvents.size(); i++) {
-			SPersonalEvent &tPersonalEvent = m_tpEvents[i];
-			tFileStream.Read	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
-			tFileStream.Read	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
-			tFileStream.Read	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
-			tPersonalEvent.tpItemIDs.resize(tFileStream.Rdword());
-			for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
-				tFileStream.Read(&(tPersonalEvent.tpItemIDs[j]),	sizeof(tPersonalEvent.tpItemIDs[j]));
-			tFileStream.Read	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
-			tFileStream.Read	(&tPersonalEvent.tPerception,		sizeof(tPersonalEvent.tPerception));
+		{
+			m_tpEvents.resize(tFileStream.Rdword());
+			PERSONAL_EVENT_IT it	= m_tpEvents.begin();
+			PERSONAL_EVENT_IT E		= m_tpEvents.end();
+			for ( ; it != E; it++) {
+				SPersonalEvent &tPersonalEvent = *it;
+				tFileStream.Read	(&tPersonalEvent.tEventID,			sizeof(tPersonalEvent.tEventID));
+				tFileStream.Read	(&tPersonalEvent.tGameTime,			sizeof(tPersonalEvent.tGameTime));
+				tFileStream.Read	(&tPersonalEvent.tTaskID,			sizeof(tPersonalEvent.tTaskID));
+				tPersonalEvent.tpItemIDs.resize(tFileStream.Rdword());
+				for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
+					tFileStream.Read(&(tPersonalEvent.tpItemIDs[j]),	sizeof(tPersonalEvent.tpItemIDs[j]));
+				tFileStream.Read	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
+				tFileStream.Read	(&tPersonalEvent.tPerception,		sizeof(tPersonalEvent.tPerception));
+			}
 		}
 		// loading tasks
-		m_tpTaskIDs.resize(tFileStream.Rdword());
-		for (int i=0; i<(int)m_tpTaskIDs.size(); i++)
-			tFileStream.Read	(&(m_tpTaskIDs[i]),sizeof(m_tpTaskIDs[i]));
+		{
+			m_tpTaskIDs.resize(tFileStream.Rdword());
+			TASK_IT it				= m_tpTaskIDs.begin();
+			TASK_IT E				= m_tpTaskIDs.end();
+			for ( ; it != E; it++)
+				tFileStream.Read	(it,sizeof(*it));
+		}
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)

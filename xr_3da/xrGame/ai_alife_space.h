@@ -102,6 +102,12 @@ namespace ALife {
 		int							iHealth;
 		EPerception					tPerception;
 	} SPersonalEvent;
+	
+	typedef struct tagSALifeCorp {
+		EInjureType					tInjureType;
+		Fvector						tPosition;					
+		Fvector						tAngles;					
+	} SALifeCorp;
 
 	typedef struct tagSSpawnHeader {
 		u32							dwVersion;
@@ -129,6 +135,7 @@ namespace ALife {
 		_TIME_ID					tTimeID;
 	} SALifeHeader;
 
+	DEFINE_VECTOR	(SALifeCorp,	CORP_VECTOR,			CORP_IT);
 	DEFINE_VECTOR	(SSpawnPoint,	SPAWN_VECTOR,			SPAWN_IT);
 	DEFINE_VECTOR	(SPersonalEvent,PERSONAL_EVENT_VECTOR,	PERSONAL_EVENT_IT);
 
