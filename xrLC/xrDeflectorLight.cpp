@@ -6,6 +6,7 @@
 #include "std_classes.h"
 #include "xrDXTC.h"
 #include "tga.h"
+#include "xrImage_Resampler.h"
 
 void Jitter_Select(UVpoint* &Jitter, DWORD& Jcount)
 {
@@ -216,6 +217,43 @@ IC DWORD	rms_diff	(DWORD a, DWORD b)
 	if (a>b)	return a-b;
 	else		return b-a;
 }
+IC BOOL		rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
+{
+	if ((0==w) || (0==h))	return FALSE;
+
+	// scale down(lanczos3) and up (bilinear, as video board)
+	LPDWORD	pScaled		= LPDWORD(malloc(w*h*4));
+	LPDWORD	pRestored	= LPDWORD(malloc(lm.dwWidth*lm.dwHeight*4));
+	imf_Process	(pScaled,	w,h,lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3	);
+	imf_Process	(pRestored,	lm.dwWidth,lm.dwHeight,pScaled,w,h,imf_filter		);
+	_FREE		(pScaled);
+
+	// compare them
+	const DWORD limit = 255-BORDER;
+	for (DWORD y=0; y<lm.dwHeight; y++)
+	{
+		LPDWORD	scan_lmap	= lm.pSurface+y*lm.dwWidth;
+		LPDWORD	scan_rest	= pRestored+y*lm.dwWidth;
+		for (DWORD x=0; x<lm.dwWidth; x++)
+		{
+			DWORD pixel	= scan_lmap[x];
+			if (RGBA_GETALPHA(pixel)>=limit)	
+			{
+				DWORD pixel_r	= scan_rest[x];
+				if (rms_diff(RGBA_GETRED(pixel_r),RGBA_GETRED(pixel))>rms)		goto fail;
+				if (rms_diff(RGBA_GETGREEN(pixel_r),RGBA_GETGREEN(pixel))>rms)	goto fail;
+				if (rms_diff(RGBA_GETBLUE(pixel_r),RGBA_GETBLUE(pixel))>rms)	goto fail;
+			}
+		}
+	}
+	_FREE	(pRestored);
+	return	TRUE;
+
+fail:
+	_FREE	(pRestored);
+	return	FALSE;
+}
+
 VOID CDeflector::Light()
 {
 	HASH	hash;
