@@ -15,8 +15,9 @@ struct SArtefactOrder : public IPureSerializeObject {
 	u32				m_count;
 	u32				m_price;
 
-	virtual void	load		(NET_Packet &packet);
-	virtual void	save		(NET_Packet &packet);
-	virtual void	load		(IReader &packet);
-	virtual void	save		(IWriter &packet);
+	IC				SArtefactOrder	(){}
+	virtual void	load			(NET_Packet &packet);
+	virtual void	save			(NET_Packet &packet);
+	virtual void	load			(IReader &packet);
+	virtual void	save			(IWriter &packet);
 };
