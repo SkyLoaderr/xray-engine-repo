@@ -116,25 +116,5 @@ void CAI_Stalker::DropItemSendMessage(CObject *O)
 //PDA functions
 void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 {
-	EPdaMsg pda_msg = ePdaMsgAccept;
-
-	if(GetPDA()->NeedToAnswer(who))
-	{
-		switch(msg)
-		{
-		case ePdaMsgTrade:
-			pda_msg = ePdaMsgAccept;
-			break;
-		case ePdaMsgNeedHelp:
-			pda_msg = ePdaMsgDecline;
-			break;
-		case ePdaMsgGoAway:
-			pda_msg = ePdaMsgDeclineRude;
-			break;
-		}
-		//реакция на сообщение
-		//SendPdaMessage(who, pda_msg, info_index);
-	}
-
 	CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
 }
