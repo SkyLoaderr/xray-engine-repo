@@ -39,6 +39,7 @@ CObject::CObject		( )
 
 	cfModel						= NULL;
 	pVisual						= NULL;
+	sh_Shader					= NULL;
 
 	bEnabled					= true;
 	bVisible					= true;
@@ -62,8 +63,8 @@ CObject::~CObject( )
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 
-	Device.Shader.Delete		(sh_Shader);
-	Render.Models.Delete		(pVisual);
+	if (sh_Shader)				Device.Shader.Delete		(sh_Shader);
+	if (pVisual)				Render.Models.Delete		(pVisual);
 	_DELETE	( cfModel );
 	_FREE	( ObjectName	);
 	_FREE	( pVisualName	);
