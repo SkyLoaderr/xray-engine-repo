@@ -171,6 +171,7 @@ typedef		aptr<int,_code<int> >		_ptr;
 extern void t_test	();
 int __cdecl main	(int argc, char* argv[])
 {
+	/*
 	{
 		_ptr	p	= (int*)0xABCD;
 		p.dump		();
@@ -179,7 +180,6 @@ int __cdecl main	(int argc, char* argv[])
 	int xf			= f<10>();
 	int x			= factorial<10>::value;
 	u32 a			= ptest<u32,10>::value;
-//	u32 b			= ptest2<u32,10> ();
 
 	DDD				t;
 	t.a				(1);
@@ -189,7 +189,6 @@ int __cdecl main	(int argc, char* argv[])
 	tc->a			(1);
 	tc->a			(1,1);
 
-	/*
 	CTimer			TM;
 	AAA				A;
 	
