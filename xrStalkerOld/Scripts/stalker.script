@@ -141,8 +141,8 @@ function process_task_changing(actor, info)
 	   info == "escape_dynamite_done" or
 
 	   info == "garbage_meetstalker_start" or
-	   info == "garbage_meet_stalker" or
-	   info == "garbage_meetstalker_start" or
+	   info == "garbage_meetstalker_done" or
+	   info == "garbage_meetstalker_die" or
 
 	   info == "agroprom_military_case" or
 	   info == "agroprom_military_case_have" or

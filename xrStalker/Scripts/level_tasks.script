@@ -87,8 +87,15 @@ function proceed(actor)
 	end
 
 	--' GARBAGE
-	if actor:has_info("garbage_meetstalker_start") and
-	   actor:object("garbage_seriy_flash") ~= nil
+	if actor:has_info("garbage_meetstalker_die") then
+		actor:set_task_state(task.fail, "garbage_meet_stalker", 0)
+	end       	
+	if actor:has_info("garbage_meetstalker_done") then
+		actor:set_task_state(task.completed, "garbage_meet_stalker", 0)
+	end       	
+	
+	if actor:dont_has_info("agroprom_gunslinger_band") and
+		actor:object("garbage_seriy_flash") ~= nil 
 	then
 		actor:give_info_portion("agroprom_gunslinger_band")
 	end       	
