@@ -68,12 +68,12 @@ void CRender::level_Unload()
 
 	//*** Sectors
 	// 1.
-	_DELETE					(rmPortals);
+	xr_delete					(rmPortals);
 	pLastSector				= 0;
 	vLastCameraPos.set		(0,0,0);
 	// 2.
 	for (I=0; I<Sectors.size(); I++)
-		_DELETE(Sectors[I]);
+		xr_delete(Sectors[I]);
 	Sectors.clear			();
 	// 3.
 	Portals.clear			();
@@ -87,7 +87,7 @@ void CRender::level_Unload()
 	for (I=0; I<Visuals.size(); I++)
 	{
 		Visuals[I]->Release();
-		_DELETE(Visuals[I]);
+		xr_delete(Visuals[I]);
 	}
 	Visuals.clear			();
 

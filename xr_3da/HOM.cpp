@@ -112,8 +112,8 @@ void CHOM::Unload		()
 	Device.Shader.Delete	(m_Shader);
 	Device.Shader._DeleteVS	(m_VS);
 //	_RELEASE	(m_pDBG);
-	_DELETE		(m_pModel);
-	_FREE		(m_pTris);
+	xr_delete	(m_pModel);
+	xr_free		(m_pTris);
 }
 
 IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
@@ -133,7 +133,7 @@ IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat 
 	int halfwidth  = occ_dim/2;
 	int halfheight = occ_dim/2;
 
-	Ipoint point2;
+	Ivector2 point2;
 	point2.set	(x-halfwidth, halfheight-y);
 
 	float size_y = VIEWPORT_NEAR * tanf( deg2rad(60.f) * 0.5f );

@@ -139,13 +139,13 @@ void CDetailManager::Unload		()
 	
 	for (DetailIt it=objects.begin(); it!=objects.end(); it++){
 		(*it)->Unload();
-		_DELETE		(*it);
+		xr_delete		(*it);
     }
 	objects.clear	();
 	visible[0].clear();
 	visible[1].clear();
 	visible[2].clear();
-	_DELETE			(dtFS);
+	xr_delete			(dtFS);
 }
 
 extern float r_ssaDISCARD;

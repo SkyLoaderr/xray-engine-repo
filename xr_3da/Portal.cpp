@@ -91,7 +91,7 @@ void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 CSector::~CSector()
 {
 	for (int i=0; i<int(tempObjects.size()); i++) 
-		_DELETE(tempObjects[i]);
+		xr_delete(tempObjects[i]);
 	tempObjects.clear();
 }
 
@@ -151,7 +151,7 @@ void CSector::Render(CFrustum &F)
 					if (pV->IsAutomatic())
 					{
 						tempObjects.erase(tempObjects.begin()+i);
-						_DELETE(pV);
+						xr_delete(pV);
 						i--;
 					}
 				}

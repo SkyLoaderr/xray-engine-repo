@@ -40,7 +40,7 @@ CWallmarksEngine::~CWallmarksEngine	()
 	}
 	{
 		for (u32 it=0; it<pool.size(); it++)
-			_DELETE	(pool[it]);
+			xr_delete	(pool[it]);
 		pool.clear	();
 	}
 }
