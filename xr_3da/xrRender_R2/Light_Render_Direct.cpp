@@ -43,9 +43,9 @@ public:
 	void				compute_caster_model	(xr_vector<Fplane>& dest, Fvector3 direction)
 	{
 		// COG
-		Fvector3	cog(0,0,0);
-		for		(int it=0; it<int(points.size()); it++)	cog += points[it];
-		cog		/= float(points.size());
+		Fvector3	cog	= {0,0,0};
+		for			(int it=0; it<int(points.size()); it++)	cog.add	(points[it]);
+		cog.div		(float(points.size()));
 
 		// planes
 		compute_planes	();
@@ -54,14 +54,13 @@ public:
 		for (int it=0; it<int(polys.size()); it++)
 		{
 			_poly&	base		= polys	[it];
-			assert	(base.classify(cog)<0);					// debug
+			VERIFY	(base.classify(cog)<0);					// debug
 
 			int		marker		= (base.planeN.dotproduct(direction)<=0)?-1:1;
 
 			// register edges
 			xr_vector<int>&	plist		= polys[it].points;
-			for (int p=0; p<int(plist.size()); p++)
-			{
+			for (int p=0; p<int(plist.size()); p++)	{
 				_edge	E		(plist[p],plist[ (p+1)%plist.size() ], marker);
 				bool	found	= false;
 				for (int e=0; e<int(edges.size()); e++)	
