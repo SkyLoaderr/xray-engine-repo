@@ -199,7 +199,7 @@ bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append, SPBI
             else						bRes = false;
             O->close();
             O = OBJ->open_chunk(count);
-            pb->Inc();
+            if (pb) pb->Inc();
         }
         OBJ->close();
     }
