@@ -18,12 +18,15 @@ CUIListWnd::CUIListWnd(void)
 	m_bListActivity = true;
 
 	m_iFocusedItem = -1;
-	
+	m_iFocusedItemGroupID = -1;
+
 	m_dwFontColor = 0xFFFFFFFF;
 
 	SetItemHeight(DEFAULT_ITEM_HEIGHT);
 
 	m_bVertFlip = false;
+
+	m_bUpdateMouseMove = false;
 }
 
 CUIListWnd::~CUIListWnd(void)
@@ -142,6 +145,54 @@ bool CUIListWnd::AddItem(const char*  str, void* pData, int value, bool push_fro
 
 	return AddItem(pItem, push_front);
 }
+
+bool CUIListWnd::AddParsedItem(const CUIString &str, const char StartShift, const u32 &MsgColor, 
+							   CGameFont* pHeaderFont, void* pData, int value, bool push_front)
+{
+	bool ReturnStatus = true;
+	const STRING& text = str.m_str;
+	STRING buf;
+
+	u32 last_pos = 0;
+
+	int GroupID = GetSize();
+
+	for(u32 i = 0; i<text.size()-2; ++i)
+	{
+		// '\n' - переход на новую строку
+		if(text[i] == '\\' && text[i+1]== 'n')
+		{	
+			buf.clear();
+			buf.insert(buf.begin(), StartShift, ' ');
+			buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.begin()+i);
+			buf.push_back(0);
+			ReturnStatus &= AddItem(&buf.front(), pData, value, push_front);
+			CUIListItem *LocalItem = GetItem(GetSize() - 1);
+			LocalItem->SetGroupID(GroupID);
+			LocalItem->SetTextColor(MsgColor);
+			LocalItem->SetFont(pHeaderFont);
+			++i;
+			last_pos = i+1;
+		}	
+	}
+
+	if(last_pos<text.size())
+	{
+		buf.clear();
+		buf.insert(buf.begin(), StartShift, ' ');
+		buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.end());
+		buf.push_back(0);
+		AddItem(&buf.front(), pData, value, push_front);
+		GetItem(GetSize() - 1)->SetGroupID(GroupID);
+		CUIListItem *LocalItem = GetItem(GetSize() - 1);
+		LocalItem->SetGroupID(GroupID);
+		LocalItem->SetTextColor(MsgColor);
+		LocalItem->SetFont(pHeaderFont);
+	}
+	
+	return ReturnStatus;
+}
+
 
 void CUIListWnd::RemoveItem(int index)
 {
@@ -294,7 +345,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	
 		if( m_ChildWndList.end() != it)
 		{
-			CUIListItem* pListItem = dynamic_cast<CUIListItem*>(*it);
+			CUIListItem* pListItem2, *pListItem = dynamic_cast<CUIListItem*>(*it);
 			R_ASSERT(pListItem);
 
 			if(CUIListItem::BUTTON_CLICKED == msg)
@@ -304,10 +355,41 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			else if(CUIListItem::BUTTON_FOCUS_RECEIVED == msg)
 			{
 				m_iFocusedItem = pListItem->GetIndex();
+				m_iFocusedItemGroupID = pListItem->GetGroupID();
+
+				// prototype code
+				
+				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+				{
+					pListItem2 = dynamic_cast<CUIListItem*>(*it);
+					if (!pListItem2) continue;
+					if (pListItem2->GetGroupID() == -1) continue;
+					if (pListItem2->GetGroupID() == pListItem->GetGroupID())
+						pListItem2->SetHighlightText(true);
+					else
+						pListItem2->SetHighlightText(false);
+				}
+				// end prototype code
 			}
 			else if(CUIListItem::BUTTON_FOCUS_LOST == msg)
 			{
 				if(pListItem->GetIndex() == m_iFocusedItem) m_iFocusedItem = -1;
+
+				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+				{
+					pListItem2 = dynamic_cast<CUIListItem*>(*it);
+					if (!pListItem2) continue;
+					pListItem2->SetHighlightText(false);
+				}
+				m_bUpdateMouseMove = true;
+
+				/*for (it = m_ChildWndList.begin(); (it != m_ChildWndList.end()) && (m_iFocusedItem == -1); ++it)
+				{
+					pListItem2 = dynamic_cast<CUIListItem*>(*it);
+					if (!pListItem2) continue;
+					if (pWnd != pListItem2)
+						pListItem2->OnMouse(cursor_pos.x - pListItem2->GetWndRect().left, cursor_pos.y - pListItem2->GetWndRect().top, MOUSE_MOVE);
+				}*/
 			}
 		}
 	}
@@ -318,12 +400,24 @@ void CUIListWnd::Draw()
 {
 	CUIWindow::Draw();
 
+	WINDOW_LIST_it it;
+
 	if(m_iFocusedItem != -1 && m_bActiveBackgroundEnable)
 	{
 		RECT rect = GetAbsoluteRect();
-		m_StaticActiveBackground.SetPos(rect.left, rect.top + 
-									(m_iFocusedItem-m_iFirstShownIndex)*GetItemHeight());
-		m_StaticActiveBackground.Render();
+		for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+		{
+			CUIListItem *pListItem2 = dynamic_cast<CUIListItem*>(*it);
+			if (!pListItem2) continue;
+			if (pListItem2->GetGroupID() == -1) continue;
+			if ((pListItem2->GetGroupID() == m_iFocusedItemGroupID) && 
+				((pListItem2->GetIndex() >= m_iFirstShownIndex) && (pListItem2->GetIndex() <= m_iRowNum + m_iFirstShownIndex - 1)))
+			{
+				m_StaticActiveBackground.SetPos(rect.left, rect.top + 
+								(pListItem2->GetIndex() - m_iFirstShownIndex)*GetItemHeight());
+				m_StaticActiveBackground.Render();
+			}
+		}
 	}
 }
 
@@ -372,6 +466,7 @@ void CUIListWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	{
 		mouse_action = CUIWindow::LBUTTON_DOWN;
 	}
+
 	inherited::OnMouse(x, y, mouse_action);
 }
 
@@ -440,4 +535,15 @@ void CUIListWnd::ScrollToEnd()
 
 	m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
 	UpdateList();
+}
+
+void CUIListWnd::Update()
+{
+	if(m_bUpdateMouseMove)
+	{
+		OnMouse(cursor_pos.x, cursor_pos.y, MOUSE_MOVE);
+		m_bUpdateMouseMove = false;
+	}
+
+	inherited::Update();
 }

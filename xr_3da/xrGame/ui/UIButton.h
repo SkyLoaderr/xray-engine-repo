@@ -58,6 +58,9 @@ public:
 
 	virtual	void UpdateTextAlign();
 
+	//подсвечен ли текст на кнопке
+	virtual bool IsHighlightText();
+
 protected:
 	
 	//состояния в которых находится кнопка

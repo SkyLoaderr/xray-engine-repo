@@ -17,6 +17,8 @@ CUIListItem::CUIListItem(void)
 
 	m_iIndex = -1;
 	m_iValue = 0;
+	m_bHighlightText = false;
+	m_iGroupID = -1;
 
 	SetTextAlign(CGameFont::alLeft);
 }
@@ -56,4 +58,9 @@ void CUIListItem::Draw()
 int CUIListItem::GetSignWidht()
 {
 	return (int)GetFont()->SizeOf(m_str);
+}
+
+bool CUIListItem::IsHighlightText()
+{
+	return m_bHighlightText;
 }

@@ -16,6 +16,10 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+const u32 NameTextColor = 0xff00ff00;
+const u32 MsgTextColor  = 0xffffffff;
+const char MessageShift = 2;
+
 CUITalkWnd::CUITalkWnd()
 {
 	Init();
@@ -61,6 +65,7 @@ void CUITalkWnd::InitTalkDialog()
 	//имена собеседников
 	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
 	UITalkDialogWnd.UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
+	UITalkDialogWnd.UICharacterName.SetText(m_pOurInvOwner->GetGameName());
 
 	
 	UpdateQuestions();
@@ -73,7 +78,6 @@ void CUITalkWnd::UpdateQuestions()
 {
 	UITalkDialogWnd.UIQuestionsList.RemoveAll();
 
-
 	R_ASSERT2(m_pOurInvOwner->GetPDA(), "PDA for character does not init yet");
 
 	//получить возможные вопросы и заполнить ими список
@@ -83,8 +87,12 @@ void CUITalkWnd::UpdateQuestions()
 		m_pOurInvOwner->GetPDA()->m_ActiveQuestionsList.end() != it;
 		++it)
 	{
-		SInfoQuestion* pQuestion = &(*it); 
-		UITalkDialogWnd.UIQuestionsList.AddItem(pQuestion->text, pQuestion);
+		SInfoQuestion* pQuestion = &(*it);
+//		CUIString CharName;
+//		CharName.SetText(m_pOurInvOwner->GetGameName());
+//		UITalkDialogWnd.AddMessageToLog();
+//		UITalkDialogWnd.UIQuestionsList.AddItem(pQuestion->text, pQuestion);
+		AddQuestion(pQuestion->text, pQuestion);
 	}
 }
 
@@ -157,16 +165,22 @@ void CUITalkWnd::AskQuestion()
 	INFO_INDEX_LIST index_list;
 	bool result = m_pOthersInvOwner->AskQuestion(*UITalkDialogWnd.m_pClickedQuestion,
 												 index_list);
+	CUIString str, SpeakerName;
+
+	SpeakerName.SetText(m_pOurInvOwner->GetGameName());
+	AddAnswer(UITalkDialogWnd.m_pClickedQuestion->text, SpeakerName);
+//	UITalkDialogWnd.AddMessageToLog(SpeakerName, UITalkDialogWnd.m_pClickedQuestion->text, &UITalkDialogWnd.UIAnswersList);
+	SpeakerName.SetText(m_pOthersInvOwner->GetGameName());
 
 	if(!result)
 	{
 		//UITalkDialogWnd.UIAnswer.SetText(UITalkDialogWnd.m_pClickedQuestion->
 		//										negative_answer_text.GetBuf());
-		UITalkDialogWnd.AddMessageToLog(UITalkDialogWnd.m_pClickedQuestion->negative_answer_text);
+		AddAnswer(UITalkDialogWnd.m_pClickedQuestion->negative_answer_text, SpeakerName);
+//		UITalkDialogWnd.AddMessageToLog(SpeakerName, UITalkDialogWnd.m_pClickedQuestion->negative_answer_text, &UITalkDialogWnd.UIAnswersList);
 	}
 	else
 	{
-		CUIString str;
 		CInfoPortion info_portion; 	
 
 		for(INFO_INDEX_LIST_it it = index_list.begin(); 
@@ -177,9 +191,27 @@ void CUITalkWnd::AskQuestion()
 			str.AppendText("\\n");
 		}
 
-		UITalkDialogWnd.AddMessageToLog(str);
+		//UITalkDialogWnd.AddMessageToLog(SpeakerName, str, &UITalkDialogWnd.UIAnswersList);
+		AddAnswer(str, SpeakerName);
 		//UITalkDialogWnd.UIAnswer.SetText(str);
 
 		//UpdateQuestions();
 	}
+}
+
+void CUITalkWnd::AddQuestion(const CUIString &str, void* pData)
+{
+	UITalkDialogWnd.UIQuestionsList.AddParsedItem(str, 0, UITalkDialogWnd.UIQuestionsList.GetTextColor(), 
+		UITalkDialogWnd.UIQuestionsList.GetFont(), pData);
+}
+
+void CUITalkWnd::AddAnswer(const CUIString &str, const CUIString &SpeakerName)
+{
+	UITalkDialogWnd.UIAnswersList.AddParsedItem(SpeakerName, 0, UITalkDialogWnd.GetHeaderColor(), UITalkDialogWnd.GetHeaderFont());
+	UITalkDialogWnd.UIAnswersList.AddParsedItem(str, MessageShift, UITalkDialogWnd.UIAnswersList.GetTextColor());
+
+	CUIString Local;
+	Local.SetText("----------------");
+	UITalkDialogWnd.UIAnswersList.AddParsedItem(Local, 0, UITalkDialogWnd.UIAnswersList.GetTextColor());
+	UITalkDialogWnd.UIAnswersList.ScrollToEnd();
 }

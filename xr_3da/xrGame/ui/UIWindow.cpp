@@ -154,8 +154,7 @@ void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	}
 
 
-	POINT cursor_pos;
-	
+
 	cursor_pos.x = x;
 	cursor_pos.y = y;
 

@@ -9,7 +9,6 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
-
 CUITalkDialogWnd::CUITalkDialogWnd()
 {
 	m_iClickedQuestion = 0;
@@ -33,7 +32,6 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	AttachChild(&UIStaticBottom);
 	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
 
-
 	//иконки с изображение нас и партнера по торговле
 	AttachChild(&UIOurIcon);
 	xml_init.InitStatic(uiXml, "static_icon", 0, &UIOurIcon);
@@ -44,10 +42,13 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	UIOthersIcon.AttachChild(&UICharacterInfoRight);
 	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), "trade_character.xml");
 
-
 	//основной фрейм диалога
 	AttachChild(&UIDialogFrame);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIDialogFrame);
+
+	// поле отображения имени актра-игрока
+	AttachChild(&UICharacterName);
+	xml_init.InitStatic(uiXml, "static", 0, &UICharacterName);
 
 	//Вопросы
 	//UIDialogFrame.AttachChild(&UIQuestionsList);
@@ -66,6 +67,9 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+
+	// шрифт для индикации имени персонажа в окне разговора
+	xml_init.InitFont(uiXml, "font", 0, m_iNameTextColor, m_pNameTextFont);
 }
 
 
@@ -105,22 +109,29 @@ void CUITalkDialogWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
-void CUITalkDialogWnd::AddMessageToLog(const CUIString& msg)
+/*
+void CUITalkDialogWnd::AddMessageToLog(CUIListWnd *List, const CUIString& msg, const char StartShift, const u32 &MsgColor)
 {
 	const STRING& text =  msg.m_str;
 	STRING buf;
 
 	u32 last_pos = 0;
 
+	List->SetTextColor(MsgColor);
+
+	int GroupID = List->GetSize();
+	
 	for(u32 i = 0; i<text.size()-2; ++i)
 	{
          // '\n' - переход на новую строку
 		if(text[i] == '\\' && text[i+1]== 'n')
 		{	
 			buf.clear();
-			buf.insert(buf.begin(), text.begin()+last_pos, text.begin()+i);
+			buf.insert(buf.begin(), StartShift, ' ');
+			buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.begin()+i);
 			buf.push_back(0);
-			UIAnswersList.AddItem(&buf.front());
+			List->AddItem(&buf.front());
+			List->GetItem(List->GetSize() - 1)->SetGroupID(GroupID);
 			++i;
 			last_pos = i+1;
 		}	
@@ -129,13 +140,11 @@ void CUITalkDialogWnd::AddMessageToLog(const CUIString& msg)
 	if(last_pos<text.size())
 	{
 		buf.clear();
-		buf.insert(buf.begin(), text.begin()+last_pos, text.end());
+		buf.insert(buf.begin(), StartShift, ' ');
+		buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.end());
 		buf.push_back(0);
-		UIAnswersList.AddItem(&buf.front());
+		List->AddItem(&buf.front());
+		List->GetItem(List->GetSize() - 1)->SetGroupID(GroupID);
 	}
-
-	//добавить строку-разделитель
-	UIAnswersList.AddItem("----------------");
-
-	UIAnswersList.ScrollToEnd();
 }
+*/

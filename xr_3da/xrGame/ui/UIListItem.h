@@ -27,13 +27,20 @@ public:
 	virtual void SetData(void* pData) { m_pData = pData;}
 
 	virtual int GetIndex() {return m_iIndex;}
-	virtual void SetIndex(int index) {m_iIndex = index;}
+	virtual void SetIndex(int index) {m_iIndex = index; m_iGroupID = index;}
 
 	virtual int GetValue() {return m_iValue;}
 	virtual void SetValue(int value) {m_iValue = value;}
 
+	virtual int	GetGroupID() { return m_iGroupID; }
+	virtual void SetGroupID(int ID) { m_iGroupID = ID; }
+
 	//возвращает длину в пикселях надписи
 	virtual int GetSignWidht();
+
+	// переопределяем критерий подсвечивания текста
+	virtual bool IsHighlightText();
+	virtual void SetHighlightText(bool Highlight) { m_bHighlightText = Highlight; }
 
 protected:
 	//указатель на произвольные данные, которые могут
@@ -45,7 +52,12 @@ protected:
 	
 	//индекс в списке
 	int m_iIndex;
-};
 
+	// идентификатор группы
+	int m_iGroupID;
+
+	// подсвечивается кнопка или нет?
+	bool m_bHighlightText;
+};
 
 #endif

@@ -34,8 +34,10 @@ public:
 	virtual void Show();
 	virtual void Hide();
 
-	void AddMessageToLog(const CUIString& msg);
+	virtual u32 GetHeaderColor() { return m_iNameTextColor; }
+	virtual CGameFont *GetHeaderFont() { return m_pNameTextFont; }
 
+//	void AddMessageToLog(CUIListWnd *List, const CUIString& msg, const char StartShift, const u32 &MsgColor);
 
 	//номер выбранного вопроса
 	int m_iClickedQuestion;
@@ -50,6 +52,7 @@ public:
 
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
+	CUIStatic			UICharacterName;
 
 	CUIButton			UIToTradeButton;
 
@@ -58,4 +61,9 @@ public:
 	CUIStatic			UIOthersIcon;
 	CUICharacterInfo	UICharacterInfoLeft;
 	CUICharacterInfo	UICharacterInfoRight;
+
+private:
+	// Ўрифт и цвет текста с именем персонажа
+	CGameFont *m_pNameTextFont;
+	u32 m_iNameTextColor;
 };

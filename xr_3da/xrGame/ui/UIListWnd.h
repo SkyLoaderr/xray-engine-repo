@@ -36,8 +36,10 @@ public:
 			 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
+	virtual void Update();
 	
 	bool AddItem(const char*  str, void* pData = NULL, int value = 0, bool push_front = false);
+	bool AddParsedItem(const CUIString &str, const char StartShift, const u32 &MsgColor, CGameFont* pHeaderFont = NULL, void* pData = NULL, int value = 0, bool push_front = false);
 	bool AddItem(CUIListItem* pItem, bool push_front = false);
 	
 	void RemoveItem(int index);
@@ -108,7 +110,8 @@ protected:
 
 	//элемент над которым курсор в данный момент или -1, если такого нет
 	int m_iFocusedItem;
-		
+	int m_iFocusedItemGroupID;
+
 	//подсветка активного элемента
 	CUIStaticItem m_StaticActiveBackground;
 	bool m_bActiveBackgroundEnable;
@@ -120,6 +123,8 @@ protected:
 
 	//переворот списка по вертикали
 	bool m_bVertFlip;
+
+	bool m_bUpdateMouseMove;
 };
 
 #endif //_UI_LIST_WND_H_

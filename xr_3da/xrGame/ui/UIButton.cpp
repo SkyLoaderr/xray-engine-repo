@@ -229,6 +229,10 @@ void  CUIButton::Draw()
 }
 
 
+bool CUIButton::IsHighlightText()
+{
+	return m_bCursorOverButton;
+}
 
 void  CUIButton::Update()
 {
@@ -252,9 +256,7 @@ void  CUIButton::Update()
 	UpdateTextAlign();
 	GetFont()->SetAligment(GetTextAlign());
 
-
-
-	if(m_bCursorOverButton && m_str && xr_strlen(m_str)>0)
+	if(IsHighlightText() && m_str && xr_strlen(m_str)>0)
 	{
 			GetFont()->SetColor(0xFF999999);
 			GetFont()->Out((float)rect.left + right_offset + 1 +m_iTextOffsetX, 

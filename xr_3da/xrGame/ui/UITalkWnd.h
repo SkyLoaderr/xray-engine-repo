@@ -45,6 +45,10 @@ protected:
 	void InitTalkDialog();
 	void AskQuestion();
 
+	// Функции добавления строк в листы вопросов и ответов
+	void AddQuestion(const CUIString &str, void* pData);
+	void AddAnswer(const CUIString &str, const CUIString &SpeakerName);
+
 	//для режима торговли
 	CUITradeWnd			UITradeWnd;
 	CUITalkDialogWnd	UITalkDialogWnd;

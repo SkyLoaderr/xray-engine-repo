@@ -121,66 +121,17 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path,
 	{
 		pWnd->Init(x, y, width, height);
 	}
-
-	
 	
 	ref_str text_path = strconcat(buf,path,":text");
+	u32 color;
+	CGameFont *pTmpFont = NULL;
+	InitFont(xml_doc, *text_path, index, color, pTmpFont);
+	pWnd->SetTextColor(color);
+	pWnd->SetFont(pTmpFont);
+
 	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x");
 	int text_y = xml_doc.ReadAttribInt(*text_path, index, "y");
-	ref_str font_name = xml_doc.ReadAttrib(*text_path, index, "font");
 	ref_str text = xml_doc.Read(*text_path, index, NULL);
-
-	int r = xml_doc.ReadAttribInt(*text_path, index, "r");
-	int g = xml_doc.ReadAttribInt(*text_path, index, "g");
-	int b = xml_doc.ReadAttribInt(*text_path, index, "b");
-	//чтоб не было тупых ошибок когда забыли поставить альфу
-	ref_str alpha = xml_doc.ReadAttrib(*text_path, index, "a");
-	int a = 0xFF;
-	if(*alpha) a = xml_doc.ReadAttribInt(*text_path, index, "a");
-	
-	u32 color = RGB_ALPHA(a,r,g,b);
-
-	if(*font_name)
-	{
-		pWnd->SetTextColor(color);
-
-		if(!xr_strcmp(*font_name, HEADER_FONT_NAME))
-		{
-			pWnd->SetFont(HUD().pFontHeaderRussian);
-		}
-		else if(!xr_strcmp(*font_name, NORMAL_FONT_NAME) || !xr_strcmp(*font_name, GRAFFITI19_FONT_NAME))
-		{
-			pWnd->SetFont(HUD().pFontGraffiti19Russian);
-		}
-		else if(!xr_strcmp(*font_name, GRAFFITI22_FONT_NAME))
-		{
-			pWnd->SetFont(HUD().pFontGraffiti22Russian);
-		}
-		else if(!xr_strcmp(*font_name, ARIAL_FONT_NAME))
-		{
-			pWnd->SetFont(HUD().pArialN21Russian);
-		}
-		else if(!xr_strcmp(*font_name, BIG_FONT_NAME))
-		{
-			pWnd->SetFont(HUD().pFontBigDigit);
-		}
-		else if(!xr_strcmp(*font_name, MEDIUM_FONT_NAME))
-		{
-			pWnd->SetFont(HUD().pFontMedium);
-		}
-		else if(!xr_strcmp(*font_name, SMALL_FONT_NAME))
-		{
-			pWnd->SetFont(HUD().pFontSmall);
-		}
-		else if(!xr_strcmp(*font_name, LETTERICA16_FONT_NAME))
-		{
-			pWnd->SetFont(HUD().pFontLetterica16Russian);
-		}
-		else if(!xr_strcmp(*font_name, LETTERICA18_FONT_NAME))
-		{
-			pWnd->SetFont(HUD().pFontLetterica18Russian);
-		}
-	}
 
 	pWnd->SetTextX(text_x);
 	pWnd->SetTextY(text_y);
@@ -257,8 +208,21 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, const char* path,
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	int item_height = xml_doc.ReadAttribInt(path, index, "item_height");
+	int active_background = xml_doc.ReadAttribInt(path, index, "active_bg");
+
+	// Init font from xml config file
+	string256 buf;
+	CGameFont *LocalFont = NULL;
+	u32 cl;
+
+	ref_str text_path = strconcat(buf,path,":font");
+	InitFont(xml_doc, *text_path, index, cl, LocalFont);
+	if (LocalFont)
+		pWnd->SetFont(LocalFont);
+	pWnd->SetTextColor(cl);
 
 	pWnd->Init(x,y, width,height,item_height);
+	pWnd->EnableActiveBackground(static_cast<bool>(active_background));
 
 	return true;
 }
@@ -322,6 +286,63 @@ bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow
 		pUIStatic->SetAutoDelete(true);
 		pParentWnd->AttachChild(pUIStatic);
 		pUIStatic = NULL;
+	}
+	return true;
+}
+
+bool CUIXmlInit::InitFont(CUIXml &xml_doc, const char *path, int index, u32 &color, CGameFont *&pFnt)
+{
+	ref_str font_name = xml_doc.ReadAttrib(path, index, "font");
+
+	int r = xml_doc.ReadAttribInt(path, index, "r");
+	int g = xml_doc.ReadAttribInt(path, index, "g");
+	int b = xml_doc.ReadAttribInt(path, index, "b");
+
+	//чтоб не было тупых ошибок когда забыли поставить альфу
+	ref_str alpha = xml_doc.ReadAttrib(path, index, "a");
+	int a = 0xFF;
+	if(*alpha) a = xml_doc.ReadAttribInt(path, index, "a");
+
+	color = RGB_ALPHA(a,r,g,b);
+
+	if(*font_name)
+	{
+		if(!xr_strcmp(*font_name, HEADER_FONT_NAME))
+		{
+			pFnt = HUD().pFontHeaderRussian;
+		}
+		else if(!xr_strcmp(*font_name, NORMAL_FONT_NAME) || !xr_strcmp(*font_name, GRAFFITI19_FONT_NAME))
+		{
+			pFnt = HUD().pFontGraffiti19Russian;
+		}
+		else if(!xr_strcmp(*font_name, GRAFFITI22_FONT_NAME))
+		{
+			pFnt = HUD().pFontGraffiti22Russian;
+		}
+		else if(!xr_strcmp(*font_name, ARIAL_FONT_NAME))
+		{
+			pFnt = HUD().pArialN21Russian;
+		}
+		else if(!xr_strcmp(*font_name, BIG_FONT_NAME))
+		{
+			pFnt = HUD().pFontBigDigit;
+		}
+		else if(!xr_strcmp(*font_name, MEDIUM_FONT_NAME))
+		{
+			pFnt = HUD().pFontMedium;
+		}
+		else if(!xr_strcmp(*font_name, SMALL_FONT_NAME))
+		{
+			pFnt = HUD().pFontSmall;
+		}
+		else if(!xr_strcmp(*font_name, LETTERICA16_FONT_NAME))
+		{
+			pFnt = HUD().pFontLetterica16Russian;
+		}
+		else if(!xr_strcmp(*font_name, LETTERICA18_FONT_NAME))
+		{
+			pFnt = HUD().pFontLetterica18Russian;
+		}
 	}
 	return true;
 }

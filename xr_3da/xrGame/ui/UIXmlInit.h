@@ -48,6 +48,9 @@ public:
 	bool InitProgressBar(CUIXml& xml_doc, const char* path, 
 						int index, CUIProgressBar* pWnd);
 
+	bool InitFont(CUIXml &xml_doc, const char *path, 
+				int index, u32 &color, CGameFont *&pFnt);
+
 	//автоматическая инициализация статических элеменитов
 	bool InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
 
