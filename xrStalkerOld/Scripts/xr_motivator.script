@@ -120,6 +120,7 @@ function motivator_binder:net_destroy()
 	object_binder.net_destroy(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
+local be
 function motivator_binder:update(delta)
 	object_binder.update(self, delta)
 	self.torch:update()
@@ -147,8 +148,8 @@ function motivator_binder:update(delta)
 	end
 
 	--' Проверка врагов
-	if false then 
-		local be = self.object:best_enemy()
+	if true then 
+		be = self.object:best_enemy()
 		if be ~= nil then
 			printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]",
 				self.object:name(),
