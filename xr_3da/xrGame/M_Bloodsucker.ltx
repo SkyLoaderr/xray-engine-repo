@@ -11,48 +11,26 @@ stand_attack_2 =	  	0.30,		40,		    500,        -4.0, 2.5, 3.0,		 -1.6, 1.6, -1.
 
 
 [m_bloodsucker_attack_effector]
-duality_h		= 0.1	;0.31
-duality_v		= 0.2	;0.31
+
+duality_h		= 0.07;0.01
+duality_v		= 0.07;0.01
 blur			= 0.01
-gray			= 0.5	;0.5
-noise_intensity = 1.0
-noise_grain		= 0.9
+gray			= 0.5
+noise_intensity 	= 0.0
+noise_grain		= 0.1 ;1.0
 noise_fps		= 30
-color_base		= 1.1,1.1,1	;0.1,0.15,0.4
-color_gray		= 1,1,1	;0.333,0.333,0.333
-color_add		= 0.2,0.2,0.1
-time			= 1.0		;1.5
-time_attack		= 0.3	;0.5		; fade in
-time_release	= 0.5		; fade out
+color_base		= 0.65,0.15,0.1
+color_gray		= 0.333,0.333,0.333
+color_add		= 0.05,0.05,0.07;0,0,0
+time			= 0.55 ;0.3
+time_attack		= 0.05		; fade in
+time_release	= 0.45		; fade out
 
 ; camera effects
-ce_time				= 1.0	;1.5
-ce_amplitude		= -30.0
-ce_period_number	= 4.0
-ce_power			= 2 ;0.7
-
-
-;[m_bloodsucker_attack_effector]
-
-;duality_h		= 0.07;0.01
-;duality_v		= 0.07;0.01
-;blur			= 0.01
-;gray			= 0.5
-;noise_intensity 	= 0.0
-;noise_grain		= 0.1 ;1.0
-;noise_fps		= 30
-;color_base		= 0.65,0.15,0.1
-;color_gray		= 0.333,0.333,0.333
-;color_add		= 0.05,0.05,0.07;0,0,0
-;time			= 0.55 ;0.3
-;time_attack		= 0.05		; fade in
-;time_release	= 0.45		; fade out
-
-; camera effects
-;ce_time				= 0.65 ;time 
-;ce_amplitude		= 12.0 
-;ce_period_number	= 2.0 
-;ce_power			= 3.0 ;0.7 ; power 
+ce_time				= 0.65 ;time 
+ce_amplitude		= 30;12.0 
+ce_period_number	= 2.0 
+ce_power			= 3.0 ;0.7 ; power 
 
 [m_bloodsucker_step_params]
 ; order: front_left, front_right, back_right, back_left
