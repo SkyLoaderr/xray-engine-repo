@@ -178,8 +178,7 @@ void RasterizeSection(unsigned char *Color, float *Depth,
 		// Now scan all lines in this section
 		for (; startY<=endY; startY++) 
 		{
-			Scan1Line(Color, Depth, W, H, int(startY), leftX, rightX, leftZ, rightZ,
-				CurrentColor);
+			Scan1Line(Color, Depth, W, H, int(startY), leftX, rightX, leftZ, rightZ, CurrentColor);
 			leftX += left_dX; rightX += right_dX;
 			leftZ += left_dZ; rightZ += right_dZ;
 		}
