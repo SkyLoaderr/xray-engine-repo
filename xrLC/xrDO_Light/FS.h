@@ -6,7 +6,6 @@
 #define fsH
 
 #define CFS_CompressMark	(1ul << 31ul)
-#define CFS_AlignMark		(1ul << 30ul)
 
 XRCORE_API void VerifyPath	(LPCSTR path);
 //------------------------------------------------------------------------------------
@@ -16,14 +15,6 @@ class XRCORE_API IWriter
 {
 private:
 	xr_stack<u32>	chunk_pos;
-	int				align_correction;
-
-	IC u32		correction	(u32 p)
-	{
-		if (p%16) {
-			return ((p%16)+1)*16 - p;
-		} return 0;
-	}
 public:
 	LPSTR			fName;
 public:
@@ -35,8 +26,6 @@ public:
 	{
 		xr_free		(fName);
         R_ASSERT3	(chunk_pos.empty(),"Opened chunk not closed.",fName);
-//		while (!chunk_pos.empty())
-//			close_chunk();
 	}
 
 	// kernel

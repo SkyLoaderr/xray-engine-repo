@@ -125,20 +125,11 @@ void CMemoryWriter::save_to	(LPCSTR fn)
 }
 
 
-u32	IWriter::align		()
-{
-	u32 bytes = correction(tell());
-	u32 copy  = bytes;
-	while (bytes) { w_u8(0); bytes--; }
-	return copy;
-}
 void	IWriter::open_chunk	(u32 type)
 {
 	w_u32(type);
 	chunk_pos.push(tell());
 	w_u32(0);	// the place for 'size'
-	if (type&CFS_AlignMark)	align_correction = align();
-	else					align_correction = 0;
 }
 void	IWriter::close_chunk	()
 {
@@ -146,14 +137,14 @@ void	IWriter::close_chunk	()
 
 	int pos			= tell();
 	seek			(chunk_pos.top());
-	w_u32			(pos-chunk_pos.top()-4-align_correction);
+	w_u32			(pos-chunk_pos.top()-4);
 	seek			(pos);
 	chunk_pos.pop	();
 }
 u32	IWriter::chunk_size	()					// returns size of currently opened chunk, 0 otherwise
 {
 	if (chunk_pos.empty())	return 0;
-	return tell() - chunk_pos.top()-4-align_correction;
+	return tell() - chunk_pos.top()-4;
 }
 void	IWriter::w_compressed(void* ptr, u32 count)
 {
@@ -256,7 +247,6 @@ u32 	IReader::find_chunk		(u32 ID, BOOL* bCompressed)
 	while (!eof()) {
 		dwType = r_u32();
 		dwSize = r_u32();
-		if (dwType&CFS_AlignMark) advance(correction(tell()));
 		if ((dwType&(~CFS_CompressMark)) == ID) {
 			if (bCompressed) *bCompressed = dwType&CFS_CompressMark;
 			return dwSize;
