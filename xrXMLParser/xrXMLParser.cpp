@@ -219,4 +219,23 @@ int XRXMLPARSER_API CUIXml::GetNodesNum(const char *path, int index, const char*
 }
 
 
-//public Xml *SearchForAttribute(Xml *afterNode , String *tagName , String *attributeName , String *attributeValuePattern);
+//нахождение элемнета по его атрибуту
+XML_NODE* CUIXml::SearchForAttribute(const char *path, int index, 
+									 const char *tag_name, 	
+									 const char *attrib, 
+									 const char *attrib_value_pattern)
+
+{
+	XML_NODE* start_node = NavigateToNode(path, index);
+
+	return SearchForAttribute(start_node, tag_name, attrib, attrib_value_pattern);
+}
+
+XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node, 
+									const char *tag_name,
+									const char *attrib, 
+									const char *attrib_value_pattern)
+{
+	return m_root.SearchForAttribute(start_node, tag_name, 
+									 attrib, attrib_value_pattern);
+}

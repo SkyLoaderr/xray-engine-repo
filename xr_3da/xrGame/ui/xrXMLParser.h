@@ -43,6 +43,8 @@ public:
 
 	bool Init(LPCSTR path, const char* xml_filename);
 	
+	
+	//чтение элементов
 	char* Read(const char *path, int index,  const char*  default_str_val = "" );
 	char* Read(XML_NODE* node,  const char*  default_str_val = "" );
 	
@@ -59,7 +61,17 @@ public:
 	int   ReadAttribInt(XML_NODE* node,
 							const char *attrib, int default_int_val = 0);
 
+	//нахождение элемента по содержимому 
+	//по параметру
+	XML_NODE* SearchForAttribute(const char *path, int index, 
+								 const char *tag_name,
+								 const char *attrib, 
+								 const char *attrib_value_pattern);
 
+	XML_NODE* SearchForAttribute(XML_NODE* start_node, 
+								 const char *tag_name,
+								 const char *attrib, 
+								 const char *attrib_value_pattern);
 
 	//возвращает количество узлов с заданым именем
 	int GetNodesNum(const char *path, int index, const char* tag_name);
@@ -70,6 +82,7 @@ public:
 	//node_index - номер, если узлов с одним именем несколько
 	XML_NODE* NavigateToNode(const char* path, int node_index = 0);
 
+	XML_NODE* GetRoot() {return &m_root;}
 
 protected:
 	XML_NODE m_root;
