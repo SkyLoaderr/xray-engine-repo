@@ -38,7 +38,7 @@ void CBurerAttackRunAround::Init()
 
 	if (dist > 30.f) {								// бежать к врагу
 		selected_point.mad(pMonster->Position(),dir_to_enemy,DIST_QUANT);
-	} else if ((dist < 20.f) && (dist > 6.f)) {	// убегать от врага
+	} else if ((dist < 20.f) && (dist > 4.f)) {	// убегать от врага
 		selected_point.mad(pMonster->Position(),dir_from_enemy,DIST_QUANT);
 		dest_direction.set(dir_to_enemy);
 	} else {											// выбрать случайную позицию
@@ -61,6 +61,7 @@ void CBurerAttackRunAround::Run()
 	pMonster->MotionMan.m_tAction = ACT_RUN;
 	pMonster->movement().set_target_point		(selected_point);
 	pMonster->movement().set_generic_parameters	();
+	pMonster->movement().set_use_covers			(false);
 
 	pMonster->sound().play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 }

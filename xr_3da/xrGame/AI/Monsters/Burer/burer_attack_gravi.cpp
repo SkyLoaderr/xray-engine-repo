@@ -4,6 +4,7 @@
 #include "burer.h"
 #include "../../../sound_player.h"
 #include "../../../ai_monster_space.h"
+#include "../critical_action_info.h"
 
 #define GOOD_DISTANCE_FOR_GRAVI 6.f
 
@@ -68,7 +69,7 @@ void CBurerAttackGravi::Run()
 	}
 
 	pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;	
-	pMonster->DirMan.face_target	(enemy, 1200);
+	pMonster->DirMan.face_target	(enemy, 500);
 }
 
 void CBurerAttackGravi::Done()
@@ -85,6 +86,8 @@ bool CBurerAttackGravi::CheckStartCondition()
 	if (dist < GOOD_DISTANCE_FOR_GRAVI) return false;
 
 	if (pMonster->EnemyMan.get_enemy_time_last_seen() != Device.dwTimeGlobal) return false; 
+
+	if (!pMonster->DirMan.is_face_target(enemy, deg(30))) return false;
 
 	// всё ок, можно начать грави атаку
 	return true;

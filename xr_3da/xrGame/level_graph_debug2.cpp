@@ -83,11 +83,34 @@ void CLevelGraph::on_render1()
 	// иначе раскрашивать по cover
 	bool b_light = !!psAI_Flags.test(aiFrustum);
 	
-	for (u32 Nid=0; Nid<header().vertex_count(); ++Nid)
+	//////////////////////////////////////////////////////////////////////////
+	Fvector min_position,max_position;
+	max_position = min_position = Device.vCameraPosition;
+	min_position.sub(30.f);
+	max_position.add(30.f);
+	
+	CLevelGraph::const_vertex_iterator	 I, E;
+	if (valid_vertex_position(min_position))
+		I = std::lower_bound(begin(),end(),vertex_position(min_position).xz());
+	else
+		I = begin();
+
+	if (valid_vertex_position(max_position)) {
+		E = std::upper_bound(begin(),end(),vertex_position(max_position).xz());
+		if (E != end()) ++E;
+	}
+	else
+		E = end();
+
+	//////////////////////////////////////////////////////////////////////////
+
+	for ( ; I != E; ++I)
 	{
-		CLevelGraph::CVertex&	N	= *vertex(Nid);
+		const CLevelGraph::CVertex&	N	= *I;
 		Fvector			PC;
 		PC				= vertex_position(N);
+
+		u32 Nid			= vertex_id(I);
 
 		if (Device.vCameraPosition.distance_to(PC)>30) continue;
 
@@ -95,7 +118,7 @@ void CLevelGraph::on_render1()
 		if (::Render->ViewBase.testSphere_dirty(PC,sr)) {
 			
 			u32	LL = ((b_light) ?	iFloor(float(N.light())/15.f*255.f) : 
-									iFloor(vertex_cover(Nid)/4*255.f));
+									iFloor(vertex_cover(I)/4*255.f));
 			
 			u32	CC		= D3DCOLOR_XRGB(0,0,255);
 			u32	CT		= D3DCOLOR_XRGB(LL,LL,LL);
