@@ -56,8 +56,8 @@ CLevel::CLevel()
 
 	m_tpScriptProcessor			= 0;
 
-	m_bNeedSync					= false;
-	m_dwNumSteps				= 0;
+	//m_bNeedSync					= false;
+	//m_dwNumSteps				= 0;
 
 	//получить материал пули
 	CShootingObject::bullet_material_id  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
@@ -177,7 +177,7 @@ void CLevel::OnFrame	()
 		}
 	}
 	//Net sync
-	if (m_bNeedSync) make_NetSync();
+	//if (m_bNeedSync) make_NetSync();
 
 	// Inherited update
 	inherited::OnFrame					();
