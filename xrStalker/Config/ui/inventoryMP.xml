@@ -62,7 +62,7 @@
 			rows_num="2" cols_num="3"></dragdrop_list>
 
 	<!-- OUTFIT SLOT -->
-	<dragdrop_list x="828" y="314" width="150" height="220"
+	<dragdrop_list x="828" y="314" width="86" height="220"
 			cell_width = "53" cell_height="53"
 			rows_num="4" cols_num="4" show_grid="1"></dragdrop_list>
 
