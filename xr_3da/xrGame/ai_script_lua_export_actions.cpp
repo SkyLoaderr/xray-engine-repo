@@ -29,6 +29,8 @@
 #include "script_motivation_action_manager_wrapper.h"
 #include "script_binder_object_wrapper.h"
 
+#include "stalker_decision_space.h"
+
 using namespace luabind;
 
 void CScriptEngine::export_action_management()
@@ -106,6 +108,8 @@ void CScriptEngine::export_action_management()
 	];
 }
 
+struct CStalkerDecisionBlock{};
+
 void CScriptEngine::export_motivation_management()
 {
 	module(lua())
@@ -158,7 +162,52 @@ void CScriptEngine::export_motivation_management()
 			.def("net_spawn",					&CScriptBinderObjectWrapper::net_Spawn_static)
 			.def("net_destroy",					&CScriptBinderObjectWrapper::net_Destroy_static)
 			.def("net_import",					&CScriptBinderObjectWrapper::net_Import_static)
-			.def("net_export",					&CScriptBinderObjectWrapper::net_Export_static)
+			.def("net_export",					&CScriptBinderObjectWrapper::net_Export_static),
 			
+		class_<CStalkerDecisionBlock>("stalker_ids")
+			.enum_("motivations")
+			[
+				value("motivation_global",			StalkerDecisionSpace::eMotivationGlobal),
+				value("motivation_alive",			StalkerDecisionSpace::eMotivationAlive),
+				value("motivation_dead",			StalkerDecisionSpace::eMotivationDead),
+				value("motivation_solve_zone_puzzle",StalkerDecisionSpace::eMotivationSolveZonePuzzle),
+				value("motivation_script",			StalkerDecisionSpace::eMotivationScript)
+			]
+			.enum_("properties")
+			[
+				value("property_alive",				StalkerDecisionSpace::eWorldPropertyAlive),
+				value("property_dead",				StalkerDecisionSpace::eWorldPropertyDead),
+				value("property_already_dead",		StalkerDecisionSpace::eWorldPropertyAlreadyDead),
+				value("property_alife",				StalkerDecisionSpace::eWorldPropertyALife),
+				value("property_puzzle_solved",		StalkerDecisionSpace::eWorldPropertyPuzzleSolved),
+				value("property_items",				StalkerDecisionSpace::eWorldPropertyItems),
+				value("property_enemy",				StalkerDecisionSpace::eWorldPropertyEnemy),
+				value("property_see_enemy",			StalkerDecisionSpace::eWorldPropertySeeEnemy),
+				value("property_item_to_kill",		StalkerDecisionSpace::eWorldPropertyItemToKill),
+				value("property_found_item_to_kill",StalkerDecisionSpace::eWorldPropertyFoundItemToKill),
+				value("property_item_can_kill",		StalkerDecisionSpace::eWorldPropertyItemCanKill),
+				value("property_found_ammo",		StalkerDecisionSpace::eWorldPropertyFoundAmmo),
+				value("property_ready_to_kill",		StalkerDecisionSpace::eWorldPropertyReadyToKill),
+				value("property_kill_distance",		StalkerDecisionSpace::eWorldPropertyKillDistance),
+				value("property_script",			StalkerDecisionSpace::eWorldPropertyScript)
+			]
+			.enum_("action")
+			[
+				value("action_already_dead",		StalkerDecisionSpace::eWorldOperatorAlreadyDead),
+				value("action_dead",				StalkerDecisionSpace::eWorldOperatorDead),
+				value("action_free_no_alife",		StalkerDecisionSpace::eWorldOperatorFreeNoALife),
+				value("action_free",				StalkerDecisionSpace::eWorldOperatorFreeALife),
+				value("action_gather_items",		StalkerDecisionSpace::eWorldOperatorGatherItems),
+				value("action_kill_enemy",			StalkerDecisionSpace::eWorldOperatorKillEnemy),
+				value("action_get_kill_distance",	StalkerDecisionSpace::eWorldOperatorGetKillDistance),
+				value("action_get_ready_to_kill",	StalkerDecisionSpace::eWorldOperatorGetReadyToKill),
+				value("action_get_enemy",			StalkerDecisionSpace::eWorldOperatorGetEnemy),
+				value("action_get_enemy_seen",		StalkerDecisionSpace::eWorldOperatorGetEnemySeen),
+				value("action_get_item_to_kill",	StalkerDecisionSpace::eWorldOperatorGetItemToKill),
+				value("action_find_item_to_kill",	StalkerDecisionSpace::eWorldOperatorFindItemToKill),
+				value("action_make_item_killing",	StalkerDecisionSpace::eWorldOperatorMakeItemKilling),
+				value("action_find_ammo",			StalkerDecisionSpace::eWorldOperatorFindAmmo),
+				value("action_script",				StalkerDecisionSpace::eWorldOperatorScript)
+			]
 	];
 }

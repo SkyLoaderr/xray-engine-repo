@@ -14,6 +14,7 @@ namespace StalkerDecisionSpace {
 		eMotivationAlive,
 		eMotivationDead,
 		eMotivationSolveZonePuzzle,
+		eMotivationScript,
 		eMotivationDummy			= u32(-1)
 	};
 
