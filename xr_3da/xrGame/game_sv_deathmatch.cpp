@@ -8,8 +8,7 @@
 #include "Inventory.h"
 #include "CustomZone.h"
 
-//int		SkinID = -1;
-u32		g_dwMaxCorpses = 10;
+
 
 void	game_sv_Deathmatch::Create					(ref_str& options)
 {
@@ -78,13 +77,14 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	/////////////////////////////////////////////////////////////////////////
 */
 	// Respawn all players and some info
-	u32		cnt = get_count();
+	u32		cnt = get_players_count();
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		// init
 		game_PlayerState*	ps	=	get_it	(it);
 
-		ClearPlayerState		(ps);
+		ps->clear();
+//		ClearPlayerState		(ps);
 		//---------------------------------------
 		SetPlayersDefItems		(ps);
 		//---------------------------------------
@@ -95,26 +95,20 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		SpawnPlayer(get_it_2_id(it), "spectator");
 	}
 	///////////////////////////////////////////
-	m_CorpseList.clear();
 }
 
-void	game_sv_Deathmatch::OnPlayerKilled			(u32 id_killed)
-{
-	game_PlayerState*	ps_killed	=	get_id	(id_killed);
-	if (!ps_killed) return;
-
-	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-	ps_killed->deaths				+=	1;
-
-};
-
-void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
+void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed)
 {
 	game_PlayerState*	ps_killer	=	get_id	(id_killer);
 	game_PlayerState*	ps_killed	=	get_id	(id_killed);
+
+	if(ps_killed){
+		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+		ps_killed->deaths				+=	1;
+	};
+
 	if (!ps_killed || !ps_killer) return;
 	
-//	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 //	ps_killed->flags				&= ~GAME_PLAYER_FLAG_READY;
 //	ps_killed->deaths				+=	1;
 
@@ -132,17 +126,23 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		if (pTeam)
 			ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillRival;
 
-		if (fraglimit && (ps_killer->kills >= fraglimit) )OnFraglimitExceed();
+//		if (fraglimit && (ps_killer->kills >= fraglimit) )OnFraglimitExceed();
 	}
 
 	// Send Message About Player Killed
 	SendPlayerKilledMessage(id_killer, id_killed);
+
+	ps_killed->lasthitter			= 0;
+	ps_killed->lasthitweapon		= 0;
+	ClearPlayerItems		(ps_killed);
+	SetPlayersDefItems		(ps_killed);
 
 	if (pTeam)
 		if (ps_killer->money_for_round < pTeam->m_iM_Min) ps_killer->money_for_round = pTeam->m_iM_Min;
 
 	signal_Syncronize();
 }
+
 
 void	game_sv_Deathmatch::OnTimelimitExceed		()
 {
@@ -156,18 +156,14 @@ void	game_sv_Deathmatch::OnFraglimitExceed		()
 #include "UIGameDM.h"
 void	game_sv_Deathmatch::Update					()
 {
-//	__super::Update	();
 	inherited::Update	();
-	switch (phase)
+
+	switch ( Phase() )
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
-			if (timelimit)
-			{
-				if ((Level().timeServer()-start_time)>u32(timelimit))
-					OnTimelimitExceed	();
-			};
-
+			checkForRoundEnd();
+/* //moved to game_sv_mp
 			// remove corpses if their number exceed limit
 			while (m_CorpseList.size()>g_dwMaxCorpses)
 			{
@@ -177,7 +173,7 @@ void	game_sv_Deathmatch::Update					()
 				NET_Packet			P;
 				u_EventGen			(P,GE_DESTROY,CorpseID);
 				Level().Send(P,net_flags(TRUE,TRUE));
-			};
+			};*/
 			//-----------------------------------------------------
 			if (m_bSpectatorMode)
 			{
@@ -200,18 +196,68 @@ void	game_sv_Deathmatch::Update					()
 		break;
 	case GAME_PHASE_PENDING:
 		{
-			if ((Level().timeServer()-start_time)>u32(10*1000) && AllPlayers_Ready())
-				OnRoundStart();
+			checkForRoundStart();
 		}
 		break;
 	}
 }
 
+bool game_sv_Deathmatch::checkForRoundStart()
+{
+
+	if( (Level().timeServer()-start_time)>u32(10*1000) && AllPlayers_Ready() ){
+		OnRoundStart();
+		return true;
+	};
+
+	return false;
+}
+
+bool game_sv_Deathmatch::checkForTimeLimit()
+{
+	if (timelimit && ((Level().timeServer()-start_time)) > u32(timelimit) )
+	{
+		OnTimelimitExceed();
+		return true;
+	};
+	return false;
+}
+
+bool game_sv_Deathmatch::checkForFragLimit()
+{
+	if( fraglimit )
+	{
+		u32		cnt		= get_players_count	();
+		for		(u32 it=0; it<cnt; ++it)	
+		{
+			game_PlayerState* ps		=	get_it	(it);
+			if (ps->kills >= fraglimit ){
+				OnFraglimitExceed();
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool game_sv_Deathmatch::checkForRoundEnd()
+{
+
+	if( checkForTimeLimit() )
+			return true;
+
+	if( checkForFragLimit() )
+			return true;
+
+	return false;
+}
+
+
 void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 {
 	
 	u32		PossiblePlayers[32];
-	u32		cnt		= get_count	();
+	u32		cnt		= get_players_count	();
 	u32		PPlayersCount = 0;
 
 	for		(u32 it=0; it<cnt; ++it)	
@@ -225,17 +271,20 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 	
 	CObject* pNewObject = NULL;
 	if (!PPlayersCount)
+
+
+
 	{
 		xrClientData*	C = NULL;
 		C	= m_server->GetServer_client();
-		pNewObject =  Level().Objects.net_Find(C->ps.GameID);
+		pNewObject =  Level().Objects.net_Find(C->ps->GameID);
 	}
 	else
 	{
 		it	= PossiblePlayers[::Random.randI((int)PPlayersCount)];
 		xrClientData*	C = NULL;
 		C	= (xrClientData*)m_server->client_Get			(it);	
-		pNewObject =  Level().Objects.net_Find(C->ps.GameID);
+		pNewObject =  Level().Objects.net_Find(C->ps->GameID);
 		CActor* pActor = dynamic_cast<CActor*>(pNewObject);
 		if (!pActor || !pActor->g_Alive()) return;
 	};
@@ -273,22 +322,27 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 		{
 			pWeapon->InitAddons();
 			pWeapon->UpdateAddonsVisibility();
+
+
+
 		}
 	}
-
 	m_dwSM_CurViewEntity = pNewObject->ID();
 	m_dwSM_LastSwitchTime = Level().timeServer() + m_dwSM_SwitchDelta;
+
+
 }
+
 
 BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 {
 	// Check if all players ready
-	u32		cnt		= get_count	();
+	u32		cnt		= get_players_count	();
 	u32		ready	= 0;
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		game_PlayerState* ps		=	get_it	(it);
-		if (ps->flags & GAME_PLAYER_FLAG_READY)	++ready;
+		if (ps->testFlag(GAME_PLAYER_FLAG_READY) )	++ready;
 		else
 			if (ps->Skip) ++ready;
 	}
@@ -297,73 +351,8 @@ BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 	return FALSE;
 };
 	
-BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
-{
-	CSE_Abstract*		e_who	= m_server->ID_to_entity(eid_who);		VERIFY(e_who	);
-	CSE_Abstract*		e_what	= m_server->ID_to_entity(eid_what);	VERIFY(e_what	);
 
-	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
-	if (A)
-	{
-		// Actor touches something
-		CSE_ALifeItemWeapon*	W			=	dynamic_cast<CSE_ALifeItemWeapon*> (e_what);
-		if (W) 
-		{
-			// Weapon
-			xr_vector<u16>&	C			=	A->children;
-			u8 slot						=	W->get_slot	();
-			for (u32 it=0; it<C.size(); ++it)
-			{
-				CSE_Abstract*		Et	= m_server->ID_to_entity				(C[it]);
-				if (0==Et)				continue;
-				CSE_ALifeItemWeapon*		T	= dynamic_cast<CSE_ALifeItemWeapon*>	(Et);
-				if (0==T)				continue;
-				if (slot == T->get_slot())	
-				{
-					// We've found same slot occupied - disallow ownership
-					return FALSE;
-				}
-			}
-
-			// Weapon slot empty - ownership OK
-			return TRUE;
-		}
-		
-		CSE_ALifeItemAmmo* pIAmmo			=	dynamic_cast<CSE_ALifeItemAmmo*> (e_what);
-		if (pIAmmo)
-		{
-			//Ammo
-			return TRUE;
-		};
-
-		CSE_ALifeItemGrenade* pIGrenade		=	dynamic_cast<CSE_ALifeItemGrenade*> (e_what);
-		if (pIGrenade)
-		{
-			//Grenade
-			return TRUE;
-		};
-
-		CSE_ALifeItemCustomOutfit* pOutfit		= dynamic_cast<CSE_ALifeItemCustomOutfit*> (e_what);
-		if (pOutfit)
-		{
-			//Possibly Addons and/or Outfits
-			return TRUE;
-		};
-
-		//---------------------------------------------------------------
-		if (IsBuyableItem(e_what->s_name)) return TRUE;
-		//---------------------------------------------------------------
-	};
-	// We don't know what the hell is it, so disallow ownership just for safety 
-	return FALSE;
-}
-
-BOOL	game_sv_Deathmatch::OnDetach		(u16 eid_who, u16 eid_what)
-{	
-	return TRUE;
-}
-
-void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
+void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 {
 //	if	(GAME_PHASE_INPROGRESS == phase) return;
 	switch (phase)
@@ -373,18 +362,13 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 			game_PlayerState*	ps	=	get_id	(id);
 			if (ps)
 			{
-				if (ps->flags & GAME_PLAYER_FLAG_READY)	
+				if (ps->testFlag(GAME_PLAYER_FLAG_READY) )	
 				{
-					ps->flags &= ~GAME_PLAYER_FLAG_READY;
+					ps->resetFlag(GAME_PLAYER_FLAG_READY);
 				} 
 				else 
 				{
-					ps->flags |= GAME_PLAYER_FLAG_READY;
-
-					if (AllPlayers_Ready())
-					{
-						OnRoundStart	();
-					};
+					ps->setFlag(GAME_PLAYER_FLAG_READY);
 				};
 			};
 		}break;
@@ -402,54 +386,16 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 			}
 			//------------------------------------------------------------
 			RespawnPlayer(id, false);
+			CSE_Abstract* pOwner = xrSCData->owner;
+			CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
+			if(pA)
+				SpawnWeaponsForActor(pOwner, ps);
 		}break;
 	};
 }
 
-void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
-{
-//	__super::OnPlayerConnect	(id_who);
-	inherited::OnPlayerConnect	(id_who);
 
-	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
-	game_PlayerState*	ps_who	=	get_id	(id_who);
-
-	ClearPlayerState(ps_who);
-	ps_who->team				=	0;	
-	
-	if (xrCData == m_server->GetServer_client())
-	{
-		if (g_pGamePersistent->bDedicatedServer)
-		{
-			ps_who->Skip = true;
-			return;
-		}
-
-		if (m_bSpectatorMode)
-		{
-			ps_who->flags |= GAME_PLAYER_FLAG_READY;
-		}
-	};
-	ps_who->Skip = false;
-	SpawnPlayer(id_who, "spectator");
-
-	// Send Message About Client Connected
-	if (xrCData)
-	{
-		NET_Packet			P;
-		P.w_begin			(M_GAMEMESSAGE);
-		P.w_u32				(GMSG_PLAYER_CONNECTED);
-		P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
-
-		u_EventSend(P);
-	};
-
-	Money_SetStart(id_who);
-	SetPlayersDefItems(ps_who);
-}
-
-
-void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
+void game_sv_Deathmatch::OnPlayerDisconnect		(ClientID id_who)
 {
 //	__super::OnPlayerDisconnect	(id_who);
 	inherited::OnPlayerDisconnect	(id_who);
@@ -474,10 +420,9 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 		if (xrCData)
 		{
 			NET_Packet			P;
-			P.w_begin			(M_GAMEMESSAGE);
-			P.w_u32				(GMSG_PLAYER_DISCONNECTED);
+			GenerateGameMessage (P);
+			P.w_u32				(GAME_EVENT_PLAYER_DISCONNECTED);
 			P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
-
 			u_EventSend(P);
 		};
 	}
@@ -489,121 +434,14 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	};
 };
 
-void	game_sv_Deathmatch::AllowDeadBodyRemove		(u32 id)
-{
-	xrClientData* xrCData	=	m_server->ID_to_client(id);
-	if (!xrCData) return;
-	if (!xrCData->owner) return;
-	
-	if (xrCData->owner->owner != m_server->GetServer_client())
-	{
-		xrCData->owner->owner = m_server->GetServer_client();
-	};
 
-	CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
 
-//	R_ASSERT2	((pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR),"Dead Player is not Actor");
 
-	if (pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
-	{
-		CActor* pActor = dynamic_cast <CActor*>(pObject);
-		if (pActor)
-		{
-			pActor->set_death_time		();
-			pActor->m_bAllowDeathRemove = true;
-		};
-	};	
-};
-
-void	game_sv_Deathmatch::SpawnPlayer				(u32 id, LPCSTR N)
-{
-	xrClientData* CL	= m_server->ID_to_client(id);
-	game_PlayerState*	ps_who	=	&CL->ps;//get_id	(id);
-	ps_who->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-	
-	// Spawn "actor"
-	LPCSTR	options			=	get_name_id	(id);
-	CSE_Abstract			*E	=	spawn_begin	(N);													// create SE
-	strcpy					(E->s_name_replace,get_option_s(options,"name","Player"));					// name
-
-	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
-
-	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
-	CSE_Spectator			*pS	=	dynamic_cast<CSE_Spectator*>(E);
-
-	R_ASSERT2	(pA || pS,"Respawned Client is not Actor nor Spectator");
-	
-	if (pA) 
-	{
-		pA->s_team				=	u8(ps_who->team);
-		assign_RP				(pA);
-		SetSkin(E, pA->s_team, ps_who->skin);
-		ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD | GAME_PLAYER_FLAG_CS_SPECTATOR);
-		ps_who->RespawnTime = Device.dwTimeGlobal;
-	}
-	else
-		if (pS)
-		{
-			Fvector Pos, Angle;
-			ps_who->flags		|= GAME_PLAYER_FLAG_CS_SPECTATOR;
-			if (!GetPosAngleFromActor(id, Pos, Angle)) assign_RP				(E);
-			else
-			{
-				E->o_Angle.set(Angle);
-				E->o_Position.set(Pos);
-			}
-		};
-	
-	Msg		("* %s respawned as %s",get_option_s(options,"name","Player"), (0 == pA) ? "spectator" : "actor");
-	spawn_end				(E,id);
-
-	ps_who->GameID = CL->owner->ID;
-
-	signal_Syncronize();
-}
-
-#include "../CameraBase.h"
-
-bool	game_sv_Deathmatch::GetPosAngleFromActor				(u32 id, Fvector& Pos, Fvector &Angle)
-{
-	xrClientData* xrCData	=	m_server->ID_to_client(id);
-	if (!xrCData || !xrCData->owner) return false;
-	
-	CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
-///	R_ASSERT2	((pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR),"Dead Player is not Actor");
-
-	if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) return false;
-
-	CActor* pActor = dynamic_cast <CActor*>(pObject);
-	if (!pActor) return false;
-
-	Angle.set(-pActor->cam_Active()->pitch, -pActor->cam_Active()->yaw, 0);
-	Pos.set(pActor->cam_Active()->vPosition);
-	return true;
-};
-
-void	game_sv_Deathmatch::KillPlayer				(u32 id_who)
-{
-
-	// Remove everything	
-	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
-	if (!xrCData) return;
-	// Kill Player on all clients
-	NET_Packet			P;
-	P.w_begin			(M_EVENT);
-	P.w_u32				(Level().timeServer());
-	P.w_u16				(GE_DIE);
-	P.w_u16				(xrCData->owner->ID);
-	P.w_u16				(0);
-	P.w_u32				(xrCData->ID);
-	m_server->SendBroadcast	(0xffffffff,P,net_flags(TRUE, TRUE, TRUE));
-
-};
-
-void	game_sv_Deathmatch::OnPlayerWantsDie		(u32 id_who)
+/*
+void	game_sv_Deathmatch::OnPlayerWantsDie		(ClientID id_who)
 {
 	KillPlayer(id_who);
-};
+};*/
 
 u32		game_sv_Deathmatch::RP_2_Use				(CSE_Abstract* E)
 {
@@ -634,12 +472,12 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 	xr_vector <u32>					pEnemies;
 	xr_vector <u32>					pFriends;
 	
-	u32		cnt = get_count();
+	u32		cnt = get_players_count();
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		// init
 		game_PlayerState*	ps	=	get_it	(it);
-		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
+		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) ) continue;
 		if (ps->team == pA->s_team && !teams.empty()) pFriends.push_back(it);
 //		else pEnemies.push_back(it);
 	};
@@ -744,7 +582,7 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 };
 
 
-void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
+void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 {
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps || ps->Skip) return;
@@ -875,28 +713,28 @@ void	game_sv_Deathmatch::SetPlayersDefItems		(game_PlayerState* ps)
 	};
 };
 
-void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons)
-{
-	if (!N) return;
-	
-	CSE_Abstract			*E	=	spawn_begin	(N);
-	E->ID_Parent = u16(actorId);
-
-	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL);	// flags
-
-	/////////////////////////////////////////////////////////////////////////////////
-	//если это оружие - спавним его с полным магазином
-	CSE_ALifeItemWeapon		*pWeapon	=	dynamic_cast<CSE_ALifeItemWeapon*>(E);
-	if (pWeapon)
-	{
-		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();
-
-		pWeapon->m_addon_flags.assign(Addons);
-	};
-	/////////////////////////////////////////////////////////////////////////////////
-
-	spawn_end				(E,m_server->GetServer_client()->ID);
-};
+//void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons)
+//{
+//	if (!N) return;
+//	
+//	CSE_Abstract			*E	=	spawn_begin	(N);
+//	E->ID_Parent = u16(actorId);
+//
+//	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL);	// flags
+//
+//	/////////////////////////////////////////////////////////////////////////////////
+//	//если это оружие - спавним его с полным магазином
+//	CSE_ALifeItemWeapon		*pWeapon	=	dynamic_cast<CSE_ALifeItemWeapon*>(E);
+//	if (pWeapon)
+//	{
+//		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();
+//
+//		pWeapon->m_addon_flags.assign(Addons);
+//	};
+//	/////////////////////////////////////////////////////////////////////////////////
+//
+//	spawn_end				(E,m_server->GetServer_client()->ID);
+//};
 
 void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState*	ps)
 {
@@ -1080,7 +918,7 @@ void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_P
 	if (!a_hitter || !a_hitted) return;
 
 //	game_PlayerState*	ps_hitter = &a_hitter->owner->ps;
-	game_PlayerState*	ps_hitted = &a_hitted->owner->ps;
+	game_PlayerState*	ps_hitted = a_hitted->owner->ps;
 
 	u32 BCount = P.B.count;
 	//---------------------------------------
@@ -1123,36 +961,6 @@ void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_P
 	P.B.count	= BCount;
 };
 
-void	game_sv_Deathmatch::SendPlayerKilledMessage	(u32 id_killer, u32 id_killed)
-{
-	game_PlayerState*	ps_killer	=	get_id	(id_killer);
-	game_PlayerState*	ps_killed	=	get_id	(id_killed);
-	if (!ps_killed || !ps_killer) return;
-
-	NET_Packet			P;
-	P.w_begin			(M_GAMEMESSAGE);
-	P.w_u32				(GMSG_PLAYER_KILLED);
-	P.w_u16				(ps_killed->GameID);
-	if (ps_killer->GameID == ps_killed->lasthitter)
-	{
-		P.w_u16				(ps_killer->GameID);
-		P.w_u16				(ps_killed->lasthitweapon);
-	}
-	else
-	{
-		P.w_u16				(ps_killer->GameID);
-		P.w_u16				(0);
-	};
-
-	u_EventSend(P);
-
-	//---------------------------------------------------------
-	ps_killed->lasthitter			= 0;
-	ps_killed->lasthitweapon		= 0;
-	ClearPlayerItems		(ps_killed);
-	//---------------------------------------------------------
-	SetPlayersDefItems		(ps_killed);
-};
 
 void	game_sv_Deathmatch::LoadTeams			()
 {
@@ -1198,16 +1006,6 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 	TeamList.push_back(NewTeam);
 };
 
-void game_sv_Deathmatch::OnPlayerChangeSkin(u32 id_who, u8 skin) 
-{
-	game_PlayerState*	ps_who	=	get_id	(id_who);
-	if (!ps_who) return;
-	ps_who->skin = skin;
-
-	KillPlayer(id_who);
-	signal_Syncronize();
-}
-
 void game_sv_Deathmatch::OnDestroyObject			(u16 eid_who)
 {
 	if (eid_who == m_dwSM_CurViewEntity)
@@ -1225,18 +1023,9 @@ void game_sv_Deathmatch::OnDestroyObject			(u16 eid_who)
 	};
 };
 
-game_sv_Deathmatch::TeamStruct* game_sv_Deathmatch::GetTeamData				(u8 Team)
-{
-	VERIFY(TeamList.size());
-	if (TeamList.empty()) return NULL;
-	
-	VERIFY(TeamList.size()>Team);
-	if (TeamList.size()<=Team) return NULL;
 
-	return &(TeamList[Team]);
-};
 
-void game_sv_Deathmatch::Money_SetStart			(u32	id_who)
+void game_sv_Deathmatch::Money_SetStart			(ClientID	id_who)
 {
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	if (!ps_who) return;
@@ -1316,7 +1105,7 @@ void	game_sv_Deathmatch::OnTeamScore	(u32 Team)
 	TeamStruct* pTeam		= GetTeamData(u8(Team));
 	if (!pTeam) return;
 	
-	u32		cnt = get_count();
+	u32		cnt = get_players_count();
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		// init
@@ -1329,7 +1118,9 @@ void	game_sv_Deathmatch::OnTeamScore	(u32 Team)
 			ps->money_for_round = ps->money_for_round + pTeam->m_iM_RoundLoose;
 	}
 }
-void game_sv_Deathmatch::net_Export_State		(NET_Packet& P, u32 id_to)
+
+
+void game_sv_Deathmatch::net_Export_State		(NET_Packet& P, ClientID id_to)
 {
 	inherited::net_Export_State(P, id_to);
 
@@ -1349,6 +1140,15 @@ int game_sv_Deathmatch::GetTeamScore(u32 idx)
 	VERIFY( (idx>=0) && (idx<teams.size()) );
 	return teams[idx].score;
 }
+void game_sv_Deathmatch::OnPlayerChangeSkin(ClientID id_who, u8 skin) 
+{
+	game_PlayerState*	ps_who	=	get_id	(id_who);
+	if (!ps_who) return;
+	ps_who->skin = skin;
+
+	KillPlayer(id_who);
+	
+}
 
 void game_sv_Deathmatch::SetTeamScore(u32 idx, int val)
 {
@@ -1356,54 +1156,6 @@ void game_sv_Deathmatch::SetTeamScore(u32 idx, int val)
 	teams[idx].score = val;
 }
 
-void	game_sv_Deathmatch::RespawnPlayer			(u32 id_who, bool NoSpectator)
-{
-	//------------------------------------------------------------
-	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
-	if (!xrCData || !xrCData->owner) return;
-	game_PlayerState*	ps	=	&(xrCData->ps);
-	CSE_Abstract* pOwner = xrCData->owner;
-	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
-	CSE_Spectator			*pS =	dynamic_cast<CSE_Spectator*>(pOwner);
-
-	if (pA)
-	{
-		//------------------------------------------------------------			
-		AllowDeadBodyRemove(id_who);
-		//------------------------------------------------------------
-		m_CorpseList.push_back(pOwner->ID);
-		//------------------------------------------------------------
-	};
-
-	if (pA && !NoSpectator)
-	{
-		//------------------------------------------------------------
-		SpawnPlayer(id_who, "spectator");
-		//------------------------------------------------------------
-	}
-	else
-	{
-		//------------------------------------------------------------
-		if (pOwner->owner != m_server->GetServer_client())
-		{
-			pOwner->owner = m_server->GetServer_client();
-		};
-		//------------------------------------------------------------
-		//remove spectator entity
-		if (pS)
-		{
-			NET_Packet			P;
-			u_EventGen			(P,GE_DESTROY,pS->ID);
-			//		pObject->u_EventSend		(P);
-			Level().Send(P,net_flags(TRUE,TRUE));
-		};
-		//------------------------------------------------------------
-		SpawnPlayer(id_who, "mp_actor");
-		//------------------------------------------------------------
-		SpawnWeaponsForActor(xrCData->owner, ps);
-		//------------------------------------------------------------
-	};
-};
 
 void	game_sv_Deathmatch::LoadAnomalySets			()
 {
@@ -1482,3 +1234,104 @@ void	game_sv_Deathmatch::StartAnomalies			()
 			pZone->ZoneEnable();
 	};
 };
+
+BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
+{
+	CSE_Abstract*		e_who	= m_server->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CSE_Abstract*		e_what	= m_server->ID_to_entity(eid_what);	VERIFY(e_what	);
+
+	CSE_ALifeCreatureActor*			A		= dynamic_cast<CSE_ALifeCreatureActor*> (e_who);
+	if (A)
+	{
+		// Actor touches something
+		CSE_ALifeItemWeapon*	W			=	dynamic_cast<CSE_ALifeItemWeapon*> (e_what);
+		if (W) 
+		{
+			// Weapon
+			xr_vector<u16>&	C			=	A->children;
+			u8 slot						=	W->get_slot	();
+			for (u32 it=0; it<C.size(); ++it)
+			{
+				CSE_Abstract*		Et	= m_server->ID_to_entity				(C[it]);
+				if (0==Et)				continue;
+				CSE_ALifeItemWeapon*		T	= dynamic_cast<CSE_ALifeItemWeapon*>	(Et);
+				if (0==T)				continue;
+				if (slot == T->get_slot())	
+				{
+					// We've found same slot occupied - disallow ownership
+					return FALSE;
+				}
+			}
+
+			// Weapon slot empty - ownership OK
+			return TRUE;
+		}
+		
+		CSE_ALifeItemAmmo* pIAmmo			=	dynamic_cast<CSE_ALifeItemAmmo*> (e_what);
+		if (pIAmmo)
+		{
+			//Ammo
+			return TRUE;
+		};
+
+		CSE_ALifeItemGrenade* pIGrenade		=	dynamic_cast<CSE_ALifeItemGrenade*> (e_what);
+		if (pIGrenade)
+		{
+			//Grenade
+			return TRUE;
+		};
+
+		CSE_ALifeItemCustomOutfit* pOutfit		= dynamic_cast<CSE_ALifeItemCustomOutfit*> (e_what);
+		if (pOutfit)
+		{
+			//Possibly Addons and/or Outfits
+			return TRUE;
+		};
+
+		//---------------------------------------------------------------
+		if (IsBuyableItem(e_what->s_name)) return TRUE;
+		//---------------------------------------------------------------
+	};
+	// We don't know what the hell is it, so disallow ownership just for safety 
+	return FALSE;
+}
+
+BOOL	game_sv_Deathmatch::OnDetach		(u16 eid_who, u16 eid_what)
+{	
+	return TRUE;
+}
+
+void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
+{
+	inherited::OnPlayerConnect	(id_who);
+
+	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
+	game_PlayerState*	ps_who	=	get_id	(id_who);
+
+	ps_who->clear();
+//	ClearPlayerState(ps_who);
+	ps_who->team				=	0;	
+	
+	if (g_pGamePersistent->bDedicatedServer && (xrCData == m_server->GetServer_client()) )
+	{
+		ps_who->Skip = true;
+		return;
+	}
+	ps_who->Skip = false;
+	SpawnPlayer(id_who, "spectator");
+
+	// Send Message About Client Connected
+	if (xrCData)
+	{
+		NET_Packet			P;
+		GenerateGameMessage (P);
+		P.w_u32				(GAME_EVENT_PLAYER_CONNECTED);
+		P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
+
+		u_EventSend(P);
+	};
+
+	Money_SetStart(id_who);
+	SetPlayersDefItems(ps_who);
+}
+
