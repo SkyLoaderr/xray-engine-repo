@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "pure.h"
 
 ENGINE_API int	__cdecl	_REG_Compare(const void *e1, const void *e2)
