@@ -17,7 +17,6 @@ USEUNIT("editor\EditMeshIO.cpp");
 USEUNIT("editor\EditMeshModify.cpp");
 USEUNIT("editor\Device.cpp");
 USEUNIT("editor\EditMeshRender.cpp");
-USEFORM("TopBar.cpp", fraTopBar);
 USEFORM("BottomBar.cpp", fraBottomBar);
 USEFORM("EditorPref.cpp", frmEditorPreferences);
 USEFORM("Splash.cpp", frmSplash);
@@ -111,6 +110,7 @@ USEUNIT("Editor\ImageManager.cpp");
 USELIB("Lib\ETools.lib");
 USEUNIT("UI_MainShader.cpp");
 USEUNIT("Editor\EditMeshPick.cpp");
+USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

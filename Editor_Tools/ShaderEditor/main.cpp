@@ -181,7 +181,7 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
     }else{
 		UI.OnAppDeactivate();
         UI.iRelease();
-    	paWindow->Color=clGray;
+    	paWindow->Color=0x00A0A6A9;
     }
 }
 //---------------------------------------------------------------------------

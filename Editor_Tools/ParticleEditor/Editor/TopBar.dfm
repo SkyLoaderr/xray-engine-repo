@@ -1,18 +1,20 @@
 object fraTopBar: TfraTopBar
   Left = 0
   Top = 0
-  Width = 686
+  Width = 1050
   Height = 18
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
   Align = alClient
   Constraints.MaxHeight = 18
   Constraints.MinHeight = 18
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  ParentColor = False
   ParentFont = False
   TabOrder = 0
   object paTBEdit: TPanel
@@ -22,6 +24,7 @@ object fraTopBar: TfraTopBar
     Height = 18
     Align = alLeft
     BevelOuter = bvNone
+    Color = 10528425
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
@@ -94,7 +97,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebEditUndoClick
     end
     object ebEditRedo: TExtBtn
@@ -166,7 +168,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebEditRedoClick
     end
   end
@@ -177,6 +178,7 @@ object fraTopBar: TfraTopBar
     Height = 18
     Align = alLeft
     BevelOuter = bvNone
+    Color = 10528425
     ParentShowHint = False
     ShowHint = True
     TabOrder = 1
@@ -250,7 +252,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ActionClick
     end
     object ebActionRotate: TExtBtn
@@ -323,7 +324,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ActionClick
     end
     object ebActionScale: TExtBtn
@@ -396,7 +396,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ActionClick
     end
     object ebActionSelect: TExtBtn
@@ -470,7 +469,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ActionClick
     end
     object ebActionAdd: TExtBtn
@@ -543,7 +541,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ActionClick
     end
   end
@@ -554,6 +551,7 @@ object fraTopBar: TfraTopBar
     Height = 18
     Align = alLeft
     BevelOuter = bvNone
+    Color = 10528425
     ParentShowHint = False
     ShowHint = True
     TabOrder = 2
@@ -629,7 +627,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
     object ebASnap: TExtBtn
       Left = 125
@@ -703,7 +700,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
     object ebCSLocal: TExtBtn
       Left = 0
@@ -777,7 +773,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
     object ebGSnap: TExtBtn
       Left = 50
@@ -848,7 +843,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
     object ebOSnap: TExtBtn
       Left = 75
@@ -926,7 +920,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
     object ebNonUniformScale: TExtBtn
       Left = 25
@@ -999,7 +992,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
     object ebVSnap: TExtBtn
       Left = 100
@@ -1077,7 +1069,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
   end
   object paAxis: TPanel
@@ -1087,6 +1078,7 @@ object fraTopBar: TfraTopBar
     Height = 18
     Align = alLeft
     BevelOuter = bvNone
+    Color = 10528425
     ParentShowHint = False
     ShowHint = True
     TabOrder = 3
@@ -1160,7 +1152,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
     object ebAxisY: TExtBtn
       Left = 25
@@ -1232,7 +1223,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
     object ebAxisZ: TExtBtn
       Left = 50
@@ -1304,7 +1294,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
     object ebAxisZX: TExtBtn
       Left = 75
@@ -1377,7 +1366,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
     end
   end
   object paView: TPanel
@@ -1387,6 +1375,7 @@ object fraTopBar: TfraTopBar
     Height = 18
     Align = alLeft
     BevelOuter = bvNone
+    Color = 10528425
     ParentShowHint = False
     ShowHint = True
     TabOrder = 4
@@ -1398,6 +1387,7 @@ object fraTopBar: TfraTopBar
       Hint = 'Front View'
       Align = alNone
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'F'
       Font.Charset = DEFAULT_CHARSET
@@ -1409,7 +1399,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebViewClick
     end
     object ebViewLeft: TExtBtn
@@ -1420,6 +1409,7 @@ object fraTopBar: TfraTopBar
       Hint = 'Left View'
       Align = alNone
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'L'
       Font.Charset = DEFAULT_CHARSET
@@ -1431,7 +1421,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebViewClick
     end
     object ebViewTop: TExtBtn
@@ -1442,6 +1431,7 @@ object fraTopBar: TfraTopBar
       Hint = 'Top View'
       Align = alNone
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'T'
       Font.Charset = DEFAULT_CHARSET
@@ -1453,7 +1443,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebViewClick
     end
     object ebViewBack: TExtBtn
@@ -1464,6 +1453,7 @@ object fraTopBar: TfraTopBar
       Hint = 'Back View'
       Align = alNone
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'B'
       Font.Charset = DEFAULT_CHARSET
@@ -1475,7 +1465,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebViewClick
     end
     object ebViewRight: TExtBtn
@@ -1486,6 +1475,7 @@ object fraTopBar: TfraTopBar
       Hint = 'Right View'
       Align = alNone
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'R'
       Font.Charset = DEFAULT_CHARSET
@@ -1497,7 +1487,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebViewClick
     end
     object ebViewBottom: TExtBtn
@@ -1508,6 +1497,7 @@ object fraTopBar: TfraTopBar
       Hint = 'Bottom View'
       Align = alNone
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       Caption = 'B'
       Font.Charset = DEFAULT_CHARSET
@@ -1519,7 +1509,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebViewClick
     end
     object ebCameraPlane: TExtBtn
@@ -1530,6 +1519,7 @@ object fraTopBar: TfraTopBar
       Hint = 'Zoom Extents'
       Align = alNone
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
       Down = True
@@ -1543,7 +1533,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebCameraStyleClick
     end
     object ebCameraArcBall: TExtBtn
@@ -1555,6 +1544,7 @@ object fraTopBar: TfraTopBar
       Hint = 'Zoom Extents Selected'
       Align = alNone
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
       Caption = 'A'
@@ -1567,7 +1557,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebCameraStyleClick
     end
     object ebCameraFly: TExtBtn
@@ -1579,6 +1568,7 @@ object fraTopBar: TfraTopBar
       Hint = 'Zoom Extents Selected'
       Align = alNone
       HotTrack = True
+      HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
       Caption = 'F'
@@ -1591,7 +1581,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebCameraStyleClick
     end
   end
@@ -1602,6 +1591,7 @@ object fraTopBar: TfraTopBar
     Height = 18
     Align = alLeft
     BevelOuter = bvNone
+    Color = 10528425
     ParentShowHint = False
     ShowHint = True
     TabOrder = 5
@@ -1674,7 +1664,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebZoomExtentsClick
     end
     object ebZoomExtentsSelected: TExtBtn
@@ -1746,7 +1735,6 @@ object fraTopBar: TfraTopBar
       NumGlyphs = 2
       ParentFont = False
       Spacing = 15
-      Transparent = False
       OnClick = ebZoomExtentsSelectedClick
     end
   end

@@ -166,12 +166,6 @@ void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEngineApplyChangesClick(TObject *Sender)
-{
-	UI.Command( COMMAND_APPLY_CHANGES );
-}
-//---------------------------------------------------------------------------
-
 void TfraLeftBar::InitPalette(TemplateVec& lst){
 	for (TemplateIt it=lst.begin(); it!=lst.end(); it++){
     	TMenuItem* mi= new TMenuItem(0);

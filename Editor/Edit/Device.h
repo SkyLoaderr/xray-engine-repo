@@ -26,6 +26,9 @@ class ENGINE_API CRenderDevice{
 	CTimer					TimerGlobal;
 
     Shader*					m_CurrentShader;
+
+	void					_Create		(LPCSTR shName);
+	void					_Destroy	(BOOL	bKeepTextures);
 public:
     Shader*					m_WireShader;
     Shader*					m_SelectionShader;
@@ -83,7 +86,6 @@ public:
 	bool 					Create			();
 	void 					Destroy			();
     void 					Resize			(int w, int h);
-    void					ReloadShaders	();
 	void 					RefreshTextures	(LPSTRVec* modif);
 	void 					UnloadTextures	();
 
@@ -95,6 +97,7 @@ public:
 
 	void 					Initialize		(void);
 	void 					ShutDown		(void);
+	void 					Reset			(LPCSTR shName, BOOL bKeepTextures);
 
     IC float				GetRenderArea	(){return m_RenderArea;}
 	// Sprite rendering
@@ -141,9 +144,6 @@ public:
 #endif
 
     bool					MakeScreenshot	(DWORDVec& pixels, DWORD& width, DWORD& height);
-
-    void					OnDeviceCreate	();
-    void					OnDeviceDestroy	();
 
 	void 					InitTimer		();
 	// Mode control

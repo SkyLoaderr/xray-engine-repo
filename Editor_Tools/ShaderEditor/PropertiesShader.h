@@ -44,6 +44,9 @@ __published:	// IDE-managed Components
 	TElTreeInplaceSpinEdit *InplaceNumber;
 	TMxPopupMenu *pmEnum;
 	TFormStorage *fsStorage;
+	TPanel *Panel1;
+	TExtBtn *ebPropertiesApply;
+	TExtBtn *ebPropertiesAutoApply;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall InplaceNumberBeforeOperation(TObject *Sender,
@@ -59,7 +62,11 @@ __published:	// IDE-managed Components
           bool &InputValid);
 	void __fastcall InplaceNumberValidateResult(TObject *Sender,
           bool &InputValid);
+	void __fastcall ebPropertiesApplyClick(TObject *Sender);
 private:	// User declarations
+    void Modified();
+    static bool m_bModified;
+    static bool m_bFreeze;
 	static TfrmShaderProperties *form;
     void __fastcall PMItemClick(TObject *Sender);
 	TElTreeItem* __fastcall AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0, LPDWORD param=0);
@@ -68,12 +75,16 @@ private:	// User declarations
 	void __fastcall AddMatrix(TElTreeItem* parent, LPSTR name);
 	void __fastcall RemoveMatrix(TElTreeItem* parent);
 	void __fastcall AddConstant(TElTreeItem* parent, LPSTR name);
-//	void __fastcall AddTexture(TElTreeItem* parent, LPSTR name);
 public:		// User declarations
 	__fastcall TfrmShaderProperties		        (TComponent* Owner);
     static void __fastcall ShowProperties();
     static void __fastcall HideProperties();
+    static bool __fastcall IsAutoApply(){ if (form) return form->ebPropertiesAutoApply->Down; else return true; }
+    static bool __fastcall IsModified(){ return m_bModified; }
+    static void __fastcall ResetModified(){ m_bModified=false; }
+
     static void __fastcall InitProperties();
+    static void __fastcall FreezeUpdate(bool val){m_bFreeze=val;}
 };
 //---------------------------------------------------------------------------
 #endif

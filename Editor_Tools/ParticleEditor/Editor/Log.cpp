@@ -37,9 +37,6 @@ void __cdecl Msg	(LPCSTR format, ...){
 #ifdef _EDITOR
     if (frmSplash) frmSplash->SetStatus(buf);
 #endif
-    TfrmLog::AddMessage(mtInformation,AnsiString(buf));
-
-	strcat( buf, "\r\n" );
     ELog.Msg(mtInformation,buf);
 }
 //----------------------------------------------------

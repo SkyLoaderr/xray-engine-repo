@@ -300,8 +300,12 @@ void TUI::HideHint(){
 
 void TUI::ShowObjectHint(){
 	VERIFY(m_bReady);
-    if (!fraBottomBar->miShowHint->Checked) return;
-    if (!m_bAppActive) return; 
+    if (!fraBottomBar->miShowHint->Checked){
+    	if (m_bHintShowing) HideHint();
+    	return;
+    }
+    if (Device.m_Camera.IsMoving()||m_MouseCaptured) return;
+    if (!m_bAppActive) return;
 
     GetCursorPos(&m_HintPoint);
     TWinControl* ctr = FindVCLWindow(m_HintPoint);

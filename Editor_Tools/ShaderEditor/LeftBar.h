@@ -67,7 +67,6 @@ __published:	// IDE-managed Components
 	TElTree *tvEngine;
 	TPanel *paAction;
 	TExtBtn *ebEngineShaderProperties;
-	TExtBtn *ebEngineApplyChanges;
 	TElTabSheet *tsCompiler;
 	TPanel *Panel4;
 	TExtBtn *ebCompilerShaderRemove;
@@ -76,7 +75,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCShaderCreate;
 	TPanel *Panel5;
 	TExtBtn *ExtBtn6;
-	TExtBtn *ExtBtn7;
 	TBevel *Bevel4;
 	TBevel *Bevel3;
 	TElTree *tvCompiler;
@@ -96,7 +94,6 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall ebEngineShaderPropertiesClick(TObject *Sender);
 	void __fastcall PreviewClick(TObject *Sender);
-	void __fastcall ebEngineApplyChangesClick(TObject *Sender);
 	void __fastcall ebEngineShaderCreateMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall CreateFolder1Click(TObject *Sender);

@@ -23,7 +23,12 @@ enum ECommands{
 	COMMAND_UPDATE_TOOLBAR,
 	COMMAND_RESET_ANIMATION,
 	COMMAND_SELECT_PREVIEW_OBJ,	// p1 - 0-plane, 1-box, 2-sphere, 3-teapot, -1-custom
-	COMMAND_APPLY_CHANGES
+	COMMAND_APPLY_CHANGES,
+
+	COMMAND_CHANGE_ACTION,
+    // unused (only for compatibility)
+    COMMAND_UNDO,
+    COMMAND_REDO
 };
 #endif //UI_MainCommandH
 

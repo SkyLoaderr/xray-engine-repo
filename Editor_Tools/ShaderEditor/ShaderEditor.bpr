@@ -9,9 +9,8 @@
       Intermediate\frustum.obj Intermediate\EditMesh.obj 
       Intermediate\EditObjectImport.obj Intermediate\EditMeshIO.obj 
       Intermediate\EditMeshModify.obj Intermediate\Device.obj 
-      Intermediate\EditMeshRender.obj Intermediate\TopBar.obj 
-      Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
-      Intermediate\Splash.obj Intermediate\main.obj 
+      Intermediate\EditMeshRender.obj Intermediate\BottomBar.obj 
+      Intermediate\EditorPref.obj Intermediate\Splash.obj Intermediate\main.obj 
       Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
       Intermediate\_quaternion.obj Intermediate\_compressed_normal.obj 
       Intermediate\xr_trims.obj Intermediate\interp.obj 
@@ -50,14 +49,15 @@
       Intermediate\xrLoadSurface.obj Intermediate\UI_Main.obj 
       Intermediate\UI_Tools.obj Intermediate\UI_MainExtern.obj 
       Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj 
-      Intermediate\UI_MainShader.obj Intermediate\EditMeshPick.obj"/>
+      Intermediate\UI_MainShader.obj Intermediate\EditMeshPick.obj 
+      Intermediate\TopBar.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) TopBar.dfm BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm 
-      LeftBar.dfm PropertiesShader.dfm LogForm.dfm Editor\ChoseForm.dfm 
-      Editor\ShaderFunction.dfm"/>
+    <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
+      PropertiesShader.dfm LogForm.dfm Editor\ChoseForm.dfm 
+      Editor\ShaderFunction.dfm Editor\TopBar.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib Lib\FreeImage.lib 
       Lib\ETools.lib"/>

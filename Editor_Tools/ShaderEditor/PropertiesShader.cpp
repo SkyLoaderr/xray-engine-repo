@@ -12,6 +12,7 @@
 #include "xr_tokens.h"
 #include "ShaderFunction.h"
 #include "ChoseForm.h"
+#include "UI_Main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "mxPlacemnt"
@@ -45,6 +46,8 @@ xr_token							mode_token					[ ]={
 //---------------------------------------------------------------------------
 
 TfrmShaderProperties* TfrmShaderProperties::form=0;
+bool TfrmShaderProperties::m_bFreeze = false;
+bool TfrmShaderProperties::m_bModified = false;
 //---------------------------------------------------------------------------
 __fastcall TfrmShaderProperties::TfrmShaderProperties(TComponent* Owner)
 	: TForm(Owner)
@@ -190,12 +193,12 @@ void __fastcall TfrmShaderProperties::InplaceFloatValidateResult(
 	if (BPID_FLOAT2==InplaceFloat->Item->Tag){
 	    if (!fsimilar(*(float*)InplaceFloat->Item->Data,E->Value)){
 		    *(float*)InplaceFloat->Item->Data = E->Value;
-    		Tools.Modified();
+            Modified();
 	    }
 	}else if (BPID_FLOAT==InplaceFloat->Item->Tag){
 	    if (!fsimilar(((BP_Float*)InplaceFloat->Item->Data)->value,E->Value)){
 		    ((BP_Float*)InplaceFloat->Item->Data)->value = E->Value;
-    		Tools.Modified();
+            Modified();
 	    }
     }
 }
@@ -225,7 +228,7 @@ void __fastcall TfrmShaderProperties::InplaceNumberValidateResult(
 	TElSpinEdit* E = InplaceNumber->Editor;
     if (*(int*)InplaceNumber->Item->Data != E->Value){
 	    *(int*)InplaceNumber->Item->Data = E->Value;
-    	Tools.Modified();
+		Modified();
     }
 }
 //---------------------------------------------------------------------------
@@ -384,14 +387,14 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
             if (((BP_BOOL*)item->Data)->value != mi->MenuIndex){
 	            item->ColumnText->Strings[0]= mi->Caption;
 	            ((BP_BOOL*)item->Data)->value= mi->MenuIndex;
-		    	Tools.Modified();
+	            Modified();
             }
         break;
 		case BPID_BOOL2:
             if ((*(BOOL*)item->Data) != mi->MenuIndex){
 	            item->ColumnText->Strings[0]= mi->Caption;
 	            (*(BOOL*)item->Data) = mi->MenuIndex;
-		    	Tools.Modified();
+	            Modified();
             }
         break;
 		case BPID_FLAG:{
@@ -402,7 +405,7 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
             else				val &=~fl;
             if (val!= *(LPDWORD)item->Data){
             	*(LPDWORD)item->Data = val;
-				Tools.Modified();
+	            Modified();
             }
         }break;
 		case BPID_TOKEN:{
@@ -410,7 +413,7 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
         	if (token_list->IDselected != GetTokenItem(token_list,mi->MenuIndex).ID){
 	            item->ColumnText->Strings[0]= mi->Caption;
     	        token_list->IDselected 		= GetTokenItem(token_list,mi->MenuIndex).ID;
-				Tools.Modified();
+	            Modified();
             }
         }break;
 		case BPID_TOKEN2:{
@@ -418,7 +421,7 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
             if ((DWORD)(item->Data)	!= token_list[mi->MenuIndex].id){
 	            item->ColumnText->Strings[0]= mi->Caption;
     	        *(LPDWORD)(item->Data)		= token_list[mi->MenuIndex].id;
-				Tools.Modified();
+	            Modified();
             }
         }break;
 		case BPID_TEXTURE:{
@@ -429,13 +432,13 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
             	if (name&&name[0]&&strcmp(tex,name)!=0){
 					strcpy(tex,name);
 		            item->ColumnText->Strings[0]= name;
-			    	Tools.Modified();
+		            Modified();
                 }
             }else if (mi->MenuIndex>=2){
             	if (strcmp(tex,TEXTUREString[mi->MenuIndex])!=0){
 					strcpy(tex,TEXTUREString[mi->MenuIndex]);
 		            item->ColumnText->Strings[0]= TEXTUREString[mi->MenuIndex];
-			    	Tools.Modified();
+		            Modified();
                 }
             }
         }break;
@@ -444,14 +447,14 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
         	if (mi->MenuIndex==0){
             	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
 					strcpy(nm,Tools.Engine.AppendConstant());
-			    	Tools.Modified();
+		            Modified();
                 }
             }else if (mi->MenuIndex>=2){
             	if (*nm!='$') Tools.Engine.RemoveConstant(nm);
             	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
 					strcpy(nm,MCString[mi->MenuIndex]);
 		            item->ColumnText->Strings[0]= MCString[mi->MenuIndex];
-			    	Tools.Modified();
+		            Modified();
                 }
             }
         }break;
@@ -462,17 +465,18 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
 					strcpy(nm,Tools.Engine.AppendMatrix());
 		            item->ColumnText->Strings[0]= MCString[mi->MenuIndex];
                     AddMatrix(item,nm);
-			    	Tools.Modified();
+		            Modified();
                 }
             }else if (mi->MenuIndex>=2){
             	if (*nm!='$'){
                 	Tools.Engine.RemoveMatrix(nm);
                     RemoveMatrix(item);
+		            Modified();
                 }
             	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
 					strcpy(nm,MCString[mi->MenuIndex]);
 		            item->ColumnText->Strings[0]= MCString[mi->MenuIndex];
-			    	Tools.Modified();
+		            Modified();
                 }
             }
         }break;
@@ -486,7 +490,7 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
 // stringZ	name
 // []		data
 void __fastcall TfrmShaderProperties::InitProperties(){
-	if (form){
+	if (form&&!m_bFreeze){
     	switch(Tools.ActiveEditor()){
         case aeEngine:
             if (Tools.Engine.m_CurrentBlender){ // fill Tree
@@ -559,6 +563,7 @@ void __fastcall TfrmShaderProperties::InitProperties(){
             }
         break;
         }
+	    m_bModified = false;
     }
 }
 //---------------------------------------------------------------------------
@@ -569,10 +574,25 @@ void __fastcall TfrmShaderProperties::CustomClick(TElTreeItem* item)
     switch (type){
     case BPID_WAVE:{
         if (TfrmShaderFunction::Run((WaveForm*)item->Data)==mrOk)
-			Tools.Modified();
+			Modified();
     }break;
     }
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmShaderProperties::ebPropertiesApplyClick(
+      TObject *Sender)
+{
+	UI.Command(COMMAND_APPLY_CHANGES);
+	Modified();
+}
+//---------------------------------------------------------------------------
+
+void TfrmShaderProperties::Modified()
+{
+	m_bModified = true;
+    Tools.Modified();
+	if (ebPropertiesAutoApply->Down)
+    	Tools.ApplyChanges();
+}
 

@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 443
+  Width = 762
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -9,29 +9,32 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 762
     Height = 17
     Align = alTop
     BevelInner = bvLowered
     BevelOuter = bvNone
+    Color = 10528425
     TabOrder = 0
     object paInfo: TPanel
       Left = 74
       Top = 1
-      Width = 310
+      Width = 629
       Height = 15
       Align = alClient
       Alignment = taLeftJustify
       BevelOuter = bvNone
+      Color = 10528425
       TabOrder = 0
       object paStatus: TPanel
         Left = 116
         Top = 0
-        Width = 230
+        Width = 289
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
         BevelInner = bvLowered
+        Color = 10528425
         Font.Charset = RUSSIAN_CHARSET
         Font.Color = clMaroon
         Font.Height = -11
@@ -40,7 +43,7 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 0
         object cgProgress: TCGauge
-          Left = 101
+          Left = 160
           Top = 2
           Width = 127
           Height = 11
@@ -65,10 +68,11 @@ object fraBottomBar: TfraBottomBar
         BevelInner = bvRaised
         BevelOuter = bvNone
         Caption = 'Status:'
+        Color = 10528425
         TabOrder = 1
       end
       object paCameraPos: TPanel
-        Left = 86
+        Left = 405
         Top = 0
         Width = 130
         Height = 15
@@ -76,7 +80,7 @@ object fraBottomBar: TfraBottomBar
         Alignment = taLeftJustify
         BevelInner = bvLowered
         Caption = 'Cam: (123,123,123)'
-        Color = clSilver
+        Color = 10528425
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clMaroon
         Font.Height = -11
@@ -92,6 +96,7 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alLeft
         BevelOuter = bvNone
+        Color = 10528425
         TabOrder = 3
         object ebLog: TExtBtn
           Left = 0
@@ -100,6 +105,7 @@ object fraBottomBar: TfraBottomBar
           Height = 15
           Align = alNone
           BevelShow = False
+          HotColor = 15790320
           CloseButton = False
           Caption = 'Log'
           Font.Charset = DEFAULT_CHARSET
@@ -110,7 +116,6 @@ object fraBottomBar: TfraBottomBar
           Kind = knMinimize
           ParentFont = False
           Spacing = 0
-          Transparent = False
           FlatAlwaysEdge = True
           OnClick = ebLogClick
         end
@@ -122,6 +127,7 @@ object fraBottomBar: TfraBottomBar
           Align = alNone
           AllowAllUp = True
           BevelShow = False
+          HotColor = 15790320
           CloseButton = False
           GroupIndex = 1
           Caption = 'Stat'
@@ -133,13 +139,12 @@ object fraBottomBar: TfraBottomBar
           Kind = knMinimize
           ParentFont = False
           Spacing = 0
-          Transparent = False
           FlatAlwaysEdge = True
           OnClick = ebStatClick
         end
       end
       object paUICursor: TPanel
-        Left = 216
+        Left = 535
         Top = 0
         Width = 94
         Height = 15
@@ -147,7 +152,7 @@ object fraBottomBar: TfraBottomBar
         Alignment = taLeftJustify
         BevelInner = bvLowered
         Caption = 'Cursor:1025, 2048'
-        Color = clSilver
+        Color = 10528425
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clMaroon
         Font.Height = -11
@@ -164,6 +169,7 @@ object fraBottomBar: TfraBottomBar
       Height = 15
       Align = alLeft
       BevelOuter = bvNone
+      Color = 10528425
       TabOrder = 1
       object ebOptions: TExtBtn
         Left = 0
@@ -172,6 +178,8 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
+        HotColor = 15790320
+        CloseTransparent = True
         Caption = 'Options'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -180,13 +188,12 @@ object fraBottomBar: TfraBottomBar
         Font.Style = []
         Kind = knMinimize
         ParentFont = False
-        Transparent = False
         FlatAlwaysEdge = True
         OnMouseDown = ebOptionsMouseDown
       end
     end
     object paGridSquareSize: TPanel
-      Left = 384
+      Left = 703
       Top = 1
       Width = 58
       Height = 15
@@ -194,7 +201,7 @@ object fraBottomBar: TfraBottomBar
       Alignment = taLeftJustify
       BevelInner = bvLowered
       Caption = 'Grid: 0.1 m'
-      Color = clSilver
+      Color = 10528425
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
       Font.Height = -11

@@ -91,7 +91,7 @@ void CRenderDevice::Initialize()
 	Shader.xrStartUp	();
 	// Startup shaders
 	Create				();
-//	PSLib.xrStartUp		();
+
 	pHUDFont 			= new CFontHUD();
 }
 
@@ -138,13 +138,11 @@ bool CRenderDevice::Create(){
 	HW.CreateDevice		(frmMain->D3DWindow->Handle,dwWidth,dwHeight);
 
 	// after creation
-	bReady				= TRUE;
-
 	dwFrame				= 0;
 
-    OnDeviceCreate();
+    _Create				("shaders.xr");
 
-	ELog.Msg( mtInformation, "D3D: initialized" );
+	ELog.Msg			(mtInformation, "D3D: initialized");
 	return true;
 }
 
@@ -157,36 +155,25 @@ void CRenderDevice::Destroy(){
 	HW.Validate					();
 
 	// before destroy
-	bReady 						= FALSE;
-	OnDeviceDestroy				();
+	_Destroy					(FALSE);
 
 	// real destroy
 	HW.DestroyDevice			();
 
 	ELog.Msg( mtInformation, "D3D: device cleared" );
 }
+//---------------------------------------------------------------------------
+void CRenderDevice::_Create(LPCSTR shName){
+	bReady				= TRUE;
 
-void CRenderDevice::OnDeviceCreate(){
 	// Shaders part
-	Shader.OnDeviceCreate();
+	Shader.OnDeviceCreate(shName);
     m_WireShader 		= Shader.Create("editor\\wire");
     m_SelectionShader 	= Shader.Create("editor\\selection");
 
 	// General Render States
 	HW.Caps.Update();
-	for (DWORD i=0; i<HW.Caps.pixel.dwStages; i++)
-	{
-//		if (psDeviceFlags&rsAnisotropic)	{
-//			Device.SetTSS(i,D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC	);
-//			Device.SetTSS(i, D3DTSS_MAGFILTER,	D3DTEXF_ANISOTROPIC );
-//			Device.SetTSS(i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		);
-//			Device.SetTSS(i, D3DTSS_MAXANISOTROPY, 16				);
-//		} else
-//		{
-//			Device.SetTSS(i, D3DTSS_MINFILTER,	D3DTEXF_LINEAR 		);
-//			Device.SetTSS(i, D3DTSS_MAGFILTER,	D3DTEXF_LINEAR 		);
-//			Device.SetTSS(i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		);
-//		}
+	for (DWORD i=0; i<HW.Caps.pixel.dwStages; i++){
 		float fBias = -1.f;
 		CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 	}
@@ -244,15 +231,16 @@ void CRenderDevice::OnDeviceCreate(){
 	}
 }
 
-void CRenderDevice::OnDeviceDestroy(){
-    m_CurrentShader		= 0;
+void CRenderDevice::_Destroy(BOOL	bKeepTextures){
+	bReady 						= FALSE;
+    m_CurrentShader				= 0;
 
 	if (m_WireShader) Shader.Delete(m_WireShader);
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
 
 	seqDevDestroy.Process		(rp_DeviceDestroy);
 
-	Shader.OnDeviceDestroy		();
+	Shader.OnDeviceDestroy		(bKeepTextures);
 
 	Primitive.OnDeviceDestroy	();
 	Streams.OnDeviceDestroy		();
@@ -398,24 +386,6 @@ void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWO
     UPDATEC(vc,pc,dwRequired);
 }
 
-void CRenderDevice::ReloadShaders(){
-	OnDeviceDestroy();
-	OnDeviceCreate();
-//S
-/*    Lib.OnDeviceDestroy();
-
-	if (m_WireShader) Shader.Delete(m_WireShader);
-	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
-
-    Shader.Reload();
-
-    m_WireShader 		= Shader.Create("$ed_wire");
-    m_SelectionShader 	= Shader.Create("$ed_selection");
-
-    Lib.OnDeviceCreate();
-*/
-}
-
 //------------------------------------------------------------------------------
 // если передан параметр modif - обновляем DX-Surface only и только из списка
 // иначе полная синхронизация 
@@ -480,4 +450,12 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
     return true;
 }
 
+void CRenderDevice::Reset(LPCSTR shName, BOOL bKeepTextures)
+{
+	u32 tm_start	= TimerAsync();
+	_Destroy		(bKeepTextures);
+	_Create			(shName);
+	u32 tm_end		= TimerAsync();
+	Msg				("*** RESET [%d ms]",tm_end-tm_start);
+}
 

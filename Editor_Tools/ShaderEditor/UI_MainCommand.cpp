@@ -57,7 +57,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    frmEditorPreferences->ShowModal();
         break;
 	case COMMAND_SAVE:
+    	// engine shaders
+//	    Tools.Engine.ApplyChanges();
     	Tools.Engine.Save();
+    	// compiler
+//	    Tools.Compiler.ApplyChanges();
     	Tools.Compiler.Save();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
@@ -106,8 +110,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Tools.SelectPreviewObject(p1);
     	break;
     case COMMAND_APPLY_CHANGES:
-    	if (Tools.ActiveEditor()==aeEngine)		Tools.Engine.ApplyChanges();
-    	else if (Tools.ActiveEditor()==aeCompiler)Tools.Compiler.ApplyChanges();
+    	Tools.ApplyChanges();
     	break;
 	case COMMAND_UPDATE_GRID:
     	DU::UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);
@@ -133,6 +136,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_CHECK_MODIFIED:
     	bRes = Tools.IsModified();
 		break;
+    case COMMAND_CHANGE_ACTION:
+    	Tools.ChangeAction(p1);
+		break;
+    case COMMAND_UNDO:
+    case COMMAND_REDO:
+    	// fake
+    	break;
  	default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;

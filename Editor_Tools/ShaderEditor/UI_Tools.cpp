@@ -20,6 +20,7 @@ CShaderTools::CShaderTools()
 {
 	m_EditObject 		= 0;
     m_bCustomEditObject	= false;
+    m_bNeedUpdateDeviceShaders = false;
 }
 //---------------------------------------------------------------------------
 
@@ -73,6 +74,10 @@ void CShaderTools::Render(){
 void CShaderTools::Update(){
 	if (m_EditObject)
     	m_EditObject->RTL_Update(Device.fTimeDelta);
+    if (m_bNeedUpdateDeviceShaders){
+    	if (ActiveEditor()==aeEngine) Engine.UpdateDeviceShaders();
+        m_bNeedUpdateDeviceShaders = false;
+    }
 }
 
 void CShaderTools::ZoomObject(){
@@ -114,6 +119,8 @@ void CShaderTools::OnDeviceCreate(){
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
+
+    m_bNeedUpdateDeviceShaders = true;
 }
 
 void CShaderTools::OnDeviceDestroy(){
@@ -135,6 +142,7 @@ void CShaderTools::SelectPreviewObject(int p){
     if (!m_EditObject)
         ELog.DlgMsg(mtError,"Object '%s.object' can't find in object library. Preview disabled.",fn);
 	ZoomObject();
+    UpdateObjectShader();
     UI.RedrawScene();
 }
 
@@ -171,4 +179,11 @@ void CShaderTools::UpdateObjectShader(){
     	}
     }
 }
+
+void CShaderTools::ApplyChanges()
+{
+    if (ActiveEditor()==aeEngine)		Tools.Engine.ApplyChanges();
+    else if (ActiveEditor()==aeCompiler)Tools.Compiler.ApplyChanges();
+}
+
 

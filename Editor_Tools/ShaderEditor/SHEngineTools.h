@@ -12,6 +12,9 @@ public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data)=0;
 };
 
+#define SHADER_FILENAME_BASE "shaders.xr"
+#define SHADER_FILENAME_TEMP "$shaders$.xr"
+
 class CSHEngineTools
 {
 	BOOL				m_bModified;
@@ -74,7 +77,7 @@ public:
 
 	void				Reload				();
 	void				Load				();
-	void				Save				();
+	void				Save				(BOOL bForVisUpdate=false);
 
     bool				IfModified			();
     bool				IsModified			(){return m_bModified;}
@@ -82,6 +85,8 @@ public:
 
     void				OnCreate			();
     void				OnDestroy			();
+
+    void				UpdateDeviceShaders	();
 
     // misc
     void				SetCurrentBlender	(CBlender* B);

@@ -15,10 +15,28 @@ enum EActiveEditor{
     aeCompiler
 };
 
+enum EAction{
+    eaSelect=0,
+    eaAdd,
+    eaMove,
+    eaRotate,
+    eaScale,
+    eaMaxActions
+};
+
+enum EAxis{
+    eAxisX=0,
+	eAxisY,
+    eAxisZ,
+    eAxisZX
+};
+
 class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CEditableObject*	m_EditObject;
     bool				m_bCustomEditObject;
+    EAction 			m_Action;
+    bool				m_bNeedUpdateDeviceShaders;
 public:
     CSHEngineTools		Engine;
     CSHCompilerTools	Compiler;
@@ -48,8 +66,12 @@ public:
     void				OnChangeEditor		();
 
     void				UpdateObjectShader	();
+    void                UpdateDeviceShaders	(){m_bNeedUpdateDeviceShaders=true;}
 
     void				OnShowHint			(AStringVec& ss);
+
+    void				ChangeAction		(EAction action){m_Action=action;}
+    void				ApplyChanges		();
 
     bool __fastcall 	MouseStart  		(TShiftState Shift){return false;}
     bool __fastcall 	MouseEnd    		(TShiftState Shift){return false;}

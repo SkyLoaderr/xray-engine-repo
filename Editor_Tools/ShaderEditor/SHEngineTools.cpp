@@ -121,15 +121,18 @@ bool CSHEngineTools::IfModified(){
     return true;
 }
 
-void CSHEngineTools::ApplyChanges(){
-    if (m_CurrentBlender){
-        CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
-        m_CurrentBlender->Load(data);
+void CSHEngineTools::UpdateDeviceShaders()
+{
+    Save(TRUE);
+    Device.Reset(SHADER_FILENAME_TEMP,TRUE);
+}
 
-        CBlender* B = CBlender::Create(m_CurrentBlender->getDescription().CLS);
-        data->Seek(0); B->Load(data);
+
+void CSHEngineTools::ApplyChanges(){
+    if (m_CurrentBlender&&TfrmShaderProperties::IsModified()){
+    	UpdateObjectFromStream();
         // update visual
-		Device.Shader.ED_UpdateBlender(m_CurrentBlender->getName(),B);
+        Tools.UpdateDeviceShaders();
         // set modified flag
 		Modified();
     }
@@ -146,6 +149,7 @@ void CSHEngineTools::Load(){
 	AnsiString fn = "shaders.xr";
     FS.m_GameRoot.Update(fn);
 
+	TfrmShaderProperties::FreezeUpdate(true);
     m_bUpdateCurrent	= false;
 
     if (FS.Exist(fn.c_str())){
@@ -210,18 +214,20 @@ void CSHEngineTools::Load(){
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
     }
 	m_bUpdateCurrent			= true;
+	TfrmShaderProperties::FreezeUpdate(false);
 }
 
-void CSHEngineTools::Save(){
-    ApplyChanges();
+void CSHEngineTools::Save(BOOL bForVisUpdate){
+	TfrmShaderProperties::FreezeUpdate(true);
+
     LPCSTR name					= m_CurrentBlender?m_CurrentBlender->getName():0;
 	ResetCurrentBlender			();
 	m_bUpdateCurrent			= false;
 
 	CollapseReferences();
     // save
-	AnsiString fn = "shaders.xr";
-    FS.m_GameRoot.Update(fn);
+	AnsiString fn 				= bForVisUpdate?SHADER_FILENAME_TEMP:SHADER_FILENAME_BASE;
+    FS.m_GameRoot.Update		(fn);
 
     CFS_Memory F;
 
@@ -263,7 +269,12 @@ void CSHEngineTools::Save(){
 	m_bUpdateCurrent		= true;
 	SetCurrentBlender		(name);
 
-    m_bModified	= FALSE;
+	if (!bForVisUpdate){
+    	m_bModified	= FALSE;
+		TfrmShaderProperties::ResetModified();
+    }
+
+	TfrmShaderProperties::FreezeUpdate(false);
 }
 
 CBlender* CSHEngineTools::FindBlender(LPCSTR name){
@@ -482,7 +493,8 @@ void CSHEngineTools::RemoveConstant(LPSTR name){
 void CSHEngineTools::UpdateStreamFromObject(){
     m_BlenderStream.clear();
     if (m_CurrentBlender) m_CurrentBlender->Save(m_BlenderStream);
-    TfrmShaderProperties::InitProperties();
+	// properties
+	TfrmShaderProperties::InitProperties();
 }
 
 void CSHEngineTools::UpdateObjectFromStream(){
@@ -495,7 +507,8 @@ void CSHEngineTools::UpdateObjectFromStream(){
 void CSHEngineTools::SetCurrentBlender(CBlender* B){
     if (!m_bUpdateCurrent) return;
 
-    UpdateObjectFromStream();
+    if (TfrmShaderProperties::IsAutoApply()) ApplyChanges();
+	else UpdateObjectFromStream();
 	if (m_CurrentBlender!=B){
         m_CurrentBlender = B;
         UpdateStreamFromObject();
