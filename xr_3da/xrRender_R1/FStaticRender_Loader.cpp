@@ -39,7 +39,7 @@ void CRender::level_Load()
 	Wallmarks			= xr_new<CWallmarksEngine>	();
 
 	// Streams
-	hGeomPatches		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	hGeomPatches.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	
 	// HOM
 	HOM.Load			();
@@ -58,7 +58,7 @@ void CRender::level_Unload()
 	HOM.Unload				();
 
 	//*** Streams
-	Device.Shader.DeleteGeom(hGeomPatches);
+	hGeomPatches.destroy	();
 
 	// Wallmarks
 	xr_delete				(Wallmarks);

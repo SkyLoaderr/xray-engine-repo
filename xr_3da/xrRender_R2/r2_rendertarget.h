@@ -77,18 +77,18 @@ private:
 	// Bloom
 	ref_geom					g_bloom_build;
 	ref_geom					g_bloom_filter;
-	ref_shader						s_bloom_dbg_1;
-	ref_shader						s_bloom_dbg_2;
-	ref_shader						s_bloom;
+	ref_shader					s_bloom_dbg_1;
+	ref_shader					s_bloom_dbg_2;
+	ref_shader					s_bloom;
 
 	// Combine
 	ref_geom					g_combine;
 	ref_geom					g_aa_blur;
 	ref_geom					g_aa_AA;
-	ref_shader						s_combine_dbg_DepthD;
-	ref_shader						s_combine_dbg_Normal;
-	ref_shader						s_combine_dbg_Accumulator;
-	ref_shader						s_combine;
+	ref_shader					s_combine_dbg_DepthD;
+	ref_shader					s_combine_dbg_Normal;
+	ref_shader					s_combine_dbg_Accumulator;
+	ref_shader					s_combine;
 private:
 	float						param_blur;
 	float						param_gray;
@@ -106,7 +106,7 @@ public:
 	void						accum_spot_geom_create	();
 	void						accum_spot_geom_destroy	();
 
-	void						u_setrt					(ref_rt& _1, ref_rt& _2, ref_rt& _3, IDirect3DSurface9* zb);
+	void						u_setrt					(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, IDirect3DSurface9* zb);
 	void						u_setrt					(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
 
 	void						phase_scene				();

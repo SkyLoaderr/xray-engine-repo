@@ -257,7 +257,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC)
 	m_explodeTime = m_engineTime = m_flashTime = 0;
 
 	if(0==pstrWallmark) hWallmark	= 0; 
-	else hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
+	else hWallmark.create			("effects\\wallmark",pstrWallmark);
 
 	CKinematics* V = PKinematics(Visual());
 	if(V) V->PlayCycle("idle1");

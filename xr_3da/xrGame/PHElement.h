@@ -67,11 +67,6 @@ class CPHElement	:  public CPhysicsElement
 	ObjectContactCallbackFun*	temp_for_push_out;
 	u32							push_untill;
 
-public:
-
-	/////////////////////////////////////////////////////////////////////////////
-	static ref_shader			hWallmark;
-	////////////////////////////
 private:
 	void					create_Sphere					(const Fsphere&		V);
 	void					create_Box						(const Fobb&		V);
@@ -172,7 +167,6 @@ public:
 
 	CPHElement(dSpaceID a_space)
 	{ 
-		///	if(!hWallmark)hWallmark	= Device.Shader.Create("effects\\wallmark", "wallmarks\\wallmark_default");
 		m_w_limit = default_w_limit;
 		m_l_limit = default_l_limit;
 		m_l_scale=default_l_scale;

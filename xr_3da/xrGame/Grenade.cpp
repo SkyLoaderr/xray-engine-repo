@@ -96,8 +96,8 @@ void CGrenade::Load(LPCSTR section) {
 
 BOOL CGrenade::net_Spawn(LPVOID DC) {
 	if(0==pstrWallmark) hWallmark	= 0; 
-	else hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
-	return inherited::net_Spawn(DC);
+	else hWallmark.create		("effects\\wallmark",pstrWallmark);
+	return inherited::net_Spawn	(DC);
 }
 
 void CGrenade::net_Destroy() 

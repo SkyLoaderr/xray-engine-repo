@@ -132,14 +132,18 @@ void CWeaponM134::FlameLOAD()
 	// flame textures
 	LPCSTR S		= pSettings->r_string	(cName(),"flame");
 	u32 scnt		= _GetItemCount(S);
-	char name[255];
+	char name		[255];
+	ref_shader		tmp;
 	for (u32 i=0; i<scnt; i++)
-		hFlames.push_back(Device.Shader.Create("effects\\flame",_GetItem(S,i,name),false));
+	{
+		tmp.create			("effects\\flame",_GetItem(S,i,name));
+		hFlames.push_back	(tmp);
+	}
 }
 void CWeaponM134::FlameUNLOAD()
 {
 	for (u32 i=0; i<hFlames.size(); i++)
-		Device.Shader.Delete(hFlames[i]);
+		hFlames[i].destroy();
 	hFlames.clear();
 }
 

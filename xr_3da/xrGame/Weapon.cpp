@@ -386,8 +386,8 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 	ShaderCreate				(hUIIcon,"hud\\default","");
 
-	if (0==pstrWallmark)		hWallmark	= 0; 
-	else						hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
+	if (0==pstrWallmark)		hWallmark			= 0; 
+	else						hWallmark.create	("effects\\wallmark",pstrWallmark);
 
 	if (0==m_pPhysicsShell)
 	{

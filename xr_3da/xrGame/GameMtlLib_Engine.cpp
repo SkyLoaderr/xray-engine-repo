@@ -33,10 +33,14 @@ void CreateSounds(SoundSVec4& lst, LPCSTR buf)
 
 void CreateMarks(ShaderSVec4& lst, LPCSTR buf)
 {
-	string128 tmp;
-	int cnt=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
+	string128	tmp;
+	int cnt		=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
+	ref_shader	tmp;
 	for (int k=0; k<cnt; k++)
-		lst.push_back	(Device.Shader.Create("effects\\wallmark",_GetItem(buf,k,tmp)));
+	{
+		tmp.create		("effects\\wallmark",_GetItem(buf,k,tmp));
+		lst.push_back	(tmp);
+	}
 }
 
 void CreatePSs(PSSVec4& lst, LPCSTR buf)

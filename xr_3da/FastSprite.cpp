@@ -14,11 +14,11 @@
 
 CFastSprite::CFastSprite(char *tex_name) : IRender_Visual()
 {
-	Type		= MT_SPRITE;
-	Stream		= RCache.Create(FVF::F_TL,MAX_SPRITES*4);
-	hShader		= Device.Shader.Create("sprite",tex_name);
+	Type			= MT_SPRITE;
+	Stream			= RCache.Create(FVF::F_TL,MAX_SPRITES*4);
+	hShader.create	("sprite",tex_name);
 
-	fTTL		= 0;
+	fTTL			= 0;
 
 	// POS,RADIUS,BBOX & mTransform --- setted up by derivates
 }

@@ -328,7 +328,7 @@ void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )
 void CLensFlare::DDLoad	()
 {
 	// VS
-	hGeom				= Device.Shader.CreateGeom(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
+	hGeom.create		(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
 
 	// shaders
 	m_Gradient.hShader	= CreateFlareShader		(m_Gradient.texture);

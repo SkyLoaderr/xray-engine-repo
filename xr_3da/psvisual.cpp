@@ -272,8 +272,7 @@ void CPSVisual::Compile(PS::SDef* source, PS::SEmitter* E)
 	VERIFY				(source);
     hShader				= source->m_CachedShader;
 	m_Definition		= source;
-	hGeom				= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-
+	hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// set default emitter data
 	VERIFY				(E);

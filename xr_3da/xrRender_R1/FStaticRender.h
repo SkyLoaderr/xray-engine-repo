@@ -62,16 +62,16 @@ public:
 	xr_vector<IRender_Visual*>								Visuals;
 	CPSLibrary												PSLibrary;
 
-	CLightDB_Static											L_DB;
-	CLightPPA_Manager										L_Dynamic;
-	CLightShadows											L_Shadows;
-	CLightProjector											L_Projector;
-	CGlowManager											Glows;
+	CLightDB_Static*										L_DB;
+	CLightPPA_Manager*										L_Dynamic;
+	CLightShadows*											L_Shadows;
+	CLightProjector*										L_Projector;
+	CGlowManager*											Glows;
 	CWallmarksEngine*										Wallmarks;
-	CDetailManager											Details;
-	CModelPool												Models;
+	CDetailManager*											Details;
+	CModelPool*												Models;
 
-	CRenderTarget											Target;			// Render-target
+	CRenderTarget*											Target;			// Render-target
 
 	CMatrix*												matDetailTexturing;
 	CMatrix*												matFogPass;
@@ -146,7 +146,7 @@ public:
 	virtual IRender_Visual*			model_Duplicate			(IRender_Visual*	V);
 	virtual void					model_Delete			(IRender_Visual* &	V);
 	virtual void 					model_Delete			(IRender_DetailModel* & F);
-	virtual void					model_Logging			(BOOL bEnable)				{ Models.Logging(bEnable);	}
+	virtual void					model_Logging			(BOOL bEnable)				{ Models->Logging(bEnable);	}
 	
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V);

@@ -80,11 +80,11 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 	} else {
 		if (data->find_chunk(OGF_TEXTURE)) {
 			string256 fnT,fnS;
-			data->r_stringZ(fnT);
-			data->r_stringZ(fnS);
-			hShader = Device.Shader.Create(fnS,fnT);
+			data->r_stringZ	(fnT);
+			data->r_stringZ	(fnS);
+			hShader.create	(fnS,fnT);
 		} else {
-			hShader = 0; // Device.Shader.Create("null","$null");
+			hShader = 0;	// Device.Shader.Create("null","$null");
 		}
 	}
 }

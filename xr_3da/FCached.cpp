@@ -111,7 +111,7 @@ void FCached::Load(const char* N, IReader *data, u32 dwFlags)
 		
 		dwVertType		= data->r_u32();
 		vCount			= data->r_u32();
-		hGeom			= Device.Shader.CreateGeom	(dwVertType, RCache.Vertex.Buffer(), RCache.Index.Buffer());
+		hGeom.create	(dwVertType, RCache.Vertex.Buffer(), RCache.Index.Buffer());
 		
 		u32	mem_size	= vCount*hGeom->vb_stride;
 		pVertices		= xr_malloc		(mem_size);

@@ -167,7 +167,7 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 	Memory.mem_copy		(bytes, indices, dwCount*2);
 	pIndices->Unlock	();
 
-	hGeom				= Device.Shader.CreateGeom	(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
+	hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
 }
 
 void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags) 
@@ -175,5 +175,5 @@ void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags)
 	_Load				(N,data,vCount);
 	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES);
 
-	hGeom				= Device.Shader.CreateGeom	(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
+	hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
 }
