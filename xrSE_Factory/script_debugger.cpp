@@ -268,7 +268,8 @@ void CScriptDebugger::GetBreakPointsFromIde()
 
 void CScriptDebugger::ErrorBreak(const char* szFile, int nLine)
 {
-	DebugBreak(szFile, nLine);
+	if(Active())
+		DebugBreak(szFile, nLine);
 }
 
 void CScriptDebugger::ClearStackTrace()
