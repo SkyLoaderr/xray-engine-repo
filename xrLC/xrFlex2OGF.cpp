@@ -108,11 +108,8 @@ void CBuild::Flex2OGF()
 		try {
 			pOGF->Optimize						();
 			pOGF->CalcBounds					();
-			if (pOGF->faces.size()>c_PM_FaceLimit)	//.
-				pOGF->MakeProgressive			();	//.
-			if (pOGF->is_progressive())			{
-				clMsg("* mesh[%d] simplified from [%dv] to [%dv]",MODEL_ID,pOGF->vertices.size(),pOGF->vertices.size()-pOGF->m_SWI.count);
-			}
+			if (pOGF->faces.size()>c_PM_FaceLimit)
+				pOGF->MakeProgressive			(c_PM_MetricLimit_static);
 			pOGF->Stripify						();
 		} catch (...)
 		{

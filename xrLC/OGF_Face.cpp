@@ -279,16 +279,29 @@ void OGF::CalculateTB()
 
 // Make Progressive
 xrCriticalSection			progressive_cs;
-void OGF::MakeProgressive	()
+void OGF::MakeProgressive	(float metric_limit)
 {
 	progressive_cs.Enter	();
 	// prepare progressive geom
 	VIPM_Init				();
 	for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)	VIPM_AppendVertex	(vertices[v_idx].P,	vertices[v_idx].UV[0]					);
 	for (u32 f_idx=0; f_idx<faces.size(); f_idx++)		VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
+
 	// Convert
 	VIPM_Result* VR			= VIPM_Convert(u32(-1),1.f,1);
-	if (VR->swr_records.size()>0){
+	while (VR->swr_records.size()>0)	{
+		// test metric
+		u32		_full	=	vertices.size	()		;
+		u32		_remove	=	m_SWI.count				;
+		u32		_simple	=	_full - _remove			;
+		float	_metric	=	float(_remove)/float(_full);
+		if		(_metric<metric_limit)		{
+			progressive_clear				()		;
+			clMsg	("* mesh simplified from [%4dv] to [%4dv] ==> em[%0.2f]-discarded",_full,_simple,metric_limit);
+			break									;
+		}
+
+		// OK
 		vecOGF_V				vertices_saved;
 		vecOGF_F				faces_saved;
 
@@ -314,7 +327,10 @@ void OGF::MakeProgressive	()
 			dst.num_verts		= src.num_verts;
 			dst.offset			= src.offset;
 		}
+
+		break	;
 	}
+
 	// cleanup
 	VIPM_Destroy		();
 	progressive_cs.Leave();

@@ -1,13 +1,15 @@
 #pragma once
 
-const	u32								c_LMAP_size			= 1024;			// pixels
-const	u32								c_VB_maxSize		= 4096*1024;	// bytes
-const	u32								c_VB_maxVertices	= 65535;		// count
-const	u32								c_vCacheSize		= 24;			// entries
-const	u32								c_SS_LowVertLimit	= 64;			// polys
-const	u32								c_SS_HighVertLimit	= 3*1024;		// polys
-const	u32								c_SS_maxsize		= 40;			// meters
-const	u32								c_PM_FaceLimit		= 128;			// face-limit
+const	u32								c_LMAP_size				= 1024;			// pixels
+const	u32								c_VB_maxSize			= 4096*1024;	// bytes
+const	u32								c_VB_maxVertices		= 65535;		// count
+const	u32								c_vCacheSize			= 24;			// entries
+const	u32								c_SS_LowVertLimit		= 64;			// polys
+const	u32								c_SS_HighVertLimit		= 3*1024;		// polys
+const	u32								c_SS_maxsize			= 40;			// meters
+const	u32								c_PM_FaceLimit			= 128;			// face-limit
+const	float							c_PM_MetricLimit_static	= 0.15;			// vertex-count-simplification-limit
+const	float							c_PM_MetricLimit_mu		= 0.05;			// vertex-count-simplification-limit
 
 BOOL	exact_normalize					(Fvector3&	a);
 BOOL	exact_normalize					(float*		a);

@@ -109,10 +109,6 @@ struct OGF : public OGF_Base
 	vecOGF_F			x_faces		;
 
 	// Progressive
-	xr_vector<Vsplit>	pmap_vsplit	;
-	xr_vector<u16>		pmap_faces	;
-	u32					dwMinVerts	;
-
 	FSlideWindowItem	m_SWI		;		// The records of the collapses.
 
 	// for build only
@@ -138,18 +134,22 @@ struct OGF : public OGF_Base
 	~OGF(){
 		xr_free			(m_SWI.sw);
 	}
-	u16					x_BuildVertex	(x_vertex&	V);
-	void				x_BuildFace		(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
-	u16					_BuildVertex	(OGF_Vertex& V1);
-	void				_BuildFace		(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
+	u16					x_BuildVertex		(x_vertex&	V);
+	void				x_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
+	u16					_BuildVertex		(OGF_Vertex& V1);
+	void				_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
 
-	void				Optimize		();
-	void				CalculateTB		();
-	void				MakeProgressive	();
-	void				Stripify		();
-	void				DumpFaces		();
+	void				Optimize			();
+	void				CalculateTB			();
+	void				MakeProgressive		(float metric_limit);
+	void				Stripify			();
+	void				DumpFaces			();
 
-	BOOL				is_progressive	()	{ return m_SWI.count;	}
+	BOOL				progressive_test	()	{ return m_SWI.count;	}
+	void				progressive_clear	()	{ 
+		m_SWI.count		= 0;
+		xr_free			(m_SWI.sw);
+	}
 
 	virtual void		PreSave			();
 	virtual void		Save			(IWriter &fs);

@@ -53,11 +53,11 @@ void xrMU_Model::calc_ogf()
 		}
 
 		try {
-			pOGF->Optimize		();
-			pOGF->CalcBounds	();
-			pOGF->CalculateTB	();
-			pOGF->MakeProgressive();
-			pOGF->Stripify		();
+			pOGF->Optimize			();
+			pOGF->CalcBounds		();
+			pOGF->CalculateTB		();
+			pOGF->MakeProgressive	(c_PM_MetricLimit_mu);
+			pOGF->Stripify			();
 		} catch (...)
 		{
 			clMsg	("* ERROR: MU2OGF, 2nd part, model %s",*m_name);
