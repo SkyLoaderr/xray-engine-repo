@@ -42,7 +42,7 @@ public:
 	IC			void	reinit						(const CLevelGraph *graph = 0);
 protected:
 	IC			bool	actual						() const;
-	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
+	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id, bool use_selector_path = false);
 	friend class CMovementManager;
 };
 
