@@ -52,7 +52,6 @@ void TGAdesc::maketga( IWriter& fs ){
 		}
 	}
 }
-
 #ifdef XRLC
 void TGAdesc::maketga( char *fname )
 {
