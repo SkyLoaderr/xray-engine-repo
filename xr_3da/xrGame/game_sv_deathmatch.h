@@ -21,6 +21,25 @@ protected:
 			return MinEnemyDist < x.MinEnemyDist;
 		};
 	};
+
+	// массив в котором хратнятся названия секций для оружия 
+	DEF_VECTOR(WPN_SECT_NAMES, std::string);
+	// Вектор массивов с именами секций для оружия
+	DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES);
+	// Вектор массивов оборудования для комманд
+	DEF_VECTOR(TEAM_LISTS, WPN_LISTS);
+
+	TEAM_LISTS	wpnTeamsSectStorage;
+
+	// Вектор имен скинов комманды
+	DEF_DEQUE(SKINS_NAMES, std::string);
+	// Вектор скинов комманд
+	DEF_DEQUE(SKINS_LISTS, SKINS_NAMES);
+
+	SKINS_LISTS	SkinsTeamSectStorage;
+
+	
+
 protected:
 	void							AllowDeadBodyRemove		(u32 id);
 	void							SpawnActor				(u32 id, LPCSTR N);
@@ -58,7 +77,14 @@ public:
 	virtual		void				assign_RP				(CSE_Abstract* E);
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 
-	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)	{};
+	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);//	{};
 
 	virtual		void				ClearPlayerState		(game_PlayerState* ps);
+	virtual		const char * 		GetWeaponForSlot		(u32 SlotNum, game_PlayerState* ps);
+
+	virtual		void				LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSection);
+	virtual		void				LoadSkinsForTeam		(SKINS_NAMES *pTeamList, char* caSection);
+
+	virtual		void				LoadWeapons				();
+	virtual		void				LoadSkins				();
 };

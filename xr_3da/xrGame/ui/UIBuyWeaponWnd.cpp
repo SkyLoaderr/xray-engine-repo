@@ -234,13 +234,40 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 		pNewDDList->SetCheckProc(BagProc);
 		m_WeaponSubBags.push_back(pNewDDList);
 	}
+	// Заполняем массив со списком оружия
+	ReInitItems(strSectionName);
+}
 
+void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
+{
 	// Заполняем массив со списком оружия
 	std::strcpy(m_SectionName, strSectionName);
+	// очищаем слоты
+	SlotToSection(KNIFE_SLOT		);
+	SlotToSection(PISTOL_SLOT		);
+	SlotToSection(RIFLE_SLOT		);
+	SlotToSection(GRENADE_SLOT		);
+	SlotToSection(APPARATUS_SLOT	);
+	SlotToSection(OUTFIT_SLOT		);
+
+	// очищаем секции
+	for (u32 i=0; i<wpnSectStorage.size(); i++)
+	{
+		WPN_SECT_NAMES WpnSectName = wpnSectStorage[i];
+		for (u32 j=0; j<WpnSectName.size(); j++)
+		{
+			std::string WpnName = WpnSectName[j];
+			WpnName.clear();
+		};
+		WpnSectName.clear();
+	}
+	wpnSectStorage.clear();
+
 	InitWpnSectStorage();
 	ClearWpnSubBags();
 	FillWpnSubBags();
-}
+
+};
 
 void CUIBuyWeaponWnd::InitInventory() 
 {
@@ -1045,6 +1072,7 @@ void CUIBuyWeaponWnd::ClearWpnSubBag(const u32 slotNum)
 
 bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 {
+	if (SlotNum >= SLOTS_NUM) return false;
 	// Выкидываем вещь из слота если есть.
 	if (!UITopList[SlotNum].GetDragDropItemsList().empty())
 	{

@@ -36,6 +36,7 @@ public:
 
 	virtual void		OnBuyMenu_Ok			()	{};
 	virtual void		OnBuyMenu_Cancel		()	{};
+	virtual void		OnTeamSelect			(int Result)	{};
 
 	virtual CUIDialogWnd*	GetBuyWnd			()	{ return NULL; };
 

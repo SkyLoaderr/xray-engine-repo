@@ -52,11 +52,8 @@ struct	game_PlayerState
 
 	game_PlayerState();
 
-	//selected weapons
-	u8			KnifeSlot;
-	u8			PistolSlot;
-	u8			RifleSlot;
-	u8			GrenadeSlot;
+	//selected weapons & etc.
+	u8			Slots[8];
 };
 
 struct	game_TeamState

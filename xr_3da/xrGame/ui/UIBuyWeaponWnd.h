@@ -287,4 +287,6 @@ public:
 	const u8 GetWeaponIndex(u32 slotNum);
 	// Получить имя оружия по индексу, и номеру слота
 	const char *GetWeaponNameByIndex(u32 slotNum, u8 idx);
+	// Перезагрузка предметов
+	void		ReInitItems	(char *strSectionName);
 };

@@ -52,6 +52,7 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team)
 	if (!ps_who || ps_who->team == team) return;
 	
 	ps_who->team = team;
+	Memory.mem_fill(ps_who->Slots, 0xff, sizeof(ps_who->Slots));
 //	ps_who->kills--;
 //	ps_who->deaths++;
 
@@ -183,6 +184,7 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 	};
 };
 
+/*
 void	game_sv_TeamDeathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 {
 	//-------------------------------------------
@@ -201,4 +203,34 @@ void	game_sv_TeamDeathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 		break;
 	}	;
 	//-------------------------------------------
+};
+*/
+void	game_sv_TeamDeathmatch::LoadWeapons				()
+{
+	/////////////////////////////////////////////////////////////////////////
+	//Loading Weapons List
+	WPN_LISTS		DefaultTeam, Team1, Team2;
+
+	LoadWeaponsForTeam				(&Team1, "teamdeathmatch_team1");
+	LoadWeaponsForTeam				(&Team2, "teamdeathmatch_team2");
+
+	wpnTeamsSectStorage.push_back(DefaultTeam);
+	wpnTeamsSectStorage.push_back(Team1);
+	wpnTeamsSectStorage.push_back(Team2);
+	/////////////////////////////////////////////////////////////////////////
+};
+
+void	game_sv_TeamDeathmatch::LoadSkins				()
+{
+	/////////////////////////////////////////////////////////////////////////
+	//Loading Skins List
+	SKINS_NAMES		DefaultTeam, Team1, Team2;
+
+	LoadSkinsForTeam				(&Team1, "teamdeathmatch_team1");
+	LoadSkinsForTeam				(&Team2, "teamdeathmatch_team2");
+
+	SkinsTeamSectStorage.push_back(DefaultTeam);
+	SkinsTeamSectStorage.push_back(Team1);
+	SkinsTeamSectStorage.push_back(Team2);
+	/////////////////////////////////////////////////////////////////////////
 };

@@ -9,9 +9,12 @@
 #include "ui/UIMapWnd.h"
 #include "ui/UISpawnWnd.h"
 
+#include "ui/UIBuyWeaponWnd.h"
+
 // refs 
 class CUITDMFragList;
 class CUITDMPlayerList;
+class CUIBuyWeaponWnd;
 
 class CUIGameTDM: public CUIGameCustom
 {
@@ -24,6 +27,8 @@ protected:
 	CUITDMPlayerList*	pPlayerListT2;
 
 	CUISpawnWnd*		pUITeamSelectWnd;
+
+	CUIBuyWeaponWnd*	pBuyMenu;
 public:
 	CUIGameTDM			(CUI* parent);
 	virtual 			~CUIGameTDM			();
@@ -34,8 +39,10 @@ public:
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);
 
-	static void			OnSelectTeamCallback	(int ButtonID);
-
+	virtual void		OnTeamSelect			(int Result);
+	virtual void		OnBuyMenu_Ok			();
+protected:
+	void				InitBuyMenu				(s16 Team = -1);
 	/////////
 	CUIInventoryWnd		InventoryMenu;
 	CUIMapWnd			MapMenu;

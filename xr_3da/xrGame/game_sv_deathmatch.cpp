@@ -9,6 +9,13 @@ void	game_sv_Deathmatch::Create					(LPSTR &options)
 	__super::Create					(options);
 	fraglimit	= get_option_i		(options,"fraglimit",0);
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
+
+	/////////////////////////////////////////////////////////////////////////
+	LoadWeapons						();
+	/////////////////////////////////////////////////////////////////////////
+	LoadSkins						();
+	/////////////////////////////////////////////////////////////////////////
+
 //	switch_Phase(GAME_PHASE_PENDING);
 	switch_Phase(GAME_PHASE_INPROGRESS);
 }
@@ -220,20 +227,10 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 					pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(xrCData->owner);
 					R_ASSERT2(pA, "Owner not a Actor");
 
-					CUIBuyWeaponWnd* pBuyWnd = (CUIBuyWeaponWnd*) HUD().GetUI()->UIGame()->GetBuyWnd();
-					if (pBuyWnd)
-					{
-						if (0xff != ps->KnifeSlot	)	
-							SpawnItem4Actor(pA->ID, pBuyWnd->GetWeaponNameByIndex(KNIFE_SLOT,		ps->KnifeSlot	));
-						if (0xff != ps->PistolSlot	)	
-							SpawnItem4Actor(pA->ID, pBuyWnd->GetWeaponNameByIndex(PISTOL_SLOT,		ps->PistolSlot	));
-						if (0xff != ps->RifleSlot	)	
-							SpawnItem4Actor(pA->ID, pBuyWnd->GetWeaponNameByIndex(RIFLE_SLOT,		ps->RifleSlot	));
-						if (0xff != ps->GrenadeSlot	)	
-							SpawnItem4Actor(pA->ID, pBuyWnd->GetWeaponNameByIndex(GRENADE_SLOT,		ps->GrenadeSlot	));
-					};
-//					SpawnItem4Actor(pA->ID, "wpn_knife");
-//					SpawnItem4Actor(pA->ID, "wpn_lr300");
+					SpawnItem4Actor(pA->ID, GetWeaponForSlot(KNIFE_SLOT, ps));
+					SpawnItem4Actor(pA->ID, GetWeaponForSlot(PISTOL_SLOT, ps));
+					SpawnItem4Actor(pA->ID, GetWeaponForSlot(RIFLE_SLOT, ps));
+					SpawnItem4Actor(pA->ID, GetWeaponForSlot(GRENADE_SLOT, ps));
 					//------------------------------------------------------------
 				};				
 			};			
@@ -382,6 +379,16 @@ void	game_sv_Deathmatch::SpawnItem4Actor			(u32 actorId, LPCSTR N)
 	E->ID_Parent = u16(actorId);
 
 	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
+
+	/////////////////////////////////////////////////////////////////////////////////
+	//если это оружие - спавним его с полным магазином
+	CSE_ALifeItemWeapon		*pWeapon	=	dynamic_cast<CSE_ALifeItemWeapon*>(E);
+	if (pWeapon)
+	{
+		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();
+	};
+	/////////////////////////////////////////////////////////////////////////////////
+
 	spawn_end				(E,Level().Server->GetServer_client()->ID);
 };
 
@@ -512,10 +519,10 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps) return;
 
-	P.r_u8		(ps->KnifeSlot);
-	P.r_u8		(ps->PistolSlot);
-	P.r_u8		(ps->RifleSlot);
-	P.r_u8		(ps->GrenadeSlot);
+	P.r_u8		(ps->Slots[KNIFE_SLOT]	);
+	P.r_u8		(ps->Slots[PISTOL_SLOT]	);
+	P.r_u8		(ps->Slots[RIFLE_SLOT]	);
+	P.r_u8		(ps->Slots[GRENADE_SLOT]);
 };
 
 void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
@@ -525,8 +532,139 @@ void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
 	ps->kills				= 0;
 	ps->deaths				= 0;
 
-	ps->KnifeSlot			= 255;
-	ps->PistolSlot			= 255;
-	ps->RifleSlot			= 255;
-	ps->GrenadeSlot			= 255;
+	Memory.mem_fill(ps->Slots, 0xff, sizeof(ps->Slots));
+};
+
+const char* game_sv_Deathmatch::GetWeaponForSlot		(u32 SlotNum, game_PlayerState* ps)
+{
+	if (!ps) return NULL;
+
+	if (0xff == ps->Slots[SlotNum]) return NULL;
+
+	WPN_LISTS	WpnList = wpnTeamsSectStorage[ps->team];
+
+	WPN_SECT_NAMES WpnSectNames = WpnList[SlotNum];
+
+	std::string Wpn = WpnSectNames[ps->Slots[SlotNum]];
+
+	return wpnTeamsSectStorage[ps->team][SlotNum][ps->Slots[SlotNum]].c_str();
+};
+
+void	game_sv_Deathmatch::LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSection)
+{
+	WPN_SECT_NAMES		wpnOneType;
+	string16			wpnSection;	
+	string256			wpnNames, wpnSingleName;
+
+	// Поле strSectionName должно содержать имя секции
+	R_ASSERT(xr_strcmp(caSection,""));
+
+	for (int i = 1; i < 20; ++i)
+	{
+		// Очищаем буфер
+		wpnOneType.clear();
+
+		// Имя поля
+		sprintf(wpnSection, "slot%i", i);
+		if (!pSettings->line_exist(caSection, wpnSection)) break;
+
+		// Читаем данные этого поля
+		std::strcpy(wpnNames, pSettings->r_string(caSection, wpnSection));
+		u32 count	= _GetItemCount(wpnNames);
+		// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+		for (u32 i = 0; i < count; ++i)
+		{
+			_GetItem(wpnNames, i, wpnSingleName);
+			wpnOneType.push_back(wpnSingleName);
+		}
+
+		if (!wpnOneType.empty())
+			pTeamList->push_back(wpnOneType);
+	}
+};
+
+void	game_sv_Deathmatch::LoadWeapons				()
+{
+	//Loading Weapons List
+	WPN_LISTS		DefaultTeam;
+	LoadWeaponsForTeam				(&DefaultTeam, "deathmatch");
+
+	wpnTeamsSectStorage.push_back(DefaultTeam);
+};
+
+void	game_sv_Deathmatch::LoadSkinsForTeam		(SKINS_NAMES *pTeamList, char* caSection)
+{
+	string256			Skins, SkinSingleName;
+
+	// Поле strSectionName должно содержать имя секции
+	R_ASSERT(xr_strcmp(caSection,""));
+
+	pTeamList->clear();
+
+	// Имя поля
+	if (!pSettings->line_exist(caSection, "skins")) return;
+
+	// Читаем данные этого поля
+	std::strcpy(Skins, pSettings->r_string(caSection, "skins"));
+	u32 count	= _GetItemCount(Skins);
+	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+	for (u32 i = 0; i < count; ++i)
+	{
+		_GetItem(Skins, i, SkinSingleName);
+		pTeamList->push_back(SkinSingleName);
+	};
+};
+
+void	game_sv_Deathmatch::LoadSkins				()
+{
+	//Loading Skins List
+	SKINS_NAMES		DefaultTeam;
+	LoadSkinsForTeam				(&DefaultTeam, "deathmatch");
+
+	SkinsTeamSectStorage.push_back(DefaultTeam);
+};
+
+void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
+{
+	if (!E) return;
+	//-------------------------------------------
+	CSE_Visual* pV = dynamic_cast<CSE_Visual*>(E);
+	if (!pV) return;
+	//-------------------------------------------
+	string256 SkinName = {"actors\\Different_stalkers\\"};
+	//загружены ли скины для этой комманды
+	if (!SkinsTeamSectStorage.empty() && 
+		SkinsTeamSectStorage.size() > Team && 
+		!SkinsTeamSectStorage[Team].empty())
+	{
+		//загружено ли достаточно скинов для этой комманды
+		if (SkinsTeamSectStorage[Team].size() > ID)
+		{
+			std::strcat(SkinName, SkinsTeamSectStorage[Team][ID].c_str());
+		}
+		else
+			std::strcat(SkinName, SkinsTeamSectStorage[Team][0].c_str());
+	}
+	else
+	{
+		//скины для такой комманды не загружены
+		switch (Team)
+		{
+		case 0:
+			std::strcat(SkinName, "stalker_hood_multiplayer");
+			break;
+		case 1:
+			std::strcat(SkinName, "soldat_beret");
+			break;
+		case 2:
+			std::strcat(SkinName, "stalker_black_mask");
+			break;
+		default:
+			R_ASSERT2(0,"Unknown Team");
+			break;
+		};
+	};
+	std::strcat(SkinName, ".ogf");
+	pV->set_visual(SkinName);
+	//-------------------------------------------
 };

@@ -8,6 +8,9 @@
 
 #define MSGS_OFFS 510
 
+#define	TEAM1_MENU		"teamdeathmatch_team1"
+#define	TEAM2_MENU		"teamdeathmatch_team2"
+
 //--------------------------------------------------------------------
 CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameCustom(parent)
 {
@@ -52,8 +55,33 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameCustom(parent)
 	pPlayerListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 	//-----------------------------------------------------------
 	pUITeamSelectWnd = xr_new<CUISpawnWnd>	();
-	pUITeamSelectWnd->SetCallbackFunc((ButtonClickCallback)OnSelectTeamCallback);
+//	pUITeamSelectWnd->SetCallbackFunc((ButtonClickCallback)OnSelectTeamCallback);
+	//-----------------------------------------------------------
+	pBuyMenu = NULL;
+
+	game_cl_GameState::Player* pCurPlayer = Game().local_player;
+	if (pCurPlayer->team != -1) InitBuyMenu();
 }
+//--------------------------------------------------------------------
+void CUIGameTDM::InitBuyMenu				(s16 Team)
+{
+	if (Team == -1)
+	{
+		Team = Game().local_player->team;
+	}
+	
+
+	if (!pBuyMenu)
+	{
+		if (Team == 1) pBuyMenu	= xr_new<CUIBuyWeaponWnd>	((char*)TEAM1_MENU);
+		if (Team == 2) pBuyMenu	= xr_new<CUIBuyWeaponWnd>	((char*)TEAM2_MENU);
+	}
+	else
+	{
+		if (Team == 1) pBuyMenu->ReInitItems((char*)TEAM1_MENU);
+		if (Team == 2) pBuyMenu->ReInitItems((char*)TEAM2_MENU);
+	};
+};
 //--------------------------------------------------------------------
 
 CUIGameTDM::~CUIGameTDM()
@@ -64,6 +92,8 @@ CUIGameTDM::~CUIGameTDM()
 	xr_delete(pPlayerListT2);
 
 	xr_delete(pUITeamSelectWnd);
+
+	xr_delete(pBuyMenu);
 }
 //--------------------------------------------------------------------
 
@@ -128,6 +158,11 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 				StartStopMenu(pUITeamSelectWnd);
 				return true;
 			}break;
+		case DIK_B:
+			{
+				if (!pBuyMenu) InitBuyMenu();
+				StartStopMenu(pBuyMenu);
+			}break;
 		}
 	}
 	return false;
@@ -147,7 +182,7 @@ bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
 	return false;
 }
 //--------------------------------------------------------------------
-void CUIGameTDM::OnSelectTeamCallback(int Team)
+void CUIGameTDM::OnTeamSelect(int Team)
 {
 	CObject *l_pObj = Level().CurrentEntity();
 
@@ -156,9 +191,27 @@ void CUIGameTDM::OnSelectTeamCallback(int Team)
 	
 	NET_Packet		P;
 	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
-	P.w_u16			(u16(l_pPlayer->ID())	);
-	P.w_s16			(s16(Team));
-	P.w_s16			((s16)0);
+	P.w_s16			(s16(Team+1));
 	//P.w_u32			(0);
+	l_pPlayer->u_EventSend		(P);
+	//-----------------------------------------------------------------
+	InitBuyMenu(s16(Team+1));
+};
+//--------------------------------------------------------------------
+void CUIGameTDM::OnBuyMenu_Ok	()
+{
+	CObject *l_pObj = Level().CurrentEntity();
+
+	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	if(!l_pPlayer) return;
+
+	NET_Packet		P;
+	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
+
+	P.w_u8		(pBuyMenu->GetWeaponIndex(KNIFE_SLOT));
+	P.w_u8		(pBuyMenu->GetWeaponIndex(PISTOL_SLOT));
+	P.w_u8		(pBuyMenu->GetWeaponIndex(RIFLE_SLOT));
+	P.w_u8		(pBuyMenu->GetWeaponIndex(GRENADE_SLOT));
+
 	l_pPlayer->u_EventSend		(P);
 };
