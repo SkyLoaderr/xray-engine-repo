@@ -317,9 +317,9 @@ public:
 				
 				// Select polygons
 				Fmatrix				ident; ident.identity();
-				DB.BBoxMode			(0); // BBOX_TRITEST
-				DB.BBoxCollide		(ident,&Level,ident,BB);
-				DWORD	triCount	= DB.GetBBoxContactCount	();
+				DB.box_options		(0); // BBOX_TRITEST
+				DB.box_query		(&Level,BB);
+				DWORD	triCount	= DB.r_count	();
 				if (0==triCount)	continue;
 				CDB::tri* tris	= Level.GetTris();
 				
