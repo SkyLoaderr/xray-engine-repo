@@ -406,12 +406,14 @@ BOOL	compress_Zero		(lm_layer& lm, u32 rms)
 		u32		c_x			= BORDER*2;
 		u32		c_y			= BORDER*2;
 		lm.surface.assign	(c_x*c_y,_c);
+		lm.marker.assign	(c_x*c_y,255);
 		lm.height			= 0;
 		lm.width			= 0;
 		return TRUE;
 	}
 	return FALSE;
 }
+
 BOOL	compress_RMS		(lm_layer& lm, u32 rms, u32& w, u32& h)
 {
 	// *** Try to bilinearly filter lightmap down and up
