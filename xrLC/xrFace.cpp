@@ -62,7 +62,7 @@ Face::~Face()
 	if (g_bUnregister) {
 		vecFaceIt F = find(g_faces.begin(), g_faces.end(), this);
 		if (F!=g_faces.end()) g_faces.erase(F);
-		else Log("Unregistered FACE destroyed");
+		else Log("* ERROR: Unregistered FACE destroyed");
 	}
 	// Remove 'this' from adjacency info in vertices
 	for (int i=0; i<3; i++)

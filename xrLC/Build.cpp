@@ -8,6 +8,7 @@
 
 vector<OGF_Base *>		g_tree;
 b_params				g_params;
+extern DWORD			dwInvalidFaces;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -115,7 +116,6 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		Msg					("* %16s: %d","faces",g_faces.size());
 		F->Close			();
 
-		extern DWORD		dwInvalidFaces;
 		if (dwInvalidFaces)	
 		{
 			Msg				("* FATAL: %d invalid faces. Compilation aborted");
