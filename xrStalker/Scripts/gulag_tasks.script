@@ -278,7 +278,9 @@ end
 
 function get_megafone(type, name)
 	if type == "blockpost" then
-		return gramofon.m_gramofon(name.."_rupor")
+		st = gramofon.m_gramofon(name.."_rupor")
+		st:event(0)
+		return st
 	end
 	return nil
 end
