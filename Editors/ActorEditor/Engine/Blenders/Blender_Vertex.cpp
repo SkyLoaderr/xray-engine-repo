@@ -21,14 +21,14 @@ CBlender_Vertex::~CBlender_Vertex()
 	
 }
 
-void	CBlender_Vertex::Save	( IWriter& FS	)
+void	CBlender_Vertex::Save	( IWriter& fs	)
 {
-	CBlender::Save	(FS);
+	CBlender::Save	(fs);
 }
 
-void	CBlender_Vertex::Load	( IReader& FS, WORD version	)
+void	CBlender_Vertex::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(FS,version);
+	CBlender::Load	(fs,version);
 }
 
 void CBlender_Vertex::Compile	(CBlender_Compile& C)

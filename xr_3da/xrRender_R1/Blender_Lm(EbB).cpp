@@ -23,20 +23,20 @@ CBlender_LmEbB::~CBlender_LmEbB	()
 	
 }
 
-void	CBlender_LmEbB::Save(	IWriter& FS )
+void	CBlender_LmEbB::Save(	IWriter& fs )
 {
-	CBlender::Save	(FS);
-	xrPWRITE_MARKER	(FS,"Environment map");
-	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT2_Name);
-	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT2_xform);
+	CBlender::Save	(fs);
+	xrPWRITE_MARKER	(fs,"Environment map");
+	xrPWRITE_PROP	(fs,"Name",				xrPID_TEXTURE,	oT2_Name);
+	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_LmEbB::Load(	IReader& FS, WORD version )
+void	CBlender_LmEbB::Load(	IReader& fs, WORD version )
 {
-	CBlender::Load	(FS,version);
-	xrPREAD_MARKER	(FS);
-	xrPREAD_PROP	(FS,xrPID_TEXTURE,	oT2_Name);
-	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT2_xform);
+	CBlender::Load	(fs,version);
+	xrPREAD_MARKER	(fs);
+	xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT2_Name);
+	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
 }
 
 void	CBlender_LmEbB::Compile(CBlender_Compile& C)

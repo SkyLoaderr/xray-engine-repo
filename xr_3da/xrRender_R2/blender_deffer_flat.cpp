@@ -27,7 +27,7 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 			char				fname	[_MAX_PATH];
 			strcpy				(fname,C.L_textures[0]); if (strext(fname)) *strext(fname)=0;
 			strcat				(fname,"_bump.dds");
-			if (fs.exist("$game_textures$",	fname))
+			if (FS.exist("$game_textures$",	fname))
 			{
 				// bump found
 				C.r2_Pass			(r2v("r2_deffer_base_bump"),r2p("r2_deffer_base_bump"));

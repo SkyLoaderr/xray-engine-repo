@@ -18,16 +18,16 @@ CBlender_Editor_Wire::~CBlender_Editor_Wire()
 
 }
 
-void	CBlender_Editor_Wire::Save	( IWriter& FS	)
+void	CBlender_Editor_Wire::Save	( IWriter& fs	)
 {
-	CBlender::Save	(FS);
-	xrPWRITE_PROP	(FS,"TFactor",	xrPID_CONSTANT, oT_Factor);
+	CBlender::Save	(fs);
+	xrPWRITE_PROP	(fs,"TFactor",	xrPID_CONSTANT, oT_Factor);
 }
 
-void	CBlender_Editor_Wire::Load	( IReader& FS, WORD version	)
+void	CBlender_Editor_Wire::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(FS,version);
-	xrPREAD_PROP	(FS,xrPID_CONSTANT,	oT_Factor);
+	CBlender::Load	(fs,version);
+	xrPREAD_PROP	(fs,xrPID_CONSTANT,	oT_Factor);
 }
 
 void CBlender_Editor_Wire::Compile	(CBlender_Compile& C)

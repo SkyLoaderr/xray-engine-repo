@@ -20,13 +20,13 @@ CBlender_default::~CBlender_default	()
 {
 
 }
-void	CBlender_default::Save(	IWriter& FS )
+void	CBlender_default::Save(	IWriter& fs )
 {
-	CBlender::Save	(FS);
+	CBlender::Save	(fs);
 }
-void	CBlender_default::Load(	IReader& FS, WORD version )
+void	CBlender_default::Load(	IReader& fs, WORD version )
 {
-	CBlender::Load	(FS,version);
+	CBlender::Load	(fs,version);
 }
 void	CBlender_default::Compile(CBlender_Compile& C)
 {

@@ -15,8 +15,8 @@ public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: lmap*base.aref";	}
 	virtual		BOOL		canBeLMAPped()	{ return TRUE; }
 
-	virtual		void		Save			(IWriter&  FS);
-	virtual		void		Load			(IReader&	FS, WORD version);
+	virtual		void		Save			(IWriter&  fs);
+	virtual		void		Load			(IReader&	fs, WORD version);
 
 	virtual		void		Compile			(CBlender_Compile& C);
 

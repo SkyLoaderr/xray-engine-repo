@@ -21,14 +21,14 @@ CBlender_LIGHT::~CBlender_LIGHT()
 
 }
 
-void	CBlender_LIGHT::Save	( IWriter& FS	)
+void	CBlender_LIGHT::Save	( IWriter& fs	)
 {
-	CBlender::Save	(FS);
+	CBlender::Save	(fs);
 }
 
-void	CBlender_LIGHT::Load	( IReader& FS, WORD version	)
+void	CBlender_LIGHT::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(FS,version);
+	CBlender::Load	(fs,version);
 }
 
 void CBlender_LIGHT::Compile	(CBlender_Compile& C)

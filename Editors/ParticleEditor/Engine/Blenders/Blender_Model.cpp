@@ -18,14 +18,14 @@ CBlender_Model::~CBlender_Model()
 	
 }
 
-void	CBlender_Model::Save	( IWriter& FS	)
+void	CBlender_Model::Save	( IWriter& fs	)
 {
-	CBlender::Save	(FS);
+	CBlender::Save	(fs);
 }
 
-void	CBlender_Model::Load	( IReader& FS, WORD version)
+void	CBlender_Model::Load	( IReader& fs, WORD version)
 {
-	CBlender::Load		(FS,version);
+	CBlender::Load		(fs,version);
 }
 
 void	CBlender_Model::Compile	(CBlender_Compile& C)

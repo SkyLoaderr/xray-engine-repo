@@ -20,14 +20,14 @@ CBlender_Screen_GRAY::~CBlender_Screen_GRAY()
 	
 }
 
-void	CBlender_Screen_GRAY::Save	( IWriter& FS	)
+void	CBlender_Screen_GRAY::Save	( IWriter& fs	)
 {
-	CBlender::Save	(FS);
+	CBlender::Save	(fs);
 }
 
-void	CBlender_Screen_GRAY::Load	( IReader& FS, WORD version	)
+void	CBlender_Screen_GRAY::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(FS,version);
+	CBlender::Load	(fs,version);
 }
 
 void	CBlender_Screen_GRAY::Compile	(CBlender_Compile& C)

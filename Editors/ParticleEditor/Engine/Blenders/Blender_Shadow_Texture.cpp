@@ -17,14 +17,14 @@ CBlender_ShTex::~CBlender_ShTex()
 
 }
 
-void	CBlender_ShTex::Save	( IWriter& FS	)
+void	CBlender_ShTex::Save	( IWriter& fs	)
 {
-	CBlender::Save	(FS);
+	CBlender::Save	(fs);
 }
 
-void	CBlender_ShTex::Load	( IReader& FS, WORD version	)
+void	CBlender_ShTex::Load	( IReader& fs, WORD version	)
 {
-	CBlender::Load	(FS,version);
+	CBlender::Load	(fs,version);
 }
 
 void CBlender_ShTex::Compile	(CBlender_Compile& C)

@@ -22,22 +22,22 @@ CBlender_B::~CBlender_B	()
 	
 }
 
-void	CBlender_B::Save		(IWriter& FS )
+void	CBlender_B::Save		(IWriter& fs )
 {
-	CBlender::Save	(FS);
+	CBlender::Save	(fs);
 }
 
-void	CBlender_B::Load		(IReader& FS, WORD version )
+void	CBlender_B::Load		(IReader& fs, WORD version )
 {
-	CBlender::Load	(FS,version);
+	CBlender::Load	(fs,version);
 
 	string64		skip;
 	switch(version) {
 	case 0:
 	case 1:
-		xrPREAD_MARKER	(FS);
-		xrPREAD_PROP	(FS,xrPID_TEXTURE,	skip);
-		xrPREAD_PROP	(FS,xrPID_MATRIX,	skip);
+		xrPREAD_MARKER	(fs);
+		xrPREAD_PROP	(fs,xrPID_TEXTURE,	skip);
+		xrPREAD_PROP	(fs,xrPID_MATRIX,	skip);
 		break;
 	case 2:
 	default:

@@ -15,8 +15,8 @@ public:
 	virtual		LPCSTR		getComment()	{ return "MODEL: env^base";	}
 	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
-	virtual		void		Save			(IWriter&  FS);
-	virtual		void		Load			(IReader&	FS, WORD version);
+	virtual		void		Save			(IWriter&  fs);
+	virtual		void		Load			(IReader&	fs, WORD version);
 
 	virtual		void		Compile			(CBlender_Compile& C);
 

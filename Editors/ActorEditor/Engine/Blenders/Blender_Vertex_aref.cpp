@@ -26,27 +26,27 @@ CBlender_Vertex_aref::~CBlender_Vertex_aref()
 
 }
 
-void	CBlender_Vertex_aref::Save(	IWriter& FS )
+void	CBlender_Vertex_aref::Save(	IWriter& fs )
 {
-	CBlender::Save		(FS);
-	xrPWRITE_PROP		(FS,"Alpha ref",	xrPID_INTEGER,	oAREF);
-	xrPWRITE_PROP		(FS,"Alpha-blend",	xrPID_BOOL,		oBlend);
+	CBlender::Save		(fs);
+	xrPWRITE_PROP		(fs,"Alpha ref",	xrPID_INTEGER,	oAREF);
+	xrPWRITE_PROP		(fs,"Alpha-blend",	xrPID_BOOL,		oBlend);
 }
 
-void	CBlender_Vertex_aref::Load(	IReader& FS, WORD version )
+void	CBlender_Vertex_aref::Load(	IReader& fs, WORD version )
 {
-	CBlender::Load		(FS,version);
+	CBlender::Load		(fs,version);
 
 	switch (version)	
 	{
 	case 0: 
-		xrPREAD_PROP	(FS,xrPID_INTEGER,	oAREF);
+		xrPREAD_PROP	(fs,xrPID_INTEGER,	oAREF);
 		oBlend.value	= FALSE;
 		break;
 	case 1:
 	default:
-		xrPREAD_PROP	(FS,xrPID_INTEGER,	oAREF);
-		xrPREAD_PROP	(FS,xrPID_BOOL,		oBlend);
+		xrPREAD_PROP	(fs,xrPID_INTEGER,	oAREF);
+		xrPREAD_PROP	(fs,xrPID_BOOL,		oBlend);
 		break;
 	}
 }
