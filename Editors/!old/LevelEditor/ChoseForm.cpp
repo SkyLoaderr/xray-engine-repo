@@ -18,7 +18,8 @@
 TfrmChoseItem*				TfrmChoseItem::form			= 0;
 AnsiString 					TfrmChoseItem::select_item	= "";
 TfrmChoseItem::EventsMap	TfrmChoseItem::m_Events;
-TOnChooseFillEvents 		TfrmChoseItem::fill_events	= 0;
+TOnChooseFillEvents 		TfrmChoseItem::fill_events	= 0;      
+AnsiString 					TfrmChoseItem::m_LastSelection; 
 
 //---------------------------------------------------------------------------
 SChooseEvents* TfrmChoseItem::GetEvents	(u32 choose_ID)
@@ -60,7 +61,7 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
 
 	// init
 	if (init_name&&init_name[0]) 
-    	form->m_LastSelection 		= init_name;
+    	m_LastSelection 			= init_name;
     form->tvItems->Selected 		= 0;
 
     // fill items
@@ -85,7 +86,7 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
     if (bRes){
 		int item_cnt				= _GetItemCount(select_item.c_str(),',');
     	dest 						= (select_item==NONE_CAPTION)?0:select_item.c_str();
-	    form->m_LastSelection		= select_item;
+	    m_LastSelection				= select_item;
         return 						item_cnt;
     }
     return 0;
@@ -114,135 +115,6 @@ void __fastcall TfrmChoseItem::FillItems()
 	form->tvItems->IsUpdating 		= false;
 }
 
-/*
-void __fastcall TfrmChoseItem::FillEntity()
-{
-    form->Caption					= "Select Entity";
-    AppendItem						(RPOINT_CHOOSE_NAME);
-    CInifile::Root& data 			= pSettings->sections();
-    for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
-    	LPCSTR val;
-    	if (it->line_exist("$spawn",&val))
-//			if (CInifile::IsBOOL(val))	
-            AppendItem(*it->Name);
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillSoundSource()
-{
-    form->Caption					= "Select Sound Source";
-    FS_QueryMap lst;
-    if (SndLib->GetSounds(lst)){
-	    FS_QueryPairIt  it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillSoundEnv()
-{
-    form->Caption					= "Select Sound Environment";
-    AStringVec lst;
-    if (SndLib->GetSoundEnvs(lst)){
-	    AStringIt  it				= lst.begin();
-    	AStringIt	_E				= lst.end();
-	    for (; it!=_E; it++)		AppendItem(it->c_str());
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillObject()
-{
-    form->Caption					= "Select Library Object";
-    FS_QueryMap lst;
-    if (Lib.GetObjects(lst)){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillGameObject()
-{
-    form->Caption					= "Select OGF";
-    FS_QueryMap lst;
-    if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".ogf")){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillGameAnim()
-{
-    form->Caption					= "Select Anim";
-    FS_QueryMap lst;
-    if (FS.file_list(lst,"$game_anims$",FS_ListFiles,".anm,*.anms")){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillLAnim()
-{
-    form->Caption					= "Select Light Animation";
-    LAItemVec& lst 					= LALib.Objects();
-    LAItemIt it						= lst.begin();
-    LAItemIt _E						= lst.end();
-    for (; it!=_E; it++)			AppendItem((*it)->cName);
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillEShader()
-{
-    form->Caption					= "Select Engine Shader";
-    CResourceManager::map_Blender& blenders = Device.Resources->_GetBlenders();
-	CResourceManager::map_BlenderIt _S = blenders.begin();
-	CResourceManager::map_BlenderIt _E = blenders.end();
-	for (; _S!=_E; _S++)AppendItem(_S->first);
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillCShader()
-{
-    form->Caption					= "Select Compiler Shader";
-    Shader_xrLCVec& shaders 		= Device.ShaderXRLC.Library();
-	Shader_xrLCIt _F 				= shaders.begin();
-	Shader_xrLCIt _E 				= shaders.end();
-	for ( ;_F!=_E;_F++)				AppendItem(_F->Name);
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillPE()
-{
-    form->Caption					= "Select Particle System";
-    for (PS::PEDIt E=::Render->PSLibrary.FirstPED(); E!=::Render->PSLibrary.LastPED(); E++)AppendItem(*(*E)->m_Name);
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillParticles()
-{
-    form->Caption					= "Select Particle System";
-    for (PS::PEDIt E=::Render->PSLibrary.FirstPED(); E!=::Render->PSLibrary.LastPED(); E++)AppendItem(*(*E)->m_Name);
-    for (PS::PGDIt G=::Render->PSLibrary.FirstPGD(); G!=::Render->PSLibrary.LastPGD(); G++)AppendItem(*(*G)->m_Name);
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillTexture()
-{
-    form->Caption					= "Select Texture";
-    FS_QueryMap	lst;
-    if (ImageLib.GetTextures(lst)){
-	    FS_QueryPairIt	it			= lst.begin();
-    	FS_QueryPairIt	_E			= lst.end();
-	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillGameMaterial()
-{
-    form->Caption					= "Select Game Material";
-	GameMtlIt _F 					= GMLib.FirstMaterial();
-	GameMtlIt _E 					= GMLib.LastMaterial();
-	for ( ;_F!=_E;_F++)				AppendItem(*(*_F)->m_Name);
-}
-*/
-//---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 // implementation
 //---------------------------------------------------------------------------
@@ -460,12 +332,13 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
     PropItemVec 		items;
 	xr_delete			(m_Thm);
 	m_Snd.destroy		();
-	if (Item&&FHelper.IsObject(Item)){
-    	if (item_select_event)	item_select_event((SChooseItem*)Item->Tag,m_Thm,m_Snd,items);
+	if (Item&&FHelper.IsObject(Item)&&Item->Tag){
+    	if (ebExt->Down&&item_select_event)	item_select_event((SChooseItem*)Item->Tag,m_Thm,m_Snd,items);
         lbItemName->Caption 	= Item->Text;
         lbHint->Caption 		= Item->Hint;
     }
-    if (m_Thm)	m_Thm->FillInfo	(items);
+    if (m_Thm)			m_Thm->FillInfo	(items);
+    if (m_Snd.handle)	m_Snd.play(0,sm_2D);
     m_Props->AssignItems		(items);
     paInfo->Visible				= !items.empty();
 	paImage->Repaint			();
@@ -542,7 +415,8 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 
 void __fastcall TfrmChoseItem::paImagePaint(TObject *Sender)
 {
-	if (m_Thm) m_Thm->Draw			(paImage,false);
+	if (m_Thm&&m_Thm->IsClass(ECustomThumbnail::ETTexture)) 
+    	static_cast<EImageThumbnail*>(m_Thm)->Draw(paImage,false);
 }
 //---------------------------------------------------------------------------
 

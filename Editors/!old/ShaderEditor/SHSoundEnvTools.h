@@ -11,20 +11,19 @@ class PropValue;
 
 class CSHSoundEnvTools: public ISHTools
 {
+	bool __fastcall				ItemExist			(LPCSTR name){return !!FindItem(name);}
 	CSoundRender_Environment*	FindItem			(LPCSTR name);
     void						SetCurrentEnv		(CSoundRender_Environment* B);
 
-    virtual LPCSTR				GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source);
     SoundEnvironment_LIB		m_Library;
 
     ESoundSource*				m_PreviewSnd;
     void __fastcall 			OnRevResetClick		(PropValue* sender, bool& bModif, bool& bSafe);
 public:
     CSoundRender_Environment* 	m_Env;
-    virtual LPCSTR				AppendItem			(LPCSTR folder_name, LPCSTR parent=0);
-    virtual void				RemoveItem			(LPCSTR name);
-	virtual void				RenameItem			(LPCSTR old_full_name, LPCSTR ren_part, int level);
-	virtual void				RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name);
+    virtual LPCSTR				AppendItem			(LPCSTR folder_name, LPCSTR parent=0);            
+    virtual BOOL __fastcall 	OnRemoveItem		(LPCSTR name, EItemType type); 
+	virtual void __fastcall 	OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
 	virtual void 				FillItemList		();
 
     void						UseEnvironment		(){Sound->set_user_env(m_Env);}
@@ -45,7 +44,7 @@ public:
 
     // misc
     virtual void				ResetCurrentItem	();
-    virtual void				SetCurrentItem		(LPCSTR name);
+    virtual void				SetCurrentItem		(LPCSTR name, bool bView);
     virtual void				ApplyChanges		(bool bForced=false);
 
 	virtual void 				RealUpdateProperties();

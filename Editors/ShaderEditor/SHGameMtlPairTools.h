@@ -11,13 +11,10 @@ class PropValue;
 class CSHGameMtlPairTools: public ISHTools
 {
 	ISHTools*				m_GameMtlTools;
-    virtual LPCSTR			GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source);
+    u32						m_StoreFlags;
 public:
-    SGameMtlPair*			m_MtlPair;
-    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent_name=0);
-    virtual void			RemoveItem			(LPCSTR name);
-	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR ren_part, int level){;}
-	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name){;}
+    SGameMtlPair*			m_MtlPair;                                
+    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent_name=0){return 0;}
 	virtual void 			FillItemList		();
 public:
 							CSHGameMtlPairTools (ISHInit& init);
@@ -33,11 +30,11 @@ public:
     virtual bool			OnCreate			();
     virtual void			OnDestroy			();
 	virtual void 			OnActivate			();
-	virtual void 			OnDeactivate		(){;}
+	virtual void 			OnDeactivate		();
 
     // misc
     virtual void			ResetCurrentItem	();
-    virtual void			SetCurrentItem		(LPCSTR name);
+    virtual void			SetCurrentItem		(LPCSTR name, bool bView);
 
 	virtual void 			RealUpdateProperties();
 

@@ -48,8 +48,8 @@ class CSHEngineTools: public ISHTools
 	MatrixMap				m_Matrices;
 	BlenderMap				m_Blenders;
 
+	bool __fastcall			ItemExist			(LPCSTR name){return !!FindItem(name);}
 	IBlender*				FindItem			(LPCSTR name);
-    virtual LPCSTR			GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source);
 
 	void 					AddMatrixRef		(LPSTR name);
 	CMatrix*				FindMatrix			(LPSTR name, bool bDuplicate);
@@ -92,7 +92,7 @@ friend class TfrmShaderProperties;
     // constant props
 	void __fastcall 		ConstOnAfterEdit	(PropItem* sender, LPVOID edit_val);
 	void __fastcall 		FillConstProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
-    // name
+    // name                                 
 	void __fastcall 		NameOnAfterEdit		(PropItem* sender, LPVOID edit_val);
 
     void					RealResetShaders	();
@@ -112,17 +112,16 @@ public:
 	void					RemoteRenameBlender	(LPCSTR old_full_name, LPCSTR new_full_name){m_RemoteRenBlender=TRUE;m_RenBlenderOldName=old_full_name;m_RenBlenderNewName=new_full_name;}
 
     Shader_xrLC*			m_Shader;
-    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent=0);
-    virtual void			RemoveItem			(LPCSTR name);
-	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR ren_part, int level);
-	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name);
+    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent=0);        
+	virtual void			RealRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name);
+    virtual BOOL __fastcall OnRemoveItem		(LPCSTR name, EItemType type); 
+	virtual void __fastcall OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
 	virtual void			FillItemList		();
 
     void					UpdateStreamFromObject();
     void					UpdateObjectFromStream();
 
     void 					ClearData			();
-//.	void __fastcall 		PreviewObjClick		(TObject *Sender);
 public:
 							CSHEngineTools		(ISHInit& init);
     virtual 				~CSHEngineTools		();
@@ -140,7 +139,7 @@ public:
 
     // misc
     virtual void			ResetCurrentItem	();
-    virtual void			SetCurrentItem		(LPCSTR name);
+    virtual void			SetCurrentItem		(LPCSTR name, bool bView);
     virtual void			ApplyChanges		(bool bForced=false);
 
 	virtual void 			RealUpdateProperties();

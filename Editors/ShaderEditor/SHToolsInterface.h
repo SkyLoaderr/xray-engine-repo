@@ -22,17 +22,15 @@ enum EToolsID{
 struct ISHInit
 {
     EToolsID				tools_id;
-	TElTree*				tvView;
-    TMxPopupMenu*			pmMenu;
+	TItemList*				m_Items;
     TProperties*			m_ItemProps;
     TProperties*			m_PreviewProps;
     TElTabSheet*			m_Sheet;
-    ISHInit(){ZeroMemory(this,sizeof(ISHInit));}
-	ISHInit(EToolsID id, TElTree* tv, TMxPopupMenu* pm, TElTabSheet* sh, TProperties* ip, TProperties* pp)
+							ISHInit(){ZeroMemory(this,sizeof(ISHInit));}
+							ISHInit(EToolsID id, TItemList* il, TElTabSheet* sh, TProperties* ip, TProperties* pp)
     {
         tools_id			= id;
-        tvView				= tv;
-        pmMenu				= pm;
+        m_Items				= il;
         m_ItemProps			= ip;
         m_PreviewProps		= pp;
         m_Sheet				= sh;
@@ -41,33 +39,34 @@ struct ISHInit
 class ISHTools
 {
 protected:
+	typedef	ISHTools 		inherited;
+
 	ISHInit					Ext;
 
 	BOOL					m_bModified;
 
-    virtual LPCSTR			GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source)=0;
+    BOOL					m_bLockUpdate;		// если менялся объект непосредственно  Update____From___()
 
-    BOOL					m_bLockUpdate;	// если менялся объект непосредственно  Update____From___()
-
+    AnsiString				m_LastSelection;
 public:
-	void					ViewAddItem			(LPCSTR full_name);
+	ListItem* 				m_CurrentItem;
+public:
     void					ViewSetCurrentItem	(LPCSTR full_name);
-    void					ViewClearItemList	();
+    AnsiString				ViewGetCurrentItem	(bool bFolderOnly);
+    TElTreeItem*			ViewGetCurrentItem	();
 public:
-    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent=0)=0;
-    virtual void			RemoveItem			(LPCSTR name)=0;
-	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR ren_part, int level)=0;
-	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name)=0;
-
+    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent=0)=0; 
 	virtual void			FillItemList		()=0;
 public:
 							ISHTools 			(ISHInit& init);
     virtual 				~ISHTools			(){;}
 
-    TElTree*				View				(){return Ext.tvView;}
     EToolsID				ID					(){return Ext.tools_id;}
-    TMxPopupMenu*			PopupMenu			(){return Ext.pmMenu;}
     TElTabSheet*			Sheet				(){return Ext.m_Sheet;}
+    AnsiString				SelectedName		();
+    void					RemoveCurrent		();
+    void					RenameCurrent		();
+
     virtual LPCSTR			ToolsName			()=0;
     
 	virtual void			Reload				()=0;
@@ -85,7 +84,7 @@ public:
 
     // misc
     virtual void			ResetCurrentItem	()=0;
-    virtual void			SetCurrentItem		(LPCSTR name)=0;
+    virtual void			SetCurrentItem		(LPCSTR name, bool bView)=0;
     virtual void			ApplyChanges		(bool bForced=false)=0;
 
 	virtual void 			RealUpdateProperties()=0;

@@ -13,10 +13,9 @@ enum EItemType{
 	TYPE_OBJECT	= 1
 };
 class XR_EPROPS_API CFolderHelper{
-    IC AnsiString		FolderAppend	(LPCSTR val)
+    IC AnsiString  		FolderAppend	(LPCSTR val)
     {
-    	if (val&&val[0]) return AnsiString(val)+"\\";
-        return   		"";
+    	return (val&&val[0])?AnsiString(val)+"\\":AnsiString("");
     }
     IC TElTreeItem*		LL_CreateFolder	(TElTree* tv, TElTreeItem* parent, const AnsiString& name, bool force_icon)
     {
@@ -87,7 +86,7 @@ public:
 	bool 				DrawThumbnail		(TCanvas *Surface, TRect &R, LPCSTR fname, u32 thm_type);
 
 	typedef bool 		__fastcall 			(__closure *TFindObjectByName)(LPCSTR new_name);
-    AnsiString			GenerateName		(LPCSTR pref, int dgt_cnt, TFindObjectByName cb);
+    AnsiString			GenerateName		(LPCSTR pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name);
 //------------------------------------------------------------------------------
 };
 

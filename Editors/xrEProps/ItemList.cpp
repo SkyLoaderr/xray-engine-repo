@@ -51,8 +51,8 @@ void TItemList::ClearParams(TElTreeItem* node)
     }else{
         // save last selected items
         ElItemsVec items;
+        last_selected_items.clear();
         if (GetSelected(items)){
-            last_selected_items.clear();
             for (ElItemsIt l_it=items.begin(); l_it!=items.end(); l_it++){
                 AnsiString s;
                 FHelper.MakeFullName(*l_it,0,s);
@@ -103,15 +103,18 @@ ListItem* TItemList::FindItem(LPCSTR full_name)
 //---------------------------------------------------------------------------
 void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bool bLeaveSel, bool bExpand)
 {
+    // select item
 	TElTreeItem* item;              
     FHelper.FindItem			(tvItems,full_name,&item);
+    if (!bLeaveSel)				tvItems->DeselectAll();
     if (item){
-    	if (!bLeaveSel)			tvItems->DeselectAll();
         if (bExpand) 			FHelper.ExpandItem(tvItems,item);
         if (tvItems->MultiSelect) 	item->Selected 		= bVal;
         else 						tvItems->Selected   = item;
 		tvItems->EnsureVisible	(item); 
 		if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
+    }else{
+        if (!tvItems->MultiSelect) 	tvItems->Selected   = item;
     }
 }
 //---------------------------------------------------------------------------

@@ -27,12 +27,12 @@ struct SChooseItem{
 DEFINE_VECTOR(SChooseItem,ChooseItemVec,ChooseItemVecIt);
 
 // refs
-class EImageThumbnail;
+class ECustomThumbnail;
 // typedef
 typedef void __fastcall (*TOnChooseFill)			(ChooseItemVec& lst);
-typedef void __fastcall (*TOnChooseSelect)			(SChooseItem* item, EImageThumbnail*& thm, ref_sound& snd, PropItemVec& info_items);
+typedef void __fastcall (*TOnChooseSelect)			(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items);
 
-typedef void __fastcall (*TOnChooseFillEvents)();
+typedef void (*TOnChooseFillEvents)();
 
 struct SChooseEvents{
 	AnsiString			caption;

@@ -9,6 +9,7 @@
 #include "UI_ShaderTools.h"
 #include "ChoseForm.h"
 #include "leftbar.h"
+#include "ItemList.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -25,11 +26,22 @@ CSHGameMtlTools::~CSHGameMtlTools()
 
 void CSHGameMtlTools::OnActivate()
 {
-    fraLeftBar->InplaceEdit->Tree = View();
+    // fill items
+    FillItemList		();
+    Ext.m_Items->OnModifiedEvent= Modified;
+    Ext.m_Items->OnItemRename	= OnRenameItem;
+    Ext.m_Items->OnItemRemove	= OnRemoveItem;
+    inherited::OnActivate		();
+}
+
+void CSHGameMtlTools::OnDeactivate()
+{
+    inherited::OnDeactivate		();
 }
 
 void CSHGameMtlTools::OnFrame()
 {
+	inherited::OnFrame();
 }
 //---------------------------------------------------------------------------
 
@@ -48,24 +60,20 @@ void CSHGameMtlTools::OnDestroy()
 void CSHGameMtlTools::Reload()
 {
 	// mtl
-	ViewClearItemList();
     ResetCurrentItem();
     // mtl pair
-	m_GameMtlPairTools->ViewClearItemList();
     m_GameMtlPairTools->ResetCurrentItem();
     // load
     Load();
-    // mtl pair
-	m_GameMtlPairTools->FillItemList();
+    FillItemList		();
 }
 
 void CSHGameMtlTools::FillItemList()
 {
-    View()->IsUpdating = true;
-	ViewClearItemList();
+	ListItemsVec items;
     for (GameMtlIt m_it=GMLib.FirstMaterial(); m_it!=GMLib.LastMaterial(); m_it++)
-        ViewAddItem(*(*m_it)->m_Name);
-    View()->IsUpdating = false;
+        LHelper.CreateItem(items,*(*m_it)->m_Name,0);
+	Ext.m_Items->AssignItems(items,false,true);
 }
 
 void CSHGameMtlTools::Load()
@@ -74,7 +82,6 @@ void CSHGameMtlTools::Load()
 
     GMLib.Unload	();
     GMLib.Load		();
-    FillItemList	();
     ResetCurrentItem();
 
 	m_bLockUpdate		= FALSE;
@@ -82,8 +89,6 @@ void CSHGameMtlTools::Load()
 
 void CSHGameMtlTools::Save()
 {
-    AnsiString name;
-    FHelper.MakeFullName(View()->Selected,0,name);
 	ResetCurrentItem	();
     m_bLockUpdate		= TRUE;
 
@@ -94,7 +99,6 @@ void CSHGameMtlTools::Save()
     EFS.LockFile		(_game_data_,GAMEMTL_FILENAME,false);
     
 	m_bLockUpdate		= FALSE;
-	SetCurrentItem		(name.c_str());
 
     m_bModified	= FALSE;
 }
@@ -106,20 +110,10 @@ SGameMtl* CSHGameMtlTools::FindItem(LPCSTR name)
     }else return 0;
 }
 
-LPCSTR CSHGameMtlTools::GenerateItemName(LPSTR name, LPCSTR pref, LPCSTR source)
-{
-    int cnt = 0;
-    if (source) strcpy(name,source); else sprintf(name,"%sgm_%02d",pref,cnt++);
-	while (FindItem(name))
-    	if (source) sprintf(name,"%s_%02d",source,cnt++);
-        else sprintf(name,"%sgm_%02d",pref,cnt++);
-	return name;
-}
-
 void __fastcall CSHGameMtlTools::FillChooseMtlType(ChooseItemVec& items)
 {
-    items.push_back(SChooseItem("Dynamic material",""));
-    items.push_back(SChooseItem("Static material",""));
+    items.push_back(SChooseItem("Dynamic",	"Dynamic material"));
+    items.push_back(SChooseItem("Static",	"Static material"));
 }
 
 LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
@@ -127,45 +121,36 @@ LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     LPCSTR M=0;
     if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,FillChooseMtlType)||!M) return 0;
 	SGameMtl* parent 	= FindItem(parent_name);
-    string64 new_name;
-    GenerateItemName	(new_name,folder_name,parent_name);
+    AnsiString pref		= parent_name?AnsiString(parent_name):AnsiString(folder_name)+M;
+    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,ItemExist,false);
     SGameMtl* S 		= GMLib.AppendMaterial(parent);
-    S->m_Name			= new_name;
+    S->m_Name			= m_LastSelection.c_str();
     S->Flags.set		(SGameMtl::flDynamic,0==strcmp(M,"Dynamic material"));
-	ViewAddItem			(*S->m_Name);
-	SetCurrentItem		(*S->m_Name);
+    UI->Command			(COMMAND_UPDATE_PROPERTIES);
 	Modified			();
     return *S->m_Name;
 }
 
-void CSHGameMtlTools::RenameItem(LPCSTR old_full_name, LPCSTR ren_part, int level)
+void CSHGameMtlTools::OnRenameItem(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type)
 {
-    VERIFY(level<_GetItemCount(old_full_name,'\\'));
-    char new_full_name[255];
-    _ReplaceItem(old_full_name,level,ren_part,new_full_name,'\\');
-    RenameItem(old_full_name, new_full_name);
+	if (type==TYPE_OBJECT){
+        SGameMtl* S = FindItem(old_full_name); R_ASSERT(S);
+        S->m_Name		= new_full_name;
+        if (S==m_Mtl)
+            UI->Command(COMMAND_UPDATE_PROPERTIES);
+    }
 }
 
-void CSHGameMtlTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
+BOOL CSHGameMtlTools::OnRemoveItem(LPCSTR name, EItemType type)
 {
-	SGameMtl* S = FindItem(old_full_name); R_ASSERT(S);
-    S->m_Name		= new_full_name;
-	if (S==m_Mtl)
-	    UI->Command(COMMAND_UPDATE_PROPERTIES);
-
-    // нужно переинициализировать лист пар
-	m_GameMtlPairTools->FillItemList();
+	if (type==TYPE_OBJECT){
+        R_ASSERT(name && name[0]);
+        GMLib.RemoveMaterial(name);
+    }
+    return true;
 }
 
-void CSHGameMtlTools::RemoveItem(LPCSTR name)
-{
-	R_ASSERT(name && name[0]);
-    GMLib.RemoveMaterial(name);
-    // нужно переинициализировать лист пар
-	m_GameMtlPairTools->FillItemList();
-}
-
-void CSHGameMtlTools::SetCurrentItem(LPCSTR name)
+void CSHGameMtlTools::SetCurrentItem(LPCSTR name, bool bView)
 {
     if (m_bLockUpdate) return;
 
@@ -174,8 +159,8 @@ void CSHGameMtlTools::SetCurrentItem(LPCSTR name)
 	if (m_Mtl!=S){
         m_Mtl = S;
 	    UI->Command(COMMAND_UPDATE_PROPERTIES);
-    }
-	ViewSetCurrentItem(name);
+	 	if (bView) ViewSetCurrentItem(name);
+   	}
 }
 
 void CSHGameMtlTools::ResetCurrentItem()
@@ -184,17 +169,12 @@ void CSHGameMtlTools::ResetCurrentItem()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHGameMtlTools::OnMaterialNameChange(PropValue* sender)
-{
-    // нужно переинициализировать лист пар
-	m_GameMtlPairTools->FillItemList();
-}
-
 void CSHGameMtlTools::RealUpdateProperties()
 {
+	FillItemList		();
 	PropItemVec items;
     if (m_Mtl)
-    	m_Mtl->FillProp	(items,FHelper.FindObject(View(),*m_Mtl->m_Name));
+    	m_Mtl->FillProp	(items,m_CurrentItem);
     Ext.m_ItemProps->AssignItems		(items);
     Ext.m_ItemProps->SetModifiedEvent	(Modified);
 }

@@ -90,7 +90,7 @@ private:	// User declarations
     bool 			bMultiSel;
     int 			iMultiSelLimit;
 
-    EImageThumbnail* 	m_Thm;
+    ECustomThumbnail* 	m_Thm;
 	ref_sound			m_Snd;
 
 	TOnChooseSelect	item_select_event;
@@ -99,7 +99,7 @@ private:	// User declarations
 	void __fastcall FillItems		();
     void __fastcall AppendItem		(SChooseItem* item);
 protected:
-    AnsiString 			m_LastSelection; 
+    static AnsiString 			m_LastSelection; 
 
     DEFINE_MAP(u32,SChooseEvents,EventsMap,EventsMapIt);     
     static EventsMap	m_Events;

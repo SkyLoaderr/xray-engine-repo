@@ -13,6 +13,7 @@
 #include "EditMesh.h"
 #include "Library.h"
 #include "ChoseForm.h"
+#include "ItemList.h"
 
 #include "Blender.h"
 
@@ -124,19 +125,24 @@ void CSHEngineTools::OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val)
 
 void CSHEngineTools::OnActivate()
 {
-    fraLeftBar->InplaceEdit->Tree 		= View();
 	PropItemVec items;
 //    m_PreviewObject->FillProp			("Object",items);
     PropValue* V						= PHelper.CreateToken<u32>	(items,FHelper.PrepareKey("Object","Reference"), &m_PreviewObjectType, preview_obj_token); 
     V->Owner()->OnAfterEditEvent 		= OnPreviewObjectRefChange;
     Ext.m_PreviewProps->AssignItems		(items);
     Ext.m_PreviewProps->ShowProperties	();
+    // fill items
+    FillItemList						();
+    Ext.m_Items->OnModifiedEvent		= Modified;
+    Ext.m_Items->OnItemRename			= OnRenameItem;
+    Ext.m_Items->OnItemRemove			= OnRemoveItem;
+    inherited::OnActivate				();
 }
 //---------------------------------------------------------------------------
 
 void CSHEngineTools::OnDeactivate()
 {
-	Ext.m_PreviewProps->ClearProperties();
+    inherited::OnDeactivate		();
 }
 
 void CSHEngineTools::ClearData()
@@ -170,10 +176,11 @@ void CSHEngineTools::OnFrame()
 	if (m_bNeedResetShaders)
     	RealResetShaders();
     if (m_RemoteRenBlender){
-    	RenameItem(m_RenBlenderOldName.c_str(),m_RenBlenderNewName.c_str());
-        m_RemoteRenBlender=FALSE;
+    	RealRenameItem		(m_RenBlenderOldName.c_str(),m_RenBlenderNewName.c_str());
+        m_RemoteRenBlender	= FALSE;
     }
 	if (m_PreviewObject) m_PreviewObject->OnFrame();
+	inherited::OnFrame();
 }
 
 void CSHEngineTools::OnRender()
@@ -198,9 +205,6 @@ void CSHEngineTools::RealResetShaders()
 	Ext.m_ItemProps->LockUpdating();
 	// disable props vis update
     m_bFreezeUpdate 	= TRUE;
-	// mem current blender
-    AnsiString name;
-    FHelper.MakeFullName(View()->Selected,0,name);
 
 	UpdateObjectShader	();
 	ResetCurrentItem	();
@@ -212,9 +216,6 @@ void CSHEngineTools::RealResetShaders()
 	// enable props vis update
     m_bFreezeUpdate 	= FALSE;
 
-	// restore current shader
-	SetCurrentItem		(name.c_str());
-
 	Ext.m_ItemProps->UnlockUpdating();
                 
     m_bNeedResetShaders	= FALSE;
@@ -222,11 +223,10 @@ void CSHEngineTools::RealResetShaders()
 
 void CSHEngineTools::FillItemList()
 {
-    View()->IsUpdating 		= true;
-	ViewClearItemList();
+	ListItemsVec items;
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
-        ViewAddItem(b->first);
-    View()->IsUpdating 		= false;
+    	LHelper.CreateItem(items,b->first,0);
+	Ext.m_Items->AssignItems(items,false,true);
 }
 
 void CSHEngineTools::ApplyChanges(bool bForced)
@@ -240,10 +240,11 @@ void CSHEngineTools::ApplyChanges(bool bForced)
 
 void CSHEngineTools::Reload()
 {
-	ViewClearItemList	();
     ResetCurrentItem	();
     ClearData			();
     Load				();
+    FillItemList		();
+    ResetShaders		(false);// required 'false' for matrix
 }
 
 void CSHEngineTools::Load()
@@ -309,7 +310,6 @@ void CSHEngineTools::Load()
                 chunk_id++;
             }
             fs->close();
-			FillItemList		();
         }
         FS.r_close				(F);
         UpdateRefCounters		();
@@ -437,16 +437,6 @@ CConstant* CSHEngineTools::FindConstant(LPSTR name, bool bDuplicate){
     return C;
 }
 
-LPCSTR CSHEngineTools::GenerateItemName(LPSTR name, LPCSTR pref, LPCSTR source)
-{
-    int cnt = 0;
-    if (source) strcpy(name,source); else sprintf(name,"%sshader_%02d",pref,cnt++);
-	while (FindItem(name))
-    	if (source) sprintf(name,"%s_%02d",source,cnt++);
-        else sprintf(name,"%sshader_%02d",pref,cnt++);
-	return name;
-}
-
 LPCSTR CSHEngineTools::GenerateMatrixName(LPSTR name){
     int cnt = 0;
     do sprintf(name,"%04x",cnt++);
@@ -526,22 +516,22 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     data.seek(0);
     B->Load(data,B->getDescription().version);
 	// set name
-    string128 name; name[0]=0;
-    B->getDescription().Setup(GenerateItemName(name,folder_name,parent_name));
+    AnsiString pref			= parent_name?AnsiString(parent_name):AnsiString(folder_name)+"shader";
+    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,ItemExist,false);
+    B->getDescription().Setup(m_LastSelection.c_str());
     // insert blender
-	std::pair<BlenderPairIt, bool> I = m_Blenders.insert(mk_pair(xr_strdup(name),B));
+	std::pair<BlenderPairIt, bool> I = m_Blenders.insert(mk_pair(xr_strdup(m_LastSelection.c_str()),B));
 	R_ASSERT2 		(I.second,"shader.xr - found duplicate name!!!");
     // insert to TreeView
-	ViewAddItem		(name);
+	UI->Command				(COMMAND_UPDATE_PROPERTIES);
 
 	ResetShaders	(true);
-    SetCurrentItem	(name);
     Modified		();
 
     return B->getName();
 }
 
-void CSHEngineTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
+void CSHEngineTools::RealRenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 {
     ApplyChanges	();
     LPSTR N 		= LPSTR(old_full_name);
@@ -558,15 +548,10 @@ void CSHEngineTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 	if (B==m_CurrentBlender) UpdateStreamFromObject();
     ApplyChanges	();
     ResetShaders	();
-    if (B==m_CurrentBlender) SetCurrentItem(B->getName());
-}
+    if (B==m_CurrentBlender) SetCurrentItem(B->getName(),true);
 
-void CSHEngineTools::RenameItem(LPCSTR old_full_name, LPCSTR ren_part, int level)
-{
-    VERIFY(level<_GetItemCount(old_full_name,'\\'));
-    char new_full_name[255];
-    _ReplaceItem(old_full_name,level,ren_part,new_full_name,'\\');
-	RenameItem(old_full_name,new_full_name);
+	m_LastSelection	= new_full_name;
+    RealUpdateProperties();
 }
 
 void CSHEngineTools::AddMatrixRef(LPSTR name)
@@ -605,21 +590,30 @@ LPCSTR CSHEngineTools::AppendMatrix(CMatrix* src, CMatrix** dest)
     return I.first->first;
 }
 
-void CSHEngineTools::RemoveItem(LPCSTR name)
+void CSHEngineTools::OnRenameItem(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type)
 {
-	R_ASSERT(name && name[0]);
-	IBlender* B = FindItem(name);
-    R_ASSERT(B);
-    // remove refs
-	ParseBlender(B,ST_RemoveBlender);
-	LPSTR N = LPSTR(name);                               
-    BlenderPairIt I = m_Blenders.find	(N);
-    xr_free 		((LPSTR)I->first);
-    xr_delete		(I->second);
-    m_Blenders.erase(I);
+	if (type==TYPE_OBJECT)
+		RemoteRenameBlender	(old_full_name, new_full_name);
+}
 
-	ApplyChanges	();
-	ResetShaders	();
+BOOL CSHEngineTools::OnRemoveItem(LPCSTR name, EItemType type)
+{
+	if (type==TYPE_OBJECT){
+        R_ASSERT(name && name[0]);
+        IBlender* B = FindItem(name);
+        R_ASSERT(B);
+        // remove refs
+        ParseBlender(B,ST_RemoveBlender);
+        LPSTR N = LPSTR(name);                               
+        BlenderPairIt I = m_Blenders.find	(N);
+        xr_free 		((LPSTR)I->first);
+        xr_delete		(I->second);
+        m_Blenders.erase(I);
+
+        ApplyChanges	();
+        ResetShaders	();
+    }
+    return TRUE;
 }
 
 void CSHEngineTools::RemoveMatrix(LPSTR name){
@@ -666,7 +660,7 @@ void CSHEngineTools::UpdateObjectFromStream()
     }
 }
 
-void CSHEngineTools::SetCurrentItem(LPCSTR name)
+void CSHEngineTools::SetCurrentItem(LPCSTR name, bool bView)
 {
     if (m_bLockUpdate) return;
 
@@ -676,8 +670,8 @@ void CSHEngineTools::SetCurrentItem(LPCSTR name)
         UpdateStreamFromObject();
         // apply this shader to non custom object
         UpdateObjectShader();
+		if (bView) ViewSetCurrentItem(name);
     }
-	ViewSetCurrentItem(name);
 }
 
 void CSHEngineTools::ResetCurrentItem()

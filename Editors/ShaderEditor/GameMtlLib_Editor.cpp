@@ -14,10 +14,10 @@
 //------------------------------------------------------------------------------
 // material routines
 //------------------------------------------------------------------------------
-void SGameMtl::FillProp		(PropItemVec& items, TElTreeItem* owner)
+void SGameMtl::FillProp		(PropItemVec& items, ListItem* owner)
 {
 	PropValue* V=0;
-    PHelper.CreateRName_TI			(items,	"Name",						&m_Name, owner);
+    PHelper.CreateRName				(items,	"Name",						&m_Name, owner);
     PHelper.CreateRText				(items,	"Desc",						&m_Desc);
 	// flags                                                      	
 	V=PHelper.CreateFlag<Flags32>	(items,	"Flags\\Dynamic",			&Flags,	flDynamic);	V->Owner()->Enable(FALSE);

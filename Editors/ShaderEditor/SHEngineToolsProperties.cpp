@@ -107,7 +107,7 @@ void __fastcall CSHEngineTools::NameOnAfterEdit(PropItem* sender, LPVOID edit_va
 {
 	TextValue* V 			= dynamic_cast<TextValue*>(sender->GetFrontValue()); R_ASSERT(V);
     AnsiString* new_name 	= (AnsiString*)edit_val;
-	if (FHelper.NameAfterEdit(View()->Selected,V->GetValue(),*new_name))
+	if (FHelper.NameAfterEdit(m_CurrentItem->Item(),V->GetValue(),*new_name))
     	RemoteRenameBlender(V->GetValue(),new_name->c_str());
 }
 //------------------------------------------------------------------------------
@@ -116,7 +116,8 @@ void CSHEngineTools::RealUpdateProperties()
 {
 	if (m_bFreezeUpdate) return;
 
-	PropItemVec items;
+	FillItemList	();
+	PropItemVec 	items;
 	if (m_CurrentBlender){ // fill Tree
     	AnsiString marker_text="";
     
@@ -128,9 +129,8 @@ void CSHEngineTools::RealUpdateProperties()
 
         PHelper.CreateCaption(items,"Type",m_CurrentBlender->getComment());
         PHelper.CreateCaption(items,"Owner",desc->cComputer);
-//. ListItem
-//.        PHelper.CreateName(items,"Name",desc->cName,sizeof(desc->cName),0);
-        PropValue* V	= PHelper.CreateText(items,"Name",desc->cName,sizeof(desc->cName));
+//		PHelper.CreateName(items,"Name",desc->cName,sizeof(desc->cName),m_CurrentItem);
+        PropValue* V = PHelper.CreateText(items,"Name",desc->cName,sizeof(desc->cName));
         V->Owner()->OnAfterEditEvent 	= NameOnAfterEdit;
         V->Owner()->OnBeforeEditEvent 	= PHelper.NameBeforeEdit;
         V->Owner()->OnDrawTextEvent 	= PHelper.NameDraw;

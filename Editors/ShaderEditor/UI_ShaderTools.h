@@ -22,6 +22,7 @@ class CShaderTools: public CToolsCustom
     };
     Flags32				m_Flags;
 public:
+	TItemList*			m_Items;
     TProperties*		m_ItemProps;
     TProperties*		m_PreviewProps;
 
@@ -29,6 +30,8 @@ public:
     ToolsMap			m_Tools;
     ISHTools*			m_Current;
     ISHTools*			Current				(){return m_Current;}
+
+    void __fastcall 	OnItemFocused		(ListItemsVec& items);
 public:
 						CShaderTools		();
     virtual 			~CShaderTools		();

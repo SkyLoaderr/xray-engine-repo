@@ -487,6 +487,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
 	TRect  R1;
 	Surface->Brush->Style 			= bsClear;
 	if (SectionIndex == 0){
+        Surface->Font->Style 		= TFontStyles();           
         Surface->Font->Color 		= prop->prop_color;
         DrawText					(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
 	}else if (SectionIndex == 1){

@@ -121,7 +121,7 @@ public:
     void 				Save			(IWriter& fs);
     IC int				GetID			(){return ID;}
 #ifdef _EDITOR
-    void 				FillProp		(PropItemVec& values, TElTreeItem* owner);
+    void 				FillProp		(PropItemVec& values, ListItem* owner);
 #endif
 };
 DEFINE_VECTOR(SGameMtl*,GameMtlVec,GameMtlIt);

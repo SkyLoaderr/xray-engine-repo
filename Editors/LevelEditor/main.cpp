@@ -16,10 +16,31 @@ TfrmMain *frmMain;
 #include "leftbar.h"
 #include "bottombar.h"
 
-//---------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+#include "ChoseForm.h"
+#include "shader.h"
+#include "shader_xrlc.h"
+#include "texture.h"
+#include "Library.h"
+#include "EditObject.h"
+#include "LevelGameDef.h"
+#include "EThumbnail.h"
+#include "FolderLib.h"
+#include "LightAnimLibrary.h"
+#include "ImageManager.h"
+#include "SoundManager.h"
+#include "ui_main.h"
+#include "PSLibrary.h"
+#include "GameMtlLib.h"
+#include "soundrender_source.h"
+#include "render.h"
+#include "ResourceManager.h"
+#include "EditorChooseEvents.h"
+
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
         : TForm(Owner)
 {
+	TfrmChoseItem::fill_events	= FillChooseEvents;
 // forms
     fraBottomBar	= xr_new<TfraBottomBar>	((TComponent*)0);
     fraTopBar   	= xr_new<TfraTopBar>	((TComponent*)0);
@@ -251,6 +272,5 @@ void __fastcall TfrmMain::paRenderResize(TObject *Sender)
 	UI->Command(COMMAND_RENDER_RESIZE);
 }
 //---------------------------------------------------------------------------
-
 
 

@@ -4,15 +4,26 @@
 
 #include "SHCompilerTools.h"
 #include "folderlib.h"
+#include "ItemList.h"
 //------------------------------------------------------------------------------
+
+void CSHCompilerTools::FillItemList()
+{
+	ListItemsVec items;
+    Shader_xrLCVec& lst = m_Library.Library();
+    for (Shader_xrLCIt it=lst.begin(); it!=lst.end(); it++)
+        LHelper.CreateItem(items,it->Name,0);
+	Ext.m_Items->AssignItems(items,false,true);
+}
 
 //------------------------------------------------------------------------------
 void CSHCompilerTools::RealUpdateProperties()
 {
+	FillItemList	();
 	PropItemVec items;
 	if (m_Shader){
 		Shader_xrLC& L 				= *m_Shader;
-        PHelper.CreateName_TI		(items, "Name",					L.Name,  		sizeof(L.Name), FHelper.FindObject(View(),L.Name));
+		PHelper.CreateName			(items, "Name",					L.Name,  		sizeof(L.Name), m_CurrentItem);
         PHelper.CreateFloat			(items, "Translucency",			&L.vert_translucency);
         PHelper.CreateFloat			(items, "Ambient",				&L.vert_ambient);
         PHelper.CreateFloat			(items, "LM density",			&L.lm_density,   0.01f,20.f);

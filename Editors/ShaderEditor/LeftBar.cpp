@@ -30,24 +30,8 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
 {
 	DEFINE_INI(fsStorage);
 
-    InplaceEdit->Editor->Color			= TColor(0x00A0A0A0);
-    InplaceEdit->Editor->BorderStyle	= bsNone;
     frmMain->paLeftBar->Width 			= paLeftBar->Width+2;
     frmMain->sbToolsMin->Left 			= paLeftBar->Width-frmMain->sbToolsMin->Width-3;
-    bFocusedAffected 					= true;
-    
-    // events
-/*
-//!    
-    tvEngine->OnStartDrag 	= FHelper.StartDrag;
-    tvEngine->OnDragOver 	= FHelper.DragOver;
-    tvCompiler->OnStartDrag = FHelper.StartDrag;
-    tvCompiler->OnDragOver 	= FHelper.DragOver;
-    tvMtl->OnStartDrag 		= FHelper.StartDrag;
-    tvMtl->OnDragOver 		= FHelper.DragOver;
-    tvSoundEnv->OnStartDrag	= FHelper.StartDrag;
-    tvSoundEnv->OnDragOver 	= FHelper.DragOver;
-*/
 }
 //---------------------------------------------------------------------------
 
@@ -147,120 +131,34 @@ void __fastcall TfraLeftBar::ebCustomFileMouseDown(TObject *Sender,
 	FHelper.ShowPPMenu(pmCustomFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
-
-
 void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	FHelper.ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
-{
-    AnsiString 	folder;
-    AnsiString 	start_folder;
-    FHelper.MakeName(STools->Current()->View()->Selected,0,start_folder,true);
-    FHelper.GenerateFolderName(STools->Current()->View(),STools->Current()->View()->Selected,folder);
-    folder = start_folder+folder;
-    TElTreeItem* node = FHelper.AppendFolder(STools->Current()->View(),folder.c_str(),true);
-    if (STools->Current()->View()->Selected) STools->Current()->View()->Selected->Expand(false);
-    STools->Current()->View()->EditItem(node,-1);
-    STools->Modified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ExpandAll1Click(TObject *Sender)
-{
-	STools->Current()->View()->FullExpand();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
-{
-	STools->Current()->View()->FullCollapse();
-}
-//---------------------------------------------------------------------------
-
-BOOL __fastcall TfraLeftBar::RemoveItem(LPCSTR p0, EItemType type)
-{
-	STools->Current()->RemoveItem(p0);
-    return TRUE;
-}
-//---------------------------------------------------------------------------
-void TfraLeftBar::AfterRemoveItem()
-{
-	STools->Current()->ResetCurrentItem();
-	STools->Current()->Modified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
-{
-	TElTreeItem* node = STools->Current()->View()->Selected;
-    if (node) STools->Current()->View()->EditItem(node,-1);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::InplaceEditValidateResult(TObject *Sender, bool &InputValid)
-{
-	TElTreeInplaceAdvancedEdit* IE=InplaceEdit;
-
-    AnsiString new_text	= AnsiString(IE->Editor->Text).LowerCase();
-    IE->Editor->Text 	= new_text;
-
-    TElTreeItem* node = IE->Item;
-    for (TElTreeItem* item=node->GetFirstSibling(); item; item=item->GetNextSibling()){
-        if ((item->Text==new_text)&&(item!=IE->Item)){
-            InputValid = false;
-            return;
-        }
-    }
-    AnsiString full_name;
-    if (FHelper.IsFolder(node)){
-        for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
-            if (FHelper.IsObject(item)){
-                FHelper.MakeName(item,0,full_name,false);
-                STools->Current()->RenameItem	(full_name.c_str(),new_text.c_str(),node->Level);
-            }
-        }
-    }else if (FHelper.IsObject(node)){
-        FHelper.MakeName(node,0,full_name,false);
-        STools->Current()->RenameItem	(full_name.c_str(),new_text.c_str(),node->Level);
-    }
-    STools->Current()->View()->Selected=node;
-	STools->Current()->Modified();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebCreateItemClick(TObject *Sender)
 {
-    AnsiString folder;
-	FHelper.MakeName(STools->Current()->View()->Selected,0,folder,true);
+    AnsiString folder = STools->Current()->ViewGetCurrentItem(true);
     STools->Current()->AppendItem(folder.c_str());
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::pcShadersChange(TObject *Sender)
 {
-    InplaceEdit->Tree = 0;
 	STools->OnChangeEditor(STools->FindTools(pcShaders->ActivePage));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebRemoveItemClick(TObject* Sender)
 {
-//	bFocusedAffected = false;
-	TElTree* tv = STools->Current()->View(); VERIFY(tv);
-	FHelper.RemoveItem(tv,tv->Selected,RemoveItem,AfterRemoveItem);
-//	bFocusedAffected = true;
-//	STools->Modified();
+	STools->Current()->RemoveCurrent();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebCloneItemClick(TObject *Sender)
 {
-    TElTreeItem* pNode = STools->Current()->View()->Selected;
+    TElTreeItem* pNode = STools->Current()->ViewGetCurrentItem();
     if (pNode&&FHelper.IsObject(pNode)){
 		AnsiString full_name;
 		FHelper.MakeName(pNode,0,full_name,false);
@@ -268,13 +166,6 @@ void __fastcall TfraLeftBar::ebCloneItemClick(TObject *Sender)
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
     }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1, EItemType type)
-{
-	STools->Current()->RenameItem(p0,p1);
-	STools->Current()->Modified();
 }
 //---------------------------------------------------------------------------
 
@@ -310,11 +201,6 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-//.#include "SHEngineSTools->h"
-//	CSHEngineTools* tools = (CSHEngineTools*)STools->FindTools(aeEngine); R_ASSERT(tools);
-//    tools->PreviewObjClick(Sender);
-
-
 void __fastcall TfraLeftBar::ExtBtn10MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -334,27 +220,6 @@ void __fastcall TfraLeftBar::MenuItem7Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
-//---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
-void __fastcall TfraLeftBar::OnDragDrop(TObject *Sender,
-      TObject *Source, int X, int Y)
-{
-	FHelper.DragDrop(Sender,Source,X,Y,RenameItem);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::tvItemFocused(TObject *Sender)
-{
-	if (!bFocusedAffected) return;
-   	AnsiString name;
-   	FHelper.MakeName(STools->Current()->View()->Selected, 0, name, false);
-	STools->Current()->SetCurrentItem(name.c_str());
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::tvEngineKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
@@ -362,11 +227,5 @@ void __fastcall TfraLeftBar::tvEngineKeyDown(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	if (Shift.Contains(ssRight)&&STools->Current()->PopupMenu()) FHelper.ShowPPMenu(STools->Current()->PopupMenu(),dynamic_cast<TExtBtn*>(Sender));
-}
-//---------------------------------------------------------------------------
 
 

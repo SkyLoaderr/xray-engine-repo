@@ -32,12 +32,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebPreferences;
 	TPanel *paEngineShaders;
 	TLabel *Label1;
-	TMxPopupMenu *pmListCommand;
-	TMenuItem *ExpandAll1;
-	TMenuItem *CollapseAll1;
-	TMenuItem *N1;
-	TMenuItem *CreateFolder1;
-	TMenuItem *Rename1;
 	TElPageControl *pcShaders;
 	TElTabSheet *tsEngine;
 	TBevel *Bevel1;
@@ -52,14 +46,12 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn4;
 	TExtBtn *ebCShaderCreate;
 	TBevel *Bevel3;
-	TElTreeInplaceAdvancedEdit *InplaceEdit;
 	TPanel *paShaderProperties;
 	TLabel *Label6;
 	TExtBtn *ExtBtn5;
 	TBevel *Bevel6;
 	TPanel *paShaderProps;
 	TSplitter *Splitter1;
-	TMenuItem *N4;
 	TExtBtn *ebImageCommands;
 	TMxPopupMenu *pmImages;
 	TMenuItem *ImageEditor1;
@@ -76,10 +68,7 @@ __published:	// IDE-managed Components
 	TBevel *Bevel2;
 	TBevel *Bevel4;
 	TPanel *Panel3;
-	TExtBtn *ExtBtn1;
-	TExtBtn *ebMaterialPairClone;
 	TExtBtn *ExtBtn6;
-	TExtBtn *ebMaterialPairSetParent;
 	TElTabSheet *tsSoundEnv;
 	TBevel *Bevel5;
 	TPanel *Panel5;
@@ -105,6 +94,7 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem5;
 	TMenuItem *MenuItem6;
 	TMenuItem *MenuItem7;
+	TPanel *paItemList;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -114,23 +104,12 @@ __published:	// IDE-managed Components
 	void __fastcall ebResetAnimationClick(TObject *Sender);
 	void __fastcall ebCustomFileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall tvEngineMouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
-	void __fastcall CreateFolder1Click(TObject *Sender);
-	void __fastcall ExpandAll1Click(TObject *Sender);
-	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall tvItemFocused(TObject *Sender);
 	void __fastcall tvEngineKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-	void __fastcall Rename1Click(TObject *Sender);
-	void __fastcall InplaceEditValidateResult(TObject *Sender,
-          bool &InputValid);
 	void __fastcall ebCreateItemClick(TObject *Sender);
 	void __fastcall pcShadersChange(TObject *Sender);
 	void __fastcall ebRemoveItemClick(TObject *Sender);
 	void __fastcall ebCloneItemClick(TObject *Sender);
-	void __fastcall OnDragDrop(TObject *Sender, TObject *Source, int X,
-          int Y);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall ebImageCommandsMouseDown(TObject *Sender,
@@ -143,10 +122,6 @@ __published:	// IDE-managed Components
 	void __fastcall MenuItem5Click(TObject *Sender);
 	void __fastcall MenuItem7Click(TObject *Sender);
 private:	// User declarations
-	void __fastcall RenameItem			(LPCSTR p0, LPCSTR p1, EItemType type);
-	BOOL __fastcall RemoveItem			(LPCSTR p0, EItemType type);
-	void __fastcall AfterRemoveItem		();
-    bool			bFocusedAffected;
 public:		// User declarations
         __fastcall TfraLeftBar			(TComponent* Owner);
 	void 			ChangeTarget		(int tgt);

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 878
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 878
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 639
+      Top = 38
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -184,7 +184,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 154
       Width = 258
-      Height = 485
+      Height = 167
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -206,7 +206,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 470
+        Height = 77
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -229,7 +229,7 @@ object fraLeftBar: TfraLeftBar
         TabBkColor = 10528425
         ActivePage = tsSoundEnv
         FlatTabBorderColor = clBtnShadow
-        Align = alClient
+        Align = alTop
         ParentColor = False
         TabOrder = 0
         object tsEngine: TElTabSheet
@@ -618,48 +618,6 @@ object fraLeftBar: TfraLeftBar
             BevelOuter = bvNone
             Color = 10528425
             TabOrder = 0
-            object ExtBtn1: TExtBtn
-              Left = 1
-              Top = 34
-              Width = 70
-              Height = 15
-              Align = alNone
-              BevelShow = False
-              HotTrack = True
-              HotColor = 15790320
-              CloseButton = False
-              Caption = 'Remove'
-              Enabled = False
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -11
-              Font.Name = 'MS Sans Serif'
-              Font.Style = []
-              Margin = 13
-              ParentFont = False
-              OnClick = ebRemoveItemClick
-            end
-            object ebMaterialPairClone: TExtBtn
-              Left = 71
-              Top = 34
-              Width = 70
-              Height = 15
-              Align = alNone
-              BevelShow = False
-              HotTrack = True
-              HotColor = 15790320
-              CloseButton = False
-              Caption = 'Inherit'
-              Enabled = False
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -11
-              Font.Name = 'MS Sans Serif'
-              Font.Style = []
-              Margin = 13
-              ParentFont = False
-              OnClick = ebCloneItemClick
-            end
             object ExtBtn6: TExtBtn
               Left = 1
               Top = 2
@@ -691,29 +649,6 @@ object fraLeftBar: TfraLeftBar
               ParentFont = False
               Spacing = 3
               OnMouseDown = ebCustomFileMouseDown
-            end
-            object ebMaterialPairSetParent: TExtBtn
-              Left = 1
-              Top = 18
-              Width = 140
-              Height = 15
-              Align = alNone
-              BevelShow = False
-              HotTrack = True
-              HotColor = 15790320
-              CloseButton = False
-              CloseWidth = 24
-              Caption = 'Create'
-              Enabled = False
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -11
-              Font.Name = 'MS Sans Serif'
-              Font.Style = []
-              Kind = knMinimize
-              Margin = 13
-              ParentFont = False
-              Spacing = 3
             end
           end
         end
@@ -838,10 +773,20 @@ object fraLeftBar: TfraLeftBar
           end
         end
       end
+      object paItemList: TPanel
+        Left = 1
+        Top = 91
+        Width = 256
+        Height = 75
+        Align = alClient
+        BevelOuter = bvNone
+        Color = 10528425
+        TabOrder = 1
+      end
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 641
+      Top = 40
       Width = 258
       Height = 236
       Align = alBottom
@@ -981,49 +926,6 @@ object fraLeftBar: TfraLeftBar
     StoredValues = <>
     Left = 65529
     Top = 65526
-  end
-  object pmListCommand: TMxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    MarginStartColor = 13158600
-    MarginEndColor = 1644825
-    BKColor = 10528425
-    SelColor = clBlack
-    SelFontColor = 10526880
-    SepHColor = 1644825
-    SepLColor = 13158600
-    LeftMargin = 10
-    Style = msOwnerDraw
-    Left = 45
-    Top = 245
-    object Rename1: TMenuItem
-      Caption = 'Rename'
-      OnClick = Rename1Click
-    end
-    object N4: TMenuItem
-      Caption = '-'
-    end
-    object CreateFolder1: TMenuItem
-      Caption = 'Create Folder'
-      OnClick = CreateFolder1Click
-    end
-    object N1: TMenuItem
-      Caption = '-'
-    end
-    object ExpandAll1: TMenuItem
-      Caption = 'Expand All'
-      OnClick = ExpandAll1Click
-    end
-    object CollapseAll1: TMenuItem
-      Caption = 'Collapse All'
-      OnClick = CollapseAll1Click
-    end
-  end
-  object InplaceEdit: TElTreeInplaceAdvancedEdit
-    Types = [sftText]
-    OnValidateResult = InplaceEditValidateResult
-    Left = 10
-    Top = 245
   end
   object pmImages: TMxPopupMenu
     Alignment = paCenter

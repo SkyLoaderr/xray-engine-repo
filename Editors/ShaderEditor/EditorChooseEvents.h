@@ -1,5 +1,8 @@
 #ifndef EditorChooseEventsH
 #define EditorChooseEventsH
+
+#include "ChooseTypes.h"
+
 void __fastcall FillEntity(ChooseItemVec& items)
 {
 //.    AppendItem						(RPOINT_CHOOSE_NAME);
@@ -10,6 +13,12 @@ void __fastcall FillEntity(ChooseItemVec& items)
 //			if (CInifile::IsBOOL(val))	
             items.push_back(SChooseItem(*it->Name,""));
     }
+}
+//---------------------------------------------------------------------------
+void __fastcall SelectSoundSource(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items)
+{
+	snd.create	(true,item->name.c_str(),0);
+    thm 		= xr_new<ESoundThumbnail>(item->name.c_str());
 }
 //---------------------------------------------------------------------------
 void __fastcall FillSoundSource(ChooseItemVec& items)
@@ -51,6 +60,22 @@ void __fastcall FillGameObject(ChooseItemVec& items)
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
     }
 }
+void __fastcall SelectGameObject(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items)
+{
+    AnsiString fn					= ChangeFileExt(item->name.c_str(),".ogf");
+    IRender_Visual* visual	= ::Render->model_Create(fn.c_str());
+    if (visual){
+        PHelper.CreateCaption	(info_items,	"Source",	*visual->desc.source_file?*visual->desc.source_file:"unknown");
+        PHelper.CreateCaption	(info_items, 	"Creator N",*visual->desc.create_name?*visual->desc.create_name:"unknown");
+        PHelper.CreateCaption	(info_items,	"Creator T",Trim(AnsiString(ctime(&visual->desc.create_time))));
+        PHelper.CreateCaption	(info_items,	"Modif N",	*visual->desc.modif_name ?*visual->desc.modif_name :"unknown");
+        PHelper.CreateCaption	(info_items,	"Modif T",	Trim(AnsiString(ctime(&visual->desc.modif_time))));
+        PHelper.CreateCaption	(info_items,	"Build N",	*visual->desc.build_name ?*visual->desc.build_name :"unknown");
+        PHelper.CreateCaption	(info_items,	"Build T",	Trim(AnsiString(ctime(&visual->desc.build_time))));
+    }
+    ::Render->model_Delete(visual);
+}
+
 //---------------------------------------------------------------------------
 void __fastcall FillGameAnim(ChooseItemVec& items)
 {
@@ -106,6 +131,10 @@ void __fastcall FillTexture(ChooseItemVec& items)
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
     }
 }
+void __fastcall SelectTexture(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items)
+{
+	thm		= xr_new<ETextureThumbnail>(item->name.c_str());
+}
 //---------------------------------------------------------------------------
 void __fastcall FillGameMaterial(ChooseItemVec& items)
 {
@@ -116,17 +145,17 @@ void __fastcall FillGameMaterial(ChooseItemVec& items)
 
 void FillChooseEvents()
 {
-	TfrmChoseItem::AppendEvents	(smSoundSource,	"Select Sound Source",		FillSoundSource,	0,false);
+	TfrmChoseItem::AppendEvents	(smSoundSource,	"Select Sound Source",		FillSoundSource,	SelectSoundSource,	false);
 	TfrmChoseItem::AppendEvents	(smSoundEnv,	"Select Sound Environment",	FillSoundEnv,		0,false);
 	TfrmChoseItem::AppendEvents	(smObject,		"Select Library Object",	FillObject,			0,false);
 	TfrmChoseItem::AppendEvents	(smEShader,		"Select Engine Shader",		FillEShader,		0,false);
 	TfrmChoseItem::AppendEvents	(smCShader,		"Select Compiler Shader",	FillCShader,		0,false);
 	TfrmChoseItem::AppendEvents	(smPE,			"Select Particle Effect",	FillPE,				0,false);
 	TfrmChoseItem::AppendEvents	(smParticles,	"Select Particle System", 	FillParticles,		0,false);
-	TfrmChoseItem::AppendEvents	(smTexture,		"Select Texture",			FillTexture,		0,false);
+	TfrmChoseItem::AppendEvents	(smTexture,		"Select Texture",			FillTexture,		SelectTexture,		false);
 	TfrmChoseItem::AppendEvents	(smEntity,		"Select Entity",			FillEntity,			0,false);
 	TfrmChoseItem::AppendEvents	(smLAnim,		"Select Light Animation",	FillLAnim,			0,false);
-	TfrmChoseItem::AppendEvents	(smGameObject,	"Select Game Object",		FillGameObject,		0,false);
+	TfrmChoseItem::AppendEvents	(smGameObject,	"Select Game Object",		FillGameObject,		SelectGameObject,	false);
 	TfrmChoseItem::AppendEvents	(smGameMaterial,"Select Game Material",		FillGameMaterial,	0,false);
 	TfrmChoseItem::AppendEvents	(smGameAnim,	"Select Animation",			FillGameAnim,		0,false);
 }

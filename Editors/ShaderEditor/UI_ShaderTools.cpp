@@ -7,6 +7,7 @@
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "leftbar.h"
+#include "ItemList.h"
 #include "PropertiesList.h"
 #include "Blender.h"
 #include "GameMtlLib.h"
@@ -18,6 +19,7 @@ CShaderTools*&	STools=(CShaderTools*)Tools;
 CShaderTools::CShaderTools()
 {
 	m_Current			= 0;
+    m_Items				= 0;
     m_ItemProps			= 0;
     m_PreviewProps		= 0;
     fFogness			= 0.9f;
@@ -64,8 +66,10 @@ void CShaderTools::Modified()
 bool CShaderTools::OnCreate()
 {
     // create props
-    m_ItemProps 	= TProperties::CreateForm("Item Properties",	fraLeftBar->paShaderProps,	alClient);
-    m_PreviewProps  = TProperties::CreateForm("Preview Properties",	fraLeftBar->paPreviewProps,	alClient);
+    m_Items			= TItemList::CreateForm		("Items",				fraLeftBar->paItemList,		alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
+	m_Items->OnItemsFocused	= OnItemFocused;
+    m_ItemProps 	= TProperties::CreateForm	("Item Properties",		fraLeftBar->paShaderProps,	alClient);
+    m_PreviewProps  = TProperties::CreateForm	("Preview Properties",	fraLeftBar->paPreviewProps,	alClient);
 
 	// shader test locking
 	AnsiString sh_fn;
@@ -99,6 +103,7 @@ bool CShaderTools::OnCreate()
 void CShaderTools::OnDestroy()
 {
 	// destroy props
+    TItemList::DestroyForm	(m_Items);
 	TProperties::DestroyForm(m_ItemProps);
     TProperties::DestroyForm(m_PreviewProps);
 	// unlock
@@ -121,9 +126,9 @@ void CShaderTools::Render()
 
 void CShaderTools::OnFrame()
 {
-	Current()->OnFrame();
 	if (m_Flags.is(flRefreshProps)) 
     	RealUpdateProperties();
+	Current()->OnFrame();
 }
 
 void CShaderTools::ZoomObject(bool bOnlySel)
@@ -240,11 +245,11 @@ void CShaderTools::RegisterTools()
 	for (int k=aeFirstTool; k<aeMaxTools; k++){	
     	ISHTools* tools = 0;
 		switch(k){
-		case aeEngine:		tools = xr_new<CSHEngineTools>		(ISHInit( EToolsID(k),	0,	fraLeftBar->pmListCommand,	fraLeftBar->tsEngine,	m_ItemProps,	m_PreviewProps));   break; // fraLeftBar->tvEngine,
-    	case aeCompiler:	tools = xr_new<CSHCompilerTools>	(ISHInit( EToolsID(k),	0,	fraLeftBar->pmListCommand,	fraLeftBar->tsCompiler, m_ItemProps,	m_PreviewProps));	break; // fraLeftBar->tvCompiler,
-    	case aeMtl:			tools = xr_new<CSHGameMtlTools>		(ISHInit( EToolsID(k),	0,	fraLeftBar->pmListCommand,	fraLeftBar->tsMaterial,	m_ItemProps,	m_PreviewProps));	break; // fraLeftBar->tvMtl,	
-    	case aeMtlPair:		tools = xr_new<CSHGameMtlPairTools>	(ISHInit( EToolsID(k),	0,	(TMxPopupMenu*)NULL,		fraLeftBar->tsMaterialPair,m_ItemProps,	m_PreviewProps));	break; // fraLeftBar->tvMtlPair,
-    	case aeSoundEnv:	tools = xr_new<CSHSoundEnvTools>	(ISHInit( EToolsID(k),	0,	fraLeftBar->pmListCommand,	fraLeftBar->tsSoundEnv,	m_ItemProps,	m_PreviewProps));	break; // fraLeftBar->tvSoundEnv,
+		case aeEngine:		tools = xr_new<CSHEngineTools>		(ISHInit( EToolsID(k),	m_Items,	fraLeftBar->tsEngine,	m_ItemProps,	m_PreviewProps));   break;
+    	case aeCompiler:	tools = xr_new<CSHCompilerTools>	(ISHInit( EToolsID(k),	m_Items,	fraLeftBar->tsCompiler, m_ItemProps,	m_PreviewProps));	break;
+    	case aeMtl:			tools = xr_new<CSHGameMtlTools>		(ISHInit( EToolsID(k),	m_Items,	fraLeftBar->tsMaterial,	m_ItemProps,	m_PreviewProps));	break;
+    	case aeMtlPair:		tools = xr_new<CSHGameMtlPairTools>	(ISHInit( EToolsID(k),	m_Items,	fraLeftBar->tsMaterialPair,m_ItemProps,	m_PreviewProps));	break;
+    	case aeSoundEnv:	tools = xr_new<CSHSoundEnvTools>	(ISHInit( EToolsID(k),	m_Items,	fraLeftBar->tsSoundEnv,	m_ItemProps,	m_PreviewProps));	break;
         }
         R_ASSERT(tools);
 		m_Tools.insert(mk_pair(k,tools));
@@ -291,4 +296,17 @@ void CShaderTools::RealUpdateProperties()
 	m_Flags.set(flRefreshProps,FALSE);
 }
 
+void __fastcall CShaderTools::OnItemFocused(ListItemsVec& items)
+{
+	LPCSTR name				= 0;
+    Current()->m_CurrentItem= 0;
+    
+	if (!items.empty()){
+    	VERIFY(items.size()==1);
+        Current()->m_CurrentItem	= *items.begin();
+        name						= Current()->m_CurrentItem->Key();
+    }
+    Current()->SetCurrentItem(name,false);
+}
+//------------------------------------------------------------------------------
 

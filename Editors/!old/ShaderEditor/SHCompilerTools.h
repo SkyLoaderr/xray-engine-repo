@@ -10,15 +10,16 @@ class PropValue;
 
 class CSHCompilerTools: public ISHTools
 {
+	bool __fastcall			ItemExist			(LPCSTR name){return !!FindItem(name);}
 	Shader_xrLC*			FindItem			(LPCSTR name);
-    virtual LPCSTR			GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source);
     Shader_xrLC_LIB			m_Library;
+
+    ListItem*				m_Selected;
 public:
     Shader_xrLC*			m_Shader;
-    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent=0);
-    virtual void			RemoveItem			(LPCSTR name);
-	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR ren_part, int level);
-	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name);
+    virtual BOOL __fastcall OnRemoveItem		(LPCSTR name, EItemType type); 
+	virtual void __fastcall OnRenameItem		(LPCSTR old_full_name, LPCSTR new_full_name, EItemType type);
+    virtual LPCSTR			AppendItem			(LPCSTR folder, LPCSTR parent=0);
 	virtual void			FillItemList		();
 public:
 							CSHCompilerTools 	(ISHInit& init);
@@ -33,11 +34,11 @@ public:
     virtual bool			OnCreate			();
     virtual void			OnDestroy			();
 	virtual void 			OnActivate			();
-	virtual void 			OnDeactivate		(){;}
+	virtual void 			OnDeactivate		();
 
     // misc
     virtual void			ResetCurrentItem	();
-    virtual void			SetCurrentItem		(LPCSTR name);
+    virtual void			SetCurrentItem		(LPCSTR name, bool bView);
     virtual void			ApplyChanges		(bool bForced=false);
 
 	virtual void 			RealUpdateProperties();
