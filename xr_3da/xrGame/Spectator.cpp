@@ -46,7 +46,7 @@ void CSpectator::UpdateCL()
 						CGroup& G = S.Groups[j];
 						for (u32 k=0; k<G.Members.size(); k++){
 							CActor* A = dynamic_cast<CActor*>(G.Members[k]);
-							if (A){
+							if (A&&A->g_Alive()){
 								if(idx==look_idx){
 									cam_Update(A->cam_Active());
 									return;
