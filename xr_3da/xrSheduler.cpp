@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "xrSheduler.h"
 
-ENGINE_API float		psUpdateFar		= 200.f;
+float					psUpdateFar		= 200.f;
+int						psSheduler		= 3000;
 LPVOID 					fiber_main		= 0;
 LPVOID					fiber_thread	= 0;
 
@@ -150,8 +151,9 @@ void CSheduler::Switch				()
 	}
 }
 
-void CSheduler::Update				(DWORD mcs)
+void CSheduler::Update				()
 {
+	DWORD	mcs						= psSheduler;
 	DWORD	dwTime					= Device.dwTimeGlobal;
 
 	// Realtime priority

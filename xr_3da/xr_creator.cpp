@@ -190,7 +190,7 @@ void CCreator::OnFrame	( void )
 
 	// Update all objects
 	VERIFY						(bReady);
-	Engine.Sheduler.Update		( 3000 );
+	Engine.Sheduler.Update		( );
 	Environment.OnMove			( );
 	Objects.OnMove				( );
 	pHUD->OnMove				( );

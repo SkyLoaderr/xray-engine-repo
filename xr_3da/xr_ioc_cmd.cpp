@@ -238,6 +238,7 @@ extern int			psSH_Blur;
 extern float		ssaLIMIT_SS;
 extern float		ssaDONTSORT_SS;
 extern float		psDetailDensity;
+extern int			psSheduler;
 
 void CCC_Register()
 {
@@ -254,8 +255,9 @@ void CCC_Register()
 	CMD1(CCC_SaveCFG,	"cfg_save"				);
 	CMD1(CCC_LoadCFG,	"cfg_load"				);
 
-	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,mtSound);
-	CMD3(CCC_Mask,		"mt_input",				&psDeviceFlags,mtInput);
+	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,	mtSound);
+	CMD3(CCC_Mask,		"mt_input",				&psDeviceFlags,	mtInput);
+	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,	1000,	10000	);
 	
 	// Events
 	CMD1(CCC_E_Dump,	"e_list"				);

@@ -50,7 +50,7 @@ public:
 public:
 	void			ProcessStep	();
 	void			Process		();
-	void			Update		(DWORD mcs		);
+	void			Update		();
 
 	void			Switch		();
 	IC void			Slice		()
