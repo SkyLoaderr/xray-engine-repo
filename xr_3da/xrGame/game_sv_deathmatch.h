@@ -33,9 +33,10 @@ protected:
 	//структура данных по команде
 	struct		TeamStruct
 	{
-		string256			Team_Section;		// имя секции комманды
-		TEAM_SKINS_NAMES	TeamSkins;			// список скинов для команды
-		TEAM_WPN_LIST		TeamsWeapons;		// список оружия для команды
+		string256			caSection;		// имя секции комманды
+		TEAM_SKINS_NAMES	aSkins;			// список скинов для команды
+		TEAM_WPN_LIST		aWeapons;		// список оружия для команды
+		WPN_SLOT_NAMES		aDefaultItems;	// предметы по умолчанию
 	};
 
 	//массив данных по командам
@@ -85,7 +86,6 @@ public:
 
 	virtual		void				ClearPlayerState		(game_PlayerState* ps);
 	virtual		void				ClearPlayerItems		(game_PlayerState* ps);
-	virtual		void				FillPlayerItemsDef		(game_PlayerState* ps);
 
 	virtual		void				SpawnWeaponsForActor	(CSE_Abstract* pE, game_PlayerState*	ps);
 	virtual		const char * 		GetItemForSlot			(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
@@ -95,6 +95,7 @@ public:
 	virtual		void				LoadTeamData			(char* caSection);
 	virtual		void				LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList);
 	virtual		void				LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins);
+	virtual		void				LoadDefItemsForTeam		(char* caSection, WPN_SLOT_NAMES* pDefItems);
 
 	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
 };

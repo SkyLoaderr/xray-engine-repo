@@ -535,10 +535,6 @@ void	game_sv_Deathmatch::ClearPlayerItems		(game_PlayerState* ps)
 	ps->BeltItems.clear();
 };
 
-void	game_sv_Deathmatch::FillPlayerItemsDef		(game_PlayerState* ps)
-{
-};
-
 const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
 {
 	if (!ps) return NULL;
@@ -550,7 +546,7 @@ const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_Pla
 
 	if (!(ps->team < s16(TeamList.size()))) return NULL;
     
-	TEAM_WPN_LIST	WpnList = TeamList[ps->team].TeamsWeapons;
+	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
 
 	if (!(SlotNum<WpnList.size())) return NULL;
 
@@ -560,7 +556,7 @@ const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_Pla
 
 	std::string Wpn = WpnSectNames[Item & 0x1f];
 
-	return TeamList[ps->team].TeamsWeapons[SlotNum][Item & 0x1f].c_str();
+	return TeamList[ps->team].aWeapons[SlotNum][Item & 0x1f].c_str();
 };
 
 u8 		game_sv_Deathmatch::GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
@@ -698,6 +694,30 @@ void	game_sv_Deathmatch::LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* p
 	};
 };
 
+void	game_sv_Deathmatch::LoadDefItemsForTeam	(char* caSection, WPN_SLOT_NAMES* pDefItems)
+{
+	string256			ItemName;
+	string4096			DefItems;
+
+	// Поле strSectionName должно содержать имя секции
+	R_ASSERT(xr_strcmp(caSection,""));
+
+	pDefItems->clear();
+
+	// Имя поля
+	if (!pSettings->line_exist(caSection, "default_items")) return;
+
+	// Читаем данные этого поля
+	std::strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
+	u32 count	= _GetItemCount(DefItems);
+	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+	for (u32 i = 0; i < count; ++i)
+	{
+		_GetItem(DefItems, i, ItemName);
+		pDefItems->push_back(ItemName);
+	};
+};
+
 void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 {
 	if (!E) return;
@@ -714,15 +734,15 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 //		!SkinsTeamSectStorage[Team].Skins.empty())
 	if (!TeamList.empty()	&&
 		TeamList.size() > Team	&&
-		!TeamList[Team].TeamSkins.empty())
+		!TeamList[Team].aSkins.empty())
 	{
 		//загружено ли достаточно скинов для этой комманды
-		if (TeamList[Team].TeamSkins.size() > ID)
+		if (TeamList[Team].aSkins.size() > ID)
 		{
-			std::strcat(SkinName, TeamList[Team].TeamSkins[ID].c_str());
+			std::strcat(SkinName, TeamList[Team].aSkins[ID].c_str());
 		}
 		else
-			std::strcat(SkinName, TeamList[Team].TeamSkins[0].c_str());
+			std::strcat(SkinName, TeamList[Team].aSkins[0].c_str());
 	}
 	else
 	{
@@ -828,10 +848,11 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 {
 	TeamStruct	NewTeam;
 
-	std::strcpy(NewTeam.Team_Section, caSection);
+	std::strcpy(NewTeam.caSection, caSection);
 
-	LoadWeaponsForTeam	(caSection, &NewTeam.TeamsWeapons);
-	LoadSkinsForTeam	(caSection, &NewTeam.TeamSkins);
+	LoadWeaponsForTeam	(caSection, &NewTeam.aWeapons);
+	LoadSkinsForTeam	(caSection, &NewTeam.aSkins);
+	LoadDefItemsForTeam	(caSection, &NewTeam.aDefaultItems);	
 
 	TeamList.push_back(NewTeam);
 };
