@@ -22,11 +22,11 @@ CAStar::CAStar(u32 dwMaxNodes)
 	m_tpIndexes					= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory					(m_tpIndexes,S2);
 	Msg							("* AI path-finding structures: %d K",(S1 + S2)/(1024));
-	m_tpMapPath					= new CAStarSearch<CAIMapShortestPathNode,SAIMapData>		(dwMaxNodes);
-	m_tpLCDPath					= new CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>			(dwMaxNodes);
-	m_tpEnemyPath				= new CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>			(dwMaxNodes);
-	m_tpEnemyPositionPath		= new CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF> (dwMaxNodes);
-	m_tpGraphPath				= new CAStarSearch<CAIGraphShortestPathNode,SAIMapData>     (dwMaxNodes);
+	m_tpMapPath					= new CAStarSearch<CAIMapShortestPathNode,SAIMapData>		(min(dwMaxNodes,Level().AI.Header().count));
+	m_tpLCDPath					= new CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>			(min(dwMaxNodes,Level().AI.Header().count));
+	m_tpEnemyPath				= new CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>			(min(dwMaxNodes,Level().AI.Header().count));
+	m_tpEnemyPositionPath		= new CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF> (min(dwMaxNodes,Level().AI.Header().count));
+	m_tpGraphPath				= new CAStarSearch<CAIGraphShortestPathNode,SAIMapData>     (min(dwMaxNodes,Level().AI.GraphHeader().dwVertexCount));
 }
 
 CAStar::~CAStar()
