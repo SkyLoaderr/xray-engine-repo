@@ -199,11 +199,11 @@ function action_follow:execute ()
        if vdist > 3 then 
           self.state = 0
        else
-          if leader ~= nil and leader:is_talking () == true then
-             printf ("LEADER IS TALKING !!!")
+          if xr_meet.is_meet (leader) == true then
+             printf ("LEADER IN MEET STATE")
              state_mgr.set_state (self.object, self.st.state_if_leader_in_meet, nil, nil, db.actor)
           else   
-             printf ("LEADER IS NOT TALKING !!!")
+             printf ("LEADER NOT IN MEET STATE")
              state_mgr.set_state (self.object, "idle")
           end  
        end   
