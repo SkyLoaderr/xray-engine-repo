@@ -35,4 +35,6 @@ void xrCore::_initialize	(const char* _ApplicationName)
 
 	Debug._initialize		();
 	Memory._initialize		();
+
+	R_ASSERT				(Memory.mem_fill);
 }

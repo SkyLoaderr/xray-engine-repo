@@ -101,6 +101,25 @@ void xrDebug::error		(HRESULT hr, const char* expr, const char *file, int line)
 	backend		(reason,file,line);
 }
 
+void xrDebug::fail		(const char *e1, const char *file, int line)
+{
+	string1024	reason;
+	sprintf		(reason,"*** Assertion failed ***\nExpression: %s\n",e1);
+	backend		(reason,file,line);
+}
+void xrDebug::fail		(const char *e1, const char *e2, const char *file, int line)
+{
+	string1024	reason;
+	sprintf		(reason,"*** Assertion failed ***\nExpression: %s\n%s",e1,e2);
+	backend		(reason,file,line);
+}
+void xrDebug::fail		(const char *e1, const char *e2, const char *e3, const char *file, int line)
+{
+	string1024	reason;
+	sprintf		(reason,"*** Assertion failed ***\nExpression: %s\n%s\n%s",e1,e2,e3);
+	backend		(reason,file,line);
+}
+
 void __cdecl xrDebug::fatal(const char* F,...)
 {
 	string1024	buffer;
