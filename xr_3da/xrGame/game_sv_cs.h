@@ -15,6 +15,7 @@ public:
 	virtual		void				OnTeamScore				(u32 team);								// команда выиграла
 	virtual		void				OnTeamsInDraw			();										// ничья
 	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target);
+	virtual		BOOL				OnTargetDetouched		(u32 id_who, u32 eid_target);			// TRUE=allow ownership, FALSE=denied
 
 	virtual		void				OnPlayerReady			(u32 id_who);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);

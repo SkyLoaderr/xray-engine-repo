@@ -16,6 +16,8 @@ BOOL CTargetCSBase::net_Spawn			(LPVOID DC)
 		xrSE_Target_CSBase* T		= (xrSE_Target_CSBase*)DC;
 		radius	= T->radius;
 		team	= T->s_team;
+		setVisible					(true);
+		setEnabled					(true);
 	}
 
 	return res;
