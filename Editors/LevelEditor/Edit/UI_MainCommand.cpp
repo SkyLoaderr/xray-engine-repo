@@ -580,6 +580,12 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_UPDATE_TOOLBAR:
     	fraLeftBar->UpdateBar();
     	break;
+    case COMMAND_TOGGLE_SAFE_RECT:
+    	psDeviceFlags.set(rsDrawSafeRect,!psDeviceFlags.is(rsDrawSafeRect));
+    	break;
+    case COMMAND_TOGGLE_GRID:
+    	psDeviceFlags.set(rsDrawGrid,!psDeviceFlags.is(rsDrawGrid));
+    	break;
 	case COMMAND_UPDATE_GRID:
     	DU::UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);
 	    OutGridSize();
@@ -632,6 +638,8 @@ void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 		else if (Key=='2')		Command(COMMAND_CHANGE_TARGET, etPS);
         else if (Key=='3')		Command(COMMAND_CHANGE_TARGET, etShape);
 		else if (Key=='R')		Command(COMMAND_LOAD_FIRSTRECENT);
+        else if (Key=='G')   	Command(COMMAND_TOGGLE_GRID);
+        else if (Key=='F')		Command(COMMAND_TOGGLE_SAFE_RECT);
     }else{
         if (Shift.Contains(ssAlt)){
         	if (Key=='F')   	Command(COMMAND_FILE_MENU);
@@ -689,6 +697,8 @@ void TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
         }
         else if (Key=='O')   			Command(COMMAND_LOAD);
         else if (Key=='N')   			Command(COMMAND_CLEAR);
+        else if (Key=='G')   			Command(COMMAND_TOGGLE_GRID);
+        else if (Key=='F')				Command(COMMAND_TOGGLE_SAFE_RECT);
     }
     if ((Key==VK_OEM_3)||(Key==VK_SHIFT))Command(COMMAND_RENDER_FOCUS);
 }

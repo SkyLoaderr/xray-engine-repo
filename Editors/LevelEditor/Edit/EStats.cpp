@@ -25,7 +25,6 @@ CStats::~CStats()
 
 }
 
-#define QS if(psDeviceFlags&rsStatistic)
 void CStats::Show(CGameFont* font)
 {
 	// Stop timers
@@ -67,7 +66,7 @@ void CStats::Show(CGameFont* font)
 	}
 
 	// Show them
-	if (psDeviceFlags & rsStatistic)
+	if (psDeviceFlags.is(rsStatistic))
 	{
 	    CGameFont& 	F = *font;
 		F.SetColor	(0xFFFFFFFF	);

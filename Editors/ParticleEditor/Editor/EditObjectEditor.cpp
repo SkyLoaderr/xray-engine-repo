@@ -91,7 +91,7 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
                 }
             }
         }else{
-            if(psDeviceFlags&rsEdgedFaces&&(1==priority)&&(false==strictB2F))
+            if(psDeviceFlags.is(rsEdgedFaces)&&(1==priority)&&(false==strictB2F))
                 RenderEdge(parent);
 
             for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){

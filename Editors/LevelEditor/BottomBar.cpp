@@ -23,27 +23,26 @@ __fastcall TfraBottomBar::TfraBottomBar(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
-#define SET_FLAG(F,V){if (V) psDeviceFlags|=(F); else psDeviceFlags&=~(F);}
-
 void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
 {
     TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
     if (mi){
         mi->Checked = !mi->Checked;
-        if (mi==miDrawGrid)     			SET_FLAG(rsDrawGrid,mi->Checked)
+        if (mi==miDrawGrid)     			psDeviceFlags.set(rsDrawGrid,mi->Checked);
         else if (mi==miRenderFillPoint)		Device.dwFillMode 	= D3DFILL_POINT;
         else if (mi==miRenderFillWireframe)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
         else if (mi==miRenderFillSolid)		Device.dwFillMode 	= D3DFILL_SOLID;
         else if (mi==miRenderShadeFlat)		Device.dwShadeMode	= D3DSHADE_FLAT;
         else if (mi==miRenderShadeGouraud)	Device.dwShadeMode	= D3DSHADE_GOURAUD;
-        else if (mi==miRenderWithTextures)	SET_FLAG(rsRenderTextures,mi->Checked)
-        else if (mi==miLightScene)  		SET_FLAG(rsLighting,mi->Checked)
-        else if (mi==miRenderLinearFilter)	SET_FLAG(rsFilterLinear,mi->Checked)
-        else if (mi==miRenderEdgedFaces)	SET_FLAG(rsEdgedFaces,mi->Checked)
-        else if (mi==miFog)					SET_FLAG(rsFog,mi->Checked)
+        else if (mi==miRenderWithTextures)	psDeviceFlags.set(rsRenderTextures,mi->Checked);
+        else if (mi==miLightScene)  		psDeviceFlags.set(rsLighting,mi->Checked);
+        else if (mi==miRenderLinearFilter)	psDeviceFlags.set(rsFilterLinear,mi->Checked);
+        else if (mi==miRenderEdgedFaces)	psDeviceFlags.set(rsEdgedFaces,mi->Checked);
+        else if (mi==miFog)					psDeviceFlags.set(rsFog,mi->Checked);
         else if (mi==miRenderHWTransform){	HW.Caps.bForceGPU_SW = !mi->Checked; UI.Resize(); }
-        else if (mi==miRealTime)			SET_FLAG(rsRenderRealTime,mi->Checked)
-        else if (mi==miDODrawObjects)		SET_FLAG(rsDetails,mi->Checked)
+        else if (mi==miRealTime)			psDeviceFlags.set(rsRenderRealTime,mi->Checked);
+        else if (mi==miDODrawObjects)		psDeviceFlags.set(rsDetails,mi->Checked);
+        else if (mi==miDrawSafeRect)		psDeviceFlags.set(rsDrawSafeRect,mi->Checked);
     }
     UI.RedrawScene();
     UI.Command(COMMAND_UPDATE_TOOLBAR);
@@ -67,15 +66,6 @@ void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
     else if (miRenderShadeGouraud->Checked)	Device.dwShadeMode=D3DSHADE_GOURAUD;
     // hw transform
     HW.Caps.bForceGPU_SW 					= !miRenderHWTransform->Checked;
-    // other render
-    SET_FLAG(rsRenderTextures,	miRenderWithTextures->Checked);
-    SET_FLAG(rsLighting,		miLightScene->Checked);
-    SET_FLAG(rsFilterLinear,	miRenderLinearFilter->Checked);
-    SET_FLAG(rsEdgedFaces,		miRenderEdgedFaces->Checked);
-    SET_FLAG(rsRenderRealTime,	miRealTime->Checked);
-    SET_FLAG(rsFog,				miFog->Checked);
-    SET_FLAG(rsDrawGrid,		miDrawGrid->Checked);
-    SET_FLAG(rsDetails,			miDODrawObjects->Checked);
 
     // quality
     if 		(N200->Checked)	QualityClick(N200);
@@ -104,8 +94,7 @@ void __fastcall TfraBottomBar::ebStopClick(TObject *Sender)
 
 void __fastcall TfraBottomBar::ebStatClick(TObject *Sender)
 {
-	if (ebStat->Down) 	psDeviceFlags |= rsStatistic;
-    else				psDeviceFlags &=~rsStatistic;
+	psDeviceFlags.set(rsStatistic,!psDeviceFlags.is(rsStatistic));
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -119,4 +108,19 @@ void __fastcall TfraBottomBar::ebOptionsMouseDown(TObject *Sender,
     TExtBtn* btn = dynamic_cast<TExtBtn*>(Sender); VERIFY(btn); btn->MouseManualUp();
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfraBottomBar::pmOptionsPopup(TObject *Sender)
+{
+    miRenderWithTextures->Checked	= psDeviceFlags.is(rsRenderTextures);
+    miLightScene->Checked			= psDeviceFlags.is(rsLighting);
+    miRenderLinearFilter->Checked	= psDeviceFlags.is(rsFilterLinear);
+    miRenderEdgedFaces->Checked		= psDeviceFlags.is(rsEdgedFaces);
+    miRealTime->Checked				= psDeviceFlags.is(rsRenderRealTime);
+    miFog->Checked					= psDeviceFlags.is(rsFog);
+    miDrawGrid->Checked				= psDeviceFlags.is(rsDrawGrid);
+    miDrawSafeRect->Checked			= psDeviceFlags.is(rsDrawSafeRect);
+    miDODrawObjects->Checked		= psDeviceFlags.is(rsDetails);
+}
+//---------------------------------------------------------------------------
+
 

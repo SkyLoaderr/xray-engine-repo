@@ -44,7 +44,7 @@ void __cdecl CRenderDevice::Fatal(const char* F,...)
 //---------------------------------------------------------------------------
 CRenderDevice::CRenderDevice()
 {
-	psDeviceFlags 	= rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
+	psDeviceFlags.set(rsStatistic|rsFilterLinear|rsFog|rsDrawGrid);
 // dynamic buffer size
 	rsDVB_Size		= 2048;
 	rsDIB_Size		= 2048;

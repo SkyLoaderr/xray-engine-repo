@@ -21,7 +21,7 @@ CGroupObject::CGroupObject(LPVOID data, LPCSTR name):CCustomObject(data,name)
 void CGroupObject::Construct(LPVOID data)
 {
 	ClassID		= OBJCLASS_GROUP;
-    m_Flags		= 0;
+    m_Flags.zero();
     m_BBox.invalidate();
 }
 
@@ -303,22 +303,12 @@ bool CGroupObject::Load(CStream& F)
 	CCustomObject::Load(F);
 
 	// objects
-    CStream* OBJ = F.OpenChunk(GROUPOBJ_CHUNK_OBJECT_LIST);
-    if (OBJ){
-        CStream* O   = OBJ->OpenChunk(0);
-        for (int count=1; O; count++) {
-            CCustomObject* obj = Scene.ReadObject(O);
-            if (obj) AppendObject(obj);
-            O->Close();
-            O = OBJ->OpenChunk(count);
-        }
-        OBJ->Close();
-    }
+    Scene.ReadObjects(F,GROUPOBJ_CHUNK_OBJECT_LIST,AppendObject);
 
     F.ReadChunk(GROUPOBJ_CHUNK_FLAGS,&m_Flags);
 
 	// update bounding volume    
-	UpdateBBoxAndPivot(m_Flags&flInitFromFirstObject);
+	UpdateBBoxAndPivot(m_Flags.is(flInitFromFirstObject));
 
     return true;
 }
@@ -332,14 +322,7 @@ void CGroupObject::Save(CFS_Base& F)
 	F.close_chunk	();
 
     // objects
-    F.open_chunk	(GROUPOBJ_CHUNK_OBJECT_LIST);
-    int count = 0;
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        F.open_chunk(count); count++;
-        Scene.SaveObject(*it,&F);
-        F.close_chunk();
-    }
-	F.close_chunk	();
+    Scene.SaveObjects(m_Objects,GROUPOBJ_CHUNK_OBJECT_LIST,F);
 
     F.write_chunk	(GROUPOBJ_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
 }

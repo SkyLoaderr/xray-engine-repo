@@ -124,7 +124,6 @@ public:
 	virtual bool 	GetBox			(Fbox& box){return false;}
 	virtual bool 	GetUTBox		(Fbox& box){return false;}
 	virtual void 	OnSceneUpdate	(){;}
-	virtual void 	OnDestroy		(){;}
     virtual void 	OnObjectRemove	(const CCustomObject* object){;}
 
 	virtual void 	OnDeviceCreate	(){;}

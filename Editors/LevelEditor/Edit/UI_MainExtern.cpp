@@ -126,14 +126,14 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 //----------------------------------------------------
 void TUI::Redraw(){
 	VERIFY(m_bReady);
-    if (!(psDeviceFlags&rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
-	if (m_Flags.is(flResize)){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE); }
+    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);                                                                      
+	if (m_Flags.is(flResize)) Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // fog
 	st_Environment& E	= Scene.m_LevelOp.m_Envs[Scene.m_LevelOp.m_CurEnv];
-	float fog_start	= (psDeviceFlags&rsFog)?(1.0f - E.m_Fogness)* 0.85f * E.m_ViewDist:ZFar();
-	float fog_end	= (psDeviceFlags&rsFog)?0.91f * E.m_ViewDist:ZFar();
+	float fog_start	= psDeviceFlags.is(rsFog)?(1.0f - E.m_Fogness)* 0.85f * E.m_ViewDist:ZFar();
+	float fog_end	= psDeviceFlags.is(rsFog)?0.91f * E.m_ViewDist:ZFar();
 	Device.SetRS( D3DRS_FOGCOLOR,	E.m_FogColor.get());
 	Device.SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
 	if (HW.Caps.bTableFog)	{
@@ -147,7 +147,7 @@ void TUI::Redraw(){
 	Device.SetRS( D3DRS_FOGEND,		*(DWORD *)(&fog_end)	);
     // filter
     for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
-        if( psDeviceFlags&rsFilterLinear){
+        if( psDeviceFlags.is(rsFilterLinear)){
             Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
             Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);
             Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_LINEAR);
@@ -158,8 +158,8 @@ void TUI::Redraw(){
         }
     }
 	// ligthing
-    if (psDeviceFlags&rsLighting) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
-    else                			Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
+    if (psDeviceFlags.is(rsLighting)) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
+    else                				Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
     try{
     	Device.Statistic.RenderDUMP_RT.Begin();
@@ -178,7 +178,7 @@ void TUI::Redraw(){
         }
 
     // draw grid
-    	if (psDeviceFlags&rsDrawGrid){
+    	if (psDeviceFlags.is(rsDrawGrid)){
 	        DU::DrawGrid();
     	    DU::DrawPivot(m_Pivot);
         }
@@ -187,6 +187,10 @@ void TUI::Redraw(){
         case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
         case esEditLightAnim:
         case esEditScene:		Scene.Render(Device.m_Camera.GetTransform()); break;
+        }
+	// draw safe rect
+        if (psDeviceFlags.is(rsDrawSafeRect)){
+        	DU::DrawSafeRect();
         }
 
     // draw selection rect

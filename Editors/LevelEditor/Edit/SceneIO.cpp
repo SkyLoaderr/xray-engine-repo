@@ -189,7 +189,7 @@ void EScene::Save(char *_FileName, bool bUndo){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
             F.open_chunk(count); count++;
-            SaveObject(*_F,&F);
+            SaveObject(*_F,F);
             F.close_chunk();
         }
 //        int sz1 = F.tell();
@@ -208,31 +208,70 @@ void EScene::Save(char *_FileName, bool bUndo){
 }
 //--------------------------------------------------------------------------------------------------
 
-void EScene::SaveObject( CCustomObject* O, CFS_Base* F ){
-	R_ASSERT(F);
-    F->open_chunk	(CHUNK_OBJECT_CLASS);
-    F->Wdword		(O->ClassID);
-    F->close_chunk	();
-    F->open_chunk	(CHUNK_OBJECT_BODY);
-    O->Save			(*F);
-    F->close_chunk	();
+void EScene::SaveObject( CCustomObject* O, CFS_Base& F )
+{
+    F.open_chunk	(CHUNK_OBJECT_CLASS);
+    F.Wdword		(O->ClassID);
+    F.close_chunk	();
+    F.open_chunk	(CHUNK_OBJECT_BODY);
+    O->Save			(F);
+    F.close_chunk	();
 }
 //--------------------------------------------------------------------------------------------------
 
-CCustomObject* EScene::ReadObject( CStream* F ){
-	CCustomObject *currentobject = 0;
-    DWORD clsid=0;
-    R_ASSERT(F->FindChunk(CHUNK_OBJECT_CLASS));
-    clsid = F->Rdword();
-	currentobject  = NewObjectFromClassID(clsid,0,0);
+void EScene::SaveObjects( ObjectList& lst, u32 chunk_id, CFS_Base& F )
+{
+    F.open_chunk	(chunk_id);
+    int count 		= 0;
+    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+        F.open_chunk(count); count++;
+        SaveObject	(*_F,F);
+        F.close_chunk();
+    }
+	F.close_chunk	();
+}
+//--------------------------------------------------------------------------------------------------
 
-    CStream* S = F->OpenChunk(CHUNK_OBJECT_BODY);
+bool EScene::ReadObject(CStream& F, CCustomObject*& O){
+    DWORD clsid=0;
+    R_ASSERT(F.FindChunk(CHUNK_OBJECT_CLASS));
+    clsid = F.Rdword();
+	O = NewObjectFromClassID(clsid,0,0);
+
+    CStream* S = F.OpenChunk(CHUNK_OBJECT_BODY);
     R_ASSERT(S);
-    bool bRes = currentobject->Load(*S);
+    bool bRes = O->Load(*S);
     S->Close();
 
-	if (!bRes) _DELETE(currentobject);
-	return currentobject;
+	if (!bRes) _DELETE(O);
+	return bRes;
+}
+//----------------------------------------------------
+
+bool EScene::ReadObjects(CStream& F, u32 chunk_id, TAppendObject on_append)
+{
+	R_ASSERT(on_append);
+	bool bRes = true;
+    CStream* OBJ 	= F.OpenChunk(chunk_id);
+    if (OBJ){
+        CStream* O   = OBJ->OpenChunk(0);
+        for (int count=1; O; count++) {
+            CCustomObject* obj=0;
+            if (ReadObject(*O, obj)) 	on_append(obj);
+            else						bRes = false;
+            O->Close();
+            O = OBJ->OpenChunk(count);
+        }
+        OBJ->Close();
+    }
+    return bRes;
+}
+//----------------------------------------------------
+
+void EScene::OnLoadAppendObject(CCustomObject* O)
+{
+	AddObject		(O,false);
+	UI.ProgressInc	();
 }
 //----------------------------------------------------
 
@@ -280,26 +319,13 @@ bool EScene::Load(char *_FileName){
 			Device.m_Camera.SetStyle(Device.m_Camera.GetStyle());
         }
 
-        // Objects
         DWORD obj_cnt 	= 0;
-	    if (F->FindChunk	(CHUNK_OBJECT_COUNT)){
-	    	obj_cnt		= F->Rdword();
-        }
+        if (F->FindChunk(CHUNK_OBJECT_COUNT)) 
+        	obj_cnt = F->Rdword();
 
-        CStream* OBJ = F->OpenChunk(CHUNK_OBJECT_LIST);
-	    UI.ProgressStart(obj_cnt,"Loading scene...");
-        if (OBJ){
-	        CStream* O   = OBJ->OpenChunk(0);
-    	    for (int count=1; O; count++) {
-			    UI.ProgressInc();
-        	    CCustomObject* obj = ReadObject(O);
-                if (obj) AddObject(obj, false);
-            	O->Close();
-	            O = OBJ->OpenChunk(count);
-    	    }
-	        OBJ->Close();
-        }
-	    UI.ProgressEnd();
+        UI.ProgressStart(obj_cnt,"Loading scene...");
+        ReadObjects		(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject);
+        UI.ProgressEnd	();
 
         // snap list
         if (F->FindChunk(CHUNK_SNAPOBJECTS)){
@@ -368,8 +394,18 @@ void EScene::SaveSelection( int classfilter, char *filename ){
 }
 
 //----------------------------------------------------
+void EScene::OnLoadSelectionAppendObject(CCustomObject* obj)
+{
+    string256 buf;
+    GenObjectName	(obj->ClassID,buf,obj->Name);
+    obj->Name		= buf;
+    AddObject		(obj, false);
+    obj->Select		(true);
+}
+//----------------------------------------------------
 
-bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
+bool EScene::LoadSelection( const char *_FileName )
+{
     DWORD version = 0;
 
 	VERIFY( _FileName );
@@ -378,6 +414,8 @@ bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
     bool res = true;
 
     if (Engine.FS.Exist(_FileName)){
+		SelectObjects( false );
+
         CFileStream F(_FileName);
 
         // Version
@@ -389,47 +427,15 @@ bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
         }
 
         // Objects
-        CStream* OBJ = F.OpenChunk(CHUNK_OBJECT_LIST);
-        if (OBJ){
-            CStream* O   = OBJ->OpenChunk(0);
-            for (int count=1; O; count++) {
-                CCustomObject* obj = ReadObject(O);
-                O->Close();
-                O = OBJ->OpenChunk(count);
-                if (obj){
-                	lst.push_back(obj);
-                }else{
-                    ELog.DlgMsg(mtError,"EScene. Failed to load selection.");
-                    res = false;
-                    break;
-                }
-            }
-            OBJ->Close();
+        if (!ReadObjects(F,CHUNK_OBJECT_LIST,OnLoadSelectionAppendObject)){
+            ELog.DlgMsg(mtError,"EScene. Failed to load selection.");
+            res = false;
         }
-    }
-
-    return res;
-}
-//----------------------------------------------------
-
-bool EScene::LoadSelection( const char *_FileName ){
-    map<int,int> group_subst;
-
-    ObjectList lst;
-    if (LoadSelection(_FileName,lst)){
-        SelectObjects( false );
-    	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-        	CCustomObject* obj = *it;
-            char buf[MAX_OBJ_NAME];
-    		GenObjectName(obj->ClassID,buf,obj->Name);
-            obj->Name=buf;
-			AddObject(obj, false);
-			obj->Select(true);
-        }
+        
+        // Synchronize
 		SynchronizeObjects();
-        return true;
     }
-	return false;
+	return res;
 }
 //----------------------------------------------------
 

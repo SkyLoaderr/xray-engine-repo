@@ -92,6 +92,7 @@ private:	// User declarations
     void __fastcall FillEntity		();
     void __fastcall FillGameObject	();
     void __fastcall FillGameMaterial();
+    void __fastcall FillSceneObject	();
 
     void __fastcall AppendItem		(LPCSTR name);
 public:		// User declarations
@@ -106,6 +107,7 @@ public:		// User declarations
         smLAnim,
         smGameObject,
         smGameMaterial,
+        smSceneObject,
         smMaxMode
     };
 protected:

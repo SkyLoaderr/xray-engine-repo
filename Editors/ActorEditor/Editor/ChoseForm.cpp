@@ -20,6 +20,10 @@
 #include "ui_main.h"
 #include "PSLibrary.h"
 #include "GameMtlLib.h"
+
+#ifdef _LEVEL_EDITOR
+ #include "Scene.h"
+#endif
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElXPThemedControl"
@@ -62,6 +66,7 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
     case smLAnim: 		form->FillLAnim();		break;
     case smGameObject: 	form->FillGameObject();	break;
     case smGameMaterial:form->FillGameMaterial();break;
+    case smSceneObject:	form->FillSceneObject();break;
     default: 
     	THROW2("ChooseForm: Unknown Item Type");
     }
@@ -191,7 +196,22 @@ void __fastcall TfrmChoseItem::FillGameMaterial()
     form->Caption					= "Select Game Material";
 	GameMtlIt _F 					= GMLib.FirstMaterial();
 	GameMtlIt _E 					= GMLib.LastMaterial();
-	for ( ;_F!=_E;_F++)				AppendItem((*_F)->name);
+	for ( ;_F!=_E;_F++)				AppendItem((*_F)->name); 
+}
+//---------------------------------------------------------------------------
+void __fastcall TfrmChoseItem::FillSceneObject()
+{
+#ifdef _LEVEL_EDITOR
+    form->Caption					= "Select Scene Object";
+    ObjectPairIt it					= Scene.FirstClass();
+    ObjectPairIt _E					= Scene.LastClass();
+    for(; it!=_E; it++){
+    	LPCSTR pref					= GetClassNameByClassID(it->first);
+    	ObjectList& lst = it->second;
+    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+        	AppendItem				(PHelper.PrepareKey(pref,(*_F)->Name));
+	}
+#endif
 }
 //---------------------------------------------------------------------------
 

@@ -41,3 +41,12 @@ void __fastcall TfraSpawnPoint::ebCurObjClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraSpawnPoint::ExtBtn3Click(TObject *Sender)
+{
+	LPCSTR dest;
+	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smSceneObject, dest)){
+    	dest = 0;
+    }
+}
+//---------------------------------------------------------------------------
+

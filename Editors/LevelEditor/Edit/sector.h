@@ -52,6 +52,7 @@ class CSector : public CCustomObject {
 
     // only for build
     int				sector_num;
+	void 			OnDestroy	();
 public:
 					CSector		(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);
@@ -65,7 +66,6 @@ public:
 	virtual bool 	GetBox		(Fbox& box);
 	virtual void 	Move		( Fvector& amount ); // need for Shift Level
 	virtual void 	OnSceneUpdate();
-	virtual void 	OnDestroy	();
     void			UpdateVolume();
 
     // file system function

@@ -131,7 +131,7 @@ public:
     bool 			IsModified		();
 
     void __fastcall Idle			();
-    void 			Resize				(bool bForced=false){   m_Flags.set(flResize,TRUE); if (bForced) Idle(); }
+    void 			Resize				(bool bForced=false){   m_Flags.set(flResize|flRedraw,TRUE); if (bForced) Idle(); }
     // add, remove, changing objects/scene
     void 			UpdateScene			(bool bForced=false){	m_Flags.set(flUpdateScene,TRUE); if (bForced) Idle();}
     // only redraw scene

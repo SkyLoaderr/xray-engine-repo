@@ -497,15 +497,12 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
     u32 pitch 		= src_w*samples;
 
     // save render params
-    u32 old_flag 	= 	psDeviceFlags;
+    Flags32 old_flag= 	psDeviceFlags;
     // set render params
 
     dwClearColor 	= 	0x0000000;
-	psDeviceFlags 	&=~	rsStatistic;
-    psDeviceFlags 	&=~	rsDrawGrid;
-    psDeviceFlags 	|= 	rsFilterLinear;
-    psDeviceFlags 	&=~	rsLighting;
-    psDeviceFlags 	&=~	rsFog;
+	psDeviceFlags.set(rsStatistic|rsDrawGrid|rsLighting|rsFog,FALSE);
+	psDeviceFlags.set(rsFilterLinear,TRUE);
 
     SetCamera(0,C,S.y,R,D);
 
@@ -553,10 +550,9 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
 {
 	BOOL bResult = TRUE;
     // save render params
-    u32 old_flag 	= 	psDeviceFlags;
+    Flags32 old_flag= 	psDeviceFlags;
     // set render params
-	psDeviceFlags 	&=~	rsStatistic;
-    psDeviceFlags 	&=~	rsDrawGrid;
+    psDeviceFlags.set(rsStatistic|rsDrawGrid,FALSE);
 
 	U32Vec pixels;
     u32 w=256,h=256;

@@ -59,6 +59,7 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall D3DWindowMouseMove(TObject *Sender, TShiftState Shift,
           int X, int Y);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
     void __fastcall IdleHandler(TObject *Sender, bool &Done);
 

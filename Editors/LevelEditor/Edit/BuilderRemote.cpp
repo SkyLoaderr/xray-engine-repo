@@ -320,13 +320,15 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
 //------------------------------------------------------------------------------
 // light build functions
 //------------------------------------------------------------------------------
-int	SceneBuilder::BuildLightControl(CLight* e)
+int	SceneBuilder::BuildLightControl(LPCSTR name)
 {
-	if (l_light_control.empty()){
-    	l_light_control.push_back(sb_light_control());
-    	sb_light_control& b = l_light_control.back();
-        b.name[0] = 0;
+	for (u32 k=0; k<l_light_control.size(); k++){
+    	sb_light_control& b = l_light_control[k];
+    	if (0==strcmp(b.name,name)) return k;
     }
+    l_light_control.push_back(sb_light_control());
+    sb_light_control& b = l_light_control.back();
+    strcpy(b.name,name);
 	return l_light_control.size()-1;
 }
 
@@ -361,10 +363,11 @@ void SceneBuilder::BuildHemiLights()
         h_data.dest 	= &dest;
         h_data.T.light	= RL;
         xrHemisphereBuild(P.area_quality,FALSE,0.5f,P.area_energy_summary,hemi_callback,&h_data);
+        int control_ID	= BuildLightControl(HEMILIGHTS_CONTROL_NAME);
         for (BLIt it=dest.begin(); it!=dest.end(); it++){
             l_light_static.push_back(b_light_static());
             b_light_static& sl	= l_light_static.back();
-            sl.controller_ID 	= 0; //?
+            sl.controller_ID 	= control_ID;
             sl.data			    = it->light;
             sl.data.mul			(it->energy);
         }
@@ -474,12 +477,8 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     b_light	L;
     L.data			= e->m_D3D; 
     L.data.mul		(e->m_Brightness);
-    L.controller_ID	= BuildLightControl(e);
+    L.controller_ID	= BuildLightControl("all"); // e->controller_name?e->controller_name:"all"
     
-    if (e->m_Flags.is(CLight::flProcedural)){
-//	    controllerID= ?;
-    }
-
 	svector<WORD,16>* lpSectors;
     if (e->m_Flags.is(CLight::flAffectDynamic)){
 		svector<WORD,16> sectors;

@@ -89,6 +89,7 @@ __published:	// IDE-managed Components
 	TPanel *paCamera;
 	TMenuItem *SpawnPoint1;
 	TMenuItem *miSpawnPointDrawText;
+	TMenuItem *miDrawSafeRect;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);
@@ -97,6 +98,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebStatClick(TObject *Sender);
 	void __fastcall ebOptionsMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+	void __fastcall pmOptionsPopup(TObject *Sender);
 private:	// User declarations
 public:
 	float fStatusProgress;

@@ -63,6 +63,7 @@ DWORD m_ColorGrid	= 0xff909090;
 DWORD m_ColorGridTh = 0xffb4b4b4;
 DWORD m_SelectionRect=D3DCOLOR_RGBA(127,255,127,64);
 
+DWORD m_ColorSafeRect = 0xffB040B0;
 
 void UpdateGrid(int number_of_cell, float square_size, int subdiv){
 	m_GridPoints.clear();
@@ -665,7 +666,30 @@ void DrawObjectAxis(const Fmatrix& T){
     Device.pSystemFont->Out(d.x-1,d.y-1,"z");
 }
 
-void DrawGrid(){
+void DrawSafeRect()
+{
+	VERIFY( Device.bReady );
+	// fill VB
+    Irect rect;
+    if ((0.75f*float(Device.dwWidth))>float(Device.dwHeight)) 
+    	rect.set(Device.m_RenderWidth_2-1.33f*float(Device.m_RenderHeight_2),0,Device.m_RenderWidth_2+1.33f*float(Device.m_RenderHeight_2),Device.dwHeight-1);
+    else										
+    	rect.set(0,Device.m_RenderHeight_2-0.75f*float(Device.m_RenderWidth_2),Device.dwWidth-1,Device.m_RenderHeight_2+0.75f*float(Device.m_RenderWidth_2));
+    DWORD vBase;
+	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(5,vs_TL->dwStride,vBase);
+    pv->set(rect.x1, rect.y1, m_ColorSafeRect,0.f,0.f); pv++;
+    pv->set(rect.x2, rect.y1, m_ColorSafeRect,0.f,0.f); pv++;
+    pv->set(rect.x2, rect.y2, m_ColorSafeRect,0.f,0.f); pv++;
+    pv->set(rect.x1, rect.y2, m_ColorSafeRect,0.f,0.f); pv++;
+    pv->set(rect.x1, rect.y1, m_ColorSafeRect,0.f,0.f); pv++;
+	Device.Streams.Vertex.Unlock(5,vs_TL->dwStride);
+	// Render it as triangle list
+	Device.SetShader(Device.m_SelectionShader);
+    Device.DP(D3DPT_LINESTRIP,vs_TL,vBase,4);
+}
+
+void DrawGrid()
+{
 	VERIFY( Device.bReady );
     DWORD vBase,iBase;
 	// fill VB

@@ -2,8 +2,8 @@
 // file: SceneClassList.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_SceneClassList_H_
-#define _INCDEF_SceneClassList_H_
+#ifndef SceneClassListH
+#define SceneClassListH
 //----------------------------------------------------
 
 class CEditableObject;

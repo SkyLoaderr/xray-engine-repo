@@ -1,8 +1,8 @@
 //----------------------------------------------------
 // file: Scene.h
 //----------------------------------------------------
-#ifndef _INCDEF_Scene_H_
-#define _INCDEF_Scene_H_
+#ifndef SceneH
+#define SceneH
 
 #include "SceneGraph.h"
 #include "Communicate.h"
@@ -130,16 +130,22 @@ protected:
         }
     };
     ERR				m_CompilerErrors;
+
+    void OnLoadAppendObject			(CCustomObject* O);
+    void OnLoadSelectionAppendObject(CCustomObject* O);
 public:
     bool m_Modified;
 
-	CCustomObject* ReadObject		(CStream*);
-	void SaveObject					(CCustomObject*,CFS_Base*);
+	typedef void (__closure *TAppendObject)(CCustomObject* object);
+
+	bool ReadObject					(CStream& F, CCustomObject*& O);
+	bool ReadObjects				(CStream& F, u32 chunk_id, TAppendObject on_append);
+	void SaveObject					(CCustomObject* O,CFS_Base& F);
+	void SaveObjects				(ObjectList& lst, u32 chunk_id, CFS_Base& F);
 public:
 	bool Load						(char *_FileName);
 	void Save						(char *_FileName, bool bUndo);
 	bool LoadSelection				(const char *_FileName);
-	bool LoadSelection				(const char *_FileName,ObjectList& lst);
 	void SaveSelection				(int classfilter, char *_FileName);
 	void Unload						();
 	void ClearObjects				(bool bDestroy);

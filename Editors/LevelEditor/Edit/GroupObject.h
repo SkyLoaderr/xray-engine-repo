@@ -1,8 +1,8 @@
 //----------------------------------------------------
 // file: GroupObject.h
 //----------------------------------------------------
-#ifndef _INCDEF_GroupObject_H_
-#define _INCDEF_GroupObject_H_
+#ifndef GroupObjectH
+#define GroupObjectH
 
 //----------------------------------------------------
 class CGroupObject: public CCustomObject{
@@ -15,7 +15,8 @@ class CGroupObject: public CCustomObject{
     enum{
     	flInitFromFirstObject
     };
-    u32				m_Flags;                                   
+    Flags32			m_Flags;                                   
+	void 			OnDestroy		();
 public:
 					CGroupObject	(LPVOID data, LPCSTR name);
 	void 			Construct		(LPVOID data);
@@ -27,7 +28,6 @@ public:
 
 	void			UpdateBBoxAndPivot(bool bInitFromFirstObject);
 	virtual bool 	GetBox			(Fbox& box);
-	virtual void 	OnDestroy		();
 
     virtual void 	NumSetPosition	(Fvector& pos);
 	virtual void 	NumSetRotation	(Fvector& rot);

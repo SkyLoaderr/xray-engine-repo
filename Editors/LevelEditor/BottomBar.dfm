@@ -201,10 +201,8 @@ object fraBottomBar: TfraBottomBar
         Width = 34
         Height = 15
         Align = alNone
-        AllowAllUp = True
         BevelShow = False
         CloseButton = False
-        GroupIndex = 1
         Caption = 'Stat'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -246,7 +244,6 @@ object fraBottomBar: TfraBottomBar
     RegistryRoot = prLocalMachine
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
-      'miDrawGrid.Checked'
       'miDrawPortalSimpleModel.Checked'
       'miDrawSectors.Checked'
       'N100.Checked'
@@ -261,15 +258,10 @@ object fraBottomBar: TfraBottomBar
       'miObjectLoopedAnimation.Checked'
       'miDrawSky.Checked'
       'miDrawObjectAnimPath.Checked'
-      'miFog.Checked'
-      'miLightScene.Checked'
-      'miRealTime.Checked'
-      'miRenderEdgedFaces.Checked'
       'miRenderFillPoint.Checked'
       'miRenderFillSolid.Checked'
       'miRenderFillWireframe.Checked'
       'miRenderHWTransform.Checked'
-      'miRenderLinearFilter.Checked'
       'miRenderShadeFlat.Checked'
       'miRenderShadeGouraud.Checked'
       'miRenderWithTextures.Checked'
@@ -291,6 +283,7 @@ object fraBottomBar: TfraBottomBar
     Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
+    OnPopup = pmOptionsPopup
     MarginStartColor = 10921638
     MarginEndColor = 2763306
     BKColor = 10528425
@@ -512,6 +505,11 @@ object fraBottomBar: TfraBottomBar
     object N4: TMenuItem
       Caption = '-'
       GroupIndex = 4
+    end
+    object miDrawSafeRect: TMenuItem
+      Caption = 'Draw Safe Rect'
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
     end
     object miDrawGrid: TMenuItem
       Caption = 'Draw Grid'

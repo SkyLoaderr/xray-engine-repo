@@ -20,12 +20,12 @@ public:
 	struct SSpawnData{
 		CLASS_ID		m_ClassID;
 		xrServerEntity*	m_Data;
-        CCustomObject*	m_Refs;
+        CCustomObject*	m_Object;
         SSpawnData	()
         {
 			m_ClassID	= 0;
 			m_Data		= 0;
-    	    m_Refs		= 0;
+    	    m_Object	= 0;
         }
         void		Create	(LPCSTR entity_ref);
         void		Destroy	();
@@ -37,8 +37,6 @@ public:
 		bool 		ExportGame(SExportStreams& F, LPCSTR name);
         
 		void		FillProp(LPCSTR pref, PropItemVec& values);
-
-		void 		OnObjectRemove(const CCustomObject* object);
 	};
 
 	SSpawnData    	m_SpawnData;
@@ -74,8 +72,6 @@ public:
 
     virtual void	OnDeviceCreate	();
     virtual void	OnDeviceDestroy	();
-
-	virtual void 	OnObjectRemove	(const CCustomObject* object);
 };
 
 #endif /*_INCDEF_Glow_H_*/

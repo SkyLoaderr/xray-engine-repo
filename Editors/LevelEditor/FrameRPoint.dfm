@@ -2,7 +2,7 @@ object fraSpawnPoint: TfraSpawnPoint
   Left = 0
   Top = 0
   Width = 123
-  Height = 277
+  Height = 179
   VertScrollBar.Visible = False
   Align = alClient
   Constraints.MaxWidth = 154
@@ -16,7 +16,7 @@ object fraSpawnPoint: TfraSpawnPoint
   ParentColor = False
   ParentFont = False
   TabOrder = 0
-  object paCommands: TPanel
+  object paCurrent: TPanel
     Left = 0
     Top = 0
     Width = 123
@@ -82,11 +82,97 @@ object fraSpawnPoint: TfraSpawnPoint
       OnClick = ebCurObjClick
     end
   end
+  object paCommands: TPanel
+    Left = 0
+    Top = 35
+    Width = 123
+    Height = 51
+    Align = alTop
+    Constraints.MaxWidth = 123
+    Constraints.MinWidth = 123
+    ParentColor = True
+    TabOrder = 1
+    object Label1: TLabel
+      Left = 1
+      Top = 1
+      Width = 121
+      Height = 13
+      Align = alTop
+      Alignment = taCenter
+      Caption = 'Commands'
+      Color = clGray
+      ParentColor = False
+      OnClick = ExpandClick
+    end
+    object ExtBtn1: TExtBtn
+      Left = 110
+      Top = 2
+      Width = 11
+      Height = 11
+      Align = alNone
+      CloseButton = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Glyph.Data = {
+        DE000000424DDE00000000000000360000002800000007000000070000000100
+        180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+        0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+        000000000000000000000000FFFFFF0000000000000000000000000000000000
+        00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+        0000}
+      ParentFont = False
+      OnClick = PaneMinClick
+    end
+    object ExtBtn3: TExtBtn
+      Left = 2
+      Top = 17
+      Width = 120
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Attach Object...'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      OnClick = ExtBtn3Click
+    end
+    object ExtBtn4: TExtBtn
+      Left = 2
+      Top = 32
+      Width = 120
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Detach Object...'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+  end
   object fsStorage: TFormStorage
     IniSection = 'FrameRPoint'
     Options = []
-    Version = 1
+    Version = 2
     StoredProps.Strings = (
+      'paCurrent.Tag'
+      'paCurrent.Height'
       'paCommands.Tag'
       'paCommands.Height')
     StoredValues = <>

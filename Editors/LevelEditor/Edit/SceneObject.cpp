@@ -248,7 +248,7 @@ void CSceneObject::OnFrame()
         m_OMParam.Update(Device.fTimeDelta);
         UpdateTransform(true);
 	}
-	if (psDeviceFlags & rsStatistic){
+	if (psDeviceFlags.is(rsStatistic)){
     	if (IsStatic()){
 		    Device.Statistic.dwLevelFaceCount 	+= GetFaceCount();
 		    Device.Statistic.dwLevelVertexCount += GetVertexCount();

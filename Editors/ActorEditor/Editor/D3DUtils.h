@@ -2,8 +2,8 @@
 // file: D3DUtils.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_D3DUtils_H_
-#define _INCDEF_D3DUtils_H_
+#ifndef D3DUtilsH
+#define D3DUtilsH
 //----------------------------------------------------
 
 namespace DU{
@@ -54,6 +54,7 @@ namespace DU{
     void DrawBox    (const Fvector& offs, const Fvector& Size, bool bWire, DWORD c);
     void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, DWORD c, bool bCull, bool bBorder, DWORD cb);
 
+    void DrawSafeRect();
     void DrawGrid	();
     void DrawPivot	(const Fvector& pos, float sz=5.f);
 	void DrawAxis	(const Fmatrix& T);

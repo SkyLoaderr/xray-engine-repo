@@ -92,7 +92,7 @@ void EScene::SmoothLandscape(){
 //----------------------------------------------------
 
 void EScene::SetLights(){
-    if (psDeviceFlags&rsLighting){
+    if (psDeviceFlags.is(rsLighting)){
         // scene lights
         int i=0;
         int l_cnt=0;

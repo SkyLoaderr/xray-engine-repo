@@ -11,6 +11,7 @@
 #include "customobject.h"
 #include "ui_main.h"
 #include "d3dutils.h"
+#include "sceneobject.h"
 
 #define SCENEOBJECT_CHUNK_PARAMS 		0xF900
 #define SCENEOBJECT_CHUNK_LOCK	 		0xF902

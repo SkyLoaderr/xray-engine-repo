@@ -11,6 +11,7 @@
 #include "render.h"
 #include "gamefont.h"
 #include "bottombar.h"
+#include "scene.h"
 
 #define SPAWNPOINT_VERSION   			0x0014
 //----------------------------------------------------
@@ -25,7 +26,7 @@
 
 #define SPAWNPOINT_CHUNK_ENTITYREF		0xE419
 #define SPAWNPOINT_CHUNK_SPAWNDATA		0xE420
-#define SPAWNPOINT_CHUNK_SPAWNDATA_EXT	0xE421
+#define SPAWNPOINT_CHUNK_ATTACHED_OBJ	0xE421
 //----------------------------------------------------
 #define MAX_TEAM 6
 const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff00ff};
@@ -76,8 +77,8 @@ void CSpawnPoint::SSpawnData::Save(CFS_Base& F)
     F.write				(Packet.B.data,Packet.B.count);
     F.close_chunk		();
 
-    F.open_chunk		(SPAWNPOINT_CHUNK_SPAWNDATA_EXT);
-    F.WstringZ			(m_Refs?m_Refs->Name:0);
+    F.open_chunk		(SPAWNPOINT_CHUNK_ATTACHED_OBJ);
+    Scene.SaveObject	(m_Object,F);
     F.close_chunk		();
 }
 bool CSpawnPoint::SSpawnData::Load(CStream& F)
@@ -92,11 +93,8 @@ bool CSpawnPoint::SSpawnData::Load(CStream& F)
     Create				(temp);
     if (Valid())		m_Data->Spawn_Read	(Packet);
 
-    if (F.FindChunk(SPAWNPOINT_CHUNK_SPAWNDATA_EXT)){
-    	F.RstringZ		(temp);
-        
-	    F.close_chunk		();
-    }
+    if (F.FindChunk(SPAWNPOINT_CHUNK_ATTACHED_OBJ))
+        Scene.ReadObject(F,m_Object);
 
     return Valid();
 }
@@ -114,10 +112,6 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, LPCSTR name)
 void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	m_Data->FillProp	(pref,items);
-}
-void CSpawnPoint::SSpawnData::OnObjectRemove(const CCustomObject* object)
-{
-	if (m_Refs==object) m_ Refs = 0;
 }
 //------------------------------------------------------------------------------
 
@@ -177,6 +171,10 @@ bool CSpawnPoint::GetBox( Fbox& box ){
 void CSpawnPoint::Render( int priority, bool strictB2F )
 {
 	inherited::Render(priority, strictB2F);
+    // render attached object
+    if (m_SpawnData.Valid()) 	
+    	m_SpawnData.m_Object->Re  nder(priority, strictB2F);
+    // render spawn point
     if (1==priority){
 		Fbox bb; GetBox(bb);
 		if (::Render->occ_visible(bb)){
@@ -387,12 +385,6 @@ Shader* CSpawnPoint::GetIcon(LPCSTR name)
 	ShaderPairIt it = m_Icons.find(name);
 	if (it==m_Icons.end())	return CreateIcon(name);
 	else					return it->second;
-}
-//----------------------------------------------------
-
-void CSpawnPoint::OnObjectRemove(CCustomObject* object)
-{
-	m_SpawnData.OnObjectRemove(object);
 }
 //----------------------------------------------------
 

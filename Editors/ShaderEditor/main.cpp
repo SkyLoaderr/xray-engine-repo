@@ -161,6 +161,13 @@ void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
     fraLeftBar->fsStorage->RestoreFormPlacement();
     fraBottomBar->fsStorage->RestoreFormPlacement();
     fraTopBar->fsStorage->RestoreFormPlacement();
+	psDeviceFlags.set(fsStorage->ReadInteger("Device Flags",rsStatistic|rsFilterLinear|rsFog|rsDrawGrid));
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::fsStorageSavePlacement(TObject *Sender)
+{
+	fsStorage->WriteInteger("Device Flags",psDeviceFlags.get());
 }
 //---------------------------------------------------------------------------
 
@@ -225,4 +232,5 @@ void __fastcall TfrmMain::D3DWindowMouseMove(TObject *Sender,
     UI.MouseMove(Shift,X,Y);
 }
 //---------------------------------------------------------------------------
+
 

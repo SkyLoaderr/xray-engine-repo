@@ -61,7 +61,7 @@ class SceneBuilder{
 
     void    ResetStructures ();
 
-    int		BuildLightControl(CLight* e);
+    int		BuildLightControl(LPCSTR name);
     void 	BuildHemiLights	();
 	void	AppendLight		();    
     BOOL 	BuildSun		(b_light* b, const Flags32& usage, svector<WORD,16>* sectors);
