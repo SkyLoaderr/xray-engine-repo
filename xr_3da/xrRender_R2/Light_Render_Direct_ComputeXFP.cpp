@@ -11,8 +11,15 @@ extern	void ComputeFrustum	(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fv
 
 BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 {
+	Fmatrix						m_ViewROT, m_invViewROT,m_invLET;
+	Fvector						t;
+	m_ViewROT.build_camera_dir	(t.set(0,0,0),Device.vCameraDirection,Device.vCameraTop);
+	m_invViewROT.invert			(m_ViewROT);
+	Device.mView.transform_tiny	(t,L->position);
+	m_invLET.translate			(t.invert());
+	P_world.mul					(m_invViewROT,m_invLET);
+
 	// Build EYE-space xform
-	P_world.invert				(Device.mView);
 	Fvector						L_dir,L_up,L_right,L_pos;
 	L_dir=cmDir	[m_phase];							L_dir.normalize		();
 	L_up=cmNorm	[m_phase];							L_up.normalize		();
@@ -22,6 +29,7 @@ BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 	P_project.build_projection	(deg2rad(90.f),1.f,PSM_near_plane,L->range+EPS_S);
 	P_combine.mul				(P_project,P_view);
 
+	return						TRUE;
 	// Quick exit for frustum-frustum intersection
 	// If the center of light lies inside, all frustums will cause intersection
 	if (RImplementation.ViewBase.testSphere_dirty(L->position,EPS_S))	return			TRUE;
