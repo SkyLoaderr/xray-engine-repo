@@ -86,7 +86,7 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 			CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
 			CHK_DX		(HW.pDevice->SetScissorRect(&R));
 		} else {
-			__asm int 3;
+			// __asm int 3;
 		}
 	}
 

@@ -278,9 +278,23 @@ void	CRenderTarget::OnDeviceCreate	()
 					float	ld	=	float(x)	/ float	(TEX_material_LdotN-1);
 					float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
 
+					/*
 							ls	*=	powf		(ld,1/32.f);						// minimize specular where diffuse near zero
 					s32		_d	=	clampr		(iFloor	(ld*255.5f),						0,255);
 					s32		_s	=	clampr		(iFloor	(powf(ls,ps_r2_ls_spower)*255.5f),	0,255);
+					*/
+					// float	sim	=	_abs		(1-_abs	(ld-ls));
+					// float	sim	=	clampr		(_sin	(PI_MUL_4*(ld*ld+ls*ls)), 0.f, 1.f);
+					// float	sim	=	_abs		(1-_abs	(_sin(ld*PI_MUL_4)-_cosls));
+					//float	sim0	=	_abs	(1-_abs	(ld-ls));
+					//float	sim1	=	_abs	(1-_abs	(ld*.5f-ls)+.5f);
+					//float	sim		=	_max	(sim0,sim1);
+					float	sim0	=	_abs	(1-_abs	(0.05f*_sin(33.f*ld)+ld-ls));
+					float	sim1	=	_abs	(1-_abs	(0.05f*_cos(33.f*ld*ls)+ld-ls));
+					float	sim2	=	_abs	(1-_abs	(ld-ls));
+					float	sim		=	_max	(_max(sim0,sim1),sim2) * powf	(ld,1/32.f);
+					s32		_d	=	clampr		(iFloor	(ld*255.5f),						0,255);
+					s32		_s	=	clampr		(iFloor	(powf(sim,ps_r2_ls_spower)*255.5f),	0,255);
 
 					*p			=	u16			(_s*256 + _d);						// color_rgba	(_d,_d,_d,_s);
 				}
@@ -292,6 +306,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		}
 
 		// Build encode table - RG
+		if (1)
 		{
 			// Surface
 			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_float2rgb,TEX_float2rgb,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&t_encodeRG_surf));
@@ -313,6 +328,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		}
 
 		// Build encode table - B
+		if (1)
 		{
 			// Surface
 			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_float2rgb,1,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&t_encodeB_surf));
@@ -331,6 +347,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		}
 
 		// Build shadow2fade
+		if (1)
 		{
 			// Surface
 			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_ds2_fade_size,1,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_ds2fade_surf));
