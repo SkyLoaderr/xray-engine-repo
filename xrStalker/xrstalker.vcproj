@@ -1270,10 +1270,16 @@
 					RelativePath=".\scripts\mizlom_part2.script">
 				</File>
 				<File
+					RelativePath=".\Scripts\mob_death.script">
+				</File>
+				<File
 					RelativePath=".\scripts\mob_remark.script">
 				</File>
 				<File
 					RelativePath=".\scripts\mob_sound.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\mob_trade.script">
 				</File>
 				<File
 					RelativePath=".\scripts\mob_walker.script">
