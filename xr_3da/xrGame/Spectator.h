@@ -3,14 +3,18 @@
 
 #pragma once
 
+#include "../feel_touch.h"
+#include "../iinputreceiver.h"
+
 #include "entity.h"
 #include "actor_flags.h"
-#include "../feel_touch.h"
 
 // refs
 class CActor;
 
-class CSpectator: public CGameObject
+class CSpectator: 
+	public CGameObject,
+	public IInputReceiver
 {
 private:
 	typedef CGameObject		inherited;
