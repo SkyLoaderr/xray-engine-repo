@@ -322,10 +322,28 @@ public:
 	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CScriptMonster,	GetCurrentAction,	const CEntityAction *,				0);
 
 	// CCustomMonster
-	BIND_FUNCTION11	(m_tpGameObject,	CheckObjectVisibility,CCustomMonster,CheckObjectVisibility,	bool,							false,					const CLuaGameObject*,	const CObject*);
+//	BIND_FUNCTION11	(m_tpGameObject,	CheckObjectVisibility,CCustomMonster,CheckObjectVisibility,	bool,							false,					const CLuaGameObject*,	const CObject*);
+
+	IC		void			CheckObjectVisibility(const CLuaGameObject *tpLuaGameObject)
+	{
+		CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
+		if (l_tpCustomMonster)
+			l_tpCustomMonster->KillEntity(tpLuaGameObject->m_tpGameObject);
+		else
+			Msg				("* [LUA] CLuaGameObject : cannot access class member CheckObjectVisibility!");
+	}
 
 	// CAI_Stalker
-	BIND_FUNCTION01	(m_tpGameObject,	UseObject,			CAI_Stalker,	UseObject,			const CLuaGameObject*,				CObject*);
+//	BIND_FUNCTION01	(m_tpGameObject,	UseObject,			CAI_Stalker,	UseObject,			const CLuaGameObject*,				CObject*);
+	IC		void			UseObject(const CLuaGameObject *tpLuaGameObject)
+	{
+		CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
+		if (l_tpCustomMonster)
+			l_tpCustomMonster->UseObject(tpLuaGameObject->m_tpGameObject);
+		else
+			Msg				("* [LUA] CLuaGameObject : cannot access class member UseObject!");
+	}
+
 	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								eStalkerRankDummy);
 	BIND_FUNCTION10	(m_tpGameObject,	GetWeaponAmmo,		CAI_Stalker,	GetWeaponAmmo,		u32,								0);
 	

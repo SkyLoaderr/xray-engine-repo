@@ -17,7 +17,13 @@ extern "C"
 
 // Lua-bind
 #pragma warning(disable:4244)
-#include <luabind\\luabind.hpp>
+#include "luabind\\luabind.hpp""
+#include "luabind\\adopt_policy.hpp"
+#include "luabind\\dependency_policy.hpp"
+#include "luabind\\return_reference_to_policy.hpp"
+#include "luabind\\out_value_policy.hpp"
+#include "luabind\\discard_result_policy.hpp"
+#include "luabind\\iterator_policy.hpp"
 #pragma warning(default:4244)
 
 // I need this because we have to exclude option /EHsc (exception handling) from the project
@@ -642,6 +648,16 @@ public:
 	CPrintClass(){}
 	virtual test_type vf(LPCSTR S) {printf("Base class function call : %s\n",S); return 1;}
 	void add() {get_manager().Add(this);}
+	CPrintClass &test(double &a)
+	{
+		a = a + 1;
+		return(*this);
+	}
+	
+	void test1(double &a)
+	{
+		a += 1;
+	}
 };
 
 class CPrintClassWrapper : public CPrintClass {
@@ -652,9 +668,57 @@ public:
 	static bool vf_static(CPrintClass *ptr, LPCSTR S) {return ptr->CPrintClass::vf(S);}
 };
 
+void test(double &a)
+{
+	a += 1.0;
+}
+
 // main
 int __cdecl _tmain(int argc, _TCHAR* argv[])
 {
+//	lua_State		*L = lua_open();
+//	if (!L)
+//		lua_error	(L);
+//
+//	luaopen_base	(L);
+//	luaopen_string	(L);
+//	luaopen_math	(L);
+//	luaopen_table	(L);
+//
+//	lua_pop			(L,4);
+//
+//	open			(L);
+//
+//	module(L)
+//	[
+//		class_<CPrintClass,CPrintClassWrapper>("pp_class")
+//			.def(constructor<>())
+//			.def("vf",		&CPrintClassWrapper::vf_static)
+//			.def("add",		&CPrintClass::add)
+//			.def("test",	&CPrintClass::test,	pure_out_value(_1, adopt(_2)))
+//			.def("test1",	&CPrintClass::test1,pure_out_value(_1))
+//	];
+
+
+//	load_file_into_namespace(L,"x:\\extension.lua","core");
+//	load_file_into_namespace(L,"x:\\extension1.lua","core");
+//	lua_State		*T = lua_newthread(L);
+//	load_file_into_namespace(T,"x:\\test1.lua","test1",false);
+
+	//	lua_resume		(T,0);
+	
+//	module(L)
+//	[
+//		def("test", test, pure_out_value(_1))
+//	];
+	
+//	lua_dofile(L,"x:\\extension.lua");
+//	lua_dofile(L,"x:\\extension1.lua");
+//	lua_State	*T = lua_newthread(L);
+//	luaL_loadfile(T,"x:\\test2.lua");
+//	lua_resume(T,0);
+//	tManager.Update();
+//	lua_resume(T,0);
 	lua_State		*L = lua_open();
 	if (!L)
 		lua_error	(L);
@@ -664,32 +728,14 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	luaopen_math	(L);
 	luaopen_table	(L);
 
-	lua_pop			(L,4);
-
 	open			(L);
 
 	module(L)
 	[
-		class_<CPrintClass,CPrintClassWrapper>("pp_class")
-			.def(constructor<>())
-			.def("vf",		&CPrintClassWrapper::vf_static)
-			.def("add",		&CPrintClass::add)
+		def("test1",&test, out_value(_1))
 	];
 
-
-//	load_file_into_namespace(L,"x:\\extension.lua","core");
-//	load_file_into_namespace(L,"x:\\extension1.lua","core");
-//	lua_State		*T = lua_newthread(L);
-//	load_file_into_namespace(T,"x:\\test1.lua","test1",false);
-
-	//	lua_resume		(T,0);
-	lua_dofile(L,"x:\\extension.lua");
-	lua_dofile(L,"x:\\extension1.lua");
-	lua_State	*T = lua_newthread(L);
-	luaL_loadfile(T,"x:\\test1.lua");
-	lua_resume(T,0);
-	tManager.Update();
-	lua_resume(T,0);
+	lua_dofile		(L,"x:\\test2.lua");
 
 	lua_close		(L);
 }
