@@ -323,7 +323,8 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	newPhysicsShell->ObjectInRoot().identity();
 	newKinematics->LL_SetBoneRoot		(split_bone);
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
-
+	
+	newPhysicsShell->set_PhysicsRefObject(O);
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
 
