@@ -177,7 +177,7 @@ void CSoundRender_Core::_initialize	(u64 window)
 	}
 
 	// Cache
-	u32		bytes_per_line		= (sdef_target_block/4)*wfm.nAvgBytesPerSec/1000;
+	u32		bytes_per_line		= (sdef_target_block/8)*wfm.nAvgBytesPerSec/1000;
     cache.initialize			(psSoundCacheSizeMB*1024,bytes_per_line);
 }
 
