@@ -21,9 +21,7 @@ public:
 
 	virtual void	UpdateCL			();
 
-	
 	virtual void	ForceFinalAnimation	();
-		
 
 			void	Hide				();
 			void	Show				();
@@ -34,5 +32,14 @@ public:
 			void	StopParticles		();
 			void	UpdateParticles		();
 		
+	// FireBall
+
+					
+			void	StartFireball		();
+			void	StopFireball		();
+
+			ref_str m_firball_sound_prepare;
+			ref_str m_firball_sound_fire;
+			ref_str m_firball_sound_finalize;
 
 };
