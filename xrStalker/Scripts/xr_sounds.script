@@ -445,6 +445,13 @@ function load_common (obj, sounds_base)
              obj:add_sound ("script_sound\\help\\soldier\\soldier_help_5",  1, snd_type.talk, 2, 1, id ())
              }
              }
+    themes["bar"] =
+             {
+             {
+             sounds_base,
+             obj:add_sound ("script_replics\\stalker_1\\talk\\stalker_talk_2", 5, snd_type.talk, 2, 1, id ()),
+             }
+             }
 
     return sounds_base
 end
