@@ -311,7 +311,7 @@ VOID CDeflector::Light()
 		lm.pSurface = (DWORD *)malloc(size);
 		ZeroMemory	(lm.pSurface,size);
 	}
-	Msg("--- %3d/%3d",lm.dwWidth,lm.dwHeight);
+//	Msg("--- %3d/%3d",lm.dwWidth,lm.dwHeight);
 
 	// Filling it with new triangles
 	Fbox bb; bb.invalidate	();
@@ -379,7 +379,7 @@ VOID CDeflector::Light()
 			lm.pSurface			= compressed;
 			lm.dwHeight			= 0;
 			lm.dwWidth			= 0;
-			Msg("*** %3d/%3d",	lm.dwWidth,lm.dwHeight);
+//			Msg("*** %3d/%3d",	lm.dwWidth,lm.dwHeight);
 			return;
 		} else {
 			// *** Try to bilinearly filter lightmap down and up
@@ -423,5 +423,5 @@ VOID CDeflector::Light()
 	ApplyBorders	(lm,252);
 	ApplyBorders	(lm,251);
 	for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-	Msg("*** %3d/%3d",lm.dwWidth,lm.dwHeight);
+//	Msg("*** %3d/%3d",lm.dwWidth,lm.dwHeight);
 }
