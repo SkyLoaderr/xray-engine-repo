@@ -6,8 +6,8 @@
 //	Description : AI Behaviour for monster "Hen"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_HEN__
-#define __XRAY_AI_HEN__
+#ifndef __XRAY_AI_HEN_SELECTORS__
+#define __XRAY_AI_HEN_SELECTORS__
 
 class CHenSelectorBase : public AI::NodeEstimator 
 {

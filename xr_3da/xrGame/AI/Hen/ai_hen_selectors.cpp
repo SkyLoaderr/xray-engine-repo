@@ -52,10 +52,11 @@ CHenSelectorAttack::CHenSelectorAttack()
 
 float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
+	/**
 	// distance to node
 	float fResult = 0.0;//*fDistance*costTravel;
 	// node lighting
-	fResult += ((float)(tNode->light)/255.f)*costLight;
+	fResult += ((float)(tNode->light)/255.f)*fLightWeight;
 	if (fResult>BestCost)
 		return(fResult);
 	// leader relationship
@@ -125,7 +126,6 @@ float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 			tDirection1.normalize();
 			tDirection.add(tDirection1);
 
-			/**/
 			if (Members[it].x - P.x < 0.0)
 				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[0])/255.f + float(tNode->cover[2])/255.f);
 			else
@@ -136,7 +136,6 @@ float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 			else
 				fResult += 0.5*COVER_PENALTY*(1.0 - float(tNode->cover[1])/255.f + float(tNode->cover[3])/255.f);
 
-			/**/
 		}
 	}
 
@@ -145,6 +144,8 @@ float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	// exit
 	//if (fResult<EPS)	bStop = TRUE;
 	return	fResult;
+	/**/
+	return(0);
 }
 
 CHenSelectorFreeHunting::CHenSelectorFreeHunting()
@@ -154,10 +155,11 @@ CHenSelectorFreeHunting::CHenSelectorFreeHunting()
 
 float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
+	/**
 	// distance to node
 	float fResult = 0.0;//*fDistance*costTravel;
 	// node lighting
-	fResult += ((float)(tNode->light)/255.f)*costLight;
+	fResult += ((float)(tNode->light)/255.f)*fLightWeight;
 	if (fResult>BestCost)
 		return(fResult);
 	// leader relationship
@@ -212,7 +214,6 @@ float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, 
 					fResult += MAX_MEMBER_PENALTY*costMembers;
 				else
 					fResult += (fDistanceToMember - OPTIMAL_MEMBER_DISTANCE)/OPTIMAL_MEMBER_DISTANCE;
-			/**/
 			tDirection.x = Members[it].x - P.x;
 			tDirection.y = fabs(Members[it].y - P.y);
 			tDirection.z = Members[it].z - P.z;
@@ -234,6 +235,8 @@ float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, 
 	// exit
 	//if (fResult<EPS)	bStop = TRUE;
 	return	fResult;
+	/**/
+	return(0);
 }
 
 CHenSelectorFollow::CHenSelectorFollow()
@@ -241,12 +244,13 @@ CHenSelectorFollow::CHenSelectorFollow()
 	Name = "selector_follow"; 
 }
 
-float CenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CHenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
+	/**
 	// distance to node
 	float fResult = 0.0;//*fDistance*costTravel;
 	// node lighting
-	fResult += ((float)(tNode->light)/255.f)*costLight;
+	fResult += ((float)(tNode->light)/255.f)*fLightWeight;
 	if (fResult>BestCost)
 		return(fResult);
 	// leader relationship
@@ -301,7 +305,6 @@ float CenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& 
 					fResult += MAX_MEMBER_PENALTY*costMembers;
 				else
 					fResult += (fDistanceToMember - OPTIMAL_MEMBER_DISTANCE)/OPTIMAL_MEMBER_DISTANCE;
-			/**/
 			tDirection.x = Members[it].x - P.x;
 			tDirection.y = fabs(Members[it].y - P.y);
 			tDirection.z = Members[it].z - P.z;
@@ -321,12 +324,13 @@ float CenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL& 
 			
 			//if (tDirection.y > 2.0)
 			//	fResult += tDirection.y*Y_MEMBER_PENALTY;
-			/**/
 		}
 	}
 	// exit
 	//if (fResult<EPS)	bStop = TRUE;
 	return	fResult;
+	/**/
+	return(0);
 }
 
 CHenSelectorPursuit::CHenSelectorPursuit()
@@ -334,12 +338,13 @@ CHenSelectorPursuit::CHenSelectorPursuit()
 	Name = "selector_pursuit"; 
 }
 
-virtual	float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
 {
+	/**
 	// distance to node
 	float fResult = 0.0;//*fDistance*costTravel;
 	// node lighting
-	fResult += ((float)(tNode->light)/255.f)*costLight;
+	fResult += ((float)(tNode->light)/255.f)*fLightWeight;
 	if (fResult>BestCost)
 		return(fResult);
 
@@ -350,6 +355,8 @@ virtual	float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistan
 	// exit
 	//if (fResult<EPS)	bStop = TRUE;
 	return	fResult;
+	/**/
+	return(0);
 }
 
 #define COVER_UNDER_FIRE			10.f
@@ -363,10 +370,11 @@ CHenSelectorUnderFire::CHenSelectorUnderFire()
 
 float CHenSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)	// min - best, max - worse
 {
+	/**
 	// distance to node
 	float fResult = 0.0;//*fDistance*costTravel;
 	// node lighting
-	fResult += ((float)(tNode->light)/255.f)*costLight;
+	fResult += ((float)(tNode->light)/255.f)*fLightWeight;
 	if (fResult>BestCost)
 		return(fResult);
 
@@ -374,7 +382,6 @@ float CHenSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BO
 	fResult += COVER_UNDER_FIRE*((float)(tNode->cover[0])/255.f + (float)(tNode->cover[1])/255.f
 				+ (float)(tNode->cover[2])/255.f + (float)(tNode->cover[3])/255.f);
 
-	/**/
 	Fvector tNodeCentre;
 	tNodeCentre.x = (float(tNode->p0.x)/255.f + float(tNode->p1.x)/255.f)/2.f - posMy.x;
 	tNodeCentre.y = (float(tNode->p0.y)/255.f + float(tNode->p1.y)/255.f)/2.f - posMy.y;
@@ -387,7 +394,8 @@ float CHenSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BO
 	fResult += DEVIATION_FROM_DIRECTION*deviation;
 
 	fResult += (cos_alpha < 0.f ? WRONG_DIRECTION_PENALTY : 0.f);
-	/**/
 	// exit
 	return	fResult;
+	/**/
+	return(0);
 }
