@@ -36,4 +36,7 @@
 <!-- Жертвоприношение -->
 <info_portion id="val_sacrifice_start"></info_portion>
 
+<!-- Игрок нашел флешку Борова -->
+<info_portion id="val_player_knows_password"></info_portion>
+
 </game_information_portions>
