@@ -80,7 +80,7 @@ void CGamePersistent::OnAppStart()
 	// load game materials
 	GMLib.Load							();
 	ai().script_engine().setup_callbacks();
-	__super::OnAppCycleStart			();
+	__super::OnAppStart			();
 }
 
 extern void clean_game_globals	();
