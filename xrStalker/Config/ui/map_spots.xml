@@ -288,7 +288,7 @@
 		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
 	</actor_location>
 
-	<enemy_location hint="enemy">
+	<enemy_location hint="enemy" no_offline="1">
 		<mini_map  spot="enemy_mini_spot"></mini_map>
 	</enemy_location>
 
