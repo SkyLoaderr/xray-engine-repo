@@ -154,7 +154,21 @@ void CUICustomItem::RenderTexPart(FVF::TL*& Pointer, const Ivector2& pos, u32 co
 	Fvector2		hp;
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	hp.set			(0.5f/float(ts.x),0.5f/float(ts.y));
+	
 	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
+
+	if (!(uFlags&flValidOriginalRect))
+	{
+		iOriginalRect.set(0,0,ts.x,ts.y);
+		uFlags |= flValidOriginalRect;
+	}
+	if (!(uFlags&flValidTextureRect))
+	{
+		iTextureRect.set(0,0,ts.x,ts.y);
+		uFlags |= flValidTextureRect;
+	}
+
+
 
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt, LBt, RTt;

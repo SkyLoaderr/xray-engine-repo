@@ -47,8 +47,12 @@ void CWeaponHUD::Load			(LPCSTR section)
 	iFireBone					= PKinematics(Visual())->LL_BoneID	(fire_bone);
 	if (iFireBone<0)			Debug.fatal	("There is no 'fire_bone' for weapon '%s'.",section);
 	vFirePoint					= pSettings->r_fvector3					(section,"fire_point");
-	if(pSettings->line_exist(section,"fire_point2")) vFirePoint2 = pSettings->r_fvector3(section,"fire_point2");
-	else vFirePoint2 = vFirePoint;
+	
+	if(pSettings->line_exist(section,"fire_point2")) 
+		vFirePoint2 = pSettings->r_fvector3(section,"fire_point2");
+	else 
+		vFirePoint2 = vFirePoint;
+
 	vShellPoint					= pSettings->r_fvector3					(section,"shell_point");
 
 	// play default animation

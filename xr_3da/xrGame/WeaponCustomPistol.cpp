@@ -20,7 +20,10 @@ void CWeaponCustomPistol::switch2_Fire	()
 		UpdateFP					();
 
 		// Fire
-		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
+		Fvector						p1, d; 
+		p1.set(vLastFP); 
+		d.set(vLastFD);
+
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) {
 			E->g_fireParams		(p1,d);

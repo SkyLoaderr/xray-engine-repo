@@ -253,6 +253,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 	float							spot_range;
 	float							spot_cone_angle;
     float							spot_brightness;
+	string64						glow_texture;
+	float							glow_radius;
+
 									CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
     virtual							~CSE_ALifeObjectHangingLamp	();
 SERVER_ENTITY_DECLARE_END

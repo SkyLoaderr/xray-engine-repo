@@ -59,7 +59,7 @@ void CUIPdaWnd::Init()
 	
 	//окно разговора по PDA
 	UIMainPdaFrame.AttachChild(&UIPdaDialogWnd);
-	UIPdaDialogWnd.Init(0,0,GetWidth(),GetHeight());
+	UIPdaDialogWnd.Init(0,0,UIMainPdaFrame.GetWidth(),UIMainPdaFrame.GetHeight());
 	UIPdaDialogWnd.Hide();
 	
 
@@ -73,7 +73,7 @@ void CUIPdaWnd::Init()
 	UIPdaContactsWnd.UIListWnd.EnableActiveBackground(true);
 	UIPdaContactsWnd.UIListWnd.EnableScrollBar(true);
 
-
+ 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 }

@@ -57,6 +57,7 @@ CWeapon::CWeapon(LPCSTR name)
 	hWallmark			= 0;
 
 	vLastFP.set			(0,0,0);
+	vLastFP2.set		(0,0,0);
 	vLastFD.set			(0,0,0);
 	vLastSP.set			(0,0,0);
 
@@ -270,12 +271,18 @@ void CWeapon::UpdateFP		()
 			// fire point&direction
 			Fmatrix& fire_mat		= V->LL_GetTransform(u16(m_pHUD->iFireBone));
 			Fmatrix& parent			= m_pHUD->Transform	();
+			
 			Fvector& fp				= m_pHUD->vFirePoint;
 			Fvector& sp				= m_pHUD->vShellPoint;
 			fire_mat.transform_tiny	(vLastFP,fp);
 			parent.transform_tiny	(vLastFP);
 			fire_mat.transform_tiny	(vLastSP,sp);
 			parent.transform_tiny	(vLastSP);
+
+			Fvector& fp2			= m_pHUD->vFirePoint2;
+			fire_mat.transform_tiny	(vLastFP2,fp2);
+			parent.transform_tiny	(vLastFP2);
+			
 			vLastFD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastFD);
 		} else {
@@ -287,6 +294,10 @@ void CWeapon::UpdateFP		()
 			parent.transform_tiny	(vLastSP,sp);
 			vLastFD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastFD);
+
+			Fvector& fp2			= vFirePoint2;
+			parent.transform_tiny	(vLastFP2,fp2);
+
 /*			HUD().pHUDFont->Color	(0xffffffff);
 			HUD().pHUDFont->OutSet	(400,300);
 			HUD().pHUDFont->OutNext	("%3.2f,  %3.2f,  %3.2f",vLastFD.x,vLastFD.y,vLastFD.z);
@@ -404,6 +415,13 @@ void CWeapon::Load		(LPCSTR section)
 
 	vFirePoint			= pSettings->r_fvector3		(section,"fire_point"		);
 	vShellPoint			= pSettings->r_fvector3		(section,"shell_point"		);
+
+	if(pSettings->line_exist(section,"fire_point2")) 
+		vFirePoint2 = pSettings->r_fvector3(section,"fire_point2");
+	else 
+		vFirePoint2 = vFirePoint;
+
+
 
 	// flames
 	iFlameDiv			= pSettings->r_s32			(section,"flame_div"		);

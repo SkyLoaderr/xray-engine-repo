@@ -52,6 +52,7 @@ protected:
 	void					signal_HideComplete		();
 
 	Fvector					vFirePoint;
+	Fvector					vFirePoint2;
 	Fvector					vShellPoint;
 
 	// Media :: flames
@@ -84,7 +85,8 @@ protected:
 	int						iHitPower;
 	float					fHitImpulse;
 
-	Fvector					vLastFP, vLastFD, vLastSP;
+	Fvector					vLastFP, vLastFP2;
+	Fvector					vLastFD, vLastSP;
 
 	//текущие значения хита и импульса для выстрела 
 	//используются для пробиваемости стен при RayPick

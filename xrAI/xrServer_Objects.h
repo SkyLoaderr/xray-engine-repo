@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(42)
+#define SPAWN_VERSION	u16(43)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -58,6 +58,7 @@
 //		and CSE_ALifeItemWeapon			appended with weapon addons state flag
 // 41 - CSE_ALifeItemTorch				appended glow
 // 42 - CSE_ALifeItemTorch				appended guid_bone
+// 42 - CSE_ALifeObjectHangingLamp		appended glow_texture and glow_radius
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

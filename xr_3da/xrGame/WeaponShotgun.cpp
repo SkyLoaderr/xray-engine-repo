@@ -31,11 +31,7 @@ void CWeaponShotgun::Load	(LPCSTR section)
 
 	// Звук и анимация для дуплета
 	SoundCreate			(sndShotBoth,		"shoot_both"   ,m_eSoundShotBoth);
-	animGet				(mhud_shot_boths,	"shoot_both");
-
-	//
-	if(pSettings->line_exist(section,"fire_point2")) vFirePoint2 = pSettings->r_fvector3(section,"fire_point2");
-	else vFirePoint2 = vFirePoint;
+	animGet				(mhud_shot_boths,		pSettings->r_string(*hud_sect,"anim_shoot_both"));
 }
 
 void CWeaponShotgun::OnShot () 
@@ -49,7 +45,10 @@ void CWeaponShotgun::OnShot ()
 void CWeaponShotgun::Fire2Start () 
 {
 	inherited::Fire2Start();
-	if (IsValid())
+	
+	FireStart();
+
+/*	if (IsValid())
 	{
 		if (!IsWorking())
 		{
@@ -72,20 +71,21 @@ void CWeaponShotgun::Fire2Start ()
 	}else{
 		if (!iAmmoElapsed)	
 			SwitchState			(eMagEmpty);
-	}
+	}*/
 }
 
 void CWeaponShotgun::Fire2End () 
 {
 	inherited::Fire2End();
-	if (IsWorking())
+	FireEnd();
+/*	if (IsWorking())
 	{
 		CWeapon::FireEnd	();
 	}
 	if (!iAmmoElapsed)	
 		TryReload	();
 	else 
-		SwitchState (eIdle);
+		SwitchState (eIdle);*/
 }
 
 
@@ -117,26 +117,20 @@ void CWeaponShotgun::OnShotBoth()
 	
 	// Shell Drop
 	OnShellDrop					();
-
-	CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
-	pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
-	Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
-	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div	((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-	pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
-	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();
-	//pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
-	//l_pos.set(XFORM()); l_pos.c.set(vLastFP); l_pos.c.y += .01;
-	//pStaticPG->UpdateParent(l_pos); pStaticPG->Play();
 }
 
 void CWeaponShotgun::switch2_Fire	()
 {
-	if (fTime<=0)
+	inherited::switch2_Fire	();
+/*	if (fTime<=0)
 	{
 		UpdateFP					();
 
 		// Fire
-		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
+		Fvector						p1, d; 
+		p1.set(vLastFP); 
+		d.set(vLastFD);
+
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(p1,d);
 		bFlame						=	TRUE;
@@ -147,7 +141,7 @@ void CWeaponShotgun::switch2_Fire	()
 		// Patch for "previous frame position" :)))
 		dwFP_Frame					= 0xffffffff;
 		dwXF_Frame					= 0xffffffff;
-	}
+	}*/
 }
 
 void CWeaponShotgun::switch2_Fire2	()
@@ -157,12 +151,16 @@ void CWeaponShotgun::switch2_Fire2	()
 		UpdateFP					();
 
 		// Fire
-		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
+		Fvector						p1, d; 
+		p1.set(vLastFP); 
+		d.set(vLastFD);
+
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(p1,d);
 		bFlame						=	TRUE;
+		
 		OnShotBoth						();
-		//--iAmmoElapsed;
+
 		FireTrace					(p1,vLastFP,d);
 		FireTrace					(p1,vLastFP,d);
 		fTime						+= fTimeToFire*2.f;

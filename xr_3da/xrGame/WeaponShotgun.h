@@ -22,7 +22,7 @@ public:
 
 	virtual bool Action(s32 cmd, u32 flags);
 
-	Fvector			vFirePoint2;
+protected:
 	ref_sound		sndShotBoth;
 	ESoundTypes		m_eSoundShotBoth;
 	MotionSVec		mhud_shot_boths;
