@@ -41,6 +41,22 @@ extern "C"{
 		CoUninitialize();
 		return true;
 		}
+	__declspec(dllexport) int __cdecl testConnection(char* sName, char* user_name, char* pwd)
+	{
+		USES_CONVERSION;
+
+		LPSQLDMOSERVER pSQLServer;
+		if ( !GetSQLServer(&pSQLServer) )
+			return (-1);
+
+		if ( !_Connect(pSQLServer,sName, user_name, pwd) ){
+			pSQLServer->Release();
+			return (-1);
+		}
+
+		pSQLServer->Release();
+		return 0;
+	}
 
 	__declspec(dllexport) int __cdecl tuneServer(char* sName, char* user_name, char* pwd)
 	{
