@@ -15,7 +15,6 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection)
 {
 //	Msg						("---begin");
 	marker									++;
-	phase									= PHASE_NORMAL;
 
 	// Calculate sector(s) and their objects
 	if (pLastSector)
@@ -156,6 +155,7 @@ void CRender::Render		()
 		m_zfill.mul	(m_project,Device.mView);
 		r_pmask										(true,false);	// enable priority "0"
 		set_Recorder								(NULL)		;
+		phase										= PHASE_SMAP;
 		render_main									(m_zfill)	;
 		r_pmask										(true,false);	// disable priority "1"
 		Device.Statistic.RenderCALC.End				( )			;
@@ -167,6 +167,7 @@ void CRender::Render		()
 	r_pmask										(true,false);	// enable priority "0"
 	if (bSUN)									set_Recorder	(&main_coarse_structure);
 	else										set_Recorder	(NULL);
+	phase										= PHASE_NORMAL;
 	render_main									(Device.mFullTransform);
 	set_Recorder								(NULL);
 	r_pmask										(true,false);	// disable priority "1"
@@ -287,6 +288,7 @@ void CRender::render_forward				()
 	{
 		// level
 		r_pmask									(false,true);			// enable priority "1"
+		phase									= PHASE_NORMAL;
 		render_main								(Device.mFullTransform);//
 		r_dsgraph_render_graph					(1);					// normal level, secondary priority
 		r_dsgraph_render_sorted					();						// strict-sorted geoms
