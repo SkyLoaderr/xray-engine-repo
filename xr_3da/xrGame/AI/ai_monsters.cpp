@@ -329,6 +329,18 @@ void CAISelectorBase::vfAddEnemyLookCost()
 	}
 }
 
+void CAISelectorBase::vfAddEnemyLookCost(float fAngle)
+{
+	if (fabs(m_dwCurTime - m_dwHitTime) < ATTACK_HIT_REACTION_TIME) {
+		Fvector tTempDirection0, tTempDirection1 = m_tHitDir;
+		tTempDirection0.sub(m_tEnemyPosition,m_tCurrentPosition);
+		vfNormalizeSafe(tTempDirection0);
+		vfNormalizeSafe(tTempDirection1);
+		float fAlpha = acosf(tTempDirection0.dotproduct(tTempDirection1));
+		m_fResult += fEnemyViewDeviationWeight*fabsf(fAngle - fAlpha);
+	}
+}
+
 void CAISelectorBase::vfAssignMemberPositionAndNode()
 {
 #ifdef DEST_POSITIONS

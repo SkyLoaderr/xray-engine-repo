@@ -402,17 +402,63 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									}
 								}
 						else
-							switch (m_cBodyState) {
-								case BODY_STATE_STAND : {
-									tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpIdle;
+							switch (eCurrentState) {
+								case aiSoldierHurtAloneDefend : {
+									switch (m_cBodyState) {
+										case BODY_STATE_STAND : {
+											tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
+											break;
+										}
+										case BODY_STATE_CROUCH : {
+											tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
+											break;
+										}
+										case BODY_STATE_LIE : {
+											tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+											break;
+										}
+									}
+									tpTorsoAnimation = tpLegsAnimation = 0;
 									break;
 								}
-								case BODY_STATE_CROUCH : {
-									tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
-									break;
-								}
-								case BODY_STATE_LIE : {
-									tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+								default : {
+									switch (eCurrentState) {
+										case aiSoldierHurtAloneDefend : {
+											switch (m_cBodyState) {
+												case BODY_STATE_STAND : {
+													tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
+													break;
+												}
+												case BODY_STATE_CROUCH : {
+													tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
+													break;
+												}
+												case BODY_STATE_LIE : {
+													tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+													break;
+												}
+											}
+											tpTorsoAnimation = tpLegsAnimation = 0;
+											break;
+										}
+										default : {
+											switch (m_cBodyState) {
+												case BODY_STATE_STAND : {
+													tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpIdle;
+													break;
+												}
+												case BODY_STATE_CROUCH : {
+													tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
+													break;
+												}
+												case BODY_STATE_LIE : {
+													tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+													break;
+												}
+											}
+											break;
+										}
+									}
 									break;
 								}
 							}
@@ -449,17 +495,40 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									}
 								}
 						else
-							switch (m_cBodyState) {
-								case BODY_STATE_STAND : {
-									tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpIdle;
+							switch (eCurrentState) {
+								case aiSoldierHurtAloneDefend : {
+									switch (m_cBodyState) {
+										case BODY_STATE_STAND : {
+											tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
+											break;
+										}
+										case BODY_STATE_CROUCH : {
+											tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
+											break;
+										}
+										case BODY_STATE_LIE : {
+											tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+											break;
+										}
+									}
+									tpTorsoAnimation = tpLegsAnimation = 0;
 									break;
 								}
-								case BODY_STATE_CROUCH : {
-									tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
-									break;
-								}
-								case BODY_STATE_LIE : {
-									tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+								default : {
+									switch (m_cBodyState) {
+										case BODY_STATE_STAND : {
+											tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpIdle;
+											break;
+										}
+										case BODY_STATE_CROUCH : {
+											tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpIdle;
+											break;
+										}
+										case BODY_STATE_LIE : {
+											tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpIdle;
+											break;
+										}
+									}
 									break;
 								}
 							}

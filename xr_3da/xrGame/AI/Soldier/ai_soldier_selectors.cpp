@@ -406,9 +406,9 @@ float CSoldierSelectorUnderFireCover::Estimate(NodeCompressed* tNode, float fDis
 	//CHECK_RESULT;
 	vfAddTotalCoverCost();
 	//CHECK_RESULT;
-	vfAddDeviationFromPreviousDirectionCost();
+	vfAddEnemyLookCost(PI_DIV_4);
 	//CHECK_RESULT;
-	//vfAddDistanceToEnemyCost();
+	vfAddDistanceToEnemyCost();
 	//CHECK_RESULT;
 	vfAddCoverFromEnemyCost();
 	
@@ -434,9 +434,9 @@ float CSoldierSelectorUnderFireLine::Estimate(NodeCompressed* tNode, float fDist
 	//CHECK_RESULT;
 	vfAddTotalCoverCost();
 	//CHECK_RESULT;
-	vfAddDeviationFromPreviousDirectionCost();
+	vfAddEnemyLookCost(PI_DIV_4);
 	//CHECK_RESULT;
-	//vfAddDistanceToEnemyCost();
+	vfAddDistanceToEnemyCost();
 	//CHECK_RESULT;
 	vfAddCoverFromEnemyCost();
 	

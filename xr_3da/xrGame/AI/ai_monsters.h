@@ -129,6 +129,7 @@ class CAISelectorBase : public AI::NodeEstimator
 		void vfAddDistanceToLeaderCost();
 		void vfAddDistanceToMemberCost();
 		void vfAddEnemyLookCost();
+		void vfAddEnemyLookCost(float fAngle);
 		void vfAddLightCost();
 		void vfAddSurroundEnemyCost();
 		void vfAddTotalCoverCost();

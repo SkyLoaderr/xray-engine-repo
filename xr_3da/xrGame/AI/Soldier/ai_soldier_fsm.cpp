@@ -761,6 +761,32 @@ void CAI_Soldier::OnLookingOver()
 	r_torso_speed = PI_DIV_4;
 }
 
+void CAI_Soldier::OnWaitingForAnimation()
+{
+	WRITE_TO_LOG("Waiting for animation...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	if (m_bStateChanged)
+		m_bActionStarted = true;
+		
+	CHECK_IF_GO_TO_PREV_STATE(!m_bActionStarted);
+}
+
+void CAI_Soldier::OnWaitingForTime()
+{
+	WRITE_TO_LOG("Waiting for time...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	CHECK_IF_SWITCH_TO_NEW_STATE((Level().timeServer() - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (dwHitTime > m_dwLastRangeSearch),aiSoldierPatrolHurt)
+
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = Level().timeServer();
+		
+	CHECK_IF_GO_TO_PREV_STATE(Level().timeServer() - m_dwLastRangeSearch > m_dwTimeBeingWaited);
+}
+
 void CAI_Soldier::OnPatrolReturn()
 {
 	WRITE_TO_LOG("Patrol return to route...");
@@ -1492,14 +1518,13 @@ void CAI_Soldier::OnHurtAloneDefend()
 			vfInitSelector(SelectorUnderFireCover,Squad,Leader);
 
 			SelectorUnderFireCover.m_tEnemyPosition = tHitPosition;
-			SelectorUnderFireCover.m_tDirection = tHitDir;
 
 			if (AI_Path.bNeedRebuild)
 				vfBuildPathToDestinationPoint(0);
 			else
 				vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
 				
-			if (AI_Path.fSpeed)
+			if (AI_Path.fSpeed > EPS_L)
 				SetDirectionLook();
 			else
 				vfAimAtEnemy();
@@ -1515,7 +1540,6 @@ void CAI_Soldier::OnHurtAloneDefend()
 			vfInitSelector(SelectorUnderFireCover,Squad,Leader);
 
 			SelectorUnderFireCover.m_tEnemyPosition = tHitPosition;
-			SelectorUnderFireCover.m_tDirection = tHitDir;
 
 			if (AI_Path.bNeedRebuild)
 				vfBuildPathToDestinationPoint(0);
@@ -1528,59 +1552,46 @@ void CAI_Soldier::OnHurtAloneDefend()
 				vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 			else
 				vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
+			
 			break;
 		}
 		case BODY_STATE_LIE : {
-			vfInitSelector(SelectorUnderFireLine,Squad,Leader);
-
-			SelectorUnderFireLine.m_tEnemyPosition = tHitPosition;
-			SelectorUnderFireLine.m_tDirection = tHitDir;
-
-			if (AI_Path.bNeedRebuild)
-				vfBuildPathToDestinationPoint(0);
-			else
-				vfSearchForBetterPositionWTime(SelectorUnderFireLine,Squad,Leader);
-				
 			vfAimAtEnemy();
 			
-			if (dwCurTime - dwHitTime > 15000) {
-				if (m_cBodyState != BODY_STATE_STAND) {
+			if (dwCurTime - dwHitTime > 7500) {
+				vfInitSelector(SelectorUnderFireCover,Squad,Leader);
+
+				SelectorUnderFireCover.m_tEnemyPosition = tHitPosition;
+				SelectorUnderFireCover.fOptEnemyDistance = vPosition.distance_to(tHitPosition) + 10.f;
+
+				if (AI_Path.bNeedRebuild)
+					vfBuildPathToDestinationPoint(0);
+				else
+					vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+					
+				if ((dwCurTime - dwHitTime > 15000) && (m_cBodyState != BODY_STATE_STAND)) {
 					StandUp();
 					m_tpAnimationBeingWaited = tSoldierAnimations.tLie.tGlobal.tpStandUp;
+					vfSetMovementType(m_cBodyState,0);
 					SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
 				}
 			}
-			else
-				vfSetMovementType(m_cBodyState,m_fMinSpeed);
+			else {
+				vfInitSelector(SelectorUnderFireLine,Squad,Leader);
+
+				SelectorUnderFireLine.m_tEnemyPosition = tHitPosition;
+				SelectorUnderFireLine.fOptEnemyDistance = vPosition.distance_to(tHitPosition) + 10.f;
+
+				if (AI_Path.bNeedRebuild)
+					vfBuildPathToDestinationPoint(0);
+				else
+					vfSearchForBetterPositionWTime(SelectorUnderFireLine,Squad,Leader);
+			}
+			
+			vfSetMovementType(m_cBodyState,m_fMinSpeed);
 			break;
 		}
 	}
-}
-
-void CAI_Soldier::OnWaitingForAnimation()
-{
-	WRITE_TO_LOG("Waiting for animation...");
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-
-	if (m_bStateChanged)
-		m_bActionStarted = true;
-		
-	CHECK_IF_GO_TO_PREV_STATE(!m_bActionStarted);
-}
-
-void CAI_Soldier::OnWaitingForTime()
-{
-	WRITE_TO_LOG("Waiting for time...");
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-
-	CHECK_IF_SWITCH_TO_NEW_STATE((Level().timeServer() - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (dwHitTime > m_dwLastRangeSearch),aiSoldierPatrolHurt)
-
-	if (m_bStateChanged)
-		m_dwLastRangeSearch = Level().timeServer();
-		
-	CHECK_IF_GO_TO_PREV_STATE(Level().timeServer() - m_dwLastRangeSearch > m_dwTimeBeingWaited);
 }
 
 void CAI_Soldier::Think()
