@@ -91,11 +91,11 @@ function Trader:process ()
 
     self.current_state = self.next_state
     if self.current_state == trader_idle then 
-       process_idle ()
+       self:process_idle ()
     elseif self.current_state == trader_wait then
-       process_wait ()
+       self:process_wait ()
     elseif self.current_state == trader_end then
-       process_end ()        
+       self:process_end ()        
     end    
         
         
