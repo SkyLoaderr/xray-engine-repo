@@ -507,19 +507,20 @@ typedef TokenValue<u32>	Token32Value;
 
 class RTokenValueCustom{
 public:
-	RTokenVec*			token;
-    					RTokenValueCustom(RTokenVec* _token):token(_token){;}
+	xr_rtoken*			token;
+    u32					token_count;
+    					RTokenValueCustom(xr_rtoken* _token, u32 _t_cnt):token(_token),token_count(_t_cnt){;}
 };
 template <class T>
 class RTokenValue: public CustomValue<T>, public RTokenValueCustom
 {
 public:
-						RTokenValue		(T* val, RTokenVec* _token):CustomValue<T>(val),RTokenValueCustom(_token){};
+						RTokenValue		(T* val, xr_rtoken* _token, u32 _t_cnt):CustomValue<T>(val),RTokenValueCustom(_token,_t_cnt){};
     virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
         ref_str draw_val;
         if (!OnDrawText.empty())	OnDrawText(this, draw_val);
-        else			for(RTokenVecIt it=token->begin(); it!=token->end(); it++) if (it->id==GetValue()) return *it->name;
+        else			for(u32 k=0; k<token_count; k++) if (token[k].id==GetValue()) return *token[k].name;
         return draw_val.c_str();
     }
 };
@@ -539,7 +540,7 @@ public:
 	u32					cnt;
     const Item*			items;
 public:
-						TokenValueSH	(u32* val, u32 _cnt, const Item* _items):CustomValue<u32>(val),cnt(_cnt),items(_items){};
+						TokenValueSH	(u32* val, const Item* _items, u32 _cnt):CustomValue<u32>(val),cnt(_cnt),items(_items){};
 	virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
         u32 draw_val 	= GetValue();
@@ -551,9 +552,10 @@ public:
 
 class ListValue: public RTextValue{
 public:                                   
-	RStringVec*			items;
+	ref_str*			items;
+    u32					item_count;
 public:                                   
-						ListValue		(ref_str* val, RStringVec* _items):RTextValue(val),items(_items){};
+						ListValue		(ref_str* val, ref_str* _items, u32 cnt):RTextValue(val),items(_items),item_count(cnt){};
 	virtual bool		Equal			(PropValue* val)
     {
         if (items!=((ListValue*)val)->items){

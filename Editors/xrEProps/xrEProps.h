@@ -95,11 +95,11 @@ public:
 	virtual Token8Value*		__stdcall	CreateToken8	    (PropItemVec& items, ref_str key, u8* val, xr_token* token)=0;
 	virtual Token16Value*		__stdcall	CreateToken16	    (PropItemVec& items, ref_str key, u16* val, xr_token* token)=0;
 	virtual Token32Value*		__stdcall	CreateToken32	    (PropItemVec& items, ref_str key, u32* val, xr_token* token)=0;
-	virtual RToken8Value* 		__stdcall	CreateRToken8	    (PropItemVec& items, ref_str key, u8* val, RTokenVec* token)=0;
-	virtual RToken16Value* 		__stdcall	CreateRToken16	    (PropItemVec& items, ref_str key, u16* val, RTokenVec* token)=0;
-	virtual RToken32Value* 		__stdcall	CreateRToken32	    (PropItemVec& items, ref_str key, u32* val, RTokenVec* token)=0;
-	virtual TokenValueSH*   	__stdcall	CreateTokenSH	    (PropItemVec& items, ref_str key, u32* val, u32 cnt, const TokenValueSH::Item* lst)=0;
-	virtual ListValue* 	 		__stdcall	CreateList		    (PropItemVec& items, ref_str key, ref_str* val, RStringVec* lst)=0;
+	virtual RToken8Value* 		__stdcall	CreateRToken8	    (PropItemVec& items, ref_str key, u8* val, xr_rtoken* token, u32 t_cnt)=0;
+	virtual RToken16Value* 		__stdcall	CreateRToken16	    (PropItemVec& items, ref_str key, u16* val, xr_rtoken* token, u32 t_cnt)=0;
+	virtual RToken32Value* 		__stdcall	CreateRToken32	    (PropItemVec& items, ref_str key, u32* val, xr_rtoken* token, u32 t_cnt)=0;
+	virtual TokenValueSH*   	__stdcall	CreateTokenSH	    (PropItemVec& items, ref_str key, u32* val, const TokenValueSH::Item* lst, u32 cnt)=0;
+	virtual ListValue* 	 		__stdcall	CreateList		    (PropItemVec& items, ref_str key, ref_str* val, ref_str* lst, u32 cnt)=0;
     virtual U32Value*  			__stdcall	CreateColor		    (PropItemVec& items, ref_str key, u32* val)=0;
     virtual ColorValue*			__stdcall	CreateFColor	    (PropItemVec& items, ref_str key, Fcolor* val)=0;
     virtual VectorValue*		__stdcall	CreateVColor	    (PropItemVec& items, ref_str key, Fvector* val)=0;

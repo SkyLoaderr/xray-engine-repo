@@ -728,14 +728,14 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_RTOKEN:{
                     pmEnum->Items->Clear();
                     RTokenValueCustom* T		= dynamic_cast<RTokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(T);
-                    RTokenVec* token_list 		= T->token;
                     TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
                     mi->Caption 				= "-";
                     pmEnum->Items->Add			(mi);
-                    for(RTokenVecIt it=token_list->begin(); it!=token_list->end(); it++){
+                    for(u32 k=0; k<T->token_count; k++){
+                    	xr_rtoken& t= T->token[k];
                         mi 			= xr_new<TMenuItem>((TComponent*)0);
-                        mi->Tag		= it-token_list->begin();
-                        mi->Caption = *it->name;
+                        mi->Tag		= k;
+                        mi->Caption = *t.name;
                         mi->OnClick = PMItemClick;
                         pmEnum->Items->Add(mi);
                     }
@@ -757,14 +757,13 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_LIST:{
                     pmEnum->Items->Clear();
                     ListValue* T				= dynamic_cast<ListValue*>(prop->GetFrontValue()); R_ASSERT(T);
-                    RStringVec* lst = T->items;
                     TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
                     mi->Caption 	= "-";
                     pmEnum->Items->Add(mi);
-                    for(RStringVecIt it=lst->begin(); it!=lst->end(); it++){
+                    for(u32 k=0; k<T->item_count; k++){
                         mi 			= xr_new<TMenuItem>((TComponent*)0);
-                        mi->Tag		= it-lst->begin();
-                        mi->Caption = it->c_str();
+                        mi->Tag		= k;
+                        mi->Caption = T->items[k].c_str();
                         mi->OnClick = PMItemClick;
                         pmEnum->Items->Add(mi);
                     }
@@ -925,9 +924,8 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_RTOKEN:{
 			RTokenValueCustom* V	= dynamic_cast<RTokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(V);
-            RTokenVec* token_list   = V->token;
             BOOL bRes 				= FALSE;
-            u32 new_val				= (*token_list)[mi->Tag].id;
+            u32 new_val				= V->token[mi->Tag].id;
             if (!RTokenOnEdit<u8>(prop,new_val,bRes))
                 if (!RTokenOnEdit<u16>(prop,new_val,bRes))
                     if (!RTokenOnEdit<u32>(prop,new_val,bRes))
@@ -948,7 +946,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_LIST:{
 			ListValue* V			= dynamic_cast<ListValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            ref_str new_val			= (*V->items)[mi->Tag];
+            ref_str new_val			= V->items[mi->Tag];
             if (prop->AfterEdit<ListValue,ref_str>(new_val))
                 if (prop->ApplyValue<ListValue,ref_str>(new_val)){
                     Modified			();

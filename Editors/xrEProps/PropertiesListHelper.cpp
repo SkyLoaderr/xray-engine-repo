@@ -80,16 +80,16 @@ Token16Value*	CPropHelper::CreateToken16	(PropItemVec& items, ref_str key, u16* 
 {   return		(Token16Value*)	AppendValue	(items,key,xr_new<Token16Value>(val,token),PROP_TOKEN);				}
 Token32Value*	CPropHelper::CreateToken32	(PropItemVec& items, ref_str key, u32* val, xr_token* token)
 {   return		(Token32Value*)	AppendValue	(items,key,xr_new<Token32Value>(val,token),PROP_TOKEN);				}
-RToken8Value* 	CPropHelper::CreateRToken8	(PropItemVec& items, ref_str key, u8* val, RTokenVec* token)
-{   return		(RToken8Value*)	AppendValue	(items,key,xr_new<RToken8Value>(val,token),PROP_RTOKEN);			}
-RToken16Value* 	CPropHelper::CreateRToken16	(PropItemVec& items, ref_str key, u16* val, RTokenVec* token)
-{   return		(RToken16Value*)AppendValue	(items,key,xr_new<RToken16Value>(val,token),PROP_RTOKEN);			}
-RToken32Value* 	CPropHelper::CreateRToken32	(PropItemVec& items, ref_str key, u32* val, RTokenVec* token)
-{   return		(RToken32Value*)AppendValue	(items,key,xr_new<RToken32Value>(val,token),PROP_RTOKEN);			}
-TokenValueSH*   CPropHelper::CreateTokenSH	(PropItemVec& items, ref_str key, u32* val, u32 cnt, const TokenValueSH::Item* lst)
-{   return		(TokenValueSH*)	AppendValue	(items,key,xr_new<TokenValueSH>(val,cnt,lst),PROP_SH_TOKEN);		}
-ListValue* 	 	CPropHelper::CreateList		(PropItemVec& items, ref_str key, ref_str* val, RStringVec* lst)
-{   return		(ListValue*)	AppendValue	(items,key,xr_new<ListValue>(val,lst),PROP_LIST);       			}
+RToken8Value* 	CPropHelper::CreateRToken8	(PropItemVec& items, ref_str key, u8* val, xr_rtoken* token, u32 t_cnt)
+{   return		(RToken8Value*)	AppendValue	(items,key,xr_new<RToken8Value>(val,token,t_cnt),PROP_RTOKEN);		}
+RToken16Value* 	CPropHelper::CreateRToken16	(PropItemVec& items, ref_str key, u16* val, xr_rtoken* token, u32 t_cnt)
+{   return		(RToken16Value*)AppendValue	(items,key,xr_new<RToken16Value>(val,token,t_cnt),PROP_RTOKEN);		}
+RToken32Value* 	CPropHelper::CreateRToken32	(PropItemVec& items, ref_str key, u32* val, xr_rtoken* token, u32 t_cnt)
+{   return		(RToken32Value*)AppendValue	(items,key,xr_new<RToken32Value>(val,token,t_cnt),PROP_RTOKEN);		}
+TokenValueSH*   CPropHelper::CreateTokenSH	(PropItemVec& items, ref_str key, u32* val, const TokenValueSH::Item* lst, u32 cnt)
+{   return		(TokenValueSH*)	AppendValue	(items,key,xr_new<TokenValueSH>(val,lst,cnt),PROP_SH_TOKEN);		}
+ListValue* 	 	CPropHelper::CreateList		(PropItemVec& items, ref_str key, ref_str* val, ref_str* lst, u32 cnt)
+{   return		(ListValue*)	AppendValue	(items,key,xr_new<ListValue>(val,lst,cnt),PROP_LIST);       			}
 U32Value*  		CPropHelper::CreateColor   	(PropItemVec& items, ref_str key, u32* val)
 {   return		(U32Value*)		AppendValue	(items,key,xr_new<U32Value>(val,0x00000000,0xffffffff,1,0),PROP_COLOR);}
 ColorValue*		CPropHelper::CreateFColor	(PropItemVec& items, ref_str key, Fcolor* val)
