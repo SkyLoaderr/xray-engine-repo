@@ -76,6 +76,22 @@ float cover_in_direction(u32 level_vertex_id, const Fvector &direction)
 	return			(ai().level_graph().cover_in_direction(y,level_vertex_id));
 }
 
+float rain_factor()
+{
+	return			(g_pGamePersistent->Environment.CurrentEnv.rain_density);
+}
+
+u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distance)
+{
+	direction.normalize_safe();
+	direction.mul	(max_distance);
+	Fvector			start_position = ai().level_graph().vertex_position(level_vertex_id);
+	Fvector			finish_position = Fvector(start_position).add(direction);
+	u32				result = u32(-1);
+	ai().level_graph().find_farthest_node_in_direction(level_vertex_id,start_position,finish_position,result,0);
+	return			(result);
+}
+
 void CScriptEngine::export_artifact_merger()
 {
 	module(lua())
@@ -150,7 +166,9 @@ void CScriptEngine::export_level()
 		def("set_weather",						set_weather),
 		def("set_time_factor",					set_time_factor),
 		def("get_time_factor",					get_time_factor),
-		def("cover_in_direction",				cover_in_direction)
+		def("cover_in_direction",				cover_in_direction),
+		def("vertex_in_direction",				vertex_in_direction),
+		def("rain_factor",						rain_factor)
 	];
 
 	module(lua())
