@@ -172,7 +172,7 @@ public:
 	// Main
 	virtual void					Calculate				();
 	virtual void					Render					();
-	virtual void					Screenshot				(LPCSTR postfix=0, BOOL bSquare=FALSE);
+	virtual void					Screenshot				(ScreenshotMode mode=SM_NORMAL, LPCSTR name = 0);
 	
 	// Render mode
 	virtual void					rmNear					();
