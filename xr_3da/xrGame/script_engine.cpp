@@ -175,7 +175,7 @@ void CScriptEngine::process	()
 	for (u32 i=0, n=m_load_queue.size(); !m_load_queue.empty(); ++i) {
 		LPSTR					S2 = m_load_queue.front();
 		m_load_queue.pop_front	();
-		if (!xr_strlen(S2) || !xr_strcmp(S2,"_G") || (m_reload_modules && i<n) || !namespace_loaded(S2)) {
+		if (!xr_strlen(S2) || xr_strcmp(S2,"_G") || (m_reload_modules && i<n) || !namespace_loaded(S2)) {
 			FS.update_path		(S,"$game_scripts$",strconcat(S1,S2,".script"));
 			Msg					("* loading script %s",S1);
 			load_file			(S,true);

@@ -15,6 +15,7 @@ xr_token					game_type_token						[ ]={
 	{ "cs",					GAME_CS									},
 	{ "teamdeathmatch",		GAME_TEAMDEATHMATCH						},
 	{ "artefacthunt",		GAME_ARTEFACTHUNT						},
+	{ "new_dm",				GAME_NEW_DM						},
 	{ 0,							0								}
 };
 
@@ -38,25 +39,40 @@ BOOL xrServer::Connect(LPSTR &session_name)
 	switch (type_id)
 	{
 	case GAME_SINGLE:	
+
+//		game				= dynamic_cast<game_sv_Single*> ( NEW_INSTANCE (CLSID_GAME_SINGLE) );
 		game				= xr_new<game_sv_Single> (this);
 		break;
 	case GAME_DEATHMATCH:
-		game				= xr_new<game_sv_Deathmatch> ();
+		game				= dynamic_cast<game_sv_Deathmatch*> ( NEW_INSTANCE (CLSID_GAME_DEATHMATCH) );
+//		game				= xr_new<game_sv_Deathmatch> ();
 		break;
 	case GAME_TEAMDEATHMATCH:
-		game				= xr_new<game_sv_TeamDeathmatch> ();
+		game				= dynamic_cast<game_sv_TeamDeathmatch*> ( NEW_INSTANCE (CLSID_GAME_TEAMDEATHMATCH) );
+//		game				= xr_new<game_sv_TeamDeathmatch> ();
 		break;
 	case GAME_ARTEFACTHUNT:
-		game				= xr_new<game_sv_ArtefactHunt> ();
+		game				= dynamic_cast<game_sv_ArtefactHunt*> ( NEW_INSTANCE (CLSID_GAME_ARTEFACTHUNT) );
+//		game				= xr_new<game_sv_ArtefactHunt> ();
 		break;
 	case GAME_CS:
-		game				= xr_new<game_sv_CS> ();
+		game				= dynamic_cast<game_sv_CS*> ( NEW_INSTANCE (CLSID_GAME_CS) );
+//		game				= xr_new<game_sv_CS> ();
 		break;
+
+	case GAME_NEW_DM:
+		game				= dynamic_cast<game_sv_GameState*> ( NEW_INSTANCE (MK_CLSID('G','M','_','N','E','W','D','M') ) );
+		//		game				= xr_new<game_sv_CS> ();
+		break;
+
 	default:
 		R_ASSERT2(0, "Unknown game type!!!");
 //		return				FALSE;
 		break;
 	}
+
+
+
 
 	// Options
 	if (0==game)			return FALSE;

@@ -36,7 +36,7 @@ namespace ObjectFactory {
 
 #ifndef NO_SCRIPTS
 #	ifndef NO_XR_GAME
-		typedef CAttachableItem	CLIENT_SCRIPT_BASE_CLASS;
+		typedef DLL_Pure		CLIENT_SCRIPT_BASE_CLASS;
 #	endif
 	typedef CSE_Abstract		SERVER_SCRIPT_BASE_CLASS;
 #endif

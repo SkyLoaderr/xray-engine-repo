@@ -75,6 +75,11 @@ int bit_not(int i)
 	return			(~i);
 }
 
+LPCSTR user_name()
+{
+	return			(Core.UserName);
+}
+
 void CScriptEngine::script_register(lua_State *L)
 {
 	function	(L,	"log",							LuaLog);
@@ -83,10 +88,10 @@ void CScriptEngine::script_register(lua_State *L)
 	function	(L,	"verify_if_thread_is_running",	verify_if_thread_is_running);
 	function	(L,	"editor",						editor);
 	function	(L,	"bit_and",						bit_and);
-	function	(L,	"bit_or",					bit_or);
-	function	(L,	"bit_xor",					bit_xor);
-	function	(L,	"bit_not",					bit_not);
-
+	function	(L,	"bit_or",						bit_or);
+	function	(L,	"bit_xor",						bit_xor);
+	function	(L,	"bit_not",						bit_not);
+	function	(L, "user_name",					user_name);
 #ifdef XRGAME_EXPORTS
 	function	(L,	"device",						get_device);
 #endif

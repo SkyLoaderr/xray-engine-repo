@@ -162,4 +162,8 @@ public:
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(u32	id_who);
 //	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(game_sv_Deathmatch)
+#undef script_type_list
+#define script_type_list save_type_list(game_sv_Deathmatch)
