@@ -51,14 +51,6 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 	if (0==triCount)	return;
 	RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
 
-	// Calculate XForms
-	Fmatrix	XForm, invXForm;
-	float	R			= sphere.R;
-//	XForm.scale			(R,R,R);
-//	XForm.translate_over(sphere.P);
-
-	invXForm.translate	(-sphere.P.x,-sphere.P.y,-sphere.P.z);
-
 	// Clip and triangulate polygons
 	Fvector	cam = Device.vCameraPosition;
 	float	r2	= sphere.R*2;
@@ -77,7 +69,6 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 
 		// Triangulation
 		PPA_Vertex		vert1,vert2,vert3;
-		Fvector			uv;
 		vert1.N.set		(Poly.n);	mk_vertex(vert1,V1,sphere.P,r2);	vlist.push_back	(vert1);
 		vert2.N.set		(Poly.n);	mk_vertex(vert2,V2,sphere.P,r2);	vlist.push_back	(vert2);
 		vert3.N.set		(Poly.n);	mk_vertex(vert3,V3,sphere.P,r2);	vlist.push_back	(vert3);
