@@ -166,8 +166,8 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 	case eFire:
 		{
 			fTime-=dt;
-			Fvector p1, d;
-			m_pParent->g_fireParams(p1,d);
+			Fvector p1_base, d_base;
+			m_pParent->g_fireParams(p1_base,d_base);
 			while (fTime<0)
 			{
 				VERIFY(m_pParent);
@@ -176,6 +176,7 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 				for (int i=0; i<iShotCount; i++){
 					// real fire
 					Collide::ray_query RQ;
+					Fvector p1=p1_base, d=d_base;
 					if (FireTrace( p1, d, RQ )){
 						if (RQ.O){
 							if (RQ.O->CLS_ID == CLSID_ENTITY)
