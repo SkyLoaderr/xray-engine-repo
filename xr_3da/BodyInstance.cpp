@@ -230,13 +230,14 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 	if (part>=MAX_PARTS)	return 0;
 	if (part<0)	{
 		for (int i=0; i<MAX_PARTS; i++)
-			LL_PlayCycle(i,motion,blendAccrue,blendFalloff,Speed,noloop);
+			LL_PlayCycle(i,motion,bMixing,blendAccrue,blendFalloff,Speed,noloop);
 		return 0;
 	}
 	if (0==(*partition)[part].Name)	return 0;
 
 	// Process old cycles and create new
-	LL_FadeCycle	(part,blendFalloff);
+	if (bMixing)	LL_FadeCycle	(part,blendFalloff);
+	else			LL_CloseCycle	(part);
 	CPartDef& P	=	(*partition)[part];
 	CBlend*	B	=	IBlend_Create();
 
@@ -249,8 +250,13 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 	blend_cycles[part].push_back(B);
 
 	// Setup blend params
-	B->blend		= CBlend::eAccrue;
-	B->blendAmount	= 0;
+	if (bMixing)	{
+		B->blend		= CBlend::eAccrue;
+		B->blendAmount	= 0;
+	} else {
+		B->blend		= CBlend::eFixed;
+		B->blendAmount	= 1;
+	}
 	B->blendAccrue	= blendAccrue;
 	B->blendFalloff	= 0; // blendFalloff used for previous cycles
 	B->blendPower	= 1;
