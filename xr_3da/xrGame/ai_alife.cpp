@@ -95,6 +95,8 @@ void CAI_ALife::Save()
 
 void CAI_ALife::Load()
 {
+	Memory.mem_compact			();
+	u32							dwMemUsage = Memory.mem_usage();
 	Log							("* Loading ALife Simulator...");
 	m_tALifeVersion				= ALIFE_VERSION;
 	m_tpActor					= 0;
@@ -138,7 +140,7 @@ void CAI_ALife::Load()
 	m_tpAI_DDD					= xr_new<CAI_DDD>();
 	m_tpAI_DDD->vfLoad			();
 	m_bLoaded					= true;
-	Log							("* Loading ALife Simulator is successfully completed");
+	Msg							("* Loading ALife Simulator is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - dwMemUsage)/1048576.0);
 }
 
 void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
