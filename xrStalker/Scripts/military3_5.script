@@ -46,7 +46,7 @@ function Projector:process ()
 	   end
 	else
 	   self.current = self.current + 1
-	   if self.current > table.getn (self.points) then self.curren = 1 end
+	   if self.current > table.getn (self.points) then self.current = 1 end
 	   point = self.points[self.current]
 	end
 
