@@ -232,7 +232,7 @@ void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 {
-	UI.Command(COMMAND_EDIT_PREFERENCES);
+	UI.Command(COMMAND_EDITOR_PREF);
 }
 //---------------------------------------------------------------------------
 

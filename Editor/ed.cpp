@@ -155,7 +155,6 @@ USELIB("lib\DX\d3dx8d.lib");
 USEUNIT("edit\EditObject.cpp");
 USEUNIT("engine\Xr_input.cpp");
 USEUNIT("engine\fcontroller.cpp");
-USEUNIT("engine\EStats.cpp");
 USEUNIT("engine\XR_CustomFont.cpp");
 USEUNIT("engine\XR_HUDFont.cpp");
 USELIB("lib\DX\dinput.lib");
@@ -200,6 +199,7 @@ USEUNIT("edit\ETextureParams.cpp");
 USERES("resource.res");
 USEUNIT("Engine\Blenders\blender_light.cpp");
 USEUNIT("edit\FolderLib.cpp");
+USEUNIT("edit\EStats.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

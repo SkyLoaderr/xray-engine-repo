@@ -38,6 +38,7 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
     else paLeftBar->Parent = frmMain;
 
     tmRefresh->Enabled = true; tmRefreshTimer(Sender);
+    UI.Command				(COMMAND_UPDATE_GRID);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)

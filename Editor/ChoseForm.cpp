@@ -11,6 +11,8 @@
 #include "Library.h"
 #include "EditObject.h"
 #include "D3DUtils.h"
+#include "ImageThumbnail.h"
+#include "FolderLib.h"
 
 #ifdef _LEVEL_EDITOR
 #include "PSLibrary.h"
@@ -38,18 +40,19 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
     form->tvItems->ShowCheckboxes 	= bMulti;
 	// init
 	if (start_name) last_item 		= start_name;
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,0,0);
+	form->tvItems->IsUpdating		= true;
     form->tvItems->Selected 		= 0;
     form->tvItems->Items->Clear		();
     // fill object list
     for (LibObjIt it=Lib->FirstObj(); it!=Lib->LastObj(); it++){
 		if (!start_folder||(start_folder&&(stricmp(start_folder,(*it)->GetFolderName())==0)))
-			if (!bExcludeSystem||(bExcludeSystem&&((*it)->GetName()[0]!='$')))
-    	    	form->AddItemToFolder((*it)->GetFolderName(),(*it)->GetName(),(*it));
+			if (!bExcludeSystem||(bExcludeSystem&&((*it)->GetName()[0]!='$'))){
+            	TElTreeItem* folder = FOLDER::AppendFolder(form->tvItems,(*it)->GetFolderName());
+    	    	form->tvItems->Items->AddChildObject(folder,(*it)->GetName(),(TObject*)TYPE_OBJECT);
+            }
     }
     // redraw
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
-	form->tvItems->Repaint			();
+	form->tvItems->IsUpdating		= false;
 	// show
     if (form->ShowModal()!=mrOk) return 0;
     return select_item.c_str();
@@ -61,7 +64,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
 	form->Mode = smShader;
 	// init
 	if (init_name) last_item = init_name;
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,0,0);
+	form->tvItems->IsUpdating		= true;
     form->tvItems->Selected = 0;
     form->tvItems->Items->Clear();
     // fill shaders list
@@ -71,16 +74,10 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
 	for (CShaderManager::BlenderPairIt _S = _F; _S!=_E; _S++){
 //		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
 		if (bExcludeSystem&&(_S->first[0]!='$')||(!bExcludeSystem))
-        	form->AddItemToFolder("Shaders",_S->first);
+			FOLDER::AppendObject(form->tvItems,_S->first);
     }
-//S    for (SH_ShaderDef* S=SHLib->FirstShader(); S!=SHLib->LastShader(); S++){
-//		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
-//S		if (bExcludeSystem&&(S->cName[0]!='$')||(!bExcludeSystem))
-//S        	form->AddItemToFolder("Shaders",S->cName);
-//S    }
     // redraw
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
-	form->tvItems->Repaint();
+	form->tvItems->IsUpdating		= false;
 	// show
     if (form->ShowModal()!=mrOk) return 0;
     return select_item.c_str();
@@ -92,25 +89,17 @@ LPCSTR __fastcall TfrmChoseItem::SelectShaderXRLC(LPCSTR start_folder, LPCSTR in
 	form->Mode = smShaderXRLC;
 	// init
 	if (init_name) last_item = init_name;
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,0,0);
+	form->tvItems->IsUpdating		= true;
     form->tvItems->Selected = 0;
     form->tvItems->Items->Clear();
     // fill shaders list
     Shader_xrLCVec& shaders = Device.ShaderXRLC.Library();
 	Shader_xrLCIt _F = shaders.begin();
 	Shader_xrLCIt _E = shaders.end();
-	for ( ;_F!=_E;_F++){
-//		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
-		form->AddItemToFolder("Shaders",_F->Name);
-    }
-//S    for (SH_ShaderDef* S=SHLib->FirstShader(); S!=SHLib->LastShader(); S++){
-//		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
-//S		if (bExcludeSystem&&(S->cName[0]!='$')||(!bExcludeSystem))
-//S        	form->AddItemToFolder("Shaders",S->cName);
-//S    }
+	for ( ;_F!=_E;_F++)
+		FOLDER::AppendObject(form->tvItems,_F->Name);
     // redraw
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
-	form->tvItems->Repaint();
+	form->tvItems->IsUpdating		= false;
 	// show
     if (form->ShowModal()!=mrOk) return 0;
     return select_item.c_str();
@@ -123,7 +112,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
 	form->Mode = smPS;
 	// init
 	if (init_name) last_item = init_name;
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,0,0);
+	form->tvItems->IsUpdating		= true;
     form->tvItems->Selected = 0;
     form->tvItems->Items->Clear();
     // fill
@@ -132,8 +121,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
         	form->AddItemToFolder(S->m_Folder,S->m_Name);
     }
     // redraw
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
-	form->tvItems->Repaint();
+	form->tvItems->IsUpdating		= false;
 	// show
     if (form->ShowModal()!=mrOk) return 0;
     return select_item.c_str();
@@ -329,46 +317,6 @@ void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfrmChoseItem::tvItemsItemSelectedChange(TObject *Sender, TElTreeItem *Item)
-{
-//S
-/*
-	if (Item==tvItems->Selected) return;
-	_DELETE(sel_tex);
-    _DELETE(sel_thm);
-	if (Item&&Item->Data){
-        if (Mode==smTexture){
-	        AnsiString nm = ChangeFileExt(Item->Text,"");
-    	    sel_tex = new ETextureCore(nm.c_str());
-	        if (!sel_tex->Valid())	pbImage->Repaint();
-            else	 				pbImagePaint(Sender);
-	        lbItemName->Caption 	= "\""+nm+"\"";
-    	    lbFileName->Caption 	= "\""+Item->Text+"\"";
-			AnsiString temp; 		temp.sprintf("%d x %d x %s",sel_tex->width(),sel_tex->height(),sel_tex->alpha()?"32b":"24b");
-            lbInfo->Caption			= temp;
-        }else if (Mode==smObject){
-	        AnsiString nm = AnsiString("$O_")+Item->Text;
-    	    sel_thm 				= new ETextureThumbnail(nm.c_str());
-            if (!sel_thm->Load()) 	pbImage->Repaint();
-            else				 	pbImagePaint(Sender);
-            CLibObject* LO			= (CLibObject*)Item->Data;
-			lbItemName->Caption 	= "\""+AnsiString(LO->GetName())+"\"";
-			lbFileName->Caption		= "\""+AnsiString(LO->GetSrcName())+"\"";
-//			AnsiString temp; 		temp.sprintf("Vertices: %d\nFaces: %d",LO->GetReference()->GetVertexCount(),LO->GetReference()->GetFaceCount());
-            lbInfo->Caption			= "";//temp;
-        }else{
-			lbItemName->Caption = "\""+Item->Text+"\"";
-			lbFileName->Caption	= "...";
-            lbInfo->Caption		= "...";
-        }
-    }else{
-		lbItemName->Caption = "...";
-		lbFileName->Caption	= "...";
-		lbInfo->Caption		= "...";
-    }
-*/
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
 {
@@ -491,6 +439,43 @@ void __fastcall TfrmChoseItem::ebMultiClearClick(TObject *Sender)
 	tvMulti->Items->Clear();
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
     	if (node->Checked) node->Checked=false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
+{
+	TElTreeItem* Item = tvItems->Selected;
+	_DELETE(m_Thm);
+	if (Item&&Item->Data){
+        if (Mode==smTexture){
+	        AnsiString nm 			= ChangeFileExt(Item->Text,"");
+    	    m_Thm 					= new EImageThumbnail(nm.c_str());
+	        if (!m_Thm->Valid())	pbImage->Repaint();
+            else	 				pbImagePaint(Sender);
+	        lbItemName->Caption 	= "\""+nm+"\"";
+    	    lbFileName->Caption 	= "\""+Item->Text+"\"";
+			AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlphaChannel?"32b":"24b");
+            lbInfo->Caption			= temp;
+        }else if (Mode==smObject){
+	        AnsiString nm = AnsiString("$O_")+Item->Text;
+    	    m_Thm 					= new EImageThumbnail(nm.c_str());
+            if (!sel_thm->Load()) 	pbImage->Repaint();
+            else				 	pbImagePaint(Sender);
+            CLibObject* LO			= (CLibObject*)Item->Data;
+			lbItemName->Caption 	= "\""+AnsiString(LO->GetName())+"\"";
+			lbFileName->Caption		= "\""+AnsiString(LO->GetSrcName())+"\"";
+			AnsiString temp; 		temp.sprintf("Vertices: %d\nFaces: %d",m_Thm->_Format().reserved[0],m_Thm->_Format().reserved[1]);
+            lbInfo->Caption			= "";//temp;
+        }else{
+			lbItemName->Caption = "\""+Item->Text+"\"";
+			lbFileName->Caption	= "...";
+            lbInfo->Caption		= "...";
+        }
+    }else{
+		lbItemName->Caption = "...";
+		lbFileName->Caption	= "...";
+		lbInfo->Caption		= "...";
+    }
 }
 //---------------------------------------------------------------------------
 

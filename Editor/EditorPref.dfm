@@ -416,9 +416,9 @@ object frmEditorPreferences: TfrmEditorPreferences
         object RxLabel17: TMxLabel
           Left = 189
           Top = 3
-          Width = 58
+          Width = 62
           Height = 13
-          Caption = 'Undo levels'
+          Caption = 'Undo Levels'
         end
         object seUndoLevels: TMultiObjSpinEdit
           Left = 283
@@ -492,14 +492,14 @@ object frmEditorPreferences: TfrmEditorPreferences
           Caption = ' Snap '
           TabOrder = 2
           object RxLabel28: TMxLabel
-            Left = 8
+            Left = 4
             Top = 15
             Width = 62
             Height = 13
             Caption = 'Angle (grad):'
           end
           object RxLabel29: TMxLabel
-            Left = 18
+            Left = 4
             Top = 33
             Width = 49
             Height = 13
@@ -546,16 +546,16 @@ object frmEditorPreferences: TfrmEditorPreferences
           object RxLabel12: TMxLabel
             Left = 5
             Top = 17
-            Width = 67
+            Width = 69
             Height = 13
-            Caption = 'Hide distance'
+            Caption = 'Hide Distance'
           end
           object RxLabel13: TMxLabel
             Left = 5
             Top = 36
-            Width = 93
+            Width = 96
             Height = 13
-            Caption = 'Ray pick height (m)'
+            Caption = 'Ray Pick Height (m)'
           end
           object seDOHideDistance: TMultiObjSpinEdit
             Left = 98
@@ -586,6 +586,57 @@ object frmEditorPreferences: TfrmEditorPreferences
             Value = 5
             AutoSize = False
             TabOrder = 1
+          end
+        end
+        object GroupBox3: TGroupBox
+          Left = 0
+          Top = 130
+          Width = 181
+          Height = 53
+          Caption = ' Grid '
+          TabOrder = 4
+          object MxLabel1: TMxLabel
+            Left = 4
+            Top = 15
+            Width = 79
+            Height = 13
+            Caption = 'Square Size (m):'
+          end
+          object MxLabel2: TMxLabel
+            Left = 4
+            Top = 33
+            Width = 79
+            Height = 13
+            Caption = 'Number of Cells:'
+          end
+          object seGridNumberOfCells: TMultiObjSpinEdit
+            Left = 109
+            Top = 31
+            Width = 69
+            Height = 18
+            LWSensitivity = 0.01
+            ButtonKind = bkLightWave
+            Increment = 10
+            MaxValue = 1000
+            MinValue = 10
+            Value = 100
+            AutoSize = False
+            TabOrder = 1
+          end
+          object seGridSquareSize: TMultiObjSpinEdit
+            Left = 109
+            Top = 13
+            Width = 69
+            Height = 18
+            LWSensitivity = 0.01
+            ButtonKind = bkLightWave
+            Decimal = 1
+            MaxValue = 10
+            MinValue = 0.1
+            ValueType = vtFloat
+            Value = 1
+            AutoSize = False
+            TabOrder = 0
           end
         end
       end

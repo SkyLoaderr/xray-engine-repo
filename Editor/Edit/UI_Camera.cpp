@@ -144,10 +144,12 @@ void CUI_Camera::Rotate(float dx, float dy){
 }
 
 bool CUI_Camera::MoveStart(TShiftState Shift){
-	if (!m_bMoving&&Shift.Contains(ssShift)){
-	    ShowCursor	(FALSE);
-        UI.iGetMousePosScreen(m_StartPos);
-		m_bMoving	= true;
+	if (Shift.Contains(ssShift)){
+    	if (!m_bMoving){
+		    ShowCursor	(FALSE);
+    	    UI.iGetMousePosScreen(m_StartPos);
+			m_bMoving	= true;
+        }
 		m_Shift 	= Shift;
         return true;
     }

@@ -18,8 +18,9 @@
 #include "UI_Main.h"
 #include "Scene.h"
 #include "builder.h"
+#include "D3DUtils.h"
 
-bool TUI::Command( int _Command, int p1 ){
+bool TUI::Command( int _Command, int p1, int p2 ){
 	char filebuffer[MAX_PATH]="";
 
     bool bRes = true;
@@ -45,7 +46,7 @@ bool TUI::Command( int _Command, int p1 ){
     	ShowContextMenu(EObjClass(p1));
         break;
 	case COMMAND_EDITOR_PREF:
-	    frmEditorPreferences->ShowModal();
+	    frmEditorPreferences->Run();
         break;
 	case COMMAND_OBJECT_LIST:
 		if( !Scene->locked() ){
@@ -486,9 +487,6 @@ bool TUI::Command( int _Command, int p1 ){
 			bRes = false;
         }
     	break;
-    case COMMAND_EDIT_PREFERENCES:
-	    frmEditorPreferences->Run();
-    	break;
     case COMMAND_SET_SNAP_OBJECTS:
 		if( !Scene->locked() ){
 	    	int cnt=Scene->SetSnapList();
@@ -519,9 +517,30 @@ bool TUI::Command( int _Command, int p1 ){
 			bRes = false;
         }
     	break;
-   case COMMAND_UPDATE_TOOLBAR:
+	case COMMAND_UPDATE_TOOLBAR:
     	fraLeftBar->UpdateBar();
     	break;
+	case COMMAND_UPDATE_GRID:
+    	DU::UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);
+	    OutGridSize();
+    	break;
+    case COMMAND_GRID_NUMBER_OF_SLOTS:
+    	if (p1)	frmEditorPreferences->seGridNumberOfCells->Value += frmEditorPreferences->seGridNumberOfCells->Increment;
+        else	frmEditorPreferences->seGridNumberOfCells->Value -= frmEditorPreferences->seGridNumberOfCells->Increment;
+        Command(COMMAND_UPDATE_GRID);
+    	break;
+    case COMMAND_GRID_SLOT_SIZE:{
+    	float step = frmEditorPreferences->seGridSquareSize->Increment;
+        float& val = frmEditorPreferences->seGridSquareSize->Value;
+    	if (p1){
+	    	if (val<1) step/=10.f;
+        	frmEditorPreferences->seGridSquareSize->Value += step;
+        }else{
+	    	if (fsimilar(val,1.f)||(val<1)) step/=10.f;
+        	frmEditorPreferences->seGridSquareSize->Value -= step;
+        }
+        Command(COMMAND_UPDATE_GRID);
+    	}break;
  	default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -577,8 +596,10 @@ void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
         	else if (Key=='G')	Command(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebGSnap);
         	else if (Key=='P')	Command(COMMAND_EDITOR_PREF);
         	else if (Key=='W')	Command(COMMAND_OBJECT_LIST);
-        	else if (Key==VK_DELETE)	Command(COMMAND_DELETE_SELECTION);
-        	else if (Key==VK_RETURN)    Command(COMMAND_SHOWPROPERTIES);
+        	else if (Key==VK_DELETE)Command(COMMAND_DELETE_SELECTION);
+        	else if (Key==VK_RETURN)Command(COMMAND_SHOWPROPERTIES);
+            else if (Key==VK_OEM_4)	Command(COMMAND_GRID_SLOT_SIZE,false);
+            else if (Key==VK_OEM_6)	Command(COMMAND_GRID_SLOT_SIZE,true);
         }
     }
 }

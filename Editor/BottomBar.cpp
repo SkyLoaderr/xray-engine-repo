@@ -6,6 +6,7 @@
 #include "UI_main.h"
 #include "leftbar.h"
 #include "LogForm.h"
+#include "EditorPref.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -69,6 +70,14 @@ void TUI::OutUICursorPos(){
         GetCursorPos(&pt);
         s.sprintf("Cursor: %d, %d",pt.x,pt.y);
         fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
+    }
+}
+//---------------------------------------------------------------------------
+void TUI::OutGridSize(){
+    if (g_bEditorValid){
+        AnsiString s;
+        s.sprintf("Grid: %1.1f",float(frmEditorPreferences->seGridSquareSize->Value));
+        fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
     }
 }
 //---------------------------------------------------------------------------

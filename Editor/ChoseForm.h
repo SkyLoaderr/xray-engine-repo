@@ -22,8 +22,7 @@
 #include "ElXPThemedControl.hpp"
 //---------------------------------------------------------------------------
 // refs
-class ETextureThumbnail;
-class ETextureCore;
+class EImageThumbnail;
 
 class TfrmChoseItem : public TForm
 {
@@ -53,8 +52,6 @@ __published:	// IDE-managed Components
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall tvItemsItemSelectedChange(TObject *Sender,
-          TElTreeItem *Item);
 	void __fastcall pbImagePaint(TObject *Sender);
 	void __fastcall tvItemsDblClick(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
@@ -70,14 +67,14 @@ __published:	// IDE-managed Components
           TDragObject *&DragObject);
 	void __fastcall ebMultiRemoveClick(TObject *Sender);
 	void __fastcall ebMultiClearClick(TObject *Sender);
+	void __fastcall tvItemsItemFocused(TObject *Sender);
 private:	// User declarations
 	static TfrmChoseItem* form;
     static AnsiString select_item;
     static AnsiString last_item;
     const char* StartFolder;
 
-//S    ETextureCore* sel_tex;
-//S    ETextureThumbnail* sel_thm;
+    EImageThumbnail* m_Thm;
 
     enum ESelectMode{
         smObject,
@@ -89,11 +86,6 @@ private:	// User declarations
     ESelectMode Mode;
 
     void InitItemsList(const char* nm=0);
-	TElTreeItem* FindItem(const char* s);
-    TElTreeItem* FindFolder(const char* s);
-    TElTreeItem* AddFolder(const char* s);
-    TElTreeItem* AddItem(TElTreeItem* node, const char* name, void* obj=(void*)1);
-    TElTreeItem* AddItemToFolder(const char* folder, const char* name, void* obj=(void*)1);
 
     bool bMultiSel;
     int iMultiSelLimit;

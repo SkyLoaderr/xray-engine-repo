@@ -116,6 +116,11 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seCameraFlySpeed;
 	TMxLabel *RxLabel15;
 	TMultiObjSpinEdit *seCameraFlyAltitude;
+	TGroupBox *GroupBox3;
+	TMxLabel *MxLabel1;
+	TMxLabel *MxLabel2;
+	TMultiObjSpinEdit *seGridNumberOfCells;
+	TMultiObjSpinEdit *seGridSquareSize;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

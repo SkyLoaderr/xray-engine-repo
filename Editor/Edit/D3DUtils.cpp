@@ -75,18 +75,18 @@ DWORD m_ColorGridTh = 0xffb4b4b4;
 DWORD m_SelectionRect=D3DCOLOR_RGBA(127,255,127,64);
 
 
-void UpdateGrid(float size, float step, int subdiv){
+void UpdateGrid(int number_of_cell, float square_size, int subdiv){
 	m_GridPoints.clear();
 // grid
 	int m_GridSubDiv[2];
 	int m_GridCounts[2];
     Fvector2 m_GridStep;
 
-    m_GridStep.set(step/subdiv,step/subdiv);
+    m_GridStep.set(square_size,square_size);
 	m_GridSubDiv[0] = subdiv;
 	m_GridSubDiv[1] = subdiv;
-	m_GridCounts[0] = iFloor(size/step)*subdiv;
-	m_GridCounts[1] = iFloor(size/step)*subdiv;
+	m_GridCounts[0] = number_of_cell;//iFloor(size/step)*subdiv;
+	m_GridCounts[1] = number_of_cell;//iFloor(size/step)*subdiv;
 
 	FVF::L left,right;
 	left.p.y = right.p.y = 0;
@@ -151,8 +151,6 @@ void InitUtilLibrary(){
 	LStream 	= Device.Streams.Create(FVF::F_L,65535);
     TLStream   	= Device.Streams.Create(FVF::F_TL,65535);
     LITStream	= Device.Streams.Create(FVF::F_LIT,65535);
-	// grid
-    UpdateGrid	(1000,5,5);
 }
 
 void UninitUtilLibrary(){

@@ -84,6 +84,7 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawDOSlotBoxes;
 	TMenuItem *miDrawDOBaseTexture;
 	TMenuItem *miDODrawObjects;
+	TPanel *paGridSquareSize;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

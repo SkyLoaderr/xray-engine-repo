@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 443
+  Width = 757
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -9,7 +9,7 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 757
     Height = 17
     Align = alTop
     BevelInner = bvLowered
@@ -18,7 +18,7 @@ object fraBottomBar: TfraBottomBar
     object paInfo: TPanel
       Left = 74
       Top = 1
-      Width = 368
+      Width = 624
       Height = 15
       Align = alClient
       Alignment = taLeftJustify
@@ -27,7 +27,7 @@ object fraBottomBar: TfraBottomBar
       object paStatus: TPanel
         Left = 150
         Top = 0
-        Width = 441
+        Width = 192
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -40,7 +40,7 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 0
         object cgProgress: TCGauge
-          Left = 312
+          Left = 63
           Top = 2
           Width = 127
           Height = 11
@@ -68,7 +68,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 1
       end
       object paCameraPos: TPanel
-        Left = 144
+        Left = 400
         Top = 0
         Width = 130
         Height = 15
@@ -159,7 +159,7 @@ object fraBottomBar: TfraBottomBar
         end
       end
       object paSel: TPanel
-        Left = 86
+        Left = 342
         Top = 0
         Width = 58
         Height = 15
@@ -177,7 +177,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 4
       end
       object paUICursor: TPanel
-        Left = 274
+        Left = 530
         Top = 0
         Width = 94
         Height = 15
@@ -222,6 +222,24 @@ object fraBottomBar: TfraBottomBar
         FlatAlwaysEdge = True
         OnMouseDown = ebOptionsMouseDown
       end
+    end
+    object paGridSquareSize: TPanel
+      Left = 698
+      Top = 1
+      Width = 58
+      Height = 15
+      Align = alRight
+      Alignment = taLeftJustify
+      BevelInner = bvLowered
+      Caption = 'Grid: 0.1 m'
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMaroon
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
     end
   end
   object fsStorage: TFormStorage
@@ -271,12 +289,18 @@ object fraBottomBar: TfraBottomBar
     Top = 33
   end
   object pmOptions: TMxPopupMenu
+    Alignment = paCenter
     AutoPopup = False
-    MenuAnimation = [maTopToBottom]
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 5
     Top = 24
     object Render1: TMenuItem

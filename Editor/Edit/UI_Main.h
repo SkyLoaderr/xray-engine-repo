@@ -61,6 +61,7 @@ protected:
     void RealUpdateScene();
 protected:
     void OutUICursorPos();
+	void OutGridSize();
 
     void D3D_CreateStateBlocks();
     void D3D_DestroyStateBlocks();
@@ -146,7 +147,7 @@ public:
     bool __fastcall KeyUp       (WORD Key, TShiftState Shift);
     bool __fastcall KeyPress    (WORD Key, TShiftState Shift);
 
-    bool Command( int _Command, int p = 0 );
+    bool Command( int _Command, int p = 0, int p2 = 0 );
 
     void BeginEState(EEditorState st){ m_EditorState.push_back(st); }
     void EndEState(){ m_EditorState.pop_back(); }

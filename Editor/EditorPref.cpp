@@ -89,6 +89,8 @@ void __fastcall TfrmEditorPreferences::fsEditorPrefRestorePlacement(
     UI.m_Cursor->SetBrushDepth(seBrushUpDepth->Value,seBrushDnDepth->Value);
     Fcolor c; c.set_windows(mc3DCursorColor->Brush->Color); UI.m_Cursor->SetColor(c);
 
+    UI.Command(COMMAND_UPDATE_GRID);
+
 	if (TS) pcObjects->ActivePage=TS;
 }
 //---------------------------------------------------------------------------

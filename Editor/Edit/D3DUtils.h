@@ -10,7 +10,7 @@ namespace DU{
     void InitUtilLibrary();
     void UninitUtilLibrary();
 
-	void UpdateGrid(float size, float step, int subdiv);
+	void UpdateGrid(int number_of_cell, float square_size, int subdiv=10);
 
     //----------------------------------------------------
     void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2, float szy2, float szz2, DWORD clr, bool bRot45=false);
