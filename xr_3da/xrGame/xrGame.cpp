@@ -23,6 +23,8 @@ ENGINE_API extern float		psHUD_FOV;
 extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
 DWORD						GAME;
+int							g_fraglimit		= 0;
+int							g_timelimit		= 0;
 
 xr_token					game_type_token						[ ]={
 	{ "single",				GAME_SINGLE								},
