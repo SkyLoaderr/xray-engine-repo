@@ -54,7 +54,7 @@
 		<visual>string_name2</visual>
 		<rank>veteran</rank>
 		<team>trader</team>
-		<start_dialog>trader_talk_about</start_dialog>
+		<start_dialog>escape_trader_start_dialog</start_dialog>
 	</character>
 	<character name_id="actor">
 		<name>Gunner</name>
