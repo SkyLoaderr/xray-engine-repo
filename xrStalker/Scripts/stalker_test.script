@@ -25,10 +25,10 @@ end
 --	action_base.initialize	(self)
 --end
 
-function custom_action:execute()
-	action_base.execute		(self)
-	printf					("action %s is executed!",self.name)
-end
+--function custom_action:execute()
+--	action_base.execute		(self)
+--	printf					("action %s is executed!",self.name)
+--end
 
 function custom_action:finalize()
 	action_base.finalize	(self)
