@@ -1059,6 +1059,26 @@ extern void delegate_test();
 extern void registry_test();
 extern void abstract_registry_test();
 
+//struct MI0 {
+//	virtual ~MI0(){}
+//};
+//
+struct MI2;
+
+struct MI1 {
+//	virtual ~MI1(){}
+	void add(MI2 *){}
+};
+
+struct MI2 : public MI1 {//, public MI0 {
+//	virtual ~MI2(){};
+};
+
+struct MI2W : public MI2, public wrap_base {};
+
+template <typename T>
+struct AW : public T, public wrap_base {};
+
 void test1()
 {
 //	registry_test();
@@ -1127,6 +1147,16 @@ void test1()
 			.def("add",	&CInternalStorage::add, adopt(_2))
 			.def("get",	&CInternalStorage::get),//adopt(return_value)),
 
+//		class_<MI0>("mi0")
+//			.def(constructor<>()),
+
+		class_<MI1>("mi1")
+			.def(constructor<>())
+			.def("add",&MI1::add,adopt(_2)),
+
+		class_<MI2,MI2W,MI1>("mi2")
+			.def(constructor<>()),
+
 		def("get_internals",	&get_internals)
 	];
 
@@ -1135,7 +1165,7 @@ void test1()
 //	registrator().script_register(L);
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
-	lua_dofile		(L,"x:\\heritage_test.script");
+//	lua_dofile		(L,"x:\\heritage_test2.script");
 //	lua_dofile		(L,"x:\\virtual_test.script");
 //	lua_dofile		(L,"x:\\comment_test.script");
 	if (xr_strlen(SSS)) {

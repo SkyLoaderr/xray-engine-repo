@@ -246,9 +246,11 @@ public:
 };
 
 template <typename func_type>
-struct CCaller {
+class CCaller {
+private:
 	func_type f;
 
+public:
 	IC				CCaller		(const func_type &_f) 
 									: f(_f)
 	{
@@ -274,31 +276,17 @@ public:
 	
 	virtual void load()
 	{
-		hierarchy_call<void,IPureALifeLObject>(
-			this,
-			IPureALifeLObject::load
-		);
+		hierarchy_call<void,IPureALifeLObject>(this,IPureALifeLObject::load);
 	}
 
 	virtual void save()
 	{
-		hierarchy_call<void,IPureALifeSObject>(
-			this,
-			IPureALifeSObject::save
-		);
+		hierarchy_call<void,IPureALifeSObject>(this,IPureALifeSObject::save);
 	}
 
 	virtual void foo(int a, int b)
 	{
-		hierarchy_call<void,IPureALifeXObject>(
-			this,
-			boost::bind(
-				IPureALifeXObject::foo,
-				_1,
-				a,
-				b
-			)
-		);
+		hierarchy_call<void,IPureALifeXObject>(this,boost::bind(IPureALifeXObject::foo,_1,a,b));
 	}
 };
 
@@ -308,6 +296,8 @@ void abstract_registry_test()
 	registry_container.load		();
 	registry_container.save		();
 	registry_container.foo		(6,7);
+	hierarchy_call<void,IPureALifeXObject>(&registry_container,boost::bind(IPureALifeXObject::foo,_1,8,9));
+
 	registry_container.registry	((r8*)0);
 	registry_container.registry	((r16*)0);
 	registry_container.registry	((r32*)0);
