@@ -195,9 +195,6 @@ void CObjectSpace::Load	(CStream *F)
 	z_count					= iCeil((H.aabb.max.z-H.aabb.min.z)/CL_SLOT_SIZE);
 	Static_Shift.invert		(H.aabb.min);
 	Dynamic.SetSize			( x_count, z_count );
-
-	// Game-postprocess
-	CFOrm_bofisudfds		(version)
 }
 //----------------------------------------------------------------------
 void CObjectSpace::dbgRender()
