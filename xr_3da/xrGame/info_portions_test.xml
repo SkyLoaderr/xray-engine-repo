@@ -68,12 +68,12 @@
 			<text>object location</text>
 		</location>
 		<location >
-			<level>agroprom</level>
+			<level>ai_test</level>
 			<icon name="Quest1" x="2" y="8" width="1" height="1"></icon>
 			<text>Quest1 at agroprom</text>
 		</location>
 		<location >
-			<level>agroprom</level>
+			<level>ai_test</level>
 			<icon name="Quest2" x="2" y="8" width="1" height="1"></icon>
 			<text>Quest2 at agroprom</text>
 		</location>
@@ -98,12 +98,12 @@
 		<article>three</article>
 		<article>four</article>
 		<location >
-			<level>agroprom</level>
+			<level>test_bloodsucker</level>
 			<icon name="Quest11" x="2" y="8" width="1" height="1"></icon>
 			<text>Quest11 at agroprom</text>
 		</location>
 		<location >
-			<level>agroprom</level>
+			<level>test_bloodsucker</level>
 			<icon name="Quest22" x="2" y="8" width="1" height="1"></icon>
 			<text>Quest22 at agroprom</text>
 		</location>
