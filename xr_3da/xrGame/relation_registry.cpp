@@ -129,6 +129,10 @@ CHARACTER_GOODWILL	 RELATION_REGISTRY::GetGoodwill			(u16 from, u16 to) const
 void RELATION_REGISTRY::SetGoodwill 	(u16 from, u16 to, CHARACTER_GOODWILL goodwill)
 {
 	RELATION_DATA& relation_data = relation_registry().registry().objects(from);
+	
+	//персональная благосклонность ограничивается, чтоб можно было с помощью
+	//командной добится нужно отношения
+	clamp(goodwill, -1000, 1000);
 	relation_data.personal[to].SetGoodwill(goodwill);
 }
 

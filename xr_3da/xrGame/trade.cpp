@@ -387,16 +387,19 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 		}
 
 
-		CHARACTER_GOODWILL attitude = RELATION_REGISTRY().GetRelationType(pPartner.inv_owner, pThis.inv_owner);
+		CHARACTER_GOODWILL attitude = RELATION_REGISTRY().GetAttitude(pPartner.inv_owner, pThis.inv_owner);
 		float goodwill_factor;
+
+		attitude += 100;
 		
 		if(NO_GOODWILL == attitude)
 			goodwill_factor = 0.f;
 		else
-			goodwill_factor = float(attitude)/100.f;
+			goodwill_factor = float(attitude)/200.f;
 
 		factor = m_tTradeFactors.fBuyFactorHostile +
 			(m_tTradeFactors.fBuyFactorFriendly - m_tTradeFactors.fBuyFactorHostile)*goodwill_factor;
+		clamp(factor, m_tTradeFactors.fBuyFactorHostile, m_tTradeFactors.fBuyFactorFriendly);
 	}
 	else if(pPartner.type == TT_ACTOR)
 	{
@@ -408,16 +411,19 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 		}
 
 
-		CHARACTER_GOODWILL attitude = RELATION_REGISTRY().GetRelationType(pPartner.inv_owner, pThis.inv_owner);
+		CHARACTER_GOODWILL attitude = RELATION_REGISTRY().GetAttitude(pPartner.inv_owner, pThis.inv_owner);
+
+		attitude += 100;
 		float goodwill_factor;
 
 		if(NO_GOODWILL == attitude)
 			goodwill_factor = 0.f;
 		else
-			goodwill_factor = float(attitude)/100.f;
+			goodwill_factor = float(attitude)/200.f;
 
 		factor = m_tTradeFactors.fSellFactorFriendly +
 			(m_tTradeFactors.fSellFactorHostile - m_tTradeFactors.fSellFactorFriendly) *goodwill_factor;
+		clamp(factor, m_tTradeFactors.fSellFactorFriendly, m_tTradeFactors.fSellFactorHostile);
 
 	}
 

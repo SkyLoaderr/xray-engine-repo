@@ -87,7 +87,7 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 
 #ifdef XRGAME_EXPORTS
 	character_profile();
-	specific_character();
+	pda->m_specific_character = specific_character();
 #endif
 
 	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter)

@@ -208,12 +208,6 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 	power = hit_result.first;
 	impulse = hit_result.second;
 
-
-/*	CEntity* E = smart_cast<CEntity*>(R.O);
-	//учитываем попадание в разные части 
-	if(E) power *= E->HitScale(R.element);
-	*/
-
 	// object-space
 	//вычислить координаты попадания
 	Fvector p_in_object_space,position_in_bone_space;

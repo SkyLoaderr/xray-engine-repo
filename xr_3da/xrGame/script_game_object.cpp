@@ -29,6 +29,10 @@
 #include "script_callback.h"
 #include "../skeletoncustom.h"
 
+
+#include "pda.h"
+#include "InfoPortion.h"
+
 class CScriptBinderObject;
 
 //////////////////////////////////////////////////////////////////////////
@@ -557,6 +561,30 @@ CScriptGameObject	*CScriptGameObject::GetObjectByIndex	(int iIndex) const
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member object!");
 		return			(0);	
 	}
+}
+
+
+void		CScriptGameObject::set_character_pda_info	(LPCSTR info_id)
+{
+	CInventoryOwner	 *pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject); VERIFY(pInventoryOwner);
+	CPda* pda = pInventoryOwner->GetPDA(); VERIFY(pda);
+	pda->SetInfoPortion(CInfoPortion::IdToIndex(info_id));
+}
+LPCSTR		CScriptGameObject::get_character_pda_info	()
+{
+	CInventoryOwner	 *pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject); VERIFY(pInventoryOwner);
+	CPda* pda = pInventoryOwner->GetPDA(); VERIFY(pda);
+	return *CInfoPortion::IndexToId(pda->GetInfoPortion());
+}
+void		CScriptGameObject::set_pda_info				(LPCSTR info_id)
+{
+	CPda* pda = smart_cast<CPda*>(m_tpGameObject); VERIFY(pda);
+	pda->SetInfoPortion(CInfoPortion::IdToIndex(info_id));
+}
+LPCSTR		CScriptGameObject::get_pda_info				()
+{
+	CPda* pda = smart_cast<CPda*>(m_tpGameObject); VERIFY(pda);
+	return *CInfoPortion::IndexToId(pda->GetInfoPortion());
 }
 
 ////////////////////////////////////////////////////////////////////////////

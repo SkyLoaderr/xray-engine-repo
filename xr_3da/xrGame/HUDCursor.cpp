@@ -14,8 +14,18 @@
 #include "game_cl_base.h"
 #include "../igame_persistent.h"
 
-#define C_ON_ENEMY	D3DCOLOR_XRGB(0xff,0,0)
-#define C_ON_FRIEND	D3DCOLOR_XRGB(0,0xff,0)
+
+#include "InventoryOwner.h"
+#include "relation_registry.h"
+#include "character_info.h"
+
+#include "string_table.h"
+
+#define C_ON_ENEMY		D3DCOLOR_XRGB(0xff,0,0)
+#define C_ON_NEUTRAL	D3DCOLOR_XRGB(0xff,0xff,0xff)
+#define C_ON_FRIEND		D3DCOLOR_XRGB(0,0xff,0)
+
+
 #define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
 #define C_SIZE		0.025f
 #define NEAR_LIM	0.5f
@@ -103,24 +113,50 @@ void CHUDCursor::Render()
 		if (RQ.O)
 		{
 			CEntityAlive*	E = smart_cast<CEntityAlive*>(RQ.O);
+			CEntityAlive*	pCurEnt = smart_cast<CEntityAlive*>(Level().CurrentEntity());
 			PIItem	l_pI = smart_cast<PIItem>(RQ.O);
+
+			string256 name_buf;
+			LPCSTR object_name = *RQ.O->cName();
+
+
 
 			if (E && (E->g_Health()>0))
 			{
 				if (GameID() == GAME_SINGLE)
 				{
+					CInventoryOwner* our_inv_owner		= smart_cast<CInventoryOwner*>(pCurEnt);
+					CInventoryOwner* others_inv_owner	= smart_cast<CInventoryOwner*>(E);
+
+					if(our_inv_owner && others_inv_owner)
+					{
+						CStringTable strtbl;
+						sprintf(name_buf, "%s, %s", *strtbl(others_inv_owner->CharacterInfo().Community().id()),
+													*strtbl(others_inv_owner->Name()));
+						object_name = name_buf;
+
+						switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
+						{
+						case ALife::eRelationTypeEnemy:
+							C = C_ON_ENEMY; break;
+						case ALife::eRelationTypeNeutral:
+							C = C_ON_NEUTRAL; break;
+						case ALife::eRelationTypeFriend:
+							C = C_ON_FRIEND; break;
+						}
+					}
+
 					if (fuzzyShowInfo>0.5f)
 					{
 						F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
-						F->OutNext	("%s",*RQ.O->cName());
+						F->OutNext	("%s", object_name);
 					}
 					fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 				}
 				else
 				{
-					CEntityAlive*	pCurEnt = smart_cast<CEntityAlive*>(Level().CurrentEntity());
 					if (pCurEnt)
-					{					
+					{	
 						if (GameID() == GAME_DEATHMATCH)
 							C = C_ON_ENEMY;
 						else

@@ -10,8 +10,12 @@
 #include "PhysicsShell.h"
 #include "Entity.h"
 #include "actor.h"
+
+#include "xrserver.h"
 #include "xrServer_Objects_ALife_Items.h"
 #include "level.h"
+
+
 
 
 CPda::CPda(void)						
@@ -24,6 +28,9 @@ CPda::CPda(void)
 	m_ruck = true;
 
 	m_idOriginalOwner = 0xffff;
+	m_iSpecificChracterOwner = NO_SPECIFIC_CHARACTER;
+	m_iInfoPortion = NO_INFO_INDEX;
+
 
 	m_bPassiveMode = false;
 	
@@ -44,7 +51,10 @@ BOOL CPda::net_Spawn(LPVOID DC)
 	CSE_Abstract		*abstract = (CSE_Abstract*)(DC);
 	CSE_ALifeItemPDA	*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
 	R_ASSERT			(pda);
-	m_idOriginalOwner	= pda->m_original_owner;
+	m_idOriginalOwner			= pda->m_original_owner;
+	m_iSpecificChracterOwner	= pda->m_specific_character;
+	m_iInfoPortion				= pda->m_info_portion;
+
 	
 	return				(TRUE);
 }
@@ -364,4 +374,17 @@ bool CPda::WaitForReply(u32 pda_ID)
 	else
 		return false;
 
+}
+
+void		CPda::SetInfoPortion (INFO_INDEX info)
+{
+	CSE_Abstract* e_entity		= Level().Server->game->get_entity_from_eid	(ID()); VERIFY(e_entity);
+	CSE_ALifeItemPDA* pda		= smart_cast<CSE_ALifeItemPDA*>(e_entity);
+	if(!pda) return;
+	pda->m_info_portion = info;
+	m_iInfoPortion = info;
+}
+INFO_INDEX	CPda::GetInfoPortion ()
+{
+	return m_iInfoPortion;
 }

@@ -15,13 +15,14 @@ class CInventory;
 class CInventoryItem;
 class CTrade;
 class CPda;
-class CCharacterInfo;
 class CGameObject;
 class CEntityAlive;
 class CCustomZone;
 class CInfoPortionWrapper;
 class NET_Packet;
 
+class CCharacterInfo;
+class CSpecificCharacter;
 
 
 class CInventoryOwner : public CAttachmentOwner {							
@@ -138,7 +139,9 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	//игровые характеристики персонажа
 public:
-	virtual CCharacterInfo& CharacterInfo	() const {VERIFY(m_pCharacterInfo); return *m_pCharacterInfo;}
+	virtual CCharacterInfo&				CharacterInfo		() const {VERIFY(m_pCharacterInfo); return *m_pCharacterInfo;}
+	virtual const CSpecificCharacter&	SpecificCharacter	() const;
+
 	//установка группировки на клиентском и серверном объкте
 	virtual void			SetCommunity	(CHARACTER_COMMUNITY_INDEX);
 	virtual void			SetRank			(CHARACTER_RANK_VALUE);

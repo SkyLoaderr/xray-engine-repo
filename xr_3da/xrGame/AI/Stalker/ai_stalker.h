@@ -79,6 +79,11 @@ private:
 	float						m_disp_stand_stand;
 	float						m_disp_stand_crouch;
 
+private:
+	float						m_fRankDisperison;
+	float						m_fRankVisibility;
+	float						m_fRankImmunity;
+
 	// best item/ammo selection members
 public:
 	u32							m_last_best_item_frame;
@@ -119,6 +124,7 @@ public:
 	virtual void						Load								(LPCSTR	section );				
 	virtual	void						reinit								();
 	virtual void						reload								(LPCSTR	section );				
+	virtual void						LoadSounds							(LPCSTR section );
 	
 	virtual BOOL						net_Spawn							(LPVOID DC);
 	virtual void						net_Export							(NET_Packet& P);

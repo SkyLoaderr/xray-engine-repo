@@ -25,6 +25,7 @@
 #include "string_table.h"
 #include "alife_registry_wrappers.h"
 #include "relation_registry.h"
+#include "ai/stalker/ai_stalker.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -346,6 +347,13 @@ void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm)
 	return pInventoryOwner->SetCommunity(community.index());
 }
 
+LPCSTR CScriptGameObject::snd_character_profile_sect () const
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->SpecificCharacter().SndConfigSect();
+}
+
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
@@ -644,4 +652,13 @@ bool CScriptGameObject::attachable_item_enabled	() const
 		return								(false);
 	}
 	return									(attachable_item->enabled());
+}
+
+
+Flags32 CScriptGameObject::get_actor_relation_flags () const
+{
+	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(m_tpGameObject);
+	VERIFY(stalker);
+
+	return stalker->m_actor_relation_flags;
 }

@@ -29,6 +29,7 @@
 #include "PhysicsShell.h"
 #include "helicopter.h"
 #include "script_zone.h"
+#include "relation_registry.h"
 
 using namespace luabind;
 
@@ -256,7 +257,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			//////////////////////////////////////////////////////////////////////////
 			.def("enable_attachable_item",		&CScriptGameObject::enable_attachable_item)
 			.def("attachable_item_enabled",		&CScriptGameObject::attachable_item_enabled)
-
+            
 			//////////////////////////////////////////////////////////////////////////
 			//inventory owner
 			//////////////////////////////////////////////////////////////////////////
@@ -334,6 +335,23 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("set_character_reputation",	&CScriptGameObject::SetCharacterReputation)
 			.def("character_community",			&CScriptGameObject::CharacterCommunity)
 			.def("set_character_community",		&CScriptGameObject::SetCharacterCommunity)
+
+			.def("actor_relation_flags",		&CScriptGameObject::get_actor_relation_flags)
+			.def("snd_character_profile_sect",	&CScriptGameObject::snd_character_profile_sect)
+
+			.def("set_character_pda_info",		&CScriptGameObject::set_character_pda_info)
+			.def("get_character_pda_info",		&CScriptGameObject::get_character_pda_info)
+			.def("set_pda_info",				&CScriptGameObject::set_pda_info)
+			.def("get_pda_info",				&CScriptGameObject::get_pda_info)
+
+			.enum_("ACTOR_RELATIONS")
+			[
+				value("relation_attack",						int(RELATION_REGISTRY::ATTACK)),
+				value("relation_fight_help_monster",			int(RELATION_REGISTRY::FIGHT_HELP_MONSTER)),
+				value("relation_fight_help_human",				int(RELATION_REGISTRY::FIGHT_HELP_HUMAN)),
+				value("relation_kill",							int(RELATION_REGISTRY::KILL))
+			]
+
 			
 
 			//////////////////////////////////////////////////////////////////////////

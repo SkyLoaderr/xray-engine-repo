@@ -311,6 +311,12 @@ public:
 			void				SetInfoCallback		(const luabind::functor<void> &lua_function);
 			void				SetInfoCallback		(const luabind::object &instance, LPCSTR method);
 			void				ClearInfoCallback	();
+
+			//////////////////////////////////////////////////////////////////////////
+			Flags32				get_actor_relation_flags () const;
+			LPCSTR				snd_character_profile_sect () const;
+
+			//////////////////////////////////////////////////////////////////////////
 			MemorySpace::CMemoryInfo *memory		(const CScriptGameObject &lua_game_object);
 			CScriptGameObject		*best_weapon	();
 			void					explode			(u32 level_time);
@@ -319,6 +325,7 @@ public:
 			CScriptSoundInfo		GetSoundInfo	();
 			CScriptMonsterHitInfo	GetMonsterHitInfo();
 			void					bind_object		(CScriptBinderObject *object);
+			
 
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
@@ -399,7 +406,15 @@ public:
 			//////////////////////////////////////////////////////////////////////////
 			void				enable_attachable_item	(bool value);
 			bool				attachable_item_enabled	() const;
+			//////////////////////////////////////////////////////////////////////////
+			// для подключения info_portion для pda
+			void				set_character_pda_info (LPCSTR info_id);
+			LPCSTR				get_character_pda_info ();
+			void				set_pda_info		   (LPCSTR info_id);
+			LPCSTR				get_pda_info		   ();
+			//////////////////////////////////////////////////////////////////////////
 			
+	
 			// HELICOPTER
 			CHelicopter*		get_helicopter			();
 

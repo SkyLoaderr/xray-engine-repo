@@ -11,7 +11,9 @@
 
 #include "../feel_touch.h"
 #include "inventory_item.h"
-#include "InfoPortion.h"
+
+#include "InfoPortionDefs.h"
+#include "character_info_defs.h"
 
 #include "PdaMsg.h"
 
@@ -89,6 +91,9 @@ public:
 	//получить последнее сообщение из лога  (false - если лог пуст)
 	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 
+	virtual void		SetInfoPortion (INFO_INDEX);
+	virtual INFO_INDEX	GetInfoPortion ();
+
 protected:
 	//поступление нового сообщения на PDA
 	bool m_bNewMessage;
@@ -102,6 +107,9 @@ protected:
 
 	//первый владелец PDA
 	u16 m_idOriginalOwner;
+	SPECIFIC_CHARACTER_INDEX m_iSpecificChracterOwner;
+	//присоединенный info portion
+	INFO_INDEX m_iInfoPortion;
 
 	//пассивный режим работы PDA
 	bool m_bPassiveMode;

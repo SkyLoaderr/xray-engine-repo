@@ -94,6 +94,21 @@ void CAI_Stalker::reinit			()
 	m_last_alife_motivations_update	= 0;
 }
 
+void CAI_Stalker::LoadSounds		(LPCSTR section)
+{
+	LPCSTR							head_bone_name = pSettings->r_string(section,"bone_head");
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),		100, SOUND_TYPE_MONSTER_DYING,		0, u32(eStalkerSoundMaskDie),				eStalkerSoundDie,				head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),			100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuring),			eStalkerSoundInjuring,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskHumming),			eStalkerSoundHumming,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAlarm),				eStalkerSoundAlarm,				head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_surrender"),	100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskSurrender),			eStalkerSoundSurrender,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_backup"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskBackup),			eStalkerSoundBackup,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_attack"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAttack),			eStalkerSoundAttack,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_friendly_fire"),100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuringByFriend),	eStalkerSoundInjuringByFriend,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_human"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicHuman),		eStalkerSoundPanicHuman,		head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_monster"),100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicMonster),		eStalkerSoundPanicMonster,		head_bone_name);
+}
+
 void CAI_Stalker::reload			(LPCSTR section)
 {
 	CMotivationActionManagerStalker::reload(section);
@@ -112,19 +127,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_disp_run_crouch				= pSettings->r_float(section,"disp_run_crouch");
 	m_disp_stand_stand				= pSettings->r_float(section,"disp_stand_stand");
 	m_disp_stand_crouch				= pSettings->r_float(section,"disp_stand_crouch");
-
-	LPCSTR							head_bone_name = pSettings->r_string(section,"bone_head");
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),		100, SOUND_TYPE_MONSTER_DYING,		0, u32(eStalkerSoundMaskDie),				eStalkerSoundDie,				head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),			100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuring),			eStalkerSoundInjuring,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskHumming),			eStalkerSoundHumming,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAlarm),				eStalkerSoundAlarm,				head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_surrender"),	100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskSurrender),			eStalkerSoundSurrender,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_backup"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskBackup),			eStalkerSoundBackup,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_attack"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAttack),			eStalkerSoundAttack,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_friendly_fire"),100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuringByFriend),	eStalkerSoundInjuringByFriend,	head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_human"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicHuman),		eStalkerSoundPanicHuman,		head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_monster"),100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicMonster),		eStalkerSoundPanicMonster,		head_bone_name);
-
+	
 	m_r_hand						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone0"));
 	m_l_finger1						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone1"));
 	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone2"));
@@ -244,6 +247,31 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 			InitImmunities(imm_sect,pSettings);
 		}
 	}
+
+	//вычислить иммунета в зависимости от ранга
+	static float novice_rank_immunity			= pSettings->r_float("ranks_properties", "immunities_novice_k");
+	static float expirienced_rank_immunity		= pSettings->r_float("ranks_properties", "immunities_experienced_k");
+
+	static float novice_rank_visibility			= pSettings->r_float("ranks_properties", "visibility_novice_k");
+	static float expirienced_rank_visibility	= pSettings->r_float("ranks_properties", "visibility_experienced_k");
+
+	static float novice_rank_dispersion			= pSettings->r_float("ranks_properties", "dispersion_novice_k");
+	static float expirienced_rank_dispersion	= pSettings->r_float("ranks_properties", "dispersion_experienced_k");
+
+	
+	CHARACTER_RANK_VALUE rank = Rank();
+	clamp(rank, 0, 100);
+	float rank_k = float(rank)/100.f;
+	m_fRankImmunity = novice_rank_immunity + (expirienced_rank_immunity - novice_rank_immunity) * rank_k;
+	m_fRankVisibility = novice_rank_visibility + (expirienced_rank_visibility - novice_rank_visibility) * rank_k;
+	m_fRankDisperison = novice_rank_immunity + (expirienced_rank_dispersion - novice_rank_dispersion) * rank_k;
+
+	//загрузка спецевической звуковой схемы для сталкера согласно m_SpecificCharacter
+	LPCSTR snd_sound_sect = SpecificCharacter().SndConfigSect();
+	if(snd_sound_sect && pSettings->section_exist(snd_sound_sect))
+		LoadSounds(snd_sound_sect);
+	else
+		LoadSounds(*cNameSect());
 
 	return							(TRUE);
 }
@@ -392,6 +420,8 @@ void CAI_Stalker::UpdateCL()
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
+	//хит может меняться в зависимости от ранга (новички получают больше хита, чем ветераны)
+	P *= m_fRankImmunity;
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
 

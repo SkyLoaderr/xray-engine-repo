@@ -19,6 +19,10 @@
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
 	float				base = PI/180.f;
+	
+	//влияние ранга на меткость
+	base *= m_fRankDisperison;
+
 	if (movement_type() == eMovementTypeWalk)
 		if (body_state() == eBodyStateStand)
 			return		(base*m_disp_walk_stand);

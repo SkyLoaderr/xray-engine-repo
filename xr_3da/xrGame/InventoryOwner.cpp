@@ -287,7 +287,7 @@ bool CInventoryOwner::OfferTalk(CInventoryOwner* talk_partner)
 	CEntityAlive* pPartnerEntityAlive = smart_cast<CEntityAlive*>(talk_partner);
 	R_ASSERT(pPartnerEntityAlive);
 	
-	ALife::ERelationType relation = RELATION_REGISTRY().GetRelationType(talk_partner, this);
+	ALife::ERelationType relation = RELATION_REGISTRY().GetRelationType(this, talk_partner);
 	if(relation == ALife::eRelationTypeEnemy) return false;
 
 	if(!pOurEntityAlive->g_Alive() || !pPartnerEntityAlive->g_Alive()) return false;
@@ -464,4 +464,9 @@ CHARACTER_REPUTATION_VALUE	CInventoryOwner::Rank		() const
 CHARACTER_REPUTATION_VALUE	CInventoryOwner::Reputation	() const
 {
 	return CharacterInfo().Reputation().value();
+}
+
+const CSpecificCharacter&	CInventoryOwner::SpecificCharacter	() const
+{
+	return CharacterInfo().m_SpecificCharacter;
 }
