@@ -132,8 +132,6 @@ void CAI_Stalker::BackCover(bool bFire)
 
 void CAI_Stalker::ForwardStraight()
 {
-	Panic();
-	return;
 	bool bPlayingHumming = m_bPlayHumming;
 	WRITE_TO_LOG("Forward straight");
 	
@@ -944,8 +942,13 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	float					yaw,pitch;
 	GetDirectionAngles		(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
-	if (getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6))
-		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
+	if (getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6)) {
+		Fvector tPoint;
+		tPoint.setHP(-yaw,0);
+		tPoint.mul(100.f);
+		tPoint.add(eye_matrix.c);
+		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeFirePoint,tPoint);
+	}
 	else
 		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
 

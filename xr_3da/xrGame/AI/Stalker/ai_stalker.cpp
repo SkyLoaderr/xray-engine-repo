@@ -142,11 +142,11 @@ void CAI_Stalker::Die				()
 
 void CAI_Stalker::LoadSounds(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount)
 {
+	tpSounds.clear			();
 	for (int j=0, N = _GetItemCount(prefix); j<N; j++) {
 		string128				fn, s;
 		LPSTR					S = (LPSTR)&s;
 		_GetItem				(prefix,j,S);
-		tpSounds.clear			();
 		if (FS.exist(fn,"$game_sounds$",S,".wav")){
 			tpSounds.push_back	(sound());
 			::Sound->create		(tpSounds.back(),TRUE,prefix,0);
