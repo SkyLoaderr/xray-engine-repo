@@ -183,8 +183,16 @@ void CLightR_Manager::render_spot	()
 
 void CLightR_Manager::render		()
 {
-	if (selected_spot.size())		{ render_spot	();	selected_spot.clear();	}
-	if (selected_point.size())		{ render_point	();	selected_point.clear(); }
+	if (selected_spot.size())		{ 
+		RImplementation.phase		= CRender::PHASE_SPOT;
+		render_spot			();	
+		selected_spot.clear	();	
+	}
+	if (selected_point.size())		{ 
+		RImplementation.phase		= CRender::PHASE_POINT;
+		render_point		();	
+		selected_point.clear(); 
+	}
 }
 
 void CLightR_Manager::add			(light* L)
