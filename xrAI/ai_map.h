@@ -548,4 +548,43 @@ public:
 		}
 		return(selected);
 	}
+
+	void						vfShallowGraphSearch(u32 dwStartNode, float fSearchRange, xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask)
+	{
+		u32							dwCurNodeID, dwNextNodeID, dwNeighbourCount;
+		NodeCompressed				*tpStartNode = Node(dwStartNode), *tpCurNode, *tpCurrentNode = tpStartNode;
+		Fvector						tStartPosition = tfGetNodeCenter(dwStartNode);
+		float						fRangeSquare = fSearchRange*fSearchRange, fDistance = tStartPosition.distance_to(tfGetNodeCenter(tpStartNode));
+		NodeLink					*I, *E;
+
+		tpaStack.clear				();
+		tpaStack.push_back			(dwStartNode);
+		tpaMask[dwStartNode]		= true;
+
+		// Cycle
+		for (u32 i=0; i<tpaStack.size(); i++) {
+			dwCurNodeID				= tpaStack[i];
+			tpCurNode				= Node(dwCurNodeID);
+			dwNeighbourCount		= tpCurNode->links;
+			I						= (NodeLink *)((BYTE *)tpCurNode + sizeof(NodeCompressed));
+			E						= I + dwNeighbourCount;
+			for ( ; I != E; I++) {
+				if (tpaMask[dwNextNodeID = UnpackLink(*I)])
+					continue;
+				tpCurrentNode		= Node(dwNextNodeID);
+				fDistance			= tStartPosition.distance_to_sqr(tfGetNodeCenter(tpCurrentNode));
+				if (fDistance >= fRangeSquare)
+					continue;
+				tpaMask[dwNextNodeID] = true;
+				tpaStack.push_back	(dwNextNodeID);
+			}
+		}
+
+		{
+			xr_vector<u32>::iterator I	= tpaStack.begin();
+			xr_vector<u32>::iterator E	= tpaStack.end();
+			for ( ; I!=E; I++)	
+				tpaMask[*I] = false;
+		}
+	}
 };

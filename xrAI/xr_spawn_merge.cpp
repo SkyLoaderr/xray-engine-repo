@@ -17,11 +17,6 @@
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
 
-typedef struct tagSLevelPoint {
-	Fvector		tPoint;
-	u32			tNodeID;
-} SLevelPoint;
-
 DEFINE_VECTOR(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
 CSE_ALifeGraph						*tpGraph = 0;
@@ -242,50 +237,9 @@ public:
 		}
 		thProgress				= .5f;
 		vfGenerateArtefactSpawnPositions();
-		thProgress				= .6f;
-		vfGenerateMonsterDeathposition();
 		thProgress				= 1.0f;
 	};
 
-	void						vfShallowGraphSearch(u32 dwStartNode, float fSearchRange, xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask)
-	{
-		u32							dwCurNodeID, dwNextNodeID, dwNeighbourCount;
-		NodeCompressed				*tpStartNode = m_tpAI_Map->Node(dwStartNode), *tpCurNode, *tpCurrentNode = tpStartNode;
-		Fvector						tStartPosition = m_tpAI_Map->tfGetNodeCenter(dwStartNode);
-		float						fRangeSquare = fSearchRange*fSearchRange, fDistance = tStartPosition.distance_to(m_tpAI_Map->tfGetNodeCenter(tpStartNode));
-		NodeLink					*I, *E;
-
-		tpaStack.clear				();
-		tpaStack.push_back			(dwStartNode);
-		tpaMask[dwStartNode]		= true;
-
-		// Cycle
-		for (u32 i=0; i<tpaStack.size(); i++) {
-			dwCurNodeID				= tpaStack[i];
-			tpCurNode				= m_tpAI_Map->Node(dwCurNodeID);
-			dwNeighbourCount		= tpCurNode->links;
-			I						= (NodeLink *)((BYTE *)tpCurNode + sizeof(NodeCompressed));
-			E						= I + dwNeighbourCount;
-			for ( ; I != E; I++) {
-				if (tpaMask[dwNextNodeID = m_tpAI_Map->UnpackLink(*I)])
-					continue;
-				tpCurrentNode		= m_tpAI_Map->Node(dwNextNodeID);
-				fDistance			= tStartPosition.distance_to_sqr(m_tpAI_Map->tfGetNodeCenter(tpCurrentNode));
-				if (fDistance >= fRangeSquare)
-					continue;
-				tpaMask[dwNextNodeID] = true;
-				tpaStack.push_back	(dwNextNodeID);
-			}
-		}
-
-		{
-			xr_vector<u32>::iterator I	= tpaStack.begin();
-			xr_vector<u32>::iterator E	= tpaStack.end();
-			for ( ; I!=E; I++)	
-				tpaMask[*I] = false;
-		}
-	}
-	
 	void						vfGenerateArtefactSpawnPositions()
 	{
 		m_tpLevelPoints.clear	();
@@ -299,37 +253,7 @@ public:
 			if (!l_tpALifeAnomalousZone)
 				continue;
 
-			vfShallowGraphSearch(l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
-
-			if (l_tpALifeAnomalousZone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
-				l_tpALifeAnomalousZone->m_wArtefactSpawnCount	= l_tpaStack.size();
-				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
-				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
-				xr_vector<SLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<SLevelPoint>::iterator				E = m_tpLevelPoints.end();
-				xr_vector<u32>::iterator						i = l_tpaStack.begin();
-				for ( ; I != E; I++, i++) {
-					(*I).tNodeID	= *i;
-					(*I).tPoint		= m_tpAI_Map->tfGetNodeCenter(*i);
-				}
-			}
-		}
-	}
-
-	void						vfGenerateMonsterDeathposition()
-	{
-		m_tpLevelPoints.clear	();
-		xr_vector<u32>			l_tpaStack;
-		l_tpaStack.reserve		(1024);
-		m_tpAI_Map->q_mark_bit.assign(m_tpAI_Map->q_mark_bit.size(),false);
-		ALIFE_OBJECT_P_IT		B = m_tpSpawnPoints.begin(), I = B;
-		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
-		for ( ; I != E; I++) {
-			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*I);
-			if (!l_tpALifeAnomalousZone)
-				continue;
-			
-			vfShallowGraphSearch(l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
+			m_tpAI_Map->vfShallowGraphSearch(l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
 
 			if (l_tpALifeAnomalousZone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
 				l_tpALifeAnomalousZone->m_wArtefactSpawnCount	= l_tpaStack.size();

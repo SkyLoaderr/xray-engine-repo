@@ -11,6 +11,11 @@
 #include "ai_alife_space.h"
 #include "ai_alife_graph.h"
 
+typedef struct tagSLevelPoint {
+	Fvector		tPoint;
+	u32			tNodeID;
+} SLevelPoint;
+
 typedef struct tagSDynamicGraphVertex {
 	Fvector						tLocalPoint;
 	Fvector						tGlobalPoint;
@@ -18,6 +23,8 @@ typedef struct tagSDynamicGraphVertex {
 	u8							tVertexTypes[LOCATION_TYPE_COUNT];
 	u32							tLevelID;
 	u32							tNeighbourCount;
+	u32							tDeathPointCount;
+	u32							dwPointOffset;
 	CSE_ALifeGraph::SGraphEdge		*tpaEdges;
 } SDynamicGraphVertex;
 

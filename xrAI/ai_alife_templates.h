@@ -71,9 +71,10 @@ void load_bool_vector(xr_vector<bool> &baVector, M &tNetPacket)
 };
 
 template <class T, class M>
-void save_base_vector(xr_vector<T> &tpVector, M &tNetPacket)
+void save_base_vector(xr_vector<T> &tpVector, M &tNetPacket,bool bSaveCount = true)
 {
-	tNetPacket.w_u32			((u32)tpVector.size());
+	if (bSaveCount)
+		tNetPacket.w_u32		((u32)tpVector.size());
 	xr_vector<T>::iterator		I = tpVector.begin();
 	xr_vector<T>::iterator		E = tpVector.end();
 	for ( ; I != E; I++)

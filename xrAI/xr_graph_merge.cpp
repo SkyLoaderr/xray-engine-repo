@@ -15,6 +15,7 @@
 #include "game_base.h"
 #include "xrServer_Objects_ALife_All.h"
 #include "xrCrossTable.h"
+#include "ai_map.h"
 using namespace ALife;
 
 class CLevelGraph;
@@ -25,7 +26,7 @@ typedef struct tagSConnectionVertex {
 	u32			dwLevelID;
 } SConnectionVertex;
 
-class CComparePredicate {
+class CCompareVertexPredicate {
 public:
 	IC bool operator()(LPCSTR S1, LPCSTR S2) const
 	{
@@ -34,7 +35,7 @@ public:
 };
 
 DEFINE_MAP		(u32,	CLevelGraph *,		GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
-DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CComparePredicate );
+DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CCompareVertexPredicate);
 
 class CLevelGraph : public CSE_ALifeGraph {
 public:
@@ -43,48 +44,23 @@ public:
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
 
-								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID) : CSE_ALifeGraph()
+								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, xr_vector<SLevelPoint> *tpLevelPoints) : CSE_ALifeGraph()
 	{
 		m_tLevel				= tLevel;
 		m_dwOffset				= dwOffset;
 		
 		FILE_NAME				caFileName;
-		// updating cross-table
-		{
-			strconcat			(caFileName,S,CROSS_TABLE_NAME_RAW);
-			CSE_ALifeCrossTable	*tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
-			xr_vector<CSE_ALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
-			tCrossTableUpdate.resize(tpCrossTable->m_tCrossTableHeader.dwNodeCount);
-			for (int i=0; i<(int)tpCrossTable->m_tCrossTableHeader.dwNodeCount; i++) {
-				tCrossTableUpdate[i] = tpCrossTable->m_tpaCrossTable[i];
-				tCrossTableUpdate[i].tGraphIndex += dwOffset;
-			}
-
-			CMemoryWriter		tMemoryStream;
-			CSE_ALifeCrossTable	tCrossTable;
-			
-			tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
-			tCrossTable.m_tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
-			tCrossTable.m_tCrossTableHeader.dwGraphPointCount = tpCrossTable->m_tCrossTableHeader.dwGraphPointCount;
-			
-			xr_delete			(tpCrossTable);
-			
-			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
-			tMemoryStream.w(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
-			tMemoryStream.close_chunk();
-			
-			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
-			for (int i=0; i<(int)tCrossTable.m_tCrossTableHeader.dwNodeCount; i++)
-				tMemoryStream.w(&(tCrossTableUpdate[i]),sizeof(tCrossTableUpdate[i]));
-			tMemoryStream.close_chunk();
-			
-			strconcat			(caFileName,S,CROSS_TABLE_NAME);
-			tMemoryStream.save_to(caFileName);
-		}
-
+		
 		// loading graph
 		strconcat				(caFileName,S,"level.graph");
-		CSE_ALifeGraph::Load		(caFileName);
+		CSE_ALifeGraph::Load	(caFileName);
+
+		strconcat				(caFileName,S,CROSS_TABLE_NAME_RAW);
+		CSE_ALifeCrossTable		*l_tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
+
+		CAI_Map					*l_tpAI_Map = xr_new<CAI_Map>(S);
+		u32						l_dwPointOffset = 0;
+
 		m_tpVertices.resize		(m_tGraphHeader.dwVertexCount);
 		GRAPH_VERTEX_IT			B = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			I = B;
@@ -103,12 +79,49 @@ public:
 				(*I).tpaEdges[i]	= tpaEdges[i];
 				(*I).tpaEdges[i].dwVertexNumber += dwOffset;
 			}
+			(*I).dwPointOffset		= 0;
+			vfGenerateDeathPoints	(int(I - B),l_tpCrossTable,tpLevelPoints,l_tpAI_Map,(*I).tDeathPointCount);
 		}
+
+		xr_delete					(l_tpCrossTable);
+		xr_delete					(l_tpAI_Map);
+		
+		// updating cross-table
+		{
+			strconcat			(caFileName,S,CROSS_TABLE_NAME_RAW);
+			CSE_ALifeCrossTable	*tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
+			xr_vector<CSE_ALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
+			tCrossTableUpdate.resize(tpCrossTable->m_tCrossTableHeader.dwNodeCount);
+			for (int i=0; i<(int)tpCrossTable->m_tCrossTableHeader.dwNodeCount; i++) {
+				tCrossTableUpdate[i] = tpCrossTable->m_tpaCrossTable[i];
+				tCrossTableUpdate[i].tGraphIndex += dwOffset;
+			}
+
+			CMemoryWriter		tMemoryStream;
+			CSE_ALifeCrossTable	tCrossTable;
+
+			tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
+			tCrossTable.m_tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
+			tCrossTable.m_tCrossTableHeader.dwGraphPointCount = tpCrossTable->m_tCrossTableHeader.dwGraphPointCount;
+
+			xr_delete			(tpCrossTable);
+
+			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
+			tMemoryStream.w(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
+			tMemoryStream.close_chunk();
+
+			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
+			for (int i=0; i<(int)tCrossTable.m_tCrossTableHeader.dwNodeCount; i++)
+				tMemoryStream.w(&(tCrossTableUpdate[i]),sizeof(tCrossTableUpdate[i]));
+			tMemoryStream.close_chunk();
+
+			strconcat			(caFileName,S,CROSS_TABLE_NAME);
+			tMemoryStream.save_to(caFileName);
+		}
+
 		// fill vertex map
 		{
-			//pSettings								= xr_new<CInifile>(SYSTEM_LTX);
 			string256								fName;
-			//strconcat								(fName,name,tLevel.caLevelName);
 			strconcat								(fName,S,"level.spawn");
 			IReader									*F = FS.r_open(fName);
 			IReader									*O = 0;
@@ -158,7 +171,6 @@ public:
 				xr_delete							(E);
 			}
 			O->close								();
-			//xr_delete								(pSettings);
 		}
 	};
 
@@ -188,7 +200,7 @@ public:
 		m_tpVertices[dwVertexNumber].tpaEdges[m_tpVertices[dwVertexNumber].tNeighbourCount - 1] = tGraphEdge;
 	}
 
-	void						vfSaveVertices(CMemoryWriter &tMemoryStream, u32 &dwOffset)
+	void						vfSaveVertices(CMemoryWriter &tMemoryStream, u32 &dwOffset, u32 &dwPointOffset)
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
@@ -200,8 +212,12 @@ public:
 			Memory.mem_copy			(tVertex.tVertexTypes,(*I).tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			tVertex.tLevelID		= (*I).tLevelID;
 			tVertex.dwEdgeOffset	= dwOffset;
+			tVertex.tDeathPointCount = (*I).tDeathPointCount;
+			tVertex.dwPointOffset	= dwPointOffset;
+			tMemoryStream.w			(&tVertex,sizeof(tVertex));
+
 			dwOffset				+= (tVertex.tNeighbourCount = (*I).tNeighbourCount)*sizeof(SGraphEdge);
-			tMemoryStream.w		(&tVertex,sizeof(tVertex));
+			dwPointOffset			+= tVertex.tDeathPointCount*sizeof(SLevelPoint);
 		}
 	};
 	
@@ -213,21 +229,72 @@ public:
 			for (int i=0; i<(int)(*I).tNeighbourCount; i++)
 				tMemoryStream.w	((*I).tpaEdges + i,sizeof(SGraphEdge));
 	};
+
+	u32							dwfGetEdgeCount()
+	{
+		u32						l_dwResult = 0;
+		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
+		GRAPH_VERTEX_IT			E = m_tpVertices.end();
+		for ( ; I != E; I++)
+			l_dwResult += (*I).tNeighbourCount;
+		return					(l_dwResult);
+	}
+
+	u32							dwfGetDeathPointCount()
+	{
+		u32						l_dwResult = 0;
+		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
+		GRAPH_VERTEX_IT			E = m_tpVertices.end();
+		for ( ; I != E; I++)
+			l_dwResult += (*I).tDeathPointCount;
+		return					(l_dwResult);
+	}
+
+	void						vfGenerateDeathPoints(int iGraphIndex, CSE_ALifeCrossTable *tpCrossTable, xr_vector<SLevelPoint> *tpLevelPoints, CAI_Map *tpAI_Map, u32 &dwDeathPointCount)
+	{
+		xr_vector<u32>			l_dwaNodes;
+		l_dwaNodes.clear		();
+		{
+			for (u32 i=0, n = tpCrossTable->m_tCrossTableHeader.dwNodeCount; i<n; i++)
+				if (tpCrossTable->m_tpaCrossTable[i].tGraphIndex == iGraphIndex)
+					l_dwaNodes.push_back(i);
+		}
+
+		u32		n = l_dwaNodes.size(), m = iFloor(.1f*n);//64;
+		float	f = float(m)/float(n);
+		dwDeathPointCount		= tpLevelPoints->size();
+		for (u32 i=0; (i<n) && (m); i++)
+			if ((n - i <= m) || (::Random.randF(1.f) <= f)) {
+				SLevelPoint	l_tLevelPoint;
+				l_tLevelPoint.tNodeID = l_dwaNodes[i];
+				l_tLevelPoint.tPoint = tpAI_Map->tfGetNodeCenter(l_dwaNodes[i]);
+				tpLevelPoints->push_back(l_tLevelPoint);
+				m--;
+			}
+		dwDeathPointCount		= tpLevelPoints->size() - dwDeathPointCount;
+	}
+
 };
 
 void xrMergeGraphs(LPCSTR name)
 {
 	// load all the graphs
 	Phase("Reading level graphs");
+	
 	CInifile *Ini = xr_new<CInifile>(INI_FILE);
 	if (!Ini->section_exist("levels"))
 		THROW;
+	R_ASSERT						(Ini->section_exist("levels"));
+
 	GRAPH_P_MAP						tpGraphs;
 	string256						S1, S2;
 	CSE_ALifeGraph::SLevel				tLevel;
 	u32								dwOffset = 0;
-	R_ASSERT						(Ini->section_exist("levels"));
-    LPCSTR N,V;
+	u32								l_dwPointOffset = 0;
+	xr_vector<SLevelPoint>			l_tpLevelPoints;
+	l_tpLevelPoints.clear			();
+    LPCSTR							N,V;
+
     for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
 		R_ASSERT					(Ini->section_exist(N));
 		tLevel.tOffset				= Ini->r_fvector3(N,"offset");
@@ -237,7 +304,7 @@ void xrMergeGraphs(LPCSTR name)
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");//level.graph");
 		tLevel.dwLevelID			= Ini->r_s32(N,"id");
-		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.dwLevelID);
+		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.dwLevelID,&l_tpLevelPoints);
 		dwOffset					+= tpLevelGraph->m_tGraphHeader.dwVertexCount;
 		tpGraphs.insert				(mk_pair(tLevel.dwLevelID,tpLevelGraph));
 		tGraphHeader.tpLevels.push_back(tLevel);
@@ -266,19 +333,32 @@ void xrMergeGraphs(LPCSTR name)
 					(*K).second->vfAddEdge		((*M).second.tGraphID,tGraphEdge);
 				}
 		}
-
 	}
+	// counting edges
+	{
+		tGraphHeader.dwEdgeCount			= 0;
+		tGraphHeader.dwDeathPointCount		= 0;
+		GRAPH_P_PAIR_IT						I = tpGraphs.begin();
+		GRAPH_P_PAIR_IT						E = tpGraphs.end();
+		for ( ; I != E; I++) {
+			tGraphHeader.dwEdgeCount		+= (*I).second->dwfGetEdgeCount();
+			tGraphHeader.dwDeathPointCount	+= (*I).second->dwfGetDeathPointCount();
+		}
+	}
+
 	///////////////////////////////////////////////////
 	
 	// save all the graphs
 	Phase("Saving graph being merged");
-	CMemoryWriter						F;
-	tGraphHeader.dwLevelCount		= tpGraphs.size();
-	tGraphHeader.dwVersion			= XRAI_CURRENT_VERSION;
-	tGraphHeader.dwVertexCount		= dwOffset;
-	F.w_u32					(tGraphHeader.dwVersion);
-	F.w_u32					(tGraphHeader.dwVertexCount);
-	F.w_u32					(tGraphHeader.dwLevelCount);
+	CMemoryWriter				F;
+	tGraphHeader.dwLevelCount	= tpGraphs.size();
+	tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
+	tGraphHeader.dwVertexCount	= dwOffset;
+	F.w_u32						(tGraphHeader.dwVersion);
+	F.w_u32						(tGraphHeader.dwLevelCount);
+	F.w_u32						(tGraphHeader.dwVertexCount);
+	F.w_u32						(tGraphHeader.dwEdgeCount);
+	F.w_u32						(tGraphHeader.dwDeathPointCount);
 	{
 		xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
 		xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
@@ -290,17 +370,14 @@ void xrMergeGraphs(LPCSTR name)
 	}
 
 	dwOffset						*= sizeof(CSE_ALifeGraph::SGraphVertex);
+	l_dwPointOffset					= dwOffset + tGraphHeader.dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge);
 	{
-//		GRAPH_P_PAIR_IT				I = tpGraphs.begin();
-//		GRAPH_P_PAIR_IT				E = tpGraphs.end();
-//		for ( ; I != E; I++)
-//			(*I).second->vfSaveVertices	(F,dwOffset);
 		xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
 		xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).dwLevelID);
 			R_ASSERT				(i != tpGraphs.end());
-			(*i).second->vfSaveVertices	(F,dwOffset);
+			(*i).second->vfSaveVertices	(F,dwOffset,l_dwPointOffset);
 		}
 	}
 	{
@@ -312,9 +389,10 @@ void xrMergeGraphs(LPCSTR name)
 			(*i).second->vfSaveEdges(F);
 		}
 	}
+	save_base_vector				(l_tpLevelPoints,F,false);
 	F.save_to("game.graph");
-	
-	// _free all the graphs
+
+	// free all the graphs
 	Phase("Freeing resources being allocated");
 	{
 		GRAPH_P_PAIR_IT				I = tpGraphs.begin();

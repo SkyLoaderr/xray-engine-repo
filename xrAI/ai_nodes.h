@@ -183,9 +183,14 @@ public:
 			SDynamicGraphVertex &tCurrentGraphVertex = tpaGraph[i];
 			for (int j = (i + 1); j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
 				SDynamicGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
-				if (tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint) < m_fMaxDistance) {
+				float fStraightDistance = tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint);
+				if (fStraightDistance < m_fMaxDistance) {
 					try {
-						fDistance = m_tpAI_Map->ffCheckPositionInDirection(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint,m_fMaxDistance);
+						if (fStraightDistance < 200.f)
+							fDistance = m_tpAI_Map->ffCheckPositionInDirection(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint,m_fMaxDistance);
+						else
+							fDistance = MAX_VALUE;
+//						fDistance = m_tpAI_Map->ffCheckPositionInDirection(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint,m_fMaxDistance);
 						if (fDistance == MAX_VALUE) {
 							SAIMapData			tData;
 							tData.dwFinishNode	= tNeighbourGraphVertex.tNodeID;

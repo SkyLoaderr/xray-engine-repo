@@ -36,13 +36,13 @@ typedef struct tagRPoint {
 	Fvector A;
 } RPoint;
 
-CSE_ALifeGraph::SGraphHeader		tGraphHeader;
-CSE_ALifeGraph::SGraphEdge		*	tpaEdges;		// graph edges
-CSE_ALifeGraph::SGraphEdge		*	tpaFullEdges;	// graph edges
+CSE_ALifeGraph::SGraphHeader	tGraphHeader;
+CSE_ALifeGraph::SGraphEdge		*tpaEdges;		// graph edges
+CSE_ALifeGraph::SGraphEdge		*tpaFullEdges;	// graph edges
 xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
 xr_stack<u32>					dwaStack;		// stack
-u32							*	dwaSortOrder;  // edge sort order
-u32							*	dwaEdgeOwner;  // edge owners
+u32								*dwaSortOrder;  // edge sort order
+u32								*dwaEdgeOwner;  // edge owners
 
 void vfLoadGraphPoints(LPCSTR name)
 {
@@ -72,6 +72,8 @@ void vfLoadGraphPoints(LPCSTR name)
 			Memory.mem_copy						(tDynamicGraphVertex.tVertexTypes,tpGraphPoint->m_tLocations,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			tDynamicGraphVertex.tLevelID		= 0;
 			tDynamicGraphVertex.tpaEdges		= 0;
+			tDynamicGraphVertex.tDeathPointCount = 0;
+			tDynamicGraphVertex.dwPointOffset	= 0;
 			tpaGraph.push_back					(tDynamicGraphVertex);
 			i++;
 		}
@@ -268,50 +270,61 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	string256					fName;
 	strconcat					(fName,name,"level.graph");
 	
-	CMemoryWriter					tGraph;
+	CMemoryWriter				tGraph;
 	tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
-	tGraphHeader.dwVertexCount	= tpaGraph.size();
 	tGraphHeader.dwLevelCount	= 1;
-	CSE_ALifeGraph::SLevel			tLevel;
+	tGraphHeader.dwVertexCount	= tpaGraph.size();
+	tGraphHeader.dwEdgeCount	= 0;
+	//
+	{
+		for (int i=0; i<(int)tpaGraph.size(); i++)
+			tGraphHeader.dwEdgeCount += tpaGraph[i].tNeighbourCount;
+	}
+	//
+	tGraphHeader.dwDeathPointCount = 0;
+
+	CSE_ALifeGraph::SLevel		tLevel;
 	tLevel.tOffset.set			(0,0,0);
 	tLevel.dwLevelID			= 0;
 	Memory.mem_copy				(tLevel.caLevelName,name,(u32)strlen(name) + 1);
 	tGraphHeader.tpLevels.push_back(tLevel);
 	tGraph.w_u32				(tGraphHeader.dwVersion);
-	tGraph.w_u32				(tGraphHeader.dwVertexCount);
 	tGraph.w_u32				(tGraphHeader.dwLevelCount);
+	tGraph.w_u32				(tGraphHeader.dwVertexCount);
+	tGraph.w_u32				(tGraphHeader.dwEdgeCount);
+	tGraph.w_u32				(tGraphHeader.dwDeathPointCount);
 	xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
 	xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 	for ( ; I != E; I++) {
-		tGraph.w_stringZ((*I).caLevelName);
-		tGraph.w_fvector3((*I).tOffset);
-		tGraph.w_u32((*I).dwLevelID);
+		tGraph.w_stringZ		((*I).caLevelName);
+		tGraph.w_fvector3		((*I).tOffset);
+		tGraph.w_u32			((*I).dwLevelID);
 	}
 
-	u32		dwPosition = tGraph.size();
+	u32							dwPosition = tGraph.size();
 	
-	Progress(0.0f);
+	Progress					(0.0f);
 	CSE_ALifeGraph::SGraphVertex tGraphVertex;
-	Memory.mem_fill(&tGraphVertex,0,sizeof(CSE_ALifeGraph::SGraphVertex));
+	Memory.mem_fill				(&tGraphVertex,0,sizeof(CSE_ALifeGraph::SGraphVertex));
 	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/4))
-		tGraph.w(&tGraphVertex,sizeof(CSE_ALifeGraph::SGraphVertex));
+		tGraph.w				(&tGraphVertex,sizeof(CSE_ALifeGraph::SGraphVertex));
 	
-	Progress(0.25f);
+	Progress					(0.25f);
 	for (int i=0; i<(int)tpaGraph.size(); Progress(.25f + float(++i)/tpaGraph.size()/2)) {
-		SDynamicGraphVertex &tDynamicGraphVertex = tpaGraph[i];
+		SDynamicGraphVertex		&tDynamicGraphVertex = tpaGraph[i];
 		for (int j=0, k=0; j<(int)tDynamicGraphVertex.tNeighbourCount; j++)
 			if (!tpAI_Map->q_mark_bit[tDynamicGraphVertex.tpaEdges + j - tpaEdges]) {
 				k++;
-				tGraph.w_u32(tDynamicGraphVertex.tpaEdges[j].dwVertexNumber);	
-				tGraph.w_float(tDynamicGraphVertex.tpaEdges[j].fPathDistance);	
+				tGraph.w_u32	(tDynamicGraphVertex.tpaEdges[j].dwVertexNumber);	
+				tGraph.w_float	(tDynamicGraphVertex.tpaEdges[j].fPathDistance);	
 			}
 		tDynamicGraphVertex.tNeighbourCount = k;
 	}
 	
-	Progress(.75f);
-	tGraph.seek(dwPosition);
+	Progress					(.75f);
+	tGraph.seek					(dwPosition);
 	for (int i=0, j=0, k=tpaGraph.size()*sizeof(CSE_ALifeGraph::SGraphVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].tNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
-		SDynamicGraphVertex &tDynamicGraphVertex = tpaGraph[i];
+		SDynamicGraphVertex				&tDynamicGraphVertex = tpaGraph[i];
 		tGraphVertex.tLocalPoint		= tDynamicGraphVertex.tLocalPoint;
 		tGraphVertex.tGlobalPoint		= tDynamicGraphVertex.tGlobalPoint;
 		tGraphVertex.tNodeID			= tDynamicGraphVertex.tNodeID;
@@ -319,11 +332,13 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 		tGraphVertex.tLevelID			= tDynamicGraphVertex.tLevelID;
 		tGraphVertex.tNeighbourCount	= tDynamicGraphVertex.tNeighbourCount;
 		tGraphVertex.dwEdgeOffset		= k + j*(u32)sizeof(CSE_ALifeGraph::SGraphEdge);
+		tGraphVertex.tDeathPointCount	= tDynamicGraphVertex.tDeathPointCount;
+		tGraphVertex.dwPointOffset		= tDynamicGraphVertex.dwPointOffset;
 		tGraph.w						(&tGraphVertex,	sizeof(CSE_ALifeGraph::SGraphVertex));
 	}
-	tGraph.save_to(fName);
-	Progress(1.0f);
-	Msg("%d bytes saved",int(tGraph.size()));
+	tGraph.save_to				(fName);
+	Progress					(1.0f);
+	Msg							("%d bytes saved",int(tGraph.size()));
 }
 
 void xrBuildGraph(LPCSTR name)
@@ -363,6 +378,7 @@ void xrBuildGraph(LPCSTR name)
 	Phase("Building graph");
 	for (u32 thID=0, dwThreadCount = THREAD_COUNT, N = tpaGraph.size(), M = 0, K = 0; thID<dwThreadCount; M += K, thID++)
 		tThreadManager.start(xr_new<CGraphThread>(thID,M, ((thID + 1) == dwThreadCount) ? N - 1 : M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,&tCriticalSection,tpAI_Map));
+//		xr_new<CGraphThread>(thID,M, ((thID + 1) == dwThreadCount) ? N - 1 : M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,&tCriticalSection,tpAI_Map)->Execute();
 	tThreadManager.wait();
 	
 	for (int i=0, dwEdgeCount=0; i<(int)tpaGraph.size(); i++)

@@ -35,6 +35,8 @@ public:
 		u8									tVertexTypes[LOCATION_TYPE_COUNT];
 		u32									tNeighbourCount:8;
 		u32									dwEdgeOffset:24;
+		u32									tDeathPointCount:8;
+		u32									dwPointOffset:24;
 	} SGraphVertex;
 
 	typedef struct tagSLevel {
@@ -45,8 +47,10 @@ public:
 
 	typedef struct tagSGraphHeader {
 		u32									dwVersion;
-		u32									dwVertexCount;
 		u32									dwLevelCount;
+		u32									dwVertexCount;
+		u32									dwEdgeCount;
+		u32									dwDeathPointCount;
 		xr_vector<SLevel>					tpLevels;
 	} SGraphHeader;
 	#pragma pack(pop)
@@ -83,8 +87,10 @@ public:
 	{ 
 		m_tpGraphVFS						= FS.r_open(fName);
 		m_tGraphHeader.dwVersion			= m_tpGraphVFS->r_u32();
-		m_tGraphHeader.dwVertexCount		= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.dwLevelCount			= m_tpGraphVFS->r_u32();
+		m_tGraphHeader.dwVertexCount		= m_tpGraphVFS->r_u32();
+		m_tGraphHeader.dwEdgeCount			= m_tpGraphVFS->r_u32();
+		m_tGraphHeader.dwDeathPointCount	= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.tpLevels.resize		(m_tGraphHeader.dwLevelCount);
 		{
 			xr_vector<SLevel>::iterator		I = m_tGraphHeader.tpLevels.begin();
