@@ -50,6 +50,10 @@ void CGroupHierarchyHolder::register_in_group			(CEntity *member)
 		m_visible_objects		= xr_new<VISIBLE_OBJECTS>();
 		m_sound_objects			= xr_new<SOUND_OBJECTS>();
 		m_hit_objects			= xr_new<HIT_OBJECTS>();
+
+		m_visible_objects->reserve	(128);
+		m_sound_objects->reserve	(128);
+		m_hit_objects->reserve		(128);
 	}
 
 	m_members.push_back			(member);
