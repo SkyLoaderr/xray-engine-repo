@@ -11,11 +11,6 @@ const int	occ_dim1			= occ_dim0/2;
 const int	occ_dim2			= occ_dim1/2;
 const int	occ_dim3			= occ_dim2/2;
 
-struct Fvector
-{
-	float x,y,z;
-};
-
 class occTri
 {
 public:	

@@ -229,6 +229,10 @@ SOURCE=.\cpuid.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\FixedVector.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\vector.h
 # End Source File
 # End Group
