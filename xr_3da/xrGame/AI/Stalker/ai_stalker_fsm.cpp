@@ -69,6 +69,20 @@ void CAI_Stalker::Think()
 	while (!m_bStopThinking);
 };
 
+void CAI_Stalker::vfAddStateToList(EStalkerStates eState)
+{
+	if ((m_tStateList.size()) && (m_tStateList[m_tStateList.size() - 1].eState == eState)) {
+		m_tStateList[m_tStateList.size() - 1].dwTime = m_dwCurrentUpdate;
+		return;
+	}
+	if (m_tStateList.size() >= MAX_STATE_LIST_SIZE)
+		m_tStateList.erase(u32(0));
+	SStalkerStates tStalkerStates;
+	tStalkerStates.dwTime = m_dwCurrentUpdate;
+	tStalkerStates.eState = eState;
+	m_tStateList.push_back(tStalkerStates);
+};
+
 void CAI_Stalker::Death()
 {
 	WRITE_TO_LOG("Death");
@@ -112,22 +126,15 @@ void CAI_Stalker::Drop()
 void CAI_Stalker::LookingOver()
 {
 	WRITE_TO_LOG("Looking over");
-	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(eStalkerStateSearching);
+	m_fCurSpeed = 0.f;
+	SWITCH_TO_NEW_STATE_AND_UPDATE(eStalkerStateSearching);
 }
 
 void CAI_Stalker::Searching()
 {
 	WRITE_TO_LOG("Searching");
 
-	INIT_SQUAD_AND_LEADER;
-	
-	SetLessCoverLook();
-	if (AI_Path.bNeedRebuild) {
-		vfBuildPathToDestinationPoint(0);
-		m_fCurSpeed = 1.f;
-	}
-	else {
-		vfInitSelector(m_tSelectorFreeHunting,Squad,Leader);
-		vfSearchForBetterPosition(m_tSelectorFreeHunting,Squad,Leader);
-	}
+	vfChoosePointAndBuildPath(m_tSelectorFreeHunting);
+
+	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeDirection);
 }

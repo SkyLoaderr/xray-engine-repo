@@ -80,7 +80,7 @@ void CAI_Stalker::vfAssignBones(CInifile *ini, const char *section)
 	PKinematics(pVisual)->LL_GetInstance(spin_bone).set_callback(SpinCallback,this);
 }
 
-void __stdcall CAI_Stalker::HeadCallback(CBoneInstance* B)
+void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
 {
 	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	Fvector c				= B->mTransform.c;
@@ -90,7 +90,7 @@ void __stdcall CAI_Stalker::HeadCallback(CBoneInstance* B)
 	B->mTransform.c			= c;
 }
 
-void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance* B)
+void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
 {
 	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	Fvector c				= B->mTransform.c;
@@ -100,7 +100,7 @@ void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance* B)
 	B->mTransform.c			= c;
 }
 
-void __stdcall CAI_Stalker::SpinCallback(CBoneInstance* B)
+void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 {
 	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	Fvector c				= B->mTransform.c;
@@ -110,7 +110,7 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance* B)
 	B->mTransform.c			= c;
 }
 
-void __stdcall CAI_Stalker::LegsSpinCallback(CBoneInstance* B)
+void __stdcall CAI_Stalker::LegsCallback(CBoneInstance *B)
 {
 //	CAI_Stalker*		A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	
@@ -122,276 +122,76 @@ void __stdcall CAI_Stalker::LegsSpinCallback(CBoneInstance* B)
 //	B->mTransform.mulB_43(spin);
 }
 
+void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
+{
+	if (g_Health() <= 0)
+		tpGlobalAnimation = m_tAnims.A[1]->m_tGlobal.A[0]->A[0];
+}
+
+void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
+{
+	if (Weapons->ActiveWeapon())
+		if (m_eCurrentState == eStalkerStateRecharge) {
+			switch (Weapons->ActiveWeaponID()) {
+				case 0 : {
+					tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[5]->A[0];
+					break;
+				}
+				case 1 : {
+					tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[5]->A[0];
+					break;
+				}
+				case 2 : {
+					tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[2]->A[5]->A[0];
+					break;
+				}
+			}
+		}
+		else {
+			switch (Weapons->ActiveWeaponID()) {
+				case 0 : {
+					tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[0]->A[0];
+					break;
+				}
+				case 1 : {
+					tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[0]->A[0];
+					break;
+				}
+				case 2 : {
+					tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[2]->A[0]->A[0];
+					break;
+				}
+			}
+		}
+	else 
+		tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[0]->A[0]->A[0];
+}
+
+void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
+{
+	if (m_fCurSpeed > EPS_L)
+		tpLegsAnimation		= m_tAnims.A[m_tBodyState]->m_tMoves.A[m_tMovementType]->A[0]->A[0];
+	else
+		tpLegsAnimation		= m_tAnims.A[1]->m_tInPlace.A[0];
+}
+
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	CKinematics	&tVisualObject		=	*(PKinematics(pVisual));
-	CMotionDef	*tpGlobalAnimation	=	0;
-	CMotionDef	*tpTorsoAnimation	=	0;
-	CMotionDef	*tpLegsAnimation	=	0;
+	CKinematics				&tVisualObject		=	*(PKinematics(pVisual));
+	CMotionDef				*tpGlobalAnimation	=	0;
+	CMotionDef				*tpTorsoAnimation	=	0;
+	CMotionDef				*tpLegsAnimation	=	0;
 
-	if (g_Health() <= 0) {
-		tpGlobalAnimation = m_tAnims.A[1]->m_tGlobal.A[0]->A[0];
-	}
-	else {
-		if (!tpTorsoAnimation)
-			if (Weapons->ActiveWeapon())
-				if (m_eCurrentState == eStalkerStateRecharge) {
-					switch (Weapons->ActiveWeaponID()) {
-						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[5]->A[0];
-							break;
-						}
-						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[5]->A[0];
-							break;
-						}
-						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[2]->A[5]->A[0];
-							break;
-						}
-					}
-				}
-				else {
-					switch (Weapons->ActiveWeaponID()) {
-						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[0]->A[0];
-							break;
-						}
-						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[0]->A[0];
-							break;
-						}
-						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[2]->A[0]->A[0];
-							break;
-						}
-					}
-				}
+	vfAssignGlobalAnimation	(tpGlobalAnimation);
+	vfAssignTorsoAnimation	(tpTorsoAnimation);
+	vfAssignLegsAnimation	(tpLegsAnimation);
 
-		if (!tpLegsAnimation)
-			tpLegsAnimation = m_tAnims.A[1]->m_tInPlace.A[0];
-	}
-	
-	if ((tpGlobalAnimation) && (m_tpCurrentGlobalAnimation != tpGlobalAnimation)) {
+	if ((tpGlobalAnimation) && (m_tpCurrentGlobalAnimation != tpGlobalAnimation))
 		tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
-	}
 	else {
 		if ((tpTorsoAnimation) && (m_tpCurrentTorsoAnimation != tpTorsoAnimation))
 			tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);
 		if ((tpLegsAnimation) && (m_tpCurrentLegsAnimation != tpLegsAnimation))
 			tVisualObject.PlayCycle(m_tpCurrentLegsAnimation = tpLegsAnimation);
 	}
-//
-//	if (fHealth <= 0) {
-//		switch (m_cBodyState) {
-//			case BODY_STATE_STAND : {
-//				for (int i=0 ;i<5; i++)
-//					if (tStalkerAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
-//						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-//						break;
-//					}
-//				if (!tpGlobalAnimation)
-//					tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,5)];
-//				break;
-//			}
-//			case BODY_STATE_CROUCH : {
-//				for (int i=0 ;i<5; i++)
-//					if (tStalkerAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
-//						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-//						break;
-//					}
-//				if (!tpGlobalAnimation)
-//					tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,5)];
-//				break;
-//			}
-//			case BODY_STATE_LIE : {
-//				tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpDeath;
-//				break;
-//			}
-//		}
-//	}
-//	else
-//		switch (m_eCurrentState) {
-//			case aiStalkerWaitForAnimation : {
-//				tpGlobalAnimation = m_tpAnimationBeingWaited;
-//				tpTorsoAnimation = tpLegsAnimation = 0;
-//				break;
-//			}
-//			case aiStalkerAttackAloneFireFire : 
-//			case aiStalkerAttackGroupFireFire : {
-//				if (m_bFiring)
-//					switch (m_cBodyState) {
-//						case BODY_STATE_STAND : {
-//							tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpAttack;
-//							break;
-//						}
-//						case BODY_STATE_CROUCH : {
-//							tpGlobalAnimation = tStalkerAnimations.tCrouch.tGlobal.tpAttack;
-//							break;
-//						}
-//						case BODY_STATE_LIE : {
-//							tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpAttack;
-//							break;
-//						}
-//					}
-//				else
-//					if (speed < EPS_L)
-//						switch (m_cBodyState) {
-//							case BODY_STATE_STAND : {
-//								tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpAim;
-//								break;
-//							}
-//							case BODY_STATE_CROUCH : {
-//								tpGlobalAnimation = tStalkerAnimations.tCrouch.tGlobal.tpAim;
-//								break;
-//							}
-//							case BODY_STATE_LIE : {
-//								tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpIdle;
-//								break;
-//							}
-//						}
-//					else
-//						tpGlobalAnimation = m_tpaMovementAnimations[m_cBodyState][m_cMovementType];
-//				tpTorsoAnimation = tpLegsAnimation = 0;
-//				break;
-//			}
-//			case aiStalkerRecharge : {
-//				switch (m_cBodyState) {
-//					case BODY_STATE_STAND : {
-//						tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpReload;
-//						break;
-//					}
-//					case BODY_STATE_CROUCH : {
-//						tpGlobalAnimation = tStalkerAnimations.tCrouch.tGlobal.tpReload;
-//						break;
-//					}
-//					case BODY_STATE_LIE : {
-//						tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpReload;
-//						break;
-//					}
-//				}
-//				break;
-//			}
-//			default : {
-//				if (speed < .1f) {
-//					// turning around || standing idle
-//					if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-//						if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
-//							if (r_torso_target.yaw - r_torso_current.yaw >= 0)
-//								switch (m_cBodyState) {
-//									case BODY_STATE_STAND : {
-//										tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpTurnRight;
-//										break;
-//									}
-//									case BODY_STATE_CROUCH : {
-//										tpGlobalAnimation = tStalkerAnimations.tCrouch.tGlobal.tpTurnRight;
-//										break;
-//									}
-//									case BODY_STATE_LIE : {
-//										tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpTurnRight;
-//										break;
-//									}
-//								}
-//							else
-//								switch (m_cBodyState) {
-//									case BODY_STATE_STAND : {
-//										tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpTurnLeft;
-//										break;
-//									}
-//									case BODY_STATE_CROUCH : {
-//										tpGlobalAnimation = tStalkerAnimations.tCrouch.tGlobal.tpTurnLeft;
-//										break;
-//									}
-//									case BODY_STATE_LIE : {
-//										tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpTurnLeft;
-//										break;
-//									}
-//								}
-//						else
-//							switch (m_cBodyState) {
-//								case BODY_STATE_STAND : {
-//									tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpaIdle[1];
-//									break;
-//								}
-//								case BODY_STATE_CROUCH : {
-//									tpGlobalAnimation = tStalkerAnimations.tCrouch.tGlobal.tpIdle;
-//									break;
-//								}
-//								case BODY_STATE_LIE : {
-//									tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpIdle;
-//									break;
-//								}
-//							}
-//					else
-//						if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
-//							if (r_torso_target.yaw > r_torso_current.yaw)
-//								switch (m_cBodyState) {
-//									case BODY_STATE_STAND : {
-//										tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpTurnLeft;
-//										break;
-//									}
-//									case BODY_STATE_CROUCH : {
-//										tpGlobalAnimation = tStalkerAnimations.tCrouch.tGlobal.tpTurnLeft;
-//										break;
-//									}
-//									case BODY_STATE_LIE : {
-//										tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpTurnLeft;
-//										break;
-//									}
-//								}
-//							else
-//								switch (m_cBodyState) {
-//									case BODY_STATE_STAND : {
-//										tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpTurnRight;
-//										break;
-//									}
-//									case BODY_STATE_CROUCH : {
-//										tpGlobalAnimation = tStalkerAnimations.tCrouch.tGlobal.tpTurnRight;
-//										break;
-//									}
-//									case BODY_STATE_LIE : {
-//										tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpTurnRight;
-//										break;
-//									}
-//								}
-//						else {
-//							switch (m_cBodyState) {
-//								case BODY_STATE_STAND : {
-//									tpGlobalAnimation = tStalkerAnimations.tNormal.tGlobal.tpaIdle[1];
-//									break;
-//								}
-//								case BODY_STATE_CROUCH : {
-//									tpGlobalAnimation = tStalkerAnimations.tCrouch.tGlobal.tpIdle;
-//									break;
-//								}
-//								case BODY_STATE_LIE : {
-//									tpGlobalAnimation = tStalkerAnimations.tLie.tGlobal.tpIdle;
-//									break;
-//								}
-//							}
-//							break;
-//						}
-//					// torso
-//				}
-//				else {
-//					//Msg("moving...");
-//					tpGlobalAnimation = m_tpaMovementAnimations[m_cBodyState][m_cMovementType];
-//					if (!tpGlobalAnimation) {
-//						tpGlobalAnimation = tpGlobalAnimation;
-//					}
-//					//torso
-//				}
-//			}
-//		}
-//	
-//	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
-//		//Msg("restarting animation..."); 
-//		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
-//		if (tpGlobalAnimation) {
-//			if (m_eCurrentState == aiStalkerWaitForAnimation)
-//				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation,TRUE,vfPlayCallBack,this);
-//			else
-//				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
-//		}
-//	}
 }

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "..\\..\\a_star.h"
+#include "..\\ai_monsters_misc.h"
 
 void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S)
 {
@@ -110,4 +111,21 @@ void CAI_Stalker::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 	
 	//if (S.m_tLeader)
 	//	S.taMembers.push_back(S.m_tLeader);
+}
+
+void CAI_Stalker::vfChoosePointAndBuildPath(CAISelectorBase &tSelector)
+{
+	INIT_SQUAD_AND_LEADER;
+	
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfInitSelector(tSelector,Squad,Leader);
+}
+
+void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
+{
+	m_tBodyState	= tBodyState;
+	m_tMovementType = tMovementType;
+	m_tLookType		= tLookType;
 }
