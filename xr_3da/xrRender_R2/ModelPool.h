@@ -12,15 +12,28 @@ namespace PS	{
 // defs
 class CModelPool
 {
+private:
 	friend class CRender;
 
+	struct str_pred : public binary_function<char*, char*, bool> 
+	{	
+		IC bool operator()(LPCSTR x, LPCSTR y) const
+		{	return strcmp(x,y)<0;	}
+	};
 	struct ModelDef
 	{
 		string128		name;
 		IVisual*		model;
 	};
 
-	vector<ModelDef>	Models;
+	typedef multimap<LPCSTR,IVisual*,str_pred>		POOL;
+	typedef POOL::iterator							POOL_IT;
+	typedef map<IVisual*,LPCSTR>					REGISTRY;
+	typedef REGISTRY::iterator						REGISTRY_IT;
+private:
+	vector<ModelDef>	Models;				// Reference / Base
+	REGISTRY			Registry;			// Just pairing of pointer / Name
+	POOL				Pool;				// Unused / Inactive
 
 	void				Destroy	();
 public:

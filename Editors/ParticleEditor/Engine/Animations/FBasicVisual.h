@@ -27,6 +27,7 @@ public:
 	virtual void			Load					(const char* N, IReader *data, u32 dwFlags);
 	virtual void			Release					();						// Shared memory release
 	virtual void			Copy					(IVisual* from);
+	virtual void			Spawn					()				{};
 
 	IVisual			();
 	virtual ~IVisual();

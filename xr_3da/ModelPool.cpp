@@ -67,8 +67,9 @@ IVisual*	CModelPool::Instance_Create(u32 type)
 IVisual*	CModelPool::Instance_Duplicate	(IVisual* V)
 {
 	R_ASSERT(V);
-	IVisual* N = Instance_Create(V->Type);
-	N->Copy	(V);
+	IVisual* N		= Instance_Create(V->Type);
+	N->Copy			(V);
+	N->Spawn		();
 	return N;
 }
 
@@ -136,6 +137,18 @@ void		CModelPool::Instance_Register(LPCSTR N, IVisual* V)
 //////////////////////////////////////////////////////////////////////
 void CModelPool::Destroy()
 {
+	// Pool
+	Pool.clear		();
+
+	// Registry
+	for (REGISTRY_IT it=Registry.begin(); it!=Registry.end(); it++)
+	{
+		xr_delete	(it->first);
+		xr_free		(it->second);
+	}
+	Registry.clear();
+
+	// Base/Reference
 	vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++) 
 	{
@@ -173,36 +186,64 @@ IVisual* CModelPool::Create(const char* name)
 	// Msg					("-CREATE %s",name);
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
+	IVisual* Model			= NULL;
 
-	// 1. Search for already loaded model
-	IVisual* Model	= Instance_Find(low_name);
+	// 0. Search POOL
+	POOL_IT	it			=	Pool.find	(low_name);
+	if (it!=map_POOL.end())
+	{
+		// 1. Instance found
+		Model				=	it->second;
+		Model->Spawn		();
+		Pool.erase			(it);
+	} else {
+		// 1. Search for already loaded model (reference, base model)
+		IVisual* Base		= Instance_Find		(low_name);
 
-	// 2. If found - return reference
-	if (0!=Model) return Instance_Duplicate(Model);
+		if (0!=Base) 
+		{
+			// 2. If found - return (cloned) reference
+			Model			= Instance_Duplicate(Base);
+			Registry.insert	(make_pair(Model,xr_strdup(low_name)));
+		} else {
+			// 3. If not found
+			Model			= Instance_Duplicate(Instance_Load(low_name));
+			Registry.insert	(make_pair(Model,xr_strdup(low_name)));
+		}
+	}
 
-	// 3. If not found
-	return Instance_Duplicate(Instance_Load(low_name));
+	return	Model;
 }
 
 IVisual* CModelPool::Create(LPCSTR name, IReader* data)
 {
-	// Msg					("-CREATE_STREAM- %s",name);
+	Msg						("! -CREATE_STREAM- %s",name);
+
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
 	// 1. Search for already loaded model
-	IVisual* Model	= Instance_Find(low_name);
+	IVisual* Model			= Instance_Find(low_name);
 
 	// 2. If found - return reference
-	if (0!=Model) return Instance_Duplicate(Model);
+	if (0!=Model)			return Instance_Duplicate(Model);
 
 	// 3. If not found
-	return Instance_Duplicate(Instance_Load(name,data));
+	return					Instance_Duplicate(Instance_Load(name,data));
 }
 
 void	CModelPool::Delete(IVisual* &V)
 {
-	xr_delete			(V);
+	REGISTRY_IT	it		= Registry.find	(V);
+	if (it!=Registry.end())
+	{
+		// Registry entry found - move it to pool
+		Pool.insert			(make_pair(it->second,V));
+	} else {
+		// Registry entry not-found - just special type of visual / particles / etc.
+		xr_delete			(V);
+	}
+	V	=	NULL;
 }
 
 IVisual* CModelPool::CreatePS	(PS::SDef* source, PS::SEmitter* E)
@@ -218,4 +259,3 @@ IVisual* CModelPool::CreatePG	(PS::CPGDef* source)
 	V->Compile		(source);
 	return V;
 }
-
