@@ -23,6 +23,7 @@
 #include "enemy_manager.h"
 #include "ai_object_location.h"
 #include "profiler.h"
+#include "stalker_animation_manager.h"
 
 CObjectHandler::CObjectHandler		()
 {
@@ -256,5 +257,10 @@ void CObjectHandler::attach				(CInventoryItem *inventory_item)
 void CObjectHandler::detach				(CInventoryItem *inventory_item)
 {
 	switch_torch				(inventory_item,false);
+	if	(
+			(inventory_item->object().ID() == m_strap_object_id) && 
+			planner().object().animation().setup_storage()
+		)
+			planner().object().animation().setup_storage(0);
 	inherited::detach			(inventory_item);
 }
