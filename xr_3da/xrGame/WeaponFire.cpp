@@ -36,8 +36,8 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	fireDispersion_Current += fireDispersion_Inc;
 	clamp(fireDispersion_Current,0.f,1.f);
 
-	//повысить изношенность оружия
-	ChangeCondition(-conditionDecreasePerShot);
+	//повысить изношенность оружия с учетом влияния конкретного патрона
+	ChangeCondition(-conditionDecreasePerShot*l_cartridge.m_impair);
 
 
 	BOOL bResult = false;
@@ -126,7 +126,6 @@ void CWeapon::Fire2End	()
 
 void CWeapon::StartFlameParticles	()
 {
-	//StartParticles(m_pFlameParticles, m_sFlameParticles, vLastFP);
 	if(!m_sFlameParticles) return;
 
 	if(m_pFlameParticles != NULL) 
@@ -146,7 +145,7 @@ void CWeapon::StopFlameParticles	()
 	if(m_pFlameParticles == NULL) return;
 	//имеет смысл принудительно останавливать только 
 	//зацикленные партиклы
-	if(!m_pFlameParticles->IsLooped()) return;
+	//if(!m_pFlameParticles->IsLooped()) return;
 
 	m_pFlameParticles->Stop();
 	m_pFlameParticles->PSI_destroy();
@@ -155,7 +154,6 @@ void CWeapon::StopFlameParticles	()
 
 void CWeapon::UpdateFlameParticles	()
 {
-//	UpdateParticles	(m_pFlameParticles, vLastFP);
 	if(!m_sFlameParticles) return;
 
 	Fmatrix pos; 
@@ -172,11 +170,6 @@ void CWeapon::UpdateFlameParticles	()
 	}
 }
 
-/*	Fvector vel; 
-	vel.sub(Position(),ps_Element(0).vPosition); 
-	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
-	m_pFlameParticles->UpdateParent(pos, vel); 
-*/
 
 //партиклы дыма
 void CWeapon::StartSmokeParticles	()
@@ -185,21 +178,8 @@ void CWeapon::StartSmokeParticles	()
 
 	Fvector vel; 
 	PHGetLinearVell(vel);
-//	vel.sub(Position(),ps_Element(0).vPosition); 
-//	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
 
 	StartParticles(pSmokeParticles, m_sSmokeParticles, vLastFP, vel, true);
-	/*if(!m_sSmokeParticles) return;
-
-	CParticlesObject* pSmokeParticles = xr_new<CParticlesObject>(m_sSmokeParticles,Sector());
-
-
-	Fmatrix pos; 
-	pos.set(XFORM()); 
-	pos.c.set(vLastFP);
-
-	pSmokeParticles->UpdateParent(pos, vel); 
-	pSmokeParticles->Play();*/
 }
 
 //партиклы гильз
@@ -209,18 +189,14 @@ void CWeapon::OnShellDrop	()
 
 	CParticlesObject* pShellParticles = xr_new<CParticlesObject>(m_sShellParticles,Sector());
 
-	Fmatrix pos; 
-	pos.k.set(vLastSD);
-	Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
-	pos.c.set(vLastSP);
+	Fmatrix particles_pos; 
+	particles_pos.set(XFORM());
+	particles_pos.c.set(vLastSP);
 
 	Fvector vel; 
 	PHGetLinearVell(vel);
-	//vel.sub(Position(),ps_Element(0).vPosition); 
-	//vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
 
-
-	pShellParticles->UpdateParent(pos, vel); 
+	pShellParticles->UpdateParent(particles_pos, vel); 
 	pShellParticles->Play();
 }
 
