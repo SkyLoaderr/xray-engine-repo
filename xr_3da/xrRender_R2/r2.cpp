@@ -171,3 +171,24 @@ CRender::CRender()
 CRender::~CRender()
 {
 }
+
+#pragma comment(lib,"d3dx_r2")
+HRESULT	CRender::CompileShader			(
+		LPCSTR                          pSrcData,
+		UINT                            SrcDataLen,
+		void*							_pDefines,
+		void*							_pInclude,
+		LPCSTR                          pFunctionName,
+		LPCSTR                          pTarget,
+		DWORD                           Flags,
+		void*							_ppShader,
+		void*							_ppErrorMsgs,
+		void*							_ppConstantTable)
+{
+        CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
+        LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
+        LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
+        LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
+        LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
+		return D3DXCompileShader		(pSrcData,SrcDataLen,_pDefines,_pInclude,pFunctionName,pTarget,Flags,_ppShader,_ppErrorMsgs,_ppConstantTable);
+}

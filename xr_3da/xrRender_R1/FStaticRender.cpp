@@ -419,3 +419,24 @@ void	CRender::ApplyBlur4		(FVF::TL4uv* pv, u32 w, u32 h, float k)
 	pv->p.set(float(_w+EPS),float(_h+EPS),	EPS,1.f); pv->color=_c; pv->uv[0].set(p1.x-kw,p1.y-kh);pv->uv[1].set(p1.x+kw,p1.y+kh);pv->uv[2].set(p1.x+kw,p1.y-kh);pv->uv[3].set(p1.x-kw,p1.y+kh);pv++;
 	pv->p.set(float(_w+EPS),EPS,			EPS,1.f); pv->color=_c; pv->uv[0].set(p1.x-kw,p0.y-kh);pv->uv[1].set(p1.x+kw,p0.y+kh);pv->uv[2].set(p1.x+kw,p0.y-kh);pv->uv[3].set(p1.x-kw,p0.y+kh);pv++;
 }
+
+#pragma comment(lib,"d3dx_r1")
+HRESULT	CRender::CompileShader			(
+		LPCSTR                          pSrcData,
+		UINT                            SrcDataLen,
+		void*							_pDefines,
+		void*							_pInclude,
+		LPCSTR                          pFunctionName,
+		LPCSTR                          pTarget,
+		DWORD                           Flags,
+		void*							_ppShader,
+		void*							_ppErrorMsgs,
+		void*							_ppConstantTable)
+{
+        CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
+        LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
+        LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
+        LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
+        LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
+		return D3DXCompileShader		(pSrcData,SrcDataLen,_pDefines,_pInclude,pFunctionName,pTarget,Flags,_ppShader,_ppErrorMsgs,_ppConstantTable);
+}

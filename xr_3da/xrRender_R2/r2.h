@@ -87,6 +87,18 @@ public:
 	virtual	void					level_Load					();
 	virtual void					level_Unload				();
 
+	virtual HRESULT					CompileShader			(
+		LPCSTR                          pSrcData,
+		UINT                            SrcDataLen,
+		void*							pDefines,
+		void*							pInclude,
+		LPCSTR                          pFunctionName,
+		LPCSTR                          pTarget,
+		DWORD                           Flags,
+		void*							ppShader,
+		void*							ppErrorMsgs,
+		void*							ppConstantTable);
+
 	// Information
 	virtual LPCSTR					getShaderPath				()									{ return "xr2_r3xx\\";	}
 	virtual ref_shader				getShader					(int id);
