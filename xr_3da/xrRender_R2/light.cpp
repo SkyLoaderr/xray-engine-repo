@@ -116,6 +116,7 @@ void	light::spatial_move			()
 	case IRender_Light::SPOT		:	
 		{
 			// minimal enclosing sphere around cone
+			VERIFY						(cone < deg2rad(120));
 			if (cone>=PI_DIV_2)			{
 				// obtused-angled
 				spatial.center.mad			(position,direction,range);
