@@ -6,15 +6,15 @@ namespace R_dsgraph
 {
 	// Elementary types
 	struct _NormalItem	{
-		float				ssa;
+		float				ssa_or_distsq;
 		IRender_Visual*		pVisual;
 	};
 	struct _MatrixItem	{
+		float				ssa_or_distsq;
 		IRenderable*		pObject;
 		IRender_Visual*		pVisual;
 		Fmatrix				Matrix;				// matrix (copy)
 		Fvector				vCenter;
-		float				lod;
 	};
 	struct _LodItem		{
 		float				ssa;

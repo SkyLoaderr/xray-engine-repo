@@ -306,6 +306,9 @@
 			<File
 				RelativePath=".\r__dsgraph_types.h">
 			</File>
+			<File
+				RelativePath=".\r_dsgraph_render.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Details"
