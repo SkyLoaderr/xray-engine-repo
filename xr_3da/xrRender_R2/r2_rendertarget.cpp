@@ -58,6 +58,56 @@ void	CRenderTarget::u_setrt			(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSur
 	RImplementation.rmNormal				();
 }
 
+u8		fpack			(float v)				{
+	s32	_v	= iFloor	(((v+1)*.5f)*255.f + .5f);
+	clamp	(_v,0,255);
+	return	u8(_v);
+}
+u8		fpackZ			(float v)				{
+	s32	_v	= iFloor	(_abs(v)*255.f + .5f);
+	clamp	(_v,0,255);
+	return	u8(_v);
+}
+Fvector	vunpack			(s32 x, s32 y, s32 z)	{
+	Fvector	pck;
+	pck.x	= (float(x)/255.f - .5f)*2.f;
+	pck.y	= (float(y)/255.f - .5f)*2.f;
+	pck.z	= -float(z)/255.f;
+	return	pck;
+}
+Fvector	vunpack			(Ivector src)			{
+	return	vunpack	(src.x,src.y,src.z);
+}
+Ivector	vpack			(Fvector src)
+{
+	Fvector			_v;
+	int	bx			= fpack	(src.x);
+	int by			= fpack	(src.y);
+	int bz			= fpackZ(src.z);
+	// dumb test
+	float	e_best	= flt_max;
+	int		r=bx,g=by,b=bz;
+	int		d=7;
+	for (int x=_max(bx-d,0); x<=_min(bx+d,255); x++)
+	for (int y=_max(by-d,0); y<=_min(by+d,255); y++)
+	for (int z=_max(bz-d,0); z<=_min(bz+d,255); z++)
+	{
+		_v				= vunpack(x,y,z);
+		float	m		= _v.magnitude();
+		float	me		= _abs(m-1.f);
+		if	(me>0.03f)	continue;
+		_v.div	(m);
+		float	e		= _abs(src.dotproduct(_v)-1.f);
+		if (e<e_best)	{
+			e_best		= e;
+			r=x,g=y,b=z;
+		}
+	}
+	Ivector		ipck;
+	ipck.set	(r,g,b);
+	return		ipck;
+}
+
 void	CRenderTarget::OnDeviceCreate	()
 {
 	dwAccumulatorClearMark			= 0;
@@ -285,6 +335,54 @@ void	CRenderTarget::OnDeviceCreate	()
 			}
 			R_CHK						(t_ds2fade_surf->UnlockRect	(0));
 		}
+
+		// Build NCM
+		{
+			R_CHK						(D3DXCreateCubeTexture(HW.pDevice,TEX_NCM,1,0,D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &t_ncm_surf));
+			t_ncm						= Device.Resources->_CreateTexture(r2_ncm);
+			t_ncm->surface_set			(t_ncm_surf);
+			for (int i = 0; i < 6; i++)	{
+				D3DLOCKED_RECT	Locked;
+				Fvector			Normal;
+				float			w,h;
+				D3DSURFACE_DESC ddsdDesc;
+
+				R_CHK			(t_ncm_surf->GetLevelDesc(0, &ddsdDesc));
+				R_CHK			(t_ncm_surf->LockRect	((D3DCUBEMAP_FACES)i, 0, &Locked, 0, 0));
+
+				for (u32 y = 0; y < ddsdDesc.Height; y++)	{
+					h = (float)y / ((float)(ddsdDesc.Height - 1));
+					h *= 2.0f;
+					h -= 1.0f;
+
+					for (u32 x = 0; x < ddsdDesc.Width; x++)	{
+						w = (float)x / ((float)(ddsdDesc.Width - 1));
+						w *= 2.0f;
+						w -= 1.0f;
+
+						u32* pBits = (u32*)((u8*)Locked.pBits + (y * Locked.Pitch) + x*4);
+						switch((D3DCUBEMAP_FACES)i)
+						{
+						case D3DCUBEMAP_FACE_POSITIVE_X:	Normal = {1.0f,		-h,		-w};	break;
+						case D3DCUBEMAP_FACE_NEGATIVE_X:	Normal = {-1.0f,	-h,		w};		break;
+						case D3DCUBEMAP_FACE_POSITIVE_Y:	Normal = {w,		1.0f,	h};		break;
+						case D3DCUBEMAP_FACE_NEGATIVE_Y:	Normal = {w,		-1.0f, -h};		break;
+						case D3DCUBEMAP_FACE_POSITIVE_Z:	Normal = {w,		-h,		1.0f};	break;
+						case D3DCUBEMAP_FACE_NEGATIVE_Z:	Normal = {-w,		-h,		-1.0f};	break;
+						default:							break;
+						}
+
+						// Normalize and store
+						Normal.normalize	();
+						Ivector			rgb	= vpack		(Normal.x);
+						*pBits				= color_rgba(rgb.x,rgb.y,rgb.z,0);
+					}
+				}
+				R_CHK			(t_ncm_surf->UnlockRect((D3DCUBEMAP_FACES)i, 0));
+			}
+
+			return S_OK;
+		}
 	}
 
 	// 
@@ -295,6 +393,8 @@ void	CRenderTarget::OnDeviceCreate	()
 void	CRenderTarget::OnDeviceDestroy	()
 {
 	// Textures
+	t_ncm->surface_set			(NULL);
+	_RELEASE					(t_ncm_surf);
 	t_ds2fade->surface_set		(NULL);
 	_RELEASE					(t_ds2fade_surf);
 	t_material->surface_set		(NULL);
