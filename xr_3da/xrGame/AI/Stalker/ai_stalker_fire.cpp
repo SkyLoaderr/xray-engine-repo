@@ -86,7 +86,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 {
 	if (g_Alive()) {
 		CCoverPoint				*cover = agent_manager().member(this).cover();
-		if (cover)
+		if (cover && who && (who->ID() != ID()) && !fis_zero(amount))
 			agent_manager().add_danger_cover	(cover,Level().timeServer());
 
 		// Play hit-ref_sound
