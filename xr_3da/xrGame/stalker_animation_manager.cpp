@@ -12,6 +12,7 @@
 #include "../skeletonanimated.h"
 #include "stalker_movement_manager.h"
 #include "entitycondition.h"
+#include "inventory.h"
 
 void CStalkerAnimationManager::reinit				()
 {
