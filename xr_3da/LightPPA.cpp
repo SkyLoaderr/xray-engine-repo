@@ -121,6 +121,7 @@ void CLightPPA_Manager::Initialize()
 {
 	VS = Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, MAX_POLYGONS*3);
 }
+
 void CLightPPA_Manager::Render()
 {
 	for (DWORD L=0; L<container.size(); L++)
