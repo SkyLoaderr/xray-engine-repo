@@ -90,7 +90,7 @@ void CUIZoneMap::Init()
 	
 	landscape.SetRect(0,0,2*map_radius,2*map_radius);
 
-#pragma todo("Correct ininializing params");
+#pragma todo("Correct ininializing params")
 	if (Level().pLevel->section_exist("level_map"))	
 	{
 		level_box.x1 = Level().pLevel->r_float("level_map","x1");
