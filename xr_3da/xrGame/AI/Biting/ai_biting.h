@@ -130,8 +130,16 @@ public:
 
 
 			bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
-
+	
+	// выполнить проверку на возможность прыжка в текущий момент времени
 	virtual	bool			CanJump							() {return false;}
+	virtual void			Jump							(Fvector pos) {};
+
+	virtual void			ProcessTurn						() {};
+
+			CBoneInstance*	GetBone							(LPCTSTR bone_name);
+			CBoneInstance*	GetBone							(int bone_id);
+
 // members
 public:
 

@@ -88,7 +88,7 @@ void CMotionManager::Init (CAI_Biting	*pM, CKinematics *tpKin)
 
 
 	time_start_stand		= 0;
-	cur_pos					= prev_pos = pMonster->Position();
+	prev_action				= ACT_STAND_IDLE;
 }
 
 void CMotionManager::Destroy()
@@ -298,18 +298,22 @@ void CMotionManager::ProcessAction()
 				else													cur_anim = MI.turn.anim_left; 	// влево
 			}
 		}	
+		
+		pMonster->ProcessTurn();
 
 		// если новая анимация не совпадает с предыдущей, проверить переход
 		if (prev_anim != cur_anim) CheckTransition(prev_anim, cur_anim);
 
-		// Проверить ASP и доп. параметры анимации (kinda damaged)
-		if (!seq_playing) pMonster->CheckSpecParams(spec_params); 
+		if (!seq_playing) {
+			// Проверить ASP и доп. параметры анимации (kinda damaged)
+			pMonster->CheckSpecParams(spec_params); 
+
+			// если монстр стоит на месте и играет анимацию движения, принять stand_idle
+			FixBadState();
+		}
 	} 
 
 	if (seq_playing) cur_anim = *seq_it;
-
-	// если монстр стоит на месте и играет анимацию движения, принять stand_idle
-	//FixBadState();
 
 	ApplyParams();
 
@@ -340,27 +344,42 @@ void CMotionManager::OnAnimationEnd()
 
 // если монстр стоит на месте и играет анимацию движения - force stand idle
 void CMotionManager::FixBadState()
-{
-	Fvector cur_pos		= pMonster->Position();
-	TTime cur_time		= Level().timeServer();
-	
-	bool bStanding		= prev_pos.similar(cur_pos);
-	if (bStanding && (time_start_stand == 0)) time_start_stand = cur_time; // только начинаем стоять на месте
-	if (!bStanding || (prev_anim != cur_anim)) time_start_stand = 0; 
+{	
+	bool is_moving_action = IsMoving();
+	bool is_action_changed = prev_action != m_tAction;
+	TTime critical_stand_time = 1000;
+	TTime cur_time = Level().timeServer();
 
-	bool bLongStanding	= false;
-	if (bStanding && (time_start_stand + 2000 < cur_time) ) bLongStanding = true;	
-
-	bool bMovingAction =	(m_tAction == ACT_WALK_FWD) || (m_tAction == ACT_WALK_BKWD) || 
-							(m_tAction == ACT_RUN) || (m_tAction == ACT_DRAG) || (m_tAction == ACT_STEAL);
-	
-	if (bMovingAction && bLongStanding) {
+	// если конец пути и монстр идёт - исправить
+	if (!pMonster->AI_Path.TravelPath.empty() && ((pMonster->AI_Path.TravelPath.size() - 1 ) <= pMonster->AI_Path.TravelStart) && is_moving_action) {
 		cur_anim = eAnimStandIdle;
+		Msg("PathEnd Fixing");
+		return;
 	}
 
-	prev_pos = cur_pos;
+	// исправления сосояния 'бега на месте'
+	if (is_action_changed) {
+		time_start_stand = 0;
+	}
+
+	// если только начинаем стоять, проигрывая анимацию движения
+	if (is_moving_action && (time_start_stand == 0)) {
+		time_start_stand	= cur_time;
+	}
+
+	if (is_moving_action && !is_action_changed && (time_start_stand + critical_stand_time < cur_time) && pMonster->IsStanding(critical_stand_time)) {
+		cur_anim = eAnimStandIdle;	
+		Msg("Bad Movement Fixing");
+	}
+
+	prev_action = m_tAction;
 }
 
+bool CMotionManager::IsMoving()
+{
+	return ((m_tAction == ACT_WALK_FWD) || (m_tAction == ACT_WALK_BKWD) || (m_tAction == ACT_RUN) || 
+			(m_tAction == ACT_DRAG) || (m_tAction == ACT_STEAL));
+}
 
 // FX plaing stuff
 void CMotionManager::AddHitFX(LPCTSTR name)

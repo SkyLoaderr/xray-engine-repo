@@ -271,4 +271,13 @@ void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_o
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
 }
 
+CBoneInstance *CAI_Biting::GetBone(LPCTSTR bone_name)
+{
+	int bone = PKinematics(Visual())->LL_BoneID(bone_name);
+	return (&PKinematics(Visual())->LL_GetInstance(u16(bone)));
+}
+CBoneInstance *CAI_Biting::GetBone(int bone_id)
+{
+	return (&PKinematics(Visual())->LL_GetInstance(u16(bone_id)));
+}
 

@@ -190,9 +190,8 @@ class CMotionManager {
 	EMotionAnim				prev_anim; 
 
 	// исправления сосояния 'бега на месте'
-	Fvector					cur_pos;
-	Fvector					prev_pos;
 	TTime					time_start_stand;
+	EAction					prev_action;
 
 	// работа с анимациями атаки
 	TTime					aa_time_started;		// время начала анимации	
@@ -245,9 +244,6 @@ public:
 	void		SetCurAnim				(EMotionAnim a) {cur_anim = a;}
 	EMotionAnim	GetCurAnim				() {return  cur_anim;} 
 
-
-	void		FixBadState				();
-
 	// работа с последовательностями
 	void		Seq_Add					(EMotionAnim a);
 	void		Seq_Switch				();					// Перейти в следующее состояние, если такового не имеется - завершить
@@ -280,6 +276,8 @@ private:
 	// дополнительные функции
 	EPState		GetState				(EMotionAnim a);
 
+	void		FixBadState				();
+	bool		IsMoving				();
 };
 
 
