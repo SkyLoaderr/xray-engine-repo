@@ -490,8 +490,6 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 
 void			F_entity_Destroy	(xrServerEntity* P)
 {
-	R_ASSERT	(P);
-	ids_used	[P->ID]	= false;
 	_DELETE		(P);
 }
 
