@@ -168,5 +168,17 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 			SetLessCoverLook();
 			break;
 		}
+		case eLookTypeSearch : {
+			SetLessCoverLook();
+			break;
+		}
+		case eLookTypeDanger : {
+			SetLessCoverLook(AI_Node,PI);
+			break;
+		}
+		case eLookTypePoint : {
+			//SetLook();
+			break;
+		}
 	}
 }

@@ -43,10 +43,19 @@ private:
 		eMovementTypeStand,
 	};
 
+	enum EMovementDirection {
+		eMovementDirectionForward = 0,
+		eMovementDirectionBack,
+		eMovementDirectionLeft,
+		eMovementDirectionRight,
+	};
+
 	enum ELookType {
 		eLookTypeDirection = 0,
 		eLookTypeView,
 		eLookTypeSearch,
+		eLookTypeDanger,
+		eLookTypePoint,
 	};
 
 	typedef struct tagSStalkerStates {
@@ -80,12 +89,17 @@ private:
 	// movement
 	EBodyState				m_tBodyState;
 	EMovementType			m_tMovementType;
+	EMovementDirection		m_tMovementDirection;
+	EMovementDirection		m_tDesirableDirection;
+	u32						m_dwDirectionStartTime;
+	u32						m_dwAnimationSwitchInterval;
 	float					m_fCrouchFactor;
 	float					m_fWalkFactor;
 	float					m_fRunFactor;
 
-			void			vfAddStateToList				(EStalkerStates eState);
 			// state machine
+			void			vfAddStateToList				(EStalkerStates eState);
+			// states
 			void			TurnOver						();
 			void			WaitForAnimation				();
 			void			WaitForTime						();
@@ -111,8 +125,10 @@ private:
 			bool			bfCheckForVisibility			(CEntity* tpEntity);
 			void			SetDirectionLook				();
 			void			SetLook							(Fvector tPosition);
-			void			SetLessCoverLook				(NodeCompressed *tNode);
 			void			SetLessCoverLook				();
+			void			SetLessCoverLook				(NodeCompressed *tpNode);
+			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle);
+			// movement and look
 			void			vfSetMovementType				(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
 			// miscellanious
 			void			DropItem						();

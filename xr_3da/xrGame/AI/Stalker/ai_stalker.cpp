@@ -14,6 +14,12 @@ CAI_Stalker::CAI_Stalker			()
 	m_tStateList.clear				();
 	while (m_tStateStack.size())
 		m_tStateStack.pop			();
+	m_tMovementDirection			= eMovementDirectionForward;
+	m_tDesirableDirection			= eMovementDirectionForward;
+	m_dwDirectionStartTime			= 0;
+	m_dwAnimationSwitchInterval		= 1000;
+	r_torso_speed					= PI;
+	q_look.o_look_speed				= PI;
 }
 
 CAI_Stalker::~CAI_Stalker			()
