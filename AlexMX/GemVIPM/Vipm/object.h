@@ -10,12 +10,10 @@
 #ifndef objectH
 #define objectH
 
-//#include "quad.h"
+#include "quad.h"
 
 // Incremented by the draw routs. Display + zero whenever you want.
 extern int g_iMaxNumTrisDrawn;
-extern long g_bShowVIPMInfo;
-extern long g_bUseFastButBadOptimise;
 
 
 // The data that gets stored inside mesh.h's tris, pts and edges.
@@ -40,6 +38,8 @@ struct MyPt
 struct MyEdge
 {
 	// Temporary data.
+	float	fError;
+	MeshPt*	pKept;	
 };
 
 struct MyTri
@@ -106,29 +106,17 @@ struct GeneralCollapseInfo
 
 struct Object
 {
-/*
-	struct edge_info
-	{
-		float				err;
-		int					v1, v2;
-		MxVector			target;
-		edge_info			(unsigned int D):target(D){};
-	};
-	xr_vector<edge_info*>	edge_list;
-
 	xr_vector<MxQuadric*>	__quadrics;			// 1 per vertex
 
 	void					collect_quadrics	();
 	unsigned int			quadric_count		() const { return __quadrics.size(); }
 	MxQuadric&				quadric				(unsigned int i)       { return *(__quadrics[i]); }
 	const MxQuadric&		quadric				(unsigned int i) const { return *(__quadrics[i]); }
-*/
 	void					compute_face_quadric(MeshTri* tri, MxQuadric& Q);
 
-	// The permanent shape.
-	MeshPt		PermPtRoot;
-	MeshTri		PermTriRoot;
-	MeshEdge	PermEdgeRoot;
+	void					compute_target_placement(MeshEdge *info);
+	void					compute_edge_info		(MeshEdge *info);
+
 
 	// The collapse list is ordered backwards,
 	// so ptr->ListNext() is the _previous_ collapse to ptr.
@@ -163,9 +151,6 @@ public:
 
 	// Bins all the current data.
 	void		BinCurrentObject			( void );
-
-	// Creates the current data from the permanent data.
-	void		MakeCurrentObjectFromPerm	( void );
 
 	// Creates and performs a collapse of pptBinned to pptKept.
 	// Make sure they actually share an edge!

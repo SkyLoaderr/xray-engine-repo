@@ -21,8 +21,6 @@
 
 int		g_iNumOfObjectVertsDrawn	= 0;
 int		g_iMaxNumTrisDrawn			= -1;
-long	g_bShowVIPMInfo				= FALSE;
-long	g_bUseFastButBadOptimise	= FALSE;
 
 Object::Object()
 {
@@ -39,39 +37,13 @@ Object::~Object()
 	{
 		delete ( CollapseRoot.ListNext() );
 	}
-
-	// Bin any mesh data.
-	while ( PermTriRoot.ListNext() != NULL )
-	{
-		delete ( PermTriRoot.ListNext() );
-	}
-	while ( PermEdgeRoot.ListNext() != NULL )
-	{
-		delete ( PermEdgeRoot.ListNext() );
-	}
-	while ( PermPtRoot.ListNext() != NULL )
-	{
-		delete ( PermPtRoot.ListNext() );
-	}
-
 }
 
 // Check that this is sensible.
 void Object::CheckObject ( void )
 {
-	MeshEdge *edge = PermEdgeRoot.ListNext();
-	while ( edge != NULL )
-	{
-		// All the pts had better be the same material.
-		edge = edge->ListNext();
-	}
-
-	MeshTri *tri = PermTriRoot.ListNext();
-	while ( tri != NULL )
-	{
-		// All the pts had better be the same material.
-		tri = tri->ListNext();
-	}
+	MeshEdge *edge;
+	MeshTri *tri;
 
 	edge = CurEdgeRoot.ListNext();
 	while ( edge != NULL )
@@ -106,46 +78,6 @@ void Object::BinCurrentObject ( void )
 	{
 		delete ( CurPtRoot.ListNext() );
 	}
-}
-
-// Creates the current data from the permanent data.
-void Object::MakeCurrentObjectFromPerm ( void )
-{
-	BinCurrentObject();
-
-	// Copy the points.
-	for ( MeshPt *ppt = PermPtRoot.ListNext(); ppt != NULL; ppt = ppt->ListNext() )
-	{
-		// Temporarily link the current and permanent points for when I construct the tris.
-		ppt->mypt.pTempPt = new MeshPt ( &CurPtRoot );
-		ppt->mypt.pTempPt->mypt = ppt->mypt;
-		ppt->mypt.pTempPt->mypt.pTempPt = ppt;
-	}
-	// Copy the edges.
-	for ( MeshEdge *pedge = PermEdgeRoot.ListNext(); pedge != NULL; pedge = pedge->ListNext() )
-	{
-		MeshEdge *pNewEdge = new MeshEdge (	pedge->pPt1->mypt.pTempPt, 
-											pedge->pPt2->mypt.pTempPt, 
-											&CurEdgeRoot );
-		pNewEdge->myedge = pedge->myedge;
-	}
-	// Copy the tris.
-	int iNumTris = 0;
-	for ( MeshTri *ptri = PermTriRoot.ListNext(); ptri != NULL; ptri = ptri->ListNext() )
-	{
-		MeshTri *pNewTri = new MeshTri (	ptri->pPt1->mypt.pTempPt, 
-											ptri->pPt2->mypt.pTempPt, 
-											ptri->pPt3->mypt.pTempPt, 
-											&CurTriRoot );
-		pNewTri->mytri = ptri->mytri;
-		iNumTris++;
-	}
-
-	ASSERT ( iNumTris == iFullNumTris );
-
-	iNumCollapses = 0;
-	iCurSlidingWindowLevel = 0;
-	SetNewLevel ( iCurSlidingWindowLevel );
 }
 
 // Creates and performs a collapse of pptBinned to pptKept.
@@ -323,6 +255,10 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 	{
 		pGCI->iNumTris++;
 	}
+
+	// recalculate quadrics
+	for ( MeshEdge *pEdge = pGCI->pptKeep->FirstEdge(); pEdge != NULL; pEdge = pEdge->ListNext() )
+		compute_edge_info(pEdge);
 
 	iNumCollapses++;
 
@@ -518,14 +454,15 @@ void Object::compute_face_quadric(MeshTri* tri, MxQuadric& Q)
 
 	Q			= MxQuadric(v1, v2, v3, 0.f);
 }
-/*
+
 void Object::collect_quadrics()
 {
-	__quadrics.resize(iFullNumPts);
+	VERIFY		(__quadrics.empty());
+	__quadrics.resize		(iFullNumPts);
 	for(unsigned int j=0; j<quadric_count(); j++)
 		__quadrics[j] = new MxQuadric(QUAD_SIZE);
 
-	MeshTri *tri = PermTriRoot.ListNext();
+	MeshTri *tri = CurTriRoot.ListNext();
 	while ( tri != NULL )
 	{
 		MxQuadric Q			(QUAD_SIZE);
@@ -542,49 +479,7 @@ void Object::collect_quadrics()
 		tri = tri->ListNext();
 	}
 }
-/*
-void Object::compute_target_placement(edge_info *info)
-{
-	MxVertexID i=info->v1, j=info->v2;
 
-	const MxQuadric &Qi=quadric(i), &Qj=quadric(j);
-	MxQuadric Q=Qi;  Q+=Qj;
-
-	double e_min;
-
-	if( placement_policy==MX_PLACE_OPTIMAL && Q.optimize(info->target)){
-		e_min = Q(info->target);
-	}else{
-		// Fall back only on endpoints
-		MxVector vi(dim()), vj(dim());
-		MxVector best(dim());
-
-		pack_to_vector(i, vi);
-		pack_to_vector(j, vj);
-
-		double ei=Q(vi), ej=Q(vj);
-
-		if( ei<ej )	{ e_min = ei; best = vi; }
-		else		{ e_min = ej; best = vj; }
-
-		if( placement_policy>=MX_PLACE_ENDORMID ){
-			MxVector mid(dim());
-			mid			= vi;
-			mid			+=vj;
-			mid			/=2.f;
-			double e_mid= Q(mid);
-
-			if( e_mid < e_min ) { e_min = e_mid; best = mid; }
-		}
-		info->target	= best;
-	}
-
-	if( weighting_policy == MX_WEIGHT_AREA_AVG )
-		e_min /= Q.area();
-
-	info->heap_key(float(-e_min));
-}
-*/
 float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, long bTryToCacheResult /*= FALSE*/ )
 {
 	if (1){
@@ -678,9 +573,51 @@ void Object::constrain_boundaries()
 	}
 }
 */
+
+void Object::compute_target_placement(MeshEdge *info)
+{
+	u32 i=info->pPt1->mypt.dwIndex, j=info->pPt2->mypt.dwIndex;
+
+	const MxQuadric &Qi=quadric(i), &Qj=quadric(j);
+	MxQuadric Q=Qi;  Q+=Qj;
+
+	double e_min;
+
+	{
+		// Fall back only on endpoints
+		MxVector vi(QUAD_SIZE), vj(QUAD_SIZE);
+
+		pack_to_vector(vi, info->pPt1->mypt.vPos, info->pPt1->mypt.fU, info->pPt1->mypt.fV);
+		pack_to_vector(vj, info->pPt2->mypt.vPos, info->pPt2->mypt.fU, info->pPt2->mypt.fV);
+
+		double ei=Q(vi), ej=Q(vj);
+
+		if( ei<ej )	{ e_min = ei; info->myedge.pKept=info->pPt1; }
+		else		{ e_min = ej; info->myedge.pKept=info->pPt2; }
+	}
+
+	info->myedge.fError = e_min;
+}
+
+void Object::compute_edge_info(MeshEdge *info)
+{
+	compute_target_placement(info);
+//	finalize_edge_update	(info);
+}
+
 void Object::initialize()
 {
-//	collect_quadrics		();
+	collect_quadrics		();
+
+	MeshEdge *edge;
+	edge = CurEdgeRoot.ListNext();
+	while ( edge != NULL )
+	{
+		compute_edge_info(edge);
+		// All the pts had better be the same material.
+		edge = edge->ListNext();
+	}
+
 //	constrain_boundaries	();
 }
 
