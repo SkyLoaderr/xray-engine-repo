@@ -61,6 +61,7 @@ public:
 	virtual void			UPDATE_Write	(NET_Packet& P)				= 0;
 	virtual void			STATE_Read		(NET_Packet& P, u16 size)	= 0;
 	virtual void			STATE_Write		(NET_Packet& P)				= 0;
+	virtual void			OnEvent			(NET_Packet& P, u16 type, u32 time, u32 sender ) {};
 
 	virtual u8				g_team()		{ return 0;	}
 	virtual u8				g_squad()		{ return 0;	}
