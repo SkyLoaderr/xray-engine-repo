@@ -84,10 +84,10 @@ void CBoneDataRigid::Calculate	(CKinematics* K, Fmatrix *parent)
 			if (INST.Callback)		INST.Callback(&INST);
         } else {
             // Build matrix
-            INST.mTransform.mul_43		(*parent,bind_transform);
-            if (INST.Callback)			INST.Callback(&INST);
-	        INST.mRenderTransform.mul_43(INST.mTransform,m2b_transform);
+            INST.mTransform.mul_43	(*parent,bind_transform);
+            if (INST.Callback)		INST.Callback(&INST);
         }
+        INST.mRenderTransform.mul_43(INST.mTransform,m2b_transform);
 
         // Calculate children
         for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)

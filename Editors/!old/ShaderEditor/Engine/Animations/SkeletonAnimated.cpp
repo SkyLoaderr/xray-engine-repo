@@ -814,8 +814,8 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
             RES.mk_xform			(Result.Q,Result.T);
             BONE_INST.mTransform.mul_43(*parent,RES);
             if (BONE_INST.Callback)		BONE_INST.Callback(&BONE_INST);
-	        BONE_INST.mRenderTransform.mul_43(BONE_INST.mTransform,m2b_transform);
         }
+        BONE_INST.mRenderTransform.mul_43(BONE_INST.mTransform,m2b_transform);
 
         // Calculate children
         for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)
