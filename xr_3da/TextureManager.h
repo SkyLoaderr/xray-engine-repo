@@ -31,36 +31,33 @@ private:
 	BOOL							bDeferredLoad;
 
 	// cache
-	enum 
-	{
-		c_shader	= (1<<0),
-		c_textures	= (1<<1),
-		c_constants	= (1<<2),
-		c_matrices	= (1<<3),
-		c_all		= c_shader|c_textures|c_constants|c_matrices
-	};
 	struct
 	{
-		Shader						S;
-		DWORD						pass;
+		CPass						pass;
 		CTexture*					surfaces	[8];
 		CMatrix*					matrices	[8];
-		DWORD						changes;
+
+		void						Invalidate	()
+		{	ZeroMemory(this,sizeof(*this));		}
 	} cache;
 public:
-	CBlender*						_CreateBlender	(LPCSTR Name);
-	CShader*						_CreateShader	(LPCSTR Name);
-	CTexture*						_CreateTexture	(LPCSTR Name);
-	CConstant*						_CreateConstant (LPCSTR Name);
-	CMatrix*						_CreateMatrix	(LPCSTR Name);
-	DWORD							_GetMemoryUsage	();
-	void							_CompileShaders ();
+	void							_ParseList		(sh_list& dest, LPCSTR names);
+	CBlender*						_GetBlender		(LPCSTR Name);
 
-	DWORD							dwPassesRequired;
+	CPassArray*						_CreatePassArray		(CPassArray*	tmpl);
+	CTextureArray*					_CreateTextureArray		(CTextureArray* tmpl);
+	CMatrixArray*					_CreateMatrixArray		(CMatrixArray*	tmpl);
+	CConstantArray*					_CreateConstantArray	(CConstantArray*tmpl);
+
+	DWORD							_CreatePass		(LPCSTR Name);
+	CTexture*						_CreateTexture	(LPCSTR Name);
+	CMatrix*						_CreateMatrix	(LPCSTR Name);
+	CConstant*						_CreateConstant (LPCSTR Name);
+
+	DWORD							_GetMemoryUsage	();
 
 	CShaderManager			()
 	{
-		dwPassesRequired	= 0;
 		bDeferredLoad		= FALSE;
 		ZeroMemory			(&cache,sizeof(cache));
 	}
@@ -70,6 +67,10 @@ public:
 
 	void	OnDeviceDestroy	(void);
 	void	OnDeviceCreate	(void);
+	IC void	OnFrameEnd		()
+	{
+		cache.Invalidate	();
+	}
 
 	// Creation/Destroying
 	Shader	Create			(LPCSTR s_shader="null", LPCSTR s_textures = "$null", LPCSTR s_constants = "", LPCSTR s_matrices = "");
@@ -80,9 +81,71 @@ public:
 	void	TexturesUnload	();
 
 	// API
-	void	__fastcall	Set			(Shader& S);
-	void	__fastcall	SetupPass	(DWORD	pass);
-	void				SetNULL		() { Set(sh_list[0]); }
+	IC void	set_ShaderCode	(DWORD dwCode)
+	{
+		if (cache.pass.dwStateBlock!=dwCode)
+		{
+			cache.pass.dwStateBlock=dwCode;
+			CHK_DX(HW.pDevice->ApplyStateBlock(dwCode));
+		}
+	}
+	IC void set_Textures	(STextureList* T)
+	{
+		if (cache.pass.T != T)
+		{
+			cache.pass.T	= T;
+			for (DWORD it=0; it<T->size(); it++)
+			{
+				CTexture*	surf = (*T)[it];
+				if (cache.surfaces[it]!=surf)	{
+					cache.surfaces[it]=surf;
+					surf->Apply	(it);
+				}
+			}
+		}
+	}
+	IC void set_Matrices	(SMatrixList* M)
+	{
+		if (cache.pass.M != M)
+		{
+			cache.pass.M = M;
+			if (M)	{
+				for (DWORD it=0; it<M->size(); it++)
+				{
+					CMatrix*	mat = (*M)[it];
+					if (mat && cache.matrices[it]!=mat)	{
+						cache.matrices[it]=mat;
+						CHK_DX(HW.pDevice->SetTransform(D3DTRANSFORMSTATETYPE(D3DTS_TEXTURE0+it),mat->xform.d3d()));
+					}
+				}
+			}
+		}
+	}
+	IC void set_Constants	(SConstantList* C, BOOL bPS)
+	{
+		if (cache.pass.C != C)
+		{
+			cache.pass.C = C;
+			if (C)	{
+				if (bPS)
+				{
+					svector<Fcolor,8>	data;
+					for (DWORD it=0; it<C.size(); it++)	data.push_back((*C)[it]->const_float);
+					CHK_DX(HW.pDevice->SetPixelShaderConstant(0,data.begin(),data.size()));
+				} else {
+					CHK_DX(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,(*C)[0]->const_dword))
+				}
+			}
+		}
+	}
+	IC void set_Shader		(Shader& S, DWORD pass=0)
+	{
+		CPass&	P = S.Passes[pass];
+		set_ShaderCode	(P.dwStateBlock);
+		set_Textures	(P.T);
+		set_Matrices	(P.M);
+		set_Constants	(P.C,S.Flags.bPixelShader);
+	}
 };
 
 #endif // !defined(AFX_TEXTUREMANAGER_H__0E25CF4B_FFEC_11D3_B4E3_4854E82A090D__INCLUDED_)

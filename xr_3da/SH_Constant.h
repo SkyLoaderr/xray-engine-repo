@@ -51,18 +51,3 @@ public:
 		return TRUE;
 	}
 };
-
-class	ENGINE_API	CConstantArray
-{
-public:
-	typedef svector<CConstant*,8>	VECTOR;
-
-	svector<VECTOR,8>	constants;
-
-	VECTOR&				Pass		(DWORD ID)	{ return constants[ID]; }
-
-	CConstantArray	()
-	{
-		ZeroMemory	(this,sizeof(*this)));
-	}
-};

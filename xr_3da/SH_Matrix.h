@@ -86,18 +86,3 @@ public:
 		}
 	}
 };
-
-class	ENGINE_API	CMatrixArray
-{
-public:
-	typedef svector<CMatrix*,8>	VECTOR;
-
-	svector<VECTOR,8>	matrices;
-
-	VECTOR&				Pass		(DWORD ID)	{ return constants[ID]; }
-
-	CMatrixArray		()
-	{
-		ZeroMemory		(this,sizeof(*this)));
-	}
-};

@@ -59,6 +59,7 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	else					return I->second;
 }
 
+/*
 DWORD CShaderManager::_GetMemoryUsage	()
 {
 	DWORD Result	= 0;
@@ -68,57 +69,63 @@ DWORD CShaderManager::_GetMemoryUsage	()
 	}
 	return Result;
 }
+*/
 
-Shader*	CShaderManager::Create(const char *sName, const char *tName, BOOL bNeedMipmaps) 
+void	CShaderManager::_ParseList(sh_list& dest, LPCSTR names)
 {
-	// Parse names
-	tex_names	Names;
+	ZeroMemory(&dest, sizeof(dest));
+	char*	P = (char*) names;
+	svector<char,64>	N;
+	
+	while (*P)
 	{
-		char*	P = (char*) tName;
-		svector<char,64>	N;
-
-		while (*P)
-		{
-			if (*P == ',') {
-				// flush
-				N.push_back(0);
-				strcpy(Names.last(),N.begin());
-				strlwr(Names.last());
-				Names.inc();
-				N.clear();
-			} else {
-				N.push_back(*P);
-			}
-			P++;
-		}
-		if (N.size())
-		{
+		if (*P == ',') {
 			// flush
 			N.push_back(0);
-			strcpy(Names.last(),N.begin());
-			strlwr(Names.last());
-			Names.inc();
+			strcpy(dest.last(),N.begin());
+			strlwr(dest.last());
+			dest.inc();
+			N.clear();
+		} else {
+			N.push_back(*P);
 		}
+		P++;
 	}
-
-	// Create shader
-	Shader* S	= new Shader;
-	S->shader	= _CreateShader	(sName);
-	S->shader->CompileTextures	(Names,S->H);
-
-	// Search if this combination exists
-	for (DWORD i=0; i<sh_list.size(); i++) {
-		if (sh_list[i]->isEqual(S)) {
-			delete S;
-			sh_list[i]->dwRefCount++;
-			return sh_list[i];
-		}
+	if (N.size())
+	{
+		// flush
+		N.push_back(0);
+		strcpy(dest.last(),N.begin());
+		strlwr(dest.last());
+		dest.inc();
 	}
+}
 
-	// Combination not found - add it
-	S->dwRefCount++;
-	sh_list.push_back(S);
-	return S;
+Shader	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+{
+	// Parse names
+	sh_list				L_textures,L_constants,L_matrices;
+	_ParseList			(L_textures,s_textures	);
+	_ParseList			(L_constants,s_constants);
+	_ParseList			(L_matrices,s_matrices	);
+
+	// Result of compile
+	CPassArray			tempPassArray;
+	CTextureArray		tempTextureArray;
+	CMatrixArray		tempMatrixArray;
+	CConstantArray		tempConstantArray;
+
+	// Compile shader
+	CBlender*	B		= _GetBlender	(s_shader);
+	CBlender_Recorder	Recorder		(&tempPassArray,&tempTextureArray,&tempMatrixArray,&tempConstantArray);
+	B->Compile			(Recorder);
+
+	// Remove duplicates / create new shaders/textures/matrices/constants
+	Shader	S;
+	S.S					= _CreatePassArray		(&tempPassArray);
+	S.T					= _CreateTextureArray	(&tempTextureArray);
+	S.M					= _CreateMatrixArray	(&tempMatrixArray);
+	S.C					= _CreateConstantArray	(&tempConstantArray);
 }
 
 void CShaderManager::Delete(Shader* &S) 
