@@ -39,3 +39,9 @@ commander_talk_outside  = chugai_sounds + 22
 commander_enemy_stalker = chugai_sounds + 23
 commander_enemy_monster = chugai_sounds + 24
 commander_radio_talk    = chugai_sounds + 25
+
+-- Jon
+jon_sounds              = chugai_sounds + 1000
+
+zombee_walk_speak	    = jon_sounds + 0
+zombee_stop_speak       = jon_sounds + 1
