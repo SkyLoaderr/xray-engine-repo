@@ -6,9 +6,6 @@
 #include "TestPhysics.h"
 #include "..\physics\bkphysix.hpp"
 
-#pragma comment(lib,"x:\\game\\bkbase.lib")
-#pragma comment(lib,"x:\\game\\bkphysix.lib")
-
 static bkPhysicEnvironment	ENV;
 
 static class myTriList : public bkRBShapeTriList {
