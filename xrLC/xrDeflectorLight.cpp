@@ -214,7 +214,21 @@ void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light
 
 VOID CDeflector::Light(float P_Base)
 {
-	hash2D<UVtri*,128,128>	hash;
+	HASH	hash;
+
+	// Surface
+	lm.pSurface = 0;
+	lm_rad		= 0;
+
+	if (g_params.m_bRadiosity) {
+		DWORD size = lm.dwWidth*lm.dwHeight*sizeof(Fvector);
+		lm_rad = (Fvector*)malloc(size);
+		ZeroMemory	(lm_rad,size);
+	}
+
+	DWORD size = lm.dwWidth*lm.dwHeight*4;
+	lm.pSurface = (DWORD *)malloc(size);
+	ZeroMemory	(lm.pSurface,size);
 
 	// Filling it with new triangles
 	Fbox bb; bb.invalidate	();
@@ -252,23 +266,6 @@ VOID CDeflector::Light(float P_Base)
 	else						L_Direct	(P_Base,hash);
 
 	LightsSelected.clear	();
-}
-
-void CDeflector::Prepare()
-{
-	// Surface
-	lm.pSurface = 0;
-	lm_rad		= 0;
-
-	if (g_params.m_bRadiosity) {
-		DWORD size = lm.dwWidth*lm.dwHeight*sizeof(Fvector);
-		lm_rad = (Fvector*)malloc(size);
-		ZeroMemory	(lm_rad,size);
-	}
-
-	DWORD size = lm.dwWidth*lm.dwHeight*4;
-	lm.pSurface = (DWORD *)malloc(size);
-	ZeroMemory	(lm.pSurface,size);
 }
 
 float gauss [7][7] =

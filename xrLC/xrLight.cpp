@@ -4,6 +4,21 @@
 
 extern void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 
+class CLMThread : public CThread
+{
+	CDeflector*	defl;
+public:
+	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
+	{
+		defl = D;
+	}
+
+	virtual void	Execute()
+	{
+		defl->Light	(0);
+	}
+};
+
 void CBuild::Light()
 {
 	vecDeflIt it;
@@ -13,18 +28,25 @@ void CBuild::Light()
 		string(g_params.m_bRadiosity?"Radiosity":"Direct") +
 		string(" lighting)...")).c_str()
 		);
-	Status("Preparing...");
-	for (it = g_deflectors.begin(); it!=g_deflectors.end(); it++)
-		(*it)->Prepare();
 
-	for (it = g_deflectors.begin(); it!=g_deflectors.end(); it++)
-	{
-		DWORD	N = it-g_deflectors.begin();
-		float	P = float(N)/float(g_deflectors.size());
-		Status("Calculating surface #%d...",N);
-		Progress(P);
-
-		(*it)->Light(P);
+	// Main process
+	CLMThread*	threads[3] = {0,0,0};
+	DWORD		N=0;
+	for (;;) {
+		for (int L=0; L<3; L++) {
+			if ((0==threads[L]) || threads[L]->thCompleted)
+			{
+				_DELETE	(threads[L]);
+				if (N>=g_deflectors.size())	continue;
+				threads[L] = new CLMThread(N,g_deflectors[N]);	N++;
+				
+				// Info
+				float	P = float(N)/float(g_deflectors.size());
+				Progress(P);
+				Status("Calculating surface up to #%d...",N);
+			}
+		}
+		if ((0==threads[0])&&(0==threads[1])&&(0==threads[2]))	break;
 	}
 
 	Phase("Saving shadowmaps...");
