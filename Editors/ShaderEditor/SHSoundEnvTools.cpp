@@ -220,7 +220,7 @@ void CSHSoundEnvTools::SetCurrentItem(LPCSTR name, bool bView)
 	CSoundRender_Environment* S = FindItem(name);
 	if (m_Env!=S){
         m_Env 			= S;
-        m_EnvSrc		= *m_Env;
+        if (m_Env) 		m_EnvSrc = *m_Env;
 	    UI->Command(COMMAND_UPDATE_PROPERTIES);
 		if (bView) ViewSetCurrentItem(name);
     }
