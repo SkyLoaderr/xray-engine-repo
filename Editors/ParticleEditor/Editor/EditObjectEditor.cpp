@@ -170,18 +170,27 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
     float m = C.magnitude();
     if (m<EPS) return;
     C.div(m);
+	int max_frame;
+    float max_dot=0;
     for (int frame=0; frame<samples; frame++){
     	float angle = frame*(PI_MUL_2/samples);
 
         Fvector D;
         D.setHP(angle,0);
         float dot = C.dotproduct(D);
-        if (dot<0.7070f) continue;
+        if (dot<0.7072f) continue;
 
+        if (dot>max_dot){
+        	max_dot = dot;
+            max_frame = frame;
+        }
+    }
+	{
+    	float angle = max_frame*(PI_MUL_2/samples);
 	    rot.rotateY(-angle);
         matrix.mul(T,rot);
     	Fvector2 lt, rb;
-	    CalculateLODTC(frame,samples,1,lt,rb);
+	    CalculateLODTC(max_frame,samples,1,lt,rb);
         LOD[0].t.set(lt);
         LOD[1].t.set(rb.x,lt.y);
         LOD[2].t.set(rb);
