@@ -1,7 +1,6 @@
 function main()
-	local foo = nil
+	local dog = get_level_object("dog")
+	dog:script(true, script_name())
 	
-	printf("test")
-	
-	foo:printf("Hello")
+	action(dog, act(act.panic, nil), cond(cond.time_end, 10000))
 end
