@@ -61,7 +61,8 @@ void Startup(LPSTR     lpCmdLine)
 
 	// Give a LOG-thread a chance to startup
 	InitCommonControls	();
-	_beginthread		(logThread,	0,0);
+	Sleep				(150);
+	_beginthread		(logThread,	1024*1024,0);
 	while				(!logWindow)	Sleep		(150);
 	
 	// Load project
