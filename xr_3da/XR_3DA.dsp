@@ -1576,51 +1576,6 @@ SOURCE=.\Environment.cpp
 SOURCE=.\Environment.h
 # End Source File
 # End Group
-# Begin Group "AI_Space"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\AI_astar.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_astar_fsa.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_qNode.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_qPath.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_qRange.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Space.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Space.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Utilities.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-# ADD CPP /FAs
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-!ENDIF 
-
-# End Source File
-# End Group
 # Begin Group "Cameras"
 
 # PROP Default_Filter ""

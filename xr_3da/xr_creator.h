@@ -7,7 +7,6 @@
 #include "cameramanager.h"
 #include "xr_area.h"
 #include "xr_snd_defs.h"
-#include "ai_space.h"
 
 // refs
 class ENGINE_API CCursor;
