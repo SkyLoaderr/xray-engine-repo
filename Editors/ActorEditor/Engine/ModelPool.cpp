@@ -347,7 +347,6 @@ IC bool	_IsRender(IRender_Visual* visual, const Fmatrix& transform, u32 priority
 void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD)
 {
     // render visual
-    RCache.set_xform_world(mTransform);
     switch (m_pVisual->Type){
     case MT_SKELETON_ANIM:
     case MT_SKELETON_RIGID:
@@ -360,6 +359,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
             IRender_Visual* V			= *I;
 			if (_IsRender(V,mTransform,priority,strictB2F)){
 		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
+			    RCache.set_xform_world	(mTransform);
 	            V->Render		 		(m_fLOD);
             }
         }
@@ -369,18 +369,22 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
         xr_vector<IRender_Visual*>::iterator 		I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
-        for (; I!=E; I++)
+        for (; I!=E; I++){
+            RCache.set_xform_world		(mTransform);
             Render						(*I,Fidentity,priority,strictB2F,m_fLOD);
+        }
     }break;
     case MT_PARTICLE_EFFECT:{
 		if (_IsRender(m_pVisual,Fidentity,priority,strictB2F)){
 	        RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
+            RCache.set_xform_world		(mTransform);
             m_pVisual->Render		 	(m_fLOD);
         }
     }break;
     default:
 		if (_IsRender(m_pVisual,mTransform,priority,strictB2F)){
 	        RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
+            RCache.set_xform_world		(mTransform);
             m_pVisual->Render		 	(m_fLOD);
         }
         break;

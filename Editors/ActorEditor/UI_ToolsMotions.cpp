@@ -64,18 +64,17 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
 	CMemoryWriter F;
 	if (source->IsSkeleton()){
         if (bUpdGeom)	bRes = UpdateGeometryStream(source);
-        if (!bRes){
+        if (!bRes||!m_GeometryStream.size()){
         	ELog.Msg(mtError,"Can't create preview geometry.");
         	return false;
         }
-        if (bUpdKeys)bRes = UpdateMotionKeysStream(source);
-        if (bUpdDefs)bRes = UpdateMotionDefsStream(source);
-        if (!bRes) ELog.Msg(mtError,"Can't create preview motions.");
-        if (!bRes||!m_GeometryStream.size()||!m_MotionKeysStream.size()||!m_MotionDefsStream.size())
-         	return false;
         F.w(m_GeometryStream.pointer(),m_GeometryStream.size());
-        F.w(m_MotionKeysStream.pointer(),m_MotionKeysStream.size());
-        F.w(m_MotionDefsStream.pointer(),m_MotionDefsStream.size());
+        if (bUpdKeys) UpdateMotionKeysStream(source);
+        if (bUpdDefs) UpdateMotionDefsStream(source);
+        if (m_MotionKeysStream.size()&&m_MotionDefsStream.size()){
+	        F.w(m_MotionKeysStream.pointer(),m_MotionKeysStream.size());
+    	    F.w(m_MotionDefsStream.pointer(),m_MotionDefsStream.size());
+        }
     }else{
         bool bRes = true;
         if (bUpdGeom) 	bRes = UpdateGeometryStream(source);
