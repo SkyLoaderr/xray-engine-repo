@@ -20,6 +20,7 @@ struct	cache_line						// internal, LRU queue
 	cache_line*				next;
 	void*					data;		// pre-formatted
 	u16*					loopback;	// dual-connectivity
+	u16						id;			// need this for dual-connectivity
 };
 //////////////////////////////////////////////////////////////////////////
 struct	cache_cat						// cache allocation table
@@ -27,7 +28,7 @@ struct	cache_cat						// cache allocation table
 	u16*					table;		// page-table
 	u32						size;		// in pages
 };
-const	u16	cat_freeline	= 0xffff;
+#define CAT_FREE			0xffff
 //////////////////////////////////////////////////////////////////////////
 class	CSoundRender_Cache
 {

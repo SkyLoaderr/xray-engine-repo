@@ -48,22 +48,23 @@ BOOL	CSoundRender_Cache::request		(cache_cat& cat, u32 id)
 {
 	// 1. check if cached version available
 	R_ASSERT		(id<cat.size);
-	u16		cptr	= cat.table[id];
-	if (cptr.line)	{
+	u16&	cptr	= cat.table[id];
+	if (CAT_FREE != cptr)	{
 		// cache line exists - change it's priority and return
-		move2top	(cptr.line);
-		return		FALSE;
+		cache_line*	L	= c_storage + cptr;
+		move2top		(L);
+		return			FALSE;
 	}
 
 	// 2. purge oldest item + move it to top
 	move2top	(c_end);
 	if (c_begin->loopback)	{
-		c_begin->loopback->line	= NULL;
+		*c_begin->loopback		= CAT_FREE;
 		c_begin->loopback		= NULL;
 	}
 
 	// 3. associate
-	cptr.line			= c_begin;
+	cptr				= c_begin->id;
 	c_begin->loopback	= &cptr;
 
 	// 4. fill with data
@@ -92,7 +93,7 @@ void	CSoundRender_Cache::disconnect	()
 	{
 		cache_line*		L	= c_storage+it;
 		if (L->loopback)	{
-			L->loopback->line	= NULL;
+			*L->loopback		= CAT_FREE;
 			L->loopback			= NULL;
 		}
 	}
@@ -108,6 +109,7 @@ void	CSoundRender_Cache::format		()
 		L->next				= ((_count-1) == it)	? NULL : c_storage+it+1;
 		L->data				= data + it*_line;
 		L->loopback			= NULL;
+		L->id				= u16	(it);
 	}
 
 	// start-end
@@ -144,6 +146,6 @@ void	CSoundRender_Cache::cat_create	(cache_cat& cat, u32 bytes)
 
 void	CSoundRender_Cache::cat_destroy	(cache_cat& cat)
 {
-	xr_free		(cat.table);
-	cat.size	= 0;
+	xr_free				(cat.table);
+	cat.size			= 0;
 }
