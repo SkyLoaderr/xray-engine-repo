@@ -23,7 +23,8 @@ const dReal default_w_limit = M_PI/16.f/fixed_step;
 const dReal default_l_limit = 3.f/fixed_step;
 const dReal default_l_scale=1.01f;
 const dReal default_w_scale=1.01f;
-
+const dReal default_disw=0.00005f;
+const dReal default_disl=0.005f;
 // #include "contacts.h"
 
 

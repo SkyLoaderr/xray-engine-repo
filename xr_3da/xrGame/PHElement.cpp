@@ -896,7 +896,7 @@ void	CPHElement::Disabling(){
 				deviation_v[2]*deviation_v[2]);
 
 			deviation/=dis_count_f;
-			if(mag_v<0.005f* dis_frames && deviation<0.00005f*dis_frames)
+			if(mag_v<m_disl_param * dis_frames && deviation<m_disw_param*dis_frames)
 				Disable();//dBodyDisable(m_body);//
 			if((!(previous_dev<deviation)&&!(previous_v<mag_v))//
 				) 
@@ -1565,4 +1565,10 @@ void CPHElement::set_DynamicScales(float l_scale/* =default_l_scale */,float w_s
 {
 	m_l_scale=l_scale;
 	m_w_scale=w_scale;
+}
+
+void CPHElement::set_DisableParams(float dis_l/* =default_disl */,float dis_w/* =default_disw */)
+{
+	m_disl_param=dis_l;
+	m_disw_param=dis_w;
 }

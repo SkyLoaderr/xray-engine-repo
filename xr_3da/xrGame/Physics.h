@@ -13,6 +13,8 @@ extern const dReal default_l_limit;
 extern const dReal default_w_limit;
 extern const dReal default_l_scale;
 extern const dReal default_w_scale;
+extern const dReal default_disw;
+extern const dReal default_disl;
 extern const dReal fixed_step;
 extern const u16	 dis_frames;
 

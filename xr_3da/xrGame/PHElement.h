@@ -30,6 +30,8 @@ class CPHElement	:  public CPhysicsElement
 	dGeomID					m_group;
 	dReal					m_l_scale;
 	dReal					m_w_scale;
+	dReal					m_disw_param;
+	dReal					m_disl_param;
 	CPhysicsRefObject*		m_phys_ref_object;
 	///////////////////////////////
 	xr_vector<CPHElement*>	m_attached_elements;
@@ -93,7 +95,7 @@ public:
 	void					CallBack1						(CBoneInstance* B);
 	void					PhDataUpdate					(dReal step);
 	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}
-
+	virtual void			set_DisableParams				(float dis_l=default_disl,float dis_w=default_disw);
 	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val)	;
 	Fmatrix					m_inverse_local_transform;
 
@@ -175,7 +177,8 @@ public:
 		m_l_limit = default_l_limit;
 		m_l_scale=default_l_scale;
 		m_w_scale=default_w_scale;
-
+		m_disw_param=default_disw;
+		m_disl_param=default_disl;
 		push_untill=0;
 		contact_callback=ContactShotMark;
 		object_contact_callback=NULL;

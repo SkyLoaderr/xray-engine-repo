@@ -418,6 +418,7 @@ if(m_pPhysicsShell) return;
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
+	m_pPhysicsShell->set_DisableParams(default_disl*50.f,default_disw*500.);
 	m_pPhysicsShell->Activate(true);
 	PKinematics(Visual())->Calculate();
 }

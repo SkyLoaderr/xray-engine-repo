@@ -124,7 +124,7 @@ virtual ~CPHShell				()
 	virtual void				StepFrameUpdate				(dReal step){};
 	virtual void				build_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map=NULL);
 	virtual void                ZeroCallbacks				();
-
+	virtual void				set_DisableParams			(float dis_l=default_disl,float dis_w=default_disw);
 	virtual void			SmoothElementsInertia(float k);
 
 	dSpaceID GetSpace()

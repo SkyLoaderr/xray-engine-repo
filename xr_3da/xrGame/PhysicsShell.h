@@ -26,7 +26,8 @@ extern const dReal default_l_limit;
 extern const dReal default_w_limit;
 extern const dReal default_l_scale;
 extern const dReal default_w_scale;
-
+extern const dReal default_disw;
+extern const dReal default_disl;
 class CPhysicsJoint;
 class CPhysicsElement;
 struct physicsBone
@@ -71,7 +72,7 @@ public:
 	virtual void			set_PushOut				(u32 time,PushOutCallbackFun* push_out=PushOutCallback)	= 0;
 	virtual void			SetMaterial				(u32 m)													= 0;
 	virtual void			SetMaterial				(LPCSTR m)												= 0;
-	
+	virtual void			set_DisableParams		(float dis_l=default_disl,float dis_w=default_disw)		= 0;
 	virtual					~CPhysicsBase	()																{};
 };
 

@@ -720,3 +720,11 @@ void CPHShell::set_DynamicScales(float l_scale/* =default_l_scale */,float w_sca
 	for( ;i!=e;i++)
 		(*i)->set_DynamicScales(l_scale,w_scale);
 }
+
+void CPHShell::set_DisableParams(float dis_l/* =default_disl */,float dis_w/* =default_disw */)
+{
+	xr_vector<CPHElement*>::iterator i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;i++)
+		(*i)->set_DisableParams(dis_l,dis_w);
+}
