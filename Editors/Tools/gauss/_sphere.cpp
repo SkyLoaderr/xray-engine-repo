@@ -16,24 +16,24 @@ private:
 
 	Fvector				q0;
 
-	float					z[d+1];
-	float					f[d+1];
+	float				z[d+1];
+	float				f[d+1];
 	Fvector				v[d+1];
 	Fvector				a[d+1];
 	Fvector				c[d+1];
-	float					sqr_r[d+1];
+	float				sqr_r[d+1];
 
 	Fvector*			current_c;      // vectors to some c[j]
-	float					current_sqr_r;
+	float				current_sqr_r;
 public:
 	Basis();
 
 	// access
 	const Fvector*		center			() const;
-	float					squared_radius	() const;
+	float				squared_radius	() const;
 	int                 size			() const;
 	int                 support_size	() const;
-	float					excess			(const Fvector& p) const;
+	float				excess			(const Fvector& p) const;
 
 	// modification
 	void                reset			(); // generates empty sphere with m=s=0
@@ -61,9 +61,9 @@ private:
 	void		mtf_mb					(It k);
 	void		pivot_mb				(It k);
 	void		move_to_front			(It j);
-	float			max_excess				(It t, It i, It& pivot) const;
-	float			abs						(float r) const {return (r>0)? r: (-r);}
-	float			sqr						(float r) const {return r*r;}
+	float		max_excess				(It t, It i, It& pivot) const;
+	float		abs						(float r) const {return (r>0)? r: (-r);}
+	float		sqr						(float r) const {return r*r;}
 public:
 	// construction
 	Miniball() {}
@@ -71,8 +71,8 @@ public:
 	void        build					();
 
 	// access
-	Fvector      center					() const;
-	float			squared_radius			() const;
+	Fvector     center					() const;
+	float		squared_radius			() const;
 	int         num_points				() const;
 	Cit         points_begin			() const;
 	Cit         points_end				() const;
