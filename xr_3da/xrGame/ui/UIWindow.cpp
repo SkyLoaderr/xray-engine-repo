@@ -230,7 +230,7 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 }
 
 void CUIWindow::OnDbClick(){
-    // overload this function to hand DbClick event
+    // overload this function to handle DbClick event
 }
 
 
