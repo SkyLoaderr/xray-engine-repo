@@ -144,7 +144,7 @@ BOOL CHangingLamp::net_Spawn(CSE_Abstract* DC)
 	}
 	
 	setVisible					(!!Visual());
-	setEnabled					(TRUE);
+	setEnabled					(!!collidable.model);
 
 	return						(TRUE);
 }
