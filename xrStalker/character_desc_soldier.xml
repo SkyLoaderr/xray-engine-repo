@@ -4,7 +4,7 @@
 <!---------------------------SOLDIER PRIVATE----------------------->
 	<specific_character id="soldier_regular_default" team_default = "1">
 		<name>Неизвестный солдат</name>
-		<icon x="12" y="2"></icon>
+		<icon x="12" y="4"></icon>
 		<map_icon x="0" y="2"></map_icon>
 		<bio>Рядовой представитель вооруженных сил.</bio>
 
@@ -16,7 +16,7 @@
 		<rank>30</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\soldier\soldier_obichniy</visual>		
+		<visual>actors\soldier\soldier_beret</visual>		
 	</specific_character>
 
 <!---------------------------SOLDIER SNIPER---------------------->
