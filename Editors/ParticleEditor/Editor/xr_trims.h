@@ -4,13 +4,19 @@
 // refs
 struct xr_token;
 
+#ifdef M_BORLAND
+	LPCSTR					_GetItem				( LPCSTR src, int, AnsiString& p, char separator=',', LPCSTR ="" );
+	LPCSTR					_GetItems 				( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator );
+	LPCSTR					_CopyVal 				( LPCSTR src, AnsiString& dst, char separator=',' );
+	AnsiString&				ListToSequence			(AStringVec& lst);
+	AnsiString&				ListToSequence2			(AStringVec& lst);
+	void 					SequenceToList			(AStringVec& lst, LPCSTR in);
+#endif
+
 int							_GetItemCount			( const char* , char separator=',');
-LPCSTR						_GetItem				( const char*, int, AnsiString& p, char separator=',', char* ="" );
-LPCSTR						_GetItem				( const char*, int, char*, char separator=',', char* ="" );
+LPCSTR						_GetItem				( const char*, int, char*, char separator=',', LPCSTR ="" );
 LPCSTR						_GetItems				( const char*, int, int, char*, char separator=',');
-LPCSTR						_GetItems 				( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator );
 const char*		  			_SetPos					( const char* src, DWORD pos, char separator=',' );
-const char* 				_CopyVal 				( const char* src, AnsiString& dst, char separator=',' );
 const char*					_CopyVal				( const char* src, char* dst, char separator=',' );
 char*						_Trim					( char* str );
 char*						_TrimLeft				( char* str );
@@ -21,8 +27,5 @@ DWORD						_ParseItem				( char* src, xr_token* token_list );
 DWORD						_ParseItem				( char* src, int ind, xr_token* token_list );
 char* 						_ReplaceItem 			( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char separator );
 char* 						_ReplaceItems 			( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, LPSTR dst, char separator );
-AnsiString&					ListToSequence			(AStringVec& lst);
-AnsiString&					ListToSequence2			(AStringVec& lst);
-void 						SequenceToList			(AStringVec& lst, LPCSTR in);
 
 #endif

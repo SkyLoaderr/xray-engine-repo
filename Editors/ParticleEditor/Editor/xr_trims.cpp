@@ -4,31 +4,6 @@
 #include "xr_trims.h"
 #include "xr_tokens.h"
 
-AnsiString& ListToSequence(AStringVec& lst)
-{
-	static AnsiString out;
-    out = "";
-    if (lst.size()){
-        out			= lst.front();
-        for (AStringIt s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
-            out		+= AnsiString(",")+(*s_it);
-    }
-    return out;
-}
-
-AnsiString& ListToSequence2(AStringVec& lst)
-{
-	static AnsiString out;
-    out = "";
-    if (lst.size()){
-        out			= lst.front();
-        for (AStringIt s_it=lst.begin()+1; s_it!=lst.end(); s_it++){
-            out		+= AnsiString("\n")+(*s_it);
-        }
-    }
-    return out;
-}
-
 void SequenceToList(AStringVec& lst, LPCSTR in)
 {
 	lst.clear();
@@ -88,17 +63,6 @@ const char* _CopyVal ( const char* src, char* dst, char separator )
 	return		dst;
 }
 
-const char* _CopyVal ( const char* src, AnsiString& dst, char separator )
-{
-	const char*	p;
-	DWORD		n;
-	p			= strchr	( src, separator );
-	n			= (p>0) ? (p-src) : strlen(src);
-    dst			= src;
-    dst			= dst.Delete(n+1,dst.Length());
-	return		dst.c_str();
-}
-
 int				_GetItemCount ( const char* src, char separator )
 {
 	const char*	res			= src;
@@ -115,7 +79,7 @@ int				_GetItemCount ( const char* src, char separator )
 	return		cnt;
 }
 
-LPCSTR _GetItem ( const char* src, int index, char* dst, char separator, char* def )
+LPCSTR _GetItem ( const char* src, int index, char* dst, char separator, LPCSTR def )
 {
 	const char*	ptr;
 	ptr			= _SetPos	( src, index, separator );
@@ -123,16 +87,6 @@ LPCSTR _GetItem ( const char* src, int index, char* dst, char separator, char* d
 		else	strcpy		( dst, def );
 	_Trim( dst );
 	return		dst;
-}
-
-LPCSTR _GetItem ( const char* src, int index, AnsiString& dst, char separator, char* def )
-{
-	const char*	ptr;
-	ptr			= _SetPos	( src, index, separator );
-	if( ptr )	_CopyVal	( ptr, dst, separator );
-		else	dst = def;
-    dst 		= dst.Trim();
-	return		dst.c_str();
 }
 
 LPCSTR _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separator )
@@ -147,18 +101,6 @@ LPCSTR _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separ
     }
     *n++ = '\0';
 	return dst;
-}
-
-LPCSTR _GetItems ( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator )
-{
-    int level = 0;
- 	for (LPCSTR p=src; *p!=0; p++){
-    	if ((level>=idx_start)&&(level<idx_end))
-        	dst += *p;
-    	if (*p==separator) level++;
-        if (level>=idx_end) break;
-    }
-	return dst.c_str();
 }
 
 DWORD _ParseItem ( char* src, xr_token* token_list )
@@ -241,5 +183,64 @@ char* _TrimLeft( char* str )
 	return str;
 }
 
+#ifdef M_BORLAND
+const char* _CopyVal ( const char* src, AnsiString& dst, char separator )
+{
+	const char*	p;
+	DWORD		n;
+	p			= strchr	( src, separator );
+	n			= (p>0) ? (p-src) : strlen(src);
+	dst			= src;
+	dst			= dst.Delete(n+1,dst.Length());
+	return		dst.c_str();
+}
+
+LPCSTR _GetItems ( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator )
+{
+	int level = 0;
+	for (LPCSTR p=src; *p!=0; p++){
+		if ((level>=idx_start)&&(level<idx_end))
+			dst += *p;
+		if (*p==separator) level++;
+		if (level>=idx_end) break;
+	}
+	return dst.c_str();
+}
+
+LPCSTR _GetItem ( const char* src, int index, AnsiString& dst, char separator, LPCSTR def )
+{
+	const char*	ptr;
+	ptr			= _SetPos	( src, index, separator );
+	if( ptr )	_CopyVal	( ptr, dst, separator );
+	else	dst = def;
+	dst 		= dst.Trim();
+	return		dst.c_str();
+}
+
+AnsiString& ListToSequence(AStringVec& lst)
+{
+	static AnsiString out;
+	out = "";
+	if (lst.size()){
+		out			= lst.front();
+		for (AStringIt s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
+			out		+= AnsiString(",")+(*s_it);
+	}
+	return out;
+}
+
+AnsiString& ListToSequence2(AStringVec& lst)
+{
+	static AnsiString out;
+	out = "";
+	if (lst.size()){
+		out			= lst.front();
+		for (AStringIt s_it=lst.begin()+1; s_it!=lst.end(); s_it++){
+			out		+= AnsiString("\n")+(*s_it);
+		}
+	}
+	return out;
+}
+#endif
 
 
