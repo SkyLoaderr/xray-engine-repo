@@ -75,6 +75,9 @@ public:
 	CModelPool										Models;
 
 	CRenderTarget									Target;			// Render-target
+
+	CMatrix*										matDetailTexturing;
+	CMatrix*										matFogPass;
 private:
 	// Loading / Unloading
 	void							LoadBuffers				(CStream	*fs);
@@ -94,6 +97,9 @@ private:
 	void							flush_Patches			();
 	void							flush_Models			();
 	void							flush_LODs				();
+
+	void							calc_DetailTexturing	();
+	void							calc_FogPass			();
 public:
 	// Loading / Unloading
 	virtual	void					level_Load				();

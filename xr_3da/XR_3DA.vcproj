@@ -1544,6 +1544,9 @@
 				RelativePath=".\FStaticRender_Cached.cpp">
 			</File>
 			<File
+				RelativePath="FStaticRender_DetailTexturing.cpp">
+			</File>
+			<File
 				RelativePath=".\FStaticRender_DetectSector.cpp">
 			</File>
 			<File
