@@ -616,7 +616,7 @@ void	game_sv_CS::Update			()
 
 void	game_sv_CS::OnPlayerReady	(u32 id)
 {
-	if	(GAME_PHASE_INPROGRESS == phase) return;
+	if	(GAME_PHASE_PENDING != phase) return;
 
 	game_PlayerState*	ps	=	get_id	(id);
 	if (ps)
