@@ -8,6 +8,8 @@
 #define XRSOUND_API __declspec(dllimport)
 #endif
 
+#define SNDENV_FILENAME "sEnvironment.xr"
+
 // refs
 class	CObject;
 class	XRSOUND_API					CSound_params;

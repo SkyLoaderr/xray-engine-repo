@@ -102,10 +102,9 @@ void CSoundRender_Core::_initialize	(u32 window)
 	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
 
 	// Load environment
-	if (FS.exist("$game_data$","sEnvironment.xr"))
+	string256					fn;
+	if (FS.exist(fn,"$game_data$",SNDENV_FILENAME))
 	{
-		string256					fn;
-		FS.update_path				(fn,"$game_data$","sEnvironment.xr");
 		s_environment				= xr_new<SoundEnvironment_LIB>();
 		s_environment->Load			(fn);
 	}

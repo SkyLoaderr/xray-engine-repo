@@ -2,9 +2,7 @@
 #define soundrender_environmentH
 #pragma once
 
-#include "soundrender.h"
-
-class CSoundRender_Environment		: public CSound_environment
+class XRSOUND_API CSoundRender_Environment
 {
 public:
 	u32				version;
@@ -36,7 +34,7 @@ public:
 	~CSoundRender_Environment		(void);
 };
 
-class SoundEnvironment_LIB
+class XRSOUND_API SoundEnvironment_LIB
 {
 public:
 	DEFINE_VECTOR				(CSoundRender_Environment*,SE_VEC,SE_IT);

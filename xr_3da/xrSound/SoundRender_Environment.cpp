@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "soundrender.h"
 #include "soundrender_environment.h"
 
 CSoundRender_Environment::CSoundRender_Environment(void)
@@ -16,20 +17,26 @@ CSoundRender_Environment::~CSoundRender_Environment(void)
 
 void CSoundRender_Environment::set_default	(bool R, bool E, bool D)
 {
-	R_InGain		=	DSFX_WAVESREVERB_INGAIN_DEFAULT;
-	R_Mix			=	DSFX_WAVESREVERB_REVERBMIX_DEFAULT;
-	R_Time			=	DSFX_WAVESREVERB_REVERBTIME_DEFAULT;
-	R_HFRatio		=	DSFX_WAVESREVERB_HIGHFREQRTRATIO_DEFAULT;
+	if (R){
+		R_InGain   	=	DSFX_WAVESREVERB_INGAIN_DEFAULT;
+		R_Mix	   	=	DSFX_WAVESREVERB_REVERBMIX_DEFAULT;
+		R_Time	   	=	DSFX_WAVESREVERB_REVERBTIME_DEFAULT;
+		R_HFRatio  	=	DSFX_WAVESREVERB_HIGHFREQRTRATIO_DEFAULT;
+    }
 
-	E_WetDry		=	50;
-	E_FeedBack		=	50;
-	E_Delay			=	500;
+    if (E){
+		E_WetDry   	=	50;
+		E_FeedBack 	=	50;
+		E_Delay	   	=	500;
+    }
 
-	D_Gain			=	-18;
-	D_Edge			=	15;
-	D_CenterF		=	2400;
-	D_BandWidth		=	2400;
-	D_Cutoff		=	8000;
+    if (D){
+		D_Gain	   	=	-18;
+		D_Edge	   	=	15;
+		D_CenterF  	=	2400;
+		D_BandWidth	=	2400;
+		D_Cutoff   	=	8000;
+    }
 }
 
 void CSoundRender_Environment::set_identity	(bool R, bool E, bool D)
