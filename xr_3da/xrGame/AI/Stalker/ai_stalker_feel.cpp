@@ -374,8 +374,10 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
-	if (who == Level().CurrentEntity())
+#ifdef IGNORE_ACTOR
+	if ((who == Level().CurrentEntity()) || (who && (who->H_Parent() == Level().CurrentEntity())))
 		return;
+#endif
 
 	if (!g_Alive()) {
 		m_tpaDynamicSounds.clear();
