@@ -7,8 +7,9 @@ const	int						lmap_size	= 1024;
 #include "xrDeflector.h"
 #include "vbm.h"
 #include "OGF_Face.h"
+#include "xr_list.h"
 
-typedef vector<vecFace>			vec2Face;
+typedef CList<vecFace>			vec2Face;
 typedef vec2Face::iterator		splitIt;
 
 typedef vector<CDeflector*>		vecDefl;
@@ -22,7 +23,6 @@ typedef map_v2v::iterator		map_v2v_it;
 extern vecVertex				g_vertices;
 extern vecFace					g_faces;
 extern vec2Face					g_XSplit;
-extern vec2Face					g_XMerge;
 extern vecDefl					g_deflectors;
 extern RAPID::Model				RCAST_Model;
 extern CDeflector*				Deflector;

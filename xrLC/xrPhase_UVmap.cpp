@@ -47,7 +47,8 @@ void Detach			(vecFace* S)
 void	CBuild::xrPhase_UVmap()
 {
 	// Main loop
-	Status("Processing...");
+	Status					("Processing...");
+	g_deflectors.reserve	(16*1024);
 	float p_cost	= 1.f / float(g_XSplit.size());
 	float p_total	= 0.f;
 	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
