@@ -32,6 +32,10 @@ awaking_time		= 200
 blowout_time		= 1200	
 accamulate_time		= 200 ;200
 
+blowout_light_time		= 900
+blowout_explosion_time	= 900
+blowout_particle_time	= 800
+
 disable_time		= -1 ; 5000		;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= 1000		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time	= 1000		;время отключения idle партиклов
@@ -46,9 +50,6 @@ light_range		    = 30.0
 light_time 		    = 0.9;0.35
 light_height		= 1.5			;подъем источника света на высоту
 
-blowout_light_time		= 900
-blowout_explosion_time	= 900
-blowout_particle_time	= 800
 
 idle_light			= off
 
@@ -73,7 +74,7 @@ artefact_spawn_height = 3		;(м) высота на центром зоны где будет рожден артефакт
 ;; ветер
 blowout_wind		= on
 
-blowout_wind_time_start     = 200
+blowout_wind_time_start     = 0
 blowout_wind_time_peak      = 600
 blowout_wind_time_end		= 1200
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
