@@ -90,7 +90,7 @@ void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 {
 	R_ASSERT					(S_INIT == status);
 	BTHREAD_params				P = { this, V, Vcnt, T, Tcnt };
-	_beginthread				(build_thread,0,&P);
+	R_ASSERT					(_beginthread(build_thread,0,&P) >= 0);
 	while						(S_INIT	== status)	Sleep	(5);
 }
 
