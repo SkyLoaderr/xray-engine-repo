@@ -93,8 +93,8 @@ function main()
 	local fsm_stalker = FSM(this.script_name(), stalker00)
 
 	-- установка функций перехода 
-	fsm_stalker:set_transition(0, 1, this.if_see_actor_tell_warning)
-	fsm_stalker:set_transition(1, 0, this.finished_talking)
+--	fsm_stalker:set_transition(0, 1, this.if_see_actor_tell_warning)
+--	fsm_stalker:set_transition(1, 0, this.finished_talking)
 	fsm_stalker:set_transition(0, 2, this.if_actor_is_dead)
 	fsm_stalker:set_transition(2, 0, this.finished_talking)
 
