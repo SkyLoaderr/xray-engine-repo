@@ -522,12 +522,6 @@
 					<File
 						RelativePath=".\xr_efflensflare.h">
 					</File>
-					<File
-						RelativePath=".\xr_effsun.cpp">
-					</File>
-					<File
-						RelativePath=".\xr_effsun.h">
-					</File>
 				</Filter>
 			</Filter>
 			<Filter
