@@ -120,11 +120,12 @@ void CSoundRender_Core::_initialize	(u32 window)
 		s_targets.push_back			(T);
 	}
 
-	cache.initialize			(psSoundCacheSizeMB*1024,sdef_target_block*wfx.nAvgBytesPerSec/1000)
+	cache.initialize			(psSoundCacheSizeMB*1024,(sdef_target_block/2)*wfx.nAvgBytesPerSec/1000)
 }
 
 void CSoundRender_Core::_destroy	()
 {
+	cache.destroy				();
 	env_unload					();
 
     // remove sources
