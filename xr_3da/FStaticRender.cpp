@@ -640,7 +640,7 @@ void	CRender::Render		()
 }
 
 // Device events
-void CRender::OnDeviceCreate()
+void CRender::OnDeviceCreate	()
 {
 	REQ_CREATE					();
 	Target.OnDeviceCreate		();
@@ -656,7 +656,7 @@ void CRender::OnDeviceCreate()
 	rmNormal					();
 }
 
-void CRender::OnDeviceDestroy()
+void CRender::OnDeviceDestroy	()
 {
 	L_Dynamic.Destroy			();
 	level_Unload				();
@@ -666,4 +666,6 @@ void CRender::OnDeviceDestroy()
 	L_Projector.OnDeviceDestroy	();
 	L_Shadows.OnDeviceDestroy	();
 	Target.OnDeviceDestroy		();
+
+	Models.Destroy				();
 }

@@ -124,7 +124,6 @@ CVisual*	CModelPool::Instance_Load(LPCSTR name, CStream* data)
 
 void		CModelPool::Instance_Register(LPCSTR N, CVisual* V)
 {
-	Msg					("------------------------- %s",N);
 	// Registration
 	ModelDef			M;
 	strcpy				(M.name,N);
@@ -138,6 +137,7 @@ void		CModelPool::Instance_Register(LPCSTR N, CVisual* V)
 //////////////////////////////////////////////////////////////////////
 void CModelPool::Destroy()
 {
+	Log("!!!!!!!!!!!!!!!!!MODEL_POOL");
 	vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++) 
 	{
@@ -161,7 +161,6 @@ CModelPool::CModelPool()
 CModelPool::~CModelPool()
 {
 	Device.seqDevDestroy.Remove	(this);
-	Destroy						();
 }
 
 CVisual* CModelPool::Instance_Find(LPCSTR N)
@@ -180,7 +179,6 @@ CVisual* CModelPool::Instance_Find(LPCSTR N)
 
 CVisual* CModelPool::Create(const char* name)
 {
-	Log("!!!!!!!!!!!!!!!!!CREATE",name);
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
@@ -196,7 +194,6 @@ CVisual* CModelPool::Create(const char* name)
 
 CVisual* CModelPool::Create(LPCSTR name, CStream* data)
 {
-	Log("!!!!!!!!!!!!!!!!!CREATE_STRM",name);
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
