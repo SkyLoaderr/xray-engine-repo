@@ -7,7 +7,7 @@
 const	u32				gi_num_photons		= 32;
 const	float			gi_optimal_range	= 15.f;
 const	float			gi_reflect			= 0.9f;
-const	float			gi_clip				= 0.01f;
+const	float			gi_clip				= 0.05f;
 const	u32				gi_maxlevel			= 4;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
