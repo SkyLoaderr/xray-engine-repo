@@ -351,6 +351,11 @@ void CWeaponMagazined::UpdateCL			()
 
 void CWeaponMagazined::UpdateSounds	()
 {
+	if (Device.dwFrame == dwUpdateSounds_Frame)  
+		return;
+	
+	dwUpdateSounds_Frame = Device.dwFrame;
+
 	// ref_sound positions
 	if (sndShow.feedback || sndHide.feedback || sndShot.feedback || sndReload.feedback || sndEmptyClick.feedback)
 	{
@@ -462,6 +467,7 @@ void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Co
 void CWeaponMagazined::OnShot		()
 {
 	// Sound
+	UpdateFP();
 	Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
 
 	// Camera
@@ -489,6 +495,7 @@ void CWeaponMagazined::OnShot		()
 
 void CWeaponMagazined::OnEmptyClick	()
 {
+	UpdateFP();
 	Sound->play_at_pos	(sndEmptyClick,H_Root(),vLastFP);
 	//if (sndEmptyClick.feedback)
 		//sndEmptyClick.feedback->set_volume(.2f);
@@ -516,6 +523,7 @@ void CWeaponMagazined::switch2_Empty()
 }
 void CWeaponMagazined::switch2_Reload()
 {
+	UpdateFP();
 	Sound->play_at_pos		(sndReload,H_Root(),vLastFP);
 	
 	///if (sndReload.feedback)	sndReload.feedback->set_volume(.2f);
@@ -527,6 +535,7 @@ void CWeaponMagazined::switch2_Hiding()
 {
 	CWeapon::FireEnd();
 	
+	UpdateFP();
 	Sound->play_at_pos(sndHide,H_Root(),vLastFP);
 	//if (sndHide.feedback) sndHide.feedback->set_volume(.2f);
 	
@@ -542,6 +551,7 @@ void CWeaponMagazined::switch2_Hidden()
 }
 void CWeaponMagazined::switch2_Showing()
 {
+	UpdateFP();
 	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
 	//if (sndShow.feedback)	sndShow.feedback->set_volume(.3f);
 
