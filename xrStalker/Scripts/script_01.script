@@ -63,6 +63,9 @@ function main()
 			stalker2:script	(false, script_01.script_name())
 			stalker2:script	(true,  script_01.script_name())
 
+			printf("a!")
+			flush()
+
 			wait(2000)
 			action(                                                                                                       
 			    stalker1,
@@ -70,6 +73,10 @@ function main()
 				sound	("scripts\\idle\\cough1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				cond	(cond.sound_end, 1000)
 			)
+
+			printf("b!")
+			flush()
+
 			wait(4000)
 			action(                                                                                                       
 			    stalker2,
@@ -78,6 +85,10 @@ function main()
 				cond	(cond.sound_end, 1000)
 			)
 			wait(3000)
+
+			printf("c!")
+			flush()
+
 			action(                                                                                                       
 			    stalker1,
 				sound	("scripts\\idle\\say_chto_s_toboy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
