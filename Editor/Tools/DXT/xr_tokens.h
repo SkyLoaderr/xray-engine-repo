@@ -1,6 +1,11 @@
 #ifndef __XR_TOKENS_H__
 #define __XR_TOKENS_H__
 
+struct ENGINE_API xr_list
+{
+	const char	*name;
+};
+
 struct ENGINE_API xr_token
 {
 	const char	*name;
