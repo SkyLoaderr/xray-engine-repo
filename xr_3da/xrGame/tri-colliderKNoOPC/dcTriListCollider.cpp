@@ -81,8 +81,8 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	const Fvector*	V_array							= Level().ObjectSpace.GetStaticVerts();
 	int OutTriCount = 0;
 
-	return dSortTriPrimitiveCollide
-		(dBoxProj,dTriBox,dSortedTriBox,
+	return dSortTriPrimitiveCollide<BoxTri>
+		(
 		Box,
 		Geometry,
 		3,
@@ -151,8 +151,8 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 	//}
 	//return OutTriCount;
 
-	return dSortTriPrimitiveCollide
-		(dCylinderProj,dTriCyl,dSortedTriCyl,
+	return dSortTriPrimitiveCollide<CylTri>
+		(
 		Cylinder,
 		Geometry,
 		3,
@@ -211,7 +211,7 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 						 CDB::RESULT*    R_end                           = XRC.r_end();
 						 CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
 				 		 const Fvector*	 V_array						 = Level().ObjectSpace.GetStaticVerts();
-						 return dSortTriPrimitiveCollide(dSphereProj,dTriSphere,dSortedTriSphere,Sphere,Geometry,Flags,Contacts,Stride,R_begin,R_end,T_array,V_array,AABB);
+						 return dSortTriPrimitiveCollide<SphereTri>(Sphere,Geometry,Flags,Contacts,Stride,R_begin,R_end,T_array,V_array,AABB);
 
 					 }
 

@@ -105,6 +105,7 @@ void ACTOR_DEFS::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR
 	m_torso[6].Create(K,base,"_7");
 	
 	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_0_aim_0"));
+	m_head_idle		= K->ID_Cycle("head_idle_0");
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
 	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
@@ -151,7 +152,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		// анимации
 		CMotionDef* M_legs	= 0;
 		CMotionDef* M_torso	= 0;
-		
+		CMotionDef* M_head	= 0;
 		// Legs
 		if		(mstate_rl&mcLanding)	M_legs	= ST->landing[0];
 		else if (mstate_rl&mcLanding2)	M_legs	= ST->landing[1];
@@ -199,6 +200,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		}
 
 		if (!M_legs)					M_legs	= ST->legs_idle;
+		if (!M_head)					M_head	= ST->m_head_idle;
 		if (!M_torso){				
 			if (m_bAnimTorsoPlayed)		M_torso	= m_current_torso;
 			else						M_torso = ST->m_torso_idle;
@@ -214,6 +216,13 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			m_current_legs_blend = PSkeletonAnimated(Visual())->PlayCycle(M_legs);
 			m_current_legs=M_legs;
 		}
+
+		if(m_current_head!=M_head)
+		{
+			PSkeletonAnimated(Visual())->PlayCycle(M_head);
+			m_current_head=M_head;
+		}
+
 	}else{
 		if (m_current_legs||m_current_torso){
 			SActorMotions::SActorState* ST = 0;

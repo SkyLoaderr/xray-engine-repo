@@ -1,12 +1,24 @@
 #ifndef		D_TRI_BOX_H
 #define		D_TRI_BOX_H
-
+#include "TriPrimitiveCollideClassDef.h"
 struct dxBox {
 	dVector3 side;	// side lengths (x,y,z)
 };
 
 
-float	dBoxProj(dxGeom* box,const dReal* normal);
+IC float	dBoxProj(dxGeom* box,const dReal* normal)
+{
+	dIASSERT (dGeomGetClass(box)== dBoxClass);
+	float hside[3];
+	dGeomBoxGetLengths(box,hside);
+	hside[0]*=.5f;hside[1]*=0.5f;hside[2]*=0.5f;
+	const dReal* R=dGeomGetRotation(box);
+	return
+		dFabs(dDOT14(normal,R+0)*hside[0])+
+		dFabs(dDOT14(normal,R+1)*hside[1])+
+		dFabs(dDOT14(normal,R+2)*hside[2]);
+}
+
 int dTriBox (
 			 const dReal* v0,const dReal* v1,const dReal* v2,
 			 CDB::TRI* T,
@@ -378,27 +390,6 @@ return depth2;
 }
 */
 
-class BoxTri
-{
-	IC	static float Proj  (dxGeom* box,const dReal* normal){return dBoxProj(box,normal);}
-		static int	 Colide(
-							const dReal* v0,const dReal* v1,const dReal* v2,
-							CDB::TRI* T,
-							dxGeom *o1,dxGeom *o2,
-							int flags, dContactGeom *contact, int skip
-							);
-		static int	ColidePlain(
-							    const dReal* triSideAx0,const dReal* triSideAx1,
-							    const dReal* triAx,
-							    //const dReal* v0,
-							    //const dReal* v1,
-							    //const dReal* v2,
-							    CDB::TRI* T,
-							    dReal dist,
-							    dxGeom *o1, dxGeom *o2,
-							    int flags, dContactGeom *contact, int skip
-							    );
-
-};
+TRI_PRIMITIVE_COLIDE_CLASS_DECLARE(Box)
 
 #endif

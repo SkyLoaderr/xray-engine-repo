@@ -1,7 +1,12 @@
 #ifndef D_TRI_SPHERE_H
 #define D_TRI_SPHERE_H
+#include "TriPrimitiveCollideClassDef.h"
 
-float	dSphereProj(dxGeom* sphere,const dReal* /**normal/**/);
+IC float	dSphereProj(dxGeom* sphere,const dReal* /**normal/**/)
+{
+	dIASSERT (dGeomGetClass(sphere)== dSphereClass);
+	return	dGeomSphereGetRadius(sphere);
+}
 
 int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 					 const dReal* triAx,
@@ -67,5 +72,5 @@ inline dReal PointSphereTest(const dReal* center, const dReal radius,
 
 }
 
-
+TRI_PRIMITIVE_COLIDE_CLASS_DECLARE(Sphere)
 #endif

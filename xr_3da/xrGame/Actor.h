@@ -221,6 +221,7 @@ public:
 	CBlend*					m_current_jump_blend;
 	CMotionDef*				m_current_legs;
 	CMotionDef*				m_current_torso;
+	CMotionDef*				m_current_head;
 
 	// callback на анимации модели актера
 	static void	__stdcall	SpinCallback		(CBoneInstance*);

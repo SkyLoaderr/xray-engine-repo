@@ -305,7 +305,7 @@ void CActor::Load	(LPCSTR section )
 	m_current_jump_blend= 0;
 	m_current_legs		= 0;
 	m_current_torso		= 0;
-
+	m_current_head		= 0;
 	// sheduler
 	shedule.t_min		= shedule.t_max = 1;
 

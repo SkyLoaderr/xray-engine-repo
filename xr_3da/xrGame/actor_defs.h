@@ -83,6 +83,7 @@ struct					SActorMotions
 		SAnimState		m_run;
 		STorsoWpn		m_torso[7];
 		CMotionDef*		m_torso_idle;
+		CMotionDef*		m_head_idle;
 
 		CMotionDef*		m_damage[DAMAGE_FX_COUNT];
 

@@ -3,11 +3,7 @@
 #include "dTriColliderMath.h"
 #include "dTriSphere.h"
 ////////////////////////////////////////////////////////////////////////////
-float	dSphereProj(dxGeom* sphere,const dReal* /**normal/**/)
-{
-	dIASSERT (dGeomGetClass(sphere)== dSphereClass);
-	return	dGeomSphereGetRadius(sphere);
-}
+
 int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 					 const dReal* triAx,
 					 CDB::TRI* T,
@@ -204,3 +200,4 @@ int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 
 						 return 0;
 					 }
+ TRI_PRIMITIVE_COLIDE_CLASS_IMPLEMENT(Sphere)

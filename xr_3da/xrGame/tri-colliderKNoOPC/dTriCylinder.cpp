@@ -5,19 +5,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-float	dCylinderProj(dxGeom* cylinder,const dReal* normal)
-{
-	dIASSERT (dGeomGetClass(cylinder)== dCylinderClassUser);
-	float hlz,radius;
-	dGeomCylinderGetParams(cylinder,&radius,&hlz);
-	const dReal* R=dGeomGetRotation(cylinder);
-	hlz*=0.5f;
-	float cos1=dFabs(dDOT14(normal,R+1));
-	cos1=cos1<REAL(1.) ? cos1 : REAL(1.); //cos1 may slightly exeed 1.f
-	float sin1=_sqrt(REAL(1.)-cos1*cos1);
-	//////////////////////////////
-	return cos1*hlz+sin1*radius;
-}
+
 bool circleLineIntersection(const dReal* cn,const dReal* cp,dReal r,const dReal* lv,const dReal* lp,dReal sign,dVector3 point){
 
 dVector3 LC={lp[0]-cp[0],lp[1]-cp[1],lp[2]-cp[2]};
@@ -790,3 +778,5 @@ else {//7-12
   if(ret&&dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
  return ret;  
 }
+
+TRI_PRIMITIVE_COLIDE_CLASS_IMPLEMENT(Cyl)
