@@ -90,7 +90,7 @@ void CTexture::Preload	()
 		LPCSTR		descr			=	Device.Resources->m_description->r_string("specification",*cName);
 		string256	bmode,bparam;	float mid;
 		sscanf		(descr,"bump_mode[%[^:]:%[^]]], material[%f]",bmode,bparam,&mid);
-		m_material							=	mid;
+		m_material					=	mid;
 		if ((bmode[0]=='u')&&(bmode[1]=='s')&&(bmode[2]=='e')&&(bmode[3]==0))
 		{
 			// bump-map specified
@@ -112,6 +112,8 @@ void CTexture::Load		()
 		flags.bUser	= true;
 		return;
 	}
+
+	Preload							();
 
 	// Check for AVI
 	string256 fn;
