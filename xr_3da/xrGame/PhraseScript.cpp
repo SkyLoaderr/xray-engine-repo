@@ -87,7 +87,7 @@ void  CPhraseScript::TransferInfo	(const CInventoryOwner* pOwner) const
 
 
 
-bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO) const 
+bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_id, int phrase_num) const 
 {
 	bool predicate_result = true;
 
@@ -106,7 +106,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO) const
 	return predicate_result;
 }
 
-void CPhraseScript::Action			(const CGameObject* pSpeakerGO) const 
+void CPhraseScript::Action			(const CGameObject* pSpeakerGO, LPCSTR dialog_id, int phrase_num) const 
 {
 	TransferInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO));
 
@@ -120,7 +120,7 @@ void CPhraseScript::Action			(const CGameObject* pSpeakerGO) const
 	}
 }
 
-bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2) const 
+bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2, LPCSTR dialog_id, int phrase_num) const 
 {
 	bool predicate_result = true;
 
@@ -139,7 +139,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObj
 	return predicate_result;
 }
 
-void CPhraseScript::Action			(const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2) const 
+void CPhraseScript::Action			(const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2, LPCSTR dialog_id, int phrase_num) const 
 {
 	TransferInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO1));
 
@@ -153,7 +153,7 @@ void CPhraseScript::Action			(const CGameObject* pSpeakerGO1, const CGameObject*
 	}
 }
 
-LPCSTR  CPhraseScript::Text		(LPCSTR original_text, const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2) const 
+LPCSTR  CPhraseScript::Text		(LPCSTR original_text, const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2, LPCSTR dialog_id, int phrase_num) const 
 {
 	if(NULL == *m_sScriptTextFunc) return NULL;
 

@@ -145,6 +145,7 @@ public:
 
 	virtual void OnItemTake		(CInventoryItem *inventory_item);
 	virtual void OnItemDrop		(CInventoryItem *inventory_item);
+	virtual void OnItemDropUpdate ();
 
 	/////////////////////////////////////////////////////////////////
 	// condition and hits

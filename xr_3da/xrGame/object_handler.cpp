@@ -197,6 +197,6 @@ void CObjectHandler::attach				(CInventoryItem *inventory_item)
 
 void CObjectHandler::detach				(CInventoryItem *inventory_item)
 {
-	inherited::detach			(inventory_item);
 	switch_torch				(inventory_item,false);
+	inherited::detach			(inventory_item);
 }

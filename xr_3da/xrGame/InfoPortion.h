@@ -95,7 +95,7 @@ public:
 	const SInfoPortionData::INFO_INDEX_VECTOR&		DisableInfos()	const {return info_data()->m_DisableInfo;}
 	
 	//запуск присоединенных скриптовых функций	
-	virtual void RunScriptActions   (const CGameObject* pOwner)	{info_data()->m_PhraseScript.Action(pOwner);}
+	virtual void RunScriptActions   (const CGameObject* pOwner)	{info_data()->m_PhraseScript.Action(pOwner, NULL, -1);}
 
 	//текстовое представление информации
 	virtual LPCSTR GetText () const ;

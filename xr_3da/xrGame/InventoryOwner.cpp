@@ -470,12 +470,4 @@ void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
 
 void CInventoryOwner::OnItemDropUpdate ()
 {
-
-	//на тот случай если была выкинута присоединяемая вещь (типа фонарика)
-	//а у нас есть еще одна
-	PSPIItem					I = inventory().m_all.begin();
-	PSPIItem					E = inventory().m_all.end();
-	for ( ; I != E; ++I)
-		if(!(*I)->m_drop && !attached(*I))
-		attach(*I);
 }

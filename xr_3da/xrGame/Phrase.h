@@ -22,7 +22,7 @@ public:
 
 	void			SetText			(LPCSTR text)		{m_text = text;}
 	LPCSTR			GetText			()	const;
-	LPCSTR			GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const;
+	LPCSTR			GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2, LPCSTR dialog_id, int phrase_num) const;
 
 	void			SetIndex	(int index)			{m_iIndex = index;}
 	int				GetIndex	()	const			{return m_iIndex;}

@@ -126,7 +126,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 			CPhraseGraph::CVertex* next_phrase_vertex = phrase_dialog->data()->m_PhraseGraph.vertex(edge.vertex_id());
 			VERIFY(next_phrase_vertex);
 
-			if(next_phrase_vertex->data()->m_PhraseScript.Precondition(pSpeakerGO2, pSpeakerGO1))
+			if(next_phrase_vertex->data()->m_PhraseScript.Precondition(pSpeakerGO2, pSpeakerGO1, *CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex), (int)phrase_id))
 				phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
 		}
 
@@ -140,7 +140,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 	//вызвать скриптовую присоединенную функцию 
 	//активируется после сказанной фразы
 	//первый параметр - тот кто говорит фразу, второй - тот кто слушает
-	last_phrase->m_PhraseScript.Action(pSpeakerGO1, pSpeakerGO2);
+	last_phrase->m_PhraseScript.Action(pSpeakerGO1, pSpeakerGO2, *CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex), (int)phrase_id);
 
 	//сообщить CDialogManager, что сказана фраза
 	//и ожидается ответ
@@ -170,7 +170,7 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 	//если собеседники еще не заданы, то текст фразы запрашивается только для 
 	//обычный но не скриптовый
 	if(pSpeakerGO1 && pSpeakerGO2)
-		script_text = phrase_vertex->data()->GetScriptText(pSpeakerGO1, pSpeakerGO2);
+		script_text = phrase_vertex->data()->GetScriptText(pSpeakerGO1, pSpeakerGO2, *CPhraseDialog::IndexToId(m_DialogIndex), (int)phrase_id);
 	return script_text?script_text:phrase_vertex->data()->GetText();
 }
 
@@ -298,7 +298,7 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 
 bool  CPhraseDialog::Precondition(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2)
 {
-	return data()->m_PhraseScript.Precondition(pSpeaker1, pSpeaker2);
+	return data()->m_PhraseScript.Precondition(pSpeaker1, pSpeaker2, *CPhraseDialog::IndexToId(m_DialogIndex), -1);
 }
 
 void   CPhraseDialog::InitXmlIdToIndex()
