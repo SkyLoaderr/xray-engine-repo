@@ -40,6 +40,8 @@
 			if (txt[0]=='!')std::cerr << "XR-Error: " << txt+1 << "\n";
 			else			std::cerr << "XR-Info: " << txt << "\n";
 		}
+//.		MStringArray res;
+//		MGlobal::executeCommand("confirmDialog -title \"Error\" -message \"Mesh have non-triangulated polygon.\" -button \"Ok\" -defaultButton \"Ok\"",res);
 	}
 #endif
 

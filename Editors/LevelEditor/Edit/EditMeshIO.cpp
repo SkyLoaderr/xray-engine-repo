@@ -23,6 +23,7 @@
 #define EMESH_CHUNK_BOP					0x1010
 #define EMESH_CHUNK_VMAPS_1		       	0x1011
 #define EMESH_CHUNK_VMAPS_2		       	0x1012
+#define EMESH_CHUNK_SG			       	0x1013
 
 void CEditableMesh::SaveMesh(IWriter& F){
 	F.open_chunk	(EMESH_CHUNK_VERSION);
@@ -51,6 +52,10 @@ void CEditableMesh::SaveMesh(IWriter& F){
 	F.open_chunk	(EMESH_CHUNK_FACES);
 	F.w_u32			(m_Faces.size()); 		/* polygon count */
     F.w				(m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
+	F.close_chunk  	();
+
+	F.open_chunk	(EMESH_CHUNK_SG);
+    F.w				(m_SGs.begin(), m_SGs.size()*sizeof(u32));
 	F.close_chunk  	();
 
 	F.open_chunk	(EMESH_CHUNK_VMREFS);
@@ -121,6 +126,10 @@ bool CEditableMesh::LoadMesh(IReader& F){
 	m_Faces.resize		(F.r_u32());
     if (m_Faces.size()==0) return false;
 	F.r					(m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
+
+	m_SGs.resize		(m_Faces.size(),-1);
+	if (F.find_chunk(EMESH_CHUNK_SG))
+		F.r				(m_SGs.begin(), m_SGs.size()*sizeof(u32));
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_VMREFS));
     m_VMRefs.resize		(F.r_u32());

@@ -22,6 +22,27 @@ void CEditableMesh::Transform(const Fmatrix& parent)
 }
 //----------------------------------------------------
 
+int CEditableMesh::FindSimilarUV(st_VMap* vmap, Fvector2& _uv)
+{
+	int sz			= vmap->size();
+	for (int k=0; k<sz; k++){
+		Fvector2& uv = vmap->getUV(k);
+		if (uv.similar(_uv)) 
+			return k;
+	}
+	return -1;
+}
+
+int CEditableMesh::FindSimilarWeight(st_VMap* vmap, float _w)
+{
+	int sz			= vmap->size();
+	for (int k=0; k<sz; k++){
+		float w		= vmap->getW(k);
+		if (fsimilar(w,_w)) return k;
+	}
+	return -1;
+}
+
 void CEditableMesh::RebuildVMaps()
 {
 	ELog.Msg		(mtInformation,"Rebuild VMaps...");
@@ -47,6 +68,14 @@ void CEditableMesh::RebuildVMaps()
 							vm_idx=nVMaps.size()-1;
 						}
 						st_VMap* nVMap=nVMaps[vm_idx];
+/*
+						int uv_idx = FindSimilarUV(nVMap,vmap->getUV(pt_it->index));
+						if (uv_idx==-1){
+							uv_idx	= nVMap->size();
+							nVMap->appendUV(vmap->getUV(pt_it->index));
+							nVMap->appendVI(F.pv[k].pindex);
+						}
+*/
 						nVMap->appendUV(vmap->getUV(pt_it->index));
 						nVMap->appendVI(F.pv[k].pindex);
 						n_pt_it->index = nVMap->size()-1;
@@ -59,6 +88,16 @@ void CEditableMesh::RebuildVMaps()
 							vm_idx=nVMaps.size()-1;
 						}
 						st_VMap* nVMapPM=nVMaps[vm_idx];
+/*
+						int uv_idx = FindSimilarUV(nVMapPM,vmap->getUV(pt_it->index));
+						if (uv_idx==-1){
+							uv_idx	= nVMapPM->size();
+							nVMapPM->appendUV(vmap->getUV(pt_it->index));
+							nVMapPM->appendVI(F.pv[k].pindex);
+							nVMapPM->appendPI(f_it-m_Faces.begin());
+						}
+						n_pt_it->index = uv_idx;
+*/
 						nVMapPM->appendUV(vmap->getUV(pt_it->index));
 						nVMapPM->appendVI(F.pv[k].pindex);
 						nVMapPM->appendPI(f_it-m_Faces.begin());
@@ -84,13 +123,15 @@ void CEditableMesh::RebuildVMaps()
 	}
 	for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++)
 		xr_delete(*vm_it);
+
 	m_VMaps.clear();
 	m_VMaps=nVMaps;
 	m_VMRefs.clear();
 	m_VMRefs = nVMRefs;
 }
 
-bool CEditableMesh::UpdateAdjacency(){
+bool CEditableMesh::UpdateAdjacency()
+{
 	if (m_Faces.empty()) return false;
     ELog.Msg(mtInformation,".. Update Adjacency");
     m_Adjs.clear();

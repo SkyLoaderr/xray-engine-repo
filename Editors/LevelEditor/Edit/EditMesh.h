@@ -207,6 +207,7 @@ protected:
     SVertVec	    m_SVertices;// |
     AdjVec		    m_Adjs;     // + some array size!!!
     SurfFaces	    m_SurfFaces;
+	U32Vec			m_SGs;		// |
     FvectorVec	    m_FNormals;	// |
     FvectorVec	    m_PNormals;	// |
     FaceVec		    m_Faces;    // + some array size!!!
@@ -247,6 +248,7 @@ public:
 
 	IC CEditableObject*	Parent				(){ return m_Parent;}
     IC FaceVec&		GetFaces				(){ return m_Faces;}
+	IC U32Vec&		GetSGs					(){ return m_SGs;}
     IC FvectorVec&	GetPoints				(){ return m_Points;}
 	IC VMapVec&		GetVMaps				(){ return m_VMaps;}
 	IC VMRefsVec&	GetVMRefs				(){ return m_VMRefs;}
@@ -291,6 +293,8 @@ public:
 	bool			Convert					(CExporter* exporter);
 #endif
 
+	int				FindSimilarUV			(st_VMap* vmap, Fvector2& _uv);
+	int				FindSimilarWeight		(st_VMap* vmap, float _w);
 	int				FindVMapByName			(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap);
 	void			RebuildVMaps			();
 
