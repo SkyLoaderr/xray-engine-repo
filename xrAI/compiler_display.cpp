@@ -47,8 +47,8 @@ void InternalRender()
 	{
 		Texel& T	= texels[t];
 		if (T.N)	{
-			minH		= _MIN(minH,T.N->Pos.y);
-			maxH		= _MAX(maxH,T.N->Pos.y);
+			minH		= _min(minH,T.N->Pos.y);
+			maxH		= _max(maxH,T.N->Pos.y);
 		}
 	}
 }
