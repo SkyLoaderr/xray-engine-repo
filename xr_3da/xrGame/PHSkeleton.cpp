@@ -9,6 +9,22 @@
 #define F_MAX         3.402823466e+38F
 u32 CPHSkeleton::remove_time=5000;
 
+bool IC CheckObjectSize(CKinematics* K)
+{
+	u16 bcount=K->LL_BoneCount();
+	for(u16 i=0;i<bcount;++i)
+	{
+		if(K->LL_GetBoneVisible(i))
+		{
+			Fobb obb=K->LL_GetBox(i);
+			if(!fis_zero(obb.m_halfsize.x) ||
+				!fis_zero(obb.m_halfsize.x)||
+				!fis_zero(obb.m_halfsize.x))return true;
+		}
+	}
+	return false;
+}
+
 CPHSkeleton::CPHSkeleton()
 {
 		Init();
@@ -283,7 +299,8 @@ void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 
 	SO->CopySpawnInit		();
 	CopySpawnInit			();
-
+	VERIFY3(CheckObjectSize(pKinematics),*(O->cNameVisual()),"Object unsplit whith no size");
+	VERIFY3(CheckObjectSize(newKinematics),*(O->cNameVisual()),"Object unsplit whith no size");
 
 }
 
