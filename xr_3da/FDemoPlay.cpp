@@ -45,7 +45,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 	}
 	stat_Start		();
 
-	Device.PreCache	(1000);
+	Device.PreCache	(100);
 }
 
 CDemoPlay::~CDemoPlay()
