@@ -167,7 +167,10 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	accum.div(255.f).add(desc.ambient			);
 	accum.mad			(desc.lmap_color,	.1f	);
 	accum.mad			(desc.hemi_color,	.2f	);
-	for (u32 lit=0; lit<lights.size(); lit++)
-		accum.mad	(lights[lit].color,.5f);
+	for (u32 lit=0; lit<lights.size(); lit++)	{
+		accum.x += lights[lit].color.r*.5f;
+		accum.y += lights[lit].color.g*.5f;
+		accum.z += lights[lit].color.b*.5f;
+	}
 	approximate			= accum;
 }
