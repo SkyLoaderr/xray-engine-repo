@@ -11,7 +11,7 @@
 
 BOOL xrServer::Connect(ref_str &session_name)
 {
-	Msg						("! sv_Connect: %s",	session_name);
+	Msg						("! sv_Connect: %s",	*session_name);
 
 	// Parse options and create game
 	if (0==strchr(*session_name,'/'))
