@@ -119,10 +119,6 @@ private:
 		ePathStateBuildGamePath,
 		ePathStateContinueGamePath,
 		
-		ePathStatePredictEnemyVertices,
-		ePathStateSelectEnemyVertex,
-		ePathStateContinueEnemySearch,
-
 		ePathStateSelectLevelVertex,
 		ePathStateBuildLevelPath,
 		ePathStateContinueLevelPath,
