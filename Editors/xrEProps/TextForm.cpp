@@ -149,7 +149,8 @@ void __fastcall TfrmText::ebSaveClick(TObject *Sender)
 	if (EFS.GetSaveName(_import_,fn,NULL,2)){
     	CMemoryWriter F;
         F.w_stringZ	(mmText->Text.c_str());
-        F.save_to	(fn.c_str());
+        if (!F.save_to(fn.c_str()))
+	    	Log		("!Can't save text file:",fn.c_str());
     }
 }
 //---------------------------------------------------------------------------
