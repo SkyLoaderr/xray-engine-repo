@@ -149,29 +149,29 @@ void CStalkerActionAccomplishTask::setup	(CAI_Stalker *object, CPropertyStorage 
 
 void CStalkerActionAccomplishTask::initialize	()
 {
-	inherited::initialize				();
+	inherited::initialize						();
 	object().movement().set_node_evaluator		(0);
 	object().movement().set_path_evaluator		(0);
-	object().movement().set_desired_position		(0);
-	object().movement().set_desired_direction		(0);
-	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
-	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_desired_position	(0);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type			(eMovementTypeWalk);
-	object().movement().set_mental_state			(eMentalStateFree);
-	object().sight().setup				(CSightAction(SightManager::eSightTypeSearch,false,true));
-	object().movement().extrapolate_path			(true);
+	object().movement().set_movement_type		(eMovementTypeWalk);
+	object().movement().set_mental_state		(eMentalStateFree);
+	object().sight().setup						(CSightAction(SightManager::eSightTypeSearch,false,true));
+	object().movement().extrapolate_path		(true);
 	object().sound().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 	if (!object().best_weapon())
-		object().CObjectHandler::set_goal	(eObjectActionIdle);
+		object().CObjectHandler::set_goal		(eObjectActionIdle);
 	else
-		object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
+		object().CObjectHandler::set_goal		(eObjectActionStrapped,object().best_weapon());
 }
 
 void CStalkerActionAccomplishTask::finalize	()
 {
-	inherited::finalize					();
-	object().movement().extrapolate_path			(false);
+	inherited::finalize						();
+	object().movement().extrapolate_path	(false);
 
 	if (!object().g_Alive())
 		return;

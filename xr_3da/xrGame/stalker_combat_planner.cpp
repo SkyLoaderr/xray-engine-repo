@@ -27,8 +27,7 @@
 
 const u32 TOLLS_INTERVAL	= 2000;
 const u32 GRENADE_INTERVAL	= 0*1000;
-const float GRENADE_RADIUS	= 20.f;
-const u32 AFTER_GRENADE_DESTROYED_INTERVAL = 20000;
+const float FRIENDLY_GRENADE_ALARM_DIST	= 5.f;
 
 using namespace StalkerDecisionSpace;
 
@@ -94,12 +93,11 @@ void CStalkerCombatPlanner::react_on_grenades		()
 	if (Device.dwTimeGlobal < reaction.m_time + GRENADE_INTERVAL)
 		return;
 
-	u32							interval = AFTER_GRENADE_DESTROYED_INTERVAL;
+//	u32							interval = AFTER_GRENADE_DESTROYED_INTERVAL;
 	const CMissile				*missile = smart_cast<const CMissile*>(reaction.m_grenade);
-	if (missile && (missile->destroy_time() > Device.dwTimeGlobal))
-		interval				= missile->destroy_time() - Device.dwTimeGlobal + AFTER_GRENADE_DESTROYED_INTERVAL;
-
-	m_object->agent_manager().add_danger_location(reaction.m_game_object->Position(),Device.dwTimeGlobal,interval,GRENADE_RADIUS);
+//	if (missile && (missile->destroy_time() > Device.dwTimeGlobal))
+//		interval				= missile->destroy_time() - Device.dwTimeGlobal + AFTER_GRENADE_DESTROYED_INTERVAL;
+//	m_object->agent_manager().add_danger_location(reaction.m_game_object->Position(),Device.dwTimeGlobal,interval,GRENADE_RADIUS);
 
 	if (missile && m_object->agent_manager().group_behaviour()) {
 //		Msg						("%6d : Stalker %s : grenade reaction",Device.dwTimeGlobal,*m_object->cName());
@@ -107,10 +105,11 @@ void CStalkerCombatPlanner::react_on_grenades		()
 		if (m_object->tfGetRelationType(initiator) == ALife::eRelationTypeEnemy)
 			m_object->sound().play	(StalkerSpace::eStalkerSoundGrenadeAlarm);
 		else
-			m_object->sound().play	(StalkerSpace::eStalkerSoundFriendlyGrenadeAlarm);
+			if (missile->Position().distance_to(m_object->Position()) < FRIENDLY_GRENADE_ALARM_DIST)
+				m_object->sound().play	(StalkerSpace::eStalkerSoundFriendlyGrenadeAlarm);
 	}
 
-	reaction.clear			();
+	reaction.clear				();
 }
 
 void CStalkerCombatPlanner::react_on_member_death	()

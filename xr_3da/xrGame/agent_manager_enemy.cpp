@@ -17,6 +17,11 @@
 #include "sound_memory_manager.h"
 #include "hit_memory_manager.h"
 #include "enemy_manager.h"
+#include "missile.h"
+#include "explosive.h"
+
+const float GRENADE_RADIUS	= 20.f;
+const u32 AFTER_GRENADE_DESTROYED_INTERVAL = 20000;
 
 struct CEnemyFiller {
 	xr_vector<CAgentManager::CEnemy>	*m_enemies;
@@ -62,6 +67,12 @@ void CAgentManager::register_grenade	(const CExplosive *grenade, const CGameObje
 	m_grenades_to_remove.push_back		(game_object->ID());
 //	Msg									("%6d : New grenade registered %s",Device.dwTimeGlobal,*game_object->cName());
 	m_grenades.push_back				(CMemberGrenade(grenade,game_object,0,Device.dwTimeGlobal));
+	
+	u32									interval = AFTER_GRENADE_DESTROYED_INTERVAL;
+	const CMissile						*missile = smart_cast<const CMissile*>(grenade);
+	if (missile && (missile->destroy_time() > Device.dwTimeGlobal))
+		interval						= missile->destroy_time() - Device.dwTimeGlobal + AFTER_GRENADE_DESTROYED_INTERVAL;
+	add_danger_location					(game_object->Position(),Device.dwTimeGlobal,interval,GRENADE_RADIUS);
 }
 
 IC	CAgentManager::CDangerLocation *CAgentManager::danger_location	(const Fvector &position)

@@ -76,7 +76,7 @@ void CMovementManager::process_level_path()
 					if (!detail().actual())
 						m_path_state	= ePathStateBuildLevelPath;
 					else {
-						if (detail().completed(object().Position(),!extrapolate_path())) {
+						if (detail().completed(object().Position(),!detail().state_patrol_path())) {
 							m_path_state	= ePathStateContinueLevelPath;
 							if (level_path().completed()) {
 								if (level_selector().used())
