@@ -572,9 +572,6 @@ void CActor::Update	(DWORD DT)
 				// Change weapon if needed
 				if (Weapons->ActiveWeaponID()!=NET_Last.weapon)
 				{
-#ifdef DEBUG
-					Log						("aaaaaaaaaaaaaaaaaaaaaaaaa : %d",NET_Last.weapon);
-#endif
 					Weapons->ActivateWeaponID(NET_Last.weapon);
 				}
 
