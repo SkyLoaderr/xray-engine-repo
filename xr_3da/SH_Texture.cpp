@@ -95,9 +95,9 @@ void CTexture::Load()
 	if (Device.Resources->m_description->line_exist("specification",*cName))	{
 		LPCSTR		descr			=	Device.Resources->m_description->r_string("specification",*cName);
 		string256	bmode,bparam;	float mid;
-		sscanf		(descr,"bump_mode[%s:%f], material[%f]",bmode,bparam,&mid);
+		sscanf		(descr,"bump_mode[%[^:]:%[^]]], material[%f]",bmode,bparam,&mid);
 		m_material							=	mid;
-		Msg			("%20s : bm[%s:%s] mid:%f",*cName,bmode,bparam,mid);
+		// Msg		("%20s : bm[%s:%s] mid:%f",*cName,bmode,bparam,mid);
 	}
 	// Check for AVI
 	string256 fn;
