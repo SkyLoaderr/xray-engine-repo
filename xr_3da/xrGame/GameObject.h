@@ -106,7 +106,7 @@ public:
 	virtual	void			reinit				();
 	virtual	void			reload				(LPCSTR section);
 	///////////////////// network /////////////////////////////////////////
-	virtual void			make_Interpolation	() {}; //interpolation from last visible to corrected position/rotation
+	virtual void			make_Interpolation	() {}; // interpolation from last visible to corrected position/rotation
 	virtual void			PH_B_CrPr			() {}; // actions & operations before physic correction-prediction steps
 	virtual void			PH_I_CrPr			() {}; // actions & operations after correction before prediction steps
 	virtual void			PH_A_CrPr			() {}; // actions & operations after phisic correction-prediction steps
