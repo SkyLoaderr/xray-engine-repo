@@ -37,7 +37,9 @@ void CEngine::Initialize	(void)
 	Engine.Sheduler.Initialize			( );
 
 	// 
+#ifdef DEBUG
 	msCreate							("game");
+#endif
 }
 
 void CEngine::Destroy	()
