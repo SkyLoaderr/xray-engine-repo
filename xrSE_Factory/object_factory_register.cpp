@@ -255,7 +255,7 @@ void CObjectFactory::register_classes	()
 	ADD(CWeaponHPSA				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_HPSA			,"wpn_hpsa");
 	ADD(CWeaponPM				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_PM				,"wpn_pm");
 	ADD(CWeaponFORT				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_FORT			,"wpn_fort");
-	ADD(CWeaponBinoculars		,CSE_ALifeItem					,CLSID_OBJECT_W_BINOCULAR		,"wpn_binocular");
+	ADD(CWeaponBinoculars		,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_BINOCULAR		,"wpn_binocular");
 	ADD(CWeaponShotgun			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SHOTGUN			,"wpn_shotgun");
 	ADD(CWeaponSVD				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SVD				,"wpn_svd");
 	ADD(CWeaponSVU				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SVU				,"wpn_svu");
