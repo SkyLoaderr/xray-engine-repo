@@ -221,8 +221,6 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 
 				UpdateFP		(bHUDView);
 				FireTrace		(p1,vLastFP,d);
-				iAmmoElapsed	--;
-		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
 				m_pHUD->Shoot	();
 			}
 

@@ -311,7 +311,7 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 			Fvector p1, d;
 			m_pParent->g_fireParams(p1,d);
 
-			while (fTime<0)
+			while ((fTime<0)  && iAmmoElapsed)
 			{
 				fTime			+=fTimeToFire;
 				
@@ -322,8 +322,6 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 
 				UpdateFP		(bHUDView);
 				FireTrace		(p1,vLastFP,d);
-				iAmmoElapsed	--;
-		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
 			}
 
 			// sound fire loop
