@@ -161,13 +161,15 @@ function action_remark_activity:stand_still()
 	local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
 	
 	if self.st.anim then
-		state_mgr.set_state(self.object, self.st.anim, cb, 0, look_tbl)
+		state_mgr.set_state(self.object, self.st.anim, cb, 0, look_tbl, { animation = true })
 	else
 		state_mgr.set_state(self.object,
 			if_then_else(sug_body_state == body_state_free, "guard", "threat"),
 			cb,
 			0,
-			look_tbl)
+			look_tbl,
+			{ animation = true }
+		)
 	end
 end
 
@@ -202,15 +204,13 @@ function action_remark_activity:step()
 		return
 	end
 
-	if not self.target then
-		if self.st.target == "actor" then
-			self.target = actor
-		else
-			self.target = level.object(self.st.target)
-		end
-		if not self.target or not self.target:alive() then
-			return
-		end
+	if self.st.target == "actor" then
+		self.target = actor
+	else
+		self.target = utils.obj_by_sid(self.st.target_sid)
+	end
+	if not self.target or not self.target:alive() then
+		return
 	end
 
 	-- Начальное состояние
@@ -351,6 +351,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.no_move = utils.cfg_get_bool           (ini, section,   "no_move",         npc, false,     st.anim ~= nil)
 	st.dlg = utils.cfg_get_string             (ini, section,   "dlg",             npc, false, "")
 	st.target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
+	if st.target ~= actor then
+		st.target_sid = tonumber(st.target)
+	end
 	st.no_danger = utils.cfg_get_bool         (ini, section,   "no_danger",       npc, false)
 
 	if not st.no_move and st.anim then
