@@ -82,7 +82,6 @@ public:
 	{
 		Nstart	= _start;
 		Nend	= _end;
-		Start	();
 	}
 	virtual void		Execute()
 	{
