@@ -475,7 +475,7 @@ void CScriptEngine::export_object()
 				value("help_pda_msg",			int(ePdaMsgNeedHelp)),
 				value("go_away_pda_msg",		int(ePdaMsgGoAway)),
 				value("info_pda_msg",			int(ePdaMsgInfo)),
-				value("no_pda_msg",				int(ePdaMessageMax))
+				value("no_pda_msg",				int(ePdaMsgMax))
 			]
 
 			.def("set_pda_callback",			(void (CLuaGameObject::*)(const luabind::functor<void>&))(CLuaGameObject::SetPdaCallback))

@@ -74,7 +74,7 @@ void CUIPdaDialogWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		{
 			m_iMsgNum = EPdaMsg(((CUIListItem*)pData)->GetValue());
 			
-			if(m_iMsgNum == ePdaMessageMax)
+			if(m_iMsgNum == ePdaMsgMax)
 				GetTop()->SendMessage(this, BACK_BUTTON_CLICKED);
 			else
 				GetTop()->SendMessage(this, MESSAGE_BUTTON_CLICKED);
@@ -176,7 +176,7 @@ void  CUIPdaDialogWnd::PhrasesAnswer()
 	UIPhrasesListWnd.AddItem(NO_MSG, NULL, ePdaMsgDecline);
 	UIPhrasesListWnd.AddItem(GETLOST_MSG, NULL, ePdaMsgDeclineRude);
 	//завершение диалога
-	UIPhrasesListWnd.AddItem(IAMLEAVE_MSG, NULL, ePdaMessageMax);
+	UIPhrasesListWnd.AddItem(IAMLEAVE_MSG, NULL, ePdaMsgMax);
 	
 }
 void CUIPdaDialogWnd::PhrasesAsk()
@@ -186,5 +186,5 @@ void CUIPdaDialogWnd::PhrasesAsk()
 	UIPhrasesListWnd.AddItem(HELP_MSG, NULL, ePdaMsgNeedHelp);
 	UIPhrasesListWnd.AddItem(GETOUT_MSG, NULL, ePdaMsgGoAway);
 	//завершение диалога
-	UIPhrasesListWnd.AddItem(IAMLEAVE_MSG, NULL, ePdaMessageMax);
+	UIPhrasesListWnd.AddItem(IAMLEAVE_MSG, NULL, ePdaMsgMax);
 }

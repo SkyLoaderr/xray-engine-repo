@@ -18,7 +18,7 @@ enum EPdaMsg {
 
 	ePdaMsgInfo,				//сообщение передает некоторую информацию
 
-	ePdaMessageMax
+	ePdaMsgMax
 };
 
 
