@@ -15,8 +15,10 @@ class CHM_Static
 {
 	struct	Slot
 	{
-		BOOL		bReady;
 		float		data	[dhm_precision][dhm_precision];
+
+		BOOL		bReady;
+		int			x,z;
 	};
 	Slot*						data	[dhm_matrix][dhm_matrix];	// database
 	int							c_x,c_z;							// center of heighmap
