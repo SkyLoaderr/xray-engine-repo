@@ -8,10 +8,12 @@ game_sv_CS::game_sv_CS()
 
 void	game_sv_CS::Create			(LPCSTR options)
 {
+	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
 }
 
 void	game_sv_CS::OnRoundStart	()
 {
+	__super::OnRoundStart	();
 	round	++;
 	if (0==round)	
 	{
@@ -37,15 +39,6 @@ void	game_sv_CS::OnRoundStart	()
 		}
 		Unlock	();
 	}
-	// clear "ready" flag
-	Lock	();
-	u32		cnt		= get_count	();
-	for		(u32 it=0; it<cnt; it++)	
-	{
-		game_PlayerState*	ps	=	get_it	(it);
-		ps->flags				&=	~GAME_PLAYER_FLAG_READY;
-	}
-	Unlock	();
 }
 
 void	game_sv_CS::OnRoundEnd		()
@@ -119,4 +112,38 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 
 void	game_sv_CS::Update			()
 {
+	if ((Device.TimerAsync()-start_time)>timelimit)
+		OnTimelimitExceed	();
+}
+
+void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
+{
+	if	(GAME_PHASE_INPROGRESS == phase) return;
+
+	Lock	();
+	game_PlayerState*	ps	=	get_id	(id);
+	if (ps)
+	{
+		if (ps->flags & GAME_PLAYER_FLAG_READY)	
+		{
+			ps->flags &= ~GAME_PLAYER_FLAG_READY;
+		} else {
+			ps->flags |= GAME_PLAYER_FLAG_READY;
+
+			// Check if all players ready
+			u32		cnt		= get_count	();
+			u32		ready	= 0;
+			for		(u32 it=0; it<cnt; it++)	
+			{
+				ps		=	get_it	(it);
+				if (ps->flags & GAME_PLAYER_FLAG_READY)	ready++;
+			}
+
+			if (ready == cnt)
+			{
+				OnRoundStart	();
+			}
+		}
+	}
+	Unlock	();
 }
