@@ -14,6 +14,7 @@
 #include "UIXmlInit.h"
 #include "../HUDManager.h"
 #include "../level.h"
+#include "../encyclopedia_article.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +39,9 @@ CUIEncyclopediaWnd::CUIEncyclopediaWnd()
 CUIEncyclopediaWnd::~CUIEncyclopediaWnd()
 {
 	if (m_pCurrArticle)
-		UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->image);
+		UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->data()->image);
+
+	DeleteArticles();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -87,6 +90,8 @@ void CUIEncyclopediaWnd::Init()
 
 	// mask
 	xml_init.InitFrameWindow(uiXml, "item_static:mask_frame_window", 0, &UIImgMask);
+	m_iItemX = uiXml.ReadAttribInt("item_static", 0, "x", 0);
+	m_iItemY = uiXml.ReadAttribInt("item_static", 0, "y", 0);
 
 	// Читаем максимальную длинну картинки в энциклопедии
 	MAX_PICTURE_WIDTH = uiXml.ReadAttribInt("item_static", 0, "width", 0);
@@ -97,94 +102,36 @@ void CUIEncyclopediaWnd::Init()
 
 	xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIEncyclopediaInfoBkg);
 	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UIEncyclopediaIdxBkg);
-
-	AddArticle("one");
-	AddArticle("two");
-	AddArticle("three");
-	AddArticle("four");
-	AddArticle("five");
-	AddArticle("six");
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
+void CUIEncyclopediaWnd::DeleteArticles()
 {
-
-/*	
-	CEncyclopediaArticle article;
-	article.Load(article_index);
-
-	article.name;
-	article.texture;
-	article.ltx
-	article.group
-	article.text
-
-	*/
-
-
-/*	static ref_str encyclopediaDB[] =
+	for(size_t i = 0; i<m_ArticlesDB.size(); i++)
 	{
-		"encyclopedia_infos.xml"
-	};
-	
-	const u32 encyclopediaDB_size = 1;
-
-	CUIXml uiXml;
-	XML_NODE *pNode = NULL;
-
-	// Ищем по всем xml'ам нужный раздел
-	for (u32 i = 0; i < encyclopediaDB_size; ++i)
-	{
-		bool xml_result = uiXml.Init("$game_data$", *encyclopediaDB[i]);
-		R_ASSERT2(xml_result, "xml file not found");
-		
-		pNode = uiXml.SearchForAttribute(uiXml.GetRoot(), "article", "id", *ID);
-		if (pNode) break;
+		xr_delete(m_ArticlesDB[i]);
 	}
+	m_ArticlesDB.clear();
+}
 
-	// Если нашли то добавляем его в списки известных артиклов, и загружаем информацию
-	if (!pNode) return;
+void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX article_index)
+{
+	for(std::size_t i = 0; i<m_ArticlesDB.size(); i++)
+	{
+		if(m_ArticlesDB[i]->Index() == article_index) return;
+	}
 
 	// Добавляем элемент
 	m_ArticlesDB.resize(m_ArticlesDB.size() + 1);
-	Article &a = m_ArticlesDB.back();
-
-	// Инициализируем изображение
-	CUIXml localXml;
-	VERIFY2(localXml.Init("$game_data$", ENCYCLOPEDIA_DIALOG_XML), "xml file not found");
-	CUIXmlInit xml_init;
-	xml_init.InitStatic(localXml, "item_static", 0, &a.image);
-
-	// Текстура
-	localXml.SetLocalRoot(pNode);
-	// если записи с текстурой нет, то ищем раздел с именем секции в ltx файле для вещи
-	if (!xml_init.InitTexture(localXml, "", 0, &a.image))
-	{
-		const ref_str ltx_record = localXml.Read("ltx", 0, "");
-		R_ASSERT(ltx_record != NULL);
-		a.image.SetShader(InventoryUtilities::GetEquipmentIconsShader());
-
-		u32 x		= pSettings->r_u32(ltx_record, "inv_grid_x") * INV_GRID_WIDTH;
-		u32 y		= pSettings->r_u32(ltx_record, "inv_grid_y") * INV_GRID_HEIGHT;
-		u32 width	= pSettings->r_u32(ltx_record, "inv_grid_width") * INV_GRID_WIDTH;
-		u32 height	= pSettings->r_u32(ltx_record, "inv_grid_height") * INV_GRID_HEIGHT;
-
-		a.image.GetUIStaticItem().SetOriginalRect(x, y, width, height);
-		a.image.ClipperOn();
-	}
-	else
-	{
-		// текст
-		a.info = uiXml.Read(pNode, "");
-		R_ASSERT(a.info != "");
-	}
-
-	RescaleStatic(a.image);
+	CEncyclopediaArticle*& a = m_ArticlesDB.back();
+	a = xr_new<CEncyclopediaArticle>();
+	a->Load(article_index);
+	RescaleStatic(a->data()->image);
+	a->data()->image.MoveWindow(m_iItemX, m_iItemY);
 
 	// Начинаем алгоритм определения группы вещи в иерархии энциклопедии
-	std::string group = uiXml.ReadAttrib(pNode, "group", "");
+	std::string group = *a->data()->group;
 	R_ASSERT(!group.empty());
 
 	// Парсим строку группы для определения вложенности
@@ -262,8 +209,9 @@ void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 			pTVItemChilds = AddTreeTail(groupTree.begin() + 1, groupTree, pTVItemChilds);
 	}
 
+
 	// Теперь читаем имя в xml и добавляем последний элемент
-	const ref_str name = uiXml.ReadAttrib(pNode, "name", "");
+	const ref_str name = a->data()->name;
 
 	// К этому моменту pTVItemChilds обязательно должна быть не NULL
 	R_ASSERT(pTVItemChilds);
@@ -278,8 +226,6 @@ void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 	pTVItem->SetValue(m_ArticlesDB.size() - 1);
 	pTVItemChilds->AddItem(pTVItem);
 //	}
-
-*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -305,24 +251,6 @@ CUITreeViewItem * CUIEncyclopediaWnd::AddTreeTail(GroupTree_it it, GroupTree &co
 
 //////////////////////////////////////////////////////////////////////////
 
-bool CUIEncyclopediaWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
-{
-	if (KEY_RELEASED == keyboard_action) return false;
-	if (DIK_T == dik)
-	{
-		AddArticle("one");
-		AddArticle("two");
-		AddArticle("three");
-		AddArticle("four");
-		AddArticle("five");
-		AddArticle("six");
-	}
-
-	return false;
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 {
 	if (&UIIdxList == pWnd && CUIListWnd::LIST_ITEM_CLICKED == msg)
@@ -336,17 +264,22 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 			// Удаляем текущую картинку и текст
 			if (m_pCurrArticle)
 			{
-				UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->image);
-				m_pCurrArticle->image.SetMask(NULL);
+				UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->data()->image);
+				m_pCurrArticle->data()->image.SetMask(NULL);
 			}
 			UIInfoList.RemoveAll();
 
 			// Отображаем новые
 			CUIString str;
-			str.SetText(*m_ArticlesDB[pTVItem->GetValue()].info);
+			str.SetText(*m_ArticlesDB[pTVItem->GetValue()]->data()->text);
 			UIInfoList.AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
-			UIEncyclopediaInfoBkg.AttachChild(&m_ArticlesDB[pTVItem->GetValue()].image);
-			m_ArticlesDB[pTVItem->GetValue()].image.SetMask(&UIImgMask);
+			UIEncyclopediaInfoBkg.AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);
+			m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetMask(&UIImgMask);
+
+			if(!m_ArticlesDB[pTVItem->GetValue()]->data()->image.GetStaticItem()->GetShader())
+				UIImgMask.Show(false);
+			else
+				UIImgMask.Show(true);
 
 			std::string caption = static_cast<std::string>(*m_InfosHeaderStr) + pTVItem->GetHierarchyAsText();
 			UIEncyclopediaInfoHeader.UITitleText.SetText(caption.c_str());
@@ -354,7 +287,7 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 			UIArticleHeader.SetText(caption.c_str());
 
 			// Запоминаем текущий эдемент
-			m_pCurrArticle = &m_ArticlesDB[pTVItem->GetValue()];
+			m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
 		}
 	}
 }
@@ -397,4 +330,21 @@ void CUIEncyclopediaWnd::RescaleStatic(CUIStatic &s)
 void CUIEncyclopediaWnd::Draw()
 {
 	inherited::Draw();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIEncyclopediaWnd::Show()
+{
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor && pActor->encyclopedia_registry.objects_ptr())
+	{
+		for(ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();
+			it != pActor->encyclopedia_registry.objects_ptr()->end(); it++)
+		{
+			AddArticle(*it);
+		}
+	}
+
+	inherited::Show();
 }

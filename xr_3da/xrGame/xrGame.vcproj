@@ -8564,6 +8564,9 @@
 					RelativePath=".\dialogs_escape.xml">
 				</File>
 				<File
+					RelativePath=".\encyclopedia_infos.xml">
+				</File>
+				<File
 					RelativePath=".\info_portions.xml">
 				</File>
 				<File

@@ -104,7 +104,17 @@ void CInfoPortion::load_shared	(LPCSTR)
 		R_ASSERT(article_str_id);
 		info_data()->m_Articles.push_back(CEncyclopediaArticle::IdToIndex(article_str_id));
 	}
+	//индексы статей, которые уберутся из реестра
+	info_data()->m_ArticlesDisable.clear();
+	articles_num = uiXml.GetNodesNum(pNode, "article_disable");
+	for(i=0; i<articles_num; ++i)
+	{
+		LPCSTR article_str_id = uiXml.Read(pNode, "article_disable", i, NULL);
+		R_ASSERT(article_str_id);
+		info_data()->m_ArticlesDisable.push_back(CEncyclopediaArticle::IdToIndex(article_str_id));
+	}
 	
+
 	//загрузить позиции на карте
 	SMapLocation map_location;
 	info_data()->m_MapLocations.clear();

@@ -46,11 +46,12 @@ public:
 	virtual void Load	(ARTICLE_STR_ID str_id);
 	virtual void Load	(ARTICLE_INDEX  index);
 
+
 protected:
 	ARTICLE_INDEX	m_ArticleIndex;
-
 	void load_shared	(LPCSTR);
-	SArticleData* data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
-
 	static void InitXmlIdToIndex();
+public:
+	const ARTICLE_INDEX Index() {return m_ArticleIndex;}
+	SArticleData* data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 };

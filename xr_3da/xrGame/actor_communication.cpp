@@ -38,17 +38,37 @@ void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion)
 
 void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
 {
+	VERIFY(info_portion);
+	ARTICLE_VECTOR& article_vector = encyclopedia_registry.objects();
+
+	ARTICLE_VECTOR::iterator last_end = article_vector.end();
+	ARTICLE_VECTOR::iterator B = article_vector.begin();
+	ARTICLE_VECTOR::iterator E = last_end;
+
+	for(ARTICLE_VECTOR::const_iterator it = info_portion->ArticlesDisable().begin();
+									it != info_portion->ArticlesDisable().end(); it++)
+	{
+		last_end = std::remove(B, last_end, *it);
+	}
+	article_vector.erase(last_end, E);
+
+	
+	for(ARTICLE_VECTOR::const_iterator it = info_portion->Articles().begin();
+									it != info_portion->Articles().end(); it++)
+	{
+		article_vector.push_back(*it);
+	}
 }
 
 //information receive
-void CActor::OnReceiveInfo(INFO_ID info_index)
+void CActor::OnReceiveInfo(INFO_ID info_id)
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
 	CInfoPortion info_portion;
-	info_portion.Load(info_index);
+	info_portion.Load(info_id);
 
 	AddMapLocationsFromInfo(&info_portion);
 	AddEncyclopediaArticle(&info_portion);
@@ -65,18 +85,18 @@ void CActor::OnReceiveInfo(INFO_ID info_index)
 		}*/
 	}
 
-	CInventoryOwner::OnReceiveInfo(info_index);
+	CInventoryOwner::OnReceiveInfo(info_id);
 }
 
 
-void CActor::OnDisableInfo(INFO_ID info_index)
+void CActor::OnDisableInfo(INFO_ID info_id)
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(pGameSP && pGameSP->TalkMenu.IsShown()) pGameSP->TalkMenu.UpdateQuestions();
 
-	Level().RemoveMapLocationByInfo(info_index);
-	CInventoryOwner::OnDisableInfo(info_index);
+	Level().RemoveMapLocationByInfo(info_id);
+	CInventoryOwner::OnDisableInfo(info_id);
 }
 
 

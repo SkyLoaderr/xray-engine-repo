@@ -18,6 +18,8 @@
 
 #include "../encyclopedia_article_defs.h"
 
+class CEncyclopediaArticle;
+
 //////////////////////////////////////////////////////////////////////////
 
 class CUIEncyclopediaWnd: public CUIDialogWnd
@@ -41,14 +43,16 @@ public:
 	virtual ~CUIEncyclopediaWnd();
 
 	virtual void Init();
-	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
+	virtual void Show();
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
 	virtual void Draw();
 
 	// Добавлем 1 энциклопедиционную статью
-	void AddArticle(const ref_str &ID);
+	void AddArticle(ARTICLE_INDEX);
+	void DeleteArticles();
 
 protected:
+
 	// Элементы графического оформления
 	CUIFrameWindow		UIEncyclopediaIdxBkg;
 	CUIFrameWindow		UIEncyclopediaInfoBkg;
@@ -63,25 +67,21 @@ protected:
 
 	// Маска для изображения предмета текущей статьи
 	CUIFrameWindow		UIImgMask;
+	//положение картинки в энциклопедии
+	int m_iItemX;
+	int m_iItemY;
 
 	CGameFont			*m_pTreeRootFont;
 	u32					m_uTreeRootColor;
 	CGameFont			*m_pTreeItemFont;
 	u32					m_uTreeItemColor;
 
-	// Стуктура статьи
-	struct Article
-	{
-		CUIStatic	image;
-		ref_str		info;
-	};
-
 	// Хранилище статей
-	typedef xr_vector<Article>				ArticlesDB;
-	typedef xr_vector<Article>::iterator	ArticlesDB_it;
-	ArticlesDB								m_ArticlesDB;
+	typedef xr_vector<CEncyclopediaArticle*>			ArticlesDB;
+	typedef xr_vector<CEncyclopediaArticle*>::iterator	ArticlesDB_it;
+	ArticlesDB											m_ArticlesDB;
 
-	Article				*m_pCurrArticle;
+	CEncyclopediaArticle							   *m_pCurrArticle;
 };
 
 #endif	//UI_ENCYCLOPEDIA_WND_H_

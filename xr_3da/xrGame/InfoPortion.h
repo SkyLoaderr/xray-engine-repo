@@ -36,6 +36,9 @@ struct SInfoPortionData : CSharedResource
 	LOCATIONS_VECTOR	m_MapLocations;
 	//список статей в энциклопедии, которые становятся известными 
 	ARTICLE_VECTOR		m_Articles;
+	//список статей в энциклопедии, которые становятся неизвестными (на тот случай если
+	//нужно заменить одну статью другой)
+	ARTICLE_VECTOR		m_ArticlesDisable;
 	
 	//присоединенное задание
 	CGameTask*			m_pGameTask;
@@ -76,6 +79,8 @@ public:
 	virtual void Load	(INFO_ID info_id);
 
 	const LOCATIONS_VECTOR&							MapLocations()	const {return info_data()->m_MapLocations;}
+	const ARTICLE_VECTOR&							Articles	()	const {return info_data()->m_Articles;}
+	const ARTICLE_VECTOR&							ArticlesDisable	()	const {return info_data()->m_ArticlesDisable;}
 	const SInfoPortionData::DIALOG_NAME_VECTOR&		DialogNames	()	const {return info_data()->m_DialogNames;}
 	const SInfoPortionData::INFO_INDEX_VECTOR&		DisableInfos()	const {return info_data()->m_DisableInfo;}
 	

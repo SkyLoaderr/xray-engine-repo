@@ -98,13 +98,13 @@ protected:
 	// сюжетная информация
 public:
 	//персонаж получил новую порцию информации
-	virtual void OnReceiveInfo	(INFO_ID info_index);
+	virtual void OnReceiveInfo	(INFO_ID info_id);
 	//убрать информацию
-	virtual void OnDisableInfo	(INFO_ID info_index);
+	virtual void OnDisableInfo	(INFO_ID info_id);
 	//передать/удалить информацию через сервер
-	virtual void TransferInfo	(INFO_ID info_index, bool add_info) const;
+	virtual void TransferInfo	(INFO_ID info_id, bool add_info) const;
 	//есть ли информация у персонажа
-	virtual bool HasInfo		(INFO_ID info_index) const;
+	virtual bool HasInfo		(INFO_ID info_id) const;
 
 
 	typedef CALifeRegistryWrapper<CInfoPortionRegistry> KNOWN_INFO_REGISTRY;

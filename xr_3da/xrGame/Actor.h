@@ -88,8 +88,8 @@ public:
 
 public:
 	//information receive & dialogs
-	virtual void OnReceiveInfo		(INFO_ID info_index);
-	virtual void OnDisableInfo		(INFO_ID info_index);
+	virtual void OnReceiveInfo		(INFO_ID info_id);
+	virtual void OnDisableInfo		(INFO_ID info_id);
 	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_ID info_index);
 protected:
 	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion);
@@ -102,7 +102,7 @@ public:
 	typedef CALifeRegistryWrapper<CKnownContactsRegistry> KNOWN_CONTACTS_REGISTRY;
 	KNOWN_CONTACTS_REGISTRY		contacts_registry;
 
-	//реестр контактов общения с другими персонажами
+	//реестр статей энциклопедии, о которых знает актер
 	typedef CALifeRegistryWrapper<CEncyclopediaRegistry> ENCYCLOPEDIA_REGISTRY;
 	ENCYCLOPEDIA_REGISTRY		encyclopedia_registry;
 

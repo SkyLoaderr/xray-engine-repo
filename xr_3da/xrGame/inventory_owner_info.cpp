@@ -22,17 +22,17 @@ void  CInventoryOwner::OnEvent (NET_Packet& P, u16 type)
 	case GE_INFO_TRANSFER:
 		{
 			u16				id;
-			s32				info_index;
+			s32				info_id;
 			u8				add_info;
 
 			P.r_u16			(id);				//отправитель
-			P.r_s32			(info_index);		//номер полученной информации
+			P.r_s32			(info_id);			//номер полученной информации
 			P.r_u8			(add_info);			//добавление или убирание информации
 
 			if(add_info)
-				OnReceiveInfo	((INFO_ID)info_index);
+				OnReceiveInfo	((INFO_ID)info_id);
 			else
-				OnDisableInfo	((INFO_ID)info_index);
+				OnDisableInfo	((INFO_ID)info_id);
 		}
 		break;
 	}
@@ -76,12 +76,12 @@ void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 	}
 }
 
-void CInventoryOwner::OnDisableInfo(INFO_ID info_index)
+void CInventoryOwner::OnDisableInfo(INFO_ID info_id)
 {
 	//удалить запись из реестра
 	KNOWN_INFO_VECTOR& known_info = known_info_registry.objects();
 
-	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));
+	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_id));
 	if( known_info.end() == it)	return;
 	known_info.erase(it);
 }

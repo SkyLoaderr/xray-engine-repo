@@ -52,7 +52,7 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	//группа
 	data()->group = uiXml.ReadAttrib(pNode, "group", "");
 	//секция ltx, откуда читать данные
-	data()->ltx = uiXml.Read(pNode, "ltx", 0);
+	data()->ltx = uiXml.Read(pNode, "ltx", 0, NULL);
 
 	if(*data()->ltx)
 	{
