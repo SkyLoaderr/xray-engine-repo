@@ -48,8 +48,7 @@ local monster2	=
 				"m_flesh_e0020",
 				"m_flesh_e0021",
 				"m_flesh_e0022"
-
-	}
+			}
 			
 local monster3	=
 			{

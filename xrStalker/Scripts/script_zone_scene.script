@@ -98,7 +98,8 @@ function CZombieLie:actor_enter()
 	
 	// «апоминаем что актер зашел, если лежали, то встаем
 	self.enter_actor	= true
-	self.time		= device():time_global()
+	self.time			= device():time_global()
+	self.finishing		= true
 	reset_action(self.object, script_name())
 	
 	if(self.zombie_lie) then
@@ -180,7 +181,7 @@ function CZombieLie2:update(delta)
 	end
 	
 	if(level.actor() and distance_between(self.object, level.actor()) < 2) then
-		self.actor_enter()
+		self:actor_enter()
 	end
 
 	if(self.object:best_enemy() or self.object:get_monster_hit_info().time ~= 0) then
@@ -242,7 +243,8 @@ function CZombieLie2:actor_enter()
 	
 	// «апоминаем что актер зашел, если лежали, то встаем
 	self.enter_actor	= true
-	self.time		= device():time_global()
+	self.time			= device():time_global()
+	self.finishing		= true
 	reset_action(self.object, script_name())
 	
 	if(self.zombie_lie) then
