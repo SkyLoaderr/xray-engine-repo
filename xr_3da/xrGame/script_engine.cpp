@@ -183,7 +183,10 @@ void CScriptEngine::register_script_classes	()
 	for (u32 i=0; i<n; ++i) {
 		_GetItem				(*m_class_registrators,i,I);
 		luabind::functor<void>	result;
-		R_ASSERT				(functor(I,result));
+		if (!functor(I,result)) {
+			script_log			(eLuaMessageTypeError,"Cannot load class registrator %s!",I);
+			continue;
+		}
 		result					(const_cast<CObjectFactory*>(&object_factory()));
 	}
 }
