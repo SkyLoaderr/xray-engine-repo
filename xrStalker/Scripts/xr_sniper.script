@@ -34,6 +34,19 @@ function point_with_bit(patrol_path, bit, old_point)			--old_point - старая точк
     end
 end
 
+--возвращает некоторую точку пути у которой установлен бит
+function point_with_bit_id(patrol_path, bit)
+
+    for i = 0, patrol_path:count()-1 do
+        --Добовляем в таблицу точки с нужным битом
+        if( patrol_path:flag(i, bit)) then
+			return patrol_path:level_vertex_id(i)
+        end
+    end
+
+    return nil		--Плохой путь, нет точки для сидения
+end
+
 --Возвращает индекс самой ближней точки пути с заданым битом, от текущей точки
 function near_point_with_bit(point, patrol_path, bit)
 	local new_point	= nil
@@ -194,7 +207,7 @@ function action_sniper_idle:__init (name, storage) super (nil, name)
 
 	local path 		= patrol(self.a.rest_path)
     self.last_point = path:level_vertex_id(path:count() - 1)  		--Последняя точка пути
-    self.rest_point = path:level_vertex_id(0)                       --Первая точка пути, в ней сидим
+    self.rest_point = this.point_with_bit_id(self.a.point_path, 0)	--Точка, в которой будем сидеть
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:initialize ()
@@ -209,7 +222,7 @@ function action_sniper_idle:initialize ()
     	self:init_state_walk()
     end
 
---   self.object:set_callback (self, "move_callback", game_object.movement)
+   self.object:set_callback (self, "move_callback", game_object.movement)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:init_state_sit_down	()
@@ -311,7 +324,7 @@ function action_sniper_idle:move_callback(obj, action_type, index)
 	if(index == 0) then return end
 	self.object:set_movement_type	(move.stand)
     self.object:set_mental_state	(anim.danger)
-    self.object:set_sight			(look.fire_point, this.point_with_bit(self.a.point_path, 1), 0)
+    self.object:set_sight			(look.fire_point, this.point_with_bit(self.a.point_path, 2), 0)
     self.state 	= LOOK
     self.time	= device():time_global() + time_to_look
 end
@@ -458,7 +471,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:initialize ()
     action_base.initialize (self)
-    self.camper_point   = this.near_point_with_bit(self.object:position(), self.a.point_path, 0)
+    self.camper_point   = this.near_point_with_bit(self.object:position(), self.a.point_path, 1)
 
     self.state			= hide
 --	printf("camper_point = %d", self.camper_point)
@@ -519,7 +532,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:move_callback(obj, action_type, index)
 	self.object:set_movement_type		(move.stand)
-    self.object:set_sight				(look.point, this.point_with_bit(self.a.point_path, 1), 0)
+    self.object:set_sight				(look.point, this.point_with_bit(self.a.point_path, 2), 0)
 
     self.time		= device():time_global() + time_camper_look
 	self.state		= LOOK
@@ -527,7 +540,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:select_look_point()
 	--Просматривает какой бит после второго установлен в точке пути self.camper_point и еще в пути точку с этим битом
-	for i = 2, 20 do
+	for i = 3, 20 do
 --        printf("point %d  bit %d", self.camper_point, i)
         if(self.a.point_path:flag(self.camper_point, i)) then
         	self.look_point	= this.point_with_bit(self.a.point_path, i, self.camper_point)
