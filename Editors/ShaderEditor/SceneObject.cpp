@@ -277,6 +277,19 @@ void CSceneObject::OnShowHint(AStringVec& dest)
 {
 	inherited::OnShowHint(dest);
     dest.push_back(AnsiString("Reference: ")+m_ReferenceName);
+    dest.push_back(AnsiString("-------"));
+    float dist			= flt_max;
+    SRayPickInfo pinf;
+    if (m_pReference->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,_ITransform(),&pinf)){
+        R_ASSERT(pinf.e_mesh);
+        CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
+        dest.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));
+        dest.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
+        dest.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));
+        dest.push_back(AnsiString("LC Shader: ")+AnsiString(surf->_ShaderXRLCName()));
+        dest.push_back(AnsiString("Game Mtl: ")+AnsiString(surf->_GameMtlName()));
+        dest.push_back(AnsiString("2 Sided: ")+AnsiString(surf->m_Flags.is(CSurface::sf2Sided)?"on":"off"));
+    }
 }
 //----------------------------------------------------
 

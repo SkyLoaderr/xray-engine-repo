@@ -48,8 +48,6 @@ __published:	// IDE-managed Components
 	TMenuItem *miFog;
 	TMenuItem *miRealTime;
 	TMenuItem *N3;
-    TMenuItem *N1;
-    TMenuItem *miShowHint;
 	TPanel *paBottomBar;
 	TPanel *paInfo;
 	TPanel *paStatusBar;
