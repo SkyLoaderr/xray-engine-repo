@@ -161,7 +161,7 @@ function set_storyline(object, char_ini)
             xr_scientist.add_to_binder  (object)
      end
 
-    --Охранника в баре у бармена
+    --Охранник в баре у бармена
     xr_motivator.storage[object:id()].security = {
                 path     = nil,         --Путь, по которому ходить
                 enabled  = false
@@ -171,7 +171,7 @@ function set_storyline(object, char_ini)
             if(char_ini:line_exist("security", "path") == true) then
                 xr_motivator.storage[object:id()].security.path     = patrol(char_ini:r_string("security", "path"))
             end
-            xr_trivial.add_security    (object)
+            --xr_trivial.add_security    (object)
             object:set_start_dialog    ("bar_security_dialog")
      end
 
@@ -186,7 +186,7 @@ function set_storyline(object, char_ini)
         if char_ini:line_exist ("bar_stalker", "passive") == true then
            xr_motivator.storage[object:id()].bar_stalker.passive = char_ini:r_bool ("bar_stalker", "passive")
         end
-        Bar_stalker.add_to_binder (object)
+        bar_stalker.add_to_binder (object)
      end
 
     -- Бармен
@@ -200,7 +200,9 @@ function set_storyline(object, char_ini)
         								  {
         									enabled  	= true,
                                             rest_path 	= nil,
-         								    look_path	= nil
+         								    look_path	= nil,
+			                                enemy		= nil,
+                                            monster		= nil
                                           }
         xr_sniper.add_to_binder (object, char_ini)
      end
