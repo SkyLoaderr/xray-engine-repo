@@ -678,7 +678,7 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetRenderState			( D3DRS_TWOSIDEDSTENCILMODE,FALSE				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_ALWAYS		);
-	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0xff				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0x1					);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILMASK,		0xff				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILWRITEMASK,	0xff				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	);
