@@ -1,6 +1,58 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
+	<specific_character id="stalker_esc_wolf" team_default = "1">
+		<name>Сталкер "Волк"</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Главарь лагеря новичков.</bio>
+
+		<class>stalker_esc_wolf</class>
+		<community>stranger</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_balon_1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_esc_bariga" team_default = "1">
+		<name>Сталкер "Барыга"</name>
+		<icon x="23" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Просто барыга.</bio>
+
+		<class>stalker_esc_bariga</class>
+		<community>stranger</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\novice\green_stalker_8</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_bm16 \n
+			ammo_12x70_buck = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
 <!---------------------------STALKER NOVICE----------------------->
 	<specific_character id="stalker_novice_default1" team_default = "1">
 		<name>Неизвестный новичок</name>
