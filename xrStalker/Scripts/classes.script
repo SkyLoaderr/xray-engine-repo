@@ -1,3 +1,10 @@
-function main ()
-    while true do wait () end
+-- класс 
+class "SinglePatrol"
+
+function SinglePatrol:__init (npc, script_name)
+	self.npc = npc
+	self.script_name = script_name
+
 end
+
+
