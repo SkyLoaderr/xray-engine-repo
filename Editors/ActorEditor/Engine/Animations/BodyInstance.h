@@ -256,6 +256,7 @@ private:
 		for (; I!=E; I++)
 			if (I->blend == CBlend::eFREE_SLOT) return I;
 		Device.Fatal("Too many blended motions requisted");
+		return 0;
 	}
 public:
 	// Low level interface

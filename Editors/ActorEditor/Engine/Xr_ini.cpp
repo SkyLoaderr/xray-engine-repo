@@ -248,15 +248,16 @@ DWORD	CInifile::LineCount	(LPCSTR Sname)
 	DWORD	C = 0;
 	for (; I!=S.end(); I++)	if (I->first) C++;
 	return  C;
+}                 
 }
 
 CInifile::Sect& CInifile::ReadSection( LPCSTR S )
 {
 	char	section[256]; strcpy(section,S); strlwr(section);
-	Sect Test; Test.Name = section; RootIt I = std::lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
+	static  Sect Test; Test.Name = section; RootIt I = std::lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
 #ifdef ENGINE_BUILD
 	if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;
-	else												Device.Fatal("Can't open section '%s'",S);
+	else												{ Device.Fatal("Can't open section '%s'",S); return Test; }
 #else
 	#ifdef _EDITOR
 		if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;

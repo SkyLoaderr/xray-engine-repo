@@ -310,7 +310,7 @@ CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 #ifdef _EDITOR
 	if (I==blenders.end())	return 0;
 #else
-	if (I==blenders.end())	Device.Fatal("Shader '%s' not found in library.",Name);
+	if (I==blenders.end())	{ Device.Fatal("Shader '%s' not found in library.",Name); return 0; }
 #endif
 	else					return I->second;
 }
