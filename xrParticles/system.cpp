@@ -482,7 +482,6 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 PARTICLEDLL_API void pStopPlaying(int action_list_num)
 {
 	_ParticleState &_ps = _GetPState();
-	if(_ps.in_new_list) return; // ERROR
 	// Execute the specified action list.
 	ParticleActions* pa	= _ps.GetListPtr(action_list_num);
 	if(pa == NULL)		return; // ERROR
@@ -499,7 +498,6 @@ PARTICLEDLL_API void pStopPlaying(int action_list_num)
 PARTICLEDLL_API void pStartPlaying(int action_list_num)
 {
 	_ParticleState &_ps = _GetPState();
-	if(_ps.in_new_list) return; // ERROR
 	// Execute the specified action list.
 	ParticleActions* pa	= _ps.GetListPtr(action_list_num);
 	if(pa == NULL)		return; // ERROR

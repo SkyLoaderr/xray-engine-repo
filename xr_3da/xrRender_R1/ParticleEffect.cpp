@@ -341,8 +341,8 @@ void CPEDef::Save(IWriter& F)
 //------------------------------------------------------------------------------
 CParticleEffect::CParticleEffect()
 {
-	m_HandleEffect 			= pGenParticleEffects(1, 1);
-    m_HandleActionList		= pGenActionLists();
+	m_HandleEffect 			= pGenParticleEffects(1, 1);	VERIFY(m_HandleEffect>=0);
+    m_HandleActionList		= pGenActionLists();			VERIFY(m_HandleActionList>=0);
     m_RT_Flags.zero			();
     m_Def					= 0;
     m_fElapsedLimit			= 0.f;
