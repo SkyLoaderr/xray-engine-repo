@@ -1,0 +1,95 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ALc", "ALc\ALc.vcproj", "{B0090B5D-A61B-4EE5-AD63-5B1E7B41A5FC}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ALu", "ALu\ALu.vcproj", "{02804C15-85F6-41C4-BC20-4B904F14117E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ALut", "ALut\ALut.vcproj", "{5160E642-BF46-4DB2-A49A-8EB22C365AE7}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenAL32", "OpenAL32\OpenAL32.vcproj", "{0574D581-931F-4747-AE2F-E198710F320C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{02804C15-85F6-41C4-BC20-4B904F14117E} = {02804C15-85F6-41C4-BC20-4B904F14117E}
+		{5160E642-BF46-4DB2-A49A-8EB22C365AE7} = {5160E642-BF46-4DB2-A49A-8EB22C365AE7}
+		{B0090B5D-A61B-4EE5-AD63-5B1E7B41A5FC} = {B0090B5D-A61B-4EE5-AD63-5B1E7B41A5FC}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenALDemo", "OpenALDemo\OpenALDemo.vcproj", "{1521E409-F007-47A1-8B2F-CC2FE498561D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B1785D79-16DC-4FA0-A71B-EE7151638798} = {B1785D79-16DC-4FA0-A71B-EE7151638798}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Router", "Router\Router.vcproj", "{B1785D79-16DC-4FA0-A71B-EE7151638798}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 7
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {A48C6F8B-248F-4960-9B7F-FA204D5A45D0}
+		SccProjectUniqueName1 = ALc\\ALc.vcproj
+		SccLocalPath1 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = ALc\\
+		SccProjectUniqueName2 = ALu\\ALu.vcproj
+		SccLocalPath2 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection2 = ALu\\
+		SccProjectUniqueName3 = ALut\\ALut.vcproj
+		SccLocalPath3 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection3 = ALut\\
+		SccProjectUniqueName4 = OpenAL32\\OpenAL32.vcproj
+		SccLocalPath4 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection4 = OpenAL32\\
+		SccProjectUniqueName5 = OpenALDemo\\OpenALDemo.vcproj
+		SccLocalPath5 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection5 = OpenALDemo\\
+		SccProjectUniqueName6 = Router\\Router.vcproj
+		SccLocalPath6 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection6 = Router\\
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{B0090B5D-A61B-4EE5-AD63-5B1E7B41A5FC}.Debug.ActiveCfg = Debug|Win32
+		{B0090B5D-A61B-4EE5-AD63-5B1E7B41A5FC}.Debug.Build.0 = Debug|Win32
+		{B0090B5D-A61B-4EE5-AD63-5B1E7B41A5FC}.Release.ActiveCfg = Release|Win32
+		{B0090B5D-A61B-4EE5-AD63-5B1E7B41A5FC}.Release.Build.0 = Release|Win32
+		{02804C15-85F6-41C4-BC20-4B904F14117E}.Debug.ActiveCfg = Debug|Win32
+		{02804C15-85F6-41C4-BC20-4B904F14117E}.Debug.Build.0 = Debug|Win32
+		{02804C15-85F6-41C4-BC20-4B904F14117E}.Release.ActiveCfg = Release|Win32
+		{02804C15-85F6-41C4-BC20-4B904F14117E}.Release.Build.0 = Release|Win32
+		{5160E642-BF46-4DB2-A49A-8EB22C365AE7}.Debug.ActiveCfg = Debug|Win32
+		{5160E642-BF46-4DB2-A49A-8EB22C365AE7}.Debug.Build.0 = Debug|Win32
+		{5160E642-BF46-4DB2-A49A-8EB22C365AE7}.Release.ActiveCfg = Release|Win32
+		{5160E642-BF46-4DB2-A49A-8EB22C365AE7}.Release.Build.0 = Release|Win32
+		{0574D581-931F-4747-AE2F-E198710F320C}.Debug.ActiveCfg = Debug|Win32
+		{0574D581-931F-4747-AE2F-E198710F320C}.Debug.Build.0 = Debug|Win32
+		{0574D581-931F-4747-AE2F-E198710F320C}.Release.ActiveCfg = Release|Win32
+		{0574D581-931F-4747-AE2F-E198710F320C}.Release.Build.0 = Release|Win32
+		{1521E409-F007-47A1-8B2F-CC2FE498561D}.Debug.ActiveCfg = Debug|Win32
+		{1521E409-F007-47A1-8B2F-CC2FE498561D}.Debug.Build.0 = Debug|Win32
+		{1521E409-F007-47A1-8B2F-CC2FE498561D}.Release.ActiveCfg = Release|Win32
+		{1521E409-F007-47A1-8B2F-CC2FE498561D}.Release.Build.0 = Release|Win32
+		{B1785D79-16DC-4FA0-A71B-EE7151638798}.Debug.ActiveCfg = Debug|Win32
+		{B1785D79-16DC-4FA0-A71B-EE7151638798}.Debug.Build.0 = Debug|Win32
+		{B1785D79-16DC-4FA0-A71B-EE7151638798}.Release.ActiveCfg = Release|Win32
+		{B1785D79-16DC-4FA0-A71B-EE7151638798}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
