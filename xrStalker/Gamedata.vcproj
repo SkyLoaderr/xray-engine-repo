@@ -163,54 +163,6 @@
 				RelativePath=".\jobs.xml">
 			</File>
 			<File
-				RelativePath=".\m_army.ltx">
-			</File>
-			<File
-				RelativePath=".\m_bandit.ltx">
-			</File>
-			<File
-				RelativePath=".\M_Bloodsucker.ltx">
-			</File>
-			<File
-				RelativePath=".\M_Boar.ltx">
-			</File>
-			<File
-				RelativePath=".\M_burer.ltx">
-			</File>
-			<File
-				RelativePath=".\M_Chimera.ltx">
-			</File>
-			<File
-				RelativePath=".\M_controller.ltx">
-			</File>
-			<File
-				RelativePath=".\M_Dog.ltx">
-			</File>
-			<File
-				RelativePath=".\M_Flesh.ltx">
-			</File>
-			<File
-				RelativePath=".\m_fraction.ltx">
-			</File>
-			<File
-				RelativePath=".\M_Fracture.ltx">
-			</File>
-			<File
-				RelativePath=".\M_giant.ltx">
-			</File>
-			<File
-				RelativePath=".\M_Poltergeist.ltx">
-			</File>
-			<File
-				RelativePath=".\M_Pseudodog.ltx">
-			</File>
-			<File
-				RelativePath=".\m_stalker.ltx">
-			</File>
-			<File
-				RelativePath=".\M_Zombie.ltx">
-			</File>
-			<File
 				RelativePath=".\maingame.xml">
 			</File>
 			<File
@@ -227,9 +179,6 @@
 			</File>
 			<File
 				RelativePath=".\map_character.xml">
-			</File>
-			<File
-				RelativePath=".\monsters.ltx">
 			</File>
 			<File
 				RelativePath=".\news.xml">
@@ -291,6 +240,63 @@
 			<File
 				RelativePath=".\trade_item.xml">
 			</File>
+			<File
+				RelativePath=".\zones.ltx">
+			</File>
+		</Filter>
+		<Filter
+			Name="Encyclopedy"
+			Filter="">
+			<File
+				RelativePath=".\encyclopedia.xml">
+			</File>
+			<File
+				RelativePath=".\encyclopedia_equipment.xml">
+			</File>
+			<File
+				RelativePath=".\encyclopedia_infos.xml">
+			</File>
+			<File
+				RelativePath=".\encyclopedia_mutants.xml">
+			</File>
+			<File
+				RelativePath=".\encyclopedia_social.xml">
+			</File>
+			<File
+				RelativePath=".\encyclopedia_vehicles.xml">
+			</File>
+			<File
+				RelativePath=".\encyclopedia_zone.xml">
+			</File>
+			<File
+				RelativePath=".\string_table_enc_equipment.xml">
+			</File>
+			<File
+				RelativePath=".\string_table_enc_mutants.xml">
+			</File>
+			<File
+				RelativePath=".\string_table_enc_social.xml">
+			</File>
+			<File
+				RelativePath=".\string_table_enc_vehicles.xml">
+			</File>
+			<File
+				RelativePath=".\string_table_enc_zone.xml">
+			</File>
+		</Filter>
+		<Filter
+			Name="InfoPortions"
+			Filter="">
+			<File
+				RelativePath=".\info_portions.xml">
+			</File>
+			<File
+				RelativePath=".\info_portions_test.xml">
+			</File>
+		</Filter>
+		<Filter
+			Name="Weapons"
+			Filter="">
 			<File
 				RelativePath=".\w_ak74.ltx">
 			</File>
@@ -375,58 +381,60 @@
 			<File
 				RelativePath=".\weapons.ltx">
 			</File>
-			<File
-				RelativePath=".\zones.ltx">
-			</File>
 		</Filter>
 		<Filter
-			Name="Encyclopedy"
+			Name="Monsters"
 			Filter="">
 			<File
-				RelativePath=".\encyclopedia.xml">
+				RelativePath=".\m_army.ltx">
 			</File>
 			<File
-				RelativePath=".\encyclopedia_equipment.xml">
+				RelativePath=".\m_bandit.ltx">
 			</File>
 			<File
-				RelativePath=".\encyclopedia_infos.xml">
+				RelativePath=".\M_Bloodsucker.ltx">
 			</File>
 			<File
-				RelativePath=".\encyclopedia_mutants.xml">
+				RelativePath=".\M_Boar.ltx">
 			</File>
 			<File
-				RelativePath=".\encyclopedia_social.xml">
+				RelativePath=".\M_burer.ltx">
 			</File>
 			<File
-				RelativePath=".\encyclopedia_vehicles.xml">
+				RelativePath=".\M_Chimera.ltx">
 			</File>
 			<File
-				RelativePath=".\encyclopedia_zone.xml">
+				RelativePath=".\M_controller.ltx">
 			</File>
 			<File
-				RelativePath=".\string_table_enc_equipment.xml">
+				RelativePath=".\M_Dog.ltx">
 			</File>
 			<File
-				RelativePath=".\string_table_enc_mutants.xml">
+				RelativePath=".\M_Flesh.ltx">
 			</File>
 			<File
-				RelativePath=".\string_table_enc_social.xml">
+				RelativePath=".\m_fraction.ltx">
 			</File>
 			<File
-				RelativePath=".\string_table_enc_vehicles.xml">
+				RelativePath=".\M_Fracture.ltx">
 			</File>
 			<File
-				RelativePath=".\string_table_enc_zone.xml">
-			</File>
-		</Filter>
-		<Filter
-			Name="InfoPortions"
-			Filter="">
-			<File
-				RelativePath=".\info_portions.xml">
+				RelativePath=".\M_giant.ltx">
 			</File>
 			<File
-				RelativePath=".\info_portions_test.xml">
+				RelativePath=".\M_Poltergeist.ltx">
+			</File>
+			<File
+				RelativePath=".\M_Pseudodog.ltx">
+			</File>
+			<File
+				RelativePath=".\m_stalker.ltx">
+			</File>
+			<File
+				RelativePath=".\M_Zombie.ltx">
+			</File>
+			<File
+				RelativePath=".\monsters.ltx">
 			</File>
 		</Filter>
 		<File
