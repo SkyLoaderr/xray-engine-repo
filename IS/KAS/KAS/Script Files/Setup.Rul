@@ -16,11 +16,9 @@
 //---------------------------------------------------------------------------
 // Global variables
 //---------------------------------------------------------------------------
-string 	g_sSerial;
-//---------------------------------------------------------------------------
             
 //.
-#define CURRENT_BUILD_DATE		"26.01.2005"
+#define CURRENT_BUILD_DATE		"28.01.2005"
 //---------------------------------------------------------------------------
 // Definition
 //---------------------------------------------------------------------------
@@ -48,6 +46,8 @@ string 	g_sSerial;
 #define REG_SERVER_ID			"Main_ServerName"
 #define REG_INSTANCE_ID			"instance"
 #define REG_VERSION_DB_ID    	"versionDB"
+#define REG_VERSION_EXE_TMP_ID 	"versionEXE_temp"
+#define REG_SERIAL_TMP_ID    	"serial_number_temp"
 
 //---------------------------------------------------------------------------
 // User defined function prototype
@@ -197,6 +197,7 @@ function ConfigureServer()
 	string 	sTmp,db_files,sInsertSQL,sServerName;
 	string 	sPrimReg,sSecReg,sVersionEXE,sVersionDB;
 	NUMBER 	nvType, nvSize, nLocation;
+	string 	sSerial;
 begin
 	bRes = CheckMSDEStatus();    
 	if (TRUE=bRes) then
@@ -278,15 +279,24 @@ begin
 		    	bRes=TRUE;
 		    endif;
 		
-//		    SetStatusWindow (80, @IDSL_PROGRESS_READ_INI);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_SERVER_ID, 		sServerName);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_EXE_ID,	sVersionEXE);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_DB_ID, 	sVersionDB);
-		
 			// parse serial number      
 			sPrimReg		= "";
-			sSecReg			= "";	
-			ParseSerialNumber(g_sSerial,sPrimReg,sSecReg);
+			sSecReg			= "";	           
+			sSerial			= "";
+			// load from registry
+			RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
+			if (RegDBGetKeyValueEx	("Software\\KASClient\\Settings\\Temp", REG_SERIAL_TMP_ID,nvType,sSerial,nvSize) < 0) then
+			    MessageBox 			("RegDBGetKeyValueEx failed: "+REG_SERIAL_TMP_ID, SEVERE);
+			endif;
+			if (RegDBGetKeyValueEx	("Software\\KASClient\\Settings\\Temp", REG_VERSION_EXE_TMP_ID,nvType,sVersionEXE,nvSize) < 0) then
+			    MessageBox 			("RegDBGetKeyValueEx failed: "+REG_VERSION_EXE_TMP_ID, SEVERE);
+			endif;
+			if (RegDBGetKeyValueEx	("Software\\KASClient\\Settings", REG_VERSION_DB_ID,nvType,sVersionDB,nvSize) < 0) then
+			    MessageBox 			("RegDBGetKeyValueEx failed: "+REG_VERSION_DB_ID, SEVERE);
+			endif;
+			RegDBDeleteKey 			("Software\\KASClient\\Settings\\Temp");
+			// parse
+			ParseSerialNumber		(sSerial,sPrimReg,sSecReg);
 		                           
 //		    SetStatusWindow (90, @IDSL_PROGRESS_REGISTERING_USER);
 			// prepare sql string
@@ -302,16 +312,6 @@ begin
 		    else
 		    	bRes=TRUE;
 		    endif;
-		
-//		    SetStatusWindow (95, @IDSL_PROGRESS_ADD_REGISTRY);
-			// insert registry keys
-			RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_VERSION_DB_ID, REGDB_STRING, sVersionDB,-1) < 0) then
-			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-			endif;
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
-			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-			endif;
 
 			// create auto-start shortcut
 			CreateStartServerShortcut();
@@ -383,6 +383,7 @@ function OnFirstUIBefore()
     string  sSetupType, sMainDir;
     BOOL    bLicenseAccepted;	
     LIST 	listStartCopy;
+	string 	sSerial;
 begin	  
     SetTitle( @IDS_PRODUCT_NAME, 0, BACKGROUNDCAPTION ); 	                  
    
@@ -459,15 +460,15 @@ Dlg_SdCustomerInformation:
 	endif;
 
 Dlg_SdCustomerInformationServer:
-	g_sSerial 	="demo-kharkiv";
-	nResult 	= SdCustomerInformationEx(sTitle, sName, sCompany, g_sSerial,nUser);
+	sSerial 	="demo-kharkiv";
+	nResult 	= SdCustomerInformationEx(sTitle, sName, sCompany, sSerial,nUser);
 	if (nResult = BACK) then
 		goto Dlg_SetupType;
 	else
 		goto Dlg_SdSelectedFolder;
 	endif;
-	if (g_sSerial ="demo-demo" ) then 
-		g_sSerial ="";
+	if (sSerial ="demo-demo" ) then 
+		sSerial ="";
 	endif;
 
 Dlg_SdCustomerInformationClient:
@@ -534,6 +535,12 @@ Dlg_SdStartCopy:
 	StopClientUpdater	();
 	ClearFolder			(TARGETDIR);
     ClearFolder			(MSDE_INSTANCE_FOLDER);
+
+	// store for the reboot
+	RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
+	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings\\Temp", REG_SERIAL_TMP_ID, REGDB_STRING, sSerial,-1) < 0) then
+	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+	endif;
 
     return 0;
 end;
@@ -652,14 +659,38 @@ function OnFirstUIAfter()
     STRING szTitle, szMsg1, szMsg2, szOpt1, szOpt2;
     NUMBER bvOpt1, bvOpt2;
 	NUMBER bShowUpdateServiceDlg;
+	string sServerName,sVersionEXE,sVersionDB;
 begin     
 	// insert registry keys
+	GetProfString			(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_SERVER_ID, 		sServerName);
+	GetProfString			(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_EXE_ID,	sVersionEXE);
+	GetProfString			(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_DB_ID, 	sVersionDB);
 	// client & server
 	RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
 	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_INSTANCE_ID, REGDB_STRING, MSDE_INSTANCE_NAME,-1) < 0) then
 	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 	endif;
-           
+	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_VERSION_DB_ID, REGDB_STRING, sVersionDB,-1) < 0) then
+	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+	endif;
+	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
+	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+	endif;
+	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings\\Temp", REG_VERSION_EXE_TMP_ID, REGDB_STRING, sVersionEXE,-1) < 0) then
+	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+	endif;
+
+	// Delete ServiceManager icon (для уверенности еще раз удаляем)
+	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
+	    if (ALLUSERS) then
+		    DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
+	    else
+			ProgDefGroupType(COMMON);
+	    	DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
+			ProgDefGroupType(PERSONAL);
+	    endif;
+	endif;
+                                             
 	// create uninstall shortcut
 	CreateUninstallShortcut			();
 	                 
@@ -682,10 +713,7 @@ begin
 	// only set this to true if you have at least the ISUS Professional Edition.
 	bShowUpdateServiceDlg = FALSE;
 
-	// Delete ServiceManager icon
-    DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
-                      
-    // Под ответственность Яны Одарич
+    //. Под ответственность Яны Одарич
 	BATCH_INSTALL = TRUE;          
           
     //{{IS_SCRIPT_TAG(Dlg_SdDinishEx)	
@@ -754,7 +782,5 @@ begin
 	// configure server           
 	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
 		ConfigureServer();
-		// Delete ServiceManager icon (для уверенности еще раз удаляем)
-	    DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
 	endif;
 end;
