@@ -79,6 +79,7 @@ function action_sleeper_activity:execute()
 	end
 	
 	if self.state == 1 then	--' приход на точку
+		self.object:set_body_state(move.standing)
 		self.object:set_mental_state(anim.free)
 		self.object:set_sight(look.path_dir, nil, 0)
 		self.object:set_movement_type(move.walk)
