@@ -15,7 +15,7 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 	{
 	case SE_L_FILL:			// masking
 		C.r_Pass			("null", 			"dumb_tcopy",				false,	FALSE,	FALSE);
-		C.r_Sampler_rtf		("s_base",			C.L_textures[0]	);
+		C.r_Sampler_clf		("s_base",			C.L_textures[0]	);
 		C.r_End				();
 		break;
 	case SE_L_UNSHADOWED:	// unshadowed
