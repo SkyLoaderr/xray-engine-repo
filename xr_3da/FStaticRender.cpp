@@ -123,7 +123,9 @@ IC		void		gm_SetLighting		(CObject* O)
 			CHK_DX(HW.pDevice->SetLight(L, LT.lights[L].L.d3d()) );
 
 		// enable them, disable others
-		
+		for (L=gm_Lcount; L<max; L++)	{ CHK_DX(HW.pDevice->LightEnable(L,TRUE));	}
+		for (L=max;	L<gm_Lcount; L++)	{ CHK_DX(HW.pDevice->LightEnable(L,FALSE)); }
+		gm_Lcount			= max;
 	}
 }
 
