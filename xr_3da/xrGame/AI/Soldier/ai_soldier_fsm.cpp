@@ -799,16 +799,33 @@ void CAI_Soldier::OnLookingOver()
 	
 //	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
 	
+	/**
 	for (int i=0; i<tpaDynamicSounds.size(); i++)
 		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
 			SelectSound(m_iSoundIndex);
 			AI_Path.TravelPath.clear();
 			SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
 		}
+	/**/
 
-	AI_Path.TravelPath.clear();
+	if (Enemy.Enemy)
+		Msg("Visiblity : %d",bfCheckForEntityVisibility(Enemy.Enemy));
+	else
+		Msg("No enemies");
+
+	if (AI_Path.TravelPath.size() == 0) {
+		CTravelNode tTravelNode;
+		tTravelNode.floating = FALSE;
+		tTravelNode.P.set(vPosition);
+		AI_Path.TravelPath.push_back(tTravelNode);
+		tTravelNode.P.set(vPosition.x,vPosition.y,vPosition.z + 1);
+		AI_Path.TravelPath.push_back(tTravelNode);
+		AI_Path.TravelStart = 0;
+	}
 	
-	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,0)
+	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
+
+	//SetLessCoverLook(AI_Node);
 }
 
 void CAI_Soldier::OnPatrolReturn()

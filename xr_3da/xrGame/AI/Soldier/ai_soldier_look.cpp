@@ -448,7 +448,7 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 	float fAlpha = tDirection.dotproduct(tMonsterDirection);
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
-	bool bVisible = fAlpha >= tpEntity->ffGetFov()/180.f*PI + EPS_L;
+	bool bVisible = fAlpha <= tpEntity->ffGetFov()/180.f/2.f*PI + EPS_L;
 	return(bVisible);
 }
 /**/

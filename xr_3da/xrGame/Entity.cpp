@@ -24,7 +24,7 @@ CEntity::CEntity()
 	
 	eHealthLost_Begin	= Engine.Event.Handler_Attach	("level.entity.healthlost.begin",	this);
 	eHealthLost_End		= Engine.Event.Handler_Attach	("level.entity.healthlost.end",		this);
-	eye_fov = 90.f;
+	eye_fov = 110.f;
 	eye_range = 1000.f;
 }
 
