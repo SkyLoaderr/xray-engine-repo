@@ -587,7 +587,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 	else
 		for (int k=0; k<(int)Group.Members.size(); k++) {
 			if (Group.Members[k]->g_Alive())
-				if (tpEntity->Position().distance_to(Group.Members[k]) < fGroupDistance)
+				if (tpEntity->Position().distance_to(Group.Members[k]->Position()) < fGroupDistance)
 					Members.push_back(Group.Members[k]);
 		}
 
