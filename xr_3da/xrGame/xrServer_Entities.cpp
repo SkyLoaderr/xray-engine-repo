@@ -97,7 +97,7 @@ void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** WeaponAmmo
-xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeObject(caSection)
+xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeDynamicObject(caSection)
 {
 	a_elapsed = m_boxSize = pSettings->r_s32(caSection, "box_size");
 }

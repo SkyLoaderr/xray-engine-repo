@@ -111,7 +111,7 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeDynamicObject)
 xrSE_DECLARE_END
 
 //***** WeaponAmmo
-xrSE_DECLARE_BEGIN(xrSE_WeaponAmmo,CALifeObject)
+xrSE_DECLARE_BEGIN(xrSE_WeaponAmmo,CALifeDynamicObject)
 	u16								a_elapsed;
 	u16								m_boxSize;
 							
