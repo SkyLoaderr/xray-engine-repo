@@ -18,7 +18,7 @@
 //---------------------------------------------------------------------------
             
 //.
-#define CURRENT_BUILD_DATE		"01.02.2005"
+#define CURRENT_BUILD_DATE		"03.02.2005"
 //---------------------------------------------------------------------------
 // Definition
 //---------------------------------------------------------------------------
@@ -294,7 +294,6 @@ begin
 			if (RegDBGetKeyValueEx	("Software\\KASClient\\Settings", REG_VERSION_DB_ID,nvType,sVersionDB,nvSize) < 0) then
 			    MessageBox 			("RegDBGetKeyValueEx failed: "+REG_VERSION_DB_ID, SEVERE);
 			endif;
-			RegDBDeleteKey 			("Software\\KASClient\\Settings\\Temp");
 			// parse
 			ParseSerialNumber		(sSerial,sPrimReg,sSecReg);
 		                           
@@ -312,9 +311,6 @@ begin
 		    else
 		    	bRes=TRUE;
 		    endif;
-
-			// create auto-start shortcut
-			CreateStartServerShortcut();
 		else
 	        MessageBox (@IDSL_ERROR_SQLSERVER_CONNECT_FAILED, SEVERE);
 	        bRes	= FALSE;
@@ -670,18 +666,19 @@ begin
 	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_INSTANCE_ID, REGDB_STRING, MSDE_INSTANCE_NAME,-1) < 0) then
 	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 	endif;
-	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_VERSION_DB_ID, REGDB_STRING, sVersionDB,-1) < 0) then
-	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-	endif;
-	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
-	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-	endif;
-	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings\\Temp", REG_VERSION_EXE_TMP_ID, REGDB_STRING, sVersionEXE,-1) < 0) then
-	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-	endif;
 
-	// Delete ServiceManager icon (для уверенности еще раз удаляем)
 	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
+		// write specific server variables
+		if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_VERSION_DB_ID, REGDB_STRING, sVersionDB,-1) < 0) then
+		    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+		endif;
+		if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
+		    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+		endif;
+		if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings\\Temp", REG_VERSION_EXE_TMP_ID, REGDB_STRING, sVersionEXE,-1) < 0) then
+		    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+		endif;                            
+		// Delete ServiceManager icon (для уверенности еще раз удаляем)
 	    if (ALLUSERS) then
 		    DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
 	    else
@@ -689,6 +686,22 @@ begin
 	    	DeleteFolderIcon(FOLDER_STARTUP, "Service Manager");
 			ProgDefGroupType(PERSONAL);
 	    endif;
+	    // stop MS DTC  
+	    if (SYSINFO.WIN9X.bWin9X) then 
+	        LaunchAppAndWait 	(WINSYSDIR^"msdtcw.exe", "-remove", WAIT);
+ 	       	RegDBSetDefaultRoot	(HKEY_LOCAL_MACHINE);
+  			RegDBDeleteKey    	("Software\\Microsoft\\Windows\\CurrentVersion\\RunServices\\MSDTC");
+  		else
+	        LaunchAppAndWait	(WINSYSDIR^"msdtc.exe", "-stop", WAIT);
+		    if (SYSINFO.WINNT.bWinNT4) then
+		        LaunchAppAndWait(WINSYSDIR^"msdtc.exe", "-remove", WAIT);
+		    else
+	        	LaunchAppAndWait(WINSYSDIR^"msdtc.exe", "-uninstall", WAIT);
+		    endif;
+		endif;
+
+		// create auto-start shortcut
+		CreateStartServerShortcut();
 	endif;
                                              
 	// create uninstall shortcut
@@ -783,4 +796,7 @@ begin
 	if (FeatureIsItemSelected(MEDIA,"MSDE")) then
 		ConfigureServer();
 	endif;
+	// clear temp folder from registry
+	RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
+	RegDBDeleteKey 			("Software\\KASClient\\Settings\\Temp");
 end;
