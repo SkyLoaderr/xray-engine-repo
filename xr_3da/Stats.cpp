@@ -83,7 +83,7 @@ void CStats::Show()
 	// Show them
 	if (psDeviceFlags & rsStatistic) 
 	{
-		CFontSmall&	F = *(pApp->pFont);
+		CFontHUD&	F = *((CFontHUD*)font);
 		F.Size		(0.016f		);
 		F.Color		(0xFFFFFFFF	);
 		F.OutSet	(-1.f,-.95f	);
