@@ -16,6 +16,7 @@ enum{
     CHUNK_FLAGS				= 0x1004ul,
     CHUNK_HEMI				= 0x1005ul,
     CHUNK_SUN_SHADOW		= 0x1006ul,
+    CHUNK_HEMI2				= 0x1007ul,
 };
 //----------------------------------------------------
 
@@ -35,6 +36,9 @@ bool ESceneLightTools::Load(IReader& F)
 
     if (F.find_chunk(CHUNK_HEMI)){
      	m_HemiQuality		= F.r_u8();
+    }
+    if (F.find_chunk(CHUNK_HEMI2)){
+		m_HemiControl		= F.r_u32();
     }
 
     if (F.find_chunk(CHUNK_SUN_SHADOW)){
@@ -72,6 +76,10 @@ void ESceneLightTools::Save(IWriter& F)
 
 	F.open_chunk	(CHUNK_HEMI);
     F.w_u8			(m_HemiQuality);
+    F.close_chunk	();
+
+	F.open_chunk	(CHUNK_HEMI2);
+	F.w_u32			(m_HemiControl);
     F.close_chunk	();
 
 	F.open_chunk	(CHUNK_SUN_SHADOW);

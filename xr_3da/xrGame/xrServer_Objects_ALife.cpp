@@ -1339,7 +1339,7 @@ void CSE_ALifeObjectBreakable::FillProp		(LPCSTR pref, PropItemVec& values)
 // CSE_ALifeMountedWeapon
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeMountedWeapon::CSE_ALifeMountedWeapon	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
-{
+{             
 }
 
 CSE_ALifeMountedWeapon::~CSE_ALifeMountedWeapon	()
