@@ -143,7 +143,6 @@ CActor::CActor() : CEntity()
 	m_fRunFactor			= 2.f;
 	m_fCrouchFactor			= 0.2f;
 //	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
-	bSndAmbientPlaying		= FALSE;
 }
 
 CActor::~CActor()
@@ -187,7 +186,6 @@ void CActor::Load(CInifile* ini, const char* section )
 	sndStep[0]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepL"));
 	sndStep[1]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepR"));
 	sndLanding			= pSounds->Create2D	(strconcat(buf,cName(),"\\landing"));
-	sndAmbient			= pSounds->Create2D	("amb_lev5_aztec");
 	pSounds->Create3D	(sndWeaponChange,	strconcat(buf,cName(),"\\weaponchange"));
 	pSounds->Create3D	(sndRespawn,		strconcat(buf,cName(),"\\respawn"));
 	pSounds->Create3D	(sndHit[0],			strconcat(buf,cName(),"\\bhit_flesh-1"));
@@ -371,12 +369,6 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
-
-	if (!bSndAmbientPlaying)	{
-		bSndAmbientPlaying	= TRUE;
-		pSounds->Play2D		(sndAmbient,true);
-		clamp			(DT,0ul,50ul);
-	}
 
 	clamp			(DT,0ul,100ul);
 	float	dt		= float(DT)/1000.f;

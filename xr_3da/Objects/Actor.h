@@ -50,8 +50,6 @@ protected:
 
 	// media
 	int					sndStep[2];
-	int					sndAmbient;
-	BOOL				bSndAmbientPlaying;
 	BOOL				bStep;
 	int					sndLanding;
 	sound3D				sndWeaponChange;
