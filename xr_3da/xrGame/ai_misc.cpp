@@ -13,56 +13,6 @@
 
 using namespace AI;
 
-/*
-class fBASE
-{
-public:
-	virtual void	GetValue	(CObject* O, LPVOID val) = 0;
-	virtual void	Load		() = 0;
-};
-
-class fHEALTH : public fBASE
-{
-public:
-	virtual void	GetValue	(CObject* O, LPVOID val)
-	{
-		*((int*) val) = O->g_Health();
-	}
-};
-
-class fCONSTANT : public fBASE
-{
-	int constant;
-public:
-	virtual void	GetValue	(CObject* O, LPVOID val)
-	{
-		*((int*) val) = constant;
-	}
-	virtual void	Load		()
-	{
-		constant = ini->ReadINT("aaa","bbb");
-	}
-};
-
-class fFUNCTION : public fBASE
-{
-public:
-	virtual void	GetValue	(CObject* O, LPVOID val)
-	{
-		*((float*) val) = ffEvaluate	(O);
-	}
-};
-
-
-fBASE*		array_of_functions[1000];
-
-{
-	float result;
-	array_of_functions [ 768 ] -> GetValue(this,&result);
-}
-
-*/
-
 extern void	UnpackContour		(CPathNodes::PContour& C, u32 ID);
 extern void	IntersectContours	(CPathNodes::PSegment& Dest, CPathNodes::PContour& C1, CPathNodes::PContour& C2);
 
