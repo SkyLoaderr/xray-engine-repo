@@ -295,7 +295,18 @@ function animation:__init(npc, mgr)
 						out		= { [0]	= {"item_2_holster_0","item_2_holster_1"} },
 						idle	= { [0]	= "item_2_aim_0" },
 						rnd		= { [0]	= {	"item_2_prepare_0",
-											"item_2_attack_0" } }}									
+											"item_2_attack_0" } }},
+
+
+		choosing	= {	prop	= { maxidle = 8,
+									sumidle = 10,
+									rnd = 80 },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= { [0]	= {	"komandir_0",
+											"komandir_1",
+											"komandir_2" } }}									
 
 	}
 	
@@ -344,6 +355,7 @@ function animation:update()
 	
 		--' ќпредел€ем нужно ли добавл€ть анимацию или ждать
 		if	self.is_called == false and
+			self.states.current_state ~= nil and
 			self.animations[self.states.current_state] ~= nil and
 			self.animations[self.states.current_state].rnd ~= nil and
 			(self.states.begin == nil or
@@ -351,6 +363,7 @@ function animation:update()
 			self.states.current_state ~= nil
 		then
 			--' ќпределение промежутков времени между анимаци€ми
+			
 			self.states.begin = device():time_global()
 			self.states.idle = (math.random(self.animations[self.states.current_state].prop.maxidle) + 
 											self.animations[self.states.current_state].prop.sumidle) * 1000
