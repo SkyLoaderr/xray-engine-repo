@@ -74,6 +74,7 @@ void CScriptEngine::export()
 	export_sound				();
 	export_hit					();
 	export_actions				();
+	export_ini					();
 	export_object				();
 	export_effector				();
 	export_artifact_merger		();

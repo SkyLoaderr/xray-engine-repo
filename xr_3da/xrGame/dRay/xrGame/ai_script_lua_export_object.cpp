@@ -16,6 +16,7 @@
 #include "pdamsg.h"
 #include "ai_script_hit.h"
 #include "cover_point.h"
+#include "script_ini_file.h"
 
 using namespace luabind;
 
@@ -192,6 +193,7 @@ void CScriptEngine::export_object()
 			.def("enable_memory_object",		&CLuaGameObject::enable_memory_object)
 			.def("active_sound_count",			&CLuaGameObject::active_sound_count)
 			.def("best_cover",					&CLuaGameObject::best_cover)
+			.def("spawn_ini",					&CLuaGameObject::spawn_ini)
 
 			// sight manager
 			.def("set_sight",					&CLuaGameObject::set_sight)

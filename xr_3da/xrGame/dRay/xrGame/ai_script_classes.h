@@ -30,6 +30,7 @@ class CInventoryItem;
 class CLuaHit;
 class CAI_Stalker;
 class CCoverPoint;
+class CScriptIniFile;
 
 class CLuaGameObject {
 	CGameObject			*m_tpGameObject;
@@ -666,4 +667,5 @@ public:
 			void				enable_memory_object	(CLuaGameObject *object, bool enable);
 			int					active_sound_count		();
 			const CCoverPoint	*best_cover				(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance);
+			CScriptIniFile		*spawn_ini				() const;
 };

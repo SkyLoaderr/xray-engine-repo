@@ -19,6 +19,7 @@
 #include "ai/biting/ai_biting.h"
 #include "cover_point.h"
 #include "cover_evaluators.h"
+#include "script_ini_file.h"
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
@@ -721,4 +722,9 @@ const CCoverPoint *CLuaGameObject::best_cover	(const Fvector &position, const Fv
 	stalker->m_ce_best->setup(enemy_position,min_enemy_distance,max_enemy_distance,0.f);
 	CCoverPoint		*point = ai().cover_manager().best_cover(position,radius,*stalker->m_ce_best);
 	return			(point);
+}
+
+CScriptIniFile *CLuaGameObject::spawn_ini			() const
+{
+	return			((CScriptIniFile*)m_tpGameObject->spawn_ini());
 }

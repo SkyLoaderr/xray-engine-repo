@@ -40,6 +40,7 @@ protected:
 			void				export_sound				();
 			void				export_hit					();
 			void				export_actions				();
+			void				export_ini					();
 			void				export_object				();
 			void				export_effector				();
 			void				export_artifact_merger		();
