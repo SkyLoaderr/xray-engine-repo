@@ -60,6 +60,10 @@ function main_menu:InitControls()
 							 y = btn_new_rect.y + btn_new_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
+	local btn_multi_rect  = {x = btn_rect.x,
+							 y = btn_load_rect.y + btn_load_rect.height + indent,
+							 width = btn_rect.width,
+							 height = btn_rect.height}
 	local btn_ok_rect     = {x = indent,
 							 y = 0,
 							 height = 40,
@@ -125,7 +129,18 @@ function main_menu:InitControls()
 	self:Register(btn)
 	main_frame:AttachChild(btn)	
 	
-	
+	--------->> MULTIPLAYER
+	btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_load")
+	btn:Init("ui\\ui_button_01", btn_multi_rect.x, btn_multi_rect.y, btn_multi_rect.width, btn_multi_rect.height)
+	btn:SetText("Multiplayer")
+	btn:SetFont(GetFontLetterica25())
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(button_indent)
+	self:Register(btn)
+	main_frame:AttachChild(btn)
+		
 	btn   = CUIButton()
 	btn:SetAutoDelete(true) 
 	btn:SetWindowName("button_ok") --set window name for callback processing
