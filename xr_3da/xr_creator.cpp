@@ -195,7 +195,7 @@ void CCreator::OnFrame	( void )
 	// Ambience
 	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_dwNextTime))
 	{
-		Sounds_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(100,5000);
+		Sounds_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(100,500);
 		Fvector	pos;
 		pos.random_dir			();
 		pos.normalize			();
