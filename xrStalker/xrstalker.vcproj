@@ -835,6 +835,9 @@
 				RelativePath=".\scripts\escape_dogs1.script">
 			</File>
 			<File
+				RelativePath=".\Scripts\escape_factory.script">
+			</File>
+			<File
 				RelativePath=".\scripts\escape_factory_bandits.script">
 			</File>
 			<File
