@@ -16,7 +16,7 @@ local source = get_level_object ("projector1")
 function on_enter (zone, obj)
 	intruder = obj
 	zone:clear_callback (true)
-	alarm:play_at_pos_unlimited (source, source:position (), 0)
+	alarm:play_at_pos(source, source:position (), 0, sound_object.looped)
 end
 
 function main ()
