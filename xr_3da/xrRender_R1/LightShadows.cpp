@@ -429,7 +429,7 @@ void CLightShadows::render	()
 				if (P.classify(S.L->position)<0)	continue;
 
 				// Clip polygon
-				sPoly*		clip	= F.ClipPoly(A,B);
+				sPoly*		clip	= F.ClipPoly	(A,B);
 				if (0==clip)						continue;
 
 				// Triangulate poly 
