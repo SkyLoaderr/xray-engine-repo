@@ -396,8 +396,14 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeInve
 		OBJECT_IT				I = std::find	(l_tpALifeTraderAbstract->children.begin(),l_tpALifeTraderAbstract->children.end(),tpALifeInventoryItem->ID);
 		R_ASSERT2				(I != l_tpALifeTraderAbstract->children.end(),"Can't detach an item which is not on my own");
 		if (bALifeRequest) {
-			l_tpALifeTraderAbstract->children.erase(I);
-			tpALifeInventoryItem->ID_Parent	= 0xffff;
+			l_tpALifeTraderAbstract->children.erase	(I);
+			tpALifeInventoryItem->ID_Parent			= 0xffff;
+			CSE_ALifeDynamicObject					*l_tpALifeDynamicObject1 = dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeInventoryItem);
+			CSE_ALifeDynamicObject					*l_tpALifeDynamicObject2 = dynamic_cast<CSE_ALifeDynamicObject*>(&tAbstract);
+			R_ASSERT2								(l_tpALifeDynamicObject1 && l_tpALifeDynamicObject2,"Invalid parent or children objects");
+			l_tpALifeDynamicObject1->o_Position		= l_tpALifeDynamicObject2->o_Position;
+			l_tpALifeDynamicObject1->m_tGraphID		= l_tpALifeDynamicObject2->m_tGraphID;
+			l_tpALifeDynamicObject1->m_fDistance	= l_tpALifeDynamicObject2->m_fDistance;
 		}
 		l_tpALifeTraderAbstract->m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
 		l_tpALifeTraderAbstract->m_iCumulativeItemVolume	-= tpALifeInventoryItem->m_iVolume;

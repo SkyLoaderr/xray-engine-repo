@@ -377,9 +377,6 @@ void CSE_ALifeHumanAbstract::vfDetachAll()
 		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 		R_ASSERT2					(l_tpALifeInventoryItem,"Invalid inventory object");
 		m_tpALife->vfDetachItem		(*this,l_tpALifeInventoryItem,m_tGraphID);
-		l_tpALifeInventoryItem->o_Position = o_Position;
-		l_tpALifeDynamicObject->m_tGraphID = m_tGraphID;
-		l_tpALifeDynamicObject->m_fDistance = m_fDistance;
 	}
 	R_ASSERT2						((m_fCumulativeItemMass < EPS_L) && (m_iCumulativeItemVolume < EPS_L),"Invalid cumulative item mass or volume value");
 	m_fCumulativeItemMass			= 0.f;
@@ -410,6 +407,35 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 			}
 		}
 		return;
+	}
+	else {
+		u32								l_dwCurrentItemCount = children.size();
+		float							l_fCumulativeItemMass = m_fCumulativeItemMass;
+		int								l_iCumulativeItemVolume = m_iCumulativeItemVolume;
+		bool							l_bOk = true;
+		ITEM_P_IT						I = m_tpALife->m_tpItemVector.begin();
+		ITEM_P_IT						E = m_tpALife->m_tpItemVector.end();
+		for ( ; I != E; I++)
+			if (bfCanGetItem(*I)) {
+				m_fCumulativeItemMass	+= (*I)->m_fMass;
+				m_iCumulativeItemVolume	+= (*I)->m_iVolume;
+				children.push_back		((*I)->ID);
+			}
+			else {
+				l_bOk = false;
+				break;
+			}
+
+		m_fCumulativeItemMass			= l_fCumulativeItemMass;
+		m_iCumulativeItemVolume			= l_iCumulativeItemVolume;
+		children.resize					(l_dwCurrentItemCount);
+
+		if (l_bOk) {
+			I							= m_tpALife->m_tpItemVector.begin();
+			for ( ; I != E; I++)
+				m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
+			return;
+		}
 	}
 	
 	if (tTakeType == eTakeTypeAll) {
