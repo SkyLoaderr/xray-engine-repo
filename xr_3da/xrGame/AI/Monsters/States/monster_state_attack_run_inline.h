@@ -20,34 +20,25 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::initialize()
 {
 	inherited::initialize();
-	m_time_path_rebuild	= 0;
+	object->CMonsterMovement::initialize_movement	();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::execute()
 {
 	float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
-
-	// проверить необходимость перестройки пути
-	bool b_need_rebuild = false;
 	
-	
-	// check time interval
-	TTime time_current = Level().timeServer();
-	if (m_time_path_rebuild + 100 + 50.f * dist < time_current) {
-		m_time_path_rebuild = time_current;
-		b_need_rebuild		= true;
-	}
-	if (object->IsPathEnd(2,0.5f)) b_need_rebuild = true;
-
-	if (b_need_rebuild)	object->MoveToTarget(object->EnemyMan.get_enemy());
-
 	// установка параметров функциональных блоков
-	object->MotionMan.m_tAction					= ACT_RUN;
-	object->CMonsterMovement::set_try_min_time	(false);
-	object->CSoundPlayer::play					(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
-	object->MotionMan.accel_activate			(eAT_Aggressive);
-	object->MotionMan.accel_set_braking			(false);
+	object->set_action									(ACT_RUN);
+	object->MotionMan.accel_activate					(eAT_Aggressive);
+	object->MotionMan.accel_set_braking					(false);
+	object->CMonsterMovement::set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
+	object->CMonsterMovement::set_rebuild_time			(100 + u32(50.f * dist));
+	object->CMonsterMovement::set_distance_to_end		(2.5f);
+	object->CMonsterMovement::set_use_covers			();
+	object->CMonsterMovement::set_cover_params			(5.f, 30.f, 1.f, 30.f);
+	object->CMonsterMovement::set_try_min_time			(false);
+	object->set_state_sound								(MonsterSpace::eMonsterSoundAttack);
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {

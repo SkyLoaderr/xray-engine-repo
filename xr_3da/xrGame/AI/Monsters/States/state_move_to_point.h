@@ -25,7 +25,6 @@ class CStateMonsterMoveToPointEx : public CState<_Object> {
 	typedef CState<_Object> inherited;
 
 	SStateDataMoveToPointEx data;
-	u32		time_last_build;
 
 public:
 						CStateMonsterMoveToPointEx	(_Object *obj) : inherited(obj, ST_MoveToPoint, &data) {}

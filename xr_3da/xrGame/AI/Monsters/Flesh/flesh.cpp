@@ -5,16 +5,12 @@
 
 CAI_Flesh::CAI_Flesh()
 {
-	stateRest			= xr_new<CBaseMonsterRest>		(this);
+	stateRest			= xr_new<CBaseMonsterRest>			(this);
 	stateAttack			= xr_new<CBaseMonsterAttack>		(this);
-	stateEat			= xr_new<CBaseMonsterEat>		(this);
-	stateHide			= xr_new<CBaseMonsterHide>		(this);
-	stateDetour			= xr_new<CBaseMonsterDetour>		(this);
-	statePanic			= xr_new<CBaseMonsterPanic>		(this);
-	stateExploreDNE		= xr_new<CBaseMonsterRunAway>	(this);
-	stateExploreDE		= xr_new<CBaseMonsterExploreDE>	(this);
+	stateEat			= xr_new<CBaseMonsterEat>			(this);
+	statePanic			= xr_new<CBaseMonsterPanic>			(this);
+	stateExploreDNE		= xr_new<CBaseMonsterRunAway>		(this);
 	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>	(this);
-	stateSearchEnemy	= xr_new<CBaseMonsterSearchEnemy>(this);
 	stateControlled		= xr_new<CBaseMonsterControlled>	(this);
 
 	CurrentState		= stateRest;
@@ -30,14 +26,10 @@ CAI_Flesh::~CAI_Flesh()
 	xr_delete(stateRest);
 	xr_delete(stateAttack);
 	xr_delete(stateEat);
-	xr_delete(stateHide);
-	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreDNE);
-	xr_delete(stateExploreDE);
 	xr_delete(stateExploreNDE);
 	xr_delete(stateControlled);
-	xr_delete(stateSearchEnemy);
 }
 
 BOOL CAI_Flesh::net_Spawn (LPVOID DC) 

@@ -19,8 +19,6 @@ public:
 	virtual	void	CheckSpecParams			(u32 spec_params);
 
 	virtual bool	ability_can_drag		() {return true;}
-	
-	CBaseMonsterSearchEnemy	*stateSearchEnemy;
 
 private:
 	bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 

@@ -146,6 +146,7 @@ public:
 
 
 	IC	void		detour_graph_points		();
+	IC	void		set_generic_parameters	();
 };
 
 #include "ai_monster_movement_inline.h"

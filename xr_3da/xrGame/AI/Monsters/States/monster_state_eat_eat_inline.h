@@ -22,6 +22,8 @@ void CStateMonsterEatingAbstract::initialize()
 	cur_state = prev_state = eStateWalkCloser;
 	time_last_eat = 0;
 
+	object->CMonsterMovement::initialize_movement();	
+
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
 		object->HDebug->M_Clear();
@@ -53,17 +55,15 @@ void CStateMonsterEatingAbstract::execute()
 
 	// реализация состояния
 	if (cur_state == eStateEat) {
-		object->MotionMan.m_tAction	= ACT_EAT;
-		
+		object->set_action				(ACT_EAT);
+		object->set_state_sound			(MonsterSpace::eMonsterSoundEat);
+
 		// съесть часть
-		
 		if (time_last_eat + u32(1000/object->get_sd()->m_fEatFreq) < object->m_current_update) {
 			object->ChangeSatiety(object->get_sd()->m_fEatSlice);
 			corpse->m_fFood -= object->get_sd()->m_fEatSliceWeight;
 			time_last_eat = object->m_current_update;
 		}
-
-		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundEat, 0,0,object->get_sd()->m_dwIdleSndDelay);
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
@@ -76,17 +76,16 @@ void CStateMonsterEatingAbstract::execute()
 #endif
 
 	} else {
-		object->MotionMan.m_tAction = ACT_WALK_FWD;
-		object->MoveToTarget(nearest_bone_pos, corpse->level_vertex_id());
-		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
+		object->set_action									(ACT_WALK_FWD);
+		object->set_state_sound								(MonsterSpace::eMonsterSoundIdle);
+		object->CMonsterMovement::set_target_point			(nearest_bone_pos, corpse->level_vertex_id());
+		object->CMonsterMovement::set_generic_parameters	();
 
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
 			object->HDebug->M_Add(0,"Eat :: Walk To Corpse", D3DCOLOR_XRGB(255,0,0));
 		}
 #endif
-
-
 	}
 
 	prev_state = cur_state;	

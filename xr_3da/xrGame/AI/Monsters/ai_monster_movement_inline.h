@@ -48,3 +48,11 @@ IC void CMonsterMovement::detour_graph_points()
 	set_path_type		(MovementManager::ePathTypeGamePath);
 	set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
 }
+
+IC void CMonsterMovement::set_generic_parameters()
+{
+	CMonsterMovement::set_rebuild_time			(5000);
+	CMonsterMovement::set_distance_to_end		(3.f);
+	CMonsterMovement::set_use_covers			();
+	CMonsterMovement::set_cover_params			(5.f, 30.f, 1.f, 30.f);
+}

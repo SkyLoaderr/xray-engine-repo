@@ -1999,12 +1999,6 @@
 								<File
 									RelativePath=".\ai\Monsters\ai_monster_movement_update.cpp">
 								</File>
-								<File
-									RelativePath=".\ai\Monsters\ai_monster_movement_update.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\ai_monster_movement_update.h">
-								</File>
 							</Filter>
 							<Filter
 								Name="Squad"
@@ -2315,13 +2309,7 @@
 								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_controlled.h">
 							</File>
 							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_detour.cpp">
-							</File>
-							<File
 								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_eat.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDE.cpp">
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDNE.cpp">
@@ -2336,18 +2324,6 @@
 								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDE.h">
 							</File>
 							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDNE.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_hide.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_misc.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_misc.h">
-							</File>
-							<File
 								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_panic.cpp">
 							</File>
 							<File
@@ -2355,15 +2331,6 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_rest.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_squadtask.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_squadtask.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_test.cpp">
 							</File>
 						</Filter>
 					</Filter>

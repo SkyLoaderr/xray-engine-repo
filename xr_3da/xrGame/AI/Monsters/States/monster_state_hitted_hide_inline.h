@@ -14,33 +14,19 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterHittedHideAbstract::initialize()
 {
 	inherited::initialize();
-	
-	m_cover_reached		= false;
-	select_target_point();
+	object->CMonsterMovement::initialize_movement	();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterHittedHideAbstract::execute()
 {
-	// проверить на завершение пути
-	if (object->CDetailPathManager::time_path_built() > time_state_started) {
-		if (object->IsPathEnd(DIST_TO_PATH_END)) {
-			m_cover_reached			= true;
-			select_target_point		();
-		}
-	}
-
-	if (target.node != u32(-1)) 
-		object->MoveToTarget			(target.position, target.node);
-	else
-		object->MoveAwayFromTarget		(danger_point);
-
-	object->MotionMan.m_tAction			= ACT_RUN;
-	object->MotionMan.accel_activate	(eAT_Aggressive);
-	object->MotionMan.accel_set_braking	(false);
-	object->CSoundPlayer::play			(MonsterSpace::eMonsterSoundPanic, 0,0,object->get_sd()->m_dwAttackSndDelay);
-
-
+	object->set_action									(ACT_RUN);
+	object->set_state_sound								(MonsterSpace::eMonsterSoundPanic);
+	object->MotionMan.accel_activate					(eAT_Aggressive);
+	object->MotionMan.accel_set_braking					(false);
+	object->CMonsterMovement::set_retreat_from_point	(object->HitMemory.get_last_hit_position());
+	object->CMonsterMovement::set_generic_parameters	();
+	
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {
 		object->HDebug->M_Add(0,"Hitted :: Hide", D3DCOLOR_XRGB(255,0,0));
@@ -59,27 +45,14 @@ bool CStateMonsterHittedHideAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterHittedHideAbstract::check_completion()
 {
-	float dist = object->Position().distance_to(danger_point);
+	float dist = object->Position().distance_to(object->HitMemory.get_last_hit_position());
 
 	// good dist  
 	if (dist < GOOD_DISTANCE_IN_COVER) return false;
 	// +hide more than 3 sec
 	if (time_state_started + MIN_HIDE_TIME > object->m_current_update) return false;
-	// +should reach at least one target cover point 
-	if (!m_cover_reached) return false;
 
 	return true;
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateMonsterHittedHideAbstract::select_target_point()
-{
-	danger_point.mad(object->Position(), object->HitMemory.get_last_hit_dir(), 2.f);
-	
-	if (!object->GetCoverFromPoint(danger_point, target.position, target.node, 10.f,30.f,20.f)) 
-		target.node	= u32(-1);
-	else if (target.position.distance_to(object->Position()) < 2.f) 
-		target.node	= u32(-1);
 }
 
 #undef GOOD_DISTANCE_IN_COVER

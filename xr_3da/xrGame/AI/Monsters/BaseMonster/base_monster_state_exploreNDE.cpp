@@ -26,6 +26,8 @@ void CBaseMonsterExploreNDE::Init()
 	target_pos	= m_tSound.position;
 
 	m_tAction = ACTION_LOOK_DESTINATION;
+
+	pMonster->CMonsterMovement::initialize_movement	();
 }
 
 void CBaseMonsterExploreNDE::Run()
@@ -51,7 +53,8 @@ void CBaseMonsterExploreNDE::Run()
 		LOG_EX("nde: GOTO_SOUND_SOURCE");
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
-		pMonster->MoveToTarget(m_tSound.position);
+		pMonster->CMonsterMovement::set_target_point		(m_tSound.position);
+		pMonster->CMonsterMovement::set_generic_parameters	();
 
 		// если монстр дошел до позиции звука, перейти к следующему заданию
 		if (m_tSound.position.distance_to(pMonster->Position()) < 1.0f) m_tAction = ACTION_LOOK_AROUND; 

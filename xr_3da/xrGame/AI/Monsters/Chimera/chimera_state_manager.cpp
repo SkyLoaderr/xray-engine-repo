@@ -2,22 +2,15 @@
 #include "chimera.h"
 #include "chimera_state_manager.h"
 #include "../ai_monster_debug.h"
-#include "../../../actor.h"
-#include "../../../level.h"
 #include "../states/monster_state_rest.h"
-#include "../states/monster_state_rest_sleep.h"
-#include "../states/monster_state_rest_walk_graph.h"
 #include "../states/monster_state_attack.h"
-#include "../states/monster_state_attack_melee.h"
-#include "../states/monster_state_attack_run.h"
-#include "../states/monster_state_find_enemy.h"
-#include "../states/monster_state_find_enemy_run.h"
-#include "../states/monster_state_find_enemy_look.h"
-#include "../states/monster_state_find_enemy_angry.h"
-#include "../states/monster_state_find_enemy_walk.h"
-#include "../states/state_move_to_point.h"
-#include "../states/state_look_point.h"
-#include "../states/state_custom_action.h"
+#include "../states/monster_state_panic.h"
+#include "../states/monster_state_eat.h"
+
+#include "../states/monster_state_hear_int_sound.h"
+#include "../states/monster_state_hear_danger_sound.h"
+#include "../states/monster_state_hitted.h"
+
 #include "chimera_state_threaten.h"
 
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
@@ -50,7 +43,13 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 	//);
 	
 
-	add_state(eStateRest, xr_new<CStateMonsterRest<CChimera> > (obj));
+	add_state(eStateRest,				xr_new<CStateMonsterRest<CChimera> >					(obj));
+	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CChimera> >					(obj));
+	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CChimera> >					(obj));
+	add_state(eStateEat,				xr_new<CStateMonsterEat<CChimera> >						(obj));
+	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CChimera> >	(obj));
+	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CChimera> >		(obj));
+	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CChimera> >					(obj));
 
 
 //	add_state(
@@ -75,18 +74,40 @@ void CStateManagerChimera::execute()
 {
 	u32 state_id = u32(-1);
 
-	//if (object->EnemyMan.get_enemy()) {
-	//	
-	//	if (object->EnemyMan.get_enemy_time_last_seen() != object->m_current_update) {
-	//		float dist = object->EnemyMan.get_enemy_position().distance_to(object->Position());
+	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
-	//		if (prev_substate == eStateFindEnemy) state_id = eStateFindEnemy;
-	//		else if (dist > 10.f) state_id = eStateFindEnemy;
-	//	}
-	//	if (state_id != eStateFindEnemy) state_id = eStateAttack;
-	//}else state_id = eStateRest;
 
-	state_id = eStateRest;
+	if (enemy) {
+		switch (object->EnemyMan.get_danger_type()) {
+			case eVeryStrong:	state_id = eStatePanic; break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:			state_id = eStatePanic; break;
+		}
+
+	} else if (object->HitMemory.is_hit()) {
+		state_id = eStateHitted;
+	} else if (object->hear_dangerous_sound) {
+		state_id = eStateDangerousSound;
+	} else if (object->hear_interesting_sound) {
+		state_id = eStateInterestingSound;
+	} else {
+		bool can_eat = false;
+		if (corpse) {
+
+			if (prev_substate == eStateEat) {
+				if (!get_state_current()->check_completion()) can_eat = true;
+			}
+
+			if ((prev_substate != eStateEat) && (object->GetSatiety() < object->get_sd()->m_fMinSatiety)) 
+				can_eat = true;		
+		}
+
+		if (can_eat) state_id = eStateEat;
+		else state_id = eStateRest;
+	}
+
 
 	select_state(state_id); 
 

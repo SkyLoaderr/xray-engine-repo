@@ -7,8 +7,6 @@ CAI_Boar::CAI_Boar()
 	stateRest			= xr_new<CBaseMonsterRest>		(this);
 	stateAttack			= xr_new<CBaseMonsterAttack>		(this);
 	stateEat			= xr_new<CBaseMonsterEat>		(this);
-	stateHide			= xr_new<CBaseMonsterHide>		(this);
-	stateDetour			= xr_new<CBaseMonsterDetour>		(this);
 	statePanic			= xr_new<CBaseMonsterPanic>		(this);
 	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>	(this);
 	stateExploreDNE		= xr_new<CBaseMonsterRunAway>	(this);
@@ -26,8 +24,6 @@ CAI_Boar::~CAI_Boar()
 	xr_delete(stateRest);
 	xr_delete(stateAttack);
 	xr_delete(stateEat);
-	xr_delete(stateHide);
-	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
 	xr_delete(stateExploreDNE);

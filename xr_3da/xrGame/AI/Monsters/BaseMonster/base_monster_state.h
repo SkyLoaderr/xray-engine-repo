@@ -115,69 +115,6 @@ private:
 };
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBaseMonsterHide class	// отход перебежками через укрытия
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CBaseMonsterHide : public IState {
-	CBaseMonster		*pMonster;
-
-	typedef IState inherited;
-public:
-					CBaseMonsterHide			(CBaseMonster *p);
-
-	virtual void	Reset			();	
-	virtual bool	GetStateAggressiveness	(){return true;}
-private:
-
-	virtual void	Init			();
-	virtual void	Run				();
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBaseMonsterDetour class	// отход перебежками через укрытия
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CBaseMonsterDetour : public IState {
-	CBaseMonster		*pMonster;
-
-	typedef IState inherited;
-public:
-					CBaseMonsterDetour			(CBaseMonster *p);
-
-	virtual void	Reset			();	
-	virtual bool	GetStateAggressiveness	(){return true;}
-private:
-	virtual void	Init			();
-	virtual void	Run				();
-};
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBaseMonsterExploreDE class	// Explore danger-expedient enemy //  Посмотреть по сторонам, укрыться	
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CBaseMonsterExploreDE : public IState {
-	CBaseMonster		*pMonster;
-
-	TTime			m_dwTimeToTurn;
-	TTime			m_dwSoundTime;
-
-	enum {
-		ACTION_LOOK_AROUND,
-		ACTION_HIDE,
-	} m_tAction;
-
-
-	typedef IState inherited;
-public:
-					CBaseMonsterExploreDE	(CBaseMonster *p);
-
-//	virtual void	Reset				();
-	virtual bool	CheckCompletion		();
-	virtual bool	GetStateAggressiveness	(){return true;}
-private:
-	virtual void	Init				();
-	virtual void	Run					();
-};
-
 
 //////////////////////////////////////////////////////////////////////////
 // Тестовое состояние CBaseMonsterNull
@@ -205,29 +142,3 @@ public:
 	void Init();
 	void Run();
 };
-
-
-class CBaseMonsterSearchEnemy : public IState {
-	typedef IState inherited;
-	CBaseMonster		*pMonster;
-
-	enum {
-		ACTION_SEARCH_ENEMY_INIT,
-		ACTION_SEARCH_ENEMY
-	} m_tAction;
-	
-	//VisionElem		m_tEnemy;
-	u32				search_vertex_id;
-
-	TTime			RebuildPathInterval;
-
-public:
-	CBaseMonsterSearchEnemy(CBaseMonster *p);
-	virtual bool	GetStateAggressiveness	(){return true;}
-private:
-	virtual void	Init				();
-	virtual void	Run					();
-	virtual void	Done				();
-	
-};
-

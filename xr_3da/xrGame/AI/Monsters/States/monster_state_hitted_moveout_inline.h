@@ -13,6 +13,7 @@ void CStateMonsterHittedMoveOutAbstract::initialize()
 {
 	inherited::initialize();
 	select_target();
+	object->CMonsterMovement::initialize_movement	();	
 }
 
 TEMPLATE_SPECIALIZATION
@@ -25,18 +26,18 @@ void CStateMonsterHittedMoveOutAbstract::execute()
 	}
 	
 	if (target.node != u32(-1))
-		object->MoveToTarget(target.position, target.node);
+		object->CMonsterMovement::set_target_point	(target.position, target.node);
 	else
-		object->MoveToTarget(object->HitMemory.get_last_hit_position());
+		object->CMonsterMovement::set_target_point	(object->HitMemory.get_last_hit_position());
 
 	float dist = object->HitMemory.get_last_hit_position().distance_to(object->Position());
 
-	if (dist > 10.f) object->MotionMan.m_tAction = ACT_WALK_FWD;
-	else object->MotionMan.m_tAction = ACT_STEAL;
+	if (dist > 10.f) object->set_action	(ACT_WALK_FWD);
+	else object->set_action				(ACT_STEAL);
 	
 	object->MotionMan.accel_deactivate	();
 	object->MotionMan.accel_set_braking (false);
-	object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
+	object->set_state_sound				(MonsterSpace::eMonsterSoundIdle);
 
 
 #ifdef DEBUG

@@ -15,20 +15,22 @@ void CBaseMonsterRunAway::Init()
 	danger_pos.mad(pMonster->Position(), dir, 5.f);
 
 	m_tAction = ACTION_RUN;
+
+	pMonster->CMonsterMovement::initialize_movement();	
 }
 
 void CBaseMonsterRunAway::Run()
 {
 	switch (m_tAction) {
 	case ACTION_RUN:	// идти к источнику
-		pMonster->MotionMan.m_tAction = ACT_RUN;
-		pMonster->MoveAwayFromTarget (danger_pos);
+		pMonster->set_action								(ACT_RUN);
+		pMonster->CMonsterMovement::set_retreat_from_point	(danger_pos);
+		pMonster->CMonsterMovement::set_generic_parameters	();
 		break;
 	case ACTION_LOOK_AROUND:
-		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
-		pMonster->FaceTarget(danger_pos);
+		pMonster->set_action	(ACT_LOOK_AROUND);
+		pMonster->FaceTarget	(danger_pos);
 		break;
 	}
 	pMonster->State_PlaySound(MonsterSpace::eMonsterSoundPanic, pMonster->get_sd()->m_dwAttackSndDelay);
-
 }

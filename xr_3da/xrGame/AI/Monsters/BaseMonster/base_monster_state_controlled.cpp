@@ -24,6 +24,9 @@ void CBaseMonsterControlled::Init()
 	m_tAction			= m_tPrevAction = ACTION_RUN;
 	LastTimeRebuild		= 0;
 	FaceEnemyLastTime	= 0;
+
+	pMonster->CMonsterMovement::initialize_movement();
+
 }
 
 void CBaseMonsterControlled::Run()
@@ -62,7 +65,6 @@ void CBaseMonsterControlled::ExecuteAttack()
 	if ((m_tPrevAction == ACTION_MELEE) && (dist < m_fDistMax)) m_tAction = ACTION_MELEE;
 	else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_MELEE);
 	
-	bool	bNeedRebuild = false;
 	bool	squad_active = false;
 	CMonsterSquad	*pSquad = 0;
 
@@ -70,32 +72,30 @@ void CBaseMonsterControlled::ExecuteAttack()
 		// ************
 		case ACTION_RUN: 		 // бежать на врага
 		// ************	
-			pMonster->MotionMan.m_tAction	= ACT_RUN;
-			pMonster->CMonsterMovement::set_try_min_time(false);
+			pMonster->set_action							(ACT_RUN);
+			pMonster->MotionMan.accel_activate				(eAT_Aggressive);
+			pMonster->MotionMan.accel_set_braking			(false);
 
-			pMonster->MotionMan.accel_activate		(eAT_Aggressive);
-			pMonster->MotionMan.accel_set_braking	(false);
-
-			DO_IN_TIME_INTERVAL_BEGIN(LastTimeRebuild,100 + 50.f * dist);
-				bNeedRebuild = true; 
-			DO_IN_TIME_INTERVAL_END();
-			if (IS_NEED_REBUILD()) bNeedRebuild = true;
+			pMonster->CMonsterMovement::set_target_point	(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
+			pMonster->CMonsterMovement::set_rebuild_time	(100 + u32(50.f * dist));
+			pMonster->CMonsterMovement::set_distance_to_end	(2.5f);
+			pMonster->CMonsterMovement::set_use_covers		();
+			pMonster->CMonsterMovement::set_cover_params	(5.f, 30.f, 1.f, 30.f);
+			pMonster->CMonsterMovement::set_try_min_time	(false);
 
 			pSquad = monster_squad().get_squad(pMonster);
 			squad_active = pSquad && pSquad->SquadActive();
 
-			if (bNeedRebuild) {
-				// Получить позицию, определённую груп. интелл.
-				if (squad_active) {
-					//TTime			squad_ai_last_updated;
-					//Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
-					//pMonster->set_dest_direction	(target);
-				}
-				pMonster->MoveToTarget(enemy);
-			}
+			// Получить команду
+			SSquadCommand command;
+			pSquad->GetCommand(pMonster, command);
+			if (!squad_active || (command.type != SC_ATTACK)) squad_active = false;
 
-			if (squad_active)
+
+			if (squad_active) {
 				pMonster->set_use_dest_orient	(true);
+				pMonster->set_dest_direction	(command.direction);
+			}
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 

@@ -12,25 +12,17 @@ void CStateMonsterHideFromPointAbstract::initialize()
 {
 	inherited::initialize();
 
-	select_target_point();
+	object->CMonsterMovement::initialize_movement();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterHideFromPointAbstract::execute()
 {
-	// проверить на завершение пути
-	if (object->CDetailPathManager::time_path_built() > time_state_started) {
-		if (object->IsPathEnd(DIST_TO_PATH_END)) select_target_point();
-	}
-
-	if (target.node != u32(-1)) {
-		object->MoveToTarget			(target.position, target.node);
-	} else {
-		object->MoveAwayFromTarget		(data.point);
-	}
-
-	object->MotionMan.m_tAction				= data.action.action;
-	object->MotionMan.SetSpecParams			(data.action.spec_params);
+	object->set_action									(data.action.action);
+	object->MotionMan.SetSpecParams						(data.action.spec_params);
+	
+	object->CMonsterMovement::set_retreat_from_point	(data.point);
+	object->CMonsterMovement::set_generic_parameters	();
 
 	if (data.accelerated) {
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
@@ -38,10 +30,7 @@ void CStateMonsterHideFromPointAbstract::execute()
 	}
 
 	if (data.action.sound_type != u32(-1)) {
-		if (data.action.sound_delay != u32(-1))
-			object->CSoundPlayer::play(data.action.sound_type, 0,0,data.action.sound_delay);
-		else 
-			object->CSoundPlayer::play(data.action.sound_type);
+		object->set_state_sound(data.action.sound_type, data.action.sound_delay == u32(-1));
 	}
 }
 
@@ -57,15 +46,6 @@ bool CStateMonsterHideFromPointAbstract::check_completion()
 	}
 		
 	return false;
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateMonsterHideFromPointAbstract::select_target_point()
-{
-	if (!object->GetCoverFromPoint(data.point,target.position, target.node, data.cover_min_dist,data.cover_max_dist,data.cover_search_radius)) 
-		target.node	= u32(-1);
-	else if (target.position.distance_to(object->Position()) < 2.f) 
-		target.node	= u32(-1);
 }
 
 #undef DIST_TO_PATH_END

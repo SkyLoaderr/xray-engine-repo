@@ -29,6 +29,8 @@ void CBaseMonsterExploreDNE::Init()
 	m_dwStayLastTimeCheck	= m_dwCurrentTime;
 
 	m_tAction				= ACTION_RUN_AWAY;
+	
+	pMonster->CMonsterMovement::initialize_movement	();
 }
 
 void CBaseMonsterExploreDNE::Run()
@@ -42,22 +44,9 @@ void CBaseMonsterExploreDNE::Run()
 	switch (m_tAction) {
 	case ACTION_RUN_AWAY: // убегать на N метров от звука
 		
-		pMonster->MotionMan.m_tAction = ACT_RUN;
-		pMonster->MoveAwayFromTarget (m_tSound.position);
-
-		// каждую минуту сохранять текущую позицию, а затем развернуться и посмотреть в последнюю позицию
-		// т.е. развернуться назад
-		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastPosSavedTime, 1000);
-			SavedPosition = pMonster->Position();
-		DO_IN_TIME_INTERVAL_END();
-
-		// проверить условие перехода в след. состояние (достаточное расстояние || стоим на месте около 2 сек)
-		if (pMonster->Position().distance_to(StartPosition) > m_fRunAwayDist) m_tAction = ACTION_LOOK_BACK_POSITION;
-		
-		DO_IN_TIME_INTERVAL_BEGIN(m_dwStayLastTimeCheck, 2000);
-			if (pMonster->Position().similar(LastPosition)) m_tAction = ACTION_LOOK_BACK_POSITION;
-			LastPosition = pMonster->Position();
-		DO_IN_TIME_INTERVAL_END();
+		pMonster->MotionMan.m_tAction						= ACT_RUN;
+		pMonster->CMonsterMovement::set_retreat_from_point	(m_tSound.position);
+		pMonster->CMonsterMovement::set_generic_parameters	();
 
 		break;
 	case ACTION_LOOK_BACK_POSITION:			// повернуться в сторону звука
@@ -72,7 +61,7 @@ void CBaseMonsterExploreDNE::Run()
 		break;
 
 	case ACTION_LOOK_AROUND:
-		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
+		pMonster->MotionMan.m_tAction =	 ACT_LOOK_AROUND;
 		break;
 	}
 	

@@ -111,7 +111,6 @@ void CMonsterMovement::set_parameters()
 	if (m_intermediate.node != u32(-1)) {
 		set_dest_position		(m_intermediate.position);
 		set_level_dest_vertex	(m_intermediate.node);
-		set_path_type			(MovementManager::ePathTypeLevelPath);
 		return;
 	}
 
@@ -124,7 +123,6 @@ void CMonsterMovement::set_parameters()
 			m_intermediate.position	= point->m_position;	
 			set_dest_position		(m_intermediate.position);
 			set_level_dest_vertex	(m_intermediate.node);
-			set_path_type			(MovementManager::ePathTypeLevelPath);
 			return;
 		}
 	}
@@ -134,7 +132,6 @@ void CMonsterMovement::set_parameters()
 	CLevelLocationSelector::set_query_interval	(0);
 	InitSelector								(*m_selector_approach, m_intermediate.position);
 	use_selector_path							(true);		// использовать при установке селектора: true - использовать путь найденный селектором, false - селектор находит тольтко ноду, путь строит BuildLevelPath
-	set_path_type								(MovementManager::ePathTypeLevelPath);
 }
 
 
@@ -163,7 +160,6 @@ void CMonsterMovement::set_target_point(const Fvector &position, u32 node)
 {
 	bool bad_state	= false;
 	if (failed())	bad_state = true;
-	//if (path_end()) bad_state = true;
 
 	// плохое состояние?
 	if (bad_state) {
@@ -189,13 +185,14 @@ void CMonsterMovement::set_target_point(const Fvector &position, u32 node)
 	}
 	
 	m_target_type		= eMoveToTarget;
+
+	set_path_type		(MovementManager::ePathTypeLevelPath);
 }
 
 void CMonsterMovement::set_retreat_from_point(const Fvector &position)
 {
 	bool bad_state = false;
 	if (failed())	bad_state = true;
-	//if (path_end()) bad_state = true;
 
 	// плохое состояние?
 	if (bad_state) {
@@ -211,6 +208,8 @@ void CMonsterMovement::set_retreat_from_point(const Fvector &position)
 	
 	m_target.node		= u32(-1);
 	m_target_type		= eRetreatFromTarget;
+
+	set_path_type		(MovementManager::ePathTypeLevelPath);
 }
 
 //////////////////////////////////////////////////////////////////////////

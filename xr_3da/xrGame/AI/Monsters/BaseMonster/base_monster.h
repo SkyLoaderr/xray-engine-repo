@@ -285,8 +285,6 @@ public:
 	IState					*stateRest;
 	IState					*stateEat;
 	IState					*stateAttack;
-	IState					*stateHide;
-	IState					*stateDetour;
 	IState					*statePanic;
 	IState					*stateExploreDNE;
 	IState					*stateExploreDE;

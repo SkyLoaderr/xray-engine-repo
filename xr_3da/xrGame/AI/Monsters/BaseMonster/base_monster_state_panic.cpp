@@ -23,6 +23,8 @@ void CBaseMonsterPanic::Init()
 	target_vertex_id			= u32(-1);
 	last_time_cover_selected	= 0;
 	m_dwFaceEnemyLastTime		= 0;
+
+	pMonster->CMonsterMovement::initialize_movement	();
 }
 
 void CBaseMonsterPanic::Run()
@@ -57,11 +59,13 @@ void CBaseMonsterPanic::Run()
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
 
 			if (target_vertex_id != u32(-1)) {
-				pMonster->MoveToTarget			(target_pos, target_vertex_id);
+				pMonster->CMonsterMovement::set_target_point		(target_pos, target_vertex_id);
 			} else {
-				pMonster->MoveAwayFromTarget	(position);
+				pMonster->CMonsterMovement::set_retreat_from_point	(position);
 			}
 			
+			pMonster->CMonsterMovement::set_generic_parameters	();
+
 			pMonster->MotionMan.accel_activate		(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking	(false);
 			

@@ -86,6 +86,9 @@ void CBaseMonsterAttack::Init()
 
 	time_next_attack_run		= 0;
 	time_next_psi_attack		= 0;
+
+	pMonster->CMonsterMovement::initialize_movement();
+	
 }
 
 #define TIME_WALK_PATH						5000
@@ -149,7 +152,6 @@ void CBaseMonsterAttack::Run()
 	
 	if ((m_tAction == ACTION_RUN) && CheckPsiAttack()) m_tAction = ACTION_PSI_ATTACK; 
 
-	bool bNeedRebuild = false;
 	bool squad_active = false;
 	CMonsterSquad	*pSquad = 0;
 
@@ -162,18 +164,16 @@ void CBaseMonsterAttack::Run()
 		case ACTION_RUN:		 // бежать на врага
 		// ************	
 			LOG_EX("ATTACK: RUN");
-			pMonster->MotionMan.m_tAction	= ACT_RUN;
-			pMonster->CMonsterMovement::set_try_min_time(false);
-			
-			pMonster->MotionMan.accel_activate		(eAT_Aggressive);
-			pMonster->MotionMan.accel_set_braking	(false);
+			pMonster->set_action							(ACT_RUN);
+			pMonster->MotionMan.accel_activate				(eAT_Aggressive);
+			pMonster->MotionMan.accel_set_braking			(false);
 
-
-			DO_IN_TIME_INTERVAL_BEGIN(LastTimeRebuild,100 + 50.f * dist);
-				bNeedRebuild = true; 
-			DO_IN_TIME_INTERVAL_END();
-			if (IS_NEED_REBUILD()) bNeedRebuild = true;
-			
+			pMonster->CMonsterMovement::set_target_point	(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
+			pMonster->CMonsterMovement::set_rebuild_time	(100 + u32(50.f * dist));
+			pMonster->CMonsterMovement::set_distance_to_end	(2.5f);
+			pMonster->CMonsterMovement::set_use_covers		();
+			pMonster->CMonsterMovement::set_cover_params	(5.f, 30.f, 1.f, 30.f);
+			pMonster->CMonsterMovement::set_try_min_time	(false);
 			
 			pSquad = monster_squad().get_squad(pMonster);
 			squad_active = pSquad && pSquad->SquadActive();
@@ -184,12 +184,10 @@ void CBaseMonsterAttack::Run()
 			if (!squad_active || (command.type != SC_ATTACK)) squad_active = false;
 
 
-			if (bNeedRebuild) {
-				pMonster->MoveToTarget(enemy);
-				if (squad_active) pMonster->set_dest_direction(command.direction);
+			if (squad_active) {
+				pMonster->set_use_dest_orient	(true);
+				pMonster->set_dest_direction	(command.direction);
 			}
-			
-			if (squad_active) pMonster->set_use_dest_orient	(true);
 			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			
@@ -237,7 +235,8 @@ void CBaseMonsterAttack::Run()
 
 			LOG_EX("ATTACK: STEAL");
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
-			pMonster->MoveToTarget(enemy);
+			pMonster->CMonsterMovement::set_target_point		(pMonster->EnemyMan.get_enemy_position(), pMonster->EnemyMan.get_enemy_vertex());
+			pMonster->CMonsterMovement::set_generic_parameters	();
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundSteal, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			break;
@@ -265,8 +264,9 @@ void CBaseMonsterAttack::Run()
 		// **********************************
 			LOG_EX("ATTACK: ENEMY_POSITION_APPROACH");
 			pMonster->MotionMan.m_tAction		= ACT_RUN;
-			pMonster->MoveToTarget				(enemy->Position());
-			pMonster->MotionMan.accel_activate	(eAT_Calm);
+			pMonster->CMonsterMovement::set_target_point		(enemy->Position());
+			pMonster->CMonsterMovement::set_generic_parameters	();
+			pMonster->MotionMan.accel_activate					(eAT_Calm);
 			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
@@ -277,10 +277,11 @@ void CBaseMonsterAttack::Run()
 		// **********************************
 			LOG_EX("ATTACK: ENEMY_WALK_AWAY");
 
-			pMonster->MotionMan.m_tAction		= ACT_WALK_FWD;
-			pMonster->MoveAwayFromTarget		(random_position(pMonster->EnemyMan.get_enemy_position(), 2.f));
-			pMonster->CSoundPlayer::play		(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
-			pMonster->MotionMan.accel_activate	(eAT_Calm);
+			pMonster->MotionMan.m_tAction						= ACT_WALK_FWD;
+			pMonster->CMonsterMovement::set_retreat_from_point	(random_position(pMonster->EnemyMan.get_enemy_position(), 2.f));
+			pMonster->CMonsterMovement::set_generic_parameters	();
+			pMonster->CSoundPlayer::play						(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
+			pMonster->MotionMan.accel_activate					(eAT_Calm);
 		
 			break;
 
@@ -313,7 +314,9 @@ void CBaseMonsterAttack::Run()
 				dir.sub(enemy->Position(), pMonster->Position());
 				dir.normalize();
 				target_point.mad(pMonster->Position(),dir,1.0f);
-				pMonster->MoveToTarget(target_point);
+			
+				pMonster->CMonsterMovement::set_target_point		(target_point);
+				pMonster->CMonsterMovement::set_generic_parameters	();
 			}
 			
 			pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RUN);

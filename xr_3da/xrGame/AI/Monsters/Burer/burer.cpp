@@ -12,15 +12,13 @@
 CBurer::CBurer()
 {
 	stateRest			= xr_new<CBaseMonsterRest>		(this);
-	stateAttack			= xr_new<CBurerAttack>		(this);
+	stateAttack			= xr_new<CBurerAttack>			(this);
 	stateEat			= xr_new<CBaseMonsterEat>		(this);
-	stateHide			= xr_new<CBaseMonsterHide>		(this);
-	stateDetour			= xr_new<CBaseMonsterDetour>		(this);
 	statePanic			= xr_new<CBaseMonsterPanic>		(this);
-	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBaseMonsterExploreDNE>	(this);
+	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>(this);
+	stateExploreDNE		= xr_new<CBaseMonsterExploreDNE>(this);
 	stateNull			= xr_new<CBaseMonsterNull>		();
-	stateScan			= xr_new<CBurerScan>		(this);
+	stateScan			= xr_new<CBurerScan>			(this);
 
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
@@ -33,8 +31,6 @@ CBurer::~CBurer()
 	xr_delete(stateRest);
 	xr_delete(stateAttack);
 	xr_delete(stateEat);
-	xr_delete(stateHide);
-	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
 	xr_delete(stateExploreDNE);

@@ -16,6 +16,7 @@ class CStateManagerChimera : public CState<CChimera> {
 		eStateDangerousSound,
 		eStateInterestingSound,
 		eStateFindEnemy,
+		eStateHitted,
 	};
 
 public:

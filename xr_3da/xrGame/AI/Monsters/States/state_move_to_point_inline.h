@@ -10,27 +10,25 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointAbstract::initialize()
 {
 	inherited::initialize();
+	object->CMonsterMovement::initialize_movement();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointAbstract::execute()
 {
-	if (data.vertex != u32(-1)) object->MoveToTarget(data.point, data.vertex);
-	else object->MoveToTarget(data.point);
+	object->set_action									(data.action.action);
+	object->MotionMan.SetSpecParams						(data.action.spec_params);
 
-	object->MotionMan.m_tAction				= data.action.action;
-	object->MotionMan.SetSpecParams			(data.action.spec_params);
-	
+	object->CMonsterMovement::set_target_point			(data.point,data.vertex);
+	object->CMonsterMovement::set_generic_parameters	();
+
 	if (data.accelerated) {
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
 		object->MotionMan.accel_set_braking (data.braking);
 	}
 
 	if (data.action.sound_type != u32(-1)) {
-		if (data.action.sound_delay != u32(-1))
-			object->CSoundPlayer::play(data.action.sound_type, 0,0,data.action.sound_delay);
-		else 
-			object->CSoundPlayer::play(data.action.sound_type);
+		object->set_state_sound(data.action.sound_type, data.action.sound_delay == u32(-1));
 	}
 }
 
@@ -56,35 +54,20 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointExAbstract::initialize()
 {
 	inherited::initialize();
-
-	time_last_build = 0;
+	object->CMonsterMovement::initialize_movement();	
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterMoveToPointExAbstract::execute()
 {
-	// проверить на завершение пути
-	bool b_build = false;
-	if (object->CDetailPathManager::time_path_built() > time_state_started) {
-		if (data.time_to_rebuild != u32(-1)) {
-			if (time_last_build + data.time_to_rebuild < object->m_current_update)
-				b_build = true;	
-		}
-	} else b_build = true;	
+	object->set_action									(data.action.action);
+	object->MotionMan.SetSpecParams						(data.action.spec_params);
 
-	// проверить на завершение пути, при условии что target не достигнут
-	if (object->IsPathEnd(data.completion_dist) && (object->Position().distance_to_xz(data.point) > 2.f * data.completion_dist)) {
-		b_build = true;
-	}
-	
-	if (b_build) {
-		if (data.vertex != u32(-1)) object->MoveToTarget(data.point, data.vertex);
-		else object->MoveToTarget(data.point);
- 		time_last_build = object->m_current_update;
-	}
-
-	object->MotionMan.m_tAction				= data.action.action;
-	object->MotionMan.SetSpecParams			(data.action.spec_params);
+	object->CMonsterMovement::set_target_point			(data.point,data.vertex);
+	object->CMonsterMovement::set_rebuild_time			(data.time_to_rebuild);
+	object->CMonsterMovement::set_distance_to_end		(2.5f);
+	object->CMonsterMovement::set_use_covers			();
+	object->CMonsterMovement::set_cover_params			(5.f, 30.f, 1.f, 30.f);
 
 	if (data.accelerated) {
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
@@ -92,10 +75,7 @@ void CStateMonsterMoveToPointExAbstract::execute()
 	}
 
 	if (data.action.sound_type != u32(-1)) {
-		if (data.action.sound_delay != u32(-1))
-			object->CSoundPlayer::play(data.action.sound_type, 0,0,data.action.sound_delay);
-		else 
-			object->CSoundPlayer::play(data.action.sound_type);
+		object->set_state_sound(data.action.sound_type, data.action.sound_delay == u32(-1));
 	}
 }
 
