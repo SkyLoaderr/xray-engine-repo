@@ -116,7 +116,7 @@ void InitSurface()
 }
 
 // Rendering of rect
-void _rect_register(_rect &R, CDeflector* D)
+void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 {
 	R.mask				= 0;
 	collected.push_back(R);
@@ -124,15 +124,31 @@ void _rect_register(_rect &R, CDeflector* D)
 	LPDWORD lm	= D->lm.pSurface;
 	DWORD	s_x	= D->lm.dwWidth+2*BORDER;
 	DWORD	s_y = D->lm.dwHeight+2*BORDER;
-	for (DWORD y=0; y<s_y; y++)
-	{
-		BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
-		DWORD*	S = lm + y*s_x;
-		for (DWORD x=0; x<s_x; x++) 
+	
+	if (!bRotate) {
+		// Normal (and fastest way)
+		for (DWORD y=0; y<s_y; y++)
 		{
-			DWORD C = *S++;
-			DWORD A = RGBA_GETALPHA(C);
-			*P ++	= BYTE(A);
+			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
+			DWORD*	S = lm + y*s_x;
+			for (DWORD x=0; x<s_x; x++) 
+			{
+				DWORD C = *S++;
+				DWORD A = RGBA_GETALPHA(C);
+				*P ++	= BYTE(A);
+			}
+		}
+	} else {
+		// Rotated :(
+		for (DWORD y=0; y<s_x; y++)
+		{
+			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
+			for (DWORD x=0; x<s_y; x++)
+			{
+				DWORD C = lm[x*s_x+y];
+				DWORD A = RGBA_GETALPHA(C);
+				*P ++	= BYTE(A);
+			}
 		}
 	}
 }
@@ -180,7 +196,7 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 				if (surface[_Y*512+_X]) continue;
 				R.init(_X,_Y,_X+r.b.x,_Y+r.b.y);
 				if (Place_Perpixel(R)) {
-					_rect_register(R,D);
+					_rect_register(R,D,FALSE);
 					return TRUE;
 				}
 			}
@@ -200,7 +216,7 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 
 				R.init(_X,_Y,_X+r.b.y,_Y+r.b.x);
 				if (Place_Perpixel(R)) {
-					_rect_register(R,D);
+					_rect_register(R,D,TRUE);
 					return TRUE;
 				}
 			}
@@ -255,7 +271,7 @@ void CBuild::MergeLM()
 				InitSurface			();
 				int id				= perturb[0];
 				_rect &First		= selected[id];
-				_rect_register		(First,SEL[id]);
+				_rect_register		(First,SEL[id],FALSE);
 				best.push_back		(First);
 				best_seq.push_back	(id);
 				brect.set			(First);
