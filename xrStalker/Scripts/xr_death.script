@@ -41,11 +41,10 @@ function set_death_checker(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	st.enabled = true
 
-	npc:set_death_callback(st.action, "death_callback")
+	npc:set_callback(game_object.death, st.action.death_callback, st.action)
 end
 
 function disable_scheme(npc, scheme)
-	npc:clear_death_callback(true);
-	npc:clear_death_callback(false);
+	npc:clear_callback(game_object.death)
 end
 

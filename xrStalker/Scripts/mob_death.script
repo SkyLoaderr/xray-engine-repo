@@ -51,6 +51,5 @@ end
 
 function disable_scheme(npc, scheme)
 	npc:clear_callback(game_object.death)
-	--npc:clear_death_callback(true)
 end
 

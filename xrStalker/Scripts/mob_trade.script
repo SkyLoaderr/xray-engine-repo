@@ -85,16 +85,17 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	
-	npc:set_callback(st.action, "start_trade", true)
-	npc:set_callback(st.action, "end_trade", false)
-	npc:set_trade_callback(st.action, "on_trade")
+	npc:set_callback(game_object.trade_start, st.action.start_trade, st.action)
+	npc:set_callback(game_object.trade_stop, st.action.end_trade, st.action)
+	npc:set_callback(game_object.trade_perform_operation , st.action.on_trade, st.action)
+	
 end
 
 function disable_scheme(npc, scheme)
 	if npc:clsid() == clsid.trader then
-		npc:clear_trade_callback()
-		npc:clear_callback(true)
-		npc:clear_callback(false)
+		npc:clear_callback(game_object.trade_start)
+		npc:clear_callback(game_object.trade_stop)
+		npc:clear_callback(game_object.trade_perform_operation)
 	end
 end
 
