@@ -67,7 +67,6 @@ void					CRender::create					()
 	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
 	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
 	::Device.Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
-	::Device.Resources->RegisterConstantSetup	("emapslice",	&binder_emap);
 	::Device.Resources->RegisterConstantSetup	("L_hdr",		&binder_lhdrscale);
 
 	c_lmaterial					= "L_material";
