@@ -37,19 +37,20 @@ public:
 #endif
 
 	// MRT-path
-	ref_rt						rt_Depth;		// Z-buffer like - initial depth
-	ref_rt						rt_Position;	// 64bit,	fat	(x,y,z,?)				(eye-space)
-	ref_rt						rt_Normal;		// 64bit,	fat	(x,y,z,hemi)			(eye-space)
-	ref_rt						rt_Color;		// 32bit,	fat	(r,g,b,specular-gloss)	(or decompressed MET-8-8-8-8)
+	ref_rt						rt_Depth;			// Z-buffer like - initial depth
+	ref_rt						rt_Position;		// 64bit,	fat	(x,y,z,?)				(eye-space)
+	ref_rt						rt_Normal;			// 64bit,	fat	(x,y,z,hemi)			(eye-space)
+	ref_rt						rt_Color;			// 32bit,	fat	(r,g,b,specular-gloss)	(or decompressed MET-8-8-8-8)
 
 	// 
-	ref_rt						rt_Accumulator;	// 32bit		(r,g,b,specular)
-	ref_rt						rt_Generic_0;	// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
-	ref_rt						rt_Generic_1;	// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
-	ref_rt						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
-	ref_rt						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
-	ref_rt						rt_LUM_64;		// 64bit, 64x64,	log-average in all components
-	ref_rt						rt_LUM_8;		// 64bit, 8x8,		log-average in all components
+	ref_rt						rt_Accumulator;		// 64bit		(r,g,b,specular)
+	ref_rt						rt_Accumulator_temp;// only for HW which doesn't feature fp16 blend
+	ref_rt						rt_Generic_0;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
+	ref_rt						rt_Generic_1;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
+	ref_rt						rt_Bloom_1;			// 32bit, dim/4	(r,g,b,?)
+	ref_rt						rt_Bloom_2;			// 32bit, dim/4	(r,g,b,?)
+	ref_rt						rt_LUM_64;			// 64bit, 64x64,	log-average in all components
+	ref_rt						rt_LUM_8;			// 64bit, 8x8,		log-average in all components
 
 	ref_rt						rt_LUM_pool	[4]	;	// 1xfp32,1x1,		exp-result -> scaler
 	ref_texture					t_LUM_src		;	// source

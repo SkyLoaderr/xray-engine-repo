@@ -40,7 +40,9 @@ void CRender::level_Load()
 	}
 
 	// Components
-	Wallmarks						= xr_new<CWallmarksEngine>	();
+	Target						= xr_new<CRenderTarget>		();
+	Wallmarks					= xr_new<CWallmarksEngine>	();
+	Details						= xr_new<CDetailManager>	();
 
 	// Static wallmarks
 	string_path fn_wm;
@@ -91,7 +93,7 @@ void CRender::level_Unload()
 	Wallmarks->unload_LevelWallmarks();
 
 	//*** Details
-	Details.Unload			();
+	Details->Unload			();
 
 	//*** Sectors
 	// 1.
@@ -125,7 +127,9 @@ void CRender::level_Unload()
 	IB.clear					();
 
 	//*** Components
+	xr_delete					(Details);
 	xr_delete					(Wallmarks);
+	xr_delete					(Target);
 
 	//*** Shaders
 	Shaders.clear_and_free		();

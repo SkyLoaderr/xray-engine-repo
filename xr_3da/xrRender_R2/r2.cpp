@@ -52,6 +52,14 @@ void					CRender::create					()
 	o.HW_smap			= HW.support	(D3DFMT_D24X8,			D3DRTYPE_TEXTURE,D3DUSAGE_DEPTHSTENCIL);
 	o.fp16_filter		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_FILTER);
 	o.fp16_blend		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_POSTPIXELSHADER_BLENDING);
+
+	// emulate ATI-R4xx series
+	if (strstr(Core.Params,"-r4xx"))	{
+		o.mrtmixdepth	= FALSE;
+		o.HW_smap		= FALSE;
+		o.fp16_filter	= FALSE;
+		o.fp16_blend	= FALSE;
+	}
 	VERIFY2				(o.mrt&&o.HW_smap&&o.fp16_filter&&o.fp16_blend,"Hardware doesn't meet minimum feature-level");
 
 	// nvstencil on NV40 and up
@@ -80,29 +88,28 @@ void					CRender::create					()
 	c_lmaterial					= "L_material";
 	c_sbase						= "s_base";
 
-	Target.OnDeviceCreate		();
+	Models						= xr_new<CModelPool>		();
 	PSLibrary.OnCreate			();
 	HWOCC.occq_create			(occq_size);
 
 	rmNormal					();
 	marker						= 0;
-
 	R_CHK						(HW.pDevice->CreateQuery(D3DQUERYTYPE_EVENT,&q_sync_point));
 } 
 void					CRender::destroy				()
 {
 	_RELEASE					(q_sync_point);
 	HWOCC.occq_destroy			();
+	xr_delete					(Models);
 	PSLibrary.OnDestroy			();
-	Target.OnDeviceDestroy		();
 }
 void					CRender::reset_begin			()
 {
-	Target.OnDeviceDestroy		();
+	xr_delete			(Target);
 }
 void					CRender::reset_end				()
 {
-	Target.OnDeviceCreate		();
+	Target			=	xr_new<CRenderTarget>			();
 }
 
 // Implementation

@@ -68,14 +68,12 @@ void					CRender::create					()
 	//
 	Models						= xr_new<CModelPool>		();
 	L_Dynamic					= xr_new<CLightR_Manager>	();
-
 	PSLibrary.OnCreate			();
 }
 void					CRender::destroy				()
 {
 	xr_delete					(L_Dynamic);
 	xr_delete					(Models);
-
 	PSLibrary.OnDestroy			();
 }
 void					CRender::reset_begin			()

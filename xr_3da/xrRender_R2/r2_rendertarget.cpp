@@ -198,7 +198,8 @@ void	CRenderTarget::OnDeviceCreate	()
 		if (Xdepth) rt_Color.create	(r2_RT_albedo,	w,h,D3DFMT_A8R8G8B8);
 		else		rt_Color.create	(r2_RT_albedo,	w,h,D3DFMT_A16B16G16R16F);
 		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A16B16G16R16F);
-		
+		if (!RImplementation.o.fp16_blend)
+			rt_Accumulator_temp.create	(r2_RT_accum_temp,	w,h,D3DFMT_A16B16G16R16F);
 		rt_Generic_0.create			(r2_RT_generic0,w,h,D3DFMT_A8R8G8B8		);
 		rt_Generic_1.create			(r2_RT_generic1,w,h,D3DFMT_A8R8G8B8		);
 	}

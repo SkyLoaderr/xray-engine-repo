@@ -79,11 +79,11 @@ public:
 	xr_vector<IRender_Visual*>									Visuals;
 	CPSLibrary													PSLibrary;
 
-	CDetailManager												Details;
-	CModelPool													Models;
+	CDetailManager*												Details;
+	CModelPool*													Models;
 	CWallmarksEngine*											Wallmarks;
 
-	CRenderTarget												Target;			// Render-target
+	CRenderTarget*												Target;			// Render-target
 
 	CLight_DB													Lights;
 	CLight_Compute_XFORM_and_VIS								LR;
@@ -174,7 +174,7 @@ public:
 
 	// Information
 	virtual void					Statistics					(CGameFont* F);
-	virtual LPCSTR					getShaderPath				()									{ return "r2\\";	}
+	virtual LPCSTR					getShaderPath				()									{ return "r2x\\";	}
 	virtual ref_shader				getShader					(int id);
 	virtual IRender_Sector*			getSector					(int id);
 	virtual IRender_Visual*			getVisual					(int id);
