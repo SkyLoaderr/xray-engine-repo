@@ -6,8 +6,8 @@
 //	Description : A-Life server objects
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef XRAY_AI_ALIFE_SERVER_OBJECTS
-#define XRAY_AI_ALIFE_SERVER_OBJECTS
+#ifndef ai_alife_server_objectsH
+#define ai_alife_server_objectsH
 
 #include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"

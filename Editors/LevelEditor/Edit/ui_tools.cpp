@@ -42,7 +42,7 @@ TFrame*	TUI_Tools::GetFrame(){
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::OnCreate()
+bool TUI_Tools::OnCreate()
 {
     target          = -1;
     action          = -1;
@@ -59,6 +59,7 @@ void TUI_Tools::OnCreate()
 	Scene.OnCreate	();
     // change target to Object
 	UI.Command		(COMMAND_CHANGE_TARGET, etObject);
+    return true;
 }
 //---------------------------------------------------------------------------
 

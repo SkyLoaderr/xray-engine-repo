@@ -83,7 +83,7 @@ public:
                     TUI_Tools		();
     virtual         ~TUI_Tools		();
 
-    void 			OnCreate		();
+    bool 			OnCreate		();
     void            OnDestroy      	();
     void            Reset       	();
 

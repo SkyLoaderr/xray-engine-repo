@@ -63,8 +63,8 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 
 // startup create
 		Application->Title 			= _EDITOR_NAME_;
-		Application->CreateForm		(__classid(TfrmMain), &frmMain);
-		Application->CreateForm		(__classid(TfrmEditorPreferences), &frmEditorPreferences);
+		Application->CreateForm(__classid(TfrmMain), &frmMain);
+		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		frmMain->SetHInst			(hInst);
 
         xr_delete					(frmSplash);
