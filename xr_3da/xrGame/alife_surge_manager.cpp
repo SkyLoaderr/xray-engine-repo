@@ -229,6 +229,12 @@ void CALifeSurgeManager::ballance_creatures()
 				else {
 					if (l_tpALifeCreatureAbstract->fHealth > 0.f)
 						m_alive_spawn_objects[(*I).second->m_tSpawnID] = true;
+					else {
+						CSE_ALifeCreatureAbstract	*creature = smart_cast<CSE_ALifeCreatureAbstract*>(spawns().spawns()[(*I).second->m_tSpawnID]);
+						VERIFY						(creature);
+						if (creature->g_Health() <= 0.f)
+							m_alive_spawn_objects[(*I).second->m_tSpawnID] = true;
+					}
 				}
 			}
 			else
