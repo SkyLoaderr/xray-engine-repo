@@ -16,7 +16,10 @@ IC	void CPropertyStorage::set_property	(const _condition_type &condition_id, con
 IC	const CPropertyStorage::_value_type	&CPropertyStorage::property	(const _condition_type &condition_id) const
 {
 	CConditionStorage::const_iterator	I = m_storage.find(condition_id);
-	VERIFY								(m_storage.end() != I);
+#ifdef DEBUG
+	if (!(m_storage.end() != I))
+		throw "m_storage.end() != I";
+#endif
 	return								((*I).second);
 }
 

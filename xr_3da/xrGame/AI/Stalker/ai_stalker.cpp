@@ -39,6 +39,7 @@
 #include "../../ai_object_location.h"
 #include "../../stalker_movement_manager.h"
 #include "../../entitycondition.h"
+#include "../../script_engine.h"
 
 #define IMPORTANT_BUILD
 
@@ -402,6 +403,11 @@ void CAI_Stalker::UpdateCL()
 		try {
 			CObjectHandler::update	();
 		}
+		catch (LPCSTR message) {
+			Msg						("! Expression \"%s\"",message);
+			CObjectHandler::set_goal(eObjectActionIdle);
+			CObjectHandler::update	();
+		}
 		catch(...) {
 			CObjectHandler::set_goal(eObjectActionIdle);
 			CObjectHandler::update	();
@@ -650,6 +656,11 @@ void CAI_Stalker::OnRender			()
 void CAI_Stalker::Think			()
 {
 	try {
+		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
+	}
+	catch (LPCSTR message) {
+		Msg						("! Expression \"%s\"",message);
+		brain().setup			(this);
 		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
 	}
 	catch(...) {
