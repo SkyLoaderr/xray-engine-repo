@@ -48,7 +48,7 @@ void CLightShadows::OnDeviceCreate	()
 	vs_World	= Device.Streams.Create		(FVF::F_LIT, 4*batch_size*3);
 	sh_BlurTR	= Device.Shader.Create		("effects\\blur",			RTtemp2);
 	sh_BlurRT	= Device.Shader.Create		("effects\\blur",			RTname2);
-	vs_Blur		= Device.Streams.Create		(FVF::F_TL2uv, 4);
+	vs_Blur		= Device.Streams.Create		(FVF::F_TL2uv, 8);
 
 	// Debug
 	sh_Screen	= Device.Shader.Create		("effects\\screen_set",RTname);
@@ -245,39 +245,40 @@ void CLightShadows::calculate	()
 	// Blur
 	{
 		float						dim				= S_rt_size;
-		Fvector2					shift,p0,p1,t0,t1;
-		shift.set					(.5f/dim, .5f/dim);
+		Fvector2					shift,p0,p1,a0,a1,b0,b1,c0,c1,d0,d1;
 		p0.set						(.5f/dim, .5f/dim);
 		p1.set						((dim+.5f)/dim, (dim+.5f)/dim);
-		p0.add						(shift);
-		p1.add						(shift);
-		shift.mul					(-2.f);
-		t0.add						(p0,shift);
-		t1.add						(p1,shift);
+		shift.set(.5f/dim, .5f/dim); a0.add(p0,shift); a1.add(p1,shift); b0.sub(p0,shift); b1.sub(p1,shift);
+		shift.set(.5f/dim,-.5f/dim); c0.add(p0,shift); c1.add(p1,shift); d0.sub(p0,shift); d1.sub(p1,shift);
 		
-		// Fill vertex buffer
+		// Fill VB
 		DWORD C						=	0xffffffff, Offset;
-		FVF::TL2uv* pv				=	(FVF::TL2uv*) vs_Blur->Lock(4,Offset);
-		pv->set						(0.f,	dim,	C, p0.x, p1.y, t0.x, t1.y);	pv++;
-		pv->set						(0.f,	0.f,	C, p0.x, p0.y, t0.x, t0.y);	pv++;
-		pv->set						(dim,	dim,	C, p1.x, p1.y, t1.x, t1.y);	pv++;
-		pv->set						(dim,	0.f,	C, p1.x, p0.y, t1.x, t0.y);	pv++;
-		vs_Blur->Unlock				(4);
+		FVF::TL2uv* pv				=	(FVF::TL2uv*) vs_Blur->Lock(8,Offset);
+		pv->set						(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
+		pv->set						(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
+		pv->set						(dim,	dim,	C, a1.x, a1.y, b1.x, b1.y);	pv++;
+		pv->set						(dim,	0.f,	C, a1.x, a0.y, b1.x, b0.y);	pv++;
+
+		pv->set						(0.f,	dim,	C, c0.x, c1.y, d0.x, d1.y);	pv++;
+		pv->set						(0.f,	0.f,	C, c0.x, c0.y, d0.x, d0.y);	pv++;
+		pv->set						(dim,	dim,	C, c1.x, c1.y, d1.x, d1.y);	pv++;
+		pv->set						(dim,	0.f,	C, c1.x, c0.y, d1.x, d0.y);	pv++;
+		vs_Blur->Unlock				(8);
 		
 		// Actual rendering (pass0, temp2real)
 		Device.Shader.set_RT		(RT->pRT,	0);
 		Device.Shader.set_Shader	(sh_BlurTR	);
-		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,Device.Streams_QuadIB);
-
+		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
+	
 		// Actual rendering (pass1, real2temp)
 		Device.Shader.set_RT		(RT_temp->pRT,	0);
 		Device.Shader.set_Shader	(sh_BlurRT	);
-		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,Device.Streams_QuadIB);
+		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset+4,	Device.Streams_QuadIB);
 
 		// Actual rendering (pass2, temp2real)
 		Device.Shader.set_RT		(RT->pRT,	0);
 		Device.Shader.set_Shader	(sh_BlurTR	);
-		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,Device.Streams_QuadIB);
+		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
 	}
 	
 	// Finita la comedia
