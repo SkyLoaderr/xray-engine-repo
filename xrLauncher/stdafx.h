@@ -11,9 +11,12 @@
 //#include <memory.h>
 //#include <tchar.h>
 
+//Ifdef OLES
+//#include "../xray/xr3DA/stdafx.h"
+//#include "../xray/xr3DA/xr_ioconsole.h"
 
-#include "../xray/xr3DA/stdafx.h"
-#include "../xray/xr3DA/xr_ioconsole.h"
+#include "../xray/stdafx.h"
+#include "../xray/xr_ioconsole.h"
 #include "xrLauncher.h"
 
 void convert(System::String* src, char* dst);
