@@ -34,7 +34,7 @@ IC	u32	CSoundPlayer::active_sound_count() const
 	xr_vector<CSoundSingle>::const_iterator	I = m_playing_sounds.begin();
 	xr_vector<CSoundSingle>::const_iterator	E = m_playing_sounds.end();
 	for ( ; I != E; ++I)
-		if ((*I).m_sound->feedback)
+		if ((*I).m_sound->feedback || ((*I).m_start_time <= Level().timeServer()))
 			++count;
 	return								(count);
 }
