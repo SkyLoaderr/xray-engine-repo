@@ -28,7 +28,7 @@ void CRenderTarget::phase_accumulator_init()
 		RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x00,0xff,0x00);
 
 		// Assuming next usage will be for directional light
-		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float			(Device.dwWidth);
 		float	_h					= float			(Device.dwHeight);
 
@@ -57,7 +57,7 @@ void CRenderTarget::phase_accumulator_init()
 		RCache.set_Stencil					(FALSE);
 
 		// Assuming next usage will be for directional light
-		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float			(Device.dwWidth/2);
 		float	_h					= float			(Device.dwHeight/2);
 		float	tw					= float			(Device.dwWidth);
@@ -89,7 +89,7 @@ void CRenderTarget::phase_accumulator_init()
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x03,0x01,0x02,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 
 		// Assuming next usage will be for directional light
-		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float			(Device.dwWidth);
 		float	_h					= float			(Device.dwHeight);
 

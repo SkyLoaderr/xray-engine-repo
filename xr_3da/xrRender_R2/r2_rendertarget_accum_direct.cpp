@@ -29,7 +29,7 @@ void CRenderTarget::shadow_direct	(light* L, u32 dls_phase)
 	// Draw full-screen quad textured with our scene image
 	{
 		u32		Offset;
-		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float(Device.dwWidth);
 		float	_h					= float(Device.dwHeight);
 
@@ -73,7 +73,7 @@ void CRenderTarget::shadow_direct	(light* L, u32 dls_phase)
 void CRenderTarget::accum_direct()
 {
 	u32		Offset;
-	u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+	u32		C					= color_rgba	(255,255,255,255);
 	float	_w					= float(Device.dwWidth);
 	float	_h					= float(Device.dwHeight);
 

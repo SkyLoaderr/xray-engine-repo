@@ -16,7 +16,7 @@ void	CRenderTarget::phase_combine	()
 	{
 		// RCache.set_Stencil		(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
 
-		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float(Device.dwWidth);
 		float	_h					= float(Device.dwHeight);
 
@@ -99,7 +99,7 @@ void	CRenderTarget::phase_combine	()
 
 	// ********************* Debug
 	if (0)		{
-		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float(Device.dwWidth)/2;
 		float	_h					= float(Device.dwHeight)/2;
 

@@ -42,8 +42,8 @@ void	CRenderTarget::u_stencil_optimize	()
 	u32		Offset;
 	float	_w					= float(Device.dwWidth);
 	float	_h					= float(Device.dwHeight);
-	u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
-	float	eps					= 0;		 // EPS_S;
+	u32		C					= color_rgba	(255,255,255,255);
+	float	eps					= EPS_S;
 	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
 	pv->set						(eps,			float(_h+eps),	eps,	1.f, C, 0, 0);	pv++;
 	pv->set						(eps,			eps,			eps,	1.f, C, 0, 0);	pv++;

@@ -43,7 +43,7 @@ void	CRenderTarget::phase_smap_spot_tsh	(light* L)
 		// Fill vertex buffer
 		Fvector2						p0,p1;
 		u32		Offset;
-		u32		C						= D3DCOLOR_RGBA	(255,255,255,255);
+		u32		C						= color_rgba	(255,255,255,255);
 		float	_w						= float(L->X.S.size);
 		float	_h						= float(L->X.S.size);
 		float	d_Z						= EPS_S;
