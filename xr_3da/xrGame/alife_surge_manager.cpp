@@ -397,11 +397,18 @@ IC	bool CALifeSurgeManager::redundant				(CSE_ALifeDynamicObject *object)
 	return									(true);
 }
 
+IC	void CALifeSurgeManager::process_spawns			()
+{
+	std::sort								(m_temp_spawns.begin(),m_temp_spawns.end());
+	xr_vector<ALife::_SPAWN_ID>::iterator	I = unique(m_temp_spawns.begin(),m_temp_spawns.end());
+	m_temp_spawns.erase						(I,m_temp_spawns.end());
+}
+
 void CALifeSurgeManager::fill_redundant_spawns		()
 {
 	m_temp_spawns.clear				();
 	spawns().fill_redundant_spawns	(m_temp_spawns);
-	std::sort						(m_temp_spawns.begin(),m_temp_spawns.end());
+	process_spawns					();
 }
 
 void CALifeSurgeManager::fill_redundant_objects		()
@@ -434,7 +441,8 @@ void CALifeSurgeManager::remove_redundant_objects	()
 void CALifeSurgeManager::fill_new_spawns			()
 {
 	m_temp_spawns.clear				();
-	spawns().fill_new_spawns		();
+	spawns().fill_new_spawns		(m_temp_spawns);
+	process_spawns					();
 }
 
 void CALifeSurgeManager::spawn_new_spawns			()
@@ -442,7 +450,7 @@ void CALifeSurgeManager::spawn_new_spawns			()
 	xr_vector<ALife::_SPAWN_ID>::const_iterator	I = m_temp_spawns.begin();
 	xr_vector<ALife::_SPAWN_ID>::const_iterator	E = m_temp_spawns.end();
 	for ( ; I != E; ++I) {
-		CSE_ALifeDynamicObject	*object, *spawn = smart_cast<CSE_ALifeDynamicObject*>(spawns().spawns().vertex(*I)->data()->object());
+		CSE_ALifeDynamicObject	*object, *spawn = smart_cast<CSE_ALifeDynamicObject*>(&spawns().spawns().vertex(*I)->data()->object());
 		VERIFY					(spawn);
 		create					(object,spawn,*I);
 	}

@@ -28,6 +28,7 @@ public:
 
 private:
 	IC		bool			redundant					(CSE_ALifeDynamicObject *object);
+	IC		void			process_spawns				();
 
 protected:
 			void			surge						();
