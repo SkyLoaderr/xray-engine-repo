@@ -23,6 +23,17 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     return TRUE;
 }
 
+// Allocators / Deallocators
+template <class T>
+IC T*	cl_alloc	(u32 count, HANDLE H)
+{
+	return (T*) HeapAlloc	(H,0,count*sizeof(T));
+}
+template <class T>
+IC void cl_free		(T* P, HANDLE H)
+{
+	HeapFree				(H,0,P);
+}
 
 // Triangle utilities
 void	TRI::convert_I2P	(Fvector* pBaseV, TRI* pBaseTri)	
