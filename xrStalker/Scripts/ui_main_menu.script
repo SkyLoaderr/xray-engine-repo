@@ -200,12 +200,16 @@ function main_menu:InitControls()
 end
 
 function main_menu:InitCallBacks()
-	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED,             self,"OnButton_ok_clicked")
+	self:AddCallback("btn_new_game",  ui_events.BUTTON_CLICKED,             self,"OnButton_new_game_clicked")
 	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED,             self,"OnButton_cancel_clicked")
 	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_OK_CLICKED,     self,"OnMsgOk")
 	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_CANCEL_CLICKED, self,"OnMsgCancel")
 	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_YES_CLICKED,    self,"OnMsgYes")
 	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_NO_CLICKED,     self,"OnMsgNo")
+end
+
+function main_menu:OnButton_new_game_clicked()
+	level.start_stop_menu(game_cl_LastStanding.new_game_dlg,false)
 end
 
 function main_menu:OnMsgOk()
@@ -228,16 +232,6 @@ function main_menu:OnMsgNo()
 	msg_box:Hide()
 end
 
-function main_menu:OnButton_ok_clicked()	
-
-end
-
-function main_menu:OnButton_cancel_clicked()
-	local message_box = self:GetMessageBox("message_box")
-	
-	message_box:SetText("Do you really want to exit?")
-	message_box:Show()
-end
 
 function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
@@ -256,9 +250,3 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
    
    return true
 end
-
-
-function main_menu:ItemIsInList(item)
-	return false
-end
-
