@@ -1268,6 +1268,14 @@ SOURCE=.\FS.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\LocatorAPI.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LocatorAPI.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\LzHuf.cpp
 # End Source File
 # Begin Source File
@@ -1306,14 +1314,6 @@ SOURCE=.\EventAPI.cpp
 # Begin Source File
 
 SOURCE=.\EventAPI.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\LocatorAPI.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\LocatorAPI.h
 # End Source File
 # Begin Source File
 
