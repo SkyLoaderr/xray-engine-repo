@@ -311,6 +311,7 @@
 
 	<dialog id="job_medkit">
 	        <precondition>trader_job.is_medkit_present</precondition>
+	        <precondition>trader_job.is_wounded</precondition>
 		<phrase_list>
 			<phrase id="0">
 				<dont_has_info>job_medkit_finished</dont_has_info>
