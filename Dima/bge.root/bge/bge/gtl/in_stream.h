@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ui.h"
+
 class IReader {
 private:
 	FILE	*m_handle;

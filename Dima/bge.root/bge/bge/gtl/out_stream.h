@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ui.h"
+
 class IWriter {
 private:
 	FILE	*m_handle;
