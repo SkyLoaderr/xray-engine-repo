@@ -1143,7 +1143,7 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 	{
 		CUIDragDropItemMP& UIDragDropItem = m_vDragDropItems[GetFirstFreeIndex()];
 
-		UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+		UIDragDropItem.CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
 		UIDragDropItem.SetShader(GetEquipmentIconsShader());
 		UIDragDropItem.SetTextureScale(SECTION_ICON_SCALE);
 		UIDragDropItem.SetColor(0xffffffff);

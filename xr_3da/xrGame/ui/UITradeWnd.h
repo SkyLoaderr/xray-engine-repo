@@ -83,10 +83,6 @@ protected:
 	static bool OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 
-	//проверяет влезут ли вещи из окна торговли в рюкзак после покупки
-	bool IsEnoughtOurRoom(CUIDragDropItem* pItem);
-	bool IsEnoughtOthersRoom(CUIDragDropItem* pItem);
-
 	bool ToOurTrade();
 	bool ToOthersTrade();
 	bool ToOurBag();
@@ -110,10 +106,8 @@ protected:
 	//окно с сообщением
 	CUIMessageBox	 UIMessageBox;
 
-
-	static const int MAX_ITEMS = 140;
-	CUIWpnDragDropItem m_vDragDropItems[MAX_ITEMS];
-	int m_iUsedItems;
+	//список элементов drag drop
+	DD_ITEMS_VECTOR	m_vDragDropItems;
 
 	//указатели игрока и того с кем торгуем
 	CInventory* m_pInv;

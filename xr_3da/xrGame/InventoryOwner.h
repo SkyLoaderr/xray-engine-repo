@@ -83,7 +83,8 @@ public:
 
 	//возвращает текуший разброс стрельбы (в радианах) с учетом движения
 	virtual float GetWeaponAccuracy			() const;
-
+	//максимальный переносимы вес
+	virtual float MaxCarryWeight			() const;
 protected:
 	// торговля
 	CTrade				*m_pTrade;

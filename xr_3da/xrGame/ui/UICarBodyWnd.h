@@ -86,10 +86,6 @@ protected:
 	static bool OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 
-	//проверяет влезут ли вещи из окна торговли в рюкзак после покупки
-	bool IsEnoughtOurRoom(CUIDragDropItem* pItem);
-	bool IsEnoughtOthersRoom(CUIDragDropItem* pItem);
-
 	bool ToOurBag();
 	bool ToOthersBag();
 	
@@ -101,10 +97,7 @@ protected:
 	//окно с сообщением
 	CUIMessageBox	 UIMessageBox;
 
-
-	static const int MAX_ITEMS = 140;
-	CUIWpnDragDropItem m_vDragDropItems[MAX_ITEMS];
-	int m_iUsedItems;
+	DD_ITEMS_VECTOR m_vDragDropItems;
 
 	//для сортировки вещей
 	TIItemList ruck_list;

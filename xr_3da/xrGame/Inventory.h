@@ -56,8 +56,12 @@ public:
 
 	//можно ли положить элемент в слот, рюкзак или на пояс
 	bool CanPutInSlot(PIItem pIItem) const;
-	bool CanPutInBelt(PIItem pIItem);
-	bool CanPutInRuck(PIItem pIItem);
+	bool CanPutInBelt(PIItem pIItem) const;
+	bool CanPutInRuck(PIItem pIItem) const;
+
+	//можно ли взять вещь
+	bool CanTakeItem(CInventoryItem *inventory_item) const;
+
 
 	// Активировать объект в указанном слоте	
 	bool Activate(u32 slot);
@@ -105,10 +109,10 @@ public:
 
 	void SetActiveSlot (u32 ActiveSlot) { m_iActiveSlot = m_iNextActiveSlot = ActiveSlot; }
 
-	bool IsSlotsUseful() {return m_bSlotsUseful;}	 
-	void SetSlotsUseful(bool slots_useful) {m_bSlotsUseful = slots_useful;}
-	bool IsBeltUseful() {return m_bBeltUseful;}
-	void SetBeltUseful(bool belt_useful) {m_bBeltUseful = belt_useful;}
+	bool IsSlotsUseful() const				{return m_bSlotsUseful;}	 
+	void SetSlotsUseful	(bool slots_useful) {m_bSlotsUseful = slots_useful;}
+	bool IsBeltUseful() const				{return m_bBeltUseful;}
+	void SetBeltUseful(bool belt_useful)	{m_bBeltUseful = belt_useful;}
 
 	// Наборы объектов. m_all - все
 	TIItemSet		m_all;
@@ -117,14 +121,17 @@ public:
 	// Слоты (фиксированное кол-во)
 	TISlotArr		m_slots;
 
-	float GetTakeDist() {return m_fTakeDist;}
-	
-	float GetMaxWeight() {return m_fMaxWeight;}
-	void  SetMaxWeight(float weight) {m_fMaxWeight = weight;}
+	//возвращает все кроме PDA в слоте и болта
+	void AddAvailableItems(TIItemList& items_container) const;
 
-	u32  GetMaxRuck() {return m_iMaxRuck;}
-	void SetMaxRuck(u32 max_ruck) {m_iMaxRuck = max_ruck;}
-	u32 GetMaxBelt() {return m_iMaxBelt;}
+	float GetTakeDist() const			{return m_fTakeDist;}
+	
+	float GetMaxWeight() const			{return m_fMaxWeight;}
+	void  SetMaxWeight(float weight)	{m_fMaxWeight = weight;}
+
+	u32  GetMaxRuck() const				{return m_iMaxRuck;}
+	void SetMaxRuck(u32 max_ruck)		{m_iMaxRuck = max_ruck;}
+	u32	 GetMaxBelt() const				{return m_iMaxBelt;}
 
 	u32 RuckWidth() const;
 	u32 RuckHeight() const;
@@ -142,11 +149,6 @@ public:
 	friend class CInventoryOwner;
 
 protected:
-	//для проверки свободного места
-	bool FreeRuckRoom();
-	bool FreeBeltRoom();
-
-
 	// Активный слот и слот который станет активным после смены
     //значения совпадают в обычном состоянии (нет смены слотов)
 	u32 m_iActiveSlot;
@@ -182,42 +184,4 @@ protected:
 	xr_vector<PIItem>	drop_tasks;
 
 	void		SendActionEvent		(s32 cmd, u32 flags);
-
-public:
-	bool CanTakeItem(CInventoryItem *inventory_item);
-protected:
-	xr_vector<CInventoryItem*>	m_item_buffer;
-	xr_vector<CInventoryItem*>	m_slot_buffer;
-	xr_vector<u64>				m_inventory_mask;
-
-private:
-	struct CItemVolumeSortPredicate {
-		IC bool							operator()							(const CInventoryItem *inventory_item1, const CInventoryItem *inventory_item2)  const
-		{
-			return						(inventory_item1->GetVolume() > inventory_item2->GetVolume());
-		};
-	};
-
-	struct CRemoveStoredItems {
-		int								m_iMaxCount;
-		xr_vector<CInventoryItem*>		*m_slots;
-
-		CRemoveStoredItems				(xr_vector<CInventoryItem*> *slots, int dwMaxCount) : m_iMaxCount(dwMaxCount)
-		{
-			m_slots						= slots;
-		}
-
-		IC bool							operator()							(const CInventoryItem *inventory_item)
-		{
-			if ((inventory_item->GetSlot() < m_slots->size()) && ((*m_slots)[inventory_item->GetSlot()] == inventory_item))
-				return					(true);
-			
-			if ((inventory_item->GetHeight() == 1) && (inventory_item->GetWidth() < m_iMaxCount)) {
-				m_iMaxCount			-= inventory_item->GetWidth();
-				return					(true);
-			}
-
-			return						(false);
-		}
-	};
 };

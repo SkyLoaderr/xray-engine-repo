@@ -38,6 +38,7 @@ CUITradeWnd::CUITradeWnd()
 
 CUITradeWnd::~CUITradeWnd()
 {
+	ClearDragDrop(m_vDragDropItems);
 }
 
 void CUITradeWnd::Init()
@@ -157,6 +158,7 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	UIMessageBox.Hide();
 	EnableAll();
 
+	ClearDragDrop(m_vDragDropItems);
 	UpdateLists();
 }  
 
@@ -227,16 +229,19 @@ void CUITradeWnd::Draw()
 void CUITradeWnd::Update()
 {
 	//убрать объект drag&drop для уже использованной вещи
-	for(int i = 0; i <m_iUsedItems; ++i) 
+	for(u32 i = 0; i <m_vDragDropItems.size(); ++i) 
 	{
-		CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
+		CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i]->GetData();
 		if(pItem && !pItem->Useful())
 		{
-			m_vDragDropItems[i].GetParent()->DetachChild(&m_vDragDropItems[i]);
-			m_vDragDropItems[i].SetData(NULL);
-			m_vDragDropItems[i].SetCustomUpdate(NULL);
+			m_vDragDropItems[i]->GetParent()->DetachChild(m_vDragDropItems[i]);
+			m_vDragDropItems[i]->SetData(NULL);
+			m_vDragDropItems[i]->SetCustomUpdate(NULL);
 
 			UpdatePrices();
+
+			xr_delete(m_vDragDropItems[i]);
+			m_vDragDropItems.erase(m_vDragDropItems.begin()+i);
 		}
 	}
 
@@ -289,7 +294,7 @@ bool CUITradeWnd::OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if(&this_trade_wnd->UIOurBagList != pItem->GetParent()) return false;
 
-	return this_trade_wnd->IsEnoughtOthersRoom(pItem);
+	return true;
 }
 bool CUITradeWnd::OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
@@ -298,62 +303,7 @@ bool CUITradeWnd::OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList
 
 	if(&this_trade_wnd->UIOthersBagList != pItem->GetParent()) return false;
 
-	return this_trade_wnd->IsEnoughtOurRoom(pItem);
-}
-
-//проверяет влезут ли вещи из окна торговли в рюкзак после покупки
-bool CUITradeWnd::IsEnoughtOurRoom(CUIDragDropItem* pItem)
-{
-	ruck_list.clear();
-
-	//та вещь, что переноситься
-	ruck_list.push_back((PIItem)pItem->GetData());
-	
-	for(DRAG_DROP_LIST_it it = UIOurBagList.GetDragDropItemsList().begin(); 
- 						  UIOurBagList.GetDragDropItemsList().end() != it; 
-						  ++it)
-	{
-		CUIDragDropItem* pDragDropItem = *it;
-		ruck_list.push_back((PIItem)pDragDropItem->GetData());
-	}
-
-	for(DRAG_DROP_LIST_it it = UIOthersTradeList.GetDragDropItemsList().begin(); 
- 			  			  UIOthersTradeList.GetDragDropItemsList().end() != it; 
-						  ++it)
-	{
-		CUIDragDropItem* pDragDropItem = *it;
-		ruck_list.push_back((PIItem)pDragDropItem->GetData());
-	}
-
-	return FreeRoom(ruck_list,RUCK_WIDTH,RUCK_HEIGHT);
-}
-
-bool CUITradeWnd::IsEnoughtOthersRoom(CUIDragDropItem* pItem)
-{
-	ruck_list.clear();
-
-	//та вещь, что переноситься
-	ruck_list.push_back((PIItem)pItem->GetData());
-
-	//вещи из рюкзака и окна торговли
-	for(DRAG_DROP_LIST_it it = UIOthersBagList.GetDragDropItemsList().begin(); 
- 			  			  UIOthersBagList.GetDragDropItemsList().end() != it; 
-						  ++it)
-	{
-		CUIDragDropItem* pDragDropItem = *it;
-		ruck_list.push_back((PIItem)pDragDropItem->GetData());
-	}
-
-	for(DRAG_DROP_LIST_it it = UIOurTradeList.GetDragDropItemsList().begin(); 
- 			  			  UIOurTradeList.GetDragDropItemsList().end() != it; 
-						  ++it)
-	{
-		CUIDragDropItem* pDragDropItem = *it;
-		ruck_list.push_back((PIItem)pDragDropItem->GetData());
-	}
-
-
-	return FreeRoom(ruck_list, RUCK_WIDTH, RUCK_HEIGHT);
+	return true;
 }
 
 
@@ -528,15 +478,10 @@ void CUITradeWnd::UpdateLists()
 	UIOthersTradeList.DropAll();
 
 
-	for(u32 i = 0; i <MAX_ITEMS; ++i) 
-	{
-		m_vDragDropItems[i].SetData(NULL);
-		m_vDragDropItems[i].SetWndRect(0,0,0,0);
-		m_vDragDropItems[i].SetCustomUpdate(NULL);
-	}
-	m_iUsedItems = 0;
+	ClearDragDrop(m_vDragDropItems);
 
-	ruck_list = m_pInv->m_ruck;
+	ruck_list.clear();
+	m_pInv->AddAvailableItems(ruck_list);
 	ruck_list.sort(GreaterRoomInRuck);
 
 	//Наш рюкзак
@@ -545,7 +490,9 @@ void CUITradeWnd::UpdateLists()
 	{
 		if((*it)) 
 		{
-			CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+			//CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+			m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
+			CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
 
 			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 			UIDragDropItem.SetShader(GetEquipmentIconsShader());
@@ -570,18 +517,12 @@ void CUITradeWnd::UpdateLists()
 			UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
 				
 			UIOurBagList.AttachChild(&UIDragDropItem);
-			++m_iUsedItems;
+//			++m_iUsedItems;
 		}
 	}
 
 	ruck_list.clear();
-	ruck_list.insert(ruck_list.begin(),
-					 m_pOthersInvOwner->inventory().m_ruck.begin(),
-					 m_pOthersInvOwner->inventory().m_ruck.end());
-	ruck_list.insert(ruck_list.end(),
-					 m_pOthersInvOwner->inventory().m_belt.begin(),
-					 m_pOthersInvOwner->inventory().m_belt.end());
-
+	m_pOthersInv->AddAvailableItems(ruck_list);
 	ruck_list.sort(GreaterRoomInRuck);
 
 
@@ -590,9 +531,11 @@ void CUITradeWnd::UpdateLists()
 	{
 		if((*it)) 
 		{
-			CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+			//CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+			m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
+			CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
 				
-			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+			UIDragDropItem.CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
 			UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
@@ -616,7 +559,7 @@ void CUITradeWnd::UpdateLists()
 			UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
 				
 			UIOthersBagList.AttachChild(&UIDragDropItem);
-			++m_iUsedItems;
+//			++m_iUsedItems;
 		}
 	}
 }

@@ -184,3 +184,10 @@ ref_shader&	InventoryUtilities::GetMPCharIconsShader()
 }
 
 
+
+void InventoryUtilities::ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector)
+{
+	for(u32 i=0; i<dd_item_vector.size(); i++)
+		xr_delete(dd_item_vector[i]);
+	dd_item_vector.clear();
+}

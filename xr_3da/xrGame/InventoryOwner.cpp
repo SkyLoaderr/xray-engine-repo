@@ -342,6 +342,12 @@ float CInventoryOwner::GetWeaponAccuracy	() const
 	return 0.f;
 }
 
+//максимальный переносимы вес
+float  CInventoryOwner::MaxCarryWeight () const
+{
+	return inventory().GetMaxWeight();
+}
+
 void CInventoryOwner::spawn_supplies		()
 {
 	CGameObject								*game_object = dynamic_cast<CGameObject*>(this);

@@ -119,11 +119,9 @@ protected:
 	//информация о предмете
 	CUIItemInfo UIItemInfo;
 
+	//список элементов drag drop
+	DD_ITEMS_VECTOR	m_vDragDropItems;
 	
-	static const int MAX_ITEMS = 70;
-	CUIWpnDragDropItem m_vDragDropItems[MAX_ITEMS];
-	int m_iUsedItems;
-
 	//указатель на инвентарь, передается перед запуском меню
 	CInventory* m_pInv;
 

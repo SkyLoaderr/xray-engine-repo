@@ -26,6 +26,9 @@
 
 
 class CUIDragDropItem;
+class CUIWpnDragDropItem;
+
+DEFINE_VECTOR(CUIWpnDragDropItem*, DD_ITEMS_VECTOR, DD_ITEMS_VECTOR_IT);
 
 
 namespace InventoryUtilities
@@ -49,4 +52,5 @@ ref_shader& GetCharIconsShader();
 // shader на иконки персонажей в мультиплеере
 ref_shader&	GetMPCharIconsShader();
 
+void ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector);
 };
