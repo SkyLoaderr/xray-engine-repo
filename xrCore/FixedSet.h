@@ -89,7 +89,7 @@ public:
 		nodes	= 0; 
 	}
 	~FixedSET() {
-		_FREE(nodes);
+		xr_free	(nodes);
 	}
 	IC TNode*	insert(const K& k) {
 		if (pool) {
