@@ -2,7 +2,7 @@
 #include "xr_area.h"
 #include "xr_object.h"
 #include "xrLevel.h"
-
+#include "xr_sndman.h"
 
 #include "xr_creator.h"
 
