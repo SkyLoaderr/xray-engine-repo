@@ -214,6 +214,13 @@ static void ColouriseLuaDoc(
 				if (blockCommentLevel == 0) {
 					sc.ForwardSetState(SCE_LUA_DEFAULT);
 				}
+			} 
+			  else if (sc.Match('*', '/') && blockCommentLevel > 0) {
+				blockCommentLevel--;
+				sc.Forward();
+				if (blockCommentLevel == 0) {
+					sc.ForwardSetState(SCE_LUA_DEFAULT);
+				}
 			}
 		}
 
@@ -235,6 +242,12 @@ static void ColouriseLuaDoc(
 				blockCommentLevel = 1;
 				sc.SetState(SCE_LUA_COMMENT);
 				sc.Forward(3);
+
+			} else if (sc.Match("/*")) {	// cpp-style block comment
+				blockCommentLevel = 1;
+				sc.SetState(SCE_LUA_COMMENT);
+				sc.Forward(3);
+
 			} else if (sc.Match('-', '-')) {
 				sc.SetState(SCE_LUA_COMMENTLINE);
 				sc.Forward();
