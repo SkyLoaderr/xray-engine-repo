@@ -544,7 +544,7 @@ void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
 }
 
 // Обработка нажатия клавиш
-extern BOOL	ShowLM;
+ENGINE_API extern BOOL	ShowLM;
 void CLevel::OnKeyboardPress(int key)
 {
 	if (pHUD->IsUIActive())			if (pHUD->GetUI()->OnKeyboardPress(key)) return;
