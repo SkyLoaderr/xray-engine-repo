@@ -317,7 +317,7 @@ public:
 
 	virtual LPCSTR	Name();
 
-	void SpawnAmmo		(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL);
+	void SpawnAmmo		(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL, u32 ParentID = 0xffffffff);
 
 	CWeaponAmmo*		m_pAmmo;
 	xr_vector<ref_str>	m_ammoTypes;

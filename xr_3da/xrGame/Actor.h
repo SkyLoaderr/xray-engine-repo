@@ -424,6 +424,9 @@ private:
 	virtual bool			NeedToDestroyObject();	
 	virtual ALife::_TIME_ID	TimePassedAfterDeath();
 
+	virtual void			SpawnAmmoForWeapon		(CInventoryItem *pIItem);
+	virtual void			RemoveAmmoForWeapon		(CInventoryItem *pIItem);
+
 
 public:
 	void					detach_Vehicle			();
@@ -533,6 +536,10 @@ public:
 	virtual void reinit			();
 	virtual void reload			(LPCSTR section);
 	virtual bool use_bolts		() const;
+
+	virtual void			OnItemTake				(CInventoryItem *inventory_item);
+	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
+
 };
 
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)

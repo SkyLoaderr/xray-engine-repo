@@ -760,7 +760,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) 
+void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID) 
 {
 	if(!m_ammoTypes.size()) return;
 	
@@ -785,7 +785,10 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect)
 	D->s_gameid = u8(GameID());
 	D->s_RP = 0xff;
 	D->ID = 0xffff;
-	D->ID_Parent = (u16)H_Parent()->ID();
+	if (ParentID == 0xffffffff)
+		D->ID_Parent = (u16)H_Parent()->ID();
+	else
+		D->ID_Parent = (u16)ParentID;
 	D->ID_Phantom = 0xffff;
 	D->s_flags.set(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime = 0;

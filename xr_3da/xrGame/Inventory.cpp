@@ -154,7 +154,7 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 	
 	if(pIItem && (m_all.find(pIItem) != m_all.end())) 
 	{
-		if (pIItem->GetSlot() == m_iActiveSlot && 
+		if (pIItem->GetSlot() == m_iActiveSlot && pIItem->GetSlot() != 0xffffffff &&
 			m_slots[pIItem->GetSlot()].m_pIItem == pIItem)
 		{
 			m_iNextActiveSlot = m_iActiveSlot = NO_ACTIVE_SLOT;

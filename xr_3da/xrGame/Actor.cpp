@@ -2181,3 +2181,77 @@ void CActor::UpdateSleep()
 	if(Level().GetGameTime()>m_dwWakeUpTime)
 		Awoke();
 }
+
+#include "WeaponMagazined.h"
+
+void CActor::OnItemTake			(CInventoryItem *inventory_item)
+{
+	CInventoryOwner::OnItemTake(inventory_item);
+	if (OnClient()) return;
+	
+	switch (Game().type)
+	{
+	case GAME_DEATHMATCH:
+		{
+			SpawnAmmoForWeapon(inventory_item);
+		}break;
+	};	
+}
+
+void CActor::OnItemDrop			(CInventoryItem *inventory_item)
+{
+	CInventoryOwner::OnItemDrop(inventory_item);
+	if (OnClient()) return;
+
+	switch (Game().type)
+	{
+	case GAME_DEATHMATCH:
+		{
+			RemoveAmmoForWeapon(inventory_item);
+		}break;
+	};
+}
+
+void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
+{
+	if (!pIItem) return;
+
+	CWeaponMagazined* pWM = dynamic_cast<CWeaponMagazined*> (pIItem);
+	if (pWM)
+	{
+		bool UsableAmmoExist = false;
+		for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
+		{
+			CWeaponAmmo* pAmmo = dynamic_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
+			if (!pAmmo) continue;
+					
+			UsableAmmoExist = true;
+			break;
+		};
+		if (!UsableAmmoExist) pWM->SpawnAmmo(0xffffffff, NULL, ID());
+	};
+};
+
+void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
+{
+	if (!pIItem) return;
+
+	CWeaponMagazined* pWM = dynamic_cast<CWeaponMagazined*> (pIItem);
+	if (pWM)
+	{
+		NET_Packet			P;
+		bool UsableAmmoExist = false;
+
+		for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
+		{
+			CWeaponAmmo* pAmmo = dynamic_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
+			if (!pAmmo) break;
+
+			UsableAmmoExist = true;
+			
+			u_EventGen			(P,GE_DESTROY,pAmmo->ID());
+			Msg					("ge_destroy: [%d] - %s",pAmmo->ID(),*(pAmmo->cName()));
+		};
+		if (UsableAmmoExist) u_EventSend			(P);
+	};
+};
