@@ -35,13 +35,6 @@ CUIEditBox::CUIEditBox(void)
 
 	m_iCursorPos = 0;
 	SetText("");
-/*
-	m_sEdit.push_back('y');
-	m_sEdit.push_back('u');
-	m_sEdit.push_back('r');
-	m_sEdit.push_back('i');
-	m_sEdit.push_back(0);
-*/
 }
 
 CUIEditBox::~CUIEditBox(void)
