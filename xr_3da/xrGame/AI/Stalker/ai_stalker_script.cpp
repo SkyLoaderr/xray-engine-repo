@@ -73,8 +73,9 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	CAnimationAction&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
 	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
 
-	vfSetParameters	(0,
-		l_tMovementAction.m_tGoalType == CMovementAction::eGoalTypePatrolPath ? 0 : &l_tMovementAction.m_tDestinationPosition,
+	vfSetParameters	(
+		0,
+		0,
 		false,
 		l_tObjectAction.m_tGoalType,
 		CMovementManager::path_type(),
