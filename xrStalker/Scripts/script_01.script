@@ -31,12 +31,10 @@ function main()
 	local sound_01 = sound_object("scripts\\alarm\\f_side_rustle")
 	local sound_cough = sound_object("scripts\\idle\\cough1")
 	local sound_holodno = sound_object("scripts\\idle\\say_holodno")
-
 	local sound_chto_s_toboy = sound_object("scripts\\idle\\say_chto_s_toboy")
 	local sound_dai_vipit = sound_object("scripts\\idle\\say_dai_vipit")
 	local sound_ti_pyuaniy = sound_object("scripts\\idle\\say_ti_pyuaniy")
 	local sound_skuchno = sound_object("scripts\\idle\\say_skuchno")
-
 	local sound_baran = sound_object("scripts\\idle\\say_baran")
 	local sound_wind = sound_object("scripts\\idle\\ew_gusty_over1")
 
@@ -55,34 +53,37 @@ function main()
 	  	move	(move.standing, move.walk,move.line,patrol("way0001")),
 		cond	(cond.time_end, 5000)
 	)
+	wait()
 	action(                                                                                                       
 	    stalker1,
-		sound	(sound_cough,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		sound	("scripts\\idle\\cough1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
 	action(                                                                                                       
 	    stalker2,
-		sound	(sound_holodno,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		sound	("scripts\\idle\\say_holodno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
+	wait()
 	action(                                                                                                       
 	    stalker1,
-		sound	(sound_chto_s_toboy,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		sound	("scripts\\idle\\say_chto_s_toboy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
 	action(                                                                                                       
 	    stalker2,
-		sound	(sound_dai_vipit,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		sound	("scripts\\idle\\say_dai_vipit","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
+	wait()
 	action(                                                                                                       
 	    stalker1,
-		sound	(sound_ti_pyuaniy,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		sound	("scripts\\idle\\say_ti_pyuaniy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
 	action(                                                                                                       
 	    stalker2,
-		sound	(sound_skuchno,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		sound	("scripts\\idle\\say_skuchno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 		cond	(cond.sound_end, 1000)
 	)
 	wait()
