@@ -608,7 +608,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 		char buf[256];
 
 		// Bone
-		u16			ID = bones->size();
+		u16			ID			= u16(bones->size());
 		data->r_stringZ(buf);	strlwr(buf);
 		CBoneData*	pBone = xr_new<CBoneData> (ID);
 		bones->push_back(pBone);

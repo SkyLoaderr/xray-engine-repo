@@ -189,7 +189,7 @@ void CCF_Skeleton::BuildState()
 	
 	const Fmatrix &L2W	= owner->XFORM();
 	Fmatrix Mbox,T,TW;
-	for (u32 i=0; i<model.size(); i++)
+	for (u16 i=0; i<model.size(); i++)
 	{
 		Fobb& B				=	K->LL_GetBox(i);
 		Fmatrix& Mbone		=	K->LL_GetTransform(i);

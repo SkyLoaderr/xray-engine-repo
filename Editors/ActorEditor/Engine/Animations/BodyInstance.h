@@ -246,7 +246,7 @@ public:
 	CBoneInstance&				LL_GetInstance	(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return bone_instances[bone_id];	}
 	CBoneData&					LL_GetData		(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return *((*bones)[bone_id]);	}
 	u16							LL_BoneRoot		()					{	return iRoot;													}
-	u16							LL_BoneCount	()					{	return bones->size();											}
+	u16							LL_BoneCount	()					{	return u16(bones->size());										}
 	Fmatrix&					LL_GetTransform	(u16 bone_id)		{	return LL_GetInstance(bone_id).mTransform;						}
 	Fobb&						LL_GetBox		(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount());	return (*bones)[bone_id]->obb;	}
 
