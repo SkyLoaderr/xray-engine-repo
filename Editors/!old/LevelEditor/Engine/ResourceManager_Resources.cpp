@@ -334,7 +334,7 @@ CRT*	CResourceManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 		CRT *RT				=	xr_new<CRT>();
 		RT->dwFlags			|=	xr_resource::RF_REGISTERED;
 		m_rtargets.insert	(mk_pair(RT->set_name(Name),RT));
-		if (Device.bReady)	RT->ñreate	(Name,w,h,f);
+		if (Device.bReady)	RT->create	(Name,w,h,f);
 		return				RT;
 	}
 }
@@ -363,7 +363,7 @@ CRTC*	CResourceManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 		CRTC *RT			=	xr_new<CRTC>();
 		RT->dwFlags			|=	xr_resource::RF_REGISTERED;
 		m_rtargets_c.insert	(mk_pair(RT->set_name(Name),RT));
-		if (Device.bReady)	RT->ñreate	(Name,size,f);
+		if (Device.bReady)	RT->create	(Name,size,f);
 		return				RT;
 	}
 }
