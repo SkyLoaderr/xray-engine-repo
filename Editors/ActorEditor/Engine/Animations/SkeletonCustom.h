@@ -136,6 +136,6 @@ public:
 	virtual void 				Spawn			();
     virtual void 				Release			();
 };
-IC CSkeletonCustom* PSkeletonCustom(IRender_Visual* V) { return dynamic_cast<CSkeletonCustom*>(V); }
+IC CSkeletonCustom* PKinematics(IRender_Visual* V) { return dynamic_cast<CSkeletonCustom*>(V); }
 //---------------------------------------------------------------------------
 #endif
