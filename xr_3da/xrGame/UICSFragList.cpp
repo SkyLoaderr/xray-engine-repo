@@ -12,7 +12,7 @@ CUICSFragList::CUICSFragList()
 
 void CUICSFragList::Init()
 {
-	inherited::Init		("ui\\ui_hud_frame",150,150,500,400,alLeft|alTop);
+	inherited::Init		("ui\\ui_hud_frame",0,0,500,400,alCenter);
 }
 //--------------------------------------------------------------------
 IC bool	pred_player		(LPVOID v1, LPVOID v2)
@@ -25,7 +25,7 @@ void CUICSFragList::OnFrame()
 	map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
 	map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
 
-	// create temporary map (sort by kills)
+	// create temporary (sort by kills)
 	items.clear			();
 	for (;I!=E;I++)		items.push_back(&I->second);
 	sort(items.begin(),items.end(),pred_player);
@@ -34,8 +34,6 @@ void CUICSFragList::OnFrame()
 	CGameFont* H		= Level().HUD()->pFontSmall;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	// global info
-	//if (Game().fraglimit)	H->OutNext	("Frag Limit:  %3d",Game().fraglimit);
-	//else					H->OutNext	("Frag Limit:  unlimited");
 	if (Game().timelimit)	H->OutNext	("Time remain: %3d (sec)",(Game().timelimit-(Level().timeServer()-Game().start_time))/1000);
 	else					H->OutNext	("Time remain: unlimited");
 	H->OutSkip			(1.5f);
@@ -48,7 +46,7 @@ void CUICSFragList::OnFrame()
 		else									H->Color(0xb0a0a0a0);
 		H->OutNext		("%3d. %-20s %-5d",k++,P->name,P->kills);
 	}
-	H->OutSkip			(3.f);
+	H->OutSkip			(2.f);
 	H->Color(0xf0a0a0ff); H->OutNext("Team 2: %d", Game().teams[1].num_targets);
 	k=1;
 	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){

@@ -51,12 +51,12 @@ class CUI{
 
 	CUIGameCustom*		pUIGame;
 
-	CHUDManager*		m_Parent;
-
 	// messages
 	float				msgs_offs;
 	float				menu_offs;
 	UIMsgSVec			messages;
+public:
+	CHUDManager*		m_Parent;
 public:
 						CUI					(CHUDManager* p);
 	virtual				~CUI				();

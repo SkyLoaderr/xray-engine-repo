@@ -15,7 +15,6 @@ class CUIStaticItem: public CUICustomItem
 	int				iTileY;
 	int				iRemX;
 	int				iRemY;
-	u32				uAlign;
 protected:
 	typedef CUICustomItem inherited;
 public:
@@ -33,7 +32,6 @@ public:
 	IC void			SetColor		(u32 clr)					{dwColor= clr;}
 	IC void			SetColor		(Fcolor clr)				{dwColor= clr.get();}
 	IC Shader*		GetShader		()							{return hShader;}
-	IC void			SetAlign		(u32 align)					{uAlign=align;};
 };
 
 #endif //__XR_UISTATICITEM_H__

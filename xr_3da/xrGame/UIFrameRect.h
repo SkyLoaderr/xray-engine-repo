@@ -4,7 +4,7 @@
 
 #include "uistaticitem.h"
 
-class CUIFrameRect
+class CUIFrameRect: public CUICustomItem
 {
 	enum{
 		fmL=0,
@@ -29,6 +29,7 @@ protected:
 public:
 	Ivector2		iPos;
 	Ivector2		iSize;
+	Irect			list_rect;
 public:
 					CUIFrameRect	();
 	void			Init			(LPCSTR base_name, int x, int y, int w, int h, DWORD align);

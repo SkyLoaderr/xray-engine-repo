@@ -19,6 +19,7 @@ class CUIGameCS: public CUIGameCustom{
 	CUIIcon				Artifact;
 	CUIIcon				OwnBase;
 	CUIIcon				EnemyBase;
+	Ivector2			vMoneyPlace;
 	BOOL				CanBuy				();
 	static void 		BuyItem				(CCustomMenuItem* sender);
 public:

@@ -17,19 +17,20 @@ void CUIFrameRect::Init(LPCSTR base_name, int x, int y, int w, int h, DWORD alig
 {
 	SetPos			(x,y);
 	SetSize			(w,h);
+	SetAlign		(align);
 	// init graphics
 	string256		buf;
 	// back
-	back.CreateShader(strconcat(buf,base_name,"_back"),	"hud\\default");		back.SetAlign	(align);
+	back.CreateShader(strconcat(buf,base_name,"_back"),	"hud\\default");			//back.SetAlign		(align);
 	// frame
-	frame[fmL].CreateShader	(strconcat(buf,base_name,"_l"),		"hud\\default");	frame[fmL].SetAlign	(align); 
-	frame[fmR].CreateShader	(strconcat(buf,base_name,"_r"),		"hud\\default");	frame[fmR].SetAlign	(align);	
-	frame[fmT].CreateShader	(strconcat(buf,base_name,"_t"),		"hud\\default");	frame[fmT].SetAlign	(align);	
-	frame[fmB].CreateShader	(strconcat(buf,base_name,"_b"),		"hud\\default");	frame[fmB].SetAlign	(align);	
-	frame[fmLT].CreateShader(strconcat(buf,base_name,"_lt"),	"hud\\default");	frame[fmLT].SetAlign(align);
-	frame[fmRT].CreateShader(strconcat(buf,base_name,"_rt"),	"hud\\default");	frame[fmRT].SetAlign(align);
-	frame[fmRB].CreateShader(strconcat(buf,base_name,"_rb"),	"hud\\default");	frame[fmRB].SetAlign(align);
-	frame[fmLB].CreateShader(strconcat(buf,base_name,"_lb"),	"hud\\default");	frame[fmLB].SetAlign(align);
+	frame[fmL].CreateShader	(strconcat(buf,base_name,"_l"),		"hud\\default");	//frame[fmL].SetAlign	(align); 
+	frame[fmR].CreateShader	(strconcat(buf,base_name,"_r"),		"hud\\default");	//frame[fmR].SetAlign	(align);	
+	frame[fmT].CreateShader	(strconcat(buf,base_name,"_t"),		"hud\\default");	//frame[fmT].SetAlign	(align);	
+	frame[fmB].CreateShader	(strconcat(buf,base_name,"_b"),		"hud\\default");	//frame[fmB].SetAlign	(align);	
+	frame[fmLT].CreateShader(strconcat(buf,base_name,"_lt"),	"hud\\default");	//frame[fmLT].SetAlign(align);
+	frame[fmRT].CreateShader(strconcat(buf,base_name,"_rt"),	"hud\\default");	//frame[fmRT].SetAlign(align);
+	frame[fmRB].CreateShader(strconcat(buf,base_name,"_rb"),	"hud\\default");	//frame[fmRB].SetAlign(align);
+	frame[fmLB].CreateShader(strconcat(buf,base_name,"_lb"),	"hud\\default");	//frame[fmLB].SetAlign(align);
 }
 //--------------------------------------------------------------------
 
@@ -45,6 +46,14 @@ void CUIFrameRect::UpdateSize()
 	int rem_y		= iSize.y%ts.y;
 	int tile_x		= iFloor(float(iSize.x)/ts.x); tile_x-=2; R_ASSERT(tile_x>=0);
 	int tile_y		= iFloor(float(iSize.y)/ts.y); tile_y-=2; R_ASSERT(tile_y>=0);
+
+	float fScale	= Level().HUD()->GetScale();
+	// center align
+	if (GetAlign()&alCenter)
+		iPos.set	(iFloor((Device.dwWidth-fScale*iSize.x)*.5f),iFloor((Device.dwHeight-fScale*iSize.y)*.5f));
+
+	list_rect.set	(iPos.x,iPos.y,iFloor(iPos.x+fScale*iSize.x),iFloor(iPos.y+fScale*iSize.y));
+	list_rect.shrink(32,32);
 
 	back.SetPos			(iPos.x+ts.x,			iPos.y+ts.y			);	back.SetTile		(tile_x,tile_y,rem_x,rem_y);
 	frame[fmL].SetPos	(iPos.x,				iPos.y+ts.y			);	frame[fmL].SetTile	(1,tile_y,0,rem_y);

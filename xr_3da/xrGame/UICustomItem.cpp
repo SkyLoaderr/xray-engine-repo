@@ -7,8 +7,9 @@
 //////////////////////////////////////////////////////////////////////
 CUICustomItem::CUICustomItem()
 {    
+	uAlign			= alNone;
 	uFlags			= 0;
-	iRect.lt.set	(0,0); iRect.rb.set(0,0);
+	iVisRect.lt.set	(0,0); iVisRect.rb.set(0,0);
 }
 //--------------------------------------------------------------------
 
@@ -44,7 +45,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, in
 
 void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color)
 {
-	Render(Pointer,pos,color,iRect.x1,iRect.y1,iRect.x2,iRect.y2);
+	Render(Pointer,pos,color,iVisRect.x1,iVisRect.y1,iVisRect.x2,iVisRect.y2);
 }
 //--------------------------------------------------------------------
 
@@ -65,16 +66,16 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 
 	Fvector2 C;
 	Ivector2 RS;
-	iRect.getsize	(RS);
+	iVisRect.getsize(RS);
 	float sc		= Level().HUD()->GetScale();
 	float sz		= sc*((RS.x>RS.y)?RS.x:RS.y)*0.7071f;
 
 	Fvector2 LTt,RBt;
-	LTt.set			(float(iRect.x1)/float(ts.x)+hp.x,float(iRect.y1)/float(ts.y)+hp.y);
-	RBt.set			(float(iRect.x2)/float(ts.x)+hp.x,float(iRect.y2)/float(ts.y)+hp.y);
+	LTt.set			(float(iVisRect.x1)/float(ts.x)+hp.x,float(iVisRect.y1)/float(ts.y)+hp.y);
+	RBt.set			(float(iVisRect.x2)/float(ts.x)+hp.x,float(iVisRect.y2)/float(ts.y)+hp.y);
 
 	// Rotation
-	iRect.getcenter	(RS); 
+	iVisRect.getcenter(RS); 
 	C.set			(RS.x*sc+pos.x,RS.y*sc+pos.y);
 
 	Pointer->set	(C.x+_sin1*sz,	C.y+_cos1*sz,	color, LTt.x, RBt.y); Pointer++;

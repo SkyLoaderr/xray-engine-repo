@@ -31,6 +31,7 @@ public:
 	CGameFont*				pFontSmall;
 	CGameFont*				pFontMedium;
 	CGameFont*				pFontDI;
+	CGameFont*				pFontBigDigit;
 public:
 							CHUDManager			();
 	virtual					~CHUDManager		();
