@@ -20,7 +20,9 @@
 struct Particle
 {
 	enum{
-		FRAME_CCW = (1<<0),
+		FRAME_CCW	= (1<<0),
+		FIRST_FRAME	= (1<<1),
+		LAST_FRAME	= (1<<2),
 	};
 	pVector pos;
 	pVector posB;
@@ -50,8 +52,9 @@ struct ParticleGroup
 	
 	inline BOOL Add(const pVector &pos, const pVector &posB,
 		const pVector &size, const pVector &rot, const pVector &vel, const pVector &color,
+
 		const float alpha = 1.0f,
-		const float age = 0.0f, WORD frame=0, WORD flags=0)
+		const float age = 0.0f, float frame=0.f, WORD flags=Particle::FIRST_FRAME)
 	{
 		if(p_count >= max_particles)
 			return FALSE;
