@@ -34,6 +34,11 @@ void CObject::cNameSect_set		(LPCSTR N)
 	_FREE(NameObject);
 	NameObject=strdup(N); 
 }
+void CObject::setEnabled		(BOOL _enabled)
+{
+	bEnabled = _enabled;	
+	if (cfModel) cfModel->Enable(_enabled); 
+}
 
 //----------------------------------------------------------------------
 // Class	: CXR_Object
@@ -50,7 +55,6 @@ CObject::CObject		( )
 
 	cfModel						= NULL;
 	pVisual						= NULL;
-	sh_Shader					= NULL;
 	pVisualName					= NULL;
 
 	bEnabled					= true;
@@ -152,7 +156,6 @@ BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_ang
 void CObject::OnDeviceDestroy	()
 {
 	if (pVisual)				Render->model_Delete	(pVisual);
-	if (sh_Shader)				Device.Shader.Delete	(sh_Shader);
 }
 
 void CObject::OnDeviceCreate	()
@@ -160,8 +163,6 @@ void CObject::OnDeviceCreate	()
 	// visual and shadow
 	REQ_CREATE					();
 	pVisual						= Render->model_Create	(pVisualName);
-	sh_Shader					= Device.Shader.Create	("effects\\shadow","fx\\shadow",false);
-	sh_Size						= Radius()/2;
 }
 
 // Updates

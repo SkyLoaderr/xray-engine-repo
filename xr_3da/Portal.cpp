@@ -74,7 +74,7 @@ void CSector::Render(CFrustum &F)
 		vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
 		for (; I!=E; I++) {
 			CObject* O = *I;
-			if (O->bVisible) 
+			if (O->getVisible) 
 			{
 				CVisual*	pV = O->Visual();
 				O->clXFORM().transform_tiny(Tpos, pV->bv_Position);

@@ -141,7 +141,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 		{
 			CCFModel&	M = *(*nl_idx);
 										  
-			if (M.Owner()->bVisible) 
+			if (M.Owner()->getVisible) 
 			{
 				if (M._svRayTest(Q))	return TRUE;
 			}

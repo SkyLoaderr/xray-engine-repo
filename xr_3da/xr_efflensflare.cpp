@@ -223,8 +223,8 @@ void CLensFlare::OnMove()
 #ifdef _LEVEL_EDITOR
 	if ( Scene.RayPick(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0, false, 0))
 #else
-	pCreator->CurrentEntity()->CFORM()->Enable( pCreator->CurrentEntity()->bVisible );
-	if ( pCreator->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir) )
+	pCreator->CurrentEntity()->CFORM()->Enable	( pCreator->CurrentEntity()->getVisible() );
+	if ( pCreator->ObjectSpace.RayTest			( Device.vCameraPosition, vSunDir) )
 #endif
 	{
 		fBlend = fBlend - BLEND_SPEED * Device.fTimeDelta;

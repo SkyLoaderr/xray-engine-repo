@@ -2,7 +2,7 @@
 #define __XR_OBJECT_H__
 
 #include "fbasicvisual.h"
-#include "xr_collide_form.h"
+// #include "xr_collide_form.h"
 #include "fcontroller.h"
 #include "xrSheduler.h"
 
@@ -20,12 +20,12 @@ enum ESectorMode						{EPM_AT_LOAD, EPM_AUTO };
 //	CObject
 //-----------------------------------------------------------------------------------------------------------
 class	ENGINE_API						CObject :	
-public CEventBase,
-public CSheduled,
-public DLL_Pure, 
-public CController,
-public pureDeviceDestroy,
-public pureDeviceCreate
+	public CEventBase,
+	public CSheduled,
+	public DLL_Pure, 
+	public CController,
+	public pureDeviceDestroy,
+	public pureDeviceCreate
 {
 public:
 	struct SavedPosition
@@ -35,8 +35,8 @@ public:
 	};
 protected:
 	// some property variables
-	bool								rbEnabled;
-	bool								rbVisible;
+	BOOL								bEnabled;
+	BOOL								bVisible;
 	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
 	LPSTR								NameObject;
 	LPSTR								NameSection;
@@ -55,10 +55,6 @@ protected:
 	// Visibility detection
 	CSector*							pSector;
 	ESectorMode							SectorMode;
-
-	// Shadow
-	Shader*								sh_Shader;
-	float								sh_Size;
 
 	// Information and status
 	void								StatusBegin		();
@@ -91,11 +87,8 @@ public:
 	virtual Fvector&					Position		() 					{ return vPosition; }
 	IC Fvector&							Direction		() 					{ return mRotate.k; }
 	IC Fmatrix&							Rotation		()					{ return mRotate;	}
-	IC CVisual*					Visual			()					{ return pVisual;   }
+	IC CVisual*							Visual			()					{ return pVisual;   }
 	IC CCFModel*						CFORM			() const			{ return cfModel;	}
-	IC void								ForcePosition	(Fvector& P)		{ vPosition.set(P); UpdateTransform(); }
-	IC Shader*							shadowShader	()					{ return sh_Shader;	}
-	IC float							shadowSize		()					{ return sh_Size;	}
 
 	// Name management
 	IC LPCSTR							cName			()					{ return NameObject;	}
@@ -104,14 +97,12 @@ public:
 	void								cNameSect_set	(LPCSTR N);
 	
 	// Visible property
-	PropertyGP(getVisible,setVisible)	BOOL bVisible;
-	void								setVisible		(bool _Visible)		{ rbVisible = _Visible; }
-	BOOL								getVisible		()					{ return rbVisible;	}
+	IC void								setVisible		(BOOL _visible)		{ bVisible = _visible; }
+	IC BOOL								getVisible		()					{ return bVisible;	}
 
 	// Enabled property
-	PropertyGP(getEnable,setEnable)		BOOL bEnabled;
-	IC void								setEnable		(bool _enabled)		{ rbEnabled = _enabled; if (cfModel) cfModel->Enable(_enabled); }
-	IC BOOL								getEnable		()					{ return rbEnabled;	}
+	void								setEnabled		(BOOL _enabled);
+	IC BOOL								getEnabled		()					{ return bEnabled;	}
 
 	//---------------------------------------------------------------------
 										CObject			();
