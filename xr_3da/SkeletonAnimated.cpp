@@ -490,7 +490,7 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	blend_instances	= NULL;
 
 	// Load animation
-	IReader*	MS	= data->open_chunk(OGF_MOTIONS2); R_ASSERT2(MS,"Unsupported motions version.");
+	IReader*	MS		= data->open_chunk(OGF_MOTIONS2); R_ASSERT3(MS,"Unsupported motions version.",N);
     u32			dwCNT	= 0;
     MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
     for (u32 M=0; M<dwCNT; M++)
