@@ -91,13 +91,13 @@ void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\",GetName(),"_",s_name);
-	if (FS.exist(temp,Path.Sounds,name,".wav"))	
+	if (FS.exist(temp,"$game_sounds$",name)) {
 	{
 		Sound->create(dest,TRUE,name,iType);
 		return;
 	}
-	strconcat	(name,"weapons\\","generic_",s_name);
-	if (FS.exist(temp,Path.Sounds,name,".wav"))	
+	strconcat	(name,"weapons\\","generic_",s_name,".wav");
+	if (FS.exist(temp,"$game_sounds$",name))	
 	{
 		Sound->create(dest,TRUE,name,iType);
 		return;

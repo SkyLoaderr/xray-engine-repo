@@ -28,14 +28,14 @@ void CAI_Crow::SAnim::Load(CKinematics* visual, LPCSTR prefix)
 void CAI_Crow::SSound::Load(LPCSTR prefix)
 {
 	string128 fn;
-	if (FS.exist(fn,Path.Sounds,prefix,".wav")){
-		m_Sounds.push_back(sound());
-		::Sound->create(m_Sounds.back(),TRUE,prefix,0);
+	if (FS.exist(fn,"$game_sounds$",prefix,".wav")){
+		m_Sounds.push_back	(sound());
+		::Sound->create		(m_Sounds.back(),TRUE,prefix,0);
 	}
 	for (int i=0; (i<MAX_SND_COUNT)&&(m_Sounds.size()<MAX_SND_COUNT); i++){
 		string64		name;
 		sprintf			(name,"%s_%d",prefix,i);
-		if (FS.exist(fn,Path.Sounds,name,".wav")){
+		if (FS.exist(fn,"$game_sounds$",name,".wav")){
 			m_Sounds.push_back(sound());
 			::Sound->create(m_Sounds.back(),TRUE,name,0);
 		}
