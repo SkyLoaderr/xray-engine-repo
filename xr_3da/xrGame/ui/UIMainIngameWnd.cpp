@@ -18,7 +18,6 @@
 #include "UIInventoryUtilities.h"
 
 #include "../inventory.h"
-#include "../../xr_ioconsole.h"
 
 using namespace InventoryUtilities;
 
@@ -48,6 +47,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_dwMsgShowingTime = 0;
 
 	m_bShowHudInfo = true;
+	m_bShowHudCrosshair = false;
 }
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
@@ -161,8 +161,11 @@ void CUIMainIngameWnd::Draw()
 		m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);
 
 		//!!!
-		Console->Execute("hud_crosshair 0");
-
+		if(psHUD_Flags.test(HUD_CROSSHAIR))
+		{
+			psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
+			m_bShowHudCrosshair = true;
+		}
 	}
 	else 
 	{
@@ -173,7 +176,11 @@ void CUIMainIngameWnd::Draw()
 			UIZoneMap.Render();
 		}
 		//!!!
-		Console->Execute("hud_crosshair 1");
+		if (m_bShowHudCrosshair)
+		{
+			m_bShowHudCrosshair = false;
+			psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+		}
 	}
 }
 
