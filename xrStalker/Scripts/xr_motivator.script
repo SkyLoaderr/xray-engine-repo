@@ -129,7 +129,6 @@ xr_motivator.storage[self.object:id()].tradeseller =
 	    		xr_motivator.storage[self.object:id()].tradeseller.enabled = char_ini:r_bool("tradeseller", "enabled")
 		end   
 	end    
-
 -- Хранение лагеря у костра
 xr_motivator.storage[self.object:id()].kamp = 
 	{	-- Будет ли работать схема? если нет, то он не будет пытаться инициализировать камп
@@ -207,7 +206,10 @@ xr_motivator.storage[self.object:id()].meet = {
 	    		xr_motivator.storage[self.object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
 	  	end   
 	end    
-
+xr_motivator.storage[self.object:id()].reactions = {
+		enabled = true,
+		evn = xr_reactions.events(self.object)
+	}
 
 	--Evaluators
 	manager:add_evaluator (properties["trade_init"], xr_evaluators.evaluator_trade_init(xr_motivator.storage[self.object:id()].tradeseller))
@@ -240,6 +242,7 @@ xr_motivator.storage[self.object:id()].meet = {
 	-- Bind other scripts
 	self.object:disable_talk()
 
+	xr_reactions.add_to_binder(self.object)
 	xr_meet.add_to_binder(self.object)
 	xr_tradeseller.add_to_binder(self.object)
 	xr_kamp.add_to_binder(self.object)
