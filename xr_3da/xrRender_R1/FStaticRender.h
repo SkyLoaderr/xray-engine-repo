@@ -20,6 +20,12 @@
 class CRender												:	public R_dsgraph_structure
 {
 public:
+	enum	{
+		PHASE_NORMAL,
+		PHASE_POINT,
+		PHASE_SPOT
+	};
+public:
 	// Sector detection and visibility
 	CSector*												pLastSector;
 	Fvector													vLastCameraPos;

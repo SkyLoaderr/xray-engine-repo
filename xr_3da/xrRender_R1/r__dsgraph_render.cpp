@@ -423,7 +423,7 @@ void	R_dsgraph_structure::r_dsgraph_render_sorted	()
 void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
 {
 	R_ASSERT						(_sector);
-	RImplementation.marker			++;
+	RImplementation.marker			++;			// !!! critical here
 
 	// Save and build new frustum, disable HOM
 	CFrustum	ViewSave			= ViewBase;
