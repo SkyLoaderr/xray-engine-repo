@@ -18,8 +18,13 @@
 #include "ai_alife_templates.h"
 #include "xrServer_Objects_ALife_Items.h"
 #include "ai_alife_predicates.h"
-#include "ai_space.h"
-#include "ai_primary_funcs.h"
+
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+	#include "ai_space.h"
+	#include "ai_primary_funcs.h"
+#endif
+#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTraderAbstract
@@ -809,8 +814,15 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	strcpy						(m_caKnownCustomers,"m_trader0000");
 	m_tpKnownCustomers.clear	();
 	m_tpALife					= 0;
-	m_cpEquipmentPreferences.resize(iFloor(getAI().m_pfEquipmentType->ffGetMaxResultValue()));
-	m_cpMainWeaponPreferences.resize(iFloor(getAI().m_pfMainWeaponType->ffGetMaxResultValue()));
+	m_cpEquipmentPreferences.resize(5);
+	m_cpMainWeaponPreferences.resize(4);
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+	m_cpEquipmentPreferences.resize(iFloor(getAI().m_pfEquipmentType->ffGetMaxResultValue() + .5f));
+	m_cpMainWeaponPreferences.resize(iFloor(getAI().m_pfMainWeaponType->ffGetMaxResultValue() + .5f));
+	R_ASSERT2					((iFloor(getAI().m_pfEquipmentType->ffGetMaxResultValue() + .5f) == 5) && (iFloor(getAI().m_pfMainWeaponType->ffGetMaxResultValue() + .5f) == 4),"Recompile Level Editor and xrAI and rebuild file \"game.spawn\"!");
+#endif
+#endif
 	for (int i=0, n=m_cpEquipmentPreferences.size(); i<n; i++)
 		m_cpEquipmentPreferences[i] = u8(::Random.randI(3));
 	for (int i=0, n=m_cpMainWeaponPreferences.size(); i<n; i++)
