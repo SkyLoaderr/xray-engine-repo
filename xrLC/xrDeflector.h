@@ -1,5 +1,7 @@
 #pragma once
 
+#include "hash2D.h"
+
 struct UVtri : public _TCF 
 {
 	Face*	owner;
@@ -44,6 +46,8 @@ public:
 	int				iArea;
 
 	vector<R_Light>	LightsSelected;
+
+	typedef hash2D<UVtri*,128,128>	HASH;
 public:
 	CDeflector		();
 	~CDeflector		();
@@ -59,31 +63,38 @@ public:
 
 	VOID	Prepare		();
 	VOID	Light		(float P_Base);
-	VOID	L_Direct	(float P_Base);
-	VOID	L_Radiosity	(float P_Base);
+	VOID	L_Direct	(float P_Base, HASH& H);
+	VOID	L_Radiosity	(float P_Base, HASH& H);
 	VOID	Save		();
 
 	WORD	GetBaseMaterial() { return tris.front().owner->dwMaterial;	}
+
+	void	Bounds		(DWORD ID, Fbox2& dest)
+	{
+		UVtri& TC		= tris[ID];
+		dest.min.set	(TC.uv[0].conv());
+		dest.max.set	(TC.uv[0].conv());
+		dest.modify		(TC.uv[1].conv());
+		dest.modify		(TC.uv[2].conv());
+	}
+	void	Bounds_Summary (Fbox2& bounds)
+	{
+		bounds.invalidate();
+		for (DWORD I=0; I<tris.size(); I++)
+		{
+			Fbox2	B;
+			Bounds	(I,B);
+			bounds.merge(B);
+		}
+	}
 };
 
 typedef vector<UVtri>::iterator UVIt;
-typedef vector<UVtri*>	vecPT;
-typedef vecPT::iterator	vecPTIT;
-
-const int	i_size	= 2;
-const float f_size	= 4.f/512.f;
-const int	h_size	= 512/i_size;
-
-IC int	slot(float t)
-{	return iFloor(t/f_size);	}
-
 IC float Lrnd()
 {
 	return g_params.m_lm_dither*2.f*float(rand())/float(RAND_MAX) + 
 		(1.f - g_params.m_lm_dither);
 }
-
-extern vecPT	HASH[h_size][h_size];
 
 extern void		Jitter_Select(UVpoint* &Jitter, DWORD& Jcount);
 

@@ -212,34 +212,23 @@ void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light
 }
 
 
-vecPT	HASH[h_size][h_size];
 VOID CDeflector::Light(float P_Base)
 {
-	// Clearing hash table
-	for (DWORD V=0; V<h_size; V++)
-		for (DWORD U=0; U<h_size; U++)
-			HASH[V][U].clear();
+	hash2D<UVtri*,128,128>	hash;
 
 	// Filling it with new triangles
-	Fbox bb; bb.invalidate();
+	Fbox bb; bb.invalidate	();
+	Fbox2 bounds;
+	Bounds_Summary			(bounds);
+	hash.initialize			(bounds);
 
-	// Sphere : calculate center & radius in 3D space
-	for (UVIt it=tris.begin(); it!=tris.end(); it++)
+	for (DWORD fid=0; fid<tris.size(); fid++)
 	{
-		// 2D rectangle of the tri
-		UVpoint min,max,p;
-		p = it->uv[0]; min.set(p); max.set(p);
-		p = it->uv[1]; min.min(p); max.max(p);
-		p = it->uv[2]; min.min(p); max.max(p);
+		UVtri* T		= &(tris[fid]);
+		Bounds			(fid,bounds);
+		hash.add		(bounds,T);
 
-		// Dispose it
-		int U1=slot(min.u); int U2=slot(max.u);
-		int V1=slot(min.v); int V2=slot(max.v);
-		for (int V=V1; V<=V2; V++)
-			for (int U=U1; U<=U2; U++)
-				HASH[V][U].push_back(it);
-
-		Face	*F = it->owner;
+		Face*	F		= T->owner;
 		for (int i=0; i<3; i++)	bb.modify(F->v[i]->P);
 	}
 	bb.getsphere(Center,Radius);
@@ -259,8 +248,8 @@ VOID CDeflector::Light(float P_Base)
 	if (LightsSelected.empty()) return;
 
 	Deflector			= this;
-	if (g_params.m_bRadiosity)	L_Radiosity	(P_Base);
-	else						L_Direct	(P_Base);
+	if (g_params.m_bRadiosity)	L_Radiosity	(P_Base,hash);
+	else						L_Direct	(P_Base,hash);
 
 	LightsSelected.clear	();
 }
