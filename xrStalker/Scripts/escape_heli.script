@@ -56,6 +56,9 @@ function update()
 			attack_end:setHMS( 0, 8, 0 )
 			attack_end:add( game.get_game_time() )
 
+			-- в первом заходе ракетами не стрелять
+			heli_mgr.heliObject.m_use_rocket_on_attack = false
+
 			state_init = false
 		end
 
@@ -67,6 +70,11 @@ function update()
 				table.remove( newbies, 1 )
 				heli_mgr:set_enemy( newbies[1], 1000 )
 			end
+		end
+
+		-- после первого захода стрелять ракетами
+		if heli_mgr.attack_passes = 999 then
+			heli_mgr.heliObject.m_use_rocket_on_attack = true
 		end
 
 		-- если все умерли
