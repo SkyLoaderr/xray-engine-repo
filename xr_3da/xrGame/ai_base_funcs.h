@@ -41,9 +41,9 @@ public:
 			return(0);
 		else
 			if (fTemp >= m_fMaxResultValue)
-				return(iFloor(m_fMaxResultValue/dwDiscretizationValue));
+				return(dwDiscretizationValue - 1);
 			else {
-				float fDummy = (m_fMaxResultValue - m_fMinResultValue)/float(dwDiscretizationValue);
+				float fDummy = (m_fMaxResultValue - m_fMinResultValue + 1)/float(dwDiscretizationValue);
 				fDummy = (fTemp - m_fMinResultValue)/fDummy;
 				return(iFloor(fDummy));
 			}

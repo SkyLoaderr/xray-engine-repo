@@ -74,7 +74,7 @@ public:
 	CPersonalCreatureTypeFunction()
 	{
 		m_fMinResultValue = 1.0;
-		m_fMaxResultValue = 22.0;
+		m_fMaxResultValue = 21.0;
 		strcat(m_caName,"PersonalCreatureType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -88,7 +88,7 @@ public:
 
 	CPersonalWeaponTypeFunction()
 	{
-		m_fMinResultValue = 0.0;
+		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"PersonalWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
@@ -223,7 +223,7 @@ public:
 
 	CEnemyWeaponTypeFunction()
 	{
-		m_fMinResultValue = 0.0;
+		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"EnemyWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
@@ -238,7 +238,7 @@ public:
 
 	CEnemyEquipmentCostFunction()
 	{
-		m_fMinResultValue = 0.0;
+		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"EnemyEquipmentCost");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
@@ -253,7 +253,7 @@ public:
 
 	CEnemyRukzakWeightFunction()
 	{
-		m_fMinResultValue = 0.0;
+		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"EnemyRukzakWeight");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
@@ -268,7 +268,7 @@ public:
 
 	CEnemyAnomalityFunction()
 	{
-		m_fMinResultValue = 0.0;
+		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"EnemyAnomality");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
@@ -404,7 +404,7 @@ public:
 
 	CItemValue()
 	{
-		m_fMinResultValue = 0.0;
+		m_fMinResultValue = 100.0;
 		m_fMaxResultValue = 2000.0;
 		strcat(m_caName,"ItemValue");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);

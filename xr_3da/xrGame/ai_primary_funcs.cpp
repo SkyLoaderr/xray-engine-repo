@@ -635,7 +635,7 @@ float CMainWeaponPreference::ffGetValue()
 	else {
 		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(getAI().m_tpCurrentALifeMember);
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in EquipmentPreference evaluation function");
-		return					(m_fLastValue = l_tpALifeHumanAbstract->m_cpMainWeaponPreferences[getAI().m_pfMainWeaponType->dwfGetDiscreteValue()]);
+		return					(m_fLastValue = l_tpALifeHumanAbstract->m_cpMainWeaponPreferences[getAI().m_pfMainWeaponType->dwfGetDiscreteValue(iFloor(getAI().m_pfMainWeaponType->ffGetMaxResultValue() + .5f))]);
 	}
 }
 

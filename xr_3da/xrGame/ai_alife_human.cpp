@@ -87,7 +87,7 @@ bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint()
 void CSE_ALifeHumanAbstract::vfCheckForDeletedEvents()
 {
 	PERSONAL_EVENT_P_IT I = std::remove_if(m_tpEvents.begin(),m_tpEvents.end(),CRemovePersonalEventPredicate(m_tpALife->m_tEventRegistry));
-	m_tpEvents.erase(I,m_tpEvents.end());
+	m_tpEvents.erase	(I,m_tpEvents.end());
 }
 
 void CSE_ALifeHumanAbstract::vfChooseHumanTask()
@@ -315,7 +315,7 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 	ITEM_P_LIST_IT					E = tpItemVector.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(*I);
-		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name)) {
+		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && bfCanGetItem(l_tpALifeItemAmmo)) {
 			m_tpALife->vfAttachItem(*this,l_tpALifeItemAmmo,m_tGraphID);
 			l_dwCount++;
 			if (l_dwCount > MAX_AMMO_ATTACH_COUNT)
@@ -380,6 +380,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 	CSE_ALifeItem					*l_tpALifeItemBest;
 	float							l_fItemBestValue;
 	
+	getAI().m_tpCurrentALifeMember	= this;
 	if ((tTakeType == eTakeTypeAll) || (tTakeType == eTakeTypeMin)) {
 		// choosing equipment
 		l_tpALifeItemBest				= 0;
@@ -442,11 +443,11 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 							break;
 						}
 						case 2 : {
-							if ((j != 8) && (j != 9))
+							if ((j != 6) && (j != 8) && (j != 9))
 								continue;
 							l_fCurrentValue = getAI().m_pfMainWeaponValue->ffGetValue();
 							break;
-								}
+						}
 						case 3 : {
 							if (j != 7)
 								continue;
@@ -463,7 +464,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 				if (l_tpALifeItemBest) {
 					m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,m_tGraphID);
 					attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemList);
-					remove_if				(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
+					ITEM_P_LIST_IT			I = remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
+					m_tpALife->m_tpItemList.erase(I,m_tpALife->m_tpItemList.end());
 				}
 			}
 		}
@@ -487,8 +489,10 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 						break;
 				}
 			}
-			if (l_dwCount)
-				remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
+			if (l_dwCount) {
+				ITEM_P_LIST_IT			I = remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
+				m_tpALife->m_tpItemList.erase(I,m_tpALife->m_tpItemList.end());
+			}
 		}
 		
 		// choosing medikits
@@ -507,8 +511,10 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 						break;
 				}
 			}
-			if (l_dwCount)
-				remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
+			if (l_dwCount) {
+				ITEM_P_LIST_IT			I = remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
+				m_tpALife->m_tpItemList.erase(I,m_tpALife->m_tpItemList.end());
+			}
 		}
 		// choosing detector
 		l_tpALifeItemBest				= 0;
@@ -551,7 +557,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 			if (bfCanGetItem(l_tpALifeItem))
 				m_tpALife->vfAttachItem	(*this,l_tpALifeItem,m_tGraphID);
 		}
-		remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
+		I							= remove_if(m_tpALife->m_tpItemList.begin(),m_tpALife->m_tpItemList.end(),CRemoveAttachedItemsPredicate());
+		m_tpALife->m_tpItemList.erase(I,m_tpALife->m_tpItemList.end());
 	}
 }
 
@@ -581,7 +588,10 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
 				m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot] = l_tpALifeItemWeapon;
 		}
 	}
-	remove_if		(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CRemoveSlotAndCellItemsPredicate(&m_tpALife->m_tpWeaponVector,6));
+	{
+		ITEM_P_IT		I = remove_if(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CRemoveSlotAndCellItemsPredicate(&m_tpALife->m_tpWeaponVector,6));
+		m_tpTempItemBuffer.erase(I,m_tpTempItemBuffer.end());
+	}
 
 	sort			(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CSortItemVolumePredicate());
 
