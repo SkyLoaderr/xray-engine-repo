@@ -11,6 +11,7 @@
 class ENGINE_API CFontSmall : public CFontBase
 {
 public:
+	CFontSmall();
 	virtual	void	OnInitialize	();
 };
 

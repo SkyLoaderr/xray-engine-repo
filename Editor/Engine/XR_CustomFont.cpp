@@ -12,7 +12,6 @@ CFontBase::CFontBase()
 	Stream			= Device.Streams.Create(FVF::F_TL,MAX_CHARS*4);
 	iNumber			= 0;
 	pShader			= 0;
-	OnDeviceCreate	();
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 

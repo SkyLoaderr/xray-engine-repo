@@ -14,6 +14,7 @@ protected:
 	virtual	float	GetRealHeight(float sz)		{return (sz*TextureSize.y/iNumber)*scale;}
 	virtual	float	GetCurrentSize()			{return fCurrentSize*TextureSize.y/iNumber;}
 public:
+	CFontHUD();
 	virtual	void	OnInitialize	();
 
 	void			SetScale		(float sc)	{scale=sc;		}

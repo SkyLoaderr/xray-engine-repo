@@ -7,6 +7,7 @@
 class ENGINE_API CFontGame : public CFontBase
 {
 public:
+	CFontGame();
 	virtual	void	OnInitialize	();
 };
 
