@@ -1,79 +1,59 @@
 
 
---' Ментальное состояние тела
---' мы уже находимся в необходимом состоянии?
-class "eva_state_mgr_mental" (property_evaluator)
-function eva_state_mgr_mental:__init(name, st) super (nil, name)
+--' Повороты тела
+--' Смотрим ли мы сейчас туда, куда нужно или нет?
+class "eva_state_mgr_direction" (property_evaluator)
+function eva_state_mgr_direction:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_mental:evaluate()
-	return (state_lib.states[self.st.target_state].mental == nil) or
-		   (state_lib.states[self.st.target_state].mental == self.object:mental_state())
+function eva_state_mgr_direction:evaluate()
+	printf("direction")
+	
+	if state_lib.states[self.st.target_state].direction == nil then return true end
+	
+	if 
+	
+	local dir = self.object:position():sub(db.actor:position())
+	
+	self.object:direction()
+	return true
 end
 
---' нужно ли нам быть в состоянии FREE
-class "eva_state_mgr_mental_free" (property_evaluator)
-function eva_state_mgr_mental_free:__init(name, st) super (nil, name)
+--' Поворачиваемся ли мы сейчас
+class "eva_state_mgr_direction_turning" (property_evaluator)
+function eva_state_mgr_direction_turning:__init(name, st) super (nil, name)
 	self.st = st
 end
-function eva_state_mgr_mental_free:evaluate()
-	return state_lib.states[self.st.target_state].mental == anim.free
-end
-
---' нужно ли нам быть в состоянии DANGER
-class "eva_state_mgr_mental_danger" (property_evaluator)
-function eva_state_mgr_mental_danger:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_mental_danger:evaluate()
-	return state_lib.states[self.st.target_state].mental == anim.danger
-end
-
---' находимся ли мы сейчас во FREE
-class "eva_state_mgr_mental_free_now" (property_evaluator)
-function eva_state_mgr_mental_free_now:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_mental_free_now:evaluate()
-	return self.object:mental_state() == anim.free
-end
-
---' находимся ли мы сейчас в DANGER
-class "eva_state_mgr_mental_danger_now" (property_evaluator)
-function eva_state_mgr_mental_danger_now:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_mental_danger_now:evaluate()
-	return self.object:mental_state() == anim.danger
+function eva_state_mgr_direction_turning:evaluate()
+	printf("%s", utils.to_str(self.object:is_body_turning()))
+	return false
 end
 
 
---' Включаем свободное состояние
-class "act_state_mgr_mental_free" (action_base)
-function act_state_mgr_mental_free:__init(name) super (nil, name)
+--' Включаем поворот
+class "act_state_mgr_direction_turn" (action_base)
+function act_state_mgr_direction_turn:__init(name) super (nil, name)
 end
-function act_state_mgr_mental_free:initialize()
+function act_state_mgr_direction_turn:initialize()
 	action_base.initialize(self)
-	self.object:set_mental_state(anim.free)
 end
-function act_state_mgr_mental_free:execute()
+function act_state_mgr_direction_turn:execute()
 	action_base.execute(self)
 end
-function act_state_mgr_mental_free:finalize()
+function act_state_mgr_direction_turn:finalize()
 	action_base.finalize(self)
 end
 
---' Включаем возбужденное состояние
-class "act_state_mgr_mental_danger" (action_base)
-function act_state_mgr_mental_danger:__init(name) super (nil, name)
+--' Ожидание поворота
+class "act_state_mgr_direction_wait" (action_base)
+function act_state_mgr_direction_wait:__init(name) super (nil, name)
 end
-function act_state_mgr_mental_danger:initialize()
+function act_state_mgr_direction_wait:initialize()
 	action_base.initialize(self)
-	self.object:set_mental_state(anim.danger)
 end
-function act_state_mgr_mental_danger:execute()
+function act_state_mgr_direction_wait:execute()
 	action_base.execute(self)
 end
-function act_state_mgr_mental_danger:finalize()
+function act_state_mgr_direction_wait:finalize()
 	action_base.finalize(self)
 end

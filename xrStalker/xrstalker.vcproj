@@ -1340,6 +1340,9 @@
 							RelativePath=".\scripts\state_mgr_bodystate.script">
 						</File>
 						<File
+							RelativePath=".\scripts\state_mgr_direction.script">
+						</File>
+						<File
 							RelativePath=".\scripts\state_mgr_mental.script">
 						</File>
 						<File
