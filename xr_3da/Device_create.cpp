@@ -63,13 +63,8 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	// ******************** Fog parameters
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,			0					));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_RANGEFOGENABLE,	FALSE				));
-	if (HW.Caps.bTableFog)	{
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGTABLEMODE,	D3DFOG_LINEAR		));
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGVERTEXMODE,	D3DFOG_NONE			));
-	} else {
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGTABLEMODE,	D3DFOG_NONE			));
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR		));
-	}
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGTABLEMODE,		D3DFOG_NONE			));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGVERTEXMODE,		D3DFOG_LINEAR		));
 
 	// Signal everyone - device created
 	RCache.OnDeviceCreate		();
