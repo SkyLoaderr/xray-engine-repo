@@ -21,8 +21,9 @@ private:
 
 class CZoneEffector {
 	SPPInfo			state;
-	float			r_min;
-	float			r_max;
+	float			r_min_perc;		// min_radius (percents [0..1])
+	float			r_max_perc;		// max_radius (percents [0..1])
+	float			radius;
 	
 	CZoneEffectPP	*p_effector;
 
@@ -31,6 +32,7 @@ public:
 			~CZoneEffector	();
 
 	void	Load			(LPCSTR section);
+	void	SetRadius		(float r);
 	void	Update			(float dist);
 
 	// Test

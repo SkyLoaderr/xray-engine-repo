@@ -1,21 +1,16 @@
 #pragma	once
 
-#include "../../../effectorPP.h"
+#include "../../../effector.h"
 
-#pragma todo("Dima to AlexMX : Move effector definition to engine headers, or move these headers to the xrGame to hold them together")
-#define BLOODSUCKER_EFFECTOR_TYPE_ID	3
+#define BLOODSUCKER_EFFECTOR_TYPE_ID	6
 
-class CBloodsuckerEffector : public CEffectorPP {
-protected:
-	typedef CEffectorPP inherited;	
-	float	time;
-	float	max_past;
-	SPPInfo max_power;
+class CBloodsuckerEffector : public CEffector {
+	typedef CEffector inherited;	
 
+	float total;
+		
 public:
 					CBloodsuckerEffector		(float time);
-	virtual			~CBloodsuckerEffector		();
-	virtual	BOOL	Process						(SPPInfo& pp);
-			void	Init						();
+	virtual	BOOL	Process						(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 };
 

@@ -197,7 +197,7 @@ void CBitingAttack::Run()
 				}
 			}
 			
-			if (!b_silent_run) pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 
 			break;
 
@@ -245,6 +245,8 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			pMonster->MoveToTarget(m_tEnemy.obj);
 			pMonster->set_use_dest_orientation	(false);
+
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundSteal, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 			break;
 		
 		// ******************
@@ -296,7 +298,7 @@ void CBitingAttack::Run()
 		case ACTION_ROTATION_JUMP: 
 		// **********************
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundLanding);
 			pMonster->MotionMan.SetSpecParams	(ASP_ROTATION_JUMP);
 			next_rot_jump_enabled				= m_dwCurrentTime + Random.randI(3000,4000);
 			pMonster->disable_path				();
@@ -419,7 +421,6 @@ bool CBitingAttack::CheckThreaten()
 bool CBitingAttack::CheckSteal()
 {
 	if (!flags.is(AF_ATTACK_RAT) &&  flags.is(AF_THIS_IS_THE_ONLY_ENEMY) &&  flags.is(AF_ENEMY_DOESNT_SEE_ME) && !flags.is(AF_ENEMY_GO_FARTHER_FAST)) {
-		b_silent_run = true;
 		
 		// Вычислить отклонение по пути
 		float path_angle = 0.f;
@@ -440,7 +441,7 @@ bool CBitingAttack::CheckSteal()
 		}
 
 		if ((path_angle < STEAL_MAX_ANGLE) && 	(dist > (m_fDistMax + 2.f) && (dist < 10.f))) return true;
-	} else b_silent_run = false;
+	}
 	
 	return false;
 }

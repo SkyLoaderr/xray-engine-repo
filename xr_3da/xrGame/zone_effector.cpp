@@ -65,7 +65,8 @@ void CZoneEffectPP::Destroy()
 ////////////////////////////////////////////////////////////////////////////////////
 CZoneEffector::CZoneEffector() 
 {
-	p_effector = 0;
+	p_effector  = 0;
+	radius		= 1;
 }
 
 CZoneEffector::~CZoneEffector()
@@ -88,8 +89,10 @@ void CZoneEffector::Load(LPCSTR section)
 	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &state.color_gray.r, &state.color_gray.g, &state.color_gray.b);
 	sscanf(pSettings->r_string(section,"color_add"),	"%f,%f,%f", &state.color_add.r,	&state.color_add.g,	 &state.color_add.b);
 
-	r_min	= pSettings->r_float(section,"radius_min");
-	r_max	= pSettings->r_float(section,"radius_max");
+	r_min_perc	= pSettings->r_float(section,"radius_min");
+	r_max_perc	= pSettings->r_float(section,"radius_max");
+
+	VERIFY(r_min_perc <= r_max_perc);
 }
 
 void CZoneEffector::Activate()
@@ -100,15 +103,19 @@ void CZoneEffector::Activate()
 
 void CZoneEffector::Update(float dist)
 {
+	// count r_min && r_max
+	float min_r = radius * r_min_perc;
+	float max_r = radius * r_max_perc;
+
 	if (p_effector) {
-		if (dist > r_max) {
+		if (dist > max_r) {
 			p_effector->Destroy();
 			p_effector = 0;
 		}
-	} else if (dist < r_max) Activate();
+	} else if (dist < max_r) Activate();
 	
 	if (p_effector) {
-		float f = (r_max - dist) / (r_max - r_min);
+		float f = (max_r - dist) / (max_r - min_r);
 		clamp(f,0.1f,1.0f);
 		p_effector->Update(f);
 	}
@@ -133,11 +140,14 @@ void CZoneEffector::SetParam(u32 type, float val)
 		case COLOR_ADD_R:		state.color_add.r		= val; break;
 		case COLOR_ADD_G:		state.color_add.g		= val; break;
 		case COLOR_ADD_B:		state.color_add.b		= val; break;
-		case DIST_MIN:			r_min					= val; break;
-		case DIST_MAX:			r_max					= val; break;
+		case DIST_MIN:			r_min_perc				= val; break;
+		case DIST_MAX:			r_max_perc				= val; break;
 		default: NODEFAULT;
 	}
 }
 
-
+void CZoneEffector::SetRadius(float r)
+{
+	radius	= r;
+}
 

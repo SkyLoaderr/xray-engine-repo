@@ -13,6 +13,8 @@ public:
 	virtual void Load(LPCSTR section);
 	//virtual void Update(u32 dt);
 	virtual void UpdateCL();
+	virtual BOOL net_Spawn(LPVOID DC);
+
 	virtual void Postprocess(f32 val);
 
 	u32 m_pp_time;

@@ -38,7 +38,6 @@ class CBitingAttack : public IState {
 	Flags32			frame_flags;
 	Flags32			flags;
 
-	bool			b_silent_run;					// не издавать звука во время бега
 	bool			b_in_threaten;
 
 	CJumping		*pJumping;

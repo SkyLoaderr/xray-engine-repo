@@ -36,6 +36,14 @@ void CMosquitoBald::Load(LPCSTR section)
 	m_effector.Load(pSettings->r_string(section,"postprocess_new"));
 }
 
+BOOL CMosquitoBald::net_Spawn(LPVOID DC)
+{
+	inherited::net_Spawn(DC);
+
+	m_effector.SetRadius(CFORM()->getSphere().R);
+
+	return TRUE;
+}
 
 //void CMosquitoBald::Update(u32 dt) {
 void CMosquitoBald::UpdateCL() 
