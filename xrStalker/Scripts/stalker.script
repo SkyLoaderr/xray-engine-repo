@@ -97,7 +97,7 @@ end
 
 function stalker_script:reinit		()
 	local					motivations	= {}
-	local					operatorts	= {}
+	local					operators	= {}
 	local					properties	= {}
 	local					manager		= self.object:motivation_action_manager()
 	local					goal		= world_state()
