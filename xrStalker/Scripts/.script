@@ -1,0 +1,117 @@
+function printf(fmt,...)
+	log(string.format(fmt,unpack(arg)))
+end
+
+function wait_game(time_to_wait)
+	if (time_to_wait == nil) then
+		coroutine.yield()
+	else
+		local time_to_stop = game.time() + time_to_wait
+		while game.time() <= time_to_stop do
+			coroutine.yield()
+		end
+	end
+end
+
+function wait(time_to_wait)
+	if (time_to_wait == nil) then
+		coroutine.yield()
+	else
+		local time_to_stop = device().time_global + time_to_wait
+		while device().time_global <= time_to_stop do
+			coroutine.yield()
+		end
+	end
+end
+
+function action(obj,...)
+	local act = entity_action()
+	local i = 1
+	while true do
+		if (arg[i] ~= nil) then
+			act:set_action(arg[i])
+		else
+			break
+		end
+		i = i + 1
+	end
+	obj:command(act)
+end
+
+class "pp_effector" (effector)
+
+function pp_effector:__init(effector_type,start_time,dest_power,life_time) super(effector_type,start_time)
+	self.start_time = start_time
+	self.stop_time	= start_time + life_time
+	self.max_power	= dest_power
+end
+
+function pp_effector:process(pp)
+	effector.process(self,pp)
+
+	local curr_time	= device().time_global
+	local d			= 0.0
+
+	if curr_time < self.start_time then
+		d			= 0.0
+	else
+	    if curr_time < self.stop_time then
+	    	d 			= (curr_time - self.start_time) / (self.stop_time - self.start_time)
+	    else
+	    	self.info	= self.max_power
+	    	return      true
+		end
+	end
+	
+	local dual		= duality()
+	local noise		= noise()
+	local color		= color()
+
+	dual.h			= self.max_power.dual.h 			* d
+	dual.v			= self.max_power.dual.v 			* d
+	noise.grain		= self.max_power.noise.grain 		* d
+	noise.intensity = self.max_power.noise.intensity 	* d
+	color.r			= self.max_power.noise.color.r 		* d
+	color.g			= self.max_power.noise.color.g 		* d
+	color.b			= self.max_power.noise.color.b 		* d 
+	color.a			= self.max_power.noise.color.a 		* d 
+	pp.gray			= self.max_power.gray 				* d
+	pp.blur			= self.max_power.blur 				* d
+
+	noise.color		= color
+	pp.dual			= dual
+	pp.noise		= noise
+	
+	self.info		= pp
+	
+	return          true
+end
+
+function pp_effector:finished()
+	return			self.stop_time < device().time_global
+end
+
+function get_level_object(obj_name)
+	res				= level.object(obj_name)
+	while res == nil do
+		res			= level.object(obj_name)
+		wait		()
+	end
+	return			res
+end
+
+function get_actor()
+	res				= level.actor()
+	while res == nil do
+		res			= level.actor()
+		wait		()
+	end
+	return			res
+end
+
+
+
+-- для устройства артефактов
+--function artifact_merge()
+--	log	("artifact merge in global space!")
+--end
