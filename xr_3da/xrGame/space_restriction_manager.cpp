@@ -163,6 +163,7 @@ IC	void CSpaceRestrictionManager::update_restrictions		(ALife::_OBJECT_ID id, re
 			restrict			(id,out_restrictions,in_restrictions);
 		return;
 	}
+	VERIFY						(!client_restriction->applied());
 	ref_str						new_out_restrictions = client_restriction->out_restrictions();
 	ref_str						new_in_restrictions = client_restriction->in_restrictions();
 	update_restrictions<add>	(new_out_restrictions,out_restrictions);
@@ -221,6 +222,7 @@ void CSpaceRestrictionManager::change_restrictions			(ALife::_OBJECT_ID id, ref_
 		restrict				(id,add_out_restrictions,add_in_restrictions);
 		return;
 	}
+	VERIFY						(!client_restriction->applied());
 	ref_str						new_out_restrictions = client_restriction->out_restrictions();
 	ref_str						new_in_restrictions = client_restriction->in_restrictions();
 	update_restrictions<false>	(new_out_restrictions,remove_out_restrictions);
