@@ -4,6 +4,7 @@
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "dRay/include/dRay.h"
+#include <ode\src\objects.h>
 //void _stdcall dGeomTransformSetInfo (dGeomID g, int mode);
 /////////////////////////////////////////
 static dContact bulletContact;
@@ -513,9 +514,9 @@ void CPHWorld::Create(){
 	phWorld = dWorldCreate();
 	Space = dHashSpaceCreate();
 	ContactGroup = dJointGroupCreate(0);		
-	dWorldSetGravity(phWorld, 0, -2.f*9.81f, 0);
+	dWorldSetGravity(phWorld, 0,-2.f*9.81f, 0);//-2.f*9.81f
 	Mesh.Create(Space,phWorld);
-	Jeep.Create(Space,phWorld);
+	Jeep.Create(0,phWorld);//(Space,phWorld)
 	Gun.Create(Space);
 	dReal k_p=1000000.f;
 	dReal k_d=2000.f;
@@ -532,10 +533,10 @@ void CPHWorld::Destroy(){
 	Mesh.Destroy();
 	Jeep.Destroy();
 	Gun.Destroy();
-	vector<CPHElement*>::iterator i;
-	for(i=elements.begin();i!=elements.end();i++){
-	delete(*i);
-	}
+	//vector<CPHElement*>::iterator i;
+	//for(i=elements.begin();i!=elements.end();i++){
+	//delete(*i);
+	//}
 	dJointGroupEmpty(ContactGroup);
 	dSpaceDestroy(Space);
 	dWorldDestroy(phWorld);
@@ -544,18 +545,30 @@ void CPHWorld::Destroy(){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-
-void CPHWorld::Step(dReal step){
+static dReal rest=0.f;
+void CPHWorld::Step(dReal step)
+{
 			// compute contact joints and forces
 	///return;
-	if(step<=0.02f){
-			
 
-			const dReal k_p=1000000.f;
-			const dReal k_d=2000.f;
+	//step+=astep;
+	const dReal max_step=0.02f;//0.0034f;
+	const dReal min_step=0.005f;
+	const dReal k_p=600000.f;//550000.f;///1000000.f;
+	const dReal k_d=40000.f;
+	//if(step>0.019){
+	//step=0.03f;
+
+	if(step<=max_step){
+			
+	
+		//if((step+=rest)<min_step) return ;
+		//rest=0;
 		
 			dWorldSetERP(phWorld,  step*k_p / (step*k_p + k_d));
 			dWorldSetCFM(phWorld,  1.f / (step*k_p + k_d));
+			//dWorldSetERP(phWorld,  0.8);
+			//dWorldSetCFM(phWorld,  0.00001);
 
 			Jeep.JointTune(step);
 
@@ -581,14 +594,16 @@ void CPHWorld::Step(dReal step){
 				
 	}
 	else{
-		UINT n=(UINT)(step/0.02f)+1;
+		UINT n=(UINT)(step/max_step)+1;
 		for(int i=0; i<n;i++)
 		{
-			const dReal k_p=1000000.f;
-			const dReal k_d=2000.f;
-		
+	
 			dWorldSetERP(phWorld,  step*k_p/n / (step*k_p/n + k_d));
 			dWorldSetCFM(phWorld,  1.f / (step*k_p/n + k_d));
+
+//			dWorldSetERP(phWorld,  0.2);
+//			dWorldSetCFM(phWorld,  0.0001);
+
 
 			Jeep.JointTune(step/n);
 			dSpaceCollide(Space, 0, &NearCallback);
@@ -603,6 +618,8 @@ void CPHWorld::Step(dReal step){
 		}
 	}
 Jeep.DynamicData.CalculateData();
+//	}
+//step=0.f;
 }
 
 static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
@@ -634,9 +651,9 @@ static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 					bulletContact.geom.depth=0.5;
 				
 					bulletContact.surface.mode = dContactBounce;
-					bulletContact.surface.mu = 0.f;
+					bulletContact.surface.mu = 0.0f;
 					bulletContact.surface.bounce = 0.3f;
-					bulletContact.surface.bounce_vel = 0.05f;
+					bulletContact.surface.bounce_vel = 0.01f;
 					}
 				}
 	
@@ -683,9 +700,9 @@ else
 	{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 2500.f;
-		contacts[i].surface.bounce = 0.1f;
-		contacts[i].surface.bounce_vel =0.005f;
+		contacts[i].surface.mu = 250.f;
+		contacts[i].surface.bounce = 0.0f;//0.1f;
+		contacts[i].surface.bounce_vel =0.001f;//0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 		}
@@ -726,7 +743,7 @@ isShooting=true;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////Implementation for CPhysicsElement
-void CPHElement::			add_Box		(Fobb&		V){
+void CPHElement::			add_Box		(const Fobb&		V){
 	m_boxes_data.push_back(V);
 }
 
@@ -752,7 +769,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 														dGeomTransformSetInfo(m_trans.back(),1);
 														}
 
-void CPHElement::			add_Sphere	(Fsphere&	V){
+void CPHElement::			add_Sphere	(const Fsphere&	V){
 	m_spheras_data.push_back(V);
 }
 
@@ -769,7 +786,9 @@ void CPHElement::			create_Sphere	(Fsphere&	V){
 														dGeomTransformSetInfo(m_trans.back(),1);		
 														};
 void CPHElement::			build	(dSpaceID space){
+
 m_body=dBodyCreate(phWorld);
+dBodySetMass(m_body,&m_mass);
 m_group=dCreateGeomGroup(space);
 Fvector mc=get_mc_data();
 //m_start=mc;
@@ -782,6 +801,20 @@ vector<Fobb>::iterator i_box;
 	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
 		create_Sphere(*i_sphere);
 		}
+}
+
+void CPHElement::			destroy	(){
+	vector<dGeomID>::iterator i;
+	for(i=m_geoms.begin();i!=m_geoms.end();i++){
+	dGeomDestroy(*i);
+	}
+	for(i=m_trans.begin();i!=m_trans.end();i++){
+	dGeomDestroy(*i);
+	}
+	dGeomDestroy(m_group);
+	dBodyDestroy(m_body);
+	m_geoms.clear();
+	m_trans.clear();
 }
 
 Fvector CPHElement::			get_mc_data	(){
@@ -804,6 +837,7 @@ Fvector CPHElement::			get_mc_data	(){
 	}
 	m_volume=volume;
 	mc.mul(1.f/volume);
+	m_mass_center=mc;
 	return mc;
 }
 Fvector CPHElement::			get_mc_geoms	(){
@@ -820,7 +854,8 @@ void CPHElement::calculate_it_data(const Fvector& mc,float mas){
 	Fvector& pos=(*i_box).m_translate;
 	Fvector l;
 	l.sub(pos,mc);
-	dMassSetBox(&m,mas/m_volume,hside.x*2.f,hside.y*2.f,hside.z*2.f);
+	dMassSetBox(&m,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
+	dMassAdjust(&m,hside.x*hside.y*hside.z*8.f/m_volume*mas);
 	dMassTranslate(&m,l.x,l.y,l.z);
 	dMassAdd(&m_mass,&m);
 	
@@ -840,21 +875,119 @@ void CPHElement::calculate_it_data(const Fvector& mc,float mas){
 
 }
 void		CPHElement::	setMass		(float M){
-
-build(m_space);
 calculate_it_data(get_mc_data(),M);
-dBodySetMass(m_body,&m_mass);
+//dMassSetBox(&m_mass,1,1,1,1);
+//dMassAdjust(&m_mass,M);
+
 
 }
+void		CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
+	//mXFORM.set(m0);
+	//m_m0.set(m0);
+	//m_m2.set(m2);
+}
+void		CPHElement::Start(){
+	//mXFORM.set(m0);
+	build(m_space);
+	//dBodySetPosition(m_body,m_m0.c.x,m_m0.c.y,m_m0.c.z);
+	//Fmatrix33 m33;
+	//m33.set(m_m0);
+	//dMatrix3 R;
+	//PHDynamicData::FMX33toDMX(m33,R);
+	//dBodySetRotation(m_body,R);
+}
 
+void		CPHElement::Deactivate(){
+	destroy();
+//	bActive=false;
+}
+void CPHElement::SetTransform(const Fmatrix &m0){
+	Fvector mc;
+	mc.set(m_mass_center);
+	m0.transform_tiny(mc);
+	dBodySetPosition(m_body,mc.x,mc.y+50.7f,mc.z);
+	Fmatrix33 m33;
+	m33.set(m0);
+	dMatrix3 R;
+	PHDynamicData::FMX33toDMX(m33,R);
+	dBodySetRotation(m_body,R);
+		
+}
 CPHElement::~CPHElement	(){
-	vector<dGeomID>::iterator i;
-	for(i=m_geoms.begin();i!=m_geoms.end();i++){
-	dGeomDestroy(*i);
+
+}
+void		CPHElement::Update(){
+	//mXFORM.identity();
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void CPHShell::setMass(float M){
+	vector<CPHElement*>::iterator i;
+	float volume=0.f;
+	for(i=elements.begin();i!=elements.end();i++)	volume+=(*i)->get_volume();
+
+	for(i=elements.begin();i!=elements.end();i++)
+	(*i)->setMass(
+				(*i)->get_volume()/volume*M
+				);
+}
+
+
+void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
+		vector<CPHElement*>::iterator i;
+		mXFORM.set(m0);
+		for(i=elements.begin();i!=elements.end();i++){
+														(*i)->Start();
+														(*i)->SetTransform(m0);
+			}
+	i=elements.begin();
+	m_body=(*i)->get_body();
+	
+	Fmatrix33 m33;
+	Fmatrix m,m1;
+	m1.set(m0);
+	m1.invert();
+	m.mul(m1,m2);
+	//m.mul(1.f/dt01);
+	m33.set(m);
+	dMatrix3 R;
+	PHDynamicData::FMX33toDMX(m33,R);
+	dBodySetLinearVel(m_body,m.c.x,m.c.y,m.c.z);
+	//dBodySetPosition(m_body,m0.c.x,m0.c.y+1.,m0.c.z);
+	bActive=true;
 	}
-	for(i=m_trans.begin();i!=m_trans.end();i++){
-	dGeomDestroy(*i);
-	}
-	dGeomDestroy(m_group);
-	dBodyDestroy(m_body);
+
+void CPHShell::Deactivate(){
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+	(*i)->Deactivate();
+bActive=false;
+}
+void CPHShell::Update(){
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+	(*i)->Update();
+		//////////////////////////////////////////////////////////////////////
+				static const dReal u = -0.1f;
+				static const dReal w_limit = M_PI/4.f/0.02f;
+				static const dReal l_limit = 3./0.02f;
+				dReal mag;
+				const dReal* pos = dBodyGetLinearVel(m_body);
+				mag=sqrtf(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
+				if(mag>l_limit){
+					dReal f=mag/l_limit;
+					dBodySetLinearVel(m_body,pos[0]/f,pos[1]/f,pos[2]/f);
+				}
+				//dBodyAddForce(m_body, u * pos[0]*mag, u * pos[1]*mag, u * pos[2]*mag);
+				const dReal* rot = dBodyGetAngularVel(m_body);
+				mag=sqrtf(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
+				if(mag>w_limit){
+					dReal f=mag/w_limit;
+					dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
+				}
+				//dBodyAddTorque(m_body, u * rot[0]*mag, u * rot[1]*mag, u * rot[2]*mag);
+			/////////////////////////////////////////////////////////////////
+	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
+							  dBodyGetPosition(m_body),
+							  mXFORM);
 }

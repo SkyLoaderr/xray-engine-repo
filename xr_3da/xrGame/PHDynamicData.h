@@ -3,7 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include <ode\ode.h>
-
 #if !defined(AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_)
 #define AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_
 
@@ -83,20 +82,18 @@ public:
 			aTransform._34=0.f;
 			aTransform._44=1.f;
 		};
-	static inline FMX33toDMX(const Fmatrix33& aTransform,dReal* R){
-			dReal tmp;
-			memcpy(R,&aTransform,sizeof(dMatrix3));
-			tmp=R[4];
-			R[4]=R[1];
-			R[1]=tmp;
+	static inline FMX33toDMX(const Fmatrix33& aTransform,dReal* R){	
+		R[0]=aTransform._11;
+		R[4]=aTransform._12;
+		R[8]=aTransform._13;
 
-			tmp=R[8];
-			R[8]=R[2];
-			R[2]=tmp;
+		R[1]=aTransform._21;
+		R[5]=aTransform._22;
+		R[9]=aTransform._23;
 
-			tmp=R[9];
-			R[9]=R[6];
-			R[6]=tmp;
+		R[2]=aTransform._31;
+		R[6]=aTransform._32;
+		R[10]=aTransform._33;
 		};
 private:
 	void CalculateR_N_PosOfChilds(dBodyID parent);
