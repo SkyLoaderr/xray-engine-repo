@@ -462,6 +462,14 @@ SOURCE=.\xr_effgamma.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\Blender_default_aref.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blender_default_aref.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\BlenderDefault.cpp
 # End Source File
 # Begin Source File
