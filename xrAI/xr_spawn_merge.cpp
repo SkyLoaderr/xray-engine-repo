@@ -20,16 +20,31 @@
 #include "object_broker.h"
 #include "graph_engine.h"
 
-DEFINE_VECTOR(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
+DEFINE_VECTOR	(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
+ALife::STORY_P_MAP				g_story_objects;
 CGameGraph						*tpGraph = 0;
+
+void add_story_object	(ALife::_STORY_ID id,CSE_ALifeDynamicObject *object, LPCSTR level_name)
+{
+	if (id == INVALID_STORY_ID)
+		return;
+
+	ALife::STORY_P_PAIR_IT		I = g_story_objects.find(id);
+	if (I != g_story_objects.end()) {
+		Msg						("Object %s, story id %d",object->s_name_replace,object->m_story_id);
+		Msg						("Object %s, story id %d",(*I).second->s_name_replace,(*I).second->m_story_id);
+		VERIFY3					(I == g_story_objects.end(),"There are several objects which has the same unique story ID, level ",level_name);
+	}
+	g_story_objects.insert		(std::make_pair(id,object));
+}
 
 extern u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName);
 
 class CSpawnComparePredicate {
 private:
 	u32							m_dwStartNode;
-	const CLevelGraph				*m_tpAI_Map;
+	const CLevelGraph			*m_tpAI_Map;
 public:
 	CSpawnComparePredicate(u32 dwStartNode, const CLevelGraph &tAI_Map)
 	{
@@ -102,6 +117,9 @@ public:
 				CSE_ALifeObject	*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
+					CSE_ALifeDynamicObject	*object = dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeObject);
+					if (object)
+						add_story_object	(object->m_story_id,object,m_tLevel.name());
 					if (!xr_strlen(tpALifeObject->m_caGroupControl)) {
 						tpALifeObject->m_dwSpawnGroup = ++*dwGroupOffset;
 						CSE_ALifeLevelChanger	*level_changer = dynamic_cast<CSE_ALifeLevelChanger*>(tpALifeObject);
@@ -522,5 +540,6 @@ public:
 
 void xrMergeSpawns(LPCSTR name, LPCSTR output)
 {
+	g_story_objects.clear();
 	CSpawnMerger	A(name,output);
 }
