@@ -1206,8 +1206,18 @@ struct CAbstractClassWrapper : public CAbstractClass, public wrap_base {
 struct vA{virtual ~vA(){}};
 struct vB : virtual public vA{virtual ~vB(){}};
 
+//#define x 5
+//#define z(a) #a
+//#define y z(__LINE__)
+//
+//void aa(const char *s)
+//{
+//	printf("%s",y);
+//}
+//
 void test1()
 {
+//	aa(z(x));
 //	test0();
 //	box_collision_test	();
 //	broker_test		();
