@@ -103,6 +103,8 @@ private:
 
 
 			void			DoDamage						(CEntity *pEntity);
+///////////////////////////////////////////////////////////////////////////////
+			void			CreateSkeleton					();
 
 // members
 public:
@@ -217,7 +219,7 @@ private:
 	
 	void					SetText();
 	virtual void			UpdateCL();
-
+	virtual void			shedule_Update(u32 dt);
 	bool					IsLeftSide(const Fvector &Position);
 	bool					IsLeftSide(float current_yaw,float target_yaw);
 	bool					bTurning;
