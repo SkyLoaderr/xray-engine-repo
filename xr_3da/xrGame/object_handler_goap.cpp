@@ -507,7 +507,7 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 			for ( ; I != E; ++I) {
 				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
 				char					temp = '?';
-				if ((J != current_state().conditions().end()) && ((*J).condition() != (*I).first))
+				if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first))
 					temp				= (*J).value() ? '+' : '-';
 				Msg					("%2c : %s",temp,property2string((*I).first));
 			}
@@ -520,7 +520,7 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 			for ( ; I != E; ++I) {
 				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
 				char					temp = '?';
-				if ((J != target_state().conditions().end()) && ((*J).condition() != (*I).first))
+				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first))
 					temp				= (*J).value() ? '+' : '-';
 				Msg					("%2c : %s",temp,property2string((*I).first));
 			}
