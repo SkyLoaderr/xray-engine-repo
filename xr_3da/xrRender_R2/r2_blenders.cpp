@@ -28,7 +28,7 @@ IBlender*	CRender::blender_create	(CLASS_ID cls)
 	case B_LaEmB:			return 0;
 	case B_LmEbB:			return 0;
 	case B_B:				return 0;
-	case B_BmmD:			return 0;
+	case B_BmmD:			return xr_new<CBlender_BmmD>			();	
 	case B_SHADOW_TEX:		return 0;
 	case B_SHADOW_WORLD:	return 0;
 	case B_BLUR:			return 0;
