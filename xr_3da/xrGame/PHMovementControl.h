@@ -241,7 +241,7 @@ public:
 	}
 	bool				CharacterExist()		
 	{
-		return m_character->b_exist;
+		return (m_character && m_character->b_exist);
 	}
 	CPHMovementControl(void);
 	~CPHMovementControl(void);
