@@ -186,8 +186,6 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 20000)
 			)
-
-
 			prof_stoyat_pristrelu:play_at_pos		(stalker1,stalker1:position(),0);
 			wait(3000)			
 			prof_padla_podslushivala:play_at_pos	(stalker1,stalker1:position(),0);
@@ -219,7 +217,6 @@ function main()
 
 			rainbow_mochi_ego:play_at_pos		(stalker2,stalker2:position(),0);
 			wait(2000)			
-			)
 			break
 		end
 		wait()			
