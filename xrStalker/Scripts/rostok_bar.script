@@ -1,14 +1,19 @@
 local stalkers = {
-                 {name = "stalker1",  id = -1},
-                 {name = "stalker2",  id = -1},
-                 {name = "stalker3",  id = -1},
-                 {name = "stalker4",  id = -1},
-                 {name = "stalker5",  id = -1},
-                 {name = "stalker6",  id = -1},
-                 {name = "stalker7",  id = -1},
-                 {name = "stalker8",  id = -1},
-                 {name = "stalker9",  id = -1},
-                 {name = "stalker10",  id = -1}
+                 {name = "bar_stalker_01",  id = -1},
+                 {name = "bar_stalker_02",  id = -1},
+                 {name = "bar_stalker_03",  id = -1},
+                 {name = "bar_stalker_04",  id = -1},
+                 {name = "bar_stalker_05",  id = -1},
+                 {name = "bar_stalker_06",  id = -1},
+                 {name = "bar_stalker_07",  id = -1},
+                 {name = "bar_stalker_08",  id = -1},
+                 {name = "bar_stalker_09",  id = -1},
+                 {name = "bar_stalker_10",  id = -1},
+                 {name = "bar_stalker_11",  id = -1},
+                 {name = "bar_stalker_12",  id = -1},
+                 {name = "bar_stalker_13",  id = -1},
+                 {name = "bar_stalker_14",  id = -1},
+                 {name = "bar_stalker_15",  id = -1}
                  }
 local indices = {}                 
                  
@@ -44,7 +49,7 @@ function on_enter (zone, obj)
         this.switch_online (indices[a])
     end
 end
--------------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------------
 function on_exit (zone, obj)
     local act = level.actor ()
     if act == nil or obj:id () ~= act:id () then return  end
