@@ -22,9 +22,6 @@ protected:
 	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 	typedef GraphEngineSpace::_solver_value_type		_value_type;
 
-protected:
-	bool				m_first_time;
-
 public:
 						CStalkerActionBase			(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();

@@ -45,7 +45,7 @@ void CSoundPlayer::reload			(LPCSTR section)
 	VERIFY							(m_playing_sounds.empty());
 }
 
-u32 CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
+u32 CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, CSoundUserDataPtr data)
 {
 	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.find(internal_type);
 	if (m_sounds.end() != I)
@@ -60,7 +60,7 @@ u32 CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 pr
 	
 	I								= m_sounds.find(internal_type);
 	VERIFY							(m_sounds.end() != I);
-	return							(load((*I).second.m_sounds,prefix,max_count,type));
+	return							(load((*I).second.m_sounds,prefix,max_count,type,data));
 }
 
 void CSoundPlayer::remove			(u32 internal_type)
@@ -70,24 +70,20 @@ void CSoundPlayer::remove			(u32 internal_type)
 	m_sounds.erase					(I);
 }
 
-u32 CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 max_count, ESoundTypes type)
+u32 CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 max_count, ESoundTypes type, CSoundUserDataPtr data)
 {
-	sounds.clear				();
+	sounds.clear					();
 	for (int j=0, N = _GetItemCount(prefix); j<N; ++j) {
-		string256				fn, s;
-		LPSTR					S = (LPSTR)&s;
-		_GetItem				(prefix,j,S);
-		if (FS.exist(fn,"$game_sounds$",S,".ogg")){
-			sounds.push_back	(xr_new<ref_sound>());
-			::Sound->create		(*sounds.back(),TRUE,prefix,type);
-		}
+		string256					fn, s;
+		LPSTR						S = (LPSTR)&s;
+		_GetItem					(prefix,j,S);
+		if (FS.exist(fn,"$game_sounds$",S,".ogg"))
+			sounds.push_back		(add(type,prefix,data));
 		for (u32 i=0; i<max_count; ++i){
-			string256			name;
-			sprintf				(name,"%s%d",S,i);
-			if (FS.exist(fn,"$game_sounds$",name,".ogg")){
-				sounds.push_back(xr_new<ref_sound>());
-				::Sound->create	(*sounds.back(),TRUE,name,type);
-			}
+			string256				name;
+			sprintf					(name,"%s%d",S,i);
+			if (FS.exist(fn,"$game_sounds$",name,".ogg"))
+				sounds.push_back	(add(type,name,data));
 		}
 	}
 	if (sounds.empty())

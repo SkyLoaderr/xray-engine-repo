@@ -24,13 +24,11 @@ void CStalkerActionBase::initialize			()
 	object().animation().clear_script_animations	();
 	object().body_action							(eBodyActionNone);
 	object().brain().affect_cover					(false);
-	m_first_time									= true;
 }
 
 void CStalkerActionBase::execute			()
 {
 	inherited::execute								();
-	m_first_time									= false;
 }
 
 void CStalkerActionBase::finalize			()

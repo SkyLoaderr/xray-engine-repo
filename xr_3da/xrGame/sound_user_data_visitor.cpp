@@ -9,6 +9,10 @@
 #include "stdafx.h"
 #include "sound_user_data_visitor.h"
 
-void CSoundUserDataVisitor::visit	(CSoundUserData *data)
+CSoundUserDataVisitor::~CSoundUserDataVisitor	()
+{
+}
+
+void CSoundUserDataVisitor::visit				(CSoundUserData *data)
 {
 }

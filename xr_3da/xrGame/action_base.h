@@ -43,6 +43,7 @@ protected:
 	ALife::_TIME_ID				m_start_game_time;
 	u32							m_inertia_time;
 	mutable _edge_value_type	m_weight;
+	bool						m_first_time;
 
 #ifdef LOG_ACTION
 public:
@@ -74,6 +75,7 @@ public:
 	IC		void				set_property		(const _condition_type &condition_id, const _value_type &value);
 	IC		const _value_type	&property			(const _condition_type &condition_id) const;
 	IC		void 				set_weight			(const _edge_value_type &weight);
+	IC		bool				first_time			() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 typedef CActionBase<CScriptGameObject> CScriptActionBase;

@@ -10,5 +10,6 @@
 
 class CSoundUserDataVisitor {
 public:
-	virtual void	visit	(CSoundUserData *data);
+	virtual			~CSoundUserDataVisitor	();
+	virtual void	visit					(CSoundUserData *data);
 };

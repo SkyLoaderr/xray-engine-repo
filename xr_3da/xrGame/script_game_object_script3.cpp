@@ -40,7 +40,6 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 	instance
 		.def("add_sound",					(u32 (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32))(CScriptGameObject::add_sound))
 		.def("add_sound",					(u32 (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR))(CScriptGameObject::add_sound))
-		.def("add_sound",					(u32 (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR,LPCSTR))(CScriptGameObject::add_sound))
 		.def("remove_sound",				&CScriptGameObject::remove_sound)
 		.def("set_sound_mask",				&CScriptGameObject::set_sound_mask)
 		.def("play_sound",					(void (CScriptGameObject::*)(u32))(CScriptGameObject::play_sound))

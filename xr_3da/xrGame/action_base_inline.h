@@ -73,11 +73,13 @@ void CBaseAction::initialize		()
 #endif
 	m_start_level_time	= Device.dwTimeGlobal;
 	m_start_game_time	= Level().GetGameTime();
+	m_first_time		= true;
 }
 
 TEMPLATE_SPECIALIZATION
 void CBaseAction::execute		()
 {
+	m_first_time		= false;
 #ifdef LOG_ACTION
 	if (m_use_log && xr_strlen(m_action_name) && m_switched)
 		debug_log		(eActionStateExecuted);
@@ -196,6 +198,12 @@ IC	void CBaseAction::show			(LPCSTR offset)
 {
 }
 #endif
+
+TEMPLATE_SPECIALIZATION
+IC	bool CBaseAction::first_time	() const
+{
+	return					(m_first_time);
+}
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CBaseAction
