@@ -215,7 +215,7 @@ void CBuild::MergeLM()
 		Deflector = g_deflectors[0];
 		if (g_deflectors.size()>1) {
 			std::sort(g_deflectors.begin()+1,g_deflectors.end(),cmp_defl);
-			int maxarea = 512*512;
+			int maxarea = 1024*1024;
 			int curarea = 0;
 			for (int i=1; i<(int)g_deflectors.size(); i++)
 			{
