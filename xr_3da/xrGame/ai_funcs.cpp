@@ -133,6 +133,6 @@ float CPatternFunction::ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **
 	m_dwLastUpdate = Level().timeServer();
 	m_tpLastMonster = tpEntityAlive;
 	for (DWORD i=0; i<m_dwVariableCount; i++)
-		m_dwaVariableValues[i] = fpaBaseFunctions[m_dwaVariableTypes[i] - 1]->dwfGetDiscreteValue(tpEntityAlive,fpaBaseFunctions,m_dwaAtomicFeatureRange[i]);
+		m_dwaVariableValues[i] = fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(tpEntityAlive,fpaBaseFunctions,m_dwaAtomicFeatureRange[i]);
 	return(m_fLastValue = ffEvaluate());
 }

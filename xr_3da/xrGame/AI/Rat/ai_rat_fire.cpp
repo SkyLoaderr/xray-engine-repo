@@ -215,12 +215,12 @@ CAI_Rat::ERatStates CAI_Rat::sfChooseAction()
 	float	fCurrentEnemyProbability	= 1.0f;
 	bool	bMySide = true, bStarted = true;
 	do {
-		CCustomMonster *m_tpCurrentMember = dynamic_cast<CCustomMonster *>(Members[j]);
+		CEntityAlive *m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[j]);
 		if (!m_tpCurrentMember) {
 			i++;
 			continue;
 		}
-		m_tpCurrentEnemy = dynamic_cast<CCustomMonster *>(VisibleEnemies[j].key);
+		m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
 		if (!m_tpCurrentEnemy) {
 			j++;
 			continue;
