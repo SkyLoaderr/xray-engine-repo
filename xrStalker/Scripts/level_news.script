@@ -1,18 +1,19 @@
-local news = {}
-
 function main()
 	fill_news()
 
 	while true do
+		local level_name = level.name()
+		if level_name == nil then
+			printf("level name nil")
+		else
+			printf("level name %s", level_name)
+		end
 
 		wait()
 	end
 end
 
-function fill_news(	
-	local level_name = level.name()
-	printf("level name %", level_name)
-	
+function fill_news()
 	if level_name == "selo" then
 		printf("read news for test level")
 
