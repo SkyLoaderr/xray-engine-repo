@@ -571,7 +571,10 @@ void CActor::Update	(DWORD DT)
 				
 				// Change weapon if needed
 				if (Weapons->ActiveWeaponID()!=NET_Last.weapon)
+				{
+					Log						("aaaaaaaaaaaaaaaaaaaaaaaaa : %d",NET_Last.weapon);
 					Weapons->ActivateWeaponID(NET_Last.weapon);
+				}
 
 				// Signal, that last time we used interpolation
 				NET_WasInterpolating	= TRUE;
