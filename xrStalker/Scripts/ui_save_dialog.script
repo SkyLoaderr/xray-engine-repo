@@ -27,8 +27,8 @@ function save_dialog:InitControls()
 							 height = 40,
 							 width  = 135}
 	btn_ok_rect.y = btn_ok_rect.height + indent
-	local btn_cancel_rect = {x = ,
-							 y = ,
+	local btn_cancel_rect = {x = btn_ok_rect.x + btn_ok_rect.width + indent,
+							 y = btn_ok_rect.y,
 							 height = btn_ok_rect.height,
 							 width  = btn_ok_rect.width}
 	local list_rect       = {x = indent,
