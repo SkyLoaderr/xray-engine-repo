@@ -759,8 +759,9 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			if (m_PhysicMovementControl->gcontact_Was) 
 				g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_Power));
 			Fvector D; D.set					(0,1,0);
+			Fvector positionInBoneSpace; positionInBoneSpace.set(0,0,0);
 			if (m_PhysicMovementControl->gcontact_HealthLost)	{
-				Hit	(m_PhysicMovementControl->gcontact_HealthLost,D,this,m_PhysicMovementControl->ContactBone(),0);//s16(6 + 2*::Random.randI(0,2))
+				Hit	(m_PhysicMovementControl->gcontact_HealthLost,D,this,m_PhysicMovementControl->ContactBone(),positionInBoneSpace,0,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
 				if(g_Alive()<=0)
 					m_PhysicMovementControl->GetDeathPosition(Position());
 			}
