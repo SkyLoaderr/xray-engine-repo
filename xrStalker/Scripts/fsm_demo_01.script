@@ -1,18 +1,35 @@
------------------------------------------------------------------
------------------------------------------------------------------
+---------------------------------------
+-- демонстрация работы FSM  
+-- пример 01. FSM одного сталкера с двумя
+-- состояниями	
+---------------------------------------
+
+-- функция перехода в первое состояние из нулевого
 function if_see_actor(npc, fsm)
 	if npc:see(actor) == true then
-		log("saw a fucking actor")
+		-- да, условие выполнено, FSM перейдет в состояние 
+		-- как только мы сделаем return true
+		log("i saw a fucking actor")
+
+		--	задаем новое состояние сталкера
+
+		action(
+			npc, 	-- указываем именно тот NPC, для которого вызван FSM
+		  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+			sound	("scripts\\alarm\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+			anim	(anim.danger),
+			cond	(cond.time_end)	-- очень много времени
+			)
 		return true
 	end
-
+	-- нет, условие не сработало, все оталось как есть
 	return false
 end
 
+-- функция перехода из первого состояние в нулевое
 function dont_see_actor(npc, fsm)
 	if npc:see(actor) == false then
 		log("i lost a trace of this fucking actor")
-		fsm:stop()
 		return true
 	end
 
@@ -21,18 +38,18 @@ end
 
 
 function main()
-	log	("script don't want to work!")
-
+	log	("FSM demo 01")
 
 	stalker00	= get_level_object("m_stalker_e0000")
 	actor = get_actor()
 
+	-- инициализация FSM сталкера
 	local fsm_stalker = FSM(this.script_name(), stalker00)
 
+	-- установка функций перехода 
 	fsm_stalker:set_transition(0, 1, this.if_see_actor)
 	fsm_stalker:set_transition(1, 0, this.dont_see_actor)
 
+	-- запуск бесконечного цикла для одного FSM
 	fsm_stalker:run_loop()
-
-
 end
