@@ -36,8 +36,8 @@ function main()
 	guard_wait02:script	(true,script_guards_pr02.script_name())
 	guard_wait03:script	(true,script_guards_pr02.script_name())
 
-	trader_guard01:script	(true,script_guards_pr00.script_name())
-	trader_guard02:script	(true,script_guards_pr00.script_name())
+	trader_guard01:script	(true,script_guards_pr02.script_name())
+	trader_guard02:script	(true,script_guards_pr02.script_name())
 
 			action(
 				guard01,
