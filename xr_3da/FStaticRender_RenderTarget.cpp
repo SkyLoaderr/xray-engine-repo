@@ -15,7 +15,7 @@ CRenderTarget::CRenderTarget()
 
 	param_blur		= 1.f;
 	param_gray		= 0.0f;
-	param_noise		= 1.f;
+	param_noise		= .5f;
 }
 
 BOOL CRenderTarget::Create	()
@@ -90,9 +90,10 @@ void CRenderTarget::e_render_noise	()
 	p0.set		(start_u,	start_v	);
 	p1.set		(end_u,		end_v	);
 
-	DWORD		Cblend				= iFloor		(param_gray*255.f);
+	u32			Cblend				= iFloor		(param_gray*255.f);
+	u32			Cbase				= 255;
 	clamp		(Cblend,0u,255u);
-	DWORD		Cgray				= D3DCOLOR_RGBA	(255,255,255,128);
+	u32			Cgray				= D3DCOLOR_RGBA	(Cbase,Cbase,Cbase,Cblend);
 
 	// 
 	u32			Offset;
