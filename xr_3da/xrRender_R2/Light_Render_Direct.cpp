@@ -80,8 +80,9 @@ public:
 		{
 			if	(edges[e].counter != 0)	continue;
 			_edge&		E		= edges[e];
-			points.push_back	(points[E.p0]-direction);
-			points.push_back	(points[E.p1]-direction);
+			Fvector3	point;
+			points.push_back	(point.sub(points[E.p0],direction));
+			points.push_back	(point.sub(points[E.p1],direction));
 			polys.push_back		(_poly());
 			_poly&		P		= polys.back();	
 			int			pend	= int(points.size());

@@ -99,8 +99,6 @@ void					CRender::create					()
 	c_sbase						= "s_base";
 
 	Target.OnDeviceCreate		();
-	LR.Create					();
-
 	PSLibrary.OnCreate			();
 	HWOCC.occq_create			(occq_size);
 
@@ -114,8 +112,6 @@ void					CRender::destroy				()
 	_RELEASE					(q_sync_point);
 	HWOCC.occq_destroy			();
 	PSLibrary.OnDestroy			();
-
-	LR.Destroy					();
 	Target.OnDeviceDestroy		();
 }
 void					CRender::reset_begin			()
