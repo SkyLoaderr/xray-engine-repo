@@ -505,6 +505,13 @@ void CShaderManager::DeferredUpload	()
 		t->second->Load(t->first);
 }
 
+void CShaderManager::DeferredUpload	()
+{
+	if (!Device.bReady)				return;
+	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
+		t->second->Unload();
+}
+
 void CShaderManager::ED_UpdateTextures(vector<LPSTR>& names)
 {
 	// 1. Unload

@@ -115,7 +115,8 @@ public:
 	void	Delete			(Shader*	&S);
 	void	DeferredLoad	(BOOL E)	{ bDeferredLoad=E;	}
 	void	DeferredUpload	();
-
+	void	DeferredUnload	();
+	
 	// API
 	IC void	set_Code		(DWORD dwCode);
 	IC void set_Textures	(STextureList* T);
