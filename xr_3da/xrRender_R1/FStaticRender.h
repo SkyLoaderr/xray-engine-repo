@@ -57,17 +57,12 @@ private:
 	void							LoadSectors				(IReader	*fs);
 	void							LoadTrees				(IReader	*fs);
 
-	BOOL							add_Dynamic				(IRender_Visual	*pVisual, u32 planes);	// normal processing
+	BOOL							add_Dynamic				(IRender_Visual	*pVisual, u32 planes);		// normal processing
 	void							add_Static				(IRender_Visual	*pVisual, u32 planes);
 	void							add_leafs_Dynamic		(IRender_Visual	*pVisual);					// if detected node's full visibility
 	void							add_leafs_Static		(IRender_Visual	*pVisual);					// if detected node's full visibility
-	void							InsertSG_Dynamic		(IRender_Visual	*pVisual, Fvector& Center);
-	void							InsertSG_Static			(IRender_Visual	*pVisual);
 
-	void							flush_Patches			();
 	void							flush_LODs				();
-
-	void							r_dump					(u32		_priority);
 
 	void							calc_DetailTexturing	();
 	void							calc_FogPass			();

@@ -33,4 +33,8 @@ public:
 	xr_vector<R_dsgraph::_LodItem>								lstLODs;
 	xr_vector<int>												lstLODgroups;
 	xr_vector<ISpatial*>										lstRenderables;
+public:
+	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);
+	void		r_dsgraph_insert_static							(IRender_Visual	*pVisual);
+	void		r_dsgraph_render								(u32			_priority);
 };

@@ -27,7 +27,7 @@ IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 	return	R*R/distSQ;
 }
 
-void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
+void CRender::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fvector& Center)
 {
 	if (pVisual->vis.frame	==	RImplementation.marker)	return;
 	pVisual->vis.frame		=	RImplementation.marker;
@@ -87,7 +87,7 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 	}
 }
 
-void CRender::InsertSG_Static	(IRender_Visual *pVisual)
+void CRender::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 {
 	if (pVisual->vis.frame == RImplementation.marker)	return;
 	pVisual->vis.frame			= RImplementation.marker;
@@ -177,7 +177,7 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 			// Calculate distance to it's center
 			Fvector							Tpos;
 			val_pTransform->transform_tiny	(Tpos, pVisual->vis.sphere.P);
-			InsertSG_Dynamic				(pVisual,Tpos);
+			r_dsgraph_insert_dynamic				(pVisual,Tpos);
 		}
 		return;
 	}
@@ -243,7 +243,7 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 	default:
 		{
 			// General type of visual
-			InsertSG_Static(pVisual);
+			r_dsgraph_insert_static(pVisual);
 		}
 		return;
 	}
@@ -310,7 +310,7 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 	default:
 		{
 			// General type of visual
-			InsertSG_Dynamic(pVisual,Tpos);
+			r_dsgraph_insert_dynamic(pVisual,Tpos);
 		}
 		break;
 	}
@@ -394,7 +394,7 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 	default:
 		{
 			// General type of visual
-			InsertSG_Static(pVisual);
+			r_dsgraph_insert_static(pVisual);
 		}
 		break;
 	}

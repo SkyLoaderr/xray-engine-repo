@@ -220,7 +220,7 @@ void		sort_tlist_mat
 	}
 }
 
-void CRender::render_scenegraph	()
+void CRender::r_dsgraph_render				(u32	_priority)
 {
 	Device.Statistic.RenderDUMP.Begin		();
 
@@ -229,7 +229,7 @@ void CRender::render_scenegraph	()
 	// Sorting by SSA and changes minimizations
 	{
 		RCache.set_xform_world			(Fidentity);
-		mapNormalVS&	vs				= mapNormal;
+		mapNormalVS&	vs				= mapNormal	[_priority];
 		vs.getANY_P						(nrmVS);
 		std::sort						(nrmVS.begin(), nrmVS.end(), cmp_vs_nrm);
 		for (u32 vs_id=0; vs_id<nrmVS.size(); vs_id++)
@@ -303,11 +303,10 @@ void CRender::render_scenegraph	()
 	// Perform sorting based on ScreenSpaceArea
 	// Sorting by SSA and changes minimizations
 	{
-		mapMatrixVS&	vs				= mapMatrix;
+		mapMatrixVS&	vs				= mapMatrix	[_priority];
 		vs.getANY_P						(matVS);
 		std::sort						(matVS.begin(), matVS.end(), cmp_vs_mat);
-		for (u32 vs_id=0; vs_id<matVS.size(); vs_id++)
-		{
+		for (u32 vs_id=0; vs_id<matVS.size(); vs_id++)	{
 			mapMatrixVS::TNode*	Nvs			= matVS[vs_id];
 			RCache.set_VS					(Nvs->key);	
 
