@@ -55,6 +55,8 @@ public:
 		float	phase_x;
 		float	phase_z;
 		DWORD	C;
+		
+		float	scale_calculated;
 	};
 	struct	SlotPart
 	{
@@ -83,7 +85,7 @@ public:
 	svector<CDetail,dm_max_objects>			objects;
 	svector<Slot,dm_cache_size>				cache;
 
-	svector<CList<SlotItem>,dm_max_objects>	visible;
+	svector<CList<SlotItem*>,dm_max_objects> visible;
 public:
 	CVertexStream*			VS;
 

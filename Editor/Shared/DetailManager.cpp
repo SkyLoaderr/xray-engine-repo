@@ -168,6 +168,14 @@ void CDetailManager::Unload		()
 	visible.clear	();
 }
 
+extern float g_fSCREEN;
+IC	float	CalcSSA(float& distSQ, Fvector& C, FBasicVisual* V)
+{
+	float R	= V->bv_Radius;
+	distSQ	= Device.vCameraPosition.distance_to_sqr(C);
+	return	g_fSCREEN*R*R/distSQ;
+}
+
 void CDetailManager::Render		(Fvector& EYE)
 {
 	int s_x	= iFloor			(EYE.x/slot_size+.5f);
@@ -200,14 +208,26 @@ void CDetailManager::Render		(Fvector& EYE)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
-						CList<SlotItem>&	vis = visible	[sp.id];
+						CList<SlotItem*>&	vis = visible	[sp.id];
 						float				R   = objects	[sp.id].radius;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++) 
 						{
-							if (Device.vCameraPosition.distance_to_sqr(siIT->P)>fade_limit)	continue;
-							if (::Render.ViewBase.testSphereDirty(siIT->P,R*siIT->scale))	vis.push_back	(*siIT);
+							SlotItem& Item	= *siIT;
+
+							float	dist_sq = Device.vCameraPosition.distance_to_sqr(Item.P);
+							if (dist_sq>fade_limit)	continue;
+
+							float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/(fade_limit-fade_start);
+							float	scale	= Item.scale*(1-alpha);
+							float	radius	= R*scale;
+
+							if (::Render.ViewBase.testSphereDirty(siIT->P,R*scale))	
+							{
+								Item.scale_calculated = scale;
+								vis.push_back(siIT);
+							}
 						}
 					}
 				}
@@ -274,10 +294,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			for (DWORD item=item_start; item<item_end; item++)
 			{
 				SlotItem&	Instance	= vis[item];
-
-				float	dist			= Device.vCameraPosition.distance_to_sqr(Instance.P);
-				float	alpha			= (dist<fade_start)?0.f:(dist-fade_start)/(fade_limit-fade_start);
-				float	scale			= Instance.scale*(1-alpha); 
+				float	scale			= Instance.scale_calculated; 
 
 				// Build matrix and xform vertices
 				mScale.scale			(scale,scale,scale);
