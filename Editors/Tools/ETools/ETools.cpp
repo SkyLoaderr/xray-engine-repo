@@ -151,4 +151,16 @@ namespace ETOOLS{
 	{
 		XRC.ray_query(inv_parent,m_def,r_start,r_dir,r_range);
 	}
+	ETOOLS_API void box_options	(u32 flags)
+	{
+		XRC.box_options(flags);
+	}
+	ETOOLS_API void	box_query	(const CDB::MODEL *m_def, const Fvector& b_center, const Fvector& b_dim)
+	{
+		XRC.box_query(m_def, b_center, b_dim);
+	}
+	ETOOLS_API void	box_query_m	(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fbox& src)
+	{
+		XRC.box_query(inv_parent, m_def, src);
+	}
 }
