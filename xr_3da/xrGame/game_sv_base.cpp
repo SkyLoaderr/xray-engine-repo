@@ -60,8 +60,14 @@ u16					game_sv_GameState::get_id_2_eid				(u32 id)
 // Utilities
 u32					game_sv_GameState::get_alive_count			(u32 team)
 {
-	Device.Fatal	("Not implemented");
-	return 0;
+	u32		cnt		= get_count	();
+	u32		alive	= 0;
+	for		(u32 it=0; it<cnt; it++)	
+	{
+		game_PlayerState*	ps	=	get_it	(it);
+		alive					+=	(ps->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD)?0:1;
+	}
+	return alive;
 }
 vector<u16>*		game_sv_GameState::get_children				(u32 id)
 {
@@ -175,7 +181,7 @@ void game_sv_GameState::OnRoundStart			()
 	for		(u32 it=0; it<cnt; it++)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
-		ps->flags				&=	~GAME_PLAYER_FLAG_READY;
+		ps->flags				&=	~(GAME_PLAYER_FLAG_READY + GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 	}
 
 	// 1. We have to destroy all player-entities and entities
