@@ -75,7 +75,12 @@ void CUIActorDiaryWnd::DeleteArticles(CUITreeViewItem *pRoot)
 	UIInfoList.RemoveAll();
 	pRoot->DeleteAllSubItems();
 }
+//////////////////////////////////////////////////////////////////////////
 
+void CUIActorDiaryWnd::ReloadArticles		()
+{
+
+}
 //////////////////////////////////////////////////////////////////////////
 
 void CUIActorDiaryWnd::Show(bool status)

@@ -427,6 +427,15 @@ void CUIDiaryWnd::InitDiary()
 		}
 	}
 
+	ReloadArticles();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void  CUIDiaryWnd::ReloadArticles()
+{
+	CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor) return;
+
 	// “ут добавл€ютс€ записи в дневник игрока
 	UIActorDiaryWnd.DeleteArticles(m_pActorDiaryRoot);
 
@@ -442,8 +451,6 @@ void CUIDiaryWnd::InitDiary()
 		}
 	}
 }
-
-
 //////////////////////////////////////////////////////////////////////////
 
 void CUIDiaryWnd::ArticleCaption(LPCSTR caption)

@@ -76,14 +76,38 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 	}
 	article_vector.erase(last_end, E);
 
-	
+	bool actor_diary_article = false;
+	bool encyclopedia_article = false;
+
 	for(ARTICLE_INDEX_VECTOR::const_iterator it = info_portion->Articles().begin();
 									it != info_portion->Articles().end(); it++)
 	{
 		CEncyclopediaArticle article;
+
 		article.Load(*it);
+		if(article.data()->articleType == ARTICLE_DATA::eEncyclopediaArticle)
+			encyclopedia_article = true;
+		else if(article.data()->articleType == ARTICLE_DATA::eDiaryArticle)
+			actor_diary_article = true;
+
 		article_vector.push_back(ARTICLE_DATA(*it, Level().GetGameTime(), article.data()->articleType));
 	}
+
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(pGameSP) 
+	{
+		if(actor_diary_article && pGameSP->PdaMenu.UIDiaryWnd.IsShown() &&
+			pGameSP->PdaMenu.UIDiaryWnd.UIActorDiaryWnd.IsShown())
+		{
+			pGameSP->PdaMenu.UIDiaryWnd.ReloadArticles();
+		}
+		
+		if(encyclopedia_article && pGameSP->PdaMenu.UIEncyclopediaWnd.IsShown())
+		{
+			pGameSP->PdaMenu.UIEncyclopediaWnd.ReloadArticles();
+		}
+	}
+
 }
 
 void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
@@ -115,6 +139,16 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 	if(old_size != task_vector.size())
 		if(HUD().GetUI())
 			HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
+
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(pGameSP) 
+	{
+		if(pGameSP->PdaMenu.UIDiaryWnd.IsShown() &&
+			pGameSP->PdaMenu.UIDiaryWnd.UIJobsWnd.IsShown())
+		{
+			pGameSP->PdaMenu.UIDiaryWnd.UIJobsWnd.ReloadJobs();
+		}
+	}
 }
 
 
@@ -153,7 +187,6 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 		else
 			pGameSP->PdaMenu.UIDiaryWnd.MarkNewsAsRead(false);
 	}
-	
 }
 
 
@@ -176,11 +209,22 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return false;
 
-	
+	//обновить отмеки на карте, если мы прямо в карте и находимся
+	if(pGameSP->PdaMenu.UIMapWnd.IsShown())
+	{
+		pGameSP->PdaMenu.UIMapWnd.InitGlobalMapObjectives	();
+		pGameSP->PdaMenu.UIMapWnd.InitLocalMapObjectives	();
+	}
+
 	if(pGameSP->TalkMenu.IsShown())
 	{
-		pGameSP->TalkMenu.UpdateQuestions();
+		pGameSP->TalkMenu.NeedUpdateQuestions();
 	}
+	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
+	{
+		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
+	}
+
 
 	return true;
 }
@@ -196,9 +240,23 @@ void CActor::OnDisableInfo(INFO_INDEX info_index)  const
 
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(pGameSP && pGameSP->TalkMenu.IsShown()) 
+	if(!pGameSP) return;
+
+	//обновить отмеки на карте, если мы прямо в карте и находимся
+	if(pGameSP->PdaMenu.UIMapWnd.IsShown())
 	{
-		pGameSP->TalkMenu.UpdateQuestions();
+		pGameSP->PdaMenu.UIMapWnd.InitGlobalMapObjectives	();
+		pGameSP->PdaMenu.UIMapWnd.InitLocalMapObjectives	();
+	}
+
+
+	if(pGameSP->TalkMenu.IsShown())
+	{
+		pGameSP->TalkMenu.NeedUpdateQuestions();
+	}
+	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
+	{
+		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
 	}
 }
 

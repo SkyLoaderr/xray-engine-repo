@@ -141,12 +141,16 @@ protected:
 	void				InitLocalMaps			();
 	void				DeleteLocalMapsData		();
 	// Инициализация заданий для отображения их на картах. Выполняется при каждом показе.
-	void				InitGlobalMapObjectives	();
-	void				InitLocalMapObjectives	();
+
 	// Инициализация локальной карты.Выполняется при каждом показе.
 	void				SetLocalMap				(const shared_str &levelName);
 	// Применить фильтр на маплокейшины, для показа соответсвующих на нужной карте
 	void				ApplyFilterToObjectives	(const shared_str &levelName);
+
+public:
+	void				InitGlobalMapObjectives	();
+	void				InitLocalMapObjectives	();
+
 
 private:
 	// Размеры глобальной карты в условных единицах

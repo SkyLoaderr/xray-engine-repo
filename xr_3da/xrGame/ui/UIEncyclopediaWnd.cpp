@@ -161,6 +161,25 @@ void CUIEncyclopediaWnd::Draw()
 {
 	inherited::Draw();
 }
+//////////////////////////////////////////////////////////////////////////
+void CUIEncyclopediaWnd::ReloadArticles()
+{
+	static u32 prevArticlesCount = 0;
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr() && pActor->encyclopedia_registry->registry().objects_ptr()->size() > prevArticlesCount)
+	{
+		ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
+		std::advance(it, prevArticlesCount);
+		for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
+		{
+			if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
+			{
+				UIInfo.AddArticle(it->index, it->readed);
+			}
+		}
+		prevArticlesCount = pActor->encyclopedia_registry->registry().objects_ptr()->size();
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -168,24 +187,7 @@ void CUIEncyclopediaWnd::Show(bool status)
 {
 	if (status)
 	{
-//		DeleteArticles();
-
-		static u32 prevArticlesCount = 0;
-		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-		if(pActor && pActor->encyclopedia_registry->registry().objects_ptr() && pActor->encyclopedia_registry->registry().objects_ptr()->size() > prevArticlesCount)
-		{
-			ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
-			std::advance(it, prevArticlesCount);
-			for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
-			{
-				if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
-				{
-					UIInfo.AddArticle(it->index, it->readed);
-				}
-			}
-
-			prevArticlesCount = pActor->encyclopedia_registry->registry().objects_ptr()->size();
-		}
+		ReloadArticles();
 	}
 	else
 	{

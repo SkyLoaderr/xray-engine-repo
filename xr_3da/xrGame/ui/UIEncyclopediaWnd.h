@@ -47,6 +47,8 @@ public:
 	void			OpenTree(int idx) { UIInfo.OpenTree(idx); }
 	// Кнопка возврата в меню заданий
 	CUIButton			UIBack;
+
+	void			ReloadArticles	();
 protected:
 
 	// Элементы графического оформления

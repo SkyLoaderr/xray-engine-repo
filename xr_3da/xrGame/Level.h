@@ -215,7 +215,10 @@ protected:
 	LOCATIONS_PTR_VECTOR	m_MapLocationVector;
 public:
 	LOCATIONS_PTR_VECTOR&   MapLocations				() {return m_MapLocationVector;}
-	void					AddObjectMapLocation		(const CGameObject* object, EMapLocationFlags location_type);
+	
+	void					AddEntityMapLocation		(const CGameObject* object, EMapLocationFlags location_type);
+	void					AddObjectMapLocationIcon	(const CGameObject* object, EMapLocationFlags location_type, LPCSTR name, LPCSTR text, int icon_x, int icon_y);
+
 	void					AddMapLocation				(const SMapLocation& map_location, EMapLocationFlags location_type);
 	void					RemoveMapLocationByID		(u16 object_id, EMapLocationFlags location_type);
 	void					RemoveMapLocationByInfo		(INFO_INDEX info_index);

@@ -39,6 +39,8 @@ public:
 	void				OpenDiaryTree(int idx) { UIActorDiaryWnd.m_pCore->OpenTree(idx); }
 
 	void				MarkNewsAsRead (bool status);
+	//записи в дневнике у актера
+	void				ReloadArticles();
 
 public:
 	// Дочерние окна входящие в окно информации

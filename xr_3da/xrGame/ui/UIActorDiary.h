@@ -34,6 +34,8 @@ public:
 	void			ShowArticle			(CUITreeViewItem *pItem);
 	virtual void	Show				(bool status);
 
+	void			ReloadArticles		();
+
 	CUIEncyclopediaCore *m_pCore;
 private:
 	CUIListWnd		UIInfoList;

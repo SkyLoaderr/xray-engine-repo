@@ -88,7 +88,7 @@ SMapLocation*  CLevel::GetMapLocationByID(u16 object_id)
 }
 
 
-void  CLevel::AddObjectMapLocation		(const CGameObject* object, EMapLocationFlags location_type)
+void  CLevel::AddEntityMapLocation		(const CGameObject* object, EMapLocationFlags location_type)
 {
 	const CEntity* entity = smart_cast<const CEntity*>(object);
 	if(!entity) return;
@@ -112,6 +112,21 @@ void  CLevel::AddObjectMapLocation		(const CGameObject* object, EMapLocationFlag
 		map_location.name = entity->cName();
 	}
 	map_location.text = "";
+	AddMapLocation(map_location, location_type);
+}
+
+void  CLevel::AddObjectMapLocationIcon	(const CGameObject* object, EMapLocationFlags location_type, 
+										 LPCSTR name, LPCSTR text, 
+										 int icon_x, int icon_y)
+{
+	SMapLocation map_location;
+	map_location.attached_to_object = true;
+	map_location.object_id = object->ID();
+	map_location.icon_width = map_location.icon_height = 1;	
+	map_location.icon_x = icon_x;
+	map_location.icon_y = icon_y;
+	map_location.name = name;
+	map_location.text = text;
 	AddMapLocation(map_location, location_type);
 }
 

@@ -136,10 +136,18 @@ Fvector vertex_position(u32 level_vertex_id)
 	return			(ai().level_graph().vertex_position(level_vertex_id));
 }
 
-void map_add_object_icon(CScriptGameObject* lua_object, u16 text_id)
+void map_add_entity_icon(CScriptGameObject* lua_object)
 {
-	Level().AddObjectMapLocation(&lua_object->object(), eMapLocationScript);
+	Level().AddEntityMapLocation(&lua_object->object(), eMapLocationScript);
 }
+
+void map_add_object_icon(CScriptGameObject* lua_object, 
+						LPCSTR name, LPCSTR text, int icon_x, int icon_y)
+{
+	Level().AddObjectMapLocationIcon(&lua_object->object(), eMapLocationScript,
+									name, text, icon_x, icon_y);
+}
+
 void map_remove_object_icon(CScriptGameObject* lua_object)
 {
 	Level().RemoveMapLocationByID(lua_object->object().ID(), eMapLocationScript);
@@ -196,8 +204,10 @@ void CLevel::script_register(lua_State *L)
 
 		def("client_spawn_manager",				get_client_spawn_manager),
 
+		def("map_add_entity_icon",				map_add_entity_icon),
 		def("map_add_object_icon",				map_add_object_icon),
 		def("map_remove_object_icon",			map_remove_object_icon),
+
 		def("start_stop_menu",					start_stop_menu),
 		def("present",							is_level_present)
 	];
