@@ -88,7 +88,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO) const
 	{
 		luabind::functor<bool>	lua_function;
 		bool functor_exists = ai().script_engine().functor(*Preconditions()[i] ,lua_function);
-		R_ASSERT3(functor_exists, "Cannot find phrase precondition", *Preconditions()[i]);
+		R_ASSERT3(functor_exists, "Cannot find precondition", *Preconditions()[i]);
 		predicate_result = lua_function	(pSpeakerGO->lua_game_object());
 		if(!predicate_result) break;
 	}

@@ -11,6 +11,7 @@
 #include "ui/xrXMLParser.h"
 #include "map_location.h"
 #include "PhraseScript.h"
+#include "GameTask.h"
 
 //////////////////////////////////////////////////////////////////////////
 // SInfoPortionData: данные для InfoProtion
@@ -30,6 +31,9 @@ struct SInfoPortionData : CSharedResource
 
 	//список локаций на карте
 	LOCATIONS_VECTOR	m_MapLocations;
+	
+	//присоединенное задание
+	CGameTask*			m_pGameTask;
 
 	//скриптовые действия, которые активируется после того как 
 	//информацию получает персонаж
@@ -71,6 +75,8 @@ public:
 
 	//текстовое представление информации
 	virtual LPCSTR GetText ();
+	//присоединенное задание, если есть
+	virtual CGameTask* GetTask () {return info_data()->m_pGameTask;}
 
 
 protected:

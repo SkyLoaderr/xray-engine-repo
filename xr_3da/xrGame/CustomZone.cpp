@@ -53,12 +53,6 @@ CCustomZone::~CCustomZone(void)
 	m_blowout_sound.destroy();
 	m_hit_sound.destroy();
 	m_entrance_sound.destroy();
-
-	if(m_pLight)
-        ::Render->light_destroy	(m_pLight);
-
-	if(m_pIdleLight)
-		::Render->light_destroy	(m_pIdleLight);
 }
 
 void CCustomZone::Load(LPCSTR section) 
@@ -173,17 +167,10 @@ void CCustomZone::Load(LPCSTR section)
 	{
 		sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
 		m_fLightRange			= pSettings->r_float(section,"light_range");
-		m_dwLightTime			= iFloor(pSettings->r_float(section,"light_time")*1000.f);
-		m_dwLightTimeLeft		= 0;
+		m_fLightTime			= pSettings->r_float(section,"light_time");
+		m_fLightTimeLeft		= 0;
 
 		m_fLightHeight		= pSettings->r_float(section,"light_height");
-
-		m_pLight = ::Render->light_create();
-		m_pLight->set_shadow(true);
-	}
-	else
-	{
-		m_pLight = NULL;
 	}
 
 	//загрузить параметры idle подсветки
@@ -191,18 +178,11 @@ void CCustomZone::Load(LPCSTR section)
 
 	if(m_bIdleLight)
 	{
-		m_pIdleLight = ::Render->light_create();
-		m_pIdleLight->set_shadow(true);
-
 		m_fIdleLightRange = pSettings->r_float(section,"idle_light_range");
 		m_fIdleLightRangeDelta = pSettings->r_float(section,"idle_light_range_delta");
 		LPCSTR light_anim = pSettings->r_string(section,"idle_light_anim");
 		m_pIdleLAnim	 = LALib.FindItem(light_anim);
 		m_fIdleLightHeight = pSettings->r_float(section,"idle_light_height");
-	}
-	else
-	{
-		m_pIdleLight = NULL;
 	}
 }
 
@@ -222,6 +202,32 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 			case 1 : l_pShape->add_box(S.data.box); break;
 		}
 	}
+
+
+	//добавить источники света
+	if(m_bIdleLight)
+	{
+		m_pIdleLight = ::Render->light_create();
+		m_pIdleLight->set_shadow(true);
+	}
+	else
+	{
+		m_pIdleLight = NULL;
+	}
+
+	if(m_bBlowoutLight) 
+	{
+		m_pLight = ::Render->light_create();
+		m_pLight->set_shadow(true);
+	}
+	else
+	{
+		m_pLight = NULL;
+	}
+
+
+
+
 
 	BOOL bOk = inherited::net_Spawn(DC);
 	
@@ -245,7 +251,6 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 
 	m_effector.SetRadius(CFORM()->getSphere().R);
 
-	
 
 	return bOk;
 }
@@ -255,11 +260,18 @@ void CCustomZone::net_Destroy()
 	inherited::net_Destroy();
 	
 	StopIdleParticles();
+
 	if(m_pLight)
+	{
 		m_pLight->set_active(false);
+		::Render->light_destroy	(m_pLight);
+	}
 
 	if(m_pIdleLight)
+	{
 		m_pIdleLight->set_active(false);
+		::Render->light_destroy	(m_pIdleLight);
+	}
 }
 
 
@@ -750,9 +762,9 @@ void  CCustomZone::Hit(float P, Fvector &dir,
 
 void CCustomZone::StartBlowoutLight		()
 {
-	if(!m_pLight || m_dwLightTime<=0) return;
+	if(!m_pLight || m_fLightTime<=0.f) return;
 	
-	m_dwLightTimeLeft = m_dwLightTime;
+	m_fLightTimeLeft = m_fLightTime;
 
 	m_pLight->set_color(m_LightColor.r, 
 						m_LightColor.g, 
@@ -763,27 +775,38 @@ void CCustomZone::StartBlowoutLight		()
 	pos.y += m_fLightHeight;
 	m_pLight->set_position(pos);
 	m_pLight->set_active(true);
+
+	//!!!
+	//Msg("blowout light of zone %s started, range %3.2f", cNameSect(), m_fLightRange);
 }
+
+void  CCustomZone::StopBlowoutLight		()
+{
+	m_fLightTimeLeft = 0.f;
+	m_pLight->set_active(false);
+	//!!!
+	//Msg("blowout light of zone %s stoped", cNameSect());
+}
+
 void CCustomZone::UpdateBlowoutLight	()
 {
 	if(!m_pLight || !m_pLight->get_active()) return;
 
-	if(m_dwLightTimeLeft>0)
+	if(m_fLightTimeLeft>0)
 	{
-		m_dwLightTimeLeft -= Device.dwTimeDelta;
+		m_fLightTimeLeft -= Device.fTimeDelta;
 
-		float scale = float(m_dwLightTimeLeft)/float(m_dwLightTime);
+		float scale = m_fLightTimeLeft/m_fLightTime;
 		m_pLight->set_color(m_LightColor.r*scale, 
 							m_LightColor.g*scale, 
 							m_LightColor.b*scale);
 		m_pLight->set_range(m_fLightRange*scale);
+
+		//!!!
+		//Msg("blowout light of zone %s, set range %3.2f", cName(), m_fLightRange*scale);
 	}
 	else
-	{
-		m_dwLightTimeLeft = 0;
-		m_pLight->set_active(false);
-		m_pLight->set_range(0.1f);
-	}
+		StopBlowoutLight ();
 }
 
 void CCustomZone::AffectObjects()

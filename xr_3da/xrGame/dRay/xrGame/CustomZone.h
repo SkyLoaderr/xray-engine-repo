@@ -225,13 +225,14 @@ protected:
 	IRender_Light*		m_pLight;
 	float				m_fLightRange;
 	Fcolor				m_LightColor;
-	u32					m_dwLightTime;
-	u32					m_dwLightTimeLeft;
+	float				m_fLightTime;
+	float				m_fLightTimeLeft;
 	float				m_fLightHeight;
 
 
 
 	virtual	void		StartBlowoutLight	();
+	virtual	void		StopBlowoutLight	();
 	virtual	void		UpdateBlowoutLight	();
 
 	//список партиклов для объетов внутри зоны
