@@ -20,7 +20,6 @@ void CRender::level_Load()
 
 	PSLibrary.OnCreate			();
 	PSLibrary.OnDeviceCreate	();
-	level_Load					();
 	L_Dynamic->Initialize		();
 
 	gm_Nearer					= FALSE;
@@ -117,9 +116,15 @@ void CRender::level_Unload()
 	IB.clear				();
 
 	//*** Components
-	xr_delete				(L_Projector);
-	xr_delete				(L_Shadows);
-	xr_delete				(Target);
+	xr_delete					(L_Projector);
+	xr_delete					(L_Shadows);
+	xr_delete					(Target);
+
+	matFogPass._set				(NULL);
+	matDetailTexturing._set		(NULL);
+
+	PSLibrary.OnDeviceDestroy	();
+	PSLibrary.OnDestroy			();
 }
 
 void CRender::LoadBuffers	(IReader *base_fs)

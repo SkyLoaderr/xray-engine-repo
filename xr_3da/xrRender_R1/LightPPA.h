@@ -47,9 +47,6 @@ class CLightPPA_Manager
 	ref_shader						hShader;
 	ref_geom						hGeom;
 public:
-	void			Initialize		();
-	void			Destroy			();
-
 	CLightPPA*		Create			();
 	void			Destroy			(CLightPPA*);
 

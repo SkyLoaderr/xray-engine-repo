@@ -801,18 +801,3 @@ void	CRender::Render		()
 
 	Device.Statistic.RenderDUMP.End();
 }
-
-void CRender::OnDeviceDestroy	()
-{
-	matFogPass._set				(NULL);
-	matDetailTexturing._set		(NULL);
-
-	L_Dynamic->Destroy			();
-	level_Unload				();
-	PSLibrary.OnDeviceDestroy	();
-	PSLibrary.OnDestroy			();
-
-	L_Projector->OnDeviceDestroy();
-	L_Shadows->OnDeviceDestroy	();
-	Target->OnDeviceDestroy		();
-}
