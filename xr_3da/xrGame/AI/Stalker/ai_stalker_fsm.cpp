@@ -175,7 +175,7 @@ void CAI_Stalker::Panic()
 	
 	m_dwInertion				= 60000;
 	
-	if (AI_Path.TravelPath.size() && (AI_Path.fSpeed < EPS_L) && !m_tEnemy.Enemy) {
+	if ((AI_Path.fSpeed < EPS_L) && !m_tEnemy.Enemy) {
 		switch (m_tActionState) {
 			case eActionStateWatch : {
 				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeDanger);
@@ -197,28 +197,21 @@ void CAI_Stalker::Panic()
 		return;
 	}
 
-	m_tActionState = eActionStateWatch;
-	if (!m_tEnemy.Enemy) {
-		int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
-		if (iIndex != -1) {
-			m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tpaDynamicObjects[iIndex].tSavedPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
-			m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
-			m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tpaDynamicObjects[iIndex].tSavedPosition.distance_to(vPosition) + 3.f;
-		}
-		else {
-			m_tSelectorFreeHunting.m_fMaxEnemyDistance = 1000.f;
-			m_tSelectorFreeHunting.m_fOptEnemyDistance = 1000.f;
-			m_tSelectorFreeHunting.m_fMinEnemyDistance = 0.f;
-		}
-	}
-	else {
-		m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
-		m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
-		m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
-	}
+	m_tActionState				= eActionStateWatch;
+	
+	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
+	m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
 
 	m_dwRandomFactor			= 50;
-	vfSetParameters				(&m_tSelectorFreeHunting,0,true,eWeaponStateIdle,ePathTypeStraightDodge,eBodyStateStand,eMovementTypeRun,eStateTypePanic,eLookTypeDirection);
+	
+	float						yaw,pitch;
+	GetDirectionAngles			(yaw,pitch);
+	yaw *= -1;
+	if (getAI().bfTooSmallAngle(yaw, r_current.yaw, PI_DIV_6))
+        vfSetParameters				(&m_tSelectorFreeHunting,0,true,eWeaponStateIdle,ePathTypeStraightDodge,eBodyStateStand,eMovementTypeRun,eStateTypePanic,eLookTypeDirection);
+	else
+        vfSetParameters				(&m_tSelectorFreeHunting,0,true,eWeaponStateIdle,ePathTypeStraightDodge,eBodyStateStand,eMovementTypeRun,eStateTypeDanger,eLookTypeDirection);
 }
 
 void CAI_Stalker::Hide()

@@ -321,8 +321,8 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 		if (tPosition.distance_to(vPosition) > fRange)
 			continue;
 
-		fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(.5f/tPosition.distance_to(vPosition))))/2.f);
-		fPitchFov		= angle_normalize_signed(fYawFov*.75f);
+		fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(1.f/tPosition.distance_to(vPosition))))/2.f);
+		fPitchFov		= angle_normalize_signed(fYawFov*1.f);
 		tPosition.sub	(vPosition);
 		tPosition.mul	(-1);
 		tPosition.getHP	(yaw2,pitch2);
@@ -330,7 +330,8 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 		pitch1			= angle_normalize_signed(pitch1);
 		yaw2			= angle_normalize_signed(yaw2);
 		pitch2			= angle_normalize_signed(pitch2);
-		if (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov)))
+//		if (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov) || true)))
+		if (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov) || false)))
 			break;
 	}
 	
@@ -347,10 +348,10 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 				H = true;
 	}
 	H = true;
-	if (K) {
-		C = true;
-		D = E = F = G = false;
-	}
+//	if (K) {
+//		C = true;
+//		D = E = F = G = false;
+//	}
 	
 	// is there any items to pick up?
 	L = false;
