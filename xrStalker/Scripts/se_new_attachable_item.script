@@ -102,6 +102,24 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self.list:add				("listitem_1")
 	self.list:add				("listitem_2")
 	self._listvalue_0			= ""
+	// choose
+	self._choose_00				= ""
+	self._choose_01				= ""
+	self._choose_02				= ""
+	self._choose_03				= ""
+	self._choose_04				= ""
+	self._choose_05				= ""
+	self._choose_06				= ""
+	self._choose_07				= ""
+	self._choose_08				= ""
+	self._choose_09				= ""
+	self._choose_10				= ""
+	self._choose_11				= ""
+	self._choose_12				= ""
+	self._choose_13				= ""
+	self._choose_14				= ""
+	self._choose_15				= ""
+	self._choose_16				= ""
 end
 
 function CSE_NewAttachableItem:__finalize	()
@@ -189,6 +207,24 @@ function CSE_NewAttachableItem:STATE_Write	(packet)
 	packet:w_u32				(self._token32_0)
 	// list
 	packet:w_stringZ			(self._listvalue_0)
+	// choose
+	packet:w_stringZ			(self._choose_00)
+	packet:w_stringZ			(self._choose_01)
+	packet:w_stringZ			(self._choose_02)
+	packet:w_stringZ			(self._choose_03)
+	packet:w_stringZ			(self._choose_04)
+	packet:w_stringZ			(self._choose_05)
+	packet:w_stringZ			(self._choose_06)
+	packet:w_stringZ			(self._choose_07)
+	packet:w_stringZ			(self._choose_08)
+	packet:w_stringZ			(self._choose_09)
+	packet:w_stringZ			(self._choose_10)
+	packet:w_stringZ			(self._choose_11)
+	packet:w_stringZ			(self._choose_12)
+	packet:w_stringZ			(self._choose_13)
+	packet:w_stringZ			(self._choose_14)
+	packet:w_stringZ			(self._choose_15)
+	packet:w_stringZ			(self._choose_16)
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
@@ -272,6 +308,24 @@ function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	self._token32_0				= packet:r_u32()
 	// list
 	self._listvalue_0			= packet:r_stringZ()
+	// choose
+	self._choose_00				= packet:r_stringZ()
+	self._choose_01				= packet:r_stringZ()
+	self._choose_02				= packet:r_stringZ()
+	self._choose_03				= packet:r_stringZ()
+	self._choose_04				= packet:r_stringZ()
+	self._choose_05				= packet:r_stringZ()
+	self._choose_06				= packet:r_stringZ()
+	self._choose_07				= packet:r_stringZ()
+	self._choose_08				= packet:r_stringZ()
+	self._choose_09				= packet:r_stringZ()
+	self._choose_10				= packet:r_stringZ()
+	self._choose_11				= packet:r_stringZ()
+	self._choose_12				= packet:r_stringZ()
+	self._choose_13				= packet:r_stringZ()
+	self._choose_14				= packet:r_stringZ()
+	self._choose_15				= packet:r_stringZ()
+	self._choose_16				= packet:r_stringZ()
 end
 
 function CSE_NewAttachableItem:FillProps	(pref,items)
@@ -361,4 +415,22 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	properties_helper():create_token32(items,"script\\token32\\0",self,"_token32_0",self.tokens32)
 	// list
 	properties_helper():create_list(items,"script\\list\\0",self,"_listvalue_0",self.list)
+	// choose
+	properties_helper():create_choose(items,"script\\choose\\00",self,"_choose_00",choose_type.sound_source)
+	properties_helper():create_choose(items,"script\\choose\\01",self,"_choose_01",choose_type.sound_environment)
+	properties_helper():create_choose(items,"script\\choose\\02",self,"_choose_02",choose_type.object)
+	properties_helper():create_choose(items,"script\\choose\\03",self,"_choose_03",choose_type.e_shader)
+	properties_helper():create_choose(items,"script\\choose\\04",self,"_choose_04",choose_type.c_shader)
+	properties_helper():create_choose(items,"script\\choose\\05",self,"_choose_05",choose_type.pe)
+	properties_helper():create_choose(items,"script\\choose\\06",self,"_choose_06",choose_type.particle)
+	properties_helper():create_choose(items,"script\\choose\\07",self,"_choose_07",choose_type.texture)
+	properties_helper():create_choose(items,"script\\choose\\08",self,"_choose_08",choose_type.entity_type)
+	properties_helper():create_choose(items,"script\\choose\\09",self,"_choose_09",choose_type.spawn_item)
+	properties_helper():create_choose(items,"script\\choose\\10",self,"_choose_10",choose_type.light_animator)
+	properties_helper():create_choose(items,"script\\choose\\11",self,"_choose_11",choose_type.visual)
+	properties_helper():create_choose(items,"script\\choose\\12",self,"_choose_12",choose_type.skeleton_animations)
+	properties_helper():create_choose(items,"script\\choose\\13",self,"_choose_13",choose_type.skeleton_bones)
+	properties_helper():create_choose(items,"script\\choose\\14",self,"_choose_14",choose_type.material)
+	properties_helper():create_choose(items,"script\\choose\\15",self,"_choose_15",choose_type.game_animation)
+	properties_helper():create_choose(items,"script\\choose\\16",self,"_choose_16",choose_type.game_motion)
 end
