@@ -23,7 +23,7 @@ static ref_shader g_EquipmentIconsShader = NULL;
 void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 {
 	CWeaponAmmo* pAmmoItem = (CWeaponAmmo*)(pItem->GetData());
-	RECT rect = pItem->GetAbsoluteRect();]
+	RECT rect = pItem->GetAbsoluteRect();
 	
 	pItem->GetFont()->Out(float(rect.left), 
 						float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
@@ -45,9 +45,9 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 //для иконок аддонов на оружии
 void InventoryUtilities::WeaponDrawProc(CUIDragDropItem* pItem)
 {
-	CWeapon* pWeapon = (CWeapon*)(pItem->GetData());
+/*	CWeapon* pWeapon = (CWeapon*)(pItem->GetData());
 	RECT rect = pItem->GetAbsoluteRect();
-
+*/
 }
 
 
