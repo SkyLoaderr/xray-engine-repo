@@ -49,6 +49,7 @@
 #include "level_graph.h"
 
 #include "phcommander.h"
+#include "map_manager.h"
 
 #ifdef DEBUG
 #include "level_debug.h"
@@ -87,6 +88,7 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 	m_pFogOfWar					= xr_new<CFogOfWar>();
 
 	m_pBulletManager			= xr_new<CBulletManager>();
+	m_map_manager				= xr_new<CMapManager>();
 
 //----------------------------------------------------
 	m_bNeed_CrPr					= false;
@@ -205,6 +207,7 @@ CLevel::~CLevel()
 	xr_delete					(m_level_debug);
 #endif
 	//-----------------------------------------------------------
+	xr_delete(m_map_manager);
 }
 
 // Game interface ////////////////////////////////////////////////////

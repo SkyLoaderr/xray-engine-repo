@@ -3,11 +3,14 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "map_location.h"
+
+/*
 #include "character_info.h"
 #include "inventoryowner.h"
 #include "entity.h"
 #include "level.h"
+
+
 
 void CLevel::AddMapLocation(const SMapLocation& map_location, EMapLocationFlags location_type)
 {
@@ -172,3 +175,5 @@ void   CLevel::UpdateMapLocation			()
 	// Проапдейтить анимацию у оставшихся
 	std::for_each(m_MapLocationVector.begin(), m_MapLocationVector.end(), std::mem_fun(&SMapLocation::UpdateAnimation));
 }
+
+*/

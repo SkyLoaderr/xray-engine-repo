@@ -23,43 +23,42 @@ class CUIStatic : public CUIWindow
 private:
 	typedef CUIWindow inherited;
 public:
-	CUIStatic();
-	virtual ~CUIStatic();
+					CUIStatic				();
+	virtual			~CUIStatic				();
 
 
-	virtual void	Init(LPCSTR tex_name, int x, int y, int width, int height);
-	virtual void	Init(int x, int y, int width, int height);
+	virtual void	Init					(LPCSTR tex_name, int x, int y, int width, int height);
+	virtual void	Init					(int x, int y, int width, int height);
 	
 	//прорисовка окна
-	virtual void	Draw();
-	//обновление перед прорисовкой
-	virtual void	Update();
-	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void	Draw					();
+	virtual void	Update					();
+	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
 
 
-	static void SetText(LPCSTR str, STRING &arr);
-	virtual void SetText(LPCSTR str);
-	LPCSTR GetText() {return m_str;}
+	static void		SetText					(LPCSTR str, STRING &arr);
+	virtual void	SetText					(LPCSTR str);
+	LPCSTR			GetText					()								{return m_str;}
 
-	virtual void SetTextAlign(CGameFont::EAligment align) {m_eTextAlign = align;}
-	CGameFont::EAligment GetTextAlign() {return m_eTextAlign;}
+	virtual void SetTextAlign				(CGameFont::EAligment align)	{m_eTextAlign = align;}
+	CGameFont::EAligment GetTextAlign		()								{return m_eTextAlign;}
 
-	void		SetTextAlign_script			(u32 align) { m_eTextAlign = (CGameFont::EAligment)align;	}
-	u32			GetTextAlign_script			()			{ return static_cast<u32>(m_eTextAlign);		}
+	void		SetTextAlign_script			(u32 align)						{ m_eTextAlign = (CGameFont::EAligment)align;	}
+	u32			GetTextAlign_script			()								{ return static_cast<u32>(m_eTextAlign);		}
 
-	void		SetColor					(u32 color) { m_UIStaticItem.SetColor(color);		}
-	u32			GetColor					() const	{ return m_UIStaticItem.GetColor();		}
+	void		SetColor					(u32 color)						{ m_UIStaticItem.SetColor(color);		}
+	u32			GetColor					() const						{ return m_UIStaticItem.GetColor();		}
 	// Получения цвета по референсу используется для анимации
-	u32&		GetColorRef					()			{ return m_UIStaticItem.GetColorRef();	}
+	u32&		GetColorRef					()								{ return m_UIStaticItem.GetColorRef();	}
 	
-	virtual void InitTexture(LPCSTR tex_name);
-	void SetOriginalRect (int x, int y, int width, int height){m_UIStaticItem.SetOriginalRect(x,y,width,height);};
-	CUIStaticItem* GetStaticItem() {return &m_UIStaticItem;}
+	virtual void	InitTexture(LPCSTR tex_name);
+	void			SetOriginalRect (int x, int y, int width, int height)	{m_UIStaticItem.SetOriginalRect(x,y,width,height);};
+	CUIStaticItem*	GetStaticItem			()								{return &m_UIStaticItem;}
 
-	virtual void ClipperOn();
-	virtual void ClipperOff();
-	virtual void ClipperOff(CUIStaticItem& UIStaticItem);
-	virtual bool GetClipperState() {return m_bClipper;}
+	virtual void ClipperOn					();
+	virtual void ClipperOff					();
+	virtual void ClipperOff					(CUIStaticItem& UIStaticItem);
+	virtual bool GetClipperState			()								{return m_bClipper;}
 
 	//отсечение части изображение, при его выходе за
 	//пределы родительского окна
@@ -76,34 +75,35 @@ public:
 	virtual float	GetTextureScaleX		();
 	virtual float	GetTextureScaleY		();
 	
-	void	SetShader			(const ref_shader& sh);
-	CUIStaticItem& GetUIStaticItem() {return m_UIStaticItem;}
+	void			SetShader				(const ref_shader& sh);
+	CUIStaticItem&	GetUIStaticItem			()						{return m_UIStaticItem;}
 
-	virtual void SetTextX(int text_x) {m_iTextOffsetX = text_x;}
-	virtual void SetTextY(int text_y) {m_iTextOffsetY = text_y;}
-	int GetTextX() {return m_iTextOffsetX;}
-	int GetTextY() {return m_iTextOffsetY;}
+	virtual void SetTextX					(int text_x)			{m_iTextOffsetX = text_x;}
+	virtual void SetTextY					(int text_y)			{m_iTextOffsetY = text_y;}
+	int			 GetTextX					()						{return m_iTextOffsetX;}
+	int			 GetTextY					()						{return m_iTextOffsetY;}
 
-	virtual void SetTextColor(u32 color)	{ m_dwFontColor = color; } 
-			u32  GetTextColor() const		{ return m_dwFontColor; }
-			u32  &GetTextColorRef()			{ return m_dwFontColor; }
+	virtual void SetTextColor				(u32 color)				{ m_dwFontColor = color; } 
+			u32  GetTextColor				() const				{ return m_dwFontColor; }
+			u32  &GetTextColorRef			()						{ return m_dwFontColor; }
 
-	void SetStretchTexture(bool stretch_texture) {m_bStretchTexture = stretch_texture;}
-	bool GetStretchTexture() {return m_bStretchTexture;}
+	void		SetStretchTexture			(bool stretch_texture)	{m_bStretchTexture = stretch_texture;}
+	bool		GetStretchTexture			()						{return m_bStretchTexture;}
 
-	void SetClipRect(Irect r);
-	Irect GetClipRect();
+	void		SetClipRect					(Irect r);
+	Irect		GetSelfClipRect				();
+	Irect		GetClipperRect				();
 
 	// Работа с маской
-	void SetMask(CUIFrameWindow *pMask);
+	void SetMask							(CUIFrameWindow *pMask);
 	// Cмещение текстуры кнопки
-	void		SetTextureOffset(int x, int y) { m_iTexOffsetX = x; m_iTexOffsetY = y; }
-	Ivector2	GetTextureOffeset() const { Ivector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
+	void		SetTextureOffset			(int x, int y)		{ m_iTexOffsetX = x; m_iTexOffsetY = y; }
+	Ivector2	GetTextureOffeset			() const			{ Ivector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
 	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
 	// "\n" реализуем таким образом wordwrap
-	static void PreprocessText(STRING &str, u32 width, CGameFont *pFont);
+	static void PreprocessText				(STRING &str, u32 width, CGameFont *pFont);
 	// Функция вывода текста
-	void DrawString(const Irect &rect);
+	void DrawString							(const Irect &rect);
 	// Когда текст надписи не влазит в статик, то, иногда, нам необходимо показать троеточие и обрезать
 	// надпись. Вот для этого и предназначена эта функция
 	enum EElipsisPosition
@@ -114,17 +114,24 @@ public:
 		eepCenter
 	};
 
-	void SetElipsis(EElipsisPosition pos, int indent);
+	void SetElipsis							(EElipsisPosition pos, int indent);
 
 	// Включть/выключить текстуру
-	void TextureOn()					{ m_bTextureEnable = true; }
-	void TextureOff()					{ m_bTextureEnable = false; }
-	void TextureAvailable(bool value)	{ m_bAvailableTexture = value; }
+	void TextureOn							()						{ m_bTextureEnable = true; }
+	void TextureOff							()						{ m_bTextureEnable = false; }
+	void TextureAvailable					(bool value)			{ m_bAvailableTexture = value; }
 
 	// performs text length limit :)
-	void PerformTextLengthLimit(int limit = -1);
+	void PerformTextLengthLimit				(int limit = -1);
 	// deletes last character in text field
-	void DeleteLastCharacter();
+	void DeleteLastCharacter				();
+	
+	void	SetHeading						(float f)				{m_fHeading = f;};
+	float	GetHeading						()						{return m_fHeading;}
+	bool	Heading							()						{return m_bHeading;}
+	void	EnableHeading					(bool b)				{m_bHeading = b;}
+
+	void	SetHeadingPivot					(const Ivector2& p)		{m_UIStaticItem.SetHeadingPivot(p);}
 
 protected:
 	bool m_bClipper;
@@ -173,6 +180,9 @@ protected:
 	
 	int space_width;
 	int word_width;
+
+	bool			m_bHeading;
+	float			m_fHeading;
 
 	CGameFont::EAligment m_eTextAlign;
 

@@ -136,7 +136,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 		info_data()->m_GameTasks.push_back(CGameTask::IdToIndex(task_str_id));
 	}
 
-
+/*
 	//загрузить позиции на карте
 	SMapLocation map_location;
 	info_data()->m_MapLocations.clear();
@@ -151,15 +151,6 @@ void CInfoPortion::load_shared	(LPCSTR)
 			map_location.info_portion_id = m_InfoIndex;
 
 			map_location.level_name = uiXml.Read(pMapNode,"level",0);
-
-			//. ???
-			/*
-#ifndef DEBUG
-			//проверка на существование уровня с заданым именем
-			if(ai().get_alife() && ai().get_game_graph() && xr_strlen(*map_location.level_name)>0)
-				ai().game_graph().header().level(*map_location.level_name);
-#endif
-			*/
 
 			map_location.x = (float)atof(uiXml.Read(pMapNode,"x",0));
 			map_location.y = (float)atof(uiXml.Read(pMapNode,"y",0));
@@ -214,6 +205,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 			info_data()->m_MapLocations.push_back(map_location);
 		}
 	}
+*/
 }
 
 LPCSTR  CInfoPortion::GetText () const

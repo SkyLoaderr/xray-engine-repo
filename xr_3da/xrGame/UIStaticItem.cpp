@@ -13,8 +13,6 @@ CUIStaticItem::CUIStaticItem()
 	iTileY			= 1;
 	iRemX			= 0;
 	iRemY			= 0;
-	bReverseRemX	= false;
-	bReverseRemY	= false;
 
 	hShader			= NULL;
 
@@ -77,57 +75,28 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 			v_cnt	+=4;
 		}
 	}
+	Irect clip_rect	= {bp.x,bp.y,iFloor(bp.x+fw*iTileX+iRemX),iFloor(bp.y+fh*iTileY+iRemY)};
+	UI()->PushScissor(clip_rect);
 	if (iRemX){
 		for (y=0; y<iTileY; ++y){
 			pos.set					(iCeil(bp.x+iTileX*fw),iCeil(bp.y+y*fh));
-//			pos.set					(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+y*fh));
-			if (bReverseRemX)
-			{
-				pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScaleX() + 0.5f);
-				inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iVisRect.y2);	
-			}
-			else
-				inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iVisRect.y2);	
+			inherited::Render		(pv,pos,dwColor);	
 			v_cnt	+=4;
 		}
 	}
 	if (iRemY){
 		for (x=0; x<iTileX; ++x){
 			pos.set					(iCeil(bp.x+x*fw),iCeil(bp.y+iTileY*fh));
-//			pos.set					(static_cast<int>(bp.x+x*fw),static_cast<int>(bp.y+iTileY*fh));
-			if (bReverseRemY)
-			{
-				pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScaleY() + 0.5f);
-				inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY,iVisRect.x2,iVisRect.y2);	
-			}
-			else
-				inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iVisRect.x2,iRemY);	
+			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iVisRect.x2,iRemY);	
 			v_cnt	+=4;
 		}
 	}
 	if (iRemX&&iRemY){
 		pos.set						(iCeil(bp.x+iTileX*fw),iCeil(bp.y+iTileY*fh));
-//		pos.set						(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+iTileY*fh));
-		if (bReverseRemY && bReverseRemX)
-		{
-			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScaleX() + 0.5f);
-			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScaleY() + 0.5f);
-			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX, iVisRect.y2 - iRemY, iVisRect.x2, iVisRect.y2);	
-		}
-		else if (bReverseRemY)
-		{
-			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScaleY() + 0.5f);
-			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY, iRemX, iVisRect.y2);
-		}
-		else if (bReverseRemX)
-		{
-			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScaleX() + 0.5f);
-			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iRemY);	
-		}
-		else
-			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iRemY);	
+		inherited::Render			(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iRemY);	
 		v_cnt		+=4;
 	}
+	UI()->PopScissor();
 
 	// unlock VB and Render it as triangle LIST
 	RCache.Vertex.Unlock	(v_cnt,hGeom.stride());
@@ -148,7 +117,7 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 	// actual rendering
 	u32			vOffset;
 	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4,hGeom.stride(),vOffset);
-	
+	 
 	inherited::Render(pv,bp,dwColor,angle);
 
 	// unlock VB and Render it as triangle LIST

@@ -28,11 +28,11 @@
 #include "alife_registry_wrappers.h"
 
 
-static LPCSTR	m_sMapSpotAnimEnemy = NULL;
-static LPCSTR	m_sMapSpotAnimNeutral = NULL;
-static LPCSTR	m_sMapSpotAnimFriend = NULL;
+//static LPCSTR	m_sMapSpotAnimEnemy = NULL;
+//static LPCSTR	m_sMapSpotAnimNeutral = NULL;
+//static LPCSTR	m_sMapSpotAnimFriend = NULL;
 
-
+/*
 void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion) const
 {
 	VERIFY(info_portion);
@@ -42,7 +42,7 @@ void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion) const
 		const SMapLocation& map_location = info_portion->MapLocations()[i];
 		Level().AddMapLocation(map_location, eMapLocationInfoPortion);
 	}
-}
+}*/
 
 class RemoveByIDPred
 {
@@ -204,7 +204,7 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
 	CInfoPortion info_portion;
 	info_portion.Load(info_index);
 
-	AddMapLocationsFromInfo	(&info_portion);
+//	AddMapLocationsFromInfo	(&info_portion);
 	AddEncyclopediaArticle	(&info_portion);
 	AddGameTask				(&info_portion);
 
@@ -214,14 +214,14 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return false;
-
+/*
 	//обновить отмеки на карте, если мы прямо в карте и находимся
 	if(pGameSP->PdaMenu.UIMapWnd.IsShown())
 	{
 		pGameSP->PdaMenu.UIMapWnd.InitGlobalMapObjectives	();
 		pGameSP->PdaMenu.UIMapWnd.InitLocalMapObjectives	();
 	}
-
+*/
 	if(pGameSP->TalkMenu.IsShown())
 	{
 		pGameSP->TalkMenu.NeedUpdateQuestions();
@@ -238,7 +238,7 @@ bool CActor::OnReceiveInfo(INFO_INDEX info_index) const
 
 void CActor::OnDisableInfo(INFO_INDEX info_index)  const
 {
-	Level().RemoveMapLocationByInfo(info_index);
+//	Level().RemoveMapLocationByInfo(info_index);
 	CInventoryOwner::OnDisableInfo(info_index);
 
 	if(!HUD().GetUI())
@@ -248,13 +248,14 @@ void CActor::OnDisableInfo(INFO_INDEX info_index)  const
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
+/* 
 	//обновить отмеки на карте, если мы прямо в карте и находимся
 	if(pGameSP->PdaMenu.UIMapWnd.IsShown())
 	{
 		pGameSP->PdaMenu.UIMapWnd.InitGlobalMapObjectives	();
 		pGameSP->PdaMenu.UIMapWnd.InitLocalMapObjectives	();
 	}
-
+*/
 
 	if(pGameSP->TalkMenu.IsShown())
 	{
@@ -411,6 +412,7 @@ void CActor::UpdateContact		(u16 contact_id)
 
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
+/*
 	static LPCSTR	m_sMapSpotAnimEnemy		= pSettings->r_string("game_map", "map_spots_enemy");	
 	static LPCSTR	m_sMapSpotAnimNeutral	= pSettings->r_string("game_map", "map_spots_neutral");
 	static LPCSTR	m_sMapSpotAnimFriend	= pSettings->r_string("game_map", "map_spots_friend");
@@ -452,12 +454,15 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 	}
 	map_location.SetColorAnimation(anim_name);
 	Level().AddMapLocation(map_location, eMapLocationPDAContact);
+*/
 }
 void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
 {
+/*
 	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
 	if (GO)
 		Level().RemoveMapLocationByID(GO->ID(), eMapLocationPDAContact);
+*/
 }
 
 void CActor::AddGameNews_deffered	 (GAME_NEWS_DATA& news_data, u32 delay)

@@ -13,9 +13,9 @@ CUICustomItem::CUICustomItem()
 	iOriginalRect.set	(0,0,0,0);
 	iTextureRect.set	(0,0,0,0);
 	eMirrorMode			= tmNone;
-
 	fScaleX				= 1.f;
 	fScaleY				= 1.f;
+	iHeadingPivot.set	(0,0); 
 }
 //--------------------------------------------------------------------
 
@@ -74,32 +74,21 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	LTp.set			(pos.x+x1*scX,pos.y+y1*scY);
 	RBp.set			(pos.x+x2*scX,pos.y+y2*scY);
 
-/*	LTp.set			(float(pos.x+x1),float(pos.y+y1));
-	RBp.set			(pos.x + x1 + float(x2-x1)/fScale,
-					 pos.y + y1 + float(y2-y1)/fScale);*/
 
 
 	//текстурные координаты
-	/*LTt.set			(fScale* float(x1)/float(ts.x)+hp.x,
-					 fScale* float(y1)/float(ts.y)+hp.y);
-	RBt.set			(fScale*float(x2)/float(ts.x)+hp.x,
-					 fScale*float(y2)/float(ts.y)+hp.y);*/
 	
-	LTt.set			( float(iOriginalRect.x1+fScaleX*x1)/float(iTextureRect.width())+hp.x,
-					  float(iOriginalRect.y1+fScaleY*y1)/float(iTextureRect.height())+hp.y);
-	RBt.set			((float(iOriginalRect.x1+fScaleX*x1)+
+	LTt.set			( float(fScaleX*iOriginalRect.x1)/float(iTextureRect.width())+hp.x,
+					  float(fScaleY*iOriginalRect.y1)/float(iTextureRect.height())+hp.y);
+	RBt.set			( float(fScaleX*iOriginalRect.x2)/float(iTextureRect.width())+hp.x,
+					  float(fScaleY*iOriginalRect.y2)/float(iTextureRect.height())+hp.y);
+/*	RBt.set			((float(iOriginalRect.x1+fScaleX*x1)+
 					  fScaleX*float(x2-x1))/
 					  float(iTextureRect.width())+hp.x,
 					 (float(iOriginalRect.y1+fScaleY*y1)+
 					  fScaleY*float(y2-y1))/
 					  float(iTextureRect.height())+hp.y);
-/*	RBt.set			((float(iOriginalRect.x1+x1)+
-					  float(x2-x1))/
-					  float(iTextureRect.width())+hp.x,
-					 (float(iOriginalRect.y1+y1)+
-					  float(y2-y1))/
-					  float(iTextureRect.height())+hp.y);*/
-
+*/
 	// Check mirror mode
 	if (tmMirrorHorisontal == eMirrorMode || tmMirrorBoth == eMirrorMode)
 	{
@@ -124,11 +113,76 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color)
 {
 	Render(Pointer,pos,color,iVisRect.x1,iVisRect.y1,iVisRect.x2,iVisRect.y2);
-	/*Render(Pointer,pos,color,iOriginalRect.x1,iOriginalRect.y1,
-							 iOriginalRect.x2,iOriginalRect.y2);
-							 */
 }
 //--------------------------------------------------------------------
+
+void rotation(int x, int y, const float angle, int& x_, int& y_)
+{
+	x_= iFloor(float(x)*_cos(angle)+float(y)*_sin(angle));
+	y_= iFloor(float(y)*_cos(angle)-float(x)*_sin(angle));
+}
+/*
+void rotation(const float x, const float y, const float angle, float& x_, float& y_)
+{
+	x_= x*cos(angle)+y*sin(angle);
+	y_= y*cos(angle)-x*sin(angle);
+}
+void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle)
+{
+	CTexture* T		= RCache.get_ActiveTexture(0);
+	Ivector2		ts;
+	Fvector2		hp;
+	ts.set			((int)T->get_Width(),(int)T->get_Height());
+	hp.set			(0.5f/float(ts.x),0.5f/float(ts.y));
+	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
+
+	angle = -angle;
+	float scX		= UI()->GetScaleX();
+	float scY		= UI()->GetScaleY();
+
+	Fvector2 LTp,RBp;
+	LTp.set			(pos.x+iOriginalRect.x1*scX, pos.y+iOriginalRect.y1*scY);
+	RBp.set			(pos.x+iOriginalRect.x2*scX, pos.y+iOriginalRect.y2*scY);
+
+	Fvector2 LTt,RTt,LBt,RBt;
+
+	LTt.x = fScaleX*float(iOriginalRect.x1)/float(ts.x)+hp.x;
+	LTt.y = fScaleY*float(iOriginalRect.y1)/float(ts.y)+hp.y;
+	RBt.x = fScaleX*float(iOriginalRect.x2)/float(ts.x)+hp.x;
+	RBt.y = fScaleY*float(iOriginalRect.y2)/float(ts.y)+hp.y;
+
+	Fvector2 vis_center;
+	vis_center.sub(RBt,LTt);
+	vis_center.mul(0.5f);
+
+	LTt.sub(vis_center);
+	rotation(LTt.x,LTt.y,angle,LTt.x,LTt.y);
+	LTt.add(vis_center);
+
+
+	RBt.sub(vis_center);
+	rotation(RBt.x,RBt.y,angle,RBt.x,RBt.y);
+	RBt.add(vis_center);
+
+	RTt.x = fScaleX*float(iOriginalRect.x2)/float(ts.x)+hp.x;
+	RTt.y = fScaleY*float(iOriginalRect.y1)/float(ts.y)+hp.y;
+	RTt.sub(vis_center);
+	rotation(RTt.x,RTt.y,angle,RTt.x,RTt.y);
+	RTt.add(vis_center);
+
+	LBt.x = fScaleX*float(iOriginalRect.x1)/float(ts.x)+hp.x;
+	LBt.y = fScaleY*float(iOriginalRect.y2)/float(ts.y)+hp.y;
+	LBt.sub(vis_center);
+	rotation(LBt.x,LBt.y,angle,LBt.x,LBt.y);
+	LBt.add(vis_center);
+
+	Pointer->set	(LTp.x,	RBp.y,	color, LBt.x, LBt.y); ++Pointer;
+	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); ++Pointer;
+	Pointer->set	(RBp.x,	RBp.y,	color, RBt.x, RBt.y); ++Pointer;
+	Pointer->set	(RBp.x,	LTp.y,	color, RTt.x, RTt.y); ++Pointer;
+}*/
+
+
 
 void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle)
 {
@@ -139,11 +193,18 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	hp.set			(0.5f/float(ts.x),0.5f/float(ts.y));
 	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
 
-	float			_sin1,_cos1,_sin2,_cos2;
-	angle			-=PI_DIV_4;
-	_sin1=_sin(angle); _cos1=_cos(angle);
-	angle			+=PI_DIV_2;
-	_sin2=_sin(angle); _cos2=_cos(angle);
+	if (!(uFlags&flValidOriginalRect)){
+		iOriginalRect.set(0,0,ts.x,ts.y);
+		uFlags |= flValidOriginalRect;
+	}
+
+//	float			_sin1,_cos1,_sin2,_cos2;
+//	angle			-=PI_DIV_4;
+//	_sin1=_sin(angle); 
+//	_cos1=_cos(angle);
+//	angle			+=PI_DIV_2;
+//	_sin2=_sin(angle); 
+//	_cos2=_cos(angle);
 
 	Fvector2 C;
 	Ivector2 RS;
@@ -154,20 +215,64 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	float szY		= scY*(RS.y)*0.7071f;
 
 	Fvector2 LTt,RBt;
-	LTt.set			(fScaleX*float(iVisRect.x1)/float(ts.x)+hp.x,
-					 fScaleY*float(iVisRect.y1)/float(ts.y)+hp.y);
-	RBt.set			(fScaleX*float(iVisRect.x2)/float(ts.x)+hp.x,
-					 fScaleY*float(iVisRect.y2)/float(ts.y)+hp.y);
+	LTt.set			(fScaleX*float(iOriginalRect.x1)/float(ts.x)+hp.x,
+					 fScaleY*float(iOriginalRect.y1)/float(ts.y)+hp.y);
+	RBt.set			(fScaleX*float(iOriginalRect.x2)/float(ts.x)+hp.x,
+					 fScaleY*float(iOriginalRect.y2)/float(ts.y)+hp.y);
+/*
 
 	// Rotation
-	iVisRect.getcenter(RS); 
-	C.set			(RS.x*scX+pos.x,RS.y*scY+pos.y);
+	if( !(uFlags&flValidHeadingPivot) ){
+		iVisRect.getcenter(RS);
+	}else
+		RS = iHeadingPivot;
+
+	C.set	(RS.x*scX+pos.x,RS.y*scY+pos.y);
+
 
 	Pointer->set	(C.x+_sin1*szX,	C.y+_cos1*szY,	color, LTt.x, RBt.y); ++Pointer;
 	Pointer->set	(C.x-_sin2*szX,	C.y-_cos2*szY,	color, LTt.x, LTt.y); ++Pointer;
 	Pointer->set	(C.x+_sin2*szX,	C.y+_cos2*szY,	color, RBt.x, RBt.y); ++Pointer;
 	Pointer->set	(C.x-_sin1*szX,	C.y-_cos1*szY,	color, RBt.x, LTt.y); ++Pointer;
+*/
+	// Rotation
+	if( !(uFlags&flValidHeadingPivot) ){
+		iVisRect.getcenter(RS);
+	}else
+		RS = iHeadingPivot;
+
+	Ivector2 LTp,RTp,LBp,RBp;
+
+	LTp.x = iVisRect.x1;
+	LTp.y = iVisRect.y1;
+	LTp.sub(RS);
+	rotation(LTp.x,LTp.y,angle,LTp.x,LTp.y);
+	LTp.add(RS);
+
+	RBp.x = iVisRect.x2;
+	RBp.y = iVisRect.y2;
+	RBp.sub(RS);
+	rotation(RBp.x,RBp.y,angle,RBp.x,RBp.y);
+	RBp.add(RS);
+
+	RTp.x = iVisRect.x2;
+	RTp.y = iVisRect.y1;
+	RTp.sub(RS);
+	rotation(RTp.x,RTp.y,angle,RTp.x,RTp.y);
+	RTp.add(RS);
+
+	LBp.x = iVisRect.x1;
+	LBp.y = iVisRect.y2;
+	LBp.sub(RS);
+	rotation(LBp.x,LBp.y,angle,LBp.x,LBp.y);
+	LBp.add(RS);
+
+	Pointer->set	(LBp.x+pos.x, LBp.y+pos.y,	color, LTt.x, RBt.y); ++Pointer;
+	Pointer->set	(LTp.x+pos.x, LTp.y+pos.y,	color, LTt.x, LTt.y); ++Pointer;
+	Pointer->set	(RBp.x+pos.x, RBp.y+pos.y,	color, RBt.x, RBt.y); ++Pointer;
+	Pointer->set	(RTp.x+pos.x, RTp.y+pos.y,	color, RBt.x, LTt.y); ++Pointer;
 }
+
 //--------------------------------------------------------------------
 //render in a rect a specified part of texture
 void CUICustomItem::RenderTexPart(FVF::TL*& Pointer, const Ivector2& pos, u32 color,  

@@ -16,8 +16,86 @@
 #include "ai_space.h"
 #include "game_graph.h"
 
+#include "ui/UIMapWnd.h"
+
 //////////////////////////////////////////////////////////////////////////
 
+CUIZoneMap::CUIZoneMap()
+{}
+
+CUIZoneMap::~CUIZoneMap()
+{
+	
+}
+
+void CUIZoneMap::Init()
+{
+	string256			gameLtxPath;
+	FS.update_path		(gameLtxPath, CONFIG_PATH, "game.ltx");
+	CInifile			gameLtx		(gameLtxPath);
+
+
+	CUIXml uiXml;
+	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "zone_map.xml");
+	R_ASSERT3(xml_result, "xml file not found", "zone_map.xml");
+
+	// load map background
+	CUIXmlInit xml_init;
+	xml_init.InitStatic(uiXml, "minimap:background", 0, &m_background);
+
+	xml_init.InitStatic(uiXml, "minimap:background:level_frame", 0, &m_clipFrame);
+	m_background.AttachChild(&m_clipFrame);
+
+	xml_init.InitStatic(uiXml, "minimap:center", 0, &m_center);
+	
+
+	
+	m_activeMap = xr_new<CUIMiniMap>();
+	m_activeMap->SetAutoDelete(true);
+	m_activeMap->Init(Level().name(),gameLtx);
+	m_clipFrame.AttachChild(m_activeMap);
+	m_activeMap->SetClipRect( m_clipFrame.GetAbsoluteRect() );
+	m_activeMap->SetZoomFactor( 10.0f*float(m_clipFrame.GetWndRect().width())/100.0f );
+	m_activeMap->EnableHeading(true);  
+	xml_init.InitStatic(uiXml, "minimap:compass", 0, &m_compass);
+	m_compass.EnableHeading(true);
+//	m_background.AttachChild(&m_compass);
+
+	m_clipFrame.AttachChild(&m_center);
+	m_center.SetWndPos(m_clipFrame.GetWidth()/2,m_clipFrame.GetHeight()/2);
+}
+
+void CUIZoneMap::Render			()
+{
+	m_background.Draw();
+	m_compass.Draw();
+}
+
+void CUIZoneMap::SetHeading		(float angle)
+{
+	m_activeMap->SetHeading(angle);
+	m_compass.SetHeading(angle);
+};
+
+void CUIZoneMap::UpdateRadar		(CActor* Actor)
+{
+	m_background.Update();
+	m_activeMap->SetActivePoint( Actor->Position() );
+}
+
+bool CUIZoneMap::ZoomIn()
+{
+	return true;
+}
+
+bool CUIZoneMap::ZoomOut()
+{
+	return true;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+/*
 static float		MAX_VIEW_DISTANCE	=		50.f;
 #define				VIEW_DISTANCE				(MAX_VIEW_DISTANCE/m_fScale)
 
@@ -174,8 +252,6 @@ void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2
 {
 	Fvector2 Pt;
 	ConvertToLocalWithoutTransform(LM, src, Pt);
-	/*float r=Pt.magnitude();
-	if (r>map_radius) Pt.mul((float)map_radius/r);*/
 	
 	on_border = false;
 	
@@ -487,3 +563,4 @@ bool CUIZoneMap::ZoomOut()
 	return false;
 }
 
+*/

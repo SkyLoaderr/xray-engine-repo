@@ -104,36 +104,39 @@ void CUI3tButton::Draw(){
 
 		if(IsHighlightText() && m_str && xr_strlen(m_str)>0 && m_bEnableTextHighlighting)
 		{
-			GetFont()->SetColor(m_HighlightColor);
-			UI()->OutText(GetFont(), GetClipRect(), 
+			CGameFont* F = GetFont();
+			Irect clip_rect = GetSelfClipRect();
+			F->SetColor(m_HighlightColor);
+
+			UI()->OutText(F, clip_rect, 
 				(float)rect.left  + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  + 1  +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(F, clip_rect, 
 				(float)rect.left  - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, clip_rect,
 				(float)rect.left  - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(F, clip_rect, 
 				(float)rect.left  + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, clip_rect,
 				(float)rect.left  + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  + 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, clip_rect,
 				(float)rect.left  - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  - 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, clip_rect,
 				(float)rect.left  - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, clip_rect,
 				(float)rect.left  + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
 				(float)rect.top  - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
@@ -151,7 +154,7 @@ void CUI3tButton::Draw(){
 		if (!m_bNewRenderMethod)
 		{
 			if(m_str && xr_strlen(m_str)>0)
-				UI()->OutText(GetFont(), GetClipRect(), 
+				UI()->OutText(GetFont(), GetSelfClipRect(), 
 				(float)rect.left   +  m_iTextOffsetX, 
 				(float)rect.top   + m_iTextOffsetY,
 				m_str);

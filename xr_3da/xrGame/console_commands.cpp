@@ -1813,9 +1813,6 @@ void CCC_RegisterCommands()
 	CMD1(CCC_ShowSmartCastStats,	"show_smart_cast_stats");
 	CMD1(CCC_ClearSmartCastStats,	"clear_smart_cast_stats");
 
-	CMD4(CCC_Integer,	"center_x",				&x_m_x,	-1000,	1000);
-	CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);
-
 	CMD3(CCC_Mask,		"dbg_draw_actor_alive",		&dbg_net_Draw_Flags,	(1<<0));
 	CMD3(CCC_Mask,		"dbg_draw_actor_dead",		&dbg_net_Draw_Flags,	(1<<1));
 	CMD3(CCC_Mask,		"dbg_draw_customzone",		&dbg_net_Draw_Flags,	(1<<2));

@@ -8,13 +8,13 @@
 		</level_frame>
 	</background>
 	
-	<compass x="145" y="155" width="32" height="32">
+	<compass x="150" y="150" width="32" height="32">
 		<texture >ui\hud_map_arrow</texture>
 	</compass>
 	
-	<foreground x="88" y="93" width="3" height="3"> 
+	<center width="3" height="3"> 
 		<texture>ui\hud_map_point</texture>
-	</foreground>
+	</center>
 	
 	</minimap>
 </window>

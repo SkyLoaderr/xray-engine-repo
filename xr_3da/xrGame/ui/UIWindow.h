@@ -115,6 +115,7 @@ public:
 
 	void					SetWndRect			(Irect r)							{m_WndRect = r;}
 
+	void					SetWndPos			(const Ivector2& pos)				{SetWndPos(pos.x, pos.y);}
 	void					SetWndPos			(int x, int y)						{int w = GetWidth();
 																					int h = GetHeight();
 																					m_WndRect.set(x,y,x+w,y+h);}
@@ -229,7 +230,7 @@ protected:
 
 public:
 	bool					CursorOverWindow() const				{ return m_bCursorOverWindow; }
-	virtual bool			GetHint			(shared_str& hint)		{return false;};
+	virtual LPCSTR			GetHint			()						{return NULL;};
 	// Последняя позиция мышки
 	Ivector2 cursor_pos;
 	DECLARE_SCRIPT_REGISTER_FUNCTION

@@ -346,31 +346,24 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 
 		int i,j;
 
-		//временно!
-		//установить масштаб для клеточки
-		float scaleX = (GetCellWidth() - 1)/51.f;
-		float scaleY = (GetCellHeight() - 1)/51.f;
-//		float scale = GetCellWidth()/52.f;
-		
 		CELL_STATIC_IT it=m_vpCellStatic.begin();
 
-		for(i=0; i<GetViewRows(); ++i)
-		{
-			for(j=0; j<GetCols(); ++j)
-			{
+		for(i=0; i<GetViewRows(); ++i){
+			for(j=0; j<GetCols(); ++j){
 
 				(*it)->Init(CELL_TEXTURE,
 								j*(GetCellWidth()),
 								i*(GetCellHeight()),
 								(GetCellWidth()),
 								(GetCellHeight()));
-				(*it)->GetUIStaticItem().SetOriginalRect(0, 0, 64, 64);
+				(*it)->GetUIStaticItem().SetOriginalRect(0, 0, 52, 52);
 				(*it)->ClipperOn();
+				(*it)->SetStretchTexture(true);
 
 				if (!IsChild( *it ) )
 					AttachChild( *it );
 				
-				(*it)->SetTextureScaleXY(scaleX, scaleY);
+//.				(*it)->SetTextureScaleXY(1, 1);
 
 				++it;
 			}
@@ -738,7 +731,7 @@ void CUIDragDropList::HighlightCell(int row, int col, bool on)
 
 	if (static_cast<u32>(row*GetCols() + col) >= m_vpCellStatic.size()) return;
 	CUIStatic * cell = m_vpCellStatic[row*GetCols() + col];
-	cell->GetUIStaticItem().SetOriginalRect(static_cast<int>(on) * 64, 0, 64, 64);
+	cell->GetUIStaticItem().SetOriginalRect(static_cast<int>(on) * 64, 0, 52, 52);
 }
 
 //////////////////////////////////////////////////////////////////////////

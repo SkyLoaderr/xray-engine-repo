@@ -43,7 +43,7 @@ void CUIRadioButton::Draw()
 	{
 		GetFont()->SetColor(0xFF00FF00);
 		float dy = ((float)rect.bottom-(float)rect.top)/2.0f;
-		UI()->OutText(GetFont(), GetClipRect(), (float)rect.left, (float)rect.top+dy,	"O");
+		UI()->OutText(GetFont(), GetSelfClipRect(), (float)rect.left, (float)rect.top+dy,	"O");
 	}
 
 	GetFont()->OnRender();

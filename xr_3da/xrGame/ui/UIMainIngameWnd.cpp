@@ -3,6 +3,11 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+
+#include "UIMainIngameWnd.h"
+#include "../UIZoneMap.h"
+
+
 #include <dinput.h>
 #include "../Entity.h"
 #include "../HUDManager.h"
@@ -26,7 +31,8 @@
 #include "../../LightAnimLibrary.h"
 
 #include "UIInventoryUtilities.h"
-#include "UIMainIngameWnd.h"
+
+
 #include "UIXmlInit.h"
 #include "UIPdaMsgListItem.h"
 #include "../alife_registry_wrappers.h"
@@ -85,6 +91,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_bShowHudCrosshair			= false;
 	// Quick infos
 	fuzzyShowInfo				= 0.f;
+	UIZoneMap					= xr_new<CUIZoneMap>();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -92,6 +99,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 CUIMainIngameWnd::~CUIMainIngameWnd()
 {
 	DestroyFlashingIcons();
+	xr_delete(UIZoneMap);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -181,8 +189,8 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIArmorBar);
 
 	//индикаторы 
-	UIZoneMap.Init();
-	UIZoneMap.SetScale(DEFAULT_MAP_SCALE);
+	UIZoneMap->Init();
+	UIZoneMap->SetScale(DEFAULT_MAP_SCALE);
 
 	//дл€ отображени€ вход€щих сообщений PDA
 	UIPdaMsgListWnd.Show(true);
@@ -359,7 +367,7 @@ void CUIMainIngameWnd::Draw()
 			CUIWindow::Draw();
 			UIPdaMsgListWnd2.Show(true);
 
-			UIZoneMap.Render();			
+			UIZoneMap->Render();			
 		}
 		if (m_bShowHudCrosshair && !zoom_mode)
 		{
@@ -564,11 +572,11 @@ void CUIMainIngameWnd::Update()
 
 
     // radar
-	UIZoneMap.UpdateRadar(m_pActor);
+	UIZoneMap->UpdateRadar(m_pActor);
 	// viewport
 	float h,p;
 	Device.vCameraDirection.getHP	(h,p);
-	UIZoneMap.SetHeading			(-h);
+	UIZoneMap->SetHeading			(-h);
 		
 	// health&armor
 	//	UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
@@ -873,11 +881,11 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		switch(dik)
 		{
 		case DIK_NUMPADMINUS:
-			UIZoneMap.ZoomOut();
+			UIZoneMap->ZoomOut();
 			return true;
 			break;
 		case DIK_NUMPADPLUS:
-			UIZoneMap.ZoomIn();
+			UIZoneMap->ZoomIn();
 			return true;
 			break;
 		}

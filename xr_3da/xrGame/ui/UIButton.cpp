@@ -254,7 +254,7 @@ void  CUIButton::Draw()
 
 		if(IsHighlightText() && m_str && xr_strlen(m_str)>0 && m_bEnableTextHighlighting)
 		{
-			Irect r = GetClipRect();
+			Irect r = GetSelfClipRect();
 			CGameFont * F = GetFont();
 			F->SetColor(m_HighlightColor);
 
@@ -301,7 +301,7 @@ void  CUIButton::Draw()
 		if (!m_bNewRenderMethod)
 		{
 			if(m_str && xr_strlen(m_str)>0)
-				UI()->OutText(GetFont(), GetClipRect(), 
+				UI()->OutText(GetFont(), GetSelfClipRect(), 
 				(float)rect.left + right_offset  +  m_iTextOffsetX, 
 				(float)rect.top + down_offset  + m_iTextOffsetY,
 				m_str);

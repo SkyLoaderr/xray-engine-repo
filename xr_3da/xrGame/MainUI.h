@@ -31,6 +31,7 @@ class CMainUI :
 		flNeedChangeCapture	= (1<<3),
 	};
 	Flags8											m_Flags;
+	xr_stack<Irect> m_Scissors;
 public:
 					CMainUI							();
 	virtual			~CMainUI						();
@@ -77,6 +78,8 @@ public:
 	int				ClientToScreenX					(int left, u32 align);
 	int				ClientToScreenY					(int top, u32 align);
 
+	void			PushScissor						(const Irect& r);
+	void			PopScissor						();
 };
 
 

@@ -25,6 +25,9 @@
 #include "HUDManager.h"
 #include "script_engine.h"
 
+#include "map_manager.h"
+#include "map_location.h"
+
 using namespace luabind;
 
 #ifdef DEBUG
@@ -144,21 +147,23 @@ Fvector vertex_position(u32 level_vertex_id)
 	return			(ai().level_graph().vertex_position(level_vertex_id));
 }
 
-void map_add_entity_icon(CScriptGameObject* lua_object)
+
+
+void map_add_object_spot(u16 id, LPCSTR spot_type, LPCSTR text)
 {
-	Level().AddEntityMapLocation(&lua_object->object(), eMapLocationScript);
+	CMapLocation* ml = Level().MapManager().AddMapLocation(spot_type,id);
+	if( xr_strlen(text) )
+			ml->SetHint(text);
 }
 
-void map_add_object_icon(CScriptGameObject* lua_object, 
-						LPCSTR name, LPCSTR text, int icon_x, int icon_y)
+void map_remove_object_spot(u16 id, LPCSTR spot_type)
 {
-	Level().AddObjectMapLocationIcon(&lua_object->object(), eMapLocationScript,
-									name, text, icon_x, icon_y);
+	Level().MapManager().RemoveMapLocation(spot_type, id);
 }
 
-void map_remove_object_icon(CScriptGameObject* lua_object)
+u16 map_has_object_spot(u16 id, LPCSTR spot_type)
 {
-	Level().RemoveMapLocationByID(lua_object->object().ID(), eMapLocationScript);
+	return Level().MapManager().HasMapLocation(spot_type, id);
 }
 
 bool patrol_path_exists(LPCSTR patrol_path)
@@ -272,10 +277,16 @@ void CLevel::script_register(lua_State *L)
 		def("name",								get_name),
 
 		def("client_spawn_manager",				get_client_spawn_manager),
-
+/*
 		def("map_add_entity_icon",				map_add_entity_icon),
 		def("map_add_object_icon",				map_add_object_icon),
 		def("map_remove_object_icon",			map_remove_object_icon),
+*/
+		def("map_add_object_spot",				map_add_object_spot),
+		def("map_remove_object_spot",			map_remove_object_spot),
+		def("map_has_object_spot",				map_has_object_spot),
+		
+
 		def("start_stop_menu",					start_stop_menu),
 		def("add_dialog_to_render",				add_dialog_to_render),
 		def("remove_dialog_to_render",			remove_dialog_to_render),

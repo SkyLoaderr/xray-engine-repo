@@ -27,6 +27,7 @@
 
 #include "actor_anim_defs.h"
 
+#include "map_manager.h"
 
 int			g_cl_InterpolationType = 0;
 u32			g_cl_InterpolationMaxPoints = 0;
@@ -708,6 +709,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_iCurWeaponHideState = 0;
 	inventory().SetPrevActiveSlot(NO_ACTIVE_SLOT);
 	//--------------------------------------------------------------
+/*
 	//добавить отметки на карте, которые актер помнит в info_portions
 	if(m_known_info_registry->registry().objects_ptr())
 	{
@@ -721,7 +723,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 			AddMapLocationsFromInfo(&info_portion);
 		}
 	}
-
+*/
 
 	//-------------------------------------
 	m_States.empty();
@@ -758,12 +760,18 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	};
 	//-------------------------------------------------------------
 
+
+	Level().MapManager().AddMapLocation("actor_spot",ID());
+	Level().MapManager().AddMapLocation("actor_spot",ID());
+
 	return					TRUE;
 }
 
 void CActor::net_Destroy	()
 {
 	inherited::net_Destroy	();
+
+	Level().MapManager().RemoveMapLocationByObjectID(ID());
 
 #pragma todo("Dima to MadMax : do not comment inventory owner net_Destroy!!!")
 	CInventoryOwner::net_Destroy();

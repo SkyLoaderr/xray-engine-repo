@@ -1865,7 +1865,7 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 	int bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
 
 	pDDItemMP->GetFont()->SetColor(0xffffffff);
-	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetClipRect(), float(left), 
+	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), float(left), 
 		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
 		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
 

@@ -11,7 +11,6 @@
 #include "infoportiondefs.h"
 #include "script_export_space.h"
 #include "StatGraph.h"
-#include "map_location.h"
 #include "xrMessages.h"
 
 class	CHUDManager;
@@ -36,6 +35,7 @@ const int maxTeams				= 32;
 
 class CFogOfWar;
 class CBulletManager;
+class CMapManager;
 
 class CLevel					: public IGame_Level, public IPureClient
 {
@@ -227,10 +227,12 @@ public:
 
 	//список локаций на карте, которые отображаются в данный момент
 protected:	
-	LOCATIONS_PTR_VECTOR	m_MapLocationVector;
+	CMapManager *			m_map_manager;
+//	LOCATIONS_PTR_VECTOR	m_MapLocationVector;
 public:
-	LOCATIONS_PTR_VECTOR&   MapLocations				() {return m_MapLocationVector;}
-	
+	CMapManager&			MapManager					() {return *m_map_manager;}
+
+/*
 	void					AddEntityMapLocation		(const CGameObject* object, EMapLocationFlags location_type);
 	void					AddObjectMapLocationIcon	(const CGameObject* object, EMapLocationFlags location_type, LPCSTR name, LPCSTR text, int icon_x, int icon_y);
 
@@ -240,7 +242,7 @@ public:
 	void					RemoveMapLocations			();
 	SMapLocation*			GetMapLocationByID			(u16 object_id);
 	void					UpdateMapLocation			();
-
+*/
 	//работа с пулями
 protected:	
 	CBulletManager*		m_pBulletManager;

@@ -43,6 +43,8 @@ CUIStatic:: CUIStatic()
 	m_ClipRect.right		= -1;
 
 	m_bCursorOverWindow		= false;
+	m_bHeading				= false;
+	m_fHeading				= 0.0f;
 
 }
 
@@ -99,25 +101,35 @@ bool box2box_intersection(const Irect &b0, const Irect &b1, Irect &result)
 
 void  CUIStatic::Draw()
 {
+	if(m_bClipper){
+		Irect clip_rect;
+		if (-1 == m_ClipRect.left && -1 == m_ClipRect.right &&
+			-1 == m_ClipRect.top && -1 == m_ClipRect.left){
+			if(GetParent())	clip_rect = GetParent()->GetAbsoluteRect();
+			else			clip_rect = GetAbsoluteRect();
+		}else				clip_rect = m_ClipRect;
+		UI()->PushScissor	(clip_rect);
+	}
+
 	if(m_bAvailableTexture && m_bTextureEnable)
 	{
 
 		Irect rect = GetAbsoluteRect();
 //		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
-		if(m_bClipper)
+/*		if(m_bClipper)
 		{
 			if (-1 == m_ClipRect.left && -1 == m_ClipRect.right &&
 				-1 == m_ClipRect.top && -1 == m_ClipRect.left)
 				TextureClipper();
 			else
 				TextureClipper(0, 0, &m_ClipRect);
-		}
+		}*/
 
 		m_UIStaticItem.SetPos	(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
 		if(m_bStretchTexture){
-			Fvector2 lt, rb;
+/*			Fvector2 lt, rb;
 			int W			= GetWidth();
 			int H			= GetHeight();
 			Irect vis_rect	= m_UIStaticItem.GetRect();
@@ -127,23 +139,30 @@ void  CUIStatic::Draw()
 			rb.y			= float(vis_rect.y2)/H;
 
 			m_UIStaticItem.Render(lt.x, lt.y, lt.x, rb.y, rb.x, rb.y, rb.x, lt.y);
-
-			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
+*/
 //			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
+
+			m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
+//			m_UIStaticItem.Render(0, 0, rect.width(), rect.height());
+		} 
+
+		if( Heading() ){
+			m_UIStaticItem.Render( GetHeading() );
 		}else
 			m_UIStaticItem.Render();
-	}
-
+		}
+	
 	inherited::Draw();
 
 	//форматированный вывод текста
-	if (GetFont())
-	{
+	if (GetFont()){
 		GetFont()->SetAligment(GetTextAlign());
 		GetFont()->SetColor(m_dwFontColor);
 		Irect r = GetAbsoluteRect();
 		DrawString(r);
 	}
+
+	if(m_bClipper)	UI()->PopScissor();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -199,7 +218,7 @@ void CUIStatic::WordOut(const Irect &rect)
 			outY = curretY;
 		}
 		
-		UI()->OutText(pFont, GetClipRect(), static_cast<float>(rect.left+outX + m_iTextOffsetX), 
+		UI()->OutText(pFont, GetSelfClipRect(), static_cast<float>(rect.left+outX + m_iTextOffsetX), 
 					  static_cast<float>(rect.top + outY + m_iTextOffsetY),  &buf_str.front());
 		word_length = 0;
 		new_word = false;
@@ -488,8 +507,16 @@ void CUIStatic::SetText(LPCSTR str)
 }
 
 //////////////////////////////////////////////////////////////////////////
+Irect CUIStatic::GetClipperRect()
+{
+	Irect	r;
+	if (m_bClipper)
+		return m_ClipRect;
+	else
+		return GetSelfClipRect();
+}
 
-Irect CUIStatic::GetClipRect()
+Irect CUIStatic::GetSelfClipRect()
 {
 	Irect	r;
 	if (m_bClipper)
@@ -498,8 +525,7 @@ Irect CUIStatic::GetClipRect()
 		r.add(GetUIStaticItem().GetPosX(), GetUIStaticItem().GetPosY());
 	}
 	else
-		r.set(0, 0, max<u32>(UI_BASE_WIDTH, Device.dwWidth),
-					max<u32>(UI_BASE_HEIGHT, Device.dwHeight));
+		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	return r;
 }

@@ -112,7 +112,7 @@ public:
 	virtual void	 LostPdaContact		(CInventoryOwner*);
 
 protected:
-	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion) const;
+//	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion) const;
 	virtual void AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const;
 	virtual void AddGameTask			 (const CInfoPortion* info_portion) const;
 

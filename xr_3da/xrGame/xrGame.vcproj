@@ -7260,12 +7260,6 @@
 							RelativePath=".\InfoPortionDefs.h">
 						</File>
 						<File
-							RelativePath=".\map_location.cpp">
-						</File>
-						<File
-							RelativePath=".\map_location.h">
-						</File>
-						<File
 							RelativePath=".\xml_str_id_loader.h">
 						</File>
 						<Filter
@@ -7339,6 +7333,28 @@
 							</File>
 							<File
 								RelativePath=".\game_news.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="map"
+							Filter="">
+							<File
+								RelativePath=".\map_location.cpp">
+							</File>
+							<File
+								RelativePath=".\map_location.h">
+							</File>
+							<File
+								RelativePath=".\map_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\map_manager.h">
+							</File>
+							<File
+								RelativePath=".\map_spot.cpp">
+							</File>
+							<File
+								RelativePath=".\map_spot.h">
 							</File>
 						</Filter>
 					</Filter>

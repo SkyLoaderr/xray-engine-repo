@@ -224,10 +224,10 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 
 	m_UIWndFrame.frame[CUIFrameRect::fmR].SetTile(tile_x, tile_y, rem_x, rem_y);
 
-	if (max(m_UIWndFrame.frame[CUIFrameRect::fmR].GetPosX(), parentAbsR.left) == parentAbsR.left)
-		m_UIWndFrame.frame[CUIFrameRect::fmR].SetReverseRem(true, false);
-	else
-		m_UIWndFrame.frame[CUIFrameRect::fmR].SetReverseRem(false, false);
+//.	if (max(m_UIWndFrame.frame[CUIFrameRect::fmR].GetPosX(), parentAbsR.left) == parentAbsR.left)
+//.		m_UIWndFrame.frame[CUIFrameRect::fmR].SetReverseRem(true, false);
+//.	else
+//.		m_UIWndFrame.frame[CUIFrameRect::fmR].SetReverseRem(false, false);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmR].SetPos(max(m_UIWndFrame.frame[CUIFrameRect::fmR].GetPosX(), parentAbsR.left),
 			max(m_UIWndFrame.frame[CUIFrameRect::fmR].GetPosY(), parentAbsR.top));
@@ -265,10 +265,10 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 
 	m_UIWndFrame.frame[CUIFrameRect::fmB].SetTile	(tile_x, tile_y, rem_x, rem_y);
 
-	if (max(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosY(), parentAbsR.top) == parentAbsR.top)
-		m_UIWndFrame.frame[CUIFrameRect::fmB].SetReverseRem(false, true);
-	else
-		m_UIWndFrame.frame[CUIFrameRect::fmB].SetReverseRem(false, false);
+//.	if (max(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosY(), parentAbsR.top) == parentAbsR.top)
+//.		m_UIWndFrame.frame[CUIFrameRect::fmB].SetReverseRem(false, true);
+//.	else
+//.		m_UIWndFrame.frame[CUIFrameRect::fmB].SetReverseRem(false, false);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmB].SetPos(max(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosX(), parentAbsR.left),
 		max(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosY(), parentAbsR.top));
@@ -305,10 +305,10 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 
 	m_UIWndFrame.frame[CUIFrameRect::fmL].SetTile	(tile_x, tile_y, rem_x, rem_y);
 
-	if (max(m_UIWndFrame.frame[CUIFrameRect::fmL].GetPosX(), parentAbsR.left) == parentAbsR.left)
-		m_UIWndFrame.frame[CUIFrameRect::fmL].SetReverseRem(true, false);
-	else
-		m_UIWndFrame.frame[CUIFrameRect::fmL].SetReverseRem(false, false);
+//.	if (max(m_UIWndFrame.frame[CUIFrameRect::fmL].GetPosX(), parentAbsR.left) == parentAbsR.left)
+//.		m_UIWndFrame.frame[CUIFrameRect::fmL].SetReverseRem(true, false);
+//.	else
+//.		m_UIWndFrame.frame[CUIFrameRect::fmL].SetReverseRem(false, false);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmL].SetPos(max(m_UIWndFrame.frame[CUIFrameRect::fmL].GetPosX(), parentAbsR.left),
 		max(m_UIWndFrame.frame[CUIFrameRect::fmL].GetPosY(), parentAbsR.top));
@@ -345,10 +345,10 @@ void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 
 	m_UIWndFrame.frame[CUIFrameRect::fmT].SetTile	(tile_x, tile_y, rem_x, rem_y);
 
-	if (max(m_UIWndFrame.frame[CUIFrameRect::fmT].GetPosY(), parentAbsR.top) == parentAbsR.top)
-		m_UIWndFrame.frame[CUIFrameRect::fmT].SetReverseRem(false, true);
-	else
-		m_UIWndFrame.frame[CUIFrameRect::fmT].SetReverseRem(false, false);
+//.	if (max(m_UIWndFrame.frame[CUIFrameRect::fmT].GetPosY(), parentAbsR.top) == parentAbsR.top)
+//.		m_UIWndFrame.frame[CUIFrameRect::fmT].SetReverseRem(false, true);
+//.	else
+//.		m_UIWndFrame.frame[CUIFrameRect::fmT].SetReverseRem(false, false);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmT].SetPos(max(m_UIWndFrame.frame[CUIFrameRect::fmT].GetPosX(), parentAbsR.left),
 		max(m_UIWndFrame.frame[CUIFrameRect::fmT].GetPosY(), parentAbsR.top));

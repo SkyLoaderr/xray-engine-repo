@@ -24,18 +24,20 @@
 class CUIMapWnd;
 class CUIGlobalMapSpot;
 
-class CUICustomMap : public CUIStatic, public CUIWndCallback{
+class CUICustomMap : public CUIStatic, public CUIWndCallback, public ISheduled{
 	
 	shared_str		m_name;
 	Frect			m_BoundRect;// real map size (meters)
 	float			m_zoom_factor;
-	CUIMapWnd*		m_mapWnd;
 public:
-					CUICustomMap					(CUIMapWnd*	pMapWnd);
+					CUICustomMap					();
 	virtual			~CUICustomMap					();
+	virtual void	SetActivePoint					(const Fvector &vNewPoint);
+	virtual	void	BeforeActivate					();
+	virtual	void	AfterDeactivate					()									{};
 
 	virtual void	Init							(shared_str name, CInifile& gameLtx);
-	Irect			ConvertRealToLocal				(const Fvector2& src);// meters->pixels (relatively own left-top pos)
+	Ivector2		ConvertRealToLocal				(const Fvector2& src);// meters->pixels (relatively own left-top pos)
 	void			FitToWidth						(u32 width);
 	void			FitToHeight						(u32 height);
 	float			GetCurrentZoom					(){return m_zoom_factor;}
@@ -43,11 +45,18 @@ public:
 	virtual void	OptimalFit						(const Irect& r);
 	virtual	void	MoveWndDelta					(const Ivector2& d);
 
-	CUIMapWnd*		MapWnd							() {return m_mapWnd;}
 	shared_str		MapName							() {return m_name;}
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		() {return NULL;}
-	virtual bool				GetHint				(shared_str& hint) {hint = m_name; return true;};
+	virtual LPCSTR	GetHint							(); 
 
+	virtual float	shedule_Scale					()	{return 1.0f;};
+	virtual void	shedule_Update					(u32 dt);
+	virtual void	SetZoomFactor					(float z);
+
+	virtual void	Draw							();
+
+protected:
+	virtual void	UpdateSpots						() {};
 };
 
 
@@ -61,12 +70,20 @@ public:
 		stMaximized
 	};
 private:
+	shared_str		m_prev_active_map;
+	CUIButton		m_maximized_btn;
+	CUIButton		m_minimized_btn;
+	Ivector2		m_maximized_btn_offset;
+	Ivector2		m_minimized_btn_offset;
+
 	Ivector2		m_MinimizedSize;
 	Ivector2		m_NormalSize;
 	EState			m_State;
 	void			OnBtnMinimizedClick		();
 	void			OnBtnMaximizedClick		();
+	CUIMapWnd*		m_mapWnd;
 public:
+	virtual void	SetActivePoint			(const Fvector &vNewPoint){};//do nothing
 	void			SwitchTo				(EState new_state);
 
 	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
@@ -76,37 +93,62 @@ public:
 	
 	virtual void	Init					(shared_str name, CInifile& gameLtx);
 	virtual void	Draw					();
+	virtual void	Update					();
+
+	CUIMapWnd*		MapWnd					() {return m_mapWnd;}
 };
 
 class CUILevelMap;
 class CUIGlobalMapSpot: public CUIWindow
 {
 	typedef CUIWindow inherited;
-	CUILevelMap*							m_owner_map;
-public:
-					CUIGlobalMapSpot		(CUICustomMap* m);
-	virtual			~CUIGlobalMapSpot		();
 
-	virtual void	Init					(u32 color);
-	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
-	virtual void	Update					();
-	virtual void	Draw					();
-	virtual bool	GetHint					(shared_str& hint);
+	CUILevelMap*				m_owner_map;
+public:
+								CUIGlobalMapSpot	(CUICustomMap* m);
+	virtual						~CUIGlobalMapSpot	();
+
+
+	virtual void				Init				(u32 color);
+	virtual void				OnMouse				(int x, int y, EUIMessages mouse_action);
+	virtual void				Update				();
+	virtual void				Draw				();
+	virtual LPCSTR				GetHint				();
 protected:
-	CUIFrameRect	UIBorder;
+	CUIFrameWindow				UIBorder;
 };
 
 class CUILevelMap: public CUICustomMap{
 	typedef  CUICustomMap inherited;
-	Frect				m_GlobalRect;			// virtual map size (meters)
-	CUIGlobalMapSpot	m_globalMapSpot;		//rect on the global map
+
+	Frect						m_GlobalRect;			// virtual map size (meters)
+	CUIGlobalMapSpot			m_globalMapSpot;		//rect on the global map
 public:
-								CUILevelMap			(CUIMapWnd*	pMapWnd);
+								CUILevelMap			();
 	virtual						~CUILevelMap		();
+	virtual	void				AfterDeactivate		();
 	virtual void				Init				(shared_str name, CInifile& gameLtx);
 	const Frect&				GlobalRect			() const								{return m_GlobalRect;}
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		()										{return &m_globalMapSpot;}
+protected:
+	virtual void				UpdateSpots			();
+
 };
+
+class CUIMiniMap: public CUICustomMap{
+	typedef  CUICustomMap inherited;
+
+public:
+								CUIMiniMap			();
+	virtual						~CUIMiniMap			();
+	virtual	void				AfterDeactivate		();
+	virtual void				Init				(shared_str name, CInifile& gameLtx);
+	virtual	void				MoveWndDelta		(const Ivector2& d);
+protected:
+	virtual void				UpdateSpots			();
+
+};
+
 
 DEFINE_MAP(shared_str,CUICustomMap*,GameMaps,GameMapsPairIt);
 
@@ -114,43 +156,43 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 {
 	typedef CUIWindow inherited;
 	enum lmFlags{lmMouseHold = 1,};
-	Flags32			m_flags;
+	Flags32						m_flags;
 
 
-	CUICustomMap*		m_activeLevelMap;
+	CUICustomMap*				m_activeLevelMap;
 
-	CUIGlobalMap*		m_GlobalMap;
-	GameMaps			m_GameMaps;
+	CUIGlobalMap*				m_GlobalMap;
+	GameMaps					m_GameMaps;
 
-	CUIFrameWindow		m_UIMainFrame;
-	CUIScrollBar		m_UIMainScrollV,	m_UIMainScrollH;
-	CUIStatic			m_UILevelFrame;
+	CUIFrameWindow				m_UIMainFrame;
+	CUIScrollBar				m_UIMainScrollV,	m_UIMainScrollH;
+	CUIStatic					m_UILevelFrame;
 
-	CUIFrameLineWnd		UIMainMapHeader;
-	void				OnScrollV			();
-	void				OnScrollH			();
-	void				UpdateScroll		();
+	CUIFrameLineWnd				UIMainMapHeader;
+	void						OnScrollV				();
+	void						OnScrollH				();
+	void						UpdateScroll			();
 public:
-					CUIMapWnd				();
-	virtual			~CUIMapWnd				();
+								CUIMapWnd				();
+	virtual						~CUIMapWnd				();
 
-	virtual void	Init					();
-	virtual void	Show					(bool status);
-	virtual void	Draw					();
-	virtual void	Update					();
-			void    ShowHint				();
+	virtual void				Init					();
+	virtual void				Show					(bool status);
+	virtual void				Draw					();
+	virtual void				Update					();
+			void				ShowHint				();
 
-	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
-	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual void				OnMouse					(int x, int y, EUIMessages mouse_action);
+	virtual void				SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-	void			InitGlobalMapObjectives	(){}
-	void			InitLocalMapObjectives	(){}
+	void						InitGlobalMapObjectives	();
+	void						InitLocalMapObjectives	();
 
-	void			SetActivePoint			(const Fvector &vNewPoint){}
-	void			SetActiveMap			(shared_str level_name);
-	CUICustomMap*	ActiveLevelMap			() {return m_activeLevelMap;};
+	void						SetActivePoint			(const Fvector &vNewPoint);
+	void						SetActiveMap			(shared_str level_name);
+	CUICustomMap*				ActiveLevelMap			() {return m_activeLevelMap;};
 
-	void			SetStatusInfo			(LPCSTR status_text);
+	void						SetStatusInfo			(LPCSTR status_text);
 };
 
 /*

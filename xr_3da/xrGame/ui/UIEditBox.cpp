@@ -301,7 +301,7 @@ void  CUIEditBox::Draw()
 
 		GetFont()->SetColor(0xAAFFFF00);
 //		Irect r = GetClipRect();
-		UI()->OutText(GetFont(), GetClipRect(), (float)rect.left+outX, 
+		UI()->OutText(GetFont(), GetSelfClipRect(), (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
 
 	}

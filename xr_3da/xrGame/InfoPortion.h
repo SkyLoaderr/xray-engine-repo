@@ -9,7 +9,6 @@
 #include "shared_data.h"
 
 #include "ui/xrXMLParser.h"
-#include "map_location.h"
 #include "PhraseScript.h"
 
 #include "xml_str_id_loader.h"
@@ -36,7 +35,7 @@ struct SInfoPortionData : CSharedResource
 	DIALOG_ID_VECTOR m_ActorDialogNames;
 
 	//список локаций на карте
-	LOCATIONS_VECTOR	m_MapLocations;
+//	LOCATIONS_VECTOR	m_MapLocations;
 	//список статей в энциклопедии, которые становятся известными 
 	ARTICLE_INDEX_VECTOR m_Articles;
 	//список статей в энциклопедии, которые становятся неизвестными (на тот случай если
@@ -86,7 +85,7 @@ public:
 	virtual void Load	(INFO_STR_ID info_str_id);
 	virtual void Load	(INFO_INDEX info_index);
 
-	const LOCATIONS_VECTOR&							MapLocations()	const {return info_data()->m_MapLocations;}
+//	const LOCATIONS_VECTOR&							MapLocations()	const {return info_data()->m_MapLocations;}
 	const ARTICLE_INDEX_VECTOR&						Articles	()	const {return info_data()->m_Articles;}
 	const ARTICLE_INDEX_VECTOR&						ArticlesDisable	()	const {return info_data()->m_ArticlesDisable;}
 	const TASK_INDEX_VECTOR&						GameTasks	()	const {return info_data()->m_GameTasks;}

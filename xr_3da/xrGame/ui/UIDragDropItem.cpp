@@ -54,8 +54,6 @@ CUIDragDropItem::~ CUIDragDropItem()
 
 }
 
-
-
 void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
 {
 	m_pParentWnd = NULL;
@@ -65,21 +63,20 @@ void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	m_pCustomUpdateProc = NULL;
 	m_pCustomDrawProc = NULL;
 
-
 	m_iOldMouseX = x;
 	m_iOldMouseY = y;
 
 	m_previousPos.x = x;
 	m_previousPos.y = y;
 
-	ClipperOn();
+	CUIButton::Init		(tex_name, x, y, width, height);
 
-	CUIButton::Init(tex_name, x, y, width, height);
+	ClipperOn			();
+	SetStretchTexture	(true);
 }
 
 void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-
 	int deltaX = 0;
 	int deltaY = 0;
 
@@ -219,15 +216,14 @@ void CUIDragDropItem::Draw()
 	int right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRectScaled().width())/2;
 	int down_offset = (GetHeight()-m_UIStaticItem.GetOriginalRectScaled().height())/2;
 
-	m_UIStaticItem.SetPos(rect.left + right_offset, rect.top + down_offset);
+	m_UIStaticItem.SetPos(rect.left , rect.top);
+//.	m_UIStaticItem.SetPos(rect.left + right_offset, rect.top + down_offset);
 	
-	if(m_bClipper)
+/*	if(m_bClipper)
 		TextureClipper(right_offset, down_offset);
-
+*/
 	m_UIStaticItem.Render();
 
-	//вызвать дополнительную функцию обновления
-	if(m_pCustomUpdateProc) (*m_pCustomUpdateProc)(this);
 
 	//вызвать дополнительную функцию рисования
 //	if(m_pCustomDrawProc) (*m_pCustomDrawProc)(this);
@@ -245,6 +241,8 @@ void CUIDragDropItem::Draw()
 void CUIDragDropItem::Update()
 {
 	inherited::Update();
+	//вызвать дополнительную функцию обновления
+	if(m_pCustomUpdateProc) (*m_pCustomUpdateProc)(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -252,7 +250,8 @@ void CUIDragDropItem::Update()
 void CUIDragDropItem::Rescale(float scale_x, float scale_y)
 {
 	float offsetCorrection = 0.0f;//scale * 2;
-	SetTextureScaleXY(scale_x, scale_y);
+//.	SetTextureScaleXY(scale_x, scale_y);
+
 	int newW	= static_cast<int>(GetGridWidth() * scale_x * (INV_GRID_WIDTH + offsetCorrection));
 	int newH	= static_cast<int>(GetGridHeight() * scale_y * (INV_GRID_HEIGHT + offsetCorrection));
 	int deltaW	= (GetWndRect().right - GetWndRect().left - newW) / 2;
@@ -260,7 +259,8 @@ void CUIDragDropItem::Rescale(float scale_x, float scale_y)
 
 	SetWidth(newW);
 	SetHeight(newH);
-	SetWndPos(GetWndRect().left + deltaW, GetWndRect().top + deltaH);
+//.	MoveWndDelta(deltaW,deltaH);
+//	SetWndPos(GetWndRect().left + deltaW, GetWndRect().top + deltaH);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -16,7 +16,7 @@
 #include "UIColorAnimatorWrapper.h"
 #include "UIArtefactPanel.h"
 
-#include "../UIZoneMap.h"
+//#include "../UIZoneMap.h"
 
 #include "../actor.h"
 #include "../weapon.h"
@@ -34,7 +34,7 @@ extern int				g_bNewsDisable;
 
 class					CUIPdaMsgListItem;
 class					CLAItem;
-
+class					CUIZoneMap;
 //////////////////////////////////////////////////////////////////////////
 
 struct CUSTOM_TEXTURE
@@ -111,7 +111,7 @@ protected:
 	CUIProgressBar		UIBatteryBar;
 	CUICarPanel			UICarPanel;
 	CUIMotionIcon		UIMotionIcon;	
-	CUIZoneMap			UIZoneMap;
+	CUIZoneMap*			UIZoneMap;
 
 	//иконка, показывающая количество активных PDA
 	CUIStatic			UIPdaOnline;

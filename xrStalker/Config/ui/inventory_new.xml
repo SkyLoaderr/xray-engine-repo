@@ -79,7 +79,7 @@
             rows_num="1" cols_num="18"></dragdrop_list>
     <!-- BAG LIST -->
     <dragdrop_list x="30" y="35" width="400" height="350"
-            cell_width = "41" cell_height="41"
+            cell_width = "40" cell_height="40"
             rows_num="18" cols_num="7" rows_num_view="10" unlimited="1"></dragdrop_list>
 
     <!-- SLOTS LISTS -->
@@ -97,17 +97,17 @@
             rows_num="2" cols_num="6"></dragdrop_list>
 
     <dragdrop_list x="670" y="14" width="100" height="120"
-            cell_width = "51" cell_height="51"
+            cell_width = "52" cell_height="52"
             rows_num="2" cols_num="2"></dragdrop_list>
 
     <dragdrop_list x="818" y="14" width="150" height="120"
-            cell_width = "51" cell_height="51"
+            cell_width = "52" cell_height="52"
             rows_num="2" cols_num="3"></dragdrop_list>
 
     <!-- OUTFIT SLOT -->
     <!-- <dragdrop_list x="828" y="314" width="150" height="220" -->
     <dragdrop_list x="858" y="314" width="86" height="340"
-            cell_width = "51" cell_height="51"
+            cell_width = "52" cell_height="52"
             rows_num="4" cols_num="4" show_grid="0"></dragdrop_list>
 
 

@@ -7,7 +7,6 @@
 
 #include "ui/UIDialogWnd.h"
 #include "ui/UIInventoryWnd.h"
-#include "ui/UIMapWnd.h"
 #include "ui/UISpawnWnd.h"
 
 #include "ui/UIBuyWeaponWnd.h"

@@ -1,13 +1,44 @@
-///////////////////////////////////////////////////////////////
-// map_location.h
-// структура для локации на карте
-///////////////////////////////////////////////////////////////
 
 #pragma once
 
-#include "ui/uistring.h"
-#include "infoportiondefs.h"
-#include "ui/UIColorAnimatorWrapper.h"
+
+class CMapSpot;
+
+class CMapLocation
+{
+private:
+	flags32					m_flags;
+	string512				m_hint;
+	CMapSpot*				m_level_spot;
+	CMapSpot*				m_zonemap_spot;
+	u16						m_objectID;
+	u16						m_refCount;
+private:
+							CMapLocation					(const CMapLocation&){}; //disable copy ctor
+
+	void					LoadSpot						(LPCSTR type); 
+
+public:
+							CMapLocation					(LPCSTR type, u16 object_id);
+	virtual					~CMapLocation					();
+	virtual		LPCSTR		GetHint							()					{return m_hint;};
+	void					SetHint							(LPCSTR hint)		{strcat(m_hint,hint);};
+	CMapSpot*				LevelSpot						()					{return m_level_spot;};
+	CMapSpot*				ZoneMapSpot						()					{return m_zonemap_spot;};
+
+	Fvector2				Position						();
+	Fvector2				Direction						();
+	shared_str				LevelName						();
+	u16						RefCount						() {return m_refCount;}
+	void					SetRefCount						(u16 c)		{m_refCount=c;}
+	u16						AddRef							() {++m_refCount; return m_refCount;}
+	u16						Release							() {--m_refCount; return m_refCount;}
+	bool					Update							(); //returns actual
+};
+
+
+/*
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -44,7 +75,8 @@ struct SMapLocation
 	bool attached_to_object;
 	//id объекта на уровне
 	u16 object_id;
-	//индекс части информации
+
+  //индекс части информации
 	INFO_INDEX info_portion_id;
 
 	//размеры и положение иконки
@@ -77,5 +109,8 @@ private:
 	ref_shader	m_iconsShader;
 };
 
+
 DEFINE_VECTOR (SMapLocation, LOCATIONS_VECTOR, LOCATIONS_VECTOR_IT);
 DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
+
+*/

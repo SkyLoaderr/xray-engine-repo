@@ -20,19 +20,24 @@ class CUICustomItem
 {
 protected:
 	enum {
-		flValidRect=0x0001,
-		flValidOriginalRect=0x0002,
-		flValidTextureRect=0x0004
+		flValidRect				=0x0001,
+		flValidOriginalRect		=0x0002,
+		flValidTextureRect		=0x0004,
+		flValidHeadingPivot		=0x0008,
 	};
 
 	//прямоугольник(в пикселях) 
-	//часть участка, который выводится в данный момент
+	//геом. регион  на который натягикается текстура с текстурными координатами iOriginalRect
 	Irect			iVisRect;
-	//положение участка текстуры, который выводится на экран
-	Irect			iOriginalRect;
-	//размеры текстуры
-	Irect			iTextureRect;
 
+	//фрейм текстуры в пикселях отн. 0/0
+	Irect			iOriginalRect;
+
+	//полный размер текстуры в пикселях
+	Irect			iTextureRect;
+	
+	// точка, относительно которой применяем поворот
+	Ivector2		iHeadingPivot;
 
 	float			fScaleX;
 	float			fScaleY;
@@ -42,38 +47,40 @@ protected:
 	EUIMirroring	eMirrorMode;
 
 public:
-					CUICustomItem	();
-	virtual			~CUICustomItem	();
-	IC void			SetRect			(int x1, int y1, int x2, int y2){iVisRect.set(x1,y1,x2,y2); uFlags|=flValidRect; }
-	IC void			SetRect			(const Irect& r){iVisRect.set(r); uFlags|=flValidRect; }
-	  void			SetOriginalRect	(int x, int y, int width, int height);
+					CUICustomItem			();
+	virtual			~CUICustomItem			();
+	IC void			SetRect					(int x1, int y1, int x2, int y2){iVisRect.set(x1,y1,x2,y2); uFlags|=flValidRect; }
+	IC void			SetRect					(const Irect& r){iVisRect.set(r); uFlags|=flValidRect; }
+	  void			SetOriginalRect			(int x, int y, int width, int height);
 
 	IC Irect		GetRect					() {return iVisRect;}
 	   Irect		GetOriginalRect			() const;
 	   Irect		GetOriginalRectScaled	();
+	
+	   void			SetHeadingPivot			(const Ivector2& p)		{iHeadingPivot=p; uFlags|=flValidHeadingPivot;}
+	   
 
-
-	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color, 
+	void			Render					(FVF::TL*& Pointer, const Ivector2& pos, u32 color, 
 														int x1, int y1, 
 														int x2, int y2);
 	
-	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color);
-	void			Render			(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle);
+	void			Render					(FVF::TL*& Pointer, const Ivector2& pos, u32 color);
+	void			Render					(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle);
 
-	void			RenderTexPart	(FVF::TL*& Pointer, const Ivector2& pos, u32 color,  
+	void			RenderTexPart			(FVF::TL*& Pointer, const Ivector2& pos, u32 color,  
 														float x1, float y1,  
 														float x2, float y2,
 														float x3, float y3,
 														float x4, float y4);
 
-	IC void			SetAlign		(u32 align)					{uAlign=align;};
-	IC u32			GetAlign		()							{return uAlign;}
+	IC void			SetAlign				(u32 align)					{uAlign=align;};
+	IC u32			GetAlign				()							{return uAlign;}
 
-	IC void			SetMirrorMode	(EUIMirroring m)			{ eMirrorMode = m; }
-	IC EUIMirroring GetMirrorMode	()							{ return eMirrorMode; }
+	IC void			SetMirrorMode			(EUIMirroring m)			{ eMirrorMode = m; }
+	IC EUIMirroring GetMirrorMode			()							{ return eMirrorMode; }
 
 	//для пропорционального масштабирования выводимой текстуры
-	void			SetScaleXY		(float x, float y);
-	float			GetScaleX		();
-	float			GetScaleY		();
+	void			SetScaleXY				(float x, float y);
+	float			GetScaleX				();
+	float			GetScaleY				();
 };
