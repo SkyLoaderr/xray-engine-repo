@@ -46,6 +46,7 @@ end
 
 function game_cl_LastStanding:GetMapEntities(ent_container)
    local D = SZoneMapEntityData()
+   D.pos:set(10,10,10)
    ent_container:push_back(D)
 end
 
