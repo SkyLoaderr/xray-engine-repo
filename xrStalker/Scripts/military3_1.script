@@ -1,29 +1,41 @@
 -- скрипт для сталкеров, которые стоят на вышках
+
+class "Guardian"
+
+function Guardian:__init (npc_object, script_name)
+    self.npc = npc_object
+    self.script_name = script_name
+	self.position = npc:position ()
+end
+
+function Guardian:start ()
+    self.npc:script (true, self.script_name)
+end
+
+
+function Guardian:stop ()
+  self.npc:script (false, self.script_name)
+end
+
+
 function main ()
 
-	local stalker1 = get_level_object ("stalker_tower1")
-	local stalker2 = get_level_object ("stalker_tower2")
-	printf ("step 1")
-	flush ()
-	local guard_stalker1 = Guardian (stalker1, nil)
-	local guard_stalker2 = Guardian (stalker2, nil)
-	printf ("step2")
-	flush ()
-	stalker1:script (true, military3_1.script_name ())
-	stalker2:script (true, military3_1.script_name ())
---	guard_stalker1:start ()
---	guard_stalker2:start ()
+	local guard1 = Guardian (get_level_object ("stalker_tower1"), military3_1.script_name ())
+	local guard2 = Guardian (get_level_object ("stalker_tower2"), military3_1.script_name ())
 
-	action (stalker1, move (move.standing, move.stand, move.line, patrol ("simple_way")), 
-			look (look.search), anim (anim.free), cond (cond.time_end, 1000000))
-	action (stalker2, move (move.standing, move.stand, move.line, patrol ("simple_way")), 
-			look (look.search), anim (anim.free), cond (cond.time_end, 1000000))
+	guard1:start ()
+	guard2:start ()
 
-	while stalker1:action () do wait () end
+--	action (stalker1, move (move.standing, move.stand, move.line, patrol ("simple_way")), 
+--			look (look.search), anim (anim.free), cond (cond.time_end, 1000000))
+--	action (stalker2, move (move.standing, move.stand, move.line, patrol ("simple_way")), 
+--			look (look.search), anim (anim.free), cond (cond.time_end, 1000000))
 
---	guard_stalker1:stop ()
---	guard_stalker2:stop ()
-	stalker1:script (false, military3_1.script_name ())
-	stalker2:script (false, military3_1.script_name ())
+	while true do wait () end
+
+	guard1:stop ()
+	guard2:stop ()
+--	stalker1:script (false, military3_1.script_name ())
+--	stalker2:script (false, military3_1.script_name ())
 
 end
