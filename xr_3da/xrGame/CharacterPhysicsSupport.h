@@ -30,7 +30,7 @@ CPhysicsShell*      &m_pPhysicsShell;
 CPhysicsShell*		m_physics_skeleton;
 CPHMovementControl& m_PhysicMovementControl;
 //skeleton
-float					skel_density_factor;
+
 float					skel_airr_lin_factor;
 float					skel_airr_ang_factor;
 float					hinge_force_factor;

@@ -44,7 +44,7 @@ const float		respawn_auto	= 7.f;
 
 
 //skeleton
-float	CActor::skel_density_factor;
+
 float	CActor::skel_airr_lin_factor;
 float	CActor::skel_airr_ang_factor;
 float	CActor::hinge_force_factor;
@@ -238,7 +238,6 @@ void CActor::Load	(LPCSTR section )
 	m_fJumpSpeed				= pSettings->r_float(section,"jump_speed");
 	m_fRunFactor				= pSettings->r_float(section,"run_coef");
 	m_fCrouchFactor				= pSettings->r_float(section,"crouch_coef");
-	skel_density_factor 		= pSettings->r_float(section,"ph_skeleton_mass_factor");
 	skel_airr_lin_factor		= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
 	skel_airr_ang_factor		= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
 	hinge_force_factor  		= pSettings->r_float(section,"ph_skeleton_hinger_factor");

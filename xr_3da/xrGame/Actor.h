@@ -166,7 +166,7 @@ public:
 
 protected:
 	// skeleton
-	static	float			skel_density_factor;
+
 	static	float			skel_airr_lin_factor;
 	static	float			skel_airr_ang_factor;
 	static	float			hinge_force_factor;

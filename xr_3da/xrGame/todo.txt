@@ -290,8 +290,5 @@ Hello Anton,
     * Запись / воспроизведение демок
   * Compatibility with old/buggy HW
 
--- 
-Best regards,
- Oles V. Shishkovtsov
- GSC-Game World
- oles@gsc-game.kiev.ua
+Slipch:
+	*

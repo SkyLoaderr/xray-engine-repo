@@ -968,3 +968,11 @@ void CPHShell::SetJointRootGeom(CPhysicsElement* root_e,CPhysicsJoint* J)
 	if(!f_holder) return;
 	j->RootGeom()=e->Geom(f_holder->LastFracture().m_start_geom_num);
 }
+
+void CPHShell::set_ApplyByGravity(bool flag)
+{
+	ELEMENT_I i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;++i)
+		(*i)->set_ApplyByGravity(flag);
+}

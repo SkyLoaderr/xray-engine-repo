@@ -140,6 +140,7 @@ public:
 	virtual void			set_AngularVel					(const Fvector& velocity);														//called anywhere ph state influent
 	virtual void			setForce						(const Fvector& force);
 	virtual void			setTorque						(const Fvector& torque);
+	virtual void			set_ApplyByGravity				(bool flag)			   ;
 	virtual	void			set_BoxMass						(const Fobb& box, float mass);													//aux
 	virtual void			get_State						(		SPHNetState&	state);
 	virtual void			set_State						(const	SPHNetState&	state);

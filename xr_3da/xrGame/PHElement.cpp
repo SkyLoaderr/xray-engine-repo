@@ -1372,3 +1372,9 @@ void CPHElement::cv2obj_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& 
 	cv2bone_Xfrom(q,pos,xform);
 	xform.mulB(m_shell->m_object_in_root);
 }
+
+void CPHElement::set_ApplyByGravity(bool flag)
+{
+	if(!bActive) return;
+	dBodySetGravityMode(m_body,flag);
+}
