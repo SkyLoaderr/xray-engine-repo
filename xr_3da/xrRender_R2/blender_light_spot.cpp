@@ -22,7 +22,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		C.r_Pass			("accum_volume",	"accum_spot_unshadowed",	false,	FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		C.r_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
-		C.r_Sampler_clf		("s_material",		r2_material);
+		C.r_Sampler_clw		("s_material",		r2_material);
 		C.r_Sampler			("s_lmap",			C.L_textures[0]);
 		C.r_End				();
 		break;
@@ -30,7 +30,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		C.r_Pass			("accum_volume",	"accum_spot_normal",		false,	FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		C.r_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
-		C.r_Sampler_clf		("s_material",		r2_material);
+		C.r_Sampler_clw		("s_material",		r2_material);
 		C.r_Sampler			("s_lmap",			C.L_textures[0]);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
@@ -41,7 +41,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		C.r_Pass			("accum_volume",	"accum_spot_fullsize",		false,	FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		C.r_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
-		C.r_Sampler_clf		("s_material",		r2_material);
+		C.r_Sampler_clw		("s_material",		r2_material);
 		C.r_Sampler			("s_lmap",			C.L_textures[0]);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
@@ -52,7 +52,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		C.r_Pass			("accum_volume",	"accum_spot_fullsize",		false,	FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		C.r_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
-		C.r_Sampler_clf		("s_material",		r2_material);
+		C.r_Sampler_clw		("s_material",		r2_material);
 		C.r_Sampler_clf		("s_lmap",			r2_RT_smap_surf);			// diff here
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
