@@ -38,18 +38,26 @@ end
 	--' Выдача подсказок
 	level_tips.get_tips(self.object)
 
-	if self.object:dont_has_info("tutorial_artefact_gain") and self.object:object("tutorial_artefact") ~= nil then
+	--' Сюжет :)
+	if	self.object:has_info("tutorial_artefact_start") and
+		self.object:dont_has_info("tutorial_artefact_gain") and 
+		self.object:object("af_blood") ~= nil 
+	then		
 		self.object:give_info_portion("tutorial_artefact_gain")
 		self.object:set_task_state(task.completed, "tutorial_find_artefact", 0)
 	end 
 
---[[       		if self.object:has_info("escape_trader_need_artefact") and
-       		   self.object:object("af_night_star") ~= nil
-       		then
-       			self.object:give_info_portion("escape_trader_find_artefact")
-				self.object:set_task_state(task.completed, "escape_trader_need_artefact", 1)
-       		end       	
+	if self.object:has_info("tutorial_wounded_help") then
+		self.object:give_info_portion("tutorial_end")
+		self.object:set_task_state(task.completed, "tutorial_help_wounded", 0)
+	end
 
+	if self.object:has_info("tutorial_wounded_die") then
+		self.object:give_info_portion("tutorial_end")
+		self.object:set_task_state(task.fail, "tutorial_help_wounded", 0)
+	end
+
+--[[
        		if self.object:has_info("escape_need_blockpost_case") and
        		   self.object:object("quest_case_01") ~= nil
        		then
@@ -77,7 +85,8 @@ end
        		then
        			self.object:give_info_portion("agroprom_find_gunslinger_band")
 				self.object:set_task_state(task.fail, "agroprom_meet_gunslinger_band", 0)
-       		end]]
+       		end
+]]
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_init    (npc)
