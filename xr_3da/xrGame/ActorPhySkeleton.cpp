@@ -35,8 +35,5 @@ void CActor::create_Skeleton(){
 	//disable_pars.rotational.velocity *=rotational_factor;
 	//m_pPhysicsShell->set_DisableParams(disable_pars);
 	m_pPhysicsShell->Activate(true);
-
-	PKinematics(Visual())->Calculate();
-
-
+	PKinematics(Visual())->CalculateBones();
 }

@@ -306,7 +306,7 @@ CBlend*	CSkeletonAnimated::LL_PlayCycle(u16 part, u16 motion, BOOL  bMixing,	flo
 void CSkeletonAnimated::Update ()
 {
 	if (Update_LastTime==Device.dwTimeGlobal) return;
-	u32 DT = Device.dwTimeGlobal-Update_LastTime;
+	u32 DT	= Device.dwTimeGlobal-Update_LastTime;
 	if (DT>66) DT=66;
 	float dt = float(DT)/1000.f;
 	Update_LastTime = Device.dwTimeGlobal;
@@ -735,12 +735,11 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 //------------------------------------------------------------------------------
 // calculate
 //------------------------------------------------------------------------------
-IC void	KEY_Interp(CKey& D, CKey& K1, CKey& K2, float delta)
+IC void	KEY_Interp	(CKey& D, CKey& K1, CKey& K2, float delta)
 {
-	D.Q.slerp	(K1.Q,K2.Q,delta);
-	D.T.lerp	(K1.T,K2.T,delta);
+	D.Q.slerp		(K1.Q,K2.Q,delta);
+	D.T.lerp		(K1.T,K2.T,delta);
 }
-
 struct ConsistantKey
 {
 	CKey*	K;
@@ -749,6 +748,7 @@ struct ConsistantKey
 	IC void	set(CKey* _K, float _w)
 	{	K = _K; w = _w; }
 };
+
 IC bool operator < (const ConsistantKey& A, const ConsistantKey& B)	// note: inverse operator
 {	return A.w>B.w; }
 
@@ -894,24 +894,32 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
     }
 }
 
-void CSkeletonAnimated::Calculate(BOOL bForced)
+void CSkeletonAnimated::CalculateBones		(BOOL bForceExact)
 {
-	Update();
+	// early out.
+	// check if the info is still relevant
+	// skip all the computations - assume nothing changes in a small period of time :)
+	if		(Device.dwTimeGlobal == UCalc_Time)										return;	// early out for "fast" update
+	Update	();
+	if		(!bForceExact && (Device.dwTimeGlobal < (UCalc_Time + UCalc_Interval)))	return;	// early out for "slow" update
 
-	if (!bForced)		if (Device.dwFrame==Update_Frame) return;
-	Update_Frame		= Device.dwFrame; 
+	// here we have either:
+	//	1:	timeout elapsed
+	//	2:	exact computation required
+	UCalc_Time			= Device.dwTimeGlobal;
 
-	// Calculate bones
-	Device.Statistic.Animation.Begin();
-	((CBoneDataAnimated*)(*bones)[iRoot])->Calculate		(this,&Fidentity);
-	Device.Statistic.Animation.End	();
+	// exact computation
+	// calculate bones
+	Device.Statistic.Animation.Begin	();
+	((CBoneDataAnimated*)(*bones)[iRoot])->Calculate	(this,&Fidentity);
+	Device.Statistic.Animation.End		();
 
 	// Calculate BOXes/Spheres if needed
-	Update_ID++; 
-	if (Update_ID>=psSkeletonUpdate) 
+	UCalc_Visibox++; 
+	if (UCalc_Visibox>=psSkeletonUpdate) 
 	{
 		// mark
-		Update_ID		= -(::Random.randI(16));
+		UCalc_Visibox		= -(::Random.randI(16));
 
 		// the update itself
 		Fbox	Box; Box.invalidate();
@@ -924,14 +932,14 @@ void CSkeletonAnimated::Calculate(BOOL bForced)
 			Fmatrix		X;		X.mul(Mbone,Mbox);
 			Fvector&	S		= obb.m_halfsize;
 
-			Fvector			P,A;
+			Fvector		P, A;
 			A.set( -S.x,	-S.y,	-S.z ); X.transform_tiny(P,A); Box.modify(P);
 			A.set( -S.x,	-S.y,	 S.z ); X.transform_tiny(P,A); Box.modify(P);
 			A.set(  S.x,	-S.y,	 S.z ); X.transform_tiny(P,A); Box.modify(P);
 			A.set(  S.x,	-S.y,	-S.z ); X.transform_tiny(P,A); Box.modify(P);
 			A.set( -S.x,	 S.y,	-S.z ); X.transform_tiny(P,A); Box.modify(P);
 			A.set( -S.x,	 S.y,	 S.z ); X.transform_tiny(P,A); Box.modify(P);
-			A.set(  S.x, 	 S.y,	 S.z ); X.transform_tiny(P,A); Box.modify(P);
+			A.set(  S.x,	 S.y,	 S.z ); X.transform_tiny(P,A); Box.modify(P);
 			A.set(  S.x, 	 S.y,	-S.z ); X.transform_tiny(P,A); Box.modify(P);
 		}
 

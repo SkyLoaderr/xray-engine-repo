@@ -113,18 +113,18 @@ void cb(CBoneInstance* B)
 void CBreakableObject::CreateUnbroken()
 {
 	m_pUnbrokenObject=xr_new<CPHStaticGeomShell>();
-	Fobb b;
-	PKinematics(Visual())->Calculate(TRUE);
-	m_saved_box.set(Visual()->vis.box);
-	Visual()->vis.box.getradius(b.m_halfsize);
-	b.xform_set(Fidentity);
-	m_pUnbrokenObject->add_Box(b);
-	m_pUnbrokenObject->Activate(XFORM());
+	Fobb			b;
+	PKinematics(Visual())->CalculateBones	();		//. bForce - was TRUE
+	m_saved_box.set				(Visual()->vis.box);
+	Visual()->vis.box.getradius	(b.m_halfsize);
+	b.xform_set					(Fidentity);
+	m_pUnbrokenObject->add_Box	(b);
+	m_pUnbrokenObject->Activate	(XFORM());
 	m_pUnbrokenObject->set_PhysicsRefObject(this);
 	//m_pUnbrokenObject->SetPhObjectInGeomData(m_pUnbrokenObject);
 	m_pUnbrokenObject->set_ObjectContactCallback(ObjectContactCallback);
 	CKinematics* K=PKinematics(Visual()); VERIFY(K);
-	K->Calculate();
+	K->CalculateBones();
 	for (u16 k=0; k<K->LL_BoneCount(); k++){
 		K->LL_GetBoneInstance(k).Callback_overwrite = TRUE;
 		K->LL_GetBoneInstance(k).Callback = cb;
@@ -186,7 +186,7 @@ void CBreakableObject::ActivateBroken()
 	m_pPhysicsShell=m_Shell;
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetStaticObjectBonesCallback());
-	PKinematics(Visual())->Calculate();
+	PKinematics(Visual())->CalculateBones();
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }
 

@@ -7,6 +7,7 @@
 
 // consts
 const	u32		MAX_BONE_PARAMS		=	5;
+const	u32		UCalc_Interval		=	33;	// 30 fps
 
 // refs
 class	ENGINE_API CKinematics;
@@ -93,9 +94,10 @@ protected:
 	accel*						bone_map_N;		// bones  assotiations	(shared)	- sorted by name
 	accel*						bone_map_P;		// bones  assotiations	(shared)	- sorted by name-pointer
 
-	s32							Update_ID;
 	u32							Update_LastTime;
-	u32							Update_Frame;
+
+	u32							UCalc_Time;
+	s32							UCalc_Visibox;
 
     Flags64						visimask;
     
@@ -133,12 +135,13 @@ public:
 	void						LL_SetBonesVisible	(u64 mask);
 
 	// Main functionality
-	virtual void				Calculate		(BOOL bForced=FALSE)=0;			// Recalculate skeleton
-	void						Callback		(UpdateCallback C, void* Param)	{	Update_Callback	= C; Update_Callback_Param	= Param;	}
+	virtual void				CalculateBones				(BOOL bForceExact	=	FALSE)		=	0;		// Recalculate skeleton
+	void						CalculateBones_Invalidate	();
+	void						Callback					(UpdateCallback C, void* Param)		{	Update_Callback	= C; Update_Callback_Param	= Param;	}
 
 	// debug
 #ifdef DEBUG
-	void						DebugRender		(Fmatrix& XFORM);
+	void						DebugRender			(Fmatrix& XFORM);
 #endif
 
 	// General "Visual" stuff

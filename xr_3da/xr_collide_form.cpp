@@ -158,9 +158,9 @@ CCF_Skeleton::CCF_Skeleton(CObject* O) : ICollisionForm(O,cftObject)
 
 void CCF_Skeleton::BuildState()
 {
-	dwFrame			= Device.dwFrame;
-	CKinematics* K	= PKinematics(owner->Visual());
-	K->Calculate	();
+	dwFrame				= Device.dwFrame;
+	CKinematics* K		= PKinematics(owner->Visual());
+	K->CalculateBones	();
 	
 	if (K->LL_VisibleBoneCount() != models.size())
 	{

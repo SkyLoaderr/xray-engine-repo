@@ -565,7 +565,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	VERIFY(m_pActorEffector == NULL);
 	m_pActorEffector = xr_new<CActorEffector>();
-	PKinematics(Visual())->Calculate();
+	PKinematics(Visual())->CalculateBones();
 	return					TRUE;
 }
 

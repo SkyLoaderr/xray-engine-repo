@@ -53,6 +53,7 @@ void CActor::PickupModeUpdate()
 		inventory().Action(kUSE, CMD_START);
 	}
 
+	// ????? GetNearest ?????
 	feel_touch_update(Position(), /*inventory().GetTakeDist()*/m_fPickupInfoRadius);
 
 	for(xr_vector<CObject*>::iterator it = feel_touch.begin();

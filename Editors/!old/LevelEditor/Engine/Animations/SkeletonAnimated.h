@@ -215,8 +215,7 @@ public:
 	
 	// Main functionality
 	void						Update			();								// Update motions
-	virtual void				Calculate		(BOOL bForced=FALSE);			// Recalculate skeleton 
-	void						Callback		(UpdateCallback C, void* Param)	{	Update_Callback	= C; Update_Callback_Param	= Param;	}
+	virtual void				CalculateBones	(BOOL bForced=FALSE);			// Recalculate skeleton 
 
 	// cycles
 	CMotionDef*					ID_Cycle		(LPCSTR  N);
@@ -224,8 +223,6 @@ public:
 	CBlend*						PlayCycle		(LPCSTR  N,  BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0);
 	CBlend*						PlayCycle		(CMotionDef* M,  BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0)
 	{	VERIFY(M); return M->PlayCycle(this,bMixIn,Callback,CallbackParam); }
-	void						Invalidate		()
-	{	Update_Frame = 0xffffff; }
 
 	// fx'es
 	CMotionDef*					ID_FX			(LPCSTR  N);

@@ -78,7 +78,7 @@ LPCSTR CKinematics::LL_BoneName_dbg	(u16 ID)
 #ifdef DEBUG
 void CKinematics::DebugRender(Fmatrix& XFORM)
 {
-	Calculate();
+	CalculateBones	();
 
 	CBoneData::BoneDebug	dbgLines;
 	(*bones)[iRoot]->DebugQuery	(dbgLines);
@@ -294,7 +294,13 @@ void CKinematics::Copy(IRender_Visual *P)
 		B->SetParent(this);
 	}
 
-	Update_ID		= psSkeletonUpdate;
+	CalculateBones_Invalidate	();
+}
+
+void CKinematics::CalculateBones_Invalidate	()
+{	
+	UCalc_Time		= 0x0; 
+	UCalc_Visibox	= psSkeletonUpdate;		
 }
 
 void CKinematics::Spawn	()
@@ -304,8 +310,8 @@ void CKinematics::Spawn	()
 	for (u32 i=0; i<bones->size(); i++)
 		bone_instances[i].construct();
 
-	Update_Callback	= NULL;
-	Update_ID		= psSkeletonUpdate;
+	Update_Callback				= NULL;
+	CalculateBones_Invalidate	();
 }
 
 void CKinematics::Release()
