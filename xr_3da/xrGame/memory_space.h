@@ -38,11 +38,17 @@ namespace MemorySpace {
 	struct SMemoryObject {
 		ALife::_TIME_ID				m_game_time;
 		u32							m_level_time;
+		ALife::_TIME_ID				m_last_game_time;
+		u32							m_last_level_time;
 		u32							m_update_count;
 		bool						m_enabled;
 
 						SMemoryObject				() : 
 							m_update_count(0),
+							m_game_time(0),
+							m_level_time(0),
+							m_last_game_time(0),
+							m_last_level_time(0),
 							m_enabled(true)
 		{
 		}
@@ -69,6 +75,8 @@ namespace MemorySpace {
 		{
 			++m_update_count;
 			m_object				= game_object;
+			m_last_game_time		= m_game_time;
+			m_last_level_time		= m_level_time;
 			m_game_time				= Level().GetGameTime();
 			m_level_time			= Level().timeServer();
 			m_object_params.fill	(game_object);
