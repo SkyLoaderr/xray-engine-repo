@@ -366,6 +366,11 @@ u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvecto
 	start					= start_position;
 	dest					= finish_position;
 	dir.sub					(dest,start);
+	static int a=0;
+	++a;
+	if (4 == a) {
+		a=a;
+	}
 	Fvector					temp = vertex_position(cur_vertex_id), t = temp;
 
 	{
@@ -379,7 +384,7 @@ u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvecto
 			temp			= vertex_position(next_vertex_id);
 			box.min			= box.max = Fvector2().set(temp.x,temp.z);
 			box.grow		(identity);
-			if (box.Pick(start,dir)) {
+			if (box.pick_exact(start,dir)) {
 				
 				if (
 					(box.max.x < _min(start.x,dest.x)) ||
@@ -410,7 +415,7 @@ u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvecto
 			temp			= vertex_position(next_vertex_id);
 			box.min			= box.max = Fvector2().set(temp.x,temp.z);
 			box.grow		(identity);
-			if (box.Pick(start,dir)) {
+			if (box.pick_exact(start,dir)) {
 				if (box.contains(dest)) {
 					TIMER_STOP(CheckPositionInDirection)
 					return		(next_vertex_id);
@@ -458,7 +463,7 @@ bool CLevelGraph::check_vertex_in_direction		(u32 start_vertex_id, const Fvector
 			temp			= vertex_position(next_vertex_id);
 			box.min			= box.max = Fvector2().set(temp.x,temp.z);
 			box.grow		(identity);
-			if (box.Pick(start,dir)) {
+			if (box.pick_exact(start,dir)) {
 				if (
 					(box.max.x < _min(start.x,dest.x)) ||
 					(box.min.x > _max(start.x,dest.x)) ||
@@ -488,7 +493,7 @@ bool CLevelGraph::check_vertex_in_direction		(u32 start_vertex_id, const Fvector
 			temp			= vertex_position(next_vertex_id);
 			box.min			= box.max = Fvector2().set(temp.x,temp.z);
 			box.grow		(identity);
-			if (box.Pick(start,dir)) {
+			if (box.pick_exact(start,dir)) {
 				if (next_vertex_id == finish_vertex_id) {
 					TIMER_STOP(CheckVertexInDirection)
 					return		(true);
