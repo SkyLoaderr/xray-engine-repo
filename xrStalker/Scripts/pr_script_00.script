@@ -73,22 +73,30 @@ function main()
 	stalker1:script	(true,  this.script_name())
 	stalker2:script	(true,  this.script_name())
 
-	while true do
-		if stalker1:see(actor) == false and stalker2:see(actor) == false then
-			printf("see = false!")
-			flush()
-		break
-		end
-	wait()
-	end
+--	while true do
+--		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+--			printf("see = false!")
+--			flush()
+--		break
+--		end
+--	wait()
+--	end
 
+--	while true do
+--		if stalker1:see(actor) or stalker2:see(actor) then
+--			printf("see = true!")
+--			flush()
+--		break
+--		end
+--	wait()
+--	end
+	
 	while true do
 		if stalker1:see(actor) or stalker2:see(actor) then
-			printf("see = true!")
-			flush()
-		break
+			printf("SEE")
+		else
+			printf("DON'T SEE")
 		end
-	wait()
 	end
 
 
