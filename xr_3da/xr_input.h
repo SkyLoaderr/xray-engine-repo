@@ -79,7 +79,7 @@ public:
 	void						iRelease					( CController *pc );
 	BOOL						iGetAsyncKeyState			( int dik );
 	BOOL						iGetAsyncBtnState			( int btn );
-	void						iGetLastMouseDelta			( Ipoint& p ){p.set(offs[0],offs[1]);}
+	void						iGetLastMouseDelta			( Ivector2& p )	{ p.set(offs[0],offs[1]); }
 
 	CInput						( BOOL bExclusive = true, int deviceForInit = default_key);
 	~CInput						( );
