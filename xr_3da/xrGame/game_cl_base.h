@@ -3,11 +3,11 @@
 #include "game_base.h"
 
 class	CGameObject;
+class	CUIGameCustom;
+class	CUI;
 
 class	game_cl_GameState	: public game_GameState
 {
-protected:
-	ref_sound		pMessageSounds[8];
 
 public:
 	struct Player : public game_PlayerState 
@@ -18,6 +18,12 @@ public:
 	u32								local_svdpnid;
 	Player*							local_player;
 	xr_vector<CGameObject*>			targets;
+
+protected:
+	//for scripting enhancement
+	CLASS_ID						getGameUICLASS_ID		(LPCSTR game_type_name);
+	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
+
 public:
 									game_cl_GameState		();
 	virtual							~game_cl_GameState		();
@@ -27,11 +33,12 @@ public:
 	virtual		void				net_import_update		(NET_Packet& P);
 	virtual		void				net_signal				(NET_Packet& P);
 
-	virtual		void				OnGameMessage			(NET_Packet& P);
+				void				OnGameMessage			(NET_Packet& P);
 
 	virtual		char*				getTeamSection			(int Team);
 
-	virtual		game_cl_GameState::Player*				GetPlayerByGameID		(u32 GameID);
+	virtual		game_cl_GameState::Player*					GetPlayerByGameID		(u32 GameID);
 	virtual		LPCSTR				type_name				() const {return "base client game";};
+				CUIGameCustom*		createGameUI			(CUI* parent);
 
 };

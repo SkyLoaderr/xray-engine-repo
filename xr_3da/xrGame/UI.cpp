@@ -13,7 +13,6 @@
 #include "level.h"
 #include "game_cl_base.h"
 
-#include "script_engine.h"
 
 #define MSGS_OFFS 510
 
@@ -50,38 +49,8 @@ CUI::~CUI()
 
 void CUI::Load()
 {
-/*
-	switch (GameID())
-	{
-	case GAME_SINGLE:			pUIGame = xr_new<CUIGameSP>		();	break;
-	case GAME_CS:				pUIGame = xr_new<CUIGameCS>		();	break;
-//	case GAME_ASSAULT:												break;
-	case GAME_DEATHMATCH:		pUIGame = xr_new<CUIGameDM>		();	break;
-	case GAME_TEAMDEATHMATCH:	pUIGame = xr_new<CUIGameTDM>	();	break;
-	case GAME_ARTEFACTHUNT:		pUIGame = xr_new<CUIGameAHunt>	();	break;
-	default:
-		pUIGame = xr_new<CUIGameDM> ();	break;
-//		NODEFAULT;
-	}
-*/
-	string128 type;
-	switch (GameID())
-	{
-	case GAME_SINGLE:			strcpy(type,"single")			;	break;
-	case GAME_CS:				strcpy(type,"cs")			;	break;
-	case GAME_DEATHMATCH:		strcpy(type,"deathmatch")		;	break;
-	case GAME_TEAMDEATHMATCH:	strcpy(type,"teamdeathmatch")	;	break;
-	case GAME_ARTEFACTHUNT:		strcpy(type,"artefacthunt")		;	break;
-	default:
-			strcpy(type,"artefacthunt");	break;
-	};
-
-	CLASS_ID clsid			= getGameUICLASS_ID(type);
-	pUIGame					= dynamic_cast<CUIGameCustom*> ( NEW_INSTANCE ( clsid ) );
-	pUIGame->SetUI(this);
-
-
-	pUIGame->Init();
+	pUIGame = Game().createGameUI(this);
+	R_ASSERT(pUIGame);
 }
 //--------------------------------------------------------------------
 
@@ -263,22 +232,3 @@ void CUI::AddMessage(LPCSTR S, LPCSTR M, u32 C, float life_time)
 	messages.push_back(xr_new<SUIMessage> (S,M,C,life_time));
 }
 
-CLASS_ID CUI::getGameUICLASS_ID(LPCSTR options)
-{
-	string256		S;
-	FS.update_path	(S,"$game_data$","script.ltx");
-	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
-	R_ASSERT		(l_tpIniFile);
-
-	string256				I;
-	strcpy(I,l_tpIniFile->r_string("common","ui_type_clsid_factory"));
-
-	luabind::functor<LPCSTR>	result;
-	R_ASSERT					(ai().script_engine().functor(I,result));
-	ref_str clsid = result		(options);
-
-	xr_delete			(l_tpIniFile);
-	
-	return TEXT2CLSID(*clsid);
-
-}

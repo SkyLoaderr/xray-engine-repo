@@ -229,7 +229,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 								if (pParent == pActor) continue;
 								ConvertToLocal(LM,pItem->Position(),P);
 
-								if (pActor->g_Team() == Game().teamInPosession)
+								if (pActor->g_Team() == Game().teamInPossession)
 								{
 									EntityOut(pItem->Position().y-Actor->Position().y,COLOR_ARTEFACT,P);
 								}

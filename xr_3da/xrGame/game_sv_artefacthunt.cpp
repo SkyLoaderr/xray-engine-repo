@@ -288,10 +288,10 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 		if (pIArtefact)
 		{
 			artefactBearerID = eid_who;
-			teamInPosession = A->g_team();
+			teamInPossession = A->g_team();
 			signal_Syncronize();
 
-			m_eAState = IN_POSESSION;
+			m_eAState = IN_POSSESSION;
 			xrClientData* xrCData	= e_who->owner;
 			game_PlayerState*	ps_who	=	&xrCData->ps;
 			if (ps_who)
@@ -331,7 +331,7 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 		if (pIArtefact)
 		{
 			artefactBearerID = 0;
-			teamInPosession = 0;
+			teamInPossession = 0;
 			signal_Syncronize();
 			m_eAState = ON_FIELD;
 
@@ -638,7 +638,7 @@ void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, u32 id_to)
 	inherited::net_Export_State(P, id_to);
 	P.w_u8			(artefactsNum);
 	P.w_u16			(artefactBearerID);
-	P.w_u8			(teamInPosession);
+	P.w_u8			(teamInPossession);
 };
 
 void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
@@ -650,7 +650,7 @@ void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
 	m_dwArtefactSpawnTime = Device.dwTimeGlobal + m_dwArtefactRespawnDelta;
 
 	artefactBearerID	= 0;
-	teamInPosession	= 0;
+	teamInPossession	= 0;
 
 	signal_Syncronize();
 };
@@ -663,7 +663,7 @@ void				game_sv_ArtefactHunt::Artefact_PrepareForRemove	()
 
 bool				game_sv_ArtefactHunt::Artefact_NeedToSpawn	()
 {
-	if (m_eAState == ON_FIELD || m_eAState == IN_POSESSION) return false;
+	if (m_eAState == ON_FIELD || m_eAState == IN_POSSESSION) return false;
 
 	if (m_dwArtefactID != 0) return false;
 	
@@ -683,7 +683,7 @@ bool				game_sv_ArtefactHunt::Artefact_NeedToSpawn	()
 };
 bool				game_sv_ArtefactHunt::Artefact_NeedToRemove	()
 {
-	if (m_eAState == IN_POSESSION) return false;
+	if (m_eAState == IN_POSSESSION) return false;
 	if (m_eAState == NOARTEFACT) return false;
 
 

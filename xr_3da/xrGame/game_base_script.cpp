@@ -65,7 +65,7 @@ void game_GameState::script_register(lua_State *L)
 			.def_readwrite("teams",				&game_GameState::teams)
 			.def_readwrite("artefactsNum",		&game_GameState::artefactsNum)
 			.def_readwrite("artefactBearerID",	&game_GameState::artefactBearerID)
-			.def_readwrite("teamInPosession",	&game_GameState::teamInPosession)
+			.def_readwrite("teamInPosession",	&game_GameState::teamInPossession)
 
 		];
 

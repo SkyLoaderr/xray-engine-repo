@@ -12,7 +12,7 @@ private:
 		NONE,
 		NOARTEFACT,
 		ON_FIELD,
-		IN_POSESSION,
+		IN_POSSESSION,
 	};
 
 protected:
@@ -35,6 +35,7 @@ protected:
 	xr_vector<RPoint>				Artefact_rpoints;
 	xr_vector<u8>					ArtefactsRPoints_ID;
 	u8								m_LastRespawnPointID;
+
 
 	void							Artefact_PrepareForSpawn	();
 	void							Artefact_PrepareForRemove	();

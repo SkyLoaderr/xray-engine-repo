@@ -82,7 +82,8 @@ public:
 	// for Artefact Hunt
 	u8								artefactsNum;
 	u16								artefactBearerID;
-	u8								teamInPosession;
+	u8								teamInPossession;
+
 public:
 	game_GameState();
 

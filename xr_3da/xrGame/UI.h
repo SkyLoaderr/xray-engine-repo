@@ -81,8 +81,6 @@ class CUI{
 	float				menu_offs;
 	UIMsgSVec			messages;
 
-	//for scripting enhancement
-	CLASS_ID				getGameUICLASS_ID(LPCSTR options);
 
 public:
 	CHUDManager*		m_Parent;

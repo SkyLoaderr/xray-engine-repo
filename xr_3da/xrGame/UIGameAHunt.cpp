@@ -160,7 +160,7 @@ void			CUIGameAHunt::OnFrame()
 				}
 				else
 				{
-					if (Game().teamInPosession != pCurActor->g_Team())
+					if (Game().teamInPossession != pCurActor->g_Team())
 					{
 						WarningMsg.Out				(0.f,-0.85f,"Stop ArtefactBearer.");
 						WarningMsg.Update			();
