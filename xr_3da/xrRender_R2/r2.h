@@ -36,6 +36,14 @@ public:
 	BOOL														b_HW_smap;
 	BOOL														b_noshadows;
 public:
+	struct		_stats
+	{
+		u32		l_shadowed, l_unshadowed;
+		u32		l_point_s,	l_point;
+		u32		l_spot_s,	l_spot;
+		u32		o_queries,	o_queries_invisible, o_queries_visible;
+	};
+public:
 	// Sector detection and visibility
 	CSector*													pLastSector;
 	Fvector														vLastCameraPos;
