@@ -37,6 +37,7 @@ class CAI_Rat : public CCustomMonster
 			aiRatPursuit,
 			aiRatFreeRecoil,
 			aiRatReturnHome,
+			aiRatEatCorp,
 		};
 
 	
@@ -321,6 +322,7 @@ class CAI_Rat : public CCustomMonster
 		void	Pursuit();
 		void	FreeRecoil();
 		void	ReturnHome();
+		void	EatCorp();
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();

@@ -10,9 +10,9 @@
 #include "ai_rat.h"
 #include "..\\ai_monsters_misc.h"
 
-/**
-#define WRITE_TO_LOG(s) bStopThinking = true;
-{\
+// bStopThinking = true;
+/**/
+#define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
 		Msg("* No objects in frustum",feel_visible.size());\
@@ -86,6 +86,10 @@ void CAI_Rat::Think()
 			}
 			case aiRatReturnHome : {
 				ReturnHome();
+				break;
+			}
+			case aiRatEatCorp : {
+				EatCorp();
 				break;
 			}
 		}
@@ -177,7 +181,12 @@ void CAI_Rat::FreeHuntingActive()
 	if (m_Enemy.Enemy) {
 		m_fGoalChangeTime = 0;
 		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
+			if (m_Enemy.Enemy->g_Alive()) {
+				SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
+			}
+			else {
+				SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatEatCorp);
+			}
 	}
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatUnderFire);
@@ -718,4 +727,91 @@ void CAI_Rat::ReturnHome()
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
+}
+
+void CAI_Rat::EatCorp()
+{
+	WRITE_TO_LOG("Eating a corp");
+
+	CHECK_IF_GO_TO_NEW_STATE(g_Alive(),aiRatDie)
+
+	SelectEnemy(m_Enemy);
+	
+	if (m_Enemy.Enemy) {
+		m_fGoalChangeTime = 0;
+		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
+			if (m_Enemy.Enemy->g_Alive()) {
+				GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
+			}
+	}
+	else {
+		GO_TO_PREV_STATE_THIS_UPDATE;
+	}
+
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatUnderFire);
+	
+	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.Enemy)) {
+		if (m_tLastSound.tpEntity)
+			m_tSavedEnemy = m_tLastSound.tpEntity;
+		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
+		m_dwLostEnemyTime = Level().timeServer();
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
+	}
+	m_tGoalDir.set			(m_Enemy.Enemy->Position());
+	
+	vfUpdateTime(m_fTimeUpdateDelta);
+
+	vfComputeNewPosition();
+
+	SetDirectionLook();
+
+	Fvector tTemp;
+	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+	vfNormalizeSafe(tTemp);
+	SRotation sTemp;
+	mk_rotation(tTemp,sTemp);
+
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
+	}
+	else 
+		if (m_fSafeSpeed != m_fSpeed) {
+			int iRandom = ::Random.randI(0,2);
+			switch (iRandom) {
+				case 0 : {
+					m_fSpeed = m_fMaxSpeed;
+					break;
+				}
+				case 1 : {
+					m_fSpeed = m_fMinSpeed;
+					break;
+				}
+				case 2 : {
+					if (::Random.randI(0,4) == 0)
+						m_fSpeed = EPS_S;
+					break;
+				}
+			}
+			m_fSafeSpeed = m_fSpeed;
+		}
+	
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	
+	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
+		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle))
+			vfSetFire(true,Group);
+		else {
+			r_torso_target.yaw = sTemp.yaw;
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
+	}
+	else {
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,m_fAttackAngle),aiRatTurn);
+	}
 }
