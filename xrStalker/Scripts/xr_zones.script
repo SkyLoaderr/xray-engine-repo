@@ -132,10 +132,8 @@ function zone_binder:net_spawn( server_object )
 	end
   
 	if ini:section_exist( "spawner" ) then
-		if ini:line_exist( "spawner", "id" ) then
-			xr_spawner.create_spawner(ini:r_string("spawner", "id"))
-			self.managers.spawner = xr_spawner.spawner[ini:r_string("spawner", "id")]
-		end
+		xr_spawner.create_spawner(ini:r_string("spawner", "id"))
+		self.managers.spawner = xr_spawner.spawner
 	end
 
 	if ini:section_exist( "tips" ) then
