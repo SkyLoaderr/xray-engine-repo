@@ -200,7 +200,7 @@ function setup(obj_name0,obj_name1,patrol_path)
 	planner:set_goal_world_state(goal)
 	
 	return					planner
-end\\
+end
 
 function main ()
 	planner0				= s_test.setup	("m_stalker_e0000","m_stalker_e0001","way0000")
