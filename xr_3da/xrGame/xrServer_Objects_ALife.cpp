@@ -12,6 +12,9 @@
 
 #ifdef AI_COMPILER
 	#include "net_utils.h"
+	#include "bone.h"
+#else
+	#include "..\bone.h"
 #endif
 
 #include "xrServer_Objects_ALife.h"
@@ -23,8 +26,6 @@
 	static TokenValue3Custom::ItemVec locations[4];
 	static AStringVec	level_ids;
 #endif
-
-#include "bone.h"
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeEvent

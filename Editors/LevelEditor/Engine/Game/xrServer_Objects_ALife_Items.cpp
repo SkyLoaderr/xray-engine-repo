@@ -12,6 +12,9 @@
 #ifdef AI_COMPILER
 	#include "net_utils.h"
 	#include "clsid_game.h"
+	#include "bone.h"
+#else
+	#include "..\bone.h"
 #endif
 
 #ifdef _EDITOR
@@ -20,7 +23,6 @@
 #endif
 
 #include "xrServer_Objects_ALife_Items.h"
-#include "bone.h"
 
 
 ////////////////////////////////////////////////////////////////////////////
