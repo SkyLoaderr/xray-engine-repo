@@ -415,15 +415,16 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				};
 
 				//-----------------------------------------------------
-				int Place = GetPlayersPlace(local_player);
+				game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
+				int Place = GetPlayersPlace(ps);
 				if (m_game_ui && Place > 0)
 				{				
 					string128 FragsStr;
 					
 					if (Place < 33)
-						sprintf(FragsStr, "You are on %s place, with %d frags", places[Place-1], local_player->kills);
+						sprintf(FragsStr, "You are on %s place, with %d frags", places[Place-1], ps->kills);
 					else
-						sprintf(FragsStr, "You have %d frags", local_player->kills);
+						sprintf(FragsStr, "You have %d frags", ps->kills);
 
 					m_game_ui->SetFragsAndPlaceCaption(FragsStr);
 				};
