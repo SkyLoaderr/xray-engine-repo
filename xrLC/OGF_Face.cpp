@@ -50,7 +50,7 @@ void OGF::Optimize()
 	dwRelevantUVMASK	= 0;
 	for (DWORD t=0; t<dwRelevantUV; t++) dwRelevantUVMASK |= 1<<t;
 
-	if (0==stricmp(shader->cName,"water")) return;
+	if (!shader_xrlc->flags.bOptimizeUV)	return;
 
 	// Optimize texture coordinates
 	// 1. Calc bounds
@@ -173,7 +173,7 @@ void OGF_Patch::Save(CFS_Base &fs)
 
 	// Texture & shader
 	fs.open_chunk(OGF_TEXTURE_L);
-	fs.Wdword(RegisterTexture(string(pBuild->textures[M.surfidx[0]].name)));
+	fs.Wdword(RegisterTexture(string(pBuild->textures[M.surfidx].name)));
 	fs.Wdword(RegisterShader(string("std_aop")));
 	fs.close_chunk();
 

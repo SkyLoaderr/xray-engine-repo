@@ -123,7 +123,7 @@ float getLastRP_Scale(RAPID::XRCollide* DB, R_Light& L)
 		}
 
 		b_material& M	= pBuild->materials			[F->dwMaterial];
-		b_texture&	T	= pBuild->textures			[M.surfidx[0]];
+		b_texture&	T	= pBuild->textures			[M.surfidx];
 
 		// barycentric coords
 		// note: W,U,V order

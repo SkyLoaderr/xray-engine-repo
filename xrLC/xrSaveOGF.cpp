@@ -3,22 +3,15 @@
 #include "OGF_Face.h"
  
 VBContainer				g_VB;
-vector<string>			g_T;
+vector<string>			g_Strings;
 vector<string>			g_S;
 
-int	RegisterTexture(string &T) {
+int	RegisterString(string &T) {
 	vector<string>::iterator W = find(g_T.begin(), g_T.end(), T);
 	if (W!=g_T.end()) return W-g_T.begin();
 	g_T.push_back(T);
 	return g_T.size()-1;
 }
-int	RegisterShader(string &S) {
-	vector<string>::iterator W = find(g_S.begin(), g_S.end(), S);
-	if (W!=g_S.end()) return W-g_S.begin();
-	g_S.push_back(S);
-	return g_S.size()-1;
-}
-
 void CBuild::SaveTREE(CFS_Base &fs)
 {
 	CFS_Memory MFS;

@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "Build.h"
 #include "Image.h"
-#include "xrShaderLib.h"
 #include "xr_func.h"
 
 //OGF_Base*	g_TREE_ROOT = 0;

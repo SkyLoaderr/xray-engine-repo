@@ -57,6 +57,12 @@ public:
 	{
 		library.clear		();
 	}
+	int						GetID	(LPCSTR name)
+	{
+		for (DWORD it=0; it<library.size(); it++)
+			if (0==stricmp(name,library[it].Name))	return it;
+		return -1;
+	}
 	Shader_xrLC*			Get		(LPCSTR name)
 	{
 		for (DWORD it=0; it<library.size(); it++)

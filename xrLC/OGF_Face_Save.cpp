@@ -5,8 +5,7 @@
 #include "fs.h"
 #include "fmesh.h"
 
-extern int	RegisterTexture	(string &T);
-extern int	RegisterShader	(string &T);
+extern int	RegisterString	(string &T);
 
 void OGF::Save(CFS_Base &fs)
 {
@@ -27,8 +26,8 @@ void OGF::Save(CFS_Base &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
-	fs.Wdword			(RegisterTexture(Tname));
-	fs.Wdword			(RegisterShader	(string(shader->cName)));
+	fs.Wdword			(RegisterString(Tname));
+	fs.Wdword			(RegisterString(string(pBuild->shader_names[shader].name)));
 	fs.close_chunk		();
 
 	// BBox (already computed)
@@ -43,8 +42,8 @@ void OGF::Save(CFS_Base &fs)
 	fs.close_chunk		();
 
 	// Vertices
-	bool bVertexColors	=	(shader->CL==SH_ShaderDef::clVertex);
-	BOOL bNeedLighting	=	(shader->NeedLighting());
+	bool bVertexColors	=	(shader_xrlc->flags.bLIGHT_Vertex);
+	bool bNeedLighting	=	FALSE;
 	DWORD	FVF			=	D3DFVF_XYZ|(dwRelevantUV<<D3DFVF_TEXCOUNT_SHIFT) |
 							(bVertexColors?D3DFVF_DIFFUSE:0) |
 							(bNeedLighting?D3DFVF_NORMAL:0);
