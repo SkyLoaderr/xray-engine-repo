@@ -223,7 +223,7 @@
             </phrase>
             <phrase id="31121">
                 <text>escape_trader_tutorial_1121</text>
-				<actions>dialogs.break_dialog</actions>
+				<action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="3111">
                 <text>escape_trader_tutorial_111</text>
@@ -232,7 +232,7 @@
             </phrase>
             <phrase id="31111">
                 <text>escape_trader_tutorial_1111</text>
-                <actions>dialogs.break_dialog</actions>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>
