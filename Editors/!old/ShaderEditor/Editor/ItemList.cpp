@@ -265,7 +265,6 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
     if (full_sort){
         tvItems->ShowColumns	= false;
     	tvItems->Sort			(true);
-        tvItems->SortMode 		= smAdd;
         tvItems->ShowColumns	= true;
     }else{
         for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
