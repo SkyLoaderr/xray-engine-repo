@@ -531,6 +531,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 
 		R_ASSERT2				((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY),"Invalid game type!");
 		R_ASSERT2				((*I = dynamic_cast<CSE_ALifeDynamicObject*>(E)) != 0,"Non-ALife object in the 'game.spawn'");
+		R_ASSERT3				((*I)->m_tNodeID && ((*I)->m_tNodeID != u32(-1)),"Invalid node for object ",(*I)->s_name_replace);
 		
 		// building map of sets : get all the zone types which can generate given artefact
 		CSE_ALifeAnomalousZone	*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);

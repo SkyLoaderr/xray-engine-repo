@@ -96,7 +96,7 @@ public:
 			void					Save						();
 			void					Generate					();
 			void					vfNewGame					(LPCSTR						caSaveName);
-			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract);
+			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract, bool bForceDelete = true);
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();
 			void					vfListEvents				();

@@ -26,6 +26,9 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	u16							id;
 	tNetPacket.r_begin			(id);
 	i->UPDATE_Read				(tNetPacket);
+	
+	R_ASSERT3					(i->m_tNodeID && (i->m_tNodeID < getAI().Header().count),"Invalid node for object ",i->s_name_replace);
+
 	i->m_tSpawnID				= tSpawnID;
 	if (!m_tpActor && dynamic_cast<CSE_ALifeCreatureActor*>(i))
 		i->ID						= 0;

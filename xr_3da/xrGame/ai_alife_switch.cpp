@@ -11,7 +11,9 @@
 #include "ai_space.h"
 #include "GameObject.h"
 
-void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract)
+#define DEBUG_LOG
+
+void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bForceDelete)
 {
 	CSE_ALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpSE_Abstract->ID];
 	VERIFY							(tpALifeDynamicObject);
@@ -29,7 +31,8 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract)
 
 	tpSE_Abstract->m_bALifeControl	= false;
 
-	m_tpServer->entity_Destroy		(tpSE_Abstract);
+	if (bForceDelete)
+		m_tpServer->entity_Destroy	(tpSE_Abstract);
 }
 
 void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bRemoveFromScheduled)
@@ -41,6 +44,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
 	m_tpServer->Process_spawn		(tNetPacket,0,FALSE,l_tpAbstract);
 	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
+	R_ASSERT3						(tpALifeDynamicObject->m_tNodeID && (tpALifeDynamicObject->m_tNodeID < getAI().Header().count),"Invalid node for object ",tpALifeDynamicObject->s_name_replace);
 
 #ifdef DEBUG_LOG
 	Msg("ALife : Spawning object %s",tpALifeDynamicObject->s_name_replace);
@@ -62,6 +66,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 			Msg						("ALife : Spawning item %s (ID = %d)",tpItem->s_name,tpItem->ID);
 #endif
 
+			R_ASSERT3				(tpItem->m_tNodeID && (tpItem->m_tNodeID < getAI().Header().count),"Invalid node for object ",tpItem->s_name_replace);
 			m_tpServer->Process_spawn(tNetPacket,0,FALSE,tpItem);
 			tpItem->o_Position		= tpALifeDynamicObject->o_Position;
 			tpItem->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;
@@ -151,6 +156,8 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 	}
 	else
 		vfCreateOnlineObject		(tpALifeDynamicObject);
+	
+	tpALifeDynamicObject->m_dwLastSwitchTime = Device.TimerAsync();
 }
 
 void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -199,6 +206,40 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 	}
 	else
 		vfRemoveOnlineObject		(tpALifeDynamicObject);
+	tpALifeDynamicObject->m_dwLastSwitchTime = Device.TimerAsync();
+}
+
+// switch object offline and check if it is a group of monsters then separate dead monsters from the group
+void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
+{
+	if (I->m_bOnline)
+		if (I->ID_Parent == 0xffff) {
+			CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
+			if (tpALifeAbstractGroup)
+				for (u32 i=0, N = (u32)tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
+					OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[i]);
+					VERIFY					(J != m_tObjectRegistry.end());
+					CSE_ALifeMonsterAbstract	*tpEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
+					if (tpEnemy && tpEnemy->fHealth <= 0) {
+						(*J).second->m_bDirectControl	= true;
+						(*J).second->m_bOnline			= true;
+						tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
+						vfUpdateDynamicData((*J).second);
+						i--;
+						N--;
+						continue;
+					}
+				}
+				vfSwitchObjectOffline(I);
+		}
+		else {
+			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
+			VERIFY				(J != m_tObjectRegistry.end());
+			if (!(*J).second->m_bOnline) {
+				VERIFY			(false);
+				vfSwitchObjectOffline(I);
+			}
+		}
 }
 
 void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
@@ -297,7 +338,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 								break;
 				}
 				// checking if group is not empty
-				if (tpALifeAbstractGroup->m_tpMembers.size()) {
+				if (tpALifeAbstractGroup->m_tpMembers.size() && (i == N)) {
 					// checking if the group wants to switch offline during the given amount of time
 					if (Device.TimerAsync() -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
 						// switching the group offline
@@ -354,38 +395,5 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			R_ASSERT2			(J != m_tObjectRegistry.end(),"Invalid parent object ID!");
 			// checking if parent is offline too
 			R_ASSERT2			(!(*J).second->m_bOnline,"Parent online, item offline...");
-		}
-}
-
-// switch object offline and check if it is a group of monsters then separate dead monsters from the group
-void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
-{
-	if (I->m_bOnline)
-		if (I->ID_Parent == 0xffff) {
-			CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
-			if (tpALifeAbstractGroup)
-				for (u32 i=0, N = (u32)tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
-					OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[i]);
-					VERIFY					(J != m_tObjectRegistry.end());
-					CSE_ALifeMonsterAbstract	*tpEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
-					if (tpEnemy && tpEnemy->fHealth <= 0) {
-						(*J).second->m_bDirectControl	= true;
-						(*J).second->m_bOnline			= true;
-						tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
-						vfUpdateDynamicData((*J).second);
-						i--;
-						N--;
-						continue;
-					}
-				}
-			vfSwitchObjectOffline(I);
-		}
-		else {
-			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
-			VERIFY				(J != m_tObjectRegistry.end());
-			if (!(*J).second->m_bOnline) {
-				VERIFY			(false);
-				vfSwitchObjectOffline(I);
-			}
 		}
 }
