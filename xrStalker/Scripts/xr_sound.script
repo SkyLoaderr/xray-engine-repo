@@ -3,7 +3,7 @@
 --	автор: Диденко Руслан (Stohe)
 ----------------------------------------------------------------------------------------------------------------------
 
-local theme = {}
+theme = {}
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_sound(obj)
 	local sounds_base = stalker_ids.sound_script + 10000
@@ -15,23 +15,24 @@ function load_sound(obj)
 	-- загрузка звуков, возвращает ИД пачки и количество звуков в пачке.
 	function load_theme(name, sid)
 		if name == "weather_bad_soldier" then
-	               	return obj:add_sound ("script_sound\\weather\\bad\\soldier_bad_weather_",  10, snd_type.talk, 2, 1, sid)
+	               	return { id = sid, max = obj:add_sound("script_sound\\weather\\bad\\soldier\\soldier_bad_weather_",  10, snd_type.talk, 2, 1, sid)}
 		elseif name == "weather_good_soldier" then
-	               	return obj:add_sound ("script_sound\\weather\\good\\soldier_good_weather_",  10, snd_type.talk, 2, 1, sid)
+	               	return { id = sid, max = obj:add_sound("script_sound\\weather\\good\\soldier\\soldier_good_weather_",  10, snd_type.talk, 2, 1, sid)}
 		end
 		return nil
 	end
 
     	-- фразы о погоде
-    	theme["weather"] = { exec = nil,
-			     types = {}}
-	theme["weather"].types["bad"] = { exec = npc_class,
-					   types = {}}
-	theme["weather"].types["bad"].types["soldier"] = load_theme("weather_bad_soldier", id())
-	theme["weather"].types["good"] = { exec = npc_class,
-					   types = {}}
-	theme["weather"].types["good"].types["soldier"] = load_theme("weather_good_soldier", id())
+    	this.theme["weather"] = { exec = this.weather_class,
+				  types = {}}
+	this.theme["weather"].types["bad"] = { exec = this.npc_class,
+					 	types = {}}
+	this.theme["weather"].types["bad"].types["soldier"] = load_theme("weather_bad_soldier", id())
+	this.theme["weather"].types["good"] = { exec = this.npc_class,
+						types = {}}
+	this.theme["weather"].types["good"].types["soldier"] = load_theme("weather_good_soldier", id())
 
+	print_table(this.theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 end
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -62,36 +63,90 @@ end
 -- sound - конструктр звуков, см выше
 -- now - если звук отыграть надо прямо сейчас
 function set_sound(npc, sound, now)
-    local a = now
+	local a = now
 
-    if sound.begin == nil or
-       (device():time_global()/1000 - sound.begin) > sound.idle then
-        sound.begin = device():time_global()/1000
-        sound.idle = math.random(sound.maxidle) + sound.sumidle
-        a = true
-    end
+	if sound.begin == nil or
+	   (device():time_global()/1000 - sound.begin) > sound.idle then
+		sound.begin = device():time_global()/1000
+		sound.idle = math.random(sound.maxidle) + sound.sumidle
+		a = true
+	end		
 
-    if a == true then
-        if math.random(100) < sound.rnd or now == true then
-            local r
-            if sound.lastsound == nil then
-                r = math.random(table.getn(sound.sounds))
-            else
-                r = math.random(table.getn(sound.sounds)-1)
-                if r >= sound.lastsound then
-                    r = r + 1
-                end
-            end
-            sound.lastsound = r
-            npc:play_sound (sound.sounds[r].pack , 1, 0, 1, 0, sound.sounds[r].id)
-        end
-    end
+	if a == true then
+		if math.random(100) < sound.rnd or now == true then
+			local r
+			if sound.lastsound == nil then
+				r = math.random(table.getn(sound.sounds))
+			else
+				r = math.random(table.getn(sound.sounds)-1)
+				if r >= sound.lastsound then
+					r = r + 1
+				end
+			end
+			sound.lastsound = r
+			npc:play_sound (sound.sounds[r].pack , 1, 0, 1, 0, sound.sounds[r].id)
+		end
+	end
 end
 
+function construct_sound(npc, themes)
+	function get_sound(path)
+		if path == nil then return nil end
+		if path.exec == nil then
+			return path
+		else
+			return get_sound(path.types[path.exec(path.types, npc)])
+		end
+	end
+
+	local sounds = {}
+
+	if themes ~= nil then
+		for k,v in themes do
+			local st = get_sound(this.theme[v])
+			if st ~= nil then
+		      		for i=0,st.max-1 do
+					table.insert(sounds, {pack = st.id, id = i})
+				end
+			end
+		end
+	end
+	return sounds
+end
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
 function npc_class(avail_types, npc)
-	return nil
+	local snpc = npc:section()
+	local type = "soldier"
+	if snpc == "m_army_soldier" or
+	   snpc == "m_army_sniper" or
+	   snpc == "m_army_commander" or
+	   snpc == "m_army_specnaz"
+	then
+		type = "soldier"
+	elseif snpc == "m_bandit_bandit" or
+	   snpc == "m_bandit_commander"
+	then
+		type = "bandit"
+	elseif snpc == "m_stalker_wolf"
+	then
+		type = "stalker"
+	elseif snpc == "m_fraction_soldier" or
+	   snpc == "m_fraction_sniper" or
+	   snpc == "m_fraction_commander" or
+	   snpc == "m_fraction_specnaz"
+	then
+		type = "fraction"
+	end
+	return type
 end
-
+function weather_class(avail_types, npc)
+	local type = "good"
+	if level.rain_factor() < 0.07 then
+		type = "good"
+	else
+		type = "bad"
+	end
+	return type
+end
