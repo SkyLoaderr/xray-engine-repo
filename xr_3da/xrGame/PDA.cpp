@@ -282,7 +282,7 @@ CObject* CPda::GetOwnerObject()
 
 //отправка сообщения другому владельцу PDA 
 //pda_num - номер PDA в нашем списке
-void CPda::SendMessage(u32 pda_num, EPdaMsg msg, EPdaMsgAnger anger)
+void CPda::SendMessage(u32 pda_num, EPdaMsg msg, int info_index)
 {
 	//найти PDA с нужным номером в списке
 	u32 i=0;
@@ -295,13 +295,13 @@ void CPda::SendMessage(u32 pda_num, EPdaMsg msg, EPdaMsgAnger anger)
 	if(it == m_PDAList.end()) return;
 	if(pPda->IsOff() || pPda->IsPassive()) return;
 	
-	PdaEventSend(pPda->ID(), msg, anger);
+	PdaEventSend(pPda->ID(), msg, info_index);
 }
 
 
 //отправление сообщению PDA с определенным ID
 //если такое есть в списке контактов
-void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger)
+void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, int info_index)
 {
 	CObject* pObject =  Level().Objects.net_Find(pda_ID);
 	CPda* pPda = dynamic_cast<CPda*>(pObject);
@@ -315,24 +315,24 @@ void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger)
 	//PDA нет в списке
 	if(it == m_PDAList.end()) return;
 
-	PdaEventSend(pda_ID, msg, anger);
+	PdaEventSend(pda_ID, msg, info_index);
 }
 
-void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger)
+void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, int info_index)
 {
-	AddMessageToLog(pda_ID, msg, anger, false);
+	AddMessageToLog(pda_ID, msg, info_index, false);
 
 	//создать и отправить пакет
 	NET_Packet		P;
 	u_EventGen		(P,GE_PDA,pda_ID);
 	P.w_u16			(u16(ID()));				//отправитель
 	P.w_s16			(s16(msg));					//сообщение
-	P.w_s16			(s16(anger));				//уровень раздраженности
+	P.w_s32			(info_index);				//индекс информации если нужен
 	u_EventSend		(P);
 }
 
 //добавляет сообщение в список
-void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger, bool receive)
+void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, int info_index, bool receive)
 {
 	m_bNewMessage = true;
 
@@ -342,7 +342,11 @@ void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger, bool rec
 	if(m_mapPdaLog.find(pda_ID) == m_mapPdaLog.end())
 	{
 		m_mapPdaLog[pda_ID].clear();
-		pda_message.question = true;
+		
+		if(msg != ePdaMsgInfo)
+			pda_message.question = false;
+		else
+			pda_message.question = false;
 	}
 	else
 	{
@@ -351,7 +355,7 @@ void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger, bool rec
 
 
 	pda_message.msg = msg;
-	pda_message.anger = anger;
+	pda_message.info_index = info_index;
 	pda_message.receive = receive;
 	pda_message.time = Level().GetGameTime();
 	
@@ -370,18 +374,18 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 		{
 			u16				id;
 			s16				msg;
-			s16				anger;
+			s32				info_index;
 
 			P.r_u16			(id);
 			P.r_s16			(msg);
-			P.r_s16			(anger);
+			P.r_s32			(info_index);
 
 			//отправить сообщение владельцу, только если мы включены
 			if(IsActive())
 			{
-				AddMessageToLog(id, (EPdaMsg)msg, (EPdaMsgAnger)anger, true);
+				AddMessageToLog(id, (EPdaMsg)msg, info_index, true);
 				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, 
-														  (EPdaMsgAnger)anger);
+														  info_index);
 			}
 		}
 		break;
@@ -447,7 +451,7 @@ bool CPda::IsKnowAbout(int info_index)
 //передача информации другому PDA
 bool CPda::TransferInfoToID(u32 pda_ID, int info_index)
 {
-	if(!IsKnowAbout(info_index)) return false;
+	//if(!IsKnowAbout(info_index)) return false;
 
 	//создать и отправить пакет
 	NET_Packet		P;

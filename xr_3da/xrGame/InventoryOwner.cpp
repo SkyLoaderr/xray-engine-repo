@@ -28,8 +28,6 @@ CInventoryOwner::CInventoryOwner()
 
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
-
-	m_iIconX = m_iIconY = 0;
 }
 CInventoryOwner::~CInventoryOwner() 
 {
@@ -132,16 +130,21 @@ bool CInventoryOwner::IsActivePDA()
 
 //виртуальная функция обработки сообщений
 //who - id PDA от которого пришло сообщение
-void CInventoryOwner::ReceivePdaMessage(u16 /**who/**/, EPdaMsg /**msg/**/, EPdaMsgAnger /**anger/**/)
+void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 {
+	if(msg == ePdaMsgInfo)
+	{
+		//переслать себе же полученную информацию
+		GetPDA()->TransferInfoToID(GetPDA()->ID(), info_index);
+	}
 }
 
 //who - id PDA которому отправляем сообщение
-void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger)
+void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, int info_index)
 {
 	if(!GetPDA() || !GetPDA()->IsActive()) return;
 
-	GetPDA()->SendMessageID(who, msg, anger);
+	GetPDA()->SendMessageID(who, msg, info_index);
 }
 
 void CInventoryOwner::InitTrade()

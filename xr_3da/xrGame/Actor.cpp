@@ -879,7 +879,7 @@ void CActor::UpdateCL()
 	else
 	{
 		//update the fog of war
-		Level().m_pFogOfWar->UpdateFog(Position(), ACTOR_FOG_REMOVE_RADIUS);
+		Level().m_pFogOfWar->UpdateFog(Position(), CFogOfWar::ACTOR_FOG_REMOVE_RADIUS);
 	};
 
 	
@@ -1587,10 +1587,31 @@ void CActor::OnReceiveInfo(int info_index)
 		{
 			pGameSP->TalkMenu.UpdateQuestions();
 		}
+		//если пришло сообщение по PDA когда сам PDA не был запущен
+		else if(!pGameSP->m_pUserMenu->IsShown())
+		{
+		}
 	}
 
-	CInventoryOwner::OnReceiveInfo(info_index);
+    CInventoryOwner::OnReceiveInfo(info_index);
 }
+
+void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
+{
+	//только если находимся в режиме single
+	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(!pGameSP) return;
+	//визуализация в интерфейсе
+	
+	CObject* pPdaObject =  Level().Objects.net_Find(who);
+	R_ASSERT(pPdaObject);
+	CPda* pPda = dynamic_cast<CPda*>(pPdaObject);
+	R_ASSERT(pPda);
+	HUD().GetUI()->UIMainIngameWnd.ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_index);
+
+    CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
+}
+
 
 void CActor::NetInput_Save()
 {

@@ -154,7 +154,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 					break;
 				}
 			}
-			m_pPda->SendMessageID(id_pda_contact, pda_msg, ePdaMsgAngerNone);
+			m_pPda->SendMessageID(id_pda_contact, pda_msg, NO_INFO_INDEX);
 			UpdateMessageLog();
 		}
 	}
@@ -164,6 +164,8 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 void CUIPdaWnd::Update()
 {
+	if(!m_pPda) return;
+	
 	//обновлять список контактов вне зависимости
 	//от того показано окно контактов или нет
 	UpdatePdaContacts();

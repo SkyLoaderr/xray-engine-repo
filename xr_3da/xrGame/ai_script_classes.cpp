@@ -38,7 +38,6 @@ bool CLuaGameObject::GiveInfoPortion(int info_index)
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
 
-	//R_ASSERT2(pInventoryOwner->GetPDA(),"PDA  for InventoryOwner not init yet!");
 	if(!pInventoryOwner->GetPDA()) return false;
 
 	//отправляем от нашему PDA пакет информации с номером
@@ -49,6 +48,27 @@ bool CLuaGameObject::GiveInfoPortion(int info_index)
 	m_tpGameObject->u_EventSend(P);
 	return			true;
 }
+
+bool CLuaGameObject::GiveInfoPortionViaPda(int info_index, CLuaGameObject* pFromWho)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return false;
+	if(!pInventoryOwner->GetPDA()) return false;
+
+	CInventoryOwner* pFromWhoInvOwner = dynamic_cast<CInventoryOwner*>(pFromWho->m_tpGameObject);
+	if(!pFromWhoInvOwner) return false;
+	if(!pFromWhoInvOwner->GetPDA()) return false;
+
+	//отправляем от нашему PDA пакет информации с номером
+	NET_Packet		P;
+	m_tpGameObject->u_EventGen(P,GE_PDA,pInventoryOwner->GetPDA()->ID());
+	P.w_u16			(u16(pFromWhoInvOwner->GetPDA()->ID()));		//отправитель
+	P.w_s16			(ePdaMsgInfo);									
+	P.w_s32			(info_index);									
+	m_tpGameObject->u_EventSend(P);
+	return			true;
+}
+
 
 CLuaGameObject *CLuaGameObject::GetCurrentWeapon() const
 {

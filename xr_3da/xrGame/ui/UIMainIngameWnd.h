@@ -8,10 +8,13 @@
 
 #include "UIStatic.h"
 #include "UIButton.h"
+#include "UIFrameWindow.h"
 #include "UIDragDropItem.h"
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UIWpnDragDropItem.h"
+
+#include "UICharacterInfo.h"
 
 
 #include "../UIZoneMap.h"
@@ -34,6 +37,9 @@ public:
 
 	bool OnKeyboardPress(int dik);
 
+	//для отображения сообщения пришедшего по PDA
+	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, int info_index);
+
 protected:
 
 	CUIStatic	UIStaticHealth;
@@ -50,7 +56,16 @@ protected:
 	CUIZoneMap UIZoneMap;
 
 	//иконка, показывающая количество активных PDA
-	CUIStatic	UIPdaOnline;
+	CUIStatic			UIPdaOnline;
+	CUICharacterInfo	UICharacterInfo;
+	CUIFrameWindow		UIPdaMessageWnd;
+	CUIStatic			UIMessageText;
+	
+	//интервал показывания сообщения
+	int					m_dwMinShowTime;
+	int					m_dwMaxShowTime;
+	//время сколько показывается новое сообщение PDA
+	int					m_dwMsgShowingTime;
 
 	//изображение оружия
 	CUIStatic			UIWeaponBack;
@@ -58,6 +73,8 @@ protected:
 	CUIStatic			UIWeaponSignName;
 	CUIStatic			UIWeaponIcon;
 	//CUIDragDropItem	UIWeaponIcon;
+
+	
 
 	//для текущего активного актера и оружия
 	CActor*		m_pActor;	

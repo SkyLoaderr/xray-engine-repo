@@ -76,7 +76,14 @@ void CUIZoneMap::Init()
 	back.Init	("ui\\ui_mg_back_map",	"hud\\default",BASE_LEFT,BASE_TOP,align);
 	back.SetRect(0,0,180,180);
 
-	landscape.Init("ui\\ui_minimap_level3",	"hud\\default",
+
+	ref_str map_texture;
+	if(Level().pLevel->line_exist("level_map","texture"))
+        map_texture = Level().pLevel->r_string("level_map","texture");
+	else
+		map_texture = "ui\\ui_minimap_level3";
+
+	landscape.Init(*map_texture,	"hud\\default",
 					map_center.x - map_radius + 1,
 					map_center.y - map_radius + 1,
 					align);
@@ -197,13 +204,18 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	float map_x = Actor->Position().x;
     float map_y = Actor->Position().z;
 
-	//Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
 	Fbox level_box;
-	level_box.x2 = 359.843f;
-	level_box.x1 = -280.157f;
-	level_box.z2 = 253.36f;
-	level_box.z1 = -386.64f;
-
+	if (Level().pLevel->section_exist("level_map"))	
+	{
+		level_box.x1 = Level().pLevel->r_float("level_map","x1");
+		level_box.z1 = Level().pLevel->r_float("level_map","z1");
+		level_box.x2 = Level().pLevel->r_float("level_map","x2");
+		level_box.z2 = Level().pLevel->r_float("level_map","z2");
+	}
+	else
+	{
+		level_box.x1 = level_box.z1 = level_box.x2 = level_box.z2 = 0.f;
+	}
 	
 	float width = level_box.x2 - level_box.x1;
 	float height = level_box.z2 - level_box.z1;

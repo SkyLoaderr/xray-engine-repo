@@ -13,29 +13,12 @@
 #include "inventory.h"
 #include "InfoPortion.h"
 
+#include "PdaMsg.h"
+
 
 class CInventoryOwner;
 
 
-//структура для описания сообщения PDA,
-//используется для ведения логов
-typedef struct tagSPdaMessage 
-{
-	EPdaMsg			msg;
-	EPdaMsgAnger	anger;
-	
-	//true если мы получали сообщение 
-	//и false если мы его посылали
-	bool			receive;
-	
-	//true, если сообщение - вопрос
-	//и false, если ответ
-	bool			question;
-
-	//время получения/отправки сообщения
-	_TIME_ID		time;
-		
-} SPdaMessage;
 
 
 DEF_LIST (PDA_LIST, CPda*);
@@ -83,8 +66,8 @@ public:
 	virtual bool IsOn() {return !m_bTurnedOff;}
 	virtual bool IsOff() {return m_bTurnedOff;}
 
-	virtual void SendMessage(u32 pda_num, EPdaMsg msg, EPdaMsgAnger anger);
-	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger);
+	virtual void SendMessage(u32 pda_num, EPdaMsg msg, int info_index);
+	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, int info_index);
 
 	virtual bool IsNewMessage(){return m_bNewMessage;}
 	virtual void NoNewMessage(){m_bNewMessage = false;}
@@ -131,8 +114,8 @@ protected:
 	//поступление нового сообщения на PDA
 	bool m_bNewMessage;
 
-	void PdaEventSend(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger);
-	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger, bool receive);
+	void PdaEventSend(u32 pda_ID, EPdaMsg msg, int info_index);
+	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, int info_index, bool receive);
 
 
 	//радиус обнаружения других PDA

@@ -463,7 +463,7 @@ public:
 	/////////////////////////
 	// PDA functions
 	/////////////////////////
-	void ReceivePdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger);
+	void ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index);
 
 protected:
 	xr_deque<CEntityAction*>	m_tpActionQueue;

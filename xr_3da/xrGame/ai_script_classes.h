@@ -477,6 +477,7 @@ public:
 	
 	//передача порции информации InventoryOwner
 	bool GiveInfoPortion(int info_index);
+	bool GiveInfoPortionViaPda(int info_index, CLuaGameObject* pFromWho);
 	
 	IC		u32				GetInventoryObjectCount() const
 	{

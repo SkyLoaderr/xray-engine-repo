@@ -593,7 +593,7 @@ float CAI_Stalker::Radius()const
 
 /////////////////////////
 //PDA functions
-void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger)
+void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 {
 	EPdaMsg pda_msg = ePdaMsgAccept;
 
@@ -613,6 +613,6 @@ void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger)
 		}
 
 		//реакция на сообщение
-		SendPdaMessage(who, pda_msg, anger);
+		SendPdaMessage(who, pda_msg, info_index);
 	}
 }

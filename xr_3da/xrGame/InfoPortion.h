@@ -11,6 +11,9 @@
 #include "ui/xrXMLParser.h"
 
 
+
+#define NO_INFO_INDEX (-1)
+
 //структура для локации на карте
 typedef struct tagSMapLocation
 {

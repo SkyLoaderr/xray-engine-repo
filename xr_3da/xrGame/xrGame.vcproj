@@ -2323,6 +2323,9 @@
 							<File
 								RelativePath=".\PDA.h">
 							</File>
+							<File
+								RelativePath=".\PdaMsg.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="Food &amp; Drugs"

@@ -43,6 +43,14 @@ protected:
 	float				fArmor,		fMAX_Armor;
 	float				fAccuracy;
 	float				m_fMaxHealthValue;
+
+	//icon position (используется при торговле и обыске трупов)
+	int m_iTradeIconX;
+	int m_iTradeIconY;
+	//иконки для карты
+	int m_iMapIconX;
+	int m_iMapIconY;
+
 public:
 	float				m_fMorale;
 	// Team params
@@ -104,6 +112,13 @@ public:
 
 	virtual BOOL			IsVisibleForHUD		()	{return g_Alive();	}
 	virtual void			g_fireParams			(Fvector &, Fvector &){}; 
+
+
+	//icon
+	virtual int GetTradeIconX() {return m_iTradeIconX;}
+	virtual int GetTradeIconY() {return m_iTradeIconY;}
+	virtual int GetMapIconX() {return m_iMapIconX;}
+	virtual int GetMapIconY() {return m_iMapIconY;}
 
 
 	//time of entity death

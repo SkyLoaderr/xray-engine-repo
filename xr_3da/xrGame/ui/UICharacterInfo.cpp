@@ -8,6 +8,7 @@
 using namespace InventoryUtilities;
 
 #include "uicharacterinfo.h"
+#include "..\\entity.h"
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
@@ -45,11 +46,33 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	}
 
 	AttachChild(&UIName);
-	xml_init.InitStatic(uiXml, "static", 0, &UIName);
+	if(uiXml.NavigateToNode("static", 0))
+	{
+		xml_init.InitStatic(uiXml, "static", 0, &UIName);
+	}
+	else
+	{
+		UIName.Show(false);
+		UIName.Enable(false);
+	}
+
 	AttachChild(&UIRank);
-	xml_init.InitStatic(uiXml, "static", 1, &UIRank);
+	if(uiXml.NavigateToNode("static", 1))
+		xml_init.InitStatic(uiXml, "static", 1, &UIRank);
+	else
+	{
+		UIRank.Show(false);
+		UIRank.Enable(false);
+	}
+
 	AttachChild(&UICommunity);
-	xml_init.InitStatic(uiXml, "static", 2, &UICommunity);
+	if(uiXml.NavigateToNode("static", 2))
+		xml_init.InitStatic(uiXml, "static", 2, &UICommunity);
+	else
+	{
+		UICommunity.Show(false);
+		UICommunity.Enable(false);
+	}
 }
 
 void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
@@ -64,10 +87,12 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 	sprintf(str, "community: %s", pInvOwner->GetGameCommunity());
 	UICommunity.SetText(str);
 
+	CEntity* pInvOwnerEntity = dynamic_cast<CEntity*>(pInvOwner);
+
 	UIIcon.SetShader(GetCharIconsShader());
 	UIIcon.GetUIStaticItem().SetOriginalRect(
-					pInvOwner->GetIconX()*ICON_GRID_WIDTH,
-					pInvOwner->GetIconY()*ICON_GRID_HEIGHT,
-					pInvOwner->GetIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
-					pInvOwner->GetIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
+					pInvOwnerEntity->GetTradeIconX()*ICON_GRID_WIDTH,
+					pInvOwnerEntity->GetTradeIconY()*ICON_GRID_HEIGHT,
+					pInvOwnerEntity->GetTradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
+					pInvOwnerEntity->GetTradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
 }

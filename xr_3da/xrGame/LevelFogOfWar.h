@@ -31,11 +31,8 @@ const static unsigned char FOG_OPEN_DOWN_LEFT	= 0x20;
 const static unsigned char FOG_OPEN_DOWN_RIGHT	= 0x40;
 const static unsigned char FOG_OPEN_UP_RIGHT	= 0x80;
 
-//размеры одной клеточки тумана в метрах
-const static float FOG_CELL_WIDTH = 20.f;
-const static float FOG_CELL_HEIGHT = 20.f;
-//радиус вокруг актрера, где убирается туман
-const static float ACTOR_FOG_REMOVE_RADIUS = 25.f;
+
+
 
 class CLevel;
 
@@ -71,6 +68,11 @@ public:
 	int m_iFogHeight;
 
 
+	//размеры одной клеточки тумана в метрах
+	static float FOG_CELL_SIZE;
+	//радиус вокруг актрера, где убирается туман
+	static float ACTOR_FOG_REMOVE_RADIUS;
+	
 protected:
 	void OpenCell(float x, float y);
 	void OpenCell(int x, int y);
@@ -80,6 +82,7 @@ protected:
 	float m_fMapHeight;
 	float m_fMapLeft;
 	float m_fMapTop;
+
 };
 
 

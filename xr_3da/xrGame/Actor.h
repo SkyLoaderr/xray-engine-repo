@@ -392,6 +392,7 @@ public:
 
 	//information receive
 	virtual void OnReceiveInfo(int info_index);
+	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index);
 
 };
 

@@ -71,11 +71,6 @@ class CUI{
 	CUISquad			UISquad;
 
 
-#ifdef UI_INTERFACE_ON
-	
-	CUIMainIngameWnd UIMainIngameWnd;
-
-#endif
 
 	//whether to show main ingame indicators (health, weapon etc)
 	bool m_bShowIndicators;
@@ -89,6 +84,10 @@ class CUI{
 	UIMsgSVec			messages;
 public:
 	CHUDManager*		m_Parent;
+
+#ifdef UI_INTERFACE_ON
+	CUIMainIngameWnd UIMainIngameWnd;
+#endif
 public:
 						CUI					(CHUDManager* p);
 	virtual				~CUI				();
@@ -109,16 +108,12 @@ public:
 	// frag-list.....
 	
 
-	//by 	Dandy
 	void ShowCursor() {UICursor.Show();}
 	void HideCursor() {UICursor.Hide();}
 	CUICursor* GetCursor() {return &UICursor;}
 
 	void ShowIndicators() {m_bShowIndicators = true;}
 	void HideIndicators() {m_bShowIndicators = false;}
-
-	//end by Dandy
-
 
 	void				AddMessage			(LPCSTR S, LPCSTR M, u32 C=0xffffffff, float life_time=LIFE_TIME);
 };

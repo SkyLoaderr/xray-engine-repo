@@ -661,6 +661,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("clear_callback",				(void (CLuaGameObject::*)(bool))(CLuaGameObject::ClearCallback))
 			.def("clear_callback",				(void (CLuaGameObject::*)(const CScriptMonster::EActionType))(CLuaGameObject::ClearCallback))
 			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
+			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
 			.def("patrol",						&CLuaGameObject::GetPatrolPathName)
 	];
 }

@@ -38,6 +38,11 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 {
 	m_pActor = NULL;
 	m_pWeapon = NULL;
+
+	m_dwMinShowTime = 0;
+	m_dwMaxShowTime = 20000;
+	m_dwMsgShowingTime = 0;
+
 }
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
@@ -96,12 +101,19 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIPdaOnline);
 	xml_init.InitStatic(uiXml, "static", 10, &UIPdaOnline);
 	
-
-
-/*	UIWeaponBack;
-	UIWeaponSignAmmo;
-	UIWeaponSignName;
-	UIWeaponIcon;*/
+	AttachChild(&UIPdaMessageWnd);
+	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIPdaMessageWnd);
+	UIPdaMessageWnd.AttachChild(&UIMessageText);
+	xml_init.InitStatic(uiXml, "msg_text", 0, &UIMessageText);
+	
+	
+	AttachChild(&UICharacterInfo);
+	xml_init.InitWindow(uiXml, "window", 0, &UICharacterInfo);
+	UICharacterInfo.Init(UICharacterInfo.GetWndRect().left,
+							UICharacterInfo.GetWndRect().top,
+							UICharacterInfo.GetWidth(),
+							UICharacterInfo.GetHeight(),
+							 "maingame_character.xml");
 
 	AttachChild(&UITextWound);
 	UITextWound.Init(UIStaticWound.GetWndRect().left+12, 
@@ -117,6 +129,17 @@ void CUIMainIngameWnd::Init()
 	//индикаторы 
 	UIZoneMap.Init();
 	UIZoneMap.SetScale(2);
+
+
+	//для отображения входящих сообщений PDA
+	UICharacterInfo.Show(false);
+	UICharacterInfo.Enable(false);
+	UIPdaMessageWnd.Show(false);
+	UIPdaMessageWnd.Enable(false);
+
+	m_dwMsgShowingTime = 0;
+	m_dwMinShowTime = pSettings->r_s32("pda_maingame","min_show_time");
+	m_dwMaxShowTime = pSettings->r_s32("pda_maingame","max_show_time");
 }
 
 void CUIMainIngameWnd::Draw()
@@ -293,11 +316,21 @@ void CUIMainIngameWnd::Update()
 	}
 
 
+	if(m_dwMsgShowingTime>0) 
+	{
+		m_dwMsgShowingTime -= Device.dwTimeDelta;
+	}
+	//если сообщение выводится 
+	else if(UICharacterInfo.IsShown())
+	{
+		m_dwMsgShowingTime = 0;
+		UICharacterInfo.Show(false);
+		UIPdaMessageWnd.Show(false);
+	}
+    
+
 	CUIWindow::Update();
 }
-
-	
-
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
@@ -313,4 +346,22 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		break;
 	}
 	return false;
+}
+
+void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, int info_index)
+{
+	R_ASSERT(pSender);
+	UICharacterInfo.InitCharacter(pSender);
+	UIPdaMessageWnd.UITitleText.SetText(pSender->GetGameName());
+	
+	if(msg == ePdaMsgInfo)
+	{
+		CInfoPortion info_portion;
+		info_portion.Load(info_index);
+		UIMessageText.SetText(info_portion.GetText());
+	}
+
+	UICharacterInfo.Show(true);
+	UIPdaMessageWnd.Show(true);
+	m_dwMsgShowingTime = m_dwMaxShowTime;
 }

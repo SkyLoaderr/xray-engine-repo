@@ -7,30 +7,12 @@
 #include "inventory.h"
 
 #include "InfoPortion.h"
+#include "PdaMsg.h"
 
 class CTrade;
 class CPda;
 
 
-//типы сообщений PDA
-enum EPdaMsg {
-	ePdaMsgTrade  = u32(0),		//торговать
-	ePdaMsgGoAway,				//убирайс€ с территории
-	ePdaMsgNeedHelp,			//просьба о помощи
-	
-	ePdaMsgAccept,				//прин€ть предложение
-	ePdaMsgDecline,				//отказатьс€
-	ePdaMsgDeclineRude,			//грубо отказатьс€
-	ePdaMessageMax
-};
-
-//уровень "злости" в сообщении
-enum EPdaMsgAnger {
-	ePdaMsgAngerNone = u32(0),
-	ePdaMsgAngerLow,
-	ePdaMsgAngerHigh,
-	ePdaMsgAngerMax
-};
 
 class CInventoryOwner		
 {							
@@ -53,9 +35,9 @@ public:
 	//функци€ через которую
 	//другие персонажи отправл€ют объекту PDA сообщение.
 	//должна быть переопределена в порожеденных классах
-	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger);
+	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index);
 	//отправка сообщени€ другому владельцу PDA
-	virtual void SendPdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger);
+	virtual void SendPdaMessage(u16 who, EPdaMsg msg, int info_index);
 
 
 	CInventory	m_inventory;									// инвентарь
@@ -87,8 +69,6 @@ public:
 	virtual LPCSTR GetGameName();
 	virtual LPCSTR GetGameRank();
 	virtual LPCSTR GetGameCommunity();
-	virtual int GetIconX() {return m_iIconX;}
-	virtual int GetIconY() {return m_iIconY;}
 
 protected:
 	// торговл€
@@ -96,7 +76,4 @@ protected:
 
 	bool m_bTalking; 
 	CInventoryOwner* m_pTalkPartner;
-
-	//координаты иконки персонажа на текстуре
-	int m_iIconX, m_iIconY;
 };

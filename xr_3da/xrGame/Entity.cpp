@@ -24,6 +24,10 @@ CEntity::CEntity()
 	fMAX_Armor			= MAX_ARMOR;
 
 	m_dwDeathTime = 0;
+
+	m_iTradeIconX = m_iTradeIconY = 0;
+	m_iMapIconX = m_iMapIconY = 0;
+	
 }
 
 CEntity::~CEntity()
@@ -140,7 +144,25 @@ void CEntity::Load		(LPCSTR section)
 #pragma todo("Jim to Dima: no specific figures or comments needed")	
 	m_fMorale = 66.f;
 
-	// Msg					("! entity size: %d",sizeof(*this));
+
+	//загрузить параметры иконки торговли
+	CKinematics* pKinematics=PKinematics(Visual());
+	CInifile* ini = NULL;
+	if(pKinematics) ini = pKinematics->LL_UserData();
+	if(ini && ini->section_exist("icon"))
+	{
+		m_iTradeIconX = ini->r_u32("icon","icon_x");
+		m_iTradeIconY = ini->r_u32("icon","icon_y");
+
+		m_iMapIconX = ini->r_u32("icon","map_icon_x");
+		m_iMapIconY = ini->r_u32("icon","map_icon_y");
+	}
+	else
+	{
+		m_iTradeIconX = m_iTradeIconY = 0;
+		m_iMapIconX = 1;
+		m_iMapIconY = 4;
+	}
 }
 
 BOOL CEntity::net_Spawn		(LPVOID DC)
