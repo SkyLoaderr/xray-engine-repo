@@ -14,7 +14,8 @@
 		. TODO: collision database simplification
 
 	/ GAME
-		. TODO: 
+		. TODO: Universal spawn
+		. TODO: Events
 
 	/ EFFECTS
 		+ TODO: Blurred output, grayed output
