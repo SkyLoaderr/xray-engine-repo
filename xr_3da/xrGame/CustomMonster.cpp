@@ -20,11 +20,12 @@ ENGINE_API extern float psGravity;
 void CCustomMonster::SAnimState::Create(CKinematics* K, LPCSTR base)
 {
 	char	buf[128];
-	fwd		= K->ID_Cycle(strconcat(buf,base,"_fwd"));
-	back	= K->ID_Cycle(strconcat(buf,base,"_back"));
-	ls		= K->ID_Cycle(strconcat(buf,base,"_ls"));
-	rs		= K->ID_Cycle(strconcat(buf,base,"_rs"));
+	fwd		= K->ID_Cycle_Safe(strconcat(buf,base,"_fwd"));
+	back	= K->ID_Cycle_Safe(strconcat(buf,base,"_back"));
+	ls		= K->ID_Cycle_Safe(strconcat(buf,base,"_ls"));
+	rs		= K->ID_Cycle_Safe(strconcat(buf,base,"_rs"));
 }
+
 void __stdcall CCustomMonster::SpinCallback(CBoneInstance* B)
 {
 	CCustomMonster*		M = dynamic_cast<CCustomMonster*> (static_cast<CObject*>(B->Callback_Param));
@@ -88,7 +89,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	iArmor					= 0;
 	
 	// Eyes
-	eye_bone				= PKinematics(pVisual)->LL_BoneID("head");
+	eye_bone				= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
 	eye_fov					= ini->ReadFLOAT(section,"eye_fov");
 	eye_range				= ini->ReadFLOAT(section,"eye_range");
 
@@ -111,12 +112,15 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	PKinematics(pVisual)->PlayCycle(m_idle);
 
 	// weapons
-	Weapons					= new CWeaponList(this);
-	Weapons->Init			("torso2","head");
-	Weapons->TakeItem		(CLSID_OBJECT_W_M134_en,0);
+	if (ini->ReadINT(section,"weapon_usage")) {
+		Weapons					= new CWeaponList(this);
+		Weapons->Init			("torso2","head");
+		Weapons->TakeItem		(CLSID_OBJECT_W_M134_en,0);
+	}
 
 	// take index spine bone
-	int spine_bone			= PKinematics(pVisual)->LL_BoneID("torso1");
+	//"torso1"
+	int spine_bone			= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
 	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 
 	// Sheduler
@@ -312,7 +316,8 @@ void CCustomMonster::Update	( DWORD DT )
 	}
 
 	// weapons
-	Weapons->Update		(dt,false);
+	if (Weapons)
+		Weapons->Update		(dt,false);
 	
 	// *** general stuff
 	inherited::Update	(DT);

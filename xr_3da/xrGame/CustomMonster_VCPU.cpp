@@ -89,16 +89,21 @@ void CCustomMonster::Exec_Action	( float dt )
 	//*** process action commands
 	AI::C_Command* C	= &q_action;
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
-	BOOL	b_firing	= Weapons->isWorking();
-	switch (L->Command) {
-	case AI::AIC_Action::FireBegin:
-		if (!b_firing)	g_cl_fireStart	();
-		break;
-	case AI::AIC_Action::FireEnd:
-		if (b_firing)	g_fireEnd		();
-		break;
-	default:
-		break;
+	if (Weapons) {
+		BOOL	b_firing	= Weapons->isWorking();
+		switch (L->Command) {
+		case AI::AIC_Action::FireBegin:
+			if (!b_firing)	g_cl_fireStart	();
+			break;
+		case AI::AIC_Action::FireEnd:
+			if (b_firing)	g_fireEnd		();
+			break;
+		default:
+			break;
+		}
+	}
+	else {
+
 	}
 	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
 }

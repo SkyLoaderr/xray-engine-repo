@@ -11,6 +11,7 @@
 #include "..\\..\\..\\3dsound.h"
 #include "ai_rat.h"
 #include "ai_rat_selectors.h"
+#include "..\\..\\..\\bodyinstance.h"
 
 //#define WRITE_LOG
 
@@ -493,7 +494,7 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 	else {
 		vector<SSubNode> tpSubNodes;
 
-		Msg("Outside the node");
+		//Msg("Outside the node");
 
 		int iMySubNode = ifDivideNearestNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
 
@@ -624,7 +625,7 @@ void CAI_Rat::Attack()
 					 ) {
 						Leader = this;
 						Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
-						Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+						//Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
 					}
 			
 			if (Leader == this) {
@@ -910,7 +911,7 @@ void CAI_Rat::FollowMe()
 					if ((Leader != this) && ((Leader->g_Health() <= 0) || (!(Leader->m_bMobility)))) {
 						Leader = this;
 						Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
-						Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+						//Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
 					}
 					// I am leader then go to state "Free Hunting"
 					if ((Leader == this) || (Leader->g_Health() <= 0) || (!(Leader->m_bMobility))) {
@@ -994,7 +995,7 @@ void CAI_Rat::FreeHunting()
 					if ((Leader != this) && ((Leader->g_Health() <= 0) || (!(Leader->m_bMobility)))) {
 						Leader = this;
 						Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
-						Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+						//Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
 					}
 					
 					if (Leader == this) {
@@ -1156,7 +1157,7 @@ void CAI_Rat::Pursuit()
 						if ((Leader != this) && ((Leader->g_Health() <= 0) || (!(Leader->m_bMobility)))) {
 							Leader = this;
 							Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
-							Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+							//Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
 						}
 						// get pointer to the class of node estimator 
 						// for finding the best node in the area
@@ -1325,7 +1326,7 @@ void CAI_Rat::UnderFire()
 					if ((Leader != this) && ((Leader->g_Health() <= 0) || (!(Leader->m_bMobility)))) {
 						Leader = this;
 						Squad.Groups[g_Group()].m_dwLeaderChangeCount++;
-						Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
+						//Msg("%d",Squad.Groups[g_Group()].m_dwLeaderChangeCount);
 					}
 					// I am leader then go to state "Free Hunting"
 					bool bWatch = false;
@@ -1501,4 +1502,78 @@ void CAI_Rat::Think()
 		}
 	}
 	while (!bStopThinking);
+}
+
+void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+{
+	R_ASSERT(fsimilar(_view.magnitude(),1));
+	R_ASSERT(fsimilar(_move.magnitude(),1));
+
+	CMotionDef*	S=m_walk.fwd;//0;
+/**
+	if (iHealth<=0)
+		S = m_death;
+	else {
+		if (speed<0.2f)
+			S = m_idle;
+		else {
+			Fvector view = _view; 
+			Fvector move = _move; 
+			view.y=0; 
+			move.y=0; 
+			view.normalize_safe();
+			move.normalize_safe();
+			float	dot  = view.dotproduct(move);
+			
+			SAnimState* AState = &m_walk;
+			AState = &m_walk;
+			
+			if (speed>2.f)
+				AState = &m_run;
+			
+			S = AState->fwd;
+		}
+	}
+/**/
+	if (S!=m_current){ 
+		m_current = S;
+		if (S) PKinematics(pVisual)->PlayCycle(S);
+	}
+}
+
+void CAI_Rat::net_Export(NET_Packet* P)					// export to server
+{
+	R_ASSERT				(net_Local);
+
+	// export last known packet
+	R_ASSERT				(!NET.empty());
+	net_update& N			= NET.back();
+	P->w_u32				(N.dwTimeStamp);
+	P->w_u8					(0);
+	P->w_vec3				(N.p_pos);
+	P->w_angle8				(N.o_model);
+	P->w_angle8				(N.o_torso.yaw);
+	P->w_angle8				(N.o_torso.pitch);
+}
+
+void CAI_Rat::net_Import(NET_Packet* P)
+{
+	R_ASSERT				(!net_Local);
+	net_update				N;
+
+	u8 flags;
+	P->r_u32				(N.dwTimeStamp);
+	P->r_u8					(flags);
+	P->r_vec3				(N.p_pos);
+	P->r_angle8				(N.o_model);
+	P->r_angle8				(N.o_torso.yaw);
+	P->r_angle8				(N.o_torso.pitch);
+
+	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
+		NET.push_back			(N);
+		NET_WasInterpolating	= TRUE;
+	}
+
+	bVisible				= TRUE;
+	bEnabled				= TRUE;
 }
