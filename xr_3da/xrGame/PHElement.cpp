@@ -59,6 +59,7 @@ CPHElement::CPHElement()																															//aux
 	//b_enabled_onstep=false;
 	//m_flags.set(flEnabledOnStep,FALSE);
 	m_flags.assign(0);
+	mXFORM.identity();
 }
 
 void CPHElement::add_Box		(const Fobb&		V)
