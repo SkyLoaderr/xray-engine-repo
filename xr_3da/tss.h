@@ -1,85 +1,106 @@
 #pragma once
 
-class ENGINE_API CSimulatorTSS
+struct ENGINE_API CSimulatorState
 {
-	DWORD	cache		[5][30];
-public:
-//	CSimulatorTSS()		{ Invalidate();	}
-	IC void	Invalidate	()	{ memset(cache,0xff,sizeof(cache)); }
-	IC void Set			(DWORD S, DWORD N, DWORD V) 
+	DWORD	type;		// 0=RS, 1=TSS
+	DWORD	v1,v2,v3;
+
+	IC void	set_RS	(DWORD a, DWORD b)
 	{
-		R_ASSERT(S<4 && N<30);
-		if (cache[S][N] != V) 
-		{
-			cache[S][N] = V;
-			HW.pDevice->SetTextureStageState(S,(D3DTEXTURESTAGESTATETYPE)N,V);
-		}
+		type	= 0;
+		v1		= a;
+		v2		= b;
+		v3		= 0;
 	}
-	IC void SetColor	(DWORD S, DWORD A1, DWORD OP, DWORD A2)
+	IC void	set_TSS	(DWORD a, DWORD b, DWORD c)
 	{
-		Set(S,D3DTSS_COLOROP,	OP);
-		switch (OP)
-		{
-		case D3DTOP_DISABLE:
-			break;
-		case D3DTOP_SELECTARG1:
-			Set(S,D3DTSS_COLORARG1,	A1);
-			break;
-		case D3DTOP_SELECTARG2:
-			Set(S,D3DTSS_COLORARG2,	A2);
-			break;
-		default:
-			Set(S,D3DTSS_COLORARG1,	A1);
-			Set(S,D3DTSS_COLORARG2,	A2);
-			break;
-		}
-	}
-	IC void SetAlpha	(DWORD S, DWORD A1, DWORD OP, DWORD A2)
-	{
-		Set(S,D3DTSS_ALPHAOP,	OP);
-		switch (OP)
-		{
-		case D3DTOP_DISABLE:
-			break;
-		case D3DTOP_SELECTARG1:
-			Set(S,D3DTSS_ALPHAARG1,	A1);
-			break;
-		case D3DTOP_SELECTARG2:
-			Set(S,D3DTSS_ALPHAARG2,	A2);
-			break;
-		default:
-			Set(S,D3DTSS_ALPHAARG1,	A1);
-			Set(S,D3DTSS_ALPHAARG2,	A2);
-			break;
-		}
+		type	= 1;
+		v1		= a;
+		v2		= b;
+		v3		= c;
 	}
 };
+typedef	vector<CSimulatorState>	SimulatorStates;
 
-class ENGINE_API CSimulatorState
+class ENGINE_API CSimulatorTSS
 {
-	DWORD	cache		[172];
+	DWORD	cache		[8][30];
 public:
-//	CSimulatorState()	{ Invalidate();	}
 	IC void	Invalidate	()	{ memset(cache,0xff,sizeof(cache)); }
-	IC void Set			(DWORD N, DWORD V)	
+	IC void Set			(SimulatorStates& container, DWORD S, DWORD N, DWORD V) 
 	{
-		R_ASSERT(N<172);
-		if (cache[N] != V)
+		R_ASSERT(S<8 && N<30);
+		if (cache[S][N] != V) 
 		{
-			cache[N] = V;
-			HW.pDevice->SetRenderState((D3DRENDERSTATETYPE)N,V);
+			cache[S][N]		= V;
+			CSimulatorState	st;	st.set_TSS(S,N,V); container.push_back(st);
+		}
+	}
+	IC void SetColor	(SimulatorStates& container, DWORD S, DWORD A1, DWORD OP, DWORD A2)
+	{
+		Set(container,S,D3DTSS_COLOROP,	OP);
+		switch (OP)
+		{
+		case D3DTOP_DISABLE:
+			break;
+		case D3DTOP_SELECTARG1:
+			Set(container,S,D3DTSS_COLORARG1,	A1);
+			break;
+		case D3DTOP_SELECTARG2:
+			Set(container,S,D3DTSS_COLORARG2,	A2);
+			break;
+		default:
+			Set(container,S,D3DTSS_COLORARG1,	A1);
+			Set(container,S,D3DTSS_COLORARG2,	A2);
+			break;
+		}
+	}
+	IC void SetAlpha	(SimulatorStates& container, DWORD S, DWORD A1, DWORD OP, DWORD A2)
+	{
+		Set(container,S,D3DTSS_ALPHAOP,	OP);
+		switch (OP)
+		{
+		case D3DTOP_DISABLE:
+			break;
+		case D3DTOP_SELECTARG1:
+			Set(container,S,D3DTSS_ALPHAARG1,	A1);
+			break;
+		case D3DTOP_SELECTARG2:
+			Set(container,S,D3DTSS_ALPHAARG2,	A2);
+			break;
+		default:
+			Set(container,S,D3DTSS_ALPHAARG1,	A1);
+			Set(container,S,D3DTSS_ALPHAARG2,	A2);
+			break;
 		}
 	}
 };
 
 class ENGINE_API CSimulatorRS
 {
+	DWORD	cache		[256];
+public:
+	IC void	Invalidate	()	{ memset(cache,0xff,sizeof(cache)); }
+	IC void Set			(SimulatorStates& container, DWORD N, DWORD V)	
+	{
+		R_ASSERT(N<256);
+		if (cache[N] != V)
+		{
+			cache[N] = V;
+			CSimulatorState	st;	st.set_RS(N,V); container.push_back(st);
+		}
+	}
+};
+
+class ENGINE_API CSimulator
+{
 public:
 	CSimulatorTSS		TSS;
-	CSimulatorState		RS;
+	CSimulatorRS		RS;
+	SimulatorStates*	container;
 public:
-	CSimulatorRS()		{ Invalidate();	}
+	CSimulator(SimulatorStates* ST)		{ Invalidate();	container=ST; }
 	IC void Invalidate	()	{ TSS.Invalidate(); RS.Invalidate(); }
-	IC void SetTSS		(DWORD S, DWORD N, DWORD V) { TSS.Set(S,N,V);	}
-	IC void SetRS		(DWORD N, DWORD V)			{ RS.Set(N,V);		}
+	IC void SetTSS		(DWORD S, DWORD N, DWORD V) { TSS.Set(*container,S,N,V);	}
+	IC void SetRS		(DWORD N, DWORD V)			{ RS.Set(*container,N,V);		}
 };
