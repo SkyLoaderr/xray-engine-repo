@@ -50,18 +50,22 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStr
 			vector<Fvector>		tpaPoints(0);
 			vector<Fvector>		tpaDeviations(0);
 			vector<Fvector>		tpaTravelPath(0);
-			tpaPoints.push_back(vPosition);
-			u32 N = AI_Path.Nodes.size();
-			Fvector			tStartPosition = vPosition;
-			u32				dwCurNode = AI_NodeID;
+			vector<u32>			tpaPointNodes(0);
+			u32					N = AI_Path.Nodes.size();
+			Fvector				tStartPosition = vPosition;
+			u32					dwCurNode = AI_NodeID;
+			tpaPoints.push_back	(vPosition);
+			tpaPointNodes.push_back(dwCurNode);
 
 			for (u32 i=1; i<=N; i++)
 				if (i<N) {
-					if (!getAI().bfCheckNodeInDirection(dwCurNode,tStartPosition,AI_Path.Nodes[i]))
+					if (!getAI().bfCheckNodeInDirection(dwCurNode,tStartPosition,AI_Path.Nodes[i])) {
 						if (dwCurNode != AI_Path.Nodes[i - 1])
 							tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
 						else
 							tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[i]));
+						tpaPointNodes.push_back(dwCurNode);
+					}
 				}
 				else
 					if (tpDestinationPosition)
@@ -476,7 +480,6 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 	/**/
 	INIT_SQUAD_AND_LEADER;
 	m_tpaNodeStack.clear();
-	vfMarkVisibleNodes(Leader);
 	for (int i=0; i<(int)Group.Members.size(); i++)
 		vfMarkVisibleNodes(Group.Members[i]);
 
@@ -519,7 +522,7 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 			mk_rotation(tDirection,tRotation);
 			float fCost = ffGetCoverInDirection(tRotation.yaw,T);
 			Msg("%d %.2f",Test,fCost);
-			if (fCost < .35f) {
+			if (fCost < .6f) {
 				bool bOk = false;
 				float fMax = 0.f;
 				for (int i=0, iIndex = -1; i<(int)Group.m_tpaSuspiciousNodes.size(); i++) {
@@ -662,10 +665,25 @@ void CAI_Stalker::vfChooseSuspiciousNode(CAISelectorBase &tSelector)
 			vfInitSelector(tSelector,Squad,Leader);
 			tSelector.m_tpEnemyNode = getAI().Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
 			tSelector.m_tEnemyPosition = getAI().tfGetNodeCenter(tSelector.m_tpEnemyNode);
+			AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+			vfBuildPathToDestinationPoint(0,true);
+			m_bActionStarted = true;
 		}
-		else
+		else {
+//			vfInitSelector(m_tSelectorRetreat,Squad,Leader);
+//			vfSearchForBetterPosition(m_tSelectorRetreat,Squad,Leader);
+//			m_tSavedEnemyPosition = getAI().tfGetNodeCenter(m_dwSavedEnemyNodeID = AI_Path.DestNode);
+//			getGroup()->m_tpaSuspiciousNodes.clear();
+//			vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(m_tSavedEnemyPosition)/4.5f,60.f)),*getGroup());
+//			vfClasterizeSuspiciousNodes(*getGroup());
+			m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
+			m_tSelectorRetreat.m_tpEnemyNode = getAI().Node(m_dwMyNodeID);
+			m_tSelectorRetreat.m_tMyPosition = vPosition;
+			m_tSelectorRetreat.m_tpMyNode = AI_Node;
 			vfChoosePointAndBuildPath(m_tSelectorRetreat);
-		m_bActionStarted = true;
+			m_iCurrentSuspiciousNodeIndex = -1;
+			m_bActionStarted = true;
+		}
 	}
 	else {
 		for (int i=0, iCount = 0; i<(int)Group.m_tpaSuspiciousNodes.size(); i++)
@@ -680,8 +698,12 @@ void CAI_Stalker::vfChooseSuspiciousNode(CAISelectorBase &tSelector)
 			m_tSavedEnemy = 0;
 			GO_TO_PREV_STATE;
 		}
-		if (m_iCurrentSuspiciousNodeIndex != -1)
-			vfChoosePointAndBuildPath(tSelector,true);
+		if (m_iCurrentSuspiciousNodeIndex != -1) {
+			if (AI_Path.DestNode != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID) {
+				AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+				vfBuildPathToDestinationPoint(0,true);
+			}
+		}
 	}
 }
 

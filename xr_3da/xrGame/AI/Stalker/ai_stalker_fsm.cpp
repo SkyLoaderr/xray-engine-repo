@@ -198,7 +198,7 @@ void CAI_Stalker::Attack()
 	WRITE_TO_LOG("Attacking");
 	SelectEnemy(m_tEnemy);
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_tEnemy.Enemy);
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(!m_tEnemy.Enemy,eStalkerStatePursuitKnown);
 
 	EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(eState != m_eCurrentState,eState);
@@ -208,9 +208,6 @@ void CAI_Stalker::Attack()
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 
 	vfChoosePointAndBuildPath	(m_tSelectorReload);
-
-	for (int i=0; i<(int)AI_Path.TravelPath.size(); i++)
-		Msg("[%f][%f][%f]",VPUSH(AI_Path.TravelPath[i].P));
 
 	vfSetFire					(true,*getGroup());
 
@@ -284,15 +281,15 @@ void CAI_Stalker::PursuitKnown()
 	WRITE_TO_LOG("Pursuiting known");
 	
 	if (m_bStateChanged) {
-		m_dwLostEnemyTime = Level().timeServer();
 		getGroup()->m_tpaSuspiciousNodes.clear();
-		vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(m_tSavedEnemyPosition)/4.5f,60.f)),*getGroup());
+		//vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(m_tSavedEnemyPosition)/4.5f,60.f)),*getGroup());
 		vfClasterizeSuspiciousNodes(*getGroup());
+		m_iCurrentSuspiciousNodeIndex = -1;
 	}
 	
-	vfStopFire();
+	vfStopFire					();
 
-	SelectEnemy(m_tEnemy);
+	SelectEnemy					(m_tEnemy);
 
 	// I see enemy
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
@@ -300,15 +297,13 @@ void CAI_Stalker::PursuitKnown()
 	// I have to recharge active weapon
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 
-	vfCheckForItems();
+	vfCheckForItems				();
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
 
-	vfChooseSuspiciousNode(m_tSelectorFreeHunting);
+	vfChooseSuspiciousNode		(m_tSelectorFreeHunting);
 	
-	vfChoosePointAndBuildPath	(m_tSelectorFreeHunting,true);
-
-	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypeDanger);
+	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypeSearch);
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;

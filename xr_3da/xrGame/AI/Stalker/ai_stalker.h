@@ -152,6 +152,8 @@ private:
 	CStalkerSelectorRetreat	m_tSelectorRetreat;
 	u32						m_dwActionRefreshRate;
 	float					m_fAttackSuccessProbability;
+	Fvector					m_tMySavedPosition;
+	u32						m_dwMyNodeID;
 	
 	// visibility constants
 	u32						m_dwMovementIdleTime;
@@ -296,6 +298,9 @@ private:
 		m_tSavedEnemyPosition	= m_tEnemy.Enemy->Position();
 		m_tpSavedEnemyNode		= m_tEnemy.Enemy->AI_Node;
 		m_dwSavedEnemyNodeID	= m_tEnemy.Enemy->AI_NodeID;
+		m_dwLostEnemyTime		= Level().timeServer();
+		m_tMySavedPosition		= vPosition;
+		m_dwMyNodeID			= AI_NodeID;
 	}
 
 public:
