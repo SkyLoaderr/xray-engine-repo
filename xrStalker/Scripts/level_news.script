@@ -227,7 +227,8 @@ function get_random_news()
 		news[t].begin = game.time()
 		--' Выдать инфо поршн
 		if actor ~= nil then
-			actor:give_info_portion_via_pda(news[t].info, actor) 
+			actor:give_game_news(news[t].info, "", 0,0,0,0)
+			--actor:give_info_portion_via_pda(news[t].info, actor) 
 		end
 	end
 	
