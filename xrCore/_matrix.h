@@ -51,7 +51,7 @@ public:
 	};
 
 	// Class members
-	IC	SelfRef	set			(const Self &a) 
+	ICF	SelfRef	set			(const Self &a) 
 	{
 		i.set(a.i); _14_=a._14;
 		j.set(a.j); _24_=a._24;
@@ -59,7 +59,7 @@ public:
 		c.set(a.c); _44_=a._44;
 		return *this;
 	}
-	IC	SelfRef	set			(const Tvector& R,const Tvector& N,const Tvector& D,const Tvector& C) 
+	ICF	SelfRef	set			(const Tvector& R,const Tvector& N,const Tvector& D,const Tvector& C) 
 	{
 		i.set(R); _14_=0;
 		j.set(N); _24_=0;
@@ -67,7 +67,7 @@ public:
 		c.set(C); _44_=1;
 		return *this;
 	}
-	IC	SelfRef	identity	(void) 
+	ICF	SelfRef	identity	(void) 
 	{
 		_11=1; _12=0; _13=0; _14=0;
 		_21=0; _22=1; _23=0; _24=0;
