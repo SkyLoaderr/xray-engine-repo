@@ -375,25 +375,27 @@ float CCar::SDoor::GetAngle()
 
 
 static xr_vector<Fmatrix> bones_bind_forms;
+bool CCar::SDoor::IsFront(const Fvector& pos,const Fvector& dir)
+{
+	CKinematics* K=PKinematics(pcar->Visual());
+	//CBoneInstance bi=K->LL_GetBoneInstance(bone_id);
+	//CBoneData& bd=K->LL_GetData(bone_id);
+	K->LL_GetBindTransform(bones_bind_forms);
+	//		Fobb bb=bd.obb;
+	Fmatrix pf;
+	pf.mul(pcar->XFORM(),bones_bind_forms[bone_id]);
+	Fvector dif,dif1;
+	dif.sub(pf.c,pos);
+	pcar->Center(dif1);
+	dif1.sub(pos);
+	//dif.normalize_safe();
+	return (dif.dotproduct(dir)<dif1.dotproduct(dir));
+}
 bool CCar::SDoor::IsInArea(const Fvector& pos,const Fvector& dir)
 {
 	if(!joint)
 	{
-		CKinematics* K=PKinematics(pcar->Visual());
-		//CBoneInstance bi=K->LL_GetBoneInstance(bone_id);
-		//CBoneData& bd=K->LL_GetData(bone_id);
-		K->LL_GetBindTransform(bones_bind_forms);
-		//		Fobb bb=bd.obb;
-		Fmatrix pf;
-		pf.mul(pcar->XFORM(),bones_bind_forms[bone_id]);
-		Fvector dif,dif1;
-		dif.sub(pf.c,pos);
-		pcar->Center(dif1);
-		dif1.sub(pos);
-		//dif.normalize_safe();
-		return (dif.dotproduct(dir)<dif1.dotproduct(dir));
-
-		
+		return IsFront(pos,dir);
 	}
 	Fmatrix closed_door_form,door_form;
 	Fvector closed_door_dir,door_dir,anchor_to_pos,door_axis;

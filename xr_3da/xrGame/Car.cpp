@@ -1242,7 +1242,8 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 			Collide::rq_result* I = R.r_begin()+k;
 			if(is_Door((u16)I->element,i)) 
 			{
-				i->second.Use();
+				bool front=i->second.IsFront(pos,dir);
+				if((Owner()&&!front)||(!Owner()&&front))i->second.Use();
 				if(i->second.state==SDoor::broken) break;
 				return false;
 				
