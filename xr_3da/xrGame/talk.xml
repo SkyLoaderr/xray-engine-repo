@@ -15,7 +15,7 @@
 	</button>
 
 	<!-- DIALOG FRAME -->
-	<frame_window x="215" y="30" width="588" height="470">
+	<frame_window x="215" y="45" width="588" height="470">
 		<base_texture>ui\ui_frame_03</base_texture>
 		<title y="-13" width="280" height="54">
 			<text font="graffiti22" r="238" g="153" b="26"/>
@@ -25,7 +25,7 @@
 	</frame_window>
 
 	<!-- OUR PHRASES FRAME -->
-	<frame_window x="215" y="560" width="588" height="177">
+	<frame_window x="215" y="540" width="588" height="177">
 		<base_texture>ui\ui_frame_03</base_texture>
 		<title y="-13" width="280" height="54">
 			<text font="graffiti22" r="238" g="153" b="26"/>
