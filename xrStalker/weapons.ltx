@@ -791,19 +791,21 @@ orientation              = 5.7, 0, -1
 position                 = 0.063, -0.015, 0.02
 visual                   = weapon\ak74\wpn_ak74_hud.ogf
 
+grenade_bone            = wpn_grenade
+
 anim_idle				= idle
 anim_reload				= reload
-anim_draw				= draw
-anim_holster			= holster
+anim_draw				= draw_wo_gl
+anim_holster			= holster_wo_gl
 anim_shoot				= shoot
-
-anim_idle_g				= idle
-anim_reload_g			= reload
-anim_shoot_g			= shoot
-anim_switch_grenade_on	= switch_g
-anim_switch_grenade_off	= switch_off
-anim_draw_g				= draw
-anim_holster_g			= holster
+						  
+anim_idle_g				= idle_grenade
+anim_reload_g			= reload_grenade
+anim_shoot_g			= shoot_grenade
+anim_switch_grenade_on	= switch_grenade
+anim_switch_grenade_off	= switch_grenade_off
+anim_draw_g				= draw_w_gl
+anim_holster_g			= holster_w_gl
 
 
 [wpn_groza]
@@ -914,6 +916,8 @@ fire_bone                = wpn_body
 orientation              = 5.7, 0, -1
 position                 = 0.063, -0.015, 0.02
 visual                   = weapon\groza\wpn_groza_hud.ogf
+
+grenade_bone            = grenade_0
 
 anim_idle		= idle
 anim_reload		= reload
