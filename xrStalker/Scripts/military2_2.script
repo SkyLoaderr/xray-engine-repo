@@ -1,2 +1,29 @@
 function main ()
+	local stalkers = {
+					  get_level_object ("stalker1"),
+					  get_level_object ("stalker2"),
+					  get_level_object ("stalker3")
+					 }
+	local ways = {
+				 patrol ("way_stalker1"),
+				 patrol ("way_stalker2"),
+				 patrol ("way_stalker3")
+				 }
+
+	for a = 1, table.getn (stalkers), 1 do
+		stalkers[a]:script (true, military2_2.script_name ())
+	end
+
+	wait (10000)	
+
+	for a = 1, table.getn (stalkers), 1 do
+		action (stalkers[a], move (move.standing, move.run, move.line, ways[a]),
+				look (look.path_dir), anim (anim.danger), cond (cond.move_end))
+
+	while stalkers[1]:action () do wait () end
+
+	for a = 1, table.getn (stalkers), 1 do
+		stalkers[a]:script (false, military2_2.script_name ())
+	end
+
 end
