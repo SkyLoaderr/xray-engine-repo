@@ -411,7 +411,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 			b_at_wall=true;
 
 	if(b_lose_control || (!b_climb&&is_contact)||
-		(!b_pure_climb&&b_good_graund)//b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2
+		(!b_pure_climb)//b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2//&&b_good_graund
 		) b_at_wall=false;
 
 	b_depart=was_contact&&(!is_contact);
@@ -518,7 +518,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		b_jumping=true;
 	}
 
-	b_lose_ground=!b_good_graund||b_lose_control;
+	b_lose_ground=!(b_good_graund||b_at_wall)||b_lose_control;
 
 
 
@@ -1025,7 +1025,11 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 	SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
 	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimbable);
 	if(is_control&&bClimable)
+	{
 		c->surface.mu=0.f;
+		c->surface.soft_cfm=world_cfm;
+		c->surface.soft_erp=world_erp;
+	}
 	b_climb=b_climb || bClimable;
 	b_pure_climb=b_pure_climb && (bClimable||c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform);
 	if(tri_material->Flags.is(SGameMtl::flPassable))return;

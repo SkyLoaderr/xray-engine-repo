@@ -150,7 +150,7 @@ IC	void		SafeAndLimitVelocity						()
 		const float		*linear_velocity		=dBodyGetLinearVel(m_body);
 		//limit velocity
 		dReal l_limit;
-		if(is_control&&!b_lose_ground) 
+		if(is_control&&!b_lose_control) 
 			l_limit = m_max_velocity/phTimefactor;
 		else			
 			l_limit=10.f/fixed_step;
@@ -163,7 +163,8 @@ IC	void		SafeAndLimitVelocity						()
 			if(mag>l_limit)
 			{
 				dReal f=mag/l_limit;
-				dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
+				if(b_lose_ground)dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
+				else			 dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
 				if(is_control&&!b_lose_control)
 										dBodySetPosition(m_body,
 														m_safe_position[0]+linear_velocity[0]*fixed_step,
