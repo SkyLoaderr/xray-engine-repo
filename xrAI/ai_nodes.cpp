@@ -37,7 +37,7 @@ IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float 
 	r3 = a1 * x3 + b1 * y3 + c1;
 	r4 = a1 * x4 + b1 * y4 + c1;
 	
-	if (r3*r4 > 0)
+	if (r3*r4 > EPS_L)
 		return(LI_NONE);
 	
 	a2 = y4 - y3;
@@ -47,7 +47,7 @@ IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float 
 	r1 = a2 * x1 + b2 * y1 + c2;
 	r2 = a2 * x2 + b2 * y2 + c2;
 	
-	if (r1*r2 > 0)
+	if (r1*r2 > EPS_S)
 		return(LI_NONE);
 	
 	if ( _abs(r1*r2)<EPS_S && _abs(r3*r4)<EPS_S ) 
@@ -219,7 +219,7 @@ IC void vfIntersectContours(SSegment &tSegment, SContour &tContour0, SContour &t
 		Log("! AI_PathNodes: Can't find intersection segment");
 }
 
-float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition, float fMaxDistance, bool bReturnValue)
+float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition, float fMaxDistance)
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
@@ -237,10 +237,7 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvecto
 
 	while (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition)) {
 		if (fCumulativeDistance > fMaxDistance)
-			if (bReturnValue)
-				return(fCumulativeDistance);
-			else
-				return(MAX_VALUE);
+			return(fCumulativeDistance);
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
 		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
@@ -254,7 +251,7 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvecto
 			u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 			if (dwIntersect == LI_INTERSECT) {
 				if (
-					(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
+					(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS_S) &&
 					(iNodeIndex != (int)dwPrevNode)
 					) {
 					tTempPoint = tTravelNode;
