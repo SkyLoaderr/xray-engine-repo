@@ -709,10 +709,9 @@ class CCC_ALifeReload : public IConsole_Command {
 public:
 	CCC_ALifeReload(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
-		if (Level().game.type == GAME_SINGLE)
-			Level().IR_OnKeyboardPress(DIK_F7);
-		else
-			Log("!Not a single player game!");
+		NET_Packet			net_packet;
+		net_packet.w_begin	(M_RELOAD_GAME);
+		Level().Send		(net_packet,net_flags(TRUE));
 	}
 };
 
@@ -720,39 +719,18 @@ class CCC_ALifeLoadFrom : public IConsole_Command {
 public:
 	CCC_ALifeLoadFrom(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
-			string256	S;
-			S[0]		= 0;
-			sscanf		(args ,"%s",S);
-			if (!xr_strlen(S))
-				Log("* Specify file name!");
-			else {
-				strconcat(Level().m_caServerOptions,S,"/single");
-				Level().IR_OnKeyboardPress(DIK_F7);
-			}
+		string256	S;
+		S[0]		= 0;
+		sscanf		(args ,"%s",S);
+		if (!xr_strlen(S)) {
+			Log("* Specify file name!");
+			return;
 		}
-		else
-			Log("!Not a single player game!");
-	}
-};
 
-class CCC_ALifeLoadALifeFrom : public IConsole_Command {
-public:
-	CCC_ALifeLoadALifeFrom(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
-			string256	S;
-			S[0]		= 0;
-			sscanf		(args ,"%s",S);
-			if (!xr_strlen(S))
-				Log("* Specify file name!");
-			else {
-				strconcat(Level().m_caServerOptions,S,"/single/alife");
-				Level().IR_OnKeyboardPress(DIK_F7);
-			}
-		}
-		else
-			Log("!Not a single player game!");
+		NET_Packet			net_packet;
+		net_packet.w_begin	(M_LOAD_GAME);
+		net_packet.w_string	(S);
+		Level().Send		(net_packet,net_flags(TRUE));
 	}
 };
 
@@ -958,7 +936,6 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD1(CCC_ALifeSaveTo,		"save_to"				);		// save game to ...
 		CMD1(CCC_ALifeReload,		"reload"				);		// reload game
 		CMD1(CCC_ALifeLoadFrom,		"load_from"				);		// load game from ...
-		CMD1(CCC_ALifeLoadALifeFrom,"aload_from"			);		// load alife game from ...
 		CMD1(CCC_FlushLog,			"flush"					);		// flush log
 		CMD1(CCC_ALifeTimeFactor,	"al_time_factor"		);		// set time factor
 		CMD1(CCC_ALifeSwitchDistance,"al_switch_distance"	);		// set switch distance

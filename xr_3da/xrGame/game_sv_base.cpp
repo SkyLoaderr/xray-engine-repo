@@ -448,6 +448,15 @@ void game_sv_GameState::save_game			(NET_Packet &net_packet, DPNID sender)
 {
 }
 
+bool game_sv_GameState::load_game			(NET_Packet &net_packet, DPNID sender)
+{
+	return						(true);
+}
+
+void game_sv_GameState::reload_game			(NET_Packet &net_packet, DPNID sender)
+{
+}
+
 void game_sv_GameState::switch_distance		(NET_Packet &net_packet, DPNID sender)
 {
 }

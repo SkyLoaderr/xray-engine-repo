@@ -42,6 +42,7 @@ CAI_Space::~CAI_Space				()
 void CAI_Space::load				(LPCSTR level_name)
 {
 	unload					();
+	u64						start = CPU::GetCycleCount();
 	Memory.mem_compact		();
 	u32						mem_usage = Memory.mem_usage();
 	m_level_graph			= xr_new<CLevelGraph>();
@@ -80,7 +81,8 @@ void CAI_Space::load				(LPCSTR level_name)
 	}
 	m_cover_manager->compute_static_cover();
 
-	Msg						("* Loading ai space is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - mem_usage)/1048576.0);
+	u64						finish = CPU::GetCycleCount();
+	Msg						("* Loading ai space is successfully completed (%.3fs, %7.3f Mb)",float(finish - start)*CPU::cycles2seconds,float(Memory.mem_usage() - mem_usage)/1048576.0);
 }
 
 void CAI_Space::unload				()

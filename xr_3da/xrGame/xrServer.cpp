@@ -190,6 +190,15 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 		{
 			game->save_game(P,sender);
 		}break;
+	case M_LOAD_GAME:
+		{
+			game->load_game			(P,sender);
+			SendBroadcast			(0xffffffff,P,net_flags(TRUE,TRUE));
+		}break;
+	case M_RELOAD_GAME:
+		{
+			SendBroadcast			(0xffffffff,P,net_flags(TRUE,TRUE));
+		}break;
 	case M_SWITCH_DISTANCE:
 		{
 			game->switch_distance(P,sender);

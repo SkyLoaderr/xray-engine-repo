@@ -22,7 +22,7 @@ protected:
 public:
 	IC				CALifeStorageManager	(xrServer *server, LPCSTR section);
 	virtual			~CALifeStorageManager	();
-			bool	load					(LPCSTR	save_name);
+			bool	load					(LPCSTR	save_name = 0);
 			void	save					(LPCSTR	save_name = 0);
 };
 

@@ -37,15 +37,13 @@ void CLevel::IR_OnKeyboardPress(int key)
 	case DIK_F6: {
 		NET_Packet					net_packet;
 		net_packet.w_begin			(M_SAVE_GAME);
-		net_packet.w_u32			(timeServer());
 		net_packet.w_string			("quick_save");
 		Send						(net_packet,net_flags(TRUE));
 		return;
 	}
 	case DIK_F7: {
 		NET_Packet					net_packet;
-		net_packet.w_begin			(M_CHANGE_LEVEL);
-		net_packet.w_u32			(timeServer());
+		net_packet.w_begin			(M_RELOAD_GAME);
 		Send						(net_packet,net_flags(TRUE));
 		return;
 	}

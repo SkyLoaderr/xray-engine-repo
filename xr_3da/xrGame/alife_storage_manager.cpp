@@ -79,9 +79,15 @@ void CALifeStorageManager::save	(LPCSTR save_name)
 
 bool CALifeStorageManager::load	(LPCSTR save_name)
 {
+	u64							start = CPU::GetCycleCount();
 	string256					save;
 	strcpy						(save,m_save_name);
-	strconcat					(m_save_name,save_name,SAVE_EXTENSION);
+	if (!save_name) {
+		if (!xr_strlen(m_save_name))
+			R_ASSERT2			(false,"There is no file name specified!");
+	}
+	else
+		strconcat				(m_save_name,save_name,SAVE_EXTENSION);
 	string256					file_name;
 	FS.update_path				(file_name,"$game_saves$",m_save_name);
 
@@ -105,6 +111,8 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 	anomalies().load			(*stream);
 	organizations().load		(*stream);
 	news().load					(*stream);
-	Msg							("* Game %s is successfully loaded from file '%s'",save_name, file_name);
+	
+	u64							finish = CPU::GetCycleCount();
+	Msg							("* Game %s is successfully loaded from file '%s' (%.3fs)",save_name, file_name,float(finish - start)*CPU::cycles2seconds);
 	return						(true);
 }

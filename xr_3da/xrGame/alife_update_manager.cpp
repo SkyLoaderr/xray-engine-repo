@@ -154,7 +154,10 @@ void CALifeUpdateManager::update(bool switch_objects)
 			
 			if (switch_objects)
 				graph().level().update	(CSwitchPredicate(this));
+
+			Device.Statistic.TEST2.Begin();
 			scheduled().update			();
+			Device.Statistic.TEST2.End	();
 			
 			break;
 		}
@@ -232,7 +235,7 @@ void CALifeUpdateManager::load			(LPCSTR game_name, bool no_assert)
 	u32									memory_usage = Memory.mem_usage();
 
 	if (!CALifeStorageManager::load(game_name)) {
-		R_ASSERT3						(no_assert,"Cannot find the specified saved game ",game_name);
+		R_ASSERT3						(no_assert && xr_strlen(game_name),"Cannot find the specified saved game ",game_name);
 		new_game						(game_name);
 	}
 
@@ -244,4 +247,23 @@ void CALifeUpdateManager::reload		(LPCSTR section)
 {
 	CALifeSimulatorBase::reload			(section);
 	set_process_time					((int)m_max_process_time);
+}
+
+bool CALifeUpdateManager::load_game		(LPCSTR game_name, bool no_assert)
+{
+	{
+		string256				temp,file_name;
+		strconcat				(temp,game_name,SAVE_EXTENSION);
+		FS.update_path			(file_name,"$saved_games$",temp);
+		if (!FS.exist(file_name)) {
+			R_ASSERT3			(no_assert,"There is no saved game ",file_name);
+			return				(false);
+		}
+	}
+	string64					S;
+	strcpy						(S,*m_server_command_line);
+	LPSTR						temp = strchr(S,'/');
+	R_ASSERT2					(temp,"Invalid server options!");
+	strconcat					(*m_server_command_line,game_name,temp);
+	return						(true);
 }

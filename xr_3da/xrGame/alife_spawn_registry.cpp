@@ -136,6 +136,10 @@ void CALifeSpawnRegistry::load	(IReader &file_stream)
 				}
 			}
 		}
+
+		if (psAI_Flags.test(aiALife)) {
+			Msg					("Spawn point %s is loaded",E->s_name_replace);
+		}
 	}
 	R_ASSERT2					(0!=(S = file_stream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
 	load_data					(m_artefact_spawn_positions,file_stream);

@@ -36,7 +36,8 @@ public:
 	virtual float		shedule_Scale			();
 	virtual void		shedule_Update			(u32 dt);	
 	virtual BOOL		shedule_Ready			();
-			void		load					(LPCSTR game_name, bool no_assert = false);
+			void		load					(LPCSTR game_name = 0, bool no_assert = false);
+			bool		load_game				(LPCSTR game_name, bool no_assert = false);
 	IC		float		update_monster_factor	() const;
 			bool		change_level			(NET_Packet	&net_packet);
 			void		set_process_time		(int microseconds);

@@ -197,6 +197,19 @@ void game_sv_Single::save_game				(NET_Packet &net_packet, DPNID sender)
 	alife().save				(*game_name);
 }
 
+bool game_sv_Single::load_game				(NET_Packet &net_packet, DPNID sender)
+{
+	if (!ai().get_alife())
+		return					(inherited::load_game(net_packet,sender));
+	ref_str						game_name;
+	net_packet.r_string			(game_name);
+	return						(alife().load_game(*game_name));
+}
+
+void game_sv_Single::reload_game			(NET_Packet &net_packet, DPNID sender)
+{
+}
+
 void game_sv_Single::switch_distance		(NET_Packet &net_packet, DPNID sender)
 {
 	if (!ai().get_alife())

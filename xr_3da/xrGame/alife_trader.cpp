@@ -42,12 +42,6 @@ void CSE_ALifeObject::spawn_supplies		()
 				alife().spawn_item	(N,o_Position,m_tNodeID,m_tGraphID,ID);
 		}
 	}
-
-	if (ini.section_exist("alife")) {
-		if (ini.line_exist("alife","interactive")) {
-			m_flags.set			(flInteractive,ini.r_bool("alife","interactive"));
-		}
-	}
 }
 
 void CSE_ALifeTraderAbstract::spawn_supplies	()

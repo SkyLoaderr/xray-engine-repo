@@ -413,8 +413,15 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 			else {
 				CSE_ALifeSchedulable	*schedulable = dynamic_cast<CSE_ALifeSchedulable*>(I);
 				// checking if the abstract monster has just died
-				if (schedulable && !schedulable->need_update(I))
-					scheduled().remove	(I,true);
+				if (schedulable) {
+					if (!schedulable->need_update(I)) {
+						if (scheduled().object(I->ID,true))
+							scheduled().remove	(I);
+					}
+					else
+						if (!scheduled().object(I->ID,true))
+							scheduled().add		(I);
+				}
 			}
 			
 			// checking if the object is ready to switch online

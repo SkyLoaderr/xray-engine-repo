@@ -92,5 +92,7 @@ public:
 	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
 	virtual		bool				change_level			(NET_Packet &net_packet, DPNID sender);
 	virtual		void				save_game				(NET_Packet &net_packet, DPNID sender);
+	virtual		bool				load_game				(NET_Packet &net_packet, DPNID sender);
+	virtual		void				reload_game				(NET_Packet &net_packet, DPNID sender);
 	virtual		void				switch_distance			(NET_Packet &net_packet, DPNID sender);
 };

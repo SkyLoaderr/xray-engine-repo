@@ -94,6 +94,8 @@ void CLevel::ClientReceive()
 			{
 				Game().OnGameMessage(*P);
 			}break;
+		case M_RELOAD_GAME:
+		case M_LOAD_GAME:
 		case M_CHANGE_LEVEL:
 			{
 				Engine.Event.Defer	("KERNEL:disconnect");

@@ -136,7 +136,7 @@ IC	void CPatrolPathManager::set_previous_point	(int point_index)
 		return;
 	}
 	if ((int)(m_path->tpaWayPoints.size()) <= point_index) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Start point vialotes path bounds %s (object %s)!",*m_path_name,*dynamic_cast<CObject*>(this)->cName());
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
 	VERIFY					(m_path);
@@ -151,7 +151,7 @@ IC	void CPatrolPathManager::set_start_point	(int point_index)
 		return;
 	}
 	if ((int)(m_path->tpaWayPoints.size()) <= point_index) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Start point vialotes path bounds %s (object %s)!",*m_path_name,*dynamic_cast<CObject*>(this)->cName());
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
 	VERIFY					(m_path);

@@ -39,7 +39,7 @@ void CMovementManager::process_level_path()
 			if (time_over()) break;
 		}
 		case ePathStateBuildDetailPath : {
-			Device.Statistic.TEST2.Begin();
+//			Device.Statistic.TEST2.Begin();
 			
 			CDetailPathManager::set_state_patrol_path(false);
 			CDetailPathManager::set_start_position(Position());
@@ -56,7 +56,7 @@ void CMovementManager::process_level_path()
 				CLevelPathManager::intermediate_index()
 			);
 	
-			Device.Statistic.TEST2.End();
+//			Device.Statistic.TEST2.End();
 
 			if (CDetailPathManager::failed()) {
 				m_path_state	= ePathStateBuildLevelPath;

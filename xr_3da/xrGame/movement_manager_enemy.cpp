@@ -41,7 +41,7 @@ void CMovementManager::process_enemy_search()
 				break;
 		}
 		case ePathStateBuildDetailPath : {
-			Device.Statistic.TEST2.Begin();
+//			Device.Statistic.TEST2.Begin();
 			CDetailPathManager::set_state_patrol_path(true);
 			CDetailPathManager::set_start_position(Position());
 			CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
@@ -55,7 +55,7 @@ void CMovementManager::process_enemy_search()
 				CLevelPathManager::intermediate_index()
 			);
 			
-			Device.Statistic.TEST2.End();
+//			Device.Statistic.TEST2.End();
 			
 			if (CDetailPathManager::failed()) {
 				m_path_state	= ePathStateBuildLevelPath;

@@ -41,7 +41,7 @@ void CMovementManager::process_game_path()
 					break;
 			}
 			case ePathStateBuildLevelPath : {
-				Device.Statistic.TEST1.Begin();
+//				Device.Statistic.TEST1.Begin();
 				CLevelPathManager::build_path(
 					level_vertex_id(),
 					ai().game_graph().vertex(
@@ -49,11 +49,11 @@ void CMovementManager::process_game_path()
 					)->level_vertex_id()
 				);
 				if (CLevelPathManager::failed()) {
-					Device.Statistic.TEST1.End();
+//					Device.Statistic.TEST1.End();
 					break;
 				}
 				m_path_state		= ePathStateContinueLevelPath;
-				Device.Statistic.TEST1.End();
+//				Device.Statistic.TEST1.End();
 				if (time_over())
 					break;
 			}
@@ -64,7 +64,7 @@ void CMovementManager::process_game_path()
 					break;
 			}
 			case ePathStateBuildDetailPath : {
-				Device.Statistic.TEST2.Begin();
+//				Device.Statistic.TEST2.Begin();
 				CDetailPathManager::set_state_patrol_path(true);
 				CDetailPathManager::set_start_position(Position());
 				CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
@@ -78,7 +78,7 @@ void CMovementManager::process_game_path()
 					CLevelPathManager::intermediate_index()
 				);
 				
-				Device.Statistic.TEST2.End();
+//				Device.Statistic.TEST2.End();
 				
 				if (CDetailPathManager::failed()) {
 					m_path_state	= ePathStateBuildLevelPath;

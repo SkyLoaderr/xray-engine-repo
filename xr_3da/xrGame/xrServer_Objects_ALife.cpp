@@ -412,8 +412,27 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion > 49) {
 		tNetPacket.r_u32		(m_flags.flags);
 	}
+	
 	if (m_wVersion > 57)
 		tNetPacket.r_string		(m_ini_string);
+
+	if (xr_strlen(m_ini_string)) {
+#pragma warning(push)
+#pragma warning(disable:4238)
+		CInifile					ini(
+			&IReader			(
+			(void*)(*(m_ini_string)),
+			m_ini_string.size()
+			)
+			);
+#pragma warning(pop)
+
+		if (!xr_strcmp(s_name_replace,"guard_soldier_0_3")) {
+			m_flags = m_flags;
+		}
+		if (ini.section_exist("alife") && ini.line_exist("alife","interactive"))
+			m_flags.set			(flInteractive,ini.r_bool("alife","interactive"));
+	}
 }
 
 void CSE_ALifeObject::UPDATE_Write			(NET_Packet &tNetPacket)
@@ -447,6 +466,7 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
 	}
+	PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
 }
 #endif
 

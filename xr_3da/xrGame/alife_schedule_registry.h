@@ -33,10 +33,11 @@ protected:
 	typedef CSafeMapIterator<ALife::_OBJECT_ID,CSE_ALifeSchedulable> inherited;
 
 public:
-	virtual				~CALifeScheduleRegistry	();
-	IC		void		add						(CSE_ALifeDynamicObject *object);
-	IC		void		remove					(CSE_ALifeDynamicObject *object, bool no_assert = false);
-	IC		void		update					();
+	virtual							~CALifeScheduleRegistry	();
+	IC		void					add						(CSE_ALifeDynamicObject *object);
+	IC		void					remove					(CSE_ALifeDynamicObject *object, bool no_assert = false);
+	IC		void					update					();
+	IC		CSE_ALifeSchedulable	*object					(const ALife::_OBJECT_ID &id, bool no_assert = false) const;
 };
 
 #include "alife_schedule_registry_inline.h"

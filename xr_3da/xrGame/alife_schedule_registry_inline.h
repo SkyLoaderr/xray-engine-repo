@@ -44,3 +44,13 @@ IC	void CALifeScheduleRegistry::remove	(CSE_ALifeDynamicObject *object, bool no_
 
 	inherited::remove			(object->ID,no_assert || !schedulable->need_update(object));
 }
+
+IC	CSE_ALifeSchedulable *CALifeScheduleRegistry::object	(const ALife::_OBJECT_ID &id, bool no_assert) const
+{
+	_const_iterator				I = objects().find(id);
+	if (I == objects().end()) {
+		R_ASSERT2				(no_assert,"The spesified object hasn't been found in the schedule registry!");
+		return					(0);
+	}
+	return						((*I).second);
+}
