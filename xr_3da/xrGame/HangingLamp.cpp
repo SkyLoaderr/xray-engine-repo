@@ -40,6 +40,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	// set bone id
 	light_bone_idx			= lamp->spot_bone[0]?PKinematics(pVisual)->LL_BoneID(lamp->spot_bone):-1;
 	clr.set					(lamp->color);
+	clr.mul_rgb				(lamp->spot_brightness);
 	light_render->set_range	(lamp->spot_range);
 	light_render->set_color	(clr);
 	light_render->set_cone	(lamp->spot_cone_angle);
@@ -98,7 +99,7 @@ void CHangingLamp::OnVisible()
 			u32 clr		= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
 			Fcolor			fclr;
 			fclr.set		(color_get_B(clr),color_get_G(clr),color_get_R(clr),1);
-			fclr.mul_rgb	(1/255.f);
+			fclr.mul_rgb	(lamp->spot_brightness/255.f);
 			light_render->set_color(fclr);
 		}
 	}
