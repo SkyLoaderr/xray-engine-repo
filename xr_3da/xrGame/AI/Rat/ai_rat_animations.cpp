@@ -121,8 +121,16 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 					else
 						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 				else
-					if (speed < 0.2f)
-						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
+					if (speed < 0.2f) {
+						for (int i=0 ;i<2; i++)
+							if (tRatAnimations.tNormal.tGlobal.tpaIdle[i] == m_tpCurrentGlobalAnimation) {
+								tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+								break;
+							}
+						
+						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
+					}
 					else
 						if (fabsf(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
@@ -135,8 +143,16 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 					else
 						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnRight;
 				else
-					if (speed < 0.2f)
-						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
+					if (speed < 0.2f) {
+						for (int i=0 ;i<2; i++)
+							if (tRatAnimations.tNormal.tGlobal.tpaIdle[i] == m_tpCurrentGlobalAnimation) {
+								tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+								break;
+							}
+						
+						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
+					}
 					else
 						if (fabsf(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
