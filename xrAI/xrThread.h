@@ -7,12 +7,14 @@ public:
 	DWORD		thID;
 	float		thProgress;
 	BOOL		thCompleted;
+	BOOL		thMessages;
 
 	CThread				(DWORD _ID)	
 	{
 		thID			= _ID;
 		thProgress		= 0;
 		thCompleted		= FALSE;
+		thMessages		= TRUE;
 	}
 	void				Start	()
 	{
