@@ -105,6 +105,7 @@ void CBuild::Flex2OGF()
 	g_XSplit.clear	();
 
 	// Export models
+	Status			("Models...");
 	for (u32 m=0; m<mu_refs.size(); m++)
 	{
 		mu_refs[m]->export_ogf	();

@@ -34,7 +34,7 @@ void OGF::Save(CFS_Base &fs)
 	fs.close_chunk		();
 
 	// Vertices
-	Shader_xrLC*	SH	= pBuild->shaders.Get(pBuild->materials[material].reserved);
+	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
 	bool bVertexColors	=	(SH->flags.bLIGHT_Vertex);
 	bool bNeedLighting	=	FALSE;
 	DWORD	FVF			=	D3DFVF_XYZ|(dwRelevantUV<<D3DFVF_TEXCOUNT_SHIFT) |
