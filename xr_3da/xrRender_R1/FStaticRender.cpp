@@ -365,6 +365,7 @@ void	CRender::Render		()
 	// Begin
 	Target->Begin					();
 
+	phase										= PHASE_NORMAL;
 	r_dsgraph_render_hud						();				// hud
 	r_dsgraph_render_graph						(0);			// normal level
 	Details->Render								();				// grass / details
@@ -372,6 +373,7 @@ void	CRender::Render		()
 	Wallmarks->Render							();				// wallmarks has priority as normal geometry
 	r_pmask										(true,false);	// disable priority "1"
 	L_Dynamic->render							();				// addititional light sources
+	phase										= PHASE_NORMAL;
 	r_pmask										(true,true);	// enable priority "0" and "1"
 	L_Shadows->render							();				// ... and shadows
 	r_dsgraph_render_graph						(1);			// normal level, secondary priority

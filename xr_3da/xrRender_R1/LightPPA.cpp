@@ -132,7 +132,7 @@ void CLightR_Manager::render_point	()
 void CLightR_Manager::render_spot	()
 {
 	// for each light
-	for (xr_vector<light*>::iterator it=selected_point.begin(); it!=selected_point.end(); it++)
+	for (xr_vector<light*>::iterator it=selected_spot.begin(); it!=selected_spot.end(); it++)
 	{
 		light*	L					= *it;
 
