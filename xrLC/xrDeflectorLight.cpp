@@ -45,10 +45,10 @@ IC void GET(
 			DWORD &r, DWORD &g, DWORD &b)
 {
 	// wrap pixels
-	if (x<0) x+=(int)lm.dwWidth;
-	else if (x>=(int)lm.dwWidth)	x-=(int)lm.dwWidth;
-	if (y<0) y+=(int)lm.dwHeight;
-	else if (y>=(int)lm.dwHeight)	y-=(int)lm.dwHeight;
+	if (x<0) return;
+	else if (x>=(int)lm.dwWidth)	return;
+	if (y<0) return;
+	else if (y>=(int)lm.dwHeight)	return;
 
 	// summarize
 	DWORD pixel = lm.pSurface[y*lm.dwWidth + x];
@@ -514,18 +514,6 @@ void CDeflector::Save()
 		_FREE(lm_rad);
 	}
 
-	// DEBUG: Saving
-	{
-		sprintf			(lm.name,"L#%d_base",deflNameID);
-		TGAdesc			p;
-		p.format		= IMG_32B;
-		p.scanlenght	= lm.dwWidth*4;
-		p.width			= lm.dwWidth;
-		p.height		= lm.dwHeight;
-		p.data			= lm.pSurface;
-		p.maketga		(lm.name);
-	}
-
 	// DEBUG: Lines
 	{
 		// 5x expand
@@ -570,16 +558,35 @@ void CDeflector::Save()
 	}
 	
 	// Borders correction
-	for (DWORD ref=254-BORDER; ref>0; ref--) ApplyBorders(lm,ref);
+	for (DWORD _y=0; _y<512; _y++)
+	{
+		for (DWORD _x=0; _x<512; _x++)
+		{
+			DWORD pixel = lm.pSurface[_y*512+_x];
+			if (RGBA_GETALPHA(pixel)>=(254-BORDER))	pixel = (pixel&RGBA_MAKE(255,255,255,0))|RGBA_MAKE(0,0,0,255);
+			else									pixel = (pixel&RGBA_MAKE(255,255,255,0));
+		}
+	}
+	for (DWORD ref=254; ref>0; ref--) ApplyBorders(lm,ref);
+
+	// DEBUG: Saving
+	{
+		sprintf			(lm.name,"L#%d",deflNameID);
+		TGAdesc			p;
+		p.format		= IMG_32B;
+		p.scanlenght	= lm.dwWidth*4;
+		p.width			= lm.dwWidth;
+		p.height		= lm.dwHeight;
+		p.data			= lm.pSurface;
+		p.maketga		(lm.name);
+	}
 
 	// Saving
 	char FN[_MAX_PATH];
 	sprintf	(lm.name,"L#%d",deflNameID);
 	sprintf	(FN,"%s%s.dds",g_params.L_path,lm.name);
 
-	R_ASSERT(
-		xrDXTC_Compress(FN,eDXT1,FALSE,lm.pSurface,lm.dwWidth,lm.dwHeight,0xff)
-			);
+	R_ASSERT(xrDXTC_Compress(FN,eDXT1,FALSE,lm.pSurface,lm.dwWidth,lm.dwHeight,0xff));
 
 	_FREE			(lm.pSurface);
 }
