@@ -4,8 +4,6 @@
 #ifndef _INCDEF_TextureParam_H_
 #define _INCDEF_TextureParam_H_
 
-#include "xr_tokens.h"
-
 #pragma pack(push,1)
 struct STextureParams{
 	enum ETFormat{
@@ -96,8 +94,9 @@ struct STextureParams{
 };
 #pragma pack( pop )
 
-extern xr_token	tparam_token[];
-extern xr_token	tfmt_token[];
+struct xr_token;
+extern xr_token	*tparam_token;
+extern xr_token	*tfmt_token;
 
 	//----------------------------------------------------
 #define THM_CURRENT_VERSION				0x0012
