@@ -177,14 +177,17 @@ void CGameFont::OnRender()
 
 void CGameFont::Add(float _x, float _y, LPCSTR s, u32 _c, float _size)
 {
-	VERIFY(xr_strlen(s)<127);
-	String rs;
+	String	rs;
+	u32		len = xr_strlen(s);
+	VERIFY	(len<sizeof(rs.string));
 	rs.x=_x;
 	rs.y=_y;
 	rs.c=_c;
 	rs.size=_size;
-	strings.push_back(rs);
-	strcpy((char *) &(strings[strings.size()-1].string),s);
+	if (len) {
+		strings.push_back(rs);
+		strcpy((char *) &(strings[strings.size()-1].string),s);
+	}
 }
 
 void __cdecl CGameFont::Out(float _x, float _y, LPCSTR fmt,...)
@@ -201,8 +204,7 @@ void __cdecl CGameFont::Out(float _x, float _y, LPCSTR fmt,...)
 
 	int vs_sz = vsprintf(rs.string,fmt,p); VERIFY(vs_sz<sizeof(rs.string));
 	va_end(p);
-
-	strings.push_back(rs);
+	if (vs_sz)	strings.push_back(rs);
 }
 
 void __cdecl CGameFont::OutNext(LPCSTR fmt,...)
@@ -219,7 +221,7 @@ void __cdecl CGameFont::OutNext(LPCSTR fmt,...)
 	int vs_sz = vsprintf(rs.string,fmt,p); VERIFY(vs_sz<sizeof(rs.string));
 	va_end(p);
 
-	strings.push_back(rs);
+	if (vs_sz)	strings.push_back(rs);
 	OutSkip(1);
 }
 
@@ -237,7 +239,7 @@ void __cdecl CGameFont::OutPrev(LPCSTR fmt,...)
 	int vs_sz = vsprintf(rs.string,fmt,p); VERIFY(vs_sz<sizeof(rs.string));
 	va_end(p);
 
-	strings.push_back(rs);
+	if (vs_sz)	strings.push_back(rs);
 	OutSkip(-1);
 }
 

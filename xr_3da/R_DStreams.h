@@ -36,7 +36,7 @@ public:
 		PGO					(Msg("PGO:VB_LOCK:%d",vl_Count));
 		// Ensure there is enough space in the VB for this data
 		u32	bytes_need		= vl_Count*Stride;
-		R_ASSERT			(bytes_need<=mSize);
+		R_ASSERT			((bytes_need<=mSize) && vl_Count);
 
 		// Vertex-local info
 		u32 vl_mSize		= mSize/Stride;
@@ -107,7 +107,7 @@ public:
 		BYTE* pLockedData		= 0;
 
 		// Ensure there is enough space in the VB for this data
-		R_ASSERT				(2*Count<=mSize);
+		R_ASSERT				((2*Count<=mSize) && Count);
 
 		// If either user forced us to flush,
 		// or there is not enough space for the index data,
