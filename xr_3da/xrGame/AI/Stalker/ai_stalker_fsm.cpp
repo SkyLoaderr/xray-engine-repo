@@ -14,8 +14,8 @@
 //#define WRITE_TO_LOG(s) m_bStopThinking = true;
 #define WRITE_TO_LOG(s) {\
 	m_bStopThinking = true;\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 }
+// Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 
 #ifndef DEBUG
 	#undef	WRITE_TO_LOG

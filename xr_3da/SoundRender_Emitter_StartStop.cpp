@@ -16,7 +16,7 @@ void CSoundRender_Emitter::start(
 	p_source.freq			= 1.f;
 	p_source.volume			= 1.f;
 
-	state					= stStarting;
+	state					= _loop?stStartingLooped:stStarting;
 }
 
 void CSoundRender_Emitter::stop	()

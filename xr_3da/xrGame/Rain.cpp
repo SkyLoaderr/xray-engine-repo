@@ -8,7 +8,7 @@
 const float snd_fade		= 0.2f;
 const int	desired_items	= 2500;
 const float	drop_length		= 1.5f;
-const float drop_width		= 0.02f;
+const float drop_width		= 0.04f;
 const float drop_angle		= 3.01f;
 const float drop_speed_min	= 40.f;
 const float drop_speed_max	= 80.f;
@@ -80,11 +80,11 @@ void	CEffect_Rain::OnDeviceDestroy	()
 void	CEffect_Rain::OnEvent	(EVENT E, u32 P1, u32 P2)
 {
 	if ((E==control_start) && (state!=stWorking))	{
-		state				= stStarting;
-		Sound->play			(snd_Ambient,0,TRUE);
+		state					= stStarting;
+		Sound->play				(snd_Ambient,0,TRUE);
 		snd_Ambient.set_volume	(snd_Ambient_volume);
 	} else if ((E==control_stop) && (state!=stIdle))	{
-		state				= stStopping;
+		state					= stStopping;
 	}
 }
 
@@ -219,15 +219,13 @@ void	CEffect_Rain::Render	()
 {
 	// Parse states
 	BOOL	bBornNewItems	= FALSE;
-	Fvector sndP;
+
 	switch (state)
 	{
 	case stIdle:		return;
 	case stStarting:	
-		snd_Ambient_volume	+= snd_fade*Device.fTimeDelta;
+		snd_Ambient_volume			+= snd_fade*Device.fTimeDelta;
 		snd_Ambient.set_volume		(snd_Ambient_volume);
-		sndP.mad					(Device.vCameraPosition,Device.vCameraDirection,.1f);
-		snd_Ambient.set_position	(sndP);
 		if (snd_Ambient_volume > 1)	state=stWorking;
 		bBornNewItems	= TRUE;
 		break;
@@ -244,7 +242,12 @@ void	CEffect_Rain::Render	()
 		bBornNewItems	= FALSE;
 		break;
 	}
-	
+
+	// Sound pos
+	Fvector						sndP;
+	sndP.mad					(Device.vCameraPosition,Device.vCameraDirection,.1f);
+	snd_Ambient.set_position	(sndP);
+
 	// Born _new_ if needed
 	float	b_radius		= 10.f;
 	float	b_radius_wrap	= b_radius+.5f;

@@ -4,6 +4,7 @@
 
 void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 {
+	Msg			("stream: %10s - [%X]:%d",source->fname,ptr,size);
 	LPBYTE		dest = LPBYTE(ptr);
 	LPBYTE		wave = LPBYTE(source->wave);
 	if ((position+size) > source->dwBytesTotal)
