@@ -162,7 +162,7 @@ void CStats::Show()
 		F.OutNext	("  HUD:       %2.2fms",RenderDUMP_HUD.result);	
 		F.OutNext	("  P_calc:    %2.2fms",RenderDUMP_Pcalc.result);
 		F.OutNext	("  S_calc:    %2.2fms",RenderDUMP_Scalc.result);
-		F.OutNext	("  S_render:  %2.2fms",RenderDUMP_Srender.result);
+		F.OutNext	("  S_render:  %2.2fms, %d",RenderDUMP_Srender.result,RenderDUMP_Srender.count);
 		F.OutSkip	();
 		F.OutNext	("*** SOUND:   %2.2fms",Sound.result);
 		F.OutNext	("  REND/SIM:  %d/%d",  snd._rendered, snd._simulated);

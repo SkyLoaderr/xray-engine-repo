@@ -310,7 +310,6 @@ void CLightShadows::calculate	()
 #define CLS(a) color_rgba(a,a,a,a)
 void CLightShadows::render	()
 {
-	Device.Statistic.RenderDUMP_Srender.Begin	();
 	// Gain access to collision-DB
 	CDB::MODEL*		DB		= g_pGameLevel->ObjectSpace.GetStaticModel();
 	CDB::TRI*		TRIS	= DB->get_tris();
@@ -332,6 +331,7 @@ void CLightShadows::render	()
 	FVF::LIT* pv				= (FVF::LIT*) RCache.Vertex.Lock(batch_size*3,geom_World->vb_stride,Offset);
 	for (u32 s_it=0; s_it<shadows.size(); s_it++)
 	{
+		Device.Statistic.RenderDUMP_Srender.Begin	();
 		shadow&		S			=	shadows[s_it];
 		float		Le			=	S.L->color.intensity()*S.E;
 		int			s_x			=	S.slot%slot_line;
@@ -417,6 +417,7 @@ void CLightShadows::render	()
 				batch					= 0;
 			}
 		}
+		Device.Statistic.RenderDUMP_Srender.End	();
 	}
 
 	// Flush if nessesary
@@ -433,5 +434,4 @@ void CLightShadows::render	()
 	// Projection
 	Device.mProject._43 = _43;
 	RCache.set_xform_project	(Device.mProject);
-	Device.Statistic.RenderDUMP_Srender.End	();
 }
