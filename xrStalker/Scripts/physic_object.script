@@ -20,10 +20,6 @@ function door_binder:__init(obj) super(obj)
 	self.angel				= 0
 end
 
-//function door_binder:reload(section)
-//	object_binder.reload(self, section)
-//end
-
 function door_binder:initialize()
 	object_binder.reinit(self)
 
