@@ -421,8 +421,15 @@
 				<File
 					RelativePath=".\info_escape.xml">
 				</File>
+			</Filter>
+			<Filter
+				Name="news"
+				Filter="">
 				<File
 					RelativePath=".\info_news.xml">
+				</File>
+				<File
+					RelativePath=".\string_table_news.xml">
 				</File>
 			</Filter>
 		</Filter>

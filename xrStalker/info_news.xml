@@ -2,96 +2,71 @@
 
 <game_information_portions>
     <info_portion id="news_escape_blockpost_attack">
-        <text>Всем прием…Братва, на блокпост не
-		суйтесь..Какие-то придурки напали на патруль…Вобщем там сейчас гарячо…Наверняка
-		опять карательный рейд будет.</text>
+        <text>news_escape_blockpost_attack</text>
     </info_portion>
+    
     <info_portion id="news_escape_blockpost_case">
-        <text>Недавно на блокпосте взяли курьера Бармена с
-		товаром…Вобщем, лакомый кусочек – ящик с артефактами, где-то у командира поста
-		лежит…Так, что если кому жить надоело – может рискнуть.</text>
+        <text>news_escape_blockpost_case</text>
     </info_portion>    
     
     <info_portion id="news_escape_electra">
-        <text>Всем внимание. На север от моста на заставе,
-		метрах в 100 за брошенным БТР-ом
-		наткнулся на скопление «Электр»…Кому инфа пригодится – с того пиво.</text>
+        <text>news_escape_electra</text>
     </info_portion>    
     
     <info_portion id="new_escape_bridge">
-        <text>Народ, вояки опять возобновили патруль под разрушенным
-		мостом на заставе. И вроде снайпер ихний там засел…рассмотреть где не успел –
-		пришлось оттуда сматывать…</text>
+        <text>new_escape_bridge</text>
     </info_portion>    
 
     <info_portion id="news_escape_bandits">
-        <text>Всем прием…На заводе на заставе опять бандюки обосновались.
-		Хабар у сталкеров отбирают…Кто там поблизости из «опытных» пугните тварей…За
-		мной не заржавеет.</text>
+        <text>news_escape_bandit</text>
     </info_portion>    
     
     <info_portion id="news_escape_dogs">
-        <text>К востоку от моста на заставе видел стаю собак –
-		в 20-30 штыков:)…Так что делайте выводы, господа…</text>
+        <text>news_escape_dogs</text>
     </info_portion>    
     
     <info_portion id="news_escape_artefact">
-        <text>Господа сталкеры…Срочно нужна «Ночная
-		звезда»...Плачу приличные бабки…Говорят на заставе с прошлого Выброса одна до
-		сих пор есть…</text>
+        <text>news_escape_artefact</text>
     </info_portion>    
     
     <info_portion id="news_garbage_marked">
-        <text>…Васька говорит еще один меченый появился,
-		только от торговца ушел. Ты знаешь, что делать…</text>
+        <text>news_garbage_marked</text>
     </info_portion>    
     
     <info_portion id="news_garbage_fedya">
-        <text>Федьку Черного кто-то пристрелил в гаражах… Чую,
-		блин, опять бандиты появились.</text>
+        <text>news_garbage_fedy</text>
     </info_portion>    
     
     <info_portion id="news_garbage_dolina">
-        <text>Не суйтесь в Темную Долину, оттуда щас лезут
-		зомбаки, толпами… Берегите патроны, млин. Давно уже пора было зачистить долину.
-		И куда только Долг смотрит?</text>
+        <text>news_garbage_dolina</text>
     </info_portion>    
     
     <info_portion id="news_garbage_dolg">
-        <text>Кажись только, что на свалке видел несколько
-		боевиков из Долга. Интересно, за кем они пришли?</text>
+        <text>news_garbage_dolg</text>
     </info_portion>    
     
     <info_portion id="news_garbage_herovo">
-        <text>…худо мне, ребята, зацепило таки меня. Если кто
-		возле ржавого озера, подсобите, за мной не заржавеет… Вобщем, постараюсь сам
-		выкарабкаться, а там посмотрим.</text>
+        <text>news_garbage_herovo</text>
     </info_portion>    
     
     <info_portion id="news_garbage_gunslinger">
-        <text>Стрелок вернулся! Только что от знающих людей
-		услыхал… Из самого центра вернулся! Значит можно, значит, блин, скоро будем
-		большой прорыв делать к центру, а там и посмотрим кто кого…</text>
+        <text>news_garbage_gunslinger</text>
     </info_portion>    
     
     <info_portion id="news_garbage_garage">
-        <text>В гаражах три человека засело… Всем осторожнее,
-		похоже это урки опять за старое взялись.</text>
+        <text>news_garbage_garage</text>
     </info_portion>    
     
     <info_portion id="news_garbage_dogs">
-        <text>Я на Свалке, тут дофига слепых псов набежало…
-		Похоже из центра пришли новые стаи, всем быть осторожнее.</text>
+        <text>news_garbage_dogs</text>
     </info_portion>    
     
     <info_portion id="news_agroprom_mili">
-        <text>Всем аккуратнее. Похоже что тут всерьез и надолго обосновались военные.
-        База у них расположена в здании института. Видел несколько десятков человек и снайпера на крыше.</text>
+        <text>news_agroprom_mili</text>
     </info_portion>    
 
     <info_portion id="news_agroprom_box">
-        <text>Подслушал из разговора патрульных, что военные все что найдут собирают на третьем
-        этаже в здании института. Есть есть желающие рискнуть ради наживы - попробуйте пробраться.</text>
+        <text>news_agroprom_box</text>
     </info_portion>    
     
 </game_information_portions>
