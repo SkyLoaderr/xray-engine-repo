@@ -63,96 +63,25 @@ BOOL	CInifile::Sect::line_exist( LPCSTR L, LPCSTR* val )
 	return FALSE;
 }
 //------------------------------------------------------------------------------
+CInifile::CInifile(IReader& F)
+{
+	fName		= 0;
+	bReadOnly	= TRUE;
+	bSaveAtEnd	= FALSE;
+	Load		(F);
+}
 
 CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd )
 {
 	fName		= szFileName?xr_strdup(szFileName):0;
     bReadOnly	= ReadOnly;
     bSaveAtEnd	= SaveAtEnd;
-
-    if (bLoad)
-	{
-#ifdef ENGINE_BUILD
-    	R_ASSERT(szFileName&&szFileName[0]);
-	    if (!Engine.FS.Exist(szFileName))
-    	{
-        	R_ASSERT(!ReadOnly);
-	        return;
-    	}
-		destructor<IReader>	file(Engine.FS.Open(szFileName));
-#else
-		destructor<IReader>	file(FS.r_open(szFileName));
-#endif
-        Sect	Current;	Current.Name = 0;
-        char	str			[1024];
-        char	str2		[1024];
-
-        while (!file().eof())
-        {
-            file().r_string	(str);
-            _Trim			(str);
-            LPSTR semi		= strchr(str,';');
-            LPSTR comment	= 0;
-            if (semi) {
-                *semi		= 0;
-                comment		= xr_strdup(semi+1);
-            }
-
-            if (str[0] && (str[0]=='['))
-            {
-                xr_free(comment);
-                if (Current.Name && Current.Name[0])
-                {
-                    RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
-                    DATA.insert		(I,Current);
-                    Current.clear	();
-                }
-                size_t L = strlen(str); str[L-1] = 0;
-				Current.Name = strlwr(xr_strdup(str+1));
-            } else {
-                if (0==Current.Name)	{
-                    xr_free(comment);
-                } else {
-                    char*		name	= str;
-                    char*		t		= strchr(name,'=');
-                    if (t)		{
-                        *t		= 0;
-                        _Trim	(name);
-                        _parse	(str2,++t);
-                    } else {
-                        str2[0]	= 0;
-                    }
-
-                    Item		I;
-                    I.first		= (name[0]?xr_strdup(name):NULL);
-                    I.second	= (str2[0]?xr_strdup(str2):NULL);
-                    I.comment	= comment;
-
-                    if (bReadOnly) {
-                        if (I.first) {
-                            xr_free(I.comment);
-                            SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
-                            Current.Data.insert(it,I);
-                        } else {
-                            xr_free(I.second);
-                            xr_free(I.comment);
-                        }
-                    } else {
-                        if (I.first || I.second || I.comment) {
-                            SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
-                            Current.Data.insert(it,I);
-                        }
-                    }
-                }
-            }
-        }
-        if (Current.Name && Current.Name[0])
-        {
-            RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
-            DATA.insert		(I,Current);
-            Current.clear	();
-        }
-    }
+	if (bLoad)
+	{	
+		IReader* R = FS.r_open(szFileName);
+		Load	(*R);
+		FS.r_close(R);
+	}
 }
 
 CInifile::~CInifile( )
@@ -170,6 +99,79 @@ CInifile::~CInifile( )
 			xr_free(I->second	);
 			xr_free(I->comment);
 		}
+	}
+}
+
+void	CInifile::Load(IReader& F)
+{
+	Sect	Current;	Current.Name = 0;
+	char	str			[1024];
+	char	str2		[1024];
+
+	while (!F.eof())
+	{
+		F.r_string		(str);
+		_Trim			(str);
+		LPSTR semi		= strchr(str,';');
+		LPSTR comment	= 0;
+		if (semi) {
+			*semi		= 0;
+			comment		= xr_strdup(semi+1);
+		}
+
+		if (str[0] && (str[0]=='['))
+		{
+			xr_free(comment);
+			if (Current.Name && Current.Name[0])
+			{
+				RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
+				DATA.insert		(I,Current);
+				Current.clear	();
+			}
+			size_t L = strlen(str); str[L-1] = 0;
+			Current.Name = strlwr(xr_strdup(str+1));
+		} else {
+			if (0==Current.Name)	{
+				xr_free(comment);
+			} else {
+				char*		name	= str;
+				char*		t		= strchr(name,'=');
+				if (t)		{
+					*t		= 0;
+					_Trim	(name);
+					_parse	(str2,++t);
+				} else {
+					str2[0]	= 0;
+				}
+
+				Item		I;
+				I.first		= (name[0]?xr_strdup(name):NULL);
+				I.second	= (str2[0]?xr_strdup(str2):NULL);
+				I.comment	= comment;
+
+				if (bReadOnly) {
+					if (I.first) {
+						xr_free(I.comment);
+						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
+						Current.Data.insert(it,I);
+					} else {
+						xr_free(I.second);
+						xr_free(I.comment);
+					}
+				} else {
+					if (I.first || I.second || I.comment) {
+						SectIt	it	= std::lower_bound(Current.begin(),Current.end(),I,item_pred());
+						Current.Data.insert(it,I);
+					}
+				}
+			}
+		}
+	}
+	if (Current.Name && Current.Name[0])
+	{
+		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),Current,sect_pred());
+		DATA.insert		(I,Current);
+		Current.clear	();
 	}
 }
 
