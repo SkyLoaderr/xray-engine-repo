@@ -6289,6 +6289,9 @@
 								RelativePath=".\helicopter.h">
 							</File>
 							<File
+								RelativePath=".\helicopter_script.cpp">
+							</File>
+							<File
 								RelativePath=".\HelicopterMotion.cpp">
 							</File>
 							<File

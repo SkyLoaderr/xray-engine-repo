@@ -7,6 +7,9 @@
 #include "entity.h"
 #include "phskeleton.h"
 
+#include "script_export_space.h"
+class CScriptGameObject;
+
 struct SHeliShared{
 	CObject*						m_destEnemy;
 	Fvector							m_destEnemyPos; //lastEnemyPos
@@ -38,8 +41,12 @@ struct SHeliShared{
 	Fvector							m_desiredP;
 	Fvector							m_desiredR;
 
-	ref_str							m_patrol_path_name;
+	float							m_wrk_altitude;
 
+	int								m_patrol_begin_idx;
+	ref_str							m_patrol_path_name;
+	const CPatrolPath*				m_currPatrolPath;
+	const CPatrolPath::CVertex*		m_currPatrolVertex;
 };
 
 class CHelicopter : 
@@ -65,10 +72,19 @@ public:
 		eMovingToPoint,
 		eInitiatePatrolByPath,
 		eMovingByPatrolPath,
-		eDead
+		eDead,
+		eForce = u32(-1)
 	}; 
+	enum EHeliEvents{
+	EV_ON_POINT,
+	EV_ON_HIT,
+	EV_FORCE32 = u32(-1)
+	};
 	SHeliShared						m_data;
 protected:
+	float							m_on_point_range_dist;
+	float							m_maxLinearSpeed;
+
 	float							m_curLinearSpeed;//m/s
 	float							m_curLinearAcc;
 	float							m_LinearAcc_fw;
@@ -152,8 +168,10 @@ public:
 	virtual							~CHelicopter();
 	
 	CHelicopter::EHeliState			state		()		{return m_curState;};
+	u32								state_script()		{return m_curState;};
 
 	void							setState	(CHelicopter::EHeliState s);
+	void							setState_script	(u32 s){setState((CHelicopter::EHeliState)s);};
 	//CAI_ObjectLocation
 	void							init		();
 	virtual	void					reinit		();
@@ -214,5 +232,19 @@ public:
 	void					goToPoint			(Fvector* to, Fvector* via, float time);
 	float					getLastPointTime	();
 
-	void					goPatrolByPatrolPath (LPCSTR path_name);
+	void					goPatrolByPatrolPath (LPCSTR path_name,int start_idx);
+	
+	float					GetDistanceToDestPosition();
+	void					SetDestPosition (Fvector* pos);
+	float					GetCurrAltitude();
+	void					SetCurrAltitude(float a);
+	float					GetCurrVelocity();
+	void					SetCurrVelocity(float v);
+	void					SetOnPointDist(float dist);
+	float					GetOnPointDist();
+	void					SetEnemy(CScriptGameObject* e);
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CHelicopter)
+#undef script_type_list
+#define script_type_list save_type_list(CHelicopter)

@@ -61,6 +61,8 @@
 #	include "script_action_condition.h"
 #	include "script_monster_action.h"
 #	include "script_entity_action.h"
+#	include "helicopter.h"
+
 #	include "game_sv_mp_script.h"
 #	include "game_cl_mp_script.h"
 #	include "UIGame_custom_script.h"

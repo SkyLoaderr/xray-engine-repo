@@ -27,7 +27,7 @@
 #include "motivation_action_manager.h"
 #include "script_task.h"
 #include "PhysicsShell.h"
-
+#include "helicopter.h"
 
 using namespace luabind;
 
@@ -367,17 +367,20 @@ void CScriptGameObject::script_register(lua_State *L)
 				value("no_pda_msg",				int(ePdaMsgMax))
 			]
 			//HELICOPTER
-			.def("air_attack",                  &CScriptGameObject::air_attack)
+
+			
+			.def("get_helicopter",              &CScriptGameObject::get_helicopter)
+/*			.def("air_attack",                  &CScriptGameObject::air_attack)
 			.def("air_attack_wait",             &CScriptGameObject::air_attack_wait)
 			.def("air_attack_active",           &CScriptGameObject::air_attack_active)
-
 			.def("heli_goto_stay_point",        (void (CScriptGameObject::*)(float))(CScriptGameObject::heli_goto_stay_point))
 			.def("heli_goto_stay_point",        (void (CScriptGameObject::*)(Fvector&,float))(CScriptGameObject::heli_goto_stay_point))
 			.def("heli_go_patrol",				&CScriptGameObject::heli_go_patrol)
 			.def("heli_go_to_point",			&CScriptGameObject::heli_go_to_point)
 			.def("heli_last_point_time",		&CScriptGameObject::heli_last_point_time)
-			.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)
 			.def("heli_go_by_patrol_path",		&CScriptGameObject::heli_go_by_patrol_path)
+*/
+			.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)
 
 			//usable object
 			.def("set_use_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetUseCallback))

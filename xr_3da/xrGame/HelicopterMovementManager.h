@@ -2,6 +2,7 @@
 
 
 #include "HelicopterMotion.h"
+#include "Patrol_path_manager.h"
 
 class CHelicopter;
 
@@ -43,6 +44,10 @@ class CHelicopterMovManager :public CHelicopterMotion
 	void	truncatePathSafe		(float from_time, float& safe_time, Fvector& lastPoint);
 	void	addGoBySpecifiedPatrolPath	(float time_from);
 
+
+	void	GoBySpecifiedPatrolPath		();
+	void	UpdatePatrolPath			();
+
 	//patrol path
 	void	makeNewPoint			(const Fvector& prevPoint, const Fvector& point, const Fbox& box, Fvector& newPoint);
 	void	makeNewPoint			(const Fbox& fbox, const Fvector& point, const Fvector& direction, Fvector& newPoint);
@@ -60,7 +65,6 @@ public:
 	void	getPathPosition			(float time, Fvector& P, Fvector& R);
 
 	float	EndTime					();
-
 
 	Fbox							m_boundingVolume;
 	Fbox							m_boundingAssert;

@@ -65,6 +65,7 @@ class CAbstractVertexEvaluator;
 class CCoverPoint;
 class CScriptIniFile;
 class CPhysicsShell;
+class CHelicopter;
 
 struct ScriptCallbackInfo{
 	CScriptCallback		m_callback;
@@ -386,15 +387,17 @@ public:
 			bool				attachable_item_enabled	() const;
 			
 			// HELICOPTER
-			void				air_attack				(CScriptGameObject*);
-			void				air_attack_wait			(CScriptGameObject*, float dist = 20.0f, float time = 5.0f);
-			bool				air_attack_active		();
-			void				heli_goto_stay_point	(float time=0.0f);
-			void				heli_goto_stay_point	(Fvector& pos, float time=0.0f);
-			void				heli_go_patrol			(float time=0.0f);
-			void				heli_go_to_point		(Fvector& pos, Fvector& via, float time);
-			float				heli_last_point_time	();
-			void				heli_go_by_patrol_path	(LPCSTR path_name);
+			CHelicopter*		get_helicopter			();
+
+//			void				air_attack				(CScriptGameObject*);
+//			void				air_attack_wait			(CScriptGameObject*, float dist = 20.0f, float time = 5.0f);
+//			bool				air_attack_active		();
+//			void				heli_goto_stay_point	(float time=0.0f);
+//			void				heli_goto_stay_point	(Fvector& pos, float time=0.0f);
+//			void				heli_go_patrol			(float time=0.0f);
+//			void				heli_go_to_point		(Fvector& pos, Fvector& via, float time);
+//			float				heli_last_point_time	();
+//			void				heli_go_by_patrol_path	(LPCSTR path_name);
 			
 			Fvector				bone_position			(LPCSTR bone_name) const;
 			bool				is_body_turning			() const;

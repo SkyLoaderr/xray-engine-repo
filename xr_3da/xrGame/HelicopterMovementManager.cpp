@@ -156,6 +156,7 @@ void CHelicopterMovManager::insertKeyPoints(	float from_time,
 
 void CHelicopterMovManager::shedule_Update(u32 timeDelta)
 {
+/*
 	float lt	= Level().timeServer()/1000.0f;
 	
 
@@ -222,9 +223,13 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta)
 		if( lt >= m_heli->m_data.m_time_last_patrol_end+m_heli->m_data.m_time_delay_between_patrol )
 			m_heli->setState(CHelicopter::eInitiatePatrolZone);
 	};
+*/
 	if( m_heli->state()==CHelicopter::eInitiatePatrolByPath) {
-		addGoBySpecifiedPatrolPath(lt);
+		GoBySpecifiedPatrolPath();
 		m_heli->setState(CHelicopter::eMovingByPatrolPath);
+	}
+	if( m_heli->state()==CHelicopter::eMovingByPatrolPath) {
+		UpdatePatrolPath();
 	}
 	
 }
@@ -728,6 +733,31 @@ float CHelicopterMovManager::EndTime()
 {
 	return m_endTime;
 
+}
+
+void CHelicopterMovManager::GoBySpecifiedPatrolPath()
+{
+	m_heli->m_data.m_currPatrolPath = Level().patrol_paths().path(m_heli->m_data.m_patrol_path_name);
+	m_heli->m_data.m_currPatrolVertex =  m_heli->m_data.m_currPatrolPath->vertex(m_heli->m_data.m_patrol_begin_idx);
+
+	m_heli->m_data.m_desiredP = m_heli->m_data.m_currPatrolVertex->data().position();
+	getPathAltitude(m_heli->m_data.m_desiredP, m_heli->m_data.m_wrk_altitude);
+}
+
+void CHelicopterMovManager::UpdatePatrolPath()
+{
+	if(m_heli->GetDistanceToDestPosition() < 10.0f){
+		CPatrolPath::const_iterator b,e;
+		m_heli->m_data.m_currPatrolPath->begin(m_heli->m_data.m_currPatrolVertex->vertex_id(),b,e);
+		if(b!=e){
+			m_heli->m_data.m_currPatrolVertex =  m_heli->m_data.m_currPatrolPath->vertex((*b).vertex_id());
+//			m_heli->m_data.m_desiredP = m_heli->m_data.m_currPatrolVertex->data().position();
+//			getPathAltitude(m_heli->m_data.m_desiredP, m_heli->m_data.m_wrk_altitude);
+			Fvector p = m_heli->m_data.m_currPatrolVertex->data().position();
+			m_heli->SetDestPosition(&p);
+		}else
+			m_heli->setState(CHelicopter::eIdleState);
+	}
 }
 
 

@@ -45,6 +45,7 @@
 #include "ai/bloodsucker/ai_bloodsucker.h"
 #include "cover_manager.h"
 #include "attachable_item.h"
+#include "helicopter.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -1251,7 +1252,7 @@ float CScriptGameObject::visibility_threshold	() const
 	}
 	return					(manager->visibility_threshold());
 }
-
+/*
 void CScriptGameObject::air_attack (CScriptGameObject * object)
 {
 	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
@@ -1342,6 +1343,16 @@ void CScriptGameObject::heli_go_by_patrol_path	(LPCSTR path_name)
 		NODEFAULT;
 	}
 	return helicopter->goPatrolByPatrolPath(path_name);
+}
+*/
+CHelicopter* CScriptGameObject::get_helicopter	()
+{
+	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
+	if (!helicopter) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member get_helicopter!");
+		NODEFAULT;
+	}
+	return helicopter;
 }
 
 /*

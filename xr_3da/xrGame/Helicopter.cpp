@@ -6,6 +6,7 @@
 #include "ExplosiveRocket.h"
 #include "level.h"
 #include "HudManager.h"
+#include "script_game_object.h"
 
 CHelicopter::CHelicopter()
 {
@@ -130,6 +131,7 @@ void CHelicopter::Load(LPCSTR section)
 	CRocketLauncher::Load	(section);
 
 ////////////////////////////////////
+	m_on_point_range_dist				= 10.0f;
 	m_data.m_time_last_patrol_end		= 0.0f;
 	m_data.m_time_last_patrol_start	= 0.0f;
 
@@ -158,7 +160,8 @@ void CHelicopter::Load(LPCSTR section)
 	m_data.m_time_patrol_period		= pSettings->r_float(section,"time_patrol_period");
 	m_data.m_time_delay_before_start	= pSettings->r_float(section,"time_delay_before_start");
 
-
+	m_data.m_wrk_altitude = m_data.m_baseAltitude;
+	m_maxLinearSpeed = m_data.m_basePatrolSpeed;
 ////////////////////////////////////
 	m_movMngr.load (section);
 
@@ -266,7 +269,6 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	setVisible			(true);
 	setEnabled			(true);
 
-	setState			(eWaitForStart);
 
 
 	Fbox b = Level().ObjectSpace.GetBoundingVolume();
@@ -290,9 +292,12 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	m_currP					= m_data.m_desiredP;
 	m_currR					= m_data.m_desiredR;
 
+	m_data.m_to_point		= m_currP;
 	m_curLinearSpeed		= 0.0f;
-	m_curLinearAcc			= 3.0f;
-
+	m_curLinearAcc			= m_LinearAcc_fw;
+	m_data.m_currPatrolVertex	= NULL;
+	m_data.m_currPatrolVertex	= NULL;
+	m_data.m_currPatrolPath		= NULL;
 	XFORM().getHPB(m_currBodyH, m_currBodyP, m_currBodyB);
 
     m_movMngr.init		(this);
@@ -348,14 +353,11 @@ void CHelicopter::UpdateCL()
 
 ///////////////////////////////////////////////////////////////////////////
 	float td = Device.fTimeDelta;
-	float lt = Level().timeServer()/1000.0f;
+//	float lt = Level().timeServer()/1000.0f;
 
-	Fvector stub;
-	m_movMngr.getPathPosition (lt ,m_data.m_desiredP, stub/*m_data.m_desiredR*/);
-
-	//rotation
-//	m_currR = m_data.m_desiredR;
-//	XFORM().setHPB(m_currR.y,m_currR.x,m_currR.z);
+//	Fvector stub;
+//	m_movMngr.getPathPosition (lt ,m_data.m_desiredP, stub);
+	m_data.m_desiredP = m_data.m_to_point;
 
 	float dist = m_currP.distance_to(m_data.m_desiredP);
 
@@ -402,11 +404,7 @@ void CHelicopter::UpdateCL()
 	m_currP.mad	(dir, vp);
 	m_curLinearSpeed += m_curLinearAcc*td;
 	
-	float clamp_speed = m_data.m_basePatrolSpeed;
-	if(clamp_speed<m_data.m_baseAttackSpeed)
-		clamp_speed = m_data.m_baseAttackSpeed;
-
-	clamp(m_curLinearSpeed,0.0f,clamp_speed);
+	clamp(m_curLinearSpeed,0.0f,m_maxLinearSpeed);
 
 	m_currBodyH = m_currPathH;
 
@@ -488,7 +486,6 @@ void CHelicopter::UpdateCL()
 					MGunFireStart();
 				}
 
-
 			
 			if( (d > m_min_rocket_dist) && 
 				(d < m_max_rocket_dist) &&
@@ -528,15 +525,29 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	if ( (state() != CHelicopter::eDead) && (GetfHealth() <= 0.0f) )
 		Die();
 
-	if(state() != CHelicopter::eDead)
-		m_movMngr.shedule_Update (time_delta);
+	if(state() != CHelicopter::eDead){
+		float dist = GetDistanceToDestPosition();
+		if(dist < m_on_point_range_dist  ){
+			NET_Packet P;
+			P.write_start();
+			P.w_float(dist);
+			P.w_vec3(m_currP);
+			s16 curr_idx = -1;
+			if(m_data.m_currPatrolVertex)
+				curr_idx = m_data.m_currPatrolVertex->vertex_id();
+			
+			P.w_s16(curr_idx);
+			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
+		}
 
+		m_movMngr.shedule_Update (time_delta);
 
 
 	if(getRocketCount()<4)
 		for(u32 i=getRocketCount(); i<4; ++i) {
 			CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
 		}
+	}
 }
 
 void CHelicopter::Hit(	float P, 
@@ -577,11 +588,21 @@ if(who==this)
 
 	if (who){
 		switch (who->SUB_CLS_ID){
-			case CLSID_OBJECT_ACTOR: 
+			case CLSID_OBJECT_ACTOR: {
 //				doHunt(who);
-				doHunt2(who, 5, 5);
+//				doHunt2(who, 5, 5);
 //				goPatrolByPatrolPath("heli_way_1");
-			break;
+
+			NET_Packet P_;
+			P_.write_start();
+			P_.w_float(P);
+			P_.w_float(impulse);
+			P_.w_u32(hit_type);
+			P_.w_stringZ( who->cName() );
+
+			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_HIT,P_);
+
+		}break;
 		default:
 			break;
 		}
@@ -679,8 +700,69 @@ float CHelicopter::getLastPointTime	()
 
 }
 
-void CHelicopter::goPatrolByPatrolPath (LPCSTR path_name)
+void CHelicopter::goPatrolByPatrolPath (LPCSTR path_name, int start_idx)
 {
+	m_data.m_patrol_begin_idx = start_idx;
 	m_data.m_patrol_path_name = path_name;
 	setState(CHelicopter::eInitiatePatrolByPath);
+}
+
+void CHelicopter::SetDestPosition (Fvector* pos)
+{
+	Collide::rq_result		cR;
+	Fvector down_dir;
+	Fvector point = *pos;
+
+	down_dir.set(0.0f, -1.0f, 0.0f);
+	Fbox boundingVolume = Level().ObjectSpace.GetBoundingVolume();
+
+	point.y = boundingVolume.max.y+EPS_L;
+
+	Level().ObjectSpace.RayPick(point, down_dir, boundingVolume.max.y-boundingVolume.min.y+1.0f, Collide::rqtStatic, cR);
+	
+	point.y = point.y-cR.range;
+
+	point.y += m_data.m_wrk_altitude;
+
+	m_data.m_to_point = point;
+}
+
+float CHelicopter::GetCurrAltitude()
+{
+	return m_data.m_wrk_altitude;
+}
+
+void CHelicopter::SetCurrAltitude(float a)
+{
+	m_data.m_wrk_altitude = a;
+}
+
+float CHelicopter::GetCurrVelocity()
+{
+	return m_curLinearSpeed;
+}
+
+void CHelicopter::SetCurrVelocity(float v)
+{
+	m_maxLinearSpeed = v;
+}
+
+void CHelicopter::SetOnPointDist(float dist)
+{
+	m_on_point_range_dist = dist;
+}
+
+float CHelicopter::GetOnPointDist()
+{
+	return m_on_point_range_dist;
+}
+
+void CHelicopter::SetEnemy(CScriptGameObject* e)
+{
+	m_data.m_destEnemy = e->object();
+}
+
+float CHelicopter::GetDistanceToDestPosition()
+{
+	return m_data.m_desiredP.distance_to(m_currP);
 }
