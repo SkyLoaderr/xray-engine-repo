@@ -7,11 +7,15 @@ struct SStateDataAction {
 	EAction		action;
 	u32			spec_params;
 	u32			time_out;
+	u32			sound_type;
+	u32			sound_delay;
 
 	SStateDataAction() {
 		action		= ACT_STAND_IDLE;
 		spec_params	= 0;
 		time_out	= 0;
+		sound_type	= u32(-1);
+		sound_delay	= u32(-1);
 	}
 };
 

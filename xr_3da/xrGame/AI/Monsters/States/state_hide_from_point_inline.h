@@ -5,29 +5,22 @@
 >
 
 #define CStateMonsterHideFromPointAbstract CStateMonsterHideFromPoint<_Object>
-#define COVER_RESELECT_TIME_QUANT 5000
+#define DIST_TO_PATH_END		1.5f
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterHideFromPointAbstract::initialize()
 {
 	inherited::initialize();
 
-	last_time_reselect_cover	= 0;
-	target.node					= u32(-1);
+	select_target_point();
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterHideFromPointAbstract::execute()
 {
-	bool b_reselect_target = false;
-	if (last_time_reselect_cover + COVER_RESELECT_TIME_QUANT < object->m_current_update) b_reselect_target = true;
-	if (object->IsPathEnd(2.5f)) b_reselect_target = true;
-
-	if (b_reselect_target) {
-		if (!object->GetCoverFromPoint(data.point,target.position, target.node, data.cover_min_dist,data.cover_max_dist,data.cover_search_radius)) {
-			target.node					= u32(-1);
-			last_time_reselect_cover	= object->m_current_update;
-		}
+	// проверить на завершение пути
+	if (object->CDetailPathManager::time_path_built() > time_state_started) {
+		if (object->IsPathEnd(DIST_TO_PATH_END)) select_target_point();
 	}
 
 	if (target.node != u32(-1)) {
@@ -43,6 +36,14 @@ void CStateMonsterHideFromPointAbstract::execute()
 		object->MotionMan.accel_activate	(EAccelType(data.accel_type));
 		object->MotionMan.accel_set_braking (data.braking);
 	}
+
+	if (data.action.sound_type != u32(-1)) {
+		if (data.action.sound_delay != u32(-1))
+			object->CSoundPlayer::play(data.action.sound_type, 0,0,data.action.sound_delay);
+		else 
+			object->CSoundPlayer::play(data.action.sound_type);
+	}
+
 }
 
 TEMPLATE_SPECIALIZATION
@@ -59,6 +60,15 @@ bool CStateMonsterHideFromPointAbstract::check_completion()
 	return false;
 }
 
-#undef COVER_RESELECT_TIME_QUANT
+TEMPLATE_SPECIALIZATION
+void CStateMonsterHideFromPointAbstract::select_target_point()
+{
+	if (!object->GetCoverFromPoint(data.point,target.position, target.node, data.cover_min_dist,data.cover_max_dist,data.cover_search_radius)) 
+		target.node	= u32(-1);
+	else if (target.position.distance_to(object->Position()) < 2.f) 
+		target.node	= u32(-1);
+}
+
+#undef DIST_TO_PATH_END
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateMonsterHideFromPointAbstract

@@ -41,6 +41,9 @@ void CStateMonsterHearInterestingSoundAbstract::setup_substates()
 		data.braking		= false;
 		data.accel_type 	= eAT_Calm;
 		data.completion_dist= 2.f;
+		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_delay = object->get_sd()->m_dwIdleSndDelay;
+		
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
 
@@ -49,14 +52,15 @@ void CStateMonsterHearInterestingSoundAbstract::setup_substates()
 			object->HDebug->M_Add(0,"Interesting Snd :: Move To Sound Source", D3DCOLOR_XRGB(255,0,0));
 		}
 #endif
-
-		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 
 	if (current_substate == eStateLookAround) {
 		SStateDataAction data;
 		data.action			= ACT_LOOK_AROUND;
+		data.sound_type		= MonsterSpace::eMonsterSoundIdle;
+		data.sound_delay	= object->get_sd()->m_dwIdleSndDelay;
+
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
 #ifdef DEBUG
@@ -65,7 +69,6 @@ void CStateMonsterHearInterestingSoundAbstract::setup_substates()
 		}
 #endif
 
-		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 }

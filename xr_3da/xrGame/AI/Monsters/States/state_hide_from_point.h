@@ -23,6 +23,10 @@ public:
 	virtual	void		execute						();
 
 	virtual bool		check_completion			();
+						
+private:
+			void		select_target_point			();
+
 };
 
 #include "state_hide_from_point_inline.h"

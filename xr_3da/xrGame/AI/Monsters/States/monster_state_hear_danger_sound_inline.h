@@ -47,6 +47,9 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.accel_type			= eAT_Aggressive;
 		data.distance			= 40.f;
 		data.action.action		= ACT_RUN;
+		data.action.sound_type	= MonsterSpace::eMonsterSoundPanic;
+		data.action.sound_delay = object->get_sd()->m_dwAttackSndDelay;
+
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
 
 #ifdef DEBUG
@@ -54,7 +57,6 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 			object->HDebug->M_Add(0,"Danger Snd :: Hide From Point", D3DCOLOR_XRGB(255,0,0));
 		}
 #endif
-		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 
@@ -63,6 +65,9 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		data.action			= ACT_STAND_IDLE;
 		data.spec_params	= ASP_STAND_SCARED;
 		data.time_out		= 2000;
+		data.sound_type	= MonsterSpace::eMonsterSoundPanic;
+		data.sound_delay = object->get_sd()->m_dwAttackSndDelay;
+
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
 #ifdef DEBUG
@@ -71,8 +76,6 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		}
 #endif
 		
-		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
-
 		return;
 	}
 
@@ -80,6 +83,9 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 		SStateDataAction data;
 		data.action			= ACT_STAND_IDLE;
 		data.spec_params	= ASP_STAND_SCARED;
+		data.sound_type	= MonsterSpace::eMonsterSoundPanic;
+		data.sound_delay = object->get_sd()->m_dwAttackSndDelay;
+
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
 #ifdef DEBUG
@@ -87,8 +93,6 @@ void CStateMonsterHearDangerousSoundAbstract::setup_substates()
 			object->HDebug->M_Add(0,"Danger Snd :: Stand Scared", D3DCOLOR_XRGB(255,0,0));
 		}
 #endif
-
-		object->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,object->get_sd()->m_dwIdleSndDelay);
 		return;
 	}
 }

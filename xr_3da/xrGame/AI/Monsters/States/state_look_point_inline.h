@@ -28,6 +28,14 @@ void CStateMonsterLookToPointAbstract::execute()
 	object->MotionMan.m_tAction				= data.action.action;
 	object->MotionMan.SetSpecParams			(data.action.spec_params);
 	object->FaceTarget						(data.point);
+
+	if (data.action.sound_type != u32(-1)) {
+		if (data.action.sound_delay != u32(-1))
+			object->CSoundPlayer::play(data.action.sound_type, 0,0,data.action.sound_delay);
+		else 
+			object->CSoundPlayer::play(data.action.sound_type);
+	}
+
 }
 
 TEMPLATE_SPECIALIZATION

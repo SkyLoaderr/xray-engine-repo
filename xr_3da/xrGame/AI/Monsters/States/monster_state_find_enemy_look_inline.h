@@ -70,6 +70,10 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 		data.braking		= false;
 		data.accel_type 	= eAT_Aggressive;
 		data.action.action	= ACT_RUN; 
+		data.action.sound_type	= MonsterSpace::eMonsterSoundAttack;
+		data.action.sound_delay = object->get_sd()->m_dwAttackSndDelay;
+
+
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
 
 #ifdef DEBUG
@@ -85,7 +89,9 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 		
 		data.action		= ACT_LOOK_AROUND;
 		data.time_out	= 2000;
-		
+		data.sound_type	= MonsterSpace::eMonsterSoundAttack;
+		data.sound_delay = object->get_sd()->m_dwAttackSndDelay;
+
 		state->fill_data_with(&data, sizeof(SStateDataAction));
 
 #ifdef DEBUG
@@ -101,6 +107,8 @@ void CStateMonsterFindEnemyLookAbstract::setup_substates()
 
 		data.point			= target_point; 
 		data.action.action	= ACT_STAND_IDLE;		
+		data.action.sound_type	= MonsterSpace::eMonsterSoundAttack;
+		data.action.sound_delay = object->get_sd()->m_dwAttackSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataLookToPoint));
 

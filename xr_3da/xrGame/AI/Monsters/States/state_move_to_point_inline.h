@@ -26,6 +26,12 @@ void CStateMonsterMoveToPointAbstract::execute()
 		object->MotionMan.accel_set_braking (data.braking);
 	}
 
+	if (data.action.sound_type != u32(-1)) {
+		if (data.action.sound_delay != u32(-1))
+			object->CSoundPlayer::play(data.action.sound_type, 0,0,data.action.sound_delay);
+		else 
+			object->CSoundPlayer::play(data.action.sound_type);
+	}
 }
 
 TEMPLATE_SPECIALIZATION
