@@ -178,27 +178,20 @@ float CGamePersistent::MtlTransparent(u32 mtl_idx)
 {
 	return GMLib.GetMaterialByIdx((u16)mtl_idx)->fVisTransparencyFactor;
 }
-
+static BOOL bRestorePause = FALSE;
 void CGamePersistent::OnAppActivate		()
 {
-	if (!g_pGameLevel || (!g_pGameLevel && GameID()== GAME_SINGLE) )
-	{	
+	if(!bRestorePause)
 		Device.Pause(FALSE);
-	}
-	else
-	{
-		Device.Pause(FALSE);
-	}
+
 }
 
 void CGamePersistent::OnAppDeactivate		()
 {
-	if (!g_pGameLevel || (!g_pGameLevel && GameID()== GAME_SINGLE) )
+	bRestorePause = FALSE;
+	if (!g_pGameLevel || (g_pGameLevel && GameID()== GAME_SINGLE) )
 	{
+		bRestorePause = Device.Pause();
 		Device.Pause(TRUE);
 	}
-	else
-	{
-		Device.Pause(FALSE);
-	};
 }
