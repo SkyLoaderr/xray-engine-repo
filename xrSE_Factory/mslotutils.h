@@ -36,7 +36,7 @@ public:
 		return TRUE;
 	};
 
-	inline BOOL	w_string(char* dst){
+	inline BOOL	w_string(const char* dst){
 		size_t sz = _strlen(dst);
 		w_int((int)sz);
 		Write(dst,(int)(sz+1)); return TRUE;
@@ -47,7 +47,7 @@ public:
 		return TRUE;
 	};
 
-	inline BOOL	w_float(float src){
+	inline BOOL	w_float(const float src){
 		Write(&src,sizeof(float));
 		return TRUE;
 	};
@@ -57,7 +57,7 @@ public:
 		return TRUE;
 	};
 	
-	inline BOOL	w_int(int src){
+	inline BOOL	w_int(const int src){
 		Write(&src,sizeof(int));
 		return TRUE;
 	};

@@ -158,6 +158,7 @@ protected:
 	CUIntArray	m_pages;
 	BOOL m_bShowCalltips;
 	CString m_strCallTip;
+	CString m_currCallTip;
 
 
 	// Generated message map functions

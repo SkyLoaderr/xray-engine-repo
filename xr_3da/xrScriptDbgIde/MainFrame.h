@@ -87,7 +87,7 @@ public:
 	virtual			~CMainFrame();
 	void			SendBreakPoints();
 	void			OpenDefaultProject();
-
+	void			GetCalltip(const char* str);
 #ifdef _DEBUG
 	virtual void	AssertValid() const;
 	virtual void	Dump(CDumpContext& dc) const;
@@ -132,3 +132,4 @@ protected:
 /////////////////////////////////////////////////////////////////////////////
 
 extern CMainFrame*	g_mainFrame;
+extern CString		g_calltip;

@@ -18,6 +18,7 @@ static char THIS_FILE[] = __FILE__;
 void ActivateXRAY();
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
+CString g_calltip;
 
 IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWnd)
 
@@ -437,8 +438,12 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 */
 
 	case DMSG_EVAL_WATCH:
+		if((int)lParam == 9999){
+				g_calltip = (LPSTR)wParam;
+				return 0;
+		}
+
 			m_wndWatches.SetResult((int)lParam, (LPSTR)wParam);
-//			SendMessage(DMSG_EVAL_WATCH,(WPARAM)(str),(LPARAM)(i));
 		break;
 
 	case DMSG_GET_BREAKPOINTS:
@@ -931,26 +936,35 @@ void CMainFrame::OnClearOutput()
 	GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Clear();
 }
 
+void CMainFrame::GetCalltip(const char* str)
+{
+	g_calltip="";
+	CMailSlotMsg msg;
+	msg.w_int(DMSG_EVAL_WATCH);
+	msg.w_string( str );
+	msg.w_int(9999);
+	if( CheckExisting(DEBUGGER_MAIL_SLOT) )
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+
+	DWORD tk_start = GetTickCount();
+    MSG         msg_;
+	while(!g_calltip.GetLength()){
+		Sleep(500);
+		if(PeekMessage( &msg_, NULL, 0U, 0U, PM_REMOVE )){
+              TranslateMessage	( &msg_ );
+              DispatchMessage	( &msg_ );
+		}
+
+		if(GetTickCount()-tk_start>5000)
+			break;
+	}
+}
+
 void ActivateXRAY()
 {
 
 	HWND h = FindWindow("_XRAY_","XRAY Engine");
 	if(h){
-//		BringWindowToTop(h);
-//		PostMessage(h,WM_MOUSEACTIVATE,WA_ACTIVE,NULL);
-//		PostMessage(h,WM_ACTIVATE,WA_ACTIVE,NULL);
 		::SetForegroundWindow(h);
 	}
 }
-/*
-CMDIChildWnd* pActive=NULL;
-void CMainFrame::OnActivate(   UINT nState,   CWnd* pWndOther,   BOOL bMinimized )
-{
-	if(nState==WA_INACTIVE && pActive)
-		this->MDIActivate(pActive);
-	
-	if((nState==WA_ACTIVE)||(nState==WA_CLICKACTIVE))
-		pActive = this->MDIGetActive();
-}
-
-*/

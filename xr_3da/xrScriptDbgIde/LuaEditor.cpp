@@ -539,40 +539,45 @@ void CLuaEditor::SetLuaLexer()
 
 void CLuaEditor::OnMouseMove(UINT nFlags, CPoint point) 
 {
-	// TODO: Add your message handler code here and/or call default
-/*
-	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
-	if ( m_bShowCalltips && pFrame->GetMode()==CMainFrame::modeDebugBreak )
+	if(!(nFlags&MK_CONTROL))
+		{CWnd::OnMouseMove(nFlags, point);return;};
+
+	if ( m_bShowCalltips /*&& g_mainFrame->GetMode()==CMainFrame::modeDebugBreak*/ )
 	{
-		char  linebuf[1000];
+		CharacterRange cr = GetSelection();
+		if(cr.cpMax==cr.cpMin)
+			{CWnd::OnMouseMove(nFlags, point);return;};
+
 		int  pos  =  Sci(SCI_POSITIONFROMPOINT, point.x, point.y);
-		int start = Sci(SCI_WORDSTARTPOSITION, pos, TRUE);
-		int end = Sci(SCI_WORDENDPOSITION, pos, TRUE);
-		TextRange tr;
-		tr.chrg.cpMin = start;
-		tr.chrg.cpMax = end;
-		tr.lpstrText = linebuf;
-		Sci(SCI_GETTEXTRANGE, 0, long(&tr));
+
+		if( !((pos<=cr.cpMax)&&(pos>=cr.cpMin)) )
+			{CWnd::OnMouseMove(nFlags, point);return;};
 		
-		CString strCalltip;
-		if ( pFrame->GetCalltip(linebuf, strCalltip) )
+		CString sel_callTip = GetSelText();
+		
+		if(m_currCallTip == sel_callTip){CWnd::OnMouseMove(nFlags, point);return;};
+			
+		
+		m_currCallTip = sel_callTip;
+
+		g_mainFrame->GetCalltip(m_currCallTip.GetBuffer() );
+		
+		if( g_calltip.GetLength()/* && m_strCallTip!=g_calltip*/ )
 		{
-			if  (Sci(SCI_CALLTIPACTIVE) && m_strCallTip!=strCalltip)
+			if  (Sci(SCI_CALLTIPACTIVE) && m_strCallTip!=g_calltip)
 					Sci(SCI_CALLTIPCANCEL);
 
 			if (!Sci(SCI_CALLTIPACTIVE))
 			{
-				Sci(SCI_CALLTIPSHOW,  start,  (int)strCalltip.GetBuffer(0));
-				strCalltip.ReleaseBuffer();
-				m_strCallTip = strCalltip;
+				Sci(SCI_CALLTIPSHOW,  pos,  (int)g_calltip.GetBuffer());
+				m_strCallTip = g_calltip;
 			};
-		}
-		else if (Sci(SCI_CALLTIPACTIVE))
+		}else if (Sci(SCI_CALLTIPACTIVE))
 					Sci(SCI_CALLTIPCANCEL);
 	}
 	else if (Sci(SCI_CALLTIPACTIVE))
 				Sci(SCI_CALLTIPCANCEL);
-*/	
+
 	CWnd::OnMouseMove(nFlags, point);
 }
 
