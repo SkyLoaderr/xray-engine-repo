@@ -307,7 +307,7 @@ void CCustomMonster::Update	( DWORD DT )
 	}
 
 	// weapons
-	Weapons->Update				(Device.fTimeDelta,false);
+	Weapons->Update		(dt,false);
 	
 	// *** general stuff
 	inherited::Update	(DT);
