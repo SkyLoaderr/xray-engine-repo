@@ -80,6 +80,7 @@ public:
 	void				Load				(CStream& FS);
 	void				calc_normals		();
 	void				calc_materials		();
+	void				calc_faceopacity	();
 };
 
 class xrMU_Reference

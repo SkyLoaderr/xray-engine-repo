@@ -370,6 +370,7 @@ void CBuild::Run	(string& P)
 	// Caching opacity
 	Status("Caching faces opacity...");
 	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
+	for (u32 m=0; m<mu_models.size(); m++) mu_models[m]->calc_faceopacity();
 
 	// Implicit
 	FPU::m64r		();
