@@ -13,7 +13,7 @@
 
 #include "xrGraph.h"
 #include "level_graph.h"
-#include "graph_search_engine.h"
+#include "graph_engine.h"
 
 class CNodeThread : public CThread
 {
