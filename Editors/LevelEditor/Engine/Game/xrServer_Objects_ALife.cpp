@@ -528,7 +528,7 @@ void CSE_ALifePHSkeletonObject::UPDATE_Read(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifePHSkeletonObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
-//.	inherited::FillProp			(pref,items);
+	inherited::FillProp			(pref,items);
 }
 #endif
 

@@ -31,7 +31,7 @@ void CActorTools::PreviewModel::RestoreParams(TFormStorage* s)
     int val;
     val					= s->ReadInteger("preview_speed",0); 	m_fSpeed 	= *((float*)&val);
     val					= s->ReadInteger("preview_segment",0); 	m_fSegment	= *((float*)&val);
-    m_Flags.set			(s->ReadInteger("preview_flags",0));
+    m_Flags.assign		(s->ReadInteger("preview_flags",0));
     m_ScrollAxis		= (EScrollAxis)s->ReadInteger("preview_scaxis",0);
 }
 

@@ -92,7 +92,7 @@ void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeTraderAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-//.	PHelper.CreateU32			(items, FHelper.PrepareKey(pref,s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
+	PHelper.CreateU32			(items, FHelper.PrepareKey(pref,base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
 }
 #endif
 
@@ -1256,8 +1256,6 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProp		(pref,items);
   	inherited2::FillProp		(pref,items);
-//.	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife\\Known traders"),	&m_caKnownCustomers,  OBJCLASS_SPAWNPOINT, "m_trader_e")	;
-//.	V->Owner()->subitem			= 8;
 }
 #endif
 
