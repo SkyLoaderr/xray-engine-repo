@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "detailmanager.h"
 
-const int			quant	= 32767.f;
-const int			c_hdr	= 5;
-const int			c_base	= c_hdr+1;
+const int			quant	= 32767;
+const int			c_hdr	= 6;
+const int			c_base	= c_hdr;
 const int			c_size	= 4;
 
 static DWORD dwDecl[] =
@@ -11,7 +11,7 @@ static DWORD dwDecl[] =
     D3DVSD_STREAM	(0),
 	D3DVSD_REG		(D3DVSDE_POSITION,	D3DVSDT_FLOAT3),	// pos
 	D3DVSD_REG		(D3DVSDE_DIFFUSE,	D3DVSDT_D3DCOLOR),	// matrix id
-	D3DVSD_REG		(D3DVSDE_TEXCOORD0,	D3DVSDT_FLOAT2),	// uv
+	D3DVSD_REG		(D3DVSDE_TEXCOORD0,	D3DVSDT_SHORT2),	// uv
 	D3DVSD_END		()
 };
 #pragma pack(push,1)
@@ -19,7 +19,7 @@ struct	vertHW
 {
 	Fvector		P;
 	DWORD		M;
-	float		u,v;
+	short		u,v;
 };
 #pragma pack(pop)
 
@@ -128,8 +128,10 @@ void CDetailManager::VS_Render()
 
 	// Render-prepare
 	CVS_Constants& VSC	=	Device.Shader.VSC;
+	float scale			=	1.f/float(quant);
 	VSC.set					(0,255.01f,255.01f,255.01f,1.f);
-	VSC.set					(1,Device.mFullTransform);
+	VSC.set					(1,scale,scale,scale,1.f);
+	VSC.set					(2,Device.mFullTransform);
 	VSC.flush				(0,c_hdr);
 	
 	// Matrices and offsets
