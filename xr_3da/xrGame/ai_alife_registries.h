@@ -406,7 +406,6 @@ public:
 	virtual void					Load(CStream	&tFileStream)
 	{
 		inherited::Load				(tFileStream);
-		R_ASSERT					(tFileStream.FindChunk(SPAWN_POINT_CHUNK_DATA));
 		m_tpServerEntitites.resize	(m_dwSpawnCount);
 		SERVER_ENTITY_P_IT			I = m_tpServerEntitites.begin();
 		SERVER_ENTITY_P_IT			E = m_tpServerEntitites.end();
