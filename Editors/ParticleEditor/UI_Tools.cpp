@@ -186,6 +186,7 @@ void CParticleTools::OnFrame()
 	if (m_Flags.is(flApplyParent))
     	RealApplyParent();
 
+//    m_EditPE->
     switch(m_EditMode){
     case emEffect:	if (m_EditPE->IsPlaying())UI.SetStatus(" PE Playing...",false); else UI.SetStatus(" Stopped.",false); break;
     case emGroup:	if (m_EditPG->IsPlaying())UI.SetStatus(" PG Playing...",false); else UI.SetStatus(" Stopped.",false); break;

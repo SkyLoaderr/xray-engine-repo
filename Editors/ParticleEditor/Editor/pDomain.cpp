@@ -191,7 +191,7 @@ void __fastcall PDomain::OnTypeChange(PropValue* sender)
 void 	PDomain::FillProp	(PropItemVec& items, LPCSTR pref)
 {
     PropValue* V;
-    V=PHelper.CreateToken	(items,pref,&type,domain_token,sizeof(type));
+    V=PHelper.CreateToken<u32>(items,pref,(u32*)&type,domain_token);
     V->OnChangeEvent		= OnTypeChange;
     
 	switch(type){

@@ -111,9 +111,9 @@ void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
             V->OnChangeEvent		= OnParamsChange;
             V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,nm.c_str(),"End Time (s)"),	&it->m_Time1,		0.f,1000.f);
             V->OnChangeEvent		= OnParamsChange;
-            V=PHelper.CreateFlag32	(items,FHelper.PrepareKey(pref,nm.c_str(),"Deferred Stop"),	&it->m_Flags,		SEffect::flDeferredStop);
+            V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Deferred Stop"),	&it->m_Flags,		SEffect::flDeferredStop);
             V->OnChangeEvent		= OnParamsChange;
-            V=PHelper.CreateFlag32	(items,FHelper.PrepareKey(pref,nm.c_str(),"Enabled"),		&it->m_Flags,		SEffect::flEnabled);
+            V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Enabled"),		&it->m_Flags,		SEffect::flEnabled);
             V->OnChangeEvent		= OnParamsChange;
         break;
         }

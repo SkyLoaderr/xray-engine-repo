@@ -119,9 +119,9 @@ void 	EParticleAction::FillProp	(PropItemVec& items, LPCSTR pref)
     	PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref,*floatNames[f_idx]).c_str(), &floats[f_idx].val, floats[f_idx].mn, floats[f_idx].mx, 0.001f, 3);
     for (u32 b_idx=0; b_idx<bools.size(); b_idx++)
     	PHelper.CreateBOOL			(items,	FHelper.PrepareKey(pref,*boolNames[f_idx]).c_str(), &bools[f_idx]);
-    PHelper.CreateFlag32			(items,	FHelper.PrepareKey(pref,"Enabled").c_str(), 		&flags, flEnabled);
+    PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,"Enabled").c_str(), 		&flags, flEnabled);
     if (!domains.empty())
-    	PHelper.CreateFlag32		(items,	FHelper.PrepareKey(pref,"Draw Domains").c_str(), 	&flags, flDrawDomain);
+    	PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,"Draw Domains").c_str(), 	&flags, flDrawDomain);
 }
 void EParticleAction::appendFloat	(LPCSTR name, float v, float mn, float mx)
 {
