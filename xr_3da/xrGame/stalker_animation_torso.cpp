@@ -132,7 +132,7 @@ u32 CStalkerAnimationManager::object_slot	() const
 	if (!m_weapon && !m_missile)
 		return		(0);
 
-	CLASS_ID		clsid = m_weapon ? m_weapon->SUB_CLS_ID : m_missile ? m_missile->SUB_CLS_ID : 0;
+	CLASS_ID		clsid = m_weapon ? m_weapon->CLS_ID : m_missile ? m_missile->CLS_ID : 0;
 
 	switch (clsid) {
 		case CLSID_OBJECT_W_VINTOREZ	:

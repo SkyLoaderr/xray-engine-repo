@@ -662,7 +662,7 @@ if(who==this)
 	};
 	
 	if (who){
-		switch (who->SUB_CLS_ID){
+		switch (who->CLS_ID){
 			case CLSID_OBJECT_ACTOR:
 			case CLSID_AI_STALKER:{
 

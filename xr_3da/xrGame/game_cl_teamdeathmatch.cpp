@@ -139,7 +139,7 @@ void game_cl_TeamDeathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 			u16 id = it->second->GameID;
 			CObject* pObject = Level().Objects.net_Find(id);
 			if (!pObject) continue;
-			if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) continue;
+			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
 
 			VERIFY(pObject);
 			D.pos = pObject->Position();
@@ -270,7 +270,7 @@ void	game_cl_TeamDeathmatch::OnRender				()
 			if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
 			CObject* pObject = Level().Objects.net_Find(id);
 			if (!pObject) continue;
-			if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) continue;
+			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
 			if (ps->team != local_player->team) continue;
 			if (ps == local_player) continue;
 

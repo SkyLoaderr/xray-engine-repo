@@ -58,8 +58,8 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 		CObject* curr = Level().CurrentEntity();
 		if (!curr) return(false);
 
-		bool is_actor		= curr->SUB_CLS_ID==CLSID_OBJECT_ACTOR;
-		bool is_spectator	= curr->SUB_CLS_ID==CLSID_SPECTATOR;
+		bool is_actor		= curr->CLS_ID==CLSID_OBJECT_ACTOR;
+		bool is_spectator	= curr->CLS_ID==CLSID_SPECTATOR;
 		
 		game_PlayerState* ps	= local_player;
 

@@ -258,7 +258,7 @@ void CActor::ActorUse()
 	if (m_holder)
 	{
 		CGameObject* holder			= smart_cast<CGameObject*>(m_holder);
-		switch (holder->SUB_CLS_ID)
+		switch (holder->CLS_ID)
 		{
 		case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
 		case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(0))	return;	break;
@@ -325,7 +325,7 @@ void CActor::ActorUse()
 		{
 			if (object)
 			{
-				switch (object->SUB_CLS_ID)
+				switch (object->CLS_ID)
 				{
 				case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
 				case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;

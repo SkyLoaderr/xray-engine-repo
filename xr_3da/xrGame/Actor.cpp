@@ -525,7 +525,7 @@ void CActor::Die	(CObject* who)
 		{
 			if (GameID() == GAME_ARTEFACTHUNT)
 			{
-				if ((*l_it)->SUB_CLS_ID == CLSID_ARTEFACT)
+				if ((*l_it)->CLS_ID == CLSID_ARTEFACT)
 				{
 					(*l_it)->Drop();
 					continue;
@@ -536,7 +536,7 @@ void CActor::Die	(CObject* who)
 			if (pOutfit) continue;
 
 			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
-//			if ((*l_it)->SUB_CLS_ID == CLSID_DEVICE_PDA)
+//			if ((*l_it)->CLS_ID == CLSID_DEVICE_PDA)
 			{
 				NET_Packet P;
 				u_EventGen(P,GE_DESTROY,(*l_it)->ID());

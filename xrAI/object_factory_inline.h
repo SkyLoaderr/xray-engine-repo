@@ -101,7 +101,7 @@ IC	int	CObjectFactory::script_clsid	(const CLASS_ID &clsid) const
 #ifndef NO_XR_GAME
 IC	CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::client_object	(const CLASS_ID &clsid) const
 {
-	return				(item(clsid).client_object());
+	return				(item(clsid).client_object()->_construct());
 }
 
 IC	CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::server_object	(const CLASS_ID &clsid, LPCSTR section) const

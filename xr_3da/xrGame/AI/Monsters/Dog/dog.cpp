@@ -42,7 +42,7 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
-	if (MotionMan.start_load_shared(SUB_CLS_ID)) {
+	if (MotionMan.start_load_shared(CLS_ID)) {
 
 		// define animation set
 		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);

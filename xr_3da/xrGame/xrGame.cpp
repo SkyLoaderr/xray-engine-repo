@@ -20,7 +20,7 @@ extern "C" {
 	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID clsid)
 	{
 		DLL_Pure			*object = object_factory().client_object(clsid);
-		object->SUB_CLS_ID	= clsid;
+		object->CLS_ID	= clsid;
 		return				(object);
 	}
 

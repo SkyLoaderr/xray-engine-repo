@@ -38,7 +38,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 	invisible_particle_name = pSettings->r_string(section,"Particle_Invisible");
 
-	if (MotionMan.start_load_shared(SUB_CLS_ID)) {
+	if (MotionMan.start_load_shared(CLS_ID)) {
 
 		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,			PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");

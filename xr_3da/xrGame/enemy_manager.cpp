@@ -58,7 +58,7 @@ float CEnemyManager::do_evaluate			(const CEntityAlive *object) const
 
 float CEnemyManager::evaluate				(const CEntityAlive *object) const
 {
-	if (object->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+	if (object->CLS_ID == CLSID_OBJECT_ACTOR)
 		m_ready_to_save					= false;
 
 	bool				visible = m_object->memory().visual().visible_now(object);

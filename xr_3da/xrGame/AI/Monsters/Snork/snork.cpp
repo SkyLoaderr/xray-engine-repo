@@ -30,7 +30,7 @@ void CSnork::Load(LPCSTR section)
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
 
-	if (MotionMan.start_load_shared(SUB_CLS_ID)) {
+	if (MotionMan.start_load_shared(CLS_ID)) {
 		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 		MotionMan.AddAnim(eAnimStandDamaged,	"stand_idle_damaged_",	-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 		MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_damaged_",	-1,	&inherited::get_sd()->m_fsVelocityWalkFwdDamaged,	PS_STAND);

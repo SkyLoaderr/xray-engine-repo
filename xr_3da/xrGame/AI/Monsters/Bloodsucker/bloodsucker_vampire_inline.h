@@ -88,7 +88,7 @@ bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 {
 	// является ли враг актером
 	const CEntityAlive *enemy = object->EnemyMan.get_enemy();
-	if (enemy->SUB_CLS_ID != CLSID_OBJECT_ACTOR) return false;
+	if (enemy->CLS_ID != CLSID_OBJECT_ACTOR) return false;
 	if (object->CControlledActor::is_controlled()) return false;
 
 	return true;

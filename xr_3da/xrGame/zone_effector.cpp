@@ -118,7 +118,7 @@ void CZoneEffector::Update(float dist)
 	float min_r = radius * r_min_perc;
 	float max_r = radius * r_max_perc;
 
-	bool camera_on_actor = (Level().CurrentEntity() && (Level().CurrentEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR));
+	bool camera_on_actor = (Level().CurrentEntity() && (Level().CurrentEntity()->CLS_ID == CLSID_OBJECT_ACTOR));
 	
 	if (p_effector) {
 		if ((dist > max_r) || !camera_on_actor)	Stop();

@@ -155,12 +155,12 @@ void CHUDManager::Render_Last()
 	if (A && !A->HUDview())			return;
 //	CCar*		C					= smart_cast<CCar*>	(O);
 //	if (C)							return;
-	if(O->SUB_CLS_ID == CLSID_CAR)
+	if(O->CLS_ID == CLSID_CAR)
 		return;
 
 //	CSpectator*	S					= smart_cast<CSpectator*>	(O);
 //	if (S)							return;
-	if(O->SUB_CLS_ID == CLSID_SPECTATOR)
+	if(O->CLS_ID == CLSID_SPECTATOR)
 		return;
 
 	// hud itself

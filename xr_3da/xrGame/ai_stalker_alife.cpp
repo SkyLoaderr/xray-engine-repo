@@ -130,7 +130,7 @@ u32 CAI_Stalker::fill_items						(CInventory &inventory, CGameObject *old_owner,
 		if (!(*I)->useful_for_NPC())
 			continue;
 
-		if (CLSID_DEVICE_PDA == (*I)->SUB_CLS_ID) {
+		if (CLSID_DEVICE_PDA == (*I)->CLS_ID) {
 			CPda				*pda = smart_cast<CPda*>(*I);
 			VERIFY				(pda);
 			if (pda->GetOriginalOwnerID() == old_owner->ID())

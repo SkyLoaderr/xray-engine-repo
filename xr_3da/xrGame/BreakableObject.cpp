@@ -241,7 +241,7 @@ void CBreakableObject::ObjectContactCallback(bool&/**do_colide/**/,dContact& c,S
 	if(
 		usr_data_1&&
 		usr_data_1->ph_ref_object&&
-		usr_data_1->ph_ref_object->SUB_CLS_ID == CLSID_OBJECT_BREAKABLE
+		usr_data_1->ph_ref_object->CLS_ID == CLSID_OBJECT_BREAKABLE
 		) {
 				body=dGeomGetBody(c.geom.g2);
 				if(!body) return;
@@ -251,7 +251,7 @@ void CBreakableObject::ObjectContactCallback(bool&/**do_colide/**/,dContact& c,S
 	else if(
 		usr_data_2&&
 		usr_data_2->ph_ref_object&&
-		usr_data_2->ph_ref_object->SUB_CLS_ID == CLSID_OBJECT_BREAKABLE
+		usr_data_2->ph_ref_object->CLS_ID == CLSID_OBJECT_BREAKABLE
 		){
 				body=dGeomGetBody(c.geom.g1);
 				if(!body) return;
@@ -318,7 +318,7 @@ void CBreakableObject::Init()
 	bRemoved				= false;
 	m_max_frame_damage		= 0.f;
 	b_resived_damage		= false;
-	//m_damage_threshold		=5.f;
+CLS_ID	//m_damage_threshold		=5.f;
 	//m_health_threshhold		=0.f
 }
 

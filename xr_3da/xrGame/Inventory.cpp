@@ -716,7 +716,7 @@ PIItem CInventory::Get(CLASS_ID cls_id, bool bSearchRuck) const
 	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
-		if(pIItem->SUB_CLS_ID == cls_id && 
+		if(pIItem->CLS_ID == cls_id && 
 								pIItem->Useful()) 
 				return pIItem;
 	}
@@ -743,7 +743,7 @@ PIItem CInventory::item(CLASS_ID cls_id) const
 	for(TIItemSet::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
-		if(pIItem->SUB_CLS_ID == cls_id && 
+		if(pIItem->CLS_ID == cls_id && 
 			pIItem->Useful()) 
 			return pIItem;
 	}
@@ -1005,4 +1005,4 @@ void  CInventory::AddAvailableItems(TIItemList& items_container) const
 		if(m_slots[OUTFIT_SLOT].m_pIItem)
 			items_container.push_back(m_slots[OUTFIT_SLOT].m_pIItem);
 	}		
-}
+}CLS_ID

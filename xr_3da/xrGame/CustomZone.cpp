@@ -88,7 +88,7 @@ void CCustomZone::Load(LPCSTR section)
 	// verify class
 	LPCSTR Class = pSettings->r_string(section,"class");
 	CLASS_ID load_cls = TEXT2CLSID(Class);
-	R_ASSERT(load_cls==SUB_CLS_ID);
+	R_ASSERT(load_cls==CLS_ID);
 
 	inherited::Load(section);
 
@@ -467,7 +467,7 @@ void CCustomZone::UpdateCL()
 
 	m_fDistanceToCurEntity = Level().CurrentEntity()->Position().distance_to(Position());
 
-	if (EnableEffector())// && Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID != CLSID_SPECTATOR)
+	if (EnableEffector())// && Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID != CLSID_SPECTATOR)
 		m_effector.Update(m_fDistanceToCurEntity);
 
 	UpdateBlowoutLight	();

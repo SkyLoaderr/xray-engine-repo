@@ -92,7 +92,7 @@ void CGameObject::reload	(LPCSTR section)
 	if (!frame_check(m_dwFrameReload))
 		return;
 
-	m_script_clsid				= object_factory().script_clsid(SUB_CLS_ID);
+	m_script_clsid				= object_factory().script_clsid(CLS_ID);
 	CScriptBinder::reload		(section);
 }
 

@@ -141,7 +141,7 @@ void game_cl_Deathmatch::OnSkinMenu_Ok			()
 BOOL game_cl_Deathmatch::CanCallBuyMenu			()
 {
 	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
-	if (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID != CLSID_SPECTATOR)
+	if (Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID != CLSID_SPECTATOR)
 	{
 		return FALSE;
 	};
@@ -173,7 +173,7 @@ BOOL game_cl_Deathmatch::CanCallSkinMenu			()
 BOOL game_cl_Deathmatch::CanCallInventoryMenu			()
 {
 	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
-	if (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID != CLSID_OBJECT_ACTOR)
+	if (Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID != CLSID_OBJECT_ACTOR)
 	{
 		return FALSE;
 	}
@@ -296,7 +296,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		m_game_ui->SetPressJumpMsgCaption("");
 		m_game_ui->SetPressBuyMsgCaption("");
 
-		if (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID == CLSID_SPECTATOR)
+		if (Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID == CLSID_SPECTATOR)
 		{
 			if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 			{
@@ -446,7 +446,7 @@ void game_cl_Deathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
 		CObject* pObject = Level().Objects.net_Find(id);
 		if (!pObject) continue;
-		if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) continue;
+		if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
 
 		VERIFY(pObject);
 		D.pos = pObject->Position();

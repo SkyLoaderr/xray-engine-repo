@@ -87,7 +87,7 @@ void game_sv_mp::OnRoundEnd				(LPCSTR reason)
 void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 {
 	CObject* pObject =  Level().Objects.net_Find(GameID);
-	if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) return;
+	if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) return;
 	// Remove everything	
 	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
 	
@@ -303,7 +303,7 @@ void	game_sv_mp::AllowDeadBodyRemove		(ClientID id, u16 GameID)
 	CObject* pObject =  Level().Objects.net_Find(GameID);
 	
 
-	if (pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+	if (pObject && pObject->CLS_ID == CLSID_OBJECT_ACTOR)
 	{
 		CActor* pActor = smart_cast <CActor*>(pObject);
 		if (pActor)
@@ -392,9 +392,9 @@ bool	game_sv_mp::GetPosAngleFromActor				(ClientID id, Fvector& Pos, Fvector &An
 	if (!xrCData || !xrCData->owner) return false;
 	
 	CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
-///	R_ASSERT2	((pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR),"Dead Player is not Actor");
+///	R_ASSERT2	((pObject && pObject->CLS_ID == CLSID_OBJECT_ACTOR),"Dead Player is not Actor");
 
-	if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) return false;
+	if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) return false;
 
 	CActor* pActor = smart_cast <CActor*>(pObject);
 	if (!pActor) return false;

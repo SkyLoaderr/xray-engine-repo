@@ -168,7 +168,7 @@ void	game_sv_Deathmatch::Update					()
 				if (GameDM) GameDM->SetSpectrModeMsgCaption("");
 
 				CObject* pObject = Level().CurrentViewEntity();
-				if (pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+				if (pObject && pObject->CLS_ID == CLSID_OBJECT_ACTOR)
 				{
 					char Text[1024];
 					sprintf(Text, "Following %s", pObject->cName().c_str());

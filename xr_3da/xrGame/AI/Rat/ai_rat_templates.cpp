@@ -387,7 +387,7 @@ bool CAI_Rat::can_stand_here	()
 	xr_vector<CObject*>::iterator		I = tpNearestList.begin();
 	xr_vector<CObject*>::iterator		E = tpNearestList.end();
 	for ( ; I != E; ++I) {
-		if ((*I)->SUB_CLS_ID != CLSID_AI_RAT)
+		if ((*I)->CLS_ID != CLSID_AI_RAT)
 			continue;
 		
 		(*I)->Visual()->vis.box.get_CD	(c,d);

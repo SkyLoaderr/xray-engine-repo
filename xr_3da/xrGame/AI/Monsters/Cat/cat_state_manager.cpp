@@ -46,7 +46,7 @@ void CStateManagerCat::execute()
 	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
 	if (enemy) {
-		if (enemy->SUB_CLS_ID == CLSID_AI_RAT) {
+		if (enemy->CLS_ID == CLSID_AI_RAT) {
 			state_id = eStateAttackRat;
 		} else {
 			switch (object->EnemyMan.get_danger_type()) {

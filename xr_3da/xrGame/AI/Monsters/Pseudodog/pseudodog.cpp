@@ -78,7 +78,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 
 	psy_effect_turn_angle		= angle_normalize(pSettings->r_float(section,"psy_effect_turn_angle"));
 
-	if (MotionMan.start_load_shared(SUB_CLS_ID)) {
+	if (MotionMan.start_load_shared(CLS_ID)) {
 
 		// define animation set
 		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);

@@ -23,7 +23,7 @@ IC	CLASS_ID CBaseFunction::clsid_member_item() const
 {
 	CLASS_ID					result;
 	if (ef_storage().non_alife().member_item())
-		result					= ef_storage().non_alife().member_item()->SUB_CLS_ID;
+		result					= ef_storage().non_alife().member_item()->CLS_ID;
 	else {
 		VERIFY2					(ef_storage().alife().member_item(),"No object specified for evaluation function");
 		result					= ef_storage().alife().member_item()->m_tClassID;
@@ -35,7 +35,7 @@ IC	CLASS_ID CBaseFunction::clsid_enemy_item() const
 {
 	CLASS_ID					result;
 	if (ef_storage().non_alife().enemy_item())
-		result					= ef_storage().non_alife().enemy_item()->SUB_CLS_ID;
+		result					= ef_storage().non_alife().enemy_item()->CLS_ID;
 	else {
 		VERIFY2					(ef_storage().alife().enemy_item(),"No object specified for evaluation function");
 		result					= ef_storage().alife().enemy_item()->m_tClassID;
@@ -47,7 +47,7 @@ IC	CLASS_ID CBaseFunction::clsid_member() const
 {
 	CLASS_ID							result;
 	if (ef_storage().non_alife().member())
-		result							= ef_storage().non_alife().member()->SUB_CLS_ID;
+		result							= ef_storage().non_alife().member()->CLS_ID;
 	else {
 		VERIFY2							(ef_storage().alife().member(),"No object specified for evaluation function");
 		const CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = smart_cast<const CSE_ALifeDynamicObject*>(ef_storage().alife().member());
@@ -61,7 +61,7 @@ IC	CLASS_ID CBaseFunction::clsid_enemy() const
 {
 	CLASS_ID							result;
 	if (ef_storage().non_alife().enemy())
-		result							= ef_storage().non_alife().enemy()->SUB_CLS_ID;
+		result							= ef_storage().non_alife().enemy()->CLS_ID;
 	else {
 		VERIFY2							(ef_storage().alife().enemy(),"No object specified for evaluation function");
 		const CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = smart_cast<const CSE_ALifeDynamicObject*>(ef_storage().alife().enemy());
@@ -561,3 +561,4 @@ float CEnemyDistanceToGraphPoint::ffGetValue()
 		return				(3);
 	return					(4);
 }
+CLS_IDCLS_IDCLS_ID

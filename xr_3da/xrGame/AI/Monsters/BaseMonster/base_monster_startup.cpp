@@ -102,7 +102,7 @@ void CBaseMonster::Load(LPCSTR section)
 	m_dwHealth						= pSettings->r_u32		(section,"Health");
 	fEntityHealth					= (float)m_dwHealth;
 
-	inherited_shared::load_shared	(SUB_CLS_ID, section);
+	inherited_shared::load_shared	(CLS_ID, section);
 
 	if (ability_can_jump())
 		m_jumping					= smart_cast<CJumping *>(this);

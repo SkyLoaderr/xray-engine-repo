@@ -296,7 +296,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 
 			if (m_bBuyEnabled)
 			{
-				if (local_player && Level().CurrentControlEntity() && Level().CurrentControlEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR/*pCurActor && pCurActor->g_Alive() && !m_gameUI->pCurBuyMenu->IsShown()*/ )
+				if (local_player && Level().CurrentControlEntity() && Level().CurrentControlEntity()->CLS_ID == CLSID_OBJECT_ACTOR/*pCurActor && pCurActor->g_Alive() && !m_gameUI->pCurBuyMenu->IsShown()*/ )
 				{
 					m_game_ui->SetBuyMsgCaption("Press B to access Buy Menu");
 				};
@@ -319,10 +319,10 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 					sprintf(S,		"Next reinforcement will arrive at . . .%d", dTime);
 					 
 					CActor* pActor = NULL;
-					if (Level().CurrentEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+					if (Level().CurrentEntity()->CLS_ID == CLSID_OBJECT_ACTOR)
 						pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
-					if (Level().CurrentEntity()->SUB_CLS_ID == CLSID_SPECTATOR || 
+					if (Level().CurrentEntity()->CLS_ID == CLSID_SPECTATOR || 
 						(pActor && !pActor->g_Alive()))
 							m_game_ui->SetReinforcementCaption(S);
 					else

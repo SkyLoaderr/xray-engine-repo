@@ -72,7 +72,7 @@ void CController::Load(LPCSTR section)
 	m_control_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
 	m_control_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
 
-	if (MotionMan.start_load_shared(SUB_CLS_ID)) {
+	if (MotionMan.start_load_shared(CLS_ID)) {
 
 		MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 		MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);

@@ -376,7 +376,7 @@ void CCustomMonster::UpdateCL	()
 			Fvector					l_tOldPosition = Position();
 			NET_Last.lerp			(A,B,factor);
 			if (Local()) {
-				if (CLSID_AI_RAT != SUB_CLS_ID) {
+				if (CLSID_AI_RAT != CLS_ID) {
 					NET_Last.p_pos		= l_tOldPosition;
 				}
 			}
@@ -859,7 +859,7 @@ void CCustomMonster::load_killer_clsids(LPCSTR section)
 
 bool CCustomMonster::is_special_killer(CObject *obj)
 {
-	return (obj && (std::find(m_killer_clsids.begin(),m_killer_clsids.end(),obj->SUB_CLS_ID) != m_killer_clsids.end()));  
+	return (obj && (std::find(m_killer_clsids.begin(),m_killer_clsids.end(),obj->CLS_ID) != m_killer_clsids.end()));  
 }
 
 float CCustomMonster::feel_vision_mtl_transp(u32 element)

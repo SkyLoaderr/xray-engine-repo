@@ -34,7 +34,7 @@ void CCustomDetector::Load(LPCSTR section)
 	// verify class
 	LPCSTR Class = pSettings->r_string(section,"class");
 	CLASS_ID load_cls = TEXT2CLSID(Class);
-	R_ASSERT(load_cls==SUB_CLS_ID);
+	R_ASSERT(load_cls==CLS_ID);
 
 	inherited::Load(section);
 
@@ -177,10 +177,10 @@ void CCustomDetector::UpdateCL()
 
 		
 		//такой тип зон не обнаруживается
-		if(m_ZoneTypeMap.find(pZone->SUB_CLS_ID) == m_ZoneTypeMap.end() ||
+		if(m_ZoneTypeMap.find(pZone->CLS_ID) == m_ZoneTypeMap.end() ||
 			!pZone->VisibleByDetector())
 			return;
-		ZONE_TYPE& zone_type = m_ZoneTypeMap[pZone->SUB_CLS_ID];
+		ZONE_TYPE& zone_type = m_ZoneTypeMap[pZone->CLS_ID];
 
 		float dist_to_zone = H_Parent()->Position().distance_to(pZone->Position()) - 0.8f*pZone->Radius();
 		if(dist_to_zone<0) dist_to_zone = 0;

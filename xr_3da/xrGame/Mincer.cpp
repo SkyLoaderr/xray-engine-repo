@@ -116,7 +116,7 @@ void CMincer::OnOwnershipTake(u16 id)
 	
 
 		CObject* obj=Level().Objects.net_Find(id);
-		if(obj->SUB_CLS_ID ==CLSID_ARTEFACT) return;
+		if(obj->CLS_ID ==CLSID_ARTEFACT) return;
 
 		m_telekinetics.draw_out_impact(dir,impulse);
 		CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(obj);

@@ -27,7 +27,7 @@ void CMercuryBall::Load(LPCSTR section)
 	// verify class
 	LPCSTR Class = pSettings->r_string(section,"class");
 	CLASS_ID load_cls = TEXT2CLSID(Class);
-	R_ASSERT(load_cls==SUB_CLS_ID);
+	R_ASSERT(load_cls==CLS_ID);
 
 	inherited::Load(section);
 

@@ -338,7 +338,7 @@ bool CShootingObject::SendHitAllowed		(CObject* pUser)
 
 	if (OnServer())
 	{
-		if (pUser->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+		if (pUser->CLS_ID == CLSID_OBJECT_ACTOR)
 		{
 			if (Level().CurrentControlEntity() != pUser)
 			{
@@ -349,7 +349,7 @@ bool CShootingObject::SendHitAllowed		(CObject* pUser)
 	}
 	else
 	{
-		if (pUser->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+		if (pUser->CLS_ID == CLSID_OBJECT_ACTOR)
 		{
 			if (Level().CurrentControlEntity() == pUser)
 			{
