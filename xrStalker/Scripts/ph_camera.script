@@ -18,6 +18,7 @@ function action_camera_activity:__init(obj, storage)
 	self.cur_wp = -1 -- текущий вейпоинт, к которому мы двигаемся
 	self.move_direction = 1 -- направление движения по вейпоинтам: 1 - вперед, (-1) - назад
     self.track_enemy = nil -- вражеский сталкер
+	self.ocular_joint = nil -- джоинт окуляра камеры
 	
 	printf("_hr: action_camera_activity:__init")
 end
@@ -43,8 +44,8 @@ function action_camera_activity:reset_scheme()
     	
 	    --action(self.object, look(look.point, self.path:point(self.cur_wp)), anim(anim.turn, 0), cond(cond.look_end))
 	    action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_v), cond(cond.look_end))
-	elseif self.st.state == "range_tracking" then
-    elseif 
+	--elseif self.st.state == "range_tracking" then
+    end
 end
 
 function action_camera_activity:update(delta)
@@ -68,12 +69,22 @@ function action_camera_activity:update(delta)
 		self:reset_scheme()
 		return
 	end
-
+--[[
+	if not self.ocular_joint then
+		local ps = self.object:get_physics_shell()
+		printf("_ttt: %s", if_then_else(ps ~= nil, "ps not nil", "ps nil"))
+		self.ocular_joint = ps:get_joint_by_bone_name("bone_light")
+	end
+--]]
     -- Следим за сталкером
-    local dist = self.object:position():distance_to(actor:position())
-    --local angle = 
+    local dist = self.object:bone_position("bone_light"):distance_to(actor:position())
+    --local diff_angle_h = 
+    --local diff_angle_v = 
 
-	if dist <= self.st.warn_distance then
+	if dist <= self.st.warn_distance
+	   --and diff_angle_h < self.st.view_range_h / 2
+	   --and diff_angle_v < self.st.view_range_v / 2
+	then
 		self.track_enemy = actor
 		xr_logic.mob_capture(self.object, true)
 		action(self.object, look(actor:position(), self.st.speed_h, self.st.speed_v), cond(cond.look_end))
@@ -99,7 +110,7 @@ function action_camera_activity:update(delta)
 		    --action(self.object, look(look.point, self.path:point(self.cur_wp)), anim(anim.turn, 0), cond(cond.look_end))
 		    action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_v), cond(cond.look_end))
         -- Двигаем камеру в диапазоне
-        elseif self.st.state == "range_tracking" then
+        //elseif self.st.state == "range_tracking" then
         end
 	end
 end
@@ -123,19 +134,20 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
     //  off - камера выключена,
     //  path_tracking - движение по пути,
     //  range_tracking - движение камеры в определенных угловых границах
-	st.state = utils.cfg_get_string(ini, section, "state", npc, true, "", "path_tracking")
+	st.state = utils.cfg_get_string(ini, section, "state", npc, false, "", "path_tracking")
 
     if st.state == "path_tracking" then
         // path_look - путь, по которому будет поворачиваться камера
         // start_wp - вейпоинт, с которого будет начинаться движение камеры
 	    st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, "")
 	    st.start_wp  = utils.cfg_get_number(ini, section, "start_wp", npc, false, 0)
-    elseif st.state == "range_tracking" then
+--[[	elseif st.state == "range_tracking" then
         // angle_h1, angle_h2 - начальный и конечный углы по горизонтали
         // angle_v - угол наклона камеры
 	    st.angle_h1 = utils.cfg_get_number(ini, section, "angle_h1", npc, false, -45)
 	    st.angle_h2 = utils.cfg_get_number(ini, section, "angle_h2", npc, false, 45)
 	    st.angle_v  = utils.cfg_get_number(ini, section, "angle_v", npc, false, 0)
+--]]
     else
         st.state = "off"
     end
@@ -143,6 +155,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
     // speed_h, speed_v - скорость поворота камеры по горизонтали и вертикали
 	st.speed_h = utils.cfg_get_number(ini, section, "speed_h", npc, false, 1)
 	st.speed_v = utils.cfg_get_number(ini, section, "speed_v", npc, false, 1)
+
+    // view_range_h, view_range_v - угол видимости камеры по горизонтали и вертикали
+	st.view_range_h = utils.cfg_get_number(ini, section, "view_range_h", npc, false, 90)
+	st.view_range_v = utils.cfg_get_number(ini, section, "view_range_v", npc, false, 90)
 
     // enemy_stalker - имя вражеского сталкера, за которым камера будет следить
     // с самого начала
