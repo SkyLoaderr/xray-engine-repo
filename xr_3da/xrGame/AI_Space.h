@@ -64,7 +64,7 @@ public:
 	void			Render			();
 
 	void			q_Range			(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator);
-	void			q_Path			(DWORD StartNode, DWORD GoalNode,		AI::Path&	Result);
+	//void			q_Path			(DWORD StartNode, DWORD GoalNode,		AI::Path&	Result);
 	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos);
 
 	// yet another A* search

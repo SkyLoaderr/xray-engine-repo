@@ -757,19 +757,7 @@ SOURCE=.\ai_a_star.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\AI_astar.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_astar_fsa.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\AI_qNode.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_qPath.cpp
 # End Source File
 # Begin Source File
 
