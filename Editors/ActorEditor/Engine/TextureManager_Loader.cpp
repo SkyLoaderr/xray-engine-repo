@@ -115,7 +115,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	{
 		R_ASSERT	(0==v->second->dwReference);
 		xr_free		(v->first);
-		R_CHK		(HW.pDevice->DeleteVertexShader(v->second->dwHandle));
+		if (!v->second->bFFP)	R_CHK		(HW.pDevice->DeleteVertexShader(v->second->dwHandle));
 		delete		v->second;
 	}
 	matrices.clear	();

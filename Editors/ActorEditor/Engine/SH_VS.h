@@ -8,6 +8,7 @@ public:
 	DWORD				dwReference;
 	DWORD				dwHandle;
 	DWORD				dwStride;
+	BOOL				bFFP;
 };
 
 #endif

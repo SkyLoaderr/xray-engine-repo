@@ -105,6 +105,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, DWORD stride)
 		CVS *VS			=	new CVS;
 		VS->dwReference	=	1;
 		VS->dwStride	=	stride;
+		VS->bFFP		=	FALSE;
 		vs.insert		(make_pair(xr_strdup(Name),VS));
 		
 		// Load vertex shader
@@ -142,17 +143,22 @@ CVS*	CShaderManager::_CreateVS	(DWORD FVF)
 		CVS *VS			=	new CVS;
 		VS->dwReference	=	1;
 		VS->dwStride	=	D3DXGetFVFVertexSize	(FVF);
+		VS->bFFP		=	TRUE;
 		vs.insert		(make_pair(xr_strdup(Name),VS));
 
 		// Create shader
+		/*
 		DWORD			decl[MAX_FVF_DECL_SIZE];
 		R_CHK			(D3DXDeclaratorFromFVF(FVF,decl));
 		R_CHK			(HW.pDevice->CreateVertexShader(decl,0,&VS->dwHandle,0));
+		*/
+		VS->dwHandle	=	FVF;
 
 		// Return
 		return			VS;
 	}
 }
+
 void	CShaderManager::_DeleteVS	(CVS* &VS)
 {
 	if (VS)	
