@@ -91,8 +91,8 @@ void CEditableObject::FillBoneList(LPCSTR pref, ListItemsVec& items, int modeID)
 	if (pref) LHelper.CreateItem(items, pref, modeID, ListItem::flSorted);
     for(BoneIt b_it=b_lst.begin(); b_it!=b_lst.end(); b_it++){
     	AnsiString pt	= MakeFullBonePath(*b_it);
-    	LPCSTR path		= pt.IsEmpty()?pref:FHelper.PrepareKey(pref, pt.c_str()).c_str();
-        LHelper.CreateItem(items, FHelper.PrepareKey(path, (*b_it)->Name()).c_str(), modeID, 0, *b_it);
+    	AnsiString path	= pt.IsEmpty()?pref:FHelper.PrepareKey(pref, pt.c_str()).c_str();
+        LHelper.CreateItem(items, FHelper.PrepareKey(path.c_str(), (*b_it)->Name()).c_str(), modeID, 0, *b_it);
     }
 }
 
