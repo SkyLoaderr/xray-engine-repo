@@ -17,7 +17,6 @@ static DWORD			phase_start_time= 0;
 static BOOL				bStatusChange	= FALSE;
 static BOOL				bPhaseChange	= FALSE;
 static DWORD			phase_total_time= 0;
-static BOOL				bHighPriority	= FALSE;
 
 static HWND hwLog		= 0;
 static HWND hwProgress	= 0;
@@ -42,11 +41,6 @@ static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 			{
 				ExitProcess	(0);
 				bClose = TRUE;
-			}
-			break;
-		case WM_KEYDOWN:
-			{
-				if (wp==VK_F1)	bHighPriority = TRUE;
 			}
 			break;
 		default:
@@ -182,6 +176,9 @@ void __cdecl logThread(void *dummy)
 		char tmpbuf[128];
 		Msg("Startup time: %s",_strtime(tmpbuf));
 	}
+
+	BOOL bHighPriority	= FALSE;
+	if (strstr(GetCommandLine(),"-oles")!=NULL)	bHighPriority	= TRUE;
 
 	// Main cycle
 	DWORD	LogSize = 0;
