@@ -156,11 +156,12 @@ void CWallmarksEngine::AddWallmark	(RAPID::tri* pTri, const Fvector &contact_poi
 	{
 		CWallmark& wm = *it;
 		if (wm.hShader != hShader)	continue;
+		if (&wm == &W)				continue;
 
 		if (wm.S.P.similar(W.S.P,0.01f))	
 		{
 			// replace
-			wm				= W;
+			wm.Copy			(W);
 			marks.pop_back	();
 			return;
 		}
