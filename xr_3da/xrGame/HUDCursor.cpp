@@ -35,8 +35,6 @@ void CHUDCursor::Render()
 {
 	Fvector		p1,p2,dir;
 
-	if (0 == (psHUD_Flags&HUD_CROSSHAIR)) return;
-
 	int cur_team = ((CEntity*)pCreator->CurrentEntity())->id_Team;
 
 	p1	= Device.vCameraPosition;

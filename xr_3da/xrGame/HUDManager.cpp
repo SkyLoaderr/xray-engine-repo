@@ -75,56 +75,59 @@ void CHUDManager::OnMove()
 ENGINE_API extern float psHUD_FOV;
 void CHUDManager::Render_Affected()
 {
+	if (pUI) pCreator->CurrentViewEntity()->OnHUDDraw	(this);
+	
+	// HUD model
+	if (psHUD_Flags&HUD_WEAPON) {
+		Fmatrix Pold			= Device.mProject;
+		Fmatrix FTold			= Device.mFullTransform;
+		float aspect			= float(Device.dwHeight)/float(Device.dwWidth);
+		Device.mProject.build_projection(
+			deg2rad(psHUD_FOV*Device.fFOV*aspect), 
+			aspect, VIEWPORT_NEAR, 
+			pCreator->Environment.Current.Far);
+		Device.mFullTransform.mul(Device.mProject, Device.mView);
+		
+		HW.pDevice->SetTransform(D3DTS_PROJECTION, Device.mProject.d3d());
+		
+		// Sort shaders 
+		for (DWORD i=0; i<Models.size(); i++) 
+		{
+			Model& M = Models[i];
+			::Render.set_Transform		(&M.M);
+			::Render.set_LightLevel		(M.iLightLevel);
+			::Render.add_leafs_Dynamic	(M.V);
+		}
+		
+		// Render with ZB hack :)
+		::Render.rmNear			();
+		::Render.flush_Models	();
+		::Render.rmNormal		();
+		
+		Device.mProject			= Pold;
+		Device.mFullTransform	= FTold;
+		HW.pDevice->SetTransform(D3DTS_PROJECTION, Device.mProject.d3d());
+	}
+	Models.clear	();
+}
+
+void CHUDManager::Render_Direct	()
+{
+	BOOL bAlready = FALSE;
 	if (psHUD_Flags&HUD_DRAW)
 	{
-		if (pUI) pCreator->CurrentViewEntity()->OnHUDDraw	(this);
-		// HUD model
-		if (psHUD_Flags&HUD_WEAPON) {
-			Fmatrix Pold			= Device.mProject;
-			Fmatrix FTold			= Device.mFullTransform;
-			float aspect			= float(Device.dwHeight)/float(Device.dwWidth);
-			Device.mProject.build_projection(
-				deg2rad(psHUD_FOV*Device.fFOV*aspect), 
-				aspect, VIEWPORT_NEAR, 
-				pCreator->Environment.Current.Far);
-			Device.mFullTransform.mul(Device.mProject, Device.mView);
-
-			HW.pDevice->SetTransform(D3DTS_PROJECTION, Device.mProject.d3d());
-			
-			// Sort shaders 
-			for (DWORD i=0; i<Models.size(); i++) 
-			{
-				Model& M = Models[i];
-				::Render.set_Transform		(&M.M);
-				::Render.set_LightLevel		(M.iLightLevel);
-				::Render.add_leafs_Dynamic	(M.V);
-			}
-			
-			// Render with ZB hack :)
-			::Render.rmNear			();
-			::Render.flush_Models	();
-			::Render.rmNormal		();
-			
-			Device.mProject			= Pold;
-			Device.mFullTransform	= FTold;
-			HW.pDevice->SetTransform(D3DTS_PROJECTION, Device.mProject.d3d());
-		}
-		Models.clear	();
-		
 		// draw hit marker
 		HitMarker.Render();
 		
 		// font render
 		pSmallFont->OnRender	();
 		pGameFont->OnRender		();
+
 		// UI
-		if (pUI&&!pUI->Render()) HUDCursor.Render();
+		bAlready = ! (pUI && !pUI->Render());
 		pHUDFont->OnRender		();
 	}
-}
-void CHUDManager::Render_Direct	()
-{
-
+	if ((psHUD_Flags&HUD_CROSSHAIR) && !bAlready)	HUDCursor.Render();
 }
 
 //--------------------------------------------------------------------
