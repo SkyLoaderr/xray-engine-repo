@@ -37,6 +37,7 @@ CWeaponLR300::~CWeaponLR300		()
 	// sounds
 	pSounds->Delete3D	(sndFireLoop	);
 	pSounds->Delete3D	(sndEmptyClick	);
+	pSounds->Delete3D	(sndReload		);
 	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 }
 
