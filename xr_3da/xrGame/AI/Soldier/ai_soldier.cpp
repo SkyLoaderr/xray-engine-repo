@@ -158,8 +158,8 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	if (Known.size()==0)	return;
 
 	// Get visible list
-	objSET		Visible;
-	ai_Track.o_get	(Visible);
+	objSET				Visible;
+	ai_Track.o_get		(Visible);
 	std::sort			(Visible.begin(),Visible.end());
 
 	// Iterate on known
