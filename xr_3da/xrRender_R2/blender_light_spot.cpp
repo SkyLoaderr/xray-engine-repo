@@ -57,7 +57,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 			C.r_Sampler_rtf		("s_smap",			r2_RT_smap_d_surf);
 			C.r_Sampler_clf		("s_material",		r2_material);
 			C.r_Sampler_clf		("s_attenuate",		r2_attenuate);
-			C.r_Sampler_clf		("s_lmap",			"lights\\lights_strobevent01");
+			C.r_Sampler_clf		("s_lmap",			C.L_textures[0]);
 			C.r_End				();
 			break;
 		}
