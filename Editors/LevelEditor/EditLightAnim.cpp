@@ -170,6 +170,7 @@ void TfrmEditLightAnim::UpdateView()
 //        stStartFrame->Caption = m_CurrentItem->Keys.size();
 		sePointer->Color = TColor(m_CurrentItem->IsKey(sePointer->Value)?0x00BFFFFF:0x00A0A0A0);
     }
+    Caption = AnsiString().sprintf("Light Animation Library%s",ebSave->Enabled?"*":"");
 }
 //------------------------------------------------------------------------------
 void __fastcall	TfrmEditLightAnim::OnFrameCountAfterEdit  (PropValue* v, s32& val, bool& accepted)
@@ -299,28 +300,28 @@ void __fastcall TfrmEditLightAnim::ebDeleteKeyClick(TObject *Sender)
 
 void __fastcall TfrmEditLightAnim::ebCreateKeyClick(TObject *Sender)
 {
-    u32 color				= m_CurrentItem->Interpolate(sePointer->Value);
+    u32 old_color			= m_CurrentItem->Interpolate(sePointer->Value);
 
-    float 	alpha			= float		(color_get_A(color))/255.f;
-    u32 	base_color		= color_rgba(color_get_B(color),color_get_G(color),color_get_R(color),0);
+    float 	alpha			= float		(color_get_A(old_color))/255.f;
+    u32 	base_color		= color_rgba(color_get_B(old_color),color_get_G(old_color),color_get_R(old_color),0);
     
-	TProperties* P 			= TProperties::CreateModalForm("Key Properties",false,TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
+	TProperties* P 			= TProperties::CreateModalForm("Key Properties",true);
     // fill data
     PropItemVec items;
     PHelper().CreateColor	(items, "Color",		&base_color);
     PHelper().CreateFloat	(items,	"Alpha",		&alpha);
     P->AssignItems			(items);
 
-    P->ShowPropertiesModal	();
-    
+    if (mrOk==P->ShowPropertiesModal()){
+        u32 new_color		= color_rgba(color_get_B(base_color),color_get_G(base_color),color_get_R(base_color),u8(alpha*255.f));
+        u32 old_sz			= m_CurrentItem->Keys.size();
+        m_CurrentItem->InsertKey(sePointer->Value,new_color);
+        UpdateView			();
+        if ((old_color!=new_color)||(old_sz!=m_CurrentItem->Keys.size())) 
+        	OnModified();
+    }
     TProperties::DestroyForm(P);
-
-    color					= color_rgba(color_get_B(base_color),color_get_G(base_color),color_get_R(base_color),u8(alpha*255.f));
-    m_CurrentItem->InsertKey(sePointer->Value,color);
-
-    UpdateView();
-    OnModified();
-}
+}                    //overridden
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::pbGPaint(TObject *Sender)
