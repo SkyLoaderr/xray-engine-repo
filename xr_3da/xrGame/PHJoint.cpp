@@ -889,6 +889,10 @@ void CPHJoint::SetJointSDfactors(float spring_factor,float damping_factor)
 	}
 }
 
+u16 CPHJoint::GetAxesNumber()
+{
+	return u16(axes.size());
+}
 void CPHJoint::CalcAxis(int ax_num,Fvector& axis, float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix,const Fmatrix& rotate)
 {
 	switch(axes[ax_num].vs)

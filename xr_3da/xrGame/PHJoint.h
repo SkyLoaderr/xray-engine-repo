@@ -56,7 +56,7 @@ class CPHJoint: public CPhysicsJoint{
 			void 				SetVelocityActive			(const int axis_num);
 			void 				CalcAxis					(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix);
 			void 				CalcAxis					(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix,const Fmatrix& rotate);
-
+	virtual	u16					GetAxesNumber				()																															 ;
 	virtual void 				SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num);
 	virtual void 				SetJointSDfactors			(float spring_factor,float damping_factor);
 	virtual void 				SetAxis						(const SPHAxis& axis,const int axis_num);

@@ -1359,3 +1359,9 @@ void CScriptGameObject::ChangeTeam(u8 team, u8 squad, u8 group)
 		custom_monster->ChangeTeam(team,squad,group);
 }
 
+CPhysicsShell* CScriptGameObject::get_physics_shell() const
+{
+	CPhysicsShellHolder* ph_shell_holder =dynamic_cast<CPhysicsShellHolder*>(m_tpGameObject);
+	if(! ph_shell_holder) return NULL;
+	return ph_shell_holder->PPhysicsShell();
+}
