@@ -10,9 +10,9 @@
 #include "ai_zombie.h"
 #include "..\\ai_monsters_misc.h"
 
-/**
-#define WRITE_TO_LOG(s) bStopThinking = true;
-{\
+/**/
+//#define WRITE_TO_LOG(s) bStopThinking = true;
+#define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
 		Msg("* No objects in frustum",feel_visible.size());\
@@ -419,7 +419,7 @@ void CAI_Zombie::Pursuit()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiZombieAttackRun);
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= m_dwLostMemoryTime);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - (int)m_tLastSound.dwTime >= m_dwLostMemoryTime);
 	
 	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
 		if (m_tLastSound.tpEntity)
