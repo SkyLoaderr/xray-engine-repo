@@ -53,3 +53,4 @@ zmey_guard_base     = zmey_actions + 0
 jon_actions = zmey_actions + 1024
 
 jon_stalker_zombe      = jon_actions + 0
+jon_stalker_novice	   = jon_actions + 1
