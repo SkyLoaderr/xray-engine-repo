@@ -52,10 +52,10 @@ bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
    	return false;
 }
 
-
 bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 {
-	BOOL* ruck_room = (BOOL*)xr_malloc(width*height);
+	BOOL* ruck_room = (BOOL*)xr_malloc(width*height*sizeof(BOOL));
+	
 	
 	R_ASSERT(ruck_room);
 
