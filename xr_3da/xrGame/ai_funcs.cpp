@@ -12,6 +12,10 @@
 #define WRITE_TO_LOG
 #define AI_PATH			"ai\\"
 
+#ifndef DEBUG
+	#undef WRITE_TO_LOG
+#endif
+
 CPatternFunction::CPatternFunction()
 {
 	m_dwPatternCount = m_dwVariableCount = m_dwParameterCount = 0;

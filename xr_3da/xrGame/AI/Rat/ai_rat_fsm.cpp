@@ -11,7 +11,7 @@
 #include "..\\ai_monsters_misc.h"
 
 using namespace NAI_Rat_Constants;
-
+		   
 #define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	if (!feel_visible.size())\
@@ -31,6 +31,10 @@ using namespace NAI_Rat_Constants;
 	}\
 	bStopThinking = true;\
 }
+
+#ifndef DEBUG
+	#define WRITE_TO_LOG(s)
+#endif
 
 void CAI_Rat::Think()
 {
