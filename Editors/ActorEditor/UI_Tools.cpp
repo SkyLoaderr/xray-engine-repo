@@ -330,7 +330,7 @@ bool CActorTools::Load(LPCSTR name)
 	VERIFY(m_bReady);
 	CEditableObject* O = new CEditableObject(name);
 	if (O->Load(name)){
-    	if (O->IsFlag(CEditableObject::eoDynamic)){
+    	if (O->m_Flags.is(CEditableObject::eoDynamic)){
             _DELETE(m_pEditObject);
             m_pEditObject = O;
             // delete visual
@@ -555,7 +555,7 @@ void CActorTools::FillObjectProperties()
 
 	PropValueVec values;
 
-    FILL_PROP(values, "Make Progressive",		&m_pEditObject->GetFlags(),  	PHelper.CreateFlag	(CEditableObject::eoProgressive));
+    FILL_PROP(values, "Make Progressive",		&m_pEditObject->m_Flags.flags, 	PHelper.CreateFlag	(CEditableObject::eoProgressive));
     FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,0,OnChangeTransform));
     FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PHelper.CreateVector(-10000,	10000,0.1,1,0,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
 
