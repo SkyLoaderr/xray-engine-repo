@@ -25,7 +25,7 @@
 #define RECHARGE_MEDIAN					(2.f/3.f)
 #define RECHARGE_EPSILON				(0.f/6.f)
 
-/**/
+/**
 void CAI_Soldier::Test()
 {
 	WRITE_TO_LOG("Temporary test state");
@@ -1957,7 +1957,7 @@ void CAI_Soldier::Think()
 				Jumping();
 				break;
 			}
-			/**
+			/**/
 			case aiSoldierDie : {
 				Die();
 				break;
@@ -2040,7 +2040,7 @@ void CAI_Soldier::Think()
 				break;
 			}
 			/**/
-			default : Test();
+			//default : Test();
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
