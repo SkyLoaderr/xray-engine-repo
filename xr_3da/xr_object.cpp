@@ -119,8 +119,7 @@ void CObject::Load				(LPCSTR section )
 	R_ASSERT					( pCreator );
 
 	// Visual
-	if (pSettings->LineExists(section,"visual")) 
-		pVisualName				= xr_strdup(pSettings->ReadSTRING(section,"visual"));
+	if (pSettings->LineExists(section,"visual")) cNameVisual_set	(pSettings->ReadSTRING(section,"visual"));
 	
 	// Collision model
 	cfModel						= NULL;
@@ -159,7 +158,7 @@ void CObject::OnDeviceCreate	()
 {
 	// visual and shadow
 	REQ_CREATE					();
-	pVisual						= Render->model_Create	(pVisualName);
+	pVisual						= Render->model_Create	(cNameVisual());
 	pLights						= new CLightTrack;
 	Sector_Detect				();
 }
