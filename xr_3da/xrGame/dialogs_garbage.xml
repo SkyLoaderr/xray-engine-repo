@@ -46,44 +46,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="gar_dolg_start">
-        <phrase_list>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="2">
-                <text>gar_dolg_start_2</text>
-            </phrase>
-            <phrase id="3">
-                <text>gar_dolg_start_3</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="gar_dolg_guard_start">
-        <phrase_list>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>gar_dolg_guard_start_3</text>
-            </phrase>
-            <phrase id="2">
-                <text>gar_dolg_guard_start_2</text>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="gar_dolg_acces">
         <phrase_list>
             <phrase id="31">
@@ -139,47 +101,6 @@
             </phrase>
             <phrase id="4">
                 <text>gar_dolg_acces_4</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="gar_dolg_about">
-        <phrase_list>
-            <phrase id="21">
-                <text>gar_dolg_about_21</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="31">
-                <text>gar_dolg_about_31</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="3">
-                <text>gar_dolg_about_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="2">
-                <text>gar_dolg_about_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="111">
-                <text></text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="1">
-                <text>gar_dolg_about_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="4">
-                <text>gar_dolg_about_4</text>
-            </phrase>
-            <phrase id="11">
-                <text></text>
-                <next>111</next>
-            </phrase>
-            <phrase id="0">
-                <text>gar_dolg_about_0</text>
-                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -268,15 +189,15 @@
         </phrase_list>
     </dialog>
     <dialog id="gar_seriy_help">
-		<precondition>dialogs.dialog_allowed</precondition>
-    	<precondition>dialogs.is_opp_wounded</precondition>
+        <precondition>dialogs.dialog_allowed</precondition>
+        <precondition>dialogs.is_opp_wounded</precondition>
         <phrase_list>
             <phrase id="0">
                 <text>gar_seriy_help_0</text>
                 <next>1</next>
             </phrase>
             <phrase id="2">
-				<precondition>dialogs.actor_have_medkit</precondition>
+                <precondition>dialogs.actor_have_medkit</precondition>
                 <text>gar_seriy_help_2</text>
                 <action>dialogs.transfer_medkit</action>
                 <next>21</next>
@@ -285,7 +206,7 @@
                 <text>gar_seriy_help_3</text>
                 <next>31</next>
             </phrase>
-            <phrase id="21">           
+            <phrase id="21">
                 <text>gar_seriy_help_21</text>
                 <actions>garbage_dialogs.transfer_seriy_flash</actions>
             </phrase>
@@ -316,6 +237,98 @@
             <phrase id="3">
                 <text>gar_seriy_start_3</text>
                 <precondition>dialogs.is_not_wounded</precondition>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="gar_dolg_guard_start">
+        <phrase_list>
+            <phrase id="2">
+                <text>gar_dolg_guard_start_2</text>
+            </phrase>
+            <phrase id="3">
+                <text>gar_dolg_guard_start_3</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <has_info>gar_dolg_access_rostok</has_info>
+                <next>3</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>gar_dolg_access_rostok</dont_has_info>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="gar_dolg_start">
+        <phrase_list>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+            </phrase>
+            <phrase id="2">
+                <text>gar_dolg_start_2</text>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>gar_dolg_help_kill_rush</dont_has_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="3">
+                <text>gar_dolg_start_3</text>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <has_info>gar_dolg_help_kill_rush</has_info>
+                <next>3</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="gar_dolg_about">
+		<has_info>gar_dolg_help_kill_rush</has_info>
+        <phrase_list>
+            <phrase id="3">
+                <text>gar_dolg_about_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <text>gar_dolg_about_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="1">
+                <text>gar_dolg_about_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="21">
+                <text>gar_dolg_about_21</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="31">
+                <text>gar_dolg_about_31</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <text>gar_dolg_about_4</text>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="0">
+                <text>gar_dolg_about_0</text>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
