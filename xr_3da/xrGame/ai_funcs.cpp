@@ -12,7 +12,7 @@
 #include "ai_space.h"
 #include "ai_alife_templates.h"
 
-//#define WRITE_TO_LOG
+#define WRITE_TO_LOG
 
 #ifndef DEBUG
 	#undef WRITE_TO_LOG
