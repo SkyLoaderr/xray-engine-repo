@@ -299,9 +299,9 @@ function body_state:anim_update(type)
 			local r
 			if table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]) > 1 then			
 				if self.states.last_id == nil then
-					r = math.random(table.getn(self.animations[self.states.current_state].rnd))
+					r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]))
 				else
-					r = math.random(table.getn(self.animations[self.states.current_state].rnd)-1)
+					r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()])-1)
 					if r >= self.states.last_id then
 						r = r + 1
 					end
