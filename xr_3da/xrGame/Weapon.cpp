@@ -78,7 +78,7 @@ void CWeapon::ShaderCreate(Shader* &dest, LPCSTR S, LPCSTR T)
 		dest = Device.Shader.Create(S,name);
 		return;
 	}
-	strconcat	(name,"weapons\\","generic_\\",T);
+	strconcat	(name,"weapons\\generic\\",T);
 	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name);
