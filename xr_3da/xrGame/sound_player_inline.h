@@ -14,6 +14,13 @@ IC	void CSoundPlayer::set_sound_mask		(u32 sound_mask)
 	remove_inappropriate_sounds			(m_sound_mask);
 }
 
+IC	void CSoundPlayer::remove_active_sounds	(u32 sound_mask)
+{
+	u32									save_sound_mask = m_sound_mask;
+	set_sound_mask						(sound_mask);
+	set_sound_mask						(save_sound_mask);
+}
+
 IC	const xr_vector<CSoundPlayer::CSoundSingle> &CSoundPlayer::playing_sounds() const
 {
 	return								(m_playing_sounds);

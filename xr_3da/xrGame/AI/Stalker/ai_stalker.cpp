@@ -31,6 +31,7 @@
 #include "../../motivation_action_manager_stalker.h"
 #include "../../script_game_object.h"
 #include "../../detail_path_manager.h"
+#include "../../agent_manager.h"
 
 extern int g_AI_inactive_time;
 
@@ -112,15 +113,16 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),		100, SOUND_TYPE_MONSTER_DYING,		0, u32(eStalkerSoundMaskDie),				eStalkerSoundDie,				head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_anomaly_death"),100, SOUND_TYPE_MONSTER_DYING,		0, u32(eStalkerSoundMaskDieInAnomaly),		eStalkerSoundDieInAnomaly,		head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),			100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuring),			eStalkerSoundInjuring,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskHumming),			eStalkerSoundHumming,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAlarm),				eStalkerSoundAlarm,				head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_attack"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAttack),			eStalkerSoundAttack,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_backup"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskBackup),			eStalkerSoundBackup,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_detour"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskDetour),			eStalkerSoundDetour,			head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_search"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskSearch),			eStalkerSoundSearch,			head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_friendly_fire"),100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuringByFriend),	eStalkerSoundInjuringByFriend,	head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_human"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicHuman),		eStalkerSoundPanicHuman,		head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_monster"),100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicMonster),		eStalkerSoundPanicMonster,		head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_tolls"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskTolls),				eStalkerSoundTolls,				head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskAlarm),				eStalkerSoundAlarm,				head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_attack"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskAttack),			eStalkerSoundAttack,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_backup"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskBackup),			eStalkerSoundBackup,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_detour"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskDetour),			eStalkerSoundDetour,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_search"),		100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskSearch),			eStalkerSoundSearch,			head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),		100, SOUND_TYPE_MONSTER_TALKING,	5, u32(eStalkerSoundMaskHumming),			eStalkerSoundHumming,			head_bone_name);
 }
 
 void CAI_Stalker::load_killer_clsids(LPCSTR section)
@@ -174,6 +176,8 @@ void CAI_Stalker::Die				(CObject* who)
 
 	//запретить использование слотов в инвенторе
 	inventory().SetSlotsUseful		(false);
+
+	agent_manager().register_corpse	(this);
 }
 
 void CAI_Stalker::Load				(LPCSTR section)

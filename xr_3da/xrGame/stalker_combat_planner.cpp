@@ -18,6 +18,8 @@
 #include "cover_point.h"
 #include "stalker_movement_restriction.h"
 
+const u32 TOLLS_INTERVAL = 2000;
+
 using namespace StalkerDecisionSpace;
 
 CStalkerCombatPlanner::CStalkerCombatPlanner	(CAI_Stalker *object, LPCSTR action_name) :
@@ -76,6 +78,18 @@ void CStalkerCombatPlanner::update				()
 {
 	update_cover			();
 	inherited::update		();
+	
+	CMemberOrder::CMemberDeathReaction	&reaction = m_object->agent_manager().member(m_object).member_death_reaction();
+	if (!reaction.m_processing)
+		return;
+
+	if (Device.dwTimeGlobal < reaction.m_time + TOLLS_INTERVAL)
+		return;
+
+	if (m_object->agent_manager().group_behaviour())
+		m_object->CSoundPlayer::play(StalkerSpace::eStalkerSoundTolls);
+
+	reaction.clear			();
 }
 
 void CStalkerCombatPlanner::initialize			()
@@ -96,8 +110,7 @@ void CStalkerCombatPlanner::finalize			()
 	if (!m_object->g_Alive())
 		return;
 
-	m_object->set_sound_mask(u32(-1));
-	m_object->set_sound_mask(0);
+	m_object->remove_active_sounds	(u32(-1));
 }
 
 void CStalkerCombatPlanner::add_evaluators		()

@@ -42,8 +42,7 @@ void CSoundPlayer::reinit			()
 void CSoundPlayer::reload			(LPCSTR section)
 {
 	clear							();
-	set_sound_mask					(u32(-1));
-	set_sound_mask					(0);
+	remove_active_sounds			(u32(-1));
 	VERIFY							(m_playing_sounds.empty());
 	m_object						= smart_cast<CObject*>(this);
 	VERIFY							(m_object);

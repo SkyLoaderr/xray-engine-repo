@@ -644,8 +644,7 @@ void CAI_Rat::EatCorpse()
 		CSoundPlayer::play				(eRatSoundEat);
 	}
 	else {
-		CSoundPlayer::set_sound_mask	(u32(-1));
-		CSoundPlayer::set_sound_mask	(0);
+		CSoundPlayer::remove_active_sounds(u32(-1));
 		if (!a)
 			m_fSpeed					= m_fMaxSpeed;
 		else

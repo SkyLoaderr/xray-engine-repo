@@ -62,8 +62,7 @@ void CStalkerActionSolveZonePuzzle::finalize	()
 	if (!m_object->g_Alive())
 		return;
 
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
-	m_object->set_sound_mask		(0);
+	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionSolveZonePuzzle::execute		()
@@ -150,7 +149,7 @@ void CStalkerActionAccomplishTask::initialize	()
 	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeSearch,false,true));
 	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	m_object->extrapolate_path			(true);
-	m_object->set_sound_mask			(u32(eStalkerSoundMaskNoHumming));
+	m_object->remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionAccomplishTask::finalize	()
@@ -276,7 +275,7 @@ void CStalkerActionCommunicateWithCustomer::initialize	()
 	m_object->set_mental_state			(eMentalStateFree);
 	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeCover,false,true));
 	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
-	m_object->set_sound_mask			(u32(eStalkerSoundMaskNoHumming));
+	m_object->remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 	m_trader							= smart_cast<CAI_Trader*>(Level().Objects.net_Find(m_object->current_alife_task().m_tCustomerID));
 	VERIFY								(m_trader);
 }

@@ -18,38 +18,63 @@ class CAI_Stalker;
 class CCoverPoint;
 
 class CMemberOrder {
-protected:
-	CAI_Stalker								*m_object;
-	mutable CCoverPoint						*m_cover;
-	AgentManager::EOrderType				m_order_type;
-	GraphEngineSpace::CWorldState			m_goal;
-	CSetupAction							m_action;
-	bool									m_initialized;
-	float									m_probability;
-	xr_vector<u32>							m_enemies;
-	bool									m_processed;
-	u32										m_selected_enemy;
+public:
+	typedef AgentManager::EOrderType		EOrderType;
+	typedef GraphEngineSpace::CWorldState	CWorldState;
 
 public:
-	IC										CMemberOrder	(CAI_Stalker *object);
-	IC		bool							initialized		() const;
-	IC		CAI_Stalker						*object			() const;
-	IC		const CSetupAction				&action			() const;
-	IC		const AgentManager::EOrderType	&order_type		() const;
-	IC		const GraphEngineSpace::CWorldState	&goal			() const;
-	IC		float							probability		() const;
-	IC		bool							processed		() const;
-	IC		u32								selected_enemy	() const;
-	IC		CSetupAction					&action			();
-	IC		void							action			(const CSetupAction	&action);
-	IC		void							order_type		(const AgentManager::EOrderType &order_type);
-	IC		void							goal			(const GraphEngineSpace::CWorldState &goal);
-	IC		void							probability		(float probability);
-	IC		xr_vector<u32>					&enemies		();
-	IC		void							processed		(bool processed);
-	IC		void							selected_enemy	(u32 selected_enemy);
-	IC		void							cover			(CCoverPoint *object_cover) const;
-	IC		CCoverPoint						*cover			() const;
+	struct CMemberDeathReaction {
+		CAI_Stalker				*m_member;
+		u32						m_time;
+		bool					m_processing;
+
+		IC			CMemberDeathReaction()
+		{
+			clear				();
+		}
+
+		IC	void	clear				()
+		{
+			m_member			= 0;
+			m_time				= 0;
+			m_processing		= false;
+		}
+	};
+
+protected:
+	CAI_Stalker					*m_object;
+	mutable CCoverPoint			*m_cover;
+	EOrderType					m_order_type;
+	CWorldState					m_goal;
+	CSetupAction				m_action;
+	bool						m_initialized;
+	float						m_probability;
+	xr_vector<u32>				m_enemies;
+	bool						m_processed;
+	u32							m_selected_enemy;
+	mutable CMemberDeathReaction m_member_death_reaction;
+
+public:
+	IC							CMemberOrder			(CAI_Stalker *object);
+	IC		bool				initialized				() const;
+	IC		CAI_Stalker			*object					() const;
+	IC		const CSetupAction	&action					() const;
+	IC		const EOrderType	&order_type				() const;
+	IC		const CWorldState	&goal					() const;
+	IC		float				probability				() const;
+	IC		bool				processed				() const;
+	IC		u32					selected_enemy			() const;
+	IC		CCoverPoint			*cover					() const;
+	IC		CMemberDeathReaction&member_death_reaction	() const;
+	IC		CSetupAction		&action					();
+	IC		xr_vector<u32>		&enemies				();
+	IC		void				cover					(CCoverPoint *object_cover) const;
+	IC		void				action					(const CSetupAction	&action);
+	IC		void				order_type				(const EOrderType &order_type);
+	IC		void				goal					(const CWorldState &goal);
+	IC		void				probability				(float probability);
+	IC		void				processed				(bool processed);
+	IC		void				selected_enemy			(u32 selected_enemy);
 };
 
 #include "member_order_inline.h"

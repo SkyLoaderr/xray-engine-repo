@@ -82,6 +82,24 @@ public:
 		}
 	};
 
+	struct CMemberCorpse {
+		CAI_Stalker		*m_member;
+		CAI_Stalker		*m_reactor;
+		u32				m_time;
+
+		IC			CMemberCorpse	(CAI_Stalker *member, CAI_Stalker *reactor, u32 time)
+		{
+			m_member	= member;
+			m_reactor	= reactor;
+			m_time		= time;
+		}
+
+		IC	bool	operator==		(CAI_Stalker *member) const
+		{
+			return		(m_member == member);
+		}
+	};
+
 public:
 	typedef xr_vector<CMemberOrder>					MEMBER_STORAGE;
 	typedef MEMBER_STORAGE::iterator				iterator;
@@ -93,6 +111,7 @@ protected:
 	xr_vector<CSoundObject>					*m_sound_objects;
 	xr_vector<CHitObject>					*m_hit_objects;
 	xr_vector<CEnemy>						m_enemies;
+	mutable xr_vector<CMemberCorpse>		m_corpses;
 	mutable xr_vector<CDangerCover>			m_danger_covers;
 	CAgentManagerMotivationPlanner			*m_brain;
 
@@ -116,6 +135,7 @@ protected:
 			float							evaluate			(const CEntityAlive *object0, const CEntityAlive *object1) const;
 			void							exchange_enemies	(CMemberOrder &member0, CMemberOrder &member1);
 			void							remove_old_danger_covers	();
+			bool							process_corpse		(CMemberOrder &member);
 
 public:
 											CAgentManager		();
@@ -128,6 +148,7 @@ public:
 			void							distribute_enemies	();
 			void							distribute_locations();
 			void							setup_actions		();
+			void							react_on_member_death();
 	IC		const CSetupAction				&action				(CAI_Stalker *object) const;
 	IC		const CMemberOrder				&member				(CAI_Stalker *object) const;
 	IC		const MEMBER_STORAGE			&members			() const;
@@ -144,6 +165,7 @@ public:
 	IC		void							clear_danger_covers	();
 	IC		shared_str						cName				() const;
 	IC		CAgentManagerMotivationPlanner	&brain				() const;
+	IC		void							register_corpse		(CAI_Stalker *corpse) const;
 };
 
 #include "agent_manager_inline.h"

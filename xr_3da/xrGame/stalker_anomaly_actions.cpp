@@ -34,7 +34,7 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 {
 	inherited::initialize				();
 
-	m_object->set_sound_mask			(u32(eStalkerSoundMaskNoHumming));
+	m_object->remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 
 	m_object->set_node_evaluator		(0);
 	m_object->set_path_evaluator		(0);
@@ -100,7 +100,7 @@ CStalkerActionDetectAnomaly::CStalkerActionDetectAnomaly	(CAI_Stalker *object, L
 void CStalkerActionDetectAnomaly::initialize	()
 {
 	inherited::initialize			();
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	m_inertia_time					= 15000 + ::Random32.random(5000);
 }
 

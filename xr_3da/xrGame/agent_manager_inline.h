@@ -127,3 +127,10 @@ IC	CAgentManagerMotivationPlanner &CAgentManager::brain() const
 	VERIFY							(m_brain);
 	return							(*m_brain);
 }
+
+IC	void CAgentManager::register_corpse	(CAI_Stalker *corpse) const
+{
+	xr_vector<CMemberCorpse>::iterator	I = std::find(m_corpses.begin(),m_corpses.end(),corpse);
+	VERIFY2								(I == m_corpses.end(),"Cannot register corpse more than a time!");
+	m_corpses.push_back					(CMemberCorpse(corpse,0,Device.dwTimeGlobal));
+}

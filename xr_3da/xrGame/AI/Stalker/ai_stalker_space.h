@@ -24,6 +24,7 @@ namespace StalkerSpace {
 		eStalkerSoundInjuringByFriend,
 		eStalkerSoundPanicHuman,
 		eStalkerSoundPanicMonster,
+		eStalkerSoundTolls,
 
 		eStalkerSoundScript,
 		eStalkerSoundDummy = u32(-1),
@@ -44,6 +45,7 @@ namespace StalkerSpace {
 		eStalkerSoundMaskInjuringByFriend	= u32(-1),
 		eStalkerSoundMaskPanicHuman			= u32(-1),
 		eStalkerSoundMaskPanicMonster		= u32(-1),
+		eStalkerSoundMaskTolls				= u32(-1),
 		eStalkerSoundMaskDummy				= u32(-1),
 	};
 };

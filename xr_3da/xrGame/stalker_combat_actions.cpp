@@ -37,7 +37,7 @@ CStalkerActionCombatBase::CStalkerActionCombatBase	(CCoverPoint **last_cover, CA
 void CStalkerActionCombatBase::initialize			()
 {
 	inherited::initialize		();
-	m_object->set_sound_mask	(u32(eStalkerSoundMaskNoHumming));
+	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionCombatBase::finalize				()
@@ -80,7 +80,7 @@ CStalkerActionGetItemToKill::CStalkerActionGetItemToKill	(CCoverPoint **last_cov
 void CStalkerActionGetItemToKill::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
+	m_object->remove_active_sounds(u32(eStalkerSoundMaskNoHumming));
 	m_object->CSightManager::setup(CSightAction(m_object->m_best_found_item_to_kill,true));
 }
 
@@ -127,7 +127,7 @@ CStalkerActionMakeItemKilling::CStalkerActionMakeItemKilling	(CCoverPoint **last
 void CStalkerActionMakeItemKilling::initialize	()
 {
 	inherited::initialize			();
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	m_object->CSightManager::clear	();
 	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePathDirection)));
 	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));

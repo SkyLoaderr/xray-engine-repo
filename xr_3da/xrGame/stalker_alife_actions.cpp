@@ -44,7 +44,7 @@ void CStalkerActionGatherItems::initialize	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	if (!m_object->inventory().ActiveItem())
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	else
@@ -143,8 +143,7 @@ void CStalkerActionNoALife::finalize	()
 	if (!m_object->g_Alive())
 		return;
 
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
-	m_object->set_sound_mask		(0);
+	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionNoALife::execute		()

@@ -355,3 +355,71 @@ float CAgentManager::cover_danger		(CCoverPoint *cover) const
 
 	return			(result);
 }
+
+bool CAgentManager::process_corpse			(CMemberOrder &member)
+{
+	float			min_dist_sqr = flt_max;
+	CMemberCorpse	*best_corpse = 0;
+	xr_vector<CMemberCorpse>::iterator	I = m_corpses.begin();
+	xr_vector<CMemberCorpse>::iterator	E = m_corpses.end();
+	for ( ; I != E; ++I) {
+		if (!member.object()->visible_now(member.object()))
+			continue;
+
+		float		dist_sqr = (*I).m_member->Position().distance_to_sqr(member.object()->Position());
+		if (dist_sqr < min_dist_sqr) {
+			if	(
+					(*I).m_reactor && 
+					((*I).m_reactor->Position().distance_to_sqr((*I).m_member->Position()) <= min_dist_sqr)
+				)
+				continue;
+			min_dist_sqr	= dist_sqr;
+			best_corpse		= &*I;
+		}
+	}
+	
+	if (!best_corpse)
+		return				(false);
+
+	best_corpse->m_reactor	= member.object();
+	return					(true);
+}
+
+struct CRemoveMemberCorpsesPredicate {
+	IC	bool operator()		(CAgentManager::CMemberCorpse &corpse) const
+	{
+		return				(!!corpse.m_reactor);
+	}
+};
+
+void CAgentManager::react_on_member_death	()
+{
+	for (;;) {
+		bool						changed = false;
+		MEMBER_STORAGE::iterator	I = members().begin();
+		MEMBER_STORAGE::iterator	E = members().end();
+		for ( ; I != E; ++I)
+			if (!(*I).member_death_reaction().m_processing)
+				changed				= process_corpse(*I);
+
+		if (!changed)
+			break;
+	}
+
+	{
+		xr_vector<CMemberCorpse>::iterator	I = m_corpses.begin();
+		xr_vector<CMemberCorpse>::iterator	E = m_corpses.end();
+		for ( ; I != E; ++I) {
+			if (!(*I).m_reactor)
+				continue;
+
+			CMemberOrder::CMemberDeathReaction	&reaction = member((*I).m_reactor).member_death_reaction();
+			reaction.m_member		= (*I).m_member;
+			reaction.m_time			= (*I).m_time;
+			reaction.m_processing	= true;
+		}
+
+		I				= remove_if(m_corpses.begin(),m_corpses.end(),CRemoveMemberCorpsesPredicate());
+		m_corpses.erase	(I,m_corpses.end());
+	}
+}

@@ -48,9 +48,7 @@ void CSoundMemoryManager::reinit				()
 
 void CSoundMemoryManager::reload				(LPCSTR section)
 {
-	m_min_sound_threshold	= 0.05f;
-	m_self_sound_factor		= 0.f;
-	m_min_sound_threshold	= GET_IF_EXISTS(pSettings,r_float,section,"sound_threshold",0.f);
+	m_min_sound_threshold	= GET_IF_EXISTS(pSettings,r_float,section,"sound_threshold",0.05f);
 	m_self_sound_factor		= GET_IF_EXISTS(pSettings,r_float,section,"self_sound_factor",0.f);
 	m_sound_decrease_quant	= GET_IF_EXISTS(pSettings,r_u32,section,"self_decrease_quant",250);
 	m_decrease_factor		= GET_IF_EXISTS(pSettings,r_float,section,"self_decrease_factor",.95f);
@@ -61,14 +59,15 @@ IC	void CSoundMemoryManager::update_sound_threshold			()
 	VERIFY		(!fis_zero(m_decrease_factor));
 	// t = max(t*f^((tc - tl)/tq),min_threshold)
 	m_sound_threshold		= _max(
-		1*m_sound_threshold*
+		m_self_sound_factor*
+		m_sound_threshold*
 		exp(
-		float(Level().timeServer() - m_last_sound_time)/
-		float(m_sound_decrease_quant)*
-		log(m_decrease_factor)
+			float(Level().timeServer() - m_last_sound_time)/
+			float(m_sound_decrease_quant)*
+			log(m_decrease_factor)
 		),
 		m_min_sound_threshold
-		);
+	);
 	VERIFY		(_valid(m_sound_threshold));
 }
 
@@ -103,7 +102,7 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 			hit_memory_manager->add_hit_object(_entity_alive);
 	}
 	
-	if (sound_power >= m_self_sound_factor*m_sound_threshold)
+	if (sound_power >= m_sound_threshold)
 		add_sound_object	(object,sound_type,position,sound_power);
 
 	m_last_sound_time		= Level().timeServer();

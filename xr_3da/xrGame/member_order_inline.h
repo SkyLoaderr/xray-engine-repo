@@ -14,9 +14,9 @@ IC	CMemberOrder::CMemberOrder					(CAI_Stalker *object) :
 	m_order_type	(AgentManager::eOrderTypeNoOrder),
 	m_action		(0.f,0)
 {
-	VERIFY				(m_object);
-	m_enemies.reserve	(16);
-	m_cover				= 0;
+	VERIFY					(m_object);
+	m_enemies.reserve		(16);
+	m_cover					= 0;
 }
 
 IC	bool CMemberOrder::initialized				() const
@@ -114,4 +114,9 @@ IC	void CMemberOrder::cover					(CCoverPoint *object_cover) const
 IC	CCoverPoint	*CMemberOrder::cover			() const
 {
 	return			(m_cover);
+}
+
+IC	CMemberOrder::CMemberDeathReaction &CMemberOrder::member_death_reaction	() const
+{
+	return			(m_member_death_reaction);
 }
