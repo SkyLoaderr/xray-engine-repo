@@ -11,8 +11,8 @@ function evaluator_state_mgr_idle:__init(name, state_manager) super (nil, name)
 end
 function evaluator_state_mgr_idle:evaluate()
 	return self.st.target_state == "idle" and 
-		   not self.st.planner:evaluator(self.st.properties["locked"]):evaluate()
-	
+		   not self.st.planner:evaluator(self.st.properties["locked"]):evaluate() and
+		   self.st.planner:evaluator(self.st.properties["movement"]):evaluate()	
 	
 end
 --' Мы уже в безраличном состоянии idle или нет ()учет с проверкой alife
