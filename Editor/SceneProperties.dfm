@@ -31,7 +31,7 @@ object frmSceneProperties: TfrmSceneProperties
     object tsBuildOptions: TTabSheet
       Caption = 'Build Options'
       ImageIndex = 8
-      object RxLabel25: TRxLabel
+      object RxLabel25: TMxLabel
         Left = 107
         Top = 106
         Width = 128
@@ -56,14 +56,14 @@ object frmSceneProperties: TfrmSceneProperties
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        object RxLabel1: TRxLabel
+        object RxLabel1: TMxLabel
           Left = 3
           Top = 10
           Width = 57
           Height = 13
           Caption = 'Level name'
         end
-        object RxLabel2: TRxLabel
+        object RxLabel2: TMxLabel
           Left = 4
           Top = 32
           Width = 52
@@ -78,49 +78,13 @@ object frmSceneProperties: TfrmSceneProperties
           AutoSize = False
           TabOrder = 0
         end
-        object deLevelPath: TDirectoryEdit
+        object edLevelPath: TEdit
           Left = 98
-          Top = 30
+          Top = 29
           Width = 254
           Height = 18
-          InitialDir = 'game\data\level'
-          NumGlyphs = 1
-          ButtonWidth = 20
-          TabOrder = 1
-          Text = 'level'
-        end
-      end
-      object GroupBox1: TGroupBox
-        Left = 0
-        Top = 51
-        Width = 354
-        Height = 38
-        Align = alTop
-        Caption = ' Detail objects '
-        TabOrder = 1
-        object RxLabel33: TRxLabel
-          Left = 4
-          Top = 15
-          Width = 72
-          Height = 13
-          Caption = 'Cluster size (m)'
-        end
-        object seDOClusterSize: TMultiObjSpinEdit
-          Left = 98
-          Top = 13
-          Width = 79
-          Height = 18
-          LWSensitivity = 0.01
-          ButtonKind = bkLightWave
-          Decimal = 1
-          Increment = 0.1
-          MaxValue = 128
-          MinValue = 1
-          ValueType = vtFloat
-          Value = 4
           AutoSize = False
-          TabOrder = 0
-          OnChange = seEnvCountChange
+          TabOrder = 1
         end
       end
     end
@@ -136,7 +100,7 @@ object frmSceneProperties: TfrmSceneProperties
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        object RxLabel3: TRxLabel
+        object RxLabel3: TMxLabel
           Left = 2
           Top = 12
           Width = 78
@@ -169,14 +133,14 @@ object frmSceneProperties: TfrmSceneProperties
           FlatAlwaysEdge = True
           OnClick = ebClearSkydomeClick
         end
-        object RxLabel10: TRxLabel
+        object RxLabel10: TMxLabel
           Left = 2
           Top = 34
           Width = 91
           Height = 13
           Caption = 'Environment count'
         end
-        object RxLabel29: TRxLabel
+        object RxLabel29: TMxLabel
           Left = 181
           Top = 34
           Width = 97
@@ -252,14 +216,14 @@ object frmSceneProperties: TfrmSceneProperties
     object tsOptimizing: TTabSheet
       Caption = 'Optimizing'
       ImageIndex = 1
-      object RxLabel11: TRxLabel
+      object RxLabel11: TMxLabel
         Left = 2
         Top = 10
         Width = 101
         Height = 13
         Caption = 'Normal smooth angle'
       end
-      object RxLabel20: TRxLabel
+      object RxLabel20: TMxLabel
         Left = 3
         Top = 30
         Width = 87
@@ -300,7 +264,7 @@ object frmSceneProperties: TfrmSceneProperties
     object tsTesselation: TTabSheet
       Caption = 'Tesselation'
       ImageIndex = 2
-      object RxLabel4: TRxLabel
+      object RxLabel4: TMxLabel
         Left = 2
         Top = 28
         Width = 66
@@ -335,23 +299,23 @@ object frmSceneProperties: TfrmSceneProperties
     object tsLightmaps: TTabSheet
       Caption = 'Lightmaps'
       ImageIndex = 4
-      object RxLabel5: TRxLabel
+      object RxLabel5: TMxLabel
         Left = 2
-        Top = 44
+        Top = 27
         Width = 76
         Height = 13
         Caption = 'Pixels per meter'
       end
-      object RxLabel12: TRxLabel
+      object RxLabel12: TMxLabel
         Left = 2
-        Top = 64
+        Top = 47
         Width = 100
         Height = 13
         Caption = 'Deflectors split angle'
       end
-      object RxLabel32: TRxLabel
+      object RxLabel32: TMxLabel
         Left = 2
-        Top = 77
+        Top = 60
         Width = 88
         Height = 26
         Caption = 'Error metrics '#13#10'(for LM collapsing)'
@@ -359,7 +323,7 @@ object frmSceneProperties: TfrmSceneProperties
       end
       object seLMPixelsPerMeter: TMultiObjSpinEdit
         Left = 114
-        Top = 42
+        Top = 25
         Width = 78
         Height = 18
         LWSensitivity = 0.1
@@ -374,7 +338,7 @@ object frmSceneProperties: TfrmSceneProperties
       end
       object seLMDeflSplitAngle: TMultiObjSpinEdit
         Left = 114
-        Top = 62
+        Top = 45
         Width = 78
         Height = 18
         LWSensitivity = 0.1
@@ -398,18 +362,9 @@ object frmSceneProperties: TfrmSceneProperties
         State = cbChecked
         TabOrder = 2
       end
-      object cbLMRadiosity: TCheckBox
-        Left = 0
-        Top = 24
-        Width = 127
-        Height = 17
-        Alignment = taLeftJustify
-        Caption = 'Radiosity'
-        TabOrder = 3
-      end
       object seLMRMS: TMultiObjSpinEdit
         Left = 115
-        Top = 82
+        Top = 65
         Width = 77
         Height = 18
         LWSensitivity = 0.1
@@ -419,7 +374,7 @@ object frmSceneProperties: TfrmSceneProperties
         ValueType = vtFloat
         Value = 0.02
         AutoSize = False
-        TabOrder = 4
+        TabOrder = 3
       end
       object GroupBox2: TGroupBox
         Left = 195
@@ -427,15 +382,15 @@ object frmSceneProperties: TfrmSceneProperties
         Width = 159
         Height = 106
         Caption = ' Hemisphere lighting '
-        TabOrder = 5
-        object RxLabel34: TRxLabel
+        TabOrder = 4
+        object RxLabel34: TMxLabel
           Left = 5
           Top = 16
           Width = 78
           Height = 13
           Caption = 'Dispersion (deg)'
         end
-        object RxLabel36: TRxLabel
+        object RxLabel36: TMxLabel
           Left = 5
           Top = 36
           Width = 97
@@ -448,7 +403,7 @@ object frmSceneProperties: TfrmSceneProperties
           Width = 67
           Height = 17
         end
-        object mcLMAreaDark: TMultiObjColor
+        object mcLMAreaColor: TMultiObjColor
           Left = 89
           Top = 56
           Width = 64
@@ -456,14 +411,14 @@ object frmSceneProperties: TfrmSceneProperties
           Pen.Style = psClear
           OnMouseDown = mcLMAmbientMouseDown
         end
-        object RxLabel24: TRxLabel
+        object RxLabel24: TMxLabel
           Left = 5
           Top = 55
           Width = 26
           Height = 13
           Caption = 'Color'
         end
-        object RxLabel39: TRxLabel
+        object RxLabel39: TMxLabel
           Left = 5
           Top = 83
           Width = 34
@@ -519,22 +474,22 @@ object frmSceneProperties: TfrmSceneProperties
         Width = 192
         Height = 86
         Caption = ' Jittering '
-        TabOrder = 6
-        object RxLabel9: TRxLabel
+        TabOrder = 5
+        object RxLabel9: TMxLabel
           Left = 5
           Top = 62
           Width = 45
           Height = 13
           Caption = 'Samples '
         end
-        object RxLabel13: TRxLabel
+        object RxLabel13: TMxLabel
           Left = 5
           Top = 17
           Width = 30
           Height = 13
           Caption = 'Dither'
         end
-        object RxLabel14: TRxLabel
+        object RxLabel14: TMxLabel
           Left = 5
           Top = 36
           Width = 46
@@ -589,7 +544,7 @@ object frmSceneProperties: TfrmSceneProperties
         Width = 192
         Height = 57
         Caption = ' Ambient '
-        TabOrder = 7
+        TabOrder = 6
         object Bevel1: TBevel
           Left = 115
           Top = 13
@@ -604,14 +559,14 @@ object frmSceneProperties: TfrmSceneProperties
           Pen.Style = psClear
           OnMouseDown = mcLMAmbientMouseDown
         end
-        object RxLabel22: TRxLabel
+        object RxLabel22: TMxLabel
           Left = 5
           Top = 15
           Width = 26
           Height = 13
           Caption = 'Color'
         end
-        object RxLabel23: TRxLabel
+        object RxLabel23: TMxLabel
           Left = 5
           Top = 35
           Width = 59
@@ -640,22 +595,22 @@ object frmSceneProperties: TfrmSceneProperties
         Width = 159
         Height = 139
         Caption = ' Fuzzy point light '
-        TabOrder = 8
-        object RxLabel35: TRxLabel
+        TabOrder = 7
+        object RxLabel35: TMxLabel
           Left = 5
           Top = 33
           Width = 42
           Height = 13
           Caption = 'Samples'
         end
-        object RxLabel40: TRxLabel
+        object RxLabel40: TMxLabel
           Left = 5
           Top = 52
           Width = 36
           Height = 13
           Caption = 'Min (m)'
         end
-        object RxLabel41: TRxLabel
+        object RxLabel41: TMxLabel
           Left = 5
           Top = 72
           Width = 39
@@ -724,42 +679,42 @@ object frmSceneProperties: TfrmSceneProperties
     object tsProgressive: TTabSheet
       Caption = 'Progressive'
       ImageIndex = 5
-      object RxLabel15: TRxLabel
+      object RxLabel15: TMxLabel
         Left = 2
         Top = 28
         Width = 51
         Height = 13
         Caption = 'UV weight'
       end
-      object RxLabel16: TRxLabel
+      object RxLabel16: TMxLabel
         Left = 2
         Top = 47
         Width = 73
         Height = 13
         Caption = 'Position weight'
       end
-      object RxLabel17: TRxLabel
+      object RxLabel17: TMxLabel
         Left = 2
         Top = 67
         Width = 82
         Height = 13
         Caption = 'Curvature weight'
       end
-      object RxLabel26: TRxLabel
+      object RxLabel26: TMxLabel
         Left = 2
         Top = 88
         Width = 95
         Height = 13
         Caption = 'Higher border angle'
       end
-      object RxLabel27: TRxLabel
+      object RxLabel27: TMxLabel
         Left = 2
         Top = 107
         Width = 109
         Height = 13
         Caption = 'Higher border distance'
       end
-      object RxLabel28: TRxLabel
+      object RxLabel28: TMxLabel
         Left = 2
         Top = 127
         Width = 175
@@ -869,14 +824,14 @@ object frmSceneProperties: TfrmSceneProperties
     object tsStrippifier: TTabSheet
       Caption = 'Strippifier'
       ImageIndex = 8
-      object RxLabel18: TRxLabel
+      object RxLabel18: TMxLabel
         Left = 2
         Top = 27
         Width = 54
         Height = 13
         Caption = 'Cache size'
       end
-      object RxLabel37: TRxLabel
+      object RxLabel37: TMxLabel
         Left = 130
         Top = 43
         Width = 219
@@ -919,14 +874,14 @@ object frmSceneProperties: TfrmSceneProperties
     object tsVertexBuffers: TTabSheet
       Caption = 'Vertex buffers'
       ImageIndex = 6
-      object RxLabel6: TRxLabel
+      object RxLabel6: TMxLabel
         Left = 2
         Top = 10
         Width = 81
         Height = 13
         Caption = 'VB max size (kB)'
       end
-      object RxLabel7: TRxLabel
+      object RxLabel7: TMxLabel
         Left = 2
         Top = 30
         Width = 78
@@ -961,35 +916,35 @@ object frmSceneProperties: TfrmSceneProperties
     object tsSubdivision: TTabSheet
       Caption = 'Subdivision'
       ImageIndex = 7
-      object RxLabel8: TRxLabel
+      object RxLabel8: TMxLabel
         Left = 2
         Top = 10
         Width = 92
         Height = 13
         Caption = 'Max object size (m)'
       end
-      object RxLabel19: TRxLabel
+      object RxLabel19: TMxLabel
         Left = 2
         Top = 30
         Width = 123
         Height = 13
         Caption = 'Perform addititional merge'
       end
-      object RxLabel21: TRxLabel
+      object RxLabel21: TMxLabel
         Left = 2
         Top = 50
         Width = 161
         Height = 13
         Caption = 'Spatial subdivisions low limit (poly)'
       end
-      object RxLabel30: TRxLabel
+      object RxLabel30: TMxLabel
         Left = 2
         Top = 70
         Width = 168
         Height = 13
         Caption = 'Spatial subdivisions hight limit (poly)'
       end
-      object RxLabel31: TRxLabel
+      object RxLabel31: TMxLabel
         Left = 2
         Top = 84
         Width = 175
@@ -1076,153 +1031,99 @@ object frmSceneProperties: TfrmSceneProperties
     Top = 0
     Width = 134
     Height = 279
+    Cursor = crDefault
     LeftPosition = 0
-    ActiveBorderType = fbtSunken
+    DoubleBuffered = False
+    DragCursor = crDrag
     Align = alLeft
     AlwaysKeepFocus = True
-    AlwaysKeepSelection = True
+    AutoCollapse = False
     AutoExpand = True
-    AutoLookup = False
     DockOrientation = doNoOrient
-    DoubleBuffered = False
-    AutoLineHeight = True
-    BarStyle = False
-    BarStyleVerticalLines = False
-    BorderStyle = bsSingle
-    ChangeStateImage = False
-    CustomCheckboxes = False
-    CustomPlusMinus = False
-    DeselectChildrenOnCollapse = False
-    DivLinesColor = clBtnFace
+    DefaultSectionWidth = 120
+    BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
     DoInplaceEdit = False
-    DraggableSections = False
-    DragAllowed = False
-    DragTrgDrawMode = ColorRect
-    DragType = dtDelphi
     DragImageMode = dimOne
-    DrawFocusRect = True
-    ExpandOnDblClick = True
-    ExpandOnDragOver = False
-    FilteredVisibility = False
+    DragTrgDrawMode = ColorRect
+    ExplorerEditMode = False
     Flat = True
-    FlatFocusedScrollbars = True
-    FocusedSelectColor = clHighlight
-    ForcedScrollBars = ssNone
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     FullRowSelect = False
-    HeaderActiveFilterColor = clBlack
-    HeaderHeight = 22
+    GradientSteps = 64
+    HeaderHeight = 19
     HeaderHotTrack = False
-    HeaderInvertSortArrows = False
     HeaderSections.Data = {
-      F8FFFFFF07000000206E9D0E00000000FFFFFFFF000001010100000078000000
-      0000000010270000000100000000000000000000000000000000010000000000
-      0000000000010000010000000001000000000000000000000000206E9D0E0000
-      0000FFFFFFFF0000010101000000780000000000000010270000000100000100
-      0000000000000000000000000100000000000000000000010000010000000001
-      000000000000000000000000206E9D0E00000000FFFFFFFF0000010101000000
-      7800000000000000102700000001000002000000000000000000000000000100
-      000000000000000000010000010000000001000000000000000000000000206E
-      9D0E00000000FFFFFFFF00000101010000007800000000000000102700000001
-      0000030000000000000000000000000001000000000000000000000100000100
-      00000001000000000000000000000000206E9D0E00000000FFFFFFFF00000101
-      0100000078000000000000001027000000010000040000000000000000000000
-      0000010000000000000000000001000001000000000100000000000000000000
-      0000206E9D0E00000000FFFFFFFF000001010100000078000000000000001027
-      0000000100000500000000000000000000000000010000000000000000000001
-      0000010000000001000000000000000000000000206E9D0E00000000FFFFFFFF
-      0000010101000000780000000000000010270000000100000600000000000000
-      0000000000000100000000000000000000010000010000000001000000000000
-      000000000000}
-    HeaderFilterColor = clBtnText
-    HeaderFlat = False
-    HideFocusRect = False
-    HideHintOnTimer = False
-    HideHintOnMove = True
-    HideSelectColor = clBtnFace
-    HideSelection = False
-    HorizontalLines = False
-    HideHorzScrollBar = False
-    HideVertScrollBar = False
-    HorzScrollBarStyles.ActiveFlat = False
-    HorzScrollBarStyles.BlendBackground = True
-    HorzScrollBarStyles.Color = clBtnFace
-    HorzScrollBarStyles.Flat = True
-    HorzScrollBarStyles.MinThumbSize = 4
-    HorzScrollBarStyles.NoDisableButtons = False
-    HorzScrollBarStyles.NoSunkenThumb = False
-    HorzScrollBarStyles.OwnerDraw = False
-    HorzScrollBarStyles.SecondaryButtons = False
-    HorzScrollBarStyles.SecondBtnKind = sbkOpposite
-    HorzScrollBarStyles.ShowLeftArrows = True
-    HorzScrollBarStyles.ShowRightArrows = True
+      F5FFFFFF070000001030330500250000FFFFFFFF000001010100696F78000000
+      00000000102700000001000520E1C60500000000000033050000000000000120
+      00000000000000000001000000000000202020416E7369537472696E67207465
+      6D703B2074656D702E737072696E74662822456E7620232564222C20665F6974
+      2D6D5F66726D456E76732E626567696E2829293B010000000001000000000000
+      0000000000001030330500250000FFFFFFFF000001010100696F780000000000
+      00001027000000010005E8E5C605010000000000330500000000000001200000
+      0000000000000001000000000000202020416E7369537472696E672074656D70
+      3B2074656D702E737072696E74662822456E7620232564222C20665F69742D6D
+      5F66726D456E76732E626567696E2829293B0100000000010000000000000000
+      000000001030330500250000FFFFFFFF000001010100696F7800000000000000
+      1027000000010005ACE6C6050200000000003305000000000000012000000000
+      000000000001000000000000202020416E7369537472696E672074656D703B20
+      74656D702E737072696E74662822456E7620232564222C20665F69742D6D5F66
+      726D456E76732E626567696E2829293B01000000000100000000000000000000
+      00001030330500250000FFFFFFFF000001010100696F78000000000000001027
+      00000001000570E7C60503000000000033050000000000000120000000000000
+      00000001000000000000202020416E7369537472696E672074656D703B207465
+      6D702E737072696E74662822456E7620232564222C20665F69742D6D5F66726D
+      456E76732E626567696E2829293B010000000001000000000000000000000000
+      1030330500250000FFFFFFFF000001010100696F780000000000000010270000
+      0001000534E8C605040000000000330500000000000001200000000000000000
+      0001000000000000202020416E7369537472696E672074656D703B2074656D70
+      2E737072696E74662822456E7620232564222C20665F69742D6D5F66726D456E
+      76732E626567696E2829293B0100000000010000000000000000000000001030
+      330500250000FFFFFFFF000001010100696F7800000000000000102700000001
+      0005F8E8C6050500000000003305000000000000012000000000000000000001
+      000000000000202020416E7369537472696E672074656D703B2074656D702E73
+      7072696E74662822456E7620232564222C20665F69742D6D5F66726D456E7673
+      2E626567696E2829293B01000000000100000000000000000000000010303305
+      00250000FFFFFFFF000001010100696F78000000000000001027000000010005
+      BCE9C60506000000000033050000000000000120000000000000000000010000
+      00000000202020416E7369537472696E672074656D703B2074656D702E737072
+      696E74662822456E7620232564222C20665F69742D6D5F66726D456E76732E62
+      6567696E2829293B010000000001000000000000000000000000}
+    HeaderFont.Charset = DEFAULT_CHARSET
+    HeaderFont.Color = clWindowText
+    HeaderFont.Height = -11
+    HeaderFont.Name = 'MS Sans Serif'
+    HeaderFont.Style = []
     HorzScrollBarStyles.ShowTrackHint = False
-    HorzScrollBarStyles.ThumbMode = etmAuto
-    HorzScrollBarStyles.ThumbSize = 0
-    HorzScrollBarStyles.Width = 14
+    HorzScrollBarStyles.Width = 16
     HorzScrollBarStyles.ButtonSize = 14
     HorzScrollBarStyles.UseSystemMetrics = False
-    InactiveBorderType = fbtSunkenOuter
-    ItemIndent = 17
-    LineHeight = 19
+    IgnoreEnabled = False
+    IncrementalSearch = False
+    KeepSelectionWithinLevel = False
+    LineBorderActiveColor = clBlack
+    LineBorderInactiveColor = clBlack
+    LineHeight = 17
     LinesColor = 5329233
-    LinesStyle = psDot
-    LineHintColor = clWindow
-    LockHeaderHeight = False
-    MainTreeColumn = 0
-    MoveColumnOnDrag = False
-    MoveFocusOnCollapse = False
+    MouseFrameSelect = True
     MultiSelect = False
     OwnerDrawMask = '~~@~~'
-    PathSeparator = '\'
     PlusMinusTransparent = True
-    RightAlignedText = False
-    RightAlignedTree = False
-    RowHotTrack = False
-    RowSelect = True
+    ScrollbarOpposite = False
     ScrollTracking = True
-    SelectColumn = -1
-    ShowButtons = True
-    ShowColumns = False
     ShowCheckboxes = True
-    ShowImages = True
-    ShowLines = True
-    ShowRoot = False
-    ShowRootButtons = True
-    SelectionMode = smUsual
-    SortDir = sdAscend
-    SortMode = smNone
-    SortSection = 0
-    SortType = stText
-    StickyHeaderSections = False
+    ShowLeafButton = False
+    StoragePath = '\Tree'
     TabOrder = 0
     TabStop = True
-    Tracking = True
-    TrackColor = clHighlight
-    UnderlineTracked = True
-    VerticalLines = False
-    VertScrollBarStyles.ActiveFlat = False
-    VertScrollBarStyles.BlendBackground = True
-    VertScrollBarStyles.Color = clBtnFace
-    VertScrollBarStyles.Flat = True
-    VertScrollBarStyles.MinThumbSize = 4
-    VertScrollBarStyles.NoDisableButtons = False
-    VertScrollBarStyles.NoSunkenThumb = False
-    VertScrollBarStyles.OwnerDraw = False
-    VertScrollBarStyles.SecondaryButtons = False
-    VertScrollBarStyles.SecondBtnKind = sbkOpposite
-    VertScrollBarStyles.ShowLeftArrows = True
-    VertScrollBarStyles.ShowRightArrows = True
     VertScrollBarStyles.ShowTrackHint = True
-    VertScrollBarStyles.ThumbMode = etmAuto
-    VertScrollBarStyles.ThumbSize = 0
-    VertScrollBarStyles.Width = 14
+    VertScrollBarStyles.Width = 16
     VertScrollBarStyles.ButtonSize = 14
     VertScrollBarStyles.UseSystemMetrics = False
+    VirtualityLevel = vlNone
     TextColor = clBtnText
     BkColor = clBtnShadow
     OnItemSelectedChange = tvOptionsItemSelectedChange
@@ -1285,7 +1186,6 @@ object frmSceneProperties: TfrmSceneProperties
       'cbTesselation.Checked'
       'pcBuildOptions.ActivePage'
       'seWeldDistance.Value'
-      'cbLMRadiosity.Checked'
       'sePM_borderH_angle.Value'
       'sePM_borderH_distance.Value'
       'sePM_heuristic.Value'
@@ -1293,7 +1193,6 @@ object frmSceneProperties: TfrmSceneProperties
       'seSSLowLimit.Value'
       'seSSMergeCoef.Value'
       'seSSDedicatedCashed.Value'
-      'seDOClusterSize.Value'
       'seLMAmbFogness.Value'
       'seLMAreaDispersion.Value'
       'seLMAreaSummaryEnergy.Value'
@@ -1306,7 +1205,7 @@ object frmSceneProperties: TfrmSceneProperties
       'seLMFuzzyMin.Value'
       'seLMFuzzySamples.Value'
       'rgAreaQuality.ItemIndex'
-      'mcLMAreaDark.Brush'
+      'mcLMAreaColor.Brush'
       'mcLMAmbient.Brush')
     StoredValues = <>
     Left = 4

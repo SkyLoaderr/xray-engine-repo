@@ -11,15 +11,9 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
-
-#include "CustomObject.h"
-#include "CloseBtn.hpp"
-#include "ElHeader.hpp"
-#include <Grids.hpp>
-#include "ElTree.hpp"
+#include "ExtBtn.hpp"
 #include "multi_edit.hpp"
+#include "MXCtrls.hpp"
 
 class TfrmNumericVector : public TForm
 {
@@ -29,12 +23,12 @@ __published:	// IDE-managed Components
     TExtBtn *ebCancel;
     TPanel *paBottom;
 	TGroupBox *gbTitle;
-	TRxLabel *RxLabel3;
+	TMxLabel *RxLabel3;
 	TMultiObjSpinEdit *seX;
 	TMultiObjSpinEdit *seY;
 	TMultiObjSpinEdit *seZ;
-	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel2;
+	TMxLabel *RxLabel1;
+	TMxLabel *RxLabel2;
 	TExtBtn *ebReset;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

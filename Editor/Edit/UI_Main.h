@@ -41,6 +41,7 @@ class TUI: public CController{
     TShiftState m_ShiftState;
 protected:
     EStateList m_EditorState;
+    bool bNeedAbort;
 public:
     TD3DWindow* GetD3DWindow(){return m_D3DWindow;}
 protected:
@@ -176,6 +177,10 @@ public:
 
     void OnAppActivate					(){;}
     void OnAppDeactivate                (){;}
+
+    bool    NeedAbort               	(){Application->ProcessMessages(); return bNeedAbort;}
+    void 	NeedBreak					(){bNeedAbort = true;}
+    void 	ResetBreak					(){bNeedAbort = false;}
 };
 extern TUI* UI;
 #endif

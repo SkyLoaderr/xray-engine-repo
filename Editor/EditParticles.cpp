@@ -14,8 +14,6 @@
 #include "PropertiesPS.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "Placemnt"
-#pragma link "multi_edit"
 #pragma resource "*.dfm"
 TfrmEditParticles* TfrmEditParticles::form = 0;
 //---------------------------------------------------------------------------
@@ -108,7 +106,7 @@ void __fastcall TfrmEditParticles::OnNameUpdate(){
 	if (!Visible()) return;
     if (form->tvItems->Selected){
     	form->tvItems->Selected->Text = form->m_SelectedPS->m_Name;
-	    form->SetCurrent(PSLib->FindPS(form->tvItems->Selected->Text.c_str()));
+	    form->SetCurrent(PSLib->FindPS(AnsiString(form->tvItems->Selected->Text).c_str()));
     }
     PSLib->Sort();
 }
@@ -191,21 +189,21 @@ void __fastcall TfrmEditParticles::tvItemsItemSelectedChange(TObject *Sender, TE
 {
 	if (Item==tvItems->Selected) return;
 	ResetCurrent();
-	if (Item->Data) SetCurrent(PSLib->FindPS(Item->Text.c_str()));
+	if (Item->Data) SetCurrent(PSLib->FindPS(AnsiString(Item->Text).c_str()));
     UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmEditParticles::FindFolder(const char* s)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (!node->Data && (node->Text == s)) return node;
+        if (!node->Data && (AnsiString(node->Text) == s)) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmEditParticles::FindItem(const char* s)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (node->Data && (node->Text == s)) return node;
+        if (node->Data && (AnsiString(node->Text) == s)) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
@@ -252,11 +250,14 @@ void TfrmEditParticles::InitItemsList(const char* nm)
     }
 }
 //---------------------------------------------------------------------------
+//S
+/*
 void __fastcall TfrmEditParticles::tvItemsTryEdit(TObject *Sender,
       TElTreeItem *Item, TElHeaderSection *Section, TFieldTypes &CellType,
       bool &CanEdit){
     FEditNode = Item;
 }
+*/
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditParticles::tvItemsItemChange(TObject *Sender,
       TElTreeItem *Item, TItemChangeMode ItemChangeMode)
@@ -264,8 +265,8 @@ void __fastcall TfrmEditParticles::tvItemsItemChange(TObject *Sender,
     if (FEditNode){
         for ( TElTreeItem* pNode = FEditNode->GetFirstChild(); pNode; pNode = FEditNode->GetNextChild(pNode))
             if (pNode->Data){
-                PS::SDef* ps = PSLib->FindPS(pNode->Text.c_str());
-                ps->SetFolder(FEditNode->Text.c_str());
+                PS::SDef* ps = PSLib->FindPS(AnsiString(pNode->Text).c_str());
+                ps->SetFolder(AnsiString(FEditNode->Text).c_str());
                 OnModified();
             }
         FEditNode = 0;
@@ -312,7 +313,7 @@ void __fastcall TfrmEditParticles::ebSaveClick(TObject *Sender)
 
 void __fastcall TfrmEditParticles::ebNewPSClick(TObject *Sender)
 {
-	sh_name name;
+	string64 name;
     PSLib->GenerateName(name);
     ResetCurrent();
     SetCurrent(PSLib->AddPS(name));
@@ -327,11 +328,11 @@ void __fastcall TfrmEditParticles::ebClonePSClick(TObject *Sender)
 {
     TElTreeItem* pNode = tvItems->Selected;
     if (pNode){
-        PS::SDef* ps_src = PSLib->FindPS(pNode->Text.c_str()); VERIFY(ps_src);
+        PS::SDef* ps_src = PSLib->FindPS(AnsiString(pNode->Text).c_str()); VERIFY(ps_src);
         if (ps_src){
 	        AnsiString folder=ps_src->m_Folder;
             AnsiString pref;
-            sh_name name;
+            string64 name;
             pref = ps_src->m_Name;
             PSLib->GenerateName(name,pref.c_str());
 		    ResetCurrent();
@@ -354,7 +355,7 @@ void __fastcall TfrmEditParticles::ebRemovePSClick(TObject *Sender)
     	if(pNode->Data){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
 				ResetCurrent();
-    	        PSLib->DeletePS(pNode->Text.c_str());
+    	        PSLib->DeletePS(AnsiString(pNode->Text).c_str());
 //	    	    PSLib->Save();
 	            pNode->Delete();
     	        OnModified();
@@ -365,7 +366,7 @@ void __fastcall TfrmEditParticles::ebRemovePSClick(TObject *Sender)
                 for ( TElTreeItem* pNode = fld->GetFirstChild(); pNode; pNode = fld->GetNextChild(pNode))
                     if (pNode->Data){
 						ResetCurrent();
-                        PSLib->DeletePS(pNode->Text.c_str());
+                        PSLib->DeletePS(AnsiString(pNode->Text).c_str());
                         OnModified();
                     }
                 fld->Delete();
@@ -413,9 +414,9 @@ void __fastcall TfrmEditParticles::tvItemsDragDrop(TObject *Sender,
     if (FDragItem&&FDragItem->Data){
         OnModified();
         node=(node->Parent)?node->Parent:node;
-        PS::SDef* P = PSLib->FindPS(FDragItem->Text.c_str());
+        PS::SDef* P = PSLib->FindPS(AnsiString(FDragItem->Text).c_str());
         VERIFY(P);
-        P->SetFolder(node->Text.c_str());
+        P->SetFolder(AnsiString(node->Text).c_str());
     }
 }
 //---------------------------------------------------------------------------

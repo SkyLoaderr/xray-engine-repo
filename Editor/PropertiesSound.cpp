@@ -7,10 +7,6 @@
 #include "SceneClassList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXSpin"
-#pragma link "RXCtrls"
-#pragma link "CloseBtn"
-#pragma link "multi_edit"
 #pragma resource "*.dfm"
 TfrmPropertiesSound *frmPropertiesSound=0;
 //---------------------------------------------------------------------------

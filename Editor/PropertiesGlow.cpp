@@ -5,19 +5,12 @@
 #include "sceneclasslist.h"
 #include "ui_main.h"
 #include "glow.h"
-#include "xrshader.h"
-#include "shader.h"
 #include "texture.h"
 #include "ChoseForm.h"
 #include "xr_trims.h"
+#include "etexture.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "Placemnt"
-#pragma link "multi_edit"
 #pragma resource "*.dfm"
 TfrmPropertiesGlow *frmPropertiesGlow=0;
 //---------------------------------------------------------------------------
@@ -84,26 +77,26 @@ void TfrmPropertiesGlow::GetObjectsInfo(){
     bool bDifTex=false, bDifShader=false;
     AnsiString sh 	= _G->m_ShaderName;
     AnsiString tex1,tex2;
-    tex1 = ListToSequence(_G->m_TexNames);
+    tex1 = _G->m_TexName;
 	for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID()==OBJCLASS_GLOW );
 		_G = (CGlow *)(*_F);
 		seRange->ObjNextInit( _G->m_Range );
 		if (!bDifShader&&(_G->m_ShaderName!=sh)) bDifShader = true;
-		tex2 = ListToSequence(_G->m_TexNames);
-        if (!bDifTex&&!_G->m_TexNames.empty()&&(tex2!=tex1))bDifTex = true;
+		tex2 = _G->m_TexName;
+        if (!bDifTex&&!_G->m_TexName.IsEmpty()&&(tex2!=tex1))bDifTex = true;
         m_Glow = 0;
 	}
 
     if (m_Glow){
     	lbShader->Font->Color = clNavy;
     	lbTexture->Font->Color = clNavy;
-		lbTexture->Caption = m_Glow->m_TexNames.empty()?AnsiString("..."):tex1;
+		lbTexture->Caption = m_Glow->m_TexName.IsEmpty()?AnsiString("..."):tex1;
 		lbShader->Caption  = m_Glow->m_ShaderName.IsEmpty()?AnsiString("..."):m_Glow->m_ShaderName;
     }else{
 		_F = m_Objects->begin();
 		_G = (CGlow *)(*_F);
-		lbTexture->Caption = _G->m_TexNames.empty()?AnsiString("..."):tex1;
+		lbTexture->Caption = _G->m_TexName.IsEmpty()?AnsiString("..."):tex1;
 		lbShader->Caption  = _G->m_ShaderName.IsEmpty()?AnsiString("..."):_G->m_ShaderName;
         if (bDifTex)	lbTexture->Color = clMaroon;
         else			lbTexture->Font->Color = clNavy;
@@ -124,7 +117,7 @@ bool TfrmPropertiesGlow::ApplyObjectsInfo(){
 		_G = (CGlow *)(*_F);
 		seRange->ObjApplyFloat( _G->m_Range );
         // apply shader
-        if (bValidTex)		SequenceToList(_G->m_TexNames,lbTexture->Caption.c_str());
+        if (bValidTex)		_G->m_TexName=lbTexture->Caption.c_str();
         if (bValidShader) 	_G->m_ShaderName = lbShader->Caption;
         if (bValidShader&&bValidTex) _G->Compile();
 	}
@@ -147,13 +140,13 @@ void __fastcall TfrmPropertiesGlow::pbImagePaint(TObject *Sender)
     if (bValidTex){
         RECT r; r.left = 1; r.top = 1;
         float w, h;
-        ETextureCore* tx = Device.Shader.FindTexture(lbTexture->Caption.c_str());
-        if (tx){
-	        w = tx->width();
-    	    h = tx->height();
+        ETextureCore tx(lbTexture->Caption.c_str());
+        if (tx.Valid()){
+	        w = tx.width();
+    	    h = tx.height();
 	        if (w>h){   r.right = pbImage->Width; r.bottom = h/w*pbImage->Height;
     	    }else{      r.right = h/w*pbImage->Width; r.bottom = pbImage->Height;}
-    	    tx->StretchThumbnail(paImage->Handle, &r);
+    	    tx.StretchThumbnail(paImage->Handle, &r);
         }
     }
 }
@@ -191,7 +184,7 @@ void __fastcall TfrmPropertiesGlow::ebSelectShaderClick(TObject *Sender)
 void __fastcall TfrmPropertiesGlow::ebSelectTextureClick(TObject *Sender)
 {
     bool bValidTex 		= (lbTexture->Caption!="...");
-	LPCSTR S = TfrmChoseItem::SelectTexture(true,bValidTex?lbTexture->Caption.c_str():0);
+	LPCSTR S = TfrmChoseItem::SelectTexture(false,bValidTex?lbTexture->Caption.c_str():0);
     if (S){lbTexture->Caption=S; OnModified(Sender);}
 }
 //---------------------------------------------------------------------------

@@ -1,18 +1,14 @@
 //---------------------------------------------------------------------------
 #ifndef PropertiesPSH
 #define PropertiesPSH
-#include "CloseBtn.hpp"
+//---------------------------------------------------------------------------
+#include "FrameEmitter.h"
+#include <Forms.hpp>
+#include "ExtBtn.hpp"
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>
-#include "multi_check.hpp"
 #include <StdCtrls.hpp>
-#include "multi_edit.hpp"
-#include "RXCtrls.hpp"
-//---------------------------------------------------------------------------
-#include "XRShaderDef.h"
-#include "FrameEmitter.h"
-#include <Forms.hpp>
 
 // refs
 class CCustomObject;
@@ -41,7 +37,7 @@ private:	// User declarations
 	static TfrmPropertiesPS* form;
 	static bool bLoadMode;
 
-    SH_Function		m_BirthFunc;
+    WaveForm m_BirthFunc;
 
     list<CCustomObject*>* m_Objects;
     void GetObjectsInfo     ();

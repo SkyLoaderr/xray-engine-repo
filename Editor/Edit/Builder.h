@@ -86,7 +86,6 @@ protected:
 
 	SSTRLIST m_TexNames;
 
-    bool bNeedAbort;
 protected:
 	bool LightenObjects				();
 	bool PrepareFolders             ();
@@ -127,9 +126,6 @@ public:
 	virtual bool Execute            ();
 	bool MakeLTX  			        ();
     bool MakeDetails				(bool bOkMessage);
-
-    bool    NeedAbort               (){Application->ProcessMessages(); return bNeedAbort;}
-    void 	BreakBuild				(){bNeedAbort = true;}
 
 	__inline bool InProgress        (){	return m_InProgress; }
 

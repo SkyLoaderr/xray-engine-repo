@@ -14,14 +14,11 @@
 
 #include <Dialogs.hpp>
 #include "ElTree.hpp"
-#include "CloseBtn.hpp"
-#include "ElHeader.hpp"
-#include "RXCtrls.hpp"
-#include <Grids.hpp>
-#include "RxMenus.hpp"
+#include "ElXPThemedControl.hpp"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
+#include "mxPlacemnt.hpp"
 #include <Menus.hpp>
-#include "Placemnt.hpp"
-#include "multi_edit.hpp"
 //---------------------------------------------------------------------------
 // refs
 class CParticleSystem;
@@ -58,10 +55,10 @@ __published:	// IDE-managed Components
 	TGroupBox *gbCurrentPS;
 	TExtBtn *ExtBtn2;
 	TExtBtn *ExtBtn5;
-	TRxLabel *lbCurState;
-	TRxLabel *lbParticleCount;
-	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel2;
+	TMxLabel *lbCurState;
+	TMxLabel *lbParticleCount;
+	TMxLabel *RxLabel1;
+	TMxLabel *RxLabel2;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -82,8 +79,6 @@ __published:	// IDE-managed Components
           TDragObject *&DragObject);
     void __fastcall tvItemsItemSelectedChange(TObject *Sender,
           TElTreeItem *Item);
-    void __fastcall tvItemsTryEdit(TObject *Sender, TElTreeItem *Item,
-          TElHeaderSection *Section, TFieldTypes &CellType, bool &CanEdit);
     void __fastcall tvItemsItemChange(TObject *Sender, TElTreeItem *Item,
           TItemChangeMode ItemChangeMode);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);

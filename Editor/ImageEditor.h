@@ -14,17 +14,15 @@
 
 #include <Dialogs.hpp>
 #include "ElTree.hpp"
-#include "CloseBtn.hpp"
-#include "ElHeader.hpp"
-#include "RXCtrls.hpp"
-#include <Grids.hpp>
-#include "RxMenus.hpp"
-#include <Menus.hpp>
-#include "Placemnt.hpp"
+#include "ElXPThemedControl.hpp"
+#include "ExtBtn.hpp"
 #include "multi_color.hpp"
+#include "MXCtrls.hpp"
+#include "mxPlacemnt.hpp"
 //---------------------------------------------------------------------------
 // refs
-class ETextureCore;
+class EImageThumbnail;
+class TfrmProperties;
 //---------------------------------------------------------------------------
 
 class TfrmImageLib : public TForm
@@ -37,40 +35,24 @@ __published:	// IDE-managed Components
 	TExtBtn *ebClose;
 	TPanel *paImage;
 	TPaintBox *pbImage;
-	TGroupBox *gbOptions;
-	TRadioGroup *rgSaveFormat;
-	TCheckBox *cbDither;
-	TCheckBox *cbAlphaZeroBorder;
-	TCheckBox *cbBinaryAlpha;
-	TCheckBox *cbNormalMap;
-	TGroupBox *GroupBox2;
-	TCheckBox *cbAllowFade;
-	TComboBox *cbNumFadeMips;
-	TLabel *Label1;
 	TExtBtn *ebConvert;
 	TBevel *Bevel1;
-	TMultiObjColor *mcFadeColor;
-	TRadioGroup *rgMIPmaps;
 	TPanel *Panel3;
-	TRxLabel *lbFileName;
-	TRxLabel *RxLabel2;
-	TRxLabel *RxLabel3;
-	TRxLabel *lbInfo;
-	TCheckBox *cbImplicitLighted;
+	TPanel *paProperties;
+	TMxLabel *lbFileName;
+	TMxLabel *RxLabel2;
+	TMxLabel *RxLabel3;
+	TMxLabel *lbInfo;
     void __fastcall ebCloseClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-	void __fastcall mcFadeColorMouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
-	void __fastcall tvItemsItemSelectedChange(TObject *Sender,
-          TElTreeItem *Item);
 	void __fastcall pbImagePaint(TObject *Sender);
-	void __fastcall rgChangeClick(TObject *Sender);
 	void __fastcall pbImageDblClick(TObject *Sender);
 	void __fastcall ebConvertClick(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
+	void __fastcall tvItemsItemFocused(TObject *Sender);
 private:
 // list functions
     void InitItemsList(const char* nm=0);
@@ -82,20 +64,20 @@ private:
 private:	// User declarations
 	static TfrmImageLib* form;
 
+	EImageThumbnail* m_Thm;
+    
     Fvector init_cam_hpb;
     Fvector init_cam_pos;
     void OnModified();
     static AStringVec check_tex_list;
-    ETextureCore* sel_tex;
-    bool bModified;
-    bool bSetMode;
-	void __fastcall SaveExportParams();
+	void __fastcall SaveTextureParams();
     bool bCheckMode;
+    TfrmProperties* ImageProps;
 public:		// User declarations
     __fastcall TfrmImageLib(TComponent* Owner);
 
-    static void __fastcall OnRender();
-    static void __fastcall OnIdle();
+    static void __fastcall OnRender(){;}
+    static void __fastcall OnIdle(){;}
 // static function
     static void __fastcall CheckImageLib();
     static void __fastcall EditImageLib(AnsiString& title, bool bCheck=false);

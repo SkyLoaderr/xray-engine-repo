@@ -14,7 +14,7 @@ friend class CImageManager;
     int				m_Width;
     int				m_Height;
 public:
-					EImageThumbnail	(LPCSTR name);
+					EImageThumbnail	(LPCSTR src_name);
 					~EImageThumbnail();
 
     // thumbnail public routines

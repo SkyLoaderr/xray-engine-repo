@@ -11,24 +11,24 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 
 #include "CustomObject.h"
-#include "CloseBtn.hpp"
 #include "ElHeader.hpp"
-#include <Grids.hpp>
 #include "ElTree.hpp"
-#include "RxMenus.hpp"
-#include <Menus.hpp>
+#include "ElXPThemedControl.hpp"
+#include "ExtBtn.hpp"
 #include "multi_check.hpp"
 #include "multi_edit.hpp"
-#include "Placemnt.hpp"
+#include "MXCtrls.hpp"
+#include "MxMenus.hpp"
+#include "mxPlacemnt.hpp"
+#include <Grids.hpp>
+#include <Menus.hpp>
 
 class CLibObject;
 class ETextureCore;
 class CEditMesh;
-struct st_Surface;
+class CSurface;
 class CSMotion;
 class COMotion;
 //---------------------------------------------------------------------------
@@ -42,8 +42,8 @@ __published:	// IDE-managed Components
     TTabSheet *tsScript;
     TMemo *mmScript;
     TTabSheet *tsInfo;
-    TRxLabel *RxLabel4;
-    TRxLabel *RxLabel5;
+    TMxLabel *RxLabel4;
+    TMxLabel *RxLabel5;
 	TTabSheet *tsSurfaces;
     TTabSheet *tsMeshes;
 	TElTree *tvSurfaces;
@@ -53,31 +53,31 @@ __published:	// IDE-managed Components
     TTabSheet *tsMainOptions;
     TEdit *edName;
     TMultiObjCheck *cbMakeDynamic;
-    TRxLabel *RxLabel2;
+    TMxLabel *RxLabel2;
     TBevel *Bevel2;
-    TRxLabel *RxLabel11;
+    TMxLabel *RxLabel11;
     TPanel *paBottom;
     TElTree *tvMeshes;
-	TRxPopupMenu *pmNumericSet;
+	TMxPopupMenu *pmNumericSet;
 	TMenuItem *Position1;
 	TMenuItem *Rotation1;
 	TMenuItem *Scale1;
 	TPanel *Panel2;
 	TGroupBox *GroupBox4;
-	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel3;
-	TRxLabel *lbVertices;
-	TRxLabel *lbFaces;
+	TMxLabel *RxLabel1;
+	TMxLabel *RxLabel3;
+	TMxLabel *lbVertices;
+	TMxLabel *lbFaces;
 	TExtBtn *ebDropper;
 	TTabSheet *tsOAnimation;
 	TTabSheet *tsSAnimation;
 	TGroupBox *gbOMotion;
-	TRxLabel *RxLabel20;
-	TRxLabel *lbOMotionName;
-	TRxLabel *RxLabel23;
-	TRxLabel *lbOMotionFrames;
-	TRxLabel *lbOMotionFPS;
-	TRxLabel *RxLabel28;
+	TMxLabel *RxLabel20;
+	TMxLabel *lbOMotionName;
+	TMxLabel *RxLabel23;
+	TMxLabel *lbOMotionFrames;
+	TMxLabel *lbOMotionFPS;
+	TMxLabel *RxLabel28;
 	TElTree *tvSMotions;
 	TGroupBox *gbTemplates;
 	TExtBtn *ExtBtn6;
@@ -87,16 +87,16 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn10;
 	TElTree *tvOMotions;
 	TGroupBox *gbSMotion;
-	TRxLabel *RxLabel29;
-	TRxLabel *lbSMotionName;
-	TRxLabel *RxLabel24;
-	TRxLabel *lbSMotionFrames;
-	TRxLabel *RxLabel27;
-	TRxLabel *lbSMotionFPS;
+	TMxLabel *RxLabel29;
+	TMxLabel *lbSMotionName;
+	TMxLabel *RxLabel24;
+	TMxLabel *lbSMotionFrames;
+	TMxLabel *RxLabel27;
+	TMxLabel *lbSMotionFPS;
 	TBevel *Bevel1;
-	TRxLabel *RxLabel30;
-	TRxLabel *RxLabel31;
-	TRxLabel *RxLabel32;
+	TMxLabel *RxLabel30;
+	TMxLabel *RxLabel31;
+	TMxLabel *RxLabel32;
 	TMultiObjSpinEdit *seSMotionSpeed;
 	TMultiObjSpinEdit *seSMotionAccrue;
 	TMultiObjSpinEdit *seSMotionFalloff;
@@ -105,45 +105,45 @@ __published:	// IDE-managed Components
 	TPanel *paTex_Surf;
 	TPanel *paTexture;
 	TGroupBox *GroupBox2;
-	TRxLabel *RxLabel7;
-	TRxLabel *RxLabel8;
-	TRxLabel *RxLabel9;
-	TRxLabel *lbWidth;
-	TRxLabel *lbHeight;
-	TRxLabel *lbAlpha;
+	TMxLabel *RxLabel7;
+	TMxLabel *RxLabel8;
+	TMxLabel *RxLabel9;
+	TMxLabel *lbWidth;
+	TMxLabel *lbHeight;
+	TMxLabel *lbAlpha;
 	TPanel *paImage;
 	TPaintBox *im;
 	TPanel *paSurface;
 	TGroupBox *GroupBox1;
-	TRxLabel *RxLabel18;
-	TRxLabel *lbSurfSideFlag;
-	TRxLabel *RxLabel35;
-	TRxLabel *lbSurfFaces;
+	TMxLabel *RxLabel18;
+	TMxLabel *lbSurfSideFlag;
+	TMxLabel *RxLabel35;
+	TMxLabel *lbSurfFaces;
 	TExtBtn *ebSelectShader;
-	TRxLabel *lbShader;
+	TMxLabel *lbShader;
 	TExtBtn *ebSelectTexture;
-	TRxLabel *lbTexture;
+	TMxLabel *lbTexture;
 	TGroupBox *gbFVF;
-	TRxLabel *RxLabel14;
-	TRxLabel *lbSurfFVF_TCCount;
-	TRxLabel *RxLabel6;
-	TRxLabel *RxLabel12;
-	TRxLabel *RxLabel15;
-	TRxLabel *RxLabel16;
-	TRxLabel *RxLabel17;
-	TRxLabel *lbSurfFVF_XYZ;
-	TRxLabel *lbSurfFVF_Normal;
-	TRxLabel *lbSurfFVF_Diffuse;
-	TRxLabel *lbSurfFVF_Specular;
-	TRxLabel *lbSurfFVF_XYZRHW;
+	TMxLabel *RxLabel14;
+	TMxLabel *lbSurfFVF_TCCount;
+	TMxLabel *RxLabel6;
+	TMxLabel *RxLabel12;
+	TMxLabel *RxLabel15;
+	TMxLabel *RxLabel16;
+	TMxLabel *RxLabel17;
+	TMxLabel *lbSurfFVF_XYZ;
+	TMxLabel *lbSurfFVF_Normal;
+	TMxLabel *lbSurfFVF_Diffuse;
+	TMxLabel *lbSurfFVF_Specular;
+	TMxLabel *lbSurfFVF_XYZRHW;
 	TPanel *paSAnimBottom;
 	TGroupBox *GroupBox5;
-	TRxLabel *RxLabel22;
-	TRxLabel *lbSMotionCount;
-	TRxLabel *RxLabel26;
-	TRxLabel *lbActiveSMotion;
-	TRxLabel *RxLabel37;
-	TRxLabel *lbSBoneCount;
+	TMxLabel *RxLabel22;
+	TMxLabel *lbSMotionCount;
+	TMxLabel *RxLabel26;
+	TMxLabel *lbActiveSMotion;
+	TMxLabel *RxLabel37;
+	TMxLabel *lbSBoneCount;
 	TGroupBox *gbSMotionCommand;
 	TExtBtn *ebSAppendMotion;
 	TExtBtn *ebSRenameMotion;
@@ -153,10 +153,10 @@ __published:	// IDE-managed Components
 	TExtBtn *ebSMotionLoad;
 	TPanel *Panel4;
 	TGroupBox *GroupBox3;
-	TRxLabel *RxLabel19;
-	TRxLabel *lbOMotionCount;
-	TRxLabel *RxLabel21;
-	TRxLabel *lbActiveOMotion;
+	TMxLabel *RxLabel19;
+	TMxLabel *lbOMotionCount;
+	TMxLabel *RxLabel21;
+	TMxLabel *lbActiveOMotion;
 	TGroupBox *gbOMotionCommand;
 	TExtBtn *ebOMotionAppend;
 	TExtBtn *ebOMotionRename;
@@ -170,22 +170,22 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	TPageControl *pcAnimType;
 	TTabSheet *tsCycle;
-	TRxLabel *RxLabel39;
+	TMxLabel *RxLabel39;
 	TComboBox *cbSBonePart;
 	TTabSheet *tsFX;
-	TRxLabel *RxLabel40;
-	TRxLabel *RxLabel34;
+	TMxLabel *RxLabel40;
+	TMxLabel *RxLabel34;
 	TComboBox *cbSStartMotionBone;
 	TMultiObjSpinEdit *seSMotionPower;
 	TMultiObjCheck *cbSMotionStopAtEnd;
 	TExtBtn *ebSReloadMotion;
 	TExtBtn *ebCancel;
-	TRxLabel *RxLabel10;
+	TMxLabel *RxLabel10;
 	TMultiObjSpinEdit *sePositionX;
 	TMultiObjSpinEdit *sePositionY;
 	TMultiObjSpinEdit *sePositionZ;
-	TRxLabel *RxLabel13;
-	TRxLabel *RxLabel25;
+	TMxLabel *RxLabel13;
+	TMxLabel *RxLabel25;
 	TMultiObjSpinEdit *seScaleX;
 	TMultiObjSpinEdit *seScaleY;
 	TMultiObjSpinEdit *seScaleZ;
@@ -193,6 +193,8 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seRotateY;
 	TMultiObjSpinEdit *seRotateZ;
 	TExtBtn *ebApply;
+	TExtBtn *ebSelectShaderXRLC;
+	TMxLabel *lbShaderXRLC;
     void __fastcall ebEditMeshClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
@@ -224,8 +226,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebOAppendMotionClick(TObject *Sender);
 	void __fastcall ebODeleteMotionClick(TObject *Sender);
 	void __fastcall ebORenameMotionClick(TObject *Sender);
-	void __fastcall tvOMotionsTryEdit(TObject *Sender, TElTreeItem *Item,
-          TElHeaderSection *Section, TFieldTypes &CellType, bool &CanEdit);
 	void __fastcall tvOMotionsItemChange(TObject *Sender, TElTreeItem *Item,
           TItemChangeMode ItemChangeMode);
 	void __fastcall tsSAnimationShow(TObject *Sender);
@@ -236,8 +236,6 @@ __published:	// IDE-managed Components
           TItemChangeMode ItemChangeMode);
 	void __fastcall tvSMotionsItemSelectedChange(TObject *Sender,
           TElTreeItem *Item);
-	void __fastcall tvSMotionsTryEdit(TObject *Sender, TElTreeItem *Item,
-          TElHeaderSection *Section, TFieldTypes &CellType, bool &CanEdit);
 	void __fastcall seSMotionChange(TObject *Sender);
 	void __fastcall ebSMotionClearClick(TObject *Sender);
 	void __fastcall ebSMotionSaveClick(TObject *Sender);
@@ -253,9 +251,10 @@ __published:	// IDE-managed Components
 	void __fastcall ebSReloadMotionClick(TObject *Sender);
 	void __fastcall ebApplyClick(TObject *Sender);
 	void __fastcall seTransformChange(TObject *Sender);
+	void __fastcall ebSelectShaderXRLCClick(TObject *Sender);
 private:	// User declarations
     ETextureCore* 			tx_selected;
-    st_Surface* 			surf_selected;
+    CSurface* 				surf_selected;
 
     CSMotion* 				selected_smotion;
     COMotion* 				selected_omotion;

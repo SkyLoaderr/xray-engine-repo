@@ -8,13 +8,12 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
-#include "CloseBtn.hpp"
-#include "RXCtrls.hpp"
 
 #include "CustomObject.h"
 #include "ui_customtools.h"
 #include "multi_edit.hpp"
-#include "Placemnt.hpp"
+#include "ExtBtn.hpp"
+#include "mxPlacemnt.hpp"
 // refs
 struct SDOClusterDef;
 //---------------------------------------------------------------------------

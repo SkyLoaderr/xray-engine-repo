@@ -1,18 +1,16 @@
 //---------------------------------------------------------------------------
 #ifndef PropertiesRPointH
 #define PropertiesRPointH
-#include "CloseBtn.hpp"
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>
 #include "multi_check.hpp"
 #include <StdCtrls.hpp>
 #include "multi_edit.hpp"
-#include "RXCtrls.hpp"
 //---------------------------------------------------------------------------
-#include "XRShaderDef.h"
-#include "FrameEmitter.h"
 #include <Forms.hpp>
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
 
 // refs
 class CCustomObject;
@@ -24,11 +22,11 @@ __published:	// IDE-managed Components
     TExtBtn *ebCancel;
     TPanel *paBottom;
 	TGroupBox *GroupBox1;
-	TRxLabel *RxLabel2;
+	TMxLabel *RxLabel2;
 	TMultiObjSpinEdit *seTeamID;
 	TEdit *edName;
-	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel3;
+	TMxLabel *RxLabel1;
+	TMxLabel *RxLabel3;
 	TMultiObjSpinEdit *seHeading;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

@@ -16,13 +16,10 @@
 #include "Library.h"
 #include <Dialogs.hpp>
 #include "ElTree.hpp"
-#include "CloseBtn.hpp"
-#include "ElHeader.hpp"
-#include "RXCtrls.hpp"
-#include <Grids.hpp>
-#include "RxMenus.hpp"
+#include "ElXPThemedControl.hpp"
+#include "ExtBtn.hpp"
+#include "mxPlacemnt.hpp"
 #include <Menus.hpp>
-#include "Placemnt.hpp"
 //---------------------------------------------------------------------------
 // refs
 class TObjectPreview;
@@ -82,8 +79,6 @@ __published:	// IDE-managed Components
 //    void __fastcall ebCancelEditClick(TObject *Sender);
     void __fastcall cbPreviewClick(TObject *Sender);
     void __fastcall ebValidateClick(TObject *Sender);
-    void __fastcall tvObjectsTryEdit(TObject *Sender, TElTreeItem *Item,
-          TElHeaderSection *Section, TFieldTypes &CellType, bool &CanEdit);
     void __fastcall tvObjectsItemChange(TObject *Sender, TElTreeItem *Item,
           TItemChangeMode ItemChangeMode);
     void __fastcall ebSaveObjectOGFClick(TObject *Sender);

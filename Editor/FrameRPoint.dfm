@@ -60,7 +60,7 @@ object fraRPoint: TfraRPoint
       ParentFont = False
       OnClick = PaneMinClick
     end
-    object RxLabel2: TRxLabel
+    object RxLabel2: TMxLabel
       Left = 2
       Top = 18
       Width = 46

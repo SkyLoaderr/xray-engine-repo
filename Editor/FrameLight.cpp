@@ -8,8 +8,6 @@
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CloseBtn"
-#pragma link "RXCtrls"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------

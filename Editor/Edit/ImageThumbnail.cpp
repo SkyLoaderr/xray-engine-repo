@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "ImageThumbnail.h"
+#include "ImageManager.h"
 #include "xrImage_Resampler.h"
 
 //----------------------------------------------------
@@ -37,10 +38,15 @@ bool CreateBitmap(HDC hdc, HBITMAP& th, DWORDVec& data, int w, int h){
 }
 //----------------------------------------------------
 
-EImageThumbnail::EImageThumbnail(LPCSTR name)
+EImageThumbnail::EImageThumbnail(LPCSTR src_name)
 {
-	m_Name = name;
-    Load();
+	m_Width	= 0;
+    m_Height= 0;
+	m_Name 	= ChangeFileExt(src_name,".thm");
+    m_Age	= 0;
+//    ZeroMemory(&m_TexParams,sizeof(m_TexParams));
+    if (!Load())
+		ImageManager.CreateThumbnail(this,src_name);
 }
 
 EImageThumbnail::~EImageThumbnail()
@@ -65,8 +71,8 @@ bool EImageThumbnail::Load()
     if (!FS.Exist(fn.c_str())) return false;
     CFileStream FN(fn.c_str());
     char MARK[8]; FN.Read(MARK,8);
-    if (strcmp(MARK,THM_SIGN)!=0){
-        ELog.DlgMsg( mtError, "Thumbnail: Unsupported version.");
+    if (strncmp(MARK,THM_SIGN,8)!=0){
+        ELog.Msg( mtError, "Thumbnail: Unsupported version.");
         return false;
     }
 
@@ -76,7 +82,7 @@ bool EImageThumbnail::Load()
 
     R_ASSERT(F.ReadChunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_CURRENT_VERSION ){
-        ELog.DlgMsg( mtError, "Thumbnail: Unsupported version.");
+        ELog.Msg( mtError, "Thumbnail: Unsupported version.");
         return false;
     }
 

@@ -5,7 +5,6 @@
 #include "EditObject.h"
 #include "library.h"
 #include "motion.h"
-#include "FileSystem.h"
 #include "Bone.h"
 //---------------------------------------------------------------------
 // Skeleton
@@ -109,7 +108,7 @@ void __fastcall TfrmPropertiesObject::ebSDeleteMotionClick(TObject *Sender)
     if (tvSMotions->Selected){
         TElTreeItem* Item 	= tvSMotions->Selected;
         if (Item->Data){
-	        m_EditObject->RemoveSMotion(Item->Text.c_str());
+	        m_EditObject->RemoveSMotion(AnsiString(Item->Text).c_str());
     	    Item->Delete();
     		lbSMotionCount->Caption = m_EditObject->m_SMotions.size();
 	    	OnModified(Sender);
@@ -148,8 +147,8 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemChange(TObject *Sender,
 	switch(ItemChangeMode){
     case icmText:
         if (FEditNode){
-            if (!m_EditObject->RenameSMotion(last_name.c_str(),Item->Text.c_str())){
-                ELog.DlgMsg(mtError,"Motion with name '%s' already present.",Item->Text.c_str());
+            if (!m_EditObject->RenameSMotion(last_name.c_str(),AnsiString(Item->Text).c_str())){
+                ELog.DlgMsg(mtError,"Motion with name '%s' already present.",AnsiString(Item->Text).c_str());
                 FEditNode = 0;
                 Item->Text = last_name;
             }else{
@@ -212,7 +211,8 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemSelectedChange(
    }
 }
 //---------------------------------------------------------------------------
-
+//S
+/*
 void __fastcall TfrmPropertiesObject::tvSMotionsTryEdit(TObject *Sender,
       TElTreeItem *Item, TElHeaderSection *Section, TFieldTypes &CellType,
       bool &CanEdit)
@@ -220,6 +220,7 @@ void __fastcall TfrmPropertiesObject::tvSMotionsTryEdit(TObject *Sender,
 	FEditNode = tvSMotions->Selected;
     last_name = FEditNode->Text;
 }
+*/
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::seSMotionChange(TObject *Sender)

@@ -10,8 +10,8 @@
 #pragma package(smart_init)
 #pragma link "multi_check"
 #pragma link "multi_edit"
-#pragma link "RXCtrls"
 #pragma link "FrameEmitter"
+#pragma link "ExtBtn"
 #pragma resource "*.dfm"
 
 TfrmPropertiesPS* TfrmPropertiesPS::form = 0;
@@ -115,7 +115,7 @@ void __fastcall TfrmPropertiesPS::ebBirthFuncMouseUp(TObject *Sender,
 {
 	if (Shift.Contains(ssShift)) fraEmitter->ebBirthFunc->Down = true;
     else{
-		frmShaderFunctionRun(&m_BirthFunc);
+		TfrmShaderFunction::Run(&m_BirthFunc);
     	fraEmitter->ebBirthFunc->Down = false;
     }
     OnModified(Sender);

@@ -6,19 +6,11 @@
 #include "CustomObject.h"
 #include "EditParticles.h"
 #include "ParticleSystem.h"
-#include "FileSystem.h"
 #include "ChoseForm.h"
 #include "ShaderFunction.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "multi_edit"
-#pragma link "RXCtrls"
-#pragma link "Placemnt"
-#pragma link "multi_color"
-#pragma link "Gradient"
-#pragma link "multi_check"
-#pragma link "FrameEmitter"
 #pragma resource "*.dfm"
 
 TfrmPropertiesPSDef* TfrmPropertiesPSDef::form = 0;
@@ -264,7 +256,7 @@ void __fastcall TfrmPropertiesPSDef::clColorMouseDown(TObject *Sender,
 	bSetMode = true;
 	if (X<grColor->Width/2){
 		DWORD color = grColor->BeginColor;
-		if (SelectColorWin(&color,&color)){
+		if (SelectColorWin(&color)){
             grColor->BeginColor = color;
             Fcolor C; C.set_windows(grColor->BeginColor);
             seColorStartR->Value = C.r*255;
@@ -273,7 +265,7 @@ void __fastcall TfrmPropertiesPSDef::clColorMouseDown(TObject *Sender,
         }
     }else{
 		DWORD color = grColor->EndColor;
-		if (SelectColorWin(&color,&color)){
+		if (SelectColorWin(&color)){
             grColor->EndColor = color;
             Fcolor C; C.set_windows(grColor->EndColor);
             seColorEndR->Value = C.r*255;
@@ -391,7 +383,7 @@ void __fastcall TfrmPropertiesPSDef::ebBirthFuncMouseUp(TObject *Sender,
     if (bSetMode) return;
 	if (Shift.Contains(ssShift)) fraEmitter->ebBirthFunc->Down = true;
     else{
-		frmShaderFunctionRun(&m_PS->m_DefaultEmitter.m_BirthFunc);
+		TfrmShaderFunction::Run(&m_PS->m_DefaultEmitter.m_BirthFunc);
     	fraEmitter->ebBirthFunc->Down = false;
     }
     ApplyObjectsInfo();

@@ -10,9 +10,6 @@
 #include "leftbar.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXCtrls"
-#pragma link "ElTree"
-#pragma link "CloseBtn"
 #pragma resource "*.dfm"
 TfrmObjectList *frmObjectList=0;
 //---------------------------------------------------------------------------
@@ -47,14 +44,14 @@ void __fastcall TfrmObjectList::FormShow(TObject *Sender)
     InitListBox();
 }
 //---------------------------------------------------------------------------
-TElTreeItem* TfrmObjectList::FindFolderByType(EObjClass type)
+TElTreeItem* TfrmObjectList::FindFolderByType(int type)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
         if (!node->Parent && (node->Data == (void*)type)) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
-TElTreeItem* TfrmObjectList::FindObjectByType(EObjClass type, void *obj)
+TElTreeItem* TfrmObjectList::FindObjectByType(int type, void *obj)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
         if (!node->Parent && (node->Data == (void*)type)){
@@ -65,7 +62,7 @@ TElTreeItem* TfrmObjectList::FindObjectByType(EObjClass type, void *obj)
     return 0;
 }
 //---------------------------------------------------------------------------
-TElTreeItem* TfrmObjectList::AddFolder(EObjClass type)
+TElTreeItem* TfrmObjectList::AddFolder(int type)
 {
     AnsiString name;
     name.sprintf("%ss",GetNameByClassID(type));
@@ -148,15 +145,6 @@ void TfrmObjectList::UpdateSelection()
     UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TfrmObjectList::tvItemsTryEdit(TObject *Sender,
-      TElTreeItem *Item, TElHeaderSection *Section, TFieldTypes &CellType,
-      bool &CanEdit)
-{
-    CanEdit = false;
-}
-//---------------------------------------------------------------------------
-
 
 void __fastcall TfrmObjectList::tvItemsItemSelectedChange(
       TObject *Sender, TElTreeItem *Item)

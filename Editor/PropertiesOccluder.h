@@ -9,11 +9,10 @@
 #include <Forms.hpp>
 #include <Dialogs.hpp>
 #include <ExtCtrls.hpp>
-#include "RXSpin.hpp"
 #include "CustomObject.h"
 #include "multi_edit.hpp"
-#include "CloseBtn.hpp"
-#include "RXCtrls.hpp"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
 //---------------------------------------------------------------------------
 class TfrmPropertiesOccluder : public TForm
 {
@@ -22,8 +21,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCancel;
 	TGroupBox *gbOrientation;
 	TMultiObjSpinEdit *sePointCount;
-	TRxLabel *RxLabel4;
-	TRxLabel *RxLabel1;
+	TMxLabel *RxLabel4;
+	TMxLabel *RxLabel1;
 	TMultiObjSpinEdit *MultiObjSpinEdit1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

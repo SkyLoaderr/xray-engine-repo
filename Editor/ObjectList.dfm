@@ -24,157 +24,94 @@ object frmObjectList: TfrmObjectList
     Top = 0
     Width = 192
     Height = 332
+    Cursor = crDefault
     LeftPosition = 0
-    ActiveBorderType = fbtSunken
-    Align = alClient
-    AlwaysKeepFocus = False
-    AlwaysKeepSelection = True
-    AutoExpand = True
-    AutoLookup = False
-    DockOrientation = doNoOrient
     DoubleBuffered = False
-    AutoLineHeight = True
-    BarStyle = False
-    BarStyleVerticalLines = False
-    BorderStyle = bsSingle
-    ChangeStateImage = False
-    CustomCheckboxes = False
-    CustomPlusMinus = False
-    DeselectChildrenOnCollapse = False
-    DivLinesColor = clBtnFace
-    DoInplaceEdit = True
-    DraggableSections = False
-    DragAllowed = False
-    DragTrgDrawMode = SelColorRect
-    DragType = dtDelphi
-    DragImageMode = dimNever
-    DrawFocusRect = True
-    ExpandOnDblClick = True
-    ExpandOnDragOver = False
-    FilteredVisibility = False
+    DragCursor = crDrag
+    Align = alClient
+    AutoCollapse = False
+    AutoExpand = True
+    DockOrientation = doNoOrient
+    DefaultSectionWidth = 120
+    BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
+    ExplorerEditMode = False
     Flat = True
-    FlatFocusedScrollbars = True
-    FocusedSelectColor = clHighlight
-    ForcedScrollBars = ssNone
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    FullRowSelect = True
-    HeaderActiveFilterColor = clBlack
-    HeaderHeight = 17
+    GradientSteps = 64
+    HeaderHeight = 19
     HeaderHotTrack = False
-    HeaderInvertSortArrows = False
     HeaderSections.Data = {
-      F8FFFFFF070000004C75EC0800000000FFFFFFFF000001010100000078000000
-      0000000010270000000100000000000000000000000000000000014000000000
-      00000000000100000100000000010000000000000000000000004C75EC080000
-      0000FFFFFFFF0000010101000000780000000000000010270000000100000100
-      0000000000000000000000000140000000000000000000010000010000000001
-      0000000000000000000000004C75EC0800000000FFFFFFFF0000010101000000
-      7800000000000000102700000001000002000000000000000000000000000140
-      0000000000000000000100000100000000010000000000000000000000004C75
-      EC0800000000FFFFFFFF00000101010000007800000000000000102700000001
-      0000030000000000000000000000000001400000000000000000000100000100
-      000000010000000000000000000000004C75EC0800000000FFFFFFFF00000101
-      0100000078000000000000001027000000010000040000000000000000000000
-      0000014000000000000000000001000001000000000100000000000000000000
-      00004C75EC0800000000FFFFFFFF000001010100000078000000000000001027
-      0000000100000500000000000000000000000000014000000000000000000001
-      00000100000000010000000000000000000000004C75EC0800000000FFFFFFFF
-      0000010101000000780000000000000010270000000100000600000000000000
-      0000000000000140000000000000000000010000010000000001000000000000
-      000000000000}
-    HeaderFilterColor = clBtnText
-    HeaderFlat = False
-    HideFocusRect = False
-    HideHintOnTimer = False
-    HideHintOnMove = True
-    HideSelectColor = clBtnFace
-    HideSelection = False
-    HorizontalLines = False
-    HideHorzScrollBar = False
-    HideVertScrollBar = False
-    HorzScrollBarStyles.ActiveFlat = False
-    HorzScrollBarStyles.BlendBackground = True
-    HorzScrollBarStyles.Color = clBtnFace
-    HorzScrollBarStyles.Flat = True
-    HorzScrollBarStyles.MinThumbSize = 4
-    HorzScrollBarStyles.NoDisableButtons = False
-    HorzScrollBarStyles.NoSunkenThumb = False
-    HorzScrollBarStyles.OwnerDraw = False
-    HorzScrollBarStyles.SecondaryButtons = False
-    HorzScrollBarStyles.SecondBtnKind = sbkOpposite
-    HorzScrollBarStyles.ShowLeftArrows = True
-    HorzScrollBarStyles.ShowRightArrows = True
+      F5FFFFFF07000000BC162A0E00270000FFFFFFFF0000010101002A0E78000000
+      00000000102700000001006D40C2B6050000000000002A0E0000000000000120
+      000000000000000000010000000000002C2054456C547265654974656D202A49
+      74656D290D0A7B0D0A2020202055706461746553656C656374696F6E28293B0D
+      0A7D0D0A2F2F2D2D2D2D2D2D2D2D2D2D2D2D2D2D010000000001000000000000
+      000000000000BC162A0E00270000FFFFFFFF0000010101002A0E780000000000
+      0000102700000001006D90DCB6050100000000002A0E00000000000001200000
+      00000000000000010000000000002C2054456C547265654974656D202A497465
+      6D290D0A7B0D0A2020202055706461746553656C656374696F6E28293B0D0A7D
+      0D0A2F2F2D2D2D2D2D2D2D2D2D2D2D2D2D2D0100000000010000000000000000
+      00000000BC162A0E00270000FFFFFFFF0000010101002A0E7800000000000000
+      102700000001006D54DDB6050200000000002A0E000000000000012000000000
+      0000000000010000000000002C2054456C547265654974656D202A4974656D29
+      0D0A7B0D0A2020202055706461746553656C656374696F6E28293B0D0A7D0D0A
+      2F2F2D2D2D2D2D2D2D2D2D2D2D2D2D2D01000000000100000000000000000000
+      0000BC162A0E00270000FFFFFFFF0000010101002A0E78000000000000001027
+      00000001006D18DEB6050300000000002A0E0000000000000120000000000000
+      000000010000000000002C2054456C547265654974656D202A4974656D290D0A
+      7B0D0A2020202055706461746553656C656374696F6E28293B0D0A7D0D0A2F2F
+      2D2D2D2D2D2D2D2D2D2D2D2D2D2D010000000001000000000000000000000000
+      BC162A0E00270000FFFFFFFF0000010101002A0E780000000000000010270000
+      0001006DDCDEB6050400000000002A0E00000000000001200000000000000000
+      00010000000000002C2054456C547265654974656D202A4974656D290D0A7B0D
+      0A2020202055706461746553656C656374696F6E28293B0D0A7D0D0A2F2F2D2D
+      2D2D2D2D2D2D2D2D2D2D2D2D010000000001000000000000000000000000BC16
+      2A0E00270000FFFFFFFF0000010101002A0E7800000000000000102700000001
+      006DA0DFB6050500000000002A0E000000000000012000000000000000000001
+      0000000000002C2054456C547265654974656D202A4974656D290D0A7B0D0A20
+      20202055706461746553656C656374696F6E28293B0D0A7D0D0A2F2F2D2D2D2D
+      2D2D2D2D2D2D2D2D2D2D010000000001000000000000000000000000BC162A0E
+      00270000FFFFFFFF0000010101002A0E7800000000000000102700000001006D
+      F8852F0F0600000000002A0E0000000000000120000000000000000000010000
+      000000002C2054456C547265654974656D202A4974656D290D0A7B0D0A202020
+      2055706461746553656C656374696F6E28293B0D0A7D0D0A2F2F2D2D2D2D2D2D
+      2D2D2D2D2D2D2D2D010000000001000000000000000000000000}
+    HeaderFont.Charset = DEFAULT_CHARSET
+    HeaderFont.Color = clWindowText
+    HeaderFont.Height = -11
+    HeaderFont.Name = 'MS Sans Serif'
+    HeaderFont.Style = []
     HorzScrollBarStyles.ShowTrackHint = False
-    HorzScrollBarStyles.ThumbMode = etmAuto
-    HorzScrollBarStyles.ThumbSize = 0
-    HorzScrollBarStyles.Width = 14
+    HorzScrollBarStyles.Width = 16
     HorzScrollBarStyles.ButtonSize = 14
     HorzScrollBarStyles.UseSystemMetrics = False
+    IgnoreEnabled = False
     Images = ImageList1
-    InactiveBorderType = fbtSunkenOuter
-    ItemIndent = 17
-    LineHeight = 19
+    IncrementalSearch = False
+    KeepSelectionWithinLevel = False
+    LineBorderActiveColor = clBlack
+    LineBorderInactiveColor = clBlack
+    LineHeight = 17
     LinesColor = clBtnShadow
-    LinesStyle = psDot
-    LineHintColor = clWindow
-    LockHeaderHeight = False
-    MainTreeColumn = 0
-    MoveColumnOnDrag = False
-    MoveFocusOnCollapse = False
-    MultiSelect = True
+    MouseFrameSelect = True
     OwnerDrawMask = '~~@~~'
-    PathSeparator = '\'
-    PlusMinusTransparent = False
-    RightAlignedText = False
-    RightAlignedTree = False
-    RowHotTrack = False
-    RowSelect = True
-    ScrollTracking = False
-    SelectColumn = -1
-    ShowButtons = True
-    ShowColumns = False
-    ShowCheckboxes = False
-    ShowImages = True
-    ShowLines = True
-    ShowRoot = False
-    ShowRootButtons = True
-    SelectionMode = smUsual
+    ScrollbarOpposite = False
+    ShowLeafButton = False
     SortDir = sdDescend
-    SortMode = smNone
-    SortSection = 0
-    SortType = stText
-    StickyHeaderSections = False
+    StoragePath = '\Tree'
     TabOrder = 0
     TabStop = True
-    Tracking = True
-    TrackColor = clHighlight
-    UnderlineTracked = True
-    VerticalLines = False
-    VertScrollBarStyles.ActiveFlat = False
-    VertScrollBarStyles.BlendBackground = True
-    VertScrollBarStyles.Color = clBtnFace
-    VertScrollBarStyles.Flat = True
-    VertScrollBarStyles.MinThumbSize = 4
-    VertScrollBarStyles.NoDisableButtons = False
-    VertScrollBarStyles.NoSunkenThumb = False
-    VertScrollBarStyles.OwnerDraw = False
-    VertScrollBarStyles.SecondaryButtons = False
-    VertScrollBarStyles.SecondBtnKind = sbkOpposite
-    VertScrollBarStyles.ShowLeftArrows = True
-    VertScrollBarStyles.ShowRightArrows = True
     VertScrollBarStyles.ShowTrackHint = True
-    VertScrollBarStyles.ThumbMode = etmAuto
-    VertScrollBarStyles.ThumbSize = 0
-    VertScrollBarStyles.Width = 14
+    VertScrollBarStyles.Width = 16
     VertScrollBarStyles.ButtonSize = 14
     VertScrollBarStyles.UseSystemMetrics = False
+    VirtualityLevel = vlNone
     TextColor = clBtnText
     BkColor = clBtnShadow
-    OnTryEdit = tvItemsTryEdit
     OnItemSelectedChange = tvItemsItemSelectedChange
     OnKeyPress = tvItemsKeyPress
   end

@@ -44,7 +44,7 @@ object frmPropertiesObject: TfrmPropertiesObject
         Caption = 'Main options'
         ImageIndex = 4
         OnShow = tsMainOptionsShow
-        object RxLabel2: TRxLabel
+        object RxLabel2: TMxLabel
           Left = 3
           Top = 16
           Width = 67
@@ -88,7 +88,7 @@ object frmPropertiesObject: TfrmPropertiesObject
         Caption = 'Transformation'
         ImageIndex = 1
         OnShow = tsInfoShow
-        object RxLabel4: TRxLabel
+        object RxLabel4: TMxLabel
           Left = 0
           Top = 10
           Width = 52
@@ -96,7 +96,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = 'Transform:'
           ShadowColor = 15263976
         end
-        object RxLabel5: TRxLabel
+        object RxLabel5: TMxLabel
           Left = 1
           Top = 110
           Width = 71
@@ -104,7 +104,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = 'Bounding Box:'
           ShadowColor = 15263976
         end
-        object RxLabel11: TRxLabel
+        object RxLabel11: TMxLabel
           Left = 48
           Top = 154
           Width = 144
@@ -112,7 +112,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = 'Noa available in multiselection'
           ShadowColor = 15263976
         end
-        object RxLabel10: TRxLabel
+        object RxLabel10: TMxLabel
           Left = 10
           Top = 29
           Width = 42
@@ -120,7 +120,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = 'Position:'
           ShadowColor = 15263976
         end
-        object RxLabel13: TRxLabel
+        object RxLabel13: TMxLabel
           Left = 10
           Top = 48
           Width = 45
@@ -128,7 +128,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = 'Rotation:'
           ShadowColor = 15263976
         end
-        object RxLabel25: TRxLabel
+        object RxLabel25: TMxLabel
           Left = 10
           Top = 67
           Width = 32
@@ -176,27 +176,11 @@ object frmPropertiesObject: TfrmPropertiesObject
             Top = 1
             Width = 260
             Height = 17
-            Color = clBtnFace
             ActiveFilterColor = clBlack
-            Flat = True
-            Sections.Data = {
-              F8FFFFFF050000004434260C00000000FFFFFFFF000001000000000014000000
-              0000000010270000000000400400000000003740000000000000010000000000
-              00000000000100000100000000010000000000000000000000004434260C0000
-              0000FFFFFFFF00000100000000003C0000000000000010270000000001400000
-              0000000037400000000000000100000000000000000000010000080000004D69
-              6E696D756D00010000000000000000000000004434260C00000000FFFFFFFF00
-              000100000000003C000000000000001027000000000140010000000000374000
-              00000000000100000000000000000000010000080000004D6178696D756D0001
-              0000000000000000000000004434260C00000000FFFFFFFF0000010000000000
-              3C00000000000000102700000000014002000000000037400000000000000100
-              0000000000000000000100000500000053697A65000100000000000000000000
-              00004434260C00000000FFFFFFFF00000100000000003C000000000000001027
-              0000000001400300000000003740000000000000010000000000000000000001
-              00000700000043656E7465720001000000000000000000000000}
-            Tracking = True
             AllowDrag = True
             Align = alTop
+            Color = clBtnFace
+            Flat = True
             DockOrientation = doNoOrient
             DoubleBuffered = False
             MoveOnDrag = False
@@ -205,7 +189,36 @@ object frmPropertiesObject: TfrmPropertiesObject
             ResizeOnDrag = False
             RightAlignedText = False
             RightAlignedOrder = False
+            Sections.Data = {
+              F5FFFFFF050000005000000000000000FFFFFFFF000001000000486F14000000
+              000000001027000000000000EC43B90504000000000065530000000000000100
+              000000000000000000010000000000007753656C6563740051FF034076FF0340
+              9BFF0340C0FF0340E4FF0340080004402A0004404B0004406F00044094000440
+              B6000440DC00044002010440260104404C010440010000000001000000000000
+              0000000000005000000000000000FFFFFFFF000001000000486F3C0000000000
+              000010270000000001008048B905000000000000655300000000000001000000
+              00000000000000010000000000007753656C6563740051FF034076FF03409BFF
+              0340C0FF0340E4FF0340080004402A0004404B0004406F00044094000440B600
+              0440DC00044002010440260104404C010440080000004D696E696D756D000100
+              00000000000000000000005000000000000000FFFFFFFF000001000000486F3C
+              0000000000000010270000000001004449B90501000000000065530000000000
+              000100000000000000000000010000000000007753656C6563740051FF034076
+              FF03409BFF0340C0FF0340E4FF0340080004402A0004404B0004406F00044094
+              000440B6000440DC00044002010440260104404C010440080000004D6178696D
+              756D00010000000000000000000000005000000000000000FFFFFFFF00000100
+              0000486F3C000000000000001027000000000100084AB9050200000000006553
+              0000000000000100000000000000000000010000000000007753656C65637400
+              51FF034076FF03409BFF0340C0FF0340E4FF0340080004402A0004404B000440
+              6F00044094000440B6000440DC00044002010440260104404C01044005000000
+              53697A6500010000000000000000000000005000000000000000FFFFFFFF0000
+              01000000486F3C000000000000001027000000000100CC4AB905030000000000
+              65530000000000000100000000000000000000010000000000007753656C6563
+              740051FF034076FF03409BFF0340C0FF0340E4FF0340080004402A0004404B00
+              04406F00044094000440B6000440DC00044002010440260104404C0104400700
+              000043656E7465720001000000000000000000000000}
             StickySections = False
+            Tracking = True
+            WrapCaptions = False
           end
         end
         object sePositionX: TMultiObjSpinEdit
@@ -344,135 +357,57 @@ object frmPropertiesObject: TfrmPropertiesObject
           Top = 0
           Width = 227
           Height = 296
+          Cursor = crDefault
           LeftPosition = 0
-          ActiveBorderType = fbtSunken
-          Align = alLeft
-          AlwaysKeepFocus = False
-          AlwaysKeepSelection = True
-          AutoExpand = False
-          AutoLookup = False
-          DockOrientation = doNoOrient
           DoubleBuffered = False
-          AutoLineHeight = True
-          BarStyle = False
-          BarStyleVerticalLines = False
-          BorderStyle = bsSingle
-          ChangeStateImage = False
-          CustomCheckboxes = False
-          CustomPlusMinus = False
-          DeselectChildrenOnCollapse = False
-          DivLinesColor = clBtnFace
+          DragCursor = crDrag
+          Align = alLeft
+          AutoCollapse = False
+          DockOrientation = doNoOrient
+          DefaultSectionWidth = 120
+          BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
           DoInplaceEdit = False
-          DraggableSections = False
-          DragAllowed = False
-          DragTrgDrawMode = SelColorRect
-          DragType = dtDelphi
-          DragImageMode = dimNever
-          DrawFocusRect = True
-          ExpandOnDblClick = True
-          ExpandOnDragOver = False
-          FilteredVisibility = False
-          Flat = False
-          FlatFocusedScrollbars = True
-          FocusedSelectColor = clHighlight
-          ForcedScrollBars = ssNone
+          ExplorerEditMode = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          FullRowSelect = True
-          HeaderActiveFilterColor = clBlack
+          GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
-          HeaderInvertSortArrows = False
-          HeaderSections.Data = {F8FFFFFF00000000}
-          HeaderFilterColor = clBtnText
-          HeaderFlat = False
-          HideFocusRect = False
-          HideHintOnTimer = False
-          HideHintOnMove = True
-          HideSelectColor = clBtnFace
-          HideSelection = False
-          HorizontalLines = False
-          HideHorzScrollBar = False
-          HideVertScrollBar = False
-          HorzScrollBarStyles.ActiveFlat = False
-          HorzScrollBarStyles.BlendBackground = True
-          HorzScrollBarStyles.Color = clBtnFace
-          HorzScrollBarStyles.Flat = True
-          HorzScrollBarStyles.MinThumbSize = 4
-          HorzScrollBarStyles.NoDisableButtons = False
-          HorzScrollBarStyles.NoSunkenThumb = False
-          HorzScrollBarStyles.OwnerDraw = False
-          HorzScrollBarStyles.SecondaryButtons = False
-          HorzScrollBarStyles.SecondBtnKind = sbkOpposite
-          HorzScrollBarStyles.ShowLeftArrows = True
-          HorzScrollBarStyles.ShowRightArrows = True
+          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'MS Sans Serif'
+          HeaderFont.Style = []
           HorzScrollBarStyles.ShowTrackHint = False
-          HorzScrollBarStyles.ThumbMode = etmAuto
-          HorzScrollBarStyles.ThumbSize = 0
           HorzScrollBarStyles.Width = 16
           HorzScrollBarStyles.ButtonSize = 16
           HorzScrollBarStyles.UseSystemMetrics = False
-          InactiveBorderType = fbtSunkenOuter
-          ItemIndent = 17
-          LineHeight = 19
-          LinesColor = clBtnFace
-          LinesStyle = psDot
-          LineHintColor = clWindow
-          LockHeaderHeight = False
-          MainTreeColumn = 0
-          MoveColumnOnDrag = False
-          MoveFocusOnCollapse = False
+          IgnoreEnabled = False
+          IncrementalSearch = False
+          KeepSelectionWithinLevel = False
+          LineBorderActiveColor = clBlack
+          LineBorderInactiveColor = clBlack
+          LineHeight = 17
+          MouseFrameSelect = True
           MultiSelect = False
           OwnerDrawMask = '~~@~~'
-          PathSeparator = '\'
-          PlusMinusTransparent = False
-          RightAlignedText = False
-          RightAlignedTree = False
-          RowHotTrack = False
-          RowSelect = True
-          ScrollTracking = False
-          SelectColumn = -1
+          ScrollbarOpposite = False
           ShowButtons = False
-          ShowColumns = False
-          ShowCheckboxes = False
           ShowImages = False
-          ShowLines = True
-          ShowRoot = False
+          ShowLeafButton = False
           ShowRootButtons = False
-          SelectionMode = smUsual
-          SortDir = sdAscend
-          SortMode = smNone
-          SortSection = 0
-          SortType = stText
-          StickyHeaderSections = False
+          StoragePath = '\Tree'
           TabOrder = 0
           TabStop = True
-          Tracking = True
-          TrackColor = clHighlight
-          UnderlineTracked = True
-          VerticalLines = False
-          VertScrollBarStyles.ActiveFlat = False
-          VertScrollBarStyles.BlendBackground = True
-          VertScrollBarStyles.Color = clBtnFace
-          VertScrollBarStyles.Flat = True
-          VertScrollBarStyles.MinThumbSize = 4
-          VertScrollBarStyles.NoDisableButtons = False
-          VertScrollBarStyles.NoSunkenThumb = False
-          VertScrollBarStyles.OwnerDraw = False
-          VertScrollBarStyles.SecondaryButtons = False
-          VertScrollBarStyles.SecondBtnKind = sbkOpposite
-          VertScrollBarStyles.ShowLeftArrows = True
-          VertScrollBarStyles.ShowRightArrows = True
           VertScrollBarStyles.ShowTrackHint = True
-          VertScrollBarStyles.ThumbMode = etmAuto
-          VertScrollBarStyles.ThumbSize = 0
           VertScrollBarStyles.Width = 16
           VertScrollBarStyles.ButtonSize = 16
           VertScrollBarStyles.UseSystemMetrics = False
-          TextColor = clWindowText
+          VirtualityLevel = vlNone
           BkColor = clBtnShadow
           OnItemSelectedChange = tvMeshesItemSelectedChange
         end
@@ -492,7 +427,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Align = alTop
             Caption = ' Summary Info '
             TabOrder = 0
-            object RxLabel1: TRxLabel
+            object RxLabel1: TMxLabel
               Left = 5
               Top = 18
               Width = 43
@@ -500,7 +435,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               Caption = 'Vertices:'
               ShadowColor = 15263976
             end
-            object RxLabel3: TRxLabel
+            object RxLabel3: TMxLabel
               Left = 5
               Top = 32
               Width = 34
@@ -508,7 +443,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               Caption = 'Faces:'
               ShadowColor = 15263976
             end
-            object lbVertices: TRxLabel
+            object lbVertices: TMxLabel
               Left = 67
               Top = 18
               Width = 11
@@ -522,7 +457,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               ParentFont = False
               ShadowColor = 15263976
             end
-            object lbFaces: TRxLabel
+            object lbFaces: TMxLabel
               Left = 67
               Top = 32
               Width = 11
@@ -548,136 +483,58 @@ object frmPropertiesObject: TfrmPropertiesObject
           Top = 0
           Width = 210
           Height = 296
+          Cursor = crDefault
           LeftPosition = 0
-          ActiveBorderType = fbtSunken
-          Align = alClient
-          AlwaysKeepFocus = False
-          AlwaysKeepSelection = True
-          AutoExpand = False
-          AutoLookup = False
-          DockOrientation = doNoOrient
           DoubleBuffered = False
-          AutoLineHeight = True
-          BarStyle = False
-          BarStyleVerticalLines = False
-          BorderStyle = bsSingle
-          ChangeStateImage = False
-          CustomCheckboxes = False
-          CustomPlusMinus = False
-          DeselectChildrenOnCollapse = False
-          DivLinesColor = clBtnFace
+          DragCursor = crDrag
+          Align = alClient
+          AutoCollapse = False
+          DockOrientation = doNoOrient
+          DefaultSectionWidth = 120
+          BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
           DoInplaceEdit = False
-          DraggableSections = False
-          DragAllowed = False
-          DragTrgDrawMode = SelColorRect
-          DragType = dtDelphi
-          DragImageMode = dimNever
-          DrawFocusRect = True
-          ExpandOnDblClick = True
-          ExpandOnDragOver = False
-          FilteredVisibility = False
-          Flat = False
-          FlatFocusedScrollbars = True
-          FocusedSelectColor = clHighlight
-          ForcedScrollBars = ssNone
+          ExplorerEditMode = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          FullRowSelect = True
-          HeaderActiveFilterColor = clBlack
+          GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
-          HeaderInvertSortArrows = False
-          HeaderSections.Data = {F8FFFFFF00000000}
-          HeaderFilterColor = clBtnText
-          HeaderFlat = False
-          HideFocusRect = False
-          HideHintOnTimer = False
-          HideHintOnMove = True
-          HideSelectColor = clBtnFace
-          HideSelection = False
-          HorizontalLines = False
-          HideHorzScrollBar = False
-          HideVertScrollBar = False
-          HorzScrollBarStyles.ActiveFlat = False
-          HorzScrollBarStyles.BlendBackground = True
-          HorzScrollBarStyles.Color = clBtnFace
-          HorzScrollBarStyles.Flat = True
-          HorzScrollBarStyles.MinThumbSize = 4
-          HorzScrollBarStyles.NoDisableButtons = False
-          HorzScrollBarStyles.NoSunkenThumb = False
-          HorzScrollBarStyles.OwnerDraw = False
-          HorzScrollBarStyles.SecondaryButtons = False
-          HorzScrollBarStyles.SecondBtnKind = sbkOpposite
-          HorzScrollBarStyles.ShowLeftArrows = True
-          HorzScrollBarStyles.ShowRightArrows = True
+          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'MS Sans Serif'
+          HeaderFont.Style = []
           HorzScrollBarStyles.ShowTrackHint = False
-          HorzScrollBarStyles.ThumbMode = etmAuto
-          HorzScrollBarStyles.ThumbSize = 0
           HorzScrollBarStyles.Width = 16
           HorzScrollBarStyles.ButtonSize = 16
           HorzScrollBarStyles.UseSystemMetrics = False
-          InactiveBorderType = fbtSunkenOuter
-          ItemIndent = 17
-          LineHeight = 19
-          LinesColor = clBtnFace
-          LinesStyle = psDot
-          LineHintColor = clWindow
-          LockHeaderHeight = False
-          MainTreeColumn = 0
-          MoveColumnOnDrag = False
-          MoveFocusOnCollapse = False
+          IgnoreEnabled = False
+          IncrementalSearch = False
+          KeepSelectionWithinLevel = False
+          LineBorderActiveColor = clBlack
+          LineBorderInactiveColor = clBlack
+          LineHeight = 17
+          MouseFrameSelect = True
           MultiSelect = False
           OwnerDrawMask = '~~@~~'
           ParentFont = False
-          PathSeparator = '\'
-          PlusMinusTransparent = False
-          RightAlignedText = False
-          RightAlignedTree = False
-          RowHotTrack = False
-          RowSelect = True
-          ScrollTracking = False
-          SelectColumn = -1
+          ScrollbarOpposite = False
           ShowButtons = False
-          ShowColumns = False
-          ShowCheckboxes = False
           ShowImages = False
-          ShowLines = True
-          ShowRoot = False
+          ShowLeafButton = False
           ShowRootButtons = False
-          SelectionMode = smUsual
-          SortDir = sdAscend
-          SortMode = smNone
-          SortSection = 0
-          SortType = stText
-          StickyHeaderSections = False
+          StoragePath = '\Tree'
           TabOrder = 0
           TabStop = True
-          Tracking = True
-          TrackColor = clHighlight
-          UnderlineTracked = True
-          VerticalLines = False
-          VertScrollBarStyles.ActiveFlat = False
-          VertScrollBarStyles.BlendBackground = True
-          VertScrollBarStyles.Color = clBtnFace
-          VertScrollBarStyles.Flat = True
-          VertScrollBarStyles.MinThumbSize = 4
-          VertScrollBarStyles.NoDisableButtons = False
-          VertScrollBarStyles.NoSunkenThumb = False
-          VertScrollBarStyles.OwnerDraw = False
-          VertScrollBarStyles.SecondaryButtons = False
-          VertScrollBarStyles.SecondBtnKind = sbkOpposite
-          VertScrollBarStyles.ShowLeftArrows = True
-          VertScrollBarStyles.ShowRightArrows = True
           VertScrollBarStyles.ShowTrackHint = True
-          VertScrollBarStyles.ThumbMode = etmAuto
-          VertScrollBarStyles.ThumbSize = 0
           VertScrollBarStyles.Width = 16
           VertScrollBarStyles.ButtonSize = 16
           VertScrollBarStyles.UseSystemMetrics = False
-          TextColor = clWindowText
+          VirtualityLevel = vlNone
           BkColor = clBtnShadow
           OnItemSelectedChange = tvSurfacesItemSelectedChange
         end
@@ -705,7 +562,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               Align = alClient
               Caption = ' Texture Properties '
               TabOrder = 0
-              object RxLabel7: TRxLabel
+              object RxLabel7: TMxLabel
                 Left = 4
                 Top = 18
                 Width = 33
@@ -713,7 +570,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Caption = 'Width:'
                 ShadowColor = 15263976
               end
-              object RxLabel8: TRxLabel
+              object RxLabel8: TMxLabel
                 Left = 4
                 Top = 33
                 Width = 36
@@ -721,7 +578,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Caption = 'Height:'
                 ShadowColor = 15263976
               end
-              object RxLabel9: TRxLabel
+              object RxLabel9: TMxLabel
                 Left = 4
                 Top = 48
                 Width = 32
@@ -729,7 +586,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Caption = 'Alpha:'
                 ShadowColor = 15263976
               end
-              object lbWidth: TRxLabel
+              object lbWidth: TMxLabel
                 Left = 45
                 Top = 18
                 Width = 15
@@ -743,7 +600,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 ParentFont = False
                 ShadowColor = 15263976
               end
-              object lbHeight: TRxLabel
+              object lbHeight: TMxLabel
                 Left = 45
                 Top = 33
                 Width = 15
@@ -757,7 +614,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 ParentFont = False
                 ShadowColor = 15263976
               end
-              object lbAlpha: TRxLabel
+              object lbAlpha: TMxLabel
                 Left = 45
                 Top = 48
                 Width = 15
@@ -806,7 +663,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               Align = alClient
               Caption = ' Surface Properties '
               TabOrder = 0
-              object RxLabel18: TRxLabel
+              object RxLabel18: TMxLabel
                 Left = 4
                 Top = 29
                 Width = 66
@@ -814,7 +671,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Caption = 'Double Sided'
                 ShadowColor = 15263976
               end
-              object lbSurfSideFlag: TRxLabel
+              object lbSurfSideFlag: TMxLabel
                 Left = 95
                 Top = 29
                 Width = 11
@@ -828,7 +685,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 ParentFont = False
                 ShadowColor = 15263976
               end
-              object RxLabel35: TRxLabel
+              object RxLabel35: TMxLabel
                 Left = 5
                 Top = 15
                 Width = 34
@@ -836,7 +693,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Caption = 'Faces:'
                 ShadowColor = 15263976
               end
-              object lbSurfFaces: TRxLabel
+              object lbSurfFaces: TMxLabel
                 Left = 95
                 Top = 15
                 Width = 11
@@ -869,7 +726,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 FlatAlwaysEdge = True
                 OnClick = ebSelectShaderClick
               end
-              object lbShader: TRxLabel
+              object lbShader: TMxLabel
                 Left = 44
                 Top = 46
                 Width = 107
@@ -889,7 +746,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               end
               object ebSelectTexture: TExtBtn
                 Left = 4
-                Top = 61
+                Top = 77
                 Width = 40
                 Height = 16
                 Align = alNone
@@ -906,11 +763,11 @@ object frmPropertiesObject: TfrmPropertiesObject
                 FlatAlwaysEdge = True
                 OnClick = ebSelectTextureClick
               end
-              object lbTexture: TRxLabel
+              object lbTexture: TMxLabel
                 Left = 44
-                Top = 64
+                Top = 78
                 Width = 107
-                Height = 109
+                Height = 13
                 Alignment = taCenter
                 AutoSize = False
                 Caption = '...'
@@ -923,7 +780,43 @@ object frmPropertiesObject: TfrmPropertiesObject
                 ParentColor = False
                 ParentFont = False
                 ShadowColor = 15263976
-                WordWrap = True
+              end
+              object ebSelectShaderXRLC: TExtBtn
+                Left = 4
+                Top = 61
+                Width = 40
+                Height = 16
+                Align = alNone
+                BevelShow = False
+                CloseButton = False
+                Caption = 'Compile'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ParentFont = False
+                Transparent = False
+                FlatAlwaysEdge = True
+                OnClick = ebSelectShaderXRLCClick
+              end
+              object lbShaderXRLC: TMxLabel
+                Left = 44
+                Top = 62
+                Width = 107
+                Height = 13
+                Alignment = taCenter
+                AutoSize = False
+                Caption = '...'
+                Color = clBtnFace
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clNavy
+                Font.Height = -11
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ParentColor = False
+                ParentFont = False
+                ShadowColor = 15263976
               end
               object gbFVF: TGroupBox
                 Left = 2
@@ -933,7 +826,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 Align = alBottom
                 Caption = ' Surface FVF '
                 TabOrder = 0
-                object RxLabel14: TRxLabel
+                object RxLabel14: TMxLabel
                   Left = 4
                   Top = 82
                   Width = 68
@@ -941,7 +834,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Caption = 'UV'#39's channel:'
                   ShadowColor = 15263976
                 end
-                object lbSurfFVF_TCCount: TRxLabel
+                object lbSurfFVF_TCCount: TMxLabel
                   Left = 90
                   Top = 82
                   Width = 11
@@ -955,7 +848,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   ParentFont = False
                   ShadowColor = 15263976
                 end
-                object RxLabel6: TRxLabel
+                object RxLabel6: TMxLabel
                   Left = 4
                   Top = 15
                   Width = 26
@@ -963,7 +856,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Caption = 'XYZ:'
                   ShadowColor = 15263976
                 end
-                object RxLabel12: TRxLabel
+                object RxLabel12: TMxLabel
                   Left = 4
                   Top = 28
                   Width = 38
@@ -971,7 +864,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Caption = 'Normal:'
                   ShadowColor = 15263976
                 end
-                object RxLabel15: TRxLabel
+                object RxLabel15: TMxLabel
                   Left = 4
                   Top = 41
                   Width = 38
@@ -979,7 +872,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Caption = 'Diffuse:'
                   ShadowColor = 15263976
                 end
-                object RxLabel16: TRxLabel
+                object RxLabel16: TMxLabel
                   Left = 4
                   Top = 54
                   Width = 47
@@ -987,7 +880,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Caption = 'Specular:'
                   ShadowColor = 15263976
                 end
-                object RxLabel17: TRxLabel
+                object RxLabel17: TMxLabel
                   Left = 4
                   Top = 69
                   Width = 53
@@ -995,7 +888,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   Caption = 'XYZRHW:'
                   ShadowColor = 15263976
                 end
-                object lbSurfFVF_XYZ: TRxLabel
+                object lbSurfFVF_XYZ: TMxLabel
                   Left = 90
                   Top = 15
                   Width = 11
@@ -1009,7 +902,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   ParentFont = False
                   ShadowColor = 15263976
                 end
-                object lbSurfFVF_Normal: TRxLabel
+                object lbSurfFVF_Normal: TMxLabel
                   Left = 90
                   Top = 28
                   Width = 11
@@ -1023,7 +916,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   ParentFont = False
                   ShadowColor = 15263976
                 end
-                object lbSurfFVF_Diffuse: TRxLabel
+                object lbSurfFVF_Diffuse: TMxLabel
                   Left = 90
                   Top = 41
                   Width = 11
@@ -1037,7 +930,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   ParentFont = False
                   ShadowColor = 15263976
                 end
-                object lbSurfFVF_Specular: TRxLabel
+                object lbSurfFVF_Specular: TMxLabel
                   Left = 90
                   Top = 54
                   Width = 11
@@ -1051,7 +944,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                   ParentFont = False
                   ShadowColor = 15263976
                 end
-                object lbSurfFVF_XYZRHW: TRxLabel
+                object lbSurfFVF_XYZRHW: TMxLabel
                   Left = 90
                   Top = 69
                   Width = 11
@@ -1130,7 +1023,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = ' Current Motion '
           TabOrder = 0
           Visible = False
-          object RxLabel20: TRxLabel
+          object RxLabel20: TMxLabel
             Left = 5
             Top = 13
             Width = 33
@@ -1138,7 +1031,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Caption = 'Name:'
             ShadowColor = 15263976
           end
-          object lbOMotionName: TRxLabel
+          object lbOMotionName: TMxLabel
             Left = 51
             Top = 13
             Width = 11
@@ -1152,7 +1045,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             ParentFont = False
             ShadowColor = 15263976
           end
-          object RxLabel23: TRxLabel
+          object RxLabel23: TMxLabel
             Left = 5
             Top = 27
             Width = 39
@@ -1160,7 +1053,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Caption = 'Frames:'
             ShadowColor = 15263976
           end
-          object lbOMotionFrames: TRxLabel
+          object lbOMotionFrames: TMxLabel
             Left = 51
             Top = 27
             Width = 11
@@ -1174,7 +1067,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             ParentFont = False
             ShadowColor = 15263976
           end
-          object lbOMotionFPS: TRxLabel
+          object lbOMotionFPS: TMxLabel
             Left = 51
             Top = 41
             Width = 11
@@ -1188,7 +1081,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             ParentFont = False
             ShadowColor = 15263976
           end
-          object RxLabel28: TRxLabel
+          object RxLabel28: TMxLabel
             Left = 5
             Top = 41
             Width = 25
@@ -1202,138 +1095,61 @@ object frmPropertiesObject: TfrmPropertiesObject
           Top = 0
           Width = 223
           Height = 235
+          Cursor = crDefault
           LeftPosition = 0
-          ActiveBorderType = fbtSunken
+          DoubleBuffered = False
+          DragCursor = crDrag
           Align = alLeft
           AlwaysKeepFocus = True
-          AlwaysKeepSelection = True
-          AutoExpand = False
-          AutoLookup = False
+          AutoCollapse = False
           DockOrientation = doNoOrient
-          DoubleBuffered = False
-          AutoLineHeight = True
-          BarStyle = False
-          BarStyleVerticalLines = False
-          BorderStyle = bsSingle
-          ChangeStateImage = False
-          CustomCheckboxes = False
-          CustomPlusMinus = False
-          DeselectChildrenOnCollapse = False
-          DivLinesColor = clBtnFace
+          DefaultSectionWidth = 120
+          BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
           DoInplaceEdit = False
-          DraggableSections = False
-          DragAllowed = False
-          DragTrgDrawMode = SelColorRect
-          DragType = dtDelphi
-          DragImageMode = dimNever
-          DrawFocusRect = True
-          ExpandOnDblClick = True
-          ExpandOnDragOver = False
-          FilteredVisibility = False
-          Flat = False
-          FlatFocusedScrollbars = True
-          FocusedSelectColor = clHighlight
-          ForcedScrollBars = ssNone
+          ExplorerEditMode = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          FullRowSelect = True
-          HeaderActiveFilterColor = clBlack
+          GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
-          HeaderInvertSortArrows = False
-          HeaderSections.Data = {F8FFFFFF00000000}
-          HeaderFilterColor = clBtnText
-          HeaderFlat = False
-          HideFocusRect = False
-          HideHintOnTimer = False
-          HideHintOnMove = True
-          HideSelectColor = clBtnFace
-          HideSelection = False
-          HorizontalLines = False
-          HideHorzScrollBar = False
-          HideVertScrollBar = False
-          HorzScrollBarStyles.ActiveFlat = False
-          HorzScrollBarStyles.BlendBackground = True
-          HorzScrollBarStyles.Color = clBtnFace
-          HorzScrollBarStyles.Flat = True
-          HorzScrollBarStyles.MinThumbSize = 4
-          HorzScrollBarStyles.NoDisableButtons = False
-          HorzScrollBarStyles.NoSunkenThumb = False
-          HorzScrollBarStyles.OwnerDraw = False
-          HorzScrollBarStyles.SecondaryButtons = False
-          HorzScrollBarStyles.SecondBtnKind = sbkOpposite
-          HorzScrollBarStyles.ShowLeftArrows = True
-          HorzScrollBarStyles.ShowRightArrows = True
+          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'MS Sans Serif'
+          HeaderFont.Style = []
           HorzScrollBarStyles.ShowTrackHint = False
-          HorzScrollBarStyles.ThumbMode = etmAuto
-          HorzScrollBarStyles.ThumbSize = 0
           HorzScrollBarStyles.Width = 16
           HorzScrollBarStyles.ButtonSize = 16
           HorzScrollBarStyles.UseSystemMetrics = False
-          InactiveBorderType = fbtSunkenOuter
-          ItemIndent = 17
-          LineHeight = 19
-          LinesColor = clBtnFace
-          LinesStyle = psDot
-          LineHintColor = clWindow
-          LockHeaderHeight = False
-          MainTreeColumn = 0
-          MoveColumnOnDrag = False
-          MoveFocusOnCollapse = False
+          IgnoreEnabled = False
+          IncrementalSearch = False
+          KeepSelectionWithinLevel = False
+          LineBorderActiveColor = clBlack
+          LineBorderInactiveColor = clBlack
+          LineHeight = 17
+          MouseFrameSelect = True
           MultiSelect = False
           OwnerDrawMask = '~~@~~'
-          PathSeparator = '\'
-          PlusMinusTransparent = False
-          RightAlignedText = False
-          RightAlignedTree = False
-          RowHotTrack = False
-          RowSelect = True
-          ScrollTracking = False
-          SelectColumn = -1
+          ScrollbarOpposite = False
           ShowButtons = False
-          ShowColumns = False
           ShowCheckboxes = True
           ShowImages = False
-          ShowLines = True
-          ShowRoot = False
+          ShowLeafButton = False
           ShowRootButtons = False
-          SelectionMode = smUsual
-          SortDir = sdAscend
-          SortMode = smNone
-          SortSection = 0
-          SortType = stText
-          StickyHeaderSections = False
+          StoragePath = '\Tree'
           TabOrder = 1
           TabStop = True
-          Tracking = True
-          TrackColor = clHighlight
-          UnderlineTracked = True
-          VerticalLines = False
-          VertScrollBarStyles.ActiveFlat = False
-          VertScrollBarStyles.BlendBackground = True
-          VertScrollBarStyles.Color = clBtnFace
-          VertScrollBarStyles.Flat = True
-          VertScrollBarStyles.MinThumbSize = 4
-          VertScrollBarStyles.NoDisableButtons = False
-          VertScrollBarStyles.NoSunkenThumb = False
-          VertScrollBarStyles.OwnerDraw = False
-          VertScrollBarStyles.SecondaryButtons = False
-          VertScrollBarStyles.SecondBtnKind = sbkOpposite
-          VertScrollBarStyles.ShowLeftArrows = True
-          VertScrollBarStyles.ShowRightArrows = True
           VertScrollBarStyles.ShowTrackHint = True
-          VertScrollBarStyles.ThumbMode = etmAuto
-          VertScrollBarStyles.ThumbSize = 0
           VertScrollBarStyles.Width = 16
           VertScrollBarStyles.ButtonSize = 16
           VertScrollBarStyles.UseSystemMetrics = False
-          TextColor = clWindowText
+          VirtualityLevel = vlNone
           BkColor = clBtnShadow
           OnItemChange = tvOMotionsItemChange
-          OnTryEdit = tvOMotionsTryEdit
           OnItemSelectedChange = tvOMotionsItemSelectedChange
         end
         object Panel4: TPanel
@@ -1352,7 +1168,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Align = alClient
             Caption = ' Summary Info '
             TabOrder = 0
-            object RxLabel19: TRxLabel
+            object RxLabel19: TMxLabel
               Left = 5
               Top = 13
               Width = 67
@@ -1360,7 +1176,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               Caption = 'Motion count:'
               ShadowColor = 15263976
             end
-            object lbOMotionCount: TRxLabel
+            object lbOMotionCount: TMxLabel
               Left = 75
               Top = 13
               Width = 11
@@ -1374,7 +1190,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               ParentFont = False
               ShadowColor = 15263976
             end
-            object RxLabel21: TRxLabel
+            object RxLabel21: TMxLabel
               Left = 5
               Top = 27
               Width = 70
@@ -1382,7 +1198,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               Caption = 'Active Motion:'
               ShadowColor = 15263976
             end
-            object lbActiveOMotion: TRxLabel
+            object lbActiveOMotion: TMxLabel
               Left = 75
               Top = 27
               Width = 11
@@ -1531,138 +1347,61 @@ object frmPropertiesObject: TfrmPropertiesObject
           Top = 0
           Width = 223
           Height = 220
+          Cursor = crDefault
           LeftPosition = 0
-          ActiveBorderType = fbtSunken
+          DoubleBuffered = False
+          DragCursor = crDrag
           Align = alLeft
           AlwaysKeepFocus = True
-          AlwaysKeepSelection = True
-          AutoExpand = False
-          AutoLookup = False
+          AutoCollapse = False
           DockOrientation = doNoOrient
-          DoubleBuffered = False
-          AutoLineHeight = True
-          BarStyle = False
-          BarStyleVerticalLines = False
-          BorderStyle = bsSingle
-          ChangeStateImage = False
-          CustomCheckboxes = False
-          CustomPlusMinus = False
-          DeselectChildrenOnCollapse = False
-          DivLinesColor = clBtnFace
+          DefaultSectionWidth = 120
+          BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
           DoInplaceEdit = False
-          DraggableSections = False
-          DragAllowed = False
-          DragTrgDrawMode = SelColorRect
-          DragType = dtDelphi
-          DragImageMode = dimNever
-          DrawFocusRect = True
-          ExpandOnDblClick = True
-          ExpandOnDragOver = False
-          FilteredVisibility = False
-          Flat = False
-          FlatFocusedScrollbars = True
-          FocusedSelectColor = clHighlight
-          ForcedScrollBars = ssNone
+          ExplorerEditMode = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          FullRowSelect = True
-          HeaderActiveFilterColor = clBlack
+          GradientSteps = 64
           HeaderHeight = 19
           HeaderHotTrack = False
-          HeaderInvertSortArrows = False
-          HeaderSections.Data = {F8FFFFFF00000000}
-          HeaderFilterColor = clBtnText
-          HeaderFlat = False
-          HideFocusRect = False
-          HideHintOnTimer = False
-          HideHintOnMove = True
-          HideSelectColor = clBtnFace
-          HideSelection = False
-          HorizontalLines = False
-          HideHorzScrollBar = False
-          HideVertScrollBar = False
-          HorzScrollBarStyles.ActiveFlat = False
-          HorzScrollBarStyles.BlendBackground = True
-          HorzScrollBarStyles.Color = clBtnFace
-          HorzScrollBarStyles.Flat = True
-          HorzScrollBarStyles.MinThumbSize = 4
-          HorzScrollBarStyles.NoDisableButtons = False
-          HorzScrollBarStyles.NoSunkenThumb = False
-          HorzScrollBarStyles.OwnerDraw = False
-          HorzScrollBarStyles.SecondaryButtons = False
-          HorzScrollBarStyles.SecondBtnKind = sbkOpposite
-          HorzScrollBarStyles.ShowLeftArrows = True
-          HorzScrollBarStyles.ShowRightArrows = True
+          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'MS Sans Serif'
+          HeaderFont.Style = []
           HorzScrollBarStyles.ShowTrackHint = False
-          HorzScrollBarStyles.ThumbMode = etmAuto
-          HorzScrollBarStyles.ThumbSize = 0
           HorzScrollBarStyles.Width = 16
           HorzScrollBarStyles.ButtonSize = 16
           HorzScrollBarStyles.UseSystemMetrics = False
-          InactiveBorderType = fbtSunkenOuter
-          ItemIndent = 17
-          LineHeight = 19
-          LinesColor = clBtnFace
-          LinesStyle = psDot
-          LineHintColor = clWindow
-          LockHeaderHeight = False
-          MainTreeColumn = 0
-          MoveColumnOnDrag = False
-          MoveFocusOnCollapse = False
+          IgnoreEnabled = False
+          IncrementalSearch = False
+          KeepSelectionWithinLevel = False
+          LineBorderActiveColor = clBlack
+          LineBorderInactiveColor = clBlack
+          LineHeight = 17
+          MouseFrameSelect = True
           MultiSelect = False
           OwnerDrawMask = '~~@~~'
-          PathSeparator = '\'
-          PlusMinusTransparent = False
-          RightAlignedText = False
-          RightAlignedTree = False
-          RowHotTrack = False
-          RowSelect = True
-          ScrollTracking = False
-          SelectColumn = -1
+          ScrollbarOpposite = False
           ShowButtons = False
-          ShowColumns = False
           ShowCheckboxes = True
           ShowImages = False
-          ShowLines = True
-          ShowRoot = False
+          ShowLeafButton = False
           ShowRootButtons = False
-          SelectionMode = smUsual
-          SortDir = sdAscend
-          SortMode = smNone
-          SortSection = 0
-          SortType = stText
-          StickyHeaderSections = False
+          StoragePath = '\Tree'
           TabOrder = 0
           TabStop = True
-          Tracking = True
-          TrackColor = clHighlight
-          UnderlineTracked = True
-          VerticalLines = False
-          VertScrollBarStyles.ActiveFlat = False
-          VertScrollBarStyles.BlendBackground = True
-          VertScrollBarStyles.Color = clBtnFace
-          VertScrollBarStyles.Flat = True
-          VertScrollBarStyles.MinThumbSize = 4
-          VertScrollBarStyles.NoDisableButtons = False
-          VertScrollBarStyles.NoSunkenThumb = False
-          VertScrollBarStyles.OwnerDraw = False
-          VertScrollBarStyles.SecondaryButtons = False
-          VertScrollBarStyles.SecondBtnKind = sbkOpposite
-          VertScrollBarStyles.ShowLeftArrows = True
-          VertScrollBarStyles.ShowRightArrows = True
           VertScrollBarStyles.ShowTrackHint = True
-          VertScrollBarStyles.ThumbMode = etmAuto
-          VertScrollBarStyles.ThumbSize = 0
           VertScrollBarStyles.Width = 16
           VertScrollBarStyles.ButtonSize = 16
           VertScrollBarStyles.UseSystemMetrics = False
-          TextColor = clWindowText
+          VirtualityLevel = vlNone
           BkColor = clBtnShadow
           OnItemChange = tvSMotionsItemChange
-          OnTryEdit = tvSMotionsTryEdit
           OnItemSelectedChange = tvSMotionsItemSelectedChange
         end
         object gbSMotion: TGroupBox
@@ -1674,7 +1413,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = ' Current Motion '
           TabOrder = 1
           Visible = False
-          object RxLabel29: TRxLabel
+          object RxLabel29: TMxLabel
             Left = 5
             Top = 13
             Width = 33
@@ -1682,7 +1421,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Caption = 'Name:'
             ShadowColor = 15263976
           end
-          object lbSMotionName: TRxLabel
+          object lbSMotionName: TMxLabel
             Left = 51
             Top = 13
             Width = 11
@@ -1696,7 +1435,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             ParentFont = False
             ShadowColor = 15263976
           end
-          object RxLabel24: TRxLabel
+          object RxLabel24: TMxLabel
             Left = 5
             Top = 25
             Width = 39
@@ -1704,7 +1443,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Caption = 'Frames:'
             ShadowColor = 15263976
           end
-          object lbSMotionFrames: TRxLabel
+          object lbSMotionFrames: TMxLabel
             Left = 51
             Top = 25
             Width = 11
@@ -1718,7 +1457,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             ParentFont = False
             ShadowColor = 15263976
           end
-          object RxLabel27: TRxLabel
+          object RxLabel27: TMxLabel
             Left = 5
             Top = 37
             Width = 25
@@ -1726,7 +1465,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Caption = 'FPS:'
             ShadowColor = 15263976
           end
-          object lbSMotionFPS: TRxLabel
+          object lbSMotionFPS: TMxLabel
             Left = 51
             Top = 37
             Width = 11
@@ -1746,7 +1485,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Width = 135
             Height = 2
           end
-          object RxLabel30: TRxLabel
+          object RxLabel30: TMxLabel
             Left = 5
             Top = 139
             Width = 36
@@ -1754,7 +1493,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Caption = 'Speed:'
             ShadowColor = 15263976
           end
-          object RxLabel31: TRxLabel
+          object RxLabel31: TMxLabel
             Left = 5
             Top = 156
             Width = 39
@@ -1762,7 +1501,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Caption = 'Accrue:'
             ShadowColor = 15263976
           end
-          object RxLabel32: TRxLabel
+          object RxLabel32: TMxLabel
             Left = 5
             Top = 174
             Width = 33
@@ -1833,7 +1572,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             OnChange = seSMotionChange
             object tsCycle: TTabSheet
               Caption = 'Cycle'
-              object RxLabel39: TRxLabel
+              object RxLabel39: TMxLabel
                 Left = 0
                 Top = -2
                 Width = 51
@@ -1865,7 +1604,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             object tsFX: TTabSheet
               Caption = 'FX'
               ImageIndex = 1
-              object RxLabel40: TRxLabel
+              object RxLabel40: TMxLabel
                 Left = 0
                 Top = -2
                 Width = 54
@@ -1879,7 +1618,7 @@ object frmPropertiesObject: TfrmPropertiesObject
                 ParentFont = False
                 ShadowColor = 15263976
               end
-              object RxLabel34: TRxLabel
+              object RxLabel34: TMxLabel
                 Left = 0
                 Top = 35
                 Width = 35
@@ -1933,7 +1672,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Align = alClient
             Caption = ' Summary Info '
             TabOrder = 0
-            object RxLabel22: TRxLabel
+            object RxLabel22: TMxLabel
               Left = 5
               Top = 27
               Width = 67
@@ -1941,7 +1680,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               Caption = 'Motion count:'
               ShadowColor = 15263976
             end
-            object lbSMotionCount: TRxLabel
+            object lbSMotionCount: TMxLabel
               Left = 75
               Top = 27
               Width = 11
@@ -1955,7 +1694,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               ParentFont = False
               ShadowColor = 15263976
             end
-            object RxLabel26: TRxLabel
+            object RxLabel26: TMxLabel
               Left = 5
               Top = 41
               Width = 70
@@ -1963,7 +1702,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               Caption = 'Active Motion:'
               ShadowColor = 15263976
             end
-            object lbActiveSMotion: TRxLabel
+            object lbActiveSMotion: TMxLabel
               Left = 75
               Top = 41
               Width = 11
@@ -1977,7 +1716,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               ParentFont = False
               ShadowColor = 15263976
             end
-            object RxLabel37: TRxLabel
+            object RxLabel37: TMxLabel
               Left = 5
               Top = 13
               Width = 60
@@ -1985,7 +1724,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               Caption = 'Bone count:'
               ShadowColor = 15263976
             end
-            object lbSBoneCount: TRxLabel
+            object lbSBoneCount: TMxLabel
               Left = 75
               Top = 13
               Width = 11
@@ -2362,9 +2101,10 @@ object frmPropertiesObject: TfrmPropertiesObject
     Left = 10
     Top = 3
   end
-  object pmNumericSet: TRxPopupMenu
+  object pmNumericSet: TMxPopupMenu
     AutoPopup = False
     MenuAnimation = [maTopToBottom]
+    MarginEndColor = clBlack
     LeftMargin = 15
     Style = msBtnLowered
     Left = 38

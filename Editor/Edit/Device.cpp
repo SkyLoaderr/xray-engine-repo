@@ -71,8 +71,11 @@ CRenderDevice::~CRenderDevice(){
 	VERIFY(!bReady);
 }
 
+extern void Surface_Init();
 void CRenderDevice::Initialize()
 {
+	Surface_Init();
+
 	AnsiString fn = "shaders_xrlc.xr";
     FS.m_GameRoot.Update(fn);
     if (FS.Exist(fn.c_str())){

@@ -53,14 +53,14 @@ object frmPropertiesOccluder: TfrmPropertiesOccluder
     Align = alTop
     Caption = ' Points '
     TabOrder = 0
-    object RxLabel4: TRxLabel
+    object RxLabel4: TMxLabel
       Left = 9
       Top = 17
       Width = 59
       Height = 13
       Caption = 'Point count:'
     end
-    object RxLabel1: TRxLabel
+    object RxLabel1: TMxLabel
       Left = 9
       Top = 37
       Width = 40

@@ -4,7 +4,7 @@ object fraEmitter: TfraEmitter
   Width = 232
   Height = 209
   TabOrder = 0
-  object RxLabel20: TRxLabel
+  object RxLabel20: TMxLabel
     Left = 4
     Top = 103
     Width = 47
@@ -17,7 +17,7 @@ object fraEmitter: TfraEmitter
     Font.Style = []
     ParentFont = False
   end
-  object RxLabel22: TRxLabel
+  object RxLabel22: TMxLabel
     Left = 4
     Top = 121
     Width = 60
@@ -50,7 +50,7 @@ object fraEmitter: TfraEmitter
     Transparent = False
     FlatAlwaysEdge = True
   end
-  object RxLabel1: TRxLabel
+  object RxLabel1: TMxLabel
     Left = 4
     Top = 138
     Width = 29
@@ -63,7 +63,7 @@ object fraEmitter: TfraEmitter
     Font.Style = []
     ParentFont = False
   end
-  object RxLabel2: TRxLabel
+  object RxLabel2: TMxLabel
     Left = -1
     Top = 3
     Width = 52
@@ -76,7 +76,7 @@ object fraEmitter: TfraEmitter
     Font.Style = []
     ParentFont = False
   end
-  object RxLabel3: TRxLabel
+  object RxLabel3: TMxLabel
     Left = 0
     Top = 21
     Width = 52
@@ -89,7 +89,7 @@ object fraEmitter: TfraEmitter
     Font.Style = []
     ParentFont = False
   end
-  object RxLabel5: TRxLabel
+  object RxLabel5: TMxLabel
     Left = -1
     Top = 40
     Width = 52
@@ -102,7 +102,7 @@ object fraEmitter: TfraEmitter
     Font.Style = []
     ParentFont = False
   end
-  object RxLabel6: TRxLabel
+  object RxLabel6: TMxLabel
     Left = 4
     Top = 153
     Width = 52
@@ -173,7 +173,7 @@ object fraEmitter: TfraEmitter
     TabWidth = 39
     object tsPoint: TTabSheet
       Caption = 'Point'
-      object RxLabel42: TRxLabel
+      object RxLabel42: TMxLabel
         Left = 47
         Top = 27
         Width = 65
@@ -190,7 +190,7 @@ object fraEmitter: TfraEmitter
     object tsCone: TTabSheet
       Caption = 'Cone'
       ImageIndex = 1
-      object RxLabel4: TRxLabel
+      object RxLabel4: TMxLabel
         Left = -1
         Top = 3
         Width = 45
@@ -203,7 +203,7 @@ object fraEmitter: TfraEmitter
         Font.Style = []
         ParentFont = False
       end
-      object RxLabel35: TRxLabel
+      object RxLabel35: TMxLabel
         Left = -1
         Top = 21
         Width = 62
@@ -216,7 +216,7 @@ object fraEmitter: TfraEmitter
         Font.Style = []
         ParentFont = False
       end
-      object RxLabel36: TRxLabel
+      object RxLabel36: TMxLabel
         Left = 0
         Top = 39
         Width = 46
@@ -229,7 +229,7 @@ object fraEmitter: TfraEmitter
         Font.Style = []
         ParentFont = False
       end
-      object RxLabel37: TRxLabel
+      object RxLabel37: TMxLabel
         Left = -1
         Top = 58
         Width = 47
@@ -334,7 +334,7 @@ object fraEmitter: TfraEmitter
     object tsSphere: TTabSheet
       Caption = 'Sphere'
       ImageIndex = 2
-      object RxLabel38: TRxLabel
+      object RxLabel38: TMxLabel
         Left = -1
         Top = 3
         Width = 55
@@ -373,7 +373,7 @@ object fraEmitter: TfraEmitter
     object tsBox: TTabSheet
       Caption = 'Box'
       ImageIndex = 3
-      object RxLabel39: TRxLabel
+      object RxLabel39: TMxLabel
         Left = -1
         Top = 3
         Width = 52
@@ -386,7 +386,7 @@ object fraEmitter: TfraEmitter
         Font.Style = []
         ParentFont = False
       end
-      object RxLabel40: TRxLabel
+      object RxLabel40: TMxLabel
         Left = 0
         Top = 21
         Width = 52
@@ -399,7 +399,7 @@ object fraEmitter: TfraEmitter
         Font.Style = []
         ParentFont = False
       end
-      object RxLabel41: TRxLabel
+      object RxLabel41: TMxLabel
         Left = -1
         Top = 40
         Width = 52

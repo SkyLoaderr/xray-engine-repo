@@ -22,6 +22,11 @@ public:
 class CFileSystem {
 	_finddata_t	FData;
 	int 	hFindHandle;
+	void 	ProcessOne(_finddata_t& F, const char* path);
+	void 	Recurse(const char* path);
+
+	AStringVec m_FindItems;
+    bool	bFiles;
 public:
 	char 	m_Root[MAX_PATH];
 	FSPath 	m_ExeRoot;
@@ -76,6 +81,9 @@ public:
 
     LPCSTR	FindFirst(LPSTR mask);
     LPCSTR	FindNext();
+
+    AStringVec&	GetFiles	(LPCSTR path);
+	AStringVec& GetDirectories(LPCSTR path);
 };
 extern CFileSystem FS;
 #endif /*_INCDEF_FileSystem_H_*/

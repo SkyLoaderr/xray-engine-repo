@@ -6,26 +6,13 @@
 #include "EditObject.h"
 #include "EditMesh.h"
 #include "Texture.h"
-#include "xrShader.h"
-#include "Shader.h"
 #include "ui_main.h"
 #include "scene.h"
-#include "XRShaderDef.h"
 #include "main.h"
 #include "motion.h"
 #include "EditLibrary.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "ElHeader"
-#pragma link "ElTree"
-#pragma link "RxMenus"
-#pragma link "multi_check"
-#pragma link "multi_edit"
-#pragma link "Placemnt"
 #pragma resource "*.dfm"
 
 TfrmPropertiesObject* 	TfrmPropertiesObject::form 				= 0;
@@ -226,8 +213,8 @@ void __fastcall TfrmPropertiesObject::Pick(const SRayPickInfo& pinf){
                 form->tvMeshes->EnsureVisible(form->tvMeshes->Selected);
             }else if (form->pcObjects->ActivePage==form->tsSurfaces){
                 UI->RedrawScene();
-                st_Surface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
-                form->tvSurfaces->Selected = form->tvSurfaces->Items->LookForItem(0,surf->name,0,0,false,true,false,false,true);
+                CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
+                form->tvSurfaces->Selected = form->tvSurfaces->Items->LookForItem(0,surf->_Name(),0,0,false,true,false,false,true);
                 form->tvSurfaces->EnsureVisible(form->tvSurfaces->Selected);
             }
         }

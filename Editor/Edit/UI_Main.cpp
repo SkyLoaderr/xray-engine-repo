@@ -29,6 +29,7 @@ TUI::TUI()
 {
     UI = this;
     m_D3DWindow = 0;
+    bNeedAbort   = false;
 
 	m_StartRStart.set(0,0,0);
 	m_StartRNorm.set(0,0,0);
@@ -346,6 +347,8 @@ void TUI::Idle()
     }
         // show hint
     UI->ShowObjectHint();
+
+	ResetBreak();
 }
 //---------------------------------------------------------------------------
 void TUI::EnableSelectionRect( bool flag ){

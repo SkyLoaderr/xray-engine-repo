@@ -11,13 +11,10 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
-#include "CustomObject.h"
-#include <Buttons.hpp>
-#include <ImgList.hpp>
 #include "ElTree.hpp"
-#include "CloseBtn.hpp"
+#include "ElXPThemedControl.hpp"
+#include "ExtBtn.hpp"
+#include <ImgList.hpp>
 
 //---------------------------------------------------------------------------
 class TfrmObjectList : public TForm
@@ -35,8 +32,6 @@ __published:	// IDE-managed Components
 	TTimer *tmRefreshList;
     void __fastcall sbCloseClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
-    void __fastcall tvItemsTryEdit(TObject *Sender, TElTreeItem *Item,
-          TElHeaderSection *Section, TFieldTypes &CellType, bool &CanEdit);
     void __fastcall tvItemsItemSelectedChange(TObject *Sender,
           TElTreeItem *Item);
     void __fastcall ebHideSelClick(TObject *Sender);
@@ -51,11 +46,11 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
     int obj_count;
-    EObjClass cur_cls;
+    int cur_cls;
     void __fastcall InitListBox();
-    TElTreeItem* FindObjectByType(EObjClass type, void *obj);
-    TElTreeItem* FindFolderByType(EObjClass type);
-    TElTreeItem* AddFolder(EObjClass type);
+    TElTreeItem* FindObjectByType(int type, void *obj);
+    TElTreeItem* FindFolderByType(int type);
+    TElTreeItem* AddFolder(int type);
     TElTreeItem* AddObject(TElTreeItem* node, LPSTR name, void* obj);
     void UpdateState();
     void UpdateSelection();

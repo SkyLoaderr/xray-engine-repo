@@ -13,8 +13,9 @@
 #include "UI_Tools.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "Placemnt"
-#pragma link "RxMenus"
+#pragma link "ExtBtn"
+#pragma link "MxMenus"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfraLeftBar *fraLeftBar;
 //---------------------------------------------------------------------------
@@ -26,7 +27,6 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     ebTargetSound->Tag      = etSound;
     ebTargetOccluder->Tag   = etOccluder;
     ebTargetGlow->Tag       = etGlow;
-    ebTargetDPatch->Tag  	= etDPatch;
     ebTargetRPoint->Tag     = etRPoint;
     ebTargetAITraffic->Tag  = etAITPoint;
     ebTargetSector->Tag 	= etSector;
@@ -92,7 +92,6 @@ void TfraLeftBar::ChangeTarget(int tgt){
 	    case etSound:		btn=ebTargetSound; 		break;
 	    case etOccluder:	btn=ebTargetOccluder; 	break;
 	    case etGlow:		btn=ebTargetGlow; 		break;
-	    case etDPatch:		btn=ebTargetDPatch; 	break;
 	    case etRPoint:		btn=ebTargetRPoint; 	break;
 	    case etAITPoint:	btn=ebTargetAITraffic; 	break;
 	    case etSector:		btn=ebTargetSector; 	break;
@@ -300,13 +299,6 @@ void __fastcall TfraLeftBar::ebRandomAddClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebShaderEditorClick(TObject *Sender)
-{
-	UI->Command(COMMAND_SHADER_EDITOR);
-}
-//---------------------------------------------------------------------------
-
-
 void __fastcall TfraLeftBar::ebLockAllClick(TObject *Sender)
 {
 	UI->Command(COMMAND_LOCK_ALL,TRUE);
@@ -391,7 +383,7 @@ void __fastcall TfraLeftBar::MakeDetailsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ShowPPMenu(TRxPopupMenu* M, TObject* B){
+void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
     POINT pt;
     GetCursorPos(&pt);
 	M->Popup(pt.x,pt.y);

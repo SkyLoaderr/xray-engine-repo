@@ -11,14 +11,13 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 
 #include "CustomObject.h"
-#include "CloseBtn.hpp"
 #include "ElHeader.hpp"
 #include <Grids.hpp>
 #include "ElTree.hpp"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
 
 //refs
 class CPortal;
@@ -31,10 +30,10 @@ __published:	// IDE-managed Components
     TExtBtn *ebCancel;
     TPanel *paBottom;
 	TGroupBox *gbOrientation;
-	TRxLabel *RxLabel5;
-	TRxLabel *RxLabel1;
-	TRxLabel *lbBackSector;
-	TRxLabel *lbFrontSector;
+	TMxLabel *RxLabel5;
+	TMxLabel *RxLabel1;
+	TMxLabel *lbBackSector;
+	TMxLabel *lbFrontSector;
 	TExtBtn *ebInvertOrientation;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

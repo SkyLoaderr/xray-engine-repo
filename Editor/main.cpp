@@ -7,13 +7,8 @@
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXCtrls"
-#pragma package(smart_init)
-#pragma link "RxMenus"
-#pragma link "Placemnt"
-#pragma link "TopBar"
-#pragma link "RenderWindow"
 #pragma resource "*.dfm"
+
 #include "ui_main.h"
 #include "library.h"
 #include "scene.h"
@@ -34,7 +29,7 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     fraLeftBar  = new TfraLeftBar(0);
     fraTopBar   = new TfraTopBar(0);
 	fsMainForm->RestoreFormPlacement();
-	if (!UI->Init(D3DWindow)) exit(-1);
+	if (!UI->OnCreate(D3DWindow)) exit(-1);
     pInput		= new CInput(FALSE,mouse_device_key);
     UI->iCapture();
 	Device.InitTimer();
@@ -169,7 +164,6 @@ void __fastcall TfrmMain::ApplyShortCut(WORD Key, TShiftState Shift)
 					            else                        UI->Command(COMMAND_SAVE);}
        	else if (Key=='1') 	 	UI->Command(COMMAND_CHANGE_TARGET, etEvent);
 		else if (Key=='2')		UI->Command(COMMAND_CHANGE_TARGET, etPS);
-        else if (Key=='3')		UI->Command(COMMAND_CHANGE_TARGET, etDPatch);
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
@@ -279,7 +273,7 @@ void __fastcall TfrmMain::fsMainFormRestorePlacement(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::ShowContextMenu(const EObjClass cls){
+void __fastcall TfrmMain::ShowContextMenu(int cls){
     if (g_bEditorValid){
         POINT pt;
         GetCursorPos(&pt);

@@ -30,7 +30,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 123
-      Height = 159
+      Height = 144
       Hint = 'Scene commands'
       Align = alTop
       ParentShowHint = False
@@ -154,29 +154,9 @@ object fraLeftBar: TfraLeftBar
         Transparent = False
         OnClick = ebEditLibClick
       end
-      object ebShaderEditor: TExtBtn
-        Left = 2
-        Top = 63
-        Width = 120
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        CloseButton = False
-        Caption = 'Shader Editor'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Margin = 13
-        ParentFont = False
-        Transparent = False
-        OnClick = ebShaderEditorClick
-      end
       object ebObjectList: TExtBtn
         Left = 2
-        Top = 108
+        Top = 93
         Width = 120
         Height = 15
         Align = alNone
@@ -196,7 +176,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebSceneCommands: TExtBtn
         Left = 2
-        Top = 125
+        Top = 110
         Width = 120
         Height = 15
         Align = alNone
@@ -226,7 +206,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebPreferences: TExtBtn
         Left = 2
-        Top = 142
+        Top = 127
         Width = 120
         Height = 15
         Align = alNone
@@ -246,7 +226,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebParticleEditor: TExtBtn
         Left = 2
-        Top = 78
+        Top = 63
         Width = 120
         Height = 15
         Align = alNone
@@ -266,7 +246,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebImageEditor: TExtBtn
         Left = 2
-        Top = 93
+        Top = 78
         Width = 120
         Height = 15
         Align = alNone
@@ -287,7 +267,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paEdit: TPanel
       Left = 1
-      Top = 160
+      Top = 145
       Width = 123
       Height = 144
       Align = alTop
@@ -549,9 +529,9 @@ object fraLeftBar: TfraLeftBar
     end
     object paTarget: TPanel
       Left = 1
-      Top = 304
+      Top = 289
       Width = 123
-      Height = 213
+      Height = 199
       Align = alTop
       TabOrder = 2
       object ebTargetObject: TExtBtn
@@ -806,66 +786,6 @@ object fraLeftBar: TfraLeftBar
         CloseButton = False
         GroupIndex = 1
         Caption = '5. Glow'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Glyph.Data = {
-          6E040000424D6E04000000000000360000002800000028000000090000000100
-          18000000000038040000120B0000120B00000000000000000000FF00FF000000
-          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4
-          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4C4C4
-          C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FFFF00FFFF00FFFF00FF
-          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000009999999999999999
-          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-          999999999999C4C4C4FF00FFC4C4C40000000000000000000000000000000000
-          00000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-          00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
-          FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
-          FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
-          9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
-          999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
-          99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
-          9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
-          999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
-          99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-          9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-          999999999999C4C4C4FF00FFC4C4C49999999999999999999999999999999999
-          99000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-          9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-          C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-          C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-          00FFFF00FF000000000000000000000000000000000000000000000000FF00FF
-          FF00FF000000000000000000000000000000000000000000000000FF00FFFF00
-          FF000000000000000000000000000000000000000000000000FF00FFC4C4C499
-          9999999999999999999999999999999999000000FF00FFFF00FFFF00FFFF00FF
-          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
-          FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
-          00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
-          C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-        Margin = 3
-        NumGlyphs = 4
-        ParentFont = False
-        Spacing = 3
-        Transparent = False
-        OnClick = TargetClick
-      end
-      object ebTargetDPatch: TExtBtn
-        Left = 2
-        Top = 196
-        Width = 120
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        CloseButton = False
-        GroupIndex = 1
-        Caption = '^3. Detail Patch'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1374,7 +1294,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 517
+      Top = 488
       Width = 123
       Height = 106
       Align = alTop
@@ -1508,6 +1428,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
+    Version = 2
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'
@@ -1524,10 +1445,11 @@ object fraLeftBar: TfraLeftBar
     Left = 65529
     Top = 65526
   end
-  object pmSceneFile: TRxPopupMenu
+  object pmSceneFile: TMxPopupMenu
     Alignment = paRight
     AutoPopup = False
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85
@@ -1549,9 +1471,10 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebSaveAsClick
     end
   end
-  object pmSceneCompile: TRxPopupMenu
+  object pmSceneCompile: TMxPopupMenu
     AutoPopup = False
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85
@@ -1577,9 +1500,10 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebValidateSceneClick
     end
   end
-  object pmSceneCommands: TRxPopupMenu
+  object pmSceneCommands: TMxPopupMenu
     AutoPopup = False
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85
@@ -1605,9 +1529,10 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebCleanLibraryClick
     end
   end
-  object pmToolsEdit: TRxPopupMenu
+  object pmToolsEdit: TMxPopupMenu
     AutoPopup = False
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85
@@ -1638,9 +1563,10 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebDeleteClick
     end
   end
-  object pmToolsSelection: TRxPopupMenu
+  object pmToolsSelection: TMxPopupMenu
     AutoPopup = False
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85
@@ -1658,9 +1584,10 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebUnselectAllClick
     end
   end
-  object pmToolsVisibility: TRxPopupMenu
+  object pmToolsVisibility: TMxPopupMenu
     AutoPopup = False
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85
@@ -1685,9 +1612,10 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebUnhideAllClick
     end
   end
-  object pmToolsLocking: TRxPopupMenu
+  object pmToolsLocking: TMxPopupMenu
     AutoPopup = False
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85
@@ -1720,9 +1648,10 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebUnlockAllClick
     end
   end
-  object pmToolsGrouping: TRxPopupMenu
+  object pmToolsGrouping: TMxPopupMenu
     AutoPopup = False
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85
@@ -1744,9 +1673,10 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebGroupDestroyAllClick
     end
   end
-  object pmSnapListCommand: TRxPopupMenu
+  object pmSnapListCommand: TMxPopupMenu
     AutoPopup = False
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85

@@ -218,7 +218,7 @@ object frmEditParticles: TfrmEditParticles
         FlatAlwaysEdge = True
         OnClick = ExtBtn5Click
       end
-      object lbCurState: TRxLabel
+      object lbCurState: TMxLabel
         Left = 47
         Top = 32
         Width = 84
@@ -232,7 +232,7 @@ object frmEditParticles: TfrmEditParticles
         Font.Style = []
         ParentFont = False
       end
-      object lbParticleCount: TRxLabel
+      object lbParticleCount: TMxLabel
         Left = 47
         Top = 45
         Width = 84
@@ -246,7 +246,7 @@ object frmEditParticles: TfrmEditParticles
         Font.Style = []
         ParentFont = False
       end
-      object RxLabel1: TRxLabel
+      object RxLabel1: TMxLabel
         Left = 2
         Top = 32
         Width = 30
@@ -259,7 +259,7 @@ object frmEditParticles: TfrmEditParticles
         Font.Style = []
         ParentFont = False
       end
-      object RxLabel2: TRxLabel
+      object RxLabel2: TMxLabel
         Left = 2
         Top = 45
         Width = 45
@@ -279,158 +279,105 @@ object frmEditParticles: TfrmEditParticles
     Top = 0
     Width = 173
     Height = 398
+    Cursor = crDefault
     LeftPosition = 0
-    ActiveBorderType = fbtSunken
+    DoubleBuffered = False
+    DragCursor = crDrag
     Align = alClient
     AlwaysKeepFocus = True
-    AlwaysKeepSelection = True
+    AutoCollapse = False
     AutoExpand = True
-    AutoLookup = False
     DockOrientation = doNoOrient
-    DoubleBuffered = False
-    AutoLineHeight = True
-    BarStyle = False
-    BarStyleVerticalLines = False
-    BorderStyle = bsSingle
-    ChangeStateImage = False
-    CustomCheckboxes = False
-    CustomPlusMinus = False
-    DeselectChildrenOnCollapse = False
-    DivLinesColor = clBtnFace
+    DefaultSectionWidth = 120
+    BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
     DoInplaceEdit = False
-    DraggableSections = False
     DragAllowed = True
-    DragTrgDrawMode = ColorRect
-    DragType = dtDelphi
     DragImageMode = dimOne
-    DrawFocusRect = True
-    ExpandOnDblClick = True
-    ExpandOnDragOver = False
-    FilteredVisibility = False
+    DragTrgDrawMode = ColorRect
+    ExplorerEditMode = False
     Flat = True
-    FlatFocusedScrollbars = True
-    FocusedSelectColor = clHighlight
-    ForcedScrollBars = ssNone
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     FullRowSelect = False
-    HeaderActiveFilterColor = clBlack
-    HeaderHeight = 22
+    GradientSteps = 64
+    HeaderHeight = 19
     HeaderHotTrack = False
-    HeaderInvertSortArrows = False
     HeaderSections.Data = {
-      F8FFFFFF07000000F8100D0C00000000FFFFFFFF000001010100000078000000
-      0000000010270000000100000000000000000000000000000000010000000000
-      0000000000010000010000000001000000000000000000000000F8100D0C0000
-      0000FFFFFFFF0000010101000000780000000000000010270000000100000100
-      0000000000000000000000000100000000000000000000010000010000000001
-      000000000000000000000000F8100D0C00000000FFFFFFFF0000010101000000
-      7800000000000000102700000001000002000000000000000000000000000100
-      000000000000000000010000010000000001000000000000000000000000F810
-      0D0C00000000FFFFFFFF00000101010000007800000000000000102700000001
-      0000030000000000000000000000000001000000000000000000000100000100
-      00000001000000000000000000000000F8100D0C00000000FFFFFFFF00000101
-      0100000078000000000000001027000000010000040000000000000000000000
-      0000010000000000000000000001000001000000000100000000000000000000
-      0000F8100D0C00000000FFFFFFFF000001010100000078000000000000001027
-      0000000100000500000000000000000000000000010000000000000000000001
-      0000010000000001000000000000000000000000F8100D0C00000000FFFFFFFF
-      0000010101000000780000000000000010270000000100000600000000000000
-      0000000000000100000000000000000000010000010000000001000000000000
-      000000000000}
-    HeaderFilterColor = clBtnText
-    HeaderFlat = False
-    HideFocusRect = False
-    HideHintOnTimer = False
-    HideHintOnMove = True
-    HideSelectColor = clBtnFace
-    HideSelection = False
-    HorizontalLines = False
-    HideHorzScrollBar = False
-    HideVertScrollBar = False
-    HorzScrollBarStyles.ActiveFlat = False
-    HorzScrollBarStyles.BlendBackground = True
-    HorzScrollBarStyles.Color = clBtnFace
-    HorzScrollBarStyles.Flat = True
-    HorzScrollBarStyles.MinThumbSize = 4
-    HorzScrollBarStyles.NoDisableButtons = False
-    HorzScrollBarStyles.NoSunkenThumb = False
-    HorzScrollBarStyles.OwnerDraw = False
-    HorzScrollBarStyles.SecondaryButtons = False
-    HorzScrollBarStyles.SecondBtnKind = sbkOpposite
-    HorzScrollBarStyles.ShowLeftArrows = True
-    HorzScrollBarStyles.ShowRightArrows = True
+      F5FFFFFF0700000098EF660700220000FFFFFFFF000001010100000078000000
+      000000001027000000010041E447D8000000000000000000000000000000016D
+      00000000000000000001000000000000745061727469636C65733A3A65624361
+      6E63656C436C69636B28544F626A656374202A53656E646572290D0A7B0D0A20
+      20202048696465456469746F722874727565293B010000000001000000000000
+      00000000000098EF660700220000FFFFFFFF0000010101000000780000000000
+      0000102700000001004178D9EB0E0100000000000000000000000000016D0000
+      0000000000000001000000000000745061727469636C65733A3A656243616E63
+      656C436C69636B28544F626A656374202A53656E646572290D0A7B0D0A202020
+      2048696465456469746F722874727565293B0100000000010000000000000000
+      0000000098EF660700220000FFFFFFFF00000101010000007800000000000000
+      1027000000010041C08F480E0200000000000000000000000000016D00000000
+      000000000001000000000000745061727469636C65733A3A656243616E63656C
+      436C69636B28544F626A656374202A53656E646572290D0A7B0D0A2020202048
+      696465456469746F722874727565293B01000000000100000000000000000000
+      000098EF660700220000FFFFFFFF000001010100000078000000000000001027
+      000000010041C8CE19040300000000000000000000000000016D000000000000
+      00000001000000000000745061727469636C65733A3A656243616E63656C436C
+      69636B28544F626A656374202A53656E646572290D0A7B0D0A20202020486964
+      65456469746F722874727565293B010000000001000000000000000000000000
+      98EF660700220000FFFFFFFF0000010101000000780000000000000010270000
+      00010041907BF80D0400000000000000000000000000016D0000000000000000
+      0001000000000000745061727469636C65733A3A656243616E63656C436C6963
+      6B28544F626A656374202A53656E646572290D0A7B0D0A202020204869646545
+      6469746F722874727565293B01000000000100000000000000000000000098EF
+      660700220000FFFFFFFF00000101010000007800000000000000102700000001
+      004108D09C0C0500000000000000000000000000016D00000000000000000001
+      000000000000745061727469636C65733A3A656243616E63656C436C69636B28
+      544F626A656374202A53656E646572290D0A7B0D0A2020202048696465456469
+      746F722874727565293B01000000000100000000000000000000000098EF6607
+      00220000FFFFFFFF000001010100000078000000000000001027000000010041
+      C4D5730E0600000000000000000000000000016D000000000000000000010000
+      00000000745061727469636C65733A3A656243616E63656C436C69636B28544F
+      626A656374202A53656E646572290D0A7B0D0A2020202048696465456469746F
+      722874727565293B010000000001000000000000000000000000}
+    HeaderFont.Charset = DEFAULT_CHARSET
+    HeaderFont.Color = clWindowText
+    HeaderFont.Height = -11
+    HeaderFont.Name = 'MS Sans Serif'
+    HeaderFont.Style = []
     HorzScrollBarStyles.ShowTrackHint = False
-    HorzScrollBarStyles.ThumbMode = etmAuto
-    HorzScrollBarStyles.ThumbSize = 0
-    HorzScrollBarStyles.Width = 14
+    HorzScrollBarStyles.Width = 16
     HorzScrollBarStyles.ButtonSize = 14
     HorzScrollBarStyles.UseSystemMetrics = False
-    InactiveBorderType = fbtSunkenOuter
-    ItemIndent = 17
-    LineHeight = 19
+    IgnoreEnabled = False
+    IncrementalSearch = False
+    KeepSelectionWithinLevel = False
+    LineBorderActiveColor = clBlack
+    LineBorderInactiveColor = clBlack
+    LineHeight = 17
     LinesColor = clBtnShadow
-    LinesStyle = psDot
-    LineHintColor = clWindow
-    LockHeaderHeight = False
-    MainTreeColumn = 0
-    MoveColumnOnDrag = False
-    MoveFocusOnCollapse = False
+    MouseFrameSelect = True
     MultiSelect = False
     OwnerDrawMask = '~~@~~'
-    PathSeparator = '\'
     PlusMinusTransparent = True
     PopupMenu = pmShaders
-    RightAlignedText = False
-    RightAlignedTree = False
-    RowHotTrack = False
-    RowSelect = True
+    ScrollbarOpposite = False
     ScrollTracking = True
-    SelectColumn = -1
-    ShowButtons = True
-    ShowColumns = False
-    ShowCheckboxes = False
-    ShowImages = True
+    ShowLeafButton = False
     ShowLines = False
-    ShowRoot = False
-    ShowRootButtons = True
-    SelectionMode = smUsual
-    SortDir = sdAscend
     SortMode = smAdd
-    SortSection = 0
-    SortType = stText
-    StickyHeaderSections = False
+    StoragePath = '\Tree'
     TabOrder = 1
     TabStop = True
-    Tracking = True
-    TrackColor = clHighlight
-    UnderlineTracked = True
-    VerticalLines = False
-    VertScrollBarStyles.ActiveFlat = False
-    VertScrollBarStyles.BlendBackground = True
-    VertScrollBarStyles.Color = clBtnFace
-    VertScrollBarStyles.Flat = True
-    VertScrollBarStyles.MinThumbSize = 4
-    VertScrollBarStyles.NoDisableButtons = False
-    VertScrollBarStyles.NoSunkenThumb = False
-    VertScrollBarStyles.OwnerDraw = False
-    VertScrollBarStyles.SecondaryButtons = False
-    VertScrollBarStyles.SecondBtnKind = sbkOpposite
-    VertScrollBarStyles.ShowLeftArrows = True
-    VertScrollBarStyles.ShowRightArrows = True
     VertScrollBarStyles.ShowTrackHint = True
-    VertScrollBarStyles.ThumbMode = etmAuto
-    VertScrollBarStyles.ThumbSize = 0
-    VertScrollBarStyles.Width = 14
+    VertScrollBarStyles.Width = 16
     VertScrollBarStyles.ButtonSize = 14
     VertScrollBarStyles.UseSystemMetrics = False
+    VirtualityLevel = vlNone
     TextColor = clBtnText
     BkColor = clBtnShadow
     OnItemChange = tvItemsItemChange
-    OnTryEdit = tvItemsTryEdit
     OnItemSelectedChange = tvItemsItemSelectedChange
     OnDragDrop = tvItemsDragDrop
     OnDragOver = tvItemsDragOver

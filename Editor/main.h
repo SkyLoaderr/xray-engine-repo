@@ -11,14 +11,10 @@
 #include <Buttons.hpp>
 #include <ComCtrls.hpp>
 #include <Menus.hpp>
-#include "RXCtrls.hpp"
-#include "CloseBtn.hpp"
-#include "RxMenus.hpp"
-#include "Placemnt.hpp"
-#include <ImgList.hpp>
-#include <ToolWin.hpp>
-#include "SceneClassList.h"
 #include "RenderWindow.hpp"
+#include "ExtBtn.hpp"
+#include "MxMenus.hpp"
+#include "mxPlacemnt.hpp"
 //---------------------------------------------------------------------------
 // refs
 
@@ -29,7 +25,7 @@ __published:	// IDE-managed Components
         TPanel *paBottomBar;
     TPanel *paTools;
     TTimer *tmRefresh;
-    TRxPopupMenu *pmObjectContext;
+    TMxPopupMenu *pmObjectContext;
     TMenuItem *miProperties;
     TMenuItem *miCopy;
     TMenuItem *miPaste;
@@ -109,7 +105,7 @@ private:	// User declarations
 public:		// User declarations
     __fastcall TfrmMain(TComponent* Owner);
     void __fastcall UpdateCaption();
-	void __fastcall ShowContextMenu(const EObjClass cls);
+	void __fastcall ShowContextMenu(int cls);
     __inline void SetHInst(HINSTANCE inst){ m_HInstance=inst; }
     void __fastcall ApplyGlobalShortCut(WORD Key, TShiftState Shift);
 };

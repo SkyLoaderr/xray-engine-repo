@@ -299,3 +299,54 @@ LPCSTR CFileSystem::FindNext(){
     return 0;
 }
 
+void CFileSystem::ProcessOne(_finddata_t& F, const char* path)
+{
+	FILE_NAME	N;
+	strcpy		(N,path);
+	strcat		(N,F.name);
+
+	if (F.attrib&_A_SUBDIR) {
+		if (0==strcmp(F.name,"."))	return;
+		if (0==strcmp(F.name,"..")) return;
+		strcat(N,"\\");
+        if (!bFiles) m_FindItems.push_back(strlwr(N));
+		Recurse(N);
+	} else {
+		if (bFiles) m_FindItems.push_back(strlwr(N));
+	}
+}
+
+void CFileSystem::Recurse(const char* path)
+{
+    _finddata_t		sFile;
+    int				hFile;
+
+	FILE_NAME		N;
+	strcpy			(N,path);
+	strcat			(N,"*.*");
+
+    R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
+	ProcessOne		(sFile,path);
+
+    while			( _findnext( hFile, &sFile ) == 0 )
+		ProcessOne	(sFile,path);
+
+    _findclose		( hFile );
+}
+
+AStringVec& CFileSystem::GetFiles(LPCSTR path)
+{
+	bFiles			= true;
+	m_FindItems.clear();
+	Recurse			(path);
+    return m_FindItems;
+}
+
+AStringVec& CFileSystem::GetDirectories(LPCSTR path)
+{
+	bFiles			= false;
+	m_FindItems.clear();
+	Recurse			(path);
+    return m_FindItems;
+}
+

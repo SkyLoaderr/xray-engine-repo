@@ -14,10 +14,6 @@
 #include "DOShuffle.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CloseBtn"
-#pragma link "RXCtrls"
-#pragma link "multi_edit"
-#pragma link "Placemnt"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------
@@ -42,11 +38,14 @@ void __fastcall TfraDetailObject::ExpandClick(TObject *Sender)
 
 void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 {
+//S
+/*
 	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene->m_DetailObjects->m_pBaseTexture)?Scene->m_DetailObjects->m_pBaseTexture->name():0);
     if (T){
 		Scene->m_DetailObjects->Initialize(T);
     	Scene->UndoSave();
     }
+*/
 }
 //---------------------------------------------------------------------------
 

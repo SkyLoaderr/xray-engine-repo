@@ -10,9 +10,9 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
-#include "CloseBtn.hpp"
-#include "Placemnt.hpp"
-#include "RxMenus.hpp"
+#include "ExtBtn.hpp"
+#include "MxMenus.hpp"
+#include "mxPlacemnt.hpp"
 #include <Menus.hpp>
 //---------------------------------------------------------------------------
 class TfraLeftBar : public TFrame
@@ -29,7 +29,6 @@ __published:	// IDE-managed Components
     TPanel *paFrames;
 	TFormStorage *fsStorage;
     TExtBtn *ebTargetGlow;
-	TExtBtn *ebTargetDPatch;
     TExtBtn *ebTargetRPoint;
 	TExtBtn *ebTargetAITraffic;
 	TExtBtn *ebTargetSector;
@@ -44,7 +43,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebSceneFile;
 	TExtBtn *ebSceneCompile;
 	TExtBtn *ebLibraryEditor;
-	TExtBtn *ebShaderEditor;
 	TExtBtn *ebObjectList;
 	TExtBtn *ebSceneCommands;
 	TExtBtn *ebPreferences;
@@ -56,25 +54,25 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn10;
 	TExtBtn *ebRandomAdd;
 	TExtBtn *ebIgnoreGroup;
-	TRxPopupMenu *pmSceneFile;
+	TMxPopupMenu *pmSceneFile;
 	TMenuItem *Clear1;
 	TMenuItem *Load1;
 	TMenuItem *Save1;
 	TMenuItem *SaveAs1;
-	TRxPopupMenu *pmSceneCompile;
+	TMxPopupMenu *pmSceneCompile;
 	TMenuItem *Options1;
 	TMenuItem *Build1;
 	TMenuItem *MakeLTX1;
 	TMenuItem *Validate1;
-	TRxPopupMenu *pmSceneCommands;
+	TMxPopupMenu *pmSceneCommands;
 	TMenuItem *Refresh1;
 	TMenuItem *ResetAniamation1;
 	TMenuItem *CleanLibrary1;
-	TRxPopupMenu *pmToolsEdit;
-	TRxPopupMenu *pmToolsSelection;
-	TRxPopupMenu *pmToolsVisibility;
-	TRxPopupMenu *pmToolsLocking;
-	TRxPopupMenu *pmToolsGrouping;
+	TMxPopupMenu *pmToolsEdit;
+	TMxPopupMenu *pmToolsSelection;
+	TMxPopupMenu *pmToolsVisibility;
+	TMxPopupMenu *pmToolsLocking;
+	TMxPopupMenu *pmToolsGrouping;
 	TMenuItem *Cut1;
 	TMenuItem *Copy1;
 	TMenuItem *miPaste;
@@ -108,7 +106,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn16;
 	TExtBtn *ebEnableSnapList;
 	TExtBtn *ExtBtn1;
-	TRxPopupMenu *pmSnapListCommand;
+	TMxPopupMenu *pmSnapListCommand;
 	TMenuItem *MenuItem3;
 	TMenuItem *MenuItem4;
 	TListBox *lbSnapList;
@@ -147,7 +145,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebUnhideAllClick(TObject *Sender);
 	void __fastcall ebHideUnselectedClick(TObject *Sender);
 	void __fastcall ebRandomAddClick(TObject *Sender);
-	void __fastcall ebShaderEditorClick(TObject *Sender);
 	void __fastcall ebLockAllClick(TObject *Sender);
 	void __fastcall ebLockSelClick(TObject *Sender);
 	void __fastcall ebLockUnselClick(TObject *Sender);
@@ -189,7 +186,7 @@ __published:	// IDE-managed Components
 	void __fastcall Checknewtextures1Click(TObject *Sender);
 	void __fastcall MakeDetailsClick(TObject *Sender);
 private:	// User declarations
-	void __fastcall ShowPPMenu(TRxPopupMenu* M, TObject* btn);
+	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);
 	void ChangeTarget(int tgt);

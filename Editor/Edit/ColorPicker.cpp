@@ -22,24 +22,29 @@ public:
 static CTCD TCD;
 
 extern "C" DLL_API bool FSColorPickerExecute(LPDWORD currentColor, LPDWORD originalColor, const int initialExpansionState);
-bool SelectColor(LPDWORD currentcolor, LPDWORD originalcolor, bool bDefaultPicker){
+bool SelectColor(LPDWORD currentcolor, bool bDefaultPicker){
 	VERIFY(currentcolor);
 	if (bDefaultPicker){
-        if (originalcolor) TCD.cdColor->Color = rgb2bgr(*originalcolor);
+        TCD.cdColor->Color = TColor(rgb2bgr(*currentcolor));
         if (TCD.cdColor->Execute()){
 			*currentcolor = bgr2rgb(TCD.cdColor->Color);
         	return true;
         }
         return false;
     }else{
-	    return FSColorPickerExecute(currentcolor, originalcolor, 0);
+    	DWORD clr=*currentcolor;
+  	    if (FSColorPickerExecute(&clr, 0, 0)){
+        	*currentcolor = clr;
+         	return true;
+        }
+        return false;
     }
 }
 
-bool SelectColorWin(LPDWORD currentcolor, LPDWORD originalcolor, bool bDefaultPicker){
+bool SelectColorWin(LPDWORD currentcolor, bool bDefaultPicker){
 	VERIFY(currentcolor);
 	if (bDefaultPicker){
-        if (originalcolor) TCD.cdColor->Color = *originalcolor;
+        TCD.cdColor->Color = TColor(*currentcolor);
         if (TCD.cdColor->Execute()){
 			*currentcolor = TCD.cdColor->Color;
         	return true;
@@ -47,15 +52,11 @@ bool SelectColorWin(LPDWORD currentcolor, LPDWORD originalcolor, bool bDefaultPi
         return false;
     }else{
         DWORD cur = bgr2rgb(*currentcolor);
-        bool bRes;
-        if (originalcolor){
-            DWORD orig = bgr2rgb(*originalcolor);
-            bRes = FSColorPickerExecute(&cur, &orig, 0);
-        }else
-            bRes = FSColorPickerExecute(&cur, 0, 0);
-
-        if (bRes) *currentcolor = rgb2bgr(cur);
-	    return bRes;
+        if (FSColorPickerExecute(&cur, 0, 0)){
+			*currentcolor = rgb2bgr(cur);
+        	return true;
+        }
+	    return false;
     }
 }
 

@@ -1,21 +1,19 @@
 //---------------------------------------------------------------------------
 #ifndef PropertiesPSDefH
 #define PropertiesPSDefH
-#include "CloseBtn.hpp"
-#include <Classes.hpp>
-#include <Controls.hpp>
-#include <ExtCtrls.hpp>
-#include "multi_color.hpp"
-#include "multi_edit.hpp"
-#include "RXCtrls.hpp"
-#include <StdCtrls.hpp>
-#include "Placemnt.hpp"
-#include <Dialogs.hpp>
+#include "FrameEmitter.h"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
+#include "mxPlacemnt.hpp"
 #include "Gradient.hpp"
 #include "multi_check.hpp"
+#include "multi_edit.hpp"
+#include <Classes.hpp>
 #include <ComCtrls.hpp>
-#include "FrameEmitter.h"
+#include <Controls.hpp>
+#include <ExtCtrls.hpp>
 #include <Forms.hpp>
+#include <StdCtrls.hpp>
 //---------------------------------------------------------------------------
 
 #include "particlesystem.h"
@@ -30,30 +28,30 @@ __published:	// IDE-managed Components
 	TTabSheet *tsVary;
 	TTabSheet *tsBlur;
 	TGroupBox *gbBase;
-	TRxLabel *RxLabel17;
-	TRxLabel *RxLabel19;
-	TRxLabel *lbCreator;
+	TMxLabel *RxLabel17;
+	TMxLabel *RxLabel19;
+	TMxLabel *lbCreator;
 	TExtBtn *ebSelectShader;
-	TRxLabel *lbShader;
-	TRxLabel *lbTexture;
+	TMxLabel *lbShader;
+	TMxLabel *lbTexture;
 	TExtBtn *ebSelectTexture;
 	TEdit *edName;
 	TGroupBox *gbParams;
-	TRxLabel *RxLabel31;
-	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel5;
-	TRxLabel *RxLabel6;
-	TRxLabel *RxLabel7;
-	TRxLabel *RxLabel8;
-	TRxLabel *RxLabel9;
-	TRxLabel *RxLabel10;
-	TRxLabel *RxLabel11;
-	TRxLabel *RxLabel12;
-	TRxLabel *RxLabel13;
-	TRxLabel *RxLabel14;
-	TRxLabel *RxLabel15;
-	TRxLabel *RxLabel21;
-	TRxLabel *RxLabel34;
+	TMxLabel *RxLabel31;
+	TMxLabel *RxLabel1;
+	TMxLabel *RxLabel5;
+	TMxLabel *RxLabel6;
+	TMxLabel *RxLabel7;
+	TMxLabel *RxLabel8;
+	TMxLabel *RxLabel9;
+	TMxLabel *RxLabel10;
+	TMxLabel *RxLabel11;
+	TMxLabel *RxLabel12;
+	TMxLabel *RxLabel13;
+	TMxLabel *RxLabel14;
+	TMxLabel *RxLabel15;
+	TMxLabel *RxLabel21;
+	TMxLabel *RxLabel34;
 	TExtBtn *ExtBtn2;
 	TExtBtn *ExtBtn3;
 	TExtBtn *ExtBtn4;
@@ -90,13 +88,13 @@ __published:	// IDE-managed Components
 	TGroupBox *GroupBox2;
 	TfraEmitter *fraEmitter;
 	TGroupBox *GroupBox1;
-	TRxLabel *RxLabel30;
-	TRxLabel *RxLabel32;
-	TRxLabel *RxLabel33;
+	TMxLabel *RxLabel30;
+	TMxLabel *RxLabel32;
+	TMxLabel *RxLabel33;
 	TExtBtn *ExtBtn11;
 	TExtBtn *ExtBtn12;
-	TRxLabel *RxLabel4;
-	TRxLabel *RxLabel20;
+	TMxLabel *RxLabel4;
+	TMxLabel *RxLabel20;
 	TMultiObjCheck *cbMotionBlur;
 	TMultiObjSpinEdit *seBlurTimeStart;
 	TMultiObjSpinEdit *seBlurSubdivStart;
@@ -104,15 +102,15 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seBlurSubdivEnd;
 	TTabSheet *tsFrame;
 	TGroupBox *gbVariability;
-	TRxLabel *RxLabel2;
-	TRxLabel *RxLabel3;
-	TRxLabel *RxLabel16;
-	TRxLabel *RxLabel23;
-	TRxLabel *RxLabel24;
-	TRxLabel *RxLabel25;
-	TRxLabel *RxLabel26;
-	TRxLabel *RxLabel27;
-	TRxLabel *RxLabel28;
+	TMxLabel *RxLabel2;
+	TMxLabel *RxLabel3;
+	TMxLabel *RxLabel16;
+	TMxLabel *RxLabel23;
+	TMxLabel *RxLabel24;
+	TMxLabel *RxLabel25;
+	TMxLabel *RxLabel26;
+	TMxLabel *RxLabel27;
+	TMxLabel *RxLabel28;
 	TMultiObjSpinEdit *seLifeVar;
 	TMultiObjSpinEdit *seSizeVar;
 	TMultiObjSpinEdit *seSpeedVar;
@@ -122,34 +120,34 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seColorVarA;
 	TMultiObjSpinEdit *seASpeedVar;
 	TGroupBox *GroupBox4;
-	TRxLabel *RxLabel29;
+	TMxLabel *RxLabel29;
 	TMultiObjCheck *cbAnimEnabled;
 	TGroupBox *GroupBox5;
-	TRxLabel *RxLabel18;
+	TMxLabel *RxLabel18;
 	TMultiObjSpinEdit *seAnimFrameWidth;
-	TRxLabel *RxLabel22;
+	TMxLabel *RxLabel22;
 	TMultiObjSpinEdit *seAnimFrameHeight;
-	TRxLabel *RxLabel35;
+	TMxLabel *RxLabel35;
 	TMultiObjSpinEdit *seAnimFrameCount;
-	TRxLabel *RxLabel36;
+	TMxLabel *RxLabel36;
 	TMultiObjSpinEdit *seAnimSpeed;
-	TRxLabel *RxLabel37;
+	TMxLabel *RxLabel37;
 	TMultiObjSpinEdit *seAnimSpeedVar;
 	TGroupBox *GroupBox6;
-	TRxLabel *RxLabel38;
-	TRxLabel *RxLabel39;
+	TMxLabel *RxLabel38;
+	TMxLabel *RxLabel39;
 	TMultiObjSpinEdit *seAnimTexWidth;
 	TMultiObjSpinEdit *seAnimTexHeight;
 	TFormStorage *fsStorage;
-	TRxLabel *RxLabel40;
+	TMxLabel *RxLabel40;
 	TMultiObjCheck *cbAlignToPath;
-	TRxLabel *RxLabel41;
+	TMxLabel *RxLabel41;
 	TMultiObjCheck *cbRandomInitAngle;
-	TRxLabel *RxLabel42;
+	TMxLabel *RxLabel42;
 	TMultiObjCheck *cbAnimAnimate;
-	TRxLabel *RxLabel43;
+	TMxLabel *RxLabel43;
 	TMultiObjCheck *cbAnimRandomInitialFrame;
-	TRxLabel *RxLabel44;
+	TMxLabel *RxLabel44;
 	TMultiObjCheck *cbAnimRandomPlaybackDir;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

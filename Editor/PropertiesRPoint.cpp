@@ -6,6 +6,8 @@
 #include "RPoint.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "ExtBtn"
+#pragma link "MXCtrls"
 #pragma resource "*.dfm"
 
 TfrmPropertiesRPoint* TfrmPropertiesRPoint::form = 0;

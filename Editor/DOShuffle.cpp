@@ -4,7 +4,6 @@
 #pragma hdrstop
 
 #include "DOShuffle.h"
-#include "FileSystem.h"
 #include "ChoseForm.h"
 #include "Texture.h"
 #include "xr_trims.h"
@@ -14,9 +13,9 @@
 #include "DetailObjects.h"
 #include "D3DUtils.h"
 #include "PropertiesDetailObject.h"
+#include "xr_func.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "Placemnt"
 #pragma resource "*.dfm"
 TfrmDOShuffle *TfrmDOShuffle::form=0;
 
@@ -69,7 +68,7 @@ void TfrmDOShuffle::GetInfo(){
 		color_indices.push_back(OneColor);
 		OneColor->Parent = form->sbDO;
 	    OneColor->ShowIndex(this);
-        OneColor->mcColor->Brush->Color = DU::rgb2bgr(it->first);
+        OneColor->mcColor->Brush->Color = rgb2bgr(it->first);
         for (d_it=it->second.begin(); d_it!=it->second.end(); d_it++)
 	        OneColor->AppendObject((*d_it)->GetName());
     }
@@ -83,9 +82,9 @@ void TfrmDOShuffle::ApplyInfo(){
     // update objects
     DM->MarkAllObjectsAsDel();
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext()){
-    	CDetail* DO = DM->FindObjectByName(node->Text.c_str());
+    	CDetail* DO = DM->FindObjectByName(AnsiString(node->Text).c_str());
     	if (DO)	DO->m_bMarkDel = false;
-        else	DO = DM->AppendObject(node->Text.c_str());
+        else	DO = DM->AppendObject(AnsiString(node->Text).c_str());
         // update data
         SDOData* DD = (SDOData*)node->Data;
         DO->m_fMinScale 		= DD->m_fMinScale;
@@ -97,9 +96,9 @@ void TfrmDOShuffle::ApplyInfo(){
 	DM->RemoveColorIndices();
 	for (DWORD k=0; k<color_indices.size(); k++){
     	TfrmOneColor* OneColor = color_indices[k];
-        DWORD clr = DU::bgr2rgb(OneColor->mcColor->Brush->Color);
+        DWORD clr = bgr2rgb(OneColor->mcColor->Brush->Color);
 	    for ( TElTreeItem* node = OneColor->tvDOList->Items->GetFirstNode(); node; node = node->GetNext())
-	    	DM->AppendIndexObject(clr,node->Text.c_str(),false);
+	    	DM->AppendIndexObject(clr,AnsiString(node->Text).c_str(),false);
     }
 }
 
@@ -116,14 +115,14 @@ __fastcall TfrmDOShuffle::TfrmDOShuffle(TComponent* Owner)
 TElTreeItem* TfrmDOShuffle::FindFolder(const char* s)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (!node->Data && (node->Text == s)) return node;
+        if (!node->Data && (AnsiString(node->Text) == s)) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmDOShuffle::FindItem(const char* s)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (node->Data && (node->Text == s)) return node;
+        if (node->Data && (AnsiString(node->Text) == s)) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
@@ -198,13 +197,15 @@ void __fastcall TfrmDOShuffle::tvItemsItemSelectedChange(TObject *Sender, TElTre
     _DELETE(sel_thm);
 	if (Item&&Item->Data){
 		AnsiString nm = AnsiString("$O_")+Item->Text;
-    	sel_thm 				= new ETextureThumbnail(nm.c_str());
+//S
+/*    	sel_thm 				= new ETextureThumbnail(nm.c_str());
         if (!sel_thm->Load()) 	pbImage->Repaint();
         else				 	pbImagePaint(Sender);
         SDOData* dd				= (SDOData*)Item->Data;
 		lbItemName->Caption 	= "\""+AnsiString(dd->LO->GetName())+"\"";
 		AnsiString temp; 		temp.sprintf("Density: %1.2f\nScale: [%3.1f, %3.1f)",dd->m_fDensityFactor,dd->m_fMinScale,dd->m_fMaxScale);
         lbInfo->Caption			= temp;
+*/
     }else{
 		lbItemName->Caption = "...";
 		lbInfo->Caption		= "...";
@@ -215,6 +216,8 @@ void __fastcall TfrmDOShuffle::tvItemsItemSelectedChange(TObject *Sender, TElTre
 void __fastcall TfrmDOShuffle::pbImagePaint(TObject *Sender)
 {
 	if (sel_thm){
+//S
+/*
         RECT r; r.left = 2; r.top = 2;
         float w, h;
         w = THUMB_WIDTH;
@@ -222,6 +225,7 @@ void __fastcall TfrmDOShuffle::pbImagePaint(TObject *Sender)
         if (w>h){   r.right = pbImage->Width; r.bottom = h/w*pbImage->Height;
         }else{      r.right = w/h*pbImage->Width; r.bottom = pbImage->Height;}
         sel_thm->DrawStretch(paImage->Handle, &r);
+*/
     }
 }
 //---------------------------------------------------------------------------
@@ -229,7 +233,7 @@ void __fastcall TfrmDOShuffle::pbImagePaint(TObject *Sender)
 
 bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails){
     char s1 = *(char*)SearchDetails;
-    char s2 = *Item->Text.c_str();
+    char s2 = *AnsiString(Item->Text).c_str();
 	return (s1==tolower(s2));
 }
 //---------------------------------------------------------------------------
@@ -237,7 +241,7 @@ bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails){
 void __fastcall TfrmDOShuffle::tvItemsKeyPress(TObject *Sender, char &Key)
 {
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
-    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);    
+    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
     if (node){
     	tvItems->Selected = node;
 		tvItems->EnsureVisible(node);

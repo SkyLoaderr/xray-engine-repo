@@ -4,7 +4,7 @@
 #include "SceneProperties.h"
 #include "OneEnvironment.h"
 #include "xrLevel.h"
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR 
  #include "Scene.h"
  #include "ui_main.h"
  #include "library.h"
@@ -12,17 +12,11 @@
  #include "EditObject.h"
 #else
  #include "Communicate.h"
- #include "FileSystem.h"
  #include "library.h"
  #include "ColorPicker.h"
 #endif
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "ToolEdit"
-#pragma link "ElTree"
-#pragma link "CloseBtn"
-#pragma link "multi_color"
-#pragma link "multi_edit"
 #pragma resource "*.dfm"
 TfrmSceneProperties *frmSceneProperties=0;
 //---------------------------------------------------------------------------
@@ -32,7 +26,7 @@ void UpdateMinValue(TMultiObjSpinEdit* c, float min_val, float divers=0.f){
 }
 //---------------------------------------------------------------------------
 
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 int frmScenePropertiesRun(b_params* params, bool bRunBuild){
 #else
 extern "C" __declspec(dllexport) __cdecl int frmScenePropertiesRun(b_params* params, DWORD version, bool bRunBuild){
@@ -77,16 +71,15 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
     TElTreeItem* root = tvOptions->Items->Add(0,"Build Options");
     root->ParentStyle = false;
     root->Bold = true;
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
     tvOptions->Items->AddChild(root,"Level options");
     tvOptions->Items->AddChild(root,"Level environment");
     tvOptions->Items->AddChild(root,"Level script");
 	edLevelName->Text		= Scene->m_LevelOp.m_LevelName;
-	deLevelPath->Text		= Scene->m_LevelOp.m_FNLevelPath;
+	edLevelPath->Text		= Scene->m_LevelOp.m_FNLevelPath;
 	seCurEnv->Value			= Scene->m_LevelOp.m_CurEnv;
 	mmText->Text			= Scene->m_LevelOp.m_BOPText;
 	edSkydomeObjectName->Text = Scene->m_LevelOp.m_SkydomeObjName;
-	seDOClusterSize->Value	= Scene->m_LevelOp.m_DOClusterSize;
 
     tsLevelScript->Enabled = true;
     tsLevelOptions->Enabled = true;
@@ -138,7 +131,6 @@ void __fastcall TfrmSceneProperties::SetSceneParams(){
 
     // Light maps
     m_BuildParams->m_bLightMaps          	= cbLMLightmaps->Checked;
-    m_BuildParams->m_bRadiosity		     	= cbLMRadiosity->Checked;
     m_BuildParams->m_lm_split_angle 	 	= seLMDeflSplitAngle->Value;
     m_BuildParams->m_lm_pixels_per_meter 	= seLMPixelsPerMeter->Value;
     m_BuildParams->m_lm_dither           	= seLMDither->Value;
@@ -149,7 +141,7 @@ void __fastcall TfrmSceneProperties::SetSceneParams(){
     m_BuildParams->m_lm_rms				 	= seLMRMS->Value;
     m_BuildParams->area_dispersion		 	= seLMAreaDispersion->Value;
     m_BuildParams->area_energy_summary	 	= seLMAreaSummaryEnergy->Value/100.f;
-    m_BuildParams->areaDark.set_windows		(mcLMAreaDark->Brush->Color);
+    m_BuildParams->area_color.set_windows	(mcLMAreaColor->Brush->Color);
 //    m_BuildParams->areaGround.set_windows	(mcLMAreaGround->Brush->Color);
     m_BuildParams->area_quality				= rgAreaQuality->ItemIndex;
     m_BuildParams->fuzzy_min				= seLMFuzzyMin->Value;
@@ -169,7 +161,7 @@ void __fastcall TfrmSceneProperties::SetSceneParams(){
     // Strippify
     m_BuildParams->m_bStripify 				= cbStrippify->Checked;
     m_BuildParams->m_vCacheSize			 	= seStripCacheSize->Value;
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 	Device.UpdateFog();
 #endif
 }
@@ -198,7 +190,6 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
 
     // Light maps
     cbLMLightmaps->Checked         	= m_BuildParams->m_bLightMaps;
-    cbLMRadiosity->Checked         	= m_BuildParams->m_bRadiosity;
     seLMDeflSplitAngle->Value      	= m_BuildParams->m_lm_split_angle;
     seLMPixelsPerMeter->Value      	= m_BuildParams->m_lm_pixels_per_meter;
     seLMDither->Value              	= m_BuildParams->m_lm_dither;
@@ -208,8 +199,7 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
     seLMAmbFogness->Value          	= m_BuildParams->m_lm_amb_fogness*100.f;
     seLMRMS->Value				   	= m_BuildParams->m_lm_rms;
     seLMAreaDispersion->Value	   	= m_BuildParams->area_dispersion;
-	mcLMAreaDark->ObjFirstInit     	( m_BuildParams->areaDark.get_windows() );
-//	mcLMAreaGround->ObjFirstInit	( m_BuildParams->areaGround.get_windows() );
+	mcLMAreaColor->ObjFirstInit     ( m_BuildParams->area_color.get_windows() );
     seLMAreaSummaryEnergy->Value   	= m_BuildParams->area_energy_summary*100.f;
     rgAreaQuality->ItemIndex		= m_BuildParams->area_quality;
     seLMFuzzyMin->Value				= m_BuildParams->fuzzy_min;
@@ -233,9 +223,9 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
 
 void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 {
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 	Scene->m_LevelOp.m_LevelName 	= edLevelName->Text;  	// Level Name
-	Scene->m_LevelOp.m_FNLevelPath 	= deLevelPath->Text;	// Path
+	Scene->m_LevelOp.m_FNLevelPath 	= edLevelPath->Text;	// Path
 	Scene->m_LevelOp.m_BOPText		= mmText->Text;			// Text
 	Scene->m_LevelOp.m_CurEnv		= seCurEnv->Value;
 //	Scene->m_LevelOp.m_ViewDist		= seViewDistance->Value;
@@ -243,7 +233,6 @@ void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 //	Scene->m_LevelOp.m_FogColor.set_windows(mcFogColor->Brush->Color);
 //	Scene->m_LevelOp.m_AmbColor.set_windows(mcAmbientColor->Brush->Color);
 	Scene->m_LevelOp.m_SkydomeObjName = edSkydomeObjectName->Text;
-	Scene->m_LevelOp.m_DOClusterSize= seDOClusterSize->Value;
     Scene->UpdateSkydome();
 #endif
     SetSceneParams();
@@ -270,7 +259,7 @@ void __fastcall TfrmSceneProperties::FormKeyDown(TObject *Sender,
 void __fastcall TfrmSceneProperties::fsScenePropsRestorePlacement(
       TObject *Sender)
 {
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
     SetSceneParams();
 #endif
 	UpdateMinValue(seLMFuzzyMax,seLMFuzzyMin->Value); // set min value
@@ -299,14 +288,14 @@ void __fastcall TfrmSceneProperties::mcLMAmbientMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
-	if (SelectColorWin(&color,&color))
+	if (SelectColorWin(&color))
 		((TMultiObjColor*)Sender)->_Set(color);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
 {
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 	LPCSTR N = TfrmChoseItem::SelectObject(false,true,SKYDOME_FOLDER,0);
 	if (!N) return;
 	CLibObject* LO = Lib->SearchObject(N);
@@ -331,7 +320,7 @@ void __fastcall TfrmSceneProperties::ebClearSkydomeClick(TObject *Sender)
 //---------------------------------------------------------------------------
 static bool bUpdateMode = false;
 void __fastcall TfrmSceneProperties::EnvsUpdate(){
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 	bUpdateMode = true;
 //	SendMessage(sbEnvs->Handle,WM_SETREDRAW,0,0);
 	// delete all created forms
@@ -362,7 +351,7 @@ void __fastcall TfrmSceneProperties::EnvsUpdate(){
 
 void __fastcall TfrmSceneProperties::tsLevelOptionsShow(TObject *Sender)
 {
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 #endif
 }
 //---------------------------------------------------------------------------
@@ -370,7 +359,7 @@ void __fastcall TfrmSceneProperties::tsLevelOptionsShow(TObject *Sender)
 void __fastcall TfrmSceneProperties::tsLevelEnvironmentShow(
       TObject *Sender)
 {
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
 	bUpdateMode = true;
 	// delete all created forms
     for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++) _DELETE(*f_it);
@@ -396,7 +385,7 @@ void __fastcall TfrmSceneProperties::tsLevelEnvironmentShow(
 
 void __fastcall TfrmSceneProperties::seEnvCountChange(TObject *Sender)
 {
-#ifdef _EDITOR
+#ifdef _LEVEL_EDITOR
     seCurEnv->MaxValue = seEnvCount->Value-1;
 
 	if (bUpdateMode) return;

@@ -12,9 +12,6 @@
 #include "portalutils.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CloseBtn"
-#pragma link "RXCtrls"
-#pragma link "RxMenus"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------

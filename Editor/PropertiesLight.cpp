@@ -6,15 +6,9 @@
 #include "ELight.h"
 #include "SceneClassList.h"
 #include "ui_main.h"
+ #include "ColorPicker.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "multi_check"
-#pragma link "multi_color"
-#pragma link "multi_edit"
 #pragma resource "*.dfm"
 TfrmPropertiesLight *frmPropertiesLight=0;
 //---------------------------------------------------------------------------
@@ -43,10 +37,7 @@ void __fastcall TfrmPropertiesLight::Run(ObjectList* pObjects, bool& bChange)
 	for(;_F!=m_Objects->end();_F++) if (t!=((CLight*)(*_F))->m_D3D.type) pcType->Hide();
 
 	GetObjectsInfo();
-    SetCurrentKey(0);
-    InitCurrentKey();
 
-	SetEnabledAnimControlsForPlay(true);
     bChange = (ShowModal()==mrOk);
 	if (m_CurLight) m_CurLight->Lock(false);
 
@@ -100,7 +91,7 @@ void __fastcall TfrmPropertiesLight::mcColorMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
-	if (SelectColorWin(&color,&color)) ((TMultiObjColor*)Sender)->_Set(color);
+	if (SelectColorWin(&color)) ((TMultiObjColor*)Sender)->_Set(color);
 }
 //---------------------------------------------------------------------------
 
@@ -111,11 +102,8 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 	CLight *_L = 0;
 	ObjectIt _F = m_Objects->begin();
 
-    AllowEditProcedural(m_Objects->size()==1);
-
 	VERIFY( (*_F)->ClassID()==OBJCLASS_LIGHT );
 	_L = (CLight *)(*_F);
-
 
 	sePointRange->ObjFirstInit		( _L->m_D3D.range );
 
@@ -129,12 +117,10 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     mmFlares->Enabled        		= cbFlares->Checked;
 
 	mcDiffuse->ObjFirstInit			( _L->m_D3D.diffuse.get_windows() );
-    cbCastShadows->ObjFirstInit		( TCheckBoxState(_L->m_CastShadows) );
     cbUseInD3D->ObjFirstInit	   	( TCheckBoxState(_L->m_UseInD3D) );
-    seShadowedScale->ObjFirstInit	( _L->m_ShadowedScale );
-    cbTargetLM->ObjFirstInit	   	( (_L->m_D3D.flags&XRLIGHT_LMAPS)?cbChecked:cbUnchecked );
-    cbTargetDynamic->ObjFirstInit	( (_L->m_D3D.flags&XRLIGHT_MODELS)?cbChecked:cbUnchecked );
-    cbTargetAnimated->ObjFirstInit	( (_L->m_D3D.flags&XRLIGHT_PROCEDURAL)?cbChecked:cbUnchecked );
+    cbTargetLM->ObjFirstInit	   	( (_L->m_Flags.bAffectStatic)?cbChecked:cbUnchecked );
+    cbTargetDynamic->ObjFirstInit	( (_L->m_Flags.bAffectDynamic)?cbChecked:cbUnchecked );
+    cbTargetAnimated->ObjFirstInit	( (_L->m_Flags.bProcedural)?cbChecked:cbUnchecked );
 
     seA0->ObjFirstInit				( _L->m_D3D.attenuation0 );
     seA1->ObjFirstInit				( _L->m_D3D.attenuation1 );
@@ -155,26 +141,12 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 	    seBrightness->ObjNextInit		( _L->m_Brightness );
 
 		mcDiffuse->ObjNextInit			( _L->m_D3D.diffuse.get_windows() );
-        cbCastShadows->ObjNextInit		( TCheckBoxState(_L->m_CastShadows) );
         cbUseInD3D->ObjNextInit			( TCheckBoxState(_L->m_UseInD3D) );
-        seShadowedScale->ObjNextInit	( _L->m_ShadowedScale );
 
-	    cbTargetLM->ObjNextInit			( (_L->m_D3D.flags&XRLIGHT_LMAPS)?cbChecked:cbUnchecked );
-    	cbTargetDynamic->ObjNextInit	( (_L->m_D3D.flags&XRLIGHT_MODELS)?cbChecked:cbUnchecked );
-	    cbTargetAnimated->ObjNextInit	( (_L->m_D3D.flags&XRLIGHT_PROCEDURAL)?cbChecked:cbUnchecked );
+	    cbTargetLM->ObjNextInit			( (_L->m_Flags.bAffectStatic)?cbChecked:cbUnchecked );
+    	cbTargetDynamic->ObjNextInit	( (_L->m_Flags.bAffectDynamic)?cbChecked:cbUnchecked );
+	    cbTargetAnimated->ObjNextInit	( (_L->m_Flags.bProcedural)?cbChecked:cbUnchecked );
 	}
-
-    // если это процедурный лайт прочитаем о нем
-    if (m_bAllowEditProcedural){
-        m_CurLight					= (CLight*)(m_Objects->front());
-        _DELETE						(m_SaveLight);
-        m_SaveLight					= new CLight(*m_CurLight);
-        seAnimSpeed->ObjFirstInit	(m_CurLight->m_D3D.p_speed);
-        InitCurrentKey				();
-
-		gbProceduralKeys->Visible 	= cbTargetAnimated->Checked;
-	    ebAdjustScene->Visible 		= cbTargetAnimated->Checked;
-    }
 }
 
 bool TfrmPropertiesLight::ApplyObjectsInfo(){
@@ -203,30 +175,15 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
         int c;
         if (mcDiffuse->ObjApply(c)){  _L->m_D3D.diffuse.set_windows(c); }
 
-        cbCastShadows->ObjApply( _L->m_CastShadows );
         cbUseInD3D->ObjApply( _L->m_UseInD3D );
-        seShadowedScale->ObjApplyFloat( _L->m_ShadowedScale );
 
-	    c=(_L->m_D3D.flags&XRLIGHT_LMAPS)?1:0;
-	    cbTargetLM->ObjApply		(c); if (c) _L->m_D3D.flags|=XRLIGHT_LMAPS; else _L->m_D3D.flags&=~XRLIGHT_LMAPS;
-	    c=(_L->m_D3D.flags&XRLIGHT_MODELS)?1:0;
-	    cbTargetDynamic->ObjApply	(c); if (c) _L->m_D3D.flags|=XRLIGHT_MODELS; else _L->m_D3D.flags&=~XRLIGHT_MODELS;
-	    c=(_L->m_D3D.flags&XRLIGHT_PROCEDURAL)?1:0;
-	    cbTargetAnimated->ObjApply(c); if (c) _L->m_D3D.flags|=XRLIGHT_PROCEDURAL; else _L->m_D3D.flags&=~XRLIGHT_PROCEDURAL;
-
-        seAnimSpeed->ObjApplyFloat( _L->m_D3D.p_speed );
+	    c=(_L->m_Flags.bAffectStatic)?1:0;
+	    cbTargetLM->ObjApply		(c); _L->m_Flags.bAffectStatic=c;
+	    c=(_L->m_Flags.bAffectDynamic)?1:0;
+	    cbTargetDynamic->ObjApply	(c); _L->m_Flags.bAffectDynamic=c;
+	    c=(_L->m_Flags.bProcedural)?1:0;
+	    cbTargetAnimated->ObjApply(c); 	 _L->m_Flags.bProcedural=c;
 	}
-
-    // сохраним анимацию
-	if (m_bAllowEditProcedural&&m_CurLight&&cbTargetAnimated->Checked){
-    	SaveCurrentKey();
-	    if (m_CurLight->m_Data.size()<2){
-        	bResult = false;
-            ELog.DlgMsg(mtError,"Not enough keys. (2-minimum)");
-    	}else{
-            m_CurLight->Update();
-        }
-    }
 
     UI->UpdateScene();
     return bResult;
@@ -359,244 +316,9 @@ void __fastcall TfrmPropertiesLight::cbTargetLMClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::cbTargetAnimatedClick(TObject *Sender){
-	gbProceduralKeys->Visible 	= cbTargetAnimated->Checked;
 	ebAdjustScene->Visible 		= cbTargetAnimated->Checked;
     if (cbTargetAnimated->Checked) cbTargetLM->Checked = false;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesLight::AllowEditProcedural(bool bAllowEditProcedural){
-	m_bAllowEditProcedural 		= bAllowEditProcedural;
-	cbTargetAnimated->Enabled 	= bAllowEditProcedural;
-	gbProceduralKeys->Visible 	= bAllowEditProcedural;
-	ebAdjustScene->Visible	 	= bAllowEditProcedural;
-}
 
-void __fastcall TfrmPropertiesLight::tbAnimKeysChange(TObject *Sender)
-{
-    SaveCurrentKey();
-    SetCurrentKey(tbAnimKeys->Position-1);
-	InitCurrentKey();
-    UpdateKeys();
-}
-//---------------------------------------------------------------------------
-
-bool TfrmPropertiesLight::SetCurrentKey(DWORD key){
-	if (m_CurLight&&(key>=0)&&(key<m_CurLight->m_Data.size())){
-    	m_CurrentAnimKey = key;
-        return true;
-    }
-    return false;
-}
-//---------------------------------------------------------------------------
-
-void TfrmPropertiesLight::InitCurrentKey(){
-	if (m_CurLight){
-        SAnimLightItem* l = (m_CurLight->m_Data.size())?&m_CurLight->m_Data[m_CurrentAnimKey]:0;
-        if (l){
-            mcDiffuse->ObjFirstInit			( l->diffuse.get_windows() );
-
-            sePointRange->Value      		= l->range;
-
-            seA0->Value 					= l->attenuation0;
-            seA1->Value 					= l->attenuation1;
-            seA2->Value 					= l->attenuation2;
-
-            seBrightness->Value 			= l->m_Brightness;
-        }
-        UpdateKeys();
-    }
-}
-
-void TfrmPropertiesLight::SaveCurrentKey(){
-    SAnimLightItem* l = m_CurLight->m_Data.size()?&m_CurLight->m_Data[m_CurrentAnimKey]:0;
-    if (l){
-        l->diffuse.set_windows(mcDiffuse->Get());
-
-        l->range		= sePointRange->Value;
-
-        l->attenuation0	= seA0->Value;
-        l->attenuation1	= seA1->Value;
-        l->attenuation2	= seA2->Value;
-
-        l->m_Brightness	= seBrightness->Value;
-    }
-}
-
-void TfrmPropertiesLight::UpdateCurAnimLight(){
-    SAnimLightItem& l				= m_CurLight->m_Data[m_CurrentAnimKey];
-
-    m_CurLight->m_D3D.flags			= 0;
-    m_CurLight->m_D3D.flags			|= (cbTargetLM->Checked)?XRLIGHT_LMAPS:0;
-    m_CurLight->m_D3D.flags			|= (cbTargetDynamic->Checked)?XRLIGHT_MODELS:0;
-    m_CurLight->m_D3D.flags			|= (cbTargetAnimated->Checked)?XRLIGHT_PROCEDURAL:0;
-    m_CurLight->m_D3D.p_key_count	= m_CurLight->m_Data.size();
- 	m_CurLight->m_D3D.p_speed 		= seAnimSpeed->Value;
-    m_CurLight->m_D3D.diffuse.set	(l.diffuse);
-    m_CurLight->m_D3D.range 		= l.range;
-    m_CurLight->m_D3D.attenuation0	= l.attenuation0;
-    m_CurLight->m_D3D.attenuation1	= l.attenuation1;
-    m_CurLight->m_D3D.attenuation2	= l.attenuation2;
-    m_CurLight->m_Brightness		= l.m_Brightness;
-}
-
-void TfrmPropertiesLight::UpdateKeys(){
-    tbAnimKeys->Min			= m_CurLight->m_Data.size()?1:0;
-    tbAnimKeys->Max			= m_CurLight->m_Data.size();
-    tbAnimKeys->Position 	= m_CurrentAnimKey+1;
-    lbMinAnimKey->Caption	= tbAnimKeys->Min;
-    lbMaxAnimKey->Caption	= tbAnimKeys->Max;
-    lbAnimKeyNum->Caption	= tbAnimKeys->Position;
-
-    // update light in scene
-    if (m_CurLight->m_Data.size()) UpdateCurAnimLight();
-
-    UI->RedrawScene();
-
-    DrawGraph();
-}
-
-
-void __fastcall TfrmPropertiesLight::ebAppendKeyClick(TObject *Sender)
-{
-	SAnimLightItem l;
-    CopyMemory(&l, &m_CurLight->m_D3D, sizeof(Flight));
-    l.m_Brightness = m_CurLight->m_Brightness;
-
-    SaveCurrentKey();
-    m_CurLight->m_Data.push_back(l);
-    SetCurrentKey(m_CurLight->m_Data.size()-1);
-    SaveCurrentKey();
-    UpdateKeys();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::ebInsertKeyClick(TObject *Sender)
-{
-	SAnimLightItem l;
-    SaveCurrentKey();
-    m_CurLight->m_Data.insert(m_CurLight->m_Data.begin()+m_CurrentAnimKey,l);
-    SaveCurrentKey();
-    UpdateKeys();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::ebRemoveAllKeysClick(TObject *Sender)
-{
-    m_CurLight->m_Data.clear();
-    SetCurrentKey(0);
-    InitCurrentKey();
-    UpdateKeys();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::ebRemoveKeyClick(TObject *Sender)
-{
-	if (m_CurLight->m_Data.size()){
-	    m_CurLight->m_Data.erase(m_CurLight->m_Data.begin()+m_CurrentAnimKey);
-    	SetCurrentKey(m_CurrentAnimKey-1);
-		InitCurrentKey();
-    	UpdateKeys();
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::ebAnimPlayClick(TObject *Sender)
-{
-	if (m_CurLight&&(m_CurLight->m_Data.size()>=2)){
-        SaveCurrentKey();
-        UpdateCurAnimLight();
-        m_CurLight->Update();
-        SetEnabledAnimControlsForPlay(false);
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::ebAnimStopClick(TObject *Sender)
-{
-	SetEnabledAnimControlsForPlay(true);
-    InitCurrentKey();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::tmAnimationTimer(TObject *Sender)
-{
-	if (m_CurLight&&(m_CurLight->m_Data.size()>=2)){
-        UI->RedrawScene(true);
-		float	p	= m_CurLight->m_D3D.p_time * m_CurLight->m_D3D.p_key_count;
-		DWORD	ip	= iFloor(p);
-	    lbAnimKeyNum->Caption = ip;
-    }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmPropertiesLight::SetEnabledAnimControlsForPlay(bool bFlag){
-  	gbType->Enabled			= bFlag;
-  	gbColor->Enabled		= bFlag;
-  	gbLightType->Enabled	= bFlag;
-  	gbKeyActions->Enabled	= bFlag;
-  	tbAnimKeys->Enabled		= bFlag;
-	tmAnimation->Enabled 	= !bFlag;
-    ebAnimStop->Enabled		= bFlag;
-
-    cbCastShadows->Enabled	= bFlag;
-    seShadowedScale->Enabled= bFlag;
-
-    ebAnimStop->Enabled		= !bFlag;
-    ebAnimPlay->Enabled		= bFlag;
-
-    if (m_CurLight)	m_CurLight->Lock(bFlag);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::ebAnimStartClick(TObject *Sender)
-{
-    SetCurrentKey(0);
-	InitCurrentKey();
-    UpdateKeys();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::ebAnimEndClick(TObject *Sender)
-{
-    SetCurrentKey(m_CurLight->m_Data.size()-1);
-	InitCurrentKey();
-    UpdateKeys();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::ebAnimRewindClick(TObject *Sender)
-{
-    SetCurrentKey(m_CurrentAnimKey-1);
-	InitCurrentKey();
-    UpdateKeys();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::ebAnimForwardClick(TObject *Sender)
-{
-    SetCurrentKey(m_CurrentAnimKey+1);
-	InitCurrentKey();
-    UpdateKeys();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::btAdjustSceneClick(
-      TObject *Sender)
-{
-    SaveCurrentKey();
-    if (m_CurLight->m_Data.size()) UpdateCurAnimLight();
-}
-//---------------------------------------------------------------------------
-
-
-/*
-void __fastcall TfrmPropertiesLight::ExtBtn1Click(TObject *Sender){
-    Fvector D;
-    D.set(float(seDirectionalDirX->Value), float(seDirectionalDirY->Value), float(seDirectionalDirZ->Value));
-    float v=D.magnitude();
-    if (v<=0.00001f){ D.set(0,-1,0); v=1;}
-    seDirectionalDirX->Value = D.x/v;
-    seDirectionalDirY->Value = D.y/v;
-    seDirectionalDirZ->Value = D.z/v;
-}
-*/

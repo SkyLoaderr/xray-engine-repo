@@ -8,12 +8,6 @@
 #include "UI_Main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "ElHeader"
-#pragma link "ElTree"
 #pragma resource "*.dfm"
 TfrmPropertiesPortal *frmPropertiesPortal=0;
 //---------------------------------------------------------------------------

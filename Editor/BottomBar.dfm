@@ -270,10 +270,11 @@ object fraBottomBar: TfraBottomBar
     Left = 185
     Top = 33
   end
-  object pmOptions: TRxPopupMenu
+  object pmOptions: TMxPopupMenu
     AutoPopup = False
     MenuAnimation = [maTopToBottom]
     TrackButton = tbLeftButton
+    MarginEndColor = clBlack
     LeftMargin = 10
     Style = msBtnLowered
     Left = 5

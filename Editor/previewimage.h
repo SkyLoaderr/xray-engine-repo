@@ -1,7 +1,6 @@
 //---------------------------------------------------------------------------
 #ifndef PreviewImageH
 #define PreviewImageH
-#include "CloseBtn.hpp"
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>

@@ -17,7 +17,6 @@ SceneBuilder* Builder;
 //----------------------------------------------------
 SceneBuilder::SceneBuilder(){
 	m_InProgress = false;
-    bNeedAbort   = false;
     m_iDefaultSectorNum = 0;
     l_vertices	= 0;
     l_faces		= 0;
@@ -32,7 +31,7 @@ SceneBuilder::~SceneBuilder(){
 }
 
 bool SceneBuilder::Execute( ){
-    bNeedAbort = false;
+	UI->ResetBreak();
 	if( m_InProgress ) return false;
 	ELog.Msg( mtInformation, "Building started..." );
 
@@ -68,7 +67,7 @@ bool SceneBuilder::Execute( ){
 }
 
 bool SceneBuilder::MakeLTX( ){
-    bNeedAbort = false;
+	UI->ResetBreak();
 	if( m_InProgress ) return false;
 	ELog.Msg( mtInformation, "Making started..." );
 
@@ -126,35 +125,35 @@ DWORD SceneBuilder::Thread(){
 	do{
 		UI->Command( COMMAND_RESET_ANIMATION );
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !PreparePath() ){
 			error_text="*ERROR: Failed to prepare level path....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !LightenObjects() ){
 			error_text="*ERROR: Failed to prepare level folders....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !PrepareFolders() ){
 			error_text="*ERROR: Failed to prepare level folders....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !UngroupAndUnlockObjects() ){
 			error_text="*ERROR: Failed to ungroup and unlock objects...";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !GetShift() ){
 			error_text="*ERROR: Failed to acquire level shift....";
 			error_flag = true;
@@ -162,42 +161,42 @@ DWORD SceneBuilder::Thread(){
 		}
 
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !ShiftLevel() ){
 			error_text="*ERROR: Failed to shift level....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !RenumerateSectors() ){
 			error_text="*ERROR: Failed to renumerate sectors....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !RemoteStaticBuild() ){
 			error_text="*ERROR: Failed static remote build....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !BuildLTX() ){
 			error_text="*ERROR: Failed to build level description....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !BuildSkyModel() ){
 			error_text="*ERROR: Failed to build OGF model....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		// only implicit lighted
 		if( !WriteTextures() ){
 			error_text="*ERROR: Failed to write textures....";
@@ -208,7 +207,7 @@ DWORD SceneBuilder::Thread(){
 	} while(0);
 
 	if( error_flag ) 		ELog.DlgMsg(mtError,error_text.c_str());
-	else if ( bNeedAbort ) 	ELog.DlgMsg(mtInformation,"Building terminated...");
+	else if ( UI->NeedAbort())ELog.DlgMsg(mtInformation,"Building terminated...");
     else					ELog.DlgMsg(mtInformation,"Building OK...");
 
 	m_InProgress = false;
@@ -225,21 +224,21 @@ DWORD SceneBuilder::ThreadMakeLTX(){
 	do{
 		UI->Command( COMMAND_RESET_ANIMATION );
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !PreparePath() ){
 			error_text="*ERROR: Failed to prepare level path....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !UngroupAndUnlockObjects() ){
 			error_text="*ERROR: Failed to ungroup and unlock objects...";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !GetShift() ){
 			error_text="*ERROR: Failed to acquire level shift....";
 			error_flag = true;
@@ -247,14 +246,14 @@ DWORD SceneBuilder::ThreadMakeLTX(){
 		}
 
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !ShiftLevel() ){
 			error_text="*ERROR: Failed to shift level....";
 			error_flag = true;
 			break;
 		}
 
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		if( !BuildLTX() ){
 			error_text="*ERROR: Failed to build level description....";
 			error_flag = true;
@@ -263,7 +262,7 @@ DWORD SceneBuilder::ThreadMakeLTX(){
 	} while(0);
 
 	if( error_flag ) 		ELog.DlgMsg(mtError,error_text.c_str());
-	else if ( bNeedAbort ) 	ELog.DlgMsg(mtInformation,"Building terminated...");
+	else if ( UI->NeedAbort())ELog.DlgMsg(mtInformation,"Building terminated...");
     else					ELog.DlgMsg(mtInformation,"Building OK...");
 
 	m_InProgress = false;

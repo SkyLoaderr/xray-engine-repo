@@ -16,9 +16,10 @@
 #include "Library.h"
 #include <Dialogs.hpp>
 #include "ElTree.hpp"
-#include "CloseBtn.hpp"
-#include "RXCtrls.hpp"
-#include "Placemnt.hpp"
+#include "ElXPThemedControl.hpp"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
+#include "mxPlacemnt.hpp"
 //---------------------------------------------------------------------------
 // refs
 class ETextureThumbnail;
@@ -42,10 +43,10 @@ __published:	// IDE-managed Components
 	TPanel *Panel2;
 	TElTree *tvItems;
 	TPanel *Panel4;
-	TRxLabel *lbItemName;
-	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel3;
-	TRxLabel *lbInfo;
+	TMxLabel *lbItemName;
+	TMxLabel *RxLabel1;
+	TMxLabel *RxLabel3;
+	TMxLabel *lbInfo;
 	TPanel *paImage;
 	TPaintBox *pbImage;
 	TExtBtn *ExtBtn2;

@@ -16,14 +16,17 @@
 #include "Builder.h"
 #include "Texture.h"
 #include "BottomBar.h"
+#include "ETexture.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
-#pragma link "CloseBtn"
 #pragma link "ElHeader"
-#pragma link "RXCtrls"
-#pragma link "RxMenus"
-#pragma link "Placemnt"
+#pragma link "ElXPThemedControl"
+#pragma link "ExtBtn"
+#pragma link "mxPlacemnt"
+#pragma link "ElXPThemedControl"
+#pragma link "ExtBtn"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfrmEditLibrary *frmEditLibrary=0;
 
@@ -155,7 +158,7 @@ void TfrmEditLibrary::OnModified(){
     if (m_SelectedObject){
     	TElTreeItem* node = FindObject(m_SelectedObject);
         VERIFY(node);
-		if (strcmp(m_SelectedObject->GetName(),node->Text.c_str())!=0)
+		if (strcmp(m_SelectedObject->GetName(),AnsiString(node->Text).c_str())!=0)
         	node->Text = m_SelectedObject->GetName();
     }
 }
@@ -197,7 +200,7 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
 TElTreeItem* TfrmEditLibrary::FindFolder(const char* s)
 {
     for ( TElTreeItem* node = tvObjects->Items->GetFirstNode(); node; node = node->GetNext())
-        if (!node->Data && (node->Text == s)) return node;
+        if (!node->Data && (AnsiString(node->Text) == s)) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
@@ -244,11 +247,14 @@ void TfrmEditLibrary::InitObjectFolder()
 //    tvObjects->FullExpand();
 }
 //---------------------------------------------------------------------------
+//S
+/*
 void __fastcall TfrmEditLibrary::tvObjectsTryEdit(TObject *Sender,
       TElTreeItem *Item, TElHeaderSection *Section, TFieldTypes &CellType,
       bool &CanEdit){
     FEditNode = Item;
 }
+*/
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::tvObjectsItemChange(TObject *Sender,
       TElTreeItem *Item, TItemChangeMode ItemChangeMode)

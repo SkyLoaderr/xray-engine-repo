@@ -7,10 +7,8 @@
 #include "SceneClassList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXSpin"
-#pragma link "multi_edit"
-#pragma link "CloseBtn"
-#pragma link "RXCtrls"
+#pragma link "ExtBtn"
+#pragma link "MXCtrls"
 #pragma resource "*.dfm"
 TfrmPropertiesOccluder *frmPropertiesOccluder=0;
 //---------------------------------------------------------------------------

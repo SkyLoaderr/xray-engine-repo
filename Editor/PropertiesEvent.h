@@ -11,15 +11,11 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 
 #include "CustomObject.h"
-#include "CloseBtn.hpp"
-#include "ElHeader.hpp"
-#include <Grids.hpp>
-#include "ElTree.hpp"
+#include "ExtBtn.hpp"
 #include "multi_check.hpp"
+#include "MXCtrls.hpp"
 
 class TfrmPropertiesEvent : public TForm
 {
@@ -30,13 +26,13 @@ __published:	// IDE-managed Components
     TPanel *paBottom;
 	TGroupBox *gbEventParams;
 	TRadioGroup *rgType;
-	TRxLabel *RxLabel5;
+	TMxLabel *RxLabel5;
 	TComboBox *cbTargetClass;
-	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel2;
+	TMxLabel *RxLabel1;
+	TMxLabel *RxLabel2;
 	TEdit *edOnExit;
 	TEdit *edOnEnter;
-	TRxLabel *RxLabel3;
+	TMxLabel *RxLabel3;
 	TMultiObjCheck *cbExecuteOnce;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

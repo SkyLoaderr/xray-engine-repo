@@ -6,13 +6,6 @@
 #include "Sector.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "ElHeader"
-#pragma link "ElTree"
-#pragma link "multi_edit"
 #pragma resource "*.dfm"
 TfrmNumericVector *frmNumericVector=0;
 

@@ -9,10 +9,11 @@
 #include "main.h"
 #include "texture.h"
 #include "previewimage.h"
+#include "ImageThumbnail.h"
+#include "ImageManager.h"
+#include "PropertiesList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "Placemnt"
-#pragma link "multi_color"
 #pragma resource "*.dfm"
 TfrmImageLib* TfrmImageLib::form = 0;
 AStringVec TfrmImageLib::check_tex_list;
@@ -22,7 +23,6 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
 {
     char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName = buf;
-	sel_tex = 0;
     bCheckMode = false;
 }
 //---------------------------------------------------------------------------
@@ -43,40 +43,38 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 }
 //---------------------------------------------------------------------------
 
-bool CheckVersion(const AnsiString& f){
-	// thm
-	AnsiString thm_name, dds_name, tex_name=f;
-    FS.m_Textures.Update(tex_name);
-    thm_name = ChangeFileExt(f,".thm");
-    FS.m_TexturesThumbnail.Update(thm_name);
-    int f1 = FS.CompareFileAge(tex_name,thm_name);
-    // dds
-    dds_name = ChangeFileExt(f,".dds");
-    FS.m_GameTextures.Update(dds_name);
-    int f2 = FS.CompareFileAge(tex_name,dds_name);
-    return (f1==1)&&(f2==1);
-}
-
-//---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::CheckImageLib(){
 	check_tex_list.clear();
+
+    int count = strlen(FS.m_Textures.m_Path);
+    AStringVec& lst = FS.GetFiles(FS.m_Textures.m_Path);
+    AnsiString thm=FS.m_TexturesThumbnail.m_Path;
+    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+        if (it->Pos(thm)==1) continue;
+        AnsiString t = it->Delete(1,count);
+		if (ImageManager.IfChanged(t.c_str())) check_tex_list.push_back(t);
+    }
+/*
+
+
     AnsiString mask = "*.tga";
     FS.m_Textures.Update(mask);
     LPCSTR T=0;
     if (T=FS.FindFirst(mask.c_str())){
         do{
-        	if (CheckVersion(T)) continue;
-            check_tex_list.push_back(ChangeFileExt(T,""));
+        	if (ImageManager.IfChanged(T)) continue;
+            check_tex_list.push_back(T);
         }while(T=FS.FindNext());
     }
     mask = "*.bmp";
     FS.m_Textures.Update(mask);
     if (T=FS.FindFirst(mask.c_str())){
         do{
-        	if (CheckVersion(T)) continue;
-            check_tex_list.push_back(ChangeFileExt(T,""));
+        	if (ImageManager.IfChanged(T)) continue;
+            check_tex_list.push_back(T);
         }while(T=FS.FindNext());
     }
+*/    
     if (check_tex_list.size())
     	EditImageLib(AnsiString("Check image params"),true);
 }
@@ -90,20 +88,18 @@ bool __fastcall TfrmImageLib::HideImageLib(){
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
-void __fastcall TfrmImageLib::OnRender(){
-	if (!Visible()) return;
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TfrmImageLib::OnIdle(){
-	if (!Visible()) return;
-}
-//---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 {
+    ImageProps = new TfrmProperties(paProperties);
+	ImageProps->Parent = paProperties;
+    ImageProps->Align = alClient;
+    ImageProps->BorderStyle = bsNone;
+    ImageProps->tvProperties->HeaderSections->Item[0]->Width = 101;
+    ImageProps->tvProperties->HeaderSections->Item[1]->Width = 65;
+    ImageProps->ShowProperties();
+
     InitItemsList();
     UI->BeginEState(esEditImages);
-	bSetMode = false;
 
     if (bCheckMode&&check_tex_list.size()){
 	    // select first item
@@ -117,27 +113,21 @@ void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 {
-	UI->Command(COMMAND_REFRESH_TEXTURES);
-    SaveExportParams();
+    SaveTextureParams();
     if (bCheckMode&&!check_tex_list.empty()){
         AnsiString info;
-        UI->ProgressStart(check_tex_list.size()*2,"");
+        UI->ProgressStart(check_tex_list.size(),"");
         for (AStringIt s_it=check_tex_list.begin(); s_it!=check_tex_list.end(); s_it++){
             info.sprintf("Making '%s'...",s_it->c_str());
-            UI->SetStatus(info.c_str());
+            ImageManager.Synchronize(s_it->c_str());
             UI->ProgressInc();
-            ETextureCore* tex = new ETextureCore(s_it->c_str());
-            tex->SaveTextureParams();
-            tex->UpdateTexture();
-            UI->ProgressInc();
-            _DELETE(tex);
         }
         UI->ProgressEnd();
     }
-
     UI->Command(COMMAND_REFRESH_TEXTURES,false);
 
-	_DELETE(sel_tex);
+	_DELETE(m_Thm);
+
 	Action = caFree;
 	form = 0;
 
@@ -151,14 +141,14 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 TElTreeItem* TfrmImageLib::FindFolder(const char* s)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (!node->Data && (node->Text == s)) return node;
+        if (!node->Data && (AnsiString(node->Text) == s)) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmImageLib::FindItem(const char* s)
 {
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (node->Data && (node->Text == s)) return node;
+        if (node->Data && (AnsiString(node->Text) == s)) return node;
     return 0;
 }
 //---------------------------------------------------------------------------
@@ -189,41 +179,31 @@ TElTreeItem* TfrmImageLib::AddItemToFolder(const char* folder, const char* name)
 //---------------------------------------------------------------------------
 void TfrmImageLib::InitItemsList(const char* nm)
 {
-	SendMessage(tvItems->Handle,WM_SETREDRAW,0,0);
+	tvItems->IsUpdating = true;
+
     tvItems->Selected = 0;
     tvItems->Items->Clear();
     // fill
-	TElTreeItem* fld = form->AddFolder("Pictures");
     if (bCheckMode||check_tex_list.size()){
     	for (AStringIt s=check_tex_list.begin(); s!=check_tex_list.end(); s++)
-            form->AddItem(fld,s->c_str());
+            form->AddItem(0,s->c_str());
     }else{
-        AnsiString mask = "*.tga";
-        FS.m_Textures.Update(mask);
-        LPCSTR T=0;
-        if (T=FS.FindFirst(mask.c_str())){
-            do form->AddItem(fld,T);
-            while(T=FS.FindNext());
-        }
-        mask = "*.bmp";
-        FS.m_Textures.Update(mask);
-        if (T=FS.FindFirst(mask.c_str())){
-            do form->AddItem(fld,T);
-            while(T=FS.FindNext());
+        int count = strlen(FS.m_Textures.m_Path);
+        AStringVec& lst = FS.GetFiles(FS.m_Textures.m_Path);
+        AnsiString thm=FS.m_TexturesThumbnail.m_Path;
+        for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+            if (it->Pos(thm)==1) continue;
+            form->AddItem(0,(it->Delete(1,count)).c_str());
         }
     }
-    fld->Expand(true);
 
     // redraw
-	SendMessage(tvItems->Handle,WM_SETREDRAW,1,0);
-	tvItems->Repaint();
     if (nm)
 		tvItems->Selected = tvItems->Items->LookForItem(0,nm,0,0,false,true,false,false,true);
-}
-//---------------------------------------------------------------------------
 
-//---------------------------------------------------------------------------
-//
+	tvItems->IsUpdating = false;
+}
+
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
@@ -238,85 +218,53 @@ void __fastcall TfrmImageLib::ebCloseClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-IC DWORD GetPowerOf2Plus1(DWORD v){
-	DWORD cnt=0;
-	while (v) {v>>=1; cnt++; };
-	return cnt;
+void __fastcall TfrmImageLib::SaveTextureParams(){
+	if (m_Thm&&ImageProps->IsModified())
+        m_Thm->Save();
 }
 
-void __fastcall TfrmImageLib::SaveExportParams(){
-    if (bModified){
-        STextureParams* fmt				= sel_tex->GetTextureParams();
-        fmt->fmt 						= STextureParams::ETFormat(rgSaveFormat->ItemIndex);
-        fmt->flag 						= 0;
-        switch (rgMIPmaps->ItemIndex){
-        case 0: fmt->flag |= EF_GENMIPMAP; 			break;
-        case 1: fmt->flag |= EF_USE_EXIST_MIPMAP; 	break;
-        case 2: fmt->flag |= EF_NO_MIPMAP; 			break;
-        }
-        if (cbDither->Checked) 			fmt->flag |= EF_DITHER;
-        if (cbBinaryAlpha->Checked) 	fmt->flag |= EF_BINARYALPHA;
-        if (cbAlphaZeroBorder->Checked) fmt->flag |= EF_ALPHAZEROBORDER;
-        if (cbNormalMap->Checked) 		fmt->flag |= EF_NORMALMAP;
-        if (cbAllowFade->Checked) 		fmt->flag |= EF_FADE;
-        if (cbImplicitLighted->Checked)	fmt->flag |= EF_IMPLICIT_LIGHTED;
-        Fcolor C; C.set_windows			(mcFadeColor->Brush->Color);
-        fmt->fade_color					= C.get();
-        fmt->fade_mips					= cbNumFadeMips->ItemIndex;
-        sel_tex->SaveTextureParams		();
-        bModified						= false;
-        if (!bCheckMode) sel_tex->UpdateTexture();
-    }
-}
-
-void __fastcall TfrmImageLib::tvItemsItemSelectedChange(TObject *Sender,
-      TElTreeItem *Item)
+void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 {
-	if (Item==tvItems->Selected) return;
+	TElTreeItem* Item = tvItems->Selected;
 	if (Item&&Item->Data){
-        AnsiString nm = ChangeFileExt(Item->Text,"");
+        AnsiString nm = Item->Text;
 		// save previous data
-        if (sel_tex){
-        	SaveExportParams();
-			_DELETE(sel_tex);
-        }
+        SaveTextureParams();
+		_DELETE(m_Thm);
         // get new texture
-        sel_tex = new ETextureCore(nm.c_str());
-        sel_tex->UpdateThumbnail();
-        if (!sel_tex->Valid())	pbImage->Repaint();
+        m_Thm = new EImageThumbnail(nm.c_str());
+        if (!m_Thm->Valid())	pbImage->Repaint();
         else	 				pbImagePaint(Sender);
-        lbFileName->Caption 	= "\""+Item->Text+"\"";
-		AnsiString temp; 		temp.sprintf("%d x %d x %s",sel_tex->width(),sel_tex->height(),sel_tex->alpha()?"32b":"24b");
+        lbFileName->Caption 	= "\""+ChangeFileExt(nm,"")+"\"";
+		AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlphaChannel()?"32b":"24b");
         lbInfo->Caption			= temp;
         // set UI
-        STextureParams* fmt		= sel_tex->GetTextureParams();
-        if (fmt){
-        	bSetMode = true;
-	        rgSaveFormat->ItemIndex		= fmt->fmt;
+        STextureParams& fmt 	= m_Thm->_Format();
 
-            if (fmt->flag&EF_GENMIPMAP) 			rgMIPmaps->ItemIndex = 0;
-            else if(fmt->flag&EF_USE_EXIST_MIPMAP) 	rgMIPmaps->ItemIndex = 1;
-            else if(fmt->flag&EF_NO_MIPMAP) 		rgMIPmaps->ItemIndex = 2;
-	        cbDither->Checked			= fmt->flag&EF_DITHER;
-	        cbBinaryAlpha->Checked		= fmt->flag&EF_BINARYALPHA;
-	        cbAlphaZeroBorder->Checked	= fmt->flag&EF_ALPHAZEROBORDER;
-	        cbNormalMap->Checked		= fmt->flag&EF_NORMALMAP;
-	        cbAllowFade->Checked		= fmt->flag&EF_FADE;
-            cbImplicitLighted->Checked	= fmt->flag&EF_IMPLICIT_LIGHTED;
-            Fcolor C; C.set(fmt->fade_color);
-            mcFadeColor->_Set			(C.get_windows());
-            cbNumFadeMips->Items->Clear	();
-            cbNumFadeMips->Items->Add	("Complete");
-            cbNumFadeMips->Items->Add	("None (1)");
-            int mip;
-            if (sel_tex->width()<sel_tex->height()) mip = GetPowerOf2Plus1(sel_tex->width())-1;
-            else									mip = GetPowerOf2Plus1(sel_tex->height())-1;
-            for (int i=2; i<mip; i++) cbNumFadeMips->Items->Add(i);
-            cbNumFadeMips->ItemIndex 	= fmt->fade_mips;
-        	bSetMode = false;
-        }
+        char key[255];
+        TElTreeItem* marker_node=0;
+
+        ImageProps->BeginFillMode("Image properties");
+        ImageProps->AddItem(0,PROP_TOKEN,"Format",(LPDWORD)&fmt.fmt,(LPDWORD)tfmt_token);
+        marker_node = ImageProps->AddItem(0,PROP_MARKER,"Flags");
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Generate MipMaps",	(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flGenerateMipMaps);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Binary Alpha",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flBinaryAlpha);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Normal Map",			(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flNormalMap);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Du Dv Map",			(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flDuDvMap);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Border",				(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flColorBorder);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Alpha Border",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flAlphaBorder);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Fade To Color",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flFadeToColor);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Fade To Alpha",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flFadeToAlpha);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Dither",				(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flDitherColor);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Implicit Lighted",	(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flImplicitLighted);
+        ImageProps->AddItem(0,PROP_TOKEN,"Mip Filter",		(LPDWORD)&fmt.mip_filter,(LPDWORD)tparam_token);
+        ImageProps->AddItem(0,PROP_COLOR,"Border Color",	(LPDWORD)&fmt.border_color);
+        ImageProps->AddItem(0,PROP_INTEGER,"Fade Color",	(LPDWORD)&fmt.fade_color);
+        ImageProps->AddItem(0,PROP_COLOR,"Fade Amount",		(LPDWORD)&fmt.fade_amount);
+        ImageProps->EndFillMode();
     }else{
-		_DELETE(sel_tex);
+		ImageProps->Clear();
+		_DELETE(m_Thm);
 		lbFileName->Caption	= "...";
 		lbInfo->Caption		= "...";
     }
@@ -325,47 +273,29 @@ void __fastcall TfrmImageLib::tvItemsItemSelectedChange(TObject *Sender,
 
 void __fastcall TfrmImageLib::pbImagePaint(TObject *Sender)
 {
-    if (sel_tex){
+    if (m_Thm){
         RECT r;
         r.left = 2; r.top = 2;
         float w, h;
-        w = sel_tex->width();
-        h = sel_tex->height();
+        w = m_Thm->_Width();
+        h = m_Thm->_Height();
         if (w!=h)	pbImage->Canvas->FillRect(pbImage->BoundsRect);
         if (w>h){   r.right = pbImage->Width-1; r.bottom = h/w*pbImage->Height-1;
         }else{      r.right = w/h*pbImage->Width-1; r.bottom = pbImage->Height-1;}
-        sel_tex->StretchThumbnail(paImage->Handle, &r);
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmImageLib::rgChangeClick(TObject *Sender)
-{
-	if (bSetMode) return;
-	bModified = true;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmImageLib::mcFadeColorMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
-	if (SelectColorWin(&color,&color)){
-    	((TMultiObjColor*)Sender)->_Set(color);
-		if (!bSetMode) bModified = true;
+        m_Thm->DrawStretch(paImage->Handle, &r);
     }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::pbImageDblClick(TObject *Sender)
 {
-	if (sel_tex) TfrmPreviewImage::Run(sel_tex);
+//S	if (sel_tex) TfrmPreviewImage::Run(sel_tex);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::ebConvertClick(TObject *Sender)
 {
-	if (!sel_tex) return;
+/*	if (!sel_tex) return;
 	SaveExportParams();
 	AnsiString fn = sel_tex->name();
 	if(FS.GetSaveName(&FS.m_GameTextures,fn)){
@@ -379,6 +309,7 @@ void __fastcall TfrmImageLib::ebConvertClick(TObject *Sender)
         }
         UI->ProgressEnd();
     }
+*/
 }
 //---------------------------------------------------------------------------
 
@@ -394,4 +325,5 @@ void __fastcall TfrmImageLib::tvItemsKeyPress(TObject *Sender, char &Key)
     }
 }
 //---------------------------------------------------------------------------
+
 

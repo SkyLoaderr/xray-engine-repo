@@ -2,24 +2,10 @@
 #pragma hdrstop
 
 #include "OneEnvironment.h"
-#include "Shader.h"
-#include "ShaderFunction.h"
-#include "ShaderModificator.h"
-#include "PropertiesShader.h"
-#include "FileSystem.h"
 #include "scene.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "ElHeader"
-#pragma link "ElTree"
-#pragma link "RxMenus"
-#pragma link "multi_color"
-#pragma link "multi_edit"
 #pragma resource "*.dfm"
 TfrmOneEnvironment *frmOneEnvironment;
 //---------------------------------------------------------------------------
@@ -74,7 +60,7 @@ void __fastcall TfrmOneEnvironment::mcAmbColorMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
-	if (SelectColorWin(&color,&color)) ((TMultiObjColor*)Sender)->_Set(color);
+	if (SelectColorWin(&color)) ((TMultiObjColor*)Sender)->_Set(color);
     UpdateClick(Sender);
 }
 //---------------------------------------------------------------------------

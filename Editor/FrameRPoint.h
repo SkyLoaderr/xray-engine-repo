@@ -8,13 +8,13 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
-#include "CloseBtn.hpp"
-#include "RXCtrls.hpp"
 
 #include "CustomObject.h"
 #include "ui_customtools.h"
 #include "multi_edit.hpp"
-#include "Placemnt.hpp"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
+#include "mxPlacemnt.hpp"
 // refs
 class CEditObject;
 //---------------------------------------------------------------------------
@@ -24,7 +24,7 @@ __published:	// IDE-managed Components
     TPanel *paCommands;
 	TLabel *APHeadLabel1;
 	TExtBtn *ExtBtn2;
-	TRxLabel *RxLabel2;
+	TMxLabel *RxLabel2;
 	TMultiObjSpinEdit *seTeamID;
 	TFormStorage *fsStorage;
     void __fastcall PaneMinClick(TObject *Sender);

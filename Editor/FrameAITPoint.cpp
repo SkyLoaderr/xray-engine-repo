@@ -8,9 +8,6 @@
 #include "AITraffic.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CloseBtn"
-#pragma link "RXCtrls"
-#pragma link "Placemnt"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------

@@ -21,7 +21,8 @@ void	Format_Register	(string& F)
 
 void	Surface_FormatExt(FREE_IMAGE_FORMAT f)
 {
-	string	ext = string(FreeImage_GetFIFExtensionList(f))+",";
+	LPCSTR n=FreeImage_GetFIFExtensionList(f);
+	string	ext = string(n)+",";
 	string	cur;
 	for		(DWORD i=0; i<ext.length(); i++)
 	{
@@ -79,17 +80,11 @@ BOOL	Surface_Detect(LPSTR F, LPSTR N)
 	return FALSE;
 }
 
-FIBITMAP*	Surface_Load(char* name)
+FIBITMAP*	Surface_Load(char* full_name)
 {
-	if (strchr(name,'.')) *(strchr(name,'.')) = 0;
-
-	// detect format
-	FILE_NAME		full;
-	if (!Surface_Detect(full,name)) return NULL;
-
 	// load
-	FREE_IMAGE_FORMAT	fif		= FreeImage_GetFIFFromFilename(full);
-	FIBITMAP*			map		= FreeImage_Load(fif,full);
+	FREE_IMAGE_FORMAT	fif		= FreeImage_GetFIFFromFilename(full_name);
+	FIBITMAP*			map		= FreeImage_Load(fif,full_name);
 	if (0==map)			return NULL;
 
 	// check if already 32bpp
@@ -105,7 +100,13 @@ FIBITMAP*	Surface_Load(char* name)
 
 DWORD*	Surface_Load(char* name, DWORD& w, DWORD& h)
 {
-	FIBITMAP* map32		= Surface_Load(name);
+	if (strchr(name,'.')) *(strchr(name,'.')) = 0;
+
+	// detect format
+	FILE_NAME		full;
+	if (!Surface_Detect(full,name)) return NULL;
+
+	FIBITMAP* map32		= Surface_Load(full);
 
 	h					= FreeImage_GetHeight	(map32);
 	w					= FreeImage_GetWidth	(map32);

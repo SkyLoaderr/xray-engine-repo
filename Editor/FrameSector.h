@@ -8,13 +8,12 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
-#include "CloseBtn.hpp"
-#include "RXCtrls.hpp"
-#include "RxMenus.hpp"
 
 #include "CustomObject.h"
 #include "ui_customtools.h"
 #include "multi_edit.hpp"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
 //---------------------------------------------------------------------------
 class TfraSector : public TFrame
 {
@@ -23,11 +22,11 @@ __published:	// IDE-managed Components
 	TExtBtn *ebAddMesh;
 	TExtBtn *ebDelMesh;
     TExtBtn *ebFaceBoxPick;
-	TRxLabel *RxLabel1;
+	TMxLabel *RxLabel1;
 	TPanel *paCommands;
-	TRxLabel *RxLabel4;
-	TRxLabel *RxLabel6;
-	TRxLabel *lbFacesCount;
+	TMxLabel *RxLabel4;
+	TMxLabel *RxLabel6;
+	TMxLabel *lbFacesCount;
 	TComboBox *cbItems;
 	TExtBtn *ebValidate;
 	TLabel *APHeadLabel1;

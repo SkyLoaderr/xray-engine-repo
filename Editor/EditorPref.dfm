@@ -16,7 +16,6 @@ object frmEditorPreferences: TfrmEditorPreferences
   Position = poScreenCenter
   Scaled = False
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
@@ -33,7 +32,7 @@ object frmEditorPreferences: TfrmEditorPreferences
       Top = 0
       Width = 396
       Height = 243
-      ActivePage = tsCamera
+      ActivePage = tsScene
       Align = alClient
       TabOrder = 0
       object tsCamera: TTabSheet
@@ -46,14 +45,14 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 61
           Caption = ' Sensitivity '
           TabOrder = 0
-          object RxLabel19: TRxLabel
+          object RxLabel19: TMxLabel
             Left = 10
             Top = 18
             Width = 48
             Height = 13
             Caption = 'Rotate, %'
           end
-          object RxLabel20: TRxLabel
+          object RxLabel20: TMxLabel
             Left = 10
             Top = 37
             Width = 43
@@ -99,21 +98,21 @@ object frmEditorPreferences: TfrmEditorPreferences
           Align = alTop
           Caption = ' Viewport '
           TabOrder = 1
-          object RxLabel11: TRxLabel
+          object RxLabel11: TMxLabel
             Left = 6
             Top = 16
             Width = 68
             Height = 13
             Caption = 'Near plane, m'
           end
-          object RxLabel1: TRxLabel
+          object RxLabel1: TMxLabel
             Left = 206
             Top = 16
             Width = 60
             Height = 13
             Caption = 'Far plane, m'
           end
-          object RxLabel22: TRxLabel
+          object RxLabel22: TMxLabel
             Left = 6
             Top = 34
             Width = 106
@@ -173,14 +172,14 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 61
           Caption = ' Fly Style '
           TabOrder = 2
-          object RxLabel21: TRxLabel
+          object RxLabel21: TMxLabel
             Left = 10
             Top = 18
             Width = 72
             Height = 13
             Caption = 'Fly speed, m/c'
           end
-          object RxLabel15: TRxLabel
+          object RxLabel15: TMxLabel
             Left = 10
             Top = 37
             Width = 66
@@ -228,21 +227,21 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 77
           Caption = ' Sensitivity '
           TabOrder = 0
-          object RxLabel8: TRxLabel
+          object RxLabel8: TMxLabel
             Left = 10
             Top = 56
             Width = 43
             Height = 13
             Caption = 'Scale, %'
           end
-          object RxLabel2: TRxLabel
+          object RxLabel2: TMxLabel
             Left = 10
             Top = 17
             Width = 48
             Height = 13
             Caption = 'Rotate, %'
           end
-          object RxLabel4: TRxLabel
+          object RxLabel4: TMxLabel
             Left = 10
             Top = 36
             Width = 43
@@ -302,7 +301,7 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 117
           Caption = ' 3D Cursor '
           TabOrder = 1
-          object RxLabel6: TRxLabel
+          object RxLabel6: TMxLabel
             Left = 10
             Top = 22
             Width = 71
@@ -310,28 +309,28 @@ object frmEditorPreferences: TfrmEditorPreferences
             AutoSize = False
             Caption = 'Segment'
           end
-          object RxLabel7: TRxLabel
+          object RxLabel7: TMxLabel
             Left = 10
             Top = 41
             Width = 22
             Height = 13
             Caption = 'Size'
           end
-          object RxLabel9: TRxLabel
+          object RxLabel9: TMxLabel
             Left = 10
             Top = 60
             Width = 48
             Height = 13
             Caption = 'Up Depth'
           end
-          object RxLabel10: TRxLabel
+          object RxLabel10: TMxLabel
             Left = 10
             Top = 79
             Width = 48
             Height = 13
             Caption = 'Dn Depth'
           end
-          object RxLabel16: TRxLabel
+          object RxLabel16: TMxLabel
             Left = 10
             Top = 98
             Width = 26
@@ -414,7 +413,7 @@ object frmEditorPreferences: TfrmEditorPreferences
       object tsScene: TTabSheet
         Caption = 'Scene'
         ImageIndex = 2
-        object RxLabel17: TRxLabel
+        object RxLabel17: TMxLabel
           Left = 189
           Top = 3
           Width = 58
@@ -438,10 +437,10 @@ object frmEditorPreferences: TfrmEditorPreferences
           Left = 0
           Top = 0
           Width = 181
-          Height = 69
+          Height = 77
           Caption = ' Box Pick '
           TabOrder = 1
-          object RxLabel18: TRxLabel
+          object RxLabel18: TMxLabel
             Left = 5
             Top = 33
             Width = 99
@@ -487,19 +486,19 @@ object frmEditorPreferences: TfrmEditorPreferences
         end
         object GroupBox13: TGroupBox
           Left = 0
-          Top = 135
+          Top = 77
           Width = 181
           Height = 53
           Caption = ' Snap '
           TabOrder = 2
-          object RxLabel28: TRxLabel
+          object RxLabel28: TMxLabel
             Left = 8
             Top = 15
             Width = 62
             Height = 13
             Caption = 'Angle (grad):'
           end
-          object RxLabel29: TRxLabel
+          object RxLabel29: TMxLabel
             Left = 18
             Top = 33
             Width = 49
@@ -537,70 +536,21 @@ object frmEditorPreferences: TfrmEditorPreferences
             TabOrder = 0
           end
         end
-        object GroupBox3: TGroupBox
-          Left = 0
-          Top = 69
-          Width = 181
-          Height = 65
-          Caption = ' Lightmap '
-          TabOrder = 3
-          object RxLabel27: TRxLabel
-            Left = 5
-            Top = 23
-            Width = 77
-            Height = 13
-            Caption = 'Use LM texture:'
-          end
-          object paImage: TPanel
-            Left = 126
-            Top = 11
-            Width = 50
-            Height = 50
-            BevelOuter = bvLowered
-            Caption = '<empty>'
-            TabOrder = 0
-            object pbImage: TPaintBox
-              Left = 1
-              Top = 1
-              Width = 48
-              Height = 48
-              Align = alClient
-              OnPaint = pbImagePaint
-            end
-          end
-          object stLMTextures: TStaticText
-            Left = 6
-            Top = 43
-            Width = 116
-            Height = 16
-            Alignment = taCenter
-            AutoSize = False
-            BorderStyle = sbsSunken
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clNavy
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = []
-            ParentFont = False
-            TabOrder = 1
-            OnMouseDown = stLMTexturesMouseDown
-          end
-        end
         object GroupBox6: TGroupBox
           Left = 185
           Top = 20
           Width = 203
           Height = 57
           Caption = ' Detail Objects '
-          TabOrder = 4
-          object RxLabel12: TRxLabel
+          TabOrder = 3
+          object RxLabel12: TMxLabel
             Left = 5
             Top = 17
             Width = 67
             Height = 13
             Caption = 'Hide distance'
           end
-          object RxLabel13: TRxLabel
+          object RxLabel13: TMxLabel
             Left = 5
             Top = 36
             Width = 93
@@ -657,14 +607,14 @@ object frmEditorPreferences: TfrmEditorPreferences
             Height = 66
             Caption = 'Random Scale'
             TabOrder = 0
-            object RxLabel3: TRxLabel
+            object RxLabel3: TMxLabel
               Left = 8
               Top = 29
               Width = 52
               Height = 13
               Caption = 'Min (XYZ):'
             end
-            object RxLabel5: TRxLabel
+            object RxLabel5: TMxLabel
               Left = 8
               Top = 47
               Width = 55
@@ -780,14 +730,14 @@ object frmEditorPreferences: TfrmEditorPreferences
             Height = 66
             Caption = 'Random Rotation'
             TabOrder = 1
-            object RxLabel23: TRxLabel
+            object RxLabel23: TMxLabel
               Left = 8
               Top = 29
               Width = 52
               Height = 13
               Caption = 'Min (XYZ):'
             end
-            object RxLabel24: TRxLabel
+            object RxLabel24: TMxLabel
               Left = 8
               Top = 47
               Width = 55
@@ -885,14 +835,14 @@ object frmEditorPreferences: TfrmEditorPreferences
             Height = 66
             Caption = 'Random Size'
             TabOrder = 2
-            object RxLabel25: TRxLabel
+            object RxLabel25: TMxLabel
               Left = 8
               Top = 29
               Width = 22
               Height = 13
               Caption = 'Min:'
             end
-            object RxLabel26: TRxLabel
+            object RxLabel26: TMxLabel
               Left = 8
               Top = 47
               Width = 25
@@ -1019,7 +969,6 @@ object frmEditorPreferences: TfrmEditorPreferences
       'pcObjects.ActivePage'
       'seDOHideDistance.Value'
       'seDORayPickHeight.Value'
-      'stLMTextures.Caption'
       'cbBoxPickFaceCulling.Checked'
       'cbBoxPickLimitedDepth.Checked'
       'seBoxPickDepthTolerance.Value'
@@ -1031,14 +980,5 @@ object frmEditorPreferences: TfrmEditorPreferences
     StoredValues = <>
     Left = 273
     Top = 9
-  end
-  object pmLMTextures: TRxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    MenuAnimation = [maTopToBottom]
-    LeftMargin = 15
-    Style = msBtnLowered
-    Left = 40
-    Top = 89
   end
 end

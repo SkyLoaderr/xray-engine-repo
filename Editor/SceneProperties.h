@@ -11,17 +11,13 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
-
-//#include "CustomObject.h"
-#include "ToolEdit.hpp"
-#include <Mask.hpp>
 #include "ElTree.hpp"
-#include "Placemnt.hpp"
-#include "CloseBtn.hpp"
+#include "ElXPThemedControl.hpp"
+#include "ExtBtn.hpp"
 #include "multi_color.hpp"
 #include "multi_edit.hpp"
+#include "MXCtrls.hpp"
+#include "mxPlacemnt.hpp"
 
 //refs
 struct b_params;
@@ -42,42 +38,41 @@ __published:	// IDE-managed Components
     TTabSheet *tsSubdivision;
 	TTabSheet *tsStrippifier;
     TMultiObjSpinEdit *seMaxEdge;
-    TRxLabel *RxLabel4;
+    TMxLabel *RxLabel4;
 	TMultiObjSpinEdit *seLMPixelsPerMeter;
-    TRxLabel *RxLabel5;
+    TMxLabel *RxLabel5;
     TMultiObjSpinEdit *seVBMaxSize;
-    TRxLabel *RxLabel6;
+    TMxLabel *RxLabel6;
     TMultiObjSpinEdit *seVBMaxVertices;
-    TRxLabel *RxLabel7;
+    TMxLabel *RxLabel7;
 	TMultiObjSpinEdit *seSSMaxSize;
-    TRxLabel *RxLabel8;
+    TMxLabel *RxLabel8;
     TFormStorage *fsSceneProps;
-    TRxLabel *RxLabel11;
+    TMxLabel *RxLabel11;
     TMultiObjSpinEdit *seSMAngle;
-    TRxLabel *RxLabel12;
+    TMxLabel *RxLabel12;
 	TMultiObjSpinEdit *seLMDeflSplitAngle;
-    TRxLabel *RxLabel15;
+    TMxLabel *RxLabel15;
     TMultiObjSpinEdit *sePMUV;
-    TRxLabel *RxLabel16;
+    TMxLabel *RxLabel16;
     TMultiObjSpinEdit *sePMPos;
-    TRxLabel *RxLabel17;
+    TMxLabel *RxLabel17;
     TMultiObjSpinEdit *sePMCurv;
 	TCheckBox *cbStrippify;
-    TRxLabel *RxLabel18;
+    TMxLabel *RxLabel18;
 	TMultiObjSpinEdit *seStripCacheSize;
     TCheckBox *cbTesselation;
 	TCheckBox *cbLMLightmaps;
     TCheckBox *cbProgressive;
     TElTree *tvOptions;
-    TRxLabel *RxLabel20;
+    TMxLabel *RxLabel20;
     TMultiObjSpinEdit *seWeldDistance;
     TPanel *Panel1;
     TTabSheet *tsBuildOptions;
-    TRxLabel *RxLabel25;
-	TCheckBox *cbLMRadiosity;
-	TRxLabel *RxLabel26;
-	TRxLabel *RxLabel27;
-	TRxLabel *RxLabel28;
+    TMxLabel *RxLabel25;
+	TMxLabel *RxLabel26;
+	TMxLabel *RxLabel27;
+	TMxLabel *RxLabel28;
 	TMultiObjSpinEdit *sePM_borderH_angle;
 	TMultiObjSpinEdit *sePM_borderH_distance;
 	TMultiObjSpinEdit *sePM_heuristic;
@@ -86,66 +81,63 @@ __published:	// IDE-managed Components
 	TExtBtn *ebOk;
 	TExtBtn *ebCancel;
 	TPanel *Panel2;
-	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel2;
+	TMxLabel *RxLabel1;
+	TMxLabel *RxLabel2;
 	TEdit *edLevelName;
-	TDirectoryEdit *deLevelPath;
 	TMultiObjSpinEdit *seSSMergeCoef;
-	TRxLabel *RxLabel19;
-	TRxLabel *RxLabel21;
+	TMxLabel *RxLabel19;
+	TMxLabel *RxLabel21;
 	TMultiObjSpinEdit *seSSLowLimit;
-	TRxLabel *RxLabel30;
+	TMxLabel *RxLabel30;
 	TMultiObjSpinEdit *seSSHighLimit;
-	TRxLabel *RxLabel31;
+	TMxLabel *RxLabel31;
 	TMultiObjSpinEdit *seSSDedicatedCashed;
-	TRxLabel *RxLabel32;
+	TMxLabel *RxLabel32;
 	TMultiObjSpinEdit *seLMRMS;
 	TTabSheet *tsLevelEnvironment;
 	TPanel *Panel3;
-	TRxLabel *RxLabel3;
+	TMxLabel *RxLabel3;
 	TExtBtn *ebChooseSkydome;
 	TExtBtn *ebClearSkydome;
-	TRxLabel *RxLabel10;
-	TRxLabel *RxLabel29;
+	TMxLabel *RxLabel10;
+	TMxLabel *RxLabel29;
 	TEdit *edSkydomeObjectName;
 	TMultiObjSpinEdit *seEnvCount;
 	TMultiObjSpinEdit *seCurEnv;
 	TScrollBox *sbEnvs;
-	TGroupBox *GroupBox1;
-	TRxLabel *RxLabel33;
-	TMultiObjSpinEdit *seDOClusterSize;
 	TGroupBox *GroupBox2;
-	TRxLabel *RxLabel34;
-	TRxLabel *RxLabel36;
+	TMxLabel *RxLabel34;
+	TMxLabel *RxLabel36;
 	TMultiObjSpinEdit *seLMAreaDispersion;
 	TMultiObjSpinEdit *seLMAreaSummaryEnergy;
 	TGroupBox *GroupBox3;
-	TRxLabel *RxLabel9;
+	TMxLabel *RxLabel9;
 	TRadioGroup *rgLMJitterSamples;
-	TRxLabel *RxLabel13;
-	TRxLabel *RxLabel14;
+	TMxLabel *RxLabel13;
+	TMxLabel *RxLabel14;
 	TMultiObjSpinEdit *seLMDither;
 	TMultiObjSpinEdit *seLMJitter;
 	TGroupBox *GroupBox4;
 	TBevel *Bevel1;
 	TMultiObjColor *mcLMAmbient;
-	TRxLabel *RxLabel22;
-	TRxLabel *RxLabel23;
+	TMxLabel *RxLabel22;
+	TMxLabel *RxLabel23;
 	TMultiObjSpinEdit *seLMAmbFogness;
-	TRxLabel *RxLabel37;
+	TMxLabel *RxLabel37;
 	TBevel *Bevel2;
-	TMultiObjColor *mcLMAreaDark;
-	TRxLabel *RxLabel24;
-	TRxLabel *RxLabel39;
+	TMultiObjColor *mcLMAreaColor;
+	TMxLabel *RxLabel24;
+	TMxLabel *RxLabel39;
 	TRadioGroup *rgAreaQuality;
 	TGroupBox *GroupBox5;
 	TCheckBox *cbLMFuzzyEnabled;
-	TRxLabel *RxLabel35;
-	TRxLabel *RxLabel40;
+	TMxLabel *RxLabel35;
+	TMxLabel *RxLabel40;
 	TMultiObjSpinEdit *seLMFuzzySamples;
 	TMultiObjSpinEdit *seLMFuzzyMin;
-	TRxLabel *RxLabel41;
+	TMxLabel *RxLabel41;
 	TMultiObjSpinEdit *seLMFuzzyMax;
+	TEdit *edLevelPath;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall btContinueClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,

@@ -9,11 +9,11 @@
 #include <Forms.hpp>
 #include <Dialogs.hpp>
 #include <ExtCtrls.hpp>
-#include "RXSpin.hpp"
-#include "CustomObject.h"
-#include "RXCtrls.hpp"
-#include "CloseBtn.hpp"
+#include "ExtBtn.hpp"
 #include "multi_edit.hpp"
+#include "MXCtrls.hpp"
+
+#include "CustomObject.h"
 //---------------------------------------------------------------------------
 class TfrmPropertiesSound : public TForm
 {
@@ -24,10 +24,10 @@ __published:	// IDE-managed Components
     TButton *btOk;
     TButton *btCancel;
     TMultiObjSpinEdit *seRange;
-    TRxLabel *RxLabel2;
+    TMxLabel *RxLabel2;
     TBevel *Bevel2;
     TEdit *edName;
-    TRxLabel *RxLabel1;
+    TMxLabel *RxLabel1;
     TExtBtn *ebLink;
     TExtBtn *ebUnLink;
     void __fastcall btApplyClick(TObject *Sender);

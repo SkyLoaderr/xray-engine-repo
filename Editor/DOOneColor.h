@@ -10,18 +10,15 @@
 #include <Dialogs.hpp>
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
-#include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 
 #include "CustomObject.h"
-#include "CloseBtn.hpp"
 #include "ElHeader.hpp"
 #include <Grids.hpp>
 #include "ElTree.hpp"
-#include "RxMenus.hpp"
 #include <Menus.hpp>
 #include "multi_color.hpp"
+#include "ElXPThemedControl.hpp"
+#include "ExtBtn.hpp"
 
 //refs
 class TfrmDOShuffle;

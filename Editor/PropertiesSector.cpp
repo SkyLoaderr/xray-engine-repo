@@ -8,13 +8,6 @@
 #include "Scene.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "ElHeader"
-#pragma link "ElTree"
-#pragma link "multi_color"
 #pragma resource "*.dfm"
 TfrmPropertiesSector *frmPropertiesSector=0;
 //---------------------------------------------------------------------------
@@ -122,7 +115,7 @@ void __fastcall TfrmPropertiesSector::mcSectorColorMouseDown(
       int Y)
 {
 	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
-	if (SelectColorWin(&color,&color,false)){
+	if (SelectColorWin(&color,false)){
     	((TMultiObjColor*)Sender)->_Set(color);
 	    OnModified(0);
     }

@@ -8,10 +8,6 @@
 #include "ParticleSystem.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CloseBtn"
-#pragma link "multi_edit"
-#pragma link "RXCtrls"
-#pragma link "multi_check"
 #pragma resource "*.dfm"
 TfraEmitter *fraEmitter;
 //---------------------------------------------------------------------------

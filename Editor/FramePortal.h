@@ -8,12 +8,11 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
-#include "CloseBtn.hpp"
-#include "RXCtrls.hpp"
-#include "RxMenus.hpp"
 
 #include "CustomObject.h"
 #include "ui_customtools.h"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
 //refs
 class CSector;
 //---------------------------------------------------------------------------
@@ -22,23 +21,23 @@ class TfraPortal : public TFrame
 __published:	// IDE-managed Components
 	TPanel *paCompute;
 	TPanel *paCommands;
-	TRxLabel *RxLabel4;
+	TMxLabel *RxLabel4;
 	TComboBox *cbItems;
 	TExtBtn *ebCompute;
 	TComboBox *cbSectorFront;
 	TComboBox *cbSectorBack;
-	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel2;
+	TMxLabel *RxLabel1;
+	TMxLabel *RxLabel2;
 	TExtBtn *ebPickSectors;
 	TExtBtn *ebComputeAllPortals;
 	TLabel *APHeadLabel1;
 	TExtBtn *ExtBtn2;
 	TLabel *APHeadLabel2;
 	TExtBtn *ExtBtn1;
-	TRxLabel *RxLabel5;
-	TRxLabel *RxLabel3;
-	TRxLabel *lbFrontSector;
-	TRxLabel *lbBackSector;
+	TMxLabel *RxLabel5;
+	TMxLabel *RxLabel3;
+	TMxLabel *lbFrontSector;
+	TMxLabel *lbBackSector;
 	TExtBtn *ExtBtn3;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall TopClick(TObject *Sender);

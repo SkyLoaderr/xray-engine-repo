@@ -206,7 +206,7 @@ object fraSector: TfraSector
       ParentFont = False
       Transparent = False
     end
-    object RxLabel1: TRxLabel
+    object RxLabel1: TMxLabel
       Left = 16
       Top = 68
       Width = 42
@@ -325,7 +325,7 @@ object fraSector: TfraSector
     Align = alTop
     ParentColor = True
     TabOrder = 0
-    object RxLabel4: TRxLabel
+    object RxLabel4: TMxLabel
       Left = 3
       Top = 76
       Width = 39
@@ -333,7 +333,7 @@ object fraSector: TfraSector
       Caption = 'Current:'
       ShadowColor = 15263976
     end
-    object RxLabel6: TRxLabel
+    object RxLabel6: TMxLabel
       Left = 4
       Top = 110
       Width = 46
@@ -347,7 +347,7 @@ object fraSector: TfraSector
       ParentFont = False
       ShadowColor = 15263976
     end
-    object lbFacesCount: TRxLabel
+    object lbFacesCount: TMxLabel
       Left = 51
       Top = 110
       Width = 70

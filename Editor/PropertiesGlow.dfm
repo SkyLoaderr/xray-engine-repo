@@ -3,7 +3,7 @@ object frmPropertiesGlow: TfrmPropertiesGlow
   Top = 302
   BorderStyle = bsDialog
   Caption = 'Glow properties'
-  ClientHeight = 139
+  ClientHeight = 109
   ClientWidth = 289
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -22,11 +22,11 @@ object frmPropertiesGlow: TfrmPropertiesGlow
     Left = 0
     Top = 0
     Width = 289
-    Height = 116
+    Height = 86
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    object RxLabel4: TRxLabel
+    object RxLabel4: TMxLabel
       Left = 1
       Top = 9
       Width = 57
@@ -52,7 +52,7 @@ object frmPropertiesGlow: TfrmPropertiesGlow
       FlatAlwaysEdge = True
       OnClick = ebSelectShaderClick
     end
-    object lbShader: TRxLabel
+    object lbShader: TMxLabel
       Left = 59
       Top = 26
       Width = 142
@@ -66,11 +66,11 @@ object frmPropertiesGlow: TfrmPropertiesGlow
       Font.Style = []
       ParentFont = False
     end
-    object lbTexture: TRxLabel
+    object lbTexture: TMxLabel
       Left = 59
       Top = 45
       Width = 142
-      Height = 68
+      Height = 16
       AutoSize = False
       Caption = '...'
       Font.Charset = DEFAULT_CHARSET
@@ -79,7 +79,6 @@ object frmPropertiesGlow: TfrmPropertiesGlow
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      WordWrap = True
     end
     object ebSelectTexture: TExtBtn
       Left = 0
@@ -138,7 +137,7 @@ object frmPropertiesGlow: TfrmPropertiesGlow
   end
   object paBottom: TPanel
     Left = 0
-    Top = 116
+    Top = 86
     Width = 289
     Height = 23
     Align = alBottom

@@ -28,9 +28,12 @@ int __fastcall TfrmPreviewImage::Run(ETextureCore* T){
 	VERIFY(T);
 	form = new TfrmPreviewImage(0);
     form->tex = T;
+//S
+/*
 	form->ClientHeight 	= T->height()+4;
     form->ClientWidth 	= T->width()+4;
     form->mult = 1;
+*/
     return form->ShowModal();
 }
 
@@ -51,7 +54,7 @@ void __fastcall TfrmPreviewImage::pbImagePaint(TObject *Sender)
         RECT r;
         r.left  = 2; r.top = 2;
         r.right = w+2; r.bottom = h+2;
-        tex->DrawStretch(paImage->Handle, &r);
+//S        tex->DrawStretch(paImage->Handle, &r);
     }
 }
 //---------------------------------------------------------------------------
@@ -67,8 +70,8 @@ void __fastcall TfrmPreviewImage::pbImageMouseDown(TObject *Sender,
         }
         if (mult<=0.0625) mult = 0.0625;
         if (mult>=2) mult = 2;
-        ClientHeight 	= tex->height()*mult+4;
-        ClientWidth 	= tex->width()*mult+4;
+//S        ClientHeight 	= tex->height()*mult+4;
+//S        ClientWidth 	= tex->width()*mult+4;
     }
 }
 //---------------------------------------------------------------------------

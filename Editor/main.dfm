@@ -138,10 +138,11 @@ object frmMain: TfrmMain
     Left = 185
     Top = 33
   end
-  object pmObjectContext: TRxPopupMenu
+  object pmObjectContext: TMxPopupMenu
     Alignment = paCenter
     AutoPopup = False
     MenuAnimation = [maTopToBottom]
+    MarginEndColor = clBlack
     LeftMargin = 15
     Style = msBtnLowered
     Left = 157

@@ -11,18 +11,11 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 
 #include "CustomObject.h"
-#include "CloseBtn.hpp"
-#include "ElHeader.hpp"
-#include <Grids.hpp>
-#include "ElTree.hpp"
-#include "RxMenus.hpp"
-#include <Menus.hpp>
 #include "multi_color.hpp"
 #include "multi_edit.hpp"
+#include "MXCtrls.hpp"
 
 //refs
 struct xr_token;
@@ -32,15 +25,15 @@ class TfrmOneEnvironment : public TForm
 {
 __published:	// IDE-managed Components
 	TGroupBox *gbEnv;
-	TRxLabel *RxLabel29;
-	TRxLabel *RxLabel30;
-	TRxLabel *RxLabel31;
+	TMxLabel *RxLabel29;
+	TMxLabel *RxLabel30;
+	TMxLabel *RxLabel31;
 	TMultiObjColor *mcAmbColor;
-	TRxLabel *RxLabel32;
+	TMxLabel *RxLabel32;
 	TMultiObjColor *mcFogColor;
 	TMultiObjSpinEdit *seViewDistance;
 	TMultiObjSpinEdit *seFogness;
-	TRxLabel *RxLabel1;
+	TMxLabel *RxLabel1;
 	TMultiObjColor *mcSkyColor;
 	TMultiObjSpinEdit *seSkyFogness;
 	void __fastcall UpdateClick(TObject *Sender);

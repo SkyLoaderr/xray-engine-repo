@@ -26,7 +26,7 @@ object frmPropertiesSound: TfrmPropertiesSound
     Align = alTop
     Caption = 'Sound:'
     TabOrder = 0
-    object RxLabel2: TRxLabel
+    object RxLabel2: TMxLabel
       Left = 11
       Top = 16
       Width = 37
@@ -40,7 +40,7 @@ object frmPropertiesSound: TfrmPropertiesSound
       Width = 176
       Height = 17
     end
-    object RxLabel1: TRxLabel
+    object RxLabel1: TMxLabel
       Left = 11
       Top = 40
       Width = 61
@@ -105,7 +105,9 @@ object frmPropertiesSound: TfrmPropertiesSound
       Top = 15
       Width = 105
       Height = 18
-      LWSensitivity = 1
+      LWSensitivity = 0.1
+      ButtonKind = bkLightWave
+      Increment = 0.01
       ValueType = vtFloat
       AutoSize = False
       TabOrder = 0

@@ -7,10 +7,6 @@
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CloseBtn"
-#pragma link "RXCtrls"
-#pragma link "multi_edit"
-#pragma link "Placemnt"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------

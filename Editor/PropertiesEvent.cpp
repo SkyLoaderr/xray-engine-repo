@@ -6,13 +6,6 @@
 #include "Event.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "ElHeader"
-#pragma link "ElTree"
-#pragma link "multi_check"
 #pragma resource "*.dfm"
 TfrmPropertiesEvent *frmPropertiesEvent=0;
 //---------------------------------------------------------------------------

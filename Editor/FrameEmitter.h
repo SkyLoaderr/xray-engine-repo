@@ -8,25 +8,25 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "CloseBtn.hpp"
 #include "multi_edit.hpp"
-#include "RXCtrls.hpp"
 #include <ComCtrls.hpp>
 #include "multi_check.hpp"
 //---------------------------------------------------------------------------
 #include "particlesystem.h"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
 
 class TfraEmitter : public TFrame
 {
 __published:	// IDE-managed Components
-	TRxLabel *RxLabel20;
-	TRxLabel *RxLabel22;
+	TMxLabel *RxLabel20;
+	TMxLabel *RxLabel22;
 	TExtBtn *ebBirthFunc;
 	TMultiObjSpinEdit *seBirthRate;
 	TMultiObjSpinEdit *seParticleLimit;
 	TPageControl *pcEmitterType;
 	TTabSheet *tsPoint;
-	TRxLabel *RxLabel42;
+	TMxLabel *RxLabel42;
 	TTabSheet *tsCone;
 	TMultiObjSpinEdit *seConeAngle;
 	TMultiObjSpinEdit *seConeDirH;
@@ -38,20 +38,20 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seBoxSizeX;
 	TMultiObjSpinEdit *seBoxSizeY;
 	TMultiObjSpinEdit *seBoxSizeZ;
-	TRxLabel *RxLabel1;
+	TMxLabel *RxLabel1;
 	TMultiObjCheck *cbBurst;
-	TRxLabel *RxLabel2;
-	TRxLabel *RxLabel3;
-	TRxLabel *RxLabel5;
-	TRxLabel *RxLabel39;
-	TRxLabel *RxLabel40;
-	TRxLabel *RxLabel41;
-	TRxLabel *RxLabel38;
-	TRxLabel *RxLabel4;
-	TRxLabel *RxLabel35;
-	TRxLabel *RxLabel36;
-	TRxLabel *RxLabel37;
-	TRxLabel *RxLabel6;
+	TMxLabel *RxLabel2;
+	TMxLabel *RxLabel3;
+	TMxLabel *RxLabel5;
+	TMxLabel *RxLabel39;
+	TMxLabel *RxLabel40;
+	TMxLabel *RxLabel41;
+	TMxLabel *RxLabel38;
+	TMxLabel *RxLabel4;
+	TMxLabel *RxLabel35;
+	TMxLabel *RxLabel36;
+	TMxLabel *RxLabel37;
+	TMxLabel *RxLabel6;
 	TMultiObjCheck *cbPlayOnce;
 private:	// User declarations
 public:		// User declarations

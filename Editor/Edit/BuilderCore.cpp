@@ -66,7 +66,7 @@ bool SceneBuilder::LightenObjects(){
     ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
     for(;_F!=_E;_F++){
     	CEditableObject* O = ((CSceneObject*)(*_F))->GetRef();
-        if (NeedAbort()) break; // break building
+        if (UI->NeedAbort()) break; // break building
         O->LightenObject();
 		UI->ProgressInc();
 	}
@@ -85,10 +85,10 @@ bool SceneBuilder::UngroupAndUnlockObjects(){
 
     for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
         ObjectList& lst = (*it).second;
-        if (NeedAbort()) break; // break building
+        if (UI->NeedAbort()) break; // break building
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 			UI->ProgressInc();
-            if (NeedAbort()) break; // break building
+            if (UI->NeedAbort()) break; // break building
             (*_F)->Ungroup();
             (*_F)->Lock(false);
         }

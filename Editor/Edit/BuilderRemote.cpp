@@ -489,7 +489,7 @@ bool SceneBuilder::RemoteStaticBuild()
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 		    UI->ProgressUpdate(i++);
-            if (NeedAbort()) break;
+            if (UI->NeedAbort()) break;
             switch((*_F)->ClassID()){
             case OBJCLASS_LIGHT:
                 BuildLight(&(TSData.lights[cur_light]),(CLight*)(*_F));
@@ -531,7 +531,7 @@ bool SceneBuilder::RemoteStaticBuild()
             	 if (sh->Passes[ps].Stages[st].Tname[0]!='$') AddUniqueTexName(sh->Passes[ps].Stages[st].Tname);
     }
 */
-    if (!NeedAbort()){
+    if (!UI->NeedAbort()){
 	    UI->ProgressStart(11,"Saving geometry to file...");
     // shaders
         TSData.shader_count = l_shaders.size();

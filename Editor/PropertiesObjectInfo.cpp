@@ -6,11 +6,8 @@
 #include "EditObject.h"
 #include "EditMesh.h"
 #include "Texture.h"
-#include "xrShader.h"
-#include "Shader.h"
 #include "ui_main.h"
 #include "scene.h"
-#include "XRShaderDef.h"
 #include "main.h"
 #include "motion.h"
 //---------------------------------------------------------------------------

@@ -6,6 +6,8 @@
 #include "UI_Main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "ElXPThemedControl"
+#pragma link "ExtBtn"
 #pragma resource "*.dfm"
 //---------------------------------------------------------------------------
 __fastcall TfrmOneColor::TfrmOneColor(TComponent* Owner)
@@ -36,7 +38,7 @@ void __fastcall TfrmOneColor::mcColorMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
-	if (SelectColorWin(&color,&color))
+	if (SelectColorWin(&color))
     	((TMultiObjColor*)Sender)->_Set(color);
 }
 //---------------------------------------------------------------------------

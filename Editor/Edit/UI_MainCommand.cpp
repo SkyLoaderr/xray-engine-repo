@@ -433,7 +433,7 @@ bool TUI::Command( int _Command, int p1 ){
     	break;
 	case COMMAND_BREAK_LAST_OPERATION:{
 		EEditorState est = GetEState();
-		if (Builder&&(est==esBuildLevel)) Builder->BreakBuild();
+		if (Builder&&(est==esBuildLevel)) UI->NeedBreak();
     	}break;
     case COMMAND_GROUP_CREATE:
 		if( !Scene->locked() ){

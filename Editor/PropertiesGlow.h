@@ -11,16 +11,12 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 
 #include "CustomObject.h"
-#include "CloseBtn.hpp"
-#include "ElHeader.hpp"
-#include <Grids.hpp>
-#include "ElTree.hpp"
-#include "Placemnt.hpp"
+#include "ExtBtn.hpp"
 #include "multi_edit.hpp"
+#include "MXCtrls.hpp"
+#include "mxPlacemnt.hpp"
 
 class CGlow;
 //---------------------------------------------------------------------------
@@ -33,12 +29,12 @@ __published:	// IDE-managed Components
     TPanel *paBottom;
     TMultiObjSpinEdit *seRange;
     TExtBtn *ebApply;
-    TRxLabel *RxLabel4;
+    TMxLabel *RxLabel4;
     TPanel *paImage;
     TPaintBox *pbImage;
 	TExtBtn *ebSelectShader;
-	TRxLabel *lbShader;
-	TRxLabel *lbTexture;
+	TMxLabel *lbShader;
+	TMxLabel *lbTexture;
 	TExtBtn *ebSelectTexture;
 	TFormStorage *fsStorage;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,

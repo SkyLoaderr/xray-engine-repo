@@ -4,7 +4,6 @@
 #include "PropertiesObject.h"
 #include "EditObject.h"
 #include "motion.h"
-#include "FileSystem.h"
 //---------------------------------------------------------------------
 // motions
 //---------------------------------------------------------------------
@@ -99,7 +98,7 @@ void __fastcall TfrmPropertiesObject::ebODeleteMotionClick(TObject *Sender)
     if (tvOMotions->Selected){
         TElTreeItem* Item 	= tvOMotions->Selected;
         if (Item->Data){
-	        m_EditObject->RemoveOMotion(Item->Text.c_str());
+	        m_EditObject->RemoveOMotion(AnsiString(Item->Text).c_str());
     	    Item->Delete();
     		lbOMotionCount->Caption = m_EditObject->m_OMotions.size();
 	    	OnModified(Sender);
@@ -115,7 +114,8 @@ void __fastcall TfrmPropertiesObject::ebORenameMotionClick(TObject *Sender)
     if (tvOMotions->Selected&&tvOMotions->Selected->Data) tvOMotions->Selected->EditText();
 }
 //---------------------------------------------------------------------------
-
+//S
+/*
 void __fastcall TfrmPropertiesObject::tvOMotionsTryEdit(TObject *Sender,
       TElTreeItem *Item, TElHeaderSection *Section, TFieldTypes &CellType,
       bool &CanEdit)
@@ -123,6 +123,7 @@ void __fastcall TfrmPropertiesObject::tvOMotionsTryEdit(TObject *Sender,
 	FEditNode = tvOMotions->Selected;
     last_name = FEditNode->Text;
 }
+*/
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::tvOMotionsItemChange(TObject *Sender,
@@ -132,8 +133,8 @@ void __fastcall TfrmPropertiesObject::tvOMotionsItemChange(TObject *Sender,
 	switch(ItemChangeMode){
     case icmText:
         if (FEditNode){
-            if (!m_EditObject->RenameOMotion(last_name.c_str(),Item->Text.c_str())){
-                ELog.DlgMsg(mtError,"Motion with name '%s' already present.",Item->Text.c_str());
+            if (!m_EditObject->RenameOMotion(last_name.c_str(),AnsiString(Item->Text).c_str())){
+                ELog.DlgMsg(mtError,"Motion with name '%s' already present.",AnsiString(Item->Text).c_str());
                 FEditNode = 0;
                 Item->Text = last_name;
             }else{

@@ -10,9 +10,6 @@
 #include "occluder.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CloseBtn"
-#pragma link "multi_edit"
-#pragma link "Placemnt"
 #pragma resource "*.dfm"
 //---------------------------------------------------------------------------
 __fastcall TfraOccluder::TfraOccluder(TComponent* Owner)

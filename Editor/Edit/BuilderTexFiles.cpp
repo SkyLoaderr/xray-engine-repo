@@ -50,7 +50,7 @@ bool SceneBuilder::WriteTextures(){
     bool bRes = true;
     UI->ProgressStart(m_TexNames.size(),"Save textures...");
 	for( DWORD i=0; i<m_TexNames.size(); i++){
-        if (NeedAbort()) break;
+        if (UI->NeedAbort()) break;
 		char out_filename[MAX_PATH];
 		_splitpath(m_TexNames[i].filename,0,0,out_filename,0);
 //S		ETextureCore *t = new ETextureCore( out_filename );

@@ -6,11 +6,8 @@
 #include "EditObject.h"
 #include "EditMesh.h"
 #include "Texture.h"
-#include "xrShader.h"
-#include "Shader.h"
 #include "ui_main.h"
 #include "scene.h"
-#include "XRShaderDef.h"
 #include "main.h"
 #include "ChoseForm.h"
 #include "xr_trims.h"
@@ -31,11 +28,10 @@ void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
     root->Underlined = true;
 
     for (SurfaceIt s_it=m_EditObject->m_Surfaces.begin(); s_it!=m_EditObject->m_Surfaces.end(); s_it++){
-        TElTreeItem* pNode = tvSurfaces->Items->AddChildObject(root,(*s_it)->name,(TObject*)(*s_it));
+        TElTreeItem* pNode = tvSurfaces->Items->AddChildObject(root,(*s_it)->_Name(),(TObject*)(*s_it));
         pNode->ParentStyle = false;
         pNode->Bold = true;
-        for (AStringIt n_it=(*s_it)->textures.begin(); n_it!=(*s_it)->textures.end(); n_it++)
-            tvSurfaces->Items->AddChild(pNode,*n_it);
+		tvSurfaces->Items->AddChild(pNode,(*s_it)->_Texture());
     }
     tvSurfaces->FullExpand();
 
@@ -45,17 +41,37 @@ void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
 void __fastcall TfrmPropertiesObject::ebSelectShaderClick(TObject *Sender)
 {
 	if (!surf_selected) return;
-	LPCSTR S = TfrmChoseItem::SelectShader(true,0,surf_selected->shader?surf_selected->shader->shader->cName:0);
+	LPCSTR S = TfrmChoseItem::SelectShader(true,0,surf_selected->_Shader()?surf_selected->_ShaderName():0);
     if (S){
         lbShader->Caption = S;
-    	if (surf_selected->shader){
-        	if(strcmp(surf_selected->shader->shader->cName,S)!=0){
-		    	Device.Shader.Delete(surf_selected->shader);
-    		    surf_selected->shader = Device.Shader.Create(S,surf_selected->textures);
+    	if (surf_selected->_Shader()){
+        	if(strcmp(surf_selected->_ShaderName(),S)!=0){
+		    	Device.Shader.Delete(surf_selected->_Shader());
+    		    surf_selected->SetShader(S, Device.Shader.Create(S,surf_selected->_Texture()));
         		OnModified(Sender);
             }
         }else{
-            surf_selected->shader = Device.Shader.Create(S,surf_selected->textures);
+            surf_selected->SetShader(S, Device.Shader.Create(S,surf_selected->_Texture()));
+            OnModified(Sender);
+        }
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TfrmPropertiesObject::ebSelectShaderXRLCClick(
+      TObject *Sender)
+{
+	if (!surf_selected) return;
+	LPCSTR S = TfrmChoseItem::SelectShaderXRLC(0,surf_selected->_Shader()?surf_selected->_ShaderName():0);
+    if (S){
+        lbShader->Caption = S;
+    	if (surf_selected->_Shader()){
+        	if(strcmp(surf_selected->_ShaderName(),S)!=0){
+		    	Device.Shader.Delete(surf_selected->_Shader());
+    		    surf_selected->SetShader(S, Device.Shader.Create(S,surf_selected->_Texture()));
+        		OnModified(Sender);
+            }
+        }else{
+            surf_selected->SetShader(S, Device.Shader.Create(S,surf_selected->_Texture()));
             OnModified(Sender);
         }
     }
@@ -64,18 +80,17 @@ void __fastcall TfrmPropertiesObject::ebSelectShaderClick(TObject *Sender)
 void __fastcall TfrmPropertiesObject::ebSelectTextureClick(TObject *Sender)
 {
 	if (!surf_selected) return;
-    AnsiString temp;
-    temp = ListToSequence(surf_selected->textures);
-	LPCSTR S = TfrmChoseItem::SelectTexture(true,temp.c_str());
+    AnsiString temp = surf_selected->_Texture();
+	LPCSTR S = TfrmChoseItem::SelectTexture(false,temp.c_str());
     if (S){
         lbTexture->Caption = S;
-        SequenceToList(surf_selected->textures,S);
-    	if (surf_selected->shader){
-			Device.Shader.Delete(surf_selected->shader);
-    		surf_selected->shader = Device.Shader.Create(lbShader->Caption.c_str(),surf_selected->textures);
+        surf_selected->SetTexture(S);
+    	if (surf_selected->_Shader()){
+			Device.Shader.Delete(surf_selected->_Shader());
+    		surf_selected->SetShader(surf_selected->_ShaderName(), Device.Shader.Create(lbShader->Caption.c_str(),surf_selected->_Texture()));
 			OnModified(Sender);
         }else{
-            surf_selected->shader = Device.Shader.Create(lbShader->Caption.c_str(),surf_selected->textures);
+            surf_selected->SetShader(surf_selected->_ShaderName(), Device.Shader.Create(lbShader->Caption.c_str(),surf_selected->_Texture()));
             OnModified(Sender);
         }
     }
@@ -94,21 +109,23 @@ void __fastcall TfrmPropertiesObject::tvSurfacesItemSelectedChange(
         paImage->Repaint();
     break;
     case 1:{
-    	st_Surface* surf			= (st_Surface*)(Item->Data);
-        lbSurfFaces->Caption 		= m_EditObject->GetSurfFaceCount(surf->name);
-        lbSurfSideFlag->Caption 	= (surf->sideflag)?"yes":"no";
-        lbShader->Caption			= surf->shader->shader->cName;
-        lbTexture->Caption			= ListToSequence(surf->textures);
+    	CSurface* surf				= (CSurface*)(Item->Data);
+        lbSurfFaces->Caption 		= m_EditObject->GetSurfFaceCount(surf->_Name());
+        lbSurfSideFlag->Caption 	= (surf->_2Sided())?"yes":"no";
+        lbShader->Caption			= surf->_Name();
+        lbTexture->Caption			= surf->_Texture();
         // FVF
-        lbSurfFVF_XYZ->Caption		= (surf->dwFVF&D3DFVF_XYZ)?"yes":"no";
-        lbSurfFVF_Normal->Caption  	= (surf->dwFVF&D3DFVF_NORMAL)?"yes":"no";
-        lbSurfFVF_Diffuse->Caption	= (surf->dwFVF&D3DFVF_DIFFUSE)?"yes":"no";
-        lbSurfFVF_Specular->Caption	= (surf->dwFVF&D3DFVF_SPECULAR)?"yes":"no";
-        lbSurfFVF_XYZRHW->Caption	= (surf->dwFVF&D3DFVF_XYZRHW)?"yes":"no";
-		lbSurfFVF_TCCount->Caption 	= ((surf->dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+        lbSurfFVF_XYZ->Caption		= (surf->_FVF()&D3DFVF_XYZ)?"yes":"no";
+        lbSurfFVF_Normal->Caption  	= (surf->_FVF()&D3DFVF_NORMAL)?"yes":"no";
+        lbSurfFVF_Diffuse->Caption	= (surf->_FVF()&D3DFVF_DIFFUSE)?"yes":"no";
+        lbSurfFVF_Specular->Caption	= (surf->_FVF()&D3DFVF_SPECULAR)?"yes":"no";
+        lbSurfFVF_XYZRHW->Caption	= (surf->_FVF()&D3DFVF_XYZRHW)?"yes":"no";
+		lbSurfFVF_TCCount->Caption 	= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
 		surf_selected 				= surf;
     }break;
     case 2:
+//S
+/*
         tx_selected = Device.Shader.FindTexture(Item->Text.c_str());
         if (tx_selected){
             lbWidth->Caption = tx_selected->width();
@@ -119,14 +136,15 @@ void __fastcall TfrmPropertiesObject::tvSurfacesItemSelectedChange(
         }else{
         	ELog.DlgMsg(mtInformation,"Texture '%s' not used in current material.",Item->Text.c_str());
         }
-    break;
+*/    break;
     }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::imPaint(TObject *Sender)
 {
     if (tx_selected){
-        RECT r; r.left = 1; r.top = 1;
+//S
+/*        RECT r; r.left = 1; r.top = 1;
         float w, h;
         w = tx_selected->width();
         h = tx_selected->height();
@@ -135,7 +153,7 @@ void __fastcall TfrmPropertiesObject::imPaint(TObject *Sender)
         }else{
         	r.right = w/h*im->Width; r.bottom = im->Height;}
 		tx_selected->StretchThumbnail(paImage->Handle, &r);
-    }
+*/    }
 }
 
 void __fastcall TfrmPropertiesObject::cbSurfSideFlagClick(TObject *Sender)

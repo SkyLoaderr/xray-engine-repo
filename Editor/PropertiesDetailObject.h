@@ -10,19 +10,17 @@
 #include <Dialogs.hpp>
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
-#include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 
 #include "CustomObject.h"
 #include "DOShuffle.h"
 
-#include "CloseBtn.hpp"
 #include "ElHeader.hpp"
 #include <Grids.hpp>
 #include "ElTree.hpp"
 #include "multi_color.hpp"
 #include "multi_edit.hpp"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
 
 
 class TfrmPropertiesDO : public TForm
@@ -32,11 +30,11 @@ __published:	// IDE-managed Components
     TExtBtn *ebCancel;
     TPanel *paBottom;
 	TGroupBox *GroupBox2;
-	TRxLabel *RxLabel5;
-	TRxLabel *RxLabel6;
+	TMxLabel *RxLabel5;
+	TMxLabel *RxLabel6;
 	TMultiObjSpinEdit *seScaleMinY;
 	TMultiObjSpinEdit *seScaleMaxY;
-	TRxLabel *RxLabel1;
+	TMxLabel *RxLabel1;
 	TMultiObjSpinEdit *seDensityFactor;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);

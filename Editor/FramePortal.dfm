@@ -48,7 +48,7 @@ object fraPortal: TfraPortal
       Transparent = False
       OnClick = ebComputeClick
     end
-    object RxLabel1: TRxLabel
+    object RxLabel1: TMxLabel
       Left = 3
       Top = 62
       Width = 63
@@ -56,7 +56,7 @@ object fraPortal: TfraPortal
       Caption = 'Sector Front:'
       ShadowColor = 15263976
     end
-    object RxLabel2: TRxLabel
+    object RxLabel2: TMxLabel
       Left = 3
       Top = 96
       Width = 64
@@ -227,7 +227,7 @@ object fraPortal: TfraPortal
     Align = alTop
     ParentColor = True
     TabOrder = 0
-    object RxLabel4: TRxLabel
+    object RxLabel4: TMxLabel
       Left = 3
       Top = 15
       Width = 39
@@ -271,21 +271,21 @@ object fraPortal: TfraPortal
       ParentFont = False
       OnClick = PanelMinClick
     end
-    object RxLabel5: TRxLabel
+    object RxLabel5: TMxLabel
       Left = 4
       Top = 48
       Width = 18
       Height = 13
       Caption = 'FS:'
     end
-    object RxLabel3: TRxLabel
+    object RxLabel3: TMxLabel
       Left = 4
       Top = 60
       Width = 19
       Height = 13
       Caption = 'BS:'
     end
-    object lbFrontSector: TRxLabel
+    object lbFrontSector: TMxLabel
       Left = 24
       Top = 48
       Width = 11
@@ -298,7 +298,7 @@ object fraPortal: TfraPortal
       Font.Style = []
       ParentFont = False
     end
-    object lbBackSector: TRxLabel
+    object lbBackSector: TMxLabel
       Left = 24
       Top = 60
       Width = 11
