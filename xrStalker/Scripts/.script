@@ -691,7 +691,7 @@ end
 function parse_names( s )
     local t = {}
 
-    for name in string.gfind( s, "([%w_]+)%p*" ) do
+    for name in string.gfind( s, "([%w_\\]+)%p*" ) do
         table.insert( t, name )
     end
 
