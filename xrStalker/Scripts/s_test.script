@@ -169,11 +169,11 @@ function setup(obj_name0,obj_name1,patrol_path)
 	
 	-- define evaluators
 	local eval_patrol_over		= s_test.const_evaluator		(false)
-	local eval_first_meet		= s_test.evaluator_first_meet	(obj_name0,obj_name1,planner:first_meet)
+	local eval_first_meet		= s_test.evaluator_first_meet	(obj_name0,obj_name1,planner.first_meet)
 	
 	-- define actions
 	local _action_patrol		= s_test.action_patrol			(obj_name0,patrol_path,"action_patrol")
-	local _action_patrol_hi		= s_test.action_patrol_hi		(obj_name0,"action_patrol_hi",planner:set_first_meet)
+	local _action_patrol_hi		= s_test.action_patrol_hi		(obj_name0,"action_patrol_hi",planner.set_first_meet)
     
 	-- define action conditions and effects
 	
