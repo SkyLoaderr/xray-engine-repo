@@ -6,6 +6,10 @@
 	invalidate				();
 	frame_sleep				= 0;
 }
+		smapvis::~smapvis	()
+{
+	flushoccq				();
+}
 void	smapvis::invalidate	()
 {
 	state		=	state_counting;
