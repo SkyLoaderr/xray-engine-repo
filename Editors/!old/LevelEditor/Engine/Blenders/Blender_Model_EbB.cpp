@@ -132,6 +132,7 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 	}
 }
 #else
+#include "uber_deffer.h"
 void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 {
 	IBlender::Compile		(C);

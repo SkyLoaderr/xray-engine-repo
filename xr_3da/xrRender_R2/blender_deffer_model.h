@@ -3,6 +3,9 @@
 class CBlender_deffer_model : public IBlender  
 {
 public:
+	xrP_Integer	oAREF;
+	xrP_BOOL	oBlend;
+public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: deffer-model-flat";	}
 	virtual		BOOL		canBeDetailed()	{ return FALSE;	}
 	virtual		BOOL		canBeLMAPped()	{ return FALSE;	}
