@@ -78,6 +78,8 @@ void CAI_Rat::Load(CInifile* ini, const char* section)
 	m_tpaAttackAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("attack_2");
 	m_tpaAttackAnimations[2] = PKinematics(pVisual)->ID_Cycle_Safe("attack_3");
 
+	m_tpaDeathAnimations[0] = m_death;
+	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_2");
 	//int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
 	//PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 }
@@ -117,7 +119,7 @@ void CAI_Rat::Death()
 	q_action.setup(AI::AIC_Action::FireEnd);
 	eCurrentState = aiRatDie;
 
-	/**/
+	/**
 	Fvector tAcceleration;
 	tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
 	vfNormalizeSafe(tAcceleration);
@@ -127,6 +129,7 @@ void CAI_Rat::Death()
 	Movement.GetPosition(vPosition);
 	UpdateTransform	();
 	/**/
+	bActive = false;
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
@@ -278,7 +281,7 @@ IC float CAI_Rat::ffGetY(NodeCompressed &tNode, float X, float Z)
 	return(v1.y);
 }
 
-/**
+/**/
 IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
 {
 	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPSILON) &&
@@ -333,7 +336,7 @@ IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode
 }
 /**/
 
-/**/
+/**
 IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode, const float fSubNodeSize)
 {
 	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPSILON + fSubNodeSize) &&
@@ -366,8 +369,8 @@ IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode
 /**/
 
 //#define MAX_NEIGHBOUR_COUNT 5
-//#define MAX_NEIGHBOUR_COUNT 9
-#define MAX_NEIGHBOUR_COUNT 25
+#define MAX_NEIGHBOUR_COUNT 9
+//define MAX_NEIGHBOUR_COUNT 25
 
 int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
 {
@@ -410,7 +413,7 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 				iCount++;
 			}
 			else
-				if (bfNeighbourNode(tNode,tMySubNode,fSubNodeSize)) {
+				if (bfNeighbourNode(tNode,tMySubNode)) {
 					tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
 					tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
 					tNode.bEmpty = true;
@@ -436,7 +439,7 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 				for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
 					tNode.tLeftDown.z = j;
 					tNode.tRightUp.z = j + fSubNodeSize;
-					if (bfNeighbourNode(tNode,tMySubNode,fSubNodeSize)) {
+					if (bfNeighbourNode(tNode,tMySubNode)) {
 						tNode.tLeftDown.y = ffGetY(*tpCurrentNode,i,j);
 						tNode.tRightUp.y = ffGetY(*tpCurrentNode,i + fSubNodeSize,j + fSubNodeSize);
 						tNode.bEmpty = true;
@@ -1468,8 +1471,15 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 	//R_ASSERT(fsimilar(_move.magnitude(),1));
 
 	CMotionDef*	S=0;
-	if (iHealth<=0)
-		S = m_death;
+	if (iHealth<=0) {
+		for (int i=0 ;i<2; i++)
+			if (m_tpaDeathAnimations[i] == m_current) {
+				S = m_current;
+				break;
+			}
+		if (!S)
+			S = m_tpaDeathAnimations[::Random.randI(0,2)];
+	}
 	else {
 		if (m_bAttackStart) {
 			if ((m_tpCurrentBlend)
