@@ -114,7 +114,7 @@ function main()
 	actor = get_actor()
 
 	heli_mgr = xr_heli.HeliManager()
-	heli_mgr:initialize( "heli" )
+	heli_mgr:initialize( "heli", nil, 30, 30 )
 
 	if not state then
 		chst( state_before )
