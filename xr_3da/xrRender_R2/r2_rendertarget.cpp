@@ -139,9 +139,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 
 	// COMBINE
 	Device.Shader.DeleteGeom	(g_combine				);
-	Device.Shader.Delete		(s_combine_dbg_Position	);
 	Device.Shader.Delete		(s_combine_dbg_Normal	);
-	Device.Shader.Delete		(s_combine_dbg_Color	);
 	Device.Shader.Delete		(s_combine_dbg_Accumulator);
 	Device.Shader.Delete		(s_combine				);
 
