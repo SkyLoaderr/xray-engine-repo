@@ -170,13 +170,19 @@ struct TL_2c3uv {
 
 void CRenderTarget::End		()
 {
-	RCache.set_RT			(HW.pBaseRT);
-	RCache.set_ZB			(HW.pBaseZB);
-	curWidth				= Device.dwWidth;
-	curHeight				= Device.dwHeight;
+	// find if distortion is needed at all
+	BOOL	bDistort	= RImplementation.b_distortion;
+	if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
+	if (bDistort)		phase_distortion		();
+
+	// combination/postprocess
+	RCache.set_RT		(HW.pBaseRT);
+	RCache.set_ZB		(HW.pBaseZB);
+	curWidth			= Device.dwWidth;
+	curHeight			= Device.dwHeight;
 	
 	if (!Perform())		return;
-	RCache.set_Element	(s_postprocess->E[1]);
+	RCache.set_Element	(bDistort ? s_postprocess->E[1] : s_postprocess->E[0]);
 
 	int		gblend		= clampr		(iFloor((1-param_gray)*255.f),0,255);
 	int		nblend		= clampr		(iFloor((1-param_noise)*255.f),0,255);
@@ -209,4 +215,14 @@ void CRenderTarget::End		()
 	RCache.set_c		("c_brightness",color_get_R(p_brightness)/255.f,color_get_G(p_brightness)/255.f,color_get_B(p_brightness)/255.f,0);
 	RCache.set_Geometry	(g_postprocess);
 	RCache.Render		(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+}
+
+void	CRenderTarget::phase_distortion	()
+{
+	u_setrt						(rt_Generic_1,0,0,HW.pBaseZB);
+	RCache.set_CullMode			(CULL_CCW);
+	RCache.set_Stencil			(FALSE);
+	RCache.set_ColorWriteEnable	();
+	CHK_DX(HW.pDevice->Clear	( 0L, NULL, D3DCLEAR_TARGET, color_rgba(127,127,127,127), 1.0f, 0L));
+	RImplementation.r_dsgraph_render_distort	();
 }
