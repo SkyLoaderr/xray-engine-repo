@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ai_script_classes.h"
+
 #define TEMPLATE_SPECIALIZATION \
 	template <\
 		typename _object_type,\
