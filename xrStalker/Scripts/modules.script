@@ -1,0 +1,99 @@
+----------------------------------------------------------------------
+-- «агрузка схем:
+----------------------------------------------------------------------
+
+module ("stalker")
+module ("monsters")
+module ("globals")
+module ("xr_actions_id")
+module ("xr_evaluators_id")
+module ("xr_sounds_id")
+module ("xr_evaluators")
+module ("xr_storyline")
+
+module ("debug_info")
+module ("utils")
+module ("move_mgr")
+
+module ("gramofon")
+
+module ("xr_motivator")
+module ("xr_logic")
+module ("xr_sounds")
+module ("xr_zones")
+module ("xr_spawner")
+
+module ("xr_reactions")
+module ("xr_state")
+module ("xr_position")
+module ("xr_sound")
+module ("xr_dialogs")
+module ("xr_replics")
+
+module ("xr_gulag")
+module ("gulag_tasks")
+module ("xr_bandit")
+module ("xr_meet")
+module ("xr_kamp")
+module ("xr_assassin")
+module ("xr_robbers")
+module ("xr_guide")
+module ("xr_robber_guard")
+module ("xr_punch")
+module ("xr_talker")
+module ("xr_bodyguard")
+module ("xr_scared")
+module ("xr_camper")
+module ("xr_sleeper")
+module ("xr_commander")
+--module ("xr_comm_ptr")
+--module ("xr_follower")
+module ("xr_ambush")
+module ("xr_waiter")
+module ("xr_wounded")
+module ("xr_scout")
+module ("xr_trivial")
+module ("xr_report")
+module ("xr_rest")
+module ("xr_chaser")
+module ("xr_formation")
+module ("xr_sos")
+module ("xr_assistance")
+
+module ("bar_stalker")
+module ("barman")
+
+module ("escape")
+module ("level_news")
+
+module ("escape_factory_bandits")
+
+module ("xr_scienist2")     --№г÷ЎЏ б ѕЁв–ап.
+module ("secret_lab_killer")
+
+--For Dark Laboratory
+module ("xr_scientist")
+
+module ("xr_outcast")	 //”ченый отшельник на болоте 
+
+--’ер знает где
+module ("xr_sniper")
+
+module ("xr_heli")
+module ("small_script")
+module ("monster")
+
+----------------------------------------------------------------------
+-- «агрузка модулей:
+----------------------------------------------------------------------
+
+load_scheme("xr_walker",      "walker")
+load_scheme("xr_remark",      "remark")
+load_scheme("xr_sleeper",     "sleeper")
+load_scheme("xr_kamp",        "kamp")
+load_scheme("xr_camper",      "camper")
+load_scheme("xr_comm_ptr",    "patrol")
+load_scheme("xr_follower",    "follower")
+load_scheme("xr_test",        "test")
+load_scheme("xr_heli_hunter", "heli_hunter")
+load_scheme("xr_zoneguard",   "zoneguard")
