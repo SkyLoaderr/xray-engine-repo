@@ -325,7 +325,7 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 {
 	// Calculate physics
 	Movement.SetPosition	(vPosition);
-	float step = 0.03f;
+	float step = 0.05f;
 	while (dt>step)			{
 		Movement.Calculate		(accel,0,jump,step,false);
 		dt -= step;
@@ -374,7 +374,7 @@ void CActor::Update	(DWORD DT)
 	}
 
 
-//	clamp			(DT,0ul,66ul);
+	clamp			(DT,0ul,66ul);
 	float	dt		= float(DT)/1000.f;
 	
 	// Check controls, create accel, prelimitary setup "mstate_real"
