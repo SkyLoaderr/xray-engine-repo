@@ -764,7 +764,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 	dReal *	globalI		= (dReal *) ALLOCA (nb * 12 *	sizeof (dReal));
 	dReal *	globalInvI	= (dReal *) ALLOCA (nb * 12 *	sizeof (dReal));
 	dReal *	cforces		= (dReal *) ALLOCA (nb * 8 *	sizeof (dReal));	dSetZero (cforces,	nb * 8);
-	int	  * ccounter	= (int	 *) ALLOCA (nb *		sizeof (int));		dSetZero (ccounter,	nb);	
+	int	  * ccounter	= (int	 *) ALLOCA (nb *		sizeof (int));		dSetZero ((dReal*)ccounter,	nb);	
 	for (b = 0; b < nb; b++)	{
 		for (i = 0; i < 4; i++)		{
 			saveFacc[b * 4 + i] = bodies[b]->facc[i];
@@ -876,7 +876,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			}
 		}
 		dSetZero (cforces,	nb	* 8	);
-		dSetZero (ccounter,	nb		);
+		dSetZero ((dReal*)ccounter,	nb		);
 	}
 	for (b = 0; b < nb; b++)
 	{
