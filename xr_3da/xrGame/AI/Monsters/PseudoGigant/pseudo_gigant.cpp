@@ -87,9 +87,13 @@ void CPseudoGigant::Load(LPCSTR section)
 	MotionMan.AddTransition(PS_STAND,			eAnimSleep,		eAnimStandLieDown,		true);
 	MotionMan.AddTransition(PS_STAND,			PS_LIE,			eAnimStandLieDown,		false);
 	
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	0, 800,	900,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,1.f,1.f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	1, 700,	800,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,1.f,1.f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	2, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,1.f,1.f));
+	Fvector hit_dir;
+	hit_dir.set			(0.f,1.f,1.f);
+	hit_dir.normalize	();
+
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	0, 800,	900,	STANDART_ATTACK, inherited::_sd->m_fHitPower,hit_dir);
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	1, 700,	800,	STANDART_ATTACK, inherited::_sd->m_fHitPower,hit_dir);
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	2, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,hit_dir);
 
 	END_LOAD_SHARED_MOTION_DATA();
 
