@@ -112,7 +112,8 @@ void CStats::Show()
 	}
 
 	CGameFont&	F			= *((CGameFont*)pFont);
-	float		f_base_size	= F.GetSize();
+	float		f_base_size	= 8;	//F.GetSize();
+				F.SetSize	(f_base_size);
 
 	if( Device.Pause() && !g_pGamePersistent->m_pMainUI->IsActive() ){
 		float sz		= pFont->GetSize();

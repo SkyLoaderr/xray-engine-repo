@@ -1134,58 +1134,6 @@
 						</Filter>
 					</Filter>
 				</Filter>
-				<Filter
-					Name="Backend"
-					Filter="">
-					<File
-						RelativePath=".\FVF.h">
-					</File>
-					<File
-						RelativePath="R_Backend.cpp">
-					</File>
-					<File
-						RelativePath="R_Backend.h">
-					</File>
-					<File
-						RelativePath="R_Backend_DBG.cpp">
-					</File>
-					<File
-						RelativePath="R_Backend_Runtime.cpp">
-					</File>
-					<File
-						RelativePath="R_Backend_Runtime.h">
-					</File>
-					<File
-						RelativePath="R_Backend_xform.cpp">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="DebugNoExceptions|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="R_Backend_xform.h">
-					</File>
-					<File
-						RelativePath="R_DStreams.cpp">
-					</File>
-					<File
-						RelativePath="R_DStreams.h">
-					</File>
-				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1306,6 +1254,58 @@
 				</File>
 				<File
 					RelativePath=".\NET_utils.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="Backend"
+				Filter="">
+				<File
+					RelativePath=".\FVF.h">
+				</File>
+				<File
+					RelativePath="R_Backend.cpp">
+				</File>
+				<File
+					RelativePath="R_Backend.h">
+				</File>
+				<File
+					RelativePath="R_Backend_DBG.cpp">
+				</File>
+				<File
+					RelativePath="R_Backend_Runtime.cpp">
+				</File>
+				<File
+					RelativePath="R_Backend_Runtime.h">
+				</File>
+				<File
+					RelativePath="R_Backend_xform.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AssemblerOutput="4"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AssemblerOutput="4"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugNoExceptions|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AssemblerOutput="4"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="R_Backend_xform.h">
+				</File>
+				<File
+					RelativePath="R_DStreams.cpp">
+				</File>
+				<File
+					RelativePath="R_DStreams.h">
 				</File>
 			</Filter>
 		</Filter>
