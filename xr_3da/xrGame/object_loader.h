@@ -35,10 +35,9 @@ struct CLoader {
 		IC	static void load_data(T &data, M &stream, const P &p)
 		{
 			CHelper1<T>::load_data<
-				object_type_traits::is_base_and_derived_or_same_for_template_template_1_1<
+				object_type_traits::is_base_and_derived_or_same_from_template<
 					IPureLîadableObject,
-					T,
-					M
+					T
 				>::value
 			>(data,stream,p);
 		}
@@ -113,21 +112,20 @@ struct CLoader {
 		template <>
 		IC	static void load_data<true>(T &data, M &stream, const P &p)
 		{
-			CHelper3::load_data	(data,stream,p);
+			CHelper3::load_data			(data,stream,p);
 		}
 	};
 
 	IC	static void load_data(LPCSTR &data, M &stream, const P &p)
 	{
-		NODEFAULT;
+		STATIC_CHECK					(false,Cannot_load_const_char_star);
 	}
 
 	IC	static void load_data(LPSTR &data, M &stream, const P &p)
 	{
-		string256						S;
-		stream.r_stringZ				(S,sizeof(S));
-		VERIFY							(xr_strlen(S) < 255);
-		data							= xr_strdup(S);
+		shared_str						S;
+		stream.r_stringZ				(S);
+		data							= xr_strdup(*S);
 	}
 
 	IC	static void load_data(shared_str &data, M &stream, const P &p)

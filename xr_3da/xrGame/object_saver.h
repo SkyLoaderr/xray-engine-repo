@@ -35,10 +35,9 @@ struct CSaver {
 		IC	static void save_data(const T &data, M &stream, const P &p)
 		{
 			CHelper1<T>::save_data<
-				object_type_traits::is_base_and_derived_or_same_for_template_template_1_1<
+				object_type_traits::is_base_and_derived_or_same_from_template<
 					IPureSavableObject,
-					T,
-					M
+					T
 				>::value
 			>(data,stream,p);
 		}
