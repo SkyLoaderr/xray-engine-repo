@@ -33,9 +33,9 @@ public:
 public:
 	Fsphere		bv_sphere;
 	Fbox		bv_bb;
-	u32			flags;
-	float		s_min;
-	float		s_max;
+	flags32		m_Flags;
+	float		m_fMinScale;
+	float		m_fMaxScale;
 
 	ref_shader	shader;
 	fvfVertexIn	*vertices;
