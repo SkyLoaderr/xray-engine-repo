@@ -223,7 +223,7 @@ void CScriptEngine::export_motivation_management()
 				value("action_aim_enemy",							StalkerDecisionSpace::eWorldOperatorAimEnemy),
 				value("action_get_ready_to_kill_moderate",			StalkerDecisionSpace::eWorldOperatorGetReadyToKillModerate),
 				value("action_get_enemy_seen_moderate",				StalkerDecisionSpace::eWorldOperatorGetEnemySeenModerate),
-				value("action_kill_enemy_moderate",					StalkerDecisionSpace::eWorldOperatorGetReadyToKillModerate),
+				value("action_kill_enemy_moderate",					StalkerDecisionSpace::eWorldOperatorKillEnemyModerate),
 				value("action_camping",								StalkerDecisionSpace::eWorldOperatorCamping),
 				value("action_get_ready_to_kill_avoid",				StalkerDecisionSpace::eWorldOperatorGetReadyToKillAvoid),
 				value("action_kill_enemy_avoid",					StalkerDecisionSpace::eWorldOperatorKillEnemyAvoid),
