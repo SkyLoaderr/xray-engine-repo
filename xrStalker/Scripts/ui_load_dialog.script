@@ -233,6 +233,7 @@ function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 end
 
 function load_dialog:AddItemToList(item)
+	local new_item = CUIListItemPair()
 	local list_box = self:GetListWnd("list_window")
 	local shift = 0
 	local color = GetARGB(255,0,255,255)
