@@ -95,11 +95,13 @@ void CMincer ::OnEvent(NET_Packet& P,u16 type)
 
 	switch(type)
 	{
-	
+
 	case GE_OWNERSHIP_TAKE:
 		u16 id=P.r_u16();
 		Fvector dir;float impulse;
 		m_telekinetics.draw_out_impact(dir,impulse);
+		CObject* obj=Level().Objects.net_Find(id);
+		if(obj->SUB_CLS_ID ==CLSID_ARTEFACT) break;
 		if (OnServer())
 		{
 			NET_Packet	l_P;
@@ -115,7 +117,7 @@ void CMincer ::OnEvent(NET_Packet& P,u16 type)
 			l_P.w_u16	(ALife::eHitTypeStrike);
 			u_EventSend	(l_P);
 	/////////////////////////////////////////////////////////
-			Level().Objects.net_Find(id)->H_SetParent(NULL);
+			obj->H_SetParent(NULL);
 			return;
 		};
 	}

@@ -1002,9 +1002,12 @@ void	CCustomZone::OnEvent (NET_Packet& P, u16 type)
 			 {
 				 u16 id;
                  P.r_u16			(id);
-                 CArtefact *artefact = smart_cast<CArtefact*>(Level().Objects.net_Find(id)); VERIFY(artefact);
-                 artefact->H_SetParent(NULL);
-				 ThrowOutArtefact(artefact);
+                 CArtefact *artefact = smart_cast<CArtefact*>(Level().Objects.net_Find(id)); 
+				 if(artefact)
+				 {
+					artefact->H_SetParent(NULL);
+					ThrowOutArtefact(artefact);
+				 }
                  break;
 			}
 	}
