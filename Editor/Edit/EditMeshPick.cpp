@@ -6,7 +6,6 @@
 #pragma hdrstop
 
 #include "EditMesh.h"
-#include "Scene.h"
 #include "UI_Main.h"
 #include "frustum.h"
 #include "EditorPref.h"
