@@ -534,10 +534,10 @@
 					RelativePath=".\Config\ui\map_character.xml">
 				</File>
 				<File
-					RelativePath=".\motion_icon.xml">
+					RelativePath=".\Config\ui\motion_icon.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\motion_icon.xml">
+					RelativePath=".\motion_icon.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\news.xml">
@@ -890,6 +890,9 @@
 			</File>
 			<File
 				RelativePath=".\scripts\escape_factory_bandits.script">
+			</File>
+			<File
+				RelativePath=".\scripts\escape_heli.script">
 			</File>
 			<File
 				RelativePath=".\scripts\escape_patrol2.script">
