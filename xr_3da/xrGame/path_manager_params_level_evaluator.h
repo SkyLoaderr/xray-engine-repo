@@ -51,8 +51,8 @@
 #define aiEnemyDistance					(aiOptEnemyDistance | aiOptEnemyDistanceWeight | aiMinEnemyDistance | aiMinEnemyDistanceWeight | aiMaxEnemyDistance | aiMaxEnemyDistanceWeight)
 #define aiMemberDanger					(u64(1) << 63)
 
-const Fvector	tLeft	= Fvector().set(-1,0,0);
-const Fvector	tRight	= Fvector().set(1,0,0);
+extern const Fvector	tLeft;
+extern const Fvector	tRight;
 
 typedef SBaseParameters<float,u32,u32> CBaseParameters;
 
