@@ -265,6 +265,15 @@
 				RelativePath=".\Level.h">
 			</File>
 			<File
+				RelativePath="Level_SLS_Default.cpp">
+			</File>
+			<File
+				RelativePath="Level_SLS_Load.cpp">
+			</File>
+			<File
+				RelativePath="Level_SLS_Save.cpp">
+			</File>
+			<File
 				RelativePath="Level_input.cpp">
 			</File>
 			<File
