@@ -23,11 +23,6 @@ void Script::vfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScr
 			return;
 }
 
-int Script::ifSuspendThread(CLuaVirtualMachine *tpLuaVirtualMachine)
-{
-	return lua_yield(tpLuaVirtualMachine, lua_gettop(tpLuaVirtualMachine));
-}
-
 //class CItemObject {
 //public:
 //	Active();
@@ -57,17 +52,16 @@ double get_time()
 	return((double)Level().GetGameTime());
 }
 
-void LuaLog(LPCSTR S)
+void LuaLog(LPCSTR caMessage)
 {
-	Msg			("* [LUA] %s",S);
+	Msg			("* [LUA] %s",caMessage);
 }
 
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	open			(tpLuaVirtualMachine);
 
-	lua_register	(tpLuaVirtualMachine,	"wait",							ifSuspendThread);
-	function		(tpLuaVirtualMachine,	"log",	(void (*) (LPCSTR))		(LuaLog));
+	function		(tpLuaVirtualMachine,	"log",	LuaLog);
 
 	module(tpLuaVirtualMachine)
 	[

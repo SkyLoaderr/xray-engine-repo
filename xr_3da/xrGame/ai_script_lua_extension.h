@@ -12,11 +12,10 @@
 
 namespace Script {
 	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	int			ifSuspendThread				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptFileName);
+	void		vfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptFileName);
 #ifdef DEBUG
 	LPCSTR		cafEventToString			(int				iEventCode);
-	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int iErrorCode);
-	bool		bfListLevelVars				(CLuaVirtualMachine *tpLuaVirtualMachine, int level);
+	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iErrorCode);
+	bool		bfListLevelVars				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iStackLevel);
 #endif
 };
