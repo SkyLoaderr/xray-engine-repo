@@ -39,12 +39,17 @@ function main()
 			prof_zomby:play_at_pos						(stalker1,stalker1:position(),0);
 			break
 		end
-		wait()			
 	end
 
-
 	while true do
-		if actor.health <= 0 and stalker1.health > 0 then
+		if actor.health <= 0 and stalker1.health > 0 and stalker1:see(actor) then
+			action(
+				stalker1,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 10000)
+			)
 		wait(2000)			
 			prof_privet_hosh_potorgovat2:play_at_pos		(stalker1,stalker1:position(),0);
 		wait(4000)			
