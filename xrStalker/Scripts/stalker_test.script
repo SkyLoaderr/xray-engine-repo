@@ -35,9 +35,18 @@ function main ()
 
 	action (
 		stalker, 
+		move		(move.standing, move.walk, move.line, patrol ("way0000")),
+		anim		(anim.free),
+		cond		(cond.time_end, 10000000)
+	)
+	
+	wait			(2000)
+	
+	action_first (
+		stalker, 
 		move		(move.standing, move.stand, move.line, patrol ("way0000")),
 		anim		("stoya_ruje_ 0"),
-		cond		(cond.time_end, 10000000)
+		cond		(cond.time_end, 10000)
 	)
 	
 	while stalker:action() do
