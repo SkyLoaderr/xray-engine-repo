@@ -66,7 +66,8 @@ public:
 	xr_vector<std::pair<ref_str,R_constant_setup*> >	v_constant_setup;
 	lua_State*											LSVM;
 	BOOL												bDeferredLoad;
-	ref_str												HLSL_Path;
+	ref_str												Path_HLSL;
+	ref_str												Path_LUA;
 private:
 	void							LS_Load				();
 	void							LS_Unload			();
@@ -165,6 +166,7 @@ public:
 	void			Evict					();
 
 	void			SetHLSL_path			(LPCSTR path);
+	void			SetSCRIPT_path			(LPCSTR path);
 };
 
 #endif //ResourceManagerH
