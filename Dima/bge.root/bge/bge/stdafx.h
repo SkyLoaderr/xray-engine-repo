@@ -46,13 +46,13 @@ typedef const char*			LPCSTR;
 
 #ifdef _DEBUG
 	#define	NODEFAULT		{\
-		Msg("nodefault reached : %s(%s)",__FILE__, __LINE__);\
+		ui().log("nodefault reached : %s(%s)",__FILE__, __LINE__);\
 		__asm int 3\
 	}
 
 	#define VERIFY(expr)	{\
 		if (!(expr)) {\
-			Msg("%s : %s(%s)",#expr,__FILE__, __LINE__);\
+			ui().log("%s : %s(%s)",#expr,__FILE__, __LINE__);\
 			__asm int 3\
 		}\
 	}

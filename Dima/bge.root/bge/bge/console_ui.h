@@ -9,7 +9,12 @@
 #pragma once
 
 class CConsoleUI {
+private:
+	FILE				*m_log;
+
 public:
-			int __cdecl log		(LPCSTR format, ...);
-			void		execute	(char argc, char *argv[]);
+						CConsoleUI	();
+	virtual				~CConsoleUI	();
+			int __cdecl log			(LPCSTR format, ...);
+			void		execute		(char argc, char *argv[]);
 };
