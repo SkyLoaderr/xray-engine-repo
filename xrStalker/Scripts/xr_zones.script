@@ -24,8 +24,8 @@ function zone_binder:net_spawn( server_object )
 
 	db.add_zone( self.object )
 
-	self.object:set_callback( game_object.zone_enter, self.on_enter, self )
-	self.object:set_callback( game_object.zone_exit,  self.on_leave, self )
+	self.object:set_callback( callback.zone_enter, self.on_enter, self )
+	self.object:set_callback( callback.zone_exit,  self.on_leave, self )
 
 	self.managers = {}
 
@@ -82,8 +82,8 @@ function zone_binder:net_spawn( server_object )
 end
 
 function zone_binder:net_destroy()
-	self.object:clear_callback( game_object.zone_enter )
-	self.object:clear_callback( game_object.zone_exit )
+	self.object:clear_callback( callback.zone_enter )
+	self.object:clear_callback( callback.zone_exit )
 
 	table.foreach( self.managers, function( k, v ) if v.destroy then v:destroy() end end )
 
