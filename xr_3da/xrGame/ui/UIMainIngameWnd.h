@@ -57,7 +57,7 @@ public:
 	bool OnKeyboardPress(int dik);
 
 	//для отображения сообщения пришедшего по PDA
-	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_index);
+	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_INDEX info_index);
 	
 	void AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMessage);
 	void AddStaticItem	(CUIStaticItem* si, int left, int top, int right, int bottom);

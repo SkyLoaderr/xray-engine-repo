@@ -114,7 +114,7 @@ void CAI_Stalker::DropItemSendMessage(CObject *O)
 
 /////////////////////////
 //PDA functions
-void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)
+void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 {
 	EPdaMsg pda_msg = ePdaMsgAccept;
 

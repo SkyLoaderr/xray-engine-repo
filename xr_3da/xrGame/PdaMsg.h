@@ -42,7 +42,7 @@ typedef struct tagSPdaMessage
 	bool			question;
 	
 	//порядковый номер информации
-	INFO_ID info_index;
+	INFO_INDEX info_index;
 
 	//время получения/отправки сообщения
 	ALife::_TIME_ID	time;

@@ -8,16 +8,16 @@
 #include "alife_space.h"
 
 #define NO_INFO_INDEX (-1)
-typedef int			INFO_ID;
+typedef int			INFO_INDEX;
 typedef ref_str		INFO_STR_ID;
 
 
 struct INFO_DATA
 {
 	INFO_DATA():id(NO_INFO_INDEX),receive_time(0){};
-	INFO_DATA(INFO_ID info_id, ALife::_TIME_ID time):id(info_id),receive_time(time){};
+	INFO_DATA(INFO_INDEX info_index, ALife::_TIME_ID time):id(info_index),receive_time(time){};
 
-	INFO_ID				id;
+	INFO_INDEX			id;
 	//время получения нужно порции информации
 	ALife::_TIME_ID		receive_time;
 };

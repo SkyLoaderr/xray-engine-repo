@@ -22,17 +22,17 @@ void  CInventoryOwner::OnEvent (NET_Packet& P, u16 type)
 	case GE_INFO_TRANSFER:
 		{
 			u16				id;
-			s32				info_id;
+			s32				info_index;
 			u8				add_info;
 
 			P.r_u16			(id);				//отправитель
-			P.r_s32			(info_id);			//номер полученной информации
+			P.r_s32			(info_index);		//номер полученной информации
 			P.r_u8			(add_info);			//добавление или убирание информации
 
 			if(add_info)
-				OnReceiveInfo	((INFO_ID)info_id);
+				OnReceiveInfo	((INFO_INDEX)info_index);
 			else
-				OnDisableInfo	((INFO_ID)info_id);
+				OnDisableInfo	((INFO_INDEX)info_index);
 		}
 		break;
 	}
@@ -45,11 +45,11 @@ public:
 	CFindByIDPred(int element_to_find) {element = element_to_find;}
 	bool operator () (const INFO_DATA& data) const {return data.id == element;}
 private:
-	INFO_ID element;
+	INFO_INDEX element;
 };
 
 
-void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
+void CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
 {
 	//Запустить скриптовый callback
 	CGameObject* pThisGameObject = dynamic_cast<CGameObject*>(this);
@@ -76,7 +76,7 @@ void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 	}
 }
 
-void CInventoryOwner::OnDisableInfo(INFO_ID info_id)
+void CInventoryOwner::OnDisableInfo(INFO_INDEX info_id)
 {
 	//удалить запись из реестра
 	KNOWN_INFO_VECTOR& known_info = known_info_registry.objects();
@@ -86,7 +86,7 @@ void CInventoryOwner::OnDisableInfo(INFO_ID info_id)
 	known_info.erase(it);
 }
 
-void CInventoryOwner::TransferInfo(INFO_ID info_index, bool add_info) const
+void CInventoryOwner::TransferInfo(INFO_INDEX info_index, bool add_info) const
 {
 	const CObject* pThisObject = dynamic_cast<const CObject*>(this); VERIFY(pThisObject);
 
@@ -99,7 +99,7 @@ void CInventoryOwner::TransferInfo(INFO_ID info_index, bool add_info) const
 	CGameObject::u_EventSend(P);
 }
 
-bool CInventoryOwner::HasInfo(INFO_ID info_index) const
+bool CInventoryOwner::HasInfo(INFO_INDEX info_index) const
 {
 	const KNOWN_INFO_VECTOR* known_info = known_info_registry.objects_ptr ();
 	

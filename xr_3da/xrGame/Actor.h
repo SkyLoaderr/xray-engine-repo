@@ -88,9 +88,9 @@ public:
 
 public:
 	//information receive & dialogs
-	virtual void OnReceiveInfo		(INFO_ID info_id);
-	virtual void OnDisableInfo		(INFO_ID info_id);
-	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_ID info_index);
+	virtual void OnReceiveInfo		(INFO_INDEX info_index);
+	virtual void OnDisableInfo		(INFO_INDEX info_index);
+	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_INDEX info_index);
 protected:
 	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion);
 	virtual void AddEncyclopediaArticle	 (const CInfoPortion* info_portion);

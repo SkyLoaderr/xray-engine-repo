@@ -38,7 +38,7 @@ struct SMapLocation
 	//id объекта на уровне
 	u16 object_id;
 	//индекс части информации
-	INFO_ID info_portion_id;
+	INFO_INDEX info_portion_id;
 
 	//размеры и положение иконки
 	int icon_x, icon_y, icon_width, icon_height;

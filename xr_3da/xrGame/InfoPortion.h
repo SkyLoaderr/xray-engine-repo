@@ -25,7 +25,7 @@ struct SInfoPortionData : CSharedResource
 	virtual ~SInfoPortionData ();
 
 	//уникальный индекс порции информации
-	INFO_ID		m_InfoIndex;
+	INFO_INDEX	m_InfoIndex;
 
 	//массив с именами диалогов, которые могут быть инициированы
 	//из этого InfoPortion
@@ -49,7 +49,7 @@ struct SInfoPortionData : CSharedResource
 
 	//массив с индексами тех порций информации, которые
 	//исчезнут, после получения этой info_portion
-	DEFINE_VECTOR(INFO_ID, INFO_INDEX_VECTOR, INFO_INDEX_VECTOR_IT);
+	DEFINE_VECTOR(INFO_INDEX, INFO_INDEX_VECTOR, INFO_INDEX_VECTOR_IT);
 	INFO_INDEX_VECTOR m_DisableInfo;
 
 	//текстовое представление информации	
@@ -60,12 +60,12 @@ struct SInfoPortionData : CSharedResource
 class CInfoPortion;
 
 //квант  - порция информации
-class CInfoPortion : public CSharedClass<SInfoPortionData, INFO_ID>,
-					 public CXML_IdToIndex<INFO_STR_ID,	INFO_ID, CInfoPortion>
+class CInfoPortion : public CSharedClass<SInfoPortionData, INFO_INDEX>,
+					 public CXML_IdToIndex<INFO_STR_ID,	INFO_INDEX, CInfoPortion>
 {
 private:
-	typedef CSharedClass<SInfoPortionData, INFO_ID> inherited_shared;
-	typedef CXML_IdToIndex<INFO_STR_ID, INFO_ID, CInfoPortion>	id_to_index;
+	typedef CSharedClass<SInfoPortionData, INFO_INDEX> inherited_shared;
+	typedef CXML_IdToIndex<INFO_STR_ID, INFO_INDEX, CInfoPortion>	id_to_index;
 
 	friend id_to_index;
 public:
@@ -76,7 +76,7 @@ public:
 	//если info с таким id раньше не использовался
 	//он будет загружен из файла
 	virtual void Load	(INFO_STR_ID info_str_id);
-	virtual void Load	(INFO_ID info_id);
+	virtual void Load	(INFO_INDEX info_index);
 
 	const LOCATIONS_VECTOR&							MapLocations()	const {return info_data()->m_MapLocations;}
 	const ARTICLE_VECTOR&							Articles	()	const {return info_data()->m_Articles;}
@@ -94,7 +94,7 @@ public:
 
 
 protected:
-    INFO_ID	m_InfoIndex;
+    INFO_INDEX	m_InfoIndex;
 
 	void load_shared	(LPCSTR);
 	SInfoPortionData* info_data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}

@@ -245,7 +245,7 @@ CObject* CPda::GetOwnerObject()
 
 //отправка сообщения другому владельцу PDA 
 //pda_num - номер PDA в нашем списке
-void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_index)
+void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_INDEX info_index)
 {
 	//найти PDA с нужным номером в списке
 	u32 i=0;
@@ -264,7 +264,7 @@ void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_index)
 
 //отправление сообщению PDA с определенным ID
 //если такое есть в списке контактов
-void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_index)
+void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index)
 {
 	CObject* pObject =  Level().Objects.net_Find(pda_ID);
 	CPda* pPda = dynamic_cast<CPda*>(pObject);
@@ -281,7 +281,7 @@ void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_index)
 	PdaEventSend(pda_ID, msg, info_index);
 }
 
-void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_ID info_index)
+void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index)
 {
 	AddMessageToLog(pda_ID, msg, info_index, false);
 
@@ -295,7 +295,7 @@ void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_ID info_index)
 }
 
 //добавляет сообщение в список
-void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_ID info_index, bool receive)
+void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index, bool receive)
 {
 	m_bNewMessage = true;
 
@@ -356,8 +356,8 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 			//отправить сообщение владельцу, только если мы включены
 			if(IsActive())
 			{
-				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, (INFO_ID)info_index);
-				AddMessageToLog(id, (EPdaMsg)msg, (INFO_ID)info_index, true);
+				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, (INFO_INDEX)info_index);
+				AddMessageToLog(id, (EPdaMsg)msg, (INFO_INDEX)info_index, true);
 			}
 		}
 		break;

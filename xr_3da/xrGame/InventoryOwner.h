@@ -54,9 +54,9 @@ public:
 	//функци€ через которую
 	//другие персонажи отправл€ют объекту PDA сообщение.
 	//должна быть переопределена в порожеденных классах
-	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index);
+	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index);
 	//отправка сообщени€ другому владельцу PDA
-	virtual void SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index);
+	virtual void SendPdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index);
 
 	// инвентарь
 	CInventory	*m_inventory;			
@@ -98,13 +98,13 @@ protected:
 	// сюжетна€ информаци€
 public:
 	//персонаж получил новую порцию информации
-	virtual void OnReceiveInfo	(INFO_ID info_id);
+	virtual void OnReceiveInfo	(INFO_INDEX info_index);
 	//убрать информацию
-	virtual void OnDisableInfo	(INFO_ID info_id);
+	virtual void OnDisableInfo	(INFO_INDEX info_index);
 	//передать/удалить информацию через сервер
-	virtual void TransferInfo	(INFO_ID info_id, bool add_info) const;
+	virtual void TransferInfo	(INFO_INDEX info_index, bool add_info) const;
 	//есть ли информаци€ у персонажа
-	virtual bool HasInfo		(INFO_ID info_id) const;
+	virtual bool HasInfo		(INFO_INDEX info_index) const;
 
 
 	typedef CALifeRegistryWrapper<CInfoPortionRegistry> KNOWN_INFO_REGISTRY;

@@ -133,7 +133,7 @@ public:
 	virtual	float				evaluate						(const CGameObject *object) const;
 	
 	// PDA && Dialogs
-	virtual void				ReceivePdaMessage				(u16 who, EPdaMsg msg, INFO_ID info_index);
+	virtual void				ReceivePdaMessage				(u16 who, EPdaMsg msg, INFO_INDEX info_index);
 
 	// scripts
 	virtual void				UseObject				(const CObject			*tpObject);

@@ -61,14 +61,14 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
 }
 
 //information receive
-void CActor::OnReceiveInfo(INFO_ID info_id)
+void CActor::OnReceiveInfo(INFO_INDEX info_index)
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
 	CInfoPortion info_portion;
-	info_portion.Load(info_id);
+	info_portion.Load(info_index);
 
 	AddMapLocationsFromInfo(&info_portion);
 	AddEncyclopediaArticle(&info_portion);
@@ -85,23 +85,23 @@ void CActor::OnReceiveInfo(INFO_ID info_id)
 		}*/
 	}
 
-	CInventoryOwner::OnReceiveInfo(info_id);
+	CInventoryOwner::OnReceiveInfo(info_index);
 }
 
 
-void CActor::OnDisableInfo(INFO_ID info_id)
+void CActor::OnDisableInfo(INFO_INDEX info_index)
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(pGameSP && pGameSP->TalkMenu.IsShown()) pGameSP->TalkMenu.UpdateQuestions();
 
-	Level().RemoveMapLocationByInfo(info_id);
-	CInventoryOwner::OnDisableInfo(info_id);
+	Level().RemoveMapLocationByInfo(info_index);
+	CInventoryOwner::OnDisableInfo(info_index);
 }
 
 
 
-void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)
+void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());

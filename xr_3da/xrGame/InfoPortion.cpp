@@ -45,7 +45,7 @@ void CInfoPortion::Load	(INFO_STR_ID info_str_id)
 	Load	(id_to_index::IdToIndex(info_str_id));
 }
 
-void CInfoPortion::Load	(INFO_ID info_index)
+void CInfoPortion::Load	(INFO_INDEX info_index)
 {
 	m_InfoIndex = info_index;
 	inherited_shared::load_shared(m_InfoIndex, NULL);
@@ -86,7 +86,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	info_data()->m_DisableInfo.clear();
 	for(i=0; i<disable_num; ++i)
 	{
-		INFO_ID info_id = CInfoPortion::IdToIndex(uiXml.Read(pNode, "disable", NULL));
+		INFO_INDEX info_id = CInfoPortion::IdToIndex(uiXml.Read(pNode, "disable", NULL));
 		info_data()->m_DisableInfo.push_back(info_id);
 	}
 

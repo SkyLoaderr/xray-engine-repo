@@ -4,32 +4,17 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma		once
-#include "alife_space.h"
+
+#include "character_info_defs.h"
 #include "PhraseDialogDefs.h"
 
-#define DEFAULT_CHARACTER_FILE "npc_profile.xml"
-#define NO_GOODWILL -1
+#include "alife_registry_container.h"
+#include "alife_registry_wrapper.h"
 
+
+#define DEFAULT_CHARACTER_FILE "npc_profile.xml"
 
 class CInventoryOwner;
-
-//структура, описывающая отношение одного персонажа к другому
-struct SRelation
-{
-	SRelation();
-	~SRelation();
-
-	ALife::ERelationType	RelationType	() const;
-	void					SetRelationType	(ALife::ERelationType relation);
-
-	int						Goodwill		() const;
-	void					SetGoodwill		(int new_goodwill);
-private:
-	//отношения (враг, нейтрал, друг)
-	ALife::ERelationType m_eRelationType;
-	//благосклонность
-	int m_iGoodwill;
-};
 
 
 class CCharacterInfo
@@ -59,7 +44,7 @@ public:
 	void				 SetGoodwill			(u16 person_id, int goodwill);
 	ALife::ERelationType GetRelationType		(u16 person_id) const ;
 	void				 SetRelationType		(u16 person_id, ALife::ERelationType new_relation);
-	void				 ClearRelations	();
+	void				 ClearRelations			();
 
 protected:
 	//////////////////////////////////////////////////////////////////////////
@@ -76,9 +61,9 @@ protected:
 	PHRASE_DIALOG_INDEX m_iStartDialog;
 
 
-	//отношения которые мы имеем о других персонажей
-	DEFINE_MAP(u16, SRelation, RELATION_MAP, RELATION_MAP_IT);
-	RELATION_MAP m_RelationMap;
+	//наши отношения с другими персонажами
+	typedef CALifeRegistryWrapper<CRelationRegistry> RELATION_REGISTRY;
+	RELATION_REGISTRY relation_registry;
 
 	//////////////////////////////////////////////////////////////////////////
 	// визуальное представление
@@ -86,7 +71,7 @@ protected:
 	//имя используемой модели
 	ref_str m_sVisualName;
 	//положение большой икноки (для торговли и общения) в файле с иконками 
-	int	m_iIconX, m_iIconY;	
+	int	m_iIconX, m_iIconY;
 	//положение мальнькой иконки (для карты)
-	int	m_iMapIconX, m_iMapIconY;	
+	int	m_iMapIconX, m_iMapIconY;
 };

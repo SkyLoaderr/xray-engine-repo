@@ -121,6 +121,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 	//-------------------------------------
 	known_info_registry.init(pThis->ID());
+	CharacterInfo().relation_registry.init(pThis->ID());
 
 	return TRUE;
 }
@@ -202,7 +203,7 @@ bool CInventoryOwner::IsActivePDA() const
 
 //виртуальная функция обработки сообщений
 //who - id PDA от которого пришло сообщение
-void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)
+void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 {
 	if(msg == ePdaMsgInfo)
 	{
@@ -235,7 +236,7 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index
 
 
 //who - id PDA которому отправляем сообщение
-void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)
+void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
 {
 	if(!GetPDA() || !GetPDA()->IsActive()) return;
 

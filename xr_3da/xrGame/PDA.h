@@ -61,8 +61,8 @@ public:
 	virtual bool IsOn() {return !m_bTurnedOff;}
 	virtual bool IsOff() {return m_bTurnedOff;}
 
-	virtual void SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_index);
-	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_index);
+	virtual void SendMessage(u32 pda_num, EPdaMsg msg, INFO_INDEX info_index);
+	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index);
 
 	virtual bool IsNewMessage(){return m_bNewMessage;}
 	virtual void NoNewMessage(){m_bNewMessage = false;}
@@ -89,14 +89,14 @@ public:
 	//получить последнее сообщение из лога  (false - если лог пуст)
 	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 
-	void					 RemoveInfo(INFO_ID info_index);
+	void					 RemoveInfo(INFO_INDEX info_index);
 
 protected:
 	//поступление нового сообщения на PDA
 	bool m_bNewMessage;
 
-	void PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_ID info_index);
-	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_ID info_index, bool receive);
+	void PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index);
+	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_INDEX info_index, bool receive);
 
 
 	//радиус обнаружения других PDA

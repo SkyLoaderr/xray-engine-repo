@@ -12,15 +12,25 @@
 #include "InfoPortionDefs.h"
 #include "PdaMsg.h"
 #include "encyclopedia_article_defs.h"
+#include "character_info_defs.h"
 
 
 #pragma warning(push)
 #pragma warning(disable:4005)
 
+
+//для всех персонажей, те порции информации, которые они помнят
 typedef CALifeAbstractRegistry<u16, KNOWN_INFO_VECTOR > CInfoPortionRegistry;
 add_to_registry_type_list(CInfoPortionRegistry);
 #define info_portions define_constant(CInfoPortionRegistry) 
 #define registry_type_list save_registry_type_list(CInfoPortionRegistry)
+
+//для всех персонажей, отношения с другими персонажами
+typedef CALifeAbstractRegistry<u16, RELATION_MAP > CRelationRegistry;
+add_to_registry_type_list(CRelationRegistry);
+#define character_relations define_constant(CRelationRegistry) 
+#define registry_type_list save_registry_type_list(CRelationRegistry)
+
 
 //для актеров, список персонажей с которыми были разговоры
 typedef CALifeAbstractRegistry<u16, TALK_CONTACT_VECTOR > CKnownContactsRegistry;
