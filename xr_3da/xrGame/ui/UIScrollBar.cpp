@@ -89,39 +89,25 @@ void CUIScrollBar::UpdateScrollBar()
 	//утановить размер и положение каретки
 	if(m_bIsHorizontal)
 	{	
-		m_ScrollBox.SetWidth(iFloor(0.5f + 
-									(float)(GetWidth()-2*SCROLLBAR_WIDTH)*
-									scrollbar_unit*m_iPageSize));
-		
-		m_ScrollBox.SetWndPos((int)(SCROLLBAR_WIDTH + 	
-									(GetWidth()-2*SCROLLBAR_WIDTH)
-									*scrollbar_unit*(m_iScrollPos-m_iMinPos)),  
-							          m_ScrollBox.GetWndRect().top);
-		
-		//в крайней позиции подправить положение scrollbox
-		if(m_iScrollPos == m_iMaxPos - m_iPageSize + 1)
-		{
-			m_ScrollBox.SetWidth(m_IncButton.GetWndRect().left-m_ScrollBox.GetWndRect().left);
-		}
-	}
-	else
-	{
-		int height = iCeil(float((GetHeight()-2*SCROLLBAR_HEIGHT))*
-						   scrollbar_unit*float(m_iPageSize)
-						   +.5f);
+		int width				= iFloor(0.5f + (float)(GetWidth()-2*SCROLLBAR_WIDTH)
+									*scrollbar_unit*m_iPageSize);
+		clamp					(width,_min(int(SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH),GetWidth()-2*SCROLLBAR_WIDTH);
+		m_ScrollBox.SetWidth	(width);
+		int pos					= (int)(SCROLLBAR_WIDTH + (GetWidth()-2*SCROLLBAR_WIDTH)
+									*scrollbar_unit*(m_iScrollPos-m_iMinPos));
+		clamp					(pos,int(SCROLLBAR_WIDTH),GetWidth()-SCROLLBAR_WIDTH-width);
+		m_ScrollBox.SetWndPos	(pos, m_ScrollBox.GetWndRect().top);
+	}else{
+		int height				= iCeil(float((GetHeight()-2*SCROLLBAR_HEIGHT))
+									*scrollbar_unit*float(m_iPageSize)
+									+.5f);
+		clamp					(height,_min(int(SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT),GetHeight()-2*SCROLLBAR_HEIGHT);
 
-		m_ScrollBox.SetHeight(height);
-
-		m_ScrollBox.SetWndPos(m_ScrollBox.GetWndRect().left,
-								iFloor( SCROLLBAR_HEIGHT+
-								(GetHeight()-2*SCROLLBAR_HEIGHT)*
-								scrollbar_unit*(m_iScrollPos-m_iMinPos)));
-
-		//в крайней позиции подправить положение scrollbox
-		if(m_iScrollPos == m_iMaxPos - m_iPageSize + 1)
-		{
-			m_ScrollBox.SetHeight(m_IncButton.GetWndRect().top-m_ScrollBox.GetWndRect().top);
-		}
+		m_ScrollBox.SetHeight	(height);
+		int pos					= iFloor( SCROLLBAR_HEIGHT+(GetHeight()-2*SCROLLBAR_HEIGHT)
+									*scrollbar_unit*(m_iScrollPos-m_iMinPos));
+		clamp					(pos,int(SCROLLBAR_HEIGHT),GetHeight()-SCROLLBAR_HEIGHT-height);
+		m_ScrollBox.SetWndPos	(m_ScrollBox.GetWndRect().left, pos);
 	}
 }
 

@@ -343,6 +343,8 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 	m_UIMainScrollH.SetRange	(0,_max(m_activeLevelMap->GetWidth()-m_UILevelFrame.GetWidth(),0));
 	m_UIMainScrollV.SetScrollPos(0);
 	m_UIMainScrollH.SetScrollPos(0);
+//	m_UIMainScrollV.SetPageSize	(10.f*float(m_activeLevelMap->GetHeight())/float(m_UILevelFrame.GetHeight()));
+//	m_UIMainScrollH.SetPageSize	(10.f*float(m_activeLevelMap->GetWidth())/float(m_UILevelFrame.GetWidth()));
 }
 
 void CUIMapWnd::Draw()
