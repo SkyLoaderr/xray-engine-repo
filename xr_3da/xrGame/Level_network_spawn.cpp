@@ -68,7 +68,4 @@ void CLevel::g_sv_Spawn		(xrServerEntity* E)
 			game_events.insert	(GEN);
 		}
 	}
-
-	//
-	F_entity_Destroy		(E);
 }
