@@ -129,6 +129,12 @@ void CCharacterInfo::load_shared	(LPCSTR)
 
 #ifdef XRGAME_EXPORTS
 
+
+PROFILE_INDEX CCharacterInfo::Profile()			const
+{
+	return m_iProfileIndex;
+}
+
 LPCSTR CCharacterInfo::Name() const
 {
 	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);

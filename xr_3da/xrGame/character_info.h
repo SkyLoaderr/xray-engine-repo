@@ -101,6 +101,7 @@ public:
 
 
 #ifdef XRGAME_EXPORTS
+	PROFILE_INDEX				Profile()			const;
 	LPCSTR						Name()				const;
 	LPCSTR						Bio()				const;
 
