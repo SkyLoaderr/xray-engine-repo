@@ -240,6 +240,7 @@ void CDetailManager::Render		(Fvector& EYE)
 CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
 {
 	static Slot	empty;
+	empty.bReady	= FALSE;
 
 	// Search cache
 	int rx	= sx-c_x + dhm_line;
