@@ -273,7 +273,7 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 	EBodyState l_tBodyState = (m_tBodyState == eBodyStateStand) && IsLimping() ? eBodyStateStandDamaged : m_tBodyState;
 	if (m_tMentalState == eMentalStateFree) {
 		tpTorsoAnimation = 0;
-//		R_ASSERT(m_tBodyState == eBodyStateStand);
+		R_ASSERT2(m_tBodyState == eBodyStateStand,"Cannot run free animation when body state is not stand!");
 		if (m_tMovementType == eMovementTypeStand)
 			tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
 		else

@@ -689,6 +689,7 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include "ui\\xrXMLParser.h"
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        u32  ul_reason_for_call, 
@@ -765,10 +766,14 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 		// keyboard binding
 		CCC_RegisterInput			();
+//		HMODULE h = LoadLibrary("x:\\xrXMLParser.dll");
+//		h=h;
+		XML_DisableStringCaching();
 		}
 		break;
 	case DLL_PROCESS_DETACH:
 		xr_delete			(g_tpAI_Space);
+		XML_CleanUpMemory();
 		break;
 	}
     return TRUE;

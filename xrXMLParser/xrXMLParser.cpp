@@ -7,9 +7,6 @@
 
 #include "xrXMLParser.h"
 
-
-
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -301,3 +298,22 @@ XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node,
 	return m_root.SearchForAttribute(start_node, tag_name, 
 									 attrib, attrib_value_pattern);
 }
+
+BOOL APIENTRY DllMain( HANDLE hModule, 
+                       u32  ul_reason_for_call, 
+                       LPVOID lpReserved
+					 )
+{
+	switch (ul_reason_for_call)
+	{
+	case DLL_PROCESS_ATTACH: {
+		CkSettings::disableStringCaching();
+		break;
+	}
+	case DLL_PROCESS_DETACH:
+		CkSettings::cleanupMemory();
+		break;
+	}
+    return TRUE;
+}
+

@@ -4,9 +4,11 @@
 #include "HUDmanager.h"
 #include "PHdynamicdata.h"
 #include "Physics.h"
+//#include "ui\\xrXMLParser.h"
 
 BOOL CLevel::net_Start_client	( LPCSTR options )
 {
+//	XML_DisableStringCaching();
 	pApp->LoadBegin	();
 
 	// name_of_server
