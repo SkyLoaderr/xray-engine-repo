@@ -33,7 +33,7 @@ void	CRenderTarget::phase_scene		()
 void	CRenderTarget::phase_combine	()
 {
 	RCache.set_RT				(HW.pBaseRT,			0);
-	RCache.set_RT				(0);
-	RCache.set_RT				(0);
+	RCache.set_RT				(0,						1);
+	RCache.set_RT				(0,						2);
 	RCache.set_ZB				(HW.pBaseZB);
 }
