@@ -186,7 +186,7 @@ void CDetailManager::Render		()
 
 			// Transfer visibile and partially visible slot contents
 			u32 mask			= 0xff;
-			u32 res				= View.testSAABB		(S.vis.sphere.P,S.vis.sphere.R,S.vis.box.min,S.vis.box.max,mask);
+			u32 res				= View.testSAABB		(S.vis.sphere.P,S.vis.sphere.R,S.vis.box.data(),mask);
 			if (fcvNone==res)							continue;	// invisible-view frustum
 			if (!RImplementation.occ_visible(S.vis))	continue;	// invisible-occlusion
 

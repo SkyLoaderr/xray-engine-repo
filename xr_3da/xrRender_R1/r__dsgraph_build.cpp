@@ -329,7 +329,7 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 	// Check frustum visibility and calculate distance to visual's center
 	EFC_Visible	VIS;
 	vis_data&	vis			= pVisual->vis;
-	VIS = View->testSAABB	(vis.sphere.P,vis.sphere.R,vis.box.min,vis.box.max,planes);
+	VIS = View->testSAABB	(vis.sphere.P,vis.sphere.R,vis.box.data(),planes);
 	if (fcvNone==VIS)		return;
 	if (!HOM.visible(vis))	return;
 
