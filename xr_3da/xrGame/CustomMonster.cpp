@@ -290,6 +290,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			Center(C);
 			R = Radius();
 			//////////////////////////////////////
+#pragma todo("Oles to all AI guys: perf/logical problem: Only few objects needs 'feel_touch' why to call update for everybody?")
 			feel_touch_update		(C,R);
 
 			net_update				uNext;
