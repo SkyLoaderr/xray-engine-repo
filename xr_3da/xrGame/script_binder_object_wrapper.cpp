@@ -103,7 +103,7 @@ void CScriptBinderObjectWrapper::save_static			(CScriptBinderObject *script_bind
 
 void CScriptBinderObjectWrapper::load					(IReader *input_packet)
 {
-	luabind::call_member<void>		(this,"load",*input_packet);
+	luabind::call_member<void>		(this,"load",input_packet);
 }
 
 void CScriptBinderObjectWrapper::load_static			(CScriptBinderObject *script_binder_object, IReader *input_packet)
