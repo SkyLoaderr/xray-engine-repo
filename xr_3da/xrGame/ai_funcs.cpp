@@ -21,7 +21,7 @@ CPatternFunction::CPatternFunction()
 	m_dwaVariableValues = 0;
 }
 
-CPatternFunction::CPatternFunction(char *caFileName, CBaseFunction **fpaBaseFunctions)
+CPatternFunction::CPatternFunction(const char *caFileName, CBaseFunction **fpaBaseFunctions)
 {
 	m_dwPatternCount = m_dwVariableCount = m_dwParameterCount = 0;
 	m_dwaVariableTypes = 0;
@@ -46,7 +46,7 @@ CPatternFunction::~CPatternFunction()
 	_FREE(m_dwaVariableValues);
 }
 
-void CPatternFunction::vfLoadEF(char *caFileName, CBaseFunction **fpaBaseFunctions)
+void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions)
 {
 	FILE *fTestParameters = fopen(caFileName,"rb");
 	if (!fTestParameters) {
@@ -109,7 +109,11 @@ double CPatternFunction::dfEvaluate()
 
 double CPatternFunction::dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 {
+	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+		return(m_dLastValue);
+	m_dwLastUpdate = Level().timeServer();
+	m_tpLastMonster = tpCustomMonster;
 	for (DWORD i=0; i<m_dwVariableCount; i++)
-		m_dwaVariableValues[i] = fpaBaseFunctions[m_dwaVariableTypes[i] - 1]->dwfGetDiscreteValue(tpCustomMonster,fpaBaseFunctions,m_dwaVariableTypes[i]);
-	return(dfEvaluate());
+		m_dwaVariableValues[i] = fpaBaseFunctions[m_dwaVariableTypes[i] - 1]->dwfGetDiscreteValue(tpCustomMonster,fpaBaseFunctions,m_dwaAtomicFeatureRange[i]);
+	return(m_dLastValue = dfEvaluate());
 }

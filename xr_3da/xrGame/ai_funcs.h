@@ -25,7 +25,7 @@ protected:
 
 public:
 
-	virtual	void	vfLoadEF(char *caFileName, CBaseFunction **fpaBaseFunctions) {};
+	virtual	void	vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions) {};
 	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions) = 0;
 	
 	virtual DWORD	dwfGetDiscreteValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions, DWORD dwDiscretizationValue)
@@ -77,16 +77,17 @@ public:
 	DWORD		*m_dwaVariableTypes;
 	DWORD		*m_dwaVariableValues;
 
-				CPatternFunction(char *caEFFileName, CBaseFunction **fpaBaseFunctions);
+				CPatternFunction(const char *caEFFileName, CBaseFunction **fpaBaseFunctions);
 				CPatternFunction();
 				~CPatternFunction();
 
-	virtual	void	vfLoadEF(char *caEFFileName, CBaseFunction **fpaBaseFunctions);
+	virtual	void	vfLoadEF(const char *caEFFileName, CBaseFunction **fpaBaseFunctions);
 	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions);
 };
 
 class CHealthFunction : public CBaseFunction {
 	
+public:
 	CHealthFunction() {
 		m_dMinResultValue = 0.0;
 		m_dMaxResultValue = 100.0;
@@ -94,9 +95,106 @@ class CHealthFunction : public CBaseFunction {
 	
 	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
 		m_dwLastUpdate = Level().timeServer();
 		m_tpLastMonster = tpCustomMonster;
 		return(m_dLastValue = tpCustomMonster->g_Health());
+	};
+	
+};
+ 
+class CArmorFunction : public CBaseFunction {
+	
+public:
+	CArmorFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = tpCustomMonster->g_Armor());
+	};
+	
+};
+ 
+class CMoraleFunction : public CBaseFunction {
+	
+public:
+	CMoraleFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = m_dMaxResultValue);
+	};
+	
+};
+ 
+class CStrengthFunction : public CBaseFunction {
+	
+public:
+	CStrengthFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = m_dMaxResultValue);
+	};
+	
+};
+ 
+class CAccuracyFunction : public CBaseFunction {
+	
+public:
+	CAccuracyFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = m_dMaxResultValue);
+	};
+	
+};
+ 
+class CReactionFunction : public CBaseFunction {
+	
+public:
+	CReactionFunction() {
+		m_dMinResultValue = 0.0;
+		m_dMaxResultValue = 100.0;
+	}
+	
+	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_dLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_dLastValue = m_dMaxResultValue);
 	};
 	
 };

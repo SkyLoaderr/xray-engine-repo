@@ -17,8 +17,11 @@
 #include "..\\..\\actor.h"
 #include "..\\..\\ai_funcs.h"
 
+#define MAX_FUNCTION_COUNT 64
+
 class CAI_Soldier : public CCustomMonster
 {
+
 	typedef	CCustomMonster inherited;
 
 	enum ESoundCcount {
@@ -731,9 +734,16 @@ class CAI_Soldier : public CCustomMonster
 		virtual BOOL  net_Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 		virtual objQualifier* GetQualifier();
 		virtual	void  soundEvent(CObject* who, int eType, Fvector& Position, float power);
+		
 		// Data driven design properties
 		static	bool				bPatternFunctionLoaded;
-		static  CBaseFunction		**fpaTypeFunctions;
+		static  CBaseFunction		*fpaBaseFunctions[MAX_FUNCTION_COUNT];
+		static  CHealthFunction		pfHealth;
+		static  CArmorFunction		pfArmor;
+		static  CMoraleFunction		pfMorale;
+		static  CStrengthFunction	pfStrength;
+		static  CAccuracyFunction	pfAccuracy;
+		static  CReactionFunction	pfReaction;
 		static  CPatternFunction	pfRelation;
 };
 		

@@ -16,7 +16,13 @@
 
 bool				CAI_Soldier::bPatternFunctionLoaded = false;
 CPatternFunction	CAI_Soldier::pfRelation;
-CBaseFunction		**CAI_Soldier::fpaTypeFunctions;
+CBaseFunction		*CAI_Soldier::fpaBaseFunctions[MAX_FUNCTION_COUNT];
+CHealthFunction		CAI_Soldier::pfHealth;
+CArmorFunction		CAI_Soldier::pfArmor;
+CMoraleFunction		CAI_Soldier::pfMorale;
+CStrengthFunction	CAI_Soldier::pfStrength;
+CAccuracyFunction	CAI_Soldier::pfAccuracy;
+CReactionFunction	CAI_Soldier::pfReaction;
 
 CAI_Soldier::CAI_Soldier()
 {
@@ -188,8 +194,16 @@ void CAI_Soldier::Load	(LPCSTR section)
 
 	if (!bPatternFunctionLoaded) {
 		bPatternFunctionLoaded = true;
-		pfRelation.vfLoadEF((char *)(pSettings->ReadSTRING(section,"Relation")),fpaTypeFunctions);
+		fpaBaseFunctions[0] = &pfHealth;
+		fpaBaseFunctions[1] = &pfArmor;
+		fpaBaseFunctions[2] = &pfMorale;
+		fpaBaseFunctions[3] = &pfStrength;
+		fpaBaseFunctions[4] = &pfAccuracy;
+		fpaBaseFunctions[5] = &pfReaction;
+		pfRelation.vfLoadEF(pSettings->ReadSTRING(section,"Relation"),fpaBaseFunctions);
 	}
+
+	//Msg("Evaluation Function Relation : %8.2f",pfRelation.dfGetValue(this,fpaBaseFunctions));
 
 	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(pSettings->ReadSTRING(section,"TestAnimation"));
 	//m_fAddAngle = pSettings->ReadFLOAT(section,"AddAngle");
