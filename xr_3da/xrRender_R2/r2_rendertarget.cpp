@@ -301,6 +301,8 @@ void	CRenderTarget::OnDeviceCreate	()
 							fs		=	powf	(_max(_max(s0,s1),s2), 24.f);
 							fs		*=	powf	(ld,1/8.f);
 								}	break;
+						default:
+							fd	= fs = 0;
 						}
 						s32		_d	=	clampr	(iFloor	(fd*255.5f),	0,255);
 						s32		_s	=	clampr	(iFloor	(fs*255.5f),	0,255);

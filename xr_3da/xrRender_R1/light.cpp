@@ -135,7 +135,12 @@ void	light::spatial_move			()
 
 #if RENDER==R_R2
 	if (flags.bActive) gi_generate	();
-	svis.invalidate					();
+	svis[0].invalidate				();
+	svis[1].invalidate				();
+	svis[2].invalidate				();
+	svis[3].invalidate				();
+	svis[4].invalidate				();
+	svis[5].invalidate				();
 #endif
 }
 

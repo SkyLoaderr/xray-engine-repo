@@ -213,8 +213,14 @@ void CRender::Render		()
 
 	// Update incremental shadowmap-visibility solver
 	{
-		for (u32 it=0; it<Lights_LastFrame.size(); it++)
-			Lights_LastFrame[it]->svis.flushoccq	();
+		for (u32 it=0; it<Lights_LastFrame.size(); it++)	{
+			Lights_LastFrame[it]->svis[0].flushoccq	();
+			Lights_LastFrame[it]->svis[1].flushoccq	();
+			Lights_LastFrame[it]->svis[2].flushoccq	();
+			Lights_LastFrame[it]->svis[3].flushoccq	();
+			Lights_LastFrame[it]->svis[4].flushoccq	();
+			Lights_LastFrame[it]->svis[5].flushoccq	();
+		}
 		Lights_LastFrame.clear	();
 	}
 
