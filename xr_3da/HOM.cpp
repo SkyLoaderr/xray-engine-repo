@@ -144,26 +144,26 @@ IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat 
 
 void CHOM::Render_DB	(CFrustum& base)
 {
-	bHOM_ModeS			= psDeviceFlags&rsOcclusion;
-	if (bHOM_ModeS)	
-	{
-		Fmatrix	mInv;	mInv.invert	(Device.mView);
-		float	fFAR	= pCreator->Environment.c_Far;
-		XRC.ray_options	(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
-		for (u32 y=0; y<occ_dim; y++)
-		{
-			for (u32 x=0; x<occ_dim; x++)
-			{
-				Fvector				D;
-				MouseRayFromPoint	(D,x,y,mInv);
-				XRC.ray_query		(m_pModel, Device.vCameraPosition, D, fFAR);
-				if (XRC.r_count())	{
-					Raster.get_frame()[y*occ_dim+x]	= m_pTris + XRC.r_begin()->id;
-					Raster.get_depth()[y*occ_dim+x]	= XRC.r_begin()->range/fFAR;
-				}
-			}
-		}
-	} else {
+//	bHOM_ModeS			= psDeviceFlags&rsOcclusion;
+//	if (bHOM_ModeS)	
+//	{
+//		Fmatrix	mInv;	mInv.invert	(Device.mView);
+//		float	fFAR	= pCreator->Environment.c_Far;
+//		XRC.ray_options	(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
+//		for (u32 y=0; y<occ_dim; y++)
+//		{
+//			for (u32 x=0; x<occ_dim; x++)
+//			{
+//				Fvector				D;
+//				MouseRayFromPoint	(D,x,y,mInv);
+//				XRC.ray_query		(m_pModel, Device.vCameraPosition, D, fFAR);
+//				if (XRC.r_count())	{
+//					Raster.get_frame()[y*occ_dim+x]	= m_pTris + XRC.r_begin()->id;
+//					Raster.get_depth()[y*occ_dim+x]	= XRC.r_begin()->range/fFAR;
+//				}
+//			}
+//		}
+//	} else {
 		// Query DB
 		XRC.frustum_options	(0);
 		XRC.frustum_query	(m_pModel,base);
@@ -216,7 +216,7 @@ void CHOM::Render_DB	(CFrustum& base)
 			if (0==pixels)
 			{ T.skip=next; continue; }
 		}
-	}
+//	}
 }
 
 void CHOM::Render		(CFrustum& base)

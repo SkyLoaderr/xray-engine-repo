@@ -25,7 +25,7 @@ void CLevel::OnKeyboardPress(int key)
 		ShowLM	= TRUE;
 		return;
 	case DIK_BACK:
-		HW.Caps.bShowOverdraw		= !HW.Caps.bShowOverdraw;
+		HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
 	case DIK_F6:
 		net_Save					("quick.save");

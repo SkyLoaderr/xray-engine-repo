@@ -60,9 +60,13 @@ void CRenderDevice::overdrawBegin	()
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILWRITEMASK,	0xffffffff		));
 
     // Increment the stencil buffer for each pixel drawn
-    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,		D3DSTENCILOP_INCRSAT	));
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP		));
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILPASS,		D3DSTENCILOP_INCRSAT	));
+
+	if (1==HW.Caps.SceneMode)		
+	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,	D3DSTENCILOP_KEEP		)); }	// Overdraw
+	else 
+	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,	D3DSTENCILOP_INCRSAT	)); }	// ZB access
 }
 
 void CRenderDevice::overdrawEnd		()
@@ -110,9 +114,9 @@ void CRenderDevice::Begin	()
 		Create	();
 	}
 
-	CHK_DX(HW.pDevice->BeginScene());
+	CHK_DX		(HW.pDevice->BeginScene());
 	Streams.BeginFrame();
-	if (HW.Caps.bShowOverdraw)	overdrawBegin	();
+	if (HW.Caps.SceneMode)	overdrawBegin	();
 	FPU::m24r();
 }
 
@@ -130,7 +134,7 @@ void CRenderDevice::End		(void)
 {
 	VERIFY(HW.pDevice);
 
-	if (HW.Caps.bShowOverdraw)	overdrawEnd		();
+	if (HW.Caps.SceneMode)	overdrawEnd		();
 
 	// end scene
 	Shader.OnFrameEnd	();

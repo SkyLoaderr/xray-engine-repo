@@ -33,7 +33,7 @@ public:
 	BOOL			bForceMultipass;
 	BOOL			bForceGPU_SW;
 	BOOL			bForceGPU_NonPure;
-	BOOL			bShowOverdraw;
+	BOOL			SceneMode;
 
 	// device format
 	D3DFORMAT		fTarget;

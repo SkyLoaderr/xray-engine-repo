@@ -283,6 +283,7 @@ extern float		ssaDISCARD;
 extern float		ssaDONTSORT;
 extern float		ssaLOD_A;
 extern float		ssaLOD_B;
+extern float		ssaHZBvsTEX;
 extern float		psDetailDensity;
 extern int			psSheduler;
 extern float		psDetail_w_rot1;
@@ -322,7 +323,7 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_wireframe",			&psDeviceFlags,rsWireframe);
 	CMD3(CCC_Mask,		"rs_renormalize",		&psDeviceFlags,rsNormalize);
 	CMD3(CCC_Mask,		"rs_antialias",			&psDeviceFlags,rsAntialias);
-	CMD3(CCC_Mask,		"rs_antialias_tv",		&psDeviceFlags,rsAntialiasBlurred);
+	CMD3(CCC_Mask,		"rs_warm_hzb",			&psDeviceFlags,rsWarmHZB);
 	CMD3(CCC_Mask,		"rs_triplebuffer",		&psDeviceFlags,rsTriplebuffer);
 	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,rsFullscreen);
 	CMD3(CCC_Mask,		"rs_clear_bb",			&psDeviceFlags,rsClearBB);
@@ -337,6 +338,7 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_ssa_lod_b",			&ssaLOD_B,			32, 64		);
 	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaDISCARD,		1,  16		);
 	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,		16, 128		);
+	CMD4(CCC_Float,		"rs_ssa_hzb_vs_tex",	&ssaHZBvsTEX,		16,	512		);
 	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,	.05f,0.3f	);
 	CMD4(CCC_Float,		"rs_detail_w_rot1",		&psDetail_w_rot1,	1.f,180.f	);
 	CMD4(CCC_Float,		"rs_detail_w_rot2",		&psDetail_w_rot2,	1.f,180.f	);

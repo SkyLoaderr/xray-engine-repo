@@ -73,7 +73,7 @@ enum {
 	rsWireframe			= (1ul<<4ul),
 	rsAnisotropic		= (1ul<<5ul),
 	rsAntialias			= (1ul<<6ul),
-	rsAntialiasBlurred	= (1ul<<7ul),
+	rsWarmHZB			= (1ul<<7ul),
 	rsNormalize			= (1ul<<8ul),
 	rsCompressLMAPs		= (1ul<<9ul),
 	rsOcclusion			= (1ul<<10ul),
