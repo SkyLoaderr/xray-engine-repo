@@ -41,16 +41,7 @@ void CShootingObject::FireShotmark (const Fvector& vDir, const Fvector &vEnd, Co
 	{
 		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
-#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
-			/*
-			IRender_Sector* S	= R.O->Sector();
-			Fvector D;	D.invert(vDir);
-
-			LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
-			CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
-			PS->m_Emitter.m_ConeDirection.set(D);
-			PS->play_at_pos		(vEnd);
-			*/
+			//тут добавить отметки крови
 		}
 		particle_dir = vDir;
 		particle_dir.invert();
@@ -183,6 +174,8 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 					material_pierce*
 					(m_pCurrentCartridge?m_pCurrentCartridge->m_kImpulse:1.f)
 					*scale;
+	
+	VERIFY(impulse>=0);
 
 	CEntity* E = dynamic_cast<CEntity*>(R.O);
 	//учитываем попадание в разные части 

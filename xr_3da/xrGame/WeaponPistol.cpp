@@ -103,8 +103,11 @@ void CWeaponPistol::OnShot		()
 	OnShellDrop					();
 
 	// ќгонь из ствола
+	
 	StartFlameParticles	();
-
+	R_ASSERT2(!m_pFlameParticles || !m_pFlameParticles->IsLooped(),
+			  "can't set looped particles system for shoting with pistol");
+	
 	//дым из ствола
 	StartSmokeParticles	();
 }

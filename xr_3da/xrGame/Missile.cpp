@@ -225,8 +225,13 @@ void CMissile::OnH_B_Independent()
 		l_up.set	(XFORM().j); l_up.mul(2.f);
 		
 		Fmatrix		l_p1, l_p2;
-		l_p1.set	(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f);
-		l_p2.set	(XFORM()); l_p2.c.add(l_up); l_fw.mul(1.f+m_fThrowForce); l_p2.c.add(l_fw);
+		l_p1.set	(XFORM()); 
+		l_p1.c.add(l_up); 
+		l_up.mul(1.2f);
+		l_p2.set	(XFORM()); 
+		l_p2.c.add(l_up); 
+		l_fw.mul(1.f+m_fThrowForce); 
+		l_p2.c.add(l_fw);
 		
 		Fvector		l_vel,a_vel;
 		float		fi,teta,r;
@@ -257,7 +262,7 @@ void CMissile::OnH_B_Independent()
 		vel.set(m_throw_direction);
 		vel.normalize();
 		vel.mul(m_fThrowForce);
-		XFORM().c.set(m_throw_point);
+		//XFORM().c.set(m_throw_point);
 		m_pPhysicsShell->Activate(XFORM(), vel, zero_vel);
 	}
 }
@@ -443,6 +448,7 @@ void CMissile::UpdateXForm()
 		mRes.set		(R,N,D,mR.c);
 		mRes.mulA_43	(E->XFORM());
 		UpdatePosition	(mRes);
+		
 		UpdateHudPosition	();
 	}
 }

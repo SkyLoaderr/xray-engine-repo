@@ -26,16 +26,25 @@ public:
 	CInventory();
 	virtual ~CInventory();
 
-	float TotalWeight() const;										// Вес инвенторя
-	bool Take(CGameObject *pObj, bool bNotActivate = false);// Взять объект. Объект попадает в рюкзак, если bNotActivate == false, то активировать объект, если у владельца инвентаря ничего не активировано (e.g. трейдер)
+	// Вес инвенторя
+	float TotalWeight() const;										
+	// Взять объект. Объект попадает в рюкзак, 
+	//если bNotActivate == false, то активировать объект, 
+	//если у владельца инвентаря ничего не активировано (e.g. трейдер)
+	bool Take(CGameObject *pObj, bool bNotActivate = false);
+	//Выбросить предмет
 	bool Drop(CGameObject *pObj, bool call_drop = true);							// Выбросить объект
-	bool DropAll();											// Выбросить все
-	void ClearAll();										// Очистить всё
+	// Выбросить все
+	bool DropAll();	
+	// Очистить всё
+	void ClearAll();
 	
-	
-	bool Slot(PIItem pIItem, bool bNotActivate = false);	// Вставить объект себе в слот. То что было - на пояс. Нельзя - в рюкзак
-	bool Belt(PIItem pIItem);								// Повесить объект на пояс
-	bool Ruck(PIItem pIItem);								// Полжить объект в рюкзак
+	// Вставить объект себе в слот. То что было - на пояс. Нельзя - в рюкзак
+	bool Slot(PIItem pIItem, bool bNotActivate = false);	
+	// Повесить объект на пояс
+	bool Belt(PIItem pIItem);
+	// Полжить объект в рюкзак
+	bool Ruck(PIItem pIItem);
 
 	//проверяет находится ли элемент в части инвенторя
 	bool InSlot(PIItem pIItem) const;
@@ -47,46 +56,62 @@ public:
 	bool CanPutInBelt(PIItem pIItem);
 	bool CanPutInRuck(PIItem pIItem);
 
-		
-	bool Activate(u32 slot);								// Активировать объект в указанном слоте
-	PIItem ActiveItem() const;								// Возвращает указатель на объект в актовном слоте
+	// Активировать объект в указанном слоте	
+	bool Activate(u32 slot);
+	// Возвращает указатель на объект в актовном слоте
+	PIItem ActiveItem() const;
 
-	bool Action(s32 cmd, u32 flags);						// true если известная команда, иначе false
-	void Update();											// Обновление
+	// true если известная команда, иначе false
+	bool Action(s32 cmd, u32 flags);
+	// Обновление на кадре
+	void Update();
 
-	PIItem Same(const PIItem pIItem, bool bSearchRuck) const;// Ищет на поясе аналогичный IItem
-	PIItem SameSlot(u32 slot,	 bool bSearchRuck) const;	// Ищет на поясе IItem для указанного слота
-	PIItem Get(const char *name, bool bSearchRuck) const;	// Ищет на поясе или в рюкзаке IItem с указанным именем (cName())
-	PIItem Get(const u32  id,	 bool bSearchRuck) const;	// Ищет на поясе или в рюкзаке IItem с указанным именем (id)
-	PIItem Get(CLASS_ID cls_id,  bool bSearchRuck) const;	// Ищет на поясе или в рюкзаке IItem с указанным CLS_ID
-	void   Clear();											// clearing Inventory
-	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	// get all the items with the same section name
-	virtual bool	bfCheckForObject(_OBJECT_ID tObjectID);	// get all the items with the same object id
+	// Ищет на поясе аналогичный IItem
+	PIItem Same(const PIItem pIItem, bool bSearchRuck) const;
+	// Ищет на поясе IItem для указанного слота
+	PIItem SameSlot(u32 slot,	 bool bSearchRuck) const;
+	// Ищет на поясе или в рюкзаке IItem с указанным именем (cName())
+	PIItem Get(const char *name, bool bSearchRuck) const;
+	// Ищет на поясе или в рюкзаке IItem с указанным именем (id)
+	PIItem Get(const u32  id,	 bool bSearchRuck) const;
+	// Ищет на поясе или в рюкзаке IItem с указанным CLS_ID
+	PIItem Get(CLASS_ID cls_id,  bool bSearchRuck) const;
+	
+	// clearing Inventory
+	void   Clear();											
+	// get all the items with the same section name
+	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	
+	// get all the items with the same object id
+	virtual bool	bfCheckForObject(_OBJECT_ID tObjectID);	
 			u32		dwfGetObjectCount();
 	CInventoryItem	*tpfGetObjectByIndex(int iIndex);
 	CInventoryItem	*GetItemFromInventory(LPCSTR caItemName);
 
-	bool Eat(PIItem pIItem);								// скушать предмет :)
+	// скушать предмет :)
+	bool Eat(PIItem pIItem);								
 
-	u32 GetActiveSlot() const {return m_activeSlot;}
+	u32 GetActiveSlot() const {return m_iActiveSlot;}
 
 	bool IsSlotsUseful() {return m_bSlotsUseful;}	 
 	void SetSlotsUseful(bool slots_useful) {m_bSlotsUseful = slots_useful;}
 	bool IsBeltUseful() {return m_bBeltUseful;}
 	void SetBeltUseful(bool belt_useful) {m_bBeltUseful = belt_useful;}
 
-	TIItemSet m_all;										// Наборы объектов. m_all - все
-	TIItemList m_ruck, m_belt;								// Списки объектов. m_ruck - рюкзак, m_belt - пояс
-	TISlotArr m_slots;										// Слоты (фиксированное кол-во)
+	// Наборы объектов. m_all - все
+	TIItemSet		m_all;
+	// Списки объектов. m_ruck - рюкзак, m_belt - пояс
+	TIItemList		m_ruck, m_belt;
+	// Слоты (фиксированное кол-во)
+	TISlotArr		m_slots;
 
-	float GetTakeDist() {return m_takeDist;}
+	float GetTakeDist() {return m_fTakeDist;}
 	
-	float GetMaxWeight() {return m_maxWeight;}
-	void  SetMaxWeight(float weight) {m_maxWeight = weight;}
+	float GetMaxWeight() {return m_fMaxWeight;}
+	void  SetMaxWeight(float weight) {m_fMaxWeight = weight;}
 
-	u32  GetMaxRuck() {return m_maxRuck;}
-	void SetMaxRuck(u32 max_ruck) {m_maxRuck = max_ruck;}
-	u32 GetMaxBelt() {return m_maxBelt;}
+	u32  GetMaxRuck() {return m_iMaxRuck;}
+	void SetMaxRuck(u32 max_ruck) {m_iMaxRuck = max_ruck;}
+	u32 GetMaxBelt() {return m_iMaxBelt;}
 
 	u32 RuckWidth() const;
 	u32 RuckHeight() const;
@@ -108,8 +133,9 @@ protected:
 
 
 	// Активный слот и слот который станет активным после смены
-	u32 m_activeSlot;
-	u32 m_nextActiveSlot;
+    //значения совпадают в обычном состоянии (нет смены слотов)
+	u32 m_iActiveSlot;
+	u32 m_iNextActiveSlot;
 
 	CInventoryOwner *m_pOwner;
 
@@ -122,13 +148,13 @@ protected:
 	bool m_bSlotsUseful;
 
 	// Максимальный вес инвентаря
-	float m_maxWeight;
+	float m_fMaxWeight;
 	// Максимальное кол-во объектов в рюкзаке и 
-	u32 m_maxRuck;
+	u32 m_iMaxRuck;
 	//на поясе
-	u32 m_maxBelt;	
+	u32 m_iMaxBelt;	
 	// Максимальное расстояние на котором можно подобрать объект
-	float m_takeDist;
+	float m_fTakeDist;
 
 
 
@@ -175,8 +201,3 @@ private:
 		}
 	};
 };
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//для владельцев инвенторя
-//#include "InventoryOwner.h"

@@ -15,7 +15,8 @@ CWeaponMagazinedWGrenade::CWeaponMagazinedWGrenade(LPCSTR name,ESoundTypes eSoun
 	m_ammoType2 = 0;
 
 	m_pGrenade = NULL;
-	m_bGrenadeMode = false;
+    m_bGrenadeMode = false;
+	m_fGrenadeVel = 0.f;
 }
 
 CWeaponMagazinedWGrenade::~CWeaponMagazinedWGrenade(void)

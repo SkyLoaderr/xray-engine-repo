@@ -89,8 +89,8 @@ void CUI::OnFrame()
 		//CWeaponList* wpns = m_Actor->GetItemList();
 		//if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
 		CActor *l_pA = dynamic_cast<CActor*>(m_Actor);
-		if(l_pA && (l_pA->inventory().m_activeSlot < l_pA->inventory().m_slots.size())) {
-			UIWeapon.Out(dynamic_cast<CWeapon*>(l_pA->inventory().m_slots[l_pA->inventory().m_activeSlot].m_pIItem));
+		if(l_pA && (l_pA->inventory().m_iActiveSlot < l_pA->inventory().m_slots.size())) {
+			UIWeapon.Out(dynamic_cast<CWeapon*>(l_pA->inventory().m_slots[l_pA->inventory().m_iActiveSlot].m_pIItem));
 		} else UIWeapon.Out(NULL);
 		
 		*/
