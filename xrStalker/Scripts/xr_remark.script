@@ -179,7 +179,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 		-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
 		xr_logic.subscribe_action_for_events(storage, new_action)
 
-	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	  	new_action = manager:action(xr_actions_id.alife)
 	  	new_action:add_precondition(world_property(properties["need_remark"], false))
 end
 

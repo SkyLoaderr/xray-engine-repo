@@ -434,7 +434,7 @@ function add_to_binder (npc, ini)
     action:add_effect               (world_property (property["complete"],          true))
     manager:add_action              (operators["single"], action)
                
-    action = manager:action (stalker_ids.action_puzzle_solver)
+    action = manager:action (xr_actions_id.alife)
     action:add_precondition (world_property (property["complete"],  true))
     --printf ("BAR_STALKER scheme binded to object %s", npc:name ())
     

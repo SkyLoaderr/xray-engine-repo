@@ -236,7 +236,7 @@ function add_to_binder( npc, char_ini )
 	action:add_effect( world_property( prop_attack, true ) )
 	manager:add_action( act_sit, action )
 
-	action = manager:action( stalker_ids.action_puzzle_solver )
+	action = manager:action( xr_actions_id.alife )
 	action:add_precondition( world_property( prop_ambush, false ) )
 
 	action = manager:action( stalker_ids.action_combat_planner )

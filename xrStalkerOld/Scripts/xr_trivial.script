@@ -170,7 +170,7 @@ function add_zombie(obj)
     action:add_effect               ( world_property ( properties[ "zombie_alife" ], false ) )
     manager:add_action              ( operators[ "stalker_zombie" ], action)
 
-    action = manager:action (stalker_ids.action_puzzle_solver)
+    action = manager:action (xr_actions_id.alife)
     action:add_precondition         ( world_property (properties["zombie_alife"],     false ) )
 end
 
@@ -322,7 +322,7 @@ function add_novice(obj)
     action:add_effect               ( world_property ( properties[ "work" ],         false ) )
     manager:add_action              ( operators[ "stalker_novice" ], action)
 
-    action = manager:action (stalker_ids.action_puzzle_solver)
+    action = manager:action (xr_actions_id.alife)
     action:add_precondition         ( world_property (properties["work"],  false ) )
 end
 
@@ -483,7 +483,7 @@ function add_novice2(obj)
     action:add_effect               ( world_property ( properties[ "novice2_alife" ], false ) )
     manager:add_action              ( operators[ "stalker_novice2" ], action)
 
-    action = manager:action (stalker_ids.action_puzzle_solver)
+    action = manager:action (xr_actions_id.alife)
     action:add_precondition         ( world_property (properties["novice2_alife"],   false ) )
 end
 
@@ -794,7 +794,7 @@ function add_novice3(obj)
     action:add_effect               (world_property ( properties["attack"],     false ) )
     manager:add_action              (operators["stalker_attack"], action)
 
-    action = manager:action (stalker_ids.action_puzzle_solver)
+    action = manager:action (xr_actions_id.alife)
     action:add_precondition         ( world_property (properties["work"],  false ) )
 end
 
@@ -909,7 +909,7 @@ function add_security(obj)
 
 	manager:add_action              (operators["security"], action)
 
-	action = manager:action         (stalker_ids.action_puzzle_solver)
+	action = manager:action         (xr_actions_id.alife)
 	action:add_precondition         (world_property (properties["enabled"],  false))
 end
 

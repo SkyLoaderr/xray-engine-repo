@@ -134,7 +134,7 @@ function add_to_binder(object)
   action:add_effect    (world_property(properties["bobik"],    false))
   manager:add_action (operators["bobik"], action)
 
-  action = manager:action (stalker_ids.action_puzzle_solver)
+  action = manager:action (xr_actions_id.alife)
   action:add_precondition    (world_property(properties["bobik"],    false))
 
 --  object:set_hear_callback(this.bobik_callback)

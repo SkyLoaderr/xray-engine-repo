@@ -310,7 +310,7 @@ function SetScheme (obj)
     action:add_effect           (world_property (return_property,               true))
     manager:add_action          (act_return, action)
 
-    action = manager:action     (stalker_ids.action_puzzle_solver)
+    action = manager:action     (xr_actions_id.alife)
     action:add_precondition     (world_property (return_property,  true))
 end
 

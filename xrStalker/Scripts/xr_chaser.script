@@ -225,7 +225,7 @@ function add_to_binder (npc, ini)
      action:add_effect             (world_property (properties["enabled"],         false))
      manager:add_action              (operators["return"], action)
 
-    action = manager:action (stalker_ids.action_puzzle_solver)
+    action = manager:action (xr_actions_id.alife)
     action:add_precondition (world_property (properties["enabled"], false))
 
 end

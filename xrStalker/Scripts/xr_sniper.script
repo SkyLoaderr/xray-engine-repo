@@ -555,7 +555,7 @@ function add_to_binder(obj, char_ini)
     action = manager:action         (stalker_ids.action_combat_planner)
     action:add_precondition         (world_property (properties["enemy_near"],      true))
 
-    action = manager:action         (stalker_ids.action_puzzle_solver)
+    action = manager:action         (xr_actions_id.alife)
     action:add_precondition         (world_property (properties["enabled"],  false))
 
     xr_reactions.add_rule      (obj,"no_visual")
@@ -799,7 +799,7 @@ function chiter_binding(obj, char_ini)
     action = manager:action         (stalker_ids.action_combat_planner)
     action:add_precondition         (world_property (properties["enemy_near"],      true))
 
-    action = manager:action         (stalker_ids.action_puzzle_solver)
+    action = manager:action         (xr_actions_id.alife)
     action:add_precondition         (world_property (properties["enabled"],  false))
 
     xr_reactions.add_rule			(obj,"no_visual")

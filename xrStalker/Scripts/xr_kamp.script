@@ -321,7 +321,6 @@ function add_to_binder(object, ini, scheme, section, storage)
 
 	local manager = object:motivation_action_manager()
 
-	properties["state_end"]		= xr_evaluators_id.state_change
 	properties["event"] 		= xr_evaluators_id.reaction
 	properties["kamp_end"]		= xr_evaluators_id.stohe_kamp_base + 1
 	properties["on_position"]	= xr_evaluators_id.stohe_kamp_base + 2
@@ -363,7 +362,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 	action:add_effect 		(world_property(properties["on_position"], 	true))
 	manager:add_action (operators["go_position"], action)
 
-	action = manager:action (stalker_ids.action_puzzle_solver)	
+	action = manager:action (xr_actions_id.alife)	
 	action:add_precondition		(world_property(properties["kamp_end"],		true))
 
 end

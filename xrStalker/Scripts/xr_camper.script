@@ -153,7 +153,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 		action:add_effect 			(world_property(stalker_ids.property_enemy,	false))		
 		manager:add_action			(operators["kill"], action)
 
-		action = manager:action		(stalker_ids.action_puzzle_solver)	
+		action = manager:action		(xr_actions_id.alife)	
 		action:add_precondition		(world_property(properties["end"],			true))
 
 		action = manager:action     (stalker_ids.action_combat_planner)

@@ -514,7 +514,7 @@ function add_to_binder(object, char_ini)
 	action:add_effect 		(world_property(properties["wait_buyer"], 		false))
 	manager:add_action (operators["wait_buyer"], action)
 
-	action = manager:action (stalker_ids.action_puzzle_solver)	
+	action = manager:action (xr_actions_id.alife)	
 	action:add_precondition		(world_property(properties["contact"],		false))
 	action:add_precondition		(world_property(properties["wait_buyer"], 	false))
 

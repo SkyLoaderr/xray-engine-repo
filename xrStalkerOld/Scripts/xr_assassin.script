@@ -174,7 +174,7 @@ function add_to_binder(npc, char_ini)
 		local st = xr_motivator.storage[npc:id()].assassin
 		st.action = new_action
 
-	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	  	new_action = manager:action(xr_actions_id.alife)
 	  	new_action:add_precondition(world_property(properties["need_assassin"], false))
 
 		if char_ini ~= nil then

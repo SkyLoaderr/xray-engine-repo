@@ -596,7 +596,7 @@ function add_to_binder (object, char_ini)
     --action:add_effect       (world_property (properties["wound"],         false))
    	manager:add_action      (operators["enemy"], action)
     
-    action = manager:action (stalker_ids.action_puzzle_solver)
+    action = manager:action (xr_actions_id.alife)
     action:add_precondition (world_property (properties["wound"],  false))
     
     action = manager:action (stalker_ids.action_combat_planner)

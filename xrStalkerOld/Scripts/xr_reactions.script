@@ -296,7 +296,7 @@ function add_to_binder(object, char_ini)
 	action:add_effect		(world_property(properties["event"],		false))
 	manager:add_action (operators["wait"], action)
 
-	action = manager:action (stalker_ids.action_puzzle_solver)
+	action = manager:action (xr_actions_id.alife)
 	action:add_precondition		(world_property(properties["event"],		false))
 
     if char_ini:section_exist ("reactions") == true then

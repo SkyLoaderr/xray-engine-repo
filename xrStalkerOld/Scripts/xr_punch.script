@@ -143,7 +143,7 @@ function add_to_binder(npc)
 	new_action:add_effect(world_property(properties["need_punch"], false))
 	manager:add_action(operators["action_punch"], new_action)
 
-	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	new_action = manager:action(xr_actions_id.alife)
 	new_action:add_precondition(world_property(properties["need_punch"], false))
 end
 

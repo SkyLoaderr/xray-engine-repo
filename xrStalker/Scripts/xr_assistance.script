@@ -176,7 +176,7 @@ function add_to_binder(npc, char_ini)
 	action:add_effect (world_property(properties["need_assistance"], false))
 	manager:add_action (operators["action_assistance"], action)
 
-	local action = manager:action(stalker_ids.action_puzzle_solver)
+	local action = manager:action(xr_actions_id.alife)
 	action:add_precondition (world_property(properties["need_assistance"],      false))
 end
 function set_assistance(object, victim)

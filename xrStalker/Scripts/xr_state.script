@@ -9,25 +9,26 @@ sit   = 2
 sit_wait = 3
 sleep = 4
 
----------------------------------------------------------------------------------------------------------------------
---Evaluators
-----------------------------------------------------------------------------------------------------------------------
--- Условие завершения скрипта
-class "evaluator_state_end" (property_evaluator)
-function evaluator_state_end:__init(storage) super()
-	self.a = storage
+class "body_state"
+function body_state:__init(npc)
+	self.npc = npc
+	self.target_state = 0
+	self.current_state = 0
 end
-function evaluator_state_end:evaluate()
-	return self.a.body_state == self.a.target_state
+--' Проверяет закончили ли мы изменение положения тела
+function body_state:finish_state()
+	if self.target_state == self.current_state then
+	
+	
+		return true
+	else
+	
+	
+		return false
+	end
 end
-
--- стоим ли мы
-class "evaluator_standing" (property_evaluator)
-function evaluator_standing:__init(storage) super()
-	self.a = storage
-end
-function evaluator_standing:evaluate()
-	return self.a.body_state == 0
+function body_state:set_state(id)
+	self.target_state = id
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -71,60 +72,18 @@ function action_change_state:finalize ()
 	action_base.finalize (self)
 end
 
--- Вставание
-class "action_stand_up" (action_base)
-function action_stand_up:__init (npc_name,action_name,storage) super (nil,action_name)
-	self.a = storage
-end
-function action_stand_up:initialize()
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()  
-	xr_state.change_state(self.object, 0, "true")
-end
-function action_stand_up:execute ()
-	action_base.execute (self)
-end
-function action_stand_up:finalize ()
-	action_base.finalize (self)
-end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Functions
 ----------------------------------------------------------------------------------------------------------------------
 -- Проверка, изменилось ли уже положение тела или нет
-function finish_state(object)
-	local st = xr_motivator.storage[object:id()].state
-	return st.body_state == st.target_state
+function finish_state(npc)
+	return true
+end
+function change_state(npc)
 end
 
---функция смены положения тела
-function change_state(object, new, emerg)
-	local st = xr_motivator.storage[object:id()].state
 
-	if st.body_state ~= new then 
---		if emerg == "true" then
---			printf("Called emerg change state for %s: old %d, new %d", object:name(), st.body_state, new)
---		else
---			printf("Called change state for %s: old %d, new %d", object:name(), st.body_state, new)
---		end
-
-	      	st.target_state = new
-		-- add transfer animation
-
-		if emerg == "true" then
-			object:clear_animations()
-			xr_state.transanim(object, st)
-			st.body_state = st.target_state
-		end
-
-		return true
-	else
-		return false
-	end
-end
 function getIdle(id)
 	if id == 0 then
 	elseif id == 1 then
@@ -202,49 +161,27 @@ function transanim(object, a)
 		end
 	end
 end
-----------------------------------------------------------------------------------------------------------------------
---State binder
-----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(object)
-	local operators		= {}
-	local properties	= {}
-
-	properties["state_end"]		= xr_evaluators_id.state_change
-	properties["stand"]		= xr_evaluators_id.stohe_state_base + 1
-
-	operators["state"]		= xr_actions_id.stohe_state_base + 1
-	operators["stand"]		= xr_actions_id.stohe_state_base + 2
-
-	local manager = object:motivation_action_manager()
-	-- Evaluators                                                                            
-	manager:add_evaluator (properties["state_end"], 		this.evaluator_state_end		(xr_motivator.storage[object:id()].state))
-	manager:add_evaluator (properties["stand"], 			this.evaluator_standing			(xr_motivator.storage[object:id()].state))
-
-	-- Actions
-	local action = this.action_change_state (object:name(),"action_change_state", xr_motivator.storage[object:id()].state)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-  	action:add_precondition    	(world_property(stalker_ids.property_enemy,   	false))
-	action:add_precondition		(world_property(properties["state_end"],	false))
-	action:add_effect 		(world_property(properties["state_end"],	true))
-	manager:add_action (operators["state"], action)
-
-	action = this.action_stand_up (object:name(),"action_stand_up", xr_motivator.storage[object:id()].state)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-	action:add_precondition		(world_property(properties["stand"],		false))
-	action:add_effect 		(world_property(properties["stand"],		true))
-	manager:add_action (operators["stand"], action)
-
-	action = manager:action (stalker_ids.action_puzzle_solver)	
-	action:add_precondition		(world_property(properties["state_end"],	true))
-
-	action = manager:action (stalker_ids.action_combat_planner)	
-	action:add_precondition		(world_property(properties["stand"],		true))
-end
 
 
-----------------------------------------------------------------------------------------------------------------------
--- General animation scheme
-----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--'--------------------------------------------------------------------------------------------------------------------
+--' General animation scheme
+--'--------------------------------------------------------------------------------------------------------------------
 class "anims"
 function anims:__init(npc)
 	self.npc = npc

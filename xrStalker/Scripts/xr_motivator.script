@@ -41,14 +41,8 @@ function motivator_binder:reinit()
 	xr_death.add_to_binder(self.object, char_ini)
 	
     --' Положения тела
-    xr_motivator.storage[self.object:id()].state = {
-            body_state = 0,
-            target_state = 0,
-            position = nil,
-            dist = 1,
-            anim = xr_state.anims(self.object)
-        }
-    xr_state.add_to_binder(self.object)
+    xr_motivator.storage[self.object:id()].state = xr_state.body_state(self.object)
+
     --' удар в морду
     xr_punch.add_to_binder (self.object)   
 
@@ -201,7 +195,6 @@ end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function addCommonPrecondition(action)
-	action:add_precondition (world_property(xr_evaluators_id.state_change,		true))
 	action:add_precondition (world_property(xr_evaluators_id.reaction,			false))
 	action:add_precondition (world_property(xr_evaluators_id.assistance + 1,	false))
 	action:add_precondition (world_property(xr_evaluators_id.stohe_meet_base + 1,false))

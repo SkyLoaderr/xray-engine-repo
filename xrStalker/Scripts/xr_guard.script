@@ -633,7 +633,7 @@ function add_to_binder(npc, char_ini)
 	   	new_action:add_effect(world_property(stalker_ids.property_enemy, false))
 		manager:add_action(operators["action_guard_2"], new_action)
 
-	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	  	new_action = manager:action(xr_actions_id.alife)
 	  	new_action:add_precondition(world_property(properties["need_guard"], false))
 
 		new_action = manager:action(stalker_ids.action_combat_planner)

@@ -189,7 +189,7 @@ function add_to_binder( npc )
 	action:add_effect      ( world_property( eva_base,                   false ) )
 	manager:add_action     ( act_base, action )
 
-	action = manager:action( stalker_ids.action_puzzle_solver )
+	action = manager:action( xr_actions_id.alife )
 	action:add_precondition( world_property( eva_base, false ) )
 
 	-- перехват смерти

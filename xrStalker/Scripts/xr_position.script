@@ -82,7 +82,6 @@ function add_to_binder(object)
 	local manager = object:motivation_action_manager()
 
 	properties["position"]	= xr_evaluators_id.position
-	properties["state_end"]		= xr_evaluators_id.state_change
 	properties["event"] 		= xr_evaluators_id.reaction
 
 	operators["go_position"] = xr_actions_id.stohe_position + 1
@@ -94,7 +93,6 @@ function add_to_binder(object)
 	local action = this.action_go_position (object:name(),"action_go_position", xr_motivator.storage[object:id()].state)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["event"], 		false))
 	action:add_precondition		(world_property(properties["position"], 	false))
 	action:add_effect 		(world_property(properties["position"], 	true))

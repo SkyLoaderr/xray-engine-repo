@@ -137,7 +137,7 @@ function add_to_binder( npc )
 	action:add_effect( world_property( prop_barman, false ) )
 	manager:add_action( act_bar, action )
 
-	action = manager:action( stalker_ids.action_puzzle_solver )
+	action = manager:action( xr_actions_id.alife )
 	action:add_precondition( world_property( prop_barman, false ) )
 
 	npc:set_start_dialog( "barman_bar" )

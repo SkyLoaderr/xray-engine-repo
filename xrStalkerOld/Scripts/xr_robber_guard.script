@@ -121,7 +121,7 @@ function add_to_binder(npc, char_ini)
 	new_action:add_effect(world_property(properties["need_robber_guard"], false))
 	manager:add_action(operators["action_robber_guard"], new_action)
 
-	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	new_action = manager:action(xr_actions_id.alife)
 	new_action:add_precondition(world_property(properties["need_robber_guard"], false))
 
 	if char_ini ~= nil then
