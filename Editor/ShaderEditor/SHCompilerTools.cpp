@@ -128,7 +128,9 @@ void CSHCompilerTools::Save(){
     FS.MarkFile(fn);
 
     // save new file
+    FS.UnlockFile			(0,fn.c_str(),false);
     m_Library.Save			(fn.c_str());
+    FS.LockFile				(0,fn.c_str(),false);
 	m_bUpdateCurrent		= true;
 	SetCurrentShader		(name);
 

@@ -14,9 +14,6 @@
 //----------------------------------------------------
 
 CLog ELog;
-BOOL CLog::bReady = false;
-char CLog::m_FileName[MAX_PATH];
-
 void Log	(const char *msg){ ELog.Msg(mtInformation,msg); }
 void Log	(const char *msg, const char*	dop){ ELog.Msg(mtInformation,"%s%s",msg,dop); }
 void Log	(const char *msg, DWORD			dop){ ELog.Msg(mtInformation,"%s%d",msg,dop); }
@@ -40,17 +37,12 @@ void __cdecl Msg	(LPCSTR format, ...){
     ELog.Msg(mtInformation,buf);
 }
 //----------------------------------------------------
-void CLog::Create(LPCSTR _FileName){
+void CLog::Create(LPCSTR _FileName, bool bContinue){
 	VERIFY(!bReady);
-    char f_path[1024];
-    char _ExeName[1024];
-    GetModuleFileName( GetModuleHandle(0), _ExeName, 1024 );
-	_splitpath( _ExeName, f_path, 0, 0, 0 );
-	_splitpath( _ExeName, 0, f_path+strlen(f_path), 0, 0 );
-
-	VERIFY( _FileName );
-    sprintf( m_FileName, "%s%s",f_path,_FileName );
-	int hf = open( m_FileName, _O_WRONLY|_O_CREAT|_O_TRUNC| _O_BINARY, _S_IREAD | _S_IWRITE );
+    strcpy( m_FileName, _FileName );
+    int hf=-1;
+    if (bContinue) 	hf = open( m_FileName, _O_WRONLY|_O_CREAT|_O_APPEND|_O_BINARY );
+	else			hf = open( m_FileName, _O_WRONLY|_O_CREAT|_O_TRUNC| _O_BINARY, _S_IREAD | _S_IWRITE );
 	_close( hf );
     bReady = TRUE;
 }

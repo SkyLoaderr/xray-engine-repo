@@ -25,75 +25,81 @@ DEFINE_MAP(AnsiString,int,FileMap,FilePairIt);
 DEFINE_MAP(AnsiString,HANDLE,HANDLEMap,HANDLEPairIt);
 
 class CFileSystem {
-	void 	ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir);
-	void 	Recurse(const char* path);
+	void 		ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir);
+	void 		Recurse(const char* path);
 
-	FileMap* m_FindItems;
-    LPSTR 	ext_mask;
-	bool 	bClampExt;
-    int		path_size;
+	FileMap* 	m_FindItems;
+    LPSTR 		ext_mask;
+	bool 		bClampExt;
+    int			path_size;
 
-    HANDLEMap m_LockFiles;
+    HANDLEMap 	m_LockFiles;
+    string256	m_LastAccessFN;
+    CLog*		m_AccessLog;
+    void		RegisterAccess(LPSTR fn);
 public:
-	char 	m_Root[MAX_PATH];
-	char 	m_Server[MAX_PATH];
-	FSPath 	m_ExeRoot;
-	FSPath 	m_GameRoot;
-	FSPath 	m_GameSounds;
-	FSPath 	m_GameCForms;
-	FSPath 	m_GameMeshes;
-	FSPath	m_GameKeys;
-	FSPath 	m_GameDO;
-	FSPath 	m_GameTextures;
-	FSPath 	m_GameLevels;
-	FSPath 	m_Maps;
-	FSPath 	m_Import;
-	FSPath 	m_Groups;
-	FSPath 	m_OMotion;
-	FSPath 	m_SMotion;
-	FSPath 	m_OMotions;
-	FSPath 	m_SMotions;
-	FSPath 	m_Objects;
-	FSPath 	m_Textures;
-	FSPath 	m_Temp;
+	string256	m_Local;
+	string256	m_Server;
+	FSPath 		m_ServerRoot;
+	FSPath 		m_LocalRoot;
+	FSPath 		m_GameRoot;
+	FSPath 		m_GameSounds;
+	FSPath 		m_GameCForms;
+	FSPath 		m_GameMeshes;
+	FSPath		m_GameKeys;
+	FSPath 		m_GameDO;
+	FSPath 		m_GameTextures;
+	FSPath 		m_GameLevels;
+	FSPath 		m_Maps;
+	FSPath 		m_Import;
+	FSPath 		m_Groups;
+	FSPath 		m_OMotion;
+	FSPath 		m_SMotion;
+	FSPath 		m_OMotions;
+	FSPath 		m_SMotions;
+	FSPath 		m_Objects;
+	FSPath 		m_Textures;
+	FSPath 		m_Temp;
 public:
-			CFileSystem		();
-	virtual ~CFileSystem	();
-    void 	OnCreate		();
+				CFileSystem		();
+	virtual 	~CFileSystem	();
+    void 		OnCreate		();
 
-	bool 	GetOpenName		(FSPath *initial, char *buffer, bool bMulti=false);
-	bool 	GetSaveName		(FSPath *initial, char *buffer);
+	bool 		GetOpenName		(FSPath *initial, char *buffer, bool bMulti=false);
+	bool 		GetSaveName		(FSPath *initial, char *buffer);
 #ifdef M_BORLAND
-	bool 	GetOpenName		(FSPath *initial, AnsiString& buf, bool bMulti=false);
-	bool 	GetSaveName		(FSPath *initial, AnsiString& buf);
+	bool 		GetOpenName		(FSPath *initial, AnsiString& buf, bool bMulti=false);
+	bool 		GetSaveName		(FSPath *initial, AnsiString& buf);
 #endif
 
-    bool 	Exist			(LPCSTR _FileName, bool bMessage = false);
-    bool 	Exist			(FSPath *initial, const char *_FileName, bool bMessage = false);
-	bool	Exist			(char* fn, const char* path, const char* name, bool bMessage = false);
-	bool	Exist			(char* fn, const char* path, const char* name, const char* ext, bool bMessage = false);
-    void 	DeleteFileByName(const char* nm);
-	void 	CopyFileTo		(LPCSTR src, LPCSTR dest, bool bOverwrite=true);
-    int		FileLength		(LPCSTR src);
+    bool 		Exist			(LPCSTR _FileName, bool bMessage = false);
+    bool 		Exist			(FSPath *initial, const char *_FileName, bool bMessage = false);
+	bool		Exist			(char* fn, const char* path, const char* name, bool bMessage = false);
+	bool		Exist			(char* fn, const char* path, const char* name, const char* ext, bool bMessage = false);
+    void 		DeleteFileByName(const char* nm);
+	void 		CopyFileTo		(LPCSTR src, LPCSTR dest, bool bOverwrite=true);
+    int			FileLength		(LPCSTR src);
 
-    int  	GetFileAge		(const AnsiString& name);
-    void 	SetFileAge		(const AnsiString& name, int FT);
+    int  		GetFileAge		(const AnsiString& name);
+    void 		SetFileAge		(const AnsiString& name, int FT);
 
-    bool 	CreateNullFile	(const char* fn);
+    bool 		CreateNullFile	(const char* fn);
 
-    void 	MarkFile		(const AnsiString& fn);
-	void 	BackupFile		(const AnsiString& fn);
-	bool 	RestoreBackup	(const AnsiString& fn);
+    void 		MarkFile		(const AnsiString& fn);
+	void 		BackupFile		(const AnsiString& fn);
+	bool 		RestoreBackup	(const AnsiString& fn);
 
-    int		GetFiles		(LPCSTR path, FileMap& items, bool bClampPath, bool bClampExt, LPCSTR ext_mask="*.*"); // return item count
+    int			GetFiles		(LPCSTR path, FileMap& items, bool bClampPath, bool bClampExt, LPCSTR ext_mask="*.*"); // return item count
 
-    void	VerifyPath		(LPCSTR path);
-	LPSTR	UpdateTextureNameWithFolder(LPSTR tex_name);
+    void		VerifyPath		(LPCSTR path);
+	LPSTR		UpdateTextureNameWithFolder(LPSTR tex_name);
 
-    bool	IsFileLocking	(LPCSTR fn);
-    bool	LockFile		(LPCSTR fn);
-    bool	UnlockFile		(LPCSTR fn);
-    LPCSTR	GetLockOwner	(LPCSTR fn);
+    BOOL		IsFileLocking	(FSPath *initial, LPSTR fn, bool bOnlySelf, LPSTR last_locker);
+    BOOL		LockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
+    BOOL		UnlockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
+    LPCSTR		GetLockOwner	(FSPath *initial, LPSTR fn);
+
+    void		GetCompAndUser	(string64& computer, string64& user);
 };
 extern CFileSystem FS;
 #endif /*_INCDEF_FileSystem_H_*/

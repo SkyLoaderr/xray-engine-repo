@@ -6,6 +6,7 @@
 #pragma hdrstop
 
 #include "xr_trims.h"
+#include "xr_ini.h"
 
 CFileSystem FS;
 //----------------------------------------------------
@@ -52,22 +53,26 @@ void FSPath::VerifyPath(){
 
 
 CFileSystem::CFileSystem( ){
-	m_Root[0] = 0;
+	m_Local[0] = 0;
+	m_Server[0] = 0;
     m_FindItems = 0;
+    m_AccessLog = 0;
 	_tzset();
 }
 
 CFileSystem::~CFileSystem(){
+	_DELETE(m_AccessLog);
 }
 
 void CFileSystem::OnCreate(){
 //	VERIFY( _ExeName );
 //	_splitpath( _ExeName, m_Root, 0, 0, 0 );
 //	_splitpath( _ExeName, 0, m_Root+strlen(m_Root), 0, 0 );
-	strcpy(m_Root,"x:\\");
+	strcpy(m_Local,"x:\\");
     strcpy(m_Server,"\\\\X-Ray\\stalker$\\");
 
-	m_ExeRoot.Init  	(m_Root, 	"",               		"",     	"" );
+	m_LocalRoot.Init  	(m_Local, 	"",               		"",     	"" );
+	m_ServerRoot.Init  	(m_Server, 	"",               		"",     	"" );
     m_GameLevels.Init	(m_Server, 	"game\\data\\levels\\",	"",     	"" );
     m_GameSounds.Init	(m_Server, 	"game\\data\\sounds\\",	"wav",		"Wave (*.wav)|*.wav" );
 	m_GameRoot.Init 	(m_Server, 	"game\\",         		"",     	"" );
@@ -79,14 +84,19 @@ void CFileSystem::OnCreate(){
 
 	m_Groups.Init   	(m_Server, 	"objects\\",       		"mesh", 	"Groups (*.group)|*.group" );
     m_Objects.Init  	(m_Server, 	"objects\\",       		"object",	"Editor objects (*.object,*.lwo)|*.object;*.lwo" );
-	m_Import.Init  		(m_Root, 	"import\\",       		"object",	"Import objects (*.object,*.lwo)|*.object;*.lwo" );
-	m_OMotion.Init		(m_Root, 	"import\\", 		   	"anm",		"Object animation (*.anim)|*.anim" );
-	m_OMotions.Init		(m_Root, 	"import\\", 		    "anms",	    "Object animation list (*.anims)|*.anims" );
-	m_SMotion.Init		(m_Root, 	"import\\", 		    "skl",		"Skeleton motion file (*.skl)|*.skl" );
-	m_SMotions.Init		(m_Root, 	"import\\", 		    "skls",		"Skeleton motions file (*.skls)|*.skls" );
+	m_Import.Init  		(m_Local, 	"import\\",       		"object",	"Import objects (*.object,*.lwo)|*.object;*.lwo" );
+	m_OMotion.Init		(m_Local, 	"import\\", 		   	"anm",		"Object animation (*.anim)|*.anim" );
+	m_OMotions.Init		(m_Local, 	"import\\", 		    "anms",	    "Object animation list (*.anims)|*.anims" );
+	m_SMotion.Init		(m_Local, 	"import\\", 		    "skl",		"Skeleton motion file (*.skl)|*.skl" );
+	m_SMotions.Init		(m_Local, 	"import\\", 		    "skls",		"Skeleton motions file (*.skls)|*.skls" );
 	m_Maps.Init     	(m_Server, 	"maps\\",         		"lv2",  	"Levels (*.lv2)|*.lv2" );
 	m_Textures.Init 	(m_Server, 	"textures\\",     		"bmp",  	"Textures (*.bmp;*.tga)|*.bmp;*.tga" );
-	m_Temp.Init     	(m_Root, 	"temp\\",         		"",     	"" );
+	m_Temp.Init     	(m_Local, 	"temp\\",         		"",     	"" );
+
+    strcpy				(m_LastAccessFN,"access.ini"); 	FS.m_ServerRoot.Update(m_LastAccessFN);
+    string256 fn; strcpy(fn,"access.log"); FS.m_ServerRoot.Update(fn);
+    m_AccessLog			= new CLog();
+	m_AccessLog->Create	(fn,true);
 }
 
 //----------------------------------------------------
@@ -449,37 +459,84 @@ LPSTR CFileSystem::UpdateTextureNameWithFolder(LPSTR tex_name)
 	return tex_name;
 }
 
-bool CFileSystem::IsFileLocking(LPCSTR fn)
+void CFileSystem::GetCompAndUser(string64& computer, string64& user)
 {
-	HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
-    CloseHandle(handle);
-    return (INVALID_HANDLE_VALUE==handle); 
+	// names
+	DWORD		comp_sz = sizeof(computer);
+	GetComputerName(computer,&comp_sz);
+	DWORD		user_sz = sizeof(user);
+	GetUserName	(user,&user_sz);
 }
 
-bool CFileSystem::LockFile(LPCSTR fn)
+void CFileSystem::RegisterAccess(LPSTR fn)
 {
+	string64 computer;
+    string64 user;
+	GetCompAndUser(computer, user);
+
+    CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
+	ini->WriteString("last_access",fn,computer);
+    CInifile::Destroy(ini);
+    m_AccessLog->Msg(mtInformation,"Lock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,DateToStr(Now()),TimeToStr(Time()));
+}
+
+BOOL CFileSystem::IsFileLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, LPSTR last_locker)
+{
+	string256 fn; strcpy(fn,fname);
+	if (initial) initial->Update(fn);
+
+	if (bOnlySelf) return (m_LockFiles.find(fn)!=m_LockFiles.end());
+	HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+    CloseHandle(handle);
+    if (last_locker&&(INVALID_HANDLE_VALUE==handle)) strcpy(last_locker,GetLockOwner(0,fn));
+    return (INVALID_HANDLE_VALUE==handle);
+}
+
+BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
+{
+	string256 fn; strcpy(fn,fname);
+	if (initial) initial->Update(fn);
+
+    BOOL bRes=false;
 	if (m_LockFiles.find(fn)==m_LockFiles.end()){
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
     	if (INVALID_HANDLE_VALUE!=handle){
-	 	   	m_LockFiles.insert(make_pair(fn,handle));
-           	return true;
+	 	   	m_LockFiles.insert(make_pair(LPSTR(fname),handle));
+            if (bLog) RegisterAccess(fname);
+            bRes=true;
         }
     }
-    return false;
+    return bRes;
 }
 
-bool CFileSystem::UnlockFile(LPCSTR fn)
+BOOL CFileSystem::UnlockFile(FSPath *initial, LPSTR fname, bool bLog)
 {
+	string256 fn; strcpy(fn,fname);
+	if (initial) initial->Update(fn);
+
 	HANDLEPairIt it = m_LockFiles.find(fn);
 	if (it!=m_LockFiles.end()){
 		m_LockFiles.erase(it);
+        if (bLog){
+			string64 computer; string64 user;
+			GetCompAndUser(computer, user);
+    		m_AccessLog->Msg(mtInformation,"Unlock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,DateToStr(Now()),TimeToStr(Time()));
+        }
     	return CloseHandle(it->second);
     }
     return false;
 }
 
-LPCSTR CFileSystem::GetLockOwner(LPCSTR fn)
+LPCSTR CFileSystem::GetLockOwner(FSPath *initial, LPSTR fname)
 {
-	return "Unknown";
+	string256 fn; strcpy(fn,fname);
+	if (initial) initial->Update(fn);
+
+    CInifile*	ini = CInifile::Create(m_LastAccessFN,true);
+	static string256 comp;
+    strcpy(comp,ini->ReadSTRING("last_access",fn));
+    CInifile::Destroy(ini);
+
+	return comp;
 }
 

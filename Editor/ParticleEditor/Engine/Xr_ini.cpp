@@ -361,7 +361,20 @@ void	CInifile::WriteString	( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment)
 	I.second		= (value[0]?strdup(value):0);
 	I.comment		= (comment?strdup(comment):0);
 	SectIt	it		= lower_bound(data.begin(),data.end(),I,item_pred());
-	data.Data.insert(it,I);
+
+    if (it != data.end()) {
+	    // Check for "first" matching
+    	if (0==strcmp(it->first,I.first)) {
+        	_FREE(it->first);
+        	_FREE(it->second);
+        	_FREE(it->comment);
+            *it  = I;
+        } else {
+			data.Data.insert(it,I);
+        }
+    } else {
+		data.Data.insert(it,I);
+    }
 }
 
 void	CInifile::WriteFloat	( LPCSTR S, LPCSTR L, float				V, LPCSTR comment )

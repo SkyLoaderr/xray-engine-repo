@@ -52,24 +52,33 @@ void CShaderTools::Modified(){
 //---------------------------------------------------------------------------
 
 bool CShaderTools::OnCreate(){
-	// test locking
-	AnsiString fn = "shaders.xr";
-    FS.m_GameRoot.Update(fn);
-	if (FS.IsFileLocking(fn.c_str())) return false;
+	// shader test locking
+	AnsiString sh_fn = "shaders.xr"; FS.m_GameRoot.Update(sh_fn);
+    string256 locker="";
+	if (FS.IsFileLocking(0,sh_fn.c_str(),false,locker)){
+		ELog.DlgMsg(mtError,"Access denied. Shaders currently locked by user '%s'.\nEditor aborted.",locker);
+    	return false;
+    }
+	// shader test locking
+	AnsiString lc_fn = "shaders_xrlc.xr"; FS.m_GameRoot.Update(lc_fn);
+	if (FS.IsFileLocking(0,lc_fn.c_str(),false,locker)){
+		ELog.DlgMsg(mtError,"Access denied. Compiler shaders currently locked by user '%s'.\nEditor aborted.",locker);
+    	return false;
+    }
 	//
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
 	Engine.OnCreate();
     Compiler.OnCreate();
 	// lock
-    FS.LockFile(fn.c_str());
+    FS.LockFile(0,sh_fn.c_str());
+    FS.LockFile(0,lc_fn.c_str());
 }
 
 void CShaderTools::OnDestroy(){
 	// unlock
-	AnsiString fn = "shaders.xr";
-    FS.m_GameRoot.Update(fn);
-    FS.UnlockFile(fn.c_str());
+    FS.UnlockFile(&FS.m_GameRoot,"shaders.xr");
+    FS.UnlockFile(&FS.m_GameRoot,"shaders_xrlc.xr");
 	//
     Lib.RemoveEditObject(m_EditObject);
     Device.seqDevCreate.Remove(this);
@@ -186,7 +195,9 @@ void CShaderTools::UpdateObjectShader(){
     	CSurface* surf = *m_EditObject->FirstSurface(); R_ASSERT(surf);
 	    if (0!=strcmp(surf->_ShaderName(),Engine.m_CurrentBlender->getName())){
     	    Device.Shader.Delete(surf->_Shader());
-	        surf->SetShader(Engine.m_CurrentBlender->getName(),Device.Shader.Create(Engine.m_CurrentBlender->getName(),surf->_Texture()));
+            string512 tex; strcpy(tex,surf->_Texture());
+            for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
+	        surf->SetShader(Engine.m_CurrentBlender->getName(),Device.Shader.Create(Engine.m_CurrentBlender->getName(),tex));
             UI.RedrawScene();
     	}
     }

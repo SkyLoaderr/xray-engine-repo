@@ -54,12 +54,6 @@ TUI::TUI()
     m_bHintShowing	= false;
 	m_pHintWindow	= 0;
 	m_LastHint		= "";
-
-// create base class
-	string64 fn;
-    strcpy(fn,_EDITOR_FILE_NAME_);
-    strcat(fn,".log");
-    ELog.Create(fn);
 }
 //---------------------------------------------------------------------------
 TUI::~TUI()
@@ -71,6 +65,13 @@ TUI::~TUI()
 }
 
 bool TUI::OnCreate(){
+// create base class
+	string256 fn;
+    strcpy(fn,_EDITOR_FILE_NAME_);
+    strcat(fn,".log");
+    FS.m_LocalRoot.Update(fn);
+    ELog.Create(fn);
+
 	Device.InitTimer();
 
     m_D3DWindow 	= frmMain->D3DWindow;
