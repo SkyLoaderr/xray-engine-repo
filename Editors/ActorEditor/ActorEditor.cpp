@@ -24,7 +24,7 @@ USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
-    	Core._initialize	("LevelEditor");
+    	Core._initialize	(_EDITOR_FILE_NAME_);
         TfrmLog::CreateLog();
 
         frmSplash = xr_new<TfrmSplash>((TComponent*)0);

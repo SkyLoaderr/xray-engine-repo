@@ -502,8 +502,8 @@ void TUI::Idle()
 	VERIFY(m_bReady);
 	// input
     pInput->OnFrame();
-    if (ELog.in_use) return;
     Sleep(1);
+    if (ELog.in_use) return;
 	Device.UpdateTimer	();
     // tools on frame
     if (m_Flags.is(flUpdateScene)){

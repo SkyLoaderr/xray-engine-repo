@@ -20,8 +20,6 @@
 #endif
 //----------------------------------------------------
 
-bool g_ErrorMode=false;
-
 CLog ELog;
 
 //----------------------------------------------------
@@ -64,7 +62,9 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...)
 
     Msg(mt, buf);
 	strcat( buf, "\r\n" );
-    g_ErrorMode = false;
+
+    in_use = false;
+
     return res;
 }
 
@@ -109,7 +109,9 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...)
 #endif
 
     Msg(mt,buf);
-    g_ErrorMode = false;
+
+    in_use = false;
+    
     return res;
 }
 

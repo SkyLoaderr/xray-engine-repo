@@ -67,8 +67,8 @@
       Intermediate\r_constants_cache.obj Intermediate\R_Backend_DBG.obj 
       Intermediate\R_Backend_Runtime.obj Intermediate\r_constants.obj 
       Intermediate\R_Backend.obj Intermediate\R_DStreams.obj 
-      Intermediate\r_shader.obj Intermediate\Blender_detail_still.obj 
-      Intermediate\Blender_tree.obj Intermediate\ELog.obj"/>
+      Intermediate\Blender_detail_still.obj Intermediate\Blender_tree.obj 
+      Intermediate\ELog.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -88,7 +88,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_ACTOR_EDITOR;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_ACTOR_EDITOR"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ActorEditor.cpp"/>
     <INCLUDEPATH value="Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore"/>
@@ -102,13 +102,13 @@
       -Iengine -IP:\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\ElPack\Code 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -src_suffix cpp 
-      -D_EDITOR -D_ACTOR_EDITOR -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
-      -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
-    <PFLAGS value="-N2Intermediate -N0Intermediate -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
+      -D_EDITOR -D_ACTOR_EDITOR -boa"/>
+    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 -6 
+      -b- -k -vi -He -c -tW -tWM"/>
+    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zd"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -GD -x"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -251,7 +251,6 @@
       <FILE FILENAME="Engine\r_constants.cpp" FORMNAME="" UNITNAME="r_constants.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend.cpp" FORMNAME="" UNITNAME="R_Backend.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_DStreams.cpp" FORMNAME="" UNITNAME="R_DStreams.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\r_shader.cpp" FORMNAME="" UNITNAME="r_shader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_detail_still.cpp" FORMNAME="" UNITNAME="Blender_detail_still" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_tree.cpp" FORMNAME="" UNITNAME="Blender_tree" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ELog.cpp" FORMNAME="" UNITNAME="ELog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -266,7 +265,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=57
+Build=60
 Debug=1
 PreRelease=0
 Special=0
@@ -278,7 +277,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.57
+FileVersion=1.0.2.60
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -360,18 +359,19 @@ Item1=c:\rad\borland\cbuilder5\source\vcl;P:\Editor\QHull\
 Item2=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=11
-Item0=_EDITOR;_ACTOR_EDITOR;_DEBUG
-Item1=_EDITORS;_ACTOR_EDITOR;_DEBUG
-Item2=_EDITOR_FAMILY;_ACTOR_EDITOR;_DEBUG
-Item3=_ACTOR_EDITOR;_DEBUG
-Item4=_EDITOR;_DEBUG
-Item5=_EDITOR
-Item6=_EDITOR;_DEBUG;_STLP_USE_OWN_NAMESPACE
-Item7=_EDITOR;_DEBUG;_BORLAND
-Item8=_DEBUG;_EDITOR
-Item9=_DEBUG;_ED
-Item10=_DEBUG
+Count=12
+Item0=_EDITOR;_ACTOR_EDITOR
+Item1=_EDITOR;_ACTOR_EDITOR;_DEBUG
+Item2=_EDITORS;_ACTOR_EDITOR;_DEBUG
+Item3=_EDITOR_FAMILY;_ACTOR_EDITOR;_DEBUG
+Item4=_ACTOR_EDITOR;_DEBUG
+Item5=_EDITOR;_DEBUG
+Item6=_EDITOR
+Item7=_EDITOR;_DEBUG;_STLP_USE_OWN_NAMESPACE
+Item8=_EDITOR;_DEBUG;_BORLAND
+Item9=_DEBUG;_EDITOR
+Item10=_DEBUG;_ED
+Item11=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=2
