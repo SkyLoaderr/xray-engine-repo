@@ -196,7 +196,7 @@ public:
 						SConnectionVertex				T;
 						LPSTR							S;
 						S								= xr_strdup(tpGraphPoint->name_replace());
-						T.caConnectName					= xr_strdup(tpGraphPoint->m_caConnectionPointName);
+						T.caConnectName					= xr_strdup(*tpGraphPoint->m_caConnectionPointName);
 						T.dwLevelID						= dwfGetIDByLevelName(Ini,*tpGraphPoint->m_caConnectionLevelName);
 						T.tGraphID						= (ALife::_GRAPH_ID)i;
 						T.tOldGraphID					= tGraphID;
