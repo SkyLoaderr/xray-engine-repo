@@ -34,8 +34,8 @@ function save_dialog:FillList()
 	for	it=0, f_cnt-1 	do
 		local file		=	flist:GetAt(it)
 		printf("file[%d]=%s",it,file)
-		table.insert(self.FileTable,file)
-		self:AddItemToList(file)		
+--		table.insert(self.FileTable,file)
+--		self:AddItemToList(file)		
 	end
 	
 	flist:Free()	
