@@ -86,14 +86,14 @@ IRender_Target*			CRender::getTarget				()					{ return Target;										}
 IRender_Light*			CRender::light_create			()					{ return L_DB->Create();								}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_DB->Destroy((light*)L); L=0; }				}
 
-void					CRender::flush					()					{ flush_Models();										}
+void					CRender::flush					()					{ r_dsgraph_render	(0);								}
 
 BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);								}
 BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);								}
 BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);								}
 
-void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
-void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
+void					CRender::add_Visual				(IRender_Visual* V ){ add_leafs_Dynamic(V);									}
+void					CRender::add_Geometry			(IRender_Visual* V ){ add_Static(V,View->getMask());						}
 void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)
 {
 	Wallmarks->AddWallmark	(T,P,&*S,s);
