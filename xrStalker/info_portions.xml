@@ -7,7 +7,7 @@
 		<location >
 			<level></level>
 			<object>trivial_novice3_0_1</object>
-			<icon name="Novice" x="2" y="2" width="1" height="1"></icon>
+			<icon name="unknown" x="2" y="3" width="1" height="1"></icon>
 			<text>Novice need weapon</text>
 		</location>
 	</info_portion>
