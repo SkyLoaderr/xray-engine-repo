@@ -100,8 +100,8 @@ void OGF::Stripify	()
 		for(u32 i=0; i<temp_list.size(); i++)
 			vertices[i]=temp_list[permute[i]];
 	} catch (...) {
-		clMsg("ERROR: [slow-vert] Stripifying failed. Dump below.");
-		DumpFaces();
+		clMsg		("ERROR: [slow-vert] Stripifying failed. Dump below.");
+		DumpFaces	();
 	}
 }
 
