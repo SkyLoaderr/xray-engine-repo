@@ -424,18 +424,6 @@ void PATargetVelocity::Save	(IWriter& F)
 	F.w_float		(scale);
 }
 
-void PAVelocityD::Load		(IReader& F)
-{
-	ParticleAction::Load 	(F);
-    F.r				(&gen_vel,sizeof(pDomain));
-    gen_velL		= gen_vel;
-}
-void PAVelocityD::Save		(IWriter& F)
-{
-	ParticleAction::Save   	(F);
-    F.w				(&gen_vel,sizeof(pDomain));
-}
-
 void PAVortex::Load			(IReader& F)
 {
 	ParticleAction::Load  	(F);

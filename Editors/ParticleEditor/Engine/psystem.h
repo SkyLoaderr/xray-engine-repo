@@ -495,14 +495,6 @@ namespace PAPI
         _METHODS;
 	};
 
-	struct PARTICLEDLL_API PAVelocityD : public ParticleAction
-	{
-		pDomain gen_velL;	// The domain of startup velocity.(in local space)
-		pDomain gen_vel;	// The domain of startup velocity.
-
-        _METHODS;
-	};
-
 	struct PARTICLEDLL_API PAVortex : public ParticleAction
 	{
 		pVector centerL;	// Center of vortex (in local space)

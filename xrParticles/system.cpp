@@ -285,7 +285,7 @@ PARTICLEDLL_API void pVelocity(float x, float y, float z)
 	_ps.Vel = pDomain(PDPoint, x, y, z);
 }
 
-PARTICLEDLL_API void __cdecl pVelocityD(PDomainEnum dtype,
+PARTICLEDLL_API void pVelocityD(PDomainEnum dtype,
 				float a0, float a1, float a2,
 				float a3, float a4, float a5,
 				float a6, float a7, float a8)
