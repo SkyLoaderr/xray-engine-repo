@@ -136,8 +136,6 @@ CLevel::~CLevel()
 	xr_delete					(game);
 	xr_delete					(game_events);
 
-	::Render->unload_LevelWallmarks();
-
 	CInfoPortion::DeleteStrToID();
 }
 

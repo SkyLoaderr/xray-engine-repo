@@ -130,8 +130,6 @@ public:
 
 	// wallmarks
 	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V);
-	virtual void					load_LevelWallmarks		(LPCSTR fn);
-	virtual void					unload_LevelWallmarks	();
 	
 	//
 	virtual IBlender*				blender_create			(CLASS_ID cls);

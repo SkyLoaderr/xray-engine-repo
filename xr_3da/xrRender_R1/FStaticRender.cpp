@@ -151,14 +151,6 @@ void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB:
 	VERIFY2					(_valid(P) && _valid(s) && T && verts && (s>EPS_L), "Invalid wallmark params");
 	Wallmarks->AddWallmark	(T,verts,P,&*S,s);
 }
-void					CRender::load_LevelWallmarks	(LPCSTR fn)
-{
-	Wallmarks->load_LevelWallmarks(fn);
-}
-void					CRender::unload_LevelWallmarks	()
-{
-	Wallmarks->unload_LevelWallmarks();
-}
 void					CRender::add_Occluder			(Fbox2&	bb_screenspace	)
 {
 	VERIFY					(_valid(bb_screenspace));
