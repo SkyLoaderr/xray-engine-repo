@@ -149,8 +149,8 @@ public:
 	void 						file_rename		(LPCSTR src, LPCSTR dest,bool bOwerwrite=true);
     int							file_length		(LPCSTR src);
 
-    int  						get_file_age	(LPCSTR nm);
-    void 						set_file_age	(LPCSTR nm, int age);
+    u32  						get_file_age	(LPCSTR nm);
+    void 						set_file_age	(LPCSTR nm, u32 age);
 
 	xr_vector<LPSTR>*			file_list_open	(LPCSTR initial, LPCSTR folder,	u32 flags=FS_ListFiles);
 	xr_vector<LPSTR>*			file_list_open	(LPCSTR path,					u32 flags=FS_ListFiles);

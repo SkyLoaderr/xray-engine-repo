@@ -111,7 +111,7 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 s
 	desc.ptr			= ptr;
 	desc.size_real		= size_real;
 	desc.size_compressed= size_compressed;
-    desc.modif			= modif & ~(u32(1));
+    desc.modif			= modif & (~u32(0x3));
 
 	// if file already exist - update info
 	files_it	I		= files.find(desc);
@@ -639,9 +639,8 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 							if ((fc.size_real == desc.size_real)&&(fc.modif==desc.modif))	{
 								// use
 							} else {
-								// Msg		("copy: db[%X],cache[%X] - '%s', ",fc.modif,desc.modif,fname);
 								// copy & use
-								fc.modif	= desc.modif;
+								Msg			("copy: db[%X],cache[%X] - '%s', ",desc.modif,fc.modif,fname);
 								bCopy		= TRUE;
 							}
 						} else {
@@ -913,16 +912,16 @@ void CLocatorAPI::update_path(std::string& dest, LPCSTR initial, LPCSTR src)
     return get_path(initial)->_update(dest,src);
 }
 
-int CLocatorAPI::get_file_age(LPCSTR nm)
+u32 CLocatorAPI::get_file_age(LPCSTR nm)
 {
 	// проверить нужно ли пересканировать пути
     check_pathes	();
 
 	files_it I 		= file_find_it(nm);
-    return (I!=files.end())?I->modif:-1;
+    return (I!=files.end())?I->modif:u32(-1);
 }
 
-void CLocatorAPI::set_file_age(LPCSTR nm, int age)
+void CLocatorAPI::set_file_age(LPCSTR nm, u32 age)
 {
 	// проверить нужно ли пересканировать пути
     check_pathes	();
