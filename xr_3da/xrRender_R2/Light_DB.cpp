@@ -175,8 +175,9 @@ void			CLight_DB::Update()
 		sun_dir_1.add			(sun_dir_base);
 		sun_dir_1.normalize		();
 
+		u32							rnd		= ::Random.randI(0,20000)*838;
 		sun_color_0.set				(sun_color_1);
-		sun_color_1.set				(::Random.randF(150.f),::Random.randF(150.f),::Random.randF(150.f));
+		sun_color_1.set				(color_get_R(rnd),color_get_G(rnd),color_get_B(rnd));
 		sun_color_1.normalize_safe	();
 		sun_color_1.mul				(::Random.randF(.5f,2.0f));
 	}
