@@ -435,7 +435,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 //					(**l_it).Drop();*/
 //		}
 //	}
-//	UpdateInventoryOwner(DT);
+	UpdateInventoryOwner(DT);
 	
 	VERIFY				(_valid(Position()));
 	m_pPhysics_support->in_shedule_Update(DT);
