@@ -3,6 +3,7 @@
 #include "..\fmesh.h"
 #include "..\xrLevel.h"
 #include "..\x_ray.h"
+#include "..\IGame_Persistent.h"
 
 void CRender::level_Load()
 {
