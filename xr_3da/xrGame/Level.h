@@ -12,6 +12,7 @@
 #include "script_export_space.h"
 #include "StatGraph.h"
 #include "map_location.h"
+#include "xrMessages.h"
 
 class	CHUDManager;
 class	CParticlesObject;
