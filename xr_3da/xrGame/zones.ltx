@@ -1023,7 +1023,7 @@ GroupControlSection		= spawn_group_zone
 $spawn 					= "zones\campfire"
 $prefetch 				= 16
 class					= Z_MBALD
-hit_impulse_scale		= 1.00
+hit_impulse_scale		= 0.00
 sound					= 
 postprocess				= postprocess_flame
 
@@ -1051,7 +1051,7 @@ disable_time			= 0	;время игнорирования неживого объекта в зоне (-1 если не нужн
 disable_time_small		= 0	;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time		= 50000	;время отключения idle партиклов
 
-ignore_nonalive			= true
+ignore_nonalive			= false
 ignore_small			= true
 ignore_artefacts		= true
 
@@ -1068,9 +1068,9 @@ idle_light_range_delta 	= 0.25
 idle_light_anim			= koster_00
 idle_light_height		= 0.70			;подъем источника света на высоту
 
-awaking_time			= 1000
+awaking_time			= 0
 blowout_time			= 300	
-accamulate_time			= 1000
+accamulate_time			= 0
 
 visible_by_detector 	= off
 
