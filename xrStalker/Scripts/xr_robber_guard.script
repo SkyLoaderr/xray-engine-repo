@@ -94,10 +94,10 @@ end
 
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, char_ini)
-	printf("xr_robber_guard: add_to_binder")
 	if not (char_ini == nil or char_ini:section_exist("robber_guard") == true) then
 		return
 	end
+	printf("xr_robber_guard: add_to_binder")
 
 	local operators    = {}
 	local properties  = {}
