@@ -353,8 +353,6 @@ void CAI_Biting::UpdateCL()
 	if (!frame_check(m_dwFrameClient))
 		return;
 
-	Exec_Look			(Device.fTimeDelta);
-
 	inherited::UpdateCL();
 	
 	if (g_Alive()) {
@@ -383,6 +381,8 @@ void CAI_Biting::UpdateCL()
 		else 
 			m_body.speed	= m_velocity_angular.target;
 	}
+
+	Exec_Look			(Device.fTimeDelta);
 
 	m_pPhysics_support->in_UpdateCL();
 
