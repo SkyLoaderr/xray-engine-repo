@@ -136,7 +136,7 @@ public:
 };
 
 
-extern void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
+extern void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 
 DEF_MAP(Implicit,DWORD,ImplicitDeflector);
 
@@ -161,7 +161,7 @@ public:
 		R_ASSERT				(DATA);
 		ImplicitDeflector& defl = *DATA;
 		vector<R_Light>	Lights	= pBuild->lights[0].lights;
-		RAPID::XRCollide		DB;
+		CDB::COLLIDER		DB;
 		
 		// Setup variables
 		UVpoint		dim,half;
@@ -176,8 +176,8 @@ public:
 		Jitter_Select(Jitter, Jcount);
 		
 		// Lighting itself
-		DB.RayMode	(0);
-		Fcolor		C[9];
+		DB.ray_options	(0);
+		Fcolor			C[9];
 		for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);
 		for (DWORD V=y_start; V<y_end; V++)
 		{

@@ -2,7 +2,7 @@
 #include "build.h"
 #include "xrThread.h"
 
-extern void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
+extern void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 
 class CLMThread : public CThread
 {
@@ -10,7 +10,7 @@ public:
 	CDeflector *		volatile	defl;
 	BOOL				volatile	bContinue;
 	HASH							H;
-	RAPID::XRCollide				DB;
+	CDB::COLLIDER					DB;
 	vector<R_Light>					LightsSelected;
 public:
 	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
@@ -96,8 +96,8 @@ public:
 	}
 	virtual void		Execute	()
 	{
-		RAPID::XRCollide	DB;
-		DB.RayMode			(RAY_CULL);
+		CDB::COLLIDER	DB;
+		DB.ray_options	(CDB::OPT_CULL);
 		
 		vector<R_Light>	Lights = pBuild->lights[0].lights;
 		if (Lights.empty())		return;

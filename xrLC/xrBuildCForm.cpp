@@ -89,7 +89,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 	p_cost  = 1.f/(cfFaces.size());
 
 	// Collect faces
-	RAPID::CollectorPacked CL(BB);
+	CDB::CollectorPacked CL(BB);
 	for (vecFaceIt F = cfFaces.begin(); F!=cfFaces.end(); F++)
 	{
 		Face*	T = *F;
@@ -119,7 +119,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 
 	// Data
 	MFS.write		(CL.getV(),CL.getVS()*sizeof(Fvector));
-	MFS.write		(CL.getT(),CL.getTS()*sizeof(RAPID::tri));
+	MFS.write		(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
 
 	// Compress chunk
 	fs.write_chunk	(fsL_CFORM|CFS_CompressMark,MFS.pointer(),MFS.size());

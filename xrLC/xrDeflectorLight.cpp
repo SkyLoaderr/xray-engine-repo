@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "build.h"
 #include "math.h"
-#include "cl_defs.h"
 #include "cl_intersect.h"
 #include "std_classes.h"
 #include "xrImage_Resampler.h"
@@ -106,19 +105,20 @@ BOOL ApplyBorders(b_texture &lm, DWORD ref)
 	return bNeedContinue;
 }
 
-float getLastRP_Scale(RAPID::XRCollide* DB, R_Light& L)
+float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)
 {
-	DWORD	tris_count  = DB->GetRayContactCount();
+	DWORD	tris_count  = DB->r_count();
 	float	scale		= 1.f;
 	Fvector B;
 
 	try {
 		for (DWORD I=0; I<tris_count; I++)
 		{
-			RAPID::raypick_info& rpinf = DB->RayContact[I];
+			CDB::RESULT& rpinf = DB->r_begin()[I];
 			
 			// Access to texture
-			Face* F										= (Face*)(RCAST_Model.tris[rpinf.id].dummy);
+			CDB::TRI& clT								= RCAST_Model.get_tris()[rpinf.id];
+			Face* F										= (Face*)(clT.dummy);
 			if (0==F)									continue;
 			
 			Shader_xrLC&	SH							= F->Shader();
@@ -126,9 +126,9 @@ float getLastRP_Scale(RAPID::XRCollide* DB, R_Light& L)
 			
 			if (F->bOpaque)		{
 				// Opaque poly - cache it
-				L.tri[0].set	(rpinf.p[0]);
-				L.tri[1].set	(rpinf.p[1]);
-				L.tri[2].set	(rpinf.p[2]);
+				L.tri[0].set	(*clT.verts[0]);
+				L.tri[1].set	(*clT.verts[1]);
+				L.tri[2].set	(*clT.verts[2]);
 				return 0;
 			}
 			
@@ -163,22 +163,22 @@ float getLastRP_Scale(RAPID::XRCollide* DB, R_Light& L)
 	return scale;
 }
 
-float rayTrace	(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float R)
+float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R)
 {
 	R_ASSERT	(DB);
 	
 	// 1. Check cached polygon
 	float _u,_v,range;
-	bool res = RAPID::TestRayTri(P,D,L.tri,_u,_v,range,false);
+	bool res = CDB::TestRayTri(P,D,L.tri,_u,_v,range,false);
 	if (res) {
 		if (range>0 && range<R) return 0;
 	}
 	
 	// 2. Polygon doesn't pick - real database query
-	DB->RayPick(0,&RCAST_Model,P,D,R);
+	DB->ray_query	(&RCAST_Model,P,D,R);
 	
 	// 3. analyze polygons and cache nearest if possible
-	if (0==DB->GetRayContactCount()) {
+	if (0==DB->r_count()) {
 		return 1;
 	} else {
 		return getLastRP_Scale(DB,L);
@@ -186,7 +186,7 @@ float rayTrace	(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float 
 	return 0;
 }
 
-void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end)
+void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end)
 {
 	Fvector		Ldir,Pnew;
 	Pnew.direct(P,N,0.01f);
@@ -387,7 +387,7 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms, DWORD& w, DWORD& h)
 	return FALSE;
 }
 
-VOID CDeflector::L_Calculate(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H)
+VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 {
 	try {
 		b_texture&		lm = layers.back().lm;
@@ -419,7 +419,7 @@ VOID CDeflector::L_Calculate(RAPID::XRCollide* DB, LSelection* LightsSelected, H
 	}
 }
 
-VOID CDeflector::Light(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H)
+VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 {
 	// Geometrical bounds
 	Fbox bb;		bb.invalidate	();

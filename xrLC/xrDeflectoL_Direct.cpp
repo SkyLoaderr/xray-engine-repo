@@ -3,10 +3,10 @@
 #include "std_classes.h"
 #include "xrThread.h"
 
-extern void LightPoint		(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
+extern void LightPoint		(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
-void CDeflector::L_Direct_Edge (RAPID::XRCollide* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)
+void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)
 {
 	Fvector		vdir;
 	vdir.sub	(v2,v1);
@@ -48,7 +48,7 @@ void CDeflector::L_Direct_Edge (RAPID::XRCollide* DB, LSelection* LightsSelected
 	}
 }
 
-void CDeflector::L_Direct	(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H)
+void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 {
 	b_texture&	lm = layers.back().lm;
 
@@ -66,7 +66,7 @@ void CDeflector::L_Direct	(RAPID::XRCollide* DB, LSelection* LightsSelected, HAS
 	Jitter_Select(Jitter, Jcount);
 	
 	// Lighting itself
-	DB->RayMode	(0);
+	DB->ray_options	(0);
 	
 	Fcolor		C[9];
 	for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);

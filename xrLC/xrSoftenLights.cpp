@@ -20,8 +20,10 @@ void		__stdcall	hemi_callback(float x, float y, float z, float E, LPVOID P)
 void CBuild::SoftenLights()
 {
 	Status	("Jittering lights...");
-	b_light*	L = lights_lmaps.begin();
-	R_Light		RL;
+	b_light*		L = lights_lmaps.begin();
+	R_Light			RL;
+	CDB::COLLIDER	XRC;
+				
 	for (;L!=lights_lmaps.end(); L++)
 	{
 		Progress				(float(L-lights_lmaps.begin())/float(lights_lmaps.size()));
@@ -140,7 +142,7 @@ void CBuild::SoftenLights()
 				R_Light	T		= RL;
 				T.energy		= RL.energy/float(g_params.fuzzy_samples);
 				
-				XRC.RayMode		(RAY_ONLYNEAREST);
+				XRC.ray_options	(CDB::OPT_ONLYNEAREST);
 				for (int i=0; i<g_params.fuzzy_samples; i++)
 				{
 					// dir & dist
@@ -149,11 +151,8 @@ void CBuild::SoftenLights()
 					float dist		= ::Random.randF(g_params.fuzzy_min,g_params.fuzzy_max);
 					
 					// check collision
-					XRC.RayPick		(0,&RCAST_Model,RL.position,R,dist);
-					if (XRC.GetRayContactCount()) {
-						const RAPID::raypick_info* I = XRC.GetMinRayPickInfo();
-						dist = I->range;
-					}
+					XRC.ray_query	(&RCAST_Model,RL.position,R,dist);
+					if (XRC.r_count())	dist = XRC.r_begin()->range;
 					
 					// calculate point
 					T.position.direct		(RL.position,R,dist*.5f);

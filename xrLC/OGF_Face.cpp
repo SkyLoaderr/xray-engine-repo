@@ -130,7 +130,7 @@ void OGF::MakeProgressive()
 		faces_saved		= faces;
 
 		// Options
-		PM_Options(dwRelevantUV,dwRelevantUVMASK,3, 
+		PM_Init	(dwRelevantUV,dwRelevantUVMASK,3, 
 			g_params.m_pm_uv, g_params.m_pm_pos, g_params.m_pm_curv, 
 			g_params.m_pm_borderH_angle, g_params.m_pm_borderH_distance, 
 			g_params.m_pm_heuristic);
