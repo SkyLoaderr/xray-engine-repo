@@ -20,15 +20,16 @@ void CRender::level_Load()
 		R_ASSERT2					(chunk,"Level doesn't builded correctly.");
 		u32 count = chunk->r_u32	();
 		Shaders.resize				(count);
-		for(u32 i=1; i<count; i++)	// skip first shader as "reserved" one
+		for(u32 i=0; i<count; i++)	// skip first shader as "reserved" one
 		{
 			string512				n_sh,n_tlist;
 			LPCSTR			n		= LPCSTR(chunk->pointer());
+			chunk->skip_stringZ		();
+			if (0==n[0])			continue;
 			strcpy					(n_sh,n);
 			LPSTR			delim	= strchr(n_sh,'/');
 			*delim					= 0;
 			strcpy					(n_tlist,delim+1);
-			chunk->skip_stringZ		();
 			Shaders[i]				= Device.Resources->Create(n_sh,n_tlist);
 		}
 		chunk->close();
