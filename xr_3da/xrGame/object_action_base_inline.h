@@ -14,12 +14,13 @@ template <typename _item_type>
 IC	CObjectActionBase<_item_type>::CObjectActionBase(_item_type *item, CAI_Stalker *owner, LPCSTR action_name) :
 	inherited			(owner,action_name)
 {
-	m_item				= item;
+	m_item					= item;
 }
 
 template <typename _item_type>
 void CObjectActionBase<_item_type>::initialize	()
 {
-	m_object->set_aimed	(0,false);
-	m_object->set_aimed	(1,false);
+	inherited::initialize	();
+	m_object->set_aimed		(0,false);
+	m_object->set_aimed		(1,false);
 }

@@ -333,7 +333,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	CActionBase<CAI_Stalker>	*action;
 	
 	// show
-	action				= xr_new<CObjectActionShow>(weapon,m_object);
+	action				= xr_new<CObjectActionShow>(weapon,m_object,"show");
 	add_condition		(action,id,eWorldPropertyHidden,	true);
 	action->add_condition(CWorldProperty(eWorldPropertyNoItems,true));
 	action->add_effect	(CWorldProperty(eWorldPropertyNoItems,false));
@@ -341,7 +341,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorShow),		action);
 
 	// hide
-	action				= xr_new<CObjectActionHide>(weapon,m_object);
+	action				= xr_new<CObjectActionHide>(weapon,m_object,"hide");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	action->add_condition(CWorldProperty(eWorldPropertyNoItems,false));
 	action->add_effect	(CWorldProperty(eWorldPropertyNoItems,true));
@@ -351,7 +351,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorHide),		action);
 
 	// drop
-	action				= xr_new<CObjectActionDrop>(weapon,m_object);
+	action				= xr_new<CObjectActionDrop>(weapon,m_object,"drop");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_effect			(action,id,eWorldPropertyDropped,	true);
 	add_effect			(action,id,eWorldPropertyAimed1,	false);
@@ -359,7 +359,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorDrop),		action);
 
 	// idle
-	action				= xr_new<CSObjectActionBase>(weapon,m_object);
+	action				= xr_new<CSObjectActionBase>(weapon,m_object,"idle");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_effect			(action,id,eWorldPropertyIdle,		true);
 	add_effect			(action,id,eWorldPropertyAimed1,	false);
@@ -367,7 +367,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorIdle),		action);
 
 	// strapping
-	action				= xr_new<CObjectActionStrapping>(weapon,m_object);
+	action				= xr_new<CObjectActionStrapping>(weapon,m_object,"strapping");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertyStrapped,	false);
 	add_effect			(action,id,eWorldPropertyStrapped,	true);
@@ -376,20 +376,20 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorStrapping),	action);
 
 	// unstrapping
-	action				= xr_new<CObjectActionUnstrapping>(weapon,m_object);
+	action				= xr_new<CObjectActionUnstrapping>(weapon,m_object,"unstrapping");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertyStrapped,	true);
 	add_effect			(action,id,eWorldPropertyStrapped,	false);
 	add_operator		(uid(id,eWorldOperatorUnstrapping),	action);
 
 	// strapped
-	action				= xr_new<CSObjectActionBase>(weapon,m_object);
+	action				= xr_new<CSObjectActionBase>(weapon,m_object,"strapped");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_effect			(action,id,eWorldPropertyIdleStrap,	true);
 	add_operator		(uid(id,eWorldOperatorStrapped),	action);
 
 	// aim1
-	action				= xr_new<CObjectActionAim>(weapon,m_object,0);
+	action				= xr_new<CObjectActionAim>(weapon,m_object,0,"aim1");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
 	add_effect			(action,id,eWorldPropertyAimed1,	true);
@@ -398,7 +398,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorAim1),		action);
 
 	// aim2
-	action				= xr_new<CObjectActionAim>(weapon,m_object,1);
+	action				= xr_new<CObjectActionAim>(weapon,m_object,1,"aim2");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch2,	true);
 	add_effect			(action,id,eWorldPropertyAimed2,	true);
@@ -407,7 +407,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorAim2),		action);
 
 	// aim_queue1
-	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,0);
+	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,0,"aim_queue1");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
 	add_condition		(action,id,eWorldPropertyQueueWait1,false);
@@ -416,7 +416,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorQueueWait1),	action);
 
 	// aim_queue2
-	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,1);
+	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,1,"aim_queue2");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
 	add_condition		(action,id,eWorldPropertyQueueWait2,false);
@@ -425,7 +425,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorQueueWait2),	action);
 
 	// fire1
-	action				= xr_new<CObjectActionFire>(weapon,m_object,0);
+	action				= xr_new<CObjectActionFire>(weapon,m_object,0,"fire1");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertyEmpty1,	false);
 	add_condition		(action,id,eWorldPropertyAimed1,	true);
@@ -435,7 +435,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorFire1),		action);
 
 	// fire2
-	action				= xr_new<CObjectActionFire>(weapon,m_object,1);
+	action				= xr_new<CObjectActionFire>(weapon,m_object,1,"fire2");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertyEmpty2,	false);
 	add_condition		(action,id,eWorldPropertyAimed2,	true);
@@ -445,7 +445,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorFire2),		action);
 
 	// reload1
-	action				= xr_new<CObjectActionReload>(weapon,m_object,0);
+	action				= xr_new<CObjectActionReload>(weapon,m_object,0,"reload1");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertyReady1,	false);
 	add_condition		(action,id,eWorldPropertyAmmo1,		true);
@@ -455,7 +455,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorReload1),		action);
 
 	// reload2
-	action				= xr_new<CObjectActionReload>(weapon,m_object,1);
+	action				= xr_new<CObjectActionReload>(weapon,m_object,1,"reload2");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertyReady2,	false);
 	add_condition		(action,id,eWorldPropertyAmmo2,		true);
@@ -465,7 +465,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorReload2),		action);
 
 	// switch1
-	action				= xr_new<CObjectActionSwitch>(weapon,m_object,0);
+	action				= xr_new<CObjectActionSwitch>(weapon,m_object,0,"switch1");
 	add_condition		(action,id,eWorldPropertySwitch1,	false);
 	add_condition		(action,id,eWorldPropertySwitch2,	true);
 	add_effect			(action,id,eWorldPropertySwitch1,	true);
@@ -475,7 +475,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorSwitch1),		action);
 
 	// switch2
-	action				= xr_new<CObjectActionSwitch>(weapon,m_object,1);
+	action				= xr_new<CObjectActionSwitch>(weapon,m_object,1,"switch2");
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
 	add_condition		(action,id,eWorldPropertySwitch2,	false);
 	add_effect			(action,id,eWorldPropertySwitch1,	false);
@@ -527,32 +527,32 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 	inherited::update			(time_delta);
 #ifdef LOG_ACTION
 	if (!solution().empty()) {
-		// printing current world state
-		{
-			Msg						("%6d : Current world state",Level().timeServer());
-			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-			EVALUATOR_MAP::const_iterator	E = evaluators().end();
-			for ( ; I != E; ++I) {
-				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
-				char				temp = '?';
-				if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first))
-					temp				= (*J).value() ? '+' : '-';
-				Msg					("%5c : %s",temp,property2string((*I).first));
-			}
-		}
-		// printing target world state
-		{
-			Msg						("%6d : Target world state",Level().timeServer());
-			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-			EVALUATOR_MAP::const_iterator	E = evaluators().end();
-			for ( ; I != E; ++I) {
-				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
-				char				temp = '?';
-				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first))
-					temp				= (*J).value() ? '+' : '-';
-				Msg					("%5c : %s",temp,property2string((*I).first));
-			}
-		}
+//		// printing current world state
+//		{
+//			Msg						("%6d : Current world state",Level().timeServer());
+//			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+//			EVALUATOR_MAP::const_iterator	E = evaluators().end();
+//			for ( ; I != E; ++I) {
+//				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
+//				char				temp = '?';
+//				if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first))
+//					temp				= (*J).value() ? '+' : '-';
+//				Msg					("%5c : %s",temp,property2string((*I).first));
+//			}
+//		}
+//		// printing target world state
+//		{
+//			Msg						("%6d : Target world state",Level().timeServer());
+//			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+//			EVALUATOR_MAP::const_iterator	E = evaluators().end();
+//			for ( ; I != E; ++I) {
+//				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
+//				char				temp = '?';
+//				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first))
+//					temp				= (*J).value() ? '+' : '-';
+//				Msg					("%5c : %s",temp,property2string((*I).first));
+//			}
+//		}
 		// printing solution
 		Msg						("%6d : Solution",Level().timeServer());
 		for (int i=0; i<(int)solution().size(); ++i)
