@@ -78,7 +78,7 @@ VOID CObjectList::DestroyObject	( CObject *pObject )
 	if (0==pObject)			return;
 	net_Unregister			(pObject);
 	OBJ_IT it				= find(objects.begin(),objects.end(),pObject);
-	if (it!=objects.end)	objects.erase(it);
+	if (it!=objects.end())	objects.erase(it);
 	DEL_INSTANCE			(pObject);
 }
 
@@ -102,7 +102,7 @@ VOID CObjectList::net_Register	(CObject* O)
 }
 VOID CObjectList::net_Unregister(CObject* O)
 {
-	map<u32,CObject*>::iterator	it = map_NETID.find(ID);
+	map<u32,CObject*>::iterator	it = map_NETID.find(O->net_ID);
 	if ((it!=map_NETID.end()) && (it->second == O))	map_NETID.erase(it);
 }
 
