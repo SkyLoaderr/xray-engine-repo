@@ -748,7 +748,7 @@ velosity.z/=time;
 velosity.y=time*world_gravity/2.f+(end_point.y-start_point.y)/time;
 JumpV(velosity);
 }
-void CPHMovementControl::Jump(const Fvector &end_point)
+float CPHMovementControl::Jump(const Fvector &end_point)
 {
 Fvector start_point;
 start_point.set(dynamic_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
@@ -760,4 +760,5 @@ velosity.x/=time;
 velosity.z/=time;
 velosity.y=time*world_gravity/2.f+(end_point.y-start_point.y)/time;
 JumpV(velosity);
+return time;
 }
