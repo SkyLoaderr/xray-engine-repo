@@ -24,12 +24,8 @@ IGame_Level::IGame_Level	()
 IGame_Level::~IGame_Level	()
 {
 	// Cleanup particles, some of them can be still active
-	while (ps_active.size())
-	{
-		CPS_Instance*	psi		= ps_active.back	();
-		ps_active.pop_back		();
-		xr_delete				(psi);
-	}
+	while (!ps_active.empty())
+		xr_delete				( *ps_active.begin() );
 
 	// 
 	xr_delete					( Environment	);
