@@ -36,7 +36,7 @@ public:
 
 	// methods
 	void				construct		();
-	void				set_callback	(BoneCallback C, void* Param);
+	void				set_callback	(BoneCallback C, void* Param, BOOL overwrite=FALSE);
 	void				set_param		(u32 idx, float data);
 	float				get_param		(u32 idx);
 };
