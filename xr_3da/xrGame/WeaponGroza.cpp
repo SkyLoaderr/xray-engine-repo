@@ -54,8 +54,6 @@ void CWeaponGroza::Load(CInifile* ini, const char* section){
 	fFlameLength	= ini->ReadFLOAT(section,"flame_length");
 	fFlameSize		= ini->ReadFLOAT(section,"flame_size");
 	bFlame			= FALSE;
-
-	FlameLOAD		();
 }
 
 void CWeaponGroza::FlameLOAD()

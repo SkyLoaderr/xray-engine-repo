@@ -128,8 +128,6 @@ void CWeaponM134::Load(CInifile* ini, const char* section)
 	
 	PKinematics(m_pHUD->Visual())->PlayCycle("idle");
 	PKinematics(m_pHUD->Visual())->LL_GetInstance(iHUDRotBone).set_callback	(RotateCallback_hud,this);
-
-	FlameLOAD		();
 }
 
 void CWeaponM134::FlameLOAD()
