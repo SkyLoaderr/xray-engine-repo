@@ -204,13 +204,13 @@ class XRSOUND_API	CSound_manager_interface
 {
 	virtual void	  				_initialize				( u64 window )																			= 0;
 	virtual void					_clear					( )																						= 0;
-//	virtual void					_restart				( )																						= 0;
 public:
 	//@{
 	/// General
 	static void						_create					( u64 window );
 	static void						_destroy				( );
-	static void						_restart				( );
+
+	virtual void					_restart				( )																						= 0;
 	//@}
 
 	//@{
