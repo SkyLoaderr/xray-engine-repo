@@ -1344,6 +1344,9 @@
 					RelativePath="xrServer_Objects.h">
 				</File>
 				<File
+					RelativePath=".\xrServer_Objects_Abstract.cpp">
+				</File>
+				<File
 					RelativePath=".\xrServer_Objects_Abstract.h">
 				</File>
 				<File
