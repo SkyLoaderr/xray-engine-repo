@@ -147,7 +147,7 @@ function save_dialog:OnListItemClicked()
 	local item_id = list_box:GetFocusedItem()
 	local item = list_box:GetItem(item_id)
 	
-	local item_text = item:GetText()
+	local item_text = item:GetTextFileName()
 	edit_box:SetText(item_text)
 end
 
