@@ -10,6 +10,10 @@
 
 #pragma hdrstop
 
+#ifdef AI_COMPILER
+	#include "net_utils.h"
+#endif
+
 #include "xrServer_Objects_ALife.h"
 #include "game_base.h"
 #include "ai_alife_templates.h"

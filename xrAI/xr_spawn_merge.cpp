@@ -16,6 +16,8 @@
 #include "game_base.h"
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
+#include "net_utils.h"
+#include "ai_alife_templates.h"
 
 DEFINE_VECTOR(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 

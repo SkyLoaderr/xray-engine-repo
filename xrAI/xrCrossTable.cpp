@@ -13,6 +13,7 @@
 
 #define					START_DISTANCE_TO_SEARCH				16.f
 #define					MAX_DEPTH								8			// i.e. 2048 meters
+DEFINE_VECTOR			(float,			FLOAT_VECTOR,			FLOAT_IT);
 DEFINE_VECTOR			(FLOAT_VECTOR,	FLOAT_VECTOR_VECTOR,	FLOAT_VECTOR_IT);
 
 
@@ -160,7 +161,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 			for ( ; I != E; I++)
 				if ((*I)[i] < tCrossTableCell.fDistance) {
 					tCrossTableCell.fDistance	= (*I)[i];
-					tCrossTableCell.tGraphIndex = _GRAPH_ID(I - B);
+					tCrossTableCell.tGraphIndex = ALife::_GRAPH_ID(I - B);
 				}
 			
 			for (int j=0; j<iVertexCount; j++)

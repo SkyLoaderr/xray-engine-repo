@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 
+#include "net_utils.h"
 #include "levelgamedef.h"
 #include "xrLevel.h"
 #include "xrThread.h"

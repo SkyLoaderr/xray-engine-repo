@@ -516,6 +516,9 @@
 					RelativePath="ai_alife_cross_table.h">
 				</File>
 				<File
+					RelativePath=".\ai_alife_graph.cpp">
+				</File>
+				<File
 					RelativePath="ai_alife_graph.h">
 				</File>
 				<File

@@ -78,7 +78,7 @@ public:
 
 			void					Load				(LPCSTR fName);
 
-	IC		bool					bfCheckMask			(svector<_LOCATION_ID,LOCATION_TYPE_COUNT> &M, _LOCATION_ID E[LOCATION_TYPE_COUNT])
+	IC		bool					bfCheckMask			(svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT])
 	{
 		for (int i=0; i<LOCATION_TYPE_COUNT; i++)
 			if ((M[i] != E[i]) && (M[i] != 255))

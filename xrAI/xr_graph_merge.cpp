@@ -16,6 +16,8 @@
 #include "xrServer_Objects_ALife_All.h"
 #include "xrCrossTable.h"
 #include "ai_map.h"
+#include "net_utils.h"
+#include "ai_alife_templates.h"
 using namespace ALife;
 
 class CLevelGraph;
