@@ -89,7 +89,7 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 
 		if(!base_name) return;
 
-		yC	 = Device.dwHeight / 2 - height / 2;
+		yC	 = UI_BASE_HEIGHT / 2 - height / 2;
 
 		// Единственное место, где надо установить не считанные данные, а вычесленные
 		pWnd->Init(*base_name, xC, yC, width, height);
@@ -128,13 +128,13 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 	xml_init.InitButton(xml_doc, "button", 0, &UIOkBtn);
 	rect	= UIOkBtn.GetWndRect();
 
-	UIOkBtn.MoveWindow(Device.dwWidth / 2 - static_cast<int>((rect.right - rect.left) * 1.5),
+	UIOkBtn.MoveWindow(UI_BASE_WIDTH / 2 - static_cast<int>((rect.right - rect.left) * 1.5),
 		r.bottom + r.top / 2 - UIOkBtn.GetHeight());
 
 	AttachChild(&UICancelBtn);
 	xml_init.InitButton(xml_doc, "button", 1, &UICancelBtn);
 	rect	= UICancelBtn.GetWndRect();
-	UICancelBtn.MoveWindow(Device.dwWidth / 2 + static_cast<int>((rect.right - rect.left) * 0.5),
+	UICancelBtn.MoveWindow(UI_BASE_WIDTH / 2 + static_cast<int>((rect.right - rect.left) * 0.5),
 		r.bottom + r.top / 2 - UICancelBtn.GetHeight());
 
 	SetFont(HUD().pFontHeaderRussian);
@@ -177,7 +177,7 @@ u8 CUISkinSelectorWnd::SwitchSkin(const u8 idx)
 
 u32 CUISkinSelectorWnd::CalculateSkinWindowWidth() const
 {
-	return static_cast<u32>(Device.dwWidth / SKINS_COUNT);
+	return static_cast<u32>(UI_BASE_WIDTH / SKINS_COUNT);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -328,7 +328,7 @@ void CUISkinSelectorWnd::DrawKBAccelerators()
 		RECT rect = m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
 
 		Irect r;
-		r.set(0, 0, Device.dwWidth, Device.dwHeight);
+		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_WIDTH);
 
 		HUD().OutText(GetFont(), r,
 			(rect.right - rect.left) / 2.0f + rect.left, 
