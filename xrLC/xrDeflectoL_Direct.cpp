@@ -122,5 +122,5 @@ void CDeflector::L_Direct(float progress)
 	DWORD	last			= range - stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(new DirectThread(thID, this, thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
-	Threads.wait			();
+	Threads.wait			(200);
 }
