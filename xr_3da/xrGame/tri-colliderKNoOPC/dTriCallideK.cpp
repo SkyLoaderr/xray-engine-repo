@@ -548,7 +548,7 @@ dReal* pdepth;
 #undef FOO
 #undef BAR
 #undef TRI_CONTAIN_POINT
- done: ;
+ //done: ;
 
 ////////////////////////////////////////////////////////////// end (from geom.cpp dCollideBP)
 

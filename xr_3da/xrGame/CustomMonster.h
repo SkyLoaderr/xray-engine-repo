@@ -10,6 +10,7 @@
 #include "..\feel_sound.h"
 #include "..\feel_touch.h"
 #include "entity.h"
+#include "movementcontrol.h"
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
 
@@ -23,6 +24,7 @@ class CCustomMonster :
 private:
 	typedef	CEntityAlive	inherited;
 protected:
+	CMovementControl	Movement;
 	// weapons
 	struct				SAnimState
 	{

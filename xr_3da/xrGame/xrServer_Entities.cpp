@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xr_ini.h"
+#include "..\\xr_ini.h"
 #include "game_base.h"
 #include "clsid_game.h"
 #include "xrServer_Entities.h"

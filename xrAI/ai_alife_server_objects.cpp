@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xr_ini.h"
+#include "..\\xr_ini.h"
 #include "xrServer_Entities.h"
 #ifdef _EDITOR
 	#include "xr_trims.h"

@@ -88,6 +88,49 @@ void CCustomMonster::OnDeviceCreate()
 void CCustomMonster::Load		(LPCSTR section)
 {
 	inherited::Load		(section);
+	///////////
+	// Movement: General
+	Movement.SetParent		(this);
+	Fbox	bb;
+
+	// Movement: BOX
+	Fvector	vBOX0_center= pSettings->ReadVECTOR	(section,"ph_box0_center"	);
+	Fvector	vBOX0_size	= pSettings->ReadVECTOR	(section,"ph_box0_size"		);
+	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
+	Movement.SetBox		(0,bb);
+
+	// Movement: BOX
+	Fvector	vBOX1_center= pSettings->ReadVECTOR	(section,"ph_box1_center"	);
+	Fvector	vBOX1_size	= pSettings->ReadVECTOR	(section,"ph_box1_size"		);
+	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
+	Movement.SetBox		(1,bb);
+
+	// Movement: Foots
+	Fvector	vFOOT_center= pSettings->ReadVECTOR	(section,"ph_foot_center"	);
+	Fvector	vFOOT_size	= pSettings->ReadVECTOR	(section,"ph_foot_size"		);
+	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
+	Movement.SetFoots	(vFOOT_center,vFOOT_size);
+
+	// Movement: Crash speed and mass
+	float	cs_min		= pSettings->ReadFLOAT	(section,"ph_crash_speed_min"	);
+	float	cs_max		= pSettings->ReadFLOAT	(section,"ph_crash_speed_max"	);
+	float	mass		= pSettings->ReadFLOAT	(section,"ph_mass"				);
+	Movement.SetCrashSpeeds	(cs_min,cs_max);
+	Movement.SetMass		(mass);
+	
+
+	// Movement: Frictions
+	/*
+	float af, gf, wf;
+	af					= pSettings->ReadFLOAT	(section,"ph_friction_air"	);
+	gf					= pSettings->ReadFLOAT	(section,"ph_friction_ground");
+	wf					= pSettings->ReadFLOAT	(section,"ph_friction_wall"	);
+	Movement.SetFriction	(af,wf,gf);
+
+	// BOX activate
+	Movement.ActivateBox	(0);
+	*/
+	////////
 
 	vPosition.y			+= EPS_L;
 	
@@ -587,6 +630,8 @@ void CCustomMonster::Death	()
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
+	Movement.SetPosition	(vPosition);
+	Movement.SetVelocity	(0,0,0);
 	xrSE_Enemy* E			= (xrSE_Enemy*)DC;
 
 	//fHealth					= float(m_iHealth);

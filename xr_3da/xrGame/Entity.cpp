@@ -248,14 +248,14 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
-	Movement.SetPosition	(vPosition);
-	Movement.SetVelocity	(0,0,0);
+	//Movement.SetPosition	(vPosition);
+	//Movement.SetVelocity	(0,0,0);
 	return					TRUE;
 }
 void CEntityAlive::HitImpulse	(float amount, Fvector& vWorldDir, Fvector& vLocalDir)
 {
-	float Q					= 2*float(amount)/Movement.GetMass();
-	Movement.vExternalImpulse.mad	(vWorldDir,Q);
+//	float Q					= 2*float(amount)/Movement.GetMass();
+//	Movement.vExternalImpulse.mad	(vWorldDir,Q);
 }
 
 CEntityAlive::CEntityAlive()

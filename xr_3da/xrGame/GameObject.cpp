@@ -99,7 +99,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		R_ASSERT			(AI.bfCheckIfGraphLoaded());
 		//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(vPosition));
 //		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,vPosition);
-		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(vPosition));
+//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(vPosition));
 		if (a_obj->m_tNodeID < getAI().Header().count)
 			AI_NodeID			=	AI.q_Node	(a_obj->m_tNodeID,vPosition);
 		else

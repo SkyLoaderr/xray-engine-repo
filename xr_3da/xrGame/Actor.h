@@ -279,7 +279,7 @@ public:
 	{
 		state.bJump			= !!(mstate_real&mcJump);
 		state.bCrouch		= !!(mstate_real&mcCrouch);
-		state.fVelocity		= Movement.GetVelocityActual();
+		state.fVelocity		= ph_Movement.GetVelocityActual();
 		return TRUE;
 	}
 	virtual void						g_PerformDrop		( );

@@ -338,9 +338,6 @@
 			<File
 				RelativePath=".\xrGame.cpp">
 			</File>
-			<File
-				RelativePath="xr_ini.h">
-			</File>
 		</Filter>
 		<Filter
 			Name="Game"

@@ -6,7 +6,7 @@
 #define AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_
 #pragma once
 
-#include "movementcontrol.h"
+
 #include "gameobject.h"
 
 // refs
