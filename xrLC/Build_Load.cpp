@@ -48,6 +48,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	string256				sh_name;
 	FS.update_path			(sh_name,"$game_data$","shaders_xrlc.xr");
 	shaders.Load			(sh_name);
+	if (strstr(Core.Params,"-nv30"))
 	{
 		Shader_xrLCVec&			v	= shaders.Library();
 		for (u32 it=0; it<v.size(); it++)
