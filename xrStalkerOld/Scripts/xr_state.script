@@ -393,5 +393,8 @@ function change_state(npc, id)
 end
 
 function anim_update(type, npc)
+	if npc:weapon_strapped() then printf("weapon strapped") end
+	if npc:weapon_unstrapped() then printf("weapon unstrapped") end
+	if not (npc:weapon_strapped() or npc:weapon_unstrapped()) then return false end
 	return xr_motivator.storage[npc:id()].state:anim_update(type)
 end

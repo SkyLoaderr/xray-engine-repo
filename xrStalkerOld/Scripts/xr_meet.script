@@ -235,6 +235,7 @@ function action_meet_wait:initialize()
 	self.object:set_mental_state(anim.free)
 
    	xr_state.change_state(self.object,xr_state.stand)
+   	printf("strap weapon")
    	self.object:set_item(object.strap, self.object:best_weapon())
 	
    	self.a.Buyer = nil
@@ -291,6 +292,7 @@ function action_weapon:initialize()
 	stop_play_sound(self.object)
 end
 function action_weapon:execute ()
+	printf("unstrap weapon1")
    	self.object:set_item(object.idle, self.object:best_weapon())
 
 	-- нужно остановиться и посмотреть в сторону актора
@@ -334,6 +336,7 @@ function action_threat:initialize()
 	stop_play_sound(self.object)
 end
 function action_threat:execute ()
+	printf("unstrap weapon2")
    	self.object:set_item(object.idle, self.object:best_weapon())
 
 	-- нужно остановиться и посмотреть в сторону актора
