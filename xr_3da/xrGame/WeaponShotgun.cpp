@@ -234,6 +234,7 @@ BOOL CWeaponShotgun::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector&
 				float power		=	float(iHitPower);
 				float scale		=	1-(RQ.range/fireDistance);	clamp(scale,0.f,1.f);
 				power			*=	_sqrt(scale);
+				float impulse	=	fHitImpulseScale*power;
 				CEntity* E		=	dynamic_cast<CEntity*>(RQ.O);
 				//CGameObject* GO	=	dynamic_cast<CGameObject*>(RQ.O);
 				if (E) power	*=	E->HitScale(RQ.element);
@@ -260,6 +261,7 @@ BOOL CWeaponShotgun::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector&
 				P.w_float		(power);
 				P.w_s16			((s16)RQ.element);
 				P.w_vec3		(position_in_bone_space);
+				P.w_float		(impulse);
 				u_EventSend		(P);
 			}
 			FireShotmark		(D,end_point,RQ);

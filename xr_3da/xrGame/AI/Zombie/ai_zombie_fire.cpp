@@ -39,7 +39,7 @@ void CAI_Zombie::Exec_Action(float dt)
 				tDirection.normalize();
 				
 				if ((this->Local()) && (m_tSavedEnemy) && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY))
-					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this,-1,position_in_bone_space);
+					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this,-1,position_in_bone_space,0);
 			}
 			else
 				m_bActionStarted = false;

@@ -80,6 +80,7 @@ public:
 			P.w_float		(10000.f);
 			P.w_s16			((s16)0);
 			P.w_vec3		(position_in_bone_space);
+			P.w_float		(.0f);
 			l_pActor->u_EventSend		(P);
 			//NET_Packet		P;
 			//l_pActor->u_EventGen		(P,GE_DIE,l_pActor->ID()	);

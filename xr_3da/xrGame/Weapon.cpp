@@ -312,6 +312,8 @@ void CWeapon::Load		(LPCSTR section)
 	light_lifetime		= pSettings->ReadFLOAT		(section,"light_time"		);
 	light_time			= -1.f;
 	iHitPower			= pSettings->ReadINT		(section,"hit_power"		);
+	if(pSettings->LineExists(section,"hit_impulse_scale")) fHitImpulseScale = pSettings->ReadFLOAT(section,"hit_impulse_scale");
+	else fHitImpulseScale = 1.f;
 
 	vFirePoint			= pSettings->ReadVECTOR		(section,"fire_point"		);
 	vShellPoint			= pSettings->ReadVECTOR		(section,"shell_point"		);
@@ -666,6 +668,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 			float power		=	float(iHitPower);
 			float scale		=	1-(RQ.range/fireDistance);	clamp(scale,0.f,1.f);
 			power			*=	_sqrt(scale);
+			float impulse	=	fHitImpulseScale*power;
 			CEntity* E		=	dynamic_cast<CEntity*>(RQ.O);
 			//CGameObject* GO	=	dynamic_cast<CGameObject*>(RQ.O);
 			if (E) power	*=	E->HitScale(RQ.element);
@@ -692,6 +695,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 			P.w_float		(power);
 			P.w_s16			((s16)RQ.element);
 			P.w_vec3		(position_in_bone_space);
+			P.w_float		(impulse);
 			u_EventSend		(P);
 		}
 		FireShotmark		(D,end_point,RQ);

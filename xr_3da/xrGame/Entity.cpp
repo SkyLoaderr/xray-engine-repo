@@ -48,7 +48,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 	}
 }
 
-void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space) 
+void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space, float impulse) 
 {
 	Log("Process HIT: ", cName());
 	// *** process hit calculations
@@ -64,7 +64,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	vLocalDir.invert		();
 
 	// hit impulse
-	HitImpulse				(perc,dir,vLocalDir);
+	HitImpulse				(impulse,dir,vLocalDir); // @@@: WT
 	
 	// Calc amount (correct only on local player)
 	float	lost_health,		lost_armor;

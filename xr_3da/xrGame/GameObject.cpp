@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "GameObject.h"
 #include "..\fbasicvisual.h"
+#include "PhysicsShell.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -15,6 +16,7 @@ CGameObject::CGameObject		()
 	AI_NodeID	= 0;
 	AI_Node		= 0;
 	setActive	(FALSE);
+	m_pPhysicsShell = NULL;
 #ifdef DEBUG
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
 #endif
@@ -45,7 +47,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 		{
 			u16				id;
 			Fvector			dir;
-			float			power;
+			float			power, impulse;
 			s16				element;
 			Fvector			position_in_bone_space;
 			P.r_u16			(id);
@@ -53,7 +55,8 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			P.r_float		(power);
 			P.r_s16			(element);
 			P.r_vec3		(position_in_bone_space);
-			Hit				(power,dir,Level().Objects.net_Find(id),element,position_in_bone_space);
+			P.r_float		(impulse);
+			Hit				(power,dir,Level().Objects.net_Find(id),element,position_in_bone_space, impulse);
 		}
 		break;
 	case GE_DESTROY:
@@ -186,6 +189,10 @@ void CGameObject::u_EventGen(NET_Packet& P, u32 type, u32 dest)
 void CGameObject::u_EventSend(NET_Packet& P, BOOL sync)
 {
 	Level().Send(P,net_flags(TRUE,TRUE));
+}
+
+void CGameObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse){
+	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse);
 }
 
 #ifdef DEBUG

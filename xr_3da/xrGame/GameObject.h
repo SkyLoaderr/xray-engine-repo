@@ -6,6 +6,7 @@
 #define AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_
 #pragma once
 
+class CPhysicsShell;
 class CGameObject : public CObject  
 #ifdef DEBUG
 	, public pureRender
@@ -17,6 +18,7 @@ public:
 	u32											AI_NodeID;
 	NodeCompressed*								AI_Node;
 	u32											respawnPhantom;
+	CPhysicsShell*						m_pPhysicsShell;
 
 	// Utilities
 	void					u_EventGen			(NET_Packet& P, u32 type, u32 dest	);
@@ -35,7 +37,8 @@ public:
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual void			UpdateCL			();
 	
-	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space)=0;
+	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse);
+
 	// Position stack
 	virtual	SavedPosition	ps_Element			(u32 ID);
 

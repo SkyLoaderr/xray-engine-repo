@@ -280,7 +280,7 @@ void CActor::net_Destroy	()
 	for (it=0; it<SND_DIE_COUNT; it++)	::Sound->Delete	(sndDie[it]);
 }
 
-void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element)
+void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float impulse)
 {
 	if (g_Alive()<=0) return;
 	Fvector position_in_bone_space;
@@ -290,17 +290,17 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element)
 	case GAME_SINGLE:		
 		{
 			if (psActorFlags.test(AF_GODMODE))	return;
-			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space);
+			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space, impulse);
 		}
 		break;
 	default:
-		inherited::Hit	(iLost,dir,who,element,position_in_bone_space);
+		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse);
 		break;
 	}
 }
 
 
-void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space)
+void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse)
 {
 	if (g_Alive()<=0) return;
 
@@ -311,11 +311,11 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	case GAME_SINGLE:		
 		{
 			if (psActorFlags.test(AF_GODMODE))	return;
-			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space);
+			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space, impulse);
 		}
 		break;
 	default:
-		inherited::Hit	(iLost,dir,who,element,position_in_bone_space);
+		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse);
 		break;
 	}
 }
@@ -444,7 +444,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		if (Local()) {
 			pCreator->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
-			if (ph_Movement.gcontact_HealthLost)	Hit	(ph_Movement.gcontact_HealthLost,D,this,-1);
+			if (ph_Movement.gcontact_HealthLost)	Hit	(ph_Movement.gcontact_HealthLost,D,this,-1,0);
 		}
 	}	
 }
