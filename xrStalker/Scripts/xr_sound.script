@@ -45,8 +45,8 @@ snd_files = {
 	
 	trade_yes_stalker              = "characters_voice\\human_01\\talk\\trade\\yes\\stalker\\yes_",
 	trade_no_stalker               = "characters_voice\\human_01\\talk\\trade\\no\\stalker\\no_",
-	
 
+	novice_camp_guards             = "characters_voice\\human_01\\scenario\\guard_novice_camp\\guard_novice_camp_tutorial_"
 }
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_sound(obj)
@@ -152,6 +152,10 @@ function load_sound(obj)
 	theme["trade_yes"].types["stalker"] = load_theme("trade_yes_stalker")
 	theme["trade_no"] = { exec = npc_class, types = {}}
 	theme["trade_no"].types["stalker"] = load_theme("trade_no_stalker")
+
+	------------------------------------------------------------------------------------------------
+	-- лагерь новичков на эскейп
+	theme["novice_camp_guards"] = load_theme("novice_camp_guards")
 	
 	--print_table(theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
