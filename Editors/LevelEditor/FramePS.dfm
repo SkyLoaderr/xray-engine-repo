@@ -1,8 +1,8 @@
 object fraPS: TfraPS
   Left = 0
   Top = 0
-  Width = 123
-  Height = 243
+  Width = 443
+  Height = 277
   VertScrollBar.Visible = False
   Align = alClient
   Constraints.MaxWidth = 123
@@ -19,7 +19,7 @@ object fraPS: TfraPS
   object paSelectObject: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 50
     Align = alTop
     ParentColor = True
@@ -37,8 +37,7 @@ object fraPS: TfraPS
       Width = 26
       Height = 15
       Align = alNone
-      BevelShow = False
-      HotTrack = True
+      BtnColor = 10528425
       CloseButton = False
       Caption = '+'
       Font.Charset = DEFAULT_CHARSET
@@ -47,7 +46,7 @@ object fraPS: TfraPS
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
-      FlatAlwaysEdge = True
+      Transparent = False
       OnClick = ebSelectByRefsClick
     end
     object ebDeselectByRefs: TExtBtn
@@ -56,8 +55,7 @@ object fraPS: TfraPS
       Width = 26
       Height = 15
       Align = alNone
-      BevelShow = False
-      HotTrack = True
+      BtnColor = 10528425
       CloseButton = False
       Caption = '-'
       Font.Charset = DEFAULT_CHARSET
@@ -66,13 +64,13 @@ object fraPS: TfraPS
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
-      FlatAlwaysEdge = True
+      Transparent = False
       OnClick = ebDeselectByRefsClick
     end
     object Label: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -111,7 +109,7 @@ object fraPS: TfraPS
       Width = 26
       Height = 15
       Align = alNone
-      BevelShow = False
+      BtnColor = 10528425
       CloseButton = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -135,7 +133,7 @@ object fraPS: TfraPS
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFF}
       ParentFont = False
-      FlatAlwaysEdge = True
+      Transparent = False
       OnClick = ebCurrentPSPlayClick
     end
     object ebCurrentPSStop: TExtBtn
@@ -144,7 +142,7 @@ object fraPS: TfraPS
       Width = 26
       Height = 15
       Align = alNone
-      BevelShow = False
+      BtnColor = 10528425
       CloseButton = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -167,7 +165,7 @@ object fraPS: TfraPS
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFF}
       ParentFont = False
-      FlatAlwaysEdge = True
+      Transparent = False
       OnClick = ebCurrentPSStopClick
     end
     object Label1: TLabel
@@ -181,7 +179,7 @@ object fraPS: TfraPS
   object Panel1: TPanel
     Left = 0
     Top = 50
-    Width = 123
+    Width = 443
     Height = 32
     Align = alTop
     ParentColor = True
@@ -208,7 +206,7 @@ object fraPS: TfraPS
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter

@@ -83,7 +83,6 @@ protected:
 	bool ShiftLevel                 ();
 
 	bool BuildLTX                   ();
-
     bool BuildGame					();
 
 	bool WriteTextures              ();
@@ -106,13 +105,13 @@ protected:
 	int CalculateSector				(const Fvector& P, float R);
 public:
 	virtual DWORD Thread            ();
-	DWORD ThreadMakeLTX             ();
+	DWORD ThreadMakeGame            ();
 public:
 	SceneBuilder                    ();
 	virtual ~SceneBuilder           ();
 
 	virtual bool Execute            ();
-	bool MakeLTX  			        ();
+	bool MakeGame  			        ();
     bool MakeDetails				(bool bOkMessage);
 
 	__inline bool InProgress        (){	return m_InProgress; }

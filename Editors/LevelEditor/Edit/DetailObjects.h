@@ -188,7 +188,7 @@ public:
         				SBase				();
         IC bool			Valid				(){return (w>0)&&(h>0)&&(!!data.size());}
     	IC void			Clear				(){name[0]=0; w=0; h=0; stream=0; data.clear(); mesh.clear(); DestroyShader();}
-        void			CreateFromObjects	(const Fbox& box, ObjectList& lst);
+        void			CreateRMFromObjects	(const Fbox& box, ObjectList& lst);
         void			Render				();
         void			CreateShader		();
         void			DestroyShader		();

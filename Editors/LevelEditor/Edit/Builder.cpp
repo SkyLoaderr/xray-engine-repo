@@ -74,7 +74,7 @@ bool SceneBuilder::Execute( ){
 	return true;
 }
 
-bool SceneBuilder::MakeLTX( ){
+bool SceneBuilder::MakeGame( ){
 	UI.ResetBreak();
 	if( m_InProgress ) return false;
 	ELog.Msg( mtInformation, "Making started..." );
@@ -94,7 +94,7 @@ bool SceneBuilder::MakeLTX( ){
 	//---------------
 	UI.BeginEState(esBuildLevel);
     try{
-	    ThreadMakeLTX();
+	    ThreadMakeGame();
     }catch(...){
     	ELog.DlgMsg(mtError,"Error has occured in builder routine. Editor aborted.");
         abort();
@@ -238,7 +238,7 @@ DWORD SceneBuilder::Thread(){
 }
 
 //----------------------------
-DWORD SceneBuilder::ThreadMakeLTX(){
+DWORD SceneBuilder::ThreadMakeGame(){
 	bool error_flag = false;
 	AnsiString error_text;
 	do{

@@ -181,7 +181,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
           FocusedSelectColor = 10526880
           FocusedSelectTextColor = clBlack
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
+          Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
@@ -409,7 +409,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
             object lbOMotionCount: TLabel
               Left = 43
               Top = 17
-              Width = 93
+              Width = 9
               Height = 13
               Caption = '...'
               Font.Charset = DEFAULT_CHARSET
@@ -429,7 +429,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
             object lbActiveOMotion: TLabel
               Left = 43
               Top = 34
-              Width = 93
+              Width = 9
               Height = 13
               Caption = '...'
               Font.Charset = DEFAULT_CHARSET
@@ -558,6 +558,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
   end
   object fsStorage: TFormStorage
     Options = [fpPosition]
+    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'pcSceneProps.ActivePage')
     StoredValues = <

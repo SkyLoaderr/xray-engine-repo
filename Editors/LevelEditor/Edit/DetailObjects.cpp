@@ -408,7 +408,7 @@ bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     	return false;
     }
 	m_Base.RecreateShader();
-    m_Base.CreateFromObjects(m_BBox,m_SnapObjects);
+    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
     return true;
 }
 
@@ -901,16 +901,20 @@ bool CDetailManager::Load(CStream& F){
     	m_SnapObjects	= Scene.m_SnapObjects;
     }
 
+    if (F.FindChunk(DETMGR_CHUNK_DENSITY))
+		m_fDensity 			= F.Rfloat();
+
 	// base texture
 	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
 	    F.RstringZ		(buf);
-    	m_Base.LoadImage(buf);
-	    m_Base.CreateShader();
-	    m_Base.CreateFromObjects(m_BBox,m_SnapObjects);
+    	if (m_Base.LoadImage(buf)){
+		    m_Base.CreateShader();
+		    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
+        }else{
+        	ELog.Msg(mtError,"DetailManager: Can't find base texture '%s'.",buf);
+            Clear(true);
+        }
     }
-
-    if (F.FindChunk(DETMGR_CHUNK_DENSITY))
-		m_fDensity 			= F.Rfloat();
 
     InvalidateCache		();
 
@@ -943,15 +947,14 @@ void CDetailManager::Save(CFS_Base& F){
     	F.WstringZ		(m_Base.GetName());
 	    F.close_chunk	();
     }
+    F.open_chunk		(DETMGR_CHUNK_DENSITY);
+    F.Wfloat			(m_fDensity);
+    F.close_chunk		();
 	// snap objects
 	F.open_chunk		(DETMGR_CHUNK_SNAP_OBJECTS);
     F.Wdword			(m_SnapObjects.size());
     for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++)
     	F.WstringZ		((*o_it)->Name);
-    F.close_chunk		();
-
-    F.open_chunk		(DETMGR_CHUNK_DENSITY);
-    F.Wfloat			(m_fDensity);
     F.close_chunk		();
 }
 
@@ -1014,7 +1017,7 @@ bool CDetailManager::SBase::LoadImage(LPCSTR nm){
     return Valid();
 }
 
-void CDetailManager::SBase::CreateFromObjects(const Fbox& box, ObjectList& lst)
+void CDetailManager::SBase::CreateRMFromObjects(const Fbox& box, ObjectList& lst)
 {
 	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
     	CSceneObject*	 S = (CSceneObject*)(*it);

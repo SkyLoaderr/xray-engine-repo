@@ -1,7 +1,7 @@
 object frmPropertiesEObject: TfrmPropertiesEObject
-  Left = 822
-  Top = 456
-  Width = 458
+  Left = 496
+  Top = 393
+  Width = 467
   Height = 363
   BiDiMode = bdRightToLeft
   BorderIcons = [biSystemMenu, biMinimize]
@@ -24,9 +24,9 @@ object frmPropertiesEObject: TfrmPropertiesEObject
   TextHeight = 13
   object ElPageControl1: TElPageControl
     Left = 0
-    Top = 19
-    Width = 450
-    Height = 317
+    Top = 0
+    Width = 459
+    Height = 336
     ActiveTabColor = 10528425
     BorderWidth = 0
     Color = 10528425
@@ -39,7 +39,7 @@ object frmPropertiesEObject: TfrmPropertiesEObject
     ScrollOpposite = False
     Style = etsAngledTabs
     TabHeight = 15
-    TabIndex = 0
+    TabIndex = 1
     TabPosition = etpBottom
     HotTrackFont.Charset = DEFAULT_CHARSET
     HotTrackFont.Color = clBlue
@@ -47,7 +47,7 @@ object frmPropertiesEObject: TfrmPropertiesEObject
     HotTrackFont.Name = 'MS Sans Serif'
     HotTrackFont.Style = []
     TabBkColor = 10528425
-    ActivePage = tsBasic
+    ActivePage = tsSurfaces
     FlatTabBorderColor = clBtnShadow
     Align = alClient
     ParentColor = False
@@ -59,11 +59,12 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       TabVisible = True
       Caption = 'Main Options'
       Color = 10528425
+      Visible = False
       object paBasic: TPanel
         Left = 0
         Top = 0
-        Width = 446
-        Height = 298
+        Width = 455
+        Height = 317
         Align = alClient
         BevelOuter = bvLowered
         Color = 10528425
@@ -76,11 +77,10 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       TabVisible = True
       Caption = 'Surfaces'
       Color = 10528425
-      Visible = False
       object paSurfaces: TPanel
         Left = 0
-        Top = 0
-        Width = 310
+        Top = 19
+        Width = 319
         Height = 298
         Align = alClient
         BevelOuter = bvLowered
@@ -88,8 +88,8 @@ object frmPropertiesEObject: TfrmPropertiesEObject
         TabOrder = 0
       end
       object Panel2: TPanel
-        Left = 310
-        Top = 0
+        Left = 319
+        Top = 19
         Width = 136
         Height = 298
         Align = alRight
@@ -313,104 +313,107 @@ object frmPropertiesEObject: TfrmPropertiesEObject
           end
         end
       end
-    end
-  end
-  object Panel1: TPanel
-    Left = 0
-    Top = 0
-    Width = 450
-    Height = 19
-    Align = alTop
-    BevelOuter = bvNone
-    Color = 10528425
-    TabOrder = 1
-    object ebSortByImage: TExtBtn
-      Left = 164
-      Top = 1
-      Width = 45
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      GroupIndex = 1
-      Caption = 'Texture'
-      FlatAlwaysEdge = True
-    end
-    object ebSortByName: TExtBtn
-      Left = 119
-      Top = 1
-      Width = 45
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      GroupIndex = 1
-      Down = True
-      Caption = 'Name'
-      FlatAlwaysEdge = True
-    end
-    object ebDropper: TExtBtn
-      Left = 2
-      Top = 1
-      Width = 63
-      Height = 17
-      Align = alNone
-      AllowAllUp = True
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      GroupIndex = 2
-      Caption = 'Dropper'
-      Glyph.Data = {
-        3E020000424D3E0200000000000036000000280000000D0000000D0000000100
-        18000000000008020000120B0000120B00000000000000000000A0A6A9A0A6A9
-        A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6
-        A900A0A6A9A0A6A9000000A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9
-        A0A6A9A0A6A9A0A6A900A0A6A9000000F7F7F7000000000000A0A6A9A0A6A9A0
-        A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9000000F7F7F7F7F7
-        F7000000A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9
-        000000F7F7F7F7F7F7F7F7F7000000A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6
-        A900A0A6A9A0A6A9A0A6A9000000F7F7F7F7F7F7F7F7F7000000A0A6A9000000
-        A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9A0A6A9A0A6A9000000F7F7F7F7F7F7F7
-        F7F7000000000000A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9A0A6A9A0A6A9A0A6
-        A9000000F7F7F7000000000000000000000000A0A6A9A0A6A900A0A6A9A0A6A9
-        A0A6A9A0A6A9A0A6A9A0A6A9000000000000000000000000000000A0A6A9A0A6
-        A900A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9000000000000000000000000000000
-        000000000000A0A6A900A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A900
-        0000000000000000000000A0A6A9A0A6A900A0A6A9A0A6A9A0A6A9A0A6A9A0A6
-        A9A0A6A9A0A6A9A0A6A9A0A6A9000000A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9
-        A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6
-        A900}
-      Margin = 2
-      FlatAlwaysEdge = True
-    end
-    object ebSortByShader: TExtBtn
-      Left = 209
-      Top = 1
-      Width = 45
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      GroupIndex = 1
-      Caption = 'Shader'
-      FlatAlwaysEdge = True
-    end
-    object Label1: TLabel
-      Left = 79
-      Top = 3
-      Width = 37
-      Height = 13
-      Caption = 'Sort By:'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
+      object Panel1: TPanel
+        Left = 0
+        Top = 0
+        Width = 455
+        Height = 19
+        Align = alTop
+        BevelOuter = bvNone
+        Color = 10528425
+        TabOrder = 2
+        object ebSortByImage: TExtBtn
+          Left = 164
+          Top = 1
+          Width = 45
+          Height = 17
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          GroupIndex = 1
+          Caption = 'Texture'
+          Enabled = False
+          FlatAlwaysEdge = True
+        end
+        object ebSortByName: TExtBtn
+          Left = 119
+          Top = 1
+          Width = 45
+          Height = 17
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          GroupIndex = 1
+          Down = True
+          Caption = 'Name'
+          Enabled = False
+          FlatAlwaysEdge = True
+        end
+        object ebDropper: TExtBtn
+          Left = 2
+          Top = 1
+          Width = 63
+          Height = 17
+          Align = alNone
+          AllowAllUp = True
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          GroupIndex = 2
+          Caption = 'Dropper'
+          Glyph.Data = {
+            3E020000424D3E0200000000000036000000280000000D0000000D0000000100
+            18000000000008020000120B0000120B00000000000000000000A0A6A9A0A6A9
+            A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6
+            A900A0A6A9A0A6A9000000A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9
+            A0A6A9A0A6A9A0A6A900A0A6A9000000F7F7F7000000000000A0A6A9A0A6A9A0
+            A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9000000F7F7F7F7F7
+            F7000000A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9
+            000000F7F7F7F7F7F7F7F7F7000000A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6
+            A900A0A6A9A0A6A9A0A6A9000000F7F7F7F7F7F7F7F7F7000000A0A6A9000000
+            A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9A0A6A9A0A6A9000000F7F7F7F7F7F7F7
+            F7F7000000000000A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9A0A6A9A0A6A9A0A6
+            A9000000F7F7F7000000000000000000000000A0A6A9A0A6A900A0A6A9A0A6A9
+            A0A6A9A0A6A9A0A6A9A0A6A9000000000000000000000000000000A0A6A9A0A6
+            A900A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9000000000000000000000000000000
+            000000000000A0A6A900A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A900
+            0000000000000000000000A0A6A9A0A6A900A0A6A9A0A6A9A0A6A9A0A6A9A0A6
+            A9A0A6A9A0A6A9A0A6A9A0A6A9000000A0A6A9A0A6A9A0A6A900A0A6A9A0A6A9
+            A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6A9A0A6
+            A900}
+          Margin = 2
+          FlatAlwaysEdge = True
+        end
+        object ebSortByShader: TExtBtn
+          Left = 209
+          Top = 1
+          Width = 45
+          Height = 17
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          GroupIndex = 1
+          Caption = 'Shader'
+          Enabled = False
+          FlatAlwaysEdge = True
+        end
+        object Label1: TLabel
+          Left = 79
+          Top = 3
+          Width = 37
+          Height = 13
+          Caption = 'Sort By:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+      end
     end
   end
   object fsStorage: TFormStorage

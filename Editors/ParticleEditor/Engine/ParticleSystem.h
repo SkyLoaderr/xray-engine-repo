@@ -231,16 +231,16 @@ public:
         m_bPlaying          = false;
         m_iPlayResidue		= 0;
 	}
-    IC virtual BOOL IsPlaying(){
+    IC BOOL IsPlaying(){
 		if (m_dwFlag&PS_EM_PLAY_ONCE)	return (m_iPlayResidue!=0);
 		else							return m_bPlaying;
     }
-    IC virtual void Play(){
+    IC void Play(){
 		m_bPlaying 		= true;
 		if (m_dwFlag&PS_EM_PLAY_ONCE)
 			m_iPlayResidue = iFloor(m_ParticleLimit);
     }
-    IC virtual void Stop(){
+    IC void Stop(){
 		m_bPlaying 			= false;
         m_fEmissionResidue 	= 0;
     }
@@ -313,7 +313,7 @@ public:
 		}
     }
 
-	IC virtual void	GeneratePosAndDir(Fvector& pos, Fvector& dir)
+	IC void	GeneratePosAndDir(Fvector& pos, Fvector& dir)
 	{
         switch (m_EmitterType){
         case emPoint:
@@ -338,7 +338,7 @@ public:
 		}
 	}
 
-	IC virtual int		CalculateBirth(int p_present, float fTime, float dT)
+	IC int		CalculateBirth(int p_present, float fTime, float dT)
 	{
     	if (!m_bPlaying) return 0;
 		// calculate how many particles we should create from ParticlesPerSec and time elapsed taking the

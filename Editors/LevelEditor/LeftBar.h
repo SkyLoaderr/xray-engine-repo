@@ -59,7 +59,7 @@ __published:	// IDE-managed Components
 	TMxPopupMenu *pmSceneCompile;
 	TMenuItem *Options1;
 	TMenuItem *Build1;
-	TMenuItem *MakeLTX1;
+	TMenuItem *MakeGame;
 	TMenuItem *Validate1;
 	TMxPopupMenu *pmSceneCommands;
 	TMenuItem *ResetAniamation1;
@@ -142,6 +142,8 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem8;
 	TMenuItem *MenuItem9;
 	TMenuItem *MenuItem10;
+	TMenuItem *N8;
+	TMenuItem *N9;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -178,7 +180,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebUnlockSelClick(TObject *Sender);
 	void __fastcall ebUnlockUnselClick(TObject *Sender);
 	void __fastcall ebResetAnimationClick(TObject *Sender);
-	void __fastcall ebMakeLTXClick(TObject *Sender);
+	void __fastcall ebMakeGameClick(TObject *Sender);
 	void __fastcall ebSceneFileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall ebSceneCompileMouseDown(TObject *Sender,

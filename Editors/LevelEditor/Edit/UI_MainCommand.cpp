@@ -364,11 +364,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
 		break;
 
-	case COMMAND_MAKE_LTX:
+	case COMMAND_MAKE_GAME:
 		if( !Scene.locked() ){
             if( !Builder.InProgress() )
                 if (frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,true)==mrOk)
-                    Builder.MakeLTX( );
+                    Builder.MakeGame( );
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;

@@ -364,9 +364,9 @@ void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebMakeLTXClick(TObject *Sender)
+void __fastcall TfraLeftBar::ebMakeGameClick(TObject *Sender)
 {
-	UI.Command( COMMAND_MAKE_LTX );
+	UI.Command( COMMAND_MAKE_GAME );
 }
 //---------------------------------------------------------------------------
 

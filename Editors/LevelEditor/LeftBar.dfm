@@ -1527,17 +1527,23 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Options'
       OnClick = ebOptionsClick
     end
+    object N8: TMenuItem
+      Caption = '-'
+    end
     object Build1: TMenuItem
       Caption = 'Build'
       OnClick = ebBuildClick
     end
-    object MakeLTX1: TMenuItem
-      Caption = 'Make LTX'
-      OnClick = ebMakeLTXClick
+    object MakeGame: TMenuItem
+      Caption = 'Make Game'
+      OnClick = ebMakeGameClick
     end
     object MakeDetails: TMenuItem
       Caption = 'Make Details'
       OnClick = MakeDetailsClick
+    end
+    object N9: TMenuItem
+      Caption = '-'
     end
     object Validate1: TMenuItem
       Caption = 'Validate'

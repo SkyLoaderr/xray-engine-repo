@@ -98,9 +98,11 @@ public:
 
 	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);
+    virtual bool	ExportSpawn		(CFS_Base&, int chunk_id){return false;}
+    virtual bool	ExportGame		(CFS_Base&, int chunk_id){return false;}
 
-	virtual bool 	GetBox			(Fbox& box){return false; }
-	virtual bool 	GetUTBox		(Fbox& box){return false; }
+	virtual bool 	GetBox			(Fbox& box){return false;}
+	virtual bool 	GetUTBox		(Fbox& box){return false;}
 	virtual void 	OnSceneUpdate	(){;}
 	virtual void 	OnDestroy		(){;}
 

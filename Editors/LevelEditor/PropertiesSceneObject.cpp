@@ -27,14 +27,14 @@ __fastcall TfrmPropertiesSceneObject::TfrmPropertiesSceneObject(TComponent* Owne
 {
 	bLoadMode = false;
     m_NewReference="";
-    pcSceneProps->ActivePage = tsBasic;
     InplaceMotionEdit->Editor->Color		= TColor(0x00A0A0A0);
     InplaceMotionEdit->Editor->BorderStyle	= bsNone;
 }
 //---------------------------------------------------------------------------
 
 
-void TfrmPropertiesSceneObject::GetObjectsInfo(){
+void TfrmPropertiesSceneObject::GetObjectsInfo()
+{
 	bLoadMode = true;
 
 	VERIFY(!m_Objects->empty());
@@ -56,11 +56,13 @@ void TfrmPropertiesSceneObject::GetObjectsInfo(){
     	edName->Enabled 	= true;
 		paMotions->Visible	= true;
         tsMotions->TabVisible=m_EditObject->IsDynamic();
+        SaveObjectsInfo		();
     }
 	bLoadMode = false;
 }
 
-bool TfrmPropertiesSceneObject::ApplyObjectsInfo(){
+bool TfrmPropertiesSceneObject::ApplyObjectsInfo()
+{
     VERIFY( !m_Objects->empty() );
 	ObjectIt _F = m_Objects->begin();
     bool bMultiSel = (m_Objects->size()>1);
@@ -78,6 +80,33 @@ bool TfrmPropertiesSceneObject::ApplyObjectsInfo(){
         	_O->SetReference(m_NewReference.c_str());
 	}
     return true;
+}
+
+void TfrmPropertiesSceneObject::SaveObjectsInfo()
+{
+	if (m_EditObject&&m_EditObject->IsDynamic()){
+		ClearObjectsInfo();
+    	for (OMotionIt it=m_EditObject->m_OMotions.begin(); it!=m_EditObject->m_OMotions.end(); it++)
+        	m_OMotions.push_back(new COMotion(*it));
+    }
+}
+
+void TfrmPropertiesSceneObject::ClearObjectsInfo()
+{
+	if (m_EditObject&&m_EditObject->IsDynamic()){
+    	for (OMotionIt it=m_OMotions.begin(); it!=m_OMotions.end(); it++)
+        	_DELETE(*it);
+     	m_OMotions.clear();
+    }
+}
+
+void TfrmPropertiesSceneObject::RestoreObjectsInfo()
+{
+	if (m_EditObject&&m_EditObject->IsDynamic()){
+		m_EditObject->ClearOMotions();
+    	for (OMotionIt it=m_OMotions.begin(); it!=m_OMotions.end(); it++)
+        	m_EditObject->m_OMotions.push_back(new COMotion(*it));
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -112,6 +141,7 @@ void __fastcall TfrmPropertiesSceneObject::ebOkClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesSceneObject::ebCancelClick(TObject *Sender)
 {
+	if (ebOk->Enabled) RestoreObjectsInfo();
     Close();
     ModalResult = mrCancel;
 }
@@ -133,6 +163,7 @@ int __fastcall TfrmPropertiesSceneObject::Run(ObjectList* pObjects, bool& bChang
 void __fastcall TfrmPropertiesSceneObject::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
+	ClearObjectsInfo();
 	Action = caFree;
     form = 0;
 }
@@ -395,6 +426,13 @@ void __fastcall TfrmPropertiesSceneObject::tvOMotionsMouseDown(
       int Y)
 {
 	if (Button==mbRight)	FOLDER::ShowPPMenu(pmMotions,0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesSceneObject::fsStorageRestorePlacement(
+      TObject *Sender)
+{
+	if (!tsMotions->TabVisible) pcSceneProps->ActivePage = tsBasic;
 }
 //---------------------------------------------------------------------------
 

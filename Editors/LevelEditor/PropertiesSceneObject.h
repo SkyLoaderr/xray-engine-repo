@@ -21,7 +21,8 @@
 
 // refs
 class CCustomObject;
-class CSceneObject;  
+class CSceneObject;
+class COMotion;
 
 class TfrmPropertiesSceneObject : public TForm
 {
@@ -101,13 +102,20 @@ __published:	// IDE-managed Components
 	void __fastcall CollapseAll1Click(TObject *Sender);
 	void __fastcall tvOMotionsMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 private:	// User declarations
 	static TfrmPropertiesSceneObject* form;
-    bool bLoadMode;
-    CSceneObject* m_EditObject;
-    list<CCustomObject*>* m_Objects;
-    void GetObjectsInfo     ();                  
+    bool 					bLoadMode;
+    CSceneObject* 			m_EditObject;
+    vector<COMotion*>		m_OMotions;
+    COMotion*				m_ActiveOMotion;
+    list<CCustomObject*>* 	m_Objects;
+    void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();
+
+    void ClearObjectsInfo	();
+    void SaveObjectsInfo	();
+    void RestoreObjectsInfo	();
     AnsiString m_NewReference;
     IC bool IsMultiSelection(){return (m_Objects->size()!=1);}
 	void __fastcall OnRenameItem(LPCSTR p0, LPCSTR p1);
