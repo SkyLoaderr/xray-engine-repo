@@ -168,12 +168,12 @@ public:
 	virtual				~CActor					( );
 
 
-	IC BOOL					isAccelerated		(DWORD mstate)	
+	IC static BOOL			isAccelerated		(DWORD mstate)	
 	{
 		if (mstate&mcAccel)	return (psActorFlags&AF_ALWAYSRUN)?FALSE:TRUE ;
 		else				return (psActorFlags&AF_ALWAYSRUN)?TRUE :FALSE;
 	}
-	IC bool					HUDview				( ) 
+	IC BOOL					HUDview				( ) 
 	{ 
 		return IsFocused()&&(cam_active==eacFirstEye); 
 	}
