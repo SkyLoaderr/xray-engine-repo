@@ -79,7 +79,11 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 #ifdef _EDITOR
 									virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator){};
 #else
+#ifdef AI_COMPILER
+									virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator){};
+#else
 									virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator);
+#endif
 #endif
 SERVER_ENTITY_DECLARE_END
 
@@ -167,6 +171,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 									CSE_ALifeHumanAbstract	(LPCSTR caSection);
 	virtual							~CSE_ALifeHumanAbstract	();
 #ifndef _EDITOR
+#ifndef AI_COMPILER
 	virtual	void					Update					(CSE_ALifeSimulator	*tpALife);
 			// FSM
 			void					vfChooseTask			(CSE_ALifeSimulator	*tpALife);
@@ -194,6 +199,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			void					vfCheckForDeletedEvents	(CSE_ALifeSimulator	*tpALife);
 			bool					bfChooseNextRoutePoint	(CSE_ALifeSimulator	*tpALife);
 			void					vfSetCurrentTask		(CSE_ALifeSimulator	*tpALife, _TASK_ID &tTaskID);
+#endif
 #endif
 SERVER_ENTITY_DECLARE_END
 
