@@ -112,7 +112,7 @@ void CUIZoneMap::Init()
 	back.SetRect(0,0,180,180);
 
 	// Получаем список уровней игры
-	const CGameGraph::LEVEL_MAP &levelMap = ai().get_game_graph()->header().levels();
+	const CGameGraph::LEVEL_MAP &levelMap = ai().game_graph().header().levels();
 
 	FindLevelByName currentLevel(Level().name());
 	CGameGraph::LEVEL_MAP::const_iterator currLIt = std::find_if(levelMap.begin(), levelMap.end(), currentLevel);

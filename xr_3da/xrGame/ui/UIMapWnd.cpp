@@ -771,7 +771,7 @@ void CUIMapWnd::InitLocalMaps()
 	R_ASSERT(ai().get_game_graph());
 
 	// Получаем список уровней игры
-	const CGameGraph::LEVEL_MAP &levelMap		= ai().get_game_graph()->header().levels();
+	const CGameGraph::LEVEL_MAP &levelMap		= ai().game_graph().header().levels();
 	
 	string256			gameLtxPath;
 	FS.update_path					(gameLtxPath, CONFIG_PATH, "game.ltx");
