@@ -41,15 +41,20 @@ void CPHShell::ExplosionHit(const Fvector& pos, const Fvector& dir, float val,co
 		//element->get_MaxAreaDir(max_area_dir);
 		//float	sign=max_area_dir.dotproduct(dir)>0.f ? 1.f : -1.f;
 		//max_area_dir.mul(sign);
-		Fvector r_dir,r_pos,r_box;
-		float rad=element->getRadius();
-		r_box.set(rad,rad,rad);
-		r_pos.random_point(r_box);
-		r_dir.random_dir();
-		r_dir.mul(0.5f);
-		r_dir.add(dir);
-		r_dir.normalize();//safe???
-		
-		element->applyImpulseTrace(r_pos,r_dir,impulse,0);
+		u16 gn=element->CPHGeometryOwner::numberOfGeoms();
+		float g_impulse=impulse/gn;
+		for(u16 j=0;j<gn;++j)
+		{
+			
+			Fvector r_dir,r_pos,r_box;
+			float rad=element->getRadius();
+			r_box.set(rad,rad,rad);
+			r_pos.random_point(r_box);
+			r_dir.random_dir();
+			r_dir.mul(0.5f);
+			r_dir.add(dir);
+			r_dir.normalize_safe();//safe???
+			element->applyImpulseTrace(r_pos,r_dir,g_impulse,element->CPHGeometryOwner::Geom(j)->bone_id());
+		}
 	}
 }

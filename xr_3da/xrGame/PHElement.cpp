@@ -592,8 +592,9 @@ void CPHElement::applyImpact(const SPHImpact& I)
 	dir.set(I.force);
 	float val=I.force.magnitude();
 	
-	if(!fis_zero(val))
+	if(!fis_zero(val)&& GeomByBoneID(I.geom))
 	{
+		
 		dir.mul(1.f/val);
 		applyImpulseTrace(pos,dir,val,I.geom);
 	}

@@ -24,7 +24,7 @@ public:
 	virtual		void				fire					(const Fvector &target);
 	virtual		void				fire					(const Fvector &target, float power);
 	virtual		void				switch_state			(ETelekineticState new_state);
-	virtual		void				destroy_object			(const Fvector dir,float val);
+	virtual		bool				destroy_object			(const Fvector dir,float val);
 
 };
 

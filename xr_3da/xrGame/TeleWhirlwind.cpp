@@ -101,18 +101,19 @@ void		CTeleWhirlwindObject::		release					()
 		impulse=throw_power*100.f;
 	}
 /////////////////////////////////////////////////
+	bool b_destroyed=false;
 	if(magnitude<2.f*object->Radius())
 	{
-		destroy_object(dir_inv,impulse);
+		b_destroyed=destroy_object(dir_inv,impulse);
 	}
 
 
-	
-	object->m_pPhysicsShell->applyImpulse(dir_inv,impulse);
+
+	if(!b_destroyed)object->m_pPhysicsShell->applyImpulse(dir_inv,impulse);
 	switch_state(TS_None);
 }
 
-void	CTeleWhirlwindObject::destroy_object		(const Fvector dir,float val) 
+bool	CTeleWhirlwindObject::destroy_object		(const Fvector dir,float val) 
 {
 	CPHDestroyable* D=object->ph_destroyable();
 	if(D)
@@ -126,7 +127,9 @@ void	CTeleWhirlwindObject::destroy_object		(const Fvector dir,float val)
 			u16 root=(smart_cast<CKinematics*>(object->Visual()))->LL_GetBoneRoot();
 			PP->StartParticles(m_telekinesis->destroing_particles(),root, Fvector().set(0,1,0),m_telekinesis->OwnerObject()->ID());
 		}
+		return true;
 	}
+	return false;
 }
 
 void		CTeleWhirlwindObject::		raise					(float step)

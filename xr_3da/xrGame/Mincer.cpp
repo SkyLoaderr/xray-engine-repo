@@ -112,11 +112,12 @@ void CMincer::OnOwnershipTake(u16 id)
 {
 		Fvector dir;float impulse;
 		//if(!m_telekinetics.has_impacts()) return;
-		m_telekinetics.draw_out_impact(dir,impulse);
+	
 
 		CObject* obj=Level().Objects.net_Find(id);
 		if(obj->SUB_CLS_ID ==CLSID_ARTEFACT) return;
 
+		m_telekinetics.draw_out_impact(dir,impulse);
 		CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(obj);
 		if(PP)
 		{
@@ -129,13 +130,13 @@ void CMincer::OnOwnershipTake(u16 id)
 			u_EventGen	(l_P,GE_HIT, id);
 			l_P.w_u16	(u16(id));
 			l_P.w_u16	(ID());
-			l_P.w_dir	(dir);
+			l_P.w_dir	(Fvector().set(0.f,-1.f,0.f));//dir
 			l_P.w_float	(0.f);
 			l_P.w_s16	(0/*(s16)BI_NONE*/);
 			Fvector		position_in_bone_space={0.f,0.f,0.f};
 			l_P.w_vec3	(position_in_bone_space);
 			l_P.w_float	(impulse);
-			l_P.w_u16	(ALife::eHitTypeStrike);
+			l_P.w_u16	(ALife::eHitTypeExplosion);
 			u_EventSend	(l_P);
 			/////////////////////////////////////////////////////////
 			obj->H_SetParent(NULL);

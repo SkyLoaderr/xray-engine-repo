@@ -25,10 +25,13 @@ CPHFracturesHolder::~CPHFracturesHolder()
 void CPHFracturesHolder::ApplyImpactsToElement(CPHElement* E)
 {
 	PH_IMPACT_I i=m_impacts.begin(),e=m_impacts.end();
+	BOOL ac_state=E->bActive;
+	E->bActive=true;
 	for(;e!=i;++i)
 	{
 		E->applyImpact(*i);
 	}
+	E->bActive=ac_state;
 }
 element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fracture)
 {
@@ -69,10 +72,11 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 	//									  fract_i->m_pos_in_element[1],
 	//									  fract_i->m_pos_in_element[2]);
 	ApplyImpactsToElement(new_element);
-	//BodyCutForce(new_element_body,default_l_limit,default_w_limit);
+	
 	//dBodyAddTorque(new_element->get_body(),fract_i->m_break_force,
 	//									   fract_i->m_break_torque,
 	//									   fract_i->m_add_torque_z);
+	//BodyCutForce(new_element_body,default_l_limit,default_w_limit);
 	element_fracture ret	=mk_pair(new_element,(CShellSplitInfo)(*fract_i));
 
 	if(m_fractures.size()-fracture>0) 
@@ -201,7 +205,7 @@ bool CPHFracturesHolder::PhDataUpdate(CPHElement* element)
 	{
 		m_has_breaks=i->Update(element)||m_has_breaks;
 	}
-	m_impacts.clear();
+	if(!m_has_breaks)m_impacts.clear();
 	return m_has_breaks;
 	
 }
