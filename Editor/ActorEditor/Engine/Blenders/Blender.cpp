@@ -81,6 +81,7 @@ void	CBlender::Load(	CStream& FS )
 #include "blender_LaEmB.h"
 #include "blender_Lm(EbB).h"
 #include "blender_LmBmmD.h"
+#include "blender_BmmD.h"
 CBlender*	CBlender::Create	(CLASS_ID cls)
 {	
 	switch (cls)
@@ -97,6 +98,7 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	case B_LmBmmD:			return new CBlender_LmBmmD;			break;
 	case B_LaEmB:			return new CBlender_LaEmB;			break;
 	case B_LmEbB:			return new CBlender_LmEbB;			break;
+	case B_BmmD:			return new CBlender_BmmD;			break;
 	default:				return 0;
 	}
 }
@@ -115,4 +117,5 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_LmBmmD));
 	palette.push_back(Create(B_LaEmB));
 	palette.push_back(Create(B_LmEbB));
+	palette.push_back(Create(B_BmmD));
 }
