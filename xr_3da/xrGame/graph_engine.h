@@ -41,7 +41,7 @@ protected:
 	typedef u32	  _iteration_type;
 
 	typedef CProblemSolver<u32,u32,u32>		CSProblemSolver;
-	typedef u8								_solver_dist_type;
+	typedef u16								_solver_dist_type;
 	typedef CSProblemSolver::_index_type	_solver_index_type;
 	typedef CSProblemSolver::_edge_type		_solver_edge_type;
 
@@ -70,7 +70,7 @@ protected:
 	typedef CVertexManagerFixed<u32,u32,8>					CVertexManager;
 	typedef CVertexManagerGeneric<u32,_solver_index_type>	CSolverVertexManager;
 	typedef CVertexAllocatorFixed<65536>					CVertexAllocator;
-	typedef CVertexAllocatorFixed<4096>						CSolverVertexAllocator;
+	typedef CVertexAllocatorFixed<1024*1024>				CSolverVertexAllocator;
 
 //	typedef CDijkstra<
 //		_dist_type,
@@ -196,6 +196,11 @@ public:
 		xr_vector<_solver_edge_type>	*node_path,
 		const _Parameters				&parameters
 	);
+
+	IC		const CSolverAlgorithm &solver_algorithm() const
+	{
+		return				(*m_solver_algorithm);
+	}
 };
 
 #include "graph_engine_inline.h"

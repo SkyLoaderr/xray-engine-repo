@@ -210,21 +210,26 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 					}
 					++J;
 				}
+				else {
+					result.add_condition(*i);
+					changed	= true;
+				}
 				++i;
 			}
 			else {
 				if ((*I).value() == (*i).value())
 					result.add_condition(*I);
 				else {
+					changed	= true;
 					while ((J != EE) && ((*J).condition() < (*i).condition()))
 						++J;
 					if ((J != EE) && ((*J).condition() == (*i).condition())) {
-						if ((*J).value() != (*i).value()) {
+						if ((*J).value() != (*i).value())
 							result.add_condition(*i);
-							changed	= true;
-						}
 						++J;
 					}
+					else
+						result.add_condition(*i);
 				}
 				++I;
 				++i;
@@ -257,6 +262,11 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 				++J;
 				++i;
 			}
+
+	if ((J == EE) && (i != e))
+		for (changed = true ; (i != e); ++i)
+			result.add_condition(*i);
+
 	if (!changed)
 		result.clear		();
 	return					(result);

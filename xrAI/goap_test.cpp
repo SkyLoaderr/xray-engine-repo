@@ -10,6 +10,9 @@
 #include "problem_solver.h"
 #include "graph_engine.h"
 
+const u32 world_state_dimension = 8;
+const u32 min_operator_count	= 4;
+const u32 max_operator_count	= 8;
 typedef u32																		_condition_type;
 typedef u32																		_value_type;
 typedef u32																		_operator_id_type;
@@ -24,12 +27,12 @@ typedef CSProblemSolver::CState													_index_type;
 typedef SBaseParameters<_dist_type,_index_type,_iteration_type>	CBaseParameters;
 CRandom								random;
 
-CState random_condition(int _max = 100, int _min = 20, int __max = 2, int __min = 1)
+CState random_condition(int _max = 100, int _min = 5, int __max = 2, int __min = 1)
 {
 	CState		result;
-	for (u32 i=0; i<8; ++i)
+	for (u32 i=0; i<world_state_dimension; ++i)
 		if (random.randI(_max) < _min)
-			result.add_condition(CCondition(u32(1) << i,random.randI(__max) < __min ? 1 : 0));
+			result.add_condition(CCondition(i,random.randI(__max) < __min ? 1 : 0));
 	return		(result);
 }
 
@@ -43,15 +46,15 @@ LPSTR show_condition(const CState &condition, LPSTR s)
 	char					*s1 = s;
 	xr_vector<CCondition>::const_iterator	i = condition.conditions().begin();
 	xr_vector<CCondition>::const_iterator	e = condition.conditions().end();
-	for (u32 I=0; (I < 8) && (i != e); ++I)
-		if ((u32(1) << I) == u32((*i).condition())) {
+	for (u32 I=0; (I < world_state_dimension) && (i != e); ++I)
+		if (I == u32((*i).condition())) {
 			s1				+= sprintf(s1,"%d ",(*i).value());
 			++i;
 		}
 		else
 			s1				+= sprintf(s1,"? ");
 
-	for ( ; I < 8; ++I)
+	for ( ; I < world_state_dimension; ++I)
 		s1					+= sprintf(s1,"? ");
 	return					(s);
 }
@@ -59,7 +62,7 @@ LPSTR show_condition(const CState &condition, LPSTR s)
 void show_condition(const CState &condition, u32 i = 0)
 {
 	string256				s;
-	Msg						("condition %d : %s",i,show_condition(condition,s));
+	Msg						("condition %2d : %s",i,show_condition(condition,s));
 }
 
 void show_operator(const COperator &_operator, u32 i)
@@ -70,7 +73,7 @@ void show_operator(const COperator &_operator, u32 i)
 	strcat					(s," -> ");
 	s1						= s + xr_strlen(s);
 	show_condition			(_operator.effects(),s1);
-	Msg						("operator %d  : %s",i,s);
+	Msg						("operator  %2d : %s",i,s);
 }
 
 void test_goap	()
@@ -87,21 +90,35 @@ void test_goap	()
 		problem_solver.set_current_state(random_condition(100,100,4,1));
 //		problem_solver.set_target_state	(random_condition(100,100,4,3) -= problem_solver.current_state());
 		problem_solver.set_target_state	(random_condition(100,100,4,3));
-		u32						operator_count = random.randI(4,8);
+		u32						operator_count = random.randI(min_operator_count,max_operator_count);
 		for (u32 i=0; i<operator_count; ++i)
 			problem_solver.add_operator	(random_operator(),i);
 
 		path.clear						();
 
-//		graph_engine->search			(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
+//		if (ii == 137) {
+//			ii = ii;
+//			Msg							("Problem %5d (try %I64d, %f sec)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start));
+//			++jj;
+//			show_condition				(problem_solver.current_state());
+//			show_condition				(problem_solver.target_state(),1);
+//
+//			{
+//				CSProblemSolver::OPERATOR_MAP::const_iterator	I = problem_solver.operators().begin();
+//				CSProblemSolver::OPERATOR_MAP::const_iterator	E = problem_solver.operators().end();
+//				for ( ; I != E; ++I)
+//					show_operator			(*(*I).second,(*I).first);
+//			}
+//		}
 #ifdef INTENSIVE_MEMORY_USAGE
 		graph_engine->search			(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
 #else
-		if (ii == 216) {
-			ii = ii;
-		}
 		graph_engine->search			(problem_solver,CState(),problem_solver.target_state(),&path,CBaseParameters());
 #endif
+//		if (ii == 137) {
+			Msg							("Finished %5d (try %I64d, %f sec, %d vertices)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start),graph_engine->solver_algorithm().data_storage().get_visited_node_count());
+			FlushLog					();
+//		}
 
 		xr_vector<_edge_type>::iterator	I = path.begin(), B = I;
 		xr_vector<_edge_type>::iterator	E = path.end();
