@@ -137,17 +137,21 @@ bool CSearchlight::bfAssignWatch(CEntityAction *tpEntityAction)
 		return		(false);
 	
 	CWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
+	
+	(!l_tWatchAction.m_tpObjectToWatch) ?	SetTarget(l_tWatchAction.m_tTargetPoint) : 
+											SetTarget(l_tWatchAction.m_tpObjectToWatch->Position());
 
-	SetTarget(l_tWatchAction.m_tTargetPoint);
 	bone_vel_x	= l_tWatchAction.vel_bone_x;
 	bone_vel_y	= l_tWatchAction.vel_bone_y;
 
-	if ((angle_difference(_cur.yaw,_target.yaw) < EPS_L) && (angle_difference(_cur.pitch,_target.pitch) < EPS_L)) 
+	
+	if ((angle_difference(_cur.yaw,_target.yaw) < EPS_L) && (angle_difference(_cur.pitch,_target.pitch) < EPS_L)) {
 		l_tWatchAction.m_bCompleted = true;
-	else
+	} else {
 		l_tWatchAction.m_bCompleted = false;
-
-	return (!l_tWatchAction.m_bCompleted);	
+	}
+	
+	return !l_tWatchAction.m_bCompleted;
 }
 
 
