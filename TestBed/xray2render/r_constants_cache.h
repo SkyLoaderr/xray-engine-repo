@@ -133,4 +133,18 @@ public:
 		Fvector4 data;		data.set(x,y,z,w);
 		seta				(C,e,data);
 	}
+
+	// 
+	void					flush	()
+	{
+		if (a_pixel.b_dirty || a_vertex.b_dirty)
+		{
+			if (a_pixel.b_dirty)
+			{
+			}
+			if (a_vertex.b_dirty)
+			{
+			}
+		}
+	}
 };
