@@ -498,6 +498,12 @@
 			<File
 				RelativePath="xrGraph.h">
 			</File>
+			<File
+				RelativePath="xrSort.cpp">
+			</File>
+			<File
+				RelativePath="xrSort.h">
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\todo.txt">

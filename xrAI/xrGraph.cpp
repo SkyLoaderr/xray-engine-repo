@@ -11,9 +11,11 @@
 #include "levelgamedef.h"
 #include "xrLevel.h"
 #include "xrThread.h"
+
 #include "xrGraph.h"
 #include "ai_nodes.h"
 #include "ai_a_star.h"
+#include "xrSort.h"
 
 #define MAX_DISTANCE_TO_CONNECT		64.f
 #define THREAD_COUNT				6
@@ -39,7 +41,9 @@ NodeCompressed**		m_nodes_ptr;	// pointers to node's data
 vector<bool>			q_mark_bit;		// temporal usage mark for queries
 
 vector<SGraphVertex>	tpaGraph;		// graph
+SGraphEdge				*tpaEdges;		// graph edges
 stack<u32>				dwaStack;		// stack
+u32						*dwaSortOrder;  // edge sort order
 
 void vfLoafAIMap(LPCSTR name)
 {
@@ -98,30 +102,6 @@ void vfLoadAIPoints(LPCSTR name)
 	}
 }
 
-void vfSaveGraph(LPCSTR name)
-{
-	FILE_NAME	fName;
-	strconcat	(fName,name,"level.graph");
-	
-	CFS_Memory	tGraph;
-	tGraph.Wdword(m_header.version);	
-	Progress(0.0f);
-	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size())) {
-		SGraphVertex &tGraphVertex = tpaGraph[i];
-		tGraph.Wvector(tGraphVertex.tPoint);
-		tGraph.Wbyte(tGraphVertex.ucVertexType);
-		tGraph.Wdword(tGraphVertex.dwNodeID);	
-		tGraph.Wdword(tGraphVertex.dwNeighbourCount);	
-		for (int j=0; j<(int)tGraphVertex.dwNeighbourCount; j++) {
-			tGraph.Wdword(tGraphVertex.tpaEdges[j].dwVertexNumber);	
-			tGraph.Wfloat(tGraphVertex.tpaEdges[j].fPathDistance);	
-		}
-	}
-	Progress(1.0f);
-	tGraph.SaveTo(fName,0);
-	Msg("%d bytes saved",int(tGraph.tell()));
-}
-
 bool bfCheckForGraphConnectivity()
 {
 	if (!tpaGraph.size())
@@ -164,19 +144,78 @@ u32 dwfErasePoints()
 	return(dwPointsWONodes);
 }
 
-void vfOptimizeGraph()
+void vfPreprocessEdges(u32 dwEdgeCount)
 {
 	Progress(0.0f);
+	SGraphEdge *tpPointer = tpaEdges = (SGraphEdge *)xr_malloc(dwEdgeCount*sizeof(SGraphEdge));
+	dwaSortOrder = (u32 *)xr_malloc(dwEdgeCount*sizeof(u32));
 	for (int i=0, iCount = (int)tpaGraph.size(); i<iCount; i++) {
 		SGraphVertex &tGraphVertex = tpaGraph[i]; 
-		int iNeighbourCount = (int)tGraphVertex.dwNeighbourCount;
-		for (int j=0; j<iNeighbourCount - 1; j++) {
-			for (int k=j+1; k<iNeighbourCount; k++) {
-				//if (tpaGraph[tGraphVertex.tpaEdges[j].dwVertexNumber].tpaEdges)
-			}
+		memcpy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.dwNeighbourCount*sizeof(SGraphEdge));
+		_FREE(tGraphVertex.tpaEdges);
+		tGraphVertex.tpaEdges = tpPointer;
+		tpPointer += tGraphVertex.dwNeighbourCount;
+	}
+	for (i=0; i<(int)dwEdgeCount; i++)
+		dwaSortOrder[i] = i;
+	Progress(1.0f);
+}
+
+void vfOptimizeGraph(u32 dwEdgeCount)
+{
+	q_mark_bit.resize(dwEdgeCount);
+	q_mark_bit.assign(dwEdgeCount,false);
+	Progress(0.0f);
+	for (int i=dwEdgeCount - 1; i>=0; Progress((float(dwEdgeCount) - (i-=2))/dwEdgeCount)) {
+		u32 dwVertex0 = tpaEdges[dwaSortOrder[i]].dwVertexNumber;
+		u32 dwVertex1 = tpaEdges[dwaSortOrder[i - 1]].dwVertexNumber;
+		SGraphVertex &tVertex0 = tpaGraph[dwVertex0];
+		SGraphVertex &tVertex1 = tpaGraph[dwVertex1];
+		bool bOk = true;
+		for (int i0=0; (i0<(int)tVertex0.dwNeighbourCount) && bOk; i0++) {
+			if (q_mark_bit[tVertex0.tpaEdges + i0 - tpaEdges])
+				continue;
+			SGraphEdge &tEdge0 = tVertex0.tpaEdges[i0];
+			for (int i1=0; i1<(int)tVertex1.dwNeighbourCount; i1++)
+				if ((tEdge0.dwVertexNumber == tVertex1.tpaEdges[i1].dwVertexNumber) && !q_mark_bit[tpaEdges + i1 - tpaEdges]) {
+					q_mark_bit[i] = q_mark_bit[i - 1] = true;
+					bOk = false;
+					break;
+				}
 		}
 	}
 	Progress(1.0f);
+}
+
+void vfSaveGraph(LPCSTR name)
+{
+	FILE_NAME	fName;
+	strconcat	(fName,name,"level.graph");
+	
+	CFS_Memory	tGraph;
+	tGraph.Wdword(m_header.version);	
+	Progress(0.0f);
+	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/2)) {
+		SGraphVertex &tGraphVertex = tpaGraph[i];
+		for (int j=0, k=0; j<(int)tGraphVertex.dwNeighbourCount; j++)
+			if (!q_mark_bit[tGraphVertex.tpaEdges + j - tpaEdges]) {
+				k++;
+				tGraph.Wdword(tGraphVertex.tpaEdges[j].dwVertexNumber);	
+				tGraph.Wfloat(tGraphVertex.tpaEdges[j].fPathDistance);	
+			}
+		tGraphVertex.dwNeighbourCount = k;
+	}
+	Progress(.5f);
+	for (int i=0; i<(int)tpaGraph.size(); Progress(.5f + float(++i)/tpaGraph.size()/2)) {
+		SGraphVertex &tGraphVertex = tpaGraph[i];
+		tGraph.Wvector(tGraphVertex.tPoint);
+		tGraph.Wbyte(tGraphVertex.ucVertexType);
+		tGraph.Wdword(tGraphVertex.dwNodeID);	
+		tGraph.Wdword(tGraphVertex.dwNeighbourCount);	
+	}
+	Progress(1.0f);
+	tGraph.SaveTo(fName,0);
+	Msg("%d bytes saved",int(tGraph.tell()));
 }
 
 void xrBuildGraph(LPCSTR name)
@@ -204,36 +243,49 @@ void xrBuildGraph(LPCSTR name)
 	START_THREADS(tpaGraph.size(),CNodeThread);
 	tThreadManager.wait();
 	Progress(1.0f);
-	Msg("%d points don't have corresponding nodes (they are deleted)",dwfErasePoints());
+	Msg("%d points don't have corresponding nodes (they are removed)",dwfErasePoints());
 
 	Phase("Building graph");
 	for (u32 thID=0, dwThreadCount = THREAD_COUNT, N = tpaGraph.size(), M = 0, K; thID<dwThreadCount; M += K, thID++)
 		tThreadManager.start(new CGraphThread(thID,M, ((thID + 1) == dwThreadCount) ? N - 1 : M + (K = GET_INDEX((N - M),(dwThreadCount - thID))),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
 	tThreadManager.wait();
 	
-	for (int i=0, j=0; i<(int)tpaGraph.size(); i++)
-		j += tpaGraph[i].dwNeighbourCount;
-	Msg("%d edges built",j);
+	for (int i=0, dwEdgeCount=0; i<(int)tpaGraph.size(); i++)
+		dwEdgeCount += tpaGraph[i].dwNeighbourCount;
+	Msg("%d edges built",dwEdgeCount);
 	Progress(1.0f);
 
 	Phase("Checking graph connectivity");
-	if ((j < ((int)tpaGraph.size() - 1)) || !bfCheckForGraphConnectivity()) {
+	if ((dwEdgeCount < ((int)tpaGraph.size() - 1)) || !bfCheckForGraphConnectivity()) {
 		Msg("Graph is not connected!");
-		//R_ASSERT(false);
+		extern  HWND logWindow;
+		MessageBox	(logWindow,"Error!","Error!",MB_OK|MB_ICONERROR);
+		return;
 	}
 	else
 		Msg("Graph is connected");
 	
+	Phase("Preprocessing edges");
+	vfPreprocessEdges(dwEdgeCount);
+
+	Phase("Sorting edges");
+	Progress(0.0f);
+	vfQuickSortEdges(tpaEdges,dwaSortOrder,dwEdgeCount);
+	Progress(1.0f);
+
 	Phase("Optimizing graph");
-	vfOptimizeGraph();
+	vfOptimizeGraph(dwEdgeCount);
 
 	Phase("Saving graph");
 	vfSaveGraph(name);
+	for (int i=0, dwNewEdgeCount=0; i<(int)tpaGraph.size(); i++)
+		dwNewEdgeCount += tpaGraph[i].dwNeighbourCount;
+	Msg("%d edges are removed",dwEdgeCount - dwNewEdgeCount);
 
 	Phase("Freeing graph being built");
 	Progress(0.0f);
-	for (i=0; i<(int)tpaGraph.size(); Progress(float(++i)/(tpaGraph.size() - 1)))
-		_FREE(tpaGraph[i].tpaEdges);
+	_FREE(tpaEdges);
+	_FREE(dwaSortOrder);
 	tpaGraph.clear();
 	Progress(1.0f);
 	
