@@ -962,7 +962,6 @@ void CPHMovementControl::ActivateBox		(DWORD id, BOOL Check/*false*/)
 	m_dwCurBox = id;
 	aabb.set(boxes[id]);
 	if(!m_character) return;
-	if(!m_character->b_exist) return;
 	Fvector v;
 	m_character->GetVelocity(v);
 	m_character->Destroy();

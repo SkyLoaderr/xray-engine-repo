@@ -113,6 +113,7 @@ public:
 	//breabable interface
 	virtual bool				isBreakable				  ();
 	virtual bool				isFractured				  ();
+	virtual CPHShellSplitterHolder*	SplitterHolder		  (){return m_spliter_holder;}
 	virtual void				SplitProcess			  (PHSHELL_PAIR_VECTOR &out_shels);
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void				get_LinearVel			  (Fvector& velocity);

@@ -8,7 +8,7 @@
 #include "holder_custom.h"
 #include "Car.h"
 #include "../skeletonanimated.h"
-
+#include "PHShellSplitter.h"
 void CActor::attach_Vehicle(CHolderCustom* vehicle)
 {
 	if(!vehicle) return;
@@ -47,8 +47,18 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 void CActor::detach_Vehicle()
 {
 	if(!m_holder) return;
+	CCar* car=smart_cast<CCar*>(m_holder);
+	if(!car)return;
+	CPHShellSplitterHolder*sh= car->PPhysicsShell()->SplitterHolder();
+	sh->Deactivate();
+	if(!ActivateBox(0))
+	{
+		sh->Activate();
+		return;
+	}
+	sh->Activate();
 	m_holder->detach_Actor();//
-	m_PhysicMovementControl->CreateCharacter();
+
 	m_PhysicMovementControl->SetPosition(m_holder->ExitPosition());
 	r_model_yaw=-m_holder->Camera()->yaw;
 	r_torso.yaw=r_model_yaw;
