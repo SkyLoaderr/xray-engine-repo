@@ -486,7 +486,7 @@ void CPracticalPSM::ComputeVirtualCameraParameters( )
             m_fSlideBack = ZCLAMP - min_z;
             m_zNear = ZCLAMP;
         }
-        else
+        else 
         {
             m_zNear = (m_bSlideBack)?max(ZCLAMP, min_z) : ZCLAMP;
             m_fSlideBack = 0.f;
@@ -514,19 +514,19 @@ void CPracticalPSM::ComputeVirtualCameraParameters( )
 //-----------------------------------------------------------------------------
 CPracticalPSM::CPracticalPSM()
 {
-    m_time = ::timeGetTime()*0.001f;
-    m_startTime = m_time;
-    m_frame = 0;
-    m_fps = 30;
-    m_pEffect = NULL;
+    m_time			= ::timeGetTime()*0.001f;
+    m_startTime		= m_time;
+    m_frame			= 0;
+    m_fps			= 30;
+    m_pEffect		= NULL;
 
-    m_bShowHelp = false;
-    m_bShowStats = false;
-    m_pAttributes = NULL;
-    m_SelectedUI = NULL;
-    m_MouseFPSUI = NULL;
-    m_pBackBuffer = NULL;
-    m_pZBuffer = NULL;
+    m_bShowHelp		= false;
+    m_bShowStats	= false;
+    m_pAttributes	= NULL;
+    m_SelectedUI	= NULL;
+    m_MouseFPSUI	= NULL;
+    m_pBackBuffer	= NULL;
+    m_pZBuffer		= NULL;
     m_pSMColorTexture = NULL;
     m_pSMZTexture = NULL;
     m_pSMColorSurface = NULL;
@@ -556,8 +556,8 @@ CPracticalPSM::CPracticalPSM()
 
     m_strWindowTitle = _T("Hardware Perspective Shadow Maps 1.0 (DX9) (HLSL)");
     m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
-    m_dwCreationWidth  = 800;       // default window width
-    m_dwCreationHeight = 600;       // default window height
+    m_dwCreationWidth	= 800;       // default window width
+    m_dwCreationHeight	= 600;       // default window height
 
-    m_fAspect = float(m_dwCreationWidth) / float(m_dwCreationHeight);
+    m_fAspect			= float(m_dwCreationWidth) / float(m_dwCreationHeight);
 }
