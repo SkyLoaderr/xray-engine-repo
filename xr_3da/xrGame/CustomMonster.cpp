@@ -247,6 +247,8 @@ void CCustomMonster::Update	( u32 DT )
 	
 	// Queue setup
 	float dt			= float(DT)/1000.f;
+	if (dt > 3)
+		return;
 	
 	if (Remote())		{
 	} else {
