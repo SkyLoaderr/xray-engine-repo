@@ -11,6 +11,7 @@
 #include "WeaponFN2000.h"
 #include "WeaponAK74.h"
 #include "WeaponLR300.h"
+#include "WeaponHPSA.h"
 
 class fClassEQ {
 	CLASS_ID cls;
@@ -163,6 +164,10 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 	case CLSID_OBJECT_W_LR300:
 		pWeapon = new CWeaponLR300	(); 
 		strcpy(sect_name,"wpn_lr300");
+		break;
+	case CLSID_OBJECT_W_HPSA:
+		pWeapon = new CWeaponHPSA	(); 
+		strcpy(sect_name,"wpn_HPSA");
 		break;
 	}
 
