@@ -157,6 +157,7 @@ void CMovementManager::build_path()
 			}
 			default :			NODEFAULT;
 		}
+		m_path_actuality	= true;
 	}
 
 	switch (m_path_type) {
@@ -181,7 +182,7 @@ void CMovementManager::process_game_path()
 	switch (m_path_state) {
 		case ePathStateSelectGameVertex : {
 			CGameLocationSelector::select_location(m_tGameVertexID,m_game_dest_vertex_id);
-			if (!CGameLocationSelector::failed())
+			if (CGameLocationSelector::failed())
 				break;
 			m_path_state	= ePathStateBuildGamePath;
 			if (time_over())
