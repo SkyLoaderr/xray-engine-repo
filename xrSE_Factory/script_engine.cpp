@@ -115,6 +115,7 @@ void CScriptEngine::export()
 	export_motivation_management		();
 	export_monster_info					();
 #endif
+	export_classes						();
 
 #ifdef XRGAME_EXPORTS
 	load_class_registrators				();

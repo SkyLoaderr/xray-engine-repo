@@ -27,3 +27,10 @@ __declspec(dllimport) LPSTR g_ca_stdout;
 
 typedef lua_State CLuaVirtualMachine;
 
+#undef STATIC_CHECK
+#include <typelist.h>
+
+#define script_type_list		Loki::NullType
+#define add_to_type_list(type)	typedef Loki::TL::Append<script_type_list,type>::Result TypeList_##type;
+#define save_type_list(type)	TypeList_##type
+

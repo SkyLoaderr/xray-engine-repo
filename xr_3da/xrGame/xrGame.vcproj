@@ -3974,6 +3974,12 @@
 						RelativePath=".\script_engine.h">
 					</File>
 					<File
+						RelativePath=".\script_engine_export.cpp">
+					</File>
+					<File
+						RelativePath=".\script_engine_export.h">
+					</File>
+					<File
 						RelativePath=".\script_engine_inline.h">
 					</File>
 				</Filter>
