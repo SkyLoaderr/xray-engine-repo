@@ -122,6 +122,22 @@ void Log(const char *msg, const Fmatrix &dop) {
 	Log		(buf);
 }
 
+void LogWinErr(const char *msg, u32 err_code){
+    LPVOID lpMsgBuf = NULL;
+    DWORD result 	= FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+        FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        err_code,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR) &lpMsgBuf,
+        0,
+        NULL);
+	Msg			("%s: %s",msg,lpMsgBuf);
+    LocalFree	(lpMsgBuf);
+}
+
 static char *month[12] = {
 	"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
 };
