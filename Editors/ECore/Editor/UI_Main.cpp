@@ -200,7 +200,8 @@ void TUI::OnAppActivate()
         m_ShiftState.Clear();
      	pInput->OnAppActivate();
     }
-    m_bAppActive = true;
+    m_bAppActive 	= true;
+    Device.bActive  = true;
 }
 //---------------------------------------------------------------------------
 
@@ -212,7 +213,8 @@ void TUI::OnAppDeactivate()
         m_ShiftState.Clear();
     }
     HideHint();
-    m_bAppActive = false;
+    m_bAppActive 	= false;
+    Device.bActive  = false;
 }
 //---------------------------------------------------------------------------
 

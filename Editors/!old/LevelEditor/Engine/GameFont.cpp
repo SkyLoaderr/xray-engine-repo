@@ -178,7 +178,9 @@ void CGameFont::OnRender()
 
 void CGameFont::Add(float _x, float _y, LPCSTR s, u32 _c, float _size)
 {
+#ifndef _EDITOR
 	if (!Device.bActive)	return;
+#endif
 	String	rs;
 	u32		len = xr_strlen(s);
 	VERIFY	(len<sizeof(rs.string));
@@ -195,7 +197,9 @@ void CGameFont::Add(float _x, float _y, LPCSTR s, u32 _c, float _size)
 
 void __cdecl CGameFont::Out(float _x, float _y, LPCSTR fmt,...)
 {
+#ifndef _EDITOR
 	if (!Device.bActive)	return;
+#endif
 	String		rs;
 	rs.x		=_x;
 	rs.y		=_y;
@@ -212,7 +216,9 @@ void __cdecl CGameFont::Out(float _x, float _y, LPCSTR fmt,...)
 
 void __cdecl CGameFont::OutNext(LPCSTR fmt,...)
 {
+#ifndef _EDITOR
 	if (!Device.bActive)	return;
+#endif
 	String rs;
 	rs.x=fCurrentX;
 	rs.y=fCurrentY;
@@ -231,7 +237,9 @@ void __cdecl CGameFont::OutNext(LPCSTR fmt,...)
 
 void __cdecl CGameFont::OutPrev(LPCSTR fmt,...)
 {
+#ifndef _EDITOR
 	if (!Device.bActive)	return;
+#endif
 	String rs;
 	rs.x=fCurrentX;
 	rs.y=fCurrentY;
