@@ -69,6 +69,8 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #define THROW			Debug.fatal("THROW");
 #define THROW2(a)		Debug.fatal(a);
 
+#define clMsg 			Msg
+
 // core
 #include <xrCore.h>
 
@@ -182,8 +184,6 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 
 #define		TEX_POINT_ATT	"internal\\internal_light_attpoint"
 #define		TEX_SPOT_ATT	"internal\\internal_light_attclip"
-
-#define clMsg Msg
 
 #pragma hdrstop
 
