@@ -275,9 +275,10 @@ void CAI_Soldier::OnFindAloneFire()
 	else
 		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 
-	if (!bfTooBigDistance(tSavedEnemyPosition,1.f)) {
-		
-	}
+//	if (!bfTooBigDistance(tSavedEnemyPosition,1.f)) {
+//		
+//	}
+
 	SetDirectionLook();
 	
 	StandUp();
