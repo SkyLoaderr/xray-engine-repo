@@ -213,8 +213,8 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 					};
 					CGrenade* pGrenade = dynamic_cast<CGrenade*>(pObj);
 					if (pGrenade) continue;
-					ConvertToLocal(LM,pItem->Position(),P);
-					EntityOut(pItem->Position().y-Actor->Position().y,COLOR_TARGET,P);
+//					ConvertToLocal(LM,pItem->Position(),P);
+//					EntityOut(pItem->Position().y-Actor->Position().y,COLOR_TARGET,P);
 					continue;
 				};
 				if (GameID() == GAME_ARTEFACTHUNT)

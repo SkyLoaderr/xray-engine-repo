@@ -521,8 +521,13 @@ void CInventoryItem::PH_A_CrPr		()
 	Fmatrix xformX;
 	pSyncObj->cv2obj_Xfrom(PredictedState.previous_quaternion, PredictedState.previous_position, xformX);
 
+	VERIFY2								(_valid(xformX),*cName());
+	pSyncObj->cv2obj_Xfrom(PredictedState.previous_quaternion, PredictedState.previous_position, xformX);
+	
 	IEndRot.set(xformX);
 	IEndPos.set(xformX.c);
+	VERIFY2								(_valid(IEndPos),*cName());
+	
 
 	m_bInInterpolation = true;
 	m_dwIStartTime = m_dwILastUpdateTime;
@@ -545,7 +550,9 @@ void CInventoryItem::make_Interpolation	()
 //			Position().set(PredictedState.position);
 			Fmatrix xformI;
 			pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformI);
+			VERIFY2								(_valid(renderable.xform),*cName());
 			XFORM().set(xformI);
+			VERIFY2								(_valid(renderable.xform),*cName());
 		}
 		else {
 			VERIFY			(CurTime <= m_dwIEndTime);
@@ -556,10 +563,14 @@ void CInventoryItem::make_Interpolation	()
 			Fvector IPos;
 			Fquaternion IRot;
 			IPos.lerp(IStartPos, IEndPos, factor);
+			VERIFY2								(_valid(IPos),*cName());
 			IRot.slerp(IStartRot, IEndRot, factor);
 
+			VERIFY2								(_valid(renderable.xform),*cName());
 			XFORM().rotation(IRot);
+			VERIFY2								(_valid(renderable.xform),*cName());
 			Position().set(IPos);
+			VERIFY2								(_valid(renderable.xform),*cName());
 			
 		};
 		/*

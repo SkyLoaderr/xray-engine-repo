@@ -71,7 +71,7 @@ void CWeaponAmmo::Load(LPCSTR section)
 	m_boxCurr = m_boxSize;
 
 	if(pSettings->line_exist(section,"can_be_unlimited"))
-		m_bCanBeUnlimited = pSettings->r_u32(section,"can_be_unlimited");
+		m_bCanBeUnlimited = u8(pSettings->r_u32(section,"can_be_unlimited"));
 	else
 		m_bCanBeUnlimited = true;
 }
@@ -180,8 +180,12 @@ void CWeaponAmmo::renderable_Render()
 
 void CWeaponAmmo::UpdateCL() 
 {
+	VERIFY2								(_valid(renderable.xform),*cName());
 	inherited::UpdateCL	();
+	VERIFY2								(_valid(renderable.xform),*cName());
 	make_Interpolation	();
+	VERIFY2								(_valid(renderable.xform),*cName());
+
 }
 
 void CWeaponAmmo::net_Export(NET_Packet& P) 

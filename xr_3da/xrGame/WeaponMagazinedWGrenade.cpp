@@ -213,7 +213,8 @@ bool CWeaponMagazinedWGrenade::Action(s32 cmd, u32 flags)
 	case kWPN_ZOOM: 
 	case kWPN_FUNC: 
 			{
-                if(flags&CMD_START) SwitchMode();
+                if(flags&CMD_START) 
+					SwitchState(eSwitch);// SwitchMode();
 				return true;
 			}
 	}
@@ -297,10 +298,14 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 		pGrenade->SetCurrentParentID(H_Parent()->ID());
 
 		
-		NET_Packet P;
-		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16(getCurrentRocket()->ID()/*m_pRocket->ID()*/);
-		u_EventSend(P);
+		if (Local() && OnServer())
+		{
+			NET_Packet P;
+			u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
+			P.w_u16(getCurrentRocket()->ID()/*m_pRocket->ID()*/);
+			u_EventSend(P);
+		};
+
 	}
 }
 
@@ -346,13 +351,28 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 
 void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S) 
 {
+	switch (S)
+	{
+	case eSwitch:
+		{
+			SwitchMode();
+		}break;
+	}
 	inherited::OnStateSwitch(S);
+	
 	UpdateGrenadeVisibility(!!iAmmoElapsed || S == eReload);
 }
 
 
 void CWeaponMagazinedWGrenade::OnAnimationEnd()
 {
+	switch (STATE)
+	{
+	case eSwitch:
+		{
+			SwitchState(eIdle);
+		}break;
+	}
 	inherited::OnAnimationEnd();
 }
 
