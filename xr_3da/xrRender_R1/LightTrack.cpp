@@ -52,7 +52,6 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	if						(0==O)																	return;
 	if						((!O->renderable_ShadowGenerate()) && (!O->renderable_ShadowReceive()))	return;
 
-	CLightTrack* pROS		= (CLightTrack*)	(O->renderable.ROS);
 	VERIFY					(dynamic_cast<CLightTrack*>(O->renderable.ROS));
 	if						(dwFrame==Device.dwFrame)	return;
 	dwFrame					= Device.dwFrame;

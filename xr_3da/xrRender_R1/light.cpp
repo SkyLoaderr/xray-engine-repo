@@ -13,9 +13,15 @@ light::light(void)
 	range			= 8.f;
 	cone			= deg2rad(60.f);
 	color.set		(1,1,1,1);
-
+#if RENDER==R_R2
 	s_spot			= NULL;
 	s_point			= NULL;
+	vis.frame2test	= 0;
+	vis.query_id	= 0;
+	vis.query_order	= 0;
+	vis.visible		= false;
+	vis.pending		= false;
+#endif
 }
 
 light::~light(void)

@@ -12,7 +12,7 @@
 
 void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, u32 intermediate_index)
 {
-	R_ASSERT				(!level_path.empty());
+	VERIFY					(!level_path.empty());
 	STravelPathPoint		current,next;
 
 	// start point
