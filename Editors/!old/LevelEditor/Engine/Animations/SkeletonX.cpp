@@ -290,42 +290,43 @@ struct	vertHW_1W
 		_tc[1]		= q_tc(tc.y);
 	}
 };
+
 static	D3DVERTEXELEMENT9 dwDecl_2W	[] =	// 32bytes
 {
-	{ 0, 0,		D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// : p0					: 2	: -12..+12
-	{ 0, 8,		D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		1 },	// : p1 				: 2	: -12..+12
-	{ 0, 16,	D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// : n0.xyz, w = weight	: 1	:  -1..+1, w=0..1
-	{ 0, 20,	D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		1 },	// : n1					: 1	:  -1..+1
-	{ 0, 24,	D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// : xy(tc), zw(indices): 2	: -16..+16, zw[0..32767]
+	{ 0, 0,		D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// : p0					: 2	: -12..+12
+	{ 0, 12,	D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		1 },	// : p1 				: 2	: -12..+12
+	{ 0, 24,	D3DDECLTYPE_FLOAT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// : n0.xyz, w = weight	: 1	:  -1..+1, w=0..1
+	{ 0, 40,	D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		1 },	// : n1					: 1	:  -1..+1
+	{ 0, 52,	D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// : xy(tc), zw(indices): 2	: -16..+16, zw[0..32767]
 	D3DDECL_END()
 };
 struct	vertHW_2W
 {
-	s16			_P0		[4];
-	s16			_P1		[4];
-	u8			_N0_w	[4];
-	u8			_N1		[4];
+	float		_P0		[3];
+	float		_P1		[3];
+	float		_N0_w	[4];
+	float		_N1		[3];
 	s16			_tc_i	[4];
 	void set(Fvector3& P0, Fvector3& P1, Fvector3 N0, Fvector3 N1, Fvector2& tc, int index0, int index1, float w)
 	{
 		N0.normalize_safe();
 		N1.normalize_safe();
-		_P0[0]		= q_P(P0.x);
-		_P0[1]		= q_P(P0.y);
-		_P0[2]		= q_P(P0.z);
-		_P0[3]		= q_P(1);
-		_P1[0]		= q_P(P1.x);
-		_P1[1]		= q_P(P1.y);
-		_P1[2]		= q_P(P1.z);
-		_P1[3]		= q_P(1);
-		_N0_w[0]	= q_N(N0.x);
-		_N0_w[1]	= q_N(N0.y);
-		_N0_w[2]	= q_N(N0.z);
-		_N0_w[3]	= u8(clampr(iFloor(w*255.f+.5f),0,255));
-		_N1[0]		= q_N(N1.x);
-		_N1[1]		= q_N(N1.y);
-		_N1[2]		= q_N(N1.z);
-		_N1[3]		= 0;
+		_P0[0]		= P0.x;	//q_P(P0.x);
+		_P0[1]		= P0.y;	//q_P(P0.y);
+		_P0[2]		= P0.z;	//q_P(P0.z);
+//		_P0[3]		= q_P(1);
+		_P1[0]		= P1.x;	//q_P(P1.x);
+		_P1[1]		= P1.y;	//q_P(P1.y);
+		_P1[2]		= P1.z;	//q_P(P1.z);
+//		_P1[3]		= q_P(1);
+		_N0_w[0]	= N0.x;	//q_N(N0.x);
+		_N0_w[1]	= N0.y;	//q_N(N0.y);
+		_N0_w[2]	= N0.z;	//q_N(N0.z);
+		_N0_w[3]	= w;	//u8(clampr(iFloor(w*255.f+.5f),0,255));
+		_N1[0]		= N1.x;	//q_N(N1.x);
+		_N1[1]		= N1.y;	//q_N(N1.y);
+		_N1[2]		= N1.z;	//q_N(N1.z);
+//		_N1[3]		= 0;
 		_tc_i[0]	= q_tc(tc.x);
 		_tc_i[1]	= q_tc(tc.y);
 		_tc_i[2]	= s16(index0);
