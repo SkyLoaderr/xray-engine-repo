@@ -43,7 +43,8 @@
 		
 		<rank>70</rank>
 		<reputation>50</reputation>
-		<visual>actors\barman\barman</visual>
+		<!-- <visual>actors\barman\barman</visual> -->
+		<visual>actors\hero\stalker_novice</visual>
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
