@@ -8,7 +8,8 @@ class ENGINE_API CHWCaps {
 public:
 	struct		caps_Geometry
 	{
-		u32	dwVersion		: 8;
+		u32	dwVersion_major	: 4;
+		u32	dwVersion_minor	: 4;
 		u32	dwRegisters		: 16;
 		u32	bSoftware		: 1;
 		u32	bPointSprites	: 1;
@@ -19,7 +20,8 @@ public:
 	};
 	struct		caps_Raster
 	{
-		u32	dwVersion		: 8;		// pixel shader version
+		u32	dwVersion_major	: 4;		// pixel shader version
+		u32	dwVersion_minor	: 4;		// pixel shader version
 		u32	dwRegisters		: 16;
 		u32	dwStages		: 8;		// number of tex-stages
 		u32	bNonPow2		: 1;
