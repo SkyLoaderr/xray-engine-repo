@@ -208,13 +208,16 @@ struct CLIST
 
 DWORD	CC	(double a)
 {
-	int	p		= iFloor(float(a));
+	int	p		= iFloor(float(a)+.5f);
 	if	(p<0)	return 0; else if (p>255) return 255;
 	return p;
 }
 
 void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW, DWORD srcH, EIMF_Type FILTER)
 {
+	R_ASSERT		(dstI);	R_ASSERT	(dstW>1);	R_ASSERT	(dstH>1);
+	R_ASSERT		(srcI);	R_ASSERT	(srcW>1);	R_ASSERT	(srcH>1);
+
 	// SRC & DST images
 	Image		src;	src.xsize	= srcW;	src.ysize	= srcH;	src.data	= srcI;	src.span	= srcW;
 	Image		dst;	dst.xsize	= dstW;	dst.ysize	= dstH;	dst.data	= dstI;	dst.span	= dstW;
@@ -245,142 +248,170 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 	CLIST	*contrib;				/* array of contribution lists */
 
 	/* create intermediate image to hold horizontal zoom */
-	tmp		= new_image	(dst.xsize, src.ysize);
-	xscale	= double	(dst.xsize) / double(src.xsize);
-	yscale	= double	(dst.ysize) / double(src.ysize);
+	try	{
+		tmp		= new_image	(dst.xsize, src.ysize);
+		xscale	= double	(dst.xsize) / double(src.xsize);
+		yscale	= double	(dst.ysize) / double(src.ysize);
+	} catch (...) {
+		Msg		("imf_Process::1");
+	};
 
 	/* pre-calculate filter contributions for a row */
-	contrib = (CLIST *)calloc	(dst.xsize, sizeof(CLIST));
+	try	{
+		contrib = (CLIST *)	calloc	(dst.xsize, sizeof(CLIST));
+	} catch (...) {
+		Msg		("imf_Process::2");
+	};
 	if(xscale < 1.0) {
-		width	= fwidth / xscale;
-		fscale	= 1.0 / xscale;
-		for(i = 0; i < dst.xsize; ++i) 
-		{
-			contrib[i].n	= 0;
-			contrib[i].p	= (CONTRIB *)calloc((int) (width * 2 + 1),	sizeof(CONTRIB));
-			center			= double(i) / xscale;
-			left			= ceil	(center - width);
-			right			= floor	(center + width);
-			for(j = int(left); j <= int(right); ++j) 
+		try	{
+			width	= fwidth / xscale;
+			fscale	= 1.0 / xscale;
+			for(i = 0; i < dst.xsize; ++i) 
 			{
-				weight	= center - double(j);
-				weight	= filterf(weight / fscale) / fscale;
-				if(j < 0) {
-					n = -j;
-				} else if(j >= src.xsize) {
-					n = (src.xsize - j) + src.xsize - 1;
-				} else {
-					n = j;
+				contrib[i].n	= 0;
+				contrib[i].p	= (CONTRIB *)calloc((int) (width * 2 + 1),	sizeof(CONTRIB));
+				center			= double(i) / xscale;
+				left			= ceil	(center - width);
+				right			= floor	(center + width);
+				for(j = int(left); j <= int(right); ++j) 
+				{
+					weight	= center - double(j);
+					weight	= filterf(weight / fscale) / fscale;
+					if(j < 0) {
+						n = -j;
+					} else if(j >= src.xsize) {
+						n = (src.xsize - j) + src.xsize - 1;
+					} else {
+						n = j;
+					}
+					k		= contrib[i].n++;
+					contrib[i].p[k].pixel	= (n<src.xsize)?n:(src.xsize-1);
+					contrib[i].p[k].weight	= weight;
 				}
-				k		= contrib[i].n++;
-				contrib[i].p[k].pixel	= (n<src.xsize)?n:(src.xsize-1);
-				contrib[i].p[k].weight	= weight;
 			}
-		}
+		} catch (...) {
+			Msg		("imf_Process::3 (xscale<1.0)");
+		};
 	} else {
-		for(i = 0; i < dst.xsize; ++i) 
-		{
-			contrib[i].n	= 0;
-			contrib[i].p	= (CONTRIB *)calloc((int) (fwidth * 2 + 1),	sizeof(CONTRIB));
-			center			= double(i) / xscale;
-			left			= ceil	(center - fwidth);
-			right			= floor	(center + fwidth);
-			for(j = int(left); j <= int(right); ++j) 
+		try	{
+			for(i = 0; i < dst.xsize; ++i) 
 			{
-				weight	= center - (double) j;
-				weight	= (*filterf)(weight);
-				if(j < 0) {
-					n = -j;
-				} else if(j >= src.xsize) {
-					n = (src.xsize - j) + src.xsize - 1;
-				} else {
-					n = j;
+				contrib[i].n	= 0;
+				contrib[i].p	= (CONTRIB *)calloc((int) (fwidth * 2 + 1),	sizeof(CONTRIB));
+				center			= double(i) / xscale;
+				left			= ceil	(center - fwidth);
+				right			= floor	(center + fwidth);
+				for(j = int(left); j <= int(right); ++j) 
+				{
+					weight	= center - (double) j;
+					weight	= (*filterf)(weight);
+					if(j < 0) {
+						n = -j;
+					} else if(j >= src.xsize) {
+						n = (src.xsize - j) + src.xsize - 1;
+					} else {
+						n = j;
+					}
+					k		= contrib[i].n++;
+					contrib[i].p[k].pixel	= (n<src.xsize)?n:(src.xsize-1);
+					contrib[i].p[k].weight	= weight;
 				}
-				k		= contrib[i].n++;
-				contrib[i].p[k].pixel	= (n<src.xsize)?n:(src.xsize-1);
-				contrib[i].p[k].weight	= weight;
 			}
-		}
+		} catch (...) {
+			Msg		("imf_Process::3 (xscale<1.0)");
+		};
 	}
 
 	/* apply filter to zoom horizontally from src to tmp */
-	raster	= (Pixel *)calloc(src.xsize, sizeof(Pixel));
-	for	(k = 0; k < tmp->ysize; ++k) 
-	{
-		get_row	(raster, &src, k);
-		for(i = 0; i < tmp->xsize; ++i) 
+	try	{
+		raster	= (Pixel *)calloc(src.xsize, sizeof(Pixel));
+	} catch (...) {	Msg		("imf_Process::4");	};
+	try	{
+		for	(k = 0; k < tmp->ysize; ++k) 
 		{
-			double	w_r	= 0., w_g = 0., w_b	= 0., w_a = 0.;
-
-			for	(j = 0; j < contrib[i].n; ++j) 
+			get_row	(raster, &src, k);
+			for(i = 0; i < tmp->xsize; ++i) 
 			{
-				double	W	=	contrib[i].p[j].weight;
-				Pixel	P	=	raster[contrib[i].p[j].pixel];
-				w_r			+=	W*double(RGBA_GETRED(P));
-				w_g			+=	W*double(RGBA_GETGREEN(P));
-				w_b			+=	W*double(RGBA_GETBLUE(P));
-				w_a			+=	W*double(RGBA_GETALPHA(P));
+				double	w_r	= 0., w_g = 0., w_b	= 0., w_a = 0.;
+
+				for	(j = 0; j < contrib[i].n; ++j) 
+				{
+					double	W	=	contrib[i].p[j].weight;
+					Pixel	P	=	raster[contrib[i].p[j].pixel];
+					w_r			+=	W*double(RGBA_GETRED(P));
+					w_g			+=	W*double(RGBA_GETGREEN(P));
+					w_b			+=	W*double(RGBA_GETBLUE(P));
+					w_a			+=	W*double(RGBA_GETALPHA(P));
+				}
+				put_pixel(tmp, i, k, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
 			}
-			put_pixel(tmp, i, k, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
 		}
-	}
-	_FREE(raster);
+		_FREE(raster);
+	} catch (...) {	Msg		("imf_Process::5");	};
 
 	/* _FREE the memory allocated for horizontal filter weights */
-	for(i = 0; i < tmp->xsize; ++i) _FREE(contrib[i].p);
-	_FREE(contrib);
+	try	{
+		for(i = 0; i < tmp->xsize; ++i) _FREE(contrib[i].p);
+		_FREE(contrib);
+	} catch (...) {	Msg		("imf_Process::6");	};
 
 	/* pre-calculate filter contributions for a column */
-	contrib = (CLIST *)calloc(dst.ysize, sizeof(CLIST));
+	try	{
+		contrib = (CLIST *)calloc(dst.ysize, sizeof(CLIST));
+	} catch (...) {	Msg		("imf_Process::7");	};
 	if(yscale < 1.0) {
-		width	= fwidth / yscale;
-		fscale	= 1.0 / yscale;
-		for	(i = 0; i < dst.ysize; ++i) 
-		{
-			contrib[i].n	= 0;
-			contrib[i].p	= (CONTRIB *)calloc((int) (width * 2 + 1),sizeof(CONTRIB));
-			center			= (double) i / yscale;
-			left			= ceil	(center - width);
-			right			= floor	(center + width);
-			for(j = int(left); j <= int(right); ++j) 
+		try	{
+			width	= fwidth / yscale;
+			fscale	= 1.0 / yscale;
+			for	(i = 0; i < dst.ysize; ++i) 
 			{
-				weight	= center - (double) j;
-				weight	= filterf(weight / fscale) / fscale;
-				if(j < 0) {
-					n = -j;
-				} else if(j >= tmp->ysize) {
-					n = (tmp->ysize - j) + tmp->ysize - 1;
-				} else {
-					n = j;
+				contrib[i].n	= 0;
+				contrib[i].p	= (CONTRIB *)calloc((int) (width * 2 + 1),sizeof(CONTRIB));
+				center			= (double) i / yscale;
+				left			= ceil	(center - width);
+				right			= floor	(center + width);
+				for(j = int(left); j <= int(right); ++j) 
+				{
+					weight	= center - (double) j;
+					weight	= filterf(weight / fscale) / fscale;
+					if(j < 0) {
+						n = -j;
+					} else if(j >= tmp->ysize) {
+						n = (tmp->ysize - j) + tmp->ysize - 1;
+					} else {
+						n = j;
+					}
+					k = contrib[i].n++;
+					contrib[i].p[k].pixel	= (n<tmp->ysize)?n:(tmp->ysize-1);
+					contrib[i].p[k].weight	= weight;
 				}
-				k = contrib[i].n++;
-				contrib[i].p[k].pixel	= (n<tmp->ysize)?n:(tmp->ysize-1);
-				contrib[i].p[k].weight	= weight;
 			}
-		}
+		} catch (...) {	Msg		("imf_Process::8 (yscale<1.0)");	};
 	} else {
-		for(i = 0; i < dst.ysize; ++i) 
-		{
-			contrib[i].n	= 0;
-			contrib[i].p	= (CONTRIB *)calloc((int) (fwidth * 2 + 1),sizeof(CONTRIB));
-			center			= (double) i / yscale;
-			left			= ceil	(center - fwidth);
-			right			= floor	(center + fwidth);
-			for(j = int(left); j <= int(right); ++j) {
-				weight = center - (double) j;
-				weight = (*filterf)(weight);
-				if(j < 0) {
-					n = -j;
-				} else if(j >= tmp->ysize) {
-					n = (tmp->ysize - j) + tmp->ysize - 1;
-				} else {
-					n = j;
+		try	{
+			for(i = 0; i < dst.ysize; ++i) 
+			{
+				contrib[i].n	= 0;
+				contrib[i].p	= (CONTRIB *)calloc((int) (fwidth * 2 + 1),sizeof(CONTRIB));
+				center			= (double) i / yscale;
+				left			= ceil	(center - fwidth);
+				right			= floor	(center + fwidth);
+				for(j = int(left); j <= int(right); ++j) {
+					weight = center - (double) j;
+					weight = (*filterf)(weight);
+					if(j < 0) {
+						n = -j;
+					} else if(j >= tmp->ysize) {
+						n = (tmp->ysize - j) + tmp->ysize - 1;
+					} else {
+						n = j;
+					}
+					k = contrib[i].n++;
+					contrib[i].p[k].pixel	= (n<tmp->ysize)?n:(tmp->ysize-1);
+					contrib[i].p[k].weight	= weight;
 				}
-				k = contrib[i].n++;
-				contrib[i].p[k].pixel	= (n<tmp->ysize)?n:(tmp->ysize-1);
-				contrib[i].p[k].weight	= weight;
 			}
-		}
+		} catch (...) {	Msg		("imf_Process::8 (yscale<1.0)");	};
 	}
 
 	/* apply filter to zoom vertically from tmp to dst */

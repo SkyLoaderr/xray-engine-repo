@@ -43,9 +43,11 @@ void CBuild::Flex2OGF()
 				{
 					// If lightmaps persist
 					CLightmap* LM	= F->lmap_layers[lmit];
-					
+					R_ASSERT		(LM);
 					strcpy			(T.name, LM->lm.name);
 					T.pSurface		= &(LM->lm);
+					R_ASSERT		(T.pSurface);
+					R_ASSERT		(pOGF);
 					pOGF->textures.push_back(T);
 				}
 			} catch (...) {  Msg("* ERROR: Flex2OGF, model# %d, *textures*",MODEL_ID); }
@@ -54,7 +56,7 @@ void CBuild::Flex2OGF()
 			try {
 				for (vecFaceIt Fit=(*it)->begin(); Fit!=(*it)->end(); Fit++)
 				{
-					static OGF_Vertex	V1,V2,V3;
+					OGF_Vertex	V1,V2,V3;
 					
 					Face*	FF = *Fit;
 					R_ASSERT(FF);
@@ -74,7 +76,7 @@ void CBuild::Flex2OGF()
 					}
 					
 					// build face
-					TRY(pOGF->_BuildFace(V1,V2,V3));
+					TRY				(pOGF->_BuildFace(V1,V2,V3));
 					V1.UV.clear();	V2.UV.clear();	V3.UV.clear();
 				}
 			} catch (...) {  Msg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
