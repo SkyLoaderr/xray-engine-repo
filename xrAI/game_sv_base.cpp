@@ -171,7 +171,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 			if (0==C_e)		strcpy(p_name,"Unknown");
 			else 
 			{
-				strcpy	(p_name,C_e->s_name_replace);
+				strcpy	(p_name,C_e->name_replace());
 			}
 		}
 

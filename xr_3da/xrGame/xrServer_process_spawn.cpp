@@ -79,7 +79,7 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 	if (CL && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))
 	{
 		CL->owner		= E;
-		// strcpy		(E->s_name_replace,CL->Name);
+//		E->set_name_replace	(CL->Name);
 	}
 
 	// PROCESS RP;	 3D position/orientation

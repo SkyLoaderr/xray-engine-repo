@@ -18,7 +18,7 @@ IC	void CALifeGraphRegistry::add	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] adding object [%s][%d] to graph point %d",object->s_name_replace,object->ID,game_vertex_id);
+		Msg						("[LSS] adding object [%s][%d] to graph point %d",object->name_replace(),object->ID,game_vertex_id);
 	}
 #endif
 	if (!object->m_bOnline && object->used_ai_locations() && object->interactive()) {
@@ -40,7 +40,7 @@ IC	void CALifeGraphRegistry::remove	(CSE_ALifeDynamicObject *object, ALife::_GRA
 	if (object->used_ai_locations() && object->interactive()) {
 	#ifdef DEBUG
 		if (psAI_Flags.test(aiALife)) {
-			Msg					("[LSS] removing object [%s][%d] from graph point %d",object->s_name_replace,object->ID,game_vertex_id);
+			Msg					("[LSS] removing object [%s][%d] from graph point %d",object->name_replace(),object->ID,game_vertex_id);
 		}
 	#endif
 		m_objects[game_vertex_id].objects().remove(object->ID);
@@ -51,7 +51,7 @@ IC	void CALifeGraphRegistry::remove	(CSE_ALifeDynamicObject *object, ALife::_GRA
 
 IC	void CALifeGraphRegistry::change	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_ID tGraphPointID, ALife::_GRAPH_ID tNextGraphPointID)
 {
-	VERIFY3						(object->used_ai_locations()/** && (object->interactive() || object->m_bOnline)/**/,*object->s_name,object->s_name_replace);
+	VERIFY3						(object->used_ai_locations()/** && (object->interactive() || object->m_bOnline)/**/,*object->s_name,object->name_replace());
 	remove						(object,tGraphPointID);
 	add							(object,tNextGraphPointID);
 	object->m_tGraphID			= tNextGraphPointID;

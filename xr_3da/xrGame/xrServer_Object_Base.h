@@ -42,6 +42,9 @@ public:
 		flSpawnDestroyOnSpawn	= u32(1 << 5),
 	};
 
+private:
+	LPSTR							s_name_replace;
+
 public:
 	BOOL							net_Ready;
 	BOOL							net_Processed;	// Internal flag for connectivity-graph
@@ -57,7 +60,6 @@ public:
 
 	// spawn data
 	shared_str						s_name;
-	LPSTR							s_name_replace;
 	u8								s_gameid;
 	u8								s_RP;
 	Flags16							s_flags;		// state flags
@@ -98,8 +100,8 @@ public:
 	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
 	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket);
 	virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items);
-	virtual LPCSTR		__stdcall	name			();
-	virtual LPCSTR		__stdcall	name_replace	();
+	virtual LPCSTR		__stdcall	name			() const;
+	virtual LPCSTR		__stdcall	name_replace	() const;
 	virtual void		__stdcall	set_name		(LPCSTR s) {s_name = s;};
 	virtual void		__stdcall	set_name_replace(LPCSTR s) {xr_free(s_name_replace); s_name_replace = xr_strdup(s);};
 	virtual Fvector&	__stdcall	position		();

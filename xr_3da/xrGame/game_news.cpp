@@ -87,7 +87,7 @@ LPCSTR GAME_NEWS_DATA::FullText()
 		LPCSTR name2 = "";
 
 		CSE_ALifeDynamicObject	*newsActorOne = ai().alife().objects().object(newsItem.m_object_id[0]); VERIFY(newsActorOne);
-		name1 = newsActorOne->s_name_replace;
+		name1 = newsActorOne->name_replace();
 		CSE_ALifeTraderAbstract* pTrader = NULL;
 		pTrader = smart_cast<CSE_ALifeTraderAbstract*>(newsActorOne);
 		if(pTrader)

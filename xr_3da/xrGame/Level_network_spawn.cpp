@@ -16,7 +16,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 
 	// Fill
 	E->s_name			= name;
-	strcpy				(E->s_name_replace,"");
+	E->set_name_replace	("");
 	E->s_gameid			=	u8(GameID());
 	E->s_RP				=	rp;
 	E->ID				=	0xffff;
@@ -99,7 +99,7 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	
 	// Fill
 	abstract->s_name		= section;
-	strcpy					(abstract->s_name_replace,section);
+	abstract->set_name_replace	(section);
 	abstract->s_gameid		= u8(GameID());
 	abstract->o_Position	= position;
 	abstract->s_RP			= 0xff;

@@ -103,7 +103,7 @@ void	game_sv_mp_script::SpawnPlayer				(ClientID id, LPCSTR N, LPCSTR SkinName, 
 	LPCSTR			options			=	get_name_id	(id);
 	CSE_Abstract*	E				=	spawn_begin	(N);								// create SE
 	
-	strcpy					(E->s_name_replace,get_option_s(options,"name","Player"));	// name
+	E->set_name_replace		(get_option_s(options,"name","Player"));	// name
 
 	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);			// flags
 

@@ -288,12 +288,12 @@ CSE_Abstract *CSE_Abstract::init	()
 	return						(this);
 }
 
-LPCSTR		CSE_Abstract::name			()
+LPCSTR		CSE_Abstract::name			() const
 {
 	return	(*s_name);
 }
 
-LPCSTR		CSE_Abstract::name_replace	()
+LPCSTR		CSE_Abstract::name_replace	() const
 {
 	return	(s_name_replace);
 }

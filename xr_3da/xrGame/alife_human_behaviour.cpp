@@ -23,7 +23,7 @@ void CSE_ALifeHumanAbstract::update			()
 	if (!bfActive())
 		return;
 	m_dwTotalMoney		= u32(-1);
-	R_ASSERT3			(!m_bOnline,"Can't update online object ",s_name_replace);
+	R_ASSERT3			(!m_bOnline,"Can't update online object ",name_replace());
 	ALife::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
 	bool				bOk;
 	do {

@@ -89,9 +89,9 @@ public:
 	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal) = 0;
 	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket) = 0;
 	virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items) = 0;
-	virtual LPCSTR		__stdcall	name			() = 0;
+	virtual LPCSTR		__stdcall	name			() const = 0;
 	virtual void		__stdcall	set_name		(LPCSTR) = 0;
-	virtual LPCSTR		__stdcall	name_replace	() = 0;
+	virtual LPCSTR		__stdcall	name_replace	() const = 0;
 	virtual void		__stdcall	set_name_replace(LPCSTR) = 0;
 	virtual Fvector&	__stdcall	position		() = 0;
 	virtual Fvector&	__stdcall	angle			() = 0;

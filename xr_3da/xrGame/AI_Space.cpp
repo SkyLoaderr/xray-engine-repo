@@ -47,9 +47,9 @@ CAI_Space::~CAI_Space				()
 void CAI_Space::load				(LPCSTR level_name)
 {
 	unload					(true);
-	u64						start = CPU::GetCycleCount();
 	Memory.mem_compact		();
 	u32						mem_usage = Memory.mem_usage();
+	u64						start = CPU::GetCycleCount();
 	m_level_graph			= xr_new<CLevelGraph>();
 	m_cross_table			= xr_new<CGameLevelCrossTable>();
 	m_graph_engine			= xr_new<CGraphEngine>(

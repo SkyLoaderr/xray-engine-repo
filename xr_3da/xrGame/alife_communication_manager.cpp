@@ -86,20 +86,20 @@ CALifeCommunicationManager::~CALifeCommunicationManager	()
 #ifdef DEBUG
 void CALifeCommunicationManager::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, ITEM_P_VECTOR &tpItemVector)
 {
-	Msg					("%s[%d]",tpALifeHumanAbstract->s_name_replace,tpALifeHumanAbstract->m_dwMoney);
+	Msg					("%s[%d]",tpALifeHumanAbstract->name_replace(),tpALifeHumanAbstract->m_dwMoney);
 	ITEM_P_IT			I = tpItemVector.begin();
 	ITEM_P_IT			E = tpItemVector.end();
 	for ( ; I != E; ++I)
-		Msg				(" %s",(*I)->base()->s_name_replace);
+		Msg				(" %s",(*I)->base()->name_replace());
 }
 
 void CALifeCommunicationManager::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
 {
-	Msg					("%s[%d]",tpALifeHumanAbstract->s_name_replace,tpALifeHumanAbstract->m_dwMoney);
+	Msg					("%s[%d]",tpALifeHumanAbstract->name_replace(),tpALifeHumanAbstract->m_dwMoney);
 	OBJECT_IT			I = tpALifeHumanAbstract->children.begin();
 	OBJECT_IT			E = tpALifeHumanAbstract->children.end();
 	for ( ; I != E; ++I)
-		Msg				(" %s",objects().object(*I)->s_name_replace);
+		Msg				(" %s",objects().object(*I)->name_replace());
 }
 #endif
 
@@ -387,7 +387,7 @@ bool CALifeCommunicationManager::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstr
 			string4096		S;
 			char			*S1 = S;	
 			if (psAI_Flags.test(aiALife)) {
-				S1				+= sprintf(S1,"%s -> ",tpALifeHumanAbstract1->s_name_replace);
+				S1				+= sprintf(S1,"%s -> ",tpALifeHumanAbstract1->name_replace());
 				
 				if (iSum1) {
 					for (int i=0, n=l_tpIndexes1.size(); i<n ;++i)
@@ -408,7 +408,7 @@ bool CALifeCommunicationManager::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstr
 			
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				S1				+= sprintf(S1,"\n%s -> ",tpALifeHumanAbstract2->s_name_replace);
+				S1				+= sprintf(S1,"\n%s -> ",tpALifeHumanAbstract2->name_replace());
 				
 				if (iSum2) {
 					for (int i=0, n=l_tpIndexes2.size(); i<n ;++i)
@@ -538,7 +538,7 @@ bool CALifeCommunicationManager::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAb
 			{
 				string4096		S;
 				char			*S1 = S;
-				S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract1->s_name_replace,tpALifeHumanAbstract1->m_dwMoney);
+				S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract1->name_replace(),tpALifeHumanAbstract1->m_dwMoney);
 				for (int i=0, n=m_tpTrader1.size(); i<n; ++i)
 					S1			+= sprintf(S1,"%6d",m_tpTrader1[i]->m_dwCost);
 				Msg				("%s",S);
@@ -546,7 +546,7 @@ bool CALifeCommunicationManager::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAb
 			{
 				string4096		S;
 				char			*S1 = S;
-				S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract2->s_name_replace,tpALifeHumanAbstract2->m_dwMoney);
+				S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract2->name_replace(),tpALifeHumanAbstract2->m_dwMoney);
 				for (int i=0, n=m_tpTrader2.size(); i<n; ++i)
 					S1			+= sprintf(S1,"%6d",m_tpTrader2[i]->m_dwCost);
 				Msg				("%s",S);
@@ -563,7 +563,7 @@ bool CALifeCommunicationManager::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAb
 			{	
 				string4096		S;
 				char			*S1 = S;
-				S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract1->s_name_replace);
+				S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract1->name_replace());
 				INT_IT			I = m_tpSums1.begin();
 				INT_IT			E = m_tpSums1.end();
 				for ( ; I != E; ++I)
@@ -573,7 +573,7 @@ bool CALifeCommunicationManager::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAb
 			{
 				string4096		S;
 				char			*S1 = S;
-				S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract2->s_name_replace);
+				S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract2->name_replace());
 				INT_IT			I = m_tpSums2.begin();
 				INT_IT			E = m_tpSums2.end();
 				for ( ; I != E; ++I)
@@ -794,7 +794,7 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 	// trade items
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg									("Selling all the items to %s",tpALifeTrader->s_name_replace);
+		Msg									("Selling all the items to %s",tpALifeTrader->name_replace());
 	}
 #endif
 	CSE_ALifeItemPDA						*original_pda = 0;

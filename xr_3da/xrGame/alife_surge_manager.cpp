@@ -340,14 +340,14 @@ void CALifeSurgeManager::assign_stalker_customers()
 //				for ( ; II != EE; ++II) {
 //					CSE_ALifeTraderAbstract *l_tpTraderAbstract = smart_cast<CSE_ALifeTraderAbstract*>((*II).second);
 //					if (l_tpTraderAbstract) {
-//						if (!xr_strcmp((*II).second->s_name_replace,S)) {
+//						if (!xr_strcmp((*II).second->name_replace(),S)) {
 //							l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back((*II).second->ID);
 //							bOk		= true;
 //							break;
 //						}
 //					}
 //				}
-//				R_ASSERT3			(bOk,"There is no customer for the stalker ",l_tpALifeHumanAbstract->s_name_replace);
+//				R_ASSERT3			(bOk,"There is no customer for the stalker ",l_tpALifeHumanAbstract->name_replace());
 //			}
 			l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back(traders().trader_nearest(l_tpALifeHumanAbstract)->ID);
 			l_tpALifeHumanAbstract->m_caKnownCustomers = 0;
@@ -431,7 +431,7 @@ void CALifeSurgeManager::spawn_new_spawns			()
 	for ( ; I != E; ++I) {
 		CSE_ALifeDynamicObject	*object, *spawn = smart_cast<CSE_ALifeDynamicObject*>(&spawns().spawns().vertex(*I)->data()->object());
 		VERIFY					(spawn);
-		Msg						("LSS : SURGE : SPAWN : [%s],[%s], level %s",*spawn->s_name,spawn->s_name_replace,ai().game_graph().header().level(ai().game_graph().vertex(spawn->m_tGraphID)->level_id()).name());
+//		Msg						("LSS : SURGE : SPAWN : [%s],[%s], level %s",*spawn->s_name,spawn->name_replace(),ai().game_graph().header().level(ai().game_graph().vertex(spawn->m_tGraphID)->level_id()).name());
 		create					(object,spawn,*I);
 	}
 }

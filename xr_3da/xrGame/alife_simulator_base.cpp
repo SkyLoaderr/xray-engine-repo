@@ -116,15 +116,18 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	abstract->ID_Phantom		= 0xffff;
 	abstract->o_Position		= position;
 	
-	strcpy						(abstract->s_name_replace,*abstract->s_name);
+	string256					s_name_replace;
+	strcpy						(s_name_replace,*abstract->s_name);
 	if (abstract->ID < 1000)
-		strcat					(abstract->s_name_replace,"0");
+		strcat					(s_name_replace,"0");
 	if (abstract->ID < 100)
-		strcat					(abstract->s_name_replace,"0");
+		strcat					(s_name_replace,"0");
 	if (abstract->ID < 10)
-		strcat					(abstract->s_name_replace,"0");
+		strcat					(s_name_replace,"0");
 	string16					S1;
-	strcat						(abstract->s_name_replace,itoa(abstract->ID,S1,10));
+	strcat						(s_name_replace,itoa(abstract->ID,S1,10));
+	abstract->set_name_replace	(s_name_replace);
+
 
 	CSE_ALifeDynamicObject		*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(abstract);
 	VERIFY						(dynamic_object);
@@ -164,15 +167,19 @@ CSE_Abstract *CALifeSimulatorBase::create(CSE_ALifeGroupAbstract *tpALifeGroupAb
 	k->ID						= server().PerformIDgen(0xffff);
 	k->m_bDirectControl			= false;
 	k->m_bALifeControl			= true;
-	strcpy						(k->s_name_replace,*k->s_name);
+	
+	string256					s_name_replace;
+	strcpy						(s_name_replace,*k->s_name);
 	if (k->ID < 1000)
-			strcat				(k->s_name_replace,"0");
+		strcat					(s_name_replace,"0");
 	if (k->ID < 100)
-		strcat					(k->s_name_replace,"0");
+		strcat					(s_name_replace,"0");
 	if (k->ID < 10)
-		strcat					(k->s_name_replace,"0");
+		strcat					(s_name_replace,"0");
 	string16					S1;
-	strcat						(k->s_name_replace,itoa(k->ID,S1,10));
+	strcat						(s_name_replace,itoa(k->ID,S1,10));
+	k->set_name_replace			(s_name_replace);
+
 	register_object				(k,true);
 	k->spawn_supplies			();
 	return						(k);
@@ -194,7 +201,7 @@ void CALifeSimulatorBase::create(CSE_ALifeDynamicObject *&i, CSE_ALifeDynamicObj
 	tNetPacket.r_begin			(id);
 	i->UPDATE_Read				(tNetPacket);
 
-	R_ASSERT3					(!(i->used_ai_locations()) || (i->m_tNodeID != u32(-1)),"Invalid vertex for object ",i->s_name_replace);
+	R_ASSERT3					(!(i->used_ai_locations()) || (i->m_tNodeID != u32(-1)),"Invalid vertex for object ",i->name_replace());
 
 	i->m_tSpawnID				= tSpawnID;
 	if (!graph().actor() && smart_cast<CSE_ALifeCreatureActor*>(i))
@@ -268,7 +275,7 @@ void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Releasing object [%s][%s][%d][%x]",abstract->s_name_replace,abstract->s_name,abstract->ID,smart_cast<void*>(abstract));
+		Msg							("[LSS] Releasing object [%s][%s][%d][%x]",abstract->name_replace(),abstract->s_name,abstract->ID,smart_cast<void*>(abstract));
 	}
 #endif
 	CSE_ALifeDynamicObject			*object = objects().object(abstract->ID);
@@ -300,7 +307,7 @@ void CALifeSimulatorBase::register_object	(CSE_ALifeDynamicObject *object, bool 
 #ifdef DEBUG
 		if (std::find(II->children.begin(),II->children.end(),item->base()->ID) != II->children.end()) {
 //			if (psAI_Flags.test(aiALife)) {
-				Msg						("[LSS] Specified item [%s][%d] is already attached to the specified object [%s][%d]",item->base()->s_name_replace,item->base()->ID,II->s_name_replace,II->ID);
+				Msg						("[LSS] Specified item [%s][%d] is already attached to the specified object [%s][%d]",item->base()->name_replace(),item->base()->ID,II->name_replace(),II->ID);
 //			}
 			Debug.fatal					("[LSS] Cannot recover from the previous error!");
 		}
@@ -341,7 +348,7 @@ void CALifeSimulatorBase::assign_death_position(CSE_ALifeCreatureAbstract *tpALi
 	tpALifeCreatureAbstract->m_tGraphID		= tGraphID;
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg									("[LSS] Generated death position %s[%f][%f][%f] -> [%f][%f][%f]",tpALifeCreatureAbstract->s_name_replace,VPUSH(tpALifeCreatureAbstract->o_Position),VPUSH((*i).level_point()));
+		Msg									("[LSS] Generated death position %s[%f][%f][%f] -> [%f][%f][%f]",tpALifeCreatureAbstract->name_replace(),VPUSH(tpALifeCreatureAbstract->o_Position),VPUSH((*i).level_point()));
 	}
 #endif
 	tpALifeCreatureAbstract->o_Position		= (*i).level_point();

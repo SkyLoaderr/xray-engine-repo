@@ -72,11 +72,11 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 	ClientID clientID;clientID.set(0);
 	server().Process_spawn			(tNetPacket,clientID,FALSE,l_tpAbstract);
 	object->s_flags.and				(u16(-1) ^ M_SPAWN_UPDATE);
-	R_ASSERT3						(ai().level_graph().valid_vertex_id(object->m_tNodeID),"Invalid vertex for object ",object->s_name_replace);
+	R_ASSERT3						(ai().level_graph().valid_vertex_id(object->m_tNodeID),"Invalid vertex for object ",object->name_replace());
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Spawning object [%s][%s][%d]",object->s_name_replace,object->s_name,object->ID);
+		Msg							("[LSS] Spawning object [%s][%s][%d]",object->name_replace(),object->s_name,object->ID);
 	}
 #endif
 
@@ -94,11 +94,11 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg					("[LSS] Spawning item [%s][%s][%d]",l_tpALifeInventoryItem->base()->s_name_replace,l_tpALifeInventoryItem->base()->s_name,l_tpALifeDynamicObject->ID);
+				Msg					("[LSS] Spawning item [%s][%s][%d]",l_tpALifeInventoryItem->base()->name_replace(),l_tpALifeInventoryItem->base()->s_name,l_tpALifeDynamicObject->ID);
 			}
 #endif
 
-//			R_ASSERT3								(ai().level_graph().valid_vertex_id(l_tpALifeDynamicObject->m_tNodeID),"Invalid vertex for object ",l_tpALifeInventoryItem->s_name_replace);
+//			R_ASSERT3								(ai().level_graph().valid_vertex_id(l_tpALifeDynamicObject->m_tNodeID),"Invalid vertex for object ",l_tpALifeInventoryItem->name_replace());
 			l_tpALifeDynamicObject->o_Position		= object->o_Position;
 			l_tpALifeDynamicObject->m_tNodeID		= object->m_tNodeID;
 			ClientID clientID;clientID.set(0);
@@ -125,7 +125,7 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Destroying object [%s][%s][%d]",object->s_name_replace,object->s_name,object->ID);
+		Msg							("[LSS] Destroying object [%s][%s][%d]",object->name_replace(),object->s_name,object->ID);
 	}
 #endif
 
@@ -136,15 +136,15 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 			if (!dynamic_object) {
 				CSE_Abstract		*abstract = server().ID_to_entity(object->children[i]);
 				VERIFY				(abstract);
-				Msg					("ERROR : [%s][%s]",object->s_name,object->s_name_replace);
-				R_ASSERT3			(false,*abstract->s_name,abstract->s_name_replace);
+				Msg					("ERROR : [%s][%s]",object->s_name,object->name_replace());
+				R_ASSERT3			(false,*abstract->s_name,abstract->name_replace());
 			}
 			VERIFY					(dynamic_object);
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(dynamic_object);
 			VERIFY2					(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->base()->s_name_replace,l_tpALifeInventoryItem->base()->s_name,l_tpALifeInventoryItem->base()->ID);
+				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->base()->name_replace(),l_tpALifeInventoryItem->base()->s_name,l_tpALifeInventoryItem->base()->ID);
 			}
 #endif
 			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->base()->ID;
@@ -186,7 +186,7 @@ void CALifeSwitchManager::switch_online(CSE_ALifeDynamicObject *object)
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Going online [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),object->s_name_replace, object->ID,VPUSH(graph().actor()->o_Position),VPUSH(object->o_Position), "*SERVER*");
+		Msg							("[LSS] Going online [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),object->name_replace(), object->ID,VPUSH(graph().actor()->o_Position),VPUSH(object->o_Position), "*SERVER*");
 	}
 #endif
 	
@@ -225,7 +225,7 @@ void CALifeSwitchManager::switch_offline(CSE_ALifeDynamicObject *object)
 	R_ASSERT						(object->m_bOnline);
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg							("[LSS] Going offline [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),object->s_name_replace, object->ID,VPUSH(graph().actor()->o_Position),VPUSH(object->o_Position), "*SERVER*");
+		Msg							("[LSS] Going offline [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),object->name_replace(), object->ID,VPUSH(graph().actor()->o_Position),VPUSH(object->o_Position), "*SERVER*");
 	}
 #endif
 	
@@ -293,7 +293,7 @@ void CALifeSwitchManager::furl_object	(CSE_ALifeDynamicObject *I)
 bool CALifeSwitchManager::synchronize_location(CSE_ALifeDynamicObject *I)
 {
 #ifdef DEBUG
-	VERIFY3					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id(),*I->s_name,I->s_name_replace);
+	VERIFY3					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id(),*I->s_name,I->name_replace());
 	xr_vector<u16>			test = I->children;
 	std::sort				(test.begin(),test.end());
 	for (u32 i=1, n=test.size(); i<n; ++i)
@@ -437,10 +437,10 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 				// checking if parent is online too
 				CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(I->ID_Parent));
 				if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->fHealth < EPS_L))
-					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
+					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->name_replace(),l_tpALifeCreatureAbstract->fHealth);
 				R_ASSERT2			(!smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(I->ID_Parent)) || (smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(I->ID_Parent))->fHealth >= EPS_L),"Parent offline, item online...");
 				if (!objects().object(I->ID_Parent)->m_bOnline)
-					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
+					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->name_replace(),l_tpALifeCreatureAbstract->fHealth);
 			}
 #endif
 			R_ASSERT2			(objects().object(I->ID_Parent)->m_bOnline,"Parent offline, item online...");
@@ -482,10 +482,10 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 			if (psAI_Flags.test(aiALife)) {
 				CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(I->ID_Parent));
 				if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->fHealth < EPS_L))
-					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
+					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->name_replace(),l_tpALifeCreatureAbstract->fHealth);
 				R_ASSERT2			(!l_tpALifeCreatureAbstract || (l_tpALifeCreatureAbstract->fHealth >= EPS_L),"Parent online, item offline...");
 				if (objects().object(I->ID_Parent)->m_bOnline)
-					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
+					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->name_replace(),l_tpALifeCreatureAbstract->fHealth);
 			}
 #endif
 			R_ASSERT2				(!objects().object(I->ID_Parent)->m_bOnline,"Parent online, item offline...");

@@ -369,7 +369,7 @@ void CPHSkeleton::InitServerObject(CSE_Abstract * D)
 	l_tpALifePhysicObject->source_id	= u16(obj->ID());
 	l_tpALifePhysicObject->startup_animation=m_startup_anim;
 	D->s_name			= "ph_skeleton_object";//*cNameSect()
-	strcpy				(D->s_name_replace,"");
+	D->set_name_replace	("");
 	D->s_gameid			=	u8(GameID());
 	D->s_RP				=	0xff;
 	D->ID				=	0xffff;

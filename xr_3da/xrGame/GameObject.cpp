@@ -182,8 +182,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	// Naming
 	cName_set						(E->s_name);
 	cNameSect_set					(E->s_name);
-	if (E->s_name_replace[0])
-		cName_set					(E->s_name_replace);
+	if (E->name_replace()[0])
+		cName_set					(E->name_replace());
 
 	setID							(E->ID);
 	

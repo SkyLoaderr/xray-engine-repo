@@ -86,7 +86,7 @@ void CSE_ALifeTraderAbstract::attach	(CSE_ALifeInventoryItem *tpALifeInventoryIt
 		if (bAddChildren) {
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg						("[LSS] Adding item [%s][%d] to the [%s] children list",tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID,base()->s_name_replace);
+				Msg						("[LSS] Adding item [%s][%d] to the [%s] children list",tpALifeInventoryItem->base()->name_replace(),tpALifeInventoryItem->base()->ID,base()->name_replace());
 			}
 #endif
 
@@ -95,14 +95,14 @@ void CSE_ALifeTraderAbstract::attach	(CSE_ALifeInventoryItem *tpALifeInventoryIt
 		}
 #ifdef DEBUG
 		if (psAI_Flags.test(aiALife)) {
-			Msg							("[LSS] Assigning parent [%s] to item [%s][%d]",base()->s_name_replace,tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID);
+			Msg							("[LSS] Assigning parent [%s] to item [%s][%d]",base()->name_replace(),tpALifeInventoryItem->base()->name_replace(),tpALifeInventoryItem->base()->ID);
 		}
 #endif
 		tpALifeInventoryItem->base()->ID_Parent	= base()->ID;
 	}
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg								("[LSS] Updating [%s] inventory with attached item [%s][%d]",base()->s_name_replace,tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID);
+		Msg								("[LSS] Updating [%s] inventory with attached item [%s][%d]",base()->name_replace(),tpALifeInventoryItem->base()->name_replace(),tpALifeInventoryItem->base()->ID);
 	}
 #endif
 	m_fCumulativeItemMass				+= tpALifeInventoryItem->m_fMass;
@@ -118,7 +118,7 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 				R_ASSERT2						(base()->children.end() != I,"Can't detach an item which is not on my own");
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
-					Msg							("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID,base()->s_name_replace);
+					Msg							("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->base()->name_replace(),tpALifeInventoryItem->base()->ID,base()->name_replace());
 				}
 #endif
 				base()->children.erase			(I);
@@ -127,7 +127,7 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 		else {
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg								("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID,base()->s_name_replace);
+				Msg								("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->base()->name_replace(),tpALifeInventoryItem->base()->ID,base()->name_replace());
 			}
 #endif
 			base()->children.erase				(*I);
@@ -140,7 +140,7 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 	R_ASSERT2								(l_tpALifeDynamicObject1 && l_tpALifeDynamicObject2,"Invalid parent or children objects");
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg									("[LSS] Removing parent [%s] from the item [%s][%d] and updating its position and graph point [%f][%f][%f] : [%d]",base()->s_name_replace,tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID,VPUSH(l_tpALifeDynamicObject2->o_Position),l_tpALifeDynamicObject2->m_tGraphID);
+		Msg									("[LSS] Removing parent [%s] from the item [%s][%d] and updating its position and graph point [%f][%f][%f] : [%d]",base()->name_replace(),tpALifeInventoryItem->base()->name_replace(),tpALifeInventoryItem->base()->ID,VPUSH(l_tpALifeDynamicObject2->o_Position),l_tpALifeDynamicObject2->m_tGraphID);
 	}
 #endif
 	l_tpALifeDynamicObject1->o_Position		= l_tpALifeDynamicObject2->o_Position;
@@ -151,7 +151,7 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] Updating [%s] inventory with detached item [%s][%d]",base()->s_name_replace,tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID);
+		Msg						("[LSS] Updating [%s] inventory with detached item [%s][%d]",base()->name_replace(),tpALifeInventoryItem->base()->name_replace(),tpALifeInventoryItem->base()->ID);
 	}
 #endif
 	m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;

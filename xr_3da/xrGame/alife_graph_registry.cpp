@@ -102,7 +102,7 @@ void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryItem *
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] Attaching item [%s][%d] to [%s][%d]",item->base()->s_name_replace,item->base()->ID,object.s_name_replace,object.ID);
+		Msg						("[LSS] Attaching item [%s][%d] to [%s][%d]",item->base()->name_replace(),item->base()->ID,object.name_replace(),object.ID);
 	}
 #endif
 	if (alife_query)
@@ -122,7 +122,7 @@ void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryItem *
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] Detaching item [%s][%d] from [%s][%d]",item->base()->s_name_replace,item->base()->ID,object.s_name_replace,object.ID);
+		Msg						("[LSS] Detaching item [%s][%d] from [%s][%d]",item->base()->name_replace(),item->base()->ID,object.name_replace(),object.ID);
 	}
 #endif
 	if (alife_query)

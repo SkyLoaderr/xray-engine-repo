@@ -117,7 +117,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	{
 		CharacterInfo().m_SpecificCharacter.Load(0);
 		CharacterInfo().InitSpecificCharacter (0);
-		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = (E->s_name_replace[0]) ? E->s_name_replace : *pThis->cName();
+		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = (E->name_replace()[0]) ? E->name_replace() : *pThis->cName();
 		CEntity* pEntity = dynamic_cast<CEntity*>(pThis); VERIFY(pEntity);
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconX = pEntity->GetTradeIconX();
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconY = pEntity->GetTradeIconY();

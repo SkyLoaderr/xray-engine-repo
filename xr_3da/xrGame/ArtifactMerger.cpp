@@ -118,7 +118,7 @@ void CArtefactMerger::SpawnArtefact(const char* af_section)
 		
 	// Fill
 	D->s_name			= af_section;
-	strcpy				(D->s_name_replace,"");
+	D->set_name_replace	("");
 	D->s_gameid			=	u8(GameID());
 	D->s_RP				=	0xff;
 	D->ID				=	0xffff;
