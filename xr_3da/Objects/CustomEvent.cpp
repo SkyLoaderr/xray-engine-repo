@@ -133,6 +133,7 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	OnEnter.Create				(ini->ReadSTRING(section,"OnEnter"));
 	OnExit.Create				(ini->ReadSTRING(section,"OnExit"));
 	ExecuteOnce					= ini->ReadBOOL(section,"execute_once");
+	bEnabled					= TRUE;
 	
 	// Target
 	clsid_Target				= ini->ReadCLSID(section,"target_class");
@@ -173,7 +174,7 @@ void CCustomEvent::OnNear( CObject* O )
 		OnEnter.Signal((DWORD)O);
 		Contacted.push_back(O);
 
-		if (ExecuteOnce)	delete this;
+		if (ExecuteOnce)	bEnabled=FALSE;
 		return;
 	}
 	
