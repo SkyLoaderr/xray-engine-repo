@@ -104,7 +104,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CMotionSequence {
 
-	xr_vector<CMotionParams>::iterator it;		// указатель на текущий элемент
+	xr_vector<CMotionParams>::iterator it;		// индекс текущий элемент
 	xr_vector<CMotionParams> States;
 
 	CCustomMonster	*pMonster;

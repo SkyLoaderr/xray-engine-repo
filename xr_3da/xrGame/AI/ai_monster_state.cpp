@@ -90,7 +90,7 @@ bool CMotionTurn::NeedToTurn(CCustomMonster *pData)
 void CMotionSequence::Init()
 {
 	States.clear();
-	it = 0;
+	it = States.end();
 	Playing = false;
 }
 
@@ -104,8 +104,7 @@ void CMotionSequence::Add(EMotionAnim a, float s, float r_s, float y, TTime t, u
 
 void CMotionSequence::Switch()
 {
-	Playing = true;
-	if (it == 0) it = States.begin();
+	if (!Playing) it = States.begin();
 	else {
 		it++; 
 		if (it == States.end()) {
@@ -113,6 +112,8 @@ void CMotionSequence::Switch()
 			return;
 		}
 	}
+
+	Playing = true;
 
 	ApplyData();
 	pMonster->OnMotionSequenceStart();

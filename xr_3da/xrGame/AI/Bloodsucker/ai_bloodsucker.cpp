@@ -21,6 +21,8 @@ void CAI_Bloodsucker::Init()
 
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
+
+	Bones.Init();
 }
 
 
@@ -35,8 +37,8 @@ void CAI_Bloodsucker::Think()
 	}else {
 		//- FSM 1-level 
 		SetState(stateRest); 
-		
 		//-
+
 		CurrentState->Execute(m_dwCurrentUpdate);
 
 		// проверяем на завершённость
@@ -59,19 +61,33 @@ void CAI_Bloodsucker::MotionToAnim(EMotionAnim motion, int &index1, int &index2,
 }
 
 
+BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC) 
+{
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+	
+	vfAssignBones	();
 
-//void CBones::Update()
-//{
-//	if (bones.empty()) return;
-//
-//	bool bAllReached = true;
-//	for (int i=0; i<bones.size(); i++) { 
-//		if ((getAI().bfTooSmallAngle(bones[i].cur_yaw,bones[i].target_yaw,EPS_L)) && 
-//			fsimilar(bones[i].cur_yaw, 0, EPS_L)) {
-//			bones[i] = bones.back();
-//			bones.push_back();
-//		}
-//	}
-//	
-//	if (bAllReached) bones.clear();
-//}
+	return(TRUE);
+}
+
+void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
+{
+	CAI_Bloodsucker*	this_class = dynamic_cast<CAI_Bloodsucker*> (static_cast<CObject*>(B->Callback_Param));
+
+	this_class->Bones.Update(Level().timeServer());
+}
+
+
+void CAI_Bloodsucker::vfAssignBones()
+{
+	// ----
+	int bone1		= PKinematics(Visual())->LL_BoneID("bip01_spine");
+	PKinematics(Visual())->LL_GetInstance(bone1).set_callback(BoneCallback,this);
+
+	// ----
+	int bone2	= PKinematics(Visual())->LL_BoneID("bip01_head");
+	PKinematics(Visual())->LL_GetInstance(bone2).set_callback(BoneCallback,this);
+}
+
+

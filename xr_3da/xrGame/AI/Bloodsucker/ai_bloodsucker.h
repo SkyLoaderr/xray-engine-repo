@@ -16,6 +16,11 @@ public:
 
 	virtual void	Think					();
 	virtual void	UpdateCL				();
+	virtual BOOL	net_Spawn				(LPVOID DC);
+
+			void	vfAssignBones			();
+
+	static	void __stdcall	BoneCallback(CBoneInstance *B);
 
 	virtual	void	MotionToAnim			(EMotionAnim motion, int &index1, int &index2, int &index3);
 
@@ -23,6 +28,7 @@ public:
 	CBloodsuckerRest	*stateRest;
 	friend	class		CBloodsuckerRest;
 
+	bonesManipulation	Bones;
 };
 
 
