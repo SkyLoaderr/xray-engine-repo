@@ -7,25 +7,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LWO", "LWO\LWO.vcproj", "{A
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Gauss", "Gauss\Gauss.vcproj", "{B4D33739-3EFB-434C-91A9-8B7E6CAA560A}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrProgressive", "xrProgressive\xrProgressive.vcproj", "{0F45FA55-BACD-4D7B-A809-24F0104F5E57}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ETools", "ETools\ETools.vcproj", "{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrHemisphere", "..\xrHemisphere\xrHemisphere.vcproj", "{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 4
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {1BF9F5C6-7510-4138-8A8D-ED28E6DAB22F}
@@ -37,21 +25,9 @@ Global
 		SccProjectName2 = \u0022$/Editors/Tools/LWO\u0022,\u0020CDFAAAAA
 		SccLocalPath2 = LWO
 		CanCheckoutShared = true
-		SccProjectUniqueName3 = Gauss\\Gauss.vcproj
-		SccProjectName3 = \u0022$/Editors/Tools/gauss\u0022,\u0020BDFAAAAA
-		SccLocalPath3 = Gauss
-		CanCheckoutShared = true
-		SccProjectUniqueName4 = xrProgressive\\xrProgressive.vcproj
-		SccProjectName4 = \u0022$/xrProgressive\u0022,\u0020LCCAAAAA
-		SccLocalPath4 = xrProgressive
-		CanCheckoutShared = true
-		SccProjectUniqueName5 = ETools\\ETools.vcproj
-		SccProjectName5 = \u0022$/Editors/Tools/ETools\u0022,\u0020ADFAAAAA
-		SccLocalPath5 = ETools
-		CanCheckoutShared = true
-		SccProjectUniqueName6 = ..\\xrHemisphere\\xrHemisphere.vcproj
-		SccProjectName6 = \u0022$/xrLC/xrHemisphere\u0022,\u0020BGFAAAAA
-		SccLocalPath6 = ..\\xrHemisphere
+		SccProjectUniqueName3 = ETools\\ETools.vcproj
+		SccProjectName3 = \u0022$/Editors/Tools/ETools\u0022,\u0020ADFAAAAA
+		SccLocalPath3 = ETools
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -71,27 +47,12 @@ Global
 		{A6EBBBBB-5FEF-4C20-8460-DFAB11734DED}.Mixed.ActiveCfg = Release|Win32
 		{A6EBBBBB-5FEF-4C20-8460-DFAB11734DED}.Release.ActiveCfg = Release|Win32
 		{A6EBBBBB-5FEF-4C20-8460-DFAB11734DED}.Release.Build.0 = Release|Win32
-		{B4D33739-3EFB-434C-91A9-8B7E6CAA560A}.Debug.ActiveCfg = Debug|Win32
-		{B4D33739-3EFB-434C-91A9-8B7E6CAA560A}.Debug.Build.0 = Debug|Win32
-		{B4D33739-3EFB-434C-91A9-8B7E6CAA560A}.Mixed.ActiveCfg = Release|Win32
-		{B4D33739-3EFB-434C-91A9-8B7E6CAA560A}.Release.ActiveCfg = Release|Win32
-		{B4D33739-3EFB-434C-91A9-8B7E6CAA560A}.Release.Build.0 = Release|Win32
-		{0F45FA55-BACD-4D7B-A809-24F0104F5E57}.Debug.ActiveCfg = Debug|Win32
-		{0F45FA55-BACD-4D7B-A809-24F0104F5E57}.Debug.Build.0 = Debug|Win32
-		{0F45FA55-BACD-4D7B-A809-24F0104F5E57}.Mixed.ActiveCfg = Release|Win32
-		{0F45FA55-BACD-4D7B-A809-24F0104F5E57}.Release.ActiveCfg = Release|Win32
-		{0F45FA55-BACD-4D7B-A809-24F0104F5E57}.Release.Build.0 = Release|Win32
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Debug.ActiveCfg = Debug|Win32
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Debug.Build.0 = Debug|Win32
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Mixed.ActiveCfg = Mixed|Win32
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Mixed.Build.0 = Mixed|Win32
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Release.ActiveCfg = Release|Win32
 		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Release.Build.0 = Release|Win32
-		{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}.Debug.ActiveCfg = Debug|Win32
-		{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}.Debug.Build.0 = Debug|Win32
-		{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}.Mixed.ActiveCfg = Release|Win32
-		{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}.Release.ActiveCfg = Release|Win32
-		{42FF4BC0-FA01-4EC8-AC08-00F403A5FF3A}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
