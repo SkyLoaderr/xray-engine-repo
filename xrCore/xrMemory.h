@@ -9,6 +9,8 @@ class XRCORE_API	xrMemory
 public:
 	void			_initialize	();
 	void			_destroy	();
+
+	u32				stat_calls;
 public:
 	u32				mem_usage	(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
 	void			mem_compact ();
