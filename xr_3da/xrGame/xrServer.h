@@ -56,10 +56,11 @@ public:
 	
 	IC u16					PerformIDgen			(u16 ID)
 	{
+		u16					l_tID = m_tID_Generator.tfGetID(ID);
 #ifdef DEBUG
-		Msg					("[ID_NEW] %d",ID);
+		Msg					("[ID_NEW] %d",l_tID);
 #endif
-		return				(m_tID_Generator.tfGetID(ID));
+		return				(l_tID);
 	}
 
 	void					Perform_connect_spawn	(CSE_Abstract* E, xrClientData* to, NET_Packet& P);

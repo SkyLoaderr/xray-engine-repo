@@ -35,8 +35,10 @@ CSE_ALifeSimulator::~CSE_ALifeSimulator()
 	D_OBJECT_PAIR_IT		I = m_tObjectRegistry.begin();
 	D_OBJECT_PAIR_IT		E = m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
-		CSE_Abstract		*l_tpAbstract = dynamic_cast<CSE_Abstract*>((*I).second);
-		m_tpServer->entity_Destroy(l_tpAbstract);
+		CSE_Abstract					*l_tpAbstract = dynamic_cast<CSE_Abstract*>((*I).second);
+		if ((*I).second->m_bOnline)
+			m_tpServer->PerformIDgen	(l_tpAbstract->ID);		
+		m_tpServer->entity_Destroy		(l_tpAbstract);
 	}
 }
 
