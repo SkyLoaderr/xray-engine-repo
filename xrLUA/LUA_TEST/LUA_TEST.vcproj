@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="xrLUA_TEST"
+	Name="LUA_TEST"
 	ProjectGUID="{67276AC3-3221-442E-9760-BA349C6880EA}"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
