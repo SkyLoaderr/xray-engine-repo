@@ -177,9 +177,11 @@ void CRender::Render		()
 
 	// $$$
 	Target.phase_accumulator			();
+	HOM.Disable							();
 	// Target.accum_direct				();
 
-	// while (has_any_lights) {
+	// sort lights by importance???
+	// while (has_any_lights_that_cast_shadows) {
 	//		if (has_point_shadowed)		->	generate point shadowmap
 	//		if (has_spot_shadowed)		->	generate spot shadowmap
 	//		switch-to-accumulator
@@ -188,81 +190,84 @@ void CRender::Render		()
 	//		if (was_point_shadowed)		->	accum point shadowed
 	//		if (was_spot_shadowed)		->	accum spot shadowed
 	//	}
+	//	if (left_some_lights_that_doesn't cast shadows)
+	//		accumulate them
 
-	// Point/spot lighting (unshadowed)
-	if (Lights.v_selected_unshadowed.size())
+	while	(Lights.v_point_s.size() || Lights.v_spot_s.size() )
 	{
-		Target.phase_accumulator		();
-		HOM.Disable						();
-		xr_vector<light*>&	Lvec		= Lights.v_selected_unshadowed;
-		for	(u32 pid=0; pid<Lvec.size(); pid++)			{
-			light*	L	= Lvec[pid];
-			if (IRender_Light::POINT==L->flags.type)	Target.accum_point_unshadow	(L);
-			else										Target.accum_spot_unshadow	(L);
-		}
-	}
-
-	// Point/spot lighting (shadowed)
-	if (Lights.v_selected_shadowed.size	())		
-	{
-		HOM.Disable								();
-		xr_vector<light*>&	Lvec				= Lights.v_selected_shadowed;
-		for	(u32 pid=0; pid<Lvec.size(); pid++)
-		{
-			light*	L	= Lvec[pid];
-			if (IRender_Light::POINT==L->flags.type)	
-			{
-				R_ASSERT2	(!RImplementation.b_nv3x, "Shadowed point lights aren't implemented for nv3X HW");
-
-				// Render shadowmap
-				for (u32 pls_phase=0; pls_phase<6; pls_phase++)	
-				{
-					phase									= PHASE_SMAP_P;
-
-					// calculate
-					LR.compute_xfp_1						(pls_phase, L);
-					r_dsgraph_render_subspace				(L->spatial.sector, LR.P_combine, L->position, TRUE);
-					LR.compute_xfp_2						(pls_phase, L);
-
-					// rendering
-					if (mapNormal[0].size() || mapMatrix[0].size())
-					{
-						Target.phase_smap_point				(pls_phase);
-						RCache.set_xform_world				(Fidentity);			// ???
-						RCache.set_xform_view				(LR.P_view);
-						RCache.set_xform_project			(LR.P_project);
-						r_dsgraph_render_graph				(0);
-					}
-				}
-
-				// Render light
-				Target.phase_accumulator		();
-				Target.accum_point_shadow		(L);
-			}
-			else
-			{
-				phase									= PHASE_SMAP_S;
-
-				// calculate
-				LR.compute_xfs_1						(0, L);
-				r_dsgraph_render_subspace				(L->spatial.sector, LR.S_combine, L->position, TRUE);
-				LR.compute_xfs_2						(0, L);
-
-				// rendering
-				if (mapNormal[0].size() || mapMatrix[0].size())
-				{
-					Target.phase_smap_spot				();
-					RCache.set_xform_world				(Fidentity);			// ???
-					RCache.set_xform_view				(LR.S_view);
-					RCache.set_xform_project			(LR.S_project);
+		// if (has_point_shadowed)
+		light*	L_point_s	= 0;	
+		if		(!Lights.v_point_s.empty())	{
+			// generate point shadowmap
+			light*	L	= L_point_s	= Lights.v_point_s.back();	Lights.v_point_s.pop_back();
+			for (u32 pls_phase=0; pls_phase<6; pls_phase++)		{
+				phase									= PHASE_SMAP_P;
+				LR.compute_xfp_1						(pls_phase, L);
+				r_dsgraph_render_subspace				(L->spatial.sector, LR.P_combine, L->position, TRUE);
+				LR.compute_xfp_2						(pls_phase, L);
+				if (mapNormal[0].size() || mapMatrix[0].size())	{
+					Target.phase_smap_point				(pls_phase);
+					RCache.set_xform_world				(Fidentity);
+					RCache.set_xform_view				(LR.P_view);
+					RCache.set_xform_project			(LR.P_project);
 					r_dsgraph_render_graph				(0);
 				}
-	
-				// Render light
-				Target.phase_accumulator		();
-				Target.accum_spot_shadow		(L);
 			}
 		}
+
+		// if (has_spot_shadowed)
+		light*	L_spot_s	= 0;	
+		if		(!Lights.v_spot_s.empty())	{
+			// generate spot shadowmap
+			light*	L	= L_spot_s	= Lights.v_spot_s.back();	Lights.v_spot_s.pop_back();
+			phase									= PHASE_SMAP_S;
+			LR.compute_xfs_1						(0, L);
+			r_dsgraph_render_subspace				(L->spatial.sector, LR.S_combine, L->position, TRUE);
+			LR.compute_xfs_2						(0, L);
+			if (mapNormal[0].size() || mapMatrix[0].size())	{
+				Target.phase_smap_spot				();
+				RCache.set_xform_world				(Fidentity);
+				RCache.set_xform_view				(LR.S_view);
+				RCache.set_xform_project			(LR.S_project);
+				r_dsgraph_render_graph				(0);
+			}
+		}
+
+		//		switch-to-accumulator
+		Target.phase_accumulator			();
+		HOM.Disable							();
+
+		//		if (has_point_unshadowed)	-> 	accum point unshadowed
+		if		(!Lights.v_point.empty())	{
+				Target.accum_point_unshadow	(Lights.v_point.back());
+				Lights.v_point.pop_back		();
+		}
+
+		//		if (has_spot_unshadowed)	-> 	accum spot unshadowed
+		if		(!Lights.v_spot.empty())	{
+			Target.accum_point_unshadow	(Lights.v_spot.back());
+			Lights.v_spot.pop_back		();
+		}
+
+		//		if (was_point_shadowed)		->	accum point shadowed
+		if		(L_point_s)					Target.accum_point_shadow	(L_point_s);
+
+		//		if (was_spot_shadowed)		->	accum spot shadowed
+		if		(L_spot_s)					Target.accum_spot_shadow	(L_spot_s);
+	}
+
+	// Point lighting (unshadowed, if left)
+	if (!Lights.v_point.empty())		{
+		xr_vector<light*>&	Lvec		= Lights.v_point;
+		for	(u32 pid=0; pid<Lvec.size(); pid++)	Target.accum_point_unshadow	(Lvec[pid]);
+		Lvec.clear	();
+	}
+
+	// Spot lighting (unshadowed, if left)
+	if (!Lights.v_spot.empty())		{
+		xr_vector<light*>&	Lvec		= Lights.v_spot;
+		for	(u32 pid=0; pid<Lvec.size(); pid++)	Target.accum_spot_unshadow	(Lvec[pid]);
+		Lvec.clear	();
 	}
 
 	// Postprocess
