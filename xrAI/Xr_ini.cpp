@@ -274,13 +274,9 @@ LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L )
 {
 	Sect&	I = r_section(S);
 	SectIt	A = std::lower_bound(I.begin(),I.end(),L,item_pred);
-#ifdef _EDITOR
 	if (A!=I.end() && strcmp(*A->first,L)==0)	return *A->second;
-	else										Debug.fatal("Can't find variable '%s'",L);
-#else
-	R_ASSERT(A!=I.end() && strcmp(*A->first,L)==0);
-	return *A->second;
-#endif
+	else										Debug.fatal("Can't find variable %s in [%s]",L,S);
+	return 0;
 }
 u8 CInifile::r_u8(LPCSTR S, LPCSTR L)
 {
