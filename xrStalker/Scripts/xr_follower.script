@@ -672,7 +672,7 @@ function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, rai
 	local char_ini = npc:spawn_ini()
 	local st = xr_motivator.storage[npc:id()].follower
 	
-	if enabled == nil then
+    if enabled == nil then
        if char_ini:section_exist ("follower") == true and char_ini:line_exist("follower", "enabled") == true then
           st.enabled = char_ini:r_bool("follower", "enabled")
        else
