@@ -123,14 +123,14 @@ function Defender:process ()
 	   self.enemy = enemy
 	else
   	   reset_action (self.npc, self.script_name)
-	   action (self.npc, move (move.crouch, move.stand, move.line, vector():set (0, 0), look (look.fire_point, enemy.npc), cond (cond.time_end, time_infinite))	
+	   action (self.npc, move (move.crouch, move.stand, move.line, vector():set (0, 0, 0)), look (look.fire_point, enemy.npc), cond (cond.time_end, time_infinite))	
 	end
  
 	if waiting ~= 0 then
 	   waiting = waiting - game.time ()
 	   if waiting < 0 then
 		  reset_action (self.npc, self.script_name)
-		  action (self.npc, move (move.crouch, move.stand, move.line, vector ():set (0, 0, 0, )), 
+		  action (self.npc, move (move.crouch, move.stand, move.line, vector ():set (0, 0, 0)), 
 				  look (look.fire_point, enemy.npc), object (self.weapon, object.fire1, math.random (2, 4)),
 				  cond (cond.time_end, time_infinite))	
 		  waiting = game.time () + math.random (2000, 3000)
