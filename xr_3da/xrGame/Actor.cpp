@@ -8,6 +8,7 @@
 #include "..\CameraFirstEye.h"
 #include "..\xr_level_controller.h"
 #include "EffectorBobbing.h"
+#include "EffectorPPHit.h"
 #include "customitem.h"
 #include "hudmanager.h"
 #include "Actor_Flags.h"
@@ -387,6 +388,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 			}
 		}
 	}
+
+	//. temporary
+	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>	());
 
 	return					TRUE;
 }

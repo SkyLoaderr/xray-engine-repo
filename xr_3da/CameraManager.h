@@ -9,7 +9,33 @@
 
 #include "CameraDefs.h"
 
+struct SPPInfo {
+	f32 blur, gray;
+	struct { f32 h, v; } duality;
+	struct {
+		f32 intensity, grain;
+		struct SColor{
+			f32 r, g, b, a;
+			IC operator u32() {
+				return color_rgba(u32(r*255), u32(g*255), u32(b*255), u32(a*255));
+			}
+		} color;
+	} noise;
+
+	IC SPPInfo& operator += (const SPPInfo &ppi) {
+		blur += ppi.blur;
+		gray += ppi.gray;
+		duality.h += ppi.duality.h; duality.v += ppi.duality.v;
+		noise.intensity += ppi.noise.intensity; noise.grain += ppi.noise.grain;
+		noise.color.r += ppi.noise.color.r; noise.color.g += ppi.noise.color.g;
+		noise.color.b += ppi.noise.color.b; noise.color.a += ppi.noise.color.a;
+		return *this;
+	}
+	void normalize();
+};
+
 DEFINE_VECTOR				(CEffector*,EffectorVec,EffectorIt);
+DEFINE_VECTOR				(CEffectorPP*,EffectorPPVec,EffectorPPIt);
 
 class ENGINE_API CCameraManager
 {
@@ -19,6 +45,7 @@ class ENGINE_API CCameraManager
 	Fvector					vRight;
 
 	EffectorVec				m_Effectors;
+	EffectorPPVec			m_EffectorsPP;
 
 	float					fFov;
 	float					fFar;
@@ -34,11 +61,18 @@ class ENGINE_API CCameraManager
 	Fvector					affected_vDirection;
 	Fvector					affected_vNormal;
 	Fvector					affected_vRight;
+
+	SPPInfo					unaffected_PP;
+	SPPInfo					affected_PP;
 public:
 	void					Dump				(void);
 	CEffector*				AddEffector			(CEffector* ef);
 	CEffector*				GetEffector			(EEffectorType type);
 	void					RemoveEffector		(EEffectorType type);
+
+	CEffectorPP*			GetEffector			(EEffectorPPType type);
+	CEffectorPP*			AddEffector			(CEffectorPP* ef);
+	void					RemoveEffector		(EEffectorPPType type);
 
 	IC Fmatrix&				unaffected_View		()	{ return unaffected_mView;		}
 	IC Fvector&				unaffected_Pos		()	{ return unaffected_vPosition;	}

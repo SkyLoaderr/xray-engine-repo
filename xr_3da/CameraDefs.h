@@ -31,7 +31,13 @@ enum EEffectorType		{
 	cefBobbing
 };
 
+enum EEffectorPPType		{
+	cefppDemo,
+	cefppHit
+};
+
 // refs
 class ENGINE_API CCameraBase;
 class ENGINE_API CEffector;
+class ENGINE_API CEffectorPP;
 

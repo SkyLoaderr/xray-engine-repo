@@ -18,6 +18,6 @@ public:
 
 	u32 m_time, m_pp_time;
 	float m_hitImpulseScale;
-	SPPInfo m_pp;
+	SZonePPInfo m_pp;
 	LPCSTR m_pHitEffect;
 };

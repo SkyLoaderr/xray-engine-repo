@@ -983,6 +983,12 @@
 					RelativePath=".\EffectorFall.h">
 				</File>
 				<File
+					RelativePath="EffectorPP.cpp">
+				</File>
+				<File
+					RelativePath="EffectorPP.h">
+				</File>
+				<File
 					RelativePath=".\cameralook.cpp">
 				</File>
 				<File

@@ -727,6 +727,12 @@
 					<File
 						RelativePath=".\EffectorBobbing.h">
 					</File>
+					<File
+						RelativePath="EffectorPPHit.cpp">
+					</File>
+					<File
+						RelativePath="EffectorPPHit.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="_actor_demo"
