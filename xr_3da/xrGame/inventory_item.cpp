@@ -845,10 +845,13 @@ void CInventoryItem::UpdateXForm	()
 
 
 #ifdef DEBUG
+extern	Flags32	dbg_net_Draw_Flags;
 void CInventoryItem::OnRender()
 {
 	if (bDebug && Visual())
 	{
+		if (!(dbg_net_Draw_Flags.is_any((1<<4)))) return;
+
 		Fvector bc,bd; 
 		Visual()->vis.box.get_CD	(bc,bd);
 		Fmatrix	M = XFORM();

@@ -125,9 +125,11 @@ BOOL CTeamBaseZone::feel_touch_contact	(CObject* O)
 }
 
 #ifdef DEBUG
+extern	Flags32	dbg_net_Draw_Flags;
 void CTeamBaseZone::OnRender() 
 {
 	if(!bDebug) return;
+	if (!(dbg_net_Draw_Flags.is_any((1<<3)))) return;
 	RCache.OnFrameEnd();
 	Fvector l_half; l_half.set(.5f, .5f, .5f);
 	Fmatrix l_ball, l_box;

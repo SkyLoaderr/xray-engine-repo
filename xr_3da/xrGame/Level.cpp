@@ -376,6 +376,7 @@ void CLevel::OnRender()
 		HUD().pFontSmall->SetColor	(0xffff0000);
 		HUD().pFontSmall->OutNext	("Client Objects:      [%d]",Server->GetEntitiesNum());
 		HUD().pFontSmall->OutNext	("Server Objects:      [%d]",Objects.objects.size());
+		HUD().pFontSmall->OutNext	("Interpolation Steps: [%d]", Level().GetInterpolationSteps());
 		HUD().pFontSmall->SetSize	(8.0f);
 		//---------------------------------------------------------------------
 	}

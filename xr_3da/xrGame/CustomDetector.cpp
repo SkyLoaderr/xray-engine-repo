@@ -260,10 +260,12 @@ void CCustomDetector::OnH_B_Independent()
 }
 
 #ifdef DEBUG
+extern	Flags32	dbg_net_Draw_Flags;
 void CCustomDetector::OnRender() 
 {
 	if(!bDebug) return;
 	RCache.OnFrameEnd();
+	if (!(dbg_net_Draw_Flags.is_any((1<<6)))) return;
 	Fmatrix l_ball;
 	l_ball.scale(m_fBuzzerRadius, m_fBuzzerRadius, m_fBuzzerRadius);
 	Fvector l_p;

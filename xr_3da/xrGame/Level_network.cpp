@@ -34,8 +34,8 @@ void CLevel::ClientSend	()
 	if (OnClient()) 
 	{
 		if (!CurrentEntity()) return;
-		CObject* pObj = CurrentEntity();
-		if (pObj->getDestroy()) return;
+		CObject* pObj = CurrentControlEntity();
+		if (pObj->getDestroy() || !pObj->net_Relevant()) return;
 
 		P.w_begin		(M_CL_UPDATE);
 		

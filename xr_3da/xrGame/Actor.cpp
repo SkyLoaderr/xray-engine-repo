@@ -1061,13 +1061,13 @@ void CActor::ForceTransform(const Fmatrix& m)
 
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
-//extern	Flags32	dbg_net_Draw_Flags;
+extern	Flags32	dbg_net_Draw_Flags;
 
 void CActor::OnRender	()
 {
 	if (!bDebug)				return;
 
-//	if ((dbg_net_Draw_Flags.is_any((1<<5))))
+	if ((dbg_net_Draw_Flags.is_any((1<<5))))
 		m_PhysicMovementControl->dbg_Draw	();
 
 	OnRender_Network();

@@ -44,6 +44,9 @@ extern	int		g_dwInputUpdateDelta		;
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
 		int		net_cl_inputupdaterate	= 50;
+#ifdef DEBUG
+		Flags32	dbg_net_Draw_Flags			= {0};
+#endif
 
 #ifdef DEBUG
 		BOOL	g_bDebugNode			= FALSE;
@@ -1021,9 +1024,18 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"g_eventdelay",			&g_dwEventDelay,	0,	1000);
 
 	CMD4(CCC_Integer,	"g_corpsenum",			(int*)&g_dwMaxCorpses,		0,	100);
-#ifdef _DEBUG
+#ifdef DEBUG
 	CMD4(CCC_Integer,	"center_x",				&x_m_x,	-1000,	1000);
 	CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);
+
+	CMD3(CCC_Mask,		"dbg_draw_actor_alive",	&dbg_net_Draw_Flags,	(1<<0));
+	CMD3(CCC_Mask,		"dbg_draw_actor_dead",	&dbg_net_Draw_Flags,	(1<<1));
+	CMD3(CCC_Mask,		"dbg_draw_customzone",	&dbg_net_Draw_Flags,	(1<<2));
+	CMD3(CCC_Mask,		"dbg_draw_teamzone",	&dbg_net_Draw_Flags,	(1<<3));
+	CMD3(CCC_Mask,		"dbg_draw_invitem",		&dbg_net_Draw_Flags,	(1<<4));
+	CMD3(CCC_Mask,		"dbg_draw_actor_phys",	&dbg_net_Draw_Flags,	(1<<5));
+	CMD3(CCC_Mask,		"dbg_draw_customdetector",	&dbg_net_Draw_Flags,	(1<<6));
+
 #endif
 
 #ifdef DEBUG
