@@ -62,6 +62,7 @@ private:
 
 	void				p_remove		(Particle* P, Particle* &LST);
 	void				p_insert		(Particle* P, Particle* &LST);
+	int					p_size			(Particle* LST);
 	Particle*			p_allocate		();
 	void				p_free			(Particle* P);
 
