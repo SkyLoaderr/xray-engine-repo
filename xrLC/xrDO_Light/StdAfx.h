@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "xrCore.h"
+#include <xrCore.h>
 
 #pragma warning(disable:4995)
-#include <d3d9.h>
+#include <d3dx9.h>
 #include <commctrl.h>
 #pragma warning(default:4995)
 
