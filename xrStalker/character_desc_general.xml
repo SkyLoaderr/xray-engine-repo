@@ -60,7 +60,7 @@
 		<class>actor</class>
 		<community>stalker</community>
 	
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>0</rank>
+		<reputation>0</reputation>
 	</specific_character>
 </xml>
