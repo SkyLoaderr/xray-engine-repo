@@ -8,19 +8,19 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	log							("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	// s8
 //	self._s8_0					= 8
-//	self._s8_1					= 9
-//	self._s8_2					= 10
-//	self._s8_3					= 11
+//	self._s8_1					= 7
+//	self._s8_2					= 6
+//	self._s8_3					= 5
 	// s16
 	self._s16_0					= 16
-	self._s16_1					= 17
-	self._s16_2					= 18
-	self._s16_3					= 19
+	self._s16_1					= 15
+	self._s16_2					= 14
+	self._s16_3					= 13
 	// s32
 	self._s32_0					= 32
-	self._s32_1					= 33
-	self._s32_2					= 34
-	self._s32_3					= 35
+	self._s32_1					= 31
+	self._s32_2					= 30
+	self._s32_3					= 29
 end
 
 function CSE_NewAttachableItem:__finalize	()
