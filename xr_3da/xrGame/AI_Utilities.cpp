@@ -58,12 +58,12 @@ float	CAI_Space::u_SqrDistance2Node(const Fvector& P, const NodeCompressed* Node
 	return	best;
 }
 
-Fvector	CAI_Space::tfGetNodeCenter(u32 dwNodeID)
+const Fvector CAI_Space::tfGetNodeCenter(u32 dwNodeID)
 {
 	return(tfGetNodeCenter(Node(dwNodeID)));
 }
 
-Fvector	CAI_Space::tfGetNodeCenter(NodeCompressed *tpNode)
+const Fvector CAI_Space::tfGetNodeCenter(NodeCompressed *tpNode)
 {
 	Fvector tP0, tP1;
 	UnpackPosition(tP0, tpNode->p0);

@@ -235,7 +235,7 @@ void CAI_Space::vfChoosePoint(Fvector &tStartPoint, Fvector &tFinishPoint, PCont
 {
 	PContour					tNextContour;
 	PSegment					tNextSegment;
-	Fvector						tCheckPoint1, tCheckPoint2, tIntersectPoint;
+	Fvector						tCheckPoint1 = tStartPoint, tCheckPoint2 = tStartPoint, tIntersectPoint;
 	UnpackContour				(tNextContour,iNodeIndex);
 	vfIntersectContours			(tNextSegment,tNextContour,tCurContour);
 	u32							dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tNextSegment.v1.x,tNextSegment.v1.z,tNextSegment.v2.x,tNextSegment.v2.z,&tIntersectPoint.x,&tIntersectPoint.z);

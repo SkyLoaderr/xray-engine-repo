@@ -261,7 +261,7 @@ void				game_sv_GameState::assign_RP				(xrServerEntity* E)
 {
 	VERIFY				(E);
 
-	u8					l_uc_team;
+	u8					l_uc_team = u8(-1);
 	xrSE_Spectator		*tpSpectator = dynamic_cast<xrSE_Spectator*>(E);
 	if (tpSpectator)
 		l_uc_team = tpSpectator->g_team();

@@ -15,11 +15,12 @@
 void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType)
 {
 	VERIFY(tLookType != eLookTypePoint);
-	Fvector tDummy;
+	Fvector		tDummy;
+	tDummy.set	(0,0,0);
 	vfSetParameters(tpNodeEvaluator,tpDesiredPosition,bSearchNode,tWeaponState,tPathType,tBodyState,tMovementType,tStateType, tLookType,tDummy);
 }
 
-void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector &tPointToLook, u32 dwLookOverDelay)
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector tPointToLook, u32 dwLookOverDelay)
 {
 	m_tPathType		= tPathType;
 	m_tBodyState	= tBodyState;

@@ -193,6 +193,8 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		AI_Path.Nodes.clear		();
 
 		AI::CTravelNode	T;
+		T.floating		= false;
+		T.P.set			(0,0,0);
 		for (i=1; i<N; i++) {
 			m_tpaLine.clear();
 			m_tpaLine.push_back(m_tpaPoints[i-1]);

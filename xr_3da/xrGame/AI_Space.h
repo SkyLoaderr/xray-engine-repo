@@ -160,8 +160,8 @@ public:
 		return(_abs(fAngle0 - fAngle1) < fDelta) || ((_abs(_abs(fAngle0 - fAngle1) - PI_MUL_2) < fDelta));
 	}
 
-	Fvector	tfGetNodeCenter					(u32 dwNodeID);
-	Fvector	tfGetNodeCenter					(NodeCompressed *tpNode);
+	const Fvector tfGetNodeCenter			(u32 dwNodeID);
+	const Fvector tfGetNodeCenter			(NodeCompressed *tpNode);
 	
 	float	ffGetDistanceBetweenNodeCenters	(u32 dwNodeID0, u32 dwNodeID1);
 	float	ffGetDistanceBetweenNodeCenters	(NodeCompressed *tpNode0, u32 dwNodeID1);

@@ -196,6 +196,8 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		AI_Path.Nodes.clear		();
 		
 		AI::CTravelNode	T;
+		T.floating		= false;
+		T.P.set			(0,0,0);
 		for (i=1; i<N; i++) {
 			m_tpaLine.clear();
 			m_tpaLine.push_back(m_tpaPoints[i-1]);
@@ -274,13 +276,12 @@ void CAI_Stalker::vfDodgeTravelLine()
 					tPoint.mul				(fDistance);
 					tPoint.add				(m_tpaTempPath[i]);
 				}
-				else
-					if ((i % 4) == 3) {
-						float				fDistance = DODGE_AMPLITUDE*_min(m_tpaTempPath[i].distance_to(m_tpaTempPath[i - 1]),MAX_DODGE_DISTANCE);
-						tPoint				= tRight;
-						tPoint.mul			(fDistance);
-						tPoint.add			(m_tpaTempPath[i]);
-					}
+				else {
+					float				fDistance = DODGE_AMPLITUDE*_min(m_tpaTempPath[i].distance_to(m_tpaTempPath[i - 1]),MAX_DODGE_DISTANCE);
+					tPoint				= tRight;
+					tPoint.mul			(fDistance);
+					tPoint.add			(m_tpaTempPath[i]);
+				}
 				
 				u32							dwNode1, dwNode2;
 				dwNode1						= getAI().dwfCheckPositionInDirection(AI_Path.Nodes[i - 1],m_tpaTempPath[i - 1],tPoint);

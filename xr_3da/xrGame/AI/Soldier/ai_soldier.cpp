@@ -235,7 +235,7 @@ void CAI_Soldier::OnEvent(EVENT E, u32 P1, u32 P2)
 					u32 team,squad,group;
 					for ( ; ; buf2++)
 						if (*buf2 == ',') {
-							Memory.mem_copy(monster_name,buf,(buf2 - buf)*sizeof(char));
+							Memory.mem_copy(monster_name,buf,((u32)(buf2 - buf))*sizeof(char));
 							monster_name[buf2++ - buf] = 0;
 							break;
 						}
