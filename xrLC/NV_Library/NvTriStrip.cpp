@@ -265,7 +265,7 @@ void RemapIndices(const PrimitiveGroup* in_primGroups, const unsigned short numG
 			if(cachedIndex == -1) //we haven't seen this index before
 			{
 				//point to "last" vertex in VB
-				(*remappedGroups)[i].indices[j] = indexCtr;
+				(*remappedGroups)[i].indices[j] = u16(indexCtr);
 
 				//add to index cache, increment
 				indexCache[in_primGroups[i].indices[j]] = indexCtr++;
@@ -273,7 +273,7 @@ void RemapIndices(const PrimitiveGroup* in_primGroups, const unsigned short numG
 			else
 			{
 				//we've seen this index before
-				(*remappedGroups)[i].indices[j] = cachedIndex;
+				(*remappedGroups)[i].indices[j] = u16(cachedIndex);
 			}
 		}
 	}
