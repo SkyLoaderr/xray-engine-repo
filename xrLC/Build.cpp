@@ -98,18 +98,13 @@ void CBuild::Run	(LPCSTR P)
 	Phase						("Optimizing...");
 	mem_Compact					();
 	PreOptimize					();
+	CorrectTJunctions			();
 
 	//****************************************** RayCast model
 	FPU::m64r					();
 	Phase						("Building RayCast model...");
 	mem_Compact					();
 	BuildRapid					();
-
-	//****************************************** Checking T-junctors
-	FPU::m64r					();
-	Phase						("Checking T-Junctions...");
-	mem_Compact					();
-	CorrectTJunctions			();
 
 	//****************************************** Building normals
 	FPU::m64r					();
@@ -131,19 +126,14 @@ void CBuild::Run	(LPCSTR P)
 	Phase						("Building collision database...");
 	mem_Compact					();
 	BuildCForm					();
-
-	//****************************************** Portals
-	FPU::m64r					();
-	Phase						("Building portals...");
-	mem_Compact					();
 	BuildPortals				(*fs);
 
 	//****************************************** Starting MU
 	FPU::m64r					();
 	Phase						("LIGHT: Starting MU...");
 	mem_Compact					();
-	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
-	for (u32 m=0; m<mu_models.size(); m++) mu_models[m]->calc_faceopacity();
+	for (vecFaceIt I=g_faces.begin();	I!=g_faces.end(); I++) (*I)->CacheOpacity();
+	for (u32 m=0; m<mu_models.size(); m++)	mu_models[m]->calc_faceopacity();
 
 	mu_base.start				(xr_new<CMUThread> (0));
 
