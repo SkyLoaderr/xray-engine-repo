@@ -28,6 +28,7 @@ CSearchlight::~CSearchlight()
 void CSearchlight::Load(LPCSTR section)
 {
 	inherited::Load(section);
+
 }
 
 
@@ -67,6 +68,8 @@ BOOL CSearchlight::net_Spawn(LPVOID DC)
 
 	lanim					= LALib.FindItem(slight->animator);
 
+	guid_bone				= slight->guid_bone; VERIFY(guid_bone!=BI_NONE);
+
 	setVisible(true);
 	setEnabled(true);
 
@@ -79,7 +82,7 @@ BOOL CSearchlight::net_Spawn(LPVOID DC)
 	_cur.yaw	= _target.yaw	= _start.yaw;
 	_cur.pitch	= _target.pitch	= _start.pitch;
 	//////////////////////////////////////////////////////////////////////////
-	
+
 	return TRUE;
 }
 
@@ -107,6 +110,23 @@ void CSearchlight::UpdateCL	()
 			light_render->set_color(fclr);
 			glow_render->set_color(fclr);
 		}
+
+		CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
+		Fmatrix M;
+
+		M.mul(XFORM(),BI.mTransform);
+
+		if (light_render->get_active()){
+			light_render->set_direction	(M.k);
+			light_render->set_position	(M.c);
+			glow_render->set_position	(M.c);
+//			time2hide			-= Device.fTimeDelta;
+//			if (time2hide<0){
+//				light_render->set_active(false);
+//				glow_render->set_active(false);
+//			}
+		}
+
 	}
 
 	// Update searchlight 
