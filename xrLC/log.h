@@ -17,6 +17,7 @@ void CloseLogWindow				(void);
 void __cdecl Status	(const char *format, ...);
 void Progress		(const float F);
 void Phase			(const char *phase_name);
+void PhaseTimeReset ();
 
 #endif
 
