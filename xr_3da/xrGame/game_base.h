@@ -44,12 +44,11 @@ class	game_GameState
 {
 public:
 	s32								type;
-
+	u16								phase;
 	s32								round;
 	s32								start_time;
 	s32								fraglimit;
 	s32								timelimit;
-	u16								phase;
 	vector<game_TeamState>			teams;
 public:
 	game_GameState();

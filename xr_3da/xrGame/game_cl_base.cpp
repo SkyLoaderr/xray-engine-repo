@@ -12,6 +12,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 {
 	// Generic
 	P.r_s32			(type);
+	P.r_u16			(phase);
 	P.r_s32			(round);
 	P.r_s32			(fraglimit);
 	P.r_s32			(timelimit);

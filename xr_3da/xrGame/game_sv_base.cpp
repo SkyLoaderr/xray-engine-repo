@@ -76,6 +76,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 {
 	// Generic
 	P.w_s32			(type);
+	P.w_u16			(phase);
 	P.w_s32			(round);
 	P.w_s32			(fraglimit);
 	P.w_s32			(timelimit);
