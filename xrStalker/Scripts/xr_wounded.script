@@ -49,20 +49,9 @@ function evaluator_wound:__init (name, storage) super (nil, name)
 end
 ------------
 function evaluator_wound:evaluate ()
-    --if self.a.ignore_time ~= 0 then
-       --if device ():time_global () - self.a.ignore_time > 60000 then
-          --self.a.ignore_time = 0
-       --else
-           --return false
-       --end
-    --end       
-
-    if self.object.health < 0.20 and self.object:object ("medkit") == nil then
-       --self.a.final = false
+    if self.object.health < 0.20 then
        return true
     end
-    
-    --self.a.final = true
     return false    
 end
 ------------------------------------------------------------------------------------------
@@ -262,6 +251,7 @@ function action_sit:execute ()
     action_base.execute (self)
     if self.object:animation_count () == 1 then 
        self.a.sit = true
+       level.map_add_object_icon (self.object, 0)
        if self.a.on_sit_info ~= nil then
           xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_sit_info.condlist)
        end 
@@ -424,12 +414,13 @@ function action_stand:execute ()
     
     if self.object:animation_count () == 0 then
        self.a.final = true
+       self.object:eat (self.object:object ("medikit"))
+       level.map_remove_object_icon (self.object)
     end    
     
 end    
 ------------
 function action_stand:finalize ()
-    self.object:set_item (object.use, self.object:object ("medikit"))
     if self.a.on_medikit_info ~= nil then
        xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit_info.condlist)
     end 
@@ -480,19 +471,12 @@ function action_enemy:execute ()
        if self.object:active_sound_count () ~= 0 then
           return 
        end     
-       --xr_sounds.play_sound (self.object, 0, "wounded", 1)
     end
     
     xr_sound.sound_update(self.object, self.sounds)		
     
     if device ():time_global () - self.send_time > 15000 then    
        this.send_sos (self.object) 
-   		--if self.actor ~= nil then
-			--news_manager.send_help(self.actor)
-		--else
-			--self.actor = level.actor()
-		--end   
-
        self.send_time = device ():time_global ()
     end   
 end    
