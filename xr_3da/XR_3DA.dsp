@@ -1763,10 +1763,6 @@ SOURCE=.\ObjectAnimator.cpp
 SOURCE=.\ObjectAnimator.h
 # End Source File
 # End Group
-# Begin Group "Weather"
-
-# PROP Default_Filter ""
-# End Group
 # Begin Source File
 
 SOURCE=.\xr_creator.cpp

@@ -5,7 +5,8 @@
 
 class ENGINE_API CSector;
 
-class ENGINE_API CPSObject: public CTempObject{
+class ENGINE_API CPSObject: public CTempObject
+{
 	CSector*			m_pCurSector;
 public:
 	PS::SEmitter		m_Emitter;

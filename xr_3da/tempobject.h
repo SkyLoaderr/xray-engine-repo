@@ -5,7 +5,8 @@
 
 class ENGINE_API FBasicVisual;
 
-class ENGINE_API CTempObject:public CSheduled{
+class ENGINE_API CTempObject : public CSheduled
+{
 protected:
 	FBasicVisual*		m_pVisual;
 	int					m_iLifeTime;

@@ -26,26 +26,31 @@ CPSObject::~CPSObject()
 }
 //----------------------------------------------------
 
-void CPSObject::UpdateSector(CSector* sect){
+void CPSObject::UpdateSector(CSector* sect)
+{
 	if (m_pCurSector) m_pCurSector->tempobjRemove(this);
-	m_pCurSector	=sect;
+	m_pCurSector	= sect;
 	m_pCurSector->tempobjAdd(this);
 }
 
-void CPSObject::Update(DWORD dt){
+void CPSObject::Update(DWORD dt)
+{
 	CPSVisual* V	= (CPSVisual*)m_pVisual;
-	V->Update(dt);
-	if (m_Emitter.m_dwFlag&PS_EM_PLAY_ONCE){
+	V->Update		(dt);
+	if (m_Emitter.m_dwFlag&PS_EM_PLAY_ONCE)
+	{
 		if ((0==V->ParticleCount())&&!m_Emitter.IsPlaying()) Stop();
 	}
 }
 
-void CPSObject::PlayAtPos(const Fvector& pos){
+void CPSObject::PlayAtPos(const Fvector& pos)
+{
 	m_Emitter.m_Position.set(pos);
-	m_Emitter.Play();
+	m_Emitter.Play			();
 }
 
-void CPSObject::Stop(){
+void CPSObject::Stop()
+{
 	m_iLifeTime		= -1;
 	((CPSVisual*)m_pVisual)->Stop();
 }
