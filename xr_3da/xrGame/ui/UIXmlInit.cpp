@@ -102,7 +102,7 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 
-	ref_str scale_str = xml_doc.ReadAttrib(path, index, "scale");
+	ref_str scale_str = xml_doc.ReadAttrib(path, index, "scale", NULL);
 	float scale = 1.f;
 	if(*scale_str) scale = (float)atof(*scale_str);
 	pWnd->SetTextureScale(scale);
