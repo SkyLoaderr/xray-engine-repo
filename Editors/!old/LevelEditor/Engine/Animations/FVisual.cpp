@@ -118,7 +118,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	}
 
 	if (dwFlags&VLOAD_NOVERTICES || dwFlags&VLOAD_NOINDICES)	return;
-	else	hGeom.create		(vFormat,pVertices,pIndices);
+	else	geom.create		(vFormat,pVertices,pIndices);
 }
 
 void Fvisual::Render	(float LOD)
