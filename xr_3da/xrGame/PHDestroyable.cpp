@@ -205,5 +205,5 @@ void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
 		dBodyGetPointVel(own_body,mc.x,mc.y,mc.z,res_vell);
 		e->set_LinearVel(*(Fvector*)&res_vell);
 	}
-	
+	new_shell->Enable();
 }
