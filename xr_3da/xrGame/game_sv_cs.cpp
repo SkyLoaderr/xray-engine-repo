@@ -185,12 +185,22 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 				vector<u16>&	C			=	A->children;
 				for (u32 it=0; it<C.size(); it++) {
 					xrServerEntity* Et = S->ID_to_entity(C[it]);
-					if(l_pMBall =  dynamic_cast<xrSE_Target_CS*>(Et)) break;
+					if(l_pMBall = dynamic_cast<xrSE_Target_CS*>(Et)) break;
 				}
 				R_ASSERT(l_pMBall);
 				S->Perform_transfer(l_pMBall, A, l_pCSCask);		// Кладем мяч в бочку
 				ps_who->flags &= ~GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
 				teams[ps_who->team].num_targets++;
+				if(teams[ps_who->team].num_targets == 3) {
+					OnTeamScore(ps_who->team);
+					u32	cnt = get_count();						// Доп. бонус за выполнение задания
+					for(u32 it=0; it<cnt; it++)	{
+						game_PlayerState* ps = get_it(it);
+						if(ps->team == ps_who->team) ps->money_for_round += 1000;
+					}											//
+					OnRoundEnd("MISSION_complete");
+				}
+				signal_Syncronize();
 				return false;
 			}
 			// Если игрок на чужой базе и у него нет мяча
@@ -199,12 +209,13 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 				vector<u16>&	C			=	l_pCSCask->children;
 				for (u32 it=0; it<C.size(); it++) {
 					xrServerEntity* Et = S->ID_to_entity(C[it]);
-					if(l_pMBall =  dynamic_cast<xrSE_Target_CS*>(Et)) break;
+					if(l_pMBall = dynamic_cast<xrSE_Target_CS*>(Et)) break;
 				}
 				R_ASSERT(l_pMBall);
 				S->Perform_transfer(l_pMBall, A, l_pCSCask);		// Отдаем игроку
 				ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
 				teams[(ps_who->team+1)%2].num_targets--;
+				signal_Syncronize();
 				return false;
 			}
 		}
@@ -216,6 +227,25 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 
 BOOL	game_sv_CS::OnDetouch		(u16 eid_who, u16 eid_what)
 {
+	xrServer*			S		= Level().Server;
+	xrServerEntity*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
+	xrServerEntity*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+
+	xrSE_Actor*			A		= dynamic_cast<xrSE_Actor*> (e_who);
+	if (A) 	{
+		game_PlayerState*	ps_who	=	get_id			(e_who->owner->ID);
+
+		xrSE_Target_CSBase *l_pCSBase	=	dynamic_cast<xrSE_Target_CSBase*>(e_what);
+		if(l_pCSBase) {
+			if(l_pCSBase->s_team == ps_who->team) {				// Если игрок пришел на свою базу
+				ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_BASE;
+			} else ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
+			return false;
+		}
+
+		xrSE_Target_CSCask *l_pCSCask =  dynamic_cast<xrSE_Target_CSCask*>(e_what);
+		if(l_pCSCask) return false;
+	}
 	return TRUE;
 }
 /*
