@@ -70,7 +70,7 @@ bool	compare3_defl		(CDeflector* D1, CDeflector* D2)
 	CDeflector::Layer*	L2 = D2->GetLayer(compare_layer);
 	return L1->Area() > L2->Area();
 }
-class	pred_remove { public: IC bool	operator() (CDeflector* D) { if (D->bMerged) {D->bMerged=FALSE; return TRUE; } else return FALSE;  }; };
+class	pred_remove { public: IC bool	operator() (CDeflector* D) { { if (0==D) return TRUE;}; if (D->bMerged) {D->bMerged=FALSE; return TRUE; } else return FALSE;  }; };
 
 void CBuild::xrPhase_MergeLM()
 {
@@ -79,6 +79,7 @@ void CBuild::xrPhase_MergeLM()
 	for (DWORD light_layer=0; light_layer<pBuild->lights.size(); light_layer++)
 	{
 		Status		("-= LM-Layer #%d =-",light_layer);
+		
 		// **** Select all deflectors, which contain this light-layer
 		Layer.clear	();
 		b_light*	L_base	= pBuild->lights[light_layer].original;
@@ -106,7 +107,8 @@ void CBuild::xrPhase_MergeLM()
 			Status		("Selection 2...");
 			Msg			("LS: %d",	Layer.size());
 			Deflector	= Layer[0];
-			std::sort	(Layer.begin()+1,Layer.end(),compare2_defl);
+			if (Layer.size()>2)
+				std::sort	(Layer.begin()+1,Layer.end(),compare2_defl);
 
 			// Select first deflectors which can fit
 			Status		("Selection 3...");
