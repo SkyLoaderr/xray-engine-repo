@@ -198,6 +198,7 @@ function Trader:set_idle ()
     self.current.use_start_end = true
     action (self.npc, anim (self.current.start_anim), cond (cond.anim_end))         
     self.current_state = trader_idle
+    self.next_state = trader_idle
     self.current.end_current = false
 end
 ----------------------------------------------------------------------------------------------------------------------
