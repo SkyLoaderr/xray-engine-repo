@@ -327,7 +327,7 @@ moveAndRotateBody (dxBody * b, dReal h)
 //  Integrate bodies
 
 void
-dInternalStepFast (dxWorld * world, dxBody * body[2], dReal * GI[2], dReal * GinvI[2], dxJoint * joint, dxJoint::Info1 info, dxJoint::Info2 Jinfo, dReal stepsize, dReal* forces)
+dInternalStepFast (dxWorld * world, dxBody * body[2], dReal * GI[2], dReal * GinvI[2], dxJoint * joint, dxJoint::Info1 info, dxJoint::Info2 Jinfo, dReal stepsize, dReal* forces, int* counter)
 {
 	int i, j, k;
 # ifdef TIMING
@@ -626,23 +626,13 @@ dInternalStepFast (dxWorld * world, dxBody * body[2], dReal * GI[2], dReal * Gin
 	for (i = 0; i < 2; i++)
 	{
 		if (!body[i])	continue;
+		counter			[body[i]->tag]	+= 1;
 		for (j = 0; j < 3; j++)
 		{
 			forces[body[i]->tag*8+j]	+= cforce[i * 8 + j];
 			forces[body[i]->tag*8+4+j]	+= cforce[i * 8 + 4 + j];
 		}
 	}
-
-	//for (i = 0; i < 2; i++)
-	//{
-	//	if (!body[i])
-	//		continue;
-	//	for (j = 0; j < 3; j++)
-	//	{
-	//		body[i]->facc[j] += cforce[i * 8 + j];
-	//		body[i]->tacc[j] += cforce[i * 8 + 4 + j];
-	//	}
-	//}
 }
 
 void
@@ -769,16 +759,14 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 
 	}
 
-	dReal *saveFacc		= (dReal *) ALLOCA (nb * 4 * sizeof (dReal));
-	dReal *saveTacc		= (dReal *) ALLOCA (nb * 4 * sizeof (dReal));
-	dReal *globalI		= (dReal *) ALLOCA (nb * 12 * sizeof (dReal));
-	dReal *globalInvI	= (dReal *) ALLOCA (nb * 12 * sizeof (dReal));
-	dReal *cforces		= (dReal *) ALLOCA (nb * 8 * sizeof (dReal));
-	dSetZero (cforces,nb * 8);
-	for (b = 0; b < nb; b++)
-	{
-		for (i = 0; i < 4; i++)
-		{
+	dReal *	saveFacc	= (dReal *) ALLOCA (nb * 4 *	sizeof (dReal));
+	dReal *	saveTacc	= (dReal *) ALLOCA (nb * 4 *	sizeof (dReal));
+	dReal *	globalI		= (dReal *) ALLOCA (nb * 12 *	sizeof (dReal));
+	dReal *	globalInvI	= (dReal *) ALLOCA (nb * 12 *	sizeof (dReal));
+	dReal *	cforces		= (dReal *) ALLOCA (nb * 8 *	sizeof (dReal));	dSetZero (cforces,	nb * 8);
+	int	  * ccounter	= (int	 *) ALLOCA (nb *		sizeof (int));		dSetZero (ccounter,	nb);	
+	for (b = 0; b < nb; b++)	{
+		for (i = 0; i < 4; i++)		{
 			saveFacc[b * 4 + i] = bodies[b]->facc[i];
 			saveTacc[b * 4 + i] = bodies[b]->tacc[i];
 		}
@@ -828,34 +816,12 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 	///////////////////////////////small steps starts/////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	int jdir=1,jfrom=0,jto=nj;
-	float scale	= dReal(1)/dReal(maxiterations);
-	for (iter = 0; iter < maxiterations; iter++)
+	float scale	= .5f;
+	for (iter = 0; iter < maxiterations; iter++, scale*=0.7071f)
 	{
 #	ifdef TIMING
 		dTimerNow ("applying inertia and gravity");
 #	endif
-
-
-#ifdef RANDOM_JOINT_ORDER
-#ifdef TIMING
-		dTimerNow ("randomizing joint order");
-#endif
-		//randomize the order of the joints by looping through the array
-		//and swapping the current joint pointer with a random one before it.
-		for (j = 0; j < nj; j++)
-		{
-			joint				= joints[j];
-			dxJoint::Info1 i1	= info[j];
-			dxJoint::Info2 i2	= Jinfo[j];
-			int r				= rand () % (j + 1);
-			joints[j]			= joints[r];
-			info[j]				= info[r];
-			Jinfo[j]			= Jinfo[r];
-			joints[r]			= joint;
-			info[r]				= i1;
-			Jinfo[r]			= i2;
-		}
-#endif
 
 		//now iterate through the random ordered joint array we created.
 		for (j =jfrom; j < jto; j+=jdir)
@@ -867,24 +833,21 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			bodyPair[0] = joint->node[0].body;
 			bodyPair[1] = joint->node[1].body;
 
-			if (bodyPair[0] && (bodyPair[0]->flags & dxBodyDisabled))
-				bodyPair[0] = 0;
-			if (bodyPair[1] && (bodyPair[1]->flags & dxBodyDisabled))
-				bodyPair[1] = 0;
+			if (bodyPair[0] && (bodyPair[0]->flags & dxBodyDisabled))	bodyPair[0] = 0;
+			if (bodyPair[1] && (bodyPair[1]->flags & dxBodyDisabled))	bodyPair[1] = 0;
 
 			//if this joint is not connected to any enabled bodies, skip it.
-			if (!bodyPair[0] && !bodyPair[1])
-				continue;
+			if (!bodyPair[0] && !bodyPair[1])	continue;
 
 			if (bodyPair[0])
 			{
-				GIPair[0] = globalI + bodyPair[0]->tag * 12;
-				GinvIPair[0] = globalInvI + bodyPair[0]->tag * 12;
+				GIPair[0]		= globalI + bodyPair[0]->tag * 12;
+				GinvIPair[0]	= globalInvI + bodyPair[0]->tag * 12;
 			}
 			if (bodyPair[1])
 			{
-				GIPair[1] = globalI + bodyPair[1]->tag * 12;
-				GinvIPair[1] = globalInvI + bodyPair[1]->tag * 12;
+				GIPair[1]		= globalI + bodyPair[1]->tag * 12;
+				GinvIPair[1]	= globalInvI + bodyPair[1]->tag * 12;
 			}
 
 			joints[j]->vtable->getInfo2 (joints[j], Jinfo + j);
@@ -893,27 +856,27 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			//modification: the calculated forces are added back to the facc and tacc
 			//vectors instead of applying them to the bodies and moving them.
 			if (info[j].m > 0)	{
-				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], stepsize /*???*/, cforces);
+				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], stepsize /*???*/, cforces, ccounter);
 			}
 		}
 
 		jdir=-jdir;
 		int ijtmp=jfrom; jfrom=jto; jto=ijtmp;
-
+ 
 		//  }
 #	ifdef TIMING
 		dTimerNow ("moving bodies");
 #	endif
 		//Now we can simulate all the free floating bodies, and move them.
-		for (b = 0; b < nb; b++)
-		{
+		for (b = 0; b < nb; b++) {
 			body = bodies[b];
 			for (j = 0; j < 4; j++)	{
-				body->facc[j] += scale*cforces[j + b*8];
-				body->tacc[j] += scale*cforces[j + b*8 + 4];
+				body->facc[j] += scale*cforces[j + b*8]		/dReal(ccounter[b]);
+				body->tacc[j] += scale*cforces[j + b*8 + 4]	/dReal(ccounter[b]);
 			}
 		}
-		dSetZero (cforces,nb * 8);
+		dSetZero (cforces,	nb	* 8	);
+		dSetZero (ccounter,	nb		);
 	}
 	for (b = 0; b < nb; b++)
 	{

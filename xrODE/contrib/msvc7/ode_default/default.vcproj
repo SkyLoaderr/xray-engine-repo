@@ -257,6 +257,15 @@
 				RelativePath="..\..\..\ode\src\array.h">
 			</File>
 			<File
+				RelativePath="..\..\..\ode\src\collision_kernel.h">
+			</File>
+			<File
+				RelativePath="..\..\..\ode\src\collision_transform.h">
+			</File>
+			<File
+				RelativePath="..\..\..\ode\src\collision_util.h">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\geom_internal.h">
 			</File>
 			<File
