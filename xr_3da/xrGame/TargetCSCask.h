@@ -8,4 +8,5 @@ class CTargetCSCask :
 public:
 	CTargetCSCask(void);
 	~CTargetCSCask(void);
+	virtual void						OnEvent				( NET_Packet& P, u16 type		);
 };
