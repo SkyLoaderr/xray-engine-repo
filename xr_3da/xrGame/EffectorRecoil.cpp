@@ -9,7 +9,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorRecoil::CEffectorRecoil(float power, float life_time) : CEffector(life_time)
+CEffectorRecoil::CEffectorRecoil(float power, float life_time) : CEffector(cefRecoil,life_time)
 {
 	fPower	= power;
 	fTime	= Recoil_TIME;

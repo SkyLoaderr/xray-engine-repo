@@ -28,19 +28,34 @@ CCameraManager::CCameraManager()
 
 	fFov			= 90;
 	fFar			= 100;
-
-	pEffector		= NULL;
 }
 
 CCameraManager::~CCameraManager()
 {
-	SetEffector	(0);
+	for (EffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
+		_DELETE(*it);
 }
 
-void	CCameraManager::SetEffector	(CEffector *pe)
+CEffector* CCameraManager::GetEffector(EEffectorType type)	
+{ 
+	for (EffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
+		if ((*it)->eType==type) return *it;
+	return 0;
+}
+
+void CCameraManager::AddEffector(CEffector* ef)
 {
-	_DELETE		(pEffector);
-	pEffector	= pe;
+	RemoveEffector(ef->eType);
+	m_Effectors.push_back(ef);
+}
+
+void CCameraManager::RemoveEffector(EEffectorType type){
+	for (EffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
+		if ((*it)->eType==type){ 
+			_DELETE(*it);
+			m_Effectors.erase(it);
+			return;
+		}
 }
 
 void CCameraManager::Update(const CCameraBase* C)
@@ -68,10 +83,18 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	unaffected_vRight.crossproduct		(vNormal,vDirection);
 
 	// Effector
-	if (pEffector) 
+	int eff_cnt=m_Effectors.size();
+	if (eff_cnt) 
 	{
-		pEffector->Process(vPosition,vDirection,vNormal);
-		if (pEffector->fLifeTime<=0) _DELETE(pEffector);
+		for (int i=0; i<eff_cnt; i++){
+			CEffector* eff = m_Effectors[i];
+			eff->Process(vPosition,vDirection,vNormal);
+			if (eff->fLifeTime<=0){ 
+				m_Effectors.erase(m_Effectors.begin()+i);
+				_DELETE(eff);
+				i--;
+			}
+		}
 		
 		// Normalize
 		vDirection.normalize	();

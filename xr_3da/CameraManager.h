@@ -9,13 +9,15 @@
 
 #include "CameraDefs.h"
 
+DEFINE_VECTOR(CEffector*,EffectorVec,EffectorIt);
+
 class ENGINE_API CCameraManager
 {
 	Fvector					vPosition;
 	Fvector					vDirection;
 	Fvector					vNormal;
 
-	CEffector*				pEffector;
+	EffectorVec				m_Effectors;
 
 	float					fFov;
 	float					fFar;
@@ -27,8 +29,9 @@ class ENGINE_API CCameraManager
 	Fvector					unaffected_vRight;
 public:
 	void					Dump				(void);
-	void					SetEffector			(CEffector *pe);
-	IC CEffector*			GetEffector			()	{ return pEffector;				}
+	void					AddEffector			(CEffector* ef);
+	CEffector*				GetEffector			(EEffectorType type);
+	void					RemoveEffector		(EEffectorType type);
 
 	IC Fmatrix&				unaffected_View		()	{ return unaffected_mView;		}
 	IC Fvector&				unaffected_Pos		()	{ return unaffected_vPosition;	}

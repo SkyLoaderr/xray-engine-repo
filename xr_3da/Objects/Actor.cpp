@@ -276,7 +276,7 @@ void CActor::Die	( )
 	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
 	cam_Set		(eacFreeLook);
 	g_fireEnd	();
-	bAlive	= FALSE;
+	bAlive		= FALSE;
 	mstate_wishful	&= ~mcAnyMove;
 	mstate_real		&= ~mcAnyMove;
 }
@@ -327,7 +327,7 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 	// Check ground-contact
 	if (net_Local && Movement.gcontact_Was && Movement.gcontact_HealthLost) 
 	{
-		pCreator->Cameras.SetEffector		(new CEffectorFall(Movement.gcontact_Power));
+		pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
 		Fvector D; D.set	(0,1,0);
 		if (Movement.gcontact_HealthLost)	Hit(int(Movement.gcontact_HealthLost),D,this);
 	}

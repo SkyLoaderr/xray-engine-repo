@@ -11,7 +11,7 @@ static __forceinline float rnd_noise(void) { return float(rand())/float(RAND_MAX
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorNoise::CEffectorNoise(float _fForce,float life_time) : CEffector(life_time)
+CEffectorNoise::CEffectorNoise(float _fForce,float life_time) : CEffector(cefNoise,life_time)
 {
 	fForce		= _fForce;
 	fStepTime	= -1.f;

@@ -1,14 +1,10 @@
-// EffectorShot.h: interface for the CEffectorShot class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_EFFECTORSHOT_H__B8CC6918_45D6_485D_8BB4_5A94CEEEFC2E__INCLUDED_)
-#define AFX_EFFECTORSHOT_H__B8CC6918_45D6_485D_8BB4_5A94CEEEFC2E__INCLUDED_
+#ifndef _EFFECTOR_BOBBING_H
+#define _EFFECTOR_BOBBING_H
 #pragma once
 
 #include "..\effector.h"
 
-class CEffectorShot : public CEffector  
+class CEffectorBobbing : public CEffector  
 {
 	Fvector	vDirectionDiff;
 	float	fTimeCurrent;
@@ -16,11 +12,11 @@ class CEffectorShot : public CEffector
 	float	fAngleCurrent;
 	float	fAngleTotal;
 public:
-	CEffectorShot			(float relax_time, float angle);
-	virtual ~CEffectorShot	();
-	virtual	void	Process	(Fvector &p, Fvector &d, Fvector &n);
+	CEffectorBobbing			(float relax_time, float angle);
+	virtual ~CEffectorBobbing	();
+	virtual	void	Process		(Fvector &p, Fvector &d, Fvector &n);
 
-	void	Shot			();
+	void	Shot				();
 };
 
-#endif // !defined(AFX_EFFECTORSHOT_H__B8CC6918_45D6_485D_8BB4_5A94CEEEFC2E__INCLUDED_)
+#endif //_EFFECTOR_BOBBING_H

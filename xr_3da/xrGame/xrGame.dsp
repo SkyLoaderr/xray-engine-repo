@@ -420,6 +420,14 @@ SOURCE=.\ActorCameras.cpp
 
 SOURCE=.\ActorInput.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\EffectorBobbing.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\EffectorBobbing.h
+# End Source File
 # End Group
 # Begin Group "_actor_demo"
 

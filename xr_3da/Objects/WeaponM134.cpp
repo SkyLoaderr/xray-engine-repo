@@ -226,7 +226,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 			pSounds->Play3DAtPos(sndServo,		vLastFP,true);
 			break;
 		case eM134Brake:
-			if (bHUDView)	Level().Cameras.SetEffector(0);
+			if (bHUDView)	Level().Cameras.RemoveEffector(cefShot);
 			// sound fire loop
 			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 
@@ -247,7 +247,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 				pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
-			if (bHUDView)	Level().Cameras.SetEffector(new CEffectorShot(camRelax,camDispersion));
+			if (bHUDView)	Level().Cameras.AddEffector(new CEffectorShot(camRelax,camDispersion));
 			break;
 		}
 		st_current=st_target;
@@ -296,7 +296,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 				fTime			+=fTimeToFire;
 				
 				if (bHUDView)	{
-					CEffectorShot*	S = (CEffectorShot*)Level().Cameras.GetEffector();
+					CEffectorShot*	S = (CEffectorShot*)Level().Cameras.GetEffector(cefShot);
 					if (S)			S->Shot();
 				}
 

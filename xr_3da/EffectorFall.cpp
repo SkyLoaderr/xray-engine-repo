@@ -11,7 +11,7 @@
 #define FALL_SPEED 3.25f
 #define FALL_MAXDIST 0.3f
 
-CEffectorFall::CEffectorFall(float power,float life_time) : CEffector(life_time)
+CEffectorFall::CEffectorFall(float power,float life_time) : CEffector(cefFall, life_time)
 {
 	fPower	= (power>1)?1:((power<0)?0:sqrtf(power));
 	fPhase	= 0;

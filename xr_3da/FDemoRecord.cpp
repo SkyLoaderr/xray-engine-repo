@@ -18,7 +18,7 @@ CDemoRecord * xrDemoRecord = 0;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(life_time)
+CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(cefDemo,life_time)
 {
 	_unlink(name);
 	hFile	= _open(name,O_WRONLY|O_CREAT|O_BINARY, S_IREAD|S_IWRITE);
@@ -28,7 +28,7 @@ CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(life_time)
 		g_vecVelocity = g_vecAngularVelocity = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		iCount = 0;
 	} else {
-		pCreator->Cameras.SetEffector(0);
+		pCreator->Cameras.RemoveEffector(cefDemo);
 	}
 }
 
@@ -114,7 +114,7 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 void CDemoRecord::OnKeyboardPress	(int dik)
 {
 	if (dik == DIK_SPACE)	RecordKey();
-	if (dik == DIK_RETURN)	pCreator->Cameras.SetEffector(0);
+	if (dik == DIK_RETURN)	pCreator->Cameras.RemoveEffector(cefDemo);
 }
 
 void CDemoRecord::RecordKey			()

@@ -1,15 +1,11 @@
-// EffectorShot.cpp: implementation of the CEffectorShot class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
-#include "EffectorShot.h"
+#include "EffectorBobbing.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorShot::CEffectorShot	(float relax_time, float angle) : CEffector(10000.f)
+CEffectorBobbing::CEffectorBobbing	(float relax_time, float angle) : CEffector(cefBobbing,10000.f)
 {
 	fTimeCurrent	= -1;
 	fTimeTotal		= relax_time;
@@ -17,12 +13,12 @@ CEffectorShot::CEffectorShot	(float relax_time, float angle) : CEffector(10000.f
 	fAngleTotal		= angle;
 }
 
-CEffectorShot::~CEffectorShot	()
+CEffectorBobbing::~CEffectorBobbing	()
 {
 
 }
 
-void CEffectorShot::Shot		()
+void CEffectorBobbing::Shot		()
 {
 	Fvector	axis; axis.set		(0,0,1);
 	vDirectionDiff.random_dir	();
@@ -30,7 +26,7 @@ void CEffectorShot::Shot		()
 	fAngleCurrent				= ::Random.randF(fAngleTotal/2,fAngleTotal);
 }
 
-void CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n)
+void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 {
 	fTimeCurrent	-= Device.fTimeDelta;
 	if (fTimeCurrent<0)		return;

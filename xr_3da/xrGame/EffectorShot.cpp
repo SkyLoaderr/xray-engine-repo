@@ -9,7 +9,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorShot::CEffectorShot	(float relax_time, float angle) : CEffector(10000.f)
+CEffectorShot::CEffectorShot	(float relax_time, float angle) : CEffector(cefShot,10000.f)
 {
 	fTimeCurrent	= -1;
 	fTimeTotal		= relax_time;
