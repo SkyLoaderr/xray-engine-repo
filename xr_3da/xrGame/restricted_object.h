@@ -60,6 +60,13 @@ public:
 	IC		CGameObject	&object							() const;
 	IC		bool		actual							() const;
 	IC		void		actual							(bool value);
+
+
+public:
+#ifdef DEBUG
+	IC		void		initialize						();
+#endif
+
 };
 
 #include "restricted_object_inline.h"
