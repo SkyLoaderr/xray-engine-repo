@@ -113,7 +113,7 @@ void ACTOR_DEFS::SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
 	m_torso[6].Create(K,base,"_7");
 
 
-	m_head_idle		= K->ID_Cycle("head_idle_0");
+	m_head_idle		= NULL;///K->ID_Cycle("head_idle_0");
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
 	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
@@ -268,7 +268,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 		if(m_current_head!=M_head)
 		{
-			PSkeletonAnimated(Visual())->PlayCycle(M_head);
+			if(M_head)PSkeletonAnimated(Visual())->PlayCycle(M_head);
 			m_current_head=M_head;
 		}
 

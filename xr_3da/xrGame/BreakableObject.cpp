@@ -199,6 +199,7 @@ void CBreakableObject::net_Destroy()
 	m_pPhysicsShell=NULL;
 	inherited::net_Destroy();
 	xr_delete(collidable.model);
+	Init();
 }
 void CBreakableObject::Split()
 {
