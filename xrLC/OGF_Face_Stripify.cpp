@@ -75,7 +75,7 @@ void OGF::Stripify	()
 		CopyMemory		(&*x_faces.begin(),&*indices.begin(),(u32)indices.size()*sizeof(u16));
 
 		// Permute vertices
-		vecOGF_V temp_list = x_vertices;
+		vec_XV temp_list = x_vertices;
 		for(u32 i=0; i<temp_list.size(); i++)
 			x_vertices[i]=temp_list[permute[i]];
 	} catch (...)	{
