@@ -50,11 +50,11 @@ void	CBuild::Flex2LOD()
 				Fcolor	_C;		_C.set(0,0,0,0);
 				float 	_N		= 0;
 
-				for (int c_it=0; c_it<pNode->chields.size(); c_it++)
+				for (u32 c_it=0; c_it<pNode->chields.size(); c_it++)
 				{
 					OGF*		ogf		= (OGF*)g_tree[pNode->chields[c_it]];
 					vecOGF_V&	verts	= ogf->vertices;
-					for (int v_it=0; v_it<verts.size(); v_it++)
+					for (u32 v_it=0; v_it<verts.size(); v_it++)
 					{
 						Fcolor			vC; 
 						OGF_Vertex&		oV	= verts[v_it];
