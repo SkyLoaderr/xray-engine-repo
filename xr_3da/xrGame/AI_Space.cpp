@@ -93,7 +93,7 @@ void CAI_Space::Render()
 	DWORD ID			= O->AI_NodeID;
 
 	pApp->pFont->Out(0.f,0.55f,"%3d,%4d,%3d -> %d",
-		int(Local[0]),int(Local[1]),int(Local[2]),DWORD(ID));
+		int(Local.x),int(Local.y),int(Local.z),DWORD(ID));
 
 	svector<DWORD,128>	linked;
 	{
@@ -187,12 +187,9 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 	{
 		NodeCompressed& N = *m_nodes_ptr[I];
 
-		if (
-			((P[0]>=N.p0[0])&&(P[0]<=N.p1[0]))&&	// X inside
-			((P[2]>=N.p0[2])&&(P[2]<=N.p1[2]))		// Z inside
-			)
+		if (u_InsideNode(N,P)) 
 		{
-			short dist = P[1]-N.p0[1];
+			int dist = int(P.y)-int(N.p0.y);
 			if (dist>=0) {
 				if (dist<min_dist) {
 					min_dist = dist;

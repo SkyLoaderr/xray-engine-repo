@@ -1,19 +1,13 @@
 #include "stdafx.h"
 #include "ai_space.h"
 
-BOOL InsideNode (NodeCompressed& N, NodePosition& P)
-{
-	return 	((P[0]>=N.p0[0])&&(P[0]<=N.p1[0]))&&	// X inside
-			((P[2]>=N.p0[2])&&(P[2]<=N.p1[2]));		// Z inside
-}
-
 class	Selector : public AI::NodeEstimator
 {
 	NodePosition*	P;
 public:
 	virtual	float	Estimate(NodeCompressed* Node, float dist, BOOL& bStop)	// min - best, max - worse
 	{
-		if (InsideNode(*Node,*P)) { bStop = TRUE; return 0; }
+		if (Level().AI.u_InsideNode(*Node,*P)) { bStop = TRUE; return 0; }
 		else return	dist;
 	}
 	Selector(NodePosition*	_P) : P(_P) {};
