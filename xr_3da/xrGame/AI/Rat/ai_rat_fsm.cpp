@@ -779,10 +779,6 @@ void CAI_Rat::EatCorpse()
 	}
 	else {
 		vfComputeNextDirectionPosition();
-		if (!feel_touch.size())
-			m_fSpeed = m_fMaxSpeed;
-		else
-			m_fSpeed = 0;
 		SetDirectionLook();
 	}
 
@@ -792,9 +788,9 @@ void CAI_Rat::EatCorpse()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay || !feel_touch.size()) {
 		m_fSpeed = .1f;
-		if (m_bNoWay) {
+		if (m_bNoWay || !feel_touch.size()) {
 			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
