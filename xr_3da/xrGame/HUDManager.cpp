@@ -83,7 +83,7 @@ void CHUDManager::Render()
 			Fmatrix FTold			= Device.mFullTransform;
 			float aspect			= float(Device.dwHeight)/float(Device.dwWidth);
 			Device.mProject.build_projection(
-				deg2rad(psHUD_FOV*pCreator->Environment.FOV_Current*aspect), 
+				deg2rad(psHUD_FOV*Device.fFOV*aspect), 
 				aspect, VIEWPORT_NEAR, 
 				pCreator->Environment.Current.Far);
 			Device.mFullTransform.mul(Device.mProject, Device.mView);
