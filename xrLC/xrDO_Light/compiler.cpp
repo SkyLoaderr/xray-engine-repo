@@ -155,7 +155,7 @@ void xrLoad(LPCSTR name)
 				if (RL.type==LT_DIRECT)	
 				{
 					R_Light	T			=	RL;
-					T.amount			=	Header.params.areaDark.magnitude_rgb()*(Header.params.area_energy_summary)/float(h_count);
+					T.amount			=	Header.params.areaDark.magnitude_rgb(); //*(Header.params.area_energy_summary)/float(h_count);
 					for (int i=0; i<h_count; i++)
 					{
 						T.direction.set			(float(hemi[i][0]),float(hemi[i][1]),float(hemi[i][2]));
