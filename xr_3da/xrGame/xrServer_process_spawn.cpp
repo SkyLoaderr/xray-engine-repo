@@ -9,28 +9,42 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 	string64	s_name;
 	P.r_string	(s_name);
 
-	// generate/find new ID for entity
-	u16 ID		= 0xffff;
-	if (ids_used.size())	
-	{
-		for (vector<bool>::iterator I=ids_used.begin(); I!=ids_used.end(); I++)
-		{
-			if (!(*I))	{ ID = I-ids_used.begin(); break; }
-		}
-		if (0xffff==ID)	{
-			ID			= ids_used.size	();
-			ids_used.push_back			(false);
-		}
-	} else {
-		ID		= 0;
-		ids_used.push_back	(false);
-	}
-
 	// create server entity
 	xrClientData* CL	= ID_to_client	(sender);
 	xrServerEntity*	E	= entity_Create	(s_name);
 	R_ASSERT			(E);
 	E->Spawn_Read		(P);
+
+	// generate/find new ID for entity
+	u16 ID		=		E->ID;
+	if (0xffff==ID)		
+	{
+		// Find
+		if (ids_used.size())	
+		{
+			for (vector<bool>::iterator I=ids_used.begin(); I!=ids_used.end(); I++)
+			{
+				if (!(*I))	{ ID = I-ids_used.begin(); break; }
+			}
+			if (0xffff==ID)	{
+				ID			= ids_used.size	();
+				ids_used.push_back			(false);
+			}
+		} else {
+			ID		= 0;
+			ids_used.push_back	(false);
+		}
+	} else {
+		// Try to use supplied ID
+		if (ID<ids_used.size())
+		{
+			R_ASSERT		(false==ids_used[ID]);
+			ids_used[ID]	= true;
+		} else {
+			ids_used.resize	(ID+1);
+			ids_used[ID]	= true;
+		}
+	}
 
 	// ID, owner, etc
 	E->ID				= ID;

@@ -4,7 +4,7 @@
 void xrServer::Process_update(NET_Packet& P, DPNID sender)
 {
 	xrClientData* CL		= ID_to_client(sender);
-	CL->net_Ready			= TRUE;
+	if (CL)	CL->net_Ready	= TRUE;
 
 	// while has information
 	while (!P.r_eof())

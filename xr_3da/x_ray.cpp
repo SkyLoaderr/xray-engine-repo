@@ -140,6 +140,7 @@ CApplication::CApplication()
 	// events
 	eQuit			= Engine.Event.Handler_Attach("KERNEL:quit",this);
 	eStartServer	= Engine.Event.Handler_Attach("KERNEL:server",this);
+	eStartServerLoad= Engine.Event.Handler_Attach("KERNEL:server_load",this);
 	eStartClient	= Engine.Event.Handler_Attach("KERNEL:client",this);
 	eDisconnect		= Engine.Event.Handler_Attach("KERNEL:disconnect",this);
 
@@ -166,11 +167,12 @@ CApplication::~CApplication()
 	// events
 	Engine.Event.Handler_Detach	(eDisconnect,this);
 	Engine.Event.Handler_Detach	(eStartClient,this);
+	Engine.Event.Handler_Detach	(eStartServerLoad,this);
 	Engine.Event.Handler_Detach	(eStartServer,this);
 	Engine.Event.Handler_Detach	(eQuit,this);
 }
 
-
+/*
 BOOL StartGame(DWORD num) 
 {
 	R_ASSERT(pCreator==NULL);
@@ -184,6 +186,7 @@ BOOL StartGame(DWORD num)
 	}
 	return true;
 }
+*/
 
 void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
 {
@@ -195,6 +198,15 @@ void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
 			_FREE(Levels[i].folder	);
 			_FREE(Levels[i].name	);
 		}
+	} else if (E==eStartServerLoad) {
+		Console.Hide();
+		LPSTR		Name = LPSTR(P1);
+		R_ASSERT	(0==pCreator);
+		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
+		R_ASSERT	(pCreator->net_Server(Name,TRUE));
+		_FREE		(Name);
+		Engine.mem_Compact	();
+		Msg			("* MEMORY USAGE: %d K",Engine.mem_Usage()/1024);
 	} else if (E==eStartServer) {
 		Console.Hide();
 		LPSTR		Name = LPSTR(P1);

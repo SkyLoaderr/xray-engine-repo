@@ -23,6 +23,7 @@ private:
 private:
 	EVENT					eQuit;
 	EVENT					eStartServer;
+	EVENT					eStartServerLoad;
 	EVENT					eStartClient;
 	EVENT					eDisconnect;
 public:

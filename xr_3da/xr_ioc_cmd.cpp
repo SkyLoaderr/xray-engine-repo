@@ -130,6 +130,25 @@ public:
 	}
 };
 
+class CCC_ServerLoad : public CConsoleCommand
+{
+public:
+	CCC_ServerLoad(LPCSTR N) : CConsoleCommand(N) {};
+	virtual void Execute(LPCSTR args) {
+		if (pCreator)	{
+			Log("! Please disconnect/unload first");
+			return;
+		}
+		string256	fn;
+		if (Engine.FS.Exist(fn,"",args,".save"))
+		{
+			Engine.Event.Defer("KERNEL:server_load",DWORD(xr_strdup(fn)));
+		} else {
+			Log("! Cannot find save-game '%s'.",fn);
+		}
+	}
+};
+
 class CCC_Client : public CConsoleCommand
 {
 public:
@@ -250,6 +269,7 @@ void CCC_Register()
 	CMD1(CCC_Help,		"help"					);
 	CMD1(CCC_Quit,		"quit"					);
 	CMD1(CCC_Server,	"server"				);
+	CMD1(CCC_ServerLoad,"server_load"			);
 	CMD1(CCC_Client,	"client"				);
 	CMD1(CCC_Disconnect,"disconnect"			);
 	CMD1(CCC_SaveCFG,	"cfg_save"				);
