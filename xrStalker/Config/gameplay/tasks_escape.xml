@@ -18,81 +18,81 @@
 	</game_task>
 
 	<game_task id="tutorial_find_artefact">
-		<title>Найти артефакт.</title>
+		<title>tutorial_find_artefact</title>
 		<objective>
-			<text>Найди свой первый артефакт.</text>
+			<text>tutorial_find_artefact_0</text>
 			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
 	<game_task id="tutorial_help_wounded">
-		<title>Помогите раненому.</title>
+		<title>tutorial_help_wounded</title>
 		<objective>
-			<text>Найди выжившего после обстрела и помогите ему.</text>
+			<text>tutorial_help_wounded_0</text>
 			<icon x="250" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
 	<game_task id="esc_trader_need_electra_artefact">
-		<title>Найти и принести артефакт из грави-аномалии.</title>
+		<title>esc_trader_need_electra_artefact</title>
 		<objective>
-			<text>Торговцу нужен любой артефакт из грави-аномалии.</text>
+			<text>esc_trader_need_electra_artefact_0</text>
 			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>Найти артефакт. Получить его можно, попытавшись загнать кого-то в аномалию.</text>
+			<text>esc_trader_need_electra_artefact_1</text>
 			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>Принести артефакт торговцу.</text>
+			<text>esc_trader_need_electra_artefact_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>	
 	</game_task>
 
 	<game_task id="esc_help_wounded_from_raid">
-		<title>Помочь сталкеру.</title>
+		<title>esc_help_wounded_from_raid</title>
 		<objective>
-			<text>Помочь сталкеру, возвращающемуся из рейда к центру Зоны.</text>
+			<text>esc_help_wounded_from_raid_0</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
 	<game_task id="esc_wounded_to_trader_gift">
-		<title>Передайте посылку торговцу.</title>
+		<title>esc_wounded_to_trader_gift</title>
 		<objective>
-			<text>Передайте посылку торговцу. Возможно, это поможет и вам.</text>
+			<text>esc_wounded_to_trader_gift_0</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
 	<game_task id="esc_blockpost_case_to_trader">
-		<title>Украсть ящик с блокпоста.</title>
+		<title>esc_blockpost_case_to_trader</title>
 		<objective>
-			<text>Украсть у командира блокпоста ящик с важными документами.</text>
+			<text>esc_blockpost_case_to_trader_0</text>
 			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>Украсть ящик с блокпоста.</text>
+			<text>esc_blockpost_case_to_trader_1</text>
 			<icon x="300" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>Принести ящик торговцу.</text>
+			<text>esc_blockpost_case_to_trader_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
 	<game_task id="esc_dinamit_to_volk">
-		<title>Достать динамит для Волка.</title>
+		<title>esc_dinamit_to_volk</title>
 		<objective>
-			<text>Необходимо забрать динамит у бандитов на фабрике и доставить его Волку.</text>
+			<text>esc_dinamit_to_volk_0</text>
 			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>Найти динамит на фабрике.</text>
+			<text>esc_dinamit_to_volk_1</text>
 			<icon x="300" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>Принести динамит Волку.</text>
+			<text>esc_dinamit_to_volk_2</text>
 			<icon x="0" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
@@ -101,41 +101,41 @@
 
 
 	<game_task id="garbage_meet_stalker">
-		<title>Встретиться на свалке со сталкером.</title>
+		<title>garbage_meet_stalker</title>
 		<objective>
-			<text>Встретиться со сталкером в гараже на свалке на счет информации о группировке Стрелка.</text>
+			<text>garbage_meet_stalker_0</text>
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
 	<game_task id="agroprom_get_military_documents">
-		<title>Достать документы военных из НИИ "Агропром".</title>
+		<title>agroprom_get_military_documents</title>
 		<objective>
-			<text>Необходимо достать военные документы и доставить их бармену в баре сталкеров.</text>
+			<text>agroprom_get_military_documents_0</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
 		</objective>
 		<objective>
-			<text>Добудьте военные документы из НИИ "Агропром".</text>
+			<text>agroprom_get_military_documents_1</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
-			<text>Отнесите документы бармену в баре сталкеров.</text>
+			<text>agroprom_get_military_documents_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
 
 	<game_task id="agroprom_meet_gunslinger_band">
-		<title>Встретиться с группировкой Стрелка.</title>
+		<title>agroprom_meet_gunslinger_band</title>
 		<objective>
-			<text>Вам стало известно, что оставшаяся часть группировки Стрелка обитает на заводе возле НИИ "Агропром". Может быть они выведут вас на Стрелка.</text>
+			<text>agroprom_meet_gunslinger_band_0</text>
 			<icon x="200" y="0" width="50" height="50">ui\ui_icons_task</icon>			
 		</objective>
 	</game_task>
 
 	<game_task id="agroprom_find_gunslinger_hide">
-		<title>Найти тайник группировки Стрелка.</title>
+		<title>agroprom_find_gunslinger_hide</title>
 		<objective>
-			<text>Найдите и обыщите тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
+			<text>agroprom_find_gunslinger_hide_0</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
