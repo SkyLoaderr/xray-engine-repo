@@ -2087,6 +2087,7 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_dolg_base_guard_acces">
+		<precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="31">
                 <text>bar_dolg_base_guard_acces_31</text>
