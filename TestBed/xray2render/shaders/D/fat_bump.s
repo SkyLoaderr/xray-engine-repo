@@ -3,8 +3,8 @@ struct 	a2v
   float4 Position: 	POSITION;	// Object-space position
   float3 N: 		NORMAL;		// Object-space normal
   float2 tc0:		TEXCOORD0;	// Texture coordinates
-  float3 T:			TEXCOORD1;	// tangent
-  float3 B:			TEXCOORD2;	// binormal
+  float3 T:			TANGENT;	// tangent
+  float3 B:			BINORMAL;	// binormal
 };
 
 struct 	v2p_out
@@ -43,7 +43,7 @@ uniform sampler2D 	s_nmap;
 // Vertex
 v2p_out v_main	( a2v  	IN )
 {
-	v2p_out 	OUT;
+	v2p_out 		OUT;
   
 	// Positions and TC
 	OUT.HPos 		= mul	(m_model2view2projection,	IN.Position	);
@@ -62,11 +62,11 @@ v2p_out v_main	( a2v  	IN )
 							);
 	*/							
 	float3x3 xform	= float3x3	(
-								IN.T.x,IN.B.y,IN.N.z,
-								IN.T.x,IN.B.y,IN.N.z,
-								IN.T.x,IN.B.y,IN.N.z
+								IN.T.x,IN.T.y,IN.T.z,
+								IN.B.x,IN.B.y,IN.B.z,
+								IN.N.x,IN.N.y,IN.N.z
 								);
-								  
+					
 	// Feed this transform to pixel shader
 	OUT.M1 			= xform[0]; 
 	OUT.M2 			= xform[1]; 
@@ -87,11 +87,13 @@ p2f 	p_main	( v2p_in IN )
 
   // Sample normal and rotate it by matrix
   half3 N	= tex2D		(s_nmap,	IN.tc0);
-  half3 Ne	= mul		(half3x3(
+  half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3),N);
+	/*
 							IN.M1.x,IN.M1.y,IN.M1.z,
 							IN.M2.x,IN.M2.y,IN.M2.z,
 							IN.M3.x,IN.M3.y,IN.M3.z),
 							N);
+	*/							
   half3 NeN	= normalize	(Ne);
   OUT.Ne 	= half4		(NeN.x,NeN.y,NeN.z,0);
   return OUT;
