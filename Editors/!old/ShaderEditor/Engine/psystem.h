@@ -538,7 +538,7 @@ namespace PAPI
         {
         	return 		actions.size();
         }
-        IC int			resize(int cnt)
+        IC void			resize(int cnt)
         {
         	actions.resize(cnt);
         }
