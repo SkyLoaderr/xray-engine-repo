@@ -48,16 +48,14 @@ void __stdcall _sound_event	(ref_sound* S, float range)
 //----------------------------------------------------------------------
 CObjectSpace::CObjectSpace	( )
 {
-	sh_debug					= 0;
-	sh_debug					= Device.Shader.Create	("debug\\wireframe","$null");
+	sh_debug.create				("debug\\wireframe","$null");
 }
 //----------------------------------------------------------------------
 CObjectSpace::~CObjectSpace	( )
 {
 	Sound->set_geometry_occ		(NULL);
 	Sound->set_handler			(NULL);
-
-	Device.Shader.Delete		(sh_debug);
+	sh_debug.destroy			();
 }
 //----------------------------------------------------------------------
 IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
@@ -120,7 +118,7 @@ void CObjectSpace::dbgRender()
 {
 	R_ASSERT(bDebug);
 
-	RCache.set_Shader(sh_debug);
+	RCache.set_Shader(sh_debug());
 	for (u32 i=0; i<q_debug.boxes.size(); i++)
 	{
 		Fobb&		obb		= q_debug.boxes[i];

@@ -14,7 +14,7 @@ public:
 	Fvector				C;
 	float				R;
 	float				fade;
-	Shader*				hShader;
+	ref_shader			hShader;
 	u32					dwFrame;
 
 	// Ray-testing cache

@@ -22,8 +22,8 @@ class CTracer : public pureDeviceDestroy, public pureDeviceCreate
 	};
 
 protected:
-	Shader*				sh_Tracer;
-	SGeometry*			hGeom;
+	ref_shader			sh_Tracer;
+	ref_geom			sh_Geom;
 
 	xr_vector<Bullet>	bullets;
 public:

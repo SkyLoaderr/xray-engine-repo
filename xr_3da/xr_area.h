@@ -16,7 +16,7 @@ class	ENGINE_API						CObjectSpace
 {
 private:
 	// Debug
-	Shader*								sh_debug;
+	ref_shader							sh_debug;
 	CDB::MODEL							Static;
 	Fvector								Static_Shift;
 public:
@@ -51,7 +51,7 @@ public:
 
 	// Device dependance and debugging
 	void								dbgRender			();
-	Shader*								dbgGetShader		()	{ return sh_debug;	}
+	Shader*								dbgGetShader		()	{ return sh_debug();	}
 };
 
 #endif //__XR_AREA_H__

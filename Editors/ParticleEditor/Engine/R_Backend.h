@@ -116,6 +116,7 @@ public:
 	IC	void						set_Constants		(R_constant_table* C);
 	IC	void						set_Element			(ShaderElement* S, u32	pass=0);
 	IC	void						set_Shader			(Shader* S, u32 pass=0);
+	IC	void						set_Shader			(ref_shader& S, u32 pass=0);
 
 	IC	void						set_States			(IDirect3DStateBlock9* _state);
 	IC  void						set_Format			(IDirect3DVertexDeclaration9* _decl);
@@ -124,6 +125,7 @@ public:
 	IC	void						set_Vertices		(IDirect3DVertexBuffer9* _vb, u32 _vb_stride);
 	IC	void						set_Indices			(IDirect3DIndexBuffer9* _ib);
 	IC  void						set_Geometry		(SGeometry* _geom);
+	IC  void						set_Geometry		(ref_shader& _geom);
 	IC  void						set_Stencil			(u32 _enable, u32 _func=D3DCMP_ALWAYS, u32 _ref=0x00, u32 _mask=0x00, u32 _writemask=0x00, u32 _fail=D3DSTENCILOP_KEEP, u32 _pass=D3DSTENCILOP_KEEP, u32 _zfail=D3DSTENCILOP_KEEP);
 
 	// constants

@@ -202,16 +202,20 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 	CHK_DX				(HW.pDevice->DrawPrimitive(T, startV, PC));
 }
 
+IC void CBackend::set_Shader			(ref_shader& S, u32 pass)	{	set_Shader			(S(),pass);	}
 IC void CBackend::set_Shader			(Shader* S, u32 pass)
 {
 	set_Element			(S->E[0],pass);
 }
+
+IC void CBackend::set_Geometry			(ref_geom& _geom)			{	set_Geometry(_geom());			}
 IC void CBackend::set_Geometry			(SGeometry* _geom)
 {
 	set_Format			(_geom->dcl);
 	set_Vertices		(_geom->vb, _geom->vb_stride);
 	set_Indices			(_geom->ib);
 }
+
 IC void CBackend::set_Stencil			(u32 _enable, u32 _func, u32 _ref, u32 _mask, u32 _writemask, u32 _fail, u32 _pass, u32 _zfail)
 {
 	// Simple filter

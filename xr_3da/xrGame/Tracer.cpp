@@ -15,29 +15,12 @@ const float TRACER_SIZE = 0.13f;
 
 CTracer::CTracer()
 {
-	Device.seqDevCreate.Add(this);
-	Device.seqDevDestroy.Add(this);
-	OnDeviceCreate();
+	sh_Tracer.create("effects\\bullet_tracer","effects\\bullet_tracer");
+	sh_Geom.create	(FVF::F_V, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 CTracer::~CTracer()
 {
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-	OnDeviceDestroy();
-}
-
-void	CTracer::OnDeviceCreate()
-{
-	REQ_CREATE	();
-	sh_Tracer	= Device.Shader.Create		("effects\\bullet_tracer","effects\\bullet_tracer");
-	hGeom		= Device.Shader.CreateGeom	(FVF::F_V, RCache.Vertex.Buffer(), RCache.QuadIB);
-}
-
-void	CTracer::OnDeviceDestroy()
-{
-	Device.Shader.Delete		(sh_Tracer);
-	Device.Shader.DeleteGeom	(hGeom);
 }
 
 void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width)
@@ -66,7 +49,7 @@ void	CTracer::Render	()
 	if (bullets.empty())	return;
 	
 	u32	vOffset;
-	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)bullets.size()*4,hGeom->vb_stride,vOffset);
+	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)bullets.size()*4,sh_Geom()->vb_stride,vOffset);
 	FVF::V	*start		=	verts;
 	float	dt			=	Device.fTimeDelta;
 
@@ -110,13 +93,13 @@ void	CTracer::Render	()
 	}
 
 	u32 vCount					= (u32)(verts-start);
-	RCache.Vertex.Unlock	(vCount,hGeom->vb_stride);
+	RCache.Vertex.Unlock	(vCount,sh_Geom()->vb_stride);
 	
 	if (vCount)	{
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
 		RCache.set_xform_world		(Fidentity);
 		RCache.set_Shader			(sh_Tracer);
-		RCache.set_Geometry			(hGeom);
+		RCache.set_Geometry			(sh_Geom);
 		RCache.Render				(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
 	}
