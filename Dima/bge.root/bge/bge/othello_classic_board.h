@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: board_classic_othello.h
+//	Module 		: othello_classic_board.h
 //	Created 	: 07.12.2004
 //  Modified 	: 07.12.2004
 //	Author		: Dmitriy Iassenev
@@ -11,7 +11,7 @@
 #include "script_export_space.h"
 #include "ui.h"
 
-class CBoardClassicOthello {
+class COthelloClassicBoard {
 public:
 	enum EBoardConstants {
 		BOARD_SIZE		= 91,
@@ -109,7 +109,7 @@ protected:
 	IC		int				compute_difference		(const cell_index &index, bool) const;
 
 public:
-	IC						CBoardClassicOthello	();
+	IC						COthelloClassicBoard	();
 			void			start_position			();
 			void			show					() const;
 	IC		LPCSTR			move_to_string			(const cell_index &index) const;
@@ -152,8 +152,8 @@ public:
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
-add_to_type_list(CBoardClassicOthello)
+add_to_type_list(COthelloClassicBoard)
 #undef script_type_list
-#define script_type_list save_type_list(CBoardClassicOthello)
+#define script_type_list save_type_list(COthelloClassicBoard)
 
-#include "board_classic_othello_inline.h"
+#include "othello_classic_board_inline.h"

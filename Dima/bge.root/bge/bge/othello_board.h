@@ -11,10 +11,10 @@
 #define OTHELLO_BOARD_CLASSIC
 
 #ifdef OTHELLO_BOARD_CLASSIC
-#	include "board_classic_othello.h"
-	typedef CBoardClassicOthello COthelloBoard;
+#	include "othello_classic_board.h"
+	typedef COthelloClassicBoard COthelloBoard;
 #else
 #	define OTHELLO_BOARD_BIT
-#	include "bitboard_othello.h"
-	typedef CBitBoardOthello CBoardOthello;
+#	include "othello_bit_board.h"
+	typedef COthelloBitBoard COthelloBoard;
 #endif

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: board_classic_othello_inline.h
+//	Module 		: othello_classic_board_inline.h
 //	Created 	: 07.12.2004
 //  Modified 	: 07.12.2004
 //	Author		: Dmitriy Iassenev
@@ -8,17 +8,17 @@
 
 #pragma once
 
-IC	CBoardClassicOthello::CBoardClassicOthello	()
+IC	COthelloClassicBoard::COthelloClassicBoard	()
 {
 	start_position	();
 }
 
-IC	CBoardClassicOthello::cell_index CBoardClassicOthello::index (const cell_index &index0, const cell_index &index1) const
+IC	COthelloClassicBoard::cell_index COthelloClassicBoard::index (const cell_index &index0, const cell_index &index1) const
 {
 	return							(BOARD_START + index0*BOARD_LINE + index1);
 }
 
-IC	void CBoardClassicOthello::index (const cell_index &index, cell_index &index0, cell_index &index1) const
+IC	void COthelloClassicBoard::index (const cell_index &index, cell_index &index0, cell_index &index1) const
 {
 	VERIFY							(index >= BOARD_START);
 	VERIFY							(((index - BOARD_START) / BOARD_LINE) < 8);
@@ -27,53 +27,53 @@ IC	void CBoardClassicOthello::index (const cell_index &index, cell_index &index0
 	index1							= (index - BOARD_START) % BOARD_LINE;
 }
 
-IC	void CBoardClassicOthello::cell				(const cell_index &index, const cell_type &value)
+IC	void COthelloClassicBoard::cell				(const cell_index &index, const cell_type &value)
 {
 	m_board[index]					= value;
 }
 
-IC	void CBoardClassicOthello::cell				(const cell_index &index0, const cell_index &index1, const cell_type &value)
+IC	void COthelloClassicBoard::cell				(const cell_index &index0, const cell_index &index1, const cell_type &value)
 {
 	m_board[index(index0,index1)]	= value;
 }
 
-IC	const CBoardClassicOthello::cell_type &CBoardClassicOthello::cell	(const cell_index &index) const
+IC	const COthelloClassicBoard::cell_type &COthelloClassicBoard::cell	(const cell_index &index) const
 {
 	return							(m_board[index]);
 }
 
-IC	const CBoardClassicOthello::cell_type &CBoardClassicOthello::cell	(const cell_index &index0, const cell_index &index1) const
+IC	const COthelloClassicBoard::cell_type &COthelloClassicBoard::cell	(const cell_index &index0, const cell_index &index1) const
 {
 	return							(m_board[index(index0,index1)]);
 }
 
-IC	const CBoardClassicOthello::cell_type &CBoardClassicOthello::color_to_move	() const
+IC	const COthelloClassicBoard::cell_type &COthelloClassicBoard::color_to_move	() const
 {
 	return							(m_color_to_move);
 }
 
-IC	u8	 CBoardClassicOthello::empties			() const
+IC	u8	 COthelloClassicBoard::empties			() const
 {
 	return							(m_empties);
 }
 
-IC	int	 CBoardClassicOthello::difference		() const
+IC	int	 COthelloClassicBoard::difference		() const
 {
 	return							(m_difference);
 }
 
-IC	bool CBoardClassicOthello::passed			() const
+IC	bool COthelloClassicBoard::passed			() const
 {
 	return							(m_passed);
 }
 
-IC	bool CBoardClassicOthello::terminal_position	() const
+IC	bool COthelloClassicBoard::terminal_position	() const
 {
 	return							(m_passed && !m_flip_stack.empty() && m_flip_stack.top().m_passed);
 }
 
-template <CBoardClassicOthello::cell_type opponent_color>
-IC	void CBoardClassicOthello::undo_move		()
+template <COthelloClassicBoard::cell_type opponent_color>
+IC	void COthelloClassicBoard::undo_move		()
 {
 	VERIFY								(!m_flip_stack.empty());
 
@@ -100,7 +100,7 @@ IC	void CBoardClassicOthello::undo_move		()
 	}
 }
 
-IC	void CBoardClassicOthello::undo_move		()
+IC	void COthelloClassicBoard::undo_move		()
 {
 	if (m_flip_stack.empty()) {
 		ui().error_log				("Undo stack is empty!\n");
@@ -113,12 +113,12 @@ IC	void CBoardClassicOthello::undo_move		()
 		undo_move<WHITE>			();
 }
 
-IC	void CBoardClassicOthello::change_color		()
+IC	void COthelloClassicBoard::change_color		()
 {
 	m_color_to_move					= m_color_to_move == BLACK ? WHITE : BLACK;
 }
 
-IC	LPCSTR CBoardClassicOthello::move_to_string	(const cell_index &index) const
+IC	LPCSTR COthelloClassicBoard::move_to_string	(const cell_index &index) const
 {
 	if (!index) {
 		strcpy						(m_temp,"PS");
@@ -129,7 +129,7 @@ IC	LPCSTR CBoardClassicOthello::move_to_string	(const cell_index &index) const
 	return							(move_to_string(index0,index1));
 }
 
-IC	LPCSTR CBoardClassicOthello::move_to_string	(const cell_index &index0, const cell_index &index1) const
+IC	LPCSTR COthelloClassicBoard::move_to_string	(const cell_index &index0, const cell_index &index1) const
 {
 	if (
 		(index0 < 0) ||
@@ -144,7 +144,7 @@ IC	LPCSTR CBoardClassicOthello::move_to_string	(const cell_index &index0, const 
 	return							(m_temp);
 }
 
-IC	CBoardClassicOthello::cell_index CBoardClassicOthello::string_to_move	(LPCSTR move) const
+IC	COthelloClassicBoard::cell_index COthelloClassicBoard::string_to_move	(LPCSTR move) const
 {
 	string256						temp;
 	xr_strcpy						(temp,move);
@@ -170,7 +170,7 @@ IC	CBoardClassicOthello::cell_index CBoardClassicOthello::string_to_move	(LPCSTR
 	return							(index(index0,index1));
 }
 
-IC	void CBoardClassicOthello::do_move	(LPCSTR move)
+IC	void COthelloClassicBoard::do_move	(LPCSTR move)
 {
 	cell_index						index = string_to_move(move);
 
@@ -195,7 +195,7 @@ IC	void CBoardClassicOthello::do_move	(LPCSTR move)
 	do_move							(index);
 }
 
-IC	bool CBoardClassicOthello::can_move	(LPCSTR move) const
+IC	bool COthelloClassicBoard::can_move	(LPCSTR move) const
 {
 	cell_index						index = string_to_move(move);
 
@@ -213,7 +213,7 @@ IC	bool CBoardClassicOthello::can_move	(LPCSTR move) const
 	return							(can_move(index));
 }
 
-IC	int	 CBoardClassicOthello::compute_difference	(LPCSTR move) const
+IC	int	 COthelloClassicBoard::compute_difference	(LPCSTR move) const
 {
 	cell_index						index = string_to_move(move);
 	
@@ -237,17 +237,17 @@ IC	int	 CBoardClassicOthello::compute_difference	(LPCSTR move) const
 	return							(compute_difference(index));
 }
 
-IC	void CBoardClassicOthello::do_move			(const cell_index &index0, const cell_index &index1)
+IC	void COthelloClassicBoard::do_move			(const cell_index &index0, const cell_index &index1)
 {
 	do_move							(move_to_string(index0,index1));
 }
 
-IC	bool CBoardClassicOthello::can_move			(const cell_index &index0, const cell_index &index1) const
+IC	bool COthelloClassicBoard::can_move			(const cell_index &index0, const cell_index &index1) const
 {
 	return							(can_move(move_to_string(index0,index1)));
 }
 
-IC	int	 CBoardClassicOthello::compute_difference	(const cell_index &index0, const cell_index &index1) const
+IC	int	 COthelloClassicBoard::compute_difference	(const cell_index &index0, const cell_index &index1) const
 {
 	return							(compute_difference(move_to_string(index0,index1)));
 }

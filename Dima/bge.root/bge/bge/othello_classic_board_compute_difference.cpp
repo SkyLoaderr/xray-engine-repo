@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: board_classic_othello_compute_result.cpp
+//	Module 		: othello_classic_board_compute_result.cpp
 //	Created 	: 08.12.2004
 //  Modified 	: 08.12.2004
 //	Author		: Dmitriy Iassenev
@@ -7,14 +7,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "board_classic_othello.h"
+#include "othello_classic_board.h"
 
 template <
 	int increment, 
-	CBoardClassicOthello::cell_type _color_to_move, 
-	CBoardClassicOthello::cell_type opponent_color
+	COthelloClassicBoard::cell_type _color_to_move, 
+	COthelloClassicBoard::cell_type opponent_color
 >
-IC	void CBoardClassicOthello::compute_direction(cell_type const *start_cell, int &result) const
+IC	void COthelloClassicBoard::compute_direction(cell_type const *start_cell, int &result) const
 {
 	if (start_cell[1*increment] != opponent_color)
 		return;
@@ -53,8 +53,8 @@ IC	void CBoardClassicOthello::compute_direction(cell_type const *start_cell, int
 		result		+= _color_to_move == BLACK ? 12 : -12;
 }
 	
-template <CBoardClassicOthello::cell_type _color_to_move>
-IC	int CBoardClassicOthello::compute_difference	(const cell_index &index) const
+template <COthelloClassicBoard::cell_type _color_to_move>
+IC	int COthelloClassicBoard::compute_difference	(const cell_index &index) const
 {
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
@@ -135,8 +135,8 @@ IC	int CBoardClassicOthello::compute_difference	(const cell_index &index) const
 	return	(result + (_color_to_move == BLACK ? 1 : -1));
 }
 
-template <CBoardClassicOthello::cell_type _color_to_move>
-IC	int	 CBoardClassicOthello::compute_difference	(const cell_index &index, bool) const
+template <COthelloClassicBoard::cell_type _color_to_move>
+IC	int	 COthelloClassicBoard::compute_difference	(const cell_index &index, bool) const
 {
 	VERIFY			(can_move(index));
 	if (index) {
@@ -155,7 +155,7 @@ IC	int	 CBoardClassicOthello::compute_difference	(const cell_index &index, bool)
 		return		(-difference());
 }
 
-int	 CBoardClassicOthello::compute_difference	(const cell_index &index) const
+int	 COthelloClassicBoard::compute_difference	(const cell_index &index) const
 {
 	if (color_to_move() == BLACK)
 		return		(compute_difference<BLACK>(index,true));

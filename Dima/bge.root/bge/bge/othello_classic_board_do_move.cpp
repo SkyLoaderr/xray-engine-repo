@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: board_classic_othello_do_move.cpp
+//	Module 		: othello_classic_board_do_move.cpp
 //	Created 	: 08.12.2004
 //  Modified 	: 08.12.2004
 //	Author		: Dmitriy Iassenev
@@ -7,12 +7,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "board_classic_othello.h"
+#include "othello_classic_board.h"
 
-template <int increment, CBoardClassicOthello::cell_type _color_to_move, CBoardClassicOthello::cell_type opponent_color>
-IC	void CBoardClassicOthello::try_flip_direction(cell_type *start_cell, int &difference)
+template <int increment, COthelloClassicBoard::cell_type _color_to_move, COthelloClassicBoard::cell_type opponent_color>
+IC	void COthelloClassicBoard::try_flip_direction(cell_type *start_cell, int &difference)
 {
-    CBoardClassicOthello::cell_type *current_cell = start_cell + increment;
+    COthelloClassicBoard::cell_type *current_cell = start_cell + increment;
 
 	if (*current_cell != opponent_color)
 		return;
@@ -53,8 +53,8 @@ check:
 	while (current_cell != start_cell);
 }
 
-template <CBoardClassicOthello::cell_type _color_to_move>
-IC	void CBoardClassicOthello::do_move		(const cell_index &index)
+template <COthelloClassicBoard::cell_type _color_to_move>
+IC	void COthelloClassicBoard::do_move		(const cell_index &index)
 {
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
@@ -142,7 +142,7 @@ IC	void CBoardClassicOthello::do_move		(const cell_index &index)
 	--m_empties;
 }
 
-void CBoardClassicOthello::do_move			(const cell_index &index)
+void COthelloClassicBoard::do_move			(const cell_index &index)
 {
 	if (index) {
 		if (color_to_move() == BLACK)

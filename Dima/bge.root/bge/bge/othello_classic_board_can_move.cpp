@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: board_classic_othello_can_move.cpp
+//	Module 		: othello_classic_board_can_move.cpp
 //	Created 	: 08.12.2004
 //  Modified 	: 08.12.2004
 //	Author		: Dmitriy Iassenev
@@ -7,14 +7,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "board_classic_othello.h"
+#include "othello_classic_board.h"
 
 template <
 	int increment, 
-	CBoardClassicOthello::cell_type _color_to_move, 
-	CBoardClassicOthello::cell_type opponent_color
+	COthelloClassicBoard::cell_type _color_to_move, 
+	COthelloClassicBoard::cell_type opponent_color
 >
-IC	bool CBoardClassicOthello::can_move_in_direction(cell_type const *start_cell) const
+IC	bool COthelloClassicBoard::can_move_in_direction(cell_type const *start_cell) const
 {
 	if (start_cell[1*increment] != opponent_color)
 		return			(false);
@@ -37,8 +37,8 @@ IC	bool CBoardClassicOthello::can_move_in_direction(cell_type const *start_cell)
 	return				(start_cell[7*increment] == _color_to_move);
 }
 	
-template <CBoardClassicOthello::cell_type _color_to_move>
-IC	bool CBoardClassicOthello::can_move		(const cell_index &index) const
+template <COthelloClassicBoard::cell_type _color_to_move>
+IC	bool COthelloClassicBoard::can_move		(const cell_index &index) const
 {
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
@@ -119,7 +119,7 @@ IC	bool CBoardClassicOthello::can_move		(const cell_index &index) const
 #endif
 }
 
-bool CBoardClassicOthello::can_move			(const cell_index &index) const
+bool COthelloClassicBoard::can_move			(const cell_index &index) const
 {
 	if (index) {
 		VERIFY		(cell(index) == EMPTY);
@@ -135,8 +135,8 @@ bool CBoardClassicOthello::can_move			(const cell_index &index) const
 	return			(false);
 }
 
-template <CBoardClassicOthello::cell_type _color_to_move>
-bool CBoardClassicOthello::can_move			() const
+template <COthelloClassicBoard::cell_type _color_to_move>
+bool COthelloClassicBoard::can_move			() const
 {
 	for (cell_index i=0; i<8; ++i)
 		for (cell_index j=0; j<8; ++j) {
@@ -149,7 +149,7 @@ bool CBoardClassicOthello::can_move			() const
 	return				(false);
 }
 
-bool CBoardClassicOthello::can_move			() const
+bool COthelloClassicBoard::can_move			() const
 {
 	if (color_to_move() == BLACK)
 		return	(can_move<BLACK>());

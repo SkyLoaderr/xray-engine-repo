@@ -1617,41 +1617,57 @@
 				<Filter
 					Name="boards"
 					>
+					<File
+						RelativePath=".\othello_board.h"
+						>
+					</File>
 					<Filter
 						Name="classic"
 						>
 						<File
-							RelativePath=".\board_classic_othello.cpp"
+							RelativePath=".\othello_classic_board.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\board_classic_othello.h"
+							RelativePath=".\othello_classic_board.h"
 							>
 						</File>
 						<File
-							RelativePath=".\board_classic_othello_can_move.cpp"
+							RelativePath=".\othello_classic_board_can_move.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\board_classic_othello_compute_difference.cpp"
+							RelativePath=".\othello_classic_board_compute_difference.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\board_classic_othello_do_move.cpp"
+							RelativePath=".\othello_classic_board_do_move.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\board_classic_othello_inline.h"
+							RelativePath=".\othello_classic_board_inline.h"
 							>
 						</File>
 						<File
-							RelativePath=".\board_classic_othello_script.cpp"
+							RelativePath=".\othello_classic_board_script.cpp"
 							>
 						</File>
 					</Filter>
 					<Filter
 						Name="bitboard"
 						>
+						<File
+							RelativePath=".\othello_bit_board.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\othello_bit_board.h"
+							>
+						</File>
+						<File
+							RelativePath=".\othello_bit_board_inline.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter

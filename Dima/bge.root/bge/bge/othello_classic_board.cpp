@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: board_classic_othello.cpp
+//	Module 		: othello_classic_board.cpp
 //	Created 	: 07.12.2004
 //  Modified 	: 07.12.2004
 //	Author		: Dmitriy Iassenev
@@ -7,9 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "board_classic_othello.h"
+#include "othello_classic_board.h"
 
-const u8 CBoardClassicOthello::flipping_directions[BOARD_SIZE] = {
+const u8 COthelloClassicBoard::flipping_directions[BOARD_SIZE] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 1, 1, 2, 2, 2, 2, 3, 3,
 	0, 1, 1, 2, 2, 2, 2, 3, 3,
@@ -22,7 +22,7 @@ const u8 CBoardClassicOthello::flipping_directions[BOARD_SIZE] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void CBoardClassicOthello::start_position	()
+void COthelloClassicBoard::start_position	()
 {
 	Memory::mem_fill		(m_board,DUMMY,sizeof(m_board));
 	
@@ -45,7 +45,7 @@ void CBoardClassicOthello::start_position	()
 	m_flip_stack.c.reserve	(4096);
 }
 
-IC	void CBoardClassicOthello::show_cell		(const cell_index &index) const
+IC	void COthelloClassicBoard::show_cell		(const cell_index &index) const
 {
 	char			output;
 	switch (cell(index)) {
@@ -69,7 +69,7 @@ IC	void CBoardClassicOthello::show_cell		(const cell_index &index) const
 	ui().log		(" %c",output);
 }
 
-IC	int	CBoardClassicOthello::move_cell(const cell_index &index) const
+IC	int	COthelloClassicBoard::move_cell(const cell_index &index) const
 {
 	flip_stack		temp = m_flip_stack;
 	for (int j= 60 - empties(); !temp.empty(); --j) {
@@ -93,7 +93,7 @@ IC	int	CBoardClassicOthello::move_cell(const cell_index &index) const
 	return			(0);
 }
 
-IC	void CBoardClassicOthello::show_move_cell	(const cell_index &index) const
+IC	void COthelloClassicBoard::show_move_cell	(const cell_index &index) const
 {
 	string16	output;
 	switch (cell(index)) {
@@ -115,7 +115,7 @@ IC	void CBoardClassicOthello::show_move_cell	(const cell_index &index) const
 	ui().log		("%s",output);
 }
 
-IC	void CBoardClassicOthello::show_letters		() const
+IC	void COthelloClassicBoard::show_letters		() const
 {
 	ui().log		("  ");
 	for (cell_index i=0; i<8; ++i)
@@ -135,17 +135,17 @@ IC	void CBoardClassicOthello::show_letters		() const
 	ui().log		("\n");
 }
 
-IC	void CBoardClassicOthello::show_digit		(const cell_index &index) const
+IC	void COthelloClassicBoard::show_digit		(const cell_index &index) const
 {
 	ui().log		("%2c",'1' + index);
 }
 
-IC	void CBoardClassicOthello::show_move_digit	(const cell_index &index) const
+IC	void COthelloClassicBoard::show_move_digit	(const cell_index &index) const
 {
 	ui().log		("|%c",'1' + index);
 }
 
-void CBoardClassicOthello::show				() const
+void COthelloClassicBoard::show				() const
 {
 	show_letters		();
 	for (cell_index i=0; i<8; ++i) {

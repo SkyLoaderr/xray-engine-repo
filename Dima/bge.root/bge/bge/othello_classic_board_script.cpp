@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: board_classic_othello_script.cpp
+//	Module 		: othello_classic_board_script.cpp
 //	Created 	: 07.12.2004
 //  Modified 	: 07.12.2004
 //	Author		: Dmitriy Iassenev
@@ -7,30 +7,30 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "board_classic_othello.h"
+#include "othello_classic_board.h"
 #include "script_space.h"
 
 using namespace luabind;
 
-void CBoardClassicOthello::script_register(lua_State *L)
+void COthelloClassicBoard::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<CBoardClassicOthello>("bco")//("board_classic_othello")
+		class_<COthelloClassicBoard>("bco")//("othello_classic_board")
 			.def(constructor<>())
-			.def("start_position",		&CBoardClassicOthello::start_position)
-			.def("show",				&CBoardClassicOthello::show)
-			.def("move",				(void (CBoardClassicOthello::*)(const cell_index &, const cell_index &))(&CBoardClassicOthello::do_move))
-			.def("move",				(void (CBoardClassicOthello::*)(LPCSTR))(&CBoardClassicOthello::do_move))
-			.def("undo",				(void (CBoardClassicOthello::*)())(&CBoardClassicOthello::undo_move))
-			.def("can_move",			(bool (CBoardClassicOthello::*)(const cell_index &, const cell_index &) const)(&CBoardClassicOthello::can_move))
-			.def("can_move",			(bool (CBoardClassicOthello::*)(LPCSTR) const)(&CBoardClassicOthello::can_move))
-			.def("can_move",			(bool (CBoardClassicOthello::*)() const)(&CBoardClassicOthello::can_move))
-			.def("color_to_move",		&CBoardClassicOthello::color_to_move)
-			.def("empties",				&CBoardClassicOthello::empties)
-			.def("difference",			&CBoardClassicOthello::difference)
-			.def("compute_difference",	(int (CBoardClassicOthello::*)(const cell_index &,const cell_index &) const)(&CBoardClassicOthello::compute_difference))
-			.def("compute_difference",	(int (CBoardClassicOthello::*)(LPCSTR) const)(&CBoardClassicOthello::compute_difference))
-			.def("terminal_position",	&CBoardClassicOthello::terminal_position)
+			.def("start_position",		&COthelloClassicBoard::start_position)
+			.def("show",				&COthelloClassicBoard::show)
+			.def("move",				(void (COthelloClassicBoard::*)(const cell_index &, const cell_index &))(&COthelloClassicBoard::do_move))
+			.def("move",				(void (COthelloClassicBoard::*)(LPCSTR))(&COthelloClassicBoard::do_move))
+			.def("undo",				(void (COthelloClassicBoard::*)())(&COthelloClassicBoard::undo_move))
+			.def("can_move",			(bool (COthelloClassicBoard::*)(const cell_index &, const cell_index &) const)(&COthelloClassicBoard::can_move))
+			.def("can_move",			(bool (COthelloClassicBoard::*)(LPCSTR) const)(&COthelloClassicBoard::can_move))
+			.def("can_move",			(bool (COthelloClassicBoard::*)() const)(&COthelloClassicBoard::can_move))
+			.def("color_to_move",		&COthelloClassicBoard::color_to_move)
+			.def("empties",				&COthelloClassicBoard::empties)
+			.def("difference",			&COthelloClassicBoard::difference)
+			.def("compute_difference",	(int (COthelloClassicBoard::*)(const cell_index &,const cell_index &) const)(&COthelloClassicBoard::compute_difference))
+			.def("compute_difference",	(int (COthelloClassicBoard::*)(LPCSTR) const)(&COthelloClassicBoard::compute_difference))
+			.def("terminal_position",	&COthelloClassicBoard::terminal_position)
 	];
 }

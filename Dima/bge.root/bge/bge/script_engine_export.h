@@ -10,4 +10,4 @@
 
 #include "script_engine.h"
 #include "console_ui.h"
-#include "board_classic_othello.h"
+#include "othello_classic_board.h"
