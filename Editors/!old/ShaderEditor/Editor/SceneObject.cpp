@@ -286,11 +286,21 @@ void CSceneObject::OnShowHint(AStringVec& dest)
         R_ASSERT(pinf.e_mesh);
         CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
         dest.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));
-        dest.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
-        dest.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));
-        dest.push_back(AnsiString("LC Shader: ")+AnsiString(surf->_ShaderXRLCName()));
-        dest.push_back(AnsiString("Game Mtl: ")+AnsiString(surf->_GameMtlName()));
         dest.push_back(AnsiString("2 Sided: ")+AnsiString(surf->m_Flags.is(CSurface::sf2Sided)?"on":"off"));
+        if (pinf.e_obj->m_Flags.is(CEditableObject::eoSoundOccluder)){
+        }else if (pinf.e_obj->m_Flags.is(CEditableObject::eoHOM)){
+	        dest.push_back(AnsiString("Game Mtl: ")+AnsiString(surf->_GameMtlName()));
+            int gm_id			= surf->_GameMtl(); 
+            if (gm_id!=GAMEMTL_NONE_ID){ 
+                SGameMtl* mtl 	= GMLib.GetMaterialByID(gm_id);
+                if (mtl)		dest.push_back(AnsiString().sprintf("Occlusion: %3.2f",mtl->fSndOcclusionFactor));
+            }
+        }else{
+	        dest.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
+    	    dest.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));
+        	dest.push_back(AnsiString("LC Shader: ")+AnsiString(surf->_ShaderXRLCName()));
+	        dest.push_back(AnsiString("Game Mtl: ")+AnsiString(surf->_GameMtlName()));
+        }
     }
 }
 //----------------------------------------------------
