@@ -244,6 +244,7 @@ void CRender::render_scenegraph	()
 	// Perform sorting based on ScreenSpaceArea
 	// Sorting by SSA and changes minimizations
 	{
+		RCache.set_xform_world			(Fidentity);
 		mapNormalVS&	vs				= mapNormal;
 		vs.getANY_P						(nrmVS);
 		std::sort						(nrmVS.begin(), nrmVS.end(), cmp_vs_nrm);
