@@ -474,7 +474,6 @@ void	game_sv_ArtefactHunt::Update			()
 }
 bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()	
 {
-	return TRUE;
 	// Check if all players ready
 	u32		cnt		= get_count	();
 	

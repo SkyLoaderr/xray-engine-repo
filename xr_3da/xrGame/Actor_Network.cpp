@@ -445,6 +445,8 @@ void CActor::NetInput_Apply			(net_input* pNI)
 	cam_Active()->yaw = pNI->cam_yaw;
 	cam_Active()->pitch = pNI->cam_pitch;
 
+	unaffected_r_torso_yaw = -pNI->cam_yaw;
+	unaffected_r_torso_pitch = pNI->cam_pitch;
 	if (OnClient())
 	{
 		float Jump = 0;
