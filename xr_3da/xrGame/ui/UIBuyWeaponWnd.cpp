@@ -1249,6 +1249,8 @@ int CUIBuyWeaponWnd::GetPriceOfItemInSlot(int slot){
 	if (!UITopList[slot].GetDragDropItemsList().empty())
 	{
 		CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(*UITopList[slot].GetDragDropItemsList().begin());
+		if (!pDDItemMP->IsEnabled())
+			return 0;
         return GetItemPrice(pDDItemMP);	
 	}
 
@@ -1366,9 +1368,6 @@ CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleA
 
 int CUIBuyWeaponWnd::GetItemPrice(CUIDragDropItemMP* pDDItemMP){
 	if (NULL == pDDItemMP)
-		return 0;
-
-	if (!pDDItemMP->IsEnabled())
 		return 0;
 
 	return static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1));
