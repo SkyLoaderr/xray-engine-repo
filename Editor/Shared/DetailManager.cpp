@@ -223,7 +223,7 @@ void CDetailManager::Render		(Fvector& EYE)
 								
 								if (g_fSCREEN*radius*radius/dist_sq < ssaLIMIT) continue;
 
-								Item.scale_calculated = scale;
+								Item.scale_calculated = alpha;
 								vis.push_back	(siIT);
 							}
 						}
@@ -292,7 +292,9 @@ void CDetailManager::Render		(Fvector& EYE)
 			for (DWORD item=item_start; item<item_end; item++)
 			{
 				SlotItem&	Instance	= *(vis[item]);
-				float	scale			= Instance.scale_calculated; 
+				float	scale			= Instance.scale;
+				float   alpha			= Instance.scale_calculated; 
+				DWORD	a				= iFloor(alpha*255.f);
 
 				// Build matrix and xform vertices
 				mScale.scale			(scale,scale,scale);
@@ -305,7 +307,7 @@ void CDetailManager::Render		(Fvector& EYE)
 					mXform.mul_43			(Instance.mRotY,mScale);
 					mXform.translate_over	(Instance.P);
 				}
-				Object.Transfer			(mXform, vDest, Instance.C);
+				Object.Transfer			(mXform, vDest, Instance.C|D3DCOLOR_RGBA(0,0,0,a));
 				vDest					+=	vCount_Object;
 			}
 			VS->Unlock	(vCount_Lock);
@@ -482,7 +484,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));
 				
 				// Color
-				Item.C		= 0xffffffff;
+				Item.C		= D3DCOLOR_RGBA		(255,255,255,0);
 				
 				// Save it
 				D.G[index].items.push_back(Item);
@@ -504,10 +506,10 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 	DS.r_yaw				= 0xaaaaaaaa;
 	DS.r_scale				= 0xaaaaaaaa;
 
-	DS.items[0].id			= 1;
-	DS.items[0].palette.a0	= 15;
+	DS.items[0].id			= 4;
+	DS.items[0].palette.a0	= 15/2;
 	DS.items[0].palette.a1	= 7;
-	DS.items[0].palette.a2	= 15;
+	DS.items[0].palette.a2	= 15/2;
 	DS.items[0].palette.a3	= 2;
 
 	DS.items[1].id			= 2;
