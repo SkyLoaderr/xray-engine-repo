@@ -73,8 +73,8 @@ void	CRender::render_lights	(light_Package& LP)
 	//	}
 	//	if (left_some_lights_that_doesn't cast shadows)
 	//		accumulate them
-
-	while	(LP.v_point_s.size() || LP.v_spot_s.size() )
+	HOM.Disable	();
+	while		(LP.v_point_s.size() || LP.v_spot_s.size() )
 	{
 		// if (has_point_shadowed)
 		light*	L_point_s	= 0;	
@@ -87,6 +87,7 @@ void	CRender::render_lights	(light_Package& LP)
 				Lights_LastFrame.push_back		(L);
 				for (u32 pls_phase=0; pls_phase<6; pls_phase++)		{
 					phase									= PHASE_SMAP_P;
+					r_pmask									(true,false);
 					if (!LR.compute_xfp_1(pls_phase, L))	continue;	// frustum doesn't touch primary frustum
 					L->svis[pls_phase].begin				();
 					r_dsgraph_render_subspace				(L->spatial.sector, L->X.P.combine, L->position, TRUE);
@@ -137,7 +138,9 @@ void	CRender::render_lights	(light_Package& LP)
 					RCache.set_xform_view				(L->X.S.view);
 					RCache.set_xform_project			(L->X.S.project);
 					r_dsgraph_render_graph				(0);
+					L->X.S.transluent					= FALSE;
 					if (bSpecial)						{
+						L->X.S.transluent					= TRUE;
 						Target.phase_smap_spot_tsh			(L);
 						r_dsgraph_render_graph				(1);			// normal level, secondary priority
 						r_dsgraph_render_sorted				( );			// strict-sorted geoms

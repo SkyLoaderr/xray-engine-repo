@@ -31,5 +31,30 @@ void	CRenderTarget::phase_smap_spot_tsh	(light* L)
 	VERIFY							(RImplementation.b_Tshadows);
 	RCache.set_ColorWriteEnable		();
 
-	// fill color-mask
+	// Select color-mask
+	ref_shader		shader			= L->s_spot;
+	if (!shader)	shader			= s_accum_spot;
+	RCache.set_Element				(shader->E[ SE_SPOT_FILL ]	);
+
+	// Fill vertex buffer
+	Fvector2						p0,p1;
+	u32		Offset;
+	u32		C						= D3DCOLOR_RGBA	(255,255,255,255);
+	float	_w						= float(L->X.S.size);
+	float	_h						= float(L->X.S.size);
+	float	d_Z						= EPS_S;
+	float	d_W						= 1.f;
+	p0.set							(.5f/_w, .5f/_h);
+	p1.set							((_w+.5f)/_w, (_h+.5f)/_h );
+
+	FVF::TL* pv						= (FVF::TL*) RCache.Vertex.Lock	(4,g_decompress->vb_stride,Offset);
+	pv->set							(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
+	pv->set							(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
+	pv->set							(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
+	pv->set							(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
+	RCache.Vertex.Unlock			(4,g_decompress->vb_stride);
+	RCache.set_Geometry				(g_decompress);
+
+	// draw
+	RCache.Render					(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }
