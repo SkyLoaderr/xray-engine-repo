@@ -196,7 +196,7 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 --see bind commands in user.lxt (bind ext_1 kY and bind ext_2 kU)
    if key_bindings.kEXT_1 == key then
 --      self:StartStopMenu(self.m_testWnd,true)
-      self:StartStopMenu(self.m_dlg, true)
+      self:StartStopMenu(self.m_dlg_, true)
       return true
    end
 
