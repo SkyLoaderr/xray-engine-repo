@@ -184,7 +184,7 @@ public:
         return len;
 	}
 
-	IC	SelfRef normalize(void) 
+	ICF	SelfRef normalize(void) 
 	{
 		VERIFY(square_magnitude() > std::numeric_limits<T>::min());
 		T mag=_sqrt(T(1)/(x*x + y*y + z*z));
@@ -208,7 +208,7 @@ public:
 	}
 
 	// Normalize
-	IC	SelfRef	normalize(const Self &v) 
+	ICF	SelfRef	normalize(const Self &v) 
 	{
 		VERIFY((v.x*v.x+v.y*v.y+v.z*v.z)>flt_zero);
 		T mag=_sqrt(1/(v.x*v.x + v.y*v.y + v.z*v.z));
