@@ -9,9 +9,8 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
-#include "texture.h"
-#include "std_classes.h"
-#include "xr_avi.h"
+// #include "std_classes.h"
+// #include "xr_avi.h"
 
 
 //////////////////////////////////////////////////////////////////////
