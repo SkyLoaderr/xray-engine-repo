@@ -24,6 +24,7 @@ local look_box     = 5
 local radio_talk   = 6
 local drink_vodka  = 7
 local sleep        = 8
+local box_alarm    = 9
 
 local snd_base           = xr_sounds_id.chugai_commander_base
 local snd_singing        = snd_base + 0
@@ -115,7 +116,7 @@ function action_commander:finalize()
     end
 end
 
-function action_commander:walk_to_pos( way, waypoint )
+function action_commander:walk_to_pos( way, waypoint, run )
     -- waypoint может быть как индексом, так и именем
     if type( waypoint ) == "string" then
         waypoint = way:index( waypoint )
@@ -132,12 +133,18 @@ function action_commander:walk_to_pos( way, waypoint )
     --self.object:set_item                ( object.idle, self.object:best_weapon() )
     self.object:set_item                ( object.idle, nil )
     self.object:set_body_state          ( move.standing )
-    self.object:set_movement_type       ( move.walk )
     self.object:set_mental_state        ( anim.free )
     self.object:set_path_type           ( game_object.level_path )
     self.object:set_detail_path_type    ( move.line )
     self.object:set_dest_level_vertex_id( way:level_vertex_id( waypoint ) )
     self.object:set_desired_position    ( self.pos )
+
+    if run then 
+        self.object:set_mental_state    ( anim.danger )
+        self.object:set_movement_type   ( move.run )
+    else
+        self.object:set_movement_type   ( move.walk )
+    end
 end
 
 function action_commander:stop()
@@ -166,7 +173,7 @@ function action_commander:execute()
             repeat
                 if not self.drunk then
                     self.act = random_choice_weighted{
-                                   [walk_inside]  = 40,
+                                   [walk_inside]  = 4000,
                                    [walk_outside] = 20,
                                    [look_map]     = 10,
                                    [look_outside] = 10,
@@ -220,6 +227,9 @@ function action_commander:execute()
 
     elseif self.act == sleep then
         self:exec_sleep()
+
+    elseif self.act == box_alarm then
+        self:exec_box_alarm()
 
     else
         self.decision = true
@@ -319,30 +329,19 @@ function action_commander:exec_look_box()
             if self.time_end <= device():time_global() then
                 if not self.object:see( self.box ) then
                     printf( "[commander] : ящик украли! “ревога!!!" )
-
-                    self.object:set_sound_mask( -1 )
-                    self.object:set_sound_mask( 0 )
-
-                    if self.drunk then
-                        self.object:play_sound( snd_lost_box_drunk, 1, 0 )
-                    else
-                        self.object:play_sound( snd_lost_box, 1, 0 )
-                    end
-
-                    xr_gulag.setFractionState( "blockpost", 2 )
-
-                    self.box_alarm = true
+                    self.act     = box_alarm
+                    self.pos     = nil
+                    self.sub_act = nil
                 else
                     printf( "[commander] : ящик на месте" )
                     self:add_inside_animations( 2 )
+                    self.act = walk_inside
                 end
 
                 self.look_at_box   = false
                 self.looked_at_box = true
 
                 self.time_end = nil
-
-                self.act = walk_inside
             end
         else
             self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
@@ -355,6 +354,51 @@ function action_commander:exec_look_box()
         self.look_at_box = false
         self.act = walk_inside
         self:add_inside_animations( 2 )
+    end
+end
+
+function action_commander:exec_box_alarm()
+    if self.pos then
+        if self:in_pos() then
+            if self.sub_act then
+                if self.object:animation_count() == 0 then
+                    self.decision = true
+                    self.object:set_item( object.idle, nil )
+                    self.object:play_sound( snd_walking, 1, 0, 1, 0, random_choice( 1, 2 ) )
+                end
+            else
+                self:stop()
+
+                for i = 1, 6 do
+                    self.object:add_animation( "poisk_idle_4", true )
+                end
+
+                self.object:set_sound_mask( -1 )
+                self.object:set_sound_mask( 0 )
+
+                if self.drunk then
+                    self.object:play_sound( snd_lost_box_drunk, 1, 0 )
+                else
+                    self.object:play_sound( snd_lost_box, 1, 0 )
+                end
+
+--                xr_gulag.setFractionState( "blockpost", 2 )
+                self.box_alarm = true
+
+                self.sub_act = true
+            end
+        else
+            -- если сдвинулс€ с позиции, то уйти
+            if self.time_end then
+                --self.object:clear_animations()
+                self.decision = true
+                self.object:set_item( object.idle, nil )
+            end
+        end
+    else
+        self.object:clear_animations()
+        self:walk_to_pos( self.a.way, "near_door", true )
+        self.object:set_item( object.activate, self.object:best_weapon() )
     end
 end
 
