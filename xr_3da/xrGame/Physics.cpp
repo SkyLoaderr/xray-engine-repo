@@ -30,8 +30,7 @@ const dReal default_l_scale	=1.01f;
 const dReal default_w_scale	=1.01f;
 const dReal	default_k_l		=0.0002f;//square resistance !!
 const dReal	default_k_w		=0.05f;
-const dReal default_disw	=0.00005f;
-const dReal default_disl	=0.005f;
+
 
 #ifndef  ODE_SLOW_SOLVER
 const dReal world_cfm		=1.1363636e-008f;
@@ -144,7 +143,7 @@ void CPHWorld::Create()
 	dSpaceSetCleanup(Space,0);
 #ifdef ODE_SLOW_SOLVER
 #else
-	dWorldSetAutoEnableDepth(phWorld, 3);
+	dWorldSetAutoEnableDepth(phWorld, 300);
 #endif
 	ContactGroup = dJointGroupCreate(0);		
 	dWorldSetGravity(phWorld, 0,-world_gravity, 0);//-2.f*9.81f

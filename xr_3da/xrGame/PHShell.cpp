@@ -576,7 +576,8 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 				root_e->add_Shape(bone_data.shape,vs_root_position);
 				root_e->add_Mass(bone_data.shape,vs_root_position,bone_data.center_of_mass,bone_data.mass);
 			}
-	
+			
+
 			//B.Callback_Param=root_e;
 			//B.Callback=NULL;
 		
@@ -596,7 +597,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			element_number=u16(elements.size());
 			add_Element(E);
 			element_added=true;
-
+			
 			
 			if(root_e)
 			{
@@ -799,7 +800,10 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	//	B.set_callback(0,root_e);
 		E=root_e;
 	}
-	
+
+	CODEGeom* added_geom	=	E->last_geom();
+	if(added_geom)	added_geom->set_bone_id(id);
+
 	if(m_spliter_holder&&E->has_geoms())
 	{
 		m_spliter_holder->AddToGeomMap(mk_pair(id,E->last_geom())); 
@@ -964,12 +968,12 @@ void CPHShell::set_DynamicScales(float l_scale/* =default_l_scale */,float w_sca
 		(*i)->set_DynamicScales(l_scale,w_scale);
 }
 
-void CPHShell::set_DisableParams(float dis_l/* =default_disl */,float dis_w/* =default_disw */)
+void CPHShell::set_DisableParams(const SAllDDOParams& params)
 {
 	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
 	for( ;i!=e;++i)
-		(*i)->set_DisableParams(dis_l,dis_w);
+		(*i)->set_DisableParams(params);
 }
 
 void CPHShell::UpdateRoot()

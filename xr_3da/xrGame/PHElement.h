@@ -4,19 +4,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "Geometry.h"
 #include "phdefs.h"
-//using namespace std;
-#ifndef PH_ELEMENT
-#define PH_ELEMENT
 #include "PhysicsCommon.h"
 #include "PHSynchronize.h"
+#include "PHDisabling.h"
+
+#ifndef PH_ELEMENT
+#define PH_ELEMENT
 class CPHElement;
 class CPHShell;
 class CPHFracture;
 DEFINE_VECTOR(CODEGeom*,GEOM_STORAGE,GEOM_I)
 class CPHFracturesHolder;
 class CPHElement	:  
-	public CPhysicsElement ,
-	public CPHSynchronize
+	public	CPhysicsElement ,
+	public	CPHSynchronize,
+	public	CPHDisablingFull
 {
 	friend class CPHFracturesHolder;
 	GEOM_STORAGE			m_geoms;					//e					//bl
@@ -27,10 +29,12 @@ class CPHElement	:
 	dMass					m_mass;						//e ??				//bl
 	dBodyID					m_body;						//e					//st
 	dSpaceID				m_group;					//e					//bl
+
 	dReal					m_l_scale;					// ->to shell ??	//bl
 	dReal					m_w_scale;					// ->to shell ??	//bl
 	dReal					m_disw_param;				// ->to shell ??	//bl
 	dReal					m_disl_param;				// ->to shell ??	//bl
+
 	CPhysicsRefObject*		m_phys_ref_object;			//->to shell ??		//bl
 	CPHElement				*m_parent_element;			//bool !			//bl
 	CPHShell				*m_shell;					//e					//bl
@@ -45,17 +49,21 @@ class CPHElement	:
 
 	dVector3					m_safe_position;		//e					//st
 	dVector3					m_safe_velocity;		//e					//st
-	dVector3					previous_p;				//e					//st
-	dMatrix3					previous_r;				//e//to angles		//st
-	dVector3					previous_p1;			//e					//st
-	dMatrix3					previous_r1;			//e//to angles		//st
+///////////////////////////////////////////////////////////////////////////////////
+	dVector3					m_sumLinDev;			//
+	dVector3					m_sumAngDev;			//
+	dVector3					m_sumLinVDev;			//
+	dVector3					m_sumAngVDev;			//
+
+	dVector3					m_prevPos;			//
+	dVector3					m_prevAngPos;			//
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
 	Fmatrix						m_inverse_local_transform;//e				//bt
 	//dVector3 previous_f;
 	//dVector3 previous_t;
-	dReal						previous_dev;			//e					//st
-	dReal						previous_v;				//e					//st
-	UINT						dis_count_f;			//e					//st
-	UINT						dis_count_f1;			//e					//st
+
 	dReal						k_w;					//->to shell ??		//st
 	dReal						k_l;//1.8f;				//->to shell ??		//st
 
@@ -80,7 +88,6 @@ private:
 	void					calculate_it_data_use_density	(const Fvector& mc,float density);												//aux
 	void					calc_it_fract_data_use_density  (const Fvector& mc,float density);//sets element mass and fractures parts mass	//aux
 	dMass					recursive_mass_summ				(u16 start_geom,FRACTURE_I cur_fracture);										//aux
-	void					Disabling						();																				//caled by ph upadate state influent
 	void					unset_Pushout					();																				//caled by ph upadate state influent
 	void					FillInterpolation				()																				//interpolation called anywhere visual influent
 	{
@@ -95,9 +102,8 @@ IC	void					UpdateInterpolation				()																				//interpolation called 
 		bUpdate=true;
 	}
 public:
-	void					Disable							();																				//ph state influent called from ph update
-	void					ReEnable						();																				//ph state influent called from ph update
-	void					ResetDisable					();																				//aux
+	virtual void			Disable							();																				//
+	virtual	void			ReEnable						();																				//
 	void					Enable							();																				//aux
 	virtual void			SetAirResistance				(dReal linear=default_k_l, dReal angular=default_k_w)							//aux (may not be)
 	{
@@ -113,9 +119,8 @@ public:
 	virtual CPhysicsShell*	PhysicsShell					();																				//aux
 	virtual void			get_Extensions					(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);			//aux
 	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}							//aux
-	virtual void			set_DisableParams				(float dis_l=default_disl,float dis_w=default_disw);							//aux (may not be)
 	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val,const u16 id)	;					//called anywhere ph state influent
-
+	virtual	void			set_DisableParams				(const SAllDDOParams& params)										;
 
 	///
 	virtual	void			add_Sphere						(const Fsphere&		V);															//aux
@@ -123,7 +128,7 @@ public:
 	virtual	void			add_Cylinder					(const Fcylinder&	V);															//aux
 	virtual void			add_Shape						(const SBoneShape& shape);														//aux
 	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);								//aux
-	virtual CODEGeom*		last_geom						(){return m_geoms.back();}														//aux
+	virtual CODEGeom*		last_geom						(){if(m_geoms.empty())return NULL; return m_geoms.back();}						//aux
 	virtual bool			has_geoms						(){return !m_geoms.empty();}
 	virtual void			set_ContactCallback				(ContactCallbackFun* callback);													//aux (may not be)
 	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);					//aux (may not be)

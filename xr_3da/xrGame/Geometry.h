@@ -64,6 +64,8 @@ virtual			void		set_local_form		(const Fmatrix& form)												=0;
 	//set
 	//element part
 				void		set_body			(dBodyID body)														;
+				void		set_bone_id			(u16 id)											{m_bone_id=id;}
+				u16			bone_id				()												{return m_bone_id;}
 				void		add_to_space		(dSpaceID space)													;
 				void		remove_from_space	(dSpaceID space)													;
 				void		set_material		(u16 ul_material)													;

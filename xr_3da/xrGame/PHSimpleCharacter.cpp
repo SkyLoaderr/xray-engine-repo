@@ -62,13 +62,11 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	b_exist=false;
 	m_mass=70.f;
 	m_max_velocity=5.f;
-	m_update_time=0.f;
+	//m_update_time=0.f;
 	b_meet_control=false;
 	b_jumping=false;
 	jump_up_velocity=6.f;
 
-	previous_p[0]=dInfinity;
-	dis_count_f=0;
 
 	m_capture_joint=NULL;
 
@@ -301,12 +299,16 @@ void		CPHSimpleCharacter::ApplyForce(const Fvector& dir,float force)
 void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	///////////////////
 	if( !dBodyIsEnabled(m_body)) {
-		if(dInfinity!=previous_p[0]) previous_p[0]=dInfinity;
+	
 		return;
 	}
 	if(is_contact&&!is_control)
 		Disabling();
 
+	if( !dBodyIsEnabled(m_body)) {
+
+		return;
+	}
 	///////////////////////
 	b_external_impulse=false;
 	was_contact=is_contact;
@@ -900,93 +902,6 @@ void CPHSimpleCharacter::SetPhysicsRefObject					(CPhysicsRefObject* ref_object)
 	}
 }
 
-
-void	CPHSimpleCharacter::Disabling(){
-	if(b_lose_control) return;
-	/////////////////////////////////////////////////////////////////////////////////////
-	////////disabling main body//////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////
-	{
-		const dReal* torqu=dBodyGetTorque(m_body);
-		const dReal* force=dBodyGetForce(m_body);
-		dReal t_m =_sqrt(	torqu[0]*torqu[0]+
-			torqu[1]*torqu[1]+
-			torqu[2]*torqu[2]);
-		dReal f_m=_sqrt(	force[0]*force[0]+
-			force[1]*force[1]+
-			force[2]*force[2]);
-		if(t_m+f_m>0.000000){
-			previous_p[0]=dInfinity;
-			previous_v=0;
-			dis_count_f=1;
-			dis_count_f1=0;
-			return;
-		}
-	}
-	if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
-		const dReal* position=dBodyGetPosition(m_body);
-		Memory.mem_copy(previous_p,position,sizeof(dVector3));
-		Memory.mem_copy(previous_p1,position,sizeof(dVector3));	
-		previous_v=0;
-		dis_count_f=1;
-		dis_count_f1=0;
-	}
-
-
-	if(ph_world->disable_count==dis_frames){	
-		if(dInfinity!=previous_p[0]){
-			const dReal* current_p=dBodyGetPosition(m_body);
-			dVector3 velocity={current_p[0]-previous_p[0],
-				current_p[1]-previous_p[1],
-				current_p[2]-previous_p[2]};
-			dReal mag_v=_sqrt(
-				velocity[0]*velocity[0]+
-				velocity[1]*velocity[1]+
-				velocity[2]*velocity[2]);
-			mag_v/=dis_count_f;
-			if(mag_v<0.001f* dis_frames && !JumpState())
-				dBodyDisable(m_body);
-			if(previous_v>mag_v)
-
-			{
-				++dis_count_f;
-				previous_v=mag_v;
-				//return;
-			}
-			else{
-				previous_v=0;
-				dis_count_f=1;
-				Memory.mem_copy(previous_p,current_p,sizeof(dVector3));
-			}
-
-			{
-
-				dVector3 velocity={current_p[0]-previous_p1[0],
-					current_p[1]-previous_p1[1],
-					current_p[2]-previous_p1[2]};
-				dReal mag_v=_sqrt(
-					velocity[0]*velocity[0]+
-					velocity[1]*velocity[1]+
-					velocity[2]*velocity[2]);
-				mag_v/=dis_count_f;
-
-				if(mag_v<0.04* dis_frames )
-					++dis_count_f1;
-				else{
-					Memory.mem_copy(previous_p1,current_p,sizeof(dVector3));
-				}
-
-				if(dis_count_f1>10) dis_count_f*=10;
-
-			}
-
-
-		}
-
-	}
-	/////////////////////////////////////////////////////////////////
-
-}
 
 
 void CPHSimpleCharacter::CaptureObject(dBodyID body,const dReal* anchor)

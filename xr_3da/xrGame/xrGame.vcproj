@@ -3586,6 +3586,22 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="Disabling"
+					Filter="">
+					<File
+						RelativePath=".\DisablingParams.cpp">
+					</File>
+					<File
+						RelativePath=".\DisablingParams.h">
+					</File>
+					<File
+						RelativePath=".\PHDisabling.cpp">
+					</File>
+					<File
+						RelativePath=".\PHDisabling.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Utils"
@@ -3595,6 +3611,9 @@
 				</File>
 				<File
 					RelativePath=".\CycleConstStorage.h">
+				</File>
+				<File
+					RelativePath=".\MathUtils.h">
 				</File>
 				<File
 					RelativePath="PHDynamicData.cpp">

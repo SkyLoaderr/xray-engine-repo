@@ -155,7 +155,7 @@ virtual ~CPHShell				()
 	virtual void                ZeroCallbacks				();
 	virtual void				ResetCallbacks				(u16 id,Flags64 &mask);
 	virtual void				SetCallbacks				();
-	virtual void				set_DisableParams			(float dis_l=default_disl,float dis_w=default_disw);
+	virtual void				set_DisableParams			(const SAllDDOParams& params);
 	virtual void				UpdateRoot					();
 	virtual void				SmoothElementsInertia		(float k);
 	virtual void				InterpolateGlobalTransform	(Fmatrix* m);

@@ -1,14 +1,13 @@
 #ifndef PHYSICS_COMMON_H
 #define PHYSICS_COMMON_H
-
+#include "DisablingParams.h"
 extern const dReal	default_l_limit;
 extern const dReal	default_w_limit;
 extern const dReal	default_k_l;
 extern const dReal	default_k_w;
 extern const dReal	default_l_scale;
 extern const dReal	default_w_scale;
-extern const dReal	default_disw;
-extern const dReal	default_disl;
+
 extern const dReal	fixed_step;
 extern const u32	dis_frames;
 extern const dReal	world_gravity;

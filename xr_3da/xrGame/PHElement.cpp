@@ -39,17 +39,26 @@ CPHElement::CPHElement()																															//aux
 	m_l_limit = default_l_limit;
 	m_l_scale=default_l_scale;
 	m_w_scale=default_w_scale;
-	m_disw_param=default_disw;
-	m_disl_param=default_disl;
+
 	push_untill=0;
 	contact_callback=ContactShotMark;
 	object_contact_callback=NULL;
 	temp_for_push_out=NULL;
+
 	m_body=NULL;
 	bActive=false;
 	bActivating=false;
-	dis_count_f=0;
-	dis_count_f1=0;
+
+
+	m_sumLinDev[0]=0.f;			//
+	m_sumAngDev;			//
+	m_sumLinVDev;			//
+	m_sumAngVDev;			//
+	
+	m_prevPos;			//
+	m_prevAngPos;			//
+
+
 	m_parent_element=NULL;
 	m_shell=NULL;
 	m_group=NULL;
@@ -224,6 +233,7 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density)
 	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
 	for(;i_geom!=e;++i_geom)(*i_geom)->add_self_mass(m_mass,mc,density);
 }
+
 static float static_dencity;
 void CPHElement::calc_it_fract_data_use_density(const Fvector& mc,float density)
 {
@@ -360,9 +370,6 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	mean_v[1]=0.f;
 	mean_v[2]=0.f;
 	*/
-	previous_p[0]=dInfinity;
-	previous_r[0]=0.f;
-	dis_count_f=0;
 
 	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
@@ -408,10 +415,6 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 	mean_v[1]=0.f;
 	mean_v[2]=0.f;
 	*/
-	previous_p[0]=dInfinity;
-	previous_r[0]=0.f;
-	dis_count_f=0;
-
 	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
 	if(disable) dBodyDisable(m_body);
@@ -454,18 +457,25 @@ void CPHElement::PhDataUpdate(dReal step){
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	if( !dBodyIsEnabled(m_body)) 
 	{
-		if(dInfinity != previous_p[0]) previous_p[0]=dInfinity;//disable
 		return;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////disable///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////base pointers/////////////////////////////////////////////////
+
+	if(dBodyIsEnabled(m_body)) Disabling();
+	if(!dBodyIsEnabled(m_body)) return;
+
+
+	//////////////////////////////////base pointers/////////////////////////////////////////////////
 	const dReal* linear_velocity	=	dBodyGetLinearVel(m_body)	;
 	const dReal* angular_velocity	=	dBodyGetAngularVel(m_body)	;
 
 	
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////scale velocity///////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////scale velocity///////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 
 	dBodySetLinearVel(
 						m_body,
@@ -562,14 +572,7 @@ void CPHElement::PhDataUpdate(dReal step){
 		}
 
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////disable///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//
-	if(!dBodyIsEnabled(m_body)) return;
-	ReEnable();
-	Disabling();
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////air resistance/////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -601,191 +604,40 @@ UpdateInterpolation				();
 
 }
 
-void	CPHElement::Disabling(){
-	//return;
-	/////////////////////////////////////////////////////////////////////////////////////
-	///////////////////disabling main body//////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////
-	{
-		const dReal* torqu=dBodyGetTorque(m_body);
-		const dReal* force=dBodyGetForce(m_body);
-		dReal t_m =_sqrt(	torqu[0]*torqu[0]+
-			torqu[1]*torqu[1]+
-			torqu[2]*torqu[2]);
-		dReal f_m=_sqrt(	force[0]*force[0]+
-			force[1]*force[1]+
-			force[2]*force[2]);
-		if(t_m+f_m>0.000000){
-			previous_p[0]=dInfinity;
-			previous_dev=0;
-			previous_v=0;
-			dis_count_f=1;
-			dis_count_f1=0;
-			return;
-		}
-	}
-	if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
-		const dReal* position=dBodyGetPosition(m_body);
-		Memory.mem_copy(previous_p,position,sizeof(dVector3));
-		Memory.mem_copy(previous_p1,position,sizeof(dVector3));
-		const dReal* rotation=dBodyGetRotation(m_body);
-		Memory.mem_copy(previous_r,rotation,sizeof(dMatrix3));
-		Memory.mem_copy(previous_r1,rotation,sizeof(dMatrix3));
-		previous_dev=0;
-		previous_v=0;
-		dis_count_f=1;
-		dis_count_f1=0;
-	}
-
-
-	if(ph_world->disable_count==dis_frames){	
-		if(dInfinity != previous_p[0]){
-			const dReal* current_p=dBodyGetPosition(m_body);
-			dVector3 velocity={current_p[0]-previous_p[0],
-				current_p[1]-previous_p[1],
-				current_p[2]-previous_p[2]};
-			dReal mag_v=_sqrt(
-				velocity[0]*velocity[0]+
-				velocity[1]*velocity[1]+
-				velocity[2]*velocity[2]);
-			mag_v/=dis_count_f;
-			const dReal* current_r=dBodyGetRotation(m_body);
-			dMatrix3 rotation_m;
-
-			dMULTIPLYOP1_333(rotation_m,=,previous_r,current_r);
-
-			dVector3 deviation_v={rotation_m[0]-1.f,
-				rotation_m[5]-1.f,
-				rotation_m[10]-1.f
-			};
-
-			dReal deviation =_sqrt(deviation_v[0]*deviation_v[0]+
-				deviation_v[1]*deviation_v[1]+
-				deviation_v[2]*deviation_v[2]);
-
-			deviation/=dis_count_f;
-			if(mag_v<m_disl_param * dis_frames && deviation<m_disw_param*dis_frames)
-				Disable();//dBodyDisable(m_body);//
-			if((!(previous_dev<deviation)&&!(previous_v<mag_v))//
-				) 
-			{
-				++dis_count_f;
-				previous_dev=deviation;
-				previous_v=mag_v;
-				//return;
-			}
-			else{
-				previous_dev=deviation;
-				previous_v=mag_v;
-				dis_count_f=1;
-				dis_count_f1=0;
-				Memory.mem_copy(previous_p,current_p,sizeof(dVector3));
-				Memory.mem_copy(previous_r,current_r,sizeof(dMatrix3));
-				//previous_p[0]=dInfinity;
-			}
-
-			{
-
-				dVector3 velocity={current_p[0]-previous_p1[0],
-					current_p[1]-previous_p1[1],
-					current_p[2]-previous_p1[2]};
-				dReal mag_v=_sqrt(
-					velocity[0]*velocity[0]+
-					velocity[1]*velocity[1]+
-					velocity[2]*velocity[2]);
-				mag_v/=dis_count_f;
-				dMatrix3 rotation_m;
-				dMULTIPLYOP1_333(rotation_m,=,previous_r1,current_r);
-
-				dVector3 deviation_v={rotation_m[0]-1.f,
-					rotation_m[5]-1.f,
-					rotation_m[10]-1.f
-				};
-
-				dReal deviation =_sqrt(deviation_v[0]*deviation_v[0]+
-					deviation_v[1]*deviation_v[1]+
-					deviation_v[2]*deviation_v[2]);
-
-				deviation/=dis_count_f;
-				if(mag_v<0.32* dis_frames && deviation<0.24*dis_frames)//0.16,0.06
-					++dis_count_f1;
-				else{
-					Memory.mem_copy(previous_p1,current_p,sizeof(dVector3));
-					Memory.mem_copy(previous_r1,current_r,sizeof(dMatrix3));
-				}
-
-				if(dis_count_f1>5) 
-				{
-					dis_count_f*=10;//10
-					dis_count_f1=0;
-				}
-
-			}
-
-
-		}
-
-	}
-	/////////////////////////////////////////////////////////////////
-
-}
-
-void CPHElement::ResetDisable(){
-	previous_p[0]=dInfinity;
-	previous_r[0]=0.f;
-	dis_count_f	 =1;
-	dis_count_f1 =0;
-}
 
 void CPHElement::Enable(){
 
 	if(!bActive) return;
 	if(dBodyIsEnabled(m_body)) return;
-	ResetDisable();
 	dBodyEnable(m_body);
 }
 
 
 void CPHElement::Disable(){
-	//return;
-	/*
-	if(!b_contacts_saved){
-	int num=dBodyGetNumJoints(m_body);
-	for(int i=0;i<num;++i){
-	dJointID joint=	dBodyGetJoint (m_body, i);
-	if(dJointGetType (joint)==dJointTypeContact){
-	dxJointContact* contact=(dxJointContact*) joint;
-	dBodyID b1=dGeomGetBody(contact->contact.geom.g1);
-	dBodyID b2=dGeomGetBody(contact->contact.geom.g2);
-	if(b1==0 || b2==0){
-	dJointID c = dJointCreateContact(phWorld, m_saved_contacts, &(contact->contact));
-	dJointAttach(c, b1, b2);
-	b_contacts_saved=true;
-	}
 
-	}
-
-	}
-	}
-
-	*/
 	if(!dBodyIsEnabled(m_body)) return;
 	FillInterpolation();
-	if(m_group)
-		SaveContacts(ph_world->GetMeshGeom(),m_group,m_saved_contacts);
-	else 
-		SaveContacts(ph_world->GetMeshGeom(),(*m_geoms.begin())->geometry_transform(),m_saved_contacts);
-
+	if(!b_contacts_saved)
+	{
+		if(m_group)
+			SaveContacts(ph_world->GetMeshGeom(),m_group,m_saved_contacts);
+		else 
+			SaveContacts(ph_world->GetMeshGeom(),(*m_geoms.begin())->geometry_transform(),m_saved_contacts);
+		b_contacts_saved=true;
+	}
+//	dBodySetForce(m_body,0.f,0.f,0.f);
+//	dBodySetTorque(m_body,0.f,0.f,0.f);
+//	dBodySetLinearVel(m_body,0.f,0.f,0.f);
+//	dBodySetAngularVel(m_body,0.f,0.f,0.f);
 	dBodyDisable(m_body);
 }
 
 
 void CPHElement::ReEnable(){
-	//if(b_contacts_saved && dBodyIsEnabled(m_body))
-	//{
+
 	dJointGroupEmpty(m_saved_contacts);
 	b_contacts_saved=false;
-	//}
+	
 }
 
 void	CPHElement::Freeze()
@@ -856,14 +708,9 @@ void CPHElement::Activate(bool place_current_forms,bool disable){
 	//initializing values for disabling//////////////////////////
 	//////////////////////////////////////////////////////////////
 
-	previous_p[0]=dInfinity;
-	previous_r[0]=0.f;
-	dis_count_f=0;
-
 	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
 	if(disable) dBodyDisable(m_body);
-
 
 }
 void CPHElement::build(bool disable){
@@ -878,14 +725,6 @@ void CPHElement::build(bool disable){
 	
 		SetTransform(mXFORM);
 	}
-
-	//////////////////////////////////////////////////////////////
-	//initializing values for disabling//////////////////////////
-	//////////////////////////////////////////////////////////////
-
-	previous_p[0]=dInfinity;
-	previous_r[0]=0.f;
-	dis_count_f=0;
 
 	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
@@ -926,10 +765,6 @@ void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 	//////////////////////////////////////////////////////////////
 	//initializing values for disabling//////////////////////////
 	//////////////////////////////////////////////////////////////
-
-	previous_p[0]=dInfinity;
-	previous_r[0]=0.f;
-	dis_count_f=0;
 
 	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
@@ -990,16 +825,6 @@ void CPHElement::CallBack(CBoneInstance* B){
 		//	dBodySetLinearVel(m_body,m.c.x,m.c.y,m.c.z);
 		PSGP.memCopy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
 		PSGP.memCopy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
-
-
-		//////////////////////////////////////////////////////////////
-		//initializing values for disabling//////////////////////////
-		//////////////////////////////////////////////////////////////
-
-		previous_p[0]=dInfinity;
-		previous_r[0]=0.f;
-		dis_count_f=0;
-
 
 		bActivating=false;
 		//previous_f[0]=dInfinity;
@@ -1400,10 +1225,9 @@ void CPHElement::set_DynamicScales(float l_scale/* =default_l_scale */,float w_s
 	m_w_scale=w_scale;
 }
 
-void CPHElement::set_DisableParams(float dis_l/* =default_disl */,float dis_w/* =default_disw */)
+void	CPHElement::set_DisableParams				(const SAllDDOParams& params)
 {
-	m_disl_param=dis_l;
-	m_disw_param=dis_w;
+	CPHDisablingFull::set_DisableParams(params);
 }
 
 
@@ -1567,15 +1391,13 @@ void CPHElement::PresetActive()
 	//initializing values for disabling//////////////////////////
 	//////////////////////////////////////////////////////////////
 
-	previous_p[0]=dInfinity;
-	previous_r[0]=0.f;
-	dis_count_f=0;
 	m_body_interpolation.SetBody(m_body);
 	FillInterpolation();
 	bActive=true;
 	RunSimulation();
 	
 }
+
 
 bool CPHElement::isBreakable()
 {

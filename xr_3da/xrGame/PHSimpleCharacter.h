@@ -88,7 +88,7 @@ public:
 	/////////////////CPHCharacter////////////////////////////////////////////
 public:
 	//update
-	virtual		void		Disabling							()					;
+
 
 	//Check state
 	virtual		bool			 ContactWas						()					{if(b_meet_control) {b_meet_control=false;return true;} else return false;}

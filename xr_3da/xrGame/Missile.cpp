@@ -111,6 +111,9 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 		m_pPhysicsShell->SetAirResistance();
+		//CKinematics* pKinematics=PKinematics(Visual());
+		//if(pKinematics) 
+		//	m_pPhysicsShell->set_M
 	}
 	return l_res;
 }

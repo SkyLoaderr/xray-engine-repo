@@ -2,6 +2,7 @@
 #include "PHObject.h"
 #include "PHInterpolation.h"
 #include "PHSynchronize.h"
+#include "PHDisabling.h"
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
 class CPhysicsRefObject;
  static enum EEnvironment
@@ -14,7 +15,8 @@ class CPhysicsRefObject;
 
 class CPHCharacter : 
 	public CPHObject,
-	public CPHSynchronize
+	public CPHSynchronize,
+	public CPHDisablingTranslational
 #ifdef DEBUG
 	,public pureRender
 #endif
@@ -35,15 +37,7 @@ CPhysicsRefObject* m_phys_ref_object;
 
 dReal m_mass;
 bool					was_enabled_before_freeze;
-////////////////////////////////////////////////////////////////////////////
-/////disable////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-dVector3 previous_p;
-dVector3 previous_p1;
-dReal previous_v;
-u32 dis_count_f;
-u32 dis_count_f1;
-float m_update_time;
+
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
@@ -53,15 +47,17 @@ dVector3 m_safe_velocity;
 dVector3 m_safe_position;
 
 
-void				Disabling										()															;
+
 
 public:
 	virtual void		Freeze								();
 	virtual void		UnFreeze							();
-	void	Enable											()															{if(m_body)dBodyEnable(m_body);}											//!!
-	bool	IsEnabled										()															{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
-	dBodyID GetBody											()															{return m_body;}
-	float	ContactVelocity									()															{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}			//!!
+	virtual	dBodyID		get_body							()															{return m_body;}
+	virtual	void		Disable								()															{dBodyDisable(m_body);}																			
+	virtual	void		ReEnable							()															{;}																				
+			void		Enable								()															{if(m_body)dBodyEnable(m_body);}											//!!
+			bool		IsEnabled							()															{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
+			float		ContactVelocity						()															{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}			//!!
 
 
 
