@@ -19,7 +19,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reinit()
     object_binder.reinit(self)
-    printf ("ReInit called")
+    printf("motivator_binder:reinit(): self.object:name()='%s'", self.object:name())
     self.object:set_hear_callback(hear_callback)
         
     local char_ini = self.object:spawn_ini()
@@ -106,6 +106,7 @@ function motivator_binder:reinit()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
+	printf("motivator_binder:net_spawn(): self.object:name()='%s'", self.object:name())
 	local sim = alife()
 	if sim ~= nil then 
 		xr_spawner.spawn(sobject)
@@ -114,29 +115,30 @@ function motivator_binder:net_spawn(sobject)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
+	printf("motivator_binder:net_destroy(): self.object:name()='%s'", self.object:name())
 	xr_motivator.storage[self.object:id()] = nil
-    object_binder.net_destroy(self)
+	object_binder.net_destroy(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:update(delta)
-    object_binder.update(self, delta)
-    self.torch:update ()
+	object_binder.update(self, delta)
+	self.torch:update()
     
---' Проверка ТИМ СКВАД ГРУП
-if false then
-  if memtsg[self.object:id()] == nil then
-    printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
-                          self.object:team(),
-                          self.object:squad(),
-                          self.object:group())
-    memtsg[self.object:id()] = self.object:id()
-  end
-end
+	--' Проверка ТИМ СКВАД ГРУП
+	if false then
+		if memtsg[self.object:id()] == nil then
+			printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
+				self.object:team(),
+				self.object:squad(),
+				self.object:group())
+			memtsg[self.object:id()] = self.object:id()
+		end
+	end
 
---' Проверка потери жизни
-if false then
-	if lasttime == nil or
-	   game.get_game_time():diffSec(lasttime) > 1 
+	--' Проверка потери жизни
+	if false then
+		if lasttime == nil or
+		   game.get_game_time():diffSec(lasttime) > 1 
 	then
 		printf("%f * %f", self.object.health, self.object.health - lasthealth)
 		lasthealth = self.object.health
@@ -148,23 +150,40 @@ end
 if false then 
 	local be = self.object:best_enemy()
 	if be ~= nil then
-		printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]", self.object:name(),
-															self.object:team(),
-															self.object:squad(),
-															self.object:group(),
-														be:name(), 
-															be:team(), 
-															be:squad(), 
-															be:group())
+		printf("ENEMYCHECK: %s[%s, %s, %s] -> %s[%s, %s, %s]",
+			self.object:name(),
+			self.object:team(),
+			self.object:squad(),
+			self.object:group(),
+			be:name(), 
+			be:team(), 
+			be:squad(), 
+			be:group())
 	end
 end
 
 end
 ----------------------------------------------------------------------------------------------------------------------
-function motivator_binder:reload (section)
-    object_binder.reload(self, section)
-    printf ("ReLoad called")
-    self.object:set_pda_callback(pda_callback)
+function motivator_binder:reload(section)
+	object_binder.reload(self, section)
+	printf("motivator_binder:reload(): self.object:name()='%s'", self.object:name())
+	self.object:set_pda_callback(pda_callback)
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:net_save_relevant()
+	printf("motivator_binder:net_save_relevant(): self.object:name()='%s'", self.object:name())
+	return true
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:save(packet)
+	printf("motivator_binder:save(): self.object:name()='%s'", self.object:name())
+	object_binder.save( self, packet )
+	-- ...
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:load(reader)
+	printf("motivator_binder:load(): self.object:name()='%s'", self.object:name())
+	object_binder.load(self, reader)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_callback(recepient, who, msg_type)
