@@ -15,7 +15,7 @@
 #define C_SIZE		0.025f
 #define NEAR_LIM	0.5f
 
-#define SHOW_INFO_SPEED	1.f
+#define SHOW_INFO_SPEED	0.5f
 #define HIDE_INFO_SPEED	10.f
 
 //////////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@ void CHUDCursor::Render()
 			if (E && (E->g_Health()>0)) 
 			{
 				if (fuzzyShowInfo>0.5f){
-					F->SetColor	(subst_alpha(C,u8(255.f*(fuzzyShowInfo-0.5f)*2.f)));
+					F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
 					F->SetSize	(0.02f);
 					F->SetAligment(CGameFont::alCenter);
 					F->Out		(PT.p.x,PT.p.y+di_size*4,"%s",RQ.O->cName());
