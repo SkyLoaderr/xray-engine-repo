@@ -101,7 +101,7 @@ public:
 ///////////////////////////////////////////////////////////////////////
 
 	// Position stack
-	virtual	SavedPosition	ps_Element			(u32 ID);
+	virtual	SavedPosition	ps_Element			(u32 ID) const;
 
 			void			setup_parent_ai_locations(bool assign_position = true);
 			void			validate_ai_locations(bool decrement_reference = true);
