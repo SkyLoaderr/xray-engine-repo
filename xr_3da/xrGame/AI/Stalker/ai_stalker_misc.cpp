@@ -189,11 +189,6 @@ void CAI_Stalker::vfUpdateSearchPosition()
 			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
 			m_tNextGP					= tpLeader->m_tNextGP;
 		}
-//		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
-//			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
-//			vfChooseNextGraphPoint		();
-//			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-//		}
 	}
 	else
 		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
