@@ -6,24 +6,31 @@
 #define AFX_TEXTUREMANAGER_H__0E25CF4B_FFEC_11D3_B4E3_4854E82A090D__INCLUDED_
 #pragma once
 
-#include "xrShaderTypes.h"
+#include "shader.h"
 
 class ENGINE_API CShaderManager
 {
 private:
-	map<LPSTR,CShader*>		shaders;	// data
-	vector<CTexture *>		textures;	// data
+	// data
+	vector<CTexture *>				textures;
+	vector<CShader*>				shaders;
+	vector<CConstant*>				constants;
 
-	vector<Shader *>		sh_list;
-	Shader*					current_shader;
-	DWORD					current_SBH;
-	CTexture*				current_surf	[sh_STAGE_MAX];
+	vector<CTextureArray*>			comb_textures;
+	vector<CConstantArray*>			comb_constants;
 
-	BOOL					bDeferredLoad;
+	BOOL							bDeferredLoad;
+
+	// cache
+	CShader*						cache_shader;
+	CTextureArray*					cache_textures;
+	CConstantArray*					cache_constants;
+	DWORD							cache_pass;
 public:
-	CTexture*				_CreateTexture	(const char* Name, BOOL bMipmaps=TRUE);
-	CShader*				_CreateShader	(const char* Name);
-	DWORD					_GetMemoryUsage	();
+	CTexture*						_CreateTexture	(LPCSTR Name);
+	CShader*						_CreateShader	(LPCSTR Name);
+	CConstant*						_CreateConstant (LPCSTR Name);
+	DWORD							_GetMemoryUsage	();
 
 	DWORD					dwPassesRequired;
 
@@ -43,7 +50,7 @@ public:
 	void	OnDeviceCreate	(void);
 
 	// Creation/Destroying
-	Shader	Create			(const char *sh_name="null", const char *t_name = "$null", BOOL bNeedMipmaps=true);
+	Shader	Create			(LPCSTR sh_name="null", DWORD lights, LPCSTR t_name = "$null");
 	void	Delete			(Shader &S);
 	void	DeferredLoad	(BOOL E)	{ bDeferredLoad=E;	}
 
@@ -54,7 +61,7 @@ public:
 	int		GetShaderCount	(void)	{ return sh_list.size(); }
 
 	// API
-	void	__fastcall	Set			(Shader* S);
+	void	__fastcall	Set			(Shader& S);
 	void	__fastcall	SetupPass	(DWORD	pass);
 	void				SetNULL		() { Set(sh_list[0]); }
 };

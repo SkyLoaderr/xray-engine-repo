@@ -24,10 +24,13 @@ protected:
 	virtual void				internal_Apply		(DWORD dwPass)	= 0;
 	virtual void				internal_Release	()				= 0;
 public:
+	LPSTR						Name;
+	DWORD						dwRefCount;
 	DWORD						dwFrame;
+	DWORD						dwPasses;
 	RFlags						Flags;		
 
-	IC void						Activate	()
+	IC DWORD					Activate	()
 	{
 		if (Device.dwFrame != dwFrame) {
 			dwFrame = Device.dwFrame;
@@ -39,32 +42,62 @@ public:
 	IC void						Release		()
 	{	internal_Release();			}
 
-	CShader	();
-	virtual ~CShader();
+	CShader						();
+	virtual ~CShader			();
 };
 
-class	ENGINE_API	CShaderArray
+class	ENGINE_API	CTextureArray
 {
 public:
-	CShader*		shaders		[COMBINATIONS_SH];
-	
-	CShaderCombination()	
+	svector<svector<CTexture*,8>,8>		textures;
+
+	CTextureArray()
 	{
-		ZeroMemory	(this,sizeof(*this));
+		ZeroMemory	(this,sizeof(*this)));
 	}
-	IC CShader*		select		(DWORD num)	{
-		return shaders			[num];
+};
+
+class	ENGINE_API	CConstant
+{
+public:
+	LPSTR			name;
+	Fcolor			const_float;
+	DWORD			const_dword;
+
+	void			set_float	(float r, float g, float b, float a)
+	{
+		const_float.set	(r,g,b,a);
+		const_dword		= const_float.get();
+	}
+	void			set_float	(Fcolor& c)
+	{
+		const_float.set	(c);
+		const_dword		= const_float.get();
+	}
+	void			set_dword	(DWORD c)
+	{
+		const_float.set(c);
+		const_dword		= c;
+	}
+};
+
+class	ENGINE_API	CConstantArray
+{
+public:
+	svector<svector<CConstant*,8>,8>	constants;
+
+	CConstantArray()
+	{
+		ZeroMemory	(this,sizeof(*this)));
 	}
 };
 
 // 
 struct ENGINE_API	Shader
 {
-	CShader*		S;
-	tex_handles*	T;
-	DWORD			c[4];		// user-defined constants
-
-	IC void			set_value	(DWORD id, DWORD val)	{ c[id]=val; }
+	CShader_Base*	S;
+	CTextureArray*	T;
+	CConstantArray* C;
 };
 
 #endif // !defined(AFX_SHADER_H__9CBD70DD_E147_446B_B4EE_5DA321EB726F__INCLUDED_)

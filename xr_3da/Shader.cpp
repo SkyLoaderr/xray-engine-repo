@@ -9,7 +9,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CShader::CShader()
+CShader_Base::CShader_Base()
 {
 	dwFrame				= 0;
 	Flags.iPriority		= 1;
@@ -17,7 +17,7 @@ CShader::CShader()
 	Flags.bStrictB2F	= FALSE;
 }
 
-CShader::~CShader()
+CShader_Base::~CShader_Base()
 {
 
 }
