@@ -122,6 +122,18 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		t = { section = "logic@bar_dolg_guard_bunker1", 
+			idle = 0,
+			prior = 7, state = {0,1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_dolg_guard_bunker2", 
+			idle = 0,
+			prior = 7, state = {0,1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
 
 		t = { section = "logic5@bar_dolg_veterans_patrol2", 
 			idle = 5*60*60*1000,

@@ -168,6 +168,60 @@ def_state_campering_fire = hide_fire
 
 ; ÂÅÒÅĞÀÍÛ ÄÎËÃÀ
 
+[logic@bar_dolg_guard_bunker1]
+active = zoneguard@bar_dolg_guard_bunker1
+actor_dialogs = actor_dialogs
+
+[zoneguard@bar_dolg_guard_bunker1]
+path_walk = guard_bunker_1_walk
+path_look = guard_bunker_1_look
+team = bar_dolg_guard_bunker_team
+zone_guard = bunker_kill_zone
+zone_warn = bunker_warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_guard_bunker_start 
+on_info = {+bar_dolg_bunker_pass} zoneguard@bar_dolg_guard_bunker1_friend
+snd_greet = bar_dolg_base_guard_backoff
+
+[zoneguard@bar_dolg_guard_bunker1_friend]
+path_walk = guard_bunker_1_walk
+path_look = guard_bunker_1_look
+team = bar_dolg_guard_bunker_team
+zone_warn = bunker_warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_guard_bunker_start 
+anim = guard
+
+
+[logic@bar_dolg_guard_bunker2]
+active = zoneguard@bar_dolg_guard_bunker2
+actor_dialogs = actor_dialogs
+
+[zoneguard@bar_dolg_guard_bunker2]
+path_walk = guard_bunker_2_walk
+path_look = guard_bunker_2_look
+team = bar_dolg_guard_bunker_team1
+zone_guard = bunker_kill_zone
+zone_warn = bunker_warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_guard_bunker_start
+on_info = {+bar_dolg_base_pass} zoneguard@bar_dolg_guard_bunker2_friend
+snd_greet = bar_dolg_base_guard_no_talk
+
+[zoneguard@bar_dolg_guard_bunker2_friend]
+path_walk = guard_bunker_1_walk
+path_look = guard_bunker_1_look
+team = bar_dolg_guard_bunker_team1
+zone_warn = bunker_warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_guard_bunker_start 
+anim = guard
+
+
 [logic1@bar_dolg_veterans_bunker]
 active = walker1@bar_dolg_veterans_bunker
 
