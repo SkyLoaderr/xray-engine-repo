@@ -43,14 +43,14 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 			if (m_AddonInfo[ID].iAttachStatus != 1 && pPossibleAddon->GetCost() <= this_inventory->GetMoneyAmount())
 			{
 				m_pAddon[ID] = pPossibleAddon;
-				m_pAddon[ID]->GetParent()->DetachChild(m_pAddon[ID]);
-				GetParent()->AttachChild(m_pAddon[ID]);
+				m_pAddon[ID]->GetParent()->DetachChild(pPossibleAddon);
+							  GetParent()->AttachChild(pPossibleAddon);
 				m_pAddon[ID]->Show(false);
 				m_pAddon[ID]->EnableDragDrop(false);
 				m_pAddon[ID]->Enable(false);
 				m_pAddon[ID]->m_bHasRealRepresentation = bRealRepresentationSet;
-				m_pAddon[ID]->Rescale(  smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScaleX(),
-										smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScaleY());
+				m_pAddon[ID]->Rescale(  m_pAddon[ID]->GetOwner()->GetItemsScaleX(),
+										m_pAddon[ID]->GetOwner()->GetItemsScaleY());
 
 				// Отнимаем денежку
 				this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - 
@@ -67,8 +67,8 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID]->Show(true);
 				m_pAddon[ID]->EnableDragDrop(true);
 				m_pAddon[ID]->Enable(true);
-				m_pAddon[ID]->Rescale(  smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScaleX(),
-										smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScaleY());
+				m_pAddon[ID]->Rescale(  smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetOwner())->GetItemsScaleX(),
+										smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetOwner())->GetItemsScaleY());
 				// Прибавляем денежку
 				if (m_pAddon[ID]->GetColor() != cUnableToBuy)
 				{
@@ -112,7 +112,15 @@ void CUIDragDropItemMP::ClipperOff()
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
+//void CUIDragDropItemMP::Update(){
+//	CUIDragDropItem::Update();
+//
+//	for (int i = 0; i < 3; ++i)
+//        if (m_pAddon[i])
+//			m_pAddon[i]->m_bInFloat = m_bInFloat;
+//}
+
+
 
 void CUIDragDropItemMP::ClipperOn()
 {
@@ -129,6 +137,9 @@ void CUIDragDropItemMP::ClipperOn()
 void CUIDragDropItemMP::Draw()
 {
 	inherited::Draw();
+
+	if (m_bInFloat) 
+		UI()->PushScissor(UI()->ScreenRect(),true);
 
 	Irect rect = GetAbsoluteRect();
 
@@ -149,26 +160,27 @@ void CUIDragDropItemMP::Draw()
 
 			pDDItemMP	= m_pAddon[i];
 			nfo			= m_AddonInfo[i];
+			
+			//pDDItemMP->SetWndPos(nfo.x, nfo.y);
+			//pDDItemMP->SetTextureScaleXY(GetTextureScaleX(), GetTextureScaleX());
+			//pDDItemMP->Draw();
 
 			// А теперь отрисовка
 			pDDItemMP->GetUIStaticItem().SetPos(rect.left + right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScaleX()),
 				rect.top + down_offset + iFloor(0.5f+(float)nfo.y * GetTextureScaleY()));
 
-			if(m_bClipper) TextureClipper(right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScaleX()),
-				down_offset +  iFloor(0.5f+(float)nfo.y * GetTextureScaleY()), 
-				NULL, pDDItemMP->GetUIStaticItem());
-
-//			if (pDDItemMP->m_bHasRealRepresentation)
-//				pDDItemMP->GetUIStaticItem().SetColor(cAbleToBuyOwned);
-//			else
-//				pDDItemMP->GetUIStaticItem().SetColor(cDetached);
+			if(m_bClipper) 
+				TextureClipper(	right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScaleX()),
+								down_offset +  iFloor(0.5f+(float)nfo.y * GetTextureScaleY()), 
+								NULL, 
+								pDDItemMP->GetUIStaticItem());
 
 			pDDItemMP->GetUIStaticItem().Render();
-//			pDDItemMP->GetUIStaticItem().SetColor(cAttached);
-
-			pDDItemMP = NULL;
 		}
 	}
+
+	if (m_bInFloat) 
+		UI()->PopScissor();
 }
 
 //////////////////////////////////////////////////////////////////////////
