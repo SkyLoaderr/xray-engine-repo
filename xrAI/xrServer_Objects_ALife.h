@@ -127,18 +127,10 @@ public:
 	OBJECT_VECTOR					m_tpMembers;
 	bool							m_bCreateSpawnPositions;
 	u16								m_wCount;
+	_TIME_ID						m_tNextBirthTime;
 
-									CSE_ALifeGroupAbstract(LPCSTR caSection) : CSE_Abstract(caSection)
-	{
-		m_tpMembers.clear			();
-		m_bCreateSpawnPositions		= true;
-		m_wCount					= 1;
-	};
-
-	virtual							~CSE_ALifeGroupAbstract()
-	{
-	};
-	
+									CSE_ALifeGroupAbstract(LPCSTR caSection);
+	virtual							~CSE_ALifeGroupAbstract();
 SERVER_ENTITY_DECLARE_END
 
 template<class __A> class CSE_ALifeGroupTemplate : public __A, public CSE_ALifeGroupAbstract {

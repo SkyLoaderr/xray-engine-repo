@@ -163,6 +163,9 @@ public:
 	CPatternFunction						*m_pfAnomalyDetectProbability;
 	CPatternFunction						*m_pfAnomalyInteractProbability;
 	CPatternFunction						*m_pfAnomalyRetreatProbability;
+	CPatternFunction						*m_pfBirthPercentage;
+	CPatternFunction						*m_pfBirthProbability;
+	CPatternFunction						*m_pfBirthSpeed;
 
 											CAI_DDD();
 	virtual									~CAI_DDD();

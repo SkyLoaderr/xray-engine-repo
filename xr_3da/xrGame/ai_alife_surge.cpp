@@ -11,6 +11,32 @@
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
 
+CSE_Abstract *CSE_ALifeSimulator::tpfCreateGroupMember(CSE_ALifeGroupAbstract *tpALifeGroupAbstract, CSE_ALifeDynamicObject *j)
+{
+	NET_Packet					tNetPacket;
+	LPCSTR						S = pSettings->r_string(tpALifeGroupAbstract->s_name,"monster_section");
+	CSE_Abstract				*l_tpAbstract = F_entity_Create(S);
+	R_ASSERT2					(l_tpAbstract,"Can't create entity.");
+	CSE_ALifeDynamicObject		*k = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpAbstract);
+	R_ASSERT2					(k,"Non-ALife object in the 'game.spawn'");
+
+	j->Spawn_Write				(tNetPacket,TRUE);
+	k->Spawn_Read				(tNetPacket);
+	tNetPacket.w_begin			(M_UPDATE);
+	j->UPDATE_Write				(tNetPacket);
+	u16							id;
+	tNetPacket.r_begin			(id);
+	k->UPDATE_Read				(tNetPacket);
+	Memory.mem_copy				(k->s_name,S,((int)strlen(S) + 1)*sizeof(char));
+	k->m_tSpawnID				= j->m_tSpawnID;
+	k->ID						= m_tpServer->PerformIDgen(0xffff);
+	k->m_bDirectControl			= false;
+	k->m_bALifeControl			= true;
+	CSE_ALifeObjectRegistry::Add(k);
+	vfUpdateDynamicData			(k);
+	return						(k);
+}
+
 void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i, CSE_ALifeDynamicObject *j, _SPAWN_ID tSpawnID)
 {
 	CSE_Abstract				*tpSE_Abstract = F_entity_Create(j->s_name);
@@ -18,7 +44,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	i							= dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 	R_ASSERT2					(i,"Non-ALife object in the 'game.spawn'");
 
-	NET_Packet	tNetPacket;
+	NET_Packet					tNetPacket;
 	j->Spawn_Write				(tNetPacket,TRUE);
 	i->Spawn_Read				(tNetPacket);
 	tNetPacket.w_begin			(M_UPDATE);
@@ -42,33 +68,14 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	if (l_tpALifeMonsterAbstract)
 		vfAssignGraphPosition	(l_tpALifeMonsterAbstract);
 
-	CSE_ALifeGroupAbstract		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(i);
-	if (l_tpALifeAbstractGroup) {
-		l_tpALifeAbstractGroup->m_tpMembers.resize(l_tpALifeAbstractGroup->m_wCount);
-		OBJECT_IT				I = l_tpALifeAbstractGroup->m_tpMembers.begin();
-		OBJECT_IT				E = l_tpALifeAbstractGroup->m_tpMembers.end();
+	CSE_ALifeGroupAbstract		*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(i);
+	if (l_tpALifeGroupAbstract) {
+		l_tpALifeGroupAbstract->m_tpMembers.resize(l_tpALifeGroupAbstract->m_wCount);
+		OBJECT_IT				I = l_tpALifeGroupAbstract->m_tpMembers.begin();
+		OBJECT_IT				E = l_tpALifeGroupAbstract->m_tpMembers.end();
 		for ( ; I != E; I++) {
-			LPCSTR						S = pSettings->r_string(i->s_name,"monster_section");
-			CSE_Abstract				*l_tpAbstract = F_entity_Create(S);
-			R_ASSERT2					(l_tpAbstract,"Can't create entity.");
-			CSE_ALifeDynamicObject		*k = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpAbstract);
-			R_ASSERT2					(k,"Non-ALife object in the 'game.spawn'");
-
-			j->Spawn_Write				(tNetPacket,TRUE);
-			k->Spawn_Read				(tNetPacket);
-			tNetPacket.w_begin			(M_UPDATE);
-			j->UPDATE_Write				(tNetPacket);
-			u16							id;
-			tNetPacket.r_begin			(id);
-			k->UPDATE_Read				(tNetPacket);
-			Memory.mem_copy				(k->s_name,S,((int)strlen(S) + 1)*sizeof(char));
-			k->m_tSpawnID				= tSpawnID;
-			k->ID						= m_tpServer->PerformIDgen(0xffff);
-			*I							= k->ID;
-			k->m_bDirectControl			= false;
-			k->m_bALifeControl			= true;
-			CSE_ALifeObjectRegistry::Add(k);
-			vfUpdateDynamicData			(k);
+			CSE_Abstract		*l_tpAbstract = tpfCreateGroupMember	(l_tpALifeGroupAbstract,j);
+			*I					= l_tpAbstract->ID;
 		}
 	}
 }
@@ -206,13 +213,13 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 		D_OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 		for ( ; I != E; I++) {
 			CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
-			CSE_ALifeGroupAbstract	  *l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>((*I).second);
+			CSE_ALifeGroupAbstract	  *l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>((*I).second);
 			if (l_tpALifeCreatureAbstract)
-				if (l_tpALifeAbstractGroup) {
-					if (l_tpALifeAbstractGroup->m_wCount) {
+				if (l_tpALifeGroupAbstract) {
+					if (l_tpALifeGroupAbstract->m_wCount) {
 						m_baAliveSpawnObjects[(*I).second->m_tSpawnID] = true;
 #pragma todo("Dima to Dima : Add monster population increase here")
-						//l_tpALifeAbstractGroup->m_wCount *= l_tpALifeAbstractGroup->m_wCount < 50 ? 1.5 : 0.8;
+						//l_tpALifeGroupAbstract->m_wCount *= l_tpALifeGroupAbstract->m_wCount < 50 ? 1.5 : 0.8;
 					}
 				}
 				else
@@ -274,17 +281,17 @@ void CSE_ALifeSimulator::vfKillCreatures()
 	for ( ; I != E; I++) {
 		CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
 		if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->m_bDirectControl) && (l_tpALifeCreatureAbstract->fHealth > 0.f)) {
-			CSE_ALifeGroupAbstract *l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>((*I).second);
+			CSE_ALifeGroupAbstract *l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>((*I).second);
 			getAI().m_tpCurrentALifeObject = (*I).second;
-			if (l_tpALifeAbstractGroup) {
+			if (l_tpALifeGroupAbstract) {
 				_GRAPH_ID			l_tGraphID = l_tpALifeCreatureAbstract->m_tGraphID;
-				for (u32 i=0, N = (u32)l_tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
-					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[i]));
+				for (u32 i=0, N = (u32)l_tpALifeGroupAbstract->m_tpMembers.size(); i<N; i++) {
+					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(l_tpALifeGroupAbstract->m_tpMembers[i]));
 					R_ASSERT2					(l_tpALifeCreatureAbstract,"Group class differs from the member class!");
 					getAI().m_tpCurrentALifeObject = l_tpALifeCreatureAbstract;
 					if (randF(100) > getAI().m_pfSurgeDeathProbability->ffGetValue()) {
 						l_tpALifeCreatureAbstract->m_bDirectControl	= true;
-						l_tpALifeAbstractGroup->m_tpMembers.erase	(l_tpALifeAbstractGroup->m_tpMembers.begin() + i);
+						l_tpALifeGroupAbstract->m_tpMembers.erase	(l_tpALifeGroupAbstract->m_tpMembers.begin() + i);
 						vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
 						vfAssignDeathPosition						(l_tpALifeCreatureAbstract,l_tGraphID);
 						i--;

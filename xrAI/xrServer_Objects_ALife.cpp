@@ -319,6 +319,21 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeGroupAbstract
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeGroupAbstract::CSE_ALifeGroupAbstract(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+	m_tpMembers.clear			();
+	m_bCreateSpawnPositions		= true;
+	m_wCount					= 1;
+	m_tNextBirthTime			= 0;
+}
+
+CSE_ALifeGroupAbstract::~CSE_ALifeGroupAbstract()
+{
+}
+
+////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObject
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)

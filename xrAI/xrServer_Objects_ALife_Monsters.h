@@ -122,6 +122,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual bool					bfActive				();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				()	{};
+			void					vfCheckForPopulationChanges();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

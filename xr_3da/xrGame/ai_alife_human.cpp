@@ -389,11 +389,11 @@ void CSE_ALifeHumanAbstract::vfDetachAll()
 void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 {
 	R_ASSERT2						(fHealth >= EPS_L,"Cannot attach items to dead human");
-	CSE_ALifeGroupAbstract			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
-	if (l_tpALifeAbstractGroup) {
+	CSE_ALifeGroupAbstract			*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
+	if (l_tpALifeGroupAbstract) {
 		{
-			OBJECT_IT					I = l_tpALifeAbstractGroup->m_tpMembers.begin();
-			OBJECT_IT					E = l_tpALifeAbstractGroup->m_tpMembers.end();
+			OBJECT_IT					I = l_tpALifeGroupAbstract->m_tpMembers.begin();
+			OBJECT_IT					E = l_tpALifeGroupAbstract->m_tpMembers.end();
 			for ( ; I != E; I++) {
 				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(*I));
 				R_ASSERT2				(l_tpALifeHumanAbstract,"Invalid group member");
@@ -401,8 +401,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 			}
 		}
 		{
-			OBJECT_IT					I = l_tpALifeAbstractGroup->m_tpMembers.begin();
-			OBJECT_IT					E = l_tpALifeAbstractGroup->m_tpMembers.end();
+			OBJECT_IT					I = l_tpALifeGroupAbstract->m_tpMembers.begin();
+			OBJECT_IT					E = l_tpALifeGroupAbstract->m_tpMembers.end();
 			for ( ; I != E; I++) {
 				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(*I));
 				R_ASSERT2				(l_tpALifeHumanAbstract,"Invalid group member");
@@ -656,15 +656,15 @@ EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeSchedulable *tp
 CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 {
 	m_tpBestDetector				= 0;
-	CSE_ALifeGroupAbstract			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
-	if (l_tpALifeAbstractGroup) {
+	CSE_ALifeGroupAbstract			*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
+	if (l_tpALifeGroupAbstract) {
 		u32							l_dwBestValue = 0;
-		if (!l_tpALifeAbstractGroup->m_wCount)
+		if (!l_tpALifeGroupAbstract->m_wCount)
 			return					(0);
-		OBJECT_IT					I = l_tpALifeAbstractGroup->m_tpMembers.begin();
-		OBJECT_IT					E = l_tpALifeAbstractGroup->m_tpMembers.end();
+		OBJECT_IT					I = l_tpALifeGroupAbstract->m_tpMembers.begin();
+		OBJECT_IT					E = l_tpALifeGroupAbstract->m_tpMembers.end();
 		for ( ; I != E; I++) {
-			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[0]));
+			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(l_tpALifeGroupAbstract->m_tpMembers[0]));
 			R_ASSERT				(l_tpALifeHumanAbstract);
 			getAI().m_tpCurrentALifeObject = l_tpALifeHumanAbstract->tpfGetBestDetector();
 			u32						l_dwCurrentValue = iFloor(getAI().m_pfDetectorType->ffGetValue()+.5f);

@@ -555,11 +555,11 @@ float CPersonalMaxHealth::ffGetValue()
 	
 	CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(getAI().m_tpCurrentALifeMember);
 	R_ASSERT3						(l_tpALifeMonsterAbstract,"Invalid object passed to the evaluation function ",m_caName);
-	CSE_ALifeGroupAbstract			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(getAI().m_tpCurrentALifeMember);
-	if (!l_tpALifeAbstractGroup)
+	CSE_ALifeGroupAbstract			*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(getAI().m_tpCurrentALifeMember);
+	if (!l_tpALifeGroupAbstract)
 		return						(m_fLastValue = l_tpALifeMonsterAbstract->m_fMaxHealthValue);
 	else
-		return						(m_fLastValue = l_tpALifeMonsterAbstract->m_fMaxHealthValue*l_tpALifeAbstractGroup->m_wCount); 
+		return						(m_fLastValue = l_tpALifeMonsterAbstract->m_fMaxHealthValue*l_tpALifeGroupAbstract->m_wCount); 
 }
 
 u32 CPersonalMaxHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)

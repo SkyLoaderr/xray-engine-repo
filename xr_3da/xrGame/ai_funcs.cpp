@@ -222,8 +222,11 @@ CAI_DDD::CAI_DDD()
 	m_pfEnemyDetectProbability			= xr_new<CPatternFunction>	("alife\\EnemyDetectProbability.efd",	this);
 	m_pfEnemyRetreatProbability			= xr_new<CPatternFunction>	("alife\\EnemyRetreatProbability.efd",	this);
 	m_pfAnomalyDetectProbability		= xr_new<CPatternFunction>	("alife\\AnomalyDetectProbability.efd",	this);
-	m_pfAnomalyInteractProbability		= xr_new<CPatternFunction>	("alife\\AnomalyInteractProbability.efd",		this);
+	m_pfAnomalyInteractProbability		= xr_new<CPatternFunction>	("alife\\AnomalyInteractProbability.efd",this);
 	m_pfAnomalyRetreatProbability		= xr_new<CPatternFunction>	("alife\\AnomalyRetreatProbability.efd",this);
+	m_pfBirthPercentage					= xr_new<CPatternFunction>	("alife\\BirthPercentage.efd",			this);
+	m_pfBirthProbability				= xr_new<CPatternFunction>	("alife\\BirthProbability.efd",			this);
+	m_pfBirthSpeed						= xr_new<CPatternFunction>	("alife\\BirthSpeed.efd",				this);
 }
 
 CAI_DDD::~CAI_DDD()

@@ -15,6 +15,7 @@ void CSE_ALifeMonsterAbstract::Update		()
 {
 	bool				bContinue = true;
 	while (bContinue && bfActive() && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fSwitchDistance)) {
+		vfCheckForPopulationChanges();
 		bContinue		= false;
 		if (m_tNextGraphID != m_tGraphID) {
 			_TIME_ID					tCurTime = m_tpALife->tfGetGameTime();
@@ -26,9 +27,9 @@ void CSE_ALifeMonsterAbstract::Update		()
 				m_fDistanceToPoint		= m_fDistanceFromPoint	= 0.0f;
 				m_tPrevGraphID			= m_tGraphID;
 				m_tpALife->vfChangeObjectGraphPoint(this,m_tGraphID,m_tNextGraphID);
-				CSE_ALifeGroupAbstract	*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
-				if (tpALifeAbstractGroup)
-					tpALifeAbstractGroup->m_bCreateSpawnPositions = true;
+				CSE_ALifeGroupAbstract	*tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
+				if (tpALifeGroupAbstract)
+					tpALifeGroupAbstract->m_bCreateSpawnPositions = true;
 			}
 		}
 		if (m_tNextGraphID == m_tGraphID) {
@@ -111,19 +112,43 @@ EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeSchedulable *
 
 bool CSE_ALifeMonsterAbstract::bfActive()
 {
-	CSE_ALifeGroupAbstract		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
-	return						((l_tpALifeAbstractGroup && (l_tpALifeAbstractGroup->m_wCount > 0)) || (!l_tpALifeAbstractGroup && (fHealth > EPS_L)));
+	CSE_ALifeGroupAbstract		*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
+	return						((l_tpALifeGroupAbstract && (l_tpALifeGroupAbstract->m_wCount > 0)) || (!l_tpALifeGroupAbstract && (fHealth > EPS_L)));
 }
 
 CSE_ALifeDynamicObject *CSE_ALifeMonsterAbstract::tpfGetBestDetector()
 {
-	CSE_ALifeGroupAbstract		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
-	if (!l_tpALifeAbstractGroup)
+	CSE_ALifeGroupAbstract		*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
+	if (!l_tpALifeGroupAbstract)
 		return					(this);
 	else {
-		if (!l_tpALifeAbstractGroup->m_wCount)
+		if (!l_tpALifeGroupAbstract->m_wCount)
 			return				(0);
 		else
-			return				(m_tpALife->tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[0]));
+			return				(m_tpALife->tpfGetObjectByID(l_tpALifeGroupAbstract->m_tpMembers[0]));
+	}
+}
+
+void CSE_ALifeMonsterAbstract::vfCheckForPopulationChanges()
+{
+	CSE_ALifeGroupAbstract		*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
+	if (!l_tpALifeGroupAbstract || !bfActive() || m_bOnline)
+		return;
+
+	_TIME_ID					l_tTimeID = m_tpALife->tfGetGameTime();
+	if (l_tTimeID >= l_tpALifeGroupAbstract->m_tNextBirthTime) {
+		l_tpALifeGroupAbstract->m_tNextBirthTime = l_tTimeID + _TIME_ID(getAI().m_pfBirthSpeed->ffGetValue()*24*60*60*1000);
+		if (m_tpALife->randF(100) < getAI().m_pfBirthProbability->ffGetValue()) {
+			u32					l_dwBornCount = iFloor(float(l_tpALifeGroupAbstract->m_wCount)*getAI().m_pfBirthPercentage->ffGetValue() + .5f);
+			if (l_dwBornCount) {
+				l_tpALifeGroupAbstract->m_tpMembers.resize(l_tpALifeGroupAbstract->m_wCount + l_dwBornCount);
+				OBJECT_IT				I = l_tpALifeGroupAbstract->m_tpMembers.begin() + l_tpALifeGroupAbstract->m_wCount;
+				OBJECT_IT				E = l_tpALifeGroupAbstract->m_tpMembers.end();
+				for ( ; I != E; I++) {
+					CSE_Abstract		*l_tpAbstract = m_tpALife->tpfCreateGroupMember	(l_tpALifeGroupAbstract,this);
+					*I					= l_tpAbstract->ID;
+				}
+			}
+		}
 	}
 }
