@@ -1,7 +1,7 @@
 
 
 local timeout = 60000
-local dist_for_report = 10
+local dist_for_report = 20
 local min_dist_to_report = 1
 
 local report_soldier_start      =   xr_sounds_id.sound_report_base  +   0
@@ -43,9 +43,14 @@ end
 function evaluator_timeout:evaluate ()
     if (device ():time_global () - self.time) > timeout then
        local leader = level.object (self.leader_name)
-       if leader ~= nil and leader:alive () == true and distance_between (leader, self.object) < dist_for_report then 
-          leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = self.object
-          return true
+       if leader ~= nil and leader:alive () == true then
+          if distance_between (leader, self.object) < dist_for_report then 
+             leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = self.object
+             return true
+          else   
+             leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil
+             return false
+          end   
        end    
     end   
     return false
@@ -337,6 +342,7 @@ function AddScheme (obj, property_id)
    	   action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	   action:add_precondition      (world_property (properties["timeout_soldier"], true))
    	   action:add_effect            (world_property (properties["timeout_soldier"], false))
+   	   action:set_weight            (2)
    	   manager:add_action           (operators["report_soldier"], action)
    	   
    	   action = manager:action (property_id)
@@ -352,6 +358,7 @@ function AddScheme (obj, property_id)
    	   action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	   action:add_precondition      (world_property (properties["leader_report"],   true))
    	   action:add_effect            (world_property (properties["leader_report"],   false))
+   	   action:set_weight            (2)
    	   manager:add_action           (operators["report_leader"], action)
    	   
        action = manager:action (property_id)

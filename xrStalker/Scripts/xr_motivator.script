@@ -408,6 +408,8 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_state.add_to_binder(self.object)
     xr_reactions.add_to_binder(self.object)
     xr_patrol.add_to_binder (self.object)
+    xr_follower.add_to_binder (self.object)
+    xr_report.AddScheme (self.object, stalker_ids.action_free_no_alife)
     xr_meet.add_to_binder(self.object)
     xr_kamp.add_to_binder(self.object)
     xr_commander.add_to_binder(self.object)
@@ -416,7 +418,6 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_sleeper.add_to_binder(self.object)
     xr_robbers.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
-    xr_follower.add_to_binder (self.object)
     xr_trivial.add_novice     (self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------

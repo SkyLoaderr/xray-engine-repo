@@ -336,21 +336,21 @@ function action_single_patrol:set_look_dir ()
     local size = table.getn (xr_motivator.storage[self.object:id()].followers)
     if size == 0 then return end
     
---    for a = 1, size, 1 do
---        xr_motivator.storage[self.object:id()].followers[a].look_dir = xr_motivator.storage[self.object:id()].followers[a].direction
---    end    
-    
-    local side = false
-    
     for a = 1, size, 1 do
-        if side == true then 
-           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), -45.0)
-           side = false
-        else
-           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), 45.0)
-           side = true
-        end   
-    end
+        xr_motivator.storage[self.object:id()].followers[a].look_dir = xr_motivator.storage[self.object:id()].followers[a].direction
+    end    
+    
+--    local side = false
+    
+--    for a = 1, size, 1 do
+--        if side == true then 
+--           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), -45.0)
+--           side = false
+--        else
+--           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), 45.0)
+--           side = true
+--        end   
+--    end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:set_animation ()
@@ -419,8 +419,6 @@ function add_to_binder(obj)
    	manager:add_action              (operators["single_patrol"], action)
 
    	action = manager:action (stalker_ids.action_free_no_alife)
-   	action:add_precondition     	(world_property (properties["complete"],  true))
-   	
-    --xr_report.AddScheme (obj, properties["complete"])
+   	action:add_precondition (world_property (properties["complete"],  true))
    	
 end
