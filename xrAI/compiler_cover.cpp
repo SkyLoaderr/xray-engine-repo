@@ -250,7 +250,8 @@ public:
 	}
 };
 
-#define NUM_THREADS	4
+#define NUM_THREADS	3
+extern	void mem_Optimize();
 void	xrCover	()
 {
 	Status("Calculating...");
@@ -266,8 +267,9 @@ void	xrCover	()
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
 	// Smooth
-	Status	("Smoothing coverage mask...");
-	Nodes	Old = g_nodes;
+	Status			("Smoothing coverage mask...");
+	mem_Optimize	();
+	Nodes	Old		= g_nodes;
 	for (DWORD N=0; N<g_nodes.size(); N++)
 	{
 		Node&	Base		= Old[N];
