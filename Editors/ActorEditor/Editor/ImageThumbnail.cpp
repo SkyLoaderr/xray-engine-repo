@@ -181,30 +181,30 @@ void EImageThumbnail::Save(int age, FSPath* path){
 bool EImageThumbnail::FillProp(PropValueVec& values)
 {
 	STextureParams& F	= m_TexParams;
-    FILL_PROP(values,	"Format",				(LPVOID)&F.fmt,			PROP::CreateTokenValue	(tfmt_token));
-    FILL_PROP(values,	"Type",					(LPVOID)&F.type,		PROP::CreateTokenValue	(ttype_token));
+    FILL_PROP(values,	"Format",				(LPVOID)&F.fmt,			PROP::CreateToken	(tfmt_token));
+    FILL_PROP(values,	"Type",					(LPVOID)&F.type,		PROP::CreateToken	(ttype_token));
             
-    FILL_PROP(values,	"MipMaps\\Enabled",		&F.flag,				PROP::CreateFlagValue	(STextureParams::flGenerateMipMaps));
-    FILL_PROP(values,	"MipMaps\\Filter",		(LPVOID)&F.mip_filter,	PROP::CreateTokenValue	(tparam_token));
+    FILL_PROP(values,	"MipMaps\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flGenerateMipMaps));
+    FILL_PROP(values,	"MipMaps\\Filter",		(LPVOID)&F.mip_filter,	PROP::CreateToken	(tparam_token));
 
-    FILL_PROP(values,	"Details\\Enabled",		&F.flag,				PROP::CreateFlagValue	(STextureParams::flHasDetailTexture));
-    FILL_PROP(values,	"Details\\Texture",		F.detail_name,			PROP::CreateTextureValue(sizeof(F.detail_name)));
-    FILL_PROP(values,	"Details\\Scale",		&F.detail_scale,		PROP::CreateFloatValue	(0.1f,10000.f,0.1f,2));
+    FILL_PROP(values,	"Details\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flHasDetailTexture));
+    FILL_PROP(values,	"Details\\Texture",		F.detail_name,			PROP::CreateTexture	(sizeof(F.detail_name)));
+    FILL_PROP(values,	"Details\\Scale",		&F.detail_scale,		PROP::CreateFloat	(0.1f,10000.f,0.1f,2));
 
-    FILL_PROP(values,	"Flags\\Grayscale",		&F.flag,				PROP::CreateFlagValue	(STextureParams::flGreyScale));
-    FILL_PROP(values,	"Flags\\Binary Alpha",	&F.flag,				PROP::CreateFlagValue	(STextureParams::flBinaryAlpha));
-    FILL_PROP(values,	"Flags\\Dither",		&F.flag,				PROP::CreateFlagValue	(STextureParams::flDitherColor));
-    FILL_PROP(values,	"Flags\\Dither Each MIP",&F.flag,				PROP::CreateFlagValue	(STextureParams::flDitherEachMIPLevel));
-    FILL_PROP(values,	"Flags\\Implicit Lighted",&F.flag,				PROP::CreateFlagValue	(STextureParams::flImplicitLighted));
+    FILL_PROP(values,	"Flags\\Grayscale",		&F.flag,				PROP::CreateFlag	(STextureParams::flGreyScale));
+    FILL_PROP(values,	"Flags\\Binary Alpha",	&F.flag,				PROP::CreateFlag	(STextureParams::flBinaryAlpha));
+    FILL_PROP(values,	"Flags\\Dither",		&F.flag,				PROP::CreateFlag	(STextureParams::flDitherColor));
+    FILL_PROP(values,	"Flags\\Dither Each MIP",&F.flag,				PROP::CreateFlag	(STextureParams::flDitherEachMIPLevel));
+    FILL_PROP(values,	"Flags\\Implicit Lighted",&F.flag,				PROP::CreateFlag	(STextureParams::flImplicitLighted));
 
-    FILL_PROP(values,	"Fade\\Enabled Color",	&F.flag,				PROP::CreateFlagValue	(STextureParams::flFadeToColor));
-    FILL_PROP(values,	"Fade\\Enabled Alpha",	&F.flag,				PROP::CreateFlagValue	(STextureParams::flFadeToAlpha));
-    FILL_PROP(values,	"Fade\\Amount",			&F.fade_amount,			PROP::CreateDWORDValue	(1000,0));
-    FILL_PROP(values,	"Fade\\Color",			&F.fade_color,			PROP::CreateColorValue	());
+    FILL_PROP(values,	"Fade\\Enabled Color",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToColor));
+    FILL_PROP(values,	"Fade\\Enabled Alpha",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToAlpha));
+    FILL_PROP(values,	"Fade\\Amount",			&F.fade_amount,			PROP::CreateDWORD	(1000,0));
+    FILL_PROP(values,	"Fade\\Color",			&F.fade_color,			PROP::CreateColor	());
             
-    FILL_PROP(values,	"Border\\Enabled Color",&F.flag,				PROP::CreateFlagValue	(STextureParams::flColorBorder));
-    FILL_PROP(values,	"Border\\Enabled Alpha",&F.flag,				PROP::CreateFlagValue	(STextureParams::flAlphaBorder));
-    FILL_PROP(values,	"Border\\Color",		&F.border_color,		PROP::CreateColorValue	());
+    FILL_PROP(values,	"Border\\Enabled Color",&F.flag,				PROP::CreateFlag	(STextureParams::flColorBorder));
+    FILL_PROP(values,	"Border\\Enabled Alpha",&F.flag,				PROP::CreateFlag	(STextureParams::flAlphaBorder));
+    FILL_PROP(values,	"Border\\Color",		&F.border_color,		PROP::CreateColor	());
     return true;
 }
 

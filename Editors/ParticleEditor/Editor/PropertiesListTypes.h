@@ -528,164 +528,164 @@ public:
 DEFINE_VECTOR(PropValue*,PropValueVec,PropValueIt);
 
 //---------------------------------------------------------------------------
-    MarkerItem*			CreateMarkerValue	()
+namespace PROP{
+    MarkerItem*			CreateMarker	()
     {
         MarkerItem* V	= new MarkerItem();
         V->type			= PROP_MARKER;
         return V;
     }
-namespace PROP{
-    IntValue* 			CreateIntValue		(int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    IntValue* 			CreateInt		(int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         IntValue* V		= new IntValue(mn,mx,inc,after,before,draw,change);
         V->type			= PROP_INTEGER;
         return V;
     }
-    DWORDValue* 		CreateDWORDValue	(int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    DWORDValue* 		CreateDWORD	(int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         DWORDValue* V	= new DWORDValue(mx,inc,after,before,draw,change);
         V->type			= PROP_DWORD;
         return V;
     }
-    FloatValue* 		CreateFloatValue	(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    FloatValue* 		CreateFloat	(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         FloatValue* V	= new FloatValue(mn,mx,inc,decim,after,before,draw,change);
         V->type			= PROP_FLOAT;
         return V;
     }           	
-    BOOLValue* 			CreateBOOLValue		(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    BOOLValue* 			CreateBOOL		(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         BOOLValue* V	=new BOOLValue(after,before,draw,change);
         V->type			= PROP_BOOLEAN;
         return V;
     }
-    FlagValue* 			CreateFlagValue		(DWORD mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    FlagValue* 			CreateFlag		(DWORD mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         FlagValue* V	= new FlagValue(mask,after,before,draw,change);
         V->type			= PROP_FLAG;
         return V;
     }
-    VectorValue* 		CreateVectorValue	(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    VectorValue* 		CreateVector	(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         VectorValue* V	= new VectorValue(mn,mx,inc,decim,after,before,draw,change);
         V->type			= PROP_VECTOR;
         return V;
     }
-	TokenValue* 		CreateTokenValue	(xr_token* token, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TokenValue* 		CreateToken	(xr_token* token, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TokenValue* V	= new TokenValue(token,after,before,draw,change);
         V->type			= PROP_TOKEN;
         return V;
     }
-	TokenValue2* 		CreateTokenValue2	(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TokenValue2* 		CreateToken2	(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TokenValue2* V	= new TokenValue2(lst,after,before,draw,change);
         V->type			= PROP_TOKEN2;
         return V;
     }
-	TokenValue3* 		CreateTokenValue3	(DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TokenValue3* 		CreateToken3	(DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TokenValue3* V	= new TokenValue3(cnt,lst,after,before,draw,change);
         V->type			= PROP_TOKEN3;
         return V;
     }
-	ListValue* 			CreateListValue		(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ListValue* 			CreateList		(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         ListValue* V	= new ListValue(lst,after,before,draw,change);
         V->type			= PROP_LIST;
         return V;
     }
-	ListValue* 			CreateListValueA	(DWORD cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ListValue* 			CreateListA	(DWORD cnt, LPCSTR* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         ListValue* V	= new ListValue(cnt,lst,after,before,draw,change);
         V->type			= PROP_LIST;
         return V;
     }
-    DWORDValue* 		CreateColorValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    DWORDValue* 		CreateColor	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         DWORDValue* V	= new DWORDValue(0xffffffff,0,after,before,draw,change);
         V->type			= PROP_COLOR;
         return V;
     }
-    ColorValue*			CreateFColorValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    ColorValue*			CreateFColor	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         ColorValue* V	= new ColorValue(after,before,draw,change);
         V->type			= PROP_FCOLOR;
         return V;
     }
-	TextValue* 			CreateTextValue		(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateText		(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_TEXT;
         return V;
     }
-	ATextValue* 		CreateATextValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ATextValue* 		CreateAText	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         ATextValue* V	= new ATextValue(after,before,draw,change);
         V->type			= PROP_A_TEXT;
         return V;
     }
-	TextValue* 			CreateEShaderValue	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateEShader	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_ESHADER;
         return V;
     }
-	TextValue* 			CreateCShaderValue	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateCShader	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_CSHADER;
         return V;
     }
-	TextValue* 			CreateTextureValue	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateTexture	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_TEXTURE;
         return V;
     }
-	TextValue* 			CreateTexture2Value	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateTexture2	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_TEXTURE2;
         return V;
     }
-	ATextValue* 		CreateAEShaderValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ATextValue* 		CreateAEShader	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         ATextValue* V	= new ATextValue(after,before,draw,change);
         V->type			= PROP_A_ESHADER;
         return V;
     }
-	ATextValue* 		CreateACShaderValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ATextValue* 		CreateACShader	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         ATextValue* V	= new ATextValue(after,before,draw,change);
         V->type			= PROP_A_CSHADER;
         return V;
     }
-	ATextValue* 		CreateATextureValue	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	ATextValue* 		CreateATexture	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         ATextValue* V	= new ATextValue(after,before,draw,change);
         V->type			= PROP_A_TEXTURE;
         return V;
     }
-	TextValue*			CreateLightAnimValue(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue*			CreateLightAnim(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_LIGHTANIM;
         return V;
     }
-	TextValue* 			CreateLibObjectValue(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateLibObject(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_LIBOBJECT;
         return V;
     }
-	TextValue* 			CreateEntityValue	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TextValue* 			CreateEntity	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_ENTITY;
         return V;
     }
-	WaveValue* 			CreateWaveValue		(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	WaveValue* 			CreateWave		(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         WaveValue* V	= new WaveValue(after,before,draw,change);
         V->type			= PROP_WAVE;

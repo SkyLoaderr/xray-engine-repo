@@ -97,7 +97,7 @@ public:		// User declarations
     bool __fastcall IsFocused				(){return tvProperties->Focused()||seNumber->Focused()||edText->Focused();}
     void __fastcall SetModifiedEvent		(TOnModifiedEvent modif=0){OnModifiedEvent=modif;}
     void __fastcall BeginFillMode			(const AnsiString& title="Properties", LPCSTR section=0);
-    TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, LPCSTR key, PropValue* value); 
+    TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, LPCSTR key, LPVOID value, PropValue* prop); 
     void __fastcall EndFillMode				(bool bFullExpand=true);
     TElTreeItem* __fastcall BeginEditMode	(LPCSTR section=0);
     void __fastcall EndEditMode				(TElTreeItem* expand_node=0);

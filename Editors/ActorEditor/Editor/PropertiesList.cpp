@@ -185,8 +185,9 @@ void __fastcall TProperties::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* __fastcall TProperties::AddItem(TElTreeItem* parent, LPCSTR key, PropValue* prop)
+TElTreeItem* __fastcall TProperties::AddItem(TElTreeItem* parent, LPCSTR key, LPVOID value, PropValue* prop)
 {
+	prop->InitFirst		(value);
     prop->item			= tvProperties->Items->AddChild(parent,key);
     prop->item->Tag	    = (int)prop;
     prop->item->UseStyles=true;
