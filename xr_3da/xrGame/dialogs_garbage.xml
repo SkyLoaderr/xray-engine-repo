@@ -152,8 +152,9 @@
                 <text>gar_seriy_help_21</text>
                 <actions>garbage_dialogs.transfer_seriy_flash</actions>
             </phrase>
-            <phrase id="31">
+            <phrase id="31">            
                 <text>gar_seriy_help_31</text>
+                <action>dialogs.kill_yourself</action>
             </phrase>
             <phrase id="1">
                 <text>gar_seriy_help_1</text>

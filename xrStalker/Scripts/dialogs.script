@@ -53,6 +53,9 @@ function transfer_bandage(first_speaker, second_speaker)
 		second_speaker:set_relation(game_object.friend, first_speaker)
 	end
 end
+function kill_yourself(npc, actor)
+	npc:kill(actor)
+end
 
 --'---------------------------------------------------------------------------------
 --' DIALOG ALLOWED
