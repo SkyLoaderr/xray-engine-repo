@@ -240,8 +240,8 @@ IC void i_section	(int Sect, BOOL bMiddle)
 		E1[1] = currentC[1]-currentA[1]; E2[1] = currentC[1]-currentB[1];
 		E1[2] = currentC[2]-currentA[2]; E2[2] = currentC[2]-currentB[2];
 	}
-	Vclamp(startY,0,occ_dim-1);
-	Vclamp(endY,  0,occ_dim-1);
+	Vclamp(startY,0,occ_dim);
+	Vclamp(endY,  0,occ_dim);
 	if (startY >= endY) return;
 	
 	// Compute the inverse slopes of the lines, ie rate of change of X by Y
