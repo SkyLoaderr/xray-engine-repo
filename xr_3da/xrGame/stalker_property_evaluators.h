@@ -66,4 +66,88 @@ public:
 	virtual _value_type	evaluate						();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorSeeEnemy
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorSeeEnemy : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorItemToKill
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorItemToKill : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorItemCanKill
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorItemCanKill : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorFoundItemToKill
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorFoundItemToKill : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorFoundAmmo
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorFoundAmmo : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorReadyToKill
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorReadyToKill : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorKillDistance
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorKillDistance : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate						();
+};
+
 #include "stalker_property_evaluators_inline.h"

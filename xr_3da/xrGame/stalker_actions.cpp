@@ -13,6 +13,9 @@
 #include "stalker_decision_space.h"
 
 using namespace StalkerDecisionSpace;
+
+typedef CStalkerActionBase::_edge_value_type _edge_value_type;
+
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionBase
 //////////////////////////////////////////////////////////////////////////
@@ -193,4 +196,358 @@ void CStalkerActionKillEnemy::execute		()
 
 	if (m_object->CMovementManager::path_completed())
 		m_object->CMemoryManager::enable		(m_object->enemy(),false);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetKillDistance
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionGetKillDistance::CStalkerActionGetKillDistance	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionGetKillDistance::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionGetKillDistance::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionGetKillDistance::execute	()
+{
+	inherited::finalize		();
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::update				(eLookTypePathDirection);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetReadyToKill
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionGetReadyToKill::CStalkerActionGetReadyToKill	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionGetReadyToKill::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionGetReadyToKill::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionGetReadyToKill::execute	()
+{
+	inherited::finalize		();
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::update				(eLookTypePathDirection);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetEnemy
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionGetEnemy::CStalkerActionGetEnemy	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionGetEnemy::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionGetEnemy::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionGetEnemy::execute	()
+{
+	inherited::finalize		();
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::update				(eLookTypePathDirection);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+#endif
+}
+
+_edge_value_type CStalkerActionGetEnemy::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
+{
+	return					(_edge_value_type(100));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetEnemySeen
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionGetEnemySeen::CStalkerActionGetEnemySeen	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionGetEnemySeen::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionGetEnemySeen::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionGetEnemySeen::execute	()
+{
+	inherited::finalize		();
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::update				(eLookTypePathDirection);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetItemToKill
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionGetItemToKill::CStalkerActionGetItemToKill	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionGetItemToKill::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionGetItemToKill::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionGetItemToKill::execute	()
+{
+	inherited::finalize		();
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::update				(eLookTypePathDirection);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionFindItemToKill
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionFindItemToKill::CStalkerActionFindItemToKill	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionFindItemToKill::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionFindItemToKill::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionFindItemToKill::execute	()
+{
+	inherited::finalize		();
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::update				(eLookTypePathDirection);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionMakeItemKilling
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionMakeItemKilling::CStalkerActionMakeItemKilling	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionMakeItemKilling::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionMakeItemKilling::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionMakeItemKilling::execute	()
+{
+	inherited::finalize		();
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::update				(eLookTypePathDirection);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionFindAmmo
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionFindAmmo::CStalkerActionFindAmmo	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionFindAmmo::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionFindAmmo::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionFindAmmo::execute	()
+{
+	inherited::finalize		();
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::update				(eLookTypePathDirection);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+#endif
+}
+
+_edge_value_type CStalkerActionFindAmmo::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
+{
+	return					(_edge_value_type(100));
 }

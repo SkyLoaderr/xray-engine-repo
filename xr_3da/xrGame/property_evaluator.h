@@ -12,7 +12,7 @@
 
 template <typename _object_type>
 class CPropertyEvaluator {
-protected:
+public:
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
 	typedef CGraphEngine::_solver_value_type		_value_type;
 

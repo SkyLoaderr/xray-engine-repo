@@ -26,8 +26,16 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyPuzzleSolved,
 
 		eWorldPropertyItems,
-		eWorldPropertyEnemies,
-
+		eWorldPropertyEnemy,
+		
+		eWorldPropertySeeEnemy,
+		eWorldPropertyItemToKill,
+		eWorldPropertyFoundItemToKill,
+		eWorldPropertyItemCanKill,
+		eWorldPropertyFoundAmmo,
+		eWorldPropertyReadyToKill,
+		eWorldPropertyKillDistance,
+		
 		eWorldPropertyScript,
 		eWorldPropertyDummy			= u32(-1),
 	};
@@ -41,6 +49,15 @@ namespace StalkerDecisionSpace {
 		
 		eWorldOperatorGatherItems,
 		eWorldOperatorKillEnemy,
+		eWorldOperatorGetKillDistance,
+		eWorldOperatorGetReadyToKill,
+		eWorldOperatorGetEnemy,
+		eWorldOperatorGetEnemySeen,
+		eWorldOperatorGetItemToKill,
+		eWorldOperatorFindItemToKill,
+		eWorldOperatorMakeItemKilling,
+		eWorldOperatorFindAmmo,
+
 
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),

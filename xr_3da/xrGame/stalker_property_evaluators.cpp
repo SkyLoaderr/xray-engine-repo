@@ -10,11 +10,13 @@
 #include "stalker_property_evaluators.h"
 #include "ai/stalker/ai_stalker.h"
 
+typedef CStalkerPropertyEvaluator::_value_type _value_type;
+
 //////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorALife
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerPropertyEvaluatorALife::_value_type CStalkerPropertyEvaluatorALife::evaluate	()
+_value_type CStalkerPropertyEvaluatorALife::evaluate	()
 {
 	return			(!!ai().get_alife());
 }
@@ -23,7 +25,7 @@ CStalkerPropertyEvaluatorALife::_value_type CStalkerPropertyEvaluatorALife::eval
 // CStalkerPropertyEvaluatorAlive
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerPropertyEvaluatorAlive::_value_type CStalkerPropertyEvaluatorAlive::evaluate	()
+_value_type CStalkerPropertyEvaluatorAlive::evaluate	()
 {
 	return			(!!m_object->g_Alive());
 }
@@ -32,7 +34,7 @@ CStalkerPropertyEvaluatorAlive::_value_type CStalkerPropertyEvaluatorAlive::eval
 // CStalkerPropertyEvaluatorItems
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerPropertyEvaluatorItems::_value_type CStalkerPropertyEvaluatorItems::evaluate	()
+_value_type CStalkerPropertyEvaluatorItems::evaluate	()
 {
 	return			(!!m_object->item());
 }
@@ -41,7 +43,72 @@ CStalkerPropertyEvaluatorItems::_value_type CStalkerPropertyEvaluatorItems::eval
 // CStalkerPropertyEvaluatorEnemies
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerPropertyEvaluatorEnemies::_value_type CStalkerPropertyEvaluatorEnemies::evaluate	()
+_value_type CStalkerPropertyEvaluatorEnemies::evaluate	()
 {
 	return			(!!m_object->enemy());
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorSeeEnemy
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorSeeEnemy::evaluate	()
+{
+	VERIFY				(m_object->enemy());
+	return				(m_object->visible(m_object->enemy()));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorItemToKill
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorItemToKill::evaluate	()
+{
+	return				(true);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorItemCanKill
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorItemCanKill::evaluate	()
+{
+	return				(true);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorFoundItemToKill
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorFoundItemToKill::evaluate	()
+{
+	return				(true);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorFoundAmmo
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorFoundAmmo::evaluate	()
+{
+	return				(true);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorReadyToKill
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorReadyToKill::evaluate	()
+{
+	return				(true);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorKillDistance
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorKillDistance::evaluate	()
+{
+	return				(true);
+}
+
