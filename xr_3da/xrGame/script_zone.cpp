@@ -36,7 +36,10 @@ void CScriptZone::reinit		()
 BOOL CScriptZone::net_Spawn	(LPVOID DC) 
 {
 	feel_touch.clear			();
-	return						(inherited::net_Spawn(DC));
+	if (!inherited::net_Spawn(DC))
+		return					(FALSE);
+	shedule_register			();
+	return						(TRUE);
 }
 
 void CScriptZone::net_Destroy	()
