@@ -20,7 +20,7 @@ function evaluator_new:evaluate()
 	end
 
 	self.a.evn:calculate()
---	self.a.evn:print()
+	self.a.evn:print()
 
 	return self.a.evn:isEvents() or self.a.obj.id ~= nil
 end
@@ -85,42 +85,42 @@ function action_wait:initialize()
 				  "prisluh_2_idle_6" }}
 
 	xr_state.change_state(self.object, 0)
+	printf("Reactions RESET")
 end
 function action_wait:execute()
 	self.a.evn:get_event(self.a.obj)
 
+	printf("Process obj %d, type: %s",self.a.obj.id, self.a.obj.type)
+
 	if self.a.obj.type == "watch" then
-		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self:set_prisluh(false)
 			self.a.evn:markAsUsed(self.a.obj.id)
 			self.a.obj.id = nil
 			return
 		end
 
-		-- если прошло много времени, прекращаем
+		--' если прошло много времени, прекращаем
 		if game.time() - self.a.obj.time >= self.a.time_wait then
-			self:set_prisluh(false)
 			self.a.evn:removeFromWatch(self.a.obj.id)
 			self.a.obj.id = nil
 			return
 		end
 
 		self.a.evn:markAsWatch(self.a.obj.id)
-		-- определяем позицию чувака и втыкаем в нее
+		--' определяем позицию чувака и втыкаем в нее
 		self.object:set_movement_type(move.stand)
 		self.object:set_sight(look.point, level.vertex_position(self.a.obj.position), 0)
 		self:set_prisluh(true)
-		-- озвучка на поиск
+		--' озвучка на поиск
 		if self.a.evn:ruleExist("silence") ~= true then
 			globals.set_sound(self.object, self.sound_watch, false)
 		end
 	end
 
 	if self.a.obj.type == "explore" then
-		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self:set_prisluh(false)
 			self.a.evn:markAsUsed(self.a.obj.id)
 			self.a.obj.id = nil
 			return
@@ -128,9 +128,8 @@ function action_wait:execute()
 	end
 
 	if self.a.obj.type == "corpse_monstr" then
-		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self:set_prisluh(false)
 			self.a.evn:markCorpse(self.a.obj.id)
 			self.a.obj.id = nil
 			return
@@ -138,9 +137,8 @@ function action_wait:execute()
 	end
 
 	if self.a.obj.type == "corpse_friend" then
-		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self:set_prisluh(false)
 			self.a.evn:markCorpse(self.a.obj.id)
 			self.a.obj.id = nil
 			return
@@ -148,9 +146,8 @@ function action_wait:execute()
 	end
 
 	if self.a.obj.type == "corpse_neutral" then
-		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self:set_prisluh(false)
 			self.a.evn:markCorpse(self.a.obj.id)
 			self.a.obj.id = nil
 			return
@@ -158,15 +155,13 @@ function action_wait:execute()
 	end
 
 	if self.a.obj.type == "corpse_enemy" then
-		-- если мы можем идентицифировать объект - отмечаем как известный и идем дальше
+		--' если мы можем идентицифировать объект - отмечаем как известный и идем дальше
 		if self.a.obj.visibility >= self.object:visibility_threshold() then
-			self:set_prisluh(false)
 			self.a.evn:markCorpse(self.a.obj.id)
 			self.a.obj.id = nil
 			return
 		end
 	end
-
 	action_base.execute(self)
 end
 function action_wait:finalize()
@@ -179,7 +174,6 @@ function action_wait:set_prisluh(prisluh)
 	end
 	if prisluh == false then
 		xr_state.anim_update(nil, self.object)
-	    	self.object:clear_animations()
 	end
 end
 
@@ -353,7 +347,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 
 		type = self:type(vo)
 
-		if continue and type == "item" then
+		if continue and (type == "item" or type == "none") then
 			continue = false
 		end
 
@@ -373,6 +367,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			-- заносим раздражитель в память
 			if self.arhive[vo:id()] == nil then
 				self.arhive[vo:id()] = {visibility = self.descr.visibility,
+							name = vo:name(),
 							sound_kat = self.descr.sound_kat,
 							sound_power = self.descr.sound_power,
 							object_type = self.descr.object_type,
@@ -390,7 +385,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			self.arhive[vo:id()].visibility		= v.value
 			self.arhive[vo:id()].time		= game.time()
 			if v.value >= self.npc:visibility_threshold() then
-				self.arhive[vo:id()].object_type = self:type(vo)
+				self.arhive[vo:id()].object_type = type
 
 				if self.arhive[vo:id()].object_type == "stalker" then
 					self.arhive[vo:id()].stalker.relation = self.npc:relation(vo)
@@ -614,7 +609,7 @@ end
 function events:printid(key)
 	value = self.arhive[key]
 	if value ~= nil then
-	printf("------------------------ Object: %d ------------------------", key)
+	printf("------------------------ Object: %d --- %s", key, value.name)
 	if value.visibility then 	printf("Visibility: %.3f", value.visibility)
 				else 	printf("Visibility: nil") end
 	if value.sound_power then 	printf("Sound power: %.3f", value.sound_power)
