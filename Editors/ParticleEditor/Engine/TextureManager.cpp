@@ -111,7 +111,8 @@ ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
 		if (S.equal(*(v_elements[it])))	return v_elements[it];
 
 	// Create _new_ entry
-	ShaderElement*	N		= xr_new<ShaderElement>(S);
+	ShaderElement*	N		=	xr_new<ShaderElement>(S);
+	N->dwFlags				|=	xr_resource::RF_REGISTERED;
 	v_elements.push_back	(N);
 	return N;
 }
@@ -166,8 +167,9 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 		if (S.equal(v_shaders[it]))	return v_shaders[it];
 
 	// Create _new_ entry
-	Shader*		N		= xr_new<Shader>(S);
-	v_shaders.push_back	(N);
+	Shader*		N			=	xr_new<Shader>(S);
+	N->dwFlags				|=	xr_resource::RF_REGISTERED;
+	v_shaders.push_back		(N);
 	return N;
 }
 
@@ -215,7 +217,8 @@ Shader*	CShaderManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_texture
 		if (S.equal(v_shaders[it]))	return v_shaders[it];
 
 	// Create _new_ entry
-	Shader*		N		= xr_new<Shader>	(S);
+	Shader*		N		=	xr_new<Shader>	(S);
+	N->dwFlags			|=	xr_resource::RF_REGISTERED;
 	v_shaders.push_back	(N);
 	return N;
 }

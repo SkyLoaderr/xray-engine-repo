@@ -3,7 +3,7 @@
 // resource itself, the base class for all derived resources
 class	ENGINE_API	xr_resource	{
 public:
-	enum			{RF_REGISTERED=1<<0; };
+	enum			{RF_REGISTERED=1<<0 };
 public:
 	u32				dwReference;
 	u32				dwFlags;

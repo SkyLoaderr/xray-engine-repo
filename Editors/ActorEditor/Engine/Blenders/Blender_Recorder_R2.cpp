@@ -96,5 +96,5 @@ void	CBlender_Compile::r2_End		()
 	dest.T					= Device.Shader._CreateTextureList	(passTextures);
 	dest.M					= 0;
 	dest.C					= 0;
-	SH->Passes.push_back	(Device.Shader._CreatePass(dest));
+	SH->Passes.push_back	(Device.Shader._CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T,dest.M,dest.C));
 }

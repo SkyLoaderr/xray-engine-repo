@@ -32,13 +32,15 @@ SState*		CShaderManager::_CreateState		(SimulatorStates& state_code)
 
 	// Create New
 	v_states.push_back				(xr_new<SState>());
+	v_states.back()->dwFlags		|= xr_resource::RF_REGISTERED;
 	v_states.back()->state			= state_code.record();
 	v_states.back()->state_code		= state_code;
 	return v_states.back();
 }
 void		CShaderManager::_DeleteState		(const SState* state)
 {
-	if (reclaim(v_states,state))	return;
+	if (0==(state->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(v_states,state))						return;
 	Msg	("! ERROR: Failed to find compiled stateblock");
 }
 
@@ -49,14 +51,15 @@ SPass*		CShaderManager::_CreatePass			(ref_state& _state, ref_ps& _ps, ref_vs& _
 		if (v_passes[it]->equal(_state,_ps,_vs,_ctable,_T,_M,_C))
 			return v_passes[it];
 
-	SPass*	P					= xr_new<SPass>();
-	P->state					= _state;
-	P->ps						= _ps;
-	P->vs						= _vs;
-	P->constants				= _ctable;
-	P->T						= _T;
-	P->M						= _M;
-	P->C						= _C;
+	SPass*	P					=	xr_new<SPass>();
+	P->dwFlags					|=	xr_resource::RF_REGISTERED;
+	P->state					=	_state;
+	P->ps						=	_ps;
+	P->vs						=	_vs;
+	P->constants				=	_ctable;
+	P->T						=	_T;
+	P->M						=	_M;
+	P->C						=	_C;
 
 	v_passes.push_back			(P);
 	return v_passes.back();
@@ -64,7 +67,8 @@ SPass*		CShaderManager::_CreatePass			(ref_state& _state, ref_ps& _ps, ref_vs& _
 
 void		CShaderManager::_DeletePass			(const SPass* P)
 {
-	if (reclaim(v_passes,P))		return;
+	if (0==(P->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(v_passes,P))						return;
 	Msg	("! ERROR: Failed to find compiled pass");
 }
 
@@ -92,13 +96,15 @@ SDeclaration*	CShaderManager::_CreateDecl	(D3DVERTEXELEMENT9* dcl)
 	u32 dcl_size			= D3DXGetDeclLength(dcl)+1;
 	CHK_DX					(HW.pDevice->CreateVertexDeclaration(dcl,&D->dcl));
 	D->dcl_code.assign		(dcl,dcl+dcl_size);
+	D->dwFlags				|= xr_resource::RF_REGISTERED;
 	v_declarations.push_back(D);
 	return D;
 }
 
 void		CShaderManager::_DeleteDecl		(const SDeclaration* dcl)
 {
-	if (reclaim(v_declarations,dcl))		return;
+	if (0==(dcl->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(v_declarations,dcl))					return;
 	Msg	("! ERROR: Failed to find compiled vertex-declarator");
 }
 
@@ -111,6 +117,7 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 	else
 	{
 		SVS*	_vs					= xr_new<SVS>	();
+		_vs->dwFlags				|= xr_resource::RF_REGISTERED;
 		m_vs.insert					(mk_pair(_vs->set_name(name),_vs));
 		if (0==stricmp(name,"null"))	{
 			_vs->vs				= NULL;
@@ -162,6 +169,7 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 
 void	CShaderManager::_DeleteVS			(const SVS* vs)
 {
+	if (0==(vs->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N				= LPSTR		(vs->cName);
 	map_VS::iterator I	= m_vs.find	(N);
 	if (I!=m_vs.end())	{
@@ -179,7 +187,8 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 	if (I!=m_ps.end())	return		I->second;
 	else
 	{
-		SPS*	_ps					= xr_new<SPS>	();
+		SPS*	_ps					=	xr_new<SPS>	();
+		_ps->dwFlags				|=	xr_resource::RF_REGISTERED;
 		m_ps.insert					(mk_pair(_ps->set_name(name),_ps));
 		if (0==stricmp(name,"null"))	{
 			_ps->ps				= NULL;
@@ -235,6 +244,7 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 }
 void	CShaderManager::_DeletePS			(const SPS* ps)
 {
+	if (0==(ps->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N				= LPSTR		(ps->cName);
 	map_PS::iterator I	= m_ps.find	(N);
 	if (I!=m_ps.end())	{
@@ -249,12 +259,14 @@ R_constant_table*	CShaderManager::_CreateConstantTable	(R_constant_table& C)
 	if (C.empty())		return NULL;
 	for (u32 it=0; it<v_constant_tables.size(); it++)
 		if (v_constant_tables[it]->equal(C))	return v_constant_tables[it];
-	v_constant_tables.push_back		(xr_new<R_constant_table>(C));
-	return v_constant_tables.back	();
+	v_constant_tables.push_back			(xr_new<R_constant_table>(C));
+	v_constant_tables.back()->dwFlags	|=	xr_resource::RF_REGISTERED;
+	return v_constant_tables.back		();
 }
 void				CShaderManager::_DeleteConstantTable	(const R_constant_table* C)
 {
-	if (reclaim(v_constant_tables,C))			return;
+	if (0==(C->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(v_constant_tables,C))				return;
 	Msg	("! ERROR: Failed to find compiled constant-table");
 }
 
@@ -270,6 +282,7 @@ CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	else
 	{
 		CRT *RT				=	xr_new<CRT>();
+		RT->dwFlags			|=	xr_resource::RF_REGISTERED;
 		m_rtargets.insert	(mk_pair(RT->set_name(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,w,h,f);
 		return				RT;
@@ -277,6 +290,7 @@ CRT*	CShaderManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 }
 void	CShaderManager::_DeleteRT		(const CRT* RT)
 {
+	if (0==(RT->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N				= LPSTR		(RT->cName);
 	map_RT::iterator I	= m_rtargets.find	(N);
 	if (I!=m_rtargets.end())	{
@@ -297,6 +311,7 @@ CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 	else
 	{
 		CRTC *RT			=	xr_new<CRTC>();
+		RT->dwFlags			|=	xr_resource::RF_REGISTERED;
 		m_rtargets_c.insert	(mk_pair(RT->set_name(Name),RT));
 		if (Device.bReady)	RT->Create	(Name,size,f);
 		return				RT;
@@ -304,6 +319,7 @@ CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
 }
 void	CShaderManager::_DeleteRTC		(const CRTC* RT)
 {
+	if (0==(RT->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N				= LPSTR		(RT->cName);
 	map_RTC::iterator I	= m_rtargets_c.find	(N);
 	if (I!=m_rtargets_c.end())	{
@@ -344,7 +360,8 @@ SGeometry*	CShaderManager::CreateGeom	(D3DVERTEXELEMENT9* decl, IDirect3DVertexB
 		if ((G.dcl==dcl) && (G.vb==vb) && (G.ib==ib) && (G.vb_stride==vb_stride))	return v_geoms[it];
 	}
 
-	SGeometry *Geom		=	xr_new<SGeometry>();
+	SGeometry *Geom		=	xr_new<SGeometry>	();
+	Geom->dwFlags		|=	xr_resource::RF_REGISTERED;
 	Geom->dcl			=	dcl;
 	Geom->vb			=	vb;
 	Geom->vb_stride		=	vb_stride;
@@ -378,6 +395,7 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	else
 	{
 		CTexture *	T		=	xr_new<CTexture>();
+		T->dwFlags			|=	xr_resource::RF_REGISTERED;
 		m_textures.insert	(mk_pair(T->set_name(Name),T));
 		if (Device.bReady && !bDeferredLoad) T->Load(Name);
 		return		T;
@@ -385,6 +403,7 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 }
 void	CShaderManager::_DeleteTexture		(const CTexture* T)
 {
+	if (0==(T->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N					= LPSTR		(T->cName);
 	map_Texture::iterator I	= m_textures.find	(N);
 	if (I!=m_textures.end())	{
@@ -405,13 +424,15 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 	if (I!=m_matrices.end())	return I->second;
 	else
 	{
-		CMatrix* M		=	xr_new<CMatrix>();
+		CMatrix* M			=	xr_new<CMatrix>();
+		M->dwFlags			|=	xr_resource::RF_REGISTERED;
 		m_matrices.insert	(mk_pair(M->set_name(Name),M));
 		return			M;
 	}
 }
 void	CShaderManager::_DeleteMatrix		(const CMatrix* M)
 {
+	if (0==(M->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N					= LPSTR		(M->cName);
 	map_Matrix::iterator I	= m_matrices.find	(N);
 	if (I!=m_matrices.end())	{
@@ -436,13 +457,15 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 	if (I!=m_constants.end())	return I->second;
 	else
 	{
-		CConstant* C	=	xr_new<CConstant>();
+		CConstant* C		=	xr_new<CConstant>();
+		C->dwFlags			|=	xr_resource::RF_REGISTERED;
 		m_constants.insert	(mk_pair(C->set_name(Name),C));
 		return	C;
 	}
 }
 void	CShaderManager::_DeleteConstant		(const CConstant* C)
 {
+	if (0==(C->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N				= LPSTR				(C->cName);
 	map_Constant::iterator I	= m_constants.find	(N);
 	if (I!=m_constants.end())	{
@@ -466,13 +489,15 @@ STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 		STextureList*	base		= lst_textures[it];
 		if (L.equal(*base))			return base;
 	}
-	STextureList*	lst		= xr_new<STextureList>(L);
+	STextureList*	lst		=	xr_new<STextureList>(L);
+	lst->dwFlags			|=	xr_resource::RF_REGISTERED;
 	lst_textures.push_back	(lst);
 	return lst;
 }
 void			CShaderManager::_DeleteTextureList(const STextureList* L)
 {
-	if (reclaim(lst_textures,L))			return;
+	if (0==(L->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(lst_textures,L))					return;
 	Msg	("! ERROR: Failed to find compiled list of textures");
 }
 //--------------------------------------------------------------------------------------------------------------
@@ -487,13 +512,15 @@ SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 		SMatrixList*	base		= lst_matrices[it];
 		if (L.equal(*base))			return base;
 	}
-	SMatrixList*	lst		= xr_new<SMatrixList>(L);
+	SMatrixList*	lst		=	xr_new<SMatrixList>(L);
+	lst->dwFlags			|=	xr_resource::RF_REGISTERED;
 	lst_matrices.push_back	(lst);
 	return lst;
 }
 void			CShaderManager::_DeleteMatrixList ( const SMatrixList* L )
 {
-	if (reclaim(lst_matrices,L))			return;
+	if (0==(L->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(lst_matrices,L))					return;
 	Msg	("! ERROR: Failed to find compiled list of xform-defs");
 }
 //--------------------------------------------------------------------------------------------------------------
@@ -508,13 +535,15 @@ SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 		SConstantList*	base		= lst_constants[it];
 		if (L.equal(*base))			return base;
 	}
-	SConstantList*	lst		= xr_new<SConstantList>(L);
+	SConstantList*	lst		=	xr_new<SConstantList>(L);
+	lst->dwFlags			|=	xr_resource::RF_REGISTERED;
 	lst_constants.push_back	(lst);
 	return lst;
 }
 void			CShaderManager::_DeleteConstantList(const SConstantList* L )
 {
-	if (reclaim(lst_constants,L))			return;
+	if (0==(L->dwFlags&xr_resource::RF_REGISTERED))	return;
+	if (reclaim(lst_constants,L))					return;
 	Msg	("! ERROR: Failed to find compiled list of r1-constant-defs");
 }
 
