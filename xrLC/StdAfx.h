@@ -99,6 +99,12 @@ using namespace std;
 #define NO_XR_3DLISTENER
 #define NO_XR_VERTEX
 #define ENGINE_API
+
+#define xr_malloc malloc
+#define xr_free free
+#define xr_strdup strdup
+
+
 #include "clsid.h"
 #include "debugkernel.h"
 #include "defines.h"
