@@ -27,7 +27,15 @@ public:
 	{
 		m_tLevel				= tLevel;
 		CVirtualFileStream		F(S);
-		F.Read					(&m_tGraphHeader,sizeof(SGraphHeader));
+		m_tGraphHeader.dwVersion		= F.Rdword();
+		m_tGraphHeader.dwVertexCount	= F.Rdword();
+		m_tGraphHeader.tpLevels.resize	(m_tGraphHeader.dwLevelCount = F.Rdword());
+		{
+			vector<SLevel>::iterator		I = m_tGraphHeader.tpLevels.begin();
+			vector<SLevel>::iterator		E = m_tGraphHeader.tpLevels.end();
+			for ( ; I != E; I++)
+				F.Read(I,sizeof(SLevel));
+		}
 		m_tpaGraph				= (SCompressedGraphVertex *)F.Pointer();
 		m_tpVertices.resize		(m_tGraphHeader.dwVertexCount);
 		GRAPH_VERTEX_IT			B = m_tpVertices.begin();
