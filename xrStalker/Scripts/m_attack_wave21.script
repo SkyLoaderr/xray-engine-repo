@@ -22,12 +22,11 @@ end
 
 function main ()
 
-
     local proj1 = get_level_object ("projector1")
     proj1:script (true, m_attack_wave21.script_name ())
     action (proj1, object (object.turn_off), cond (cond.time_end, time_infinite))
     
-    local proj2 = get_level_object ("projector1")
+    local proj2 = get_level_object ("projector2")
     proj2:script (true, m_attack_wave21.script_name ())
     action (proj2, object (object.turn_off), cond (cond.time_end, time_infinite))
 
