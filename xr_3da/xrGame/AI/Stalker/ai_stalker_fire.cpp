@@ -285,7 +285,7 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 		float			enemy_distance = enemy_position.distance_to((*I)->position());
 		float			my_distance = self_position.distance_to((*I)->position());
 
-		if (cover_value >= 1.5*best_value)
+		if (cover_value >= 2.f*best_value)
 			continue;
 
 		if (enemy_distance <= min_enemy_distance)
