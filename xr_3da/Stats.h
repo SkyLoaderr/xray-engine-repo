@@ -41,9 +41,9 @@ public:
 	CStatTimer	RenderCALC_HOM;		// HOM rendering
 	CStatTimer	Animation;			// skeleton calculation
 	CStatTimer	RenderDUMP;			// actual primitive rendering
+	CStatTimer	RenderDUMP_Wait;	// ...waiting something back (queries results, etc.)
 	CStatTimer	RenderDUMP_RT;		// ...render-targets
 	CStatTimer	RenderDUMP_SKIN;	// ...skinning
-	CStatTimer	RenderDUMP_Cached;	// ...cached rendering
 	CStatTimer	RenderDUMP_HUD;		// ...hud rendering
 	CStatTimer	RenderDUMP_Glows;	// ...glows vis-testing,sorting,render
 	CStatTimer	RenderDUMP_Lights;	// ...d-lights building/rendering
