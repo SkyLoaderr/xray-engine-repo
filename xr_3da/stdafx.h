@@ -79,6 +79,7 @@
 #include <string.h>
 #include <process.h>
 #include <assert.h>
+#include <typeinfo.h>
 
 #ifndef DEBUG
 #pragma inline_depth	( 254 )

@@ -280,6 +280,8 @@ void CActor::Die	( )
 
 void CActor::feel_touch_new				(CObject* O)
 {
+	NET_Packet	P;
+
 	// Test for weapon
 	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 	if (W)
@@ -289,6 +291,8 @@ void CActor::feel_touch_new				(CObject* O)
 		if (T)	
 		{
 			// We have similar weapon - just get ammo out of it
+			NET_Packet	P;
+
 			if (W->Local())	T->Ammo_add	(W->Ammo_eject());
 			else			
 			{

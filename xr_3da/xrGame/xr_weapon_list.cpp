@@ -194,8 +194,6 @@ void CWeaponList::LeaveWeapon(CLASS_ID cls)
 }
 */
 
-#include <typeinfo.h>
-
 CWeapon*	CWeaponList::getWeaponByWeapon(CWeapon* W)
 {
 	for (u32 it=0; it<m_Weapons.size(); it++)

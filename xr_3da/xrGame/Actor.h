@@ -198,12 +198,12 @@ public:
 	// Network
 	virtual void						Load				( LPCSTR section );
 	virtual BOOL						net_Spawn			( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
-	virtual void						net_OwnershipTake	(CObject* O);
-	virtual void						net_OwnershipReject	(CObject* O);
 	virtual void						net_Export			(NET_Packet& P);				// export to server
 	virtual void						net_Import			(NET_Packet& P);				// import from server
 	virtual BOOL						net_Relevant		()	{ return net_Local; };		// relevant for export to server
 
+	void								ge_OwnershipTake	(NET_Packet& P);
+	void								ge_OwnershipReject	(NET_Packet& P);
 	
 	virtual void			Die					( );
 	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);
