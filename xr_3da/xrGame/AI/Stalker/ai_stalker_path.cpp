@@ -36,6 +36,7 @@ void CAI_Stalker::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntit
 		S.m_tEnemy			= m_tSavedEnemy;
 		S.m_tEnemyPosition	= m_tSavedEnemyPosition;
 		S.m_dwEnemyNode		= m_dwSavedEnemyNodeID;
+		R_ASSERT2			(int(m_dwSavedEnemyNodeID) > 0, "Invalid enemy node");
 		S.m_tpEnemyNode		= m_tpSavedEnemyNode;
 	}
 	
@@ -135,6 +136,8 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		AI_Path.TravelStart		= 0;
 	}
 	else {
+		if (tpDestinationPosition && getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),*tpDestinationPosition))
+			tpDestinationPosition->y = getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tpDestinationPosition->x,tpDestinationPosition->z);
 		m_tpaPoints.clear			();
 		m_tpaDeviations.clear		();
 		m_tpaTravelPath.clear		();
@@ -143,9 +146,9 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		u32							N = (int)AI_Path.Nodes.size();
 		if (!N) {
 			Msg("! Node list is empty!");
-			AI_Path.Nodes.clear();
+			AI_Path.Nodes.clear		();
 			AI_Path.TravelPath.clear();
-			m_tPathState = ePathStateSearchNode;
+			m_tPathState			= ePathStateSearchNode;
 			Device.Statistic.TEST1.End();
 			return;
 		}

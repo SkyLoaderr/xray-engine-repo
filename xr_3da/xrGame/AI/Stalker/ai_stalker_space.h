@@ -29,7 +29,8 @@ DEFINE_VECTOR							(ref_sound,SOUND_VECTOR,SOUND_IT);
 #ifndef SILENCE
 	#define OUT_TEXT(S)						if (g_Alive()) Msg(S);
 #else
-	#define OUT_TEXT(S)						;
+//	#define OUT_TEXT(S)						;
+	#define OUT_TEXT(S)						if (g_Alive()) Msg(S);
 #endif
 
 enum EBodyState {

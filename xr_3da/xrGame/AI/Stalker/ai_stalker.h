@@ -384,6 +384,7 @@ private:
 		m_tSavedEnemyPosition	= m_tEnemy.Enemy->Position();
 		m_tpSavedEnemyNode		= m_tEnemy.Enemy->AI_Node;
 		m_dwSavedEnemyNodeID	= m_tEnemy.Enemy->AI_NodeID;
+		R_ASSERT2				(int(m_dwSavedEnemyNodeID) > 0, "Invalid enemy node");
 		m_dwLostEnemyTime		= Level().timeServer();
 		m_tMySavedPosition		= Position();
 		m_dwMyNodeID			= AI_NodeID;

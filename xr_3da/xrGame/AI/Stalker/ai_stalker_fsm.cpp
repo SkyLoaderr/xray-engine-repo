@@ -384,7 +384,8 @@ void CAI_Stalker::ForwardCover()
 
 	m_dwInertion = 60000;
 
-	if (!m_tEnemy.Enemy && (m_tActionState != eActionStateWatchGo)) {
+//	if (!m_tEnemy.Enemy && (m_tActionState != eActionStateWatchGo)) {
+	if (!m_tEnemy.Enemy) {
 		if (!E || (Position().distance_to(m_tSavedEnemyPosition) < 5.f) || (Level().timeServer() - m_dwLostEnemyTime > 6000))
 			SearchEnemy();
 		else
@@ -432,35 +433,6 @@ void CAI_Stalker::ForwardCover()
 			m_tpCurrentSound->feedback->set_position(eye_matrix.c);
 
 	switch (m_tActionState) {
-/**
-		case eActionStateWatchGo : {
-			WRITE_TO_LOG			("WatchGo : Forward cover");
-			if (bBackMove)
-				vfSetParameters			(&m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eWeaponStateIdle : eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateStand,eMovementTypeRun,eStateTypeDanger,eLookTypeDirection);
-			else
-				vfSetParameters			(&m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eWeaponStateIdle : eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateStand,eMovementTypeRun,eStateTypeDanger,eLookTypeFirePoint,tPoint);
-			if ((m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L)) && (Level().timeServer() - m_dwActionStartTime > 4000) && ((getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),tPoint) != u32(-1)) || (Level().timeServer() - m_dwActionStartTime > 7000))) {
-				m_tActionState		= eActionStateWatchLook;
-				m_dwActionStartTime = Level().timeServer();
-			}
-			break;
-		}
-		case eActionStateWatchLook : {
-			WRITE_TO_LOG			("WatchLook : Forward cover");
-			float					fDistance = m_tEnemy.Enemy->Position().distance_to(Position());
-			CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-			if (tpWeapon)
-				m_tSelectorCover.m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
-			m_tSelectorCover.m_fMaxEnemyDistance = _max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
-			m_tSelectorCover.m_fMinEnemyDistance = _max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
-			vfSetParameters			(&m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eWeaponStateIdle : eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
-			if (!tpWeapon || (tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || ((!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1) && (Level().timeServer() - m_dwActionStartTime > 5000)))) {
-				m_tActionState		= eActionStateWatchGo;
-				m_dwActionStartTime = Level().timeServer();
-			}
-			break;
-		}
-/**/
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : ForwardCover");
 			if ((Level().timeServer() - m_dwActionStartTime < 5500) && (AI_Path.TravelPath.size() > AI_Path.TravelStart + 1))
@@ -509,12 +481,18 @@ void CAI_Stalker::SearchEnemy()
 	
 	CGroup						&Group = *getGroup();
 	
+	if (bfCheckIfSound()) {
+		m_dwLastEnemySearch = 0;
+		vfUpdateVisibilityBySensitivity();
+	}
+
 	if (m_dwLastEnemySearch != m_dwLastUpdate) {
 		m_tActionState			= eActionStateDontWatch;
 		m_iCurrentSuspiciousNodeIndex = 0;
 		m_bSearchedForEnemy		= true;
 		m_tPathState			= ePathStateBuildNodePath;
 		Group.m_tpaSuspiciousNodes.clear();
+		Msg						("[%d] : Updating search params",Level().timeServer());
 	}
 	m_bSearchedForEnemy			= true;
 
@@ -522,7 +500,7 @@ void CAI_Stalker::SearchEnemy()
 		case eActionStateDontWatch : {
 			OUT_TEXT("Last enemy position");
 			AI_Path.DestNode	= m_dwSavedEnemyNodeID;
-			if (!AI_Path.DestNode) {
+			if (int(AI_Path.DestNode) <= 0) {
 				Msg("! Invalid Saved Enemy Node in Search Enemy (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
 				m_tSavedEnemy = 0;
 				m_dwInertion = 0;
@@ -534,17 +512,7 @@ void CAI_Stalker::SearchEnemy()
 					m_iCurrentSuspiciousNodeIndex = -1;
 				}
 			}
-			bool bB = m_bStateChanged && !::Random.randI(2);
-			if (bB) {
-				//Msg("Going to the position being anticipated");
-//				SSearchPlace tSearchPlace;
-//				tSearchPlace.dwSearched = 0;
-//				tSearchPlace.dwNodeID = m_dwSavedEnemyNodeID;
-//				tSearchPlace.fCost = 0;
-//				tSearchPlace.dwGroup = Group.m_tpaSuspiciousGroups.size();
-//				Group.m_tpaSuspiciousGroups.push_back(false);
-//				Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
-			}
+			bool bB = false;//m_bStateChanged && !::Random.randI(2);
 			if (bB || ((getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),m_tSavedEnemyPosition) != -1) && (bfIf_I_SeePosition(m_tSavedEnemyPosition))) || (AI_NodeID == m_dwSavedEnemyNodeID))
 				m_tActionState = eActionStateWatchGo;
 			else {
@@ -633,7 +601,7 @@ void CAI_Stalker::SearchEnemy()
 				}
 			}
 			
-			if ((m_iCurrentSuspiciousNodeIndex >= 0) && ((int)Group.m_tpaSuspiciousNodes.size() > (m_iCurrentSuspiciousNodeIndex + 1))) {
+			if ((m_iCurrentSuspiciousNodeIndex >= 0) && ((int)Group.m_tpaSuspiciousNodes.size() > m_iCurrentSuspiciousNodeIndex)) {
 				bool bOk = false;	
 #ifdef AI_BEST
 				for (u32 i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
@@ -766,61 +734,6 @@ void CAI_Stalker::ExploreDE()
 		m_tpCurrentSound = 0;
 	}
 
-//	Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
-//	if (getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint))
-//		tPoint.y			= getAI().ffGetY(*getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint.x,tPoint.z);
-//	else
-//		tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
-//	if (m_bStateChanged) {
-//		m_tActionState		= eActionStateDontWatch;
-//		m_dwActionStartTime = Level().timeServer();
-//		AI_Path.TravelPath.clear();
-//	}
-//	m_tSelectorFreeHunting.m_fOptEnemyDistance = _max(15.f,Position().distance_to(tPoint));
-//	switch (m_tActionState) {
-//		case eActionStateDontWatch : {
-//			WRITE_TO_LOG			("DontWatch : Exploring danger expedient ref_sound");
-//			AccomplishTask			(&m_tSelectorFreeHunting);
-//			if (getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),tPoint) != u32(-1)) {
-//				m_tActionState		= eActionStateWatch;
-//				m_dwActionStartTime = Level().timeServer();
-//			}
-//			break;
-//		}
-//		case eActionStateWatch : {
-//			WRITE_TO_LOG			("Watch : Exploring danger expedient ref_sound");
-//			if (Position().distance_to(tPoint) < 5.f)
-//				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeLookFireOver,tPoint,3000);
-//			else
-//				vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateCrouch,eMovementTypeWalk,eStateTypeDanger,eLookTypeLookFireOver,tPoint,3000);
-//			if (Level().timeServer() - m_dwActionStartTime > 10000) {
-//				m_tActionState		= eActionStateWatchGo;
-//				m_dwActionStartTime = Level().timeServer();
-//			}
-//			break;
-//		}
-//		case eActionStateWatchGo : {
-//			WRITE_TO_LOG			("WatchGo : Exploring danger expedient ref_sound");
-//			AccomplishTask			(&m_tSelectorFreeHunting);
-//			if ((Level().timeServer() - m_dwActionStartTime > 6000) && (getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),tPoint) != u32(-1))) {
-//				m_tActionState		= eActionStateWatchLook;
-//				m_dwActionStartTime = Level().timeServer();
-//			}
-//			break;
-//		}
-//		case eActionStateWatchLook : {
-//			WRITE_TO_LOG			("WatchLook : Exploring danger expedient ref_sound");
-//			vfUpdateSearchPosition	();
-//			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-//			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
-//			if ((Level().timeServer() - m_dwActionStartTime > 6000) || (getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),tPoint) == u32(-1))) {
-//				m_tActionState		= eActionStateWatchGo;
-//				m_dwActionStartTime = Level().timeServer();
-//			}
-//			break;
-//		}
-//		default : NODEFAULT;
-//	}
 	m_dwInertion			= 60000;
 	
 	if (!m_inventory.ActiveItem() && M) {
@@ -834,6 +747,7 @@ void CAI_Stalker::ExploreDE()
 	}
 	m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+	R_ASSERT2				(int(m_dwSavedEnemyNodeID) > 0, "Invalid enemy node");
 	m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
 	m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
 	vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
@@ -849,6 +763,7 @@ void CAI_Stalker::ExploreNDE()
 
 	m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+	R_ASSERT2				(int(m_dwSavedEnemyNodeID) > 0, "Invalid enemy node");
 	m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
 	m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
 	vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);

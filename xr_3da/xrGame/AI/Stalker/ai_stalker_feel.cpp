@@ -504,7 +504,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						m_tpaDynamicSounds[j].tMySavedPosition	= this->Position();
 						m_tpaDynamicSounds[j].tMyOrientation	= r_torso_current;
 						m_tpaDynamicSounds[j].tpEntity			= tpEntity;
-						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : -1;
+						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : AI_NodeID;
 						m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
 						if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[j].dwNodeID),Position))
 							m_tpaDynamicSounds[j].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[j].dwNodeID);
@@ -527,7 +527,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 							m_tpaDynamicSounds[dwIndex].tMySavedPosition	= this->Position();
 							m_tpaDynamicSounds[dwIndex].tMyOrientation		= r_torso_current;
 							m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
-							m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
+							m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : AI_NodeID;
 							m_tpaDynamicSounds[dwIndex].dwMyNodeID			= AI_NodeID;
 							if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[dwIndex].dwNodeID),Fvector(Position)))
 								m_tpaDynamicSounds[dwIndex].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[dwIndex].dwNodeID);
@@ -544,7 +544,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						tDynamicSound.tMySavedPosition	= this->Position();
 						tDynamicSound.tMyOrientation	= r_torso_current;
 						tDynamicSound.tpEntity			= tpEntity;
-						tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
+						tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : AI_NodeID;
 						tDynamicSound.dwMyNodeID		= AI_NodeID;
 						if (tpEntity && !getAI().bfInsideNode(getAI().Node(tDynamicSound.dwNodeID),Fvector(Position)))
 							tDynamicSound.tSavedPosition	= getAI().tfGetNodeCenter(tDynamicSound.dwNodeID);
@@ -572,18 +572,19 @@ void CAI_Stalker::vfUpdateVisibilityBySensitivity()
 
 				m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 				m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+				R_ASSERT2				(int(m_dwSavedEnemyNodeID) > 0, "Invalid enemy node");
 				m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
 				m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
 				m_dwLastEnemySearch		= 0;
-//				int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
-//				if (iIndex != -1) {
-//					m_tpaDynamicObjects[iIndex].tSavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
-//					m_tpaDynamicObjects[iIndex].dwNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-//					m_tpaDynamicObjects[iIndex].tMySavedPosition	= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
-//					m_tpaDynamicObjects[iIndex].dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
-//					m_tpaDynamicObjects[iIndex].tMyOrientation		= m_tpaDynamicSounds[m_iSoundIndex].tMyOrientation;
-//					m_tpaDynamicObjects[iIndex].dwTime				= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
-//				}
+				int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
+				if (iIndex != -1) {
+					m_tpaDynamicObjects[iIndex].tSavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+					m_tpaDynamicObjects[iIndex].dwNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+					m_tpaDynamicObjects[iIndex].tMySavedPosition	= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
+					m_tpaDynamicObjects[iIndex].dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
+					m_tpaDynamicObjects[iIndex].tMyOrientation		= m_tpaDynamicSounds[m_iSoundIndex].tMyOrientation;
+					m_tpaDynamicObjects[iIndex].dwTime				= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
+				}
 				vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
 			}
 			break;
