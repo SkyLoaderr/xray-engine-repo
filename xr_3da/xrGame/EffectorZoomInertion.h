@@ -19,13 +19,16 @@ class CEffectorZoomInertion : public CCameraEffector
 
 	Fvector m_vOldCameraDir;
 
+	u32		m_dwTimePassed;
+
 	//параметры настройки эффектора
 	float	m_fCameraMoveEpsilon;
 	float	m_fDispMin;
 	float	m_fSpeedMin;
 	float	m_fZoomAimingDispK;
 	float	m_fZoomAimingSpeedK;
-
+	//время через которое эффектор меняет направление движения
+	u32		m_dwDeltaTime;
 public:
 	CEffectorZoomInertion				();
 	virtual ~CEffectorZoomInertion		();

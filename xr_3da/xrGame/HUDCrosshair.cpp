@@ -113,7 +113,7 @@ void CHUDCrosshair::OnRender ()
 	
 	if(target_radius - radius>radius_speed)
 		radius += radius_speed;
-	if(radius - target_radius >radius_speed)
+	else if(radius - target_radius >radius_speed)
 		radius -= radius_speed;
 	else 
 		radius = target_radius;

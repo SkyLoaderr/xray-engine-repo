@@ -30,6 +30,9 @@ void CEffectorZoomInertion::Load		()
 	m_fZoomAimingDispK	= pSettings->r_float(EFFECTOR_ZOOM_SECTION, "zoom_aim_disp_k");
 	m_fZoomAimingSpeedK	= pSettings->r_float(EFFECTOR_ZOOM_SECTION, "zoom_aim_speed_k");
 
+	m_dwDeltaTime		= pSettings->r_u32(EFFECTOR_ZOOM_SECTION, "delta_time");
+	m_dwTimePassed		= 0;
+
 	m_fFloatSpeed		= m_fSpeedMin;
 	m_fDispRadius		= m_fDispMin;
 
@@ -56,9 +59,11 @@ void CEffectorZoomInertion::SetParams	(float disp)
 
 	//для того, чтоб сразу прошел пересчет направления
 	//движения прицела
-	if(!fis_zero(old_disp-disp,EPS))
-		m_fEpsilon = 2*disp;
+	if(!fis_zero(old_disp-m_fDispRadius,EPS))
+		m_fEpsilon = 2*m_fDispRadius;
 }
+
+
 
 BOOL CEffectorZoomInertion::Process		(Fvector &p, Fvector &d, Fvector &n, 
 										 float& fFov, float& fFar, float& fAspect)
@@ -73,8 +78,10 @@ BOOL CEffectorZoomInertion::Process		(Fvector &p, Fvector &d, Fvector &n,
 	Fvector dir;
 	dir.sub(m_vCurrentPoint,m_vTargetPoint);
 
-	if(dir.magnitude()<m_fEpsilon)
+	if(dir.magnitude()<m_fEpsilon || m_dwTimePassed>m_dwDeltaTime)
 	{
+		m_dwTimePassed = 0;
+		
 		m_fEpsilon = 2*m_fFloatSpeed;
 
 		float half_disp_radius = m_fDispRadius/2.f;
@@ -96,6 +103,8 @@ BOOL CEffectorZoomInertion::Process		(Fvector &p, Fvector &d, Fvector &n,
 
 	if(!camera_moved)
 		d.add(m_vCurrentPoint);
+
+	m_dwTimePassed += Device.dwTimeDelta;
 
 	return TRUE;
 }
