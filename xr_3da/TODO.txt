@@ -27,7 +27,6 @@
 	bugs/features:
 		*	BUG:		models/model_trans 			- черный
 		*	BUG:		vert_aref					- черный
-		*	BUG:		засветка кончиков моделей 
 		*	BUG:		5-color-lods
 
 ***[OLES]*** Done:
@@ -47,10 +46,12 @@
 		*	NEW:		4tap projection filter
 		*	NEW:		2tap duality filter
 		*	BUG:		sun source shadowing
+		*	BUG:		засветка кончиков моделей 
+		*	NEW:shader: типа по альфе в моделях - рефлекшн, какая-то кубемапа
+		
 
 ***[OLES]*** In progress:
 -------------------------
-		1.		типа по альфе в моделях - рефлекшн, какая-то кубемапа
 		2.		типа стекло, типа преломляет, типа статика
 		3.		вода???
 		
