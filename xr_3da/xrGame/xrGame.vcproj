@@ -1793,6 +1793,19 @@
 									</FileConfiguration>
 								</File>
 							</Filter>
+							<Filter
+								Name="StateCombatCover"
+								Filter="">
+								<File
+									RelativePath=".\state_combat_cover.cpp">
+								</File>
+								<File
+									RelativePath=".\state_combat_cover.h">
+								</File>
+								<File
+									RelativePath=".\state_combat_cover_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="StateManagerDeath"

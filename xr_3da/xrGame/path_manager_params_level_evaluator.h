@@ -307,7 +307,7 @@ public:
 		m_fResult		+= 
 			m_fCoverFromEnemyWeight*(
 				ai().level_graph().cover_in_direction(yaw,m_tpCurrentNode) +
-				ai().level_graph().cover_in_direction(-yaw,m_tpEnemyNode)
+				ai().level_graph().cover_in_direction(angle_normalize_signed(yaw + PI),m_tpEnemyNode)
 			);
 	}
 
@@ -320,7 +320,7 @@ public:
 		m_fResult		+= 
 			m_fCoverFromEnemyWeight*(
 				ai().level_graph().cover_in_direction(yaw,m_tpCurrentNode) +
-				ai().level_graph().cover_in_direction(-yaw,m_tpCurrentMemberNode)
+				ai().level_graph().cover_in_direction(angle_normalize_signed(yaw + PI),m_tpCurrentMemberNode)
 			);
 	}
 

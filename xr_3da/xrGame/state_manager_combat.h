@@ -18,6 +18,7 @@ protected:
 
 	enum ECombatStates {
 		eCombatStateAttackWeak	= u32(0),
+		eCombatStateCover,
 		eCombatStateDummy		= u32(-1),
 	};
 public:

@@ -8,8 +8,9 @@
 
 #include "stdafx.h"
 #include "state_manager_combat.h"
-#include "state_combat_attack_weak.h"
 #include "ai/stalker/ai_stalker.h"
+#include "state_combat_attack_weak.h"
+#include "state_combat_cover.h"
 
 CStateManagerCombat::CStateManagerCombat	(LPCSTR state_name) : inherited(state_name)
 {
@@ -27,6 +28,7 @@ void CStateManagerCombat::Init			()
 void CStateManagerCombat::Load			(LPCSTR section)
 {
 	add_state				(xr_new<CStateAttackWeak>("AttackWeak"),	eCombatStateAttackWeak,		0);
+//	add_state				(xr_new<CStateCover>("Cover"),				eCombatStateCover,			0);
 
 	inherited::Load			(section);
 }
@@ -36,6 +38,8 @@ void CStateManagerCombat::reinit		(CAI_Stalker *object)
 	inherited::reinit		(object);
 	set_current_state		(eCombatStateAttackWeak);
 	set_dest_state			(eCombatStateAttackWeak);
+//	set_current_state		(eCombatStateCover);
+//	set_dest_state			(eCombatStateCover);
 }
 
 void CStateManagerCombat::reload		(LPCSTR section)
@@ -52,6 +56,7 @@ void CStateManagerCombat::initialize	()
 void CStateManagerCombat::execute		()
 {
 	set_dest_state			(eCombatStateAttackWeak);
+//	set_dest_state			(eCombatStateCover);
 	inherited::execute		();
 }
 
