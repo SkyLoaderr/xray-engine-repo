@@ -54,92 +54,6 @@ AutoCall::AutoCall()
 	}
 }
 
-#ifdef PARTICLE_MP
-// This code is defined if we are compiling the library to be used on
-// multiple threads. We need to have each API call figure out which
-// _ParticleState belongs to it. We hash pointers to contexts in
-// _CtxHash. Whenever a TID is asked for but doesn't exist we create
-// it.
-
-#include <mpc.h>
-
-// XXX This hard limit should get fixed.
-int _CtxCount = 151;
-_ParticleState **_CtxHash = NULL;
-
-inline int _HashTID(int tid)
-{
-  return ((tid << 13) ^ ((tid >> 11) ^ tid)) % _CtxCount;
-}
-
-// Returns a reference to the appropriate particle state.
-_ParticleState &_GetPStateWithTID()
-{
-  int tid = mp_my_threadnum();
-
-  int ind = _HashTID(tid);
-
-  // cerr << tid << "->" << ind << endl;
-
-  // Check through the hash table and find it.
-  for(int i=ind; i<_CtxCount; i++)
-    if(_CtxHash[i] && _CtxHash[i]->tid == tid)
-      {
-	//#pragma critical
-	//cerr << tid << " => " << i << endl;
-	
-      return *_CtxHash[i];
-      }
-
-  for(i=0; i<ind; i++)
-    if(_CtxHash[i] && _CtxHash[i]->tid == tid)
-      return *_CtxHash[i];
-
-  // It didn't exist. It's a new context, so create it.
-  _ParticleState *psp = xr_new<_ParticleState>();
-  psp->tid = tid;
-
-  // Find a place to put it.
-  for(i=ind; i<_CtxCount; i++)
-    if(_CtxHash[i] == NULL)
-      {
-	// #pragma critical
-	// cerr << "Stored " << tid << " at " << i << endl;
-	_CtxHash[i] = psp;
-	return *psp;
-      }
-
-  for(i=0; i<ind; i++)
-    if(_CtxHash[i] == NULL)
-      {
-	_CtxHash[i] = psp;
-	return *psp;
-      }
-
-  // We should never get here. The hash table got full.
-  exit(1);
-
-  // To appease warnings.
-  return *_CtxHash[0];
-}
-
-inline void _PLock()
-{
-  // XXX This implementation is specific to the #pragma parallel directives.
-  // cerr << "Getting lock.\n";
-  // mp_setlock();
-  // cerr << "Got lock.\n";
-}
-
-inline void _PUnLock()
-{
-  // XXX This implementation is specific to the #pragma parallel directives.
-  // cerr << "Giving lock.\n";
-  // mp_unsetlock();
-  // cerr << "Gave lock.\n";
-}
-
-#else
 // This is the global state.
 _ParticleState __ps;
 _ParticleState& _GetPState()
@@ -158,15 +72,6 @@ PAHeader* _GetListPtr(int action_list_num)
 {
 	return __ps.GetListPtr(action_list_num);
 }
-
-inline void _PLock()
-{
-}
-
-inline void _PUnLock()
-{
-}
-#endif
 
 _ParticleState::_ParticleState()
 {
@@ -568,8 +473,6 @@ PARTICLEDLL_API int pGenActionLists(int action_list_count)
 	if(_ps.in_new_list)
 		return -1; // ERROR
 	
-	_PLock();
-
 	int ind = _ps.GenerateLists(action_list_count);
 	
 	for(int i=ind; i<ind+action_list_count; i++)
@@ -579,8 +482,6 @@ PARTICLEDLL_API int pGenActionLists(int action_list_count)
 		_ps.alist_list[i]->type = PAHeaderID;
 		_ps.alist_list[i]->count = 1;
 	}
-
-	_PUnLock();
 
 	return ind;
 }
@@ -630,8 +531,6 @@ PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_cou
 	if(action_list_num + action_list_count > _ps.alist_count)
 		return; // ERROR
 
-	_PLock();
-
 	for(int i = action_list_num; i < action_list_num + action_list_count; i++)
 	{
 		if(_ps.alist_list[i])
@@ -641,12 +540,9 @@ PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_cou
 		}
 		else
 		{
-			_PUnLock();
 			return; // ERROR
 		}
 	}
-
-	_PUnLock();
 }
 
 void _pSendAction(ParticleAction *S, PActionEnum type, int size);
@@ -781,9 +677,6 @@ PARTICLEDLL_API int pGenParticleGroups(int p_group_count, int max_particles)
 	if(_ps.in_new_list)
 		return -1; // ERROR
 
-	_PLock();
-	// cerr << "Generating pg " << _ps.tid << " cnt= " << max_particles << endl;
-
 	int ind = _ps.GenerateGroups(p_group_count);
 	
 	for(int i=ind; i<ind+p_group_count; i++)
@@ -793,8 +686,6 @@ PARTICLEDLL_API int pGenParticleGroups(int p_group_count, int max_particles)
 		_ps.group_list[i]->particles_allocated = max_particles;
 		_ps.group_list[i]->p_count = 0;
 	}
-
-	_PUnLock();
 	
 	return ind;
 }
@@ -809,8 +700,6 @@ PARTICLEDLL_API void pDeleteParticleGroups(int p_group_num, int p_group_count)
 	if(p_group_num + p_group_count > _ps.group_count)
 		return; // ERROR
 	
-	_PLock();
-
 	for(int i = p_group_num; i < p_group_num + p_group_count; i++)
 	{
 		if(_ps.group_list[i])
@@ -820,12 +709,9 @@ PARTICLEDLL_API void pDeleteParticleGroups(int p_group_num, int p_group_count)
 		}
 		else
 		  {
-		  	_PUnLock();
 			return; // ERROR
 		  }
 	}
-
-	_PUnLock();
 }
 
 // Change which group is current.
@@ -870,8 +756,6 @@ PARTICLEDLL_API int pSetMaxParticlesG(int group_num, int max_count)
 		return max_count;
 	}
 
-	_PLock();
-	
 	// Allocate particles.
 	ParticleGroup *pg2 =(ParticleGroup *)xr_alloc<Particle>(max_count + 2);
 	if(pg2 == NULL)
@@ -879,8 +763,6 @@ PARTICLEDLL_API int pSetMaxParticlesG(int group_num, int max_count)
 		// Not enough memory. Just give all we've got.
 		// ERROR
 		pg->max_particles = pg->particles_allocated;
-
-		_PUnLock();
 		
 		return pg->max_particles;
 	}
@@ -892,8 +774,6 @@ PARTICLEDLL_API int pSetMaxParticlesG(int group_num, int max_count)
 	_ps.group_list[_ps.group_id] = _ps.pgrp = pg2;
 	pg2->max_particles = max_count;
 	pg2->particles_allocated = max_count;
-
-	_PUnLock();
 
 	return max_count;
 }

@@ -153,6 +153,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="psystem.h">
+			</File>
+			<File
 				RelativePath="stdafx.h">
 			</File>
 		</Filter>
@@ -194,9 +197,6 @@
 			</File>
 			<File
 				RelativePath="p_vector.h">
-			</File>
-			<File
-				RelativePath=".\papi.h">
 			</File>
 			<File
 				RelativePath=".\system.cpp">

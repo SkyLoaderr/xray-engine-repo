@@ -7,13 +7,6 @@
 #ifndef general_h
 #define general_h
 
-#include "papi.h"
-#include "p_vector.h"
-
-#ifdef _WIN32
-#pragma warning (disable:4244)
-#endif
-
 namespace PAPI{
 #pragma pack (push,4)
 	// A single particle
@@ -482,25 +475,11 @@ namespace PAPI{
 		void		ResetState		();
 	};
 
-#ifdef PARTICLE_MP
-	// All entry points call this to get their particle state.
-	inline _ParticleState &_GetPState()
-	{
-		// Returns a reference to the appropriate particle state.
-		extern _ParticleState &_GetPStateWithTID();
-
-		return _GetPStateWithTID();
-	}
-
-#else
-
 	// All entry points call this to get their particle state.
 	// For the non-MP case this is practically a no-op.
-	extern "C" PARTICLEDLL_API _ParticleState& _GetPState();
-	extern "C" PARTICLEDLL_API ParticleGroup* _GetGroupPtr(int p_group_num);
-	extern "C" PARTICLEDLL_API PAHeader* _GetListPtr(int action_list_num);
-#endif
-
+	PARTICLEDLL_API		_ParticleState& _GetPState();
+	PARTICLEDLL_API		ParticleGroup*	_GetGroupPtr(int p_group_num);
+	PARTICLEDLL_API		PAHeader*		_GetListPtr(int action_list_num);
 #pragma pack( pop ) // push 4
 }
 

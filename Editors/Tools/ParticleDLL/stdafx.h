@@ -11,6 +11,9 @@
 
 #include <xrCore.h>
 
+#include "p_vector.h"
+#include "psystem.h"
+
 #ifdef __BORLANDC__
 #pragma comment( lib, "x:\\xrCoreB.lib"	)
 #else

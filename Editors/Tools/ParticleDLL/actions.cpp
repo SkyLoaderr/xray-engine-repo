@@ -12,8 +12,8 @@
 #include "general.h"
 using namespace PAPI;
 
-#define SQRT2PI 2.506628274631000502415765284811045253006
-#define ONEOVERSQRT2PI (1. / SQRT2PI)
+#define SQRT2PI 2.506628274631000502415765284811045253006f
+#define ONEOVERSQRT2PI (1.f/SQRT2PI)
 
 // To offset [0 .. 1] vectors to [-.5 .. .5]
 static pVector vHalf(0.5, 0.5, 0.5);
@@ -781,7 +781,7 @@ void PAExplosion::Execute(ParticleGroup *group)
 		float dist = _sqrt(distSqr);
 		float DistFromWaveSqr = _sqr(radius - dist);
 		
-		float Gd = exp(DistFromWaveSqr * inexp) * outexp;
+		float Gd = expf(DistFromWaveSqr * inexp) * outexp;
 		
 		m.vel += dir * (Gd * magdt / (dist * (distSqr + epsilon)));
 	}
@@ -1749,7 +1749,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 		{
 			p1 = pVector(a0, a1, a2);
 			radius1 = a3;
-			float tmp = 1./radius1;
+			float tmp = 1.f/radius1;
 			radius2Sqr = -0.5f*_sqr(tmp);
 			radius2 = ONEOVERSQRT2PI * tmp;
 		}
