@@ -36,6 +36,7 @@ public:
 	BOOL														b_nv3x;
 	BOOL														b_HW_smap;
 	BOOL														b_decompress_2pass;
+	BOOL														b_noshadows;
 public:
 	// Sector detection and visibility
 	CSector*													pLastSector;

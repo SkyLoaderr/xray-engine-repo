@@ -132,7 +132,7 @@ void			CLight_DB::add_light		(light* L)
 	if (Device.dwFrame==L->dwFrame)	return;
 	L->dwFrame	=	Device.dwFrame;
 
-	// L->flags.bShadow	= FALSE;	//.
+	if (b_noshadows)	L->flags.bShadow	= FALSE;
 	if (L->flags.bShadow)			{
 		switch (L->flags.type)	{
 			case IRender_Light::POINT:
