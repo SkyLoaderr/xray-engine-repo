@@ -79,6 +79,8 @@ BOOL C3DSound::Update_Volume()
 
 void C3DSound::Update_Occlusion()
 {
+	if (pCreator->ObjectSpace.RayTest(P,D,f,false,&I->Cache))	I->fuzzy-=fuzzy_update_novis*dt;
+	else														I->fuzzy+=fuzzy_update_vis*dt;
 }
 
 void C3DSound::OnMove		()
