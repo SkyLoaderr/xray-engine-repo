@@ -8,6 +8,8 @@
 #include "autosave_manager.h"
 #include "xrserver.h"
 #include "ai_space.h"
+#include "script_callback_ex.h"
+#include "script_game_object.h"
 
 #define ENEMIES_RADIUS				30.f
 
@@ -162,7 +164,7 @@ EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_ch
 
 	Level().Cameras.AddEffector(object().m_pSleepEffectorPP);
 
-	callback(GameObject::eActorSleep)( lua_game_object() );
+	m_object->callback(GameObject::eActorSleep)( m_object->lua_game_object() );
 
 	return easCanSleep;
 }
