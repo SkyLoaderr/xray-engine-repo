@@ -7,12 +7,13 @@
 
 #include "ftreevisual.h"
 
-shared_str						c_consts;
-shared_str						c_wave;
-shared_str						c_wind;
-shared_str						c_c_bias;
-shared_str						c_c_scale;
-shared_str						c_c_sun;
+shared_str					m_xform;
+shared_str					c_consts;
+shared_str					c_wave;
+shared_str					c_wind;
+shared_str					c_c_bias;
+shared_str					c_c_scale;
+shared_str					c_c_sun;
 
 FTreeVisual::FTreeVisual	(void)
 {
@@ -72,6 +73,7 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	hGeom.create		(vFormat,pVertices,pIndices);
 
 	// Get constants
+	m_xform				= "m_xform";
 	c_consts			= "consts";
 	c_wave				= "wave";
 	c_wind				= "wind";
@@ -113,6 +115,7 @@ void FTreeVisual::Render	(float LOD)
 	if (tvs.dwFrame!=Device.dwFrame)	tvs.calculate();
 
 	// setup constants
+	RCache.set_c			(m_xform,	xform);														// matrix
 	RCache.set_c			(c_consts,	tvs.scale,tvs.scale,0,0);									// consts/scale
 	RCache.set_c			(c_wave,	tvs.wave);													// wave
 	RCache.set_c			(c_wind,	tvs.wind);													// wind
@@ -162,7 +165,6 @@ void FTreeVisual_ST::Load		(const char* N, IReader *data, u32 dwFlags)
 void FTreeVisual_ST::Render		(float LOD)
 {
 	inherited::Render			(LOD);
-	// RCache.set_xform_world	(xform);
 	RCache.set_Geometry			(hGeom);
 	RCache.Render				(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
 }
