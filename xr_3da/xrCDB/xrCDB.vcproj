@@ -256,7 +256,7 @@
 						PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
 						AssemblerListingLocation=".\Mixed/"
 						ObjectFile=".\Mixed/"
-						ProgramDataBaseFileName=".\Mixed/"/>
+						ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32">
