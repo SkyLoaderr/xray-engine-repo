@@ -24,3 +24,15 @@ void CSE_ALifeTorridZone::script_register(lua_State *L)
 			)
 	];
 }
+
+void CSE_ALifeZoneVisual::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife2(
+			CSE_ALifeZoneVisual,
+			"cse_zone_visual",
+			CSE_ALifeAnomalousZone,
+			CSE_Visual
+			)
+	];
+}

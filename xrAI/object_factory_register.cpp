@@ -120,6 +120,9 @@
 #	include "script_zone.h"
 #	include "team_base_zone.h"
 #	include "torridZone.h"
+#	include "ZoneVisual.h"
+#	include "hairszone.h"
+#	include "amebazone.h"
 
 #	include "simpledetector.h"
 
@@ -308,8 +311,8 @@ void CObjectFactory::register_classes	()
 	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_ACIDF					,"zone_acid_fog");
 	ADD(CMincer					,CSE_ALifeAnomalousZone			,CLSID_Z_GALANT					,"zone_galantine");
 	ADD(CRadioactiveZone		,CSE_ALifeAnomalousZone			,CLSID_Z_RADIO					,"zone_radioactive");
-	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_BFUZZ					,"zone_bfuzz");
-	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_RUSTYH					,"zone_rusty_hair");
+	ADD(CHairsZone				,CSE_ALifeZoneVisual			,CLSID_Z_BFUZZ					,"zone_bfuzz");
+	ADD(CHairsZone				,CSE_ALifeZoneVisual			,CLSID_Z_RUSTYH					,"zone_rusty_hair");
 	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_DEAD					,"zone_dead");
 	ADD(CLevelChanger			,CSE_ALifeLevelChanger			,CLSID_LEVEL_CHANGER			,"level_changer");
 	ADD(CScriptZone				,CSE_ALifeSpaceRestrictor		,CLSID_SCRIPT_ZONE				,"script_zone");
@@ -317,7 +320,7 @@ void CObjectFactory::register_classes	()
 	ADD(CTeamBaseZone			,CSE_ALifeTeamBaseZone			,CLSID_Z_TEAM_BASE				,"team_base_zone");
 	ADD(CTorridZone				,CSE_ALifeTorridZone			,CLSID_Z_TORRID					,"torrid_zone");
 	ADD(CSpaceRestrictor		,CSE_ALifeSpaceRestrictor		,CLSID_SPACE_RESTRICTOR			,"space_restrictor");
-
+	ADD(CAmebaZone				,CSE_ALifeZoneVisual			,CLSID_Z_AMEBA					,"ameba_zone");
 	// Detectors
 	ADD(CSimpleDetector			,CSE_ALifeItemDetector			,CLSID_DETECTOR_SIMPLE			,"device_detector_simple");
 
@@ -337,5 +340,6 @@ void CObjectFactory::register_classes	()
 	ADD(CBreakableObject		,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE			,"obj_breakable");
 	ADD(CClimableObject			,CSE_ALifeObjectClimable		,CLSID_OBJECT_CLIMABLE			,"obj_climable");
 	ADD(CPhysicsSkeletonObject	,CSE_ALifePHSkeletonObject		,CLSID_PH_SKELETON_OBJECT		,"obj_phskeleton");
+
 
 }

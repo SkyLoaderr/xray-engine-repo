@@ -780,6 +780,55 @@ void CSE_ALifeTorridZone::FillProps(LPCSTR pref, PropItemVec& values)
 	inherited2::FillProps		(pref, values);
 }
 
+//////////////////////////////////////////////////////////////////////////
+//CSE_ALifeZoneVisual
+//////////////////////////////////////////////////////////////////////////
+CSE_ALifeZoneVisual::CSE_ALifeZoneVisual	(LPCSTR caSection)
+:CSE_ALifeAnomalousZone(caSection),CSE_Visual(caSection)
+{
+	if (pSettings->line_exist(caSection,"visual"))
+		set_visual				(pSettings->r_string(caSection,"visual"));
+}
+
+CSE_ALifeZoneVisual::~CSE_ALifeZoneVisual	()
+{
+
+}
+
+CSE_Visual* CSE_ALifeZoneVisual::visual	()
+{
+	return		static_cast<CSE_Visual*>(this);
+}
+void CSE_ALifeZoneVisual::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited1::STATE_Read		(tNetPacket,size);
+	visual_read				(tNetPacket);	
+	
+}
+
+void CSE_ALifeZoneVisual::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited1::STATE_Write		(tNetPacket);
+	visual_write				(tNetPacket);
+}
+
+void CSE_ALifeZoneVisual::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeZoneVisual::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Write	(tNetPacket);
+}
+
+void CSE_ALifeZoneVisual::FillProps(LPCSTR pref, PropItemVec& values)
+{
+	inherited1::FillProps		(pref, values);
+	inherited2::FillProps		(pref, values);
+	ISE_Abstract* abstract		= smart_cast<ISE_Abstract*>(this); VERIFY(abstract);
+	PHelper().CreateChoose(values,	PrepareKey(pref,abstract->name(),"Attack animation"),	&attack_animation, smSkeletonAnims,0,(void*)*visual_name);
+}
 //-------------------------------------------------------------------------
 //
 //void CSE_ALifeAnomalousZoneMoving::UPDATE_Write(NET_Packet &tNetPacket)

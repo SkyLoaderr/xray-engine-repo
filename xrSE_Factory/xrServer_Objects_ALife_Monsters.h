@@ -118,6 +118,8 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCustomZone)
 #define script_type_list save_type_list(CSE_ALifeCustomZone)
 
+
+
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALifeSchedulable)
 	float							m_fRadius;
 	float							m_fBirthProbability;
@@ -159,6 +161,15 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTorridZone,CSE_ALifeCustomZone,CSE_Motion)
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTorridZone)
 #define script_type_list save_type_list(CSE_ALifeTorridZone)
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeZoneVisual,CSE_ALifeAnomalousZone,CSE_Visual)
+shared_str attack_animation;
+CSE_ALifeZoneVisual	(LPCSTR caSection);
+virtual							~CSE_ALifeZoneVisual	();
+virtual CSE_Visual* __stdcall	visual					();
+SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeZoneVisual)
+#define script_type_list save_type_list(CSE_ALifeZoneVisual)
 
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------

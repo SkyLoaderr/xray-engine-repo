@@ -470,8 +470,61 @@ blowout_wind		= off
 ;рождение артефактов во время срабатывания
 spawn_blowout_artefacts = off
 
+[zone_burning_fuzz1]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zones\burning fuzz1"
+;$prefetch 		= 16
+class			= CLSID_Z_BFUZZ
+hit_impulse_scale	= 0
+sound			= zone_mosquito_bald
+postprocess		= postprocess_fuzz
 
-[zone_rusty_hair]
+
+artefacts		= af_fuzz_kolobok,1
+BirthProbability = 0.5
+
+hit_type		= burn
+hit_effect		= anomaly2\hit_metal_02
+
+idle_particles		= anomaly2\pux_idle
+blowout_particles	= anomaly2\pux_blast
+
+;hit_small_particles		= hit_fx\hit_metal_02
+;hit_big_particles			= anomaly2\
+idle_small_particles		= anomaly2\pux_damage_smoke_01
+idle_big_particles			= anomaly2\pux_damage_smoke_02
+;entrance_small_particles	= anomaly2\electra_entrance_small
+;entrance_big_particles		= anomaly2\electra_entrance_big
+
+;idle_sound			= anomaly\anomaly_gravy_idle
+blowout_sound		= anomaly\pux_blast
+hit_sound			= anomaly\electra_hit
+;entrance_sound		= anomaly\electra_hit
+
+disable_time		= 500	;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time	= 1000	;время отключения idle партиклов
+
+awaking_time		= 1000
+blowout_time		= 300	
+accamulate_time		= 1000
+
+ignore_nonalive		= false;
+ignore_small		= false;
+ignore_artefacts	= true
+
+blowout_light		= off
+idle_light			= off
+
+visible_by_detector = on
+
+blowout_wind		= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;рождение артефактов во время срабатывания
+spawn_blowout_artefacts = off
+
+[ zone_rusty_hair]
 GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\rusty hair"
 ;$prefetch 		= 16
@@ -508,6 +561,42 @@ blowout_wind		= off
 ;рождение артефактов во время срабатывания
 spawn_blowout_artefacts = off
 
+[zone_ameba]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zones\ameba"
+;$prefetch 		= 16
+class			= Z_AMEBA
+hit_impulse_scale	= .1
+sound			= zone_mosquito_bald
+postprocess		= postprocess_new
+
+artefacts		= af_rusty_thorn,0.7,af_rusty_kristall,0.25,af_rusty_sea-urchin,0.05
+BirthProbability = 0.9
+
+hit_type		= shock
+
+disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time	= -1	;время отключения idle партиклов
+
+ignore_nonalive		= false;
+ignore_small		= false;
+ignore_artefacts	= true
+
+awaking_time		= 1000
+blowout_time		= 300	
+accamulate_time		= 1000
+
+blowout_light		= off
+idle_light			= off
+
+visible_by_detector = on
+
+blowout_wind		= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;рождение артефактов во время срабатывания
+spawn_blowout_artefacts = off
 
 [zone_dead]
 GroupControlSection	= spawn_group_zone
