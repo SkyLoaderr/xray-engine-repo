@@ -34,6 +34,7 @@ extern void release_smart_cast_stats	();
 
 extern	u64		g_qwStartGameTime;
 extern	float	g_fTimeFactor;
+extern	u64		g_qwEStartGameTime;
 
 ENGINE_API
 extern	float	psHUD_FOV;
