@@ -13,7 +13,8 @@ struct		RPoint
 {
 	Fvector	P;
 	Fvector A;
-	RPoint(){P.set(.0f,0.f,.0f);A.set(.0f,0.f,.0f);}
+	u32		TimeToUnfreeze;
+	RPoint(){P.set(.0f,0.f,.0f);A.set(.0f,0.f,.0f); TimeToUnfreeze = 0;}
 	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT
 };
 add_to_type_list(RPoint)

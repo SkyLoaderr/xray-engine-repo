@@ -18,6 +18,7 @@ class	game_sv_GameState	: public game_GameState
 	typedef game_GameState inherited;
 protected:
 	float							m_fFriendlyFireModifier;
+	u32								m_RPointFreezeTime;
 	xrServer*						m_server;
 	GameEventQueue*					m_event_queue;
 

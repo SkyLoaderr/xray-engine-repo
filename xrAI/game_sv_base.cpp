@@ -292,6 +292,8 @@ void game_sv_GameState::Create					(shared_str &options)
 	int iFF = get_option_i(*options,"ffire",0);
 	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
 	else m_fFriendlyFireModifier = 0.000001f;
+
+	m_RPointFreezeTime = get_option_i(*options, "rpfrz", 1) * 1000;
 }
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E)
@@ -310,7 +312,35 @@ void	game_sv_GameState::assign_RP				(CSE_Abstract* E)
 			R_ASSERT2(tpTeamed,"Non-teamed object is assigning to respawn point!");
 	}
 	xr_vector<RPoint>&	rp	= rpoints[l_uc_team];
-	RPoint&				r	= rp[::Random.randI((int)rp.size())];
+	//-----------------------------------------------------------
+	xr_vector<u32>	xrp;//	= rpoints[l_uc_team];
+	for (u32 i=0; i<rp.size(); i++)
+	{
+		if (rp[i].TimeToUnfreeze < Level().timeServer())
+			xrp.push_back(i);
+	}
+	u32 rpoint = 0;
+	if (xrp.size() && !tpSpectator)
+	{
+		rpoint = xrp[::Random.randI((int)xrp.size())];
+	}
+	else
+	{
+		if (!tpSpectator)
+		{
+			for (u32 i=0; i<rp.size(); i++)
+			{
+				rp[i].TimeToUnfreeze = 0;
+			};
+		};
+		rpoint = ::Random.randI((int)rp.size());
+	}
+	//-----------------------------------------------------------
+	RPoint&				r	= rp[rpoint];
+	if (!tpSpectator)
+	{
+		r.TimeToUnfreeze	= Level().timeServer() + m_RPointFreezeTime;
+	};
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
 }
