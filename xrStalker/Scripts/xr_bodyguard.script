@@ -215,8 +215,8 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 --Guard binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(npc)
-	--printf("_bp: add_to_binder (bodyguard)")
+function add_to_binder(npc, char_ini)
+	printf("_bp: add_to_binder (bodyguard)")
 	local operators    = {}
 	local properties  = {}
 
@@ -242,6 +242,8 @@ function add_to_binder(npc)
 
 	new_action = manager:action(stalker_ids.action_puzzle_solver)
 	new_action:add_precondition(world_property(properties["need_bodyguard"], false))
+
+	if char_ini ~= nil then xr_bodyguard.set_bodyguard(npc) end
 end
 
 -- функции
