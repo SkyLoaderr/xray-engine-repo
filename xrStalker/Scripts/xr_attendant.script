@@ -112,6 +112,8 @@ end
 function action_follow:initialize ()
     action_base.initialize (self)
     self.st.signals = {}
+    self.st.signals["leader_change_scheme"] = false
+    self.st.signals["leader_dead"] = false
 end
 --------
 function action_follow:execute ()
@@ -128,6 +130,17 @@ function action_follow:execute ()
     end 
     -- проверим нахождение нас в списке
     self:check_list ()
+    
+    if self.st.leader_section == nil then
+       self.st.leader_section = db.storage[self.st.leader_id].active_section
+       --if self.st.leader_section ~= nil then
+          --printf ("FOLLOWER %s, LEADER SCHEME  = %s", self.object:name (), self.st.leader_section)
+       --end   
+    end
+       
+    if db.storage[self.st.leader_id].active_section ~= self.st.leader_section then
+       self.st.signals["leader_change_scheme"] = true 
+    end    
     
     if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
        self.st.leader_id = nil
@@ -246,6 +259,7 @@ function action_follow:free ()
     else
        xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
     end
+    st.leader_scheme = nil
 end
 -----------------------------------------------------------------------------------
 
@@ -297,6 +311,7 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, npc)
 	
 	st.leader = utils.cfg_get_string (ini, section, "leader",  npc, false, "")
+	st.leader_section = nil
 	st.animation_move = utils.cfg_get_string (ini, section, "anim_walk",  npc, false, "", "walk")
 	st.animation_run = utils.cfg_get_string (ini, section, "anim_run",  npc, false, "", "run")
 	st.animation_sprint = utils.cfg_get_string (ini, section, "anim_sprint",  npc, false, "", "sprint")
