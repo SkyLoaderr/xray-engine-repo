@@ -33,7 +33,7 @@ CSpaceRestriction *CSpaceRestrictorManager::restriction	(ref_str space_restricto
 	return					(temp);
 }
 
-void CSpaceRestrictorManager::associate					(ALife::_OBJECT_ID id, ref_str space_restrictors)
+void CSpaceRestrictorManager::restrict					(ALife::_OBJECT_ID id, ref_str space_restrictors)
 {
 	m_clients[id]			= restriction(space_restrictors);
 }

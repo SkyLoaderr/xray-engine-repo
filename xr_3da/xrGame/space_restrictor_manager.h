@@ -32,7 +32,7 @@ protected:
 public:
 	IC								CSpaceRestrictorManager		();
 	virtual							~CSpaceRestrictorManager	();
-			void					associate					(ALife::_OBJECT_ID id, ref_str space_restrictors);
+			void					restrict					(ALife::_OBJECT_ID id, ref_str space_restrictors);
 			bool					accessible					(ALife::_OBJECT_ID id, const Fvector &position);
 			CSpaceRestriction		*restriction				(ref_str space_restrictors);
 	IC		CSpaceRestriction		*restriction				(ALife::_OBJECT_ID id);

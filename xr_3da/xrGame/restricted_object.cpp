@@ -38,7 +38,7 @@ BOOL CRestrictedObject::net_Spawn		(LPVOID data)
 	m_in_restrictions			= xr_new<CRestrictionContainer>();
 	m_out_restrictions			= xr_new<CRestrictionContainer>();
 
-	Level().space_restrictor_manager().associate		(ID(),monster->m_space_restrictors);
+	Level().space_restrictor_manager().restrict		(ID(),monster->m_space_restrictors);
 
 	return						(TRUE);
 }
