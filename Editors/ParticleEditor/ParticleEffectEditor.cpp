@@ -224,21 +224,22 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
         }
     }
 	// align to path
-    P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Align To Path"), 				&m_Flags, dfAlignToPath);
+    P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Align To Path"), 					&m_Flags, dfAlignToPath);
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfAlignToPath))
     	PHelper().CreateAngle3(items,PrepareKey		(pref,"Movement\\Align To Path\\Default Rotate"),	&m_APDefaultRotation);
 	// velocity scale
-    P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Velocity Scale"),				&m_Flags, dfVelocityScale);
+    P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Velocity Scale"),					&m_Flags, dfVelocityScale);
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfVelocityScale))
     	PHelper().CreateVector(items,PrepareKey		(pref,"Movement\\Velocity Scale\\Value"),		&m_VelocityScale, -1000.f, 1000.f);
 	// collision
-    P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Collision"),					&m_Flags, dfCollision);
+    P=PHelper().CreateFlag32(items,PrepareKey	(pref,"Movement\\Collision"),						&m_Flags, dfCollision);
     P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     FloatValue*	V 			= 0;
     if (m_Flags.is(dfCollision)){
-    	PHelper().CreateFlag32(items,PrepareKey(pref,"Movement\\Collision\\Destroy On Contact"),&m_Flags, dfCollisionDel);
+    	PHelper().CreateFlag32(items,PrepareKey(pref,"Movement\\Collision\\Collide With Dynamic"),	&m_Flags, dfCollisionDyn);
+    	PHelper().CreateFlag32(items,PrepareKey(pref,"Movement\\Collision\\Destroy On Contact"),	&m_Flags, dfCollisionDel);
 	    V=PHelper().CreateFloat	(items,PrepareKey	(pref,"Movement\\Collision\\Friction"),			&m_fCollideOneMinusFriction,0.f, 1.f);
         V->OnBeforeEditEvent.bind	(this,&PS::CPEDef::CollisionFrictionOnBeforeEdit);
         V->OnAfterEditEvent.bind	(this,&PS::CPEDef::CollisionFrictionOnAfterEdit);
