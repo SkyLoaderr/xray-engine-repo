@@ -4,7 +4,6 @@
 #include <msacm.h>
 
 // refs
-class ENGINE_API CInifile;
 class ENGINE_API IReader;
 
 class ENGINE_API CSoundStream : 
