@@ -60,6 +60,7 @@ void CVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 	} else {
 		THROW;
 	}
+	Msg	("DBG: [%f,%f,%f] - [%f,%f,%f]",VPUSH(bbox.min),VPUSH(bbox.max));
 
 	// Sphere (if exists)
 	if (data->FindChunk(OGF_BSPHERE))
@@ -68,7 +69,7 @@ void CVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 		data->Read(&bv_Radius,sizeof(float));
 	}
 
-	if (*LPDWORD(&bv_Radius) == 0xffc00000)
+	if ((*LPDWORD(&bv_Radius) == 0xffc00000)||fis_gremlin(bv_Radius)||fis_denormal(bv_Radius))
 	{
 		bv_Position.sub	(bbox.max,bbox.min);
 		bv_Position.div	(2);
