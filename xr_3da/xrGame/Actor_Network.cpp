@@ -792,9 +792,10 @@ void	CActor::OnChangeVisual()
 	m_vehicle_anims.	Create			(V);
 	CDamageManager::reload(pSettings->r_string(cNameSect(),"damage"),pSettings);
 	//-------------------------------------------------------------------------------
-	m_r_hand				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_hand");
-	m_l_finger1				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_finger1");
-	m_r_finger2				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_finger2");
+	m_r_hand			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone0"));
+	m_l_finger1			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone1"));
+	m_r_finger2			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone2"));
+
 	//-------------------------------------------------------------------------------
 	reattach_items();
 	//-------------------------------------------------------------------------------

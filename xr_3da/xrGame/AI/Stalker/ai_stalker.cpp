@@ -62,10 +62,6 @@ void CAI_Stalker::reinit			()
 
 	m_pPhysics_support->in_Init		();
 	
-	m_r_hand						= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_hand");
-	m_l_finger1						= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_finger1");
-	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_finger2");
-
 	m_last_best_item_frame			= 0;
 	m_best_item_to_kill				= 0;
 	m_best_ammo						= 0;
@@ -82,6 +78,17 @@ void CAI_Stalker::reinit			()
 	m_ce_best->set_inertia			(1000);
 	m_ce_angle->set_inertia			(5000);
 	m_ce_safe->set_inertia			(1000);
+	m_ce_random_game->set_inertia	(3000);
+
+	m_not_enough_food				= false;
+	m_can_buy_food					= false;?
+	m_not_enough_medikits			= false;
+	m_can_buy_medikits				= false;
+	m_no_or_bad_weapon				= false;?
+	m_can_buy_weapon				= false;
+	m_not_enough_ammo				= false;
+	m_can_buy_ammo					= false;
+	m_last_alife_motivations_update	= 0;
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
@@ -114,6 +121,10 @@ void CAI_Stalker::reload			(LPCSTR section)
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_friendly_fire"),100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuringByFriend),	eStalkerSoundInjuringByFriend,	head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_human"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicHuman),		eStalkerSoundPanicHuman,		head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_monster"),100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicMonster),		eStalkerSoundPanicMonster,		head_bone_name);
+
+	m_r_hand						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone0"));
+	m_l_finger1						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone1"));
+	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone2"));
 }
 
 void CAI_Stalker::Die				()

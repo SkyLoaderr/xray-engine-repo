@@ -34,8 +34,8 @@ public:
 			void		add_restrictions		(shared_str out_restrictions, shared_str in_restrictions);
 			void		remove_restrictions		(shared_str out_restrictions, shared_str in_restrictions);
 			void		remove_all_restrictions	();
-			shared_str		in_restrictions			() const;
-			shared_str		out_restrictions		() const;
+			shared_str	in_restrictions			() const;
+			shared_str	out_restrictions		() const;
 	IC		bool		applied					() const;
 };
 

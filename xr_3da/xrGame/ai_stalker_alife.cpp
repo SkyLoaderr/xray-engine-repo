@@ -374,3 +374,84 @@ void CAI_Stalker::communicate						(CInventoryOwner *trader)
 	select_items			();
 	process_items			();
 }
+
+void CAI_Stalker::compute_food_conditions			()
+{
+	m_not_enough_food				= false;
+	m_can_buy_food					= false;
+	m_not_enough_medikits			= false;
+	m_can_buy_medikits				= false;
+}
+
+void CAI_Stalker::compute_weapon_conditions			()
+{
+	m_no_or_bad_weapon				= false;
+	m_can_buy_weapon				= false;
+}
+
+void CAI_Stalker::compute_ammo_conditions			()
+{
+	m_not_enough_ammo				= false;
+	m_can_buy_ammo					= false;
+}
+
+void CAI_Stalker::compute_alife_conditions			()
+{
+	if (Device.dwTimeGlobal < m_last_alife_motivations_update + 10000)
+		return;
+
+	m_last_alife_motivations_update	= Device.dwTimeGlobal;
+
+	// not enough food condition computation
+	compute_food_conditions			();
+	compute_weapon_conditions		();
+	compute_ammo_conditions			();
+}
+
+bool CAI_Stalker::not_enough_food					()
+{
+	compute_alife_conditions();
+	return					(m_not_enough_food);
+}
+
+bool CAI_Stalker::can_buy_food						()
+{
+	compute_alife_conditions();
+	return					(m_can_buy_food);
+}
+
+bool CAI_Stalker::not_enough_medikits				()
+{
+	compute_alife_conditions();
+	return					(m_not_enough_medikits);
+}
+
+bool CAI_Stalker::can_buy_medikits					()
+{
+	compute_alife_conditions();
+	return					(m_can_buy_medikits);
+}
+
+bool CAI_Stalker::no_or_bad_weapon					()
+{
+	compute_alife_conditions();
+	return					(m_no_or_bad_weapon);
+}
+
+bool CAI_Stalker::can_buy_weapon					()
+{
+	compute_alife_conditions();
+	return					(m_can_buy_weapon);
+}
+
+bool CAI_Stalker::not_enough_ammo					()
+{
+	compute_alife_conditions();
+	return					(m_not_enough_ammo);
+}
+
+bool CAI_Stalker::can_buy_ammo						()
+{
+	compute_alife_conditions();
+	return					(m_can_buy_ammo);
+}

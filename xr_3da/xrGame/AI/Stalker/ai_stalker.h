@@ -216,12 +216,24 @@ public:
 	virtual	void						spawn_supplies			();
 			void						adjust_speed_to_animation	(const EMovementDirection movement_direction);
 	IC		const CAgentManager			&agent_manager			() const;
+	
 	virtual bool						human_being				() const
 	{
 		return							(true);
 	}
+	
 			bool						undetected_anomaly		();
 			bool						inside_anomaly			();
+
+			bool						not_enough_food			();
+			bool						can_buy_food			();
+			bool						not_enough_medikits		();
+			bool						can_buy_medikits		();
+			bool						no_or_bad_weapon		();
+			bool						can_buy_weapon			();
+			bool						not_enough_ammo			();
+			bool						can_buy_ammo			();
+
 
 	//игровое имя 
 	virtual LPCSTR						Name					() const
@@ -261,6 +273,17 @@ private:
 	xr_vector<CTradeItem>				m_temp_items;
 	u32									m_total_money;
 
+private:
+	bool								m_not_enough_food;
+	bool								m_can_buy_food;
+	bool								m_not_enough_medikits;
+	bool								m_can_buy_medikits;
+	bool								m_no_or_bad_weapon;
+	bool								m_can_buy_weapon;
+	bool								m_not_enough_ammo;
+	bool								m_can_buy_ammo;
+	u32									m_last_alife_motivations_update;
+
 protected:
 			bool						task_completed					(const CALifeTask *_task);
 			bool						similar_task					(const CALifeTask *prev_task, const CALifeTask *new_task);
@@ -279,6 +302,11 @@ protected:
 			void						select_items					();
 			void						process_items					();
 			void						transfer_item					(CInventoryItem *item, CGameObject *old_owner, CGameObject *new_owner);
+
+			void						compute_food_conditions			();
+			void						compute_weapon_conditions		();
+			void						compute_ammo_conditions			();
+			void						compute_alife_conditions		();
 
 public:
 			CALifeTask					&current_alife_task				();

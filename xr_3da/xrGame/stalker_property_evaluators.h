@@ -190,4 +190,100 @@ public:
 	virtual _value_type	evaluate							();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorNotEnoughFood
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorNotEnoughFood : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorCanBuyFood
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorCanBuyFood : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorNotEnoughMedikits
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorNotEnoughMedikits : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorCanBuyMedikit
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorCanBuyMedikit : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorNoOrBadWeapon
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorNoOrBadWeapon : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorCanBuyWeapon
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorCanBuyWeapon : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorNotEnoughAmmo
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorNotEnoughAmmo : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorCanBuyAmmo
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorCanBuyAmmo : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
 #include "stalker_property_evaluators_inline.h"

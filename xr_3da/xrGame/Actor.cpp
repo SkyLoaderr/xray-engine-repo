@@ -207,9 +207,6 @@ void CActor::reinit	()
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	CMaterialManager::reinit();
-//	m_r_hand				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_hand");
-//	m_l_finger1				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_finger1");
-//	m_r_finger2				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_finger2");
 }
 
 void CActor::reload	(LPCSTR section)

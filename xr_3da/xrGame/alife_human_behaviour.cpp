@@ -220,8 +220,8 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 
 void CSE_ALifeHumanAbstract::vfSearchObject()
 {
-	m_fCurSpeed		= m_fSearchSpeed;
-	m_detect_probability	= m_fSearchSuccessProbability; 
+	m_fCurSpeed					= m_fSearchSpeed;
+	m_detect_probability		= m_fSearchSuccessProbability; 
 	CALifeTask	*l_tpALifeTask = ai().alife().tasks().task(m_dwCurTaskID);
 	switch (l_tpALifeTask->m_tTaskType) {
 		case eTaskTypeSearchForItemCG :
@@ -232,7 +232,7 @@ void CSE_ALifeHumanAbstract::vfSearchObject()
 		}
 		case eTaskTypeSearchForItemCL :
 		case eTaskTypeSearchForItemOL : {
-			m_tTaskState	= eTaskStateChooseTask;
+			m_tTaskState		= eTaskStateChooseTask;
 			break;
 		}
 		default :				NODEFAULT;

@@ -33,6 +33,18 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyReachedCustomerLocation,
 		eWorldPropertyCustomerSatisfied,
 
+		eWorldPropertyNotEnoughFood,
+		eWorldPropertyCanBuyFood,
+
+		eWorldPropertyNotEnoughMedikits,
+		eWorldPropertyCanBuyMedikit,
+
+		eWorldPropertyNoOrBadWeapon,
+		eWorldPropertyCanBuyWeapon,
+
+		eWorldPropertyNotEnoughAmmo,
+		eWorldPropertyCanBuyAmmo,
+
 		eWorldPropertyItems,
 		eWorldPropertyEnemy,
 		
@@ -76,6 +88,8 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorFindItemToKill,
 		eWorldOperatorMakeItemKilling,
 		eWorldOperatorFindAmmo,
+
+
 
 		eWorldOperatorAimEnemy,
 		eWorldOperatorRetreatFromEnemy,
