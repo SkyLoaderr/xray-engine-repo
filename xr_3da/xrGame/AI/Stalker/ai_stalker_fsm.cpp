@@ -109,6 +109,7 @@ void CAI_Stalker::BackCover(bool bFire)
 void CAI_Stalker::ForwardStraight()
 {
 	bool bPlayingHumming = m_bPlayHumming;
+	
 	WRITE_TO_LOG("Forward straight");
 	
 	if (m_bStateChanged && !m_bPlayHumming && m_tpCurrentSound) {
@@ -117,10 +118,12 @@ void CAI_Stalker::ForwardStraight()
 	}
 
 	m_dwInertion				= 20000;
+	
 	if (!m_tEnemy.Enemy && (m_dwSavedEnemyNodeID != u32(-1))) {
 		SearchEnemy();
 		return;
 	}
+	
 	Fvector						tPoint;
 	m_tEnemy.Enemy->clCenter	(tPoint);
 	float						fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());
@@ -137,8 +140,8 @@ void CAI_Stalker::ForwardStraight()
 	CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 	if (tpWeapon) {
 		m_tSelectorFreeHunting.m_fMaxEnemyDistance = tpWeapon->m_fMaxRadius;
-		m_tSelectorFreeHunting.m_fMinEnemyDistance = 6.f;//tpWeapon->m_fMinRadius;
-		m_tSelectorFreeHunting.m_fOptEnemyDistance = 6.f;//tpWeapon->m_fMinRadius + 3.f;
+		m_tSelectorFreeHunting.m_fMinEnemyDistance = 15.f;//tpWeapon->m_fMinRadius;
+		m_tSelectorFreeHunting.m_fOptEnemyDistance = 15.f;//tpWeapon->m_fMinRadius + 3.f;
 	}
 
 	vfSetParameters				(&m_tSelectorFreeHunting,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eWeaponStateIdle : eWeaponStatePrimaryFire,fDistance > 15.f ? ePathTypeStraightDodge : ePathTypeCriteria,eBodyStateStand,m_tEnemy.Enemy->Position().distance_to(vPosition) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
@@ -957,7 +960,12 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	// going via graph nodes
 	WRITE_TO_LOG			("Accomplishing task");
 	m_bPlayHumming = true;
+	
+	if (getAI().m_tpaGraph[m_tNextGP].tNodeID == AI_NodeID)
+		m_dwTimeToChange = 0;
+
 	vfUpdateSearchPosition	();
+
 	if (m_bStateChanged || AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode)) {
 		AI_Path.Nodes.clear();
 		AI_Path.TravelPath.clear();
