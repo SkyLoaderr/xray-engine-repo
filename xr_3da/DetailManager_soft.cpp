@@ -95,9 +95,11 @@ void CDetailManager::soft_Render	()
 					float	cy			= 1.f/7.f;
 					float	cz			= 1.f/3.f;
 					Fvector&	B		= mXform.c;
-					Fvector dir2D;
+					Fvector dir2D,ldir;
 					dir2D.set			(sinf(tm_rot),0,cosf(tm_rot));
 					dir2D.normalize		();
+					ldir.set			(0,-1,1);
+					ldir.normalize		();
 
 					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
 					{
@@ -124,10 +126,17 @@ void CDetailManager::soft_Render	()
 						dstIt->P			=	pos2D;
 
 						// 
+						Fvector norm;		norm.sub	(pos2D,	mXform.c);
+						norm.normalize		();
+						float	dot			= norm.dotproduct	(ldir);
+						Fcolor clr;			clr.set				(Instance.C,Instance.C,Instance.C,1.f);
+						clr.mul_rgb			(.5f+dot*dot*dot*dot);
+
+						// 
 						/*
 						mXform.transform_tiny	(dstIt->P,srcIt->P);
 						*/
-						dstIt->C	= C;
+						dstIt->C	= clr.get();
 						dstIt->u	= srcIt->u;
 						dstIt->v	= srcIt->v;
 					}
