@@ -15,21 +15,50 @@
 #else
 
 template <class T>
-class	xr_allocator	: public std::allocator<T>	{
+class	xr_allocator_t	{
 public:
-	T*					allocate	(size_type n, const void* = 0) const					{ 	return xr_alloc<T>((u32)n);	}
-	void				deallocate	(pointer p, size_type n)								{	xr_free	(p);				}
-	void				deallocate	(pointer p)												{	xr_free	(p);				}
+	typedef	size_t		size_type;
+	typedef ptrdiff_t	difference_type;
+	typedef T*			pointer;
+	typedef const T*	const_pointer;
+	typedef T&			reference;
+	typedef const T&	const_reference;
+	typedef T			value_type;
+
+public:
+	template<class _Other>	
+	struct rebind			{	typedef xr_allocator_t<_Other> other;	};
+public:
+							pointer					address			(reference _Val) const					{	return (&_Val);	}
+							const_pointer			address			(const_reference _Val) const			{	return (&_Val);	}
+													xr_allocator_t	()										{	}
+													xr_allocator_t	(const xr_allocator_t<T>&)				{	}
+	template<class _Other>							xr_allocator_t	(const xr_allocator_t<_Other>&)			{	}
+	template<class _Other>	xr_allocator_t<T>&		operator=		(const xr_allocator_t<_Other>&)			{	return (*this);	}
+							pointer					allocate		(size_type n, const void* p=0) const	{	return xr_alloc<T>((u32)n);	}
+							void					deallocate		(pointer p, size_type n) const			{	xr_free	(p);				}
+							void					construct		(pointer p, const T& _Val)				{	_Construct(p, _Val);		}
+							void					destroy			(pointer p)								{	_Destroy(p);				}
+							size_type				max_size		() const								{	size_type _Count = (size_type)(-1) / sizeof (T);	return (0 < _Count ? _Count : 1);	}
+};
+template<class _Ty,	class _Other>	inline	bool operator==(const xr_allocator_t<_Ty>&, const xr_allocator_t<_Other>&)			{	return (true);							}
+template<class _Ty, class _Other>	inline	bool operator!=(const xr_allocator_t<_Ty>&, const xr_allocator_t<_Other>&)			{	return (false);							}
+
+namespace std
+{
+	template<class _Tp1, class _Tp2>	inline	xr_allocator_t<_Tp2>&	__stl_alloc_rebind(xr_allocator_t<_Tp1>& __a, const _Tp2*)	{	return (xr_allocator_t<_Tp2>&)(__a);	}
+	template<class _Tp1, class _Tp2>	inline	xr_allocator_t<_Tp2>	__stl_alloc_create(xr_allocator_t<_Tp1>&, const _Tp2*)		{	return xr_allocator_t<_Tp2>();			}
 };
 
-template	<typename T>							class	xr_vector	: public std::vector<T,xr_allocator<T> >		{};
-template	<typename T>							class	xr_list 	: public std::list<T,xr_allocator<T> >			{};
-template	<typename T>							class	xr_deque 	: public std::deque<T,xr_allocator<T> >			{};
-template	<typename T>							class	xr_stack 	: public std::stack<T,xr_deque<T> >				{};
-template	<typename K, class P=less<K> >			class	xr_set		: public std::set<K,P,xr_allocator<K> >			{};
-template	<typename K, class P=less<K> >			class	xr_multiset	: public std::multiset<K,P,xr_allocator<K> >	{};
-template	<typename K, class V, class P=less<K> >	class	xr_map 		: public std::map<K,V,P,xr_allocator<pair<const K,V> > >		{};
-template	<typename K, class V, class P=less<K> >	class	xr_multimap : public std::multimap<K,V,P,xr_allocator<pair<const K,V> > > 	{};
+template	<typename T>							class	xr_vector		: public std::vector<T,xr_allocator_t<T> >						{};
+template	<>										class	xr_vector<bool>	: public std::vector<bool,xr_allocator_t<bool> >				{};
+template	<typename T>							class	xr_list 		: public std::list<T,xr_allocator_t<T> >						{};
+template	<typename T>							class	xr_deque 		: public std::deque<T,xr_allocator_t<T> >						{};
+template	<typename T>							class	xr_stack 		: public std::stack<T,xr_deque<T> >								{};
+template	<typename K, class P=less<K> >			class	xr_set			: public std::set<K,P,xr_allocator_t<K> >						{};
+template	<typename K, class P=less<K> >			class	xr_multiset		: public std::multiset<K,P,xr_allocator_t<K> >					{};
+template	<typename K, class V, class P=less<K> >	class	xr_map 			: public std::map<K,V,P,xr_allocator_t<pair<const K,V> > >		{};
+template	<typename K, class V, class P=less<K> >	class	xr_multimap		: public std::multimap<K,V,P,xr_allocator_t<pair<const K,V> > > {};
 
 #endif
 
