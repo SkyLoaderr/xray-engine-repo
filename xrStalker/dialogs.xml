@@ -20,6 +20,7 @@
 			</phrase>
 			<phrase id="3">
 				<text>Как нибудь в другой раз.</text>
+				<action>escape.break_dialog</action>
 			</phrase>
 		</phrase_list>
 	</dialog>
