@@ -309,7 +309,11 @@ void CSE_ALifeSimulator::vfAssignArtefactPosition(CSE_ALifeAnomalousZone *tpALif
 	tpALifeDynamicObject->o_Position		= m_tpArtefactSpawnPositions[l_dwIndex].level_point();
 	tpALifeDynamicObject->m_tNodeID			= m_tpArtefactSpawnPositions[l_dwIndex].level_vertex_id();
 	tpALifeDynamicObject->m_fDistance		= m_tpArtefactSpawnPositions[l_dwIndex].distance();
-	Msg										("[LSS] Zone %s[%f][%f][%f] %d: generated artefact position %s[%f][%f][%f]",tpALifeAnomalousZone->s_name_replace,VPUSH(tpALifeAnomalousZone->o_Position),tpALifeAnomalousZone->m_dwStartIndex,tpALifeDynamicObject->s_name_replace,VPUSH(tpALifeDynamicObject->o_Position));
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		Msg									("[LSS] Zone %s[%f][%f][%f] %d: generated artefact position %s[%f][%f][%f]",tpALifeAnomalousZone->s_name_replace,VPUSH(tpALifeAnomalousZone->o_Position),tpALifeAnomalousZone->m_dwStartIndex,tpALifeDynamicObject->s_name_replace,VPUSH(tpALifeDynamicObject->o_Position));
+	}
+#endif
 }
 
 void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALifeCreatureAbstract, _GRAPH_ID tGraphID, CSE_ALifeSchedulable *tpALifeSchedulable)
@@ -331,7 +335,11 @@ void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALif
 	ai().game_graph().begin_spawn			(tGraphID,i,e);
 	i										+= (e != i) ? randI(s32(e - i)) : 0;
 	tpALifeCreatureAbstract->m_tGraphID		= tGraphID;
-	Msg										("[LSS] Generated death position %s[%f][%f][%f] -> [%f][%f][%f]",tpALifeCreatureAbstract->s_name_replace,VPUSH(tpALifeCreatureAbstract->o_Position),VPUSH((*i).level_point()));
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		Msg									("[LSS] Generated death position %s[%f][%f][%f] -> [%f][%f][%f]",tpALifeCreatureAbstract->s_name_replace,VPUSH(tpALifeCreatureAbstract->o_Position),VPUSH((*i).level_point()));
+	}
+#endif
 	tpALifeCreatureAbstract->o_Position		= (*i).level_point();
 	tpALifeCreatureAbstract->m_tNodeID		= (*i).level_vertex_id();
 	R_ASSERT2								((ai().game_graph().vertex(tGraphID)->level_id() != m_tCurrentLevelID) || ai().level_graph().valid_vertex_id(tpALifeCreatureAbstract->m_tNodeID),"Invalid vertex");

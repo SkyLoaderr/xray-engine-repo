@@ -167,18 +167,20 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData *l_pC	= ID_to_client(sender);
 //			VERIFY				(game && l_pC && l_pC->owner);
 			VERIFY				(game && l_pC);
-			if (l_pC && l_pC->owner)
+			if ((game->type != GAME_SINGLE) && l_pC && l_pC->owner)
 			{
 				Msg					("* [%2d] killed by [%2d] - sended by [%s:%2d]", id_dest, id_src, game->get_option_s(l_pC->Name,"name","Player"), l_pC->owner->ID);
 			}
 
 			CSE_Abstract*		e_dest		= game->get_entity_from_eid	(id_dest);	// кто умер
 			VERIFY				(e_dest);
-			Msg					("* [%2d] is [%s:%s]", id_dest, e_dest->s_name, e_dest->s_name_replace);
+			if (game->type != GAME_SINGLE)
+				Msg				("* [%2d] is [%s:%s]", id_dest, e_dest->s_name, e_dest->s_name_replace);
 			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	);	// кто убил
 			VERIFY				(e_src);
 			R_ASSERT2			(e_dest && e_src, "Killer or/and being killed are offline or not exist at all :(");
-			Msg					("* [%2d] is [%s:%s]", id_src, e_src->s_name, e_src->s_name_replace);
+			if (game->type != GAME_SINGLE)
+				Msg				("* [%2d] is [%s:%s]", id_src, e_src->s_name, e_src->s_name_replace);
 
 			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
 			xrClientData*		c_src		= e_src->owner;				// клиент, чей юнит убил
