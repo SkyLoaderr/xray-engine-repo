@@ -33,7 +33,7 @@ public:
 	virtual	void	Load								(LPCSTR section);
 	virtual	void	reinit								();
 	virtual	void	reload								(LPCSTR section);
-	virtual void	Exec_Look							(float dt);
+			void	Exec_Look							(float dt);
 			bool	bfIf_I_SeePosition					(Fvector tPosition) const;
 			void	SetPointLookAngles					(const Fvector &tPosition, float &yaw, float &pitch, const CGameObject *object = 0);
 			void	SetFirePointLookAngles				(const Fvector &tPosition, float &yaw, float &pitch, const CGameObject *object = 0);
