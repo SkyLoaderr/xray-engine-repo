@@ -215,16 +215,14 @@ void CPHWorld::Step(dReal step)
 		dSpaceCollide		(Space, 0, &NearCallback); 
 		Device.Statistic.ph_collision.End	();
 
-
-
 		Device.Statistic.ph_core.Begin		();
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
 			(*iter)->PhTune(fixed_step);	
 
 		#ifdef ODE_SLOW_SOLVER
-		dWorldStep			(phWorld, fixed_step);
+		dWorldStep		(phWorld, fixed_step);
 		#else
-		dWorldStepFast (phWorld,fixed_step,18);
+		dWorldStepFast	(phWorld,fixed_step,18);
 		#endif
 		Device.Statistic.ph_core.End		();
 
