@@ -223,6 +223,7 @@ public:
 	virtual void					play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		u32 flags=0, float delay=0.f)	= 0;
 	virtual void					play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		u32 flags=0, float delay=0.f)	= 0;
 
+	virtual void					set_volume				( float f=1.f )																			= 0;
 	virtual void					set_geometry_env		( IReader* I )																			= 0;
 	virtual void					set_geometry_occ		( CDB::MODEL* M )																		= 0;
 	virtual void					set_handler				( sound_event* E )																		= 0;
