@@ -12,7 +12,10 @@
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\actor.h"
 
+//#undef SILENCE
+
 #define MIN_SOUND_VOLUME				.05f
+
 BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 {
 	CEntityAlive*	E = dynamic_cast<CEntityAlive*>		(O);
