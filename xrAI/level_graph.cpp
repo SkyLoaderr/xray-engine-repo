@@ -8,7 +8,9 @@
 
 #include "stdafx.h"
 #include "level_graph.h"
+#ifndef AI_COMPILER
 #include "ai_space.h"
+#endif
 #include "graph_search_engine.h"
 
 #ifndef AI_COMPILER
