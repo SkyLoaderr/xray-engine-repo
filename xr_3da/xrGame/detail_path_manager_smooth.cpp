@@ -600,7 +600,7 @@ void CDetailPathManager::add_patrol_point()
 		Fvector							v;
 		v.sub							(m_path.back().position,m_path[m_last_patrol_point - 1].position);
 		v.y								= 0.f;
-		if (v.square_magnitude() > EPS_S)
+		if (v.magnitude() > EPS_S)
 			v.normalize					();
 		else
 			return;
