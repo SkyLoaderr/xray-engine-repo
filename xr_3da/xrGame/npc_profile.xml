@@ -5,70 +5,13 @@
 	<!-- PERSON INFORMATION  -->
 
 	<character id="default">
-		<!--<name>Undefined Character</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<rank>none</rank>
-		<team>none</team>
-		<start_dialog></start_dialog>
-		-->
+		<team>Stalker</team>
 	</character>
 	
-	
-	<character id="novice">
-		<rank>10</rank>
-		<reputation>50</reputation>
-	</character>
-	
-	<character id="veteran">
-		<rank>70</rank>
-	</character>
-	
-	<character id="monolith">
-		<name>Unknown Stalker</name>
-		<icon x="4" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
-		<visual>string_name2</visual>
-		<rank>veteran</rank>
-		<team>clan Monolith</team>
-		<start_dialog>stalker_talk_about</start_dialog>
-		
-		<specific_character>default</specific_character>
-	</character>
-	<character id="dolg">
-		<name>Dolg</name>
-		<icon x="10" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
-		<visual>string_name2</visual>
-		<rank>veteran</rank>
-		<team>clan Dolg</team>
-		<start_dialog>dolg_talk_about</start_dialog>
-		
-		<specific_character>default</specific_character>
-	</character>
-	<character id="freedom">
-		<name>Freedom</name>
-		<icon x="8" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
-		<visual>string_name2</visual>
-		<rank>veteran</rank>
-		<team>clan Freedom</team>
-		<start_dialog>stalker_talk_about</start_dialog>
-		
-		<specific_character>default</specific_character>
-	</character>
 	<character id="trader">
-		<name>Trader</name>
-		<icon x="3" y="1"></icon>
-		<map_icon x="0" y="4"></map_icon>
-		<visual>string_name2</visual>
-		<rank>veteran</rank>
-		<team>trader</team>
-		<start_dialog>escape_trader_start_dialog</start_dialog>
-		<specific_character>default</specific_character>
+		<specific_character>trader</specific_character>
 	</character>
-	
-	
+		
 	<character id="actor">
 		<specific_character>actor</specific_character>
 	</character>

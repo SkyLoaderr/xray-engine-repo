@@ -139,9 +139,6 @@
 				RelativePath=".\artefacthunt_game.ltx">
 			</File>
 			<File
-				RelativePath=".\artefacts.ltx">
-			</File>
-			<File
 				RelativePath=".\buy_mp_item.xml">
 			</File>
 			<File
@@ -329,9 +326,6 @@
 			</File>
 			<File
 				RelativePath=".\trade_new.xml">
-			</File>
-			<File
-				RelativePath=".\zones.ltx">
 			</File>
 		</Filter>
 		<Filter
@@ -572,6 +566,19 @@
 			</File>
 			<File
 				RelativePath=".\npc_profile.xml">
+			</File>
+		</Filter>
+		<Filter
+			Name="artefacts&amp;anomalies"
+			Filter="">
+			<File
+				RelativePath=".\artefacts.ltx">
+			</File>
+			<File
+				RelativePath=".\string_table_artefacts.xml">
+			</File>
+			<File
+				RelativePath=".\zones.ltx">
 			</File>
 		</Filter>
 		<File
