@@ -248,7 +248,7 @@ void CAI_Crow::state_Flying()
 	// Update position
 	vOldPosition.set(Position());
 	XFORM().setHPB	(vHPB.x,vHPB.y,vHPB.z);
-	Position().mad	(vDirection,fSpeed*Device.fTimeDelta);
+	Position().mad	(vOldPosition,vDirection,fSpeed*Device.fTimeDelta);
 }
 
 static Fvector vV={0,0,0};
