@@ -2,7 +2,6 @@
 #include "build.h"
 #include "cl_collector.h"
 
-#define	_USE_MATH_DEFINES
 #define FLT_MIN	flt_min
 #define FLT_MAX	flt_max
 
