@@ -98,6 +98,8 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 		ps_killed->deaths				+=	1;
 	};
 
+	signal_Syncronize();
+
 	if (!ps_killed || !ps_killer) return;
 
 	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
@@ -134,8 +136,6 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 	ps_killed->lasthitweapon		= 0;
 	ClearPlayerItems		(ps_killed);
 	SetPlayersDefItems		(ps_killed);
-
-	signal_Syncronize();
 }
 
 void	game_sv_ArtefactHunt::OnPlayerReady			(ClientID id)

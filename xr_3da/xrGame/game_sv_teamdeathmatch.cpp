@@ -101,6 +101,7 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID i
 		ps_killed->deaths				+=	1;
 	};
 
+	signal_Syncronize();
 
 	if (!ps_killed || !ps_killer) return;
 
@@ -149,7 +150,7 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID i
 
 //	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit ) )OnFraglimitExceed();
 
-	signal_Syncronize();
+//	signal_Syncronize();
 }
 
 bool game_sv_TeamDeathmatch::checkForFragLimit()

@@ -109,6 +109,8 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 		ps_killed->deaths				+=	1;
 	};
 
+	signal_Syncronize();
+
 	if (!ps_killed || !ps_killer) return;
 	
 	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
@@ -135,8 +137,6 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 	ps_killed->lasthitweapon		= 0;
 	ClearPlayerItems		(ps_killed);
 	SetPlayersDefItems		(ps_killed);
-
-	signal_Syncronize();
 }
 
 

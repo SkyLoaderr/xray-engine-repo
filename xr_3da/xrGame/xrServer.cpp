@@ -408,7 +408,7 @@ void			xrServer::Server_Client_Check	( IClient* CL )
 
 bool		xrServer::OnCL_QueryHost		() 
 {
-	if (GameID() == GAME_SINGLE) return false;
+	if (game->Type() == GAME_SINGLE) return false;
 	return (client_Count() != 0); 
 };
 
