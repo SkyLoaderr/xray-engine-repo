@@ -3,8 +3,10 @@
 Чугай Саша
 
 Сделать:
+    - дождаться пока сделают ходьбу
     - подставить настоящие звуки
     - звуки во сне
+    - сон
     - time_end=nil
 --------------------------------------------------------------------------------------------------------------------]]
 
@@ -186,7 +188,7 @@ function action_commander:execute()
                                    [walk_outside] = 20,
                                    [look_map]     = 10,
                                    [look_outside] = 10,
-                                   [radio_talk]   = 20000,
+                                   [radio_talk]   = 20,
                                    [drink_vodka]  = 10 }
                 else
                     self.act = random_choice_weighted{
