@@ -223,7 +223,7 @@ enum EMotionAnim {
 
 // Generic actions
 enum EAction {
-	ACT_STAND_IDLE = 0,
+	ACT_STAND_IDLE	= u32(0),
 	ACT_SIT_IDLE,
 	ACT_LIE_IDLE,
 	ACT_WALK_FWD,
@@ -235,7 +235,8 @@ enum EAction {
 	ACT_DRAG,
 	ACT_ATTACK,
 	ACT_STEAL,
-	ACT_LOOK_AROUND
+	ACT_LOOK_AROUND,
+	ACT_NONE		= u32(-1)
 };
 
 enum EPState {

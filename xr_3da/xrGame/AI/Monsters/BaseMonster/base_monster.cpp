@@ -137,7 +137,7 @@ void CBaseMonster::Die(CObject* who)
 		sound().play			(MonsterSpace::eMonsterSoundDie);
 
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
-
+	
 	if (m_controlled)			m_controlled->on_die();
 }
 

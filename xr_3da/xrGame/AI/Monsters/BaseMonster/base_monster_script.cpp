@@ -24,6 +24,7 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 	if (movement().detail().time_path_built() >= tpEntityAction->m_tActionCondition.m_tStartTime) {
 		if ((l_tMovementAction.m_fDistToEnd > 0) && movement().IsPathEnd(l_tMovementAction.m_fDistToEnd))  {
 			l_tMovementAction.m_bCompleted = true;
+			Msg("!!!!!!!!!!! By dist !!!!!!!!!!!!!!!");
 			return false;
 		}
 	}
@@ -93,6 +94,9 @@ bool CBaseMonster::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 	if (!inherited::bfAssignWatch(tpEntityAction))
 		return		(false);
 	
+	// Инициализировать action
+	MotionMan.m_tAction = ACT_STAND_IDLE;
+
 	CScriptWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
 	if (l_tWatchAction.completed()) return false;
 
@@ -213,15 +217,12 @@ void CBaseMonster::ProcessScripts()
 	
 	m_script_processing_active = true;
 
-	// Инициализировать action
-	MotionMan.m_tAction = ACT_STAND_IDLE;
-
 	movement().Update_Initialize			();
 	
 	// Выполнить скриптовые actions
 	m_script_state_must_execute					= false;
 	inherited::ProcessScripts					();
-	
+
 	m_current_update							= Device.dwTimeGlobal;
 
 	// обновить мир (память, враги, объекты)

@@ -50,37 +50,11 @@ void CBaseMonster::Think()
 	STOP_PROFILE;
 }
 
-//void CBaseMonster::squad_notify()
-//{
-//	CMonsterSquad	*squad = monster_squad().get_squad(this);
-//	SMemberGoal		goal;
-//
-//	if (CurrentState == stateAttack) {
-//		goal.type	= MG_AttackEnemy;
-//		goal.entity	= const_cast<CEntityAlive*>(EnemyMan.get_enemy());
-//	}  
-//	
-//	squad->UpdateGoal(this, goal);
-//}
-
 void CBaseMonster::update_fsm()
 {
 	if (CriticalActionInfo->is_fsm_locked()) return;
 
 	StateMan->update				();		
 	TranslateActionToPathParams		();
-
-	//if (!UpdateStateManager()) {
-	//	StateSelector				();
-	//	CurrentState->Execute		(m_current_update);
-	//	squad_notify				();
-	//}
-	//
-
-	//StateMan->update				();
-	//squad_notify					();	
-
-	//TranslateActionToPathParams		();
-
 }
 
