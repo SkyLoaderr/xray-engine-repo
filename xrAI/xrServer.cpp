@@ -366,7 +366,7 @@ bool xrServer::verify_entities				() const
 	for ( ; I != E; ++I) {
 		VERIFY2							((*I).first != 0xffff,"SERVER : Invalid entity id as a map key - 0xffff");
 		VERIFY2							((*I).second,"SERVER : Null entity object in the map");
-		VERIFY3							((*I).first == (*I).second->ID,"SERVER : ID mismatch - map keysss
+		VERIFY3							((*I).first == (*I).second->ID,"SERVER : ID mismatch - map key doesn't correspond to the real entity ID",(*J).second->s_name_replace);
 	}
 	return								(true);
 }
