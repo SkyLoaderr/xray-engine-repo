@@ -481,11 +481,6 @@
 				Filter="">
 				<File
 					RelativePath=".\DummyObject.cpp">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\DummyObject.h">
@@ -1249,6 +1244,9 @@
 			<Filter
 				Name="Tri-Collider"
 				Filter="">
+				<File
+					RelativePath="tri-colliderKNoOPC\__aabb_tri.h">
+				</File>
 				<File
 					RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
 				</File>

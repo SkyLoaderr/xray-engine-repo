@@ -1160,8 +1160,8 @@ void CPHShell::PhDataUpdate(dReal step){
 										   deviation_v[2]*deviation_v[2]);
 
 					deviation/=dis_count_f;
-					//if(mag_v<0.001* dis_frames && deviation<0.00001*dis_frames)
-					//	dBodyDisable(m_body);
+					if(mag_v<0.001* dis_frames && deviation<0.00001*dis_frames)
+						dBodyDisable(m_body);
 					if((previous_dev>deviation&&previous_v>mag_v)
 					  ) 
 					{
