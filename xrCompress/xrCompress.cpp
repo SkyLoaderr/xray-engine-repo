@@ -9,7 +9,7 @@ CFS_Memory				fs_desc;
 
 void Compress			(const char* path)
 {
-	printf				("%-80s   ",path);
+	printf				("\n%-80s   ",path);
 
 	// Compress into BaseFS
 	CVirtualFileStream	src(path);
@@ -18,7 +18,7 @@ void Compress			(const char* path)
 	unsigned	c_size	= 0;
 	_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
 	fs->write			(c_data,c_size);
-	printf				("%%%3.1f\n",100.f*float(c_size)/float(src.Length()));
+	printf				("%%%3.1f",100.f*float(c_size)/float(src.Length()));
 
 	// Write description
 	fs_desc.WstringZ	(path);
