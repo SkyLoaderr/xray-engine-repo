@@ -995,6 +995,16 @@ function loadStates(gname, type)
 			return 0
 		end
 	end
+
+    local f = gulag_military.load_states (gname, type)
+    if f ~= nil then return f end
+     --if db.actor and db.actor:has_info ("gar_monsters_rush_wave1") then
+          --return 1
+       --else
+          --return 0
+	   --end
+	   --return 0
+	--end   
 end
 
 function get_megafone(type, name)
