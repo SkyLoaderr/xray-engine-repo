@@ -18,14 +18,15 @@ class CAbstractPathManager {
 private:
 	const _Graph								*m_graph;
 	_VertexEvaluator							*m_evaluator;
-	xr_vector<_vertex_id_type>					m_path;
+
+protected:
 	_index_type									m_current_index;
 	_index_type									m_intermediate_index;
 	_vertex_id_type								m_dest_vertex_id;
 	bool										m_actuality;
 	bool										m_failed;
+	xr_vector<_vertex_id_type>					m_path;
 
-protected:
 	IC	_vertex_id_type	dest_vertex_id				() const;
 	IC	_vertex_id_type	intermediate_vertex_id		() const;
 	IC			u32		intermediate_index			() const;

@@ -29,5 +29,22 @@ IC	bool CLevelManagerTemplate::actual() const
 	return		(inherited::actual(level_vertex_id(),dest_vertex_id()));
 }
 
+TEMPLATE_SPECIALIZATION
+IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
+{
+	VERIFY					(ai().level_graph().valid_vertex_id(start_vertex_id) && ai().level_graph().valid_vertex_id(dest_vertex_id));
+	if (ai().level_graph().check_vertex_in_direction(start_vertex_id,ai().level_graph().vertex_position(start_vertex_id),dest_vertex_id)) {
+		m_path.resize			(2);
+		m_path[0]				= start_vertex_id;
+		m_path[1]				= dest_vertex_id;
+		m_failed				= false;
+		m_current_index			= _index_type(0);
+		m_intermediate_index	= _index_type(0);
+		m_actuality				= !failed();
+		return;
+	}
+	inherited::build_path		(start_vertex_id,dest_vertex_id);
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CLevelManagerTemplate
