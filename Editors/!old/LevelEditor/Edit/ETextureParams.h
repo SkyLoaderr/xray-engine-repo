@@ -135,7 +135,7 @@ struct XR_EPROPS_API STextureParams{
 #ifdef _EDITOR
 	PropValue::TOnChange			OnTypeChangeEvent;
 	void __stdcall	OnTypeChange	(PropValue* v);
-    void 			FillProp		(PropItemVec& items, PropValue::TOnChange OnChangeEvent);
+    void 			FillProp		(LPCSTR base_name, PropItemVec& items, PropValue::TOnChange OnChangeEvent);
 #endif
 };
 #pragma pack( pop )

@@ -146,7 +146,7 @@ void STextureParams::OnTypeChange(PropValue* prop)
     if (!OnTypeChangeEvent.empty()) OnTypeChangeEvent(prop);
 }
 
-void STextureParams::FillProp(PropItemVec& items, PropValue::TOnChange on_type_change)
+void STextureParams::FillProp(LPCSTR base_name, PropItemVec& items, PropValue::TOnChange on_type_change)
 {                             
 	OnTypeChangeEvent	= on_type_change;
     PropValue* P		= PHelper().CreateToken32	(items, "Type",		(u32*)&type,		ttype_token);
@@ -164,8 +164,11 @@ void STextureParams::FillProp(PropItemVec& items, PropValue::TOnChange on_type_c
 
     	P = PHelper().CreateToken32	(items, "Bump\\Mode",				(u32*)&bump_mode,	tbmode_token);
         P->OnChangeEvent.bind(this,&STextureParams::OnTypeChange);
-        if (tbmUse==bump_mode)
-        	PHelper().CreateChoose	(items, "Bump\\Texture",			&bump_name,			smTexture);
+        if (tbmUse==bump_mode){
+        	AnsiString path;
+            path = base_name;
+        	PHelper().CreateChoose	(items, "Bump\\Texture",			&bump_name,			smTexture, path.c_str());
+        }
         
         PHelper().CreateFlag32		(items, "Details\\Use As Diffuse",	&flags,				flDiffuseDetail);
         PHelper().CreateFlag32		(items, "Details\\Use As Bump (R2)",&flags,				flBumpDetail);
