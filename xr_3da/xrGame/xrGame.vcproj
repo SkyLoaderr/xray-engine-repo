@@ -3999,6 +3999,9 @@
 						RelativePath=".\script_lua_export_alife.cpp">
 					</File>
 					<File
+						RelativePath=".\script_lua_export_globals.cpp">
+					</File>
+					<File
 						RelativePath=".\script_lua_export_ini.cpp">
 					</File>
 					<File
