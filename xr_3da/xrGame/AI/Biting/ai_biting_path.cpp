@@ -365,3 +365,4 @@ void CAI_Biting::WalkNextGraphPoint()
 
 	SetupVelocityMasks();
 }
+

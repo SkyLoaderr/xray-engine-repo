@@ -136,6 +136,9 @@ void CAI_Dog::StateSelector()
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 		SetState(stateEat);
 	else						SetState(stateRest); 
+
+
+	BonesInMotion(); 
 }
 
 
@@ -162,6 +165,8 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	Bones.AddBone(GetBoneInstance("bip01_spine1"), AXIS_Z); 
 	Bones.AddBone(GetBoneInstance("bip01_spine2"), AXIS_Z); 
 	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_X); 
+	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Y); 
+	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Z); 
 
 	return TRUE;
 }
@@ -176,12 +181,45 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 
 void CAI_Dog::OnSoundPlay()
 {
-	if (!Bones.IsActive()) Bones.SetMotion(GetBoneInstance("bone01"),AXIS_Y, PI_DIV_6, PI_MUL_2, 1);
+	if (!Bones.IsActive()) Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_Y, PI_DIV_6, PI_MUL_2, 1);
 }
 
 void CAI_Dog::LookPosition(Fvector /**pos/**/, float angular_speed)
 {
 }
+
+#define TURN_HEAD_ANGLE PI_DIV_4
+
+void CAI_Dog::BonesInMotion() 
+{
+	EMotionAnim anim = MotionMan.GetCurAnim();
+	bool b_enable_motions = false;
+
+	switch (anim) {
+	case eAnimSitIdle:
+	case eAnimWalkFwd:
+		b_enable_motions = true;
+		break;
+	}
+	
+	if (!Bones.IsActive() && b_enable_motions) {
+		float	x,y,z;
+		u8		side_to_look = 0; // 0 - front, 1 - left, 2 - right
+		
+		u8 selector = u8(Random.randI(100)); 
+		if (selector < 20)		side_to_look = 1;
+		else if (selector < 40)	side_to_look = 2;
+		
+		if (side_to_look == 1)	{	x = -TURN_HEAD_ANGLE;	y = TURN_HEAD_ANGLE;	z = TURN_HEAD_ANGLE;} 
+		else if (side_to_look == 2)	{	x = TURN_HEAD_ANGLE; 	y = TURN_HEAD_ANGLE;	z = -TURN_HEAD_ANGLE;}
+		else {x = 0.f; y = 0.f; z = 0.f;}
+
+		Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_X, x, PI_DIV_2, 3000);
+		Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_Y, y, PI_DIV_2, 3000);
+		Bones.SetMotion(GetBoneInstance("bip01_head"),AXIS_Z, z, PI_DIV_2, 3000);
+	}
+}
+
 
 void CAI_Dog::UpdateCL()
 {
