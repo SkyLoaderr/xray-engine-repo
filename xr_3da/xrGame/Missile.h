@@ -40,6 +40,8 @@ public:
 
 	virtual void Show();
 	virtual void Hide();
+	virtual bool IsHidden() {return m_state == MS_HIDDEN;}
+	virtual bool IsHiding() {return m_state == MS_HIDING;}
 
 	virtual void Throw();
 	virtual void Destroy();

@@ -261,7 +261,10 @@ bool CInventory::Activate(u32 slot)
 {	
 	R_ASSERT2(slot == NO_ACTIVE_SLOT || slot<m_slots.size(), "wrong slot used");
 
-	if(m_iActiveSlot == slot || m_iNextActiveSlot == slot)
+	if(m_iActiveSlot == slot || (m_iNextActiveSlot == slot &&
+		m_iActiveSlot != NO_ACTIVE_SLOT &&
+		m_slots[m_iActiveSlot].m_pIItem && 
+		m_slots[m_iActiveSlot].m_pIItem->IsHiding()))
 		return false;
 
 	//активный слот не выбран

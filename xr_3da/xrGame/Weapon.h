@@ -251,6 +251,7 @@ public:
 	IC BOOL					IsVisible			()	const		{	return getVisible();						}	// Weapon change occur only after visibility change
 	IC BOOL					IsUpdating			()	const		{	return bWorking || m_bPending || getVisible();}	// Does weapon need's update?
 	virtual bool			IsHidden			()				{	return STATE == eHidden;}						// Does weapon is in hidden state
+	virtual bool			IsHiding			()				{	return STATE == eHiding;}
 		
 	IC EHandDependence		HandDependence		()				{	return eHandDependence;}
 	virtual float			GetZoomFactor		()				{	return fZoomFactor;							}

@@ -9,6 +9,8 @@
 #include "WeaponHUD.h"
 #include "Actor.h"
 
+#include "Missile.h"
+
 CHudItem::CHudItem(void)
 {
 	m_pHUD = NULL;
@@ -59,7 +61,7 @@ void  CHudItem::LoadSound(LPCSTR section, LPCSTR line,
 	if(count>1 && delay != NULL)
 	{
 		_GetItem (str, 1, buf_str);
-		*delay = atof(buf_str);
+		*delay = (float)atof(buf_str);
 	}
 	else
 		*delay = 0;
@@ -73,15 +75,21 @@ void CHudItem::renderable_Render()
 	//if (m_pHUD && pActor && hud_mode && 
 	//	!IsHidden() &&	!m_pHUD->IsHidden())
 
-	if(hud_mode && !m_pHUD->IsHidden())
+	if(hud_mode && !m_pHUD->IsHidden() && !IsHidden())
 	{ 
+		if(dynamic_cast<CMissile*>(this))
+		{
+			int a =0;
+			a++;
+		}
+
 		// HUD render
 		UpdateHudPosition			();
 		::Render->set_Transform		(&m_pHUD->Transform());
 		::Render->add_Visual		(m_pHUD->Visual());
 	}
 	//else if(!pActor || !hud_mode)
-	else if(!H_Parent() || (!hud_mode && !m_pHUD->IsHidden()))
+	else if(!H_Parent() || (!hud_mode && !m_pHUD->IsHidden() && !IsHidden()))
 	{
 		// normal render
 		::Render->set_Transform		(&XFORM());

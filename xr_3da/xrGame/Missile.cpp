@@ -321,7 +321,7 @@ u32 CMissile::State(u32 state)
 	case MS_SHOWING:
         {
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), FALSE, this);
 		} break;
 	case MS_IDLE:
 		{
@@ -455,9 +455,6 @@ void CMissile::UpdateXForm()
 
 void CMissile::renderable_Render() 
 {
-	UpdateXForm();
-	UpdateFP();
-
 	inherited::renderable_Render();
 }
 
@@ -468,7 +465,8 @@ void CMissile::Show()
 
 void CMissile::Hide() 
 {
-	SwitchState(MS_HIDING);
+	//SwitchState(MS_HIDING);
+	SwitchState(MS_HIDDEN);
 }
 
 void CMissile::Throw() 

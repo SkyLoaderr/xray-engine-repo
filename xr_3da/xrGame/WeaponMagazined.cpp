@@ -418,7 +418,8 @@ void CWeaponMagazined::SetDefaults	()
 void CWeaponMagazined::Hide		()
 {
 	// add shot effector
-	SwitchState(eHiding);
+	//SwitchState(eHiding);
+	SwitchState(eHidden);
 }
 void CWeaponMagazined::Show		()
 {

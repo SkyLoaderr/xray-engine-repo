@@ -49,8 +49,8 @@ public:
 	//активация и деактивации вещи как активной в интерфейсе
 	virtual bool	Activate();
 	virtual void	Deactivate();
+	
 
-		
 	//для завершения анимации
 	virtual void	OnAnimationEnd		();
 

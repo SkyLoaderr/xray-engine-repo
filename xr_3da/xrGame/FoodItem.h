@@ -54,6 +54,8 @@ public:
 
 	virtual bool Useful() {return CEatableItem::Useful();}
 	virtual bool IsPending() {return inherited::IsPending();}
+	virtual bool IsHidden()	{return FOOD_HIDDEN == STATE;}
+	virtual bool IsHiding() {return FOOD_HIDING == STATE;}
 
 protected:
 	bool m_bReadyToEat;
