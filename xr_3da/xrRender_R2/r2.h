@@ -110,7 +110,7 @@ public:
 	shared_str													c_sbase			;
 	shared_str													c_lmaterial		;
 	float														o_hemi			;
-
+	float														o_sun			;
 	IDirect3DQuery9*											q_sync_point	;
 private:
 	// Loading / Unloading
@@ -155,6 +155,7 @@ public:
 		if (0==O)					return;
 		CROS_impl& LT				= *((CROS_impl*)O->renderable.ROS);
 		o_hemi						= 0.5f*LT.get_hemi			();
+		o_sun						= 0.5f*LT.get_sun			();
 	}
 	IC void							apply_lmaterial				()
 	{

@@ -34,9 +34,9 @@ CROS_impl::CROS_impl	()
 	sun_smooth			= 0.2f;
 
 #if RENDER==R_R1
-	MODE				= IRender_ObjectSpecific::TRACE_ALL		;
+	MODE				= IRender_ObjectSpecific::TRACE_ALL											;
 #else
-	MODE				= IRender_ObjectSpecific::TRACE_HEMI	;
+	MODE				= IRender_ObjectSpecific::TRACE_HEMI + IRender_ObjectSpecific::TRACE_SUN	;
 #endif
 }
 
@@ -248,9 +248,9 @@ void	CROS_impl::update	(IRenderable* O)
 // hemi & sun: update and smooth
 void	CROS_impl::update_smooth	()
 {
-	dwFrameSmooth			=	Device.dwFrame;
-	float	l_f				=	Device.fTimeDelta*lt_smooth;
-	float	l_i				=	1.f-l_f;
+	dwFrameSmooth			=	Device.dwFrame					;
+	float	l_f				=	Device.fTimeDelta*lt_smooth		;
+	float	l_i				=	1.f-l_f							;
 	hemi_smooth				=	hemi_value*l_f + hemi_smooth*l_i;
 	sun_smooth				=	sun_value *l_f + sun_smooth *l_i;
 }
