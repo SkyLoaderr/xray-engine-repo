@@ -1423,7 +1423,6 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	}
 
 
-#ifndef NDEBUG
 #ifdef DEBUG
 	string128 buf;
 	HUD().pFontSmall->SetColor(0xffffffff);
@@ -1436,10 +1435,9 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	{
 	case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;
 	case CPHMovementControl::peInAir:		strcpy(buf,"air");				break;
-	case CPHMovementControl::peAtWall:	strcpy(buf,"wall");				break;
+	case CPHMovementControl::peAtWall:		strcpy(buf,"wall");				break;
 	}
 	HUD().pFontSmall->OutNext	(buf);
-#endif
 #endif
 }
 
