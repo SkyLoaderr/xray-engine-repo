@@ -286,12 +286,14 @@ LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L)
 }
 
 ref_str		CInifile::r_string_wb(LPCSTR S, LPCSTR L)	{
-	string512	_original;	strcpy(_original,r_string(S,L));
-	u32			_len		= xr_strlen(_original);
-	if	(0==_len)					return ref_str("");
+	LPCSTR		_base		= r_string(S,L);
+	if	(0==_base)					return	ref_str(0);
+	string512	_original;	
+	u32			_len		= xr_strlen(strcpy(_original,_base));
+	if	(0==_len)					return	ref_str("");
 	if	('"'==_original[_len-1])	_original[_len-1]=0;				// skip end
-	if	('"'==_original[0])			return ref_str(&_original[0] + 1);	// skip begin
-	return		ref_str(_original);
+	if	('"'==_original[0])			return	ref_str(&_original[0] + 1);	// skip begin
+	return									ref_str(_original);
 }
 
 u8 CInifile::r_u8(LPCSTR S, LPCSTR L)
