@@ -70,6 +70,16 @@ end
 function game_cl_LastStanding:TranslateGameMessage(msg, P)
    if msg == game_messages.game_messages.GAME_EVENT_ROUND_STARTED then
       self:CommonMessageOut("R O U N D  S T A R T E D")
+   elseif msg == game_messages.game_messages.GAME_EVENT_PLAYER_CONNECTED then
+      local name = P:r_stringZ()
+      local msg = "Player connected"
+      self:CommonMessageOut(msg)
+
+   elseif msg == game_messages.game_messages.GAME_EVENT_PLAYER_DISCONNECTED then
+      local name = P:r_stringZ()
+      local msg = "Player disconnected"
+      self:CommonMessageOut(msg)
+
    else
       game_cl_mp_script.TranslateGameMessage(self,msg, P)
    end

@@ -1,109 +1,15 @@
-[teamdeathmatch_base_cost]
-wpn_knife			=	10
+[game_laststanding_options]
 
-wpn_pm				=	100
-wpn_pb				=	150
-wpn_usp				=	120
-wpn_fort			=	120
-wpn_walther			=	130
-wpn_hpsa			=	120
-
-wpn_l85				=	350
-wpn_ak74			=	350
-wpn_fn2000			=	1500
-wpn_lr300			=	400
-wpn_val				=	2000
-wpn_vintorez		=	2500
-wpn_svu				=	3350
-wpn_svd				=	3500
-wpn_groza			=	600
-wpn_toz34			=	300
-wpn_rpg7			=	1800
-wpn_gauss			=	3500
-wpn_bm16 			=	300
-
-grenade_f1			=	80
-grenade_rgd5		=	90
-ammo_vog-25			=	80
-ammo_m209			=	80
-ammo_og-7b			=	50
-
-exo_outfit			=	300
-scientific_outfit	=	400
-
-device_torch		=	50
-wpn_addon_scope		=	200
-wpn_addon_silencer	=	150
-wpn_addon_grenade_launcher			= 250
-wpn_addon_grenade_launcher_m203		= 250
-
-[teamdeathmatch_team1]
 ;slot1 = wpn_knife
-slot2 = wpn_pb, wpn_usp, wpn_fort
-slot3 = wpn_l85, wpn_fn2000, wpn_lr300, wpn_svu, wpn_groza, wpn_rpg7
-slot4 = grenade_f1, ammo_vog-25, ammo_m209, ammo_og-7b,
-slot5 = exo_outfit, scientific_outfit
-slot6 = device_torch
+;slot2 = wpn_pb, wpn_usp, wpn_fort
+;slot3 = wpn_l85, wpn_fn2000, wpn_lr300, wpn_svu, wpn_groza, wpn_rpg7
+;slot4 = grenade_f1, ammo_vog-25, ammo_m209, ammo_og-7b,
+;slot5 = exo_outfit, scientific_outfit
+;slot6 = device_torch
 
-skins = stalker_sv_balon_10, stalker_sv_hood_9,stalker_sv_rukzak_3,stalker_sv_rukzak_2
+actor_entity 			= mp_actor
+spectator_entity 	= spectator
+
+default_weapons	= wpn_knife, wpn_pb, wpn_ak74{Silencer+Scope+GrenadeLauncher}
 
 
-;default_items	= wpn_knife, wpn_pb;, device_torch
-
-;//соответствие иконок обоорудованию
-exo_outfit			= stalker_sv_exoskeleton
-scientific_outfit	= stalker_sci_svoboda
-
-;//money amounts
-money_start		= 260
-money_min		= 0
-
-kill_rival		= 100
-kill_self		= -100
-kill_team		= -150
-
-target_rival	= 0
-target_team		= 0
-target_succeed	= 0
-target_succeed_all	= 0
-
-round_win		= 100
-round_loose		= 50
-round_draw		= 50
-
-wpn_usp_cost	= 0
-
-[teamdeathmatch_team2]
-;slot1 = wpn_knife
-slot2 = wpn_pm, wpn_walther, wpn_hpsa
-slot3 = wpn_ak74, wpn_val, wpn_vintorez, wpn_svd, wpn_toz34, wpn_rpg7
-slot4 = grenade_rgd5, ammo_vog-25, ammo_og-7b
-slot5 = exo_outfit, scientific_outfit
-slot6 = device_torch
-
-skins = stalker_killer_head_1,stalker_killer_antigas,stalker_killer_head_3,stalker_killer_mask
-
-;default_items	= wpn_knife, wpn_pm;, device_torch
-
-;//соответствие иконок обоорудованию
-exo_outfit				= stalker_killer_exoskeleton
-scientific_outfit		= stalker_sci_killer
-
-;//money amounts
-money_start		= 260
-money_min		= 0
-
-kill_rival		= 100
-kill_self		= -100
-kill_team		= -150
-
-target_rival	= 0
-target_team		= 0
-target_succeed	= 0
-target_succeed_all	= 0
-
-round_win		= 100
-round_loose		= 50
-round_draw		= 50
-
-wpn_pm_cost		= 0

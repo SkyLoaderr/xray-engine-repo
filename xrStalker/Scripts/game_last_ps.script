@@ -1,24 +1,17 @@
 class "game_last_playerState"(game_PlayerState)
 
 function game_last_playerState:__init() super()
-
-   self.var_1 = "qwerty"
-   self.var_2 = 6400
-   self.var_3 = 5.78957
-   self.kills = 600
+   self.lifecount = 0
 end
 
 function game_last_playerState:__finalize  ()
-   local t = 0
 end
 
 function game_last_playerState:clear ()
 
      game_PlayerState.clear(self)
 
-   self.var_1 = ""
-   self.var_2 = 0
-   self.var_3 = 0
+      self.lifecount = -1
 
 end
 
@@ -27,9 +20,7 @@ end
 function game_last_playerState:net_Export (P)
 
       game_PlayerState.net_Export(self,P)
-      P:w_stringZ(self.var_1)
-      P:w_u32(self.var_2)
-      P:w_float(self.var_3)
+      P:w_u32(   self.lifecount )
 
 end
 
@@ -37,9 +28,7 @@ end
 
 function game_last_playerState:net_Import (P)
 
-      game_PlayerState.net_Import(self,P)
-      self.var_1 = P:r_stringZ()
-      self.var_2 = P:r_u32()
-      self.var_3 = P:r_float()
+   game_PlayerState.net_Import(self,P)
+   self.lifecount = P:r_u32()
 
 end
