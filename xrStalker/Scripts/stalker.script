@@ -25,7 +25,6 @@ function object_init    (obj)
 			obj:set_use_callback(object_info_callback)
 		end
 	end	
-	
 end
 
 function object_info_callback(obj)
@@ -37,5 +36,9 @@ function object_info_callback(obj)
 			local label = obj_ini:r_string("info", "id")
 			actor:give_info_portion(label)			
 		end
-	end	
+	end
+end
+
+function script_zone_init(obj)
+	obj:bind_object(xr_zones.zone_binder(obj))
 end
