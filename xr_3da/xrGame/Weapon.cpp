@@ -385,7 +385,7 @@ void CWeapon::Update		(DWORD dT)
 {
 	// Queue shrink
 	DWORD	dwTimeCL	= Level().timeServer()-NET_Latency;
-	VERIFY				(!NET.empty());
+	// VERIFY				(!NET.empty());
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
 	// Logic

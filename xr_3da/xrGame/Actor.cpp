@@ -312,40 +312,64 @@ void CActor::g_sv_AnalyzeNeighbours	()
 	CObjectSpace::NL_IT		n_end						= Level().ObjectSpace.q_nearest.end		();
 	if (n_end==n_begin)		return;
     
-	// Process results
-	std::sort				(n_begin,n_end);
-
+	// Process results (NEW)
 	for (CObjectSpace::NL_IT it = n_begin; it!=n_end; it++)
 	{
 		CObject* O = *it;
-
-		// Test for weapon
-		CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-		if (W)
+		if (find(nearest.begin(),nearest.end(),O) == nearest.end())
 		{
-			// Search if we have similar type of weapon
-			CWeapon* T = Weapons->getWeaponByWeapon	(W);
-			if (T)	
-			{
-				// We have similar weapon - just get ammo out of it
-				if (W->Local())	T->Ammo_add	(W->Ammo_eject());
-				else			
-				{
-					Device.Fatal("Ammo eject from non local weapon not implemented");
-				}
-				continue;
-			} else {
-				// We doesn't have similar weapon - pick up it
-				NET_Packet	P;
-				P.w_begin	(M_OWNERSHIP_TAKE);
-				P.w_u16		(u16(ID()));
-				P.w_u16		(u16(W->ID()));
-				Level().Send(P,net_flags(TRUE,TRUE,TRUE));
-			}
+			// new 
+			g_near_new			(O);
+			nearest.push_back	(O);
 		}
-
-		// 
 	}
+
+	// Process results (DELETE)
+	for (int d = 0; d<int(nearest.size()); d++)
+	{
+		CObject* O	= nearest[d];
+		if (find(n_begin,n_end,O) == n_end)
+		{
+			// delete
+			g_near_delete		(O);
+			nearest.erase		(nearest.begin()+d);
+			d--;
+		}
+	}
+}
+
+void CActor::g_near_new				(CObject* O)
+{
+	// Test for weapon
+	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
+	if (W)
+	{
+		// Search if we have similar type of weapon
+		CWeapon* T = Weapons->getWeaponByWeapon	(W);
+		if (T)	
+		{
+			// We have similar weapon - just get ammo out of it
+			if (W->Local())	T->Ammo_add	(W->Ammo_eject());
+			else			
+			{
+				Device.Fatal("Ammo eject from non local weapon not implemented");
+			}
+			return;
+		} else {
+			// We doesn't have similar weapon - pick up it
+			NET_Packet	P;
+			P.w_begin	(M_OWNERSHIP_TAKE);
+			P.w_u16		(u16(ID()));
+			P.w_u16		(u16(W->ID()));
+			Level().Send(P,net_flags(TRUE,TRUE,TRUE));
+		}
+	}
+
+	// 
+}
+
+void CActor::g_near_delete			(CObject* O)
+{
 }
 
 void CActor::net_OwnershipTake		(CObject* O)
