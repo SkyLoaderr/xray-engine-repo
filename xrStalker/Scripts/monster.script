@@ -1,8 +1,7 @@
 function main()
-	wait(15000)                                                                                                    
+	wait(10000)                                                                                                    
 	                                                                                                              
 	flesh  	= 	get_level_object("m_flesh_e0000")                                                                     
-	bloody 	=	get_level_object("m_blood_e0000")
 	actor   = 	get_actor()
 
 	flesh:script(true,monster.script_name())                                                                                
