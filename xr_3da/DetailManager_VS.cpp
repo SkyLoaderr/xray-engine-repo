@@ -89,7 +89,7 @@ void CDetailManager::hw_Load()
 		}
 		R_CHK			(hw_VB->Unlock());
 	}
-
+ 
 	// Fill IB
 	{
 		u16*			pI;
