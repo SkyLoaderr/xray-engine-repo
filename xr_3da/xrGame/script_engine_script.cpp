@@ -10,12 +10,15 @@
 #include "script_engine.h"
 #include "script_space.h"
 #include "ai_space.h"
-
+#include "script_debugger.h"
 using namespace luabind;
 
 void LuaLog(LPCSTR caMessage)
 {
 	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeMessage,"%s",caMessage);
+	if( CScriptDebugger::GetDebugger()->Active() ){
+		CScriptDebugger::GetDebugger()->Write(caMessage);
+	}
 }
 
 void LoadScriptModule(LPCSTR script_name)
