@@ -43,16 +43,16 @@ void __cdecl main(char argc, char *argv[])
 	
 	u64						start, finish;
 
-	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
-	Sleep(1);
+	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	Sleep					(1);
 	
 	start					= CPU::cycles();
-	search.search			(9);
+	search.search			(10);
 	finish					= CPU::cycles();
 
-	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
-	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
 	ui().log				("Nodes searched : %d\n",search.m_counter);
 	ui().log				("Search speed   : %f (nodes per second)\n",float(search.m_counter)/((finish - start)*CPU::cycles2seconds));
