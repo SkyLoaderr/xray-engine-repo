@@ -225,6 +225,8 @@ bool CBone::ExportOGF(IWriter& F)
         ELog.Msg(mtError,"Bone '%s' has non-dynamic game material.",Name());
     	return false;
     }
+
+    F.w_u32		(OGF_IKDATA_VERSION);
     
     F.w_stringZ	(game_mtl);	
     F.w			(&shape,sizeof(SBoneShape));
