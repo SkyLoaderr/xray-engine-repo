@@ -1,0 +1,58 @@
+module("bloodsucker")
+module("monster_bind")
+module("pripyat_football")
+
+function bind(obj)
+	local char_ini	= obj:spawn_ini()
+	
+	if(char_ini == nil) then return end
+	
+	// Для спауна
+	xr_spawner.spawn_client(obj)
+	
+	// Читер на ростке(кровосос)
+	if(char_ini:section_exist("rostok_bloodsuceker")) then
+		obj:bind_object(bloodsucker.CRostokBloodSucker(obj))
+	end
+	
+	// Собака доктора
+	if(char_ini:section_exist("outcast_dog")) then
+		obj:bind_object(monster_bind.COutcastDog(obj))
+	end
+
+	// Монстр, который после смерти пинает труп
+	if(char_ini:section_exist("play_with_corpse")) then
+		obj:bind_object(monster_bind.CNecrophil(obj))
+	end
+	
+	// Монтры, которые играю в футбол
+	if(char_ini:section_exist("play_football")) then
+		obj:bind_object(pripyat_football.CFootballPlayer(obj))
+	end
+
+	// Контролер, тренер монстров игроков
+	if(char_ini:section_exist("controler_trainer")) then
+		obj:bind_object(pripyat_football.CControlerTrainer(obj))
+	end
+end
+	
+
+
+//-------------------------------------------------------------------------------------------
+// Шаблон для скриптов, где монстр будет биндится
+//-------------------------------------------------------------------------------------------
+class "template" (object_binder)
+function template:__init(obj) super(obj)
+end 
+
+function template:reload(section)
+	object_binder.reload(self, section)
+end
+
+function template:update(delta)
+	object_binder.update(self, delta)
+end
+
+function template:net_destroy()
+	object_binder.net_destroy(self)
+end 

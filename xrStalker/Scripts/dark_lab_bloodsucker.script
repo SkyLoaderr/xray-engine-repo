@@ -1,0 +1,98 @@
+local name 	= "m_bloodsucker_e"
+local time 	= 3000
+local enter = false
+
+
+function main()
+	// Ждем появления актера в online
+	while(level.actor() == nil) do
+		wait()
+	end
+	
+	local actor		= level.actor()
+	
+	// Проверяем, надо ли запустить скрипт
+	if(actor:has_info("dark_lab_bloodsucker")) then
+		return (0)
+	end
+	
+	local npc		= get_level_object(name)
+	local path		= nil
+	local see_actor	= false
+	local char_ini 	= npc:spawn_ini()
+	local end_time	= 0
+	local zone_name = nil
+	local zone		= nil
+	
+	if(npc:alive() == false) then return end
+	
+	if(char_ini) then 
+		time 		= utils.conf_get_number(char_ini, "data", "time", nil, npc, false, 3) * 1000
+		path		= patrol(utils.conf_get_string (char_ini, "data", "path", nil, npc, true))
+		zone_name	= utils.conf_get_string(char_ini, "data", "zone", nil, npc, false)
+	end
+	
+	npc:script(true, script_name())
+	npc:set_manual_invisibility(true)
+	npc:set_invisible(false)
+	
+	// Если есть необязательный параметр имя зоны,  то вешаем callback на вход в эту зону
+	if(zone_name) then
+		zone		= get_level_object(zone_name)
+		zone:set_callback(on_enter, true)
+	end
+	
+	while(true) do
+		// Видим ли мы актера или раньше выдили
+		if(see_actor or enter or npc:see(actor)) then
+			if(see_actor == false) then
+				// Увидели актера в первый раз
+				end_time	= device():time_global() + time
+				set_action_look_to_actor(npc, actor)
+				see_actor	= true
+			end
+			
+			if(device():time_global() > end_time) then
+				// Время вышло, отпускаем
+				npc:script(false, script_name())
+				//npc:set_manual_invisibility(false)
+				if(zone) then zone:clear_callback(true) end
+				
+				return
+			end
+		else
+			// Если пока не видим актера, то стоим и смотрим в точку
+			if(npc:action() == nil) then 
+				set_action(npc, path)
+			end
+		end
+		
+		wait()
+	end	
+end
+
+function set_action(npc, path)
+	// Если далеко от точки, идим к ней, в противном случае играем анимацию idle
+	if(npc:position():distance_to(path:point(0)) > 1.5) then
+		action(npc, move(move.walk_fwd, path:point(0), 1), sound(sound.idle), cond(cond.move_end))
+		action(npc, look(look.point, path:point(1)), anim(anim.turn, 0), cond(cond.look_end))
+		action(npc, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, 60000))
+	else
+		action(npc, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, 60000))
+	end
+end
+
+function set_action_look_to_actor(npc, actor)
+	reset_action(npc, script_name())
+	action(npc, look(look.point, actor:position()), cond(cond.look_end))
+	action(npc, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, 20000))
+
+	actor:give_info_portion("dark_lab_bloodsucker")
+end 
+
+function on_enter(zone, obj)
+	if(obj:id() == get_actor_id()) then
+		// Сообщаем, что актер защел в зону
+		enter = true
+	end
+end 
