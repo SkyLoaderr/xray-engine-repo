@@ -24,20 +24,18 @@ class ENGINE_API CDetailManager
 public:
 	struct	SlotItem
 	{
-		Fvector	P;
-		float	scale;
-		float	C;
-		DWORD	C_dw;
-		float	scale_calculated;           
-		Fmatrix	mRotY;
-		DWORD	vis_ID;
+		Fvector				P;
+		float				scale;
+		float				C;
+		DWORD				C_dw;
+		float				scale_calculated;           
+		Fmatrix				mRotY;
+		DWORD				vis_ID;
 	};
 	struct	SlotPart
 	{
 		DWORD				id;	
-		vector<SlotItem>	items;
-
-		SlotPart()			{ items.reserve	(4); }
+		vector<SlotItem*>	items;
 	};
 	enum	SlotType
 	{
