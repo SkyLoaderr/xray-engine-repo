@@ -19,7 +19,7 @@ function main()
 	dt3:setHMS(2,5,4)
 
 	local s  = dt2:diffSec(dt3)
-	printf("difference = %f",s)
+	printf("---difference = %f",s)
 	
 	
 	if dt>dt2 then
