@@ -20,6 +20,9 @@ local snd = {
 		[[characters_voice\human_01\scenario\trader\trader_monolog1]]
 	},
 
+	trader_tut_choice = {
+		[[characters_voice\human_01\scenario\trader\trader_script1b_5.ogg]]
+	},
 
 	hello = {
 			[[characters_voice\human_01\scenario\trader\trader_script1a_1]],
