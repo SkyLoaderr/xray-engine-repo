@@ -10,14 +10,15 @@
 class ENGINE_API C3DSound;
 class CObjectAnimator;
 
-#define DUMMY_ANIMATED	0x0001
-#define DUMMY_SKELETON	0x0002
-
 class CDummyObject : public CObject, public pureRender
 {
 	CObjectAnimator*	animator;
 	Fvector				start_position;
 
+	enum SStyle{
+		esAnimated		= 0x0001,
+		esSkeleton		= 0x0002
+	};
 	DWORD				style;
 
 	sound				sndDummy;

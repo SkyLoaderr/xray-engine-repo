@@ -36,7 +36,7 @@ void CDummyObject::OnRender()
 
 void CDummyObject::Update(DWORD dt)
 {
-	if (style&DUMMY_ANIMATED){
+	if (style&esAnimated){
 		animator->OnMove();
 		mRotate.set		(animator->GetRotate());
 		vPosition.set	(animator->GetPosition());
@@ -53,18 +53,15 @@ void CDummyObject::Load	(CInifile* ini, const char* section)
 	inherited::Load(ini,section);
 
 	if (ini->LineExists(section,"motions")){
-		style			|= DUMMY_ANIMATED;
+		style			|= esAnimated;
 		animator		= new CObjectAnimator();
 		animator->Load	(ini, section);
 		animator->PlayMotion("idle",true);
 		start_position.set(vPosition);
 	}
 	if (pVisual->Type==MT_SKELETON){
-		style			|= DUMMY_SKELETON;
-//		PKinematics(pVisual)->PlayCycle	("legs");
-//		PKinematics(pVisual)->PlayCycle	("torso");
+		style			|= esSkeleton;
 		PKinematics(pVisual)->PlayCycle	("idle");
-//		PKinematics(pVisual)->PlayCycle	("walk_fwd");
 
 		/*
 		for (int i=0; i<128; i++) {
