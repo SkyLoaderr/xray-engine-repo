@@ -17,6 +17,9 @@
 #include "../string_table.h"
 #include "../Inventory.h"
 
+#include "../InfoPortion.h"
+#include "../game_base_space.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 #define EQUIPMENT_ICONS "ui\\ui_icon_equipment"
@@ -491,4 +494,19 @@ LPCSTR InventoryUtilities::GetGoodwillAsText(CHARACTER_GOODWILL goodwill)
 	CharInfoStrings::const_iterator cit = charInfoGoodwillStrings->upper_bound(goodwill);
 	R_ASSERT(charInfoGoodwillStrings->end() != cit);
 	return *cit->second;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+// специальная функция для передачи info_portions при нажатии кнопок UI 
+// (для tutorial)
+void InventoryUtilities::SendInfoToActor(LPCSTR info_id)
+{
+	if (GameID() != GAME_SINGLE) return;
+	
+	CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(actor)
+	{
+		actor->TransferInfo(CInfoPortion::IdToIndex(info_id), true);
+	}
 }

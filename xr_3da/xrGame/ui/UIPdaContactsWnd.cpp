@@ -27,7 +27,9 @@ void CUIPdaContactsWnd::Show(bool status)
 	inherited::Enable(status);
 
 	if (status)
+	{
 		UIListWnd.Reset();
+	}
 }
 
 void CUIPdaContactsWnd::Init(int x, int y, int width, int height)

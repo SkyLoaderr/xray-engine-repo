@@ -273,22 +273,6 @@ void CUIInventoryWnd::Update()
 
 void CUIInventoryWnd::Show() 
 { 
-/*	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(pActor)
-	{
-		m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
-
-		if(pActor->inventory().ActiveItem())
-		{
-			CWeapon* pWeapon = smart_cast<CWeapon*>(pActor->inventory().ActiveItem());
-			if(pWeapon) pWeapon->ResetPending();
-		}
-		pActor->inventory().Activate(NO_ACTIVE_SLOT);
-	}
-
-
-*/
 	InitInventory();
 	inherited::Show();
 	m_pCurrentDragDropItem = NULL;
@@ -298,11 +282,11 @@ void CUIInventoryWnd::Show()
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 
-		pActor->HideCurrentWeapon(GEG_PLAYER_INVENTORYMENU_OPEN);//, false);
-//		NET_Packet	P;
-//		pActor->u_EventGen(P, GEG_PLAYER_INVENTORYMENU_OPEN, pActor->ID());
-//		pActor->u_EventSend(P);
+        pActor->HideCurrentWeapon(GEG_PLAYER_INVENTORYMENU_OPEN);//, false);
 	}
+
+	//дать возможность скриптам определить, что актер зашел в меню
+	SendInfoToActor("ui_inventory");
 
 	Update();
 }

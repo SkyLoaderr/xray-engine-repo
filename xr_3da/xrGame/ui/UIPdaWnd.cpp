@@ -256,17 +256,20 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaSections section, int addiotionalValue)
 		break;
 	case epsContacts:
 		UITabControl.SetNewActiveTab	(eptComm);
+		InventoryUtilities::SendInfoToActor("ui_pda_contacts");
 		break;
 	case epsEncyclopedia:
 		UITabControl.SetNewActiveTab	(eptEncyclopedia);
 		UIEncyclopediaWnd.OpenTree		(addiotionalValue);
 		UIEncyclopediaWnd.UIBack.Show	(true);
+		InventoryUtilities::SendInfoToActor("ui_pda_encyclopedia");
 		break;
 	case epsDiaryArticle:
 		UITabControl.SetNewActiveTab	(eptEvents);
 		UIDiaryWnd.SetActiveSubdialog	(section);
 		UIDiaryWnd.OpenDiaryTree		(addiotionalValue);
 		UIEncyclopediaWnd.UIBack.Show	(true);
+		InventoryUtilities::SendInfoToActor("ui_pda_diary");
 		break;
 	default:
 		NODEFAULT;

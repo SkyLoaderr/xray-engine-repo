@@ -13,6 +13,8 @@
 #include "../Level.h"
 #include "../actor.h"
 
+#include "UIInventoryUtilities.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 const char * const		ACTOR_STATISTIC_XML		= "actor_statistic.xml";
@@ -85,6 +87,7 @@ void CUIActorInfoWnd::Show(bool status)
 	{
 		UICharacterInfo.InitCharacter(&pActor->CharacterInfo());
 		UICharIconHeader.UITitleText.SetText(UICharacterInfo.UIName.GetText());
+		InventoryUtilities::SendInfoToActor("ui_pda_actor_info");
 	}
 }
 

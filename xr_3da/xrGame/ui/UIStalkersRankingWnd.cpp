@@ -113,6 +113,7 @@ void CUIStalkersRankingWnd::Show(bool status)
 		AddStalkerInfo();
 		UICharacterWindow.Show(false);
 		UICharIconHeader.UITitleText.SetText("");
+		InventoryUtilities::SendInfoToActor("ui_pda_ranking");
 	}
 }
 

@@ -187,11 +187,13 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				UIJobsWnd.SetFilter(eTaskStateFail);
 				m_pActiveSubdialog = &UIJobsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
+				InventoryUtilities::SendInfoToActor("ui_pda_jobs_failed");
 				break;
 			case idJobsAccomplished:
 				UIJobsWnd.SetFilter(eTaskStateCompleted);
 				m_pActiveSubdialog = &UIJobsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
+				InventoryUtilities::SendInfoToActor("ui_pda_jobs_accomplished");
 				break;
 			case idJobsCurrent:
 
@@ -201,6 +203,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				UIJobsWnd.SetFilter(eTaskStateInProgress);
 				m_pActiveSubdialog = &UIJobsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
+				InventoryUtilities::SendInfoToActor("ui_pda_jobs_current");
 				break;
 
 			case idContracts:
@@ -210,19 +213,23 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pActiveSubdialog = &UIContractsWnd;
 				SetContractTrader();
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
+				InventoryUtilities::SendInfoToActor("ui_pda_contracts");
 				break;
 
 			case idNews:
 				m_pActiveSubdialog = &UINewsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
+				InventoryUtilities::SendInfoToActor("ui_pda_news");
 				break;
 
 			case idActorDiary:
 				m_pActiveSubdialog = &UIActorDiaryWnd;
+				InventoryUtilities::SendInfoToActor("ui_pda_events_diary");
 				break;
 			default:
 				NODEFAULT;
 			}
+
 
 			if (m_pActiveSubdialog)
 			{

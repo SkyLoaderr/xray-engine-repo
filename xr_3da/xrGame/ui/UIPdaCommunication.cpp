@@ -49,17 +49,6 @@ void CUIPdaCommunication::Init()
 
 	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
 
-//	AttachChild(&UIStaticTop);
-//	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
-//	AttachChild(&UIStaticBottom);
-//	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
-
-//	AttachChild(&UIMainPdaFrame);
-//	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainPdaFrame);
-//
-//	AttachChild(&UIPDAHeader);
-//	xml_init.InitStatic(uiXml, "static", 0, &UIPDAHeader);
-
 	//окно разговора по PDA
 	AttachChild(&UIPdaDialogWnd);
 	UIPdaDialogWnd.Init(0, 0, GetWidth(), GetHeight());
@@ -68,7 +57,7 @@ void CUIPdaCommunication::Init()
 	//список контактов
 	AttachChild(&UIPdaContactsWnd);
 	UIPdaContactsWnd.Init(0,0, GetWidth(), GetHeight());
-	UIPdaContactsWnd.Show(true);
+	UIPdaContactsWnd.Show(false);
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
@@ -187,7 +176,9 @@ void CUIPdaCommunication::Show(bool status)
 {
 	inherited::Show(status);
 	if (status)
+	{
 		InitPDACommunication();
+	}
 }
 
 
@@ -462,7 +453,7 @@ void CUIPdaCommunication::UpdateQuestions()
 		for(u32 i=0; i< m_pOurDialogManager->AvailableDialogs().size(); i++)
 		{
 			const DIALOG_SHARED_PTR& phrase_dialog = m_pOurDialogManager->AvailableDialogs()[i];
-			if(phrase_dialog->GetDialogType() == eDialogTypePDA)
+			if(phrase_dialog->GetDialogType(eDialogTypePDA))
 				AddQuestion(phrase_dialog->DialogCaption(), NULL, (int)i);
 		}
 	}

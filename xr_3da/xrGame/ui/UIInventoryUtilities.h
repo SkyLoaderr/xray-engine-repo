@@ -94,4 +94,7 @@ LPCSTR	GetReputationAsText			(CHARACTER_REPUTATION_VALUE rankID);
 LPCSTR	GetGoodwillAsText			(CHARACTER_GOODWILL			goodwill);
 
 void	ClearCharacterInfoStrings	();
+
+void	SendInfoToActor				(LPCSTR info_id);
+
 };

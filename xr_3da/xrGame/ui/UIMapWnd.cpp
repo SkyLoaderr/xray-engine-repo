@@ -666,11 +666,14 @@ void CUIMapWnd::SwitchMapMode(const EMapModes mode)
 //		UIMapTypeSwitch.SetText(*st("Global Map"));
 		m_pCurrentMap = &UILocalMapBackground;
 		UILocalMapBackground.Show(true);
+		SendInfoToActor("ui_pda_map_local");
 		break;
 	case emmGlobal:
 //		UIMapTypeSwitch.SetText(*st("Local Map"));
 		m_pCurrentMap = &UIGlobalMapBackground;
 		UIGlobalMapBackground.Show(true);
+		SendInfoToActor("ui_pda_map_global");
+
 		for (LocalMaps_it it = m_LocalMaps.begin(); it != m_LocalMaps.end(); ++it)
 		{
 			if (Level().name() == it->first)
