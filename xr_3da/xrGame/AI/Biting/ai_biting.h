@@ -46,5 +46,3 @@ public:
 		//virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 		*/
 };
-		
-#endif
