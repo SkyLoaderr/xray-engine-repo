@@ -856,6 +856,7 @@ void CUIBuyWeaponWnd::InitWpnSectStorage()
 
 	// Поле strSectionName должно содержать имя секции
 	R_ASSERT(xr_strcmp(m_SectionName,""));
+	R_ASSERT2(pSettings->section_exist(m_SectionName), "Section doesn't exist");
 
 	for (int i = 1; i < 20; ++i)
 	{

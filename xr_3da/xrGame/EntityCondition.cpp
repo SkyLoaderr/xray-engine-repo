@@ -141,6 +141,8 @@ void CEntityCondition::reinit	()
 	m_fHealthLost = 0.f;
 	m_pWho = NULL;
 
+	m_WoundMap.clear();
+
 	Awoke();
 }
 
