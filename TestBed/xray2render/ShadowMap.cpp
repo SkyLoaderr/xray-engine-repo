@@ -1,19 +1,5 @@
-#define STRICT
-#include <Windows.h>
-#include <commctrl.h>
-#include <stdio.h>
-#include <math.h>
-#include <D3DX9.h>
-#include "DXUtil.h"
-#include "D3DEnumeration.h"
-#include "D3DSettings.h"
-#include "D3DApp.h"
-#include "D3DFile.h"
-#include "D3DFont.h"
-#include "D3DUtil.h"
-#include "Util.h"
+#include "stdafx.h"
 
-#pragma warning(disable : 4305)
 //-----------------------------------------------------------------------------
 // Globals variables and definitions
 //-----------------------------------------------------------------------------
@@ -149,7 +135,8 @@ CMyD3DApplication g_d3dApp;
 //-----------------------------------------------------------------------------
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 {
-    InitCommonControls();
+    InitCommonControls	();
+	InitMath			();
     if (FAILED(g_d3dApp.Create(hInst)))
         return 0;
 

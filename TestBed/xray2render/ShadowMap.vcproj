@@ -323,6 +323,9 @@
 			RelativePath=".\ShadowMap.cpp">
 		</File>
 		<File
+			RelativePath="Stdafx.h">
+		</File>
+		<File
 			RelativePath=".\Util.cpp">
 		</File>
 		<File
