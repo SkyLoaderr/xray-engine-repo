@@ -53,13 +53,14 @@ void CWayPoint::Render(bool bParentSelect)
 	// draw links
 	Fvector p1,p2;
     p1.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
+    DU.DrawText(m_vPosition,*m_Name,0xffffffff,0xff000000);
     for (WPLIt it=m_Links.begin(); it!=m_Links.end(); it++){
     	SWPLink* O = (SWPLink*)(*it);
 	    p2.set	(O->way_point->m_vPosition.x,O->way_point->m_vPosition.y+WAYPOINT_SIZE*0.85f,O->way_point->m_vPosition.z);
     	DU.DrawLink(p1,p2,0.25f,0xffffff00);
         Fvector xx;
         xx.sub(p2,p1);
-        xx.mul(0.9f);
+        xx.mul(0.95f);
         xx.add(p1);
     	DU.DrawText(xx,AnsiString().sprintf("P: %1.2f",O->probability).c_str(),0xffffffff,0xff000000);
     }
@@ -116,15 +117,25 @@ void CWayPoint::InvertLink(CWayPoint* P)
 	WPLIt A=FindLink(P);
     WPLIt B=P->FindLink(this);
     bool a=(A!=m_Links.end()), b=(B!=P->m_Links.end());
-    if (a&&b) return;
-	if (a) m_Links.erase(A);
-	if (b) P->m_Links.erase(B);
-    if (a) P->AppendLink(this, 1.f);	//. link pb?
-	if (b) AppendLink(P, 1.f);          //. link pb?
+//    if (a&&b) return;
+	float p_a;
+	float p_b;
+	if (a){ p_a = (*A)->probability; xr_delete(*A); m_Links.erase(A);	}
+	if (b){ p_b = (*B)->probability; xr_delete(*B); P->m_Links.erase(B);}
+    if (a){ P->CreateLink(this, p_a);}
+	if (b){ CreateLink(P, p_b);      }
 }
-void CWayPoint::AppendLink(CWayPoint* P, float pb)
+void CWayPoint::CreateLink(CWayPoint* P, float pb)
 {
-	m_Links.push_back(xr_new<SWPLink>(P,pb));
+    m_Links.push_back(xr_new<SWPLink>(P,pb));
+}
+bool CWayPoint::AppendLink(CWayPoint* P, float pb)
+{
+	if (FindLink(P)==m_Links.end()){
+    	CreateLink(P,pb);
+        return true;
+    }
+    return false;
 }
 bool CWayPoint::DeleteLink(CWayPoint* P)
 {
@@ -139,22 +150,15 @@ bool CWayPoint::DeleteLink(CWayPoint* P)
 }
 bool CWayPoint::AddSingleLink(CWayPoint* P)
 {
-	if (std::find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
-    	AppendLink(P,1.f);
-        UI.RedrawScene();
-    	return true;
-    }
-	return false;
+    UI.RedrawScene();
+    return AppendLink(P,1.f);
 }
 bool CWayPoint::AddDoubleLink(CWayPoint* P)
 {
-	if (std::find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
-    	AppendLink(P,1.f);
-        P->AppendLink(this,1.f);
-        UI.RedrawScene();
-    	return true;
-    }
-	return false;
+    UI.RedrawScene();
+    bool bRes 	= 	AppendLink		(P,1.f);
+    bRes 		|=	P->AppendLink	(this,1.f);
+    return bRes;
 }
 bool CWayPoint::RemoveLink(CWayPoint* P)
 {
@@ -208,9 +212,10 @@ void CWayObject::InvertLink()
     }
 }
 
-void CWayObject::Add1Link()
+bool CWayObject::Add1Link()
 {
-	RemoveLink();
+	bool bRes = false;
+	//RemoveLink();
     WPVec objects;
     if (GetSelectedPoints(objects)){
         WPIt _A0=objects.begin();
@@ -221,15 +226,17 @@ void CWayObject::Add1Link()
             WPIt _B=_A; _B++;
             for (; _B!=_B1; _B++){
                 CWayPoint* B = (CWayPoint*)(*_B);
-                A->AddSingleLink(B);
+                bRes |= A->AddSingleLink(B);
             }
         }
     }
+    return bRes;
 }
 
-void CWayObject::Add2Link()
+bool CWayObject::Add2Link()
 {
-    RemoveLink();
+	bool bRes = false;
+    //RemoveLink();
     WPVec objects;
     if (GetSelectedPoints(objects)){
         WPIt _A0=objects.begin();
@@ -240,10 +247,11 @@ void CWayObject::Add2Link()
             WPIt _B=_A; _B++;
             for (; _B!=_B1; _B++){
                 CWayPoint* B = (CWayPoint*)(*_B);
-                A->AddDoubleLink(B);
+                bRes |= A->AddDoubleLink(B);
             }
         }
     }
+    return bRes;
 }
 
 void CWayObject::RemoveLink()
@@ -458,7 +466,7 @@ bool CWayObject::Load(IReader& F)
     	int idx0 	= F.r_u16();
     	int idx1 	= F.r_u16();
         float pb	= F.r_float();
-        m_WayPoints[idx0]->AppendLink(m_WayPoints[idx1],pb);
+        m_WayPoints[idx0]->CreateLink(m_WayPoints[idx1],pb);
     }
 
 	R_ASSERT(F.find_chunk(WAYOBJECT_CHUNK_TYPE));
@@ -577,12 +585,12 @@ void CWayObject::FillProp(LPCSTR pref, PropItemVec& items)
         for(WPIt it=m_WayPoints.begin();it!=m_WayPoints.end();it++){
         	CWayPoint* W = *it;
             if ((*it)->m_bSelected){
-            	PropValue* V 					= PHelper.CreateRText(items, FHelper.PrepareKey(pref,"Name"),&W->m_Name);
+            	PropValue* V 					= PHelper.CreateRText(items, FHelper.PrepareKey(pref,"Way Point\\Name"),&W->m_Name);
                 V->Owner()->OnAfterEditEvent 	= OnWayPointNameAfterEdit;
-                for (int k=0; k<32; k++)
-                    PHelper.CreateFlag32(items,	FHelper.PrepareKey(pref,"Flags",AnsiString(k).c_str()),	&W->m_Flags,	1<<k);
                 for (WPLIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++)
-                    PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref,"Links",*(*l_it)->way_point->m_Name),&(*l_it)->probability);
+                    PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref,"Way Point\\Links",*(*l_it)->way_point->m_Name),&(*l_it)->probability);
+                for (int k=0; k<32; k++)
+                    PHelper.CreateFlag32(items,	FHelper.PrepareKey(pref,"Way Point\\Flags",AnsiString(k).c_str()),	&W->m_Flags,	1<<k);
             }
     	}
     }

@@ -34,11 +34,12 @@ void __fastcall TfraWayPoint::ebAdd1LinksClick(TObject *Sender)
     	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
     	return;
     }
+    bool bRes = false;
 	ObjectList lst;
-    int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
+    Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
-    	((CWayObject*)(*it))->Add1Link();
-	if (cnt) Scene.UndoSave();
+    	bRes|=((CWayObject*)(*it))->Add1Link();
+	if (bRes) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -48,11 +49,12 @@ void __fastcall TfraWayPoint::ebAdd2LinkClick(TObject *Sender)
     	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
     	return;
     }
+    bool bRes = false;
 	ObjectList lst;
-    int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
+    Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
-    	((CWayObject*)(*it))->Add2Link();
-	if (cnt) Scene.UndoSave();
+    	bRes|=((CWayObject*)(*it))->Add2Link();
+	if (bRes) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 

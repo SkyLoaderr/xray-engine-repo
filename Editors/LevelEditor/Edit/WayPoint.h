@@ -26,7 +26,8 @@ class CWayPoint{
     Flags32		m_Flags;
     BOOL		m_bSelected;
     WPLVec		m_Links;
-    void		AppendLink		(CWayPoint* P, float pb);
+    void		CreateLink		(CWayPoint* P, float pb);
+    bool		AppendLink		(CWayPoint* P, float pb);
     bool		DeleteLink		(CWayPoint* P);
 public:
                 CWayPoint		(LPCSTR name);
@@ -74,8 +75,8 @@ public:
     void			RemoveSelectedPoints();
     void			RemoveLink		();
     void			InvertLink		();
-    void			Add1Link		();
-    void			Add2Link		();
+    bool			Add1Link		();
+    bool			Add2Link		();
     // change position/orientation methods
 	virtual void 	MoveTo			(const Fvector& pos, const Fvector& up);
 	virtual void 	Move			(Fvector& amount);
