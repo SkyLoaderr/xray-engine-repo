@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 712
+  Height = 614
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,10 +22,11 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 712
+    Height = 614
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
+    Color = 10528425
     Constraints.MaxWidth = 212
     Constraints.MinWidth = 212
     TabOrder = 0
@@ -151,8 +152,9 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 250
+      Height = 152
       Align = alClient
+      Color = 10528425
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
@@ -163,7 +165,7 @@ object fraLeftBar: TfraLeftBar
         Height = 13
         Align = alTop
         Alignment = taCenter
-        Caption = 'Particles'
+        Caption = 'Motions'
         Color = clGray
         ParentColor = False
         OnClick = PanelMaximizeClick
@@ -172,29 +174,31 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 219
+        Height = 121
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 217
+          Top = 120
           Width = 208
-          Height = 2
+          Height = 1
           Align = alBottom
+          Shape = bsLeftLine
         end
         object Bevel1: TBevel
           Left = 0
           Top = 34
           Width = 208
-          Height = 2
+          Height = 1
           Align = alTop
+          Shape = bsLeftLine
         end
-        object tvParticles: TElTree
+        object tvMotions: TElTree
           Left = 0
-          Top = 36
+          Top = 35
           Width = 208
-          Height = 181
+          Height = 85
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -274,12 +278,12 @@ object fraLeftBar: TfraLeftBar
           VertScrollBarStyles.ButtonSize = 16
           VirtualityLevel = vlNone
           BkColor = clGray
-          OnItemFocused = tvParticlesItemFocused
-          OnDragDrop = tvParticlesDragDrop
-          OnDragOver = tvParticlesDragOver
-          OnStartDrag = tvParticlesStartDrag
-          OnMouseDown = tvParticlesMouseDown
-          OnKeyDown = tvParticlesKeyDown
+          OnItemFocused = tvMotionsItemFocused
+          OnDragDrop = tvMotionsDragDrop
+          OnDragOver = tvMotionsDragOver
+          OnStartDrag = tvMotionsStartDrag
+          OnMouseDown = tvMotionsMouseDown
+          OnKeyDown = tvMotionsKeyDown
         end
         object Panel1: TPanel
           Left = 0
@@ -320,7 +324,7 @@ object fraLeftBar: TfraLeftBar
             HotTrack = True
             HotColor = 15790320
             CloseButton = False
-            Caption = 'Clone'
+            Caption = 'Clear'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -373,7 +377,7 @@ object fraLeftBar: TfraLeftBar
             HotColor = 15790320
             CloseButton = False
             CloseWidth = 24
-            Caption = 'Create'
+            Caption = 'Append'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -389,7 +393,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 233
+        Top = 135
         Width = 208
         Height = 16
         Align = alBottom
@@ -420,7 +424,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 361
+      Top = 263
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -464,11 +468,27 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = PanelMimimizeClick
       end
-      object paPSProps: TPanel
+      object Bevel3: TBevel
         Left = 1
         Top = 14
         Width = 208
-        Height = 335
+        Height = 1
+        Align = alTop
+        Shape = bsLeftLine
+      end
+      object Bevel4: TBevel
+        Left = 1
+        Top = 348
+        Width = 208
+        Height = 1
+        Align = alBottom
+        Shape = bsLeftLine
+      end
+      object paPSProps: TPanel
+        Left = 1
+        Top = 15
+        Width = 208
+        Height = 333
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -477,7 +497,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 319
+      Top = 221
       Width = 210
       Height = 42
       Hint = 'Scene commands'
@@ -493,7 +513,7 @@ object fraLeftBar: TfraLeftBar
         Height = 13
         Align = alTop
         Alignment = taCenter
-        Caption = 'Current PS'
+        Caption = 'Current Motion'
         Color = clGray
         ParentColor = False
         OnClick = PanelMaximizeClick
@@ -587,7 +607,7 @@ object fraLeftBar: TfraLeftBar
         FlatAlwaysEdge = True
         OnClick = ebCurrentPSStopClick
       end
-      object lbCurState: TMxLabel
+      object lbCurFrames: TMxLabel
         Left = 113
         Top = 15
         Width = 95
@@ -602,7 +622,7 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         ShadowColor = 10528425
       end
-      object lbParticleCount: TMxLabel
+      object lbCurFPS: TMxLabel
         Left = 113
         Top = 28
         Width = 95
@@ -620,9 +640,9 @@ object fraLeftBar: TfraLeftBar
       object RxLabel2: TMxLabel
         Left = 65
         Top = 28
-        Width = 45
+        Width = 25
         Height = 13
-        Caption = 'Particles:'
+        Caption = 'FPS:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -634,9 +654,9 @@ object fraLeftBar: TfraLeftBar
       object RxLabel1: TMxLabel
         Left = 65
         Top = 15
-        Width = 30
+        Width = 39
         Height = 13
-        Caption = 'State:'
+        Caption = 'Frames:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -676,26 +696,13 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 181
-    Top = 80
+    Left = 117
+    Top = 86
     object Save1: TMenuItem
-      Caption = 'Save'
-      OnClick = ebSaveClick
+      Caption = 'Load'
     end
     object Reload1: TMenuItem
-      Caption = 'Reload'
-      OnClick = ebReloadClick
-    end
-    object N2: TMenuItem
-      Caption = '-'
-    end
-    object Import1: TMenuItem
-      Caption = 'Import'
-      Enabled = False
-    end
-    object Export1: TMenuItem
-      Caption = 'Export'
-      Enabled = False
+      Caption = 'Save'
     end
   end
   object pmPreviewObject: TMxPopupMenu
@@ -713,10 +720,23 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 117
     Top = 18
-    object Custom1: TMenuItem
-      Tag = -1
-      Caption = 'Custom...'
-      OnClick = PreviewClick
+    object Load1: TMenuItem
+      Caption = 'Load'
+    end
+    object Reload2: TMenuItem
+      Caption = 'Reload'
+    end
+    object Save2: TMenuItem
+      Caption = 'Save'
+    end
+    object SaevAs1: TMenuItem
+      Caption = 'Save As...'
+    end
+    object N5: TMenuItem
+      Caption = '-'
+    end
+    object Export2: TMenuItem
+      Caption = 'Export'
     end
   end
   object pmShaderList: TMxPopupMenu
@@ -754,7 +774,7 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object InplaceParticleEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvParticles
+    Tree = tvMotions
     Types = [sftText]
     OnValidateResult = InplaceParticleEditValidateResult
     Left = 5

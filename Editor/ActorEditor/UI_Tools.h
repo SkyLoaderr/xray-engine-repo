@@ -3,6 +3,7 @@
 #define UIToolsH
 
 // refs
+class TfrmProperties;
 class CEditableObject;
 
 enum EAction{
@@ -23,6 +24,8 @@ enum EAxis{
 
 class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 {
+    TfrmProperties*		m_Props;
+
 	CEditableObject*	m_EditObject;
     bool				m_bModified;
     bool				m_bReady;
@@ -53,10 +56,12 @@ public:
     bool				IsModified			(){return m_bModified;}
     void				Modified			();
 
+    void				SetCurrentMotion	(LPCSTR name);
+
     void				ZoomObject			();
     void				ChangeAction		(EAction action);
 
-    void				Load				();
+    void				Load				(LPCSTR name);
     void				Save				();
     void				Reload				();
     void				ApplyChanges		();
@@ -64,8 +69,7 @@ public:
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();
 
-    void				SelectPreviewObject	(int p);
-    void				ResetPreviewObject	();
+    void				Clear				();
 
     void				OnShowHint			(AStringVec& SS);
 

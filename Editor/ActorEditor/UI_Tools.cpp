@@ -11,6 +11,7 @@
 #include "topbar.h"
 #include "xr_trims.h"
 #include "library.h"
+#include "PropertiesList.h"
 
 //------------------------------------------------------------------------------
 CActorTools Tools;
@@ -40,6 +41,7 @@ bool CActorTools::OnCreate(){
     Device.seqDevDestroy.Add(this);
 
     // props
+    m_Props = TfrmProperties::CreateProperties(fraLeftBar->paPSProps,alClient);
 
     m_bReady = true;
 
@@ -57,6 +59,7 @@ void CActorTools::OnDestroy(){
     m_bReady			= false;
 	// unlock
 //    FS.UnlockFile(&FS.m_GameRoot,"particles.xr");
+	TfrmProperties::DestroyProperties(m_Props);
 
 	Lib.RemoveEditObject(m_EditObject);
     Device.seqDevCreate.Remove(this);
@@ -135,24 +138,15 @@ void CActorTools::OnDeviceCreate(){
 void CActorTools::OnDeviceDestroy(){
 }
 
-void CActorTools::SelectPreviewObject(int p){
-    LPCSTR fn=m_EditObject?m_EditObject->GetName():"";
-    fn=TfrmChoseItem::SelectObject(false,0,fn);
-    if (!fn) return;
-    Lib.RemoveEditObject(m_EditObject);
-    m_EditObject = Lib.CreateEditObject(fn);
-    if (!m_EditObject)
-        ELog.DlgMsg(mtError,"Object '%s' can't find in object library.",fn);
-	ZoomObject();
-    UI.RedrawScene();
-}
-
-void CActorTools::ResetPreviewObject(){
+void CActorTools::Clear(){
 	VERIFY(m_bReady);
+
+//S    _DELETE();
+
     UI.RedrawScene();
 }
 
-void CActorTools::Load()
+void CActorTools::Load(LPCSTR name)
 {
 	VERIFY(m_bReady);
 }
@@ -294,5 +288,10 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         //amount
     }break;
     }
+}
+
+void CActorTools::SetCurrentMotion(LPCSTR name)
+{
+	//
 }
 

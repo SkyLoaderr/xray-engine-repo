@@ -39,20 +39,16 @@ __published:	// IDE-managed Components
 	TPanel *paParticles;
 	TLabel *Label1;
 	TExtBtn *ExtBtn3;
-	TMenuItem *Custom1;
 	TMxPopupMenu *pmShaderList;
 	TMenuItem *ExpandAll1;
 	TMenuItem *CollapseAll1;
 	TMenuItem *N1;
 	TMenuItem *CreateFolder1;
 	TMenuItem *Rename1;
-	TMenuItem *N2;
-	TMenuItem *Import1;
-	TMenuItem *Export1;
 	TElTreeInplaceAdvancedEdit *InplaceParticleEdit;
 	TPanel *paPSList;
 	TBevel *Bevel2;
-	TElTree *tvParticles;
+	TElTree *tvMotions;
 	TPanel *Panel1;
 	TExtBtn *ebEngineShaderRemove;
 	TExtBtn *ebEngineShaderClone;
@@ -70,10 +66,18 @@ __published:	// IDE-managed Components
 	TExtBtn *ebEngineApplyChanges;
 	TExtBtn *ebCurrentPSPlay;
 	TExtBtn *ebCurrentPSStop;
-	TMxLabel *lbCurState;
-	TMxLabel *lbParticleCount;
+	TMxLabel *lbCurFrames;
+	TMxLabel *lbCurFPS;
 	TMxLabel *RxLabel2;
 	TMxLabel *RxLabel1;
+	TMenuItem *Load1;
+	TMenuItem *Save2;
+	TMenuItem *Reload2;
+	TMenuItem *Export2;
+	TMenuItem *SaevAs1;
+	TMenuItem *N5;
+	TBevel *Bevel3;
+	TBevel *Bevel4;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -85,7 +89,7 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall ebSceneCommandsMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall tvParticlesMouseDown(TObject *Sender, TMouseButton Button,
+	void __fastcall tvMotionsMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall PreviewClick(TObject *Sender);
 	void __fastcall ebEngineApplyChangesClick(TObject *Sender);
@@ -93,19 +97,19 @@ __published:	// IDE-managed Components
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
 	void __fastcall ebParticleShaderRemoveClick(TObject *Sender);
-	void __fastcall tvParticlesItemFocused(TObject *Sender);
+	void __fastcall tvMotionsItemFocused(TObject *Sender);
 	void __fastcall ebParticleCloneClick(TObject *Sender);
-	void __fastcall tvParticlesKeyDown(TObject *Sender, WORD &Key,
+	void __fastcall tvMotionsKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall Rename1Click(TObject *Sender);
 	void __fastcall InplaceParticleEditValidateResult(TObject *Sender,
           bool &InputValid);
 	void __fastcall ebPSCreateClick(TObject *Sender);
-	void __fastcall tvParticlesStartDrag(TObject *Sender,
+	void __fastcall tvMotionsStartDrag(TObject *Sender,
           TDragObject *&DragObject);
-	void __fastcall tvParticlesDragOver(TObject *Sender, TObject *Source, int X,
+	void __fastcall tvMotionsDragOver(TObject *Sender, TObject *Source, int X,
           int Y, TDragState State, bool &Accept);
-	void __fastcall tvParticlesDragDrop(TObject *Sender, TObject *Source, int X,
+	void __fastcall tvMotionsDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
 	void __fastcall ebCurrentPSPlayClick(TObject *Sender);
 	void __fastcall ebCurrentPSStopClick(TObject *Sender);
@@ -115,8 +119,8 @@ private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();
-	void 			AddPS			(LPCSTR full_name, bool bLoadMode);
-	void 			ClearParticleList();
+	void 			AddMotion		(LPCSTR full_name, bool bLoadMode);
+	void 			ClearMotionList	();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

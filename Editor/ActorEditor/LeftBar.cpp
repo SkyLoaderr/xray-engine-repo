@@ -145,7 +145,7 @@ void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesMouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::tvMotionsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	if (Button==mbRight)	ShowPPMenu(pmShaderList,Sender);
@@ -164,17 +164,17 @@ void __fastcall TfraLeftBar::ebEngineApplyChangesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::ClearParticleList(){
-	tvParticles->Items->Clear();
+void TfraLeftBar::ClearMotionList(){
+	tvMotions->Items->Clear();
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::AddPS(LPCSTR full_name, bool bLoadMode){
-	TElTreeItem* node = FOLDER::AppendObject(tvParticles,full_name);
+void TfraLeftBar::AddMotion(LPCSTR full_name, bool bLoadMode){
+	TElTreeItem* node = FOLDER::AppendObject(tvMotions,full_name);
     if (!bLoadMode){
 	    if (node&&node->Parent) node->Parent->Expand(false);
     	node->Selected = true;
-		tvParticles->Selected = node;
+		tvMotions->Selected = node;
     }
 }
 //---------------------------------------------------------------------------
@@ -183,25 +183,25 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 {
 	AnsiString folder;
     AnsiString start_folder;
-    FOLDER::MakeName(tvParticles->Selected,0,start_folder,true);
-    FOLDER::GenerateFolderName(tvParticles,tvParticles->Selected,folder);
+    FOLDER::MakeName(tvMotions->Selected,0,start_folder,true);
+    FOLDER::GenerateFolderName(tvMotions,tvMotions->Selected,folder);
     folder = start_folder+folder;
-	TElTreeItem* node = FOLDER::AppendFolder(tvParticles,folder.c_str());
-    if (tvParticles->Selected) tvParticles->Selected->Expand(false);
-    tvParticles->EditItem(node,-1);
+	TElTreeItem* node = FOLDER::AppendFolder(tvMotions,folder.c_str());
+    if (tvMotions->Selected) tvMotions->Selected->Expand(false);
+    tvMotions->EditItem(node,-1);
 	Tools.Modified();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExpandAll1Click(TObject *Sender)
 {
-	tvParticles->FullExpand();
+	tvMotions->FullExpand();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 {
-	tvParticles->FullCollapse();
+	tvMotions->FullCollapse();
 }
 //---------------------------------------------------------------------------
 
@@ -237,12 +237,12 @@ void __fastcall TfraLeftBar::ebParticleShaderRemoveClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesItemFocused(TObject *Sender)
+void __fastcall TfraLeftBar::tvMotionsItemFocused(TObject *Sender)
 {
-/*	AnsiString name;
-    FOLDER::MakeName(tvParticles->Selected, 0, name, false);
-	Tools.SetCurrentPS(name.c_str());
-*/}
+	AnsiString name;
+    FOLDER::MakeName(tvMotions->Selected, 0, name, false);
+	Tools.SetCurrentMotion(name.c_str());
+}
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
@@ -260,7 +260,7 @@ void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
 */}
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesKeyDown(TObject *Sender, WORD &Key,
+void __fastcall TfraLeftBar::tvMotionsKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
 	if (Key==VK_DELETE) ebParticleShaderRemoveClick(Sender);
@@ -269,8 +269,8 @@ void __fastcall TfraLeftBar::tvParticlesKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
 {
-	TElTreeItem* node = tvParticles->Selected;
-    if (node) tvParticles->EditItem(node,-1);
+	TElTreeItem* node = tvMotions->Selected;
+    if (node) tvMotions->EditItem(node,-1);
 }
 //---------------------------------------------------------------------------
 
@@ -316,19 +316,19 @@ void __fastcall TfraLeftBar::ebPSCreateClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesStartDrag(TObject *Sender,
+void __fastcall TfraLeftBar::tvMotionsStartDrag(TObject *Sender,
       TDragObject *&DragObject)
 {
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
+	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(tv);
 	if (tv->ItemFocused) 	DragItem = tv->ItemFocused;
   	else					DragItem = 0;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvParticlesDragOver(TObject *Sender,
+void __fastcall TfraLeftBar::tvMotionsDragOver(TObject *Sender,
       TObject *Source, int X, int Y, TDragState State, bool &Accept)
 {
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
+	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(tv);
 	TElTreeItem* tgt;
     TElTreeItem* src=DragItem;
     TSTItemPart IP;
@@ -354,10 +354,10 @@ void __fastcall TfraLeftBar::tvParticlesDragOver(TObject *Sender,
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TfraLeftBar::tvParticlesDragDrop(TObject *Sender,
+void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
+	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(tv);
 	TElTreeItem* tgt_folder = tv->GetItemAt(X, Y, 0, 0);
     if (tgt_folder&&(FOLDER::IsObject(tgt_folder))) tgt_folder=tgt_folder->Parent;
 
@@ -371,13 +371,13 @@ void __fastcall TfraLeftBar::tvParticlesDragDrop(TObject *Sender,
     TElTreeItem* item = DragItem;
     do{
     	DWORD type = DWORD(item->Data);
-		TElTreeItem* pNode = FOLDER::FindItemInFolder(type,tvParticles,cur_folder,item->Text);
+		TElTreeItem* pNode = FOLDER::FindItemInFolder(type,tvMotions,cur_folder,item->Text);
 		if (pNode&&FOLDER::IsObject(item)){
             item=item->GetNext();
         	continue;
         }
 
-        if (!pNode) pNode = tvParticles->Items->AddChildObject(cur_folder,item->Text,(TObject*)type);
+        if (!pNode) pNode = tvMotions->Items->AddChildObject(cur_folder,item->Text,(TObject*)type);
 		if (FOLDER::IsFolder(item)){
         	cur_folder = pNode;
 		    FOLDER::MakeName(cur_folder,0,cur_fld_name,true);
