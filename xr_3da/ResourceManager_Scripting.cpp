@@ -19,6 +19,7 @@ class	adopt_sampler
 public:
 	adopt_sampler			(CBlender_Compile*	_C, u32 _stage)		: C(_C), stage(_stage)		{ if (u32(-1)==stage) C=0;		}
 	adopt_sampler			(const adopt_sampler&	_C)				: C(_C.C), stage(_C.stage)	{ if (u32(-1)==stage) C=0;		}
+	~adopt_sampler			()										{ }
 
 	adopt_sampler&			_texture		(LPCSTR texture)		{ if (C) C->i_Texture	(stage,texture);			return *this;	}
 	adopt_sampler&			_projective		(bool _b)				{ if (C) C->i_Projective(stage,_b);					return *this;	}
@@ -49,6 +50,7 @@ class	adopt_compiler
 public:
 	adopt_compiler			(CBlender_Compile*	_C)	: C(_C)							{ }
 	adopt_compiler			(const adopt_compiler&	_C)	: C(_C.C)					{ }
+	~adopt_compiler			()														{ }
 
 	adopt_compiler&			_pass			(LPCSTR	vs,		LPCSTR ps)				{	C->r_Pass			(vs,ps,true);	return	*this;			}
 	adopt_compiler&			_fog			(bool	_fog)							{	C->PassSET_LightFog	(FALSE,_fog);	return	*this;			}

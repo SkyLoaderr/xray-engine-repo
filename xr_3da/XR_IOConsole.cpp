@@ -315,19 +315,21 @@ outloop:
 	if (editor[0]==0)		return;
 	if (RecordCommands)		Log("~",editor);
 	
-	editor[j++  ]=' ';
-	editor[len=j]=0;
+	// split into cmd/params
+	editor[j++  ]	=	' ';
+	editor[len=j]	=	0;
 	for (i=0; i<len; i++) {
 		if (editor[i]!=' ') first_word[i]=editor[i];
 		else {
-			strcpy(editor,&(editor[i+1]));
+			// last 'word' - exit
+			strcpy(last_word,editor+i+1);
 			break;
 		}
 	}
 	first_word[i]=0;
-	strcpy(last_word,editor);
 	if (last_word[xr_strlen(last_word)-1]==' ') last_word[xr_strlen(last_word)-1]=0;
 	
+	// search
 	vecCMD_IT I = Commands.find(first_word);
 	if (I!=Commands.end()) {
 		CConsoleCommand &C = *(I->second);
