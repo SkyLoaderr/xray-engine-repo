@@ -442,6 +442,7 @@ void CTreeViewFiles::OnDblclk(NMHDR* pNMHDR, LRESULT* pResult)
 	if ( pPF )
 	{
 		CLuaView* pView = theApp.OpenProjectFilesView(pPF);
+
 /*		if(pView){
 			pPF->SetLuaView(pView);
 			pPF->Check_view();
@@ -458,6 +459,12 @@ void CTreeViewFiles::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
 	TV_KEYDOWN* pTVKeyDown = (TV_KEYDOWN*)pNMHDR;
 	// TODO: Add your control notification handler code here
 	HTREEITEM hItem = m_pTree->GetSelectedItem();
+
+	if( hItem && pTVKeyDown->wVKey == VK_RETURN ){
+		OnDblclk(pNMHDR, pResult);
+		return;
+	}
+
 	if ( hItem && pTVKeyDown->wVKey == VK_DELETE )
 	{
 		CProjectFile* pPF = (CProjectFile*)m_pTree->GetItemData(hItem);

@@ -8,6 +8,7 @@
 #include "LuaView.h"
 #include "ProjectFile.h"
 #include "MainFrame.h"
+#include "ScintillaView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -181,8 +182,9 @@ BOOL CLuaView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	if (lpnmhdr->hwndFrom == m_editor.m_hWnd)
 	{
 		*pResult = OnSci((SCNotification*)lParam);
+		return CView::OnNotify(wParam, lParam, pResult);
 		
-		return TRUE;
+//		return TRUE;
 	}
 	return CView::OnNotify(wParam, lParam, pResult);
 }
@@ -831,11 +833,6 @@ void CLuaView::OnBreakPointList()
 	return;
 }
 
-void CLuaView::OnActivateView(  BOOL bActivate,  CView* pActivateView,  CView* pDeactiveView )
-{
-	if(bActivate)
-		GetEditor()->GrabFocus();
-}
 
 
 void CLuaView::OnAddWatch() 
@@ -859,4 +856,25 @@ void CLuaView::OnAddWatch()
 		g_mainFrame->m_wndWatches.AddWatch(sel);
 	}
 
+}
+
+void CLuaView::OnActivateView(  BOOL bActivate,  CView* pActivateView,  CView* pDeactiveView )
+{
+	CString msg;
+	if( bActivate && (this==pActivateView) )
+	{
+		msg = "activate";
+		g_mainFrame->GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(msg);
+		GetEditor()->GrabFocus();
+	}else{
+		msg = "de-activate";
+		g_mainFrame->GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(msg);
+	}
+	CView::OnActivateView(bActivate, pActivateView, pDeactiveView);
+}
+
+void CLuaView::OnActivateFrame(UINT nState, CFrameWnd* pFrameWnd)
+{
+	int i=0;
+	CView::OnActivateFrame(nState, pFrameWnd);
 }

@@ -21,6 +21,7 @@ class CLuaView : public CView
 protected: // create from serialization only
 	CLuaView();
 	DECLARE_DYNCREATE(CLuaView)
+	virtual void OnActivateFrame(UINT nState, CFrameWnd* pFrameWnd);
 
 // Attributes
 public:

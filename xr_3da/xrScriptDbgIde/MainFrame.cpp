@@ -926,6 +926,8 @@ void CMainFrame::EvalWatch(CString watch, int iItem)
 
 void CMainFrame::OnToolsOptions()
 {
+	CLuaView* v = GetActiveView();
+	v->Activate();
 }
 
 BOOL CMainFrame::checkExistingFolder(CString str)
@@ -990,3 +992,13 @@ void ActivateXRAY()
 		::SetForegroundWindow(h);
 	}
 }
+/*
+void CMainFrame::OnActivate(   UINT nState,   CWnd* pWndOther,   BOOL bMinimized )
+{
+	if(nState==WA_INACTIVE && pActive)
+		this->MDIActivate(pActive);
+	
+	if((nState==WA_ACTIVE)||(nState==WA_CLICKACTIVE))
+		pActive = this->MDIGetActive();
+}*/
+
