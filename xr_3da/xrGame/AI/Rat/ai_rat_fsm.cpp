@@ -317,10 +317,11 @@ void CAI_Rat::UnderFire()
 		}
 	}
 
-	m_tGoalDir = m_tSpawnPosition;
-	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir = m_tSpawnPosition;
+	
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }
@@ -413,7 +414,8 @@ void CAI_Rat::AttackRun()
 
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) && (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatAttackFire)
 
-	m_tGoalDir.set			(m_Enemy.Enemy->Position());
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir.set(m_Enemy.Enemy->Position());
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -456,11 +458,12 @@ void CAI_Rat::Retreat()
 			GO_TO_PREV_STATE;
 		}
 
-	m_tGoalDir = m_tSpawnPosition;
-	
 	vfUpdateTime(m_fTimeUpdateDelta);
 	
 	m_fSpeed = m_fAttackSpeed;
+
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir = m_tSpawnPosition;
 
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
@@ -496,7 +499,8 @@ void CAI_Rat::Pursuit()
 		GO_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
 
-	m_tGoalDir.set(m_tSavedEnemyPosition);
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir.set(m_tSavedEnemyPosition);
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -538,7 +542,8 @@ void CAI_Rat::FreeRecoil()
 	
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(Level().timeServer() - m_dwLostEnemyTime >= m_dwLostRecoilTime,aiRatPursuit);
 	
-	m_tGoalDir.set(m_tSpawnPosition);
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir.set(m_tSpawnPosition);
 	
 	m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
 	
@@ -617,7 +622,9 @@ void CAI_Rat::EatCorpse()
 		m_dwLostEnemyTime = Level().timeServer();
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
-	m_tGoalDir.set			(m_Enemy.Enemy->Position());
+
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir.set(m_Enemy.Enemy->Position());
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
