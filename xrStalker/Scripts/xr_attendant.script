@@ -141,11 +141,11 @@ function action_follow:execute ()
           self.object:set_path_type (game_object.level_path)
           self.object:set_dest_level_vertex_id (vid)
           if vdist > 20 then
-             state_mgr.set_state (self.object, "sprint")
+             state_mgr.set_state (self.object, st.animation_sprint)
           elseif vdist < 3 then
-             state_mgr.set_state (self.object, "walk")
+             state_mgr.set_state (self.object, st.animation_move)
           elseif vdist > 5 then
-             state_mgr.set_state (self.object, "run")
+             state_mgr.set_state (self.object, st.animation_run)
           end   
        else
           self.state = 1
@@ -289,6 +289,9 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, npc)
 	
 	st.leader = utils.cfg_get_string (ini, section, "leader",  npc, false, "")
+	st.animation_move = utils.cfg_get_string (ini, section, "animation_walk",  npc, false, "walk")
+	st.animation_run = utils.cfg_get_string (ini, section, "animation_run",  npc, false, "run")
+	st.animation_sprint = utils.cfg_get_string (ini, section, "animation_sprint",  npc, false, "sprint")
 	st.formation = utils.cfg_get_bool (ini, section, "formation_line", npc, false, false)
 	st.distance = utils.cfg_get_number (ini, section, "distance", npc, false)
 	if st.distance == nil then
