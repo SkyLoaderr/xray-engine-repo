@@ -997,6 +997,9 @@
 				RelativePath=".\xr_creator.h">
 			</File>
 			<File
+				RelativePath="xr_creator_check_textures.cpp">
+			</File>
+			<File
 				RelativePath=".\xr_level_controller.cpp">
 			</File>
 			<File
@@ -1907,10 +1910,6 @@
 					RelativePath="xrStripify.h">
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Interface"
-			Filter="">
 		</Filter>
 		<Filter
 			Name="Sound"

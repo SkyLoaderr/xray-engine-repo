@@ -80,6 +80,7 @@ public:
 
 	// Loader interface
 	Shader*						LL_CreateShader			(int S, int T, int M, int C);
+	void						LL_CheckTextures		();
 };
 
 extern ENGINE_API	CCreator*	pCreator;
