@@ -34,7 +34,7 @@ public:
 			vector<SLevel>::iterator		I = m_tGraphHeader.tpLevels.begin();
 			vector<SLevel>::iterator		E = m_tGraphHeader.tpLevels.end();
 			for ( ; I != E; I++)
-				F.Read(I,sizeof(SLevel));
+				F.Rvector((*I).tOffset);
 		}
 		m_tpaGraph				= (SCompressedGraphVertex *)F.Pointer();
 		m_tpVertices.resize		(m_tGraphHeader.dwVertexCount);
