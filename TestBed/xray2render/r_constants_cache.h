@@ -135,15 +135,17 @@ public:
 	}
 
 	// 
-	void					flush	()
+	void					flush	(IDirect3DDevice9* D)
 	{
 		if (a_pixel.b_dirty || a_vertex.b_dirty)
 		{
 			if (a_pixel.b_dirty)
 			{
+				// fp
 			}
 			if (a_vertex.b_dirty)
 			{
+				// fp
 			}
 		}
 	}
