@@ -32,7 +32,7 @@ protected:
 	Shader*					pShader;
 	CVS*					VS;
 
-	u32						dwFlags;
+	u32						uFlags;
 	float					fScale;
 public:
 	enum{
@@ -40,15 +40,16 @@ public:
 		fsDeviceIndependent	= (1<<1),
 		fsVariableWidth		= (1<<2),
 		fsPreloadedTC		= (1<<3),
+		fsValidTS			= (1<<4),
 		fsForceDWORD		= (-1)
 	};
 protected:
-	IC	float				ConvertX		(float x)	{return (dwFlags&fsDeviceIndependent)?Device._x2real(x):x*fScale;}
-	IC	float				ConvertY		(float y)	{return (dwFlags&fsDeviceIndependent)?Device._y2real(y):y*fScale;}
-	IC	float				ConvertSize		(float sz)	{return (dwFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz*fScale;}
-	IC	float				GetCurrentSize	()			{return (dwFlags&fsDeviceIndependent)?2*fCurrentSize:fCurrentSize*fScale;}
+	IC	float				ConvertX		(float x)	{return (uFlags&fsDeviceIndependent)?Device._x2real(x):x*fScale;}
+	IC	float				ConvertY		(float y)	{return (uFlags&fsDeviceIndependent)?Device._y2real(y):y*fScale;}
+	IC	float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz*fScale;}
+	IC	float				GetCurrentSize	()			{return (uFlags&fsDeviceIndependent)?2*fCurrentSize:fCurrentSize*fScale;}
 public:
-							CGameFont		(LPCSTR shader, LPCSTR texture, int tsize, int iCPL=16, u32 flags=0);
+							CGameFont		(LPCSTR shader, LPCSTR texture, int iCPL=16, u32 flags=0);
 							~CGameFont		();
 
 	IC void					Color			(u32 C)	{dwCurrentColor=C;};
@@ -58,7 +59,7 @@ public:
 	IC void					Add				(float _x, float _y, char *s, u32 _c=0xffffffff, float _size=0.01f);
 	IC float				SizeOf			(char *s)	
 	{ 
-		if (dwFlags&fsVariableWidth){
+		if (uFlags&fsVariableWidth){
 			int		len			= strlen(s);
 			float	X			= 0;
 			if (len) {

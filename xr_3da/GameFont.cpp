@@ -8,51 +8,49 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 #define MAX_CHARS	1024
-CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, u32 flags)
+CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int iCPL, u32 flags)
 {
 	fScale						= 1.f;
-	dwFlags						= flags;
+	uFlags						= flags;
 	cShader						= xr_strdup(shader);
 	cTexture					= xr_strdup(texture);
 	iNumber						= iCPL;
 	pShader						= 0;
-	vHalfPixel.set				(0.5f/float(tsize),0.5f/float(tsize));
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	vUVSize.set					(1.f/float(iNumber),1.f/float(iNumber));
 	for (int i=0; i<256; i++){	CharMap[i] = i; WFMap[i].set(1.f,1.f,1.f);}
 	strings.reserve				(128);
 
-	Size						(float(tsize)/float(iCPL));
+//A	Size						(float(tsize)/float(iCPL));
 	// check ini exist
 	string256 fn,buf;
 	strcpy(buf,texture); if (strext(buf)) *strext(buf)=0;
 #ifdef M_BORLAND
-	if (!Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,buf,	".ini")){
+	if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,buf,	".ini")){
 #else
 	if (Engine.FS.Exist(fn,Path.Textures,buf,".ini")){
 #endif
-		CInifile* ini		= CInifile::Create(fn);
+		CInifile* ini			= CInifile::Create(fn);
 		if (ini->SectionExists("char widths")){
 			for (int i=0; i<256; i++)
-				WFMap[i].z	= ini->ReadFLOAT("char widths",itoa(i,buf,10))/fCurrentSize;
-			vInterval.set	(1.f,1.f);
-			dwFlags			|= fsVariableWidth;
+				WFMap[i].z		= ini->ReadFLOAT("char widths",itoa(i,buf,10));
+			vInterval.set		(1.f,1.f);
+			uFlags				|= fsVariableWidth;
 		}else if (ini->SectionExists("symbol_coords")){
 			for (int i=0; i<256; i++){
-				sprintf		(buf,"%3s",i);
-				Fvector4 v	= ini->ReadVECTOR4("symbol_coords",buf);
-				WFMap[i].z	= (v[2]-v[0])/fCurrentSize;
-				dwFlags		|= fsPreloadedTC|fsVariableWidth;
+				sprintf			(buf,"%3s",i);
+				Fvector4 v		= ini->ReadVECTOR4("symbol_coords",buf);
+				WFMap[i].z		= (v[2]-v[0]);
 			}
-			vInterval.set	(1.f,1.f);
-			dwFlags			|= fsVariableWidth;
+			vInterval.set		(1.f,1.f);
+			uFlags				|= (fsVariableWidth|fsPreloadedTC);
 		}else THROW;
-		CInifile::Destroy	(ini);
+		CInifile::Destroy		(ini);
 	}else{
-		if (dwFlags&fsDeviceIndependent)	vInterval.set	(0.65f,1.f);
-		else								vInterval.set	(0.75f,1.f);
-		dwFlags					&=~fsVariableWidth;
+		if (uFlags&fsDeviceIndependent)	vInterval.set	(0.65f,1.f);
+		else							vInterval.set	(0.75f,1.f);
+		uFlags					&=~fsVariableWidth;
 	}
 
 	OnDeviceCreate				();
@@ -92,6 +90,15 @@ void CGameFont::OnRender()
 {
 	if (pShader) Device.Shader.set_Shader	(pShader);
 
+	if (!(uFlags&fsValidTS)){
+		CTexture* T		= Device.Shader.get_ActiveTexture(0);
+		Ivector2		ts;
+		ts.set			((int)T->get_Width(),(int)T->get_Height());
+		vHalfPixel.set	(0.5f/float(ts.x),0.5f/float(ts.y));
+		uFlags			|= fsValidTS;
+		for (int i=0; i<256; i++) WFMap[i].z	/= fCurrentSize;
+	}
+
 	for (u32 i=0; i<strings.size(); ) 
 	{
 		// calculate first-fit
@@ -125,14 +132,14 @@ void CGameFont::OnRender()
 
 				u32	clr,clr2; 
 				clr			= PS.c; 
-				if (dwFlags&fsGradient){
+				if (uFlags&fsGradient){
 					u32	_R	= RGBA_GETRED	(clr)/2;
 					u32	_G	= RGBA_GETGREEN	(clr)/2;
 					u32	_B	= RGBA_GETBLUE	(clr)/2;
 					u32	_A	= RGBA_GETALPHA	(clr);
-					clr2		= D3DCOLOR_RGBA	(_R,_G,_B,_A);
+					clr2	= D3DCOLOR_RGBA	(_R,_G,_B,_A);
 				}else{
-					clr2		= clr;
+					clr2	= clr;
 				}
 
 				float	tu,tv;
@@ -141,8 +148,13 @@ void CGameFont::OnRender()
 					Fvector& l	= WFMap		[PS.string[j]];
 					float scw	= S*l.z;
 					if (c>=0){
-						tu		= (c%iNumber)*vUVSize.x+vHalfPixel.x;
-						tv		= (c/iNumber)*vUVSize.y+vHalfPixel.y;
+						if (uFlags&fsPreloadedTC){
+							tu	= l.x*vUVSize.x+vHalfPixel.x;
+							tv	= l.y*vUVSize.y+vHalfPixel.y;
+						}else{
+							tu	= (c%iNumber)*vUVSize.x+vHalfPixel.x;
+							tv	= (c/iNumber)*vUVSize.y+vHalfPixel.y;
+						}
 						v->set(X,		Y2,	clr2,tu,				tv+vUVSize.y);	v++;
 						v->set(X,		Y,	clr, tu,				tv);			v++;
 						v->set(X+scw,	Y2,	clr2,tu+vUVSize.x*l.z,	tv+vUVSize.y);	v++;
