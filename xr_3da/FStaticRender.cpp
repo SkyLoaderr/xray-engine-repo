@@ -25,13 +25,15 @@ CVisual*	CRender::model_Create		(CStream* data)					{ return Models.Create(data)
 CVisual*	CRender::model_Duplicate	(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
 void		CRender::model_Delete		(CVisual* &V)					{ Models.Delete(V);						}
 
-int			CRender::getVisualsCount	()					{ return Visuals.size();							}
+int			CRender::getVisualsCount	()					{ return Visuals.size();								}
 CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<int(Portals.size()));	return &Portals[id];}
 CSector*	CRender::getSector			(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
-CSector*	CRender::getSectorActive	()					{ return pLastSector;								}
+CSector*	CRender::getSectorActive	()					{ return pLastSector;									}
 CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
 DWORD		CRender::getFVF				(int id)			{ VERIFY(id<int(FVF.size()));		return FVF[id];		}
 IDirect3DVertexBuffer8*	CRender::getVB	(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
+CRender_target* CRender::getTarget		()					{ return &Target;										}
+
 void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);						}
 void		CRender::L_select			(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {	L_DB.Select	(pos,fRadius,dest);		}
@@ -398,8 +400,8 @@ void	CRender::Render		()
 {
 	Device.Statistic.RenderDUMP.Begin();
 
-	// Target.set_blur	(1.f);
-	Target.Begin							();
+	// Target.set_gray					(.5f+sinf(Device.fTimeGlobal)/2.f);
+	Target.Begin					();
 
 	// HUD render
 	{

@@ -14,7 +14,15 @@ class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
 class ENGINE_API	CLightPPA;
 
-// definition
+// definition (Target)
+class	ENGINE_API	CRender_target
+{
+public:
+	virtual	void					set_blur	(float f)	= 0;
+	virtual	void					set_gray	(float f)	= 0;
+};
+
+// definition (Renderer)
 class	ENGINE_API	CRender_interface	:
 	public pureDeviceCreate,
 	public pureDeviceDestroy
@@ -28,18 +36,19 @@ public:
 	CFrustum*						View;
 public:
 	// Loading / Unloading
-	virtual	void					level_Load				()			= 0;
-	virtual void					level_Unload			()			= 0;
+	virtual	void					level_Load				()					= 0;
+	virtual void					level_Unload			()					= 0;
 
 	// Information
-	virtual int						getVisualsCount			()			= 0;
-	virtual CPortal*				getPortal				(int id)	= 0;
-	virtual CSector*				getSector				(int id)	= 0;
-	virtual CSector*				getSectorActive			()			= 0;
-	virtual CVisual*				getVisual				(int id)	= 0;
-	virtual DWORD					getFVF					(int id)	= 0;
-	virtual IDirect3DVertexBuffer8*	getVB					(int id)	= 0;
-	virtual CSector*				detectSector			(Fvector& P)	= 0;
+	virtual int						getVisualsCount			()					= 0;
+	virtual CPortal*				getPortal				(int id)			= 0;
+	virtual CSector*				getSector				(int id)			= 0;
+	virtual CSector*				getSectorActive			()					= 0;
+	virtual CVisual*				getVisual				(int id)			= 0;
+	virtual DWORD					getFVF					(int id)			= 0;
+	virtual IDirect3DVertexBuffer8*	getVB					(int id)			= 0;
+	virtual CSector*				detectSector			(Fvector& P)		= 0;
+	virtual CRender_target*			getTarget				()					= 0;
 	
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)			{ VERIFY(O);	View = O;			}

@@ -1,6 +1,8 @@
 #pragma once
 
-class ENGINE_API		CRenderTarget
+#include "render.h"
+
+class CRenderTarget		: public CRender_target
 {
 private:
 	BOOL				bAvailable;
@@ -30,6 +32,6 @@ public:
 	void				Begin				();
 	void				End					();
 
-	void				set_blur			(float f)		{ param_blur=f; }
-	void				set_gray			(float f)		{ param_gray=f; }
+	virtual void		set_blur			(float f)		{ param_blur=f; }
+	virtual void		set_gray			(float f)		{ param_gray=f; }
 };

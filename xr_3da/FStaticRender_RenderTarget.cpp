@@ -112,7 +112,7 @@ void CRenderTarget::End		()
 	pStream->Unlock			(12);
 
 	// Actual rendering
-	if (TRUE)
+	if (FALSE)	
 	{
 		// Render to temporary buffer (PS)
 		Device.Shader.set_RT				(RT_temp->pRT,HW.pTempZB);

@@ -367,6 +367,15 @@ void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
 
+	// zone test
+	Fvector z_P			= {1.803, -0.012, -22.089};
+	float	z_R			= 10.f;
+
+	float	z_amount	= Position().distance_to(z_P)/z_R;
+	clamp	(z_amount,0.f,1.f);
+	Render->getTarget()->set_gray	(z_amount);
+
+	// 
 	clamp			(DT,0ul,100ul);
 	float	dt		= float(DT)/1000.f;
 	

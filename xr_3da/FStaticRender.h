@@ -100,6 +100,7 @@ public:
 	virtual DWORD					getFVF					(int id);
 	virtual IDirect3DVertexBuffer8*	getVB					(int id);
 	virtual CSector*				detectSector			(Fvector& P);
+	virtual CRender_target*			getTarget				();
 	
 	// Main 
 	virtual void					flush					();
