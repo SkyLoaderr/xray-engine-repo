@@ -77,12 +77,12 @@ void CUIInventoryWnd::Init()
 
 	CUIXmlInit xml_init;
 
-	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
+	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	AttachChild(&UIStaticTop);
-	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,1024,128);
+	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,UI_BASE_WIDTH,128);
 	AttachChild(&UIStaticBottom);
-	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
+	UIStaticBottom.Init("ui\\ui_bottom_background", 0, UI_BASE_HEIGHT-32, UI_BASE_WIDTH,32);
 
 
 	AttachChild(&UIStaticBelt);
@@ -335,11 +335,12 @@ void CUIInventoryWnd::InitInventory()
 
 			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
 
-			//!!! Временно не отображаем патроны в инвентаре !!!
+			// Не отображаем патроны в инвентаре если они посечены как "бесконечные"
+			// Применимио только к режиму мультиплеера
 			if(pWeaponAmmo)
 			{
 				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
-				if (Game().type != GAME_SINGLE)	
+				if (Game().type != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)	
 					continue;
 			}
 
@@ -380,11 +381,12 @@ void CUIInventoryWnd::InitInventory()
 				
 			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
 
-			//!!! Временно не отображаем патроны в инвентаре !!!
+			// Не отображаем патроны в инвентаре если они посечены как "бесконечные"
+			// Применимио только к режиму мультиплеера
 			if(pWeaponAmmo)
 			{
 				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
-				if (Game().type != GAME_SINGLE)	
+				if (Game().type != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)
 					continue;
 			}
 
