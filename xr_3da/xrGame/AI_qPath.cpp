@@ -21,10 +21,10 @@ public:
 	GraphSearchNode	( DWORD ID )	
 	{ 
 		NodeID		= ID;
-		Node		= pCreator->AI.Node(ID);
+		Node		= Level().AI.Node(ID);
 		Fvector		P0,P1;
-		pCreator->AI.UnpackPosition	(P0,Node->p0);
-		pCreator->AI.UnpackPosition	(P1,Node->p1);
+		Level().AI.UnpackPosition	(P0,Node->p0);
+		Level().AI.UnpackPosition	(P1,Node->p1);
 		Center.lerp	(P0,P1,.5f);
 	}
 	
@@ -71,7 +71,7 @@ public:
 		NodeLink* L_end			= L_it+L_count;
 		for(; L_it!=L_end; L_it++) 
 		{
-			DWORD ID			= pCreator->AI.UnpackLink(*L_it);
+			DWORD ID			= Level().AI.UnpackLink(*L_it);
 			if (ID==Parent)		continue;
 
 			astarsearch->AddSuccessor(GraphSearchNode(ID));
