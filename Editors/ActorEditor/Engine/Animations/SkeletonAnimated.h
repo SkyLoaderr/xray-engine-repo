@@ -17,7 +17,6 @@ class 	ENGINE_API CSkeletonAnimated;
 class	ENGINE_API CBoneDataAnimated;
 class   ENGINE_API CBoneInstanceAnimated;
 struct	ENGINE_API CKey;
-struct	ENGINE_API CKeyQ;
 class	ENGINE_API CInifile;
 
 // callback
@@ -32,10 +31,13 @@ struct ENGINE_API CKey
 	Fquaternion	Q;			// rotation
 	Fvector		T;			// translation
 };
-struct ENGINE_API CKeyQ
+struct ENGINE_API CKeyQR
 {
 	s16			x,y,z,w;	// rotation
-	Fvector		t;			// translation
+};
+struct ENGINE_API CKeyQT
+{
+	s8			x,y,z;
 };
 #pragma pack(pop)
 
@@ -78,7 +80,10 @@ typedef BlendList::iterator				BlendListIt;
 class ENGINE_API		CMotion
 {
 public:
-	CKeyQ*				_keys;
+	CKeyQR*				_keysR;
+	CKeyQT*				_keysT;
+    Fvector				_initT;
+    Fvector				_sizeT;
 	u32					_count;
 	float				GetLength()				{ return float(_count)*SAMPLE_SPF; }
 };

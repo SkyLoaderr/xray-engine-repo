@@ -393,8 +393,10 @@ void CSkeletonAnimated::Release()
 	for (u32 i=0; i<bones->size(); i++)
 	{
 		CBoneDataAnimated* B = (CBoneDataAnimated*)(*bones)[i];
-		for (u32 m=0; m<B->Motions.size(); m++)
-			xr_free(B->Motions[m]._keys);
+		for (u32 m=0; m<B->Motions.size(); m++){
+			xr_free(B->Motions[m]._keysR);
+			xr_free(B->Motions[m]._keysT);
+        }
 	}
 
 	// destroy shared data
@@ -489,29 +491,40 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	blend_instances	= NULL;
 
 	// Load animation
-	IReader*	MS		= data->open_chunk(OGF_MOTIONS);
-	u32			dwCNT	= 0;
-	MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
-	for (u32 M=0; M<dwCNT; M++)
-	{
-		string128			mname;
-		R_ASSERT			(MS->find_chunk(M+1));
-		MS->r_stringZ		(mname);
-		motion_map->insert	(mk_pair(ref_str(strlwr(mname)),M));
+	IReader*	MS	= data->open_chunk(OGF_MOTIONS2); R_ASSERT2(MS,"Unsupported motions version.");
+    u32			dwCNT	= 0;
+    MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
+    for (u32 M=0; M<dwCNT; M++)
+    {
+        string128			mname;
+        R_ASSERT			(MS->find_chunk(M+1));
+        MS->r_stringZ		(mname);
+        motion_map->insert	(mk_pair(ref_str(strlwr(mname)),M));
 
-		u32 dwLen			= MS->r_u32();
-		for (u32 i=0; i<bones->size(); i++)
-		{
-			CMotion TMP;
-			TMP._keys			= xr_alloc<CKeyQ>(dwLen);
-			TMP._count			= dwLen;
-			MS->r				(TMP._keys,TMP._count*sizeof(CKeyQ));
-			u32 crc=crc32_calc	(TMP._keys,TMP._count*sizeof(CKeyQ));
-			Msg					("motion %-30s,bone[%2d] -> %x",mname,i,crc);
-			((CBoneDataAnimated*)(*bones)[i])->Motions.push_back(TMP);
-		}
-	}
-	MS->close();
+        u32 dwLen			= MS->r_u32();
+        for (u32 i=0; i<bones->size(); i++)
+        {
+            CMotion TMP;
+            TMP._count		= dwLen;
+            u8 t_present	= MS->r_u8();
+            u32 crc_q		= MS->r_u32();
+            TMP._keysR		= xr_alloc<CKeyQR>(dwLen);
+            MS->r			(TMP._keysR,TMP._count*sizeof(CKeyQR));
+            if (t_present){
+                u32 crc_t	= MS->r_u32();
+                TMP._keysT	= xr_alloc<CKeyQT>(dwLen);
+                MS->r		(TMP._keysT,TMP._count*sizeof(CKeyQT));
+                MS->r_fvector3	(TMP._sizeT);
+                MS->r_fvector3	(TMP._initT);
+            }else{
+                TMP._keysT	= 0;
+                MS->r_fvector3	(TMP._initT);
+            }
+
+            ((CBoneDataAnimated*)(*bones)[i])->Motions.push_back(TMP);
+        }
+    }
+    MS->close();
 
 	// Load definitions
 	IReader* MP = data->open_chunk(OGF_SMPARAMS2);
@@ -648,9 +661,41 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                 u32				frame	=	iFloor(time);
                 float			delta	=	time-float(frame);
                 u32				count	=	M._count;
-                CKeyQ&			K1		=	M._keys[(frame+0)%count];
-                CKeyQ&			K2		=	M._keys[(frame+1)%count];
-                PSGP.blerp				(D,&K1,&K2,delta);
+                CKeyQR*			K1r		=	&M._keysR[(frame+0)%count];
+                CKeyQR*			K2r		=	&M._keysR[(frame+1)%count];
+                // rotation
+                {
+                    Fquaternion	Q1,Q2;
+                    Q1.x		= float(K1r->x)*KEY_QuantI;
+                    Q1.y		= float(K1r->y)*KEY_QuantI;
+                    Q1.z		= float(K1r->z)*KEY_QuantI;
+                    Q1.w		= float(K1r->w)*KEY_QuantI;
+
+                    Q2.x		= float(K2r->x)*KEY_QuantI;
+                    Q2.y		= float(K2r->y)*KEY_QuantI;
+                    Q2.z		= float(K2r->z)*KEY_QuantI;
+                    Q2.w		= float(K2r->w)*KEY_QuantI;
+
+                    D->Q.slerp	(Q1,Q2,delta);
+                }
+                // translate
+                if (M._keysT){
+	                CKeyQT*	K1t	= &M._keysT[(frame+0)%count];
+    	            CKeyQT*	K2t	= &M._keysT[(frame+1)%count];
+
+                    Fvector T1,T2;
+                    T1.x		= float(K1t->x)*M._sizeT.x+M._initT.x;
+                    T1.y		= float(K1t->y)*M._sizeT.y+M._initT.y;
+                    T1.z		= float(K1t->z)*M._sizeT.z+M._initT.z;
+                    T2.x		= float(K2t->x)*M._sizeT.x+M._initT.x;
+                    T2.y		= float(K2t->y)*M._sizeT.y+M._initT.y;
+                    T2.z		= float(K2t->z)*M._sizeT.z+M._initT.z;
+                    
+	                D->T.lerp	(T1,T2,delta);
+                }else{
+	                D->T.set	(M._initT);
+                }
+//                PSGP.blerp				(D,&K1,&K2,delta);
             }
 
             // Blend them together
