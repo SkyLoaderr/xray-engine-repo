@@ -30,6 +30,21 @@ void	CRenderTarget::phase_combine	()
 		}
 	}
 
+	// calc m-blur matrices
+	Fmatrix		m_previous, m_current;
+	Fvector2	m_blur_scale;
+	{
+		static Fmatrix		m_saved_viewproj;
+		
+		// (new-camera) -> (world) -> (old_viewproj)
+		Fmatrix	m_invview;	m_invview.invert	(Device.mView);
+		m_previous.mul		(m_saved_viewproj,m_invview);
+		m_current.set		(Device.mProject)		;
+		m_saved_viewproj.set(Device.mFullTransform)	;
+		float	scale		= .5f;
+		m_blur_scale.set	(scale,-scale).div(12.f);
+	}
+
 	// Draw full-screen quad textured with our scene image
 	{
 		// Compute params
@@ -118,6 +133,7 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_Stencil	( FALSE		);
 	if (1)	
 	{
+		// 
 		struct v_aa	{
 			Fvector4	p;
 			Fvector2	uv0;
