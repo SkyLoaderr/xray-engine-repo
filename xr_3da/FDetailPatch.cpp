@@ -28,7 +28,7 @@ void FDetailPatch::Load(const char* N, CStream* fs, u32 dwFlags)
 	R_ASSERT		(size && (size%sizeof(DPatch) == 0));
 	u32 count		= size/sizeof(DPatch);
 	patches.resize	(count);
-	PSGP.memCopy	(&*patches.begin(),fs->Pointer(),size);
+	Memory.mem_copy	(&*patches.begin(),fs->Pointer(),size);
 
 	Stream			= Device.Streams.Create(FVF::F_TL,count*4);
 }

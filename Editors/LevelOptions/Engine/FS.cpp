@@ -23,11 +23,7 @@ void CFS_Memory::write	(const void* ptr, u32 count)
 		if (0==data)		data = (BYTE*)	xr_malloc	(mem_size);
 		else				data = (BYTE*)	xr_realloc	(data,mem_size);
 	}
-#ifdef ENGINE_BUILD	
-	PSGP.memCopy	(data+position,ptr,count);
-#else
-	CopyMemory		(data+position,ptr,count);
-#endif
+	Memory.mem_copy	(data+position,ptr,count);
 	position		+=count;
 	if (position>file_size) file_size=position;
 }
@@ -111,21 +107,12 @@ CStream*	CStream::OpenChunk(u32 ID)
 void	CStream::Close()
 {	xr_delete((CStream*)this); }
 
-#ifdef	ENGINE_BUILD
 void	CStream::Read	(void *p,int cnt)
 {
 	VERIFY		(Pos+cnt<=Size);
-	PSGP.memCopy(p,Pointer(),cnt);
+	Memory.mem_copy(p,Pointer(),cnt);
 	Advance		(cnt);
 };
-#else
-void	CStream::Read	(void *p,int cnt)
-{
-	VERIFY(Pos+cnt<=Size);
-	CopyMemory(p,Pointer(),cnt);
-	Advance(cnt);
-};
-#endif
 
 //---------------------------------------------------
 // temp stream

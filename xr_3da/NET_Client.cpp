@@ -319,7 +319,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 				// Copy the Host Address
 				R_CHK		(pEnumHostsResponseMsg->pAddressSender->Duplicate(&NODE.pHostAddress ) );
-				PSGP.memCopy(&NODE.dpAppDesc,pDesc,sizeof(DPN_APPLICATION_DESC));
+				Memory.mem_copy(&NODE.dpAppDesc,pDesc,sizeof(DPN_APPLICATION_DESC));
 
 				// Null out all the pointers we aren't copying
 				NODE.dpAppDesc.pwszSessionName					= NULL;

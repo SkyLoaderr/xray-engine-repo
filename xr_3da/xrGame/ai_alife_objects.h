@@ -215,7 +215,7 @@ public:
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints)
 	{
 		LPCSTR						S = pSettings->ReadSTRING(tpSpawnPoints[tSpawnID]->m_caModel, "class");
-		PSGP.memCopy				(&m_tClassID,S,sizeof(m_tClassID));
+		Memory.mem_copy				(&m_tClassID,S,sizeof(m_tClassID));
 		m_tGraphID					= tpSpawnPoints[tSpawnID]->m_tNearestGraphPointID;
 		m_tSpawnID					= tSpawnID;
 		CALifeCreatureSpawnPoint	*tpALifeCreatureSpawnPoint = dynamic_cast<CALifeCreatureSpawnPoint *>(tpSpawnPoints[tSpawnID]);

@@ -65,7 +65,7 @@ namespace Feel {
 		}
 
 		// Copy results and perform traces
-		PSGP.memCopy		(&query,&seen,sizeof(query));
+		Memory.mem_copy		(&query,&seen,sizeof(query));
 		o_trace				(P,dt);
 	}
 	void Vision::o_trace(Fvector& P, float dt)

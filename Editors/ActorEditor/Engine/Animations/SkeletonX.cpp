@@ -41,7 +41,7 @@ void CSkeletonX_PM::Copy(CVisual *V)
 
 	R_CHK				(HW.pDevice->CreateIndexBuffer(dwCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices));
 	R_CHK				(pIndices->Lock(0,0,&bytes,0));
-	PSGP.memCopy		(bytes, indices, dwCount*2);
+	Memory.mem_copy		(bytes, indices, dwCount*2);
 	pIndices->Unlock	();
 }
 void CSkeletonX_ST::Copy(CVisual *P) 
@@ -155,7 +155,7 @@ void CSkeletonX_PM::Load(const char* N, CStream *data, u32 dwFlags)
 	u32				dwCount = data->Rdword();
 	R_ASSERT			(dwCount%3 == 0);
 	indices				= LPWORD(xr_malloc(dwCount*2));
-	PSGP.memCopy		(indices,data->Pointer(),dwCount*2);
+	Memory.mem_copy		(indices,data->Pointer(),dwCount*2);
 	dwPrimitives		= dwCount/3;
 
 	BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
@@ -165,7 +165,7 @@ void CSkeletonX_PM::Load(const char* N, CStream *data, u32 dwFlags)
 
 	R_CHK				(HW.pDevice->CreateIndexBuffer(dwCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices));
 	R_CHK				(pIndices->Lock(0,0,&bytes,0));
-	PSGP.memCopy		(bytes, indices, dwCount*2);
+	Memory.mem_copy		(bytes, indices, dwCount*2);
 	pIndices->Unlock	();
 }
 

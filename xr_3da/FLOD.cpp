@@ -32,7 +32,7 @@ void FLOD::Copy			(CVisual *pFrom	)
 	inherited::Copy		(pFrom);
 
 	FLOD* F				= (FLOD*)pFrom;
-	PSGP.memCopy		(facets,F->facets,sizeof(facets));
+	Memory.mem_copy		(facets,F->facets,sizeof(facets));
 }
 void FLOD::Render		(float LOD		)
 {

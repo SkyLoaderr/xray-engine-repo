@@ -60,7 +60,7 @@ void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
 			BYTE*	bytes		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*hVS->dwStride,dwUsage,0,dwPool,&pVertices));
 			R_CHK				(pVertices->Lock(0,0,&bytes,0));
-			PSGP.memCopy		(bytes, data->Pointer(), vCount*hVS->dwStride);
+			Memory.mem_copy		(bytes, data->Pointer(), vCount*hVS->dwStride);
 			pVertices->Unlock	();
 		}
 	}
@@ -90,7 +90,7 @@ void Fvisual::Load		(const char* N, CStream *data, u32 dwFlags)
 
 			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices));
 			R_CHK				(pIndices->Lock(0,0,&bytes,0));
-			PSGP.memCopy		(bytes, data->Pointer(), iCount*2);
+			Memory.mem_copy		(bytes, data->Pointer(), iCount*2);
 			pIndices->Unlock	();
 		}
 	}

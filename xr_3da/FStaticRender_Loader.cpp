@@ -124,7 +124,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 			BYTE*	pData		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,vFVF,dwPool,&VB[i]));
 			R_CHK				(VB[i]->Lock(0,0,&pData,0));
-			PSGP.memCopy		(pData,fs().Pointer(),vCount*vSize);
+			Memory.mem_copy		(pData,fs().Pointer(),vCount*vSize);
 			VB[i]->Unlock		();
 
 			fs().Advance		(vCount*vSize);
@@ -146,7 +146,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 			BYTE*	pData		= 0;
 			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&IB[i]));
 			R_CHK				(IB[i]->Lock(0,0,&pData,0));
-			PSGP.memCopy		(pData,fs().Pointer(),iCount*2);
+			Memory.mem_copy		(pData,fs().Pointer(),iCount*2);
 			IB[i]->Unlock		();
 
 			fs().Advance		(iCount*2);

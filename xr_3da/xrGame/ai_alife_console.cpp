@@ -31,7 +31,7 @@ void vfPrintLargeString(const char *S1, const char *S, const int i, const int j,
 	string128	S2;
 	if (strlen(S))
 		for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
-			PSGP.memCopy(S2,S + k*u,u*sizeof(char));
+			Memory.mem_copy(S2,S + k*u,u*sizeof(char));
 			if (k == m - 1)
 				S2[l - k*u]=0;
 			else
@@ -56,7 +56,7 @@ void vfPrintLargeString(const char *S1, const char *S, const int j, const u32 u)
 	string128	S2;
 	if (strlen(S))
 		for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
-			PSGP.memCopy(S2,S + k*u,u*sizeof(char));
+			Memory.mem_copy(S2,S + k*u,u*sizeof(char));
 			if (k == m - 1)
 				S2[l - k*u]=0;
 			else
@@ -80,7 +80,7 @@ void CAI_ALife::vfListObjects()
 	string64		tString;
 	Msg("%s->Listing objects :",cName());
 	for (int i=0; I != E; I++, i++) {
-		PSGP.memCopy(tString,&((*I).second->m_tClassID),sizeof((*I).second->m_tClassID));
+		Memory.mem_copy(tString,&((*I).second->m_tClassID),sizeof((*I).second->m_tClassID));
 		tString[sizeof((*I).second->m_tClassID)] = 0;
 		Msg("* %4d : %8s[ID=%4d][MDL=%10s][CNT=%3d][GID=%4d][UPD=%d]",i,tString,(*I).first,m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_caModel,(*I).second->m_wCount,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
 	}
@@ -159,7 +159,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	
 	CALifeDynamicObject	*tpALifeDynamicObject = (*I).second;
 	string64		tString;
-	PSGP.memCopy	(tString,&(tpALifeDynamicObject->m_tClassID),sizeof(tpALifeDynamicObject->m_tClassID));
+	Memory.mem_copy	(tString,&(tpALifeDynamicObject->m_tClassID),sizeof(tpALifeDynamicObject->m_tClassID));
 	tString[sizeof(tpALifeDynamicObject->m_tClassID)] = 0;
 	Msg("* Class ID      : %s[%I64u]",tString,tpALifeDynamicObject->m_tClassID);
 	Msg("* ObjectID      : %d",tpALifeDynamicObject->m_tObjectID);
@@ -270,14 +270,14 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 			}
 			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCG) {
 				string64 tString;
-				PSGP.memCopy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
+				Memory.mem_copy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
 				tString[sizeof(tTask.m_tClassID)] = 0;
 				Msg("* Graph ID    : %d",tTask.m_tGraphID);
 				Msg("* Class ID    : %d (%s)",tTask.m_tClassID,tString);
 			}
 			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCL) {
 				string64 tString;
-				PSGP.memCopy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
+				Memory.mem_copy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
 				tString[sizeof(tTask.m_tClassID)] = 0;
 				Msg("* Location ID : %d",tTask.m_tLocationID);
 				Msg("* Class ID    : %d (%s)",tTask.m_tClassID,tString);
@@ -413,14 +413,14 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 	}
 	else if (tTask.m_tTaskType == eTaskTypeSearchForItemCG) {
 		string64 tString;
-		PSGP.memCopy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
+		Memory.mem_copy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
 		tString[sizeof(tTask.m_tClassID)] = 0;
 		Msg("* Graph ID    : %d",tTask.m_tGraphID);
 		Msg("* Class ID    : %d (%s)",tTask.m_tClassID,tString);
 	}
 	else if (tTask.m_tTaskType == eTaskTypeSearchForItemCL) {
 		string64 tString;
-		PSGP.memCopy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
+		Memory.mem_copy(tString,&(tTask.m_tClassID),sizeof(tTask.m_tClassID));
 		tString[sizeof(tTask.m_tClassID)] = 0;
 		Msg("* Location ID : %d",tTask.m_tLocationID);
 		Msg("* Class ID    : %d (%s)",tTask.m_tClassID,tString);

@@ -20,7 +20,7 @@ void CPSLibrary::xrStartUp()
 		{
 			void*	Pdst				= &m_PSs	[it];
 			void*	Psrc				= &library	[it];
-			PSGP.memCopy				(Pdst,Psrc,sizeof(PS::SDef));
+			Memory.mem_copy				(Pdst,Psrc,sizeof(PS::SDef));
 			m_PSs[it].m_CachedShader	= NULL;
 		}
 		Msg("* FS: Download %d particle system(s).",m_PSs.size());

@@ -1155,8 +1155,8 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
 
 
-	PSGP.memCopy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	PSGP.memCopy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
 
 
 //////////////////////////////////////////////////////////////
@@ -1243,8 +1243,8 @@ void CPHElement::PhDataUpdate(dReal step){
 											   m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 											   m_safe_position[2]-m_safe_velocity[2]*fixed_step);
 				else{
-					PSGP.memCopy(m_safe_position,position,sizeof(dVector3));
-					PSGP.memCopy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+					Memory.mem_copy(m_safe_position,position,sizeof(dVector3));
+					Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
 					}
 				//const dReal k_l=0.1f;
 				//dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);
@@ -1304,11 +1304,11 @@ void	CPHElement::Disable(){
 				}
 				if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
 					const dReal* position=dBodyGetPosition(m_body);
-					PSGP.memCopy(previous_p,position,sizeof(dVector3));
-					PSGP.memCopy(previous_p1,position,sizeof(dVector3));
+					Memory.mem_copy(previous_p,position,sizeof(dVector3));
+					Memory.mem_copy(previous_p1,position,sizeof(dVector3));
 					const dReal* rotation=dBodyGetRotation(m_body);
-					PSGP.memCopy(previous_r,rotation,sizeof(dMatrix3));
-					PSGP.memCopy(previous_r1,rotation,sizeof(dMatrix3));
+					Memory.mem_copy(previous_r,rotation,sizeof(dMatrix3));
+					Memory.mem_copy(previous_r1,rotation,sizeof(dMatrix3));
 					previous_dev=0;
 					previous_v=0;
 					dis_count_f=1;
@@ -1356,8 +1356,8 @@ void	CPHElement::Disable(){
 					previous_dev=0;
 					previous_v=0;
 					dis_count_f=1;
-					PSGP.memCopy(previous_p,current_p,sizeof(dVector3));
-					PSGP.memCopy(previous_r,current_r,sizeof(dMatrix3));
+					Memory.mem_copy(previous_p,current_p,sizeof(dVector3));
+					Memory.mem_copy(previous_r,current_r,sizeof(dMatrix3));
 					}
 
 					{
@@ -1386,8 +1386,8 @@ void	CPHElement::Disable(){
 					if(mag_v<0.04* dis_frames && deviation<0.01*dis_frames)
 						dis_count_f1++;
 					else{
-						PSGP.memCopy(previous_p1,current_p,sizeof(dVector3));
-						PSGP.memCopy(previous_r1,current_r,sizeof(dMatrix3));
+						Memory.mem_copy(previous_p1,current_p,sizeof(dVector3));
+						Memory.mem_copy(previous_r1,current_r,sizeof(dMatrix3));
 						}
 
 					if(dis_count_f1>10) dis_count_f*=10;
@@ -1470,8 +1470,8 @@ void CPHElement::CallBack(CBoneInstance* B){
 	//dMatrix3 R;
 	//PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetLinearVel(m_body,m.c.x,m.c.y,m.c.z);
-	PSGP.memCopy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	PSGP.memCopy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
 
 
 //////////////////////////////////////////////////////////////
@@ -1535,8 +1535,8 @@ void CPHElement::Activate(){
 	//dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
 	//dBodySetPosition(m_body,m0.c.x,m0.c.y+1.,m0.c.z);
 
-	PSGP.memCopy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	PSGP.memCopy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
 
 
 //////////////////////////////////////////////////////////////

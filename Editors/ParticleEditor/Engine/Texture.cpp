@@ -551,7 +551,7 @@ _DDS_2D:
 			T_src->LockRect			(L_src,&R_src,0,0);
 			T_dst->LockRect			(L_dst,&R_dst,0,0);
 
-			PSGP.memCopy			(R_dst.pBits,R_src.pBits,D_dst.Size);
+			Memory.mem_copy			(R_dst.pBits,R_src.pBits,D_dst.Size);
 
 			T_dst->UnlockRect		(L_dst);
 			T_src->UnlockRect		(L_src);
@@ -658,7 +658,7 @@ _TGA:
 		u32 *pImagePixels	= (u32 *)xr_malloc(dwH*dwP);
 		u32 *pNewPixels	= NULL;
 
-		PSGP.memCopy		(pImagePixels,Image.pData,dwH*dwP);
+		Memory.mem_copy		(pImagePixels,Image.pData,dwH*dwP);
 		while (dwWidth!=dwW) {
 			pNewPixels=TUBuild32MipLevel(Mipgen,dwW,dwH,dwP,pImagePixels);
 			xr_free(pImagePixels); pImagePixels=pNewPixels; pNewPixels=NULL;

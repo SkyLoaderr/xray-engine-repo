@@ -62,7 +62,7 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 	if (I!=players.end())
 	{
 		Player& IP		= I->second;
-		PSGP.memCopy	(&IP,&PS,sizeof(PS));
+		Memory.mem_copy	(&IP,&PS,sizeof(PS));
 	}
 }
 

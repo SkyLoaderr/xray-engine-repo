@@ -226,7 +226,7 @@ WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, u32 count)
 {
 	R_ASSERT		(dest && src && count);
 
-	PSGP.memCopy	(dest,src,count);
+	Memory.mem_copy	(dest,src,count);
 	return WORD		(count);
 
 	/*
@@ -257,7 +257,7 @@ WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, u32 count)
 {  
 	R_ASSERT(dest && src && count);
 
-	PSGP.memCopy	(dest,src,count);
+	Memory.mem_copy	(dest,src,count);
 	return			WORD(count);
 
 	/*

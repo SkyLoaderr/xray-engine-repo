@@ -77,7 +77,7 @@ void	CPrimitive::IB_Create	(u32 dwBaseVert, u32 dwCount, u32 dwUsage,VOID* pData
 		&pIndices
 		));
 	if (pData){
-		PSGP.memCopy(IB_Lock(),pData,dwCount*2);
+		Memory.mem_copy(IB_Lock(),pData,dwCount*2);
 		IB_Unlock	();
 	}
 }

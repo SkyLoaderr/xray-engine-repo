@@ -39,7 +39,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 		
 		seq.resize	(sz/sizeof(Fmatrix));
 		m_count		= seq.size();
-		PSGP.memCopy(&*seq.begin(),data,sz);
+		Memory.mem_copy(&*seq.begin(),data,sz);
 		xr_free		(data);
 		Log			("! Total frames: ",m_count);
 	}

@@ -35,7 +35,7 @@ public:
 	}
 	void				implication	(NET_Packet& P) const
 	{
-		PSGP.memCopy	(P.B.data,data.begin(),data.size());
+		Memory.mem_copy	(P.B.data,data.begin(),data.size());
 		P.B.count		= data.size();
 		P.r_pos			= 0;
 	}

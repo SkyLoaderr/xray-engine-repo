@@ -59,7 +59,7 @@ void TransferGeometry	(LPVOID vDest, LPVOID vSrc, u32 vCount, u32 vStride,
 			break;
 		}
 	} else {
-		PSGP.memCopy	(vDest,vSrc,vCount*vStride);
+		Memory.mem_copy	(vDest,vSrc,vCount*vStride);
 	}
 
 	// Transfer indices (in 32bit lines)

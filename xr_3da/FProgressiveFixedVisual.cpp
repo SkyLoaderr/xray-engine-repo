@@ -154,7 +154,7 @@ void	FProgressiveFixedVisual::Copy(CVisual *pFrom)
 	R_CHK					(pSrc->pIndices->Lock		(0,0,&d_src,D3DLOCK_READONLY));
 	R_CHK					(HW.pDevice->CreateIndexBuffer(iCount*2,desc.Usage,D3DFMT_INDEX16,desc.Pool,&pIndices));
 	R_CHK					(pIndices->Lock				(0,0,&d_dst,0));
-	PSGP.memCopy			(d_dst,d_src,desc.Size);
+	Memory.mem_copy			(d_dst,d_src,desc.Size);
 	R_CHK					(pIndices->Unlock());
 	R_CHK					(pSrc->pIndices->Unlock());
 }
