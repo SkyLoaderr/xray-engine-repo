@@ -28,7 +28,7 @@ public:
 	void							cform_write		(NET_Packet& P);
 									CSE_Shape		();
 	virtual							~CSE_Shape		();
-	virtual CSE_Shape*  __stdcall	shape			();
+	virtual CSE_Shape*  __stdcall	shape			() = 0;
 };
 add_to_type_list(CSE_Shape)
 #define script_type_list save_type_list(CSE_Shape)
@@ -45,7 +45,7 @@ public:
 
     void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return *visual_name;};
-	virtual CSE_Visual* __stdcall	visual			();
+	virtual CSE_Visual* __stdcall	visual			() = 0;
 };
 add_to_type_list(CSE_Visual)
 #define script_type_list save_type_list(CSE_Visual)
@@ -63,7 +63,7 @@ public:
     void							set_motion		(LPCSTR name);
 	LPCSTR							get_motion		() const {return *motion_name;};
 
-	virtual CSE_Motion* __stdcall	motion			();
+	virtual CSE_Motion* __stdcall	motion			() = 0;
 };
 add_to_type_list(CSE_Motion)
 #define script_type_list save_type_list(CSE_Motion)

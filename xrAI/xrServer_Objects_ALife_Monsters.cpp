@@ -259,6 +259,11 @@ CSE_ALifeCustomZone::~CSE_ALifeCustomZone	()
 {
 }
 
+CSE_Shape* CSE_ALifeCustomZone::shape		()
+{
+	return						(this);
+}
+
 void CSE_ALifeCustomZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	// CForm
@@ -468,6 +473,11 @@ CSE_ALifeTorridZone::CSE_ALifeTorridZone	(LPCSTR caSection)
 
 CSE_ALifeTorridZone::~CSE_ALifeTorridZone	()
 {
+}
+
+CSE_Motion* CSE_ALifeTorridZone::motion		()
+{
+	return						(this);
 }
 
 void CSE_ALifeTorridZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)

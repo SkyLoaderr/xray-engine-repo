@@ -227,6 +227,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
 									CSE_Event		(LPCSTR caSection);
 	virtual							~CSE_Event		();
 			void					Actions_clear	();
+	virtual CSE_Shape*  __stdcall	shape			();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_Event)
 #define script_type_list save_type_list(CSE_Event)

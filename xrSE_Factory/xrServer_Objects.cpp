@@ -221,6 +221,11 @@ CSE_Event::~CSE_Event						()
 {
 }
 
+CSE_Shape* CSE_Event::shape					()
+{
+	return						(this);
+}
+
 void CSE_Event::Actions_clear				()
 {
 	for (u32 a=0; a<Actions.size(); a++)

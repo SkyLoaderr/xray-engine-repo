@@ -198,6 +198,7 @@ add_to_type_list(CSE_ALifeDynamicObject)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject,CSE_Visual)
 									CSE_ALifeDynamicObjectVisual(LPCSTR caSection);
 	virtual							~CSE_ALifeDynamicObjectVisual();
+	virtual CSE_Visual* __stdcall	visual					();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeDynamicObjectVisual)
 #define script_type_list save_type_list(CSE_ALifeDynamicObjectVisual)
@@ -216,6 +217,7 @@ add_to_type_list(CSE_ALifePHSkeletonObject)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shape)
 									CSE_ALifeScriptZone		(LPCSTR caSection);
 	virtual							~CSE_ALifeScriptZone	();
+	virtual CSE_Shape*  __stdcall	shape					();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeScriptZone)
 #define script_type_list save_type_list(CSE_ALifeScriptZone)
@@ -325,6 +327,8 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CS
 	virtual							~CSE_ALifeHelicopter		();
 	virtual	void					load						(NET_Packet &tNetPacket);
 	virtual bool					used_ai_locations			() const;
+	virtual CSE_Motion*	__stdcall	motion						();
+
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHelicopter)
 #define script_type_list save_type_list(CSE_ALifeHelicopter)

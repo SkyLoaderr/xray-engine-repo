@@ -74,6 +74,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCustomZone,CSE_ALifeDynamicObject,CSE_Shap
 	
 									CSE_ALifeCustomZone		(LPCSTR caSection);
 	virtual							~CSE_ALifeCustomZone	();
+	virtual CSE_Shape*  __stdcall	shape					();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCustomZone)
 #define script_type_list save_type_list(CSE_ALifeCustomZone)
@@ -110,6 +111,7 @@ add_to_type_list(CSE_ALifeAnomalousZone)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTorridZone,CSE_ALifeCustomZone,CSE_Motion)
 									CSE_ALifeTorridZone		(LPCSTR caSection);
 	virtual							~CSE_ALifeTorridZone	();
+	virtual CSE_Motion*	__stdcall	motion					();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTorridZone)
 #define script_type_list save_type_list(CSE_ALifeTorridZone)

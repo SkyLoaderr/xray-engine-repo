@@ -456,6 +456,11 @@ CSE_ALifeDynamicObjectVisual::~CSE_ALifeDynamicObjectVisual()
 {
 }
 
+CSE_Visual* CSE_ALifeDynamicObjectVisual::visual	()
+{
+	return						(this);
+}
+
 void CSE_ALifeDynamicObjectVisual::STATE_Write(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
@@ -553,12 +558,17 @@ void CSE_ALifePHSkeletonObject::FillProp(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeScriptZone
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeScriptZone::CSE_ALifeScriptZone(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection)
+CSE_ALifeScriptZone::CSE_ALifeScriptZone	(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection)
 {
 }
 
-CSE_ALifeScriptZone::~CSE_ALifeScriptZone()
+CSE_ALifeScriptZone::~CSE_ALifeScriptZone	()
 {
+}
+
+CSE_Shape* CSE_ALifeScriptZone::shape		()
+{
+	return						(this);
 }
 
 void CSE_ALifeScriptZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -1148,6 +1158,11 @@ CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicOb
 
 CSE_ALifeHelicopter::~CSE_ALifeHelicopter	()
 {
+}
+
+CSE_Motion* CSE_ALifeHelicopter::motion		()
+{
+	return						(this);
 }
 
 void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
