@@ -1,18 +1,37 @@
+local entered = false
+
+function on_enter (zone, object)
+	entered = true
+end
+
+
 function main ()
 
-	local boar = get_level_object ("boar")
-	local way = patrol ("way")
+	local zone = get_level_object ("hero_zone")
+	local hero = get_level_object ("hero")
+	local pos = patrol ("freeway"):point (0)
 
-	boar:script (true, s_test.script_name ())
+	zone:clear_callback (true)
+	zone:set_callback (s_test.on_enter, true)
+	hero:script (true, s_test.script_name ())
+    action (hero, anim ("mashina_0"), cond (cond.time_end, 1000000))
 
-	action (boar, move (move.act_stand_idle, move.default, vector ():set (0, 0, 0)), cond (cond.time_end, time_infinite))
+	while entered == false then wait () end
+
+	reset_action (hero, s_test.script_name ())
 	
-	wait (5000)
-	reset_action (boar, s_test.script_name ())
-	action (boar, move (move.act_run, move.force_type, way), cond (cond.move_end))
-	
-	while boar:action () do wait () end
+    action (hero, anim ("mashina_1"), cond (cond.anim_end))
+    action (hero, move (pos, 0.6), anim ("mashina_2"), cond (cond.anim_end))
+    action (hero, move (pos, 0.6), anim ("mashina_3"), cond (cond.anim_end))
+    action (hero, anim ("mashina_4"), cond (cond.anim_end))
+    action (hero, anim ("mashina_5"), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
+      cond (cond.anim_end))
 
-	boar:script (false, s_test.script_name ())
+    while hero:action () do wait () end
+
+
+    hero:script (false, s_test.script_name ())
+
+	
 
  end
