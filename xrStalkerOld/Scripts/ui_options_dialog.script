@@ -28,10 +28,6 @@ function options_dialog:__finalize()
 
 end
 
-function options_dialog:SetClGame(game_cl)
-   self.m_game_cl = game_cl
-end
-
 function options_dialog:InitControls()
 	ui_base_dialog.base_dialog.InitControls(self, "Options")
 
@@ -239,7 +235,7 @@ function options_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
    WINDOW_KEY_PRESSED = 6
 
 	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
-		self:OnButton_ok_clicked()
+		level.start_stop_menu(self,true)
 	end
    
 	return true
