@@ -6,10 +6,9 @@
 
 class CEffectorPPHit : public CEffectorPP
 {
-	float	fTime;
-	float	fSpeed;
+	float	fTime, fLifeTime;
 public:
-			CEffectorPPHit		();
+			CEffectorPPHit		(float time, float force);
 	virtual ~CEffectorPPHit		();
 	virtual	BOOL	Process		(SPPInfo& pp);
 };

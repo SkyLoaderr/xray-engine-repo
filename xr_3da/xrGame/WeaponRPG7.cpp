@@ -155,7 +155,15 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) {
 		CGameObject *l_pGO = *m_blasted.begin();
 		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->clCenter(l_goPos); else l_goPos.set(l_pGO->Position());
 		l_dir.sub(l_goPos, vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
-		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
+		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
+		if(l_pGO->Visual()) {
+			const Fbox &l_b1 = l_pGO->BoundingBox(); Fbox l_b2; l_b2.invalidate();
+			Fmatrix l_m; l_m.identity(); l_m.k.set(l_dir); GetBasis(l_m.k, l_m.i, l_m.j);
+			for(int i = 0; i < 8; i++) { Fvector l_v; l_b1.getpoint(i, l_v); l_m.transform_tiny(l_v); l_b2.modify(l_v); }
+			Fvector l_c, l_d; l_b2.get_CD(l_c, l_d);
+			l_S = l_d.x*l_d.y;
+		}
+		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * l_S;
 		if(l_impuls > .001f) {
 			setEnabled(false);
 			l_impuls *= l_pGO->ExplosionEffect(vPosition, m_blastR, l_elsemnts, l_bs_positions);

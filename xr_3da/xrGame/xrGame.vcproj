@@ -1076,6 +1076,16 @@
 								RelativePath="RGD5.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Weapon Val"
+							Filter="">
+							<File
+								RelativePath="WeaponVal.cpp">
+							</File>
+							<File
+								RelativePath="WeaponVal.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Target"

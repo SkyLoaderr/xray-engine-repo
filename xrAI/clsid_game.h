@@ -60,6 +60,7 @@
 #define CLSID_OBJECT_W_SVD			MK_CLSID('W','_','S','V','D',' ',' ',' ')
 #define CLSID_OBJECT_W_SVU			MK_CLSID('W','_','S','V','U',' ',' ',' ')
 #define CLSID_OBJECT_W_RPG7			MK_CLSID('W','_','R','P','G','7',' ',' ')
+#define CLSID_OBJECT_W_VAL			MK_CLSID('W','_','V','A','L',' ',' ',' ')
 
 // Weapons Ammo
 #define CLSID_OBJECT_A_M134			MK_CLSID('A','_','M','1','3','4',' ',' ')

@@ -707,6 +707,7 @@ extern "C" {
 		case CLSID_OBJECT_W_SVD:		P = xr_new<CWeaponSVD>();			break;
 		case CLSID_OBJECT_W_SVU:		P = xr_new<CWeaponSVU>();			break;
 		case CLSID_OBJECT_W_RPG7:		P = xr_new<CWeaponRPG7>();			break;
+		case CLSID_OBJECT_W_VAL:		P = xr_new<CWeaponAK74>();			break;
 
 		// Inventory
 		case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;

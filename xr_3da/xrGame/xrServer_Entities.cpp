@@ -1392,6 +1392,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_GRENADE_F1:			return xr_new<CALifeDynamicObject>	(caSection);
 	case CLSID_OBJECT_G_RPG7:		return xr_new<CALifeDynamicObject>	(caSection);
 	case CLSID_GRENADE_RGD5:		return xr_new<CALifeDynamicObject>	(caSection);
+	case CLSID_OBJECT_W_VAL:		return xr_new<xrSE_Weapon>			(caSection);
 }
 	return 0;
 }

@@ -429,6 +429,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse);
 		break;
 	}
+	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(2.5f, 1.f));
 }
 
 

@@ -5,10 +5,9 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorPPHit::CEffectorPPHit() : CEffectorPP(cefppHit,10000.f)
+CEffectorPPHit::CEffectorPPHit(float time, float force) : CEffectorPP(cefppHit,time)
 {
-	fTime			= 0;
-	fSpeed			= 10.f;
+	fTime = fLifeTime = time;
 }
 
 CEffectorPPHit::~CEffectorPPHit	()
@@ -17,8 +16,8 @@ CEffectorPPHit::~CEffectorPPHit	()
 
 BOOL CEffectorPPHit::Process	(SPPInfo& pp)
 {
-	fTime			+= fSpeed*Device.fTimeDelta;
-	//pp.duality.h	+= _sin(fTime);
-	//pp.duality.v	+= _cos(fTime);
+	fLifeTime -= Device.fTimeDelta; if(fLifeTime<0) return FALSE;
+	pp.duality.h	= 1.f * fLifeTime / fTime;
+	pp.duality.v	= 1.f * fLifeTime / fTime;
 	return TRUE;
 }
