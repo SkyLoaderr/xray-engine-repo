@@ -71,14 +71,23 @@ void CBitingAttack::Init()
 
 	bCanThreaten	= true;
 
+	temp_pos.set		(0.f,0.f,1.f);
+	m_dwTimeWalkingPath  = 0;
+
+	time_start_walk_away = 0;
+
+
+	once_flag_1 = once_flag_1 = false;
+
 	// Test
 	LOG_EX("_ Attack Init _");
 }
 
+#define TIME_WALK_PATH 5000
+
 void CBitingAttack::Run()
 {
 	// ≈сли враг изменилс€, инициализировать состо€ние
-//	if (!pMonster->m_tEnemy.obj) R_ASSERT("m_enemy undefined!!!");
 	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
 	else m_tEnemy = pMonster->m_tEnemy;
 
@@ -101,8 +110,6 @@ void CBitingAttack::Run()
 		m_tAction = ACTION_RUN;
 	}
 
-	u32 delay;
-
 	// проверить на возможность прыжка
 	CJumping *pJumping = dynamic_cast<CJumping *>(pMonster);
 	if (pJumping) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
@@ -112,43 +119,30 @@ void CBitingAttack::Run()
 		return;
 	}
 
+	// проверить на возможность подкрадывани€
 	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
 	if ((ACTION_RUN == m_tAction) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
 
-//	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
+	// проверить на возможность пугани€
+	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
 
-//#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
-//	if (m_bInvisibility && ACTION_THREATEN != m_tAction) {
-//		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
-//		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
-//
-//		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
-//			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
-//				if (pBS->CMonsterInvisibility::Switch(false)) {
-//					pBS->ChangePower(pBS->m_ftrPowerDown);
-//					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-//				}
-//			}
-//		}
-//	}
-
+	// ѕроверить, достижим ли противник
+	if (pMonster->ObjectNotReachable(m_tEnemy.obj)) {
+		m_tAction = ACTION_WALK_ANGRY_AROUND;
+	}
 
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {	
 		case ACTION_RUN:		 // бежать на врага
-			delay = ((m_bAttackRat)? 0: 300);
-
-			pMonster->set_level_dest_vertex(m_tEnemy.obj->level_vertex_id());
-			pMonster->set_dest_position(pMonster->CheckPosition(m_tEnemy.obj, m_tEnemy.obj->Position()));
-			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
-
+			pMonster->MoveToTarget(m_tEnemy.obj);
 			pMonster->MotionMan.m_tAction = ACT_RUN;
+
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
-			pMonster->enable_movement(false);			
 			
-			bCanThreaten	= false;
+			pMonster->enable_movement(false);			
+			bCanThreaten			= false;
 
 			// если враг крыса под монстром подпрыгнуть и убить
 			if (m_bAttackRat) {
@@ -164,53 +158,60 @@ void CBitingAttack::Run()
 
 			// —мотреть на врага 
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
-				float yaw, pitch;
-				Fvector dir;
-				yaw = pMonster->m_body.target.yaw;
-				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
-				dir.getHP(yaw,pitch);
-				yaw *= -1;
-				yaw = angle_normalize(yaw);
-				pMonster->m_body.target.yaw = yaw;
+				pMonster->FaceTarget(m_tEnemy.obj);
 			DO_IN_TIME_INTERVAL_END();
 			
 			if (m_bAttackRat) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 			pMonster->MotionMan.m_tAction = ACT_ATTACK;
 
+
 			break;
 		case ACTION_STEAL:
 			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
-
-			pMonster->set_level_dest_vertex(m_tEnemy.obj->level_vertex_id());
-			pMonster->set_dest_position(pMonster->CheckPosition(m_tEnemy.obj, m_tEnemy.obj->Position()));
-			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
-
+			pMonster->MoveToTarget(m_tEnemy.obj);
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			break;
 		case ACTION_THREATEN: 
-			// —мотреть на врага 
-			LOG_EX("ACTION THREATEN!!!");
 			pMonster->enable_movement(false);
 
+			// —мотреть на врага 
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
-				float yaw, pitch;
-				Fvector dir;
-				yaw = pMonster->m_body.target.yaw;
-				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
-				dir.getHP(yaw,pitch);
-				yaw *= -1;
-				yaw = angle_normalize(yaw);
-				pMonster->m_body.target.yaw = yaw;
+				pMonster->FaceTarget(m_tEnemy.obj);
 			DO_IN_TIME_INTERVAL_END();
 
 			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
+			break;
+
+		case ACTION_WALK_ANGRY_AROUND:
+			pMonster->enable_movement(false);
+			pMonster->LookPosition(m_tEnemy.obj->Position(), PI_DIV_2);
+			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 
 			break;
 	}
 
 	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
+ 
+
+#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+	if (m_bInvisibility && ACTION_THREATEN != m_tAction) {
+		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
+		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
+
+		bool			bActorIsEnemy = (dynamic_cast<CActor*>(m_tEnemy.obj) == 0);	// set !=0 to work
+
+		if (pBS && pA && bActorIsEnemy && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
+			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
+				if (pBS->CMonsterInvisibility::Switch(false)) {
+					pBS->ChangePower(pBS->m_ftrPowerDown);
+					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+				}
+			}
+		}
+	}
 }
+
 
 void CBitingAttack::Done()
 {
@@ -218,7 +219,6 @@ void CBitingAttack::Done()
 
 	pMonster->AS_Stop();
 }
-
 
 // –еализаци€ пугани€:
 // мораль - маленька€, рассто€ние - рассто€ние дл€ аттаки
@@ -228,31 +228,72 @@ void CBitingAttack::Done()
 bool CBitingAttack::CheckThreaten()
 {
 //	if (pMonster->GetEntityMorale() > 0.8f) {
-//		LOG_EX("Try Threaten:: Entity Morale > 0.8");
 //		return false;
 //	}
 
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) == FLAG_ENEMY_DOESNT_SEE_ME) || 
 		((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST)) {
-		LOG_EX("Try Threaten:: враг бежит || не видит");
 		return false;
 	}
 
 	if ((dist < m_fDistMin) || (dist > m_fDistMax)) {
-		LOG_EX("Try Threaten:: дистанци€ не дл€ атаки");
 		return false;
 	}
 	if (pMonster->IsDangerousEnemy(m_tEnemy.obj)) {
-		LOG_EX("Try Threaten:: враг опасный");
 		return false;
 	}
 
 	if (!bCanThreaten) {
-		LOG_EX("Try Threaten:: не могу атаковать");	
 		return false;
 	}
 
 	return true;
 }
 
+Fvector CBitingAttack::RandomPos(Fvector pos, float R)
+{
+	Fvector local;
+
+	local = pos;
+	local.x += ::Random.randF(-R,R);
+	local.z += ::Random.randF(-R,R);
+
+	return local;
+}
+
+void CBitingAttack::WalkAngrySubState()
+{
+	switch (m_tAction) {
+	case ACTION_WALK_AWAY:	
+		DO_ONCE_BEGIN(once_flag_2);
+			time_start_walk_away = m_dwCurrentTime;
+		DO_ONCE_END();
+
+		pMonster->Path_WalkAroundObj(m_tEnemy.obj, m_tEnemy.obj->Position());
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		
+		if (TIME_OUT(time_start_walk_away, 5000) || pMonster->IsMoveAlongPathFinished()) 
+			m_tAction = ACTION_FACE_ENEMY;
+	
+		break;
+	case ACTION_FACE_ENEMY:
+		pMonster->enable_movement(false);
+
+		DO_ONCE_BEGIN(once_flag_1);
+			pMonster->FaceTarget(m_tEnemy.obj);
+		DO_ONCE_END();
+
+		if (angle_difference(pMonster->m_body.target.yaw,pMonster->m_body.current.yaw) < PI_DIV_6/6)
+			m_tAction = ACTION_THREATEN2;
+
+		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+
+		break;
+	case ACTION_THREATEN2:	
+		pMonster->enable_movement(false);	
+		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+		pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
+		break;
+	}
+}
 

@@ -171,7 +171,7 @@ void CAI_Biting::vfUpdateParameters()
 	cur_pos			= Position();
 
 	bStanding		= !!prev_pos.similar(cur_pos);
-	if (bStanding && (0 == time_start_stand)) time_start_stand = m_current_update;		// только начинаем стоять на месте
+	if (bStanding && (0 == time_start_stand)) time_start_stand = m_dwCurrentTime;		// только начинаем стоять на месте
 	if (!bStanding) time_start_stand = 0; 
 
 	prev_pos	= cur_pos;
@@ -182,7 +182,7 @@ void CAI_Biting::vfUpdateParameters()
 
 bool CAI_Biting::IsStanding (TTime time)
 {
-	return (bStanding && (time_start_stand + time < Level().timeServer()));
+	return (bStanding && (time_start_stand + time < m_dwCurrentTime));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

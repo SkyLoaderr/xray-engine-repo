@@ -84,13 +84,17 @@ void CBitingEat::Run()
 	else if (bRestAfterLunch) m_tAction = ACTION_LITTLE_REST;
 	else if (bEating && (cur_dist > m_fDistToCorpse)) m_tAction = ACTION_WALK;
 
-	LOG_EX2("My pos[%f,%f,%f],c.pos[%f,%f,%f], dist[%f], r[%f]", *"*/ VPUSH(pMonster->Position()), VPUSH(nearest_bone_pos), cur_dist, m_fDistToCorpse  /*"*);
-	
 	float saved_dist	= SavedPos.distance_to(pMonster->Position()); // расстояние, на которое уже оттащен труп
+
+	u32 node_id;
 
 	switch (m_tAction) {
 	case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
-		pMonster->set_level_dest_vertex (pCorpse->level_vertex_id());
+		
+		node_id = ai().level_graph().check_position_in_direction(pCorpse->level_vertex_id(), pCorpse->Position(), nearest_bone_pos);
+		if (node_id == -1)pMonster->set_level_dest_vertex (pCorpse->level_vertex_id());
+		else pMonster->set_level_dest_vertex (node_id);
+		
 		pMonster->set_dest_position(nearest_bone_pos);
 		pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 		
@@ -141,7 +145,7 @@ void CBitingEat::Run()
 		break;
 	
 	case ACTION_GET_HIDE:
-		pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 10.f, 300);
+		pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 10.f);
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
 
 		if (cur_dist > 10.f) {
@@ -150,9 +154,6 @@ void CBitingEat::Run()
 			bRestAfterLunch	= true;
 			m_dwTimeStartRest = m_dwCurrentTime;
 		}
-
-		LOG_EX("EAT:: action_get_hide activated");
-
 		break;
 	case ACTION_LITTLE_REST:
 		pMonster->enable_movement	(false);
@@ -162,9 +163,6 @@ void CBitingEat::Run()
 			pMonster->flagEatNow	= false;
 			bRestAfterLunch			= false; 
 		}
-		
-		LOG_EX("EAT:: action_little_rest activated");
-
 		break;
 
 	case ACTION_WALK:
@@ -200,7 +198,7 @@ void CBitingEat::Run()
 
 	case ACTION_DRAG:
 		
-		pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist, 500);
+		pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist);
 
 		// Установить параметры движения
 		pMonster->MotionMan.m_tAction = ACT_DRAG; 

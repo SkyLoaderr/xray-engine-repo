@@ -114,7 +114,12 @@ class CBitingAttack : public IState {
 		ACTION_ATTACK_MELEE,
 		ACTION_FIND_ENEMY,
 		ACTION_STEAL,
-		ACTION_THREATEN
+		ACTION_THREATEN,
+		ACTION_WALK_ANGRY_AROUND,
+		ACTION_STAND_ANGRY_FACE_ENEMY,
+		ACTION_WALK_AWAY,
+		ACTION_FACE_ENEMY,
+		ACTION_THREATEN2,
 	} m_tAction;
 
 	VisionElem		m_tEnemy;
@@ -138,6 +143,12 @@ class CBitingAttack : public IState {
 
 	bool			bCanThreaten;
 
+	Fvector			temp_pos;
+	TTime			m_dwTimeWalkingPath;
+
+	bool			once_flag_1,once_flag_2;
+
+	TTime			time_start_walk_away;
 
 public:	
 					CBitingAttack	(CAI_Biting *p, bool bVisibility);
@@ -149,6 +160,9 @@ public:
 	virtual void	Done			();
 
 			bool	CheckThreaten	();
+			Fvector RandomPos		(Fvector pos, float R);
+			
+			void	WalkAngrySubState();
 
 };
 

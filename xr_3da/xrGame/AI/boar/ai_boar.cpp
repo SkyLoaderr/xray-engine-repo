@@ -136,7 +136,7 @@ void CAI_Boar::CheckSpecParams(u32 /**spec_params/**/)
 
 }
 
-void CAI_Boar::LookPosition(Fvector to_point)
+void CAI_Boar::LookPosition(Fvector to_point, float angular_speed)
 {
 	Fvector dir;
 	dir.sub(to_point, Position());

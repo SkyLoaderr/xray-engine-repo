@@ -18,9 +18,10 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters		();
 
-	// Pre Update path parameters
+	// pre-update path parameters
 	enable_movement(true);
-	
+	CLevelLocationSelector::set_evaluator(0);
+
 	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
 		CurrentState->Reset();
 		SetState(stateRest);
@@ -29,13 +30,13 @@ void CAI_Biting::Think()
 	StateSelector			();
 	CurrentState->Execute	(m_current_update);
 
-	// Update path
+	// update path
 	CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
-	set_desirable_speed		(m_fCurSpeed);
 	update_path				();
 
 	MotionMan.ProcessAction();
 
+	set_desirable_speed		(m_fCurSpeed);
 
 	// process sound
 	ControlSound(m_current_update);

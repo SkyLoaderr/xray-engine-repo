@@ -168,9 +168,10 @@ public:
 
 	// path routines
 			void			vfInitSelector					(PathManagers::CAbstractVertexEvaluator &S, bool hear_sound = false);
-			void			Path_GetAwayFromPoint			(CEntity *pE, Fvector position, float dist, TTime rebuild_time);
-			void			Path_CoverFromPoint				(CEntity *pE, Fvector position, TTime rebuild_time);
-			void			Path_ApproachPoint				(CEntity *pE, Fvector position, TTime rebuild_time);
+			void			Path_GetAwayFromPoint			(CEntity *pE, Fvector position, float dist);
+			void			Path_CoverFromPoint				(CEntity *pE, Fvector position);
+			void			Path_ApproachPoint				(CEntity *pE, Fvector position);
+			void			Path_WalkAroundObj				(CEntity *pE, Fvector position);
 
 	// Other
 			void			vfUpdateParameters				();
@@ -188,7 +189,7 @@ public:
 	
 	// Other 
 			void			SetDirectionLook				(bool bReversed = false);
-	virtual void			LookPosition					(Fvector to_point);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
+	virtual void			LookPosition					(Fvector to_point, float angular_speed = PI_DIV_3);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 
 	// Process scripts
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
@@ -217,7 +218,8 @@ public:
 			
 			bool			IsRightSide						(float ty, float cy) {return ((angle_normalize_signed(ty - cy) > 0));}
 
-			Fvector			CheckPosition					(CEntity *pE, Fvector v);
+			Fvector			GetValidPosition				(CEntity *entity, const Fvector &actual_position);
+
 // members
 public:
 
@@ -235,16 +237,14 @@ public:
 	xr_vector<Fvector>		m_tpaTravelPath;
 	xr_vector<u32>			m_tpaPointNodes;
 	xr_vector<u32>			m_tpaNodes;
-//	PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>			*m_tSelectorFreeHunting;
-//	PathManagers::CVertexEvaluator<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	*m_tSelectorCover;
-//	PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>			*m_tSelectorGetAway;
-//	PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>			*m_tSelectorApproach;
-//	PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>			*m_tSelectorHearSnd;
+
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorFreeHunting;
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorCover;
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorGetAway;
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorApproach;
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorHearSnd;
+	PathManagers::CAbstractVertexEvaluator	*m_tSelectorWalkAround;
+	
 
 	EBitingPathState		m_tPathState;
 	u32						m_dwPathBuiltLastTime;
@@ -325,6 +325,17 @@ public:
 		s_dbg() {active = false;}
 		void set(const Fvector &f) {pos = f; active = true;}
 	} dbg_info;
+
+	
+	// PathManagement Bridge
+	void MoveToTarget			(CEntity *entity); 
+	void MoveToTarget			(const Fvector &pos, u32 node_id);
+	void FaceTarget				(CEntity *entity);
+	void FaceTarget				(const Fvector &position);
+	bool IsObjectPositionValid	(CEntity *entity);
+	bool IsMoveAlongPathFinished();
+	bool IsMovingOnPath			();
+	bool ObjectNotReachable		(CEntity *entity);
 
 };
 

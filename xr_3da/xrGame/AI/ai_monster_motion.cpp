@@ -226,7 +226,7 @@ bool CMotionManager::PrepareAnimation()
 	// установить анимацию	
 	m_tpCurAnim = anim_it->second.pMotionVect[index];
 	
-	LOG_EX2("ANIM: Name = [%s], Time =[%u]", *"*/ *anim_it->second.target_name, pMonster->m_dwCurrentTime /*"*);
+	LOG_EX2("SET_ANIM = [%s]", *"*/ *anim_it->second.target_name /*"*);
 
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);
@@ -278,6 +278,9 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 // выполняется на каждом шед.апдейте, после выполнения состояния
 void CMotionManager::ProcessAction()
 {
+	bad_motion_fixed		= false;
+
+	
 	if (pJumping && pJumping->IsActive()) return;
 
 	if (!seq_playing) {
@@ -287,7 +290,7 @@ void CMotionManager::ProcessAction()
 		cur_anim = MI.anim;
 
 		// установить target.yaw
-		if (!pMonster->CDetailPathManager::path().empty()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
+		if (!pMonster->CDetailPathManager::path().empty() && pMonster->CMovementManager::enabled()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
 		// если новая анимация не совпадает с предыдущей, проверить переход
 		if (prev_anim != cur_anim) CheckTransition(prev_anim, cur_anim);
@@ -301,10 +304,9 @@ void CMotionManager::ProcessAction()
 					// необходим поворот влево или вправо
 					if (angle_normalize_signed(target_yaw - cur_yaw) > 0) 	cur_anim = MI.turn.anim_right;	// вправо
 					else													cur_anim = MI.turn.anim_left; 	// влево
-
-					// Проверить, является ли это хорошим методом
-					Seq_Add(cur_anim);
-					Seq_Switch();
+					// Проверить, является ли это хорошим методом (вроде не очень)
+					// Seq_Add(cur_anim);
+					// Seq_Switch();
 				}
 			}	
 
@@ -358,37 +360,30 @@ void CMotionManager::OnAnimationEnd()
 // если монстр стоит на месте и играет анимацию движения - force stand idle
 void CMotionManager::FixBadState()
 {	
-	if (IsMoving() && pMonster->CDetailPathManager::completed(pMonster->Position()))
+	bool is_moving_action = IsMoving();
+	bool is_action_changed = prev_action != m_tAction;
+	TTime cur_time = Level().timeServer();
+
+	if (pMonster->CDetailPathManager::completed(pMonster->Position()) && is_moving_action) {
+		bad_motion_fixed = true;
 		cur_anim = eAnimStandIdle;
+		return;
+	}
 
-//	bool is_moving_action = IsMoving();
-//	bool is_action_changed = prev_action != m_tAction;
-//	TTime cur_time = Level().timeServer();
-//
-//	// если конец пути и монстр идёт - исправить
-//	if (!pMonster->valid() && is_moving_action) {
-//		cur_anim = eAnimStandIdle;
-//		return;
-//	}
-//
-//	// исправления сосояния 'бега на месте'
-//	if (is_action_changed) {
-//		time_start_stand = 0;
-//	}
-//
-//	// если только начинаем стоять, проигрывая анимацию движения
-//	if (is_moving_action && (0 == time_start_stand)) {
-//		time_start_stand	= cur_time;
-//	}
-//
-//	if (is_moving_action && !is_action_changed && (time_start_stand + CRITICAL_STAND_TIME < cur_time) && pMonster->IsStanding(CRITICAL_STAND_TIME)) {
-//		cur_anim = eAnimStandIdle;	
-//
-//		if (time_start_stand + CRITICAL_STAND_TIME + TIME_STAND_RECHECK < cur_time) time_start_stand = 0;
-//	}
-//
-//	prev_action = m_tAction;
+	if (is_action_changed) {
+		time_start_stand = 0;
+	}
 
+	if (is_moving_action && (0 == time_start_stand)) {
+		time_start_stand	= cur_time;
+	}
+
+	if (is_moving_action && !is_action_changed && (time_start_stand + CRITICAL_STAND_TIME < cur_time) && pMonster->IsStanding(CRITICAL_STAND_TIME)) {
+		bad_motion_fixed = true;
+		cur_anim = eAnimStandIdle;	
+		if (time_start_stand + CRITICAL_STAND_TIME + TIME_STAND_RECHECK < cur_time) time_start_stand = 0;
+	}
+	prev_action = m_tAction;
 }
 
 void CMotionManager::CheckReplacedAnim()
@@ -659,9 +654,5 @@ void CMotionManager::FX_Play(u16 bone, bool is_front, float amount)
 
 	fx_time_last_play = pMonster->m_dwCurrentTime;
 }
-
-
-
-
 
 

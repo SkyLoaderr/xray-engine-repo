@@ -38,7 +38,7 @@ void CBitingHide::Run()
 	if (m_tEnemy.obj) EnemyPos = m_tEnemy.obj->Position();
 	else EnemyPos = m_tEnemy.position;
 
-	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj, EnemyPos, 3.f, 2000);
+	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj, EnemyPos, 3.f);
 
 	// Установить параметры движения
 	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

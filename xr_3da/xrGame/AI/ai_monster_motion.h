@@ -263,6 +263,8 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 
 	TTime					fx_time_last_play;
 
+	bool					bad_motion_fixed;		// true, если монстр пытается двигаться, но стоит на месте
+
 public:
 	
 	EAction					m_tAction;
@@ -332,8 +334,11 @@ public:
 	void		FX_ConvertMap			();
 	void		FX_Play					(u16 bone, bool is_front, float amount);
 
-		// Обновить tpKinematics
+	// Обновить tpKinematics
 	void		UpdateVisual			();
+
+
+	bool		BadMotionFixed			() {return bad_motion_fixed;}
 
 private:	
 
@@ -349,8 +354,6 @@ private:
 	// работа с анимациями атак
 	void		AA_Clear				(); 
 	void		AA_SwitchAnimation		(EMotionAnim a, u32 i3);
-
-private:
 
 	// дополнительные функции
 	EPState		GetState				(EMotionAnim a);

@@ -17,7 +17,7 @@ public:
 
 	virtual void	ProcessTurn			();
 
-	virtual	void	LookPosition		(Fvector to_point);
+	virtual	void	LookPosition		(Fvector to_point, float angular_speed = PI_DIV_3);
 
 	CBitingNull		*stateTest;
 };

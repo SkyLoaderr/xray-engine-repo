@@ -65,7 +65,7 @@ void CBitingExploreDNE::Run()
 	case ACTION_RUN_AWAY: // убегать на N метров от звука
 		LOG_EX(" DNE : [RUN AWAY]");
 
-		pMonster->Path_GetAwayFromPoint (0, m_tSound.position, m_fRunAwayDist, 2000);
+		pMonster->Path_GetAwayFromPoint (0, m_tSound.position, m_fRunAwayDist);
 		pMonster->MotionMan.m_tAction = ACT_RUN;
 
 		// каждую минуту сохранять текущую позицию, а затем развернуться и посмотреть в последнюю позицию
@@ -97,8 +97,6 @@ void CBitingExploreDNE::Run()
 		break;
 
 	case ACTION_LOOK_AROUND:
-		LOG_EX("DNE : [LOOK_AROUND]");
-		
 		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
 		break;
 	}

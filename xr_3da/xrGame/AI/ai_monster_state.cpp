@@ -52,6 +52,8 @@ void IState::Execute(TTime cur_time)
 
 void IState::Init()
 {
+	Reset					();
+
 	m_dwNextThink			= m_dwCurrentTime;
 	m_tState				= STATE_RUN;
 	m_dwStateStartedTime	= m_dwCurrentTime;

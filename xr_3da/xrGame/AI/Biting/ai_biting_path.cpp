@@ -43,7 +43,7 @@ void CAI_Biting::vfInitSelector(PathManagers::CAbstractVertexEvaluator &S, bool 
 }
 
 // high level 
-void CAI_Biting::Path_GetAwayFromPoint(CEntity *pE, Fvector position, float dist, TTime rebuild_time)
+void CAI_Biting::Path_GetAwayFromPoint(CEntity *pE, Fvector position, float dist)
 {
 	if (pE) {
 		m_tEnemy.Set(pE,0);									// forse enemy selection
@@ -62,7 +62,7 @@ void CAI_Biting::Path_GetAwayFromPoint(CEntity *pE, Fvector position, float dist
 	CLevelLocationSelector::set_evaluator(m_tSelectorGetAway);
 }
 
-void CAI_Biting::Path_CoverFromPoint(CEntity *pE, Fvector position, TTime rebuild_time)
+void CAI_Biting::Path_CoverFromPoint(CEntity *pE, Fvector position)
 {
 //	if (pE) {
 //		m_tEnemy.Set(pE,0); 									// forse enemy selection
@@ -81,7 +81,7 @@ void CAI_Biting::Path_CoverFromPoint(CEntity *pE, Fvector position, TTime rebuil
 //	vfChoosePointAndBuildPath(m_tSelectorCover, 0, true, 0, rebuild_time);
 }
 
-void CAI_Biting::Path_ApproachPoint(CEntity *pE, Fvector position, TTime rebuild_time)
+void CAI_Biting::Path_ApproachPoint(CEntity *pE, Fvector position)
 {
 	if (pE) {
 		m_tEnemy.Set(pE,0); 									// forse enemy selection
@@ -94,10 +94,25 @@ void CAI_Biting::Path_ApproachPoint(CEntity *pE, Fvector position, TTime rebuild
 	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
 }
 
-// Развернуть объект в направление движения
+void CAI_Biting::Path_WalkAroundObj(CEntity *pE, Fvector position)
+{
+	if (pE) {
+		m_tEnemy.Set(pE,0); 									// forse enemy selection
+		vfInitSelector(*m_tSelectorWalkAround, false);
+	} else {
+
+		vfInitSelector(*m_tSelectorWalkAround, true);
+		m_tSelectorWalkAround->m_tEnemyPosition = position;
+	}
+
+	CLevelLocationSelector::set_evaluator(m_tSelectorWalkAround);
+}
+
+
+
+// Развернуть объект в направление движения по пути
 void CAI_Biting::SetDirectionLook(bool bReversed)
 {
-
 	float yaw,pitch;
 	
 	// get prev
@@ -109,14 +124,11 @@ void CAI_Biting::SetDirectionLook(bool bReversed)
 	if (bReversed) m_body.target.yaw = angle_normalize(m_body.target.yaw + PI);
 	else m_body.target.yaw = angle_normalize(m_body.target.yaw);
 
-	LOG_EX2("DIRLOOK: current [%f], target [%f]", *"*/ m_body.current.yaw, m_body.target.yaw /*"*);
-
-
 	m_head.target = m_body.target;
 }
 
 // каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
-void CAI_Biting::LookPosition(Fvector to_point)
+void CAI_Biting::LookPosition(Fvector to_point, float angular_speed)
 {
 	// по-умолчанию просто изменить m_body.target.yaw
 	Fvector	dir;
@@ -131,8 +143,75 @@ void CAI_Biting::LookPosition(Fvector to_point)
 	m_body.target.yaw = angle_normalize(-yaw);
 }
 
-Fvector CAI_Biting::CheckPosition(CEntity *pE, Fvector v)
+// проверить, находится ли объект entity на ноде
+// возвращает позицию объекта, если он находится на ноде, или центр его ноды
+Fvector CAI_Biting::GetValidPosition(CEntity *entity, const Fvector &actual_position)
 {
-	if (ai().level_graph().inside(pE->level_vertex(), v)) return v;
-	else return ai().level_graph().vertex_position(pE->level_vertex());
+	if (ai().level_graph().inside(entity->level_vertex(), actual_position)) return actual_position;
+	else return ai().level_graph().vertex_position(entity->level_vertex());
+}
+
+void CAI_Biting::MoveToTarget(CEntity *entity) 
+{
+	set_level_dest_vertex(entity->level_vertex_id());
+	set_dest_position(GetValidPosition(entity, entity->Position()));
+	set_path_type (CMovementManager::ePathTypeLevelPath);
+}
+
+void CAI_Biting::MoveToTarget(const Fvector &pos, u32 node_id) 
+{
+	set_level_dest_vertex(node_id);
+	set_dest_position(pos);
+	set_path_type (CMovementManager::ePathTypeLevelPath);
+}
+
+void CAI_Biting::FaceTarget(CEntity *entity) 
+{
+	float yaw, pitch;
+	Fvector dir;
+	
+	dir.sub(entity->Position(), Position());
+	dir.getHP(yaw,pitch);
+	yaw *= -1;
+	yaw = angle_normalize(yaw);
+	m_body.target.yaw = yaw;
+
+}
+
+void CAI_Biting::FaceTarget(const Fvector &position) 
+{
+	float yaw, pitch;
+	Fvector dir;
+
+	dir.sub(position, Position());
+	dir.getHP(yaw,pitch);
+	yaw *= -1;
+	yaw = angle_normalize(yaw);
+	m_body.target.yaw = yaw;
+}
+
+
+// возвращает true, если объект entity находится на ноде
+bool CAI_Biting::IsObjectPositionValid(CEntity *entity)
+{
+	return ai().level_graph().inside(entity->level_vertex_id(), entity->Position());
+}
+
+bool CAI_Biting::IsMoveAlongPathFinished()
+{
+	return CDetailPathManager::completed(Position());
+}
+
+bool CAI_Biting::IsMovingOnPath	()
+{
+	return !IsMoveAlongPathFinished() && CMovementManager::enabled();
+}
+
+
+bool CAI_Biting::ObjectNotReachable(CEntity *entity) 
+{
+	if (!IsObjectPositionValid(entity)) return true;
+	if (MotionMan.BadMotionFixed()) return true;
+
+	return false;
 }

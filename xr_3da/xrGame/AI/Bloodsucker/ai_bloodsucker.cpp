@@ -79,11 +79,11 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimSitToSleep,		"sit_sleep_down_",		-1, 0,										0,										PS_SIT);
 	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,										0,										PS_STAND);
 	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,				inherited::_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimThreaten,		"stand_aggressive_",	-1, 0,										0,										PS_STAND);
+	MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1, 0,										0,										PS_STAND);
 	MotionMan.AddAnim(eAnimMiscAction_00,	"stand_to_aggressive_",	-1, 0,										0,										PS_STAND);	
 	
 	// define transitions
-	MotionMan.AddTransition(PS_STAND,			eAnimThreaten,	eAnimMiscAction_00,	false);
+//	MotionMan.AddTransition(PS_STAND,			eAnimThreaten,	eAnimMiscAction_00,	false);
 	MotionMan.AddTransition(eAnimStandSitDown,	eAnimSleep,		eAnimSitToSleep,	false);
 	MotionMan.AddTransition(PS_STAND,			eAnimSleep,		eAnimStandSitDown,	true);
 	MotionMan.AddTransition(PS_STAND,			PS_SIT,			eAnimStandSitDown,	false);
@@ -92,7 +92,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.AddTransition(PS_LIE,				PS_STAND,		eAnimSitStandUp,	false);
 
 	// define links from Action to animations
-	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6/5);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
@@ -110,11 +110,11 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
 
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		1.3f, inherited::_sd->m_fHitPower, -PI_DIV_6,	PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	center,		1.3f, inherited::_sd->m_fHitPower, 0.f,			PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		1.4f, inherited::_sd->m_fHitPower, PI_DIV_3,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		2.2f, inherited::_sd->m_fHitPower, -PI_DIV_6,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	center,		2.2f, inherited::_sd->m_fHitPower, 0.f,			PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		2.3f, inherited::_sd->m_fHitPower, PI_DIV_3,	PI_DIV_6);
 
-	MotionMan.FX_LoadMap(section); 
+	//MotionMan.FX_LoadMap(section); 
 
 	END_LOAD_SHARED_MOTION_DATA();
 }
@@ -143,7 +143,7 @@ void CAI_Bloodsucker::vfAssignBones()
 }
 
 
-#define MAX_BONE_ANGLE PI_DIV_2
+#define MAX_BONE_ANGLE PI_DIV_4
 
 void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 {
@@ -160,7 +160,7 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	if (angle_difference(cur_yaw,yaw) <= MAX_BONE_ANGLE) {		// bone turn only
 		bone_angle = dy;
 	} else {													// torso & bone turn 
-		if (path_completed()) m_body.target.yaw = angle_normalize(-yaw);
+		if (IsMoveAlongPathFinished() || !CMovementManager::enabled()) m_body.target.yaw = angle_normalize(-yaw);
 		if (dy / 2 < MAX_BONE_ANGLE) bone_angle = dy / 2;
 		else bone_angle = MAX_BONE_ANGLE;
 	}
@@ -179,12 +179,12 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	Bones.SetMotion(bone_head,	AXIS_Y, pitch, bone_turn_speed, 100);	
 }
 
-void CAI_Bloodsucker::LookPosition(Fvector to_point)
+void CAI_Bloodsucker::LookPosition(Fvector to_point, float angular_speed)
 {
 	Fvector	dir;
 	dir.set(to_point);
 	dir.sub(Position());
-	LookDirection(dir,PI_DIV_3);
+	LookDirection(dir,angular_speed);
 }
 
 void CAI_Bloodsucker::ActivateEffector(float life_time)
@@ -220,7 +220,6 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 
 void CAI_Bloodsucker::UpdateCL()
 {
-	
 	inherited::UpdateCL();
 
 	// Blink processing
@@ -228,19 +227,11 @@ void CAI_Bloodsucker::UpdateCL()
 	bool NewVis		=	CMonsterInvisibility::Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
 
-	
-	HUD().pFontSmall->OutSet	(400,200);
-	HUD().pFontSmall->OutNext	("Cur = [%f], Target=[%f]", m_body.current.yaw, m_body.target.yaw);
 }
 
 void CAI_Bloodsucker::StateSelector()
 {
 	VisionElem ve;
-
-//	if (C || D || E || F) SetState(statePanic);
-//	else SetState(stateRest);
-//
-//	return;
 
 	if (C && H && I)			SetState(statePanic);
 	else if (C && H && !I)		SetState(statePanic);

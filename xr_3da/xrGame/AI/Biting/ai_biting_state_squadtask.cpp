@@ -46,7 +46,7 @@ void CBitingSquadTask::Run()
 	case SC_COVER:			break;
 	case SC_FOLLOW:			
 		// Exec path selector
-		pMonster->Path_ApproachPoint(0, task.target.pos, 2000);
+		pMonster->Path_ApproachPoint(0, task.target.pos);
 		pMonster->CLevelLocationSelector::set_evaluator(pMonster->m_tSelectorApproach);
 
 		LOG_EX("Squad Task	::	Evaluate selector... ");

@@ -24,7 +24,7 @@ public:
 	virtual void	CheckSpecParams		(u32 spec_params);
 	virtual	void	OnSoundPlay			();
 
-	virtual void	LookPosition		(Fvector to_point);		
+	virtual void	LookPosition		(Fvector to_point, float angular_speed = PI_DIV_3);		
 
 	virtual void	OnJumpStop			();
 	virtual bool	CanJump				() {return true;}

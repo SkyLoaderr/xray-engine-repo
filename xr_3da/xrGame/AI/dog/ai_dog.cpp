@@ -208,7 +208,7 @@ void CAI_Dog::OnSoundPlay()
 	if (!Bones.IsActive()) Bones.SetMotion(GetBoneInstance("bone01"),AXIS_Y, PI_DIV_6, PI_MUL_2, 1);
 }
 
-void CAI_Dog::LookPosition(Fvector /**pos/**/)
+void CAI_Dog::LookPosition(Fvector /**pos/**/, float angular_speed)
 {
 //	if (GetBoneInstance.IsActive()) return;
 //	TTime itime = TTime(MotionMan.jump.ph_time * 1000);
