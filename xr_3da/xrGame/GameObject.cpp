@@ -105,7 +105,10 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	// AI-DB connectivity
 	Fvector				nPos	= vPosition;
+	CTimer		T; T.Start		();
 	int node			= getAI().q_LoadSearch(nPos);
+	Msg			("--spawn--ai-node: %f ms",1000.f*T.GetAsync());
+
 	if (node<0)			{
 		Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
 		AI_NodeID			= u32(-1);

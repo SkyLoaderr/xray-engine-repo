@@ -53,8 +53,7 @@ void CAI_Stalker::OnDeviceCreate	()
 { 
 	inherited::OnDeviceCreate		();
 
-	CTimer		T;
-	T.Start		();
+	CTimer		T; T.Start		();
 	CStalkerAnimations::Load		(PKinematics(pVisual));
 	Msg			("--spawn--dc-anim-load: %f ms",1000.f*T.GetAsync());
 	T.Start		();
