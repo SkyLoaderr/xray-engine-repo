@@ -72,6 +72,8 @@ protected:
 	// Parentness
 	CObject*							Parent;
 public:
+	DWORD								dwFrame_UpdateCL;
+
 	// Network
 	IC BOOL								Local				()					{ return net_Local;		}
 	IC BOOL								Remote				()					{ return !net_Local;	}

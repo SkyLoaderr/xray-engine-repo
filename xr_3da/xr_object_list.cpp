@@ -75,12 +75,22 @@ void CObjectList::DestroyObject	( u32 ID )
 	DestroyObject(net_Find(ID));
 }
 
+IC void SingleUpdate			(CObject* O)
+{
+	if (Device.dwFrame != O->dwFrame_UpdateCL)
+	{
+		if (O->H_Parent())		SingleUpdate(O->H_Parent());
+		O->dwFrame_UpdateCL		= Device.dwFrame;
+		O->UpdateCL				();
+	}
+}
+
 void CObjectList::OnMove		()
 {
 	// Clients
 	Device.Statistic.UpdateClient.Begin		();
 	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
-		(*O)->UpdateCL();
+		SingleUpdate(*O);
 	Device.Statistic.UpdateClient.End		();
 }
 
