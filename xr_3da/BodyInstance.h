@@ -82,7 +82,7 @@ public:
 	BOOL			noloop;
 
 	PlayCallback	Callback;
-	void*			Callback_Param;
+	void*			CallbackParam;
 	
 	DWORD			dwFrame;
 };
@@ -179,7 +179,7 @@ public:
 	{	int		t = iFloor(V*655.35f); clamp(t,0,65535); return WORD(t); }
 
 	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, BOOL bCycle);
-	CBlend*		PlayCycle	(CKinematics* P, BOOL bMixIn);
+	CBlend*		PlayCycle	(CKinematics* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
 	CBlend*		PlayFX		(CKinematics* P);
 };
 
@@ -294,9 +294,9 @@ public:
 	// cycles
 	CMotionDef*					ID_Cycle		(LPCSTR  N);
 	CMotionDef*					ID_Cycle_Safe	(LPCSTR  N);
-	CBlend*						PlayCycle		(LPCSTR  N,  BOOL bMixIn=TRUE);
-	CBlend*						PlayCycle		(CMotionDef* M,  BOOL bMixIn=TRUE)
-	{	VERIFY(M); return M->PlayCycle(this,bMixIn); }
+	CBlend*						PlayCycle		(LPCSTR  N,  BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0);
+	CBlend*						PlayCycle		(CMotionDef* M,  BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0)
+	{	VERIFY(M); return M->PlayCycle(this,bMixIn,Callback,CallbackParam); }
 
 	// fx'es
 	CMotionDef*					ID_FX			(LPCSTR  N);

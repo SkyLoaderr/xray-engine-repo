@@ -44,14 +44,15 @@ void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycl
 	if (bCycle && (falloff>=accrue)) falloff = accrue-1;
 }
 
-CBlend*	CMotionDef::PlayCycle(CKinematics* P, BOOL bMixIn)
+CBlend*	CMotionDef::PlayCycle(CKinematics* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param)
 {
 	return P->LL_PlayCycle(
 		int(bone_or_part),int(motion),bMixIn,
 		fAA*Dequantize(accrue),
 		fAA*Dequantize(falloff),
 		Dequantize(speed),
-		noloop
+		noloop,
+		Callback,Callback_Param
 		);
 }
 
@@ -127,10 +128,10 @@ CMotionDef*	CKinematics::ID_Cycle_Safe(LPCSTR  N)
 	if(I==m_cycle->end()) return 0;
 	return &I->second;
 }
-CBlend*	CKinematics::PlayCycle		(LPCSTR  N, BOOL bMixIn)
+CBlend*	CKinematics::PlayCycle		(LPCSTR  N, BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
 {
 	mdef::iterator I = m_cycle->find(LPSTR(N));
-	if (I!=m_cycle->end())	return I->second.PlayCycle(this,bMixIn);
+	if (I!=m_cycle->end())	return I->second.PlayCycle(this,bMixIn,Callback,CallbackParam);
 	else {
 		Msg("ANIM::Cycle '%s' not found.",N);
 		return NULL;
@@ -223,14 +224,14 @@ void	CKinematics::LL_CloseCycle(int part)
 	}
 }
 
-CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float blendAccrue, float blendFalloff, float Speed, BOOL noloop)
+CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float blendAccrue, float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID CallbackParam)
 {
 	// validate and unroll
 	if (motion<0)			return 0;
 	if (part>=MAX_PARTS)	return 0;
 	if (part<0)	{
 		for (int i=0; i<MAX_PARTS; i++)
-			LL_PlayCycle(i,motion,bMixing,blendAccrue,blendFalloff,Speed,noloop);
+			LL_PlayCycle(i,motion,bMixing,blendAccrue,blendFalloff,Speed,noloop,Callback,CallbackParam);
 		return 0;
 	}
 	if (0==(*partition)[part].Name)	return 0;
@@ -265,9 +266,10 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 	B->timeCurrent	= 0;
 	B->timeTotal	= Bone->Motions[motion].GetLength();
 	B->bone_or_part	= part;
-
 	B->playing		= TRUE;
 	B->noloop		= noloop;
+	B->Callback		= Callback;
+	B->CallbackParam= CallbackParam;
 	return			B;
 }
 
@@ -303,6 +305,7 @@ void CKinematics::Update ()
 				if (B.noloop && (B.timeCurrent > (B.timeTotal-SAMPLE_SPF) )) {
 					B.timeCurrent	= B.timeTotal-SAMPLE_SPF;
 					B.playing		= FALSE;
+					if (B.Callback)	B.Callback(&B);
 				}
 				break;
 			case CBlend::eAccrue:	
