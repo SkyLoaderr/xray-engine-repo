@@ -5,6 +5,11 @@
 #include "dCylinder/dCylinder.h"
 #include "PhysicsShell.h"
 
+class CPHObject {
+public:
+virtual void PhDataUpdate(dReal step)=0;
+virtual void PhTune(dReal step)=0;
+};
 ///////////////////////////////////////////////////////////////////////////////
 class CPHMesh {
 	dGeomID Geom;
@@ -42,8 +47,8 @@ public:
 	void SetStartPosition(Fvector pos){dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);}
 	void SetPosition(Fvector pos){
 	const dReal* currentPos=dBodyGetPosition(Bodies[0]);	
-	Fvector v={pos.x-currentPos[0],pos.y+1.f-currentPos[1],pos.z-currentPos[2]};
-	dBodySetPosition(Bodies[0],pos.x,pos.y+1.f,pos.z);
+	Fvector v={pos.x-currentPos[0],pos.y-currentPos[1],pos.z-currentPos[2]};
+	dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);
 	for(unsigned int i=1;i<NofBodies; i++ ){
 		const dReal* currentPos=dBodyGetPosition(Bodies[i]);
 		dVector3 newPos={currentPos[0]+v.x,currentPos[1]+v.y,currentPos[2]+v.z};
@@ -92,17 +97,19 @@ class CPHWorld {
 	dSpaceID Space;
 	
 	CPHMesh Mesh;
+	vector<CPHObject*> m_objects;
 public:
 	CPHGun Gun;
-	CPHJeep Jeep;
+	//CPHJeep Jeep;
 	
 	//vector<CPHElement*> elements;
 //	CPhysicsWorld(){};
 	~CPHWorld(){};
 
 	dSpaceID GetSpace(){return Space;};
-	
+//	dWorldID GetWorld(){return phWorld;};
 	void Create();
+	void AddObject(CPHObject*object){m_objects.push_back(object);};
 	//CPHElement* AddElement(){
 	//CPHElement* phelement=new CPHElement(Space);
 	//elements.push_back(phelement);
@@ -118,7 +125,8 @@ public:
 //static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 };
 /////////////////////////////////////////////////////////////////////////////
-static dWorldID phWorld;
+
+extern dWorldID phWorld;
 /////////////////////////////////
 static dJointGroupID ContactGroup;
 /////////////////////////////////////////////////////////////////////

@@ -575,7 +575,39 @@ int i;
 
 dVector3 axis,outAx;
 
-
+/*
+#define TEST(ax,ox,c) \
+for(i=0;i<3;i++){\
+	dCROSS114(axis,=,triSideAx##ax,R+i);\
+	dNormalize3(axis);\
+	int ix1=(i+1)%3;\
+	int ix2=(i+2)%3;\
+	sidePr=\
+		dFabs(dDOT14(axis,R+ix1)*hside[ix1])+\
+		dFabs(dDOT14(axis,R+ix2)*hside[ix2]);\
+\
+	dist##ax=(dDOT(v##ax,axis)-dDOT(p,axis));\
+	dist##ox=(dDOT(v##ox,axis)-dDOT(p,axis));\
+			signum=dist##ox<0.f ? -1.f : 1.f;\
+\
+depth##ax=sidePr-signum*dist##ax;\
+depth##ox=sidePr-signum*dist##ox;\
+	if(depth##ax<depth##ox){\
+			if(depth##ax>0.f){\
+			if(depth##ax<outDepth){ \
+				if(dDOT(axis,triAx)*signum<0.f)	{\
+						outDepth=depth##ax;\
+						outAx[0]=axis[0];\
+						outAx[1]=axis[1];\
+						outAx[2]=axis[2];\
+						code=c+i;\
+					}\
+			}\
+				}\
+			else return 0;\
+	}\
+}
+*/
 #define TEST(ax,ox,c) \
 for(i=0;i<3;i++){\
 	dCROSS114(axis,=,triSideAx##ax,R+i);\
@@ -627,6 +659,7 @@ if(code==0){
 	norm[1]=triAx[1]*signum;
 	norm[2]=triAx[2]*signum;
 
+/////////////////////////////////////////// from geom.cpp dCollideBP
   dReal Q1 = -signum*dDOT14(triAx,R+0);
   dReal Q2 = -signum*dDOT14(triAx,R+1);
   dReal Q3 = -signum*dDOT14(triAx,R+2);
@@ -641,77 +674,78 @@ if(code==0){
   pos[1]=p[1];
   pos[2]=p[2];
 
-  pos[0]-= A1>0.f ? hside[0]*R[0]:-hside[0]*R[0];
-  pos[1]-= A1>0.f ? hside[0]*R[4]:-hside[0]*R[4];
-  pos[2]-= A1>0.f ? hside[0]*R[8]:-hside[0]*R[8];
+#define FOO(i,op) \
+  pos[0] op hside[i] * R[0+i]; \
+  pos[1] op hside[i] * R[4+i]; \
+  pos[2] op hside[i] * R[8+i];
+#define BAR(i,iinc) if (A ## iinc > 0) { FOO(i,-=) } else { FOO(i,+=) }
+  BAR(0,1);
+  BAR(1,2);
+  BAR(2,3);
+#undef FOO
+#undef BAR
 
-  pos[0]-= A2>0.f ? hside[1]*R[1]:-hside[1]*R[1];
-  pos[1]-= A2>0.f ? hside[1]*R[5]:-hside[1]*R[5];
-  pos[2]-= A2>0.f ? hside[1]*R[9]:-hside[1]*R[9];
-
-  pos[0]-= A3>0.f ? hside[2]*R[2]:-hside[2]*R[2];
-  pos[1]-= A3>0.f ? hside[2]*R[6]:-hside[2]*R[6];
-  pos[2]-= A3>0.f ? hside[2]*R[10]:-hside[2]*R[10];
+///////////////////////////////////////////////////////////
 
 
+if (maxc == 1) goto done;
 
+  // get the second and third contact points by starting from `p' and going
+  // along the two sides with the smallest projected length.
+
+//(@slipch) it is not perfectly right for triangle collision 
+//because it need to check if additional points are in the triangle but it seems cause no problem
  
-  
-  ret=0;
-  dVector3 cross0, cross1, cross2;
-  dReal ds0,ds1,ds2;
-  
-  dCROSS(cross0,=,triAx,triSideAx0);
-  ds0=dDOT(cross0,v0);
+#define FOO(i,j,op) \
+  CONTACT(contact,i*skip)->pos[0] = pos[0] op 2.f*hside[j] * R[0+j]; \
+  CONTACT(contact,i*skip)->pos[1] = pos[1] op 2.f*hside[j] * R[4+j]; \
+  CONTACT(contact,i*skip)->pos[2] = pos[2] op 2.f*hside[j] * R[8+j];
+#define BAR(ctact,side,sideinc) \
+  depth -= B ## sideinc; \
+  if (depth < 0) goto done; \
+  if (A ## sideinc > 0) { FOO(ctact,side,+) } else { FOO(ctact,side,-) } \
+  CONTACT(contact,ctact*skip)->depth = depth; \
+  ret++;
 
-  dCROSS(cross1,=,triAx,triSideAx1);
-  ds1=dDOT(cross1,v1);
+  CONTACT(contact,skip)->normal[0] =  triAx[0]*signum;
+  CONTACT(contact,skip)->normal[1] =  triAx[1]*signum;
+  CONTACT(contact,skip)->normal[2] =  triAx[2]*signum;
+  if (maxc == 3) {
+    CONTACT(contact,2*skip)->normal[0] = triAx[0]*signum;
+    CONTACT(contact,2*skip)->normal[1] = triAx[1]*signum;
+    CONTACT(contact,2*skip)->normal[2] = triAx[2]*signum;
+  }
 
-  dCROSS(cross2,=,triAx,triSideAx2);
-  ds2=dDOT(cross2,v2);
+  if (B1 < B2) {
+    if (B3 < B1) goto use_side_3; else {
+      BAR(1,0,1);	// use side 1
+      if (maxc == 2) goto done;
+      if (B2 < B3) goto contact2_2; else goto contact2_3;
+    }
+  }
+  else {
+    if (B3 < B2) {
+      use_side_3:	// use side 3
+      BAR(1,2,3);
+      if (maxc == 2) goto done;
+      if (B1 < B2) goto contact2_1; else goto contact2_2;
+    }
+    else {
+      BAR(1,1,2);	// use side 2
+      if (maxc == 2) goto done;
+      if (B1 < B3) goto contact2_1; else goto contact2_3;
+    }
+  }
 
-  if(dDOT(cross0,pos)-ds0>0.f && 
-	 dDOT(cross1,pos)-ds1>0.f && 
-	 dDOT(cross2,pos)-ds2>0.f){
-	  						   contact->pos[0] = pos[0];
-							   contact->pos[1] = pos[1];
-							   contact->pos[2] = pos[2];
-							   contact->depth = outDepth;
-							   ret=1;
-							}
+  contact2_1: BAR(2,0,1); goto done;
+  contact2_2: BAR(2,1,2); goto done;
+  contact2_3: BAR(2,2,3); goto done;
+#undef FOO
+#undef BAR
 
+ done: ;
 
-  CONTACT(contact,ret*skip)->pos[0]=pos[0]+(A1>0.f ? 2*hside[0]:-2*hside[0])*R[0];
-  CONTACT(contact,ret*skip)->pos[1]=pos[1]+(A1>0.f ? 2*hside[0]:-2*hside[0])*R[4];
-  CONTACT(contact,ret*skip)->pos[2]=pos[2]+(A1>0.f ? 2*hside[0]:-2*hside[0])*R[8];
-  CONTACT(contact,ret*skip)->depth=outDepth-dFabs(Q1*hside[0]);
-
-  if(CONTACT(contact,ret*skip)->depth>0.f)
-    if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
-	   dDOT(cross1,CONTACT(contact,ret*skip)->pos)-ds1>0.f && 
-	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ret++;
-  
-  
-  CONTACT(contact,ret*skip)->pos[0]=pos[0]+(A3>0.f ? 2*hside[2]:-2*hside[2])*R[2];
-  CONTACT(contact,ret*skip)->pos[1]=pos[1]+(A3>0.f ? 2*hside[2]:-2*hside[2])*R[6];
-  CONTACT(contact,ret*skip)->pos[2]=pos[2]+(A3>0.f ? 2*hside[2]:-2*hside[2])*R[10];
-  CONTACT(contact,ret*skip)->depth=outDepth-dFabs(Q3*hside[2]);
-
-  if(CONTACT(contact,ret*skip)->depth>0.f)
-    if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
-	   dDOT(cross1,CONTACT(contact,ret*skip)->pos)-ds1>0.f && 
-	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ret++;
-
-
-  CONTACT(contact,ret*skip)->pos[0]=pos[0]+(A2>0.f ? 2*hside[1]:-2*hside[1])*R[1];
-  CONTACT(contact,ret*skip)->pos[1]=pos[1]+(A2>0.f ? 2*hside[1]:-2*hside[1])*R[5];
-  CONTACT(contact,ret*skip)->pos[2]=pos[2]+(A2>0.f ? 2*hside[1]:-2*hside[1])*R[9];
-  CONTACT(contact,ret*skip)->depth=outDepth-dFabs(Q2*hside[1]);
-
-  if(CONTACT(contact,ret*skip)->depth>0.f)
-    if(dDOT(cross0,CONTACT(contact,ret*skip)->pos)-ds0>0.f && 
-	   dDOT(cross1,CONTACT(contact,ret*skip)->pos)-ds1>0.f && 
-	   dDOT(cross2,CONTACT(contact,ret*skip)->pos)-ds2>0.f) ret++;
+////////////////////////////////////////////////////////////// end (from geom.cpp dCollideBP)
 
 	}
 else if(code<=9)
@@ -823,14 +857,14 @@ case 2:
 
 
 
-if(code!=0){
+//if(code!=0){
 contact->pos[0] = pos[0];
 contact->pos[1] = pos[1];
 contact->pos[2] = pos[2];
 
 contact->depth = outDepth;
 
-}
+//}
  for (int i=0; i<ret; i++) {
     CONTACT(contact,i*skip)->g1 = const_cast<dxGeom*> (o2);
     CONTACT(contact,i*skip)->g2 = const_cast<dxGeom*> (o1);

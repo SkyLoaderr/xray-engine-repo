@@ -73,6 +73,7 @@ vector<Triangle> neg_tries;
 dReal pos_dist=dInfinity,neg_depth=dInfinity,b_neg_depth=dInfinity;
 dReal max_proj=-dInfinity,proj;
 const dReal* p=o1->pos;
+UINT b_count=0;
 dVector3 pos_vect={last_pos[0]-p[0],last_pos[1]-p[1],last_pos[2]-p[2]};
 dxBox *box = (dxBox*) CLASSDATA(o1);
 const dVector3 hside={box->side[0]/2.f,box->side[1]/2.f,box->side[2]/2.f,-1};
@@ -113,7 +114,9 @@ for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
 
 
 						}
-	 else{			if(b_neg_depth>tri.depth){
+	 else{
+		 b_count++;
+		 if(b_neg_depth>tri.depth){
 									b_neg_depth=tri.depth;
 									b_neg_tri=tri;
 									}
@@ -194,7 +197,7 @@ if(max_proj==-dInfinity)
 								  CONTACT(contact, ret * skip),   skip);
 
 
-	 	 if(b_neg_depth<dInfinity&&ret==0){
+	 	 if(b_neg_depth<dInfinity&&b_count>1&&ret==0){
 		 	 bool include = true;
 				for(i=pos_tries.begin();i!=pos_tries.end();i++){
 								if((dDOT(b_neg_tri.norm,i->v0)-b_neg_tri.pos)<0.f||
@@ -285,9 +288,9 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 
 	dReal* R=const_cast<dReal*>(dGeomGetRotation(Box));
 
-	AABB.x=(dFabs(BoxSides[0]*R[0])+dFabs(BoxSides[1]*R[4])+dFabs(BoxSides[2]*R[8]))/2.f+1.f*EPS_L;
-	AABB.y=(dFabs(BoxSides[0]*R[1])+dFabs(BoxSides[1]*R[5])+dFabs(BoxSides[2]*R[9]))/2.f+1000.f*EPS_L;
-	AABB.z=(dFabs(BoxSides[0]*R[2])+dFabs(BoxSides[1]*R[6])+dFabs(BoxSides[2]*R[10]))/2.f+1.f*EPS_L;
+	AABB.x=(dFabs(BoxSides[0]*R[0])+dFabs(BoxSides[1]*R[1])+dFabs(BoxSides[2]*R[2]))/2.f+1.f*EPS_L;
+	AABB.y=(dFabs(BoxSides[0]*R[4])+dFabs(BoxSides[1]*R[5])+dFabs(BoxSides[2]*R[6]))/2.f+1000.f*EPS_L;
+	AABB.z=(dFabs(BoxSides[0]*R[8])+dFabs(BoxSides[1]*R[9])+dFabs(BoxSides[2]*R[10]))/2.f+1.f*EPS_L;
 
 	        //
         XRC.box_options                (0);

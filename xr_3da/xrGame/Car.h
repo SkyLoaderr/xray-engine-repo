@@ -1,17 +1,20 @@
 #pragma once
 #include "entity.h"
-
+#include "PHDynamicData.h"
+#include "Physics.h"
 // refs
 class ENGINE_API			CBoneInstance;
 
 // defs
-class CCar :				public CEntity
+class CCar :				public CEntity,public CPHObject
 {
 private:
 	typedef CEntity			inherited;
 private:
+	CPHJeep					m_jeep;
+ 
 	CCameraBase*			camera;
-
+	
 	void					cam_Update			(float dt);
 
 	sound					snd_engine;
@@ -22,6 +25,9 @@ private:
 	static void __stdcall	cb_WheelFR			(CBoneInstance* B);
 	static void __stdcall	cb_WheelBL			(CBoneInstance* B);
 	static void __stdcall	cb_WheelBR			(CBoneInstance* B);
+
+	virtual void PhDataUpdate(dReal step);
+	virtual void PhTune(dReal step);
 public:
 	// Core events
 	virtual void			Load				( LPCSTR section );

@@ -11,6 +11,8 @@ static dContact bulletContact;
 static bool isShooting;
 static dVector3 RayD;
 static dVector3 RayO;
+
+dWorldID phWorld;
 /////////////////////////////////////
 static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 
@@ -19,6 +21,7 @@ static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 void CPHWorld::Render()
 {
 	return;
+	/*
 	Device.Shader.OnFrameEnd		();
 	Device.set_xform_world			(Fidentity);
 	Fmatrix M;
@@ -58,6 +61,7 @@ void CPHWorld::Render()
 	M.scale(scale);
 	M.c = t;
 	Device.Primitive.dbg_DrawEllipse(M, 0xffffffff);
+	*/
 }
 
 //////////////////////////////////////////////////////////////
@@ -516,7 +520,7 @@ void CPHWorld::Create(){
 	ContactGroup = dJointGroupCreate(0);		
 	dWorldSetGravity(phWorld, 0,-2.f*9.81f, 0);//-2.f*9.81f
 	Mesh.Create(Space,phWorld);
-	Jeep.Create(Space,phWorld);//(Space,phWorld)
+	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	Gun.Create(Space);
 	dReal k_p=1000000.f;
 	dReal k_d=2000.f;
@@ -524,14 +528,14 @@ void CPHWorld::Create(){
 	dWorldSetERP(phWorld,  h*k_p / (h*k_p + k_d));
 	dWorldSetCFM(phWorld,  1.f / (h*k_p + k_d));
 	
-	Jeep.DynamicData.CalculateData();
+	//Jeep.DynamicData.CalculateData();
 }
 
 /////////////////////////////////////////////////////////////////////////////
 
 void CPHWorld::Destroy(){
 	Mesh.Destroy();
-	Jeep.Destroy();
+	//Jeep.Destroy();
 	Gun.Destroy();
 	//vector<CPHElement*>::iterator i;
 	//for(i=elements.begin();i!=elements.end();i++){
@@ -550,7 +554,7 @@ void CPHWorld::Step(dReal step)
 {
 			// compute contact joints and forces
 	///return;
-
+	vector<CPHObject*>::iterator iter;
 	//step+=astep;
 	const dReal max_step=0.02f;//0.0034f;
 	const dReal min_step=0.005f;
@@ -570,7 +574,7 @@ void CPHWorld::Step(dReal step)
 			//dWorldSetERP(phWorld,  0.8);
 			//dWorldSetCFM(phWorld,  0.00001);
 
-			Jeep.JointTune(step);
+//			Jeep.JointTune(step);
 
 			dSpaceCollide(Space, 0, &NearCallback);
 		
@@ -583,8 +587,13 @@ void CPHWorld::Step(dReal step)
 			
 		*/
 			
-				
+			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+				(*iter)->PhTune(step);	
+
 			dWorldStep(phWorld, step);
+
+			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+				(*iter)->PhDataUpdate(step);
 			//Jeep.DynamicData.CalculateData();
 			
 			dJointGroupEmpty(ContactGroup);
@@ -604,20 +613,23 @@ void CPHWorld::Step(dReal step)
 //			dWorldSetERP(phWorld,  0.2);
 //			dWorldSetCFM(phWorld,  0.0001);
 
+			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+				(*iter)->PhTune(step/n);	
+//			Jeep.JointTune(step/n);
+			dSpaceCollide(Space, 0, &NearCallback); 
+		
 
-			Jeep.JointTune(step/n);
-			dSpaceCollide(Space, 0, &NearCallback);
-				
 			dWorldStep(phWorld, step/n);
 			//Jeep.DynamicData.CalculateData();
-	
+		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+				(*iter)->PhDataUpdate(step/n);
 			dJointGroupEmpty(ContactGroup);
 	
 		
 
 		}
 	}
-Jeep.DynamicData.CalculateData();
+//Jeep.DynamicData.CalculateData();
 //	}
 //step=0.f;
 }
