@@ -85,7 +85,6 @@ function action_guard_activity:initialize()
 
 	self.reset_scheme()
 end
-
 function action_guard_activity:reset_scheme()
 	-- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
 	self.path_active = self.path_main
@@ -108,8 +107,7 @@ function action_guard_activity:reset_scheme()
 	self.object:set_sight(look.danger, nil, 0)
 
 	self.state = self.state_moving
-end
-	
+end	
 function action_guard_activity:waypoint_callback(obj, action_type, index)
     -- Будет использоваться позже для вызова этой функции с целью иммитации коллбека (для путей, состоящих из одной точки):
     self.last_action_type = action_type
@@ -398,9 +396,5 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 		end
 	end
 	xr_motivator.checkStorage(object)
-
-	local manager = object:motivation_action_manager()
-	local action = manager:get_action(xr_actions_id.zmey_action_guard_activity) 
-	action:reset_scheme()
 end
 
