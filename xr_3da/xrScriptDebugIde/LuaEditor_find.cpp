@@ -64,9 +64,22 @@ void CLuaEditor::SetSel(long start, long end, BOOL bDirect)
 void CLuaEditor::CompleteWord(const char* word)
 {
   	int word_end = GetSelectionEnd();
-	int word_start = Sci(SCI_WORDSTARTPOSITION,word_end);
+	int word_start = GetWordStart(word_end);//Sci(SCI_WORDSTARTPOSITION,word_end);
 	SetSel(word_start,word_end);
 	ReplaceSel(word);
+}
+
+long CLuaEditor::GetWordStart(long end)
+{
+	long word_start = end;
+	char ch;
+	while(1){
+		ch = Sci(SCI_GETCHARAT,word_start-1);
+		if( ch==' ' || ch=='\t' || ch=='\n' || ch=='\r')
+			break;
+		--word_start;
+	}
+	return word_start;
 }
 
 int CLuaEditor::PointXFromPosition(long pos, BOOL bDirect)
@@ -111,9 +124,8 @@ bool CLuaEditor::createWordList(CMenu& mnu)
 	TextToFind ttf;
 	int word_end = GetSelectionEnd();
 
-	int word_start = Sci(SCI_WORDSTARTPOSITION,word_end);
-	if(word_end-word_start < 3)
-		return false;
+	int word_start = GetWordStart(word_end);
+//	int word_start = Sci(SCI_WORDSTARTPOSITION,word_end);
 
 	char buff[2048];
 	TextRange tr;
@@ -129,6 +141,7 @@ bool CLuaEditor::createWordList(CMenu& mnu)
 	ttf.chrg.cpMax = GetLength();
 	int r;
 	CStringList sl;
+	sl.AddHead(str_word);
 
 	char trim[] = "\t\n\r";
 
@@ -145,5 +158,5 @@ bool CLuaEditor::createWordList(CMenu& mnu)
 		}
 		ttf.chrg.cpMin = r+1;
 	}
-	return (sl.GetSize()>0);
+	return (sl.GetSize()>1);
 }

@@ -86,6 +86,7 @@ public:
 	void	CompleteWord(const char* word);
 	void	createFunctionList(CMenu& mnu);
 	bool	createWordList(CMenu& mnu);
+	long	GetWordStart(long end);
 //lexer
 	void	SetLexer(int lexer, BOOL bDirect = TRUE);
 	void	SetKeyWords(int keywordSet, const char* keyWords, BOOL bDirect = TRUE);
