@@ -188,7 +188,6 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 
 				OnShot			(bHUDView);
 				FireTrace		(p1,vLastFP,d);
-				m_pHUD->Shoot	();
 			}
 		}
 		break;
@@ -205,8 +204,6 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 		}
 		break;
 	}
-
-	m_pHUD->UpdateAnimation	();
 }
 
 void CWeaponMagazined::Render(BOOL bHUDView)

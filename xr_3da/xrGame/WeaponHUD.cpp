@@ -7,6 +7,7 @@
 #include "..\fmesh.h"
 #include "..\bodyinstance.h"
 #include "WeaponHUD.h"
+#include "Weapon.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -123,7 +124,7 @@ static void __stdcall animCallback	(CBlend* B)
 	W->OnAnimationEnd	();
 }
 
-void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CWeapon* W);
+void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CWeapon* W)
 {
 	if (W)	PKinematics(pVisual)->PlayCycle(M,bMixIn,animCallback,W);
 	else	PKinematics(pVisual)->PlayCycle(M,bMixIn);

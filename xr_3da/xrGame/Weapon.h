@@ -80,6 +80,7 @@ protected:
 	virtual void	UpdateFP		(BOOL bHUD)	= 0;
 	virtual void	UpdateXForm		(BOOL bHUD)	= 0;
 	
+public:
 	virtual void	OnMagazineEmpty	()			= 0;
 	virtual void	OnAnimationEnd	()			{};
 public:
