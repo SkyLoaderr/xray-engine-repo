@@ -77,11 +77,11 @@ enum {
 
 
 class CSoundUserDataVisitor;
-
-class CSoundUserData : public xr_resource{
+class CSoundUserData : public xr_resource
+{
 public:
-	virtual							~CSoundUserData(){}
-	virtual void					accept(CSoundUserDataVisitor*)=0;
+	virtual							~CSoundUserData()				{}
+	virtual void					accept(CSoundUserDataVisitor*)	= 0;
 };
 typedef resptr_core<CSoundUserData,resptr_base<CSoundUserData> >	CSoundUserDataPtr;
 
