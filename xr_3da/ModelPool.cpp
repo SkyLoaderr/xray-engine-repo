@@ -180,6 +180,7 @@ CVisual* CModelPool::Instance_Find(LPCSTR N)
 
 CVisual* CModelPool::Create(const char* name)
 {
+	Log("!!!!!!!!!!!!!!!!!CREATE",name);
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
@@ -195,6 +196,7 @@ CVisual* CModelPool::Create(const char* name)
 
 CVisual* CModelPool::Create(LPCSTR name, CStream* data)
 {
+	Log("!!!!!!!!!!!!!!!!!CREATE_STRM",name);
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
