@@ -40,7 +40,7 @@ namespace InventoryUtilities
 //для сортировки
 bool GreaterRoomInRuck(PIItem item1, PIItem item2);
 //для проверки свободного места
-bool FreeRoom(TIItemList item_list, int width, int height);
+bool FreeRoom(TIItemContainer& item_list, int width, int height);
 
 //для надписей на иконках с оружием
 void AmmoDrawProc(CUIDragDropItem* pItem);

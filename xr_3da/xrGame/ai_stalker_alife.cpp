@@ -124,8 +124,8 @@ bool CAI_Stalker::alife_task_completed			()
 u32 CAI_Stalker::fill_items						(CInventory &inventory, CGameObject *old_owner, ALife::_OBJECT_ID new_owner_id)
 {
 	u32							result = 0;
-	TIItemSet::iterator			I = inventory.m_all.begin();
-	TIItemSet::iterator			E = inventory.m_all.end();
+	TIItemContainer::iterator			I = inventory.m_all.begin();
+	TIItemContainer::iterator			E = inventory.m_all.end();
 	for ( ; I != E; ++I) {
 		if (!(*I)->useful_for_NPC())
 			continue;

@@ -122,14 +122,14 @@ public:
 	void SetBeltUseful(bool belt_useful)	{m_bBeltUseful = belt_useful;}
 
 	// Наборы объектов. m_all - все
-	TIItemSet		m_all;
+	TIItemContainer		m_all;
 	// Списки объектов. m_ruck - рюкзак, m_belt - пояс
-	TIItemList		m_ruck, m_belt;
+	TIItemContainer		m_ruck, m_belt;
 	// Слоты (фиксированное кол-во)
 	TISlotArr		m_slots;
 
 	//возвращает все кроме PDA в слоте и болта
-	void				AddAvailableItems(TIItemList& items_container, bool for_trade = false) const;
+	void				AddAvailableItems(TIItemContainer& items_container, bool for_trade = false) const;
 
 	float				GetTakeDist					() const				{return m_fTakeDist;}
 	
@@ -169,7 +169,7 @@ protected:
 	CInventoryOwner *m_pOwner;
 
 	//буферный список для сортировки
-	TIItemList ruck_list;
+	TIItemContainer ruck_list;
 
 	//флаг, показывающий наличие пояса в инвенторе
 	bool m_bBeltUseful;
@@ -193,7 +193,7 @@ protected:
 
 
 	//буфферный список
-	TIItemList			l_subs; 
+	TIItemContainer			l_subs; 
 	xr_vector<PIItem>	drop_tasks;
 	bool				m_drop_last_frame;
 

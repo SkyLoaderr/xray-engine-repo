@@ -96,7 +96,7 @@ protected:
 	DD_ITEMS_VECTOR m_vDragDropItems;
 
 	//для сортировки вещей
-	TIItemList ruck_list;
+	TIItemContainer ruck_list;
 
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;

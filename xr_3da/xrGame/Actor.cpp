@@ -548,14 +548,14 @@ void CActor::Die	(CObject* who)
 
 
 	///!!! чистка пояса
-	TIItemList &l_blist = inventory().m_belt;
+	TIItemContainer &l_blist = inventory().m_belt;
 	while (!l_blist.empty())	inventory().Ruck(l_blist.front());
 
 	if (OnServer() && GameID() != GAME_SINGLE)
 	{
 		bool MedKitDropped = false;
 		//if we are on server and actor has PDA - destroy PDA
-		TIItemList &l_rlist = inventory().m_ruck;
+		TIItemContainer &l_rlist = inventory().m_ruck;
 		for(PPIItem l_it = l_rlist.begin(); l_rlist.end() != l_it; ++l_it)
 		{
 			if (GameID() == GAME_ARTEFACTHUNT)
@@ -1202,8 +1202,8 @@ void CActor::OnItemDropUpdate ()
 
 	//на тот случай если была выкинута присоединяемая вещь (типа фонарика)
 	//а у нас есть еще одна
-	PSPIItem					I = inventory().m_all.begin();
-	PSPIItem					E = inventory().m_all.end();
+	TIItemContainer::iterator					I = inventory().m_all.begin();
+	TIItemContainer::iterator					E = inventory().m_all.end();
 	for ( ; I != E; ++I)
 		if(!(*I)->m_drop && !attached(*I))
 			attach(*I);
@@ -1324,8 +1324,8 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 	/*
 	//--- проверяем не подходят ли они к чему-то еще
 	bool CanRemove = true;
-	TIItemSet::const_iterator I = inventory().m_all.begin();//, B = I;
-	TIItemSet::const_iterator E = inventory().m_all.end();
+	TIItemContainer::const_iterator I = inventory().m_all.begin();//, B = I;
+	TIItemContainer::const_iterator E = inventory().m_all.end();
 	for ( ; I != E; ++I)
 	{
 		CInventoryItem* pItem = (*I);//->m_pIItem;

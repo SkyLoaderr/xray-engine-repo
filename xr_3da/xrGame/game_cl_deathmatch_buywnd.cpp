@@ -93,8 +93,8 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 		//проверяем предметы которые есть у игрока
 
 		/*
-		TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
-		TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
+		TIItemContainer::const_iterator	I = pCurActor->inventory().m_all.begin();
+		TIItemContainer::const_iterator	E = pCurActor->inventory().m_all.end();
 		
 		for ( ; I != E; ++I) 
 		{
@@ -103,8 +103,8 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 		*/
 
 		//проверяем пояс
-		TIItemList::const_iterator	IBelt = pCurActor->inventory().m_belt.begin();
-		TIItemList::const_iterator	EBelt = pCurActor->inventory().m_belt.end();
+		TIItemContainer::const_iterator	IBelt = pCurActor->inventory().m_belt.begin();
+		TIItemContainer::const_iterator	EBelt = pCurActor->inventory().m_belt.end();
 
 		for ( ; IBelt != EBelt; ++IBelt) 
 		{

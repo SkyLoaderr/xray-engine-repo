@@ -219,7 +219,7 @@ void CInventory::Replace(PIItem pIItem)
 	}
 	else 
 	{
-		TIItemList::iterator it = std::find(m_belt.begin(), m_belt.end(), pIItem);
+		TIItemContainer::iterator it = std::find(m_belt.begin(), m_belt.end(), pIItem);
 		if(m_belt.end() != it)
 		{
 			if(eItemPlaceBelt != pIItem->m_eItemPlace)
@@ -229,7 +229,7 @@ void CInventory::Replace(PIItem pIItem)
 		}
 		else
 		{
-			TIItemList::iterator it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
+			TIItemContainer::iterator it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
 			VERIFY(it != m_ruck.end());
 			if(eItemPlaceRuck != pIItem->m_eItemPlace)
 				m_ruck.erase(it);
@@ -269,7 +269,7 @@ void CInventory::Replace(PIItem pIItem)
 
 void CInventory::ReplaceAll()
 {
-	PSPIItem it;
+	TIItemContainer::iterator it;
 	
 	m_ruck.insert(m_ruck.begin(), m_belt.begin(), m_belt.end());
 	m_belt.clear();
@@ -322,7 +322,7 @@ void CInventory::ReplaceAll()
 
 bool CInventory::DropAll()
 {
-	PSPIItem it;
+	TIItemContainer::iterator it;
 
 	for(it = m_all.begin(); m_all.end() != it; ++it)
 	{
@@ -651,7 +651,7 @@ void CInventory::Update()
 	//проверить рюкзак и пояс, есть ли вещи, которые нужно выкинуть
 	u32		drop_count = 0;
 	for		(int i = 0; i < 2; ++i)	{
-		TIItemList &list = i?m_ruck:m_belt;
+		TIItemContainer &list = i?m_ruck:m_belt;
 		PPIItem it = list.begin();
 	
 		while(list.end() != it)
@@ -707,9 +707,9 @@ void CInventory::Update()
 //ищем на поясе гранату такоже типа
 PIItem CInventory::Same(const PIItem pIItem, bool bSearchRuck) const
 {
-	const TIItemList &list = bSearchRuck ? m_ruck : m_belt;
+	const TIItemContainer &list = bSearchRuck ? m_ruck : m_belt;
 
-	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
+	for(TIItemContainer::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		const PIItem l_pIItem = *it;
 		
@@ -726,9 +726,9 @@ PIItem CInventory::SameSlot(u32 slot, bool bSearchRuck) const
 {
 	if(slot == NO_ACTIVE_SLOT) 	return NULL;
 
-	const TIItemList &list = bSearchRuck ? m_ruck : m_belt;
+	const TIItemContainer &list = bSearchRuck ? m_ruck : m_belt;
 	
-	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
+	for(TIItemContainer::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(pIItem->GetSlot() == slot) return pIItem;
@@ -740,9 +740,9 @@ PIItem CInventory::SameSlot(u32 slot, bool bSearchRuck) const
 //найти в инвенторе вещь с указанным именем
 PIItem CInventory::Get(const char *name, bool bSearchRuck) const
 {
-	const TIItemList &list = bSearchRuck ? m_ruck : m_belt;
+	const TIItemContainer &list = bSearchRuck ? m_ruck : m_belt;
 	
-	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
+	for(TIItemContainer::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(!xr_strcmp(pIItem->object().cNameSect(), name) && 
@@ -754,9 +754,9 @@ PIItem CInventory::Get(const char *name, bool bSearchRuck) const
 
 PIItem CInventory::Get(CLASS_ID cls_id, bool bSearchRuck) const
 {
-	const TIItemList &list = bSearchRuck ? m_ruck : m_belt;
+	const TIItemContainer &list = bSearchRuck ? m_ruck : m_belt;
 	
-	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
+	for(TIItemContainer::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(pIItem->object().CLS_ID == cls_id && 
@@ -768,9 +768,9 @@ PIItem CInventory::Get(CLASS_ID cls_id, bool bSearchRuck) const
 
 PIItem CInventory::Get(const u16 id, bool bSearchRuck) const
 {
-	const TIItemList &list = bSearchRuck ? m_ruck : m_belt;
+	const TIItemContainer &list = bSearchRuck ? m_ruck : m_belt;
 
-	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
+	for(TIItemContainer::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(pIItem->object().ID() == id) 
@@ -781,9 +781,9 @@ PIItem CInventory::Get(const u16 id, bool bSearchRuck) const
 
 PIItem CInventory::item(CLASS_ID cls_id) const
 {
-	const TIItemSet &list = m_all;
+	const TIItemContainer &list = m_all;
 
-	for(TIItemSet::const_iterator it = list.begin(); list.end() != it; ++it) 
+	for(TIItemContainer::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(pIItem->object().CLS_ID == cls_id && 
@@ -803,7 +803,7 @@ float CInventory::TotalWeight() const
 float CInventory::CalcTotalWeight()
 {
 	float weight = 0;
-	for(TIItemSet::const_iterator it = m_all.begin(); m_all.end() != it; ++it) 
+	for(TIItemContainer::const_iterator it = m_all.begin(); m_all.end() != it; ++it) 
 		weight += (*it)->Weight();
 
 	m_fTotalWeight = weight;
@@ -814,7 +814,7 @@ float CInventory::CalcTotalWeight()
 u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 {
 	u32			l_dwCount = 0;
-	TIItemList	&l_list = m_ruck;
+	TIItemContainer	&l_list = m_ruck;
 	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
@@ -827,8 +827,8 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 
 bool CInventory::bfCheckForObject(ALife::_OBJECT_ID tObjectID)
 {
-	TIItemSet	&l_list = m_all;
-	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
+	TIItemContainer	&l_list = m_all;
+	for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
 		if (l_pIItem->object().ID() == tObjectID)
@@ -839,8 +839,8 @@ bool CInventory::bfCheckForObject(ALife::_OBJECT_ID tObjectID)
 
 CInventoryItem *CInventory::get_object_by_id(ALife::_OBJECT_ID tObjectID)
 {
-	TIItemSet	&l_list = m_all;
-	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
+	TIItemContainer	&l_list = m_all;
+	for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
 		if (l_pIItem->object().ID() == tObjectID)
@@ -929,7 +929,7 @@ bool CInventory::CanPutInBelt(PIItem pIItem) const
 	if(!pIItem || !pIItem->Belt()) return false;
 	if(m_belt.size() == BeltWidth()) return false;
 
-	TIItemList buf_list;
+	TIItemContainer buf_list;
 	buf_list.clear();
 	buf_list.insert(buf_list.begin(), m_belt.begin(), m_belt.end());
 	buf_list.push_back(pIItem);
@@ -953,9 +953,9 @@ u32	CInventory::dwfGetObjectCount()
 CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
 {
 	if ((iIndex >= 0) && (iIndex < (int)m_all.size())) {
-		TIItemSet	&l_list = m_all;
+		TIItemContainer	&l_list = m_all;
 		int			i = 0;
-		for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it, ++i) 
+		for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it, ++i) 
 			if (i == iIndex)
                 return	(*l_it);
 	}
@@ -969,9 +969,9 @@ CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
 
 CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 {
-	TIItemSet	&l_list = m_all;
-	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-		if (!xr_strcmp((*l_it)->object().cNameSect(),caItemName))
+	TIItemContainer	&l_list = m_all;
+	for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
+		if (!xr_strcmp((*l_it)->object().cNameSect().c_str(),caItemName))
 			return	(*l_it);
 //	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*smart_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);
@@ -986,7 +986,7 @@ bool CInventory::CanTakeItem(CInventoryItem *inventory_item) const
 
 	if(!inventory_item->CanTake()) return false;
 
-	for(TIItemSet::const_iterator it = m_all.begin(); it != m_all.end(); it++)
+	for(TIItemContainer::const_iterator it = m_all.begin(); it != m_all.end(); it++)
 		if((*it)->object().ID() == inventory_item->object().ID()) break;
 	VERIFY2(it == m_all.end(), "item already exists in inventory");
 
@@ -1018,7 +1018,7 @@ u32 CInventory::TotalVolume() const
 {
 	u32 total_volume = 0;
 
-	for(TIItemSet::const_iterator it = m_all.begin(); m_all.end() != it; ++it)
+	for(TIItemContainer::const_iterator it = m_all.begin(); m_all.end() != it; ++it)
 		total_volume += (*it)->GetVolume();
 
 	return total_volume;
@@ -1029,9 +1029,9 @@ u32  CInventory::BeltWidth() const
 	return m_iMaxBelt;
 }
 
-void  CInventory::AddAvailableItems(TIItemList& items_container, bool for_trade) const
+void  CInventory::AddAvailableItems(TIItemContainer& items_container, bool for_trade) const
 {
-	for(TIItemList::const_iterator it = m_ruck.begin(); m_ruck.end() != it; ++it) 
+	for(TIItemContainer::const_iterator it = m_ruck.begin(); m_ruck.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
 		if(!for_trade || pIItem->CanTrade())
@@ -1040,7 +1040,7 @@ void  CInventory::AddAvailableItems(TIItemList& items_container, bool for_trade)
 
 	if(m_bBeltUseful)
 	{
-		for(TIItemList::const_iterator it = m_belt.begin(); m_belt.end() != it; ++it) 
+		for(TIItemContainer::const_iterator it = m_belt.begin(); m_belt.end() != it; ++it) 
 		{
 			PIItem pIItem = *it;
 			if(!for_trade || pIItem->CanTrade())
@@ -1084,7 +1084,7 @@ bool CInventory::isBeautifulForActiveSlot	(CInventoryItem *pIItem)
 #include "WeaponHUD.h"
 void CInventory::Items_SetCurrentEntityHud(bool current_entity)
 {
-	PSPIItem it;
+	TIItemContainer::iterator it;
 	for(it = m_all.begin(); m_all.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;

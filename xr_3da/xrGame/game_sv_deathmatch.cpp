@@ -725,8 +725,8 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 		xr_vector<u16>				ItemsToDelete;
 
 		//проверяем пояс
-		TIItemList::const_iterator	IBelt = pActor->inventory().m_belt.begin();
-		TIItemList::const_iterator	EBelt = pActor->inventory().m_belt.end();
+		TIItemContainer::const_iterator	IBelt = pActor->inventory().m_belt.begin();
+		TIItemContainer::const_iterator	EBelt = pActor->inventory().m_belt.end();
 
 		for ( ; IBelt != EBelt; ++IBelt) 
 		{

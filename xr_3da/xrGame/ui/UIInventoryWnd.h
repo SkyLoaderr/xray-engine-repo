@@ -179,7 +179,7 @@ protected:
 	void SetCurrentItem(CInventoryItem* pItem);
 
 	//дополнительные списки для сортировки вещей
-	TIItemList ruck_list;
+	TIItemContainer ruck_list;
 	
 	//вещь к которой мы присоединяем add-on
 	PIItem	m_pItemToUpgrade;

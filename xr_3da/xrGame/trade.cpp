@@ -253,8 +253,8 @@ void CTrade::SellItem(int id)
 	CInventory &pThisInv		= GetTradeInv(pThis);
 	CInventory &pPartnerInv		= GetTradeInv(pPartner);
 
-	PSPIItem first_in_group_it;
-	for (PSPIItem  it = first_in_group_it = pThisInv.m_all.begin(); pThisInv.m_all.end() != it; ++it) {
+	TIItemContainer::iterator first_in_group_it;
+	for (TIItemContainer::iterator  it = first_in_group_it = pThisInv.m_all.begin(); pThisInv.m_all.end() != it; ++it) {
 		if ((it != first_in_group_it) && (xr_strcmp((*first_in_group_it)->Name(), (*it)->Name()) != 0)) {
 			++i;
 			first_in_group_it = it;

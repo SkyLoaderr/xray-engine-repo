@@ -586,7 +586,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 							inventory().Ruck((*I).m_pIItem);
 
 //			///!!!
-//			TIItemList &l_list = inventory().m_ruck;
+//			TIItemContainer &l_list = inventory().m_ruck;
 //			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 //			{
 //				CArtefact* pArtefact = smart_cast<CArtefact*>(*l_it);
@@ -607,7 +607,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 						inventory().Ruck((*I).m_pIItem);
 			//		(*I).m_pIItem->Drop();
 			
-			/*TIItemList &l_list = inventory().m_ruck;
+			/*TIItemContainer &l_list = inventory().m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 				if ((*l_it)->Useful())
 					(**l_it).Drop();*/

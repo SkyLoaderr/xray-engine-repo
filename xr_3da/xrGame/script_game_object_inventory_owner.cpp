@@ -194,7 +194,7 @@ void CScriptGameObject::ForEachInventoryItems(const luabind::functor<void> &func
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::ForEachInventoryItems non-CInventoryOwner object !!!");
 	
 	CInventory* pInv = &owner->inventory();
-	TIItemList item_list;
+	TIItemContainer item_list;
 	pInv->AddAvailableItems(item_list, true);
 
 	PPIItem it;

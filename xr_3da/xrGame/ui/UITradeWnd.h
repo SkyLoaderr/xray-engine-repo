@@ -138,7 +138,7 @@ protected:
 	CUIDragDropItem* m_pCurrentDragDropItem;
 
 	//для сортировки вещей
-	TIItemList ruck_list;
+	TIItemContainer ruck_list;
 
 	//устанавливает текущий предмет
 	void SetCurrentItem(CInventoryItem* pItem);

@@ -165,8 +165,8 @@ void CAI_Stalker::update_best_item_info	()
 
 	// try to find the best item which can kill
 	{
-		PSPIItem					I = inventory().m_all.begin();
-		PSPIItem					E = inventory().m_all.end();
+		TIItemContainer::iterator					I = inventory().m_all.begin();
+		TIItemContainer::iterator					E = inventory().m_all.end();
 		for ( ; I != E; ++I) {
 			if ((*I)->can_kill()) {
 				ai().ef_storage().non_alife().member_item()	= &(*I)->object();
