@@ -72,9 +72,9 @@ xr_token game_types[]={
 };
 void	xrServerEntity::FillProp	(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values,	pref, "Game Type",		&s_gameid, 		PROP::CreateToken(game_types,1));
-	FILL_PROP_EX(values,	pref, "Active",			&s_flags, 		PROP::CreateFlag(M_SPAWN_OBJECT_ACTIVE));
-	FILL_PROP_EX(values,	pref, "Respawn Time (s)",&RespawnTime,	PROP::CreateU16(0,43200));
+	FILL_PROP_EX(values,	pref, "Game Type",		&s_gameid, 		PHelper.CreateToken(game_types,1));
+	FILL_PROP_EX(values,	pref, "Active",			&s_flags, 		PHelper.CreateFlag(M_SPAWN_OBJECT_ACTIVE));
+	FILL_PROP_EX(values,	pref, "Respawn Time (s)",&RespawnTime,	PHelper.CreateU16(0,43200));
 }
 #endif
 
@@ -125,8 +125,8 @@ void	xrSE_Weapon::STATE_Write	(NET_Packet& P)
 void	xrSE_Weapon::FillProp		(LPCSTR pref, PropValueVec& values)
     {
     	inherited::FillProp(pref, values);
-      	FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Ammo: total",		&a_current, PROP::CreateU16(0,1000,1));
-        FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Ammo: in magazine",	&a_elapsed, PROP::CreateU16(0,30,1));
+      	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Ammo: total",		&a_current, PHelper.CreateU16(0,1000,1));
+        FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Ammo: in magazine",	&a_elapsed, PHelper.CreateU16(0,30,1));
     }
 #endif
 
@@ -154,9 +154,9 @@ void	xrSE_Teamed::UPDATE_Write		(NET_Packet& P)	{};
 void	xrSE_Teamed::FillProp			(LPCSTR pref, PropValueVec& values)
 {
   	inherited::FillProp(pref,values);
-   	FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Team",	&s_team, 	PROP::CreateU8(0,64,1));
-    FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Squad",	&s_squad, 	PROP::CreateU8(0,64,1));
-    FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Group",	&s_group, 	PROP::CreateU8(0,64,1));
+   	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Team",	&s_team, 	PHelper.CreateU8(0,64,1));
+    FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Squad",	&s_squad, 	PHelper.CreateU8(0,64,1));
+    FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Group",	&s_group, 	PHelper.CreateU8(0,64,1));
 }
 #endif
 
@@ -234,7 +234,7 @@ void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
 #ifdef _EDITOR
 void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values,	pref, "Model",		s_Model, 		PROP::CreateLibObject(sizeof(s_Model)));
+	FILL_PROP_EX(values,	pref, "Model",		s_Model, 		PHelper.CreateLibObject(sizeof(s_Model)));
 }
 #endif
 //
@@ -297,7 +297,7 @@ void xrSE_Health::UPDATE_Write		(NET_Packet& P)				{};
 void xrSE_Health::FillProp			(LPCSTR pref, PropValueVec& values)
 {
 	inherited::FillProp(pref,values);
-	FILL_PROP_EX(values,	pref, "Health amount",	&amount,	PROP::CreateU8(0,255));
+	FILL_PROP_EX(values,	pref, "Health amount",	&amount,	PHelper.CreateU8(0,255));
 }
 #endif
 
