@@ -7,6 +7,14 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+void FOLDER::ShowPPMenu(TMxPopupMenu* M, TExtBtn* B){
+    POINT pt;
+    GetCursorPos(&pt);
+	M->Popup(pt.x,pt.y-10);
+    if (B) B->MouseManualUp();
+}
+//---------------------------------------------------------------------------
+
 LPCSTR FOLDER::GetFolderName(const AnsiString& full_name, AnsiString& dest)
 {
     for (int i=full_name.Length(); i>=1; i--)
@@ -238,6 +246,108 @@ void FOLDER::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiString& name
     int cnt = 0;
     while (FindItemInFolder(TYPE_OBJECT,tv,node,name))
     	name.sprintf("%s_%02d",pref,cnt++);
+}
+//---------------------------------------------------------------------------
+
+LPCSTR FOLDER::ReplacePart(LPCSTR old_name, LPCSTR ren_part, int level, LPSTR dest)
+{
+    VERIFY(level<_GetItemCount(old_name,'\\'));
+    _ReplaceItem(old_name,level,ren_part,dest,'\\');
+    return dest;
+}
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Drag'n'Drop
+//---------------------------------------------------------------------------
+void FOLDER::DragDrop(TObject *Sender, TObject *Source, int X, int Y)
+{
+	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
+	TElTreeItem* tgt_folder = tv->GetItemAt(X, Y, 0, 0);
+    if (tgt_folder&&(IsObject(tgt_folder))) tgt_folder=tgt_folder->Parent;
+
+    AnsiString base_name;
+    MakeName(tgt_folder,0,base_name,true);
+    AnsiString cur_fld_name=base_name;
+    TElTreeItem* cur_folder=tgt_folder;
+
+    int drg_level=DragItem->Level;
+
+    TElTreeItem* item = DragItem;
+    do{
+    	DWORD type = DWORD(item->Data);
+		TElTreeItem* pNode = FindItemInFolder(type,tv,cur_folder,item->Text);
+		if (pNode&&IsObject(item)){
+            item=item->GetNext();
+        	continue;
+        }
+
+        if (!pNode) pNode = tv->Items->AddChildObject(cur_folder,item->Text,(TObject*)type);
+		if (IsFolder(item)){
+        	cur_folder = pNode;
+		    MakeName(cur_folder,0,cur_fld_name,true);
+            item=item->GetNext();
+        }else{
+        	// rename
+		    AnsiString old_name, new_name;
+		    MakeName(item,0,old_name,false);
+		    MakeName(pNode,0,new_name,false);
+
+            DragAction(old_name.c_str(),new_name.c_str());
+
+            TElTreeItem* parent=item->Parent;
+            // get next item && delete existance
+            TElTreeItem* next=item->GetNext();
+			item->Delete();
+
+            if (parent&&((parent->GetLastChild()==item)||(0==parent->ChildrenCount))){
+	            if (0==parent->ChildrenCount) parent->Delete();
+	        	cur_folder = cur_folder?cur_folder->Parent:0;
+            }
+
+            item=next;
+        }
+    }while(item&&(item->Level>drg_level));
+}
+//---------------------------------------------------------------------------
+
+void FOLDER::DragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept)
+{
+	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
+	TElTreeItem* tgt;
+    TElTreeItem* src=DragItem;
+    TSTItemPart IP;
+    int HCol;
+    if (!DragItem) Accept = false;
+  	else{
+		tgt = tv->GetItemAt(X, Y, IP, HCol);
+        if (tgt){
+        	if (IsFolder(src)){
+                bool b = true;
+                for (TElTreeItem* itm=tgt->Parent; itm; itm=itm->Parent) if (itm==src){b=false; break;}
+            	if (IsFolder(tgt)){
+		        	Accept = b&&(tgt!=src)&&(src->Parent!=tgt);
+                }else if (IsObject(tgt)){
+		        	Accept = b&&(src!=tgt->Parent)&&(tgt!=src)&&(tgt->Parent!=src->Parent);
+                }
+            }else if (IsObject(src)){
+            	if (IsFolder(tgt)){
+		        	Accept = (tgt!=src)&&(src->Parent!=tgt);
+                }else if (IsObject(tgt)){
+		        	Accept = (tgt!=src)&&(src->Parent!=tgt->Parent);
+                }
+            }
+        }else Accept = !!DragItem->Parent;
+    }
+}
+//---------------------------------------------------------------------------
+
+void FOLDER::StartDrag(TObject *Sender, TDragObject *&DragObject, TOnAfterDrag after_drag)
+{
+	DragAction = after_drag; R_ASSERT(DragAction);
+	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
+	if (tv->ItemFocused) 	DragItem = tv->ItemFocused;
+  	else					DragItem = 0;
 }
 //---------------------------------------------------------------------------
 

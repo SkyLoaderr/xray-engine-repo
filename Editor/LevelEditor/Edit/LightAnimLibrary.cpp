@@ -21,7 +21,6 @@ CLAItem::CLAItem()
 
 void CLAItem::InitDefault(){
 	Keys[0]		= 0x00000000;
-	Keys[1]		= 0x00000000;
 }
 
 void CLAItem::Load(CStream& F)
@@ -66,6 +65,7 @@ void CLAItem::InsertKey(int frame, DWORD color)
 void CLAItem::DeleteKey(int frame)
 {
 	R_ASSERT(frame<=iFrameCount);
+    if (0==frame) return;
 	KeyPairIt it=Keys.find(frame);
     if (it!=Keys.end()) Keys.erase(it);
 }
@@ -90,14 +90,9 @@ void CLAItem::Resize(int new_len)
 			iFrameCount = new_len;
         	MoveKey(old_len,new_len);
         }else{
-        	DWORD clr=Interpolate(new_len-1);
-			pair<KeyPairIt, KeyPairIt> I = Keys.equal_range(new_len-1);
-            if (I.first!=Keys.end()){
-	            if (I.first->first<new_len) I.first++;
-    	        Keys.erase(I.first, Keys.end());
-				iFrameCount = new_len;
-        	    InsertKey(new_len,clr);
-            }
+			KeyPairIt I = Keys.upper_bound(new_len-1);
+            if (I!=Keys.end()) Keys.erase(I, Keys.end());
+            iFrameCount = new_len;
         }
     }
 }
@@ -105,27 +100,63 @@ void CLAItem::Resize(int new_len)
 DWORD CLAItem::Interpolate(int frame)
 {
     R_ASSERT(frame<=iFrameCount);
-	pair<KeyPairIt, KeyPairIt> I = Keys.equal_range(frame);
+
+    KeyPairIt A=Keys.find(frame);
+    KeyPairIt B;
+    if (A!=Keys.end()){
+    	return A->second;
+    }else{
+    	B=Keys.upper_bound(frame);
+        if (B==Keys.end()){
+        	return A->second;
+        }
+    	A=B;
+        A--;
+    }
 
     Fcolor c, c0, c1;
-    int a0=I.first->first;
-    int a1=I.second->first;
-	R_ASSERT(I.first!=Keys.end());
-    c0.set(I.first->second);
-    c1.set(I.second->second);
-    float t = float(frame)/float(I.second->first-I.first->first);
+    float a0=A->first;
+    float a1=B->first;
+    c0.set(A->second);
+    c1.set(B->second);
+    float t = float(frame-a0)/float(a1-a0);
     c.lerp(c0,c1,t);
-
-	return c.get();
+    return c.get();
 }
 
-DWORD CLAItem::Calculate(float T)
+DWORD CLAItem::Calculate(float T, int& frame)
 {
-    float	t	= Device.fTimeGlobal;
-    float 	l	= float(iFrameCount)/fFPS;
-    return Interpolate(fmod(t,l)*fFPS);
+    frame	= fmod(Device.fTimeGlobal,float(iFrameCount)/fFPS)*fFPS;
+    return Interpolate(frame);
 }
 
+int CLAItem::PrevKeyFrame(int frame)
+{
+    KeyPairIt A=Keys.lower_bound(frame);
+    if (A!=Keys.end()){
+    	KeyPairIt B=A; B--;
+        if (B!=Keys.end()) return B->first;
+        return A->first;
+    }else{
+    	return Keys.rbegin()->first;
+    }
+}
+
+int CLAItem::NextKeyFrame(int frame)
+{
+    KeyPairIt A=Keys.lower_bound(frame);
+    if (A!=Keys.end()){
+    	KeyPairIt B=A; B++;
+        if (B!=Keys.end()) return B->first;
+        return A->first;
+    }else{
+    	return Keys.rend()->first;
+    }
+}
+
+//------------------------------------------------------------------------------
+// Library
+//------------------------------------------------------------------------------
 ELightAnimLibrary::ELightAnimLibrary()
 {
 }
@@ -141,8 +172,14 @@ void ELightAnimLibrary::OnCreate()
 
 void ELightAnimLibrary::OnDestroy()
 {
+	Unload();
+}
+
+void ELightAnimLibrary::Unload()
+{
 	for (LAItemIt it=Items.begin(); it!=Items.end(); it++)
     	_DELETE(*it);
+    Items.clear();
 }
 
 void ELightAnimLibrary::Load()
@@ -187,6 +224,8 @@ void ELightAnimLibrary::Save()
 
 void ELightAnimLibrary::Reload()
 {
+	Unload();
+	Load();
 }
 
 CLAItem* ELightAnimLibrary::FindItem(LPCSTR name)
@@ -224,3 +263,8 @@ void ELightAnimLibrary::DeleteItem(LPCSTR name)
 {
 }
 
+void ELightAnimLibrary::RenameItem(LPCSTR old_full_name, LPCSTR new_name)
+{
+	CLAItem* I=FindItem(old_full_name); R_ASSERT(I);
+    strcpy(I->cName,new_name);
+}

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 786
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -258,7 +258,7 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         CloseButton = False
-        Caption = 'Light Animation Editor'
+        Caption = 'Light Anim Editor'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11

@@ -1,6 +1,6 @@
 object frmEditLightAnim: TfrmEditLightAnim
-  Left = 312
-  Top = 592
+  Left = 245
+  Top = 499
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Light Animation Library'
@@ -29,6 +29,12 @@ object frmEditLightAnim: TfrmEditLightAnim
     Align = alClient
     BevelOuter = bvNone
     Color = 10528425
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 0
     Visible = False
     object Bevel1: TBevel
@@ -59,24 +65,19 @@ object frmEditLightAnim: TfrmEditLightAnim
       Caption = 'Frame count:'
     end
     object pbG: TPaintBox
-      Left = 4
+      Left = 3
       Top = 102
-      Width = 353
+      Width = 357
       Height = 25
       Color = clBlack
       ParentColor = False
-      OnClick = pbGClick
+      OnMouseDown = pbGMouseDown
+      OnMouseMove = pbGMouseMove
+      OnMouseUp = pbGMouseUp
       OnPaint = pbGPaint
     end
-    object Label4: TLabel
-      Left = 95
-      Top = 84
-      Width = 32
-      Height = 13
-      Caption = 'Frame:'
-    end
-    object ExtBtn1: TExtBtn
-      Left = 3
+    object ebDeleteKey: TExtBtn
+      Left = 75
       Top = 132
       Width = 67
       Height = 17
@@ -85,8 +86,195 @@ object frmEditLightAnim: TfrmEditLightAnim
       BtnColor = 10528425
       CloseButton = False
       Caption = 'Delete Key'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       Transparent = False
       FlatAlwaysEdge = True
+      OnClick = ebDeleteKeyClick
+    end
+    object ebCreateKey: TExtBtn
+      Left = 3
+      Top = 132
+      Width = 67
+      Height = 17
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = 'Create Key'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebCreateKeyClick
+    end
+    object ebPrevKey: TExtBtn
+      Left = 121
+      Top = 84
+      Width = 21
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = '<'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebPrevKeyClick
+    end
+    object ebFirstKey: TExtBtn
+      Left = 100
+      Top = 84
+      Width = 21
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = '|<<'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebFirstKeyClick
+    end
+    object ebNextKey: TExtBtn
+      Left = 222
+      Top = 84
+      Width = 21
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = '>'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebNextKeyClick
+    end
+    object ebLastKey: TExtBtn
+      Left = 243
+      Top = 84
+      Width = 21
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = '>>|'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebLastKeyClick
+    end
+    object ebMoveKeyLeft: TExtBtn
+      Left = 76
+      Top = 84
+      Width = 21
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = '<-'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebMoveKeyLeftClick
+    end
+    object ebMoveKeyRight: TExtBtn
+      Left = 267
+      Top = 84
+      Width = 21
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = '->'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebMoveKeyRightClick
+    end
+    object ebFirstFrame: TExtBtn
+      Left = 3
+      Top = 84
+      Width = 21
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = '|<<'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebFirstFrameClick
+    end
+    object ebLastFrame: TExtBtn
+      Left = 338
+      Top = 84
+      Width = 21
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = '>>|'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebLastFrameClick
     end
     object paColor: TPanel
       Left = 233
@@ -94,8 +282,27 @@ object frmEditLightAnim: TfrmEditLightAnim
       Width = 125
       Height = 59
       BevelOuter = bvNone
-      Color = clBlack
+      Color = 10526880
       TabOrder = 4
+      object lbCurFrame: TMxLabel
+        Left = 113
+        Top = 1
+        Width = 9
+        Height = 14
+        Alignment = taRightJustify
+        Caption = '7'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 15790320
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+        ShadowColor = 5460819
+        ShadowPos = spRightBottom
+        Transparent = True
+      end
     end
     object seFPS: TMultiObjSpinEdit
       Left = 96
@@ -115,6 +322,9 @@ object frmEditLightAnim: TfrmEditLightAnim
       Ctl3D = True
       ParentCtl3D = False
       TabOrder = 1
+      OnLWChange = seFPSLWChange
+      OnExit = seFPSExit
+      OnKeyDown = seFPSKeyDown
     end
     object edName: TEdit
       Left = 96
@@ -123,6 +333,7 @@ object frmEditLightAnim: TfrmEditLightAnim
       Height = 19
       AutoSize = False
       Color = 10526880
+      Enabled = False
       TabOrder = 0
     end
     object seFrameCount: TMultiObjSpinEdit
@@ -146,25 +357,28 @@ object frmEditLightAnim: TfrmEditLightAnim
       OnKeyDown = seFrameCountKeyDown
     end
     object sePointer: TMultiObjSpinEdit
-      Left = 130
-      Top = 81
-      Width = 98
-      Height = 18
+      Left = 142
+      Top = 82
+      Width = 79
+      Height = 17
       LWSensitivity = 0.01
       ButtonKind = bkLightWave
       ButtonWidth = 16
       MaxValue = 100000
       AutoSize = False
-      Color = 10526880
+      Color = 12582911
       Ctl3D = True
       ParentCtl3D = False
       TabOrder = 3
+      OnLWChange = sePointerLWChange
       OnChange = sePointerChange
+      OnExit = sePointerExit
+      OnKeyDown = sePointerKeyDown
     end
     object stStartFrame: TStaticText
-      Left = 3
+      Left = 25
       Top = 84
-      Width = 47
+      Width = 38
       Height = 15
       AutoSize = False
       BorderStyle = sbsSunken
@@ -174,9 +388,9 @@ object frmEditLightAnim: TfrmEditLightAnim
       TabOrder = 5
     end
     object stEndFrame: TStaticText
-      Left = 312
+      Left = 300
       Top = 84
-      Width = 47
+      Width = 38
       Height = 15
       AutoSize = False
       BorderStyle = sbsSunken
@@ -204,16 +418,17 @@ object frmEditLightAnim: TfrmEditLightAnim
       DragCursor = crDrag
       Align = alClient
       AlwaysKeepFocus = True
+      AlwaysKeepSelection = False
       AutoCollapse = False
       AutoExpand = True
       DockOrientation = doNoOrient
       DefaultSectionWidth = 120
       BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
       CustomPlusMinus = True
-      DoInplaceEdit = False
+      DragAllowed = True
       DrawFocusRect = False
       DragImageMode = dimOne
-      DragTrgDrawMode = ColorRect
+      DragTrgDrawMode = dtdDownColorLine
       ExplorerEditMode = False
       Flat = True
       FocusedSelectColor = 10526880
@@ -228,36 +443,36 @@ object frmEditLightAnim: TfrmEditLightAnim
       HeaderHeight = 19
       HeaderHotTrack = False
       HeaderSections.Data = {
-        F4FFFFFF07000000BCA8680600000000FFFFFFFF000001010100000078000000
+        F4FFFFFF070000008C45D70D00000000FFFFFFFF000001010100000078000000
         000000001027000000010000C0CA530500000000000000000000000000000100
         0000000000000000000100000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000090000000010000000001000000000000
-        000000000000BCA8680600000000FFFFFFFF0000010101000000780000000000
+        0000000000008C45D70D00000000FFFFFFFF0000010101000000780000000000
         00001027000000010000702B4905010000000000000000000000000001000000
         0000000000000001000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000900000000100000000010000000000000000
-        00000000BCA8680600000000FFFFFFFF00000101010000007800000000000000
+        000000008C45D70D00000000FFFFFFFF00000101010000007800000000000000
         1027000000010000504F150E0200000000000000000000000000010000000000
         0000000000010000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000009000000001000000000100000000000000000000
-        0000BCA8680600000000FFFFFFFF000001010100000078000000000000001027
+        00008C45D70D00000000FFFFFFFF000001010100000078000000000000001027
         00000001000084DF650E03000000000000000000000000000100000000000000
         0000000100000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000090000000010000000001000000000000000000000000
-        BCA8680600000000FFFFFFFF0000010101000000780000000000000010270000
+        8C45D70D00000000FFFFFFFF0000010101000000780000000000000010270000
         0001000070981404040000000000000000000000000001000000000000000000
         0001000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
-        000000000000000090000000010000000001000000000000000000000000BCA8
-        680600000000FFFFFFFF00000101010000007800000000000000102700000001
+        0000000000000000900000000100000000010000000000000000000000008C45
+        D70D00000000FFFFFFFF00000101010000007800000000000000102700000001
         00000427B6190500000000000000000000000000010000000000000000000001
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
-        00000000000090000000010000000001000000000000000000000000BCA86806
+        000000000000900000000100000000010000000000000000000000008C45D70D
         00000000FFFFFFFF000001010100000078000000000000001027000000010000
         54C5450406000000000000000000000000000100000000000000000000010000
         0000000000000000000000000000000000000000000000000000000000000000
@@ -328,6 +543,10 @@ object frmEditLightAnim: TfrmEditLightAnim
       TextColor = clBtnText
       BkColor = clGray
       OnItemFocused = tvItemsItemFocused
+      OnDragDrop = tvItemsDragDrop
+      OnDragOver = tvItemsDragOver
+      OnStartDrag = tvItemsStartDrag
+      OnMouseDown = tvItemsMouseDown
       OnDblClick = tvItemsDblClick
       OnKeyPress = tvItemsKeyPress
     end
@@ -411,5 +630,48 @@ object frmEditLightAnim: TfrmEditLightAnim
         Name = 'EmitterDirZ'
         Value = 0s
       end>
+  end
+  object pmActionList: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    MarginStartColor = 13158600
+    MarginEndColor = 1644825
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Top = 30
+    object Rename1: TMenuItem
+      Caption = 'Rename'
+      OnClick = Rename1Click
+    end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object CreateFolder1: TMenuItem
+      Caption = 'Create Folder'
+      OnClick = CreateFolder1Click
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object ExpandAll1: TMenuItem
+      Caption = 'Expand All'
+      OnClick = ExpandAll1Click
+    end
+    object CollapseAll1: TMenuItem
+      Caption = 'Collapse All'
+      OnClick = CollapseAll1Click
+    end
+  end
+  object InplaceTextEdit: TElTreeInplaceAdvancedEdit
+    Tree = tvItems
+    Types = [sftText]
+    OnValidateResult = InplaceTextEditValidateResult
+    Left = 30
+    Top = 30
   end
 end

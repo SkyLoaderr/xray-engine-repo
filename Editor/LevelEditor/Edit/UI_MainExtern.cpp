@@ -5,6 +5,7 @@
 #include "UI_Main.h"
 #include "UI_Tools.h"
 #include "EditLibrary.h"
+#include "EditLightAnim.h"
 #include "ImageEditor.h"
 #include "topbar.h"
 #include "leftbar.h"
@@ -196,22 +197,20 @@ void TUI::Idle()
 {
 	VERIFY(m_bReady);
 	// reset fpu
-//    _clear87();
-//    FPU::m24r();
 	// input
     pInput->OnFrame();
     if (g_ErrorMode) return;
-//    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);
     Sleep(5);
 	Device.UpdateTimer();
     EEditorState est = GetEState();
-    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditImages)){
+    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditImages)||(est==esEditLightAnim)){
 	    if (bUpdateScene) RealUpdateScene();
     	if (bRedraw){
             Scene.Update(Device.fTimeDelta);
         	Redraw();
         }
 		Tools.Update();
+        if (est==esEditLightAnim) TfrmEditLightAnim::OnIdle();
     }
         // show hint
     ShowObjectHint();
