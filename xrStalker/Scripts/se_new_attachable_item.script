@@ -6,7 +6,7 @@ class "CSE_NewAttachableItem"				(cse_alife_item)
 
 function CSE_NewAttachableItem:__init		(section) super(section)
 	log							("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
-	self.script_property0		= 6
+	self.script_property0		= flags32()
 end
 
 function CSE_NewAttachableItem:__finalize	()
@@ -21,14 +21,14 @@ end
 function CSE_NewAttachableItem:STATE_Write	(packet)
 	log							("CSE_NewAttachableItem::STATE_Write called!")
 	cse_alife_item.STATE_Write	(self,packet)
-	packet:w_s32				(10)
+	packet:w_u32				(self.script_property0:get())
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	log							("CSE_NewAttachableItem::STATE_Read called!")
 	cse_alife_item.STATE_Read	(self,packet,size)
-	self.script_property0		= packet:r_s32()
-	this.printf					("STATE_Read : %d",self.script_property0)
+	self.script_property0:set	(packet:r_u32())
+	this.printf					("STATE_Read : %d",self.script_property0:get())
 end
 
 function CSE_NewAttachableItem:UPDATE_Write	(packet)
@@ -45,7 +45,7 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	log							("CSE_NewAttachableItem::FillProps called!")
 	cse_alife_item.FillProps	(self,pref,items)
 	log							("Props1")
-	properties_helper():create_s32(items,pref,self.script_property0)
+	properties_helper():create_flag32(items,pref,self.script_property0)
 	log							("Props2")
 	log							("Props3")
 	log							("Props4")
