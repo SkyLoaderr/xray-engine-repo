@@ -72,11 +72,13 @@ void SBullet::Init(const Fvector& position,
 
 CBulletManager::CBulletManager()
 {
+	m_Bullets.clear();
 	m_Bullets.reserve(100);
 }
 
 CBulletManager::~CBulletManager()
 {
+	m_Bullets.clear();
 }
 
 #define BULLET_MANAGER_SECTION "bullet_manager"
@@ -222,7 +224,7 @@ void CBulletManager::Render	()
 {
 	if(m_Bullets.empty()) return;
 
-	u32	vOffset;
+	u32	vOffset = 0;
 	u32 bullet_num = m_Bullets.size();
 
 	

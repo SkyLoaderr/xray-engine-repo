@@ -123,9 +123,18 @@ void CTelekinesis::PhDataUpdate(dReal step)
 	}
 }
 
+bool RemovePred(CTelekineticObject &tele_object)
+{
+	return (!tele_object.get_object() || tele_object.get_object()->getDestroy());
+}
+
 void  CTelekinesis::PhTune(dReal step)
 {
 	if (!active) return;
+
+	//убрать все объеты с getDestroy() == true
+	TELE_OBJECTS_IT it = remove_if(objects.begin(),objects.end(), RemovePred);
+	objects.erase(it, objects.end());
 	
 	for (u32 i = 0; i < objects.size(); i++) {
 		switch (objects[i].get_state()) {

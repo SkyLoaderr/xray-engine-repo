@@ -1,10 +1,15 @@
 #include "stdafx.h"
+#include "Level_Bullet_Manager.h"
 
 void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
 	IGame_Level::net_Stop		();
 	IPureClient::Disconnect		();
+
+	BulletManager().Clear		();
+
+	
 	if (Server)
 	{
 		Server->Disconnect		();
