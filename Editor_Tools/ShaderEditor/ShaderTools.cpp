@@ -414,9 +414,11 @@ void CShaderTools::CollapseMatrix(LPSTR name){
     for (MatrixPairIt m=m_OptMatrices.begin(); m!=m_OptMatrices.end(); m++){
         if (m->second->Similar(*M)){
             strcpy(name,m->first);
-            break;
+            return;
         }
     }
+    // append opt matrix
+	m_OptMatrices.insert(make_pair(strdup(name),M));
 }
 
 void CShaderTools::CollapseConstant(LPSTR name){
@@ -425,9 +427,11 @@ void CShaderTools::CollapseConstant(LPSTR name){
     for (ConstantPairIt c=m_OptConstants.begin(); c!=m_OptConstants.end(); c++){
         if (c->second->Similar(*C)){
             strcpy(name,c->first);
-            break;
+            return;
         }
     }
+    // append opt constant
+	m_OptConstants.insert(make_pair(strdup(name),C));
 }
 
 static CExpandBlender 	ExpandBlender;
@@ -471,5 +475,14 @@ void CShaderTools::CollapseReferences(){
     m_OptMatrices.clear();
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
     	ParseBlender(b->second,CollapseBlender);
+	// Matrices
+	for (MatrixPairIt m=m_Matrices.begin(); m!=m_Matrices.end(); m++)
+		free		(m->first);
+	m_Matrices.clear	();
+	// Constants
+	for (ConstantPairIt c=m_Constants.begin(); c!=m_Constants.end(); c++)
+		free		(c->first);
+	m_Constants.clear	();
+//	m_Matrices.assign();
 }
 
