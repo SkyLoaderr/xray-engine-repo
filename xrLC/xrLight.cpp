@@ -194,6 +194,12 @@ void CBuild::LightVertex()
 	DWORD	last			= VL_faces->size()-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CVertexLightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+
+	// Light models
+	for (u32 m=0; m<mu_refs.size(); m++)
+		mu_refs[m]->calc_lighting	();
+
+	// Wait other threads
 	Threads.wait			();
 	clMsg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 

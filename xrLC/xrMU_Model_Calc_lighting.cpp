@@ -119,3 +119,9 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 		dest[I]			= m_vertices[I]->C;
 	}
 }
+
+
+void xrMU_Reference::calc_lighting()
+{
+	model->calc_lighting(color,xform,RCAST_Model,0);
+}

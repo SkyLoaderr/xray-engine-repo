@@ -32,34 +32,39 @@ void xrMU_Reference::export_ogf()
 					xrMU_Model::v_faces_it	_end	= _beg + it->count;
 					for (xrMU_Model::v_faces_it Fit=_beg; Fit!=_end; Fit++)
 					{
-						OGF_Vertex	V1,V2,V3;
+						OGF_Vertex	V0,V1,V2;
 
 						xrMU_Model::_face*	FF		= *Fit;
 						R_ASSERT			(FF);
 
+						// Vertices
+						xrMU_Model::_vertex*	_V0		= FF->v[0];	u32 id0	= find(model->m_vertices.begin(),model->m_vertices.end(),_V0)-model->m_vertices.begin();
+						xrMU_Model::_vertex*	_V1		= FF->v[1];	u32 id1	= find(model->m_vertices.begin(),model->m_vertices.end(),_V1)-model->m_vertices.begin();
+						xrMU_Model::_vertex*	_V2		= FF->v[2];	u32 id2	= find(model->m_vertices.begin(),model->m_vertices.end(),_V2)-model->m_vertices.begin();
+
 						// Geometry - POS
-						xform.transform_tiny(V1.P, FF->v[0]->P);
-						xform.transform_tiny(V2.P, FF->v[1]->P);	
-						xform.transform_tiny(V3.P, FF->v[2]->P);	
+						xform.transform_tiny(V0.P, _V0->P);
+						xform.transform_tiny(V1.P, _V1->P);	
+						xform.transform_tiny(V2.P, _V2->P);	
 
 						// Geometry - NORMAL
-						xform.transform_dir(V1.N, FF->v[0]->N); V1.N.normalize();
-						xform.transform_dir(V2.N, FF->v[1]->N); V2.N.normalize();
-						xform.transform_dir(V3.N, FF->v[2]->N); V3.N.normalize();
+						xform.transform_dir(V0.N, _V0->N); V0.N.normalize();
+						xform.transform_dir(V1.N, _V1->N); V1.N.normalize();
+						xform.transform_dir(V2.N, _V2->N); V2.N.normalize();
 
 						// Geometry - COLOR
-						V1.Color			= 0xffffffff;//FF->v[0]->Color.get();
-						V2.Color			= 0xffffffff;//FF->v[1]->Color.get();
-						V3.Color			= 0xffffffff;//FF->v[2]->Color.get();
+						V0.Color			= color[id0].get();
+						V1.Color			= color[id1].get();
+						V2.Color			= color[id2].get();
 
 						// Geometry - UV
-						V1.UV.push_back		(FF->tc[0]);
-						V2.UV.push_back		(FF->tc[1]);
-						V3.UV.push_back		(FF->tc[2]);
+						V0.UV.push_back		(FF->tc[0]);
+						V1.UV.push_back		(FF->tc[1]);
+						V2.UV.push_back		(FF->tc[2]);
 
 						// build face
-						TRY					(pOGF->_BuildFace(V1,V2,V3));
-						V1.UV.clear();	V2.UV.clear();	V3.UV.clear();
+						TRY					(pOGF->_BuildFace(V0,V1,V2));
+						V0.UV.clear();	V1.UV.clear();	V2.UV.clear();
 					}
 				} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *faces*",g_tree.size()); }
 			} catch (...)
