@@ -57,7 +57,8 @@ void CRender::level_Load()
 	marker						= 0;
 
 	if	(!g_pGamePersistent->bDedicatedServer)	{
-		// SWIs
+		//Sliding window
+		pApp->LoadTitle				("Loading SWIs...");
 		LoadSWIs					(fs);
 
 		// VB
@@ -81,10 +82,6 @@ void CRender::level_Load()
 
 	// Lights
 	pApp->LoadTitle				("Loading lights...");
-	LoadLights					(fs);
-
-	//Sliding window
-	pApp->LoadTitle				("Loading SWIs...");
 	LoadLights					(fs);
 
 	// HOM

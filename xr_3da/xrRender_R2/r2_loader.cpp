@@ -50,19 +50,23 @@ void CRender::level_Load()
 		Wallmarks->load_LevelWallmarks(fn_wm);
 
 	if	(!g_pGamePersistent->bDedicatedServer)	{
+		//Sliding window
+		pApp->LoadTitle				("Loading SWIs...");
+		LoadSWIs					(fs);
+
 		// VB
-		pApp->LoadTitle		("Loading geometry...");
-		LoadBuffers			(fs);
+		pApp->LoadTitle				("Loading geometry...");
+		LoadBuffers					(fs);
 
 		// Visuals
-		pApp->LoadTitle		("Loading spatial-DB...");
-		chunk				= fs->open_chunk(fsL_VISUALS);
-		LoadVisuals			(chunk);
-		chunk->close		();
+		pApp->LoadTitle				("Loading spatial-DB...");
+		chunk						= fs->open_chunk(fsL_VISUALS);
+		LoadVisuals					(chunk);
+		chunk->close				();
 
 		// Details
-		pApp->LoadTitle		("Loading details...");
-		Details->Load		();
+		pApp->LoadTitle				("Loading details...");
+		Details->Load				();
 	}
 
 	// Sectors
