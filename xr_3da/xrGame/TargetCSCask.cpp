@@ -21,6 +21,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_TAKE : {
 			P.r_u16(id);
 			CObject *l_pObj = Level().Objects.net_Find(id);
+			Log			("----------- void CTargetCSCask::OnEvent --- TAKE",l_pObj->cName());
 
 			// Test for CS Target
 			CTargetCS* l_pBall = dynamic_cast<CTargetCS*>(l_pObj);
@@ -33,6 +34,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_REJECT :{
 			P.r_u16(id);
 			CObject* l_pObj	= Level().Objects.net_Find(id);
+			Log			("----------- void CTargetCSCask::OnEvent --- REJECT",l_pObj->cName());
 
 			// Test for CS Target
 			CTargetCS* l_pBall	= dynamic_cast<CTargetCS*>(l_pObj);

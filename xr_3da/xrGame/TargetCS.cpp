@@ -22,6 +22,7 @@ BOOL CTargetCS::net_Spawn(LPVOID DC) {
 }
 
 void CTargetCS::OnH_A_Chield() {
+	Log("+++++++++++ void CTargetCS::OnH_A_Chield()");
 	inherited::OnH_A_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
@@ -29,6 +30,7 @@ void CTargetCS::OnH_A_Chield() {
 }
 
 void CTargetCS::OnH_B_Independent() {
+	Log("+++++++++++ void CTargetCS::OnH_B_Independent()");
 	inherited::OnH_B_Independent();
 	setVisible					(true);
 	setEnabled					(true);

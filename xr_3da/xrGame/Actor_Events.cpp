@@ -20,6 +20,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	{
 	case GE_OWNERSHIP_TAKE:
 		{
+			Log("CActor::OnEvent - TAKE");
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
@@ -51,6 +52,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_OWNERSHIP_REJECT:
 		{
+			Log			("CActor::OnEvent - REJECR");
+
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
