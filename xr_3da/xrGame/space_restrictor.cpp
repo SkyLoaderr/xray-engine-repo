@@ -157,6 +157,7 @@ BOOL CSpaceRestrictor::UsedAI_Locations	()
 #ifdef PRECOMPUTED_INSIDE
 void CSpaceRestrictor::spatial_move		()
 {
+	inherited::spatial_move				();
 	actual		(false);
 }
 #endif
