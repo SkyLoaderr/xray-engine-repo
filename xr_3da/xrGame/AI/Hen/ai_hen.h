@@ -106,7 +106,7 @@ class CAI_Hen : public CCustomMonster
 		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  Death();
 		virtual void  Load( CInifile* ini, const char* section );
-		virtual BOOL  Spawn(BOOL bLocal, int server_id, int team, int squad, int group, Fvector4& o_pos);
+		virtual BOOL  Spawn(BOOL bLocal, int server_id, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle);
 		virtual void  Think();
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);
