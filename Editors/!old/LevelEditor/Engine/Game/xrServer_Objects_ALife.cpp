@@ -1228,7 +1228,8 @@ CSE_ALifeCar::~CSE_ALifeCar				()
 
 void CSE_ALifeCar::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
-	inherited::STATE_Read		(tNetPacket,size);
+	if(m_wVersion>65)		inherited::STATE_Read		(tNetPacket,size);
+	else CSE_ALifeDynamicObjectVisual::STATE_Read		(tNetPacket,size);
 	if ((m_wVersion > 52) && (m_wVersion < 55))
 		tNetPacket.r_float		();
 }

@@ -19,7 +19,7 @@
 #pragma warning(push)
 #pragma warning(disable:4005)
 
-#define SPAWN_VERSION	u16(65)
+#define SPAWN_VERSION	u16(66)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
