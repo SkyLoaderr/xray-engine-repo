@@ -41,7 +41,7 @@ void	CRenderTarget::phase_combine	()
 		m_previous.mul		(m_saved_viewproj,m_invview);
 		m_current.set		(Device.mProject)		;
 		m_saved_viewproj.set(Device.mFullTransform)	;
-		float	scale		= .5f;
+		float	scale		= ps_r2_mblur/2.f;
 		m_blur_scale.set	(scale,-scale).div(12.f);
 	}
 
