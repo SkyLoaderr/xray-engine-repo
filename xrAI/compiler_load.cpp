@@ -158,6 +158,7 @@ void xrLoad(LPCSTR name)
 
 		R_ASSERT			(F->open_chunk(E_AIMAP_CHUNK_NODES));
 		u32					N = F->r_u32();
+		R_ASSERT2			(N < ((u32(1) << u32(21)) - 2),"Too many nodes!");
 		g_nodes.resize		(N);
 
 		hdrNODES			H;
