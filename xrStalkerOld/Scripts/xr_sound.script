@@ -60,20 +60,21 @@ function load_sound(obj)
 												//return t
 	end
 	-- загрузка звуков, возвращает »ƒ пачки и количество звуков в пачке.
-	function load_theme(name)
-		local file = snd_files[name]
-		if file ~= nil then
-			local sid = id()
-			local t = { id = sid, max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid) }
-
-			if t.max == 0 then
-				printf( "No sounds loaded: %s", file )
+	function load_theme(name, seq)
+		if name ~= nil then
+			local file = snd_files[name]
+			if file ~= nil then
+				local sid = id()
+				local t = { id = sid, seq = seq == true, max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid) }
+				if t.max == 0 then
+					printf( "No sounds loaded: %s", file )
+				end
+				return t
+			else
+				return nil
 			end
-
-			return t
-		else
-			return nil
 		end
+		return nil
 	end
 
 	-- фразы о погоде
@@ -158,12 +159,11 @@ function load_sound(obj)
 	------------------------------------------------------------------------------------------------
 	-- лагерь новичков на эскейп
 	theme["novice_camp_guards"] = load_theme("novice_camp_guards")
+	theme["seq_novice_camp_guards"] = load_theme("novice_camp_guards", true)
 	
 	-- radio for military stalkers
 	theme["military_radio"] = load_theme ("military_radio")
 	
-	
-	--print_table(theme)
 	--printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 	--print_table(theme)
 end
@@ -202,77 +202,104 @@ function sound_update(npc, sound, now)
 			end
 		end
 
-		-- получить id-шки пачек звуков, которые могут быть проиграны
-
-		local sounds_ids = {}
-
-		function get_sound(path)
+		function get_sound(path, tt)
 			if path == nil then return nil end
 			if path.exec == nil then
 				if path.max > 0 then
-					sounds_ids[path.id] = path.max
+					printf("*LOAD SOUNDS*: MAX = %s", path.max)
+					tt[path.id] = path.max
 				end
 			else
 				local pe = path.exec(path.types, npc, target)
 				if type(pe) == "table" then
 					for k,v in pe do
-						get_sound(path.types[v])
+						get_sound(path.types[v], tt)
 					end
 				else
-					get_sound(path.types[pe])
+					get_sound(path.types[pe], tt)
 				end
 			end
 		end
+		function get_sound_count(tt)
+			local n = 0
+			for k,v in tt do
+				n = n + v
+			end
+			return n
+		end
+		--' –азделим за€вленные темы на рандомные и последовательные.		
+
+		local sounds_ids = {}
+		local sounds_seq = {}
 
 		for k,v in sound.themes do
 			if theme[v] ~= nil then
-				get_sound(theme[v])
+				if theme[v].seq == true then
+					get_sound(theme[v], sounds_seq)
+				else
+					get_sound(theme[v], sounds_ids)
+				end
 			else
 				printf("ERROR: invalid theme %s", v)
 			end
 		end
-
-		-- проиграть один звук
+		
+		--' проиграть один звук
 		if now or sound.rnd == nil or math.random(100) < sound.rnd then
-			local sum = 0
-			local id
-			local num
-
-			for k, w in sounds_ids do
-				sum = sum + w
-			end
-
-			if sum == 0 then
-				return
-			end
-
-			repeat
-				local r = math.random(0, sum - 1)
-				local cur_sum = 0
-
-				for k, w in sounds_ids do
-					cur_sum = cur_sum + w
-
-					if r < cur_sum then
-						id  = k
-						num = r - (cur_sum - w)
-						break
+			--' играем рандомные звуки
+			local max_seq_cnt = get_sound_count(sounds_seq)
+			if max_seq_cnt > 0 and
+			   (sound["seq_cnt"] == nil or sound["seq_cnt"] < max_seq_cnt)
+			then						
+				if sound["seq_cnt"] == nil then
+					sound["seq_cnt"] = 0
+				end
+				local n = sound["seq_cnt"]
+				for k,v in sounds_seq do
+					if n < v then
+						--' играем звук
+						npc:play_sound(k, 1, 0, 1, 0, sound["seq_cnt"])
+						sound["seq_cnt"] = sound["seq_cnt"] + 1
+						return
+					else
+						n = n - v
 					end
 				end
-			until id ~= sound.last_id or num ~= sound.last_num or sum == 1
+			else
+				local sum = 0
+				local id
+				local num
 
-			sound.last_id  = id
-			sound.last_num = num
+				for k, w in sounds_ids do
+					sum = sum + w
+				end
 
---			if type( now ) == "number" then
---				printf("Number")
---				npc:play_sound(id, now+1, now, 1, 0, num)
---			else
-				printf("_bp: play_sound: %d, %d", id, num)
-				--npc:set_sound_mask (0) -- DELME
+				if sum == 0 then
+					return
+				end
+
+				repeat
+					local r = math.random(0, sum - 1)
+					local cur_sum = 0
+
+					for k, w in sounds_ids do
+						cur_sum = cur_sum + w
+
+						if r < cur_sum then
+							id  = k
+							num = r - (cur_sum - w)
+							break
+						end
+					end
+				until id ~= sound.last_id or num ~= sound.last_num or sum == 1
+
+				sound.last_id  = id
+				sound.last_num = num
+
 				npc:play_sound(id, 1, 0, 1, 0, num)
---			end
-		end
+			end
+		end				
+		
 	end
 end
 
