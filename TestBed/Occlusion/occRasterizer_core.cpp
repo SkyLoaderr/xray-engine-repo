@@ -167,14 +167,9 @@ void i_test		( int x, int y)
 	i_test_micro	(x,y);
 }
 
-void i_edge		( float __x1, float __y1, float __x2, float __y2)
+void i_edge		( int x1, int y1, int x2, int y2)
 {
-	int x1	= iFloor(__x1);
-	int x2	= iFloor(__x2);
     int dx	= abs(x2 - x1);
-
-	int y1	= iFloor(__y1);
-	int y2	= iFloor(__y2);
     int dy	= abs(y2 - y1);
 
     int sx = x2 >= x1 ? 1 : -1;
@@ -328,7 +323,13 @@ void occRasterizer::rasterize	(occTri* T)
 	}
 
 	// Rasterize (and Y-connect) edges
-	i_edge			(currentA[0],currentA[1],currentB[0],currentB[1]);
-	i_edge			(currentA[0],currentA[1],currentC[0],currentC[1]);
-	i_edge			(currentB[0],currentB[1],currentC[0],currentC[1]);
+	int ax			= iFloor(currentA[0]);
+	int ay			= iFloor(currentA[1]);
+	int bx			= iFloor(currentB[0]);
+	int by			= iFloor(currentB[1]);
+	int cx			= iFloor(currentC[0]);
+	int cy			= iFloor(currentC[1]);
+	i_edge			(ax,ay,bx,by);
+	i_edge			(ax,ay,cx,cy);
+	i_edge			(bx,by,cx,cy);
 }
