@@ -79,7 +79,7 @@ public:
 	{
 		R_ASSERT					(tFileStream.find_chunk(ALIFE_CHUNK_DATA));
 		tFileStream.r				(&m_tALifeVersion,	sizeof(m_tALifeVersion));
-		R_ASSERT					(m_tALifeVersion != ALIFE_VERSION);
+		R_ASSERT					(m_tALifeVersion == ALIFE_VERSION);
 		tFileStream.r				(&m_tZoneState,		sizeof(m_tZoneState));
 	};
 };
@@ -94,8 +94,7 @@ public:
 	{
 		R_ASSERT(tFileStream.find_chunk(SPAWN_POINT_CHUNK_VERSION));
 		m_tSpawnVersion				= tFileStream.r_u32();
-		if (m_tSpawnVersion != XRAI_CURRENT_VERSION)
-			THROW;
+		R_ASSERT(m_tSpawnVersion == XRAI_CURRENT_VERSION);
 		m_dwSpawnCount				= tFileStream.r_u32();
 		m_dwLevelCount				= tFileStream.r_u32();
 	};
