@@ -160,7 +160,7 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 	inherited1::FillProp		(_pref,items);
 	inherited2::FillProp		(_pref,items);
 	AnsiString					S;
-    AnsiString pref 			= FHelper.PrepareKey(_pref,s_name,"ALife\\Supplies");
+    AnsiString 					pref = FHelper.PrepareKey(_pref,s_name,"ALife\\Supplies");
 
     supplies_count				= m_tpSupplies.size();
 	PropValue* V=PHelper.CreateS32(items, FHelper.PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);

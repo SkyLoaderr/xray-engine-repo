@@ -388,7 +388,7 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref, "ALife\\Probability"),			&m_fProbability,	0,100);
+	PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),	&m_fProbability,	0,100);
 	PHelper.CreateSceneItem		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	m_caGroupControl,  sizeof(m_caGroupControl), OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
 }
 #endif
@@ -515,8 +515,8 @@ void CSE_ALifeDynamicObjectVisual::UPDATE_Read(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-	inherited1::FillProp		(FHelper.PrepareKey(pref,s_name),items);
-	inherited2::FillProp		(FHelper.PrepareKey(pref,s_name),items);
+	inherited1::FillProp		(pref,items);
+	inherited2::FillProp		(FHelper.PrepareKey(pref,s_name).c_str(),items);
 }
 #endif
 
@@ -749,7 +749,6 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
     
 	if (visual && PKinematics(visual))
 	{
-		CKinematics::accel		*ll_bones	= PKinematics(visual)->LL_Bones();
 		CKinematics::accel		*ll_motions	= PKinematics(visual)->LL_Motions();
 		CKinematics::accel::iterator _I, _E;
 		AStringVec				vec;
