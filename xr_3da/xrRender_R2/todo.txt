@@ -35,9 +35,10 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +FEATURE:	anisotropic
 +FEATURE:	linear-fog
 +FEATURE:	particles/transparency
++		:	light-sleeping logic
+		:	faster bloom blur
 self-ilum
 volume-fog
-light-sleeping logic
 
 Engine/Game:
 	* refactor/rebuild collision detection infrastructure (along with Slipch)	
