@@ -411,7 +411,6 @@ void CWeaponMagazined::switch2_Reload()
 }
 void CWeaponMagazined::switch2_Hiding()
 {
-	// switch2_Idle			();
 	pSounds->PlayAtPos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
