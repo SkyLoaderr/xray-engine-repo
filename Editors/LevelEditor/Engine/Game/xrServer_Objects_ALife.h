@@ -11,11 +11,11 @@
 
 #include "xrServer_Objects.h"
 #include "alife_space.h"
-#include "phsynchronize.h"
 #ifndef _EDITOR
-#ifndef AI_COMPILER
-	class CALifeSimulator;
-#endif
+#	ifndef AI_COMPILER
+#		include "phsynchronize.h"
+		class 	CALifeSimulator;
+#	endif
 #endif
 
 #ifdef _EDITOR
