@@ -74,7 +74,7 @@ LPCSTR global_names			[] = {
 	"damage_",
 	"escape_",
 	"dead_stop_",
-	"norm_hello_",
+	"hello_",
 	0
 };
 
