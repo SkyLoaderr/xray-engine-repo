@@ -28,8 +28,10 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSchedulable, _GRAPH_ID tGraphID)
 {
 	CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeSchedulable);
-	D_OBJECT_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
-	D_OBJECT_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
+	m_tpGraphPointObjects.clear	();
+	m_tpGraphPointObjects.insert(m_tpGraphPointObjects.end(),m_tpGraphObjects[tGraphID].tpObjects.begin(),m_tpGraphObjects[tGraphID].tpObjects.end());
+	D_OBJECT_P_IT				I = m_tpGraphPointObjects.begin();
+	D_OBJECT_P_IT				E = m_tpGraphPointObjects.end();
 	int							l_iGroupIndex;
 	bool						l_bFirstTime = true;
 	bool						l_bMutualDetection;

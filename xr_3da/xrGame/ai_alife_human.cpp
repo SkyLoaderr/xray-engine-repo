@@ -172,7 +172,7 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 		return					(m_tpCurrentBestWeapon);
 	}
 	else
-		inherited2::tpfGetBestWeapon(tHitType,fHitPower);
+		return(inherited2::tpfGetBestWeapon(tHitType,fHitPower));
 }
 
 bool CSE_ALifeHumanAbstract::bfPerformAttack()
@@ -338,7 +338,7 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALif
 	return						(u16(l_dwResult));
 }
 
-void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector)
+void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector, _GRAPH_ID tGraphID)
 {
 	if (!tpALifeItemWeapon->m_caAmmoSections)
 		return;
@@ -348,7 +348,7 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 	for ( ; I != E; I++) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(*I);
 		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && bfCanGetItem(l_tpALifeItemAmmo)) {
-			m_tpALife->vfAttachItem(*this,l_tpALifeItemAmmo,m_tGraphID);
+			m_tpALife->vfAttachItem(*this,l_tpALifeItemAmmo,tGraphID);
 			l_dwCount++;
 			if (l_dwCount > MAX_AMMO_ATTACH_COUNT)
 				break;
@@ -497,7 +497,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(_GRAPH_ID tGraphID, ETakeType tTakeTy
 				}
 				if (l_tpALifeItemBest) {
 					m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,tGraphID);
-					attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector);
+					attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector,tGraphID);
 					ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 					m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 				}

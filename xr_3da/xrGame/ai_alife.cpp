@@ -26,6 +26,7 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 	m_dwInventorySlotCount	= pSettings->r_u32("inventory","slots");
 	m_tpWeaponVector.resize(m_dwInventorySlotCount);
 	m_baMarks.assign	(u16(-1),false);
+	m_tpGraphPointObjects.reserve(256);
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()

@@ -40,6 +40,7 @@ class CSE_ALifeSimulator :
 	// temporary buffers for combats
 	SCHEDULE_P_VECTOR				m_tpaCombatGroups[2];
 	CSE_ALifeSchedulable			*m_tpaCombatObjects[2];
+	D_OBJECT_P_VECTOR				m_tpGraphPointObjects;
 
 	// common
 			void					vfUpdateDynamicData			(bool						bReserveID = true);
