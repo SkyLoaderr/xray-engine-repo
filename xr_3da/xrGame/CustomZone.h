@@ -4,7 +4,7 @@
 #include "actor.h"
 
 struct SPPInfo {
-	f32 blur, gray, noise, noise_scale;
+	f32 duality_h, duality_v, blur, gray, noise, noise_scale;
 	u32 r, g, b, a;
 };
 
@@ -20,7 +20,8 @@ public:
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void Load(LPCSTR section);
 	virtual void net_Destroy();
-	virtual void Update(u32 dt);
+	//virtual void Update(u32 dt);
+	virtual void UpdateCL();
 	virtual void Affect(CObject* O) {}
 
 	virtual void feel_touch_new(CObject* O);

@@ -18,6 +18,9 @@ void CMosquitoBald::Load(LPCSTR section) {
 	m_hitImpulseScale = pSettings->ReadFLOAT(section,"hit_impulse_scale");
 
 	LPCSTR l_PP = pSettings->ReadSTRING(section,"postprocess");
+	m_pp.duality_h = pSettings->ReadFLOAT(l_PP,"duality_h");
+	m_pp.duality_v = pSettings->ReadFLOAT(l_PP,"duality_v");
+	m_pp.gray = pSettings->ReadFLOAT(l_PP,"gray");
 	m_pp.blur = pSettings->ReadFLOAT(l_PP,"blur");
 	m_pp.gray = pSettings->ReadFLOAT(l_PP,"gray");
 	m_pp.noise = pSettings->ReadFLOAT(l_PP,"noise");
@@ -51,7 +54,9 @@ void CMosquitoBald::Affect(CObject* O) {
 	}
 }
 
-void CMosquitoBald::Update(u32 dt) {
+//void CMosquitoBald::Update(u32 dt) {
+void CMosquitoBald::UpdateCL() {
+	u32 dt = Device.dwTimeDelta;
 	m_time += dt;
 	if(m_time > m_period) {
 		m_time = m_period;
@@ -60,12 +65,13 @@ void CMosquitoBald::Update(u32 dt) {
 	}
 	if(m_pLocalActor && m_pLocalActor->g_Alive()) {
 		CRender_target*		T	= ::Render->getTarget();
-		//T->set_duality_h		(.015f*sinf(1.f*Device.fTimeGlobal));
-		//T->set_duality_v		(.017f*cosf(1.1f*Device.fTimeGlobal));
-		T->set_duality_h		(.0f);
-		T->set_duality_v		(.0f);
+		f32 l_h = m_pp_time < g_pp_fade ? m_pp.duality_h * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_h;
+		f32 l_v = m_pp_time < g_pp_fade ? m_pp.duality_v * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_v;
+		T->set_duality_h		(l_h*sinf(1.f*Device.fTimeGlobal));
+		T->set_duality_v		(l_v*cosf(1.1f*Device.fTimeGlobal));
+		//T->set_duality_h		(.0f);
+		//T->set_duality_v		(.0f);
 		T->set_noise			(m_pp_time < g_pp_fade ? m_pp.noise * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);
-//		T->set_noise			(.02f);
 		T->set_noise_scale		(m_pp.noise_scale);
 		T->set_noise_color		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
 		T->set_noise_fps		(10.f);
@@ -74,14 +80,17 @@ void CMosquitoBald::Update(u32 dt) {
 		if(m_pp_time > g_pp_fade) m_pp_time = (u32)g_pp_fade;
 		m_pp_time = m_pp_time < dt ? 0 : m_pp_time - dt;
 		CRender_target*		T	= ::Render->getTarget();
-		T->set_duality_h		(.0f);
-		T->set_duality_v		(.0f);
+		f32 l_h = m_pp_time < g_pp_fade ? m_pp.duality_h * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_h;
+		f32 l_v = m_pp_time < g_pp_fade ? m_pp.duality_v * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_v;
+		T->set_duality_h		(l_h*sinf(1.f*Device.fTimeGlobal));
+		T->set_duality_v		(l_v*cosf(1.1f*Device.fTimeGlobal));
 		T->set_noise			(m_pp_time < g_pp_fade ? m_pp.noise * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);
 		T->set_noise_scale		(m_pp.noise_scale);
 		T->set_noise_color		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
 		T->set_noise_fps		(10.f);
 	}
-	inherited::Update(dt);
+	inherited::UpdateCL();
+	//inherited::Update(dt);
 }
 
 void CMosquitoBald::Postprocess(f32 val) {

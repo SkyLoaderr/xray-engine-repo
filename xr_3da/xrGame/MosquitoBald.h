@@ -10,7 +10,8 @@ public:
 	virtual ~CMosquitoBald(void);
 
 	virtual void Load(LPCSTR section);
-	virtual void Update(u32 dt);
+	//virtual void Update(u32 dt);
+	virtual void UpdateCL();
 	virtual void Affect(CObject* O);
 
 	virtual void Postprocess(f32 val);

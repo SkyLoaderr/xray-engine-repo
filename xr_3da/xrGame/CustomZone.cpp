@@ -59,10 +59,10 @@ void CCustomZone::Load(LPCSTR section) {
 
 
 // @@@ WT: !!!!!бпелеммн!!!!!
-	CRender_target*		T	= ::Render->getTarget();
-	T->set_duality_h		(0);
-	T->set_duality_v		(0);
-	T->set_noise			(0);
+	//CRender_target*		T	= ::Render->getTarget();
+	//T->set_duality_h		(0);
+	//T->set_duality_v		(0);
+	//T->set_noise			(0);
 // @@@ WT
 
 }
@@ -72,8 +72,11 @@ void CCustomZone::net_Destroy() {
 	SoundDestroy(m_ambient);
 }
 
-void CCustomZone::Update(u32 dt) {
-	inherited::Update	(dt);
+//void CCustomZone::Update(u32 dt) {
+	//inherited::Update	(dt);
+void CCustomZone::UpdateCL() {
+	//u32 dt = Device.dwTimeDelta;
+	inherited::UpdateCL();
 
 	const Fsphere& s		= cfModel->getSphere();
 	Fvector					P;
