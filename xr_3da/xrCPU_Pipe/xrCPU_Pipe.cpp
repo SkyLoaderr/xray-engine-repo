@@ -21,6 +21,8 @@ extern xrM44_Mul	xrM44_Mul_x86;
 extern xrM44_Mul	xrM44_Mul_3DNow;
 extern xrM44_Mul	xrM44_Mul_SSE;
 extern xrTransfer	xrTransfer_x86;
+extern xrMemCopy_8b	xrMemCopy_MMXSSE3DNow;
+extern xrMemCopy_8b	xrMemCopy_x86;
 
 extern "C" {
 	__declspec(dllexport) void	__cdecl	xrBind_PSGP	(xrDispatchTable* T)
@@ -49,5 +51,6 @@ extern "C" {
 			T->blerp	= xrBoneLerp_3DNow;
 //			T->m44_mul	= xrM44_Mul_3DNow;
 		}
+		if (dwFeatures & CPU::ID.)
 	}
 };
