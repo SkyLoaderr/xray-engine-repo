@@ -10,7 +10,6 @@
 
 const DWORD MAX_POLYGONS=1024;
 const float MAX_DISTANCE=50.f;
-const DWORD LID_HELPER  =500; 
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -102,16 +101,6 @@ void CLightPPA_Manager::Render()
 	Device.mProject._43 -= 0.001f; 
 	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,	Device.mProject.d3d() ));
 
-	// Create D3D unattenuated light
-	Flight					D3D;
-	D3D.type				= D3DLIGHT_POINT;
-	D3D.specular.set		(0,0,0,0);
-	D3D.ambient.set			(0,0,0,0);
-	D3D.range				= 100.f;
-	D3D.attenuation0		= 1.f;
-	D3D.attenuation1		= 0;
-	D3D.attenuation2		= 0;
-
 	Device.Shader.Set		(SH);
 	for (DWORD L=0; L<container.size(); L++)
 	{
@@ -122,19 +111,12 @@ void CLightPPA_Manager::Render()
 		if (alpha>=1)		continue;
 		if (!::Render.ViewBase.testSphereDirty (PPL.sphere.P,PPL.sphere.R))	continue;
 
-		// Setup D3D light
-		D3D.diffuse.mul_rgb	(PPL.color,1-alpha);
-		D3D.position.set	(PPL.sphere.P);
-		CHK_DX				(HW.pDevice->SetLight	(LID_HELPER,D3D.d3d()));
-		CHK_DX				(HW.pDevice->LightEnable(LID_HELPER,TRUE));
-
 		// Calculations and rendering
 		PPL.Render			(VS);
 	}
 
 	// Clean up
 	container.clear		();
-	CHK_DX				(HW.pDevice->LightEnable(LID_HELPER,FALSE));
 
 	// Projection
 	Device.mProject._43 = _43;
