@@ -6,8 +6,7 @@
 //	Description : Object saver
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef XRAY_OBJECT_SAVER
-#define XRAY_OBJECT_SAVER
+#pragma once
 
 template <class M, typename P>
 struct CSaver {
@@ -204,5 +203,3 @@ IC	void save_data(const T &data, M &stream)
 {
 	save_data(data,stream,object_saver::detail::CEmptyPredicate());
 }
-
-#endif // XRAY_OBJECT_SAVER

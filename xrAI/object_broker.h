@@ -6,15 +6,9 @@
 //	Description : Object broker
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef XRAY_OBJECT_BROKER
-#define XRAY_OBJECT_BROKER
+#pragma once
 
-#define XRAY_COMPATIBIBLE
-
-#ifdef XRAY_COMPATIBIBLE
-#	include "net_utils.h"
-#endif
-
+#include "net_utils.h"
 #include <queue>
 #include "object_interfaces.h"
 #include "object_type_traits.h"
@@ -23,5 +17,3 @@
 #include "object_destroyer.h"
 #include "object_loader.h"
 #include "object_saver.h"
-
-#endif //XRAY_OBJECT_BROKER

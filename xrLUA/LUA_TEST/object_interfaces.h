@@ -6,8 +6,7 @@
 //	Description : ALife interfaces
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef XRAY_ALIFE_INTERFACES
-#define XRAY_ALIFE_INTERFACES
+#pragma once
 
 class NET_Packet;
 
@@ -45,5 +44,3 @@ class IPureSchedulableObject {
 public:
 	virtual void					update		()										= 0;
 };
-
-#endif

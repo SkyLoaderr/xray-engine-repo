@@ -6,8 +6,7 @@
 //	Description : Object cloner
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef XRAY_OBJECT_CLONER
-#define XRAY_OBJECT_CLONER
+#pragma once
 
 struct CCloner {
 	template <typename T>
@@ -187,5 +186,3 @@ IC	void clone(const T &p0, T &p1)
 {
 	CCloner::clone	(p0,p1);
 }
-
-#endif // XRAY_OBJECT_EQUALITY_CHECKER

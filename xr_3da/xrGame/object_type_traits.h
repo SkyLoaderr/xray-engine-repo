@@ -6,8 +6,7 @@
 //	Description : Object type traits
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef XRAY_OBJECT_TYPE_TRAITS
-#define XRAY_OBJECT_TYPE_TRAITS
+#pragma once
 
 //#define USE_BOOST
 
@@ -213,5 +212,4 @@
 //			};
 //		};
 	};
-#endif
 #endif

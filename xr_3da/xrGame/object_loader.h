@@ -6,8 +6,7 @@
 //	Description : Object loader
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef XRAY_OBJECT_LOADER
-#define XRAY_OBJECT_LOADER
+#pragma once
 
 template <class M, typename P>
 struct CLoader {
@@ -282,5 +281,3 @@ IC	void load_data(const T &data, M &stream)
 {
 	load_data				(data,stream,object_loader::detail::CEmptyPredicate());
 }
-
-#endif // XRAY_OBJECT_LOADER
