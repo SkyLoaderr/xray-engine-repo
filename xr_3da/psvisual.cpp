@@ -138,9 +138,7 @@ void CPSVisual::Render(float LOD)
 	float fTime			= Device.fTimeGlobal;
 	
 	// build transform matrix
-	Fmatrix mSpriteTransform;
-	mSpriteTransform.set(Device.mFullTransform);
-//	mSpriteTransform.translate_over(m_Emitter->m_Position);
+	Fmatrix mSpriteTransform = Device.mFullTransform;
 	
     int 	mb_samples 	= 1;
     float 	mb_step 	= 0;
@@ -216,7 +214,7 @@ void CPSVisual::Render(float LOD)
 	m_Stream->Unlock(dwNumVerts);
 	if (dwNumVerts)
 	{
-//		Device.Shader.Set		(hShader);
+		Device.Shader.Set		(hShader);
 		Device.Primitive.Draw	(m_Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);
 	}
 }

@@ -45,4 +45,5 @@ void CPSObject::PlayAtPos(const Fvector& pos){
 
 void CPSObject::Stop(){
 	m_iLifeTime		= -1;
+	((CPSVisual*)m_pVisual)->Stop();
 }

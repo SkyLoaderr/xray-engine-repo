@@ -79,12 +79,15 @@ void CHUDManager::Render()
 		if (pUI) pCreator->CurrentViewEntity()->OnHUDDraw(this);
 		// HUD model
 		if (psHUD_Flags&HUD_WEAPON) {
-			Fmatrix Pold = Device.mProject;
-			float aspect = float(Device.dwHeight)/float(Device.dwWidth);
+			Fmatrix Pold			= Device.mProject;
+			Fmatrix FTold			= Device.mFullTransform;
+			float aspect			= float(Device.dwHeight)/float(Device.dwWidth);
 			Device.mProject.build_projection(
 				deg2rad(psHUD_FOV*pCreator->Environment.FOV_Current*aspect), 
 				aspect, VIEWPORT_NEAR, 
 				pCreator->Environment.Current.Far);
+			Device.mFullTransform.mul(Device.mProject, Device.mView);
+
 			HW.pDevice->SetTransform(D3DTS_PROJECTION, Device.mProject.d3d());
 			
 			// Sort shaders 
@@ -101,7 +104,8 @@ void CHUDManager::Render()
 			::Render.flush_Models	();
 			::Render.rmNormal		();
 			
-			Device.mProject = Pold;
+			Device.mProject			= Pold;
+			Device.mFullTransform	= FTold;
 			HW.pDevice->SetTransform(D3DTS_PROJECTION, Device.mProject.d3d());
 		}
 		Models.clear	();

@@ -40,14 +40,14 @@ CWeaponProtecta::~CWeaponProtecta()
 	pSounds->Delete3D(sndFire);
 	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 	
-	_DELETE			(m_pShootPSVisual);
+	_DELETE			(m_pShootPS);
 }
 
 void CWeaponProtecta::Load(CInifile* ini, const char* section){
 	inherited::Load(ini, section);
 	R_ASSERT(m_pHUD);
 	
-	m_pShootPSVisual= (CPSVisual*)::Render.Models.CreatePS("protecta_smoke",&m_pShootPSEmitter);
+	m_pShootPS		= new CPSObject("protecta_smoke");
 
 	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
 	iShotCount		= ini->ReadINT(section,"shot_count");
@@ -149,8 +149,6 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 	// cycle update
 	if (st_current == eShoot) UpdateFP(bHUDView);
 
-	m_pShootPSVisual->Update(dt*1000);
-
 	switch (st_current)
 	{
 	case eIdle:
@@ -165,11 +163,9 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 			while (fTime<0)
 			{
 				// play smoke
-				m_pShootPSVisual->Stop();
-				m_pShootPSEmitter.Stop();
-				m_pShootPSEmitter.m_Position.set		(vLastFP);
-				m_pShootPSEmitter.m_ConeDirection.set	(vLastFD);
-				m_pShootPSEmitter.Play();
+				m_pShootPS->Stop();
+				m_pShootPS->m_Emitter.m_ConeDirection.set	(vLastFD);
+				m_pShootPS->PlayAtPos(vLastFP);
 
 				// real shoot
 				VERIFY(m_pParent);
@@ -224,7 +220,7 @@ void CWeaponProtecta::Render(BOOL bHUDView)
 		if (m_pHUD){ 
 			Level().HUD()->RenderModel(m_pHUD->Visual(),m_pHUD->Transform(),iFloor(LL));
 			// Render PS Shoot
-			Level().HUD()->RenderModel(m_pShootPSVisual,precalc_identity,255);
+			Level().HUD()->RenderModel(m_pShootPS->Visual(),precalc_identity,255);
 		}
 	}
 	else
@@ -235,7 +231,7 @@ void CWeaponProtecta::Render(BOOL bHUDView)
 		::Render.add_leafs_Dynamic	(Visual());
 
 		// Render PS Shoot
-		::Render.add_leafs_Dynamic	(m_pShootPSVisual);
+		::Render.add_leafs_Dynamic	(m_pShootPS->Visual());
 	}
 }
 

@@ -5,7 +5,7 @@
 #include "weapon.h"
 
 class ENGINE_API C3DSound;
-class ENGINE_API CPSVisual;
+class ENGINE_API CPSObject;
 
 #define SND_RIC_COUNT 5
 
@@ -36,8 +36,7 @@ private:
 	
 	EGrozaState		st_current, st_target;
 	
-	CPSVisual*		m_pShootPSVisual;
-	PS::SEmitter	m_pShootPSEmitter;
+	CPSObject*		m_pShootPS;
 
 	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
 	void			UpdateFP		(BOOL bHUD);
