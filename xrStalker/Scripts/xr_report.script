@@ -1,5 +1,5 @@
-local timeout = 10000
-local dist_for_report = 5
+local timeout = 60000
+local dist_for_report = 20
 local min_dist_to_report = 1
 
 local operators     = {}
