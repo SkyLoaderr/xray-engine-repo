@@ -7,7 +7,12 @@
 
 #pragma once
 
-#include "ui/xrxmlparser.h"
+#ifdef XRGAME_EXPORTS
+	#include "ui/xrxmlparser.h"
+#else
+	#include "xrxmlparser.h"
+#endif
+
 
 //T_ID    - уникальный текстовый идентификатор (аттрибут id в XML файле)
 //T_INDEX - уникальный числовой индекс 

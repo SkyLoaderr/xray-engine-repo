@@ -1157,13 +1157,31 @@
 					Name="ServerStuff"
 					Filter="">
 					<File
+						RelativePath=".\character_info.cpp">
+					</File>
+					<File
+						RelativePath=".\character_info.h">
+					</File>
+					<File
 						RelativePath=".\character_info_defs.h">
+					</File>
+					<File
+						RelativePath=".\shared_data.h">
+					</File>
+					<File
+						RelativePath=".\tinyxml.h">
+					</File>
+					<File
+						RelativePath=".\xml_str_id_loader.h">
 					</File>
 					<File
 						RelativePath=".\xrMessages.h">
 					</File>
 					<File
 						RelativePath=".\xrServer_Space.h">
+					</File>
+					<File
+						RelativePath=".\xrXMLParser.h">
 					</File>
 				</Filter>
 			</Filter>

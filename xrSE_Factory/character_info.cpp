@@ -5,12 +5,19 @@
 
 #include "stdafx.h"
 #include "character_info.h"
-#include "PhraseDialog.h"
-#include "ui/xrXMLParser.h"
-
-#include "alife_registry_container_composition.h"
 
 #ifdef XRGAME_EXPORTS
+	#include "ui/xrXMLParser.h"
+#else
+	#include "xrXMLParser.h"
+#endif
+
+
+#ifdef XRGAME_EXPORTS
+
+#include "PhraseDialog.h"
+#include "alife_registry_container_composition.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 SCharacterProfile::SCharacterProfile()
