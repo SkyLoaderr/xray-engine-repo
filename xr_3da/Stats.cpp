@@ -252,7 +252,7 @@ void CStats::Show()
 	if (errors.size())
 	{
 		CGameFont&	F = *((CGameFont*)pFont);
-		F.SetColor	(color_rgba(255,16,16,255));
+		F.SetColor	(color_rgba(255,16,16,191));
 		F.OutSet	(200,0);
 		for (u32 it=0; it<errors.size(); it++)
 			F.OutNext("%s",errors[it].c_str());
