@@ -98,9 +98,11 @@ void Script::LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpL
 	LuaOut		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)" : "%s%s : %s %s %s",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "",tpLuaDebug->currentline);
 }
 
+#ifndef DEBUG
 void FlushLogFake(LPCSTR S)
 {
 }
+#endif
 
 void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
@@ -110,6 +112,15 @@ void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
 #else
 	function		(tpLuaVirtualMachine,	"flush",FlushLogFake);
 #endif
+}
+
+CLuaGameObject *tpfGetActor()
+{
+	CGameObject *l_tpGameObject = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+	if (l_tpGameObject)
+		return(xr_new<CLuaGameObject>(l_tpGameObject));
+	else
+		return(0);
 }
 
 void Script::vfExportFvector(CLuaVirtualMachine *tpLuaVirtualMachine)
@@ -294,7 +305,8 @@ void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
 	[
 		// declarations
 		def("cameras",							get_camera_manager),
-		def("object",							get_object_by_name)
+		def("object",							get_object_by_name),
+		def("actor",							tpfGetActor)
 //		def("get_weather",						Level::get_weather)
 	];
 
