@@ -74,7 +74,6 @@ void CBuild::BuildRapid()
 	Msg						("Faces: original(%d), model(%d), ratio(%f)",
 		g_faces.size(),CL.getTS(),float(CL.getTS())/float(g_faces.size()));
 	RCAST_Model				= xr_new<CDB::MODEL> ();
-	// RCAST_Model->setheap	(hLargeHeap);
 	switch					(RCAST_Model->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS(),TRUE))
 	{
 	case 0:						break;
