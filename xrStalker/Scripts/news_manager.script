@@ -19,7 +19,7 @@ function send_news(actor, news_id)
 	if snd_obj ~= nil then
 		snd_obj:play(actor, 0, sound_object.s2d)
 	end
-	actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
+	actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)	
 end
 function send_tip(actor, news_id)
 	if actor == nil or news_id == nil then return false end

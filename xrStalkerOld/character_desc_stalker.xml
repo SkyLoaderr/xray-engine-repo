@@ -29,6 +29,32 @@
 		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>
 	</specific_character>
 
+	<specific_character id="stalker_esc_fox" team_default = "1">
+		<name>Сталкер "Лис"</name>
+		<icon x="26" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Старый прожженый зоной одиночка.</bio>
+
+		<class>stalker_esc_fox</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_4</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pbp \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj \n
+			device_torch \n
+			fox_flash \n
+		</supplies>
+					
+		<start_dialog>escape_lager_volk_hello</start_dialog>
+	</specific_character>
+
 	<specific_character id="stalker_esc_bariga" team_default = "1">
 		<name>Сталкер "Барыга"</name>
 		<icon x="24" y="2"></icon>

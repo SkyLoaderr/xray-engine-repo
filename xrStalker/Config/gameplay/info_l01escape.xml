@@ -130,8 +130,10 @@
 		</location>
 		<task>esc_help_wounded_from_raid</task>	
 	</info_portion>
-	<info_portion id="escape_stalker_spawn">	
+	<info_portion id="escape_stalker_spawn">
 	</info_portion>
+	<info_portion id="escape_stalker_dog_spawn">
+	</info_portion>	
 	<info_portion id="escape_stalker_give">	
 	</info_portion>	
 	<info_portion id="escape_stalker_done">

@@ -200,4 +200,8 @@
 	<character id="soldier_commander">
 		<class>Soldier_commander</class>
 	</character>	
+	
+	<character id="stalker_escape_fox">
+		<class>stalker_esc_fox</class>
+	</character>	
 </xml>
