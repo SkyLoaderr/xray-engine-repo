@@ -205,7 +205,8 @@ void CWeaponList::Update(float dt, bool bHUDView)
 	// Change weapon if needed and can be done
 	if (m_iSelectedWeapon>=0)	
 	{
-		if (!m_Weapons[m_iActiveWeapon]->IsVisible())	{
+		if ((m_iActiveWeapon<0) || (!m_Weapons[m_iActiveWeapon]->IsVisible()))
+		{
 			m_iActiveWeapon		= m_iSelectedWeapon;
 			m_Weapons[m_iActiveWeapon]->Show	();
 		}
