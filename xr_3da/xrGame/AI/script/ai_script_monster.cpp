@@ -603,7 +603,8 @@ BOOL CScriptMonster::UsedAI_Locations()
 void CScriptMonster::shedule_Update	(u32 DT)
 {
 	inherited::shedule_Update		(DT);
-	ProcessScripts					();
+	if (m_bScriptControl)
+		ProcessScripts				();
 }
 
 void ScriptCallBack(CBlend* B)
