@@ -261,7 +261,7 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 			m_fLastValue =  12;
 			break;
 		}
-		case CLSID_AI_DOG				: {
+		case CLSID_AI_DOG_RED	: {
 			m_fLastValue =  2;
 			break;
 		}
@@ -327,9 +327,8 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 			m_fLastValue =  4;
 			break;
 		}
-		case CLSID_AI_DOG_RED	:
 		case CLSID_AI_DOG_BLACK	: {
-			m_fLastValue =  4;
+			m_fLastValue =  3;
 			break;
 		}
 		case CLSID_AI_TRADER: 
@@ -875,7 +874,6 @@ float CDetectorType::ffGetValue()
 		case CLSID_AI_ZOMBIE			: 
 		case CLSID_AI_ZOMBIE_HUMAN		: 
 		case CLSID_AI_POLTERGEIST		: 
-		case CLSID_AI_DOG				: 
 		case CLSID_AI_FLESH				: 
 		case CLSID_AI_DWARF				: 
 		case CLSID_AI_SCIENTIST			: 
