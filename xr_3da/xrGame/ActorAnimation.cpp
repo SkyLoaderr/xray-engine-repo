@@ -134,7 +134,7 @@ void SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
 	
 	//climb anims
 	strcpy(base,"cl");
-	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle_0"));
+	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle_1"));
 	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_0_aim_0"));
 	m_walk.Create	(K,base,"_run");
 	m_run.Create	(K,base,"_run");
@@ -168,7 +168,7 @@ void SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR base)
 {
 	string128		buf,buf1;
 	legs_turn		= K->ID_Cycle(strconcat(buf,base,"_turn"));
-	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle_1"));
+	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle_0"));
 	death			= K->ID_Cycle(strconcat(buf,base,"_death_0"));
 	
 	m_walk.Create	(K,base,"_walk");
