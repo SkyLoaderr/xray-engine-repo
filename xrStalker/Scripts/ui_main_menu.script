@@ -291,10 +291,10 @@ function main_menu:HideAllTabs()
 	self.new_tab:Show(false)
 end
 
-function main_menu:OnButton_back(){
+function main_menu:OnButton_back()
 	self:HideAllTabs()
 	self:main_tab:Show(true)
-}
+end
 
 function main_menu:OnButton_new_game_clicked()
 	self:HideAllTabs()
