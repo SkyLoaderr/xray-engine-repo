@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------SVOBODA NOVICE----------------------->
-	<specific_character id="svoboda_novice_default" team_default = "1">
+<!---------------------------SVOBODA REGULAR----------------------->
+	<specific_character id="svoboda_regular_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="10" y="2"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
-		<team>Svoboda_novice</team>
+		<team>Svoboda_regular</team>
 		
-		<class>Svoboda_novice</class>
+		<class>Svoboda_regular</class>
 		<community>freedom</community>
 		
 		<rank>30</rank>
@@ -23,16 +23,16 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-<!---------------------------SVOBODA GENERAL---------------------->
-	<specific_character id="svoboda_general_default" team_default = "1">
+<!---------------------------SVOBODA SNIPER---------------------->
+	<specific_character id="svoboda_sniper_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="22" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
-		<team>Svoboda_general</team>
+		<team>Svoboda_sniper</team>
 		
-		<class>Svoboda_general</class>
+		<class>Svoboda_sniper</class>
 		<community>freedom</community>
 
 		<rank>50</rank>
@@ -45,16 +45,16 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-<!---------------------------SVOBODA VETERAN---------------------->
+<!---------------------------SVOBODA SPECNAZ---------------------->
 	<specific_character id="svoboda_veteran_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
-		<team>Svoboda_veteran</team>
+		<team>Svoboda_specnaz</team>
 		
-		<class>Svoboda_veteran</class>
+		<class>Svoboda_specnaz</class>
 		<community>freedom</community>
 
 		<rank>70</rank>

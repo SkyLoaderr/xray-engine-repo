@@ -96,20 +96,20 @@
 
 	<!-- Svoboda -->
 	<character id="svoboda">
-		<team>Svoboda_general</team>
-		<class>Svoboda_general</class>
+		<team>Svoboda_regular</team>
+		<class>Svoboda_regular</class>
 	</character>
-	<character id="svoboda_novice">
-		<team>Svoboda_novice</team>
-		<class>Svoboda_novice</class>
+	<character id="svoboda_regular">
+		<team>Svoboda_regular</team>
+		<class>Svoboda_regular</class>
 	</character>
-	<character id="svoboda_general">
-		<team>Svoboda_general</team>
-		<class>Svoboda_general</class>
+	<character id="svoboda_sniper">
+		<team>Svoboda_sniper</team>
+		<class>Svoboda_sniper</class>
 	</character>
-	<character id="svoboda_veteran">
-		<team>Svoboda_veteran</team>
-		<class>Svoboda_veteran</class>
+	<character id="svoboda_specnaz">
+		<team>Svoboda_specnaz</team>
+		<class>Svoboda_specnaz</class>
 	</character>
 	<character id="svoboda_master">
 		<team>Svoboda_master</team>
@@ -118,20 +118,20 @@
 
 	<!-- Monolit -->
 	<character id="monolit">
-		<team>Monolit_general</team>
-		<class>Monolit_general</class>
+		<team>Monolit_regular</team>
+		<class>Monolit_regular</class>
 	</character>
-	<character id="monolit_novice">
-		<team>Monolit_novice</team>
-		<class>Monolit_novice</class>
+	<character id="monolit_regular">
+		<team>Monolit_regular</team>
+		<class>Monolit_regular</class>
 	</character>
-	<character id="monolit_general">
-		<team>Monolit_general</team>
-		<class>Monolit_general</class>
+	<character id="monolit_sniper">
+		<team>Monolit_sniper</team>
+		<class>Monolit_sniper</class>
 	</character>
-	<character id="monolit_veteran">
-		<team>Monolit_veteran</team>
-		<class>Monolit_veteran</class>
+	<character id="monolit_specnaz">
+		<team>Monolit_specnaz</team>
+		<class>Monolit_specnaz</class>
 	</character>
 	<character id="monolit_master">
 		<team>Monolit_master</team>
@@ -140,20 +140,20 @@
 
 	<!-- Killer -->
 	<character id="killer">
-		<team>Killer_general</team>
-		<class>Killer_general</class>
+		<team>Killer_regular</team>
+		<class>Killer_regular</class>
 	</character>
-	<character id="killer_novice">
-		<team>Killer_novice</team>
-		<class>Killer_novice</class>
+	<character id="killer_regular">
+		<team>Killer_regular</team>
+		<class>Killer_regular</class>
 	</character>
-	<character id="killer_general">
-		<team>Killer_general</team>
-		<class>Killer_general</class>
+	<character id="killer_sniper">
+		<team>Killer_sniper</team>
+		<class>Killer_sniper</class>
 	</character>
-	<character id="killer_veteran">
-		<team>Killer_veteran</team>
-		<class>Killer_veteran</class>
+	<character id="killer_specnaz">
+		<team>Killer_specnaz</team>
+		<class>Killer_specnaz</class>
 	</character>
 	<character id="killer_master">
 		<team>Killer_master</team>

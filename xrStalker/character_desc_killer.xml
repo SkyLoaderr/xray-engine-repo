@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------KILLER NOVICE----------------------->
-	<specific_character id="killer_novice_default" team_default = "1">
+<!---------------------------KILLER REGULAR----------------------->
+	<specific_character id="killer_regular_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="27" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
-		<team>Killer_novice</team>
+		<team>Killer_regular</team>
 		
-		<class>Killer_novice</class>
+		<class>Killer_regular</class>
 		<community>killer</community>
 					
 		<rank>30</rank>
@@ -19,16 +19,16 @@
 		<visual>actors\killer\stalker_ki_mask</visual>
 	</specific_character>
 
-<!---------------------------KILLER GENERAL---------------------->
-	<specific_character id="killer_general_default" team_default = "1">
+<!---------------------------KILLER SNIPER---------------------->
+	<specific_character id="killer_sniper_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
-		<team>Killer_general</team>
+		<team>Killer_sniper</team>
 		
-		<class>Killer_general</class>
+		<class>Killer_sniper</class>
 		<community>killer</community>
 
 		<rank>50</rank>
@@ -37,16 +37,16 @@
 		<visual>actors\killer\stalker_ki_antigas</visual>
 	</specific_character>
 
-<!---------------------------KILLER VETERAN---------------------->
-	<specific_character id="killer_veteran_default" team_default = "1">
+<!---------------------------KILLER SPECNAZ---------------------->
+	<specific_character id="killer_specnaz_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="29" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
-		<team>Killer_veteran</team>
+		<team>Killer_specnaz</team>
 		
-		<class>Killer_veteran</class>
+		<class>Killer_specnaz</class>
 		<community>killer</community>
 
 		<rank>70</rank>

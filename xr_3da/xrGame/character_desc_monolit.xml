@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------MONOLIT NOVICE----------------------->
-	<specific_character id="monolit_novice_default" team_default = "1">
+<!---------------------------MONOLIT REGULAR----------------------->
+	<specific_character id="monolit_regular_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Представитель группировки "Монолит".</bio>
 
-		<team>Monolit_novice</team>
+		<team>Monolit_regular</team>
 		
-		<class>Monolit_novice</class>
+		<class>Monolit_regular</class>
 		<community>monolith</community>
 
 		
@@ -20,16 +20,16 @@
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
 	</specific_character>
 
-<!---------------------------MONOLIT GENERAL---------------------->
-	<specific_character id="monolit_general_default" team_default = "1">
+<!---------------------------MONOLIT SNIPER---------------------->
+	<specific_character id="monolit_sniper_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Представитель группировки "Монолит".</bio>
 
-		<team>Monolit_general</team>
+		<team>Monolit_sniper</team>
 		
-		<class>Monolit_general</class>
+		<class>Monolit_sniper</class>
 		<community>monolith</community>
 
 		<rank>50</rank>
@@ -38,16 +38,16 @@
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
 	</specific_character>
 
-<!---------------------------MONOLIT VETERAN---------------------->
-	<specific_character id="monolit_veteran_default" team_default = "1">
+<!---------------------------MONOLIT SPECNAZ---------------------->
+	<specific_character id="monolit_specnaz_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="29" y="8"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Представитель группировки "Монолит".</bio>
 
-		<team>Monolit_veteran</team>
+		<team>Monolit_specnaz</team>
 
-		<class>Monolit_veteran</class>
+		<class>Monolit_specnaz</class>
 		<community>monolith</community>
 		
 		<rank>70</rank>
