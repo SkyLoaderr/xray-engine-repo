@@ -90,14 +90,11 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 
 	if (R.O)
 	{
-/*		if (R.O->CLS_ID==CLSID_ENTITY)
-		{
-			//тут добавить отметки крови на живой сущности
-		}
-		*/
+		//на текущем актере отметок не ставим
+		if(Level().CurrentEntity()->ID() == R.O->ID()) return;
 
 		ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
-NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
+						NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
 
 		if (pWallmarkShader)
 		{

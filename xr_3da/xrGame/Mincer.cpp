@@ -129,7 +129,7 @@ void CMincer::OnOwnershipTake(u16 id)
 		{
 			NET_Packet	l_P;
 			u_EventGen	(l_P,GE_HIT, id);
-			l_P.w_u16	(u16(id));
+			l_P.w_u16	(ID());
 			l_P.w_u16	(ID());
 			l_P.w_dir	(Fvector().set(1.f,0.f,1.f));//dir
 			l_P.w_float	(0.f);
@@ -153,7 +153,7 @@ void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float
 	{
 		NET_Packet	l_P;
 		u_EventGen	(l_P,GE_HIT, EA->ID());
-		l_P.w_u16	(u16(EA->ID()));
+		l_P.w_u16	(ID());
 		l_P.w_u16	(ID());
 		l_P.w_dir	(throw_in_dir);
 		l_P.w_float	(power);

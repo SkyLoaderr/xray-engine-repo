@@ -239,7 +239,7 @@ void CBaseGraviZone ::	AffectThrow(CPhysicsShellHolder* GO,const Fvector& throw_
 		{
 			NET_Packet	l_P;
 			u_EventGen	(l_P,GE_HIT, GO->ID());
-			l_P.w_u16	(u16(GO->ID()));
+			l_P.w_u16	(ID());
 			l_P.w_u16	(ID());
 			l_P.w_dir	(throw_in_dir);
 			l_P.w_float	(power);
