@@ -66,7 +66,7 @@ void CBuild::Light()
 }
 
 //-----------------------------------------------------------------------
-extern BOOL	hasImplicitLighting(Face* F);
+extern BOOL	hasImplicitLighting		(Face* F);
 
 typedef	multimap<float,vecVertex>	mapVert;
 typedef	mapVert::iterator			mapVertIt;
