@@ -42,6 +42,7 @@ public:
 		u32			query_order;	// order of occlusion query
 		bool		visible;		// visible/invisible
 		bool		pending;		// test is still pending
+		u16			smap_ID;
 	}				vis;
 
 	union			_xform	{

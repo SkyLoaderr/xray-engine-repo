@@ -1,7 +1,65 @@
 #include "stdafx.h"
 
+IC		bool	pred_area		(light* _1, light* _2)
+{
+	u32		a0		= _1->X.S.size;
+	u32		a1		= _2->X.S.size;
+	return	a0>a1;	// reverse -> descending
+}
+
 void	CRender::render_lights	(light_Package& LP)
 {
+	//////////////////////////////////////////////////////////////////////////
+	// Refactor order based on ability to pack shadow-maps
+	// 1. calculate area + sort in descending order
+	const	u16		smap_unassigned			= u16(-1);
+	{
+		xr_vector<light*>&	source		= LP.v_spot_s;
+		for (u32 it=0; it<source.size(); it++)
+		{
+			light*	L		= source[it];
+			L->vis_update	();
+			if	(!L->vis.visible)	{
+				source.erase		(source.begin()+it);
+				it--;
+			} else {
+				LR.compute_xfs_1	(0, L);
+			}
+		}
+	}
+
+	// 2. refactor - infact we could go from the backside and sort in ascending order
+	{
+		xr_vector<light*>&		source		= LP.v_spot_s;
+		xr_vector<light*>		refactored	;
+		refactored.reserve		(LP.v_spot_s.size());
+		u32						total		= source.size();
+
+		for		(u16 smap_ID=0; refactored.size()!=total; smap_ID++)
+		{
+			LP_smap_pool.initialize	(DSM_size);
+			std::sort				(source.begin(),source.end(),pred_area);
+			for	(u32 test=0; test<source.size(); test++)
+			{
+				light*	L	= source[test];
+				SMAP_Rect	R;
+				if		(LP_smap_pool.push(R,L->X.S.size))	{
+					// OK
+					L->X.S.posX			= R.min.x;
+					L->X.S.posY			= R.min.y;
+					L->vis.smap_ID		= smap_ID;
+					refactored.push_back(L);
+					source.erase		(source.begin()+test);
+					test				--;
+				}
+			}
+		}
+
+		// save (lights are popped from back)
+		std::reverse	(refactored.begin(),refactored.end());
+		LP.v_spot_s		= refactored;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	// sort lights by importance???
 	// while (has_any_lights_that_cast_shadows) {
@@ -46,27 +104,32 @@ void	CRender::render_lights	(light_Package& LP)
 		}
 
 		// if (has_spot_shadowed)
-		light*	L_spot_s	= 0;	
-		if		(!LP.v_spot_s.empty())	{
+		xr_vector<light*>	L_spot_s;
+		if	(!LP.v_spot_s.empty())	{
 			// generate spot shadowmap
-			light*	L	= L_spot_s	= LP.v_spot_s.back();	LP.v_spot_s.pop_back();
-			L->vis_update	();
-			if		(!L->vis.visible)	L_spot_s = 0;
-			else	{
-				Lights_LastFrame.push_back				(L);
+			xr_vector<light*>&	source		= LP.v_spot_s;
+			light*		L		= source.back	()	;
+			u16			sid		= L->vis.smap_ID	;
+
+			while (true)	
+			{
+				if	(source.empty())		break;
+				L	= source.back			();
+				if	(L->vis.smap_ID!=sid)	break;
+				L_spot_s.push_back			(L);
+				source.pop_back				();
+				Lights_LastFrame.push_back	(L);
+
+				// render
 				phase									= PHASE_SMAP_S;
-				LR.compute_xfs_1						(0, L);
 				L->svis[0].begin						();
 				r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
-				LR.compute_xfs_2						(0, L);
 				if (mapNormal[0].size() || mapMatrix[0].size())	{
 					Target.phase_smap_spot				(L);
 					RCache.set_xform_world				(Fidentity);
 					RCache.set_xform_view				(L->X.S.view);
 					RCache.set_xform_project			(L->X.S.project);
 					r_dsgraph_render_graph				(0);
-
-
 				}
 				L->svis[0].end							();
 			}
