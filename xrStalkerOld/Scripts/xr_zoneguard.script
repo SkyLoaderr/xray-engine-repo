@@ -194,8 +194,8 @@ function action_zoneguard_activity:fsm_step()
 			end
 			self.zone_appear_wait_end_time = nil
 		else
-			printf("_bp: object '%s': waiting for zone_guard '%s'",
-				self.object:name(), self.st.zone_guard)
+			--printf("_bp: object '%s': waiting for zone_guard '%s'",
+			--	self.object:name(), self.st.zone_guard)
 			if not self.zone_appear_wait_end_time then
 				self.zone_appear_wait_end_time = device():time_global() + zone_appear_in_db_wait_timeout
 			elseif device():time_global() >= self.zone_appear_wait_end_time then
@@ -215,8 +215,8 @@ function action_zoneguard_activity:fsm_step()
 			end
 			self.zone_appear_wait_end_time = nil
 		else
-			printf("_bp: object '%s': waiting for zone_warn '%s'",
-				self.object:name(), self.st.zone_warn)
+			--printf("_bp: object '%s': waiting for zone_warn '%s'",
+			--	self.object:name(), self.st.zone_warn)
 			if not self.zone_appear_wait_end_time then
 				self.zone_appear_wait_end_time = device():time_global() + zone_appear_in_db_wait_timeout
 			elseif device():time_global() >= self.zone_appear_wait_end_time then
