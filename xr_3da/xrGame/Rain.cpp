@@ -322,7 +322,6 @@ void	CEffect_Rain::Render	()
 	Particle*	P		= particle_active;
 	if (0==P)			return;
 	
-	Device.Statistic.TEST.Begin		();
 	{
 		float	dt					= Device.fTimeDelta;
 		CIndexStream* IS			= Device.Streams.Get_IB();
@@ -391,5 +390,4 @@ void	CEffect_Rain::Render	()
 			UPDATEC							(vCount_Lock,dwNumPrimitives,2);
 		}
 	}
-	Device.Statistic.TEST.End		();
 }
