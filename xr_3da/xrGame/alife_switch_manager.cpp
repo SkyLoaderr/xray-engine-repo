@@ -264,7 +264,7 @@ void CALifeSwitchManager::switch_offline(CSE_ALifeDynamicObject *object)
 		scheduled().add		(object);
 		graph().add			(object,object->m_tGraphID,false);
 	}
-	//else {
+	else {
 	//	if (!xr_strcmp(object->name(),"bolt")) {
 	//		object = object;
 	//	}
