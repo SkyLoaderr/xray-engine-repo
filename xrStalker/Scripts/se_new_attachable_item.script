@@ -64,6 +64,8 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	// flags32
 	self._flag32_0				= flags32()
 	self._flag32_0:zero			()
+	// color
+	self._color_0				= 0
 end
 
 function CSE_NewAttachableItem:__finalize	()
@@ -129,6 +131,8 @@ function CSE_NewAttachableItem:STATE_Write	(packet)
 	packet:w_u16				(self._flag16_0:get())
     // flags32
 	packet:w_u32				(self._flag32_0:get())
+    // color
+	packet:w_u32				(self._color_0)
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
@@ -190,6 +194,8 @@ function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	self._flag16_0:assign		(packet:r_u16())
 	// flags32
 	self._flag32_0:assign		(packet:r_u32())
+    // color
+	self._color_0				= packet:r_u32	()
 end
 
 function CSE_NewAttachableItem:FillProps	(pref,items)
@@ -257,4 +263,6 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	properties_helper():create_flag32(items,"script\\flags32\\1",self,"_flag32_0",2)
 	properties_helper():create_flag32(items,"script\\flags32\\2",self,"_flag32_0",4)
 	properties_helper():create_flag32(items,"script\\flags32\\3",self,"_flag32_0",8)
+	// color
+	properties_helper():create_color(items,"script\\u32\\0",self,"_color_0")
 end
