@@ -21,6 +21,7 @@ IC	void CGameLocationSelector::Init				(_Graph *graph = 0)
 {
 	// initializing inherited
 	inherited::Init					(graph);
+	CAI_ObjectLocation::Init		();
 	// self-initializing 
 	m_selection_type				= eSelectionTypeMask || eSelectionTypeRandomBranching;
 	m_time_to_change				= 0;
