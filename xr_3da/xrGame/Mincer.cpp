@@ -80,15 +80,15 @@ bool CMincer::BlowoutState	()
 {
 	bool ret=inherited::BlowoutState	();
 
-	xr_set<CObject*>::iterator it=m_inZone.begin(),e=m_inZone.end();
-	for(;e!=it;++it)
-	{
-		CEntityAlive * EA = smart_cast<CEntityAlive *>(*it);
-		if(!EA)continue;
-		CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
-		Telekinesis().activate(GO,m_fThrowInImpulse, m_fTeleHeight, 100000);
+	//xr_set<CObject*>::iterator it=m_inZone.begin(),e=m_inZone.end();
+	//for(;e!=it;++it)
+	//{
+	//	CEntityAlive * EA = smart_cast<CEntityAlive *>(*it);
+	//	if(!EA)continue;
+	//	CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
+	//	Telekinesis().activate(GO,m_fThrowInImpulse, m_fTeleHeight, 100000);
 
-	}
+	//}
 
 	if(m_dwBlowoutExplosionTime<(u32)m_iPreviousStateTime ||
 		m_dwBlowoutExplosionTime>=(u32)m_iStateTime) return ret;
