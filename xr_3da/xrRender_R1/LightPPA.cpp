@@ -108,12 +108,17 @@ void CLightR_Manager::render_point	()
 
 void CLightR_Manager::render_spot	()
 {
+	// for each light
+	//		1. Calculate light frustum
+	//		2. Calculate visibility for light
+	//		3. Set global light-params to be used by shading
+	//		4. Dump sorting tree
 }
 
 void CLightR_Manager::render		()
 {
-	if (selected_point.size())	{ render_point	();	selected_point.clear(); }
-	if (selected_spot.size())	{ render_spot	();	selected_spot.clear();	}
+	if (selected_point.size())		{ render_point	();	selected_point.clear(); }
+	if (selected_spot.size())		{ render_spot	();	selected_spot.clear();	}
 }
 
 void CLightR_Manager::add			(light* L)
