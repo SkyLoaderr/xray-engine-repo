@@ -1,36 +1,255 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="New_21">
-        <text>Дождик капает</text>
+    <string id="trader_strelok_521">
+        <text>Согласен</text>
     </string>
-    <string id="New_2">
-        <text>Что нового в Зоне?</text>
+    <string id="trader_strelok_522">
+        <text>Не согласен</text>
     </string>
-    <string id="New_3">
+    <string id="trader_strelok_532">
+        <text>Не согласен</text>
+    </string>
+    <string id="trader_strelok_531">
+        <text>Согласен</text>
+    </string>
+    <string id="trader_strelok_511">
+        <text>Согласен</text>
+    </string>
+    <string id="trader_strelok_512">
+        <text>Не согласен</text>
+    </string>
+    <string id="trader_strelok_53">
+        <text>В НИИ Агропром найди дискеты и т.д.</text>
+    </string>
+    <string id="trader_strelok_6">
         <text>Пойду я, пожалуй</text>
     </string>
-    <string id="New_1">
-        <text>Расскажи о Стрелке</text>
+    <string id="trader_strelok_1">
+        <text>Что ты знаешь о Стрелке?</text>
     </string>
-    <string id="New_1121">
-        <text>Да, пропал</text>
+    <string id="trader_strelok_11">
+        <text>Был такой сталкер, но сам я его не видел. Откуда появился и куда пропал - неизвестно. По слухам он пробирался к центру Зоны. Попробуй разузнать больше у сталкеров.</text>
     </string>
-    <string id="New_11">
-        <text>Стрелок - очень модный штрих. Нашел путь к центру и пропал.</text>
+    <string id="trader_strelok_113">
+        <text>А что там такого в центре Зоны?</text>
     </string>
-    <string id="New_113">
+    <string id="trader_strelok_1131">
+        <text>В центре Зоны точно есть клондайк артефактов и тот, кто проберется туда, сказочно разбогатеет. Понимаешь куда клоню?</text>
+    </string>
+    <string id="trader_strelok_112">
+        <text>Как Стрелок проник к центру Зоны?</text>
+    </string>
+    <string id="trader_strelok_2">
+        <text>Ты не знаешь сталкера по кличке Серый?</text>
+    </string>
+    <string id="trader_strelok_21">
+        <text>Слышал, что он сейчас отдыхает в гараже на Свалке. Он был далеко в Зоне. Не так далеко, как Стрелок, конечно, но безбедную старость он себе уж точно обеспечил. Кстати, Серый что-то знает о Стрелке. Дуй к нему, разузнай что и как.</text>
+    </string>
+    <string id="trader_strelok_3">
+        <text>Что ты знаешь о призрачном сталкере?</text>
+    </string>
+    <string id="trader_strelok_31">
+        <text>Вроде как был такой, член группировки Стрелка, когда все в центре Зоны сгинули, он один и вернулся… А Стрелок, похоже, того…</text>
+    </string>
+    <string id="trader_strelok_4">
+        <text>Военные сталкеры в НИИ Агропром</text>
+    </string>
+    <string id="trader_strelok_41">
+        <text>Явно военные сталкеры там неспроста появились и за его вывеской скрывалось что-то другое.</text>
+    </string>
+    <string id="trader_strelok_411">
+        <text>Что такое НИИ Агропром?</text>
+    </string>
+    <string id="trader_strelok_4111">
+        <text>Что-то есть в институтах… это что-то может ответить на многие вопросы о Зоне и причинах ее появления, а также о том, что мешает пробиться вглубь Зоны</text>
+    </string>
+    <string id="trader_strelok_5">
+        <text>Работа?</text>
+    </string>
+    <string id="trader_strelok_51">
+        <text>Сходи к северу от завода на пустырь. Там постоянно много воронок. Если заманить в них монстров, то эти аномалии рождают артефакты. А там как раз плоти любят обитать. Вот и попробуй этих свинок обдурить</text>
+    </string>
+    <string id="trader_strelok_52">
+        <text>Сходи-ка на блокпост, достань ящик.</text>
+    </string>
+    <string id="trader_strelok_1121">
+        <text>Не знаю. Возможно, знает Бармен или кто-то из сталкеров ветеранов.</text>
+    </string>
+    <string id="trader_strelok_11211">
+        <text>Кто такой Бармен?</text>
+    </string>
+    <string id="trader_strelok_112111">
+        <text>Кореш мой. Заведует баром сталкеров на заводе Росток. Но пускают туда только ветеранов, так что не спеши</text>
+    </string>
+    <string id="trader_strelok_114111">
+        <text>й</text>
+    </string>
+    <string id="trader_strelok_114">
         <text>Спасибо за инфу</text>
     </string>
-    <string id="New_1111">
-        <text>Да, к центру</text>
+    <string id="trader_strelok_11411">
+        <text>й</text>
     </string>
-    <string id="New_112">
+    <string id="new_1131">
+        <text>q</text>
+    </string>
+    <string id="new_9">
+        <text>text in default</text>
+    </string>
+    <string id="new_1121">
+        <text>Да, пропал</text>
+    </string>
+    <string id="new_113">
+        <text>Спасибо за инфу</text>
+    </string>
+    <string id="new_112">
         <text>Пропал?</text>
     </string>
-    <string id="New_111">
+    <string id="new_3">
+        <text>Ну, пойду я..</text>
+    </string>
+    <string id="new_21">
+        <text>Дождик капает</text>
+    </string>
+    <string id="new_2">
+        <text>Что нового в Зоне?</text>
+    </string>
+    <string id="new_1">
+        <text>Расскажи о Стрелке</text>
+    </string>
+    <string id="new_11">
+        <text>Стрелок - очень модный штрих. Нашел путь к центру и пропал.</text>
+    </string>
+    <string id="new_1111">
+        <text>Да, к центру</text>
+    </string>
+    <string id="new_111">
         <text>К центру?</text>
     </string>
-    <string id="New_0">
+    <string id="new_0">
         <text>Привет</text>
+    </string>
+    <string id="volk_212">
+        <text>А что там такого в центре Зоны?</text>
+    </string>
+    <string id="volk_213">
+        <text>Спасибо</text>
+    </string>
+    <string id="volk_2121">
+        <text>Есть кое-что получше, чем россыпь артефактов… Исполнитель желаний там, а это гораздо ценнее любых богатств</text>
+    </string>
+    <string id="volk_31">
+        <text>Вроде как был такой, член группировки Стрелка, когда все в центре Зоны сгинули он один и вернулся… а Стрелок похоже того…</text>
+    </string>
+    <string id="volk_3">
+        <text>Что ты знаешь о призрачном сталкере?</text>
+    </string>
+    <string id="volk_4">
+        <text>Работа?</text>
+    </string>
+    <string id="volk_42">
+        <text>Бандитов на заводе надо шугнуть…они всех тут достали… вон недавно моего сталкера мочканули, а он неплохой хабар мне нес… Такие вот дела…Я забашлял командиру блок поста, он обещался завтра утром часов в 8 отправить туда своих ребят. Дык, я что предлагаю: ты в этот момент, когда они мочить друг-друга будут, пострайся найти их нычку и тяни все стоящее сюда. А то солдаты все себе прикарманят…Жалко…</text>
+    </string>
+    <string id="volk_41">
+        <text>Послушай, я в Зоне уже долго. Осточертели уже эти мутанты, аномалии. В печенках сидят. А дома меня ждет жена, дети. Помоги мне. Выбраться из Зоны можно, но это не так-то легко. Достань динамит - отблагодарю.</text>
+    </string>
+    <string id="volk_412">
+        <text>Не согласен</text>
+    </string>
+    <string id="volk_421">
+        <text>Согласен</text>
+    </string>
+    <string id="volk_422">
+        <text>Не согласен</text>
+    </string>
+    <string id="volk_211121">
+        <text>На мертвом озере Янтарь их база.</text>
+    </string>
+    <string id="volk_411">
+        <text>Согласен</text>
+    </string>
+    <string id="volk_5">
+        <text>Пойду я, пожалуй.</text>
+    </string>
+    <string id="volk_2">
+        <text>Что ты знаешь о сталкере по кличке Стрелок?</text>
+    </string>
+    <string id="volk_21">
+        <text>Слышал какие-то мрачные истории… Вроде он пропал несколько месяцев назад, после того, как пробрался к центру Зоны. Его группировка распалась или была кем-то уничтожена… Это все что я знаю…</text>
+    </string>
+    <string id="volk_211">
+        <text>Как Стрелок проник к центру Зоны?</text>
+    </string>
+    <string id="volk_2111">
+        <text>Не знаю. Должен знать Бармен, еще могут знать в лагере Ученых.</text>
+    </string>
+    <string id="volk_21111">
+        <text>Кто такой этот Бармен?</text>
+    </string>
+    <string id="volk_211111">
+        <text>Заведует баром сталкеров на заводе &amp;quot;Росток&amp;quot;. Но пускают туда только ветеранов, так что не спеши</text>
+    </string>
+    <string id="volk_21112">
+        <text>А где находится лагерь Ученых?</text>
+    </string>
+    <string id="volk_0">
+        <text>default text</text>
+    </string>
+    <string id="volk_11">
+        <text>Точно. Мне передали, что ты одного из наших от смерти спас. Спасибо тебе. Держи артефакт в знак нашей благодарности - его можешь поменять у Торговца на оружие, патроны или еду.</text>
+    </string>
+    <string id="volk_111">
+        <text>й</text>
+    </string>
+    <string id="volk_1111">
+        <text>й</text>
+    </string>
+    <string id="volk_1">
+        <text>Ты Волк?</text>
+    </string>
+    <string id="brodyaga_22">
+        <text>Волк главный. Вон он, в сталкерском костюме.</text>
+    </string>
+    <string id="brodyaga_23">
+        <text>А-а-а.. Это тебе к Волку. Такой угрюмый мужик, у костра греется. Мы с ним вчера на разведку ходили, так он меня от плоти спас. Вбил пять зарядов ей промеж глаз - она сразу копыта откинула. Я его должник теперь.</text>
+    </string>
+    <string id="brodyaga_31">
+        <text>Это никакая не деревенька. Это лагерь! Ну, новички приходят в Зону, нельзя же сразу на монстров бросаться. Надо сначала пообвыкнуть. Вот я в Зоне всего 3 месяца - и недавно убил слепого Пса.</text>
+    </string>
+    <string id="brodyaga_41">
+        <text>Это местный перекупщик хлама всякого. Подходить к нему лично для меня неприятно, но иногда бывает, что позарез нужны деньги. Вот и приходится к нему обращаться.</text>
+    </string>
+    <string id="brodyaga_12">
+        <text>Не слышал о таком</text>
+    </string>
+    <string id="brodyaga_13">
+        <text>Ничего</text>
+    </string>
+    <string id="brodyaga_21">
+        <text>Видишь того мужика в красивом сталкерском костюме? Это Волк. Он тут всем заправляет. Я вот скоро поднакоплю деньжат и тоже себе такой костюмчик куплю.</text>
+    </string>
+    <string id="brodyaga_1">
+        <text>Что ты знаешь о сталкере по кличке Стрелок</text>
+    </string>
+    <string id="brodyaga_2">
+        <text>Кто тут в лагере главный</text>
+    </string>
+    <string id="brodyaga_3">
+        <text>Что это за деревенка?</text>
+    </string>
+    <string id="brodyaga_5">
+        <text>Пойду я, пожалуй</text>
+    </string>
+    <string id="brodyaga_4">
+        <text>А что это за грязный товарищ, который один сидит на окраине лагеря?</text>
+    </string>
+    <string id="brodyaga_11">
+        <text>Пару раз слышал это имя, но подробностей не знаю</text>
+    </string>
+    <string id="brodyaga_111">
+        <text>й</text>
+    </string>
+    <string id="brodyaga_1111">
+        <text>й</text>
     </string>
 </string_table>

@@ -1,56 +1,437 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="New">
+    <dialog id="trader_strelok">
         <phrase_list>
-            <phrase id="21">
-                <text>New_21</text>
+            <phrase id="521">
+                <text>trader_strelok_521</text>
+                <next>11411</next>
             </phrase>
-            <phrase id="2">
-                <text>New_2</text>
-                <next>21</next>
+            <phrase id="522">
+                <text>trader_strelok_522</text>
+                <next>11411</next>
             </phrase>
-            <phrase id="3">
-                <text>New_3</text>
+            <phrase id="532">
+                <text>trader_strelok_532</text>
+                <next>11411</next>
+            </phrase>
+            <phrase id="531">
+                <text>trader_strelok_531</text>
+                <next>11411</next>
+            </phrase>
+            <phrase id="511">
+                <text>trader_strelok_511</text>
+                <next>114111</next>
+            </phrase>
+            <phrase id="512">
+                <text>trader_strelok_512</text>
+                <next>114111</next>
+            </phrase>
+            <phrase id="53">
+                <text>trader_strelok_53</text>
+                <next>531</next>
+                <next>532</next>
+            </phrase>
+            <phrase id="6">
+                <text>trader_strelok_6</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="1">
-                <text>New_1</text>
+                <text>trader_strelok_1</text>
                 <next>11</next>
             </phrase>
-            <phrase id="1121">
-                <text>New_1121</text>
-                <next>111</next>
+            <phrase id="11">
+                <text>trader_strelok_11</text>
                 <next>112</next>
                 <next>113</next>
+                <next>114</next>
             </phrase>
-            <phrase id="11">
-                <text>New_11</text>
+            <phrase id="113">
+                <text>trader_strelok_113</text>
+                <next>1131</next>
+            </phrase>
+            <phrase id="1131">
+                <text>trader_strelok_1131</text>
+                <next>112</next>
+                <next>113</next>
+                <next>114</next>
+            </phrase>
+            <phrase id="112">
+                <text>trader_strelok_112</text>
+                <next>1121</next>
+            </phrase>
+            <phrase id="2">
+                <text>trader_strelok_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>trader_strelok_21</text>
+                <next>11411</next>
+            </phrase>
+            <phrase id="3">
+                <text>trader_strelok_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>trader_strelok_31</text>
+                <next>11411</next>
+            </phrase>
+            <phrase id="4">
+                <text>trader_strelok_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>trader_strelok_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="411">
+                <text>trader_strelok_411</text>
+                <next>4111</next>
+            </phrase>
+            <phrase id="4111">
+                <text>trader_strelok_4111</text>
+                <next>11411</next>
+            </phrase>
+            <phrase id="5">
+                <text>trader_strelok_5</text>
+                <next>51</next>
+                <next>52</next>
+                <next>53</next>
+            </phrase>
+            <phrase id="51">
+                <text>trader_strelok_51</text>
+                <next>511</next>
+                <next>512</next>
+            </phrase>
+            <phrase id="52">
+                <text>trader_strelok_52</text>
+                <next>521</next>
+                <next>522</next>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="1121">
+                <text>trader_strelok_1121</text>
+                <next>11211</next>
+            </phrase>
+            <phrase id="11211">
+                <text>trader_strelok_11211</text>
+                <next>112111</next>
+            </phrase>
+            <phrase id="112111">
+                <text>trader_strelok_112111</text>
+                <next>112</next>
+                <next>113</next>
+                <next>114</next>
+            </phrase>
+            <phrase id="114111">
+                <text>trader_strelok_114111</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="114">
+                <text>trader_strelok_114</text>
+                <next>1141</next>
+            </phrase>
+            <phrase id="1141">
+                <text />
+                <next>11411</next>
+            </phrase>
+            <phrase id="11411">
+                <text>trader_strelok_11411</text>
+                <next>114111</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="new">
+        <phrase_list>
+            <phrase id="1131">
+                <text>new_1131</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="9">
+                <text>new_9</text>
+                <next>99</next>
+            </phrase>
+            <phrase id="1121">
+                <text>new_1121</text>
                 <next>111</next>
                 <next>112</next>
                 <next>113</next>
             </phrase>
             <phrase id="113">
-                <text>New_113</text>
-                <next>1</next>
+                <text>new_113</text>
+                <next>99</next>
             </phrase>
-            <phrase id="1111">
-                <text>New_1111</text>
+            <phrase id="99">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="112">
+                <text>new_112</text>
+                <next>1121</next>
+            </phrase>
+            <phrase id="3">
+                <text>new_3</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="21">
+                <text>new_21</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="2">
+                <text>new_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="1">
+                <text>new_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>new_11</text>
                 <next>111</next>
                 <next>112</next>
                 <next>113</next>
             </phrase>
-            <phrase id="112">
-                <text>New_112</text>
-                <next>1121</next>
+            <phrase id="1111">
+                <text>new_1111</text>
+                <next>111</next>
+                <next>112</next>
+                <next>113</next>
             </phrase>
             <phrase id="111">
-                <text>New_111</text>
+                <text>new_111</text>
                 <next>1111</next>
             </phrase>
             <phrase id="0">
-                <text>New_0</text>
+                <text>new_0</text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="volk">
+        <phrase_list>
+            <phrase id="212">
+                <text>volk_212</text>
+                <next>2121</next>
+            </phrase>
+            <phrase id="213">
+                <text>volk_213</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="2121">
+                <text>volk_2121</text>
+                <next>211</next>
+                <next>212</next>
+                <next>213</next>
+            </phrase>
+            <phrase id="31">
+                <text>volk_31</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="3">
+                <text>volk_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="4">
+                <text>volk_4</text>
+                <next>41</next>
+                <next>42</next>
+            </phrase>
+            <phrase id="42">
+                <text>volk_42</text>
+                <next>421</next>
+                <next>422</next>
+            </phrase>
+            <phrase id="41">
+                <text>volk_41</text>
+                <next>411</next>
+                <next>412</next>
+            </phrase>
+            <phrase id="412">
+                <text>volk_412</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="421">
+                <text>volk_421</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="422">
+                <text>volk_422</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="211121">
+                <text>volk_211121</text>
+                <next>211</next>
+                <next>212</next>
+                <next>213</next>
+            </phrase>
+            <phrase id="411">
+                <text>volk_411</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="5">
+                <text>volk_5</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="2">
+                <text>volk_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>volk_21</text>
+                <next>211</next>
+                <next>212</next>
+                <next>213</next>
+            </phrase>
+            <phrase id="211">
+                <text>volk_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="2111">
+                <text>volk_2111</text>
+                <next>21111</next>
+                <next>21112</next>
+            </phrase>
+            <phrase id="21111">
+                <text>volk_21111</text>
+                <next>211111</next>
+            </phrase>
+            <phrase id="211111">
+                <text>volk_211111</text>
+                <next>211</next>
+                <next>212</next>
+                <next>213</next>
+            </phrase>
+            <phrase id="21112">
+                <text>volk_21112</text>
+                <next>211121</next>
+            </phrase>
+            <phrase id="0">
+                <text>volk_0</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="11">
+                <text>volk_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>volk_111</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="1111">
+                <text>volk_1111</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="1">
+                <text>volk_1</text>
+                <next>11</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="brodyaga">
+        <phrase_list>
+            <phrase id="22">
+                <text>brodyaga_22</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="23">
+                <text>brodyaga_23</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="31">
+                <text>brodyaga_31</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="41">
+                <text>brodyaga_41</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="12">
+                <text>brodyaga_12</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="13">
+                <text>brodyaga_13</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="21">
+                <text>brodyaga_21</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="1">
+                <text>brodyaga_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+            </phrase>
+            <phrase id="2">
+                <text>brodyaga_2</text>
+                <next>21</next>
+                <next>22</next>
+                <next>23</next>
+            </phrase>
+            <phrase id="3">
+                <text>brodyaga_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="5">
+                <text>brodyaga_5</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="4">
+                <text>brodyaga_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="11">
+                <text>brodyaga_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>brodyaga_111</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="1111">
+                <text>brodyaga_1111</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
             </phrase>
         </phrase_list>
     </dialog>
