@@ -104,7 +104,6 @@
 #include <list>
 #include <set>
 #include <map>
-#include <deque>
 using namespace std;
 
 // Property-set support

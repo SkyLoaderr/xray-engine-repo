@@ -23,6 +23,8 @@
 #define		B_SHADOW_TEX	MK_CLSID('S','H','_','T','E','X',' ',' ')
 #define		B_SHADOW_WORLD	MK_CLSID('S','H','_','W','O','R','L','D')
 
+#define		B_MODEL			MK_CLSID('M','O','D','E','L',' ',' ',' ')
+
 // Editor
 #define		B_EDITOR_WIRE	MK_CLSID('E','_','W','I','R','E',' ',' ')
 #define		B_EDITOR_SEL	MK_CLSID('E','_','S','E','L',' ',' ',' ')

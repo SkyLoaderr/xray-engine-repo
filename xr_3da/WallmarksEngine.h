@@ -6,6 +6,8 @@
 #define AFX_WALLMARKSENGINE_H__10192F6D_882B_440F_818C_888FB47AEB02__INCLUDED_
 #pragma once
 
+#include <deque>
+
 const float W_TTL			= 15.f;
 const float W_DIST_FADE		= 15.f;
 const float	W_DIST_FADE_SQR	= W_DIST_FADE*W_DIST_FADE;

@@ -644,6 +644,10 @@
 							<File
 								RelativePath=".\Blenders\Blender_LmBmmD.h"/>
 							<File
+								RelativePath="Blenders\Blender_Model.cpp"/>
+							<File
+								RelativePath="Blenders\Blender_Model.h"/>
+							<File
 								RelativePath=".\Blenders\Blender_Screen_GRAY.cpp"/>
 							<File
 								RelativePath=".\Blenders\Blender_Screen_GRAY.h"/>
