@@ -87,11 +87,19 @@ protected:
 	CORPSE_LIST						m_CorpseList;
 
 	ref_str							m_sBaseWeaponCostSection;
-
+	
 	s32								fraglimit; //dm,tdm,ah
 	s32								timelimit; //dm
 	u32								damageblocklimit;//dm,tdm
 	xr_vector<game_TeamState>		teams;//dm,tdm,ah
+	/////////////////////////////////////////////////////////////
+	DEF_VECTOR(ANOMALIES, std::string);
+	DEF_VECTOR(ANOMALY_SETS, ANOMALIES);
+
+	ANOMALY_SETS					m_AnomalySetsList;
+	xr_vector<u8>					m_AnomalySetID;
+	u32								m_dwLastAnomalySetID;
+	bool							m_bAnomaliesEnabled;
 
 protected:
 	virtual		void				OnPlayerChangeSkin		(u32 id_who, u8 skin);
@@ -158,6 +166,10 @@ public:
 	virtual		void				LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList);
 	virtual		void				LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins);
 	virtual		void				LoadDefItemsForTeam		(char* caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems);
+
+	virtual		char*				GetAnomalySetBaseName	() {return "deathmatch_game_anomaly_sets";};
+	virtual		void				LoadAnomalySets			();
+	virtual		void				StartAnomalies			();
 
 	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
 	virtual		bool				IsBuyableItem			(LPCSTR	ItemName);

@@ -318,6 +318,7 @@ void CLevel::OnFrame	()
 	Device.Statistic.TEST0.End			();
 }
 
+#include "CustomZone.h"
 void CLevel::OnRender()
 {
 	inherited::OnRender	();
@@ -344,6 +345,10 @@ void CLevel::OnRender()
 			CTeamBaseZone	*team_base_zone = dynamic_cast<CTeamBaseZone*>(*I);
 			if (team_base_zone)
 				team_base_zone->OnRender();
+			
+			CCustomZone	*pCustomZone = dynamic_cast<CCustomZone*>(*I);
+			if (pCustomZone)
+				pCustomZone->OnRender();
 		}
 		if (Game().type != GAME_SINGLE)
 		{

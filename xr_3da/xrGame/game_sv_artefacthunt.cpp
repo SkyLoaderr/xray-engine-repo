@@ -520,6 +520,8 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	//-------------------------------------------------
 	if (m_iReinforcementTime == -1) RespawnAllNotAlivePlayers();
 	//-------------------------------------------------
+	if (m_bAnomaliesEnabled)	StartAnomalies();
+	//-------------------------------------------------
 };
 
 void	game_sv_ArtefactHunt::RemoveArtefact			()

@@ -93,17 +93,20 @@ void CMincer::Affect(CObject* O)
 		if(power > 0.01f) 
 		{
 			position_in_bone_space.set(0.f,0.f,0.f);
-			NET_Packet	P;
-			pObject->u_EventGen		(P,GE_HIT,pObject->ID());
-			P.w_u16					(ID());
-			P.w_u16					(ID());
-			P.w_dir					(dir);
-			P.w_float				(power);
-			P.w_s16					((s16)0);
-			P.w_vec3				(position_in_bone_space);
-			P.w_float				(impulse);
-			P.w_u16					(ALife::eHitTypeWound);
-			pObject->u_EventSend	(P);
+			if (OnServer())
+			{
+				NET_Packet	P;
+				pObject->u_EventGen		(P,GE_HIT,pObject->ID());
+				P.w_u16					(ID());
+				P.w_u16					(ID());
+				P.w_dir					(dir);
+				P.w_float				(power);
+				P.w_s16					((s16)0);
+				P.w_vec3				(position_in_bone_space);
+				P.w_float				(impulse);
+				P.w_u16					(ALife::eHitTypeWound);
+				pObject->u_EventSend	(P);
+			};
 		}
 	}
 }

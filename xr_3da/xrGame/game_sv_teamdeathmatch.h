@@ -31,4 +31,5 @@ public:
 
 	virtual		void				LoadTeams				();
 
+	virtual		char*				GetAnomalySetBaseName	() {return "teamdeathmatch_game_anomaly_sets";};
 };

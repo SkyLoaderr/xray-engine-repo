@@ -17,6 +17,7 @@
 #include "phmovementcontrol.h"
 #include "xrmessages.h"
 #include "PhysicsShellHolder.h"
+#include "Level.h"
 
 CGraviZone::CGraviZone(void)
 {
@@ -131,7 +132,7 @@ void CGraviZone::Affect(CObject* O)
 {
 	CPhysicsShellHolder* GO = dynamic_cast<CPhysicsShellHolder*>(O);
 	if(!GO) return;
-	CEntityAlive* EA = dynamic_cast<CEntityAlive*>(GO);
+	CEntityAlive* EA = dynamic_cast<CEntityAlive*>(GO);	
 
 	//////////////////////////////////////////////////////////////////////////
 	//	зат€гиваем объет по направлению к центру зоны
@@ -143,8 +144,14 @@ void CGraviZone::Affect(CObject* O)
 
 	float dist = throw_in_dir.magnitude();
 	float dist_to_radius = dist/Radius();
-	
-	if(dist_to_radius>m_fBlowoutRadiusPercent)
+	//---------------------------------------------------------
+	bool CanApplyPhisImpulse = GO->Local() == TRUE;
+	if (EA && EA->g_Alive())
+	{
+		CanApplyPhisImpulse &= (Level().CurrentControlEntity() && Level().CurrentControlEntity() == EA);
+	};
+	//---------------------------------------------------------	
+	if(dist_to_radius>m_fBlowoutRadiusPercent && CanApplyPhisImpulse)
 	{
 		if(EA && EA->g_Alive())
 		{
@@ -160,6 +167,11 @@ void CGraviZone::Affect(CObject* O)
 		else if(GO && GO->PPhysicsShell())
 		{
 			GO->PPhysicsShell()->applyImpulse(throw_in_dir, m_fThrowInImpulse*GO->GetMass()/500.f);
+			if (GO->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+			{
+				int x=0;
+				x=x;
+			}
 		}
 	}
 	else
@@ -189,24 +201,25 @@ void CGraviZone::Affect(CObject* O)
 		m_ObjectInfoMap[O].total_damage += power;
 		m_ObjectInfoMap[O].hit_num++;
 
-
-
 		if(power > 0.01f) 
 		{
 			m_dwDeltaTime = 0;
 			position_in_bone_space.set(0.f,0.f,0.f);
 
-			NET_Packet	l_P;
-			u_EventGen	(l_P,GE_HIT, GO->ID());
-			l_P.w_u16	(u16(GO->ID()));
-			l_P.w_u16	(ID());
-			l_P.w_dir	(throw_in_dir);
-			l_P.w_float	(power);
-			l_P.w_s16	(0/*(s16)BI_NONE*/);
-			l_P.w_vec3	(position_in_bone_space);
-			l_P.w_float	(impulse);
-			l_P.w_u16	((u16)m_eHitTypeBlowout);
-			u_EventSend	(l_P);
+			if (OnServer())
+			{
+				NET_Packet	l_P;
+				u_EventGen	(l_P,GE_HIT, GO->ID());
+				l_P.w_u16	(u16(GO->ID()));
+				l_P.w_u16	(ID());
+				l_P.w_dir	(throw_in_dir);
+				l_P.w_float	(power);
+				l_P.w_s16	(0/*(s16)BI_NONE*/);
+				l_P.w_vec3	(position_in_bone_space);
+				l_P.w_float	(impulse);
+				l_P.w_u16	((u16)m_eHitTypeBlowout);
+				u_EventSend	(l_P);
+			};
 
 
 			PlayHitParticles(GO);

@@ -78,6 +78,8 @@ public:
 	virtual void  Center (Fvector& C)	const;
 	virtual float Radius () const;
 
+	virtual void	OnEvent				(NET_Packet& P, u16 type);
+
 #ifdef DEBUG
 	virtual void OnRender();
 #endif
@@ -116,6 +118,7 @@ protected:
 		eZoneStateAwaking,		//пробуждение зоны (объект попал в зону)
 		eZoneStateBlowout,		//выброс
         eZoneStateAccumulate,	//накапливание энергии, после выброса
+		eZoneStateDisabled,
 		eZoneStateMax
 	} EZoneState;
 
@@ -133,12 +136,21 @@ protected:
 	StateTimeSVec m_StateTime;
 
 	virtual void SwitchZoneState(EZoneState new_state);
+	virtual void OnStateSwitch	(EZoneState new_state);
 
 	//обработка зоны в различных состояниях
 	virtual bool IdleState();
 	virtual bool AwakingState();
 	virtual bool BlowoutState();
 	virtual bool AccumulateState();
+
+	virtual bool Enable();
+	virtual bool Disable();
+public:
+	virtual bool IsEnabled ()	{return m_eZoneState != eZoneStateDisabled; };
+	virtual void ZoneEnable();	
+	virtual void ZoneDisable();
+protected:
 
 
 	//воздействие зоной на объект
@@ -264,7 +276,6 @@ protected:
 	virtual bool EnableEffector() {return false;}
 
 	virtual bool IsVisibleForZones() { return false;}
-
 
 	//обновление, если зона передвигается
 	virtual void OnMove	();

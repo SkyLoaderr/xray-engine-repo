@@ -67,6 +67,8 @@ enum {
 	GE_GRENADE_EXPLODE,
 	GE_INV_ACTION,				//a action beign taken on inventory
 
+	GE_ZONE_STATE_CHANGE,
+
 
 	GE_GAME_EVENT,
 /*

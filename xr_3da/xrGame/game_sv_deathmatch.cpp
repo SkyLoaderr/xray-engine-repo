@@ -6,6 +6,7 @@
 #include "level.h"
 #include "xrserver.h"
 #include "Inventory.h"
+#include "CustomZone.h"
 
 int		SkinID = -1;
 u32		g_dwMaxCorpses = 10;
@@ -15,30 +16,51 @@ void	game_sv_Deathmatch::Create					(ref_str& options)
 	inherited::Create						(options);
 	fraglimit			= get_option_i		(*options,"fraglimit",0);
 	timelimit			= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
-	damageblocklimit	= get_option_i		(*options,"timelimit",5)*1000;	// in (ms)
+	damageblocklimit	= get_option_i		(*options,"dmgblock",5)*1000;	// in (ms)
 
+	if (get_option_i(*options,"anomalies",0) != 0)
+		m_bAnomaliesEnabled	= true;
+	else 
+		m_bAnomaliesEnabled	= false;
 	/////////////////////////////////////////////////////////////////////////
 	LoadTeams();
 	/////////////////////////////////////////////////////////////////////////
-
-//	switch_Phase(GAME_PHASE_PENDING);
-	switch_Phase(GAME_PHASE_INPROGRESS);
+	switch_Phase(GAME_PHASE_PENDING);
+//	switch_Phase(GAME_PHASE_INPROGRESS);
 
 	::Random.seed(GetTickCount());
 	/////////////////////////////////////////////////////////////////////////
 	m_CorpseList.clear();
+
+	m_AnomalySetsList.clear();
+	m_AnomalySetID.clear();
+	m_dwLastAnomalySetID	= 1001;
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
 {
+	/////////////////////////////////////////////////////////////////////////
+//	LoadAnomalySets();
+	/////////////////////////////////////////////////////////////////////////
 	for (u32 i=0; i<teams.size(); ++i)
 	{
 		teams[i].score			= 0;
 		teams[i].num_targets	= 0;
-	}
+	};
 
 	inherited::OnRoundStart	();
-
+/*
+	/////////////////////////////////////////////////////////////////////////
+	//Disable all anomalies
+	xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
+	xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
+	for ( ; I != E; ++I) 
+	{
+		CCustomZone	*pCustomZone = dynamic_cast<CCustomZone*>(*I);
+		if (pCustomZone) pCustomZone->ZoneDisable();
+	};
+	/////////////////////////////////////////////////////////////////////////
+*/
 	// Respawn all players and some info
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; ++it)	
@@ -1240,5 +1262,83 @@ void	game_sv_Deathmatch::RespawnPlayer			(u32 id_who, bool NoSpectator)
 		//------------------------------------------------------------
 		SpawnWeaponsForActor(xrCData->owner, ps);
 		//------------------------------------------------------------
+	};
+};
+
+void	game_sv_Deathmatch::LoadAnomalySets			()
+{
+	//-----------------------------------------------------------
+	if (!m_AnomalySetsList.empty()) return;
+	//-----------------------------------------------------------
+	char* ASetBaseName = GetAnomalySetBaseName();
+
+	string256 SetName, AnomaliesNames, AnomalyName;
+	ANOMALIES		AnomalySingleSet;
+	for (u32 i=0; i<20; i++)
+	{
+		AnomalySingleSet.clear();
+
+		sprintf(SetName, "set%i", i);
+		if (!Level().pLevel->line_exist(ASetBaseName, SetName))
+			continue;
+
+		std::strcpy(AnomaliesNames, Level().pLevel->r_string(ASetBaseName, SetName));
+		u32 count	= _GetItemCount(AnomaliesNames);
+		if (!count) continue;
+
+		for (u32 j=0; j<count; j++)
+		{
+			_GetItem(AnomaliesNames, j, AnomalyName);
+			AnomalySingleSet.push_back(AnomalyName);
+		};
+
+		if (AnomalySingleSet.empty()) continue;
+		m_AnomalySetsList.push_back(AnomalySingleSet);
+	};
+};
+
+void	game_sv_Deathmatch::StartAnomalies			()
+{
+	if (m_AnomalySetsList.empty())
+		LoadAnomalySets();
+	if (m_AnomalySetsList.empty()) return;	
+
+	xr_vector<u8>&	ASetID	= m_AnomalySetID;
+	if (ASetID.empty())
+	{
+		for (u8 i=0; i<m_AnomalySetsList.size(); i++)
+		{
+			if (m_dwLastAnomalySetID == i) continue;
+			ASetID.push_back(i);
+		};
+	};
+
+	u8 ID = u8(::Random.randI((int)ASetID.size()));
+	u32 NewAnomalySetID = ASetID[ID];
+	ASetID.erase(ASetID.begin()+ID);
+	///////////////////////////////////////////////////
+	if (m_dwLastAnomalySetID < m_AnomalySetsList.size())
+	{
+		ANOMALIES* OldAnomalies = &(m_AnomalySetsList[m_dwLastAnomalySetID]);
+		for (u32 i=0; i<OldAnomalies->size(); i++)
+		{
+			const char *pName = ((*OldAnomalies)[i]).c_str();
+			CCustomZone* pZone = dynamic_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
+			if (!pZone) continue;
+			if (pZone->IsEnabled())
+				pZone->ZoneDisable();
+		};
+	};
+	///////////////////////////////////////////////////
+	m_dwLastAnomalySetID = NewAnomalySetID;
+
+	ANOMALIES* NewAnomalies = &(m_AnomalySetsList[NewAnomalySetID]);
+	for (u32 i=0; i<NewAnomalies->size(); i++)
+	{
+		const char *pName = ((*NewAnomalies)[i]).c_str();
+		CCustomZone* pZone = dynamic_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
+		if (!pZone) continue;
+		if (!pZone->IsEnabled())
+			pZone->ZoneEnable();
 	};
 };

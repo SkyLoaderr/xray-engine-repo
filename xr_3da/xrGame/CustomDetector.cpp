@@ -204,7 +204,7 @@ void CCustomDetector::UpdateCL()
 void CCustomDetector::feel_touch_new(CObject* O) 
 {
 	CCustomZone *pZone = dynamic_cast<CCustomZone*>(O);
-	if(pZone) 
+	if(pZone && pZone->IsEnabled()) 
 	{
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"started to feel a zone.");
 		m_ZoneInfoMap[pZone].snd_time = 0;

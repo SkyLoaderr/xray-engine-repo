@@ -141,6 +141,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		}
 		break;
 	case GE_WPN_STATE_CHANGE:
+	case GE_ZONE_STATE_CHANGE:
 		SendBroadcast			(0xffffffff,P,MODE);
 //		VERIFY					(verify_entities());
 		break;
