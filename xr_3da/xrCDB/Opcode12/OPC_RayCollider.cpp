@@ -57,7 +57,7 @@
  *
  *		- You can setup "first contact" mode or "all contacts" mode with RayCollider::SetFirstContact().
  *		- In "first contact" mode we return as soon as the ray hits one face. If can be useful e.g. for shadow feelers, where
- *		you want to know whether the path to the light is free or not (a boolean answer is enough).
+ *		you want to know whether the path to the light is _free or not (a boolean answer is enough).
  *		- In "all contacts" mode we return all faces hit by the ray.
  *
  *	TEMPORAL COHERENCE:
