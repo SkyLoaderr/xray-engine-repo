@@ -40,7 +40,6 @@
 #define _WIN32_DCOM
 
 #include <windows.h>
-
 #ifndef __BORLANDC__
 	#include <windowsx.h>
 #endif
@@ -51,7 +50,6 @@
 #define MMNOAUX
 #define MMNOMIXER
 #define MMNOJOY
-
 #include <mmsystem.h>
 
 // mmreg.h
@@ -60,7 +58,6 @@
 #define NOJPEGDIB
 #define NONEWIC
 #define NOBITMAP
-
 #include <mmreg.h>
 
 
@@ -219,7 +216,6 @@ public:
 };
 
 // ********************************************** The Core definition
-
 class XRCORE_API xrCore 
 {
 public:
