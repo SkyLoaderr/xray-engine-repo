@@ -110,7 +110,7 @@ function main_menu:InitControls()
 	self.background = CUIStatic()
 	self.background:SetAutoDelete(true)
 	self.background:SetWindowName("background")
-	self.background:Init("ui\\ui_static_main_menu_background",self.screen.x, self.screen.y, self.screen.width, self.screen.height)
+	self.background:Init("video03_tech",self.screen.x, self.screen.y, self.screen.width, self.screen.height)
 	self:AttachChild(self.background)
 	
 	-- MAIN WINDOW
