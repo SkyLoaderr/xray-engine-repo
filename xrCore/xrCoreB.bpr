@@ -251,24 +251,25 @@ Item1=XRLC_Intermediate
 Item2=xrLC_Options
 
 [HistoryLists\hlFinalOutputDir]
-Count=7
+Count=8
 Item0=x:\
-Item1=S:\build_zmey\
-Item2=S:\build_zmey
-Item3=x:\xrCoreB.dll\
-Item4=x:\xrCoreB.dll
-Item5=!run\
-Item6=!run
+Item1=z:\
+Item2=S:\build_zmey\
+Item3=S:\build_zmey
+Item4=x:\xrCoreB.dll\
+Item5=x:\xrCoreB.dll
+Item6=!run\
+Item7=!run
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl
 
 [Parameters]
-RunParams=-ebuild
+RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\LevelEditor.exe
+HostApplication=z:\LevelEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

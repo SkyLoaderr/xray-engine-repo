@@ -171,7 +171,8 @@ void __fastcall TShellChangeThread::Execute(void)
 	for (PathIt it=events.begin(); it!=events.end(); it++){
     	Path& P			= *it;
         P.FWaitHandle	= FindFirstChangeNotification(P.FDirectory.c_str(), P.bRecurse, FNotifyOptionFlags);
-        R_ASSERT3		(P.FWaitHandle != INVALID_HANDLE_VALUE,"Can't create notify handle",P.FDirectory.c_str());
+        if (P.FWaitHandle == INVALID_HANDLE_VALUE)
+            Debug.fatal	("Can't create notify handle for path: '%s'\nwith error: '%s'",P.FDirectory.c_str(),*GetWinErr(GetLastError()));
     }
     LeaveCriticalSection(&CS);
 //	if (FWaitHandle == INVALID_HANDLE_VALUE)

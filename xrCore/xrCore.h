@@ -183,6 +183,10 @@
 #include "FileSystem.h"
 #include "FTimer.h"
 
+// stl ext
+DEFINE_VECTOR(ref_str,RStrVec,RStrIt);
+
+// destructor
 template <class T>
 class destructor
 {
