@@ -129,7 +129,7 @@ void CStateInternalAbstract::update_enemy_info		()
 			break;
 	}
 
-	if (m_object->visible_now(m_object->enemy()) && m_object->see(m_object->enemy(),m_object))
+	if (m_object->visible_now(m_object->enemy()))
 		m_enemy_info		= EEnemyInfo(m_enemy_info | eEnemyInfoSeeMe);
 
 	if (m_object->expedient(m_object->enemy()))

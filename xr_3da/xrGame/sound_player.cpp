@@ -39,11 +39,11 @@ void CSoundPlayer::reload			(LPCSTR section)
 	VERIFY							(m_playing_sounds.empty());
 }
 
-void CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
+u32 CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
 {
 	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.find(internal_type);
 	if (m_sounds.end() != I)
-		return;
+		return						(0);
 
 	CSoundCollection				sound_collection;
 	sound_collection.m_priority		= priority;
@@ -54,7 +54,7 @@ void CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 p
 	
 	I								= m_sounds.find(internal_type);
 	VERIFY							(m_sounds.end() != I);
-	load							((*I).second.m_sounds,prefix,max_count,type);
+	return							(load((*I).second.m_sounds,prefix,max_count,type));
 }
 
 void CSoundPlayer::remove			(u32 internal_type)
@@ -64,7 +64,7 @@ void CSoundPlayer::remove			(u32 internal_type)
 	m_sounds.erase					(I);
 }
 
-void CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 max_count, ESoundTypes type)
+u32 CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 max_count, ESoundTypes type)
 {
 	sounds.clear				();
 	for (int j=0, N = _GetItemCount(prefix); j<N; ++j) {
@@ -87,6 +87,7 @@ void CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 ma
 	if (sounds.empty()) {
 		Msg						("! There are no sounds with prefix %s",prefix);
 	}
+	return						((u32)sounds.size());
 }
 
 bool CSoundPlayer::check_sound_legacy(u32 internal_type) const

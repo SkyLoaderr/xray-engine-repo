@@ -171,9 +171,9 @@ void CScriptGameObject::script_register(lua_State *L)
 			
 			// sound_player
 			
-			.def("add_sound",					(void (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32))(CScriptGameObject::add_sound))
-			.def("add_sound",					(void (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR))(CScriptGameObject::add_sound))
-			.def("add_sound",					(void (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR,LPCSTR))(CScriptGameObject::add_sound))
+			.def("add_sound",					(u32 (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32))(CScriptGameObject::add_sound))
+			.def("add_sound",					(u32 (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR))(CScriptGameObject::add_sound))
+			.def("add_sound",					(u32 (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR,LPCSTR))(CScriptGameObject::add_sound))
 			.def("remove_sound",				&CScriptGameObject::remove_sound)
 			.def("set_sound_mask",				&CScriptGameObject::set_sound_mask)
 			.def("play_sound",					(void (CScriptGameObject::*)(u32))(CScriptGameObject::play_sound))
@@ -277,7 +277,7 @@ void CScriptGameObject::script_register(lua_State *L)
 //		class_<CGameObject>("game_object_class")
 //			.def(								constructor<>()),
 
-//		class_<CAttachableItem,CGameObject>("attachable_item")
+//		class_<CAttachableItem,DLL_Pure>("attachable_item")
 		,class_<CAttachableItem>("attachable_item")
 			.def(								constructor<>())
 	];

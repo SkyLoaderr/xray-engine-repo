@@ -49,7 +49,7 @@ void CMonsterEnemyManager::update()
 	
 	// проверить видимость
 	enemy_see_me = false;
-	if (monster->CVisualMemoryManager::see(enemy, monster)) enemy_see_me = true;
+	if (monster->CVisualMemoryManager::visible_now(enemy)) enemy_see_me = true;
 	
 	// обновить опасность врага
 	danger_type = eNone;

@@ -131,11 +131,8 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 
 	// we do not save sounds from the objects we see (?!)
 	CVisualMemoryManager	*visual_memory_manager = dynamic_cast<CVisualMemoryManager*>(this);
-	if (visual_memory_manager) {
-		xr_vector<CVisibleObject>::const_iterator I = std::find(visual_memory_manager->memory_visible_objects().begin(),visual_memory_manager->memory_visible_objects().end(),object_id(object));
-		if ((visual_memory_manager->memory_visible_objects().end() != I) && ((*I).m_level_time > m_last_sound_time))
-			return;
-	}
+	if (visual_memory_manager && visual_memory_manager->visible_now(entity_alive))
+		return;
 
 	const CGameObject *game_object	= dynamic_cast<const CGameObject*>(object);
 	CGameObject *self			= dynamic_cast<CGameObject*>(this);

@@ -453,27 +453,31 @@ void  CScriptGameObject::set_detail_path_type	(CMovementManager::EDetailPathType
 		stalker->set_detail_path_type	(detail_path_type);
 }
 
-void  CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
+u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
-	if (!sound_player)
+	if (!sound_player) {
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
+		return					(0);
+	}
 	else
-		sound_player->add		(prefix,max_count,type,priority,mask,internal_type,bone_name);
+		return					(sound_player->add(prefix,max_count,type,priority,mask,internal_type,bone_name));
 }
 
-void  CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
+u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
-	if (!sound_player)
+	if (!sound_player) {
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
+		return					(0);
+	}
 	else
-		sound_player->add		(prefix,max_count,type,priority,mask,internal_type, bone_name, head_anim);
+		return					(sound_player->add(prefix,max_count,type,priority,mask,internal_type, bone_name, head_anim));
 }
 
-void  CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type)
+u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type)
 {
-	add_sound					(prefix,max_count,type,priority,mask,internal_type,"bip01_head");
+	return						(add_sound(prefix,max_count,type,priority,mask,internal_type,"bip01_head"));
 }
 
 void CScriptGameObject::remove_sound	(u32 internal_type)

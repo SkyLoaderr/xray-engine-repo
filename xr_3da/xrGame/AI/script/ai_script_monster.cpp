@@ -111,18 +111,12 @@ LPCSTR CScriptMonster::GetScriptControlName() const
 	return				(*m_caScriptName);
 }
 
-bool CScriptMonster::CheckObjectVisibility(const CObject *tpObject)
+bool CScriptMonster::CheckObjectVisibility(const CGameObject *tpObject)
 {
 	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(this);
 	if (!l_tpCustomMonster)
 		return			(false);
-	l_tpCustomMonster->feel_vision_get(l_tpCustomMonster->m_visible_objects);
-	xr_vector<CObject*>::const_iterator	I = l_tpCustomMonster->m_visible_objects.begin();
-	xr_vector<CObject*>::const_iterator	E = l_tpCustomMonster->m_visible_objects.end();
-	for ( ; I != E; ++I)
-		if (tpObject == dynamic_cast<CObject*>(*I))
-			return		(true);
-	return				(false);
+	return				(l_tpCustomMonster->CVisualMemoryManager::visible_now(tpObject));
 }
 
 //определяет видимость определенного типа объектов, 
