@@ -260,6 +260,7 @@ extern "C"
 };
 */
 HRESULT	CRender::shader_compile			(
+		LPCSTR							name,
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,
 		void*							_pDefines,
@@ -350,8 +351,17 @@ HRESULT	CRender::shader_compile			(
     LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
     LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
 	HRESULT		_result	= D3DXCompileShader(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
-	if (o.disasm)
+	if (SUCCEEDED(_result) && o.disasm)
 	{
+		ID3DXBuffer*		code	= (LPD3DXBUFFER*)_ppShader;
+		ID3DXBuffer*		disasm	= 0;
+		D3DXDisassembleShader		(LPDWORD(code->GetBufferPointer()), FALSE, 0, &disasm );
+		string_path			dname;
+		strconcat			(dname,"disasm_",name);
+		IWriter*			W		= FS.w_open("$logs$",dname);
+		W->w				(disasm->GetBufferPointer(),disasm->GetBufferSize());
+		FS.w_close			(W);
+		_RELEASE			(disasm);
 	}
 	return		_result;
 }
