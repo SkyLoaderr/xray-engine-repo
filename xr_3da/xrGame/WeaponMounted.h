@@ -23,6 +23,9 @@ private:
 
 	Fvector					fire_pos, fire_dir;
 
+	//режим стрельбы
+	bool					m_bFiring;
+
 	static void __stdcall	BoneCallbackX		(CBoneInstance *B);
 	static void __stdcall	BoneCallbackY		(CBoneInstance *B);
 public:
@@ -33,6 +36,8 @@ public:
 	virtual const Fmatrix&	XFORM()	 const		{return CGameObject::XFORM();}
 	virtual		  Fmatrix&	XFORM()				{return CGameObject::XFORM();}
 	virtual IRender_Sector*	Sector()			{return CGameObject::Sector();}
+	virtual const Fvector&	CurrentFirePoint()	{return fire_pos;}
+	virtual const Fvector&	CurrentFirePoint2() {return fire_pos;}
 
 	// Generic
 	virtual void			Load				(LPCSTR section);

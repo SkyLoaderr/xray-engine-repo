@@ -32,6 +32,7 @@ void __stdcall CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 CWeaponMounted::CWeaponMounted()
 {
 	camera		= xr_new<CCameraFirstEye>	(this, pSettings, "mounted_weapon_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid|CCameraBase::flDirectionRigid); 
+	m_bFiring	= false;
 }
 
 CWeaponMounted::~CWeaponMounted()
@@ -142,7 +143,9 @@ void	CWeaponMounted::OnKeyboardPress		(int dik)
 
 	switch (dik)	
 	{
-	case kWPN_FIRE:							break;
+	case kWPN_FIRE:					
+		m_bFiring	= true;
+		break;
 	};
 
 }
@@ -151,7 +154,9 @@ void	CWeaponMounted::OnKeyboardRelease	(int dik)
 	if (Remote())							return;
 	switch (dik)	
 	{
-	case kWPN_FIRE:							break;
+	case kWPN_FIRE:
+		m_bFiring	= false;
+		break;
 	};
 }
 void	CWeaponMounted::OnKeyboardHold		(int dik)
