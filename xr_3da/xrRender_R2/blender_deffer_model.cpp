@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Blender_deffer_flat.h"
+#include "Blender_deffer_model.h"
 
 CBlender_deffer_model::CBlender_deffer_model	()	{	description.CLS		= B_MODEL;	}
 CBlender_deffer_model::~CBlender_deffer_model	()	{	}
