@@ -215,7 +215,8 @@ LPCSTR STextureParams::FormatString	()
 
 u32 STextureParams::MemoryUsage(LPCSTR base_name)
 {
-	u32 mem_usage = width*height*4;
+	u32 mem_usage	= width*height*4;
+	if (flags.test(flGenerateMipMaps))	{ mem_usage*=3ul; mem_usage/=2ul; }
     switch (fmt){
     case STextureParams::tfDXT1:
     case STextureParams::tfADXT1: 	mem_usage/=6; break;
