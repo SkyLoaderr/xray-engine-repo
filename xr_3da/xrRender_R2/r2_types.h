@@ -37,7 +37,7 @@ const		u32					SMAP_adapt_max		= 1024	;
 
 const		u32					TEX_material_LdotN	= 128	;	// diffuse,		X, almost linear = small res
 const		u32					TEX_material_LdotH	= 256	;	// specular,	Y
-const		u32					TEX_jitter			= 128	;
+const		u32					TEX_jitter			= 64	;
 const		u32					TEX_jitter_count	= 4		;
 
 const		u32					BLOOM_size_X		= 256	;
