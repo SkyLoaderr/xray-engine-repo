@@ -192,7 +192,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 					b1.direct	(p1,Device.vCameraRight,1.f);
 					b1.direct	(b1,d,3	);
 					b2.direct	(p1,d,30);
-					::Render.add_Line(b1,b2,.1f,0xffffffff,sh_BulletTracer);
+					::Render.add_Line(b1,b2,.1f,D3DCOLOR_XRGB(255,0,0),sh_BulletTracer);
 				}
 
 				// real fire
