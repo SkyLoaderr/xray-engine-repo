@@ -218,6 +218,7 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 	SM_SwitchOnPlayer(pNewObject);
 };
 
+#include "WeaponHUD.h"
 void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 {
 //	CObject* pNewObject =  Level().Objects.net_Find(ps->GameID);
@@ -234,6 +235,16 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 	Engine.Sheduler.Unregister	(pNewObject);
 	Engine.Sheduler.Register	(pNewObject, TRUE);
 	*/
+	CActor* pActor = dynamic_cast<CActor*> (pNewObject);
+	if (pActor)
+	{
+		CHudItem* pHudItem = dynamic_cast<CHudItem*>(pActor->inventory().ActiveItem());
+		if (pHudItem) 
+		{
+			pHudItem->GetHUD()->SetCurrentEntityHud(true);
+			pHudItem->StartIdleAnim();
+		}
+	}
 
 	m_dwSM_CurViewEntity = pNewObject->ID();
 	m_dwSM_LastSwitchTime = Level().timeServer() + m_dwSM_SwitchDelta;
