@@ -1706,7 +1706,7 @@ bool CUIBuyWeaponWnd::MenuLevelJump(MENU_LEVELS lvl)
 			SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
 			// Спрятали
 			m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
-			UIBagWnd.DetachChild(m_WeaponSubBags.back());
+			UIBagWnd.DetachAll();
 			UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
 			break;
 		}

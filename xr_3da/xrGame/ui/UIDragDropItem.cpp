@@ -252,7 +252,7 @@ void CUIDragDropItem::Update()
 
 void CUIDragDropItem::Rescale(float scale)
 {
-	float offsetCorrection = scale * 2;
+	float offsetCorrection = 0.0f;//scale * 2;
 	SetTextureScale(scale);
 	int newW	= static_cast<int>(GetGridWidth() * scale * (INV_GRID_WIDTH + offsetCorrection));
 	int newH	= static_cast<int>(GetGridHeight() * scale * (INV_GRID_HEIGHT + offsetCorrection));
