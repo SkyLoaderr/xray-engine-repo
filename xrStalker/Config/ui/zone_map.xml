@@ -12,7 +12,7 @@
 		<texture >ui\hud_map_arrow</texture>
 	</compass>
 	
-	<center width="3" height="3"> 
+	<center width="3" height="3" alignment="c"> 
 		<texture>ui\hud_map_point</texture>
 	</center>
 	
