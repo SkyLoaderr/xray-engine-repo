@@ -12,7 +12,7 @@
 //struct CLuaVirtualMachine;
 
 namespace Script {
-	bool		bfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
+	bool		bfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName, int iErorCode = 0);
 	void		vfExportGlobals				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportFvector				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportFmatrix				(CLuaVirtualMachine *tpLuaVirtualMachine);
@@ -30,9 +30,7 @@ namespace Script {
 	bool		bfLoadBuffer				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caBuffer,		size_t	tSize,				LPCSTR	caScriptName);
 	bool		bfLoadFile					(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName,	bool	bCall = true);
 	bool		bfLoadFileIntoNamespace		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName,	LPCSTR	caNamespaceName,	bool	bCall);
-#ifdef DEBUG
 	LPCSTR		cafEventToString			(int				iEventCode);
 	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iErrorCode);
 	bool		bfListLevelVars				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iStackLevel);
-#endif
 };

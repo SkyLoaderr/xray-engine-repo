@@ -7,14 +7,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
-#ifdef DEBUG
 #include "ai_script_space.h"
 #include "ai_script_lua_extension.h"
 
 using namespace Script;
 
-bool Script::bfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptFileName)
+bool Script::bfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptFileName, int iErorCode)
 {
 	for (int i=-1; ; i--)
 		if (lua_isstring(tpLuaVirtualMachine,i)) {
@@ -24,9 +22,9 @@ bool Script::bfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScr
 				return	(true);
 			}
 			else {
-				if (!i)
+				if (!i && !iErorCode)
 					LuaOut	(Lua::eLuaMessageTypeInfo,"Output from %s",caScriptFileName);
-				LuaOut	(Lua::eLuaMessageTypeMessage,"%s",S);
+				LuaOut	(iErorCode ? Lua::eLuaMessageTypeError : Lua::eLuaMessageTypeMessage,"%s",S);
 			}
 		}
 		else {
@@ -38,9 +36,9 @@ bool Script::bfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScr
 						return	(true);
 					}
 					else {
-						if (!i)
+						if (!i && !iErorCode)
 							LuaOut	(Lua::eLuaMessageTypeInfo,"Output from %s",caScriptFileName);
-						LuaOut	(Lua::eLuaMessageTypeMessage,"%s",S);
+						LuaOut	(iErorCode ? Lua::eLuaMessageTypeError : Lua::eLuaMessageTypeMessage,"%s",S);
 					}
 				}
 				else
@@ -125,4 +123,3 @@ bool Script::bfListLevelVars(CLuaVirtualMachine *tpLuaVirtualMachine, int iStack
 	}
 	return		(true);
 }
-#endif

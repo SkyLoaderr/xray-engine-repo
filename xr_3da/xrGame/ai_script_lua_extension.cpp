@@ -16,38 +16,43 @@ using namespace Script;
 
 int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
-	LPCSTR		S = "";
+	LPCSTR		S = "", SS = "";
 	LPSTR		S1;
 	string4096	S2;
 	switch (tLuaMessageType) {
 		case Lua::eLuaMessageTypeInfo : {
 			S	= "* [LUA] ";
+			SS	= "[INFO]    ";
 			break;
 		}
 		case Lua::eLuaMessageTypeError : {
 			S	= "! [LUA] ";
+			SS	= "[ERROR]   ";
 			break;
 		}
 		case Lua::eLuaMessageTypeMessage : {
 			S	= "[LUA] ";
+			SS	= "[MESSAGE] ";
 			break;
 		}
 		default : NODEFAULT;
 	}
 	
-	strcpy	(S2,S);
-	S1		= S2 + strlen(S);
-
 	va_list	l_tMarker;
 	
 	va_start(l_tMarker,caFormat);
 
+	strcpy	(S2,S);
+	S1		= S2 + strlen(S);
 	int		l_iResult = vsprintf(S1,caFormat,l_tMarker);
-	
-	va_end	(l_tMarker);
-
 	Msg		("%s",S2);
-	getAI().m_tpLuaOutput->w_string(S1);
+	
+	strcpy	(S2,SS);
+	S1		= S2 + strlen(SS);
+	vsprintf(S1,caFormat,l_tMarker);
+	getAI().m_tpLuaOutput->w_string(S2);
+
+	va_end	(l_tMarker);
 
 	return	(l_iResult);
 }
@@ -161,7 +166,7 @@ bool Script::bfLoadBuffer(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caBuff
 
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		if (!bfPrintOutput	(tpLuaVirtualMachine,caScriptName));
+		if (!bfPrintOutput	(tpLuaVirtualMachine,caScriptName,l_iErrorCode));
 			vfPrintError(tpLuaVirtualMachine,l_iErrorCode);
 #endif
 		return			(false);
@@ -188,7 +193,7 @@ bool bfDoFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool
 //		int			l_iErrorCode = lua_pcall(tpLuaVirtualMachine,0,0,0);
 //		if (l_iErrorCode) {
 //#ifdef DEBUG
-//			bfPrintOutput	(tpLuaVirtualMachine,caScriptName);
+//			bfPrintOutput	(tpLuaVirtualMachine,caScriptName,l_iErrorCode);
 //			vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
 //#endif
 //			return	(false);
