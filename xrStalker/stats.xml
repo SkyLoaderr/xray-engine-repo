@@ -13,7 +13,7 @@
 	<list x="10" y="40" width="370" height="410" item_height="18" active_bg="0">
 		<font font="letterica18" r="255" g="255" b="255"></font>
 		<!-- SUBITEMS IN LISTITEM -->
-		<static x="0" y="0" width="100" height="15">
+		<static x="0" y="0" width="200" height="15">
 			<text font="letterica18" r="192" g="192" b="192"></text>
 		</static>
 		<static x="150" y="0" width="100" height="15">
