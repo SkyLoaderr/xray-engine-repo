@@ -338,6 +338,13 @@ public:
 		_34			= 1.0f;
 		_43			= -Q*fNearPlane;
 	}
+	IC	void	build_projection_ortho	(T w, T h, T zn, T zf)
+	{
+		_11	= T(2)/w;	_12 = 0;		_13 = 0;			_14 = 0;
+		_21 = 0;		_22 = T(2)/h;	_23	= 0;			_24	= 0;
+		_31 = 0;		_32 = 0;		_33	= T(1)/(zf-zn);	_34	= 0;
+		_41 = 0;		_42 = 0;		_43	= zn/(zn-zf);	_44	= T(1);
+	}
 	IC	void	build_camera(const Tvector &vFrom, const Tvector &vAt, const Tvector &vWorldUp) 
 	{
 		// Get the z basis vector, which points straight ahead. This is the
