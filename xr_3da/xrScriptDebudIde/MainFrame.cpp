@@ -264,6 +264,15 @@ void CMainFrame::OnProjectAddFiles()
 
 void CMainFrame::OnClose() 
 {
+	if(m_needAnswer){
+		CMailSlotMsg msg;
+		msg.w_int(DMSG_SHOW_IDE);
+		msg.w_int(DMSG_DEBUG_GO);
+		if(CheckExisting(DEBUGGER_MAIL_SLOT))
+			SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+		m_needAnswer = FALSE;
+	};
+
 	if ( m_nAppMode!=modeNoProject )
 		GetProject()->SaveModified();
 	
