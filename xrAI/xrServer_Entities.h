@@ -48,6 +48,7 @@ public:
 
 class xrSE_Visualed
 {
+	string64						visual_name;
 public:
 #ifdef _EDITOR
 	AnsiString						play_animation;
@@ -55,7 +56,6 @@ public:
     void __fastcall					OnChangeVisual		(PropValue* sender);
     void 							PlayAnimation		(LPCSTR name);
 #endif
-	string64						visual_name;
 public:
 									xrSE_Visualed		(LPCSTR name=0)
     {
@@ -68,6 +68,8 @@ public:
     }
 	void							visual_read			(NET_Packet& P);
 	void							visual_write		(NET_Packet& P);
+
+    void							set_visual			(LPCSTR name);
     
 #ifdef _EDITOR
     void 							FillProp			(LPCSTR pref, PropItemVec& values);
@@ -207,7 +209,6 @@ xrSE_DECLARE_END
 
 //***** MercuryBall
 xrSE_DECLARE_BEGIN2(xrSE_MercuryBall,CALifeItem,xrSE_Visualed)
-	string64						s_Model;
 									xrSE_MercuryBall(LPCSTR caSection);
 xrSE_DECLARE_END
 
@@ -215,10 +216,8 @@ xrSE_DECLARE_END
 xrSE_DECLARE_BEGIN2(xrSE_Car,xrServerEntity,xrSE_Visualed)
 									xrSE_Car		(LPCSTR caSection) : xrServerEntity(caSection)
 	{
-		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
-			LPCSTR	S			= pSettings->r_string(caSection,"visual");
-			Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
-		}
+		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+    	    set_visual		(pSettings->r_string(caSection,"visual"));
 	};
 xrSE_DECLARE_END
 
@@ -226,10 +225,8 @@ xrSE_DECLARE_END
 xrSE_DECLARE_BEGIN2(xrSE_Crow,xrServerEntity,xrSE_Visualed)
 									xrSE_Crow		(LPCSTR caSection) : xrServerEntity(caSection)
 	{
-		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
-			LPCSTR	S			= pSettings->r_string(caSection,"visual");
-			Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
-		}
+		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+    	    set_visual		(pSettings->r_string(caSection,"visual"));
 	};
 xrSE_DECLARE_END
 
@@ -238,10 +235,8 @@ xrSE_DECLARE_BEGIN2(xrSE_Health,CALifeItem,xrSE_Visualed)
 	u8								amount;
 									xrSE_Health		(LPCSTR caSection) : CALifeItem(caSection)
 	{
-		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
-			LPCSTR	S			= pSettings->r_string(caSection,"visual");
-			Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
-		}
+		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+    	    set_visual		(pSettings->r_string(caSection,"visual"));
 	};
 xrSE_DECLARE_END
 

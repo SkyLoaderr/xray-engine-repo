@@ -14,10 +14,8 @@ xrSE_Weapon::xrSE_Weapon(LPCSTR caSection) : CALifeItem(caSection)
 	a_current			= 90;
 	a_elapsed			= 0;
 	state				= 0;
-	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
-		LPCSTR	S			= pSettings->r_string(caSection,"visual");
-		Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
-	}
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+        set_visual		(pSettings->r_string(caSection,"visual"));
 }
 
 void xrSE_Weapon::UPDATE_Read		(NET_Packet& P)
@@ -108,10 +106,8 @@ void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
 xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeItem(caSection)
 {
 	a_elapsed = m_boxSize = pSettings->r_s32(caSection, "box_size");
-	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
-		LPCSTR	S			= pSettings->r_string(caSection,"visual");
-		Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
-	}
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+        set_visual		(pSettings->r_string(caSection,"visual"));
 }
 
 void xrSE_WeaponAmmo::STATE_Read(NET_Packet& P, u16 size)
@@ -255,21 +251,18 @@ void	xrSE_Dummy::FillProp			(LPCSTR pref, PropItemVec& values)
 //***** MercuryBall
 xrSE_MercuryBall::xrSE_MercuryBall(LPCSTR caSection) : CALifeItem(caSection)
 {
-	s_Model[0]	=	0;
-	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
-		LPCSTR	S			= pSettings->r_string(caSection,"visual");
-		Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
-	}
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+        set_visual		(pSettings->r_string(caSection,"visual"));
 }
 void	xrSE_MercuryBall::UPDATE_Read	(NET_Packet& P)				{inherited::UPDATE_Read(P);}
 void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)				{inherited::UPDATE_Write(P);}
-void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{inherited::STATE_Read(P, size);P.r_string(s_Model); }
-void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{inherited::STATE_Write(P);P.w_string(s_Model); }
+void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{inherited::STATE_Read(P, size);visual_read(P); }
+void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{inherited::STATE_Write(P);visual_write(P); }
 
 #ifdef _EDITOR
 void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,s_name,"Model"),	s_Model,sizeof(s_Model));
+	xrSE_Visualed::FillProp(pref,items);
 }
 #endif
 //
@@ -481,8 +474,7 @@ void xrSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 //***** Actor
 xrSE_Actor::xrSE_Actor				(LPCSTR caSection) : xrSE_Teamed(caSection), CALifeTraderParams(caSection)
 {
-	visual_name[0]					= 0;
-	strcat							(visual_name,"actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
+	set_visual						("actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
 }
 
 void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)
@@ -490,10 +482,7 @@ void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)
 	inherited::STATE_Read(P,size);
 	CALifeTraderParams::STATE_Read(P,size);
 	if (m_wVersion >= 3)
-		if (m_wVersion <= 16)
-			P.r_string(visual_name);
-		else
-			visual_read(P);
+		visual_read(P);
 };
 
 void xrSE_Actor::STATE_Write		(NET_Packet& P)
@@ -621,6 +610,14 @@ void	xrSE_Enemy::FillProp			(LPCSTR pref, PropItemVec& items)
 //		}
 //	}
 //};
+void					xrSE_Visualed::set_visual(LPCSTR name)
+{
+	strcpy				(visual_name,name);
+#ifdef _EDITOR
+	OnChangeVisual		(0);
+#endif
+}
+
 void					xrSE_Visualed::visual_read(NET_Packet& P)
 {
 	P.r_string			(visual_name);
@@ -800,8 +797,7 @@ void CALifeMonsterAbstract::UPDATE_Read(NET_Packet &tNetPacket)
 
 xrSE_Rat::xrSE_Rat(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
-	visual_name[0]					= 0;
-	strcat							(visual_name,"monsters\\rat\\rat_1");
+	set_visual						("monsters\\rat\\rat_1");
 	// personal charactersitics
 	fEyeFov							= 120;
 	fEyeRange						= 10;
@@ -833,10 +829,7 @@ void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
 	// inherited properties
 	inherited::STATE_Read(P,size);
 	// model
-	if (m_wVersion <= 16)
-		P.r_string(visual_name);
-	else
-		visual_read(P);
+	visual_read(P);
 	// personal characteristics
 	P.r_float (fEyeFov);
 	P.r_float (fEyeRange);
@@ -943,8 +936,7 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropItemVec& items)
 
 xrSE_Zombie::xrSE_Zombie(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
-	visual_name[0]					= 0;
-	strcat							(visual_name,"monsters\\zombie\\zombie_1");
+	set_visual						("monsters\\zombie\\zombie_1");
 	// personal charactersitics
 	fEyeFov							= 120;
 	fEyeRange						= 30;
@@ -966,10 +958,7 @@ void xrSE_Zombie::STATE_Read(NET_Packet& P, u16 size)
 	// inherited properties
 	inherited::STATE_Read(P,size);
 	// model
-	if (m_wVersion <= 16)
-		P.r_string(visual_name);
-	else
-		visual_read(P);
+	visual_read(P);
 	// personal characteristics
 	P.r_float (fEyeFov);
 	P.r_float (fEyeRange);
@@ -1046,8 +1035,7 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropItemVec& items)
 
 xrSE_Dog::xrSE_Dog(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
-	visual_name[0]					= 0;
-	strcat							(visual_name,"monsters\\dog\\dog_1");
+	set_visual						("monsters\\dog\\dog_1");
 	// personal charactersitics
 	fEyeFov							= 120;
 	fEyeRange						= 10;
@@ -1079,10 +1067,7 @@ void xrSE_Dog::STATE_Read(NET_Packet& P, u16 size)
 	// inherited properties
 	inherited::STATE_Read(P,size);
 	// model
-	if (m_wVersion <= 16)
-		P.r_string(visual_name);
-	else
-		visual_read(P);
+	visual_read(P);
 	// personal characteristics
 	P.r_float (fEyeFov);
 	P.r_float (fEyeRange);
@@ -1189,8 +1174,7 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 
 xrSE_Biting::xrSE_Biting(LPCSTR caSection) : CALifeMonsterAbstract(caSection)
 {
-	LPCSTR	S						= pSettings->r_string(caSection,"visual");
-	Memory.mem_copy					(visual_name,S,(strlen(S) + 1)*sizeof(char));
+    set_visual						(pSettings->r_string(caSection,"visual"));
 }
 
 void xrSE_Biting::STATE_Read(NET_Packet& P, u16 size)
@@ -1198,10 +1182,7 @@ void xrSE_Biting::STATE_Read(NET_Packet& P, u16 size)
 	// inherited properties
 	inherited::STATE_Read(P,size);
 	// model
-	if (m_wVersion <= 16)
-		P.r_string(visual_name);
-	else
-		visual_read(P);
+	visual_read(P);
 }
 
 void xrSE_Biting::STATE_Write(NET_Packet& P)
@@ -1379,8 +1360,7 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 
 xrSE_Human::xrSE_Human(LPCSTR caSection) : CALifeMonsterAbstract(caSection), CALifeTraderParams(caSection)
 {
-	visual_name[0]					= 0;
-	strcat							(visual_name,"actors\\Different_stalkers\\stalker_no_hood_singleplayer");
+	set_visual						("actors\\Different_stalkers\\stalker_no_hood_singleplayer");
 	// personal charactersitics
 	fHealth							= 100;
 }
@@ -1391,10 +1371,7 @@ void xrSE_Human::STATE_Read(NET_Packet& P, u16 size)
 	inherited::STATE_Read(P,size);
 	CALifeTraderParams::STATE_Read(P,size);
 	// model
-	if (m_wVersion <= 16)
-		P.r_string(visual_name);
-	else
-		visual_read(P);
+	visual_read(P);
 	// personal characteristics
 	if (m_wVersion <= 8)
 		P.r_float (fHealth);
@@ -1630,10 +1607,8 @@ xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : CALifeDynamicObject(caS
 	type 		= epotBox;
 	mass 		= 10.f;
     fixed_bone[0]=0;
-	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
-		LPCSTR	S			= pSettings->r_string(caSection,"visual");
-		Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
-	}
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+    	set_visual			(pSettings->r_string(caSection,"visual"));
 }
 xrSE_PhysicObject::~xrSE_PhysicObject() 
 {
