@@ -42,32 +42,13 @@ ph_skeleton_hinger_factor1   = 1
 ph_skeleton_ddelay	     	 = 15
 ph_skel_fatal_impulse_factor = 8
 damage			 = actor_damage
+
+
 ;---------------------------------------------------------------------
 ;actor condition
 
-satiety_v					= 0.00001				;скорость уменьшения сытости со временем
-radiation_v					= 0.0001				;скорость уменьшения радиации
-satiety_power_v				= 0.0005				;увеличение силы при уменьшении сытости 
-satiety_health_v			= 0.00001				;увеличение здоровья при уменьшении сытости 
-satiety_critical			= 0.01					;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
-radiation_health_v			= 0.001					;уменьшение здоровья при воздействии радиации
-bleeding_v					= 5.0					;потеря крови при максимальной ране
-wound_incarnation_v			= 0.0					;скорость заживания раны (процентов в от размера раны)
-morale_v					= 0.0001				;скорость восстановления морали 						
-health_hit_part				= 1.0					;процент хита, уходящий на отнимание здоровья
-power_hit_part				= 0.3					;процент хита, уходящий на отнимание силы
-accel_power_v				= 0.0003				;влияния ускорения на отбирание сил
-jump_power_v				= 0.05					;влияния прыжка на отбирание сил
-
-burn_immunity 				= 1.0				;коэффициенты иммунитета 
-strike_immunity 			= 1.0
-shock_immunity 				= 1.0
-wound_immunity				= 1.0
-radiation_immunity 			= 1.0
-telepatic_immunity 			= 1.0
-chemical_burn_immunity 		= 1.0
-explosion_immunity 			= 1.0
-fire_wound_immunity  		= 1.0
+immunities_sect				= actor_immunities
+condition_sect				= actor_condition
 
 sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
 sleep_power = 1.0		;1.5
@@ -97,21 +78,43 @@ body_remove_time = 60000	;время уничтожения трупа (с учетом TimeFactor)
 sleep_time_factor = 1000	;400		;во сколько раз время идет быстрее, когда актер спит
 
 
-;;;;;;;;;;;;;;;;;;;;
-;; хромота
 
-heavy_breath_snd = heart\8		;звук тяжелого дыхания при усталости	
 
-limping_health_begin =	0.2		;порог здоровья меньше которого актер начинает хромать
-limping_health_end   =	0.3		;порог здоровья больше которого актер перестает хромать
-
-limping_power_begin  =	0.01	;порог силы меньше которого актер начинает хромать
-limping_power_end	 =	0.11	;порог силы больше которого актер перестает хромать
-
-use_limping_state	 = on
-
+[actor_immunities]
+burn_immunity 				= 1.0				;коэффициенты иммунитета 
+strike_immunity 			= 1.0
+shock_immunity 				= 1.0
+wound_immunity				= 1.0
+radiation_immunity 			= 1.0
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 1.0
+fire_wound_immunity  		= 1.0
 
 [actor_condition]
+satiety_v					= 0.00001				;скорость уменьшения сытости со временем
+radiation_v					= 0.0001				;скорость уменьшения радиации
+satiety_power_v				= 0.0005				;увеличение силы при уменьшении сытости 
+satiety_health_v			= 0.00001				;увеличение здоровья при уменьшении сытости 
+satiety_critical			= 0.01					;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v			= 0.001					;уменьшение здоровья при воздействии радиации
+bleeding_v					= 5.0					;потеря крови при максимальной ране
+wound_incarnation_v			= 0.0					;скорость заживания раны (процентов в от размера раны)
+morale_v					= 0.0001				;скорость восстановления морали 						
+health_hit_part				= 1.0					;процент хита, уходящий на отнимание здоровья
+power_hit_part				= 0.3					;процент хита, уходящий на отнимание силы
+
+;actor_condition only
+accel_power_v				= 0.0003				;влияния ускорения на отбирание сил
+jump_power_v				= 0.05					;влияния прыжка на отбирание сил
+
+; хромота
+heavy_breath_snd = heart\8		;звук тяжелого дыхания при усталости	
+limping_health_begin =	0.2		;порог здоровья меньше которого актер начинает хромать
+limping_health_end   =	0.3		;порог здоровья больше которого актер перестает хромать
+limping_power_begin  =	0.01	;порог силы меньше которого актер начинает хромать
+limping_power_end	 =	0.11	;порог силы больше которого актер перестает хромать
+use_limping_state	 = on
 
 
 [actor_damage]
