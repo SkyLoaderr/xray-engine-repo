@@ -135,7 +135,28 @@ class CAI_Soldier : public CCustomMonster
 		FIGHT_TYPE_ATTACK = 0,
 		FIGHT_TYPE_DEFEND,
 		FIGHT_TYPE_RETREAT,
+		FIGHT_TYPE_PURSUIT,
+		FIGHT_TYPE_FIND,
+		FIGHT_TYPE_HURT,
+		FIGHT_TYPE_NONE,
 	};
+
+	enum EActionTypes {
+		ACTION_TYPE_GROUP = 0,
+		ACTION_TYPE_ALONE,
+		ACTION_TYPE_DIE,
+		ACTION_TYPE_NONE,
+	};
+
+	#define MAX_STATE_LIST_SIZE 32
+
+	typedef struct tagSSoldierStates {
+		ESoldierStates	eState;
+		DWORD			dwTime;
+	}SSoldierStates;
+
+	DWORD m_tActionType;
+	DWORD m_tFightType;
 
 	typedef	CCustomMonster inherited;
 
@@ -386,6 +407,7 @@ class CAI_Soldier : public CCustomMonster
 
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
+		svector<SSoldierStates,MAX_STATE_LIST_SIZE>	tStateList;
 		bool					m_bStateChanged;
 		
 		CSoldierSelectorAttack				SelectorAttack;
@@ -486,7 +508,7 @@ class CAI_Soldier : public CCustomMonster
 		bool bfSaveFromEnemy(CEntity *tpEntity);
 		DWORD tfGetAloneFightType();
 		DWORD tfGetGroupFightType();
-		bool bfCheckIfGroupFightType();
+		DWORD tfGetActionType();
 		bool bfCheckForDanger();
 		void vfStopFire();
 		void SelectSound(int &iIndex);
@@ -533,8 +555,8 @@ class CAI_Soldier : public CCustomMonster
 			vfSetMovementType(c,d);
 		}
 	IC	bool bfAmIDead()		{return(g_Health() <= 0);}
-	IC	bool bfAmIHurt()		{return(Level().timeServer() > dwHitTime);}
-	IC	bool bfIsMemberHurt()	{return(Level().timeServer() > getGroup()->m_dwLastHitTime);}
+	IC	bool bfAmIHurt()		{return(Level().timeServer() >= dwHitTime);}
+	IC	bool bfIsMemberHurt()	{return(Level().timeServer() >= getGroup()->m_dwLastHitTime);}
 	IC  bool bfDoesEnemyExist()	{return(Enemy.Enemy != 0);}
 	IC  bool bfIsEnemyVisible()	{return(Enemy.bVisible);}
 	IC  bool bfFireEnemy(CEntity *tpEntity)		
@@ -572,6 +594,39 @@ class CAI_Soldier : public CCustomMonster
 	IC	bool bfTooBigAngle(float fAngle0, float fAngle1, float fDelta)
 		{
 			return(fabsf(fAngle0 - fAngle1) < fDelta) || ((fabsf(fabsf(fAngle0 - fAngle1) - PI_MUL_2) < fDelta));
+		}
+	IC	DWORD tfUpdateActionType()
+		{
+			return(m_tActionType = tfGetActionType());
+		}
+	IC	DWORD tfUpdateFightTypeAlone()
+		{
+			return(m_tFightType = tfGetAloneFightType());
+		}
+	IC	DWORD tfUpdateFightTypeGroup()
+		{
+			return(m_tFightType = tfGetGroupFightType());
+		}
+	IC	bool bfCheckIfActionTypeChanged()
+		{
+			return(tfGetActionType() != m_tActionType);
+		}
+	IC	bool bfCheckIfFightTypeChanged()
+		{
+			return(((m_tActionType == ACTION_TYPE_ALONE) && (tfGetAloneFightType() != m_tFightType)) || ((m_tActionType == ACTION_TYPE_GROUP) && (tfGetGroupFightType() != m_tFightType)) || ((m_tActionType != ACTION_TYPE_ALONE) && (m_tActionType != ACTION_TYPE_GROUP)));
+		}
+	IC	bool bfCheckIfActionOrFightTypeChanged()
+		{
+			return(bfCheckIfActionTypeChanged() || bfCheckIfFightTypeChanged());
+		}
+	IC	void vfAddStateToList(ESoldierStates eState)
+		{
+			if (tStateList.size() > MAX_STATE_LIST_SIZE)
+				tStateList.erase(DWORD(0));
+			SSoldierStates tSoldierStates;
+			tSoldierStates.dwTime = Level().timeServer();
+			tSoldierStates.eState = eState;
+			tStateList.push_back(tSoldierStates);
 		}
 
 
