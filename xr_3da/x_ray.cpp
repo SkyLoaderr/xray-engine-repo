@@ -302,9 +302,10 @@ void CApplication::LoadBegin	()
 {
 	ll_dwReference++;
 	if (1==ll_dwReference) {
-		ll_hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-		ll_hLogo1.create("font","ui\\ui_logo");
-		ll_hLogo2.create("font","ui\\ui_logo_nv");
+		::Sound->set_volume (0.f);
+		ll_hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+		ll_hLogo1.create	("font","ui\\ui_logo");
+		ll_hLogo2.create	("font","ui\\ui_logo_nv");
 		ll_hLogo			= ll_hLogo2;
 		CheckCopyProtection	();
 	}
@@ -313,6 +314,9 @@ void CApplication::LoadBegin	()
 void CApplication::LoadEnd		()
 {
 	ll_dwReference--;
+	if (0==ll_dwReference)		{
+		::Sound->set_volume		(1.f);
+	}
 }
 
 void CApplication::LoadTitle	(char *S, char *S2)
