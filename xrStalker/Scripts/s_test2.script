@@ -8,7 +8,7 @@ function update_action (npc, script, ...)
 	end
 
 	for a = 1, arg.n, 1 do
-		if arg[a] ~= nil then act:set (arg[i])
+		if arg[a] ~= nil then act:set (arg[i]) end
 	end		
 	reset_action (npc, script)
     npc:command (act, false)
