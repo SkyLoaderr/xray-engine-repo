@@ -128,8 +128,8 @@ void CGameFont::OnRender()
 					int c		= CharMap	[PS.string[j]];
 					float cw	= WFMap		[PS.string[j]];
 					if (c>=0){
-						tu	= (c%iNumber)*vUVSize.x+vHalfPixel.x;
-						tv	= (c/iNumber)*vUVSize.y+vHalfPixel.y;
+						tu		= (c%iNumber)*vUVSize.x+vHalfPixel.x;
+						tv		= (c/iNumber)*vUVSize.y+vHalfPixel.y;
 						v->set(X,		Y2,	clr2,tu,				tv+vUVSize.y);	v++;
 						v->set(X,		Y,	clr, tu,				tv);			v++;
 						v->set(X+S*cw,	Y2,	clr2,tu+vUVSize.x*cw,	tv+vUVSize.y);	v++;
