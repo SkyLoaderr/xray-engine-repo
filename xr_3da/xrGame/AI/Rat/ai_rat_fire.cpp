@@ -11,6 +11,7 @@
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\actor.h"
 #include "..\\..\\hudmanager.h"
+#include "..\\..\\ai_funcs.h"
 
 #define SPECIAL_SQUAD					6
 #define LIGHT_FITTING			
@@ -202,16 +203,17 @@ CAI_Rat::ERatStates CAI_Rat::sfChooseAction()
 		return(tStateStack.top());
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	EntityVec	Members;
-	Members.push_back(Group.Leader);
+	Members.push_back(Level().Teams[g_Team()].Squads[g_Squad()].Leader);
 	Members.push_back(this);
-	for (int k=0; k<Group.Members.size(); k++)
+	for (int k=0; k<(int)Group.Members.size(); k++)
 		if (Group.Members[k]->g_Alive())
 			Members.push_back(Group.Members[k]);
 
 	int i = 0, j = 0;
 	do {
-		float fProbability = pfAttackSuccessProbability.ffGetValue(this,fpaBaseFunctions);
-		if (Members[i])
+		//float fProbability = pfAttackSuccessProbability.ffGetValue(this,fpaBaseFunctions);
+		//if (Members[i])
 	}
-	while ((i < Members.size()) && (j < VisibleEnemies.size()));
+	while ((i < (int)Members.size()) && (j < (int)VisibleEnemies.size()));
+	return(aiRatAttackRun);
 }

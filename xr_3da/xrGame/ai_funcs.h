@@ -96,13 +96,32 @@ public:
 	virtual float	ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions);
 };
 
-class CHealthFunction : public CBaseFunction {
+class CDistanceFunction : public CBaseFunction {
 
 public:
-	CHealthFunction() {
+	CDistanceFunction() {
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 150.0;
+		strcat(m_caName,"Distance");
+	}
+	
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+			return(m_fLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster;
+		return(m_fLastValue = tpCustomMonster->Position().distance_to(tpCustomMonster->m_tpCurrentEnemy->Position()));
+	};
+};
+ 
+class CPersonalHealthFunction : public CBaseFunction {
+
+public:
+	CPersonalHealthFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
-		strcat(m_caName,"Health");
+		strcat(m_caName,"PersonalHealth");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
@@ -115,13 +134,13 @@ public:
 	};
 };
  
-class CMoraleFunction : public CBaseFunction {
+class CPersonalMoraleFunction : public CBaseFunction {
 	
 public:
-	CMoraleFunction() {
+	CPersonalMoraleFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
-		strcat(m_caName,"Morale");
+		strcat(m_caName,"PersonalMorale");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
@@ -134,13 +153,13 @@ public:
 	};
 };
  
-class CCreatureTypeFunction : public CBaseFunction {
+class CPersonalCreatureTypeFunction : public CBaseFunction {
 	
 public:
-	CCreatureTypeFunction() {
+	CPersonalCreatureTypeFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 22.0;
-		strcat(m_caName,"CreatureType");
+		strcat(m_caName,"PersonalCreatureType");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
@@ -243,7 +262,7 @@ public:
 	};
 };
  
-class CWeaponTypeFunction : public CBaseFunction {
+class CPersonalWeaponTypeFunction : public CBaseFunction {
 	
 	float ffGetTheBestWeapon(CCustomMonster *tpCustomMonster) 
 	{
@@ -294,10 +313,10 @@ class CWeaponTypeFunction : public CBaseFunction {
 	}
 
 public:
-	CWeaponTypeFunction() {
+	CPersonalWeaponTypeFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
-		strcat(m_caName,"WeaponType");
+		strcat(m_caName,"PersonalWeaponType");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
@@ -400,25 +419,81 @@ public:
 		}
 		return(m_fLastValue);
 	};
-	
 };
  
-class CDistanceFunction : public CBaseFunction {
+class CEnemyHealthFunction : public CBaseFunction {
 
 public:
-	CDistanceFunction() {
+	CEnemyHealthFunction() {
 		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 150.0;
-		strcat(m_caName,"Distance");
+		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"EnemyHealth");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster->m_tpCurrentEnemy))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster;
-		return(m_fLastValue = tpCustomMonster->Position().distance_to(tpCustomMonster->m_tpCurrentEnemy->Position()));
+		m_tpLastMonster = tpCustomMonster->m_tpCurrentEnemy;
+		return(m_fLastValue = tpCustomMonster->pfPersonalHealth.ffGetValue(tpCustomMonster->m_tpCurrentEnemy,fpaBaseFunctions));
+	};
+};
+ 
+class CEnemyMoraleFunction : public CBaseFunction {
+	
+public:
+	CEnemyMoraleFunction() {
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"EnemyMorale");
+	}
+	
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster->m_tpCurrentEnemy))
+			return(m_fLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster->m_tpCurrentEnemy;
+		return(m_fLastValue = tpCustomMonster->pfPersonalMorale.ffGetValue(tpCustomMonster->m_tpCurrentEnemy,fpaBaseFunctions));
+	};
+};
+ 
+class CEnemyCreatureTypeFunction : public CBaseFunction {
+	
+public:
+	CEnemyCreatureTypeFunction() {
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 22.0;
+		strcat(m_caName,"EnemyCreatureType");
+	}
+	
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster->m_tpCurrentEnemy))
+			return(m_fLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster->m_tpCurrentEnemy;
+		return(m_fLastValue = tpCustomMonster->pfPersonalCreatureType.ffGetValue(tpCustomMonster->m_tpCurrentEnemy,fpaBaseFunctions));
+	};
+};
+ 
+class CEnemyWeaponTypeFunction : public CBaseFunction {
+	
+public:
+	CEnemyWeaponTypeFunction() {
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 12.0;
+		strcat(m_caName,"EnemyWeaponType");
+	}
+	
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	{
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster->m_tpCurrentEnemy))
+			return(m_fLastValue);
+		m_dwLastUpdate = Level().timeServer();
+		m_tpLastMonster = tpCustomMonster->m_tpCurrentEnemy;
+		return(m_fLastValue = tpCustomMonster->pfPersonalWeaponType.ffGetValue(tpCustomMonster->m_tpCurrentEnemy,fpaBaseFunctions));
 	};
 };
  

@@ -142,15 +142,16 @@ void CCustomMonster::Load		(LPCSTR section)
 	if (!bPatternFunctionLoaded) {
 		bPatternFunctionLoaded = true;
 		fpaBaseFunctions[0] = &pfDistance;
-		fpaBaseFunctions[1] = &pfPersonalHealth;
-		fpaBaseFunctions[2] = &pfPersonalMorale;
-		fpaBaseFunctions[3] = &pfPersonalCreatureType;
-		fpaBaseFunctions[4] = &pfPersonalWeaponType;
 		
-		fpaBaseFunctions[21] = &pfEnemyHealth;
-		fpaBaseFunctions[22] = &pfEnemyMorale;
-		fpaBaseFunctions[23] = &pfEnemyCreatureType;
-		fpaBaseFunctions[24] = &pfEnemyWeaponType;
+		fpaBaseFunctions[21] = &pfPersonalHealth;
+		fpaBaseFunctions[22] = &pfPersonalMorale;
+		fpaBaseFunctions[23] = &pfPersonalCreatureType;
+		fpaBaseFunctions[24] = &pfPersonalWeaponType;
+		
+		fpaBaseFunctions[41] = &pfEnemyHealth;
+		fpaBaseFunctions[42] = &pfEnemyMorale;
+		fpaBaseFunctions[43] = &pfEnemyCreatureType;
+		fpaBaseFunctions[44] = &pfEnemyWeaponType;
 
 		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat",				fpaBaseFunctions);
 		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat",			fpaBaseFunctions);

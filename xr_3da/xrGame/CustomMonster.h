@@ -13,20 +13,27 @@
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
 
-#define MAX_FUNCTION_COUNT 64
+#define MAX_FUNCTION_COUNT 128
 
-class  CBaseFunction;
-class  CPatternFunction;
-class  CHealthFunction;
-class  CMoraleFunction;
-class  CCreatureTypeFunction;
-class  CWeaponTypeFunction;
-class  CDistanceFunction;
+class	CBaseFunction;
+class	CPatternFunction;
 
-class ENGINE_API CMotionDef;
-class ENGINE_API CKinematics;
-class ENGINE_API CBoneInstance;
-class CWeaponList;
+class	CDistanceFunction;
+
+class	CPersonalHealthFunction;			
+class	CPersonalMoraleFunction;			
+class	CPersonalCreatureTypeFunction;	
+class	CPersonalWeaponTypeFunction;		
+
+class	CEnemyHealthFunction;			
+class	CEnemyMoraleFunction;			
+class	CEnemyCreatureTypeFunction;		
+class	CEnemyWeaponTypeFunction;		
+
+class	ENGINE_API CMotionDef;
+class	ENGINE_API CKinematics;
+class	ENGINE_API CBoneInstance;
+class	CWeaponList;
 
 class CCustomMonster : 
 	public CEntityAlive, 
@@ -119,7 +126,6 @@ public:
 	float				m_fSoundPower;
 	float				m_fStartPower;
 	CLevel::SPath		*m_tpPath;
-	CCustomMonster		*m_tpCurrentEnemy;
 
 	virtual void		Think() = 0;
 
@@ -260,34 +266,30 @@ public:
 	virtual	void			feel_touch_new		(CObject* O);
 	virtual	void			OnEvent				(NET_Packet& P, u16 type);
 
-// Data driven design properties
+			CCustomMonster					*m_tpCurrentEnemy;
+	// Data driven design properties
+	static	bool							bPatternFunctionLoaded;
 	// primary functions
-	static	bool					bPatternFunctionLoaded;
-	static  CBaseFunction			*fpaBaseFunctions[MAX_FUNCTION_COUNT];
+	static  CBaseFunction					*fpaBaseFunctions[MAX_FUNCTION_COUNT];
 
-CDistanceFunction				CCustomMonster::pfDistance;
+	static	CDistanceFunction				pfDistance;
 
-CPersonalHealthFunction			CCustomMonster::pfPersonalHealth;
-CPersonalMoraleFunction			CCustomMonster::pfPersonalMorale;
-CPersonalCreatureTypeFunction	CCustomMonster::pfPersonalCreatureType;
-CPersonalWeaponTypeFunction		CCustomMonster::pfPersonalWeaponType;
+	static  CPersonalHealthFunction			pfPersonalHealth;
+	static  CPersonalMoraleFunction			pfPersonalMorale;
+	static  CPersonalCreatureTypeFunction	pfPersonalCreatureType;
+	static  CPersonalWeaponTypeFunction		pfPersonalWeaponType;
 
-CEnemyHealthFunction			CCustomMonster::pfEnemyHealth;
-CEnemyMoraleFunction			CCustomMonster::pfEnemyMorale;
-CEnemyCreatureTypeFunction		CCustomMonster::pfEnemyCreatureType;
-CEnemyWeaponTypeFunction		CCustomMonster::pfEnemyWeaponType;
+	static  CEnemyHealthFunction			pfEnemyHealth;
+	static  CEnemyMoraleFunction			pfEnemyMorale;
+	static  CEnemyCreatureTypeFunction		pfEnemyCreatureType;
+	static  CEnemyWeaponTypeFunction		pfEnemyWeaponType;
 
-	static  CHealthFunction			pfHealth;
-	static  CMoraleFunction			pfMorale;
-	static  CCreatureTypeFunction	pfCreatureType;
-	static  CWeaponTypeFunction		pfWeaponType;
-	static  CDistanceFunction		pfDistance;
 	// complex functions
-	static  CPatternFunction		pfEnemyStatus;
-	static  CPatternFunction		pfPersonalStatus;
-	static  CPatternFunction		pfWeaponEffectiveness;
-	static  CPatternFunction		pfAttackSuccessProbability;
-	static  CPatternFunction		pfDefendSuccessProbability;
+	static  CPatternFunction				pfPersonalStatus;
+	static  CPatternFunction				pfEnemyStatus;
+	static  CPatternFunction				pfWeaponEffectiveness;
+	static  CPatternFunction				pfAttackSuccessProbability;
+	static  CPatternFunction				pfDefendSuccessProbability;
 };
 
 namespace AI{
