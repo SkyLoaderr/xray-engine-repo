@@ -372,7 +372,6 @@ void CShaderManager::Delete(Shader* &S)
 	S				= 0;
 }
 
-
 void	CShaderManager::OnFrameEnd	()
 {
 	for (DWORD stage=0; stage<HW.Caps.pixel.dwStages; stage++)

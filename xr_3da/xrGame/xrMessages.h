@@ -69,11 +69,10 @@ M_SPAWN
 			u8				count;
 
 			action {
-				u64			clsid_target;
-				u16			OnEnter_count;	// number of times to play
-				stringZ		OnEnter;
-				u16			OnLeave_count;	// number of times to play
-				stringZ		OnLeave;
+				u8			type;			// 0=Enter, 1=Leave
+				u64			clsid;
+				u16			count;			// number of times to play
+				stringZ		event;
 			}
 			...
 		}
