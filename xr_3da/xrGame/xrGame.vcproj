@@ -1174,6 +1174,13 @@
 									RelativePath=".\object_state_switch.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="ObjectStateIdle"
+								Filter="">
+								<File
+									RelativePath=".\object_state_idle.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter

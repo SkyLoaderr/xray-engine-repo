@@ -152,43 +152,54 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 
 bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 {
-	if (!inherited::bfAssignObject(tpEntityAction))
-		return	(false);
+	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
+	CInventoryItem	*l_tpInventoryItem	= dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
 
-	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
-	if (!l_tObjectAction.m_tpObject)
-		return	((l_tObjectAction.m_bCompleted = true) == false);
+	if (!inherited::bfAssignObject(tpEntityAction) || !l_tObjectAction.m_tpObject || !l_tpInventoryItem) {
+		if (!inventory().ActiveItem()) {
+			CObjectHandler::set_dest_state	(eObjectActionNoItems);
+		}
+		else {
+//			inventory().Action	(kWPN_FIRE,	CMD_STOP);
+			CObjectHandler::set_dest_state	(eObjectActionIdle,inventory().ActiveItem());
+//			CObjectHandler::set_dest_state	(eObjectActionNoItems);
+		}
 
-	CInventoryItem		*l_tpInventoryItem		= dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
-	if (!l_tpInventoryItem)
-		return	((l_tObjectAction.m_bCompleted = true) == false);
+		return	((l_tObjectAction.m_bCompleted = (CObjectHandler::current_state_id() == CObjectHandler::dest_state_id())) == false);
+	}
+	else {
+	}
 
 	CWeapon				*l_tpWeapon				= dynamic_cast<CWeapon*>(inventory().ActiveItem());
-	CWeaponMagazined	*l_tpWeaponMagazined	= dynamic_cast<CWeaponMagazined*>(inventory().ActiveItem());
+//	CWeaponMagazined	*l_tpWeaponMagazined	= dynamic_cast<CWeaponMagazined*>(inventory().ActiveItem());
 
 	switch (l_tObjectAction.m_tGoalType) {
 		case eObjectActionIdle : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
-			inventory().Action	(kWPN_FIRE,	CMD_STOP);
-			l_tObjectAction.m_bCompleted = true;
+			CObjectHandler::set_dest_state	(eObjectActionIdle,l_tpInventoryItem);
+//			inventory().Action	(kWPN_FIRE,	CMD_STOP);
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::current_state_id() == CObjectHandler::dest_state_id())) == false);
 			break;
 		}
 		case eObjectActionFire1 : {
-			if (!l_tpWeapon)
-				return	((l_tObjectAction.m_bCompleted = true) == false);
+			CObjectHandler::set_dest_state	(eObjectActionFire1,l_tpInventoryItem);
+//			if (!l_tpWeapon)
+//				return	((l_tObjectAction.m_bCompleted = true) == false);
 			if (inventory().ActiveItem()) {
 				if (l_tpWeapon->GetAmmoElapsed()) {
-					if (l_tpWeapon->GetAmmoMagSize() > 1)
-						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
-					else
-						l_tpWeaponMagazined->SetQueueSize(1);
-					inventory().Action(kWPN_FIRE,	CMD_START);
+//					if (l_tpWeapon->GetAmmoMagSize() > 1)
+//						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
+//					else
+//						l_tpWeaponMagazined->SetQueueSize(1);
+//					inventory().Action(kWPN_FIRE,	CMD_START);
 				}
 				else {
-					inventory().Action(kWPN_FIRE,	CMD_STOP);
-					if (l_tpWeapon->GetAmmoCurrent())
-						inventory().Action(kWPN_RELOAD, CMD_START);
+//					inventory().Action(kWPN_FIRE,	CMD_STOP);
+					if (l_tpWeapon->GetAmmoCurrent()) {
+//						CObjectHandler::set_dest_state	(eObjectActionFire1,l_tObjectAction.m_tpObject);
+//						inventory().Action(kWPN_RELOAD, CMD_START);
+					}
 					else
 						l_tObjectAction.m_bCompleted = true;
 				}
@@ -196,20 +207,23 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			break;
 		}
 		case eObjectActionFire2 : {
-			if (!l_tpWeapon)
-				return	((l_tObjectAction.m_bCompleted = true) == false);
+			CObjectHandler::set_dest_state	(eObjectActionFire2,l_tpInventoryItem);
+//			if (!l_tpWeapon)
+//				return	((l_tObjectAction.m_bCompleted = true) == false);
 			if (inventory().ActiveItem()) {
 				if (l_tpWeapon->GetAmmoElapsed()) {
-					if (l_tpWeapon->GetAmmoMagSize() > 1)
-						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
-					else
-						l_tpWeaponMagazined->SetQueueSize(1);
-					inventory().Action(kWPN_FUNC,	CMD_START);
+//					if (l_tpWeapon->GetAmmoMagSize() > 1)
+//						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
+//					else
+//						l_tpWeaponMagazined->SetQueueSize(1);
+//					inventory().Action(kWPN_FIRE,	CMD_START);
 				}
 				else {
-					inventory().Action(kWPN_FUNC,	CMD_STOP);
-					if (l_tpWeapon->GetAmmoCurrent())
-						inventory().Action(kWPN_RELOAD, CMD_START);
+//					inventory().Action(kWPN_FIRE,	CMD_STOP);
+					if (l_tpWeapon->GetAmmoCurrent()) {
+//						CObjectHandler::set_dest_state	(eObjectActionFire1,l_tObjectAction.m_tpObject);
+//						inventory().Action(kWPN_RELOAD, CMD_START);
+					}
 					else
 						l_tObjectAction.m_bCompleted = true;
 				}
@@ -220,49 +234,54 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		case eObjectActionReload1 : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
-			if (inventory().ActiveItem()) {
-				inventory().Action(kWPN_FIRE,	CMD_STOP);
-				if (CWeapon::eReload != l_tpWeapon->STATE)
-					inventory().Action(kWPN_RELOAD,	CMD_START);
+			CObjectHandler::set_dest_state	(eObjectActionReload1,l_tpInventoryItem);
+			if (inventory().ActiveItem()->ID() == l_tObjectAction.m_tpObject->ID()) {
+//				inventory().Action(kWPN_FIRE,	CMD_STOP);
+				if (CWeapon::eReload != l_tpWeapon->STATE) {
+//					inventory().Action(kWPN_RELOAD,	CMD_START);
+				}
 				else
 					l_tObjectAction.m_bCompleted = true;
 			}
 			else
 				LuaOut(Lua::eLuaMessageTypeError,"cannot reload active item because it is not selected!");
+
+//			if (inventory().ActiveItem()) {
+//				inventory().Action(kWPN_FIRE,	CMD_STOP);
+//				if (CWeapon::eReload != l_tpWeapon->STATE)
+//					inventory().Action(kWPN_RELOAD,	CMD_START);
+//				else
+//					l_tObjectAction.m_bCompleted = true;
+//			}
+//			else
+//				LuaOut(Lua::eLuaMessageTypeError,"cannot reload active item because it is not selected!");
 			break;
 		}
 		case eObjectActionActivate : {
-			CInventoryItem	*l_tpInventoryItem = dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
-			if (l_tpInventoryItem) {
-				CTorch			*torch = dynamic_cast<CTorch*>(l_tObjectAction.m_tpObject);
-				if (torch) {
-					torch->Switch(true);
-					break;
-				}
-				CObjectHandler::set_dest_state(eObjectActionIdle,l_tpInventoryItem);
+			CTorch			*torch = dynamic_cast<CTorch*>(l_tObjectAction.m_tpObject);
+			if (torch) {
+				torch->Switch(true);
+				break;
+			}
+			CObjectHandler::set_dest_state(eObjectActionIdle,l_tpInventoryItem);
 //				inventory().Slot(l_tpInventoryItem);
 //				inventory().Activate(l_tpInventoryItem->GetSlot());
-				if (l_tpWeapon && (CWeapon::eShowing != l_tpWeapon->STATE))
-					l_tObjectAction.m_bCompleted = true;
-			}
-			else
-				LuaOut(Lua::eLuaMessageTypeError,"cannot activate non-inventory object!");
+//			if (inventory().ActiveItem() && (inventory().ActiveItem()->ID() == l_tpInventoryItem->ID()))
+//				if (l_tpWeapon && (CWeapon::eIdle == l_tpWeapon->STATE))
+//				l_tObjectAction.m_bCompleted = true;
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::current_state_id() == CObjectHandler::dest_state_id())) == false);
+
 			break;
 		}
 		case eObjectActionDeactivate : {
-			CInventoryItem	*l_tpInventoryItem = dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
-			if (l_tpInventoryItem) {
-				CTorch			*torch = dynamic_cast<CTorch*>(l_tObjectAction.m_tpObject);
-				if (torch) {
-					torch->Switch(false);
-					break;
-				}
-//				inventory().Activate(u32(-1));
-				CObjectHandler::set_dest_state(eObjectActionNoItems);
-				l_tObjectAction.m_bCompleted = true;
+			CTorch			*torch = dynamic_cast<CTorch*>(l_tObjectAction.m_tpObject);
+			if (torch) {
+				torch->Switch(false);
+				break;
 			}
-			else
-				LuaOut(Lua::eLuaMessageTypeError,"cannot activate non-inventory object!");
+//				inventory().Activate(u32(-1));
+			CObjectHandler::set_dest_state(eObjectActionNoItems);
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::current_state_id() == CObjectHandler::dest_state_id())) == false);
 			break;
 		}
 		case eObjectActionUse : {

@@ -21,6 +21,7 @@ public:
 
 	virtual	void		initialize			()
 	{
+		inherited::initialize();
 		VERIFY			(m_inventory_item);
 		m_object->inventory().Slot(m_inventory_item);
 		m_object->inventory().Activate(m_inventory_item->GetSlot());

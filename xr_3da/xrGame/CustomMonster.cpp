@@ -645,7 +645,7 @@ void CCustomMonster::OnRender()
 	
 	for (u32 i=0; i < nodes.size(); i++) {
 		float	cover	= ai().level_graph().vertex_cover(nodes[i]);
-		Fvector pos		= ai().level_graph().vertex_position(nodes[i]);
+//		Fvector pos		= ai().level_graph().vertex_position(nodes[i]);
 		u32 col = D3DCOLOR_XRGB(0,0,u32(cover/4.0*255));
 
 		CLevelGraph::SContour contour;

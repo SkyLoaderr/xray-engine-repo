@@ -15,17 +15,17 @@ class CObjectStateEmpty : public CObjectStateBase {
 public:
 							CObjectStateEmpty	(CInventoryItem *inventory_item, const u32 weapon_state, bool equality = false) :
 								CObjectStateBase(inventory_item,weapon_state,equality)
-	  {
-	  }
+	{
+	}
 
-	  virtual	bool		completed			() const
-	  {
-			CWeapon			*weapon = dynamic_cast<CWeapon*>(m_inventory_item);
-			if (!weapon)
-				return		(inherited::completed());
+	virtual	bool		completed			() const
+	{
+		CWeapon			*weapon = dynamic_cast<CWeapon*>(m_inventory_item);
+		if (!weapon)
+			return		(inherited::completed());
 
-			return					(
-				((weapon->STATE != m_weapon_state) && !m_equality)
-			);
-	  }
+		return					(
+			((weapon->STATE != m_weapon_state) && !m_equality)
+		);
+	}
 };

@@ -20,22 +20,24 @@ public:
 
 	virtual	void		initialize			()
 	{
-//		CWeapon			*weapon = dynamic_cast<CWeapon*>(m_inventory_item);
-//		if (weapon && (weapon->STATE != CWeapon::eFire) && !weapon->IsWorking())
-			m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+		inherited::initialize();
+		m_object->inventory().Action(kWPN_FIRE,	CMD_START);
 	}
 
 	virtual	void		execute			()
 	{
-//		CWeapon			*weapon = dynamic_cast<CWeapon*>(m_inventory_item);
-//		if (weapon && (weapon->STATE != CWeapon::eFire) && !weapon->IsWorking())
-			m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+		inherited::execute();
+		m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+	}
+
+	virtual	bool		completed			() const
+	{
+		return				(true);
 	}
 
 	virtual	void		finalize			()
 	{
-//		CWeapon			*weapon = dynamic_cast<CWeapon*>(m_inventory_item);
-//		if (weapon && (weapon->STATE != CWeapon::eFire) && !weapon->IsWorking())
 		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
+		inherited::finalize();
 	}
 };

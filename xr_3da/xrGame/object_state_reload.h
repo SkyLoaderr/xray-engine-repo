@@ -15,28 +15,30 @@ class CObjectStateReload : public CObjectStateBase {
 public:
 							CObjectStateReload	(CInventoryItem *inventory_item, const u32 weapon_state, bool equality = false) :
 								CObjectStateBase(inventory_item,weapon_state,equality)
-	  {
-	  }
+	{
+	}
 
-	  virtual	void		initialize			()
-	  {
-		  m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
-		  m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
-	  }
+	virtual	void		initialize			()
+	{
+		inherited::initialize();
+		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
+		m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
+	}
 
-	  virtual	void		execute			()
-	  {
-		  m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
-	  }
+	virtual	void		execute			()
+	{
+		inherited::execute();
+		m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
+	}
 
-	  virtual	bool		completed			() const
-	  {
-		  CWeapon			*weapon = dynamic_cast<CWeapon*>(m_inventory_item);
-		  if (!weapon)
-			  return		(inherited::completed());
+	virtual	bool		completed			() const
+	{
+		CWeapon			*weapon = dynamic_cast<CWeapon*>(m_inventory_item);
+		if (!weapon)
+			return		(inherited::completed());
 
-		  return					(
-			  ((weapon->STATE != m_weapon_state) && !m_equality)
-			  );
-	  }
+		return					(
+			((weapon->STATE != m_weapon_state) && !m_equality)
+		);
+	}
 };

@@ -407,6 +407,31 @@ bool CDetailPathManager::compute_path(
 	return					(true);
 }
 
+void CDetailPathManager::validate_vertex_position(STrajectoryPoint &point) const
+{
+	if (ai().level_graph().inside(point.vertex_id,point.position))
+		return;
+
+//	point.vertex_id			= ai().level_graph().vertex(point.vertex_id,ai().level_graph().v3d(point.position),false);
+//	if (ai().level_graph().inside(point.vertex_id,point.position)) {
+//		Msg					("%6d : %d - [%f][%f][%f]",Level().timeServer(),point.vertex_id,VPUSH(ai().level_graph().v3d(point.position)));
+//		return;
+//	}
+
+	CLevelGraph::SContour	contour;
+	Fvector					position, center;
+	ai().level_graph().contour(contour,point.vertex_id);
+	ai().level_graph().nearest(position,ai().level_graph().v3d(point.position),contour);
+	center.add				(contour.v1,contour.v3);
+	center.mul				(.5f);
+	center.sub				(position);
+	center.normalize		();
+	center.mul				(EPS_L);
+	position.add			(center);
+	point.position			= ai().level_graph().v2d(position);
+	VERIFY					(ai().level_graph().inside(point.vertex_id,point.position));
+}
+
 bool CDetailPathManager::init_build(
 	const xr_vector<u32>	&level_path, 
 	u32						intermediate_index,
@@ -426,12 +451,16 @@ bool CDetailPathManager::init_build(
 	start.direction						= ai().level_graph().v2d(m_start_direction);
 	start.vertex_id						= level_path.front();
 	
+	validate_vertex_position			(start);
+	
 	dest.position						= ai().level_graph().v2d(m_dest_position);
 	if (m_use_dest_orientation)
 		dest.direction					= ai().level_graph().v2d(m_dest_direction);
 	else
 		dest.direction.set				(0.f,1.f);
 	dest.vertex_id						= level_path.back();
+	
+	validate_vertex_position			(dest);
 
 	if (start.direction.square_magnitude() < EPS_L)
 		start.direction.set				(0.f,1.f);
@@ -489,7 +518,7 @@ bool CDetailPathManager::fill_key_points(
 )
 {
 	STravelPoint						start_point;
-	start_point.vertex_id				= level_path.front();
+	start_point.vertex_id				= start.vertex_id;
 	start_point.position				= start.position;
 	m_key_points.clear					();
 
@@ -537,6 +566,9 @@ void CDetailPathManager::build_path_via_key_points(
 	xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
 	for ( ; I != E; ++I) {
 		// setting up destination
+		if (!ai().level_graph().inside((*I).vertex_id,(*I).position)) {
+			VERIFY					(false);
+		}
 		if ((I + 1) != E) {
 			(STravelPoint&)d = *I;
 			d.direction.sub				((I + 1)->position,d.position);

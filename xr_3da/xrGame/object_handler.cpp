@@ -15,6 +15,7 @@
 #include "object_state_reload.h"
 #include "object_state_empty.h"
 #include "object_state_switch.h"
+#include "object_state_idle.h"
 
 #include "entity_alive.h"
 #include "inventoryowner.h"
@@ -416,18 +417,23 @@ void CObjectHandler::update(u32 time_delta)
 //			if (tpWeaponMagazined->IsAmmoAvailable())
 //				stalker->inventory().Action(kWPN_RELOAD,	CMD_START);
 	set_current_state	(object_state());
+	if (current_state_state_id() == eObjectActionNoItems) {
+		__asm int 3
+	}
 	inherited::update	(time_delta);
 
 #ifdef DEBUG
-//	if (!path().empty()) {
-//		Msg				("Path : ");
-//		xr_vector<u32>::const_iterator	I = path().begin();
-//		xr_vector<u32>::const_iterator	E = path().end();
-//		for ( ; I != E; ++I)
-//			Msg			("%s",to_string(*I));
-//	}
-//	else
-//		Msg			("Path : %s",to_string(current_state_id()));
+	if (strcmp("stalker3",m_object->cName()))
+		return;
+	if (!path().empty()) {
+		Msg				("Path : ");
+		xr_vector<u32>::const_iterator	I = path().begin();
+		xr_vector<u32>::const_iterator	E = path().end();
+		for ( ; I != E; ++I)
+			Msg			("%s",to_string(*I));
+	}
+	else
+		Msg			("Path : %s",to_string(current_state_id()));
 #endif
 }
 
@@ -446,6 +452,9 @@ u32 CObjectHandler::weapon_state(const CWeapon *weapon) const
 			if (weapon_magazined->IsMisfire() && (current_state_state_id() != eObjectActionReload1))
 				return(CWeapon::eMisfire);
 			
+			if (current_state_state_id() == eObjectActionHide) {
+				__asm int 3;
+			}
 			switch (current_state_state_id()) {
 				case eObjectActionIdle		: return(CWeapon::eIdle		);
 				case eObjectActionFire1		: return(CWeapon::eFire		);
@@ -468,6 +477,9 @@ u32 CObjectHandler::object_state() const
 	CWeapon				*weapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
 	if (weapon) {
 		if (weapon->ID() != current_object_state_id()) {
+			if (weapon_state(weapon) == CWeapon::eHiding) {
+				__asm int 3;
+			}
 			switch (weapon_state(weapon)) {
 				case CWeapon::eIdle		: return(uid(eObjectActionIdle,weapon->ID()));
 				case CWeapon::eFire		: return(uid(eObjectActionFire1,weapon->ID()));
@@ -625,15 +637,15 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionIdle,id),		0);
 		add_state		(xr_new<CObjectStateShow>(inventory_item,CWeapon::eShowing),	uid(eObjectActionShow,id),		0);
 		add_state		(xr_new<CObjectStateHide>(inventory_item,CWeapon::eHiding),		uid(eObjectActionHide,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionStrap,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionAim1,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionAim2,id),		0);
+		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionStrap,id),		0);
+		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionAim1,id),		0);
+		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionAim2,id),		0);
 		add_state		(xr_new<CObjectStateReload>(inventory_item,CWeapon::eReload),	uid(eObjectActionReload1,id),	0);
 		add_state		(xr_new<CObjectStateReload>(inventory_item,CWeapon::eReload),	uid(eObjectActionReload2,id),	0);
 		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,CWeapon::eFire),uid(eObjectActionFire1,id),		0);
 		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eFire2),		uid(eObjectActionFire2,id),		0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionSwitch1,id),	0);
-		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionSwitch2,id),	0);
+		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionSwitch1,id),	0);
+		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionSwitch2,id),	0);
 		add_state		(xr_new<CObjectStateEmpty>(inventory_item,CWeapon::eFire),		uid(eObjectActionMisfire1,id),	0);
 		add_state		(xr_new<CObjectStateEmpty>(inventory_item,CWeapon::eFire),		uid(eObjectActionEmpty1,id),	0);
 
@@ -670,7 +682,7 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		state(uid(eObjectActionAim2,id)).set_inertia_time(1000);
 	}
 	else if (missile) {
-		add_state		(xr_new<CObjectStateBase>(inventory_item,MS_IDLE,true),		uid(eObjectActionIdle,id),		0);
+		add_state		(xr_new<CObjectStateIdle>(inventory_item,MS_IDLE,true),		uid(eObjectActionIdle,id),		0);
 //		add_state		(xr_new<CObjectStateShow>(inventory_item,MS_SHOWING),		uid(eObjectActionShow,id),		0);
 		add_state		(xr_new<CObjectStateShow>(inventory_item,MS_IDLE),		uid(eObjectActionShow,id),		0);
 		add_state		(xr_new<CObjectStateHide>(inventory_item,MS_HIDING),		uid(eObjectActionHide,id),		0);

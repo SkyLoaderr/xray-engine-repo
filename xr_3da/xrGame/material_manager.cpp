@@ -53,6 +53,8 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 	R_ASSERT3				(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterialByIdx(m_last_material_id)->m_Name);
 	CObject					*object = dynamic_cast<CObject*>(this);
 	VERIFY					(object);
+	Fvector					position = object->Position();
+	position.y				+= .10f;
 	// ref_sound step
 	if (!standing) {
 		if (m_time_to_step < 0) {
@@ -60,18 +62,18 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 			m_time_to_step							= step_time;
 			if (mtl_pair->StepSounds.size() >= 2){
 				m_step_sound[m_step_id]				= mtl_pair->StepSounds[m_step_id];
-				m_step_sound[m_step_id].play_at_pos	(object,object->Position());
+				m_step_sound[m_step_id].play_at_pos	(object,position);
 			}
 		}
 		m_time_to_step								-= time_delta;
 	}
 
 	if (m_step_sound[0].feedback)		{
-		m_step_sound[0].set_position	(object->Position());
+		m_step_sound[0].set_position	(position);
 		m_step_sound[0].set_volume		(volume);
 	}
 	if (m_step_sound[1].feedback)		{
-		m_step_sound[1].set_position	(object->Position());
+		m_step_sound[1].set_position	(position);
 		m_step_sound[1].set_volume		(volume);
 	}
 }

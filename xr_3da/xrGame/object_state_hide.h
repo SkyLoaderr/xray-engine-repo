@@ -20,6 +20,7 @@ public:
 
 	virtual	void		initialize			()
 	{
+		inherited::initialize();
 		VERIFY			(m_inventory_item);
 		m_object->inventory().Activate(NO_ACTIVE_SLOT);
 	}

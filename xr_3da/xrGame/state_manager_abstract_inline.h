@@ -108,6 +108,7 @@ TEMPLATE_SPECIALIZATION
 IC	T	&CAbstractStateManager::dest_state	()
 {
 	VERIFY					(graph().vertex(dest_vertex_id()));
+	Msg						("%6d : %d",Level().timeServer(),dest_vertex_id() >> 16);
 	return					(*graph().vertex(dest_vertex_id())->data().m_state);
 }
 

@@ -244,6 +244,7 @@ void CSightManager::update		(MonsterSpace::ELookType tLookType, const Fvector *t
 		}
 		case eLookTypeFirePoint : {
 			SetFirePointLookAngles(*tPointToLook,stalker->m_head.target.yaw,stalker->m_head.target.pitch);
+			stalker->m_head.target.pitch = 0;
 			break;
 		}
 		case eLookTypeLookOver : {
