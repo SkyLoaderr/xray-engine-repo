@@ -126,6 +126,8 @@ void CAI_Rat::Load(LPCSTR section)
 
 	m_dwActionRefreshRate	 		= pSettings->ReadINT   (section,"ActionRefreshRate");
 
+	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
+
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;
 }
