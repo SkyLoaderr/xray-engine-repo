@@ -91,7 +91,6 @@ function main()
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				sound	("scripts\\alarm\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				look	(look.fire_point, stalker2),
 				anim	(anim.danger),
 				cond	(cond.sound_end, 10000)
 				)
