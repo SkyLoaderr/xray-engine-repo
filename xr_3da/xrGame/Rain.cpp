@@ -238,7 +238,6 @@ void	CEffect_Rain::Render	()
 	
 	// Perform update
 	DWORD		vOffset;
-	CHeightMap&	HM			= Level().HeightMap;
 	FVF::LIT	*verts		= (FVF::LIT	*) VS->Lock(desired_items*4,vOffset);
 	FVF::LIT	*start		= verts;
 	float		dt			= Device.fTimeDelta;
@@ -302,7 +301,7 @@ void	CEffect_Rain::Render	()
 		Device.Shader.set_Shader		(P->visual->hShader);
 		
 		DWORD		offset;
-		FVF::TL*	verts	= VSP->Lock	(particles_cache*4,offset);
+		FVF::TL*	verts	= (FVF::TL*) VSP->Lock	(particles_cache*4,offset);
 		int			pcount  = 0;
 		while (P)	{
 			Particle*	next	= P->next;
@@ -322,7 +321,7 @@ void	CEffect_Rain::Render	()
 					// flush
 					VSP->Unlock	(pcount*4);
 					Device.Primitive.Draw	(VSP,pcount*4,pcount*2,offset,Device.Streams_QuadIB);
-					verts	= VSP->Lock	(particles_cache*4,offset);
+					verts	= (FVF::TL*) VSP->Lock	(particles_cache*4,offset);
 					pcount	= 0;
 				}
 				int		count_real_verts	= P->visual->RenderTO(verts);
