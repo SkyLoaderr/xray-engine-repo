@@ -1,9 +1,38 @@
 #ifndef MATH_UTILS_H
 #define MATH_UTILS_H
 
+IC  float* cast_fp(Fvector& fv)
+{
+	return (float*) (&fv);
+}
+
+IC const float* cast_fp(const Fvector& fv)
+{
+	return (const float*) (&fv);
+}
+IC Fvector &cast_fv(float* fp)
+{
+	return *((Fvector*)fp);
+}
+
+IC const Fvector &cast_fv(const float* fp)
+{
+	return *((const Fvector*)fp);
+}
+
+IC	float	dXZDot(const float* v0,const float* v1)
+{
+	return v0[0]*v1[0]+v0[2]*v1[2];
+}
+
 IC	void	dVectorSet(dReal* vd,const dReal* vs)
 {
 	vd[0]=vs[0];vd[1]=vs[1];vd[2]=vs[2];
+}
+
+IC	void	dVectorSetInvert(dReal* vd,const dReal* vs)
+{
+	vd[0]=-vs[0];vd[1]=-vs[1];vd[2]=-vs[2];
 }
 
 IC	void dVectorSetZero(dReal* vd)
@@ -31,11 +60,17 @@ IC	void	dVectorAdd(dReal* v,const dReal* av)
 {
 	v[0]+=av[0];	v[1]+=av[1];	v[2]+=av[2];
 }
-
+IC	void	dVectorAddMul(dReal* v,const dReal* ad,float mul)
+{
+	v[0]+=ad[0]*mul;
+	v[1]+=ad[1]*mul;
+	v[2]+=ad[2]*mul;
+}
 IC	void	dVectorAdd(dReal* v,const dReal* av0,const dReal* av1)
 {
 	v[0]=av0[0]+av1[0];	v[1]=av0[1]+av1[1]; v[2]=av0[2]+av1[2];
 }
+
 IC	void	dVectorSub(dReal* v,const dReal* av)
 {
 	v[0]-=av[0];	v[1]-=av[1];	v[2]-=av[2];

@@ -167,7 +167,8 @@ private:
 	bool		ValidateWalkOn						()			;
 	u16			RetriveContactBone					()			;
 	void		SafeAndLimitVelocity				()			;
-
+	void		UpdateStaticDamage					(dContact* c,SGameMtl* tri_material,bool bo1);
+	void		UpdateDynamicDamage					(dContact* c,SGameMtl* obj_material,dBodyID b,bool bo1);
 public:	
 #ifdef DEBUG
 	virtual		void		OnRender							()					;

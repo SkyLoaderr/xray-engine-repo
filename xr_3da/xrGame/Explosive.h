@@ -10,6 +10,7 @@
 #include "../feel_touch.h"
 #include "inventory_item.h"
 #include "ai_sounds.h"
+#include "script_export_space.h"
 
 class IRender_Light;
 
@@ -43,6 +44,7 @@ public:
 	virtual void 				GenExplodeEvent (const Fvector& pos, const Fvector& normal);
 	virtual void 				FindNormal(Fvector& normal);
 	virtual CGameObject			*cast_game_object()=0;
+	virtual CExplosive*			cast_explosive(){return this;}
 protected:
 	//ID персонажа который иницировал действие
 	u16 m_iCurrentParentID;
@@ -110,4 +112,9 @@ protected:
 		float amplitude;	
 		float period_number;
 	} effector;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CExplosive)
+#undef script_type_list
+#define script_type_list save_type_list(CExplosive)

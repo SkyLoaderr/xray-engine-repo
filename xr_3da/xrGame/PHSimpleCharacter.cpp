@@ -17,6 +17,7 @@
 #include "gameobject.h"
 #include "physicsshellholder.h"
 #include "../skeletoncustom.h"
+#include "PHSimpleCharacterInline.h"
 
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
@@ -40,22 +41,14 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 
 	m_hat=NULL;
 	m_hat_transform=NULL;
-
 	m_acceleration.set(0,0,0);
 	b_external_impulse=false;
 	m_phys_ref_object=NULL;
 	p_lastMaterial=&lastMaterial;
 	b_on_object=false;
-
 	m_friction_factor=1.f;
-
-	m_control_force[0]=0.f;
-	m_control_force[1]=0.f;
-	m_control_force[2]=0.f;
-
-	m_depart_position[0]=0.f;
-	m_depart_position[1]=0.f;
-	m_depart_position[2]=0.f;
+	dVectorSetZero(m_control_force);
+	dVectorSetZero(m_depart_position);
 	is_contact=false;
 	was_contact=false;
 	is_control=false;
@@ -416,7 +409,6 @@ void CPHSimpleCharacter::PhTune(dReal step){
 
 	if(m_elevator_state.ClimbingState()) 
 	{
-		// b_clamb_jump=true;
 		b_side_contact=false;
 		m_friction_factor=1.f;
 		if(b_stop_control) 
@@ -639,14 +631,8 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 		//CDB::TRI* T = T_array + Res->id;
 		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
 		if(__aabb_tri(Point((float*)&center_forbid),Point((float*)&AABB_forbid),vertices)){
-			side0[0]=Res->verts[1].x-Res->verts[0].x;
-			side0[1]=Res->verts[1].y-Res->verts[0].y;
-			side0[2]=Res->verts[1].z-Res->verts[0].z;
-			
-			side1[0]=Res->verts[2].x-Res->verts[1].x;
-			side1[1]=Res->verts[2].y-Res->verts[1].y;
-			side1[2]=Res->verts[2].z-Res->verts[1].z;
-
+			cast_fv(side0).sub(Res->verts[1],Res->verts[0]);
+			cast_fv(side1).sub(Res->verts[2],Res->verts[1]);
 			dCROSS(norm,=,side0,side1);//optimize it !!!
 			dNormalize3(norm);
 			//if(b_leader)dVectorSet((dReal*)&leader_norm,norm);
@@ -667,14 +653,8 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 		//CDB::TRI* T = T_array + Res->id;
 		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
 		if(__aabb_tri(Point((float*)&center),Point((float*)&AABB),vertices)){
-			side0[0]=Res->verts[1].x-Res->verts[0].x;
-			side0[1]=Res->verts[1].y-Res->verts[0].y;
-			side0[2]=Res->verts[1].z-Res->verts[0].z;
-
-			side1[0]=Res->verts[2].x-Res->verts[1].x;
-			side1[1]=Res->verts[2].y-Res->verts[1].y;
-			side1[2]=Res->verts[2].z-Res->verts[1].z;
-
+			cast_fv(side0).sub(Res->verts[1],Res->verts[0]);
+			cast_fv(side1).sub(Res->verts[2],Res->verts[1]);
 			dCROSS(norm,=,side0,side1);//optimize it !!!
 			dNormalize3(norm);
 			if(norm[1]>CHWON_ANG_COS) return 
@@ -699,17 +679,8 @@ void CPHSimpleCharacter::SetCamDir(const Fvector& cam_dir)
 static const float pull_force=25.f;
 void CPHSimpleCharacter::ApplyAcceleration() 
 {
-	//	if (Level().iGetKeyState(DIK_RSHIFT))
-	//	{
-	//	__asm int 3
-	//	int i;
-	//	i=5;
-	//	}
-	m_control_force[0]=0.f;
-	m_control_force[1]=0.f;
-	m_control_force[2]=0.f;
-	
 
+	dVectorSetZero(m_control_force);
 	//if(m_max_velocity<EPS) return;
 	dMass m;
 	dBodyGetMass(m_body,&m);
@@ -719,9 +690,8 @@ void CPHSimpleCharacter::ApplyAcceleration()
 
 	if(b_lose_control) 
 	{
-		m_control_force[0]=m_acceleration.x*m.mass*m_air_control_factor;
-		m_control_force[1]=m_acceleration.y*m.mass*m_air_control_factor;
-		m_control_force[2]=m_acceleration.z*m.mass*m_air_control_factor;
+		dVectorSet(m_control_force,cast_fp(m_acceleration));
+		dVectorMul(m_control_force,m.mass*m_air_control_factor);
 		return;
 	}
 
@@ -733,9 +703,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 		if(m_elevator_state.ClimbingState())
 		{
 			m_elevator_state.GetControlDir(*(Fvector*)m_control_force);
-			m_control_force[0]*=m_friction_factor*m.mass*pull_force*2.f;
-			m_control_force[1]*=m_friction_factor*m.mass*pull_force*2.f;
-			m_control_force[2]*=m_friction_factor*m.mass*pull_force*2.f;
+			dVectorMul(m_control_force,m_friction_factor*m.mass*pull_force*2.f);
 			return;
 		}
 	}
@@ -749,55 +717,37 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	if(b_clamb_jump&&b_valide_wall_contact){
 		dCROSS(fvdir,=,sidedir,m_wall_contact_normal);
 		dNormalize3(fvdir);
-		m_control_force[0]+=fvdir[0]*m.mass*pull_force;
-		m_control_force[1]+=fvdir[1]*m.mass*pull_force;
-		m_control_force[2]+=fvdir[2]*m.mass*pull_force;
+		dVectorAddMul(m_control_force,fvdir,m.mass*pull_force);
 	}
 	else{
 		 if(b_valide_ground_contact&&(m_ground_contact_normal[1]>M_SQRT1_2)){//M_SQRT1_2//0.8660f
 		 dCROSS(fvdir,=,sidedir,m_ground_contact_normal);
 		 dNormalize3(fvdir);
-		 m_control_force[0]+=fvdir[0]*m.mass*pull_force;
-		 m_control_force[1]+=fvdir[1]*m.mass*pull_force;
-		 m_control_force[2]+=fvdir[2]*m.mass*pull_force;
-
+		 dVectorAddMul(m_control_force,fvdir,m.mass*pull_force);
 		 }
 		else{
-			//fvdir[0]=0.f;fvdir[1]=0.f;fvdir[2]=0.f;//
 			dVectorSet(fvdir,accel);
 			dNormalize3(fvdir);
-			m_control_force[0]+=fvdir[0]*m.mass*pull_force*1.5f;
-			m_control_force[1]+=fvdir[1]*m.mass*pull_force*1.5f;
-			m_control_force[2]+=fvdir[2]*m.mass*pull_force*1.5f;
+			dVectorAddMul(m_control_force,fvdir,m.mass*pull_force*1.5f);
 		}
 
 	}
-
 	if(!m_elevator_state.ClimbingState()&&b_clamb_jump){//&&m_wall_contact_normal[1]<M_SQRT1_2
-		m_control_force[0]*=4.f;
-		m_control_force[1]*=4.f;//*8.f
-		m_control_force[2]*=4.f;
+		dVectorMul(m_control_force,4.f);
 		m_control_force[1]=dFabs(m_control_force[1]);
 		m_control_force[0]=m_control_force[0]*accel[0]>0.f ? m_control_force[0] : -m_control_force[0];
 		m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_control_force[2];
 	}
-
-	m_control_force[0]*=m_friction_factor;
-	m_control_force[1]*=m_friction_factor;
-	m_control_force[2]*=m_friction_factor;
-
+	dVectorMul(m_control_force,m_friction_factor);
 }
 
 
 void	CPHSimpleCharacter::IPosition(Fvector& pos) {
 
 	if(!b_exist){
-		pos.set(m_safe_position[0],
-			m_safe_position[1],
-			m_safe_position[2]);
+		pos.set(cast_fv(m_safe_position));
 		return;
 	}
-
 	m_body_interpolation.InterpolatePosition(pos);
 	pos.y-=m_radius;
 	return;
@@ -1032,6 +982,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 {
 	Fvector dir;
 	dir.set(m_damege_contact.geom.normal[0]*m_dmc_signum,m_damege_contact.geom.normal[1]*m_dmc_signum,m_damege_contact.geom.normal[2]*m_dmc_signum);
+
 	collide::ray_defs Q(*(((Fvector*)(m_damege_contact.geom.pos))), dir, m_radius, CDB::OPT_ONLYNEAREST,collide::rqtBoth);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	u16 contact_bone=0;
 	CObject* object=smart_cast<CObject*>(m_phys_ref_object);
@@ -1087,7 +1038,11 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 /////////////////////////////////////////////////////////////////
 void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * material_1,SGameMtl * material_2){
 
-	bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g1==m_hat_transform;
+	const dReal* normal=c->geom.normal;
+	const dReal* pos=c->geom.pos;
+	const dGeomID g1=c->geom.g1;
+	const dGeomID g2=c->geom.g2;
+	bool bo1=(g1==m_wheel)||g1==m_cap_transform||g1==m_shell_transform||g1==m_hat_transform;
 
 	//SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
 	SGameMtl* tri_material=0;
@@ -1104,34 +1059,30 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		c->surface.soft_erp=world_erp;
 	}
 	
-	if(tri_material->Flags.is(SGameMtl::flPassable))return;
+	if(tri_material->Flags.is(SGameMtl::flPassable))
+	{
+		UpdateStaticDamage(c,tri_material,bo1);
+		return;
+	}
 
 	dReal spring_rate=def_spring_rate;
 	dReal dumping_rate=def_dumping_rate;
-	bool object=(dGeomGetBody(c->geom.g1)&&dGeomGetBody(c->geom.g2));
+	bool object=(dGeomGetBody(g1)&&dGeomGetBody(g2));
 	b_on_object=b_on_object||object;
 	*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
 
-	if((c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform))
+	if((g1==m_cap_transform||g2==m_cap_transform||g1==m_shell_transform||g2==m_shell_transform))
 	{
-		
-		//Fvector2 f={m_control_force[0],m_control_force[2]},cn={c->geom.normal[0],c->geom.normal[2]};
-		//f.normalize(),cn.normalize();
-		//float product=f.x*cn.x+f.y*cn.y;
-		//if(is_control&& (bo1	?	product<-M_SQRT1_2	:	product>M_SQRT1_2))
 		b_side_contact=true;
-
-		//c->surface.soft_cfm*=spring_rate;//0.01f;
-		//c->surface.soft_erp*=dumping_rate;//10.f;
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
 		c->surface.mu		=0.00f;
 	}
 	
 	if(bo1)
 	{
-		if(c->geom.g1==m_wheel)
+		if(g1==m_wheel)
 		{
-			if(c->geom.normal[1]<0.f)
+			if(normal[1]<0.f)
 			{
 				do_collide=false;
 				return;
@@ -1140,9 +1091,9 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	}
 	else
 	{
-		if(c->geom.g2==m_wheel)
+		if(g2==m_wheel)
 		{
-			if(c->geom.normal[1]>0.f)
+			if(normal[1]>0.f)
 			{
 				do_collide=false;
 				return;
@@ -1154,90 +1105,27 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	
 	if(object){
 		spring_rate*=10.f;
-		const dReal* vel=dBodyGetLinearVel(m_body);
-		dReal c_vel;
 		dBodyID b;
-
 		SGameMtl* obj_material=NULL;
 		if(bo1)
 		{
 			b=dGeomGetBody(c->geom.g2);
-			//obj_material=GMLib.GetMaterialByIdx(retrieveGeomUserData(c->geom.g2)->material);
 			obj_material=material_2;
 		}
 		else
 		{
 			b=dGeomGetBody(c->geom.g1);
-			//obj_material=GMLib.GetMaterialByIdx(retrieveGeomUserData(c->geom.g1)->material);
 			obj_material=material_1;
 		}
-
-
-		dMass m;
-		dBodyGetMass(b,&m);
-		const dReal* obj_vel=dBodyGetLinearVel(b);
-		dVector3 obj_vel_effective={obj_vel[0]*object_demage_factor,obj_vel[1]*object_demage_factor,obj_vel[2]*object_demage_factor};
-		dVector3 obj_impuls={obj_vel_effective[0]*m.mass,obj_vel_effective[1]*m.mass,obj_vel_effective[2]*m.mass};
-		dVector3 impuls={vel[0]*m_mass,vel[1]*m_mass,vel[2]*m_mass};
-		dVector3 c_mas_impuls={obj_impuls[0]+impuls[0],obj_impuls[1]+impuls[1],obj_impuls[2]+impuls[2]};
-		dReal cmass=m_mass+m.mass;
-		dVector3 c_mass_vel={c_mas_impuls[0]/cmass,c_mas_impuls[1]/cmass,c_mas_impuls[2]/cmass};
-		//dVector3 rel_impuls={obj_impuls[0]-impuls[0],obj_impuls[1]-impuls[1],obj_impuls[2]-impuls[2]};
-		//c_vel=dFabs(dDOT(obj_vel,c->geom.normal)*_sqrt(m.mass/m_mass));
-		dReal vel_prg=dDOT(vel,c->geom.normal);
-		dReal obj_vel_prg=dDOT(obj_vel_effective,c->geom.normal);
-		dReal c_mass_vel_prg=dDOT(c_mass_vel,c->geom.normal);
-
-		//dReal kin_energy_start=dDOT(vel,vel)*m_mass/2.f+dDOT(obj_vel,obj_vel)*m.mass/2.f*object_demage_factor;
-		//dReal kin_energy_end=dDOT(c_mass_vel,c_mass_vel)*cmass/2.f;
-
-		dReal kin_energy_start=vel_prg*vel_prg*m_mass/2.f+obj_vel_prg*obj_vel_prg*m.mass/2.f;
-		dReal kin_energy_end=c_mass_vel_prg*c_mass_vel_prg*cmass/2.f;
-
-		dReal accepted_energy=(kin_energy_start-kin_energy_end);
-		if(accepted_energy>0.f)
-				c_vel=dSqrt(accepted_energy/m_mass*2.f)*obj_material->fBounceDamageFactor;
-		else c_vel=0.f;
-		//	}
-		//	else
-		//	{
-		//		dBodyID b=dGeomGetBody(c->geom.g1);
-		//		dMass m;
-		//		dBodyGetMass(b,&m);
-		//		const dReal* obj_vel=dBodyGetLinearVel(b);
-		//	dVector3 rel_vel={obj_vel[0]-vel[0],obj_vel[1]-vel[1],obj_vel[2]-vel[2]};
-		//		c_vel=dDOT(obj_vel,c->geom.normal)/m_mass*m.mass;
-		//	}
-		if(c_vel>m_contact_velocity) 
-		{
-			m_contact_velocity=c_vel;
-			m_dmc_signum=bo1 ? 1.f : -1.f;
-			m_dmc_type=ctStatic;
-			m_damege_contact=*c;
-		}
+		UpdateDynamicDamage(c,obj_material,b,bo1);
 	}
 
-
-
-
-
-	//.	if(material->Flags.is(SGameMtl::flWalkOn))
-	//.		b_clamb_jump=true;
-
-
-	//bool bo1=(c->geom.g1==m_wheel_transform);
-	//if(!(bo1 || (c->geom.g2==m_wheel_transform))) 
-	//	return;
 	b_any_contacts=true;
 	is_contact=true;
 
-	//if(b_at_wall&&!bClimable) return;
-	if(!((c->geom.g1==m_wheel) || (c->geom.g2==m_wheel)||(m_elevator_state.ClimbingState())  ))//
+	if(!((g1==m_wheel) || (g2==m_wheel)||(m_elevator_state.ClimbingState())  ))//
 		return;
 
-
-
-	///m_friction_factor=(c->surface.mu<1.f&&!object) ? c->surface.mu : 1.f;
 	float friction=1.f;
 	if(!object && !b_side_contact)
 	{
@@ -1246,136 +1134,76 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	if(m_friction_factor<friction)m_friction_factor=friction; 
 	++m_contact_count;
 
-	//if( !b_saved_contact_velocity)
-	//		{//b_lose_control &&
-	//			b_saved_contact_velocity=true;
-	//			const dReal* v=dBodyGetLinearVel(m_body);
-	//			m_contact_velocity=dFabs(dDOT(v,c->geom.normal));
-	//		}
-
-	//if(b_lose_control) 
-	{
-		const dReal* v=dBodyGetLinearVel(m_body);
-		dReal mag=dFabs(dDOT(v,c->geom.normal))*tri_material->fBounceDamageFactor;
-		if(mag>m_contact_velocity)
-		{
-			m_contact_velocity=mag;
-			m_dmc_signum=bo1 ? 1.f : -1.f;
-			m_dmc_type=ctStatic;
-			m_damege_contact=*c;
-		}
-	}
-
-
-
-
 	if(bo1){
-		////////////////////////////
-		//if(c->geom.normal[1]<0.1f){
-		//	c->geom.normal[1]=-c->geom.normal[1];
-		//	c->geom.depth=0.f;
-		//}
-
-
 		///////////////////////////////////
-		if(c->geom.g1==m_wheel){
-			dVectorSet(m_death_position,dGeomGetPosition(c->geom.g1));
+		if(g1==m_wheel){
+			dVectorSet(m_death_position,dGeomGetPosition(g1));
 			m_death_position[1]+=c->geom.depth;
-			if(dGeomGetUserData(c->geom.g1)->pushing_neg)
-				m_death_position[1]=dGeomGetUserData(c->geom.g1)->neg_tri.pos;
-
-			if(dGeomGetUserData(c->geom.g1)->pushing_b_neg)
-				m_death_position[1]=dGeomGetUserData(c->geom.g1)->b_neg_tri.pos;
+			if(dGeomGetUserData(g1)->pushing_neg)
+				m_death_position[1]=dGeomGetUserData(g1)->neg_tri.pos;
+			if(dGeomGetUserData(g1)->pushing_b_neg)
+				m_death_position[1]=dGeomGetUserData(g1)->b_neg_tri.pos;
 			b_death_pos=true;
 		}
 		/////////////////////////////////////////////////////////////
-		if(c->geom.normal[1]>m_ground_contact_normal[1]||!b_valide_ground_contact)//
+		if(normal[1]>m_ground_contact_normal[1]||!b_valide_ground_contact)//
 		{
-			m_ground_contact_normal[0]=c->geom.normal[0];
-			m_ground_contact_normal[1]=c->geom.normal[1];
-			m_ground_contact_normal[2]=c->geom.normal[2];
-			dVectorSet(m_ground_contact_position,c->geom.pos);
+			dVectorSet(m_ground_contact_normal,normal);
+			dVectorSet(m_ground_contact_position,pos);
 			b_valide_ground_contact=true;
 		}
-
-		if((c->geom.normal[0]*m_acceleration.x+
-			c->geom.normal[2]*m_acceleration.z)<
-			(m_wall_contact_normal[0]*m_acceleration.x+
-			m_wall_contact_normal[2]*m_acceleration.z)
-			||!b_valide_wall_contact)//
+		if(dXZDot(normal,cast_fp(m_acceleration))<dXZDot(m_wall_contact_normal,cast_fp(m_acceleration))||!b_valide_wall_contact)
 		{
-			m_wall_contact_normal[0]=c->geom.normal[0];
-			m_wall_contact_normal[1]=c->geom.normal[1];
-			m_wall_contact_normal[2]=c->geom.normal[2];
+			dVectorSet(m_wall_contact_normal,c->geom.normal);
 			dVectorSet(m_wall_contact_position,c->geom.pos);
 			b_valide_wall_contact=true;
 		}
-
 	}
 	else{
-		if(c->geom.g2==m_wheel){
-			dVectorSet(m_death_position,dGeomGetPosition(c->geom.g2));
+		if(g2==m_wheel){
+			dVectorSet(m_death_position,dGeomGetPosition(g2));
 			m_death_position[1]+=c->geom.depth;
-			if(dGeomGetUserData(c->geom.g2)->pushing_neg)
-				m_death_position[1]=dGeomGetUserData(c->geom.g2)->neg_tri.pos;
+			if(dGeomGetUserData(g2)->pushing_neg)
+				m_death_position[1]=dGeomGetUserData(g2)->neg_tri.pos;
 
-			if(dGeomGetUserData(c->geom.g2)->pushing_b_neg)
-				m_death_position[1]=dGeomGetUserData(c->geom.g2)->b_neg_tri.pos;
+			if(dGeomGetUserData(g2)->pushing_b_neg)
+				m_death_position[1]=dGeomGetUserData(g2)->b_neg_tri.pos;
 			b_death_pos=true;
 		}
-		if(c->geom.normal[1]<-m_ground_contact_normal[1]||!b_valide_ground_contact)//
+		if(normal[1]<-m_ground_contact_normal[1]||!b_valide_ground_contact)//
 		{
-			m_ground_contact_normal[0]=-c->geom.normal[0];
-			m_ground_contact_normal[1]=-c->geom.normal[1];
-			m_ground_contact_normal[2]=-c->geom.normal[2];
-			dVectorSet(m_ground_contact_position,c->geom.pos);
+			dVectorSetInvert(m_ground_contact_normal,normal);
+			dVectorSet(m_ground_contact_position,pos);
 			b_valide_ground_contact=true;
 		}
-		if(c->geom.normal[0]*m_acceleration.x+
-			c->geom.normal[2]*m_acceleration.z>
-			-m_wall_contact_normal[0]*m_acceleration.x-
-			m_wall_contact_normal[2]*m_acceleration.z
-			||!b_valide_wall_contact)//
+		if(dXZDot(normal,cast_fp(m_acceleration)) > -dXZDot(m_wall_contact_normal,cast_fp(m_acceleration))||!b_valide_wall_contact)//
 		{
-			m_wall_contact_normal[0]=-c->geom.normal[0];
-			m_wall_contact_normal[1]=-c->geom.normal[1];
-			m_wall_contact_normal[2]=-c->geom.normal[2];
-			dVectorSet(m_wall_contact_position,c->geom.pos);
+			dVectorSetInvert(m_wall_contact_normal,normal);
+			dVectorSet(m_wall_contact_position,pos);
 			b_valide_wall_contact=true;
 		}
 	}
-
-
-
 	if(is_control&&!b_lose_control||b_jumping){
-		if(c->geom.g1==m_wheel||c->geom.g2==m_wheel&&!bClimable)
+		if(g1==m_wheel||g2==m_wheel&&!bClimable)
 		{
 			c->surface.mu = 0.f;//0.00f;
 			c->surface.mode|=dContactFDir1|dContactMotion1;
 			dReal mag=m_acceleration.magnitude();
 			c->surface.motion1=mag/10.f;
-			c->fdir1[0]=m_acceleration[0]/mag;
-			c->fdir1[1]=m_acceleration[1]/mag;
-			c->fdir1[2]=m_acceleration[2]/mag;
+			dVectorSet(c->fdir1,cast_fp(m_acceleration));
+			dVectorMul(c->fdir1,1.f/mag);
 		}
 		else{
 				c->surface.mu = 0.00f;
 			}
-		//dNormalize3(c->fdir1);
-		//c->surface.soft_cfm*=spring_rate;//0.01f;
-		//c->surface.soft_erp*=dumping_rate;//10.f;
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
-		
 	}
 	else
 	{
-		//c->surface.soft_cfm*=spring_rate;//0.01f;
-		//c->surface.soft_erp*=dumping_rate;//10.f;
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
  		c->surface.mu *= (1.f+b_clamb_jump*3.f)*m_friction_factor;
 	}
-
-
+	UpdateStaticDamage(c,tri_material,bo1);
 }
 
 void CPHSimpleCharacter::GroundNormal(Fvector &norm)

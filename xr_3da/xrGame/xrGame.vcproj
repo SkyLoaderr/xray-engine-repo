@@ -6791,6 +6791,9 @@
 							<File
 								RelativePath=".\ExplosiveItem.h">
 							</File>
+							<File
+								RelativePath=".\ExplosiveScript.cpp">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -8969,6 +8972,9 @@
 							</File>
 							<File
 								RelativePath=".\PHSimpleCharacter.h">
+							</File>
+							<File
+								RelativePath=".\PHSimpleCharacterInline.h">
 							</File>
 						</Filter>
 						<Filter

@@ -32,6 +32,7 @@ class CAI_Stalker;
 class CScriptEntity;
 class CAI_ObjectLocation;
 class CWeapon;
+class CExplosive;
 
 class CGameObject : 
 	public CObject, 
@@ -65,6 +66,7 @@ public:
 	virtual CAI_Stalker*				cast_stalker				()						{return NULL;}
 	virtual CScriptEntity*				cast_script_entity			()						{return NULL;}
 	virtual CWeapon*					cast_weapon					()						{return NULL;}
+	virtual CExplosive*					cast_explosive				()						{return NULL;}
 
 public:
 	virtual BOOL						feel_touch_on_contact	(CObject *)					{return TRUE;}
