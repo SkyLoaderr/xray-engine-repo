@@ -5,7 +5,7 @@
 #include "SkeletonAnimated.h"
 //#include "LevelGameDef.h"
 
-ref_sound choose_snd;
+ref_sound* choose_snd;
 
 namespace ChoseEvents{
 void __stdcall  FillEntity(ChooseItemVec& items, void* param)
@@ -21,8 +21,8 @@ void __stdcall  FillEntity(ChooseItemVec& items, void* param)
 //---------------------------------------------------------------------------
 void __stdcall  SelectSoundSource(SChooseItem* item, PropItemVec& info_items)
 {
-	choose_snd.create			(true,item->name.c_str(),0);
-    choose_snd.play				(0,sm_2D);
+	choose_snd->create			(true,item->name.c_str(),0);
+    choose_snd->play				(0,sm_2D);
 //    snd.pla
 /*
 //.
@@ -232,11 +232,12 @@ void FillChooseEvents()
 	TfrmChoseItem::AppendEvents	(smGameMaterial,	"Select Game Material",		ChoseEvents::FillGameMaterial,	0,					0);
 	TfrmChoseItem::AppendEvents	(smGameAnim,		"Select Animation",			ChoseEvents::FillGameAnim,		0,					0);
 	TfrmChoseItem::AppendEvents	(smGameSMotions,	"Select Game Object Motions",ChoseEvents::FillGameObjectMots,ChoseEvents::SelectGameObjectMots,0);
+    choose_snd = xr_new<ref_sound>();
 }
 void ClearChooseEvents()
 {
 	TfrmChoseItem::ClearEvents	();
-    choose_snd.destroy			();
+    xr_delete					(choose_snd);
 }
 
 //---------------------------------------------------------------------------
