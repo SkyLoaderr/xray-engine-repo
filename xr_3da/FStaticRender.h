@@ -27,7 +27,8 @@
 const int max_patches = 512;
 
 // definition
-class ENGINE_API CRender			:  public CRender_interface
+class CRender	:  
+	public CRender_interface
 {
 public:
 	// Dynamic scene graph
@@ -59,7 +60,7 @@ public:
 	CHOM											HOM;
 	
 	// Global vertex-buffer container
-	vector<u32>									FVF;
+	vector<u32>										FVF;
 	vector<IDirect3DVertexBuffer8*>					VB;
 	vector<IDirect3DIndexBuffer8*>					IB;
 	vector<CVisual*>								Visuals;
