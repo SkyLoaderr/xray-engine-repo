@@ -33,21 +33,21 @@ CHitMarker::~CHitMarker()
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 
-	VS				= 0;
+	hVS				= 0;
 	OnDeviceDestroy	();
 } 
 //--------------------------------------------------------------------
 
-void CHitMarker::OnDeviceDestroy()
-{
-	Device.Shader.Delete		(hShader);
-	Device.Shader._DeleteVS		(hVS);
-}
 void CHitMarker::OnDeviceCreate()
 {
 	REQ_CREATE	();
 	hShader		= Device.Shader.Create		("hud\\hitmarker","ui\\hud_hitmarker");
 	hVS			= Device.Shader._CreateVS	(FVF::F_TL);
+}
+void CHitMarker::OnDeviceDestroy()
+{
+	Device.Shader._DeleteVS		(hVS);
+	Device.Shader.Delete		(hShader);
 }
 
 const static float fShowTime = 0.2f;
@@ -70,9 +70,9 @@ void CHitMarker::Render()
 				fHitMarks[i] -= Device.fTimeDelta;
 			}
 		}
-		DWORD Count				= D-Start;
-		VS->Unlock				(Count,hVS->dwStride);
-		if (Count)	
+		DWORD Count						= D-Start;
+		Device.Streams.Vertex.Unlock	(Count,hVS->dwStride);
+		if (Count)
 		{
 			Device.Shader.set_Shader	(hShader);
 			Device.Primitive.setVertices(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());

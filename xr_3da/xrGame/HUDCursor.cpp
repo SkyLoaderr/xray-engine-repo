@@ -20,23 +20,22 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CHUDCursor::CHUDCursor()
+CHUDCursor::CHUDCursor	()
 {    
-	hShader			= 0;
-	hVS				= 0;
-	OnDeviceCreate	();
+	hShader				= 0;
+	hVS					= 0;
+	OnDeviceCreate		();
 	
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 }
 
-CHUDCursor::~CHUDCursor()
+CHUDCursor::~CHUDCursor	()
 {
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 	
-	Stream			= 0;
-	OnDeviceDestroy	();
+	OnDeviceDestroy		();
 }
 
 void CHUDCursor::OnDeviceCreate()
@@ -99,7 +98,7 @@ void CHUDCursor::Render()
 	}
 	// actual rendering
 	DWORD			vOffset;
-	FVF::TL*	pv	= (FVF::TL*)Stream->Lock(4,vOffset);
+	FVF::TL*	pv	= (FVF::TL*)Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
 	float			size= Device.dwWidth * di_size;
 	
 	// Convert to screen coords
@@ -112,8 +111,10 @@ void CHUDCursor::Render()
 	pv->set(cx + size, cy - size, PT.p.z, PT.p.w, C, 1, 0); pv++;
 	
 	// unlock VB and Render it as triangle list
-	Stream->Unlock			(4);
-	Device.Shader.set_Shader(hShader);
-	Device.Primitive.Draw	(Stream,4,2,vOffset,Device.Streams_QuadIB);
-	// Device.Primitive.dbg_DrawLINE(precalc_identity,p1,p2,C);
+	Stream->Unlock				(4,hVS->dwStride);
+	Device.Shader.set_Shader	(hShader);
+	Device.Primitive.setVertices(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
+	Device.Primitive.setIndices	(vOffset,Device.Streams.QuadIB);;
+	Device.Primitive.Render		(D3DPT_TRIANGLELIST,0,4,0,2);
+	UPDATEC						(4,2,1);
 }
