@@ -23,10 +23,10 @@ public:
 	SLevel						m_tLevel;
 	SCompressedGraphVertex		*m_tpaGraph;
 
-								CLevelGraph(SLevel &tLevel, u32 dwOffset, u32 dwLevelID)
+								CLevelGraph(SLevel &tLevel, char *S, u32 dwOffset, u32 dwLevelID)
 	{
 		m_tLevel				= tLevel;
-		CVirtualFileStream		F(m_tLevel.caLevelName);
+		CVirtualFileStream		F(S);
 		F.Read					(&m_tGraphHeader,sizeof(SGraphHeader));
 		m_tpaGraph				= (SCompressedGraphVertex *)F.Pointer();
 		m_tpVertices.resize		(m_tGraphHeader.dwVertexCount);
@@ -105,10 +105,9 @@ void xrMergeGraphs()
 	for (dwLevelID = 0; pSettings->LineExists("game_levels",itoa(dwLevelID,S1,10)); dwLevelID++) {
 		sscanf(pSettings->ReadSTRING("game_levels",itoa(dwLevelID,S1,10)),"%f,%f,%f,%s",&(tLevel.tOffset.x),&(tLevel.tOffset.y),&(tLevel.tOffset.z),S1);
 		strconcat(S2,"gamedata\\levels\\",S1);
-		strconcat(tLevel.caLevelName,S2,"\\level.graph");
-		tpGraphs.push_back(xr_new<CLevelGraph>(tLevel,dwOffset,dwLevelID));
+		strconcat(S1,S2,"\\level.graph");
+		tpGraphs.push_back(xr_new<CLevelGraph>(tLevel,S1,dwOffset,dwLevelID));
 		dwOffset += tpGraphs[tpGraphs.size() - 1]->m_tGraphHeader.dwVertexCount;
-		Memory.mem_copy				(tLevel.caLevelName,S1,strlen(S1) + 1);
 		tGraphHeader.tpLevels.push_back(tLevel);
 	}
 	R_ASSERT(tpGraphs.size());
@@ -129,10 +128,8 @@ void xrMergeGraphs()
 	{
 		vector<SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
 		vector<SLevel>::iterator	E = tGraphHeader.tpLevels.end();
-		for ( ; I != E; I++) {
-			F.write((*I).caLevelName,strlen((*I).caLevelName) + 1);	
+		for ( ; I != E; I++)
 			F.Wvector((*I).tOffset);
-		}
 	}
 
 	dwOffset						*= sizeof(SCompressedGraphVertex);

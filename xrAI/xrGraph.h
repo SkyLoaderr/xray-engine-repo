@@ -36,7 +36,6 @@ typedef struct tagSCompressedGraphVertex {
 } SCompressedGraphVertex;
 
 typedef struct tagSLevel {
-	string64			caLevelName;
 	Fvector				tOffset;
 } SLevel;
 
