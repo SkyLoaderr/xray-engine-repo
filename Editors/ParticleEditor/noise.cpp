@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "noise.h"
-
+ 
 //==============================================================================
 // Perlin's noise from Texturing and Modeling...
 #define B 256
