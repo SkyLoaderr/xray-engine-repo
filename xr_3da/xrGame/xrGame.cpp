@@ -154,7 +154,8 @@ public:
 			if (CO < CLObjNum && CO < SVObjNum)
 			{
 				CSE_Abstract* pEntity = Level().Server->GetEntity(CO);
-				Msg("*%4d: Client - %20s[%5d] <===> Server - %s [%d]", CO+1, 
+				char color = (Level().Objects.objects[CO]->ID() == pEntity->ID) ? '-' : '!';
+				Msg("%c%4d: Client - %20s[%5d] <===> Server - %s [%d]", color, CO+1, 
 						*(Level().Objects.objects[CO]->cNameSect()), Level().Objects.objects[CO]->ID(),
 						pEntity->s_name, pEntity->ID);
 			}
