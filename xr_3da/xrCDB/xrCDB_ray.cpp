@@ -7,39 +7,39 @@ using namespace CDB;
 using namespace Opcode;
 
 IC u32& uf		(float &x) { return (u32&)x; }
-BOOL	Pick2	(const Fvector& min, const Fvector& max, const Fvector& origin, const Fvector& dir, Fvector& coord)
+BOOL	Pick2	(const Fvector& min, const Fvector& max, const Fvector& origin, const Fvector& dir, const Fvector& idir, Fvector& coord)
 {
 	Fvector				MaxT;
 	MaxT.x=MaxT.y=MaxT.z=-1.0f;
 	BOOL Inside			= TRUE;
-
+ 
 	// Find candidate planes.
 	if(origin[0] < min[0]) {
 		coord[0]	= min[0];
 		Inside		= FALSE;
-		if(uf(dir[0]))	MaxT[0] = (min[0] - origin[0]) / dir[0]; // Calculate T distances to candidate planes
+		if(uf(idir[0]))	MaxT[0] = (min[0] - origin[0]) * idir[0]; // Calculate T distances to candidate planes
 	} else if(origin[0] > max[0]) {
 		coord[0]	= max[0];
 		Inside		= FALSE;
-		if(uf(dir[0]))	MaxT[0] = (max[0] - origin[0]) / dir[0]; // Calculate T distances to candidate planes
+		if(uf(idir[0]))	MaxT[0] = (max[0] - origin[0]) * idir[0]; // Calculate T distances to candidate planes
 	}
 	if(origin[1] < min[1]) {
 		coord[1]	= min[1];
 		Inside		= FALSE;
-		if(uf(dir[1]))	MaxT[1] = (min[1] - origin[1]) / dir[1]; // Calculate T distances to candidate planes
+		if(uf(idir[1]))	MaxT[1] = (min[1] - origin[1]) * idir[1]; // Calculate T distances to candidate planes
 	} else if(origin[1] > max[1]) {
 		coord[1]	= max[1];
 		Inside		= FALSE;
-		if(uf(dir[1]))	MaxT[1] = (max[1] - origin[1]) / dir[1]; // Calculate T distances to candidate planes
+		if(uf(idir[1]))	MaxT[1] = (max[1] - origin[1]) * idir[1]; // Calculate T distances to candidate planes
 	}
 	if(origin[2] < min[2]) {
 		coord[2]	= min[2];
 		Inside		= FALSE;
-		if(uf(dir[2]))	MaxT[2] = (min[2] - origin[2]) / dir[2]; // Calculate T distances to candidate planes
+		if(uf(idir[2]))	MaxT[2] = (min[2] - origin[2]) * idir[2]; // Calculate T distances to candidate planes
 	} else if(origin[2] > max[2]) {
 		coord[2]	= max[2];
 		Inside		= FALSE;
-		if(uf(dir[2]))	MaxT[2] = (max[2] - origin[2]) / dir[2]; // Calculate T distances to candidate planes
+		if(uf(idir[2]))	MaxT[2] = (max[2] - origin[2]) * idir[2]; // Calculate T distances to candidate planes
 	}
 
 	// Ray origin inside bounding box
@@ -53,27 +53,24 @@ BOOL	Pick2	(const Fvector& min, const Fvector& max, const Fvector& origin, const
 	if	(MaxT[1] > MaxT[0])				WhichPlane = 1;
 	if	(MaxT[2] > MaxT[WhichPlane])	WhichPlane = 2;
 
-	// Check final candidate actually inside box
+	// Check final candidate actually inside box (if max < 0)
 	if(uf(MaxT[WhichPlane])&0x80000000) return false;
 
-	if  (0==WhichPlane)	{
-		// 1 & 2
+	if  (0==WhichPlane)	{	// 1 & 2
 		coord[1] = origin[1] + MaxT[0] * dir[1];
 		if((coord[1] < min[1]) || (coord[1] > max[1]))	return false;
 		coord[2] = origin[2] + MaxT[0] * dir[2];
 		if((coord[2] < min[2]) || (coord[2] > max[2]))	return false;
 		return true;
 	}
-	if (1==WhichPlane)	{
-		// 0 & 2
+	if (1==WhichPlane)	{	// 0 & 2
 		coord[0] = origin[0] + MaxT[1] * dir[0];
 		if((coord[0] < min[0]) || (coord[0] > max[0]))	return false;
 		coord[2] = origin[2] + MaxT[1] * dir[2];
 		if((coord[2] < min[2]) || (coord[2] > max[2]))	return false;
 		return true;
 	}
-	if (2==WhichPlane)	{
-		// 0 & 1
+	if (2==WhichPlane)	{	// 0 & 1
 		coord[0] = origin[0] + MaxT[2] * dir[0];
 		if((coord[0] < min[0]) || (coord[0] > max[0]))	return false;
 		coord[1] = origin[1] + MaxT[2] * dir[1];
@@ -91,7 +88,7 @@ public:
 	TRI*			tris;
 	Fvector*		verts;
 	
-	Fvector			rC,rD;
+	Fvector			rC,rD,rDI;
 	float			rRange;
 	float			rRange2;
 
@@ -104,6 +101,9 @@ public:
 		rD.set		(D);
 		rRange		= R;
 		rRange2		= R*R;
+		if (_abs(rD.x)>flt_eps)	rDI.x= 1.f/rD.x; else rDI.x=0;
+		if (_abs(rD.y)>flt_eps)	rDI.y= 1.f/rD.y; else rDI.y=0;
+		if (_abs(rD.z)>flt_eps)	rDI.z= 1.f/rD.z; else rDI.z=0;
 	}
 
 	IC BOOL			_box		(const Fvector& bCenter, const Fvector& bExtents, Fvector& coord)
@@ -111,7 +111,7 @@ public:
 		Fbox		BB;
 		BB.min.sub	(bCenter,bExtents);
 		BB.max.add	(bCenter,bExtents);
-        return 		BB.Pick2(rC,rD,coord);
+        return 		Pick2	(BB.min,BB.max,rC,rD,rDI,coord);
 	}
 	
 	IC bool			_tri		(u32* p, float& u, float& v, float& range)
