@@ -66,21 +66,46 @@ BOOL CCF_Polygonal::_RayTest( RayQuery& Q)
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.Start());
-	temp.transform_dir	(dD,Q.Dir());
+	temp.transform_tiny	(dS,Q.start);
+	temp.transform_dir	(dD,Q.dir);
+
+	// 
+	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+
+	// Query
+	XRC.ray_query		(&model,dS,dD,Q.range);
+	if (XRC.r_count()) 	{
+		CDB::RESULT* R	= XRC.r_begin();
+		if (R->range < Q.range) {
+			Q.range		= R->range;
+			Q.element	= R->id;
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+BOOL CCF_Polygonal::_RayPick( RayPickResult& result, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
+{
+	// Convert ray into local model space
+	Fvector dS, dD;
+	Fmatrix temp; 
+	temp.invert			(owner->XFORM());
+	temp.transform_tiny	(dS,_start);
+	temp.transform_dir	(dD,_dir);
 
 	// 
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
 
 	// Query
 	BOOL bHIT = FALSE;
-	XRC.ray_query		(&model,dS,dD,Q.Range());
+	XRC.ray_query		(&model,dS,dD,_range);
 	if (XRC.r_count()) 	{
 		for (int k=0; k<XRC.r_count(); k++){
 			bHIT		= TRUE;
 			CDB::RESULT* R	= XRC.r_begin()+k;
-			Q.AppendResult(R->range,R->id);
-			if (Q.Flags().is(CDB::OPT_ONLYFIRST)) return TRUE;
+			result.AppendResult(R->range,R->id,_flags&CDB::OPT_ONLYNEAREST);
+			if (_flags&CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}
 	return bHIT;
@@ -201,8 +226,8 @@ BOOL CCF_Skeleton::_RayTest( RayQuery& Q)
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.Start());
-	temp.transform_dir	(dD,Q.Dir());
+	temp.transform_tiny	(dS,Q.start);
+	temp.transform_dir	(dD,Q.dir);
 
 	// 
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
@@ -212,12 +237,40 @@ BOOL CCF_Skeleton::_RayTest( RayQuery& Q)
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
-		float range		= Q.Range();
-		if (RAYvsOBB(*I,Q.Start(),Q.Dir(),range)) 
+		if (RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
+		{
+			bHIT = TRUE;
+			Q.element = I-model.begin();
+		}
+	}
+	return bHIT;
+}
+
+BOOL CCF_Skeleton::_RayPick( RayPickResult& result, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
+{
+	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
+
+	// Convert ray into local model space
+	Fvector dS, dD;
+	Fmatrix temp; 
+	temp.invert			(owner->XFORM());
+	temp.transform_tiny	(dS,_start);
+	temp.transform_dir	(dD,_dir);
+
+	// 
+	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+
+	if (dwFrame!=Device.dwFrame)			BuildState();
+
+	BOOL bHIT = FALSE;
+	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
+	{
+		float range		= _range;
+		if (RAYvsOBB(*I,_start,_dir,range)) 
 		{
 			bHIT		= TRUE;
-			Q.AppendResult(range,I-model.begin());
-			if (Q.Flags().is(CDB::OPT_ONLYFIRST)) return TRUE;
+			result.AppendResult(range,I-model.begin(),_flags&CDB::OPT_ONLYNEAREST);
+			if (_flags&CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}
 	return bHIT;
@@ -322,8 +375,8 @@ BOOL CCF_Rigid::_RayTest( RayQuery& Q)
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.Start());
-	temp.transform_dir	(dD,Q.Dir());
+	temp.transform_tiny	(dS,Q.start);
+	temp.transform_dir	(dD,Q.dir);
 
 	// 
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
@@ -333,12 +386,40 @@ BOOL CCF_Rigid::_RayTest( RayQuery& Q)
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
-		float range		= Q.Range();
-		if (RAYvsOBB(*I,Q.Start(),Q.Dir(),range)) 
+		if (RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
+		{
+			bHIT = TRUE;
+			Q.element = I-model.begin();
+		}
+	}
+	return bHIT;
+}
+
+BOOL CCF_Rigid::_RayPick( RayPickResult& result, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
+{
+	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
+
+	// Convert ray into local model space
+	Fvector dS, dD;
+	Fmatrix temp; 
+	temp.invert			(owner->XFORM());
+	temp.transform_tiny	(dS,_start);
+	temp.transform_dir	(dD,_dir);
+
+	// 
+	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+
+	if (dwFrame!=Device.dwFrame)			BuildState();
+
+	BOOL bHIT = FALSE;
+	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
+	{
+		float range		= _range;
+		if (RAYvsOBB(*I,_start,_dir,range)) 
 		{
 			bHIT		= TRUE;
-			Q.AppendResult(range,I-model.begin());
-			if (Q.Flags().is(CDB::OPT_ONLYFIRST)) return TRUE;
+			result.AppendResult(range,I-model.begin(),_flags&CDB::OPT_ONLYNEAREST);
+			if (_flags&CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}
 	return bHIT;
@@ -415,6 +496,8 @@ BOOL CCF_EventBox::Contact(CObject* O)
 }
 BOOL CCF_EventBox::_RayTest(RayQuery& Q)
 {	return FALSE; }
+BOOL CCF_EventBox::_RayPick( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
+{	return FALSE; }
 void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
 //----------------------------------------------------------------------------------
@@ -424,6 +507,8 @@ CCF_Shape::CCF_Shape(CObject* _owner) : ICollisionForm(_owner)
 {
 }
 BOOL CCF_Shape::_RayTest(RayQuery& Q)
+{	return FALSE; }
+BOOL CCF_Shape::_RayPick( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
 {	return FALSE; }
 void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }

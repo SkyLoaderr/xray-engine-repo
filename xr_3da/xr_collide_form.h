@@ -80,30 +80,40 @@ protected:
 	CObject*		owner;			// владелец
 	u32				dwQueryID;
 protected:
+	struct			RayQuery{
+		Fvector		start;
+		Fvector		dir;
+		float		range;
+		int			element;
+					RayQuery(const Fvector& _start, const Fvector& _dir, float _range)
+		{
+			start	=_start;
+			dir		= _dir;
+			range	= _range;
+		}
+	};
+
 	Fbox			bv_box;			// (Local) BBox объекта
 	Fsphere			bv_sphere;		// (Local) Sphere 
 public:
-	class			RayQuery
+	class			RayPickResult
 	{
-		Fvector		start;
-		Fvector		dir;
-		Flags32		flags;			// CDB flags
-		float		range;
 	public:
 		struct		Result{
 			float	range;
 			int		element;
 		};
+	protected:
 		DEFINE_VECTOR(Result,ResultVec,ResultIt);
 		ResultVec	results;
-		IC void		AppendResult	(float _range, int _element)
+	public:
+		IC void		AppendResult	(float _range, int _element, BOOL only_nearest)
 		{
-			if (flags.is(CDB::OPT_ONLYNEAREST)&&!results.empty())
-			{
-				Result& R = results.back();
+			if (only_nearest&&!results.empty()){
+				Result& R			= results.back();
 				if (_range<R.range){
-					R.range		=_range;
-					R.element	=_element;
+					R.range			=_range;
+					R.element		=_element;
 				}
 				return;
 			}
@@ -111,26 +121,15 @@ public:
 			results.back().range	=_range;
 			results.back().element	=_element;
 		}
-	public:
-						RayQuery		(const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
-						{
-							start.set	(_start);
-							dir.set		(_dir);
-							range		= _range;
-							flags.set	(_flags);
-						};
-		IC const Fvector&	Start		()	{return start;}
-		IC const Fvector&	Dir			()	{return dir;}
-		IC float			Range		()	{return range;}
-		IC const Flags32&	Flags		()	{return flags;}
-
-		IC int				r_count		()	{return results.size();}
+		IC int		r_count			()	{return results.size();}
+		IC Result*	r_begin			()	{return &*results.begin();}
 	};
 public:
 					ICollisionForm	( CObject* _owner );
 	virtual			~ICollisionForm	( );
 
 	virtual BOOL	_RayTest		( RayQuery& Q) = 0;
+	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags) = 0;
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags) = 0;
 
 	IC CObject*		Owner			( )	const				{ return owner;			}
@@ -147,6 +146,7 @@ public:
 					CCF_Polygonal	( CObject* _owner );
 
 	virtual BOOL	_RayTest		( RayQuery& Q);
+	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			LoadModel		( CInifile* ini, const char *section );
@@ -177,7 +177,8 @@ private:
 public:
 					CCF_Skeleton	( CObject* _owner );
 
-	virtual BOOL	_RayTest		( RayQuery& Q );
+	virtual BOOL	_RayTest		( RayQuery& Q);
+	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 };
 
@@ -196,7 +197,8 @@ private:
 public:
 					CCF_Rigid		( CObject* _owner );
 
-	virtual BOOL	_RayTest		( RayQuery& Q );
+	virtual BOOL	_RayTest		( RayQuery& Q);
+	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 };
 
@@ -208,6 +210,7 @@ public:
 					CCF_EventBox	( CObject* _owner );
 
 	virtual BOOL	_RayTest		( RayQuery& Q);
+	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			Contact			( CObject* O );
@@ -231,6 +234,7 @@ public:
 					CCF_Shape		( CObject* _owner );
 
 	virtual BOOL	_RayTest		( RayQuery& Q);
+	virtual BOOL	_RayPick		( RayPickResult& R, const Fvector& _start, const Fvector& _dir, float _range, u32 _flags=0);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	void			add_sphere		( Fsphere& S	);

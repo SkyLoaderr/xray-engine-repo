@@ -80,6 +80,22 @@ CCar* CActor::pick_VehicleObject(int& element)
 	Collide::ray_query	l_rq;
 	l_rq.O=NULL;
 	g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
+	
+	if (l_rq.O)
+	{
+		ICollisionForm::RayPickResult result;
+		if (l_rq.O->collidable.model->_RayPick	(result,Device.vCameraPosition, Device.vCameraDirection, 3.f, 0)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+		{
+			int y=result.r_count();
+			for (int k=0; k<y; k++){
+				ICollisionForm::RayPickResult::Result* R = result.r_begin()+k;
+				R->element;
+				R->range;
+				R=0;
+			}
+		}
+	}
+	
 	setEnabled(true);
 	element=l_rq.element;
 	return dynamic_cast<CCar*>(l_rq.O);

@@ -17,7 +17,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 	VERIFY					(_abs(dir.magnitude()-1)<EPS);
 
 	XRC.ray_options			(CDB::OPT_ONLYFIRST);
-	ICollisionForm::RayQuery Q(start,dir,range,CDB::OPT_ONLYFIRST);
+	ICollisionForm::RayQuery Q(start,dir,range);
 	if (bDynamic) 
 	{
 		// Traverse object database
@@ -80,7 +80,7 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 	// Traverse object database
 	g_SpatialSpace.q_ray	(0,STYPE_COLLIDEABLE,start,dir,range);
 
-	ICollisionForm::RayQuery	Q(start,dir,R.range,CDB::OPT_ONLYNEAREST);
+	ICollisionForm::RayQuery	Q(start,dir,R.range);
 	// Determine visibility for dynamic part of scene
 	for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
 	{
@@ -91,11 +91,10 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 		if (collidable->collidable.model->_RayTest(Q))	
 		{
 			C	= D3DCOLOR_XRGB(128,128,196);
-			ICollisionForm::RayQuery::Result& QR = Q.results.back();
-			if (QR.range<R.range) {
+			if (Q.range<R.range) {
 				R.O			= collidable;
-				R.range		= QR.range;
-				R.element	= QR.element;
+				R.range		= Q.range;
+				R.element	= Q.element;
 			}
 		}
 		if (bDebug) 
