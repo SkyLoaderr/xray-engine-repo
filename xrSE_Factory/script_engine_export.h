@@ -17,6 +17,7 @@
 #include "script_sound_type.h"
 #include "script_net_packet.h"
 #include "xrServer_Objects_ALife_All.h"
+#include "script_properties_list_helper.h"
 
 #ifdef XRGAME_EXPORTS
 #	include "alife_simulator.h"

@@ -1130,6 +1130,19 @@
 					<File
 						RelativePath=".\xrEProps.h">
 					</File>
+					<Filter
+						Name="ScriptPropertiesListHelper"
+						Filter="">
+						<File
+							RelativePath=".\properties_list_helper_script.cpp">
+						</File>
+						<File
+							RelativePath=".\script_properties_list_helper.cpp">
+						</File>
+						<File
+							RelativePath=".\script_properties_list_helper.h">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>
