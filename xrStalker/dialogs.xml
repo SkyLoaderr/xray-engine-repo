@@ -16,14 +16,6 @@
 		</phrase_list>
 	</dialog>
 	
-    <dialog id="hello_dialog">
-        <phrase_list>
-            <phrase id="0">
-                <text>Привет</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-
     <dialog id="dolg_talk_about">
         <phrase_list>
             <phrase id="0">
@@ -108,6 +100,14 @@
     </dialog>
 
 <!-- FINAL DIALOGS -->
+    <dialog id="hello_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>Привет</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+
     <dialog id="actor_break_dialog" priority="-1">
 	<phrase_list>
 	    <phrase id="0">
