@@ -7,6 +7,7 @@
 #pragma once
 
 #include "shader.h"
+#include "tss_def.h"
 
 class ENGINE_API CShaderManager
 {
@@ -18,17 +19,23 @@ private:
 	};
 	
 	// data
-	map<LPSTR,CShader*,str_pred>	shaders;
-	map<LPSTR,CTexture*,str_pred>	textures;
-
-	map<LPSTR,CConstant*,str_pred>	constants;
-	map<LPSTR,CMatrix*,str_pred>	matrices;
 	map<LPSTR,CBlender*,str_pred>	blenders;
+	map<LPSTR,CTexture*,str_pred>	textures;
+	map<LPSTR,CMatrix*,str_pred>	matrices;
+	map<LPSTR,CConstant*,str_pred>	constants;
 
-	vector<CTextureArray*>			comb_textures;
-	vector<CConstantArray*>			comb_constants;
+	// shader code array
+	struct sh_Code {
+		DWORD				SB;
+		DWORD				Reference;
+		SimulatorStates		Code;
+	};
+	vector<sh_Code>					codes;
 
-	BOOL							bDeferredLoad;
+	// lists
+	vector<STextureList*>			lst_textures;
+	vector<SMatrixList*>			lst_matrices;
+	vector<SConstantList*>			lst_constants;
 
 	// cache
 	struct
@@ -39,27 +46,38 @@ private:
 
 		void						Invalidate	()
 		{	ZeroMemory(this,sizeof(*this));		}
-	} cache;
+	}								cache;
+
+	// misc
+	BOOL							bDeferredLoad;
 public:
-	void							_ParseList		(sh_list& dest, LPCSTR names);
-	CBlender*						_GetBlender		(LPCSTR Name);
+	// Miscelaneous
+	void							_ParseList			(sh_list& dest, LPCSTR names);
+	CBlender*						_GetBlender			(LPCSTR Name);
+	DWORD							_GetMemoryUsage		();
 
-	CPassArray*						_CreatePassArray		(CPassArray*	tmpl);
-	CTextureArray*					_CreateTextureArray		(CTextureArray* tmpl);
-	CMatrixArray*					_CreateMatrixArray		(CMatrixArray*	tmpl);
-	CConstantArray*					_CreateConstantArray	(CConstantArray*tmpl);
+	// Low level resource creation
+	CTexture*						_CreateTexture		(LPCSTR Name);
+	void							_DeleteTexture		(CTexture* &T);
+	CMatrix*						_CreateMatrix		(LPCSTR Name);
+	void							_DeleteMatrix		(CMatrix*  &M);
+	CConstant*						_CreateConstant		(LPCSTR Name);
+	void							_DeleteConstant		(CConstant* &C);
 
-	DWORD							_CreatePass		(LPCSTR Name);
-	CTexture*						_CreateTexture	(LPCSTR Name);
-	CMatrix*						_CreateMatrix	(LPCSTR Name);
-	CConstant*						_CreateConstant (LPCSTR Name);
-
-	DWORD							_GetMemoryUsage	();
+	// Shader compiling / optimizing
+	DWORD							_CreateCode			(SimulatorStates& Code);
+	void							_DeleteCode			(DWORD& SB);
+	STextureList*					_CreateTextureList	(STextureList& L);
+	void							_DeleteTextureList	(STextureList* &L);
+	SMatrixList*					_CreateMatrixList	(SMatrixList& L);
+	void							_DeleteMatrixList	(SMatrixList* &L);
+	SConstantList*					_CreateConstantList	(SConstantList& L);
+	void							_DeleteConstantList	(SConstantList* &L);
 
 	CShaderManager			()
 	{
 		bDeferredLoad		= FALSE;
-		ZeroMemory			(&cache,sizeof(cache));
+		cache.Invalidate	();
 	}
 
 	void	xrStartUp		();

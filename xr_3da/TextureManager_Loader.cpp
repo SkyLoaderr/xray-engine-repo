@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "fs.h"
 
 void CShaderManager::xrStartUp()
 {

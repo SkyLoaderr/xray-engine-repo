@@ -1,26 +1,6 @@
 #pragma once
 
-struct ENGINE_API CSimulatorState
-{
-	DWORD	type;		// 0=RS, 1=TSS
-	DWORD	v1,v2,v3;
-
-	IC void	set_RS	(DWORD a, DWORD b)
-	{
-		type	= 0;
-		v1		= a;
-		v2		= b;
-		v3		= 0;
-	}
-	IC void	set_TSS	(DWORD a, DWORD b, DWORD c)
-	{
-		type	= 1;
-		v1		= a;
-		v2		= b;
-		v3		= c;
-	}
-};
-typedef	vector<CSimulatorState>	SimulatorStates;
+#include "tss_def.h"
 
 class ENGINE_API CSimulatorTSS
 {

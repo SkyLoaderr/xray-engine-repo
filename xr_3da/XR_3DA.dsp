@@ -508,6 +508,10 @@ SOURCE=.\Blender_Recorder.h
 
 SOURCE=.\tss.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\tss_def.h
+# End Source File
 # End Group
 # Begin Source File
 
@@ -649,10 +653,6 @@ SOURCE=.\TextureManager.h
 # Begin Source File
 
 SOURCE=.\TextureManager_Loader.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\TextureManager_Runtime.cpp
 # End Source File
 # Begin Source File
 

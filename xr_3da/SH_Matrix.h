@@ -14,6 +14,7 @@ public:
 public:
 	Fmatrix			xform;
 
+	DWORD			dwReference;
 	DWORD			dwFrame;
 	DWORD			dwMode;
 	DWORD			tcm;				// mask for tc-modifiers

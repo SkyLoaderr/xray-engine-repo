@@ -4,73 +4,172 @@
 
 #include "stdafx.h"
 #include "TextureManager.h"
+#include "tss.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-CBlender* CShaderManager::_CreateBlender	(LPCSTR Name) 
+DWORD		CShaderManager::_CreateCode		(SimulatorStates& code)
 {
-	R_ASSERT(Name && Name[0]);
+	// Search equal code
+	for (DWORD it=0; it<codes.size(); it++)
+	{
+		sh_Code&			C		= codes[it];;
+		SimulatorStates&	base	= C.Code;
+		if (base.equal(code))	{
+			C.Reference	+= 1;
+			return C.SB;
+		}
+	}
 
-	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(Name);
-	if (I==blenders.end())	Device.Fatal("Blender '%s' not found in library.",Name);
-	else					return I->second;
+	// Create New
+	codes.push_back			(sh_Code());
+	codes.back().SB			= code.record();
+	codes.back().Reference	= 1;
+	codes.back().Code		= code;
+	return codes.back().SB;
 }
-CShader* CShaderManager::_CreateShader		(LPCSTR Name) 
+void		CShaderManager::_DeleteCode		(DWORD& SB)
 {
-	R_ASSERT(Name && Name[0]);
+	R_ASSERT(SB);
+	// Dummy search
+	for (DWORD it=0; it<codes.size(); it++)
+	{
+		sh_Code&			C		= codes[it];;
+		if (C.SB == SB)	{
+			SB = 0;
+			C.Reference	--;
+			return;
+		}
+	}
 
-	map<LPSTR,CShader*,str_pred>::iterator I = shaders.find	(Name);
-	if (I==shaders.end())	Device.Fatal("Shader '%s' not found in library.",Name);
-	else					return I->second;
+	// Fail
+	Device.Fatal("Failed to find compiled shader or stateblock");
 }
+
+//--------------------------------------------------------------------------------------------------------------
 CTexture* CShaderManager::_CreateTexture	(LPCSTR Name) 
 {
 	R_ASSERT(Name && Name[0]);
 
 	// ***** first pass - search already loaded texture
 	map<LPSTR,CTexture*,str_pred>::iterator I = textures.find	(Name);
-	if (I!=textures.end())	{
-		I->second->dwRefCount++;
-		return		I->second;
+	if (I!=textures.end())	
+	{
+		CTexture *T		=	I->second;
+		T->dwRefCount	+=	1;
+		return		T;
 	}
-
-	// ***** real creation
-	CTexture *p		= new CTexture	(Name);
-	p->dwRefCount	= 1;
-	if (Device.bReady && !bDeferredLoad) p->Load();
-	textures.insert(make_pair(strdup(Name),p));
-	return p;
+	else 
+	{
+		CTexture *T		= new CTexture;
+		T->dwRefCount	= 1;
+		textures.insert	(make_pair(strdup(Name),T));
+		if (Device.bReady && !bDeferredLoad) T->Load(Name);
+		return		T;
+	}
 }
-CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name) 
+void	CShaderManager::_DeleteTexture		(CTexture* &T)
 {
-	R_ASSERT(Name && Name[0]);
-
-	map<LPSTR,CConstant*,str_pred>::iterator I = constants.find	(Name);
-	if (I==constants.end())	Device.Fatal("Constant '%s' not found in library.",Name);
-	else					return I->second;
+	R_ASSERT(T);
+	T->dwRefCount	--;
+	T=0;
 }
+//--------------------------------------------------------------------------------------------------------------
 CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name) 
 {
 	R_ASSERT(Name && Name[0]);
 
 	map<LPSTR,CMatrix*,str_pred>::iterator I = matrices.find	(Name);
-	if (I==matrices.end())	Device.Fatal("Matrix '%s' not found in library.",Name);
+	if (I!=matrices.end())	
+	{
+		CMatrix* M		=	I->second;
+		M->dwReference	+=	1;
+		return	M;
+	}
+	else
+	{
+		CMatrix* M		=	new CMatrix;
+		M->dwReference	=	1;
+		matrices.insert	(make_pair(strdup(Name),M));
+		return	M;
+	}
+}
+void	CShaderManager::_DeleteMatrix		(CMatrix* &M)
+{
+	R_ASSERT(M);
+	M->dwReference	--;
+	M=0;
+}
+//--------------------------------------------------------------------------------------------------------------
+CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name) 
+{
+	R_ASSERT(Name && Name[0]);
+
+	map<LPSTR,CConstant*,str_pred>::iterator I = constants.find	(Name);
+	if (I!=constants.end())	
+	{
+		CConstant* C	=	I->second;
+		C->dwReference	+=	1;
+		return	C;
+	}
+	else
+	{
+		CConstant* C	=	new CConstant;
+		C->dwReference	=	1;
+		constants.insert	(make_pair(strdup(Name),C));
+		return	C;
+	}
+}
+void	CShaderManager::_DeleteConstant		(CConstant* &C)
+{
+	R_ASSERT(C);
+	C->dwReference	--;
+	C=0;
+}
+
+//--------------------------------------------------------------------------------------------------------------
+CBlender* CShaderManager::_GetBlender		(LPCSTR Name) 
+{
+	R_ASSERT(Name && Name[0]);
+
+	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(Name);
+	if (I==blenders.end())	Device.Fatal("Shader '%s' not found in library.",Name);
 	else					return I->second;
 }
-
-/*
-DWORD CShaderManager::_GetMemoryUsage	()
+//--------------------------------------------------------------------------------------------------------------
+STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 {
-	DWORD Result	= 0;
-	for (DWORD i=0; i<textures.size(); i++) 
+	for (DWORD it=0; it<lst_textures.size(); it++)
 	{
-		Result += textures[i]->dwMemoryUsage;
+		STextureList*	base		= lst_textures[it];
+		if (L.equal(*base))			return base;
 	}
-	return Result;
-}
-*/
 
+	lst_textures.push_back	(new STextureList(L.begin(),L.size()));
+	return lst_textures.back();
+}
+SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
+{
+	for (DWORD it=0; it<lst_matrices.size(); it++)
+	{
+		SMatrixList*	base		= lst_matrices[it];
+		if (L.equal(*base))			return base;
+	}
+	lst_matrices.push_back	(new SMatrixList(L.begin(),L.size()));
+	return lst_matrices.back();
+}
+SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
+{
+	for (DWORD it=0; it<lst_constants.size(); it++)
+	{
+		SConstantList*	base		= lst_constants[it];
+		if (L.equal(*base))			return base;
+	}
+	lst_constants.push_back	(new SConstantList(L.begin(),L.size()));
+	return lst_constants.back();
+}
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
 void	CShaderManager::_ParseList(sh_list& dest, LPCSTR names)
 {
 	ZeroMemory(&dest, sizeof(dest));
