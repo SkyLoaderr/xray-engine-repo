@@ -529,7 +529,7 @@ public:
 		dest.z	= (v.x*_13 + v.y*_23 + v.z*_33 + _43)*iw;
 	}
 
-	IC	void	transform_tiny		(Tvector &v) const
+	ICF	void	transform_tiny		(Tvector &v) const
 	{
 		Tvector			res;
 		transform_tiny	(res,v);
@@ -541,7 +541,7 @@ public:
 		transform		(res,v);
 		v.set			(res);
 	}
-	IC	void	transform_dir		(Tvector &v) const
+	ICF	void	transform_dir		(Tvector &v) const
 	{
 		Tvector			res;
 		transform_dir	(res,v);
