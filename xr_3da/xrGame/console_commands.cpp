@@ -642,9 +642,12 @@ public:
 //			return;
 //		}
 
-		string_path	S,S1;
-		S[0]		= 0;
-		sscanf		(args ,"%s",S);
+		u64						start, finish;
+		string_path				S,S1;
+		S[0]					= 0;
+		sscanf					(args ,"%s",S);
+		
+		start					= CPU::GetCycleCount();
 		if (!xr_strlen(S)) {
 			NET_Packet			net_packet;
 			net_packet.w_begin	(M_SAVE_GAME);
@@ -660,10 +663,17 @@ public:
 			net_packet.w_u8		(1);
 			Level().Send		(net_packet,net_flags(TRUE));
 		}
+		finish					= CPU::GetCycleCount();
+		Msg						("Autosave overhead : %f",CPU::cycles2milisec*(finish - start));
 
 		strcat					(S,".dds");
 		FS.update_path			(S1,"$game_saves$",S);
+		
+		start					= CPU::GetCycleCount();
 		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S1);
+		finish					= CPU::GetCycleCount();
+
+		Msg						("Screenshot overhead : %f",CPU::cycles2milisec*(finish - start));
 	}
 };
 
