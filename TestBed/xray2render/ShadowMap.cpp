@@ -209,7 +209,7 @@ CMyD3DApplication::CMyD3DApplication()
 	m_strWindowTitle					= _T	("xray2 : render");
 	m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
 	m_d3dEnumeration.AppMinStencilBits	= 1;
-	// m_d3dEnumeration.AppRequiresFullscreen = TRUE;
+	m_d3dEnumeration.AppRequiresFullscreen = TRUE;
 	m_dwCreationWidth					= OUT_WIDTH;
 	m_dwCreationHeight					= OUT_HEIGHT;
 
