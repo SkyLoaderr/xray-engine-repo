@@ -280,8 +280,12 @@ void CAI_Soldier::OnRetreatAloneFire()
 	if (!Enemy.Enemy)
 		SelectorRetreat.m_tEnemyPosition = tSavedEnemyPosition;
 
-	if (AI_Path.bNeedRebuild)
-		vfBuildPathToDestinationPoint(0);
+	if (AI_Path.bNeedRebuild) {
+		vfInitSelector(SelectorAttack,Squad,Leader);
+		if (!Enemy.Enemy)
+			SelectorAttack.m_tEnemyPosition = tSavedEnemyPosition;
+		vfBuildPathToDestinationPoint(SelectorAttack,);
+	}
 	else
 		vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
 
