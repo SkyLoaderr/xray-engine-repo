@@ -104,6 +104,7 @@ extern	Merged			g_merged;
 extern	Lights			g_lights;
 extern	Params			g_params;
 extern	RAPID::Model	Level;
+extern	RAPID::Model	LevelLight;
 extern	Fbox			LevelBB;
 extern	Vectors			Emitters;
 
