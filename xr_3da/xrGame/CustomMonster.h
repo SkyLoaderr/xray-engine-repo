@@ -12,7 +12,7 @@
 #include "..\feel_sound.h"
 #include "..\feel_touch.h"
 #include "entity.h"
-#include "phmovementcontrol.h"
+
 #include "ai_space.h"
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
@@ -84,8 +84,7 @@ public:
 		BODY_STATE_LIE,
 	};
 	
-	//Movement
-	CPHMovementControl	Movement;
+
 
 	// Pathfinding cache
 	AI::CPathNodes		AI_Path;

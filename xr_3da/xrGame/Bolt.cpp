@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "bolt.h"
 #include "ParticlesObject.h"
-
+#include "PhysicsShell.h"
 CBolt::CBolt(void) {
 	//m_belt = true;
 	m_weight = .1f;

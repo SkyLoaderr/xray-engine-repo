@@ -2,7 +2,7 @@
 #include "torch.h"
 #include "entity.h"
 #include "..\LightAnimLibrary.h"
-
+#include "PhysicsShell.h"
 const float TIME_2_HIDE		= 5.f;
 
 CTorch::CTorch(void) 

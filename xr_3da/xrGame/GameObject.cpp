@@ -10,7 +10,7 @@
 #include "CustomMonster.h"
 #include "physicobject.h"
 #include "HangingLamp.h"
-
+#include "PhysicsShell.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -358,6 +358,8 @@ void CGameObject::PHSetPushOut()
 	if(m_pPhysicsShell)
 		m_pPhysicsShell->set_PushOut(5000,PushOutCallback1);
 }
+
+f32 CGameObject::GetMass() { return m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
 ///void CGameObject::OnH_A_Independent()
 //{
 //	if(m_pPhysicsShell)

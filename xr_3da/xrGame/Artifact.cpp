@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "artifact.h"
+#include "PhysicsShell.h"
 //#include "actor.h"
 
 xr_set<CArtifact*> CArtifact::m_all;

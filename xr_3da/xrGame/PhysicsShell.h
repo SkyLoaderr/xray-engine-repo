@@ -11,11 +11,7 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
 
 
 
-class CPhysicsRefObject
-{
-public:
-	virtual ~CPhysicsRefObject() {}
-};
+#include "PhysicsRefObject.h"
 
 extern const dReal fixed_step;
 IC float Erp(float k_p,float k_d)		{return ((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)));}

@@ -678,11 +678,6 @@
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
-							<FileConfiguration
-								Name="Mixed|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_state.cpp">
@@ -2227,6 +2222,12 @@
 				RelativePath="_cylinder.h">
 			</File>
 			<File
+				RelativePath=".\CharacterPhysicsSupport.cpp">
+			</File>
+			<File
+				RelativePath=".\CharacterPhysicsSupport.h">
+			</File>
+			<File
 				RelativePath="dCylinder\dCylinder.cpp">
 			</File>
 			<File
@@ -2282,6 +2283,9 @@
 			</File>
 			<File
 				RelativePath="Physics.h">
+			</File>
+			<File
+				RelativePath=".\PhysicsRefObject.h">
 			</File>
 			<File
 				RelativePath="PhysicsShell.cpp">

@@ -10,7 +10,7 @@
 
 // refs
 class CLAItem;
-
+class CPhysicsElement;
 class CHangingLamp: public CGameObject
 {
 	typedef	CGameObject		inherited;

@@ -157,6 +157,10 @@ public:
 	{	
 		m_character->GetDesiredPosition(dpos);
 	}
+	bool				CharacterExist()		
+	{
+		return m_character->b_exist;
+	}
 	CPHMovementControl(void);
 	~CPHMovementControl(void);
 };

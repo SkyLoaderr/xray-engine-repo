@@ -10,7 +10,7 @@
 
 #include "ai_rat.h"
 #include "..\\ai_monsters_misc.h"
-
+#include "..\\..\\PhysicsShell.h"
 CAI_Rat::CAI_Rat()
 {
 	m_tHitDir.set			(0,0,1);

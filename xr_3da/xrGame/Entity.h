@@ -8,7 +8,7 @@
 
 
 #include "gameobject.h"
-
+#include "phmovementcontrol.h"
 // refs
 class	ENGINE_API CCameraBase;
 class	ENGINE_API C3DSound;
@@ -16,6 +16,7 @@ class	ENGINE_API CMotionDef;
 class	ENGINE_API CKinematics;
 class	ENGINE_API CBoneInstance;
 class	CWeaponList;
+class   CPHMovementControl;
  
 class CEntity : public CGameObject
 {
@@ -103,6 +104,8 @@ public:
 	u32						m_dwDeathTime;
 	float					m_fAccuracy;
 	float					m_fIntelligence;
+	//Movement
+	CPHMovementControl		Movement;
 public:
 	// General
 	CEntityAlive			();
@@ -129,6 +132,12 @@ public:
 	};
 
 	virtual void			BuyItem					(LPCSTR buf);
+public:
+IC	CPHMovementControl* PMovement()
+	{
+		return &Movement;
+	}
+
 };
 
 #endif // !defined(AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_)

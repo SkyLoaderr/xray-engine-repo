@@ -6,7 +6,9 @@
 #define AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_
 #pragma once
 
-#include "PhysicsShell.h"
+class CPhysicsShell;
+#include "PhysicsRefObject.h"
+
 class CGameObject : 
 	public CObject, 
 	public CPhysicsRefObject
@@ -17,7 +19,10 @@ public:
 	u32											AI_NodeID;
 	NodeCompressed*								AI_Node;
 	CPhysicsShell*								m_pPhysicsShell;
-
+	IC CPhysicsShell*			PPhysicsShell()		
+	{
+		return m_pPhysicsShell;
+	}
 	// Utilities
 	void					u_EventGen			(NET_Packet& P, u32 type, u32 dest	);
 	void					u_EventSend			(NET_Packet& P, BOOL sync=TRUE		);
@@ -53,7 +58,7 @@ public:
 	virtual ~CGameObject();
 
 	virtual f32 ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions);
-	virtual f32 GetMass() { return m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
+	virtual f32 GetMass();
 
 #ifdef DEBUG
 	virtual void			OnRender			();

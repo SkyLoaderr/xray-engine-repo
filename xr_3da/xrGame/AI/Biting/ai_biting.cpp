@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
-
+#include "..\\..\\PhysicsShell.h"
 CAI_Biting::CAI_Biting()
 {
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "physicobject.h"
-
+#include "PhysicsShell.h"
 CPhysicObject::CPhysicObject(void) {
 	m_type = epotBox;
 	m_mass = 10.f;
