@@ -854,6 +854,8 @@ void CActor::UpdateCL()
 
 	if (g_Alive()) 
 	{
+		//if(m_PhysicMovementControl->CharacterExist())
+		//			m_PhysicMovementControl->InterpolatePosition(Position());
 		//обновить информацию о предметах лежащих рядом с актером
 		PickupModeUpdate();	
 
