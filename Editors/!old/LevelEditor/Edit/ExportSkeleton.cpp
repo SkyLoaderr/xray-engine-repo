@@ -732,6 +732,9 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 
     for (SMotionIt motion_it=m_Source->FirstSMotion(); motion_it!=m_Source->LastSMotion(); motion_it++, smot++){
         CSMotion* motion 	= *motion_it;
+
+//		if (motion->m_Flags.is(esmStopAtEnd)) Msg("%s - %d",motion->Name(),motion->m_Flags.is(esmStopAtEnd));
+        
         F.open_chunk(smot);
         F.w_stringZ(motion->Name());
         F.w_u32(motion->Length());
