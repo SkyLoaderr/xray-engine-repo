@@ -14,7 +14,7 @@ end
 function save_dialog:InitControls()
 	self:Init(100,100,257,271) --init self position and size
 	
-	local screen_height = get_device():height
+	local screen_height = get_device().height
 	//local screen_width  = get_device():width
 	
 	
