@@ -114,19 +114,25 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 		if (it2!=g_trans.end())	it2++;
 
 		// Search
+		BOOL	found = FALSE;
 		for (; it!=it2; it++)
 		{
 			v_vertices&	VL		= it->second;
 			_vertex* Front		= VL.front();
 			R_ASSERT			(Front);
 			if (Front->P.similar(V->P,eps))
+			{
+				found				= TRUE;
 				VL.push_back		(V);
+			}
 		}
 
 		// Register
-		mapVertIt	ins			= g_trans.insert(mk_pair(key,v_vertices()));
-		ins->second.reserve		(32);
-		ins->second.push_back	(V);
+		if (!found)				{
+			mapVertIt	ins			= g_trans.insert(mk_pair(key,v_vertices()));
+			ins->second.reserve		(32);
+			ins->second.push_back	(V);
+		}
 	}
 
 	// Enable faces if needed
