@@ -87,61 +87,10 @@ void CDetailManager::soft_Render	()
 					CDetail::fvfVertexIn	*srcIt = Object.vertices, *srcEnd = Object.vertices+Object.number_vertices;
 					CDetail::fvfVertexOut	*dstIt = vDest;
 
-					//
-					float	tm			= Device.fTimeGlobal*2.f; 
-					float	height		= Object.bv_bb.max.y-Object.bv_bb.min.y;
-					float	cx			= 1.f/5.f;
-					float	cy			= 1.f/7.f;
-					float	cz			= 1.f/3.f;
-					Fvector&	B		= mXform.c;
-					Fvector dir2D,ldir;
-					float	tm_rot		= PI_MUL_2*Device.fTimeGlobal/30;
-					dir2D.set			(sinf(tm_rot),0,cosf(tm_rot));
-					dir2D.normalize		();
-					ldir.set			(0,-1,0);
-					ldir.normalize		();
-
 					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
 					{
-						Fvector& src		= srcIt->P;
-						Fcolor clr;			clr.set				(Instance.C,Instance.C,Instance.C,1.f);
-
-						//
-						Fvector pos;		mXform.transform_tiny	(pos,src);			// normal coords
-						float	angle		= pos.x*cx + pos.y*cy + pos.z*cz + 1.f*tm;
-						float	dot			= sinf					(angle);
-						float	H			= pos.y - mXform.c.y;						// height of vertex (scaled)
-						float	frac		= src.y/height;								// fraction of model height
-						float	inten		= .1f * H * dot;
-
-						//
-						Fvector ctrl1;		ctrl1.set	(0,				0,		0				);
-						Fvector ctrl2;		ctrl2.set	(0,				H/2,	0				);
-						Fvector ctrl3;		ctrl3.set	(dir2D.x*inten,	H,		dir2D.z*inten	);
-
-						//
-						Fvector temp;		temp.lerp	(ctrl1, ctrl2, frac);
-						Fvector temp2;		temp2.lerp	(ctrl2, ctrl3, frac);
-						Fvector result;		result.lerp	(temp,	temp2, frac);
-						pos.x				= pos.x			+ result.x;
-						pos.y				= mXform.c.y	+ result.y;
-						pos.z				= pos.z			+ result.z;
-						dstIt->P			= pos;
-
-						// 
-						/*
-						Fvector norm;		norm.sub	(pos2D,	mXform.c);
-						norm.normalize		();
-						float	dot			= norm.dotproduct	(ldir);
-						*/
-						clamp				(dot,0.f,1.f		);
-						clr.mul_rgb			(.9f+dot*dot*frac	);
-
-						// 
-						/*
 						mXform.transform_tiny	(dstIt->P,srcIt->P);
-						*/
-						dstIt->C	= clr.get();
+						dstIt->C	= C;
 						dstIt->u	= srcIt->u;
 						dstIt->v	= srcIt->v;
 					}
