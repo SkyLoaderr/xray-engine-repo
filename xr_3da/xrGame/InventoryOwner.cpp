@@ -329,8 +329,8 @@ void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
 }
 
 
-//возвращает текуший разброс стрельбы с учетом движения
+//возвращает текуший разброс стрельбы с учетом движения (в радианах)
 float CInventoryOwner::GetWeaponAccuracy() const
 {
-	return 1.f;
+	return 0.f;
 }
