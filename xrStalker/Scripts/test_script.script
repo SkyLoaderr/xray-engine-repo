@@ -9,8 +9,9 @@ function dump_time(t)
 	printf(t:timeToString(game.CTime.TimeToHours))
 	printf(t:timeToString(game.CTime.TimeToMinutes))
 	printf(t:timeToString(game.CTime.TimeToSeconds))
-*/	
+	
 	printf(t:timeToString(game.CTime.TimeToMilisecs))
+	*/
 printf("")
 end
 
