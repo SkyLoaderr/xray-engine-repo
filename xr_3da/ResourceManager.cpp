@@ -290,7 +290,7 @@ void	CResourceManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u
 }
 void	CResourceManager::_DumpMemoryUsage		()
 {
-	xr_map<u32,shared_str>		mtex			;
+	xr_multimap<u32,shared_str>		mtex			;
 
 	// sort
 	{
@@ -306,8 +306,8 @@ void	CResourceManager::_DumpMemoryUsage		()
 
 	// dump
 	{
-		xr_map<u32,shared_str>::iterator I = mtex.begin	();
-		xr_map<u32,shared_str>::iterator E = mtex.end	();
+		xr_multimap<u32,shared_str>::iterator I = mtex.begin	();
+		xr_multimap<u32,shared_str>::iterator E = mtex.end	();
 		for (; I!=E; I++)
 			Msg			("* %4.1f : %s",float(I->first)/1024.f,I->second.c_str());
 	}
