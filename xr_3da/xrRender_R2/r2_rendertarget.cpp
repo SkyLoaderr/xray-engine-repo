@@ -22,11 +22,23 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_combine						= xr_new<CBlender_combine>				();
 
 	//	NORMAL
+	if (RImplementation.b_nv3x)
+	{
+		u32	w=Device.dwWidth, h=Device.dwHeight;
+		rt_Deffer					= Device.Shader._CreateRT	(r2_RT_DEFFER,	w,h,MAKEFOURCC('N','V','E','3'));
+		R_ASSERT					(rt_Deffer);
+	} 
+	else
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Position					= Device.Shader._CreateRT	(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Color					= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16);
+	}
+
+	// NORMAL-part2
+	{
+		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Accumulator				= Device.Shader._CreateRT	(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
 		rt_Generic					= Device.Shader._CreateRT	(r2_RT_generic,	w,h,D3DFMT_A8R8G8B8);
 	}
@@ -190,13 +202,17 @@ void	CRenderTarget::OnDeviceDestroy	()
 	// NORMAL
 	Device.Shader._DeleteRT		(rt_Generic				);
 	Device.Shader._DeleteRT		(rt_Accumulator			);
+
 	Device.Shader._DeleteRT		(rt_Color				);
 	Device.Shader._DeleteRT		(rt_Normal				);
 	Device.Shader._DeleteRT		(rt_Position			);
+	Device.Shader._DeleteRT		(rt_Deffer				);
 
 	// Blenders
 	xr_delete					(b_combine				);
 	xr_delete					(b_bloom				);
+	xr_delete					(b_accum_spot_s			);
+	xr_delete					(b_accum_spot_uns		);
 	xr_delete					(b_accum_point_uns		);
 	xr_delete					(b_accum_point_s		);
 	xr_delete					(b_accum_direct			);
