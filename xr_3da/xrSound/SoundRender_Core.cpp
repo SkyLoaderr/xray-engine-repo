@@ -263,15 +263,44 @@ void	CSoundRender_Core::destroy(sound& S )
 
 CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 {
+	static CSoundRender_Environment	identity;
+
 	if (bUserEnvironment)
 	{
 		return &s_user_environment;
-	} else 
+	} 
+	else 
 	{
-		static CSoundRender_Environment	identity;
-		identity.set_identity	(true,true,true);
-		// identity.set_default	(false,false,false);
-		return &identity;
+		if (geom_ENV)
+		{
+			geom_DB.ray_options		(CDB::OPT_ONLYNEAREST);
+			Fvector	dir				= {0,-1,0};
+			geom_DB.ray_query		(geom_ENV,P,dir,1000.f);
+			if (geom_DB.r_count())
+			{
+				CDB::RESULT*		r	= geom_DB.r_begin();
+				CDB::TRI*			T	= geom_ENV->get_tris()+r->id;
+				Fvector tri_norm;
+				tri_norm.mknormal		(*T->verts[0],*T->verts[1],*T->verts[2]);
+				float	dot				= dir.dotproduct(tri_norm);
+				if (dot<0)
+				{
+					u16		id_front	= (T->dummy&0x0000ffff)>>0;		//	front face
+					return	s_environment->Get(id_front);
+				} else {
+					u16		id_back		= (T->dummy&0xffff0000)>>16;	//	back face
+					return	s_environment->Get(id_back);
+				}
+			} else
+			{
+				identity.set_identity	(true,true,true);
+				return &identity;
+			}
+		} else
+		{
+			identity.set_identity	(true,true,true);
+			return &identity;
+		}
 	}
 }
 
