@@ -72,7 +72,10 @@ public:
 	virtual void	set_type				(LT type)						{ flags.type = type;		}
 	virtual void	set_active				(bool b);
 	virtual bool	get_active				()								{ return flags.bActive;		}
-	virtual void	set_shadow				(bool b)						{ flags.bShadow=b;			}
+	virtual void	set_shadow				(bool b)						
+	{ 
+		flags.bShadow=b;			
+	}
 	virtual void	set_position			(const Fvector& P);
 	virtual void	set_rotation			(const Fvector& D, const Fvector& R);
 	virtual void	set_cone				(float angle);
