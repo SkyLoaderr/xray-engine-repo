@@ -49,7 +49,7 @@
         <text>Про Стрелка не слышал?</text>
     </string>
     <string id="escape_lager_hlam_flame_111">
-        <text>Попадался мне как-то костюм с надписью &amp;amp;quot;группировка Стрелка&amp;amp;quot;. Перепродал с хорошим наваром. Что-то такое увидишь - тащи ко мне.</text>
+        <text>Попадался мне как-то костюм с надписью &amp;amp;amp;amp;quot;группировка Стрелка&amp;amp;amp;amp;quot;. Перепродал с хорошим наваром. Что-то такое увидишь - тащи ко мне.</text>
     </string>
     <string id="escape_lager_hlam_flame_12">
         <text>Как жизнь? Чем занимаешься?</text>
@@ -85,7 +85,7 @@
         <text>Что за Бармен такой?</text>
     </string>
     <string id="escape_lager_volk_flame_11111">
-        <text>На заводе &amp;amp;amp;amp;quot;Росток&amp;amp;amp;amp;quot; есть бар сталкеров. Вот он там главный. Но вход открыт только для ветеранов.</text>
+        <text>На заводе &amp;amp;amp;amp;amp;amp;quot;Росток&amp;amp;amp;amp;amp;amp;quot; есть бар сталкеров. Вот он там главный. Но вход открыт только для ветеранов.</text>
     </string>
     <string id="escape_lager_volk_flame_1112">
         <text>А где находится лагерь Ученых?</text>
@@ -100,7 +100,7 @@
         <text>Большинство разбогатеть хотят - на артефакты охотятся. Однако есть кое-что получше, чем россыпь артефактов… Исполнитель желаний там, а это гораздо ценнее любых богатств.</text>
     </string>
     <string id="escape_lager_volk_flame_1211">
-        <text>&amp;amp;amp;amp;quot;Исполнитель желаний&amp;amp;amp;amp;quot;? Это еще что такое?</text>
+        <text>&amp;amp;amp;amp;amp;amp;quot;Исполнитель желаний&amp;amp;amp;amp;amp;amp;quot;? Это еще что такое?</text>
     </string>
     <string id="escape_lager_volk_flame_12111">
         <text>Сам не знаю. Но он там точно есть... Я надеюсь…</text>
@@ -160,7 +160,7 @@
         <text>Ну вот и ладненько. Что нибудь еще?</text>
     </string>
     <string id="escape_trader_jobs_2">
-        <text>Все как обычно. Прежде всего мне нужны артефакты. Плачу обычную цену, ни больше, ни меньше.\n Ну и иногда мне нужны &amp;amp;amp;amp;amp;amp;amp;quot;особые&amp;amp;amp;amp;amp;amp;amp;quot; люди для &amp;amp;amp;amp;amp;amp;amp;quot;особой&amp;amp;amp;amp;amp;amp;amp;quot; работы.</text>
+        <text>Все как обычно. Прежде всего мне нужны артефакты. Плачу обычную цену, ни больше, ни меньше.\n Ну и иногда мне нужны особые люди для особой работы.</text>
     </string>
     <string id="escape_trader_jobs_3">
         <text>Действительно, все как обычно. Ладно - если что-то найду, постараюсь не забыть принести.</text>
