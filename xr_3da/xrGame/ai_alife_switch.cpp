@@ -13,21 +13,25 @@
 void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 {
 	NET_Packet						tNetPacket;
+	
+	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
+	m_tpServer->Process_spawn		(tNetPacket,0,FALSE,tpALifeDynamicObject);
+	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
+
 	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; I++) {
-			CALifeDynamicObject		*tpItem = dynamic_cast<CALifeDynamicObject*>(m_tObjectRegistry[*I]);
-			VERIFY(tpItem);
+			CALifeItem				*tpItem = dynamic_cast<CALifeItem*>(m_tObjectRegistry[*I]);
+			if (!tpItem)
+				continue;
 			tpItem->s_flags.or		(M_SPAWN_UPDATE);
 			m_tpServer->Process_spawn(tNetPacket,0,FALSE,tpItem);
 			tpItem->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
+			tpItem->m_bOnline		= true;
 		}
 	}
-	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
-	m_tpServer->Process_spawn		(tNetPacket,0,FALSE,tpALifeDynamicObject);
-	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
 }
 
 void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
@@ -36,8 +40,13 @@ void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 	if (tpTraderParams) {
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
-		for ( ; I != E; I++)
-			m_tpServer->Perform_destroy(m_tObjectRegistry[*I],net_flags(TRUE,TRUE));
+		for ( ; I != E; I++) {
+			CALifeItem				*tpItem = dynamic_cast<CALifeItem*>(m_tObjectRegistry[*I]);
+			if (!tpItem)
+				continue;
+			m_tpServer->Perform_destroy(tpItem,net_flags(TRUE,TRUE));
+			tpItem->m_bOnline		= false;
+		}
 	}
 	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
 }
@@ -115,9 +124,13 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 
 void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 {
-	I->m_tNodeID = getAI().q_Node(I->m_tNodeID,I->o_Position);
-	if (!I->m_tNodeID)
-		Msg("! ALife : Corresponding node hasn't been found for monster %s",I->s_name_replace);
+	if (I->m_bOnline || !I->m_tNodeID || (I->m_tNodeID >= getAI().Header().count)) {
+		I->m_tNodeID = getAI().q_Node(I->m_tNodeID,I->o_Position);
+		I->m_tGraphID = getAI().m_tpaCrossTable[I->m_tNodeID].tGraphIndex;
+		I->m_fDistance = getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
+	}
+	if (!I->m_tNodeID || (I->m_tNodeID >= getAI().Header().count))
+		Msg("! ALife : Corresponding node hasn't been found for object %s",I->s_name_replace);
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
 			if (I->m_dwLastSwitchTime) {
@@ -164,8 +177,10 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 		else {
 			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
 			VERIFY				(J != m_tObjectRegistry.end());
-			if (!(*J).second->m_bOnline)
+			if (!(*J).second->m_bOnline) {
+				VERIFY			(false);
 				vfSwitchObjectOffline(I);
+			}
 		}
 	else
 		if (I->ID_Parent == 0xffff) {
@@ -187,8 +202,18 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 		else {
 			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
 			VERIFY				(J != m_tObjectRegistry.end());
-			if ((*J).second->m_bOnline)
+			if ((*J).second->m_bOnline) {
+				CALifeDynamicObject *tpALifeDynamicObject = (*J).second;
+				OBJECT_IT					i = tpALifeDynamicObject->children.begin();
+				OBJECT_IT					e = tpALifeDynamicObject->children.end();
+				for ( ; i != e; i++)
+					if (*i == I->ID) {
+						i=i;
+					}
+				
+				VERIFY				(false);
 				vfSwitchObjectOnline(I);
+			}
 		}
 	
 	CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract*>(I);

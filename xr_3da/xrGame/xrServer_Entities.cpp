@@ -1491,11 +1491,11 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_TARGET_CS_BASE:		return xr_new<xrSE_Target_CSBase>	(caSection);
 	case CLSID_TARGET_CS:			return xr_new<xrSE_Target_CS>		(caSection);
 	case CLSID_TARGET_CS_CASK:		return xr_new<xrSE_Target_CSCask>	(caSection);
-	case CLSID_IITEM_BOLT:			return xr_new<CALifeDynamicObject>	(caSection);
-	case CLSID_GRENADE_F1:			return xr_new<CALifeDynamicObject>	(caSection);
-	case CLSID_OBJECT_G_RPG7:		return xr_new<CALifeDynamicObject>	(caSection);
-	case CLSID_GRENADE_RGD5:		return xr_new<CALifeDynamicObject>	(caSection);
-	case CLSID_DEVICE_TORCH:		return xr_new<CALifeDynamicObject>	(caSection);
+	case CLSID_IITEM_BOLT:			return xr_new<CALifeItem>			(caSection);
+	case CLSID_GRENADE_F1:			return xr_new<CALifeItem>			(caSection);
+	case CLSID_OBJECT_G_RPG7:		return xr_new<CALifeItem>			(caSection);
+	case CLSID_GRENADE_RGD5:		return xr_new<CALifeItem>			(caSection);
+	case CLSID_DEVICE_TORCH:		return xr_new<CALifeItem>			(caSection);
 	case CLSID_OBJECT_W_VAL:		return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_VINTOREZ:	return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_WALTHER:	return xr_new<xrSE_Weapon>			(caSection);

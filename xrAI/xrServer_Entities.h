@@ -167,7 +167,7 @@ xrSE_DECLARE_BEGIN(xrSE_MercuryBall,CALifeItem)
 xrSE_DECLARE_END
 
 //***** Car
-xrSE_DECLARE_BEGIN(xrSE_Car,xrSE_Teamed)
+xrSE_DECLARE_BEGIN(xrSE_Car,xrServerEntity)
 									xrSE_Car		(LPCSTR caSection) : xrSE_Teamed(caSection)
 	{
 	};

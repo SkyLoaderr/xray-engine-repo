@@ -328,17 +328,17 @@ public:
 		vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 	};
 
-	IC void vfAttachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
+	IC void vfAttachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bGenEvent = true)
 	{
-		NET_Packet		P;
-		m_tpGame->u_EventGen(P,GE_OWNERSHIP_TAKE,tServerEntity.ID);
-		P.w_u16			(u16(tpALifeItem->ID));
-		m_tpGame->u_EventSend(P);
+		if (bGenEvent) {
+			NET_Packet		P;
+			m_tpGame->u_EventGen(P,GE_OWNERSHIP_TAKE,tServerEntity.ID);
+			P.w_u16			(u16(tpALifeItem->ID));
+			m_tpGame->u_EventSend(P);
+		}
 		
-		//tServerEntity.children.push_back(tpALifeItem->m_tObjectID);
 		CALifeTraderParams *tpALifeTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
 		VERIFY(tpALifeTraderParams);
-		tpALifeItem->ID_Parent = tServerEntity.ID;
 		ALIFE_ENTITY_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 		ALIFE_ENTITY_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
 		for ( ; I != E; I++)
@@ -349,13 +349,14 @@ public:
 		tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
 	}
 
-	IC void vfDetachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
+	IC void vfDetachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bGenEvent = true)
 	{
-		NET_Packet		P;
-		m_tpGame->u_EventGen(P,GE_OWNERSHIP_REJECT,tServerEntity.ID);
-		P.w_u16			(u16(tpALifeItem->ID));
-		m_tpGame->u_EventSend(P);
-		//tpALifeItem->ID = 65535;
+		if (bGenEvent) {
+			NET_Packet		P;
+			m_tpGame->u_EventGen(P,GE_OWNERSHIP_REJECT,tServerEntity.ID);
+			P.w_u16			(u16(tpALifeItem->ID));
+			m_tpGame->u_EventSend(P);
+		}
 		CALifeTraderParams *tpTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
 		VERIFY(tpTraderParams);
 		m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
