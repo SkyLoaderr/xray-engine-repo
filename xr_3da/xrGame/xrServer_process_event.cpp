@@ -184,8 +184,9 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			if (e_dest->m_bALifeControl) {
 				game_sv_Single *tpGame = dynamic_cast<game_sv_Single*>(game);
 				VERIFY(tpGame);
-				if (e_dest->ID_Parent == 0xffff)
+				if (e_dest->ID_Parent == 0xffff) {
 					tpGame->m_tpALife->vfReleaseObject(e_dest,false);
+				}
 			}
 			
 			entity_Destroy		(e_dest);

@@ -127,7 +127,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	}
 	if (S.Enemy)
 		vfSaveEnemy();
-	if (m_tSavedEnemy->getDestroy())
+	if (m_tSavedEnemy && m_tSavedEnemy->getDestroy())
 		m_tSavedEnemy = 0;
 }
 

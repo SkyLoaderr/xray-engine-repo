@@ -68,8 +68,8 @@ class CSE_ALifeSimulator :
 			void					vfAssignStalkerCustomers	();
 	// switch online/offline routines
 			void					vfValidatePosition			(CSE_ALifeDynamicObject		*I);
-			void					vfRemoveOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool					bAddToScheduled = true);
-			void					vfCreateOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool					bRemoveFromScheduled = true);
+			void					vfRemoveOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool					bAddToRegistries = true);
+			void					vfCreateOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool					bRemoveFromRegistries = true);
 			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
@@ -100,7 +100,6 @@ public:
 	
 	// temporary buffers for combats
 	ITEM_P_VECTOR					m_tpItemVector;
-	
 	// constructors/destructors
 									CSE_ALifeSimulator			(xrServer					*tpServer);
 	virtual							~CSE_ALifeSimulator			();
@@ -114,7 +113,7 @@ public:
 			void					Save						(LPCSTR						caSaveName);
 			void					Save						();
 			void					vfNewGame					(LPCSTR						caSaveName);
-			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract,				bool						bForceDelete = true);
+			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract,				bool						bALifeRequest = true);
 	// miscellanious
 			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTraderAbstract		*tpTraderAbstract);
 			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable);

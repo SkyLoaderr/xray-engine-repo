@@ -11,35 +11,25 @@
 #include "ai_space.h"
 #include "GameObject.h"
 
-void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bForceDelete)
+void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALifeRequest)
 {
 	CSE_ALifeDynamicObject			*tpALifeDynamicObject = tpfGetObjectByID(tpSE_Abstract->ID);
 	VERIFY							(tpALifeDynamicObject);
 	m_tObjectRegistry.erase			(tpSE_Abstract->ID);
 	
-	if (!dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject) || !dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject)->bfAttached()) {
-		if (!tpALifeDynamicObject->m_bOnline && !dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject))
-			vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
-		if (getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID == m_tCurrentLevelID) {
-			R_ASSERT2				(m_tpCurrentLevel->find(tpALifeDynamicObject->ID) != m_tpCurrentLevel->end(),"Level map synchronization failed (not found)");
-			vfRemoveObjectFromCurrentLevel(tpALifeDynamicObject);
-		}
-	}
-	else
-		R_ASSERT2					(m_tpCurrentLevel->find(tpALifeDynamicObject->ID) == m_tpCurrentLevel->end(),"Level map synchronization failed (found)");
-	
-	CSE_ALifeMonsterAbstract		*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpSE_Abstract);
-	if (tpALifeMonsterAbstract && !tpALifeMonsterAbstract->m_bOnline && (m_tpScheduledObjects.find(tpALifeMonsterAbstract->ID) != m_tpScheduledObjects.end()))
-		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
+	vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+	vfRemoveObjectFromCurrentLevel	(tpALifeDynamicObject);
+	vfRemoveObjectFromScheduled		(tpALifeDynamicObject);
 
 	tpSE_Abstract->m_bALifeControl	= false;
 
-	if (bForceDelete)
+	if (bALifeRequest)
 		m_tpServer->entity_Destroy	(tpSE_Abstract);
 }
 
-void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bRemoveFromScheduled)
+void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bRemoveFromRegistries)
 {
+	tpALifeDynamicObject->m_bOnline	= true;
 	NET_Packet						tNetPacket;
 	
 	CSE_Abstract					*l_tpAbstract = dynamic_cast<CSE_Abstract*>(tpALifeDynamicObject);
@@ -81,15 +71,16 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 		}
 	}
 	
-	tpALifeDynamicObject->m_bOnline	= true;
-	if (bRemoveFromScheduled) {
+	if (bRemoveFromRegistries) {
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
 		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 	}
 }
 
-void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bAddToScheduled)
+void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bAddToRegistries)
 {
+	tpALifeDynamicObject->m_bOnline	= false;
+
 	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
 	_OBJECT_ID						l_tObjectID = tpALifeDynamicObject->ID;
 	tpALifeDynamicObject->ID		= m_tpServer->PerformIDgen(l_tObjectID);
@@ -120,8 +111,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 		}
 	}
 	
-	tpALifeDynamicObject->m_bOnline	= false;
-	if (bAddToScheduled) {
+	if (bAddToRegistries) {
 		vfAddObjectToScheduled		(tpALifeDynamicObject);
 		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 	}
