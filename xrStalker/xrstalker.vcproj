@@ -1311,6 +1311,16 @@
 						Name="Physics"
 						Filter="">
 					</Filter>
+					<Filter
+						Name="StateManager"
+						Filter="">
+						<File
+							RelativePath=".\scripts\state_lib.script">
+						</File>
+						<File
+							RelativePath=".\scripts\state_mgr.script">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Libraries"
