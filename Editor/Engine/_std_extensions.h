@@ -37,4 +37,30 @@ IC u32		_sqrt	(u32 x)			{ return u32(iFloor(_sqrt(float(x))));  }
 template <class T>	IC T	_min	(T a, T b)	{ return a<b?a:b;	}
 template <class T>	IC T	_max	(T a, T b)	{ return a>b?a:b;	}
 
+
+// string management
+IC char*						strconcat				( char* dest, const char* S1, const char* S2)
+{	return strcat(strcpy(dest,S1),S2); }
+
+// dest = S1+S2+S3
+IC char*						strconcat				( char* dest, const char* S1, const char* S2, const char* S3)
+{	return strcat(strcat(strcpy(dest,S1),S2),S3); }
+
+// dest = S1+S2+S3+S4
+IC char*						strconcat				( char* dest, const char* S1, const char* S2, const char* S3, const char* S4)
+{	return strcat(strcat(strcat(strcpy(dest,S1),S2),S3),S4); }
+
+// dest = S1+S2+S3+S4+S5
+IC char*						strconcat				( char* dest, const char* S1, const char* S2, const char* S3, const char* S4, const char* S5)
+{	return strcat(strcat(strcat(strcat(strcpy(dest,S1),S2),S3),S4),S5); }
+
+// dest = S1+S2+S3+S4+S5+S6
+IC char*						strconcat				( char* dest, const char* S1, const char* S2, const char* S3, const char* S4, const char* S5, const char* S6)
+{	return strcat(strcat(strcat(strcat(strcat(strcpy(dest,S1),S2),S3),S4),S5),S6); }
+
+// return pointer to ".ext"
+IC char*						strext					( const char* S )
+{	return strchr(S,'.'); }
+
+
 #endif

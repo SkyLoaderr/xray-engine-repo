@@ -17,11 +17,11 @@ enum	xrProperties
 	xrP_MATRIX,		// really only name(stringZ) is written into stream
 	xrP_CONSTANT,	// really only name(stringZ) is written into stream
 	xrP_TEXTURE,	// really only name(stringZ) is written into stream
-	xrP_OBJECT,	// really only name(stringZ) is written into stream
 	xrP_INTEGER,
 	xrP_FLOAT,
 	xrP_BOOL,
 	xrP_TOKEN,
+	xrP_OBJECT,		// really only name(stringZ) is written into stream
 	xrP_FORCEDWORD=DWORD(-1)
 };
 

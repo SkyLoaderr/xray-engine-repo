@@ -7,7 +7,6 @@
 #pragma once
 
 #include "Blender_Recorder.h"
-#include "Blender_Params.h"
 #include "Blender_CLSID.h"
 
 #define		BP_W_MARKER(a)	BP_write_c(FS,BPID_MARKER,a,0,0)

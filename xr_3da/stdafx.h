@@ -123,6 +123,7 @@ using namespace std;
 #include "defines.h"
 #include "pure.h"
 #include "vector.h"
+#include "properties.h"
 #ifndef NO_XRLOG
 #include "log.h"
 #endif
