@@ -608,6 +608,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	if (!inherited::net_Spawn(DC))	return FALSE;
+
+	ROS()->force_mode	(IRender_ObjectSpecific::TRACE_ALL);
+
 	m_pPhysics_support->in_NetSpawn	(e);
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);

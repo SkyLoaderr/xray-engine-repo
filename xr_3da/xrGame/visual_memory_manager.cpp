@@ -11,6 +11,7 @@
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
 #include "../skeletoncustom.h"
+#include "clsid_game.h"
 
 struct CNotYetVisibleObjectPredicate{
 	const CGameObject *m_game_object;
@@ -58,6 +59,7 @@ void CVisualMemoryManager::CVisionParameters::Load	(LPCSTR section, bool not_a_s
 	m_time_quant				= pSettings->r_float(section,"time_quant");
 	m_decrease_value			= pSettings->r_float(section,"decrease_value");
 	m_velocity_factor			= pSettings->r_float(section,"velocity_factor");
+	m_luminocity_factor			= pSettings->r_float(section,"luminocity_factor");
 }
 
 void CVisualMemoryManager::Load					(LPCSTR section)
@@ -122,6 +124,15 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	return								(distance);
 }
 
+float CVisualMemoryManager::object_luminocity	(const CGameObject *game_object) const
+{
+	if (game_object->SUB_CLS_ID != CLSID_OBJECT_ACTOR)
+		return	(1.f);
+	float		luminocity = const_cast<CGameObject*>(game_object)->ROS()->get_luminocity();
+	float		power = log(luminocity)*current_state().m_luminocity_factor;
+	return		(exp(power));
+}
+
 float CVisualMemoryManager::get_object_velocity	(const CGameObject *game_object, const CNotYetVisibleObject &not_yet_visible_object) const
 {
 	if ((game_object->ps_Size() < 2) || (not_yet_visible_object.m_prev_time == game_object->ps_Element(game_object->ps_Size() - 2).dwTime))
@@ -139,7 +150,7 @@ float CVisualMemoryManager::get_object_velocity	(const CGameObject *game_object,
 	);
 }
 
-float CVisualMemoryManager::get_visible_value	(float distance, float object_distance, float time_delta, float object_velocity) const
+float CVisualMemoryManager::get_visible_value	(float distance, float object_distance, float time_delta, float object_velocity, float luminocity) const
 {
 	float								always_visible_distance = current_state().m_always_visible_distance;
 
@@ -149,6 +160,7 @@ float CVisualMemoryManager::get_visible_value	(float distance, float object_dist
 	return								(
 		time_delta / 
 		current_state().m_time_quant * 
+		luminocity *
 		(1.f + current_state().m_velocity_factor*object_velocity) *
 		(distance - object_distance) /
 		(distance - always_visible_distance)
@@ -211,7 +223,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 		CNotYetVisibleObject	new_object;
 		new_object.m_object		= game_object;
 		new_object.m_prev_time	= 0;
-		new_object.m_value		= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,new_object));
+		new_object.m_value		= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,new_object),object_luminocity(game_object));
 		clamp					(new_object.m_value,0.f,current_state().m_visibility_threshold + EPS_L);
 		new_object.m_updated	= true;
 		new_object.m_prev_time	= get_prev_time(game_object);
@@ -220,7 +232,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	}
 	
 	object->m_updated			= true;
-	object->m_value				+= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,*object));
+	object->m_value				+= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,*object),object_luminocity(game_object));
 	clamp						(object->m_value,0.f,current_state().m_visibility_threshold + EPS_L);
 	object->m_prev_time			= get_prev_time(game_object);
 
