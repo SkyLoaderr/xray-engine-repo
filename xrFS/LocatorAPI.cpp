@@ -673,7 +673,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 								// use
 							} else {
 								// copy & use
-								Msg			("copy: db[%X],cache[%X] - '%s', ",desc.modif,fc.modif,fname);
+//.								Msg			("copy: db[%X],cache[%X] - '%s', ",desc.modif,fc.modif,fname);
 								bCopy		= TRUE;
 							}
 						} else {

@@ -45,11 +45,11 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IR:\SDK\DirectX9.0_sum_2004\Include -I$(BCB)\include -I$(BCB)\include\vcl 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS -D_DEBUG 
+      -IR:\SDK\DirectX9.0_sum_2004\Include -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
-      -IR:\Borland\CBuilder6\Include\Mfc -I..\Tools\Etools -src_suffix cpp 
-      -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS -D_DEBUG -boa"/>
+      -IR:\Borland\CBuilder6\Include\Mfc -I..\Tools\Etools -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
