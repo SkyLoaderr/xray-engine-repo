@@ -21,6 +21,22 @@ CSector::~CSector()
 
 }
 
+IC BOOL	ValidateMerge	(Fbox& bb_base, Fbox& bb, float& volume, float SLimit)
+{
+	// Size
+	Fbox	merge;	merge.merge		(bb_base,bb);
+	Fvector sz;		merge.getsize	(sz);
+	if (sz.x>SLimit)		return FALSE;	// Don't exceed limits (4/3 GEOM)
+	if (sz.y>SLimit)		return FALSE;
+	if (sz.z>SLimit)		return FALSE;
+
+	// Volume
+	volume		= merge.getvolume	();
+
+	// OK
+	return TRUE;
+}
+
 void CSector::BuildHierrarhy()
 {
 	Fvector		scene_size;
@@ -48,19 +64,32 @@ void CSector::BuildHierrarhy()
 			pNode->AddChield(I);
 
 			// Find best object to connect with
-			for (int J=0; J<iSize; J++)
+			for (;;) 
 			{
-				OGF_Base* candidate = g_tree[J];
-				if ( candidate->bConnected)			continue;
-				if ( candidate->Sector != SelfID)	continue;
 
-				Fbox		bb;	
-				Fvector		size;
-				bb.set		(pNode->bbox);
-				bb.merge	(candidate->bbox);
-				bb.getsize	(size);
-				if (size.x>SizeLimit || size.y>SizeLimit || size.z>SizeLimit) continue;
-				pNode->AddChield(J);
+				// Find best object to connect with
+				int		best_id		= -1;
+				float	best_volume	= flt_max;
+				for (int J=0; J<iSize; J++)
+				{
+					OGF_Base* candidate = g_tree[J];
+					if ( candidate->bConnected)			continue;
+					if ( candidate->Sector != SelfID)	continue;
+
+					float V;
+					if (ValidateMerge(pNode->bbox,candidate->bbox,V,SizeLimit))
+					{
+						if (V<best_volume)	{
+							best_volume		= V;
+							best_id			= J;
+						}
+					}
+				}
+
+				// Analyze
+				if (best_id<0)	break;
+				pNode->AddChield	(J);
+				pNode->CalcBounds	();
 			}
 
 			if (pNode->chields.size()>1) {

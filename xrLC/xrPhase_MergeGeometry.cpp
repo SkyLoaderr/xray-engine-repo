@@ -55,7 +55,7 @@ float	Cuboid			(Fbox& BB)
 	return  powf(volume_cube / volume, 1.f/7.f);
 }
 
-void	MakeCube		(Fbox& BB_dest, Fbox& BB_src)
+IC void	MakeCube		(Fbox& BB_dest, Fbox& BB_src)
 {
 	Fvector C,D;
 	BB_src.get_CD		(C,D);
@@ -67,7 +67,7 @@ void	MakeCube		(Fbox& BB_dest, Fbox& BB_src)
 	BB_dest.grow		(max);
 }
 
-BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
+IC BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 {
 	// Polygons
 	if ((f1+f2) > u32(4*g_params.m_SS_High/3))		return FALSE;	// Don't exceed limits (4/3 max POLY)	

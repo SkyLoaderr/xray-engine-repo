@@ -170,8 +170,9 @@ public:
 				V->Color.a		= F->Shader().vert_translucency;
 				g_trans_register(V);
 			}
+
+			thProgress	= float(I - faceStart) / float(faceEnd-faceStart);
 		}
-		thProgress	= float(I - faceStart) / float(faceEnd-faceStart);
 	}
 };
 
