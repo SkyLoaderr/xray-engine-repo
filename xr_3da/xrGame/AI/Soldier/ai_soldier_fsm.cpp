@@ -1276,7 +1276,7 @@ void CAI_Soldier::OnPatrol()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
 	
-	if ((m_dwCreatePathAttempts > 10) && ((!(AI_Path.fSpeed)) || (AI_Path.TravelPath.empty()) || (AI_Path.TravelPath[AI_Path.TravelStart].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) <= .5f))) {
+	if ((m_dwCreatePathAttempts < 20) && ((!(AI_Path.fSpeed)) || (AI_Path.TravelPath.empty()) || (AI_Path.TravelPath[AI_Path.TravelStart].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) <= .5f))) {
 		
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart = 0;
@@ -1319,7 +1319,7 @@ void CAI_Soldier::OnPatrol()
 		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_dwaNodes, m_bLooped,false);
 		
 		m_dwCreatePathAttempts++;
-		Msg("paths : %d",m_dwCreatePathAttempts);
+		Msg("%s paths : %d",cName(),m_dwCreatePathAttempts);
 		// invert path if needed
 		if (AI_Path.TravelPath.size()) {
 			if (!m_bLooped) {
