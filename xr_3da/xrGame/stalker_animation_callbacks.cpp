@@ -22,9 +22,9 @@ static const float p_head_factor			= 1.0f;
 static const float y_spin_fire_factor		= 0.5f;
 static const float y_shoulder_fire_factor	= 0.5f;
 static const float y_head_fire_factor		= 0.0f;
-static const float p_spin_fire_factor		= 0.2f;
-static const float p_shoulder_fire_factor	= 0.7f;
-static const float p_head_fire_factor		= 0.1f;
+static const float p_spin_fire_factor		= 0.5f;
+static const float p_shoulder_fire_factor	= 0.5f;
+static const float p_head_fire_factor		= 0.0f;
 
 void __stdcall head_callback	(CBoneInstance *B)
 {
