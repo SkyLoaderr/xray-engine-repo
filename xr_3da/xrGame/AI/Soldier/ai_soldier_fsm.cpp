@@ -34,8 +34,8 @@ void CAI_Soldier::OnFight()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(bfCheckIfGroupFightType(),aiSoldierFightGroup);
-	SWITCH_TO_NEW_STATE(aiSoldierFightAlone);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckIfGroupFightType(),aiSoldierFightGroup);
+	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierFightAlone);
 }
 
 void CAI_Soldier::OnFightAlone()
@@ -44,10 +44,14 @@ void CAI_Soldier::OnFightAlone()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_GO_TO_PREV_STATE(bfCheckIfGroupFightType());
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType());
 
-	DWORD dwCurTime = Level().timeServer();
-	//CHECK_IF_SWITCH_TO_NEW_STATE(,aiSoldierHurtAlone);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(dwHitTime >= m_dwLastUpdate,aiSoldierHurtAlone);
+
+	SelectEnemy(Enemy);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.Enemy,aiSoldierFindAlone);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.bVisible,aiSoldierPursuitAlone);
 }
 
 void CAI_Soldier::OnFightGroup()
@@ -410,7 +414,7 @@ void CAI_Soldier::OnTurnOver()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 		
-	CHECK_IF_SWITCH_TO_NEW_STATE(bfCheckForDanger(),aiSoldierFight)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
 	if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))) {
 		m_ePreviousState = tStateStack.top();
@@ -432,7 +436,7 @@ void CAI_Soldier::OnWaitForAnimation()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(bfCheckForDanger(),aiSoldierFight)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
 	if (m_bStateChanged)
 		m_bActionStarted = true;
@@ -448,7 +452,7 @@ void CAI_Soldier::OnWaitForTime()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(bfCheckForDanger(),aiSoldierFight)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
 	if (m_bStateChanged)
 		m_dwLastRangeSearch = Level().timeServer();
@@ -485,7 +489,7 @@ void CAI_Soldier::OnLookingOver()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE((g_Squad() != SPECIAL_SQUAD) && bfCheckForDanger(),aiSoldierFight)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((g_Squad() != SPECIAL_SQUAD) && bfCheckForDanger(),aiSoldierFight)
 	
 	INIT_SQUAD_AND_LEADER;
 	
@@ -513,7 +517,7 @@ void CAI_Soldier::OnPatrolReturnToRoute()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(bfCheckForDanger(),aiSoldierFight);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight);
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -578,7 +582,7 @@ void CAI_Soldier::OnPatrolRoute()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(bfCheckForDanger(),aiSoldierFight);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
 	
@@ -674,7 +678,7 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(bfCheckForDanger(),aiSoldierFight);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(bfCheckForDanger(),aiSoldierFight);
 		
 	INIT_SQUAD_AND_LEADER;
 
