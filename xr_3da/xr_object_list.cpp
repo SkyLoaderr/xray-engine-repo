@@ -119,3 +119,12 @@ CObject* CObjectList::net_Find	(u32 ID)
 	map<u32,CObject*>::iterator	it = map_NETID.find(ID);
 	return (it==map_NETID.end())?0:it->second;
 }
+
+void	CObjectList::SLS_Save			(CFS_Base&	fs		)
+{
+
+}
+
+void	CObjectList::SLS_Load			(CStream&	fs		)
+{
+}
