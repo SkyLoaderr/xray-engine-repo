@@ -1842,8 +1842,8 @@ void CCC_RegisterCommands()
 	//Recon params
 	CMD4(CCC_Float,		"recon_min_dist",		&g_fMinReconDist,	1.0f, 50.0f);
 	CMD4(CCC_Float,		"recon_max_dist",		&g_fMaxReconDist,	50.0f, 100.0f);
-	CMD4(CCC_Float,		"recon_min_speed",		&g_fMinReconSpeed,	1.0f, 180.0f);
-	CMD4(CCC_Float,		"recon_max_speed",		&g_fMaxReconSpeed,	1.0f, 180.0f);
+	CMD4(CCC_Float,		"recon_min_speed",		&g_fMinReconSpeed,	0.1f, 180.0f);
+	CMD4(CCC_Float,		"recon_max_speed",		&g_fMaxReconSpeed,	0.1f, 180.0f);
 
 	CMD4(CCC_Integer,	"g_checktime",			&g_bCheckTime,		0,	1);
 	CMD4(CCC_Integer,	"g_eventdelay",			&g_dwEventDelay,	0,	1000);
