@@ -127,6 +127,7 @@ public:
 	virtual void	Draw					();
 
 	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
+	virtual void	OnMouseWheel			(int direction);
 	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
 	void			InitGlobalMapObjectives	(){}

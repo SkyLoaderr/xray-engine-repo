@@ -379,6 +379,14 @@ void CUIMapWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 	};
 }
 
+void CUIMapWnd::OnMouseWheel(int direction)
+{
+	if(direction<0)
+		m_UIMainScrollV.TryScrollInc();
+	else
+		m_UIMainScrollV.TryScrollDec();
+}
+
 void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	CUIWndCallback::OnEvent(pWnd, msg, pData);
