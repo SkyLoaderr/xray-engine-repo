@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "..\xr_area.h"
 #include "..\bodyinstance.h"
-//#include "..\physics\PhysicsObject.h"
 #include "..\effectorfall.h"
 #include "..\CameraLook.h"
 #include "..\CameraFirstEye.h"
