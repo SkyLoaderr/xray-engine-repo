@@ -1075,8 +1075,12 @@ void xrGraphPoint::UPDATE_Write		(NET_Packet& P)
 void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 {
     CInifile *Ini 					= 0;
-    if(loc_base_ids.empty()||loc_aux_ids.empty()||level_ids.empty())
-        Ini							= xr_new<CInifile>("gamedata\\game.ltx");
+    if(loc_base_ids.empty()||loc_aux_ids.empty()||level_ids.empty()){
+	    string256 gm_name			= "game.ltx";
+    	Engine.FS.m_GameRoot.Update	(gm_name);
+    	R_ASSERT2(Engine.FS.Exist(gm_name),"Couldn't find file 'game.ltx'");
+		Ini							= xr_new<CInifile>(gm_name);
+    }
     if(loc_base_ids.empty()){
 		R_ASSERT					(Ini->SectionExists("location_base"));
         LPCSTR N,V;
@@ -1103,12 +1107,12 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 		R_ASSERT					(Ini->SectionExists("levels"));
         LPCSTR N,V;
         for (u32 k = 0; Ini->ReadLINE("levels",k,&N,&V); k++) {
-			R_ASSERT(Ini->SectionExists(V));
+			R_ASSERT(Ini->SectionExists(N));
    			level_ids.push_back		(TokenValue4::Item());
             TokenValue4::Item& val	= level_ids.back();
-			LPCSTR					S = Ini->ReadSTRING			(V,"caption");
+			LPCSTR					S = Ini->ReadSTRING(N,"caption");
 			val.str					= S;
-            val.ID					= Ini->ReadINT(V,"id");
+            val.ID					= Ini->ReadINT(N,"id");
         }
     }
     if (Ini)	xr_delete(Ini);
