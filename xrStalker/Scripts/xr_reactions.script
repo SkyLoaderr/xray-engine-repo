@@ -430,6 +430,10 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			end
 		end
 
+		if continue and self:type(vo) == "item" then
+			continue = false
+		end
+
 		if continue and (vo_id == clsid.stalker or vo_id == clsid.actor) then
 			if vo:squad() == self.npc:squad()
 			then
