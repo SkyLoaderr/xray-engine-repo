@@ -178,9 +178,8 @@ end
 --            themes = { "weather", "state" }  -- список тем для разговора
 --  }
 function sound_update(npc, sound, now)
-	if sound.begin == nil or
-	   now or
-	   (device():time_global() - sound.begin) > sound.idle*1000 then
+	if ( sound.begin == nil  or  now  or  device():time_global() - sound.begin > sound.idle*1000 )
+	   and npc:active_sound_count() == 0 then
 		sound.begin = device():time_global()
 
 		if sound.maxidle ~= nil then
@@ -220,7 +219,7 @@ function sound_update(npc, sound, now)
 		end
 
 		-- проиграть один звук
-		if sound.rnd == nil or math.random(100) < sound.rnd then
+		if sound.rnd == nil or math.random(100) < sound.rnd or now then
 			local sum = 0
 			local id
 			local num
@@ -246,7 +245,11 @@ function sound_update(npc, sound, now)
 			sound.last_id  = id
 			sound.last_num = num
 
-			npc:play_sound(id, 1, 0, 1, 0, num)
+			if type( now ) == "number" then
+				npc:play_sound(id, now+1, now, 1, 0, num)
+			else
+				npc:play_sound(id, 1, 0, 1, 0, num)
+			end
 		end
 	end
 end
