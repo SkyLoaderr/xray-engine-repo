@@ -514,9 +514,7 @@ float CAI_Rat::get_custom_pitch_speed	(float def_speed)
 					return	(PI_DIV_2);
 
 	Debug.fatal				("Impossible RAT speed!");
-#ifdef DEBUG
 	return					(PI_DIV_2);
-#endif
 }
 
 BOOL CAI_Rat::renderable_ShadowReceive	()
