@@ -8,7 +8,7 @@ function main()
     action(
 		stalker,
 		look			(look.fire_point,actor),
-		sound			(snd),
+		sound			(sndactor:position()),
 		cond			(cond.time_end,10000000)
     )
         
