@@ -22,6 +22,7 @@ CGameObject::CGameObject		()
 {
 	m_pPhysicsShell			= NULL;
 	m_tpALife				= 0;
+	m_dwNetSpawnFrame		= u32(-1);
 }
 
 CGameObject::~CGameObject		()
@@ -96,6 +97,11 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 
 BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
+	if (Device.dwFrame == m_dwNetSpawnFrame)
+		return						(TRUE);
+
+	m_dwNetSpawnFrame				= Device.dwFrame;
+
 	setDestroy						(FALSE);	// @@@ WT
 
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
@@ -143,7 +149,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			validate_ai_locations	(false);
 
 			// validating position
-			if (!dynamic_cast<CPhysicObject*>(this) && !dynamic_cast<CHangingLamp*>(this))
+			if (UsedAI_Locations())
 				Position().y		= ai().level_graph().vertex_plane_y(*level_vertex(),Position().x,Position().z);
 		
 		}
@@ -353,3 +359,8 @@ void CGameObject::OnRender()
 	}
 }
 #endif
+
+BOOL CGameObject::UsedAI_Locations()
+{
+	return					(TRUE);
+}

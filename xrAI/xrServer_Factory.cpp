@@ -131,6 +131,7 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_GRENADE_RGD5:		return xr_new<CSE_ALifeItemGrenade>				(caSection);
 		case CLSID_DEVICE_TORCH:		return xr_new<CSE_ALifeItemTorch>				(caSection);			// Visualed
 		case CLSID_OBJECT_PHYSIC:		return xr_new<CSE_ALifeObjectPhysic>			(caSection);            // Visualed
+		case CLSID_SCRIPT_OBJECT:		return xr_new<CSE_ALifeDynamicObjectVisual>		(caSection);            // Visualed
 
 		default:						NODEFAULT;
 	}

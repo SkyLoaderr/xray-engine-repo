@@ -399,7 +399,8 @@ public:
 		virtual void OnH_B_Independent	();
 		virtual void OnEvent			(NET_Packet& P, u16 type) {inherited::OnEvent(P,type);}
 		virtual void renderable_Render	() {inherited::renderable_Render();}
-		virtual bool Useful();		
+		virtual bool Useful				();		
+		virtual BOOL UsedAI_Locations	();
 #ifdef DEBUG
 		virtual void OnRender			();
 #endif

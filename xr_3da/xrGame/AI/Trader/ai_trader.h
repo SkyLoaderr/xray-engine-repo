@@ -58,5 +58,5 @@ public:
 	virtual void		renderable_Render		();
 
 	virtual	bool		bfScriptAnimation		();
-
+	virtual BOOL		UsedAI_Locations		();
 };

@@ -334,6 +334,11 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	P.w_u16(u16(O->ID()));
 	O->u_EventSend(P);
 }
+
+BOOL CPhysicObject::UsedAI_Locations()
+{
+	return					(FALSE);
+}
 //////////////////////////////////////////////////////////////////////////
 /*
 DEFINE_MAP_PRED	(LPCSTR,	CPhysicsJoint*,	JOINT_P_MAP,	JOINT_P_PAIR_IT,	pred_str);

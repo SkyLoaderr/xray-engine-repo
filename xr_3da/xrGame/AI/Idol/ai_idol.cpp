@@ -37,7 +37,6 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 	CSE_ALifeObjectIdol				*tpIdol	= dynamic_cast<CSE_ALifeObjectIdol*>(e);
 	
 	R_ASSERT						(tpIdol);
-	cNameVisual_set					(tpIdol->get_visual());
 	
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	

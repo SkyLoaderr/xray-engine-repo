@@ -244,7 +244,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
 	R_ASSERT						(tpHuman);
-	cNameVisual_set					(tpHuman->get_visual());
 
 	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	m_body.current.pitch			= m_body.target.pitch	= 0;
@@ -305,7 +304,6 @@ void CAI_Stalker::net_Destroy()
 {
 	inherited::net_Destroy	();
 	m_pPhysics_support->in_NetDestroy();
-	Init					();
 	m_inventory.Clear		();
 }
 

@@ -41,6 +41,7 @@ public:
 	virtual	void	Hit				(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse);
 	virtual void	net_Export		(NET_Packet& P);
 	virtual void	net_Import		(NET_Packet& P);
+	virtual BOOL	UsedAI_Locations();
 };
 
 #endif //HangingLampH

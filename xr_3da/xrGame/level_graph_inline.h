@@ -328,20 +328,6 @@ IC	u32	CLevelGraph::value(const u32 vertex_id, const_iterator &i) const
 	return				(value(vertex(vertex_id),i));
 }
 
-#ifdef DEBUG
-#ifndef AI_COMPILER
-IC void CLevelGraph::set_start_point	(const Fvector &start_point)
-{
-	m_start_point		= start_point;
-}
-
-IC void CLevelGraph::set_finish_point	(const Fvector &finish_point)
-{
-	m_finish_point		= finish_point;
-}
-#endif
-#endif
-
 IC	bool CLevelGraph::is_accessible		(const u32 vertex_id) const
 {
 	VERIFY				(valid_vertex_id(vertex_id));

@@ -417,3 +417,21 @@ LPCSTR CScriptMonster::GetPatrolPathName()
 		return				("");
 	return					(*m_tpActionQueue.back()->m_tMovementAction.m_path_name);
 }
+
+BOOL CScriptMonster::net_Spawn		(LPVOID DC)
+{
+	if (!inherited::net_Spawn(DC))
+		return						(FALSE);
+
+	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeDynamicObjectVisual	*l_tpALifeDynamicObjectVisual = dynamic_cast<CSE_ALifeDynamicObjectVisual*>(e);
+	R_ASSERT						(l_tpALifeDynamicObjectVisual);
+	cNameVisual_set					(l_tpALifeDynamicObjectVisual->get_visual());
+
+	return							(TRUE);
+}
+
+BOOL CScriptMonster::UsedAI_Locations()
+{
+	return							(FALSE);
+}

@@ -185,8 +185,6 @@ public:
 #ifndef AI_COMPILER
 private:
 	ref_shader			sh_debug;
-	Fvector				m_start_point;
-	Fvector				m_finish_point;
 	xr_vector<Fvector>	m_tpTravelLine;
 	xr_vector<Fvector>	m_tpaPoints;
 	xr_vector<Fvector>	m_tpaDeviations;
@@ -196,12 +194,34 @@ private:
 	xr_vector<u32>		m_tpaNodes;
 	xr_vector<Fvector>	m_tpaTempPath;
 public:
+	struct SPathPoint {
+		Fvector			position;
+		Fvector			direction;
+		float			linear_velocity;
+		float			angular_velocity; 
+		u32				vertex_id;
+	};
+
+	struct SCirclePoint {
+		Fvector			center;
+		float			radius;
+		Fvector			point;
+		float			angle;
+	};
+
+	struct STrajectoryPoint :
+		public SPathPoint,
+		public SCirclePoint
+	{
+	};
+private:
+	STrajectoryPoint	start, dest;
+public:
 	xr_vector<BYTE>		q_mark;			// temporal usage mark for queries
 	xr_vector<u32>		q_stack;		// temporal usage stack for search enemy queries
 
 			void	render						();
-	IC		void	set_start_point				(const Fvector &start_point);
-	IC		void	set_finish_point			(const Fvector &finish_point);
+			void	set_start_point				();
 			void	draw_oriented_bounding_box	(Fmatrix &T, Fvector &half_dim, u32 C,	u32 C1) const;
 			void	draw_travel_line			() const;
 			void	compute_travel_line			(xr_vector<u32> &path, u32 start_vertex_id, u32 finish_vertex_id) const;

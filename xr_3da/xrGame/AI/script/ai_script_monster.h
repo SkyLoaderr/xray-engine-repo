@@ -41,6 +41,7 @@ public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
 			void				InitScript				();
+	virtual BOOL				net_Spawn				(LPVOID DC);
 	virtual void				net_Destroy				();
 			const Fmatrix		GetUpdatedMatrix		(ref_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset);
 			void				vfUpdateParticles		();
@@ -72,4 +73,5 @@ public:
 	virtual	void				callback				(const EActionType tActionType);
 
 	virtual LPCSTR				GetPatrolPathName		();
+	virtual BOOL				UsedAI_Locations		();
 };

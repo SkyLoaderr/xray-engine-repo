@@ -490,27 +490,6 @@ void CLevelGraph::draw_dynamic_obstacles() const
 //	}
 }
 
-struct SPathPoint {
-	Fvector			position;
-	Fvector			direction;
-	float			linear_velocity;
-	float			angular_velocity; 
-	u32				vertex_id;
-};
-
-struct SCirclePoint {
-	Fvector			center;
-	float			radius;
-	Fvector			point;
-	float			angle;
-};
-
-struct STrajectoryPoint :
-	public SPathPoint,
-	public SCirclePoint
-{
-};
-
 IC	void adjust_point(
 	const Fvector		&source, 
 	float				yaw, 
@@ -550,8 +529,8 @@ IC	void assign_angle(
 }
 
 IC	void compute_circles(
-	STrajectoryPoint	&point, 
-	SCirclePoint		*circles
+	CLevelGraph::STrajectoryPoint	&point, 
+	CLevelGraph::SCirclePoint		*circles
 )
 {
 	VERIFY				(!fis_zero(point.angular_velocity));
@@ -573,11 +552,11 @@ IC	float cross_product_2D_y(
 }
 
 IC	bool compute_tangent(
-	const STrajectoryPoint	&start, 
-	const SCirclePoint		&start_circle, 
-	const STrajectoryPoint	&dest, 
-	const SCirclePoint		&dest_circle, 
-	SCirclePoint			*tangents
+	const CLevelGraph::STrajectoryPoint	&start, 
+	const CLevelGraph::SCirclePoint		&start_circle, 
+	const CLevelGraph::STrajectoryPoint	&dest, 
+	const CLevelGraph::SCirclePoint		&dest_circle, 
+	CLevelGraph::SCirclePoint			*tangents
 )
 {
 #pragma todo("Dima to Dima : If this will be a slow down, optimize it by using just a few square roots instead of arctangents and arccosinuses")
@@ -675,38 +654,8 @@ IC	bool compute_tangent(
 	return				(true);
 }
 
-IC	bool choose_tangent(
-	STrajectoryPoint	&start, 
-	STrajectoryPoint	&dest, 
-	const SCirclePoint	tangents[4][2], 
-	const u32			tangent_count
-)
-{
-	float				min_distance = flt_max;
-	u32					choosen = u32(-1);
-	for (u32 i=0; i<tangent_count; ++i) {
-		float			trajectory_length = 
-			_abs(tangents[i][0].angle)*tangents[i][0].radius + 
-			_abs(tangents[i][1].angle)*tangents[i][1].radius + 
-			tangents[i][0].point.distance_to_xz(tangents[i][1].point);
-		if (trajectory_length < min_distance) {
-			min_distance = trajectory_length;
-			choosen		= i;
-		}
-	}
-	if (choosen > tangent_count)
-		return			(false);
-
-	SCirclePoint		&_start = start;
-	SCirclePoint		&_dest  = dest;
-	_start				= tangents[choosen][0];
-	_dest				= tangents[choosen][1];
-
-	return				(true);
-}
-
 IC	bool build_circle_trajectory(
-	const STrajectoryPoint	&position, 
+	const CLevelGraph::STrajectoryPoint	&position, 
 	xr_vector<Fvector>		&path,
 	bool					start_point
 )
@@ -729,8 +678,8 @@ IC	bool build_circle_trajectory(
 }
 
 IC	bool build_line_trajectory(
-	const STrajectoryPoint	&start, 
-	const STrajectoryPoint	&dest, 
+	const CLevelGraph::STrajectoryPoint	&start, 
+	const CLevelGraph::STrajectoryPoint	&dest, 
 	xr_vector<Fvector>		&path
 )
 {
@@ -746,8 +695,8 @@ IC	bool build_line_trajectory(
 }
 
 IC	bool build_trajectory(
-	const STrajectoryPoint	&start, 
-	const STrajectoryPoint	&dest, 
+	const CLevelGraph::STrajectoryPoint	&start, 
+	const CLevelGraph::STrajectoryPoint	&dest, 
 	xr_vector<Fvector>		&path
 )
 {
@@ -767,18 +716,63 @@ IC	bool build_trajectory(
 	return				(true);
 }
 
+struct SDist {
+	u32		index;
+	float	distance;
+
+	bool operator<(const SDist &d1) const
+	{
+		return		(distance < d1.distance);
+	}
+};
+
+IC	bool build_trajectory(
+	CLevelGraph::STrajectoryPoint	&start, 
+	CLevelGraph::STrajectoryPoint	&dest, 
+	const CLevelGraph::SCirclePoint	tangents[4][2], 
+	const u32						tangent_count,
+	xr_vector<Fvector>				&path
+)
+{
+	SDist		dist[4];
+	{
+		for (u32 i=0; i<tangent_count; ++i) {
+			dist[i].index = i;
+			dist[i].distance = 
+				_abs(tangents[i][0].angle)*tangents[i][0].radius + 
+				_abs(tangents[i][1].angle)*tangents[i][1].radius + 
+				tangents[i][0].point.distance_to_xz(tangents[i][1].point);
+		}
+	}
+	
+	std::sort	(dist,dist + tangent_count);
+
+	{
+		for (u32 i=0, j = path.size(); i<tangent_count; ++i) {
+			(CLevelGraph::SCirclePoint&)(start) = tangents[dist[i].index][0];
+			(CLevelGraph::SCirclePoint&)(dest)	= tangents[dist[i].index][1];
+			if (build_trajectory(start,dest,path))
+				return	(true);
+			else
+				path.resize(j);
+		}
+	}
+
+	return		(false);
+}
+
 IC	bool compute_trajectory(
-	STrajectoryPoint &start, 
-	STrajectoryPoint &dest, 
+	CLevelGraph::STrajectoryPoint &start, 
+	CLevelGraph::STrajectoryPoint &dest, 
 	xr_vector<Fvector> &path
 )
 {
-	SCirclePoint	start_circles[2], dest_circles[2];
+	CLevelGraph::SCirclePoint	start_circles[2], dest_circles[2];
 	compute_circles	(start,start_circles);
 	compute_circles	(dest,dest_circles);
 	
 	u32				tangent_count = 0;
-	SCirclePoint	tangent_points[4][2];
+	CLevelGraph::SCirclePoint	tangent_points[4][2];
 	for (u32 i=0; i<2; ++i)
 		for (u32 j=0; j<2; ++j)
 			if (compute_tangent(
@@ -789,57 +783,48 @@ IC	bool compute_trajectory(
 					tangent_points[tangent_count]
 				)
 			)
-			++tangent_count;
+				++tangent_count;
 
-	if (!choose_tangent(start,dest,tangent_points,tangent_count))
-		return		(false);
+	return			(build_trajectory(start,dest,tangent_points,tangent_count,path));
+}
 
-	return			(build_trajectory(start,dest,path));
+void write_trajectory_point(const CLevelGraph::STrajectoryPoint point, LPCSTR point_desc)
+{
+	Msg						("\n%s",point_desc);
+	Msg						("%f",point.angular_velocity);
+	Msg						("%f",point.linear_velocity);
+	Msg						("[%f][%f][%f]",VPUSH(point.position));
+	Msg						("[%f][%f][%f]",VPUSH(point.direction));
+}
+
+void CLevelGraph::set_start_point	()
+{
+	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+	obj						= Level().Objects.FindObjectByName("localhost/dima");
+	CActor					*actor = dynamic_cast<CActor*>(obj);
+
+	start.angular_velocity	= PI_DIV_2;
+	start.linear_velocity	= 1.f;
+	start.position			= stalker->Position();
+	start.direction.setHP	(-stalker->m_body.current.yaw,0);
+	start.vertex_id			= vertex(start.position);
+
+	dest.angular_velocity	= PI_DIV_2;
+	dest.linear_velocity	= 2.f;
+	dest.position			= actor->Position();
+	dest.direction.setHP	(actor->r_model_yaw,0);
+	dest.vertex_id			= vertex(dest.position);
 }
 
 void CLevelGraph::compute_path()
 {
-//	STrajectoryPoint		start, dest;
-//
-//	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
-//	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
-//	obj						= Level().CurrentEntity();
-//	CActor					*actor = dynamic_cast<CActor*>(obj);
-//	
-//	start.angular_velocity	= PI_DIV_2;
-//	start.linear_velocity	= 2.15f;
-//	start.position			= stalker->Position();
-//	start.direction.setHP	(-stalker->m_body.current.yaw,0);
-//	start.vertex_id			= stalker->level_vertex_id();
-//	
-//	dest.angular_velocity	= PI_DIV_2;
-//	dest.linear_velocity	= 2.15f;
-//	dest.position			= actor->Position();
-//	dest.direction.setHP	(actor->r_model_yaw,0);
-//	dest.vertex_id			= actor->level_vertex_id();
-	
-//	start.angular_velocity	= 1.f;
-//	start.linear_velocity	= 2.f;
-//	start.position			= Fvector().set(-50,0,-40);
-//	start.direction.set		(0,0,1);
-//	start.vertex_id			= vertex(start.position);
-//	
-//	dest.angular_velocity	= 1.f;
-//	dest.linear_velocity	= 1.f;
-//	dest.position			= Fvector().set(-50,0,-40);
-//	dest.direction.set		(0,0,-1);
-//	dest.vertex_id			= vertex(dest.position);
-
-//	m_tpTravelLine.clear	();
-//	compute_trajectory		(start,dest,m_tpTravelLine);
+	m_tpTravelLine.clear	();
+	if (!compute_trajectory(start,dest,m_tpTravelLine)) {
+		write_trajectory_point(start,"start");
+		write_trajectory_point(dest, "dest");
+	}
 	return;
-	//	u32						l_dwStartNodeID		= vertex(m_start_point);
-	//	VERIFY					(inside(vertex(l_dwStartNodeID),m_start_point));
-	//	u32						l_dwFinishNodeID	= vertex(m_finish_point);
-	//	VERIFY					(inside(vertex(l_dwFinishNodeID),m_finish_point));
-	//	xr_vector<u32>			l_tpNodePath;
-	//	ai().graph_engine().search(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,&l_tpNodePath,CGraphEngine::CObstacleParams());
-	//	compute_travel_line		(l_tpNodePath,l_dwStartNodeID,l_dwFinishNodeID);
 }
 
 #endif // DEBUG

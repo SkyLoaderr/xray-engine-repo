@@ -178,3 +178,8 @@ void CHangingLamp::net_Import(NET_Packet& P)
 {
 	R_ASSERT						(Remote());
 }
+
+BOOL CHangingLamp::UsedAI_Locations()
+{
+	return					(FALSE);
+}

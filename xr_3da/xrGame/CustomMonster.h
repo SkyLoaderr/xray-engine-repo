@@ -260,5 +260,6 @@ public:
 	virtual void				OnEvent					( NET_Packet& P, u16 type		);
 	virtual void				net_Destroy				();
 	virtual	void				Init					();
+	virtual BOOL				UsedAI_Locations		();
 };
 #endif // !defined(AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_)

@@ -81,13 +81,10 @@ void	CCar::Load					( LPCSTR section )
 
 BOOL	CCar::net_Spawn				(LPVOID DC)
 {
-	CSE_Abstract			*e		= (CSE_Abstract*)(DC);
-	CSE_ALifeItemCar		*po		= dynamic_cast<CSE_ALifeItemCar*>(e);
+	CSE_Abstract					*e = (CSE_Abstract*)(DC);
+	CSE_ALifeItemCar				*po = dynamic_cast<CSE_ALifeItemCar*>(e);
 	R_ASSERT						(po);
-	LPCSTR							vname = po->get_visual();
-	R_ASSERT2						(vname && vname[0], "Model isn't assigned for CAR");
-	cNameVisual_set					(vname);
-	BOOL R							= inherited::net_Spawn	(DC);
+	BOOL							R = inherited::net_Spawn(DC) && CScriptMonster::net_Spawn(DC);
 
 	setEnabled						(TRUE);
 	setVisible						(TRUE);
@@ -1169,4 +1166,9 @@ void CCar::PhDataUpdate(dReal /**step/**/)
 {
 	if (GetScriptControl())
 		ProcessScripts();
+}
+
+BOOL CCar::UsedAI_Locations()
+{
+	return					(TRUE);
 }

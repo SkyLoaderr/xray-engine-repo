@@ -164,7 +164,6 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterRat						*tpSE_Rat = dynamic_cast<CSE_ALifeMonsterRat*>(e);
 	// model
-	cNameVisual_set					(tpSE_Rat->get_visual());
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 	// personal characteristics
@@ -225,10 +224,8 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 void CAI_Rat::net_Destroy()
 {
 	inherited::net_Destroy();
-
-	Init();
-
-	if (m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+	if (m_pPhysicsShell) 
+		m_pPhysicsShell->Deactivate();
 }
 
 void CAI_Rat::net_Export(NET_Packet& P)
@@ -434,3 +431,8 @@ void CAI_Rat::OnRender()
 	CEatableItem::OnRender();
 }
 #endif
+
+BOOL CAI_Rat::UsedAI_Locations()
+{
+	return					(TRUE);
+}

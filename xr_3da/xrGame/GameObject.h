@@ -18,6 +18,7 @@ class CGameObject :
 	virtual public CAI_ObjectLocation
 {
 	typedef CObject inherited;
+	u32						m_dwNetSpawnFrame;
 protected:
 	CSE_ALifeSimulator		*m_tpALife;
 public:
@@ -70,6 +71,7 @@ public:
 
 	virtual f32 ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions);
 	virtual f32 GetMass();
+	virtual BOOL			UsedAI_Locations	();
 
 #ifdef DEBUG
 	virtual void			OnRender			();

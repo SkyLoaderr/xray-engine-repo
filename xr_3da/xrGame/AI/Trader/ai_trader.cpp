@@ -49,9 +49,8 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	m_tpOrderedArtefacts			= l_tpTrader->m_tpOrderedArtefacts;
 	
 	R_ASSERT						(l_tpTrader);
-	cNameVisual_set					(l_tpTrader->get_visual());
 	
-	if (!inherited::net_Spawn(DC))	return FALSE;
+	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))	return FALSE;
 
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
@@ -258,4 +257,9 @@ void CAI_Trader::UpdateCL()
 	if (!bfScriptAnimation()) {
 		SelectAnimation		(XFORM().k,XFORM().k,0.f);
 	}
+}
+
+BOOL CAI_Trader::UsedAI_Locations()
+{
+	return					(TRUE);
 }

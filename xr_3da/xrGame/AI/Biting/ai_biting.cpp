@@ -200,8 +200,6 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	CSE_ALifeMonsterBiting			*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
 	
 	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
-
-	cNameVisual_set					(l_tpSE_Biting->get_visual());
 	
 	R_ASSERT2						(ai().get_level_graph() && ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 	m_tNextGP						= m_tCurGP = ai().cross_table().vertex(level_vertex_id()).game_vertex_id();
@@ -220,7 +218,6 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 void CAI_Biting::net_Destroy()
 {
 	inherited::net_Destroy();
-	Init();
 	m_pPhysics_support->in_NetDestroy();
 }
 

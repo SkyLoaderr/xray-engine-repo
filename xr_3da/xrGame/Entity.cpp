@@ -145,8 +145,9 @@ void CEntity::Load		(LPCSTR section)
 
 BOOL CEntity::net_Spawn		(LPVOID DC)
 {
-	inherited::net_Spawn	(DC);
-
+	if (!inherited::net_Spawn(DC))
+		return				(FALSE);
+		
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeCreatureAbstract	*E	= dynamic_cast<CSE_ALifeCreatureAbstract*>(e);
 	if (!E) {

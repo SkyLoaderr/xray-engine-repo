@@ -43,6 +43,7 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 void CCustomMonster::Init()
 {
 	CMovementManager::Init();
+	InitScript			();
 	tWatchDirection		= Direction();
 	m_body.speed		= PI;
 	m_head.speed		= PI;
@@ -646,10 +647,10 @@ void CCustomMonster::Die	()
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
-	if (!inherited::net_Spawn(DC))	return FALSE;
+	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))		return FALSE;
 
-	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterAbstract			*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
+	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeMonsterAbstract	*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
 
 	set_level_dest_vertex	(level_vertex_id());
 
@@ -683,8 +684,6 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 		setEnabled				(TRUE);
 	} else {
 	}
-
-	CMovementManager::Init		();
 
 	return TRUE;
 }
@@ -809,4 +808,9 @@ bool CCustomMonster::bfScriptAnimation()
 		m_tpScriptAnimation	= 0;
 		return		(false);
 	}
+}
+
+BOOL CCustomMonster::UsedAI_Locations()
+{
+	return					(TRUE);
 }

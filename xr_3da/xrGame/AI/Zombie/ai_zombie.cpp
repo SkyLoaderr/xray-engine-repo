@@ -131,7 +131,6 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterZombie						*tpSE_Zombie = dynamic_cast<CSE_ALifeMonsterZombie*>(e);
 	// model
-	cNameVisual_set					(tpSE_Zombie->get_visual());
 	// personal characteristics
 	m_body.current.yaw				= m_body.target.yaw	= -tpSE_Zombie->o_Angle.y;
 	m_body.current.pitch			= m_body.target.pitch	= 0;
