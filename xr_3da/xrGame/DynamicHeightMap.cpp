@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "DynamicHeightMap.h"
+#include "..\collide\cl_intersect.h"
 
 const int	tasksPerFrame	= 3;
 const float limit_up		= 100.f;
@@ -80,7 +81,7 @@ void CHM_Static::Update	()
 		// Build BBox
 		Fbox				bb;
 		bb.min.set			(S->x*dhm_size,		view.y-limit_down,	S->z*dhm_size);
-		bb.max.set			(bb.min.x+dhm_size,	view.y+limit_up,	S->min.z+dhm_size);
+		bb.max.set			(bb.min.x+dhm_size,	view.y+limit_up,	bb.min.z+dhm_size);
 		bb.grow				(EPS_L);
 		
 		// Select polygons
