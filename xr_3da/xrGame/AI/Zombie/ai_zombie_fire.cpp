@@ -85,13 +85,13 @@ void CAI_Zombie::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	Group.m_tLastHitDirection = tHitDir;
 	Group.m_tHitPosition = tHitPosition;
 	
-	// Play hit-sound
-	sound& S				= sndHit[Random.randI(SND_HIT_COUNT)];
-	if (S.feedback)			return;
-	if (Random.randI(2))	return;
-	pSounds->PlayAtPos		(S,this,vPosition);
-	
 	if (iHealth > 0) {
+		// Play hit-sound
+		sound& S				= sndHit[Random.randI(SND_HIT_COUNT)];
+		if (S.feedback)			return;
+		if (Random.randI(2))	return;
+		pSounds->PlayAtPos		(S,this,vPosition);
+		
 		/**/
 		if (::Random.randI(0,2))
 			PKinematics(pVisual)->PlayFX(tZombieAnimations.tNormal.tTorso.tpDamageLeft);

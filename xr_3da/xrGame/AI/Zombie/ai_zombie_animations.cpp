@@ -68,13 +68,15 @@ void CAI_Zombie::vfLoadAnimations()
 	
 	tZombieAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle("attack");
 	tZombieAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle("attack_1");
+	tZombieAnimations.tNormal.tGlobal.tpaAttack[2] = tpVisualObject->ID_Cycle("attack_2");
 	
 	tZombieAnimations.tNormal.tGlobal.tWalk.fwd = tpVisualObject->ID_Cycle("norm_walk_fwd");
 	tZombieAnimations.tNormal.tGlobal.tWalk.back = tpVisualObject->ID_Cycle("norm_walk_back");
 	tZombieAnimations.tNormal.tGlobal.tWalk.ls = tpVisualObject->ID_Cycle("norm_walk_ls");
 	tZombieAnimations.tNormal.tGlobal.tWalk.rs = tpVisualObject->ID_Cycle("norm_walk_rs");
 
-	tZombieAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle("norm_idle");
+	tZombieAnimations.tNormal.tGlobal.tpaIdle[0] = tpVisualObject->ID_Cycle("norm_idle");
+	tZombieAnimations.tNormal.tGlobal.tpaIdle[1] = tpVisualObject->ID_Cycle("norm_idle_1");
 	
 	tZombieAnimations.tNormal.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle("norm_turn_ls");
 	tZombieAnimations.tNormal.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle("norm_turn_rs");
@@ -82,7 +84,7 @@ void CAI_Zombie::vfLoadAnimations()
 	tZombieAnimations.tNormal.tTorso.tpDamageLeft = tpVisualObject->ID_FX("norm_damage_ls");
 	tZombieAnimations.tNormal.tTorso.tpDamageRight = tpVisualObject->ID_FX("norm_damage_rs");
 	
-	tpVisualObject->PlayCycle(tZombieAnimations.tNormal.tGlobal.tpIdle);
+	tpVisualObject->PlayCycle(tZombieAnimations.tNormal.tGlobal.tpaIdle[1]);
 }
 
 void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
@@ -92,6 +94,8 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	CMotionDef*	tpLegsAnimation=0;
 	CMotionDef*	tpGlobalAnimation=0;
 
+	//tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaDeath[2];
+	/**/
 	if (iHealth <= 0) {
 		switch (m_cBodyState) {
 			case BODY_STATE_STAND : {
@@ -115,19 +119,18 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	else
 		if (speed<0.2f) {
 			switch (eCurrentState) {
-				/**/
 				case aiZombieAttackFire : {
 					switch (m_cBodyState) {
 						case BODY_STATE_STAND : {
 							tpGlobalAnimation = 0;
-							for (int i=0 ;i<2; i++)
+							for (int i=0 ;i<3; i++)
 								if (tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
 									tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 									break;
 								}
 							
 							if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
+								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
 							break;
 						}
 						case BODY_STATE_CROUCH : {
@@ -139,7 +142,6 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					}
 					break;
 				}
-				/**/
 				default : {
 					if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
 						if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
@@ -148,7 +150,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							else
 								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
 						else
-							tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpIdle;
+							tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaIdle[1];
 					else
 						if (PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 							if (r_torso_target.yaw > r_torso_current.yaw)
@@ -156,7 +158,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							else
 								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpTurnRight;
 						else
-							tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpIdle;
+							tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaIdle[1];
 					
 					break;
 				}
@@ -197,7 +199,6 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					tpGlobalAnimation = AState->back;
 
 			switch (eCurrentState) {
-				/**/
 				case aiZombieAttackFire : {
 					switch (m_cBodyState) {
 						case BODY_STATE_STAND : {
@@ -221,7 +222,6 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					}
 					break;
 				}
-				/**/
 				default : {
 					switch (m_cBodyState) {
 						case BODY_STATE_STAND : {
@@ -238,7 +238,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 				}
 			}
 		}
-	
+	/**/
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
 		if (tpGlobalAnimation) {

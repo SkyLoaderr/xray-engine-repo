@@ -452,7 +452,7 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 }
 /**/
 
-void CAI_Soldier::vfAimAtEnemy()
+void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 {
 	Fvector	pos1, pos2;
 	
@@ -468,17 +468,19 @@ void CAI_Soldier::vfAimAtEnemy()
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// for making soldiers not so precise :-)))
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	float fMissDistance = fDistance <= m_fMinMissDistance ? m_fMinMissFactor : fDistance >= m_fMaxMissDistance ? m_fMaxMissFactor : (fDistance - m_fMinMissDistance)/(m_fMaxMissDistance - m_fMinMissDistance)*(m_fMaxMissFactor - m_fMinMissFactor) + m_fMinMissFactor;
-	float fAlpha = 1.f - _sqr(fMissDistance)/(2*tWatchDirection.square_magnitude());
-	clamp(fAlpha,-.99999f,+.99999f);
-	fAlpha = acosf(fAlpha);
+	if (bInaccuracy) {
+		float fMissDistance = fDistance <= m_fMinMissDistance ? m_fMinMissFactor : fDistance >= m_fMaxMissDistance ? m_fMaxMissFactor : (fDistance - m_fMinMissDistance)/(m_fMaxMissDistance - m_fMinMissDistance)*(m_fMaxMissFactor - m_fMinMissFactor) + m_fMinMissFactor;
+		float fAlpha = 1.f - _sqr(fMissDistance)/(2*tWatchDirection.square_magnitude());
+		clamp(fAlpha,-.99999f,+.99999f);
+		fAlpha = acosf(fAlpha);
 
-	SRotation sRot;
-	mk_rotation(tWatchDirection,sRot);
-	
-	sRot.pitch += ::Random.randF(-fAlpha,+fAlpha);
-	sRot.yaw += ::Random.randF(-fAlpha,+fAlpha);
-	tWatchDirection.setHP(-sRot.yaw,-sRot.pitch);
+		SRotation sRot;
+		mk_rotation(tWatchDirection,sRot);
+		
+		sRot.pitch += ::Random.randF(-fAlpha,+fAlpha);
+		sRot.yaw += ::Random.randF(-fAlpha,+fAlpha);
+		tWatchDirection.setHP(-sRot.yaw,-sRot.pitch);
+	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	mk_rotation(tWatchDirection,r_torso_target);

@@ -429,7 +429,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S);
 		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-		void vfAimAtEnemy();
+		void vfAimAtEnemy(bool bInaccuracy = false);
 		void vfSaveEnemy();
 		bool bfCheckIfCanKillMember();
 		bool bfCheckIfCanKillEnemy();
