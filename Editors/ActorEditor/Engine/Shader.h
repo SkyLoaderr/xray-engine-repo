@@ -84,7 +84,7 @@ public:
 	};
 public:
 	SFlags				Flags;
-	svector<ref_pass,4>	Passes;
+	svector<ref_pass,2>	Passes;
 
 						ShaderElement	();
 						~ShaderElement	();
