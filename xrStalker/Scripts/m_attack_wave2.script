@@ -331,7 +331,7 @@ function main ()
 	end
 	
 
-    wait (20000)
+    wait (60000)
 
 	while entered == false do
 	      for a = 1, table.getn (monsters), 1 do   
