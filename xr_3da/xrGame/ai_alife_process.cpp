@@ -98,7 +98,10 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 					case eTaskTypeSearchForItemCL :
 					case eTaskTypeSearchForItemOL : {
 						VERIFY(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
+						tpALifeHuman->m_baVisitedVertices.resize(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
+						tpALifeHuman->m_baVisitedVertices.assign(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size(),false);
 						tGraphID = m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID][tpALifeHuman->m_dwCurTaskLocation = 0];
+						tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation] = true;
 						break;
 					}
 					default : NODEFAULT;
@@ -130,8 +133,9 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 						}
 						case eTaskTypeSearchForItemCL :
 						case eTaskTypeSearchForItemOL : {
-							tpALifeHuman->m_dwCurTaskLocation++;
+							for (tpALifeHuman->m_dwCurTaskLocation++; (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size()) && (tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation]); tpALifeHuman->m_dwCurTaskLocation++);
 							if (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size()) {
+								tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation] = true;
 								Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID][tpALifeHuman->m_dwCurTaskLocation],tpALifeHuman->m_tpaVertices);
 								tpALifeHuman->m_dwCurNode = 0;
 							}

@@ -16,7 +16,19 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 		tpALifeMonsterAbstract->m_fDistanceFromPoint += float(dwCurTime - tpALifeMonsterAbstract->m_tTimeID)/1000.f * tpALifeMonsterAbstract->m_fCurSpeed;
 		if (tpALifeMonsterAbstract->m_fDistanceToPoint - tpALifeMonsterAbstract->m_fDistanceFromPoint < EPS_L) {
 			vfChangeObjectGraphPoint(tpALifeMonsterAbstract,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
-			
+			CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
+			if (tpALifeHumanAbstract && (tpALifeHumanAbstract->m_tTaskState == eTaskStateGoing)) {
+				GRAPH_IT	B = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.tLocationID].begin();
+				GRAPH_IT	E = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.tLocationID].end();
+				GRAPH_IT	I = B;
+				for (; I != E; I++) {
+					if (*I == tpALifeHumanAbstract->m_tGraphID)
+						tpALifeHumanAbstract->m_baVisitedVertices[I - B] = true;
+					else
+						if (*I == tpALifeHumanAbstract->m_tNextGraphID)
+							tpALifeHumanAbstract->m_baVisitedVertices[I - B] = true;
+				}
+			}
 			tpALifeMonsterAbstract->m_fDistanceToPoint	= tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 			tpALifeMonsterAbstract->m_tPrevGraphID		= tpALifeMonsterAbstract->m_tGraphID;
 			tpALifeMonsterAbstract->m_tGraphID			= tpALifeMonsterAbstract->m_tNextGraphID;

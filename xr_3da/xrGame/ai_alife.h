@@ -205,27 +205,32 @@ public:
 		}
 	}
 
-	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman, OBJECT_IT &I)
+	IC bool bfCheckIfTaskCompleted(CALifeHumanParams &tHumanParams, CALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
 	{
-		I = tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
-		OBJECT_IT	E = tpALifeHuman->m_tHumanParams.m_tpItemIDs.end();
+		I = tHumanParams.m_tpItemIDs.begin();
+		OBJECT_IT	E = tHumanParams.m_tpItemIDs.end();
 		for ( ; I != E; I++) {
-			switch (tpALifeHuman->m_tCurTask.tTaskType) {
+			switch (tpALifeHumanAbstract->m_tCurTask.tTaskType) {
 				case eTaskTypeSearchForItemCL :
 				case eTaskTypeSearchForItemCG : {
-					if (m_tObjectRegistry.m_tppMap[*I]->m_tClassID == tpALifeHuman->m_tCurTask.tClassID)
+					if (m_tObjectRegistry.m_tppMap[*I]->m_tClassID == tpALifeHumanAbstract->m_tCurTask.tClassID)
 						return(true);
 					break;
 				}
 				case eTaskTypeSearchForItemOL :
 				case eTaskTypeSearchForItemOG : {
-					if (m_tObjectRegistry.m_tppMap[*I]->m_tObjectID == tpALifeHuman->m_tCurTask.tObjectID)
+					if (m_tObjectRegistry.m_tppMap[*I]->m_tObjectID == tpALifeHumanAbstract->m_tCurTask.tObjectID)
 						return(true);
 					break;
 				}
 			};
 		}
 		return(false);
+	}
+
+	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman, OBJECT_IT &I)
+	{
+		return(bfCheckIfTaskCompleted(tpALifeHuman->m_tHumanParams,tpALifeHuman,I));
 	}
 
 	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman)
