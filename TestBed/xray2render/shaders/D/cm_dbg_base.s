@@ -42,6 +42,6 @@ p2f 	p_main	( v2p_in IN )
 {
   p2f		OUT;
 
-  OUT.C 	= tex2D		(s_normal, float2(IN.Tex0.x, IN.Tex0.y)); 
+  OUT.C 	= tex2D		(s_diffuse, float2(IN.Tex0.x, IN.Tex0.y)); 
   return OUT;
 }
