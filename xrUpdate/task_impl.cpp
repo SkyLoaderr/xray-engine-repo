@@ -10,7 +10,7 @@ BOOL rename_file(LPCSTR src, LPCSTR dst);
 BOOL check_RO(LPCSTR src);
 
 BOOL file_exist(LPCSTR src);
-BOOL mk_bk_rename(LPCSTR src, int start_from=0);
+BOOL mk_bk_rename(LPCSTR src);
 void copy_folder(LPCSTR src, LPCSTR dst);
 void checkRightFolderName(LPSTR fn);
 
@@ -198,7 +198,7 @@ BOOL copy_file(LPCSTR src, LPCSTR dst_fldr, LPCSTR dst_fn)
 	}
 }
 
-BOOL mk_bk_rename(LPCSTR src, int start_from)
+BOOL mk_bk_rename(LPCSTR src)
 {
 	string_path file_name;
 	string16	drive;
@@ -210,9 +210,22 @@ BOOL mk_bk_rename(LPCSTR src, int start_from)
 	
 	string16 num;
 	string16 new_ext;
-	itoa(start_from,num,10);
+	int start_from=0;
 	string_path new_file_name;
 
+	while(true){
+		itoa(start_from,num,10);
+		strconcat(new_ext,"_old",num);
+		strconcat(new_file_name,drive,dir,"backup\\",file_name,ext,new_ext);
+		if( !file_exist(new_file_name) ){
+			_VerifyPath(new_file_name);
+			rename_file(src, new_file_name);
+			break;
+		}
+		++start_from;
+	}
+	return TRUE;
+/*
 	char* f = 0;
 	if( f = strstr(ext,"_old") ){ //its a bk_copy !!!
 		string16 ext_orig;
@@ -229,8 +242,10 @@ BOOL mk_bk_rename(LPCSTR src, int start_from)
 	if( file_exist(new_file_name) )
 		if( !mk_bk_rename(new_file_name, ++start_from) )
 			return FALSE;
+	
 	_VerifyPath(new_file_name);
 	return rename_file(src, new_file_name);
+*/
 }
 
 BOOL rename_file(LPCSTR src, LPCSTR dst)
@@ -243,7 +258,10 @@ BOOL rename_file(LPCSTR src, LPCSTR dst)
 		Msg("Done.");
 		return TRUE;
 	}else
-		Msg("Error :%s", fo.m_sError.GetBuffer() );
+		Msg("----------------------------------------------------" );
+		Msg("Cann't rename  file %s to %s.",src,dst);
+		Msg("the error is: %s", fo.m_sError.GetBuffer() );
+		Msg("----------------------------------------------------" );
 
 	return TRUE;
 }
