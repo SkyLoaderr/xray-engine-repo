@@ -176,9 +176,9 @@ struct b_params
 		area_quality			= 2;
 
 		// Light smoothing
-		fuzzy_min				= 0.3f;
-		fuzzy_max				= 1.f;
-		fuzzy_samples			= 16;
+		fuzzy_min				= 0.2f;
+		fuzzy_max				= 0.5f;
+		fuzzy_samples			= 12;
 		fuzzy_enable			= FALSE;
 
         // Progressive
@@ -211,7 +211,7 @@ struct b_params
 		m_lm_pixels_per_meter	= 14;
 		m_lm_jitter_samples		= 9;
 		area_quality			= 2;
-		fuzzy_enable			= FALSE;
+		fuzzy_enable			= TRUE;
 	}
 };
 
