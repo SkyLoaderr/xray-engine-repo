@@ -60,11 +60,11 @@ void C3DSound::Update()
 // Update volume
 BOOL C3DSound::Update_Volume()
 {
-	fRealVolume			= .9f*fRealVolume + .1f*(fVolume*psSoundVEffects*fBaseVolume);
 	float	dist		= Device.vCameraPosition.distance_to(ps.vPosition);
 	if (dist>ps.flMaxDistance)	return FALSE;
 	else {
-		// Trace wave
+		Update_Occlusion	();
+		fRealVolume			= .9f*fRealVolume + .1f*(fVolume*psSoundVEffects*fBaseVolume);
 		float att			= ps.flMinDistance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
 		float volume		= fRealVolume*att;
 		if (volume>psSoundCull)	{

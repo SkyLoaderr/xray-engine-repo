@@ -71,7 +71,8 @@ public:
 
 	void					OnMove					(void);
 	void					Update					(void);
-	BOOL					Update_Volume			(void);			// returns TRUE if not "silent"
+	BOOL					Update_Volume			(void);			// returns TRUE if "audible"
+	void					Update_Occlusion		(void);
 
 	C3DSound();
 	~C3DSound();
