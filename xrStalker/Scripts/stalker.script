@@ -121,7 +121,7 @@ function stalker_script:reinit		()
 	printf					("point 3")
 
 	-- // motivations
-	manager:add_motivation	(motivations["global"],		stalker.motivation_global(motivations))
+	manager:add_motivation	(motivations["global"],		stalker.motivation_global(self.object,motivations))
 
 	printf					("point 4")
 	goal:clear				()
