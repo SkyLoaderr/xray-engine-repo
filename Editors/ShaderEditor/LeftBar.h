@@ -30,9 +30,6 @@ __published:	// IDE-managed Components
 	TLabel *APHeadLabel2;
 	TExtBtn *ebSceneMin;
 	TExtBtn *ebPreferences;
-	TMxPopupMenu *pmEngineShadersFile;
-	TMenuItem *Save1;
-	TMenuItem *Reload1;
 	TPanel *paEngineShaders;
 	TLabel *Label1;
 	TMxPopupMenu *pmListCommand;
@@ -41,9 +38,6 @@ __published:	// IDE-managed Components
 	TMenuItem *N1;
 	TMenuItem *CreateFolder1;
 	TMenuItem *Rename1;
-	TMenuItem *N2;
-	TMenuItem *Import1;
-	TMenuItem *Export1;
 	TElPageControl *pcShaders;
 	TElTabSheet *tsEngine;
 	TBevel *Bevel1;
@@ -99,16 +93,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCreateSoundEnv;
 	TElTree *tvSoundEnv;
 	TExtBtn *ebEngineShaderCreate;
-	TMenuItem *N7;
-	TMenuItem *miEnginePreviewObject;
-	TMenuItem *Plane2;
-	TMenuItem *Box2;
-	TMenuItem *Ball2;
-	TMenuItem *Teapot2;
-	TMenuItem *N8;
-	TMenuItem *Custom2;
-	TMenuItem *N9;
-	TMenuItem *Clear2;
 	TMxPopupMenu *pmCustomFile;
 	TMenuItem *MenuItem1;
 	TMenuItem *MenuItem2;
@@ -153,8 +137,6 @@ __published:	// IDE-managed Components
 	void __fastcall ImageEditor1Click(TObject *Sender);
 	void __fastcall Refresh1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
-	void __fastcall ebEngineFileMouseDown(TObject *Sender,
-          TMouseButton Button, TShiftState Shift, int X, int Y);
 private:	// User declarations
 	void __fastcall RenameItem			(LPCSTR p0, LPCSTR p1);
 	BOOL __fastcall RemoveItem			(LPCSTR p0);

@@ -139,12 +139,6 @@ void __fastcall TfraLeftBar::ebCustomFileMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEngineFileMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	FHelper.ShowPPMenu(pmEngineShadersFile,dynamic_cast<TExtBtn*>(Sender));
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
@@ -340,4 +334,5 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 //.#include "SHEngineTools.h"
 //	CSHEngineTools* tools = (CSHEngineTools*)Tools.FindTools(aeEngine); R_ASSERT(tools);
 //    tools->PreviewObjClick(Sender);
+
 

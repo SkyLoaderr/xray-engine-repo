@@ -23,7 +23,6 @@ void CSHCompilerTools::UpdateProperties()
         PHelper.CreateFlag32	(items, "Flags\\Vertex light",	&L.m_Flags,   	Shader_xrLC::flLIGHT_Vertex);
         PHelper.CreateFlag32	(items, "Flags\\Cast shadow",	&L.m_Flags,   	Shader_xrLC::flLIGHT_CastShadow);
         PHelper.CreateFlag32	(items, "Flags\\Sharp",			&L.m_Flags,   	Shader_xrLC::flLIGHT_Sharp);
-        PHelper.CreateFlag32	(items, "Flags\\Leave normals",	&L.m_Flags,   	Shader_xrLC::flSaveNormals);
     }
     Ext.m_ItemProps->AssignItems(items,true);
     Ext.m_ItemProps->SetModifiedEvent(Modified);

@@ -5,8 +5,12 @@
 #include "blenders\Blender_Recorder.h"
 #include "blenders\Blender.h"
 
-#include "igame_level.h"
-#include "environment.h"
+#ifdef _EDITOR
+	#include "ui_tools.h"
+#else
+	#include "igame_level.h"
+	#include "environment.h"
+#endif
 
 // matrices
 #define	BIND_DECLARE(xf)	\
@@ -48,8 +52,14 @@ class cl_fog_params	: public R_constant_setup {
 	{
 		if (marker!=Device.dwFrame)
 		{
-			f_near	= g_pGameLevel->Environment->c_FogNear;
-			f_far	= 1/(g_pGameLevel->Environment->c_FogFar - f_near);
+#ifdef _EDITOR
+			u32 fog_color;
+            float s_fog, e_fog;
+		    Tools.GetCurrentFog(fog_color, s_fog, e_fog);
+#else
+			f_near	= s_fog;
+			f_far	= 1/(e_fog - f_near);
+#endif
 		}
 		RCache.set_c	(C,f_near,f_far,0,0);
 	}

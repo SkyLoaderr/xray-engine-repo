@@ -67,6 +67,11 @@ public:
 
     // camera
 	CUI_Camera 				m_Camera;
+
+    Fvector					vCameraPosition;
+    Fvector					vCameraDirection;
+    Fvector					vCameraTop;
+    
 	Fmatrix					mView;
 	Fmatrix 				mProjection;
 	Fmatrix					mFullTransform;

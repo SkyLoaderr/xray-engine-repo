@@ -4,7 +4,8 @@
 #include "UI_Camera.h"
 #include "ui_main.h"
 
-CUI_Camera::CUI_Camera(){
+CUI_Camera::CUI_Camera()
+{
 	m_Style = csPlaneMove;
 
 	m_Znear = 0.2f;
@@ -20,10 +21,12 @@ CUI_Camera::CUI_Camera(){
     m_bMoving=false;
 }
 
-CUI_Camera::~CUI_Camera(){
+CUI_Camera::~CUI_Camera()
+{
 }
 
-void CUI_Camera::SetStyle(ECameraStyle new_style){
+void CUI_Camera::SetStyle(ECameraStyle new_style)
+{
   	if (new_style==cs3DArcBall){
 	    Fvector dir;
         dir.sub			(m_Target,m_Position);
@@ -41,26 +44,30 @@ void CUI_Camera::SetStyle(ECameraStyle new_style){
     UI.RedrawScene();
 }
 
-void CUI_Camera::Reset(){
+void CUI_Camera::Reset()
+{
 	m_HPB.set(0,0,0);
     m_Position.set(0,3,-10);
 	SetStyle(m_Style);
     BuildCamera();
 }
 
-void CUI_Camera::Set(float h, float p, float b, float x, float y, float z){
+void CUI_Camera::Set(float h, float p, float b, float x, float y, float z)
+{
 	m_HPB.set(h,p,b);
     m_Position.set(x,y,z);
     BuildCamera();
 }
 
-void CUI_Camera::Set(const Fvector& hpb, const Fvector& pos){
+void CUI_Camera::Set(const Fvector& hpb, const Fvector& pos)
+{
 	m_HPB.set(hpb);
     m_Position.set(pos);
     BuildCamera();
 }
 
-void CUI_Camera::BuildCamera(){
+void CUI_Camera::BuildCamera()
+{
 	if (m_HPB.x>PI_MUL_2)  m_HPB.x-=PI_MUL_2;	if (m_HPB.x<-PI_MUL_2) m_HPB.x+=PI_MUL_2;
 	if (m_HPB.y>PI_MUL_2)  m_HPB.y-=PI_MUL_2;	if (m_HPB.y<-PI_MUL_2) m_HPB.y+=PI_MUL_2;
 	if (m_HPB.z>PI_MUL_2)  m_HPB.z-=PI_MUL_2;	if (m_HPB.z<-PI_MUL_2) m_HPB.z+=PI_MUL_2;
@@ -76,6 +83,10 @@ void CUI_Camera::BuildCamera(){
 	m_CamMat.setHPB(m_HPB.x,m_HPB.y,m_HPB.z);
     m_CamMat.translate_over(m_Position);
     UI.OutCameraPos();
+    
+	Device.vCameraPosition.set	(m_CamMat.c);
+	Device.vCameraDirection.set	(m_CamMat.k);
+	Device.vCameraTop.set		(m_CamMat.j);
 }
 
 void CUI_Camera::SetDepth(float _far, bool bForcedUpdate)
@@ -124,7 +135,8 @@ void CUI_Camera::Update(float dt)
     }
 }
 
-void CUI_Camera::Pan(float dx, float dz){
+void CUI_Camera::Pan(float dx, float dz)
+{
     Fvector vmove;
     vmove.set( m_CamMat.k );  vmove.y = 0;
     vmove.normalize_safe();
@@ -139,7 +151,8 @@ void CUI_Camera::Pan(float dx, float dz){
     BuildCamera();
 }
 
-void CUI_Camera::Scale(float dy){
+void CUI_Camera::Scale(float dy)
+{
     Fvector vmove;
     vmove.set( 0.f, dy, 0.f );
     vmove.y *= -m_SM;
@@ -156,7 +169,8 @@ void CUI_Camera::Rotate(float dx, float dy)
     BuildCamera();
 }
 
-bool CUI_Camera::MoveStart(TShiftState Shift){
+bool CUI_Camera::MoveStart(TShiftState Shift)
+{
 	if (Shift.Contains(ssShift)){
     	if (!m_bMoving){
 		    ShowCursor	(FALSE);
@@ -170,7 +184,8 @@ bool CUI_Camera::MoveStart(TShiftState Shift){
     return false;
 }
 
-bool CUI_Camera::MoveEnd(TShiftState Shift){
+bool CUI_Camera::MoveEnd(TShiftState Shift)
+{
 	m_Shift = Shift;
 	if (!Shift.Contains(ssLeft)||!Shift.Contains(ssShift)){
 	    SetCursorPos(m_StartPos.x, m_StartPos.y);
@@ -181,7 +196,8 @@ bool CUI_Camera::MoveEnd(TShiftState Shift){
     return false;
 }
 
-bool CUI_Camera::Process(TShiftState Shift, int dx, int dy){
+bool CUI_Camera::Process(TShiftState Shift, int dx, int dy)
+{
     if (m_bMoving){
         m_Shift = Shift;
 // camera move
@@ -209,7 +225,8 @@ bool CUI_Camera::Process(TShiftState Shift, int dx, int dy){
     return false;
 }
 
-bool CUI_Camera::KeyDown(WORD Key, TShiftState Shift){
+bool CUI_Camera::KeyDown(WORD Key, TShiftState Shift)
+{
     if (m_bMoving){
     	switch (Key){
         case VK_CONTROL: m_Shift<<ssCtrl; break;
@@ -220,7 +237,8 @@ bool CUI_Camera::KeyDown(WORD Key, TShiftState Shift){
 	return false;
 }
 
-bool CUI_Camera::KeyUp(WORD Key, TShiftState Shift){
+bool CUI_Camera::KeyUp(WORD Key, TShiftState Shift)
+{
     if (m_bMoving){
     	switch (Key){
         case VK_SHIFT: m_Shift>>ssShift; MoveEnd(m_Shift); break;
@@ -232,7 +250,8 @@ bool CUI_Camera::KeyUp(WORD Key, TShiftState Shift){
 	return false;
 }
 
-void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Ivector2& point ){
+void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Ivector2& point )
+{
 	int halfwidth  = UI.GetRealWidth()*0.5f;
 	int halfheight = UI.GetRealHeight()*0.5f;
 
@@ -255,7 +274,8 @@ void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Iv
 	direction.normalize();
 }
 
-void CUI_Camera::ZoomExtents(const Fbox& bb){
+void CUI_Camera::ZoomExtents(const Fbox& bb)
+{
 	Fvector C,D,P;
     float R,H1,H2;
     bb.getsphere(C,R);
@@ -278,7 +298,8 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
 */
 }
 
-void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy){
+void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy)
+{
 	float dist = m_Position.distance_to(m_Target);
 	if (Shift.Contains(ssAlt)){
 		if (Shift.Contains(ssLeft)){
