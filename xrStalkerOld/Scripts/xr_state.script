@@ -260,7 +260,7 @@ function body_state:transanim(object, target_state)
 end
 function body_state:weapon_slot()
 	local weapon = self.npc:active_item()
-	if weapon == nil then
+	if weapon == nil or self.npc:weapon_strapped() == true then
 		return 0
 	end
 	local id = get_clsid(weapon)

@@ -235,9 +235,7 @@ function action_meet_wait:initialize()
 	self.object:set_mental_state(anim.free)
 
    	xr_state.change_state(self.object,xr_state.stand)
-   	printf("*MEET*: straping weapon %d", device():time_global())   	
    	self.object:set_item(object.strap, self.object:best_weapon())
-
 	
    	self.a.Buyer = nil
 end
@@ -254,9 +252,7 @@ function action_meet_wait:execute ()
 	self.object:set_sight(look.direction, dir, 0)
 
 	-- Анимации
-	if self.object:weapon_strapped() == true then
-		xr_state.anim_update("idle", self.object)
-	end
+	xr_state.anim_update("idle", self.object)
 
 	-- Звуки
 	if self.object:active_sound_count() == 0 then
@@ -266,9 +262,7 @@ function action_meet_wait:execute ()
 end
 function action_meet_wait:finalize ()
 	self.object:disable_talk()
-	if self.object:weapon_strapped() == true then	
-		xr_state.anim_update(nil, self.object)
-	end
+	xr_state.anim_update(nil, self.object)
 	action_base.finalize (self)
 end
 
