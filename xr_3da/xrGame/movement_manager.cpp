@@ -175,7 +175,8 @@ void CMovementManager::update_path	()
 		default :				NODEFAULT;
 	}
 
-	verify_detail_path			();
+	if (accessible(Position()))
+		verify_detail_path		();
 }
 
 void CMovementManager::verify_detail_path	()
