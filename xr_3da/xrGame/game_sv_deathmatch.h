@@ -5,6 +5,7 @@
 class	game_sv_Deathmatch			: public game_sv_GameState
 {
 protected:
+	void							AllowDeadBodyRemove		(u32 id);
 public:
 	virtual		void				Create					(LPSTR &options);
 
