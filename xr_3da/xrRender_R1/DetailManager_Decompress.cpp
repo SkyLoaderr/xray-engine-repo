@@ -119,7 +119,8 @@ void		CDetailManager::cache_Decompress(Slot* S)
 			// Position (XZ)
 			float		rx = (float(x)/float(d_size))*dm_slot_size + D.vis.box.min.x;
 			float		rz = (float(z)/float(d_size))*dm_slot_size + D.vis.box.min.z;
-			Item.P.set	(rx + r_jitter.randFs(jitter), D.vis.box.max.y, rz + r_jitter.randFs(jitter));
+			Fvector		Item_P;
+			Item_P.set	(rx + r_jitter.randFs(jitter), D.vis.box.max.y, rz + r_jitter.randFs(jitter));
 
 			// Position (Y)
 			float y		= D.vis.box.min.y-5;
@@ -136,7 +137,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 Device.Statistic.TEST0.Begin	();
 					I.s_obj->GetFaceWorld(I.e_mesh,I.inf[k].id,verts);
 Device.Statistic.TEST0.End		();
-					if (CDB::TestRayTri(Item.P,dir,verts,r_u,r_v,r_range,TRUE))
+					if (CDB::TestRayTri(Item_P,dir,verts,r_u,r_v,r_range,TRUE))
 					{
 						if (r_range>=0)	{
 							float y_test	= Item.P.y - r_range;
@@ -147,7 +148,7 @@ Device.Statistic.TEST0.End		();
 #else
 				CDB::TRI&	T		= tris[xrc.r_begin()[tid].id];
 				Fvector		Tv[3]	= { verts[T.verts[0]],verts[T.verts[1]],verts[T.verts[2]] };
-				if (CDB::TestRayTri(Item.P,dir,Tv,r_u,r_v,r_range,TRUE))
+				if (CDB::TestRayTri(Item_P,dir,Tv,r_u,r_v,r_range,TRUE))
 				{
 					if (r_range>=0)	{
 						float y_test	= Item.P.y - r_range;
