@@ -84,8 +84,8 @@ function game_cl_LastStanding:OnKeyboardPress(key)
       local game_object = self:GetObjectByGameID(ps_local.GameID)
 		if game_object == nil then return false end
 
-		local is_actor = curr->SUB_CLS_ID==CLSID_OBJECT_ACTOR;
-		local is_spectator = curr->SUB_CLS_ID==CLSID_SPECTATOR;
+		local is_actor = game_object:clsid() == clsid.actor
+		local is_spectator = game_object:clsid() == clsid.spectator
 		
 
 		b_need_to_send_ready =	
@@ -95,9 +95,9 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 		
 		if b_need_to_send_ready then
 				local P = net_packet()
-				self:u_EventGen	(P,game_messages.game_messages.GE_GAME_EVENT, ps_local.GameID	)
+				self:GameEventGen	(P, ps_local.GameID	)
 				P:w_u16(game_messages.game_messages.GAME_EVENT_PLAYER_READY);
-				self:u_EventSend	(P)
+				self:EventSend	(P)
             return true
 		
 		else
@@ -106,12 +106,18 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 
 	end
 
+   if key_bindings.keys.kINVENTORY == key then
+      self:StartStopMenu(self.m_inventory_wnd)
+      return true
+   end
+
 	if (self:Phase() ~= game_phases.game_phases.GAME_PHASE_INPROGRESS) and 
-      (key_bindings.keys.kQUIT ~= key) ) then	
+      (key_bindings.keys.kQUIT ~= key) and 
+      (key_bindings.keys.kCONSOLE ~= key)  then	
          return  true
       end
 
-	return inherited::OnKeyboardPress(key)
+	return game_cl_mp_script.OnKeyboardPress(self, key)
 
 end
 
