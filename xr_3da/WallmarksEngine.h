@@ -36,13 +36,12 @@ struct ENGINE_API	CWallmark {
 		hShader		= hTex;
 		ttl			= W_TTL;
 	};
-	IC void		Draw	(CVertexStream* VS) 
+	IC void		Draw	(Vertex*	&D) 
 	{
 		DWORD vOffset,C;
 		C = iFloor(ttl/W_TTL * 255.f);
 		C = D3DCOLOR_RGBA(C,C,C,C);
 
-		Vertex* D = (Vertex*)VS->Lock(verts.size(),vOffset);
 		for (Vertex* S=verts.begin(); S!=verts.end(); S++,D++)
 		{
 			D->P.set(S->P);
@@ -50,10 +49,6 @@ struct ENGINE_API	CWallmark {
 			D->tu	= S->tu;
 			D->tv	= S->tv;
 		}
-		VS->Unlock(verts.size());
-
-		Device.Shader.Set		(hShader);
-		Device.Primitive.Draw	(VS,verts.size()/3,vOffset);
 	};
 };
 

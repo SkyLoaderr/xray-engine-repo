@@ -14,7 +14,7 @@
 #include "x_ray.h"
 #include "xr_smallfont.h"
 
-#define MAX_TRIS	256
+#define MAX_TRIS	1024
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -164,17 +164,49 @@ void CWallmarksEngine::Render()
 	if (!marks.empty()) 
 	{
 		Device.Statistic.RenderDUMP_WM.Begin	();
+
+		DWORD				w_offset;
+		CWallmark::Vertex*	w_verts = VS->Lock	(MAX_TRIS*3,w_offset);
+		CWallmark::Vertex*	w_start = w_verts;
+
+		Shader*	w_S			= marks.front().hShader;
 		for (DWORD i=0; i<marks.size(); i++)
 		{
 			CWallmark& W = marks[i];
-			if (::Render.ViewBase.testSphereDirty(W.S.P,W.S.R)) {
+			if (::Render.ViewBase.testSphereDirty(W.S.P,W.S.R)) 
+			{
 				float dst = Device.vCameraPosition.distance_to_sqr(W.S.P);
 				float ssa = g_fSCREEN * W.S.R * W.S.R / dst;
-				if (ssa>=1)	W.Draw	(VS);
+				if (ssa>=1)	{
+					DWORD w_count	= w_verts-w_start;
+					if (((w_count+W.verts.size())>=MAX_TRIS*3)||(w_S!=W.hShader))
+					{
+						// Flush stream
+						VS->Unlock				(w_count);
+						Device.Shader.Set		(w_S);
+						Device.Primitive.Draw	(VS,w_count/3,w_offset);
+
+						// Restart (re-lock/re-calc)
+						w_verts		= VS->Lock	(MAX_TRIS*3,w_offset);
+						w_start		= w_verts;
+						w_S			= W.hShader;
+					}
+
+					W.Draw	(w_verts);
+				}
 			}
 			W.ttl -= Device.fTimeDelta;
 		}
+
+		// Flush stream
+		DWORD w_count			= w_verts-w_start;
+		VS->Unlock				(w_count);
+		Device.Shader.Set		(w_S);
+		Device.Primitive.Draw	(VS,w_count/3,w_offset);
+
+		// Remove last used wallmarks
 		while (!marks.empty() && (marks.front().ttl<=EPS_S)) marks.pop_front();
+
 		Device.Statistic.RenderDUMP_WM.End		();
 	}
 
