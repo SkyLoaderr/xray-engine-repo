@@ -10,27 +10,29 @@ function on_enter (zone, object)
     if object:id () == get_actor ():id () then actor_entered = true end
 end
 
---function check (stalker)
---    reset_action (stalker, military2_1.script_name ())
---    action (stalker, anim ("prisluh"), cond (cond.time_end, 10000))
---    while stalker:action () do wait () end
---end
+function check (stalker)
+    reset_action (stalker, military2_1.script_name ())
+    action (stalker, anim ("prisluh"), cond (cond.time_end, 10000))
+    while stalker:action () do wait () end
+end
 
 function main ()
 
     local stalker1 = get_level_object ("stalker1")
     local stalker2 = get_level_object ("stalker2")
     local stalker3 = get_level_object ("stalker3")
---	local artefact = get_level_object ("artefact")
     local weapon = get_level_object ("ak74")
     local torch = get_level_object ("torch")
     local testway = patrol ("way_test")
 	local baseway = patrol ("way_base")
 
+    --local artefact = get_level_object ("artefact")
+    --if artefact ~= nil then printf ("Getting artefact") end
+
     local sound1_1 = sound_object ("scripts\\Rolik\\Stalker1_1")
     local sound1_2 = sound_object ("scripts\\Rolik\\Stalker1_2")
     local sound1_3 = sound_object ("scripts\\Rolik\\Stalker1_3")
---    local sound2_1 = sound_object ()
+    local sound2_1 = sound_object ("scripts\\Rolik\\Stalker2_1")
     local sound2_2 = sound_object ("scripts\\Rolik\\Stalker2_2")
     local sound3_1 = sound_object ("scripts\\Rolik\\Stalker3_1")
     local sound3_2 = sound_object ("scripts\\Rolik\\Stalker3_2")
@@ -53,24 +55,27 @@ function main ()
     reset_action (stalker2, military2_1.script_name ())
     reset_action (stalker3, military2_1.script_name ())
     action (stalker1, anim ("stalker_2_1"), cond (cond.time_end, 100000000))
+    action (stalker2, anim ("sidya_boltaet_ 0"), cond (cond.time_end, 100000000))
     action (stalker3, object (torch, object.deactivate), cond (cond.time_end, 100))
     action (stalker3, object (weapon, object.deactivate), cond (cond.time_end, 1000))
     action (stalker3, anim ("stalker_3_2"), cond (cond.time_end, 100000000))
+    
+    sound2_1:play_at_pos (stalker2, stalker2:position (), 0)
 
-    action (stalker2, anim ("sidya_boltaet_ 0"), sound ("scripts\\Rolik\\Stalker2_1", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
-	while stalker2:action () do wait () end    
+    while sound2_1:playing () do wait () end
+
     wait (1000)
 
     --phrase 2
     reset_action (stalker2, military2_1.script_name ())
     action (stalker2, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
 	reset_action (stalker3, military2_1.script_name ())
-
-    action (stalker3, anim ("stalker_3_1"), sound ("scripts\\Rolik\\Stalker2_1", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
-	while stalker3:action () do wait () end
-
+    action (stalker3, anim ("stalker_3_1"), cond (cond.time_end, 100000000))
+    sound3_1:play_at_pos (stalker3, stalker3:position (), 0)
+    while sound3_1:playing () do wait () end
 	reset_action (stalker3, military2_1.script_name ())
     action (stalker3, anim ("stalker_3_2"), cond (cond.time_end, 100000000))
+
     wait (1500)
 
     --phrase 3
@@ -107,7 +112,7 @@ function main ()
 
     --check move
     reset_action (stalker3, military2_1.script_name ())
-    action (stalker3, move (pos, 0.5), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
+    action (stalker3, move (pos, 0.26), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
     action (stalker3, move (pos, 0.05), anim ("walk_fwd_crawl_stop"), cond (cond.anim_end))
     action (stalker3, anim ("prisluh"), cond (cond.anim_end	))
 	action (stalker3, anim ("prisluh_v_torso_idle_2"), 	cond (cond.anim_end))
@@ -168,3 +173,4 @@ function main ()
     stalker3:script (false, military2_1.script_name ())
 
 end
+
