@@ -121,6 +121,7 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_lager_volk_dynamite_done">
+		<has_info>escape_dynamite_start</has_info>
         <precondition>escape_dialog.have_dynamite</precondition>
         <phrase_list>
             <phrase id="1">

@@ -111,11 +111,11 @@ function action_meet_wait:execute ()
 		end
 	end
 		
-	action_base.execute (self)
+	action_base.execute(self)
 end
 function action_meet_wait:finalize ()
 	self.object:disable_talk()
-	action_base.finalize (self)
+	action_base.finalize(self)
 end
 
 --' “ипа спр€чь пушку, чувак
