@@ -108,7 +108,7 @@ void CRenderTarget::End		()
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
 	DWORD	Cgray	= D3DCOLOR_RGBA	(90,90,90,0);
-	int		A		= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
+	int		A		= 127; //iFloor		((1-param_gray)*255.f); clamp(A,0,255);
 	DWORD	Calpha	= D3DCOLOR_RGBA	(255,255,255,A);
 	float	tw		= float(Device.dwWidth);
 	float	th		= float(Device.dwHeight);
@@ -143,8 +143,10 @@ void CRenderTarget::End		()
 		Device.Primitive.Draw	(pStream,4,2,Offset+0,Device.Streams_QuadIB);
 		if (param_gray<0.999f) {
 			// Blend COLOR
-			Device.Shader.set_Shader(pShaderBlend);
-			Device.Primitive.Draw	(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+			Device.Shader.set_Shader		(pShaderBlend);
+			Device.Primitive.setVerticesUC	(pStream->getFVF(), pStream->getStride(), pStream->getBuffer());
+			Device.Primitive.setIndicesUC	(Offset+4, Device.Streams_QuadIB);
+			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 		}
 	} else {
 		// Draw COLOR

@@ -72,7 +72,7 @@ void CActor::cam_Update(float dt, BOOL bZoom)
 		dangle.set			(0,0,0);
 		break;
 	case eacFreeLook: 
-		cam_gray			+= dt/10.f;
+		cam_gray			+= dt;
 		clamp				(cam_gray,0.f,1.f);
 		dangle.set			(0,0,0);
 		break;
