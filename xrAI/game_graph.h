@@ -16,7 +16,7 @@
 
 #include "ai_alife_space.h"
 
-#define GRAPH_NAME							"game_test.graph"
+#define GRAPH_NAME							"game.graph"
 
 class CGameGraph {
 public:
