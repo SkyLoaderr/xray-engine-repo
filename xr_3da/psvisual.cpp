@@ -58,7 +58,6 @@ void CPSVisual::Update(DWORD dt)
 	bv_BBox.invalidate	();
 	for (i=0; i<int(m_Particles.size()); i++)
 	{
-//		Log("a");
 		if (fTime>m_Particles[i].m_Time.end) {
 			// Need to delete particle
 			if (iCount_Create)	{
@@ -74,7 +73,6 @@ void CPSVisual::Update(DWORD dt)
 			}
 		}
 		
-//		Log("b");
 		// Simulate this particle
 		SParticle& P	= m_Particles[i];
 		float T 		= fTime-P.m_Time.start;
