@@ -86,7 +86,7 @@ void	ISpatial::spatial_move	()
 	if (spatial.node_ptr)
 	{
 		//*** somehow it was determined that object has been moved
-		IRender_Sector*		S				= ::Render->detectSector(spatial.center);
+		IRender_Sector*		S				= ::Render->detectSector(spatial_sector_point());
 		if (S)				spatial.sector	= S;
 
 		//*** check if we are supposed to correct it's spatial location

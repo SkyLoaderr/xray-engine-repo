@@ -34,7 +34,8 @@ public:
 	virtual void	set_color		(float r, float g, float b)		{ color.set(r,g,b,1);		}
 	virtual void	set_texture		(LPCSTR name);
 
-	virtual	void	spatial_move	();
+	virtual	void	spatial_move		();
+	virtual	Fvector	spatial_sector_point();
 
 	light();
 	virtual ~light();

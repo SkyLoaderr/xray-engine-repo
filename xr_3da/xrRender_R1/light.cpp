@@ -90,11 +90,10 @@ void	light::set_direction	(const Fvector& D)	{
 	spatial_move				();
 }
 
-void	light::spatial_move		()
+void	light::spatial_move			()
 {
-	spatial.center				= position;
-	spatial.radius				= range;
-	/*
+	//spatial.center				= position;
+	//spatial.radius				= range;
 	if (flags.type == IRender_Light::POINT)				{
 		spatial.center				= position;
 		spatial.radius				= range;
@@ -110,6 +109,10 @@ void	light::spatial_move		()
 			spatial.center.mad			(position,direction,spatial.radius);
 		}
 	}
-	*/
 	ISpatial::spatial_move		();
+}
+
+Fvector	light::spatial_sector_point	()	
+{ 
+	return position; 
 }
