@@ -51,13 +51,14 @@ void CBuild::Flex2OGF()
 					pOGF->textures.push_back(T);
 				} else {
 					// If lightmaps persist
-					CLightmap* LM	= F->lmap_layer;
-					R_ASSERT		(LM);
-					strcpy			(T.name, LM->lm_texture.name);
-					T.pSurface		= &(LM->lm_texture);
-					R_ASSERT		(T.pSurface);
-					R_ASSERT		(pOGF);
-					pOGF->textures.push_back(T);
+					CLightmap*	LM	= F->lmap_layer;
+					if (LM)		{
+						strcpy			(T.name, LM->lm_texture.name);
+						T.pSurface		= &(LM->lm_texture);
+						R_ASSERT		(T.pSurface);
+						R_ASSERT		(pOGF);
+						pOGF->textures.push_back(T);
+					}
 				}
 			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *textures*",MODEL_ID); }
 			
