@@ -284,14 +284,14 @@ void CController::UpdateCL()
 		time_started = Level().timeServer();
 	}
 
-	float percent = (Level().timeServer() - time_started) / time_to_show;
+	float percent = float((Level().timeServer() - time_started)) / float(time_to_show);
 
 	float x1 = Device.dwWidth  / 2 - ((Device.dwWidth	/ 2) * (1 - percent));
 	float y1 = Device.dwHeight / 2 - ((Device.dwHeight	/ 2) * (1 - percent));
 	float x2 = Device.dwWidth  / 2 + ((Device.dwWidth	/ 2) * (1 - percent));
 	float y2 = Device.dwHeight / 2 + ((Device.dwHeight	/ 2) * (1 - percent));
 	
-	HUD().GetUI()->UIMainIngameWnd.AddStaticItem(&m_UIControlFX,x1,y1,x2,y2);
+	HUD().GetUI()->UIMainIngameWnd.AddStaticItem(&m_UIControlFX,int(x1),int(y1),int(x2),int(y2));
 }
 
 void CController::Jump()
