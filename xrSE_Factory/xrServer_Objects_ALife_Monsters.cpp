@@ -239,7 +239,7 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 #endif
 
 	CSpecificCharacter selected_char;
-	selected_char.Load(new_spec_char);
+	selected_char.Load(m_iSpecificCharacter);
 	if(selected_char.Visual())
 	{
 		CSE_Visual* visual = smart_cast<CSE_Visual*>(base()); VERIFY(visual);
