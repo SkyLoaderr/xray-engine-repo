@@ -59,7 +59,7 @@ IC	int CBoardClassicOthello::compute_difference	(const cell_index &index) const
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
 	cell_type const *start_cell		= m_board + index;
-	int								result = difference(), start = result;
+	int				result			= difference();
 
 	switch (flipping_directions[index]) {
 		case 1 : {
@@ -132,14 +132,13 @@ IC	int CBoardClassicOthello::compute_difference	(const cell_index &index) const
 		default : NODEFAULT;
 	}
 	
-	if (start != result)
-		result += _color_to_move == BLACK ? 1 : -1;
-
-	return	(result);
+	return	(result + (_color_to_move == BLACK ? 1 : -1));
 }
 
-int	 CBoardClassicOthello::compute_difference	(const cell_index &index) const
+template <CBoardClassicOthello::cell_type _color_to_move>
+IC	int	 CBoardClassicOthello::compute_difference	(const cell_index &index, bool) const
 {
+	VERIFY			(can_move(index));
 	if (index) {
 		VERIFY		(can_move(index) == EMPTY);
 		if (color_to_move() == BLACK)
@@ -147,9 +146,19 @@ int	 CBoardClassicOthello::compute_difference	(const cell_index &index) const
 		else
 			return	(-compute_difference<WHITE>(index));
 	}
+
 	VERIFY			(!can_move());
+
 	if (color_to_move() == BLACK)
 		return		(difference());
 	else
 		return		(-difference());
+}
+
+int	 CBoardClassicOthello::compute_difference	(const cell_index &index) const
+{
+	if (color_to_move() == BLACK)
+		return		(compute_difference<BLACK>(index,true));
+	else
+		return		(-compute_difference<WHITE>(index,true));
 }

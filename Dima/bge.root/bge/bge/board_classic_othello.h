@@ -64,6 +64,7 @@ private:
 	int				m_difference;
 	bool			m_passed;
 	flip_stack		m_flip_stack;
+	mutable char	m_temp[16];
 
 protected:
 	IC		void			show_cell				(const cell_type &value) const;
@@ -76,7 +77,7 @@ protected:
 	IC		void			try_flip_direction		(cell_type *start_cell, int &difference);
 	
 	template <cell_type color_to_move>
-	IC		bool			do_move					(const cell_index &index);
+	IC		void			do_move					(const cell_index &index);
 
 protected:
 	template <cell_type opponent_color>
@@ -99,10 +100,15 @@ protected:
 	template <cell_type color_to_move>
 	IC		int				compute_difference		(const cell_index &index) const;
 
+	template <cell_type color_to_move>
+	IC		int				compute_difference		(const cell_index &index, bool) const;
+
 public:
 	IC						CBoardClassicOthello	();
 			void			start_position			();
 			void			show					() const;
+	IC		LPCSTR			move_to_string			(const cell_index &index) const;
+	IC		LPCSTR			move_to_string			(const cell_index &index0, const cell_index &index1) const;
 
 public:
 	IC		const cell_type	&color_to_move			() const;
@@ -112,14 +118,15 @@ public:
 
 public:
 	IC		cell_index		index					(const cell_index &index0, const cell_index &index1) const;
+	IC		void			index					(const cell_index &index, cell_index &index0, cell_index &index1) const;
 	IC		void			cell					(const cell_index &index,  const cell_type &value);
 	IC		void			cell					(const cell_index &index0, const cell_index &index1, const cell_type &value);
 	IC		const cell_type	&cell					(const cell_index &index) const;
 	IC		const cell_type	&cell					(const cell_index &index0, const cell_index &index1) const;
 
 public:
-			bool			do_move					(const cell_index &index);
-	IC		bool			do_move					(const cell_index &index0, const cell_index &index1);
+			void			do_move					(const cell_index &index);
+	IC		void			do_move					(const cell_index &index0, const cell_index &index1);
 
 public:
 	IC		void			undo_move				();

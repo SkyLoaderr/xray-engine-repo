@@ -54,7 +54,7 @@ check:
 }
 
 template <CBoardClassicOthello::cell_type _color_to_move>
-IC	bool CBoardClassicOthello::do_move		(const cell_index &index)
+IC	void CBoardClassicOthello::do_move		(const cell_index &index)
 {
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
@@ -133,32 +133,27 @@ IC	bool CBoardClassicOthello::do_move		(const cell_index &index)
 		default : NODEFAULT;
 	}
 
-	if (stack_count != (int)m_flip_stack.size()) {
-		*start_cell			= color_to_move;
-		m_flip_stack.push	(CStackCell(start_cell));
-		m_flip_stack.push	(CStackCell((int)m_flip_stack.size() - stack_count - 1,m_passed));
-		m_passed			= false;
-		m_difference		= difference + 1;
-		m_color_to_move		= opponent_color;
-		return				(true);
-	}
-	return					(false);
+	*start_cell			= color_to_move;
+	m_flip_stack.push	(CStackCell(start_cell));
+	m_flip_stack.push	(CStackCell((int)m_flip_stack.size() - stack_count - 1,m_passed));
+	m_passed			= false;
+	m_difference		= difference + 1;
+	m_color_to_move		= opponent_color;
 }
 
-bool CBoardClassicOthello::do_move			(const cell_index &index)
+void CBoardClassicOthello::do_move			(const cell_index &index)
 {
 	if (index) {
 		if (color_to_move() == BLACK)
-			return		(do_move<BLACK>(index));
+			do_move<BLACK>	(index);
 		else
-			return		(do_move<WHITE>(index));
+			do_move<WHITE>	(index);
+		return;
 	}
 	
-	if (can_move())
-		return			(false);
-
+	VERIFY				(!can_move());
+	
 	change_color		();
 	m_flip_stack.push	(CStackCell(0,m_passed));
 	m_passed			= true;
-	return				(true);
 }

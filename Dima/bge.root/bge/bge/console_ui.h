@@ -11,6 +11,15 @@
 #include "script_export_space.h"
 
 class CConsoleUI {
+public:
+	enum EMessageType {
+		eMessageTypeCore	= u32(0),
+		eMessageTypeScript,
+		eMessageTypeWarning,
+		eMessageTypeError,
+		eMessageTypeDummy	= u32(-1),
+	};
+
 private:
 	FILE				*m_log;
 
@@ -18,11 +27,18 @@ protected:
 			LPSTR		process_compile	();
 			void		show_header		(const vector<LPCSTR> &strings);
 	virtual	void		show_header		();
+			int __cdecl pure_log		(LPCSTR format, va_list list = va_list());
+
+	template <EMessageType type>
+			int __cdecl log				(LPCSTR format, va_list list);
 
 public:
 						CConsoleUI		();
 	virtual				~CConsoleUI		();
-			int __cdecl log				(LPCSTR format, ...);
+			int __cdecl	log				(LPCSTR format, ...);
+			int __cdecl	script_log		(LPCSTR format, ...);
+			int __cdecl	warning_log		(LPCSTR format, ...);
+			int __cdecl	error_log		(LPCSTR format, ...);
 			void		execute			(char argc, char *argv[]);
 			void		flush			();
 	DECLARE_SCRIPT_REGISTER_FUNCTION

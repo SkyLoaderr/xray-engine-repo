@@ -103,17 +103,93 @@ void CConsoleUI::show_header()
 	show_header				(strings);
 }
 
-int __cdecl CConsoleUI::log	(LPCSTR format, ...)
+int __cdecl CConsoleUI::pure_log	(LPCSTR format, va_list list)
+{
+	int						result = vfprintf(stdout,format,list);
+	vfprintf				(m_log,format,list);
+	return					(result);
+}
+
+template <CConsoleUI::EMessageType type>
+int __cdecl CConsoleUI::log	(LPCSTR format, va_list list)
 {
 	va_list					marker;
-
 	va_start				(marker,format);
 
-	int						result = vfprintf(stdout,format,marker);
-	vfprintf				(m_log,format,marker);
+	switch (type) {
+		case eMessageTypeCore : {
+			break;
+		}
+		case eMessageTypeScript : {
+			pure_log		("Script : ");
+			break;
+		}
+		case eMessageTypeWarning : {
+			pure_log		("Warning : ");
+			break;
+		}
+		case eMessageTypeError : {
+			pure_log		("Error : ");
+			break;
+		}
+		default : NODEFAULT;
+	}
 
+	int						result = pure_log(format,list);
+
+	switch (type) {
+		case eMessageTypeCore : {
+			break;
+		}
+		case eMessageTypeScript : {
+			pure_log		("\n");
+			break;
+		}
+		case eMessageTypeWarning : {
+			break;
+		}
+		case eMessageTypeError : {
+			break;
+		}
+		default : NODEFAULT;
+	}
+
+	return					(result);
+}
+
+int __cdecl	CConsoleUI::log	(LPCSTR format, ...)
+{
+	va_list					marker;
+	va_start				(marker,format);
+	int						result = log<eMessageTypeCore>		(format,marker);
 	va_end					(marker);
+	return					(result);
+}
 
+int __cdecl	CConsoleUI::script_log	(LPCSTR format, ...)
+{
+	va_list					marker;
+	va_start				(marker,format);
+	int						result = log<eMessageTypeScript>	(format,marker);
+	va_end					(marker);
+	return					(result);
+}
+
+int __cdecl	CConsoleUI::warning_log	(LPCSTR format, ...)
+{
+	va_list					marker;
+	va_start				(marker,format);
+	int						result = log<eMessageTypeWarning>	(format,marker);
+	va_end					(marker);
+	return					(result);
+}
+
+int __cdecl	CConsoleUI::error_log	(LPCSTR format, ...)
+{
+	va_list					marker;
+	va_start				(marker,format);
+	int						result = log<eMessageTypeError>		(format,marker);
+	va_end					(marker);
 	return					(result);
 }
 

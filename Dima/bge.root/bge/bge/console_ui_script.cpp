@@ -15,8 +15,7 @@ using namespace luabind;
 
 void _log(CConsoleUI *ui, LPCSTR string)
 {
-	ui->log(string);
-	ui->log("\n");
+	ui->script_log(string);
 }
 
 void CConsoleUI::script_register(lua_State *L)
