@@ -23,7 +23,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	case eMA_Steal:		MotionMan.m_tAction = ACT_STEAL;		break;
 	}
 
-	Msg("Action Movement executed!");
+	//Msg("Action Movement executed!");
 	CMonsterMovement::set_path_targeted();
 		
 	return			(true);		
@@ -76,7 +76,7 @@ bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
 			break;
 	}
 
-	Msg("Action Watch executed!");
+//	Msg("Action Watch executed!");
 
 	if (angle_difference(m_body.target.yaw,m_body.current.yaw) < EPS_L)
 		l_tWatchAction.m_bCompleted = true;
@@ -106,7 +106,7 @@ bool CAI_Biting::bfAssignAnimation(CEntityAction *tpEntityAction)
 	case eAA_LookAround:	MotionMan.m_tAction = ACT_LOOK_AROUND;	break;
 	case eAA_Turn:			MotionMan.m_tAction = ACT_TURN;			break;
 	}
-	Msg("Action Animation executed!");
+//	Msg("Action Animation executed!");
 
 	return				(true);
 }
@@ -136,7 +136,7 @@ bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 			break;
 	}
 
-	Msg("Action MonsterAction executed!");
+//	Msg("Action MonsterAction executed!");
 	b_script_state_must_execute = true;
 	return (!l_tAction.m_bCompleted);
 }

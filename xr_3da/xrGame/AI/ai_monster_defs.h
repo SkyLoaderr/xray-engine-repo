@@ -329,6 +329,58 @@ typedef struct {
 
 } SAttackAnimation;
 
+
+struct SAAParam {
+	float		time;
+	float		hit_power;		// damage
+	float		impulse;
+	Fvector		impulse_dir;
+
+	// field of hit
+	struct {
+		float	from_yaw;
+		float	to_yaw;
+		float	from_pitch;
+		float	to_pitch;
+	} foh;
+	
+	float		dist;
+};
+
+DEFINE_MAP(ref_str,	SAAParam, AA_MAP, AA_MAP_IT);
+
+struct SStepParam {
+	struct{
+		float	time;
+		float	power;
+	} step[4];
+};
+
+DEFINE_MAP(ref_str,	SStepParam, STEPS_MAP, STEPS_MAP_IT);
+
+struct SCurrentAnim {
+	ref_str		name;
+	
+	EMotionAnim	anim;
+	u8			index;
+
+	TTime		started;
+};
+
+struct SStepInfo {
+	struct {
+		ref_sound		sound;
+		bool			handled;
+	} activity[4];
+	
+	SStepParam		params;
+	bool			disable;
+
+	SStepInfo()		{disable = true;}
+};
+
+//////////////////////////////////////////////////////////////////////////
+
 struct t_fx_index {
 	s8 front;	
 	s8 back;	
@@ -411,4 +463,9 @@ enum EAccelValue {
 
 
 #define PATH_NEED_REBUILD() m_object->IsPathEnd(2,0.5f)
+
+
+// тип монстра (по количеству ног)
+#define QUADRUPEDAL		4
+#define BIPEDAL			2
 

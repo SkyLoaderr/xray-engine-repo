@@ -95,10 +95,8 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	0, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,1.f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	1, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,1.f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	2, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,1.f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttackRun, 0, 300,	400,	-PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6, 5.5f, inherited::_sd->m_fHitPower,Fvector().set(0.f,1.0f,1.0f));
+	MotionMan.AA_Load	(pSettings->r_string(section, "attack_params"));
+	MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 	END_LOAD_SHARED_MOTION_DATA();
 

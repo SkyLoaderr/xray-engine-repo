@@ -11,6 +11,7 @@ class CBurer :	public CAI_Biting,
 				public CPHUpdateObject /* make this object update physics correctly */ {
 
 	typedef		CAI_Biting					inherited;
+public:
 	typedef		CTelekinesis<CBurer>		TTelekinesis;
 
 public:

@@ -119,9 +119,8 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimSniff);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S);
 
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 400, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.5f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 400, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.5f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
-
+	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
+	
 	END_LOAD_SHARED_MOTION_DATA();
 
 	MotionMan.accel_load			(section);
@@ -246,7 +245,7 @@ void CAI_Dog::UpdateCL()
 
 		if (Level().ObjectSpace.RayPick(trace_from, Direction(), trace_dist , Collide::rqtBoth, l_rq)) {
 			if ((l_rq.O == CJumping::GetEnemy()) && (l_rq.range < trace_dist)) {
-				HitEntity(pE, inherited::_sd->m_fHitPower,Direction());
+				//HitEntity(pE, inherited::_sd->m_fHitPower,Direction());
 				strike_in_jump = true;
 			}
 		}

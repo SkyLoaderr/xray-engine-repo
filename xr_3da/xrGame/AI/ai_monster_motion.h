@@ -30,9 +30,7 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 	EAction					prev_action;
 
 	// работа с анимациями атаки
-	TTime					aa_time_started;		// время начала анимации	
 	TTime					aa_time_last_attack;	// время последнего нанесения хита
-	ATTACK_ANIM				aa_stack;				// список атак для текущей анимации
 
 	// -------------------------------------------------------------------------
 
@@ -65,6 +63,8 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 
 	// ---------------------------------------------------------------------------------------
 
+
+	SStepInfo					step_info;
 
 public:
 	
@@ -130,12 +130,16 @@ public:
 
 
 	// работа с анимациями атак
-	void		AA_PushAttackAnim		(SAttackAnimation AttackAnim);
-	void		AA_PushAttackAnim		(EMotionAnim a, u32 i3, TTime from, TTime to, const Fvector &ray_from, const Fvector &ray_to, float damage, Fvector &dir, u32 flags = 0);
-	bool		AA_CheckTime			(TTime cur_time, SAttackAnimation &anim); 
+	void		AA_Load					(LPCSTR section);
+	bool		AA_TimeTest				(SAAParam &params);
 	void		AA_UpdateLastAttack		(TTime cur_time) {aa_time_last_attack = cur_time;}
-	void		AA_PushAttackAnimTest	(EMotionAnim a, u32 i3, TTime from, TTime to, float y1, float y2, float p1, float p2, float dist, float damage, Fvector &dir, u32 flags = 0);
+
+	// Steps
+	void		STEPS_Load				(LPCSTR section, u8 legs_num);
+	void		STEPS_Initialize		();
+	void		STEPS_Update			(u8 legs_num);
 	
+
 	// FX's
 	void		FX_Play					(EHitSide side, float amount);
 	
@@ -176,6 +180,7 @@ public:
 	
 	void		ForceAngularSpeed		(float vel);
 	float		GetAnimTime				(EMotionAnim anim, u32 index);
+	float		GetAnimTime				(LPCSTR anim_name);
 	float		GetAnimSpeed			(EMotionAnim anim);
 
 	bool		IsStandCurAnim			();

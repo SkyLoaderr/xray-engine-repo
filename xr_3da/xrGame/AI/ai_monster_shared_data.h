@@ -78,6 +78,9 @@ public:
 	FX_MAP_STRING			fx_map_string;
 	FX_MAP_U16				fx_map_u16;
 	bool					map_converted;
+	
+	AA_MAP					aa_map;
+	STEPS_MAP				steps_map;
 };
 
 

@@ -163,12 +163,14 @@ public:
 	virtual bool			ability_psi_attack				() {return false;}
 
 	// ---------------------------------------------------------------------------------
+	virtual u8				get_legs_number					() {return QUADRUPEDAL;}
+	// ---------------------------------------------------------------------------------
 
 	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist);
 	
 	// Other
 			void			vfUpdateParameters				();
-			void			HitEntity						(const CEntity *pEntity, float fDamage, Fvector &dir);
+			void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
 
 	// Other 
 			void			SetDirectionLook				(bool bReversed = false);
@@ -221,6 +223,9 @@ public:
 	float					m_fCurMinAttackDist;		// according to attack stops
 
 	
+	SCurrentAnim			cur_anim;
+
+
 	// -----------------------------------------------------------------------
 	// FSM
 	virtual void            StateSelector					() = 0;  // should be pure 

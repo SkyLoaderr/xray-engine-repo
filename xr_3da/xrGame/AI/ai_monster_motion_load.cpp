@@ -180,55 +180,56 @@ void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 	}
 }
 
-void CMotionManager::AA_PushAttackAnim(SAttackAnimation AttackAnim)
-{	
-	_sd->aa_all.push_back(AttackAnim);
-}
-
-void CMotionManager::AA_PushAttackAnim(EMotionAnim a, u32 i3, TTime from, TTime to, const Fvector &ray_from, const Fvector &ray_to, float damage, Fvector &dir, u32 flags)
+void CMotionManager::AA_Load(LPCSTR section)
 {
-	CHECK_SHARED_LOADED();	
+	CHECK_SHARED_LOADED();
 
-	SAttackAnimation anim;
-	anim.anim			= a;
-	anim.anim_i3		= i3;
+	if (!pSettings->section_exist(section)) return;
 
-	anim.time_from		= from;
-	anim.time_to		= to;
+	SAAParam	anim;
+	LPCSTR		anim_name,val;
+	string16	cur_elem;
 
-	anim.trace_from		= ray_from;
-	anim.trace_to		= ray_to;
+	for (u32 i=0; pSettings->r_line(section,i,&anim_name,&val); ++i) {
+		_GetItem	(val,0,cur_elem);		anim.time			= float(atof(cur_elem));
+		_GetItem	(val,1,cur_elem);		anim.hit_power		= float(atof(cur_elem));
+		_GetItem	(val,2,cur_elem);		anim.impulse		= float(atof(cur_elem));
+		_GetItem	(val,3,cur_elem);		anim.impulse_dir.x	= float(atof(cur_elem));
+		_GetItem	(val,4,cur_elem);		anim.impulse_dir.y	= float(atof(cur_elem));
+		_GetItem	(val,5,cur_elem);		anim.impulse_dir.z	= float(atof(cur_elem));
+		_GetItem	(val,6,cur_elem);		anim.foh.from_yaw	= float(atof(cur_elem));
+		_GetItem	(val,7,cur_elem);		anim.foh.to_yaw		= float(atof(cur_elem));
+		_GetItem	(val,8,cur_elem);		anim.foh.from_pitch	= float(atof(cur_elem));
+		_GetItem	(val,9,cur_elem);		anim.foh.to_pitch	= float(atof(cur_elem));
+		_GetItem	(val,10,cur_elem);		anim.dist			= float(atof(cur_elem));
 
-	anim.damage			= damage;
-	anim.hit_dir			= dir;
-
-	anim.flags			= flags;
-
-	AA_PushAttackAnim	(anim);
+		anim.impulse_dir.normalize();
+		_sd->aa_map.insert(mk_pair(anim_name, anim));
+	}
 }
 
-void CMotionManager::AA_PushAttackAnimTest(EMotionAnim a, u32 i3, TTime from, TTime to, float y1, float y2, float p1, float p2, float dist, float damage, Fvector &dir, u32 flags)
+void CMotionManager::STEPS_Load(LPCSTR section, u8 legs_num)
 {
-	CHECK_SHARED_LOADED();	
+	CHECK_SHARED_LOADED();
 
-	SAttackAnimation anim;
-	anim.anim			= a;
-	anim.anim_i3		= i3;
+	if (!pSettings->section_exist(section)) return;
+	R_ASSERT((legs_num>=0) && (legs_num<=4));
 
-	anim.time_from		= from;
-	anim.time_to		= to;
 
-	anim.damage			= damage;
-	anim.hit_dir		= dir;
+	SStepParam	anim; 
+	anim.step[0].time = 0.1f; // avoid warning
 
-	anim.flags			= flags;
+	LPCSTR		anim_name,val;
+	string16	cur_elem;
 
-	anim.yaw_from		= y1;
-	anim.yaw_to			= y2;
-	anim.pitch_from		= p1;
-	anim.pitch_to		= p2;
-	anim.dist			= dist;
-
-	AA_PushAttackAnim	(anim);
+	for (u32 i=0; pSettings->r_line(section,i,&anim_name,&val); ++i) {
+		for (u32 j=0;j<legs_num;j++) {
+			_GetItem	(val,j*2,cur_elem);		anim.step[j].time	= float(atof(cur_elem));
+			_GetItem	(val,j*2+1,cur_elem);	anim.step[j].power	= float(atof(cur_elem));
+		}
+		_sd->steps_map.insert(mk_pair(anim_name, anim));
+	}
 }
+
+
 

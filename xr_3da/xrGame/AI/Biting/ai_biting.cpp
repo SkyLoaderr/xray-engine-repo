@@ -67,6 +67,9 @@ void CAI_Biting::Init()
 	anim_speed						= -1.f;
 	cur_blend						= 0;
 
+	cur_anim.anim					= eAnimStandIdle;
+	cur_anim.index					= 0;
+	cur_anim.started				= 0;
 }
 
 void CAI_Biting::reinit()
@@ -138,10 +141,6 @@ void CAI_Biting::LoadShared(LPCSTR section)
 {
 	// Загрузка параметров из LTX
 	_sd->m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
-	_sd->m_fHitPower					= pSettings->r_float (section,"hit_power");
-
-	_sd->m_fImpulseMin					= pSettings->r_float(section,"ImpulseMin");
-	_sd->m_fImpulseMax					= pSettings->r_float(section,"ImpulseMax");
 
 	_sd->m_fsVelocityStandTurn.Load		(section,"Velocity_Stand");
 	_sd->m_fsVelocityWalkFwdNormal.Load (section,"Velocity_WalkFwdNormal");
@@ -183,18 +182,18 @@ void CAI_Biting::LoadShared(LPCSTR section)
 
 	_sd->m_bUsedSquadAttackAlg			= pSettings->r_u8	(section,"squad_attack_algorithm");
 
-	AddStepSound(section, eAnimWalkFwd,			"step_snd_walk");
-	AddStepSound(section, eAnimWalkDamaged,		"step_snd_walk_dmg");
-	AddStepSound(section, eAnimRun,				"step_snd_run");
-	AddStepSound(section, eAnimRunDamaged,		"step_snd_run_dmg");
-	AddStepSound(section, eAnimStandTurnLeft,	"step_snd_turn");
-	AddStepSound(section, eAnimStandTurnRight,	"step_snd_turn");
-	AddStepSound(section, eAnimSteal,			"step_snd_steal");
-	AddStepSound(section, eAnimDragCorpse,		"step_snd_drag");
-	AddStepSound(section, eAnimWalkTurnLeft,	"step_snd_walk");
-	AddStepSound(section, eAnimWalkTurnRight,	"step_snd_walk");
-	AddStepSound(section, eAnimRunTurnLeft,		"step_snd_run");
-	AddStepSound(section, eAnimRunTurnRight,	"step_snd_run");
+//	AddStepSound(section, eAnimWalkFwd,			"step_snd_walk");
+//	AddStepSound(section, eAnimWalkDamaged,		"step_snd_walk_dmg");
+//	AddStepSound(section, eAnimRun,				"step_snd_run");
+//	AddStepSound(section, eAnimRunDamaged,		"step_snd_run_dmg");
+//	AddStepSound(section, eAnimStandTurnLeft,	"step_snd_turn");
+//	AddStepSound(section, eAnimStandTurnRight,	"step_snd_turn");
+//	AddStepSound(section, eAnimSteal,			"step_snd_steal");
+//	AddStepSound(section, eAnimDragCorpse,		"step_snd_drag");
+//	AddStepSound(section, eAnimWalkTurnLeft,	"step_snd_walk");
+//	AddStepSound(section, eAnimWalkTurnRight,	"step_snd_walk");
+//	AddStepSound(section, eAnimRunTurnLeft,		"step_snd_run");
+//	AddStepSound(section, eAnimRunTurnRight,	"step_snd_run");
 
 	// Load attack postprocess --------------------------------------------------------
 	LPCSTR ppi_section = pSettings->r_string(section, "attack_effector");
@@ -356,11 +355,7 @@ void CAI_Biting::UpdateCL()
 	if (g_Alive()) {
 		AA_CheckHit();
 
-		// step sounds
-		float vol = 0.0f, freq = 1.0f;
-		GetStepSound(MotionMan.GetCurAnim(), vol, freq);
-		
-		CMaterialManager::update(Device.fTimeDelta,vol,freq,!!fis_zero(speed()));
+		MotionMan.STEPS_Update(get_legs_number());
 	}
 
 	CJumping *pJumping = dynamic_cast<CJumping *>(this);

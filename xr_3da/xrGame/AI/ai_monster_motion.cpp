@@ -51,8 +51,6 @@ void CMotionManager::Init (CAI_Biting	*pM)
 
 	Seq_Init				();
 
-	AA_Clear				();
-
 	b_end_transition		= false;
 	saved_anim				= cur_anim;
 
@@ -61,6 +59,8 @@ void CMotionManager::Init (CAI_Biting	*pM)
 	b_forced_velocity		= false;
 	
 	accel_init				();
+
+	aa_time_last_attack		= 0;
 }
 
 // ”станавливает текущую анимацию, которую необходимо проиграть.
@@ -92,10 +92,17 @@ bool CMotionManager::PrepareAnimation()
 
 	// установить анимацию	
 	m_tpCurAnim = anim_it->second.pMotionVect[index];
-	//Msg("** Animation set = [%s]", *anim_it->second.target_name);
 
-	// установить параметры атаки
-	AA_SwitchAnimation(cur_anim, index);
+	// «аполнить текущую анимацию
+	string64 st;
+	sprintf(st, "%s%d", *anim_it->second.target_name, index);
+	pMonster->cur_anim.name		= st; 
+	pMonster->cur_anim.anim		= cur_anim;
+	pMonster->cur_anim.index	= u8(index);
+	pMonster->cur_anim.started	= Level().timeServer();
+
+	// инициализировать информацию о текущей анимации шагани€
+	STEPS_Initialize();
 
 	return true;
 }
@@ -235,48 +242,36 @@ void CMotionManager::Seq_Finish()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Attack Animation
-void CMotionManager::AA_Clear()
-{ 
-	aa_time_started		= 0;
-	aa_time_last_attack	= 0;
-	aa_stack.clear		(); 
-}
 
-
-void CMotionManager::AA_SwitchAnimation(EMotionAnim anim, u32 i3)
-{
-	aa_time_started = Level().timeServer();
-	aa_stack.clear();
-
-	// найти в m_all анимации с параметрами (anim,i3) и заполнить m_stack
-	ATTACK_ANIM_IT I = _sd->aa_all.begin();
-	ATTACK_ANIM_IT E = _sd->aa_all.end();
-
-	for (;I!=E; ++I) {
-		if ((I->anim == anim) && (I->anim_i3 == i3)) {
-			aa_stack.push_back(*I);
-		}
-	}
-}
+#define TIME_OFFSET 10
+#define TIME_DELTA	1000
 
 // —равнивает тек. врем€ с временами хитов в стеке
-bool CMotionManager::AA_CheckTime(TTime cur_time, SAttackAnimation &anim)
+bool CMotionManager::AA_TimeTest(SAAParam &params)
 {
-	// „астота хитов не может быть больше 'time_delta'
-	TTime time_delta = 1000;
+	// „астота хитов не может быть больше 'TIME_DELTA'
+	TTime cur_time	= Level().timeServer();
 
-	if (aa_stack.empty()) return false;
-	if (aa_time_last_attack + time_delta > cur_time) return false;
+	if (aa_time_last_attack + TIME_DELTA > cur_time) return false;
 
-	ATTACK_ANIM_IT I = aa_stack.begin();
-	ATTACK_ANIM_IT E = aa_stack.end();
+	// искать текущую анимацию в AA_MAP
+	AA_MAP_IT it = _sd->aa_map.find(pMonster->cur_anim.name);
+	if (it == _sd->aa_map.end()) return false;
+	
+	// вычислить смещЄнное врем€ хита в соответствии с параметрами анимации атаки
+	TTime offset_time = pMonster->cur_anim.started + u32(1000 * GetAnimTime(*pMonster->cur_anim.name) * it->second.time);
 
-	for (;I!=E; ++I) if ((aa_time_started + I->time_from <= cur_time) && (cur_time <= aa_time_started + I->time_to)) {
-		anim = (*I);
+	//Msg("Anim = [%s] Anim time = [%f]", *pMonster->cur_anim.name, GetAnimTime(*pMonster->cur_anim.name));
+
+	if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
+		params = it->second;
 		return true;
 	}
+
 	return false;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 
 EPState	CMotionManager::GetState (EMotionAnim a)
@@ -348,6 +343,16 @@ float CMotionManager::GetAnimTime(EMotionAnim anim, u32 index)
 
 	return  bone_anim->Motions[def->motion].GetLength();
 }
+
+float CMotionManager::GetAnimTime(LPCSTR anim_name)
+{
+	CMotionDef			*def		= PSkeletonAnimated(pVisual)->ID_Cycle(anim_name);
+	CBoneData			&bone_data	= PSkeletonAnimated(pVisual)->LL_GetData(0);
+	CBoneDataAnimated	*bone_anim	= dynamic_cast<CBoneDataAnimated *>(&bone_data);
+
+	return  bone_anim->Motions[def->motion].GetLength() / def->Dequantize(def->speed);
+}
+
 
 float CMotionManager::GetAnimSpeed(EMotionAnim anim)
 {
@@ -552,4 +557,63 @@ LPCSTR CMotionManager::GetActionName(EAction action)
 
 // End Debug
 //////////////////////////////////////////////////////////////////////////
+
+
+void CMotionManager::STEPS_Update(u8 legs_num)
+{
+	if (step_info.disable) return;
+	
+	SGameMtlPair* mtl_pair		= pMonster->CMaterialManager::get_current_pair();
+	if (!mtl_pair) return;
+	if (mtl_pair->StepSounds.empty()) return;
+
+	// получить параметры шага
+	SStepParam &step		= step_info.params;
+	TTime		cur_time	= Level().timeServer();
+	
+	for (u32 i=0; i<legs_num; i++) {
+		
+		// если событие уже обработано дл€ этой ноги, то skip
+		if (step_info.activity[i].handled) continue;
+		
+		// вычислить смещЄнное врем€ шага в соответствии с параметрами анимации ходьбы
+		TTime offset_time = pMonster->cur_anim.started + u32(1000 * GetAnimTime(*pMonster->cur_anim.name) * step.step[i].time);
+		
+		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
+			
+			// Play Sound
+			step_info.activity[i].sound = SELECT_RANDOM(mtl_pair->StepSounds);
+			step_info.activity[i].sound.play_at_pos	(pMonster,pMonster->Position());
+			//step_info.activity[i].sound.set_volume	();
+
+			// Play Particle
+			// Play Camera FXs
+
+			step_info.activity[i].handled = true;
+		}
+	}
+
+	// позиционировать играемые звуки
+	for (u32 i=0; i<legs_num; i++) {
+		if (step_info.activity[i].handled && step_info.activity[i].sound.feedback) {
+			step_info.activity[i].sound.set_position	(pMonster->Position());
+		}
+	}
+}
+
+void CMotionManager::STEPS_Initialize() 
+{
+	// искать текущую анимацию в STEPS_MAP
+	STEPS_MAP_IT it = _sd->steps_map.find(pMonster->cur_anim.name);
+	if (it == _sd->steps_map.end()) {
+		step_info.disable = true;
+		return;
+	}
+
+	step_info.disable = false;
+
+	for (u32 i=0; i<4; i++) step_info.activity[i].handled = false;
+
+	step_info.params = it->second;
+}
 

@@ -26,6 +26,8 @@ public:
 	virtual void	update					(float time_delta, float volume, float step_time, bool standing);
 	IC		u16		last_material_idx		() const;
 	IC		u16		self_material_idx		() const;
+			
+	IC SGameMtlPair	*get_current_pair		();
 };
 
 #include "material_manager_inline.h"

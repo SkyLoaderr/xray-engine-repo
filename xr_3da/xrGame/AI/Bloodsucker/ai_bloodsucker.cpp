@@ -114,16 +114,11 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround); 
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
-	Fvector center;
-	center.set		(0.f,0.f,0.f);
+	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.2f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.2f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
-//	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,2.2f));
-
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 600, 700, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
-	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 2, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
+	//MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
+	//MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 600, 700, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
+	//MotionMan.AA_PushAttackAnimTest(eAnimAttack, 2, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
 	
 	END_LOAD_SHARED_MOTION_DATA();
 
