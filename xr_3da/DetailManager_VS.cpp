@@ -74,7 +74,7 @@ void CDetailManager::hw_Load()
 			CDetail& D		=	*objects[o];
 			for (u32 batch=0; batch<hw_BatchSize; batch++)
 			{
-				DWORD mid	=	batch*c_size+c_base;
+				DWORD mid	=	batch*c_size;
 				for (u32 v=0; v<D.number_vertices; v++)
 				{
 					Fvector&	vP = D.vertices[v].P;
