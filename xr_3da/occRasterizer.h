@@ -18,6 +18,7 @@ public:
 	occTri*			adjacent	[3];
 	Fvector			raster		[3];		
 	DWORD			flags;
+	float			area;
 };
 
 class ENGINE_API	occRasterizer  

@@ -31,6 +31,16 @@ struct HOM_poly
 };
 #pragma pack(pop)
 
+float	Area (Fvector& v0, Fvector& v1, Fvector& v2)
+{
+	float	e1 = v0.distance_to(v1);
+	float	e2 = v0.distance_to(v2);
+	float	e3 = v1.distance_to(v2);
+	
+	float	p  = (e1+e2+e3)/2.f;
+	return	sqrtf( p*(p-e1)*(p-e2)*(p-e3) );
+}
+
 void CHOM::Load			()
 {
 	// Find and open file
@@ -66,6 +76,7 @@ void CHOM::Load			()
 		rT.adjacent[1]	= (CDB::edge_open==clT.IDadj()[1])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[1]);
 		rT.adjacent[2]	= (CDB::edge_open==clT.IDadj()[2])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[2]);
 		rT.flags		= clT.dummy;
+		rT.area			= 
 	}
 
 	// Create AABB-tree
