@@ -19,5 +19,5 @@ struct CVisionParameters {
 	float						m_transparency_threshold;
 	float						m_luminocity_factor;
 
-		void	Load			(LPCSTR section, bool not_a_stalker);
+			void	Load		(LPCSTR section, bool not_a_stalker);
 };

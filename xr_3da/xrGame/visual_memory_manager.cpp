@@ -175,10 +175,10 @@ float CVisualMemoryManager::get_object_velocity	(const CGameObject *game_object,
 	return					(
 		pos1.vPosition.distance_to(pos0.vPosition)/
 		(
-		float(pos1.dwTime)/1000.f - 
-		float(pos0.dwTime)/1000.f
+			float(pos1.dwTime)/1000.f - 
+			float(pos0.dwTime)/1000.f
 		)
-		);
+	);
 }
 
 float CVisualMemoryManager::get_visible_value	(float distance, float object_distance, float time_delta, float object_velocity, float luminocity) const
