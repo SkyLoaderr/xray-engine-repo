@@ -6,8 +6,8 @@ template <class T, const int dim>
 class svector 
 {
 private:
-	T		array[dim];
-	u32	count;
+	T			array[dim];
+	u32			count;
 public:
 	typedef T*	iterator;
 
@@ -18,7 +18,7 @@ public:
 
 	IC T*		begin()				{ return array;							}
 	IC T*		end	 ()				{ return array+count;					}
-	IC u32	size()				{ return count;							}
+	IC u32		size()		const	{ return count;							}
 	IC void		clear()				{ count=0;								}
 	IC void		resize(int c)		{ VERIFY(c<=dim); count=c;				}
 	IC void		reserve(int c)		{ }
@@ -26,13 +26,13 @@ public:
 	IC void		push_back(T e)		{ VERIFY(count<dim); array[count++]=e;	}
 	IC void		pop_back()			{ VERIFY(count); count--;				}
 
-	IC T&		operator[] (u32 id){ VERIFY(id<count); return array[id];	}
+	IC T&		operator[] (u32 id)	{ VERIFY(id<count); return array[id];	}
 
 	IC T&		front()				{ return array[0];						}
 	IC T&		back()				{ return array[count-1];				}
 	IC T&		last()				{ VERIFY(count<dim); return array[count];}
 	IC void		inc	()				{ count++; }
-	IC bool		empty()				{ return 0==count;	}
+	IC bool		empty()		const	{ return 0==count;	}
 
 	IC void		erase(u32 id)		{
 		VERIFY(id<count);
