@@ -136,14 +136,16 @@ void CAI_Rat::FreeHunting()
 			m_dwLostEnemyTime = Level().timeServer();
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
 		}
-		m_dwLastRangeSearch = Level().timeServer();
-		Fvector tTemp;
-		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-		tTemp.normalize_safe();
-		tTemp.mul(UNDER_FIRE_DISTANCE);
-		m_tSpawnPosition.add(vPosition,tTemp);
-		m_fGoalChangeTime = 0;
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
+		if (m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) {
+			m_dwLastRangeSearch = Level().timeServer();
+			Fvector tTemp;
+			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+			tTemp.normalize_safe();
+			tTemp.mul(UNDER_FIRE_DISTANCE);
+			m_tSpawnPosition.add(vPosition,tTemp);
+			m_fGoalChangeTime = 0;
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
+		}
 	}
     m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
@@ -311,6 +313,8 @@ void CAI_Rat::AttackRun()
 {
 	WRITE_TO_LOG("Attack enemy");
 	bStopThinking = true;
+
+	Msg("%d : %d",Level().timeServer(),m_dwLostEnemyTime);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 	
