@@ -53,6 +53,7 @@ protected:
 	float							m_bind_x_rot, m_bind_y_rot;
 	Fvector							m_bind_x, m_bind_y;
 	BOOL							m_allow_fire;
+	BOOL							m_use_rocket_on_attack;
 
 	u16								m_fire_bone;
 	u16								m_rotate_x_bone;
@@ -73,6 +74,7 @@ protected:
 
 	typedef xr_map<s16,float>::iterator bonesIt;
 public:
+	float							m_korridor;
 	u32								m_time_delay_before_start;
 	u32								m_time_patrol_period;
 	u32								m_time_delay_between_patrol;

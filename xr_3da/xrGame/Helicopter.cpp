@@ -73,6 +73,7 @@ CHelicopter::init()
 	m_velocity = 25.0f;
 	//	m_altitude = 4.0f;
 	m_altitude = 30.0f;
+	m_korridor = 10.0f;
 
 	m_destEnemy = 0;
 	m_cur_x_rot = 0.0f;
@@ -82,6 +83,7 @@ CHelicopter::init()
 	m_bind_x_rot= 0.f;
 	m_bind_y_rot= 0.f;
 	m_allow_fire= FALSE;
+	m_use_rocket_on_attack = FALSE;
 	m_movementMngr.init(this);
 	setState(CHelicopter::eIdleState);
 	SetfHealth(100.0f);
@@ -116,7 +118,7 @@ CHelicopter::Load(LPCSTR section)
 	m_sAmmoType = pSettings->r_string(section, "ammo_class");
 	m_CurrentAmmo.Load(*m_sAmmoType);
 
-	m_sRocketSection		= pSettings->r_string	(section,"rocket_class");
+	m_sRocketSection						= pSettings->r_string	(section,"rocket_class");
 
 	m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float(section,"burn_immunity");
 	m_HitTypeK[ALife::eHitTypeStrike]		= pSettings->r_float(section,"strike_immunity");
@@ -133,7 +135,8 @@ CHelicopter::Load(LPCSTR section)
 	m_time_delay_between_patrol				= pSettings->r_u32(section,"time_delay_between_patrol")*1000;
 	m_velocity								= pSettings->r_float(section,"velocity");
 	m_altitude								= pSettings->r_float(section,"altitude");
-
+	m_korridor								= pSettings->r_float(section,"alt_korridor");
+	m_use_rocket_on_attack					= pSettings->r_bool(section,"use_rocket");
 }
 
 void		
@@ -304,7 +307,7 @@ CHelicopter::shedule_Update(u32	time_delta)
 		{
 			FireStart();
 	
-			if(m_pRocket)
+			if(m_pRocket&&m_use_rocket_on_attack)
 			{
 				CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
 				VERIFY(pGrenade);

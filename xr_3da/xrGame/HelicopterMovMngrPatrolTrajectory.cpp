@@ -16,7 +16,6 @@ CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, xr_vector<
 	Fvector		down_dir;
 	bool		useXBound;
 	bool		min_max;
-	float		desireH = 10.0f;
 
 	Collide::rq_result R;
 
@@ -36,7 +35,9 @@ CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, xr_vector<
 			keyPoint.x = ::Random.randF(level_box.min.x, level_box.max.x);
 		}
 
-		keyPoint.y = helicopter()->altitude()+::Random.randF(-10.0f, 10.0f);
+//		keyPoint.y = helicopter()->altitude()+::Random.randF(-10.0f, 10.0f);
+		keyPoint.y = helicopter()->altitude()+::Random.randF(-helicopter()->m_korridor, helicopter()->m_korridor);
+
 /*		keyPoint.y = ::Random.randF(30.0f, 40.0f);
 		keyPoint.y = level_box.max.y;
 		Level().ObjectSpace.RayPick(keyPoint, down_dir, level_box.max.y-level_box.min.y+1.0f, Collide::rqtStatic, R);
