@@ -20,7 +20,7 @@ public:
 	IC	SelfRef	set		(const Self& f)								{ flags =	f.flags;	return *this;	}
 	IC	SelfRef	set		(const T mask)								{ flags	=	mask;		return *this;	}
 	IC	SelfRef	set		(const T mask, BOOL value)					{ if (value) flags|=mask; else flags&=~mask; return *this; }
-	IC 	BOOL	is		(const T mask)						const	{ return flags&mask;}
+	IC 	BOOL	is		(const T mask)						const	{ return mask==(flags&mask);}
 	IC 	BOOL	test	(const T mask)						const	{ return flags&mask;}
 	IC 	SelfRef	or		(const T mask)								{ flags|=mask;		return *this;	}
 	IC 	SelfRef	or		(const Self& f, const T mask) 				{ flags=f.flags|mask;return *this;	}
