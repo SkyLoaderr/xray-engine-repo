@@ -12,7 +12,6 @@
 #include "ai_space.h"
 
 //#define WRITE_TO_LOG
-#define AI_PATH			"ai\\"
 
 #ifndef DEBUG
 	#undef WRITE_TO_LOG
@@ -55,29 +54,28 @@ CPatternFunction::~CPatternFunction()
 
 void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 {
-	char			caPath	[260];
-	strconcat		(caPath,AI_PATH,caFileName);
-	if (!FS.exist	(caPath, "$game_data$", caPath)) {
-		Msg("! Evaluation function : File not found \"%s\"",caPath);
-		R_ASSERT(false);
+	string256		caPath;
+	if (!FS.exist(caPath,"$game_ai$",caFileName)) {
+		Msg			("! Evaluation function : File not found \"%s\"",caPath);
+		R_ASSERT	(false);
 		return;
 	}
 	
-	IReader *F = FS.r_open(caPath);
-	F->r(&m_tEFHeader,sizeof(SEFHeader));
+	IReader			*F = FS.r_open(caPath);
+	F->r			(&m_tEFHeader,sizeof(SEFHeader));
 
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
-		FS.r_close(F);
-		Msg("! Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caPath);
-		R_ASSERT(false);
+		FS.r_close	(F);
+		Msg			("! Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caPath);
+		R_ASSERT	(false);
 		return;
 	}
 
-	F->r(&m_dwVariableCount,sizeof(m_dwVariableCount));
+	F->r			(&m_dwVariableCount,sizeof(m_dwVariableCount));
 	m_dwaAtomicFeatureRange = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
-	ZeroMemory(m_dwaAtomicFeatureRange,m_dwVariableCount*sizeof(u32));
-	u32 *m_dwaAtomicIndexes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
-	ZeroMemory(m_dwaAtomicIndexes,m_dwVariableCount*sizeof(u32));
+	ZeroMemory		(m_dwaAtomicFeatureRange,m_dwVariableCount*sizeof(u32));
+	u32				*m_dwaAtomicIndexes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
+	ZeroMemory		(m_dwaAtomicIndexes,m_dwVariableCount*sizeof(u32));
 
 	for (u32 i=0; i<m_dwVariableCount; i++) {
 		F->r(m_dwaAtomicFeatureRange + i,sizeof(u32));
@@ -86,43 +84,43 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	}
 
 	m_dwaVariableTypes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
-	F->r(m_dwaVariableTypes,m_dwVariableCount*sizeof(u32));
+	F->r			(m_dwaVariableTypes,m_dwVariableCount*sizeof(u32));
 
-	F->r(&m_dwFunctionType,sizeof(u32));
+	F->r			(&m_dwFunctionType,sizeof(u32));
 
-	F->r(&m_fMinResultValue,sizeof(float));
-	F->r(&m_fMaxResultValue,sizeof(float));
+	F->r			(&m_fMinResultValue,sizeof(float));
+	F->r			(&m_fMaxResultValue,sizeof(float));
 
-	F->r(&m_dwPatternCount,sizeof(m_dwPatternCount));
-	m_tpPatterns = (SPattern *)xr_malloc(m_dwPatternCount*sizeof(SPattern));
+	F->r			(&m_dwPatternCount,sizeof(m_dwPatternCount));
+	m_tpPatterns	= (SPattern *)xr_malloc(m_dwPatternCount*sizeof(SPattern));
 	m_dwaPatternIndexes = (u32 *)xr_malloc(m_dwPatternCount*sizeof(u32));
-	ZeroMemory(m_dwaPatternIndexes,m_dwPatternCount*sizeof(u32));
+	ZeroMemory		(m_dwaPatternIndexes,m_dwPatternCount*sizeof(u32));
 	m_dwParameterCount = 0;
 	for ( i=0; i<m_dwPatternCount; i++) {
 		if (i)
 			m_dwaPatternIndexes[i] = m_dwParameterCount;
-		F->r(&(m_tpPatterns[i].dwCardinality),sizeof(m_tpPatterns[i].dwCardinality));
+		F->r		(&(m_tpPatterns[i].dwCardinality),sizeof(m_tpPatterns[i].dwCardinality));
 		m_tpPatterns[i].dwaVariableIndexes = (u32 *)xr_malloc(m_tpPatterns[i].dwCardinality*sizeof(u32));
-		F->r(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality*sizeof(u32));
-		u32 m_dwComplexity = 1;
+		F->r		(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality*sizeof(u32));
+		u32			m_dwComplexity = 1;
 		for (int j=0; j<(int)m_tpPatterns[i].dwCardinality; j++)
 			m_dwComplexity *= m_dwaAtomicFeatureRange[m_tpPatterns[i].dwaVariableIndexes[j]];
 		m_dwParameterCount += m_dwComplexity;
 	}
 	
-	m_faParameters = (float *)xr_malloc(m_dwParameterCount*sizeof(float));
-	F->r(m_faParameters,m_dwParameterCount*sizeof(float));
-	FS.r_close(F);
+	m_faParameters	= (float *)xr_malloc(m_dwParameterCount*sizeof(float));
+	F->r			(m_faParameters,m_dwParameterCount*sizeof(float));
+	FS.r_close		(F);
 
 	m_dwaVariableValues = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
 	
-	xr_free(m_dwaAtomicIndexes);
+	xr_free			(m_dwaAtomicIndexes);
     
 	tpAI_DDD->m_fpaBaseFunctions[m_dwFunctionType] = this;
 	
-	_splitpath(caPath,0,0,m_caName,0);
+	_splitpath		(caPath,0,0,m_caName,0);
 
-	Msg("* Evaluation function \"%s\" is successfully loaded",m_caName);
+	Msg				("* Evaluation function \"%s\" is successfully loaded",m_caName);
 }
 
 float CPatternFunction::ffEvaluate()
