@@ -246,7 +246,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 				pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
-			if (bHUDView)	Level().Cameras.SetEffector(new CEffectorShot(.05f,deg2rad(.2f)));
+			if (bHUDView)	Level().Cameras.SetEffector(new CEffectorShot(camRelax,camDispersion));
 			break;
 		}
 		st_current=st_target;

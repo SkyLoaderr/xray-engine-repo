@@ -71,6 +71,10 @@ void CWeapon::Load(CInifile* ini, const char* section)
 
 	fireDistance	= ini->ReadFLOAT	(section,"fire_distance"	);
 	fireDispersion	= ini->ReadFLOAT	(section,"fire_dispersion"	); fireDispersion = deg2rad(fireDispersion);
+
+	camRelax		= ini->ReadFLOAT	(section,"cam_relax"		);
+	camDispersion	= ini->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
+
 	iHitPower		= ini->ReadINT		(section,"hit_power"		);
 	
 	bVisible		= FALSE;

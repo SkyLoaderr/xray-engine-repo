@@ -35,6 +35,9 @@ protected:
 
 	float			fireDistance;
 	float			fireDispersion;
+	
+	float			camRelax;
+	float			camDispersion;
 
 	BOOL			FireTrace		(const Fvector& P, const Fvector& Peff,	Fvector& D);
 	virtual void	FireShotmark	(const Fvector& vDir,	const Fvector &vEnd, Collide::ray_query& R);

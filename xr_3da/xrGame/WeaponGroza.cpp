@@ -235,7 +235,7 @@ void CWeaponGroza::Render(BOOL bHUDView)
 	}
 	if ((st_current==eFire) && bFlame) 
 	{
-		if (bHUDView &&	(0==Level().Cameras.GetEffector()))	Level().Cameras.SetEffector(new CEffectorShot(.05f,deg2rad(1.0f)));
+		if (bHUDView &&	(0==Level().Cameras.GetEffector()))	Level().Cameras.SetEffector(new CEffectorShot(camRelax,camDispersion));
 
 		UpdateFP	(bHUDView);
 
