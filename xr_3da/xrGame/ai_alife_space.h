@@ -63,11 +63,13 @@ namespace ALife {
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
+#pragma pack(push,4)
 	typedef struct tagSLevelPoint {
 		Fvector		tPoint;
 		u32			tNodeID;
 		float		fDistance;	
 	} SLevelPoint;
+#pragma pack(pop)
 
 	typedef struct tagSTerrainPlace{
 		svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
