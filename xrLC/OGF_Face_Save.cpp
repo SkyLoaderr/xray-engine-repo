@@ -214,6 +214,7 @@ void OGF_Reference::Save	(IWriter &fs)
 	fs.w_u32			(vb_id);
 	fs.w_u32			(vb_start);
 	fs.w_u32			((u32)model->vertices.size());
+
 	fs.w_u32			(ib_id);
 	fs.w_u32			(ib_start);
 	fs.w_u32			((u32)model->faces.size()*3);
@@ -240,40 +241,16 @@ void OGF_Reference::Save	(IWriter &fs)
 	}
 }
 
-void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
-{
-//	clMsg			("- saving: cached");
-	R_ASSERT		(0);
-
-	fs.open_chunk	(OGF_VERTICES);
-	fs.w_u32		(0);
-	fs.w_u32		((u32)vertices.size());
-	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
-	{
-		fs.w(&*V,6*sizeof(float));	// Position & normal
-		if (bVertexColored)	fs.w(&(V->Color),4);
-		for (u32 uv=0; uv<dwRelevantUV; uv++)
-			fs.w(&*V->UV.begin()+uv,2*sizeof(float));
-	}
-	fs.close_chunk	();
-	
-	// Faces
-	fs.open_chunk	(OGF_INDICES);
-	fs.w_u32		((u32)faces.size()*3);
-	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.w(&*F,3*sizeof(u16));
-	fs.close_chunk	();
-}
-
 void	OGF::PreSave			()
 {
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
 	bool bVertexColored	=	(SH->flags.bLIGHT_Vertex);
-	VDeclarator		D;
 
 	// X-vertices/faces
 	{
-		D.set			(x_decl_vert);
-		x_VB.Begin		(D);
+		VDeclarator		x_D;
+		x_D.set			(x_decl_vert);
+		x_VB.Begin		(x_D);
 		for (itXV V=x_vertices.begin(); V!=x_vertices.end(); V++)
 		{
 			x_vert		v	(V->P,V->UV);
@@ -284,6 +261,7 @@ void	OGF::PreSave			()
 	}
 
 	// Vertices
+	VDeclarator		D;
 	if	(bVertexColored){
 		// vertex-colored
 		D.set			(r1_decl_vert);
@@ -319,6 +297,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	fs.w_u32		(vb_id);
 	fs.w_u32		(vb_start);
 	fs.w_u32		((u32)vertices.size());
+
 	fs.w_u32		(ib_id);
 	fs.w_u32		(ib_start);
 	fs.w_u32		((u32)faces.size()*3);
