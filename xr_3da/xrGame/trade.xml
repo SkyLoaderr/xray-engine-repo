@@ -17,11 +17,6 @@
 		<text font="graffiti22" r="238" g="153" b="26">Leave</text>
 	</button>
 
-	<!-- Background for this buttons -->
-	<auto_static x="345" y="700" width="290" height="450">
-		<texture>ui\ui_bt_trade</texture>
-	</auto_static>
-
 	<!-- OUR BAG -->
 	<our_bag_static x="20" y="270" width="290" height="450">
 		<texture>ui\ui_dg_inventory_exchange_trade</texture>
