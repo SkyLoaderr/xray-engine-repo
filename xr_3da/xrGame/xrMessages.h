@@ -80,10 +80,21 @@ M_SPAWN
 	event
 	{
 		cform {
-			
+			u8				count;
+
+			element {
+				u8			type;	// 0=Sphere, 1=Box
+
+				sphere {
+					Fsphere		def;
+				}
+				box {
+					Fmatrix		def;
+				}
+			}
 		}
 		actions {
-			P.w_u8			(number);
+			u8				count;
 
 			action {
 				u8			bOnce;

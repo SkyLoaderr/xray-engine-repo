@@ -87,6 +87,13 @@ public:
 	{
 		w	(S,strlen(S)+1);
 	}
+	IC void w_matrix	(Fmatrix& M)
+	{
+		w_vec3	(M.i);
+		w_vec3	(M.j);
+		w_vec3	(M.k);
+		w_vec3	(M.c);
+	}
 	
 	// reading
 	IC DWORD r_begin	( u16& type	)	// returns time of receiving
@@ -152,5 +159,12 @@ public:
 		LPCSTR	data	= LPCSTR(&B.data[r_pos]);
 		int		len		= strlen(data);
 		r		(S,len+1);
+	}
+	IC void		r_matrix		(Fmatrix& M)
+	{
+		M.i		= r_vec3	();	M._14_	= 0;
+		M.j		= r_vec3	();	M._24_	= 0;
+		M.k		= r_vec3	();	M._34_	= 0;
+		M.c		= r_vec3	();	M._44_	= 1;
 	}
 };
