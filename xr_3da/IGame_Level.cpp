@@ -8,6 +8,8 @@
 #include "xrLevel.h"
 #include "environment.h"
 
+ENGINE_API	IGame_Level*	g_pGameLevel	= NULL;
+
 IGame_Level::IGame_Level	()
 {
 	g_pGameLevel				= this;

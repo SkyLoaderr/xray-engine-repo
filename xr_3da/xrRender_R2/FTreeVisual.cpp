@@ -2,8 +2,8 @@
 #pragma hdrstop
 
 #include "ftreevisual.h"
+#include "..\igame_level.h"
 #include "..\fmesh.h"
-#include "..\xr_creator.h"
 #include "..\xr_effsun.h"
 
 FTreeVisual::FTreeVisual	(void)

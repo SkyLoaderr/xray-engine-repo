@@ -42,10 +42,10 @@ public:
 	svector<CSquad,maxTeams>	Squads;
 };
 
-class CLevel : public CCreator, public IPureClient
+class CLevel					: public IGame_Level, public IPureClient
 {
 protected:
-	typedef CCreator inherited;
+	typedef IGame_Level			inherited;
 
 	// Local events
 	EVENT						eChangeRP;
@@ -61,7 +61,7 @@ public:
 	game_cl_GameState			game;
 	BOOL						game_configured;
 	NET_Queue_Event				game_events;
-	xr_deque<CSE_Abstract*>	game_spawn_queue;
+	xr_deque<CSE_Abstract*>		game_spawn_queue;
 
 	xrServer*					Server;
 

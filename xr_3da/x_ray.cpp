@@ -243,7 +243,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 		LPSTR		op_server		= LPSTR	(P1);
 		LPSTR		op_client		= LPSTR	(P2);
 		R_ASSERT	(0==g_pGameLevel);
-		g_pGameLevel	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
+		g_pGameLevel	= (IGame_Level*)	NEW_INSTANCE(CLSID_LEVEL);
 		R_ASSERT	(g_pGameLevel->net_Start(op_server,op_client));
 		xr_free		(op_server);
 		xr_free		(op_client);
