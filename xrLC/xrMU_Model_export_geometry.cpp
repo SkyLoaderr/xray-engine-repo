@@ -6,7 +6,7 @@ const s32	quant		= 32768/max_tile;
 
 s16 QC	(float v)
 {
-	int t		=	iFloor(v*float(quant)); clamp(t,-quant,quant);
+	int t		=	iFloor(v*float(quant)); clamp(t,-32768,32767);
 	return	s16	(t);
 }
 
