@@ -594,7 +594,7 @@ void CAI_Rat::Attack()
 			return;
 		}
 		else {
-			Fvector tTempPosition = Position();
+			//Fvector tTempPosition = Position();
 			//Msg("%d : %6.2f,%6.2f,%6.2f",this,tTempPosition.x,tTempPosition.y,tTempPosition.z);
 			if (Enemy.bVisible) {
 				CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
@@ -712,7 +712,7 @@ void CAI_Rat::FollowMe()
 				}
 				else {
 					// determining the team
-					Fvector tTempPosition = Position();
+					//Fvector tTempPosition = Position();
 					//Msg("%d : %6.2f,%6.2f,%6.2f",this,tTempPosition.x,tTempPosition.y,tTempPosition.z);
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					// determining who is leader
@@ -784,7 +784,7 @@ void CAI_Rat::FreeHunting()
 				}
 				else {
 					// determining the team
-					Fvector tTempPosition = Position();
+					//Fvector tTempPosition = Position();
 					//Msg("%d : %6.2f,%6.2f,%6.2f",this,tTempPosition.x,tTempPosition.y,tTempPosition.z);
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					// determining who is leader
