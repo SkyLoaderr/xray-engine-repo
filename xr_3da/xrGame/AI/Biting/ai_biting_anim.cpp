@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
+#include "../ai_monster_utils.h"
 
 static void __stdcall vfPlayEndCallBack(CBlend* B)
 {

@@ -14,14 +14,13 @@
 #include "ai_biting_state.h"
 #include "../ai_monster_mem.h"
 #include "../ai_monster_sound.h"
-#include "../ai_monster_share.h"
-#include "../../path_manager_level_selector.h"
 
+#include "../ai_monster_shared_data.h"
 #include "../ai_monster_debug.h"
-#include "../ai_monster_motion_stats.h"
 
+#include "../ai_monster_movement.h"
 
-// flags
+// Enemy flags
 #define FLAG_ENEMY_DIE					( 1 << 0 )
 #define FLAG_ENEMY_LOST_SIGHT			( 1 << 1 )
 #define FLAG_ENEMY_GO_CLOSER			( 1 << 2 )
@@ -35,42 +34,39 @@
 #define FLAG_ENEMY_GO_OFFLINE			( 1 << 10 )
 #define FLAG_ENEMY_DOESNT_SEE_ME		( 1 << 11 )
 
-#define SOUND_ATTACK_HIT_MIN_DELAY 1000
-#define MORALE_NORMAL	0.5f
-
+#define SOUND_ATTACK_HIT_MIN_DELAY	1000
+#define MORALE_NORMAL				0.5f
 
 #define STANDART_ATTACK -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,3.5f
 #define SIMPLE_ENEMY_HIT_TEST
 //#define TEST_EAT_STATE
 
 
-
 class CCharacterPhysicsSupport;
-class PathManagers::CAbstractVertexEvaluator;
-
 
 typedef VisionElem SEnemy;
-
-#include "ai_biting_shared.h"
-
-
-#define BEGIN_LOAD_SHARED_MOTION_DATA() {MotionMan.PrepareSharing();}
-#define END_LOAD_SHARED_MOTION_DATA()	{MotionMan.NotifyShareLoaded();}
-
-#define SHARE_ON_LOAD(pmt) {							\
-		pmt::Prepare(SUB_CLS_ID);						\
-		if (!pmt::IsLoaded()) LoadShared(section);		\
-		pmt::Finish();									\
-}
 
 class CAI_Biting : public CCustomMonster, 
 				   public CMonsterMemory,
 				   public CMonsterSound,
+				   virtual public CMonsterMovement,
 				   public CSharedClass<_biting_shared> {
 
 	typedef	CCustomMonster					inherited;
 	typedef CSharedClass<_biting_shared>	_sd_biting;
 	typedef CMovementManager				MoveMan;
+
+
+	// -------------------------------------------------------
+	// attack stops
+	struct SAttackStop {
+		float	min_dist;		// load from ltx
+		float	step;			// load from ltx
+		bool	active;
+		bool	prev_prev_hit;
+		bool	prev_hit;
+	} _as;
+
 
 	enum EMovementParameters {
 		eVelocityParameterStand			= u32(1) <<  4,
@@ -89,12 +85,23 @@ class CAI_Biting : public CCustomMonster,
 		eVelocityParamsSteal			= eVelocityParameterStand | eVelocityParameterSteal,
 	};
 
-
 public:
 	
 	// friend definitions
 	friend	class			CMotionManager;
 	friend	class			IState;
+	friend	class			CBitingRest;
+	friend  class 			CBitingAttack;
+	friend	class 			CBitingEat;
+	friend	class 			CBitingHide;
+	friend	class 			CBitingDetour;
+	friend	class 			CBitingPanic;
+	friend	class 			CBitingExploreDNE;
+	friend	class 			CBitingExploreDE;
+	friend	class 			CBitingExploreNDE;
+	friend	class 			CBitingSquadTask;
+	friend	class			CBitingRest;
+
 
 							CAI_Biting						();
 	virtual					~CAI_Biting						();
@@ -106,7 +113,6 @@ public:
 
 	virtual void			Load							(LPCSTR section);
 
-	// network routines
 	virtual BOOL			net_Spawn						(LPVOID DC);
 	virtual void			net_Destroy						();
 	virtual void			net_Export						(NET_Packet& P);
@@ -121,32 +127,41 @@ public:
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
 
-	// Other
-			void			vfUpdateParameters				();
-		
-			void			HitEntity						(const CEntity *pEntity, float fDamage, Fvector &dir);
-			
-			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
+	virtual bool			useful							(const CGameObject *object) const;
 
-	virtual bool			AA_CheckHit						();
 
-	// установка специфических анимаций 
-	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
-
-	// FSM
-	virtual void            StateSelector					() = 0;  // should be pure 
-	
-	// Other 
-			void			SetDirectionLook				(bool bReversed = false);
-	virtual void			LookPosition					(Fvector to_point, float angular_speed = PI_DIV_3);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
-
+	// ---------------------------------------------------------------------------------
 	// Process scripts
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignObject					(CEntityAction	*tpEntityAction);
 
-			bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
-	virtual void			ProcessTurn						() {};
 
+	// ---------------------------------------------------------------------------------
+	
+	virtual void			ProcessTurn						() {};
+	virtual bool			AA_CheckHit						();
+	// установка специфических анимаций 
+	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
+	virtual void			LookPosition					(Fvector to_point, float angular_speed = PI_DIV_3);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
+
+
+	// ---------------------------------------------------------------------------------
+
+	
+	// Other
+			void			vfUpdateParameters				();
+		
+			void			HitEntity						(const CEntity *pEntity, float fDamage, Fvector &dir);
+
+	
+
+
+	// Other 
+			void			SetDirectionLook				(bool bReversed = false);
+	
+
+
+			
 			CBoneInstance *GetBoneInstance					(LPCTSTR bone_name);
 			CBoneInstance *GetBoneInstance					(int bone_id);
 		
@@ -162,37 +177,14 @@ public:
 	
 	// Morale
 			void			MoraleBroadcast					(float fValue);
-
 			void			LoadShared						(LPCSTR section);
-
-	// Common stuff
-			
-			bool			IsRightSide						(float ty, float cy) {return ((angle_normalize_signed(ty - cy) > 0));}
-
-			Fvector			GetValidPosition				(const CEntity *entity, const Fvector &actual_position);
 
 	// Step sounds
 			void			AddStepSound					(LPCSTR section, EMotionAnim a, LPCSTR name);
 			void			GetStepSound					(EMotionAnim a, float &vol, float &freq);
-
-
-	virtual bool			useful							(const CGameObject *object) const;
-
-
-	// Path
-			void			InitSelector					(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos);
-			void			Path_GetAwayFromPoint			(Fvector position, float dist);
-			void			Path_ApproachPoint				(Fvector position);
-
-			void			SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
-			void			SetSelectorPathParams			();
-
-			void			SetVelocity						();
-			void			PreprocessAction				();
-
-			bool			IsObstacle						(TTime time);
+	
 			void			SetupVelocityMasks				(bool force_real_speed);
-
+			void			SetVelocity						();
 
 	
 // members
@@ -207,19 +199,12 @@ public:
 	Fvector					m_tNextGraphPoint;
 	
 
-	PathManagers::CAbstractVertexEvaluator	*m_tSelectorGetAway;
-	PathManagers::CAbstractVertexEvaluator	*m_tSelectorApproach;
-
-
 	float					m_fGoingSpeed;			// speed over the path
 	u32						m_dwHealth;				
 
-	// FSM 
-	IState					*CurrentState;
 
 	// State properties
 	float					m_fAttackSuccessProbability[4];
-	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 
 	// State flags
 	bool					m_bDamaged;
@@ -242,8 +227,12 @@ public:
 
 	float					m_fCurMinAttackDist;		// according to attack stops
 
+	
+	// -----------------------------------------------------------------------
+	// FSM
+	virtual void            StateSelector					() = 0;  // should be pure 
+			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
-	// Biting-specific states
 	CBitingRest				*stateRest;
 	CBitingEat				*stateEat;
 	CBitingAttack			*stateAttack;
@@ -254,78 +243,38 @@ public:
 	CBitingExploreDE		*stateExploreDE;
 	CBitingExploreNDE		*stateExploreNDE;
 	CBitingSquadTask		*stateSquadTask;
-	
 	CBitingTest				*stateTest;
 
-	friend	class			CBitingRest;
-	friend  class 			CBitingAttack;
-	friend	class 			CBitingEat;
-	friend	class 			CBitingHide;
-	friend	class 			CBitingDetour;
-	friend	class 			CBitingPanic;
-	friend	class 			CBitingExploreDNE;
-	friend	class 			CBitingExploreDE;
-	friend	class 			CBitingExploreNDE;
-	friend	class 			CBitingSquadTask;
+	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
+	IState					*CurrentState;
 
-	friend	class			CBitingRest;
+	// -------------------------------------------------------
 
 	// State flags
 	bool					flagEatNow;				// true - сейчас монстр ест
 
 	CMotionManager			MotionMan; 
 
-	// -------------------------------------------------------
-	// attack stops
-	struct SAttackStop {
-		float	min_dist;		// load from ltx
-		float	step;			// load from ltx
-		bool	active;
-		bool	prev_prev_hit;
-		bool	prev_hit;
-	} _as;
-
-	// PathManagement Bridge
-	void MoveToTarget			(const CEntity *entity); 
-	void MoveToTarget			(const Fvector &pos, u32 node_id);
-	void FaceTarget				(const CEntity *entity);
-	void FaceTarget				(const Fvector &position);
-	bool IsObjectPositionValid	(const CEntity *entity);
-	bool IsMoveAlongPathFinished();
-	bool IsMovingOnPath			();
-	bool ObjectNotReachable		(const CEntity *entity);
-
-	Fvector	RandomPosInR		(const Fvector &p, float r);
-
-	void	UpdateVelocities	(STravelParams cur_velocity);
-	
-	xr_vector<STravelParams> velocities;
-
-	u32		GetNextGameVertex	(float R);
-
-	bool	NeedRebuildPath		(u32 n_points);
-	bool	NeedRebuildPath		(float dist_to_end);
-	bool	NeedRebuildPath		(u32 n_points, float dist_to_end);
-
-
 	bool RayPickEnemy(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
 
-	CMotionStats	*MotionStats;
-
-	//////////////////////////////////////////////////////////////////////////
-	// DEBUG
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;
 	virtual void	OnRender();
 #endif
 
-	bool	is_angle_between(float yaw, float yaw_from, float yaw_to);
-
 	u16		fire_bone_id;
 	float	GetRealDistToEnemy();
-	void	WalkNextGraphPoint();
 
-	bool	b_try_min_time;
+	void FaceTarget				(const CEntity *entity);
+	void FaceTarget				(const Fvector &position);
+	void			PreprocessAction				();
+
+	bool			IsObstacle						(TTime time);
+	bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
+
+	void	UpdateVelocities	(STravelParams cur_velocity);
+
+	xr_vector<STravelParams> velocities;
 
 };
 

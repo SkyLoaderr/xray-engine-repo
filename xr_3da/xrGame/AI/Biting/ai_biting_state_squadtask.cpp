@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "ai_biting_state.h"
+#include "../ai_monster_utils.h"
 
 CBitingSquadTask::CBitingSquadTask(CAI_Biting *p)
 {
@@ -65,14 +66,14 @@ void CBitingSquadTask::Run()
 		if (dist > 3.f) {
 			
 			DO_ONCE_BEGIN(flag_once_1);
-				saved_pos = pMonster->RandomPosInR(pos,5.f);	
+				saved_pos = random_position(pos,5.f);	
 			DO_ONCE_END();
 			
 			if (!pMonster->CDetailPathManager::path().empty()) {
 				Fvector p = pMonster->CDetailPathManager::path()[pMonster->CDetailPathManager::path().size()-1].position;
 				if ((pMonster->Position().distance_to(p) <  1.f) || 
-					(pMonster->CDetailPathManager::completed(pMonster->Position()))) saved_pos = pMonster->RandomPosInR(pos,5.f);
-			} else saved_pos = pMonster->RandomPosInR(pos,5.f);
+					(pMonster->CDetailPathManager::completed(pMonster->Position()))) saved_pos = random_position(pos,5.f);
+			} else saved_pos = random_position(pos,5.f);
 
 			pMonster->Path_ApproachPoint(saved_pos);
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

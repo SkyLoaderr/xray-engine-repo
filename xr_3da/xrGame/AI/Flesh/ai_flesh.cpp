@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ai_flesh.h"
 #include "../../ai_space.h"
+#include "../ai_monster_utils.h"
 
 CAI_Flesh::CAI_Flesh()
 {

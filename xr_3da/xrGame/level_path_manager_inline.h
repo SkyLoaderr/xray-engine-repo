@@ -37,9 +37,9 @@ IC	bool CLevelManagerTemplate::actual() const
 TEMPLATE_SPECIALIZATION
 IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id, bool use_selector_path)
 {
-	if (use_selector_path) {
+	if (use_selector_path) { 
 		m_failed				= false;
-		m_actuality				= !failed();
+		m_actuality				= true;
 		return;
 	}
 

@@ -5,6 +5,8 @@
 
 #include "../../hudmanager.h"
 
+#include "../ai_monster_utils.h"
+
 //#define AI_SQUAD_ENABLE
 
 
@@ -171,7 +173,7 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	}
 
 	bone_angle /= 2;
-	if (IsRightSide(yaw,cur_yaw)) bone_angle *= -1.f;
+	if (from_right(yaw,cur_yaw)) bone_angle *= -1.f;
 
 	Bones.SetMotion(bone_spine, AXIS_X, bone_angle, bone_turn_speed, 100);
 	Bones.SetMotion(bone_head,	AXIS_X, bone_angle, bone_turn_speed, 100);

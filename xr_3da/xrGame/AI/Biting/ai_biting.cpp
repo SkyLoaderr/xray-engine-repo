@@ -19,27 +19,15 @@ CAI_Biting::CAI_Biting()
 	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
 
-	m_tSelectorApproach				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
-	m_tSelectorGetAway				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
-
-
-#ifdef DEBUG
 	HDebug							= xr_new<CMonsterDebug>(this, Fvector().set(0.0f,2.0f,0.0f), 20.f);
-#endif
-	MotionStats						= xr_new<CMotionStats> (this);
+	
 }
 
 CAI_Biting::~CAI_Biting()
 {
 	xr_delete(m_pPhysics_support);
-	xr_delete(m_tSelectorApproach);
-	xr_delete(m_tSelectorGetAway);
-
-#ifdef DEBUG
+	
 	xr_delete(HDebug);
-#endif
-
-	xr_delete(MotionStats);
 }
 
 void CAI_Biting::Init()
@@ -228,6 +216,12 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_PhysicMovementControl.SetPosition	(Position());
 	m_PhysicMovementControl.SetVelocity	(0,0,0);
 
+	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
+	if ((pSquad->GetLeader() == this)) { 
+		pSquad->SetupAlgType(ESquadAttackAlg(_sd->m_bUsedSquadAttackAlg));
+	}
+
+
 	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(0.f,						_sd->m_fsTurnNormalAngular	)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(_sd->m_fsWalkFwdNormal,	_sd->m_fsWalkAngular		)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(_sd->m_fsRunFwdNormal,	_sd->m_fsRunAngular			)));
@@ -235,11 +229,6 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsRunFwdDamaged,	_sd->m_fsRunAngular			)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(_sd->m_fsSteal,			_sd->m_fsWalkAngular		)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-_sd->m_fsDrag,			_sd->m_fsWalkAngular		)));
-
-	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
-	if ((pSquad->GetLeader() == this)) { 
-		pSquad->SetupAlgType(ESquadAttackAlg(_sd->m_bUsedSquadAttackAlg));
-	}
 
 	return(TRUE);
 }
@@ -335,9 +324,7 @@ void CAI_Biting::UpdateCL()
 
 	m_pPhysics_support->in_UpdateCL();
 
-#ifdef DEBUG
 	HDebug->M_Update();
-#endif
 	
 }
 
@@ -394,18 +381,6 @@ void CAI_Biting::OnRender()
 	HDebug->HT_Update();
 }
 #endif
-
-bool CAI_Biting::is_angle_between(float yaw, float yaw_from, float yaw_to)
-{
-	float diff = angle_difference(yaw_from,yaw_to);
-	R_ASSERT(diff < PI);
-
-	float d1 = angle_difference(yaw,yaw_from);
-	float d2 = angle_difference(yaw,yaw_to);
-
-	if ((d1 < diff) && (d2<diff)) return true;
-	else return false;
-}
 
 // Получить расстояние от fire_bone до врага
 // Выполнить RayQuery от fire_bone в enemy.center

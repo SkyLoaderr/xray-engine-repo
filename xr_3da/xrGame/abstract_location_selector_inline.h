@@ -44,7 +44,8 @@ IC	void CSelectorTemplate::reinit					(const _Graph *graph)
 	m_query_interval		= 0;
 	m_graph					= graph;
 	m_path					= 0;
-}
+	dest_vertex_id			= 0;
+}	
 
 TEMPLATE_SPECIALIZATION
 IC	_vertex_id_type CSelectorTemplate::get_selected_vertex_id() const
@@ -77,6 +78,9 @@ IC	bool CSelectorTemplate::actual(const _vertex_id_type start_vertex_id, bool pa
 		return				(true);
 
 	perform_search			(start_vertex_id);
+	if (!failed() && dest_vertex_id)
+		*dest_vertex_id		= m_selected_vertex_id;
+	
 	return					(failed());
 }
 
@@ -93,15 +97,14 @@ IC	bool CSelectorTemplate::used() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSelectorTemplate::select_location	(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id)
+IC	void CSelectorTemplate::select_location	(const _vertex_id_type start_vertex_id, bool path_completed)
 {
-	if (used() && ((m_last_query_time + m_query_interval) <= Level().timeServer())) {
+	if (used() && (((m_last_query_time + m_query_interval) <= Level().timeServer()) || path_completed)) {
 		perform_search		(start_vertex_id);
-		if (!failed())
-			dest_vertex_id	= m_selected_vertex_id;
+		if (!failed() && dest_vertex_id) 
+			*dest_vertex_id	= m_selected_vertex_id;
 	}
-	else
-		m_failed			= false;
+	else m_failed			= false;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -109,6 +112,9 @@ IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 {
 	VERIFY						(m_evaluator && m_graph);
 	m_last_query_time			= Level().timeServer();
+	
+	Msg("Selector perform search");
+		
 	m_evaluator->m_path			= m_path;
 	ai().graph_engine().search	(*m_graph,vertex_id,vertex_id,0,*m_evaluator);
 	m_failed	= 
@@ -124,6 +130,13 @@ IC	void CSelectorTemplate::set_dest_path		(xr_vector<_vertex_id_type> &path)
 {
 	m_path						= &path;
 }
+
+TEMPLATE_SPECIALIZATION
+IC	void CSelectorTemplate::set_dest_vertex		(_vertex_id_type &vertex_id)
+{
+	dest_vertex_id				= &vertex_id;
+}
+
 
 #undef CSelectorTemplate
 #undef TEMPLATE_SPECIALIZATION

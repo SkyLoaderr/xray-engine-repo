@@ -58,6 +58,7 @@ void CMovementManager::reinit		()
 
 	CGameLocationSelector::set_dest_path	(CGamePathManager::m_path);
 	CLevelLocationSelector::set_dest_path	(CLevelPathManager::m_path);
+	CLevelLocationSelector::set_dest_vertex	(CLevelPathManager::m_dest_vertex_id);
 }
 
 void CMovementManager::reload		(LPCSTR section)
@@ -79,6 +80,9 @@ void CMovementManager::update_path()
 		CLevelPathManager::set_evaluator(m_base_level_selector);
 
 	if (!actual()) {
+
+		Msg("* Path :: CMovementManager :: [!actual] make everything inactual");
+
 		CGamePathManager::make_inactual();
 		CLevelPathManager::make_inactual();
 		CPatrolPathManager::make_inactual();

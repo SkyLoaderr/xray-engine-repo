@@ -20,15 +20,18 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters						();
 
+
+	LOG_EX("---------------------------------------------------------");
+	LOG_EX2("-- Next Frame :: Time = [%u]", *"*/ Level().timeServer() /*"*);
+	LOG_EX2("-- Current Node [%u], Current Pos = [%f,%f,%f]", *"*/ level_vertex_id(), VPUSH(Position()) /*"*);
+	LOG_EX2("-- Target Node [%u] Target Pos = [%f,%f,%f]", *"*/ dynamic_cast<CAI_ObjectLocation *>(Level().CurrentEntity())->level_vertex_id(), VPUSH(Level().CurrentEntity()->Position()) /*"*);
+	LOG_EX("---------------------------------------------------------");
+
+
 	if (m_PhysicMovementControl.JumpState()) enable_movement(false);
 
 	// pre-update path parameters
-	//CMonsterMovement::Frame_Init();
-	enable_movement							(true);
-	CLevelLocationSelector::set_evaluator	(0);
-	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
-	b_try_min_time							= true;		
-
+	CMonsterMovement::Frame_Init();
 
 	// fix off-line displacement
 	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
@@ -43,19 +46,45 @@ void CAI_Biting::Think()
 		pSquad->UpdateDecentralized();
 	} 
 
+
 	StateSelector							();
 	CurrentState->Execute					(m_current_update);
+
+// Test /////
 	
-	//CMonsterMovement::Frame_Update			();
-	CDetailPathManager::set_try_min_time	(b_try_min_time); 
-	update_path								();
+	MotionMan.m_tAction						= ACT_RUN;
+	Fvector position = Level().CurrentEntity()->Position();
+	//position.y += 10.f;
+
+	Fvector new_pos;
+	Fvector dir;
+	dir.sub(Position(),position);
+	new_pos.mad(position, dir,20.f);
+	position = new_pos;
+
+	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
+	InitSelector(*m_tSelectorApproach, position);
+	CLevelLocationSelector::set_query_interval(3000);	
+	
+	// использовать при установке селектора: true - использовать путь найденный селектором, false - селектор находит тольтко ноду, путь строит BuildLevelPath
+	CMovementManager::use_selector_path(true);
+	
+	SetSelectorPathParams					();
+	
+	HDebug->L_Clear();
+	HDebug->L_AddPoint(position, 0.35f, D3DCOLOR_XRGB(0,255,255)); 
+
+
+
+/////////////
+
+	CMonsterMovement::Frame_Update			();
 
 	PreprocessAction						();
 	MotionMan.ProcessAction					();
 
-	//CMonsterMovement::Frame_Finalize		();
 	SetVelocity								();
-	set_desirable_speed						(m_fCurSpeed);
+	CMonsterMovement::Frame_Finalize		();
 
 	// process sound
 	ControlSound							(m_current_update);

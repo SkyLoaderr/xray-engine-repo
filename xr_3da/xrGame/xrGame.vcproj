@@ -817,9 +817,6 @@
 					<File
 						RelativePath="AI\Biting\ai_biting_path.cpp">
 					</File>
-					<File
-						RelativePath=".\ai\biting\ai_biting_shared.h">
-					</File>
 					<Filter
 						Name="States"
 						Filter="">
@@ -1028,8 +1025,7 @@
 					<File
 						RelativePath=".\ai\ai_monster_movement.cpp">
 						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
+							Name="Debug|Win32">
 							<Tool
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
@@ -1049,14 +1045,16 @@
 					<File
 						RelativePath=".\ai\ai_monster_movement.h">
 						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
+							Name="Debug|Win32">
 							<Tool
 								Name="VCCustomBuildTool"/>
 						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\ai\ai_monster_share.h">
+					</File>
+					<File
+						RelativePath=".\ai\ai_monster_shared_data.h">
 					</File>
 					<File
 						RelativePath=".\ai\ai_monster_sound.cpp">
@@ -1074,6 +1072,12 @@
 						RelativePath=".\Ai\ai_monster_state.h">
 					</File>
 					<File
+						RelativePath=".\ai\ai_monster_utils.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\ai_monster_utils.h">
+					</File>
+					<File
 						RelativePath="AI\ai_monsters_anims.h">
 					</File>
 					<File
@@ -1081,16 +1085,6 @@
 					</File>
 					<File
 						RelativePath=".\AI\ai_monsters_misc.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ai_pseudodog"
-					Filter="">
-					<File
-						RelativePath=".\ai\pseudodog\ai_pseudodog.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\pseudodog\ai_pseudodog.h">
 					</File>
 				</Filter>
 				<Filter
@@ -1120,6 +1114,16 @@
 					<File
 						RelativePath="AI\Rat\ai_rat_templates.cpp">
 					</File>
+					<Filter
+						Name="ai_pseudodog"
+						Filter="">
+						<File
+							RelativePath=".\ai\pseudodog\ai_pseudodog.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\pseudodog\ai_pseudodog.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ai_script"
