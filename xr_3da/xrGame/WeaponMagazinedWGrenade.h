@@ -16,6 +16,7 @@ public:
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
+
 	virtual void OnH_B_Independent();
 	virtual void UpdateCL();
 
@@ -78,6 +79,10 @@ public:
 	
 	virtual void	OnH_B_Chield	();
 	virtual void	OnH_B_Independent();
+
+	virtual bool	Attach(PIItem pIItem);
+	virtual bool	Detach(PIItem pIItem);
+
 	
 	virtual void	OnStateSwitch	(u32 S);
 	

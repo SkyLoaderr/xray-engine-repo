@@ -1015,14 +1015,18 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-bool CWeapon::Attach(PIItem pIItem, bool force) 
+bool CWeapon::Attach(PIItem pIItem) 
 {
-	return inherited::Attach(pIItem, force);
+	return inherited::Attach(pIItem);
 }
 
-bool CWeapon::Detach(PIItem pIItem, bool force) 
+bool CWeapon::Detach(PIItem pIItem) 
 {
-	return inherited::Detach(pIItem, false);
+	return inherited::Detach(pIItem);
+}
+bool CWeapon::Detach(const char* item_section_name)
+{
+	return inherited::Detach(item_section_name);
 }
 
 void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) 

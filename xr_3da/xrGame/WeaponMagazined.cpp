@@ -672,3 +672,12 @@ bool CWeaponMagazined::Action(s32 cmd, u32 flags)
 	}
 	return false;
 }
+
+bool CWeaponMagazined::Attach(PIItem pIItem)
+{
+	return inherited::Attach(pIItem);
+}
+bool CWeaponMagazined::Detach(PIItem pIItem)
+{
+	return inherited::Detach(pIItem);
+}

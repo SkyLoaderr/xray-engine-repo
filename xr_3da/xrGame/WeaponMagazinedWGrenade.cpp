@@ -7,6 +7,8 @@
 #include "extendedgeom.h"
 #include "effectorshot.h"
 
+#include "GrenadeLauncher.h"
+
 static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) 
 {
 	if(_abs(n.z)>.707107f) {FLOAT a=n.y*n.y+n.z*n.z, k=1.f/_sqrt(a); u.x=0; u.y=-n.z*k; u.z=n.y*k; v.x=a*k; v.y=-n.x*u.z; v.z=n.x*u.y; }
@@ -974,5 +976,27 @@ void CWeaponMagazinedWGrenade::OnH_B_Independent()
 		SwitchMode();
 		bPending = false;
 	}
-		
+}
+
+bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
+{
+	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
+	
+	if(pGrenadeLauncher)
+	{
+		return true;
+	}
+	else
+        return inherited::Attach(pIItem);
+}
+bool CWeaponMagazinedWGrenade::Detach(PIItem pIItem)
+{
+	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
+
+	if(pGrenadeLauncher)
+	{
+		return true;
+	}
+	else
+		return inherited::Detach(pIItem);
 }

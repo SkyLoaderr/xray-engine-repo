@@ -94,7 +94,8 @@ public:
 
 	virtual void	net_Destroy		();
 
-
+	virtual bool	Attach			(PIItem pIItem);
+	virtual bool	Detach			(PIItem pIItem);
 
 	virtual bool	Action			(s32 cmd, u32 flags);
 	bool			IsAmmoAvailable	();

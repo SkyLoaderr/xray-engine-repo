@@ -267,8 +267,9 @@ public:
 	virtual bool Activate();
 	virtual void Deactivate();
 	virtual bool Action(s32 cmd, u32 flags);
-	virtual bool Attach(PIItem pIItem, bool force = false);
-	virtual bool Detach(PIItem pIItem, bool force = true);
+	virtual bool Attach(PIItem pIItem);
+	virtual bool Detach(PIItem pIItem);
+	virtual bool Detach(const char* item_section_name);
 	virtual const char* Name();
 
 	void SpawnAmmo		(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL);

@@ -40,6 +40,8 @@ public:
 	virtual bool	Useful();									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool	Attach(PIItem pIItem) {return false;}
 	virtual bool	Detach(PIItem pIItem) {return false;}
+	//при детаче спаунится новая вещь при заданно названии секции
+	virtual bool	Detach(const char* item_section_name) {return false;}
 	
 	virtual bool	Activate();									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual void	Deactivate();								// !!! Переопределить. (см. в Inventory.cpp)
