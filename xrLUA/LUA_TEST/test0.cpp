@@ -593,8 +593,51 @@ const xr_vector<LPCSTR> &get_strs()
 	return			(strs);
 }
 
+struct test_shared_ptr {
+	test_shared_ptr()
+	{
+		printf("test_shared_ptr CONSTRUCTOR is called!\n");
+	}
+
+	virtual ~test_shared_ptr()
+	{
+		printf("test_shared_ptr DESTRUCTOR is called!\n");
+	}
+};
+
+void test_shared()
+{
+	typedef boost::shared_ptr<test_shared_ptr> _pointer;
+	_pointer	a1 = (boost::shared_ptr<test_shared_ptr>)xr_new<test_shared_ptr>();
+	{
+		_pointer	a2 = a1;
+	}
+}
+
+struct nmf_test {
+	u32 d;
+};
+
+template <bool a>
+void nmf(const nmf_test &instance)
+{
+	printf			("ok : %d",instance.d);
+}
+
+// STATIC_CHECK macro for compile-time assertion.
+// From Andrei Alexandrescu, "Modern C++ Design", 6th printing, p. 25,
+// and Loki Library file "static_check.h", June 20, 2001.
+template<bool> struct CompileTimeError;
+template<> struct CompileTimeError<true> {};
+#define STATIC_CHECK(expr, msg)  \
+{  \
+	CompileTimeError<((expr) != 0)> ERROR_##msg;  \
+	(void)ERROR_##msg;  \
+} 
+
 void test0()
 {
+	test_shared();
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
@@ -650,6 +693,11 @@ void test0()
 	module(L)
 	[
 		instance,
+
+		class_<nmf_test>("nmf_test")
+			.def(				constructor<>())
+			.def_readwrite("d",	&nmf_test::d)
+			.def("nmf",			&nmf<true>),
 
 		class_<A,A_wrapper>("A")
 			.def(				constructor<>())
