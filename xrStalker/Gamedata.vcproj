@@ -381,6 +381,9 @@
 			Name="InfoPortions"
 			Filter="">
 			<File
+				RelativePath=".\info_lchanger_ico.xml">
+			</File>
+			<File
 				RelativePath=".\info_portions.xml">
 			</File>
 			<File
