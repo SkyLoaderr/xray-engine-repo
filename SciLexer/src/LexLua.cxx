@@ -24,7 +24,7 @@
 #include "SciLexer.h"
 
 static inline bool IsAWordChar(const int ch) {
-	return (ch < 0x80) && (isalnum(ch) || ch == '_' || ch == '.');
+	return (ch < 0x80) && (isalnum(ch) || ch == '_' /*|| ch == '.'*/);
 }
 
 static inline bool IsAWordStart(const int ch) {
@@ -49,7 +49,7 @@ static inline bool IsLuaOperator(int ch) {
 		ch == '{' || ch == '}' || ch == '~' ||
 		ch == '[' || ch == ']' || ch == ';' ||
 		ch == '<' || ch == '>' || ch == ',' ||
-		ch == '.' || ch == '^' || ch == '%' || ch == ':') {
+		ch == '.' || ch == '^' || ch == '%'/* || ch == ':'*/) {
 		return true;
 	}
 	return false;
@@ -157,8 +157,14 @@ static void ColouriseLuaDoc(
 					sc.ChangeState(SCE_LUA_WORD6);
 				} else if (keywords7.InList(s)) {
 					sc.ChangeState(SCE_LUA_WORD7);
-				} else if (keywords8.InList(s)) {
+/*				} else if (keywords8.InList(s)) {
+					sc.ChangeState(SCE_LUA_WORD8);*/
+//				} else if ( (sc.GetRelative(-(strlen(s)+1))==':')||(sc.GetRelative(-(strlen(s)+1))=='.') ) {
+//					sc.ChangeState(SCE_LUA_WORD8);
+				} else if ( sc.GetRelative(0)=='(' ) {
 					sc.ChangeState(SCE_LUA_WORD8);
+				} else if ( (sc.GetRelative(0)==':')||(sc.GetRelative(0)=='.') ) {
+					sc.ChangeState(SCE_LUA_WORD7);
 				}
 				sc.SetState(SCE_LUA_DEFAULT);
 			}
@@ -226,9 +232,9 @@ static void ColouriseLuaDoc(
 
 		// Determine if a new state should be entered.
 		if (sc.state == SCE_LUA_DEFAULT) {
-			if (IsADigit(sc.ch) || (sc.ch == '.' && IsADigit(sc.chNext))) {
+			if (IsADigit(sc.ch) || (sc.ch == '.' && IsADigit(sc.chNext) && !IsADigit(sc.chPrev))) {
 				sc.SetState(SCE_LUA_NUMBER);
-			} else if (IsAWordStart(sc.ch)) {
+			} else if (IsAWordStart(sc.ch)||sc.chPrev==':'||sc.chPrev=='.') {
 				sc.SetState(SCE_LUA_IDENTIFIER);
 			} else if (sc.Match('\"')) {
 				sc.SetState(SCE_LUA_STRING);

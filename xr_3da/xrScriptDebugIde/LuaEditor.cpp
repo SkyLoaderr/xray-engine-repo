@@ -567,6 +567,7 @@ const char cppKeyWords[] =
 void CLuaEditor::StyleSetFore(int style, COLORREF fore, BOOL bDirect)
 {
   Sci(SCI_STYLESETFORE, (WPARAM) style, (LPARAM) fore/*, bDirect*/);
+  
 }
 
 void CLuaEditor::StyleSetBack(int style, COLORREF back, BOOL bDirect)
@@ -591,11 +592,15 @@ void CLuaEditor::StyleSetFont(int style, const char* fontName, BOOL bDirect)
 
 void CLuaEditor::setupLexer_ex()
 {
-  const char keywords[] = "module class self __finalize __init and break do else elseif end false for function global if in local nil not or repeat return then true until while";
+  const char keywords[] = "super module class __finalize __init and break do else elseif end false for function global if in local nil not or repeat return then true until while";
+  const char keywords2[] = "self";
+
   //Setup the Lexer
 //  SetLexer(SCLEX_CPP);
   SetLexer(SCLEX_LUA);
   SetKeyWords(0, keywords);
+  SetKeyWords(1, keywords2);
+
 
   //Setup styles
 //  SetAStyle(STYLE_DEFAULT, RGB(0, 0, 0), RGB(0xff, 0xff, 0xff), 12, "Courier");
@@ -609,8 +614,11 @@ void CLuaEditor::setupLexer_ex()
   SetAStyle(SCE_C_COMMENTDOCKEYWORD, RGB(0, 0x80, 0));
   SetAStyle(SCE_C_COMMENTDOCKEYWORDERROR, RGB(0, 0x80, 0));
   SetAStyle(SCE_LUA_NUMBER, RGB(0, 0x80, 0x80));
-  SetAStyle(SCE_LUA_WORD, RGB(0, 0, 0x80));
-  StyleSetBold(SCE_LUA_WORD, 1);
+  SetAStyle(SCE_LUA_WORD, RGB(0, 0, 0xff));
+  SetAStyle(SCE_LUA_WORD2, RGB(0xd0, 0, 0));
+  SetAStyle(SCE_LUA_WORD7, RGB(0x80, 0x80, 0x80)); //!!!variable name
+  SetAStyle(SCE_LUA_WORD8, RGB(0x80, 0, 0)); //!!!function name
+  StyleSetBold(SCE_LUA_WORD, 0);
   SetAStyle(SCE_LUA_STRING, RGB(0x80, 0, 0x80));
   SetAStyle(SCE_LUA_IDENTIFIER, RGB(0, 0, 0));
   SetAStyle(SCE_LUA_PREPROCESSOR, RGB(0x80, 0, 0));
