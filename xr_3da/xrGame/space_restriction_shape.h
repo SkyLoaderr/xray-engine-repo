@@ -13,6 +13,7 @@
 class CSpaceRestrictor;
 
 class CSpaceRestrictionShape : public CSpaceRestrictionBase {
+	friend struct CBorderMergePredicate;
 public:
 	using CSpaceRestrictionBase::inside;
 
@@ -24,6 +25,7 @@ protected:
 	IC			Fvector	position				(const CCF_Shape::shape_def &data) const;
 	IC			float	radius					(const CCF_Shape::shape_def &data) const;
 				void	build_border			();
+				void	fill_shape				(const CCF_Shape::shape_def &shape);
 
 public:
 	IC					CSpaceRestrictionShape	(CSpaceRestrictor *space_restrictor, bool default_restrictor);

@@ -41,21 +41,12 @@ public:
 		IC	u16				cover					(u8 index) const;
 		IC	u16				plane					() const;
 		IC	const CPosition &position				() const;
+		IC	bool			operator<				(const CLevelGraph::CVertex &vertex) const;
+		IC	bool			operator>				(const CLevelGraph::CVertex &vertex) const;
+		IC	bool			operator==				(const CLevelGraph::CVertex &vertex) const;
 		friend class CLevelGraph;
 	};
 
-	struct SSortNodesPredicate {
-		u32			m_xz;
-					SSortNodesPredicate	(u32 xz) :
-						m_xz(xz)
-		{
-		}
-
-		IC	bool	operator()			(const CVertex &vertex) const
-		{
-			return		(m_xz < vertex.position().xz());
-		}
-	};
 private:
 	enum ELineIntersections {
 		eLineIntersectionNone		= u32(0),
@@ -205,6 +196,8 @@ public:
 	IC		bool	create_straight_path		(u32 start_vertex_id, const Fvector2 &start_point, const Fvector2 &finish_point, xr_vector<T> &tpaOutputPoints, const T &example, bool bAddFirstPoint, bool bClearPath = true) const;
 	template<typename T>
 	IC		void	assign_y_values				(xr_vector<T> &path);
+	template<typename P>
+	IC		void	iterate_vertices			(const Fvector &min_position, const Fvector &max_position, const P &predicate);
 	IC		bool	check_vertex_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const;
 	IC		u32		check_position_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const;
 			bool	check_vertex_in_direction_slow	(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const;
@@ -273,17 +266,20 @@ public:
 #endif
 };
 
+IC	bool operator<		(const CLevelGraph::CVertex &vertex, u32 vertex_xz);
+IC	bool operator>		(const CLevelGraph::CVertex &vertex, u32 vertex_xz);
+IC	bool operator==		(const CLevelGraph::CVertex &vertex, u32 vertex_xz);
+IC	bool operator<		(u32 vertex_xz, const CLevelGraph::CVertex &vertex);
+IC	bool operator>		(u32 vertex_xz, const CLevelGraph::CVertex &vertex);
+IC	bool operator==		(u32 vertex_xz, const CLevelGraph::CVertex &vertex);
+
 #ifdef DEBUG
-#ifndef AI_COMPILER
-
-extern BOOL	g_bDebugNode;
-extern u32	g_dwDebugNodeSource;
-extern u32	g_dwDebugNodeDest;
-
+#	ifndef AI_COMPILER
+		extern BOOL	g_bDebugNode;
+		extern u32	g_dwDebugNodeSource;
+		extern u32	g_dwDebugNodeDest;
+#	endif
 #endif
-#endif
-
-
 
 #include "level_graph_inline.h"
 #include "level_graph_vertex_inline.h"

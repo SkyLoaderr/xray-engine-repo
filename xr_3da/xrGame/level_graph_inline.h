@@ -313,6 +313,21 @@ IC	const CLevelGraph::CPosition &CLevelGraph::CVertex::position() const
 	return				(p);
 }
 
+IC	bool CLevelGraph::CVertex::operator<	(const CLevelGraph::CVertex &vertex) const
+{
+	return				(position().xz() < vertex.position().xz());
+}
+
+IC	bool CLevelGraph::CVertex::operator>	(const CLevelGraph::CVertex &vertex) const
+{
+	return				(position().xz() > vertex.position().xz());
+}
+
+IC	bool CLevelGraph::CVertex::operator==	(const CLevelGraph::CVertex &vertex) const
+{
+	return				(position().xz() == vertex.position().xz());
+}
+
 IC	u32	CLevelGraph::level_id() const
 {
 	return				(m_level_id);
@@ -571,4 +586,53 @@ IC	void CLevelGraph::clear_mask			(u32 vertex_id)
 {
 	VERIFY						(!m_access_mask[vertex_id]);
 	m_access_mask[vertex_id]	= true;
+}
+
+template<typename P>
+IC	void CLevelGraph::iterate_vertices		(const Fvector &min_position, const Fvector &max_position, const P &predicate)
+{
+	CVertex						*I, *E;
+
+	if (valid_vertex_position(min_position))
+		I						= std::lower_bound(m_nodes,m_nodes + header().vertex_count(),vertex_position(min_position).xz());
+	else
+		I						= m_nodes;
+
+	if (valid_vertex_position(max_position))
+		E						= std::upper_bound(m_nodes,m_nodes + header().vertex_count(),vertex_position(max_position).xz()) + 1;
+	else
+		E						= m_nodes + header().vertex_count();
+
+	for ( ; I != E; ++I)
+		predicate				(*I);
+}
+
+IC	bool operator<		(const CLevelGraph::CVertex &vertex, u32 vertex_xz)
+{
+	return						(vertex.position().xz() < vertex_xz);
+}
+
+IC	bool operator>		(const CLevelGraph::CVertex &vertex, u32 vertex_xz)
+{
+	return						(vertex.position().xz() > vertex_xz);
+}
+
+IC	bool operator==		(const CLevelGraph::CVertex &vertex, u32 vertex_xz)
+{
+	return						(vertex.position().xz() == vertex_xz);
+}
+
+IC	bool operator<		(u32 vertex_xz, const CLevelGraph::CVertex &vertex)
+{
+	return						(vertex_xz < vertex.position().xz());
+}
+
+IC	bool operator>		(u32 vertex_xz, const CLevelGraph::CVertex &vertex)
+{
+	return						(vertex_xz > vertex.position().xz());
+}
+
+IC	bool operator==		(u32 vertex_xz, const CLevelGraph::CVertex &vertex)
+{
+	return						(vertex_xz == vertex.position().xz());
 }

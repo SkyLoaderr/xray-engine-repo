@@ -161,19 +161,12 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 	return					(best_vertex_id);
 }
 
-struct SSortNodesPredicate1 {
-	IC	bool	operator()			(const CLevelGraph::CVertex &vertex, u32 xz) const
-	{
-		return		(vertex.position().xz() < xz);
-	}
-};
-
 u32	CLevelGraph::vertex_id				(const Fvector &position) const
 {
 	CPosition			_vertex_position = vertex_position(position);
 	CVertex				*B = m_nodes;
 	CVertex				*E = m_nodes + header().vertex_count();
-	CVertex				*I = std::lower_bound	(B,E,_vertex_position.xz(),SSortNodesPredicate1());
+	CVertex				*I = std::lower_bound	(B,E,_vertex_position.xz());
 	if ((I == E) || ((*I).position().xz() != _vertex_position.xz()))
 		return			(u32(-1));
 
