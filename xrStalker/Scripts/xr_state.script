@@ -57,7 +57,7 @@ function body_state:set_state(id)
 		self:transanim(self.npc, id)
 		return true
 	end
-	false
+	return false
 end
 function body_state:transanim(object, target_state)
 	if self.tanim[self.current_state][target_state] ~= nil then
