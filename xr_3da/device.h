@@ -27,6 +27,7 @@ private:
     RECT									m_rcWindowBounds;
     RECT									m_rcWindowClient;
 
+	DWORD									Timer_MM_Delta;
 	CTimer									Timer;
 	CTimer									TimerGlobal;
 public:
@@ -97,6 +98,10 @@ public:
 	{
 		u64	qTime		= TimerGlobal.GetElapsed();
 		return u32((qTime*u64(1000))/CPU::cycles_per_second);
+	}
+	u32	 TimerAsyncMM	(void)
+	{
+		return TimerAsync()+Timer_MM_Delta;
 	}
 
 	// Creation & Destroying

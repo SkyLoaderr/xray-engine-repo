@@ -94,6 +94,7 @@ Oles:
 	+ TODO: Semi-Static, vertex-cache optimized LOD (only on static)
 		..........UNRELIABLE..........
 	+ TODO: SoundMangager - 3D control on/off
+	. TODO: timeGetTime() - kill this fuckin' function out of the code
 	. TODO: Per sector wallmarks
 	. TODO: Lighting on models / ground lighting
 	. TODO: AI
