@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#ifdef DEBUG
+
 static HANDLE hLocalSlot	= INVALID_HANDLE_VALUE;
 
 extern	void msParse(LPCSTR cmd);
@@ -79,4 +81,5 @@ void	msWrite(char *name, char* dest, char *msg)
 		(LPOVERLAPPED) NULL);  
 	fResult = CloseHandle(hFile);
 }
- 
+
+#endif
