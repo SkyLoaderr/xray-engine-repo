@@ -1285,6 +1285,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MIPFILTER,	D3DTEXF_NONE);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// samplers and texture (NORM)
@@ -1292,6 +1293,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MIPFILTER,	D3DTEXF_NONE);
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// samplers and texture (Power32)
@@ -1299,6 +1301,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MIPFILTER,	D3DTEXF_NONE);
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
 	// samplers and texture (SMAP)
@@ -1306,6 +1309,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_MIPFILTER,	D3DTEXF_NONE);
 	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// Set up the stencil states
