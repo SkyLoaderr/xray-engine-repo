@@ -35,20 +35,20 @@ void CScriptMonster::Init()
 		m_tpCallbacks[i].m_method_name	= "";
 	}
 
-	m_tSoundCallback.m_lua_function	= 0;
-	m_tSoundCallback.m_lua_object	= 0;
-	m_tSoundCallback.m_method_name	= "";
+	m_tSoundCallback.m_lua_function		= 0;
+	m_tSoundCallback.m_lua_object		= 0;
+	m_tSoundCallback.m_method_name		= "";
 
-	m_tHitCallback.m_lua_function	= 0;
-	m_tHitCallback.m_lua_object		= 0;
-	m_tHitCallback.m_method_name	= "";
+	m_tHitCallback.m_lua_function		= 0;
+	m_tHitCallback.m_lua_object			= 0;
+	m_tHitCallback.m_method_name		= "";
 
-	m_caScriptName					= "";
-	m_bScriptControl				= false;
+	m_caScriptName						= "";
+	m_bScriptControl					= false;
 	
-	m_tpScriptAnimation				= 0;
-	m_tpCurrentEntityAction			= 0;
-	m_tpNextAnimation				= 0;
+	m_tpScriptAnimation					= 0;
+	m_tpCurrentEntityAction				= 0;
+	m_tpNextAnimation					= 0;
 }
 
 void CScriptMonster::ResetScriptData(void *pointer)
@@ -82,8 +82,8 @@ void CScriptMonster::ResetScriptData(void *pointer)
 
 void CScriptMonster::reinit()
 {
-	inherited::reinit				();
-	ResetScriptData					();
+	inherited::reinit					();
+	ResetScriptData						();
 }
 
 void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caSciptName)
@@ -309,13 +309,13 @@ bool CScriptMonster::bfAssignWatch(CEntityAction *tpEntityAction)
 bool CScriptMonster::bfAssignAnimation(CEntityAction *tpEntityAction)
 {
 	m_tpNextAnimation = 0;
-	if (GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted)
-		return		(true);
-	if (!xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay))
+	if (GetCurrentAction() && GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 		return		(false);
+	if (!xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay))
+		return		(true);
 	CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
 	m_tpNextAnimation	= tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
-	return			(false);
+	return			(true);
 }
 
 const Fmatrix CScriptMonster::GetUpdatedMatrix(ref_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset)

@@ -22,7 +22,6 @@
 using namespace luabind;
 using namespace Script;
 
-
 CRenderDevice &get_device()
 {
 	return		(Device);
@@ -152,5 +151,98 @@ void Script::vfExportParticles(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("position",					&CParticlesObject::Position)
 			.def("play_at_pos",					&CParticlesObject::play_at_pos)
 			.def("stop",						&CParticlesObject::Stop)
+	];
+}
+
+template<typename T>
+CLuaGameObject *get_memory_object(T &object)
+{
+	if (!object.m_object || !dynamic_cast<CGameObject*>(object.m_object))
+		return		(0);
+	return			(xr_new<CLuaGameObject>(dynamic_cast<CGameObject*>(object.m_object)));
+}
+
+int get_sound_type(const CSoundObject &sound_object)
+{
+	return			((int)sound_object.m_sound_type);
+}
+
+void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
+	module(tpLuaVirtualMachine)
+	[
+		class_<SRotation>("rotation")
+			.def_readonly("direction",		&SRotation::yaw)
+			.def_readonly("direction",		&SRotation::pitch),
+			
+		class_<MemorySpace::SObjectParams>("object_params")
+			.def_readonly("level_vertex",	&MemorySpace::SObjectParams::m_level_vertex_id)
+			.def_readonly("position",		&MemorySpace::SObjectParams::m_position)
+			.def_readonly("orientation",	&MemorySpace::SObjectParams::m_orientation),
+			
+		class_<MemorySpace::SMemoryObject>("memory_object")
+			.def_readonly("game_time",		&MemorySpace::SMemoryObject::m_game_time)
+			.def_readonly("level_time",		&MemorySpace::SMemoryObject::m_level_time)
+			.def_readonly("update_count",	&MemorySpace::SMemoryObject::m_update_count),
+
+		class_<MemorySpace::CMemoryObject<CEntityAlive>,MemorySpace::SMemoryObject>("entity_memory_object")
+			.def_readonly("object_info",	&MemorySpace::CMemoryObject<CEntityAlive>::m_object_params)
+			.def_readonly("self_info",		&MemorySpace::CMemoryObject<CEntityAlive>::m_self_params),
+
+		class_<MemorySpace::CMemoryObject<CGameObject>,MemorySpace::SMemoryObject>("game_memory_object")
+			.def_readonly("object_info",	&MemorySpace::CMemoryObject<CGameObject>::m_object_params)
+			.def_readonly("self_info",		&MemorySpace::CMemoryObject<CGameObject>::m_self_params),
+
+		class_<MemorySpace::CHitObject,MemorySpace::CMemoryObject<CEntityAlive> >("hit_memory_object")
+			.def_readonly("direction",		&MemorySpace::CHitObject::m_direction)
+			.def_readonly("bone_index",		&MemorySpace::CHitObject::m_bone_index)
+			.def_readonly("amount",			&MemorySpace::CHitObject::m_amount),
+		
+		class_<MemorySpace::CVisibleObject,MemorySpace::CMemoryObject<CGameObject> >("visible_memory_object")
+			.def_readonly("visible",		&MemorySpace::CSoundObject::m_visible),
+		
+		class_<MemorySpace::CSoundObject,MemorySpace::CVisibleObject>("sound_memory_object")
+			.enum_("sound_types")
+			[
+				value("no_sound",				int(SOUND_TYPE_NO_SOUND					)),
+				value("weapon",					int(SOUND_TYPE_WEAPON					)),
+				value("item",					int(SOUND_TYPE_ITEM						)),
+				value("monster",				int(SOUND_TYPE_MONSTER					)),
+				value("anomaly",				int(SOUND_TYPE_ANOMALY					)),
+				value("world",					int(SOUND_TYPE_WORLD					)),
+				value("item_pick_up",			int(SOUND_TYPE_ITEM_PICKING_UP			)),
+				value("item_drop",				int(SOUND_TYPE_ITEM_DROPPING			)),
+				value("item_hide",				int(SOUND_TYPE_ITEM_HIDING				)),
+				value("item_take",				int(SOUND_TYPE_ITEM_TAKING				)),
+				value("item_use",				int(SOUND_TYPE_ITEM_USING				)),
+				value("weapon_shoot",			int(SOUND_TYPE_WEAPON_SHOOTING			)),
+				value("weapon_empty",			int(SOUND_TYPE_WEAPON_EMPTY_CLICKING	)),
+				value("weapon_bullet_hit",		int(SOUND_TYPE_WEAPON_BULLET_HIT		)),
+				value("weapon_reload",			int(SOUND_TYPE_WEAPON_RECHARGING		)),
+				value("monster_die",			int(SOUND_TYPE_MONSTER_DYING			)),
+				value("monster_injure",			int(SOUND_TYPE_MONSTER_INJURING			)),
+				value("monster_step",			int(SOUND_TYPE_MONSTER_STEP				)),
+				value("monster_talk",			int(SOUND_TYPE_MONSTER_TALKING			)),
+				value("monster_attack",			int(SOUND_TYPE_MONSTER_ATTACKING		)),
+				value("monster_eat",			int(SOUND_TYPE_MONSTER_EATING			)),
+				value("anomaly_idle",			int(SOUND_TYPE_ANOMALY_IDLE				)),
+				value("world_object_break",		int(SOUND_TYPE_WORLD_OBJECT_BREAKING	)),
+				value("world_object_collide",	int(SOUND_TYPE_WORLD_OBJECT_COLLIDING	)),
+				value("world_object_explode",	int(SOUND_TYPE_WORLD_OBJECT_EXPLODING	)),
+				value("world_object_ambient",	int(SOUND_TYPE_WORLD_AMBIENT			)),
+				value("weapon_pistol",			int(SOUND_TYPE_WEAPON_PISTOL			)),
+				value("weapon_gun",				int(SOUND_TYPE_WEAPON_GUN				)),
+				value("weapon_submachinegun",	int(SOUND_TYPE_WEAPON_SUBMACHINEGUN		)),
+				value("weapon_machinegun",		int(SOUND_TYPE_WEAPON_MACHINEGUN		)),
+				value("weapon_sniper_rifle",	int(SOUND_TYPE_WEAPON_SNIPERRIFLE		)),
+				value("weapon_grenade_launcher",int(SOUND_TYPE_WEAPON_GRENADELAUNCHER	)),
+				value("weapon_rocket_launcher",	int(SOUND_TYPE_WEAPON_ROCKETLAUNCHER	))
+			]
+
+			.def("type",					&MemorySpace::CSoundObject::sound_type)
+			.def_readonly("power",			&MemorySpace::CSoundObject::m_power),
+
+		def("get_memory_object",			get_memory_object<CHitObject>),
+		def("get_memory_object",			get_memory_object<CSoundObject>)
 	];
 }

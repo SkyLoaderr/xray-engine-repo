@@ -100,6 +100,11 @@ namespace MemorySpace {
 			m_sound_type			= sound_type;
 			m_power					= sound_power;
 		}
+
+		IC	int		sound_type		() const
+		{
+			return					(int(m_sound_type));
+		}
 	};
 
 	template <typename T>

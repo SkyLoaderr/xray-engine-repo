@@ -27,6 +27,7 @@ namespace Script {
 	void		vfExportEffector			(CLuaVirtualMachine *tpLuaVM);
 	void		vfExportArtifactMerger		(CLuaVirtualMachine *tpLuaVM);
 	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVM);
+	void		vfExportMemoryObjects		(CLuaVirtualMachine *tpLuaVM);
 	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVM);
 	bool		bfLoadFile					(CLuaVirtualMachine *tpLuaVM, LPCSTR	caScriptName,	bool	bCall = true);
 	void		LuaHookCall					(CLuaVirtualMachine *tpLuaVM, lua_Debug *tpLuaDebug);
