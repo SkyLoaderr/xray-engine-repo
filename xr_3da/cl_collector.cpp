@@ -10,7 +10,42 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-namespace CDB {
+namespace CDB 
+{
+	void Collector::calc_adjacency()
+	{
+		// Dumb algorithm O(N^2) :)
+		for (DWORD f=0; f<faces.size(); f++)
+		{
+			for (DWORD t=0; t<faces.size(); t++)
+			{
+				if (t==f)	continue;
+
+				for (DWORD f_e=0; f_e<3; f_e++)
+				{
+					DWORD f1	= faces[f].IDverts()[(f_e+0)%3];
+					DWORD f2	= faces[f].IDverts()[(f_e+1)%3];
+					if (f1>f2)	swap(f1,f2);
+
+					for (DWORD t_e=0; t_e<3; t_e++)
+					{
+						DWORD t1	= faces[t].IDverts()[(t_e+0)%3];
+						DWORD t2	= faces[t].IDverts()[(t_e+1)%3];
+						if (t1>t2)	swap(t1,t2);
+						
+						if (f1==t1 && f2==t2) 
+						{
+							// f.edge[f_e] linked to t.edge[t_e]
+							faces[f].IDadj(f_e)	= t;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+
 	CollectorPacked::CollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces)
 	{
 		// Params

@@ -40,4 +40,6 @@ void CHOM::Load			(CStream* S)
 		S->Read				(&P,sizeof(P));
 		CL.add_face_packed	(P.v1,P.v2,P.v3,CDB::edge_open,CDB::edge_open,CDB::edge_open,0,0,0,EPS_L);
 	}
+	
+	// Determine adjacency
 }

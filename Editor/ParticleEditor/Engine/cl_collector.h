@@ -64,6 +64,8 @@ namespace CDB {
 			T.dummy			= dummy;
 			faces.push_back(T);
 		}
+		void			calc_adjacency	();
+		
 		Fvector*		getV()	{ return verts.begin();	}
 		int				getVS()	{ return verts.size();	}
 		TRI*			getT()	{ return faces.begin();	}
