@@ -4,12 +4,14 @@
 #include "cl_defs.h"
 #include "cl_intersect.h"
 
+#include "xrThread.h"
+
 const int	LIGHT_Count			=3;
 const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
-typedef	svector<R_Light,128>	LSelection;
+typedef	svector<R_Light*,128>	LSelection;
 
-IC bool RayPick(Fvector& P, Fvector& D, float r, R_Light& L)
+IC bool RayPick(RAPID::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
 	// 1. Check cached polygon
 	float _u,_v,range;
@@ -19,12 +21,12 @@ IC bool RayPick(Fvector& P, Fvector& D, float r, R_Light& L)
 	}
 
 	// 2. Polygon doesn't pick - real database query
-	XRC.RayPick(0,&Level,P,D,r);
-	if (0==XRC.GetRayContactCount()) {
+	DB.RayPick(0,&Level,P,D,r);
+	if (0==DB.GetRayContactCount()) {
 		return false;
 	} else {
 		// cache polygon
-		RAPID::raypick_info&	rpinf	= XRC.RayContact[0];
+		RAPID::raypick_info&	rpinf	= DB.RayContact[0];
 		L.tri[0].set	(rpinf.p[0]);
 		L.tri[1].set	(rpinf.p[1]);
 		L.tri[2].set	(rpinf.p[2]);
@@ -32,24 +34,26 @@ IC bool RayPick(Fvector& P, Fvector& D, float r, R_Light& L)
 	}
 }
 
-float LightPoint(Fvector &P, Fvector &N, LSelection& SEL)
+float LightPoint(RAPID::XRCollide& DB, Fvector &P, Fvector &N, LSelection& SEL)
 {
 	Fvector		Ldir,Pnew;
 	Pnew.direct(P,N,0.05f);
 
-	R_Light	*L = SEL.begin(), *E = SEL.end();
+	R_Light	**IT = SEL.begin(), **E = SEL.end();
 
 	float	amount = 0;
-	for (;L!=E; L++)
+	for (; IT!=E; IT++)
 	{
-		if (L->type==LT_DIRECT) {
+		R_Light* L = *IT;
+		if (L->type==LT_DIRECT) 
+		{
 			// Cos
 			Ldir.invert	(L->direction);
 			float D		= Ldir.dotproduct( N );
 			if( D <=0 ) continue;
 
 			// Raypick
-			if (!RayPick(Pnew,Ldir,1000.f,*L))	amount+=D*L->amount;
+			if (!RayPick(DB,Pnew,Ldir,1000.f,*L))	amount+=D*L->amount;
 		} else {
 			// Distance
 			float sqD	= P.distance_to_sqr(L->position);
@@ -63,26 +67,94 @@ float LightPoint(Fvector &P, Fvector &N, LSelection& SEL)
 			
 			// Raypick
 			float R		= sqrtf(sqD);
-			if (!RayPick(Pnew,Ldir,R,*L))
+			if (!RayPick(DB,Pnew,Ldir,R,*L))
 				amount += (D*L->amount)/(L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 		}
 	}
 	return amount;
 }
 
+class	LightThread : public CThread
+{
+	DWORD	Nstart, Nend;
+public:
+	LightThread			(DWORD ID, DWORD _start, DWORD _end) : CThread(ID)
+	{
+		Nstart	= _start;
+		Nend	= _end;
+		Start	();
+	}
+	virtual void		Execute()
+	{
+		RAPID::XRCollide DB;
+		DB.RayMode		(RAY_ONLYFIRST|RAY_CULL);
+
+		vector<R_Light>	Lights = g_lights;
+
+		Fvector			P,D,PLP;
+		D.set			(0,1,0);
+		float coeff		= 0.5f*g_params.fPatchSize/float(LIGHT_Count);
+		
+		LSelection		Selected;
+		float			LperN	= float(g_lights.size());
+		for (DWORD i=Nstart; i<Nend; i++)
+		{
+			Node& N = g_nodes[i];
+			
+			// select lights
+			Selected.clear();
+			for (DWORD L=0; L<Lights.size(); L++)
+			{
+				R_Light&	R = g_lights[L];
+				if (R.type==LT_DIRECT)	Selected.push_back(&R);
+				else {
+					float dist = N.Pos.distance_to(R.position);
+					if (dist-g_params.fPatchSize < R.range)
+						Selected.push_back(&R);
+				}
+			}
+			LperN = 0.9f*LperN + 0.1f*float(Selected.size());
+			
+			// lighting itself
+			float amount=0;
+			for (int x=-LIGHT_Count; x<=LIGHT_Count; x++) 
+			{
+				P.x = N.Pos.x + coeff*float(x);
+				for (int z=-LIGHT_Count; z<=LIGHT_Count; z++) 
+				{
+					// compute position
+					P.z = N.Pos.z + coeff*float(z);
+					P.y = N.Pos.y;
+					N.Plane.intersectRayPoint(P,D,PLP);	// "project" position
+					P.y = PLP.y;
+					
+					// light point
+					amount += LightPoint(DB,P,N.Plane.n,Selected);
+				}
+			}
+			
+			// calculation of luminocity
+			N.LightLevel	= amount/float(LIGHT_Total);
+			
+			thProgress		= float(i-Nstart)/float(Nend-Nstart);
+		}
+	}
+};
+
+#define NUM_THREADS	8
 void	xrLight			()
 {
 	Fvector P,D,PLP;
 	D.set	(0,1,0);
 	float coeff = 0.5f*g_params.fPatchSize/float(LIGHT_Count);
 	XRC.RayMode	(RAY_ONLYFIRST|RAY_CULL);
-
+	
 	LSelection	Selected;
 	float		LperN	= float(g_lights.size());
 	for (DWORD i=0; i<g_nodes.size(); i++)
 	{
 		Node& N = g_nodes[i];
-
+		
 		// select lights
 		Selected.clear();
 		for (DWORD L=0; L<g_lights.size(); L++)
