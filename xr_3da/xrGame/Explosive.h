@@ -79,6 +79,8 @@ protected:
 	float m_fExplodeDuration;
 	//общее время взрыва
 	float m_fExplodeDurationMax;
+	//флаг состояния взрыва
+	bool  m_bExploding;
 
 	//////////////////////////////////////////////
 	//для разлета осколков
@@ -100,6 +102,9 @@ protected:
 	Fcolor				m_LightColor;
 	float				m_fLightRange;
 	float				m_fLightTime;
+	
+	virtual	void		StartLight	();
+	virtual	void		StopLight	();
 
 	// эффектор
 	struct {

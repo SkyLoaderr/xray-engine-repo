@@ -136,11 +136,6 @@ CLevel::~CLevel()
 	xr_delete			(m_pFogOfWar);
 	//destroy bullet manager
 	xr_delete					(m_pBulletManager);
-	//info portions static data
-	CInfoPortion::DeleteStrToID();
-	//static shader for blood
-	CEntityAlive::UnloadBloodyWallmarks	();
-	CEntityAlive::UnloadFireParticles ();
 }
 
 // Game interface ////////////////////////////////////////////////////

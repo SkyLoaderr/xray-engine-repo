@@ -75,6 +75,13 @@ void clear_singletons ()
 	xr_delete(g_ai_space);
 	// destroy monster squad global var
 	xr_delete(g_monster_squad);
+
+
+	//info portions static data
+	CInfoPortion::DeleteStrToID();
+	//static shader for blood
+	CEntityAlive::UnloadBloodyWallmarks	();
+	CEntityAlive::UnloadFireParticles ();
 }
 
 // console commands

@@ -14,6 +14,8 @@
 #define BLOOD_DROPS_SIZE		0.03f
 
 
+
+//отметки крови на стенах 
 SHADER_VECTOR* CEntityAlive::m_pBloodMarksVector = NULL;
 bool CEntityAlive::m_BloodyWallmarksLoaded = false;
 
@@ -22,6 +24,12 @@ float CEntityAlive::m_fBloodMarkSizeMax = 0.f;
 float CEntityAlive::m_fBloodMarkDistance = 0.f;
 float CEntityAlive::m_fBloodMarkDispersion = 0.f;
 float CEntityAlive::m_fNominalHit = 0.f;
+
+//капание крови
+SHADER_VECTOR* CEntityAlive::m_pBloodDropsVector = NULL;
+float CEntityAlive::m_fStartBloodWoundSize = 0.3f;
+float CEntityAlive::m_fStopBloodWoundSize = 0.1f;
+
 
 //минимальный размер ожега, после которого горят партиклы
 //минимальное время горения
@@ -32,11 +40,6 @@ float CEntityAlive::m_fStartBurnWoundSize = 0.3f;
 float CEntityAlive::m_fStopBurnWoundSize = 0.1f;
 //время через которое с раны размером 1.0 будет падать капля крови
 float CEntityAlive::m_fBloodDropTime = 0.9f;
-
-//капание крови
-SHADER_VECTOR* CEntityAlive::m_pBloodDropsVector = NULL;
-float CEntityAlive::m_fStartBloodWoundSize = 0.3f;
-float CEntityAlive::m_fStopBloodWoundSize = 0.1f;
 
 STR_VECTOR* CEntityAlive::m_pFireParticlesVector = NULL;
 
@@ -124,7 +127,7 @@ void CEntityAlive::UnloadBloodyWallmarks	()
 	m_pBloodDropsVector->clear();
 
 	xr_delete(m_pBloodMarksVector);
-	xr_delete(m_pBloodMarksVector);
+	xr_delete(m_pBloodDropsVector);
 }
 
 void CEntityAlive::LoadFireParticles(LPCSTR section)
@@ -311,6 +314,7 @@ void CEntityAlive::BloodyWallmarks (float P, const Fvector &dir, s16 element,
 	wallmark_size *= small_entity;
 	clamp(wallmark_size, m_fBloodMarkSizeMin, m_fBloodMarkSizeMax);
 
+	VERIFY(m_pBloodMarksVector);
 	PlaceBloodWallmark(dir, start_pos, m_fBloodMarkDistance, 
 						wallmark_size, *m_pBloodMarksVector);
 
@@ -469,6 +473,7 @@ void CEntityAlive::UpdateBloodDrops()
 			float drop_time = m_fBloodDropTime*(1.f/blood_size)*Random.randF(0.8f, 1.2f);
 			if(pWound->m_fUpdateTime>drop_time)
 			{
+				VERIFY(m_pBloodDropsVector);
 				PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f),
 								Position(), m_fBloodMarkDistance, 
 								BLOOD_DROPS_SIZE, *m_pBloodDropsVector);

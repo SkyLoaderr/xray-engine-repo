@@ -46,6 +46,8 @@ CExplosive::CExplosive(void)
 
 	m_iCurrentParentID = 0xffff;
 	m_bReadyToExplode = false;
+
+	m_bExploding = false;
 }
 
 CExplosive::~CExplosive(void) 
@@ -104,7 +106,7 @@ BOOL CExplosive::net_Spawn		(LPVOID DC)
 void CExplosive::net_Destroy	()
 {
 	inherited::net_Destroy();
-	m_pLight->set_active(false);
+	StopLight();
 }
 
 
@@ -115,6 +117,8 @@ void CExplosive::Explode()
 {
 	VERIFY(0xffff != m_iCurrentParentID);
 	VERIFY(m_bReadyToExplode);
+
+	m_bExploding = true;
 
 	Fvector& pos = m_vExplodePos;
 	Fvector& dir = m_vExplodeDir;
@@ -142,13 +146,7 @@ void CExplosive::Explode()
 	pStaticPG->Play();
 
 	//включаем подсветку от взрыва
-	if(m_fLightTime>0)
-	{
-		m_pLight->set_color(m_LightColor.r, m_LightColor.g, m_LightColor.b);
-		m_pLight->set_range(m_fLightRange);
-		m_pLight->set_position(pos); 
-		m_pLight->set_active(true);
-	}
+	StartLight();
 
 	//trace frags
 	Fvector frag_dir; 
@@ -289,11 +287,11 @@ void CExplosive::feel_touch_new(CObject* O)
 
 void CExplosive::UpdateCL() 
 {
-	//время вышло, взрываем сам объект
-	if(m_fExplodeDuration > 0 && m_fExplodeDuration <= Device.fTimeDelta) 
+	//время вышло, убираем объект взрывчатки
+	if(m_fExplodeDuration < 0.f && m_bExploding) 
 	{
-		m_fExplodeDuration = 0.f;
-		m_pLight->set_active(false);
+		m_bExploding = false;
+		StopLight();
 		
 		//ликвидировать сам объект 
 		NET_Packet			P;
@@ -301,22 +299,23 @@ void CExplosive::UpdateCL()
 //		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 		if (Local()) u_EventSend			(P);
 	} 
-	else if(m_fExplodeDuration>0)
+	else if(m_bExploding)
 	{
 		m_fExplodeDuration -= Device.fTimeDelta;
-		
-		if(m_fExplodeDuration > (m_fExplodeDurationMax - m_fLightTime)) 
+
+		//обновить подсветку взрыва
+		if(m_pLight->get_active() && m_fLightTime>0)
 		{
-			if(m_fLightTime>0)
+			if(m_fExplodeDuration > (m_fExplodeDurationMax - m_fLightTime))
 			{
 				float scale = (m_fExplodeDuration - (m_fExplodeDurationMax - m_fLightTime))/m_fLightTime;
 				m_pLight->set_color(m_LightColor.r*scale, m_LightColor.g*scale, m_LightColor.b*scale);
 				m_pLight->set_range(m_fLightRange*scale);
-			}
-		} 
-	} 
-	else 
-		m_pLight->set_active(false);
+			} 
+			else
+				StopLight();
+		}
+	}
 }
 
 void CExplosive::OnEvent(NET_Packet& P, u16 type) 
@@ -388,3 +387,23 @@ void CExplosive::FindNormal(Fvector& normal)
 	}
 }
 
+void CExplosive::StartLight	()
+{
+	VERIFY(m_pLight);
+
+	if(m_fLightTime>0)
+	{
+		m_pLight->set_color(m_LightColor.r, m_LightColor.g, m_LightColor.b);
+		m_pLight->set_range(m_fLightRange);
+		m_pLight->set_position(m_vExplodePos); 
+		m_pLight->set_active(true);
+
+		Msg("explosive light start %x", this);
+	}
+}
+void CExplosive::StopLight	()
+{
+	VERIFY(m_pLight);
+	m_pLight->set_active(false);
+	Msg("explosive light stop %x", this);
+}
