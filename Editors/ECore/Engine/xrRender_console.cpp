@@ -5,6 +5,7 @@
 
 // Common
 int			ps_r__Supersample		= 1;
+int			ps_r__Anisotropic		= 4;
 
 float		ps_r__Detail_w_rot1			= 30.f;
 float		ps_r__Detail_w_rot2			= 1.f;
@@ -76,7 +77,7 @@ void		xrRender_initconsole	()
 {
 	// Common
 	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
-	CMD4(CCC_Aniso,		"r__aniso_tf",			&ps_r__Anisotropic);
+	CMD2(CCC_Aniso,		"r__aniso_tf",			&ps_r__Anisotropic);
 	CMD4(CCC_Float,		"r__detail_w_rot1",		&ps_r__Detail_w_rot1,		1.f,	180.f	);
 	CMD4(CCC_Float,		"r__detail_w_rot2",		&ps_r__Detail_w_rot2,		1.f,	180.f	);
 	CMD4(CCC_Float,		"r__detail_w_speed",	&ps_r__Detail_w_speed,		1.f,	4.f		);
