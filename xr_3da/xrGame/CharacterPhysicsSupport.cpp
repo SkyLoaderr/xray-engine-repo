@@ -89,7 +89,13 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
 			if(!m_pPhysicsShell->bActivating&&!b_death_anim_on)
 			{
 				if(m_eType==etStalker)
-				PKinematics(m_EntityAlife.Visual())->PlayCycle("death_init");
+				{
+					PKinematics(m_EntityAlife.Visual())->LL_CloseCycle(0) ;
+					PKinematics(m_EntityAlife.Visual())->LL_CloseCycle(1) ;
+					PKinematics(m_EntityAlife.Visual())->LL_CloseCycle(2) ;
+					PKinematics(m_EntityAlife.Visual())->LL_CloseCycle(3) ;
+					PKinematics(m_EntityAlife.Visual())->PlayCycle("death_init");
+				}
 				b_death_anim_on=true;
 			}
 
