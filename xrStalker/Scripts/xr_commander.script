@@ -104,7 +104,7 @@ function evaluator_actor_is_close:evaluate()
         the_actor = level.actor()
     end
 
-    return the_actor ~= nil and the_actor:position():distance_to_sqr( self.npc:position() ) < 6.25
+    return false --the_actor ~= nil and the_actor:position():distance_to_sqr( self.npc:position() ) < 6.25
 end
 
 ---------------------------------------------------------------------------------------------------------------------
