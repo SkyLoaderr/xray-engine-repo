@@ -697,27 +697,31 @@ MaxVoiceInterval	     = 120000			; milliseconds
 VoiceRefreshRate	     =   2500			; milliseconds
 
 ChangeActiveStateProbability = 1.0 			; range [0..1]
-ActiveCountPercent	     =   16			; percents
-StandingCountPercent	     =   16			; percents
-PassiveScheduleMin	     =  100			; microseconds
-PassiveScheduleMax           = 1000			; microseconds
+ActiveCountPercent	     =   16				; percents
+StandingCountPercent	 =   16				; percents
+PassiveScheduleMin	     =  100				; microseconds
+PassiveScheduleMax       = 1000				; microseconds
 
 LostMemoryTime		     = 20000			; milliseconds
 LostRecoilTime		     =  2000			; milliseconds
 UnderFireDistance	     =   100			; meters
-RetreatTime		     = 10000			; milliseconds
+RetreatTime				 = 10000			; milliseconds
 RetreatDistance		     =   100			; meters
-AttackStraightDistance	     =    10			; meters
+AttackStraightDistance	 =    10			; meters
 StableDistance		     =     5			; meters
 WallMinTurnValue	     =    90 			; degrees
 WallMaxTurnValue	     =   270			; degrees
 
-AngleSpeed		     = 0.2	                ; degrees per second
-GoalChangeDelta	 	     = 10.0			; seconds
-GoalVariation	  	     = 10.0, 0.0, 20.0		; each coordinate in meters
+AngleSpeed				 = 0.2	            ; degrees per second
+GoalChangeDelta	 	     = 10.0				; seconds
+GoalVariation	  	     = 10.0, 0.0, 20.0	; each coordinate in meters
+AngularStandSpeed		 = 360				; degrees
+AngularMinSpeed			 = 360				; degrees
+AngularMaxSpeed			 = 30				; degrees
+AngularAttackSpeed		 = 10				; degrees
 
-MoraleDeathDistance	     = 50			; meters
-SoundThreshold		     = 0.06                     ; range [0..1]
+MoraleDeathDistance	     = 50				; meters
+SoundThreshold		     = 0.06             ; range [0..1]
 
 ActionRefreshRate	     = 500			; milliseconds
 MaxHealthValue		     = 15			; range [0..200]
