@@ -458,7 +458,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     self.object:disable_talk()
 
 	-- SCRIPT ACTION PLANNER
-
+--[[
 	properties["scripts"] = xr_evaluators_id.script_evaluator
 	manager:add_evaluator (properties["scripts"], 		this.evaluator_script		())		
 
@@ -476,25 +476,25 @@ xr_motivator.storage[self.object:id()].reactions = {
 
 --	action = manager:action (stalker_ids.action_puzzle_solver)	
 --	action:add_precondition			(world_property(properties["scripts"],		false))
+]]
 
-
-    --xr_state.add_to_binder(self.object)
-    --xr_reactions.add_to_binder(self.object)
-    --xr_position.add_to_binder(self.object)
---    xr_patrol.add_to_binder (self.object)
---    xr_follower.add_to_binder (self.object)
---    xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
---    xr_meet.add_to_binder(self.object)
-    --xr_kamp.add_to_binder(self.object)
---    xr_commander.add_to_binder(self.object)
---    xr_guard.add_to_binder(self.object)
---    xr_camper2.add_to_binder(self.object)
---    xr_sleeper.add_to_binder(self.object)
---    xr_robbers.add_to_binder(self.object)
---    xr_scout.add_to_binder(self.object)
---    xr_trivial.add_novice     (self.object)
---    xr_trivial.add_novice2    (self.object)
---    xr_trivial.add_novice3    (self.object)
+    xr_state.add_to_binder(self.object)
+    xr_reactions.add_to_binder(self.object)
+    xr_position.add_to_binder(self.object)
+    xr_patrol.add_to_binder (self.object)
+    xr_follower.add_to_binder (self.object)
+    xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
+    xr_meet.add_to_binder(self.object)
+    xr_kamp.add_to_binder(self.object)
+    xr_commander.add_to_binder(self.object)
+    xr_guard.add_to_binder(self.object)
+    xr_camper2.add_to_binder(self.object)
+    xr_sleeper.add_to_binder(self.object)
+    xr_robbers.add_to_binder(self.object)
+    xr_scout.add_to_binder(self.object)
+    xr_trivial.add_novice     (self.object)
+    xr_trivial.add_novice2    (self.object)
+    xr_trivial.add_novice3    (self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)

@@ -164,25 +164,31 @@ function add_to_binder(object)
 	local operators		= {}
 	local properties	= {}
 
-	local manager = object:motivation_action_manager()
-
-	printf("STATE BASE %d", xr_evaluators_id.state_change)
-
 	properties["state_end"]		= xr_evaluators_id.state_change
 
 	operators["state"]		= xr_actions_id.stohe_state_base + 1
 
-	-- Evaluators                                                                            
-	manager:add_evaluator (properties["state_end"], 		this.evaluator_state_end		(xr_motivator.storage[object:id()].state))
+	local manager = object:motivation_action_manager()
+--	local action_pl = manager:get_action(xr_actions_id.action_planner) 
+--	if action_pl ~= nil then
+--		local act_pl = cast_action_to_planner(action_pl)
+--		if act_pl ~= nil then
 
-	-- Actions
-	local action = this.action_change_state (object:name(),"action_change_state", xr_motivator.storage[object:id()].state)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["state_end"],	false))
-	action:add_effect 		(world_property(properties["state_end"],	true))
-	manager:add_action (operators["state"], action)
+			-- Evaluators                                                                            
+			manager:add_evaluator (properties["state_end"], 		this.evaluator_state_end		(xr_motivator.storage[object:id()].state))
 
-	action = manager:action (stalker_ids.action_puzzle_solver)
-	action:add_precondition		(world_property(properties["state_end"],	true))
+			-- Actions
+			local action = this.action_change_state (object:name(),"action_change_state", xr_motivator.storage[object:id()].state)
+			action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+			action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+			action:add_precondition		(world_property(properties["state_end"],	false))
+			action:add_effect 		(world_property(properties["state_end"],	true))
+			manager:add_action (operators["state"], action)
+
+	action = manager:action (stalker_ids.action_puzzle_solver)	
+	action:add_precondition		(world_property(properties["state_end"],		true))
+
+--		end
+--	end
+
 end
