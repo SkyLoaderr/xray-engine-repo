@@ -46,8 +46,8 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +BUG	:	biasing for spot-lighting
 +BUG	:	fucking light-flickering!!!
 +BUG	:	DX-WARN: RT used while bound
++FEATURE:	self-ilum
 
-self-ilum
 hw-pointlight
 incremental object level culling
 volume-fog
