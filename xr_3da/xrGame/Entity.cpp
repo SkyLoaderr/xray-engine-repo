@@ -114,12 +114,13 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 
 	// If Local() - perform some logic
 	//if (Local() && (fEntityHealth>0))
-	if (Local() && g_Alive())
+	if (Local())
 	{
 		//if (fEntityHealth<=0)
 		if(!g_Alive() && !AlreadyDie())
 		{
-			KillEntity(who);
+//			Msg			("%6d : KillEntity from CEntity for object %s",Level().timeServer(),*cName());
+			KillEntity	(who);
 		}
 	}
 }

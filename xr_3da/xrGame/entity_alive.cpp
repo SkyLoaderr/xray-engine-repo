@@ -106,10 +106,14 @@ void CEntityAlive::shedule_Update(u32 dt)
 	//убить сущность
 	if(Local() && !g_Alive() && !AlreadyDie())
 	{
-		if(GetWhoHitLastTime())
+		if(GetWhoHitLastTime()) {
+//			Msg			("%6d : KillEntity from CEntityAlive (using who hit last time) for object %s",Level().timeServer(),*cName());
 			KillEntity(GetWhoHitLastTime());
-		else
+		}
+		else {
+//			Msg			("%6d : KillEntity from CEntityAlive for object %s",Level().timeServer(),*cName());
 			KillEntity(this);
+		}
 	}
 }
 

@@ -324,7 +324,6 @@ void CMissile::UpdateXForm()
 		int				boneL,boneR,boneR2;
 		E->g_WeaponBones(boneL,boneR,boneR2);
 
-//		if ((STATE == eReload) || (!E->g_Alive()))
 		boneL = boneR2;
 
 		V->Calculate	();

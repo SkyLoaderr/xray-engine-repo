@@ -12,6 +12,7 @@
 #include "state_combat_attack_weak.h"
 #include "ai/stalker/ai_stalker.h"
 #include "inventory_item.h"
+#include "missile.h"
 
 CStateAttackWeak::CStateAttackWeak	(LPCSTR state_name) : inherited(state_name)
 {
@@ -63,7 +64,7 @@ void CStateAttackWeak::execute			()
 		m_object->CSightManager::update			(eLookTypeFirePoint,&mem_object.m_object_params.m_position);
 	}
 	else {
-		if (m_object->best_weapon()->SUB_CLS_ID != CLSID_IITEM_BOLT)
+		if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
 			m_object->CObjectHandler::set_dest_state(eObjectActionAim1,m_object->best_weapon());
 		
 		Fvector			direction;

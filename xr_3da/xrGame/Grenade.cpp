@@ -116,7 +116,8 @@ void CGrenade::OnAnimationEnd()
 			xr_delete(m_pPhysicsShell);
 			
 			//выкинуть гранату из инвентаря
-			m_pInventory->Ruck(this); 
+			if (m_pInventory)
+				m_pInventory->Ruck(this); 
 			m_dwDestroyTime = 0;
 			
 			if (Local())
