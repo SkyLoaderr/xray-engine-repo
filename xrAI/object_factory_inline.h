@@ -8,25 +8,17 @@
 
 #pragma once
 
-IC	CObjectFactory::CObjectItemAbstract::CObjectItemAbstract	(const CLASS_ID &clsid, LPCSTR script_clsid) :
-	m_clsid				(clsid)
 #ifndef NO_XR_GAME
-	,m_script_clsid		(script_clsid)
-#endif
+IC	CObjectFactory::CLIENT_SCRIPT_BASE_CLASS *CObjectFactory::client_instance() const
 {
-}
-
-IC	const CLASS_ID &CObjectFactory::CObjectItemAbstract::clsid	() const
-{
-	return				(m_clsid);
-}
-
-#ifndef NO_XR_GAME
-IC	ref_str	CObjectFactory::CObjectItemAbstract::script_clsid	() const
-{
-	return				(m_script_clsid);
+	return						(m_client_instance);
 }
 #endif
+
+IC	CObjectFactory::SERVER_SCRIPT_BASE_CLASS *CObjectFactory::server_instance() const
+{
+	return						(m_server_instance);
+}
 
 IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const
 {
@@ -48,7 +40,7 @@ IC	bool CObjectFactory::CObjectItemPredicateCLSID::operator()	(const CObjectItem
 	return				(m_clsid == item->clsid());
 }
 
-#ifndef NO_XR_GAME
+#ifndef NO_SCRIPTS
 IC	CObjectFactory::CObjectItemPredicateScript::CObjectItemPredicateScript	(const ref_str &script_clsid_name) :
 	m_script_clsid_name	(script_clsid_name)
 {
@@ -60,86 +52,20 @@ IC	bool CObjectFactory::CObjectItemPredicateScript::operator()	(const CObjectIte
 }
 #endif
 
-template <typename _client_type, typename _server_type>
-IC	CObjectFactory::CObjectItemCS<_client_type,_server_type>::CObjectItemCS	(const CLASS_ID &clsid, LPCSTR script_clsid) :
-	inherited			(clsid,script_clsid)
-{
-}
-
-#ifndef NO_XR_GAME
-template <typename _client_type, typename _server_type>
-CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::CObjectItemCS<_client_type,_server_type>::client_object	() const
-{
-	return				(xr_new<CLIENT_TYPE>());
-}
-#endif
-
-template <typename _client_type, typename _server_type>
-CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItemCS<_client_type,_server_type>::server_object	(LPCSTR section) const
-{
-	return				(xr_new<SERVER_TYPE>(section));
-}
-
-template <typename _unknown_type, bool _client_object>
-IC	CObjectFactory::CObjectItem<_unknown_type,_client_object>::CObjectItem	(const CLASS_ID &clsid, LPCSTR script_clsid) :
-	inherited			(clsid,script_clsid)
-{
-}
-
-#ifndef NO_XR_GAME
-template <typename _unknown_type, bool _client_object>
-CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,_client_object>::client_object	() const
-{
-	NODEFAULT;
-#ifdef DEBUG
-	return				(0);
-#endif
-}
-#endif
-
-template <typename _unknown_type, bool _client_object>
-CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,_client_object>::server_object	(LPCSTR section) const
-{
-	return				(xr_new<SERVER_TYPE>(section));
-}
-
-#ifndef NO_XR_GAME
-template <typename _unknown_type>
-IC	CObjectFactory::CObjectItem<_unknown_type,true>::CObjectItem	(const CLASS_ID &clsid, LPCSTR script_clsid) :
-	inherited			(clsid,script_clsid)
-{
-}
-
-template <typename _unknown_type>
-CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,true>::client_object	() const
-{
-	return				(xr_new<CLIENT_TYPE>());
-}
-
-template <typename _unknown_type>
-CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::CObjectItem<_unknown_type,true>::server_object	(LPCSTR section) const
-{
-	NODEFAULT;
-#ifdef DEBUG
-	return				(0);
-#endif
-}
-#endif
-
 IC	const CObjectFactory::OBJECT_ITEM_STORAGE &CObjectFactory::clsids	() const
 {
 	return				(m_clsids);
 }
 
 #ifndef NO_XR_GAME
-IC	const CObjectFactory::CObjectItemAbstract &CObjectFactory::item	(const CLASS_ID &clsid) const
+IC	const CObjectItemAbstract &CObjectFactory::item	(const CLASS_ID &clsid) const
 {
 	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,CObjectItemPredicate());
 	VERIFY				((I != clsids().end()) && ((*I)->clsid() == clsid));
 	return				(**I);
 }
 #else
-IC	const CObjectFactory::CObjectItemAbstract *CObjectFactory::item	(const CLASS_ID &clsid, bool no_assert) const
+IC	const CObjectItemAbstract *CObjectFactory::item	(const CLASS_ID &clsid, bool no_assert) const
 {
 	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,CObjectItemPredicate());
 	if ((I == clsids().end()) || ((*I)->clsid() != clsid)) {
@@ -147,57 +73,6 @@ IC	const CObjectFactory::CObjectItemAbstract *CObjectFactory::item	(const CLASS_
 		return			(0);
 	}
 	return				(*I);
-}
-#endif
-
-#ifndef NO_XR_GAME
-template <typename _client_type, typename _server_type>
-IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
-{
-//	{
-//		typedef boost::is_base_and_derived<CLIENT_BASE_CLASS,CType<_client_type,_server_type,CLIENT_BASE_CLASS>::type> a;
-//		STATIC_CHECK	(a::value,Client_class_must_be_derived_from_the_CLIENT_BASE_CLASS);
-//	}
-//	{
-//		typedef boost::is_base_and_derived<SERVER_BASE_CLASS,CType<_client_type,_server_type,SERVER_BASE_CLASS>::type> a;
-//		STATIC_CHECK	(a::value,Server_class_must_be_derived_from_the_SERVER_BASE_CLASS);
-//	}
-//	add					(xr_new<CObjectItemCS<CType<_client_type,_server_type,CLIENT_BASE_CLASS>::type,CType<_client_type,_server_type,SERVER_BASE_CLASS>::type> >(clsid,script_clsid));
-
-	{
-		typedef boost::is_base_and_derived<CLIENT_BASE_CLASS,_client_type> a;
-		STATIC_CHECK	(a::value,Client_class_must_be_derived_from_the_CLIENT_BASE_CLASS);
-	}
-	{
-		typedef boost::is_base_and_derived<SERVER_BASE_CLASS,_server_type> a;
-		STATIC_CHECK	(a::value,Server_class_must_be_derived_from_the_SERVER_BASE_CLASS);
-	}
-	add					(xr_new<CObjectItemCS<_client_type,_server_type> >(clsid,script_clsid));
-}
-
-template <typename _unknown_type>
-IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
-{
-	{
-		typedef boost::is_base_and_derived<CLIENT_BASE_CLASS,_unknown_type> a;
-		typedef boost::is_base_and_derived<SERVER_BASE_CLASS,_unknown_type> b;
-		STATIC_CHECK	(a::value || b::value,Class_must_be_derived_from_the_CLIENT_BASE_CLASS_or_SERVER_BASE_CLASS);
-	}
-	add					(
-		xr_new<
-			CObjectItem<
-				_unknown_type,
-				boost::is_base_and_derived<CLIENT_BASE_CLASS,_unknown_type>::value
-			>
-		>
-		(clsid,script_clsid)
-	);
-}
-#else
-template <typename _unknown_type>
-IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
-{
-	add					(xr_new<CObjectItem<_unknown_type,false> >(clsid,script_clsid));
 }
 #endif
 
@@ -218,14 +93,16 @@ IC	void CObjectFactory::add	(CObjectItemAbstract *item)
 	m_clsids.push_back	(item);
 }
 
-#ifndef NO_XR_GAME
+#ifndef NO_SCRIPTS
 IC	int	CObjectFactory::script_clsid	(const CLASS_ID &clsid) const
 {
 	const_iterator		I = std::lower_bound(clsids().begin(),clsids().end(),clsid,CObjectItemPredicate());
 	VERIFY				((I != clsids().end()) && ((*I)->clsid() == clsid));
 	return				(int(I - clsids().begin()));
 }
+#endif
 
+#ifndef NO_XR_GAME
 IC	CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::client_object	(const CLASS_ID &clsid) const
 {
 	return				(item(clsid).client_object());
