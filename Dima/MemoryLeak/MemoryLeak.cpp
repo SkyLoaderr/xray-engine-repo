@@ -18,6 +18,7 @@ struct SCover {
 
 struct SCoverCluster : public SCover {
 	u32				acc_cover[4];
+//	u64				acc_cover2[4];
 	u32				sort_cover;
 	u32				m_magnitude;
 	u32				item_count;
@@ -25,12 +26,22 @@ struct SCoverCluster : public SCover {
 
 	IC u32	distance(const SCoverCluster &node) const
 	{
-		return		(
-			_sqr(int(cover[0]) - int(node.cover[0])) +
-			_sqr(int(cover[1]) - int(node.cover[1])) +
-			_sqr(int(cover[2]) - int(node.cover[2])) +
-			_sqr(int(cover[3]) - int(node.cover[3]))
-			);
+//		if (item_count*node.item_count == 1)
+			return		(
+				_sqr(int(cover[0]) - int(node.cover[0])) +
+				_sqr(int(cover[1]) - int(node.cover[1])) +
+				_sqr(int(cover[2]) - int(node.cover[2])) +
+				_sqr(int(cover[3]) - int(node.cover[3]))
+				);
+//		double	n1 = item_count, n2 = node.item_count, result = 0, s1, s2;
+//		for (int i=0; i<4; ++i) {
+//			if (cover[i] == node.cover[i])
+//				continue;
+//			s1		= (double)acc_cover2[i];
+//			s2		= (double)node.acc_cover2[i];
+//			result	+= (_sqr(n2)*(2*s1 + (item_count > 1 ? n1*s1 : 0)) + _sqr(n1)*(2*s2 + (node.item_count > 1 ? n2*s2 : 0)) - 4*n1*n2*_sqrt(s1*s2))/(2*n1*n2*(n1+n2));
+//		}
+//		return				(_abs(iFloor(result)));
 	}
 
 	IC void set_sort()
@@ -55,8 +66,10 @@ struct SCoverCluster : public SCover {
 		item_count			= 1;
 		Memory.mem_copy		(cover,&node,sizeof(cover));
 
-		for (int i=0; i<4; ++i)
+		for (int i=0; i<4; ++i) {
 			acc_cover[i]	= cover[i];
+//			acc_cover2[i]	= _sqr(u64(cover[i]));
+		}
 
 		set_sort			();
 		set_magnitude		();
@@ -69,6 +82,7 @@ struct SCoverCluster : public SCover {
 
 		for (u32 i=0; i<4; ++i) {
 			acc_cover[i]	+= cluster.acc_cover[i];
+//			acc_cover2[i]	+= cluster.acc_cover2[i];
 			cover[i]		= acc_cover[i]/item_count;
 		}
 		set_sort			();
@@ -204,7 +218,7 @@ void xrPalettizeCovers(u32 *data, u32 N)
 	best_pair.reserve		(clusters.size());
 	u32						best_distance;
 	double					iterations = compute_formula(clusters.size(),256);
-	double					portion = iterations/100;
+	double					portion = iterations/10000;
 	double					accumulator = 0;
 	printf					("\t\tIteration : %6.2f%%",0.f);
 	for (int ii=0, nn = clusters.size(); clusters.size() > 256; ) {
@@ -246,8 +260,8 @@ void xrPalettizeCovers(u32 *data, u32 N)
 						best_pair.push_back(t);
 					}
 			}
-			if (!best_distance)
-				i = k;
+//			if (!best_distance)
+//				i = k;
 		}
 
 		// merging the pair
@@ -342,6 +356,8 @@ void xrPalettizeCovers(u32 *data, u32 N)
 	xr_free					(memory_block);
 }
 
+extern void vfNeuQuant(u32 *data, u32 N);
+
 int __cdecl _tmain(int argc, _TCHAR* argv[])
 {
 	if (argc < 2) {
@@ -370,8 +386,8 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 			if (a1.find(data1.data) == a1.end())
 				a1.insert(data1.data);
 			for (int j=0; j<4; ++j) {
-				diff0	+= _sqr((int)data.a[j] - (int)data0.a[j]);
-				diff1	+= _sqr((int)data.a[j] - (int)data1.a[j]);
+				diff0	+= _abs((int)data.a[j] - (int)data0.a[j]);
+				diff1	+= _abs((int)data.a[j] - (int)data1.a[j]);
 			}
 		}
 
@@ -392,7 +408,8 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	
 	printf				("Palette construction started\n");
 	u64					l_qwStartTime = CPU::GetCycleCount(), l_qwFinishTime;
-	xrPalettizeCovers	(image.pData,image.dwWidth*image.dwHeight);
+//	xrPalettizeCovers	(image.pData,image.dwWidth*image.dwHeight);
+	vfNeuQuant			(image.pData,image.dwWidth*image.dwHeight);
 	l_qwFinishTime		= CPU::GetCycleCount();
 	printf				("Palette construction finished\n");
 	printf				("Time : %f seconds\n",CPU::cycles2seconds*s64(l_qwFinishTime - l_qwStartTime));

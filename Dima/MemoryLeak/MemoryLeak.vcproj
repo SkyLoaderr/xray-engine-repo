@@ -132,6 +132,9 @@
 				RelativePath=".\FreeImage.h">
 			</File>
 			<File
+				RelativePath=".\il_ney_quant.cpp">
+			</File>
+			<File
 				RelativePath=".\Image.cpp">
 			</File>
 			<File
