@@ -110,8 +110,10 @@ void	CRenderTarget::phase_luminance()
 		pv->p.set	(float(_ts+eps),eps,			eps,1.f);	for (int t=0; t<8; t++)	pv->uv[t].set(b[t].x,a[t].y, a[t+8].y,b[t+8].x);	// xy/yx	- right+up
 		pv++;
 		RCache.Vertex.Unlock		(4,g_bloom_filter->vb_stride);
+		float	mgray				= ps_r2
 		RCache.set_Element			(s_luminance->E[2]	);
 		RCache.set_Geometry			(g_bloom_filter		);
+		RCache.set_c				("MiddleGray",)
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 

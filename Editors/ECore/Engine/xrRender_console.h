@@ -41,6 +41,7 @@ extern float		ps_r2_ssaHZBvsTEX;
 // R2-specific
 extern Flags32		ps_r2_ls_flags;				// r2-only
 extern float		ps_r2_df_parallaxh;			// r2-only
+extern float		ps_r2_tonemap_middlegray;	// r2-only
 extern float		ps_r2_ls_dynamic_range;		// r2-only
 extern float		ps_r2_ls_bloom_kernel_g;	// r2-only	// gauss
 extern float		ps_r2_ls_bloom_kernel_b;	// r2-only	// bilinear
