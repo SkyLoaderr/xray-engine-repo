@@ -383,7 +383,7 @@ BOOL CCF_Rigid::_RayTest( Collide::RayQuery& Q)
 	temp.transform_dir	(dD,Q.dir);
 
 	// 
-	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+	if (!bv_sphere.intersect(dS,dD))		return FALSE;
 
 	if (dwFrame!=Device.dwFrame)			BuildState();
 

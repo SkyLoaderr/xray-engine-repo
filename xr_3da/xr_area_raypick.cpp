@@ -93,12 +93,7 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 		{
 			Collide::rq_result* res = Q.r_begin(); 
 			C	= D3DCOLOR_XRGB(128,128,196);
-			if (res->range<R.range) {
-				R			= *res;
-//				R.O			= collidable;
-//				R.range		= res->range;
-//				R.element	= res->element;
-			}
+			if (res->range<R.range) R = *res;
 		}
 		if (bDebug) 
 		{
