@@ -227,9 +227,9 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 
 			if (Level().CurrentEntity() && Level().CurrentEntity()->ID() == PlayerID)
-				pMessageSounds[3].play_at_pos(NULL, Device.vCameraPosition, 0, 0);
+				pMessageSounds[3].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 			else
-				pMessageSounds[4].play_at_pos(NULL, Device.vCameraPosition, 0, 0);
+				pMessageSounds[4].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
 	case GMSG_ARTEFACT_DROPPED:
 		{
@@ -247,7 +247,7 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 				Color_Artefact);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 
-			pMessageSounds[0].play_at_pos(NULL, Device.vCameraPosition, 0, 0);
+			pMessageSounds[0].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
 	case GMSG_ARTEFACT_ONBASE:
 		{
@@ -265,16 +265,16 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 
 			if (Level().CurrentEntity() && Level().CurrentEntity()->ID() == PlayerID)
-				pMessageSounds[1].play_at_pos(NULL, Device.vCameraPosition, 0, 0);
+				pMessageSounds[1].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 			else
-				pMessageSounds[2].play_at_pos(NULL, Device.vCameraPosition, 0, 0);
+				pMessageSounds[2].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
 	case GMSG_ARTEFACT_SPAWNED:
 		{
 			sprintf(Text, "%sArtefact has been spawned. Bring it to your base to score.", 
 				Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
-			pMessageSounds[5].play_at_pos(NULL, Device.vCameraPosition, 0, 0);
+			pMessageSounds[5].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
 	case GMSG_ARTEFACT_DESTROYED:
 		{
