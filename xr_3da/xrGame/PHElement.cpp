@@ -1639,8 +1639,9 @@ void CPHElement::set_State(const SPHNetState& state)
 void CPHElement::cv2bone_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)
 {
 	xform.rotation(q);
-	xform.mulB(m_inverse_local_transform);
 	xform.c.set(pos);
+	xform.mulB(m_inverse_local_transform);
+
 }
 void CPHElement::cv2obj_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)
 {
