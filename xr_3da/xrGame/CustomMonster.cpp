@@ -6,12 +6,13 @@
 #include "..\xr_mac.h"
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
+#include "..\xr_hudfont.h"
+#include "..\fstaticrender.h"
 #include "ai_console.h"
 #include "CustomMonster.h"
 #include "xr_weapon_list.h"
 #include "customitem.h"
 #include "hudmanager.h"
-#include "..\xr_hudfont.h"
 
 const DWORD NET_Latency	= 100;
 
@@ -448,6 +449,12 @@ void CCustomMonster::Exec_Visibility	( float dt )
 void CCustomMonster::OnMoveVisible()
 {
 	inherited::OnMoveVisible	();
+
+	Fvector P;	clCenter(P);
+	TEST.SetPosition	(P);
+	TEST.SetRange		(4.f);
+	TEST.SetColor		(0,0,1.f);
+	::Render.Lights_Dynamic.Add	(&TEST);
 
 	// weapons
 	Weapons->OnRender			(false);
