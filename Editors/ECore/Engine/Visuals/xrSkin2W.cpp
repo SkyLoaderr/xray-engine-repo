@@ -23,6 +23,7 @@ struct vertBoned2W	// (1+3+3 + 1+3+3 + 2)*4 = 16*4 = 64 bytes
 };
 */
 
+#pragma optimize("a",on)
 void __stdcall xrSkin2W_x86(vertRender*		D,
 							vertBoned2W*	S,
 							u32				vCount,
