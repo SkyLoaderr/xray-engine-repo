@@ -90,8 +90,8 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
     if (m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim)){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
-//.		Device.Models.Render(m_Visual,parent,priority,strictB2F,1.f);
-
+//. 	Device.Models.Render(m_Visual,parent,priority,strictB2F,1.f);
+//*
 		RCache.set_xform_world	(parent);
 	    if (m_Flags.is(eoHOM)){
         	if ((1==priority)&&(false==strictB2F)){
@@ -116,7 +116,7 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
                 }
             }
         }
-
+//*/
     }
 }
 
@@ -279,11 +279,12 @@ void CEditableObject::DefferedLoadRP()
 	IReader R		(F.pointer(), F.size());
     m_Visual 		= Device.Models.Create(&R);
     //..
-*/    
+/*/
 
 	// создать заново shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
        (*s_it)->OnDeviceCreate();
+//*/
 	// создать LOD shader
 	AnsiString l_name = GetLODTextureName();
     AnsiString fname = l_name+AnsiString(".tga");
@@ -408,23 +409,24 @@ void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
 #include "Blender.h"
 IC BOOL BE      (BOOL A, BOOL B)
 {
-        bool a = !!A;
-        bool b = !!B;
-        return a==b;
+    bool a = !!A;
+    bool b = !!B;
+    return a==b;
 }
 bool CEditableObject::CheckShaderCompatible()
 {
+	bool bRes 			= true;
 	for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
     {
     	CBlender* 		B = Device.Shader._FindBlender((*s_it)->m_ShaderName.c_str()); 
         Shader_xrLC* 	C = Device.ShaderXRLC.Get((*s_it)->m_ShaderXRLCName.c_str());
         R_ASSERT(B&&C);
     	if (!BE(B->canBeLMAPped(),!C->flags.bLIGHT_Vertex)){ 
-        	ELog.DlgMsg	(mtError,"Error in object: '%s'.\nEngine shader '%s' non compatible with compiler shader '%s'",GetName(),(*s_it)->m_ShaderName.c_str(),(*s_it)->m_ShaderXRLCName.c_str());
-        	return false;
+        	ELog.Msg	(mtError,"Object '%s': engine shader '%s' non compatible with compiler shader '%s'",GetName(),(*s_it)->m_ShaderName.c_str(),(*s_it)->m_ShaderXRLCName.c_str());
+            bRes 		= false;
         }
     }
-    return true;
+    return bRes;
 }
 //---------------------------------------------------------------------------
 

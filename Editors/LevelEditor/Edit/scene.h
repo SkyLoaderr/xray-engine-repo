@@ -151,12 +151,12 @@ public:
     };
     ERR				m_CompilerErrors;
 protected:
-    void OnLoadAppendObject			(CCustomObject* O);
-    void OnLoadSelectionAppendObject(CCustomObject* O);
+    bool OnLoadAppendObject			(CCustomObject* O);
+    bool OnLoadSelectionAppendObject(CCustomObject* O);
 public:
     bool m_Modified;
 
-	typedef void (__closure *TAppendObject)(CCustomObject* object);
+	typedef bool (__closure *TAppendObject)(CCustomObject* object);
 
 	bool ReadObject					(IReader& F, CCustomObject*& O);
 	bool ReadObjects				(IReader& F, u32 chunk_id, TAppendObject on_append);

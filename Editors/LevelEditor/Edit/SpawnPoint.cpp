@@ -13,6 +13,7 @@
 #include "bottombar.h"
 #include "scene.h"
 #include "xrServer_Entities.h"
+#include "BodyInstance.h"
 
 #include "eshape.h"
 #include "sceneobject.h"
@@ -104,7 +105,6 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 
     // export cform (if needed)
     xrSE_CFormed* cform 		= dynamic_cast<xrSE_CFormed*>(m_Data);
-//   	if (cform) cform->shapes.push_back		(xrSE_CFormed::shape_def());
 // SHAPE
     if (cform&&!(owner->m_AttachedObject&&(owner->m_AttachedObject->ClassID==OBJCLASS_SHAPE))){
 		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attached shape.",owner->Name);
@@ -115,16 +115,6 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 		shape->ApplyScale		();
     	cform->shapes 			= shape->GetShapes();
     }
-// VISUAL    
-    xrSE_Visualed* visual		= dynamic_cast<xrSE_Visualed*>(m_Data);
-    if (visual&&!(owner->m_AttachedObject&&(owner->m_AttachedObject->ClassID==OBJCLASS_SCENEOBJECT))){
-		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attached SceneObject.",owner->Name);
-    	return false;
-    }
-    if (visual){
-	    CSceneObject* scene_obj	= dynamic_cast<CSceneObject*>(owner->m_AttachedObject); R_ASSERT(scene_obj);
-    	strcpy(visual->visual_name,scene_obj->GetRefName());
-    }
     // end
 
     NET_Packet					Packet;
@@ -134,14 +124,21 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     F.spawn.stream.w			(Packet.B.data,Packet.B.count);
     F.spawn.stream.close_chunk	();
 
-//    if (cform){
-//    	cform->shapes 			= shape->GetShapes();
-//	}
     return true;
 }
 void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	m_Data->FillProp	(pref,items);
+}
+void CSpawnPoint::SSpawnData::Render(const Fmatrix& parent,int priority, bool strictB2F)
+{
+    xrSE_Visualed* V			= dynamic_cast<xrSE_Visualed*>(m_Data);
+	if (V&&V->visual)			Device.Models.Render(V->visual,parent,priority,strictB2F,1.f);
+}
+void CSpawnPoint::SSpawnData::OnFrame()
+{
+    xrSE_Visualed* V			= dynamic_cast<xrSE_Visualed*>(m_Data);
+	if (V&&V->visual&&PKinematics(V->visual)) PKinematics(V->visual)->Calculate();
 }
 //------------------------------------------------------------------------------
 CSpawnPoint::CSpawnPoint(LPVOID data, LPCSTR name):CCustomObject(data,name)
@@ -205,9 +202,9 @@ bool CSpawnPoint::AttachObject(CCustomObject* obj)
         case OBJCLASS_SHAPE:
 	    	bAllowed = !!dynamic_cast<xrSE_CFormed*>(m_SpawnData.m_Data);
         break;
-        case OBJCLASS_SCENEOBJECT:
-	    	bAllowed = !!dynamic_cast<xrSE_Visualed*>(m_SpawnData.m_Data);
-        break;
+//        case OBJCLASS_SCENEOBJECT:
+//	    	bAllowed = !!dynamic_cast<xrSE_Visualed*>(m_SpawnData.m_Data);
+//        break;
         }
     }
     // реальный атач
@@ -256,14 +253,16 @@ bool CSpawnPoint::GetBox( Fbox& box ){
 void CSpawnPoint::OnFrame()
 {
 	inherited::OnFrame();
-    if (m_AttachedObject) m_AttachedObject->OnFrame();
+    if (m_AttachedObject) 		m_AttachedObject->OnFrame	();
+	if (m_SpawnData.Valid())    m_SpawnData.OnFrame			();
 }
 
 void CSpawnPoint::Render( int priority, bool strictB2F )
 {
 	inherited::Render(priority, strictB2F);
     // render attached object
-    if (m_AttachedObject) m_AttachedObject->Render(priority, strictB2F);
+    if (m_AttachedObject) 		m_AttachedObject->Render(priority, strictB2F);
+	if (m_SpawnData.Valid())    m_SpawnData.Render(_Transform(),priority, strictB2F);
     // render spawn point
     if (1==priority){
 		Fbox bb; GetBox(bb);
@@ -345,10 +344,13 @@ bool CSpawnPoint::RayPick(float& distance, const Fvector& start, const Fvector& 
 	return bPick;
 }
 //----------------------------------------------------
-void CSpawnPoint::OnAppendObject(CCustomObject* object)
+bool CSpawnPoint::OnAppendObject(CCustomObject* object)
 {
 	R_ASSERT(!m_AttachedObject);
+    if (object->ClassID!=OBJCLASS_SHAPE) return false;
+    // all right
     m_AttachedObject = object;
+    return true;
 }
 
 bool CSpawnPoint::Load(IReader& F){

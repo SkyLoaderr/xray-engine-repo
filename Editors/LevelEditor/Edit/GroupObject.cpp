@@ -62,16 +62,17 @@ void CGroupObject::OnFrame()
     	(*it)->OnFrame();
 }
 
-void CGroupObject::AppendObject(CCustomObject* object)
+bool CGroupObject::AppendObject(CCustomObject* object)
 {
-	if (!IsGroupClassID(object->ClassID)) return;
+	if (!IsGroupClassID(object->ClassID)) return false;
     if (object->GetOwner()){
         if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Object '%s' already in group '%s'. Change group?",object->Name,object->GetOwner()->Name))
-        	return;
+        	return false;
 	    object->OnDetach();
     }
 	object->OnAttach		(this);
 	m_Objects.push_back		(object);
+    return true;
 }
 void CGroupObject::UpdateBBoxAndPivot(bool bInitFromFirstObject)
 {

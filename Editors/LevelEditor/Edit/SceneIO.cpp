@@ -264,7 +264,7 @@ bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append)
         IReader* O   = OBJ->open_chunk(0);
         for (int count=1; O; count++) {
             CCustomObject* obj=0;
-            if (ReadObject(*O, obj)) 	on_append(obj);
+            if (ReadObject(*O, obj)){ 	if (!on_append(obj)) xr_delete(obj);}
             else						bRes = false;
             O->close();
             O = OBJ->open_chunk(count);
@@ -275,10 +275,11 @@ bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append)
 }
 //----------------------------------------------------
 
-void EScene::OnLoadAppendObject(CCustomObject* O)
+bool EScene::OnLoadAppendObject(CCustomObject* O)
 {
 	AddObject		(O,false);
 	UI.ProgressInc	();
+    return true;
 }
 //----------------------------------------------------
 
@@ -402,13 +403,14 @@ void EScene::SaveSelection( int classfilter, char *filename ){
 }
 
 //----------------------------------------------------
-void EScene::OnLoadSelectionAppendObject(CCustomObject* obj)
+bool EScene::OnLoadSelectionAppendObject(CCustomObject* obj)
 {
     string256 buf;
     GenObjectName	(obj->ClassID,buf,obj->Name);
     obj->Name		= buf;
     AddObject		(obj, false);
     obj->Select		(true);
+    return true;
 }
 //----------------------------------------------------
 

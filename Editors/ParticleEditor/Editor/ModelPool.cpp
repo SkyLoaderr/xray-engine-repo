@@ -58,21 +58,22 @@ IVisual*	CModelPool::Instance_Duplicate	(IVisual* V)
 
 IVisual*	CModelPool::Instance_Load		(const char* N)
 {
-	IVisual	*V;
-	string256		fn;
-	string256		name;
+	IVisual*			V;
+	string256			fn;
+	string256			name;
 
 	// Add default ext if no ext at all
 	if (0==strext(N))	strconcat	(name,N,".ogf");
 	else				strcpy		(name,N);
 
+    FS.update_path		(fn,_game_meshes_,name);
+    
 	// Load data from MESHES or LEVEL
-	if (!FS.exist(N)){
-		Msg("Can't find model file '%s'.",name);
-		THROW;
-	} else {
-		strcpy			(fn,N);
+	if (!FS.exist(fn)){
+		ELog.DlgMsg		(mtError,"Can't find model file '%s'.",fn);
+		return 			0;
 	}
+	
 
 	// Actual loading
 	IReader*			data	= FS.r_open(fn);

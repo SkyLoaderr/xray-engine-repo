@@ -8,7 +8,7 @@
 class CGroupObject: public CCustomObject{
 	ObjectList      m_Objects;
     typedef CCustomObject inherited;
-    void			AppendObject	(CCustomObject* object);
+    bool			AppendObject	(CCustomObject* object);
     void			RemoveObject	(CCustomObject* object);
     Fbox			m_BBox;
 

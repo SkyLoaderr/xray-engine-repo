@@ -566,7 +566,7 @@ bool ESceneAIMapTools::GenerateMap()
 	if (!m_SnapObjects.empty()){
         if (!m_Emitters.empty()){
             // clear
-            if (!m_Nodes.empty()&&(mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Remove existing nodes?")))
+            if (!m_Nodes.empty()&&(mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Leave existing nodes?")))
 	            Clear			(true);
                 
             // building

@@ -748,12 +748,21 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
     if (bTestShaderCompatible){
     	bool bRes = true;
         ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
+		DEFINE_SET(CEditableObject*,EOSet,EOSetIt);
+        EOSet objects;
         for(ObjectIt it=lst.begin();it!=lst.end();it++){
         	CSceneObject* S = (CSceneObject*)(*it);
         	if (S->IsStatic()||S->IsMUStatic()){
 	            CEditableObject* O = ((CSceneObject*)(*it))->GetReference(); R_ASSERT(O);
-    	        if (!(bRes = O->CheckShaderCompatible())) return false;
+                if (objects.find(O)==objects.end()){
+	    	        if (!O->CheckShaderCompatible()) bRes = false;
+                    objects.insert(O);
+                }
             }
+        }
+		if (!bRes){ 
+        	ELog.DlgMsg	(mtError,"ERROR: Scene has non compatible shaders. See log.");
+        	return false;
         }
     }
     

@@ -151,11 +151,18 @@ void ESceneAIMapTools::DenumerateNodes()
 {
 	u32 cnt=m_Nodes.size();
 	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
-    	R_ASSERT2	((((u32)(*it)->n1<cnt)||((u32)(*it)->n1==InvalidNode))&&
+    	if	(!((((u32)(*it)->n1<cnt)||((u32)(*it)->n1==InvalidNode))&&
         			 (((u32)(*it)->n2<cnt)||((u32)(*it)->n2==InvalidNode))&&
                      (((u32)(*it)->n3<cnt)||((u32)(*it)->n3==InvalidNode))&&
-                     (((u32)(*it)->n4<cnt)||((u32)(*it)->n4==InvalidNode))
-                     ,"AINode: Wrong link found.");
+                     (((u32)(*it)->n4<cnt)||((u32)(*it)->n4==InvalidNode)))){
+                     ELog.Msg(mtError,"Node: has wrong link [%3.2f, %3.2f, %3.2f], {%d,%d,%d,%d}",VPUSH((*it)->Pos),(*it)->n1,(*it)->n2,(*it)->n3,(*it)->n4);
+                     (*it)->n1 = 0;
+                     (*it)->n2 = 0;
+                     (*it)->n3 = 0;
+                     (*it)->n4 = 0;
+                     continue;
+                     }
+//                     ,"AINode: Wrong link found.");
     	(*it)->n1	= ((u32)(*it)->n1==InvalidNode)?0:m_Nodes[(u32)(*it)->n1];
     	(*it)->n2	= ((u32)(*it)->n2==InvalidNode)?0:m_Nodes[(u32)(*it)->n2];
     	(*it)->n3	= ((u32)(*it)->n3==InvalidNode)?0:m_Nodes[(u32)(*it)->n3];
@@ -320,10 +327,9 @@ void ESceneAIMapTools::RemoveNode(AINodeIt it)
     // unregister node from hash
 	AINodeVec* V = HashMap(node->Pos); R_ASSERT2(V,"AINode position out of bounds.");
 	for (AINodeIt I=V->begin(); I!=V->end(); I++)
-    	if (node==*I){V->erase(I); return;}
-    // remove node from list
-    m_Nodes.erase	(it);
+    	if (node==*I) {V->erase(I); break;}
     // delete node & erase from list
+    m_Nodes.erase	(it);
     xr_delete		(node);
 }
 

@@ -24,6 +24,7 @@
 #include "sceneproperties.h"
 #include "builder.h"
 #include "SoundManager.h"
+#include "NumericVector.h"
 
 bool TUI::CommandExt(int _Command, int p1, int p2)
 {
@@ -482,6 +483,11 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     case COMMAND_MUTE_SOUND:
     	SndLib.MuteSounds(p1);
     	break;
+    case COMMAND_MOVE_CAMERA_TO:{
+    	Fvector pos=Device.m_Camera.GetPosition();
+		if (NumericVectorRun("Move to",&pos,3))
+        	Device.m_Camera.Set(Device.m_Camera.GetHPB(),pos);
+    	}break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -507,6 +513,7 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
             if (Key==VK_F5)    			COMMAND0(COMMAND_BUILD)                		
             else if (Key==VK_F7)   		COMMAND0(COMMAND_OPTIONS)                      
             else if (Key=='A')    		COMMAND0(COMMAND_SELECT_ALL)                   
+            else if (Key=='T')    		COMMAND0(COMMAND_MOVE_CAMERA_TO)                   
             else if (Key=='I')    		COMMAND0(COMMAND_INVERT_SELECTION_ALL)         
             else if (Key=='1') 	 		COMMAND1(COMMAND_CHANGE_TARGET, etGroup)
             else if (Key=='2')			COMMAND1(COMMAND_CHANGE_TARGET, etPS)          

@@ -38,6 +38,9 @@ public:
 		bool 		ExportGame(SExportStreams& F, CSpawnPoint* owner);
 
 		void		FillProp(LPCSTR pref, PropItemVec& values);
+
+		void    	Render	(const Fmatrix& parent,int priority, bool strictB2F);
+		void    	OnFrame	();
 	};
 
 	SSpawnData    	m_SpawnData;
@@ -50,7 +53,7 @@ public:
     static Shader* 	CreateIcon(LPCSTR name);
     static Shader* 	GetIcon(LPCSTR name);
 
-    void 			OnAppendObject	(CCustomObject* object);
+    bool 			OnAppendObject	(CCustomObject* object);
 protected:
     virtual void 	SetPosition		(const Fvector& pos);
     virtual void 	SetRotation		(const Fvector& rot);
