@@ -9112,12 +9112,6 @@
 					RelativePath=".\ui\UIBuyWeaponWnd.h">
 				</File>
 				<File
-					RelativePath=".\ui\UIChatWnd.cpp">
-				</File>
-				<File
-					RelativePath=".\ui\UIChatWnd.h">
-				</File>
-				<File
 					RelativePath=".\ui\UIDragDropItemMP.cpp">
 				</File>
 				<File
@@ -9151,6 +9145,22 @@
 					</File>
 					<File
 						RelativePath=".\ui\UISkinSelector.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Chat"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIChatLog.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIChatLog.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIChatWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIChatWnd.h">
 					</File>
 				</Filter>
 			</Filter>

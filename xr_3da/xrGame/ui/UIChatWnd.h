@@ -6,13 +6,23 @@
 //  Simple chat window for multiplayer purposes
 //=============================================================================
 
+#ifndef UI_CHAT_WND_H_
+#define UI_CHAT_WND_H_
+
+#pragma once
+
+//////////////////////////////////////////////////////////////////////////
+
 #include "UIDialogWnd.h"
 #include "UIEditBox.h"
 
 //////////////////////////////////////////////////////////////////////////
 
-class CUIListWnd;
+class CUIChatLog;
 class game_cl_GameState;
+
+extern const char * const	CHAT_MP_WND_XML;
+extern const int			fadeDelay;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,7 +31,7 @@ class CUIChatWnd: public CUIDialogWnd
 	typedef CUIDialogWnd inherited;
 
 public:
-						CUIChatWnd			(CUIListWnd *pList);
+						CUIChatWnd			(CUIChatLog *pList);
 	virtual				~CUIChatWnd			();
 	virtual void		Show				();
 	virtual void		Hide				();
@@ -29,14 +39,17 @@ public:
 	void				Init				();
 	void				Say					(const ref_str &phrase);
 	void				SetEditBoxPrefix	(const ref_str &prefix);
-	void				SetReplicaAuthor	(const ref_str &authorName);
 	void				SetOwner			(game_cl_GameState *pO) { pOwner = pO; }
 
 	CUIEditBox			UIEditBox;
 
 protected:
-	CUIListWnd			*pUILogList;
+	CUIChatLog			*pUILogList;
 	CUIStatic			UIPrefix;
 	ref_str				m_AuthorName;
 	game_cl_GameState	*pOwner;
 };
+
+//////////////////////////////////////////////////////////////////////////
+
+#endif

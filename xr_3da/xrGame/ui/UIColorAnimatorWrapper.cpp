@@ -19,7 +19,8 @@
 CUIColorAnimatorWrapper::CUIColorAnimatorWrapper()
 	:	colorAnimation		(NULL),
 		animationTime		(0.0f),
-		color				(NULL)
+		color				(NULL),
+		isDone				(false)
 {
 	prevGlobalTime	= Device.fTimeGlobal;
 }
@@ -29,10 +30,23 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper()
 CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const ref_str &animationName, u32 *colorToModify)
 	:	colorAnimation		(LALib.FindItem(*animationName)),
 		animationTime		(0.0f),
-		color				(colorToModify)
+		color				(colorToModify),
+		isDone				(false)
 {
 	VERIFY(colorAnimation);
 	VERIFY(color);
+	prevGlobalTime	= Device.fTimeGlobal;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const ref_str &animationName)
+	:	colorAnimation		(LALib.FindItem(*animationName)),
+		animationTime		(0.0f),
+		color				(NULL),
+		isDone				(false)
+{
+	VERIFY(colorAnimation);
 	prevGlobalTime	= Device.fTimeGlobal;
 }
 
@@ -62,7 +76,7 @@ void CUIColorAnimatorWrapper::SetColorToModify(u32 *colorToModify)
 
 void CUIColorAnimatorWrapper::Update()
 {
-	if (colorAnimation)
+	if (colorAnimation && !isDone)
 	{
 		if (!isCyclic)
 		{
@@ -70,25 +84,28 @@ void CUIColorAnimatorWrapper::Update()
 			{
 				currColor		= colorAnimation->CalculateBGR(animationTime, currFrame);
 //				Msg("frame: %i", dummy);
-				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), 255/*color_get_A(currColor)*/);
+				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
 				// обновим время
 				animationTime	+= Device.fTimeGlobal - prevGlobalTime;
-				Msg("%i", currFrame);
-
 			}
-			// В любом случае (при любом ФПС) последним кадром должен быть последний кадр анимации
-			else if (currFrame != colorAnimation->iFrameCount - 1)
+			else
 			{
-				currColor		= colorAnimation->CalculateBGR(colorAnimation->iFrameCount / colorAnimation->fFPS, currFrame);
-				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), 255/*color_get_A(currColor)*/);
+				// В любом случае (при любом ФПС) последним кадром должен быть последний кадр анимации
+				if (currFrame != colorAnimation->iFrameCount - 1)
+				{
+					currColor	= colorAnimation->CalculateBGR(colorAnimation->iFrameCount / colorAnimation->fFPS, currFrame);
+					currColor	= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
+				}
+				// Индицируем конец анимации
+				isDone = true;
 			}
 
-			prevGlobalTime		= Device.fTimeGlobal;
+			prevGlobalTime = Device.fTimeGlobal;
 		}
 		else
 		{
 			currColor	= colorAnimation->CalculateBGR(Device.fTimeGlobal, currFrame);
-			currColor	= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), 255/*color_get_A(currColor)*/);
+			currColor	= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
 		}
 
 		if (color)
@@ -100,8 +117,20 @@ void CUIColorAnimatorWrapper::Update()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIColorAnimatorWrapper::Reset() const
+void CUIColorAnimatorWrapper::Reset()
 {
 	prevGlobalTime	= Device.fTimeGlobal;
 	animationTime	= 0.0f;
+	isDone			= false;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int CUIColorAnimatorWrapper::TotalFrames() const
+{
+	if (colorAnimation)
+	{
+		return colorAnimation->iFrameCount;
+	}
+	return 0;
 }

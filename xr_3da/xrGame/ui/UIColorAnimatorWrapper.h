@@ -31,7 +31,8 @@ public:
 						CUIColorAnimatorWrapper	();
 	// colorToModify - указатель на цвет который меняем
 	// animationName - имя цветовой анимации
-	explicit			CUIColorAnimatorWrapper	(const ref_str &animationName, u32 *colorToModify);
+	explicit			CUIColorAnimatorWrapper	(const ref_str &animationName);
+						CUIColorAnimatorWrapper	(const ref_str &animationName, u32 *colorToModify);
 
 	// Установить новую цветовую анимацию
 	void				SetColorAnimation		(const ref_str &animationName);
@@ -39,16 +40,19 @@ public:
 	// Функция которую необходимо обязательно поместить в Update диалога, для обновления анимации
 	virtual void		Update					();
 	void				Cyclic					(bool cyclic)	{ isCyclic = cyclic; }
-	void				Reset					() const;
+	void				Reset					();
 	u32					GetColor				() const		{ return currColor; }
+	int					LastFrame				() const		{ return currFrame; }
+	int					TotalFrames				() const;
+	bool				Done					() const		{ return isDone; }
 
 private:
 	// Собственно анимация
 	CLAItem				*colorAnimation;
 	// Предыдущее запоменное значение глобального времени игры
-	mutable float		prevGlobalTime;
+	float				prevGlobalTime;
 	// Время прошедшее с начала анимации
-	mutable float		animationTime;
+	float				animationTime;
 	// Циклическое бесконечное проигрывание
 	bool				isCyclic;
 	// Цвет который мы можем изменять переданный нам извне
@@ -57,6 +61,8 @@ private:
 	u32					currColor;
 	// Текущий кадр анимации
 	int					currFrame;
+	// Анимация закончилась?
+	bool				isDone;
 };
 
 #endif

@@ -210,7 +210,7 @@ protected:
 	// Отображение подсказок при наведении прицела на объект
 	void				RenderQuickInfos();
 	// Просчитать анимационные параметры фейда для айтемов листа
-	void				FadeUpdate(CUIListWnd *pWnd, int fadeDuration);
+	static void			FadeUpdate(CUIListWnd *pWnd, int fadeDuration);
 
 	// для лога сообщений на экране устанавливаем время постепенного исчезновения надписи
 	int					m_iPdaMessagesFade_mSec;

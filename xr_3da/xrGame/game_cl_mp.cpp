@@ -7,24 +7,27 @@
 #include "level.h"
 #include "hudmanager.h"
 #include "ui/UIChatWnd.h"
-
+#include "ui/UIChatLog.h"
 
 game_cl_mp::game_cl_mp()
 {
 	pChatWnd		= NULL;
+	pChatLog		= NULL;
 };
 
 game_cl_mp::~game_cl_mp()
 {
 	xr_delete(pChatWnd);
+	xr_delete(pChatLog);
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
 {
-	pChatWnd		= xr_new<CUIChatWnd>(&HUD().GetUI()->UIMainIngameWnd.UIMPChatLog);
-	pChatWnd->Init				();
-	pChatWnd->SetOwner			(this);
-	pChatWnd->SetReplicaAuthor	(Level().CurrentEntity()->cName());
+	pChatLog = xr_new<CUIChatLog>();
+	pChatLog->Init();
+	pChatWnd = xr_new<CUIChatWnd>(pChatLog);
+	pChatWnd->Init();
+	pChatWnd->SetOwner(this);
 	return NULL;
 };
 
@@ -202,4 +205,20 @@ void game_cl_mp::ChatSayTeam(const ref_str &phrase)
 {
 	int x=0;
 	x=x;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void game_cl_mp::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update(dt);
+	static offFlag = false;
+	if (!offFlag)
+	{
+		if (HUD().GetUI()->UIGame())
+		{
+			HUD().GetUI()->UIGame()->AddDialogToRender(pChatLog);
+			offFlag = true;
+		}
+	}
 }

@@ -84,8 +84,9 @@ public:
 	int GetTextX() {return m_iTextOffsetX;}
 	int GetTextY() {return m_iTextOffsetY;}
 
-	void SetTextColor(u32 color) {m_dwFontColor = color;} 
-	u32 GetTextColor() {return m_dwFontColor;}
+	void SetTextColor(u32 color)	{ m_dwFontColor = color; } 
+	u32 GetTextColor() const		{ return m_dwFontColor; }
+	u32 &GetTextColorRef()			{ return m_dwFontColor; }
 
 	void SetStretchTexture(bool stretch_texture) {m_bStretchTexture = stretch_texture;}
 	bool GetStretchTexture() {return m_bStretchTexture;}

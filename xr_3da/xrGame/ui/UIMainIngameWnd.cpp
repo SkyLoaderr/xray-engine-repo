@@ -266,11 +266,6 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIBatteryBar);
 	ShowBattery(false);
 	SetBatteryCharge(1.0f);
-
-	// Multiplayer chat log
-	AttachChild(&UIMPChatLog);
-	xml_init.InitListWnd(uiXml, "chat_log_list", 0, &UIMPChatLog);
-	m_iChatMessagesFade_mSec = uiXml.ReadAttribInt("chat_log_list", 0, "fade", 0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -543,7 +538,6 @@ void CUIMainIngameWnd::Update()
 	// Fade animations
 	FadeUpdate(&UIPdaMsgListWnd, m_iPdaMessagesFade_mSec);
 	FadeUpdate(&UIInfoMessages, m_iInfoMessagesFade_mSec);
-	FadeUpdate(&UIMPChatLog, m_iChatMessagesFade_mSec);
 
 	UpdateFlashingIcons();
 	UIContactsAnimation.Update();
