@@ -72,18 +72,18 @@ function main()
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			printf("see = false!")
 			flush()
+		break
 		end
 	wait()
-	break
 	end
 
 	while true do
 		if stalker1:see(actor) or stalker2:see(actor) then
 			printf("see = true!")
 			flush()
+		break
 		end
 	wait()
-	break
 	end
 
 
