@@ -208,6 +208,8 @@ void CSpawnPoint::Construct(LPVOID data)
     	    }else{
         		SetValid(false);
 	        }
+        }else{
+        	m_Type			= ptSpawnPoint;
         }
     }else{
 		SetValid(false);
@@ -302,14 +304,32 @@ bool CSpawnPoint::GetBox( Fbox& box )
         box.set		(PPosition, PPosition);
         box.grow	(Selected()?m_EM_Radius:ENVMOD_SIZE);
     break;
-    default:
-        box.set		( PPosition, PPosition );
-        box.min.x 	-= RPOINT_SIZE;
-        box.min.y 	-= 0;
-        box.min.z 	-= RPOINT_SIZE;
-        box.max.x 	+= RPOINT_SIZE;
-        box.max.y 	+= RPOINT_SIZE*2.f;
-        box.max.z 	+= RPOINT_SIZE;
+    case ptSpawnPoint:
+    	if (m_SpawnData.Valid()){
+		    CSE_Visual* V		= dynamic_cast<CSE_Visual*>(m_SpawnData.m_Data);
+			if (V&&V->visual){
+            	box.set		(V->visual->vis.box);
+                box.xform	(FTransform);
+            }else{
+                box.set		( PPosition, PPosition );
+                box.min.x 	-= RPOINT_SIZE;
+                box.min.y 	-= 0;
+                box.min.z 	-= RPOINT_SIZE;
+                box.max.x 	+= RPOINT_SIZE;
+                box.max.y 	+= RPOINT_SIZE*2.f;
+                box.max.z 	+= RPOINT_SIZE;
+            }
+        }else{
+            box.set		( PPosition, PPosition );
+            box.min.x 	-= RPOINT_SIZE;
+            box.min.y 	-= 0;
+            box.min.z 	-= RPOINT_SIZE;
+            box.max.x 	+= RPOINT_SIZE;
+            box.max.y 	+= RPOINT_SIZE*2.f;
+            box.max.z 	+= RPOINT_SIZE;
+        }
+    break;
+    default: NODEFAULT;
     }
 	return true;
 }
@@ -404,7 +424,7 @@ bool CSpawnPoint::RayPick(float& distance, const Fvector& start, const Fvector& 
     float 		radius;
     GetBox		(bb);
     bb.getsphere(pos,radius);
-    
+
 	Fvector ray2;
 	ray2.sub	(pos, start);
 
@@ -412,9 +432,13 @@ bool CSpawnPoint::RayPick(float& distance, const Fvector& start, const Fvector& 
     if( d > 0  ){
         float d2 = ray2.magnitude();
         if( ((d2*d2-d*d) < (radius*radius)) && (d>radius) ){
-        	if (d<distance){
-	            distance = d;
-    	        return true;
+            Fvector pt;
+            if (Fbox::rpOriginOutside==bb.Pick2(start,direction,pt)){
+            	d	= start.distance_to(pt);
+            	if (d<distance){
+                    distance	= d;
+                    bPick 		= true;
+	            }
             }
         }
     }
@@ -449,6 +473,7 @@ bool CSpawnPoint::Load(IReader& F){
             return false;
         }
         SetValid	(true);
+        m_Type			= ptSpawnPoint;
     }else{
 	    if (F.find_chunk(SPAWNPOINT_CHUNK_TYPE))     m_Type 		= (EPointType)F.r_u32();
         if (m_Type>=ptMaxType){
