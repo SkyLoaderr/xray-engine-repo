@@ -123,7 +123,7 @@ void CCoverEvaluatorAngle::initialize		(const Fvector &start_position)
 void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point)
 {
 	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
-	float					my_distance		= m_start_position.distance_to(cover_point->position());
+//	float					my_distance		= m_start_position.distance_to(cover_point->position());
 
 	if (enemy_distance <= m_min_distance)
 		return;
