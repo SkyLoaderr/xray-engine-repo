@@ -558,6 +558,14 @@ SOURCE=.\hash2D.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Lightmap.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Lightmap.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrDeflectoL_Direct.cpp
 # End Source File
 # Begin Source File
