@@ -42,6 +42,7 @@ protected:
 	ref_str							m_out_restrictions;
 	ref_str							m_in_restrictions;
 	xr_vector<u32>					m_border;
+	xr_vector<u32>					m_temp;
 	CSpaceRestrictionManager		*m_space_restriction_manager;
 	CBaseRestrictionPtr				m_out_space_restriction;
 	CBaseRestrictionPtr				m_in_space_restriction;
