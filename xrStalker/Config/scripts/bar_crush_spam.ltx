@@ -2,7 +2,7 @@
 active = sr_idle@freedom
 
 [sr_idle@freedom]
-on_timer = 20000| sr_idle@ecolog %=bar_freedom_spam%
+on_timer = 20000| {+bar_freedom_attack_ecolog} nil, {+bar_get_research_dead} nil, {+bar_resque_research_dead} nil, sr_idle@ecolog %=bar_freedom_spam%
 
 [sr_idle@ecolog]
-on_timer = 3000| sr_idle@freedom %=bar_ecolog_spam%
+on_timer = 3000| {+bar_freedom_attack_ecolog} nil, {+bar_get_research_dead} nil, {+bar_resque_research_dead} nil, sr_idle@freedom %=bar_ecolog_spam%

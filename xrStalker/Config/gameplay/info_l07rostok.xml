@@ -170,8 +170,11 @@
 	<info_portion id="bar_get_research_done"></info_portion>
 	<info_portion id="bar_get_research_fail"></info_portion>		
     
+    <info_portion id="bar_get_research_dead"></info_portion>
+    
     <!-- FREEDOM ATTACK ECOLOG -->
     <info_portion id="bar_freedom_attack_ecolog"></info_portion>
+    <info_portion id="bar_resque_research_corruped"></info_portion>
     
     <!-- BAR BARMEN JOB -->
         <!-- FIND DOCUMENTS -->

@@ -150,6 +150,8 @@ function proceed(actor)
 		set_task_state(task.completed, "bar_crazy_veterans_quest", 1)
 	end 
 
+
+
 	if	actor:has_info("bar_resque_research_start") and 
  		actor:dont_has_info("bar_resque_research_gain") and
  		actor:dont_has_info("bar_resque_research_fail") and
@@ -157,6 +159,13 @@ function proceed(actor)
 	then		
 		actor:give_info_portion("bar_resque_research_gain")
 		set_task_state(task.completed, "bar_resque_information", 1)
+	end 
+	if	actor:has_info("bar_resque_research_start") and 
+ 		actor:dont_has_info("bar_resque_research_fail") and
+ 		actor:has_info("bar_resque_research_corruped")
+	then		
+		actor:give_info_portion("bar_resque_research_fail")
+		set_task_state(task.fail, "bar_resque_information", 0)
 	end 
 
 	if	actor:has_info("bar_get_research_start") and 
@@ -167,6 +176,16 @@ function proceed(actor)
 		actor:give_info_portion("bar_get_research_gain")
 		set_task_state(task.completed, "bar_get_information", 1)
 	end 
+	if	actor:has_info("bar_get_research_start") and 
+ 		actor:dont_has_info("bar_get_research_fail") and
+ 		(actor:has_info("bar_resque_research_corruped") or
+ 		 actor:has_info("bar_get_research_dead"))
+	then		
+		actor:give_info_portion("bar_get_research_fail")
+		set_task_state(task.fail, "bar_get_information", 0)
+	end 
+
+
 
 	if	actor:has_info("bar_bar_drunk_dolg_quest_start") and 
  		actor:dont_has_info("bar_bar_drunk_dolg_quest_finish") and
@@ -566,9 +585,14 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_get_research_done" then
 		remove_location(509, "bar_freedom_volkodav_location")
 
-		
+	elseif info_id == "bar_freedom_attack_ecolog" then
+		news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom")
+		news_manager.send_tip(db.actor, "bar_ecolog_attack", 3, "ecolog")
+		db.actor:give_info_portion("bar_resque_research_corruped")
+			
 	elseif info_id == "bar_get_research_fail" then
 		remove_location(509, "bar_freedom_volkodav_location")
+		remove_location(503, "bar_ecolog_crush_location")
 
 	elseif info_id == "bar_dolg_veteran_start" then
 		add_location(501, "bar_dolg_arhive_document_location")

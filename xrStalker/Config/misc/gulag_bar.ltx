@@ -454,6 +454,7 @@ on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_sniper_1
 [camper1@bar_freedom_attack_sniper_1]
 path_walk = acamper_1_walk
 path_look = acamper_1_look
+radius = 5
 no_retreat = true
 
 [logic@bar_freedom_attack_sniper_2]
@@ -467,6 +468,7 @@ on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_sniper_2
 [camper1@bar_freedom_attack_sniper_2]
 path_walk = acamper_2_walk
 path_look = acamper_2_look
+radius = 5
 no_retreat = true
 
 [logic@bar_freedom_attack_sniper_3]
@@ -480,6 +482,7 @@ on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_sniper_3
 [camper1@bar_freedom_attack_sniper_3]
 path_walk = acamper_3_walk
 path_look = acamper_3_look
+radius = 5
 no_retreat = true
 
 [logic@bar_freedom_attack_sniper_4]
@@ -493,6 +496,7 @@ on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_sniper_4
 [camper1@bar_freedom_attack_sniper_4]
 path_walk = acamper_4_walk
 path_look = acamper_4_look
+radius = 5
 no_retreat = true
 
 
@@ -507,6 +511,7 @@ on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_guard_1
 [camper1@bar_freedom_attack_guard_1]
 path_walk = aguard_1_walk
 path_look = aguard_1_look
+radius = 5
 no_retreat = true
 
 [logic@bar_freedom_attack_guard_2]
@@ -520,10 +525,12 @@ on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_guard_2
 [camper1@bar_freedom_attack_guard_2]
 path_walk = aguard_2_walk
 path_look = aguard_2_look
+radius = 5
 no_retreat = true
 
 [logic@bar_freedom_attack_commander]
 active = {-bar_freedom_attack_ecolog} camper@bar_freedom_attack_commander, camper1@bar_freedom_attack_commander
+on_death = death@bar_freedom_attack_commander
 
 [camper@bar_freedom_attack_commander]
 path_walk = commandir_walk
@@ -534,8 +541,11 @@ on_info = {+bar_freedom_attack_ecolog} camper1@bar_freedom_attack_commander
 [camper1@bar_freedom_attack_commander]
 path_walk = acommandir_walk
 path_look = acommandir_look
+radius = 5
 no_retreat = true
 
+[death@bar_freedom_attack_commander]
+on_info = %+bar_get_research_dead%
 
 
 [logic@bar_freedom_attack_camper_1_relax]
@@ -544,7 +554,8 @@ active = camper@bar_freedom_attack_camper_1_relax
 [camper@bar_freedom_attack_camper_1_relax]
 path_walk = relax_1_walk
 path_look = relax_1_look
-
+radius = 5
+no_retreat = true
 
 [logic@bar_freedom_attack_camper_2_relax]
 active = camper@bar_freedom_attack_camper_2_relax
@@ -552,7 +563,8 @@ active = camper@bar_freedom_attack_camper_2_relax
 [camper@bar_freedom_attack_camper_2_relax]
 path_walk = relax_2_walk
 path_look = relax_2_look
-
+radius = 5
+no_retreat = true
 
 [logic@bar_freedom_attack_camper_3_relax]
 active = camper@bar_freedom_attack_camper_3_relax
@@ -560,7 +572,8 @@ active = camper@bar_freedom_attack_camper_3_relax
 [camper@bar_freedom_attack_camper_3_relax]
 path_walk = relax_3_walk
 path_look = relax_3_look
-
+radius = 5
+no_retreat = true
 
 [logic@bar_freedom_attack_camper_4_relax]
 active = camper@bar_freedom_attack_camper_4_relax
@@ -568,7 +581,8 @@ active = camper@bar_freedom_attack_camper_4_relax
 [camper@bar_freedom_attack_camper_4_relax]
 path_walk = relax_4_walk
 path_look = relax_4_look
-
+radius = 5
+no_retreat = true
 
 [logic@bar_freedom_attack_camper_5_relax]
 active = camper@bar_freedom_attack_camper_5_relax
@@ -576,7 +590,8 @@ active = camper@bar_freedom_attack_camper_5_relax
 [camper@bar_freedom_attack_camper_5_relax]
 path_walk = relax_5_walk
 path_look = relax_5_look
-
+radius = 5
+no_retreat = true
 
 [logic@bar_freedom_attack_camper_6_relax]
 active = camper@bar_freedom_attack_camper_6_relax
@@ -584,16 +599,18 @@ active = camper@bar_freedom_attack_camper_6_relax
 [camper@bar_freedom_attack_camper_6_relax]
 path_walk = relax_6_walk
 path_look = relax_6_look
-
+radius = 5
+no_retreat = true
 
 [logic@bar_freedom_attack_commander_relax]
 active = camper@bar_freedom_attack_commander_relax
+on_death = death@bar_freedom_attack_commander
 
 [camper@bar_freedom_attack_commander_relax]
 path_walk = relax_volkodav_walk
 path_look = relax_volkodav_look
-
-
+radius = 5
+no_retreat = true
 
 ;*******************************************************************
 ; Ученные
