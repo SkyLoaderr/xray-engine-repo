@@ -90,8 +90,11 @@ function action_meet_wait:initialize()
 	self.object:set_desired_direction()
 	
 	self.object:enable_talk()
-	state_mgr.set_state(self.object, "wait", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
-	--state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
+	if self.object:limping() then
+		state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor})
+	else			
+		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor})
+	end	
 end
 function action_meet_wait:time_callback()
 	state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
@@ -259,11 +262,19 @@ function action_state_talk:execute()
 		if self.overrides_meet_state ~= nil then
 			state_mgr.set_state(self.object, self.overrides_meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
 		else
-			state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+			if self.object:limping() then
+				state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+			else			
+				state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+			end
 		end			
 	else	
 		if self.overrides_meet_state ~= nil then
-			state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})	
+			if self.object:limping() then
+				state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+			else			
+				state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+			end
 			self.overrides_meet_state = nil
 		end
 	end
