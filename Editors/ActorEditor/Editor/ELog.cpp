@@ -30,7 +30,10 @@
 	#include "NetDeviceLog.h"
 	void __stdcall ELogCallback(LPCSTR txt)
 	{
-//		MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);
+ 		if (0!=txt[0]){
+			if (txt[0]=='!')EConsole.print(mtError,txt+1);
+			else			EConsole.print(mtInformation,txt);
+		}
 	}
 #endif
 #ifdef _MAYA_PLUGIN
