@@ -84,14 +84,14 @@ void CUIGameCS::OnFrame()
 			m_Parent->m_Parent->pFontBigDigit->Out			((float)vTimePlace.x,(float)vTimePlace.y,"\x60%s",make_time(buf,(Game().timelimit-(Level().timeServer()-Game().start_time))/1000));
 		}
 	break;
-	case ÒÐÅÒÜÅ_ÑÎÑÒÎßÍÈÅ:
+/*	case ÒÐÅÒÜÅ_ÑÎÑÒÎßÍÈÅ:
 		// åñëè èãðà çàêîí÷åíà
 		m_Parent->m_Parent->pFontDI->SetAligment(CGameFont::alCenter);
 		m_Parent->m_Parent->pFontDI->SetColor();
 		m_Parent->m_Parent->pFontDI->SetSize(0.2f);
 		m_Parent->m_Parent->pFontDI->Out(0,0.5f,"ÓÐÀ...../dgdfgdg");
 	break;
-	}
+*/	}
 }
 //--------------------------------------------------------------------
 
