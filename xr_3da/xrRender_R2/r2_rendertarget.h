@@ -93,7 +93,7 @@ public:
 	void						accum_point_geom_destroy();
 
 	void						u_setrt					(CRT* _1, CRT* _2, CRT* _3, IDirect3DSurface9* zb);
-	void						u_setrt					(IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
+	void						u_setrt					(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
 
 	void						phase_scene				();
 	void						phase_scene_sky			();

@@ -51,8 +51,6 @@ void CRenderTarget::phase_bloom	()
 
 	// Targets
 	u_setrt								(rt_Bloom_1,NULL,NULL,rt_Bloom_ZB);		// No need for ZBuffer at all
-	dwWidth								= Device.dwWidth/2;
-	dwHeight							= Device.dwHeight/2;
 	
 	// XForms
 	RCache.set_xform_world				(Fidentity);

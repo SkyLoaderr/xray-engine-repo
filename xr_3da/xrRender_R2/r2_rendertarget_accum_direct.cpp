@@ -6,7 +6,7 @@ void CRenderTarget::shadow_direct	(u32 dls_phase)
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / DSM_size);
 	u32				uRange				= 1; 
-	if (RImplementation.b_nv3x)	uRange	= 0xFFFFFFFF >> (32 - 24);
+	if (RImplementation.b_nv3x)	uRange	= (u32(0xFFFFFFFF) >> u32(32 - 24));
 	float			fRange				= float(uRange);
 	float			fBias				= -0.001f*fRange;
 	Fmatrix			m_TexelAdjust		= 
