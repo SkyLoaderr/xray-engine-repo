@@ -43,6 +43,8 @@ void CFontBase::OnDeviceDestroy()
 
 void CFontBase::OnRender()
 {
+	Log("CFontBase::OnRender - begin");
+
 	if (pShader) Device.Shader.set_Shader	(pShader);
 	Fvector2 UVSize;	UVSize.set(1.f/float(iNumber),1.f/float(iNumber));
 	Fvector2 HalfPixel;	HalfPixel.set(.5f/TextureSize.x,.5f/TextureSize.y);
@@ -109,14 +111,17 @@ void CFontBase::OnRender()
 
 		// Unlock and draw
 		DWORD vCount = v-start;
-		Stream->Unlock(vCount);
-		// Device.Primitive.Draw(Stream,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
+		Stream->Unlock			(vCount);
+		Device.Primitive.Draw	(Stream,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
 	}
 	strings.clear();
+
+	Log("CFontBase::OnRender - end");
 }
 
 void CFontBase::Add(float _x, float _y, char *s, DWORD _c, float _size)
 {
+	Log("CFontBase::Add");
 	VERIFY(strlen(s)<127);
 	String rs;
 	rs.x=_x;
@@ -129,6 +134,8 @@ void CFontBase::Add(float _x, float _y, char *s, DWORD _c, float _size)
 
 void __cdecl CFontBase::Out(float _x, float _y, char *fmt,...)
 {
+	Log("CFontBase::Out");
+
 	String rs;
 	rs.x=_x;
 	rs.y=_y;
