@@ -1786,13 +1786,15 @@ void print_help(lua_State *L)
 }
 
 extern void lesha_test();
+void bug_test();
 
 int __cdecl main(int argc, char* argv[])
 {
 //	test1();
 //	test0();
 //	time_smart_ptr_test();
-	lesha_test();
+//	lesha_test();
+	bug_test();
 	return 0;
 
 	printf	("xrLuaCompiler v0.1\n");
@@ -1924,7 +1926,33 @@ int __cdecl main(int argc, char* argv[])
 //		strcpy		(g_ca_stdout,"");
 //	}
 //	lua_pcall			(L,0,0,0);
-	lua_dofile			(L,"x:\\test.script");
+
+/**/
+	LPCSTR					s = "main()";
+	lua_dofile				(L,"x:\\bug6.script");
+	for (int i=0; ;++i) {
+		lua_State			*t = lua_newthread(L);
+		int					thread_reference = luaL_ref(L,LUA_REGISTRYINDEX);
+		int					err = luaL_loadbuffer	(t,s,strlen(s),"@_thread_main");
+		if (err) {
+			printf			("ERROR : %s\n",lua_tostring(L,-1));
+			break;
+		}
+		lua_resume			(t,0);
+		luaL_unref			(L,LUA_REGISTRYINDEX,thread_reference);
+		lua_setgcthreshold	(L,0);
+	}
+/**
+
+	lua_dofile					(L,"x:\\bug6.script");
+	for (;;) {
+		luabind::functor<void>	f = luabind::object_cast<luabind::functor<void> >(luabind::get_globals(L)["main"]);
+		f						();
+		lua_setgcthreshold		(L,0);
+	}
+/**/
+
+
 //	lua_setgcthreshold	(L,0);
 //	if (xr_strlen(g_ca_stdout)) {
 //		fputc		(0,stderr);
@@ -1958,4 +1986,39 @@ int __cdecl main(int argc, char* argv[])
 //	check if we are yielded
 
 //	L->ci->state & CI_YIELD
+}
+
+void bug_test	()
+{
+	lua_State				*L = lua_open();
+
+	if (!L) {
+		lua_error			(L);
+		return;
+	}
+
+	luaopen_base			(L);
+	luaopen_string			(L);
+	luaopen_math			(L);
+	luaopen_table			(L);
+	luaopen_debug			(L);
+	
+	luabind::open			(L);
+
+	LPCSTR					s = "main()";
+	lua_dofile				(L,"x:\\bug6.script");
+	for (int i=0; i<10; ++i) {
+		lua_State			*t = lua_newthread(L);
+		int					thread_reference = luaL_ref(L,LUA_REGISTRYINDEX);
+		int					err = luaL_loadbuffer(t,s,strlen(s),"@_thread_main");
+		if (err) {
+			printf			("ERROR : %s\n",lua_tostring(L,-1));
+			break;
+		}
+		lua_resume			(t,0);
+		luaL_unref			(L,LUA_REGISTRYINDEX,thread_reference);
+		lua_setgcthreshold	(L,0);
+	}
+
+	lua_close				(L);
 }
