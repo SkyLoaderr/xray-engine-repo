@@ -20,6 +20,12 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 		return;
 	}
 
+	// check if we can assign entity to some client
+	if (0==CL && !net_Players.empty())
+	{
+		CL	= SelectBestClientToMigrateTo	(E);
+	}
+
 	// check for respawn-capability and create phantom as needed
 	if (E->RespawnTime && (0xffff==E->ID_Phantom))
 	{
