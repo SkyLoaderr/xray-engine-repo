@@ -102,9 +102,9 @@ void CGameTask::load_shared	(LPCSTR)
 
 	data()->title = uiXml.Read(task_node, "title", 0, NULL);
 
-	SGameTaskObjective objective;
 	for(int i=0; i<tag_num; i++)
 	{
+		SGameTaskObjective objective;
 		LPCSTR tag_text = uiXml.Read(task_node, "objective:text", i, NULL);
 		objective.description = tag_text;
 		tag_text = uiXml.Read(task_node, "objective:article", i, NULL);
