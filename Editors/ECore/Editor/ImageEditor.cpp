@@ -225,16 +225,17 @@ void __fastcall TfrmImageLib::fsStorageSavePlacement(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
 {
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Are you sure to export association?")==mrNo) return;
 
-    int res = ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo<<mbCancel,"Save modified properties?");
-    switch (res){
-    case mrYes: 	UpdateLib();	break;
-    case mrNo: 			  			break;
-    case mrCancel: 		  			return;
+    if (!modif_map.empty()){
+        int res = ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo<<mbCancel,"Save modified properties?");
+        switch (res){
+        case mrYes: 	UpdateLib();	break;
+        case mrNo: 			  			break;
+        case mrCancel: 		  			return;
+        }
     }
 
 	AnsiString nm;

@@ -188,10 +188,10 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
 	CSMotion* SM = (CSMotion*)sender->m_Object;
 
     PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Global\\Motion count"),	m_pEditObject->SMotionCount());
-    ButtonValue* B;
+    ButtonValue* B;                         
     B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Global\\Edit"),			"Append,Delete,Save",ButtonValue::flFirstOnly);
-    B->OnBtnClickEvent		= OnMotionEditClick;
-    if (SM){                                                                   
+    B->OnBtnClickEvent		= OnMotionEditClick; 
+    if (SM){                                                                     
         B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Motion\\Control"),		"Play,Stop,Pause",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent		= OnMotionControlClick;
 	    PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Motion\\Frame\\Start"),	SM->FrameStart());
