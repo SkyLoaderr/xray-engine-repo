@@ -135,6 +135,7 @@
 		<texture>ui\ui_mn_health</texture>
 	</car_health_static>
 	
-	
 	<car_panel x="860" y="545" width="150" height="200" align="rb"></car_panel>
+	
+	<motion_icon x="860" y="545" width="150" height="200" align="rb"></motion_icon>
 </window>
