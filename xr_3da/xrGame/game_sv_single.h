@@ -1,15 +1,17 @@
 #pragma once
 
 #include "game_sv_base.h"
+#include "ai_alife.h"
 
 class	game_sv_Single				: public game_sv_GameState
 {
-protected:
+private:
+	CAI_ALife						tALife;
 public:
 	virtual		void				Create					(LPCSTR options);
 
 	// Events
-	virtual		void				OnRoundStart			()								{};		// старт раунда
+	virtual		void				OnRoundStart			();										// старт раунда
 	virtual		void				OnRoundEnd				()								{};		// старт раунда
 	virtual		void				OnTeamScore				(u32 team)						{};		// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
@@ -22,5 +24,5 @@ public:
 	virtual		void				OnTimelimitExceed		()								{};
 
 	// Main
-	virtual		void				Update					()								{};
+	virtual		void				Update					();
 };

@@ -3,7 +3,7 @@
 
 void	game_sv_Single::Create			(LPCSTR options)
 {
-	switch_Phase	(GAME_PHASE_INPROGRESS);
+	switch_Phase	(GAME_PHASE_PENDING);
 }
 
 BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
@@ -47,5 +47,24 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 {
 	return TRUE;
+}
+
+void	game_sv_Single::OnRoundStart	()
+{
+	tALife.Load();
+}
+
+void	game_sv_Single::Update			()
+{
+	__super::Update	();
+	switch(phase) 	{
+		case GAME_PHASE_PENDING : {
+			if ((Device.TimerAsync()-start_time)>u32(5*1000)) {
+				OnRoundStart();
+				switch_Phase(GAME_PHASE_INPROGRESS);
+			}
+		}
+		break;
+	}
 }
 

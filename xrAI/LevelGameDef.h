@@ -138,7 +138,8 @@ public:
 	{
 		R_ASSERT(fs.FindChunk(NPC_POINT_CHUNK_VERSION));
 		u32 dwVersion = fs.Rdword();
-		if (dwVersion != NPC_POINT_VERSION) THROW;
+		if (dwVersion != NPC_POINT_VERSION)
+			THROW;
 		
 		R_ASSERT(fs.FindChunk(NPC_POINT_CHUNK_DATA));
 		fs.Rstring					(caModel);
@@ -157,7 +158,7 @@ public:
 #ifdef _EDITOR
 	virtual void FillProp	(LPCSTR pref, PropValueVec& values)
 	{
-   		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"NPC name",					&caModel,					PHelper.CreateGameObject(sizeof(caModel)));
+   		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Model",						&caModel,					PHelper.CreateGameObject(sizeof(caModel)));
    		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Team",						&ucTeam,						PHelper.CreateU8	(0,255,1));
    		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Squad",						&ucSquad,					PHelper.CreateU8	(0,255,1));
    		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Group",						&ucGroup,					PHelper.CreateU8	(0,255,1));
