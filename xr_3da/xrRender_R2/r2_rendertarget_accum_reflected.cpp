@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-extern Fvector du_cone_vertices[DU_CONE_NUMVERTEX];
-
 void CRenderTarget::accum_reflected		(light* L)
 {
 	// *** assume accumulator setted up ***
@@ -9,14 +7,11 @@ void CRenderTarget::accum_reflected		(light* L)
 	ref_shader		shader		= s_accum_reflected;
 
 	BOOL	bIntersect			= FALSE; //enable_scissor(L);
-	{
-		// setup xform
-		L->xform_calc					();
-		RCache.set_xform_world			(L->m_xform			);
-		RCache.set_xform_view			(Device.mView		);
-		RCache.set_xform_project		(Device.mProject	);
-		bIntersect						= enable_scissor	(L);
-	}
+	L->xform_calc				();
+	RCache.set_xform_world		(L->m_xform			);
+	RCache.set_xform_view		(Device.mView		);
+	RCache.set_xform_project	(Device.mProject	);
+	bIntersect					= enable_scissor	(L);
 
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane

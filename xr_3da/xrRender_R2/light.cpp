@@ -103,13 +103,15 @@ void	light::spatial_move			()
 	//spatial.center				= position;
 	//spatial.radius				= range;
 	switch(flags.type)	{
-	case IRender_Light::POINT		:	{
-		spatial.center				= position;
-		spatial.radius				= range;
+	case IRender_Light::REFLECTED	:	
+	case IRender_Light::POINT		:	
+		{
+			spatial.center				= position;
+			spatial.radius				= range;
 		} 
 		break;
-	case IRender_Light::REFLECTED	:	
-	case IRender_Light::SPOT		:	{
+	case IRender_Light::SPOT		:	
+		{
 			// minimal enclosing sphere around cone
 			if (cone>=PI_DIV_2)			{
 				// obtused-angled
