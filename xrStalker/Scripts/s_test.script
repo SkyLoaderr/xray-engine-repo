@@ -8,7 +8,6 @@ end
 
 
 function Test1:set_value (v)
-
     self.value = v
 end
 
@@ -38,7 +37,10 @@ end
 function main ()
    
     local cl2 = s_test.Test2 ()
+    printf ("Step 1")
     cl2:set_value (20)
+    printf ("Step 1")
     cl2:print ()
+    printf ("Step 1")
     
 end
