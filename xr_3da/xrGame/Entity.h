@@ -38,7 +38,6 @@ protected:
 	
 	float				fMAX_Health;
 	float				fArmor,		fMAX_Armor;
-	float				fAccuracy;
 	float				m_fMaxHealthValue;
 
 	//icon position (используется при торговле и обыске трупов)
@@ -85,9 +84,9 @@ public:
 	float					g_Armor				()const	{ return fArmor;	}
 	virtual float			g_Health			()const	{ return fEntityHealth;}
 	virtual float			g_MaxHealth			()const	{ return m_fMaxHealthValue;	}
-	float					g_Accuracy			()const	{ return fAccuracy;	}
+
 	virtual BOOL			g_Alive				()const	{ return fEntityHealth>0; }
-	virtual BOOL			g_State				(SEntityState &/**state/**/)	{return FALSE;}
+	virtual BOOL			g_State				(SEntityState &/**state/**/) const	{return FALSE;}
 	
 	virtual bool			AlreadyDie()			{return  0!=m_dwDeathTime?true:false;}
 	virtual ALife::_TIME_ID	GetDeathTime()			{return m_dwDeathTime;}

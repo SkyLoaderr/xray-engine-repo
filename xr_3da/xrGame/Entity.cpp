@@ -19,7 +19,6 @@
 
 CEntity::CEntity()
 {
-	fAccuracy			= 1.f;
 	fMAX_Health			= MAX_HEALTH;
 	fMAX_Armor			= MAX_ARMOR;
 
