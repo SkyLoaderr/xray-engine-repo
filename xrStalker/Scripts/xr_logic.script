@@ -11,6 +11,8 @@ function gulag_activate(npc, ini, section, gulag_name)
 	if section == nil then
 		utils.abort("gulag_activate: section is nil")
 	end
+
+	local npc_id = npc:id()
 	xr_motivator.storage[npc_id]["active_section"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
 	activate_by_section(npc, ini, section)
