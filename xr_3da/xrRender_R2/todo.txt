@@ -50,12 +50,12 @@ R1:
 
 R2:
 	* work out point-light-hw-shadowmaps()							-	1 day
-	* work out tonemapping				(?)							-	?
-	* work out blooming					(again)						-\  3 days	
+done* work out tonemapping				(?)							-	?
+done* work out blooming					(again)						-\  3 days	
 	* work out skybox					(again)						-/
 	* work out hemisphere				(again)						-	1 day (?)
 	* work out ordinary rendering + transparency					-	1 day (?)
-	* work out HUD													-	1 day (?)
+done* work out HUD													-	1 day (?)
 	* sRGB convert diffuse				(???)						-	?
 	* transluency						(again + experiment)		-	1day - 1week
 	* reverse culling for spot/point with initial clears - should avoid most biasing (?)	- 1day - but can just not work :)
@@ -65,7 +65,7 @@ R2:
 	* generated bumpmaps leaks
 	* surface material:
 		- emmisive map
-		- detail-bump map
+	done- detail-bump map
 		- anisotropic materials										-	1 day
 		- material	definition										-	(blin-bump-low-spec, 1=blin-bump-high-spec, 2=anisotroptic-low, 3=anisotroptic-high) / ()
 	* SlidingWindow VIPM / screen-error	(???)						-	3 day (max) / R1
@@ -78,7 +78,6 @@ R2:
 		emisssive				/ 1 scalar / 1 koeff				-	none
 		material-id				/ 1 scalar
 		transluency				/ ???
-
 ----------------------------
 blin-bump-low-spec  , blin-bump-high-spec
 blin-bump-high-spec	, anisotroptic-low, 
