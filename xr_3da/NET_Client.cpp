@@ -17,17 +17,19 @@ INetQueue::~INetQueue()
 }
 NET_Packet*		INetQueue::Create	()
 {
+	NET_Packet*	P			= 0;
 	cs.Enter		();
 	if (free.empty())	
 	{
 		ready.push_back		(new NET_Packet());
-		return ready.back	();
+		P					= ready.back	();
 	} else {
 		ready.push_back		(free.back());
 		free.pop_back		();
-		return ready.back	();
+		P					= ready.back	();
 	}
 	cs.Leave		();
+	return	P;
 }
 NET_Packet*		INetQueue::Retreive	()
 {
