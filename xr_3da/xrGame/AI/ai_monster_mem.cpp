@@ -279,7 +279,7 @@ void CVisionMemory::RemoveOldElems()
 	Objects.erase(I,Objects.end());
 	
 	// удалить 'старых' врагов и тех, расстояние до которых > 30м и др.
-	I = remove_if(Enemies.begin(), Enemies.end(), predicate_remove_old_enemies(timeCurrent,timeMemory,pMonster->Position()));
+	I = remove_if(Enemies.begin(), Enemies.end(), predicate_remove_old_enemies(timeCurrent,timeMemory,pMonster->Position(), pMonster->eye_range));
 	Enemies.erase(I,Enemies.end());
 }
 

@@ -169,12 +169,15 @@ struct predicate_remove_old_enemies {
 	TTime	cur_time;
 	TTime	mem_time;
 	Fvector monster_pos;
-	predicate_remove_old_enemies(TTime c_time, TTime m_time, Fvector m_pos) { 
-		cur_time = c_time;	mem_time = m_time;	monster_pos = m_pos;
+	float	eye_range;
+
+	predicate_remove_old_enemies(TTime c_time, TTime m_time, Fvector m_pos, float range) { 
+		cur_time = c_time;	mem_time = m_time;	monster_pos = m_pos; eye_range = range;
 	}
 	bool operator() (const VisionElem &x) { 
 		return ((x.time + mem_time < cur_time) || (!x.obj) || (!x.obj->g_Alive()) || 
-			    ((x.obj->Position().distance_to(monster_pos) > 30) && (x.time != cur_time))); 
+			    ((x.obj->Position().distance_to(monster_pos) > 30) && (x.time != cur_time)) || 
+				 (x.obj->Position().distance_to(monster_pos) > eye_range)); 
 	}
 };
 

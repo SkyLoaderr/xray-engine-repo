@@ -2,6 +2,7 @@
 
 class CEntity;
 
+// Типы команд
 enum ESquadCommand {
 	SC_EXPLORE,
 	SC_ATTACK,
@@ -12,12 +13,14 @@ enum ESquadCommand {
 	SC_NONE
 };
 
+// Типы состояний задачи
 enum ESquadTaskState {
 	TS_REQUEST,		// запрос на выполнение задачи
 	TS_PROGRESS,	// задача в процессе выполнения
 	TS_REFUSED,		// в выполнении задачи - отказано
 };
 
+// Состояние лидера
 enum ELeaderState {
 	LS_IDLE,
 	LS_EAT,
@@ -26,7 +29,12 @@ enum ELeaderState {
 	LS_DEFENCE
 };
 
+struct SEntityState {
+	CEntity *pEnemy;
+	Fvector target_pos;
+};
 
+// Задача
 struct GTask {
 	struct {
 		ESquadCommand		command;
@@ -43,45 +51,67 @@ struct GTask {
 };
 
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// MonsterSquad Class
 class CMonsterSquad {
-	DEFINE_MAP(CEntity*, GTask, SQUAD_MAP,	SQUAD_MAP_IT);
-	DEFINE_VECTOR(CEntity*, ENTITY_VEC, ENTITY_VEC_IT);
+	DEFINE_MAP		(CEntity*, GTask,	SQUAD_MAP,	SQUAD_MAP_IT);
+	DEFINE_VECTOR	(CEntity*, ENTITY_VEC,	ENTITY_VEC_IT);
+	DEFINE_MAP		(CEntity*, SEntityState, ENTITY_STATE_MAP, ENTITY_STATE_MAP_IT);
+
+	CEntity				*leader;
+	ELeaderState		leader_state;
 	
-	CEntity			*leader;
-	ELeaderState	leader_state;
+	SQUAD_MAP			squad;
 	
-	SQUAD_MAP		squad;
-	
-	u8				id;
+	u8					id;
+
+	ENTITY_STATE_MAP	states;
 
 public:
 				CMonsterSquad(u8 i) : id(i), leader(0) {}
 				~CMonsterSquad() {}
 	
+	// -----------------------------------------------------------------
+
 	void		RegisterMember		(CEntity *pE);
 	void		RemoveMember		(CEntity *pE);
+
+	// -----------------------------------------------------------------
 
 	void		SetLeader			(CEntity *pE) {leader = pE;}
 	CEntity		*GetLeader			() {return leader;}
 	void		SetLeaderState		(ELeaderState ls) {leader_state = ls;}
 
+	// -----------------------------------------------------------------
 
+	// Централизованное принятие решений
 	void		ProcessGroupIntel	();
 	void		ProcessGroupIntel	(const GTask &task);
 
+	// -----------------------------------------------------------------
+	
+	// Децентрализованное управление
+	void		UpdateMonsterData	(CEntity *pE, CEntity *pEnemy);
+	void		UpdateDecentalized	();
+	Fvector		GetTargetPoint		(CEntity *pE);
+
+	// -----------------------------------------------------------------
+
+	// Получить задачу для NPC
 	GTask		&GetTask			(CEntity *pE);
 
+	// Получить id своего squad
 	u8			GetID				() {return id;}
 
+	// DEBUG
 	void		Dump				();
-
-	void		AskMember			(CEntity *pE, const GTask &new_task);
 
 private:
 	ENTITY_VEC	enemies;
 	ENTITY_VEC	members;
 	u32			dest_node;
 
+	void		AskMember			(CEntity *pE, const GTask &new_task);
 
 private:
 	void		TaskIdle			();
@@ -93,7 +123,6 @@ private:
 
 
 	CEntity		*GetNearestEnemy	(CEntity *t, ENTITY_VEC *ev);
-	
 	
 };
 

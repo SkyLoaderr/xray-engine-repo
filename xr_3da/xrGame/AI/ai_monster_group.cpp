@@ -81,6 +81,7 @@ void CMonsterSquad::RegisterMember(CEntity *pE)
 	GTask blank_task;
 	InitTask(&blank_task);
 	squad.insert(mk_pair(pE, blank_task));
+	states.insert(mk_pair(pE, 0));
 
 	if (!leader) leader = pE;
 }
@@ -330,4 +331,115 @@ bool CMonsterSquad::IsPriorityHigher(ESquadCommand com_new, ESquadCommand com_ol
 {
 	return (Level().SquadMan.TransformPriority(com_new) >  Level().SquadMan.TransformPriority(com_old));
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Decentralized Approach (just general data for monsters)
+//////////////////////////////////////////////////////////////////////////
+void CMonsterSquad::UpdateMonsterData(CEntity *pE, CEntity *pEnemy)
+{
+	SEntityState S;
+	S.pEnemy = pEnemy;
+	
+	ENTITY_STATE_MAP_IT it = states.find(pE);
+	if (it == states.end()) {
+		states.insert(mk_pair(pE, S));
+	} else {
+		it->second.pEnemy = pEnemy;
+	}
+}
+
+
+Fvector CMonsterSquad::GetTargetPoint(CEntity *pE)
+{
+	ENTITY_STATE_MAP_IT it = states.find(pE);
+	R_ASSERT(it != states.end());
+	
+	return it->second.target_pos;
+}
+
+
+
+struct predicate_remove_members {
+	CEntity	*pEntity;
+	predicate_remove_members(CEntity *pE)	{pEntity = pE;}
+	
+	
+	bool operator() (const )	{return (x.time < new_time); }
+};
+
+
+template<class Collection, class Predicate>
+void remove_if2 (Collection &_map, Collection::iterator it1, Collection::iterator it2, Predicate pr)
+{
+	for (Collection::iterator it = it1, nit; it != it2;	)
+	{
+		nit = it; ++nit;
+		if (pr(*it))
+			_map.erase (it);
+	}
+}
+
+template<class Collection, class Predicate>
+inline void remove_if2 (Collection &doc, Predicate pr)
+{
+	remove_if2 (doc, doc.begin(), doc.end(), pr);
+}
+
+
+
+
+void CMonsterSquad::UpdateDecentalized()
+{
+	
+	ENTITY_STATE_MAP	new_map;
+	new_map				= states;	
+	ENTITY_STATE_MAP	cur_map;
+	
+	while (!new_map.empty()) {
+		ENTITY_STATE_MAP_IT	it	= new_map.begin();
+		CEntity	*pGeneralEnemy	= it->second.pEnemy;
+
+		for (;it != new_map.end(); it++) {
+			if (it->second.pEnemy == pGeneralEnemy) cur_map.insert(*it);
+		}
+		
+		// work with cur_map
+		// ... 
+		
+		
+		//---------------------------------
+		// 
+		cur_map.clear();
+		
+		// remove from new_map all with pGeneralEnemy
+		
+		for (it = new_map.begin(); it != )
+		
+		it = std::remove_if(new_map.begin(), new_map.end(), predicate_remove_members(pGeneralEnemy));
+		new_map.erase(it, new_map.end());
+
+	}
+
+
+//	xr_vector<CEntity *> used;
+//	xr_vector<CEntity *> current;
+//	
+//	ENTITY_STATE_MAP_IT	current_state_it = states.begin();
+//
+//	while (used.size() != states.size()) {
+//		ENTITY_STATE_MAP_IT I,B,E;
+//		B = states.begin();
+//		E = states.end();
+//		for (I = B; I!=E;I++) {
+//			// проверить есть ли уже данный элемент в списке
+//			xr_vector<CEntity *>::iterator it = used.find((*I)->first);
+//			if (it != used.end()) 
+//
+//		}
+//		
+//		
+//		current_state_it++;
+//	}
+}
+
 

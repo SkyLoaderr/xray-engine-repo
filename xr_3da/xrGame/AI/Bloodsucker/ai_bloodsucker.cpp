@@ -217,8 +217,6 @@ void CAI_Bloodsucker::CheckSpecParams(u32 spec_params)
 
 }
 
-
-
 BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC) 
 {
 	if (!inherited::net_Spawn(DC))
