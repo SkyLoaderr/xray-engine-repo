@@ -272,7 +272,7 @@ void CAI_Stalker::vfDodgeTravelLine()
 	Device.Statistic.AI_Path.End();
 }
 
-void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition)
+void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode)
 {
 	INIT_SQUAD_AND_LEADER;
 
@@ -281,12 +281,41 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 		m_tPathState		= ePathStateSearchNode;
 		AI_Path.DestNode	= u32(-1);
 	}
+	EPathType tPathType = m_tPathType;
+	switch (m_tPathType) {
+		case ePathTypeStraight : {
+			m_tPathType = ePathTypeStraight;
+			break;
+		}
+		case ePathTypeDodge : {
+			m_tPathType = ePathTypeDodge;
+			break;
+		}
+		case ePathTypeCriteria : {
+			m_tPathType = ePathTypeCriteria;
+			break;
+		}
+		case ePathTypeStraightDodge : {
+			if (::Random.randI(0,100) < m_dwRandomFactor)
+				m_tPathType = ePathTypeStraight;
+			else
+				m_tPathType = ePathTypeDodge;
+			break;
+		}
+		case ePathTypeDodgeCriteria : {
+			if (::Random.randI(0,100) < m_dwRandomFactor)
+				m_tPathType = ePathTypeDodge;
+			else
+				m_tPathType = ePathTypeCriteria;
+			break;
+		}
+	}
 	switch (m_tPathState) {
 		case ePathStateSearchNode : {
-			if (tpNodeEvaluator)
+			if (tpNodeEvaluator && bSearchForNode)
 				vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
 			else
-				if (!tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+				if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
 					m_tPathState = ePathStateBuildNodePath;
 			break;
 		}
@@ -310,6 +339,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 			break;
 		}
 	}
+	m_tPathType = tPathType;
 }
 
 void CAI_Stalker::vfChooseNextGraphPoint()
