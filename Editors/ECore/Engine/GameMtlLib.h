@@ -274,10 +274,10 @@ public:
 	}
 #else
 	// game
-	IC u16				GetMaterialIdx	(int ID){GameMtlIt it=GetMaterialItByID(ID);R_ASSERT(materials.end() != it); return (u16)(it-materials.begin());}
-	IC u16				GetMaterialIdx	(LPCSTR name){GameMtlIt it=GetMaterialIt(name);R_ASSERT(materials.end() != it); return (u16)(it-materials.begin());}
-	IC SGameMtl*		GetMaterialByIdx(u16 idx){R_ASSERT(idx<materials.size()); return materials[idx];}
-	IC SGameMtl*		GetMaterialByID (s32 id){return GetMaterialByIdx(GetMaterialIdx(id));}
+	IC u16				GetMaterialIdx	(int ID)		{GameMtlIt it=GetMaterialItByID(ID);VERIFY(materials.end() != it); return (u16)(it-materials.begin());}
+	IC u16				GetMaterialIdx	(LPCSTR name)	{GameMtlIt it=GetMaterialIt(name);VERIFY(materials.end() != it); return (u16)(it-materials.begin());}
+	IC SGameMtl*		GetMaterialByIdx(u16 idx)		{VERIFY(idx<materials.size()); return materials[idx];}
+	IC SGameMtl*		GetMaterialByID (s32 id)		{return GetMaterialByIdx(GetMaterialIdx(id));}
 #endif
 
 	IC GameMtlIt		FirstMaterial	(){return materials.begin();}

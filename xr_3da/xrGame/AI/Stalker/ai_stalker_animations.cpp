@@ -572,23 +572,29 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 
 static void	TorsoPlayCallback(CBlend *B)
 {
+#ifdef DEBUG
 	CAI_Stalker							*stalker = (CAI_Stalker*)B->CallbackParam;
 	VERIFY								(stalker);
-//	stalker->m_tpCurrentTorsoAnimation	= 0;
+	//	stalker->m_tpCurrentTorsoAnimation	= 0;
+#endif
 }
 
 static void	LegsPlayCallback(CBlend *B)
 {
+#ifdef DEBUG
 	CAI_Stalker							*stalker = (CAI_Stalker*)B->CallbackParam;
 	VERIFY								(stalker);
-//	stalker->m_tpCurrentLegsAnimation	= 0;
+	//	stalker->m_tpCurrentLegsAnimation	= 0;
+#endif
 }
 
 static void	GlobalPlayCallback(CBlend *B)
 {
+#ifdef DEBUG
 	CAI_Stalker							*stalker = (CAI_Stalker*)B->CallbackParam;
 	VERIFY								(stalker);
-//	stalker->m_tpCurrentGlobalAnimation	= 0;
+	//	stalker->m_tpCurrentGlobalAnimation	= 0;
+#endif
 }
 
 void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
@@ -597,8 +603,7 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 	VERIFY					(stalker);
 	CSkeletonAnimated		&tVisualObject		=	*(PSkeletonAnimated(stalker->Visual()));
 
-	if (m_tAnims.A.empty())
-		return;
+	if (m_tAnims.A.empty())	return;
 
 	CMotionDef				*tpGlobalAnimation	=	0;
 	CMotionDef				*tpTorsoAnimation	=	0;

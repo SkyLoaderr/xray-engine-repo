@@ -624,8 +624,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 		R_ASSERT2				(M_UPDATE == ID,"Invalid packet ID (!= M_UPDATE)!");
 		E->UPDATE_Read			(tNetPacket);
 
-		CSE_ALifeObject			*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
-		VERIFY					(tpALifeObject);
+		VERIFY					(dynamic_cast<CSE_ALifeObject*>(E));
 
 		R_ASSERT2				((GAME_SINGLE == E->s_gameid) || (GAME_ANY == E->s_gameid),"Invalid game type!");
 		R_ASSERT2				(0 != (*I = dynamic_cast<CSE_ALifeDynamicObject*>(E)),"Non-ALife object in the 'game.spawn'");

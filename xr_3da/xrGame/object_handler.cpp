@@ -622,6 +622,8 @@ u32 CObjectHandler::object_state() const
 			default			 : NODEFAULT;
 		}
 	}
+	
+	NODEFAULT;
 
 #ifdef DEBUG
 	return			(u32(eObjectActionDummy));

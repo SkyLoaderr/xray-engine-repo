@@ -254,10 +254,12 @@ void CScriptMonster::vfFinishAction(CEntityAction *tpEntityAction)
 void CScriptMonster::ProcessScripts()
 {
 	CEntityAction	*l_tpEntityAction = 0;
+#ifdef DEBUG
 	bool			empty_queue = m_tpActionQueue.empty();
+#endif
 	while (!m_tpActionQueue.empty()) {
 		l_tpEntityAction= m_tpActionQueue.front();
-		R_ASSERT	(l_tpEntityAction);
+		VERIFY		(l_tpEntityAction);
 #ifdef _DEBUG
 //		if (!xr_strcmp("m_stalker_wounded",*cName()))
 //			Msg			("%6d Processing action : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
