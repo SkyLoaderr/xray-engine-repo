@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "UIListWndEx.h"
-#include "UIListItemEx.h"
+#include "UIListItemPair.h"
 #include "../script_space.h"
 
 using namespace luabind;
@@ -28,6 +28,18 @@ void CUIListWndEx::script_register(lua_State *L)
 			
 			class_<CUIListItemEx, CUIListItem>("CUIListItemEx")
 			.def(							constructor<>())
+			.def("SetPerformTextLimit",		&CUIListItemPair::SetPerformTextLimit),
+
+
+			class_<CUIListItemPair, CUIListItemEx>("CUIListItemPair")
+			.def(							constructor<>())
+			.def("SetTextFileName",			&CUIListItemPair::SetTextFileName)
+			.def("SetTextDateTime",			&CUIListItemPair::SetTextDateTime)
+			.def("SetFontFileName",			&CUIListItemPair::SetFontFileName)
+			.def("SetFontDateTime",			&CUIListItemPair::SetFontDateTime)
+			.def("SetTextFileName",			&CUIListItemPair::SetTextFileName)
+			.def("GetBorder",				&CUIListItemPair::GetBorder)
+			.def("SetBorder",				&CUIListItemPair::SetBorder)
 
 		];
 }

@@ -120,6 +120,11 @@ public:
 	void TextureOff()					{ m_bTextureEnable = false; }
 	void TextureAvailable(bool value)	{ m_bAvailableTexture = value; }
 
+	// performs text length limit :)
+	void PerformTextLengthLimit(int limit = -1);
+	// deletes last character in text field
+	void DeleteLastCharacter();
+
 protected:
 	bool m_bClipper;
 	//растягивание текстуры в видимую область

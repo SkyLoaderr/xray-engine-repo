@@ -6,6 +6,7 @@ CUIListItemEx::CUIListItemEx(void)
 	this->InitTexture("ui\\hud_map_point");
 	this->SetStretchTexture(true);
 	this->SetColor(color_argb(0, 0, 0, 0));
+	this->m_bPerformTextLimit = false;
 }
 
 CUIListItemEx::~CUIListItemEx(void)
@@ -26,4 +27,14 @@ void CUIListItemEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 		this->Draw();
 		break;
 	}
+}
+
+void CUIListItemEx::SetPerformTextLimit(bool bPerform){
+	this->m_bPerformTextLimit = bPerform;
+}
+
+void CUIListItemEx::Draw(){
+	if (m_bPerformTextLimit)
+		this->PerformTextLengthLimit();
+	inherited::Draw();	
 }

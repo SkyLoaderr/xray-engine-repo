@@ -9229,6 +9229,12 @@
 							RelativePath=".\ui\UIListItemEx.h">
 						</File>
 						<File
+							RelativePath=".\ui\UIListItemPair.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListItemPair.h">
+						</File>
+						<File
 							RelativePath=".\ui\UIListWndEx.cpp">
 						</File>
 						<File

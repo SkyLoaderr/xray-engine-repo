@@ -842,3 +842,47 @@ void CUIStatic::OnMouse(int x, int y, EUIMessages mouse_action)
 
 	inherited::OnMouse(x, y, mouse_action);
 }
+
+// Note: you can use "limit = -1" to fit text to 
+// element's width
+void CUIStatic::PerformTextLengthLimit(int limit){
+	// our minimal length is length of two spaces
+	int minLength = (int)this->GetFont()->SizeOf("  ");
+	int selfWidth = this->GetWidth();
+
+	// no coment
+	if (limit < 0)
+		limit = selfWidth;
+	if (limit < minLength)
+		limit = minLength;
+
+	int currentLength = (int)this->GetFont()->SizeOf(this->GetText());
+
+	if (currentLength <= limit)
+		return;
+	else
+		do
+		{
+			// delete one character (last) and recalculate current length
+			this->DeleteLastCharacter();
+			currentLength = (int)this->GetFont()->SizeOf(this->GetText());
+		}while(currentLength > limit);	    
+}
+
+void CUIStatic::DeleteLastCharacter(){
+	LPCSTR str = this->GetText();
+	STRING arr;
+
+	// exit if there is void string
+	if (xr_strlen(str) == 0)
+		return;
+
+	// get string without last character
+	for(u32 i=0, n=xr_strlen(str) - 1; i<n; ++i)
+		arr.push_back(str[i]);
+
+	arr.push_back(0);
+	str = &arr.front();
+
+	this->SetText(str);
+}
