@@ -784,10 +784,8 @@ function getJob(fraction, npc)
 	end
 end
 function needRaid(fraction)
-	printf("[RAID] needraid")
 	if xr_gulag.fraction[fraction] ~= nil then
 		local cc = xr_gulag.fraction[fraction]:getCasualities()
-		printf("[RAID] cc %d", cc)
 		if cc >= 3 then return true end
 	end
 	return false			
@@ -800,7 +798,6 @@ end
 function startRaid(fraction)
 	if xr_gulag.fraction[fraction] ~= nil then
 		local cc = xr_gulag.fraction[fraction]:getCasualities()
-		printf("[RAID] StartRaid cc %d", cc)
 		xr_gulag.fraction[fraction]:changeCasualities(-cc)
 	end
 end
