@@ -3,7 +3,7 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
-#define	GI_THREADS		1
+#define	GI_THREADS		2
 const	u32				gi_num_photons		= 32;
 const	float			gi_optimal_range	= 15.f;
 const	float			gi_reflect			= 0.9f;
