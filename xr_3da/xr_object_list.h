@@ -11,7 +11,6 @@ private:
 	// data
 	xr_map<u32,CObject*>		map_NETID			;
 	xr_vector<CObject*>			destroy_queue		;
-public:
 	xr_vector<CObject*>			objects_active		;
 	xr_vector<CObject*>			objects_sleeping	;
 public:
@@ -42,6 +41,11 @@ public:
 	void						o_remove			( xr_vector<CObject*>&	v,  CObject*	O);
 	void						o_activate			( CObject*		O		);
 	void						o_sleep				( CObject*		O		);
+	IC u32						o_count				()	{ return objects_active.size()+objects_sleeping.size(); };
+	IC CObject*					o_get_by_iterator	(u32 _it)	{
+		if (_it<objects_active.size())	return objects_active	[_it];
+		else							return objects_sleeping	[_it-objects_active.size()];
+	}
 };
 
 #endif //__XR_OBJECT_LIST_H__

@@ -418,31 +418,24 @@ void CLevel::OnRender()
 		ai().level_graph().render();
 
 	if (bDebug)	{
-		xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
-		xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
-		for ( ; I != E; ++I) {
-			CSpaceRestrictor	*space_restrictor = smart_cast<CSpaceRestrictor*>(*I);
+		for (u32 I=0; I < Level().Objects.o_count(); I++) {
+			CObject*	_O		= Level().Objects.o_get_by_iterator(I);
+			CSpaceRestrictor	*space_restrictor = smart_cast<CSpaceRestrictor*>	(_O);
 			if (space_restrictor)
 				space_restrictor->OnRender();
-			CClimableObject		*climable		  = smart_cast<CClimableObject*>(*I);
+			CClimableObject		*climable		  = smart_cast<CClimableObject*>	(_O);
 			if(climable)
 				climable->OnRender();
-		}
-		if (GameID() != GAME_SINGLE)
-		{
-			xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
-			xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
-			for ( ; I != E; ++I) {
-
-				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(*I);
+			if (GameID() != GAME_SINGLE)
+			{
+				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(_O);
 				if (pIItem) pIItem->OnRender();
 			}
-		};
-
+		}
 		ObjectSpace.dbgRender	();
 
 		//---------------------------------------------------------------------
-		HUD().Font().pFontSmall->OutSet	(170,630);
+		HUD().Font().pFontSmall->OutSet		(170,630);
 		HUD().Font().pFontSmall->SetSize	(16.0f);
 		HUD().Font().pFontSmall->SetColor	(0xffff0000);
 		HUD().Font().pFontSmall->OutNext	("Client Objects:      [%d]",Server->GetEntitiesNum());

@@ -43,10 +43,14 @@ CObject*	CObjectList::FindObjectByName	( LPCSTR name )
 
 CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )
 {
-	xr_vector<CObject*>::iterator O	= std::find_if(objects_active.begin(),objects_active.end(),fClassEQ(cls));
-	if (O!=objects_active.end())	return *O;
-	xr_vector<CObject*>::iterator O	= std::find_if(objects_sleeping.begin(),objects_sleeping.end(),fClassEQ(cls));
-	if (O!=objects_sleeping.end())	return *O;
+	{
+		xr_vector<CObject*>::iterator O	= std::find_if(objects_active.begin(),objects_active.end(),fClassEQ(cls));
+		if (O!=objects_active.end())	return *O;
+	}
+	{
+		xr_vector<CObject*>::iterator O	= std::find_if(objects_sleeping.begin(),objects_sleeping.end(),fClassEQ(cls));
+		if (O!=objects_sleeping.end())	return *O;
+	}
 
 	return	NULL;
 }
@@ -184,19 +188,24 @@ CObject* CObjectList::net_Find			(u32 ID)
 
 void CObjectList::Load		()
 {
-	R_ASSERT				(map_NETID.empty() && objects.empty() && destroy_queue.empty());
+	R_ASSERT				(map_NETID.empty() && objects_active.empty() && destroy_queue.empty() && objects_sleeping.empty());
 }
 
 void CObjectList::Unload	( )
 {
 	// Destroy objects
-	while (objects.size())
+	while (objects_sleeping.size())
 	{
-		CObject*	O	= objects.back();
+		CObject*	O	= objects_sleeping.back	();
 		O->net_Destroy	(   );
 		Destroy			( O );
 	}
-	objects.clear	();
+	while (objects_active.size())
+	{
+		CObject*	O	= objects_active.back	();
+		O->net_Destroy	(   );
+		Destroy			( O );
+	}
 }
 
 CObject*	CObjectList::Create				( LPCSTR	name	)

@@ -191,7 +191,7 @@ public:
 	virtual void Execute(LPCSTR args) 
 	{
 		u32 SVObjNum = Level().Server->GetEntitiesNum();
-		u32 CLObjNum = Level().Objects.objects.size();
+		u32 CLObjNum = Level().Objects.o_count();
 
 		Msg("Client Objects : %d", CLObjNum);
 		Msg("Server Objects : %d", SVObjNum);
@@ -201,9 +201,9 @@ public:
 			if (CO < CLObjNum && CO < SVObjNum)
 			{
 				CSE_Abstract* pEntity = Level().Server->GetEntity(CO);
-				char color = (Level().Objects.objects[CO]->ID() == pEntity->ID) ? '-' : '!';
+				char color = (Level().Objects.o_get_by_iterator(CO)->ID() == pEntity->ID) ? '-' : '!';
 				Msg("%c%4d: Client - %20s[%5d] <===> Server - %s [%d]", color, CO+1, 
-					*(Level().Objects.objects[CO]->cNameSect()), Level().Objects.objects[CO]->ID(),
+					*(Level().Objects.o_get_by_iterator(CO)->cNameSect()), Level().Objects.o_get_by_iterator(CO)->ID(),
 					pEntity->s_name.c_str(), pEntity->ID);
 			}
 			else
@@ -211,7 +211,7 @@ public:
 				if (CO<CLObjNum)
 				{
 					Msg("! %2d: Client - %s [%d] <===> Server - -----------------", CO+1, 
-						*(Level().Objects.objects[CO]->cNameSect()), Level().Objects.objects[CO]->ID());
+						*(Level().Objects.o_get_by_iterator(CO)->cNameSect()), Level().Objects.o_get_by_iterator(CO)->ID());
 				}
 				else
 				{

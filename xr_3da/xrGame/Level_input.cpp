@@ -98,6 +98,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 	}
 #ifdef DEBUG
+				 /*
 	case DIK_F4: {
 		if (GameID() != GAME_SINGLE) return;
 		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
@@ -152,19 +153,12 @@ void CLevel::IR_OnKeyboardPress(int key)
 					{
 						pHudItem->OnStateSwitch(pHudItem->State());
 					}
-					/*
-					CWeapon* pWeapon = smart_cast<CWeapon*>(pActor->inventory().ActiveItem());
-					if (pWeapon)
-					{
-						pWeapon->InitAddons();
-						pWeapon->UpdateAddonsVisibility();
-					}
-					*/
 				}
 			}
 		}
 		return;
 	}
+	*/
 #endif
 
 #ifdef DEBUG

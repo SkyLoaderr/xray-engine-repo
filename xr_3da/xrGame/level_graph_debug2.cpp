@@ -1282,15 +1282,16 @@ void CLevelGraph::on_render3	()
 
 void CLevelGraph::on_render5	()
 {
-	xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
-	xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
-	for ( ; I != E; ++I) {
-		CTeamBaseZone	*team_base_zone = smart_cast<CTeamBaseZone*>(*I);
+	xr_vector<CObject*>::iterator	I	= 0;
+	xr_vector<CObject*>::iterator	E	= Level().Objects.o_count();
+	for ( ; I < E; ++I) {
+		CObject*		_O				= Level().Objects.o_get_by_iterator(I);
+		CTeamBaseZone	*team_base_zone = smart_cast<CTeamBaseZone*>(_O);
 		if (team_base_zone) {
 			team_base_zone->OnRender();
 			continue;
 		}
-		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(*I);
+		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(_O);
 		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
 			if (!tpCustomMonster->movement().detail().path().empty()) {
@@ -1298,7 +1299,7 @@ void CLevelGraph::on_render5	()
 				RCache.dbg_DrawAABB(temp,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
 			}
 		}
-		CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(*I);
+		CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(_O);
 		if (!stalker || !stalker->memory().enemy().selected())
 			continue;
 
@@ -1351,10 +1352,11 @@ void CLevelGraph::on_render5	()
 
 void CLevelGraph::on_render6	()
 {
-	xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
-	xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
-	for ( ; I != E; ++I) {
-		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(*I);
+	xr_vector<CObject*>::iterator	I	= 0;
+	xr_vector<CObject*>::iterator	E	= Level().Objects.o_count();
+	for ( ; I < E; ++I) {
+		CObject*		_O				= Level().Objects.o_get_by_iterator(I);
+		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(_O);
 		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
 			if (!tpCustomMonster->movement().detail().path().empty()) {
