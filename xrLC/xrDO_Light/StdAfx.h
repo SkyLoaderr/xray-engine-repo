@@ -16,6 +16,7 @@
 #pragma warning(default:4995)
 
 #define ENGINE_API
+#define ECORE_API
 
 #include "clsid.h"
 #include "defines.h"
