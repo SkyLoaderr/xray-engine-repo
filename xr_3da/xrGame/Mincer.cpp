@@ -230,6 +230,8 @@ void CMincer::OnRender()
 	}
 }
 
+#endif
+
 bool CMincer::CheckAffectField(CPhysicsShellHolder* GO,float dist_to_radius)
 {
 	if(GO->CLS_ID!=CLSID_OBJECT_ACTOR)
@@ -239,5 +241,3 @@ bool CMincer::CheckAffectField(CPhysicsShellHolder* GO,float dist_to_radius)
 		return dist_to_radius>m_fActorBlowoutRadiusPercent;
 	}
 }
-
-#endif
