@@ -35,22 +35,22 @@ struct clQueryCollision
 		boxes.clear		();
 		spheres.clear	();
 	}
-	IC void				AddTri( const Fmatrix& m, const CDB::TRI* one ) 
+	IC void				AddTri( const Fmatrix& m, const CDB::TRI* one, const Fvector* verts ) 
 	{
 		clQueryTri	T;
-		m.transform_tiny	(T.p[0],*one->verts[0]);
-		m.transform_tiny	(T.p[1],*one->verts[1]);
-		m.transform_tiny	(T.p[2],*one->verts[2]);
-		T.T = one;
+		m.transform_tiny	(T.p[0],verts[one->verts[0]]);
+		m.transform_tiny	(T.p[1],verts[one->verts[1]]);
+		m.transform_tiny	(T.p[2],verts[one->verts[2]]);
+		T.T					= one;
 		tris.push_back		(T);
 	}
-	IC void				AddTri(const CDB::TRI* one ) 
+	IC void				AddTri(const CDB::TRI* one, const Fvector* verts ) 
 	{
-		clQueryTri	T;
-		T.p[0]	= *one->verts[0];
-		T.p[1]	= *one->verts[1];
-		T.p[2]	= *one->verts[2];
-		T.T		= one;
+		clQueryTri			T;
+		T.p[0]				= verts[one->verts[0]];
+		T.p[1]				= verts[one->verts[1]];
+		T.p[2]				= verts[one->verts[2]];
+		T.T					= one;
 		tris.push_back		(T);
 	}
 	IC void				AddBox(const Fmatrix& M, const Fbox& B)

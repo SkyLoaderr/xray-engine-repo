@@ -6,7 +6,7 @@
 #include "soundrender_cache.h"
 
 // refs
-class OggVorbis_File;
+struct OggVorbis_File;
 
 class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
