@@ -103,9 +103,9 @@ float	box_filter			(float t)
 #define	triangle_support	(1.0)
 float	triangle_filter		(float t)
 {
-	if(t < 0.0) t = -t;
-	if(t < 1.0) return(1.0 - t);
-	return(0.0);
+	if(t < 0.0f) t = -t;
+	if(t < 1.0f) return(1.0f - t);
+	return(0.0f);
 }
 
 //
