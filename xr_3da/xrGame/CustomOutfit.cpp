@@ -175,3 +175,12 @@ u32	CCustomOutfit::ef_equipment_type	() const
 {
 	return		(m_ef_equipment_type);
 }
+
+float CCustomOutfit::GetPowerLoss() 
+{
+	if (m_fPowerLoss<1 && GetCondition() <= 0)
+	{
+		return 1.0f;			
+	};
+	return m_fPowerLoss;
+};

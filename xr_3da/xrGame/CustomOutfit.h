@@ -40,7 +40,7 @@ public:
 	float GetHitTypeProtection(ALife::EHitType hit_type);
 	//коэффициент на который домножается потеря силы
 	//если на персонаже надет костюм
-	float GetPowerLoss() {return m_fPowerLoss;};
+	float GetPowerLoss();
 
 	int GetIconX() {return m_iOutfitIconX;}
 	int GetIconY() {return m_iOutfitIconY;}
