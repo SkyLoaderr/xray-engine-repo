@@ -170,6 +170,7 @@ function action_wait:execute()
 	action_base.execute(self)
 end
 function action_wait:finalize()
+	self:set_prisluh(false)
 	action_base.finalize (self)
 end
 function action_wait:set_prisluh(prisluh)
