@@ -191,7 +191,7 @@ function fract:print()
 end
 function fract:loadJob(name) -- загружает список заданий
 	if name == "dolg" then
-		local t = { name = "guard",
+		local t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
@@ -202,7 +202,7 @@ function fract:loadJob(name) -- загружает список заданий
 			path_main = "dolg_sleep_1",
 			path_hideout = "dolg_sleep_1" }
 		table.insert(self.Job, t)			
-		t = { name = "guard",
+		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
@@ -213,7 +213,7 @@ function fract:loadJob(name) -- загружает список заданий
 			path_main = "dolg_sleep_2",
 			path_hideout = "dolg_sleep_2" }
 		table.insert(self.Job, t)			
-		t = { name = "guard",
+		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
@@ -224,7 +224,7 @@ function fract:loadJob(name) -- загружает список заданий
 			path_main = "dolg_sleep_3",
 			path_hideout = "dolg_sleep_3" }
 		table.insert(self.Job, t)			
-		t = { name = "guard",
+		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
@@ -235,7 +235,7 @@ function fract:loadJob(name) -- загружает список заданий
 			path_main = "dolg_sleep_4",
 			path_hideout = "dolg_sleep_4" }
 		table.insert(self.Job, t)			
-		t = { name = "guard",
+		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
@@ -246,7 +246,7 @@ function fract:loadJob(name) -- загружает список заданий
 			path_main = "dolg_sleep_5",
 			path_hideout = "dolg_sleep_5" }
 		table.insert(self.Job, t)			
-		t = { name = "guard",
+		t = { name = "sleeper",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
