@@ -44,6 +44,20 @@ IC	CLASS_ID clsid_member()
 	return								(result);
 }
 
+IC	CLASS_ID clsid_enemy()
+{
+	CLASS_ID							result;
+	if (ai().ef_storage().m_tpCurrentEnemy)
+		result							= ai().ef_storage().m_tpCurrentEnemy->SUB_CLS_ID;
+	else {
+		VERIFY2							(ai().ef_storage().m_tpCurrentALifeEnemy,"No object specified for evaluation function");
+		const CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = smart_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeEnemy);
+		VERIFY2							(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function");
+		result							= l_tpALifeDynamicObject->m_tClassID;
+	}
+	return								(result);
+}
+
 float CDistanceFunction::ffGetValue()
 {
 	if (bfCheckForCachedResult())
@@ -811,7 +825,7 @@ float CEnemyAnomalyType::ffGetValue()
 	if (bfCheckForCachedResult())
 		return					(m_fLastValue);
 
-	switch (clsid_member()) {
+	switch (clsid_enemy()) {
 		case CLSID_Z_TORRID :
 		case CLSID_Z_MBALD : {
 			m_fLastValue		=  1;
