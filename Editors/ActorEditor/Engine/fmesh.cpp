@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "d3dx8.h"
-
 BOOL ValidateIndices(u32 vCount, u32 iCount, WORD* pIndices)
 {
 	if (vCount>65535)	return FALSE;

@@ -16,7 +16,7 @@
 #define DIRECTINPUT_VERSION 0x0700
 
 #include <d3d8.h>
-// #include <d3dx8.h>
+#include <d3dx8.h>
 #include <dinput.h>
 #include <dsound.h>
 #include <dplay8.h>
