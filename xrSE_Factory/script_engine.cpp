@@ -142,6 +142,9 @@ void CScriptEngine::add_file			(LPCSTR file_name)
 
 void CScriptEngine::load_common_scripts()
 {
+#ifdef DBG_DISABLE_SCRIPTS
+	return;
+#endif
 	string256		S;
 	FS.update_path	(S,"$game_data$","script.ltx");
 	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
@@ -199,6 +202,9 @@ void CScriptEngine::register_script_classes	()
 
 void CScriptEngine::load_class_registrators		()
 {
+#ifdef DBG_DISABLE_SCRIPTS
+	return;
+#endif
 	string256		S;
 	FS.update_path	(S,"$game_data$","script.ltx");
 	CInifile		*l_tpIniFile = xr_new<CInifile>(S);

@@ -71,6 +71,11 @@ void CScriptProcess::run_strings()
 
 void CScriptProcess::update()
 {
+#ifdef DBG_DISABLE_SCRIPTS
+	m_scripts_to_run.clear();
+	m_strings_to_run.clear();
+	return;
+#endif
 	run_scripts			();
 	run_strings			();
 	LPSTR	S = g_ca_stdout;

@@ -11,6 +11,8 @@
 #include "script_storage.h"
 #include "script_export_space.h"
 
+// #define DBG_DISABLE_SCRIPTS
+
 #ifdef XRGAME_EXPORTS
 	class CScriptProcess;
 	class CScriptThread;

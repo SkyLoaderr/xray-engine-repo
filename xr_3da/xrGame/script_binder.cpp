@@ -41,6 +41,9 @@ void CScriptBinder::Load			(LPCSTR section)
 
 void CScriptBinder::reload			(LPCSTR section)
 {
+#ifdef DBG_DISABLE_SCRIPTS
+	return;
+#endif
 	VERIFY					(!m_object);
 	if (!pSettings->line_exist(section,"script_binding"))
 		return;
