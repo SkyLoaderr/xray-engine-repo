@@ -10,7 +10,7 @@
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\ai_monsters_misc.h"
-#include "ai_biting_anim.h"
+#include "..\\ai_monster_motion.h"
 #include "ai_biting_state.h"
 #include "..\\ai_monster_mem.h"
 #include "..\\ai_monster_sound.h"
@@ -133,8 +133,8 @@ public:
 			bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
 	virtual void			ProcessTurn						() {};
 
-			CBoneInstance*	GetBone							(LPCTSTR bone_name);
-			CBoneInstance*	GetBone							(int bone_id);
+			CBoneInstance *GetBoneInstance					(LPCTSTR bone_name);
+			CBoneInstance *GetBoneInstance					(int bone_id);
 
 // members
 public:

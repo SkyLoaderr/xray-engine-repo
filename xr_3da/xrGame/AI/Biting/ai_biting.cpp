@@ -24,7 +24,6 @@ CAI_Biting::~CAI_Biting()
 
 void CAI_Biting::Init()
 {
-	
 	// initializing class members
 	m_tCurGP						= _GRAPH_ID(-1);
 	m_tNextGP						= _GRAPH_ID(-1);
@@ -33,7 +32,6 @@ void CAI_Biting::Init()
 	
 	m_dwLastRangeSearch				= 0;
 
-	// Инициализация параметров анимации
 	m_tPathState					= PATH_STATE_SEARCH_NODE;
 
 	m_fAttackSuccessProbability[0]	= .8f;
@@ -54,14 +52,16 @@ void CAI_Biting::Init()
 	flagEatNow						= false;
 
 	CMonsterSound::Init				(this);
-	
+	// Attack-stops init
 	AS_Init							();
+
+	// Инициализация параметров анимации	
+	MotionMan.Init					(this);
 }
 
 void CAI_Biting::Die()
 {
 	inherited::Die( );
-
 	DeinitMemory();
 
 	SetSoundOnce(SND_TYPE_DIE, m_dwCurrentTime);
@@ -90,6 +90,9 @@ void CAI_Biting::Load(LPCSTR section)
 		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
 		m_tpaTerrain.push_back		(tTerrainPlace);
 	}
+
+	// Загрузка параметров из LTX
+
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
@@ -100,15 +103,13 @@ void CAI_Biting::Load(LPCSTR section)
 
 	m_tSelectorHearSnd.Load			(section,"selector_hear_sound");	 // like _free hunting
 
-
-	// loading frustum parameters
 	eye_fov							= pSettings->r_float(section,"EyeFov");
 	eye_range						= pSettings->r_float(section,"eye_range");
 	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
 	m_fHitPower						= pSettings->r_float (section,"hit_power");
-	// temp
+	
 	fEntityHealth					= (float)m_dwHealth;
 
 	// prefetching
@@ -182,9 +183,8 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	R_ASSERT2						(getAI().bfCheckIfMapLoaded() && getAI().bfCheckIfGraphLoaded() && getAI().bfCheckIfCrossTableLoaded() && (getAI().m_dwCurrentLevelID != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
-	// loading animation stuff
-#pragma	todo("Jim to Jim: Bring all motion loading stuff off from Net_Spawn")
-	MotionMan.Init					(this, PSkeletonAnimated(Visual()));
+	// Установить новый Visual, перезагрузить анимации
+	MotionMan.OnNetSpawn();
 
 	m_pPhysics_support->in_NetSpawn();
 
@@ -273,9 +273,7 @@ void CAI_Biting::UpdateCL()
 	
 	// Проверка состояния анимации (атака)
 	if (g_Alive()) {
-		
 		AA_CheckHit();
-		//MotionMan.JMP_Update();
 	}
 
 	m_pPhysics_support->in_UpdateCL();
@@ -284,9 +282,8 @@ void CAI_Biting::UpdateCL()
 void CAI_Biting::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	////physics/////////////////////////////////////////////////////////////////////////////////////
+	
 	m_pPhysics_support->in_shedule_Update(dt);
-
 }
 
 void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
@@ -297,12 +294,13 @@ void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_o
 	if (g_Alive()) SetSoundOnce(SND_TYPE_TAKE_DAMAGE, m_dwCurrentTime);
 }
 
-CBoneInstance *CAI_Biting::GetBone(LPCTSTR bone_name)
+CBoneInstance *CAI_Biting::GetBoneInstance(LPCTSTR bone_name)
 {
 	int bone = PKinematics(Visual())->LL_BoneID(bone_name);
 	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone)));
 }
-CBoneInstance *CAI_Biting::GetBone(int bone_id)
+
+CBoneInstance *CAI_Biting::GetBoneInstance(int bone_id)
 {
 	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone_id)));
 }
