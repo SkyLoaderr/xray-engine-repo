@@ -123,7 +123,7 @@ void CDetailManager::hw_Unload()
 
 
 float	psDetail_w_rot1			= 30.f;
-float	psDetail_w_rot2			= 1.5f;
+float	psDetail_w_rot2			= 1.0f;
 float	psDetail_w_speed		= 2.f;
 float	psDetail_l_ambient		= .9f;
 float	psDetail_l_aniso		= .25f;
@@ -139,8 +139,8 @@ void CDetailManager::hw_Render()
 	Fvector dir1,dir2;
 	float	tm_rot1			= PI_MUL_2*Device.fTimeGlobal/psDetail_w_rot1;
 	float	tm_rot2			= PI_MUL_2*Device.fTimeGlobal/psDetail_w_rot2;
-	dir1.set				(sinf(tm_rot1),0,cosf(tm_rot1));	dir1.normalize		();	dir1.mul(.1f);	// dir*amplitude
-	dir2.set				(sinf(tm_rot2),0,cosf(tm_rot2));	dir1.normalize		(); dir2.mul(.05f);	// dir*amplitude
+	dir1.set				(sinf(tm_rot1),0,cosf(tm_rot1));	dir1.normalize		();	dir1.mul(.1f);	// dir1*amplitude
+	dir2.set				(sinf(tm_rot2),0,cosf(tm_rot2));	dir2.normalize		(); dir2.mul(.05f);	// dir2*amplitude
 
 	// Wave0
 	CVS_Constants& VSC		=	Device.Shader.VSC;
