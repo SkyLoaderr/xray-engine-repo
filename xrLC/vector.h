@@ -145,10 +145,10 @@ ICF float		angle_normalize_signed(float a)
 	return angle;
 }
 
-// 0..PI
-IC float		angle_difference(float a, float b)
+// -PI..PI
+IC float		angle_difference_signed(float a, float b)
 {
-	float diff	= angle_normalize(a) - angle_normalize(b);
+	float diff	= angle_normalize_signed(a) - angle_normalize_signed(b);
 	if (diff>0) {
 		if (diff>PI)
 			diff	-= PI_MUL_2;
@@ -156,7 +156,13 @@ IC float		angle_difference(float a, float b)
 		if (diff<-PI)	
 			diff	+= PI_MUL_2;
 	}
-	return _abs	(diff);
+	return diff;
+}
+
+// 0..PI
+IC float		angle_difference(float a, float b)
+{
+	return _abs	(angle_difference_signed(a,b));
 }
 
 // c=current, t=target, s=speed, dt=dt
@@ -195,6 +201,31 @@ IC float		angle_lerp		(float A, float B, float f)
 	else if (diff<-PI)	diff	+= PI_MUL_2;
 
 	return			A + diff*f;
+}
+
+IC float		angle_inertion	(float src, float tgt, float speed, float clmp, float dt)
+{
+	float a			= angle_normalize_signed	(tgt);
+	if (angle_lerp(src,a,speed,dt)){
+		src			= angle_normalize_signed	(src);
+		float dH	= angle_difference_signed	(src,a);
+		float dCH	= clampr					(dH,-clmp,clmp);
+		src			-= dH-dCH;
+	}
+	return			src;
+}
+
+IC float		angle_inertion_var(float src, float tgt, float min_speed, float max_speed, float clmp, float dt)
+{
+	tgt				= angle_normalize_signed	(tgt);
+	src				= angle_normalize_signed	(src);
+	float speed		= abs((max_speed-min_speed)*angle_difference(tgt,src)/clmp)+min_speed;
+	if (angle_lerp(src,tgt,speed,dt)){
+		float dH	= angle_difference_signed	(src,tgt);
+		float dCH	= clampr					(dH,-clmp,clmp);
+		src			-= dH-dCH;
+	}
+	return			src;
 }
 
 template <class T>

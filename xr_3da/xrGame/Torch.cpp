@@ -15,8 +15,11 @@
 
 #include "ui/UIMainIngameWnd.h"
 
-const float TIME_2_HIDE		= 5.f;
-
+static const float		TIME_2_HIDE				= 5.f;
+static const float		TORCH_INERTION_CLAMP	= PI_DIV_6;
+static const float		TORCH_INERTION_SPEED_MAX= 7.5f;
+static const float		TORCH_INERTION_SPEED_MIN= 0.5f;
+static const Fvector	TORCH_OFFSET			= {-0.2f,+0.1f,-0.3f};
 
 CTorch::CTorch(void) 
 {
@@ -30,10 +33,13 @@ CTorch::CTorch(void)
 	time2hide					= 0;
 	fBrightness					= 1.f;
 
-	m_NightVisionRechargeTime		= 6.f;
-	m_NightVisionRechargeTimeMin	= 2.f;
-	m_NightVisionDischargeTime		= 10.f;
-	m_NightVisionChargeTime			= 0.f;
+	m_NightVisionRechargeTime	= 6.f;
+	m_NightVisionRechargeTimeMin= 2.f;
+	m_NightVisionDischargeTime	= 10.f;
+	m_NightVisionChargeTime		= 0.f;
+
+	m_prev_hp.set				(0,0);
+	m_delta_h					= 0;
 }
 
 CTorch::~CTorch(void) 
@@ -48,7 +54,7 @@ CTorch::~CTorch(void)
 void CTorch::Load(LPCSTR section) 
 {
 	inherited::Load			(section);
-	m_pos					= pSettings->r_fvector3(section,"position");
+//	m_pos					= pSettings->r_fvector3(section,"position");
 	light_trace_bone		= pSettings->r_string(section,"light_trace_bone");
 
 
@@ -195,8 +201,9 @@ BOOL CTorch::net_Spawn(CSE_Abstract* DC)
 	guid_bone				= K->LL_BoneID	(pUserData->r_string("torch_definition","guide_bone"));	VERIFY(guid_bone!=BI_NONE);
 	Fcolor clr				= pUserData->r_fcolor				("torch_definition","color");
 	fBrightness				= clr.intensity();
+	float range				= pUserData->r_float				("torch_definition","range");
 	light_render->set_color	(clr);
-	light_render->set_range	(pUserData->r_float					("torch_definition","range"));
+	light_render->set_range	(range);
 	light_render->set_cone	(deg2rad(pUserData->r_float			("torch_definition","spot_angle")));
 	light_render->set_texture(pUserData->r_string				("torch_definition","spot_texture"));
 
@@ -209,6 +216,8 @@ BOOL CTorch::net_Spawn(CSE_Abstract* DC)
 	VERIFY					(!torch->m_active || (torch->ID_Parent != 0xffff));
 	
 	SwitchNightVision		(false);
+
+	m_delta_h				= PI_DIV_2-atan((range*0.5f)/_abs(TORCH_OFFSET.x));
 
 	return					(TRUE);
 }
@@ -254,10 +263,7 @@ void CTorch::UpdateCL	()
 
 	UpdateSwitchNightVision   ();
 
-	if (light_render->get_active())
-	{
-
-
+	if (light_render->get_active()){
 		CBoneInstance& BI = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(guid_bone);
 		Fmatrix M;
 
@@ -269,23 +275,28 @@ void CTorch::UpdateCL	()
 
 			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
 						
-			M.mul						(XFORM(),BI.mTransform);
+			M.mul				(XFORM(),BI.mTransform);
 
-			if(actor)
-			{
-				light_render->set_position	(M.c);
+			if(actor){
+				m_prev_hp.x		= angle_inertion_var(m_prev_hp.x,-actor->cam_FirstEye()->yaw,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
+				m_prev_hp.y		= angle_inertion_var(m_prev_hp.y,-actor->cam_FirstEye()->pitch,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
+
+				Fvector dir;	
+				dir.setHP		(m_prev_hp.x+m_delta_h,m_prev_hp.y);
+
+				Fvector offset	= M.c; 
+				offset.mad		(M.i,TORCH_OFFSET.x);
+				offset.mad		(M.j,TORCH_OFFSET.y);
+				offset.mad		(M.k,TORCH_OFFSET.z);
+
+				light_render->set_position	(offset);
 				glow_render->set_position	(M.c);
-				Fvector dir = actor->cam_FirstEye()->vDirection;
-				Fmatrix rY;
-				rY.rotateY(PI_DIV_8);
-				rY.transform_dir(dir);
+
 				light_render->set_rotation	(dir,
 											actor->cam_FirstEye()->vNormal);
 				glow_render->set_direction	(actor->cam_FirstEye()->vDirection);
 
-			}
-			else
-			{
+			}else{
 				light_render->set_position	(M.c);
 				light_render->set_rotation	(M.k,M.i);
 				glow_render->set_position	(M.c);
