@@ -14,7 +14,8 @@ template <
 	typename _dist_type,
 	typename _index_type,
 	typename _iteration_type
-> class CPathManagerBase {
+> 	class CPathManagerBase 
+{
 protected:
 	const _Graph		*graph;
 	_DataStorage		*data_storage; 
@@ -37,11 +38,11 @@ public:
 	{
 	}
 
-	virtual	void		init			()
+	IC		void		init			()
 	{
 	}
 
-	virtual	void		setup			(
+	IC		void		setup			(
 				const _Graph			*_graph,
 				_DataStorage			*_data_storage,
 				xr_vector<_index_type>	*_path,
@@ -62,35 +63,35 @@ public:
 		max_iteration_count		= _max_iteration_count;
 	}
 
-	virtual	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2)
+	IC		_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2)
 	{
 		VERIFY					(graph);
 		return					(graph->get_edge_weight(node_index1,node_index2));
 	}
 
-	virtual	_dist_type	estimate		(const _index_type node_index)
+	IC		_dist_type	estimate		(const _index_type node_index)
 	{
 		VERIFY					(graph);
 		return					(graph->get_edge_weight(node_index,goal_node_index));
 	}
 
-	virtual	void		create_path		()
+	IC		void		create_path		()
 	{
 		VERIFY					(data_storage && path);
 		data_storage->get_path	(*path);
 	}
 
-	virtual	_index_type	start_node		()
+	IC		_index_type	start_node		()
 	{
 		return					(start_node_index);
 	}
 
-	virtual	bool		is_goal_reached	(const _index_type node_index) const
+	IC		bool		is_goal_reached	(const _index_type node_index) const
 	{
 		return					(node_index == goal_node_index);
 	}
 
-	virtual	bool		is_limit_reached(const _iteration_type	iteration_count) const
+	IC		bool		is_limit_reached(const _iteration_type	iteration_count) const
 	{
 		VERIFY					(data_storage);
 		return					(
@@ -100,13 +101,13 @@ public:
 		);
 	}
 
-	virtual	bool		is_accessible	(const _index_type node_index) const
+	IC		bool		is_accessible	(const _index_type node_index) const
 	{
 		VERIFY					(graph);
 		return					(graph->is_accessible(node_index));
 	}
 
-	virtual	bool		is_metric_euclidian()
+	IC		bool		is_metric_euclidian()
 	{
 #pragma todo("Dima to Dima : implement path manager for non-euclidian metrics")
 		return					(true);

@@ -102,7 +102,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="FALSE"
-				OptimizeForProcessor="3"
+				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="FALSE"
 				PreprocessorDefinitions="WIN32,NDEBUG,_WINDOWS,AI_COMPILER"
 				StringPooling="TRUE"
@@ -110,7 +110,7 @@
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
-				EnableEnhancedInstructionSet="2"
+				EnableEnhancedInstructionSet="1"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
@@ -490,6 +490,9 @@
 					</File>
 					<File
 						RelativePath=".\path_manager.h">
+					</File>
+					<File
+						RelativePath=".\path_manager_base.h">
 					</File>
 					<File
 						RelativePath=".\path_test.cpp">
