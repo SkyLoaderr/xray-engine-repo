@@ -373,7 +373,9 @@ _BUMP_from_base:
 					for (u32 x = 0; x < desc.Width; x++)	{
 						DWORD&	pSrc	= *(((DWORD*)((BYTE*)Rsrc.pBits + (y * Rsrc.Pitch)))+x);
 						DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
-						pDst			= subst_alpha(pDst,color_get_A(pDst)/3);
+						u32		occ		= color_get_A(pDst)/3;
+						u32		def		= 8;
+						pDst			= subst_alpha(pDst,(occ+def)/2);
 					}
 				}
 
