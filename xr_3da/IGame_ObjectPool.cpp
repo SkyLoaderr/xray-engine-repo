@@ -13,8 +13,6 @@ IGame_ObjectPool::~IGame_ObjectPool(void)
 	R_ASSERT			(map_POOL.empty());
 }
 
-//#define NEW_PREFETCH_IMPL
-
 void IGame_ObjectPool::prefetch	()
 {
 	R_ASSERT			(map_POOL.empty());
@@ -24,7 +22,6 @@ void IGame_ObjectPool::prefetch	()
 	int	p_count			= 0;
 	::Render->model_Logging	(FALSE);
 
-#ifdef NEW_PREFETCH_IMPL
 	string256 section;
 	// prefetch objects
 	strconcat				(section,"prefetch_objects_",g_pGamePersistent->m_game_params.m_game_type);
@@ -43,26 +40,6 @@ void IGame_ObjectPool::prefetch	()
 			map_POOL.insert	(mk_pair(pObject->cNameSect(),pObject));
 		}
 	}
-#else
-	CInifile::Root&	R	= pSettings->sections();
-	for (CInifile::RootIt	S	= R.begin(); S!=R.end(); S++){
-		if (pSettings->line_exist(*S->Name,"$prefetch")){
-			Msg					("* prefetching: %s",	*S->Name); 
-			int		count		=	pSettings->r_s32	(*S->Name,"$prefetch");
-			R_ASSERT2			((count>0) && (count<=128), "Too many objects for prefetching");
-			count				/=	4;
-			count				+=	1;
-			CLASS_ID CLS		=	pSettings->r_clsid	(*S->Name,"class");
-			p_count				+=	count;
-			for (int c=0; c<count; c++)	{
-				CObject* pObject	= (CObject*) NEW_INSTANCE(CLS);
-				pObject->Load		(*S->Name);
-				VERIFY2				(*pObject->cNameSect(),*S->Name);
-				map_POOL.insert		(mk_pair(pObject->cNameSect(),pObject));
-			}
-		}
-	}
-#endif
 
 	// out statistic
 	::Render->model_Logging	(TRUE);

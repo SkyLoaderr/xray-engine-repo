@@ -142,11 +142,17 @@ BOOL EFS_Utils::LockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 	if (m_LockFiles.find(fn)==m_LockFiles.end()){
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 		if (INVALID_HANDLE_VALUE!=handle){
-			LPSTR lp_fn=fn;
+			LPSTR lp_fn			= fn;
 			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(mk_pair(lp_fn,handle));
-			R_ASSERT(I.second);
-			RegisterAccess(fn,"Lock",bLog);
-			bRes=true;
+			R_ASSERT(			I.second);
+			// register access
+            xr_string			m_LastAccessFN;
+            FS.update_path		(m_LastAccessFN,"$server_data_root$","access.ini");
+            CInifile*	ini		= CInifile::Create(m_LastAccessFN.c_str(),false);
+            ini->w_string		("locked",fn,Core.CompName);
+            CInifile::Destroy	(ini);
+            if (bLog) 			WriteAccessLog(fn,"Lock");
+			bRes				= true;
 		}
 	}
 	return bRes;
@@ -157,13 +163,18 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(fn,initial,fn);
 
-	HANDLEPairIt it = m_LockFiles.find(fn);
+	HANDLEPairIt it 			= m_LockFiles.find(fn);
 	if (it!=m_LockFiles.end()){
-		m_LockFiles.erase(it);
-		if (bLog){
-			WriteAccessLog(fn,"Unlock");
-		}
-		return CloseHandle(it->second);
+    	void* handle 			= it->second;
+		m_LockFiles.erase		(it);
+        // unregister access
+        xr_string				m_LastAccessFN;
+        FS.update_path			(m_LastAccessFN,"$server_data_root$","access.ini");
+        CInifile*	ini			= CInifile::Create(m_LastAccessFN.c_str(),false);
+        ini->remove_line		("locked",fn);
+        CInifile::Destroy		(ini);
+		if (bLog)				WriteAccessLog(fn,"Unlock");
+		return CloseHandle		(handle);
 	}
 	return false;
 }
@@ -177,7 +188,7 @@ shared_str EFS_Utils::GetLockOwner(LPCSTR initial, LPCSTR fname)
 	FS.update_path	(m_LastAccessFN,"$server_data_root$","access.ini");
 	CInifile*	ini = CInifile::Create(m_LastAccessFN.c_str(),true);
 	static string256 comp;
-	strcpy(comp,ini->line_exist("last_access",fn)?ini->r_string("last_access",fn):"unknown");
+	strcpy			(comp,ini->line_exist("locked",fn)?ini->r_string("locked",fn):"unknown");
 	CInifile::Destroy(ini);
 
 	return comp;
