@@ -7,7 +7,6 @@
 
 // consts
 const	u32		MAX_BONE_PARAMS		=	4;
-const	u16		BI_NONE				=	u16(-1);
 
 // refs
 class	ENGINE_API CKinematics;

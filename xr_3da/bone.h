@@ -10,6 +10,8 @@
 // refs
 class CBone;
 
+const	u16		BI_NONE				=	u16(-1);
+
 #pragma pack( push,1 )
 enum EJointType
 {
