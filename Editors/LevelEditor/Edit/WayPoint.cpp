@@ -59,12 +59,11 @@ void CWayPoint::Render(LPCSTR parent_name, bool bParentSelect)
 	Fvector p1,p2;
     p1.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
 
-    u32 c = (bParentSelect&&m_bSelected)?0xFFFFFFFF:0xFF000000;
-    u32 s = (bParentSelect&&m_bSelected)?0xFF909090:0xFF000000;
-    u32 l = (bParentSelect&&m_bSelected)?0xffffff00:0xff909000;
-
-    AnsiString hint	= AnsiString(" ")+parent_name;
     if (bParentSelect){
+        u32 c = (m_bSelected)?0xFFFFFFFF:0xFFA0A0A0;
+        u32 s = 0xFF000000;
+
+	    AnsiString hint	= AnsiString(" ")+parent_name;
 	    hint		+= " [";
 	    hint		+= *m_Name;
 	    hint		+= "]";
@@ -76,9 +75,11 @@ void CWayPoint::Render(LPCSTR parent_name, bool bParentSelect)
             xx.add(p1);
             DU.DrawText(xx,AnsiString().sprintf("P: %1.2f",O->probability).c_str(),c,s);
         }
+	    DU.DrawText(m_vPosition,hint.c_str(),c,s);
     }
     
-    DU.DrawText(m_vPosition,hint.c_str(),c,s);
+    u32 l = 0xff606000;
+    if (bParentSelect) l = m_bSelected?0xffffff00:0xff909000;
     for (WPLIt it=m_Links.begin(); it!=m_Links.end(); it++){
     	SWPLink* O = (SWPLink*)(*it);
 	    p2.set	(O->way_point->m_vPosition.x,O->way_point->m_vPosition.y+WAYPOINT_SIZE*0.85f,O->way_point->m_vPosition.z);
