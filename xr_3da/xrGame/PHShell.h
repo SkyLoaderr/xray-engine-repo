@@ -151,6 +151,8 @@ public:
 	virtual void				UnFreezeContent				();
 	virtual void				Freeze						();
 	virtual void				UnFreeze					();
+	virtual void				NetInterpolationModeON		(){CPHObject::NetInterpolationON();}
+	virtual void				NetInterpolationModeOFF		(){CPHObject::NetInterpolationOFF();}
 
 	virtual void				StepFrameUpdate				(dReal step){};
 	virtual void				build_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map=NULL);

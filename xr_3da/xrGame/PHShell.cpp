@@ -944,7 +944,7 @@ void CPHShell::UpdateRoot()
 void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 {
 	
-	if(!CPHObject::is_active()&&!PHNetInterpolationMode()) return;
+	if(!CPHObject::is_active()&&!CPHObject::NetInterpolation()) return;
 	(*elements.begin())->InterpolateGlobalTransform(m);
 	m->mulB_43	(m_object_in_root);
 	

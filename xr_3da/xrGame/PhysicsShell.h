@@ -245,6 +245,8 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual CPHSynchronize*		get_ElementSync			(u16 element)										= 0;
 	virtual void				Freeze					()													= 0;
 	virtual void				UnFreeze				()													= 0;
+	virtual void				NetInterpolationModeON	()													= 0;
+	virtual void				NetInterpolationModeOFF ()													= 0;
 	virtual void				Disable					()													= 0;
 	virtual CPhysicsElement*	NearestToPoint			(const Fvector& point)								= 0;
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
