@@ -8,4 +8,13 @@
     <info_portion id="info_stalker_danger">
         <text>tips_stalker_danger</text>
     </info_portion>
+    
+	<info_portion id="tutorial_trader_search_corpses">
+		<text>Обыщи трупы</text>
+	</info_portion>
+
+	<info_portion id="tutorial_trader_help_wounded">
+		<text>Дай раненому аптечку</text>
+	</info_portion>
+    
 </game_information_portions>
