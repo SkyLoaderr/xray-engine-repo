@@ -33,8 +33,11 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		m_speed			= 0.f;
 
 		// Физика устанавливает позицию в соответствии с нулевой скоростью 
-		Fvector velocity={0.f,0.f,0.f};
-		movement_control->SetVelocity		(velocity);
+		if(!movement_control->JumpState())
+		{
+			Fvector velocity={0.f,0.f,0.f};
+			movement_control->SetVelocity		(velocity);
+		}
 		if(movement_control->IsCharacterEnabled()) {
 			movement_control->Calculate(CDetailPathManager::path(),0.f,CDetailPathManager::m_current_travel_point,precision);
 			movement_control->GetPosition(dest_position);
