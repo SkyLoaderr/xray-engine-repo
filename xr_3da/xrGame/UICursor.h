@@ -2,7 +2,7 @@
 #define __XR_UICURSOR_H__
 #pragma once
 
-class CUICursor : public pureDeviceDestroy, pureDeviceCreate
+class CUICursor
 {
 	Shader*			hShader;
 	CVertexStream*	Stream;	
@@ -13,9 +13,6 @@ public:
 					~CUICursor	();
 	void			Render		();
 	const Fvector2&	GetPos		(){return vPos;}
-
-	virtual void			OnDeviceDestroy	();
-	virtual void			OnDeviceCreate	();
 };
 
 #endif //__XR_UICURSOR_H__

@@ -2,14 +2,17 @@
 #define __XR_HUDCURSOR_H__
 #pragma once
 
-class CHUDCursor
+class CHUDCursor : public pureDeviceDestroy, pureDeviceCreate
 {
-	Shader*			hShader;
-	CVertexStream*	Stream;	
+	Shader*					hShader;
+	CVertexStream*			Stream;	
 public:
-					CHUDCursor	();
-					~CHUDCursor	();
-	void			Render		();
+							CHUDCursor	();
+							~CHUDCursor	();
+	void					Render		();
+
+	virtual void			OnDeviceDestroy	();
+	virtual void			OnDeviceCreate	();
 };
 
 #endif //__XR_HUDCURSOR_H__

@@ -22,15 +22,34 @@
 
 CHUDCursor::CHUDCursor()
 {    
-	Stream		= Device.Streams.Create	(FVF::F_TL,4);
-	hShader		= Device.Shader.Create	("font","ui\\cursor",FALSE);
+	hShader			= 0;
+	Stream			= 0;
+	OnDeviceCreate	();
+	
+	Device.seqDevCreate.Add		(this);
+	Device.seqDevDestroy.Add	(this);
 }
 
 CHUDCursor::~CHUDCursor()
 {
+	Device.seqDevCreate.Remove	(this);
+	Device.seqDevDestroy.Remove	(this);
+	
+	Stream			= 0;
+	OnDeviceDestroy	();
+}
+
+void CHUDCursor::OnDeviceDestroy()
+{
 	Device.Shader.Delete(hShader);
 }
- 
+void CHUDCursor::OnDeviceCreate()
+{
+	REQ_CREATE	();
+	Stream		= Device.Streams.Create	(FVF::F_TL,4);
+	hShader		= Device.Shader.Create	("font","ui\\cursor",FALSE);
+}
+
 void CHUDCursor::Render()
 {
 	Fvector		p1,p2,dir;

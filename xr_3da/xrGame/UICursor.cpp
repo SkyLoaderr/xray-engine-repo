@@ -13,36 +13,16 @@ CUICursor::CUICursor()
 {    
 	vPos.set		(0.f,0.f);
 
-	hShader			= 0;
-	Stream			= 0;
-	OnDeviceCreate	();
-	
-	Device.seqDevCreate.Add		(this);
-	Device.seqDevDestroy.Add	(this);
+	Stream		= Device.Streams.Create	(FVF::F_TL,4);
+	hShader		= Device.Shader.Create	("font","ui\\ui_cursor",FALSE);
 }
 //--------------------------------------------------------------------
 
 CUICursor::~CUICursor()
 {
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-	
-	Stream			= 0;
-	OnDeviceDestroy	();
-}
-//--------------------------------------------------------------------
-void CUICursor::OnDeviceDestroy()
-{
 	Device.Shader.Delete(hShader);
 }
-void CUICursor::OnDeviceCreate()
-{
-	REQ_CREATE	();
-	Stream		= Device.Streams.Create	(FVF::F_TL,4);
-	hShader		= Device.Shader.Create	("font","ui\\ui_cursor",FALSE);
-}
-
-
+//--------------------------------------------------------------------
 void CUICursor::Render()
 {
 	// actual rendering
