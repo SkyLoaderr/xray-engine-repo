@@ -63,8 +63,15 @@
 	<info_portion id="rat_swarm">
 	</info_portion>	
 
-	<info_portion id="spawn_rat">
+	<info_portion id="trup1">
 	</info_portion>	
+
+	<info_portion id="trup2">
+	</info_portion>	
+
+	<info_portion id="trup3">
+	</info_portion>	
+
 
 	<info_portion id="start">
 	</info_portion>	
