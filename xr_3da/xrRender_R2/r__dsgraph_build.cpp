@@ -23,7 +23,7 @@ float		r_ssaHZBvsTEX;
 
 IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 {
-	float R	= V->vis.sphere.R + ps_r__LOD_Power;
+	float R	= V->vis.sphere.R + 0;
 	distSQ	= Device.vCameraPosition.distance_to_sqr(C)+EPS;
 	return	R/distSQ;
 }
