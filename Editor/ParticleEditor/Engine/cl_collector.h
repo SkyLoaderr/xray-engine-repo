@@ -16,11 +16,11 @@ namespace RAPID {
 		vector<Fvector>	verts;
 		vector<tri>		faces;
 
-		IC DWORD		VPack(Fvector& V)
+		IC DWORD		VPack(Fvector& V, float eps)
 		{
 			vector<Fvector>::iterator I,E;
 			I=verts.begin(); E=verts.end();
-			for (;I!=E;I++) if (I->similar(V,EPS_S)) return (I-verts.begin());
+			for (;I!=E;I++) if (I->similar(V,eps)) return (I-verts.begin());
 			verts.push_back(V);
 			return verts.size()-1;
 		}
@@ -50,13 +50,14 @@ namespace RAPID {
 		void			add_face_packed(
 			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
 			DWORD e01, DWORD e12, DWORD e20,		// edges
-			WORD material, WORD sector, DWORD dummy	// misc
+			WORD material, WORD sector, DWORD dummy,// misc
+			float eps = EPS
 			)
 		{
 			tri T;
-			T.IDverts()	[0] = VPack(v0);
-			T.IDverts()	[1] = VPack(v1);
-			T.IDverts()	[2] = VPack(v2);
+			T.IDverts()	[0] = VPack(v0,eps);
+			T.IDverts()	[1] = VPack(v1,eps);
+			T.IDverts()	[2] = VPack(v2,eps);
 			T.IDadj()	[0]	= e01;
 			T.IDadj()	[1]	= e12;
 			T.IDadj()	[2]	= e20;
