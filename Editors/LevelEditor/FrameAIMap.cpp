@@ -119,7 +119,7 @@ void __fastcall TfraAIMap::ebSideClick(TObject *Sender)
     else if (ebModeRemove->Down)	mode = ESceneAIMapTools::mdRemove;
     else if (ebModeInvert->Down)	mode = ESceneAIMapTools::mdInvert;
     TExtBtn* btn = dynamic_cast<TExtBtn*>(Sender); R_ASSERT(btn);
-	tools->MakeLinks(fl[ConvertV2L(btn->Tag)], mode);
+	tools->MakeLinks(fl[ConvertV2L(btn->Tag)], mode, ebIgnoreConstraints->Down);
     Scene.UndoSave();
     UI.RedrawScene();      
 }

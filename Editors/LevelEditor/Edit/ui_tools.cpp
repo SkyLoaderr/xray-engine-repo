@@ -229,7 +229,6 @@ bool TUI_Tools::Pick(TShiftState Shift)
     if( Scene.locked() && (esEditLibrary==UI.GetEState())){
         UI.IR_GetMousePosReal(Device.m_hRenderWnd, UI.m_CurrentCp);
         UI.m_StartCp = UI.m_CurrentCp;
-        Device.m_Camera.MouseRayFromPoint(UI.m_StartRStart, UI.m_StartRNorm, UI.m_StartCp );
         Device.m_Camera.MouseRayFromPoint(UI.m_CurrentRStart, UI.m_CurrentRNorm, UI.m_CurrentCp );
         SRayPickInfo pinf;
         TfrmEditLibrary::RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,&pinf);

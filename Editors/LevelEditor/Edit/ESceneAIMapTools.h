@@ -87,7 +87,7 @@ protected:
 	AINodeVec*			HashMap					(int ix, int iz);
 	AINodeVec*			HashMap					(Fvector& V);
 	SAINode*			FindNode				(Fvector& vAt, float eps=0.05f);
-	SAINode* 			FindNeighbor			(SAINode* N, int side);
+	SAINode* 			FindNeighbor			(SAINode* N, int side, bool bIgnoreConstraints);
 	void 				MotionSimulate			(Fvector& result, Fvector& start, Fvector& end, float _radius, float _height);
 
     void				RemoveNode				(AINodeIt N);
@@ -176,7 +176,7 @@ public:
 
     AINodeVec&			Nodes					(){return m_Nodes;}
     
-    void				MakeLinks				(u8 side_flag, EMode mode);
+    void				MakeLinks				(u8 side_flag, EMode mode, bool bIgnoreConstraints);
     void				RemoveLinks				();
     void				InvertLinks				();
 

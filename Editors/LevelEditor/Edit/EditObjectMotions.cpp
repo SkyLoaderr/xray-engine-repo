@@ -27,25 +27,6 @@ public:
 	IC bool operator() (CBone* B) { return (stricmp(B->WMap(),wm_name.c_str())==0); }
 };
 //----------------------------------------------------
-void st_AnimParam::Set(CCustomMotion* M)
-{
-	t=0;
-    min_t=(float)M->FrameStart()/M->FPS();
-    max_t=(float)M->FrameEnd()/M->FPS();
-    bPlay=true;
-}
-void st_AnimParam::Update(float dt, float speed, bool loop)
-{
-	if (!bPlay) return;
-	t+=speed*dt;
-    if (t>max_t){
-#ifdef _EDITOR
-		if (loop) t=t-max_t+min_t; else
-#endif
-		t=max_t;
-	}
-}
-
 #ifdef _EDITOR
 void CEditableObject::OnFrame()
 {

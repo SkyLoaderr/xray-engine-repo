@@ -234,6 +234,7 @@ void __fastcall TfrmEditLightAnim::ebReloadClick(TObject *Sender)
 	m_CurrentItem = 0;
 	LALib.Reload();
 //	bFreezeUpdate = true;
+	m_Props->ClearProperties();
     InitItems();
 //	bFreezeUpdate = false;
 }

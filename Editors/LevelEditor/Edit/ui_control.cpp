@@ -176,6 +176,8 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift){
 
     if (Shift.Contains(ssCtrl)){
 	    Fvector p,n;
+		UI.IR_GetMousePosReal(Device.m_hRenderWnd, UI.m_CurrentCp);
+        Device.m_Camera.MouseRayFromPoint(UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.m_CurrentCp);
     	if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)){
             EObjClass cls = Tools.CurrentClassID();
             for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){

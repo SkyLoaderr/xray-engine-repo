@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 956
+  Height = 885
   HorzScrollBar.ButtonSize = 1
   HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False
@@ -574,7 +574,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 282
       Width = 198
-      Height = 231
+      Height = 224
       Align = alTop
       Color = 10528425
       TabOrder = 2
@@ -1166,7 +1166,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebTargetGroup: TExtBtn
         Left = 2
-        Top = 166
+        Top = 165
         Width = 195
         Height = 15
         Align = alNone
@@ -1227,7 +1227,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebTargetPS: TExtBtn
         Left = 2
-        Top = 181
+        Top = 179
         Width = 195
         Height = 15
         Align = alNone
@@ -1349,7 +1349,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebTargetDO: TExtBtn
         Left = 2
-        Top = 199
+        Top = 193
         Width = 195
         Height = 15
         Align = alNone
@@ -1410,7 +1410,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebTargetAIMap: TExtBtn
         Left = 2
-        Top = 214
+        Top = 207
         Width = 195
         Height = 15
         Align = alNone
@@ -1472,7 +1472,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 513
+      Top = 506
       Width = 198
       Height = 124
       Align = alTop
@@ -1690,7 +1690,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 13
+    Version = 14
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'

@@ -73,7 +73,7 @@ bool CSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
         u32 idx = (inner<<16)|(outer);
 
         // append to collector
-		Fmatrix M			= E->get_box();
+		Fmatrix M;	E->get_box	(M);
         
         Fvector bv[DU_BOX_NUMVERTEX];
         for (int k=0; k<DU_BOX_NUMVERTEX; k++) M.transform_tiny(bv[k],du_box_vertices[k]);

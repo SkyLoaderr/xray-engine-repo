@@ -51,8 +51,8 @@ bool ESoundEnvironment::GetBox( Fbox& box )
 
 void ESoundEnvironment::Render(int priority, bool strictB2F)
 {
-	m_Shape->m_bSelected 	= Selected();
-    m_Shape->m_bLocked		= Locked();
+	m_Shape->Select			(Selected());
+    m_Shape->Lock			(Locked());
     m_Shape->Render			(priority,strictB2F);
 }
 
@@ -141,12 +141,11 @@ void ESoundEnvironment::Scale(Fvector& amount)
 	m_Shape->Scale(amount);
 }
 
-const Fmatrix& ESoundEnvironment::get_box()
+void ESoundEnvironment::get_box(Fmatrix& m)
 {
 	CSE_Shape::shape_def& shape = m_Shape->get_shape(0);
     R_ASSERT(shape.type==CSE_Shape::cfBox);
-    Fmatrix M			= shape.data.box;
-    M.mulA				(m_Shape->_Transform());
+    m.mul				(m_Shape->_Transform(),shape.data.box);
 }
 
 void ESoundEnvironment::OnSceneUpdate()

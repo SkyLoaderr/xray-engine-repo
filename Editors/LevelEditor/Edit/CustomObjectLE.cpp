@@ -85,10 +85,10 @@ void CCustomObject::Move(Fvector& amount)
     Fvector v=PPosition;
     Fvector r=PRotation;
     if (fraTopBar->ebMoveToSnap->Down){
-        bool bVis=m_bVisible;
-        m_bVisible=false;
-    	SnapMove(v,r,FTransformRP,amount);
-        m_bVisible=bVis;
+        BOOL bVis	= Visible();
+        Show		(FALSE);
+    	SnapMove	(v,r,FTransformRP,amount);
+        Show		(bVis);
     }else{
 	    v.add(amount);
     }

@@ -107,10 +107,10 @@ bool CSceneObject::GetUTBox( Fbox& box )
 	return true;
 }
 
-bool __inline CSceneObject::IsRender()
+bool CSceneObject::IsRender()
 {
 	if (!m_pReference) return false;
-    return ::Render->occ_visible(m_TBBox);
+    return ::Render->occ_visible(m_TBBox)||inherited::IsRender();
 }
 
 void CSceneObject::Render(int priority, bool strictB2F)
@@ -255,8 +255,10 @@ void __fastcall CSceneObject::ReferenceChange(PropValue* sender)
 void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp	(pref,items);
-    PropValue* V		= PHelper.CreateALibObject	(items,FHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); 
+    PropValue* V		= PHelper.CreateALibObject	(items,FHelper.PrepareKey(pref,"Reference"),		&m_ReferenceName); 
     V->OnChangeEvent 	= ReferenceChange;
+    if (IsDynamic())
+	    inherited::AnimationFillProp(pref,items);
 }
 
 bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)

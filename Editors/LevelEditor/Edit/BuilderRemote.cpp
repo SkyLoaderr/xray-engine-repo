@@ -186,21 +186,28 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
     // fill faces
     for (SurfFacesPairIt sp_it=mesh->m_SurfFaces.begin(); sp_it!=mesh->m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
-        CSurface* surf = sp_it->first;
-		u32 dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
-        R_ASSERT(dwTexCnt==1);
+        CSurface* surf 		= sp_it->first;
+        int m_id			= BuildMaterial(surf,sect_num);
+		int gm_id			= surf->_GameMtl(); 
+        if (m_id<0)			{ bResult = FALSE; break; }
+        if (gm_id<0){ 
+        	ELog.DlgMsg		(mtError,"Surface: '%s' contains bad game material.",surf->_Name());
+        	bResult 		= FALSE; 
+            break; 
+        }
+		u32 dwTexCnt 		= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+        if (dwTexCnt!=1){ 
+        	ELog.DlgMsg		(mtError,"Surface: '%s' contains more than 1 texture refs.",surf->_Name());
+        	bResult 		= FALSE; 
+            break; 
+        }
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
             R_ASSERT(face_it<face_cnt);
             b_face& first_face 		= faces[face_it++];
         	{
-                int m_id			= BuildMaterial(surf,sect_num);
-                if (m_id<0){
-                	bResult 		= FALSE;
-                    break;
-                }
                 first_face.dwMaterial 		= m_id;
-                first_face.dwMaterialGame 	= surf->_GameMtl();
+                first_face.dwMaterialGame 	= gm_id; 
                 for (int k=0; k<3; k++){
                     st_FaceVert& fv = face.pv[k];
                     // vertex index

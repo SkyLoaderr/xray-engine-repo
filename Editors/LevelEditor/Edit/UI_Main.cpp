@@ -32,8 +32,6 @@ TUI::TUI()
     m_D3DWindow = 0;
     bNeedAbort   = false;
 
-	m_StartRStart.set(0,0,0);
-	m_StartRNorm.set(0,0,0);
 	m_CurrentRStart.set(0,0,0);
 	m_CurrentRNorm.set(0,0,0);
 
@@ -199,8 +197,6 @@ void TUI::MousePress(TShiftState Shift, int X, int Y)
             }else{
                 IR_GetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
                 m_StartCp = m_CurrentCp;
-
-                Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
             }
 

@@ -22,7 +22,7 @@ void CEditableObject::FillSurfaceProps(CSurface* SURF, LPCSTR pref, PropItemVec&
     V=PHelper.CreateATexture(items, FHelper.PrepareKey(pref,"Texture"), 	&SURF->m_Texture);					V->OnChangeEvent=OnChangeShader;
     V=PHelper.CreateAEShader(items, FHelper.PrepareKey(pref,"Shader"), 		&SURF->m_ShaderName);				V->OnChangeEvent=OnChangeShader;
     V=PHelper.CreateACShader(items, FHelper.PrepareKey(pref,"Compile"), 	&SURF->m_ShaderXRLCName);
-    V=PHelper.CreateAGameMtl(items, FHelper.PrepareKey(pref,"Game Mtl"),	&SURF->m_GameMtlName);				V->OnChangeEvent=SURF->OnChangeGameMtl;
+    PHelper.CreateAGameMtl	(items, FHelper.PrepareKey(pref,"Game Mtl"),	&SURF->m_GameMtlName);
     V=PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"2 Sided"), 	&SURF->m_Flags, CSurface::sf2Sided);V->OnChangeEvent=OnChangeShader;
 }
 //---------------------------------------------------------------------------

@@ -87,6 +87,8 @@ public:
 					COMotion		(COMotion* src);
 	virtual			~COMotion		();
 
+	void			Clear			();
+
 	void			_Evaluate		(float t, Fvector& T, Fvector& R);
 	virtual void	Save			(IWriter& F);
 	virtual bool	Load			(IReader& F);
@@ -96,6 +98,14 @@ public:
 
 #ifdef _LW_EXPORT
 	void			ParseObjectMotion(LWItemID object);
+#endif
+#ifdef _EDITOR
+	void 			FindNearestKey	(float t, float& min_k, float& max_k, float eps=EPS_L);
+	void			CreateKey		(float t, const Fvector& P, const Fvector& R);
+	void			DeleteKey		(float t);
+    void			NormalizeKeys	();
+    int				KeyCount		();
+	CEnvelope*		Envelope		(EChannelType et=ctPositionX){return envs[et];}
 #endif
 };
 

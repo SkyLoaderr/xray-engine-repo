@@ -71,9 +71,6 @@ public:
 	Ivector2 m_StartCp;
 	Ivector2 m_CurrentCp;
 
-	Fvector m_StartRStart;
-	Fvector m_StartRNorm;
-
 	Fvector m_CurrentRStart;
 	Fvector m_CurrentRNorm;
 

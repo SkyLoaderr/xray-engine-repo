@@ -50,18 +50,27 @@ bool CCustomMotion::Load(IReader& F){
 //------------------------------------------------------------------------------------------
 // Object Motion
 //------------------------------------------------------------------------------------------
-COMotion::COMotion():CCustomMotion(){
+COMotion::COMotion():CCustomMotion()
+{
 	mtype			=mtObject;
-	ZeroMemory		(envs,sizeof(CEnvelope*)*ctMaxChannel);
+	for (int ch=0; ch<ctMaxChannel; ch++)
+		envs[ch]	= xr_new<CEnvelope> ();
 }
 
-COMotion::COMotion(COMotion* source):CCustomMotion(source){
+COMotion::COMotion(COMotion* source):CCustomMotion(source)
+{
 	// bone motions
 	for (int ch=0; ch<ctMaxChannel; ch++)
 		envs[ch]	= xr_new<CEnvelope> (source->envs[ch]);
 }
 
-COMotion::~COMotion(){
+COMotion::~COMotion()
+{
+	Clear			();
+}
+
+void COMotion::Clear()
+{
 	for (int ch=0; ch<ctMaxChannel; ch++) xr_delete(envs[ch]);
 }
 
@@ -91,23 +100,27 @@ bool COMotion::LoadMotion(const char* buf)
 	return Load		(F());
 }
 
-void COMotion::Save(IWriter& F){
+void COMotion::Save(IWriter& F)
+{
 	CCustomMotion::Save(F);
 	F.w_u16		(EOBJ_OMOTION_VERSION);
 	for (int ch=0; ch<ctMaxChannel; ch++)
 		envs[ch]->Save(F);
 }
 
-bool COMotion::Load(IReader& F){
+bool COMotion::Load(IReader& F)
+{
 	CCustomMotion::Load(F);
 	WORD vers	= F.r_u16();
     if (vers==0x0003){
+	    Clear	();
         for (int ch=0; ch<ctMaxChannel; ch++){
             envs[ch] = xr_new<CEnvelope> ();
             envs[ch]->Load_1(F);
         }
     }else{
 		if (vers!=EOBJ_OMOTION_VERSION) return false;
+	    Clear	();
         for (int ch=0; ch<ctMaxChannel; ch++){
             envs[ch] = xr_new<CEnvelope> ();
             envs[ch]->Load_2(F);
@@ -116,6 +129,38 @@ bool COMotion::Load(IReader& F){
 	return true;
 }
 
+#ifdef _EDITOR
+void COMotion::CreateKey(float t, const Fvector& P, const Fvector& R)
+{
+	envs[ctPositionX]->InsertKey(t,P.x);
+	envs[ctPositionY]->InsertKey(t,P.y);
+	envs[ctPositionZ]->InsertKey(t,P.z);
+	envs[ctRotationH]->InsertKey(t,R.x);
+	envs[ctRotationP]->InsertKey(t,R.y);
+	envs[ctRotationB]->InsertKey(t,R.z);
+}
+void COMotion::DeleteKey(float t)
+{
+	envs[ctPositionX]->DeleteKey(t);
+	envs[ctPositionY]->DeleteKey(t);
+	envs[ctPositionZ]->DeleteKey(t);
+	envs[ctRotationH]->DeleteKey(t);
+	envs[ctRotationP]->DeleteKey(t);
+	envs[ctRotationB]->DeleteKey(t);
+}
+int COMotion::KeyCount()
+{
+	return envs[ctPositionX]->keys.size();
+}
+void  COMotion::FindNearestKey(float t, float& mn, float& mx, float eps)
+{
+	KeyIt min_k;
+    KeyIt max_k;
+	envs[ctPositionX]->FindNearestKey(t, min_k, max_k, eps);
+    mn = (min_k!=envs[ctPositionX]->keys.end())?(*min_k)->time:t; 
+    mx = (max_k!=envs[ctPositionX]->keys.end())?(*max_k)->time:t; 
+}
+#endif
 
 
 //------------------------------------------------------------------------------------------

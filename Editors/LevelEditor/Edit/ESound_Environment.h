@@ -24,7 +24,7 @@ public:
     virtual Fvector& 	GetRotation	()						{ return m_Shape->PRotation;	}
 	virtual void 		SetRotation		(const Fvector& rot)	{ m_Shape->PRotation = rot;		}
 
-    const Fmatrix&		get_box		();
+    void				get_box			(Fmatrix& m);
 public:
 						ESoundEnvironment(LPVOID data, LPCSTR name);
 	void 				Construct		(LPVOID data);

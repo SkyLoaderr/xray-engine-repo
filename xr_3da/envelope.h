@@ -100,7 +100,7 @@ public:
 	KeyVec		keys;
 	int			behavior[2];
 public:
-				CEnvelope	(){behavior[0]=0;behavior[1]=0;}
+				CEnvelope	(){behavior[0]=1;behavior[1]=1;}
 				CEnvelope	(CEnvelope* source);
 	virtual		~CEnvelope	();
 
@@ -113,6 +113,11 @@ public:
 	void		LoadA		(IReader& F);
 
     void		RotateKeys	(float angle);
+
+    KeyIt		FindKey		(float t, float eps=EPS_L);
+    void		FindNearestKey(float t, KeyIt& min, KeyIt& max, float eps=EPS_L);
+    void		InsertKey	(float t, float val);                                   
+    void		DeleteKey	(float t);
 };
 
 #endif //_ENVELOPE_H_

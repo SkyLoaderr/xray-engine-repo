@@ -45,12 +45,11 @@ class CSurface
     u32				m_GameMtlID;
     ref_shader		m_Shader;
 	enum ERTFlags{
-         rtValidShader	= (1<<0),
+        rtValidShader	= (1<<0),
 	};
 public:
 	enum EFlags{
     	sf2Sided		= (1<<0),
-        sfValidGameMtlID= (1<<1),
     };
 	AnsiString		m_Name;
     AnsiString		m_Texture;	//
@@ -73,7 +72,6 @@ public:
 	CSurface		()
 	{
     	m_GameMtlName="default";
-        m_GameMtlID	= GAMEMTL_NONE;
 		m_Shader	= 0;
         m_RTFlags.zero	();
 		m_Flags.zero	();
@@ -111,19 +109,12 @@ public:
 #endif
 	}
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
-    IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;m_Flags.set(sfValidGameMtlID,FALSE);}
+    IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;}
     IC void			SetFVF			(u32 fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){string256 buf; strcpy(buf,name); if(strext(buf)) *strext(buf)=0; m_Texture=buf;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
 #ifdef _EDITOR
-    IC u32			_GameMtl		()
-    {
-    	if (!m_Flags.is(sfValidGameMtlID)){
-        	m_GameMtlID = GMLib.GetMaterialID(m_GameMtlName.c_str()); R_ASSERT(m_GameMtlID!=GAMEMTL_NONE);
-        	m_Flags.set(sfValidGameMtlID,TRUE);
-        }
-        return m_GameMtlID;
-    }
+    IC u32			_GameMtl		()const	{return GMLib.GetMaterialID	(m_GameMtlName.c_str());}
     IC void			OnDeviceCreate	()
     { 
         R_ASSERT(!m_RTFlags.is(rtValidShader));
@@ -136,8 +127,6 @@ public:
     	m_Shader.destroy();
         m_RTFlags.set(rtValidShader,FALSE);
     }
-	// properties
-	void __fastcall OnChangeGameMtl	(PropValue* sender){ m_Flags.set(sfValidGameMtlID,FALSE); }
 #endif
 };
 
@@ -146,19 +135,6 @@ DEFINE_VECTOR	(CSurface,SurfInstVec,SurfInstIt);
 DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
-
-struct st_AnimParam{
-    float			t;
-    float			min_t;
-    float			max_t;
-    bool			bPlay;
-    void			Set		(CCustomMotion* M);
-    float			Frame	()			{ return t;}
-    void			Update	(float dt, float speed, bool loop);
-    void			Play	(){bPlay=true; t=min_t;}
-    void			Stop	(){bPlay=false; t=min_t;}
-    void			Pause	(){bPlay=!bPlay;}
-};
 
 struct SBonePart{
 	AnsiString 		alias;
@@ -196,7 +172,7 @@ class CEditableObject{
     BPVec			m_BoneParts;
     CSMotion*		m_ActiveSMotion;
 public:
-    st_AnimParam	m_SMParam;
+    st_AnimParams	m_SMParam;
 public:
 	// options
 	Flags32			m_Flags;

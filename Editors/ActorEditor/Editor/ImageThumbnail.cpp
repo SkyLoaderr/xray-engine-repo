@@ -78,6 +78,7 @@ int EImageThumbnail::MemoryUsage()
 	        mem_usage *= cnt?cnt:1;
         }
     }
+    break;
     default: THROW;
     break;
     }

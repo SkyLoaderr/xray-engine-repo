@@ -293,7 +293,7 @@ CWayPoint* CWayObject::AppendWayPoint()
 void CWayObject::Select(int flag)
 {
     if (IsPointMode()){
-	    if (m_bSelected){
+	    if (Selected()){
         	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Select(flag);
         }
     }else{
@@ -325,7 +325,7 @@ bool CWayObject::RaySelect(int flag, const Fvector& start, const Fvector& dir, b
 bool CWayObject::FrustumSelect(int flag, const CFrustum& frustum)
 {
     if (IsPointMode()){
-	    if (m_bSelected){
+	    if (Selected()){
             bool bRes=false;
             for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
                 bRes|=(*it)->FrustumSelect(flag,frustum);

@@ -480,5 +480,7 @@ void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
     PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Visibility radius"),	&m_VisRadius, 10, 250);
     PHelper.CreateU32	(items, FHelper.PrepareKey(pref,"Brush size"),			&m_BrushSize, 1, 100);
+    PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Params\\Can Up"),		&m_Params.fCanUP, 	0.f, 10.f);
+    PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Params\\Can Down"),	&m_Params.fCanDOWN, 0.f, 10.f);
 }
 

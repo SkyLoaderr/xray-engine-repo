@@ -132,8 +132,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         else 	Device.dwFillMode 	= D3DFILL_SOLID;
 	    break;
     case COMMAND_RENDER_FOCUS:
-		if (frmMain->Visible&&m_bReady)
+		if (frmMain->Visible&&m_bReady){
         	m_D3DWindow->SetFocus();
+            
+        }
     	break;
     case COMMAND_UPDATE_CAPTION:
     	frmMain->UpdateCaption();

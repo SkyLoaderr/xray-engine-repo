@@ -15,6 +15,64 @@ CEnvelope::CEnvelope(CEnvelope* source)
     	keys[i]	= xr_new<st_Key> (*source->keys[i]);
 }
 
+void CEnvelope::FindNearestKey(float t, KeyIt& min_k, KeyIt& max_k, float eps)
+{
+	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++){
+    	if (fsimilar((*k_it)->time,t,eps)){
+        	max_k = k_it+1;
+        	min_k = (k_it==keys.begin())?k_it:k_it-1;
+        	return;
+        }
+    	if ((*k_it)->time>t){ 
+        	max_k = k_it;
+        	min_k = (k_it==keys.begin())?k_it:k_it-1;
+            return;
+        }
+    }
+    min_k=keys.empty()?keys.end():keys.end()-1;
+    max_k=keys.end();
+}
+
+KeyIt CEnvelope::FindKey(float t, float eps)
+{
+	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++){
+    	if (fsimilar((*k_it)->time,t,eps)) return k_it;
+    	if ((*k_it)->time>t) return keys.end();
+    }
+    return keys.end();
+}
+
+void CEnvelope::InsertKey(float t, float val)
+{	
+	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++){
+    	if (fsimilar((*k_it)->time,t,EPS_L)){ 
+        	(*k_it)->value= val;
+            return;
+        }
+        // insert before
+    	if ((*k_it)->time>t) break;
+    }
+    // create new key
+    st_Key* K 	= xr_new<st_Key>();
+    K->time 	= t;
+    K->value 	= val;
+    K->shape	= SHAPE_TCB; 
+    behavior[0]	= BEH_CONSTANT;
+    behavior[1]	= BEH_CONSTANT;
+    keys.insert	(k_it,K);
+}
+
+void CEnvelope::DeleteKey(float t)
+{	
+	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++){
+    	if (fsimilar((*k_it)->time,t,EPS_L)){ 
+        	xr_delete(*k_it);
+            keys.erase(k_it);
+            return;
+        }
+    }
+}
+
 void CEnvelope::RotateKeys(float angle)
 {
 	for (u32 i=0; i<keys.size(); i++)

@@ -11,15 +11,25 @@
 #include "customobject.h"
 #include "ui_main.h"
 #include "d3dutils.h"
+#include "motion.h"
 
 #define CUSTOMOBJECT_CHUNK_PARAMS 		0xF900
 #define CUSTOMOBJECT_CHUNK_LOCK	 		0xF902
 #define CUSTOMOBJECT_CHUNK_TRANSFORM	0xF903
 #define CUSTOMOBJECT_CHUNK_GROUP		0xF904
+#define CUSTOMOBJECT_CHUNK_MOTION		0xF905
+#define CUSTOMOBJECT_CHUNK_FLAGS		0xF906
+#define CUSTOMOBJECT_CHUNK_NAME			0xF907
 //----------------------------------------------------
 
 CCustomObject::~CCustomObject()
 {
+	xr_delete				(m_Motion);
+}
+
+bool CCustomObject::IsRender()
+{
+    return (Selected()&&m_CO_Flags.is(flMotion));
 }
 
 void CCustomObject::OnUpdateTransform()
@@ -34,43 +44,64 @@ void CCustomObject::OnUpdateTransform()
 	FTransform.mul			(FTransformRP,FTransformS);
     FITransformRP.invert	(FTransformRP);
     FITransform.invert		(FTransform);
+
+    if (Motionable()&&Visible()&&Selected()&&m_RT_Flags.is(flRT_AutoKey)) AnimationCreateKey(m_MotionParams.Frame());
 }
 
 void CCustomObject::Select( int flag )
 {
-    if (m_bVisible){
-        m_bSelected = (flag==-1)?(m_bSelected?false:true):flag;
-        UI.RedrawScene();
-        UI.Command	(COMMAND_UPDATE_PROPERTIES);
+    if (m_CO_Flags.is(flVisible)){
+        m_CO_Flags.set			(flSelected,(flag==-1)?(m_CO_Flags.is(flSelected)?FALSE:TRUE):flag);
+        UI.RedrawScene		();
+        UI.Command			(COMMAND_UPDATE_PROPERTIES);
     }
 }
 
 void CCustomObject::Show( BOOL flag )
 {
-    m_bVisible = flag;
-    if (!m_bVisible) m_bSelected = false;
+	m_CO_Flags.set	   	(flVisible,flag);
+    if (!m_CO_Flags.is(flVisible)) m_CO_Flags.set(flSelected, FALSE);
     UI.RedrawScene();
 };
 
 void CCustomObject::Lock( BOOL flag )
 {
-	m_bLocked = flag;
+	m_CO_Flags.set(flLocked,flag);
 };
 
 bool CCustomObject::Load(IReader& F)
 {
-    R_ASSERT(F.find_chunk(CUSTOMOBJECT_CHUNK_PARAMS));
-	m_bSelected 	= F.r_u16();
-	m_bVisible   	= F.r_u16();
-	F.r_stringZ		(FName);
+    if (F.find_chunk(CUSTOMOBJECT_CHUNK_FLAGS)){
+        m_CO_Flags.set 	(F.r_u32());
+    	
+        R_ASSERT(F.find_chunk(CUSTOMOBJECT_CHUNK_NAME));
+        F.r_stringZ		(FName);
+    }else{
+    	
+        R_ASSERT(F.find_chunk(CUSTOMOBJECT_CHUNK_PARAMS));
+        m_CO_Flags.set	(flSelected,F.r_u16());
+        m_CO_Flags.set 	(flVisible,	F.r_u16());
+        F.r_stringZ		(FName);
 
-	if(F.find_chunk(CUSTOMOBJECT_CHUNK_LOCK))
-		m_bLocked	= F.r_u16();
+        if(F.find_chunk(CUSTOMOBJECT_CHUNK_LOCK))
+            m_CO_Flags.set	(flLocked, F.r_u16());
+    }
 
 	if(F.find_chunk(CUSTOMOBJECT_CHUNK_TRANSFORM)){
         F.r_fvector3(FPosition);
         F.r_fvector3(FRotation);
         F.r_fvector3(FScale);
+    }
+
+    // object motion
+    if (F.find_chunk(CUSTOMOBJECT_CHUNK_MOTION)){
+        m_Motion 	= xr_new<COMotion>();
+        if (!m_Motion->Load(F)){
+            ELog.Msg(mtError,"CustomObject: '%s' - motion has different version. Load failed.",Name);
+            xr_delete(m_Motion);
+        }
+	    m_MotionParams.Set(m_Motion);
+        AnimationUpdate(m_MotionParams.Frame());
     }
 
 //	UpdateTransform	(true); // нужно для секторов, иначе неправильный бокс
@@ -82,14 +113,12 @@ bool CCustomObject::Load(IReader& F)
 
 void CCustomObject::Save(IWriter& F)
 {
-	F.open_chunk	(CUSTOMOBJECT_CHUNK_PARAMS);
-	F.w_u16			(m_bSelected);
-	F.w_u16			(m_bVisible);
-	F.w_stringZ		(FName);
+	F.open_chunk	(CUSTOMOBJECT_CHUNK_FLAGS);
+	F.w_u32			(m_CO_Flags.get());
 	F.close_chunk	();
 
-	F.open_chunk	(CUSTOMOBJECT_CHUNK_LOCK);
-	F.w_u16			(m_bLocked);
+	F.open_chunk	(CUSTOMOBJECT_CHUNK_NAME);
+	F.w_stringZ		(FName);
 	F.close_chunk	();
 
 	F.open_chunk	(CUSTOMOBJECT_CHUNK_TRANSFORM);
@@ -97,19 +126,32 @@ void CCustomObject::Save(IWriter& F)
     F.w_fvector3 	(FRotation);
     F.w_fvector3 	(FScale);
 	F.close_chunk	();
+
+    // object motion
+    if (m_CO_Flags.is(flMotion)){
+    	VERIFY			(m_Motion);
+		F.open_chunk	(CUSTOMOBJECT_CHUNK_MOTION);
+		m_Motion->Save	(F);
+		F.close_chunk	();
+    }
 }
 //----------------------------------------------------
 
 void CCustomObject::OnFrame()
 {
+    if (m_Motion) 			AnimationOnFrame();
 	if (m_bUpdateTransform) OnUpdateTransform();
 }
 
 void CCustomObject::Render(int priority, bool strictB2F)
 {
-	if (fraBottomBar->miDrawObjectsPivot->Checked&&(1==priority)&&(false==strictB2F)&&(Selected())){
-    	Device.SetShader(Device.m_WireShader);
-    	DU.DrawObjectAxis(FTransformRP);
+	if ((1==priority)&&(false==strictB2F)){
+        if (fraBottomBar->miDrawObjectsPivot->Checked&&Selected()){
+            Device.SetShader(Device.m_WireShader);
+            DU.DrawObjectAxis(FTransformRP);
+        }
+        if (Visible()&&Selected()&&fraBottomBar->miDrawObjectAnimPath->Checked&&m_Motion)
+            AnimationDrawPath();
     }
 }
 

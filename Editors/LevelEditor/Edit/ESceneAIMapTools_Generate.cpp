@@ -689,7 +689,7 @@ void ESceneAIMapTools::InvertLinks()
     UpdateHLSelected	();
 }
 
-SAINode* ESceneAIMapTools::FindNeighbor(SAINode* N, int side)
+SAINode* ESceneAIMapTools::FindNeighbor(SAINode* N, int side, bool bIgnoreConstraints)
 {
 	Fvector Pos;
 	Pos.set			(N->Pos);
@@ -701,18 +701,38 @@ SAINode* ESceneAIMapTools::FindNeighbor(SAINode* N, int side)
 	case 3: Pos.z -= m_Params.fPatchSize; break;
     }
 	AINodeVec* nodes = HashMap(Pos);
-    float dy		= flt_max;
     SAINode* R		= 0;
     if (nodes)
-        for (AINodeIt I=nodes->begin(); I!=nodes->end(); I++)
-            if (fsimilar((*I)->Pos.x,Pos.x)&&fsimilar((*I)->Pos.z,Pos.z)){ 
-            	float _dy = _abs((*I)->Pos.y-Pos.y);
-            	if (_dy<dy){dy=_dy; R=*I;}
+		if (bIgnoreConstraints){
+		    float dy= flt_max;
+            for (AINodeIt I=nodes->begin(); I!=nodes->end(); I++)
+                if (fsimilar((*I)->Pos.x,Pos.x,EPS_L)&&fsimilar((*I)->Pos.z,Pos.z,EPS_L)){ 
+                    float _dy = _abs((*I)->Pos.y-Pos.y);
+                    if (_dy<dy){dy=_dy; R=*I;}
+                }
+        }else{
+		    SAINode* R_up	= 0;
+		    SAINode* R_down	= 0;
+		    float dy_up 	= flt_max;
+		    float dy_down 	= flt_max;
+            for (AINodeIt I=nodes->begin(); I!=nodes->end(); I++){
+                if (fsimilar((*I)->Pos.x,Pos.x,EPS_L)&&fsimilar((*I)->Pos.z,Pos.z,EPS_L)){ 
+                    float _dy = (*I)->Pos.y-Pos.y;
+                    float _ady= _abs(_dy);
+                    if (_dy>=0.f){
+                    	if ((_ady<m_Params.fCanUP)&&(_ady<dy_up))		{dy_up=_ady; R_up=*I;}
+                    }else{
+                    	if ((_ady<m_Params.fCanDOWN)&&(_ady<dy_down))	{dy_down=_ady; R_down=*I;}
+                    }
+                }
             }
+            if (dy_down<=dy_up)	R = R_down;
+            else			  	R = R_up;
+        }
     return R;
 }
 
-void ESceneAIMapTools::MakeLinks(u8 side_flag, EMode mode)
+void ESceneAIMapTools::MakeLinks(u8 side_flag, EMode mode, bool bIgnoreConstraints)
 {
 	if (!side_flag) return;
 	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
@@ -722,15 +742,15 @@ void ESceneAIMapTools::MakeLinks(u8 side_flag, EMode mode)
             	if (!(side_flag&fl[k])) continue;
             	switch (mode){
                 case mdAppend:{ 
-                    SAINode* S 				= FindNeighbor(T,k);
+                    SAINode* S 				= FindNeighbor(T,k,bIgnoreConstraints);
                     if (S&&S->flags.is(SAINode::flSelected)) T->n[k] = S;
                 }break;
                 case mdRemove:{ 
-                    SAINode* S 				= FindNeighbor(T,k);
-                    if (S) T->n[k] = 0;
+                    SAINode* S 				= FindNeighbor(T,k,bIgnoreConstraints);
+                    if (S&&S->flags.is(SAINode::flSelected)) T->n[k] = 0;
                 }break;
                 case mdInvert:{ 
-                    SAINode* S 				= FindNeighbor(T,k);
+                    SAINode* S 				= FindNeighbor(T,k,bIgnoreConstraints);
                     if (S){
                     	if (!T->flags.is(fl[k])){ 
                             if (T->n[k]&&S->n[opposite[k]]) continue;
@@ -750,42 +770,7 @@ void ESceneAIMapTools::MakeLinks(u8 side_flag, EMode mode)
 		(*a_it)->flags.set(SAINode::flN1|SAINode::flN2|SAINode::flN3|SAINode::flN4,FALSE);
     UpdateHLSelected	();
 }
-/*
-void ESceneAIMapTools::MakeLinks(bool bUp, bool bDown)
-{
-    // copy selected nodes
-    g_nodes.clear();
-	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
-    	if ((*it)->flags.is(SAINode::flSelected)) g_nodes.push_back(*it);
-    // make links
-	for (it=g_nodes.begin(); it!=g_nodes.end(); it++){
-    	SAINode* T 						= *it;
-    	for (int k=0; k<4; k++){
-        	if (!T->flags.is(fl[k])){
-                SAINode* N 					= FindNeighbor(T,g_nodes,k);
-                if (N){
-                    if (bUp&&bDown){
-                        T->n[k] 			= N; T->flags.set(fl[k],TRUE);
-                        N->n[opposite[k]] 	= T; N->flags.set(fl[opposite[k]],TRUE);
-                    }else{
-                        if (bUp){
-                        	if (T->Pos.y<N->Pos.y){T->n[k] = N;/ N->n[opposite[k]]=0;/}
-                        }
-                        if (bDown)
-                        	if (T->Pos.y>N->Pos.y){T->n[k] = N;/ N->n[opposite[k]]=0;/}
-                    }
-                }
-                T->flags.set(fl[k],TRUE);
-            }
-        }
-    }
-    // reset processing flag
-	for (it=g_nodes.begin(); it!=g_nodes.end(); it++)
-		(*it)->flags.set(SAINode::flN1|SAINode::flN2|SAINode::flN3|SAINode::flN4,FALSE);
 
-    UpdateHLSelected	();
-}
-*/
 #define		merge(pt)	if (fsimilar(P.y,REF.y,0.5f)) { c++; pt.add(P); }
 void ESceneAIMapTools::SmoothNodes()
 {
