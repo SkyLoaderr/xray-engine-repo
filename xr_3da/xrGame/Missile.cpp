@@ -155,6 +155,11 @@ void CMissile::OnH_B_Independent() {
 		//a_vel.set(::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI),::Random.randF(ri*2.f*M_PI,ri*3.f*M_PI));
 
 		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
+		//dMass m;
+		//dMassSetBox(&m,1.f,1.f,1.f,1.f);
+		//dMassAdjust(&m,3.f);
+	
+		//dBodySetMass(m_pPhysicsShell->get_ElementByStoreOrder(0)->get_body(),&m);
 		XFORM().set(l_p1);
 		Position().set(XFORM().c);
 	}
