@@ -5,7 +5,7 @@ function set_storyline(object, char_ini)
        char_ini:line_exist("bobik", "enabled") == true and
        char_ini:r_bool("bobik", "enabled") == true
     then
-        escape_bobic.add_to_binder(object)
+        escape_bobik.add_to_binder(object)
     end
 
 
