@@ -15,6 +15,17 @@
 #include "blenders\blender_recorder.h"
 
 //--------------------------------------------------------------------------------------------------------------
+template <class T>
+BOOL	reclaim		(xr_vector<T*>& vec, const T* ptr)
+{
+	xr_vector<T*>::iterator it	= vec.begin	();
+	xr_vector<T*>::iterator end	= vec.end	();
+	for (; it!=end; it++)
+		if (*it == ptr)	{ vec.erase	(it); return TRUE; }
+		return FALSE;
+}
+
+//--------------------------------------------------------------------------------------------------------------
 IBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 {
 	R_ASSERT(Name && Name[0]);
@@ -103,6 +114,12 @@ ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
 	ShaderElement*	N		= xr_new<ShaderElement>(S);
 	v_elements.push_back	(N);
 	return N;
+}
+
+void CShaderManager::_DeleteElement(const ShaderElement* S)
+{
+	if (reclaim(v_elements,S))	return;
+	Msg	("! ERROR: Failed to find compiled 'shader-element'");
 }
 
 Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
@@ -203,30 +220,10 @@ Shader*	CShaderManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_texture
 	return N;
 }
 
-void CShaderManager::_DeleteElement(ShaderElement* &S)
+void CShaderManager::Delete(const Shader* S)
 {
-	if (0==S)				return;
-
-	for (u32 p=0; p<S->Passes.size(); p++)
-	{
-		SPass& P			= *S->Passes[p];
-		_DeleteState		(P.state);
-		_DeletePS			(P.ps);
-		_DeleteVS			(P.vs);
-		_DeleteTextureList	(P.T);
-		_DeleteMatrixList	(P.M);
-		_DeleteConstantList	(P.C);
-	}
-}
-
-void CShaderManager::Delete(Shader* &S)
-{
-	if (0==S)		return;
-
-	_DeleteElement	(S->E[2]);
-	_DeleteElement	(S->E[1]);
-	_DeleteElement	(S->E[0]);
-	S				= 0;
+	if (reclaim(v_shaders,S))	return;
+	Msg	("! ERROR: Failed to find complete shader");
 }
 
 void	CShaderManager::DeferredUpload	()

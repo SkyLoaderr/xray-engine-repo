@@ -9,10 +9,10 @@ public:
 };
 class	ENGINE_API	xr_resource_named	:	public xr_resource		{
 public:
-	const char *	cName;
+	char *			cName;
 
-	const char * 	set_name			( const char * name)	
-	{ 
+	char *			set_name			( const char * name)	
+	{
 		xr_free		(cName);
 		cName		= xr_strdup(name);
 		return		cName;

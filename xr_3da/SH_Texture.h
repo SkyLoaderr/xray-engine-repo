@@ -6,7 +6,7 @@
 
 class ENGINE_API CAviPlayerCustom;
 
-class ENGINE_API CTexture			: public xr_resource									{
+class ENGINE_API CTexture			: public xr_resource_named				{
 public:
 	IDirect3DBaseTexture9*				pSurface;
 	CAviPlayerCustom*					pAVI;
