@@ -75,7 +75,7 @@ void CBuild::ResolveMaterials()
 	xr_vector<Fbox> bbox;
 	xr_vector<int>	 id;
 
-	float merge_lim = g_params.m_SS_maxsize*g_params.m_SS_merge_coeff;
+	float merge_lim = c_SS_maxsize*g_params.m_SS_merge_coeff;
 	for (int X=0; X<int(g_XSplit.size()); X++)
 	{
 		// calc bounding box
@@ -181,9 +181,9 @@ void CBuild::ResolveMaterials()
 
 		// analyze bb size
 		size.sub(bb.max,bb.min);
-		if  (	(size.y>g_params.m_SS_maxsize) 
-			||	(size.x>g_params.m_SS_maxsize)
-			||	(size.z>g_params.m_SS_maxsize)
+		if  (	(size.y>g_params.c_SS_maxsize) 
+			||	(size.x>g_params.c_SS_maxsize)
+			||	(size.z>g_params.c_SS_maxsize)
 			||	(int(g_XSplit[X].size()) > g_params.m_SS_High)
 			) 
 		{

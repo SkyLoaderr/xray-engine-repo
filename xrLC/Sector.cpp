@@ -55,7 +55,7 @@ void CSector::BuildHierrarhy	()
 	delimiter		*=	2;
 
 	int		iLevel	=	2;
-	float	SizeLimit = g_params.m_SS_maxsize/4.f;
+	float	SizeLimit = c_SS_maxsize/4.f;
 	if		(SizeLimit<4.f) SizeLimit=4.f;
 	for (; SizeLimit<=delimiter; SizeLimit*=2)
 	{

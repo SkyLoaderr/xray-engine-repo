@@ -4,6 +4,7 @@ const	u32								c_LMAP_size			= 1024;
 const	u32								c_VB_maxSize		= 4096*1024;
 const	u32								c_VB_maxVertices	= 65535;
 const	u32								c_vCacheSize		= 24;
+const	u32								c_SS_maxsize		= 48;
 const	u32								c_PM_LowVertLimit	= 128;
 
 #include "xrPool.h"

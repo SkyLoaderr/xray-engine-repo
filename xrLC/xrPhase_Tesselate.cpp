@@ -6,7 +6,7 @@ void CBuild::Tesselate	()
 	u32	cnt_splits	= 0;
 	g_bUnregister		= FALSE;
 	
-	const float	tess	= g_params.m_SS_maxsize/2.5f;
+	const float	tess	= c_SS_maxsize/2.5f;
 
 	for (int I=0; I<int(g_faces.size()); I++)
 	{

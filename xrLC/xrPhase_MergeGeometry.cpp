@@ -37,9 +37,9 @@ BOOL	NeedMerge		(vecFace& subdiv, Fbox& bb_base)
 	bb_base.grow		(EPS_S);	// Enshure non-zero volume
 
 	Fvector sz_base;	bb_base.getsize(sz_base);
-	if (sz_base.x<g_params.m_SS_maxsize)		return TRUE;
-	if (sz_base.y<g_params.m_SS_maxsize)		return TRUE;
-	if (sz_base.z<g_params.m_SS_maxsize)		return TRUE;
+	if (sz_base.x<c_SS_maxsize)		return TRUE;
+	if (sz_base.y<c_SS_maxsize)		return TRUE;
+	if (sz_base.z<c_SS_maxsize)		return TRUE;
 	return FALSE;
 }
 
@@ -75,9 +75,9 @@ IC BOOL	ValidateMerge	(u32 f1, Fbox& bb_base, u32 f2, Fbox& bb, float& volume)
 	// Size
 	Fbox	merge;	merge.merge		(bb_base,bb);
 	Fvector sz;		merge.getsize	(sz);
-	if (sz.x>(4*g_params.m_SS_maxsize/3))			return FALSE;	// Don't exceed limits (4/3 GEOM)
-	if (sz.y>(4*g_params.m_SS_maxsize/3))			return FALSE;
-	if (sz.z>(4*g_params.m_SS_maxsize/3))			return FALSE;
+	if (sz.x>(4*c_SS_maxsize/3))			return FALSE;	// Don't exceed limits (4/3 GEOM)
+	if (sz.y>(4*c_SS_maxsize/3))			return FALSE;
+	if (sz.z>(4*c_SS_maxsize/3))			return FALSE;
 
 	// Volume
 	Fbox		bb0,bb1;

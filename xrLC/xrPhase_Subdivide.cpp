@@ -38,9 +38,9 @@ void CBuild::xrPhase_Subdivide()
 		// analyze if we need to split
 		size.sub(bb.max,bb.min);
 		BOOL	bSplit	= FALSE;
-		if  	(size.x>g_params.m_SS_maxsize)					bSplit	= TRUE;
-		if		(size.y>g_params.m_SS_maxsize)					bSplit	= TRUE;
-		if		(size.z>g_params.m_SS_maxsize)					bSplit	= TRUE;
+		if  	(size.x>c_SS_maxsize)					bSplit	= TRUE;
+		if		(size.y>c_SS_maxsize)					bSplit	= TRUE;
+		if		(size.z>c_SS_maxsize)					bSplit	= TRUE;
 		if		(int(g_XSplit[X]->size()) > g_params.m_SS_High)	bSplit	= TRUE;
 		CDeflector*	defl_base	= (CDeflector*)g_XSplit[X]->front()->pDeflector;
 		if		(!bSplit && defl_base)	{
