@@ -136,7 +136,7 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 		}
 
 		// Register
-		mapVertIt	ins			= g_trans.insert(make_pair(key,v_vertices()));
+		mapVertIt	ins			= g_trans.insert(mk_pair(key,v_vertices()));
 		ins->second.reserve		(32);
 		ins->second.push_back	(V);
 	}

@@ -95,7 +95,7 @@ public:
 						xr_vector<CALifeObject*> tpTemp;
 						tpTemp.clear();
 						tpTemp.push_back(tpALifeObject);
-						tpSGMap.insert(make_pair(tpALifeObject->m_dwSpawnGroup,tpTemp));
+						tpSGMap.insert(mk_pair(tpALifeObject->m_dwSpawnGroup,tpTemp));
 					}
 					else
 						(*I).second.push_back(tpALifeObject);
