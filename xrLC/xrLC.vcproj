@@ -46,9 +46,10 @@
 				AssemblerListingLocation=".\Release/"
 				ObjectFile="Debug/"
 				ProgramDataBaseFileName="Debug/"
-				BrowseInformation="1"
+				BrowseInformation="0"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
@@ -115,9 +116,10 @@
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
-				BrowseInformation="1"
+				BrowseInformation="0"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
@@ -193,13 +195,13 @@
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="Debug/xrLC.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile="Debug/"
-				ProgramDataBaseFileName="Debug/"
-				BrowseInformation="1"
+				AssemblerListingLocation="Mixed\"
+				ObjectFile="Mixed\"
+				ProgramDataBaseFileName="Mixed\"
+				BrowseInformation="0"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
@@ -215,8 +217,10 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
-				MapExports="TRUE"
-				SubSystem="2"/>
+				MapExports="FALSE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
