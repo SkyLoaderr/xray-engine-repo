@@ -21,7 +21,6 @@ function Guardian:start ()
     self.npc:script (true, self.script_name)
 	action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)), 
 			look (), anim (anims[self.curr_anim]), cond (cond.anim_end))
-	--action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)), look (look.search), anim (anim.free), cond (cond.time_end, math.random (5000, 10000)))
 	printf ("Start for object %s called", self.npc:name ())
 end
 
@@ -31,20 +30,16 @@ function Guardian:stop ()
 end
 
 function Guardian:setmove ()
---	local vec = vector ():set (math.random (-1000, 1000) / 1000, 0, math.random (-1000, 1000) / 1000)
---	vec:normalize ()
---	local newpos = vector():set (self.position.x + vec.x, self.position.y + vec.y, self.position.z + vec.z);
 	self:reset ()
 	action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)), look (look.search), anim (anim.free), cond (cond.time_end, math.random (5000, 10000)))
 end
 
 function Guardian:setanim ()
 	self.curr_anim = math.random (1, table.getn (anims))
-	self.num_repeats = math.random (1, num_anims[self.curr_anim])
-	printf ("Current animation %d for object %s", self.curr_anim, self.npc:name ())
+	self.num_repeats = 1
     self:reset ()
 	action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)), 
-			look (), anim (anims[self.curr_anim], aflags[self.curr_anim]), cond (cond.anim_end))
+			anim (anims[self.curr_anim], aflags[self.curr_anim]), cond (cond.anim_end))
 	printf ("Set anim called")
 end
 
@@ -57,32 +52,17 @@ function Guardian:process ()
 
 	if self.npc:action () then return end
 
---	self:reset ()
---	self:setanim ()
---	self:setmove ()
-
-
 	   if self.current_state == 0 then
-		  self.num_repeats = self.num_repeats - 1
-		  if self.num_repeats > 0 then
-			 self:reset ()
-			 action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
-					 look (), anim (anims[self.curr_anim]), cond (cond.anim_end))
-			 return
-			 end
  		  self.current_state = 1
 		  self:setmove ()	
 	   else
 		  self.current_state = 0
 		  self:setanim ()
-		  end
+ 	   end
 end
 
 
 function main ()
-
---	local t = classes.Test ()
---	t:start ()
 
 	local guard1 = military3_1.Guardian (get_level_object ("stalker_tower1"), military3_1.script_name (), "way_tower1")
 	local guard2 = military3_1.Guardian (get_level_object ("stalker_tower2"), military3_1.script_name (), "way_tower2")

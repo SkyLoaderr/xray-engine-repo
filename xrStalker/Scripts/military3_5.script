@@ -1,38 +1,5 @@
 -- скрипт патрульных сталкеров
 
---флаги для Animation Set
--- 0 - последовательное проигрывание анимаций
--- 1 - случайная анимация
-
---флаги для добавленых анимаций
--- 0 - проиграть один раз и забыть
--- 1 - возможен повтор
-
-class "AnimationSet"
-
-function AnimationSet:__init (flags)
-	self.anims_list = {}
-	self.anims_repeat = {}
-	self.flags = 0
-	self.current_animation = 0
-end
-
-function AnimationSet:add_animation (anim_name, repeat_flag)
-	table.insert (self.anims_list, anim_name)
-	table.insert (self.anims_repeat, repeat_flag)
-end
-
-function AnimationSet:get_animation ()
-	local size = table.getn (self.anims_list)
-	if size == 0 then return anim.free end
-	if self.flags == 0 then
-	   self.current_animation = self.current_animation  + 1
-	   if self.current_animation > size then self.current_animation = 1 end
-   	   return self.anims_list[self.current_animation]
-	   end
-	self.current_animation = math.random (1, size)
- 	return self.anims_list[self.current_animation]
-end
 
 -- состояния:
 -- 0 - в пути 
@@ -262,6 +229,8 @@ function main ()
 
 	patrol1:set_friend (patrol2)
 	patrol2:set_friend (patrol1)
+	patrol1.probability = 40
+	patrol2.probability = 40
 
   	patrol1:start ()
   	patrol2:start ()

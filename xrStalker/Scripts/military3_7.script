@@ -1,76 +1,33 @@
-function set_animation (npc)
-
-	local at = {"uslishal", "prisluh", "proverka_dver"}
-	reset_action (npc, military3_7.script_name ())
-    action (npc, move (move.standing, move.stand, move.line, patrol ("way_ptr30")),
-		 	anim (at[math.random (1, table.getn (at))]), cond (cond.anim_end))
-end
-
 function main ()
 
-  	local bredun1 = get_level_object ("stalker_ptr3")
-  	local bredun2 = get_level_object ("stalker_ptr4")
-  	local bredun3 = get_level_object ("stalker_ptr6")
-  	local bredun4 = get_level_object ("stalker_ptr7")
-  	local bredun5 = get_level_object ("stalker_ptr8")
+	local anims = classes.AnimationSet (1)
+	anims:add_animation ("uslishal", false)
+	anims:add_animation ("prisluh", false)
+	anims:add_animation ("proverka_dver", false)
+
+	local bredun1 = classes.SinglePatrol (get_level_object ("stalker_ptr3"), military3_7.script_name (), "way_ptr30", anims)
+	local bredun2 = classes.SinglePatrol (get_level_object ("stalker_ptr4"), military3_7.script_name (), "way_ptr40", anims)
+	local bredun3 = classes.SinglePatrol (get_level_object ("stalker_ptr6"), military3_7.script_name (), "way_ptr30", anims)
+	local bredun4 = classes.SinglePatrol (get_level_object ("stalker_ptr7"), military3_7.script_name (), "way_ptr40", anims)
+	local bredun5 = classes.SinglePatrol (get_level_object ("stalker_ptr8"), military3_7.script_name (), "way_ptr80", anims)
 
 	local actor = get_actor ()
   	local horror_sound = sound_object("rnd_the_horror4")
 
-  	bredun1:script (true, military3_7.script_name ())
-  	bredun2:script (true, military3_7.script_name ())
-  	bredun3:script (true, military3_7.script_name ())
-  	bredun4:script (true, military3_7.script_name ())
-  	bredun5:script (true, military3_7.script_name ())
-  	action (bredun1, move (move.standing, move.walk, move.line, patrol ("way_ptr30")),
-            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-  	action (bredun2, move (move.standing, move.walk, move.line, patrol ("way_ptr40")),
-            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-  	action (bredun3, move (move.standing, move.walk, move.line, patrol ("way_ptr30")),
-            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-  	action (bredun4, move (move.standing, move.walk, move.line, patrol ("way_ptr40")),
-            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-  	action (bredun5, move (move.standing, move.walk, move.line, patrol ("way_ptr80")),
-            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-
 	while true do 
-		  wait (5000) 
-		  if math.random (1, 100) < 5 then
-      		 horror_sound:play_at_pos (actor, actor:position (), 0);
-			 military3_7.set_animation (bredun1)
-			 military3_7.set_animation (bredun2)
-			 military3_7.set_animation (bredun3)
-			 military3_7.set_animation (bredun4)
-			 military3_7.set_animation (bredun5)
-			 while bredun1:action () do wait () end
-			 reset_action (bredun1, military3_7.script_name ())
-			 reset_action (bredun2, military3_7.script_name ())
-			 reset_action (bredun3, military3_7.script_name ())
-			 reset_action (bredun4, military3_7.script_name ())
-			 reset_action (bredun5, military3_7.script_name ())
-
-  			 action (bredun1, move (move.standing, move.walk, move.line, patrol ("way_ptr30")),
-          			 look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-  			 action (bredun2, move (move.standing, move.walk, move.line, patrol ("way_ptr40")),
-          			 look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-  			 action (bredun3, move (move.standing, move.walk, move.line, patrol ("way_ptr30")),
-          			 look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-  			 action (bredun4, move (move.standing, move.walk, move.line, patrol ("way_ptr40")),
-          			 look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-  			 action (bredun5, move (move.standing, move.walk, move.line, patrol ("way_ptr80")),
-          			 look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-	
-		  end	
-			
-			 
+		  bredun1:process ()		
+		  bredun2:process ()		
+		  bredun3:process ()		
+		  bredun4:process ()		
+		  bredun5:process ()		
+		  wait (5000)
 		  end
 
-
-  bredun1:script (false, military3_5.script_name ())
-  bredun2:script (false, military3_5.script_name ())
-  bredun3:script (false, military3_5.script_name ())
-  bredun4:script (false, military3_5.script_name ())
-  bredun5:script (false, military3_5.script_name ())
+  bredun1:finish ()
+  bredun2:finish ()
+  bredun3:finish ()
+  bredun4:finish ()
+  bredun5:finish ()
 
 
 end
