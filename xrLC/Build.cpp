@@ -217,6 +217,11 @@ void CBuild::Load	(const b_params& Params, const CStream& _in_FS)
 			F->Close		();
 		}
 
+		// ***Hack*** to merge all layers into one
+		for (u32 H=1; H<L_layers.size(); H++)
+			L_layers[0].lights.insert(L_layers[0].lights.end(),L_layers[H].lights.begin(),L_layers[H].lights.end());
+		L_layers.erase	(L_layers.begin()+1,L_layers.end());
+
 		// Dynamic
 		transfer("d-lights",	L_dynamic,			FS,		EB_Light_dynamic);
 	}
