@@ -7,7 +7,7 @@ using namespace CDB;
 using namespace Opcode;
 
 IC u32& uf		(float &x) { return (u32&)x; }
-BOOL	Pick2	(const Fvector& min, const Fvector& max, const Fvector& origin, const Fvector& dir, const Fvector& idir, Fvector& coord)
+IC BOOL	Pick2	(const Fvector& min, const Fvector& max, const Fvector& origin, const Fvector& dir, const Fvector& idir, Fvector& coord)
 {
 	Fvector				MaxT;
 	MaxT.x=MaxT.y=MaxT.z=-1.0f;
