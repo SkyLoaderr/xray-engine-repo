@@ -8,7 +8,8 @@
 #include "PSVisual.h"
 #include "fstaticrender.h"
 
-CPSObject::CPSObject(LPCSTR ps_name, CSector* S, bool bAutoRemove){
+CPSObject::CPSObject(LPCSTR ps_name, CSector* S, BOOL bAutoRemove)
+{
 	m_bAutoRemove	= bAutoRemove;
 
 	// create visual
@@ -20,7 +21,8 @@ CPSObject::CPSObject(LPCSTR ps_name, CSector* S, bool bAutoRemove){
 }
 //----------------------------------------------------
 
-CPSObject::~CPSObject(){
+CPSObject::~CPSObject()
+{
 }
 //----------------------------------------------------
 

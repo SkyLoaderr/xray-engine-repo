@@ -31,7 +31,7 @@ public:
 	Fvector			vNormal;
 	float			f_fov;
 public:
-					CCameraBase		( CObject* p, bool rlink );
+					CCameraBase		( CObject* p, BOOL rlink );
 	virtual			~CCameraBase	( );
 
 	virtual	void	OnActivate		( CCameraBase* old_cam ){;}
