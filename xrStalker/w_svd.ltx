@@ -21,15 +21,12 @@ ammo_class				= ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
 
 resource				= 6000
 
-cam_relax_speed         = 5
+cam_relax_speed         = 9
 cam_dispersion          = 2
-cam_max_angle			= 3
-fire_dispersion         = 0.025
-fire_dispersion_add     = 3
-fire_dispersion_relax   = 2
-fire_dispersion_base	 = 0.047 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)disp_vel_factor			= 0.1
-disp_crouch_factor		= 0.5
-disp_jump_factor		= 3
+cam_max_angle			= 6
+
+fire_dispersion_base         = 0.025
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability		= 0.5
 condition_shot_dec		= 0.0003
@@ -46,8 +43,7 @@ inv_grid_x			= 0
 inv_grid_y			= 0
 
 
-;cam_relax              = 0.37
-;cam_dispersion         = 2
+
 direction               = 0, 0, 1
 
 fire_point              = 0.0, 0.14, 0.95
@@ -64,8 +60,8 @@ hit_power                = 95
 hit_impulse		 		 = 145
 hit_type = wound
 
-fire_distance            = 500
-bullet_speed			 = 830			;начальная скорость пули
+fire_distance            = 600
+bullet_speed		 = 830			;начальная скорость пули
 rpm                      = 200
 ; end ttc
 hud                      = wpn_svd_hud
