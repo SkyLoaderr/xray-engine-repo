@@ -17,7 +17,8 @@
 #include "resource.h"
 #include "LightAnimLibrary.h"
 #include "ispatial.h"
-
+// 2446363
+// umbt@ukr.net
 //////////////////////////////////////////////////////////////////////////
 struct _SoundProcessor	: public pureFrame
 {
