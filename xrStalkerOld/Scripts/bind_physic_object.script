@@ -14,13 +14,20 @@ function init(obj)
 
 	local ini = obj:spawn_ini()
 	if ini and ini:section_exist("animation") then
-		obj:bind_object(handing_lamp_binder(obj))
+		--obj:bind_object(handing_lamp_binder(obj))
+		utils.abort("object '%s': animation section is deprecated, use logic + impulse combination",
+			obj:name())
 		return
 	end
 
 	----------------------------------------------------------------------------------------
 	-- Новые схемы
 	----------------------------------------------------------------------------------------
+
+	-- Биндить предмет нет смысла, если у него нет секции logic
+	if not ini or not ini:section_exist("logic") then
+		return
+	end
 
 	local new_binder = generic_physics_binder(obj)
 	obj:bind_object(new_binder)
@@ -103,53 +110,3 @@ function generic_physics_binder:load(reader)
 	xr_logic.load_obj(self.object, reader)
 end
 
-
-
---------------------------------------------------------------------------------
-class "handing_lamp_binder" (object_binder)
-function handing_lamp_binder:__init(obj) super(obj)
-	printf("Binding lamp")
-	self.type		= "low"
-	self.time		= 0
-	self.rnd		= 0
-	self.dir_x_axis = -1
-	self.dir_y_axis = -1
-	self.joint	= nil
-end
-
-function handing_lamp_binder:reload(section)
-	object_binder.reload(self, section)
-	
-	//'Читаем данные из кастом даты. Если неправильные данные, то ставим type = "low"
-	local ini	= self.object:spawn_ini()
-	if(ini:line_exist("animation", "type")) then
-		self.type = ini:r_string("animation", "type")
-		printf("read animation type: %s", self.type)
-	end
-	
-	if(self.type ~= "low" and self.type ~= "midle" and self.type ~= "hight") then
-		printf("WRONG TUNING HANDING LAMP")
-		self.type	= "low"
-	end
-	
-	self.time	= device():time_global()
-	self.dir_x_axis = 1
-	self.dir_z_axis	= 1
-	self.joint		= nil
-end
-
-function handing_lamp_binder:update(delta)
-	object_binder.update(self, delta)
-
-	if(self.joint == nil) then
-		self.joint	= self.object:get_physics_shell():get_joint_by_bone_name("provod")
-	end	
-	
-	if(device():time_global() > self.time) then
-		self.joint:set_max_force_and_velocity(0.5 + math.random(), 0.1 * self.dir_x_axis, 0)
-		self.joint:set_max_force_and_velocity(0.5 + math.random(), 0.1 * self.dir_z_axis, 2)
-		self.dir_x_axis  = self.dir_x_axis * (-1)
-		self.dir_z_axis = self.dir_z_axis * (-1)
-		self.time    = device():time_global() + math.random(800, 1000)
-	end				
-end
