@@ -46,6 +46,7 @@ void CScriptProcess::run_scripts()
 		xr_free		(I);
 		m_scripts_to_run.pop_back();
 
+		m_reload_modules	= true;
 		CScriptThread		*l_tpScript = xr_new<CScriptThread>(S);
 		xr_free		(S);
 
