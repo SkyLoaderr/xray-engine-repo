@@ -44,10 +44,50 @@ public:
 		return				(m_tpSound->handle->length_ms());
 	}
 
-			void				Play			(CLuaGameObject *object, float delay = 0.f, int flags = 0);
-			void				PlayUnlimited	(CLuaGameObject *object, float delay = 0.f, int flags = 0);
-			void				PlayAtPos		(CLuaGameObject *object, const Fvector &position, float delay = 0.f, int flags = 0);
-			void				PlayAtPosUnlimited(CLuaGameObject *object, const Fvector &position, float delay = 0.f, int flags = 0);
+	IC		void				Play			(CLuaGameObject *object)
+	{
+		Play					(object,0.f,0);
+	}
+
+	IC		void				Play			(CLuaGameObject *object, float delay)
+	{
+		Play					(object,delay,0);
+	}
+			
+			void				Play			(CLuaGameObject *object, float delay, int flags);
+
+	IC		void				PlayUnlimited	(CLuaGameObject *object)
+	{
+		PlayUnlimited			(object,0.f,0);
+	}
+
+	IC		void				PlayUnlimited	(CLuaGameObject *object, float delay)
+	{
+		PlayUnlimited			(object,delay,0);
+	}
+			void				PlayUnlimited	(CLuaGameObject *object, float delay, int flags);
+
+	IC		void				PlayAtPos		(CLuaGameObject *object, const Fvector &position)
+	{
+		PlayAtPos				(object,position,0.f,0);
+	}
+
+	IC		void				PlayAtPos		(CLuaGameObject *object, const Fvector &position, float delay)
+	{
+		PlayAtPos				(object,position,delay,0);
+	}
+			void				PlayAtPos		(CLuaGameObject *object, const Fvector &position, float delay, int flags);
+
+	IC		void				PlayAtPosUnlimited(CLuaGameObject *object, const Fvector &position)
+	{
+		PlayAtPosUnlimited		(object,position,0.f,0);
+	}
+
+	IC		void				PlayAtPosUnlimited	(CLuaGameObject *object, const Fvector &position, float delay)
+	{
+		PlayAtPosUnlimited		(object,position,delay,0);
+	}
+			void				PlayAtPosUnlimited(CLuaGameObject *object, const Fvector &position, float delay, int flags);
 
 	BIND_FUNCTION00	(m_tpSound,			Stop,				ref_sound,		stop);
 	BIND_FUNCTION01	(m_tpSound,			SetPosition,		ref_sound,		set_position,		const Fvector &,		const Fvector &);
