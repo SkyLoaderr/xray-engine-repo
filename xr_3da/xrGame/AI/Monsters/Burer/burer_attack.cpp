@@ -6,7 +6,6 @@
 #include "burer_attack_misc.h"
 #include "burer_attack.h"
 #include "burer.h"
-#include "../../ai_monster_debug.h"
 
 
 #define GRAVI_PERCENT		50

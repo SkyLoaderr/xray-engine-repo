@@ -35,9 +35,9 @@ void CScanningAbilityAbstract::schedule_update()
 	if (state == eStateNotActive) {
 		if (scan_obj->Position().distance_to(object->Position()) < scan_radius) state = eStateScanning;
 	}
+
 	if (state == eStateNotActive) return;
 
-	
 	if (state == eStateScanning) {
 		// обновить scan_value
 		float vel = get_velocity(scan_obj);
@@ -51,11 +51,11 @@ void CScanningAbilityAbstract::schedule_update()
 		}
 	}
 
-
 	if (scan_value > critical_value) {
 		on_scan_success();
 		state = eStateDisabled;
 	}
+
 }
 
 TEMPLATE_SPECIALIZATION
@@ -65,7 +65,7 @@ void CScanningAbilityAbstract::frame_update(u32 dt)
 
 	if (scan_value < 0) scan_value = 0.f;
 	else if (scan_value > 0) {
-		scan_value -= decrease_value * float(dt / 1000);
+		scan_value -= decrease_value * float(dt) / 1000;
 	}
 }
 
