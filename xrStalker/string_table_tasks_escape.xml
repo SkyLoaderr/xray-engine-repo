@@ -10,12 +10,12 @@
 		<text ln="rus">Помоги новичку достать оружие.</text>
 	</string>
 
-	<string id="storyline_eliminate_gunslinger">
+	<string id="storyline_escape_eliminate_gunslinger">
 		<text>Eliminate Gunslinger.</text>
 		<text ln="rus">Убить Стрелка.</text>
 	</string>
 
-	<string id="storyline_find_gunslinger">
+	<string id="storyline_escape_find_gunslinger">
 		<text>Find Gunslinger.</text>
 		<text ln="rus">Найти Стрелка.</text>
 	</string>

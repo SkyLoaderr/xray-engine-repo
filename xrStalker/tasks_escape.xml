@@ -16,15 +16,15 @@
 	</game_task>
 
 	<game_task id="storyline_eliminate_gunslinger">
-		<title>storyline_eliminate_gunslinger</title>
+		<title>storyline_escape_eliminate_gunslinger</title>
 		<objective>
-			<text>storyline_eliminate_gunslinger</text>
+			<text>storyline_escape_eliminate_gunslinger</text>
 		</objective>
 		<objective>
-			<text>storyline_find_gunslinger</text>
+			<text>storyline_escape_find_gunslinger</text>
 		</objective>
 		<objective>
-			<text>storyline_eliminate_gunslinger</text>
+			<text>storyline_escape_eliminate_gunslinger</text>
 		</objective>
 	</game_task>
 

@@ -21,7 +21,7 @@
         <location>
             <level></level>
             <object>000</object>
-			<icon name="Case" x="5" y="1" width="1" height="1"></icon>
+			<icon name="Case" x="5" y="1" width="1" height="1" r="0" g="50" b="255"></icon>
             <text>”красть €щик с блокпоста</text>
         </location>
         <task>escape_blockpost_case</task>
