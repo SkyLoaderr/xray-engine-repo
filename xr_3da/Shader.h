@@ -6,6 +6,11 @@
 #define SHADER__INCLUDED_
 #pragma once
 
+class	ENGINE_API	CShader;
+class	ENGINE_API	CTextureArray;
+class	ENGINE_API	CMatrixArray;
+class	ENGINE_API	CConstantArray;
+
 struct ENGINE_API	Shader
 {
 	CShader*		S;
