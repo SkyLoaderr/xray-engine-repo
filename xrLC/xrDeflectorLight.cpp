@@ -211,6 +211,11 @@ void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light
 	}
 }
 
+IC DWORD	rms_diff	(DWORD a, DWORD b)
+{
+	if (a>b)	return a-b;
+	else		return b-a;
+}
 VOID CDeflector::Light()
 {
 	HASH	hash;
@@ -318,9 +323,9 @@ VOID CDeflector::Light()
 				{
 					DWORD pixel	= lm.pSurface	[y*s_x+x];
 					if (RGBA_GETALPHA(pixel)>=254)	{
-						if (_abs(s32(RGBA_GETRED	(pixel))-s32(_r))>rms)	{ bCompress=FALSE; break; }
-						if (_abs(s32(RGBA_GETGREEN	(pixel))-s32(_g))>rms)	{ bCompress=FALSE; break; }
-						if (_abs(s32(RGBA_GETBLUE	(pixel))-s32(_b))>rms)	{ bCompress=FALSE; break; }
+						if (rms_diff(_r, RGBA_GETRED(pixel))>rms)	{ bCompress=FALSE; break; }
+						if (rms_diff(_g, RGBA_GETGREEN(pixel))>rms)	{ bCompress=FALSE; break; }
+						if (rms_diff(_b, RGBA_GETBLUE(pixel))>rms)	{ bCompress=FALSE; break; }
 					}
 				}
 				if (!bCompress) break;

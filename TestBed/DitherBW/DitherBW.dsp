@@ -139,12 +139,14 @@ SOURCE=.\xrImage_Resampler.cpp
 
 !IF  "$(CFG)" == "DitherBW - Win32 Release"
 
-# PROP Exclude_From_Build 1
-
 !ELSEIF  "$(CFG)" == "DitherBW - Win32 Debug"
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrImage_Resampler.h
 # End Source File
 # End Target
 # End Project
