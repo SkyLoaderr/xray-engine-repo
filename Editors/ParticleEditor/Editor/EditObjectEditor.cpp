@@ -155,13 +155,6 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
         	    DU.DrawLine	(p1,p2,c);
             }
 			if (fraBottomBar->miDrawBoneAxis->Checked) DU.DrawObjectAxis(M,0.03f);
-            else{
-				Fvector p2,d; 	d.set	(0,0,1);
-	            M.transform_dir	(d);
-    	        p2.mad			(p1,d,(*b_it)->Length());
-        	    DU.DrawLine	(p1,p2,c);
-            	DU.DrawRomboid	(p1,0.025,c);
-            }
 			if (fraBottomBar->miDrawBoneNames->Checked) DU.DrawText(p1,(*b_it)->Name());
         }
     }
