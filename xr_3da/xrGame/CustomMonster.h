@@ -16,6 +16,7 @@
 #include "ai_space.h"
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
+#include "AI\\ai_monster_state.h"
 
 
 //#define IGNORE_ACTOR
@@ -150,6 +151,12 @@ public:
 
 	// movement
 	float				m_fJumpSpeed;
+
+	// Biting/Himera motion & states management
+	u32					m_dwCurrentUpdate;
+	EMotionAnim			m_tAnim;
+	void				SetDirectionLook();
+
 
 	// network
 //------------------------------

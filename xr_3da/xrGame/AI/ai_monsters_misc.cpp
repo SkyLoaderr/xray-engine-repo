@@ -637,6 +637,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 				}
 }
 
+
 Fvector	tfComputeSpringPull(Fvector &tCurrentPosition, Fvector &tSpringPosition, float fInflexibilityCoefficient)
 {
 	Fvector tResult;

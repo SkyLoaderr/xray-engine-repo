@@ -1,23 +1,23 @@
 	////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_biting.h
+//	Module 		: ai_chimera.h
 //	Created 	: 21.05.2003
 //  Modified 	: 21.05.2003
 //	Author		: Serge Zhem
-//	Description : AI Behaviour for all the monsters of class "Biting"
+//	Description : AI Behaviour for all the monsters of class "Chimera"
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\ai_monsters_misc.h"
-#include "ai_biting_anim.h"
-#include "ai_biting_space.h"
-#include "ai_biting_state.h"
+#include "ai_chimera_anim.h"
+#include "ai_chimera_space.h"
+#include "ai_chimera_state.h"
 #include "..\\ai_monster_mem.h"
 
 
-class CAI_Biting : public CCustomMonster, 
-				   public CBitingAnimations,
+class CAI_Chimera : public CCustomMonster, 
+				   public CChimeraAnimations,
 				   public CMonsterMemory
 {
 	typedef struct tagSHurt {
@@ -25,20 +25,12 @@ class CAI_Biting : public CCustomMonster,
 		u32	dwTime;
 	} SHurt;
 
-	enum ESoundCcount {
-		SND_HIT_COUNT=1,
-		SND_DIE_COUNT=1,
-		SND_ATTACK_COUNT=1,
-		SND_VOICE_COUNT=2,
-	};
-
-
 public:
 
 	typedef	CCustomMonster inherited;
 
-							CAI_Biting		();
-	virtual					~CAI_Biting		();
+							CAI_Chimera		();
+	virtual					~CAI_Chimera		();
 	virtual	BOOL			renderable_ShadowReceive	()			{ return FALSE;	}
 	virtual void			Die				();
 	virtual void			HitSignal		(float amount, Fvector& vLocalDir, CObject* who, s16 element);
@@ -63,54 +55,34 @@ private:
 			void			vfBuildTravelLine				(Fvector *tpDestinationPosition);
 			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
 			void			vfChooseNextGraphPoint			();
-			void			vfSaveEnemy						();
 			void			vfValidatePosition				(Fvector &tPosition, u32 dwNodeID);
 			void			vfUpdateParameters				();
 			float			EnemyHeuristics					(CEntity* E);
-			// построение пути и установка параметров скорости
-			// tpPoint - куда смотреть при движении
-			void			vfSetParameters					(AI_Biting::EPathType path_type,IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint = 0, bool moveback=false, bool bSelectorPath = false);
-			void			vfSetMotionActionParams			(AI_Biting::EBodyState, AI_Biting::EMovementType, AI_Biting::EMovementDir, AI_Biting::EStateType, AI_Biting::EActionType);
-			void			vfSetAnimation					(bool bForceChange = false);
-			void			vfAssignPitch					();
+			AI_Chimera::EPathState			m_tPathState;
+			AI_Chimera::EPathType			m_tPathType;
+			AI_Chimera::EPathType			m_tPrevPathType;
 
+			// определения target.yaw
+			void			SetDirectionLook				();
 			void			SetReversedDirectionLook		();
+
 			int				ifFindHurtIndex					(CEntity *tpEntity);
 			void			vfAddHurt						(const SHurt &tHurt);
 			void			vfUpdateHurt					(const SHurt &tHurt);
 
 			void			Death							();
-			void			BackCover						(bool bFire = true);
-			void			ForwardStraight					();
-			void			Panic							();
-			void			Hide							();
-			void			Detour							();
-			void			ExploreDE						();
-			void			ExploreDNE						();
-			void			ExploreNDE						();
-			void			ExploreNDNE						();
-			void			AccomplishTask					(IBaseAI_NodeEvaluator *tpNodeEvaluator = 0);
-			void			Scared							();
 
-
-			void			vfSetFireBones					(CInifile *ini, const char *section);
-			
 			// Eat corpse
 			float			CorpHeuristics					(CEntity* E);
-
-
 			void			DoDamage						(CEntity *pEntity);
+
+			float			m_fGoingSpeed;
 
 // members
 public:
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual	void			feel_touch_new					(CObject* O);
-
-	bool					m_bActionFinished;
-	bool					bPlayDeath;
-	bool					bStartPlayDeath;
-	
 
 	void OnAnimationEnd();
 private:
@@ -126,9 +98,6 @@ private:
 	// работа с графом
 	void					vfUpdateDetourPoint();
 
-	float					m_fGoingSpeed;			
-
-	// Fields
 	bool					bPeaceful;
 	
 	// properties
@@ -136,24 +105,9 @@ private:
 	u32						m_dwMoraleValue;
 
 	
-	/////////////////////////////////////////////////////
-	AI_Biting::EMovementType		m_tMovementType;
-	AI_Biting::EBodyState			m_tBodyState;
-	AI_Biting::EStateType			m_tStateType;
-	AI_Biting::EMovementDir			m_tMovementDir;
-	AI_Biting::EActionType			m_tActionType;
-
-	AI_Biting::EPathState			m_tPathState;
-	AI_Biting::EPathType			m_tPathType;
-	AI_Biting::EPathType			m_tPrevPathType;
 	
-
-	
-	float					m_fWalkFactor;
-	float					m_fWalkFreeFactor;
-
 	// время вызовов функции Think()
- 
+	u32						m_dwCurrentUpdate;  
 
 	// search and path parameters
 	u32							m_dwLastRangeSearch;		// время последнего поиска узла
@@ -168,22 +122,10 @@ private:
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight >	m_tSelectorRetreat;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance>	m_tSelectorCover;
-	u32							m_dwAnimFrameDelay;
-	u32							m_dwAnimLastSetTime;
-
-	//////////////////////////////////////////////////////////////////////////
-	// FSM
-	xr_vector<CObject*>		m_tpaVisibleObjects;	// массив видимых объектов
 
 	// Sound
-//	SSimpleSound			m_tLastSound;
-//	u32						m_dwLastSoundNodeID;
-//	AI_Biting::ESoundType	SndType;
 	float					m_fSoundThreshold;
 	
-	/////////////////////////////////////////////////////////////////////////////////////////
-	AI_Biting::EActionState m_tActionState;
-
 	// HIT
 	u32						m_dwHitTime;
 	Fvector					m_tHitDir;
@@ -196,49 +138,19 @@ private:
 	float					m_fAttackSuccessProbability2;
 	float					m_fAttackSuccessProbability3;
 	
-	bool					_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 
-	u32						m_dwInertion;							// Инерция состояния
-	u32						m_dwActionStartTime;
-	bool					m_bStateChanged;
-	float					m_ls_yaw;
 	u32						m_dwRandomFactor;
 	svector<SHurt,MAX_HURT_COUNT>	m_tpaHurts;
-	u32						m_dwLostEnemyTime;
 
 	// eat corpse
 	BOOL					m_bCannibalism;
 	BOOL					m_bEatMemberCorpses;
 	u32						m_dwEatCorpseInterval;
 	
-	void					SetText();
 	virtual void			UpdateCL();
 
-	bool					IsLeftSide(const Fvector &Position);
-	bool					IsLeftSide(float current_yaw,float target_yaw);
-	bool					bTurning;
-
-	
-	// SOUNDS
-	ref_sound					m_tpaSoundHit[SND_HIT_COUNT];
-	ref_sound					m_tpaSoundDie[SND_DIE_COUNT];
-	ref_sound					m_tpaSoundAttack[SND_ATTACK_COUNT];
-	ref_sound					m_tpaSoundVoice[SND_VOICE_COUNT];
-	ref_sound*					m_tpSoundBeingPlayed;
-	u32						m_dwLastSoundRefresh;
-	float					m_fMinVoiceIinterval;
-	float					m_fMaxVoiceIinterval;
-	float					m_fVoiceRefreshRate;
-	u32						m_dwLastVoiceTalk;
-
-	void					vfLoadSounds();
 	bool					bShowDeath;
-
-
-	u32						m_dwLastTimeEat;
-	u32						m_dwEatInterval;
-
 
 	u32						m_dwLieIndex;
 	u32						m_dwActionIndex;
@@ -246,53 +158,36 @@ private:
 	u32						m_dwPointCheckLastTime;
 	u32						m_dwPointCheckInterval;
 
-	u32						m_AttackLastTime;			// последнее время аттаки
-	u32						m_AttackInterval;
-	Fvector					m_AttackLastPosition;		// последняя позиция врага во время аттаки
-
-	void vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
-	
-	// Fire bone indexes
-	u32		m_iLeftFireBone;
-	u32		m_iRightFireBone;
-
-
-	u32		m_dwAttackMeleeTime;
-	u32		m_dwAttackActorMeleeTime;
-	bool	AttackMelee(CObject *obj,bool bAttackRat);
-
-
+	/////////////////////////////////////////////////////////////////////////////
 	// Extended FSM
-	CBitingMotion		Motion;
+	CChimeraMotion		Motion;
 	IState				*CurrentState;
-	CBitingRest				*stateRest;
-	CBitingAttack				*stateAttack;
-	CBitingEat				*stateEat;
-	CBitingHide				*stateHide;
-	CBitingDetour				*stateDetour;
-	CBitingPanic				*statePanic;
+	CChimeraRest		*stateRest;
+	CChimeraAttack		*stateAttack;
+	CChimeraEat			*stateEat;
+	CChimeraHide		*stateHide;
+	CChimeraDetour		*stateDetour;
+	CChimeraPanic		*statePanic;
 
-	friend	class CBitingMotion;
+	friend	class CChimeraMotion;
 	friend	class CMotionParams;
 	friend  class CMotionTurn;
-	friend  class CBitingAttack;
+	friend  class CChimeraAttack;
 	friend	class CMotionSequence;
 	
 	friend	class IState;
-	friend	class CBitingRest;
-	friend	class CBitingEat;
-	friend	class CBitingHide;
-	friend	class CBitingDetour;
-	friend	class CBitingPanic;
+	friend	class CChimeraRest;
+	friend	class CChimeraEat;
+	friend	class CChimeraHide;
+	friend	class CChimeraDetour;
+	friend	class CChimeraPanic;
 
 	void SetState(IState *pS, bool bSkipInertiaCheck = false);
-	
 	void ControlAnimation();
 
 	virtual BOOL			feel_vision_isRelevant	(CObject* O);
 
 	// Animations
-	//EMotionAnim		m_tAnim;
 	EMotionAnim		m_tAnimPrevFrame;
 	void			MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3);
 

@@ -733,3 +733,20 @@ void CCustomMonster::feel_touch_new				(CObject* O)
 void CCustomMonster::Exec_Action(float dt)
 {
 }
+
+// Развернуть объект в направление движения
+void CCustomMonster::SetDirectionLook()
+{
+	int i = ps_Size();		// position stack size
+	if (i > 1) {
+		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+		if (tWatchDirection.magnitude() > EPS_L) {
+			tWatchDirection.normalize();
+			mk_rotation(tWatchDirection,r_torso_target);
+		}
+	}
+	else
+		r_torso_target.pitch = 0;
+	r_target = r_torso_target;
+}

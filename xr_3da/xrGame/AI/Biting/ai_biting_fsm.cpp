@@ -169,7 +169,7 @@ void CAI_Biting::ForwardStraight()
 	
 	VisionElem ve;
 
-	if (!SelectEnemy(ve)) return;
+	if (!GetEnemyFromMem(ve,Position())) return;
 
 
 
@@ -437,11 +437,11 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	
 	// проверка на видимость трупов
 	VisionElem ve;
-	SelectCorpse(ve);
+	GetCorpseFromMem(ve,Position());
 	
 	Fvector *tpDesiredPosition = 0;
 	
-//	if (SelectCorpse(ve)) 
+//	if (GetCorpseFromMem(ve,Position())) 
 //		if (ve.obj->m_fFood >= 0) bCorpseFound = true;
 
 //	if (m_bStateChanged) {
@@ -586,203 +586,73 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	// Play ref_sound
 }
 
+
 void CAI_Biting::Think()
 {
 	if (!g_Alive()) return;
 
-//---------------------------------------------------------------------------------
-	
-	// ќбновление времени
+
 	m_dwLastUpdateTime		= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
 
-	// ќбновление пам€ти монстра
-	UpdateMemory();
+	vfUpdateParameters		();
+
+	VisionElem ve;
+	GetEnemyFromMem(ve,Position());
+
+#ifndef SILENCE
+	if (g_Alive())
+		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][H=%d][I=%d][J=%d][K=%d]",cName(),A,B,C,D,E,F,H,I,J,K);
+#endif
+
+	// A - € слышу опасный звук
+	// B - € слышу неопасный звук
+	// — - € вижу очень опасного врага
+	// D - € вижу опасного врага
+	// E - € вижу равного врага
+	// F - € вижу слабого врага
+	// H - враг выгодный
+	// I - враг видит мен€
+	// J - A | B
+	// K - C | D | E | F 
 
 
 	if (Motion.m_tSeq.Active())	{
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	}else {
 		//- FSM 1-level 
-		VisionElem VE;
-		if (SelectEnemy(VE)) {
-			//SetState(stateAttack);
-			//SetState(stateHide);
-			SetState(stateDetour);
-		} else if (SelectCorpse(VE)){	
-			SetState(stateEat);
-		} else {
-			SetState(stateRest);
-		}
+
+		if (C && H && I)			SetState(stateHide);
+		else if (C && H && !I)		SetState(stateHide);
+		else if (C && !H && I)		SetState(stateHide);
+		else if (C && !H && !I) 	SetState(stateHide);
+		else if (D && H && I)		SetState(stateHide);
+		else if (D && H && !I)		SetState(stateAttack);  //тихо подобратьс€ и начать аттаку
+		else if (D && !H && I)		SetState(stateHide);
+		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрыти€
+		else if (E && H && I)		SetState(stateAttack); 
+		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобратьс€ и начать аттаку
+		else if (E && !H && I) 		SetState(stateDetour); 
+		else if (E && !H && !I)		SetState(stateDetour); 
+		else if (F && H && I) 		SetState(stateAttack); 		
+		else if (F && H && !I)  	SetState(stateAttack); 
+		else if (F && !H && I)  	SetState(stateDetour); 
+		else if (F && !H && !I) 	SetState(stateDetour);	
+		else if (A && !K && !H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+		else if (A && !K && H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
+		else if (B && !K && !H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+		else if (B && !K && H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+		else if (GetCorpseFromMem(ve,Position()))	SetState(stateEat);
+		else						SetState(stateRest); 
 		//---
-		CurrentState->Execute(true);
+		
+		CurrentState->Execute(m_dwCurrentUpdate);
+		
+		// провер€ем на завершЄнность
+		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
 	}
 	
 	Motion.SetFrameParams(this);
 
 	ControlAnimation();
-//---------------------------------------------------------------------------------	
-	
-	return;
-
-
-	
-//
-//	
-//
-//	
-//	
-////	m_dwLastUpdateTime		= m_dwCurrentUpdate;
-////	m_dwCurrentUpdate		= Level().timeServer();
-////
-////	EPostureAnim old_p = m_tPostureAnim;
-////	EActionAnim old_a = m_tActionAnim;
-////
-////
-//////	if (CurrentState->CheckCompletion()) {
-//////		// выбор состо€ни€ по умолчанию
-//////		CurrentState = stateRest;
-//////	}
-//////
-//////	CurrentState->Execute(true);
-////
-////	
-////	if (microAction->Active()) {
-////		microAction->Execute(true);
-////	} else {
-////		CurrentState->Execute();
-////		CheckForMicroAction();
-////	}
-////	
-////
-////	if (old_p != m_tPostureAnim || old_a != m_tActionAnim) {
-////		FORCE_ANIMATION_SELECT();
-////	}
-////	return;
-//
-//
-//	m_dwLastUpdateTime		= m_dwCurrentUpdate;
-//	m_dwCurrentUpdate		= Level().timeServer();
-//
-//	vfUpdateParameters		();
-//
-//	VisionElem ve;
-//#pragma todo("MONSTER MEMORY REFACTORING...")
-//	//Mem.SelectEnemy(ve);
-//
-//	if (!K && _K && ve.obj) {
-//		K = true;
-//		C = _C;
-//		E = _E;
-//		D = _D;
-//		F = _F;
-//		H = _H;
-//		I = _I;
-//		m_bStateChanged = false;
-//	}
-//
-//	m_bStateChanged			= ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K));
-//
-//#ifndef SILENCE
-//	if (g_Alive())
-//		Msg("%s : [S=%d][A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][H=%d][I=%d][J=%d][K=%d]",cName(),m_bStateChanged ? 1 : 0,A,B,C,D,E,F,H,I,J,K);
-//#endif
-//	
-//
-//// A - € слышу опасный звук
-//// B - € слышу неопасный звук
-//// — - € вижу очень опасного врага
-//// D - € вижу опасного врага
-//// E - € вижу равного врага
-//// F - € вижу слабого врага
-//// H - враг выгодный
-//// I - враг видит мен€
-//// J - A | B
-//// K - C | D | E | F 
-//
-//	if (!g_Alive()) {
-//		Death				();
-//	} else 				   
-//
-//	if (C && H && I) {
-//		Scared	();
-//	} else
-//	if (C && H && !I) {
-//		Scared	();
-//	} else
-//	if (C && !H && I) {
-//		Panic			();
-//	} else
-//	if (C && !H && !I) {
-//		Panic();
-//	} else
-//	
-//	if (D && H && I) {
-//		Panic	();
-//	} else
-//	if (D && H && !I) {
-//		ForwardStraight	(); //тихо подобратьс€ и начать аттаку
-//	} else
-//	if (D && !H && I) {
-//		Panic	();
-//	} else
-//	if (D && !H && !I) {
-//		Hide	();			// отход перебежками через укрыти€
-//	} else
-//	if (E && H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (E && H && !I) {
-//		ForwardStraight	(); //тихо подобратьс€ и начать аттаку
-//	} else
-//	if (E && !H && I) {
-//		Detour			();
-//	} else
-//	if (E && !H && !I) {
-//		Detour			();
-//	} else
-//	
-//	if (F && H && I) {
-//		ForwardStraight	();
-//	} else
-//	if (F && H && !I) {
-//		ForwardStraight	();
-//	} else
-//	if (F && !H && I) {
-//		Detour			();
-//	} else
-//	if (F && !H && !I) {
-//		Detour			();
-//	} else
-//	
-//
-//	if (A && !K && !H) {	// слышу опасный звук, но не вижу, враг не выгодный
-//		ExploreDNE();
-//	} else
-//	if (A && !K && H) {		// слышу опасный звук, но не вижу, враг выгодный
-//		ExploreDE();
-//	} else
-//	
-//	if (B && !K && !H) {	// слышу не опасный звук, но не вижу, враг не выгодный
-//		ExploreNDNE();
-//	} else
-//	if (B && !K && H) {		// слышу не опасный звук, но не вижу, враг выгодный
-//		ExploreNDE();
-//	} else {
-//		AccomplishTask();   // гул€ть
-//	}
-//	
-//	_A	= A;
-//	_B	= B;
-//	_C	= C;
-//	_D	= D;
-//	_E	= E;
-//	_F	= F;
-//	_H	= H;
-//	_I	= I;
-//	_J	= J;
-//	_K	= K;
-//
-//	
-//	vfSetAnimation(true);
 }

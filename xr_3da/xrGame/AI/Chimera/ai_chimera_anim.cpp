@@ -1,19 +1,19 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_biting_anim.cpp
+//	Module 		: ai_chimera_anim.cpp
 //	Created 	: 22.05.2003
 //  Modified 	: 22.05.2003
 //	Author		: Serge Zhem
-//	Description : Animations, Bone transformations and Sounds for monsters of biting class 
+//	Description : Animations, Bone transformations and Sounds for monsters of chimera class 
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 
-#include "ai_biting.h"
-#include "ai_biting_space.h"
+#include "ai_chimera.h"
+#include "ai_chimera_space.h"
 
-using namespace AI_Biting;
+using namespace AI_Chimera;
 
-namespace AI_Biting {
+namespace AI_Chimera {
 	LPCSTR caStateNames			[] = {
 		"stand_",				// 0
 		"sit_",					// 1
@@ -47,11 +47,11 @@ namespace AI_Biting {
 
 static void __stdcall vfPlayCallBack(CBlend* B)
 {
-	CAI_Biting *tpBiting = (CAI_Biting*)B->CallbackParam;
-	tpBiting->OnAnimationEnd();
+	CAI_Chimera *tpChimera = (CAI_Chimera*)B->CallbackParam;
+	tpChimera->OnAnimationEnd();
 }
 
-void CAI_Biting::OnAnimationEnd()
+void CAI_Chimera::OnAnimationEnd()
 {
 	m_tpCurrentGlobalAnimation = 0;
 
@@ -67,7 +67,7 @@ void CAI_Biting::OnAnimationEnd()
 	}
 }
 
-void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
+void CAI_Chimera::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
 	if (bShowDeath)	{
 		m_tpCurrentGlobalAnimation = m_tAnimations.A[ePostureStand].A[eActionDie].A[::Random.randI((int)m_tAnimations.A[ePostureStand].A[eActionDie].A.size())];
@@ -77,7 +77,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 	}
 	
 	if (g_Alive())
-		if (!m_tpCurrentGlobalAnimation && m_bActionFinished) {
+		if (!m_tpCurrentGlobalAnimation) {
 
 			int i1,i2,i3;
 			MotionToAnim(m_tAnim,i1,i2,i3);
@@ -90,8 +90,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 		}
 }
 
-
-void CAI_Biting::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
+void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
 {
 	switch(motion) {
 		case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;

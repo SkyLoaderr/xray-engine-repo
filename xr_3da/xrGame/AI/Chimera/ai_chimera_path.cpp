@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_biting_path.cpp
+//	Module 		: ai_chimera_path.cpp
 //	Created 	: 26.05.2003
 //  Modified 	: 26.05.2003
 //	Author		: Serge Zhem
@@ -7,11 +7,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_biting.h"
+#include "ai_chimera.h"
 #include "..\\..\\a_star.h"
 #include "..\\ai_monsters_misc.h"
 
-using namespace AI_Biting;
+using namespace AI_Chimera;
 
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	 4000		// 2 сек
 #define TIME_TO_SEARCH					60000
@@ -21,7 +21,7 @@ using namespace AI_Biting;
 /////////////////////////////////////////////////////////////////////////////////////
 // Функция InitSelector
 
-void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
+void CAI_Chimera::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 {
 	S.m_dwCurTime		= m_dwCurrentUpdate;
 	S.m_tMe				= this;
@@ -30,7 +30,7 @@ void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 
 
 	VisionElem ve;
-	GetEnemyFromMem(ve,Position());
+	GetEnemyFromMem(ve, Position());
 
 	S.m_tEnemy			= ve.obj;
 	S.m_tEnemyPosition	= ve.position;
@@ -44,7 +44,7 @@ void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Функция SearchForBetterPosition
-void CAI_Biting::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader)
+void CAI_Chimera::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader)
 {
 	Device.Statistic.AI_Range.Begin();	// определение времени вып. функции
 
@@ -87,7 +87,7 @@ void CAI_Biting::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluator
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Функция BuildPathToDestinationPoint
-void CAI_Biting::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEvaluator)
+void CAI_Chimera::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 {
 	Device.Statistic.AI_Path.Begin();
 
@@ -124,7 +124,7 @@ void CAI_Biting::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEval
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Построить TravelLine
-void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
+void CAI_Chimera::vfBuildTravelLine(Fvector *tpDestinationPosition)
 {
 	Device.Statistic.TEST1.Begin();
 
@@ -225,7 +225,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Выбор точки, построение пути, построение TravelLine
-void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath)
+void CAI_Chimera::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath)
 {
 	INIT_SQUAD_AND_LEADER;
 
@@ -285,51 +285,9 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 	m_tPathType = tPathType;	// восстанавливаем текущий тип пути
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-// Выбор точки, построение пути, построение TravelLine
-void CAI_Biting::vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath)
-{
-	INIT_SQUAD_AND_LEADER;
-
-	if (m_tPrevPathType != m_tPathType) {	// если изменен тип пути, то необходимо перестроить путь
-		m_tPrevPathType		= m_tPathType;
-		m_tPathState		= ePathStateSearchNode;
-		AI_Path.Nodes.clear	();
-	}
-	if (tpNodeEvaluator)
-		vfInitSelector			(*tpNodeEvaluator,Squad);
-
-
-	EPathType tPathType = m_tPathType;		// сохраняем текущий тип пути
-
-	if (m_tPathType == ePathTypeStraightCriteria) {
-		(::Random.randI(0,100) < (int)m_dwPathTypeRandomFactor) ? m_tPathType = ePathTypeStraight :
-		m_tPathType = ePathTypeCriteria ;
-	}
-
-	if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
-		vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
-	
-	if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))  {
-		if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
-			vfBuildPathToDestinationPoint(bSelectorPath ? tpNodeEvaluator : 0);
-	
-		if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition && (!AI_Path.TravelPath.size() || (tpDestinationPosition->distance_to_xz(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) > EPS_L))) {
-				AI_Path.Nodes.clear();
-				AI_Path.Nodes.push_back(AI_NodeID);
-		} else if (bSearchForNode && tpNodeEvaluator) return;
-		 
-		vfBuildTravelLine(tpDestinationPosition);
-	}
-//		if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-			
-	m_tPathType = tPathType;	// восстанавливаем текущий тип пути
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Выбор следующей точки графа
-void CAI_Biting::vfChooseNextGraphPoint()
+void CAI_Chimera::vfChooseNextGraphPoint()
 {
 	_GRAPH_ID						tGraphID		= m_tNextGP;
 	u16								wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;
@@ -372,7 +330,7 @@ void CAI_Biting::vfChooseNextGraphPoint()
 }
 
 // Выбор точки графа, в соответствии с выбором лидера
-void CAI_Biting::vfUpdateDetourPoint()
+void CAI_Chimera::vfUpdateDetourPoint()
 {
 	if (!g_Alive())
 		return;
@@ -380,7 +338,7 @@ void CAI_Biting::vfUpdateDetourPoint()
 	INIT_SQUAD_AND_LEADER;
 
 	if (this != Leader)	{
-		CAI_Biting *tpLeader			= dynamic_cast<CAI_Biting*>(Leader);
+		CAI_Chimera *tpLeader			= dynamic_cast<CAI_Chimera*>(Leader);
 		if (tpLeader) {
 			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
 			m_tNextGP					= tpLeader->m_tNextGP;

@@ -1,9 +1,9 @@
 	////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_biting_space.h
+//	Module 		: ai_chimera_space.h
 //	Created 	: 26.05.2003
 //  Modified 	: 26.05.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Biting types and structures
+//	Description : Chimera types and structures
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -24,48 +24,7 @@
 	#define OUT_TEXT(S)						;
 #endif
 
-namespace AI_Biting {
-	enum EBodyState {
-		eBodyStateLie = 0,
-		eBodyStateSit,
-		eBodyStateStand,
-	};
-
-	enum EMovementType {
-		eMovementTypeWalk = 0,
-		eMovementTypeRun,
-		eMovementTypeStand,
-	};
-
-	enum EStateType {
-		eStateTypeDanger = 0,
-		eStateTypeNormal,
-		eStateTypePanic,
-		eStateTypeDamaged,
-	};
-
-	enum EMovementDir {
-		eMovementDirectionForward = 0,
-		eMovementDirectionBack,
-		eMovementDirectionLeft,
-		eMovementDirectionRight,
-		eMovementDirectionNone
-	};
-
-	enum EActionType {
-		eActionTypeRun = 0,
-		eActionTypeStand,
-		eActionTypeTurn,
-		eActionTypeWalk,
-		eActionTypeAttack,
-		eActionTypeAttackTurning,
-		eActionTypeEat,
-		eActionTypeLieDown,
-		eActionTypeStandUp,
-		eActionTypeLie,
-
-	};
-
+namespace AI_Chimera {
 	// Paths
 	enum EPathState {
 		ePathStateSearchNode = 0,
@@ -107,26 +66,6 @@ namespace AI_Biting {
 		eActionLieDown,
 		eActionStandUp,
 		eActionCheckCorpse,
-	};
-
-	// Sound
-	
-	enum ESoundType {
-		eHearSoundNone = 0,
-		eHearSoundCommon,				
-		eHearSoundInteresting,
-		eHearSoundDangerous,
-	};
-	
-	enum EActionState {
-		eActionStateRun = 0,
-		eActionStateStand,
-		eActionStateDontWatch,
-		eActionStateWatch,
-		eActionStateWatchGo,
-		eActionStateWatchLook,
-		eActionStateLie,
-		eActionStateScared
 	};
 
 };

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_biting_state.cpp
+//	Module 		: ai_chimera_state.cpp
 //	Created 	: 27.05.2003
 //  Modified 	: 27.05.2003
 //	Author		: Serge Zhem
@@ -7,22 +7,21 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_biting.h"
-#include "ai_biting_state.h"
+#include "ai_chimera.h"
+#include "ai_chimera_state.h"
 #include "..\\rat\\ai_rat.h"
 
-using namespace AI_Biting;
-
+using namespace AI_Chimera;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingMotion implementation
+// CChimeraMotion implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CBitingMotion::Init()
+void CChimeraMotion::Init()
 {
 	m_tSeq.Init();
 }
 
-void CBitingMotion::SetFrameParams(CAI_Biting *pData) 
+void CChimeraMotion::SetFrameParams(CAI_Chimera *pData) 
 {
 	if (!m_tSeq.Active()) {
 
@@ -31,10 +30,10 @@ void CBitingMotion::SetFrameParams(CAI_Biting *pData)
 
 		//!- проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
 		if ((pData->m_tAnimPrevFrame == eMotionLieIdle) && (pData->m_tAnim != eMotionLieIdle)){
-			m_tSeq.Add(eMotionStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			m_tSeq.Switch();
-			m_tSeq.ApplyData(pData);
-		}
+				m_tSeq.Add(eMotionStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+				m_tSeq.Switch();
+				m_tSeq.ApplyData(pData);
+			}
 
 		//!---
 	} else {
@@ -43,20 +42,26 @@ void CBitingMotion::SetFrameParams(CAI_Biting *pData)
 }
 
 
+//*********************************************************************************************************
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingRest implementation
+// STATE MANAGMENT
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//*********************************************************************************************************
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CChimeraRest implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingRest::CBitingRest(CAI_Biting *p)  
+CChimeraRest::CChimeraRest(CAI_Chimera *p)  
 {
 	pMonster = p;
 	Reset();
-
 	SetLowPriority();			// удиноразова€ утановка приоритета
 }
 
 
-void CBitingRest::Reset()
+void CChimeraRest::Reset()
 {
 	IState::Reset();
 
@@ -67,7 +72,7 @@ void CBitingRest::Reset()
 	
 }
 
-void CBitingRest::Run()
+void CChimeraRest::Run()
 {
 	// проверить нужно ли провести перепланировку
 	if (m_dwCurrentTime > m_dwLastPlanTime + m_dwReplanTime) Replanning();
@@ -93,7 +98,7 @@ void CBitingRest::Run()
 	}
 }
 
-void CBitingRest::Replanning()
+void CChimeraRest::Replanning()
 {
 	// Test
 	Msg("_ Rest replanning _");
@@ -110,7 +115,7 @@ void CBitingRest::Replanning()
 		pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
 		pMonster->m_tPathType = ePathTypeStraight;
 		
-		pMonster->vfChoosePointAndBuildPathAtOnce(0,0, false, 0);
+		pMonster->vfChoosePointAndBuildPath(0,0, false, 0);
 
 		dwMinRand = 3000;
 		dwMaxRand = 5000;
@@ -146,7 +151,7 @@ void CBitingRest::Replanning()
 }
 
 
-TTime CBitingRest::UnlockState(TTime cur_time)
+TTime CChimeraRest::UnlockState(TTime cur_time)
 {
 	TTime dt = inherited::UnlockState(cur_time);
 
@@ -157,10 +162,10 @@ TTime CBitingRest::UnlockState(TTime cur_time)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingAttack implementation
+// CChimeraAttack implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingAttack::CBitingAttack(CAI_Biting *p)  
+CChimeraAttack::CChimeraAttack(CAI_Chimera *p)  
 {
 	pMonster = p;
 	Reset();
@@ -168,7 +173,7 @@ CBitingAttack::CBitingAttack(CAI_Biting *p)
 }
 
 
-void CBitingAttack::Reset()
+void CChimeraAttack::Reset()
 {
 	IState::Reset();
 
@@ -182,13 +187,13 @@ void CBitingAttack::Reset()
 
 }
 
-void CBitingAttack::Init()
+void CChimeraAttack::Init()
 {
 	IState::Init();
 
 	// ѕолучить врага
 	VisionElem ve;
-	if (!pMonster->GetEnemyFromMem(ve,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemyFromMem(ve, pMonster->Position())) R_ASSERT(false);
 	pEnemy = ve.obj;
 
 	// ќпределение класса врага
@@ -209,7 +214,7 @@ void CBitingAttack::Init()
 	Msg("_ Attack Init _");
 }
 
-void CBitingAttack::Run()
+void CChimeraAttack::Run()
 {
 	// ¬ыбор состо€ни€
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
@@ -242,7 +247,7 @@ void CBitingAttack::Run()
 	}
 }
 
-bool CBitingAttack::CheckCompletion() 
+bool CChimeraAttack::CheckCompletion() 
 {
 	// если враг убит
 	if (!pEnemy || !pEnemy->g_Alive()) return true;
@@ -251,10 +256,10 @@ bool CBitingAttack::CheckCompletion()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingEat class
+// CChimeraEat class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingEat::CBitingEat(CAI_Biting *p)  
+CChimeraEat::CChimeraEat(CAI_Chimera *p)  
 {
 	pMonster = p;
 	Reset();
@@ -262,7 +267,7 @@ CBitingEat::CBitingEat(CAI_Biting *p)
 }
 
 
-void CBitingEat::Reset()
+void CChimeraEat::Reset()
 {
 	IState::Reset();
 
@@ -274,13 +279,13 @@ void CBitingEat::Reset()
 	m_dwEatInterval		= 1000;
 }
 
-void CBitingEat::Init()
+void CChimeraEat::Init()
 {
 	IState::Init();
 
 	// ѕолучить инфо о трупе
 	VisionElem ve;
-	if (!pMonster->GetCorpseFromMem(ve,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetCorpseFromMem(ve, pMonster->Position())) R_ASSERT(false);
 	pCorpse = ve.obj;
 
 	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pCorpse);
@@ -292,7 +297,7 @@ void CBitingEat::Init()
 
 }
 
-void CBitingEat::Run()
+void CChimeraEat::Run()
 {
 	bool bStartEating = (m_tAction == ACTION_RUN);
 
@@ -334,7 +339,7 @@ void CBitingEat::Run()
 	}
 }
 
-bool CBitingEat::CheckCompletion() 
+bool CChimeraEat::CheckCompletion() 
 {
 	// если труп съеден || монстр достаточно сыт
 	if ((pCorpse->m_fFood <= 0.f) || (!IsInertia())) return true;
@@ -344,21 +349,21 @@ bool CBitingEat::CheckCompletion()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingHide class
+// CChimeraHide class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingHide::CBitingHide(CAI_Biting *p)
+CChimeraHide::CChimeraHide(CAI_Chimera *p)
 {
 	pMonster = p;
 	Reset();
 	SetNormalPriority();
 }
 
-void CBitingHide::Init()
+void CChimeraHide::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemyFromMem(m_tEnemy,pMonster->Position())) R_ASSERT(false);
+	if (!pMonster->GetEnemyFromMem(m_tEnemy, pMonster->Position())) R_ASSERT(false);
 	pMonster->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
 	pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
 	pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
@@ -372,14 +377,14 @@ void CBitingHide::Init()
 
 }
 
-void CBitingHide::Reset()
+void CChimeraHide::Reset()
 {
 	inherited::Reset();
 
 	m_tEnemy.obj		= 0;
 }
 
-void CBitingHide::Run()
+void CChimeraHide::Run()
 {
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
 
@@ -388,7 +393,7 @@ void CBitingHide::Run()
 	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfWalkTurningSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
 }
 
-bool CBitingHide::CheckCompletion()
+bool CChimeraHide::CheckCompletion()
 {	
 	// если больша€ дистанци€ || враг забыт
 	return false;
@@ -396,23 +401,23 @@ bool CBitingHide::CheckCompletion()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingDetour class
+// CChimeraDetour class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingDetour::CBitingDetour(CAI_Biting *p)
+CChimeraDetour::CChimeraDetour(CAI_Chimera *p)
 {
 	pMonster = p;
 	Reset();
 	SetNormalPriority();
 }
 
-void CBitingDetour::Reset()
+void CChimeraDetour::Reset()
 {
 	inherited::Reset();
 	m_tEnemy.obj		= 0;
 }
 
-void CBitingDetour::Init()
+void CChimeraDetour::Init()
 {
 	inherited::Init();
 
@@ -425,12 +430,12 @@ void CBitingDetour::Init()
 
 }
 
-void CBitingDetour::Run()
+void CChimeraDetour::Run()
 {
 	Msg("--- DETOUR ---");
 
 	VisionElem tempEnemy;
-	if (pMonster->GetEnemyFromMem(tempEnemy,pMonster->Position())) {
+	if (pMonster->GetEnemyFromMem(tempEnemy, pMonster->Position())) {
 		m_tEnemy = tempEnemy;
 		SetInertia(10000);
 	}
@@ -451,7 +456,7 @@ void CBitingDetour::Run()
 	SetNextThink(1000);
 }
 
-bool CBitingDetour::CheckCompletion()
+bool CChimeraDetour::CheckCompletion()
 {	
 	// если больша€ дистанци€ || враг забыт
 	if (!IsInertia()) return true;
@@ -460,24 +465,24 @@ bool CBitingDetour::CheckCompletion()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingPanic class
+// CChimeraPanic class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingPanic::CBitingPanic(CAI_Biting *p)
+CChimeraPanic::CChimeraPanic(CAI_Chimera *p)
 {
 	pMonster = p;
 	Reset();
 	SetHighPriority();
 }
 
-void CBitingPanic::Reset()
+void CChimeraPanic::Reset()
 {
 	inherited::Reset();
 
 	m_tEnemy.obj = 0;
 }
 
-void CBitingPanic::Init()
+void CChimeraPanic::Init()
 {
 	inherited::Init();
 
@@ -495,7 +500,7 @@ void CBitingPanic::Init()
 
 }
 
-void CBitingPanic::Run()
+void CChimeraPanic::Run()
 {
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, false, 0);
 
@@ -503,7 +508,7 @@ void CBitingPanic::Run()
 	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfRunAttackTurnSpeed,m_cfRunAttackTurnRSpeed,m_cfRunAttackMinAngle);
 }
 
-bool CBitingPanic::CheckCompletion()
+bool CChimeraPanic::CheckCompletion()
 {	
 	// если больша€ дистанци€ || враг забыт
 	if (!IsInertia()) return true;
@@ -514,10 +519,10 @@ bool CBitingPanic::CheckCompletion()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CAI_Biting state-specific functions
+// CAI_Chimera state-specific functions
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CAI_Biting::SetState(IState *pS, bool bSkipInertiaCheck)
+void CAI_Chimera::SetState(IState *pS, bool bSkipInertiaCheck)
 {
 	if (CurrentState != pS) {
 		// проверка инерций
@@ -532,7 +537,7 @@ void CAI_Biting::SetState(IState *pS, bool bSkipInertiaCheck)
 	}
 }
 
-void CAI_Biting::ControlAnimation()
+void CAI_Chimera::ControlAnimation()
 {
 	//-- проверка специфических анимаций --
 	if (Motion.m_tSeq.Started) {

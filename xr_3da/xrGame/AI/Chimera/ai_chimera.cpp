@@ -1,31 +1,31 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_biting.cpp
+//	Module 		: ai_chimera.cpp
 //	Created 	: 22.05.2003
 //  Modified 	: 22.05.2003
 //	Author		: Serge Zhem
-//	Description : AI Behaviour for all monsters of class "Biting"
+//	Description : AI Behaviour for all monsters of class "Chimera"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_biting.h"
+#include "ai_chimera.h"
 
-using namespace AI_Biting;
+using namespace AI_Chimera;
 
-CAI_Biting::CAI_Biting()
+CAI_Chimera::CAI_Chimera()
 {
 	Init();
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
-	stateRest			= xr_new<CBitingRest>		(this);
-	stateAttack			= xr_new<CBitingAttack>		(this);
-	stateEat			= xr_new<CBitingEat>		(this);
-	stateHide			= xr_new<CBitingHide>		(this);
-	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this);
+	stateRest			= xr_new<CChimeraRest>		(this);
+	stateAttack			= xr_new<CChimeraAttack>	(this);
+	stateEat			= xr_new<CChimeraEat>		(this);
+	stateHide			= xr_new<CChimeraHide>		(this);
+	stateDetour			= xr_new<CChimeraDetour>	(this);
+	statePanic			= xr_new<CChimeraPanic>	(this);
 	CurrentState		= stateRest;
 }
 
-CAI_Biting::~CAI_Biting()
+CAI_Chimera::~CAI_Chimera()
 {
 	xr_delete(stateRest);
 	xr_delete(stateAttack);
@@ -35,21 +35,16 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(statePanic);
 }
 
-void CAI_Biting::Init()
+void CAI_Chimera::Init()
 {
 	// initializing class members
 	m_tpCurrentGlobalAnimation		= 0;
 	m_tCurGP						= _GRAPH_ID(-1);
 	m_tNextGP						= _GRAPH_ID(-1);
-	m_fGoingSpeed					= 0.f;
 	m_dwTimeToChange				= 0;
 	
 	m_dwLastRangeSearch				= 0;
-
-
-	// Инициализация параметров состояния
-	vfSetMotionActionParams			(eBodyStateStand, eMovementTypeStand, 
-									eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
+	m_fGoingSpeed					= 0.f;
 
 	// Инициализация параметров анимации
 	m_tAnim							= DEFAULT_ANIM;
@@ -61,53 +56,17 @@ void CAI_Biting::Init()
 	m_fAttackSuccessProbability2	= .4f;
 	m_fAttackSuccessProbability3	= .2f;
 
-	m_dwLostEnemyTime				= 0;
-
-	m_dwInertion					= 100000;
-
-	m_bStateChanged					= true;
-	
-	m_dwActionStartTime				= 0;
-
-	_A=_B=_C=_D=_E=_F=_H=_I=_J=_K   = false;
-	
-	m_dwAnimFrameDelay				= 100;
-	m_dwAnimLastSetTime				= 0;
-	m_bActionFinished				= true;
-
-	bPlayDeath						= false;
-	bStartPlayDeath					= false;
-	bTurning						= false;
-	m_tpSoundBeingPlayed			= 0;
-	
-	
-	bShowDeath						= false;
-	
-	m_dwEatInterval					= 500;
-	m_dwLastTimeEat					= 0;
-
-	m_dwLieIndex					= 0;
-	
-
 	m_dwPointCheckLastTime			= 0;
 	m_dwPointCheckInterval			= 1500;
 	
 	m_dwActionIndex					= 0;
 
-	m_AttackLastTime				= 0;			
-	m_AttackInterval				= 500;
-	m_AttackLastPosition.set		(0,0,0);		
-
 	InitMemory(5000,10000);
-
-	m_dwAttackMeleeTime				= 0;
-	m_dwAttackActorMeleeTime		= 0;
-
 	Motion.Init();
 
 }
 
-void CAI_Biting::Die()
+void CAI_Chimera::Die()
 {
 	inherited::Die( );
 
@@ -118,18 +77,9 @@ void CAI_Biting::Die()
 	
 	bShowDeath = true;
 	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
-
-	::Sound->play_at_pos(m_tpaSoundDie[::Random.randI(SND_DIE_COUNT)],this,eye_matrix.c);
-	
-	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
-	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
-	DELETE_SOUNDS			(SND_ATTACK_COUNT,	m_tpaSoundDie);
-	DELETE_SOUNDS			(SND_VOICE_COUNT, m_tpaSoundVoice);
-
-
 }
 
-void CAI_Biting::Load(LPCSTR section)
+void CAI_Chimera::Load(LPCSTR section)
 {
 	// load parameters from ".ltx" file
 	inherited::Load		(section);
@@ -150,6 +100,7 @@ void CAI_Biting::Load(LPCSTR section)
 		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
 		m_tpaTerrain.push_back		(tTerrainPlace);
 	}
+	
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
@@ -171,17 +122,9 @@ void CAI_Biting::Load(LPCSTR section)
 	//m_fHitPower						= 1.f;
 	fHealth							= (float)m_dwHealth;
 
-
-	vfLoadSounds();
-
-	m_fMinVoiceIinterval			= pSettings->r_float (section,"MinVoiceInterval");
-	m_fMaxVoiceIinterval			= pSettings->r_float (section,"MaxVoiceInterval");
-	m_fVoiceRefreshRate				= pSettings->r_float (section,"VoiceRefreshRate");
-
-	vfSetFireBones				(pSettings,section);
 }
 
-BOOL CAI_Biting::net_Spawn (LPVOID DC) 
+BOOL CAI_Chimera::net_Spawn (LPVOID DC) 
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
@@ -194,7 +137,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
 	// loading animations
-	CBitingAnimations::Load			(PKinematics(Visual()));
+	CChimeraAnimations::Load			(PKinematics(Visual()));
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.CreateCharacter();
@@ -206,14 +149,14 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	return(TRUE);
 }
 
-void CAI_Biting::net_Destroy()
+void CAI_Chimera::net_Destroy()
 {
 	inherited::net_Destroy();
 	Init();
 	Movement.DestroyCharacter();
 }
 
-void CAI_Biting::net_Export(NET_Packet& P) 
+void CAI_Chimera::net_Export(NET_Packet& P) 
 {
 	R_ASSERT				(Local());
 
@@ -239,7 +182,7 @@ void CAI_Biting::net_Export(NET_Packet& P)
 	P.w						(&f1,						sizeof(f1));
 }
 
-void CAI_Biting::net_Import(NET_Packet& P)
+void CAI_Chimera::net_Import(NET_Packet& P)
 {
 	R_ASSERT				(Remote());
 	net_update				N;
@@ -265,7 +208,7 @@ void CAI_Biting::net_Import(NET_Packet& P)
 	setEnabled				(TRUE);
 }
 
-void CAI_Biting::Exec_Movement		(float dt)
+void CAI_Chimera::Exec_Movement		(float dt)
 {
 	AI_Path.Calculate				(this,Position(),Position(),m_fCurSpeed,dt);
 }
@@ -275,25 +218,8 @@ void CAI_Biting::Exec_Movement		(float dt)
 // Other functions
 //////////////////////////////////////////////////////////////////////
 
-void CAI_Biting::UpdateCL()
+void CAI_Chimera::UpdateCL()
 {
-	SetText();
 	inherited::UpdateCL();
 
-}
-
-// Load sounds
-void CAI_Biting::vfLoadSounds()
-{
-	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters\\flesh\\test_1",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	::Sound->create(m_tpaSoundDie[0],TRUE,"monsters\\flesh\\test_0",SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters\\flesh\\test_2",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->create(m_tpaSoundVoice[0],TRUE,"monsters\\flesh\\test_3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundVoice[1],TRUE,"monsters\\flesh\\test_3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-}
-
-void CAI_Biting::vfSetFireBones(CInifile *ini, const char *section)
-{
-	m_iLeftFireBone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"LeftFireBone"));
-	m_iRightFireBone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"RightFireBone"));
 }

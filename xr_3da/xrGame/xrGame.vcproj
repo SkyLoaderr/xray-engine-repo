@@ -474,6 +474,18 @@
 						Name="ai_custom"
 						Filter="">
 						<File
+							RelativePath=".\Ai\ai_monster_mem.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\ai_monster_mem.h">
+						</File>
+						<File
+							RelativePath=".\Ai\ai_monster_state.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\ai_monster_state.h">
+						</File>
+						<File
 							RelativePath=".\CustomMonster.cpp">
 						</File>
 						<File
@@ -519,12 +531,6 @@
 						</File>
 						<File
 							RelativePath="AI\Biting\ai_biting_fsm.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Biting\ai_biting_mem.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Biting\ai_biting_mem.h">
 						</File>
 						<File
 							RelativePath="AI\Biting\ai_biting_misc.cpp">
@@ -682,6 +688,106 @@
 						</File>
 						<File
 							RelativePath=".\AI\Crow\ai_crow.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ai_chimera"
+						Filter="">
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera.h">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCustomBuildTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_anim.h">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCustomBuildTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_feel.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_fire.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_fsm.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_misc.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_path.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_space.h">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCustomBuildTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_state.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Ai\Chimera\ai_chimera_state.h">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCustomBuildTool"/>
+							</FileConfiguration>
 						</File>
 					</Filter>
 				</Filter>

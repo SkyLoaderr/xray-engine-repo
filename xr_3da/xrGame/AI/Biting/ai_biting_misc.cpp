@@ -243,8 +243,9 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 // «рение, слух, веро€тность победы, выгодность противника
 void CAI_Biting::vfUpdateParameters()
 {
-	
-	UpdateMemory();
+	xr_vector<CObject*> Visible_Objects;
+	feel_vision_get(Visible_Objects);
+	UpdateMemory(Visible_Objects);
 
 	//------------------------------------
 	// слух
@@ -262,9 +263,11 @@ void CAI_Biting::vfUpdateParameters()
 
 	//------------------------------------
 	// «рение
+	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 
 	VisionElem ve;
-	if (SelectEnemy(ve)) {
+	if (GetEnemyFromMem(ve,Position())) {
+		VisibleEnemies.insert(ve.obj);
 
 		// определить, видит ли мен€ враг
 		I = false;
@@ -305,75 +308,10 @@ void CAI_Biting::vfUpdateParameters()
 	}
 
 
-//	//------------------------------------
-//	// слух
-//	A = B = false;
-//	
-//	if (_A && !A && ((m_tLastSound.dwTime + m_dwInertion) > m_dwCurrentUpdate))
-//		A = true;
-//	
-//	if (_B && !B && ((m_tLastSound.dwTime + m_dwInertion) > m_dwCurrentUpdate))
-//		B = true;
-//	
-//	if (!A && !B && (m_tLastSound.dwTime >= m_dwLastUpdateTime)) {
-//		B = true;
-//		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) || 
-//			((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_RECHARGING) == SOUND_TYPE_WEAPON_RECHARGING) || 
-//			((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET) || 
-//			((m_tLastSound.eSoundType & SOUND_TYPE_MONSTER_ATTACKING) == SOUND_TYPE_MONSTER_ATTACKING) )
-//				A = true;
-//	} 
-//	J = A | B;
-//
-//	//------------------------------------
-//	// враг мен€ видит?
-//	
-//	//	SelectEnemy			(m_tEnemy);
-//
-//	I					= false;
-//	for (int i=0, n=VisibleEnemies.size(); i<n; i++) {
-//		float			yaw1, pitch1, yaw2, pitch2, fYawFov, fPitchFov, fRange;
-//		Fvector			tPosition = VisibleEnemies[i].key->Position();
-//
-//		CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(VisibleEnemies[i].key);
-//		if (tpCustomMonster) {
-//			yaw1		= -tpCustomMonster->r_current.yaw;
-//			pitch1		= -tpCustomMonster->r_current.pitch;
-//			fYawFov		= angle_normalize_signed(tpCustomMonster->ffGetFov()*PI/180.f);
-//			fRange		= tpCustomMonster->ffGetRange();
-//		}
-//		else {
-//			CActor		*tpActor = dynamic_cast<CActor *>(VisibleEnemies[i].key);
-//			if (tpActor) {
-//				yaw1	= tpActor->Orientation().yaw;
-//				pitch1	= tpActor->Orientation().pitch;
-//				fYawFov	= angle_normalize_signed(tpActor->ffGetFov()*PI/180.f);
-//				fRange	= tpActor->ffGetRange();
-//			}
-//			else
-//				continue;
-//		}
-//
-//		if (tPosition.distance_to(vPosition) > fRange)
-//			continue;
-//
-//		fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(1.f/tPosition.distance_to(vPosition))))/2.f);
-//		fPitchFov		= angle_normalize_signed(fYawFov*1.f);
-//		tPosition.sub	(vPosition);
-//		tPosition.mul	(-1);
-//		tPosition.getHP	(yaw2,pitch2);
-//		yaw1			= angle_normalize_signed(yaw1);
-//		pitch1			= angle_normalize_signed(pitch1);
-//		yaw2			= angle_normalize_signed(yaw2);
-//		pitch2			= angle_normalize_signed(pitch2);
-//		if (0 != (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov) || false))))
-//			break;
-//	}
-
 	//------------------------------------
 	// веро€тность победы
 	C = D = E = F = G	= false;
-	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
+	
 	if (bfIsAnyAlive(VisibleEnemies)) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 
@@ -408,7 +346,12 @@ void CAI_Biting::vfUpdateParameters()
 	}
 
 	// temp - выгоден
-	H = true;
+//	if (ve.obj) {
+//		D = C = false;
+//		E = true;
+//	}
+	H = false;
+	H= true;
 }
 
 

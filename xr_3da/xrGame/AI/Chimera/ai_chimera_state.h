@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_biting_state.h
+//	Module 		: ai_chimera_state.h
 //	Created 	: 27.06.2003
 //  Modified 	: 27.06.2003
 //	Author		: Serge Zhem
@@ -10,13 +10,13 @@
 
 #include "..\\ai_monster_state.h"
 
-class CAI_Biting;
+class CAI_Chimera;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingMotion class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class CBitingMotion {
+class CChimeraMotion {
 public:
 	CMotionParams		m_tParams;			//!< Общие параметры движения для конкретного состояния
 	CMotionTurn			m_tTurn;			//!< Параметры движения в случае, если необходим поворот
@@ -24,17 +24,18 @@ public:
 
 
 	void Init();							//!< Иницализация движения
-	void SetFrameParams(CAI_Biting *pData);	//!< Установка параметров на текущий фрейм
+	void SetFrameParams(CAI_Chimera *pData);	//!< Установка параметров на текущий фрейм
 
 };
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingRest class
+// CChimeraRest class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class CBitingRest : public IState {
-	CAI_Biting	*pMonster;
-	
+class CChimeraRest : public IState {
+	CAI_Chimera		*pMonster;
+
 	enum {
 			ACTION_WALK,
 			ACTION_STAND,
@@ -48,7 +49,7 @@ class CBitingRest : public IState {
 	typedef IState inherited;
 
 public:
-	CBitingRest(CAI_Biting *p);
+	CChimeraRest(CAI_Chimera *p);
 
 	virtual void Reset();
 
@@ -60,12 +61,11 @@ private:
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingAttack class
+// CChimeraAttack class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class CBitingAttack : public IState {
-	
-	CAI_Biting	*pMonster;
+class CChimeraAttack : public IState {
+	CAI_Chimera		*pMonster;
 
 	enum {
 		ACTION_RUN,
@@ -79,7 +79,7 @@ class CBitingAttack : public IState {
 	float			m_fDistMax;						//!< максимально допустимое расстояние для аттаки
 
 public:
-	CBitingAttack(CAI_Biting *p);
+	CChimeraAttack(CAI_Chimera *p);
 
 	void Reset();
 	bool CheckCompletion();
@@ -91,12 +91,11 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingEat class
+// CChimeraEat class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class CBitingEat : public IState {
-	
-	CAI_Biting	*pMonster;
+class CChimeraEat : public IState {
+	CAI_Chimera		*pMonster;
 
 	enum {
 		ACTION_RUN,
@@ -110,7 +109,7 @@ class CBitingEat : public IState {
 	TTime			m_dwEatInterval;
 
 public:
-	CBitingEat(CAI_Biting *p);
+	CChimeraEat(CAI_Chimera *p);
 
 	void Reset();
 	bool CheckCompletion();
@@ -121,10 +120,10 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingHide class	// отход перебежками через укрытия
+// CChimeraHide class	// отход перебежками через укрытия
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CBitingHide : public IState {
-	CAI_Biting		*pMonster;
+class CChimeraHide : public IState {
+	CAI_Chimera		*pMonster;
 
 	VisionElem		m_tEnemy;
 
@@ -134,7 +133,7 @@ class CBitingHide : public IState {
 	typedef IState inherited;
 
 public:
-					CBitingHide			(CAI_Biting *p);
+					CChimeraHide			(CAI_Chimera *p);
 
 	virtual	bool	CheckCompletion	();
 	virtual void	Reset			();	
@@ -146,16 +145,16 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingDetour class	// отход перебежками через укрытия
+// CChimeraDetour class	// отход перебежками через укрытия
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CBitingDetour : public IState {
-	CAI_Biting		*pMonster;
+class CChimeraDetour : public IState {
+	CAI_Chimera		*pMonster;
 
 	VisionElem		m_tEnemy;
 
 	typedef IState inherited;
 public:
-					CBitingDetour			(CAI_Biting *p);
+					CChimeraDetour			(CAI_Chimera *p);
 
 	virtual void	Reset			();	
 	virtual	bool	CheckCompletion	();
@@ -166,16 +165,16 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingPanic class	// убегать от противника
+// CChimeraPanic class	// убегать от противника
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CBitingPanic : public IState {
-	CAI_Biting		*pMonster;
+class CChimeraPanic : public IState {
+	CAI_Chimera		*pMonster;
 
 	VisionElem		m_tEnemy;
 
 	typedef IState inherited;
 public:
-					CBitingPanic			(CAI_Biting *p);
+					CChimeraPanic			(CAI_Chimera *p);
 
 	virtual void	Reset			();	
 	virtual	bool	CheckCompletion	();

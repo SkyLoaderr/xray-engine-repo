@@ -9,22 +9,6 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 
-// Развернуть объект в направление движения
-void CAI_Biting::SetDirectionLook()
-{
-	int i = ps_Size();		// position stack size
-	if (i > 1) {
-		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		if (tWatchDirection.magnitude() > EPS_L) {
-			tWatchDirection.normalize();
-			mk_rotation(tWatchDirection,r_torso_target);
-		}
-	}
-	else
-		r_torso_target.pitch = 0;
-	r_target = r_torso_target;
-}
 
 // Развернуть объект в направление движения
 void CAI_Biting::SetReversedDirectionLook()
@@ -108,7 +92,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 	if (!pEntity) return;
 
 	VisionElem ve;
-	if (!SelectEnemy(ve)) return;
+	if (!GetEnemyFromMem(ve,Position())) return;
 
 	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
 		Fvector tDirection;
