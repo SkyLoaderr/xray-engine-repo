@@ -68,12 +68,14 @@ CWeapon::CWeapon(LPCSTR name)
 	m_pAmmo				= NULL;
 
 
+	m_pFlameParticles2	= NULL;
+	m_sFlameParticles2 = NULL;
 
 }
 
 CWeapon::~CWeapon		()
 {
-	}
+}
 
 void CWeapon::Hit(float P, Fvector &dir,	
 		    CObject* who, s16 element,
@@ -199,7 +201,10 @@ void CWeapon::Load		(LPCSTR section)
 
 	inherited::Load					(section);
 	CShootingObject::Load			(section);
+
 	
+	if(pSettings->line_exist(section, "flame_particles_2"))
+		m_sFlameParticles2 = pSettings->r_string(section, "flame_particles_2");
 
 
 	Fvector				pos,ypr;
@@ -526,8 +531,8 @@ void CWeapon::UpdateCL		()
 	UpdateLight();
 
 	//нарисовать партиклы
-	if(m_pFlameParticles)UpdateFlameParticles();
-	if(m_pFlameParticles2) UpdateFlameParticles2();
+	UpdateFlameParticles();
+	UpdateFlameParticles2();
 
 	make_Interpolation();
 }
@@ -560,7 +565,6 @@ void CWeapon::signal_HideComplete()
 
 void CWeapon::SetDefaults()
 {
-	bWorking			= false;
 	bWorking2			= false;
 	m_bPending			= false;
 

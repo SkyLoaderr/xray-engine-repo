@@ -72,7 +72,7 @@ void CMissile::Load(LPCSTR section)
 	m_sAnimThrowEnd		= pSettings->r_string(*hud_sect, "anim_throw_end");
 
 	if(pSettings->line_exist(section,"snd_playing"))
-		LoadSound(section,"snd_playing",sndPlaying,TRUE);
+		HUD_SOUND::LoadSound(section,"snd_playing",sndPlaying,TRUE);
 
 	m_animation_slot	= pSettings->r_u32(section,"animation_slot");
 }
@@ -103,7 +103,7 @@ void CMissile::net_Destroy()
 {
 	inherited::net_Destroy();
 
-	DestroySound(sndPlaying);
+	HUD_SOUND::DestroySound(sndPlaying);
 	m_fake_missile = 0;
 }
 

@@ -46,9 +46,8 @@ public:
 	virtual void			shedule_Update		(u32 dt);
 
 
-	virtual const Fmatrix&	XFORM()	 const		{return inherited::XFORM();}
-	virtual		  Fmatrix&	XFORM()				{return inherited::XFORM();}
-	virtual IRender_Sector*	Sector()			{return inherited::Sector();}
+	virtual const Fmatrix&	ParticlesXFORM() const	{return inherited::XFORM();}
+	virtual IRender_Sector*	Sector()				{return inherited::Sector();}
 
 	virtual void			renderable_Render	();
 
@@ -128,7 +127,6 @@ public:
 	virtual bool			IsHidden			()	const		{	return STATE == eHidden;}						// Does weapon is in hidden state
 	virtual bool			IsHiding			()	const		{	return STATE == eHiding;}
 
-	IC BOOL					IsWorking			()	const		{	return bWorking;							}
 	IC BOOL					IsValid				()	const		{	return iAmmoElapsed;						}
 	// Does weapon need's update?
 	IC BOOL					IsUpdating			()	const		{	return bWorking || m_bPending || getVisible();}	
@@ -139,7 +137,7 @@ public:
 
 protected:
 	// Weapon fires now
-	bool					bWorking, bWorking2;
+	bool					bWorking2;
 	// a misfire happens, you'll need to rearm weapon
 	bool					bMisfire;				
 
@@ -264,8 +262,6 @@ protected:
 	virtual void			UpdateHudPosition	();
 
 	virtual const Fvector&	CurrentFirePoint	() {return vLastFP;}
-	virtual const Fvector&	CurrentFirePoint2	() {return vLastFP2;}
-
 //////////////////////////////////////////////////////////////////////////
 // Weapon fire
 //////////////////////////////////////////////////////////////////////////
@@ -275,8 +271,9 @@ protected:
 	//трассирование полета пули
 	virtual void			FireTrace			(const Fvector& P, Fvector& D);
 
-	virtual void			FireStart			();
-	virtual void			FireEnd				();
+	virtual void			FireStart			() {CShootingObject::FireStart();}
+	virtual void			FireEnd				() {CShootingObject::FireEnd();}
+
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();
 	virtual void			Reload				();
@@ -313,7 +310,6 @@ protected:
 	float					camRelaxSpeed;
 	float					camDispersion;
 
-
 protected:
 	//для отдачи оружия
 	Fvector					m_vRecoilDeltaAngle;
@@ -323,6 +319,19 @@ protected:
 	float					m_fMinRadius;
 	float					m_fMaxRadius;
 
+//////////////////////////////////////////////////////////////////////////
+// партиклы
+//////////////////////////////////////////////////////////////////////////
+
+protected:	
+	//для второго ствола
+	virtual void			StartFlameParticles2();
+	virtual void			StopFlameParticles2	();
+	virtual void			UpdateFlameParticles2();
+protected:
+	ref_str					m_sFlameParticles2;
+	//объект партиклов для стрельбы из 2-го ствола
+	CParticlesObject*		m_pFlameParticles2;
 
 //////////////////////////////////////////////////////////////////////////
 // Weapon and ammo

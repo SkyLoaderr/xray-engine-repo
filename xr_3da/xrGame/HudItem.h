@@ -6,22 +6,10 @@
 #pragma once
 
 #include "inventory_item.h"
+#include "HudSound.h"
 
 
 class CWeaponHUD;
-
-//описание звуков применяемых в HUD-е 
-//с дополнительными параметрами
-struct HUD_SOUND
-{
-	void set_position(const Fvector& pos) {snd.set_position(pos);}
-	
-	ref_sound snd;
-	float delay;	//задержка перед проигрыванием
-	float volume;	//громкость
-};
-
-
 
 class CHudItem: virtual public CInventoryItem
 {
@@ -33,20 +21,6 @@ protected: //чтоб нельзя было вызвать на прямую
 public:
 	virtual void	Load		(LPCSTR section);
 
-	////////////////////////////////////
-	// работа со звуками
-	/////////////////////////////////////
-
-	static void		LoadSound	(LPCSTR section, LPCSTR line,
-									ref_sound& hud_snd, BOOL _3D,
-									int type = st_SourceType,
-									float* volume = NULL,
-									float* delay = NULL);
-	static void		LoadSound	(LPCSTR section, LPCSTR line,
-									 HUD_SOUND& hud_snd, BOOL _3D,
-									 int type = st_SourceType);
-
-	static void		DestroySound (HUD_SOUND& hud_snd);
 
 		   void		PlaySound	(HUD_SOUND& snd,
 								 const Fvector& position);

@@ -44,14 +44,6 @@ void CWeapon::FireTrace		(const Fvector& P, Fvector& D)
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 }
 
-void CWeapon::FireStart	()
-{
-	bWorking=true;	
-}
-void CWeapon::FireEnd	()				
-{ 
-	bWorking=false;	
-}
 void CWeapon::Fire2Start()				
 { 
 	bWorking2=true;	
@@ -77,4 +69,18 @@ void CWeapon::StopShooting		()
 
 	bWorking = false;
 	//if(IsWorking()) FireEnd();
+}
+
+
+void CWeapon::StartFlameParticles2	()
+{
+	CShootingObject::StartParticles (m_pFlameParticles2, *m_sFlameParticles2, vLastFP2);
+}
+void CWeapon::StopFlameParticles2	()
+{
+	CShootingObject::StopParticles (m_pFlameParticles2);
+}
+void CWeapon::UpdateFlameParticles2	()
+{
+	CShootingObject::UpdateParticles (m_pFlameParticles2, vLastFP2);
 }

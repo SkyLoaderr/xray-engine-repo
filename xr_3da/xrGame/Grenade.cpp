@@ -15,7 +15,7 @@ CGrenade::CGrenade(void)
 
 CGrenade::~CGrenade(void) 
 {
-	DestroySound(sndCheckout);
+	HUD_SOUND::DestroySound(sndCheckout);
 }
 
 void CGrenade::Load(LPCSTR section) 
@@ -23,7 +23,7 @@ void CGrenade::Load(LPCSTR section)
 	inherited::Load(section);
 	CExplosive::Load(section);
 
-	LoadSound(section,"snd_checkout",sndCheckout,TRUE,m_eSoundCheckout);
+	HUD_SOUND::LoadSound(section,"snd_checkout",sndCheckout,TRUE,m_eSoundCheckout);
 }
 
 BOOL CGrenade::net_Spawn(LPVOID DC) 

@@ -44,8 +44,6 @@ protected:
 	MotionSVec		mhud_shots;
 
 	// General
-	//счетчик времени, затрачиваемого на выстрел
-	float			fTime;
 	//флаг того, что хотя бы один выстрел мы должны сделать
 	//(даже если очень быстро нажали на курок и вызвалось FireEnd)
 	bool			m_bFireSingleShot;

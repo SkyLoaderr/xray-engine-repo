@@ -27,9 +27,9 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
 	//// Sounds
-	LoadSound(section,"snd_shoot_grenade"	, sndShotG		, TRUE, m_eSoundShot);
-	LoadSound(section,"snd_reload_grenade"	, sndReloadG	, TRUE, m_eSoundReload);
-	LoadSound(section,"snd_switch"			, sndSwitch		, TRUE, m_eSoundReload);
+	HUD_SOUND::LoadSound(section,"snd_shoot_grenade"	, sndShotG		, TRUE, m_eSoundShot);
+	HUD_SOUND::LoadSound(section,"snd_reload_grenade"	, sndReloadG	, TRUE, m_eSoundReload);
+	HUD_SOUND::LoadSound(section,"snd_switch"			, sndSwitch		, TRUE, m_eSoundReload);
 	
 
 	m_sFlameParticles2 = pSettings->r_string(section, "grenade_flame_particles");
@@ -91,9 +91,9 @@ void CWeaponMagazinedWGrenade::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	DestroySound(sndShotG);
-	DestroySound(sndReloadG);
-	DestroySound(sndSwitch);
+	HUD_SOUND::DestroySound(sndShotG);
+	HUD_SOUND::DestroySound(sndReloadG);
+	HUD_SOUND::DestroySound(sndSwitch);
 }
 
 

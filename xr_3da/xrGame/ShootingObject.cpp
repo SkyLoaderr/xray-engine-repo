@@ -18,7 +18,8 @@
 
 CShootingObject::CShootingObject(void)
 {
-	fTimeToFire			= 0;
+	fTime				= 0;
+ 	fTimeToFire			= 0;
 	iHitPower			= 0;
 	m_fStartBulletSpeed = 1000.f;
 
@@ -39,9 +40,13 @@ CShootingObject::CShootingObject(void)
 	m_bShotLight = true;
 
 	//particles
-	m_sFlameParticlesCurrent = m_sFlameParticles = m_sFlameParticles2 = NULL;
+	m_sFlameParticlesCurrent = m_sFlameParticles = NULL;
 	m_sSmokeParticlesCurrent = m_sSmokeParticles = NULL;
 	m_sShellParticles = NULL;
+	
+	bWorking			= false;
+
+	reinit();
 
 }
 CShootingObject::~CShootingObject(void)
@@ -53,7 +58,6 @@ CShootingObject::~CShootingObject(void)
 void CShootingObject::reinit()
 {
 	m_pFlameParticles	= NULL;
-	m_pFlameParticles2	= NULL;
 }
 
 void CShootingObject::Load	(LPCSTR section)
@@ -170,7 +174,7 @@ void CShootingObject::UpdateParticles (CParticlesObject*& pParticles,
 	if(!pParticles) return;
 
 	Fmatrix particles_pos; 
-	particles_pos.set(XFORM());
+	particles_pos.set(ParticlesXFORM());
 	particles_pos.c.set(pos);
 	
 	//pParticles->UpdateParent(particles_pos,vel);
@@ -208,10 +212,6 @@ void CShootingObject::LoadFlameParticles (LPCSTR section, LPCSTR prefix)
 	if(pSettings->line_exist(section, full_name))
 		m_sFlameParticles	= pSettings->r_string (section, full_name);
 
-	strconcat(full_name, prefix, "flame_particles_2");
-	if(pSettings->line_exist(section, full_name))
-		m_sFlameParticles2 = pSettings->r_string(section, full_name);
-
 	strconcat(full_name, prefix, "smoke_particles");
 	if(pSettings->line_exist(section, full_name))
 		m_sSmokeParticles = pSettings->r_string (section, full_name);
@@ -234,28 +234,12 @@ void CShootingObject::OnShellDrop	(const Fvector& play_pos,
 	CParticlesObject* pShellParticles = xr_new<CParticlesObject>(*m_sShellParticles,Sector());
 
 	Fmatrix particles_pos; 
-	particles_pos.set(XFORM());
+	particles_pos.set(ParticlesXFORM());
 	particles_pos.c.set(play_pos);
 
 	pShellParticles->UpdateParent(particles_pos, parent_vel); 
 	pShellParticles->Play();
 }
-
-
-
-void CShootingObject::StartFlameParticles2	()
-{
-	StartParticles (m_pFlameParticles2, *m_sFlameParticles2, CurrentFirePoint2());
-}
-void CShootingObject::StopFlameParticles2	()
-{
-	StopParticles (m_pFlameParticles2);
-}
-void CShootingObject::UpdateFlameParticles2	()
-{
-	UpdateParticles (m_pFlameParticles2, CurrentFirePoint2());
-}
-
 
 
 //партиклы дыма
@@ -301,7 +285,7 @@ void CShootingObject::UpdateFlameParticles	()
 	if(!m_pFlameParticles) return;
 
 	Fmatrix pos; 
-	pos.set(XFORM()); 
+	pos.set(ParticlesXFORM()); 
 	pos.c.set(CurrentFirePoint());
 
 	m_pFlameParticles->SetXFORM(pos);
@@ -372,4 +356,13 @@ void CShootingObject::FireBullet(const Fvector& pos,
 
 	// light
 	if(m_bShotLight) Light_Start();
+}
+
+void CShootingObject::FireStart	()
+{
+	bWorking=true;	
+}
+void CShootingObject::FireEnd	()				
+{ 
+	bWorking=false;	
 }

@@ -51,7 +51,16 @@ protected:
 												const CCartridge& cartridge,
 												u16 parent_id,
 												u16 weapon_id);
+
+	virtual void			FireStart			();
+	virtual void			FireEnd				();
+public:
+	IC BOOL					IsWorking			()	const	{return bWorking;}
+
 protected:
+	// Weapon fires now
+	bool					bWorking;
+
 	float					fTimeToFire;
 	int						iHitPower;
 	float					fHitImpulse;
@@ -70,6 +79,10 @@ protected:
 	float					tracerStartLength;
 	float					tracerWidth;
 	u32						tracerFrame;
+
+
+	//счетчик времени, затрачиваемого на выстрел
+	float			fTime;
 
 protected:
 	//для сталкеров, чтоб они знали эффективные границы использования 
@@ -107,11 +120,10 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 protected:
 	//функции родительского объекта
-	virtual const Fmatrix&	XFORM()	 const = 0;
+	virtual const Fmatrix&	ParticlesXFORM()	 const = 0;
 	virtual IRender_Sector*	Sector() = 0;
 	virtual const Fvector&	CurrentFirePoint()	= 0;
-	virtual const Fvector&	CurrentFirePoint2() = 0;
-		
+	
 
 	////////////////////////////////////////////////
 	//общие функции для работы с партиклами оружия
@@ -128,10 +140,6 @@ protected:
 	virtual void			StartFlameParticles	();
 	virtual void			StopFlameParticles	();
 	virtual void			UpdateFlameParticles();
-	//для второго ствола
-	virtual void			StartFlameParticles2();
-	virtual void			StopFlameParticles2	();
-	virtual void			UpdateFlameParticles2();
 
 	//партиклы дыма
 	virtual void			StartSmokeParticles	(const Fvector& play_pos,
@@ -149,13 +157,8 @@ protected:
 	ref_str				m_sFlameParticlesCurrent;
 	//для выстрела 1м и 2м видом стрельбы
 	ref_str				m_sFlameParticles;
-	ref_str				m_sFlameParticles2;
-
 	//объект партиклов огня
 	CParticlesObject*	m_pFlameParticles;
-
-	//объект партиклов для стрельбы из 2-го ствола
-	CParticlesObject*	m_pFlameParticles2;
 
 	//имя пратиклов для дыма
 	ref_str				m_sSmokeParticlesCurrent;

@@ -30,8 +30,6 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 	m_eSoundEmptyClick	= ESoundTypes(SOUND_TYPE_WEAPON_EMPTY_CLICKING | eSoundType);
 	m_eSoundReload		= ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
 	
-	fTime				= 0;
-	
 	m_pSndShotCurrent = NULL;
 	m_sSilencerFlameParticles = m_sSilencerSmokeParticles = NULL;
 
@@ -49,11 +47,11 @@ void CWeaponMagazined::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	DestroySound(sndShow);
-	DestroySound(sndHide);
-	DestroySound(sndShot);
-	DestroySound(sndEmptyClick);
-	DestroySound(sndReload);
+	HUD_SOUND::DestroySound(sndShow);
+	HUD_SOUND::DestroySound(sndHide);
+	HUD_SOUND::DestroySound(sndShot);
+	HUD_SOUND::DestroySound(sndEmptyClick);
+	HUD_SOUND::DestroySound(sndReload);
 }
 
 
@@ -62,11 +60,11 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	inherited::Load		(section);
 		
 	// Sounds
-	LoadSound(section,"snd_draw"	, sndShow		, TRUE, m_eSoundShow		);
-	LoadSound(section,"snd_holster"	, sndHide		, TRUE, m_eSoundHide		);
-	LoadSound(section,"snd_shoot"	, sndShot		, TRUE, m_eSoundShot		);
-	LoadSound(section,"snd_empty"	, sndEmptyClick	, TRUE, m_eSoundEmptyClick	);
-	LoadSound(section,"snd_reload"	, sndReload		, TRUE, m_eSoundReload		);
+	HUD_SOUND::LoadSound(section,"snd_draw"	, sndShow		, TRUE, m_eSoundShow		);
+	HUD_SOUND::LoadSound(section,"snd_holster"	, sndHide		, TRUE, m_eSoundHide		);
+	HUD_SOUND::LoadSound(section,"snd_shoot"	, sndShot		, TRUE, m_eSoundShot		);
+	HUD_SOUND::LoadSound(section,"snd_empty"	, sndEmptyClick	, TRUE, m_eSoundEmptyClick	);
+	HUD_SOUND::LoadSound(section,"snd_reload"	, sndReload		, TRUE, m_eSoundReload		);
 	
 	m_pSndShotCurrent = &sndShot;
 		
@@ -90,7 +88,7 @@ void CWeaponMagazined::Load	(LPCSTR section)
 			m_sSilencerFlameParticles = pSettings->r_string(section, "silencer_flame_particles");
 		if(pSettings->line_exist(section, "silencer_smoke_particles"))
 			m_sSilencerSmokeParticles = pSettings->r_string(section, "silencer_smoke_particles");
-		LoadSound(section,"snd_silncer_shot", sndSilencerShot, TRUE, m_eSoundShot);
+		HUD_SOUND::LoadSound(section,"snd_silncer_shot", sndSilencerShot, TRUE, m_eSoundShot);
 	}
 }
 

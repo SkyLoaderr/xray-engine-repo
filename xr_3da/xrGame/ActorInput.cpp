@@ -138,6 +138,12 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 
 	if (g_Alive())	
 	{
+		if(m_holder)
+		{
+			m_holder->OnKeyboardRelease(cmd);
+			return;
+		}
+
 		if(inventory().Action(cmd, CMD_STOP)) return;
 
 		if (cmd == kUSE) 
@@ -145,12 +151,6 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 			PickupModeOff();
 		}
 
-
-		if(m_holder)
-		{
-			m_holder->OnKeyboardRelease(cmd);
-			return;
-		}
 
 		switch(cmd)
 		{
