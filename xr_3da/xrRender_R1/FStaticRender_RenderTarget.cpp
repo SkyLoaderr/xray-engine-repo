@@ -67,7 +67,7 @@ BOOL CRenderTarget::Create	()
 	s_postprocess.create				("postprocess");
 	if (RImplementation.b_distortion)	s_postprocess_D.create("postprocess_d");
 	g_postprocess.create				(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_SPECULAR|D3DFVF_TEX3,RCache.Vertex.Buffer(),RCache.QuadIB);
-	return	RT->Valid() && RT_distort->Valid();
+	return	RT->valid() && RT_distort->valid();
 }
 
 CRenderTarget::~CRenderTarget	()
