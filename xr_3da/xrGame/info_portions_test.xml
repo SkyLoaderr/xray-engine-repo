@@ -3,7 +3,7 @@
 <game_information_portions>
 	<info_portion id="actor_start">
 		<location >
-			<level></level>
+			<level>test_bloodsucker</level>
 			<x>-250</x>
 			<y>100</y>
 			<icon name="Dealer" x="2" y="2" width="1" height="1" r="255" g="0" b="0" marker="1"></icon>
@@ -63,6 +63,7 @@
 		<article>two</article>
 		<article>bbb</article>
 		<location >
+			<level>ai_test</level>
 			<object story_id = "0"></object>
 			<x>100</x>
 			<y>0</y>
