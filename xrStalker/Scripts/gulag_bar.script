@@ -175,6 +175,40 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+
+	-- Гулаг нехороших сталкеров ветеранов на Дикой территории
+	if type == "bar_evil_veterans" then
+		t = { section = "logic1@bar_evil_veterans_patrol", 
+			idle = 0,
+			prior = 10, state = {0,1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic2@bar_evil_veterans_walker1", 
+			idle = 0,
+			prior = 7, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic3@bar_evil_veterans_kamp1", 
+			idle = 0,
+			prior = 7, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic2@bar_evil_veterans_walker2", 
+			idle = 0,
+			prior = 7, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic3@bar_evil_veterans_kamp2", 
+			idle = 0,
+			prior = 7, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 end
 
 function load_states(gname, type)
@@ -228,6 +262,31 @@ function load_states(gname, type)
 ]]			
 		end
 	end
+	if type == "bar_evil_veterans" then        
+		return function (gulag)
+				return 2
+--[[
+				for k,v in gulag.Object do
+					enemy = v:best_enemy()
+					if enemy ~= nil then
+   						gulag.alarm_start = game.get_game_time()
+   						return 2 -- тревога
+					end
+				end		
+		
+				if gulag.alarm_start == nil or
+					game.get_game_time():diffSec(gulag.alarm_start) > 300 then
+					if level.get_time_hours() >= 6 and level.get_time_hours() <= 22 then
+						return 0  -- день
+					else
+						return 1  -- ночь
+					end
+				else
+					return 2
+				end
+]]			
+		end
+	end
 end
 
 function checkStalker(npc_community, gulag_type)
@@ -236,6 +295,9 @@ function checkStalker(npc_community, gulag_type)
 	end
 	if gulag_type == "bar_dolg_veterans" then
 		return npc_community == "dolg"
+	end
+	if gulag_type == "bar_evil_veterans" then
+		return npc_community == "stalker"
 	end
 	return false
 end
