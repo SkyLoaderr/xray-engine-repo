@@ -81,7 +81,7 @@ function update()
 
 		-- если все умерли
 		if table.getn( newbies ) == 0 then
-			printf("_ch: 2 %s", attack_end:timeToString(game.CTime.TimeToMilisecs))
+			printf("_ch: 2 %s", game.get_game_time:timeToString(game.CTime.TimeToMilisecs))
 			chst( state_after )
 		end
 
@@ -122,7 +122,7 @@ function main()
 		chst( state_before )
 	end
 
-	actor:give_info_portion( "tutorial_wounded_help" )
+--	actor:give_info_portion( "tutorial_wounded_help" )
 
 	while true do
 		update()
