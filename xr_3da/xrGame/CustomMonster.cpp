@@ -70,20 +70,8 @@ void CCustomMonster::OnDeviceCreate()
 	
 	// Eyes
 	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_head"));
-	eye_fov					= pSettings->ReadFLOAT(cNameSect(),"eye_fov");
-	eye_range				= pSettings->ReadFLOAT(cNameSect(),"eye_range");
-
-	// movement
-	m_fJumpSpeed			= pSettings->ReadFLOAT(cNameSect(),"jump_speed");
-	//
-	m_fMinSpeed				= pSettings->ReadFLOAT(cNameSect(),"min_speed");
-	m_fMaxSpeed				= pSettings->ReadFLOAT(cNameSect(),"max_speed");
-	m_fCurSpeed				= m_fMaxSpeed;
-
 	// Motions
 	CKinematics* skeleton	= PKinematics(pVisual);
-	m_current				= 0;
-
 	// take index spine bone
 	//"torso1"
 	int torso_bone			= skeleton->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_torso"));
@@ -101,6 +89,16 @@ void CCustomMonster::Load		(LPCSTR section)
 	
 	Movement.SetPosition		(vPosition);
 	
+	eye_fov					= pSettings->ReadFLOAT(section,"eye_fov");
+	eye_range				= pSettings->ReadFLOAT(section,"eye_range");
+	// movement
+	m_fJumpSpeed			= pSettings->ReadFLOAT(section,"jump_speed");
+	//
+	m_fMinSpeed				= pSettings->ReadFLOAT(section,"min_speed");
+	m_fMaxSpeed				= pSettings->ReadFLOAT(section,"max_speed");
+	m_fCurSpeed				= m_fMaxSpeed;
+	m_current				= 0;
+
 	// Health & Armor
 	fArmor					= 0;
 	

@@ -200,6 +200,7 @@ void CAI_Rat::FreeHunting()
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy) {
+		SelectEnemy(m_Enemy);
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
@@ -332,18 +333,23 @@ void CAI_Rat::Retreat()
 		
 		INIT_SQUAD_AND_LEADER;
 		
-		if (this == Leader) {
-			Fvector tTemp;
-			tTemp.sub(vPosition,m_Enemy.Enemy->Position());
-			tTemp.normalize_safe();
-			tTemp.mul(RETREAT_DISTANCE);
-			m_tSafeSpawnPosition.add(vPosition,tTemp);
-		}
-		else {
-			CAI_Rat *tpRatLeader = dynamic_cast<CAI_Rat *>(Leader);
-			if (tpRatLeader)
-				m_tSafeSpawnPosition.set(tpRatLeader->m_tSafeSpawnPosition);
-		}
+//		if (this == Leader) {
+//			Fvector tTemp;
+//			tTemp.sub(vPosition,m_Enemy.Enemy->Position());
+//			tTemp.normalize_safe();
+//			tTemp.mul(RETREAT_DISTANCE);
+//			m_tSafeSpawnPosition.add(vPosition,tTemp);
+//		}
+//		else {
+//			CAI_Rat *tpRatLeader = dynamic_cast<CAI_Rat *>(Leader);
+//			if (tpRatLeader)
+//				m_tSafeSpawnPosition.set(tpRatLeader->m_tSafeSpawnPosition);
+//		}
+		Fvector tTemp;
+		tTemp.sub(vPosition,m_Enemy.Enemy->Position());
+		tTemp.normalize_safe();
+		tTemp.mul(RETREAT_DISTANCE);
+		m_tSafeSpawnPosition.add(vPosition,tTemp);
 	}
 	else
 		if (Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) {
