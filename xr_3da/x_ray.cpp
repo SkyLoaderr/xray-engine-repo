@@ -156,7 +156,7 @@ CApplication::CApplication()
 	Level_Scan					( );
 
 	// Font
-	pFont						= new CGameFont	("font","ui\\ui_font_console_01",16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pFont						= new CGameFont	("font","ui\\ui_font_console",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	Device.seqRender.Add		( pFont, REG_PRIORITY_LOW-1000 );
 
 	// Register us
