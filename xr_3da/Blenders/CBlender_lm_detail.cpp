@@ -166,7 +166,7 @@ void	CBlender_lm_detail::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_
 				RS.StageBegin		();
 				{
 					RS.StageSET_Address	(D3DTADDRESS_WRAP);
-					RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+					RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
 					RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
 					RS.Stage_Texture	(oT2_Name,		L_textures	);
 					RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
@@ -179,4 +179,5 @@ void	CBlender_lm_detail::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_
 			}
 			break;
 		}
+	}
 }
