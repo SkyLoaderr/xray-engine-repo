@@ -17,14 +17,17 @@ public:
 	virtual		void				Unlock					();
 	virtual		game_PlayerState*	get_it					(u32 it);
 	virtual		game_PlayerState*	get_id					(u32 id);								// DPNID
-	virtual		string64*			get_name_it				(u32 it);
-	virtual		string64*			get_name_id				(u32 id);								// DPNID
+	virtual		LPCSTR				get_name_it				(u32 it);
+	virtual		LPCSTR				get_name_id				(u32 id);								// DPNID
+	virtual		u32					get_id_2_eid			(u32 id);
 	virtual		u32					get_it_2_id				(u32 it);
 	virtual		u32					get_count				();
 	
 	// Signals
-	virtual		void				signal_Syncronize		();
 	virtual		void				switch_Phase			(u32 new_phase);
+	virtual		void				signal_Syncronize		();
+	virtual		void				signal_Destroy			()	{};
+	virtual		void				signal_Create			();
 
 	// Utilities
 	virtual		u32					get_alive_count			(u32 team);

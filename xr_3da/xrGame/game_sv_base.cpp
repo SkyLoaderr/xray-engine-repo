@@ -92,6 +92,11 @@ void				game_sv_GameState::signal_Syncronize		()
 {
 	sv_force_sync	= TRUE;
 }
+void				game_sv_GameState::signal_Create			()
+{
+
+}
+
 void				game_sv_GameState::switch_Phase				(u32 new_phase)
 {
 	phase				= u16(new_phase);
@@ -171,6 +176,10 @@ void game_sv_GameState::OnRoundStart			()
 		ps->flags				&=	~GAME_PLAYER_FLAG_READY;
 	}
 	Unlock	();
+
+	// 1. We have to destroy all player-entities and entities
+
+	// 2. We have to create them at respawn points and/or specified positions
 }
 
 void game_sv_GameState::OnRoundEnd				(LPCSTR reason)

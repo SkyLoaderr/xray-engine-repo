@@ -95,3 +95,31 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 	}
 	Unlock	();
 }
+
+void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
+{
+	__super::OnPlayerConnect	(id_who);
+
+	LPCSTR	options				=	get_name_id	(id_who);
+
+	// Create and fill
+	xrSE_Actor*	A	= (xrSE_Actor*)F_entity_Create("actor");	R_ASSERT(A);					// create SE
+	strcpy			(A->s_name,"actor");														// ltx-def
+	strcpy			(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+	A->s_gameid		=	u8(type);																// game-type
+	A->s_team		=	u8(0);																	// no-team
+	E->s_RP			=	0xff;																	// auto-select
+	A->ID			=	0xffff;																	// server must generate ID
+	A->ID_Parent	=	0xffff;																	// no-parent
+	A->ID_Phantom	=	0xffff;																	// no-phantom
+	A->s_flags		=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
+	A->RespawnTime	=	0;																		// no-respawn
+
+	// Send
+	NET_Packet						P;
+	A->Spawn_Write					(P,FALSE);
+	Level().Server->Process_spawn	(P,id_who);
+
+	// Destroy
+	F_entity_Destroy	(A);
+}
