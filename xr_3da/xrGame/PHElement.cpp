@@ -5,6 +5,7 @@
 #include "PHFracture.h"
 #include "PHContactBodyEffector.h"
 #include "MathUtils.h"
+#include "PhysicsShellHolder.h"
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
