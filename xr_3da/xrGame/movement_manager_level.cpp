@@ -9,6 +9,10 @@
 #include "stdafx.h"
 #include "movement_manager.h"
 
+#ifdef	NDEBUG
+#define Msg(a)
+#endif
+
 void CMovementManager::process_level_path()
 {
 	switch (m_path_state) {
