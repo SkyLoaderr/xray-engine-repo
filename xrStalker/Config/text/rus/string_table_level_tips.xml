@@ -10,6 +10,11 @@
 		<text ln="rus">Бэрэгись мандавошек.</text>
 	</string>
 
+	<string id="esc_trader_how_to_talk">
+		<text>Default tips</text>
+		<text ln="rus">Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
+	</string>
+
 	<string id="tutorial_trader_search_corpses">
 		<text>Default tips</text>
 		<text ln="rus">Обыщи трупы, там может быть что-нибудь полезное.</text>

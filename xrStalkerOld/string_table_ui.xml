@@ -1,24 +1,38 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <!-- таблица строк общего назначения -->
 <string_table>
-  <string id="Local Map">
-    <text>To Local Map</text>
-    <text ln="rus">Локальная карта</text>
-  </string>
-  <string id="Global Map">
-    <text>To Global Map</text>
-    <text ln="rus">Глобальная карта</text>
-  </string>
-  <!-- надписи внизу основного окна -->
-  <string id="cant_walk">
-    <text>too tied to walk</text>
-    <text ln="rus">слишком истощен, чтобы идти</text>
-  </string>
-    <!-- Надпись на физической двери. Не стирать. Джон. -->
-  <string id="door_sign">
-    <text>Press 'E' to open the door</text>
-    <text ln="rus">Нажмите 'E' для того, чтобы открыть дверь</text>
-  </string>
+	<string id="Local Map">
+		<text>To Local Map</text>
+		<text ln="rus">Локальная карта</text>
+	</string>
+
+	<string id="Global Map">
+		<text>To Global Map</text>
+		<text ln="rus">Глобальная карта</text>
+	</string>
+
+	<!-- Надписи внизу основного окна -->
+	<string id="cant_walk">
+		<text>too tied to walk</text>
+		<text ln="rus">слишком истощен, чтобы идти</text>
+	</string>
+
+	<!-- Надпись на физической двери -->
+
+	<string id="tip_door_locked">
+		<text>The door is locked</text>
+		<text ln="rus">Дверь заперта</text>
+	</string>
+
+	<string id="tip_door_open">
+		<text>Press 'E' to open the door</text>
+		<text ln="rus">Нажмите 'E' для того, чтобы открыть дверь</text>
+	</string>
+
+	<string id="tip_door_close">
+		<text>Press 'E' to close the door</text>
+		<text ln="rus">Нажмите 'E' для того, чтобы закрыть дверь</text>
+	</string>
 
 </string_table>
 
