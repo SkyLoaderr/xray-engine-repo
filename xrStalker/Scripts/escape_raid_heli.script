@@ -83,10 +83,11 @@ end
 function HeliManager:Run()
 	self.m_b_exploded        = false
 	self.m_b_prepered_to_die = false
+	self.m_run               = true
 
 	local state, health, altitude
 
-	while not self.m_b_exploded do
+	while self.m_run do
 		state = self.m_heliObject:GetState()
 
 		if state == CHelicopter.eIdleState then
@@ -113,10 +114,17 @@ function HeliManager:Run()
 				self.m_b_exploded = true
 				printf("[heli] EXPLODE")
 				self.m_heliObject:Explode()
+				self.m_heliObject:TurnLighting( true )
+				self.m_end_lighting = device():time_global() + 15000
 			end
 		end
 
-	   wait()
+		if self.m_b_exploded and self.m_end_lighting < device():time_global() then
+			self.m_heliObject:TurnLighting( false )
+			self.m_run = false
+		end
+
+		wait()
 	end
 end
 
