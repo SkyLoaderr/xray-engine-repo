@@ -95,7 +95,7 @@ public:
     bool					bTerminator;
     
     EnvVec*					CurrentWeather;
-    shared_str					CurrentWeatherName;
+    shared_str				CurrentWeatherName;
 	WeatherMap				Weathers;
 	xr_vector<CEnvModifier>	Modifiers;
 
@@ -115,6 +115,7 @@ public:
 	// music interface
 	struct	music
 	{
+		shared_str			name;
 		ref_sound			left;
 		ref_sound			right;
 		bool				playing		()		{ return left.feedback && right.feedback; }

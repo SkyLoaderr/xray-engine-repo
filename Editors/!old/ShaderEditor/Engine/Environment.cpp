@@ -318,6 +318,9 @@ void CEnvironment::load		()
 			strconcat	(_l,_n,"_l");
 			strconcat	(_r,_n,"_r");
 			music*		m = xr_new<music>	();
+#ifdef DEBUG
+			m->name				= _n;
+#endif
 			m->left.create		(true,_l,0);
 			m->right.create		(true,_r,0);
 			playlist.push_back	(m);
@@ -487,10 +490,13 @@ void CEnvironment::OnFrame()
 		playlist.push_back	(_old);
 		playlist.front()->left.play_at_pos	(0,Device.vCameraPosition);	playlist.front()->left.set_priority(1000.f);
 		playlist.front()->right.play_at_pos	(0,Device.vCameraPosition);	playlist.front()->right.set_priority(1000.f);
+#ifdef	DEBUG
+		Msg					("* playing music track: %s",playlist.front()->name.c_str());
+#endif
 	}
 
 	// update
-	CSound_params		spL,spR;
+	CSound_params			spL,spR;
 	spL.freq				= 1.f;
 	spL.min_distance		= 10.f;
 	spL.max_distance		= 100.f;

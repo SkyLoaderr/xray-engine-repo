@@ -49,6 +49,20 @@ void	CalcGauss_k7(
 	w0.set	(W[1],W[2],W[3],W[4]);		// -1, -2, -3, -4
 	w1.set	(W[5],W[6],W[7],W[0]);		// -5, -6, -7, 0
 }
+void	CalcGauss_wave(
+					   Fvector4&	w0,						// weight
+					   Fvector4&	w1,						// weight
+					   float		r_base		=3.3f,		// gaussian radius
+					   float		r_detail	=1.0f,		// gaussian radius
+					   float		s_out		=1.f		// resulting magnitude
+					   )
+{
+	Fvector4	t0,t1;
+	CalcGauss_k7(w0,w1,r_base,  s_out);
+	CalcGauss_k7(t0,t1,r_detail,s_out);
+	w0.add		(t0);
+	w1.add		(t1);
+}
 
 void CRenderTarget::phase_bloom	()
 {
@@ -208,7 +222,7 @@ void CRenderTarget::phase_bloom	()
 
 			// Perform filtering
 			Fvector4	w0,w1;
-			CalcGauss_k7				(w0,w1,ps_r2_ls_bloom_kernel_g,ps_r2_ls_bloom_kernel_scale);
+			CalcGauss_wave				(w0,w1,ps_r2_ls_bloom_kernel_g,ps_r2_ls_bloom_kernel_g/3.f,ps_r2_ls_bloom_kernel_scale);
 			u_setrt						(rt_Bloom_2,NULL,NULL,NULL);		// No need for ZBuffer at all
 			RCache.set_Element			(s_bloom->E[1]);
 			RCache.set_ca				("weight", 0,			w0);
@@ -287,7 +301,7 @@ void CRenderTarget::phase_bloom	()
 
 			// Perform filtering
 			Fvector4	w0,w1;
-			CalcGauss_k7				(w0,w1,ps_r2_ls_bloom_kernel_g,ps_r2_ls_bloom_kernel_scale);
+			CalcGauss_wave				(w0,w1,ps_r2_ls_bloom_kernel_g,ps_r2_ls_bloom_kernel_g/3.f,ps_r2_ls_bloom_kernel_scale);
 			u_setrt						(rt_Bloom_1,NULL,NULL,NULL);				// No need for ZBuffer at all
 			RCache.set_Element			(s_bloom->E[2]);
 			RCache.set_ca				("weight", 0,			w0);
