@@ -25,12 +25,12 @@ CLightPPA::~CLightPPA()
 
 }
 
-IC void mk_vertex	(PPA_Vertex& D, Fvector& P, Fsphere& S)
+IC void mk_vertex	(PPA_Vertex& D, Fvector& P, Fvector& C, float r2)
 {
 	D.P.set	(P);
-	D.u0	= (P.x-S.P.x)/S.R+.5f; 
-	D.v0	= (P.z-S.P.z)/S.R+.5f;
-	D.u1	= (P.y-S.P.y)/S.R+.5f;
+	D.u0	= (P.x-C.x)/r2+.5f; 
+	D.v0	= (P.z-C.z)/r2+.5f;
+	D.u1	= (P.y-C.y)/r2+.5f;
 	D.v1	=.5f;
 }
 
@@ -111,12 +111,12 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 		// Triangulation
 		PPA_Vertex		vert1,vert2,vert3;
 		Fvector			uv;
-		vert1.N.set(N);	mk_vertex(vert1,(*P)[0],sphere);
-		vert2.N.set(N);	mk_vertex(vert2,(*P)[1],sphere);
+		vert1.N.set(N);	mk_vertex(vert1,(*P)[0],sphere.P,sphere.R*2);
+		vert2.N.set(N);	mk_vertex(vert2,(*P)[1],sphere.P,sphere.R*2);
 		vert3.N.set		(N);
 		for (DWORD i=2; i<P->size(); i++)
 		{
-			mk_vertex		(vert3,(*P)[i],sphere);
+			mk_vertex		(vert3,(*P)[i],sphere.P,sphere.R*2);
 			vlist.push_back	(vert1);
 			vlist.push_back	(vert2);
 			vlist.push_back	(vert3);
