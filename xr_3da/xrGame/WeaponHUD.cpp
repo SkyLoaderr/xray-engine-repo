@@ -177,6 +177,14 @@ void CWeaponHUD::StopCurrentAnim	()
 	}
 }
 
+void CWeaponHUD::StopCurrentAnimWithoutCallback		()
+{
+	m_dwAnimEndTime = 0;
+	m_bStopAtEndAnimIsRunning = false;
+
+	m_pCallbackItem = NULL;
+}
+
 ///////////////////////////////////////////////////////////
 // Синглтоны для загрузки и освобождения общей информации 
 // в HUD

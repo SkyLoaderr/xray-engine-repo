@@ -39,6 +39,7 @@ void CGrenade::net_Destroy()
 
 void CGrenade::OnH_B_Independent() 
 {
+	m_pHUD->StopCurrentAnimWithoutCallback();
 	inherited::OnH_B_Independent();
 }
 

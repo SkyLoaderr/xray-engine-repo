@@ -103,6 +103,9 @@ public:
 	//обновление HUD должно вызыватьс€ на каждом кадре
 	void				UpdateHud		();
 
+	void				StopCurrentAnimWithoutCallback	();
+
+
 protected:
 	static SHARED_HUD_INFO*				GetHudInfo			(ref_str section, CHudItem* pHudItem);
 	static void							ReleaseHudInfo		(ref_str section);

@@ -81,7 +81,7 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 	if (Remote())												return;
 
 	if (GAME_PHASE_PENDING	== Game().phase || GAME_PHASE_INPROGRESS	== Game().phase ){
-		if (kWPN_FIRE == cmd){
+		if (kWPN_FIRE == cmd && HUD().GetUI()->UIGame()->CanBeReady()){
 			// Switch our "ready" status
 			NET_Packet			P;
 			u_EventGen			(P,GEG_PLAYER_READY,ID());
