@@ -13,7 +13,6 @@
 #include "object_broker.h"
 #include "alife_event_personal.h"
 #include "alife_artefact_order.h"
-#include "ef_primary.h"
 
 #ifndef AI_COMPILER
 #	include "ai_space.h"
@@ -26,6 +25,7 @@
 #	include "game_graph.h"
 #	include "alife_simulator.h"
 #	include "alife_registry_container.h"
+#	include "ef_primary.h"
 #endif
 
 
