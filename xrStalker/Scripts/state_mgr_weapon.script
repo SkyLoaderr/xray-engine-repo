@@ -9,14 +9,12 @@ function eva_state_mgr_weapon:evaluate()
 	if (state_lib.states[self.st.target_state].weapon == nil) or
 	   (state_lib.states[self.st.target_state].weapon == "strapped" and
 		self.object:weapon_strapped()) or
-	   (state_lib.states[self.st.target_state].weapon == "unstrapped" and
-		self.object:weapon_unstrapped() and
-		
+	   ((state_lib.states[self.st.target_state].weapon == "unstrapped" or
+	     state_lib.states[self.st.target_state].weapon == "fire") and
+		self.object:weapon_unstrapped() and	
 		self.object:active_item() ~= nil and		
 		self.object:best_weapon() ~= nil and
-		self.object:active_item():id() == self.object:best_weapon():id()
-		
-		)
+		self.object:active_item():id() == self.object:best_weapon():id())
 	then
 		--printf("eva_state_mgr_weapon:evaluate() TRUE")
 		return true
@@ -54,7 +52,8 @@ function eva_state_mgr_weapon_unstrapped:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_weapon_unstrapped:evaluate()
-	return state_lib.states[self.st.target_state].weapon == "unstrapped"
+	return state_lib.states[self.st.target_state].weapon == "unstrapped" or
+		   state_lib.states[self.st.target_state].weapon == "fire"
 end
 --' Держит ли уже он оружие в руках
 class "eva_state_mgr_weapon_unstrapped_now" (property_evaluator)
@@ -67,14 +66,6 @@ function eva_state_mgr_weapon_unstrapped_now:evaluate()
 			self.object:active_item():id() == self.object:best_weapon():id()
 end
 
---' Необходимо ли стрелять из оружия
-class "eva_state_mgr_weapon_fire" (property_evaluator)
-function eva_state_mgr_weapon_fire:__init(name, st) super (nil, name)
-	self.st = st
-end
-function eva_state_mgr_weapon_fire:evaluate()
-	return state_lib.states[self.st.target_state].weapon == "fire"
-end
 
 --' Достать оружие
 class "act_state_mgr_weapon_unstrapp" (action_base)
@@ -89,22 +80,6 @@ function act_state_mgr_weapon_unstrapp:execute()
 	action_base.execute(self)
 end
 function act_state_mgr_weapon_unstrapp:finalize()
-	action_base.finalize(self)
-end
-
---' Стрелять из оружия
-class "act_state_mgr_weapon_fire" (action_base)
-function act_state_mgr_weapon_fire:__init(name) super (nil, name)
-end
-function act_state_mgr_weapon_fire:initialize()
-	action_base.initialize(self)
-	self.object:set_item(object.fire1, self.object:best_weapon())
-end
-function act_state_mgr_weapon_fire:execute()
---	printf("*STATE MGR* Weapon Fire action")
-	action_base.execute(self)
-end
-function act_state_mgr_weapon_fire:finalize()
 	action_base.finalize(self)
 end
 

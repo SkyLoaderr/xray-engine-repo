@@ -57,6 +57,13 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},			
+	sneak_fire = {	weapon = "fire",
+				movement = move.walk,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = nil
+			},			
 	assault = {	weapon = "unstrapped",
 					movement = move.run,
 					mental = anim.danger,
@@ -101,6 +108,13 @@ states = {
 				bodystate = move.crouch,
 				animstate = "stand",
 				animation = "hide"
+			},
+	hide_fire = {	weapon = "fire",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = nil
 			},
 	caution = {	weapon = nil,
 				movement = move.stand,

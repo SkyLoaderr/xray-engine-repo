@@ -131,12 +131,10 @@ function action_kill:execute ()
 		printf("_bp: %d: see_enemy?", device():time_global())
 		if self.object:see(self.enemy) == true then
 			printf("_bp: YES")
-			state_mgr.set_state(self.object, "threat", nil, nil, {look_object = self.enemy})
---			self.object:set_item(object.fire1, self.object:best_weapon())
+			state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy})
 		else
 			printf("_bp: NO")
-			state_mgr.set_state(self.object, "hide")
---			self.object:set_item(object.activate, self.object:best_weapon())
+			state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy:position()})
 		end
 	end
 end
@@ -173,11 +171,10 @@ function action_retreat:execute()
 	action_base.execute(self)
 
 	if self.object:best_enemy() then
-		state_mgr.set_state(self.object, "sneak", nil, nil, self.object:best_enemy())
 		if self.object:see(self.object:best_enemy()) == true then
-			self.object:set_item(object.fire1, self.object:best_weapon())
+			state_mgr.set_state(self.object, "sneak_fire", nil, nil, {look_object = self.object:best_enemy()})
 		else
-			self.object:set_item(object.activate, self.object:best_weapon())
+			state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.object:best_enemy(), look_position = self.object:best_enemy():position()})
 		end
 	end
 	
