@@ -22,6 +22,7 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 	m_eSoundReload		= ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
 	m_eSoundRicochet	= ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET | eSoundType);
 	fTime				= 0;
+	m_queueSize = m_shotNum = 0;
 }
 
 CWeaponMagazined::~CWeaponMagazined()
@@ -75,6 +76,7 @@ void CWeaponMagazined::Load	(LPCSTR section)
 
 void CWeaponMagazined::FireStart		()
 {
+	if(dynamic_cast<CActor*>(H_Parent())) m_queueSize = 0;
 	if(IsValid()) {
 		if(!IsWorking()) {
 			if(STATE==eReload) return;
@@ -96,6 +98,7 @@ void CWeaponMagazined::FireStart		()
 }
 
 void CWeaponMagazined::FireEnd() {
+	m_shotNum = 0;
 	if(IsWorking()) {
 		CWeapon::FireEnd();
 	}
@@ -284,11 +287,13 @@ void CWeaponMagazined::state_Fire	(float dt)
 	{
 		bFlame			=	TRUE;
 		fTime			+=	fTimeToFire;
-		
+
+		m_shotNum++;
 		OnShot			();
 		FireTrace		(p1,vLastFP,d);
 	}
 	UpdateSounds			();
+	if(m_shotNum == m_queueSize) FireEnd();
 }
 
 void CWeaponMagazined::state_MagEmpty	(float dt)

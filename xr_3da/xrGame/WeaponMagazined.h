@@ -96,6 +96,9 @@ public:
 
 	virtual bool Action(s32 cmd, u32 flags);
 	bool			IsAmmoAvailable	();
+
+	u32 m_queueSize, m_shotNum;
+	void SetQueueSize(u32 size) { m_queueSize = size; }
 };
 
 #endif //__XR_WEAPON_MAG_H__
