@@ -28,7 +28,9 @@ function stateAttack:execute()
   self:testing()
 
   if( self.memory.npc:action() == nil ) then
+	  printf("attack 1-1")
       action( self.memory.npc, act( act.attack, self.enemy ), cond( cond.time_end, 100000 ) )
+      printf("attack 1-2")
     end
 end
 
@@ -111,7 +113,9 @@ function stateAttackThreaten:execute()
     if( self.memory.npc:action() == nil ) then
     if(self.memory.hit.time ~= 0) then
         --If hit, attack enemy
+	      printf("attack 2-1")
           action(self.memory.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 20000))
+	      printf("attack 2-2")
           return
         end
 
@@ -177,7 +181,9 @@ function stateAttackArtful:execute()
     end
 
     if( self.memory.npc:action() == nil ) then
+	    printf("attack 3-1")
         action( self.memory.npc, act( act.attack, self.enemy ), cond( cond.time_end, 100000 ) )
+	    printf("attack 3-2")
     end
 end
 
@@ -246,7 +252,9 @@ function stateAttackArtful:actor()
   if(self.angry)then
   --Если злые, то атакуем актера
       if(self.memory.npc:action() == nil) then
+	      printf("attack 4-1")
           action(self.memory.npc, act(act.attack, level.actor()), cond(cond.time_end, 30000) )
+	      printf("attack 4-2")
         end
       return
     end
