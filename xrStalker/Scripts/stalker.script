@@ -174,11 +174,11 @@ function stalker_script:net_destroy	()
 end
 
 function stalker_script:net_export	(packet)
-	object_binder.net_export	(self)
+	object_binder.net_export	(self,packet)
 end
 
 function stalker_script:net_import	(packet)
-	object_binder.net_import	(self)
+	object_binder.net_import	(self,packet)
 end
 
 function init		(obj)
