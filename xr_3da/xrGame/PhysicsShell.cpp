@@ -85,7 +85,7 @@ CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P
 		CPhysicsElement* fixed_element=i->second.element;
 		R_ASSERT2(fixed_element,"fixed bone has no physics");
 		//if(!fixed_element) continue;
-		FixBody(fixed_element->get_body());
+		fixed_element->Fix();
 	}
 	return pPhysicsShell;
 }
@@ -122,7 +122,7 @@ CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,U16Vec
 		CPhysicsElement* fixed_element=i->second.element;
 		//R_ASSERT2(fixed_element,"fixed bone has no physics");
 		if(!fixed_element) continue;
-		FixBody(fixed_element->get_body());
+		fixed_element->Fix();
 	}
 	return pPhysicsShell;
 }
