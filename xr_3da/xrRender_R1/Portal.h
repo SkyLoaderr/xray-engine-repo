@@ -91,10 +91,12 @@ public:
 	}
 
 	// Main interface
-	void					Render		(CFrustum& F);
-	void					Load		(IReader& fs);
-	void					DebugDump	();
-	IVisual*				Root		()	{ return pRoot; }
+	void					Render			(CFrustum& F);
+	void					Render_smap_d	(CFrustum& F);
+	void					Render_smap_p	(CFrustum& F);
+	void					Load			(IReader& fs);
+	void					DebugDump		();
+	IVisual*				Root			()	{ return pRoot; }
 
 	void					get_objects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM, objSET &D, objQualifier* Q, void* P);
 

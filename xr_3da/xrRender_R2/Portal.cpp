@@ -171,7 +171,7 @@ void CSector::Render(CFrustum &F)
 			CSector* pSector;
 
 			if (PORTAL->bDualRender) {
-				pSector = PORTAL->getSector(this);
+				pSector = PORTAL->getSector			(this);
 			} else {
 				pSector = PORTAL->getSectorBack		(Device.vCameraPosition);
 				if (pSector==this)			continue;
@@ -198,7 +198,7 @@ void CSector::Render(CFrustum &F)
 			if (!RImplementation.occ_visible(*P))	continue;
 
 			// Create _new_ frustum and recurse
-			CFrustum Clip;
+			CFrustum			Clip;
 			Clip.CreateFromPortal(P,Device.vCameraPosition,Device.mFullTransform);
 			PORTAL->dwFrame		= Device.dwFrame;
 			PORTAL->bDualRender	= FALSE;
