@@ -342,7 +342,14 @@ BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 	{
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
-		if (!l_pC->net_Ready) continue;
+		if (!l_pC->net_Ready)
+		{
+			if (l_pC->ID == m_server->GetServer_client()->ID)
+			{
+				continue;
+			}
+			++ready;
+		};
 		if (ps->testFlag(GAME_PLAYER_FLAG_READY) )	++ready;
 		else
 			if (ps->Skip) ++ready;
