@@ -9,6 +9,6 @@
 #pragma once
 
 #ifdef _DEBUG
-#define LOG_STATE
+//#define LOG_STATE
 #endif
 
