@@ -6,7 +6,7 @@ void CInvisibility::reinit()
 	inherited::reinit();
 	
 	m_time_start_blink	= 0;
-	m_cur_visibility	= true;
+	m_cur_visibility	= false;
 	m_blink				= false;
 	m_time_last_blink	= 0;
 

@@ -135,6 +135,7 @@ void CAI_Bloodsucker::reinit()
 	MotionMan.AddAnimTranslation	(def1,"vampire_0");
 	MotionMan.AddAnimTranslation	(def2,"vampire_1");
 	MotionMan.AddAnimTranslation	(def3,"vampire_2");
+
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -266,6 +267,9 @@ BOOL CAI_Bloodsucker::net_Spawn (CSE_Abstract* DC)
 
 	vfAssignBones	();
 
+	// спаунится нивидимым
+	setVisible		(false);
+
 	return(TRUE);
 }
 
@@ -349,3 +353,16 @@ void CAI_Bloodsucker::Die(CObject* who)
 	inherited::Die(who);
 }
 
+#ifdef DEBUG
+CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
+{
+	CBaseMonster::SDebugInfo info = inherited::show_debug_info();
+	if (!info.active) return CBaseMonster::SDebugInfo();
+
+	string128 text;
+	sprintf(text, "Invisibility Value = [%f]", CInvisibility::get_value());
+	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
+
+	return CBaseMonster::SDebugInfo();
+}
+#endif

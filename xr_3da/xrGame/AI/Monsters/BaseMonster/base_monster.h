@@ -317,9 +317,22 @@ IC	void					wake_up				(){m_bSleep = false;}
 	virtual void			on_first_update		();
 
 #ifdef DEBUG
+	struct SDebugInfo {
+		bool	active;
+		float	x;
+		float	y;
+		float	delta_y;
+		u32		color;
+		u32		delimiter_color;
+
+		SDebugInfo() : active(false) {}
+		SDebugInfo(float px, float py, float dy, u32 c, u32 dc) : active(true), x(px), y(py), delta_y(dy), color (c), delimiter_color(dc) {}
+	};
+	
+	
 	u8						m_show_debug_info;	// 0 - none, 1 - first column, 2 - second column
 	void					set_show_debug_info	(u8 show = 1){m_show_debug_info = show;}
-	virtual	void			show_debug_info		();
+	virtual	SDebugInfo		show_debug_info		();
 #endif
 
 private:

@@ -13,6 +13,8 @@ class	CStateBloodsuckerVampire : public CState<_Object> {
 	};
 
 	u32					m_time_last_vampire;
+	
+	const CEntityAlive *enemy;
 
 public:
 						CStateBloodsuckerVampire		(_Object *obj);

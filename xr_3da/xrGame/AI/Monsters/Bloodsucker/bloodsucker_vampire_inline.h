@@ -37,6 +37,8 @@ void CStateBloodsuckerVampireAbstract::initialize()
 
 	object->CInvisibility::set_manual_switch	();
 	object->CInvisibility::manual_activate		();
+
+	enemy	= object->EnemyMan.get_enemy();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -101,6 +103,11 @@ bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 	if (enemy->CLS_ID != CLSID_OBJECT_ACTOR)		return false;
 	if (!object->EnemyMan.see_enemy_now())			return false;
 	if (object->CControlledActor::is_controlled())	return false;
+
+	const CActor *actor = smart_cast<const CActor *>(enemy);
+	VERIFY(actor);
+	if (actor && actor->IsControlled())				return false;
+
 	if (m_time_last_vampire + TIME_VAMPIRE_STATE_DELAY > Device.dwTimeGlobal) return false;
 
 	return true;
@@ -110,7 +117,10 @@ TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerVampireAbstract::check_completion()
 {
 	if ((current_substate == eStateRunAway) && 
-		get_state_current()->check_completion()) return true;
+		get_state_current()->check_completion())	return true;
+
+	// если враг изменился
+	if (enemy != object->EnemyMan.get_enemy())		return true;
 
 	return false;
 }

@@ -584,7 +584,7 @@ public:
 	// Controlled Routines
 	//////////////////////////////////////////////////////////////////////////
 public:	
-			bool			IsControlled			() {return m_controlled;}
+			bool			IsControlled			() const {return m_controlled;}
 			void			SetControlled			(bool b_controlled = true) {m_controlled = b_controlled; if (!m_controlled) m_controlled_mouse_scale_factor = 1.0f; else mstate_wishful = 0;}
 			void			SetMouseScaleFactor		(float value) {m_controlled_mouse_scale_factor = ((value > 0)? value : 1.0f); }
 

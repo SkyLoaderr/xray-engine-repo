@@ -33,6 +33,7 @@ public:
 	float GetPower() const {return m_fPower;}
 	float GetSatiety() const {return m_fSatiety;}
 	float GetRadiation() const {return m_fRadiation;}
+	float GetPsyHealth() const {return m_fPsyHealth;}
 
 	float GetCircumspection() const {return m_fCircumspection;}
 	float GetEntityMorale() const {return m_fEntityMorale;}
@@ -46,6 +47,7 @@ public:
 	void ChangePower(float value);
 	void ChangeSatiety(float value);
 	void ChangeRadiation(float value);
+	void ChangePsyHealth(float value);
 
 	void ChangeBleeding(float percent);
 
@@ -72,10 +74,11 @@ public:
 	virtual CObject* GetWhoHitLastTime() {return m_pWho;}
 
 protected:
-	virtual void UpdateHealth();
-	virtual void UpdatePower();
-	virtual void UpdateSatiety();
+	virtual void UpdateHealth	();
+	virtual void UpdatePower	();
+	virtual void UpdateSatiety	();
 	virtual void UpdateRadiation();
+	virtual void UpdatePsyHealth();
 
 	virtual void UpdateCircumspection();
 	virtual void UpdateEntityMorale();
@@ -101,6 +104,7 @@ protected:
 	float m_fPower;					//сила
 	float m_fSatiety;				//сытость (энергия)
 	float m_fRadiation;				//доза радиактивного облучения
+	float m_fPsyHealth;				//здоровье
 
 	float m_fCircumspection;		//настороженность	
 	float m_fEntityMorale;			//мораль
@@ -110,6 +114,7 @@ protected:
 	float m_fPowerMax;
 	float m_fSatietyMax;
 	float m_fRadiationMax;
+	float m_fPsyHealthMax;
 
 	float m_fCircumspectionMax;
 	float m_fEntityMoraleMax;
@@ -119,6 +124,7 @@ protected:
 	float m_fDeltaPower;
 	float m_fDeltaSatiety;
 	float m_fDeltaRadiation;
+	float m_fDeltaPsyHealth;
 
 	float m_fDeltaCircumspection;
 	float m_fDeltaEntityMorale;
@@ -129,6 +135,7 @@ protected:
 	float m_fV_Power;
 	float m_fV_Satiety;
 	float m_fV_Radiation;
+	float m_fV_PsyHealth;
 
 	float m_fV_Circumspection;
 	float m_fV_EntityMorale;
@@ -138,12 +145,14 @@ protected:
 	float m_fK_SleepPower;
 	float m_fK_SleepSatiety;
 	float m_fK_SleepRadiation;
+	float m_fK_SleepPsyHealth;
 
 	//текущие состояния
 	float m_fCurrentSleepHealth;
 	float m_fCurrentSleepPower;
 	float m_fCurrentSleepSatiety;
 	float m_fCurrentSleepRadiation;
+	float m_fCurrentSleepPsyHealth;
 
 
 	//скорости восстановления здоровья и силы

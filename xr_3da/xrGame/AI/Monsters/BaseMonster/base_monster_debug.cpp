@@ -5,11 +5,11 @@
 #include "../../../entitycondition.h"
 
 #ifdef DEBUG
-void CBaseMonster::show_debug_info()
+CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 {
 	if (m_show_debug_info == 0) {
 		DBG().text(this).clear();
-		return;
+		return SDebugInfo();
 	}
 
 	float y				= 200;
@@ -104,5 +104,7 @@ void CBaseMonster::show_debug_info()
 	DBG().text(this).add_item(text,										 x, y+=delta_y, color);
 
 	DBG().text(this).add_item("---------------------------------------", x, y+=delta_y, delimiter_color);
+
+	return SDebugInfo(x, y, delta_y, color, delimiter_color);
 }
 #endif

@@ -15,7 +15,7 @@ CEnergyHolder::~CEnergyHolder()
 
 void CEnergyHolder::reinit()
 {
-	m_active					= false;
+	m_active					= true;
 	m_value						= 1.0f;
 	m_time_last_update			= Device.dwTimeGlobal;
 }
