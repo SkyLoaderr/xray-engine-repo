@@ -68,10 +68,18 @@ struct file_comparer{
 
 int ProcessDifference()
 {
+	LPCSTR params = GetCommandLine();
+
+	if(strstr(params,"-diff /?")){
+		printf("HELP:\n");
+		printf("xrCompress.exe -diff <new_data> <old_data> -out <diff_resulf>\n");
+		printf("<new_data>, <old_data> and <diff_resulf> values must be folder name\n");
+		return 3;
+	}
+
 	CLocatorAPI* FS_new = NULL;
 	CLocatorAPI* FS_old = NULL;
 	
-	LPCSTR params = GetCommandLine();
 
 	xr_vector<char*>*	file_list_old		= NULL;
 	xr_vector<char*>*	folder_list_old		= NULL;

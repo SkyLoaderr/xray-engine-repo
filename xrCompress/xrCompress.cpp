@@ -223,6 +223,7 @@ int __cdecl main	(int argc, char* argv[])
 	}else{
 		if (argc<2)	{
 			printf("ERROR: u must pass folder name as parameter.\n");
+			printf("use -diff /? option to get information about creating difference.\n");
 			return 3;
 		}
 		printf			("[settings] SKIP: '*.key','build.*'\n");
