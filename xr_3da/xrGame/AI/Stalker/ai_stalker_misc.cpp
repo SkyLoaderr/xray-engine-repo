@@ -184,9 +184,14 @@ void CAI_Stalker::vfUpdateSearchPosition()
 	INIT_SQUAD_AND_LEADER;
 	
 	if (this != Leader)	{
-		CAI_Stalker *tpLeader			= dynamic_cast<CAI_Stalker*>(Leader);
-		if (tpLeader)
-			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
+//		CAI_Stalker *tpLeader			= dynamic_cast<CAI_Stalker*>(Leader);
+//		if (tpLeader)
+//			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
+		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+			vfChooseNextGraphPoint		();
+			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+		}
 	}
 	else
 		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
