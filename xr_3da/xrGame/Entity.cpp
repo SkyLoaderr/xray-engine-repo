@@ -218,7 +218,6 @@ void CEntity::Update	(DWORD dt)
 	if (eHealthLost_Enabled)
 	{
 		eHealthLost_cumulative	+= (float(dt)/1000.f)*eHealthLost_speed;
-		Log("*****",eHealthLost_cumulative);
 		if (eHealthLost_cumulative > eHealthLost_granularity)
 		{
 			Fvector vdir; vdir.set	(0,1,0);
