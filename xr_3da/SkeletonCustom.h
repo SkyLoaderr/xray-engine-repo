@@ -61,6 +61,7 @@ public:
     Fvector				center_of_mass;
 public:    
 						CBoneData		(u16 ID):SelfID(ID){}
+	virtual				~CBoneData		(){;}
 #ifdef DEBUG
 	void				DebugQuery		(BoneDebug& L);
 #endif

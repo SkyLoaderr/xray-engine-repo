@@ -109,8 +109,8 @@
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
       -IP:\xrCore -Ieditor -Iengine -Iengine\blenders -Iengine\visuals 
       -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -xf -xp -VF -X- -r- -ps -a4 -6 -b- 
-      -k -y -v -vi- -c -tW -tWM"/>
+    <CFLAG1 value="-vGc -vGt -vGd -Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -xf -xp -VF -X- -r- 
+      -ps -a4 -6 -b- -k -y -v -vi- -c -tW -tWM"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <AFLAGS value="/mx /w2 /zi"/>
     <LFLAGS value="/P1024"/>
@@ -118,7 +118,7 @@
   </OPTIONS>
   <LINKER>
     <ALLOBJ value="$(OBJFILES)"/>
-    <ALLLIB value=""/>
+    <ALLLIB value="cg32.lib "/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
@@ -370,7 +370,7 @@ RemoteDebug=0
 [Compiler]
 ShowInfoMsgs=0
 LinkDebugVcl=0
-LinkCGLIB=0
+LinkCGLIB=1
 
 [CORBA]
 AddServerUnit=1

@@ -419,6 +419,7 @@ void CSkeletonAnimated::Release()
 	}
 
 	// destroy shared data
+	xr_delete(partition);
 	xr_delete(motion_map);
 	xr_delete(m_cycle);
 	xr_delete(m_fx);
