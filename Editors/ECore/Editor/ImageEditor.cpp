@@ -33,8 +33,8 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
 void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps 				= TProperties::CreateForm	("",paProperties,alClient);
-    m_ItemList					= TItemList::CreateForm		("Items",paItems,alClient);
-    m_ItemList->OnItemsFocused 	= OnItemsFocused;
+    m_ItemList					= IItemList::CreateForm		("Items",paItems,alClient);
+    m_ItemList->SetOnItemsFocusedEvent(OnItemsFocused);
     m_ItemList->SetImages		(ImageList);
 }
 //---------------------------------------------------------------------------
@@ -42,7 +42,7 @@ void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 void __fastcall TfrmImageLib::FormDestroy(TObject *Sender)
 {
     TProperties::DestroyForm(m_ItemProps);
-    TItemList::DestroyForm	(m_ItemList);
+    IItemList::DestroyForm	(m_ItemList);
 }
 //---------------------------------------------------------------------------
 

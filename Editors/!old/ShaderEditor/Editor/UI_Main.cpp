@@ -409,8 +409,6 @@ void TUI::Idle()
 	ResetBreak		();
 	// check mail
     CheckMailslot	();
-    // update item list
-    TItemList::OnFrame();
     // OnFrame
     TfrmImageLib::OnFrame();
     TfrmSoundLib::OnFrame();

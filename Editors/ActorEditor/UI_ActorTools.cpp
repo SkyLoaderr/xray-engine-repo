@@ -10,7 +10,6 @@
 #include "ui_main.h"
 #include "leftbar.h"
 #include "PropertiesList.h"               
-#include "ItemList.h"
 #include "motion.h"
 #include "bone.h"
 #include "library.h"
@@ -139,8 +138,8 @@ bool CActorTools::OnCreate()
 	inherited::OnCreate();
     // props
 	m_ClipMaker		= TClipMaker::CreateForm();
-    m_ObjectItems 	= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,TItemList::ilDragCustom|TItemList::ilMultiSelect|TItemList::ilSuppressStatus);
-	m_ObjectItems->OnItemsFocused	= OnObjectItemFocused;
+    m_ObjectItems 	= IItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,IItemList::ilDragCustom|IItemList::ilMultiSelect|IItemList::ilSuppressStatus);
+	m_ObjectItems->SetOnItemsFocusedEvent(OnObjectItemFocused);
     m_Props 		= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,OnItemModified);
     m_PreviewObject.OnCreate();
 
@@ -155,7 +154,7 @@ void CActorTools::OnDestroy()
 	inherited::OnDestroy();
 
     TClipMaker::DestroyForm	(m_ClipMaker);
-	TItemList::DestroyForm	(m_ObjectItems);
+	IItemList::DestroyForm	(m_ObjectItems);
 	TProperties::DestroyForm(m_Props);
     m_PreviewObject.OnDestroy();
 

@@ -5,14 +5,10 @@
 #include <ElVCLUtils.hpp>
 #include <ElTools.hpp>
 
-//#include "ShaderFunction.h"
 #include "ColorPicker.h"
-//#include "ChoseForm.h"
 #include "FolderLib.h"
 #include "NumericVector.h"
 #include "TextForm.h"
-//#include "ui_main.h"
-//#include "EThumbnail.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -30,20 +26,72 @@
 #pragma link "ElPopBtn"
 #pragma resource "*.dfm"
 
-TItemList::ILVec TItemList::ILForms;
 //---------------------------------------------------------------------------
-void TItemList::OnFormFrame()
-{
-}
+// IItemList vector
 //---------------------------------------------------------------------------
-
-void TItemList::OnFrame()
-{
-	for (ILIt it=ILForms.begin(); it!=ILForms.end(); it++)
-    	(*it)->OnFormFrame();
-}
+DEFINE_VECTOR					(IItemList*,ILVec,ILIt);
+static  ILVec					ILForms;
 
 //---------------------------------------------------------------------------
+IItemList* IItemList::CreateForm(LPCSTR title, TWinControl* parent, TAlign align, u32 flags)
+{
+	TItemList* props 			= xr_new<TItemList>(parent);
+    // on create
+	props->OnCreate				(title,parent, align, flags);
+	ILForms.push_back			(props);
+	return props;
+}
+
+IItemList* IItemList::CreateModalForm(LPCSTR title, u32 flags)
+{
+	return CreateForm			(title,0,alNone,flags);
+}
+
+void IItemList::DestroyForm(IItemList*& props)
+{
+	VERIFY(props);
+    ILIt it						= std::find(ILForms.begin(),ILForms.end(),props); VERIFY(it!=ILForms.end());
+	ILForms.erase				(it);
+    // destroy forms
+	props->OnDestroy			();
+    xr_delete					(props);
+}
+
+//---------------------------------------------------------------------------
+void TItemList::OnCreate(LPCSTR title, TWinControl* parent, TAlign align, u32 flags)
+{
+    m_Flags.assign				(flags);
+    tvItems->MultiSelect		= m_Flags.is(ilMultiSelect);
+    if (parent){
+		Parent 					= parent;
+    	Align 					= align;
+	    BorderStyle 			= bsNone;
+        ShowList				();
+        fsStorage->Active		= false;
+    }
+    if (m_Flags.is(ilDragAllowed)){
+	    tvItems->OnStartDrag 	= FHelper.StartDrag;
+	    tvItems->OnDragOver 	= FHelper.DragOver;
+        tvItems->DragAllowed	= true;
+    }else if (m_Flags.is(ilDragCustom)){
+        tvItems->DragAllowed	= true;
+    }else{
+	    tvItems->OnStartDrag 	= 0;
+	    tvItems->OnDragOver 	= 0;
+        tvItems->DragAllowed	= false;
+    }
+    if (Parent)	tvItems->HeaderSections->Item[0]->Text = title;
+    else				Caption = title;
+    fsStorage->IniSection   	= title;
+    paStatus->Visible 			= !m_Flags.is(ilSuppressStatus);
+}
+
+void TItemList::OnDestroy()
+{
+	ClearList			();
+	Close				();
+}
+
 void TItemList::ClearParams(TElTreeItem* node)
 {
 	if (node){
@@ -101,7 +149,7 @@ ListItem* TItemList::FindItem(LPCSTR full_name)
     return item?(ListItem*)item->Tag:0;
 }
 //---------------------------------------------------------------------------
-void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bool bLeaveSel, bool bExpand)
+void TItemList::SelectItem(LPCSTR full_name, bool bVal, bool bLeaveSel, bool bExpand)
 {
     // select item
 	TElTreeItem* item;              
@@ -121,62 +169,17 @@ void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bo
 
 __fastcall TItemList::TItemList(TComponent* Owner) : TForm(Owner)
 {
-    m_Flags.zero	();
-    OnItemFocused	= 0;
-    OnItemsFocused	= 0;
-    OnCloseEvent	= 0;
-    OnItemRename	= 0;
-    iLocked			= 0;
+    m_Flags.zero		();
+    OnItemFocusedEvent	= 0;
+    OnItemsFocusedEvent	= 0;
+    OnCloseEvent		= 0;
+    OnItemRenameEvent	= 0;
+    OnItemRemoveEvent	= 0;
+    iLocked				= 0;
 }
 //---------------------------------------------------------------------------
 
-TItemList* TItemList::CreateForm(const AnsiString& title, TWinControl* parent, TAlign align, u32 flags)
-{
-	TItemList* props 			= xr_new<TItemList>(parent);
-    props->m_Flags.assign		(flags);
-    props->tvItems->MultiSelect	= props->m_Flags.is(ilMultiSelect);
-    if (parent){
-		props->Parent 			= parent;
-    	props->Align 			= align;
-	    props->BorderStyle 		= bsNone;
-        props->ShowList			();
-        props->fsStorage->Active= false;
-    }
-    if (props->m_Flags.is(ilDragAllowed)){
-	    props->tvItems->OnStartDrag = FHelper.StartDrag;
-	    props->tvItems->OnDragOver 	= FHelper.DragOver;
-        props->tvItems->DragAllowed	= true;
-    }else if (props->m_Flags.is(ilDragCustom)){
-        props->tvItems->DragAllowed	= true;
-    }else{
-	    props->tvItems->OnStartDrag = 0;
-	    props->tvItems->OnDragOver 	= 0;
-        props->tvItems->DragAllowed	= false;
-    }
-    if (props->Parent)	props->tvItems->HeaderSections->Item[0]->Text = title;
-    else				props->Caption 	= title;
-    props->fsStorage->IniSection   		= title;
-    props->paStatus->Visible 			= !props->m_Flags.is(ilSuppressStatus);
-	ILForms.push_back(props);
-	return props;
-}
-
-TItemList* TItemList::CreateModalForm(const AnsiString& title, u32 flags)
-{
-	return CreateForm			(title,0,alNone,flags);
-}
-
-void TItemList::DestroyForm(TItemList*& props)
-{
-	VERIFY(props);
-    ILIt it						= std::find(ILForms.begin(),ILForms.end(),props); VERIFY(it!=ILForms.end());
-	ILForms.erase				(it);
-    // destroy forms
-	props->ClearList			();
-	props->Close				();
-    xr_delete					(props);
-}
-void __fastcall TItemList::ShowList()
+void TItemList::ShowList()
 {
 	Show();
 }
@@ -367,8 +370,8 @@ void __fastcall TItemList::tvItemsAfterSelectionChange(TObject *Sender)
 	if (IsLocked()) return;
     ListItemsVec sel_items;
     GetSelected	(0,sel_items,false);
-    if (OnItemFocused)		OnItemFocused(GetSelected());
-    if (OnItemsFocused) 	OnItemsFocused(sel_items);
+    if (OnItemFocusedEvent)		OnItemFocusedEvent(GetSelected());
+    if (OnItemsFocusedEvent) 	OnItemsFocusedEvent(sel_items);
     for (ListItemsIt it=sel_items.begin(); it!=sel_items.end(); it++){
         if ((*it)->OnItemFocused)(*it)->OnItemFocused(*it);
     }
@@ -491,7 +494,7 @@ void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
 
 void __fastcall	TItemList::RenameItem(LPCSTR fn0, LPCSTR fn1, EItemType type)
 {
-	if (OnItemRename) OnItemRename	(fn0,fn1,type);
+	if (OnItemRenameEvent) OnItemRenameEvent	(fn0,fn1,type);
     if (type==TYPE_OBJECT){
         TElTreeItem* item0			= FHelper.FindObject(tvItems,fn0); 	VERIFY(item0);
         ListItem* prop				= (ListItem*)item0->Tag; 			VERIFY(prop);
@@ -534,7 +537,7 @@ void __fastcall TItemList::tvItemsKeyDown(TObject *Sender, WORD &Key,
 {
 	if (m_Flags.is(ilEditMenu)){
 		if (Key==VK_DELETE) 
-			if (FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemove))
+			if (FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemoveEvent))
             	if (OnModifiedEvent) OnModifiedEvent();
     }
 }
@@ -600,10 +603,10 @@ void TItemList::RemoveSelItems(CFolderHelper::TOnItemRemove on_remove)
         bool bSelChanged=false;
         bool bRes=false;
         for (ElItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
-			if (!FHelper.RemoveItem(tvItems,*it,on_remove?on_remove:OnItemRemove)){
+			if (!FHelper.RemoveItem(tvItems,*it,on_remove?on_remove:OnItemRemoveEvent)){
             	AnsiString fn;
                 FHelper.MakeFullName(*it,0,fn);
-            	SelectItem(fn,true,true,false);
+            	SelectItem(fn.c_str(),true,true,false);
                 bSelChanged=true;
             }else{
             	bRes = true;
@@ -648,15 +651,24 @@ void TItemList::FireOnItemFocused()
 }
 //---------------------------------------------------------------------------
 
-void TItemList::GetFolders(AStringVec& folders)
+void TItemList::GetFolders(RStrVec& folders)
 {
     for (TElTreeItem* item=tvItems->Items->GetFirstNode(); item; item=item->GetNext()){
         if (FHelper.IsFolder(item)){
             AnsiString nm;
             FHelper.MakeFullName(item,0,nm);
-            folders.push_back	(nm+'\\');
+            folders.push_back	(AnsiString(nm+'\\').c_str());
         }
     }
+}
+//---------------------------------------------------------------------------
+
+void TItemList::GenerateObjectName(ref_str name, LPCSTR start_node, LPCSTR pref, bool num_first)
+{
+	AnsiString _name;
+	TElTreeItem* node 		  	= FHelper.FindItem(tvItems, start_node);
+	FHelper.GenerateObjectName	(tvItems, node, _name, pref, num_first);
+    name					  	= _name.c_str();
 }
 //---------------------------------------------------------------------------
 

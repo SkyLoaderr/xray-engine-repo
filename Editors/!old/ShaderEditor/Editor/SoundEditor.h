@@ -71,7 +71,7 @@ private:	// User declarations
     DEFINE_VECTOR		(ESoundThumbnail*,THMVec,THMIt);
     THMVec				m_THM_Used;
     THMVec				m_THM_Current;
-    TItemList*			m_ItemList;
+    IItemList*			m_ItemList;
     TProperties* 		m_ItemProps;
 
     ESoundThumbnail*	FindUsedTHM			(LPCSTR name);

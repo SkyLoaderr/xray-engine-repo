@@ -64,9 +64,6 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
     #define ENGINE_API		__declspec(dllimport)
 #endif
 
-//#define ECORE_API
-//#define ENGINE_API
-
 #define DLL_API			__declspec(dllimport)
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
 #define THROW			Debug.fatal("THROW");

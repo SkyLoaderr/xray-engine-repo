@@ -13,7 +13,6 @@
 #include "SkeletonAnimated.h"
 #include "fmesh.h"
 #include "folderlib.h"
-#include "ItemList.h"
 #include "leftbar.h"
 //---------------------------------------------------------------------------
 CMotionDef*	CActorTools::EngineModel::FindMotionDef(LPCSTR name)

@@ -6,7 +6,6 @@
 #include "UI_Main.h"
 #include "EditObject.h"
 #include "PropertiesList.h"               
-#include "ItemList.h"
 #include "motion.h"
 #include "bone.h"
 #include "leftbar.h"
@@ -28,7 +27,6 @@ void __fastcall CActorTools::OnObjectItemFocused(ListItemsVec& items)
 	if (!items.empty()){
 	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
             ListItem* prop = *it;
-            m_ObjectItems->pmItems->Items->Clear();
             if (prop){
                 m_EditMode = EEditMode(prop->Type());
                 switch(m_EditMode){
@@ -448,12 +446,6 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
             }
         }break; 
 		case jtWheel:
-//		case jtWheelXZ:
-//		case jtWheelXY:
-//		case jtWheelYX:
-//		case jtWheelYZ:
-//		case jtWheelZX:
-//		case jtWheelZY:
         {
 //	        int idx = (data.type-jtWheelXZ)/2;
 	        int idx = (data.type-jtWheel)/2;
@@ -501,7 +493,7 @@ void CActorTools::FillObjectProperties(PropItemVec& items, LPCSTR pref, ListItem
 void CActorTools::SelectListItem(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand)
 {
 	AnsiString nm = (name&&name[0])?FHelper.PrepareKey(pref,name):AnsiString(pref);
-	m_ObjectItems->SelectItem(nm,bVal,bLeaveSel,bExpand);
+	m_ObjectItems->SelectItem(nm.c_str(),bVal,bLeaveSel,bExpand);
 	if (pref){
     	m_ObjectItems->SelectItem(pref,true,true,bExpand);
     }

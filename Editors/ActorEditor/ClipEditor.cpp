@@ -6,7 +6,6 @@
 #include <ElTools.hpp>
 
 #include "ElTree.hpp"
-#include "ItemList.h"
 #include "motion.h"
 #include "skeletoncustom.h"
 #include "editobject.h"
@@ -135,8 +134,8 @@ __fastcall TClipMaker::TClipMaker(TComponent* Owner) : TForm(Owner)
 void __fastcall TClipMaker::FormCreate(TObject *Sender)
 {
 	m_ClipProps		= TProperties::CreateForm("Clip Properties",paClipProps,alClient);
-	m_ClipList		= TItemList::CreateForm("Clips",paClipList,alClient,0);
-	m_ClipList->OnItemsFocused	= OnClipItemFocused;
+	m_ClipList		= IItemList::CreateForm("Clips",paClipList,alClient,0);
+	m_ClipList->SetOnItemsFocusedEvent(OnClipItemFocused);
 
 	Device.seqFrame.Add	(this);
 }
@@ -147,7 +146,7 @@ void __fastcall TClipMaker::FormDestroy(TObject *Sender)
 	Device.seqFrame.Remove(this);
 	Clear			();
 	TProperties::DestroyForm(m_ClipProps);
-	TItemList::DestroyForm(m_ClipList);
+	IItemList::DestroyForm(m_ClipList);
 }
 //---------------------------------------------------------------------------
 
@@ -518,7 +517,7 @@ void TClipMaker::SelectClip(CUIClip* clip)
 	if (sel_clip!=clip){
         AnsiString nm	= clip?*clip->name:"";
         sel_clip		= clip;
-        m_ClipList->SelectItem(nm,true,false,true);
+        m_ClipList->SelectItem(nm.c_str(),true,false,true);
         RepaintClips	();
         UpdateProperties();
     }
@@ -526,9 +525,9 @@ void TClipMaker::SelectClip(CUIClip* clip)
 
 void TClipMaker::InsertClip()
 {
-	AnsiString nm;
-    FHelper.GenerateObjectName(m_ClipList->tvItems,0,nm,"clip",true);
-	CUIClip* clip	= xr_new<CUIClip>(nm.c_str(),this,sel_clip?sel_clip->RunTime()-EPS_L:0);
+	ref_str nm;
+    m_ClipList->GenerateObjectName	(nm,0,"clip",true);
+	CUIClip* clip	= xr_new<CUIClip>(*nm,this,sel_clip?sel_clip->RunTime()-EPS_L:0);
     clips.push_back	(clip);
     UpdateClips		(true,false);     
     SelectClip		(clip);
@@ -537,9 +536,9 @@ void TClipMaker::InsertClip()
 
 void TClipMaker::AppendClip()
 {
-	AnsiString nm;
-    FHelper.GenerateObjectName(m_ClipList->tvItems,0,nm,"clip",true);
-	CUIClip* clip	= xr_new<CUIClip>(nm.c_str(),this,sel_clip?sel_clip->RunTime()+sel_clip->Length()-EPS_L:0);
+	ref_str nm;
+    m_ClipList->GenerateObjectName	(nm,0,"clip",true);
+	CUIClip* clip	= xr_new<CUIClip>(*nm,this,sel_clip?sel_clip->RunTime()+sel_clip->Length()-EPS_L:0);
     clips.push_back	(clip);
     UpdateClips		(true,false);
     SelectClip		(clip);

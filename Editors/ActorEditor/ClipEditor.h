@@ -16,10 +16,8 @@
 #include <StdCtrls.hpp>
 #include "multi_edit.hpp"
 #include "PropertiesList.h"
-#include "ItemList.h"
 #include "motion.h"
 //---------------------------------------------------------------------------
-
 class TClipMaker: public TForm,
 	public pureFrame
 {
@@ -173,7 +171,7 @@ protected:
     CUIClip*			sel_clip; 
     u32					play_clip;
     TProperties*		m_ClipProps;
-    TItemList*			m_ClipList;
+    IItemList*			m_ClipList;
 
     void				PlayAnimation	(CUIClip* clip);
     

@@ -33,11 +33,11 @@ __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
 void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps = TProperties::CreateForm("SoundED",paProperties,alClient);
-    m_ItemList	= TItemList::CreateForm("Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilMultiSelect|TItemList::ilDragAllowed);
-    m_ItemList->OnItemRemove	= RemoveSound;
-    m_ItemList->OnItemRename	= RenameSound;
-    m_ItemList->OnItemsFocused 	= OnItemsFocused;
-    m_ItemList->SetImages		(ImageList);
+    m_ItemList	= IItemList::CreateForm("Items",paItems,alClient,IItemList::ilEditMenu|IItemList::ilMultiSelect|IItemList::ilDragAllowed);
+    m_ItemList->SetOnItemRemoveEvent	(RemoveSound);
+    m_ItemList->SetOnItemRenameEvent	(RenameSound);
+    m_ItemList->SetOnItemsFocusedEvent	(OnItemsFocused);
+    m_ItemList->SetImages				(ImageList);
     bAutoPlay 	= FALSE;
 }
 //---------------------------------------------------------------------------
@@ -45,7 +45,7 @@ void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 void __fastcall TfrmSoundLib::FormDestroy(TObject *Sender)
 {
     TProperties::DestroyForm(m_ItemProps);
-    TItemList::DestroyForm	(m_ItemList);
+    IItemList::DestroyForm	(m_ItemList);
 	m_Snd.destroy			();
 }
 //---------------------------------------------------------------------------
@@ -255,7 +255,7 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
         // folder name
         AnsiString folder;
 
-        TItemList::ElItemsVec sel_items;
+        ElItemsVec sel_items;
         if (m_ItemList->GetSelected(sel_items)>1){
             ELog.DlgMsg(mtInformation,"Select only one item and retry again.");
         	return;
@@ -287,7 +287,7 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
         if (bNeedUpdate){
         	SndLib->RefreshSounds(false);
 			InitItemsList		();
-			m_ItemList->SelectItem	(m_LastSelection,true,false,true);
+			m_ItemList->SelectItem	(m_LastSelection.c_str(),true,false,true);
         }
         // refresh selected
 //		RefreshSelected();

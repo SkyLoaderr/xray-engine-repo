@@ -21,13 +21,7 @@
 #include "FolderLib.h"
 #include "PropertiesListTypes.h"
 
-class XR_EPROPS_API IItemList
-{
-public:
-	virtual void	AAA()=0;
-};
-
-class XR_EPROPS_API TItemList: public TForm, public IItemList
+class TItemList: public TForm, public IItemList
 {
 __published:	// IDE-managed Components
 	TElTree *tvItems;
@@ -79,11 +73,6 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsHeaderResize(TObject *Sender);
 	void __fastcall tvItemsCompareItems(TObject *Sender, TElTreeItem *Item1,
           TElTreeItem *Item2, int &res);
-public:
-	DEFINE_VECTOR(TElTreeItem*,ElItemsVec,ElItemsIt);
-    typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
-    typedef void 	__fastcall (__closure *TOnItemsFocused)		(ListItemsVec& items);
-    typedef void 	__fastcall (__closure *TOnCloseEvent)		(void);
 private:	// User declarations
     AStringVec 			last_selected_items;
 
@@ -93,29 +82,15 @@ private:	// User declarations
 	void 				OutBOOL					(BOOL val, TCanvas* Surface, const TRect& R);
 	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect R, TGraphic* g=0, bool bArrow=false);
 public:
-	enum{
-    	// set
-    	ilEditMenu		= (1<<0),              
-        ilMultiSelect	= (1<<1),
-        ilDragAllowed	= (1<<2),
-        ilDragCustom	= (1<<3),
-        ilFolderStore	= (1<<4),
-        ilSuppressIcon 	= (1<<5),
-        ilSuppressStatus= (1<<6),
-
-        // internal
-        ilRT_FullExpand	= (1<<30),
-//        ilRT_UpdateLocked=(1<<31),
-    };
     s32					iLocked;
     Flags32				m_Flags;
 	// events
-    TOnModifiedEvent 	OnModifiedEvent;
-    TOnItemsFocused		OnItemsFocused;
-    TOnItemFocused		OnItemFocused;
-    TOnCloseEvent		OnCloseEvent;
-    CFolderHelper::TOnItemRename	OnItemRename;
-    CFolderHelper::TOnItemRemove	OnItemRemove;
+    TOnModifiedEvent  	OnModifiedEvent;
+    TOnILItemsFocused	OnItemsFocusedEvent;
+    TOnILItemFocused	OnItemFocusedEvent;
+    TOnILCloseEvent	  	OnCloseEvent;
+    CFolderHelper::TOnItemRename	OnItemRenameEvent;
+    CFolderHelper::TOnItemRemove	OnItemRemoveEvent;
 protected:
 	// RT store
     struct SFolderStore{
@@ -124,51 +99,41 @@ protected:
     DEFINE_MAP(AnsiString,SFolderStore,FolderStoreMap,FolderStorePairIt);
     FolderStoreMap		FolderStore;
 protected:
-    // TItemList vector
-	DEFINE_VECTOR(TItemList*,ILVec,ILIt);
-	static  ILVec		ILForms;
-
-	void 				OnFormFrame				();
     void __fastcall		RenameItem				(LPCSTR fn0, LPCSTR fn1, EItemType type);
 public:		// User declarations
-	__fastcall 			TItemList	       		(TComponent* Owner);
-	static TItemList* 	CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect|ilFolderStore);
-	static TItemList* 	CreateModalForm			(const AnsiString& title, u32 flags=ilMultiSelect|ilFolderStore);
-	static void 		DestroyForm				(TItemList*& props);
-	static void 		OnFrame					();
+	__fastcall 	    	TItemList	       		(TComponent* Owner);
 
-    void __fastcall 	ShowListModal			();
-    void __fastcall 	ShowList				();
-    void __fastcall 	HideList				();
-    void __fastcall 	ClearList				();
-    void __fastcall 	RefreshForm				();
+    void 			 	ShowListModal			();
+    void 				ShowList				();
+    void 				HideList				();
+    void 				RefreshForm				();
 
-    void __fastcall		DeselectAll				();
-    void __fastcall		SelectItem				(const AnsiString& full_name, bool bVal, bool bLeaveSel, bool bExpand);
-    void __fastcall 	AssignItems				(ListItemsVec& values, bool full_expand, bool full_sort=false);
-    bool __fastcall 	IsFocused				(){return tvItems->Focused();}
+    void 				DeselectAll				();
+    virtual void 		SelectItem				(LPCSTR full_name, bool bVal, bool bLeaveSel, bool bExpand);
+    virtual void 		AssignItems				(ListItemsVec& values, bool full_expand, bool full_sort=false);
+    bool 				IsFocused				(){return tvItems->Focused();}
 
-    int __fastcall		GetSelected				(ElItemsVec& items);
-    int __fastcall		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject);
-    TElTreeItem*		GetSelected				(){R_ASSERT(!tvItems->MultiSelect); return (tvItems->MultiSelect)?0:tvItems->Selected;}
-    ListItem*			FindItem				(LPCSTR full_name);
+    virtual int  		GetSelected				(ElItemsVec& items);
+    virtual int  		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject);
+    virtual TElTreeItem*GetSelected				(){R_ASSERT(!tvItems->MultiSelect); return (tvItems->MultiSelect)?0:tvItems->Selected;}
+    virtual ListItem*	FindItem				(LPCSTR full_name);
 
-    void 				LockUpdating			(){ tvItems->IsUpdating = true; iLocked++; }
-    void 				UnlockUpdating			(){ tvItems->IsUpdating = false;iLocked--; VERIFY(iLocked>=0);}
-    bool				IsLocked				(){ return (iLocked>0); }
+    virtual void 		LockUpdating			(){ tvItems->IsUpdating = true; iLocked++; }
+    virtual void 		UnlockUpdating			(){ tvItems->IsUpdating = false;iLocked--; VERIFY(iLocked>=0);}
+    virtual bool		IsLocked				(){ return (iLocked>0); }
 
-    void				SetImages				(TImageList* image_list){tvItems->Images=image_list;}
+    virtual void		SetImages				(TImageList* image_list){tvItems->Images=image_list;}
 
     void				LoadSelection			(TFormStorage* storage);
     void				SaveSelection			(TFormStorage* storage);
 
-    void __fastcall 	SaveParams				(TFormStorage* fs)
+    virtual void  		SaveParams				(TFormStorage* fs)
     {
 //		fs->WriteInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvItems->HeaderSections->Item[0]->Width);
 		fs->WriteInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),miDrawThumbnails->Checked);
         SaveSelection							(fs);
     }
-    void __fastcall 	LoadParams				(TFormStorage* fs)
+    virtual void  		LoadParams				(TFormStorage* fs)
     {
     	LoadSelection							(fs);
 //		tvItems->HeaderSections->Item[0]->Width = fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvItems->HeaderSections->Item[0]->Width);
@@ -176,13 +141,24 @@ public:		// User declarations
         RefreshForm			();
     }
 
-    void 				RemoveSelItems			(CFolderHelper::TOnItemRemove on_remove=0);
-    void 				RenameSelItem			();
-    void				FireOnItemFocused		();
+    virtual void 		RemoveSelItems			(CFolderHelper::TOnItemRemove on_remove=0);
+    virtual void 		RenameSelItem			();
+    virtual void		FireOnItemFocused		();
 
-    void				GetFolders				(AStringVec& folders);
-    
-	virtual void		AAA(){}
+    virtual void		GetFolders				(RStrVec& folders);
+
+    virtual void 		OnCreate				(LPCSTR title, TWinControl* parent, TAlign align, u32 flags);
+    virtual void 		OnDestroy				();
+
+    virtual void 		ClearList				();
+
+	virtual void 		GenerateObjectName		(ref_str name, LPCSTR start_node, LPCSTR pref="object", bool num_first=false);
+
+    virtual void		SetOnItemsFocusedEvent	(TOnILItemsFocused e)			{OnItemsFocusedEvent=e;}
+    virtual void		SetOnCloseEvent			(TOnILCloseEvent e)				{OnCloseEvent=e;}
+    virtual void		SetOnItemRenameEvent	(CFolderHelper::TOnItemRename e){OnItemRenameEvent=e;}
+    virtual void		SetOnItemRemoveEvent	(CFolderHelper::TOnItemRemove e){OnItemRemoveEvent=e;}
+    virtual void		SetOnModifiedEvent		(TOnModifiedEvent e)			{OnModifiedEvent=e;}
 };
 //---------------------------------------------------------------------------
 #endif
