@@ -114,7 +114,7 @@ void CRenderTarget::End		()
 	// UV
 	Fvector2		shift,p0,p1;
 	shift.set		(.5f/tw, .5f/th);
-	shift.mul		(blur);
+	shift.mul		(param_blur);
 	p0.set			(.5f/tw, .5f/th);
 	p1.set			((tw+.5f)/tw, (th+.5f)/th );
 	p0.add			(shift);

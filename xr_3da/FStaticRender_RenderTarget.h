@@ -25,8 +25,11 @@ public:
 	void				OnDeviceDestroy		();
 
 	BOOL				NeedPostProcess		()	{ return (param_blur>EPS)||(param_gray>EPS); }
-
 	BOOL				Available			()	{ return bAvailable; }
+
 	void				Begin				();
 	void				End					();
+
+	void				set_blur			(float f)		{ param_blur=f; }
+	void				set_gray			(float f)		{ param_gray=f; }
 };
