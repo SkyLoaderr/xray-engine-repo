@@ -22,4 +22,6 @@ function main ()
     h.type  = hit.strike
     bar:hit (h)
 
+    zone:clear_callback (true)
+
 end
