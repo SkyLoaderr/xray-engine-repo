@@ -2857,10 +2857,6 @@ SOURCE=.\features.txt
 # End Source File
 # Begin Source File
 
-SOURCE=.\LightController_track.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\plan_last_month.txt
 # End Source File
 # Begin Source File
