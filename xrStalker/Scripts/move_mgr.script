@@ -247,10 +247,12 @@ function move_mgr:sync_ok()
 	return true
 end
 
-function move_mgr:update()
+function move_mgr:update(no_dialog_mgr_update)
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 
-	self.dialog_mgr:update()
+	if not no_dialog_mgr_update then
+		self.dialog_mgr:update()
+	end
 
 	-- Если это не тот тип звука, который нужно проиграть всего один раз, то играть его:
 	if not self.play_sound_after_anim_start then
@@ -283,7 +285,7 @@ function move_mgr:update()
 					"callback function wasn't registered in move_mgr:reset()",
 					self.object:name(), self.path_look)
 			end
-			if self.move_cb(this.arrival_after_rotation, tonumber(retv)) then
+			if self.move_cb(this.arrival_after_rotation, self.retval_after_rotation) then
 				-- Идти сразу дальше
 				self.expiration_time = 0
 				self.state = state_anim_playing
@@ -460,8 +462,8 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.sound.themes = parse_names(suggested_snd)
 		else
 			self.sound.rnd = snd_prob
-			self.sound.maxidle = 5000 -- 1  -- т.е. по умолчанию пауза от 5 до 10 сек
-			self.sound.sumidle = 5000 -- 1
+			self.sound.maxidle = 10 - 5 + 1    -- 1  -- т.е. по умолчанию пауза от 5 до 10 сек
+			self.sound.sumidle = 5 - 1         -- 1
 			self.sound.themes = parse_names(suggested_snd)
 		end
 		-- Этот звук играть прямо сейчас, а не когда начнется анимация на позиции (после поворота и т.д.):
@@ -653,6 +655,10 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 		self.state = state_standing_before_anim
 		self.object:set_movement_type(move.stand)
+
+		-- Сразу же стартовать update, не ждать execute. Тогда, если мы уже смотрим
+		-- в нужную сторону - не будет паузы в несколько миллисекунд на поворот.
+		self:update(true)
 	else
 		utils.abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
 			self.object:name(), self.path_walk, index, self.path_look)
