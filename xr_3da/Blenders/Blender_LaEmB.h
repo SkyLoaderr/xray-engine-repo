@@ -15,7 +15,7 @@ public:
 	string64	oT2_xform;		// xform for secondary texture
 	string64	oT2_const;
 public:
-	virtual		LPCSTR		getComment()	{ return "(lmap+env)*base";	}
+	virtual		LPCSTR		getComment()	{ return "(lmap+env*const)*base";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);
