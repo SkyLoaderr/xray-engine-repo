@@ -28,9 +28,6 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 	if (strstr			        ( Core.Params,"-nosound"))		return;
 
     // OpenAL device
-    ALCubyte* 			        deviceSpecifier;
-//	ALCubyte 			        deviceName[] = "DirectSound3D";
-    // OpenAL device
     pDevice						= alcOpenDevice		(NULL);
 	if (pDevice == NULL){
 		Log						("Failed to create OpenAL device.");
@@ -39,10 +36,10 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 	}
 
     // Get the device specifier.
-#ifndef _EDITOR    
+    ALCubyte* 			        deviceSpecifier;
     deviceSpecifier         	= alcGetString		(pDevice, ALC_DEVICE_SPECIFIER);
 	Msg				        	("OpenAL: Using device '%s'.", deviceSpecifier);
-#endif    
+
     // Create context
     pContext					= alcCreateContext	(pDevice,NULL);
 	if (0==pContext){

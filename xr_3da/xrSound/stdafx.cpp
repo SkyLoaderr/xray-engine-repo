@@ -14,7 +14,7 @@
     #pragma comment(lib,	"x:\\xrCoreB.lib"		)
     #pragma comment(lib,	"x:\\xrCDBB.lib"		)
 #ifdef _OPENAL
-    #pragma comment(lib,	"x:\\OpenAL32B.lib"		)
+    #pragma comment(lib,	"x:\\wrap_oalB.lib"		)
 #endif
 #else
 	#pragma comment(lib,	"x:\\eax.lib"			)
@@ -23,7 +23,7 @@
     #pragma comment(lib,	"x:\\xrCore"			)
     #pragma comment(lib,	"x:\\xrCDB"				)
 #ifdef _OPENAL
-    #pragma comment(lib,	"x:\\OpenAL32.lib"		)
+    #pragma comment(lib,	"x:\\wrap_oal.lib"		)
 #endif
 #endif
 
