@@ -153,7 +153,8 @@ void CDetailPathManager::build_dodge_path		(const xr_vector<u32> &level_path, u3
 
 void CDetailPathManager::build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
 {
-	VERIFY(!level_path.empty());
+	build_criteria_path		(level_path,intermediate_index,dest_position);
+//	VERIFY(!level_path.empty());
 //
 //	if (ai().level_graph().inside(ai().level_graph().vertex(level_dest_vertex_id()),dest_position))
 //		dest_position.y = 

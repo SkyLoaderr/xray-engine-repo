@@ -13,9 +13,9 @@ IC	bool CDetailPathManager::failed() const
 	return					(m_failed);
 }
 
-IC	bool CDetailPathManager::completed() const
+IC	bool CDetailPathManager::completed(const Fvector &position) const
 {
-	return					(m_path.empty() || m_dest_position.similar(m_path.back().m_position));
+	return					(m_path.empty() || (m_dest_position.similar(m_path.back().m_position) && position.similar(m_dest_position)));
 }
 
 IC	const xr_vector<CDetailPathManager::STravelPoint> &CDetailPathManager::path() const
