@@ -32,14 +32,14 @@ local patrols = {
                    script_zone = "raid_script_zone",
                    zone_obj = nil,
                       {
-                      name = "raid_1_soldier_1",
+                      name = "raid_1_commander",
                       id = -1,
                       on_move = false,
                       dead = false,
                       npc = nil
                       },
                       {
-                      name = "raid_1_commander",
+                      name = "raid_1_soldier_1",
                       id = -1,
                       on_move = false,
                       dead = false,
@@ -59,14 +59,14 @@ local patrols = {
                    script_zone = "raid_script_zone",
                    zone_obj = nil,
                       {
-                      name = "raid_2_soldier_1",
+                      name = "raid_2_commander",
                       id = -1,
                       on_move = false,
                       dead = false,
                       npc = nil
                       },
                       {
-                      name = "raid_2_commander",
+                      name = "raid_2_soldier_1",
                       id = -1,
                       on_move = false,
                       dead = false,
