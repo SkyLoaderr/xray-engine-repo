@@ -5,10 +5,10 @@
 -- Доработки: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
---odule("bloodsucker")
---odule("monster_bind")
---odule("pripyat_football")
---odule("monster_gameplay")
+module("bloodsucker")
+module("monster_bind")
+module("pripyat_football")
+module("monster_gameplay")
 
 function bind(obj)
 	xr_motivator.storage[obj:id()] = { }
