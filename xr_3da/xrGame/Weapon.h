@@ -42,6 +42,12 @@ public:
 	virtual void			net_Export			(NET_Packet& P);	// export to server
 	virtual void			net_Import			(NET_Packet& P);	// import from server
 
+	//serialization
+	virtual void	save				(NET_Packet &output_packet);
+	virtual void	load				(IReader &input_packet);
+	virtual BOOL	net_SaveRelevant	()								{return inherited::net_SaveRelevant();}
+
+
 	virtual void			UpdateCL			();
 	virtual void			shedule_Update		(u32 dt);
 
@@ -70,6 +76,10 @@ public:
 	virtual void			setup_physic_shell	();
 
 	virtual void			SwitchState(u32 S);
+
+	//инициализация если вещь в активном слоте или спрятана на OnH_B_Chield
+	virtual void	OnActiveItem		();
+	virtual void	OnHiddenItem		();
 
 //////////////////////////////////////////////////////////////////////////
 //  Network

@@ -50,7 +50,6 @@ CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection)
 		m_qwGridBitMask			|= ((u64(1) << m_iGridWidth) - 1) << (i*RUCK_WIDTH);
 
 	m_tPreviousParentID			= 0xffff;
-	m_eItemPlace				= eItemPlaceUndefined;
 }
 
 CSE_Abstract *CSE_ALifeInventoryItem::init	()

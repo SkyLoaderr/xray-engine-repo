@@ -11,6 +11,8 @@
 #include "Missile.h"
 #include "xrmessages.h"
 #include "level.h"
+#include "inventory.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -68,6 +70,11 @@ void CHudItem::PlaySound(HUD_SOUND& hud_snd,
 	HUD_SOUND::PlaySound(hud_snd, position, H_Root(), !!hud_mode);
 }
 
+BOOL  CHudItem::net_Spawn(LPVOID DC) 
+{
+	BOOL l_res = inherited::net_Spawn(DC);
+	return l_res;
+}
 
 
 void CHudItem::renderable_Render()
@@ -189,6 +196,17 @@ void CHudItem::OnH_A_Chield		()
 
 	inherited::OnH_A_Chield		();
 }
+
+void CHudItem::OnH_B_Chield		()
+{
+	inherited::OnH_B_Chield		();
+
+	if (m_pInventory && m_pInventory->ActiveItem() == dynamic_cast<PIItem>(this))
+		OnActiveItem ();
+	else
+		OnHiddenItem ();
+}
+
 void CHudItem::OnH_B_Independent	()
 {
 	hud_mode = FALSE;

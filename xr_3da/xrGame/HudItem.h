@@ -52,8 +52,10 @@ public:
 	virtual void	OnEvent				(NET_Packet& P, u16 type);
 
 	virtual void	OnH_A_Chield		();
+	virtual void	OnH_B_Chield		();
 	virtual void	OnH_B_Independent	();
-
+	
+	virtual	BOOL	net_Spawn			(LPVOID DC);
 	virtual void	net_Destroy			();
 
 	
@@ -61,6 +63,9 @@ public:
 	virtual bool	Activate			();
 	virtual void	Deactivate			();
 	
+	//инициализация если вещь в активном слоте или спрятана на OnH_B_Chield
+	virtual void	OnActiveItem		() {};
+	virtual void	OnHiddenItem		() {};
 
 	//для завершения анимации
 	virtual void	OnAnimationEnd		();

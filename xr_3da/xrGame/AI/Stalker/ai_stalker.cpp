@@ -561,3 +561,14 @@ void CAI_Stalker::Think			()
 	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
 	CSSetupManager::update			(Level().timeServer() - m_dwLastUpdateTime);
 }
+
+void CAI_Stalker::save (NET_Packet &output_packet)
+{
+	inherited::save(output_packet);
+	CInventoryOwner::save(output_packet);
+}
+void CAI_Stalker::load (IReader &input_packet)		
+{
+	inherited::load(input_packet);
+	CInventoryOwner::load(input_packet);
+}

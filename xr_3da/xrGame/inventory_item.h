@@ -65,7 +65,7 @@ public:
 
 	virtual void	save				(NET_Packet &output_packet);
 	virtual void	load				(IReader &input_packet);
-	virtual BOOL	net_SaveRelevant	()								{return inherited::net_SaveRelevant();}
+	virtual BOOL	net_SaveRelevant	()								{return TRUE;}
 
 
 	virtual void	UpdateCL			();

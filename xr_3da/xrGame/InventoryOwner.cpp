@@ -108,7 +108,6 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 	}
 
-
 	
 	if(!pThis->Local())  return TRUE;
 
@@ -128,9 +127,34 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 void CInventoryOwner::net_Destroy()
 {
 	CAttachmentOwner::net_Destroy();
-	m_inventory->SetActiveSlot(NO_ACTIVE_SLOT);
+	
+	inventory().Clear();
+	inventory().SetActiveSlot(NO_ACTIVE_SLOT);
 	m_pPdaCallback->clear();
 	m_pInfoCallback->clear();
+}
+
+
+void	CInventoryOwner::save	(NET_Packet &output_packet)
+{
+	if(inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
+		output_packet.w_u8((u8)(-1));
+	else
+		output_packet.w_u8((u8)inventory().GetActiveSlot());
+}
+void	CInventoryOwner::load	(IReader &input_packet)
+{
+	u8 active_slot = input_packet.r_u8();
+	if(active_slot == u8(-1))
+		inventory().SetActiveSlot(NO_ACTIVE_SLOT);
+	else
+	{
+		inventory().SetActiveSlot(active_slot);
+/*		if(!inventory().ActiveItem())
+		{
+			inventory().SetActiveSlot(NO_ACTIVE_SLOT);
+		}*/
+	}
 }
 
 

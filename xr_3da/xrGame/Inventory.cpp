@@ -178,6 +178,120 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 	return false;
 }
 
+void CInventory::Replace(PIItem pIItem)
+{
+	//выкинуть предмет из старого места
+	if(InSlot(pIItem))
+	{
+		if(eItemPlaceSlot != pIItem->m_eItemPlace)
+			m_slots[pIItem->GetSlot()].m_pIItem = NULL;
+		else
+			return;
+	}
+	else 
+	{
+		TIItemList::iterator it = std::find(m_belt.begin(), m_belt.end(), pIItem);
+		if(m_belt.end() != it)
+		{
+			if(eItemPlaceBelt != pIItem->m_eItemPlace)
+				m_belt.erase(it);
+			else
+				return;
+		}
+		else
+		{
+			TIItemList::iterator it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
+			VERIFY(it != m_ruck.end());
+			if(eItemPlaceRuck != pIItem->m_eItemPlace)
+				m_ruck.erase(it);
+			else
+				return;
+		}
+
+	}
+
+	bool result = false;
+	switch(pIItem->m_eItemPlace)
+	{
+	case eItemPlaceBelt:
+		result = Belt(pIItem); R_ASSERT(result);
+		break;
+	case eItemPlaceRuck:
+		result = Ruck(pIItem); R_ASSERT(result);
+		break;
+	case eItemPlaceSlot:
+		result = Slot(pIItem, true); R_ASSERT(result);
+		break;
+	default:
+		if(CanPutInSlot(pIItem))
+		{
+			result = Slot(pIItem, true); R_ASSERT(result);
+		} 
+		else if (CanPutInBelt(pIItem))
+		{
+			result = Belt(pIItem); R_ASSERT(result);
+		}
+		else
+		{
+			result = Ruck(pIItem); R_ASSERT(result);
+		}
+	}
+
+}
+
+void CInventory::ReplaceAll()
+{
+	PSPIItem it;
+	
+	m_ruck.insert(m_ruck.begin(), m_belt.begin(), m_belt.end());
+	m_belt.clear();
+	
+	for(u32 i=0; i<m_slots.size(); i++)
+	{
+		if(m_slots[i].m_pIItem)
+		{
+			m_ruck.push_back(m_slots[i].m_pIItem);
+			m_slots[i].m_pIItem = NULL;
+		}
+	}
+
+	for(it = m_all.begin(); m_all.end() != it; ++it)
+	{
+		PIItem pIItem = *it;
+
+		bool result = false;
+		switch(pIItem->m_eItemPlace)
+		{
+		case eItemPlaceBelt:
+			result = Belt(pIItem); R_ASSERT(result);
+			break;
+		case eItemPlaceRuck:
+			result = Ruck(pIItem); R_ASSERT(result);
+			break;
+		case eItemPlaceSlot:
+			result = Slot(pIItem, true); R_ASSERT(result);
+			break;
+		default:
+			if(CanPutInSlot(pIItem))
+			{
+				result = Slot(pIItem, true); R_ASSERT(result);
+			} 
+			else if (CanPutInBelt(pIItem))
+			{
+				result = Belt(pIItem); R_ASSERT(result);
+			}
+			else
+			{
+				result = Ruck(pIItem); R_ASSERT(result);
+			}
+		}
+	}
+
+	m_dwModifyFrame = Device.dwFrame;
+}
+
+
+
 bool CInventory::DropAll()
 {
 	PSPIItem it;
@@ -193,22 +307,6 @@ bool CInventory::DropAll()
 	m_dwModifyFrame = Device.dwFrame;
 
 	return true;
-}
-
-void CInventory::ClearAll() 
-{
-	PSPIItem it;
-	
-	for(it = m_all.begin(); m_all.end() != it; ++it) 
-	{
-		PIItem pIItem = *it;
-		Ruck(pIItem);
-	}
-	m_ruck.clear();
-	m_all.clear();
-
-	CalcTotalWeight();
-	m_dwModifyFrame = Device.dwFrame;
 }
 
 //положить вещь в слот

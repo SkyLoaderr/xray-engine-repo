@@ -35,10 +35,6 @@ public:
 	ALife::_OBJECT_ID				m_tPreviousParentID;
 	CSE_ALifeObject					*m_self;
 
-	//положение вещи в инвенторе (используется актером 
-	//при переходе в offline и обратно)
-	EItemPlace						m_eItemPlace;
-
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
 	virtual							~CSE_ALifeInventoryItem	();
 	// we need this to prevent virtual inheritance :-(

@@ -40,7 +40,11 @@ public:
 	// Выбросить все
 	bool DropAll();	
 	// Очистить всё
-	void ClearAll();
+	void Clear();
+	//расположить предметы в инвентаре в соответствии с ItemPlace
+	void ReplaceAll		();
+	void Replace		(PIItem pItem);
+
 	
 	// Вставить объект себе в слот. То что было - на пояс. Нельзя - в рюкзак
 	bool Slot(PIItem pIItem, bool bNotActivate = false);	
@@ -49,7 +53,7 @@ public:
 	// Полжить объект в рюкзак
 	bool Ruck(PIItem pIItem);
 
-	//проверяет находится ли элемент в части инвенторя
+	//проверяет находится ли элемент в части инвентаря
 	bool InSlot(PIItem pIItem) const;
 	bool InBelt(PIItem pIItem) const;
 	bool InRuck(PIItem pIItem) const;
@@ -87,8 +91,6 @@ public:
 	PIItem Get	(CLASS_ID cls_id,  bool bSearchRuck) const;
 	PIItem item (CLASS_ID cls_id) const;
 	
-	// clearing Inventory
-	void   Clear();											
 	// get all the items with the same section name
 	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	
 	// get all the items with the same object id

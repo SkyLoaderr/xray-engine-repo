@@ -1076,10 +1076,12 @@ void	CActor::CalculateInterpolationParams()
 void CActor::save(NET_Packet &output_packet)
 {
 	inherited::save(output_packet);
+	CInventoryOwner::save(output_packet);
 }
 void CActor::load(IReader &input_packet)
 {
 	inherited::load(input_packet);
+	CInventoryOwner::load(input_packet);
 }
 
 

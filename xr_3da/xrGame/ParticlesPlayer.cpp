@@ -81,11 +81,9 @@ void	CParticlesPlayer::net_DestroyParticles	()
 		for (ParticlesInfoListIt p_it=b_info.particles.begin(); p_it!=b_info.particles.end(); p_it++)
 		{
 			SParticlesInfo& p_info	= *p_it;
-
 			p_info.ps->PSI_destroy		();
-			ParticlesInfoListIt cur_it	= p_it++;
-			b_info.particles.erase		(cur_it);
 		}
+		b_info.particles.clear();
 	}
 }
 

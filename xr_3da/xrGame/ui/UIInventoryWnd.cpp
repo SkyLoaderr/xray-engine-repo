@@ -1091,6 +1091,9 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 
 bool CUIInventoryWnd::ToSlot()
 {
+	// Можно ли засунуть новую вещь в предназначеный для нее слот?
+	if(!GetInventory()->CanPutInSlot(m_pCurrentItem)) return false;
+
 	// Если целевой слот - слот с одеждой, то попробуем убрать текущую одежду
 	if (OUTFIT_SLOT == m_pCurrentItem->GetSlot()) UndressOutfit();
 
@@ -1111,9 +1114,6 @@ bool CUIInventoryWnd::ToSlot()
 				NULL);
 		}
 	}
-
-	// Можно ли засунуть новую вещь в предназначеный для нее слот?
-	if(!GetInventory()->CanPutInSlot(m_pCurrentItem)) return false;
 
 	//попытаться закинуть элемент в соответствующий слот
 	bool result = GetInventory()->Slot(m_pCurrentItem);

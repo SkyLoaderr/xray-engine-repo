@@ -57,6 +57,9 @@ protected:
 	void UpdatePosition(const Fmatrix& trans);
 	void spawn_fake_missile	();
 
+	//инициализация если вещь в активном слоте или спрятана на OnH_B_Chield
+	virtual void	OnActiveItem		();
+	virtual void	OnHiddenItem		();
 protected:
 
 	u32 m_state;

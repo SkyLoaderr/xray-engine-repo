@@ -92,8 +92,6 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 	m_throw_matrix.identity();
 	///////////////////////////////////
 
-	m_state = MS_HIDDEN;
-
 	return l_res;
 }
 
@@ -102,6 +100,20 @@ void CMissile::net_Destroy()
 	inherited::net_Destroy();
 	m_fake_missile = 0;
 }
+
+void CMissile::OnActiveItem		()
+{
+	inherited::OnActiveItem();
+	m_state	= MS_IDLE;
+	if (m_pHUD) m_pHUD->Show();
+}
+void CMissile::OnHiddenItem		()
+{
+	inherited::OnHiddenItem();
+	if (m_pHUD) m_pHUD->Hide();
+	m_state = MS_HIDDEN;
+}
+
 
 void CMissile::OnH_B_Chield() 
 {

@@ -475,3 +475,15 @@ void CAI_Trader::spawn_supplies			()
 	inherited::spawn_supplies		();
 	CInventoryOwner::spawn_supplies	();
 }
+
+
+void CAI_Trader::save (NET_Packet &output_packet)
+{
+	inherited::save(output_packet);
+	CInventoryOwner::save(output_packet);
+}
+void CAI_Trader::load (IReader &input_packet)		
+{
+	inherited::load(input_packet);
+	CInventoryOwner::load(input_packet);
+}

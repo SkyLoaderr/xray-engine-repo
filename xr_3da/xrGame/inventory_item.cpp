@@ -314,7 +314,6 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 	if(!pSE_InventoryItem) return res;
 
 	//!!!
-	m_eItemPlace = pSE_InventoryItem->m_eItemPlace;
 	m_fCondition = pSE_InventoryItem->m_fCondition;
 	if (Game().type != GAME_SINGLE)
 	{
@@ -438,6 +437,8 @@ void CInventoryItem::load(IReader &packet)
 {
 	inherited::load(packet);
 	m_eItemPlace = (EItemPlace)packet.r_u8 ();
+/*	if(m_pInventory)
+		m_pInventory->Replace(this);*/
 }
 
 ///////////////////////////////////////////////

@@ -475,6 +475,17 @@ void CWeapon::net_Import	(NET_Packet& P)
 	
 }
 
+
+void CWeapon::save(NET_Packet &output_packet)
+{
+	inherited::save(output_packet);
+}
+void CWeapon::load(IReader &input_packet)
+{
+	inherited::load(input_packet);
+}
+
+
 void CWeapon::OnEvent				(NET_Packet& P, u16 type) 
 {
 	inherited::OnEvent(P,type);
@@ -531,16 +542,27 @@ void CWeapon::OnH_A_Chield		()
 	UpdateAddonsVisibility		();
 };
 
+void CWeapon::OnActiveItem ()
+{
+	inherited::OnActiveItem();
+	//если мы занружаемся и оружие было в руках
+	STATE = NEXT_STATE = eIdle;
+	if (m_pHUD) m_pHUD->Show();
+}
+
+void CWeapon::OnHiddenItem ()
+{
+	inherited::OnHiddenItem();
+	if (m_pHUD)	m_pHUD->Hide ();
+	STATE = NEXT_STATE = eHidden;
+}
+
+
 void CWeapon::OnH_B_Chield		()
 {
 	m_dwWeaponIndependencyTime = 0;
 	inherited::OnH_B_Chield		();
 
-	if (m_pHUD)
-		m_pHUD->Hide			();
-
-	STATE = NEXT_STATE			= eHidden;
-	
 	OnZoomOut					();
 }
 

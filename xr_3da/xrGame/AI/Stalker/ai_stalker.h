@@ -100,8 +100,8 @@ public:
 	virtual	BOOL				net_SaveRelevant				();
 
 	//save/load server serialization
-	virtual void				save							(NET_Packet &output_packet) {inherited::save(output_packet);}
-	virtual void				load							(IReader &input_packet)		{inherited::load(input_packet);}
+	virtual void				save							(NET_Packet &output_packet);
+	virtual void				load							(IReader &input_packet);
 
 	virtual void				UpdateCL						();
 	virtual void				shedule_Update					(u32 dt);

@@ -36,6 +36,11 @@ public:
 	virtual void	reload						(LPCSTR section);
 	virtual void	OnEvent						(NET_Packet& P, u16 type);
 
+	//serialization
+	virtual void	save						(NET_Packet &output_packet);
+	virtual void	load						(IReader &input_packet);
+
+	
 	//обновление
 	virtual void	UpdateInventoryOwner		(u32 deltaT);
 
