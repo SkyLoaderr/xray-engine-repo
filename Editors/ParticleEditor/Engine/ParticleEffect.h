@@ -20,6 +20,9 @@ namespace PAPI
 
 namespace PS
 {
+	typedef BOOL (__stdcall * CollisionCallback)(CParticleEffect* E, PAPI::Particle& P, const Fvector& pt, const Fvector& norm); // TRUE-continue collision exec
+	typedef void (__stdcall * DestroyCallback)	(CParticleEffect* E, PAPI::Particle& P);
+
 	class PFunction;
 	struct SFrame
 	{
@@ -58,18 +61,23 @@ namespace PS
 	public:
 		enum{
 			dfSprite		= (1<<0),
-			dfModel			= (1<<1),
+//			dfObject		= (1<<1),
 
 			dfFramed		= (1<<10),
 			dfAnimated		= (1<<11),
 			dfRandomFrame   = (1<<12),
 			dfRandomPlayback= (1<<13),
+            
 			dfTimeLimit		= (1<<14),
+
+            dfAlignToPath	= (1<<15),
+            dfCollision		= (1<<16),
+            dfCollisionDel	= (1<<17),
 		};
 
 		string64			m_Name;
 		Flags32				m_Flags;
-
+        
 		LPSTR				m_ShaderName;
 		LPSTR				m_TextureName;
 
@@ -83,6 +91,11 @@ namespace PS
 		PAPI::PAHeader*		m_ActionList;
 
 		ref_shader			m_CachedShader;
+	protected:
+    // collision
+	    float 				m_CollideOneMinusFriction;
+        float 				m_CollideResilience;
+        float 				m_CollideSqrCutoff; 
 #ifdef _PARTICLE_EDITOR
 	public:
 		AnsiString			m_SourceText;
@@ -94,14 +107,17 @@ namespace PS
 	public:
 		// api function
 		// state api                                      
-		void				pSprite				(string64& sh_name, string64& tex_name);
+		void				pSprite				(string128& sh_name, string128& tex_name);
 		void				pFrame				(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);
+		void 				pAlignToPath		();
+        void				pCollision			(float friction, float resilience, float cutoff, BOOL destroy_on_contact=FALSE);
 		// action api
 		void 				pAnimate			(float speed=24.f, BOOL random_playback=FALSE);
 		void 				pTimeLimit			(float time_limit);
 		// action
 		void				pFrameInitExecute	(PAPI::ParticleEffect *effect);
 		void				pAnimateExecute		(PAPI::ParticleEffect *effect, float dt);
+        void				pCollisionExecute	(PAPI::ParticleEffect *effect, float dt, CParticleEffect* owner, CollisionCallback cb);
 	protected:
 		BOOL 				SaveActionList		(IWriter& F);
 		BOOL 				LoadActionList		(IReader& F);
@@ -133,6 +149,9 @@ namespace PS
 		s32					m_MemDT;
 
 		Fvector				m_InitialPosition;
+    protected:
+    	DestroyCallback		m_DestroyCallback;
+        CollisionCallback	m_CollisionCallback;
 	public:
 		enum{
 			flRT_Playing		= (1<<0),
@@ -172,6 +191,9 @@ namespace PS
 		virtual float		GetTimeLimit		(){VERIFY(m_Def); return m_Def->m_Flags.is(CPEDef::dfTimeLimit)?m_Def->m_fTimeLimit:-1.f;}
 
 		virtual LPCSTR		Name				(){VERIFY(m_Def); return m_Def->m_Name;}
+
+        void				SetDestroyCB		(DestroyCallback 	destroy_cb)		{m_DestroyCallback 	= destroy_cb;}
+        void				SetCollisionCB		(CollisionCallback	collision_cb)	{m_CollisionCallback= collision_cb;}
 	};
 	DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
 }
@@ -187,6 +209,7 @@ namespace PS
 #define PED_CHUNK_TIMELIMIT		0x0008
 #define PED_CHUNK_TIMELIMIT2	0x0009
 #define PED_CHUNK_SOURCETEXT   	0x0020
+#define PED_CHUNK_COLLISION	   	0x0021
 
 //---------------------------------------------------------------------------
 #endif
