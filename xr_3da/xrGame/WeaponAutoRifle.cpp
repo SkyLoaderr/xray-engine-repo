@@ -36,6 +36,8 @@ CWeaponAutoRifle::~CWeaponAutoRifle()
 	SoundDestroy		(sndRicochet[2]	);
 	SoundDestroy		(sndRicochet[3]	);
 	SoundDestroy		(sndRicochet[4]	);
+	
+	MediaUNLOAD			();
 }
 
 void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
