@@ -310,13 +310,19 @@ void CActor::feel_touch_delete		(CObject* O)
 {
 }
 
+IC BOOL BE(BOOL A, BOOL B)
+{
+	bool a = !!A;
+	bool b = !!B;
+	return a==b;
+}
 void CActor::net_OwnershipTake		(CObject* O)
 {
 	// Test for weapon
 	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 	if (W) 
 	{
-		R_ASSERT							(W->Local());
+		R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
 		W->H_SetParent						(this);
 		int id	= Weapons->weapon_add		(W);
 		Weapons->ActivateWeaponID			(id);
@@ -330,6 +336,7 @@ void CActor::net_OwnershipReject	(CObject* O)
 	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 	if (W) 
 	{
+		R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
 		R_ASSERT							(W->Local());
 		W->H_SetParent						(0);
 		int id	= Weapons->weapon_remove	(W);
