@@ -106,8 +106,7 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 {
 	// Name
 	R_ASSERT					(section);
-	_FREE						(ObjectName);
-	ObjectName					= strdup(section);
+	cNameSET					(section);
 	
 	// Geometry and transform
 	Fvector dir,norm;
