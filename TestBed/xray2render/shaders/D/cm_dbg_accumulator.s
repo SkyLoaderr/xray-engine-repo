@@ -42,8 +42,8 @@ p2f 	p_main	( v2p_in IN )
 {
   p2f		OUT;
 
-  half4 D	= tex2D		(s_diffuse,		IN.Tex0);
-  half4 L 	= tex2D		(s_accumulator, IN.Tex0);
+  half4 D	= tex2D		(s_diffuse,		IN.Tex0);	// IN:  rgb.gloss
+  half4 L 	= tex2D		(s_accumulator, IN.Tex0);	// IN:  rgb[diffuse].specular
   
   half4 S	= half4		(L.w,L.w,L.w,L.w) * D.w;	// replicated specular * gloss
   OUT.C 	= L + S;
