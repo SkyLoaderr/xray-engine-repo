@@ -892,7 +892,11 @@ end
 
 ----------------------------------------------------------------------------------------------------------------------
 
-function add_to_binder( npc )
+function add_to_binder( npc, char_ini )
+    if char_ini and not char_ini:section_exist( "commander" ) then
+        return
+    end
+
     local a = xr_motivator.storage[npc:id()].commander
 
     a.dead_hook = false
