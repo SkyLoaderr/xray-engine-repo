@@ -100,6 +100,8 @@ void CStalkerMovementManager::reinit				()
 
 	m_desired_position				= 0;
 	m_desired_direction				= 0;
+	m_path_evaluator				= 0;
+	m_node_evaluator				= 0;
 	m_body_state					= eBodyStateStand;
 	m_movement_type					= eMovementTypeStand;
 	m_mental_state					= eMentalStateDanger;

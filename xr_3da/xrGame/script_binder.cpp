@@ -43,7 +43,7 @@ void CScriptBinder::reload			(LPCSTR section)
 {
 	inherited::reload		(section);
 	VERIFY					(!m_object);
-	if (!pSettings->line_exist(section,"script_binding") || true)
+	if (!pSettings->line_exist(section,"script_binding"))// || true)
 		return;
 	
 	LPCSTR					string_to_run = pSettings->r_string(section,"script_binding");
@@ -84,8 +84,8 @@ BOOL CScriptBinder::net_Spawn		(LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return				(FALSE);
 
-//	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
-	if (m_object && !m_object->net_Spawn(0))//DC))
+	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
+	if (m_object && !m_object->net_Spawn(abstract))
 		return				(FALSE);
 
 	return					(TRUE);
@@ -102,13 +102,13 @@ void CScriptBinder::net_Destroy		()
 void CScriptBinder::net_Import		(NET_Packet &net_packet)
 {
 	if (m_object)
-		m_object->net_Import(*(int*)((void*)&net_packet));
+		m_object->net_Import(&net_packet);
 }
 
 void CScriptBinder::net_Export		(NET_Packet &net_packet)
 {
 	if (m_object)
-		m_object->net_Export(*(int*)((void*)&net_packet));
+		m_object->net_Export(&net_packet);
 }
 
 void CScriptBinder::set_object		(CScriptBinderObject *object)

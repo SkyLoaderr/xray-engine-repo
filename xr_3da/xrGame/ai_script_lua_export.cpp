@@ -50,34 +50,35 @@ int Script::LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 void Script::LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
 {
-	lua_getinfo(tpLuaVirtualMachine,"nSlu",tpLuaDebug);
-	Lua::ELuaMessageType	l_tLuaMessageType = Lua::eLuaMessageTypeError;
-	LPCSTR	S = "";
-	switch (tpLuaDebug->event) {
-		case LUA_HOOKCALL		: {
-			l_tLuaMessageType = Lua::eLuaMessageTypeHookCall;
-			break;
-		}
-		case LUA_HOOKRET		: {
-			l_tLuaMessageType = Lua::eLuaMessageTypeHookReturn;
-			break;
-		}
-		case LUA_HOOKLINE		: {
-			l_tLuaMessageType = Lua::eLuaMessageTypeHookLine;
-			break;
-		}
-		case LUA_HOOKCOUNT		: {
-			l_tLuaMessageType = Lua::eLuaMessageTypeHookCount;
-			break;
-		}
-		case LUA_HOOKTAILRET	: {
-			l_tLuaMessageType = Lua::eLuaMessageTypeHookTailReturn;
-			break;
-		}
-		default					: NODEFAULT;
-	}
-
-	LuaOut		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)" : "%s%s : %s %s %s",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "",tpLuaDebug->currentline);
+	return;
+//	lua_getinfo(tpLuaVirtualMachine,"nSlu",tpLuaDebug);
+//	Lua::ELuaMessageType	l_tLuaMessageType = Lua::eLuaMessageTypeError;
+//	LPCSTR	S = "";
+//	switch (tpLuaDebug->event) {
+//		case LUA_HOOKCALL		: {
+//			l_tLuaMessageType = Lua::eLuaMessageTypeHookCall;
+//			break;
+//		}
+//		case LUA_HOOKRET		: {
+//			l_tLuaMessageType = Lua::eLuaMessageTypeHookReturn;
+//			break;
+//		}
+//		case LUA_HOOKLINE		: {
+//			l_tLuaMessageType = Lua::eLuaMessageTypeHookLine;
+//			break;
+//		}
+//		case LUA_HOOKCOUNT		: {
+//			l_tLuaMessageType = Lua::eLuaMessageTypeHookCount;
+//			break;
+//		}
+//		case LUA_HOOKTAILRET	: {
+//			l_tLuaMessageType = Lua::eLuaMessageTypeHookTailReturn;
+//			break;
+//		}
+//		default					: NODEFAULT;
+//	}
+//
+//	LuaOut		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)" : "%s%s : %s %s %s",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "",tpLuaDebug->currentline);
 }
 
 #ifndef DEBUG

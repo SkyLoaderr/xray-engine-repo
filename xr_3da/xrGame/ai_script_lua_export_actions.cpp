@@ -15,6 +15,8 @@
 
 #include "ai_script_classes.h"
 
+#include "xrServer_Objects.h"
+
 #include "script_world_property.h"
 #include "script_world_state.h"
 #include "script_property_evaluator_wrapper.h"
@@ -91,7 +93,7 @@ void Script::vfExportActionManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("add_action",					(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_edge_type &, CScriptActionPlanner::COperator *))(CScriptActionPlanner::add_operator))
 			.def("remove_action",				(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_edge_type &))(CScriptActionPlanner::remove_operator))
 			.def("action",						&CScriptActionPlanner::action)
-			.def("add_evaluator",				(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &))(CScriptActionPlanner::add_evaluator))
+			.def("add_evaluator",				(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &, CScriptActionPlanner::CConditionEvaluator *))(CScriptActionPlanner::add_evaluator))
 			.def("remove_evaluator",			(void (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &))(CScriptActionPlanner::remove_evaluator))
 			.def("evaluator",					(const CScriptActionPlanner::CConditionEvaluator * (CScriptActionPlanner::*)(const CScriptActionPlanner::_condition_type &) const)(CScriptActionPlanner::evaluator))
 			.def("current_action_id",			&CScriptActionPlanner::current_action_id)
@@ -118,7 +120,7 @@ void Script::vfExportMotivationManagement(CLuaVirtualMachine *tpLuaVirtualMachin
 			.def("reload",						&CScriptMotivationWrapper::reload_static)
 			.def("evaluate",					&CScriptMotivationWrapper::evaluate_static),
 
-		class_<CScriptMotivationAction,CScriptMotivationActionWrapper>("motivation_action")
+		class_<CScriptMotivationAction,CScriptMotivationActionWrapper,CScriptMotivation>("motivation_action")
 			.def(								constructor<const CScriptWorldState &>())
 			.def("goal",						&CScriptMotivationAction::goal),
 
@@ -145,11 +147,10 @@ void Script::vfExportMotivationManagement(CLuaVirtualMachine *tpLuaVirtualMachin
 			.def("update",						&CScriptMotivationActionManagerWrapper::update_static)
 			.def("clear",						&CScriptMotivationActionManager::clear),
 
-//		class_<CSE_Abstract>("server_object")
-//			.def(								constructor<>())
+		class_<CSE_Abstract>("server_object"),
 			
-//		class_<NET_Packet>("net_packet")
-//			.def(								constructor<>())
+		class_<NET_Packet>("net_packet")
+			.def(								constructor<>()),
 			
 		class_<CScriptBinderObject,CScriptBinderObjectWrapper>("object_binder")
 			.def_readonly("object",				&CScriptBinderObject::m_object)

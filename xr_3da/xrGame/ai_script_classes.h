@@ -504,11 +504,11 @@ public:
 			CLuaGameObject		*GetEnemy			() const;
 			CLuaGameObject		*GetCorpse			() const;
 
-	IC		void				set_object			(CScriptBinderObject *object)
+	IC		void				bind_object			(CScriptBinderObject *object)
 	{
 		CScriptBinder			*binder = dynamic_cast<CScriptBinder*>(m_tpGameObject);
 		if (!binder)
-			LuaOut				(Lua::eLuaMessageTypeError,"CScriptBinder : cannot access class member set_object!");
+			LuaOut				(Lua::eLuaMessageTypeError,"CScriptBinder : cannot access class member bind_object!");
 		else
 			binder->set_object	(object);
 	}
@@ -535,9 +535,13 @@ public:
 			void				set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
 			void				add_sound				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name);
 			void				remove_sound			(u32 internal_type);
-			void				play_sound				(u32 internal_type, u32 max_start_time = 0, u32 min_start_time = 0, u32 max_stop_time = 0, u32 min_stop_time = 0, u32 id = u32(-1));
 			void				set_sound_mask			(u32 sound_mask);
 			void				set_sight				(ELookType tLookType, const Fvector	*tPointToLook = 0, u32 dwLookOverDelay = u32(-1));
 			void				set_item				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
 			u32					GetRank					();
+			void				play_sound				(u32 internal_type);
+			void				play_sound				(u32 internal_type, u32 max_start_time);
+			void				play_sound				(u32 internal_type, u32 max_start_time, u32 min_start_time);
+			void				play_sound				(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time);
+			void				play_sound				(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time, u32 min_stop_time);
 };

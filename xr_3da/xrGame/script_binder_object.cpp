@@ -35,10 +35,10 @@ void CScriptBinderObject::net_Destroy		()
 {
 }
 
-void CScriptBinderObject::net_Import		(NetPacket &net_packet)
+void CScriptBinderObject::net_Import		(NetPacket *net_packet)
 {
 }
 
-void CScriptBinderObject::net_Export		(NetPacket &net_packet)
+void CScriptBinderObject::net_Export		(NetPacket *net_packet)
 {
 }

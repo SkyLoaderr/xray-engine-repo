@@ -371,15 +371,6 @@ void CLuaGameObject::remove_sound	(u32 internal_type)
 		sound_player->remove	(internal_type);
 }
 
-void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time, u32 min_stop_time, u32 id)
-{
-	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
-	if (!sound_player)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
-	else
-		sound_player->play		(internal_type,max_start_time,min_start_time,max_stop_time,min_stop_time,id);
-}
-
 void CLuaGameObject::set_sound_mask	(u32 sound_mask)
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
@@ -417,3 +408,49 @@ u32 CLuaGameObject::GetRank		()
 	else
 		return					(stalker->GetRank());
 }
+
+void CLuaGameObject::play_sound		(u32 internal_type)
+{
+	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+	if (!sound_player)
+		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+	else
+		sound_player->play		(internal_type);
+}
+
+void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time)
+{
+	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+	if (!sound_player)
+		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+	else
+		sound_player->play		(internal_type,max_start_time);
+}
+
+void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time)
+{
+	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+	if (!sound_player)
+		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+	else
+		sound_player->play		(internal_type,max_start_time,min_start_time);
+}
+
+void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time)
+{
+	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+	if (!sound_player)
+		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+	else
+		sound_player->play		(internal_type,max_start_time,min_start_time,max_stop_time);
+}
+
+void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time, u32 min_stop_time)
+{
+	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
+	if (!sound_player)
+		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+	else
+		sound_player->play		(internal_type,max_start_time,min_start_time,max_stop_time,min_stop_time);
+}
+

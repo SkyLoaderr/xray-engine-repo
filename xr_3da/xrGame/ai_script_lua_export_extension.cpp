@@ -416,7 +416,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("explode",						&CLuaGameObject::explode)
 			.def("get_enemy",					&CLuaGameObject::GetEnemy)
 			.def("get_corpse",					&CLuaGameObject::GetCorpse)
-			.def("set_object",					&CLuaGameObject::set_object)
+			.def("bind_object",					&CLuaGameObject::bind_object)
 			.def("motivation_action_manager",	&CLuaGameObject::motivation_action_manager)
 			
 			// movement manager
