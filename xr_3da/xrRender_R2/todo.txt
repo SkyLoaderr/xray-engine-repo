@@ -1,13 +1,3 @@
-* shadowed		point lights
-* unshadowed	point lights
-* bloom
-* nv30
-* xrLC format
-* bump shaders
-* ability to specify texture + transform on P-lights
-* ability to project texture on directional lights
-* skybox/fog
-
 ----------------------------
 done, ~7% perf-gain		:	intelligent	RT-switches sheduling + give some time to complete RT-rendering
 done, ~5.5% perf-gain	:	cull point-light frustums against real frustum
@@ -24,6 +14,8 @@ bicubic filter for spot shadows
 detail	bumpmaps	- better quality
 work out blooming	(again)
 work out skybox		(again)
+work out tonemapping(?)
+sRGB convert diffuse???
 reverse culling	for spot/point with initial clears - should avoid most biasing ?
 ----------------------------
 perspective shadow maps and all that stuff Gary talks about
