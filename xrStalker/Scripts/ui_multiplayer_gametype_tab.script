@@ -27,15 +27,15 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	rbtn_group_rect.y = (self.main_rect.height - rbtn_group_rect.height)/2
 	rbtn_group_rect.x = (self.main_rect.width - rbtn_rect.width)/2
 	
-	rbtn_dm_rect	= { x		= rbnt_group_rect.x,
+	rbtn_dm_rect	= { x		= rbtn_group_rect.x,
 						y		= rbtn_group_rect.y,
 						width	= rbtn_rect.widht,
 						height	= rbtn_rect.height}
-	rbtn_tdm_rect	= { x		= rbnt_group_rect.x,
+	rbtn_tdm_rect	= { x		= rbtn_group_rect.x,
 						y		= rbtn_group_rect.y + rbtn_rect.height + self.indent,
 						width	= rbtn_rect.widht,
 						height	= rbtn_rect.height}
-	rbtn_ah_rect	= { x		= rbnt_group_rect.x,
+	rbtn_ah_rect	= { x		= rbtn_group_rect.x,
 						y		= rbtn_group_rect.y + rbtn_rect.height + self.indent*2,
 						width	= rbtn_rect.widht,
 						height	= rbtn_rect.height}
