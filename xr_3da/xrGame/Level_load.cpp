@@ -5,7 +5,7 @@
 #include "ParticlesObject.h"
 #include "ai_script_processor.h"
 
-void CLevel::vfCreateAllPossiblePaths(string64& sName, SPath &tpPatrolPath)
+void CLevel::vfCreateAllPossiblePaths(LPCSTR sName, SPath &tpPatrolPath)
 {
 	xr_vector<Fvector>		tpaPoints;
 	xr_vector<Fvector>		tpaDeviations;
