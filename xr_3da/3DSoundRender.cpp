@@ -7,7 +7,7 @@
 #include "3DSoundRender.h"
 #include "3DSound.h"
 
-int		psSoundRelaxTime		= 3;
+int		psSoundRelaxTime		= 15;
 Flags32	psSoundFlags			= {ssWaveTrace};
 float	psSoundOcclusionScale	= 0.85f;
 float	psSoundCull				= 0.07f;
