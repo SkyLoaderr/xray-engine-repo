@@ -35,7 +35,8 @@ void CEatableItem::Load(LPCSTR section)
 	m_fPowerInfluence = pSettings->r_float(section, "eat_power");
 	m_fSatietyInfluence = pSettings->r_float(section, "eat_satiety");
 	m_fRadiationInfluence = pSettings->r_float(section, "eat_radiation");
-
+	m_fWoundsHealPerc	= pSettings->r_float(section, "wounds_heal_perc");
+	
 	m_iPortionsNum = pSettings->r_s32(section, "eat_portions_num");
 	VERIFY(m_iPortionsNum<10000);
 }

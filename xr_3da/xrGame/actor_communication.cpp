@@ -235,9 +235,6 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 
 			for(u32 i = 0; i<info_portion.DialogNames().size(); i++)
 				AddAvailableDialog(*info_portion.DialogNames()[i], partner);
-
-			for(u32 i = 0; i<info_portion.ActorDialogNames().size(); i++)
-				AddAvailableDialog(*info_portion.ActorDialogNames()[i], partner);
 		}
 	}
 
@@ -246,6 +243,20 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 	
 	for(u32 i = 0; i<pInvOwnerPartner->CharacterInfo().ActorDialogs().size(); i++)
 		AddAvailableDialog(CPhraseDialog::IndexToId(pInvOwnerPartner->CharacterInfo().ActorDialogs()[i]), partner);
+
+	//добавить актерские диалоги собеседника из info portions
+	if(pInvOwnerPartner->m_known_info_registry->registry().objects_ptr())
+	{
+		for(KNOWN_INFO_VECTOR::const_iterator it = pInvOwnerPartner->m_known_info_registry->registry().objects_ptr()->begin();
+			pInvOwnerPartner->m_known_info_registry->registry().objects_ptr()->end() != it; ++it)
+		{
+			//подгрузить кусочек информации с которым мы работаем
+			CInfoPortion info_portion;
+			info_portion.Load((*it).id);
+			for(u32 i = 0; i<info_portion.ActorDialogNames().size(); i++)
+				AddAvailableDialog(*info_portion.ActorDialogNames()[i], partner);
+		}
+	}
 
 	CPhraseDialogManager::UpdateAvailableDialogs(partner);
 }

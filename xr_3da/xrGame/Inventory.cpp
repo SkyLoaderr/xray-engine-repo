@@ -817,6 +817,7 @@ bool CInventory::Eat(PIItem pIItem)
 	pCondition->ChangePower(pItemToEat->m_fPowerInfluence);
 	pCondition->ChangeSatiety(pItemToEat->m_fSatietyInfluence);
 	pCondition->ChangeRadiation(pItemToEat->m_fRadiationInfluence);
+	pCondition->ChangeBleeding(pItemToEat->m_fWoundsHealPerc);
 	
 
 	//уменьшить количество порций

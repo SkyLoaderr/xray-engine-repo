@@ -33,6 +33,8 @@ public:
 	float	m_fPowerInfluence;
 	float	m_fSatietyInfluence;
 	float	m_fRadiationInfluence;
+	//заживление ран на кол-во процентов
+	float	m_fWoundsHealPerc;
 
 	//количество порций еды, 
 	//-1 - порция одна и больше не бывает (чтоб не выводить надпись в меню)
