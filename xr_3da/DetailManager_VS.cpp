@@ -29,7 +29,7 @@ void CDetailManager::VS_Load()
 	_RELEASE		(errors);
 
 	// Analyze batch-size
-	VS_BatchSize	= 19; //(DWORD(HW.Caps.vertex.dwRegisters)-5)/4;
+	VS_BatchSize	= 32; //(DWORD(HW.Caps.vertex.dwRegisters)-5)/4;
 
 	// Pre-process objects
 	DWORD			dwVerts		= 0;
