@@ -345,8 +345,8 @@ function action_commander:exec_look_box()
     if self.box then
         if self.time_end then
             if self.time_end <= device():time_global() then
---                if not self.object:see( self.box ) then
-                if self.object:position():distance_to_sqr( self.box:position() ) > 25 then
+                if not self.object:see( self.box ) then
+--                if self.object:position():distance_to_sqr( self.box:position() ) > 25 then
                     printf( "[commander] : ящик украли! “ревога!!!" )
                     self.act     = box_alarm
                     self.pos     = nil
@@ -367,8 +367,8 @@ function action_commander:exec_look_box()
             end
         else
             self:stop()
-            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
-            --self.object:set_sight( look.direction, vector():set( 1, 0, 0 ), 0 )
+--            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
+            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ), 0 )
             self.object:set_mental_state( anim.free )
 
             self.time_end = device():time_global() + 3000
