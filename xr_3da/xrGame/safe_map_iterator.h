@@ -17,9 +17,9 @@ template <
 >
 class CSafeMapIterator {
 public:
-	typedef xr_map<_key_type,_data_type*>		_REGISTRY;
-	typedef typename _REGISTRY::iterator		_iterator;
-	typedef typename _REGISTRY::const_iterator	_const_iterator;
+	typedef xr_map<_key_type,_data_type*,_predicate>	_REGISTRY;
+	typedef typename _REGISTRY::iterator				_iterator;
+	typedef typename _REGISTRY::const_iterator			_const_iterator;
 
 protected:
 	_REGISTRY				m_objects;
