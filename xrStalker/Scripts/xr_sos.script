@@ -206,7 +206,7 @@ end
 -----------------------------------------------------------------------
 function add_to_binder (obj, char_ini)
 
-    if char_ini == nil or char_ini:section_exist ("sos") == true then
+    if char_ini == nil or char_ini:section_exist ("sos") == false then return end
 
 	local operators		= {}
 	local properties	= {}
@@ -217,9 +217,8 @@ function add_to_binder (obj, char_ini)
 	properties["action"]            = xr_evaluators_id.sidor_sos + 3
 
  	operators["init"]               = xr_actions_id.sidor_act_sos + 0
-	operators["raid"]               = xr_actions_id.sidor_act_sos + 1
-	operators["kill"]               = xr_actions_id.sidor_act_sos + 2
-	operators["help"]               = xr_actions_id.sidor_act_sos + 3
+	operators["kill"]               = xr_actions_id.sidor_act_sos + 1
+	operators["help"]               = xr_actions_id.sidor_act_sos + 2
 	
 	local manager  = obj:motivation_action_manager ()
   	manager:add_evaluator (properties["enabled"], this.evaluator_enabled ("property_enabled", xr_motivator.storage[obj:id()].sos))
@@ -237,7 +236,7 @@ function add_to_binder (obj, char_ini)
    	manager:add_action              (operators["init"], action)
   	
   	action = this.action_kill
-	end	
+	
 end
 -----------------------------------------------------------------------
 function set_sos (npc, enabled)
