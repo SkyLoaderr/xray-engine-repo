@@ -74,7 +74,13 @@ void	CPHAICharacter::Jump(const Fvector& jump_velocity)
 	b_jump=true;
 	m_jump_accel.set(jump_velocity);
 }
-
+void	CPHAICharacter::	ValidateWalkOn						()
+{
+if(b_on_object)
+	ValidateWalkOnObject();
+ else 
+	 b_clamb_jump=true;
+}
 
 #ifdef DEBUG
 void	CPHAICharacter::OnRender()	

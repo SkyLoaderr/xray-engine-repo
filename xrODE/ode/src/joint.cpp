@@ -33,7 +33,9 @@ transform is the identity.
 #include <ode/rotation.h>
 #include <ode/matrix.h>
 #include "joint.h"
-
+#ifdef DE_PADF_INTEGRATION
+#include "de_padf_integration.h"
+#endif
 //****************************************************************************
 // externs
 
@@ -726,7 +728,11 @@ dxJoint::Vtable __dball_vtable = {
   (dxJoint::init_fn*) ballInit,
   (dxJoint::getInfo1_fn*) ballGetInfo1,
   (dxJoint::getInfo2_fn*) ballGetInfo2,
-  dJointTypeBall};
+  dJointTypeBall
+#ifdef DE_PADF_INTEGRATION
+  ,(dxJoint::addBodiesForces_fn*) emptyAddForces
+#endif
+};
 
 //****************************************************************************
 // hinge
@@ -1014,7 +1020,11 @@ dxJoint::Vtable __dhinge_vtable = {
   (dxJoint::init_fn*) hingeInit,
   (dxJoint::getInfo1_fn*) hingeGetInfo1,
   (dxJoint::getInfo2_fn*) hingeGetInfo2,
-  dJointTypeHinge};
+  dJointTypeHinge
+#ifdef DE_PADF_INTEGRATION
+  ,(dxJoint::addBodiesForces_fn*) emptyAddForces
+#endif
+};
 
 //****************************************************************************
 // slider
@@ -1249,7 +1259,11 @@ dxJoint::Vtable __dslider_vtable = {
   (dxJoint::init_fn*) sliderInit,
   (dxJoint::getInfo1_fn*) sliderGetInfo1,
   (dxJoint::getInfo2_fn*) sliderGetInfo2,
-  dJointTypeSlider};
+  dJointTypeSlider
+#ifdef DE_PADF_INTEGRATION
+  ,(dxJoint::addBodiesForces_fn*) emptyAddForces
+#endif
+};
 
 //****************************************************************************
 // contact
@@ -1442,7 +1456,11 @@ dxJoint::Vtable __dcontact_vtable = {
   (dxJoint::init_fn*) contactInit,
   (dxJoint::getInfo1_fn*) contactGetInfo1,
   (dxJoint::getInfo2_fn*) contactGetInfo2,
-  dJointTypeContact};
+  dJointTypeContact
+#ifdef DE_PADF_INTEGRATION
+  ,(dxJoint::addBodiesForces_fn*) contactAddForces
+#endif
+};
 
 //****************************************************************************
 // hinge 2. note that this joint must be attached to two bodies for it to work
@@ -1794,7 +1812,11 @@ dxJoint::Vtable __dhinge2_vtable = {
   (dxJoint::init_fn*) hinge2Init,
   (dxJoint::getInfo1_fn*) hinge2GetInfo1,
   (dxJoint::getInfo2_fn*) hinge2GetInfo2,
-  dJointTypeHinge2};
+  dJointTypeHinge2
+#ifdef DE_PADF_INTEGRATION
+  ,(dxJoint::addBodiesForces_fn*) emptyAddForces
+#endif
+};
 
 //****************************************************************************
 // universal
@@ -2251,7 +2273,11 @@ dxJoint::Vtable __duniversal_vtable = {
   (dxJoint::init_fn*) universalInit,
   (dxJoint::getInfo1_fn*) universalGetInfo1,
   (dxJoint::getInfo2_fn*) universalGetInfo2,
-  dJointTypeUniversal};
+  dJointTypeUniversal
+#ifdef DE_PADF_INTEGRATION
+  ,(dxJoint::addBodiesForces_fn*) emptyAddForces
+#endif
+};
 
 //****************************************************************************
 // angular motor
@@ -2650,7 +2676,11 @@ dxJoint::Vtable __damotor_vtable = {
   (dxJoint::init_fn*) amotorInit,
   (dxJoint::getInfo1_fn*) amotorGetInfo1,
   (dxJoint::getInfo2_fn*) amotorGetInfo2,
-  dJointTypeAMotor};
+  dJointTypeAMotor
+#ifdef DE_PADF_INTEGRATION
+  ,(dxJoint::addBodiesForces_fn*) emptyAddForces
+#endif
+};
 
 //****************************************************************************
 // fixed joint
@@ -2737,7 +2767,11 @@ dxJoint::Vtable __dfixed_vtable = {
   (dxJoint::init_fn*) fixedInit,
   (dxJoint::getInfo1_fn*) fixedGetInfo1,
   (dxJoint::getInfo2_fn*) fixedGetInfo2,
-  dJointTypeFixed};
+  dJointTypeFixed
+#ifdef DE_PADF_INTEGRATION
+  ,(dxJoint::addBodiesForces_fn*) emptyAddForces
+#endif
+};
 
 //****************************************************************************
 // null joint
@@ -2760,4 +2794,8 @@ dxJoint::Vtable __dnull_vtable = {
   (dxJoint::init_fn*) 0,
   (dxJoint::getInfo1_fn*) nullGetInfo1,
   (dxJoint::getInfo2_fn*) nullGetInfo2,
-  dJointTypeNull};
+  dJointTypeNull
+#ifdef DE_PADF_INTEGRATION
+  ,(dxJoint::addBodiesForces_fn*) emptyAddForces
+#endif
+};

@@ -419,6 +419,12 @@
 				RelativePath="..\..\..\ode\src\collision_util.cpp">
 			</File>
 			<File
+				RelativePath=".\de_padf_integration.cpp">
+			</File>
+			<File
+				RelativePath=".\de_padf_integration.h">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\error.cpp">
 			</File>
 			<File

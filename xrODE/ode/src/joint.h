@@ -20,6 +20,8 @@
  *                                                                       *
  *************************************************************************/
 
+//#define	DE_PADF_INTEGRATION
+
 #ifndef _ODE_JOINT_H_
 #define _ODE_JOINT_H_
 
@@ -110,12 +112,16 @@ struct dxJoint : public dObject {
   typedef void init_fn (dxJoint *joint);
   typedef void getInfo1_fn (dxJoint *joint, Info1 *info);
   typedef void getInfo2_fn (dxJoint *joint, Info2 *info);
+  typedef void addBodiesForces_fn(dxJoint *joint);
   struct Vtable {
     int size;
     init_fn *init;
     getInfo1_fn *getInfo1;
     getInfo2_fn *getInfo2;
     int typenum;		// a dJointTypeXXX type number
+#ifdef DE_PADF_INTEGRATION
+	addBodiesForces_fn *addForces;
+#endif
   };
 
   Vtable *vtable;		// virtual function table

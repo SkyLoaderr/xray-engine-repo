@@ -184,11 +184,13 @@ public:
 
 	virtual		void		get_State							(		SPHNetState&	state)								;
 	virtual		void		set_State							(const	SPHNetState&	state)								;
-
+	virtual		void		ValidateWalkOn						();
+	bool		ValidateWalkOnMesh					()			;
+	bool		ValidateWalkOnObject				()			;
 private:
 	void		CheckCaptureJoint					()			;
 	void		ApplyAcceleration					()			;
-	bool		ValidateWalkOn						()			;
+
 	u16			RetriveContactBone					()			;
 	void		SafeAndLimitVelocity				()			;
 	void		UpdateStaticDamage					(dContact* c,SGameMtl* tri_material,bool bo1);

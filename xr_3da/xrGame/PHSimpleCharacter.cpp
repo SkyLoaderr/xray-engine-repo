@@ -452,45 +452,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		}
 	}
 
-	if(b_on_object)
-	{
-		//deside to stop clamb
-		if(b_clamb_jump){
-			const dReal* current_pos=dBodyGetPosition(m_body);
-			dVector3 dif={current_pos[0]-m_clamb_depart_position[0],
-				current_pos[1]-m_clamb_depart_position[1],
-				current_pos[2]-m_clamb_depart_position[2]};
-			if( //!b_valide_wall_contact||
-				//(dDOT(dif,dif)>CLAMB_DISTANCE*CLAMB_DISTANCE))	//	(m_wall_contact_normal[1]> M_SQRT1_2) ||							]
-				dFabs(dif[1])>CLAMB_DISTANCE){
-					b_clamb_jump=false;
-					//	dBodySetLinearVel(m_body,0.f,0.f,0.f);
-				}
-		}
-
-		//decide to clamb
-		if(!m_elevator_state.Active() &&b_valide_wall_contact && (m_contact_count>1)&&(m_wall_contact_normal[1]<M_SQRT1_2 )&& !b_side_contact ) //&& dDOT(m_wall_contact_normal,m_ground_contact_normal)<.9f
-		{
-			//if( dDOT(m_wall_contact_normal,m_ground_contact_normal)<.999999f)
-			//dVector3 diff={m_wall_contact_normal[0]-m_ground_contact_normal[0],m_wall_contact_normal[1]-m_ground_contact_normal[1],m_wall_contact_normal[2]-m_ground_contact_normal[2]};
-			//if( dDOT(diff,diff)>0.001f)
-			if(((m_wall_contact_position[0]-m_ground_contact_position[0])*m_control_force[0]+
-				(m_wall_contact_position[2]-m_ground_contact_position[2])*m_control_force[2])>0.05f &&
-				m_wall_contact_position[1]-m_ground_contact_position[1]>0.01f)
-				b_clamb_jump=true;
-
-
-		}
-
-		if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
-			if(
-				dFabs((m_wall_contact_position[0]-m_ground_contact_position[0])+		//*m_control_force[0]
-				(m_wall_contact_position[2]-m_ground_contact_position[2]))>0.05f &&//0.01f//*m_control_force[2]
-				m_wall_contact_position[1]-m_ground_contact_position[1]>0.01f)
-				dVectorSet(m_clamb_depart_position,dBodyGetPosition(m_body));
-	}
-
-	else b_clamb_jump=ValidateWalkOn()&&!m_elevator_state.NearDown();
+	ValidateWalkOn();
 
 	//jump	
 	if(b_jump)
@@ -583,8 +545,53 @@ const float CHWON_CALL_UP_SHIFT=0.05f;
 const float CHWON_CALL_FB_HIGHT=1.5f;
 const float CHWON_AABB_FB_FACTOR =1.f;
 
+void CPHSimpleCharacter::ValidateWalkOn()
+{
+	if(b_on_object)
+	{
+		ValidateWalkOnObject();
+	}
+	else b_clamb_jump=ValidateWalkOnMesh()&&!m_elevator_state.NearDown();
+}
+bool CPHSimpleCharacter::ValidateWalkOnObject()
+{
+	//deside to stop clamb
+	if(b_clamb_jump){
+		const dReal* current_pos=dBodyGetPosition(m_body);
+		dVector3 dif={current_pos[0]-m_clamb_depart_position[0],
+			current_pos[1]-m_clamb_depart_position[1],
+			current_pos[2]-m_clamb_depart_position[2]};
+		if( //!b_valide_wall_contact||
+			//(dDOT(dif,dif)>CLAMB_DISTANCE*CLAMB_DISTANCE))	//	(m_wall_contact_normal[1]> M_SQRT1_2) ||							]
+			dFabs(dif[1])>CLAMB_DISTANCE){
+				b_clamb_jump=false;
+				//	dBodySetLinearVel(m_body,0.f,0.f,0.f);
+			}
+	}
 
-bool CPHSimpleCharacter::ValidateWalkOn()
+	//decide to clamb
+	if(!m_elevator_state.Active() &&b_valide_wall_contact && (m_contact_count>1)&&(m_wall_contact_normal[1]<M_SQRT1_2 )&& !b_side_contact ) //&& dDOT(m_wall_contact_normal,m_ground_contact_normal)<.9f
+	{
+		//if( dDOT(m_wall_contact_normal,m_ground_contact_normal)<.999999f)
+		//dVector3 diff={m_wall_contact_normal[0]-m_ground_contact_normal[0],m_wall_contact_normal[1]-m_ground_contact_normal[1],m_wall_contact_normal[2]-m_ground_contact_normal[2]};
+		//if( dDOT(diff,diff)>0.001f)
+		if(((m_wall_contact_position[0]-m_ground_contact_position[0])*m_control_force[0]+
+			(m_wall_contact_position[2]-m_ground_contact_position[2])*m_control_force[2])>0.05f &&
+			m_wall_contact_position[1]-m_ground_contact_position[1]>0.01f)
+			b_clamb_jump=true;
+
+
+	}
+
+	if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
+		if(
+			dFabs((m_wall_contact_position[0]-m_ground_contact_position[0])+		//*m_control_force[0]
+			(m_wall_contact_position[2]-m_ground_contact_position[2]))>0.05f &&//0.01f//*m_control_force[2]
+			m_wall_contact_position[1]-m_ground_contact_position[1]>0.01f)
+			dVectorSet(m_clamb_depart_position,dBodyGetPosition(m_body));
+	return b_clamb_jump;
+}
+bool CPHSimpleCharacter::ValidateWalkOnMesh()
 {
 	Fvector AABB,AABB_forbid,center,center_forbid,accel_add,accel;
 	dVector3 norm,side0,side1;
