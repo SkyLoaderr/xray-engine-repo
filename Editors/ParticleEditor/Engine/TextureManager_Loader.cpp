@@ -227,7 +227,11 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 	}
 
 	// Load detail textures association
+#ifdef _EDITOR
+	string256 fname; strconcat	(fname,Engine.FS.m_GameTextures.m_Path,"textures.ltx");
+#else
 	string256 fname; strconcat	(fname,Path.Textures,"textures.ltx");
+#endif
 	LPCSTR		Iname		= fname;
 	if (Engine.FS.Exist(Iname))	
 	{

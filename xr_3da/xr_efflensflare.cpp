@@ -40,6 +40,8 @@ CLensFlare::CLensFlare()
 
     LightColor.set				( 0xFFFFFFFF );
 	fGradientValue				= 0.f;
+
+    hGeom						= 0;
 }
 
 
