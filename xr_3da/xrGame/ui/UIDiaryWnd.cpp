@@ -443,7 +443,8 @@ void CUIDiaryWnd::SetActiveSubdialog(EPdaSections section)
 	switch (section)
 	{
 	case epsActiveJobs:
-		UITreeView.SendMessage(m_pJobsRoot, BUTTON_CLICKED, NULL);
+		if (!m_pActiveJobs->IsOpened())
+			UITreeView.SendMessage(m_pJobsRoot, BUTTON_CLICKED, NULL);
 		SendMessage(this, DIARY_RESET_PREV_ACTIVE_ITEM, NULL);
 		UITreeView.SendMessage(m_pActiveJobs, BUTTON_CLICKED, NULL);
 		break;
