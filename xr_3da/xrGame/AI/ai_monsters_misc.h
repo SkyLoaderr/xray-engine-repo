@@ -107,10 +107,10 @@
 		R_ASSERT (Leader);
 	
 	#define ADJUST_ANGLE(A) \
-		if (A >= PI_MUL_2 - EPS_L)\
+		if (A >= PI - EPS_L)\
 			A -= PI_MUL_2;\
 		else\
-			if (A <= -EPS_L)\
+			if (A <= -PI + EPS_L)\
 				A += PI_MUL_2;
 			
 	#define ADJUST_BONE(A) \

@@ -44,21 +44,21 @@ bool CAI_Rat::bfCheckForVisibility(CEntity* tpEntity)
 	}
 	
 	// computing lightness weight
-	fResult *= 2*float(0 + tpEntity->AI_Node->light)/(0 + 255.f);
+	fResult *= m_fShadowWeight*float(tpEntity->AI_Node->light)/255.f;
 	
 	// computing enemy state
 	switch (m_cBodyState) {
-	case BODY_STATE_STAND : {
-		break;
-							}
-	case BODY_STATE_CROUCH : {
-		fResult *= m_fCrouchVisibilityMultiplier;
-		break;
-							 }
-	case BODY_STATE_LIE : {
-		fResult *= m_fLieVisibilityMultiplier;
-		break;
-						  }
+		case BODY_STATE_STAND : {
+			break;
+		}
+		case BODY_STATE_CROUCH : {
+			fResult *= m_fCrouchVisibilityMultiplier;
+			break;
+		}
+		case BODY_STATE_LIE : {
+			fResult *= m_fLieVisibilityMultiplier;
+			break;
+		}
 	}
 	
 	// computing my ability to view the enemy
@@ -76,9 +76,10 @@ void CAI_Rat::SetDirectionLook()
 		if (tWatchDirection.square_magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
-			r_target.yaw = r_torso_target.yaw;
-			ASSIGN_SPINE_BONE;
-			q_look.o_look_speed=PI_DIV_4;
+			ADJUST_BONE_ANGLES
+			//NET_Last.o_model = r_torso_target.yaw;
+			//r_spine_target.yaw = r_target.yaw = 0;
+			//q_look.o_look_speed=PI_DIV_4;
 		}
 	}
 	//r_target.pitch = 0;
@@ -92,11 +93,11 @@ void CAI_Rat::vfAimAtEnemy()
 	svCenter(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
-	r_target.yaw += PI_DIV_6;
-	ASSIGN_SPINE_BONE;
+	r_spine_target.yaw = r_target.yaw = r_torso_target.yaw;
+	//r_target.yaw += PI_DIV_6;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
-	q_look.o_look_speed=_FB_look_speed;
+	//q_look.o_look_speed=_FB_look_speed;
+	ADJUST_BONE_ANGLES
 }
 
 static BOOL __fastcall RatQualifier(CObject* O, void* P)

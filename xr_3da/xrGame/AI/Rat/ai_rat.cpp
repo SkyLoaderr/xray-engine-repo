@@ -29,7 +29,7 @@ CAI_Rat::CAI_Rat()
 	//m_fSpin = 0.0;
 	//m_fMultiplier = sinf(m_fSpin);
 	//AI_Path.m_bCollision = false;
-	q_look.o_look_speed = _FB_look_speed;
+	r_spine_speed = r_torso_speed = q_look.o_look_speed = PI_DIV_4;
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend = 0;
 	m_bActionStarted = false;
@@ -82,7 +82,6 @@ void CAI_Rat::Load(CInifile* ini, const char* section)
 	vfLoadSounds();
 	vfLoadAnimations();
 	vfLoadSelectors(ini,section);
-	vfAssignBones(ini,section);
 	
 	// visibility
 	m_dwMovementIdleTime = ini->ReadINT(section,"MovementIdleTime");
@@ -113,7 +112,7 @@ BOOL CAI_Rat::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angl
 	else
 		eCurrentState = aiRatFollowLeader;
 	
-	//eCurrentState = aiRatFreeHunting;
+	eCurrentState = aiRatFreeHunting;
 	/**/
 	
 	return TRUE;

@@ -15,6 +15,8 @@
 #include "..\\..\\..\\3dsound.h"
 #include "..\\..\\..\\xr_trims.h"
 
+#define TORSO_ANGLE_DELTA				(PI/30.f)
+
 void CAI_Rat::Die()
 {
 	WRITE_TO_LOG("Dying...");
@@ -27,7 +29,6 @@ void CAI_Rat::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
-	//bActive = false;
 	bEnabled = false;
 	
 	if (m_bFiring) {
@@ -44,13 +45,6 @@ void CAI_Rat::Die()
 			vPosition.set(vPosition.x,fY,vPosition.z);
 		UpdateTransform();
 	}
-}
-
-void CAI_Rat::Jumping()
-{
-	WRITE_TO_LOG("Jumping...");
-	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 }
 
 void CAI_Rat::FreeHunting()
@@ -76,6 +70,13 @@ void CAI_Rat::FreeHunting()
 	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierUnderFire)
 	
 	//CHECK_IF_SWITCH_TO_NEW_STATE(m_tpaPatrolPoints.size(),aiSoldierPatrolRoute)
+
+	if ((r_torso_target.yaw*r_torso_current.yaw >= 0) || (fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI)) {
+		CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA,aiRatTurn)
+	}
+	else {
+		CHECK_IF_SWITCH_TO_NEW_STATE(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA,aiRatTurn)
+	}
 
 	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
@@ -152,6 +153,8 @@ void CAI_Rat::FollowLeader()
 
 	CHECK_IF_GO_TO_NEW_STATE(Leader == this,aiRatFreeHunting)
 
+	CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_current.yaw - r_torso_target.yaw) >= PI_DIV_6,aiRatTurn)
+
 	GoToPointViaSubnodes(Leader->Position());
 	
 	SetDirectionLook();
@@ -190,7 +193,7 @@ void CAI_Rat::AttackFire()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 	
-	CHECK_IF_GO_TO_NEW_STATE(fabsf(r_torso_current.yaw - sTemp.yaw) > 2*PI_DIV_6,aiRatAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE(fabsf(r_torso_current.yaw - sTemp.yaw) > PI_DIV_6,aiRatAttackRun)
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -243,7 +246,9 @@ void CAI_Rat::AttackRun()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	CHECK_IF_GO_TO_NEW_STATE((fabsf(r_torso_current.yaw - sTemp.yaw) < 2*PI_DIV_6) && (tDistance.magnitude() <= 2.f),aiRatAttackFire);
+	CHECK_IF_GO_TO_NEW_STATE((fabsf(r_torso_current.yaw - sTemp.yaw) < PI_DIV_6) && (tDistance.magnitude() <= 2.f),aiRatAttackFire);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_current.yaw - sTemp.yaw) >= PI_DIV_6,aiRatTurn)
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -266,6 +271,25 @@ void CAI_Rat::AttackRun()
 	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
 }
 
+void CAI_Rat::Turn()
+{
+	WRITE_TO_LOG("Turning...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
+
+	CHECK_IF_GO_TO_PREV_STATE((!m_bStateChanged) && (m_tpCurrentGlobalAnimation != tRatAnimations.tNormal.tGlobal.tpTurnLeft) && (m_tpCurrentGlobalAnimation != tRatAnimations.tNormal.tGlobal.tpTurnRight))
+	
+	INIT_SQUAD_AND_LEADER
+	
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+
+	vfSetFire(false,Group);
+
+	//AI_Path.TravelPath.clear();
+
+	vfSetMovementType(BODY_STATE_STAND,0);
+}
+
 void CAI_Rat::Think()
 {
 	bStopThinking = false;
@@ -274,10 +298,6 @@ void CAI_Rat::Think()
 		switch(eCurrentState) {
 			case aiRatDie : {
 				Die();
-				break;
-			}
-			case aiRatJumping : {
-				Jumping();
 				break;
 			}
 			case aiRatFreeHunting : {
@@ -294,6 +314,10 @@ void CAI_Rat::Think()
 			}
 			case aiRatAttackRun : {
 				AttackRun();
+				break;
+			}
+			case aiRatTurn : {
+				Turn();
 				break;
 			}
 		}

@@ -24,7 +24,7 @@ class CAI_Rat : public CCustomMonster
 
 	enum ERatStates 	{
 		aiRatDie = 0,
-		aiRatJumping,
+		aiRatTurn,
 		aiRatFreeHunting,
 		aiRatFollowLeader,
 		aiRatAttackFire,
@@ -127,6 +127,7 @@ class CAI_Rat : public CCustomMonster
 		float			m_fLieVisibilityMultiplier;
 		float			m_fVisibilityThreshold;
 		float			m_fLateralMutliplier;
+		float			m_fShadowWeight;
 		
 		float			m_fHitPower;
 		DWORD			m_dwHitInterval;
@@ -182,18 +183,17 @@ class CAI_Rat : public CCustomMonster
 		void UnderFire();
 		/**/
 		void Die();
-		void Jumping();
 		void FollowLeader();
 		void FreeHunting();
 		void AttackFire();
 		void AttackRun();
+		void Turn();
 		
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
 		bool bfCheckForVisibility(CEntity* tpEntity);
 		void vfLoadSounds();
 		void vfLoadSelectors(CInifile *ini, const char *section);
-		void vfAssignBones(CInifile *ini, const char *section);
 		void vfLoadAnimations();
 		bool bfCheckPath(AI::Path &Path);
 		//void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
