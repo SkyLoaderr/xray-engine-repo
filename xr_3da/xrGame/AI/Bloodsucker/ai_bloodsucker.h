@@ -33,6 +33,8 @@ public:
 
 			void			ActivateEffector		(float life_time);
 	
+	virtual	void			CheckSpecParams			(u32 spec_params);
+
 	bonesManipulation		Bones;
 
 	float					m_fInvisibilityDist;			// дистанция до врага, на которой монстр может становиться нивидимым

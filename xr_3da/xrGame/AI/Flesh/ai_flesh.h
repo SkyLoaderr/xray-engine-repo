@@ -14,7 +14,7 @@ public:
 
 	virtual	void	CheckAttackHit			();
 
-	virtual	bool	CheckSpecParams			(u32 spec_params);
+	virtual	void	CheckSpecParams			(u32 spec_params);
 
 private:
 	bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 

@@ -122,3 +122,10 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	return TRUE;
 }
 
+void CAI_Dog::CheckSpecParams(u32 spec_params)
+{
+	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+		MotionMan.Seq_Add(eAnimCheckCorpse);
+		MotionMan.Seq_Switch();
+	}
+}

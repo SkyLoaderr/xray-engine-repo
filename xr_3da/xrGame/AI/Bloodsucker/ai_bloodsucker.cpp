@@ -106,6 +106,12 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	center,		1.3f, m_fHitPower, 0.f,			PI_DIV_6);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3,	PI_DIV_6);
 
+	// Hit fx's
+	MotionMan.AddHitFX("hit_high_0"); 
+	MotionMan.AddHitFX("hit_high_1");
+	MotionMan.AddHitFX("hit_low_0"); 
+	MotionMan.AddHitFX("hit_low_1");
+
 	return(TRUE);
 }
 
@@ -220,3 +226,11 @@ void CAI_Bloodsucker::ActivateEffector(float life_time)
 	Level().Cameras.AddEffector(xr_new<CBloodsuckerEffector>(life_time));
 }
 
+
+void CAI_Bloodsucker::CheckSpecParams(u32 spec_params)
+{
+	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+		MotionMan.Seq_Add(eAnimCheckCorpse);
+		MotionMan.Seq_Switch();
+	}
+}

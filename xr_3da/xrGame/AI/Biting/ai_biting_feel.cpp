@@ -83,5 +83,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	XFORM().transform_dir(D,vLocalDir);
 	
 	feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
+
+	MotionMan.PlayHitFX(amount);
 }
 

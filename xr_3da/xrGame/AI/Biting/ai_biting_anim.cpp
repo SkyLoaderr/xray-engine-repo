@@ -81,8 +81,14 @@ void CMotionManager::Init (CAI_Biting	*pM, CKinematics *tpKin)
 	m_tTransitions.clear	();
 	m_tMotions.clear		();
 
+	m_tHitFXs.clear			();
+
 	Seq_Init				();
 	AA_Clear				();
+
+
+	time_start_stand		= 0;
+	cur_pos					= prev_pos = pMonster->Position();
 }
 
 void CMotionManager::Destroy()
@@ -232,7 +238,7 @@ bool CMotionManager::PrepareAnimation()
 	return true;
 }
 
-bool CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
+void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 {
 	// поиск соответствующего перехода
 	bool		bActivated	= false;
@@ -250,7 +256,7 @@ bool CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 		bool target_is_good = ((I->ps_target_used) ? (I->state_target == state_to) : (I->anim_target == to));
 
 		if (from_is_good && target_is_good) {
-			
+
 			// переход годится
 			Seq_Add(I->anim_transition);
 			bActivated	= true;	
@@ -265,18 +271,13 @@ bool CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 	}
 
 	if (bActivated) Seq_Switch();
-	return bActivated;
 }
 
 // В соответствии текущему действию m_tAction, назначить соответсвующию анимацию и параметры движения
 // выполняется на каждом шед.апдейте, после выполнения состояния
 void CMotionManager::ProcessAction()
 {
-	// Если последовательность активирована
-	if (seq_playing) {
-		cur_anim = *seq_it;
-	} else {
-		
+	if (!seq_playing) {
 		// преобразовать Action в Motion и получить новую анимацию
 		SMotionItem MI = m_tMotions[m_tAction];
 		cur_anim = MI.anim;
@@ -287,52 +288,33 @@ void CMotionManager::ProcessAction()
 		// проверить необходимость поворота
 		float &cur_yaw		= pMonster->r_torso_current.yaw;
 		float &target_yaw	= pMonster->r_torso_target.yaw;
-		if (MI.is_turn_params)
+		if (MI.is_turn_params) {
 			if (!getAI().bfTooSmallAngle(cur_yaw, target_yaw, MI.turn.min_angle)) {
-				// повернуться
 				// необходим поворот влево или вправо
-				if (angle_normalize_signed(target_yaw - cur_yaw) > 0) {
-					// вправо
-					cur_anim = MI.turn.anim_right;
-				} else {
-					// влево
-					cur_anim = MI.turn.anim_left;
-				}
+				if (angle_normalize_signed(target_yaw - cur_yaw) > 0) 	cur_anim = MI.turn.anim_right;	// вправо
+				else													cur_anim = MI.turn.anim_left; 	// влево
 			}
-			// Проверить ASP
-			if (CheckSpecParams()) return;
-			
-			// если новая анимация не совпадает с предыдущей, проверить переход
-			if (prev_anim != cur_anim) {
-				if (CheckTransition	(prev_anim, cur_anim)) return;
-			}
-	} // sequence playing
-	
+		}	
+
+		// если новая анимация не совпадает с предыдущей, проверить переход
+		if (prev_anim != cur_anim) CheckTransition(prev_anim, cur_anim);
+
+		// Проверить ASP и доп. параметры анимации (kinda damaged)
+		if (!seq_playing) pMonster->CheckSpecParams(spec_params); 
+	} 
+
+	if (seq_playing) cur_anim = *seq_it;
+
+	// если монстр стоит на месте и играет анимацию движения, принять stand_idle
+	//FixBadState();
+
 	ApplyParams();
 
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
-	if (cur_anim != prev_anim) {
-		FORCE_ANIMATION_SELECT();		
-	}
+	if (cur_anim != prev_anim) FORCE_ANIMATION_SELECT();		
 
 	prev_anim	= cur_anim;
 	spec_params = 0;
-}
-
-// возвращает true, если после выполнения этой функции необходимо прервать обработку
-bool CMotionManager::CheckSpecParams()
-{
-	if ((spec_params & ASP_DRAG_CORPSE) == 	ASP_DRAG_CORPSE) {
-		cur_anim = eAnimDragCorpse;
-	}
-
-	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		Seq_Add(eAnimCheckCorpse);
-		Seq_Switch();
-		return true;
-	}
-	
-	return (pMonster->CheckSpecParams(spec_params));
 }
 
 
@@ -351,6 +333,48 @@ void CMotionManager::OnAnimationEnd()
 { 
 	m_tpCurAnim = 0;
 	if (seq_playing) Seq_Switch();
+}
+
+// если монстр стоит на месте и играет анимацию движения - force stand idle
+void CMotionManager::FixBadState()
+{
+	Fvector cur_pos		= pMonster->Position();
+	TTime cur_time		= Level().timeServer();
+	
+	bool bStanding		= prev_pos.similar(cur_pos);
+	if (bStanding && (time_start_stand == 0)) time_start_stand = cur_time; // только начинаем стоять на месте
+	if (!bStanding || (prev_anim != cur_anim)) time_start_stand = 0; 
+
+	bool bLongStanding	= false;
+	if (bStanding && (time_start_stand + 2000 < cur_time) ) bLongStanding = true;	
+
+	bool bMovingAction =	(m_tAction == ACT_WALK_FWD) || (m_tAction == ACT_WALK_BKWD) || 
+							(m_tAction == ACT_RUN) || (m_tAction == ACT_DRAG) || (m_tAction == ACT_STEAL);
+	
+	if (bMovingAction && bLongStanding) {
+		cur_anim = eAnimStandIdle;
+	}
+
+	prev_pos = cur_pos;
+}
+
+
+// FX plaing stuff
+void CMotionManager::AddHitFX(LPCTSTR name)
+{
+	m_tHitFXs.push_back(tpKinematics->ID_FX_Safe(name));
+}
+
+void CMotionManager::PlayHitFX(float amount)
+{
+	// info: check if function can be called more than once at a time
+
+	if (m_tHitFXs.empty()) return;
+
+	float power_factor = amount/100.f; 
+	clamp(power_factor,0.f,1.f);
+
+	tpKinematics->PlayFX(m_tHitFXs[::Random.randI(m_tHitFXs.size())],power_factor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -392,6 +416,7 @@ void CMotionManager::Seq_Finish()
 	Seq_Init(); 
 	ProcessAction();	// выполнить текущие установки
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Attack Animation

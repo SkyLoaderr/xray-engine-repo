@@ -52,6 +52,7 @@ void CAI_Biting::Init()
 	m_pPhysics_support				->in_Init();
 
 	flagEatNow						= false;
+
 }
 
 void CAI_Biting::Die()
@@ -59,9 +60,6 @@ void CAI_Biting::Die()
 	inherited::Die( );
 
 	DeinitMemory();
-
-//	bShowDeath = true;
-//	SelectAnimation(dir,dir,0.f);
 }
 
 void CAI_Biting::Load(LPCSTR section)

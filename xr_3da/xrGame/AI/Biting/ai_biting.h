@@ -107,6 +107,7 @@ public:
 			void			Path_CoverFromPoint				(CEntity *pE, Fvector position, TTime rebuild_time);
 			void			Path_ApproachPoint				(CEntity *pE, Fvector position, TTime rebuild_time);
 
+	// Other
 			void			vfUpdateParameters				();
 		
 			void			DoDamage						(CEntity *pEntity, float fDamage, float yaw, float pitch);
@@ -114,16 +115,16 @@ public:
 
 	virtual void			CheckAttackHit					();
 
-	virtual	bool			CheckSpecParams					(u32 spec_params) {return false;}
+	// установка специфических анимаций 
+	virtual	void			CheckSpecParams					(u32 spec_params) {}
 
 	// FSM
 	virtual void            StateSelector					() = 0;  // should be pure 
 	
-	
-	// Other
+	// Other 
 			void			SetDirectionLook				(bool bReversed = false);
 	virtual void			LookPosition					(Fvector to_point);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
-			
+
 // members
 public:
 

@@ -90,7 +90,7 @@ BOOL CAI_Flesh::net_Spawn (LPVOID DC)
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkBkwd);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimRunTurnLeft, eAnimRunTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 
@@ -190,25 +190,33 @@ void CAI_Flesh::CheckAttackHit()
 	}
 }
 
-bool CAI_Flesh::CheckSpecParams(u32 spec_params)
+// возвращает true, если после выполнения этой функции необходимо прервать обработку
+// т.е. если активирована последовательность
+void CAI_Flesh::CheckSpecParams(u32 spec_params)
 {
+
+	if ((spec_params & ASP_DRAG_CORPSE) == 	ASP_DRAG_CORPSE) MotionMan.SetCurAnim(eAnimDragCorpse);
+	else if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) MotionMan.SetCurAnim(eAnimStandDamaged);
+
 	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) {
 		MotionMan.Seq_Add(eAnimAttackRat);
 		MotionMan.Seq_Switch();
-		return true;
 	} 
 	
-	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {
-		MotionMan.SetCurAnim(eAnimScared);
-	}
-
 	if ((spec_params & ASP_ATTACK_RAT_JUMP) == ASP_ATTACK_RAT_JUMP) {
 		MotionMan.Seq_Add(eAnimAttackJump);
 		MotionMan.Seq_Switch();
-		return true;
 	} 
 
-	return false;
+	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+		MotionMan.Seq_Add(eAnimCheckCorpse);
+		MotionMan.Seq_Switch();
+	}
+
+	EMotionAnim cur_anim = MotionMan.GetCurAnim();
+	bool bDamaged = (GetHealth() < 0.5f);
+
+	if (cur_anim == eAnimStandIdle && bDamaged) MotionMan.SetCurAnim(eAnimStandDamaged);
 }
 
 
@@ -246,5 +254,4 @@ bool CAI_Flesh::ConeSphereIntersection(Fvector ConeVertex, float ConeAngle, Fvec
 	
 	return false;
 }
-
 

@@ -146,8 +146,4 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	return TRUE;
 }
 
-void CAI_Chimera::Load (LPCSTR section)
-{
-	inherited::Load (section);
-}
 

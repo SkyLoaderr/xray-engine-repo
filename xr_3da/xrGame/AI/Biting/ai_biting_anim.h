@@ -88,6 +88,7 @@ enum EPState {
 #define	ASP_STAND_SCARED		(1 << 5)
 
 DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);
+
 struct SAnimItem {
 
 	anim_string	target_name;	// "stand_idle_"
@@ -171,6 +172,8 @@ class CMotionManager {
 	CAI_Biting				*pMonster;
 	CKinematics				*tpKinematics;
 
+	ANIM_VECTOR				m_tHitFXs;
+	
 	// работа с последовательностями
 	SEQ_VECTOR				seq_states;
 	SEQ_VECTOR_IT			seq_it;				// итератор (текущий элемент)
@@ -178,6 +181,11 @@ class CMotionManager {
 
 	EMotionAnim				cur_anim; 
 	EMotionAnim				prev_anim; 
+
+	// исправления сосояния 'бега на месте'
+	Fvector					cur_pos;
+	Fvector					prev_pos;
+	TTime					time_start_stand;
 
 	// работа с анимациями атаки
 	TTime					aa_time_started;		// время начала анимации	
@@ -209,7 +217,7 @@ public:
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion);
 	
-	bool		CheckTransition			(EMotionAnim from, EMotionAnim to);
+	void		CheckTransition			(EMotionAnim from, EMotionAnim to);
 	void		ApplyParams				();
 
 	// выполнить текущий m_tAction
@@ -222,10 +230,18 @@ public:
 
 	void		SetSpecParams			(u32 param) {spec_params |= param;}
 	void		SetCurAnim				(EMotionAnim a) {cur_anim = a;}
+	EMotionAnim	GetCurAnim				() {return  cur_anim;} 
+
+
+	void		FixBadState				();
 
 	// работа с последовательностями
 	void		Seq_Add					(EMotionAnim a);
 	void		Seq_Switch				();					// Перейти в следующее состояние, если такового не имеется - завершить
+
+	// проиграть hit fx
+	void		AddHitFX				(LPCTSTR name);
+	void		PlayHitFX				(float amount);
 
 private:	
 	// загрузка анимаций
@@ -238,8 +254,6 @@ private:
 	// работа с анимациями атак
 	void		AA_Clear				(); 
 	void		AA_SwitchAnimation		(EMotionAnim a, u32 i3);
-
-	bool		CheckSpecParams			();	
 
 public:
 	void		AA_PushAttackAnim		(SAttackAnimation AttackAnim);

@@ -14,7 +14,6 @@ public:
 	virtual void			StateSelector		();
 
 	virtual BOOL			net_Spawn			(LPVOID DC);
-	virtual	void			Load				(LPCSTR section);
 
 	// Bone manipulation
 			void			vfAssignBones		(CInifile *ini, const char *section);
