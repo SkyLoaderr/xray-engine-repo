@@ -57,7 +57,7 @@ void CPSLibrary::OnDeviceDestroy		()
 PS::SDef* CPSLibrary::FindPS			(LPCSTR Name)
 {
 	for (PS::PSIt it=m_PSs.begin(); it!=m_PSs.end(); it++)
-    	if (0==strcmp(it->m_Name,Name)) return &*it;
+    	if (0==strcmp(*it->m_Name,Name)) return &*it;
 	return NULL;
 }
 
