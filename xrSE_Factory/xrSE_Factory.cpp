@@ -11,69 +11,21 @@
 #include "ai_space.h"
 #include "script_engine.h"
 #include "object_factory.h"
-
-#include <boost/function.hpp>
+#include "xrEProps.h"
 
 extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
+typedef IPropHelper& (__stdcall *TPHelper) ();
 
-struct DLL_API CTestMultiple {
-	virtual ~CTestMultiple(){};
-};
+TPHelper	_PHelper = 0;
+HMODULE		prop_helper_module = 0;
+LPCSTR		prop_helper_library = "xrEPropsB.dll", prop_helper_func = "PHelper";
 
-class DLL_API CTestImpl : public CTestInterface, public CTestMultiple {
-public:
-							CTestImpl		();
-	virtual	void xr_stdcall	test_0			(LPCSTR);
-	virtual void xr_stdcall	test_1			(int);
-	virtual void __stdcall	test_test0		();
-	virtual void __stdcall	test_test1		();
-};
-
-DLL_API CTestInterface *create_test_object	()
+IPropHelper &PHelper()
 {
-	return				(xr_new<CTestImpl>());
+	R_ASSERT3					(_PHelper,"Cannot find entry point of the function or Cannot find library",prop_helper_library);
+	return						(_PHelper());
 }
-
-DLL_API void			destroy_test_object	(CTestInterface *&object)
-{
-	xr_delete			(object);
-}
-
-CTestImpl::CTestImpl	()
-{
-	test0.bind			(this,&CTestImpl::test_0);
-	test1.bind			(this,&CTestImpl::test_1);
-	test_test0			();
-	test_test1			();
-}
-
-void CTestImpl::test_0		(LPCSTR str)
-{
-	Msg					("TEST_0 : %s",str);
-}
-
-void CTestImpl::test_1		(int num)
-{
-	Msg					("TEST_1 : %d",num);
-}
-
-void CTestImpl::test_test0	()
-{
-	test0				("VC7.1 : OK!");
-}
-
-void CTestImpl::test_test1	()
-{
-	test1				(1);
-}
-
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
 
 DLL_API CSE_Abstract *create_object	(LPCSTR section)
 {
@@ -85,16 +37,34 @@ DLL_API void destroy_object			(CSE_Abstract *&abstract)
 	return				(F_entity_Destroy(abstract));
 }
 
+void load_prop_helper			()
+{
+
+	prop_helper_module			= LoadLibrary(prop_helper_library);
+	if (!prop_helper_module) {
+		Msg						("! Cannot find library %s",prop_helper_library);
+		return;
+	}
+	_PHelper					= (TPHelper)GetProcAddress(prop_helper_module,prop_helper_func);
+	if (!_PHelper) {
+		Msg						("! Cannot find entry point of the function %s in the library %s",prop_helper_func,prop_helper_func);
+		return;
+	}
+}
+
 BOOL APIENTRY DllMain				(HANDLE module_handle, DWORD call_reason, LPVOID reserved)
 {
 	switch (call_reason) {
 		case DLL_PROCESS_ATTACH: {
  			Core._initialize			("xrSE_Factory",NULL);
+			load_prop_helper			();
 			ai().script_engine().export	();
 			break;
 		}
 		case DLL_PROCESS_DETACH: {
 			xr_delete					(g_object_factory);
+			if (prop_helper_module)
+				FreeLibrary				(prop_helper_module);
 			Core._destroy				();
 			break;
 		}

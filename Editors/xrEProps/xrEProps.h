@@ -98,8 +98,7 @@ public:
 #ifdef __BORLANDC__
 	extern "C" XR_EPROPS_API IPropHelper& PHelper ();
 #else
-	typedef IPropHelper& (__stdcall *TPHelper) ();
-	extern TPHelper PHelper;
+	extern IPropHelper &PHelper();
 #endif
 //---------------------------------------------------------------------------
 

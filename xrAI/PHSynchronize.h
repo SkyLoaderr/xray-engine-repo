@@ -1,10 +1,7 @@
 #ifndef PH_SYNCHRONIZE_H
 #define PH_SYNCHRONIZE_H
 
-#ifdef AI_COMPILER
-	#include "net_utils.h"
-#endif
-
+#include "net_utils.h"
 #include "PHNetState.h"
 
 class CPHSynchronize

@@ -89,14 +89,12 @@ namespace ALife {
 		u32						m_dwCount;
 		float					m_fMinFactor;
 		float					m_fMaxFactor;
-#ifdef _EDITOR
 		STraderSupply()
 		{
 			m_dwCount			= 1;
 			m_fMinFactor		= 0.f;
 			m_fMaxFactor		= 1.f;
 		}
-#endif
 	};
 
 	struct SSumStackCell {
@@ -295,9 +293,8 @@ namespace ALife {
 				return(eHitTypeExplosion);
 		else
 				Debug.fatal("Unsupported hit type!");
-#ifndef _EDITOR
-		__assume(0);
-#else
+		NODEFAULT;
+#ifdef DEBUG
 		return(eHitTypeMax);
 #endif
 	}
@@ -316,9 +313,7 @@ namespace ALife {
 			case eHitTypeExplosion		: return("explosion");
 			default						: NODEFAULT;
 		}
-#ifndef _EDITOR
-		__assume(0);
-#else
+#ifdef DEBUG
 		return(0);
 #endif
 	}

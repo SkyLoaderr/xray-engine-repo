@@ -7,14 +7,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#pragma hdrstop
 #include "object_factory.h"
 
 CSE_Abstract *F_entity_Create	(LPCSTR section)
 {
-#ifdef _EDITOR
 	if (!pSettings->section_exist(section))
 		return	(0);
-#endif
 	return		(object_factory().server_object(pSettings->r_clsid(section,"class"),section));
 }
