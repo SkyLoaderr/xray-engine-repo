@@ -87,7 +87,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
     // Init COM so we can use CoCreateInstance
     CoInitializeEx	(NULL, COINIT_MULTITHREADED);
 
-	mmgrInitialize	(2);
+	mmgrInitialize	(0);
 
 	CreateLog	(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q"));
 	Debug.Start	();

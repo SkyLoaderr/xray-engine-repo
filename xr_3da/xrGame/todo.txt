@@ -121,7 +121,7 @@ Oles:
 -----------------------------------------------------------------------------------------------------------
 Sanya:
 	. BUG:  Run, Press Jump (don't release), after landing - release, try to jump again :)
-	. BUG:	
+	. BUG:	Turn sometimes cycles in continuesly
 	. BUG:	SetHPB(-,-,+)
 	+ BUG:	RayPick -- не всегда выбирает монстрика (FillLine...)
 	+ BUG:	Ќе вращаетс€ пушка (callback??)
