@@ -71,7 +71,7 @@ public:
 	// R1-specific global constants
 	Fmatrix														r1_dlight_tcgen			;
 	light*														r1_dlight_light			;
-	light*														r1_dlight_scale			;
+	float														r1_dlight_scale			;
 	cl_light_PR													r1_dlight_binder_PR		;
 	cl_light_C													r1_dlight_binder_color	;
 	cl_light_XFORM												r1_dlight_binder_xform	;
