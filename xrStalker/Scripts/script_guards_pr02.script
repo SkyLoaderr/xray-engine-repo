@@ -170,6 +170,18 @@ function main()
 			wait(3000)			
 			final_guard04:script	(false,script_guards_pr02.script_name())
 			final_guard05:script	(false,script_guards_pr02.script_name())
+			action(
+				final_guard04,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000000)
+			)
+			action(
+				final_guard05,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000000)
+			)
 			siren:play_at_pos		(actor,actor:position(),0);
 			wait(1000)			
 			nemedlenno:play_at_pos		(actor,actor:position(),0);
