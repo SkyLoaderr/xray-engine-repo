@@ -43,8 +43,24 @@ void main(int argc, char* argv[])
 	CImage			tex,scaled;
 	tex.LoadTGA		("x:\\dbg\\test.tga");
 	scaled.Create	(tex.dwWidth/2,tex.dwHeight/2);
+
+	// filters
 	imf_Process		(scaled.pData,scaled.dwWidth,scaled.dwHeight,tex.pData,tex.dwWidth,tex.dwHeight,imf_filter);
+	scaled.SaveTGA	("x:\\dbg\\f_filter.tga");
+	imf_Process		(scaled.pData,scaled.dwWidth,scaled.dwHeight,tex.pData,tex.dwWidth,tex.dwHeight,imf_box);
+	scaled.SaveTGA	("x:\\dbg\\f_box.tga");
+	imf_Process		(scaled.pData,scaled.dwWidth,scaled.dwHeight,tex.pData,tex.dwWidth,tex.dwHeight,imf_triangle);
+	scaled.SaveTGA	("x:\\dbg\\f_tri.tga");
+	imf_Process		(scaled.pData,scaled.dwWidth,scaled.dwHeight,tex.pData,tex.dwWidth,tex.dwHeight,imf_bell);
+	scaled.SaveTGA	("x:\\dbg\\f_bell.tga");
+	imf_Process		(scaled.pData,scaled.dwWidth,scaled.dwHeight,tex.pData,tex.dwWidth,tex.dwHeight,imf_b_spline);
+	scaled.SaveTGA	("x:\\dbg\\f_spline.tga");
+	imf_Process		(scaled.pData,scaled.dwWidth,scaled.dwHeight,tex.pData,tex.dwWidth,tex.dwHeight,imf_lanczos3);
+	scaled.SaveTGA	("x:\\dbg\\f_lanczos3.tga");
+	imf_Process		(scaled.pData,scaled.dwWidth,scaled.dwHeight,tex.pData,tex.dwWidth,tex.dwHeight,imf_mitchell);
+	scaled.SaveTGA	("x:\\dbg\\f_mitchell.tga");
 	
+	// dither
 	int			magic[16][16];
 	bwdithermap	(2,magic);
 
@@ -86,14 +102,6 @@ void main(int argc, char* argv[])
 	}
 	
 	// Save
-	TGAdesc		tga;
-	tga.data	= tex.pData;
-	tga.format	= IMG_24B;
-	tga.height	= tex.dwHeight;
-	tga.width	= tex.dwWidth;
-	tga.scanlenght=tex.dwWidth*4;
-
-	CFS_File	fs	("x:\\dbg\\out.tga");
-	tga.maketga	(fs);
+	tex.SaveTGA	("x:\\dbg\\out.tga",TRUE);
 }
 
