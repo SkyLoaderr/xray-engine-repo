@@ -515,9 +515,9 @@ void CDetailManager::UpdateCache	(int limit)
 				
 				// Select 
 				if (selected.empty())	continue;
-				DWORD ID,index;
-				if (selected.size()==1)	{ index = selected[0]; ID = DS.items[index].id; }
-				else					{ index = selected[r_selection.randI(selected.size())]; ID = DS.items[index].id; }
+				DWORD index;
+				if (selected.size()==1)	index = selected[0];
+				else					index = selected[r_selection.randI(selected.size())]; 
 				
 				
 				SlotItem	Item;
