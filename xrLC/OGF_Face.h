@@ -7,16 +7,11 @@
 
 struct OGF_Texture
 {
-	string256		name;
-
-	// for build only
-	b_texture*		pSurface;
+	ref_str				name;
+	b_texture*			pSurface;
 };
-typedef xr_vector<OGF_Texture>	vecOGF_T;
+typedef svector<OGF_Texture,2>	vecOGF_T;
 typedef vecOGF_T::iterator		itOGF_T;
-
-typedef xr_vector<WORD>			vecUnroll;
-typedef vecUnroll::iterator		vecUnrollIt;
 
 struct OGF;
 struct OGF_Vertex
@@ -36,7 +31,7 @@ typedef vecOGF_V::iterator		itOGF_V;
 #pragma pack(push,1)
 struct OGF_Face
 {
-	WORD			v[3];
+	u16			v[3];
 
 	IC void			safe_replace(int what, int to)
 	{
@@ -67,7 +62,7 @@ struct OGF;
 struct OGF_Base
 {
 	int					iLevel;
-	WORD				Sector;
+	u16					Sector;
 	BOOL				bConnected;
 
 	Fbox				bbox;
@@ -98,7 +93,7 @@ struct OGF : public OGF_Base
 
 	// Progressive
 	xr_vector<Vsplit>	pmap_vsplit;
-	xr_vector<WORD>		pmap_faces;
+	xr_vector<u16>		pmap_faces;
 	u32					dwMinVerts;
 	int					I_Current;
 
@@ -111,7 +106,7 @@ struct OGF : public OGF_Base
 		dwRelevantUVMASK	= 0;
 		I_Current			= -1;
 	};
-	WORD				_BuildVertex	(OGF_Vertex& V1);
+	u16					_BuildVertex	(OGF_Vertex& V1);
 	void				_BuildFace		(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
 
 	void				Optimize		();
@@ -172,7 +167,7 @@ struct OGF_Node : public OGF_Base
 {
 	xr_vector<u32>		chields;
 
-	OGF_Node(int _L, WORD _Sector) : OGF_Base(_L) { Sector=_Sector; }
+	OGF_Node(int _L, u16 _Sector) : OGF_Base(_L) { Sector=_Sector; }
 
 	void				AddChield	(u32 ID)
 	{
@@ -192,7 +187,7 @@ struct OGF_Node : public OGF_Base
 
 struct	OGF_LOD		: public OGF_Node
 {
-	OGF_LOD(int _L, WORD _Sector) : OGF_Node(_L,_Sector) {};
+	OGF_LOD(int _L, u16 _Sector) : OGF_Node(_L,_Sector) {};
 
 	struct _vertex
 	{
