@@ -65,6 +65,9 @@ function multiplayer_create_dialog:InitControls()
 	self.map_tab:InitControls(self.left_align_x, self.top_align_y)
 	self.main_frame:AttachChild(self.map_tab)
 	
+	self.tab_video = ui_options_video_tab.options_video_tab()
+	self.tab_video:InitControls(self.left_align_x, self.top_align_y)
+	self.main_frame:AttachChild(self.tab_video)	
 end
 
 function multiplayer_create_dialog:InitCallbacks()
