@@ -342,34 +342,37 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	}
 #ifndef NDEBUG
 #ifdef DEBUG
-	string128 buf;
-	strcpy(buf,"");
-	if (mstate_rl&mcAccel)		strcat(buf,"Accel ");
-	if (mstate_rl&mcCrouch)		strcat(buf,"Crouch ");
-	if (mstate_rl&mcFwd)		strcat(buf,"Fwd ");
-	if (mstate_rl&mcBack)		strcat(buf,"Back ");
-	if (mstate_rl&mcLStrafe)	strcat(buf,"LStrafe ");
-	if (mstate_rl&mcRStrafe)	strcat(buf,"RStrafe ");
-	if (mstate_rl&mcJump)		strcat(buf,"Jump ");
-	if (mstate_rl&mcFall)		strcat(buf,"Fall ");
-	if (mstate_rl&mcTurn)		strcat(buf,"Turn ");
-	if (mstate_rl&mcLanding)	strcat(buf,"Landing ");
-	if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
-	HUD().pFontSmall->SetColor	(0xffffffff);
-	HUD().pFontSmall->OutSet	(170,450);
-	HUD().pFontSmall->OutNext	("MSTATE:     [%s]",buf);
-//	if (buf[0]) 
-//		Msg("%s",buf);
-	switch (m_PhysicMovementControl->Environment())
+	if (Level().CurrentControlEntity() == this)
 	{
-	case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;
-	case CPHMovementControl::peInAir:		strcpy(buf,"air");				break;
-	case CPHMovementControl::peAtWall:		strcpy(buf,"wall");				break;
-	}
-	HUD().pFontSmall->OutNext	(buf);
-	HUD().pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
-	HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
-	HUD().pFontSmall->OutNext	("vertex ID   %d",level_vertex_id());
+		string128 buf;
+		strcpy(buf,"");
+		if (mstate_rl&mcAccel)		strcat(buf,"Accel ");
+		if (mstate_rl&mcCrouch)		strcat(buf,"Crouch ");
+		if (mstate_rl&mcFwd)		strcat(buf,"Fwd ");
+		if (mstate_rl&mcBack)		strcat(buf,"Back ");
+		if (mstate_rl&mcLStrafe)	strcat(buf,"LStrafe ");
+		if (mstate_rl&mcRStrafe)	strcat(buf,"RStrafe ");
+		if (mstate_rl&mcJump)		strcat(buf,"Jump ");
+		if (mstate_rl&mcFall)		strcat(buf,"Fall ");
+		if (mstate_rl&mcTurn)		strcat(buf,"Turn ");
+		if (mstate_rl&mcLanding)	strcat(buf,"Landing ");
+		if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
+		HUD().pFontSmall->SetColor	(0xffffffff);
+		HUD().pFontSmall->OutSet	(170,450);
+		HUD().pFontSmall->OutNext	("MSTATE:     [%s]",buf);
+		//	if (buf[0]) 
+		//		Msg("%s",buf);
+		switch (m_PhysicMovementControl->Environment())
+		{
+		case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;
+		case CPHMovementControl::peInAir:		strcpy(buf,"air");				break;
+		case CPHMovementControl::peAtWall:		strcpy(buf,"wall");				break;
+		}
+		HUD().pFontSmall->OutNext	(buf);
+		HUD().pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
+		HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
+		HUD().pFontSmall->OutNext	("vertex ID   %d",level_vertex_id());
+	};
 #endif
 #endif
 }
