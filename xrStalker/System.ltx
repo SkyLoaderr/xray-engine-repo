@@ -1222,15 +1222,15 @@ ignore_small		= false;
 [detector_simple]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "devices\detector"
-$prefetch 		= 32
-class			= D_SIMDET
-cform                   = skeleton
-visual                  = items\geiger_01.ogf
-radius			= 10
+$spawn 				= "devices\detector"
+$prefetch 			= 32
+class				= D_SIMDET
+cform				= skeleton
+visual				= items\geiger_01.ogf
+radius				= 10
 buzzer_radius		= 1.5
-noise			= zone_mosquito_bald       ;detectors\geiger_noise_loop 
-buzzer			= zone_mosquito_bald       ;detectors\DA-2_alarm_loop
+noise				= zone_mosquito_bald       ;detectors\geiger_noise_loop 
+buzzer				= zone_mosquito_bald       ;detectors\DA-2_alarm_loop
 
 zone_class_1		= zone_mosquito_bald
 zone_sound_1		= detectors\DA-2_beep1
