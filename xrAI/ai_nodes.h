@@ -187,8 +187,8 @@ public:
 				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
 					//Msg("{%3d,%3d}",i,j);
 					try {
-						fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.dwNodeID,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,m_fMaxDistance);
-						if (fDistance == MAX_VALUE)
+						//fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.dwNodeID,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,m_fMaxDistance);
+						//if (fDistance == MAX_VALUE)
 							vfFindTheShortestPath(m_tpHeap, m_tpIndexes, m_dwAStarStaticCounter, tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance,m_fMaxDistance,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,tpaNodes);//,*m_tpCriticalSection,((tCurrentGraphVertex.dwNodeID == 28975) && (tNeighbourGraphVertex.dwNodeID == 6080)));
 						if (fDistance < m_fMaxDistance) {
 							m_tpCriticalSection->Enter();

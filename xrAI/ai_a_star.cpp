@@ -117,7 +117,7 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 		// check if that node is our goal
 		if (tpBestNode->iIndex == (int)dwGoalNode) {
 			fDistance = tpBestNode->g;
-			/**/
+			/**
 			float fStraightDistance = fDistance;
 
 			tpTemp1 = tpBestNode;
@@ -165,6 +165,7 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 			//tCriticalSection.Enter();
 			//Msg("[%6d][%6d] : %6.2f -> %6.2f (%6.2f%c)",dwStartNode,tpBestNode->iIndex,fStraightDistance,fDistance,(fStraightDistance - fDistance)/fStraightDistance*100,'%');
 			//tCriticalSection.Leave();
+			/**/
 			return;
 		}
 		
