@@ -366,6 +366,7 @@ void CAI_Stalker::vfChooseNextGraphPoint()
 					m_tCurGP		= m_tNextGP;
 					m_tNextGP		= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
 					m_dwTimeToChange= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
+					m_dwTimeToChange= 0;
 					return;
 				}
 		}
@@ -380,6 +381,7 @@ void CAI_Stalker::vfChooseNextGraphPoint()
 						m_tCurGP	= m_tNextGP;
 						m_tNextGP	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
 						m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
+						m_dwTimeToChange= 0;
 						return;
 					}
 					iBranches++;
