@@ -573,17 +573,17 @@ HRESULT CMyD3DApplication::RenderShadowMap()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderScene	()
 {
-	m_pd3dDevice->Clear					(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00404080, 1.0f, 0L);
+	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00404080, 1.0f, 0L);
 
-	D3DXVECTOR4 vDiffuseFloor			(0.75f, 0.75f, 0.75f, 1.0f);
-	D3DXVECTOR4 vDiffuseModel			(1.0f, 1.0f, 1.0f, 1.0f);
+	D3DXVECTOR4 vDiffuseFloor				(0.75f, 0.75f, 0.75f, 1.0f);
+	D3DXVECTOR4 vDiffuseModel				(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_pd3dDevice->SetTexture			(0, m_pShadowMap);
+	m_pd3dDevice->SetTexture				(0, m_pShadowMap);
 
-	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
-    m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
-    m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
+    m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
+    m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
 
 	// Pixel shader and jittering
 	// jittered sample offset table for 1k shadow maps
