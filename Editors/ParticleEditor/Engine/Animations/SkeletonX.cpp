@@ -118,7 +118,7 @@ void CSkeletonX_ST::Release()
 void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount) 
 {	
 	//. temp
-	xr_set<u32>		bids;
+	xr_set<u32>		bids,bids2;
 
 	// Load vertices
 	R_ASSERT	(data->find_chunk(OGF_VERTICES));
@@ -136,9 +136,8 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 		Vertices2W	= NULL;
 		data->r		(Vertices1W,size);
 		for (it=0; it<dwVertCount; it++)
-		{
-			bids.insert(Vertices1W[it].matrix);
-		}
+			bids.insert	(Vertices1W[it].matrix);
+		Msg	("         BPV: %d, %d verts, %d bone-influences",bpv,dwVertCount,bids.size());
 		break;
 	case 2*0x12071980:
 		bpv			= 2;
@@ -148,16 +147,22 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 		data->r		(Vertices2W,size);
 		for (it=0; it<dwVertCount; it++)
 		{
-			bids.insert(Vertices2W[it].matrix0);
-			bids.insert(Vertices2W[it].matrix1);
+			bids.insert				(Vertices2W[it].matrix0);
+			bids.insert				(Vertices2W[it].matrix1);
+			float	w				= Vertices2W[it].w;
+			if (fsimilar(w,0,.01f))			bids2.insert(Vertices2W[it].matrix0);
+			else if (fsimilar(w,1,.01f))	bids2.insert(Vertices2W[it].matrix1);
+			else {
+				bids2.insert(Vertices2W[it].matrix0);
+				bids2.insert(Vertices2W[it].matrix1);
+			}
 		}
+		Msg	("         BPV: %d, %d verts, %d/%d bone-influences",bpv,dwVertCount,bids.size(),bids2.size());
 		break;
 	default:
 		Debug.fatal	("Invalid vertex type in skinned model '%s'",N);
 		break;
 	}
-
-	Msg	("         BPV: %d, %d verts, %d bone-influences",bpv,dwVertCount,bids.size());
 }
 
 void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags) 
