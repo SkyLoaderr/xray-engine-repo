@@ -132,6 +132,7 @@ bool CScriptThread::update()
 		ai().script_engine().current_thread	(0);
 	}
 	catch(...) {
+		ai().script_engine().current_thread	(0);
 		m_active		= false;
 	}
 	return				(m_active);
