@@ -55,7 +55,7 @@
 		<team>Soldier_private</team>
 		<class>Soldier_private</class>
 	</character>
-	<character id="soldier_novice">
+	<character id="soldier_ryadovoy">
 		<team>Soldier_private</team>
 		<class>Soldier_private</class>
 	</character>
