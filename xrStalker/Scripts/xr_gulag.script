@@ -27,7 +27,7 @@ function fract:addObject(npc)
 	end
 end
 function fract:calculate() -- просчет лагеря
-	printf("game time, %s", game.time())
+--	printf("game time, %s", game.time())
 
 	-- проверка не закончилось ли время особого состояния
 	if self.stateBegin ~= nil and self.state ~= 0 then
