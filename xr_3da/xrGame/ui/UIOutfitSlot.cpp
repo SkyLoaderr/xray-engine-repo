@@ -6,7 +6,9 @@
 #include "UIOutfitSlot.h"
 
 #include "../CustomOutfit.h"
-
+#include "../game_cl_base.h"
+#include "../Level.h"
+#include "UISkinSelector.h"
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
@@ -62,14 +64,30 @@ void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 	//в этот слот могут помещаться только костюмы
 	R_ASSERT(pOutfit);
 
+	if (Game().type != GAME_SINGLE)
+	{
+		UIOutfitIcon.SetShader(GetMPCharIconsShader());
+		CObject *pInvOwner = dynamic_cast<CObject*>(Level().CurrentEntity());
+		std::string a = *pInvOwner->cNameVisual();
+		std::string::iterator it = std::find(a.rbegin(), a.rend(), '\\').base(); 
+		if (it != a.begin())
+			a.erase(a.begin(), it);
 
-	UIOutfitIcon.SetShader(GetCharIconsShader());
-	UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-					pOutfit->GetIconX()*ICON_GRID_WIDTH,
-					pOutfit->GetIconY()*ICON_GRID_HEIGHT,
-					pOutfit->GetIconX()+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
-					pOutfit->GetIconY()+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+		int m_iSkinX = 0, m_iSkinY = 0;
+		sscanf(pSettings->r_string("multiplayer_skins", a.c_str()), "%i,%i", &m_iSkinX, &m_iSkinY);
 
+		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
+			m_iSkinX, m_iSkinY, SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT); 
+	}
+	else
+	{
+		UIOutfitIcon.SetShader(GetCharIconsShader());
+		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
+			pOutfit->GetIconX()*ICON_GRID_WIDTH,
+			pOutfit->GetIconY()*ICON_GRID_HEIGHT,
+			pOutfit->GetIconX()+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
+			pOutfit->GetIconY()+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+	}
 
 	// Скрываем изображение
 	pDDItem->Show(false);
