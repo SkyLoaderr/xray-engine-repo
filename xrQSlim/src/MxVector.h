@@ -49,8 +49,8 @@ public:
 
     inline unsigned int dim() const { return N; }
 
-    T& operator()(unsigned int i)       { AssertBound(i<N); return elt[i]; }
-    T  operator()(unsigned int i) const { AssertBound(i<N); return elt[i]; }
+    T& operator()(unsigned int i)       { VERIFY(i<N); return elt[i]; }
+    T  operator()(unsigned int i) const { VERIFY(i<N); return elt[i]; }
 
     operator       T*()       { return elt; }
     operator const T*() const { return elt; }
@@ -131,11 +131,6 @@ public:
 inline double norm(const MxVector& v) { return mxv_norm(v, v.dim()); }
 inline double norm2(const MxVector& v) { return mxv_dot(v, v, v.dim()); }
 inline double unitize(MxVector& v) { return mxv_unitize(v, v.dim()); }
-
-inline ostream&
-operator<<(ostream& out,const MxVector& v) { return mxv_write(out,v,v.dim()); }
-inline istream&
-operator>>(istream& in, MxVector& v) { return mxv_read(in, v, v.dim()); }
 
 // MXVECTOR_INCLUDED
 #endif

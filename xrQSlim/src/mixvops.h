@@ -139,23 +139,6 @@ __OP mxv_basis(__T *r, unsigned int b, __DIM)
     forall(i, N)  r[i] = (i==b)?__T(1.0):__T(0.0);  return r;
 }
 
-#ifndef MIXVOPS_NO_IOSTREAMS
-__LINKAGE ostream& mxv_write(ostream& out, const __T *v, __DIM)
-{
-    out << v[0];
-    for(unsigned int i=1; i<(unsigned int)N; i++)   out << " " << v[i];
-    return out;
-}
-__LINKAGE ostream& mxv_write(const __T *v, __DIM)
-	{return mxv_write(cout, v, N);}
-
-__LINKAGE istream& mxv_read(istream& in, __T *v, __DIM)
-{
-    forall(i,N) in >> v[i];  return in;
-}
-__LINKAGE istream& mxv_read(__T *v, __DIM) { return mxv_read(cin, v, N); }
-#endif
-
 #undef __T
 #undef __DIM
 #undef __LINKAGE

@@ -44,12 +44,6 @@ public:
     operator       T*()       { return elt; }
     operator const T*() const { return elt; }
 
-#ifndef HAVE_CASTING_LIMITS
-    T& operator[](int i)       { return elt[i]; }
-    T  operator[](int i) const { return elt[i]; }
-    operator const T*()       { return elt; }
-#endif
-
     // In-place arithmetic methods
     //
     inline TVec2& operator+=(const TVec2& v);
