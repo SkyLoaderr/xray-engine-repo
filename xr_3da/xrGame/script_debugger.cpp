@@ -154,6 +154,11 @@ BOOL CScriptDebugger::PrepareLuaBind()
 	return TRUE;
 }
 
+void CScriptDebugger::DebugBreak()
+{
+	m_nMode = DMOD_BREAK;
+}
+
 void CScriptDebugger::Break()
 {
 

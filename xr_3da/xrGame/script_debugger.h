@@ -46,6 +46,7 @@ public:
 	void			ClearGlobalVariables();
 	void			StackLevelChanged	();
 	void			Break				();
+	void			DebugBreak			();
 	void			DebugBreak			(const char* szFile, int nLine);
 	void			ErrorBreak			(const char* szFile = 0, int nLine = 0);
 	void			LineHook			(const char* szFile, int nLine);

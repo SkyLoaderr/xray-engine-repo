@@ -30,6 +30,8 @@
 #include "game_cl_base.h"
 #include "object_factory.h"
 
+#include "script_debugger.h"
+
 #pragma comment(lib,"ode.lib" )
 
 ENGINE_API
@@ -848,6 +850,26 @@ public:
 	}
 };
 
+class CCC_ScriptDbg : public IConsole_Command {
+public:
+	CCC_ScriptDbg(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		CScriptDebugger* d = CScriptDebugger::GetDebugger();
+		if(d){
+			if(d->Active())
+				d->DebugBreak();
+			else
+				Msg("Script debugger not active.");
+		}else
+			Msg("Script debugger not present.");
+	}
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"script debugger <DebugBreak> command"); 
+	}
+};
+
 class CCC_PostprocessTest : public IConsole_Command {
 public:
 	CCC_PostprocessTest(LPCSTR N) : IConsole_Command(N)  { };
@@ -954,6 +976,8 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 			CMD3(CCC_Mask,				"ai_dbg_cover",			&psAI_Flags,	aiCover);
 			CMD1(CCC_Script,			"run_script");
 			CMD1(CCC_ScriptCommand,		"run_string");
+
+			CMD1(CCC_ScriptDbg,			"script_debug_break");
 
 			// Trader
 			CMD1(CCC_Trader,			"trade");
