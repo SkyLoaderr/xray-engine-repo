@@ -289,10 +289,10 @@ BOOL CCF_EventBox::Contact(CObject* O)
 	FBasicVisual*	V = O->Visual();
 	Fvector&		P = V->bv_Position;
 	float			R = V->bv_Radius;
-
+	
 	Fvector			PT;
 	O->svTransform.transform_tiny(PT,P);
-
+	
 	for (int i=0; i<6; i++) {
 		if (Planes[i].classify(PT)>R) return FALSE;
 	}
@@ -333,4 +333,13 @@ void CCF_Shape::add_box		(Fmatrix& B )
 }
 
 BOOL CCF_Shape::Contact( CObject* O )
-{	return FALSE; }
+{
+	FBasicVisual*	V = O->Visual();
+	Fvector&		P = V->bv_Position;
+	float			R = V->bv_Radius;
+	
+	Fvector			PT;
+	O->svTransform.transform_tiny	(PT,P);
+
+	
+}
