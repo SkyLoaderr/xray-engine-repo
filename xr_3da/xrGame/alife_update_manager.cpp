@@ -108,13 +108,11 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	if (m_changing_level)
 		return					(false);
 
+	Level().ClientSend			();
 	Level().ClientSave			();
 	
 	m_changing_level			= true;
-	for (u32 i=0, n = graph().actor()->children.size(); i<n; ++i)
-		if (objects().object(graph().actor()->children[i],true))
-			Msg					("%2d[%5d] : Item %s",i,graph().actor()->children[i],objects().object(graph().actor()->children[i])->s_name_replace);
-
+	
 	ALife::_GRAPH_ID			safe_graph_vertex_id	= graph().actor()->m_tGraphID;
 	u32							safe_level_vertex_id	= graph().actor()->m_tNodeID;
 	Fvector						safe_position			= graph().actor()->o_Position;
@@ -149,10 +147,20 @@ void CALifeUpdateManager::update(bool switch_objects)
 		case eZoneStateBetweenSurges : {
 			if (time_manager().game_time() > time_manager().next_surge_time()) {
 				header().set_state		(eZoneStateSurge);
-				if (!switch_objects)
+
+				if (switch_objects) {
+					Msg						("SURGE started");
+					NET_Packet				net_packet;
+					net_packet.w_begin		(M_CHANGE_LEVEL);
+					net_packet.w			(&graph().actor()->m_tGraphID,sizeof(graph().actor()->m_tGraphID));
+					net_packet.w			(&graph().actor()->m_tNodeID,sizeof(graph().actor()->m_tNodeID));
+					net_packet.w_vec3		(graph().actor()->o_Position);
+					net_packet.w_vec3		(graph().actor()->o_Angle);
+					Level().Send			(net_packet,net_flags(TRUE));
 					return;
-				for ( ;!graph().level().objects().empty(); )
-					furl_object			((*graph().level().objects().begin()).second);
+				}
+//				for ( ;!graph().level().objects().empty(); )
+//					furl_object			((*graph().level().objects().begin()).second);
 				break;
 			}
 			
