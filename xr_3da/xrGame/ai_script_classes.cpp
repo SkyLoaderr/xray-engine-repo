@@ -11,6 +11,7 @@
 #include "ai_script_actions.h"
 #include "Inventory.h"
 #include "weapon.h"
+#include "ParticlesObject.h"
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
@@ -68,17 +69,12 @@ CLuaGameObject *CLuaGameObject::GetMedikit() const
 	return			(xr_new<CLuaGameObject>(l_tpStalker->GetMedikit()));
 }
 
-CMovementAction::CMovementAction(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, CLuaGameObject *tpObjectToGo)
-{
-	SetBodyState		(tBodyState);
-	SetMovementType		(tMovementType);
-	SetPathType			(tPathType);
-	SetObjectToGo		(tpObjectToGo);
-}
-
 void CMovementAction::SetObjectToGo(CLuaGameObject *tpObjectToGo)
 {
-	m_tpObjectToGo		= tpObjectToGo->operator CObject*();
+	if (tpObjectToGo)
+		m_tpObjectToGo	= tpObjectToGo->operator CObject*();
+	else
+		m_tpObjectToGo	= 0;
 	m_tGoalType			= eGoalTypeObject;
 	m_bCompleted		= false;
 }
@@ -88,6 +84,19 @@ void CWatchAction::SetWatchObject(CLuaGameObject *tpObjectToWatch)
 	m_tpObjectToWatch	= tpObjectToWatch->operator CObject*();
 	m_tGoalType			= eGoalTypeObject;
 	m_bCompleted		= false;
+}
+
+CParticleAction::~CParticleAction()
+{
+	xr_delete			(m_tpParticleSystem);
+}
+
+void CParticleAction::SetParticle(LPCSTR caParticleToRun)
+{
+	strcpy				(m_caParticleToRun,caParticleToRun);
+	m_tGoalType			= eGoalTypeParticleAttached;
+	m_tpParticleSystem	= xr_new<CParticlesObject>(m_caParticleToRun,true);
+	m_bStartedToPlay	= false;
 }
 
 void CObjectAction::SetObject(CLuaGameObject *tpLuaGameObject)

@@ -11,35 +11,11 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\actor.h"
 #include "..\\..\\bolt.h"
-
-#pragma todo("Dima to Dima : Recover code from fatal error : C1055")
-
-void CAI_Stalker::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
-{
-	Fvector			tTemp;
-	tTemp.sub		(tPosition,eye_matrix.c);
-	tTemp.getHP		(yaw,pitch);
-//	VERIFY			(_valid(yaw));
-//	VERIFY			(_valid(pitch));
-	yaw				*= -1;
-	pitch			*= -1;
-}
-
-void CAI_Stalker::SetFirePointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
-{
-	Fvector			tTemp;
-	Center			(tTemp);
-	tTemp.sub		(tPosition,tTemp);
-	tTemp.getHP		(yaw,pitch);
-//	VERIFY			(_valid(yaw));
-//	VERIFY			(_valid(pitch));
-	yaw				*= -1;
-	pitch			*= -1;
-}
+#include "..\\..\\ai_script_actions.h"
 
 void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType)
 {
-//	R_ASSERT		(tLookType != eLookTypePoint);
+	R_ASSERT		(tLookType != eLookTypePoint);
 	vfSetParameters	(tpNodeEvaluator,tpDesiredPosition,bSearchNode,tWeaponState,tPathType,tBodyState,tMovementType,tMentalState, tLookType, Fvector().set(0,0,0));
 }
 
@@ -52,86 +28,91 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 	bool			bLookChanged = (m_tLookType != tLookType);
 	m_tLookType		= tLookType;
 
-	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode);
+	if (!GetScriptControl() || !GetCurrentAction() || (GetCurrentAction()->m_tMovementAction.m_tGoalType != CMovementAction::eGoalTypeNoPathPosition))
+		vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode);
 
 	m_fCurSpeed		= 1.f;
 
 	if (AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart)) {
+		if (GetScriptControl() && GetCurrentAction() && (_abs(GetCurrentAction()->m_tMovementAction.m_fSpeed) > EPS_L))
+			m_fCurSpeed = GetCurrentAction()->m_tMovementAction.m_fSpeed;
+		else {
 		// if linear speed is too big for a turn 
 		// then decrease linear speed and 
 		// increase angular speed
-//		if ((AI_Path.TravelPath.size() - 2) > AI_Path.TravelStart) {
-//			Fvector tPoint1, tPoint2;
-//			float	yaw1, pitch1, yaw2, pitch2;
-////			tPoint1.sub(AI_Path.TravelPath[AI_Path.TravelStart].P,AI_Path.TravelPath[AI_Path.TravelStart + 1].P);
-////			tPoint2.sub(AI_Path.TravelPath[AI_Path.TravelStart + 1].P,AI_Path.TravelPath[AI_Path.TravelStart + 2].P);
-////			tPoint1.getHP(yaw1,pitch1);
-////			tPoint2.getHP(yaw2,pitch2);
-//			if (ps_Size() > 2) {
-//				tPoint1.sub(ps_Element(ps_Size() - 2).Position(),ps_Element(ps_Size() - 3).Position());
-//				tPoint2.sub(ps_Element(ps_Size() - 1).Position(),ps_Element(ps_Size() - 2).Position());
-//				tPoint1.getHP(yaw1,pitch1);
-//				tPoint2.getHP(yaw2,pitch2);
-//				//Msg("%f -> %f",yaw1/PI*180.f,yaw2/PI*180.f);
-//				//GetDirectionAngles(yaw1,pitch1);
-//				if (!getAI().bfTooSmallAngle(yaw1,yaw2,1*PI_DIV_6)) {
-//					m_tMovementType = eMovementTypeWalk;
-//					if (m_tMentalState == eMentalStatePanic)
-//						m_tMentalState = eMentalStateDanger;
+//			if ((AI_Path.TravelPath.size() - 2) > AI_Path.TravelStart) {
+//				Fvector tPoint1, tPoint2;
+//				float	yaw1, pitch1, yaw2, pitch2;
+////				tPoint1.sub(AI_Path.TravelPath[AI_Path.TravelStart].P,AI_Path.TravelPath[AI_Path.TravelStart + 1].P);
+////				tPoint2.sub(AI_Path.TravelPath[AI_Path.TravelStart + 1].P,AI_Path.TravelPath[AI_Path.TravelStart + 2].P);
+////				tPoint1.getHP(yaw1,pitch1);
+////				tPoint2.getHP(yaw2,pitch2);
+//				if (ps_Size() > 2) {
+//					tPoint1.sub(ps_Element(ps_Size() - 2).Position(),ps_Element(ps_Size() - 3).Position());
+//					tPoint2.sub(ps_Element(ps_Size() - 1).Position(),ps_Element(ps_Size() - 2).Position());
+//					tPoint1.getHP(yaw1,pitch1);
+//					tPoint2.getHP(yaw2,pitch2);
+//					//Msg("%f -> %f",yaw1/PI*180.f,yaw2/PI*180.f);
+//					//GetDirectionAngles(yaw1,pitch1);
+//					if (!getAI().bfTooSmallAngle(yaw1,yaw2,1*PI_DIV_6)) {
+//						m_tMovementType = eMovementTypeWalk;
+//						if (m_tMentalState == eMentalStatePanic)
+//							m_tMentalState = eMentalStateDanger;
+//					}
 //				}
 //			}
-//		}
 
-		switch (m_tBodyState) {
-			case eBodyStateCrouch : {
-				m_fCurSpeed *= m_fCrouchFactor;
-				break;
-			}
-			case eBodyStateStand : {
-				break;
-			}
-			default : NODEFAULT;
-		}
-		switch (m_tMovementType) {
-			case eMovementTypeWalk : {
-				switch (m_tMentalState) {
-					case eMentalStateDanger : {
-						m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
-						break;
-					}
-					case eMentalStateFree : {
-						m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
-						break;
-					}
-					case eMentalStatePanic : {
-						Debug.fatal("");
-						break;
-					}
+			switch (m_tBodyState) {
+				case eBodyStateCrouch : {
+					m_fCurSpeed *= m_fCrouchFactor;
+					break;
 				}
-				r_torso_speed	= PI_MUL_2;
-				r_head_speed	= 3*PI_DIV_2;
-				break;
-			}
-			case eMovementTypeRun : {
-				switch (m_tMentalState) {
-					case eMentalStateDanger : {
-						m_fCurSpeed *= IsLimping() ? m_fDamagedRunFactor : m_fRunFactor;
-						break;
-					}
-					case eMentalStateFree : {
-						m_fCurSpeed *= IsLimping() ? m_fDamagedRunFreeFactor : m_fRunFreeFactor;
-						break;
-					}
-					case eMentalStatePanic : {
-						m_fCurSpeed *= IsLimping() ? m_fDamagedPanicFactor : m_fPanicFactor;
-						break;
-					}
+				case eBodyStateStand : {
+					break;
 				}
-				r_torso_speed	= PI_MUL_2;
-				r_head_speed	= 3*PI_DIV_2;
-				break;
+				default : NODEFAULT;
 			}
-			default : m_fCurSpeed = 0.f;
+			switch (m_tMovementType) {
+				case eMovementTypeWalk : {
+					switch (m_tMentalState) {
+						case eMentalStateDanger : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
+							break;
+						}
+						case eMentalStateFree : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
+							break;
+						}
+						case eMentalStatePanic : {
+							Debug.fatal("");
+							break;
+						}
+					}
+					r_torso_speed	= PI_MUL_2;
+					r_head_speed	= 3*PI_DIV_2;
+					break;
+				}
+				case eMovementTypeRun : {
+					switch (m_tMentalState) {
+						case eMentalStateDanger : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFactor : m_fRunFactor;
+							break;
+						}
+						case eMentalStateFree : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedRunFreeFactor : m_fRunFreeFactor;
+							break;
+						}
+						case eMentalStatePanic : {
+							m_fCurSpeed *= IsLimping() ? m_fDamagedPanicFactor : m_fPanicFactor;
+							break;
+						}
+					}
+					r_torso_speed	= PI_MUL_2;
+					r_head_speed	= 3*PI_DIV_2;
+					break;
+				}
+				default : m_fCurSpeed = 0.f;
+			}
 		}
 	}
 	else {
@@ -174,8 +155,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			Fvector tTemp;
 			tTemp.sub	(tPointToLook,eye_matrix.c);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
-//			VERIFY					(_valid(r_target.yaw));
-//			VERIFY					(_valid(r_target.pitch));
+			VERIFY					(_valid(r_target.yaw));
+			VERIFY					(_valid(r_target.pitch));
 			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
 				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
 					r_target.yaw += PI_DIV_6*2;
@@ -195,8 +176,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			Center(tTemp);
 			tTemp.sub	(tPointToLook,tTemp);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
-//			VERIFY					(_valid(r_target.yaw));
-//			VERIFY					(_valid(r_target.pitch));
+			VERIFY					(_valid(r_target.yaw));
+			VERIFY					(_valid(r_target.pitch));
 			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
 				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
 					r_target.yaw += PI_DIV_6*2;

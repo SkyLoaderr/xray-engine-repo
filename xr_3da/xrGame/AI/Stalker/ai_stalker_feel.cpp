@@ -16,6 +16,29 @@
 
 #define MIN_SOUND_VOLUME				.05f
 
+void CAI_Stalker::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
+{
+	Fvector			tTemp;
+	tTemp.sub		(tPosition,eye_matrix.c);
+	tTemp.getHP		(yaw,pitch);
+//	VERIFY			(_valid(yaw));
+//	VERIFY			(_valid(pitch));
+	yaw				*= -1;
+	pitch			*= -1;
+}
+
+void CAI_Stalker::SetFirePointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
+{
+	Fvector			tTemp;
+	Center			(tTemp);
+	tTemp.sub		(tPosition,tTemp);
+	tTemp.getHP		(yaw,pitch);
+//	VERIFY			(_valid(yaw));
+//	VERIFY			(_valid(pitch));
+	yaw				*= -1;
+	pitch			*= -1;
+}
+
 BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 {
 	CEntityAlive*	E = dynamic_cast<CEntityAlive*>		(O);

@@ -61,6 +61,7 @@ private:
 	xr_vector<Fvector>			m_tpaLine;
 	xr_vector<u32>				m_tpaNodes;
 	xr_vector<Fvector>			m_tpaTempPath;
+	CLevel::SPath				*m_tpPatrolPath;
 
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
@@ -471,5 +472,6 @@ public:
 			void				vfAssignWatch			(CEntityAction *tpEntityAction);
 			void				vfAssignAnimation		(CEntityAction *tpEntityAction);
 			void				vfAssignSound			(CEntityAction *tpEntityAction);
+			void				vfAssignParticles		(CEntityAction *tpEntityAction);
 			void				vfAssignObject			(CEntityAction *tpEntityAction);
 };

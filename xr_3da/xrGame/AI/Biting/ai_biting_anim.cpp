@@ -467,8 +467,7 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 {
 	// найти анимацию 
 	ANIM_ITEM_MAP_IT  item_it = m_tAnims.find(a);
-#pragma todo("Dima to Dima : Recover code from fatal error : C1055")
-//	R_ASSERT(item_it != m_tAnims.end());
+	R_ASSERT(item_it != m_tAnims.end());
 
 	return item_it->second.pos_state;
 }

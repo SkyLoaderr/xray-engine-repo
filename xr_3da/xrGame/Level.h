@@ -97,11 +97,11 @@ public:
 	typedef xr_vector<Fvector>			SPointVector;
 
 	typedef struct tagSPath {
-		u32							dwType;
+		u32								dwType;
 		xr_vector<SWayPoint>			tpaWayPoints;
-		xr_vector<SWayLink>			tpaWayLinks;
+		xr_vector<SWayLink>				tpaWayLinks;
 		xr_vector<u32>					tpaWayPointIndexes;
-		SPointVector				tpaVectors[3];
+		SPointVector					tpaVectors[3];
 	} SPath;
 
 	enum EPathTypes {

@@ -29,7 +29,8 @@ public:
 	enum EGoalType {
 		eGoalTypeObject = u32(0),
 		eGoalTypePatrolPath,
-		eGoalTypePosition,
+		eGoalTypePathPosition,
+		eGoalTypeNoPathPosition,
 		eGoalTypeDummy = u32(-1),
 	};
 
@@ -41,35 +42,54 @@ public:
 	Fvector							m_tDestinationPosition;
 	u32								m_tNodeID;
 	EGoalType						m_tGoalType;
+	float							m_fSpeed;
 
 							CMovementAction		()
 	{
-		m_tBodyState		= eBodyStateStand;
-		m_tMovementType		= eMovementTypeStand;
-		m_tPathType			= ePathTypeStraight;
-
-		m_tpObjectToGo		= 0;
-		strcpy				(m_caPatrolPathToGo,"");
-		m_tDestinationPosition.set(0,0,0);
-		m_tGoalType			= eGoalTypeDummy;
+		SetBodyState		(eBodyStateStand);
+		SetMovementType		(eMovementTypeStand);
+		SetPathType			(ePathTypeStraight);
+		SetPatrolPath		("");
+		SetPosition			(Fvector().set(0,0,0));
+		SetSpeed			(0);
+		SetObjectToGo		(0);
 	}
 
-							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, CLuaGameObject *tpObjectToGo);
+							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
+	{
+		SetBodyState		(tBodyState);
+		SetMovementType		(tMovementType);
+		SetPathType			(tPathType);
+		SetObjectToGo		(tpObjectToGo);
+		SetSpeed			(fSpeed);
+	}
 
-							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, LPCSTR caPatrolPathToGo)
+							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, LPCSTR caPatrolPathToGo, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
 		SetPathType			(tPathType);
 		SetPatrolPath		(caPatrolPathToGo);
+		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, const Fvector &tPosition)
+							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
 		SetPathType			(tPathType);
 		SetPosition			(tPosition);
+		SetSpeed			(fSpeed);
+	}
+
+							CMovementAction		(const Fvector &tPosition, float fSpeed)
+	{
+		SetBodyState		(eBodyStateStand);
+		SetMovementType		(eMovementTypeStand);
+		SetPathType			(ePathTypeStraight);
+		SetPosition			(tPosition);
+		SetSpeed			(fSpeed);
+		m_tGoalType			= eGoalTypeNoPathPosition;
 	}
 
 			void			SetBodyState		(const StalkerSpace::EBodyState tBodyState)
@@ -102,8 +122,13 @@ public:
 			void			SetPosition			(const Fvector &tPosition)
 	{
 		m_tDestinationPosition = tPosition;
-		m_tGoalType			= eGoalTypePosition;
+		m_tGoalType			= eGoalTypePathPosition;
 		m_bCompleted		= false;
+	}
+
+			void			SetSpeed			(float fSpeed)
+	{
+		m_fSpeed			= fSpeed;
 	}
 };
 
@@ -217,6 +242,8 @@ public:
 	string32						m_caSoundToPlay;
 	EGoalType						m_tGoalType;
 	ref_sound						*m_tpSound;
+	bool							m_bLooped;
+	bool							m_bSound3D;
 	bool							m_bStartedToPlay;
 	Fvector							m_tSoundPosition;
 
@@ -226,18 +253,33 @@ public:
 		m_tGoalType			= eGoalTypeDummy;
 		m_bCompleted		= false;
 		m_bStartedToPlay	= false;
+		m_bLooped			= false;
+		m_bSound3D			= false;
 		m_tpSound			= 0;
 	}
 
-							CSoundAction		(LPCSTR caSoundToPlay)
+	CSoundAction		(LPCSTR caSoundToPlay, bool bLooped = false, bool bSound3D = true)
 	{
+		m_bLooped			= bLooped;
+		m_bSound3D			= bSound3D;
 		SetSound			(caSoundToPlay);
 	}
 
-							CSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition)
+							CSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition, bool bLooped = false, bool bSound3D = true)
 	{
+		m_bLooped			= bLooped;
+		m_bSound3D			= bSound3D;
 		SetSound			(caSoundToPlay);
 		SetPosition			(tPosition);
+	}
+
+	virtual					~CSoundAction		()
+	{
+		if (m_tpSound) {
+			m_tpSound->destroy();
+			xr_delete		(m_tpSound);
+			m_tpSound		= 0;
+		}
 	}
 
 			void			SetSound			(LPCSTR caSoundToPlay)
@@ -248,20 +290,66 @@ public:
 		m_bStartedToPlay	= false;
 		string256			l_caFileName;
 		if (FS.exist(l_caFileName,"$game_sounds$",m_caSoundToPlay,".wav")) {
-			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,m_caSoundToPlay,0);
-			m_bStartedToPlay= true;
-			m_bCompleted	= true;
+			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),m_bSound3D,m_caSoundToPlay);
+			m_bStartedToPlay= false;
+			m_bCompleted	= false;
 		}
 		else {
 			Log				("* [LUA] File not found \"%s\"!",l_caFileName);
 			m_tpSound		= 0;
-			m_bCompleted	= false;
+			m_bStartedToPlay= true;
+			m_bCompleted	= true;
 		}
 	}
 			void			SetPosition			(const Fvector &tPosition)
 	{
 		m_tSoundPosition	= tPosition;
 		m_tGoalType			= eGoalTypeSoundPosition;
+		m_bStartedToPlay	= false;
+	}
+};
+
+class CParticleAction : public CAbstractAction {
+public:
+	enum EGoalType {
+		eGoalTypeParticleAttached = u32(0),
+		eGoalTypeParticlePosition,
+		eGoalTypeDummy = u32(-1),
+	};
+	string32						m_caParticleToRun;
+	EGoalType						m_tGoalType;
+	CParticlesObject				*m_tpParticleSystem;
+	bool							m_bStartedToPlay;
+	Fvector							m_tParticlePosition;
+
+							CParticleAction		()
+	{
+		strcpy				(m_caParticleToRun,"");
+		m_tGoalType			= eGoalTypeDummy;
+		m_bCompleted		= false;
+		m_bStartedToPlay	= false;
+		m_tpParticleSystem	= 0;
+	}
+
+							CParticleAction		(LPCSTR caPartcileToRun)
+	{
+		SetParticle			(caPartcileToRun);
+	}
+
+							CParticleAction		(LPCSTR caPartcileToRun, const Fvector &tPosition)
+	{
+		SetParticle			(caPartcileToRun);
+		SetPosition			(tPosition);
+	}
+
+	virtual					~CParticleAction	();
+
+			void			SetParticle			(LPCSTR caParticleToRun);
+			
+			void			SetPosition			(const Fvector &tPosition)
+	{
+		m_tParticlePosition	= tPosition;
+		m_tGoalType			= eGoalTypeParticlePosition;
 		m_bStartedToPlay	= false;
 	}
 };
@@ -334,6 +422,7 @@ public:
 	CWatchAction					m_tWatchAction;
 	CAnimationAction				m_tAnimationAction;
 	CSoundAction					m_tSoundAction;
+	CParticleAction					m_tParticleAction;
 	CObjectAction					m_tObjectAction;
 	CActionCondition				m_tActionCondition;
 
