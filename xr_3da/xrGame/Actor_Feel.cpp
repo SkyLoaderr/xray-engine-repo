@@ -6,6 +6,7 @@
 #include "mercuryball.h"
 #include "targetcsbase.h"
 #include "targetcs.h"
+#include "targetcscask.h"
 
 void CActor::feel_touch_new				(CObject* O)
 {
@@ -17,8 +18,9 @@ void CActor::feel_touch_new				(CObject* O)
 	CTargetAssault*	At	= dynamic_cast<CTargetAssault*>	(O);
 	CTargetCSBase*	CSb	= dynamic_cast<CTargetCSBase*>	(O);
 	CTargetCS*		CSt	= dynamic_cast<CTargetCS*>		(O);
+	CTargetCSCask*	CSca= dynamic_cast<CTargetCSCask*>	(O);
 
-	if (W || At || CSb || CSt)
+	if (W || At || CSb || CSt || CSca)
 	{
 		// Generate event
 		NET_Packet		P;
