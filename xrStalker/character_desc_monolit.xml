@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+<!---------------------------STALKER------------------------------>
+	<specific_character id="monolit_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Представитель группировки "Монолит".</bio>
+
+		<team>Monolit</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\monolit\stalker_mo_hood_9</visual>
+	</specific_character>
+
+<!---------------------------STALKER NOVICE----------------------->
+	<specific_character id="monolit_novice_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Представитель группировки "Монолит".</bio>
+
+		<team>Monolit_novice</team>
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\monolit\stalker_mo_hood_9</visual>
+	</specific_character>
+
+<!---------------------------STALKER GENERAL---------------------->
+	<specific_character id="monolit_general_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Представитель группировки "Монолит".</bio>
+
+		<team>Monolit_general</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\monolit\stalker_mo_hood_9</visual>
+	</specific_character>
+
+<!---------------------------STALKER VETERAN---------------------->
+	<specific_character id="monolit_veteran_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Представитель группировки "Монолит".</bio>
+
+		<team>Monolit_veteran</team>
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\monolit\stalker_mo_hood_9</visual>
+	</specific_character>
+
+<!---------------------------STALKER MASTER----------------------->
+	<specific_character id="monolit_master_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Представитель группировки "Монолит".</bio>
+
+		<team>Monolit_master</team>
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\monolit\stalker_mo_nauchniy</visual>
+	</specific_character>
+
+	
+</xml>
