@@ -64,6 +64,11 @@ void	CBlender_default::Compile(CBlender_Compile& C)
 			C.PassEnd			();
 		} else {
 			// Level view
+			C.r_Pass	("r1_default","r1_default",TRUE);
+			C.r_Sampler	("s_base",C.L_textures[0]);
+			C.r_Sampler	("s_lmap",C.L_textures[1]);
+			C.r_End		();
+			/*
 			C.PassBegin		();
 			{
 				C.PassSET_ZB			(TRUE,TRUE);
@@ -83,6 +88,7 @@ void	CBlender_default::Compile(CBlender_Compile& C)
 				C.StageEnd				();
 			}
 			C.PassEnd			();
+			*/
 		}
 	}
 }
