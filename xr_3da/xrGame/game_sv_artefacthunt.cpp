@@ -10,10 +10,11 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 
 	m_dwArtefactRespawnDelta = get_option_i		(options,"ardelta",0)*1000;
 	m_ArtefactsNum	= u8(get_option_i		(options,"anum",1));
-	m_dwArtefactStayTime	= u32(get_option_i		(options,"astime",5))*60000;
+	m_dwArtefactStayTime	= get_option_i		(options,"astime",5)*60000;
 	fraglimit = 0;	
 
 	m_delayedRoundEnd = false;
+	m_eAState = NONE;
 	//---------------------------------------------------
 	// loading respawn points for artefacts
 	Artefact_rpoints.clear();
@@ -54,10 +55,7 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 	}
 	R_ASSERT2 (!Artefact_rpoints.empty(), "No points to spawn ARTEFACT");
 	//---------------------------------------------------------------
-	m_dwArtefactSpawnTime = 0;
-	m_ArtefactBearerID = 0;
-	m_TeamInPosession = 0;
-	m_dwArtefactRemoveTime = -1;
+	Artefact_PrepareForSpawn();
 
 	m_ArtefactsSpawnedTotal = 0;
 }
@@ -67,15 +65,10 @@ void	game_sv_ArtefactHunt::OnRoundStart			()
 	inherited::OnRoundStart	();
 	
 	m_delayedRoundEnd = false;
-	m_dwArtefactSpawnTime = 0;
+	
 	m_ArtefactsSpawnedTotal = 0;
 	
-	m_ArtefactBearerID = 0;
-	m_TeamInPosession = 0;
-	m_dwArtefactRemoveTime = -1;
-
-	m_ArtefactsSpawnedTotal = 0;
-	m_dwArtefactID = 0;
+	Artefact_PrepareForSpawn();
 
 /*
 	// Respawn all players and some info
@@ -294,7 +287,6 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 				P.w_u16				(ps_who->team);
 				u_EventSend(P);
 			};
-			m_dwArtefactRemoveTime = -1;
 			return TRUE;
 		};
 	}
@@ -328,7 +320,8 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 				P.w_u16				(ps_who->team);
 				u_EventSend(P);
 			};
-			m_dwArtefactRemoveTime = 0;
+			Artefact_PrepareForRemove();
+
 			return TRUE;
 		};
 	}
@@ -405,11 +398,10 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	P.w_u16				(ps->team);
 	u_EventSend(P);
 	//-----------------------------------------------
-	m_ArtefactBearerID	= 0;
-	m_TeamInPosession	= 0;
 	signal_Syncronize();
 	//-----------------------------------------------
-	m_dwArtefactSpawnTime = 0;
+	Artefact_PrepareForSpawn();
+
 	if (teams[ps->team-1].score >= m_ArtefactsNum) 
 	{
 		OnTeamScore(ps->team-1);
@@ -435,13 +427,9 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	P.w_u32				(GMSG_ARTEFACT_SPAWNED);
 	u_EventSend(P);
 	//-----------------------------------------------
-	m_dwArtefactSpawnTime = -1;
-	m_dwArtefactRemoveTime = 0;
+	m_eAState = ON_FIELD;
 
-	m_ArtefactBearerID = 0;
-	m_TeamInPosession = 0;
-
-	m_ArtefactsSpawnedTotal++;
+	Artefact_PrepareForRemove();
 };
 
 void	game_sv_ArtefactHunt::RemoveArtefact			()
@@ -455,79 +443,38 @@ void	game_sv_ArtefactHunt::RemoveArtefact			()
 	P.w_u32				(GMSG_ARTEFACT_DESTROYED);
 	u_EventSend(P);
 	//-----------------------------------------------
-	m_dwArtefactSpawnTime = 0;
-	m_dwArtefactRemoveTime = -1;
-
 	m_ArtefactBearerID = 0;
 	m_TeamInPosession = 0;
+	Artefact_PrepareForSpawn();
 };
 
 void	game_sv_ArtefactHunt::Update			()
 {
 	inherited::Update	();
 
-	switch(phase) 	{
-		case GAME_PHASE_TEAM1_SCORES :
-		case GAME_PHASE_TEAM2_SCORES :
-		case GAME_PHASE_TEAMS_IN_A_DRAW :
-			{
-//				if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
-				if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
-			} break;
-		case GAME_PHASE_PENDING : 
-			{
-//				if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
-			} break;			
-		case GAME_PHASE_INPROGRESS:
-			{
-				if (m_dwArtefactSpawnTime == 0)
-				{
-					m_dwArtefactSpawnTime = Device.dwTimeGlobal + m_dwArtefactRespawnDelta;
-				}
-				else
-				{
-					if (m_dwArtefactSpawnTime != -1 && u32(m_dwArtefactSpawnTime) < Device.dwTimeGlobal)
-					{
-						if (ArtefactSpawn_Allowed() || 0 != m_ArtefactsSpawnedTotal  )
-						{
-							m_dwArtefactSpawnTime = -1;
-							//time to spawn Artefact;
-							SpawnArtefact();
-						};
-					};
-				};
-
-				if (m_dwArtefactStayTime != 0)
-				{
-
-					if (m_dwArtefactRemoveTime == 0)
-					{					
-						m_dwArtefactRemoveTime = Device.dwTimeGlobal+m_dwArtefactStayTime;
-					}
-					else
-					{
-						if ((m_dwArtefactRemoveTime != -1) && (u32(m_dwArtefactRemoveTime) < Device.dwTimeGlobal))
-						{
-							RemoveArtefact();
-						};
-					};
-				};
-				if (m_dwArtefactID != 0)
-				{
-					CSE_Abstract*		E	= get_entity_from_eid	(m_dwArtefactID);
-					if (!E) 
-					{
-						m_dwArtefactSpawnTime = 0;
-						m_dwArtefactRemoveTime = -1;
-						m_ArtefactBearerID = 0;
-						m_TeamInPosession = 0;
-					};
-				};
-			}break;
+	switch(phase) 	
+	{
+	case GAME_PHASE_TEAM1_SCORES :
+	case GAME_PHASE_TEAM2_SCORES :
+	case GAME_PHASE_TEAMS_IN_A_DRAW :
+		{
+			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
+		} break;
+	case GAME_PHASE_PENDING : 
+		{
+			//				if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
+		} break;			
+	case GAME_PHASE_INPROGRESS:
+		{
+			if (Artefact_NeedToSpawn()) return;
+			if (Artefact_NeedToRemove()) return;
+			if (Artefact_MissCheck()) return;
+		}break;
 	}
 }
 bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()	
 {
+	return TRUE;
 	// Check if all players ready
 	u32		cnt		= get_count	();
 	
@@ -628,3 +575,72 @@ void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, u32 id_to)
 	P.w_u16			(m_ArtefactBearerID);
 	P.w_u8			(m_TeamInPosession);
 };
+
+void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
+{
+	m_dwArtefactID			= 0;
+
+	m_eAState = NOARTEFACT;
+
+	m_dwArtefactSpawnTime = Device.dwTimeGlobal + m_dwArtefactRespawnDelta;
+
+	m_ArtefactBearerID	= 0;
+	m_TeamInPosession	= 0;
+};
+
+void				game_sv_ArtefactHunt::Artefact_PrepareForRemove	()
+{
+	m_dwArtefactRemoveTime = Device.dwTimeGlobal + m_dwArtefactStayTime;
+	m_dwArtefactSpawnTime = 0;
+};
+
+bool				game_sv_ArtefactHunt::Artefact_NeedToSpawn	()
+{
+	if (m_eAState == ON_FIELD || m_eAState == IN_POSESSION) return false;
+
+	if (m_dwArtefactID != 0) return false;
+	
+	VERIFY(m_dwArtefactID == 0);
+	
+	if (m_dwArtefactSpawnTime < Device.dwTimeGlobal)
+	{
+		if (ArtefactSpawn_Allowed() || 0 != m_ArtefactsSpawnedTotal  )
+		{
+			m_dwArtefactSpawnTime = 0;
+			//time to spawn Artefact;
+			SpawnArtefact();
+			return true;
+		};
+	};
+	return false;
+};
+bool				game_sv_ArtefactHunt::Artefact_NeedToRemove	()
+{
+	if (m_eAState == IN_POSESSION) return false;
+
+	if (m_dwArtefactStayTime == 0) return false;
+
+	if (m_dwArtefactRemoveTime < Device.dwTimeGlobal)
+	{
+		VERIFY (m_eAState == ON_FIELD);
+		RemoveArtefact();
+		return true;
+	};
+	return false;
+}
+
+bool				game_sv_ArtefactHunt::Artefact_MissCheck	()
+{
+	if (m_eAState == NONE) return false;
+	
+	if (m_dwArtefactID != 0)
+	{
+		CSE_Abstract*		E	= get_entity_from_eid	(m_dwArtefactID);
+		if (!E) 
+		{
+			Artefact_PrepareForSpawn();
+			return true;
+		};
+	};
+	return false;
+}

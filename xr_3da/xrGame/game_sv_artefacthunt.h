@@ -7,20 +7,37 @@ class	game_sv_ArtefactHunt			: public game_sv_TeamDeathmatch
 private:
 	typedef game_sv_TeamDeathmatch inherited;
 protected:
-	u16			m_dwArtefactID;
+	
+	enum	ARTEFACT_STATE
+	{
+		NONE,
+		NOARTEFACT,
+		ON_FIELD,
+		IN_POSESSION,
+	};
 	
 	BOOL		m_delayedRoundEnd;
 	u32			m_roundEndDelay;
 
-	s32			m_dwArtefactRespawnDelta;
-	s32			m_dwArtefactSpawnTime;
+	u32			m_dwArtefactRespawnDelta;
+	u32			m_dwArtefactStayTime;
+
+	u32			m_dwArtefactSpawnTime;
+	u32			m_dwArtefactRemoveTime;
 
 	u16			m_ArtefactsSpawnedTotal;
+	u16			m_dwArtefactID;	
 
-	s32			m_dwArtefactStayTime;
-	s32			m_dwArtefactRemoveTime;
+	ARTEFACT_STATE		m_eAState;
 
 	xr_vector<RPoint>				Artefact_rpoints;
+
+	void							Artefact_PrepareForSpawn	();
+	void							Artefact_PrepareForRemove	();
+
+	bool							Artefact_NeedToSpawn	();
+	bool							Artefact_NeedToRemove	();
+	bool							Artefact_MissCheck		();
     	
 public:
 	virtual		void				Create					(LPSTR &options);
