@@ -110,10 +110,18 @@ std::string to_string(luabind::object const& o)
 	return s.str();
 }
 
+void strreplaceall(std::string &str, LPCSTR S, LPCSTR N)
+{
+	LPSTR	A;
+	int		S_len = xr_strlen(S);
+	while ((A = strstr(str.c_str(),S)) != 0)
+		str.replace(A - str.c_str(),S_len,N);
+}
+
 std::string member_to_string(luabind::object const& e, LPCSTR function_signature)
 {
 #if !defined(LUABIND_NO_ERROR_CHECKING)
-	using namespace luabind;
+    using namespace luabind;
 	lua_State* L = e.lua_state();
 	LUABIND_CHECK_STACK(L);
 
@@ -148,9 +156,14 @@ std::string member_to_string(luabind::object const& e, LPCSTR function_signature
 			{
 				std::string str;
 				i->get_signature(L, str);
+				strreplaceall	(str,"custom [","");
+				strreplaceall	(str,"]","");
+				strreplaceall	(str,"float","number");
+				strreplaceall	(str,"lua_State*, ","");
+				strreplaceall	(str," ,lua_State*","");
 				if (i != m->overloads().begin())
 					s << "\n";
-				s << function_signature << str;
+				s << function_signature << str << ";";
 			}
 		}
 #ifdef BOOST_NO_STRINGSTREAM
@@ -159,15 +172,16 @@ std::string member_to_string(luabind::object const& e, LPCSTR function_signature
 		return s.str();
 	}
 
-	return to_string(e);
+    return to_string(e);
 #else
-	return "";
+    return "";
 #endif
 }
 
 void print_class(lua_State *L, luabind::detail::class_rep *crep)
 {
 	std::string			S;
+	// print class and bases
 	{
 		S				= (crep->get_class_type() != luabind::detail::class_rep::cpp_class) ? "LUA class " : "C++ class ";
 		S.append		(crep->name());
@@ -184,34 +198,70 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 		}
 		Msg				("%s {",S.c_str());
 	}
+	// print class constants
+	{
+		const luabind::detail::class_rep::STATIC_CONSTANTS	&constants = crep->static_constants();
+		luabind::detail::class_rep::STATIC_CONSTANTS::const_iterator	I = constants.begin();
+		luabind::detail::class_rep::STATIC_CONSTANTS::const_iterator	E = constants.end();
+		for ( ; I != E; ++I)
+			Msg		("    const %s = %d;",(*I).first,(*I).second);
+		if (!constants.empty())
+			Msg		("    ");
+	}
+	// print class properties
 	{
 		typedef std::map<const char*, luabind::detail::class_rep::callback, luabind::detail::ltstr> PROPERTIES;
 		const PROPERTIES &properties = crep->properties();
-		PROPERTIES::const_iterator	I = properties.begin(), B = I;
+		PROPERTIES::const_iterator	I = properties.begin();
 		PROPERTIES::const_iterator	E = properties.end();
 		for ( ; I != E; ++I)
-			Msg			("    property %s",(*I).first);
+			Msg	("    property %s;",(*I).first);
+		if (!properties.empty())
+			Msg		("    ");
 	}
-	crep->get_table	(L);
-	luabind::object	table(L);
-	table.set		();
-	if (!crep->properties().empty() && (table.begin() != table.end()))
-		Msg			(" ");
-	for (luabind::object::iterator i = table.begin(); i != table.end(); ++i) {
-		luabind::object	object = *i;
-		std::string	S;
-		S			= "    function ";
-		S.append	(to_string(i.key()).c_str());
-		Msg			("%s",member_to_string(object,S.c_str()).c_str());
+	// print class constructors
+	{
+		const std::vector<luabind::detail::construct_rep::overload_t>	&constructors = crep->constructors().overloads;
+		std::vector<luabind::detail::construct_rep::overload_t>::const_iterator	I = constructors.begin();
+		std::vector<luabind::detail::construct_rep::overload_t>::const_iterator	E = constructors.end();
+		for ( ; I != E; ++I) {
+			std::string S;
+			(*I).get_signature(L,S);
+			Msg		("    %s %s;",crep->name(),S.c_str());
+		}
+		if (!constructors.empty())
+			Msg		("    ");
 	}
-	Msg				("}\n");
+	// print class methods
+	{
+		crep->get_table	(L);
+		luabind::object	table(L);
+		table.set		();
+		for (luabind::object::iterator i = table.begin(); i != table.end(); ++i) {
+			luabind::object	object = *i;
+			std::string	S;
+			S			= "    function ";
+			S.append	(to_string(i.key()).c_str());
+
+			strreplaceall	(S,"function __add","operator +");
+			strreplaceall	(S,"function __sub","operator -");
+			strreplaceall	(S,"function __mul","operator *");
+			strreplaceall	(S,"function __div","operator /");
+			strreplaceall	(S,"function __pow","operator ^");
+			strreplaceall	(S,"function __lt","operator <");
+			strreplaceall	(S,"function __le","operator <=");
+			strreplaceall	(S,"function __eq","operator ==");
+			Msg			("%s",member_to_string(object,S.c_str()).c_str());
+		}
+	}
+	Msg			("};");
 }
 
 void print_help(lua_State *L)
 {
 	Msg				("\n\nList of the classes exported to LUA\n");
 	luabind::detail::class_registry::get_registry(L)->iterate_classes(L,&print_class);
-	Msg				("\nEn of list of the classes exported to LUA\n");
+	Msg				("\nEnd of list of the classes exported to LUA\n");
 }
 
 //////////////////////////////////////////////////////////////////////////
