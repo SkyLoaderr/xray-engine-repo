@@ -213,57 +213,54 @@ end
 
 --ѕри попытке поюзать незапертую дверь она просто силой открываетс€ до максимально допустимого состо€ни€.
 
-function parse_waypoint_data(str)
-	local len = string.len(str)
-	local at = 1
-
-	local to
-
-	local rslt = {}
-
-	at = string.find(str, "|", at, true)
-	if at == nil then
+function parse_waypoint_data(pathname, wpname)
+	if string.find(waypoint_name, "|", at, true) == nil then
 		return {}
 	end
 
-	while true do
-		at = at + 1
+	local par_num
+	local fld_num
+	local fld
+	local val
 
-		-- Ќайдено поле, считать значение вида field=val
+	local rslt = {}
 
-		-- «ахватить name:
-		local nam
-		if at > len then
-			return nil
-		end
-		to = string.find(str, "=", at, true)
-		if to == nil or to - 1 < at then
-			return nil
-		end
-		nam = string.sub(str, at, to - 1) -- -1 потому что не нужно захватывать сам сивол '='
+	par_num = 1
+	for param in string.gfind(wpname, "([%w_\\=]+)|*") do
+		if par_num == 1 then
+			-- continue
+		else
+			if param == "" then
+				utils.abort("path '%s': waypoint '%s': syntax error in waypoint name", pathname, wpname)
+			end
 
-		-- «ахватить value:
-		local val
-		at = to + 1
-		if at > len then
-			return nil
-		end
-		to = string.find(str, "|", at, true)
-		if to ~= nil and to - 1 <= at then
-			return nil
-		end
-		if to == nil then
-			to = len + 1 -- это последнее поле в строке, захватить до конца
-		end
-		val = string.sub(str, at, to - 1)
-		at = to
+			fld_num = 1
+			fld = nil
+			val = nil
+			for v in string.gfind(param, "([%w_\\]+)=*") do
+				if flkd_num == 1 then
+					fld = v
+				elseif fld_num == 2 then
+					val = v
+				else
+					utils.abort("path '%s': waypoint '%s': syntax error while parsing the param '%s'",
+						pathname, wpname, param)
+				end
+				fld_num = fld_num + 1
+			end
 
-		rslt[nam] = val
-		print(nam .. " = " .. val)
+			if not fld or fld == "" then
+				utils.abort("path '%s': waypoint '%s': syntax error while parsing the param '%s': no field specified",
+					pathname, wpname, param)
+			end
 
-		if at == len + 1 then
-			break
+			if not val then
+				val = "true"
+			end
+
+			rslt[fld] = val
 		end
+		par_num = par_num + 1
 	end
 	return rslt
 end
