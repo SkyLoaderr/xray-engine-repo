@@ -287,6 +287,16 @@ function NPC:is_looking()
 end
 
 function NPC:shoot_then_reload_actions(whom)
+	action(self.npc,
+	       look(look.fire_point, whom),
+	       anim(anim.danger),
+	       move(move.standing, move.stand, move.line, whom),
+	       object(self.wpn, object.fire1),
+	       cond(cond.move_end)
+	)
+	
+	if true then return end
+	
 	for i = 1, 30 do
 		--[[
 		action(self.npc,
@@ -587,6 +597,12 @@ function Camper:see_enemy()
 	if not self.c_npc.npc:alive() then
 		self.state = nil
 		return
+	end
+
+	if not self.c_enemy.npc:alive() and self.c_npc:is_shooting() then
+			interrupt_action(self.c_npc.npc, self.script_name)
+			self.state = nil
+			return
 	end
 
 	--printf("Camper: see_enemy: %d", game.time())
