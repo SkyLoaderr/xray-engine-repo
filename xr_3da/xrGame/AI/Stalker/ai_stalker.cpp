@@ -175,6 +175,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
 	R_ASSERT						(tpHuman);
+	m_dwMoney						= tpHuman->m_dwMoney;
 
 	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	m_body.current.pitch			= m_body.target.pitch	= 0;
@@ -264,10 +265,10 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 	}
 
+	P.w_float						(inventory().TotalWeight());
+	P.w_u32							(m_dwMoney);
 	P.w_u32							(0);
-	P.w_u32							(0);
-	P.w_u32							(0);
-//	P.w_u32							(0);
+
 	CScriptBinder::net_Export		(P);
 }
 
@@ -302,7 +303,7 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	float							fDummy;
 	u32								dwDummy;
 	P.r_float						(fDummy);
-	P.r_u32							(dwDummy);
+	m_dwMoney						= P.r_u32();
 	P.r_u32							(dwDummy);
 
 	P.r_u32							(dwDummy);
