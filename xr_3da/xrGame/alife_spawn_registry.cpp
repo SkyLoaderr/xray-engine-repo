@@ -92,8 +92,6 @@ void CALifeSpawnRegistry::load	(LPCSTR spawn_name)
 
 void CALifeSpawnRegistry::load	(IReader &file_stream)
 {
-	m_artefact_anomaly_map.clear();
-
 	IReader						*chunk;
 	chunk						= file_stream.open_chunk(0);
 	m_header.load				(*chunk);
@@ -124,23 +122,26 @@ void CALifeSpawnRegistry::load_updates			(IReader &stream)
 
 void CALifeSpawnRegistry::build_spawn_anomalies	()
 {
-//	
-//	{
-//		// building map of sets : get all the zone types which can generate given artefact
-//		CSE_ALifeAnomalousZone	*anomaly = smart_cast<CSE_ALifeAnomalousZone*>(E);
-//		if (anomaly) {
-//			ALife::EAnomalousZoneType	type = anomaly->m_tAnomalyType;
-//			for (u16 i=0, n = anomaly->m_wItemCount; i<n; ++i) {
-//				ALife::ITEM_SET_PAIR_IT	I = m_artefact_anomaly_map.find(anomaly->m_cppArtefactSections[i]);
-//				if (m_artefact_anomaly_map.end() != I)
-//					(*I).second.insert(type);
-//				else {
-//					m_artefact_anomaly_map.insert(mk_pair(anomaly->m_cppArtefactSections[i],ALife::U32_SET()));
-//					I = m_artefact_anomaly_map.find(anomaly->m_cppArtefactSections[i]);
-//					if ((*I).second.find(type) == (*I).second.end())
-//						(*I).second.insert(type);
-//				}
-//			}
-//		}
-//	}
+	m_artefact_anomaly_map.clear	();
+
+	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
+	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
+	for ( ; I != E; ++I) {
+		// building map of sets : get all the zone types which can generate given artefact
+		CSE_ALifeAnomalousZone				*anomaly = smart_cast<CSE_ALifeAnomalousZone*>((*I)->data());
+		if (anomaly) {
+			ALife::EAnomalousZoneType		type = anomaly->m_tAnomalyType;
+			for (u16 i=0, n = anomaly->m_wItemCount; i<n; ++i) {
+				ALife::ITEM_SET_PAIR_IT		I = m_artefact_anomaly_map.find(anomaly->m_cppArtefactSections[i]);
+				if (m_artefact_anomaly_map.end() != I)
+					(*I).second.insert		(type);
+				else {
+					m_artefact_anomaly_map.insert(mk_pair(anomaly->m_cppArtefactSections[i],ALife::U32_SET()));
+					I = m_artefact_anomaly_map.find(anomaly->m_cppArtefactSections[i]);
+					if ((*I).second.find(type) == (*I).second.end())
+						(*I).second.insert	(type);
+				}
+			}
+		}
+	}
 }
