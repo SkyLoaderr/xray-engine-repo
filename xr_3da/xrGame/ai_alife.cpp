@@ -50,6 +50,12 @@ void CAI_ALife::vfInitGraph()
 
 void CAI_ALife::vfInitScheduledObjects()
 {
+	m_tpScheduledObjects.clear();
+	for (m_tObjectRegistry.m_tpIterator = m_tObjectRegistry.m_tppMap.begin(); m_tObjectRegistry.m_tpIterator != m_tObjectRegistry.m_tppMap.end(); m_tObjectRegistry.m_tpIterator++) {
+		CALifeMonster	*tpALifeMonster = dynamic_cast<CALifeMonster *>((*m_tObjectRegistry.m_tpIterator).second);
+		if (tpALifeMonster)
+			m_tpScheduledObjects.push_back(tpALifeMonster);
+	}
 }
 
 // temporary
