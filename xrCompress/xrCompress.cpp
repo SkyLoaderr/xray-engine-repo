@@ -32,7 +32,7 @@ BOOL	testVFS			(LPCSTR path)
 		if (0==stricmp(p_ext,".game"))		return FALSE;
 		if (0==stricmp(p_ext,".hom"))		return FALSE;
 		if (0==stricmp(p_ext,".ltx"))		return FALSE;
-		if (0==stricmp(p_ext,".spawn"))	return FALSE;
+		if (0==stricmp(p_ext,".spawn"))		return FALSE;
 		return TRUE;
 	}
 	return FALSE;
