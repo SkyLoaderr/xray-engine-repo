@@ -385,16 +385,6 @@
 									RelativePath=".\property_evaluator_member_inline.h">
 								</File>
 							</Filter>
-							<Filter
-								Name="member_function"
-								Filter="">
-								<File
-									RelativePath=".\property_evaluator_member_function.h">
-								</File>
-								<File
-									RelativePath=".\property_evaluator_member_function_inline.h">
-								</File>
-							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
