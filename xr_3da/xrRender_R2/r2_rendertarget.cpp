@@ -18,7 +18,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Position					= Device.Shader._CreateRT	(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Color					= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16);
 		rt_Accumulator				= Device.Shader._CreateRT	(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
 		rt_Bloom_1					= Device.Shader._CreateRT	(r2_RT_bloom1,	w,h,D3DFMT_A8R8G8B8);
@@ -50,7 +50,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	{
 		s_combine					= Device.Shader.Create_B	(b_combine,					"r2\\combine");
 		s_combine_dbg_Position		= Device.Shader.Create		("effects\\screen_set",		r2_RT_P);
-		s_combine_dbg_Normal		= Device.Shader.Create		("effects\\screen_set",		r2_RT_N);
+		s_combine_dbg_Normal		= Device.Shader.Create		("effects\\screen_set",		r2_RT_N_H);
 		s_combine_dbg_Color			= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
 		s_combine_dbg_Accumulator	= Device.Shader.Create		("effects\\screen_set",		r2_RT_accum);
 		g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
