@@ -219,44 +219,35 @@ IC	bool build_circle_trajectory(
 	TIMER_START(BuildCircleTrajectory)
 	Fvector				direction, curr_pos;
 	u32					curr_vertex_id;
-	if (start_point) {
-		direction.sub	(position.position,position.center);
-		curr_pos		= position.position;
-		curr_vertex_id	= position.vertex_id;
-	}
-	else {
-		direction.sub	(position.point,position.center);
-		curr_pos		= position.point;
-		TIMER_START(BCT_CPID)
-		curr_vertex_id	= level_graph.check_position_in_direction(position.vertex_id,position.position,curr_pos);
-		TIMER_STOP(BCT_CPID)
-		if (!level_graph.valid_vertex_id(curr_vertex_id)) {
-			TIMER_STOP(BuildCircleTrajectory)
-			return		(false);
-		}
-		curr_pos.y		= level_graph.vertex_plane_y(curr_vertex_id,curr_pos.x,curr_pos.z);
-	}
+	direction.sub		(position.position,position.center);
+	curr_pos			= position.position;
+	curr_vertex_id		= position.vertex_id;
+	float				angle = position.angle;
+	u32					size = path ? path->size() : u32(-1);
+	if (!start_point)
+		angle			*= -1;
 
 	float				yaw,pitch;
 	direction.getHP		(yaw,pitch);
 	yaw					= angle_normalize(yaw);
-	u32					m = iFloor(_abs(position.angle)/position.angular_velocity*10.f +.5f);
+	u32					m = iFloor(_abs(angle)/position.angular_velocity*10.f +.5f);
 	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
 		Fvector			t;
-		adjust_point	(position.center,yaw + float(i)*position.angle/float(n),position.radius,t);
-		TIMER_START(BCT_CPID)
-		curr_vertex_id	= level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
-		TIMER_STOP(BCT_CPID)
-		if (!level_graph.valid_vertex_id(curr_vertex_id)) {
-			TIMER_STOP(BuildCircleTrajectory)
+		adjust_point	(position.center,yaw + float(i)*angle/float(n),position.radius,t);
+		if (!level_graph.inside(curr_vertex_id,t))
+			curr_vertex_id = level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
+		if (!level_graph.valid_vertex_id(curr_vertex_id))
 			return		(false);
-		}
 		if (path) {
 			t.y			= level_graph.vertex_plane_y(curr_vertex_id,t.x,t.z);
 			path->push_back(t);
 		}
 		curr_pos		= t;
 	}
+	
+	if (path && !start_point)
+		reverse			(path->begin() + size,path->end());
+
 	TIMER_STOP(BuildCircleTrajectory)
 	return				(true);
 }
