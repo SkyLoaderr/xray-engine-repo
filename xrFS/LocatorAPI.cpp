@@ -217,7 +217,7 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 	while (!hdr->eof())
 	{
 		string_path		name,full;
-		hdr->r_stringZ	(name);
+		hdr->r_stringZ	(name,sizeof(name));
 		strconcat		(full,base,name);
 		size_t vfs		= archives.size()-1;
 		u32 ptr			= hdr->r_u32();
@@ -347,7 +347,7 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 		LPCSTR			lp_add, lp_def, lp_capt;
 		string16		b_v;
 		while(!F->eof()){
-			F->r_string	(buf);
+			F->r_string	(buf,sizeof(buf));
 			_GetItem(buf,0,id,'=');
 			if (id[0]==';') continue;
 			_GetItem(buf,1,temp,'=');

@@ -129,7 +129,7 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 	while (!names->eof())
 	{
 		string256			n;
-		names->r_stringZ	(n);
+		names->r_stringZ	(n,sizeof(n));
 		int id				= s_environment->GetID(n);
 		R_ASSERT			(id>=0);
 		ids.push_back		(u16(id));

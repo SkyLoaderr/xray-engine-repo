@@ -216,23 +216,38 @@ void	IReader::r	(void *p,int cnt)
 };
 
 IC BOOL			is_term		(char a) { return (a==13)||(a==10); };
-void	IReader::r_string	(char *dest)
+IC u32	IReader::advance_term_string()
 {
+	u32 sz		= 0;
 	char *src 	= (char *) data;
 	while (!eof()) {
 		if (is_term(src[Pos])) {
-			*dest = 0;
 			Pos++;
 			if (!eof() && is_term(src[Pos])) Pos++;
-			return;
+			break;
 		}
-		*dest++ = src[Pos++];
+        sz++;
 	}
-	*dest		=	0;
+    return sz;
 }
-void	IReader::r_stringZ	(char *dest)
+void	IReader::r_string	(char *dest, u32 tgt_sz)
+{
+	u32 sz 		= advance_term_string();
+    R_ASSERT2(sz<tgt_sz,"Dest string less than needed.");
+	char *src 	= (char *) data;
+    strncpy		(dest,src,sz);
+}
+void	IReader::r_string	(std::string& dest)
+{
+	u32 sz 		= advance_term_string();
+	char *src 	= (char *) data;
+    dest.assign	(src,sz);
+}
+void	IReader::r_stringZ	(char *dest, u32 tgt_sz)
 {
 	char *src 	= (char *) data;
+	u32 sz 		= xr_strlen(src);
+    R_ASSERT2(sz<tgt_sz,"Dest string less than needed.");
 	while ((src[Pos]!=0) && (!eof())) *dest++ = src[Pos++];
 	*dest		=	0;
 	Pos++;

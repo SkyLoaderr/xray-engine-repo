@@ -126,6 +126,7 @@ protected:
 			return ((p%16)+1)*16 - p;
 		} return 0;
 	}
+	u32 			advance_term_string	();
 public:
 	IReader			()
 	{
@@ -149,10 +150,12 @@ public:
 	
 	void			r			(void *p,int cnt);
 
-	void			r_string	(char *dest);
-	void			r_stringZ	(char *dest);
+	void			r_string	(char *dest, u32 tgt_sz);
+	void			r_string	(std::string& dest);
+
 	void			skip_stringZ();
 
+	void			r_stringZ	(char *dest, u32 tgt_sz);
 	void			r_stringZ	(shared_str& dest);
 	void			r_stringZ	(std::string& dest);
 

@@ -109,12 +109,12 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 {
 	R_ASSERT(F);
 	Sect	Current;	Current.Name = 0;
-	char	str			[4096];
-	char	str2		[4096];
+	string4096	str;
+	string4096	str2;
 
 	while (!F->eof())
 	{
-		F->r_string		(str);
+		F->r_string		(str,sizeof(str));
 		_Trim			(str);
 		LPSTR semi		= strchr(str,';');
 		LPSTR comment	= 0;
