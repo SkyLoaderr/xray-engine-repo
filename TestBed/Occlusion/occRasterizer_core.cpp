@@ -183,11 +183,11 @@ void occRasterizer::i_section	(float *A, float *B, float *C, occTri* T, int Sect
 		rightZ	= startp1[2] + E1[2]*t; right_dZ = E1[2]/E1[1];
 	}	
 	// Now scan all lines in this section
-	float lhx = left_dX/2;
-	float rhx = right_dX/2;
+	float lhx = left_dX/2;	leftX	+= lhx;	// half pixel
+	float rhx = right_dX/2;	rightX	+= rhx;	// half pixel
 	for (; startY<=endY; startY++) 
 	{
-		i_scan	(int(startY), minp(leftX-lhx,leftX+lhx), maxp(rightX-rhx,rightX+rhx), leftZ, rightZ, T);
+		i_scan	(int(startY), maxp(leftX-lhx,leftX+lhx), minp(rightX-rhx,rightX+rhx), leftZ, rightZ, T);
 		leftX	+= left_dX; rightX += right_dX;
 		leftZ	+= left_dZ; rightZ += right_dZ;
 	}
