@@ -63,32 +63,32 @@ void CAI_Biting::Think()
 	HDebug->SetActive						(true);
 #endif
 
-	static u32 next_bridge	= 10000;
+	//static u32 next_bridge	= 10000;
 
-	if (next_bridge < m_current_update) {
-		next_bridge = m_current_update + 5000;
-		
-		// remove from prev team
-		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-		Group.Member_Remove(this);
+	//if (next_bridge < m_current_update) {
+	//	next_bridge = m_current_update + 5000;
+	//	
+	//	// remove from prev team
+	//	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	//	Group.Member_Remove(this);
 
-		// set new team
-		if (g_Team() == 0){
-			id_Team		= 1;
-			id_Squad	= 1;
-			id_Group	= 0;
-		} else {
-			id_Team		= 0;
-			id_Squad	= 0;
-			id_Group	= 0;
-		}
-		
-		// add to new team
-		Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-		Group.Member_Add(this);
-	} 
+	//	// set new team
+	//	if (g_Team() == 0){
+	//		id_Team		= 1;
+	//		id_Squad	= 1;
+	//		id_Group	= 0;
+	//	} else {
+	//		id_Team		= 0;
+	//		id_Squad	= 0;
+	//		id_Group	= 0;
+	//	}
+	//	
+	//	// add to new team
+	//	Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	//	Group.Member_Add(this);
+	//} 
 
-	Msg("Time[%u]  ::  Team[%u] Squad[%u] Group[%u]", m_current_update, g_Team(),g_Squad(),g_Group());
+	//Msg("Time[%u]  ::  Team[%u] Squad[%u] Group[%u]", m_current_update, g_Team(),g_Squad(),g_Group());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
