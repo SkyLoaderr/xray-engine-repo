@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "fstaticrender_rendertarget.h"
 
-static LPCSTR	RTname	= "$user$rendertarget";
-DWORD			hPS		= 0;
+static LPCSTR		RTname	= "$user$rendertarget";
+static CPS*			hPS		= 0;
+static CTexture*	hTex	= 0;
 
 CRenderTarget::CRenderTarget()
 {
@@ -19,9 +20,6 @@ CRenderTarget::CRenderTarget()
 
 BOOL CRenderTarget::Create	()
 {
-	// Temp
-	D3DXAssembleShader(pPS,strlen(pPS),)
-
 	// 
 	RT			= Device.Shader._CreateRT		(RTname,Device.dwWidth,Device.dwHeight);
 	
@@ -35,6 +33,9 @@ BOOL CRenderTarget::Create	()
 
 void CRenderTarget::OnDeviceCreate	()
 {
+	hPS			= Device.Shader._CreatePS		("transfer");
+	hTex		= Device.Shader._CreateTexture	("transfer");
+
 	bAvailable	= Create	();
 }
 
@@ -44,6 +45,9 @@ void CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
 	Device.Shader._DeleteRT		(RT);
+
+	Device.Shader._DeletePS		(hPS);
+	Device.Shader._DeleteTexture(hTex);
 }
 
 void CRenderTarget::Begin	()
@@ -61,12 +65,12 @@ void CRenderTarget::End		()
 {
 	Device.Shader.set_RT		(HW.pBaseRT,HW.pBaseZB);
 	
-	if (!Available() || !NeedPostProcess())	return;
+	// if (!Available() || !NeedPostProcess())	return;
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
 	DWORD	Cgray	= D3DCOLOR_RGBA	(90,90,90,0);
-	int		A		= 127; //iFloor		((1-param_gray)*255.f); clamp(A,0,255);
+	int		A		= iFloor		((1-param_gray)*255.f); clamp(A,0,255);
 	DWORD	Calpha	= D3DCOLOR_RGBA	(255,255,255,A);
 	float	tw		= float(Device.dwWidth);
 	float	th		= float(Device.dwHeight);
@@ -108,7 +112,18 @@ void CRenderTarget::End		()
 		}
 	} else {
 		// Draw COLOR
-		Device.Shader.set_Shader(pShaderSet);
-		Device.Primitive.Draw	(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+		Device.Shader.set_Shader	(pShaderSet);
+		Device.Primitive.Draw		(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+		
+		/*
+		extern	DWORD						dwDebugSB;
+		static	float	c0[]				= {0.30f, 0.59f, 0.11f, 1.0f};
+		HW.pDevice->ApplyStateBlock			(dwDebugSB);
+		HW.pDevice->SetPixelShader			(hPS->dwHandle);
+		HW.pDevice->SetPixelShaderConstant	(0,c0,1);
+		hTex->Apply							(1);
+		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+		*/
+
 	}
 }

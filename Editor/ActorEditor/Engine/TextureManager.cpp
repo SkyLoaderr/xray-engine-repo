@@ -145,7 +145,7 @@ CPS*	CShaderManager::_CreatePS		(LPCSTR cName)
 	
 	// ***** first pass - search already loaded shader
 	LPSTR N = LPSTR(Name);
-	VSMap::iterator I = ps.find	(N);
+	PSMap::iterator I = ps.find	(N);
 	if (I!=ps.end())	
 	{
 		CPS *PS			=	I->second;
