@@ -283,7 +283,7 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 
 			for (int i=0, n=children.size() ; i<n; ++i) {
 				CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = smart_cast<CSE_ALifeItemAmmo*>(ai().alife().objects().object(children[i]));
-				if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && l_tpALifeItemAmmo->a_elapsed) {
+				if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,*l_tpALifeItemAmmo->s_name) && l_tpALifeItemAmmo->a_elapsed) {
 					alife().release		(l_tpALifeItemAmmo,true);
 					--i;
 					--n;
@@ -318,7 +318,7 @@ void CSE_ALifeHumanAbstract::vfCollectAmmoBoxes()
 				continue;
 			}
 
-			if (!strstr(l_tpALifeItemAmmo->s_name,l_tpALifeItemAmmo1->s_name))
+			if (!strstr(*l_tpALifeItemAmmo->s_name,*l_tpALifeItemAmmo1->s_name))
 				continue;
 
 			alife().m_temp_marks[j]	= true;
@@ -360,7 +360,7 @@ void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 		default : {
 			for (int i=0, n=children.size() ; i<n; ++i) {
 				CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = smart_cast<CSE_ALifeItemAmmo*>(ai().alife().objects().object(children[i]));
-				if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name)) {
+				if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,*l_tpALifeItemAmmo->s_name)) {
 					if (m_tpCurrentBestWeapon->m_dwAmmoAvailable > l_tpALifeItemAmmo->a_elapsed) {
 						m_tpCurrentBestWeapon->m_dwAmmoAvailable	-= l_tpALifeItemAmmo->a_elapsed;
 						continue;
@@ -391,7 +391,7 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(const CSE_ALifeItemWeapon *
 	OBJECT_IT					E = tpObjectVector.end();
 	for ( ; I != E; ++I) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = smart_cast<CSE_ALifeItemAmmo*>(ai().alife().objects().object(*I));
-		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name))
+		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,*l_tpALifeItemAmmo->s_name))
 			l_dwResult			+= l_tpALifeItemAmmo->a_elapsed;
 	}
 	return						(u16(l_dwResult));
@@ -406,7 +406,7 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(const CSE_ALifeItemWeapon *
 	ITEM_P_IT					E = tpItemVector.end();
 	for ( ; I != E; ++I) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = smart_cast<CSE_ALifeItemAmmo*>(*I);
-		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && (l_tpALifeItemAmmo->m_dwCost <= m_dwTotalMoney) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItemAmmo->ID) == tpObjectVector->end()))) {
+		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,*l_tpALifeItemAmmo->s_name) && (l_tpALifeItemAmmo->m_dwCost <= m_dwTotalMoney) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItemAmmo->ID) == tpObjectVector->end()))) {
 			l_dwResult			+= l_tpALifeItemAmmo->a_elapsed;
 			m_dwTotalMoney		-= l_tpALifeItemAmmo->m_dwCost;
 		}
@@ -423,7 +423,7 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 	ITEM_P_IT					E = tpItemVector.end();
 	for ( ; I != E; ++I) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = smart_cast<CSE_ALifeItemAmmo*>(*I);
-		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && (l_tpALifeItemAmmo->m_dwCost <= m_dwTotalMoney) && bfCanGetItem(l_tpALifeItemAmmo) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItemAmmo->ID) == tpObjectVector->end()))) {
+		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,*l_tpALifeItemAmmo->s_name) && (l_tpALifeItemAmmo->m_dwCost <= m_dwTotalMoney) && bfCanGetItem(l_tpALifeItemAmmo) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItemAmmo->ID) == tpObjectVector->end()))) {
 			if (!tpObjectVector)
 				alife().graph().attach(*this,l_tpALifeItemAmmo,l_tpALifeItemAmmo->m_tGraphID);
 			else {

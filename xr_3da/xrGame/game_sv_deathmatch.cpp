@@ -932,7 +932,7 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 {
 	TeamStruct	NewTeam;
 
-	std::strcpy(NewTeam.caSection, caSection);
+	NewTeam.caSection	= caSection;
 
 	LoadWeaponsForTeam	(caSection, &NewTeam.aWeapons);
 	LoadSkinsForTeam	(caSection, &NewTeam.aSkins);
@@ -1250,7 +1250,7 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 		};
 
 		//---------------------------------------------------------------
-		if (IsBuyableItem(e_what->s_name)) return TRUE;
+		if (IsBuyableItem(*e_what->s_name)) return TRUE;
 		//---------------------------------------------------------------
 	};
 	// We don't know what the hell is it, so disallow ownership just for safety 

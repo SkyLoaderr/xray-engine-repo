@@ -699,7 +699,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID)
 	R_ASSERT(l_pA);
 	// Fill
 	l_pA->m_boxSize = (u16)pSettings->r_s32(ammoSect, "box_size");
-	strcpy(D->s_name, ammoSect);
+	D->s_name		= ammoSect;
 	strcpy(D->s_name_replace, "");
 	D->s_gameid = u8(GameID());
 	D->s_RP = 0xff;

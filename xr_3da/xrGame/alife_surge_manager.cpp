@@ -171,7 +171,7 @@ void CALifeSurgeManager::generate_anomalies()
 
 				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
 
-				strcpy					(l_tpALifeItemArtefact->s_name_replace,l_tpALifeItemArtefact->s_name);
+				strcpy					(l_tpALifeItemArtefact->s_name_replace,*l_tpALifeItemArtefact->s_name);
 				if (l_tpALifeItemArtefact->ID < 1000)
 					strcat				(l_tpALifeItemArtefact->s_name_replace,"0");
 				if (l_tpALifeItemArtefact->ID < 100)
@@ -336,9 +336,9 @@ void CALifeSurgeManager::sell_artefacts(CSE_ALifeTrader &tTrader)
 				continue;
 
 			// adding item to the temporary artefact map
-			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeItemArtefact->s_name);
+			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(*l_tpALifeItemArtefact->s_name);
 			if (m_tpTraderItems.end() == k)
-				m_tpTraderItems.insert(mk_pair(l_tpALifeItemArtefact->s_name,1));
+				m_tpTraderItems.insert(mk_pair(*l_tpALifeItemArtefact->s_name,1));
 			else
 				++((*k).second);
 		}
@@ -417,9 +417,9 @@ void CALifeSurgeManager::buy_supplies(CSE_ALifeTrader &tTrader)
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(objects().object(*i));
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory object has a parent?!");
 			// adding item to the temporary item map
-			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeInventoryItem->base()->s_name);
+			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(*l_tpALifeInventoryItem->base()->s_name);
 			if (m_tpTraderItems.end() == k)
-				m_tpTraderItems.insert(mk_pair(l_tpALifeInventoryItem->base()->s_name,1));
+				m_tpTraderItems.insert(mk_pair(*l_tpALifeInventoryItem->base()->s_name,1));
 			else
 				++((*k).second);
 		}

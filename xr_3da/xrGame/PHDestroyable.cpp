@@ -39,7 +39,7 @@ void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 
 		l_tpALifePhysicObject->source_id	= u16(-1);
 	//	l_tpALifePhysicObject->startup_animation=m_startup_anim;
-		strcpy				(D->s_name,"ph_skeleton_object");//*cNameSect()
+		D->s_name			= "ph_skeleton_object";//*cNameSect()
 		strcpy				(D->s_name_replace,"");
 		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;

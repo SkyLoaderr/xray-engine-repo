@@ -201,14 +201,14 @@ void CALifeOrganizationRegistry::update()
 						ALife::ARTEFACT_ORDER_IT	ee = (*j).second->m_query.end();
 						bool						l_bIsReadyForInvention = true;
 						for ( ; ii != ee; ++ii) {
-							ALife::LPSTR_BOOL_PAIR_IT	iii = m_artefacts.find((*ii).m_section);
-							R_ASSERT3					(m_artefacts.end() != iii,"Unknown artefact",(*ii).m_section);
+							ALife::LPSTR_BOOL_PAIR_IT	iii = m_artefacts.find((LPSTR)*(*ii).m_section);
+							R_ASSERT3					(m_artefacts.end() != iii,"Unknown artefact",*(*ii).m_section);
 							if ((*iii).second) {
 								l_bFoundDiscovery	= false;
 								break;
 							}
 							else {
-								ALife::ITEM_COUNT_PAIR_IT	jj = (*I).second->m_purchased_artefacts.find((LPSTR)(*ii).m_section);
+								ALife::ITEM_COUNT_PAIR_IT	jj = (*I).second->m_purchased_artefacts.find((LPSTR)*(*ii).m_section);
 								if (((*I).second->m_purchased_artefacts.end() == jj) || ((*jj).second < (*ii).m_count))
 									l_bIsReadyForInvention = false;
 							}
@@ -254,7 +254,7 @@ void CALifeOrganizationRegistry::update()
 						(*I).second->m_ordered_artefacts.resize(ee - ii);
 						ALife::ARTEFACT_ORDER_IT		II = (*I).second->m_ordered_artefacts.begin();
 						for ( ; ii != ee; ++ii, ++II) {
-							strcpy			((*II).m_section,(*ii)->m_section);
+							(*II).m_section = (*ii)->m_section;
 							(*II).m_count	= randI((*ii)->min_count(),(*ii)->max_count());
 							(*II).m_price	= randI((*ii)->min_price(),(*ii)->max_price());
 						}
@@ -297,31 +297,31 @@ void CALifeOrganizationRegistry::update_artefact_orders(CSE_ALifeTrader &tTrader
 			ARTEFACT_ORDER_IT		i = (*I).second->m_ordered_artefacts.begin();
 			ARTEFACT_ORDER_IT		e = (*I).second->m_ordered_artefacts.end();
 			for ( ; i != e; ++i) {
-				ARTEFACT_TRADER_ORDER_PAIR_IT	ii = tTrader.m_tpOrderedArtefacts.find((*i).m_section);
+				ARTEFACT_TRADER_ORDER_PAIR_IT	ii = tTrader.m_tpOrderedArtefacts.find(*(*i).m_section);
 				if (tTrader.m_tpOrderedArtefacts.end() != ii) {
 					(*ii).second->m_dwTotalCount += (*i).m_count;
 					SArtefactOrder	l_tArtefactOrder;
 					l_tArtefactOrder.m_count	= (*i).m_count;
 					l_tArtefactOrder.m_price	= (*i).m_price;
-					strcpy						(l_tArtefactOrder.m_section,(*I).first);
+					l_tArtefactOrder.m_section	= (*I).first;
 					(*ii).second->m_tpOrders.push_back(l_tArtefactOrder);
 				}
 				else {
 					SArtefactTraderOrder	*l_tpTraderArtefactOrder = xr_new<SArtefactTraderOrder>();
-					strcpy					(l_tpTraderArtefactOrder->m_caSection,(*i).m_section);
+					l_tpTraderArtefactOrder->m_caSection = (*i).m_section;
 					l_tpTraderArtefactOrder->m_dwTotalCount = (*i).m_count;
 					SArtefactOrder			l_tArtefactOrder;
 					l_tArtefactOrder.m_count	= (*i).m_count;
 					l_tArtefactOrder.m_price	= (*i).m_price;
-					strcpy						(l_tArtefactOrder.m_section,(*I).first);
+					l_tArtefactOrder.m_section	= (*I).first;
 					l_tpTraderArtefactOrder->m_tpOrders.push_back(l_tArtefactOrder);
-					tTrader.m_tpOrderedArtefacts.insert(mk_pair(l_tpTraderArtefactOrder->m_caSection,l_tpTraderArtefactOrder));
-					R_ASSERT				(tTrader.m_tpOrderedArtefacts.find(l_tpTraderArtefactOrder->m_caSection) != tTrader.m_tpOrderedArtefacts.end());
+					tTrader.m_tpOrderedArtefacts.insert(mk_pair(*l_tpTraderArtefactOrder->m_caSection,l_tpTraderArtefactOrder));
+					R_ASSERT				(tTrader.m_tpOrderedArtefacts.find(*l_tpTraderArtefactOrder->m_caSection) != tTrader.m_tpOrderedArtefacts.end());
 					// updating cross traders table
-					TRADER_SET_PAIR_IT		J = m_cross_traders.find((*i).m_section);
+					TRADER_SET_PAIR_IT		J = m_cross_traders.find(*(*i).m_section);
 					if (m_cross_traders.end() == J) {
-						m_cross_traders.insert(mk_pair((*i).m_section,TRADER_SET()));
-						J = m_cross_traders.find((*i).m_section);
+						m_cross_traders.insert(mk_pair(*(*i).m_section,TRADER_SET()));
+						J = m_cross_traders.find(*(*i).m_section);
 						R_ASSERT2	(m_cross_traders.end() != J,"Cannot append the cross trader map!");
 					}
 					TRADER_SET_IT	K = (*J).second.find(&tTrader);

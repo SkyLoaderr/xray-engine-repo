@@ -42,7 +42,7 @@ public:
 	xrClientData*					owner;
 
 	// spawn data
-	string64						s_name;
+	shared_str						s_name;
 	string64						s_name_replace;
 	u8								s_gameid;
 	u8								s_RP;
@@ -73,8 +73,8 @@ public:
 	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
 	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket);
 	virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items);
-	virtual LPSTR		__stdcall	name			();
-	virtual LPSTR		__stdcall	name_replace	();
+	virtual LPCSTR		__stdcall	name			();
+	virtual LPCSTR		__stdcall	name_replace	();
 	virtual Fvector&	__stdcall	position		();
 	virtual Fvector&	__stdcall	angle			();
 	virtual Flags16&	__stdcall	flags			();

@@ -185,7 +185,7 @@ void CALifeUpdateManager::create_anomalies	()
 		u32								group_id	= (*I)->m_dwSpawnGroup;
 		for (m = I + 1, j = I; (m != E) && ((*m)->m_dwSpawnGroup == group_id); ++m) ;
 
-		CSE_Abstract					*object = F_entity_Create((*I)->s_name);
+		CSE_Abstract					*object = F_entity_Create(*(*I)->s_name);
 		R_ASSERT2						(object,"Can't create entity.");
 
 		CSE_ALifeDynamicObject			*i = smart_cast<CSE_ALifeDynamicObject*>(object);

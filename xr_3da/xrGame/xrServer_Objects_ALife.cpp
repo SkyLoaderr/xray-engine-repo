@@ -148,12 +148,12 @@ void CSE_ALifeGraphPoint::UPDATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_ALifeGraphPoint::FillProps			(LPCSTR pref, PropItemVec& items)
 {
-	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\1"),				&m_tLocations[0],			&*fp_data.locations[0].begin(), fp_data.locations[0].size());
-	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\2"),				&m_tLocations[1],			&*fp_data.locations[1].begin(), fp_data.locations[1].size());
-	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\3"),				&m_tLocations[2],			&*fp_data.locations[2].begin(), fp_data.locations[2].size());
-	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\4"),				&m_tLocations[3],			&*fp_data.locations[3].begin(), fp_data.locations[3].size());
-	PHelper().CreateRList	 	(items,	PrepareKey(pref,s_name,"Connection\\Level name"),	&m_caConnectionLevelName,	&*fp_data.level_ids.begin(),	fp_data.level_ids.size());
-	PHelper().CreateRText	 	(items,	PrepareKey(pref,s_name,"Connection\\Point name"),	&m_caConnectionPointName);
+	PHelper().CreateRToken8		(items,	PrepareKey(pref,*s_name,"Location\\1"),				&m_tLocations[0],			&*fp_data.locations[0].begin(), fp_data.locations[0].size());
+	PHelper().CreateRToken8		(items,	PrepareKey(pref,*s_name,"Location\\2"),				&m_tLocations[1],			&*fp_data.locations[1].begin(), fp_data.locations[1].size());
+	PHelper().CreateRToken8		(items,	PrepareKey(pref,*s_name,"Location\\3"),				&m_tLocations[2],			&*fp_data.locations[2].begin(), fp_data.locations[2].size());
+	PHelper().CreateRToken8		(items,	PrepareKey(pref,*s_name,"Location\\4"),				&m_tLocations[3],			&*fp_data.locations[3].begin(), fp_data.locations[3].size());
+	PHelper().CreateRList	 	(items,	PrepareKey(pref,*s_name,"Connection\\Level name"),	&m_caConnectionLevelName,	&*fp_data.level_ids.begin(),	fp_data.level_ids.size());
+	PHelper().CreateRText	 	(items,	PrepareKey(pref,*s_name,"Connection\\Point name"),	&m_caConnectionPointName);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -292,18 +292,18 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref, 	items);
-	PHelper().CreateRText		(items,	PrepareKey(pref,s_name,"Custom data"),&m_ini_string);
-	PHelper().CreateFloat		(items,	PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
+	PHelper().CreateRText		(items,	PrepareKey(pref,*s_name,"Custom data"),&m_ini_string);
+	PHelper().CreateFloat		(items,	PrepareKey(pref,*s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
 	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
-    PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smSpawnItem, 0, (void*)gcs);
+    PHelper().CreateChoose		(items, PrepareKey(pref,*s_name,"ALife\\Group control"),		&m_caGroupControl, smSpawnItem, 0, (void*)gcs);
 	if (m_flags.is(flUseSwitches)) {
-		PHelper().CreateFlag32	(items,	PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
-		PHelper().CreateFlag32	(items,	PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
+		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
+		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
 	}                            
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\No move in offline"),&m_flags,			flOfflineNoMove);
-	PHelper().CreateRToken32	(items,	PrepareKey(pref,s_name,"ALife\\Story ID"),			&m_story_id,		&*fp_data.story_names.begin(), fp_data.story_names.size());
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\No move in offline"),&m_flags,			flOfflineNoMove);
+	PHelper().CreateRToken32	(items,	PrepareKey(pref,*s_name,"ALife\\Story ID"),			&m_story_id,		&*fp_data.story_names.begin(), fp_data.story_names.size());
 }
 
 bool CSE_ALifeObject::used_ai_locations		() const
@@ -613,7 +613,7 @@ xr_token defaul_retrictor_types[]={
 void CSE_ALifeSpaceRestrictor::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProps		(pref,items);
-	PHelper().CreateToken8		(items, PrepareKey(pref,s_name,"restrictor type"), &m_space_restrictor_type,	defaul_retrictor_types);
+	PHelper().CreateToken8		(items, PrepareKey(pref,*s_name,"restrictor type"), &m_space_restrictor_type,	defaul_retrictor_types);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -682,8 +682,8 @@ void CSE_ALifeLevelChanger::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref,items);
 	
-	PHelper().CreateRList		(items,PrepareKey(pref,s_name,"Level to change"),		&m_caLevelToChange,		&*fp_data.level_ids.begin(), fp_data.level_ids.size());
-	PHelper().CreateRText		(items,PrepareKey(pref,s_name,"Level point to change"),	&m_caLevelPointToChange);
+	PHelper().CreateRList		(items,PrepareKey(pref,*s_name,"Level to change"),		&m_caLevelToChange,		&*fp_data.level_ids.begin(), fp_data.level_ids.size());
+	PHelper().CreateRText		(items,PrepareKey(pref,*s_name,"Level point to change"),	&m_caLevelPointToChange);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -792,12 +792,12 @@ void CSE_ALifeObjectPhysic::FillProps		(LPCSTR pref, PropItemVec& values)
 	inherited1::FillProps		(pref,	 values);
 	inherited2::FillProps		(pref,	 values);
 
-	PHelper().CreateToken32		(values, PrepareKey(pref,s_name,"Type"), &type,	po_types);
-	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
-    PHelper().CreateFlag8		(values, PrepareKey(pref,s_name,"Active"), &_flags, flActive);
+	PHelper().CreateToken32		(values, PrepareKey(pref,*s_name,"Type"), &type,	po_types);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Mass"), &mass, 0.1f, 10000.f);
+    PHelper().CreateFlag8		(values, PrepareKey(pref,*s_name,"Active"), &_flags, flActive);
 
     // motions & bones
-	PHelper().CreateChoose		(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
+	PHelper().CreateChoose		(values, 	PrepareKey(pref,*s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
 }
 
 bool CSE_ALifeObjectPhysic::used_ai_locations	() const
@@ -962,39 +962,39 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 	inherited2::FillProps		(pref,values);
 
     PropValue* P				= 0;
-	PHelper().CreateFlag16		(values, PrepareKey(pref,s_name,"Flags\\Physic"),		&flags,			flPhysic);
-	PHelper().CreateFlag16		(values, PrepareKey(pref,s_name,"Flags\\Cast Shadow"),	&flags,			flCastShadow);
-	PHelper().CreateFlag16		(values, PrepareKey(pref,s_name,"Flags\\Allow R1"),		&flags,			flR1);
-	PHelper().CreateFlag16		(values, PrepareKey(pref,s_name,"Flags\\Allow R2"),		&flags,			flR2);
-	P=PHelper().CreateFlag16	(values, PrepareKey(pref,s_name,"Flags\\Allow Ambient"),&flags,			flPointAmbient);
+	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Physic"),		&flags,			flPhysic);
+	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Cast Shadow"),	&flags,			flCastShadow);
+	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Allow R1"),		&flags,			flR1);
+	PHelper().CreateFlag16		(values, PrepareKey(pref,*s_name,"Flags\\Allow R2"),		&flags,			flR2);
+	P=PHelper().CreateFlag16	(values, PrepareKey(pref,*s_name,"Flags\\Allow Ambient"),&flags,			flPointAmbient);
     P->OnChangeEvent.bind		(this,&CSE_ALifeObjectHangingLamp::OnChangeFlag);
 	// 
-	P=PHelper().CreateFlag16	(values, PrepareKey(pref,s_name,"Light\\Type"), 		&flags,				flTypeSpot, "Point", "Spot");
+	P=PHelper().CreateFlag16	(values, PrepareKey(pref,*s_name,"Light\\Type"), 		&flags,				flTypeSpot, "Point", "Spot");
     P->OnChangeEvent.bind		(this,&CSE_ALifeObjectHangingLamp::OnChangeFlag);
-	PHelper().CreateColor		(values, PrepareKey(pref,s_name,"Light\\Color"),		&color);
-    PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Light\\Brightness"),	&brightness,		0.1f, 5.f);
-	PHelper().CreateChoose		(values, PrepareKey(pref,s_name,"Light\\Color Animator"),&color_animator, 	smLAnim);
-	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Light\\Range"),		&range,				0.1f, 1000.f);
-	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Light\\Virtual Size"),	&m_virtual_size,	0.f, 100.f);
-	PHelper().CreateChoose		(values, PrepareKey(pref,s_name,"Light\\Texture"),	    &light_texture, 	smTexture, "lights");
+	PHelper().CreateColor		(values, PrepareKey(pref,*s_name,"Light\\Color"),		&color);
+    PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Brightness"),	&brightness,		0.1f, 5.f);
+	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Color Animator"),&color_animator, 	smLAnim);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Range"),		&range,				0.1f, 1000.f);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Light\\Virtual Size"),	&m_virtual_size,	0.f, 100.f);
+	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Light\\Texture"),	    &light_texture, 	smTexture, "lights");
 
     if (flags.is(flTypeSpot))
-		PHelper().CreateAngle	(values, PrepareKey(pref,s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
+		PHelper().CreateAngle	(values, PrepareKey(pref,*s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
 
 	// bones
-    ChooseValue* V				= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
-	V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Guid bone"),		&guid_bone,			smSkeletonBones,0,(void*)visual()->get_visual());
+    ChooseValue* V				= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
+	V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Guid bone"),		&guid_bone,			smSkeletonBones,0,(void*)visual()->get_visual());
 
 	if (flags.is(flPointAmbient)){
-        PHelper().CreateFloat	(values, PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
-        PHelper().CreateFloat	(values, PrepareKey(pref,s_name,"Ambient\\Power"),		&m_ambient_power);
-		PHelper().CreateChoose	(values, PrepareKey(pref,s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
+        PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
+        PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Power"),		&m_ambient_power);
+		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
     }
     // glow
-	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Glow\\Radius"),	    &glow_radius,		0.01f, 100.f);
-	PHelper().CreateChoose		(values, PrepareKey(pref,s_name,"Glow\\Texture"),	    &glow_texture, 		smTexture,	"glow");
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Glow\\Radius"),	    &glow_radius,		0.01f, 100.f);
+	PHelper().CreateChoose		(values, PrepareKey(pref,*s_name,"Glow\\Texture"),	    &glow_texture, 		smTexture,	"glow");
 	// game
-	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Game\\Health"),		&m_health,			0.f, 100.f);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Game\\Health"),		&m_health,			0.f, 100.f);
 }
 
 bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
@@ -1136,7 +1136,7 @@ void CSE_ALifeHelicopter::FillProps(LPCSTR pref, PropItemVec& values)
 	inherited2::FillProps		(pref,	values);
 	inherited3::FillProps		(pref,	values);
 
-    PHelper().CreateChoose		(values,	PrepareKey(pref,s_name,"Engine Sound"), &engine_sound, smSoundSource);
+    PHelper().CreateChoose		(values,	PrepareKey(pref,*s_name,"Engine Sound"), &engine_sound, smSoundSource);
 }
 
 bool CSE_ALifeHelicopter::used_ai_locations	() const
@@ -1268,7 +1268,7 @@ void CSE_ALifeObjectBreakable::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeObjectBreakable::FillProps		(LPCSTR pref, PropItemVec& values)
 {
   	inherited::FillProps			(pref,values);
-	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Health"),			&m_health,			0.f, 100.f);
 }
 
 bool CSE_ALifeObjectBreakable::used_ai_locations	() const
@@ -1331,7 +1331,7 @@ void CSE_ALifeObjectClimable::FillProps		(LPCSTR pref, PropItemVec& values)
 {
 	//inherited1::FillProps			(pref,values);
 	inherited2::FillProps			(pref,values);
-	//PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
+	//PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Health"),			&m_health,			0.f, 100.f);
 }
 
 bool CSE_ALifeObjectClimable::used_ai_locations	() const
@@ -1417,7 +1417,7 @@ void CSE_ALifeTeamBaseZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeTeamBaseZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref,items);
-	PHelper().CreateU8			(items, PrepareKey(pref,s_name,"team"),			&m_team,			0, 16);
+	PHelper().CreateU8			(items, PrepareKey(pref,*s_name,"team"),			&m_team,			0, 16);
 }
 
 ////////////////////////////////////////////////////////////////////////////

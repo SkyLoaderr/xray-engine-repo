@@ -349,7 +349,7 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 		if (W) 
 		{
 			//---------------------------------------------------------------
-			if (IsBuyableItem(e_what->s_name)) return TRUE;
+			if (IsBuyableItem(*e_what->s_name)) return TRUE;
 			//---------------------------------------------------------------
 		}
 	}

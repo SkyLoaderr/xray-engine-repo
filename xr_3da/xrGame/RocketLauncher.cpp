@@ -35,7 +35,7 @@ void CRocketLauncher::SpawnRocket(LPCSTR rocket_section, CGameObject* parent_roc
 	R_ASSERT			(l_tpTemporary);
 	l_tpTemporary->m_tNodeID	= parent_rocket_launcher->level_vertex_id();
 	// Fill
-	strcpy				(D->s_name, rocket_section);
+	D->s_name			= rocket_section;
 	strcpy				(D->s_name_replace,"");
 	
 	D->s_gameid			=	u8(GameID());

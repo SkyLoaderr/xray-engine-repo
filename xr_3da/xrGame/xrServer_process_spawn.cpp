@@ -38,7 +38,7 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 	if (E->RespawnTime && (0xffff==E->ID_Phantom))
 	{
 		// Create phantom
-		CSE_Abstract* Phantom	=	entity_Create	(E->s_name); R_ASSERT(Phantom);
+		CSE_Abstract* Phantom	=	entity_Create	(*E->s_name); R_ASSERT(Phantom);
 		Phantom->Spawn_Read		(P);
 		Phantom->ID				=	PerformIDgen	(0xffff);
 		Phantom->ID_Phantom		=	Phantom->ID;						// Self-linked to avoid phantom-breeding

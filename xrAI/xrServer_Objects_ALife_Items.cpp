@@ -140,10 +140,10 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 
 void CSE_ALifeInventoryItem::FillProps		(LPCSTR pref, PropItemVec& values)
 {
-	PHelper().CreateFloat			(values, PrepareKey(pref, base()->s_name, "Item condition"), 		&m_fCondition, 			0.f, 1.f);
+	PHelper().CreateFloat			(values, PrepareKey(pref, *base()->s_name, "Item condition"), 		&m_fCondition, 			0.f, 1.f);
 	CSE_ALifeObject					*alife_object = smart_cast<CSE_ALifeObject*>(base());
 	R_ASSERT						(alife_object);
-	PHelper().CreateFlag32			(values, PrepareKey(pref, base()->s_name,"ALife\\Useful for AI"),	&alife_object->m_flags,	CSE_ALifeObject::flUsefulForAI);
+	PHelper().CreateFlag32			(values, PrepareKey(pref, *base()->s_name,"ALife\\Useful for AI"),	&alife_object->m_flags,	CSE_ALifeObject::flUsefulForAI);
 }
 
 bool CSE_ALifeInventoryItem::bfUseful		()
@@ -290,21 +290,21 @@ void CSE_ALifeItemTorch::FillProps			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProps			(pref,	 values);
 /*
-	PHelper.CreateColor			(values, FHelper.PrepareKey2(pref,s_name,"Color"),			&color);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,s_name,"Color animator"),	animator,			sizeof(animator), 		smLAnim);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,s_name,"Spot texture"),	spot_texture,		sizeof(spot_texture),	smTexture);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
-	PHelper.CreateAngle			(values, FHelper.PrepareKey2(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
-    PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,s_name,"Glow texture"),	glow_texture,		sizeof(glow_texture), 	smTexture);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
+	PHelper.CreateColor			(values, FHelper.PrepareKey2(pref,*s_name,"Color"),			&color);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,*s_name,"Color animator"),	animator,			sizeof(animator), 		smLAnim);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,*s_name,"Spot texture"),	spot_texture,		sizeof(spot_texture),	smTexture);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,*s_name,"Range"),			&spot_range,		0.1f, 1000.f);
+	PHelper.CreateAngle			(values, FHelper.PrepareKey2(pref,*s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
+    PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,*s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,*s_name,"Glow texture"),	glow_texture,		sizeof(glow_texture), 	smTexture);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,*s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
     // bones
     if (visual && smart_cast<CKinematics*>(visual))
     {
         AStringVec				vec;
         u16 cnt					= smart_cast<CKinematics*>(visual)->LL_Bones()->size();
         for (u16 k=0; k<cnt; k++) vec.push_back(smart_cast<CKinematics*>(visual)->LL_BoneName_dbg(k));
-		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey2(pref,s_name,"Guide bone"),		&guid_bone,	&vec);
+		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey2(pref,*s_name,"Guide bone"),		&guid_bone,	&vec);
     }
 */
 }
@@ -427,18 +427,18 @@ u16	 CSE_ALifeItemWeapon::get_ammo_magsize	()
 void CSE_ALifeItemWeapon::FillProps			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps			(pref, items);
-	PHelper().CreateU8			(items,PrepareKey(pref,s_name,"Ammo type:"), &ammo_type,0,255,1);
-	PHelper().CreateU16			(items,PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
+	PHelper().CreateU8			(items,PrepareKey(pref,*s_name,"Ammo type:"), &ammo_type,0,255,1);
+	PHelper().CreateU16			(items,PrepareKey(pref,*s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
 	
 
 	if ((EWeaponAddonStatus)pSettings->r_s32(s_name,"scope_status") == eAddonAttachable)
-	       PHelper().CreateFlag8(items,PrepareKey(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);
+	       PHelper().CreateFlag8(items,PrepareKey(pref,*s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);
 
 	if ((EWeaponAddonStatus)pSettings->r_s32(s_name,"silencer_status") == eAddonAttachable)
-        PHelper().CreateFlag8	(items,PrepareKey(pref,s_name,"Addons\\Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
+        PHelper().CreateFlag8	(items,PrepareKey(pref,*s_name,"Addons\\Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
 
 	if ((EWeaponAddonStatus)pSettings->r_s32(s_name,"grenade_launcher_status") == eAddonAttachable)
-        PHelper().CreateFlag8	(items,PrepareKey(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
+        PHelper().CreateFlag8	(items,PrepareKey(pref,*s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -483,7 +483,7 @@ void CSE_ALifeItemAmmo::UPDATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_ALifeItemAmmo::FillProps			(LPCSTR pref, PropItemVec& values) {
   	inherited::FillProps			(pref,values);
-	PHelper().CreateU16			(values, PrepareKey(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
+	PHelper().CreateU16			(values, PrepareKey(pref, *s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -558,7 +558,7 @@ void CSE_ALifeItemArtefact::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeItemArtefact::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps			(pref,items);
-	PHelper().CreateFloat			(items, PrepareKey(pref, s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
+	PHelper().CreateFloat			(items, PrepareKey(pref, *s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -639,7 +639,7 @@ void CSE_ALifeItemDocument::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeItemDocument::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps			(pref,items);
-	PHelper().CreateU16			(items, PrepareKey(pref, s_name, "Document index :"), &m_wDocIndex, 0, 65535);
+	PHelper().CreateU16			(items, PrepareKey(pref, *s_name, "Document index :"), &m_wDocIndex, 0, 65535);
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -137,7 +137,7 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 				CSE_Abstract		*abstract = server().ID_to_entity(object->children[i]);
 				VERIFY				(abstract);
 				Msg					("ERROR : [%s][%s]",object->s_name,object->s_name_replace);
-				R_ASSERT3			(false,abstract->s_name,abstract->s_name_replace);
+				R_ASSERT3			(false,*abstract->s_name,abstract->s_name_replace);
 			}
 			VERIFY					(dynamic_object);
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(dynamic_object);
@@ -293,7 +293,7 @@ void CALifeSwitchManager::furl_object	(CSE_ALifeDynamicObject *I)
 bool CALifeSwitchManager::synchronize_location(CSE_ALifeDynamicObject *I)
 {
 #ifdef DEBUG
-	VERIFY3					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id(),I->s_name,I->s_name_replace);
+	VERIFY3					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id(),*I->s_name,I->s_name_replace);
 	xr_vector<u16>			test = I->children;
 	std::sort				(test.begin(),test.end());
 	for (u32 i=1, n=test.size(); i<n; ++i)

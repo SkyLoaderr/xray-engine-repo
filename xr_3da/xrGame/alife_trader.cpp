@@ -175,7 +175,7 @@ u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem
 				++l_dwPurchasedCount;
 	}
 
-	ARTEFACT_TRADER_ORDER_PAIR_IT	J = m_tpOrderedArtefacts.find(tpALifeInventoryItem->base()->s_name);
+	ARTEFACT_TRADER_ORDER_PAIR_IT	J = m_tpOrderedArtefacts.find(*tpALifeInventoryItem->base()->s_name);
 	if ((m_tpOrderedArtefacts.end() != J) && (l_dwPurchasedCount < (*J).second->m_dwTotalCount)) {
 		ARTEFACT_ORDER_IT		I = (*J).second->m_tpOrders.begin();
 		ARTEFACT_ORDER_IT		E = (*J).second->m_tpOrders.end();

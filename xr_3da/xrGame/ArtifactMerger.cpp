@@ -117,7 +117,7 @@ void CArtefactMerger::SpawnArtefact(const char* af_section)
 	l_tpALifeDynamicObject->m_tNodeID = this->level_vertex_id();
 		
 	// Fill
-	strcpy				(D->s_name, af_section);
+	D->s_name			= af_section;
 	strcpy				(D->s_name_replace,"");
 	D->s_gameid			=	u8(GameID());
 	D->s_RP				=	0xff;

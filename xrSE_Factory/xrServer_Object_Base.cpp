@@ -78,7 +78,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	s_gameid					= 0;
 	s_RP						= 0xFE;			// Use supplied coords
 	s_flags.assign				(0);
-	Memory.mem_copy				(s_name,caSection,((u32)xr_strlen(caSection) + 1)*sizeof(char));
+	s_name						= caSection;
 	ZeroMemory					(s_name_replace,sizeof(string64));
 	o_Angle.set					(0.f,0.f,0.f);
 	o_Position.set				(0.f,0.f,0.f);
@@ -242,12 +242,12 @@ CSE_Abstract *CSE_Abstract::init	()
 	return						(this);
 }
 
-LPSTR		CSE_Abstract::name			()
+LPCSTR		CSE_Abstract::name			()
 {
-	return	(s_name);
+	return	(*s_name);
 }
 
-LPSTR		CSE_Abstract::name_replace	()
+LPCSTR		CSE_Abstract::name_replace	()
 {
 	return	(s_name_replace);
 }

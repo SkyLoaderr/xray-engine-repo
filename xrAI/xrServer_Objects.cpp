@@ -284,8 +284,8 @@ void CSE_Target_CS_Base::UPDATE_Write		(NET_Packet	&tNetPacket)
 void CSE_Target_CS_Base::FillProps			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref,items);
-    PHelper().CreateFloat		(items,PrepareKey(pref,s_name,"Radius"),	&radius,1.f,100.f);
-    PHelper().CreateU8			(items,PrepareKey(pref,s_name,"Team"),		&s_team,0,1);
+    PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Radius"),	&radius,1.f,100.f);
+    PHelper().CreateU8			(items,PrepareKey(pref,*s_name,"Team"),		&s_team,0,1);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -319,7 +319,7 @@ void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_Target_CS_Cask::FillProps			(LPCSTR pref, PropItemVec& items)
 {
-	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smVisual);
+	PHelper().CreateChoose		(items, PrepareKey(pref,*s_name,"Model"),	&s_Model,	smVisual);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -353,7 +353,7 @@ void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 
 void CSE_Target_CS::FillProps				(LPCSTR pref, PropItemVec& items)
 {
-	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smVisual);
+	PHelper().CreateChoose		(items, PrepareKey(pref,*s_name,"Model"),	&s_Model,	smVisual);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -424,7 +424,7 @@ void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 void CSE_SpawnGroup::FillProps				(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProps				(pref,values);
-	PHelper().CreateFloat			(values,PrepareKey(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
+	PHelper().CreateFloat				(values,PrepareKey(pref,*s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
 };
 
 ////////////////////////////////////////////////////////////////////////////

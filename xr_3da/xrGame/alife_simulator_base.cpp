@@ -107,7 +107,7 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	CSE_Abstract				*abstract = F_entity_Create(section);
 	R_ASSERT3					(abstract,"Cannot find item with section %s",section);
 
-	strcpy						(abstract->s_name,section);
+	abstract->s_name			= section;
 	abstract->s_gameid			= u8(GAME_SINGLE); // GameID()
 	abstract->s_RP				= 0xff;
 	abstract->ID				= server().PerformIDgen(0xffff);
@@ -115,7 +115,7 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	abstract->ID_Phantom		= 0xffff;
 	abstract->o_Position		= position;
 	
-	strcpy						(abstract->s_name_replace,abstract->s_name);
+	strcpy						(abstract->s_name_replace,*abstract->s_name);
 	if (abstract->ID < 1000)
 		strcat					(abstract->s_name_replace,"0");
 	if (abstract->ID < 100)
@@ -158,12 +158,12 @@ CSE_Abstract *CALifeSimulatorBase::create(CSE_ALifeGroupAbstract *tpALifeGroupAb
 	u16							id;
 	tNetPacket.r_begin			(id);
 	k->UPDATE_Read				(tNetPacket);
-	strcpy						(k->s_name,S);
+	k->s_name					= S;
 	k->m_tSpawnID				= j->m_tSpawnID;
 	k->ID						= server().PerformIDgen(0xffff);
 	k->m_bDirectControl			= false;
 	k->m_bALifeControl			= true;
-	strcpy						(k->s_name_replace,k->s_name);
+	strcpy						(k->s_name_replace,*k->s_name);
 	if (k->ID < 1000)
 			strcat				(k->s_name_replace,"0");
 	if (k->ID < 100)
@@ -179,7 +179,7 @@ CSE_Abstract *CALifeSimulatorBase::create(CSE_ALifeGroupAbstract *tpALifeGroupAb
 
 void CALifeSimulatorBase::create(CSE_ALifeDynamicObject *&i, CSE_ALifeDynamicObject *j, const _SPAWN_ID &tSpawnID)
 {
-	CSE_Abstract				*tpSE_Abstract = F_entity_Create(j->s_name);
+	CSE_Abstract				*tpSE_Abstract = F_entity_Create(*j->s_name);
 	R_ASSERT2					(tpSE_Abstract,"Can't create entity.");
 	i							= smart_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 	R_ASSERT2					(i,"Non-ALife object in the 'game.spawn'");

@@ -16,7 +16,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 	VERIFY				(E);
 
 	// Fill
-	strcpy				(E->s_name,name);
+	E->s_name			= name;
 	strcpy				(E->s_name_replace,"");
 	E->s_gameid			=	u8(GameID());
 	E->s_RP				=	rp;
@@ -49,7 +49,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 
 	// Client spawn
 	T.Start		();
-	CObject*	O		= Objects.Create	(E->s_name);
+	CObject*	O		= Objects.Create	(*E->s_name);
 	// Msg				("--spawn--CREATE: %f ms",1000.f*T.GetAsync());
 
 	T.Start		();
@@ -99,7 +99,7 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 		weapon->a_elapsed = weapon->get_ammo_magsize();
 	
 	// Fill
-	strcpy					(abstract->s_name,section);
+	abstract->s_name		= section;
 	strcpy					(abstract->s_name_replace,section);
 	abstract->s_gameid		= u8(GameID());
 	abstract->o_Position	= position;

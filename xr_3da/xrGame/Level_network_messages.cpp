@@ -171,7 +171,7 @@ void CLevel::ClientReceive()
 				else
 				{
 					const char* m_SO = m_caServerOptions.c_str();
-					const char* m_CO = m_caClientOptions.c_str();
+//					const char* m_CO = m_caClientOptions.c_str();
 
 					m_SO = strchr(m_SO, '/'); if (m_SO) m_SO++;
 					m_SO = strchr(m_SO, '/'); 
