@@ -1780,6 +1780,15 @@ void CActor::SetPhPosition(const Fmatrix &pos)
 	//else m_phSkeleton->S
 }
 
+void CActor::ForceTransform(const Fmatrix& m)
+{
+	if(g_Alive()<=0) return;
+	mRotate.set(m);
+	mRotate.c.set(0,0,0);
+	vPosition.set(m.c);
+	UpdateTransform();
+	ph_Movement.SetPosition(m.c);
+}
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
 void CActor::OnRender	()

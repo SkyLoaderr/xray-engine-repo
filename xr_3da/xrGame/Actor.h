@@ -299,7 +299,7 @@ public:
 	virtual void						OnVisible			( );
 	virtual void						OnEvent				( NET_Packet& P, u16 type		);
 	virtual void						OnDeviceCreate		( );
-
+	virtual void						ForceTransform		(const Fmatrix &m);
 	void								ZoneEffect			(float z_amount);
 	void								Statistic			( );
 	void								SetPhPosition		(const Fmatrix& pos);
