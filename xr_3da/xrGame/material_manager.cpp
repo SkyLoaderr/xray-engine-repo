@@ -56,7 +56,7 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 	CObject					*object = dynamic_cast<CObject*>(this);
 	VERIFY					(object);
 	Fvector					position = object->Position();
-	position.y				+= .10f;
+	position.y				+= .10f; 
 	// ref_sound step
 	if (!standing) {
 		if (m_time_to_step < 0) {
