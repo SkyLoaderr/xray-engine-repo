@@ -41,13 +41,11 @@ protected:
 
 	virtual void			UpdateMapLocations		() {};
 //-----------------------------------------------------------------------------------
-	ref_shader				m_BuyMenuShader;
 	ref_shader				m_EquipmentIconsShader;
 	ref_shader				m_KillEventIconsShader;
 	ref_shader				m_RadiationIconsShader;
 	ref_shader				m_BloodLossIconsShader;
 
-    virtual ref_shader		GetBuyMenuShader();
 	virtual ref_shader		GetEquipmentIconsShader	();
 	virtual ref_shader		GetKillEventIconsShader	();
 	virtual ref_shader		GetRadiationIconsShader	();
