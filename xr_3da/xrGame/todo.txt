@@ -21,6 +21,7 @@
 	+ TODO: SE : Weapon
 	+ TODO: NET: Migrate
 	+ TODO: NET: Ownership
+	+ TODO: Disable VS on Ge4 MX
 	
 	. TODO: Detail texturing
 

@@ -14,8 +14,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 	xrServerEntity*	E	= entity_Create	(s_name);
 	R_ASSERT			(E);
 	E->Spawn_Read		(P);
-
-#pragma todo("SE, Spawn: remove auto-activate")
+ 
 	E->s_flags			|= M_SPAWN_OBJECT_ACTIVE;
 
 	// generate/find new ID for entity
