@@ -68,6 +68,7 @@ public:
 
 	Shader_xrLC_LIB			shaders;
 
+	DWORD	mem_Usage				();
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
 public:

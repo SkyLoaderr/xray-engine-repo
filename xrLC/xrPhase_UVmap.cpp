@@ -81,12 +81,16 @@ void	CBuild::xrPhase_UVmap()
 				}
 			}
 			if (msF) {
+				DWORD M0	= mem_Usage();
 				g_deflectors.push_back	(new CDeflector);
+				Log("-- new CDeflector: ",mem_Usage()-M0);
 				
 				// Start recursion from this face
+				DWORD M1	= mem_Usage();
 				affected				= 1;
 				Deflector->OA_SetNormal	(msF->N);
 				msF->OA_Unwarp			();
+				Log("-- OA_Unwarp: ",mem_Usage()-M1);
 				
 				// break the cycle to startup again
 				Deflector->OA_Export	();
@@ -94,19 +98,21 @@ void	CBuild::xrPhase_UVmap()
 				// Detach affected faces
 				vecFace		faces_affected;
 				faces_affected.reserve	(_MAX(256,affected));
+				faces_affected.clear	();
 				for (int i=0; i<int(g_XSplit[SP]->size()); i++) {
 					Face *F = (*g_XSplit[SP])[i];
 					if ( F->pDeflector==Deflector ) {
 						faces_affected.push_back(F);
-						g_XSplit[SP]->erase		(g_XSplit[SP]->begin()+i);
+						g_XSplit[SP]->erase		(g_XSplit[SP]->begin()+i); 
 						i--;
 					}
 				}
 				
 				// detaching itself
+				DWORD M2	= mem_Usage();
 				Detach				(&faces_affected);
+				Log("-- Detach: ",mem_Usage()-M2);
 				g_XSplit.push_back	(new vecFace(faces_affected));
-				faces_affected.clear();
 			} else {
 				if (g_XSplit[SP]->empty()) 
 				{
@@ -143,4 +149,35 @@ void CBuild::mem_Compact()
 {
 	_heapmin			();
 	HeapCompact			(GetProcessHeap(),0);
+}
+DWORD CBuild::mem_Usage()
+{
+	_HEAPINFO		hinfo;
+	int				heapstatus;
+	hinfo._pentry	= NULL;
+	DWORD	total	= 0;
+	while( ( heapstatus = _heapwalk( &hinfo ) ) == _HEAPOK )
+	{ 
+		if (hinfo._useflag == _USEDENTRY)	total += hinfo._size;
+	}
+	
+	switch( heapstatus )
+	{
+	case _HEAPEMPTY:
+//		Msg( "OK - empty heap\n" );
+		break;
+	case _HEAPEND:
+//		Msg( "OK - end of heap\n" );
+		break;
+	case _HEAPBADPTR:
+		Msg( "ERROR - bad pointer to heap\n" );
+		break;
+	case _HEAPBADBEGIN:
+		Msg( "ERROR - bad start of heap\n" );
+		break;
+	case _HEAPBADNODE:
+		Msg( "ERROR - bad node in heap\n" );
+		break;
+	}
+	return total;
 }
