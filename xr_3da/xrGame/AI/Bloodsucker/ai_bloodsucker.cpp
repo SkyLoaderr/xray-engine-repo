@@ -322,6 +322,7 @@ void CAI_Bloodsucker::on_activate()
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
 	state_invisible = true;
 
+	spatial.type |= STYPE_VISIBLEFORAI;
 }
 
 void CAI_Bloodsucker::on_deactivate()
@@ -331,6 +332,7 @@ void CAI_Bloodsucker::on_deactivate()
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
 	state_invisible = false;
 	
+	spatial.type &= ~STYPE_VISIBLEFORAI;
 }
 
 void CAI_Bloodsucker::net_Destroy()

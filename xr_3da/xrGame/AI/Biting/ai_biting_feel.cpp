@@ -70,7 +70,7 @@ BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 {
 	if (CLSID_ENTITY!=O->CLS_ID) return FALSE;
 	
-	if (!O->getVisible()) return FALSE;
+	if ((O->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI) return FALSE;
 	
 	CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 	if (!E) return FALSE;
