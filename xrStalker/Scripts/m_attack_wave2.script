@@ -308,7 +308,7 @@ function main ()
 		monsters[a]:initialize ()
 --	    if a <= table.getn (stalkers) then
 --		   stalkers[a]:initialize ()
-		end
+--		end
 	end
 	
 
@@ -320,7 +320,7 @@ function main ()
 			  monsters[1]:process ()
 --	          if a <= table.getn (stalkers) then
 --		         stalkers[a]:process ()
-  		      end
+--  		      end
 		  end	
 		  wait (200)
 	end
