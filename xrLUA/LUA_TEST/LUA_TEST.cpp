@@ -434,24 +434,81 @@ void print_stack(lua_State *L)
 //		printf("%2d : %s\n",i,lua_typename(L, lua_type(L, i)));
 }
 
-bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true)
+//bool create_namespace_table(lua_State *L, LPCSTR N)
+//{
+//	if (!strlen(N))
+//		return			(false);
+//	LPSTR			S = (char*)xr_malloc((strlen(N) + 1)*sizeof(char));
+//	strcpy			(S,N);
+//	LPSTR			S1 = strchr(S,'.');
+//	if (S1)
+//		*S1				= 0;
+//	lua_pushstring	(L,S);
+//	lua_gettable	(L,-2);
+//	if (lua_isnil(L,-1)) {
+//		lua_pop			(L,1);
+//		lua_newtable	(L);
+//		lua_pushstring	(L,S);
+//		lua_pushvalue	(L,-2);
+//		lua_settable	(L,-4);
+//	}
+//	else
+//		if (!lua_istable(L,-1)) {
+//			xr_free			(S);
+//			lua_pop			(L,2);
+//			printf			(" Error : the namespace name is already being used by the non-table object!\n");
+//			return			(false);
+//		}
+//	lua_remove		(L,-2);
+//	bool			l_bResult = true;
+//	if (S1)
+//		l_bResult	= create_namespace_table(L,++S1);
+//	xr_free			(S);
+//	return			(l_bResult);
+//}
+
+bool create_namespace_table(lua_State *L, LPCSTR N)
 {
-	lua_pushstring	(L,N);
+	lua_pushstring	(L,"_G");
 	lua_gettable	(L,LUA_GLOBALSINDEX);
-	if (lua_isnil(L,-1)) {
-		lua_pop			(L,1);
-		lua_newtable	(L);
-		lua_pushstring	(L,N);
-		lua_pushvalue	(L,-2);
-		lua_settable	(L,LUA_GLOBALSINDEX);
-	}
-	else
-		if (!lua_istable(L,-1)) {
-			lua_pop			(L,1);
-			printf			(" Error : the namespace name is already being used by the non-table object!\n");
-			return			(false);
+	LPSTR			S2 = (char*)xr_malloc((strlen(N) + 1)*sizeof(char)), S = S2;
+	strcpy			(S,N);
+	for (;;) {
+		if (!strlen(S)) {
+			xr_free		(S2);
+			return		(false);
 		}
-	
+		LPSTR			S1 = strchr(S,'.');
+		if (S1)
+			*S1				= 0;
+		lua_pushstring	(L,S);
+		lua_gettable	(L,-2);
+		if (lua_isnil(L,-1)) {
+			lua_pop			(L,1);
+			lua_newtable	(L);
+			lua_pushstring	(L,S);
+			lua_pushvalue	(L,-2);
+			lua_settable	(L,-4);
+		}
+		else
+			if (!lua_istable(L,-1)) {
+				xr_free			(S2);
+				lua_pop			(L,2);
+				printf			(" Error : the namespace name is already being used by the non-table object!\n");
+				return			(false);
+			}
+		lua_remove		(L,-2);
+		if (S1)
+			S			= ++S1;
+		else
+			break;
+	}
+	xr_free			(S2);
+	return			(true);
+}
+
+void copy_globals(lua_State *L)
+{
 	lua_newtable	(L);
 	lua_pushstring	(L,"_G");
 	lua_gettable	(L,LUA_GLOBALSINDEX);
@@ -462,7 +519,10 @@ bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = tru
 		lua_settable	(L,-6);
 		lua_pop			(L, 1);
 	}
+}
 
+bool do_file(lua_State *L, LPCSTR S, bool bCall)
+{
 	if (luaL_loadfile(L,S)) {
 		printf			(" Error in file %s!\n",S);
 		for (int i=0; ; i++)
@@ -479,6 +539,11 @@ bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = tru
 	else
 		lua_insert		(L,-4);
 
+	return			(true);
+}
+
+void set_namespace(lua_State *L)
+{
 	lua_pushnil		(L);
 	while (lua_next(L, -2) != 0) {
 		lua_pushvalue	(L,-2);
@@ -511,8 +576,17 @@ bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = tru
 		lua_settable	(L,-6);
 		lua_pop			(L, 1);
 	}
-	
 	lua_pop			(L,3);
+}
+
+bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true)
+{
+	if (!create_namespace_table(L,N))
+		return		(false);
+	copy_globals	(L);
+	if (!do_file(L,S,bCall))
+		return		(false);
+	set_namespace	(L);
 	return			(true);
 }
 
@@ -531,7 +605,7 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 //	open			(L);
 
 	lua_pop			(L,4);
-	load_file_into_namespace(L,"x:\\extension.lua","core");
+	load_file_into_namespace(L,"x:\\extension.lua","core.core.core.core.core.core.core.core");
 	load_file_into_namespace(L,"x:\\extension1.lua","core");
 	lua_State		*T = lua_newthread(L);
 	load_file_into_namespace(T,"x:\\test1.lua","test1",false);
