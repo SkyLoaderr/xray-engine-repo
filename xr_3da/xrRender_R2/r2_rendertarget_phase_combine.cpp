@@ -42,7 +42,7 @@ void	CRenderTarget::phase_combine	()
 		float dr					= ps_r2_ls_dynamic_range;
 		RCache.set_Shader			(s_combine);
 		RCache.set_c				("light_dynamic_range",	dr,dr,dr,dr);
-		RCache.set_c				("light_hemi",			.5f,.5f,.5f,.5f);
+		RCache.set_c				("light_hemi",			.5f,.5f,.5f,0.f);
 		RCache.set_Geometry			(g_combine);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
