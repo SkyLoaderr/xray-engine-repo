@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ai_alife_space.h"
 using namespace ALife;
 using namespace AI;
 

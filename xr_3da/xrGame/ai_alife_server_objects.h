@@ -8,7 +8,6 @@
 
 #pragma once
 
-class xrClientData;
 #include "ai_alife_objects.h"
 
 class CALifeMonsterParams : public IPureServerEditorObject {
@@ -170,7 +169,6 @@ public:
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
 	{
 		inherited::STATE_Read		(tNetPacket, size);
-		m_wCountAfter				= m_wCount;
 	}
 
 	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
@@ -183,6 +181,11 @@ public:
 	{
 		inherited::UPDATE_Read		(tNetPacket);
 		tNetPacket.r				(&m_wCountAfter,sizeof(m_wCountAfter));
+	};
+
+	virtual void					Init(LPCSTR caSection)
+	{
+		m_wCountAfter				= m_wCount;
 	};
 };
 
