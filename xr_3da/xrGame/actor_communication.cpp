@@ -132,17 +132,18 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 {
 	m_AvailableDialogs.clear();
 
-	VERIFY2(CInventoryOwner::known_info_registry.objects_ptr(), "No Info in 'Known_Info_Registry' for Actor");
-
-	for(KNOWN_INFO_VECTOR::const_iterator it = CInventoryOwner::known_info_registry.objects_ptr()->begin();
-								CInventoryOwner::known_info_registry.objects_ptr()->end() != it; ++it)
+	if(CInventoryOwner::known_info_registry.objects_ptr())
 	{
-		//подгрузить кусочек информации с которым мы работаем
-		CInfoPortion info_portion;
-		info_portion.Load((*it).id);
-	
-		for(u32 i = 0; i<info_portion.DialogNames().size(); i++)
-			AddAvailableDialog(*info_portion.DialogNames()[i], partner);
+		for(KNOWN_INFO_VECTOR::const_iterator it = CInventoryOwner::known_info_registry.objects_ptr()->begin();
+			CInventoryOwner::known_info_registry.objects_ptr()->end() != it; ++it)
+		{
+			//подгрузить кусочек информации с которым мы работаем
+			CInfoPortion info_portion;
+			info_portion.Load((*it).id);
+
+			for(u32 i = 0; i<info_portion.DialogNames().size(); i++)
+				AddAvailableDialog(*info_portion.DialogNames()[i], partner);
+		}
 	}
 	CPhraseDialogManager::UpdateAvailableDialogs(partner);
 }
