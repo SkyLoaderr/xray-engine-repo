@@ -12,7 +12,7 @@
 BOOL xrServer::Connect(shared_str &session_name)
 {
 #ifdef DEBUG
-	Msg						("! sv_Connect: %s",	*session_name);
+	Msg						("* sv_Connect: %s",	*session_name);
 #endif
 
 	// Parse options and create game

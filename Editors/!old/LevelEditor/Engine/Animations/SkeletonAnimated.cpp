@@ -494,7 +494,7 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	IBlend_Startup	();
 
 	if (motions.cycle()->size()<2)			
-		Msg("! WARNING: model '%s' has only one motion. Candidate for SkeletonRigid???",N);
+		Msg("* WARNING: model '%s' has only one motion. Candidate for SkeletonRigid???",N);
 }
 
 //------------------------------------------------------------------------------
