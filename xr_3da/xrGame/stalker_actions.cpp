@@ -228,6 +228,8 @@ void CStalkerActionGetEnemySeen::initialize	()
 void CStalkerActionGetEnemySeen::finalize	()
 {
 	inherited::finalize		();
+	if (m_object->enemy() && m_object->visible(m_object->enemy()))
+		m_storage->set_property		(eWorldPropertyEnemyAimed,true);
 	m_object->set_sound_mask(0);
 }
 
