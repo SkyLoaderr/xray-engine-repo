@@ -23,18 +23,22 @@ function helper_init(first_speaker, second_speaker)
 	end
 end
 -------------------
-function is_medikit_present (helper, player)
+--' Прекондишн на медикит
+function is_medikit_present (helper, player) 
     return helper:object ("medikit") ~= nil
 end
 -------------------
+--' Передача медикита халявная
 function drop_medikit (helper, player)
     helper:transfer_item (helper:object ("medikit"), player)
 end
 -------------------
+--' Продажа медикита
 function sell_medikit (helper, player)
     helper:transfer_item (helper:object ("medikit"), player)
 end
 -------------------
+--' Имеется ли лишнее оружие
 function have_extra_weapon (helper, player)
     local count = helper:object_count () 
     if count == 0 then return false end
@@ -47,8 +51,8 @@ function have_extra_weapon (helper, player)
     return false    
 end
 -------------------
+--' Хорошо ли персонаж себя чувствует
 function is_health_good (helper, player)
     return player.health >= 0.9 
 end    
-end
 -----------------------------------------------------------------------------------

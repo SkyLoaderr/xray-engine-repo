@@ -160,9 +160,9 @@
                 <next>14</next>
             </phrase>
             <phrase id="11">
-				<!-- прекондишн -->
+				<!-- прекондишн <precondition></precondition> -->
                 <text>Возьми, потом отблагодаришь.</text>
-                <!-- Вызвать функцию передачи аптечки -->
+                <!-- Вызвать функцию передачи аптечки <action></action> -->
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
