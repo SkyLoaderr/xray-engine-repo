@@ -183,10 +183,32 @@ void CRender::render_sun				()
 
 	// Fill the database
 	{
+		HOM.Disable								();
 		phase									= PHASE_SMAP_S;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 		else							r_pmask	(true,false	);
 		fuckingsun->svis.begin					();
 		r_dsgraph_render_subspace				(cull_sector, &cull_frustum, fuckingsun->X.S.combine, cull_COP, TRUE);
+		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
+		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
+		if ( bNormal || bSpecial)	{
+			stats.s_merged						++;
+			Target.phase_smap_direct			(fuckingsun		);
+			RCache.set_xform_world				(Fidentity		);
+			RCache.set_xform_view				(L->X.D.view	);
+			RCache.set_xform_project			(L->X.D.project	);
+			r_dsgraph_render_graph				(0);
+			L->X.D.transluent					= FALSE;
+			if (bSpecial)						{
+				L->X.D.transluent					= TRUE;
+				Target.phase_smap_direct_tsh		(fuckingsun);
+				r_dsgraph_render_graph				(1);			// normal level, secondary priority
+				r_dsgraph_render_sorted				( );			// strict-sorted geoms
+			}
+		} else {
+			stats.s_finalclip					++;
+		}
+		L->svis.end								();
+		r_pmask									(true,false);
 	}
 }

@@ -193,7 +193,7 @@ void CRender::Render		()
 	}
 
 	// Directional light - fucking sun
-	render_sun								();
+	// render_sun								();
 
 	// Lighting, non dependant on OCCQ
 	Target.phase_accumulator				();

@@ -289,25 +289,7 @@
 				RelativePath="r2_R_render.cpp">
 			</File>
 			<File
-				RelativePath="r2_R_smap_direct.cpp">
-			</File>
-			<File
 				RelativePath=".\r2_R_sun.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="r2_screenshot.cpp">

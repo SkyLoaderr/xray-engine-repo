@@ -132,6 +132,7 @@ public:
 	void						phase_occq				();
 	void						phase_wallmarks			();
 	void						phase_smap_direct		(light* L);
+	void						phase_smap_direct_tsh	(light* L);
 	void						phase_smap_spot_clear	();
 	void						phase_smap_spot			(light* L);
 	void						phase_smap_spot_tsh		(light* L);
