@@ -332,4 +332,5 @@ void CWeapon::Render(BOOL bHUDView)
 		UpdateFP	(bHUDView);
 		Light_Render(vLastFP);
 	}
+	if (m_pHUD)	PKinematics(m_pHUD->Visual())->Update	();
 }

@@ -256,7 +256,6 @@ private:
 			if (I->blend == CBlend::eFREE_SLOT) return I;
 		Device.Fatal("Too many blended motions requisted");
 	}
-	void									Update			();	// Update motions
 public:
 	// Low level interface
 	int							LL_BoneID		(LPCSTR B);
@@ -289,6 +288,7 @@ public:
 	void						LL_CloseCycle	(int partition);
 	
 	// Main functionality
+	void						Update			();	// Update motions
 	void						Calculate		(BOOL bLight=FALSE);	// Recalculate skeleton (Light mode can be used to avoid interpolation)
 
 	// cycles
