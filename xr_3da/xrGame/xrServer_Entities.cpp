@@ -308,6 +308,24 @@ void xrSE_Target_CSBase::FillProp			(LPCSTR pref, PropValueVec& values)
 }
 #endif
 
+//***** Target CS Cask
+xrSE_Target_CSCask::xrSE_Target_CSCask()
+{
+	s_Model[0]	=	0;
+}
+void	xrSE_Target_CSCask::UPDATE_Read	(NET_Packet& P)				{}
+void	xrSE_Target_CSCask::UPDATE_Write	(NET_Packet& P)				{}
+void	xrSE_Target_CSCask::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
+void	xrSE_Target_CSCask::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
+
+#ifdef _EDITOR
+void	xrSE_Target_CSCask::FillProp	(LPCSTR pref, PropValueVec& values)
+{
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateLibObject(sizeof(s_Model)));
+}
+#endif
+//
+
 //***** Target CS
 xrSE_Target_CS::xrSE_Target_CS()
 {

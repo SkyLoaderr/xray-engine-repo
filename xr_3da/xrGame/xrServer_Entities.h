@@ -191,6 +191,12 @@ xrSE_DECLARE_BEGIN(xrSE_Target_CSBase,xrSE_Target)
 	xrSE_Target_CSBase		();
 xrSE_DECLARE_END
 
+//***** Target CS Cask
+xrSE_DECLARE_BEGIN(xrSE_Target_CSCask,xrSE_Target)
+	string64				s_Model;
+	xrSE_Target_CSCask();
+xrSE_DECLARE_END
+
 //***** Target CS
 xrSE_DECLARE_BEGIN(xrSE_Target_CS,xrSE_Target)
 	string64				s_Model;
