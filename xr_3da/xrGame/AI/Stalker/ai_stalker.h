@@ -72,7 +72,7 @@ public:
 	virtual void			OnDeviceCreate			();
 	virtual void			Load					(LPCSTR	section );				
 	virtual void			HitSignal				(float P,	Fvector& vLocalDir, CObject* who, s16 element);
-	virtual void			g_WeaponBones			(int& L,	int& R	){};
+	virtual void			g_WeaponBones			(int& L,	int& R	);
 	virtual void			Think					();
 	virtual void			Die						();
 	virtual void			g_fireParams			(Fvector& P, Fvector& D);
@@ -80,4 +80,6 @@ public:
 	virtual void			net_Import				(NET_Packet& P);
 	virtual void			SelectAnimation			(const Fvector& _view, const Fvector& _move, float speed );
 	virtual void			OnEvent					(NET_Packet& P, u16 type);
+			void			feel_touch_new			(CObject* O);
+			void			OnVisible				();
 };

@@ -26,3 +26,10 @@ objQualifier* CAI_Stalker::GetQualifier	()
 	return(&StalkerQualifier);
 }
 
+void CAI_Stalker::OnVisible	()
+{
+	inherited::OnVisible	();
+
+	CWeapon* W				= Weapons->ActiveWeapon();
+	if (W)					W->OnVisible		();
+}

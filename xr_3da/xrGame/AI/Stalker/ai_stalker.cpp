@@ -20,6 +20,7 @@ CAI_Stalker::~CAI_Stalker()
 	for (int i=0; i<(int)m_tStateList.size(); i++)
 		Msg("%3d %6d",m_tStateList[i].eState,m_tStateList[i].dwTime);
 	Msg("Total updates : %d",m_dwUpdateCount);
+	xr_delete(Weapons);
 }
 
 // when soldier is dead
@@ -36,18 +37,23 @@ void CAI_Stalker::OnDeviceCreate()
 { 
 	inherited::OnDeviceCreate();
 	CStalkerAnimations::Load(PKinematics(pVisual));
+	Weapons->Init		(pSettings->ReadSTRING(cNameSect(),"bone_torso_weapon"),pSettings->ReadSTRING(cNameSect(),"bone_head_weapon"));
 }
 
 void CAI_Stalker::Load	(LPCSTR section)
 { 
 	inherited::Load		(section);
+	Weapons				= xr_new<CWeaponList> (this);
 }
 
 BOOL CAI_Stalker::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
-	cNameVisual_set		("actors\\Different_stalkers\\stalker_no_hood_singleplayer.ogf");
+	xrSE_Human		*tpHuman = (xrSE_Human*)(DC);
+	R_ASSERT		(tpHuman);
+	cNameVisual_set	(tpHuman->caModel);
+	fHealth			= tpHuman->fHealth;
 	m_eCurrentState = m_ePreviousState = eStalkerStateLookingOver;
 	return				(TRUE);
 }

@@ -11,28 +11,28 @@
 
 void CAI_Stalker::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
 {
-//	if (Weapons->ActiveWeapon()) {
-//		fire_pos.set(Weapons->ActiveWeapon()->Position());
-//		/**
-//		if ((tSavedEnemy) && (tSavedEnemy->g_Health() > 0)) {
-//			Fvector fTemp;
-//			fTemp.sub(tSavedEnemy->Position(),fire_pos);
-//			fTemp.normalize_safe();
-//			fire_dir.set(fTemp);
-//		}
-//		else
-//			fire_dir.set(eye_matrix.k);
-//		/**/
-//			//fire_dir.set(eye_matrix.k);
-//			//fire_dir.set(tWatchDirection);
-//		/**
-//		if (r_torso_current.yaw > PI)
-//			fire_dir.setHP(-r_torso_current.yaw + m_fAddWeaponAngle,-r_torso_current.pitch);
-//		else
-//			fire_dir.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
-//		/**/
-//		fire_dir.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
-//	}
+	if (Weapons->ActiveWeapon()) {
+		fire_pos.set(Weapons->ActiveWeapon()->Position());
+		/**
+		if ((tSavedEnemy) && (tSavedEnemy->g_Health() > 0)) {
+			Fvector fTemp;
+			fTemp.sub(tSavedEnemy->Position(),fire_pos);
+			fTemp.normalize_safe();
+			fire_dir.set(fTemp);
+		}
+		else
+			fire_dir.set(eye_matrix.k);
+		/**/
+			//fire_dir.set(eye_matrix.k);
+			//fire_dir.set(tWatchDirection);
+		/**
+		if (r_torso_current.yaw > PI)
+			fire_dir.setHP(-r_torso_current.yaw + m_fAddWeaponAngle,-r_torso_current.pitch);
+		else
+			fire_dir.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+		/**/
+		fire_dir.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+	}
 }
 
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
@@ -60,4 +60,11 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 //			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
 //				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
 //	}
+}
+
+void CAI_Stalker::g_WeaponBones	(int& L, int& R)
+{
+	VERIFY	(Weapons);
+	L		=	Weapons->m_iACTboneL;
+	R		=	Weapons->m_iACTboneR;
 }
