@@ -48,23 +48,18 @@ cam_max_angle				= 4		;максимальный угол отдачи
 cam_max_angle_horz	= 5.0	;(degree) maximum shot horizontal degree 
 cam_step_angle_horz	= 0.5	;(degree) size of step camera moved in horizontal position while shooting
 
-;;;destroy it
-cam_horz_prob = 1			;probability of the horizontal deviation of effector while shooting (1 – always deviates)
-cam_horz_factor = 1.5		; empirically determined coefficient  of the horizontal deviation (if raises – dispersal raises) 
-
-
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
 misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
 condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
 direction                	= 0, 0, 1
-fire_point               	= 0.0, 0.14, 0.15
+fire_point               	= 0.0, 0.132, 0.137
 
 flame_particles		   		= weapons\generic_weapon05
 smoke_particles		   		= weapons\generic_shoot_00
 
-shell_point		 			= 0.05, 0.12, -0.05
+shell_point		 			= 0.0, 0.132, 0.03
 shell_dir		 			= 0.0, 0.0, 0.4
 shell_particles	 			= weapons\generic_shells
 
@@ -82,7 +77,7 @@ rpm                      	= 300
 
 hud                      	= wpn_usp_hud
 normal                   	= 0, 1, 0
-position                 	= -0.03, -0.044, 0.12
+position                 	= -0.021, -0.08, 0.0
 orientation              	= 0, 0, 0
 ;startup_ammo             	= 90
 visual                   	= weapons\usp_45\wpn_usp_45.ogf
