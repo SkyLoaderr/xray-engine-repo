@@ -145,7 +145,7 @@ void game_sv_GameState::OnRoundStart			()
 
 void game_sv_GameState::OnRoundEnd				(LPCSTR reason)
 {
-	phase		= GAME_PHASE_INPROGRESS;
+	phase		= GAME_PHASE_PENDING;
 }
 
 void game_sv_GameState::OnPlayerConnect			(u32 id_who, LPCSTR options)
