@@ -166,4 +166,6 @@ public:
 	virtual ~CRender				();
 };
 
+extern CRender						Render_Implementation;
+
 #endif // !defined(AFX_FSTATICRENDER_H__CC9820C1_A341_11D3_B4E3_4854E82A090D__INCLUDED_)

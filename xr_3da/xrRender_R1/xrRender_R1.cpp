@@ -11,6 +11,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		::Render		= &Render_Implementation;
+		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
@@ -18,12 +20,3 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 	}
     return TRUE;
 }
-
-extern "C" {
-	DLL_API CRender_interface*	__cdecl xrCreate		()
-	{
-	}
-	DLL_API CRender_interface*	__cdecl xrDestroy		(CRender_interface* I)
-	{
-	}
-};
