@@ -112,11 +112,12 @@ BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dis
 #endif
     return bRes;
 }
-
+/*
 IC bool sound_pred(const CEffect_Thunderbolt::SoundDesc& x, float val)
 {
 	return x.time<val;
 };
+*/
 #define FAR_DIST g_pGamePersistent->Environment.CurrentEnv.far_plane
 #define SUN_DIR  g_pGamePersistent->Environment.CurrentEnv.sun_dir
 void CEffect_Thunderbolt::Bolt(float period, float lt)
@@ -157,9 +158,13 @@ void CEffect_Thunderbolt::Bolt(float period, float lt)
 	    next_lightning_time = Device.fTimeGlobal+lt+EPS_L;
     }else{
 	    next_lightning_time = Device.fTimeGlobal+period+Random.randF(-period*0.3f,period*0.3f);
-    	float val			= Device.fTimeGlobal+dist/300.f;
+/*  
+		float val			= Device.fTimeGlobal+dist/300.f;
 	    SoundDeqIt it		= std::lower_bound(sound_times.begin(),sound_times.end(),val,sound_pred);
     	sound_times.insert	(it,SoundDesc(val,pos));
+*/
+		current->snd.play_at_pos_unlimited(0,pos,FALSE,dist/300.f);
+		current->snd.set_range	(dist/2,dist*2.f);
     }
 }
 
@@ -171,6 +176,7 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
     }else if (bEnabled&&(Device.fTimeGlobal>next_lightning_time)){ 
     	if (state==stIdle)	Bolt(period,duration);
     }
+/*
     if (!sound_times.empty()){
     	SoundDesc& next_tm 	= sound_times.front();
         if (Device.fTimeGlobal>next_tm.time){
@@ -181,6 +187,7 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
             sound_times.pop_front	();
         }
     }
+*/
 	if (state==stWorking){
     	if (current_time>life_time) state = stIdle;
     	current_time	+= Device.fTimeDelta;

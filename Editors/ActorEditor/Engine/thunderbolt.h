@@ -38,14 +38,16 @@ public:
 class ENGINE_API CEffect_Thunderbolt
 {
 public:
+/*
 	struct SoundDesc{
     	float 	time;
         Fvector	pos;
         SoundDesc(float t, const Fvector& p){time=t;pos=p;}
     };
+*/
 private:
 	DEFINE_VECTOR(CThunderboltDesc*,DescVec,DescIt);
-	DEFINE_DEQUE(SoundDesc,SoundDeq,SoundDeqIt);
+//	DEFINE_DEQUE(SoundDesc,SoundDeq,SoundDeqIt);
 	DescVec			  			palette;
     CThunderboltDesc*			current;
 
@@ -68,7 +70,7 @@ private:
     float						life_time;
     float						current_time;
     float						next_lightning_time;
-    SoundDeq					sound_times;
+//    SoundDeq					sound_times;
 	BOOL						bEnabled;
 
     // params
