@@ -321,7 +321,7 @@ void __fastcall TfrmEditLightAnim::ebCreateKeyClick(TObject *Sender)
         	OnModified();
     }
     TProperties::DestroyForm(P);
-}                    //overridden
+}                    
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::pbGPaint(TObject *Sender)
