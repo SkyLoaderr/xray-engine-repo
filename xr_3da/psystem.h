@@ -80,11 +80,11 @@ namespace PAPI
 		Flags32	flags;
 	};
 
-	// A group of particles - Info and an array of Particles
-	struct PARTICLEDLL_API ParticleGroup
+	// A effect of particles - Info and an array of Particles
+	struct PARTICLEDLL_API ParticleEffect
 	{
 		int p_count;				// Number of particles currently existing.
-		int max_particles;			// Max particles allowed in group.
+		int max_particles;			// Max particles allowed in effect.
 		int particles_allocated;	// Actual allocated size.
 		Particle list[1];			// Actually, num_particles in size
 
@@ -178,7 +178,7 @@ namespace PAPI
 		PACopyVertexBID,	// Set the secondary position from current position.
 		PADampingID,		// Dampen particle velocities.
 		PAExplosionID,		// An Explosion.
-		PAFollowID,			// Accelerate toward the previous particle in the group.
+		PAFollowID,			// Accelerate toward the previous particle in the effect.
 		PAGravitateID,		// Accelerate each particle toward each other particle.
 		PAGravityID,		// Acceleration in the given direction.
 		PAJetID,			// 
@@ -220,7 +220,7 @@ namespace PAPI
 	};
 
 	// This Methods actually does the particle's action.
-	#define Methods	void Execute	(ParticleGroup *pg);\
+	#define Methods	void Execute	(ParticleEffect *pe);\
 	void Transform	(const Fmatrix& m);
 
 	struct PAHeader : public ParticleAction
@@ -518,17 +518,17 @@ namespace PAPI
 		BOOL	in_call_list;
 		BOOL	in_new_list;
 
-		int group_id;
+		int effect_id;
 		int list_id;
-		ParticleGroup *pgrp;
+		ParticleEffect *peff;
 		PAHeader *pact;
 		int tid; // Only used in the MP case, but always define it.
 
-		// These are static because all threads access the same groups.
+		// These are static because all threads access the same effects.
 		// All accesses to these should be locked.
-		DEFINE_VECTOR(ParticleGroup*,ParticleGroupVec,ParticleGroupVecIt);
+		DEFINE_VECTOR(ParticleEffect*,ParticleEffectVec,ParticleEffectVecIt);
 		DEFINE_VECTOR(PAHeader*,PAHeaderVec,PAHeaderVecIt);
-		static ParticleGroupVec	group_vec;
+		static ParticleEffectVec	effect_vec;
 		static PAHeaderVec		alist_vec;
 
 		// state part
@@ -545,12 +545,12 @@ namespace PAPI
 
 		_ParticleState();
 
-		// Return an index into the list of particle groups where
-		// p_group_count groups can be added.
-		int			GenerateGroups	(int p_group_count);
-		int			GenerateLists	(int alist_count);
-		ParticleGroup *GetGroupPtr	(int p_group_num);
-		PAHeader	*GetListPtr		(int action_list_num);
+		// Return an index into the list of particle effects where
+		// p_effect_count effects can be added.
+		int				GenerateEffects	(int p_effect_count);
+		int				GenerateLists	(int alist_count);
+		ParticleEffect*	GetEffectPtr	(int p_effect_num);
+		PAHeader*		GetListPtr		(int action_list_num);
 		// 
 		void		ResetState		();
 	};
@@ -558,7 +558,7 @@ namespace PAPI
 	// All entry points call this to get their particle state.
 	// For the non-MP case this is practically a no-op.
 	PARTICLEDLL_API		_ParticleState& _GetPState();
-	PARTICLEDLL_API		ParticleGroup*	_GetGroupPtr(int p_group_num);
+	PARTICLEDLL_API		ParticleEffect*	_GetEffectPtr(int p_effect_num);
 	PARTICLEDLL_API		PAHeader*		_GetListPtr(int action_list_num);
 	#pragma pack( pop ) // push 4
 
@@ -628,28 +628,28 @@ namespace PAPI
 
 	PARTICLEDLL_API void pStartPlaying(int action_list_num);
 
-	// Particle Group Calls
+	// Particle Effect Calls
 
-	PARTICLEDLL_API void pCopyGroup(int p_src_group_num, int index = 0, int copy_count = P_MAXINT);
+	PARTICLEDLL_API void pCopyEffect(int p_src_effect_num, int index = 0, int copy_count = P_MAXINT);
 
-	PARTICLEDLL_API void pCurrentGroup(int p_group_num);
+	PARTICLEDLL_API void pCurrentEffect(int p_effect_num);
 
-	PARTICLEDLL_API void pDeleteParticleGroups(int p_group_num, int p_group_count = 1);
+	PARTICLEDLL_API void pDeleteParticleEffects(int p_effect_num, int p_effect_count = 1);
 
-	PARTICLEDLL_API void pDrawGroupl(int dlist, BOOL const_size = FALSE,
+	PARTICLEDLL_API void pDrawEffectl(int dlist, BOOL const_size = FALSE,
 		BOOL const_color = FALSE, BOOL const_rotation = FALSE);
 
-	PARTICLEDLL_API void pDrawGroupp(int primitive, BOOL const_size = FALSE,
+	PARTICLEDLL_API void pDrawEffectp(int primitive, BOOL const_size = FALSE,
 		BOOL const_color = FALSE);
 
-	PARTICLEDLL_API int pGenParticleGroups(int p_group_count = 1, int max_particles = 0);
+	PARTICLEDLL_API int pGenParticleEffects(int p_effect_count = 1, int max_particles = 0);
 
-	PARTICLEDLL_API int pGetGroupCount();
+	PARTICLEDLL_API int pGetEffectCount();
 
 	PARTICLEDLL_API int pGetParticles(int index, int count, float *position = NULL, float *color = NULL,
 		float *vel = NULL, float *size = NULL, float *age = NULL);
 
-	PARTICLEDLL_API int pSetMaxParticlesG(int group_num, int max_count);
+	PARTICLEDLL_API int pSetMaxParticlesG(int effect_num, int max_count);
 
 	PARTICLEDLL_API int pSetMaxParticles(int max_count);
 

@@ -57,19 +57,21 @@ LPCSTR _CopyVal ( LPCSTR src, LPSTR dst, char separator )
 	return		dst;
 }
 
-int				_GetItemCount ( LPCSTR src, char separator )
+int	_GetItemCount ( LPCSTR src, char separator )
 {
-	LPCSTR	res			= src;
-	LPCSTR	last_res	= res;
 	u32		cnt			= 0;
-	while( 0!=(res=strchr(res,separator)) )
-	{
-		res		++;
-        last_res=res;
-		cnt		++;
-        if (res[0]==separator) break;
+	if (src&&src[0]){
+		LPCSTR	res			= src;
+		LPCSTR	last_res	= res;
+		while( 0!=(res=strchr(res,separator)) )
+		{
+			res		++;
+			last_res=res;
+			cnt		++;
+			if (res[0]==separator) break;
+		}
+		if (strlen(last_res)) cnt++;
 	}
-    if (strlen(last_res)) cnt++;
 	return		cnt;
 }
 

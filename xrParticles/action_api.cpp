@@ -11,7 +11,7 @@ namespace PAPI{
 
 extern void _pAddActionToList(ParticleAction *S, int size);
 extern void _pCallActionList(ParticleAction *pa, int num_actions,
-							 ParticleGroup *pg);
+							 ParticleEffect *pe);
 
 // Do not call this function.
 void _pSendAction(ParticleAction *S, PActionEnum type, int size)
@@ -29,7 +29,7 @@ void _pSendAction(ParticleAction *S, PActionEnum type, int size)
 		// Immediate mode. Execute it.
 		// This is a hack to give them local access to dt.
 		S->dt = _ps.dt;
-		_pCallActionList(S, 1, _ps.pgrp);
+		_pCallActionList(S, 1, _ps.peff);
 	}
 }
 
@@ -455,7 +455,7 @@ PARTICLEDLL_API void pVertex(float x, float y, float z)
 	}
 	
 	// Immediate mode. Quickly add the vertex.
-	if(_ps.pgrp == NULL)
+	if(_ps.peff == NULL)
 		return;
 	
 	pVector pos(x, y, z);
@@ -468,7 +468,7 @@ PARTICLEDLL_API void pVertex(float x, float y, float z)
 	_ps.Rot.Generate(rot);
 	_ps.Vel.Generate(vel);
 	_ps.Color.Generate(col);
-	_ps.pgrp->Add(pos, posB, siz, rot, vel, col, _ps.Alpha, _ps.Age);
+	_ps.peff->Add(pos, posB, siz, rot, vel, col, _ps.Alpha, _ps.Age);
 }
 
 PARTICLEDLL_API void pVortex(float center_x, float center_y, float center_z,

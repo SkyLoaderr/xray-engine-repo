@@ -42,7 +42,7 @@ static inline float NRand(float sigma = 1.0f)
 		return -y * sigma * ONE_OVER_SIGMA_EXP;
 }
 
-void PAAvoid::Execute(ParticleGroup *group)
+void PAAvoid::Execute(ParticleEffect *effect)
 {
 	float magdt = magnitude * dt;
 	
@@ -52,9 +52,9 @@ void PAAvoid::Execute(ParticleGroup *group)
 		{
 			if(look_ahead < P_MAXFLOAT)
 			{
-				for(int i = 0; i < group->p_count; i++)
+				for(int i = 0; i < effect->p_count; i++)
 				{
-					Particle &m = group->list[i];
+					Particle &m = effect->list[i];
 					
 					// p2 stores the plane normal (the a,b,c of the plane eqn).
 					// Old and new distances: dist(p,plane) = n * p + d
@@ -74,9 +74,9 @@ void PAAvoid::Execute(ParticleGroup *group)
 			}
 			else
 			{
-				for(int i = 0; i < group->p_count; i++)
+				for(int i = 0; i < effect->p_count; i++)
 				{
-					Particle &m = group->list[i];
+					Particle &m = effect->list[i];
 					
 					// p2 stores the plane normal (the a,b,c of the plane eqn).
 					// Old and new distances: dist(p,plane) = n * p + d
@@ -116,9 +116,9 @@ void PAAvoid::Execute(ParticleGroup *group)
 			s2 *= -det;
 			
 			// See which particles bounce.
-			for(int i = 0; i < group->p_count; i++)
+			for(int i = 0; i < effect->p_count; i++)
 			{
-				Particle &m = group->list[i];
+				Particle &m = effect->list[i];
 				
 				// See if particle's current and next positions cross plane.
 				// If not, couldn't bounce, so keep going.
@@ -213,9 +213,9 @@ void PAAvoid::Execute(ParticleGroup *group)
 			s2 *= -det;
 			
 			// See which particles bounce.
-			for(int i = 0; i < group->p_count; i++)
+			for(int i = 0; i < effect->p_count; i++)
 			{
-				Particle &m = group->list[i];
+				Particle &m = effect->list[i];
 				
 				// See if particle's current and next positions cross plane.
 				// If not, couldn't bounce, so keep going.
@@ -282,9 +282,9 @@ void PAAvoid::Execute(ParticleGroup *group)
 			float r2Sqr = _sqr(position.radius2);
 			
 			// See which particles bounce.
-			for(int i = 0; i < group->p_count; i++)
+			for(int i = 0; i < effect->p_count; i++)
 			{
-				Particle &m = group->list[i];
+				Particle &m = effect->list[i];
 				
 				// See if particle's current and next positions cross plane.
 				// If not, couldn't bounce, so keep going.
@@ -344,9 +344,9 @@ void PAAvoid::Execute(ParticleGroup *group)
 			float rSqr = position.radius1 * position.radius1;
 			
 			// See which particles are aimed toward the sphere.
-			for(int i = 0; i < group->p_count; i++)
+			for(int i = 0; i < effect->p_count; i++)
 			{
-				Particle &m = group->list[i];
+				Particle &m = effect->list[i];
 				
 				// First do a ray-sphere intersection test and
 				// see if it's soon enough.
@@ -385,7 +385,7 @@ void PAAvoid::Transform(const Fmatrix& m)
 }
 //-------------------------------------------------------------------------------------------------
 
-void PABounce::Execute(ParticleGroup *group)
+void PABounce::Execute(ParticleEffect *effect)
 {
 	switch(position.type)
 	{
@@ -408,9 +408,9 @@ void PABounce::Execute(ParticleGroup *group)
 			s2 *= -det;
 			
 			// See which particles bounce.
-			for(int i = 0; i < group->p_count; i++)
+			for(int i = 0; i < effect->p_count; i++)
 			{
-				Particle &m = group->list[i];
+				Particle &m = effect->list[i];
 				
 				// See if particle's current and next positions cross plane.
 				// If not, couldn't bounce, so keep going.
@@ -476,9 +476,9 @@ void PABounce::Execute(ParticleGroup *group)
 			float r2Sqr = _sqr(position.radius2);
 			
 			// See which particles bounce.
-			for(int i = 0; i < group->p_count; i++)
+			for(int i = 0; i < effect->p_count; i++)
 			{
-				Particle &m = group->list[i];
+				Particle &m = effect->list[i];
 				
 				// See if particle's current and next positions cross plane.
 				// If not, couldn't bounce, so keep going.
@@ -537,9 +537,9 @@ void PABounce::Execute(ParticleGroup *group)
 	case PDPlane:
 		{
 			// See which particles bounce.
-			for(int i = 0; i < group->p_count; i++)
+			for(int i = 0; i < effect->p_count; i++)
 			{
-				Particle &m = group->list[i];
+				Particle &m = effect->list[i];
 				
 				// See if particle's current and next positions cross plane.
 				// If not, couldn't bounce, so keep going.
@@ -588,9 +588,9 @@ void PABounce::Execute(ParticleGroup *group)
 			s2 *= -det;
 			
 			// See which particles bounce.
-			for(int i = 0; i < group->p_count; i++)
+			for(int i = 0; i < effect->p_count; i++)
 			{
-				Particle &m = group->list[i];
+				Particle &m = effect->list[i];
 				
 				// See if particle's current and next positions cross plane.
 				// If not, couldn't bounce, so keep going.
@@ -649,9 +649,9 @@ void PABounce::Execute(ParticleGroup *group)
 		{
 			// Sphere that particles bounce off
 			// The particles are always forced out of the sphere.
-			for(int i = 0; i < group->p_count; i++)
+			for(int i = 0; i < effect->p_count; i++)
 			{
-				Particle &m = group->list[i];
+				Particle &m = effect->list[i];
 				
 				// See if particle's next position is inside domain.
 				// If so, bounce it.
@@ -708,31 +708,31 @@ void PABounce::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 // Set the secondary position of each particle to be its position.
-void PACallActionList::Execute(ParticleGroup *group)
+void PACallActionList::Execute(ParticleEffect *effect)
 {
 	pCallActionList(action_list_num);
 }
 //-------------------------------------------------------------------------------------------------
 
 // Set the secondary position of each particle to be its position.
-void PACopyVertexB::Execute(ParticleGroup *group)
+void PACopyVertexB::Execute(ParticleEffect *effect)
 {
 	int i;
 	
 	if(copy_pos)
 	{
-		for(i = 0; i < group->p_count; i++)
+		for(i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			m.posB = m.pos;
 		}
 	}
 	
 	if(copy_vel)
 	{
-		for(i = 0; i < group->p_count; i++)
+		for(i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			m.velB = m.vel;
 		}
 	}
@@ -740,15 +740,15 @@ void PACopyVertexB::Execute(ParticleGroup *group)
 //-------------------------------------------------------------------------------------------------
 
 // Dampen velocities
-void PADamping::Execute(ParticleGroup *group)
+void PADamping::Execute(ParticleEffect *effect)
 {
 	// This is important if dt is != 1.
 	pVector one(1,1,1);
 	pVector scale(one - ((one - damping) * dt));
 	
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		float vSqr = m.vel.length2();
 		
 		if(vSqr >= vlowSqr && vSqr <= vhighSqr)
@@ -762,7 +762,7 @@ void PADamping::Execute(ParticleGroup *group)
 //-------------------------------------------------------------------------------------------------
 
 // Exert force on each particle away from explosion center
-void PAExplosion::Execute(ParticleGroup *group)
+void PAExplosion::Execute(ParticleEffect *effect)
 {
 	float radius = velocity * age;
 	float magdt = magnitude * dt;
@@ -770,9 +770,9 @@ void PAExplosion::Execute(ParticleGroup *group)
 	float inexp = -0.5f*_sqr(oneOverSigma);
 	float outexp = ONEOVERSQRT2PI * oneOverSigma;
 	
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		
 		// Figure direction to particle.
 		pVector dir(m.pos - center);
@@ -794,19 +794,19 @@ void PAExplosion::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 // Follow the next particle in the list
-void PAFollow::Execute(ParticleGroup *group)
+void PAFollow::Execute(ParticleEffect *effect)
 {
 	float magdt = magnitude * dt;
 	float max_radiusSqr = max_radius * max_radius;
 	
 	if(max_radiusSqr < P_MAXFLOAT)
 	{
-		for(int i = 0; i < group->p_count - 1; i++)
+		for(int i = 0; i < effect->p_count - 1; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Accelerate toward the particle after me in the list.
-			pVector tohim(group->list[i+1].pos - m.pos); // tohim = p1 - p0
+			pVector tohim(effect->list[i+1].pos - m.pos); // tohim = p1 - p0
 			float tohimlenSqr = tohim.length2();
 			
 			if(tohimlenSqr < max_radiusSqr)
@@ -818,12 +818,12 @@ void PAFollow::Execute(ParticleGroup *group)
 	}
 	else
 	{
-		for(int i = 0; i < group->p_count - 1; i++)
+		for(int i = 0; i < effect->p_count - 1; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Accelerate toward the particle after me in the list.
-			pVector tohim(group->list[i+1].pos - m.pos); // tohim = p1 - p0
+			pVector tohim(effect->list[i+1].pos - m.pos); // tohim = p1 - p0
 			float tohimlenSqr = tohim.length2();
 			
 			// Compute force exerted between the two bodies
@@ -834,21 +834,21 @@ void PAFollow::Execute(ParticleGroup *group)
 //-------------------------------------------------------------------------------------------------
 
 // Inter-particle gravitation
-void PAGravitate::Execute(ParticleGroup *group)
+void PAGravitate::Execute(ParticleEffect *effect)
 {
 	float magdt = magnitude * dt;
 	float max_radiusSqr = max_radius * max_radius;
 	
 	if(max_radiusSqr < P_MAXFLOAT)
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Add interactions with other particles
-			for(int j = i + 1; j < group->p_count; j++)
+			for(int j = i + 1; j < effect->p_count; j++)
 			{
-				Particle &mj = group->list[j];
+				Particle &mj = effect->list[j];
 				
 				pVector tohim(mj.pos - m.pos); // tohim = p1 - p0
 				float tohimlenSqr = tohim.length2()+EPS_S;
@@ -866,14 +866,14 @@ void PAGravitate::Execute(ParticleGroup *group)
 	}
 	else
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Add interactions with other particles
-			for(int j = i + 1; j < group->p_count; j++)
+			for(int j = i + 1; j < effect->p_count; j++)
 			{
-				Particle &mj = group->list[j];
+				Particle &mj = effect->list[j];
 				
 				pVector tohim(mj.pos - m.pos); // tohim = p1 - p0
 				float tohimlenSqr = tohim.length2()+EPS_S;
@@ -890,29 +890,29 @@ void PAGravitate::Execute(ParticleGroup *group)
 //-------------------------------------------------------------------------------------------------
 
 // Acceleration in a constant direction
-void PAGravity::Execute(ParticleGroup *group)
+void PAGravity::Execute(ParticleEffect *effect)
 {
 	pVector ddir(direction * dt);
 	
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
 		// Step velocity with acceleration
-		group->list[i].vel += ddir;
+		effect->list[i].vel += ddir;
 	}
 }
 //-------------------------------------------------------------------------------------------------
 
 // Accelerate particles along a line
-void PAJet::Execute(ParticleGroup *group)
+void PAJet::Execute(ParticleEffect *effect)
 {
 	float magdt = magnitude * dt;
 	float max_radiusSqr = max_radius * max_radius;
 	
 	if(max_radiusSqr < P_MAXFLOAT)
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Figure direction to particle.
 			pVector dir(m.pos - center);
@@ -933,9 +933,9 @@ void PAJet::Execute(ParticleGroup *group)
 	}
 	else
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Figure direction to particle.
 			pVector dir(m.pos - center);
@@ -960,34 +960,34 @@ void PAJet::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 // Get rid of older particles
-void PAKillOld::Execute(ParticleGroup *group)
+void PAKillOld::Execute(ParticleEffect *effect)
 {
 	// Must traverse list in reverse order so Remove will work
-	for(int i = group->p_count-1; i >= 0; i--)
+	for(int i = effect->p_count-1; i >= 0; i--)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		
 		if(!((m.age < age_limit) ^ kill_less_than))
-			group->Remove(i);
+			effect->Remove(i);
 	}
 }
 
 // Match velocity to near neighbors
-void PAMatchVelocity::Execute(ParticleGroup *group)
+void PAMatchVelocity::Execute(ParticleEffect *effect)
 {
 	float magdt = magnitude * dt;
 	float max_radiusSqr = max_radius * max_radius;
 	
 	if(max_radiusSqr < P_MAXFLOAT)
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Add interactions with other particles
-			for(int j = i + 1; j < group->p_count; j++)
+			for(int j = i + 1; j < effect->p_count; j++)
 			{
-				Particle &mj = group->list[j];
+				Particle &mj = effect->list[j];
 				
 				pVector tohim(mj.pos - m.pos); // tohim = p1 - p0
 				float tohimlenSqr = tohim.length2();
@@ -1005,14 +1005,14 @@ void PAMatchVelocity::Execute(ParticleGroup *group)
 	}
 	else
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Add interactions with other particles
-			for(int j = i + 1; j < group->p_count; j++)
+			for(int j = i + 1; j < effect->p_count; j++)
 			{
-				Particle &mj = group->list[j];
+				Particle &mj = effect->list[j];
 				
 				pVector tohim(mj.pos - m.pos); // tohim = p1 - p0
 				float tohimlenSqr = tohim.length2();
@@ -1027,12 +1027,12 @@ void PAMatchVelocity::Execute(ParticleGroup *group)
 	}
 }
 
-void PAMove::Execute(ParticleGroup *group)
+void PAMove::Execute(ParticleEffect *effect)
 {
 	// Step particle positions forward by dt, and age the particles.
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		// пропустить (на следующем кадре будет удален)
 		if (m.flags.is(Particle::DYING)) continue;
 		// move
@@ -1042,16 +1042,16 @@ void PAMove::Execute(ParticleGroup *group)
 }
 
 // Accelerate particles towards a line
-void PAOrbitLine::Execute(ParticleGroup *group)
+void PAOrbitLine::Execute(ParticleEffect *effect)
 {
 	float magdt = magnitude * dt;
 	float max_radiusSqr = max_radius * max_radius;
 	
 	if(max_radiusSqr < P_MAXFLOAT)
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Figure direction to particle from base of line.
 			pVector f(m.pos - p);
@@ -1073,9 +1073,9 @@ void PAOrbitLine::Execute(ParticleGroup *group)
 	else
 	{
 		// Removed because it causes pipeline stalls.
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Figure direction to particle from base of line.
 			pVector f(m.pos - p);
@@ -1102,16 +1102,16 @@ void PAOrbitLine::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 // Accelerate particles towards a point
-void PAOrbitPoint::Execute(ParticleGroup *group)
+void PAOrbitPoint::Execute(ParticleEffect *effect)
 {
 	float magdt = magnitude * dt;
 	float max_radiusSqr = max_radius * max_radius;
 
 	if(max_radiusSqr < P_MAXFLOAT)
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Figure direction to particle.
 			pVector dir(center - m.pos);
@@ -1128,9 +1128,9 @@ void PAOrbitPoint::Execute(ParticleGroup *group)
 	else
 	{
 		// Avoids pipeline stalls.
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Figure direction to particle.
 			pVector dir(center - m.pos);
@@ -1151,11 +1151,11 @@ void PAOrbitPoint::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 // Accelerate in random direction each time step
-void PARandomAccel::Execute(ParticleGroup *group)
+void PARandomAccel::Execute(ParticleEffect *effect)
 {
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		
 		pVector acceleration;
 		gen_acc.Generate(acceleration);
@@ -1173,11 +1173,11 @@ void PARandomAccel::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 // Immediately displace position randomly
-void PARandomDisplace::Execute(ParticleGroup *group)
+void PARandomDisplace::Execute(ParticleEffect *effect)
 {
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		
 		pVector displacement;
 		gen_disp.Generate(displacement);
@@ -1195,11 +1195,11 @@ void PARandomDisplace::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 // Immediately assign a random velocity
-void PARandomVelocity::Execute(ParticleGroup *group)
+void PARandomVelocity::Execute(ParticleEffect *effect)
 {
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		
 		pVector velocity;
 		gen_vel.Generate(velocity);
@@ -1212,23 +1212,6 @@ void PARandomVelocity::Execute(ParticleGroup *group)
 void PARandomVelocity::Transform(const Fmatrix& m)
 {
 	gen_vel.transform_dir(gen_velL,m);
-}
-//-------------------------------------------------------------------------------------------------
-
-void PARotateD::Execute(ParticleGroup *group)
-{
-	for(int i = 0; i < group->p_count; i++)
-	{
-		Particle &m = group->list[i];
-        if (m.flags.is(Particle::BIRTH))
-        {
-			gen_rotate.Generate(m.rot);
-        }
-	}
-}
-void PARotateD::Transform(const Fmatrix& m)
-{
-	gen_rotate.transform_dir(gen_rotateL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1248,13 +1231,13 @@ static inline void _pconstrain(float x0, float v0, float xf, float vf,
 // Over time, restore particles to initial positions
 // Put all particles on the surface of a statue, explode the statue,
 // and then suck the particles back to the original position. Cool!
-void PARestore::Execute(ParticleGroup *group)
+void PARestore::Execute(ParticleEffect *effect)
 {
 	if(time_left <= 0)
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Already constrained, keep it there.
 			m.pos = m.posB;
@@ -1268,10 +1251,10 @@ void PARestore::Execute(ParticleGroup *group)
 		float tSqrInv2dt = dt * 2.0f / (t * t);
 		float tCubInv3dtSqr = dtSqr * 3.0f / (t * t * t);
 		
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
 #if 1
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Solve for a desired-behavior velocity function in each axis
 			// _pconstrain(m.pos.x, m.vel.x, m.posB.x, 0., timeLeft, &a, &b, &c);
@@ -1297,7 +1280,7 @@ void PARestore::Execute(ParticleGroup *group)
 			// Figure new velocity at next timestep
 			m.vel.z += a + b;
 #else
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// XXX Optimize this.
 			// Solve for a desired-behavior velocity function in each axis
@@ -1329,16 +1312,16 @@ void PARestore::Execute(ParticleGroup *group)
 }
 
 // Kill particles with positions on wrong side of the specified domain
-void PASink::Execute(ParticleGroup *group)
+void PASink::Execute(ParticleEffect *effect)
 {
 	// Must traverse list in reverse order so Remove will work
-	for(int i = group->p_count-1; i >= 0; i--)
+	for(int i = effect->p_count-1; i >= 0; i--)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		
 		// Remove if inside/outside flag matches object's flag
 		if(!(position.Within(m.pos) ^ kill_inside))
-			group->Remove(i);
+			effect->Remove(i);
 	}
 }
 void PASink::Transform(const Fmatrix& m)
@@ -1348,16 +1331,16 @@ void PASink::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 // Kill particles with velocities on wrong side of the specified domain
-void PASinkVelocity::Execute(ParticleGroup *group)
+void PASinkVelocity::Execute(ParticleEffect *effect)
 {
 	// Must traverse list in reverse order so Remove will work
-	for(int i = group->p_count-1; i >= 0; i--)
+	for(int i = effect->p_count-1; i >= 0; i--)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		
 		// Remove if inside/outside flag matches object's flag
 		if(!(velocity.Within(m.vel) ^ kill_inside))
-			group->Remove(i);
+			effect->Remove(i);
 	}
 }
 void PASinkVelocity::Transform(const Fmatrix& m)
@@ -1367,7 +1350,7 @@ void PASinkVelocity::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 // Randomly add particles to the system
-void PASource::Execute(ParticleGroup *group)
+void PASource::Execute(ParticleEffect *effect)
 {
 	if (m_Flags.is(flSilent)) return;
 
@@ -1378,8 +1361,8 @@ void PASource::Execute(ParticleGroup *group)
 		rate++;
 	
 	// Don't emit more than it can hold.
-	if(group->p_count + rate > group->max_particles)
-		rate = group->max_particles - group->p_count;
+	if(effect->p_count + rate > effect->max_particles)
+		rate = effect->max_particles - effect->p_count;
 	
 	pVector pos, posB, vel, col, siz, rt;
 	
@@ -1393,7 +1376,7 @@ void PASource::Execute(ParticleGroup *group)
 			float ag = age + NRand(age_sigma);
 			
 			
-			group->Add(pos, pos, siz, rt, vel, col, alpha, ag);
+			effect->Add(pos, pos, siz, rt, vel, col, alpha, ag);
 		}
 	}
 	else
@@ -1407,7 +1390,7 @@ void PASource::Execute(ParticleGroup *group)
 			color.Generate(col);
 			float ag = age + NRand(age_sigma);
 
-			group->Add(pos, posB, siz, rt, vel, col, alpha, ag);
+			effect->Add(pos, posB, siz, rt, vel, col, alpha, ag);
 		}
 	}
 }
@@ -1419,14 +1402,14 @@ void PASource::Transform(const Fmatrix& m)
 //-------------------------------------------------------------------------------------------------
 
 
-void PASpeedLimit::Execute(ParticleGroup *group)
+void PASpeedLimit::Execute(ParticleEffect *effect)
 {
 	float min_sqr = min_speed*min_speed;
 	float max_sqr = max_speed*max_speed;
 	
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		float sSqr = m.vel.length2();
 		if(sSqr<min_sqr && sSqr)
 		{
@@ -1442,28 +1425,28 @@ void PASpeedLimit::Execute(ParticleGroup *group)
 }
 
 // Change color of all particles toward the specified color
-void PATargetColor::Execute(ParticleGroup *group)
+void PATargetColor::Execute(ParticleEffect *effect)
 {
 	float scaleFac = scale * dt;
 	
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		m.color += (color - m.color) * scaleFac;
 		m.alpha += (alpha - m.alpha) * scaleFac;
 	}
 }
 
 // Change sizes of all particles toward the specified size
-void PATargetSize::Execute(ParticleGroup *group)
+void PATargetSize::Execute(ParticleEffect *effect)
 {
 	float scaleFac_x = scale.x * dt;
 	float scaleFac_y = scale.y * dt;
 	float scaleFac_z = scale.z * dt;
 	
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		pVector dif(size - m.size);
 		dif.x *= scaleFac_x;
 		dif.y *= scaleFac_y;
@@ -1473,15 +1456,15 @@ void PATargetSize::Execute(ParticleGroup *group)
 }
 
 // Change rotation of all particles toward the specified velocity
-void PATargetRotate::Execute(ParticleGroup *group)
+void PATargetRotate::Execute(ParticleEffect *effect)
 {
 	float scaleFac = scale * dt;
 
 	pVector r = pVector(_abs(rot.x),_abs(rot.y),_abs(rot.z));
 
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 //		m.rot += (r - m.rot) * scaleFac;
 		pVector sign(m.rot.x>=0.f?scaleFac:-scaleFac,m.rot.y>=0.f?scaleFac:-scaleFac,m.rot.z>=0.f?scaleFac:-scaleFac);
 		pVector dif((r.x-_abs(m.rot.x))*sign.x,(r.y-_abs(m.rot.y))*sign.x,(r.z-_abs(m.rot.z))*sign.x);
@@ -1490,13 +1473,13 @@ void PATargetRotate::Execute(ParticleGroup *group)
 }
 
 // Change velocity of all particles toward the specified velocity
-void PATargetVelocity::Execute(ParticleGroup *group)
+void PATargetVelocity::Execute(ParticleEffect *effect)
 {
 	float scaleFac = scale * dt;
 	
-	for(int i = 0; i < group->p_count; i++)
+	for(int i = 0; i < effect->p_count; i++)
 	{
-		Particle &m = group->list[i];
+		Particle &m = effect->list[i];
 		m.vel += (velocity - m.vel) * scaleFac;
 	}
 }
@@ -1509,16 +1492,16 @@ void PATargetVelocity::Transform(const Fmatrix& m)
 // Immediately displace position using vortex
 // Vortex tip at center, around axis, with magnitude
 // and tightness exponent
-void PAVortex::Execute(ParticleGroup *group)
+void PAVortex::Execute(ParticleEffect *effect)
 {
 	float magdt = magnitude * dt;
 	float max_radiusSqr = max_radius * max_radius;
 	
 	if(max_radiusSqr < P_MAXFLOAT)
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Vector from tip of vortex
 			pVector offset(m.pos - center);
@@ -1560,9 +1543,9 @@ void PAVortex::Execute(ParticleGroup *group)
 	}
 	else
 	{
-		for(int i = 0; i < group->p_count; i++)
+		for(int i = 0; i < effect->p_count; i++)
 		{
-			Particle &m = group->list[i];
+			Particle &m = effect->list[i];
 			
 			// Vector from tip of vortex
 			pVector offset(m.pos - center);

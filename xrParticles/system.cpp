@@ -27,7 +27,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 namespace PAPI{
 float ParticleAction::dt;
 
-_ParticleState::ParticleGroupVec	_ParticleState::group_vec;
+_ParticleState::ParticleEffectVec	_ParticleState::effect_vec;
 _ParticleState::PAHeaderVec			_ParticleState::alist_vec;
 
 // This AutoCall struct allows for static initialization of the above shared variables.
@@ -38,9 +38,9 @@ struct AutoCall
 
 AutoCall::AutoCall()
 {
-	// The list of groups, etc.	
+	// The list of effects, etc.	
 	/*
-	_ParticleState::group_vec.reserve(128);
+	_ParticleState::effect_vec.reserve(128);
 	_ParticleState::alist_vec.reserve(128);
 	*/
 }
@@ -57,9 +57,9 @@ _ParticleState& _GetPState()
 }
 
 // Get a pointer to the particles in gp memory
-ParticleGroup* _GetGroupPtr(int p_group_num)
+ParticleEffect* _GetEffectPtr(int p_effect_num)
 {
-	return __ps.GetGroupPtr(p_group_num);
+	return __ps.GetEffectPtr(p_effect_num);
 }
 PAHeader* _GetListPtr(int action_list_num)
 {
@@ -73,9 +73,9 @@ _ParticleState::_ParticleState()
 	
 	dt				= 1.0f;
 	
-	group_id		= -1;
+	effect_id		= -1;
 	list_id			= -1;
-	pgrp			= NULL;
+	peff			= NULL;
 	pact			= NULL;
 	tid				= 0; // This will be filled in above if we're MP.
 
@@ -96,10 +96,10 @@ void _ParticleState::ResetState()
 	parent_motion	= 0.f;
 }
 
-ParticleGroup *_ParticleState::GetGroupPtr(int p_group_num)
+ParticleEffect *_ParticleState::GetEffectPtr(int p_effect_num)
 {
-	R_ASSERT(p_group_num>=0&&p_group_num<(int)group_vec.size());
-	return group_vec[p_group_num];
+	R_ASSERT(p_effect_num>=0&&p_effect_num<(int)effect_vec.size());
+	return effect_vec[p_effect_num];
 }
 
 PAHeader *_ParticleState::GetListPtr(int a_list_num)
@@ -108,29 +108,29 @@ PAHeader *_ParticleState::GetListPtr(int a_list_num)
 	return alist_vec[a_list_num];
 }
 
-// Return an index into the list of particle groups where
-// p_group_count groups can be added.
-int _ParticleState::GenerateGroups(int p_group_count)
+// Return an index into the list of particle effects where
+// p_effect_count effects can be added.
+int _ParticleState::GenerateEffects(int p_effect_count)
 {
 	int num_empty = 0;
 	int first_empty = -1;
 	
-	for(int i=0; i<(int)group_vec.size(); i++){
-		if(group_vec[i]){
+	for(int i=0; i<(int)effect_vec.size(); i++){
+		if(effect_vec[i]){
 			num_empty = 0;
 			first_empty = -1;
 		}else{
 			if(first_empty < 0)
 				first_empty = i;
 			num_empty++;
-			if(num_empty >= p_group_count)
+			if(num_empty >= p_effect_count)
 				return first_empty;
 		}
 	}
 	
 	// Couldn't find a big enough gap. Reallocate.
-	first_empty = group_vec.size();
-	group_vec.push_back	(xr_alloc<ParticleGroup>(p_group_count));
+	first_empty = effect_vec.size();
+	effect_vec.push_back	(xr_alloc<ParticleEffect>(p_effect_count));
 	
 	return first_empty;
 }
@@ -169,10 +169,10 @@ int _ParticleState::GenerateLists(int list_count)
 ////////////////////////////////////////////////////////
 // Auxiliary calls
 void _pCallActionList(ParticleAction *apa, int num_actions,
-					  ParticleGroup *pg)
+					  ParticleEffect *pe)
 {
-	// All these require a particle group, so check for it.
-	if(pg == NULL)
+	// All these require a particle effect, so check for it.
+	if(pe == NULL)
 		return;
 	
 	PAHeader *pa = (PAHeader *)apa;
@@ -183,94 +183,94 @@ void _pCallActionList(ParticleAction *apa, int num_actions,
 		switch(pa->type)
 		{
 		case PAAvoidID:
-			((PAAvoid *)pa)->Execute(pg);
+			((PAAvoid *)pa)->Execute(pe);
 			break;
 		case PABounceID:
-			((PABounce *)pa)->Execute(pg);
+			((PABounce *)pa)->Execute(pe);
 			break;
 		case PACallActionListID:
-			((PACallActionList *)pa)->Execute(pg);
+			((PACallActionList *)pa)->Execute(pe);
 			break;
 		case PACopyVertexBID:
-			((PACopyVertexB *)pa)->Execute(pg);
+			((PACopyVertexB *)pa)->Execute(pe);
 			break;
 		case PADampingID:
-			((PADamping *)pa)->Execute(pg);
+			((PADamping *)pa)->Execute(pe);
 			break;
 		case PAExplosionID:
-			((PAExplosion *)pa)->Execute(pg);
+			((PAExplosion *)pa)->Execute(pe);
 			break;
 		case PAFollowID:
-			((PAFollow *)pa)->Execute(pg);
+			((PAFollow *)pa)->Execute(pe);
 			break;
 		case PAGravitateID:
-			((PAGravitate *)pa)->Execute(pg);
+			((PAGravitate *)pa)->Execute(pe);
 			break;
 		case PAGravityID:
-			((PAGravity *)pa)->Execute(pg);
+			((PAGravity *)pa)->Execute(pe);
 			break;
 		case PAJetID:
-			((PAJet *)pa)->Execute(pg);
+			((PAJet *)pa)->Execute(pe);
 			break;
 		case PAKillOldID:
-			((PAKillOld *)pa)->Execute(pg);
+			((PAKillOld *)pa)->Execute(pe);
 			break;
 		case PAMatchVelocityID:
-			((PAMatchVelocity *)pa)->Execute(pg);
+			((PAMatchVelocity *)pa)->Execute(pe);
 			break;
 		case PAMoveID:
-			((PAMove *)pa)->Execute(pg);
+			((PAMove *)pa)->Execute(pe);
 			break;
 		case PAOrbitLineID:
-			((PAOrbitLine *)pa)->Execute(pg);
+			((PAOrbitLine *)pa)->Execute(pe);
 			break;
 		case PAOrbitPointID:
-			((PAOrbitPoint *)pa)->Execute(pg);
+			((PAOrbitPoint *)pa)->Execute(pe);
 			break;
 		case PARandomAccelID:
-			((PARandomAccel *)pa)->Execute(pg);
+			((PARandomAccel *)pa)->Execute(pe);
 			break;
 		case PARandomDisplaceID:
-			((PARandomDisplace *)pa)->Execute(pg);
+			((PARandomDisplace *)pa)->Execute(pe);
 			break;
 		case PARandomVelocityID:
-			((PARandomVelocity *)pa)->Execute(pg);
+			((PARandomVelocity *)pa)->Execute(pe);
 			break;
 		case PARestoreID:
-			((PARestore *)pa)->Execute(pg);
+			((PARestore *)pa)->Execute(pe);
 			break;
 		case PASinkID:
-			((PASink *)pa)->Execute(pg);
+			((PASink *)pa)->Execute(pe);
 			break;
 		case PASinkVelocityID:
-			((PASinkVelocity *)pa)->Execute(pg);
+			((PASinkVelocity *)pa)->Execute(pe);
 			break;
 		case PASourceID:
-			((PASource *)pa)->Execute(pg);
+			((PASource *)pa)->Execute(pe);
 			break;
 		case PASpeedLimitID:
-			((PASpeedLimit *)pa)->Execute(pg);
+			((PASpeedLimit *)pa)->Execute(pe);
 			break;
 		case PATargetColorID:
-			((PATargetColor *)pa)->Execute(pg);
+			((PATargetColor *)pa)->Execute(pe);
 			break;
 		case PATargetSizeID:
-			((PATargetSize *)pa)->Execute(pg);
+			((PATargetSize *)pa)->Execute(pe);
 			break;
 		case PATargetRotateID:
-			((PATargetRotate *)pa)->Execute(pg);
+			((PATargetRotate *)pa)->Execute(pe);
 			break;
 		case PATargetRotateDID:
-			((PATargetRotate *)pa)->Execute(pg);
+			((PATargetRotate *)pa)->Execute(pe);
 			break;
 		case PATargetVelocityID:
-			((PATargetVelocity *)pa)->Execute(pg);
+			((PATargetVelocity *)pa)->Execute(pe);
 			break;
 		case PATargetVelocityDID:
-			((PATargetVelocity *)pa)->Execute(pg);
+			((PATargetVelocity *)pa)->Execute(pe);
 			break;
 		case PAVortexID:
-			((PAVortex *)pa)->Execute(pg);
+			((PAVortex *)pa)->Execute(pe);
 			break;
 		}
 	}
@@ -543,7 +543,7 @@ PARTICLEDLL_API void pCallActionList(int action_list_num)
 		
 		_ps.in_call_list = TRUE;
 		
-		_pCallActionList(pa+1, pa->count-1, _ps.pgrp);
+		_pCallActionList(pa+1, pa->count-1, _ps.peff);
 		
 		_ps.in_call_list = FALSE;
 	}
@@ -677,106 +677,106 @@ PARTICLEDLL_API void pStartPlaying(int action_list_num)
 }
 
 ////////////////////////////////////////////////////////
-// Particle Group Calls
+// Particle Effect Calls
 
-// Create particle groups, each with max_particles allocated.
-PARTICLEDLL_API int pGenParticleGroups(int p_group_count, int max_particles)
+// Create particle effects, each with max_particles allocated.
+PARTICLEDLL_API int pGenParticleEffects(int p_effect_count, int max_particles)
 {
 	_ParticleState &_ps = _GetPState();
 
 	if(_ps.in_new_list)
 		return -1; // ERROR
 
-	int ind = _ps.GenerateGroups(p_group_count);
+	int ind = _ps.GenerateEffects(p_effect_count);
 	
-	for(int i=ind; i<ind+p_group_count; i++)
+	for(int i=ind; i<ind+p_effect_count; i++)
 	{
-		_ps.group_vec[i] = (ParticleGroup *)xr_alloc<Particle>(max_particles + 2);
-		_ps.group_vec[i]->max_particles = max_particles;
-		_ps.group_vec[i]->particles_allocated = max_particles;
-		_ps.group_vec[i]->p_count = 0;
+		_ps.effect_vec[i] = (ParticleEffect *)xr_alloc<Particle>(max_particles + 2);
+		_ps.effect_vec[i]->max_particles = max_particles;
+		_ps.effect_vec[i]->particles_allocated = max_particles;
+		_ps.effect_vec[i]->p_count = 0;
 	}
 	
 	return ind;
 }
 
-PARTICLEDLL_API void pDeleteParticleGroups(int p_group_num, int p_group_count)
+PARTICLEDLL_API void pDeleteParticleEffects(int p_effect_num, int p_effect_count)
 {
-	if(p_group_num < 0)
+	if(p_effect_num < 0)
 		return; // ERROR
 
 	_ParticleState &_ps = _GetPState();
 
-	if(p_group_num + p_group_count > (int)_ps.group_vec.size())
+	if(p_effect_num + p_effect_count > (int)_ps.effect_vec.size())
 		return; // ERROR
 	
-	for(int i = p_group_num; i < p_group_num + p_group_count; i++)
+	for(int i = p_effect_num; i < p_effect_num + p_effect_count; i++)
 	{
-		if(_ps.group_vec[i])	xr_free(_ps.group_vec[i]);
+		if(_ps.effect_vec[i])	xr_free(_ps.effect_vec[i]);
 		else					return; // ERROR
 	}
 }
 
-// Change which group is current.
-PARTICLEDLL_API void pCurrentGroup(int p_group_num)
+// Change which effect is current.
+PARTICLEDLL_API void pCurrentEffect(int p_effect_num)
 {
 	_ParticleState &_ps = _GetPState();
 
 	if(_ps.in_new_list)
 		return; // ERROR
 	
-	_ps.pgrp = _ps.GetGroupPtr(p_group_num);
-	if(_ps.pgrp)
-		_ps.group_id = p_group_num;
+	_ps.peff = _ps.GetEffectPtr(p_effect_num);
+	if(_ps.peff)
+		_ps.effect_id = p_effect_num;
 	else
-		_ps.group_id = -1;
+		_ps.effect_id = -1;
 }
 
-// Change the maximum number of particles in the current group.
-PARTICLEDLL_API int pSetMaxParticlesG(int group_num, int max_count)
+// Change the maximum number of particles in the current effect.
+PARTICLEDLL_API int pSetMaxParticlesG(int effect_num, int max_count)
 {
 	_ParticleState &_ps = _GetPState();
 
 	if(_ps.in_new_list)
 		return 0; // ERROR
 	
-	ParticleGroup *pg = _ps.GetGroupPtr(group_num);
-	if(pg == NULL)
+	ParticleEffect *pe = _ps.GetEffectPtr(effect_num);
+	if(pe == NULL)
 		return 0; // ERROR
 	
 	if(max_count < 0)
 		return 0; // ERROR
 
 	// Reducing max.
-	if(pg->particles_allocated >= max_count)
+	if(pe->particles_allocated >= max_count)
 	{
-		pg->max_particles = max_count;
+		pe->max_particles = max_count;
 
 		// May have to kill particles.
-		if(pg->p_count > pg->max_particles)
-			pg->p_count = pg->max_particles;
+		if(pe->p_count > pe->max_particles)
+			pe->p_count = pe->max_particles;
 
 		return max_count;
 	}
 
 	// Allocate particles.
-	ParticleGroup *pg2 =(ParticleGroup *)xr_alloc<Particle>(max_count + 2);
-	if(pg2 == NULL)
+	ParticleEffect *pe2 =(ParticleEffect *)xr_alloc<Particle>(max_count + 2);
+	if(pe2 == NULL)
 	{
 		// Not enough memory. Just give all we've got.
 		// ERROR
-		pg->max_particles = pg->particles_allocated;
+		pe->max_particles = pe->particles_allocated;
 		
-		return pg->max_particles;
+		return pe->max_particles;
 	}
 	
-	Memory.mem_copy(pg2, pg, (pg->p_count + 2) * sizeof(Particle));
+	Memory.mem_copy(pe2, pe, (pe->p_count + 2) * sizeof(Particle));
 	
-	xr_free(pg);
+	xr_free(pe);
 	
-	_ps.group_vec[_ps.group_id] = _ps.pgrp = pg2;
-	pg2->max_particles			= max_count;
-	pg2->particles_allocated	= max_count;
+	_ps.effect_vec[_ps.effect_id] = _ps.peff = pe2;
+	pe2->max_particles			= max_count;
+	pe2->particles_allocated	= max_count;
 
 	return max_count;
 }
@@ -784,34 +784,34 @@ PARTICLEDLL_API int pSetMaxParticlesG(int group_num, int max_count)
 PARTICLEDLL_API int pSetMaxParticles(int max_count)
 {
 	_ParticleState &_ps = _GetPState();
-	return pSetMaxParticlesG(_ps.group_id,max_count);
+	return pSetMaxParticlesG(_ps.effect_id,max_count);
 }
 
-// Copy from the specified group to the current group.
-PARTICLEDLL_API void pCopyGroup(int p_src_group_num, int index, int copy_count)
+// Copy from the specified effect to the current effect.
+PARTICLEDLL_API void pCopyEffect(int p_src_effect_num, int index, int copy_count)
 {
 	_ParticleState &_ps = _GetPState();
 
 	if(_ps.in_new_list)
 		return; // ERROR
 	
-	ParticleGroup *srcgrp = _ps.GetGroupPtr(p_src_group_num);
-	if(srcgrp == NULL)
+	ParticleEffect *srceff = _ps.GetEffectPtr(p_src_effect_num);
+	if(srceff == NULL)
 		return; // ERROR
 
-	ParticleGroup *destgrp = _ps.pgrp;
-	if(destgrp == NULL)
+	ParticleEffect *desteff = _ps.peff;
+	if(desteff == NULL)
 		return; // ERROR
 
 	// Find out exactly how many to copy.
 	int ccount = copy_count;
-	if(ccount > srcgrp->p_count - index)
-		ccount = srcgrp->p_count - index;
-	if(ccount > destgrp->max_particles - destgrp->p_count)
-		ccount = destgrp->max_particles - destgrp->p_count;
+	if(ccount > srceff->p_count - index)
+		ccount = srceff->p_count - index;
+	if(ccount > desteff->max_particles - desteff->p_count)
+		ccount = desteff->max_particles - desteff->p_count;
 
 	// #pragma critical
-	// cerr << p_src_group_num << ": " << ccount << " " << srcgrp->p_count << " " << index << endl;
+	// cerr << p_src_effect_num << ": " << ccount << " " << srceff->p_count << " " << index << endl;
 
 	if(ccount<0)
 	  ccount = 0;
@@ -819,13 +819,13 @@ PARTICLEDLL_API void pCopyGroup(int p_src_group_num, int index, int copy_count)
 	// Directly copy the particles to the current list.
 	for(int i=0; i<ccount; i++)
 	{
-		destgrp->list[destgrp->p_count+i] =
-			srcgrp->list[index+i];
+		desteff->list[desteff->p_count+i] =
+			srceff->list[index+i];
 	}
-	destgrp->p_count += ccount;
+	desteff->p_count += ccount;
 }
 
-// Copy from the current group to application memory.
+// Copy from the current effect to application memory.
 PARTICLEDLL_API int pGetParticles(int index, int count, float *verts,
 				  float *color, float *vel, float *size, float *age)
 {
@@ -837,16 +837,16 @@ PARTICLEDLL_API int pGetParticles(int index, int count, float *verts,
 	if(_ps.in_new_list)
 		return -1; // ERROR
 		
-	ParticleGroup *pg = _ps.pgrp;
-	if(pg == NULL)
+	ParticleEffect *pe = _ps.peff;
+	if(pe == NULL)
 		return -2; // ERROR
 
 	if(index < 0 || count < 0)
 		return -3; // ERROR
 
-	if(index + count > pg->p_count)
+	if(index + count > pe->p_count)
 	  {
-	    count = pg->p_count - index;
+	    count = pe->p_count - index;
 	    if(count <= 0)
 	      return -4; // ERROR index out of bounds.
 	  }
@@ -856,7 +856,7 @@ PARTICLEDLL_API int pGetParticles(int index, int count, float *verts,
 	// This could be optimized.
 	for(int i=0; i<count; i++)
 	{
-		Particle &m = pg->list[index + i];
+		Particle &m = pe->list[index + i];
 
 		if(verts)
 		{
@@ -896,17 +896,17 @@ PARTICLEDLL_API int pGetParticles(int index, int count, float *verts,
 	return count;
 }
 
-// Returns the number of particles currently in the group.
-PARTICLEDLL_API int pGetGroupCount()
+// Returns the number of particles currently in the effect.
+PARTICLEDLL_API int pGetEffectCount()
 {
 	_ParticleState &_ps = _GetPState();
 
 	if(_ps.in_new_list)
 		return 0; // ERROR
 	
-	if(_ps.pgrp == NULL)
+	if(_ps.peff == NULL)
 		return 0; // ERROR
 
-	return _ps.pgrp->p_count;
+	return _ps.peff->p_count;
 }
 }
