@@ -23,6 +23,7 @@
 
 #include "xrXMLParser.h"
 #include "UICarPanel.h"
+#include "UIMotionIcon.h"
 //////////////////////////////////////////////////////////////////////////
 
 //для режима настройки HUD
@@ -102,7 +103,7 @@ protected:
 	CUIProgressBar		UIArmorBar;
 	CUIProgressBar		UIBatteryBar;
 	CUICarPanel			UICarPanel;
-
+	CUIMotionIcon		UIMotionIcon;
 	CUIZoneMap			UIZoneMap;
 
 	//иконка, показывающая количество активных PDA
@@ -150,7 +151,7 @@ protected:
 	CUIStatic			UIWoundIcon;
 	CUIStatic			UIStarvationIcon;
 	CUIStatic			UIFatigueIcon;
-
+	
 public:
 	
 	// Енумы соответсвующие предупреждающим иконкам 
@@ -240,4 +241,5 @@ public:
 	// Показать/спрятать батарейку
 	void				ShowBattery(bool on);
 	CUICarPanel&		CarPanel(){return UICarPanel;};
+	CUIMotionIcon&		MotionIcon(){return UIMotionIcon;}
 };

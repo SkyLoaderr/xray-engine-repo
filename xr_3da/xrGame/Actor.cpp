@@ -819,7 +819,7 @@ void CActor::shedule_Update	(u32 DT)
 		g_Physics				(NET_SavedAccel,Jump,dt);
 		g_cl_ValidateMState		(dt,mstate_wishful);
 		g_SetAnimation			(mstate_real);
-
+		UpdateMotionIcon		(mstate_real);
 
 		// Check for game-contacts
 		Fvector C; float R;		
@@ -1398,4 +1398,20 @@ void CActor::AnimTorsoPlayCallBack(CBlend* B)
 {
 	CActor* actor		= (CActor*)B->CallbackParam;
 	actor->m_bAnimTorsoPlayed = FALSE;
+}
+
+void CActor::UpdateMotionIcon(u32 mstate_rl)
+{
+	CUIMotionIcon		&motion_icon=HUD().GetUI()->UIMainIngameWnd.MotionIcon();
+	if(mstate_rl&mcCrouch)
+	{
+		if(mstate_rl&mcAccel)
+			motion_icon.ShowState(CUIMotionIcon::stCreep);
+		else
+			motion_icon.ShowState(CUIMotionIcon::stCrouch);
+	}
+	else if(mstate_rl&mcClimb)
+		motion_icon.ShowState(CUIMotionIcon::stClimb);
+	else
+		motion_icon.ShowState(CUIMotionIcon::stNormal);
 }

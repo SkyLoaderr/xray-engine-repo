@@ -380,7 +380,8 @@ public:
 	void					g_Orientate				(u32 mstate_rl, float dt);
 	bool					g_LadderOrient			() ;
 	static bool				isAccelerated			(u32 mstate);
-	
+	void					UpdateMotionIcon		(u32 mstate_rl);
+
 	bool					CanAccelerate			();
 	bool					CanJump					();
 	bool					CanMove					();

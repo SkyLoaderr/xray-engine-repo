@@ -8755,6 +8755,12 @@
 						RelativePath=".\ui\UIMainIngameWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIMotionIcon.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMotionIcon.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIPdaMsgListItem.cpp">
 					</File>
 					<File

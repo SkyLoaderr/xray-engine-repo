@@ -269,6 +269,9 @@ void CUIMainIngameWnd::Init()
 	
 	AttachChild(&UICarPanel);
 	xml_init.InitWindow(uiXml, "car_panel", 0, &UICarPanel);
+
+	AttachChild(&UIMotionIcon);
+	xml_init.InitWindow(uiXml, "motion_icon", 0, &UIMotionIcon);
 //	UICarPanel.Show(true);
 }
 

@@ -564,6 +564,7 @@ void CActor::NetInput_Apply			(net_input* pNI)
 		g_Physics				(NET_SavedAccel,Jump,dt);
 		g_cl_ValidateMState		(dt,mstate_wishful);
 		g_SetAnimation			(mstate_real);
+
 	}
 };
 
