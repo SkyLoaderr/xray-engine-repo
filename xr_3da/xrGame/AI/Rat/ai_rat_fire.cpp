@@ -14,7 +14,6 @@
 #include "..\\..\\ai_funcs.h"
 
 #define SPECIAL_SQUAD					6
-#define LIGHT_FITTING					
 #define MIN_PROBABILITY					0.5f
 #define ACTION_REFRESH_RATE				1000
 
