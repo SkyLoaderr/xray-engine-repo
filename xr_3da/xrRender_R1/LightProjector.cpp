@@ -96,6 +96,7 @@ void CLightProjector::setup		(int id)
 		return;
 	}
 	RCache.set_c	("m_plmap_xform",receivers[id].UVgen);
+	RCache.set_c	("m_plmap_clamp",receivers[id].UVclamp);
 }
 
 //
@@ -139,14 +140,14 @@ void CLightProjector::calculate	()
 		D3DVIEWPORT9 VP		=	{s_x*P_o_size,s_y*P_o_size,P_o_size,P_o_size,0,1 };
 		CHK_DX					(HW.pDevice->SetViewport(&VP));
 
-		// calculate uv-gen matrix
-		Fmatrix			mCombine;		mCombine.mul	(mProject,mView);
-		Fmatrix			mTemp;
-		float			fSlotSize		= float(P_o_size)/float(P_rt_size);
-		float			fSlotX			= float(s_x*P_o_size)/float(P_rt_size);
-		float			fSlotY			= float(s_y*P_o_size)/float(P_rt_size);
-		float			fTexelOffs		= (.5f / P_rt_size);
-		Fmatrix			m_TexelAdjust	= 
+		// calculate uv-gen matrix and clamper
+		Fmatrix				mCombine;		mCombine.mul	(mProject,mView);
+		Fmatrix				mTemp;
+		float				fSlotSize		= float(P_o_size)/float(P_rt_size);
+		float				fSlotX			= float(s_x*P_o_size)/float(P_rt_size);
+		float				fSlotY			= float(s_y*P_o_size)/float(P_rt_size);
+		float				fTexelOffs		= (.5f / P_rt_size);
+		Fmatrix				m_TexelAdjust	= 
 		{
 			0.5f/*x-scale*/,	0.0f,							0.0f,				0.0f,
 			0.0f,				-0.5f/*y-scale*/,				0.0f,				0.0f,
@@ -158,20 +159,21 @@ void CLightProjector::calculate	()
 		C.UVgen.mulA		(mTemp);
 		mTemp.translate		(fSlotX+fTexelOffs,fSlotY+fTexelOffs,0);
 		C.UVgen.mulA		(mTemp);
+		C.UVclamp.set		(fSlotX+fTexelOffs,fSlotY+fTexelOffs,fSlotX+fSlotSize-fTexelOffs,fSlotY+fSlotSize-fTexelOffs);
 
 		// Clear color to ambience
-		float	c_a				=	((CLightTrack*)C.O->renderable.ROS)->ambient;
-		int		c_i				=	iFloor(c_a)/2;
-		CHK_DX					(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
+		float	c_a			=	((CLightTrack*)C.O->renderable.ROS)->ambient;
+		int		c_i			=	iFloor(c_a)/2;
+		CHK_DX				(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
 		
 		// Build bbox and render
 		Fvector	min,max;
 		Fbox	BB;
-		min.set					(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
-		max.set					(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
-		BB.set					(min,max);
-		ISpatial*	spatial		= dynamic_cast<ISpatial*>	(C.O);
-		if (spatial)			RImplementation.RenderBox	(spatial->spatial.sector,BB,2);
+		min.set				(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
+		max.set				(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
+		BB.set				(min,max);
+		ISpatial*	spatial	= dynamic_cast<ISpatial*>	(C.O);
+		if (spatial)		RImplementation.RenderBox	(spatial->spatial.sector,BB,2);
 	}
 
 	// Blur
