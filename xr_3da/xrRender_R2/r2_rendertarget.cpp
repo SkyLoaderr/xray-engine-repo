@@ -161,7 +161,7 @@ void	generate_jitter	(DWORD*	dest, u32 elem_count)
 		for (int t=0; t<samples.size(); t++)
 		{
 			int		dist	= _abs(test.x-samples[t].x)+_abs(test.y-samples[t].y);
-			if (dist<8)		{
+			if (dist<64)	{
 				valid		= FALSE;
 				break;
 			}
