@@ -16,6 +16,7 @@
 
 #include "ui_main.h"
 #include "d3dutils.h"
+#include "editorpref.h"
 
 TUI UI;
 
@@ -322,6 +323,84 @@ void TUI::ShowObjectHint(){
 	AStringVec SS;
 	Tools.OnShowHint(SS);
     if (!ShowHint(SS)) HideHint();
+}
+//---------------------------------------------------------------------------
+void TUI::SetStatus(LPSTR s){
+	VERIFY(m_bReady);
+    fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
+}
+void TUI::ProgressInfo(LPCSTR text)
+{
+	if (text){
+		fraBottomBar->paStatus->Caption=fraBottomBar->sProgressTitle+" ("+text+")";
+    	fraBottomBar->paStatus->Repaint();
+    }
+}                                                           
+void TUI::ProgressStart(float max_val, const char* text)
+{
+	VERIFY(m_bReady);
+    fraBottomBar->sProgressTitle = text;
+	fraBottomBar->paStatus->Caption=text;
+    fraBottomBar->paStatus->Repaint();
+	fraBottomBar->fMaxVal=max_val;
+	fraBottomBar->fStatusProgress=0;
+	fraBottomBar->cgProgress->Progress=0;
+	fraBottomBar->cgProgress->Visible=true;
+}
+void TUI::ProgressEnd(){
+	VERIFY(m_bReady);
+    fraBottomBar->sProgressTitle = "";
+	fraBottomBar->paStatus->Caption="";
+    fraBottomBar->paStatus->Repaint();
+	fraBottomBar->cgProgress->Visible=false;
+}
+void TUI::ProgressUpdate(float val){
+	VERIFY(m_bReady);
+	fraBottomBar->fStatusProgress=val;
+    if (fraBottomBar->fMaxVal>=0){
+    	int new_val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (new_val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+    	    fraBottomBar->cgProgress->Repaint();
+        }
+    }
+}
+void TUI::ProgressInc(const char* info){
+	VERIFY(m_bReady);
+    ProgressInfo(info);
+	fraBottomBar->fStatusProgress++;
+    if (fraBottomBar->fMaxVal>=0){
+    	int val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=val;
+	        fraBottomBar->cgProgress->Repaint();
+        }
+    }
+}
+//---------------------------------------------------------------------------
+void TUI::OutCameraPos(){
+	VERIFY(m_bReady);
+    AnsiString s;
+	const Fvector& c 	= Device.m_Camera.GetPosition();
+	s.sprintf("Cam: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
+//	const Fvector& hpb 	= Device.m_Camera.GetHPB();
+//	s.sprintf(" Cam: %3.1f°, %3.1f°, %3.1f°",rad2deg(hpb.y),rad2deg(hpb.x),rad2deg(hpb.z));
+    fraBottomBar->paCamera->Caption=s; fraBottomBar->paCamera->Repaint();
+}
+//---------------------------------------------------------------------------
+void TUI::OutUICursorPos(){
+	VERIFY(m_bReady);
+    AnsiString s; POINT pt;
+    GetCursorPos(&pt);
+    s.sprintf("Cur: %d, %d",pt.x,pt.y);
+    fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
+}
+//---------------------------------------------------------------------------
+void TUI::OutGridSize(){
+	VERIFY(m_bReady);
+    AnsiString s;
+    s.sprintf("Grid: %1.1f",float(frmEditorPreferences->seGridSquareSize->Value));
+    fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
 }
 //---------------------------------------------------------------------------
 /*
