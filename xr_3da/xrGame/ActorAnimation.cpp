@@ -436,8 +436,15 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			m_current_head=M_head;
 		}
 		if (m_current_legs!=M_legs){
-			m_current_legs_blend = smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_legs,TRUE,legs_play_callback,this);
-			m_current_legs=M_legs;
+			float pos					= 0.f;
+			if ((mstate_real&mcAnyMove)&&(mstate_old&mcAnyMove)&&m_current_legs_blend)
+				pos						= fmod(m_current_legs_blend->timeCurrent,m_current_legs_blend->timeTotal)/m_current_legs_blend->timeTotal;
+			m_current_legs_blend		= smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_legs,TRUE,legs_play_callback,this);
+			if ((!(mstate_old&mcAnyMove))&&(mstate_real&mcAnyMove))
+				pos						= 0.5f*Random.randI(2);
+			if (m_current_legs_blend)
+				m_current_legs_blend->timeCurrent = m_current_legs_blend->timeTotal*pos;
+			m_current_legs				= M_legs;
 		}
 	}else{
 		if (m_current_legs||m_current_torso){
