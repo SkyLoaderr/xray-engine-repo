@@ -1099,7 +1099,7 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 //		}
 		
 		//if ((dwCurTime - SoldierLeader->m_dwLastRangeSearch < 10000) && (SoldierLeader->AI_Path.fSpeed > EPS_L)) {
-		if (SoldierLeader->AI_Path.fSpeed > EPS_L) {
+		if (SoldierLeader->AI_Path.fSpeed > .1f) {
 			m_dwLoopCount = SoldierLeader->m_dwLoopCount;
 			
 			AI_Path.TravelPath.clear();
@@ -1295,7 +1295,7 @@ void CAI_Soldier::OnPatrol()
 			m_dwLoopCount = 0;
 		
 		for (int i=0; i<Group.Members.size(); i++)
-			if (((CCustomMonster*)(Group.Members[i]))->AI_Path.fSpeed > EPS_L)
+			if (((CCustomMonster*)(Group.Members[i]))->AI_Path.fSpeed > .1f)
 				return;
 
 //		if (!m_bLooped) {
@@ -2031,11 +2031,6 @@ void CAI_Soldier::OnPursuitAlone()
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 
-	m_dwLastRangeSearch = dwCurTime;
-	
-	if (m_bStateChanged)
-		m_dwLastRangeSearch = 0;
-
 	vfSetFire(false,Group);
 
 	CHECK_IF_GO_TO_NEW_STATE(!m_bFiring && Weapons->ActiveWeapon() && (float(Weapons->ActiveWeapon()->GetAmmoElapsed()) / float(Weapons->ActiveWeapon()->GetAmmoMagSize()) < RECHARGE_MEDIAN + ::Random.randF(-RECHARGE_EPSILON,+RECHARGE_EPSILON)),aiSoldierRecharge);
@@ -2045,7 +2040,7 @@ void CAI_Soldier::OnPursuitAlone()
 	SelectorPatrol.m_tEnemy = tSavedEnemy;
 	SelectorPatrol.m_tEnemyPosition = tSavedEnemyPosition;
 
-	CHECK_IF_GO_TO_PREV_STATE(!(m_bStateChanged) && (ps_Size() > 0) && (dwCurTime - ps_Element(ps_Size() - 1).dwTime > 5000));
+	CHECK_IF_GO_TO_PREV_STATE(!(m_bStateChanged) && (ps_Size() > 0) && (ps_Element(ps_Size() - 1).dwTime > 60000));
 
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
@@ -2053,7 +2048,12 @@ void CAI_Soldier::OnPursuitAlone()
 //		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
 		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 		
-	if (AI_Path.fSpeed > EPS_L)
+	m_dwLastRangeSearch = dwCurTime;
+	
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = 0;
+
+	if (AI_Path.fSpeed > .1f)
 		SetDirectionLook();
 	else
 		vfAimAtEnemy();
