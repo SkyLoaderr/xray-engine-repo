@@ -184,7 +184,7 @@ CBlend*	CSkeletonAnimated::PlayFX			(LPCSTR  N, float power_scale)
 CBlend*	CSkeletonAnimated::LL_PlayFX		(u16 bone, u16 motion, float blendAccrue, float blendFalloff, float Speed, float Power)
 {
 	if (BI_NONE==motion)	return 0;
-//.	if (blend_fx.size()>=MAX_BLENDED) return 0;
+	if (blend_fx.size()>=MAX_BLENDED) return 0;
 	if (BI_NONE==bone)		bone = iRoot;
 	
 	CBlend*	B		= IBlend_Create();
