@@ -429,4 +429,25 @@ void CAI_ALife::vfCheckForDeletedEvents(CALifeHuman	*tpALifeHuman)
 
 void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 {
+	OBJECT_IT it = m_tpGraphObjects[tpALifeHuman->m_tGraphID].begin();
+	OBJECT_IT E  = m_tpGraphObjects[tpALifeHuman->m_tGraphID].end();
+	for( ; it != E; it++) {
+		OBJECT_PAIR_IT	i = m_tObjectRegistry.m_tppMap.find(*it);
+		VERIFY(i != m_tObjectRegistry.m_tppMap.end());
+		CALifeItem *tpALifeItem = (*i).second;
+		VERIFY(tpALifeItem);
+		CALifeCorp *tpALifeCorp = dynamic_cast<CALifeCorp *>(tpALifeItem);
+		if (!tpALifeCorp) {
+			CALifeMonster *tpALifeMonster = dynamic_cast<CALifeMonster *>(tpALifeItem);
+			if (!tpALifeMonster) {
+				if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
+					tpALifeHuman->m_tpItemIDs.push_back(*it);
+					m_tpGraphObjects[tpALifeHuman->m_tGraphID].erase(it);
+				}
+				else {
+
+				}
+			}
+		}
+	}
 }

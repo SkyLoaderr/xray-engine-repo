@@ -57,23 +57,27 @@ public:
 	typedef	CALifeMonsterGroup inherited;
 	
 	_TIME_ID						m_tTimeID;
+	float							m_fMass;
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save		(tMemoryStream);
 		tMemoryStream.write	(&m_tTimeID,	sizeof(m_tTimeID));
+		tMemoryStream.Wfloat(m_fMass);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		inherited::Load		(tFileStream);
 		tFileStream.Read	(&m_tTimeID,	sizeof(m_tTimeID));
+		m_fMass				= tFileStream.Rfloat();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		inherited::Init(tSpawnID,tpSpawnPoints);
-		m_tTimeID = 0;
+		inherited::Init		(tSpawnID,tpSpawnPoints);
+		m_tTimeID			= 0;
+		m_fMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "ph_mass");
 	}
 };
 
@@ -81,38 +85,24 @@ class CALifeCorp : public CALifeItem {
 public:
 	typedef	CALifeItem inherited;
 
-	CORP_VECTOR					m_tpCorps;
+	EInjureType						m_tInjureType;
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save		(tMemoryStream);
-		tMemoryStream.Wdword(m_tpCorps.size());
-		CORP_IT it			= m_tpCorps.begin();
-		CORP_IT E			= m_tpCorps.end();
-		for ( ; it != E; it++) {
-            tMemoryStream.write	(&((*it).tInjureType),	sizeof((*it).tInjureType));
-			tMemoryStream.Wvector((*it).tPosition);
-            tMemoryStream.Wvector((*it).tAngles);
-		}
+		tMemoryStream.write	(&m_tInjureType,sizeof(m_tInjureType));
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		inherited::Load		(tFileStream);
-		m_tpCorps.resize	(tFileStream.Rdword());
-		CORP_IT it			= m_tpCorps.begin();
-		CORP_IT E			= m_tpCorps.end();
-		for ( ; it != E; it++) {
-            tFileStream.Read	(&((*it).tInjureType),	sizeof((*it).tInjureType));
-            tFileStream.Rvector	((*it).tPosition);
-            tFileStream.Rvector	(((*it).tAngles));
-		}
+		tFileStream.Read	(&m_tInjureType,sizeof(m_tInjureType));
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
-		m_tpCorps.clear();
+		m_tInjureType		= eInjureTypeDummy;
 	}
 };
 
@@ -176,6 +166,8 @@ public:
 	PERSONAL_EVENT_VECTOR			m_tpEvents;
 	OBJECT_VECTOR					m_tpItemIDs;
 	TASK_VECTOR						m_tpTaskIDs;
+	float							m_fItemMass;
+	float							m_fMaxItemMass;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
@@ -214,6 +206,7 @@ public:
 			for ( ; it != E; it++)
 				tMemoryStream.write	(it,sizeof(*it));
 		}
+		tMemoryStream.Wfloat		(m_fItemMass);
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
@@ -253,14 +246,17 @@ public:
 			for ( ; it != E; it++)
 				tFileStream.Read	(it,sizeof(*it));
 		}
+		m_fItemMass					= tFileStream.Rfloat();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
-		m_tpEvents.	clear();
-		m_tpItemIDs.clear();
-		m_tpTaskIDs.clear();
+		m_tpEvents.	clear			();
+		m_tpItemIDs.clear			();
+		m_tpTaskIDs.clear			();
+		m_fItemMass					= 0.0f;
+		m_fMaxItemMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "MaxItemMass");
 	}
 };
 
