@@ -141,7 +141,7 @@ void CAI_Stalker::ForwardStraight()
 //			m_tpCurrentSound->feedback->set_position(eye_matrix.c);
 //
 //	m_bPlayHumming				= false;
-//	CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+//	CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
 //	if (tpWeapon) {
 //		m_tpSelectorFreeHunting->m_fMaxEnemyDistance = tpWeapon->m_fMaxRadius;
 //		m_tpSelectorFreeHunting->m_fMinEnemyDistance = 15.f;//tpWeapon->m_fMinRadius;
@@ -189,9 +189,9 @@ void CAI_Stalker::Camp(bool /**bWeapon/**/)
 //			add_visible_object	(visible_object);
 //			//CDetailPathManager::path().clear();
 //			//m_level_path.clear();
-//			CWeapon	*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+//			CWeapon	*tpWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
 //			if (tpWeapon && (tpWeapon->GetAmmoElapsed() < tpWeapon->GetAmmoMagSize()/2))
-//				m_inventory.Action(kWPN_RELOAD,CMD_START);
+//				inventory().Action(kWPN_RELOAD,CMD_START);
 ////			vfSetParameters		(0,0,false,eObjectActionIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
 //			vfSetParameters		(0,0,false,eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,visible_object.m_object_params.m_position);
 //		}
@@ -407,7 +407,7 @@ void CAI_Stalker::ForwardCover()
 //		m_tActionState			= eActionStateWatchLook;
 //		m_dwActionStartTime		= Level().timeServer();
 //		float					fDistance = m_tSavedEnemyPosition.distance_to(Position());
-//		CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+//		CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
 //		if (tpWeapon)
 //			m_tpSelectorCover->m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
 //		m_tpSelectorCover->m_fMaxEnemyDistance = _max(fDistance - 1.f,m_tpSelectorCover->m_fOptEnemyDistance + 3.f);
@@ -461,7 +461,7 @@ void CAI_Stalker::ForwardCover()
 //		case eActionStateWatchLook : {
 //			WRITE_TO_LOG			("WatchLook : ForwardCover");
 //			float					fDistance = m_tSavedEnemyPosition.distance_to(Position());
-//			CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+//			CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
 //			if (tpWeapon)
 //				m_tpSelectorCover->m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
 //			m_tpSelectorCover->m_fMaxEnemyDistance = _max(fDistance - 1.f,m_tpSelectorCover->m_fOptEnemyDistance + 3.f);
@@ -751,7 +751,7 @@ void CAI_Stalker::ExploreDE()
 //
 //	m_dwInertion			= 60000;
 //	
-//	if (!m_inventory.ActiveItem() && M) {
+//	if (!inventory().ActiveItem() && M) {
 //		TakeItems();
 //		return;
 //	}

@@ -43,11 +43,11 @@ void CAI_Trader::Load(LPCSTR section)
 	fEntityHealth = pSettings->r_float	(section,"Health");
 
 	float max_weight = pSettings->r_float	(section,"max_item_mass");
-	m_inventory.SetMaxWeight(max_weight);
-	m_inventory.SetMaxRuck(10000);
+	inventory().SetMaxWeight(max_weight);
+	inventory().SetMaxRuck(10000);
 	
-	m_trade_storage.SetMaxWeight(max_weight);
-	m_trade_storage.SetMaxRuck(m_inventory.GetMaxRuck());
+	m_trade_storage->SetMaxWeight(max_weight);
+	m_trade_storage->SetMaxRuck(inventory().GetMaxRuck());
 }
 
 void CAI_Trader::Init()
@@ -119,7 +119,7 @@ void CAI_Trader::net_Export		(NET_Packet& P)
 {
 	R_ASSERT						(Local());
 
-	P.w_float						(m_inventory.TotalWeight());
+	P.w_float						(inventory().TotalWeight());
 	P.w_u32							(0);
 	P.w_u32							(0);
 }
@@ -165,12 +165,12 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_TAKE:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
-			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(this);
+			if(g_Alive() && inventory().Take(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(this);
 			break;
 		case GE_OWNERSHIP_REJECT:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
-			if(m_inventory.Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
+			if(inventory().Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
 			break;
 		case GE_TRANSFER_AMMO:
 			break;
@@ -180,12 +180,12 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			Obj			= Level().Objects.net_Find	(id);
 			
-			if(g_Alive() && m_trade_storage.Take(dynamic_cast<CGameObject*>(Obj), true)) Obj->H_SetParent(this);
+			if(g_Alive() && m_trade_storage->Take(dynamic_cast<CGameObject*>(Obj), true)) Obj->H_SetParent(this);
 			break;
 		case GE_TRADE_SELL:
 			P.r_u16		(id);
 			Obj			= Level().Objects.net_Find	(id);
-			if	(m_trade_storage.Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
+			if	(m_trade_storage->Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
 			break;
 	}
 }
@@ -224,7 +224,7 @@ void CAI_Trader::DropItemSendMessage(CObject *O)
 void CAI_Trader::shedule_Update	(u32 dt)
 {
 	inherited::shedule_Update	(dt);
-	//m_inventory.Update			(dt);
+	//inventory().Update			(dt);
 	//GetTrade()->UpdateTrade		();
 	UpdateInventoryOwner(dt);
 
@@ -247,7 +247,7 @@ void CAI_Trader::renderable_Render	()
 
 void CAI_Trader::g_fireParams(Fvector& P, Fvector& D)
 {
-	if (g_Alive() && m_inventory.ActiveItem()) {
+	if (g_Alive() && inventory().ActiveItem()) {
 		Center(P);
 		D.setHP(0,0);
 		D.normalize_safe();
@@ -261,7 +261,7 @@ void CAI_Trader::Think()
 
 void CAI_Trader::Die ( )
 {
-	m_inventory.DropAll();
+	inventory().DropAll();
 }
 
 void CAI_Trader::net_Destroy()

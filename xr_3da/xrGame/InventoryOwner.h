@@ -4,18 +4,15 @@
 //////////////////////////////////////////////////////
 
 #pragma once
-#include "inventory.h"
-
 #include "InfoPortion.h"
 #include "PdaMsg.h"
 
+class CInventory;
+class CInventoryItem;
 class CTrade;
 class CPda;
 
-
-
-class CInventoryOwner		
-{							
+class CInventoryOwner {							
 public:
 	CInventoryOwner();
 	virtual ~CInventoryOwner();
@@ -44,8 +41,8 @@ public:
 	virtual void SendPdaMessage(u16 who, EPdaMsg msg, int info_index);
 
 
-	CInventory	m_inventory;									// инвентарь
-	CInventory	m_trade_storage;								// склад 
+	CInventory	*m_inventory;									// инвентарь
+	CInventory	*m_trade_storage;								// склад 
 
 	
 	////////////////////////////////////
@@ -73,15 +70,15 @@ public:
 	virtual LPCSTR GetGameName();
 	virtual LPCSTR GetGameRank();
 	virtual LPCSTR GetGameCommunity();
-	const CInventory &inventory() const {return(m_inventory);}
-	CInventory &inventory() {return(m_inventory);}
+	const CInventory &inventory() const {return(*m_inventory);}
+	CInventory &inventory() {return(*m_inventory);}
 
 protected:
 	// торговля
-	CTrade*	m_pTrade;
+	CTrade				*m_pTrade;
 
-	bool m_bTalking; 
-	CInventoryOwner* m_pTalkPartner;
+	bool				m_bTalking; 
+	CInventoryOwner		*m_pTalkPartner;
 
 private:
 	Fvector				m_torch_angle_offset;

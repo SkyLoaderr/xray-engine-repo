@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "entity_alive.h"
 #include "inventoryowner.h"
+#include "inventory.h"
 
 /////////////////////////////////////////////
 // CEntityAlive
@@ -73,8 +74,8 @@ void CEntityAlive::net_Destroy	()
 {
 	CInventoryOwner	*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(this);
 	if (l_tpInventoryOwner) {
-		l_tpInventoryOwner->m_inventory.ClearAll();
-		l_tpInventoryOwner->m_trade_storage.ClearAll();
+		l_tpInventoryOwner->inventory().ClearAll();
+		l_tpInventoryOwner->m_trade_storage->ClearAll();
 	}
 
 	inherited::net_Destroy		();

@@ -10,8 +10,8 @@
 #include "entity_alive.h"
 #include "pda.h"
 #include "actor.h"
-
 #include "trade.h"
+#include "inventory.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -24,16 +24,18 @@ CInventoryOwner::CInventoryOwner			()
 
 CInventoryOwner::~CInventoryOwner			() 
 {
-	if (m_pTrade)
-		xr_delete				(m_pTrade);
+	xr_delete					(m_inventory);
+	xr_delete					(m_trade_storage);
+	xr_delete					(m_pTrade);
 }
 
 void CInventoryOwner::Init					()
 {
-	m_pTrade					= NULL;
 	m_torch_angle_offset		= Fvector().set(0,0,0);
 	m_torch_position_offset		= Fvector().set(0,0,0);
 	m_torch_bone_name			= "";
+	m_inventory					= xr_new<CInventory>();
+	m_trade_storage				= xr_new<CInventory>();
 }
 
 void CInventoryOwner::Load					(LPCSTR section)
@@ -47,15 +49,15 @@ void CInventoryOwner::Load					(LPCSTR section)
 
 void CInventoryOwner::reinit				()
 {
-	m_inventory.m_pOwner		= this;
-	m_trade_storage.m_pOwner	= this;
+	inventory().m_pOwner		= this;
+	m_trade_storage->m_pOwner	= this;
 
 	m_dwMoney					= 0;
 	m_tRank						= eStalkerRankNone;
 
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
-	m_inventory.Clear			();
+	inventory().Clear			();
 }
 
 void CInventoryOwner::reload				(LPCSTR section)
@@ -150,7 +152,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
 {
-	m_inventory.Update();
+	inventory().Update();
 	if(m_pTrade) m_pTrade->UpdateTrade();
 
 	if(IsTalking())
@@ -177,10 +179,10 @@ CPda* CInventoryOwner::GetPDA()
 	
 //	if(!pEntityAlive || !pEntityAlive->g_Alive()) return NULL; 
 
-	/*R_ASSERT2(m_inventory.m_slots[PDA_SLOT].m_pIItem, 
+	/*R_ASSERT2(inventory().m_slots[PDA_SLOT].m_pIItem, 
 			"PDA for character does not init yet");*/
 	
-	return (CPda*)m_inventory.m_slots[PDA_SLOT].m_pIItem;
+	return (CPda*)inventory().m_slots[PDA_SLOT].m_pIItem;
 }
 
 bool CInventoryOwner::IsActivePDA()
@@ -322,9 +324,9 @@ void __stdcall InventoryCallback(CKinematics *tpKinematics)
 	CInventoryOwner		*inventory_owner = dynamic_cast<CInventoryOwner*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
 	VERIFY				(inventory_owner);
 
-	CInventoryItem		*torch = inventory_owner->m_inventory.Get(CLSID_DEVICE_TORCH,false);
+	CInventoryItem		*torch = inventory_owner->inventory().Get(CLSID_DEVICE_TORCH,false);
 	if (!torch) {
-		torch			= inventory_owner->m_inventory.Get(CLSID_DEVICE_TORCH,true);
+		torch			= inventory_owner->inventory().Get(CLSID_DEVICE_TORCH,true);
 		if (!torch)
 			return;
 	}
@@ -346,12 +348,12 @@ void __stdcall InventoryCallback(CKinematics *tpKinematics)
 
 void CInventoryOwner::renderable_Render		()
 {
-	if (m_inventory.ActiveItem())
-		m_inventory.ActiveItem()->renderable_Render();
+	if (inventory().ActiveItem())
+		inventory().ActiveItem()->renderable_Render();
 
-	CInventoryItem		*torch = m_inventory.Get(CLSID_DEVICE_TORCH,false);
+	CInventoryItem		*torch = inventory().Get(CLSID_DEVICE_TORCH,false);
 	if (!torch)
-		torch			= m_inventory.Get(CLSID_DEVICE_TORCH,true);
+		torch			= inventory().Get(CLSID_DEVICE_TORCH,true);
 
 	if (torch)
 		torch->renderable_Render();

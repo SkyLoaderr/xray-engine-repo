@@ -12,18 +12,19 @@
 #include "../../graph_engine.h"
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
+#include "../../inventory.h"
 
 bool CAI_Stalker::bfHealthIsGood			()
 {
 	return(true);
 }
 
-bool CAI_Stalker::bfItemCanTreat			(CInventoryItem * /**tpInventoryItem/**/)
+bool CAI_Stalker::bfItemCanTreat			(CInventoryItem *tpInventoryItem)
 {
 	return(false);
 }
 
-void CAI_Stalker::vfUseItem					(CInventoryItem * /**tpInventoryItem/**/)
+void CAI_Stalker::vfUseItem					(CInventoryItem *tpInventoryItem)
 {
 }
 
@@ -74,13 +75,13 @@ bool CAI_Stalker::bfCheckIfTaskCompleted()
 	switch (tTask.m_tTaskType) {
 		case eTaskTypeSearchForItemCL :
 		case eTaskTypeSearchForItemCG : {
-			if (m_inventory.dwfGetSameItemCount(tTask.m_caSection))
+			if (inventory().dwfGetSameItemCount(tTask.m_caSection))
 				return(true);
 			break;
 		}
 		case eTaskTypeSearchForItemOL :
 		case eTaskTypeSearchForItemOG : {
-			if (m_inventory.bfCheckForObject(tTask.m_tObjectID))
+			if (inventory().bfCheckForObject(tTask.m_tObjectID))
 				return(true);
 			break;
 		}

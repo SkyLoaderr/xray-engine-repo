@@ -26,7 +26,7 @@ ALife::EStalkerRank	CAI_Stalker::GetRank() const
 
 CWeapon	*CAI_Stalker::GetCurrentWeapon() const
 {
-	return			(dynamic_cast<CWeapon*>(m_inventory.ActiveItem()));
+	return			(dynamic_cast<CWeapon*>(inventory().ActiveItem()));
 }
 
 u32 CAI_Stalker::GetWeaponAmmo() const
@@ -162,32 +162,32 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 	if (!l_tpInventoryItem)
 		return	((l_tObjectAction.m_bCompleted = true) == false);
 
-	CWeapon				*l_tpWeapon				= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-	CWeaponMagazined	*l_tpWeaponMagazined	= dynamic_cast<CWeaponMagazined*>(m_inventory.ActiveItem());
+	CWeapon				*l_tpWeapon				= dynamic_cast<CWeapon*>(inventory().ActiveItem());
+	CWeaponMagazined	*l_tpWeaponMagazined	= dynamic_cast<CWeaponMagazined*>(inventory().ActiveItem());
 
 	switch (l_tObjectAction.m_tGoalType) {
 		case eObjectActionIdle : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
-			m_inventory.Action	(kWPN_FIRE,	CMD_STOP);
+			inventory().Action	(kWPN_FIRE,	CMD_STOP);
 			l_tObjectAction.m_bCompleted = true;
 			break;
 		}
 		case eObjectActionFire1 : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
-			if (m_inventory.ActiveItem()) {
+			if (inventory().ActiveItem()) {
 				if (l_tpWeapon->GetAmmoElapsed()) {
 					if (l_tpWeapon->GetAmmoMagSize() > 1)
 						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
 					else
 						l_tpWeaponMagazined->SetQueueSize(1);
-					m_inventory.Action(kWPN_FIRE,	CMD_START);
+					inventory().Action(kWPN_FIRE,	CMD_START);
 				}
 				else {
-					m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+					inventory().Action(kWPN_FIRE,	CMD_STOP);
 					if (l_tpWeapon->GetAmmoCurrent())
-						m_inventory.Action(kWPN_RELOAD, CMD_START);
+						inventory().Action(kWPN_RELOAD, CMD_START);
 					else
 						l_tObjectAction.m_bCompleted = true;
 				}
@@ -197,18 +197,18 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		case eObjectActionFire2 : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
-			if (m_inventory.ActiveItem()) {
+			if (inventory().ActiveItem()) {
 				if (l_tpWeapon->GetAmmoElapsed()) {
 					if (l_tpWeapon->GetAmmoMagSize() > 1)
 						l_tpWeaponMagazined->SetQueueSize(l_tObjectAction.m_dwQueueSize);
 					else
 						l_tpWeaponMagazined->SetQueueSize(1);
-					m_inventory.Action(kWPN_FUNC,	CMD_START);
+					inventory().Action(kWPN_FUNC,	CMD_START);
 				}
 				else {
-					m_inventory.Action(kWPN_FUNC,	CMD_STOP);
+					inventory().Action(kWPN_FUNC,	CMD_STOP);
 					if (l_tpWeapon->GetAmmoCurrent())
-						m_inventory.Action(kWPN_RELOAD, CMD_START);
+						inventory().Action(kWPN_RELOAD, CMD_START);
 					else
 						l_tObjectAction.m_bCompleted = true;
 				}
@@ -219,10 +219,10 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		case eObjectActionReload1 : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
-			if (m_inventory.ActiveItem()) {
-				m_inventory.Action(kWPN_FIRE,	CMD_STOP);
+			if (inventory().ActiveItem()) {
+				inventory().Action(kWPN_FIRE,	CMD_STOP);
 				if (CWeapon::eReload != l_tpWeapon->STATE)
-					m_inventory.Action(kWPN_RELOAD,	CMD_START);
+					inventory().Action(kWPN_RELOAD,	CMD_START);
 				else
 					l_tObjectAction.m_bCompleted = true;
 			}
@@ -239,8 +239,8 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 					break;
 				}
 				CObjectHandler::set_dest_state(eObjectActionIdle,l_tpInventoryItem);
-//				m_inventory.Slot(l_tpInventoryItem);
-//				m_inventory.Activate(l_tpInventoryItem->GetSlot());
+//				inventory().Slot(l_tpInventoryItem);
+//				inventory().Activate(l_tpInventoryItem->GetSlot());
 				if (l_tpWeapon && (CWeapon::eShowing != l_tpWeapon->STATE))
 					l_tObjectAction.m_bCompleted = true;
 			}
@@ -256,7 +256,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 					torch->Switch(false);
 					break;
 				}
-//				m_inventory.Activate(u32(-1));
+//				inventory().Activate(u32(-1));
 				CObjectHandler::set_dest_state(eObjectActionNoItems);
 				l_tObjectAction.m_bCompleted = true;
 			}
@@ -269,7 +269,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			break;
 		}
 		case eObjectActionTake : {
-			if (m_inventory.GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
+			if (inventory().GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
 				LuaOut(Lua::eLuaMessageTypeError,"item is already in the inventory!");
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			}
@@ -278,7 +278,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			break;
 		}
 		case eObjectActionDrop : {
-			if (!m_inventory.GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
+			if (!inventory().GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
 				LuaOut(Lua::eLuaMessageTypeError,"item is not in the inventory!");
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			}

@@ -3,9 +3,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include ".\entitycondition.h"
-#include ".\inventoryowner.h"
-#include ".\customoutfit.h"
+#include "../entitycondition.h"
+#include "../inventoryowner.h"
+#include "../customoutfit.h"
+#include "../inventory.h"
 
 
 #define MAX_HEALTH 1.0f
@@ -275,7 +276,7 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
     CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(this);
 	if(!pInvOwner) return hit_power;
 
-	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->m_inventory.m_slots[OUTFIT_SLOT].m_pIItem;
+	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
 	if(!pOutfit) return hit_power;
 
 	switch(hit_type)

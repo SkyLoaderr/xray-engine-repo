@@ -39,7 +39,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			if (32 == O->ID()) {
 				O = O;
 			}
-			if (g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(O),true)) { //GetScriptControl()
+			if (g_Alive() && inventory().Take(dynamic_cast<CGameObject*>(O),true)) { //GetScriptControl()
 				O->H_SetParent(this);
 				if (!inventory().ActiveItem() && GetScriptControl() && dynamic_cast<CShootingObject*>(O))
 					CObjectHandler::set_dest_state(eObjectActionIdle,dynamic_cast<CGameObject*>(O));
@@ -61,7 +61,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject		*O = Level().Objects.net_Find(id);
 			
-			if (m_inventory.Drop(dynamic_cast<CGameObject*>(O)) && !O->getDestroy()) {
+			if (inventory().Drop(dynamic_cast<CGameObject*>(O)) && !O->getDestroy()) {
 				O->H_SetParent	(0);
 				feel_touch_deny	(O,2000);
 			}

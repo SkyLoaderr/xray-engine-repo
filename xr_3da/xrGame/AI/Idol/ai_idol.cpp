@@ -108,7 +108,7 @@ void CAI_Idol::OnEvent		(NET_Packet& P, u16 type)
 			CObject* O	= Level().Objects.net_Find	(id);
 
 			Log("Trying to take - ", O->cName());
-			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
+			if(g_Alive() && inventory().Take(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(this);
 				Log("TAKE - ", O->cName());
 			}
@@ -119,7 +119,7 @@ void CAI_Idol::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 			
-			if(m_inventory.Drop(dynamic_cast<CGameObject*>(O))) {
+			if(inventory().Drop(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(0);
 				feel_touch_deny(O,2000);
 			}
@@ -167,13 +167,13 @@ void CAI_Idol::DropItemSendMessage(CObject *O)
 void CAI_Idol::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	//m_inventory.Update		(dt);
+	//inventory().Update		(dt);
 	UpdateInventoryOwner(dt);
 }
 
 void CAI_Idol::g_WeaponBones	(int &L, int &R1, int &R2)
 {
-	if (g_Alive() && m_inventory.ActiveItem()) {
+	if (g_Alive() && inventory().ActiveItem()) {
 		CKinematics *V	= PKinematics(Visual());
 		R1				= V->LL_BoneID("bip01_r_hand");
 		R2				= V->LL_BoneID("bip01_r_finger2");
@@ -184,13 +184,13 @@ void CAI_Idol::g_WeaponBones	(int &L, int &R1, int &R2)
 void CAI_Idol::renderable_Render	()
 {
 	inherited::renderable_Render	();
-	if(m_inventory.ActiveItem())
-		m_inventory.ActiveItem()->renderable_Render();
+	if(inventory().ActiveItem())
+		inventory().ActiveItem()->renderable_Render();
 }
 
 void CAI_Idol::g_fireParams(Fvector& P, Fvector& D)
 {
-	if (g_Alive() && m_inventory.ActiveItem()) {
+	if (g_Alive() && inventory().ActiveItem()) {
 		Center(P);
 		D.setHP(0,0);
 		D.normalize_safe();

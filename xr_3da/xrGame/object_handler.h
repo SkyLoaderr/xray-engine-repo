@@ -63,8 +63,8 @@ public:
 	IC		u32		uid						(const u32 id0, const u32 id1) const;
 			void	add_item				(CInventoryItem *inventory_item);
 			void	remove_item				(CInventoryItem *inventory_item);
-	IC		void	set_dest_state			(const MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
-	IC		bool	object_state			(u32 state_id, CInventoryItem *inventory_item);
+			void	set_dest_state			(const MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
+	IC		bool	object_state			(u32 state_id, CObject *object);
 	IC		u32		current_object_state_id	() const;
 	IC		u32		current_state_state_id	() const;
 			u32		object_state			() const;

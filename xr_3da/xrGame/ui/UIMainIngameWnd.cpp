@@ -181,10 +181,10 @@ void CUIMainIngameWnd::Update()
 	}
 
 
-	if(m_pActor->m_inventory.GetActiveSlot() < m_pActor->m_inventory.m_slots.size()) 
+	if(m_pActor->inventory().GetActiveSlot() < m_pActor->inventory().m_slots.size()) 
 	{
-		CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pActor->m_inventory.m_slots[
-										m_pActor->m_inventory.GetActiveSlot()].m_pIItem); 
+		CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pActor->inventory().m_slots[
+										m_pActor->inventory().GetActiveSlot()].m_pIItem); 
 		
 		if(pWeapon)	
 		{

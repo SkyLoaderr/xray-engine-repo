@@ -209,7 +209,7 @@ void CUIInventoryWnd::InitInventory()
 	if(!pInvOwner) return;
 
 
-	CInventory* pInv = &pInvOwner->m_inventory;
+	CInventory* pInv = &pInvOwner->inventory();
 	
 	m_pMouseCapturer = NULL;
 
@@ -730,7 +730,7 @@ void CUIInventoryWnd::EatItem()
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
 
-	pActor->m_inventory.Eat(m_pCurrentItem);
+	pActor->inventory().Eat(m_pCurrentItem);
 	
 	if(!m_pCurrentItem->Useful())
 	{
@@ -755,14 +755,14 @@ void CUIInventoryWnd::Show()
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(pActor)
 	{
-		m_iCurrentActiveSlot = pActor->m_inventory.GetActiveSlot();
+		m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
 
-		if(pActor->m_inventory.ActiveItem())
+		if(pActor->inventory().ActiveItem())
 		{
-			CWeapon* pWeapon = dynamic_cast<CWeapon*>(pActor->m_inventory.ActiveItem());
+			CWeapon* pWeapon = dynamic_cast<CWeapon*>(pActor->inventory().ActiveItem());
 			if(pWeapon) pWeapon->ResetPending();
 		}
-		pActor->m_inventory.Activate(NO_ACTIVE_SLOT);
+		pActor->inventory().Activate(NO_ACTIVE_SLOT);
 	}
 
 
@@ -776,9 +776,9 @@ void CUIInventoryWnd::Hide()
 	//достать вещь в активный слот
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && m_iCurrentActiveSlot != NO_ACTIVE_SLOT && 
-		pActor->m_inventory.m_slots[m_iCurrentActiveSlot].m_pIItem)
+		pActor->inventory().m_slots[m_iCurrentActiveSlot].m_pIItem)
 	{
-		pActor->m_inventory.Activate(m_iCurrentActiveSlot);
+		pActor->inventory().Activate(m_iCurrentActiveSlot);
 		m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
 	}
 
@@ -1041,10 +1041,10 @@ void CUIInventoryWnd::AttachAddon()
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(pActor)
 	{
-		if(m_pItemToUpgrade == pActor->m_inventory.ActiveItem())
+		if(m_pItemToUpgrade == pActor->inventory().ActiveItem())
 		{
-			m_iCurrentActiveSlot = pActor->m_inventory.GetActiveSlot();
-			pActor->m_inventory.Activate(NO_ACTIVE_SLOT);
+			m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
+			pActor->inventory().Activate(NO_ACTIVE_SLOT);
 		}
 	}
 
@@ -1067,10 +1067,10 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(pActor)
 	{
-		if(m_pCurrentItem == pActor->m_inventory.ActiveItem())
+		if(m_pCurrentItem == pActor->inventory().ActiveItem())
 		{
-			m_iCurrentActiveSlot = pActor->m_inventory.GetActiveSlot();
-			pActor->m_inventory.Activate(NO_ACTIVE_SLOT);
+			m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
+			pActor->inventory().Activate(NO_ACTIVE_SLOT);
 		}
 	}
 }

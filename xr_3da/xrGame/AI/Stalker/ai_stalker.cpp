@@ -77,7 +77,7 @@ void CAI_Stalker::Die				()
 	m_bHammerIsClutched				= !::Random.randI(0,2);
 
 	//запретить использование слотов в инвенторе
-	m_inventory.SetSlotsUseful		(false);
+	inventory().SetSlotsUseful		(false);
 }
 
 void CAI_Stalker::Load				(LPCSTR section)
@@ -191,7 +191,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	// export last known packet
 	R_ASSERT						(!NET.empty());
 	net_update& N					= NET.back();
-	P.w_float						(m_inventory.TotalWeight());
+	P.w_float						(inventory().TotalWeight());
 	P.w_u32							(0);
 	P.w_u32							(0);
 
@@ -372,32 +372,32 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	VERIFY				(_valid(Position()));
 
 	// inventory update
-	if (m_dwDeathTime && (m_inventory.TotalWeight() > 0)) {
-		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	if (m_dwDeathTime && (inventory().TotalWeight() > 0)) {
+		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
 		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !m_bHammerIsClutched || (Level().timeServer() - m_dwDeathTime > 500)) {
-			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
-			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+			xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
+			xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
 			for ( ; I != E; ++I)
-				if ((I - B) == (int)m_inventory.GetActiveSlot()) 
+				if ((I - B) == (int)inventory().GetActiveSlot()) 
 					(*I).m_pIItem->Drop();
 				else
-					if((*I).m_pIItem) m_inventory.Ruck((*I).m_pIItem);
+					if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
 
-			/*TIItemList &l_list = m_inventory.m_ruck;
+			/*TIItemList &l_list = inventory().m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 				if ((*l_it)->Useful())
 					(*l_it)->Drop();*/
 		}
 		else {
-			m_inventory.Action(kWPN_FIRE,	CMD_START);
-			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
-			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+			inventory().Action(kWPN_FIRE,	CMD_START);
+			xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
+			xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
 			for ( ; I != E; ++I)
-				if ((I - B) != (int)m_inventory.GetActiveSlot())
-					m_inventory.Ruck((*I).m_pIItem);
+				if ((I - B) != (int)inventory().GetActiveSlot())
+					inventory().Ruck((*I).m_pIItem);
 			//		(*I).m_pIItem->Drop();
 			
-			/*TIItemList &l_list = m_inventory.m_ruck;
+			/*TIItemList &l_list = inventory().m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 				if ((*l_it)->Useful())
 					(**l_it).Drop();*/
@@ -413,7 +413,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 float CAI_Stalker::Radius() const
 { 
 	float R		= inherited::Radius();
-	CWeapon* W	= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	CWeapon* W	= dynamic_cast<CWeapon*>(inventory().ActiveItem());
 	if (W) R	+= W->Radius();
 	return R;
 }

@@ -4,6 +4,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "ai/trader/ai_trader.h"
 #include "artifact.h"
+#include "inventory.h"
 
 class CInventoryOwner;
 
@@ -427,7 +428,7 @@ CInventory& CTrade::GetTradeInv(SInventoryOwner owner)
 {
 	R_ASSERT(TT_NONE != owner.type);
 
-	return ((TT_TRADER == owner.type) ? (owner.inv_owner->m_trade_storage) : (owner.inv_owner->m_inventory));
+	return ((TT_TRADER == owner.type) ? (*owner.inv_owner->m_trade_storage) : (owner.inv_owner->inventory()));
 }
 
 CTrade*	CTrade::GetPartnerTrade()

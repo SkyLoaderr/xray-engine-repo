@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "state_combat_attack_weak.h"
 #include "ai/stalker/ai_stalker.h"
+#include "inventory_item.h"
 
 CStateAttackWeak::CStateAttackWeak	(LPCSTR state_name) : inherited(state_name)
 {

@@ -812,3 +812,26 @@ CInventoryItem *CObjectHandler::best_weapon() const
 	}
 	return			(best_weapon);
 }
+
+void CObjectHandler::set_dest_state	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
+{
+	if (object_action == MonsterSpace::eObjectActionActivate)
+		object_action					= MonsterSpace::eObjectActionIdle;
+
+	if (object_action == MonsterSpace::eObjectActionDeactivate)
+		object_action					= MonsterSpace::eObjectActionNoItems;
+
+	if (object_action == MonsterSpace::eObjectActionNoItems) {
+		inherited::set_dest_state		(object_action);
+		return;
+	}
+
+	if (game_object)
+		inherited::set_dest_state		(uid(object_action, game_object->ID()));
+	else
+		if (inventory().ActiveItem())
+			inherited::set_dest_state	(uid(object_action, inventory().ActiveItem()->ID()));
+		else
+			inherited::set_dest_state	(u32(MonsterSpace::eObjectActionNoItems));
+}
+

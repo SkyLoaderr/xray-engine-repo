@@ -142,7 +142,7 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	UICharacterInfoLeft.InitCharacter(m_pInvOwner);
 	UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
 
-	m_pInv = &m_pInvOwner->m_inventory;
+	m_pInv = &m_pInvOwner->inventory();
 	m_pOthersInv = pOur->GetTrade()->GetPartnerInventory();
 	
 	m_pTrade = pOur->GetTrade();
@@ -573,11 +573,11 @@ void CUITradeWnd::UpdateLists()
 
 	ruck_list.clear();
 	ruck_list.insert(ruck_list.begin(),
-					 m_pOthersInvOwner->m_inventory.m_ruck.begin(),
-					 m_pOthersInvOwner->m_inventory.m_ruck.end());
+					 m_pOthersInvOwner->inventory().m_ruck.begin(),
+					 m_pOthersInvOwner->inventory().m_ruck.end());
 	ruck_list.insert(ruck_list.end(),
-					 m_pOthersInvOwner->m_inventory.m_belt.begin(),
-					 m_pOthersInvOwner->m_inventory.m_belt.end());
+					 m_pOthersInvOwner->inventory().m_belt.begin(),
+					 m_pOthersInvOwner->inventory().m_belt.end());
 
 	ruck_list.sort(GreaterRoomInRuck);
 

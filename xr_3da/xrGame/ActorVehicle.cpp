@@ -31,7 +31,7 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(CarHeadCallback,this);
 
 	m_PhysicMovementControl.DestroyCharacter();
-	//PIItem iitem=m_inventory.ActiveItem();
+	//PIItem iitem=inventory().ActiveItem();
 	setVisible(true);
 	//clear actor movement states 
 	mstate_wishful=0;

@@ -202,8 +202,8 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 	if (ai().ef_storage().m_tpCurrentMember) {
 		const CInventoryOwner *tpInventoryOwner = dynamic_cast<const CInventoryOwner*>(ai().ef_storage().m_tpCurrentMember);
 		if (tpInventoryOwner) {
-			xr_vector<CInventorySlot>::const_iterator I = tpInventoryOwner->m_inventory.m_slots.begin();
-			xr_vector<CInventorySlot>::const_iterator E = tpInventoryOwner->m_inventory.m_slots.end();
+			xr_vector<CInventorySlot>::const_iterator I = tpInventoryOwner->inventory().m_slots.begin();
+			xr_vector<CInventorySlot>::const_iterator E = tpInventoryOwner->inventory().m_slots.end();
 			for ( ; I != E; ++I)
 				if ((*I).m_pIItem) {
 					CWeapon *tpCustomWeapon = dynamic_cast<CWeapon*>((*I).m_pIItem);
@@ -502,7 +502,7 @@ float CEnemyRukzakWeightFunction::ffGetValue()
 	if (ai().ef_storage().m_tpCurrentMember) {
 		const CInventoryOwner	*tpInventoryOwner = dynamic_cast<const CInventoryOwner*>(ai().ef_storage().m_tpCurrentMember);
 		if (tpInventoryOwner)
-			m_fLastValue	= tpInventoryOwner->m_inventory.TotalWeight();
+			m_fLastValue	= tpInventoryOwner->inventory().TotalWeight();
 		else
 			m_fLastValue	= 0;
 	}

@@ -15,6 +15,8 @@
 #include "ai/trader/ai_trader.h"
 #include "ai_script_actions.h"
 
+class CInventoryItem;
+
 class CLuaEffector : public CEffectorPP {
 public:
 	typedef CEffectorPP inherited;
@@ -346,8 +348,8 @@ public:
 	BIND_FUNCTION01	(m_tpGameObject,	setEnabled,			CGameObject,	setEnabled,			BOOL,							BOOL);
 
 	// CInventoryItem
-	BIND_FUNCTION10	(m_tpGameObject,	Cost,				CInventoryItem,	Cost,				u32,							u32(-1));
-	BIND_FUNCTION10	(m_tpGameObject,	GetCondition,		CInventoryItem,	GetCondition,		float,							0);
+	u32				Cost			() const;
+	float			GetCondition	() const;
 
 	// CEntity
 	BIND_MEMBER		(m_tpGameObject,	DeathTime,			CEntity,		m_dwDeathTime,		_TIME_ID,						_TIME_ID(-1));
@@ -508,64 +510,12 @@ public:
 	bool GiveInfoPortion(int info_index);
 	bool GiveInfoPortionViaPda(int info_index, CLuaGameObject* pFromWho);
 	
-	IC		u32				GetInventoryObjectCount() const
-	{
-		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
-		if (l_tpInventoryOwner)
-			return			(l_tpInventoryOwner->m_inventory.dwfGetObjectCount());
-		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member obj_count!");
-			return			(0);
-		}
-	}
+	u32				GetInventoryObjectCount() const;
 
-	IC		CLuaGameObject	*GetActiveItem()
-	{
-		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
-		if (l_tpInventoryOwner)
-			if (l_tpInventoryOwner->m_inventory.ActiveItem())
-				return		(xr_new<CLuaGameObject>(l_tpInventoryOwner->m_inventory.ActiveItem()));
-			else
-				return		(0);
-		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member activge_item!");
-			return			(0);
-		}
-	}
+	CLuaGameObject	*GetActiveItem();
 
-	IC		CLuaGameObject	*GetObjectByName	(LPCSTR caObjectName) const
-	{
-		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
-		if (l_tpInventoryOwner) {
-			CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->m_inventory.GetItemFromInventory(caObjectName);
-			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tpInventoryItem);
-			if (!l_tpGameObject)
-				return		(0);
-			else
-				return		(xr_new<CLuaGameObject>(l_tpGameObject));
-		}
-		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
-			return			(0);
-		}
-	}
-	
-	IC		CLuaGameObject	*GetObjectByIndex	(int iIndex) const
-	{
-		CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
-		if (l_tpInventoryOwner) {
-			CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->m_inventory.tpfGetObjectByIndex(iIndex);
-			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tpInventoryItem);
-			if (!l_tpGameObject)
-				return		(0);
-			else
-				return		(xr_new<CLuaGameObject>(l_tpGameObject));
-		}
-		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
-			return			(0);	
-		}
-	}
+	CLuaGameObject	*GetObjectByName	(LPCSTR caObjectName) const;
+	CLuaGameObject	*GetObjectByIndex	(int iIndex) const;
 
 	void SetCallback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter)
 	{

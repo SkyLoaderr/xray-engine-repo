@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
-#include "Inventory.h"
+#include "inventory_item.h"
 #include "weapon.h"
 #include "ParticlesObject.h"
 #include "PDA.h"
@@ -152,4 +152,83 @@ void CObjectAction::SetObject(CLuaGameObject *tpLuaGameObject)
 CLuaGameObject::operator CObject*()
 {
 	return			(dynamic_cast<CObject*>(m_tpGameObject));
+}
+
+u32	CLuaGameObject::Cost			() const
+{
+	CInventoryItem		*inventory_item = dynamic_cast<CInventoryItem*>(m_tpGameObject);
+	if (!inventory_item) {
+		LuaOut			(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member Cost!");
+		return			(false);
+	}
+	return				(inventory_item->Cost());
+}
+
+float CLuaGameObject::GetCondition	() const
+{
+	CInventoryItem		*inventory_item = dynamic_cast<CInventoryItem*>(m_tpGameObject);
+	if (!inventory_item) {
+		LuaOut			(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member Cost!");
+		return			(false);
+	}
+	return				(inventory_item->GetCondition());
+}
+
+u32	CLuaGameObject::GetInventoryObjectCount() const
+{
+	CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if (l_tpInventoryOwner)
+		return			(l_tpInventoryOwner->inventory().dwfGetObjectCount());
+	else {
+		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member obj_count!");
+		return			(0);
+	}
+}
+
+CLuaGameObject	*CLuaGameObject::GetActiveItem()
+{
+	CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if (l_tpInventoryOwner)
+		if (l_tpInventoryOwner->inventory().ActiveItem())
+			return		(xr_new<CLuaGameObject>(l_tpInventoryOwner->inventory().ActiveItem()));
+		else
+			return		(0);
+	else {
+		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member activge_item!");
+		return			(0);
+	}
+}
+
+CLuaGameObject	*CLuaGameObject::GetObjectByName	(LPCSTR caObjectName) const
+{
+	CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if (l_tpInventoryOwner) {
+		CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->inventory().GetItemFromInventory(caObjectName);
+		CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tpInventoryItem);
+		if (!l_tpGameObject)
+			return		(0);
+		else
+			return		(xr_new<CLuaGameObject>(l_tpGameObject));
+	}
+	else {
+		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
+		return			(0);
+	}
+}
+
+CLuaGameObject	*CLuaGameObject::GetObjectByIndex	(int iIndex) const
+{
+	CInventoryOwner		*l_tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if (l_tpInventoryOwner) {
+		CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->inventory().tpfGetObjectByIndex(iIndex);
+		CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tpInventoryItem);
+		if (!l_tpGameObject)
+			return		(0);
+		else
+			return		(xr_new<CLuaGameObject>(l_tpGameObject));
+	}
+	else {
+		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
+		return			(0);	
+	}
 }

@@ -4,11 +4,11 @@
 #include "PhysicsShell.h"
 #include "ai/script/ai_script_monster.h"
 #include "CarLights.h"
-#include "inventory.h"
 
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
+class						CInventory;
 
 // defs
 
@@ -417,7 +417,7 @@ public:
 	CCameraBase*			Camera				(){return active_camera;}
 
 	// Inventory for the car
-	CInventory*				GetInventory		(){return &m_inventory;}
+	CInventory*				GetInventory		(){return inventory;}
 
 public:
 	CCar(void);
@@ -501,7 +501,7 @@ private:
 
 
 	//Inventory for the car
-	CInventory	m_inventory;
+	CInventory	*inventory;
 	
 	virtual	void reinit		();
 };

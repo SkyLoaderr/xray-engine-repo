@@ -19,31 +19,9 @@ IC	u32 CObjectHandler::uid(const u32 id0, const u32 id1) const
 	return				((id0 << 16) | id1);
 }
 
-IC	void CObjectHandler::set_dest_state	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
+IC	bool CObjectHandler::object_state	(u32 state_id, CObject *object)
 {
-	if (object_action == MonsterSpace::eObjectActionActivate)
-		object_action					= MonsterSpace::eObjectActionIdle;
-
-	if (object_action == MonsterSpace::eObjectActionDeactivate)
-		object_action					= MonsterSpace::eObjectActionNoItems;
-
-	if (object_action == MonsterSpace::eObjectActionNoItems) {
-		inherited::set_dest_state		(object_action);
-		return;
-	}
-
-	if (game_object)
-		inherited::set_dest_state		(uid(object_action, game_object->ID()));
-	else
-		if (inventory().ActiveItem())
-			inherited::set_dest_state	(uid(object_action, inventory().ActiveItem()->ID()));
-		else
-			inherited::set_dest_state	(u32(MonsterSpace::eObjectActionNoItems));
-}
-
-IC	bool CObjectHandler::object_state	(u32 state_id, CInventoryItem *inventory_item)
-{
-	return				((state_id & 0xffff) == inventory_item->ID());
+	return				((state_id & 0xffff) == object->ID());
 }
 
 IC	u32	CObjectHandler::current_object_state_id	() const

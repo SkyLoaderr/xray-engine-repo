@@ -55,8 +55,8 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			{
 				//только если находимся в режиме single
 				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-				if(pGameSP)pGameSP->StartCarBody(&m_inventory, this,
-												 &m_pPersonWeLookingAt->m_inventory,
+				if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
+												 &m_pPersonWeLookingAt->inventory(),
 												 dynamic_cast<CGameObject*>(m_pPersonWeLookingAt));
 			}
 		}
@@ -64,7 +64,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		{
 			//только если находимся в режиме single
 			CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-			if(pGameSP)pGameSP->StartCarBody(&m_inventory, this,
+			if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
 											 m_pCarWeLookingAt->GetInventory(),
 											 dynamic_cast<CGameObject*>(m_pCarWeLookingAt));
 
@@ -77,7 +77,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		return;
 	}
 
-	if(m_inventory.Action(cmd, CMD_START))						return;
+	if(inventory().Action(cmd, CMD_START))						return;
 
 
 	switch(cmd){
@@ -96,7 +96,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kWPN_FIRE:	g_fireStart		(); 						break;
 	case kWPN_ZOOM:	g_fire2Start	();							break;
 	case kTORCH:{ 
-		PIItem I = m_inventory.Get("device_torch",false); 
+		PIItem I = inventory().Get("device_torch",false); 
 		if (I){
 			CTorch* torch = dynamic_cast<CTorch*>(I);
 			if (torch) torch->Switch();
@@ -136,7 +136,7 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 
 	if (g_Alive())	
 	{
-		if(m_inventory.Action(cmd, CMD_STOP)) return;
+		if(inventory().Action(cmd, CMD_STOP)) return;
 
 		if(m_vehicle)
 		{

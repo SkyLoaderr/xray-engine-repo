@@ -116,7 +116,7 @@ CActor::CActor() : CEntityAlive()
 	InitTrade();
 
 	//разрешить использование пояса в inventory
-	m_inventory.SetBeltUseful(true);
+	inventory().SetBeltUseful(true);
 
 	m_pPersonWeLookingAt = NULL;
 	m_pCarWeLookingAt = NULL;
@@ -298,7 +298,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_angle8			(r_torso.yaw);
 	P.w_angle8			(r_torso.pitch);
 
-	P.w_float			(m_inventory.TotalWeight());
+	P.w_float			(inventory().TotalWeight());
 	P.w_u32				(0);
 	P.w_u32				(0);
 
@@ -433,7 +433,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	// *** weapons
 	//if (Local()) 			Weapons->ActivateWeaponID	(0);
-	//if(Local()) m_inventory.Activate(1);
+	//if(Local()) inventory().Activate(1);
 
 	NET_SavedAccel.set		(0,0,0);
 	NET_WasInterpolating	= TRUE;
@@ -662,7 +662,7 @@ void CActor::Die	( )
 	//b_DropActivated			= TRUE;
 	//g_PerformDrop			();
 	// @@@ WT
-	m_inventory.DropAll();
+	inventory().DropAll();
 	// Play ref_sound
 	::Sound->play_at_pos		(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
 	cam_Set					(eacFreeLook);
@@ -1053,8 +1053,8 @@ void CActor::shedule_Update	(u32 DT)
 		}
 		pCamBobbing->SetState					(mstate_real);
 		//cam_Update								(dt,Weapons->getZoomFactor());
-		CWeapon *l_pW = dynamic_cast<CWeapon*>(m_inventory.GetActiveSlot() < 0xffffff ? 
-					m_inventory.m_slots[m_inventory.GetActiveSlot()].m_pIItem : NULL);
+		CWeapon *l_pW = dynamic_cast<CWeapon*>(inventory().GetActiveSlot() < 0xffffff ? 
+					inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
 		cam_Update(dt,l_pW?l_pW->GetZoomFactor():DEFAULT_FOV);
 	}
 	else 
@@ -1066,7 +1066,7 @@ void CActor::shedule_Update	(u32 DT)
 	setVisible				(!HUDview	());
 
 	//установить режим показа HUD для текущего активного слота
-	CHudItem* pHudItem = dynamic_cast<CHudItem*>(m_inventory.ActiveItem());
+	CHudItem* pHudItem = dynamic_cast<CHudItem*>(inventory().ActiveItem());
 	if(pHudItem) pHudItem->SetHUDmode(HUDview());
 	
 //	R_ASSERT(GAMEMTL_NONE!=last_material_id());
@@ -1109,15 +1109,15 @@ void CActor::shedule_Update	(u32 DT)
 	Collide::rq_result l_rq;
 	if(g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, 
 										 Device.vCameraDirection, 
-									 	 m_inventory.GetTakeDist(),  Collide::rqtBoth, l_rq)) 
+									 	 inventory().GetTakeDist(),  Collide::rqtBoth, l_rq)) 
 	{
-		m_inventory.m_pTarget = dynamic_cast<PIItem>(l_rq.O);
+		inventory().m_pTarget = dynamic_cast<PIItem>(l_rq.O);
 		m_pPersonWeLookingAt = dynamic_cast<CInventoryOwner*>(l_rq.O);
 		m_pCarWeLookingAt = dynamic_cast<CCar*>(l_rq.O);
 	}
 	else 
 	{
-		m_inventory.m_pTarget = NULL;
+		inventory().m_pTarget = NULL;
 		m_pPersonWeLookingAt = NULL;
 	}
 	setEnabled(true);
@@ -1246,8 +1246,8 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			
 			//уменьшить силу игрока из-за выполненого прыжка
 			if (!psActorFlags.test(AF_GODMODE))	
-					ConditionJump((m_inventory.TotalWeight()+GetMass())/
-								  (m_inventory.GetMaxWeight() + GetMass()));
+					ConditionJump((inventory().TotalWeight()+GetMass())/
+								  (inventory().GetMaxWeight() + GetMass()));
 		}
 
 		/*
@@ -1423,7 +1423,7 @@ void CActor::g_PerformDrop	( )
 	} else {
 		//
 		
-		PIItem pItem = m_inventory.ActiveItem();
+		PIItem pItem = inventory().ActiveItem();
 		if (0==pItem) return;
 		pItem->Drop();
 
@@ -1455,10 +1455,10 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 {
 	//CWeapon* W			= Weapons->ActiveWeapon();
 	//if (W)				W->renderable_Render		();
-	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->renderable_Render();
+	//CWeapon *W = dynamic_cast<CWeapon*>(inventory().ActiveItem()); if(W) W->renderable_Render();
 
-	if(m_inventory.ActiveItem()&&!m_vehicle) {
-		m_inventory.ActiveItem()->renderable_Render();
+	if(inventory().ActiveItem()&&!m_vehicle) {
+		inventory().ActiveItem()->renderable_Render();
 	}
 
 
@@ -1519,7 +1519,7 @@ ENGINE_API extern float		psHUD_FOV;
 float CActor::Radius()const
 { 
 	float R		= inherited::Radius();
-	CWeapon* W	= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	CWeapon* W	= dynamic_cast<CWeapon*>(inventory().ActiveItem());
 	if (W) R	+= W->Radius();
 	//	if (HUDview()) R *= 1.f/psHUD_FOV;
 	return R;
@@ -1538,8 +1538,8 @@ void CActor::UpdateCondition()
 
 	if(isAccelerated(mstate_real) && (mstate_real&mcAnyMove))
 	{
-	   ConditionAccel((m_inventory.TotalWeight()+GetMass())/
-						(m_inventory.GetMaxWeight()+GetMass()));
+	   ConditionAccel((inventory().TotalWeight()+GetMass())/
+						(inventory().GetMaxWeight()+GetMass()));
 	}
 	
 	CActorCondition::UpdateCondition();

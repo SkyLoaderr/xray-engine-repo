@@ -47,7 +47,8 @@ CCar::CCar(void)
 	m_car_sound			=xr_new<SCarSound>	(this);
 
 	//у машины слотов в инвентаре нет
-	m_inventory.SetSlotsUseful(false);
+	inventory			= xr_new<CInventory>();
+	inventory->SetSlotsUseful(false);
 }
 
 CCar::~CCar(void)
@@ -58,6 +59,7 @@ CCar::~CCar(void)
 	m_car_sound->Destroy();
 	xr_delete			(m_car_sound);
 	ClearExhausts();
+	xr_delete			(inventory);
 }
 
 void CCar::reinit		()
@@ -1159,7 +1161,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
-			if(m_inventory.Take(dynamic_cast<CGameObject*>(O))) 
+			if(GetInventory()->Take(dynamic_cast<CGameObject*>(O))) 
 			{
 				O->H_SetParent(this);
 			}
@@ -1178,7 +1180,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
-			if(m_inventory.Drop(dynamic_cast<CGameObject*>(O))) 
+			if(GetInventory()->Drop(dynamic_cast<CGameObject*>(O))) 
 			{
 				O->H_SetParent(0);
 			}
