@@ -35,13 +35,13 @@ class CSE_ALifeSimulator :
 	public ISheduled,
 	public CRandom 
 {
-	u64								m_qwMaxProcessTime;
+	u64								m_max_process_time;
+	u64								m_start_time;
+	float							m_update_monster_factor;
 	xrServer						*m_tpServer;
 	bool							m_bActorEnabled;
 	string256						m_caSaveName;
-	bool							m_bFirstUpdate;
 	u32								m_dwMaxCombatIterationCount;
-	u64								m_qwCycleCounter;
 	
 	// temporary buffer for purchased by the particular trader artefacts
 	ALife::ITEM_COUNT_MAP			m_tpTraderItems;
@@ -102,10 +102,7 @@ class CSE_ALifeSimulator :
 			void					vfCreateOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool					bRemoveFromRegistries = true);
 			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
-			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfFurlObjectOffline			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
-			void					vfProcessAllTheSwitches		();
-			void					vfProcessUpdates			();
 	// interaction routines
 			void					vfInitAI_ALifeMembers		();
 			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable,		ALife::_GRAPH_ID		tGraphID);
@@ -185,6 +182,8 @@ public:
 			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTrader			*tpALifeTrader);
 			float					distance					(const DWORD_VECTOR &path) const;
 			CSE_Abstract			*spawn_item					(LPCSTR section,			const Fvector &position,	u32 level_vertex_id,	ALife::_GRAPH_ID game_vertex_id,	u16 parent_id);
+	virtual void					check_for_switch			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
+			void					vfSetProcessTime			(int						iMicroSeconds);
 	// console commands support
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();
@@ -199,7 +198,6 @@ public:
 			void					vfGraphVertexInfo			(ALife::_GRAPH_ID			tGraphID);
 			void					vfSetSwitchDistance			(float						fNewDistance);
 			float					ffGetSwitchDistance			();
-			void					vfSetProcessTime			(int						iMicroSeconds);
 			void					vfSetSwitchFactor			(float						fSwitchFactor);
 			void					vfSetSwitchDelay			(int						iMilliSeconds);
 			void					vfSetScheduleMin			(int						iMilliSeconds);

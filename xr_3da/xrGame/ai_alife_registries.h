@@ -23,20 +23,7 @@ public:
 	virtual	void					Save						(IWriter &tMemoryStream);
 	virtual void					Load						(IReader &tFileStream);
 			void					Add							(CSE_ALifeDynamicObject *tpALifeDynamicObject);
-
-	IC		CSE_ALifeDynamicObject	*object			(ALife::_OBJECT_ID tObjectID, bool bNoAssert = false)
-	{
-		ALife::D_OBJECT_PAIR_IT		I = m_tObjectRegistry.find(tObjectID);
-		
-		if (!bNoAssert) {
-			R_ASSERT2				(m_tObjectRegistry.end() != I,"Specified object hasn't been found in the Object registry!");
-		}
-		else
-			if (m_tObjectRegistry.end() == I)
-				return				(0);
-
-		return						((*I).second);
-	}
+	IC		CSE_ALifeDynamicObject	*object						(ALife::_OBJECT_ID tObjectID, bool bNoAssert = false);
 };
 
 class CSE_ALifeEventRegistry : public IPureALifeLSObject {
@@ -49,19 +36,7 @@ public:
 	virtual	void					Save						(IWriter &tMemoryStream);
 	virtual	void					Load						(IReader &tFileStream);
 	virtual	void					Add							(CSE_ALifeEvent	*tpEvent);
-	
-	IC		CSE_ALifeEvent			*event			(ALife::_EVENT_ID tEventID, bool bNoAssert = false)
-	{
-		ALife::EVENT_PAIR_IT		I = m_tEventRegistry.find(tEventID);
-
-		if (!bNoAssert)
-			R_ASSERT2				(m_tEventRegistry.end() != I,"Specified event hasn't been found in the Event registry!");
-		else
-			if (m_tEventRegistry.end() == I)
-				return				(0);
-
-		return						((*I).second);
-	}
+	IC		CSE_ALifeEvent			*event						(ALife::_EVENT_ID tEventID, bool bNoAssert = false);
 };
 
 class CSE_ALifeTaskRegistry : public IPureALifeLSObject {
@@ -76,35 +51,29 @@ public:
 	virtual	void					Load						(IReader &tFileStream);
 	virtual	void					Add							(CSE_ALifeTask *tpTask);
 	virtual	void					Update						(CSE_ALifeTask *tpTask);
-
-	IC		CSE_ALifeTask			*task						(ALife::_TASK_ID tTaskID, bool bNoAssert = false)
-	{
-		ALife::TASK_PAIR_IT			I = m_tTaskRegistry.find(tTaskID);
-
-		if (!bNoAssert)
-			R_ASSERT2				(m_tTaskRegistry.end() != I,"Specified task hasn't been found in the Task registry!");
-		else
-			if (m_tTaskRegistry.end() == I)
-				return				(0);
-
-		return						((*I).second);
-	}
+	IC		CSE_ALifeTask			*task						(ALife::_TASK_ID tTaskID, bool bNoAssert = false);
 };
 
 class CSE_ALifeGraphRegistry {
+protected:
+	typedef ALife::D_OBJECT_MAP::iterator _iterator;
+
 public:
 	CSE_ALifeCreatureActor			*m_tpActor;
-	bool							m_bSwitchChanged;
-	ALife::_OBJECT_ID				m_tNextFirstSwitchObjectID;
 	ALife::_LEVEL_ID				m_tCurrentLevelID;
 	ALife::D_OBJECT_MAP				*m_tpCurrentLevel;
-	ALife::GRAPH_POINT_VECTOR		m_tpGraphObjects;									// по точке графа получить все 
+	ALife::GRAPH_POINT_VECTOR		m_tpGraphObjects;	// по точке графа получить все 
 	ALife::GRAPH_VECTOR				m_tpTerrain[LOCATION_TYPE_COUNT][ALife::LOCATION_COUNT];	
-																						// массив списков: по идетнификатору 
-																						//	местности получить список точек 
-																						//  графа
+	// массив списков: по идетнификатору 
+	//	местности получить список точек 
+	//  графа
+	u64								m_cycle_count;
+	_iterator						m_next_iterator;
+	bool							m_first_update;
+	u64								m_start_time;
+	u64								m_max_process_time;
 
-
+public:
 									CSE_ALifeGraphRegistry		();
 	virtual							~CSE_ALifeGraphRegistry		();
 			void					Init						();
@@ -121,6 +90,12 @@ public:
 			void					vfChangeEventGraphPoint		(CSE_ALifeEvent			*tpEvent,				ALife::_GRAPH_ID		tGraphPointID,			ALife::_GRAPH_ID tNextGraphPointID);
 			void					vfAttachItem				(CSE_Abstract			&tAbstract,				CSE_ALifeInventoryItem	*tpALifeInventoryItem,	ALife::_GRAPH_ID tGraphID,			bool bALifeRequest = true);
 			void					vfDetachItem				(CSE_Abstract			&tAbstract,				CSE_ALifeInventoryItem	*tpALifeInventoryItem,	ALife::_GRAPH_ID tGraphID,			bool bALifeRequest = true);
+	virtual void					check_for_switch			(CSE_ALifeDynamicObject *tpALifeDynamicObject) = 0;
+	IC		void					update_next					();
+	IC		_iterator				&next						();
+			void					update						();
+	IC		bool					time_over					();
+	IC		void					set_process_time			(u64 process_time);
 };
 
 class CSE_ALifeTraderRegistry {
@@ -135,16 +110,28 @@ public:
 };
 
 class CSE_ALifeScheduleRegistry {
+protected:
+	typedef ALife::SCHEDULE_P_PAIR_IT _iterator;
+
 public:
 	ALife::SCHEDULE_P_MAP			m_tpScheduledObjects;	// массив обновляемых объектов
-	ALife::_OBJECT_ID				m_tNextFirstProcessObjectID;
-	bool							m_bUpdateChanged;
+	u64								m_cycle_count;
+	_iterator						m_next_iterator;
+	u64								m_start_time;
+	u64								m_max_process_time;
 
-	virtual							~CSE_ALifeScheduleRegistry	(){}
-			void					Init						();
+public:
+	IC								CSE_ALifeScheduleRegistry	();
+	virtual							~CSE_ALifeScheduleRegistry	();
+	IC		void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 			void					add							(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects = true);
 			void					remove						(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects = true);
+	IC		void					update_next					();
+	IC		_iterator				&next						();
+			void					update						();
+	IC		bool					time_over					();
+	IC		void					set_process_time			(u64 process_time);
 };
 
 class CSE_ALifeSpawnRegistry : public CSE_ALifeSpawnHeader {

@@ -54,6 +54,18 @@ void CLevelGraph::render()
 //			}
 //		}
 //	}
+	// test
+//	{
+//		Fvector				position = Fvector().set(-151.899979f,-28.842815f,-303.799988f);
+//		position.y			+= 1.f;
+//		RCache.dbg_DrawAABB	(position,.35f,1.f,.35f,D3DCOLOR_XRGB(255,255,255));
+//	}
+//	{
+//		Fvector				position = Fvector().set(-159.599991f,-31.175661f,-280.000000f);
+//		position.y			+= 1.f;
+//		RCache.dbg_DrawAABB	(position,.35f,1.f,.35f,D3DCOLOR_XRGB(255,255,255));
+//	}
+	// end of test
 	
 	if (bDebug && psAI_Flags.test(aiDebug)) {
 		CGameObject*	O	= dynamic_cast<CGameObject*> (Level().CurrentEntity());

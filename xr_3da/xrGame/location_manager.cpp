@@ -28,7 +28,7 @@ void CLocationManager::Load			(LPCSTR section)
 	m_vertex_types.clear			();
 	LPCSTR							S = pSettings->r_string(section,"terrain");
 	u32								N = _GetItemCount(S);
-	R_ASSERT						(!(N % (LOCATION_TYPE_COUNT + 2)) && N);
+	R_ASSERT3						(!(N % (LOCATION_TYPE_COUNT + 2)) && N,"Terrain locations are incorrectly specified for the monster",section);
 	ALife::STerrainPlace			terrain_mask;
 	terrain_mask.tMask.resize		(LOCATION_TYPE_COUNT);
 	m_vertex_types.reserve			(32);

@@ -347,7 +347,7 @@ bool CSE_ALifeSimulator::bfValidatePosition(CSE_ALifeDynamicObject *I)
 	return							(true);
 }
 
-void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
+void CSE_ALifeSimulator::check_for_switch	(CSE_ALifeDynamicObject		*I)
 {
 	// updating vertex if it is invalid and object is not attached and online
 	if (!bfValidatePosition(I))

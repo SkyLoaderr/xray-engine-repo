@@ -26,15 +26,10 @@ CSE_ALifeObjectRegistry::CSE_ALifeObjectRegistry()
 
 CSE_ALifeObjectRegistry::~CSE_ALifeObjectRegistry()
 {
-	// since we use multiple inheritance, we have to cast the objects to the underlying class
-	// to remove them properly
 	D_OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
 	D_OBJECT_PAIR_IT			E = m_tObjectRegistry.end();
 	for ( ; I != E; ++I)	
-	{
-		CSE_Abstract*			A	= dynamic_cast<CSE_Abstract*>((*I).second);
-		xr_delete				(A);
-	}
+		xr_delete				((*I).second);
 }
 
 void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
@@ -222,6 +217,7 @@ void CSE_ALifeTaskRegistry::Update(CSE_ALifeTask	*tpTask)
 CSE_ALifeGraphRegistry::CSE_ALifeGraphRegistry()
 {
 	m_tpCurrentLevel			= 0;
+	m_next_iterator				= 0;
 }
 
 CSE_ALifeGraphRegistry::~CSE_ALifeGraphRegistry()
@@ -252,13 +248,36 @@ void CSE_ALifeGraphRegistry::Init()
 	
 	xr_delete					(m_tpCurrentLevel);
 	m_tpActor					= 0;
-	m_tNextFirstSwitchObjectID	= _OBJECT_ID(-1);
+	m_next_iterator				= 0;
+	m_first_update				= true;
+	m_cycle_count				= 0;
+}
+
+void CSE_ALifeGraphRegistry::update			()
+{
+	++m_cycle_count;
+	_iterator					I = next();
+	for (u32 i=0; (I != m_tpCurrentLevel->end()) && ((*I).second->m_switch_counter != m_cycle_count); ++i) {
+		update_next				();
+		(*I).second->m_switch_counter = m_cycle_count;
+		check_for_switch		((*I).second);
+		I						= next();
+		if (!m_first_update && time_over())
+			break;
+	}
+//	m_first_update				= false;
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		Msg						("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
+	}
+#endif
 }
 
 void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	if (!tpALifeDynamicObject->m_bDirectControl)
 		return;
+
 	if (tpALifeDynamicObject->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) {
 		m_tpActor = dynamic_cast<CSE_ALifeCreatureActor*>(tpALifeDynamicObject);
 		R_ASSERT2			(m_tpActor,"Invalid flag M_SPAWN_OBJECT_ASPLAYER for non-actor object!");
@@ -274,6 +293,7 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 				for ( ; I != E; ++I)
 					m_tpCurrentLevel->insert(mk_pair((*I).first,(*I).second));
 			}
+		m_next_iterator		= m_tpCurrentLevel->begin();
 	}
 
 	CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
@@ -290,10 +310,13 @@ void CSE_ALifeGraphRegistry::vfAddObjectToCurrentLevel(CSE_ALifeDynamicObject *t
 #endif
 	D_OBJECT_PAIR_IT			I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID);
 	R_ASSERT2					(m_tpCurrentLevel->end() == I,"Specified object has been already found in the current level map");
+	
+	bool						addition = m_tpCurrentLevel->empty();
+
 	m_tpCurrentLevel->insert	(mk_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
-	m_bSwitchChanged			= true;
-	if (_OBJECT_ID(-1) == m_tNextFirstSwitchObjectID)
-		m_tNextFirstSwitchObjectID = tpALifeDynamicObject->ID;
+
+	if (addition)
+		m_next_iterator			= m_tpCurrentLevel->begin();
 }
 
 void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -305,19 +328,14 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObje
 #endif
 	D_OBJECT_PAIR_IT			I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID), J = I;
 	R_ASSERT2					(m_tpCurrentLevel->end() != I,"Specified object hasn't been already found in the current level map");
-	if (m_tNextFirstSwitchObjectID == tpALifeDynamicObject->ID) {
-		if (m_tpCurrentLevel->end() == ++J)
-			J					=	m_tpCurrentLevel->begin();
-		if (m_tpCurrentLevel->end() != J)
-			m_tNextFirstSwitchObjectID	= (*J).second->ID;
-		else
-			m_tNextFirstSwitchObjectID	= _OBJECT_ID(-1);
-		if (psAI_Flags.test(aiALife)) {
-			Msg					("[LSS] changing next first switch object id [%d] -> [%d]",tpALifeDynamicObject->ID,m_tNextFirstSwitchObjectID);
-		}
-	}
+
+	if (I == m_next_iterator)
+		update_next				();
+
 	m_tpCurrentLevel->erase		(I);
-	m_bSwitchChanged			= true;
+
+	if (m_tpCurrentLevel->empty())
+		update_next				();
 }
 
 void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID, bool bUpdateSwitchObjects)
@@ -495,10 +513,9 @@ CSE_ALifeTrader *CSE_ALifeTraderRegistry::trader_nearest(CSE_ALifeHumanAbstract 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeScheduleRegistry
 ////////////////////////////////////////////////////////////////////////////
-void CSE_ALifeScheduleRegistry::Init()
+
+CSE_ALifeScheduleRegistry::~CSE_ALifeScheduleRegistry	()
 {
-	m_tpScheduledObjects.clear	();
-	m_tNextFirstProcessObjectID	= _OBJECT_ID(-1);
 }
 
 void CSE_ALifeScheduleRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -506,6 +523,25 @@ void CSE_ALifeScheduleRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObj
 	if (!tpALifeDynamicObject->m_bDirectControl)
 		return;
 	add							(tpALifeDynamicObject);
+}
+
+void CSE_ALifeScheduleRegistry::update					()
+{
+	++m_cycle_count;
+	_iterator					I = next();
+	for (u32 i=0; (I != m_tpScheduledObjects.end()) && ((*I).second->m_schedule_counter != m_cycle_count); ++i) {
+		update_next				();
+		(*I).second->m_schedule_counter = m_cycle_count;
+		(*I).second->Update		();
+		I						= next();
+		if (time_over())
+			break;
+	}
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		Msg						("[LSS][SU][%d : %d]",i, m_tpScheduledObjects.size());
+	}
+#endif
 }
 
 void CSE_ALifeScheduleRegistry::add(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
@@ -524,20 +560,21 @@ void CSE_ALifeScheduleRegistry::add(CSE_ALifeDynamicObject *tpALifeDynamicObject
 		return;
 
 	CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);
-#pragma todo("Dima to Dima : Change this line if CSE_ALifeAnomalousZone::Update() is not empty, this is just a performance trick")
-	//	if (l_tpALifeAnomalousZone && (l_tpALifeAnomalousZone->m_maxPower < EPS_L))
 	if (l_tpALifeAnomalousZone)
 		return;
 
 	if (!bUpdateSchedulableObjects)
 		return;
+	
 	SCHEDULE_P_PAIR_IT			I = m_tpScheduledObjects.find(tpALifeDynamicObject->ID);
 	R_ASSERT2					(m_tpScheduledObjects.end() == I,"Specified object has been already found in the scheduled objects registry");
-	m_tpScheduledObjects.insert	(mk_pair(l_tpALifeSchedulable->ID,l_tpALifeSchedulable));
-	m_bUpdateChanged			= true;
 
-	if (_OBJECT_ID(-1) == m_tNextFirstProcessObjectID)
-		m_tNextFirstProcessObjectID = l_tpALifeSchedulable->ID;
+	bool						addition = m_tpScheduledObjects.empty();
+
+	m_tpScheduledObjects.insert	(mk_pair(l_tpALifeSchedulable->ID,l_tpALifeSchedulable));
+
+	if (addition)
+		m_next_iterator			= m_tpScheduledObjects.begin();
 }
 
 void CSE_ALifeScheduleRegistry::remove			(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
@@ -545,8 +582,6 @@ void CSE_ALifeScheduleRegistry::remove			(CSE_ALifeDynamicObject *tpALifeDynamic
 	if (!tpALifeDynamicObject->interactive())
 		return;
 
-//	R_ASSERT2					(tpALifeDynamicObject->m_bOnline || (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject) && (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject)->fHealth <= 0)	|| (dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeDynamicObject) && dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeDynamicObject)->m_tpMembers.empty())),"Can't remove from scheduled objects offline object!");
-	
 	CSE_ALifeSchedulable		*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
 	if (!l_tpALifeSchedulable)
 		return;
@@ -561,31 +596,17 @@ void CSE_ALifeScheduleRegistry::remove			(CSE_ALifeDynamicObject *tpALifeDynamic
 
 	if (!bUpdateSchedulableObjects)
 		return;
-	SCHEDULE_P_PAIR_IT			I = m_tpScheduledObjects.find(l_tpALifeSchedulable->ID), J = I;
+	
+	SCHEDULE_P_PAIR_IT			I = m_tpScheduledObjects.find(l_tpALifeSchedulable->ID);
 	R_ASSERT2					(m_tpScheduledObjects.end() != I,"Specified object hasn't been found in the scheduled objects registry!");
 	
-	if (m_tNextFirstProcessObjectID == l_tpALifeSchedulable->ID) {
-#ifdef DEBUG
-		if (psAI_Flags.test(aiALife)) {
-			Msg							("[LSS] Changing next schedulable object (%d)",m_tNextFirstProcessObjectID);
-		}
-#endif
-		VERIFY					(!m_tpScheduledObjects.empty());
-		if (m_tpScheduledObjects.end() == ++J)
-			J = m_tpScheduledObjects.begin();
-		if ((m_tpScheduledObjects.end() != J) && ((*J).second->ID != m_tNextFirstProcessObjectID))
-			m_tNextFirstProcessObjectID	= (*J).second->ID;
-		else
-			m_tNextFirstProcessObjectID	= _OBJECT_ID(-1);
-#ifdef DEBUG
-		if (psAI_Flags.test(aiALife)) {
-			Msg							("[LSS] Changing next schedulable object (%d)",m_tNextFirstProcessObjectID);
-		}
-#endif
-	}
-	
+	if (I == m_next_iterator)
+		update_next				();
+
 	m_tpScheduledObjects.erase	(I);
-	m_bUpdateChanged			= true;
+
+	if (m_tpScheduledObjects.empty())
+		update_next				();
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -5399,6 +5399,16 @@
 						RelativePath=".\shared_data.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="DateTime"
+					Filter="">
+					<File
+						RelativePath=".\date_time.cpp">
+					</File>
+					<File
+						RelativePath=".\date_time.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Server"

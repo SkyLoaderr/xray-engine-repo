@@ -29,7 +29,7 @@ public:
 #endif
 #endif
 	CSE_ALifeDynamicObject			*m_tpBestDetector;
-	u64								m_qwUpdateCounter;
+	u64								m_schedule_counter;
 
 									CSE_ALifeSchedulable	(LPCSTR caSection);
 	virtual							~CSE_ALifeSchedulable	();
@@ -211,7 +211,7 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	ALife::_TIME_ID					m_tTimeID;
-	u64								m_qwSwitchCounter;
+	u64								m_switch_counter;
 	
 									CSE_ALifeDynamicObject(LPCSTR caSection);
 	virtual							~CSE_ALifeDynamicObject();

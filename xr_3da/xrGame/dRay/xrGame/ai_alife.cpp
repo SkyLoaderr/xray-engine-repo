@@ -12,36 +12,52 @@
 #include "game_graph.h"
 #include "ef_storage.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "date_time.h"
+
 using namespace ALife;
 
 CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 {
-	m_tpServer				= tpServer;
-	m_bLoaded				= false;
-	m_tpActor				= 0;
-	m_caSaveName[0]			= 0;
-	shedule_register		();
-	m_bFirstUpdate			= true;
+	m_tpServer					= tpServer;
+	m_bLoaded					= false;
+	m_tpActor					= 0;
+	m_caSaveName[0]				= 0;
+	shedule_register			();
 	for (int i=0; i<2; ++i) {
 		m_tpaCombatGroups[i].clear();
 		m_tpaCombatGroups[i].reserve(255);
 	}
-	VERIFY					(!ai().get_alife());
-	ai().set_alife			(this);
-	m_dwInventorySlotCount	= pSettings->r_u32("inventory","slots");
-	m_tpWeaponVector.resize	(m_dwInventorySlotCount);
-	m_baMarks.assign		(u16(-1),false);
-	m_qwCycleCounter		= u64(-1);
+	VERIFY						(!ai().get_alife());
+	ai().set_alife				(this);
+	m_dwInventorySlotCount		= pSettings->r_u32("inventory","slots");
+	m_tpWeaponVector.resize		(m_dwInventorySlotCount);
+	m_baMarks.assign			(u16(-1),false);
 
-	m_tpItems1.reserve		(MAX_STACK_DEPTH);
-	m_tpItems2.reserve		(MAX_STACK_DEPTH);
-	m_tpBlockedItems1.reserve(MAX_STACK_DEPTH);
-	m_tpBlockedItems2.reserve(MAX_STACK_DEPTH);
-	m_tpTrader1.reserve		(MAX_STACK_DEPTH);
-	m_tpTrader1.reserve		(MAX_STACK_DEPTH);
-	m_tpSums1.reserve		(MAX_STACK_DEPTH);
-	m_tpSums2.reserve		(MAX_STACK_DEPTH);
-	m_changing_level		= false;
+	m_tpItems1.reserve			(MAX_STACK_DEPTH);
+	m_tpItems2.reserve			(MAX_STACK_DEPTH);
+	m_tpBlockedItems1.reserve	(MAX_STACK_DEPTH);
+	m_tpBlockedItems2.reserve	(MAX_STACK_DEPTH);
+	m_tpTrader1.reserve			(MAX_STACK_DEPTH);
+	m_tpTrader1.reserve			(MAX_STACK_DEPTH);
+	m_tpSums1.reserve			(MAX_STACK_DEPTH);
+	m_tpSums2.reserve			(MAX_STACK_DEPTH);
+	m_changing_level			= false;
+
+	shedule.t_min				= pSettings->r_s32	("alife","schedule_min");
+	shedule.t_max				= pSettings->r_s32	("alife","schedule_max");
+	m_max_process_time			= pSettings->r_s32	("alife","process_time");
+	m_fSwitchDistance			= pSettings->r_float("alife","switch_distance");
+	m_fSwitchFactor				= pSettings->r_float("alife","switch_factor");
+	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
+	m_fNormalTimeFactor			= pSettings->r_float("alife","normal_time_factor");
+	m_dwMaxCombatIterationCount	= pSettings->r_u32	("alife","max_combat_iteration_count");
+	m_update_monster_factor		= pSettings->r_float("alife","update_monster_factor");
+	vfSetProcessTime			((int)m_max_process_time);
+	
+	u32							years,months,days,hours,minutes,seconds;
+	sscanf						(pSettings->r_string("alife","start_time"),"%d:%d:%d",&hours,&minutes,&seconds);
+	sscanf						(pSettings->r_string("alife","start_date"),"%d.%d.%d",&days,&months,&years);
+	m_start_time				= generate_time(years,months,days,hours,minutes,seconds);
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
@@ -166,14 +182,6 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 
 	// loading default settings from 'system.ltx'
 	Log							("* Loading parameters...");
-	shedule.t_min				= pSettings->r_s32	("alife","schedule_min");
-	shedule.t_max				= pSettings->r_s32	("alife","schedule_max");
-	m_qwMaxProcessTime			= pSettings->r_s32	("alife","process_time")*CPU::cycles_per_microsec;
-	m_fSwitchDistance			= pSettings->r_float("alife","switch_distance");
-	m_fSwitchFactor				= pSettings->r_float("alife","switch_factor");
-	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
-	m_fNormalTimeFactor			= pSettings->r_float("alife","normal_time_factor");
-	m_dwMaxCombatIterationCount	= pSettings->r_u32	("alife","max_combat_iteration_count");
 	vfSetSwitchDistance			(m_fSwitchDistance);
 
 	string256					caFileName;
@@ -218,7 +226,7 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 		CSE_ALifeEventRegistry::Load(*tpStream);
 		Log						("* Loading tasks...");
 		CSE_ALifeTaskRegistry::Load	(*tpStream);
-		Log						("* Loading anomly map...");
+		Log						("* Loading anomaly map...");
 		CSE_ALifeAnomalyRegistry::Load(*tpStream);
 		Log						("* Loading organizations and discoveries...");
 		CSE_ALifeOrganizationRegistry::Load(*tpStream);
@@ -283,7 +291,7 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 		I = m;
 	}
 
-	m_tGameTime					= u64(m_dwStartTime = Device.TimerAsync());
+	m_tGameTime					= m_start_time;
 	m_tZoneState				= eZoneStateSurge;
 	_TIME_ID					l_tFinishTime = m_tGameTime + 0*120000;//3*7*24*3600*1000; // 3 weeks in milliseconds
 	float						l_fTimeFactor = m_fTimeFactor;
@@ -385,4 +393,12 @@ void CSE_ALifeSimulator::vfCreateItem	(CSE_ALifeObject *object)
 	}
 	
 	dynamic_object->m_bOnline		= true;
+}
+
+void CSE_ALifeSimulator::vfSetProcessTime			(int	iMicroSeconds)
+{
+	m_max_process_time	= iMicroSeconds;
+	CSE_ALifeGraphRegistry::set_process_time	(u64(float(m_max_process_time) - float(m_max_process_time)*m_update_monster_factor)*CPU::cycles_per_microsec);
+	CSE_ALifeScheduleRegistry::set_process_time	(u64(float(m_max_process_time)*m_update_monster_factor)*CPU::cycles_per_microsec);
+	m_max_process_time	*= CPU::cycles_per_microsec;
 }

@@ -539,7 +539,7 @@ void CSE_ALifeEventGroup::UPDATE_Read		(NET_Packet &tNetPacket)
 CSE_ALifeDynamicObject::CSE_ALifeDynamicObject(LPCSTR caSection) : CSE_ALifeObject(caSection), CSE_Abstract(caSection)
 {
 	m_tTimeID					= 0;
-	m_qwSwitchCounter			= u64(-1);
+	m_switch_counter			= u64(-1);
 }
 
 CSE_ALifeDynamicObject::~CSE_ALifeDynamicObject()
@@ -1163,7 +1163,7 @@ CSE_ALifeSchedulable::CSE_ALifeSchedulable(LPCSTR caSection) : CSE_Abstract(caSe
 #endif
 #endif
 	m_tpBestDetector			= 0;
-	m_qwUpdateCounter			= u64(-1);
+	m_schedule_counter			= u64(-1);
 }
 
 CSE_ALifeSchedulable::~CSE_ALifeSchedulable()

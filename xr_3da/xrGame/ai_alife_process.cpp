@@ -8,109 +8,8 @@
 
 #include "stdafx.h"
 #include "ai_alife.h"
-#include "graph_engine.h"
-#include "xrserver_objects_alife_monsters.h"
+
 using namespace ALife;
-
-#define SWITCH_TIME_FACTOR u64(10)
-
-void CSE_ALifeSimulator::vfProcessAllTheSwitches()
-{
-	// processing online/offline switches
-	R_ASSERT2							(m_tpCurrentLevel,"There is no actor in the game!");
-	D_OBJECT_PAIR_IT					I = m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID);;
-//	u64									qwStartTime	= CPU::GetCycleCount();
-//	u64									l_qwMaxProcessTime = m_qwMaxProcessTime/SWITCH_TIME_FACTOR;
-	for (int i=1; ; ++i) {
-		m_bSwitchChanged				= false;
-		if ((*I).second->m_qwSwitchCounter == m_qwCycleCounter) {
-#ifdef DEBUG
-			if (psAI_Flags.test(aiALife)) {
-				Msg						("[LSS][OOS][%d : %d]",i-1, m_tpCurrentLevel->size());
-			}
-#endif
-			return;
-		}
-
-		(*I).second->m_qwSwitchCounter	= m_qwCycleCounter;
-		ProcessOnlineOfflineSwitches	((*I).second);
-		
-		if (m_bSwitchChanged) {
-			I							= m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID);
-			R_ASSERT2					(m_tpCurrentLevel->end() != I,"Cannot find specified object on the current level map");
-		}
-		++I;
-		if (m_tpCurrentLevel->end() == I) {
-			// this map cannnot be empty, because at least actor must belong to it
-			R_ASSERT2					(!m_tpCurrentLevel->empty(),"Impossible situation : current level contains no objects! (where is an actor, for example?)");
-			I							= m_tpCurrentLevel->begin();
-		}
-		
-		m_tNextFirstSwitchObjectID		= (*I).first;
-
-//		if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
-//#ifdef DEBUG
-//			if (psAI_Flags.test(aiALife)) {
-//				Msg						("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
-//			}
-//#endif
-//			return;
-//		}
-	}
-}
-
-void CSE_ALifeSimulator::vfProcessUpdates()
-{
-	u64							qwStartTime	= CPU::GetCycleCount();
-	u64							l_qwMaxProcessTime = m_qwMaxProcessTime - m_qwMaxProcessTime/SWITCH_TIME_FACTOR;
-	if (m_tpScheduledObjects.size()) {
-		SCHEDULE_P_PAIR_IT		I = m_tpScheduledObjects.find(m_tNextFirstProcessObjectID);
-		R_ASSERT2				(m_tpScheduledObjects.end() != I,"Cannot find specified object on the current level map");
-		for (int i=1; ; ++i) {
-			m_bUpdateChanged				= false;
-			if ((*I).second->m_qwUpdateCounter == m_qwCycleCounter) {
-#ifdef DEBUG
-				if (psAI_Flags.test(aiALife)) {
-					Msg						("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
-				}
-#endif
-				return;
-			}
-
-			(*I).second->m_qwUpdateCounter	= m_qwCycleCounter;
-			(*I).second->Update				();
-
-			if (m_bUpdateChanged) {
-				if (m_tpScheduledObjects.empty())
-					break;
-				I							= m_tpScheduledObjects.find(m_tNextFirstProcessObjectID);
-				R_ASSERT2					(m_tpScheduledObjects.end() != I,"Cannot find specified object on the current level map");
-			}
-			++I;
-			if (m_tpScheduledObjects.end() == I) {
-				I							= m_tpScheduledObjects.begin();
-				if (m_tpScheduledObjects.end() == I) {
-#ifdef DEBUG
-					if (psAI_Flags.test(aiALife)) {
-						Msg					("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
-					}
-#endif
-					return;
-				}
-			}
-			m_tNextFirstProcessObjectID		= (*I).first;
-
-			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
-#ifdef DEBUG
-				if (psAI_Flags.test(aiALife)) {
-					Msg						("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
-				}
-#endif
-				return;
-			}
-		}
-	}
-}
 
 void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 {
@@ -122,7 +21,6 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 		return;
 	}
 	
-	++m_qwCycleCounter;
 	vfInitAI_ALifeMembers				();
 
 	switch (m_tZoneState) {
@@ -144,17 +42,10 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 					vfFurlObjectOffline((*I).second);
 				break;
 			}
-			if (m_bFirstUpdate) {
-				u64						l_qwSave = m_qwMaxProcessTime;
-				m_qwMaxProcessTime		= u64(60000000)*CPU::cycles_per_microsec;
-				m_tNextFirstSwitchObjectID = (*m_tpCurrentLevel->begin()).second->ID;
-				vfProcessAllTheSwitches	();
-				m_qwMaxProcessTime		= l_qwSave;
-				m_bFirstUpdate			= false;
-			}
-			else
-				vfProcessAllTheSwitches	();
-			vfProcessUpdates();
+			
+			CSE_ALifeGraphRegistry::update		();
+			CSE_ALifeScheduleRegistry::update	();
+			
 			break;
 		}
 		default : NODEFAULT;
