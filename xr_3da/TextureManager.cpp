@@ -146,6 +146,14 @@ STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 	lst_textures.push_back	(new STextureList(L.begin(),L.size()));
 	return lst_textures.back();
 }
+void			CShaderManager::_DeleteTextureList(STextureList* &L)
+{
+	for (DWORD it=0; it<L->size(); it++)
+		_DeleteTexture	((*L)[it]);
+	L->clear ();
+	L = 0;
+}
+//--------------------------------------------------------------------------------------------------------------
 SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 {
 	for (DWORD it=0; it<lst_matrices.size(); it++)
@@ -156,6 +164,14 @@ SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 	lst_matrices.push_back	(new SMatrixList(L.begin(),L.size()));
 	return lst_matrices.back();
 }
+void			CShaderManager::_DeleteMatrixList (	SMatrixList* &L )
+{
+	for (DWORD it=0; it<L->size(); it++)
+		_DeleteMatrix ((*L)[it]);
+	L->clear();
+	L = 0;
+}
+//--------------------------------------------------------------------------------------------------------------
 SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 {
 	for (DWORD it=0; it<lst_constants.size(); it++)
@@ -165,6 +181,13 @@ SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 	}
 	lst_constants.push_back	(new SConstantList(L.begin(),L.size()));
 	return lst_constants.back();
+}
+void			CShaderManager::_DeleteConstantList(SConstantList* &L )
+{
+	for (DWORD it=0; it<L->size(); it++)
+		_DeleteConstant ((*L)[it]);
+	L->clear();
+	L = 0;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -208,79 +231,52 @@ Shader	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_const
 	_ParseList			(L_constants,s_constants);
 	_ParseList			(L_matrices,s_matrices	);
 
-	// Result of compile
-	CPassArray			tempPassArray;
-	CTextureArray		tempTextureArray;
-	CMatrixArray		tempMatrixArray;
-	CConstantArray		tempConstantArray;
-
 	// Compile shader
+	Shader		S;
 	CBlender*	B		= _GetBlender	(s_shader);
-	CBlender_Recorder	Recorder		(&tempPassArray,&tempTextureArray,&tempMatrixArray,&tempConstantArray);
+	CBlender_Recorder	Recorder		(&S);
 	B->Compile			(Recorder);
 
-	// Remove duplicates / create new shaders/textures/matrices/constants
-	Shader	S;
-	S.S					= _CreatePassArray		(&tempPassArray);
-	S.T					= _CreateTextureArray	(&tempTextureArray);
-	S.M					= _CreateMatrixArray	(&tempMatrixArray);
-	S.C					= _CreateConstantArray	(&tempConstantArray);
+	// ok
+	return S;
 }
 
-void CShaderManager::Delete(Shader* &S) 
+void CShaderManager::Delete(Shader &S) 
 {
 	R_ASSERT(S);
-
-	// Decrease texture references
-	tex_handles& H = S->H;
-	for (DWORD pass=0; pass<H.size(); pass++)
-		for (DWORD stage=0; stage<H[pass].size(); stage++)
-		{
-			CTexture* T = H[pass][stage];
-			T->dwRefCount--;
-		}
-
-	// Real destroy
-	S->dwRefCount--;
-	if (S->dwRefCount==0) {
-		Shader** P = find(sh_list.begin(),sh_list.end(),S);
-		R_ASSERT(P!=sh_list.end());
-		sh_list.erase(P);
-		_DELETE(S);
+	for (DWORD p=0; p<S.Passes.size(); p++)
+	{
+		CPass& P = S.Passes[p];
+		_DeleteCode			(P.dwStateBlock);
+		_DeleteTextureList	(P.T);
+		_DeleteMatrixList	(P.M);
+		_DeleteConstantList	(P.C);
 	}
-	S=NULL;
+	ZeroMemory(&S,sizeof(S));
 }
 
 void	CShaderManager::OnDeviceDestroy(void) 
 {
+	DWORD it;
+
 	if (Device.bReady) return;
 
-	// unload textures
-	TexturesUnload();
+	// Delete Texture List
+	for (it=0; it<lst_textures.size(); it++)	
 
-	// unload shaders
-	for (DWORD i=0; i<shaders.size(); i++)
-		shaders[i]->Release();
+	lst_textures.clear	();
+	lst_matrices.clear	();
+	lst_constants.clear	();
+
+	// Dele
 }
 
 void	CShaderManager::OnDeviceCreate(void) 
 {
 	if (!Device.bReady) return;
 
-	// load shaders
-	vector<SH_ShaderDef>	LIB;
-	shLibrary_Load			("shaders.xr",LIB);
-	R_ASSERT				(LIB.size()==shaders.size());
-	for (DWORD i=0; i<shaders.size(); i++)
-		shaders[i]->Compile(LIB[i]);
+	cache.Invalidate();
 
-	// load textures
-	TexturesLoad			();
-
-	// invalidate caches
-	current_shader			= NULL;
-	current_SBH				= 0xffffffff;
-	ZeroMemory				(current_surf,sizeof(current_surf));
 }
 
 void CShaderManager::TexturesLoad	()

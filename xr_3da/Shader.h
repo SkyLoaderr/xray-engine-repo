@@ -10,9 +10,18 @@ class	ENGINE_API	CTexture;
 class	ENGINE_API	CMatrix;
 class	ENGINE_API	CConstant;
 
-typedef svector<CTexture*,8>	STextureList;
-typedef svector<CMatrix*,8>		SMatrixList;
-typedef svector<CConstant*,8>	SConstantList;
+struct	ENGINE_API	STextureList	: public svector<CTexture*,8>
+{
+	DWORD	dwReference;
+};
+struct	ENGINE_API	SMatrixList		: public svector<CMatrix*,8>
+{
+	DWORD	dwReference;
+};
+struct	ENGINE_API	SConstantList	: public svector<CConstant*,8>
+{
+	DWORD	dwReference;
+};
 
 struct	ENGINE_API		CPass 
 {
