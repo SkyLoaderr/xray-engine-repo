@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "dxtlib.h"
-#include "TextureParams.h"
+#include "ETextureParams.h"
 #include "dds.h"
 #include "d3dx.h"
 
@@ -109,7 +109,9 @@ void FillRect(LPBYTE data, LPBYTE new_data, DWORD offs, DWORD pitch, DWORD h, DW
 
 extern "C" __declspec(dllexport) 
 bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch, 
-				 STextureParams* fmt, DWORD depth){
+				 STextureParams* fmt, DWORD depth)
+{
+	R_ASSERT((0!=w)&&(0!=h));
 
     gFileOut = _open( out_name, _O_WRONLY|_O_BINARY|_O_CREAT,_S_IWRITE);
     if (gFileOut==-1){
@@ -120,19 +122,23 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 	HRESULT hr=-1;
 // convert to Options
     CompressionOptions nvOpt;
-    nvOpt.MipMapsInImage 	= false;
-    if (fmt->flag&EF_GENMIPMAP) 			nvOpt.MipMapType=dGenerateMipMaps;
-    else if(fmt->flag&EF_USE_EXIST_MIPMAP) 	nvOpt.MipMapType=dUseExistingMipMaps;
-    else if(fmt->flag&EF_NO_MIPMAP) 		nvOpt.MipMapType=dNoMipMaps;
-    nvOpt.BinaryAlpha	    = !!(fmt->flag&EF_BINARYALPHA);
-    nvOpt.NormalMap			= !!(fmt->flag&EF_NORMALMAP);
-    nvOpt.AlphaBorder		= !!(fmt->flag&EF_ALPHAZEROBORDER);
-    nvOpt.Border			= false;
-    nvOpt.BorderColor.u		= 0x0;
-    nvOpt.Fade				= !!(fmt->flag&EF_FADE);
+    nvOpt.bMipMapsInImage	= false;
+
+	bool a = fmt->flag.bGenerateMipMaps;
+
+    if (fmt->flag.bGenerateMipMaps)	nvOpt.MipMapType=dGenerateMipMaps;
+    else							nvOpt.MipMapType=dNoMipMaps;
+    nvOpt.bBinaryAlpha	    = fmt->flag.bBinaryAlpha;
+    nvOpt.bNormalMap		= fmt->flag.bNormalMap;
+	nvOpt.bDuDvMap			= fmt->flag.bDuDvMap;
+    nvOpt.bAlphaBorder		= fmt->flag.bAlphaBorder;
+    nvOpt.bBorder			= fmt->flag.bColorBorder;
+    nvOpt.BorderColor.u		= fmt->border_color;
+    nvOpt.bFade				= fmt->flag.bFadeToColor;
+    nvOpt.bFadeAlpha		= fmt->flag.bFadeToAlpha;
     nvOpt.FadeToColor.u		= fmt->fade_color;
-    nvOpt.FadeToMipMaps		= fmt->fade_mips;
-    nvOpt.Dither			= !!(fmt->flag&EF_DITHER);
+    nvOpt.FadeAmount		= fmt->fade_amount;
+    nvOpt.bDitherColor		= fmt->flag.bDitherColor;
     nvOpt.TextureType		= dTextureType2D;
     switch(fmt->fmt){
     case STextureParams::tfDXT1: 	nvOpt.TextureFormat = dDXT1; 	break;
@@ -145,9 +151,19 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
     case STextureParams::tfRGB: 	nvOpt.TextureFormat = d888; 	break;
     case STextureParams::tfRGBA: 	nvOpt.TextureFormat = d8888; 	break;
     }
+    switch(fmt->flag.eMIPFilter){
+    case STextureParams::dMIPFilterBox:		nvOpt.MIPFilterType = dMIPFilterBox;	break;
+    case STextureParams::dMIPFilterCubic:	nvOpt.MIPFilterType = dMIPFilterCubic;	break;
+    case STextureParams::dMIPFilterFullDFT:	nvOpt.MIPFilterType = dMIPFilterFullDFT;break;
+    case STextureParams::dMIPFilterKaiser:	nvOpt.MIPFilterType = dMIPFilterKaiser; break;
+    case STextureParams::dMIPFilterLinearLightKaiser:	nvOpt.MIPFilterType = dMIPFilterLinearLightKaiser; break;
+    case STextureParams::dMIPFilterAdvanced: break;
+	}
 //-------------------
 
-	if (nvOpt.MipMapType==dUseExistingMipMaps){
+	if (fmt->flag.bGenerateMipMaps&&(STextureParams::dMIPFilterAdvanced==fmt->flag.eMIPFilter)){
+		nvOpt.MipMapType=dUseExistingMipMaps;
+
 		LPBYTE pImagePixels=0;
 		int numMipmaps=GetPowerOf2Plus1(__min(w,h));
 		DWORD line_pitch=w*2*4;

@@ -26,23 +26,24 @@ struct STextureParams{
         dMIPFilterLinearLightKaiser	= 4,
 		dMIPFilterAdvanced			= 5
 	};
-	struct {
-		DWORD bGenerateMipMaps	: 1,
-		DWORD bBinaryAlpha		: 1,
-		DWORD bNormalMap		: 1,
-		DWORD bDuDvMap			: 1,
-		DWORD bAlphaBorder		: 1,
-		DWORD bColorBorder		: 1,
-		DWORD bFadeToColor		: 1,
-		DWORD bFadeToAlpha		: 1,
-		DWORD bDitherColor		: 1,
-		DWORD eMIPFilter		: 3,
-		DWORD reserved0			: 12,
+	struct Flags{
+		DWORD bGenerateMipMaps	: 1;
+		DWORD bBinaryAlpha		: 1;
+		DWORD bNormalMap		: 1;
+		DWORD bDuDvMap			: 1;
+		DWORD bAlphaBorder		: 1;
+		DWORD bColorBorder		: 1;
+		DWORD bFadeToColor		: 1;
+		DWORD bFadeToAlpha		: 1;
+		DWORD bDitherColor		: 1;
+		DWORD eMIPFilter		: 3;
+		DWORD reserved0			: 12;
 
-		DWORD bImplicitLighted	: 1,
-	}flag;
+		DWORD bImplicitLighted	: 1;
+	};
 
 	ETFormat		fmt;
+	Flags			flag;
 	DWORD			border_color;
     DWORD			fade_color;
     int				fade_amount;

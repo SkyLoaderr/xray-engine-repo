@@ -118,6 +118,10 @@ SOURCE=.\dds.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\ETextureParams.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\FS.cpp
 # End Source File
 # Begin Source File
@@ -144,10 +148,6 @@ SOURCE=.\StdAfx.cpp
 # Begin Source File
 
 SOURCE=.\StdAfx.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\TextureParams.h
 # End Source File
 # Begin Source File
 

@@ -1,7 +1,7 @@
 #ifndef __DXTLIB_H__
 #define __DXTLIB_H__
 
-#include <nvdxt_options.h>
+#include "nvdxt_options.h"
 /*********************************************************************NVMH2****
 Path:  C:\Dev\devrel\Nv_sdk_4\Dx8_private\PhotoShop\dxtlib
 File:  dxtlib.h
