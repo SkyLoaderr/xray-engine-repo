@@ -41,6 +41,7 @@ public:
 	void			GetKeyR			(u32 idx, Fvector& R);
 	void			GetKey			(u32 idx, Fvector& T, Fvector& R);
 	void			GetKeyTime		(u32 idx, float& time);
+	float			GetDistanceInWay(float from_tm, float to_tm);
 #ifdef DEBUG
 	virtual void	OnRender		();
 	void			DrawPath		(bool bDrawInterpolated, bool bDrawKeys, float dTime=0.5f);

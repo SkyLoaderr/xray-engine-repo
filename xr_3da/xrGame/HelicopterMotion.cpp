@@ -89,6 +89,24 @@ void CHelicopterMotion::FindNearestKey(float	t,
 	min_idx =	(u32)std::distance(envs[ctPositionX]->keys.begin(), min_k );
 }
 
+float CHelicopterMotion::GetDistanceInWay(float from_tm, float to_tm)
+{
+	float tm_delta = 0.5f;
+	float dist = 0.0f;
+	Fvector p_prevT,T,R;
+	_Evaluate	(from_tm, p_prevT, R);
+	
+	float dt = from_tm+tm_delta;
+
+	for(; dt < to_tm; dt+=tm_delta){
+		_Evaluate	(dt, T, R);
+		dist		+= p_prevT.distance_to(T);	
+		p_prevT = T;
+	};
+
+	return dist;
+}
+
 float CHelicopterMotion::GetLength(float* mn, float* mx)
 {
 	float ln,len=0.f; 

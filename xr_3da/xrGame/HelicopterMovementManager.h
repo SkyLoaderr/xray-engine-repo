@@ -44,7 +44,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 	void	buildHuntPath			(const Fvector& enemyPos);
 	void	onFrame					();
 	void	onTime					(float t);
-	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys, float velocity, bool updateHPB=true);
+	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys, float velocity, bool updateHPB, bool normalizeTime);
 	void	updatePathHPB			(float from_time);
 	void	buildHPB				(const Fvector& p_prev, const Fvector& p_prev_phb, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res, float time);
 	void	addPartolPath			(float from_time);
