@@ -5,7 +5,8 @@ function fill_tips(object, name, distance, cond, news)
 		t = { info = name,
 			position = object:position(),
 			radius = distance,
-			conditions = cond}
+			conditions = cond,
+			news = news }
 		tips[name] = t
 	end
 end
