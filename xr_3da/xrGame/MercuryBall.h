@@ -13,5 +13,8 @@ public:
 	CMercuryBall(void);
 	~CMercuryBall(void);
 
+	virtual void			OnH_A_Chield		();
+	virtual void			OnH_B_Independent	();
+
 	BOOL net_Spawn(LPVOID DC);
 };

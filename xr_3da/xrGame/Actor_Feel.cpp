@@ -3,12 +3,23 @@
 #include "weapon.h"
 #include "xr_weapon_list.h"
 #include "targetassault.h"
+#include "mercuryball.h"
 
 void CActor::feel_touch_new				(CObject* O)
 {
 	if (!g_Alive())		return;
 
 	NET_Packet	P;
+
+	// Test for Artifact
+	CMercuryBall* A	= dynamic_cast<CMercuryBall*>	(O);
+	if (A)
+	{
+		u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
+		P.w_u16		(u16(A->ID()));
+		u_EventSend	(P);
+		return;
+	}
 
 	// Test for weapon
 	CWeapon* W	= dynamic_cast<CWeapon*>	(O);

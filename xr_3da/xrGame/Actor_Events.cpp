@@ -2,6 +2,7 @@
 #include "actor.h"
 #include "weapon.h"
 #include "xr_weapon_list.h"
+#include "mercuryball.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -22,7 +23,15 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
+			// Test for Artifact
+			CMercuryBall* A	= dynamic_cast<CMercuryBall*>	(O);
+			if (A) 
+			{
+				A->H_SetParent(this);
+				return;
+			}
 			// Test for weapon
+
 			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 			if (W) 
 			{
