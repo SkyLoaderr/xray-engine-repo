@@ -528,7 +528,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Full-screen-quad VB
 	{
 		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
-		const float _w	= w-.9f, _h = h-.9f;
+		const float _w	= w-.99f, _h = h-.99f;
 		const float thw = .5f/w;
 		const float thh = .5f/h;
 
