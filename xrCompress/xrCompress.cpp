@@ -197,6 +197,7 @@ int __cdecl main	(int argc, char* argv[])
 	printf			("\nCompressing files...");
 
 	string256		folder;		strlwr(strconcat(folder,argv[1],"\\"));
+	FS.update_path				(folder,"");
 	xr_vector<char*>*	list	= FS.file_list_open	(folder,FS_ListFiles);
 	if (!list->empty())
 	{
