@@ -145,7 +145,7 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 		u64 qwFinish = CPU::GetCycleCount();
 //.		Msg("* ALife : synchronizing (%f sec) for object %s : %d -> %d",(qwFinish - qwStart)*CPU::cycles2microsec/1000000.f,I->s_name_replace,dwLastNodeID,I->m_tNodeID);
 	}
-	if ((I->m_tNodeID < 0) || (I->m_tNodeID >= getAI().Header().count))
+//.	if ((I->m_tNodeID < 0) || (I->m_tNodeID >= getAI().Header().count))
 //.		Msg("! ALife : Corresponding node hasn't been found for object %s",I->s_name_replace);
 	if (I->m_bOnline)
 		if (I->ID_Parent == 0xffff) {
