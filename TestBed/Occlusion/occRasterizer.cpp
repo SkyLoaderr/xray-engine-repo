@@ -81,7 +81,21 @@ void occRasterizer::propagade	()
 	propagade_depth	(bufDepth_3,bufDepth_2,occ_dim_3);
 }
 
-void occRasterizer::test		(float x0, float y0, float x1, float y1, float z)
+BOOL occRasterizer::test		(float _x0, float _y0, float _x1, float _y1, float _z)
 {
+	float d2	= occ_dim_0/2;
+	int x0		= iFloor(_x0*d2); clamp(x0,0,occ_dim_0-1);
+	int x1		= iCeil (_x1*d2); clamp(x1,0,occ_dim_0-1);
+	int y0		= iFloor(_y0*d2); clamp(y0,0,occ_dim_0-1);
+	int y1		= iCeil (_y1*d2); clamp(y1,0,occ_dim_0-1);
+	int	z		= d2int	(_z);
 	
+	for (int y=y0; y<=y1; y++)
+	{
+		for (int x=x0; x<x1; x++)
+		{
+			if (z<bufDepth_0[y][x])	return TRUE;
+		}
+	}
+	return FALSE;
 }
