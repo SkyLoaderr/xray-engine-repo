@@ -79,9 +79,9 @@ function load_dialog:InitControls()
 	----- CODE -------
 	
 	-- INFO box --
-	local frame_info = CUIFrameWindow() 
+	local frame_info = CUIStatic() 
     frame_info:SetAutoDelete(true)
-    frame_info:Init("ui\\ui_frame_very_small", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
+    frame_info:Init("ui\\ui_static_loadgameinfo", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
 	self.main_frame:AttachChild(frame_info)	
 
 	------------LIST-----------------
