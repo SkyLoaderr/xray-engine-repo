@@ -117,7 +117,7 @@ void CEntity::Load		(LPCSTR section)
 	
 	m_fMorale = 66.f;
 
-	Msg					("! entity size: %d",sizeof(*this));
+	// Msg					("! entity size: %d",sizeof(*this));
 }
 
 BOOL CEntity::net_Spawn		(LPVOID DC)

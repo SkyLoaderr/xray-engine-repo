@@ -117,7 +117,7 @@ void CCustomMonster::Load		(LPCSTR section)
 	shedule_Min			= 50;
 	shedule_Max			= 500; // 30 * NET_Latency / 4;
 
-	Msg					("! cmonster size: %d",sizeof(*this));
+	// Msg				("! cmonster size: %d",sizeof(*this));
 }
 
 void CCustomMonster::g_WeaponBones	(int& L, int& R)

@@ -109,7 +109,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	hinge_vel			=pSettings->ReadFLOAT(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor=pSettings->ReadFLOAT(section,"ph_skel_fatal_impulse_factor");
 
-	Msg	("! stalker size: %d",sizeof(*this));
+	// Msg	("! stalker size: %d",sizeof(*this));
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
