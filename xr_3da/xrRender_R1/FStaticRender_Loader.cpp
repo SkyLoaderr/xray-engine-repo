@@ -100,7 +100,9 @@ void CRender::level_Unload		()
 	// 1.
 	xr_delete					(rmPortals);
 	pLastSector					= 0;
-	vLastCameraPos.set			(0,0,0);
+	vLastCameraPos.set			(flt_max,flt_max,flt_max);
+	uLastLTRACK					= 0;
+
 	// 2.
 	for (I=0; I<Sectors.size(); I++)	xr_delete(Sectors[I]);
 	Sectors.clear_and_free		();

@@ -407,8 +407,14 @@ void CRender::Calculate				()
 	else
 	{
 		set_Object											(0);
+		/*
 		g_pGameLevel->pHUD->Render_First					();	
 		g_pGameLevel->pHUD->Render_Last						();	
+
+		// Calculate miscelaneous stuff
+		L_Shadows->calculate								();
+		L_Projector->calculate								();
+		*/
 	}
 
 	// End calc
