@@ -33,8 +33,9 @@ public:
 
 	IC void*					Lock			( u32 vl_Count, u32 Stride, u32& vOffset )
 	{
+		PGO					(Msg("PGO:VB_LOCK:%d",vl_Count));
 		// Ensure there is enough space in the VB for this data
-		u32	bytes_need	= vl_Count*Stride;
+		u32	bytes_need		= vl_Count*Stride;
 		R_ASSERT			(bytes_need<=mSize);
 
 		// Vertex-local info
@@ -65,6 +66,7 @@ public:
 
 	IC void						Unlock			( u32 Count, u32 Stride)
 	{
+		PGO					(Msg("PGO:VB_UNLOCK:%d",Count));
 		mPosition			+=	Count*Stride;
 
 		VERIFY				(pVB);
@@ -100,6 +102,7 @@ public:
 
 	IC u16*						Lock			( u32 Count, u32& vOffset )
 	{
+		PGO						(Msg("PGO:IB_LOCK:%d",Count));
 		vOffset					= 0;
 		BYTE* pLockedData		= 0;
 
@@ -125,6 +128,7 @@ public:
 	}
 	IC void						Unlock(u32 RealCount)
 	{
+		PGO						(Msg("PGO:IB_UNLOCK:%d",RealCount));
 		mPosition				+=	RealCount;
 		VERIFY					(pIB);
 		pIB->Unlock				();

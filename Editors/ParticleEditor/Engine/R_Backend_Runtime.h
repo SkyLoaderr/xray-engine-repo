@@ -35,6 +35,7 @@ IC void CBackend::set_RT				(IDirect3DSurface9* RT, u32 ID)
 {
 	if (RT!=pRT[ID])
 	{
+		PGO				(Msg("PGO:setRT"));
 		stat.target_rt	++;
 		pRT[ID]			= RT;
 		CHK_DX			(HW.pDevice->SetRenderTarget(ID,RT));
@@ -45,6 +46,7 @@ IC void	CBackend::set_ZB				(IDirect3DSurface9* ZB)
 {
 	if (ZB!=pZB)
 	{
+		PGO				(Msg("PGO:setZB"));
 		stat.target_zb	++;
 		pZB				= ZB;
 		CHK_DX			(HW.pDevice->SetDepthStencilSurface(ZB));
@@ -55,6 +57,7 @@ IC void	CBackend::set_States			(IDirect3DStateBlock9* _state)
 {
 	if (state!=_state)
 	{
+		PGO				(Msg("PGO:state_block"));
 		stat.states		++;
 		state			= _state;
 		state->Apply	();
@@ -72,7 +75,10 @@ IC void CBackend::set_Textures			(STextureList* _T)
 			if (textures[it]!=surf)	{
 				stat.textures	++;
 				textures[it]	=surf;
-				if (surf)		surf->Apply	(it);
+				if (surf)		{
+					PGO			(Msg("PGO:tex%d:%s",it,surf->cName));
+					surf->Apply	(it);
+				}
 			}
 		}
 		u32 last				= T->size();
@@ -112,6 +118,8 @@ IC void CBackend::set_Constants			(R_constant_table* C)
 	xforms.unmap	();
 	if (0==C)		return;
 
+	PGO				(Msg("PGO:c-table"));
+
 	// process constant-loaders
 	R_constant**	it	= C->table.begin();
 	R_constant**	end	= C->table.end	();
@@ -137,6 +145,7 @@ IC void CBackend::set_Format			(IDirect3DVertexDeclaration9* _decl)
 {
 	if (decl!=_decl)
 	{
+		PGO				(Msg("PGO:v_format:%x",_decl));
 		stat.decl		++;
 		decl			= _decl;
 		CHK_DX			(HW.pDevice->SetVertexDeclaration(decl));
@@ -147,6 +156,7 @@ IC void CBackend::set_PS				(IDirect3DPixelShader9* _ps)
 {
 	if (ps!=_ps)
 	{
+		PGO				(Msg("PGO:Pshader:%x",_ps));
 		stat.ps			++;
 		ps				= _ps;
 		CHK_DX			(HW.pDevice->SetPixelShader(ps));
@@ -157,6 +167,7 @@ IC void CBackend::set_VS				(IDirect3DVertexShader9* _vs)
 {
 	if (vs!=_vs)
 	{
+		PGO				(Msg("PGO:Vshader:%x",_vs));
 		stat.vs			++;
 		vs				= _vs;
 		CHK_DX			(HW.pDevice->SetVertexShader(vs));
@@ -167,6 +178,7 @@ IC void CBackend::set_Vertices			(IDirect3DVertexBuffer9* _vb, u32 _vb_stride)
 {
 	if ((vb!=_vb) || (vb_stride!=_vb_stride))
 	{
+		PGO				(Msg("PGO:VB:%x,%d",_vb,_vb_stride));
 		stat.vb			++;
 		vb				= _vb;
 		vb_stride		= _vb_stride;
@@ -178,6 +190,7 @@ IC void CBackend::set_Indices			(IDirect3DIndexBuffer9* _ib)
 {
 	if (ib!=_ib)
 	{
+		PGO				(Msg("PGO:IB:%x",_vb));
 		stat.ib			++;
 		ib				= _ib;
 		CHK_DX			(HW.pDevice->SetIndices(ib));
@@ -186,6 +199,7 @@ IC void CBackend::set_Indices			(IDirect3DIndexBuffer9* _ib)
 
 IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
 {
+	PGO					(Msg("PGO:DIP:%dv/%df",countV,PC));
 	stat.calls			++;
 	stat.verts			+= countV;
 	stat.polys			+= PC;
@@ -195,6 +209,7 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 coun
 
 IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 {
+	PGO					(Msg("PGO:DIP:%dv/%df",3*PC,PC));
 	stat.calls			++;
 	stat.verts			+= 3*PC;
 	stat.polys			+= PC;

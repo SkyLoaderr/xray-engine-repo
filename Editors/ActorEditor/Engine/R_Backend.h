@@ -2,6 +2,14 @@
 #define r_backendH
 #pragma once
 
+#define RBackend_PGO
+
+#ifdef	RBackend_PGO
+#define PGO(a)	a
+#else
+#define PGO(a)
+#endif
+
 #include "r_DStreams.h"
 #include "r_constants_cache.h"
 #include "r_backend_xform.h"
