@@ -7,12 +7,12 @@
 #include "fmesh.h"
 #include "fvisual.h"
 #include "fprogressivefixedvisual.h"
-///#include "fprogressive.h"
 #include "fhierrarhyvisual.h"
 #include "bodyinstance.h"
 #include "fdetailpatch.h"
 #include "PSVisual.h"
 #include "fcached.h"
+#include "flod.h"
 
 #include "x_ray.h"
 
@@ -157,8 +157,8 @@ CModelPool::~CModelPool()
 CVisual* CModelPool::Create(const char* name)
 {
 	// 1. Search for already loaded model
-	char low_name[64]; R_ASSERT(strlen(name)<64);
-	strcpy(low_name,name); strlwr(low_name);
+	string128 low_name;		R_ASSERT(strlen(name)<128);
+	strcpy(low_name,name);	strlwr(low_name);
 
 	CVisual*				Model=0;
 	vector<ModelDef>::iterator	I;

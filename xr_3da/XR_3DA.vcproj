@@ -1903,6 +1903,14 @@
 					<File
 						RelativePath=".\SkeletonX.h"/>
 				</Filter>
+				<Filter
+					Name="LOD BB"
+					Filter="">
+					<File
+						RelativePath="FLOD.cpp"/>
+					<File
+						RelativePath="FLOD.h"/>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Wallmarks"
