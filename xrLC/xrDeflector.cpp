@@ -159,8 +159,8 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 	d_min.v		= (float(base_v)+.5f)/float(lm_v);
 	d_max.u		= (float(base_u+size_u)-.5f)/float(lm_u);
 	d_max.v		= (float(base_v+size_v)-.5f)/float(lm_v);
-	if (d_min.u>d_max.u)	d_min.u=d_max.u=(d_min.u+d_max.u)/2;
-	if (d_min.v>d_max.v)	d_min.v=d_max.v=(d_min.v+d_max.v)/2;
+	if (d_min.u>=d_max.u)	{ d_min.u=d_max.u=(d_min.u+d_max.u)/2; d_min.u-=EPS_S; d_max.u+=EPS_S; }
+	if (d_min.v>=d_max.v)	{ d_min.v=d_max.v=(d_min.v+d_max.v)/2; d_min.v-=EPS_S; d_max.v+=EPS_S; }
 	d_size.sub	(d_max,d_min);
 	
 	// Remapping

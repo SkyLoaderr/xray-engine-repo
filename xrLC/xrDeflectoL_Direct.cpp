@@ -130,7 +130,7 @@ void CDeflector::L_Direct	(HASH& H)
 	}
 
 	// *** Render Edges
-	float texel_size = (1.f/float(_max(lm.dwWidth,lm.dwHeight)))/4.f;
+	float texel_size = (1.f/float(_max(lm.dwWidth,lm.dwHeight)))/8.f;
 	for (DWORD t=0; t<tris.size(); t++)
 	{
 		UVtri&		T	= tris[t];
