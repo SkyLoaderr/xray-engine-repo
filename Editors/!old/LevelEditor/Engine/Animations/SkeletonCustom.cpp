@@ -268,6 +268,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
         (*bones)[LL_GetBoneRoot()]->CalculateM2B(Fidentity);
     	IKD->close();
     }
+#ifndef _EDITOR
 	// after load process
 	{
 		for (u16 child_idx=0; child_idx<children.size(); child_idx++)
@@ -288,21 +289,9 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 			}
 		}
 	}
-/*
-	for (u16 rr=0; rr<LL_BoneCount(); rr++){
-		CBoneData& BD	= LL_GetData(rr);
-		Log("bones:",rr);
-		for (u32 ch=0; ch<BD.child_faces.size(); ch++){
-			Log("child:",ch);
-			for (u32 fc=0; fc<BD.child_faces[ch].size(); fc++){
-				Log("F:",BD.child_faces[ch][fc]);
-			}
-		}
-	}
-*/
+#endif
 	// reset update_callback
 	Update_Callback	= NULL;
-
 	// reset update frame
 	wm_frame		= u32(-1);
 }
