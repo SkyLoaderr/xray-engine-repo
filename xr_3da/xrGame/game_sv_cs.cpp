@@ -3,6 +3,7 @@
 
 void	game_sv_CS::Create			(LPCSTR options)
 {
+	teams.resize(2); // @@@ WT
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
 	switch_Phase(GAME_PHASE_PENDING);
 }
@@ -32,6 +33,7 @@ void	game_sv_CS::OnRoundStart	()
 			ps->money_total			=	ps->money_total + ps->money_for_round;
 			ps->money_for_round		=	0;
 		}
+		teams[0].num_targets = teams[1].num_targets = 0;
 		Unlock	();
 	}
 }
@@ -107,10 +109,22 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 	xrSE_Target_CSBase *l_pCSBase =  dynamic_cast<xrSE_Target_CSBase*>(e_entity);
 	if(l_pCSBase) {
 		
-		if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // Пока не сделан респавн
+		if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // @@@ WT : Пока не сделан респавн
 
-		if(l_pCSBase->g_team() == ps_who->team) ps_who->flags |= GAME_PLAYER_FLAG_ONCSBASE;
+		if(l_pCSBase->g_team() == ps_who->team) {				// Если игрок пришел на свою базу
+			ps_who->flags |= GAME_PLAYER_FLAG_ONCSBASE;
+			if(ps_who->flags&GAME_PLAYER_FLAG_HASARTFCT) {		// и у него есть артефакт
+				teams[ps_who->team].num_targets++;
+				// @@@ WT : нужно выбросить артефакт
+				ps_who->flags &= ~GAME_PLAYER_FLAG_HASARTFCT;
+			}
+		}
 		return false;
+	}
+	xrSE_MercuryBall *l_pMBall =  dynamic_cast<xrSE_MercuryBall*>(e_entity);
+	if(l_pMBall) {
+		if(ps_who->flags&GAME_PLAYER_FLAG_ONCSBASE) return false;
+		ps_who->flags |= GAME_PLAYER_FLAG_HASARTFCT;
 	}
 	return TRUE;
 }
