@@ -380,5 +380,5 @@ void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec &items)
 
 bool CSE_Abstract::validate					()
 {
-	return						(match_configuration());
+	return						(true);
 }

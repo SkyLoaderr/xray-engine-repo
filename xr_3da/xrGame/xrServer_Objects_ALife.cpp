@@ -994,6 +994,11 @@ bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
 	return						(false);
 }
 
+bool CSE_ALifeObjectHangingLamp::validate			()
+{
+	return						(flags.test(flR1) || flags.test(flR2));
+}
+
 bool CSE_ALifeObjectHangingLamp::match_configuration() const
 {
 	R_ASSERT3(flags.test(flR1) || flags.test(flR2),"no renderer type set for hanging-lamp ",name_replace());
