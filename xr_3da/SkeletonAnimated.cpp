@@ -116,10 +116,25 @@ MotionID CSkeletonAnimated::ID_Cycle_Safe(LPCSTR  N)
     }
     return motion_ID;
 }
-MotionID CSkeletonAnimated::ID_Cycle	(LPCSTR  N)
+MotionID CSkeletonAnimated::ID_Cycle	(shared_str  N)
 {
 	MotionID motion_ID		= ID_Cycle_Safe	(N);	R_ASSERT3(motion_ID.valid(),"! MODEL: can't find cycle: ", N);
     return motion_ID;
+}
+MotionID CSkeletonAnimated::ID_Cycle_Safe(shared_str  N)
+{
+	MotionID motion_ID;
+	for (int k=m_Motions.size()-1; k>=0; --k){
+		shared_motions* s_mots	= &m_Motions[k];
+		accel_map::iterator I 	= s_mots->cycle()->find(N);
+		if (I!=s_mots->cycle()->end())	{	motion_ID.set(u16(k),I->second); break;}
+	}
+	return motion_ID;
+}
+MotionID CSkeletonAnimated::ID_Cycle	(LPCSTR  N)
+{
+	MotionID motion_ID		= ID_Cycle_Safe	(N);	R_ASSERT3(motion_ID.valid(),"! MODEL: can't find cycle: ", N);
+	return motion_ID;
 }
 void	CSkeletonAnimated::LL_FadeCycle(u16 part, float falloff)
 {
