@@ -115,6 +115,9 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	}
 
 	//*******
+	Status	("Models");
+
+	//*******
 	Status	("Other transfer...");
 	transfer("materials",	materials,			FS,		EB_Materials);
 	transfer("shaders",		shader_render,		FS,		EB_Shaders_Render);
