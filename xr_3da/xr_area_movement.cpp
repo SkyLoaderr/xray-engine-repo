@@ -1,9 +1,10 @@
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "xr_area.h"
 #include "xr_collide_form.h"
 #include "xr_object.h"
 #include "cl_intersect.h"
-#include "xr_creator.h"
 
 using namespace	Collide;
 

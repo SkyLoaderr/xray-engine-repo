@@ -3,7 +3,7 @@
 #include "render.h"
 #include "xr_object.h"
 #include "xr_collide_form.h"
-#include "xr_creator.h"
+#include "igame_level.h"
 
 namespace Feel {
 	void	Vision::o_new		(CObject* O)

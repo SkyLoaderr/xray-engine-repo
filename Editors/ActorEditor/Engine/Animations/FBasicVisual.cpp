@@ -8,7 +8,7 @@
 #include "fbasicvisual.h"
 #include "fmesh.h"
 #ifndef _EDITOR
-	#include "xr_creator.h"
+	#include "igame_level.h"
 #endif
 
 //////////////////////////////////////////////////////////////////////

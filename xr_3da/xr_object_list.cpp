@@ -1,7 +1,8 @@
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "xr_object_list.h"
 #include "std_classes.h"
-#include "xr_creator.h"
 
 #include "xr_object.h"
 #include "net_utils.h"
@@ -165,4 +166,37 @@ void	CObjectList::SLS_Load			(IReader&	fs		)
 		else			O->SLS_Load(fs);
 		ID ++;
 	}
+}
+
+void CObjectList::Load		()
+{
+	R_ASSERT			(map_NETID.empty() && objects.empty() && destroy_queue.empty());
+}
+
+void CObjectList::Unload	( )
+{
+	// Destroy objects
+	while (objects.size())
+	{
+		CObject*	O	= objects.back();
+		O->net_Destroy	(   );
+		Destroy			( O );
+	}
+	objects.clear();
+}
+
+CObject*	CObjectList::Create				( LPCSTR	name	)
+{
+	CObject*	O			= g_pGamePersistent->ObjectPool.create(name);
+	objects.push_back		(O);
+	return					O;
+}
+
+void		CObjectList::Destroy			( CObject*	O		)
+{
+	if (0==O)				return;
+	net_Unregister			(O);
+	OBJ_IT it				=	std::find	(objects.begin(),objects.end(),O);
+	if (it!=objects.end())	objects.erase	(it);
+	g_pGamePersistent->ObjectPool.destroy	(O);
 }

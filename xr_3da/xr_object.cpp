@@ -1,6 +1,7 @@
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "xr_object.h"
-#include "xr_creator.h"
 #include "xr_area.h"
 #include "render.h"
 #include "xrLevel.h"

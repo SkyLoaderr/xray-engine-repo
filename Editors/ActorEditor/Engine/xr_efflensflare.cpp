@@ -8,7 +8,7 @@
 	#include "scene.h"
 	#include "ui_main.h"
 #else
-	#include "xr_creator.h"
+	#include "igame_level.h"
 #endif
 
 

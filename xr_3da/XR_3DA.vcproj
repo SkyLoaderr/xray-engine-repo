@@ -827,6 +827,12 @@
 				Name="Objects"
 				Filter="">
 				<File
+					RelativePath=".\IGame_ObjectPool.cpp">
+				</File>
+				<File
+					RelativePath=".\IGame_ObjectPool.h">
+				</File>
+				<File
 					RelativePath=".\xr_object.cpp">
 				</File>
 				<File

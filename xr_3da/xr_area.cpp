@@ -1,8 +1,9 @@
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "xr_area.h"
 #include "xr_object.h"
 #include "xrLevel.h"
-#include "xr_creator.h"
 #include "feel_sound.h"
 #include "x_ray.h"
 #include "GameFont.h"

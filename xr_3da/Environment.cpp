@@ -3,12 +3,13 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "Environment.h"
 #include "render.h"
 #include "xr_effsun.h"
 #include "xr_trims.h"
 #include "xr_input.h"
-#include "xr_creator.h"
 #include "PSObject.h"
 
 #include "fmesh.h"

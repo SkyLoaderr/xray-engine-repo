@@ -1,5 +1,7 @@
 #pragma once
 
+#include "fcontroller.h"
+
 // refs
 class ENGINE_API CCursor;
 class ENGINE_API CCustomHUD;

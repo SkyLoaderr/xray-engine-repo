@@ -1,7 +1,7 @@
 #include "stdafx.h"
+#include "igame_level.h"
 #include "xr_collide_form.h"
 #include "xr_object.h"
-#include "xr_creator.h"
 #include "xr_area.h"
 #include "x_ray.h"
 #include "xrLevel.h"

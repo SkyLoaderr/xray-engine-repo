@@ -1,6 +1,7 @@
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "xr_effsun.h"
-#include "xr_creator.h"
 #include "environment.h"
 
 CSun::CSun( CInifile* pIni, LPCSTR section ) {

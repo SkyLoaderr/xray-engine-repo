@@ -3,11 +3,12 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "igame_level.h"
+
 #include "CameraBase.h"
 #include "CameraManager.h"
 #include "Effector.h"
 #include "EffectorPP.h"
-#include "xr_creator.h"
 
 #include "x_ray.h"
 #include "gamefont.h"
