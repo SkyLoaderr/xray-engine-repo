@@ -95,7 +95,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Core._initialize		("xray");
 	FPU::m24r				();
 
-	// mmgrInitialize	(0);
+	int a=1;
+	int b=0;
+	int c=a/b;
+	int* x = 0;
+	*x	= a/b;
 
 	BOOL bCaptureExceptions	= !(strstr(lpCmdLine,"-E") || strstr(lpCmdLine,"-e"));
 #ifdef DEBUG
