@@ -217,7 +217,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				setMass1				(float M)											= 0;
 	virtual void				SmoothElementsInertia	(float k)											= 0;
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
-	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
+	virtual CPhysicsElement*	get_Element				(ref_str bone_name)									= 0;
 	virtual CPhysicsElement*	get_ElementByStoreOrder (u16 num)											= 0;
 	virtual u16					get_ElementsNumber		()													= 0;
 	virtual CPHSynchronize*		get_ElementSync			(u16 element)										= 0;
