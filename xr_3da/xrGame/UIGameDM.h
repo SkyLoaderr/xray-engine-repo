@@ -7,11 +7,14 @@
 
 #include "ui/UIDialogWnd.h"
 #include "ui/UIInventoryWnd.h"
-//#include "ui/UIMapWnd.h"
+#include "ui/UIMapWnd.h"
+
+#include "ui/UIBuyWeaponWnd.h"
 
 // refs 
 class CUIDMFragList;
 class CUIDMPlayerList;
+class CUIBuyWeaponWnd;
 
 class CUIGameDM: public CUIGameCustom
 {
@@ -20,6 +23,7 @@ private:
 protected:
 	CUIDMFragList*		pFragList;
 	CUIDMPlayerList*	pPlayerList;
+	CUIBuyWeaponWnd*	pBuyMenu;
 public:
 						CUIGameDM			(CUI* parent);
 	virtual 			~CUIGameDM			();
@@ -31,6 +35,7 @@ public:
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;
+	CUIBuyWeaponWnd		BuyMenu;
 //	CUIStatsWnd*		pUIStatsWnd;
 };
 #endif // __XR_UIGAMEDM_H__

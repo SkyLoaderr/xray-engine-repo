@@ -330,7 +330,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 	if (pA) 
 	{
 		pA->s_team				=	u8(ps_who->team);
-		assign_RP				(E);
+		assign_RP				(pA);
 	}
 	else
 		if (pS)
@@ -346,6 +346,8 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 		};
 	
 	spawn_end				(E,id);
+
+	ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 }
 
 void	game_sv_Deathmatch::SpawnItem4Actor			(u32 actorId, LPCSTR N)
@@ -401,4 +403,78 @@ void	game_sv_Deathmatch::KillPlayer				(u32 id_who)
 void	game_sv_Deathmatch::OnPlayerWantsDie		(u32 id_who)
 {
 	KillPlayer(id_who);
+};
+
+u32		game_sv_Deathmatch::RP_2_Use				(CSE_Abstract* E)
+{
+	return 0;
+};
+
+void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
+{
+	VERIFY				(E);
+	u32		Team		= RP_2_Use(E);
+	VERIFY				(rpoints[Team].size());
+
+	CSE_Spectator		*pSpectator = dynamic_cast<CSE_Spectator*>(E);
+	if (pSpectator)
+	{
+		game_sv_GameState::assign_RP(E);
+		return;
+	};
+
+	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
+	if (!pA)
+	{
+		game_sv_GameState::assign_RP(E);
+		return;
+	};
+//-------------------------------------------------------------------------------
+	//create Enemies list
+	xr_vector <u32>					pEnemies;
+	xr_vector <u32>					pFriends;
+	
+	u32		cnt = get_count();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		// init
+		game_PlayerState*	ps	=	get_it	(it);
+		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
+		if (ps->team == pA->s_team && !teams.empty()) pFriends.push_back(it);
+		else pEnemies.push_back(it);
+	};
+
+	if (pEnemies.empty()) 
+	{
+		game_sv_GameState::assign_RP(E);
+		return;
+	};
+//-------------------------------------------------------------------------------	
+	xr_vector<RPoint>&	rp	= rpoints[Team];
+	xr_deque<RPointData>			pRPDist;
+	pRPDist.clear();
+
+	u32 NumRP = rp.size();
+	Fvector DistVect;
+	for (it=0; it < NumRP; it++)
+	{
+		RPoint&				r	= rp[it];
+		pRPDist.push_back(RPointData(it, 1000000.0f));
+
+		for (u32 p=0; p<pEnemies.size(); p++)
+		{
+			xrClientData* xrCData	=	Level().Server->ID_to_client(get_it_2_id(pEnemies[p]));
+			if (!xrCData || !xrCData->owner) continue;
+
+			CSE_Abstract* pOwner = xrCData->owner;
+			DistVect.sub(pOwner->o_Position, r.P);
+			float Dist = DistVect.square_magnitude();
+			if (pRPDist[it].MinEnemyDist > Dist) pRPDist[it].MinEnemyDist = Dist;
+		};
+	};
+	std::sort(pRPDist.begin(), pRPDist.end());
+
+	RPoint&				r	= rp[(pRPDist.back()).PointID];
+	E->o_Position.set	(r.P);
+	E->o_Angle.set		(r.A);
 };

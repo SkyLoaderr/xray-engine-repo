@@ -18,4 +18,5 @@ public:
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
 
 	virtual		u8					AutoTeam				( );
+	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 };

@@ -92,13 +92,12 @@ void CUIGameTDM::Render()
 
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
-		HUD().GetUI()->HideIndicators();
-//		HUD().GetUI()->ShowCursor();
-
+//		HUD().GetUI()->HideIndicators();
 		pPlayerListT1->Draw();
 		pPlayerListT2->Draw();
 		break;
 	case GAME_PHASE_INPROGRESS:
+//		HUD().GetUI()->ShowIndicators();
 		if (uFlags&flShowFragList) 
 		{
 			pFragListT1->Draw	();

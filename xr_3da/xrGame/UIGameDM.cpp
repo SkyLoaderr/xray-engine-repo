@@ -3,6 +3,7 @@
 
 #include "UIDMPlayerList.h"
 #include "UIDMFragList.h"
+#include "ui\UIBuyWeaponWnd.h"
 
 #define MSGS_OFFS 510
 
@@ -26,6 +27,8 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 	FrameH	= FrameRect.bottom - FrameRect.top;
 
 	pPlayerList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	//-----------------------------------------------------------
+	pBuyMenu	= xr_new<CUIBuyWeaponWnd>	();
 }
 //--------------------------------------------------------------------
 
@@ -33,6 +36,7 @@ CUIGameDM::~CUIGameDM()
 {
 	xr_delete(pFragList);
 	xr_delete(pPlayerList);
+	xr_delete(pBuyMenu);
 }
 //--------------------------------------------------------------------
 
@@ -92,12 +96,14 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 		// switch pressed keys
 		switch (dik){
 		case DIK_TAB:	
-			/*
-			m_pUserMenu = pFragList;
-			pFragList->Show();
-			*/
-			SetFlag		(flShowFragList,TRUE);	
-			return true;
+			{
+				SetFlag		(flShowFragList,TRUE);	
+				return true;
+			}break;
+		case DIK_B:
+			{
+				StartStopMenu(pBuyMenu);
+			}break;
 		}
 	}
 	return false;

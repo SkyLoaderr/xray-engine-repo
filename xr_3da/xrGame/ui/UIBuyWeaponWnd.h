@@ -23,6 +23,7 @@ class CInventory;
 
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
+#include "UITabControl.h"
 
 class CArtifact;
 

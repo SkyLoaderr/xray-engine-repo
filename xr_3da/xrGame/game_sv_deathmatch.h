@@ -5,6 +5,23 @@
 class	game_sv_Deathmatch			: public game_sv_GameState
 {
 protected:
+	struct		RPointData
+	{
+		u32		PointID;
+		float	MinEnemyDist;
+
+		RPointData(u32 ID, float Dist):
+		PointID(ID),
+		MinEnemyDist(Dist)
+		{
+		};
+
+		bool operator<(const RPointData &x)
+		{
+			return MinEnemyDist < x.MinEnemyDist;
+		};
+	};
+protected:
 	void							AllowDeadBodyRemove		(u32 id);
 	void							SpawnActor				(u32 id, LPCSTR N);
 	bool							GetPosAngleFromActor	(u32 id, Fvector& Pos, Fvector &Angle);
@@ -34,5 +51,7 @@ public:
 	// Main
 	virtual		void				Update					();
 				BOOL				AllPlayers_Ready		();
-				
+
+	virtual		void				assign_RP				(CSE_Abstract* E);
+	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 };
