@@ -48,7 +48,12 @@ void CEngine::Destroy	()
 	Engine.External.Destroy				( );
 	Engine.FS.Destroy					( );
 	
-	if (hPSGP)	{ FreeLibrary(hPSGP); hPSGP=0; }
+	if (hPSGP)	
+	{ 
+		FreeLibrary	(hPSGP); 
+		hPSGP		=0; 
+		ZeroMemory	(&PSGP,sizeof(PSGP));
+	}
 }
 
 void CEngine::mem_Compact()

@@ -738,6 +738,7 @@ void CActor::g_PerformDrop	( )
 	VERIFY					(b_DropActivated);
 	b_DropActivated			= FALSE;
 	CObject*		O		= Weapons->ActiveWeapon();
+	if (0==O)				return;
 
 	// We doesn't have similar weapon - pick up it
 	NET_Packet		P;

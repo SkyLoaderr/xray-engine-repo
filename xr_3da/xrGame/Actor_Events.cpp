@@ -47,6 +47,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				int id	= Weapons->weapon_remove	(W);
 				Weapons->ActivateWeaponHistory		();
 				W->H_SetParent						(0);
+				feel_touch.push_back				(W);
 				return;
 			}
 		}
