@@ -29,7 +29,7 @@ function main ()
     scr_zone:set_callback (this.on_exit,  false)
     
     while true do
-          wait (1000)
+          wait ()
     end      
 end
 -------------------------------------------------------------------------------------
