@@ -375,7 +375,10 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 			{
 				if (local_player && Level().CurrentControlEntity() && Level().CurrentControlEntity()->CLS_ID == CLSID_OBJECT_ACTOR/*pCurActor && pCurActor->g_Alive() && !m_gameUI->pCurBuyMenu->IsShown()*/ )
 				{
-					m_game_ui->SetBuyMsgCaption("Press B to access Buy Menu");
+					if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
+					{					
+						m_game_ui->SetBuyMsgCaption("Press B to access Buy Menu");
+					};
 				};
 			};
 
