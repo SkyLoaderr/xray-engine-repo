@@ -173,15 +173,15 @@ public:
 	{
 		u16				val;
 		r_u16			(val);
-		A				= (float(val)*(max-min))/65535.f + min;
+		A				= (float(val)*(max-min))/65535.f + min;		// floating-point-error possible
 		VERIFY			((A >= min-EPS_S) && (A <= max+EPS_S));
 	}
 	IC void		r_float_q8		(float& A, float min, float max)
 	{
 		u8				val;
 		r_u8			(val);
-		A				= (float(val)*(max-min))/255.f + min;
-		VERIFY			((A >= min-EPS_S) && (A <= max+EPS_S));
+		A				= (float(val)/255.0001f) *(max-min) + min;	// floating-point-error possible
+		VERIFY			((A >= min) && (A <= max));
 	}
 	IC void		r_angle16		(float& A)		{ r_float_q16	(A,0,PI_MUL_2);	}
 	IC void		r_angle8		(float& A)		{ r_float_q8	(A,0,PI_MUL_2);	}
