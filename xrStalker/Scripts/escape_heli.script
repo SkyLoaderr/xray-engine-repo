@@ -1,10 +1,14 @@
 --[[------------------------------------------------------------------------------------------------------------------
 Управление вертолётом для Escape. Патрулирование, убийство новичков возле вагончика.
 Чугай Саша
+
+Сделать:
+	- убрать внешний скрипт
 --------------------------------------------------------------------------------------------------------------------]]
 
 local heli_mgr
-local actor
+local actor, actor_dist
+local wounded_tip
 
 local state_before      = 0
 local state_heli_fly    = 1
@@ -18,6 +22,7 @@ local state
 local wounded_id
 local newbies = {}
 local attack_end
+local actor_is_victim
 
 function chst( new_state )
 	state      = new_state
@@ -25,7 +30,9 @@ function chst( new_state )
 end
 
 function update()
-	-- вертолёт летает неподалёку
+	actor_dist = actor:position():distance_to_sqr( wounded_tip:position() )
+
+	-- вертолёт стоит в stay-point
 	if state == state_before then
 		if state_init then
 --			heli_mgr:set_path( "heli_path_tutorial" )
@@ -89,6 +96,12 @@ function update()
 			state_init = false
 		end
 
+		-- если актёр близко, то атаковать его
+		if not actor_is_victim and actor_dist < 50*50 then
+			table.insert( newbies, actor )
+			actor_is_victim = true
+		end
+
 		-- вертолёт атакует новичков
 		if not heli_mgr.enemy then
 			heli_mgr:set_enemy( newbies[1], 1000 )
@@ -100,26 +113,25 @@ function update()
 		end
 
 		-- если все умерли
-		if table.getn( newbies ) == 0 then
+		if table.getn( newbies ) == 0 and not actor_is_victim then
 --			printf("_ch: 2 %s", game.get_game_time:timeToString(game.CTime.TimeToMilisecs))
 			chst( state_after )
 		end
 
 		-- если прошло время
-		if attack_end < game.get_game_time() then
+--[[		if attack_end < game.get_game_time() and not actor_is_victim then
 			-- убить всех живых
 			for i, npc in newbies do
 				npc:kill( heli_mgr.heli )
 			end
 
 			chst( state_after )
-		end
+		end]]
 	end
 
 	-- сцена закончена
 	if state == state_after then
 		if state_init then
-			-- рождаем раненного
 			local sim = alife()
 			if sim then
 				sim:set_switch_online( wounded_id, true )
@@ -135,10 +147,24 @@ function update()
 			state_init = false
 		end
 	end
+
+	-- рождение раненого
+--[[	if ( state == state_after or
+	   ( state ~= state_before and actor_dist < 50*50 ) ) and
+	   actor:dont_has_info( "tutorial_wounded_start" )
+	then
+		local sim = alife()
+		if sim then
+			sim:set_switch_online( wounded_id, true )
+		end
+
+		actor:give_info_portion( "tutorial_wounded_start" )
+	end]]
 end
 
 function main()
-	actor = get_actor()
+	actor       = get_actor()
+	wounded_tip = get_level_object( "esc_tip_vagon_medikit" )
 
 --	local snd = sound_object( [[characters_voice\human_01\scenario\helicopter\heli_attack]] )
 --	snd:play_at_pos( actor, actor:position():add( vector():set( 80, 0, 0 ) ) )
