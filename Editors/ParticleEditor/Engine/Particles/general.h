@@ -21,8 +21,6 @@ struct Particle
 {
 	enum{
 		FRAME_CCW	= (1<<0),
-		FIRST_FRAME	= (1<<1),
-		LAST_FRAME	= (1<<2),
 	};
 	pVector pos;
 	pVector posB;
@@ -54,7 +52,7 @@ struct ParticleGroup
 		const pVector &size, const pVector &rot, const pVector &vel, const pVector &color,
 
 		const float alpha = 1.0f,
-		const float age = 0.0f, float frame=0.f, WORD flags=Particle::FIRST_FRAME)
+		const float age = 0.0f, float frame=P_MAXFLOAT, WORD flags=0)
 	{
 		if(p_count >= max_particles)
 			return FALSE;

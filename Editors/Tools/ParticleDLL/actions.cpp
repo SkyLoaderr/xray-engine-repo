@@ -1009,7 +1009,6 @@ void PAMove::Execute(ParticleGroup *group)
 		
 		m.age += dt;
 		m.pos += m.vel * dt;
-		m.flags &=~ Particle::FIRST_FRAME;
 	}
 }
 
@@ -1513,13 +1512,16 @@ void PAFrame::Execute(ParticleGroup *group)
 	float speedFac = speed * dt;
 	for(int i = 0; i < group->p_count; i++){
 		Particle &m = group->list[i];
-		if (m.flags&Particle::FIRST_FRAME){// first init
+		if (m.frame==P_MAXFLOAT){// first init
 			if (random_frame)				m.frame	= drand48()*frame_count;
 			if (animated&&random_playback)	m.flags |= drand48()>=0.5f?Particle::FRAME_CCW:0;
 		}else{
 			if (animated){
-				m.frame += speedFac;
-				if (m.frame>frame_count) m.frame-=frame_count;
+				m.frame += ((m.flags&Particle::FRAME_CCW)?-1.f:1.f)*speedFac;
+				if (m.frame>frame_count) 
+					m.frame-=frame_count;
+				if (m.frame<-frame_count) 
+					m.frame+=frame_count;
 			}
 		}
 	}
