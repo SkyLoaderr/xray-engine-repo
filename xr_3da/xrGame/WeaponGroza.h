@@ -2,72 +2,52 @@
 #define __XR_WEAPON_GROZA_H__
 #pragma once
 
-#include "weapon.h"
-
-class ENGINE_API C3DSound;
+#include "WeaponMagazined.h"
 
 #define SND_RIC_COUNT 5
 
-class CWeaponGroza: public CWeapon
+class CWeaponFN2000: public CWeaponMagazined
 {
-	enum EGrozaState
-	{
-		eIdle,
-		eReload,
-		eFire
-	};
-	typedef CWeapon inherited;
-
 private:
-	// General
-	float			fTime;
-	BOOL			bFlame;
-
-	sound3D			sndFireLoop;
-	sound3D			sndRicochet		[SND_RIC_COUNT];
-
-	vector<Shader*>	hFlames;
-
-	Fvector			vFirePoint;
-
-	DWORD			dwFP_Frame;
-	DWORD			dwXF_Frame;
-
-	int				iFlameDiv;
-	float			fFlameLength;
-	float			fFlameSize;
+	typedef CWeaponMagazined inherited;
+private:
+	// Media :: sounds
+	sound3D					sndFireLoop;
+	sound3D					sndEmptyClick;
+	sound3D					sndReload;
+	sound3D					sndRicochet		[SND_RIC_COUNT];
 	
-	EGrozaState		st_current, st_target;
-
-	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
-	virtual void	UpdateFP		(BOOL bHUD);
-	virtual void	UpdateXForm		(BOOL bHUD);
-
+	// Media :: flames
+	svector<Shader*,8>		hFlames;
+	int						iFlameDiv;
+	float					fFlameLength;
+	float					fFlameSize;
+	
+	// HUD :: Animations
+	CMotionDef*				mhud_idle;
+	CMotionDef*				mhud_reload;
+	CMotionDef*				mhud_hide;
+	CMotionDef*				mhud_show;
+	svector<CMotionDef*,8>	mhud_shots;
 protected:
-	void			FlameLOAD		();
-	void			FlameUNLOAD		();
-	
-	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	MediaLOAD		();
+	virtual void	MediaUNLOAD		();
+	virtual void	switch2_Idle	(BOOL bHUDView);
+	virtual void	switch2_Fire	(BOOL bHUDView);
+	virtual void	switch2_Empty	(BOOL bHUDView);
+	virtual void	switch2_Reload	(BOOL bHUDView);
+	virtual void	OnShot			(BOOL bHUDView);
+	virtual void	OnEmptyClick	(BOOL bHUDView);
+	virtual void	OnDrawFlame		(BOOL bHUDView);
+	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	OnAnimationEnd	();
 public:
-					CWeaponGroza	();
-	virtual			~CWeaponGroza	();
-
-	// misc
+	CWeaponFN2000		();
+	virtual			~CWeaponFN2000	();
+	
 	virtual void	Load			(CInifile* ini, const char* section);
-
-	virtual void	SetDefaults		();
-	virtual void	FireStart		();
-	virtual void	FireEnd			();
-	virtual BOOL	HasOpticalAim	()				{ return TRUE; }
-
-	virtual void	Hide			();
-	virtual void	Show			();
-
-	virtual	void	Update			(float dt, BOOL bHUDView);
-	virtual	void	Render			(BOOL bHUDView);
-
-	virtual void	OnDeviceCreate	();
-	virtual void	OnDeviceDestroy	();
+	virtual void	Update			(float dt, BOOL bHUDView);
+	
 };
 
 #endif //__XR_WEAPON_GROZA_H__
