@@ -37,7 +37,7 @@ void __cdecl	Intro	( void* fn )
 	do	{
 		// open
 		ZeroMemory		(&openparams,sizeof(openparams));
-		openparams.lpstrDeviceType = "avivideo";
+		openparams.lpstrDeviceType  = "avivideo";
 		openparams.lpstrElementName = filename;
 		me = mciSendCommand(0, MCI_OPEN,
 			MCI_WAIT|MCI_OPEN_TYPE|MCI_OPEN_ELEMENT,
