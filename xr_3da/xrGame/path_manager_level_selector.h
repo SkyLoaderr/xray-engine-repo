@@ -297,123 +297,20 @@ namespace PathManagers {
 
 		IC		void vfAddCoverFromEnemyCost				()
 		{
-			if (m_tpEnemyNode) {
-				u8	*my_cover	= ai().level_graph().cover(m_tpCurrentNode);
-				u8	*enemy_cover = ai().level_graph().cover(m_tpEnemyNode);
-
-	#ifdef OLD_COVER_COST
-				m_tEnemyDirection.x = m_tEnemyPosition.x - m_tCurrentPosition.x;
-				m_tEnemyDirection.y = m_tEnemyPosition.y - m_tCurrentPosition.y;
-				m_tEnemyDirection.z = m_tEnemyPosition.z - m_tCurrentPosition.z;
-				if (m_tEnemyDirection.x < 0.f) {
-					m_fResult += m_fCoverFromEnemyWeight*(1.f - float(my_cover[0])/255.f);
-					m_fResult += m_fCoverFromEnemyWeight*(1.f - float(enemy_cover[2])/255.f);
-				}
-				else {
-					m_fResult += m_fCoverFromEnemyWeight*(1.f - float(my_cover[2])/255.f);
-					m_fResult += m_fCoverFromEnemyWeight*(1.f - float(enemy_cover[0])/255.f);
-				}
-				if (m_tEnemyDirection.z < 0.f) {
-					m_fResult += m_fCoverFromEnemyWeight*(1.f - float(my_cover[3])/255.f);
-					m_fResult += m_fCoverFromEnemyWeight*(1.f - float(enemy_cover[1])/255.f);
-				}
-				else {
-					m_fResult += m_fCoverFromEnemyWeight*(1.f - float(my_cover[1])/255.f);
-					m_fResult += m_fCoverFromEnemyWeight*(1.f - float(enemy_cover[3])/255.f);
-				}
-	#else
-				m_tEnemyDirection.x = m_tEnemyPosition.x - m_tCurrentPosition.x;
-				m_tEnemyDirection.y = m_tEnemyPosition.y - m_tCurrentPosition.y;
-				m_tEnemyDirection.z = m_tEnemyPosition.z - m_tCurrentPosition.z;
-				vfNormalizeSafe(m_tEnemyDirection);
-				float fAlpha;
-				if (m_tEnemyDirection.x < 0.f)
-					if (m_tEnemyDirection.z >= 0.f) {
-						fAlpha = acosf(m_tEnemyDirection.dotproduct(tLeft));
-						m_fResult += m_fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(1.f - float(my_cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(my_cover[1])/255.f));
-						fAlpha = PI/2 - fAlpha;
-						m_fResult += m_fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(0.f + float(enemy_cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(enemy_cover[3])/255.f));
-					}
-					else {
-						fAlpha = acosf(m_tEnemyDirection.dotproduct(tLeft));
-						m_fResult += m_fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(1.f - float(my_cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(my_cover[3])/255.f));
-						fAlpha = PI/2 - fAlpha;
-						m_fResult += m_fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(0.f + float(enemy_cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(enemy_cover[1])/255.f));
-					}
-				else
-					if (m_tEnemyDirection.z >= 0.f) {
-						fAlpha = acosf(m_tEnemyDirection.dotproduct(tRight));
-						m_fResult += m_fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(1.f - float(my_cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(my_cover[1])/255.f));
-						fAlpha = PI/2 - fAlpha;
-						m_fResult += m_fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(0.f + float(enemy_cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(enemy_cover[3])/255.f));
-					}
-					else {
-						fAlpha = acosf(m_tEnemyDirection.dotproduct(tRight));
-						m_fResult += m_fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(1.f - float(my_cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(my_cover[3])/255.f));
-						fAlpha = PI/2 - fAlpha;
-						m_fResult += m_fCoverFromEnemyWeight*(fAlpha/PI_DIV_2*(0.f + float(enemy_cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(0.f + float(enemy_cover[1])/255.f));
-					}
-	#endif
-			}
+			Fvector			direction;
+			direction.sub	(m_tEnemyPosition,m_tCurrentPosition);
+			float			yaw, pitch;
+			direction.getHP	(yaw,pitch);
+			m_fResult		+= m_fCoverFromEnemyWeight*ai().level_graph().cover_in_direction(yaw,m_tpCurrentNode);
 		}
 
 		IC		void vfAddCoverFromMemberCost				()
 		{
-			u8	*my_cover	= ai().level_graph().cover(m_tpCurrentNode);
-			u8	*member_cover = ai().level_graph().cover(m_tpCurrentMemberNode);
-	#ifdef OLD_COVER_COST
-			m_tCurrentMemberDirection.x = m_tCurrentMemberPosition.x - m_tCurrentPosition.x;
-			m_tCurrentMemberDirection.y = m_tCurrentMemberPosition.y - m_tCurrentPosition.y;
-			m_tCurrentMemberDirection.z = m_tCurrentMemberPosition.z - m_tCurrentPosition.z;
-			if (m_tCurrentMemberDirection.x < 0.f) {
-				m_fResult += fCoverFromLeaderWeight*(1.f - float(my_cover[0])/255.f);
-				m_fResult += fCoverFromLeaderWeight*(1.f - float(member_cover[2])/255.f);
-			}
-			else {
-				m_fResult += fCoverFromLeaderWeight*(1.f - float(my_cover[2])/255.f);
-				m_fResult += fCoverFromLeaderWeight*(1.f - float(member_cover[0])/255.f);
-			}
-			if (m_tCurrentMemberDirection.z < 0.f) {
-				m_fResult += fCoverFromLeaderWeight*(1.f - float(my_cover[3])/255.f);
-				m_fResult += fCoverFromLeaderWeight*(1.f - float(member_cover[1])/255.f);
-			}
-			else {
-				m_fResult += fCoverFromLeaderWeight*(1.f - float(my_cover[1])/255.f);
-				m_fResult += fCoverFromLeaderWeight*(1.f - float(member_cover[3])/255.f);
-			}
-	#else
-			m_tCurrentMemberDirection.x = m_tCurrentMemberPosition.x - m_tCurrentPosition.x;
-			m_tCurrentMemberDirection.y = m_tCurrentMemberPosition.y - m_tCurrentPosition.y;
-			m_tCurrentMemberDirection.z = m_tCurrentMemberPosition.z - m_tCurrentPosition.z;
-			vfNormalizeSafe(m_tCurrentMemberDirection);
-			float fAlpha;
-			if (m_tCurrentMemberDirection.x < 0.f)
-				if (m_tCurrentMemberDirection.z >= 0.f) {
-					fAlpha = acosf(m_tCurrentMemberDirection.dotproduct(tLeft));
-					m_fResult += m_fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(my_cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(my_cover[1])/255.f));
-					fAlpha = PI/2 - fAlpha;
-					m_fResult += m_fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(member_cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(member_cover[3])/255.f));
-				}
-				else {
-					fAlpha = acosf(m_tCurrentMemberDirection.dotproduct(tLeft));
-					m_fResult += m_fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(my_cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(my_cover[3])/255.f));
-					fAlpha = PI/2 - fAlpha;
-					m_fResult += m_fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(member_cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(member_cover[1])/255.f));
-				}
-			else
-				if (m_tCurrentMemberDirection.z >= 0.f) {
-					fAlpha = acosf(m_tCurrentMemberDirection.dotproduct(tRight));
-					m_fResult += m_fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(my_cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(my_cover[1])/255.f));
-					fAlpha = PI/2 - fAlpha;
-					m_fResult += m_fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(member_cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(member_cover[3])/255.f));
-				}
-				else {
-					fAlpha = acosf(m_tCurrentMemberDirection.dotproduct(tRight));
-					m_fResult += m_fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(my_cover[2])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(my_cover[3])/255.f));
-					fAlpha = PI/2 - fAlpha;
-					m_fResult += m_fCoverFromMemberWeight*(fAlpha/PI_DIV_2*(1.f - float(member_cover[0])/255.f) + (PI/2 - fAlpha)/PI_DIV_2*(1.f - float(member_cover[1])/255.f));
-				}
-	#endif
+			Fvector			direction;
+			direction.sub	(m_tCurrentMemberDirection,m_tCurrentPosition);
+			float			yaw, pitch;
+			direction.getHP	(yaw,pitch);
+			m_fResult		+= m_fCoverFromMemberWeight*ai().level_graph().cover_in_direction(yaw,m_tpCurrentNode);
 		}
 
 		IC		void vfAddTotalCoverCost					()

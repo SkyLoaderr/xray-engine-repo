@@ -924,15 +924,17 @@ void CAI_Stalker::Think()
 	m_tpSavedEnemyNode	= ai().level_graph().vertex(m_dwSavedEnemyNodeID = m_tSavedEnemy->level_vertex_id());
 	m_tMySavedPosition	= Position();
 	m_dwMyNodeID		= level_vertex_id();
+	m_tpSelectorRetreat->m_fSearchRange = 30.f;
 	INIT_SQUAD_AND_LEADER;
 	vfInitSelector		(*m_tpSelectorRetreat,Squad,Leader);
 
-	m_tMovementType		= eMovementTypeRun;
-	m_tMentalState		= eMentalStatePanic;
+	m_tMovementType		= eMovementTypeWalk;
+	m_tMentalState		= eMentalStateDanger;
 	CMovementManager::set_path_type		(ePathTypeLevelPath);
 	CLevelLocationSelector::set_evaluator(m_tpSelectorRetreat);
 	update_path			();
-	SetDirectionLook	();
+	SetPointLookAngles	(m_tSavedEnemyPosition,m_head.target.yaw,m_head.target.pitch);
+	set_desirable_speed	(m_fWalkFactor);
 	return;
 //	if (!m_dwLastUpdate) {
 //		Level().ObjectSpace.GetNearest(Position(),3.f);
