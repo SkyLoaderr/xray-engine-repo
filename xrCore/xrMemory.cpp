@@ -65,10 +65,13 @@ void	xrMemory::_initialize	(BOOL bDebug)
 Memory.dbg_check();
 }
 
+extern void dbg_dump_leaks();
 void	xrMemory::_destroy()
 {
 	xr_delete					(g_pSharedMemoryContainer);
 	xr_delete					(g_pStringContainer);
+
+	if (debug_mode)				dbg_dump_leaks();
 
 	mem_initialized				= FALSE;
 	debug_mode					= FALSE;
