@@ -28,23 +28,9 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 	F_entity_Destroy	(E);
 }
 
-void CLevel::g_sv_Spawn		(NET_Packet* Packet)
+void CLevel::g_sv_Spawn		(xrServerEntity* E)
 {
 	CTimer		T;
-
-	// Begin analysis
-	NET_Packet&	P		= *Packet;
-	u16					dummy;
-	string64			s_name;
-	P.r_begin			(dummy);	R_ASSERT	(dummy==M_SPAWN);
-	P.r_string			(s_name);
-
-	// Create DC (xrSE)
-	xrServerEntity*		E	= F_entity_Create(s_name);
-	R_ASSERT			(E);
-	E->Spawn_Read		(P);
-	if (E->s_flags.is(M_SPAWN_UPDATE))
-		E->UPDATE_Read	(P);
 
 #ifdef DEBUG
 	Msg					("CLIENT: Spawn: %s, ID=%d", E->s_name, E->ID);
@@ -52,15 +38,14 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 
 	// Client spawn
 	T.Start		();
-	CObject*	O		= Objects.LoadOne	(s_name);
+	CObject*	O		= Objects.LoadOne	(E->s_name);
 	// Msg			("--spawn--LOAD: %f ms",1000.f*T.GetAsync());
 
 	T.Start		();
 	if (0==O || (!O->net_Spawn	(E))) 
 	{
 		O->net_Destroy			( );
-		Objects.DestroyObject	(O);
-		Msg						("! Failed to spawn entity '%s'",s_name);
+		Msg						("! Failed to spawn entity '%s'",E->s_name);
 	} else {
 		// Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 

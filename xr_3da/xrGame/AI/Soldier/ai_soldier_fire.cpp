@@ -173,7 +173,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 		// only for fitting light coefficients
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
-			Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
+			HUD().outMessage(0xffffffff,cName(),"I don't see you");
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #endif
 		return;
@@ -204,7 +204,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 					bool bB = bfCheckForVisibility(E);
 					CActor *tpActor = dynamic_cast<CActor *>(E);
 					if (tpActor) {
-						Level().HUD()->outMessage(0xffffffff,cName(),bB ? "I see you" : "I don't see you");
+						HUD().outMessage(0xffffffff,cName(),bB ? "I see you" : "I don't see you");
 						bActorInCamera = true;
 						continue;
 					}
@@ -241,7 +241,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	// only for fitting light coefficients
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
-		Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
+		HUD().outMessage(0xffffffff,cName(),"I don't see you");
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #endif
 }
