@@ -48,7 +48,7 @@ void	CSheduler::internal_Registration()
 	{
 		ItemReg&	R	= Registration	[it];
 		if (R.OP)	internal_Register	(R.Object,R.RT);
-		else		internal_Unregister	(R.Object);
+		else		internal_Unregister	(R.Object,R.RT);
 	}
 	Registration.clear	();
 }
@@ -79,10 +79,11 @@ void CSheduler::internal_Register	(ISheduled* O, BOOL RT)
 	}
 }
 
-void CSheduler::internal_Unregister	(ISheduled* O)
+void CSheduler::internal_Unregister	(ISheduled* O, BOOL RT)
 {
-	VERIFY	(!O->shedule.b_locked)	;
-	if (O->shedule.b_RT)
+	//the object may be already dead
+	//VERIFY	(!O->shedule.b_locked)	;
+	if (RT)
 	{
 		for (u32 i=0; i<ItemsRT.size(); i++)
 		{
@@ -113,10 +114,10 @@ void	CSheduler::Register		(ISheduled* A, BOOL RT				)
 void	CSheduler::Unregister	(ISheduled* A						)
 {
 	ItemReg		R;
-	R.OP		= FALSE		;
-	R.RT		= FALSE		;
-	R.Object	= A			;
-	Registration.push_back	(R);
+	R.OP		= FALSE				;
+	R.RT		= A->shedule.b_RT	;
+	R.Object	= A					;
+	Registration.push_back			(R);
 }
 
 void CSheduler::EnsureOrder		(ISheduled* Before, ISheduled* After)

@@ -35,7 +35,7 @@ private:
 	}
 
 	void			internal_Register		(ISheduled* A, BOOL RT=FALSE		);
-	void			internal_Unregister		(ISheduled* A						);
+	void			internal_Unregister		(ISheduled* A, BOOL RT				);
 	void			internal_Registration	();
 public:
 	u64				cycles_start;
