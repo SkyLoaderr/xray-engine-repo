@@ -35,6 +35,8 @@ struct D3DMATRIX;
 #define NODEFAULT
 #include "vector.h"
 
+#include "opcode.h"
+
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}

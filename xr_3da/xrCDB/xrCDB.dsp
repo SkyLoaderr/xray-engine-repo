@@ -267,5 +267,125 @@ SOURCE=.\xrCDB.cpp
 SOURCE=.\xrCDB.h
 # End Source File
 # End Group
+# Begin Group "Opcode"
+
+# PROP Default_Filter ""
+# Begin Group "API"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\OPC_Model.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Model.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Settings.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Opcode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Opcode.h
+# End Source File
+# End Group
+# Begin Group "Trees"
+
+# PROP Default_Filter ""
+# End Group
+# Begin Group "Overlap tests"
+
+# PROP Default_Filter ""
+# End Group
+# Begin Group "ICE"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\IceAABB.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceAABB.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceBoundingSphere.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceContainer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceContainer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceFPU.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceHPoint.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceMatrix3x3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceMatrix3x3.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceMatrix4x4.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceMatrix4x4.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceMemoryMacros.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IcePlane.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IcePoint.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\IcePoint.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceRandom.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceRay.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceTriangle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceTriangle.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IceTypes.h
+# End Source File
+# End Group
+# End Group
 # End Target
 # End Project
