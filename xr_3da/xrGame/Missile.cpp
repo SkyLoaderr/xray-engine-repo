@@ -39,9 +39,9 @@ void CMissile::Load(LPCSTR section) {
 		else{inst_z;}
 
 BOOL CMissile::net_Spawn(LPVOID DC) {
+	R_ASSERT(!m_pInventory);
 	BOOL l_res = inherited::net_Spawn(DC);
 
-	R_ASSERT(!m_pInventory);
 	CKinematics* V = PKinematics(Visual());
 	if(V) V->PlayCycle("idle");
 	setVisible					(true);
@@ -91,10 +91,10 @@ BOOL CMissile::net_Spawn(LPVOID DC) {
 
 void CMissile::net_Destroy() {
 	//R_ASSERT(!m_pInventory);
-	m_pInventory = 0;
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
+	m_pInventory = 0;
 }
 
 //void CMissile::OnDeviceCreate() {
