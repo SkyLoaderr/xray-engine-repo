@@ -78,7 +78,8 @@ TEMPLATE_SPECIALIZATION
 IC	_dist_type CSolverPathManager::estimate			(const _index_type &vertex_id) const
 {
 	VERIFY					(graph);
-	return					((_dist_type)graph->get_edge_weight(vertex_id,start_node_index,m_iterator));
+//	return					((_dist_type)graph->get_edge_weight(vertex_id,start_node_index,m_iterator));
+	return					((_dist_type)vertex_id.difference(start_node_index));
 }
 
 TEMPLATE_SPECIALIZATION
