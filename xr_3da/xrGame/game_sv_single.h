@@ -26,7 +26,7 @@ public:
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда
 	virtual		void				OnRoundEnd				()								{};		// старт раунда
-	virtual		void				OnTeamScore				(u32 team)						{};		// команда выиграла
+	virtual		void				OnTeamScore				(u32 /**team/**/)				{};		// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	;//{};
 

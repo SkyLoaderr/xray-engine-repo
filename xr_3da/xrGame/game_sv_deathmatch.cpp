@@ -16,7 +16,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 
 	// Respawn all players and some info
 	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; it++)	
+	for		(u32 it=0; it<cnt; ++it)	
 	{
 		// init
 		game_PlayerState*	ps	=	get_it	(it);
@@ -99,7 +99,7 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			// Weapon
 			xr_vector<u16>&	C			=	A->children;
 			u8 slot						=	W->get_slot	();
-			for (u32 it=0; it<C.size(); it++)
+			for (u32 it=0; it<C.size(); ++it)
 			{
 				CSE_Abstract*		Et	= S->ID_to_entity				(C[it]);
 				if (0==Et)				continue;
@@ -142,10 +142,10 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 			// Check if all players ready
 			u32		cnt		= get_count	();
 			u32		ready	= 0;
-			for		(u32 it=0; it<cnt; it++)	
+			for		(u32 it=0; it<cnt; ++it)	
 			{
 				ps		=	get_it	(it);
-				if (ps->flags & GAME_PLAYER_FLAG_READY)	ready++;
+				if (ps->flags & GAME_PLAYER_FLAG_READY)	++ready;
 			}
 
 			if (ready == cnt)
@@ -192,7 +192,7 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	xr_vector<u16>::iterator i,e;
 	i=C->begin();
 	e=C->end();
-	for(;i!=e;i++)
+	for(;i!=e;++i)
 //	while(C->size())
 	{
 		u16		eid						= (*i);

@@ -11,7 +11,7 @@ public:
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда
 
-	virtual		void				OnTeamScore				(u32 team)						{};		// команда выиграла
+	virtual		void				OnTeamScore				(u32 /**team/**/)						{};		// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);

@@ -8,13 +8,13 @@ game_GameState::game_GameState()
 
 void	game_GameState::OnStartRound	()
 {
-	round	++;
+	++round;
 	if (0==round)	
 	{
 		// give $1000 to everybody
 		Lock	();
 		u32		cnt = get_count();
-		for		(u32 it=0; it<cnt; it++)	
+		for		(u32 it=0; it<cnt; ++it)	
 		{
 			game_PlayerState*	ps	=	get_it	(ps);
 			ps->money_total			=	1000;
@@ -25,7 +25,7 @@ void	game_GameState::OnStartRound	()
 		// sum-up money for round with total
 		Lock	();
 		u32		cnt = get_count();
-		for		(u32 it=0; it<cnt; it++)	
+		for		(u32 it=0; it<cnt; ++it)	
 		{
 			game_PlayerState*	ps	=	get_it	(ps);
 			ps->money_total			+=	ps->money_for_round;
@@ -40,7 +40,7 @@ void	game_GameState::OnTeamScore		(u32 team)
 	// Increment/decrement money
 	Lock	();
 	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; it++)	
+	for		(u32 it=0; it<cnt; ++it)	
 	{
 		game_PlayerState*	ps	=	get_it	(ps);
 		ps->money_for_round		+=	(team==ps->team)?+1000:+500;
@@ -53,7 +53,7 @@ void	game_GameState::OnTeamsInDraw	()
 	// Give $1000 to everybody
 	Lock	();
 	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; it++)	
+	for		(u32 it=0; it<cnt; ++it)	
 	{
 		game_PlayerState*	ps	=	get_it	(ps);
 		ps->money_for_round		+=	+1000;
@@ -125,7 +125,7 @@ void CPlayers::remove(NET_Packet& P)
 CPlayers::Item* CPlayers::access(u32 ID)
 {
 	xr_map<u32,Item>::iterator	it = items.find	(ID);
-	if (it!=items.end())		return &it->second;
+	if (items.end() != it)		return &it->second;
 	else						return 0;
 }
 */
