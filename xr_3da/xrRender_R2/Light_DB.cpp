@@ -55,6 +55,7 @@ void CLight_DB::Load			(IReader *fs)
 				v_static.push_back	(NULL);
 				xr_delete			(L);
 				sun_dir.set			(Ldata.direction);
+				sun_dir.y			+= -1.f;
 				sun_dir.normalize	();
 				sun_color.set		(Ldata.diffuse.r,Ldata.diffuse.g,Ldata.diffuse.b,1.f);
 			}
