@@ -259,7 +259,7 @@ void xrSE_Enemy::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P
 void xrSE_Enemy::STATE_Write		(NET_Packet& P)				{inherited::STATE_Write(P);		};
 void xrSE_Enemy::UPDATE_Read		(NET_Packet& P)
 {
-	P.r_u32				(dwTimeStamp	);
+	P.r_u32				(timestamp		);
 	P.r_u8				(flags			);
 	P.r_vec3			(o_Position		);
 	P.r_angle8			(o_model		);
@@ -268,7 +268,7 @@ void xrSE_Enemy::UPDATE_Read		(NET_Packet& P)
 }
 void xrSE_Enemy::UPDATE_Write		(NET_Packet& P)
 {
-	P.w_u32				(dwTimeStamp	);
+	P.w_u32				(timestamp		);
 	P.w_u8				(flags			);
 	P.w_vec3			(o_Position		);
 	P.w_angle8			(o_model		);
@@ -402,7 +402,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_AI_RAT:				return new	xrSE_Enemy;
 	case CLSID_AI_SOLDIER:			return new	xrSE_Enemy;
 	case CLSID_AI_ZOMBIE:			return new	xrSE_Enemy;
-	case CLSID_AI_CROW:				return new	xrSE_Crow;
+//	case CLSID_AI_CROW:				return new	xrSE_Crow;
 	case CLSID_EVENT:				return new  xrSE_Event;
 	case CLSID_CAR_NIVA:			return new  xrSE_Car;
 	case CLSID_OBJECT_W_M134:		return new	xrSE_Weapon;
