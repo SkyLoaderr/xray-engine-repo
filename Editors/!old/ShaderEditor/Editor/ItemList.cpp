@@ -133,7 +133,7 @@ __fastcall TItemList::TItemList(TComponent* Owner) : TForm(Owner)
 TItemList* TItemList::CreateForm(const AnsiString& title, TWinControl* parent, TAlign align, u32 flags)
 {
 	TItemList* props 			= xr_new<TItemList>(parent);
-    props->m_Flags.set			(flags);
+    props->m_Flags.assign		(flags);
     props->tvItems->MultiSelect	= props->m_Flags.is(ilMultiSelect);
     if (parent){
 		props->Parent 			= parent;

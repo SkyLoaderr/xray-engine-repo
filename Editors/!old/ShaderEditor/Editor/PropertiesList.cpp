@@ -133,7 +133,7 @@ TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* paren
     }
 	props->Caption				= title;	
     props->fsStorage->IniSection= title;
-    props->m_Flags.set			(flags);
+    props->m_Flags.assign		(flags);
     if (props->m_Flags.is_any(plItemFolders)){
     	if (props->m_Flags.is(plIFTop)){
             props->paFolders->Align	= alTop;
@@ -165,7 +165,7 @@ TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowBut
     props->paButtons->Visible	= bShowButtonsBar;
 	props->Caption				= title;	
     props->fsStorage->IniSection= title;
-    props->m_Flags.set			(flags);
+    props->m_Flags.assign		(flags);
     if (props->m_Flags.is(plItemFolders)){
     	if (props->m_Flags.is(plIFTop)){
             props->paFolders->Align	= alTop;

@@ -52,7 +52,7 @@ void STextureParams::Load(IReader& F)
 {
     R_ASSERT(F.find_chunk(THM_CHUNK_TEXTUREPARAM));
     F.r					(&fmt,sizeof(ETFormat));
-    flags.set	(F.r_u32());
+    flags.assign(F.r_u32());
     border_color= F.r_u32();
     fade_color	= F.r_u32();
     fade_amount	= F.r_u32();

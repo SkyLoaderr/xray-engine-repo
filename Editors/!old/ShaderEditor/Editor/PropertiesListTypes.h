@@ -279,7 +279,7 @@ public:
 public:
 						ButtonValue		(AnsiString val, u32 flags)
 	{
-    	m_Flags.set		(flags);
+    	m_Flags.assign	(flags);
     	OnBtnClickEvent	= 0;
     	btn_num			= -1;
     	AnsiString 		v;
@@ -490,7 +490,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						FlagValueCustom	(u32 mask){m_Flags.set(mask);}
+						FlagValueCustom	(u32 mask){m_Flags.assign(mask);}
 	virtual	bool		HaveCaption		(){return caption[0].Length()&&caption[1].Length();}
     virtual bool		GetValueEx		()=0;
 };
