@@ -171,6 +171,11 @@ void CODEGeom::set_static_ref_form(const Fmatrix& form)
 	dGeomSetRotation(geometry_transform(),R);
 }
 
+void CODEGeom::set_position(const Fvector& /*ref_point*/)
+{
+	dGeomUserDataResetLastPos(geom());
+}
+
 void CODEGeom::set_body(dBodyID body)
 {
 	if(m_geom_transform) dGeomSetBody(m_geom_transform,body);
@@ -409,6 +414,8 @@ return dCreateBox(0,
 void CBoxGeom::set_position(const Fvector& ref_point)
 {
 
+	inherited::set_position(ref_point);
+
 	dVector3 local_position={m_box.m_translate.x-ref_point.x,
 							m_box.m_translate.y-ref_point.y,
 							m_box.m_translate.z-ref_point.z
@@ -475,6 +482,7 @@ dGeomID CSphereGeom::create()
 void CSphereGeom::set_position(const Fvector& ref_point)
 {
 
+	inherited::set_position(ref_point);
 	dVector3 local_position={
 		m_sphere.P.x-ref_point.x,
 		m_sphere.P.y-ref_point.y,
@@ -551,6 +559,7 @@ return dCreateCylinder(
 void CCylinderGeom::set_position(const Fvector& ref_point)
 {
 
+	inherited::set_position(ref_point);
 	dVector3 local_position={
 	 m_cylinder.m_center.x-ref_point.x,
 	 m_cylinder.m_center.y-ref_point.y,

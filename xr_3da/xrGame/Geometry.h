@@ -81,7 +81,7 @@ protected:
 	virtual		dGeomID		create				()																	=0;
 public:
 				void		build				(const Fvector& ref_point)											;
-	virtual		void		set_position		(const Fvector& ref_point)											=0;//for build geom
+	virtual		void		set_position		(const Fvector& ref_point)											;//for build geom
 				void		move_local_basis	(const Fmatrix& inv_new_mul_old)									;
 				void		destroy				()																	;
 							CODEGeom			()																	;

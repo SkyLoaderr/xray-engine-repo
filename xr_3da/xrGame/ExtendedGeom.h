@@ -115,4 +115,10 @@ IC void dGeomUserDataSetElementPosition(dxGeom* geom,u16 e_pos)
 	(dGeomGetUserData(geom))->element_position=e_pos;
 }
 
+IC void dGeomUserDataResetLastPos(dxGeom* geom)
+{
+	(dGeomGetUserData(geom))->last_pos[0]=-dInfinity;
+	(dGeomGetUserData(geom))->last_pos[1]=-dInfinity;
+	(dGeomGetUserData(geom))->last_pos[2]=-dInfinity;
+}
 #endif
