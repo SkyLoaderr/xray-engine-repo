@@ -108,7 +108,7 @@ void CPHCapture::PullingUpdate()
 
 		m_joint=dJointCreateBall(0,0);
 		m_island.AddJoint(m_joint);
-		m_ajoint=dJointCreateAMotor(phWorld,0);
+		m_ajoint=dJointCreateAMotor(0,0);
 		dJointSetAMotorMode (m_ajoint, dAMotorEuler);
 		dJointSetAMotorNumAxes (m_ajoint, 3);
 

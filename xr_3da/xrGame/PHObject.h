@@ -14,19 +14,15 @@ class CPHObject :
 	public ISpatial 
 {
 	DECLARE_PHLIST_ITEM(CPHObject)
-				//PH_OBJECT_I m_ident;
 
-		
-				//bool		b_activated;
-				//bool		b_freezed;
-				//bool		b_dirty;
 			Flags8	m_flags;
 
 			enum{
 					st_activated					=(1<<0),
 					st_freezed						=(1<<1),
 					st_dirty						=(1<<2),
-					st_net_interpolation			=(1<<3)
+					st_net_interpolation			=(1<<3),
+					fl_ray_motions					=(1<<4)
 				};
 			
 			CPHIsland		m_island;
@@ -71,6 +67,7 @@ virtual		void		activate		()										;
 		IC	bool		is_active		()										{return !!m_flags.test(st_activated)/*b_activated*/;}
 			void		deactivate		()										;
 virtual		void		Collide			()										;
+virtual		void		RMotionsColllide()										{;}
 
 virtual		void		vis_update_activate(){}
 virtual		void		vis_update_deactivate(){}

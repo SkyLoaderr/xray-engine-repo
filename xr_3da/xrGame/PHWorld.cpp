@@ -75,11 +75,9 @@ CPHWorld::CPHWorld()
 }
 void CPHWorld::Create()
 {
+	dWorldID phWorld=0;
 	if (psDeviceFlags.test(mtPhysics))	Device.seqFrameMT.Add	(this,REG_PRIORITY_HIGH);
 	else								Device.seqFrame.Add		(this,REG_PRIORITY_LOW);
-
-	phWorld = dWorldCreate();
-	//Space = dHashSpaceCreate(0);
 
 	//dVector3 extensions={2048,256,2048};
 	/*
@@ -90,11 +88,10 @@ void CPHWorld::Create()
 	dVector3 extensions		=	{ level_size.x ,256.f,level_size.z};
 	dVector3 center			=	{level_center.x,0.f,level_center.z};
 	*/
-	//Space					=	dQuadTreeSpaceCreate (0, center,extensions, 6);
 
-	//dSpaceSetCleanup			(Space,0);
 #ifdef ODE_SLOW_SOLVER
 #else
+
 	dWorldSetAutoEnableDepthSF1(phWorld, 100000000);
 	///dWorldSetContactSurfaceLayer(phWorld,0.f);
 	//phWorld->contactp.min_depth =0.f;
@@ -103,11 +100,8 @@ void CPHWorld::Create()
 	ContactGroup			= dJointGroupCreate(0);		
 	dWorldSetGravity		(phWorld, 0,-world_gravity, 0);//-2.f*9.81f
 	Mesh.Create				(0,phWorld);
-	//Jeep.Create(Space,phWorld);//(Space,phWorld)
-	//Gun.Create(Space);
 #ifdef PH_PLAIN
 	plane=dCreatePlane(Space,0,1,0,0.3f);
-	//dGeomCreateUserData(plane);
 #endif
 
 	//const  dReal k_p=2400000.f;//550000.f;///1000000.f;
@@ -117,7 +111,6 @@ void CPHWorld::Create()
 	//dWorldSetERP(phWorld,  0.2f);
 	//dWorldSetCFM(phWorld,  0.000001f);
 	disable_count=0;
-	//Jeep.DynamicData.CalculateData();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -130,11 +123,8 @@ void CPHWorld::Destroy(){
 	dJointGroupEmpty(ContactGroup);
 	ContactFeedBacks.clear();
 	ContactEffectors.clear();
-	//dSpaceDestroy(Space);
-	dWorldDestroy(phWorld);
 	dCloseODE();
 	dCylinderClassUser=-1;
-
 	Device.seqFrameMT.Remove	(this);
 	Device.seqFrame.Remove		(this);
 }
