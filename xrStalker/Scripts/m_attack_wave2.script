@@ -184,10 +184,11 @@ function Defender:process ()
 	
 	--если нет врагов, то отпускаем мужика
     if enemy == nil then
-	   self.npc:script (false, self.script)
-	   self.freed = true
-	   printf ("Stalker freed 3")
-	   return
+       return 
+	   --self.npc:script (false, self.script)
+	   --self.freed = true
+	   --printf ("Stalker freed 3")
+	   --return
     end	   
 	
 	--целимся во врага
