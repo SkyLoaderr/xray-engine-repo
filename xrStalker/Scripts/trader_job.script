@@ -15,6 +15,7 @@ end
 -- функция генерит текст задания для артефактов в диалогах
 function artefacts_task_text(original_text, first_speaker, second_speaker)
 
+/*	
 	local task_list = first_speaker:artefact_tasks()
 
 	local different_artefacts = {}
@@ -24,6 +25,18 @@ function artefacts_task_text(original_text, first_speaker, second_speaker)
 		result_text = string.format("%s\\n%s from %s, count %d, price %d", result_text, 
 									K.name, K.organization, K.quantity, K.price)
 	end
+*/
+
+	local tasks = task_list(first_speaker:id())
+
+	local result_text = string.format("%s\\n", original_text)
+
+	for i = 0, tasks:size(), 1 do 
+		K = tasks:get(i)
+		result_text = string.format("%s\\n%s from %s, count %d, price %d", result_text, 
+									K.name, K.organization, K.quantity, K.price)
+	end
+
 	
 	return result_text
 end
