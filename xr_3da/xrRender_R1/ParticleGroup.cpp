@@ -309,6 +309,7 @@ void CParticleGroup::OnFrame(u32 u_dt)
         float f_dt	= float(u_dt)/1000.f;
         for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++){	
             if (e_it->m_Flags.is(CPGDef::SEffect::flEnabled)){
+            	VERIFY				(items.size()==m_Def->m_Effects.size());
                 SItem& I			= items[e_it-m_Def->m_Effects.begin()];
                 if (I.IsPlaying()){
                     if ((ct<=e_it->m_Time1)&&(ct+f_dt>=e_it->m_Time1))	

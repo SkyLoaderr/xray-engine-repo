@@ -33,6 +33,7 @@ void __fastcall PS::CPGDef::OnEffectsEditClick(PropValue* sender, bool& bDataMod
     switch (B->btn_num){
     case 0:
         m_Effects.push_back(SEffect());
+        m_Effects.back().m_Flags.set(CPGDef::SEffect::flEnabled,FALSE);
         UI->Command		(COMMAND_UPDATE_PROPERTIES);
         OnParamsChange	(sender);
         bDataModified	= true;
@@ -86,14 +87,8 @@ void __fastcall PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModi
 
 void __fastcall PS::CPGDef::OnParamsChange(PropValue* sender)
 {
-	PTools->SetCurrentPG	(this);
-}
-
-void __fastcall PS::CPGDef::OnChildChange(PropValue* sender)
-{
 	PTools->SetCurrentPG	(0);
 	PTools->SetCurrentPG	(this);
-//    if (!m_Flags.is(SEffect::flHaveChild))
 }
 
 void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
@@ -112,24 +107,33 @@ void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
     V=PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Time Limit (s)"),	&m_fTimeLimit,	-1.f,1000.f);
     V->OnChangeEvent			= OnParamsChange;
     for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); it++){
+    	u32 clr					= it->m_Flags.is(CPGDef::SEffect::flEnabled)?clBlack:clSilver;
         AnsiString nm 			= AnsiString("Effect #")+(it-m_Effects.begin()+1);
         B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,nm.c_str()),"Preview,Select,Remove",ButtonValue::flFirstOnly); B->Owner()->tag = it-m_Effects.begin();
         B->OnBtnClickEvent		= OnEffectEditClick;
+        B->Owner()->prop_color	= clr;
         V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Name"),&it->m_EffectName,smPE);
         V->OnChangeEvent		= OnParamsChange;
+        V->Owner()->prop_color	= clr;
         V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,nm.c_str(),"Start Time (s)"),&it->m_Time0,		0.f,1000.f);
         V->OnChangeEvent		= OnParamsChange;
+        V->Owner()->prop_color	= clr;
         V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,nm.c_str(),"End Time (s)"),	&it->m_Time1,		0.f,1000.f);
         V->OnChangeEvent		= OnParamsChange;
+        V->Owner()->prop_color	= clr;
         V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Deferred Stop"),&it->m_Flags,	SEffect::flDefferedStop);
         V->OnChangeEvent		= OnParamsChange;
+        V->Owner()->prop_color	= clr;
         V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Enabled"),		&it->m_Flags, 	SEffect::flEnabled);
         V->OnChangeEvent		= OnParamsChange;
+        V->Owner()->prop_color	= clr;
         V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,nm.c_str(),"Child"),		&it->m_Flags,	SEffect::flHaveChild);
-        V->OnChangeEvent		= OnChildChange;
+        V->OnChangeEvent		= OnParamsChange;
+        V->Owner()->prop_color	= clr;
         if (it->m_Flags.is(SEffect::flHaveChild)){
 	        V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Child\\Name"),	&it->m_ChildEffectName,smPE);
     	    V->OnChangeEvent	= OnParamsChange;
+	        V->Owner()->prop_color	= clr;
         }
     }
 }

@@ -681,7 +681,7 @@ PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
     string64 pref		={0};
     if (src){ 			strcpy(pref,*src->m_Name);folder_name="";}
     else strconcat		(pref,folder_name.c_str(),"pe");
-    AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName);
+    AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName,false);
     PS::CPEDef* S 		= ::Render->PSLibrary.AppendPED(src);
     S->m_Name			= new_name.c_str();
     S->m_OwnerName		= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
@@ -702,7 +702,7 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
     string64 pref		={0};
     if (src){ 			strcpy(pref,*src->m_Name);folder_name="";}
     else strconcat		(pref,folder_name.c_str(),"pg");
-    AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName);
+    AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName,false);
     PS::CPGDef* S 		= ::Render->PSLibrary.AppendPGD(src);
     S->m_Name			= new_name.c_str();
     S->m_OwnerName		= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();

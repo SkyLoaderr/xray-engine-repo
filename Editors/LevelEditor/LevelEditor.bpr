@@ -270,6 +270,7 @@
       <FILE FILENAME="Edit\ELight_def.h" FORMNAME="" UNITNAME="ELight_def.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneObjectToolsExportBreakable.cpp" FORMNAME="" UNITNAME="ESceneObjectToolsExportBreakable" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\xrHemisphere.cpp" FORMNAME="" UNITNAME="xrHemisphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="EditorChooseEvents.h" FORMNAME="" UNITNAME="EditorChooseEvents.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

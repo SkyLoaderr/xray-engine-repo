@@ -25,7 +25,7 @@ namespace PS
 			ref_str			m_ChildEffectName;
 			float			m_Time0;
 			float			m_Time1;
-							SEffect				(){m_Flags.set(flEnabled);m_Time0=0;m_Time1=0;}
+							SEffect				(){m_Flags.zero();/*set(flEnabled)*/m_Time0=0;m_Time1=0;}
 #ifdef _EDITOR
             BOOL			Equal				(const SEffect&);
 #endif
@@ -43,7 +43,6 @@ namespace PS
 		void __fastcall 	OnEffectEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
 		void __fastcall 	OnControlClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
 		void __fastcall 	OnParamsChange	(PropValue* sender);
-		void __fastcall 	OnChildChange	(PropValue* sender);
 		void				FillProp	   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 		BOOL				Equal			(const CPGDef* pe);
 #endif
