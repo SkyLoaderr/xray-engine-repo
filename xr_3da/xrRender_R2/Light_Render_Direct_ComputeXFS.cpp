@@ -67,7 +67,7 @@ void CLight_Compute_XFORM_and_VIS::compute_xf_spot	(light* L)
 	float	n			= 2.f						;
 	float	x			= float(L->X.S.size)		;
 	float	alpha		= L->cone/2					;
-	float	tan_beta	= (x+2*n)*tanf(alpha) / x	;
+	//float	tan_beta	= (x+2*n)*tanf(alpha) / x	;
 	//float	g_alpha		= 2*rad2deg		(alpha);
 	//float	g_beta		= 2*rad2deg		(atanf(tan_beta));
 	//Msg				("x(%f) : a(%f), b(%f)",x,g_alpha,g_beta);

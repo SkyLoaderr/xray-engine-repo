@@ -36,8 +36,9 @@ private:
 		stack.push_back		(R);
 		Ivector2			p0,p1;
 		R.get_cp			(p0,p1);
-		if ((p0.x<psize)&&(p0.y<psize))	cpoint.push_back(p0);	// 1st
-		if ((p1.x<psize)&&(p1.y<psize))	cpoint.push_back(p1);	// 2nd
+		s32 ps				= s32(psize);
+		if ((p0.x<ps)&&(p0.y<ps))	cpoint.push_back(p0);	// 1st
+		if ((p1.x<ps)&&(p1.y<ps))	cpoint.push_back(p1);	// 2nd
 	}
 public:
 	void			initialize	(u32 _size)

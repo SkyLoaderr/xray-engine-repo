@@ -122,7 +122,7 @@ void	CROS_impl::update	(IRenderable* O)
 			 light*	sun		=		RImplementation.Lights.sun_adapted	;
 			#endif
 			Fvector	direction;	direction.set	(sun->direction).invert().normalize	();
-			sun_value		=	!(bool)(g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache_sun))?1.f:0.f;
+			sun_value		=	!(g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache_sun))?1.f:0.f;
 		}
 	}
 	
@@ -134,7 +134,7 @@ void	CROS_impl::update	(IRenderable* O)
 
 		// take sample
 		Fvector	direction;	direction.set	(hdir[sample][0],hdir[sample][1],hdir[sample][2]).normalize	();
-		result[sample]	=	!(bool)g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
+		result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
 //		Msg				("%d:-- %s",sample,result[sample]?"true":"false");
 	}
 

@@ -246,7 +246,7 @@ BOOL CHOM::visible		(vis_data& vis)
 	// 1. The object was visible, but we must to re-check it		- test		| frame-new, tested-???, hom_res = true;
 	// 2. New object slides into view								- delay test| frame-old, tested-old, hom_res = ???;
 	u32 frame_current	= Device.dwFrame;
-	u32	frame_prev		= frame_current-1;
+	// u32	frame_prev		= frame_current-1;
 
 	Device.Statistic.RenderCALC_HOM.Begin	();
 	BOOL result			= _visible			(vis.box,m_xform_01);
