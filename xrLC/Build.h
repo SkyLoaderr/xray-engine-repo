@@ -12,6 +12,7 @@
 #include "xrLevel.h"
 #include "xrShaderDef.h"
 #include "textureparams.h"
+#include "shader_xrlc.h"
 
 #pragma comment(lib,"x:\\dxt.lib")
 extern "C" __declspec(dllimport) bool __cdecl DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch, STextureParams* fmt, DWORD depth);
@@ -46,7 +47,6 @@ public:
 	vector<b_material>		materials;
 	vector<b_shader>		shader_names;
 	vector<b_BuildTexture>	textures;
-	vector<SH_ShaderDef>	shader_defs;
 
 	vector<b_glow>			glows;
 	vector<b_occluder>		occluders;
@@ -59,6 +59,8 @@ public:
 	vector<R_Light>			lights_soften;
 
 	Fbox					scene_bb;
+
+	Shader_xrLC_LIB			shaders;
 public:
 	void	Run();
 

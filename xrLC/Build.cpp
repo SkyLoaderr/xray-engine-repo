@@ -35,13 +35,13 @@ CBuild::CBuild(b_transfer * L)
 	float	p_total = 0;
 	float	p_cost  = 1.f/3.f;
 
-	Phase	("Loading shaders...");
-	shLibrary_Load("x:\\game\\shaders.xr",shader_defs);
+	Phase		("Loading shaders...");
+	shaders.Load("x:\\game\\shaders_xrlc.xr");
 
-	Phase	("Converting data structures...");
+	Phase		("Converting data structures...");
 
 	//*******
-	Status	("Vertices...");
+	Status		("Vertices...");
 	scene_bb.invalidate	();
 	for (i=0; i<L->vertex_count; i++)
 	{
@@ -126,7 +126,6 @@ CBuild::CBuild(b_transfer * L)
 		LPSTR N			= BT.name;
 		if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 		char th_name[256]; strconcat(th_name,"x:\\textures\\thumbnail\\",N,".thm");
-//		Msg("- THM: %s",N);
 		CCompressedStream THM(th_name,"THM");
 
 		// analyze thumbnail information

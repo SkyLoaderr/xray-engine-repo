@@ -594,19 +594,7 @@ SOURCE=.\xrImage_Resampler.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\XRShaderDef.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderLib.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderLib.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderTypes.h
+SOURCE=.\Shader_xrLC.h
 # End Source File
 # End Group
 # Begin Group "XRAY"
