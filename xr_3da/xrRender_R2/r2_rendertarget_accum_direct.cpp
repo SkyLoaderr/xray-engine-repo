@@ -49,7 +49,7 @@ void CRenderTarget::accum_direct	()
 		// Shader + constants
 		RCache.set_Shader			(s_accum_direct);
 		RCache.set_c				("c_hpos",c_hpos);
-		Fvector4 J; float scale		= (2.0f / DSM_size)/11.f;
+		Fvector4 J; float scale		= (3.0f / DSM_size)/11.f;
 		R_constant* _C				= RCache.get_c			("jitter");
 		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
 		J.set(19, 3,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,1,J.x,J.y,-J.y,-J.x);

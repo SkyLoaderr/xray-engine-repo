@@ -102,6 +102,24 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 //////////////////////////////////////////////////////////////////////////
 // R2
 //////////////////////////////////////////////////////////////////////////
+class cl_chpos	: public R_constant_setup 
+{
+	u32			dwFrame;
+	Fvector4	c_hpos;
+
+	virtual void setup (R_constant* C) 
+	{ 
+		if (Device.dwFrame != dwFrame)	
+		{
+			//dwFrame							= Device.dwFrame;
+			RCache.xforms.m_vp.transform	(c_hpos,Device.vCameraPosition);
+			c_hpos.mul						(1/c_hpos.w);
+		}
+		RCache.set_c	(C,c_hpos);	
+	}
+};
+static cl_chpos	binder_chpos;
+
 void	CBlender_Tree::Compile	(CBlender_Compile& C)
 {
 	CBlender::Compile	(C);
