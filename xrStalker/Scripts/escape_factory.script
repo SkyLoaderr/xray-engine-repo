@@ -1,14 +1,15 @@
 local members = {}
+local on_active = false
 
 -------------------------------------------------------------------------
 function add_member (obj)
+    if on_active == true then return end
     local ini = obj:spawn_ini ()
     if ini == nil or ini:section_exist ("factory") == false then
        return 
     end
     printf ("Object %s is added to zone", obj:name ())
-    local size = table.getn (members) + 1
-    members[size] = obj:id ()
+    table.insert (members, obj:id ())
     switch_offline (obj)
     return        
 end
@@ -29,7 +30,7 @@ function factory_combat:on_enter (obj)
     if actor == nil or obj:id () ~= actor:id () then 
        return 
     end
-    
+    on_active = true    
     if table.getn (members) == 0 then return end
     for a = 1, table.getn (members), 1 do
         switch_online (members[a])
