@@ -60,6 +60,7 @@ class CAI_Rat : public CCustomMonster
 		float			m_fGoalChangeTime;
 		//
 		Fvector			m_tSpawnPosition;
+		Fvector			m_tSafeSpawnPosition;
 		DWORD			m_dwStandLookTime;
 		////////////////////////////////////////////////////////////////////////////
 		// end of test properties
@@ -184,15 +185,20 @@ class CAI_Rat : public CCustomMonster
 		CRatSelectorFreeHunting		SelectorFreeHunting;
 
 		
+		IC void vfChangeGoal()
+		{
+			Fvector vP;
+			vP.set(m_tSpawnPosition.x,m_tSpawnPosition.y+m_fMinHeight,m_tSpawnPosition.z);
+			m_tGoalDir.x = vP.x+m_tVarGoal.x*::Random.randF(-0.5f,0.5f); 
+			m_tGoalDir.y = vP.y+m_tVarGoal.y*::Random.randF(-0.5f,0.5f);
+			m_tGoalDir.z = vP.z+m_tVarGoal.z*::Random.randF(-0.5f,0.5f);
+		}
+		
 		IC bool bfCheckIfGoalChanged()
 		{
 			if (m_fGoalChangeTime<=0){
 				m_fGoalChangeTime += m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
-				Fvector vP;
-				vP.set(m_tSpawnPosition.x,m_tSpawnPosition.y+m_fMinHeight,m_tSpawnPosition.z);
-				m_tGoalDir.x = vP.x+m_tVarGoal.x*::Random.randF(-0.5f,0.5f); 
-				m_tGoalDir.y = vP.y+m_tVarGoal.y*::Random.randF(-0.5f,0.5f);
-				m_tGoalDir.z = vP.z+m_tVarGoal.z*::Random.randF(-0.5f,0.5f);
+				vfChangeGoal();
 				return(true);
 			}
 			return(false);
@@ -225,6 +231,7 @@ class CAI_Rat : public CCustomMonster
 			m_fGoalChangeTime -= fTimeDelta;
 		};		
 		
+		void vfComputeNewPosition();
 		/**
 		void SenseSomething();
 		void UnderFire();

@@ -22,25 +22,16 @@ void CAI_Rat::Exec_Action(float dt)
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
 			
-			DWORD dwTime = Level().timeServer();
-			
-			//if ((Movement.Environment() == CMovementControl::peOnGround) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
-			//if (dwTime - m_dwStartAttackTime > m_dwHitInterval) {
-			if (Movement.Environment() == CMovementControl::peOnGround) {
-				
+			if (tSavedEnemy->g_Health() > 0) {
+				DWORD dwTime = Level().timeServer();
 				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
-				
 				Fvector tDirection;
 				tDirection.sub(tSavedEnemy->Position(),this->Position());
 				tDirection.normalize();
 				
-//				if ((this->Local()) && (tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
-				if ((tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
-					if (tSavedEnemy->g_Health() > 0)
-						tSavedEnemy->Hit(m_fHitPower,tDirection,this);
-					else
-						m_bActionStarted = false;
+				if ((this->Local()) && (tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
+					tSavedEnemy->Hit(m_fHitPower,tDirection,this);
 			}
 			else
 				m_bActionStarted = false;

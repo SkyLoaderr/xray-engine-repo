@@ -128,6 +128,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(vPosition);
+	m_tSafeSpawnPosition.set(m_tSpawnPosition);
 	INIT_SQUAD_AND_LEADER;
 
 	tStateStack.push(eCurrentState = aiRatFreeHunting);
