@@ -128,7 +128,7 @@ void CPlanner::update				(u32 time_delta)
 	// printing solution
 	if (m_use_log) {
 		if (m_solution_changed) {
-			Msg						("%6d : Solution for object %s",Level().timeServer(),object_name());
+			Msg						("%6d : Solution for object %s [%d vertices searched]",Level().timeServer(),object_name(),ai().graph_engine().solver_algorithm().data_storage().get_visited_node_count());
 			for (int i=0; i<(int)solution().size(); ++i)
 				Msg					("%s",action2string(solution()[i]));
 		}
