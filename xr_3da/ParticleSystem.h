@@ -136,8 +136,6 @@ struct ENGINE_API SDef: public SParams
 	DWORD  				m_dwCreationTime;
     SEmitterDef			m_DefaultEmitter;
 
-	Shader*				m_CachedShader;
-
     void 				Reset()
 	{
 	    m_Reserved[0]	= 0;

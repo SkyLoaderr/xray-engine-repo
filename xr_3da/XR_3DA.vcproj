@@ -1927,6 +1927,8 @@
 				<File
 					RelativePath=".\PSObject.h"/>
 				<File
+					RelativePath="PSRuntime.h"/>
+				<File
 					RelativePath=".\PSystem.cpp">
 					<FileConfiguration
 						Name="Debug|Win32"

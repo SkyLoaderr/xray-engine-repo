@@ -4,10 +4,10 @@
 #ifndef _INCDEF_PSLibrary_H_
 #define _INCDEF_PSLibrary_H_
 
-#include "ParticleSystem.h"
-DEFINE_VECTOR			(PS::SDef, PSList, PSIt);
+#include				"PSRuntime.h"
+DEFINE_VECTOR			(PS::SDef_RT, PSList, PSIt);
 
-#define PSLIB_FILENAME "particles.xr"
+#define PSLIB_FILENAME	"particles.xr"
 
 class CPSLibrary
 {
