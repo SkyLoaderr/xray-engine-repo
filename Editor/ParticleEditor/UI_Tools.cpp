@@ -39,8 +39,8 @@ CParticleTools::~CParticleTools()
 
 bool CParticleTools::OnCreate(){
 	// shader test locking
-	AnsiString fn = "particles.xr"; FS.m_GameRoot.Update(fn);
-	if (FS.CheckLocking(0,fn.c_str(),false,true))
+	AnsiString fn = "particles.xr"; Engine.FS.m_GameRoot.Update(fn);
+	if (Engine.FS.CheckLocking(0,fn.c_str(),false,true))
     	return false;
 
     Device.seqDevCreate.Add(this);
@@ -58,7 +58,7 @@ bool CParticleTools::OnCreate(){
     ChangeAction(eaSelect);
 
 	// lock
-    FS.LockFile(0,fn.c_str());
+    Engine.FS.LockFile(0,fn.c_str());
     return true;
 }
 
@@ -66,7 +66,7 @@ void CParticleTools::OnDestroy(){
 	VERIFY(m_bReady);
     m_bReady			= false;
 	// unlock
-    FS.UnlockFile(&FS.m_GameRoot,"particles.xr");
+    Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"particles.xr");
 
 	Lib.RemoveEditObject(m_EditObject);
 	_DELETE(m_TestObject);
@@ -200,9 +200,9 @@ void CParticleTools::Save()
 	VERIFY(m_bReady);
     ApplyChanges();
 	m_bModified = false;
-    FS.UnlockFile(&FS.m_GameRoot,"particles.xr",false);
+    Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"particles.xr",false);
 	PSLib.Save();
-    FS.LockFile(&FS.m_GameRoot,"particles.xr",false);
+    Engine.FS.LockFile(&Engine.FS.m_GameRoot,"particles.xr",false);
 }
 
 void CParticleTools::Reload()

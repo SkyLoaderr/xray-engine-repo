@@ -22,7 +22,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
-		FS.OnCreate			();
+		Engine.Initialize	();
 		InitMath			();
         // make interface
 	    fraBottomBar		= new TfraBottomBar(0);
@@ -49,6 +49,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		PSLib.OnDestroy	();
 		Lib.OnDestroy	();
         UI.OnDestroy	();
+		Engine.Destroy	();
 		//----------------
         _DELETE(fraLeftBar);
 	    _DELETE(fraTopBar);
