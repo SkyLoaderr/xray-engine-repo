@@ -73,7 +73,7 @@ float rad(float a) { return a*3.14159265358f / 180.f; }
 const float p_c		= 32.7f;
 const float p_r		= 25.4f;
 const float p_r2	= 30.4f;
-const float p_a		= 9.5f;
+const float p_a		= .1f;
 
 void edges(occTri& T)
 {
@@ -89,7 +89,7 @@ int __cdecl main	(int argc, char* argv[])
 	occRasterizer	occ;
 
 	occ.clear		();
-	for (int test=0; test<=36; test++)
+	for (int test=0; test<=3600; test++)
 	{
 		float		a0	= rad(test*p_a);
 		float		a1	= rad(test*p_a + 60.f);
@@ -148,12 +148,12 @@ int __cdecl main	(int argc, char* argv[])
 				}
 		}
 	}
-	edges(T1);
-	edges(T2);
+//	edges(T1);
+//	edges(T2);
 	
 	// save
 	char name[256];
-	sprintf(name,"c:\\occ%2d.tga",test);
+	sprintf(name,"c:\\occ%2d.tga",0);
 	TGAdesc	desc;
 	desc.format		= IMG_32B;
 	desc.scanlenght	= size*4;

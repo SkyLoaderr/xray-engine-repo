@@ -82,6 +82,10 @@ LINK32=link.exe
 # Name "Occlusion - Win32 Debug"
 # Begin Source File
 
+SOURCE=.\FTimer.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Occlusion.cpp
 
 !IF  "$(CFG)" == "Occlusion - Win32 Release"
