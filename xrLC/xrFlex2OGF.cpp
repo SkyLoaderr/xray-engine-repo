@@ -23,6 +23,7 @@ void CBuild::Flex2OGF()
 		OGF*		pOGF	= new OGF;
 		Face*		F		= *(it->begin());				// first face
 		b_material*	M		= &(materials[F->dwMaterial]);	// and it's material
+		R_ASSERT	(F && M);
 		
 		try {
 			// Common data
