@@ -8,6 +8,7 @@
 #include "..\xr_object.h"
 #include "..\x_ray.h"
 #include "..\GameFont.h"
+#include "..\SkeletonCustom.h"
 
 // #include "xr_effsun.h"
 
@@ -15,7 +16,7 @@ const float W_TTL			= 30.f;
 const float W_DIST_FADE		= 15.f;
 const float	W_DIST_FADE_SQR	= W_DIST_FADE*W_DIST_FADE;
 const float I_DIST_FADE_SQR	= 1.f/W_DIST_FADE_SQR;
-const int	MAX_TRIS		= 512;
+const int	MAX_TRIS		= 1024;
 
 struct SWMSlotFindPredicate {
 	ref_shader	shader;
@@ -28,7 +29,7 @@ struct SWMSlotFindPredicate {
 
 CWallmarksEngine::wm_slot* CWallmarksEngine::FindSlot	(const ref_shader shader)
 {
-	WMSVecIt it					= std::find_if(marks.begin(),marks.end(),SWMSlotFindPredicate(shader));
+	WMSlotVecIt it				= std::find_if(marks.begin(),marks.end(),SWMSlotFindPredicate(shader));
 	return						(it!=marks.end())?*it:0;
 }
 CWallmarksEngine::wm_slot* CWallmarksEngine::AppendSlot	(ref_shader shader)
@@ -43,10 +44,11 @@ CWallmarksEngine::wm_slot* CWallmarksEngine::AppendSlot	(ref_shader shader)
 
 CWallmarksEngine::CWallmarksEngine	()
 {
-	pool.reserve	(256);
-	marks.reserve	(256);
+	static_pool.reserve		(256);
+	skeleton_pool.reserve	(256);
+	marks.reserve			(256);
 
-	hGeom.create	(FVF::F_LIT, RCache.Vertex.Buffer(), NULL);
+	hGeom.create			(FVF::F_LIT, RCache.Vertex.Buffer(), NULL);
 }
 
 CWallmarksEngine::~CWallmarksEngine	()
@@ -58,38 +60,43 @@ CWallmarksEngine::~CWallmarksEngine	()
 void CWallmarksEngine::clear()
 {
 	{
-		for (WMSVecIt p_it=marks.begin(); p_it!=marks.end(); p_it++){
-			for (WMVecIt m_it=(*p_it)->items.begin(); m_it!=(*p_it)->items.end(); m_it++)
-				wm_destroy	(*m_it);
-			xr_delete(*p_it);
+		for (WMSlotVecIt p_it=marks.begin(); p_it!=marks.end(); p_it++){
+			for (StaticWMVecIt m_it=(*p_it)->static_items.begin(); m_it!=(*p_it)->static_items.end(); m_it++)
+				static_wm_destroy	(*m_it);
+			xr_delete		(*p_it);
 		}
 		marks.clear	();
 	}
 	{
-		for (u32 it=0; it<pool.size(); it++)
-			xr_delete	(pool[it]);
-		pool.clear	();
+		for (u32 it=0; it<static_pool.size(); it++)
+			xr_delete		(static_pool[it]);
+		static_pool.clear	();
+	}
+	{
+		for (u32 it=0; it<skeleton_pool.size(); it++)
+			xr_delete		(skeleton_pool[it]);
+		skeleton_pool.clear	();
 	}
 }
 
 // allocate
-CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		()
+CWallmarksEngine::static_wallmark*	CWallmarksEngine::static_wm_allocate		()
 {
-	wallmark*			W = 0;
-	if (pool.empty())	W = xr_new<wallmark> ();
-	else				{ W = pool.back(); pool.pop_back(); }
+	static_wallmark*	W = 0;
+	if (static_pool.empty())  W = xr_new<static_wallmark> ();
+	else					{ W = static_pool.back(); static_pool.pop_back(); }
 
 	W->ttl				= W_TTL;
 	W->verts.clear		();
 	return W;
 }
 // destroy
-void		CWallmarksEngine::wm_destroy		(wallmark*	W	)
+void		CWallmarksEngine::static_wm_destroy		(CWallmarksEngine::static_wallmark*	W	)
 {
-	pool.push_back		(W);
+	static_pool.push_back	(W);
 }
 // render
-void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
+void		CWallmarksEngine::static_wm_render		(CWallmarksEngine::static_wallmark*	W, FVF::LIT* &V)
 {
 	float		a		= 1-(W->ttl/W_TTL);
 	int			aC		= iFloor	( a * 255.f);	clamp	(aC,0,255);
@@ -105,8 +112,28 @@ void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
 	}
 }
 
+// allocate
+CSkeletonWallmark*	CWallmarksEngine::skeleton_wm_allocate		()
+{
+	CSkeletonWallmark*			W = 0;
+	if (skeleton_pool.empty())	W = xr_new<CSkeletonWallmark> ();
+	else						{ W = skeleton_pool.back(); skeleton_pool.pop_back(); }
+	W->Clear					();
+	return W;
+}
+// destroy
+void		CWallmarksEngine::skeleton_wm_destroy		(CSkeletonWallmark*	W	)
+{
+	skeleton_pool.push_back		(W);
+}
+// render
+void		CWallmarksEngine::skeleton_wm_render		(CSkeletonWallmark*	W, FVF::LIT* &dst)
+{
+	Memory.mem_copy				(dst,&*W->r_verts.begin	(),W->r_verts.size()*sizeof(FVF::LIT));
+	dst							+= W->r_verts.size();
+}
 //--------------------------------------------------------------------------------
-void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
+void CWallmarksEngine::RecurseTri(u32 t, Fmatrix &mView, CWallmarksEngine::static_wallmark	&W)
 {
 	CDB::TRI*	T			= sml_collector.getT()+t;
 	if (T->dummy)			return;
@@ -217,11 +244,11 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 	sml_clipper.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
 
 	// create wallmark
-	wallmark* W			= wm_allocate();
+	static_wallmark* W	= static_wm_allocate();
 	RecurseTri			(0,mView,*W);
 
 	// calc sphere
-	if (W->verts.size()<3) { wm_destroy(W); return; }
+	if (W->verts.size()<3) { static_wm_destroy(W); return; }
 	else {
 		Fbox bb;	bb.invalidate();
 
@@ -232,17 +259,16 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 	}
 
 	// search if similar wallmark exists
-	wm_slot* slot	= FindSlot	(hShader);
+	wm_slot* slot			= FindSlot	(hShader);
 	if (slot){
-		WMVecIt		it	= slot->items.begin	();
-		WMVecIt		end	= slot->items.end	();
-		for (; it!=end; it++)
-		{
-			wallmark* wm	= *it;
+		StaticWMVecIt it	= slot->static_items.begin	();
+		StaticWMVecIt end	= slot->static_items.end	();
+		for (; it!=end; it++){
+			static_wallmark* wm	= *it;
 			if (wm->bounds.P.similar(W->bounds.P,0.02f)){ // replace
-				wm_destroy	(wm);
-				*it			= W;
-				return		;
+				static_wm_destroy	(wm);
+				*it					= W;
+				return;
 			}
 		}
 	}else{
@@ -250,15 +276,40 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 	}
 
 	// no similar - register _new_
-	slot->items.push_back(W);
+	slot->static_items.push_back(W);
 }
 
-void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
+void CWallmarksEngine::AddStaticWallmark	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
 {
 	// Physics may add wallmarks in parallel with rendering
 	lock.Enter				();
 	AddWallmark_internal	(pTri,pVerts,contact_point,hShader,sz);
 	lock.Leave				();
+}
+
+CSkeletonWallmark* CWallmarksEngine::AllocateSkeletonWallmark()
+{
+	lock.Enter				();
+	CSkeletonWallmark* wm	= skeleton_wm_allocate();
+	lock.Leave				();
+	return wm;
+}
+
+void CWallmarksEngine::AddSkeletonWallmark(CSkeletonWallmark* wm)
+{
+	lock.Enter				();
+	// search if similar wallmark exists
+	wm_slot* slot			= FindSlot	(wm->shader);
+	if (0==slot) slot		= AppendSlot(wm->shader);
+	// no similar - register _new_
+	slot->skeleton_items.push_back(wm);
+	lock.Leave				();
+}
+
+void CWallmarksEngine::RemoveSkeletonWallmark(CSkeletonWallmark*& wm)
+{
+	skeleton_pool.push_back	(wm);
+	wm						= 0;
 }
 
 extern float r_ssaDISCARD;
@@ -275,17 +326,22 @@ void CWallmarksEngine::Render()
 	RCache.set_xform_project	(Device.mProject);
 
 	Device.Statistic.RenderDUMP_WM.Begin	();
+	Device.Statistic.RenderDUMP_WMS_Count	= 0;
+	Device.Statistic.RenderDUMP_WMD_Count	= 0;
+	Device.Statistic.RenderDUMP_WMT_Count	= 0;
 
 	float	ssaCLIP				= r_ssaDISCARD/4;
 
-	for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+	for (WMSlotVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
 		u32			w_offset= 0;
 		FVF::LIT*	w_verts = (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
 		FVF::LIT*	w_start = w_verts;
 		wm_slot* slot		= *slot_it;	
-		for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); ){
-			wallmark* W		= *w_it;
+		// static wallmarks
+		for (StaticWMVecIt w_it=slot->static_items.begin(); w_it!=slot->static_items.end(); ){
+			static_wallmark* W		= *w_it;
 			if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)){
+				Device.Statistic.RenderDUMP_WMS_Count++;
 				float dst	= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
 				float ssa	= W->bounds.R * W->bounds.R / dst;
 				if (ssa>=ssaCLIP)	{
@@ -301,22 +357,49 @@ void CWallmarksEngine::Render()
 							// Restart (re-lock/re-calc)
 							w_verts		= (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
 							w_start		= w_verts;
+
+							Device.Statistic.RenderDUMP_WMT_Count += w_count/3;
 						}
 					}
-
-					wm_render	(W,w_verts);
+					static_wm_render	(W,w_verts);
 				}
 			}
 			W->ttl	-= Device.fTimeDelta;
 			if (W->ttl<=EPS){	
-				wm_destroy		(W);
-				*w_it			= slot->items.back();
-				slot->items.pop_back();
+				static_wm_destroy	(W);
+				*w_it				= slot->static_items.back();
+				slot->static_items.pop_back();
 			}else{
 				w_it++;
 			}
 		}
+		// dynamic wallmarks
+		for (xr_vector<CSkeletonWallmark*>::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
+			CSkeletonWallmark* W	= *w_it;
+			float dst	= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
+			float ssa	= W->bounds.R * W->bounds.R / dst;
+			if (ssa>=ssaCLIP){
+				Device.Statistic.RenderDUMP_WMD_Count++;
+				u32 w_count		= u32(w_verts-w_start);
+				if ((w_count+W->r_verts.size())>=(MAX_TRIS*3)){
+					if (w_count){
+						// Flush stream
+						RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
+						RCache.set_Shader		(slot->shader);
+						RCache.set_Geometry		(hGeom);
+						RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
 
+						// Restart (re-lock/re-calc)
+						w_verts		= (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
+						w_start		= w_verts;
+
+						Device.Statistic.RenderDUMP_WMT_Count += w_count/3;
+					}
+				}
+				skeleton_wm_render	(W,w_verts);
+			}
+		}
+		slot->skeleton_items.clear();
 		// Flush stream
 		u32 w_count				= u32(w_verts-w_start);
 		RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
@@ -325,6 +408,7 @@ void CWallmarksEngine::Render()
 			RCache.set_Shader	(slot->shader);
 			RCache.set_Geometry	(hGeom);
 			RCache.Render		(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+			Device.Statistic.RenderDUMP_WMT_Count += w_count/3;
 		}
 	}
 
@@ -353,10 +437,10 @@ void CWallmarksEngine::load_LevelWallmarks(LPCSTR fn)
 					F->r_stringZ		(tex_name);
 					ref_shader	sh;		sh.create		("effects\\wallmark",*tex_name);
 					wm_slot* slot		= AppendSlot	(sh);
-					slot->items.resize	(item_cnt);
-					for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
-						*w_it			= wm_allocate	();
-						wallmark* W		= *w_it;
+					slot->static_items.resize			(item_cnt);
+					for (StaticWMVecIt w_it=slot->static_items.begin(); w_it!=slot->static_items.end(); w_it++){
+						*w_it			= static_wm_allocate	();
+						static_wallmark* W = *w_it;
 						W->ttl			= flt_max;
 						F->r			(&W->bounds,sizeof(W->bounds));
 						W->verts.resize	(F->r_u32());
