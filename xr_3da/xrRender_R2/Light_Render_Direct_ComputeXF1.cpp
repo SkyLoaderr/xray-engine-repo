@@ -55,37 +55,37 @@ void	CLight_Render_Direct::compute_xfd_1	(u32 m_phase)
 	L_right.crossproduct	(L_up,L_dir);								L_right.normalize	();
 	L_up.crossproduct		(L_dir,L_right);							L_up.normalize		();
 	L_pos.set				(0,0,0);
-	L_view.build_camera_dir	(L_pos,L_dir,L_up);
+	D_view.build_camera_dir	(L_pos,L_dir,L_up);
 
 	//
 	Fbox	bb;
 	Fvector bbc,bbd,T;
 
 	// L-view corner points and box
-	bb.invalidate();		for (int i=0; i<5; i++)	{ L_view.transform_tiny	(T,_F[i]); bb.modify (T); }
+	bb.invalidate();		for (int i=0; i<5; i++)	{ D_view.transform_tiny	(T,_F[i]); bb.modify (T); }
 	bb.get_CD				(bbc,bbd);
 
 	// Back project center
 	Fmatrix inv;
-	inv.invert				(L_view);
+	inv.invert				(D_view);
 	inv.transform_tiny		(L_pos,bbc);
 
 	// L-view matrix
 	L_pos.mad				(L_dir, -DSM_d_range);
-	L_view.build_camera_dir	(L_pos,L_dir,L_up);
+	D_view.build_camera_dir	(L_pos,L_dir,L_up);
 
 	// L-view corner points and box
-	bb.invalidate();		for (int i=0; i<5; i++)	{ L_view.transform_tiny	(T,_F[i]); bb.modify (T); }
+	bb.invalidate();		for (int i=0; i<5; i++)	{ D_view.transform_tiny	(T,_F[i]); bb.modify (T); }
 	bb.get_CD				(bbc,bbd);
 
 	// L_project
 	//float				d	= 2*p_DIST/_cos(p_FOV/2);	
 	float				dx	= 2*bbd.x;
 	float				dy	= 2*bbd.y;
-	L_project.build_projection_ortho(dx,dy,1.f,2*DSM_d_range);
+	D_project.build_projection_ortho(dx,dy,1.f,2*DSM_d_range);
 
 	// 
-	L_combine.mul			(L_project,L_view);
+	D_combine.mul			(D_project,D_view);
 }
 
 void CLight_Render_Direct::compute_xfd_2(u32 m_phase)

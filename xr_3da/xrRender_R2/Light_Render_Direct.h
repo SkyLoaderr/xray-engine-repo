@@ -3,9 +3,15 @@
 class CLight_Render_Direct
 {
 public:
-	Fmatrix							L_view;
-	Fmatrix							L_project;
-	Fmatrix							L_combine;
+	Fmatrix							D_view;
+	Fmatrix							D_project;
+	Fmatrix							D_combine;
+	Fmatrix							P_view;
+	Fmatrix							P_project;
+	Fmatrix							P_combine;
+	Fmatrix							S_view;
+	Fmatrix							S_project;
+	Fmatrix							S_combine;
 public:
 	void							Create			();
 	void							Destroy			();

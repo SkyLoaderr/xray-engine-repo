@@ -180,7 +180,7 @@ void CRender::Render		()
 	// Target.accum_direct				();
 
 	// Point/spot lighting (unshadowed)
-	if (1)
+	if (Lights.v_selected_unshadowed.size())
 	{
 		Target.phase_accumulator		();
 		HOM.Disable						();
@@ -194,10 +194,10 @@ void CRender::Render		()
 	}
 
 	// Point/spot lighting (shadowed)
-	if (1)
+	if (Lights.v_selected_shadowed.size	())
 	{
 		HOM.Disable								();
-		xr_vector<light*>&	Lvec	= Lights.v_selected_shadowed;
+		xr_vector<light*>&	Lvec				= Lights.v_selected_shadowed;
 		for	(u32 pid=0; pid<Lvec.size(); pid++)
 		{
 			light*	L	= Lvec[pid];
@@ -212,7 +212,7 @@ void CRender::Render		()
 
 					// calculate
 					LR.compute_xfp_1						(pls_phase, L);
-					r_dsgraph_render_subspace				(L->spatial.sector, LR.L_combine, L->position, TRUE);
+					r_dsgraph_render_subspace				(L->spatial.sector, LR.P_combine, L->position, TRUE);
 					LR.compute_xfp_2						(pls_phase, L);
 
 					// rendering
@@ -220,8 +220,8 @@ void CRender::Render		()
 					{
 						Target.phase_smap_point				(pls_phase);
 						RCache.set_xform_world				(Fidentity);			// ???
-						RCache.set_xform_view				(LR.L_view);
-						RCache.set_xform_project			(LR.L_project);
+						RCache.set_xform_view				(LR.P_view);
+						RCache.set_xform_project			(LR.P_project);
 						r_dsgraph_render_graph				(0);
 					}
 				}
@@ -236,7 +236,7 @@ void CRender::Render		()
 
 				// calculate
 				LR.compute_xfs_1						(0, L);
-				r_dsgraph_render_subspace				(L->spatial.sector, LR.L_combine, L->position, TRUE);
+				r_dsgraph_render_subspace				(L->spatial.sector, LR.S_combine, L->position, TRUE);
 				LR.compute_xfs_2						(0, L);
 
 				// rendering
@@ -244,8 +244,8 @@ void CRender::Render		()
 				{
 					Target.phase_smap_spot				();
 					RCache.set_xform_world				(Fidentity);			// ???
-					RCache.set_xform_view				(LR.L_view);
-					RCache.set_xform_project			(LR.L_project);
+					RCache.set_xform_view				(LR.S_view);
+					RCache.set_xform_project			(LR.S_project);
 					r_dsgraph_render_graph				(0);
 				}
 	

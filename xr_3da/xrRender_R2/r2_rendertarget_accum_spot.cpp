@@ -109,8 +109,8 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 
 		// compute xforms
 		Fmatrix			xf_world;		xf_world.invert	(Device.mView);
-		Fmatrix			xf_view			= RImplementation.LR.L_view;
-		Fmatrix			xf_project;		xf_project.mul	(m_TexelAdjust,RImplementation.LR.L_project);
+		Fmatrix			xf_view			= RImplementation.LR.S_view;
+		Fmatrix			xf_project;		xf_project.mul	(m_TexelAdjust,RImplementation.LR.S_project);
 		m_Shadow.mul					(xf_view, xf_world);
 		m_Shadow.mulA					(xf_project	);
 	}
