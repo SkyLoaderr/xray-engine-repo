@@ -173,18 +173,18 @@ void CRender::add_leafs_Dynamic(CVisual *pVisual)
 		{
 			// Add all children, doesn't perform any tests
 			FHierrarhyVisual* pV = (FHierrarhyVisual*)pVisual;
-			I = pV->chields.begin	();
-			E = pV->chields.end		();
+			I = pV->children.begin	();
+			E = pV->children.end		();
 			for (; I!=E; I++)	add_leafs_Dynamic	(*I);
 		}
 		return;
 	case MT_SKELETON:
 		{
-			// Add all chields, doesn't perform any tests
+			// Add all children, doesn't perform any tests
 			CKinematics * pV = (CKinematics*)pVisual;
 			pV->Calculate			();
-			I = pV->chields.begin	();
-			E = pV->chields.end		();
+			I = pV->children.begin	();
+			E = pV->children.end		();
 			for (; I!=E; I++)	add_leafs_Dynamic	(*I);
 		}
 		return;
@@ -210,20 +210,20 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
 		{
-			// Add all chields, doesn't perform any tests
+			// Add all children, doesn't perform any tests
 			FHierrarhyVisual* pV = (FHierrarhyVisual*)pVisual;
-			I = pV->chields.begin	();
-			E = pV->chields.end		();
+			I = pV->children.begin	();
+			E = pV->children.end	();
 			for (; I!=E; I++)	add_leafs_Static (*I);
 		}
 		return;
 	case MT_SKELETON:
 		{
-			// Add all chields, doesn't perform any tests
+			// Add all children, doesn't perform any tests
 			CKinematics * pV = (CKinematics*)pVisual;
 			pV->Calculate			();
-			I = pV->chields.begin	();
-			E = pV->chields.end		();
+			I = pV->children.begin	();
+			E = pV->children.end	();
 			for (; I!=E; I++)	add_leafs_Static	(*I);
 		}
 		return;
@@ -237,8 +237,8 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_leafs_Static	(pV->chields.back());
-			else										add_leafs_Static	(pV->chields.front());
+			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_leafs_Static	(pV->children.back());
+			else										add_leafs_Static	(pV->children.front());
 		}
 		break;
 	default:
@@ -270,10 +270,10 @@ BOOL CRender::add_Dynamic(CVisual *pVisual, DWORD planes)
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
 		{
-			// Add all chields
+			// Add all children
 			FHierrarhyVisual* pV = (FHierrarhyVisual*)pVisual;
-			I = pV->chields.begin	();
-			E = pV->chields.end		();
+			I = pV->children.begin	();
+			E = pV->children.end		();
 			if (fcvPartial==VIS) {
 				for (; I!=E; I++)	add_Dynamic			(*I,planes);
 			} else {
@@ -283,11 +283,11 @@ BOOL CRender::add_Dynamic(CVisual *pVisual, DWORD planes)
 		break;
 	case MT_SKELETON:
 		{
-			// Add all chields, doesn't perform any tests
+			// Add all children, doesn't perform any tests
 			CKinematics * pV		= (CKinematics*)pVisual;
 			pV->Calculate			();
-			I = pV->chields.begin	();
-			E = pV->chields.end		();
+			I = pV->children.begin	();
+			E = pV->children.end		();
 			if (fcvPartial==VIS) {
 				for (; I!=E; I++)	add_Dynamic			(*I,planes);
 			} else {
@@ -319,10 +319,10 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
 		{
-			// Add all chields
+			// Add all children
 			FHierrarhyVisual* pV = (FHierrarhyVisual*)pVisual;
-			I = pV->chields.begin	();
-			E = pV->chields.end		();
+			I = pV->children.begin	();
+			E = pV->children.end		();
 			if (fcvPartial==VIS) {
 				for (; I!=E; I++)	add_Static			(*I,planes);
 			} else {
@@ -332,11 +332,11 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 		break;
 	case MT_SKELETON:
 		{
-			// Add all chields, doesn't perform any tests
+			// Add all children, doesn't perform any tests
 			CKinematics * pV	= (CKinematics*)pVisual;
 			pV->Calculate			();
-			I = pV->chields.begin	();
-			E = pV->chields.end		();
+			I = pV->children.begin	();
+			E = pV->children.end	();
 			if (fcvPartial==VIS) {
 				for (; I!=E; I++)	add_Static			(*I,planes);
 			} else {
@@ -348,8 +348,8 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_Static	(pV->chields.back(),	planes);
-			else										add_Static	(pV->chields.front(),	planes);
+			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_Static	(pV->children.back(),	planes);
+			else										add_Static	(pV->children.front(),	planes);
 		}
 		break;
 	case MT_CACHED:

@@ -225,8 +225,8 @@ void CEnvironment::RenderFirst()
 			{
 				FHierrarhyVisual* pV	= (FHierrarhyVisual*)pSkydome;
 				vector<CVisual*>::iterator I,E;
-				I = pV->chields.begin	();
-				E = pV->chields.end		();
+				I = pV->children.begin	();
+				E = pV->children.end	();
 				for (; I!=E; I++)		
 				{
 					CVisual* V				= *I;

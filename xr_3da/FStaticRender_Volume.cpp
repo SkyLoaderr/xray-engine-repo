@@ -19,10 +19,10 @@ void CRender::RenderBox			(CSector* S, Fbox& BB, int sh)
 		switch (V->Type) {
 		case MT_HIERRARHY:
 			{
-				// Add all chields
+				// Add all children
 				FHierrarhyVisual* pV = (FHierrarhyVisual*)V;
-				I = pV->chields.begin	();
-				E = pV->chields.end		();
+				I = pV->children.begin	();
+				E = pV->children.end		();
 				for (; I!=E; I++)		{
 					CVisual* T			= *I;
 					if (BB.intersect(T->bv_BBox))	lstVisuals.push_back(T);
@@ -31,11 +31,11 @@ void CRender::RenderBox			(CSector* S, Fbox& BB, int sh)
 			break;
 		case MT_SKELETON:
 			{
-				// Add all chields
+				// Add all children
 				CKinematics * pV = (CKinematics*)V;
 				pV->Calculate			();
-				I = pV->chields.begin	();
-				E = pV->chields.end		();
+				I = pV->children.begin	();
+				E = pV->children.end		();
 				for (; I!=E; I++)		{
 					CVisual* T			= *I;
 					if (BB.intersect(T->bv_BBox))	lstVisuals.push_back(T);

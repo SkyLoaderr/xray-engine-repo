@@ -12,7 +12,7 @@
 class ENGINE_API FHierrarhyVisual : public CVisual
 {
 public:
-	vector<CVisual*>		chields;
+	vector<CVisual*>		children;
 	BOOL					bDontDelete;
 
 	virtual void	Load	(const char* N, CStream *data, DWORD dwFlags);

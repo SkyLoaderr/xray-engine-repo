@@ -176,6 +176,30 @@ void CLevel::ClientReceive()
 		case M_UPDATE:
 			Objects.net_Import	(P);
 			break;
+		case M_TAKE_OWNERSHIP:		// DUAL: Client request for ownership of an item
+			{
+				u16				ID_child;
+				P->r_u16		(ID);
+				P->r_u16		(ID_child);
+				CObject*	O	= Objects.net_Find		(ID);
+				CObject*	C	= Objects.net_Find		(ID_child);
+				if (O && C)		O->net_OwnershipTake	(C);
+			}
+			break;
+		case M_TAKE_REJECTION:		// DUAL: Client request ownership rejection
+			{
+				u16				ID_child;
+				P->r_u16		(ID);
+				P->r_u16		(ID_child);
+				CObject*	O	= Objects.net_Find		(ID);
+				CObject*	C	= Objects.net_Find		(ID_child);
+				if (O && C)		O->net_OwnershipReject	(C);
+			}
+			break;
+		case M_MIGRATE_DEACTIVATE:	// TO:   Changing server, just deactivate
+			break;
+		case M_MIGRATE_ACTIVATE:	// TO:   Changing server, full state
+			break;
 		case M_HIT:
 			{
 				P->r_u16		(ID);

@@ -133,7 +133,7 @@ public:
 	typedef svector<int,128>	BoneDebug;
 public:
 	int				SelfID;
-	vecBones		Chields;	// bones which are slaves to this
+	vecBones		children;	// bones which are slaves to this
 	vector<CMotion>	Motions;	// all known motions
 	Fobb			obb;
 
@@ -147,11 +147,11 @@ public:
 	void			Calculate		(CKinematics* K, Fmatrix *Parent);
 	void			DebugQuery		(BoneDebug& L)
 	{
-		for (DWORD i=0; i<Chields.size(); i++)
+		for (DWORD i=0; i<children.size(); i++)
 		{
 			L.push_back(SelfID);
-			L.push_back(Chields[i]->SelfID);
-			Chields[i]->DebugQuery(L);
+			L.push_back(children[i]->SelfID);
+			children[i]->DebugQuery(L);
 		}
 	}
 

@@ -58,7 +58,7 @@ protected:
 	CLightTrack*						pLights;
 
 	// Information and status
-	void								StatusBegin		();
+	void								StatusBegin			();
 
 	// Network
 	DWORD								net_ID;
@@ -73,86 +73,88 @@ protected:
 	CObject*							Parent;
 public:
 	// Network
-	IC BOOL								Local			()					{ return net_Local;		}
-	IC BOOL								Remote			()					{ return !net_Local;	}
-	IC DWORD							ID				()					{ return net_ID;		}
-	virtual BOOL						Ready			()					{ return net_Ready;		}
-	virtual float						shedule_Scale	()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
+	IC BOOL								Local				()					{ return net_Local;		}
+	IC BOOL								Remote				()					{ return !net_Local;	}
+	IC DWORD							ID					()					{ return net_ID;		}
+	virtual BOOL						Ready				()					{ return net_Ready;		}
+	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 
 	// Parentness
-	IC CObject*							H_Parent		()					{ return Parent;		}
-	IC CObject*							H_Root			()					{ return Parent?Parent->H_Root():this;	}
+	IC CObject*							H_Parent			()					{ return Parent;		}
+	IC CObject*							H_Root				()					{ return Parent?Parent->H_Root():this;	}
 
 	// Geometry xform
-	void								UpdateTransform	(void);
-	void								svCenter		(Fvector& C) const;
-	void								clCenter		(Fvector& C) const;
-	IC const Fmatrix&					svXFORM			()			 const	{ return svTransform;	}
-	IC const Fmatrix&					clXFORM			()			 const	{ return clTransform;	}
+	void								UpdateTransform		(void);
+	void								svCenter			(Fvector& C) const;
+	void								clCenter			(Fvector& C) const;
+	IC const Fmatrix&					svXFORM				()			 const	{ return svTransform;	}
+	IC const Fmatrix&					clXFORM				()			 const	{ return clTransform;	}
 	
-	IC CSector*							Sector			()					{ return pSector;		}
-	IC CLightTrack*						Lights			()					{ return pLights;		}
-	virtual float						Ambient			()					{ return 0.f;		 	}
-	virtual BOOL						ShadowGenerate	()					{ return TRUE;			}
-	virtual BOOL						ShadowReceive	()					{ return TRUE;			}
+	IC CSector*							Sector				()					{ return pSector;		}
+	IC CLightTrack*						Lights				()					{ return pLights;		}
+	virtual float						Ambient				()					{ return 0.f;		 	}
+	virtual BOOL						ShadowGenerate		()					{ return TRUE;			}
+	virtual BOOL						ShadowReceive		()					{ return TRUE;			}
 	
-	virtual float						Radius			() const;
-	virtual Fvector&					Position		() 					{ return vPosition;		}
-	IC Fvector&							Direction		() 					{ return mRotate.k;		}
-	IC Fmatrix&							Rotation		()					{ return mRotate;		}
-	IC CVisual*							Visual			()					{ return pVisual;		}
-	IC CCFModel*						CFORM			() const			{ return cfModel;		}
+	virtual float						Radius				() const;
+	virtual Fvector&					Position			() 					{ return vPosition;		}
+	IC Fvector&							Direction			() 					{ return mRotate.k;		}
+	IC Fmatrix&							Rotation			()					{ return mRotate;		}
+	IC CVisual*							Visual				()					{ return pVisual;		}
+	IC CCFModel*						CFORM				() const			{ return cfModel;		}
 
 	// Name management
-	virtual LPCSTR						cName			()					{ return NameObject;	}
-	void								cName_set		(LPCSTR N);
-	IC LPCSTR							cNameSect		()					{ return NameSection;	}
-	void								cNameSect_set	(LPCSTR N);
+	virtual LPCSTR						cName				()					{ return NameObject;	}
+	void								cName_set			(LPCSTR N);
+	IC LPCSTR							cNameSect			()					{ return NameSection;	}
+	void								cNameSect_set		(LPCSTR N);
 	
 	// Visible property
-	IC void								setVisible		(BOOL _visible)		{ bVisible = _visible;	}
-	IC BOOL								getVisible		()					{ return bVisible;		}
+	IC void								setVisible			(BOOL _visible)		{ bVisible = _visible;	}
+	IC BOOL								getVisible			()					{ return bVisible;		}
 
 	// Enabled property
-	void								setEnabled		(BOOL _enabled);
-	IC BOOL								getEnabled		()					{ return bEnabled;		}
+	void								setEnabled			(BOOL _enabled);
+	IC BOOL								getEnabled			()					{ return bEnabled;		}
 
 	//---------------------------------------------------------------------
-										CObject			();
-	virtual								~CObject		();
+										CObject				();
+	virtual								~CObject			();
 
-	virtual void						Load			(LPCSTR section);
-	virtual void						Sector_Detect	();
-	virtual void						Sector_Move		(CSector* P);
+	virtual void						Load				(LPCSTR section);
+	virtual void						Sector_Detect		();
+	virtual void						Sector_Move			(CSector* P);
 	
 	// Update
-	virtual void						OnVisible		(void);								// returns lighting level
-	virtual void						Update			(DWORD dt);							// Called by sheduler
-	virtual void						UpdateCL		();									// Called each frame, so no need for dt
-	virtual BOOL						net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
-	virtual void						net_Destroy		();
-	virtual void						net_Export		(NET_Packet& P) {};					// export to server
-	virtual void						net_Import		(NET_Packet& P) {};					// import from server
-	virtual BOOL						net_Relevant	()				{ return FALSE; };	// relevant for export to server
+	virtual void						OnVisible			(void);								// returns lighting level
+	virtual void						Update				(DWORD dt);							// Called by sheduler
+	virtual void						UpdateCL			();									// Called each frame, so no need for dt
+	virtual BOOL						net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual void						net_Destroy			();
+	virtual void						net_Export			(NET_Packet& P) {};					// export to server
+	virtual void						net_Import			(NET_Packet& P) {};					// import from server
+	virtual BOOL						net_Relevant		()				{ return FALSE; };	// relevant for export to server
+	virtual void						net_OwnershipTake	(CObject* O)	{};
+	virtual void						net_OwnershipReject	(CObject* O)	{};
 
 	// Position stack
-	IC DWORD							ps_Size			()				{ return PositionStack.size(); }
-	virtual	SavedPosition				ps_Element		(DWORD ID);
+	IC DWORD							ps_Size				()				{ return PositionStack.size(); }
+	virtual	SavedPosition				ps_Element			(DWORD ID);
 
 	// Collision/Feedback/Interaction
-	virtual void						OnNear			(CObject* near)		{};
+	virtual void						OnNear				(CObject* near)		{};
 
 	// HUD
-	virtual void						OnHUDDraw		(CCustomHUD* hud)	{};
+	virtual void						OnHUDDraw			(CCustomHUD* hud)	{};
 
 	// Active/non active
-	virtual void						OnActivate		();
-	virtual void						OnDeactivate	();
+	virtual void						OnActivate			();
+	virtual void						OnDeactivate		();
 	
 	// Device dependance
-	virtual void						OnDeviceDestroy	();
-	virtual void						OnDeviceCreate	();
-	virtual void						OnEvent			(EVENT E, DWORD P1, DWORD P2) {};
+	virtual void						OnDeviceDestroy		();
+	virtual void						OnDeviceCreate		();
+	virtual void						OnEvent				(EVENT E, DWORD P1, DWORD P2) {};
 };
 
 #endif //__XR_OBJECT_H__

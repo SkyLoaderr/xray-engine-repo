@@ -73,7 +73,7 @@ enum OGF_Chuncks {
 	OGF_P_MAP		= 9,
 	OGF_VCONTAINER	= 10,
 	OGF_BSPHERE		= 11,
-	OGF_CHIELDS_L	= 12,	// Link to chield visuals
+	OGF_CHIELDS_L	= 12,	// Link to child visuals
 	OGF_BONE_NAMES	= 13,	// * For skeletons only
 	OGF_MOTIONS		= 14,	// * For skeletons only
 	OGF_DPATCH		= 15,	// --- DPatches only

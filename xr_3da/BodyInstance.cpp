@@ -86,7 +86,7 @@ CBlend*	CMotionDef::PlayFX(CKinematics* P)
 void	CBoneData::Motion_Start	(CKinematics* K, CBlend* handle) 
 {
 	K->LL_GetInstance(SelfID).blend_add		(handle);
-	for (vecBonesIt I=Chields.begin(); I!=Chields.end(); I++)
+	for (vecBonesIt I=children.begin(); I!=children.end(); I++)
 		(*I)->Motion_Start	(K,handle);
 }
 void	CBoneData::Motion_Start_IM	(CKinematics* K, CBlend* handle) 
@@ -96,7 +96,7 @@ void	CBoneData::Motion_Start_IM	(CKinematics* K, CBlend* handle)
 void	CBoneData::Motion_Stop	(CKinematics* K, CBlend* handle) 
 {
 	K->LL_GetInstance(SelfID).blend_remove	(handle);
-	for (vecBonesIt I=Chields.begin(); I!=Chields.end(); I++)
+	for (vecBonesIt I=children.begin(); I!=children.end(); I++)
 		(*I)->Motion_Stop	(K,handle);
 }
 void	CBoneData::Motion_Stop_IM	(CKinematics* K, CBlend* handle) 
@@ -507,9 +507,9 @@ void CKinematics::Copy(CVisual *P)
 	IBlend_Startup			();
 	IBoneInstances_Create	();
 
-	for (DWORD i=0; i<chields.size(); i++) 
+	for (DWORD i=0; i<children.size(); i++) 
 	{
-		CVisual*	V = chields[i];
+		CVisual*	V = children[i];
 		CSkeletonX*		B = NULL;
 		switch (V->Type)
 		{
@@ -582,7 +582,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 		} else {
 			int ID = LL_BoneID(P);
 			R_ASSERT(ID>=0);
-			(*bones)[ID]->Chields.push_back(B);
+			(*bones)[ID]->children.push_back(B);
 		}
 	}
 	R_ASSERT(-1 != iRoot);

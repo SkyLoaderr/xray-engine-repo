@@ -11,13 +11,13 @@ class ENGINE_API CSoundManager : public pureFrame
 private:	
 	BOOL					bPresent;
 	
-	// saves
+	// Saves
 	float					fMasterVolume;
 	float					fMusicVolume;
 	DWORD					dwFreq;
 	DWORD					dwModel;
 	
-	// Chields
+	// Children
 	CCDA*					pCDA;
 	CSoundRender*			pSoundRender;
 	CMusicStream*			pMusicStreams;

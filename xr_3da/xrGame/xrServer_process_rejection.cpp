@@ -21,4 +21,7 @@ void xrServer::Process_rejecting(NET_Packet& P, DPNID sender)
 	// Rebuild parentness
 	R_ASSERT			(0xffff != e_entity->ID_Parent);
 	e_entity->ID_Parent	= 0xffff;
+
+	// Signal to everyone (including sender)
+	SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE,TRUE));
 }

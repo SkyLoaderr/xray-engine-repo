@@ -103,8 +103,8 @@ void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 	INST.mTransform.mul_43	(*parent,RES);
 	if (INST.Callback)		INST.Callback(&INST);
 
-	// Calculate chields
-	for (vector<CBoneData*>::iterator C=Chields.begin(); C!=Chields.end(); C++)
+	// Calculate children
+	for (vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)
 		(*C)->Calculate(K,&INST.mTransform);
 }
 

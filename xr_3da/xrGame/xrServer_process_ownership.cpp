@@ -19,4 +19,7 @@ void xrServer::Process_ownership(NET_Packet& P, DPNID sender)
 	// Rebuild parentness
 	R_ASSERT			(0xffff == e_entity->ID_Parent);
 	e_entity->ID_Parent	= id_parent;
+
+	// Signal to everyone (including sender)
+	SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE,TRUE));
 }
