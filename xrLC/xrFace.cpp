@@ -9,7 +9,7 @@ const int	idx2edge	[3][3]  = {
 	{ 2,  1, -1}
 };
 
-DWORD			dwInvalidFaces	= 0;
+u32				dwInvalidFaces	= 0;
 
 extern CBuild*	pBuild;
 
@@ -70,7 +70,7 @@ Face::~Face()
 }
 Shader_xrLC&	Face::Shader()
 {
-	DWORD shader_id = pBuild->materials[dwMaterial].reserved;
+	u32 shader_id = pBuild->materials[dwMaterial].reserved;
 	return *(pBuild->shaders.Get(shader_id));
 }
 

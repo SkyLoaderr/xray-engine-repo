@@ -3,7 +3,7 @@
 #include "std_classes.h"
 #include "xrThread.h"
 
-extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
+extern void Jitter_Select	(UVpoint* &Jitter, u32& Jcount);
 
 void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip)
 {
@@ -64,7 +64,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 	UVpoint		JS;
 	JS.set		(.499f/dim.u, .499f/dim.v);
 	
-	DWORD		Jcount;
+	u32		Jcount;
 	UVpoint*	Jitter;
 	Jitter_Select(Jitter, Jcount);
 	
@@ -72,12 +72,12 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 	DB->ray_options	(0);
 	
 	Fcolor		C[9];
-	for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);
-	for (DWORD V=0; V<lm.dwHeight; V++)
+	for (u32 J=0; J<9; J++)	C[J].set(0,0,0,0);
+	for (u32 V=0; V<lm.dwHeight; V++)
 	{
-		for (DWORD U=0; U<lm.dwWidth; U++)
+		for (u32 U=0; U<lm.dwWidth; U++)
 		{
-			DWORD		Fcount	= 0;
+			u32		Fcount	= 0;
 			
 			try {
 				for (J=0; J<Jcount; J++) 
@@ -135,7 +135,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 
 	// *** Render Edges
 	float texel_size = (1.f/float(_max(lm.dwWidth,lm.dwHeight)))/8.f;
-	for (DWORD t=0; t<UVpolys.size(); t++)
+	for (u32 t=0; t<UVpolys.size(); t++)
 	{
 		UVtri&		T	= UVpolys[t];
 		Face*		F	= T.owner;
