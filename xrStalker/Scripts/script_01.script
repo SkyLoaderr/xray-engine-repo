@@ -109,8 +109,8 @@ function main()
 				cond	(cond.sound_end, 1000)
 			)
 			wait(2000)
+			break		
 		end
-		break		
 	end
 
 	event:clear_callback(true)
@@ -255,7 +255,7 @@ function main()
 
 	while true do
 		if actor.health <= 0 and stalker1.health > 0 then
-		wait(1000)			
+		wait(2000)			
 			sound_baran:play_at_pos		(stalker1,stalker1:position(),0);
 			break
 		end
