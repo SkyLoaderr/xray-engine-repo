@@ -324,6 +324,27 @@
     <string id="escape_trader_done_gift_2">
         <text>Сидорович, не трать время... ближе к делу.</text>
     </string>
+    <string id="escape_trader_done_gift_21">
+        <text>Вообщем суть в том, что из НИИ "Агропром" на блокпост передали то, что мне очень нужно. Белый пластиковый ящик. Нужно его спереть. Только осторожно. Военные когда обижаются, то вокруг такой шмон наводят, что даже крысы разбегаются. Я бы на твоем месте постарался это сделать ночью, и максимально тихо.</text>
+    </string>
+    <string id="escape_trader_done_gift_211">
+        <text>А что за ящик то такой?</text>
+    </string>
+    <string id="escape_trader_done_gift_2111">
+        <text>Да в самом ящике ничего особенного. Пластиковый белый саквояж. А вот то, что в самом ящике - мне очень нужно. Это документы - предварительный отчет экспедиции военных в НИИ "Агропром".</text>
+    </string>
+    <string id="escape_trader_done_gift_21111">
+        <text>Хорошо, я постараюсь.[Задание]</text>
+    </string>
+    <string id="escape_trader_done_gift_211111">
+        <text>Ну принесешь ящик, тогда и рассчитаемся.</text>
+    </string>
+    <string id="escape_trader_done_gift_21112">
+        <text>Нет, я не согласен.</text>
+    </string>
+    <string id="escape_trader_done_gift_211121">
+        <text>Ну как хочешь.</text>
+    </string>
     <string id="escape_trader_done_tutorial_artefact_0">
         <text>Ну что, держи мой "первый" артефакт.</text>
     </string>
