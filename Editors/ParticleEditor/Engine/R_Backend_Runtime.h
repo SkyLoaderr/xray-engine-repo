@@ -245,5 +245,9 @@ IC void	CBackend::set_ColorWriteEnable	(u32 _mask )
 {
 	if (colorwrite_mask		!= _mask)		{ colorwrite_mask=_mask;		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	_mask				));	}
 }
+IC void	CBackend::set_CullMode			(u32 _mode)
+{
+	if (cull_mode			!= _mode)		{ cull_mode = _mode;			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			_mode				)); }
+}
 
 #endif

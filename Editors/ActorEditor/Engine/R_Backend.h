@@ -15,6 +15,10 @@
 #include "r_backend_xform.h"
 #include "fvf.h"
 
+const	u32		CULL_CCW			= D3DCULL_CCW;
+const	u32		CULL_CW				= D3DCULL_CW;
+const	u32		CULL_NONE			= D3DCULL_NONE;
+
 class ENGINE_API CBackend
 {
 public:
@@ -51,6 +55,7 @@ private:
 	u32								stencil_pass;
 	u32								stencil_zfail;
 	u32								colorwrite_mask;
+	u32								cull_mode;
 
 	// Lists
 	STextureList*					T;
@@ -61,32 +66,7 @@ private:
 	CTexture*						textures	[8];
 	CMatrix*						matrices	[8];
 
-	void							Invalidate	()
-	{
-		pRT[0]						= NULL;
-		pRT[1]						= NULL;
-		pRT[2]						= NULL;
-		pRT[3]						= NULL;
-		pZB							= NULL;
-
-		decl						= NULL;
-		vb							= NULL;
-		ib							= NULL;
-		vb_stride					= 0;
-
-		state						= NULL;
-		ps							= NULL;
-		vs							= NULL;
-		ctable						= NULL;
-
-		T							= NULL;
-		M							= NULL;
-		C							= NULL;
-
-		textures[0]=textures[1]=textures[2]=textures[3]=textures[4]=textures[5]=textures[6]=textures[7]=NULL;
-		matrices[0]=matrices[1]=matrices[2]=matrices[3]=matrices[4]=matrices[5]=matrices[6]=matrices[7]=NULL;
-	}
-
+	void							Invalidate	();
 public:
 	struct _stats
 	{
@@ -153,6 +133,7 @@ public:
 	IC  void						set_Geometry		(ref_geom& _geom)					{	set_Geometry(&*_geom);		}
 	IC  void						set_Stencil			(u32 _enable, u32 _func=D3DCMP_ALWAYS, u32 _ref=0x00, u32 _mask=0x00, u32 _writemask=0x00, u32 _fail=D3DSTENCILOP_KEEP, u32 _pass=D3DSTENCILOP_KEEP, u32 _zfail=D3DSTENCILOP_KEEP);
 	IC  void						set_ColorWriteEnable(u32 _mask = D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA);
+	IC  void						set_CullMode		(u32 _mode);
 
 	// constants
 	IC	R_constant*					get_c				(LPCSTR n)															{ if (ctable)	return ctable->get(n);else return 0;}
