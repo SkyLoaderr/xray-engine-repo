@@ -184,10 +184,10 @@ void CEnvironment::RenderFirst	()
 	Offset.add			(D,COP);
 
 	// find projector direction vectors (from cop through silhouette pts)
-	T.mad(Offset,U,wT);	sPts[0].mad(T,R,wR); dirs[0].sub(sPts[0],COP).normalize();	// 0=TR
-	T.mad(Offset,U,wT);	sPts[1].mad(T,R,wL); dirs[1].sub(sPts[1],COP).normalize();	// 1=TL
-	T.mad(Offset,U,wB);	sPts[2].mad(T,R,wL); dirs[2].sub(sPts[2],COP).normalize();	// 2=BL
-	T.mad(Offset,U,wB);	sPts[3].mad(T,R,wR); dirs[3].sub(sPts[3],COP).normalize();	// 3=BR
+	T.mad(Offset,U,wT);	sPts[0].mad(T,R,wR); dirs[0].sub(sPts[0],COP).normalize();// 0=TR
+	T.mad(Offset,U,wT);	sPts[1].mad(T,R,wL); dirs[1].sub(sPts[1],COP).normalize();// 1=TL
+	T.mad(Offset,U,wB);	sPts[2].mad(T,R,wL); dirs[2].sub(sPts[2],COP).normalize();// 2=BL
+	T.mad(Offset,U,wB);	sPts[3].mad(T,R,wR); dirs[3].sub(sPts[3],COP).normalize();// 3=BR
 
 	// Render skybox/plane
 	{
@@ -198,14 +198,14 @@ void CEnvironment::RenderFirst	()
 		float	_h					= float		(::Render->getTarget()->get_height());
 
 		// Analyze depth
-		float						d_Z	= EPS_S, d_W = 1.f;
+		float						d_Z	= .99f, d_W = 1.f;
 
 		// Fill vertex buffer
 		v_skybox* pv				= (v_skybox*)	RCache.Vertex.Lock	(4,sh_2geom.stride(),Offset);
-		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, dirs[2]);	pv++; // BL
-		pv->set						(EPS,			EPS,			d_Z,	d_W, C, dirs[1]);	pv++; // TL
-		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, dirs[3]);	pv++; // BR
-		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, dirs[0]);	pv++; // TR
+		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, dirs[3]);	pv++; // BL
+		pv->set						(EPS,			EPS,			d_Z,	d_W, C, dirs[0]);	pv++; // TL
+		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, dirs[2]);	pv++; // BR
+		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, dirs[1]);	pv++; // TR
 		RCache.Vertex.Unlock		(4,sh_2geom.stride());
 		RCache.set_Geometry			(sh_2geom);
 		RCache.set_Shader			(sh_2sky);
