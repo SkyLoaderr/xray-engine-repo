@@ -50,7 +50,7 @@ void	CPhysicObject::SpawnInitPhysics	(CSE_Abstract* D)
 
 	if(Visual()&&PKinematics(Visual()))
 	{
-		CSE_PHSkeleton	*po	= dynamic_cast<CSE_PHSkeleton*>(D);
+//		CSE_PHSkeleton	*po	= dynamic_cast<CSE_PHSkeleton*>(D);
 		CSkeletonAnimated*	pSkeletonAnimated=NULL;
 		R_ASSERT			(Visual()&&PKinematics(Visual()));
 		pSkeletonAnimated	=PSkeletonAnimated(Visual());
