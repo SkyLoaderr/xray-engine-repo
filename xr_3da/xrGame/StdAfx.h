@@ -28,6 +28,10 @@
 #include "../SkeletonAnimated.h"
 #include "../SkeletonRigid.h"
 
+// ???
+#include <dinput.h>
+
+// ???
 #pragma todo("Oles to Kostya/Slipch: following header(ode_include) should'nt be in 'stdafx.h' !!!")
 #include "ode_include.h"
 

@@ -26,7 +26,7 @@ SHARED_HUD_INFO::SHARED_HUD_INFO(LPCSTR section, CHudItem* pHudItem)
 	// Visual
 	LPCSTR visual_name			= pSettings->r_string(section, "visual");
 	pVisual						= ::Render->model_Create(visual_name);
-	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
+//	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
 
 	// fire bone	
 	if(dynamic_cast<CWeapon*>(pHudItem))

@@ -18,7 +18,7 @@ void CCustomDoor::Load			(LPCSTR section)
 {
 	inherited::Load				(section);
 
-	R_ASSERT	(Visual()->Type==MT_SKELETON_ANIM);
+	//R_ASSERT	(Visual()->Type==MT_SKELETON_ANIM);
 	PSkeletonAnimated(Visual())->PlayCycle("close");
 
 	if (pSettings->line_exist(section,"sound"))

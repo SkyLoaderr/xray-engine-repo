@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "gamepersistent.h"
+#include "../fmesh.h"
 #include "../xr_ioconsole.h"
 #include "gamemtllib.h"
 
