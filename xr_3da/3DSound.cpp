@@ -174,7 +174,7 @@ void C3DSound::OnMove		()
 				pBuffer->Play				(0, 0, DSBPLAY_LOOPING);// start buffer
 				ps.dwMode					=	DS3DMODE_NORMAL;	// enable 3D processing
 				bNeedUpdate					=	true;				// signal to APPLY changes
-				dwState						=	stPlaying;			// switch state
+				dwState						=	stPlayingLooped;	// switch state
 			}
 		}
 		break;
