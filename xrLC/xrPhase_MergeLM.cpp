@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "build.h"
+#include "lightmap.h"
 #include "xrPhase_MergeLM_Rect.h"
 
 // Surface access
@@ -65,10 +66,11 @@ bool	compare2_defl		(CDeflector* D1, CDeflector* D2)
 // by area of layer - reverse
 bool	compare3_defl		(CDeflector* D1, CDeflector* D2)
 {
-	CDeflector::Layer&	L1 = D1->GetLayer(compare_layer)
-	CDeflector::Layer&	L2 = D2->GetLayer(compare_layer)
+	CDeflector::Layer*	L1 = D1->GetLayer(compare_layer);
+	CDeflector::Layer*	L2 = D2->GetLayer(compare_layer);
 	return L1->Area() > L2->Area();
 }
+class	pred_remove { public: IC bool	operator() (CDeflector* D) { if (D->bMerged) {D->bMerged=FALSE; return TRUE; } else return FALSE;  }; };
 
 void CBuild::xrPhase_MergeLM()
 {
@@ -82,8 +84,8 @@ void CBuild::xrPhase_MergeLM()
 		b_light*	L_base	= pBuild->lights[light_layer].original;
 		for (int it=0; it<(int)g_deflectors.size(); it++)
 		{
-			if (g_deflectors[it].bMerged)				continue;
-			if (0==g_deflectors[it].GetLayer(L_base))	continue;	
+			if (g_deflectors[it]->bMerged)				continue;
+			if (0==g_deflectors[it]->GetLayer(L_base))	continue;	
 			Layer.push_back	(g_deflectors[it]);
 		}
 		if (Layer.empty())	continue;
@@ -122,7 +124,7 @@ void CBuild::xrPhase_MergeLM()
 			// Process 
 			for (it=0; it<merge_count; it++) 
 			{
-				CDeflector::Layer&	L = Layer[it]->GetLayer	(L_base);
+				CDeflector::Layer&	L = *(Layer[it]->GetLayer(L_base));
 				_rect		rT,rS; 
 				rS.a.set	(0,0);
 				rS.b.set	(L.lm.dwWidth+2*BORDER-1, L.lm.dwHeight+2*BORDER-1);
@@ -139,16 +141,13 @@ void CBuild::xrPhase_MergeLM()
 						R_ASSERT(rT.SizeY() == rS.SizeX());
 						bRotated = TRUE;
 					}
-					lmap->Capture		(Layer[it],rT.x,rT.y,rT.SizeX(),rT.SizeY(),bRotated);
-					Layer[it].bMerged	= TRUE;
+					lmap->Capture		(Layer[it],rT.a.x,rT.a.y,rT.SizeX(),rT.SizeY(),bRotated,L_base);
+					Layer[it]->bMerged	= TRUE;
 				}
 				Progress(float(it)/float(merge_count));
 			}
 
 			// Remove merged lightmaps
-			class pred_remove {
-				IC bool	operator() (CDeflector* D) { if (D->bMerged) {D->bMerged=FALSE; return TRUE; } else return FALSE;  };
-			};
 			vecDeflIt last	= remove_if	(Layer.begin(),Layer.end(),pred_remove());
 			Layer.erase		(last,Layer.end());
 
