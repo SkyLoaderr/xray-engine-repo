@@ -73,9 +73,9 @@ void CUI::OnFrame()
 		// weapon
 		CWeaponList* wpns = m_Actor->GetItemList();
 		if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
-		// out GAME-style depend information
-		if (pUIGame) pUIGame->OnFrame	();
 	}
+	// out GAME-style depend information
+	if (pUIGame) pUIGame->OnFrame	();
 
 	if (!messages.empty()){
 		m_Parent->pFontSmall->OutSet(0,msgs_offs);
