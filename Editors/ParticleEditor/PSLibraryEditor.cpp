@@ -7,18 +7,7 @@
 
 void __fastcall CPSLibrary::FindByName(LPCSTR new_name, bool& res)
 {
-	res = (FindPS(new_name)||FindPED(new_name)||FindPGD(new_name));
-}
-
-PS::SDef* CPSLibrary::AppendPS(PS::SDef* src)
-{
-	if (src)
-    	m_PSs.push_back(*src);
-	else{
-    	m_PSs.push_back(PS::SDef());
-	    m_PSs.back().InitDefault();
-    }
-    return &m_PSs.back();
+	res = (FindPED(new_name)||FindPGD(new_name));
 }
 
 PS::CPEDef* CPSLibrary::AppendPED(PS::CPEDef* src)
@@ -52,11 +41,6 @@ void CPSLibrary::Save(const char* nm)
 
 	F.open_chunk	(PS_CHUNK_VERSION);
     F.w_u16			(PS_VERSION);
-	F.close_chunk	();
-
-	F.open_chunk	(PS_CHUNK_FIRSTGEN);
-    F.w_u32			(m_PSs.size());
-	F.w				(m_PSs.begin(), m_PSs.size()*sizeof(PS::SDef));
 	F.close_chunk	();
 
 	F.open_chunk	(PS_CHUNK_SECONDGEN);
