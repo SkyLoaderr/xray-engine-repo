@@ -39,7 +39,8 @@ void	CBlender_Screen_GRAY::Compile	(CBlender_Recorder& RS, sh_list& L_textures, 
 		RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
 		RS.PassSET_LightFog	(FALSE,FALSE);
 		
-		if (HW.Caps.pixel.op_DP3)	{
+		if (HW.Caps.pixel.op_DP3 && !strstr(GetCommandLine(),"-no_dp3") && !strstr(GetCommandLine(),"-NO_DP3"))	
+		{
 			RS.R().SetRS		(D3DRS_TEXTUREFACTOR,D3DCOLOR_RGBA(76+105,150+105,29+105,0));
 
 			// Stage0 - Base texture
