@@ -23,8 +23,23 @@ function main()
     )
     
 	while stalker:action() do
+		if (stalker:get_script()) then
+			printf		("stalker is under script control")
+		else
+			printf		("stalker is free")
+		end
 		wait			()
     end
     
+	if (stalker:get_script()) then
+		printf			("stalker is under script control")
+	else
+		printf			("stalker is free")
+		
     stalker:script		(false,stalker_test:script_name());
+    
+	if (stalker:get_script()) then
+		printf			("stalker is under script control")
+	else
+		printf			("stalker is free")
 end
