@@ -49,13 +49,12 @@ IPureClient::~IPureClient	()
 {
 }
 
-BOOL IPureClient::Connect(LPCSTR server_name)
+BOOL IPureClient::net_Connect(LPCSTR server_name)
 {
 	R_ASSERT(server_name);
 
 	net_Connected	= FALSE;
 	net_Syncronised	= FALSE;
-	net_Disconnected= FALSE;
 
     // Create the IDirectPlay8Client object.
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Client, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Client, (LPVOID*) &NET));
@@ -180,11 +179,11 @@ BOOL IPureClient::Connect(LPCSTR server_name)
 	R_CHK			(NET->GetSPCaps(&sp_guid,&sp_caps,0));
 
 	// Sync
-	Syncronize	();
+	net_Syncronize	();
 	return	TRUE;
 }
 
-void IPureClient::Disconnect()
+void IPureClient::net_Disconnect()
 {
     if( NET )	NET->Close(0);
 
@@ -370,7 +369,7 @@ void	IPureClient::Send(NET_Packet& P, DWORD dwFlags, DWORD dwTimeout)
 		));
 }
 
-BOOL	IPureClient::HasBandwidth	()
+BOOL	IPureClient::net_HasBandwidth	()
 {
 	DWORD	dwTime			= Device.dwTimeGlobal;
 	DWORD	dwInterval		= 1000/psNET_ClientUpdate;
@@ -477,7 +476,7 @@ void __cdecl		sync_thread(void* P)
 	IPureClient*	C = (IPureClient*)P;
 	C->Sync_Thread	();
 }
-void	IPureClient::Syncronize	()
+void	IPureClient::net_Syncronize	()
 {
 	net_Syncronised	= FALSE;
 	net_TimeDelta	= 0;
