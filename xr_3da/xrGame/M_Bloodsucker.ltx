@@ -11,50 +11,55 @@ stand_attack_2 =	  	0.45,		40,		    400,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6
 ;--------------------------------------------------------------------------
 ;	anim			Cycles	| time1 | power1 | time2 | power2 | 
 ;--------------------------------------------------------------------------
-stand_walk_fwd_0	=	1,  	   0.9,     1,	   0.20,     0.7 
-stand_run_0		=	1,  	   0.2,     1,	   0.70,     0.7
+stand_run_0		=	1,  	   0.2,     1,	  0.70,     0.7
+stand_run_dmg_0		=	1,	   0.2,     1,	  0.25,     0.7,   
+stand_walk_fwd_dmg_0	=   	1,	   0.2,     1,	  0.25,     0.7,   
+stand_walk_fwd_0	=	1,  	   0.9,     1,	  0.20,     0.7 
+stand_steal_0		=	1,	   0.2,     0.5,  0.25,     0.5,   
+;stand_drag_0		=	1,	   0.2,     1,	  0.25,     0.7,   
+
 
 [m_bloodsucker_e]
-GroupControlSection	 = spawn_group
-$spawn               = "monsters\bloodsucker"	; option for Level Editor
-$npc			     = on						; option for Level Editor
+GroupControlSection		 = spawn_group
+$spawn               		 = "monsters\bloodsucker"		; option for Level Editor
+$npc			     	 = on					; option for Level Editor
 ;$prefetch 			 = 16
-Scheduled		     = on						; option for ALife Simulator
-Human		     	 = off						; option for ALife Simulator
-Health			     = 400						; option for ALife Simulator
-MinSpeed		     = 2.0	;1.0						; option for ALife Simulator
-MaxSpeed		     = 4.5	;1.5						; option for ALife Simulator
-going_speed          = 2.0	;1.0                      ; option for ALife Simulator
-search_speed         = .5                       ; option for ALife Simulator
+Scheduled		    	 = on					; option for ALife Simulator
+Human		     		 = off					; option for ALife Simulator
+Health			   	 = 400					; option for ALife Simulator
+MinSpeed		    	 = 2.0	;1.0				; option for ALife Simulator
+MaxSpeed		    	 = 4.5	;1.5				; option for ALife Simulator
+going_speed          		 = 2.0	;1.0                      	; option for ALife Simulator
+search_speed         		 = .5                       		; option for ALife Simulator
 visual				 = monsters\krovosos\bloodsucker
-MaxHealthValue		 = 200						; range [0..200]
-DynamicObjectsCount	 = 32
+MaxHealthValue		 	 = 200					; range [0..200]
+DynamicObjectsCount	 	 = 32
 
-cform                = skeleton					; collision class
-class                = AI_BLOOD					; AI class
+cform               		 = skeleton				; collision class
+class                		 = AI_BLOOD				; AI class
 
 bone_head			 = bip01_head				; bone name
 bone_fire			 = bip01_head
-weapon_usage		 = 0						; boolean
+weapon_usage		 	 = 0					; boolean
 
-ph_box0_center 		 = 0.0,  0.9,  0.0
-ph_box0_size 		 = 0.35, 0.9,  0.35
-ph_box1_center 		 = 0.0,  0.6,  0.0
-ph_box1_size 		 = 0.40, 0.6,  0.40
-ph_foot_size 		 = 0.20, 0.23, 0.20
-ph_crash_speed_min   = 16
-ph_crash_speed_max   = 30
-ph_mass 		     = 120.
+ph_box0_center 			 = 0.0,  0.9,  0.0
+ph_box0_size 		 	 = 0.35, 0.9,  0.35
+ph_box1_center 		 	 = 0.0,  0.6,  0.0
+ph_box1_size 		 	 = 0.40, 0.6,  0.40
+ph_foot_size 		  	 = 0.20, 0.23, 0.20
+ph_crash_speed_min   		 = 16
+ph_crash_speed_max   		 = 30
+ph_mass 		    	 = 120.
 
-ph_skeleton_airr_lin_factor		= 1.0
-ph_skeleton_airr_ang_factor		= 1.0
-ph_skeleton_hinger_factor1		= 1
-ph_skeleton_ddelay	     		= 20
+ph_skeleton_airr_lin_factor	= 1.0
+ph_skeleton_airr_ang_factor	= 1.0
+ph_skeleton_hinger_factor1	= 1.0
+ph_skeleton_ddelay	     	= 20
 ph_skel_fatal_impulse_factor	= 3.0
-ph_skel_shot_up_factor               = 8
+ph_skel_shot_up_factor          = 8
 
 
-SoundThreshold		 = 0.06             ; range [0..1]
+SoundThreshold		 	 = 0.06             ; range [0..1]
 
 EyeFov				 = 110;
 eye_range			 = 70;
@@ -75,40 +80,40 @@ Velocity_Steal			= 0.7,	3.0,	1,		1
 
 ; acceleration
 Accel_Generic			= 1.5
-Accel_Calm				= 2.5
-Accel_Aggressive		= 3.5
+Accel_Calm			= 2.5
+Accel_Aggressive		= 5.5
 
 Velocity_Invisible_Linear	= 15.0
 Velocity_Invisible_Angular	= 6.0
-;Particle_Invisible			= anomaly2\group_items\electra2_flash ;explosions\group_items\expl_02_flame ;weapons\generic_flame
-Particle_Invisible			= anomaly2\group_items\burn_attack_flash_test ;explosions\group_items\expl_02_flame ;weapons\generic_flame
+;Particle_Invisible		= anomaly2\group_items\electra2_flash ;explosions\group_items\expl_02_flame ;weapons\generic_flame
+Particle_Invisible		= anomaly2\group_items\burn_attack_flash_test ;explosions\group_items\expl_02_flame ;weapons\generic_flame
 
 
 ;attack parameters
-MinAttackDist		= 1.25	;2.4
-MaxAttackDist		= 2.3	;3.8
-EffectDistance		= 20.0
-
-as_min_dist				= 0.5
-as_step					= 0.5
+MinAttackDist			= 1.25	;2.4
+MaxAttackDist			= 2.3	;3.8
+EffectDistance			= 20.0
+hit_type			= wound
+as_min_dist			= 0.5
+as_step				= 0.5
 
 ; "Rest" state specific 
-ProbRestWalkFree	= 60	;50    ; яЁш тvсюЁх фхщёЄтш , т 50% ёыєўр ї ьюэёЄЁ сєфхЄ їюфшЄ№
-ProbRestStandIdle	= 15		
-ProbRestLieIdle		= 15	;25
-ProbRestTurnLeft	= 10
+ProbRestWalkFree		= 60	;50    ; яЁш тvсюЁх фхщёЄтш , т 50% ёыєўр ї ьюэёЄЁ сєфхЄ їюфшЄ№
+ProbRestStandIdle		= 15		
+ProbRestLieIdle			= 15	;25
+ProbRestTurnLeft		= 10
 
-; ярЁрьхЄЁv эхтшфшьюёЄш
+; Invisibility Settings
 BlinkTime			= 90	;400	;300		; тЁхь  ьхЁЎрэш 
-BlinkMicroInterval  = 30		; тЁхь  ътрэЄр ьхЁЎрэш 
-RestoreInterval		= 5000		; тЁхь  тюёёЄрэютыхэш  5 ёхъ
-InvisibilityTimeMin	= 5000		; ьшэ тЁхь , эр ъюЄюЁюх ьюэёЄЁ ёЄрэютшЄё  эхтшфшьvь
-InvisibilityTimeMax	= 6000		;4000		; ьръё тЁхь , эр ъюЄюЁюх ьюэёЄЁ ёЄрэютшЄё  эхтшфшьvь
-PowerDownFactor		= 0.10		; [0..1] ъю¤ЇЇшЎшхэЄ, эр ъюЄюЁvщ ярфрхЄ ёшыр ьюэёЄЁр яЁш ръЄштрЎшш эхтшфшьюёЄш
-PowerThreshold		= 0.70		; [0..1] яюЁюу ёшыv, яюёых ъюЄюЁюую эхы№ч  ёЄрЄ№ эхтшфшьvь 
-InvisibilityDist	= 8.0		; [1..n] фшёЄрэЎш  фю тЁрур, эр ъюЄюЁющ ьюэёЄЁ ьюцхЄ ёЄрэютшЄ№ё  эштшфшьvь
+BlinkMicroInterval  		= 30		; тЁхь  ътрэЄр ьхЁЎрэш 
+RestoreInterval			= 5000		; тЁхь  тюёёЄрэютыхэш  5 ёхъ
+InvisibilityTimeMin		= 5000		; ьшэ тЁхь , эр ъюЄюЁюх ьюэёЄЁ ёЄрэютшЄё  эхтшфшьvь
+InvisibilityTimeMax		= 6000		;4000		; ьръё тЁхь , эр ъюЄюЁюх ьюэёЄЁ ёЄрэютшЄё  эхтшфшьvь
+PowerDownFactor			= 0.10		; [0..1] ъю¤ЇЇшЎшхэЄ, эр ъюЄюЁvщ ярфрхЄ ёшыр ьюэёЄЁр яЁш ръЄштрЎшш эхтшфшьюёЄш
+PowerThreshold			= 0.70		; [0..1] яюЁюу ёшыv, яюёых ъюЄюЁюую эхы№ч  ёЄрЄ№ эхтшфшьvь 
+InvisibilityDist		= 8.0		; [1..n] фшёЄрэЎш  фю тЁрур, эр ъюЄюЁющ ьюэёЄЁ ьюцхЄ ёЄрэютшЄ№ё  эштшфшьvь
 
-DayTime_Begin		= 6	;6			; эрўрыр фэ  фы  ьюэёЄЁр
+DayTime_Begin			= 6	;6			; эрўрыр фэ  фы  ьюэёЄЁр
 DayTime_End			= 21		; ъюэхЎ фэ  фы  ьюэёЄЁр
 Min_Satiety			= 0.55 	;0.06		; ьшэ. эюЁьр ёvЄюёЄш (ьхэ№°х - єцх уюыюфэvщ)
 Max_Satiety			= 1.0	;0.9		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
@@ -119,12 +124,12 @@ distance_to_corpse	= 0.8		; фшёЄ. фю ЄЁєяр, яЁш ъюЄюЁющ юэ яхЁхїюфшЄ т ёюёЄю эшх
 bone_spin				= bip01_spine1
 
 ;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_free_hunting   =      20.0,            20.0,				1000.0,              0.0,               10000.0,          1000.0,               10000.0,      
-selector_cover          =      20.0,            -1000.0,			30.0,                0.0,               0.0,              100000.0,             100000.0,               1000.0,
-selector_hear_sound		=      20.0,            1.0,				1000.0,              0.0,               0.0,              1000.0,               10000.0,      
+selector_free_hunting   =      20.0,            20.0,		1000.0,              0.0,               10000.0,          1000.0,               10000.0,      
+selector_cover          =      20.0,            -1000.0,	30.0,                0.0,               0.0,              100000.0,             100000.0,               1000.0,
+selector_hear_sound	=      20.0,            1.0,		1000.0,              0.0,               0.0,              1000.0,               10000.0,      
 
-selector_getaway		=      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
-selector_approach		=      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+selector_getaway	=      20.0,            20.0,           1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
+selector_approach	=      20.0,            1.0,            1000.0,             0.0,               0.0,              1000.0,				10000.0,      
 
 ;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_walk_around	=      20.0,            6.0,                 1000.0,             4.0,               5000.0,					8.0,				5000.0,      
@@ -132,58 +137,58 @@ selector_walk_around	=      20.0,            6.0,                 1000.0,       
 
 
 terrain					= 255,255,255,255,30,40
-hit_type				= wound
 
-; entity condition
-satiety_v 		= 0.001			;0.01		;скорость уменьшения сытости со временем
-radiation_v 		= 0.00001		;0.004		;скорость уменьшения радиации
-satiety_power_v 	= 0.005		;0.01			;увеличение силы при уменьшении сытости 
-satiety_health_v 	= 0.001	;0.03				;увеличение здоровья при уменьшении сытости 
+
+; entity condition 
+satiety_v 		= 0.001			;0.01		;скорость уменьшения сытости со временем [0...1]
+radiation_v 		= 0.00001		;0.004		;скорость уменьшения радиации [0...1]
+satiety_power_v 	= 0.005		;0.01			;увеличение силы при уменьшении сытости [0...1]
+satiety_health_v 	= 0.001	;0.03				;увеличение здоровья при уменьшении сытости [0...1]
 satiety_critical 	= 0		;0.25			;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
-radiation_health_v 	= 0.01	;0.006				;уменьшение здоровья при воздействии радиации
-bleeding_v 		= 0.05			;0.02		;потеря крови при максимальной ране
-wound_incarnation_v 	= 0.1	;0.001		   		;скорость заживания раны 
-morale_v		= 0.01					;скорость восстановления морали
-health_hit_part 	= 0.5		;0.8			;процент хита, уходящий на отнимание здоровья
-power_hit_part 		= 1.0		;0.9			;процент хита, уходящий на отнимание силы
+radiation_health_v 	= 0.01	;0.006				;уменьшение здоровья при воздействии радиации [0...1]
+bleeding_v 		= 0.05			;0.02		;потеря крови при максимальной ране [0...1]
+wound_incarnation_v 	= 0.1	;0.001		   		;скорость заживания раны [0...1]
+morale_v		= 0.01					;скорость восстановления морали [0...1]
+health_hit_part 	= 0.5		;0.8			;процент хита, уходящий на отнимание здоровья [0...1]
+power_hit_part 		= 1.0		;0.9			;процент хита, уходящий на отнимание силы [0...1]
 
-burn_immunity = 0.5						;коэффициенты иммунитета 
-strike_immunity = 0.5
-shock_immunity = 0.5
-wound_immunity = 0.1	;0.75	;1.0		
-radiation_immunity = 0.5
-telepatic_immunity = 1.0
-chemical_burn_immunity = 0.5
-explosion_immunity = 0.5
-fire_wound_immunity  = 0.5
+burn_immunity 		= 0.5						;коэффициенты иммунитета 
+strike_immunity 	= 0.5
+shock_immunity 		= 0.5
+wound_immunity 		= 0.1	;0.75	;1.0		
+radiation_immunity 	= 0.5
+telepatic_immunity 	= 1.0
+chemical_burn_immunity  = 0.5
+explosion_immunity 	= 0.5
+fire_wound_immunity  	= 0.5
 
-sleep_health = 1.0		;1.5				;ъю¤ЇЇшЎшхэЄv ёъюЁюёЄхщ шчьхэхэш  ярЁрьхЄЁют тю тЁхь  ёэр
-sleep_power = 1.0		;1.5
-sleep_satiety = 1.0		;0.8
-sleep_radiation = 1.0	;1.1
+sleep_health 		= 1.0		;1.5				;ъю¤ЇЇшЎшхэЄv ёъюЁюёЄхщ шчьхэхэш  ярЁрьхЄЁют тю тЁхь  ёэр
+sleep_power 		= 1.0		;1.5
+sleep_satiety 		= 1.0		;0.8
+sleep_radiation 	= 1.0	;1.1
 
-eat_freq			=	5.0		; ўрёЄюЄр єъєёют т ёхъ
-eat_slice			=	0.05	; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
-eat_slice_weight	=	10.0	; єьхэ№°хэшх хфv є ЄЁєяр
+eat_freq		= 5.0		; ўрёЄюЄр єъєёют т ёхъ
+eat_slice		= 0.05	; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
+eat_slice_weight	= 10.0	; єьхэ№°хэшх хфv є ЄЁєяр
 
 ; Morale
 MoraleSuccessAttackQuant	= 0.3;
-MoraleDeathQuant			= -0.3;
-MoraleFearQuant				= -0.002
-MoraleRestoreQuant			= 0.001
+MoraleDeathQuant		= -0.3;
+MoraleFearQuant			= -0.002
+MoraleRestoreQuant		= 0.001
 MoraleBroadcastDistance		= 10.0
 
-sound_idle				= monsters\bloodsucker\idle_
-sound_eat				= monsters\bloodsucker\eat_
+sound_idle			= monsters\bloodsucker\idle_
+sound_eat			= monsters\bloodsucker\eat_
 sound_attack			= monsters\bloodsucker\attack_
 sound_attack_hit		= monsters\bloodsucker\attack_hit_
 sound_take_damage		= monsters\bloodsucker\hit_
-sound_die				= monsters\bloodsucker\die_
-sound_bkgnd				= monsters\biting\def_
+sound_die			= monsters\bloodsucker\die_
+sound_bkgnd			= monsters\biting\def_
 sound_threaten			= monsters\biting\def_
 sound_landing			= monsters\biting\def_
-sound_steal				= monsters\biting\def_
-sound_panic				= monsters\bloodsucker\hit_
+sound_steal			= monsters\biting\def_
+sound_panic			= monsters\bloodsucker\hit_
 sound_growling			= monsters\biting\def_
 
 
@@ -191,15 +196,15 @@ idle_sound_delay		= 15000
 eat_sound_delay			= 3000
 attack_sound_delay		= 2000
 
-jump_factor				= 1.6
-jump_delay				= 3000	
+jump_factor			= 1.6
+jump_delay			= 3000	
 jump_min_dist			= 1.0 
 jump_max_dist			= 20.0
 jump_max_angle			= 1.5
 
 DamagedThreshold		= 0.5
 
-material				= creatures\medium
+material			= creatures\medium
 DynamicObjectsCount		= 32
 
 step_snd_walk			= 1.0, 1.0
@@ -210,7 +215,7 @@ step_snd_turn			= 1.0, 2.0
 step_snd_steal			= 1.0, 2.0
 step_snd_drag			= 1.0, 2.0
 
-squad_attack_algorithm	= 1
+squad_attack_algorithm		= 1
 
 postprocess_new			= postprocess_new
 attack_effector			= monster_attack_effector
