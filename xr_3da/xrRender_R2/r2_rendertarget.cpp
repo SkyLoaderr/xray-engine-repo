@@ -168,6 +168,11 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.DeleteGeom	(g_bloom_filter			);
 	Device.Shader.DeleteGeom	(g_bloom_build			);
 
+	// SPOT
+	Device.Shader.Delete		(s_accum_spot_s			);
+	Device.Shader._DeleteRT		(rt_smap_s				);
+	_RELEASE					(rt_smap_s_ZB);
+
 	// POINT
 	Device.Shader.DeleteGeom	(g_accum_point			);
 	accum_point_geom_destroy	();
