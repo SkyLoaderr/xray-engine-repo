@@ -18,6 +18,22 @@ function give_job_box01(first_speaker, second_speaker)
 
 end
 
+function is_trader (first_speaker, second_speaker)
+
+	if (clsid.trader == second_speaker:clsid()) then
+		return true
+    end
+	return false
+end
+
+function is_stalker (first_speaker, second_speaker)
+
+	if (clsid.stalker == second_speaker:clsid()) then
+		return true
+    end
+	return false
+end
+
 
 function is_box_present(first_speaker, second_speaker)
 
