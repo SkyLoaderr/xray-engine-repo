@@ -64,20 +64,19 @@ namespace PS
 	public:
     	DEFINE_VECTOR(IRender_Visual*,VisualVec,VisualVecIt);
     	class SItem{
-        	IRender_Visual*	effect;
-            VisualVec		children;
-            VisualVec		children_stopped;
+        	IRender_Visual*	_effect;
+            VisualVec		_children;
+            VisualVec		_children_stopped;
         public:
         	void			Set				(IRender_Visual* e);
             void			Clear			();
 
             IC u32			GetVisuals		(xr_vector<IRender_Visual*>& visuals)
             {
-            	visuals.reserve				(children.size()+children_stopped.size()+1);
-                visuals.push_back			(effect);
-			    VisualVecIt it;
-                for (it=children.begin(); it!=children.end(); it++) 				visuals.push_back(*it);
-                for (it=children_stopped.begin(); it!=children_stopped.end(); it++)	visuals.push_back(*it);
+            	visuals.reserve				(_children.size()+_children_stopped.size()+1);
+                if (_effect)				visuals.push_back(_effect);
+                visuals.insert				(visuals.end(),_children.begin(),_children.end());
+                visuals.insert				(visuals.end(),_children_stopped.begin(),_children_stopped.end());
                 return visuals.size();
             }
             

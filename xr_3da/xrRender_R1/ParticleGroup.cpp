@@ -109,53 +109,55 @@ void CPGDef::Save(IWriter& F)
 //------------------------------------------------------------------------------
 void CParticleGroup::SItem::Set(IRender_Visual* e)
 {
-	effect=e;
+	_effect=e;
 }
 void CParticleGroup::SItem::Clear()
 {
-    ::Render->model_Delete(effect);
-    VisualVecIt it;
-    for (it=children.begin(); it!=children.end(); it++)
-	    ::Render->model_Delete(*it);
-    for (it=children_stopped.begin(); it!=children_stopped.end(); it++)
+	VisualVec 		visuals;
+    GetVisuals		(visuals);
+    for (VisualVecIt it=visuals.begin(); it!=visuals.end(); it++)
 	    ::Render->model_Delete(*it);
 }
 void CParticleGroup::SItem::AppendChild(LPCSTR eff_name)
 {
-    children.push_back((CParticleEffect*)RImplementation.model_CreatePE(eff_name));
+    _children.push_back((CParticleEffect*)RImplementation.model_CreatePE(eff_name));
 }
 void CParticleGroup::SItem::RemoveChild(u32 idx)
 {
-	VERIFY(idx<children.size());
-    IRender_Visual*& V 			= children[idx];
+	VERIFY(idx<_children.size());
+    IRender_Visual*& V 			= _children[idx];
     ((CParticleEffect*)V)->Stop	(TRUE);
-    children_stopped.push_back	(V);
-    V 							= children.back();
-    children.pop_back			();
+    _children_stopped.push_back	(V);
+    V 							= _children.back();
+    _children.pop_back			();
 }
 void CParticleGroup::SItem::Play()
 {
-    CParticleEffect* E	= static_cast<CParticleEffect*>(effect);
+    CParticleEffect* E	= static_cast<CParticleEffect*>(_effect);
     if (E) E->Play();
 }
 void CParticleGroup::SItem::Stop(BOOL def_stop)
 {
-    CParticleEffect* E	= static_cast<CParticleEffect*>(effect);
+    CParticleEffect* E	= static_cast<CParticleEffect*>(_effect);
     if (E) E->Stop(def_stop);
 }
 BOOL CParticleGroup::SItem::IsPlaying()
 {
-    CParticleEffect* E	= static_cast<CParticleEffect*>(effect);
+    CParticleEffect* E	= static_cast<CParticleEffect*>(_effect);
     return E?E->IsPlaying():FALSE;
 }
 void CParticleGroup::SItem::UpdateParent(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM)
 {
-    CParticleEffect* E	= static_cast<CParticleEffect*>(effect);
+    CParticleEffect* E	= static_cast<CParticleEffect*>(_effect);
     if (E) E->UpdateParent(m,velocity,bXFORM);
 }
+struct zero_vis_pred : public std::unary_function<IRender_Visual*, bool>
+{
+	bool operator()(const IRender_Visual* x){ return x==0; }
+};
 void CParticleGroup::SItem::OnFrame(u32 u_dt, Fbox& box, bool& bPlaying)
 {
-    CParticleEffect* E		= static_cast<CParticleEffect*>(effect);
+    CParticleEffect* E		= static_cast<CParticleEffect*>(_effect);
     if (E){
         E->OnFrame			(u_dt);
         if (E->IsPlaying()){ 
@@ -164,7 +166,7 @@ void CParticleGroup::SItem::OnFrame(u32 u_dt, Fbox& box, bool& bPlaying)
         }
     }
     VisualVecIt it;
-    for (it=children.begin(); it!=children.end(); it++){
+    for (it=_children.begin(); it!=_children.end(); it++){
         CParticleEffect* E	= static_cast<CParticleEffect*>(*it);
         if (E){
             E->OnFrame			(u_dt);
@@ -174,7 +176,7 @@ void CParticleGroup::SItem::OnFrame(u32 u_dt, Fbox& box, bool& bPlaying)
             }
         }
     }
-    for (it=children_stopped.begin(); it!=children_stopped.end(); it++){
+    for (it=_children_stopped.begin(); it!=_children_stopped.end(); it++){
     	if (!((CParticleEffect*)(*it))->IsPlaying()) ::Render->model_Delete(*it);
         else{
             CParticleEffect* E	= static_cast<CParticleEffect*>(*it);
@@ -187,37 +189,30 @@ void CParticleGroup::SItem::OnFrame(u32 u_dt, Fbox& box, bool& bPlaying)
             }
         }
     }
+    VisualVecIt new_end=std::remove_if(_children_stopped.begin(),_children_stopped.end(),zero_vis_pred());
+    _children_stopped.erase(new_end,_children_stopped.end());
 }
 void CParticleGroup::SItem::OnDeviceCreate()
 {
-    CParticleEffect* E	= static_cast<CParticleEffect*>(effect);
-	if (E) E->OnDeviceCreate();
-    VisualVecIt it;
-    for (it=children.begin(); it!=children.end(); it++)
-	    static_cast<CParticleEffect*>(*it)->OnDeviceCreate();
-    for (it=children_stopped.begin(); it!=children_stopped.end(); it++)
+	VisualVec 		visuals;
+    GetVisuals		(visuals);
+    for (VisualVecIt it=visuals.begin(); it!=visuals.end(); it++)
 	    static_cast<CParticleEffect*>(*it)->OnDeviceCreate();
 }
 void CParticleGroup::SItem::OnDeviceDestroy()
 {
-    CParticleEffect* E	= static_cast<CParticleEffect*>(effect);
-	if (E) E->OnDeviceDestroy();
-    VisualVecIt it;
-    for (it=children.begin(); it!=children.end(); it++)
-	    static_cast<CParticleEffect*>(*it)->OnDeviceDestroy();
-    for (it=children_stopped.begin(); it!=children_stopped.end(); it++)
+	VisualVec 		visuals;
+    GetVisuals		(visuals);
+    for (VisualVecIt it=visuals.begin(); it!=visuals.end(); it++)
 	    static_cast<CParticleEffect*>(*it)->OnDeviceDestroy();
 }
 u32	CParticleGroup::SItem::ParticlesCount()
 {
 	u32 p_count=0;
-    CParticleEffect* E	= static_cast<CParticleEffect*>(effect);
-	if (E) p_count+=E->ParticlesCount();
-    VisualVecIt it;
-    for (it=children.begin(); it!=children.end(); it++)
-	    static_cast<CParticleEffect*>(*it)->ParticlesCount();
-    for (it=children_stopped.begin(); it!=children_stopped.end(); it++)
-	    static_cast<CParticleEffect*>(*it)->ParticlesCount();
+	VisualVec 		visuals;
+    GetVisuals		(visuals);
+    for (VisualVecIt it=visuals.begin(); it!=visuals.end(); it++)
+	    p_count		+= static_cast<CParticleEffect*>(*it)->ParticlesCount();
     return p_count;
 }
 
