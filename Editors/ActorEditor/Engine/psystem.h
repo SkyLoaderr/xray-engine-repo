@@ -74,6 +74,7 @@ namespace PAPI
 		};
 		pVector	pos;
 		pVector	posB;
+        pVector p[3];
 		pVector	size;
 		pVector	rot;
 		pVector	vel;
@@ -112,6 +113,9 @@ namespace PAPI
 				Particle& P = list[p_count];
 				P.pos = pos;
 				P.posB = posB;
+                P.p[0] = pos;
+                P.p[1] = pos;
+                P.p[2] = pos;
 				P.size = size;
 				P.rot = rot;
 				P.vel = vel;
