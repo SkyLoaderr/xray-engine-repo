@@ -124,7 +124,8 @@ void CLevel::IR_OnKeyboardPress(int key)
 #ifdef DEBUG
 	case DIK_DIVIDE:
 		if( OnServer() ){
-			Server->game->SetGameTimeFactor(1.f);
+			float NewTimeFactor				= pSettings->r_float("alife","time_factor");
+			Server->game->SetGameTimeFactor(NewTimeFactor);
 //			SetGameTimeFactor(1.f);	
 		}
 		break;
