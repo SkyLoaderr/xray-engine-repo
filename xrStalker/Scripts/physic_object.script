@@ -60,11 +60,11 @@ function door_binder:update(delta)
 	end
 end
 
-function door_binder:open_door()
+function door_binder:close_door()
 	self.joint:set_max_force_and_velocity(200, 1, 0)
 end
 
-function door_binder:close_door()
+function door_binder:open_door()
 	self.joint:set_max_force_and_velocity(200, -1, 1)
 end
 
