@@ -395,6 +395,7 @@ void CAI_Stalker::SelectSound(int &iIndex)
 
 void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
+	//return;
 	#ifdef WRITE_LOG
 		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif

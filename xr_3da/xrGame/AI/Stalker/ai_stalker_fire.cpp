@@ -80,19 +80,18 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	// Save event
 	Fvector D;
 	svTransform.transform_dir(D,vLocalDir);
+	
 	m_dwHitTime = Level().timeServer();
 	m_tHitDir.set(D);
 	m_tHitDir.normalize();
 	m_tHitPosition = who->Position();
+	
 	SHurt	tHurt;
 	tHurt.dwTime	= Level().timeServer();
-	if (tHurt.tpEntity	= dynamic_cast<CEntity*>(who)) {
-		int iIndex = ifFindHurtIndex(tHurt.tpEntity);
-		if (iIndex == -1)
-			vfAddHurt(tHurt);
-		else
-			m_tpaHurts[iIndex].dwTime = tHurt.dwTime;
-	}
+	if (tHurt.tpEntity = dynamic_cast<CEntity*>(who))
+		vfUpdateHurt(tHurt);
+
+	feel_sound_new(who,SOUND_TYPE_MONSTER_ATTACKING,who->Position(),1.f);
 	
 	float	yaw, pitch;
 	D.getHP(yaw,pitch);

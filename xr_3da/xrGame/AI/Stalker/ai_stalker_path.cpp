@@ -133,6 +133,11 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		m_tpaPointNodes.clear		();
 
 		u32							N = AI_Path.Nodes.size();
+		if (!N) {
+			Msg("! Node lis is empty!");
+			m_tPathState = ePathStateBuildNodePath;
+			return;
+		}
 		Fvector						tStartPosition = vPosition;
 		u32							dwCurNode = AI_NodeID;
 		m_tpaPoints.push_back		(vPosition);
