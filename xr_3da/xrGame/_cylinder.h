@@ -28,7 +28,7 @@ struct	Fcylinder
 		m_translate.set	(S.c);
 	}
 
-
+	
 
 };
 

@@ -15,7 +15,7 @@
 ///////////////////////////////////////////////////////////////////
 
 #include "ExtendedGeom.h"
-union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
+//union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 
 const dReal fixed_step=0.02f;
 const u16 dis_frames=11;

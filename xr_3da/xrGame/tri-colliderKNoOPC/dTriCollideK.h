@@ -368,6 +368,10 @@ inline bool  TriContainPoint(const dReal* v0,const dReal* v1,const dReal* v2,con
   dCROSS(cross2,=,triAx,triSideAx2);
   ds2=dDOT(cross2,v2);
 
+//dReal a1 =dDOT(cross0,pos)-ds0;
+//dReal a2 =dDOT(cross1,pos)-ds1;
+//dReal a3 =dDOT(cross2,pos)-ds2;
+
   if(dDOT(cross0,pos)-ds0>0.f && 
 	 dDOT(cross1,pos)-ds1>0.f && 
 	 dDOT(cross2,pos)-ds2>0.f) return true;
