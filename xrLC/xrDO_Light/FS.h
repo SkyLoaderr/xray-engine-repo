@@ -188,6 +188,7 @@ public:
 #ifdef _EDITOR
 	IC void			r_stringZ	(AnsiString& dest)
 	{
+    	dest 		= "";
 		char *src = (char *) data;
 		while ((src[Pos]!=0) && (!eof())) dest += src[Pos++];
 		Pos		++;
