@@ -1,6 +1,4 @@
-is_creature_entered = false
-is_actor_entered = false
-stalkers_already_saw_actor = false
+i_see_chert = 1
 
 function main()
 
@@ -44,6 +42,14 @@ function main()
 				anim	(anim.free),
 				cond	(cond.time_end, 100000000)
 			)
+
+	if siviy:see(chert) and == 1 then
+		wait(2000)			
+		siviy_privet:play_at_pos						(siviy,siviy:position(),0);
+		wait(2000)			
+		prof_ne_ojidal_tebya_vstretit:play_at_pos		(chert,chert:position(),0);
+		wait(2000)			
+		end
 
 	while siviy:action() and chert:action() do
 	    wait	()
