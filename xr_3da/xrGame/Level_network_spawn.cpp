@@ -95,7 +95,7 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	//оружие спавним с полным магазинои
 	CSE_ALifeItemWeapon* weapon = smart_cast<CSE_ALifeItemWeapon*>(abstract);
 	if(weapon)
-		weapon->a_elapsed = weapon->get_ammo_magsize();
+		weapon->a_elapsed	= weapon->get_ammo_magsize();
 	
 	// Fill
 	abstract->s_name		= section;
@@ -108,7 +108,7 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	abstract->ID_Phantom	= 0xffff;
 	abstract->s_flags.assign(M_SPAWN_OBJECT_LOCAL);
 	abstract->RespawnTime	= 0;
-	
+
 	if (!return_item) {
 		NET_Packet				P;
 		abstract->Spawn_Write	(P,TRUE);
