@@ -666,11 +666,11 @@ void test_smooth_path(LPCSTR name)
 	
 	start.position.set			(-83.817009f,-0.093572f);
 	start.direction.set			(-_sin(1.820413f),_cos(1.820413f));
-	start.vertex_id				= level_graph->vertex(v3d(start.position));
+	start.vertex_id				= level_graph->vertex(u32(-1),v3d(start.position));
 
 	dest.position.set			(-84.000008f,-0.093299f);
 	dest.direction.set			(0.f,1.f);
-	dest.vertex_id				= level_graph->vertex(v3d(dest.position));
+	dest.vertex_id				= level_graph->vertex(u32(-1),v3d(dest.position));
 	
 	fill_params					(start,dest,start_set,dest_set);
 

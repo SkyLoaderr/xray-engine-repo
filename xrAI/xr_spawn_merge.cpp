@@ -206,7 +206,7 @@ public:
 			R_ASSERT2			(dwStart < dwFinish,S);
 		}
 		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = .5f*(fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation))) {
-			if ((m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->vertex(m_tpSpawnPoints[i]->o_Position)) == -1) {
+			if ((m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->vertex(u32(-1),m_tpSpawnPoints[i]->o_Position)) == -1) {
 				string4096 S1;
 				char *S = S1;
 				S += sprintf(S,"SPAWN POINT %s IS REMOVED! (Reason : can't find a corresponding NODE)",m_tpSpawnPoints[i]->s_name_replace);
