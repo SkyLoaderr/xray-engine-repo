@@ -61,14 +61,14 @@ void CWeaponProtecta::Load(CInifile* ini, const char* section){
 	char name[255];
 	for (DWORD i=0; i<scnt; i++)
 		hFlames.push_back(Device.Shader.Create("fire_trail",_GetItem(S,i,name),false));
+	bFlame			= FALSE;
 }
 
 void CWeaponProtecta::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
-		st_target	= eFire;
-		fTime		= 0;
+		st_target	= eShoot;
 	}
 }
 
@@ -145,12 +145,13 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 	// on state change
 	if (st_target!=st_current)
 	{
-		if (st_target == eFire) UpdateFP(bHUDView);
+		if (st_target == eShoot) UpdateFP(bHUDView);
 
 		switch(st_target){
 		case eIdle:
+			bFlame	= FALSE;
 			break;
-		case eFire:
+		case eShoot:
 			pSounds->Play3DAtPos(sndFire,vLastFP,true);
 			break;
 		}
@@ -158,18 +159,19 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 	}
 
 	// cycle update
-	if (st_current == eFire) UpdateFP(bHUDView);
+	if (st_current == eShoot) UpdateFP(bHUDView);
 	switch (st_current)
 	{
 	case eIdle:
 		break;
-	case eFire:
+	case eShoot:
 		{
 			fTime-=dt;
 			Fvector p1_base, d_base;
 			m_pParent->g_fireParams(p1_base,d_base);
 			while (fTime<0)
 			{
+				bFlame	= TRUE;
 				VERIFY(m_pParent);
 				fTime+=fTimeToFire;
 				
@@ -227,7 +229,7 @@ void CWeaponProtecta::Render(BOOL bHUDView)
 		::Render.set_LightLevel		(iFloor(m_pParent->AI_Lighting));
 		::Render.add_leafs_Dynamic	(Visual());
 	}
-	if (st_current==eFire) 
+	if ((st_current==eShoot) && bFlame) 
 	{
 		UpdateFP	(bHUDView);
 

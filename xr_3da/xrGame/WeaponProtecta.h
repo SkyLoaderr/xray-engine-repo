@@ -14,13 +14,14 @@ class CWeaponProtecta: public CWeapon
 	{
 		eIdle,
 		eReload,
-		eFire
+		eShoot
 	};
 	typedef CWeapon inherited;
 
 private:
 	// General
 	float			fTime;
+	BOOL			bFlame;
 
 	sound3D			sndFire;
 	sound3D			sndRicochet[SND_RIC_COUNT];
