@@ -26,6 +26,7 @@ enum EVMType{
 struct st_VMapPt{
 	int				vmap_index;	// ссылка на мапу
 	int				index;		// индекс в мапе на uv
+	st_VMapPt(){vmap_index=-1;index=-1;}
 };
 // uv's
 class st_VMap{
@@ -35,11 +36,11 @@ public:
     BYTE			dim;
     EVMType			type;
 	BOOL			polymap;
-//	INTVec			vindices;
-//	INTVec			pindices;
+	INTVec			vindices;
+	INTVec			pindices;
 public:
-				    st_VMap		(bool pm=true)			{ name[0]=0; type=vmtUV; dim=2; polymap=pm;}
-					st_VMap		(EVMType t,bool pm=true){ name[0]=0; type=t; polymap=pm; if (t==vmtUV) dim=2; else dim=1;}
+				    st_VMap		(bool pm=false)			{name[0]=0; type=vmtUV; dim=2; polymap=pm;}
+					st_VMap		(EVMType t,bool pm=false){name[0]=0; type=t; polymap=pm; if (t==vmtUV) dim=2; else dim=1;}
     IC Fvector2&	getUV		(int idx)				{VERIFY(type==vmtUV);		return (Fvector2&)vm[idx*dim];}
     IC float&		getW		(int idx)				{VERIFY(type==vmtWeight);	return vm[idx];}
     IC FloatVec&	getvm		()						{return vm;}
@@ -146,6 +147,7 @@ public:
 protected:
 	Fbox			m_Box;
     FvectorVec		m_Points;	// |
+	INTVec			m_PointVMap;// |
     SVertVec		m_SVertices;// |
     AdjVec			m_Adjs;     // + some array size!!!
     SurfFaces		m_SurfFaces;
@@ -222,9 +224,7 @@ public:
 	bool			ExtractMaterial			(CSurface *surf, StdMat *smtl);
 	bool			Convert					(INode *node);
 #endif
-#ifdef _LWO_EXPORT
-	st_VMap*		FindVMapByName			(const char* name, EVMType t);
-#endif
+	int				FindVMapByName			(const char* name, EVMType t, BOOL polymap);
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditableMesh_H_*/
