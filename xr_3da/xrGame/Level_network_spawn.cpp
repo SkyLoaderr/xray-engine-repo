@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "gameobject.h"
 
 void CLevel::g_cl_Spawn		(LPCSTR name, int rp, int team, int squad, int group)
 {
@@ -60,13 +61,17 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 		if (s_flags&M_SPAWN_OBJECT_ACTIVE)							O->OnActivate	( );
 		if (0xffff != s_server_parent_id)	
 		{
-			NET_Packet	GEN;
-			GEN.w_begin	(M_EVENT);
-			GEN.w_u32	(Level().timeServer());
-			GEN.w_u16	(GE_OWNERSHIP_TAKE);
-			GEN.w_u16	(s_server_parent_id);
-			GEN.w_u16	(u16(O->ID()));
-			Send		(GEN,net_flags(TRUE,TRUE));
+			// Generate event
+			NET_Packet		GEN;
+			GEN.w_begin		(M_EVENT);
+			GEN.w_u32		(Level().timeServer()-NET_Latency);
+			GEN.w_u16		(GE_OWNERSHIP_TAKE);
+			GEN.w_u16		(s_server_parent_id);
+			GEN.w_u16		(u16(O->ID()));
+
+			// Simulate event arrival
+			CGameObject* GO = dynamic_cast<CGameObject*>(O);
+			if (0!=GO)		GO->net_Event	(GEN);
 		}
 	}
 }
