@@ -863,8 +863,9 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20)
 		inherited1::STATE_Read	(tNetPacket,size);
-	if (m_wVersion>=69)
+	if (m_wVersion>=68)//69 hack!!!
 		inherited2::STATE_Read	(tNetPacket,size);
+#pragma todo("change 68 -> 69")
 	if (m_wVersion < 32)
 		visual_read				(tNetPacket);
 
@@ -1158,9 +1159,9 @@ void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket,size);
     CSE_Motion::motion_read		(tNetPacket);
-	if(m_wVersion>=69)
+	if(m_wVersion>=68)// 69 !! hack!!!
 		inherited3::STATE_Read		(tNetPacket,size);
-    
+#pragma todo("change 68 -> 69")
     tNetPacket.r_string			(startup_animation);
 	tNetPacket.r_string			(engine_sound);
 

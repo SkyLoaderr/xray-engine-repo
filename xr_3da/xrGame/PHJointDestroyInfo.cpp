@@ -4,8 +4,8 @@
 CPHJointDestroyInfo::CPHJointDestroyInfo(u16 bone_id, float break_force,float break_torque)
 {
 	m_bone_id=bone_id;
-	m_sq_break_force=break_force*break_force;
-	m_sq_break_torque=break_torque*break_torque;
+	m_sq_break_force=break_force*break_force*10000.f;
+	m_sq_break_torque=break_torque*break_torque*10000.f;
 	m_breaked=false;
 }
 

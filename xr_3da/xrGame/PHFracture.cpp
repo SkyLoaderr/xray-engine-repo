@@ -484,9 +484,9 @@ bool CPHFracture::Update(CPHElement* element)
 	//vtemp.crossproduct(first_in_bone,first_part_force);
 	//break_torque.sub(vtemp);
 #ifdef DBG_BREAK		
-	float btm_dbg=break_torque.magnitude()/10000000.f;
+	float btm_dbg=break_torque.magnitude()/1000000000.f;
 #endif
-	if(break_torque.magnitude()/10000000.f>m_break_torque)
+	if(break_torque.magnitude()/1000000000.f>m_break_torque)
 	{
 		//m_break_torque.set(second_part_torque);
 		m_pos_in_element.set(second_part_force);
@@ -495,7 +495,7 @@ bool CPHFracture::Update(CPHElement* element)
 		m_add_torque_z=second_part_torque.z;
 		m_breaked=true;
 #ifndef DBG_BREAK		
-			return m_breaked;
+		return m_breaked;
 #endif
 	}
 
@@ -512,9 +512,9 @@ bool CPHFracture::Update(CPHElement* element)
 	//vtemp.crossproduct(first_in_bone,first_part_torque);
 	//break_force.sub(vtemp);
 #ifdef DBG_BREAK		
-	float bfm_dbg=break_force.magnitude();
+	float bfm_dbg=break_force.magnitude()/100.f;
 #endif
-	if(m_break_force<break_force.magnitude())
+	if(m_break_force<break_force.magnitude()/100.f)
 	{
 		
 		m_pos_in_element.set(second_part_force);
@@ -528,7 +528,7 @@ bool CPHFracture::Update(CPHElement* element)
 #endif
 	}
 #ifdef DBG_BREAK
-Msg("bone_id %d break_torque - %f(max %f) break_force %f (max %f)",m_bone_id,btm_dbg,m_break_torque,bfm_dbg,m_break_force);
+Msg("bone_id %d break_torque - %f(max %f) break_force %f (max %f) breaked %d",m_bone_id,btm_dbg,m_break_torque,bfm_dbg,m_break_force,m_breaked);
 #endif
 	return m_breaked;
 }
