@@ -17,7 +17,6 @@ CMosquitoBald::~CMosquitoBald(void)
 void CMosquitoBald::Load(LPCSTR section) 
 {
 	inherited::Load(section);
-	m_pHitEffect = pSettings->r_string(section,"hit_effect");
 }
 
 
@@ -72,7 +71,7 @@ void CMosquitoBald::Affect(CObject* O)
 
 		NET_Packet	l_P;
 		u_EventGen	(l_P,GE_HIT, pGameObject->ID());
-		l_P.w_u16	(u16(pGameObject->ID()));
+		l_P.w_u16	(ID());
 		l_P.w_u16	(ID());
 		l_P.w_dir	(hit_dir);
 		l_P.w_float	(power);

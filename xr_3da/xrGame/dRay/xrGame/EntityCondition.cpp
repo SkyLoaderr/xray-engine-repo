@@ -363,16 +363,15 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 	switch(hit_type)
 	{
 	case ALife::eHitTypeBurn:
-		hit_power *= m_HitTypeK[hit_type];
-		break;
 	case ALife::eHitTypeChemicalBurn:
-		hit_power *= m_HitTypeK[hit_type];
-		break;
 	case ALife::eHitTypeTelepatic:
-		hit_power *= m_HitTypeK[hit_type];
-		break;
 	case ALife::eHitTypeShock:
 		hit_power *= m_HitTypeK[hit_type];
+		break;
+	case ALife::eHitTypeRadiation:
+		hit_power *= m_HitTypeK[hit_type];
+		m_fDeltaRadiation += hit_power;
+		return NULL;
 		break;
 	case ALife::eHitTypeStrike:
 	case ALife::eHitTypeFireWound:

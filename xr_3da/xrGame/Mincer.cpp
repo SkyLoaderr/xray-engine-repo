@@ -95,7 +95,7 @@ void CMincer::Affect(CObject* O)
 			position_in_bone_space.set(0.f,0.f,0.f);
 			NET_Packet	P;
 			pObject->u_EventGen		(P,GE_HIT,pObject->ID());
-			P.w_u16					(u16(pObject->ID()));
+			P.w_u16					(ID());
 			P.w_u16					(ID());
 			P.w_dir					(dir);
 			P.w_float				(power);

@@ -194,8 +194,8 @@ void CBlackGraviArtifact::GraviStrike()
 				
 				NET_Packet		P;
 				u_EventGen		(P,GE_HIT, pGameObject->ID());
-				P.w_u16			(u16(ID()));
-				P.w_u16			(u16(ID()));
+				P.w_u16			(ID());
+				P.w_u16			(ID());
 				P.w_dir			(strike_dir);
 				P.w_float		(hit_power);
 				P.w_s16			(element);

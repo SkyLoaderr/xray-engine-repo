@@ -17,7 +17,5 @@ public:
 	virtual void Affect(CObject* O);
 
 protected:
-	ref_str m_pHitEffect;
-
 	virtual bool BlowoutState();
 };
