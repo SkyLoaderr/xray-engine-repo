@@ -38,6 +38,6 @@ class	R_constant_table
 private:
 	vector<R_constant*>		table;
 public:
-	void					create		(D3DXSHADER_CONSTANTTABLE* desc);
+	BOOL					parse		(D3DXSHADER_CONSTANTTABLE* desc, u16 destination);
 	R_constant*				get			(LPCSTR name);
 };
