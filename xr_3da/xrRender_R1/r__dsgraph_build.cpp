@@ -39,11 +39,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select shader
-#if		RENDER==R_R1
-	ShaderElement*		sh	= (RI.L_Projector->shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
-#elif	RENDER==R_R2
-	ShaderElement*		sh	= pVisual->hShader->E[RImplementation.phase]._get();
-#endif
+	ShaderElement*		sh		= rimp_select_sh_dynamic(pVisual,distSQ);
 
 	// Create common node
 	// NOTE: Invisible elements exist only in R1
@@ -99,11 +95,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select shader
-#if		RENDER==R_R1
-	ShaderElement*		sh		= (((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
-#elif	RENDER==R_R2
-	ShaderElement*		sh		= pVisual->hShader->E[RImplementation.phase]._get();
-#endif
+	ShaderElement*		sh		= rimp_select_sh_static(pVisual,distSQ);
 
 	// strict-sorting selection
 	if (sh->Flags.bStrictB2F) {

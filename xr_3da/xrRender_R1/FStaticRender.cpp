@@ -16,6 +16,25 @@ using	namespace		R_dsgraph;
 CRender													RImplementation;
 
 //////////////////////////////////////////////////////////////////////////
+ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq)
+{
+#if		RENDER==R_R1
+	return (RI.L_Projector->shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
+#elif	RENDER==R_R2
+	return pVisual->hShader->E[RImplementation.phase]._get();
+#endif
+}
+//////////////////////////////////////////////////////////////////////////
+ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)
+{
+#if		RENDER==R_R1
+	return (((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
+#elif	RENDER==R_R2
+	return pVisual->hShader->E[RImplementation.phase]._get();
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////
 void					CRender::create					()
 {
 	::Device.Resources->SetHLSL_path("R1\\");

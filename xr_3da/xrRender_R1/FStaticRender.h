@@ -49,22 +49,25 @@ public:
 	CRenderTarget*											Target;			// Render-target
 private:
 	// Loading / Unloading
-	void							LoadBuffers				(IReader	*fs);
-	void							LoadVisuals				(IReader	*fs);
-	void							LoadLights				(IReader	*fs);
-	void							LoadPortals				(IReader	*fs);
-	void							LoadSectors				(IReader	*fs);
-	void							LoadTrees				(IReader	*fs);
+	void								LoadBuffers				(IReader	*fs);
+	void								LoadVisuals				(IReader	*fs);
+	void								LoadLights				(IReader	*fs);
+	void								LoadPortals				(IReader	*fs);
+	void								LoadSectors				(IReader	*fs);
+	void								LoadTrees				(IReader	*fs);
 
-	BOOL							add_Dynamic				(IRender_Visual	*pVisual, u32 planes);		// normal processing
-	void							add_Static				(IRender_Visual	*pVisual, u32 planes);
-	void							add_leafs_Dynamic		(IRender_Visual	*pVisual);					// if detected node's full visibility
-	void							add_leafs_Static		(IRender_Visual	*pVisual);					// if detected node's full visibility
+	BOOL								add_Dynamic				(IRender_Visual	*pVisual, u32 planes);		// normal processing
+	void								add_Static				(IRender_Visual	*pVisual, u32 planes);
+	void								add_leafs_Dynamic		(IRender_Visual	*pVisual);					// if detected node's full visibility
+	void								add_leafs_Static		(IRender_Visual	*pVisual);					// if detected node's full visibility
+
+	virtual		ShaderElement*			rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq);
+	virtual		ShaderElement*			rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq);
 public:
-	IRender_Portal*					getPortal				(int id);
-	IRender_Sector*					getSectorActive			();
-	IRender_Visual*					model_CreatePE			(LPCSTR			name);
-	void							ApplyObject				(IRenderable*	O);
+	IRender_Portal*						getPortal				(int id);
+	IRender_Sector*						getSectorActive			();
+	IRender_Visual*						model_CreatePE			(LPCSTR			name);
+	void								ApplyObject				(IRenderable*	O);
 public:
 	// Loading / Unloading
 	virtual	void					create					();
