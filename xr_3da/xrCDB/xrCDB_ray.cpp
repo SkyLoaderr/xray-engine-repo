@@ -12,12 +12,13 @@ class ray_collider
 public:
 	COLLIDER*		dest;
 	TRI*			tris;
+	Fvector*		verts;
 	
 	Fvector			rC,rD;
 	float			rRange;
 	float			rRange2;
 
-	IC void			_init		(COLLIDER* CL, TRI* T, const Fvector& C, const Fvector& D, float R)
+	IC void			_init		(COLLIDER* CL, Fvector* V, TRI* T, const Fvector& C, const Fvector& D, float R)
 	{
 		dest		= CL;
 		tris		= T;
@@ -33,82 +34,15 @@ public:
 		BB.min.sub	(bCenter,bExtents);
 		BB.max.add	(bCenter,bExtents);
         return 		BB.Pick2(rC,rD,coord);
-		
-		/*
-		BOOL		Inside = TRUE;
-		Fvector		MaxT,bMin,bMax;
-		MaxT.set	(-1.f,-1.f,-1.f);
-		bMin.sub	(bCenter,bExtents);
-		bMax.add	(bCenter,bExtents);
-		
-		// Find candidate planes.
-		if(rC[0] < bMin[0]) {
-			Inside		= FALSE;	coord[0]	= bMin[0];
-			MaxT[0]		= (bMin[0] - rC[0]) / rD[0];	// Calculate T distances to candidate planes
-		} else if(rC[0] > bMax[0]) {
-			Inside		= FALSE;	coord[0]	= bMax[0];
-			MaxT[0]		= (bMax[0] - rC[0]) / rD[0];	// Calculate T distances to candidate planes
-		}
-		if(rC[1] < bMin[1]) {
-			Inside		= FALSE;	coord[1]	= bMin[1];
-			MaxT[1]		= (bMin[1] - rC[1]) / rD[1];	// Calculate T distances to candidate planes
-		} else if(rC[1] > bMax[1]) {
-			Inside		= FALSE;	coord[1]	= bMax[1];
-			MaxT[1]		= (bMax[1] - rC[1]) / rD[1];	// Calculate T distances to candidate planes
-		}
-		if(rC[2] < bMin[2]) {
-			Inside		= FALSE;	coord[2]	= bMin[2];
-			MaxT[2]		= (bMin[2] - rC[2]) / rD[2];	// Calculate T distances to candidate planes
-		} else if(rC[2] > bMax[2]) {
-			Inside		= FALSE;	coord[2]	= bMax[2];
-			MaxT[2]		= (bMax[2] - rC[2]) / rD[2];	// Calculate T distances to candidate planes
-		}
-		
-		// Ray rP inside bounding box
-		if(Inside)		{ coord.set	(rC); return true; }
-		
-		// Get largest of the maxT's for final choice of intersection
-		DWORD WhichPlane = 0;
-		if(MaxT[1] > MaxT[0])			WhichPlane = 1;
-		if(MaxT[2] > MaxT[WhichPlane])	WhichPlane = 2;
-		
-		// Check final candidate actually inside box
-		if(IR(MaxT[WhichPlane])&0x80000000) return false;
-		
-		switch (WhichPlane) {
-		case 0:	// 1 & 2
-			coord[1] = rC[1] + MaxT[0] * rD[1];				// 1 1 0 1
-			if(fabsf(coord[1]) > bMax[1])	return false;
-			coord[2] = rC[2] + MaxT[0] * rD[2];				// 2 2 0 2
-			if(fabsf(coord[2]) > bMax[2])	return false;
-			return true;
-		case 1:	// 0 & 2
-			coord[0] = rC[0] + MaxT[1] * rD[0];				// 0 0 1 0
-			if(fabsf(coord[0]) > bMax[0])	return false;
-			coord[2] = rC[2] + MaxT[1] * rD[2];				// 2 2 1 2
-			if(fabsf(coord[2]) > bMax[2])	return false;
-			return true;
-		case 2:	// 0 & 1
-			coord[0] = rC[0] + MaxT[2] * rD[0];				// 0 0 2 0
-			if(fabsf(coord[0]) > bMax[0])	return false;
-			coord[1] = rC[1] + MaxT[2] * rD[1];				// 1 1 2 1
-			if(fabsf(coord[1]) > bMax[1])	return false;
-			return true;
-		default:
-			NODEFAULT;
-#ifdef DEBUG
-			return false;
-#endif
-		}
-		*/
 	}
 	
 	IC bool			_tri		(u32* p, float& u, float& v, float& range)
 	{
 		Fvector edge1, edge2, tvec, pvec, qvec;
-		float det,inv_det;
+		float	det,inv_det;
 		
 		// find vectors for two edges sharing vert0
+		Fvector&			p1	= 
 		edge1.sub			(*p[1], *p[0]);
 		edge2.sub			(*p[2], *p[0]);
 		// begin calculating determinant - also used to calculate U parameter
