@@ -143,7 +143,7 @@ void __cdecl logThread(void *dummy)
 	SetProcessPriorityBoost	(GetCurrentProcess(),TRUE);
 
 	// Startup
-	string128	log_name,log_user;
+	string256	log_name,log_user;
 	DWORD		buffer_size		= 128;
 	GetUserName	(log_user,&buffer_size);
 	strconcat	(log_name,"x:\\build_",strlwr(log_user),".log");
@@ -180,7 +180,7 @@ void __cdecl logThread(void *dummy)
 	}
 
 	BOOL		bHighPriority	= FALSE;
-	string128	u_name;
+	string256	u_name;
 	DWORD		u_size	= sizeof(u_name)-1;
 	GetUserName	(u_name,&u_size);
 	_strlwr		(u_name);

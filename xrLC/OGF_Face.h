@@ -7,7 +7,7 @@
 
 struct OGF_Texture
 {
-	string64			name;
+	string256		name;
 
 	// for build only
 	b_texture*		pSurface;
