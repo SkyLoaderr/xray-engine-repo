@@ -834,13 +834,12 @@ if( m_acceleration.y>0.f&&!b_lose_control && (m_ground_contact_normal[1]>0.5f||b
 
 void CPHSimpleCharacter::ApplyAcceleration() 
 {
-	if (Level().iGetKeyState(DIK_RSHIFT))
-	{
+//	if (Level().iGetKeyState(DIK_RSHIFT))
+//	{
 	//	__asm int 3
-	int i;
-	i=5;
-	i=i;
-	}
+//	int i;
+//	i=5;
+//	}
 
 dMass m;
 dBodyGetMass(m_body,&m);
