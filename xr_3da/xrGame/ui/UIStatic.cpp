@@ -81,7 +81,11 @@ void  CUIStatic::Draw()
 		m_UIStaticItem.Render();
 
 	inherited::Draw();
+}
 
+
+void CUIStatic::Update()
+{
 	// Вывод текста
 
 	if(m_str == NULL) return;
@@ -181,12 +185,8 @@ void  CUIStatic::Draw()
 			AddLetter(m_str[i]);
 		}
 	}
-	GetFont()->OnRender();
-}
+//	GetFont()->OnRender();
 
-
-void CUIStatic::Update()
-{
 	inherited::Update();
 }
 
@@ -216,7 +216,7 @@ void CUIStatic::WordOut()
 			outY = curretY;
 		}
 		
-		HUD().OutText(GetFont(), GetClipRect(),static_cast<float>(HUD().GetScale() * (rect.left+outX + m_iTextOffsetX)), 
+		HUD().OutText(GetFont(), GetClipRect(), static_cast<float>(HUD().GetScale() * (rect.left+outX + m_iTextOffsetX)), 
 						 static_cast<float>(HUD().GetScale() * (rect.top+outY + m_iTextOffsetY)),  &buf_str.front());
 		word_length = 0;
 		new_word = false;
