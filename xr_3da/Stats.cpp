@@ -152,7 +152,7 @@ void CStats::Show()
 #define PPP(a) (100.f*float(a)/float(EngineTOTAL.result))
 		F.OutNext	("*** ENGINE:  %2.2fms",EngineTOTAL.result);	
 		F.OutNext	("Memory:      %2.2fa",fMem_calls);
-		F.OutNext	("uClients:    %2.2fms, %2.1f%%",UpdateClient.result,	PPP(UpdateClient.result));
+		F.OutNext	("uClients:    %2.2fms, %2.1f%%, %d/%d",UpdateClient.result,PPP(UpdateClient.result),UpdateClient_active,UpdateClient_total);
 		F.OutNext	("uSheduler:   %2.2fms, %2.1f%%",Sheduler.result,		PPP(Sheduler.result));
 		F.OutNext	("uSheduler_L: %2.2fms",fShedulerLoad);
 		F.OutNext	("spInsert:    %2.2fms, %2.1f%%",g_SpatialSpace->stat_insert.result, PPP(g_SpatialSpace->stat_insert.result));
@@ -234,6 +234,7 @@ void CStats::Show()
 		pFont->OnRender					();
 	}
 
+#ifdef DEBUG
 	//////////////////////////////////////////////////////////////////////////
 	// PERF ALERT
 	if (!g_bDisableRedText)
@@ -270,6 +271,8 @@ void CStats::Show()
 			F.OutNext("%s",errors[it].c_str());
 		F.OnRender	();
 	}
+#endif
+
 	{
 		EngineTOTAL.FrameStart		();	
 		Sheduler.FrameStart			();	

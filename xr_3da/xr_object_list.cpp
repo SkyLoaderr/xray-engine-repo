@@ -50,7 +50,8 @@ void CObjectList::SingleUpdate	(CObject* O)
 	if (O->processing_enabled() && (Device.dwFrame != O->dwFrame_UpdateCL))
 	{
 		if (O->H_Parent())		SingleUpdate(O->H_Parent());
-		O->dwFrame_UpdateCL		= Device.dwFrame;
+		Device.Statistic.UpdateClient_active	++;
+		O->dwFrame_UpdateCL		=				Device.dwFrame;
 		O->UpdateCL				();
 		VERIFY3					(O->dbg_update_cl == Device.dwFrame, "Broken sequence of calls to 'UpdateCL'",*O->cName());
 		if (O->getDestroy() && !O->shedule.b_locked)	destroy_queue.push_back(O);
@@ -67,6 +68,8 @@ void CObjectList::Update		()
 {
 	// Clients
 	if (Device.fTimeDelta>EPS_S)			{
+		Device.Statistic.UpdateClient_active	= 0;
+		Device.Statistic.UpdateClient_total		= objects.size();
 		Device.Statistic.UpdateClient.Begin		();
 		for (xr_vector<CObject*>::iterator O=objects.begin(); O!=objects.end(); O++) 
 			SingleUpdate(*O);
