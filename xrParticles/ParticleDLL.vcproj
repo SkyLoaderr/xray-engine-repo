@@ -118,6 +118,7 @@
 			<Tool 
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 			<IntelOptions 
+				CompilerName="1"
 				WholeProgramOptimization="1"/>
 		</Configuration>
 		<Configuration 

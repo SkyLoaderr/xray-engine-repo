@@ -282,6 +282,8 @@
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool 
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			<IntelOptions 
+				CompilerName="1"/>
 		</Configuration>
 	</Configurations>
 	<References>
