@@ -46,6 +46,7 @@ public:
 	virtual	void		OnEvent			(NET_Packet& P, u16 type);
 	virtual	void		DropItemSendMessage(CObject *O);
 
+	virtual BOOL		feel_vision_isRelevant	(CObject* O)	{ return FALSE;	}
 	virtual	void		feel_touch_new			(CObject* O);
 	virtual void		shedule_Update			(u32 dt);
 	virtual void		renderable_Render		();

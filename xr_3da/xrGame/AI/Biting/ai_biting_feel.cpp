@@ -59,7 +59,8 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 
 	if (power >= m_fSoundThreshold) {
 		if (this != who) {
-			Mem.HearSound(who,eType,Position,power,m_dwCurrentUpdate);
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+			// Mem.HearSound(who,eType,Position,power,m_dwCurrentUpdate);
 		}
  	}
 
@@ -107,9 +108,12 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 	if (!g_Alive()) return;
 	if (!pEntity) return;
 
-	if (!Mem.IsEnemy()) return;
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	// if (!Mem.IsEnemy()) return;
 
-	VisionElem &ve = Mem.GetNearestObject(Position());
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	// VisionElem &ve = Mem.GetNearestObject(Position());
+	VisionElem ve;
 	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
 		Fvector tDirection;
 		Fvector position_in_bone_space;
@@ -132,7 +136,7 @@ BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 	else  {
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 		if (!E) return FALSE;
-		if (E->g_Team() == g_Team()) && (E->g_Alive()) return FALSE;
+		if (E->g_Team() == g_Team() && E->g_Alive()) return FALSE;
 		return TRUE;
 	}
 }

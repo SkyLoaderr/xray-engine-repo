@@ -125,14 +125,16 @@ void CAI_Biting::Init()
 	m_dwEnemyMemoryTime				= 5000;  
 	m_dwEnemyLastMemoryTime			= 0;
 
-	Mem.Init(5000,10000,this);
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	// Mem.Init(5000,10000,this);
 }
 
 void CAI_Biting::Die()
 {
 	inherited::Die( );
 
-	Mem.Deinit();
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	// Mem.Deinit();
 
 
 	Fvector	dir;

@@ -52,7 +52,7 @@ void CAI_Biting::Panic()
 					m_tActionState = eActionStateDontWatch;
 				}
 				break;
-									 
+
 			case eActionStateDontWatch : 
 				break;
 			default : 
@@ -82,7 +82,7 @@ void CAI_Biting::Scared()
 
 		Fvector ptr = Position();
 		/*	Temp comment: Saved enemy...
-			ptr.sub(m_tSavedEnemy->Position());
+		ptr.sub(m_tSavedEnemy->Position());
 		*/
 		ptr.normalize();
 		ptr.mul(20.f);
@@ -101,18 +101,18 @@ void CAI_Biting::Scared()
 			// построить путь в обратную от врага сторону
 			vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionBack, 
 				eStateTypeDanger,eActionTypeWalk);
-			
+
 			vfSetParameters	 (ePathTypeStraight,0,&m_EnemyPos,true,0,true);
 			break;
 		case eActionStateDontWatch :	// убегать
-	/*	Temp comment: Saved enemy...		
+			/*	Temp comment: Saved enemy...		
 			m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
 			m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
 			m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(Position()) + 3.f;
 
 			vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
 			vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
-	*/
+			*/
 			break;
 	}
 }
@@ -120,14 +120,14 @@ void CAI_Biting::Scared()
 void CAI_Biting::BackCover(bool bFire)
 {
 	WRITE_TO_LOG("Back Cover");
-	
+
 	if (m_bStateChanged) {
 		m_tActionState			= eActionStateWatchGo;
 		m_dwActionStartTime		= m_dwCurrentUpdate;
 	}
 
 	m_dwInertion				= 60000;
-	
+
 	Fvector						EnemyPosition = m_tSavedEnemyPosition;
 	m_tSelectorCover.m_fMinEnemyDistance = EnemyPosition.distance_to(Position()) + 3.f;
 
@@ -136,45 +136,48 @@ void CAI_Biting::BackCover(bool bFire)
 			WRITE_TO_LOG			("WatchGo : BackCover");
 			if (m_dwCurrentUpdate - m_dwActionStartTime < 8500) {
 				vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, eMovementDirectionForward, 
-										eStateTypeDanger,eActionTypeRun);
+					eStateTypeDanger,eActionTypeRun);
 				vfSetParameters			(ePathTypeStraight,&m_tSelectorCover,0,true,0);
 			}
 			else {
 				vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionForward, 
-										eStateTypeDanger,eActionTypeWalk);
+					eStateTypeDanger,eActionTypeWalk);
 				vfSetParameters			(ePathTypeStraight,0,0,true,0);
 			}
 
 
 			if ((m_dwCurrentUpdate - m_dwActionStartTime > 10000) && 
 				((getAI().dwfCheckPositionInDirection(AI_NodeID,Position(),EnemyPosition) != u32(-1)) || 
-				 (m_dwCurrentUpdate - m_dwActionStartTime > 8000))) {
-				
-				m_tActionState		= eActionStateWatchLook;
-				m_dwActionStartTime = m_dwCurrentUpdate;
-			}
-			break;
+				(m_dwCurrentUpdate - m_dwActionStartTime > 8000))) {
+
+					m_tActionState		= eActionStateWatchLook;
+					m_dwActionStartTime = m_dwCurrentUpdate;
+				}
+				break;
 		case eActionStateWatchLook : 
 			break;
 		default : 
 			m_tActionState			= eActionStateWatchGo;
 			break;
-				  
+
 	}
 }
 
 void CAI_Biting::ForwardStraight()
 {
 	WRITE_TO_LOG("Forward Straight");
-	
-	if (!Mem.IsEnemy()) return;
+
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	// if (!Mem.IsEnemy()) return;
 	
 
 // -----------------------------------------------------------------------------
 // Choose branch
 	m_dwInertion				= 6000;
-	
-	VisionElem					&ve = Mem.GetNearestObject(Position());
+
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	//VisionElem					&ve = Mem.GetNearestObject(Position());
+	VisionElem					ve;	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	EActionState				OldState;
 
 	bool						bAttackRat;
@@ -616,7 +619,8 @@ void CAI_Biting::Think()
 //	return;
 
 
-	Mem.UpdateMemory();
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	//Mem.UpdateMemory();
 	//Mem.ShowDbgInfo();
 	
 

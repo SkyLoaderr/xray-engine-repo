@@ -109,8 +109,6 @@ public:
 	const Fbox&		getBBox			( )	const				{ return bv_box;		}
 	float			getRadius		( )	const				{ return bv_sphere.R;	}
 	const Fsphere&	getSphere		( )	const				{ return bv_sphere;		}
-
-	void			OnMove			( );
 };
 
 class ENGINE_API	CCF_Polygonal : public ICollisionForm

@@ -243,7 +243,8 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 // «рение, слух, веро€тность победы, выгодность противника
 void CAI_Biting::vfUpdateParameters()
 {
-	Mem.UpdateMemory();
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	// Mem.UpdateMemory();
 	SelectEnemy(m_tEnemy);
 
 	//------------------------------------
@@ -252,15 +253,21 @@ void CAI_Biting::vfUpdateParameters()
 	
 	SoundElem se;
 
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+/*
 	if (Mem.IsRememberSound()) {
 		Mem.GetMostDangerousSound(se,A);
 		B = !A;
 	}
+*/
+
 	J = A | B;
 
 	//------------------------------------
 	// «рение
 
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	/*
 	if (Mem.IsEnemy()) {
 		VisionElem &ve = Mem.GetNearestObject(Position());
 
@@ -301,7 +308,7 @@ void CAI_Biting::vfUpdateParameters()
 			I = getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov));
 		}
 	}
-
+	*/
 
 
 //	//------------------------------------
@@ -442,7 +449,7 @@ bool CAI_Biting::IsLeftSide(const Fvector &Position)
 	Fvector temp;
 
 	iV		= XFORM().i;
-	temp	= Position();
+	temp	= XFORM().c;
 	temp.sub(Position);
 	float f = temp.dotproduct(iV);
 

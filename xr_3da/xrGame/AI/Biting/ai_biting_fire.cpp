@@ -30,7 +30,8 @@ void CAI_Biting::SelectEnemy(SEnemySelected& S)
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;
 
-	if (!Mem.IsEnemy()) return;
+#pragma todo("Oles to Jim: CMonsterMemory - commented out")
+	// if (!Mem.IsEnemy()) return;
 	
 	//VisionElem &ve = Mem.GetNearestObject(vPosition);
 
