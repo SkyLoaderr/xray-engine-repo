@@ -78,13 +78,11 @@ void	CBlender_LmEbB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list
 		switch (HW.Caps.pixel.dwStages)
 		{
 		case 2:		// Geforce1/2/MX
-			if (0==stricmp(oT2_const,"$null"))	compile_2	(RS,L_textures,L_matrices,L_constants);
-			else								compile_2c	(RS,L_textures,L_matrices,L_constants);
+			compile_2	(RS,L_textures,L_matrices,L_constants);
 			break;
 		case 3:		// Kyro, Radeon, Radeon2, Geforce3/4
 		default:
-			if (0==stricmp(oT2_const,"$null"))	compile_3	(RS,L_textures,L_matrices,L_constants);
-			else								compile_3c	(RS,L_textures,L_matrices,L_constants);
+			compile_3	(RS,L_textures,L_matrices,L_constants);
 			break;
 		}
 	}
