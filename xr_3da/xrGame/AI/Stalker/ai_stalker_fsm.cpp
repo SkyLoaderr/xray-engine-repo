@@ -15,9 +15,9 @@
 
 #define AI_BEST
 /**
+	Msg("Speed      : %7.3f",m_fCurSpeed);\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
-	Msg("Speed      : %7.3f",m_fCurSpeed);\
 /**/
 
 #undef	WRITE_TO_LOG
@@ -162,6 +162,7 @@ void CAI_Stalker::Camp(bool bWeapon)
 		m_tpCurrentSound->stop();
 		m_tpCurrentSound = 0;
 	}
+
 	int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
 	if (iIndex == -1)
 		return;
@@ -505,6 +506,7 @@ void CAI_Stalker::SearchEnemy()
 	m_dwInertion				= 180000;
 
 	INIT_SQUAD_AND_LEADER;
+	
 	CGroup						&Group = *getGroup();
 	
 	if (m_dwLastEnemySearch != m_dwLastUpdate) {
@@ -1097,8 +1099,14 @@ void CAI_Stalker::Think()
 		H = _H;
 		I = _I;
 		m_bStateChanged = false;
-		vfUpdateVisibilityBySensitivity();
 	}
+	
+	if (bfCheckIfSound()) {
+		vfUpdateVisibilityBySensitivity();
+		m_dwInertion	= 0;
+		m_dwActionStartTime = m_dwCurrentUpdate;
+	}
+
 	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L));// || (_M	!= M));
 
 //	if (m_tEnemy.Enemy && (_K != K))
