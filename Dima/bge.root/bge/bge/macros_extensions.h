@@ -24,7 +24,7 @@
 
 	#define VERIFY(expr)	{\
 		if (!(expr)) {\
-		ui().log("Expression : %s\nFile : %s\n Line : %d\n",#expr,__FILE__, __LINE__);\
+		ui().log("\n\nExpression : %s\nFile       : %s\nLine       : %d\n",#expr,__FILE__, __LINE__);\
 			__asm int 3\
 		}\
 	}
