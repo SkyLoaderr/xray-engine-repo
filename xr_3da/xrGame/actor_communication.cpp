@@ -308,5 +308,6 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
 {
 	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
-	Level().RemoveMapLocationByID(GO->ID(), eMapLocationPDAContact);
+	if (GO)
+		Level().RemoveMapLocationByID(GO->ID(), eMapLocationPDAContact);
 }
