@@ -166,7 +166,7 @@ public:
 				P.r_begin							(ID);
 				R_ASSERT							(M_SPAWN==ID);
 				P.r_string							(fName);
-				CSE_Abstract						*E = F_entity_Create	(fName);
+				CSE_Abstract						*E = create_object(fName);
 				R_ASSERT2							(E,"Can't create entity.");
 				E->Spawn_Read						(P);
 				CSE_ALifeGraphPoint					*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);
@@ -216,7 +216,7 @@ public:
 						}
 					}
 				}
-				xr_delete								(E);
+				destroy_object						(E);
 			}
 			if (i != m_tpGraph->header().vertex_count())
 				Msg									("Graph for the level %s doesn't correspond to the graph points from Level Editor! (%d : %d)",m_tLevel.name(),i,m_tpGraph->header().vertex_count());

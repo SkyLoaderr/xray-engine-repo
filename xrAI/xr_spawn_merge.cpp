@@ -104,7 +104,7 @@ public:
 			string64			s_name;
 			P.r_string			(s_name);
 			// create server entity
-			CSE_Abstract		*E = F_entity_Create			(s_name);
+			CSE_Abstract		*E = create_object(s_name);
 			if (!E) {
 				string4096		S;
 				sprintf			(S,"Can't create entity '%s' !\n",E->s_name_replace);
@@ -147,7 +147,7 @@ public:
 					else {
 						CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
 						if (!graph_point)
-							xr_delete(E);
+							destroy_object(E);
 						else
                             m_graph_points.push_back	(graph_point);
 					}
@@ -156,7 +156,7 @@ public:
 			else {
 				CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
 				if (!graph_point)
-					xr_delete(E);
+					destroy_object(E);
 				else
                     m_graph_points.push_back	(graph_point);
 			}
@@ -211,13 +211,14 @@ public:
 				xr_free((*I).second);
 			}
 		}
-		delete_data					(l_tpSpawnGroupControlsMap);
+		delete_data				(l_tpSpawnGroupControlsMap);
 	};
 	virtual 					~CSpawn()
 	{
 		delete_data				(m_tpAI_Map);
 		delete_data				(m_tpCrossTable);
 		delete_data				(m_graph_points);
+		delete_data				(m_tpSpawnPoints);
 	};
 
 	void						Execute()

@@ -22,6 +22,7 @@
 #pragma comment(lib,"x:/xrcdb.LIB")
 #pragma comment(lib,"x:/MagicFM.LIB")
 #pragma comment(lib,"x:/xrCore.LIB")
+#pragma comment(lib,"x:/xrSE_Factory.LIB")
 
 extern void	xrCompiler			(LPCSTR name, bool draft_mode);
 extern void __cdecl logThread	(void *dummy);
@@ -156,7 +157,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      int       nCmdShow)
 {
 	// Initialize debugging
- 	Core._initialize		("xrAI",NULL);
+// 	Core._initialize		("xrAI",NULL);
 
 	Startup					(lpCmdLine);
 	

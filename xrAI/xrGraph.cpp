@@ -62,7 +62,7 @@ void vfLoadGraphPoints(LPCSTR name)
 		P.r_begin							(ID);
 		R_ASSERT							(M_SPAWN==ID);
 		P.r_string							(fName);
-		CSE_Abstract						*E = F_entity_Create	(fName);
+		CSE_Abstract						*E = create_object(fName);
 		R_ASSERT2							(E,"Can't create entity.");
 		E->Spawn_Read						(P);
 		CSE_ALifeGraphPoint						*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);
@@ -80,7 +80,7 @@ void vfLoadGraphPoints(LPCSTR name)
 			tpaGraph.push_back					(tDynamicGraphVertex);
 			i++;
 		}
-		xr_delete							(E);
+		destroy_object						(E);
 		if (i % 100 == 0)
 			Status							("Vertices read : %d",i);
 	}

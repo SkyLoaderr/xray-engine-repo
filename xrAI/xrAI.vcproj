@@ -929,6 +929,9 @@
 							<File
 								RelativePath=".\goap_test.cpp">
 							</File>
+							<File
+								RelativePath=".\seed.dat">
+							</File>
 							<Filter
 								Name="condition state"
 								Filter="">
@@ -1273,18 +1276,6 @@
 					RelativePath=".\object_broker_inline.h">
 				</File>
 				<File
-					RelativePath=".\object_factory.cpp">
-				</File>
-				<File
-					RelativePath=".\object_factory.h">
-				</File>
-				<File
-					RelativePath=".\object_factory_inline.h">
-				</File>
-				<File
-					RelativePath=".\object_factory_register.cpp">
-				</File>
-				<File
 					RelativePath=".\PHNetState.cpp">
 				</File>
 				<File
@@ -1298,9 +1289,6 @@
 				</File>
 				<File
 					RelativePath="xrMessages.h">
-				</File>
-				<File
-					RelativePath="xrServer_Factory.cpp">
 				</File>
 				<File
 					RelativePath="xrServer_Objects.cpp">
@@ -1354,9 +1342,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\seed.dat">
-		</File>
 		<File
 			RelativePath=".\todo.txt">
 		</File>
