@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UIScriptWnd.h"
-
+#include "../Level.h"
+#include "../HudManager.h"
 #include "../script_space.h"
 #include <luabind/operator.hpp>
 #include "../object_broker.h"
@@ -22,7 +23,11 @@ struct event_comparer{
 };
 
 UIScriptWnd::UIScriptWnd():inherited()
-{}
+{
+	Hide();
+	SetFont(HUD().pFontDI);
+
+}
 
 UIScriptWnd::~UIScriptWnd()
 {
@@ -36,6 +41,7 @@ void UIScriptWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	CALLBACK_IT it = std::find_if(m_callbacks.begin(),m_callbacks.end(),ec);
 	if(it==m_callbacks.end())
 		return;
+	SCRIPT_CALLBACK_EXECUTE_0((*it)->m_callback )
 
 }
 
@@ -58,6 +64,15 @@ void UIScriptWnd::AddCallback(LPCSTR control_id, s16 event, const luabind::funct
 	c->m_event			= event;
 	
 }
+
+void UIScriptWnd::AddCallback (LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method)
+{
+	SCallbackInfo* c	= NewCallback ();
+	c->m_callback.set	(lua_object,method);
+	c->m_controlName	= control_id;
+	c->m_event			= event;
+}
+
 
 void UIScriptWnd::test()
 {

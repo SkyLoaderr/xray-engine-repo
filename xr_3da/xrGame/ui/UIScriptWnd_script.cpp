@@ -22,11 +22,12 @@ void UIScriptWnd::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<UIScriptWnd, CUIDialogWnd>("UIScriptWnd")
+		class_<UIScriptWnd, CUIDialogWnd>("CUIScriptWnd")
 		.def(					constructor<>())
 
 		.def("Load",			&UIScriptWnd::Load)
-		.def("AddCallback",		&UIScriptWnd::AddCallback)
+		.def("AddCallback",		(void(UIScriptWnd::*)(LPCSTR, s16, const luabind::functor<void>&))UIScriptWnd::AddCallback)
+		.def("AddCallback",		(void(UIScriptWnd::*)(LPCSTR, s16, const luabind::object&, LPCSTR))UIScriptWnd::AddCallback)
 
 		.def("test",			&UIScriptWnd::test)
 
