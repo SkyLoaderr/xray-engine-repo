@@ -83,6 +83,10 @@ public:
 	// Например: кнопка A - код 0x1E(DIK_A)
 	void		SetAccelerator(u32 uAccel)	{ m_uAccelerator = uAccel; }
 	const u32	GetAccelerator() const		{ return m_uAccelerator; }
+	
+	// Метод рендеринга: старый - вся строке скопом, но одним цветом, или по словам, с переносами и
+	// цветовым отделением отдельных блоков
+	void SetNewRenderMethod(bool newMethod) { m_bNewRenderMethod = newMethod; }
 
 protected:
 	
@@ -108,6 +112,7 @@ protected:
 
 	// код акселератора
 	u32 m_uAccelerator;
+	bool	m_bNewRenderMethod;
 };
 
 #endif // _UI_BUTTON_H_

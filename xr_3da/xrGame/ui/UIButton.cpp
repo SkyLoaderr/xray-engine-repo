@@ -39,6 +39,8 @@ CUIButton:: CUIButton()
 
 	m_iTexOffsetX		= 0;
 	m_iTexOffsetY		= 0;
+
+	m_bNewRenderMethod	= false;
 }
 
  CUIButton::~ CUIButton()
@@ -308,16 +310,22 @@ void  CUIButton::Draw()
 
 	GetFont()->SetColor(m_dwFontColor);
 
-//	if(m_str && xr_strlen(m_str)>0)
-//		HUD().OutText(GetFont(), GetClipRect(), 
-//		(float)rect.left + right_offset  +  m_iTextOffsetX, 
-//		(float)rect.top + down_offset  + m_iTextOffsetY,
-//		m_str);
-	rect.left	+=	right_offset;
-	rect.top	+=	down_offset;
+	if (!m_bNewRenderMethod)
+	{
+		if(m_str && xr_strlen(m_str)>0)
+			HUD().OutText(GetFont(), GetClipRect(), 
+			(float)rect.left + right_offset  +  m_iTextOffsetX, 
+			(float)rect.top + down_offset  + m_iTextOffsetY,
+			m_str);
+		GetFont()->OnRender();
+	}
+	else
+	{
+		rect.left	+=	right_offset;
+		rect.top	+=	down_offset;
 
-//	GetFont()->OnRender();
-	inherited::DrawString(rect);
+		inherited::DrawString(rect);
+	}
 }
 
 
