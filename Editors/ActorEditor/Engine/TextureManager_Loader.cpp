@@ -119,7 +119,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		if (!v->second->bFFP)	R_CHK		(HW.pDevice->DeleteVertexShader(v->second->dwHandle));
 		delete		v->second;
 	}
-	matrices.clear	();
+	vs.clear	();
 	
 	// Release blenders
 	for (map<LPSTR,CBlender*,str_pred>::iterator b=blenders.begin(); b!=blenders.end(); b++)
