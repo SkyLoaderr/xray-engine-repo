@@ -71,7 +71,7 @@ public:
 	void					Delete3D				( sound3D& S);
 	void					SetGeometry				( RAPID::Model* M )	{ pGeometry=M; }
 	RAPID::Model*			GetGeometry				( )					{ return pGeometry;	}
-	BOOL					TestOcclusion			( Fvector& P, float R );
+	BOOL					IsOccluded				( Fvector& P, float R );
 	
 	// Stream interface
 	CSoundStream*			CreateStream			( CInifile* ini, LPCSTR section );

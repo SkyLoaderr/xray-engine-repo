@@ -417,3 +417,8 @@ void	CSoundManager::DeleteStream			( CSoundStream* pSnd )
 	pMusicStreams->DeleteSound(pSnd);
 }
 //-----------------------------------------------------------------------------
+
+BOOL CSoundManager::IsOccluded(	Fvector& P, float R )
+{
+
+}
