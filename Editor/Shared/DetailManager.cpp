@@ -304,7 +304,6 @@ void CDetailManager::Render		(Fvector& EYE)
 				float	scale			= Instance.scale_calculated;
 
 				// Build matrix
-//				mScale.scale			(scale,scale,scale);
 				if (scale>0.7f)	
 				{
 					mRotXZ.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
