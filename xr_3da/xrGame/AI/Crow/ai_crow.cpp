@@ -191,7 +191,8 @@ void CAI_Crow::Update(DWORD DT)
 		// sounds
 		if (fIdleSoundTime<=0){
 			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
-			pSounds->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
+			if (st_current==eFlyIdle)
+				pSounds->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
 		}
 		fIdleSoundTime-=float(DT)/1000.f;
 	}
