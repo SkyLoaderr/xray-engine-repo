@@ -27,7 +27,7 @@ enum OGF_Chuncks {
 	OGF_VERTICES			= 3,
 	OGF_INDICES				= 4,
 	OGF_P_MAP				= 5,	//---------------------- unused
-	OGF_P_LODS				= 6,
+	OGF_SWIDATA				= 6,
 	OGF_VCONTAINER			= 7,
 	OGF_ICONTAINER			= 8,
     OGF_CHILDREN			= 9,	// * For skeletons only

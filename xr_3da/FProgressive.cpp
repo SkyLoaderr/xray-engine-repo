@@ -36,7 +36,7 @@ void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 {
 	Fvisual::Load(N,data,dwFlags);
 	
-	IReader* lods 	= data->open_chunk	(OGF_P_LODS);
+	IReader* lods 	= data->open_chunk	(OGF_SWIDATA);
 
 	pSWI			= xr_new<FSlideWindowItem>();
 	R_ASSERT		(lods);
