@@ -117,9 +117,6 @@ void CAI_Rat::Death()
 	q_action.setup(AI::AIC_Action::FireEnd);
 	eCurrentState = aiRatDie;
 
-	// removing from group
-	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
-
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
@@ -458,9 +455,6 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition)
 		// divide the nearest nodes into the subnodes 0.7x0.7 m^2
 		int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
 		VERIFY(iMySubNode >= 0);
-		// filling the subnodes with the moving objects
-		Level().ObjectSpace.GetNearest(tCurrentPosition,3.f);//20*(Level().AI.GetHeader().size));
-		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
 		Fvector tCenter;
 
 		int i;
@@ -495,6 +489,10 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition)
 		/**/
 
 		/**/
+		// filling the subnodes with the moving objects
+		Level().ObjectSpace.GetNearest(tCurrentPosition,3.f);//20*(Level().AI.GetHeader().size));
+		CObjectSpace::NL_TYPE tpNearestList = Level().ObjectSpace.nearest_list;
+		//Msg("%d",tpNearestList.size());
 		if (!(tpNearestList.empty())) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
@@ -598,6 +596,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition)
 		VERIFY(iMySubNode >= 0);
 		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,2*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
+		//Msg("%d",tpNearestList.size());
 		if (!tpNearestList.empty()) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
@@ -1520,7 +1519,7 @@ void CAI_Rat::Exec_Action	( float dt )
 
 void CAI_Rat::Exec_Movement	( float dt )
 {
-	if ((!m_bAttackStart) && (g_Health() > 0))
+	if (!m_bAttackStart)
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	else {
 		/**/

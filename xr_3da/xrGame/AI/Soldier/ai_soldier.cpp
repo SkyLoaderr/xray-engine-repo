@@ -312,8 +312,9 @@ void CAI_Soldier::Attack()
 				S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
 				
 				S.taMembers = Squad.Groups[g_Group()].Members;
-				if (S.m_tLeader)
-					S.taMembers.push_back(S.m_tLeader);
+				
+				//if (S.m_tLeader)
+				//	S.taMembers.push_back(S.m_tLeader);
 
 				// checking if I need to rebuild the path i.e. previous search
 				// has found better destination node
