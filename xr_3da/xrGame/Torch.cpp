@@ -112,8 +112,12 @@ void CTorch::OnH_A_Chield()
 	XFORM().c.set			(Position());
 	m_focus.set				(Position());
 	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
-	setVisible				(true);
-	setEnabled				(true);
+	CInventoryOwner			*inventory_owner = dynamic_cast<CInventoryOwner*>(H_Parent());
+	VERIFY					(inventory_owner);
+	if (inventory_owner->use_torch()) {
+		setVisible			(true);
+		setEnabled			(true);
+	}
 }
 
 void CTorch::OnH_B_Independent() 

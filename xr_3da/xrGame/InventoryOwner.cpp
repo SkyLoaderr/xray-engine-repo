@@ -36,9 +36,11 @@ void CInventoryOwner::Init					()
 
 void CInventoryOwner::Load					(LPCSTR section)
 {
-	m_torch_angle_offset		= pSettings->r_fvector3	(section,"torch_angle_offset");
-	m_torch_position_offset		= pSettings->r_fvector3	(section,"torch_position_offset");
-	m_torch_bone_name			= pSettings->r_string	(section,"torch_bone_name");
+	if (use_torch()) {
+		m_torch_angle_offset	= pSettings->r_fvector3	(section,"torch_angle_offset");
+		m_torch_position_offset	= pSettings->r_fvector3	(section,"torch_position_offset");
+		m_torch_bone_name		= pSettings->r_string	(section,"torch_bone_name");
+	}
 }
 
 void CInventoryOwner::reinit				()
@@ -70,8 +72,10 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	
 	if(!pThis->Local())  return TRUE;
     
-	VERIFY				(pThis->Visual());
-	PKinematics			(pThis->Visual())->Callback(VisualCallback,this);
+	if (use_torch()) {
+		VERIFY			(pThis->Visual());
+		PKinematics		(pThis->Visual())->Callback(VisualCallback,this);
+	}
 	//////////////////////////////////////////////
 	//проспавнить PDA каждому inventory owner
 	//////////////////////////////////////////////
@@ -324,4 +328,9 @@ void CInventoryOwner::renderable_Render		()
 
 	if (torch)
 		torch->renderable_Render();
+}
+
+bool CInventoryOwner::use_torch				() const
+{
+	return				(true);
 }

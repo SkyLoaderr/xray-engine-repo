@@ -92,6 +92,7 @@ public:
 	IC	const Fvector	&torch_position_offset	() const;
 	IC	LPCSTR			torch_bone_name			() const;
 	virtual void		renderable_Render		();
+	virtual	bool		use_torch				() const;
 };
 
 #include "inventory_owner_inline.h"

@@ -368,4 +368,7 @@ void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell)
 	if (m_tpOnTrade) (*m_tpOnTrade)(xr_new<CLuaGameObject>(O),bSell);
 }
 
-
+bool CAI_Trader::use_torch				() const
+{
+	return				(true);
+}

@@ -87,5 +87,6 @@ public:
 			void			OnStartTrade			();
 			void			OnStopTrade				();
 			void			OnTradeAction			(CGameObject *O, bool bSell);
-
+public:	
+	virtual	bool			use_torch				() const;
 };
