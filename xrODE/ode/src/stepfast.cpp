@@ -822,7 +822,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		float	scale	= 0;
 		if		(iter <  halfiterations )	scale = 1.f / powf(2.f,halfiterations-iter+1);
 		else if (iter == halfiterations )	scale = .5f;
-		else if (iter >	 halfiterations )	scale = 1.f / powf(2.f,iter-halfiterations+1);
+		else if (iter >	 halfiterations )	scale = .5f / float(halfiterations); // 1.f / powf(2.f,iter-halfiterations+1);
 
 		dSetZero (cforces,			nb	* 8	);
 		dSetZero ((dReal*)ccounter,	nb		);
