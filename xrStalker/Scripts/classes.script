@@ -350,7 +350,7 @@ function NPC:is_shooting()
 	return self.last_action == self.action_shooting and self.npc:get_script() and self.npc:action()
 end
 
-function NPC:talk(to_whom, snd, animat, waitfor_anim_end, bone)
+function NPC:talk(to_whom, snd, animat, waitfor_anim_end, bone, fire_point)
 	debug_log(self.script_name, 'NPC:talk snd=\"%s\"', if_then_else(snd ~= nil, snd, "<nil>"))
 	-- Всегда отключать looking при начале talking
 	if self:is_looking() then
@@ -388,6 +388,11 @@ function NPC:talk(to_whom, snd, animat, waitfor_anim_end, bone)
 		act:set_action( cond(cond.time_end, time_infinite) )
 		printf("NPC:talk:snd is nil!")
 	end
+	
+	if fire_point ~= nil then
+		act:set_action( move(move.standing, move.run, move.line, patrol(fire_point)) )
+	end
+
 	self.npc:command(act, false)
 
 	self.last_action = self.action_talking
@@ -401,7 +406,8 @@ function NPC:get_dialogue()
 	return self.dlg_fsm
 end
 
-function NPC:talk_dialogue(to_whom)
+-- Если есть патроны - идти на fire_point во время разговора
+function NPC:talk_dialogue(to_whom, fire_point)
 	printf("NPC:talk_dialogue")
 	if self.dlg_fsm ~= nil then
 		printf("NPC:talk_dialogue:self.dlg_fsm ~= nil")
@@ -412,7 +418,7 @@ function NPC:talk_dialogue(to_whom)
 			printf("NPC:talk_dialogue:animat returned by next_phrase() is --- " .. animat)
 		end
 		if snd ~= nil then
-			self:talk(to_whom, snd, animat, waitfor_anim_end, nil)
+			self:talk(to_whom, snd, animat, waitfor_anim_end, nil, fire_point)
 		else
 			printf("NPC:talk_dialogue:snd is nil (POSSIBLY WRONG STATE???), starting the infinite pause")
 			delay = time_infinite
@@ -437,6 +443,9 @@ function NPC:talk_dialogue(to_whom)
 			else
 				printf("_bp: talk_dialogue: condition for idling is anim_end!")
 				act:set_action( cond(cond.anim_end) )
+			end
+			if fire_point ~= nil then
+				act:set_action( move(move.standing, move.run, move.line, patrol(fire_point)) )
 			end
 			self.npc:command(act, false)
 		--end
@@ -657,7 +666,9 @@ function Camper:not_see_enemy()
 	end
 
 	if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
-		self.c_npc:talk_dialogue(self.c_enemy.npc)
+		if self.c_npc.wpn:get_ammo_in_magazine() ~= 0 then
+			self.c_npc:talk_dialogue(self.c_enemy.npc, "way_attack_point") -- разговор вести с точки нападения
+		end
 	end
 end
 
