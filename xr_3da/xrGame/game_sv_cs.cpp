@@ -6,6 +6,10 @@ game_sv_CS::game_sv_CS()
 	round	= -1;
 }
 
+void	game_sv_CS::Create			(LPCSTR options)
+{
+}
+
 void	game_sv_CS::OnStartRound	()
 {
 	round	++;
@@ -90,5 +94,9 @@ void	game_sv_CS::OnTimeElapsed	()
 }
 
 void	game_sv_CS::OnTargetTouched	(u32 id_who, u32 id_target)
+{
+}
+
+void	game_sv_CS::Update			()
 {
 }
