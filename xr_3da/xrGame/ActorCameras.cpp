@@ -55,7 +55,8 @@ void CActor::cam_Update(float dt, float fFOV)
 	CCameraBase* C				= cameras	[cam_active];
 	C->Update					(point,dangle);
 	C->f_fov					= fFOV;
-	g_pGameLevel->Cameras.Update	(C);
+	if (Level().CurrentEntity() == this)
+		g_pGameLevel->Cameras.Update	(C);
 
 	// ::Render.Target.set_gray	(cam_gray);
 }
