@@ -74,7 +74,7 @@ enum {
 	rsAntialias			= (1ul<<6ul),
 	rsAntialiasBlurred	= (1ul<<7ul),
 	rsNormalize			= (1ul<<8ul),
-	rsOverdrawView		= (1ul<<9ul),
+	rsCompressLMAPs		= (1ul<<9ul),
 	rsOcclusion			= (1ul<<10ul),
 	rsStatistic			= (1ul<<11ul),
 	mtSound				= (1ul<<24ul),
