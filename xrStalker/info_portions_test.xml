@@ -96,6 +96,7 @@
 		<task>task2</task>
 		
 		<dialog>pda_trade</dialog>
+		<dialog>escape_trader_talk_flame</dialog>
 		
 		<article>three</article>
 		<article>four</article>
