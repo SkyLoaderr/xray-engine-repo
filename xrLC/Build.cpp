@@ -148,7 +148,7 @@ CBuild::CBuild(b_transfer * L)
 	for (DWORD m=0; m<materials.size(); m++)
 	{
 		b_material &M = materials[m];
-		int id = shaders.GetID(shader_names[M.shader].name);
+		int id = shaders.GetID(shader_names[M.shader_xrlc].name);
 		if (id<0) {
 			Msg("ERROR: Shader '%s' not found in library",shader_names[M.shader].name);
 			R_ASSERT(id>=0);
