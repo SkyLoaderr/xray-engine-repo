@@ -63,7 +63,7 @@ struct DetailHeader
 {
 	u32		version;
 	u32		object_count;
-	int			offs_x,	offs_z;
+	int		offs_x,	offs_z;
 	u32		size_x,	size_z;
 };
 
