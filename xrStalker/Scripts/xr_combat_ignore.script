@@ -11,17 +11,17 @@ function action_process_enemy_callback:__init( obj, storage )
 end
 
 function action_process_enemy_callback:enemy_callback( obj, enemy )
-	printf( "ENEMY CALLBACK obj='%s', enemy='%s'", obj:name(), enemy:name() )
+--	printf( "ENEMY_CALLBACK obj='%s', enemy='%s'", obj:name(), enemy:name() )
 
 	local overrides = xr_logic.generic_scheme_overrides( obj )
 
-	if not overrides then
+--[[	if not overrides then
 		printf( "no overrides" )
 	end
 
 	if not overrides.combat_ignore then
 		printf( "no overrides.combat_ignore" )
-	end
+	end]]
 
 	db.storage[obj:id()].enemy = enemy
 
@@ -30,27 +30,12 @@ function action_process_enemy_callback:enemy_callback( obj, enemy )
 	   db.actor and
 	   xr_logic.pick_section_from_condlist( db.actor, obj, overrides.combat_ignore.condlist ) ~= nil
 	then
-		printf( "false" )
+--		printf( "false" )
 		return false
 	end
 
-	printf( "true" )
+--	printf( "true" )
 	do return true end
-
-	if who ~= nil then
-		printf("[%s] killed by [%s]", victim:name(), who:name() )
-		db.storage[victim:id()].death.killer = who:id()
-	else
-		printf("[%s] killed by [Unknown]", victim:name())
-	end
-
-	if db.storage[self.object:id()].active_scheme then
-		if db.actor then
-			if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
-				return
-			end
-		end
-	end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -66,7 +51,7 @@ function set_combat_ignore_checker( npc, ini, scheme, section )
 --	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 --	st.enabled = true
 
-	printf( "xr_combat_ignore: SET ENEMY CALLBACK, obj=%s", npc:name() )
+	printf( "xr_combat_ignore: SET ENEMY_CALLBACK, obj=%s", npc:name() )
 	npc:set_enemy_callback( st.action.enemy_callback, st.action )
 end
 
