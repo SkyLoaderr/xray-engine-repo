@@ -21,7 +21,7 @@ BOOL PS::CPEDef::Equal(const CPEDef* pe)
     if (0!=memcmp(&m_Frame,&pe->m_Frame,sizeof(m_Frame))) 	return FALSE;
 	if (!fsimilar(m_fTimeLimit,pe->m_fTimeLimit))			return FALSE;
     if (m_MaxParticles!=pe->m_MaxParticles)					return FALSE;
-    if (m_ActionList.size()!=pe->m_ActionList.size())		return FALSE;
+    if (m_Actions.size()!=pe->m_Actions.size())				return FALSE;
     if (!m_VelocityScale.similar(pe->m_VelocityScale))		return FALSE;
 	if (!fsimilar(m_fCollideOneMinusFriction,pe->m_fCollideOneMinusFriction))	return FALSE;
     if (!fsimilar(m_fCollideResilience,pe->m_fCollideResilience))				return FALSE;
@@ -38,7 +38,7 @@ void PS::CPEDef::Copy(const CPEDef& src)
     m_Frame				= src.m_Frame;
 	m_fTimeLimit		= src.m_fTimeLimit;
     m_MaxParticles		= src.m_MaxParticles;
-    m_ActionList.clear	();
+    m_Actions.clear		();
 	m_CachedShader		= src.m_CachedShader;
     m_VelocityScale.set			(src.m_VelocityScale);
 	m_fCollideOneMinusFriction	= src.m_fCollideOneMinusFriction;

@@ -42,7 +42,7 @@ CPEDef::~CPEDef()
 {
     xr_free				(m_ShaderName);
     xr_free				(m_TextureName);
-    for (PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++) xr_delete(*it);
+//	for (PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++) xr_delete(*it);
 }
 void CPEDef::SetName(LPCSTR name)
 {
@@ -188,12 +188,15 @@ BOOL CPEDef::Load(IReader& F)
 	R_ASSERT		(F.find_chunk(PED_CHUNK_EFFECTDATA));
     m_MaxParticles	= F.r_u32();
 
-    R_ASSERT		(F.find_chunk(PED_CHUNK_ACTIONLIST));
-    m_ActionList.resize(F.r_u32());
+    u32 sz			= F.find_chunk(PED_CHUNK_ACTIONLIST); R_ASSERT(sz);
+    m_Actions.w		(F.pointer(),sz);
+/*//!
+    m_ActionList.actions.resize(F.r_u32());
     for (PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++){
     	*it			= PAPI::pCreateAction((PActionEnum)F.r_u32());
         (*it)->Load	(F);
     }
+*/
 
 	F.r_chunk		(PED_CHUNK_FLAGS,&m_Flags);
 
@@ -270,11 +273,14 @@ void CPEDef::Save(IWriter& F)
     F.close_chunk	();
 
 	F.open_chunk	(PED_CHUNK_ACTIONLIST);
-    F.w_u32			(m_ActionList.size());
+    F.w				(m_Actions.pointer(),m_Actions.size());
+/*//!
+    F.w_u32			(m_ActionList.actions.size());
     for (PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++){
     	F.w_u32		((*it)->type);
         (*it)->Save	(F);
     }
+*/    
     F.close_chunk	();
 
 	F.w_chunk		(PED_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
@@ -470,8 +476,17 @@ BOOL CParticleEffect::Compile(CPEDef* def)
 
         // append actions
         pNewActionList			(m_HandleActionList);
+        IReader F				(m_Def->m_Actions.pointer(),m_Def->m_Actions.size());
+        u32 cnt					= F.r_u32();
+        for (u32 k=0; k<cnt; k++){
+            ParticleAction* act	= PAPI::pCreateAction	((PActionEnum)F.r_u32());
+            act->Load			(F);
+            pAddActionToList	(act);
+        }
+/*//!
 	    for (PAVecIt it=m_Def->m_ActionList.begin(); it!=m_Def->m_ActionList.end(); it++)
             pAddActionToList	(*it);
+*/
         pEndActionList();
         
         // time limit

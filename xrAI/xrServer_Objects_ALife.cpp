@@ -773,8 +773,8 @@ void __fastcall	CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
 
 void __fastcall	CSE_ALifeObjectPhysic::OnChooseAnim(PropValue* sender, AStringVec& lst)
 {
-    CSkeletonAnimated::accel  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
-    CSkeletonAnimated::accel::iterator _I, _E;
+    CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
+    CSkeletonAnimated::accel_map::iterator _I, _E;
     _I							= ll_motions->begin();
     _E							= ll_motions->end();
     for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
@@ -920,8 +920,8 @@ void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
 
 void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseAnim(PropValue* sender, AStringVec& lst)
 {
-    CSkeletonAnimated::accel  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
-    CSkeletonAnimated::accel::iterator _I, _E;
+    CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
+    CSkeletonAnimated::accel_map::iterator _I, _E;
     _I							= ll_motions->begin();
     _E							= ll_motions->end();
     for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
@@ -1078,8 +1078,8 @@ void __fastcall	CSE_ALifeHelicopter::OnChangeAnim(PropValue* sender)
 
 void __fastcall	CSE_ALifeHelicopter::OnChooseAnim(PropValue* sender, AStringVec& lst)
 {
-    CSkeletonAnimated::accel  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
-    CSkeletonAnimated::accel::iterator _I, _E;
+    CSkeletonAnimated::accel_map  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
+    CSkeletonAnimated::accel_map::iterator _I, _E;
     _I							= ll_motions->begin();
     _E							= ll_motions->end();
     for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);

@@ -98,7 +98,8 @@ namespace PS
 
 		int					m_MaxParticles;
 
-		PAPI::PAVec 		m_ActionList;
+        CMemoryWriter		m_Actions;
+//		PAPI::ParticleActions m_ActionList;
 
 		ref_shader			m_CachedShader;
 

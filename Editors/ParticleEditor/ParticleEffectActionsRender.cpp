@@ -129,7 +129,7 @@ void PS::CPEDef::Render()
 {
 //.	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++)
 //.    	(*it)->Render();
-	for (PAPI::PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++)
-    	RenderAction(*it);
+//.	for (PAPI::PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++)
+//.    	RenderAction(*it);
 }
 

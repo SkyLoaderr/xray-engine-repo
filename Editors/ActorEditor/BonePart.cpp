@@ -61,8 +61,8 @@ void __fastcall TfrmBonePart::FillBoneParts()
     for (k=0; k<4; k++){T[k]->Items->Clear();E[k]->Text="";}
 	for (BPIt it=m_BoneParts->begin(); it!=m_BoneParts->end(); it++){
         E[it-m_BoneParts->begin()]->Text = it->alias;
-        for (IntIt w_it=it->bones.begin(); w_it!=it->bones.end(); w_it++)
-        	FHelper.AppendObject(T[it-m_BoneParts->begin()],m_EditObject->BoneNameByID(*w_it));
+        for (AStringIt w_it=it->bones.begin(); w_it!=it->bones.end(); w_it++)
+        	FHelper.AppendObject(T[it-m_BoneParts->begin()],w_it->c_str());
     }
     for (k=0; k<4; k++) T[k]->IsUpdating = false;
     lbTotalBones->Caption = m_EditObject->BoneCount();
@@ -134,7 +134,7 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
     for (k=0; k<4; k++){
     	if (T[k]->Items->Count)
 		    for ( TElTreeItem* node = T[k]->Items->GetFirstNode(); node; node = node->GetNext())
-	        	b_use[m_EditObject->BoneIDByName(AnsiString(node->Text).c_str())]++;
+	        	b_use[m_EditObject->FindBoneByNameIdx(AnsiString(node->Text).c_str())]++;
     }
     for (U8It u_it=b_use.begin(); u_it!=b_use.end(); u_it++)
     	if (*u_it!=1){ 
@@ -150,7 +150,7 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
             SBonePart& BP = m_BoneParts->back();
             BP.alias = E[k]->Text;
 		    for ( TElTreeItem* node = T[k]->Items->GetFirstNode(); node; node = node->GetNext())
-            	BP.bones.push_back(m_EditObject->BoneIDByName(AnsiString(node->Text).c_str()));
+            	BP.bones.push_back(node->Text);
         }
     }
     ATools->OnMotionDefsModified();

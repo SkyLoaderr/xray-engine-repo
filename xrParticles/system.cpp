@@ -247,7 +247,7 @@ void _pAddActionToList(ParticleAction *S)
 
 PARTICLEDLL_API void pAddActionToList(ParticleAction* S)
 {
-	_pAddActionToList(pCreateAction(S->type,S));
+	_pAddActionToList(S);
 }
 
 ////////////////////////////////////////////////////////

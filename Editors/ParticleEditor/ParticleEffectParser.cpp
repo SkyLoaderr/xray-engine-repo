@@ -508,16 +508,6 @@ PFunction* CPEDef::FindCommandPrototype(LPCSTR src, LPCSTR& dest)
     }
 }
 
-void TransferActions(PAVec& src, PAVec& dest)
-{
-	for (PAVecIt d_it=dest.begin(); d_it!=dest.end(); d_it++)
-    	xr_delete(*d_it);
-    dest.clear();
-	for (PAVecIt s_it=src.begin(); s_it!=src.end(); s_it++)
-    	dest.push_back(pCreateAction((*s_it)->type,*s_it));
-}
-
-
 void CPEDef::Compile()
 {
 	// load templates
@@ -595,8 +585,13 @@ void CPEDef::Compile()
         m_MaxParticles			= pe->max_particles;
     
         // save action list
-        PAVec*	pa				= _GetListPtr(action_list_handle); R_ASSERT(pa);
-        TransferActions			(*pa,m_ActionList);
+        ParticleActions* pa		= _GetListPtr(action_list_handle); R_ASSERT(pa);
+        m_Actions.clear			();
+        m_Actions.w_u32			(pa->size());
+        for (PAVecIt it=pa->begin(); it!=pa->end(); it++){
+        	m_Actions.w_u32		((*it)->type);
+            (*it)->Save			(m_Actions);  
+        }
     }catch(...){
     }
 
