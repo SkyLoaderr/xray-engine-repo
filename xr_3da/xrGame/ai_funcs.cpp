@@ -56,44 +56,44 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 	char caPath[260];
 	memcpy(caPath,Path.GameData,(strlen(Path.GameData) + 1)*sizeof(char));
 	strcat(caPath,AI_PATH);
-	strcat(caPath,caFileName);
 
-	FILE *fTestParameters = fopen(caPath,"rb");
-	if (!fTestParameters) {
+	if (!Engine.FS.Exist(caPath, caPath, caFileName)) {
 		Msg("! Evaluation function : File not found \"%s\"",caPath);
 		R_ASSERT(false);
 		return;
 	}
 	
-	fread(&m_tEFHeader,1,sizeof(SEFHeader),fTestParameters);
+	CStream *F = Engine.FS.Open(caPath);
+	F->Read(&m_tEFHeader,sizeof(SEFHeader));
+
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
-		fclose(fTestParameters);
+		Engine.FS.Close(F);
 		Msg("! Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caPath);
 		R_ASSERT(false);
 		return;
 	}
 
-	fread(&m_dwVariableCount,1,sizeof(m_dwVariableCount),fTestParameters);
+	F->Read(&m_dwVariableCount,sizeof(m_dwVariableCount));
 	m_dwaAtomicFeatureRange = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
 	ZeroMemory(m_dwaAtomicFeatureRange,m_dwVariableCount*sizeof(u32));
 	u32 *m_dwaAtomicIndexes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
 	ZeroMemory(m_dwaAtomicIndexes,m_dwVariableCount*sizeof(u32));
 
 	for (u32 i=0; i<m_dwVariableCount; i++) {
-		fread(m_dwaAtomicFeatureRange + i,1,sizeof(u32),fTestParameters);
+		F->Read(m_dwaAtomicFeatureRange + i,sizeof(u32));
 		if (i)
 			m_dwaAtomicIndexes[i] = m_dwaAtomicIndexes[i-1] + m_dwaAtomicFeatureRange[i-1];
 	}
 
 	m_dwaVariableTypes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
-	fread(m_dwaVariableTypes,m_dwVariableCount,sizeof(u32),fTestParameters);
+	F->Read(m_dwaVariableTypes,m_dwVariableCount*sizeof(u32));
 
-	fread(&m_dwFunctionType,1,sizeof(u32),fTestParameters);
+	F->Read(&m_dwFunctionType,sizeof(u32));
 
-	fread(&m_fMinResultValue,1,sizeof(float),fTestParameters);
-	fread(&m_fMaxResultValue,1,sizeof(float),fTestParameters);
+	F->Read(&m_fMinResultValue,sizeof(float));
+	F->Read(&m_fMaxResultValue,sizeof(float));
 
-	fread(&m_dwPatternCount,1,sizeof(m_dwPatternCount),fTestParameters);
+	F->Read(&m_dwPatternCount,sizeof(m_dwPatternCount));
 	m_tpPatterns = (SPattern *)xr_malloc(m_dwPatternCount*sizeof(SPattern));
 	m_dwaPatternIndexes = (u32 *)xr_malloc(m_dwPatternCount*sizeof(u32));
 	ZeroMemory(m_dwaPatternIndexes,m_dwPatternCount*sizeof(u32));
@@ -101,9 +101,9 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 	for ( i=0; i<m_dwPatternCount; i++) {
 		if (i)
 			m_dwaPatternIndexes[i] = m_dwParameterCount;
-		fread(&(m_tpPatterns[i].dwCardinality),1,sizeof(m_tpPatterns[i].dwCardinality),fTestParameters);
+		F->Read(&(m_tpPatterns[i].dwCardinality),sizeof(m_tpPatterns[i].dwCardinality));
 		m_tpPatterns[i].dwaVariableIndexes = (u32 *)xr_malloc(m_tpPatterns[i].dwCardinality*sizeof(u32));
-		fread(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality,sizeof(u32),fTestParameters);
+		F->Read(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality*sizeof(u32));
 		u32 m_dwComplexity = 1;
 		for (int j=0; j<(int)m_tpPatterns[i].dwCardinality; j++)
 			m_dwComplexity *= m_dwaAtomicFeatureRange[m_tpPatterns[i].dwaVariableIndexes[j]];
@@ -111,8 +111,8 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 	}
 	
 	m_faParameters = (float *)xr_malloc(m_dwParameterCount*sizeof(float));
-	fread(m_faParameters,m_dwParameterCount,sizeof(float),fTestParameters);
-	fclose(fTestParameters);
+	F->Read(m_faParameters,m_dwParameterCount*sizeof(float));
+	Engine.FS.Close(F);
 
 	m_dwaVariableValues = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
 	
@@ -120,7 +120,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
     
 	Level().m_tpAI_DDD->fpaBaseFunctions[m_dwFunctionType] = this;
 	
-	_splitpath(caFileName,0,0,m_caName,0);
+	_splitpath(caPath,0,0,m_caName,0);
 
 	Msg("* Evaluation function \"%s\" is successfully loaded",m_caName);
 }
