@@ -98,6 +98,8 @@ void CBuild::xrPhase_Subdivide()
 			g_XSplit.erase		(g_XSplit.begin()+X); X--;
 			g_XSplit.push_back	(s1);
 			g_XSplit.push_back	(s2);
+			
+			// Detach
 		}
 		s1.clear	();
 		s2.clear	();
