@@ -25,6 +25,9 @@ using namespace InventoryUtilities;
 
 #include "../InfoPortion.h"
 
+//const int	BELT_SLOT		= 5;
+//const int	MP_SLOTS_NUM	= 8;
+
 #define MAX_ITEMS	70
 
 const u32			cDetached				= 0xffffffff;
@@ -64,6 +67,8 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 
 	m_mlCurrLevel	= mlRoot;
 	m_bIgnoreMoney	= false;
+
+	SetMoneyAmount(10000);
 
 	// Инициализируем вещи
 	Init(strSectionName);
@@ -177,12 +182,12 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 		xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
 	}
 	// 1 дополнительный лист для аддонов к оружию
-	CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
-	R_ASSERT(pNewDDList);
-	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
-	m_WeaponSubBags.push_back(pNewDDList);
-	pNewDDList->SetCheckProc(BagProc);
-	pNewDDList->SetMessageTarget(this);
+//	CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
+//	R_ASSERT(pNewDDList);
+//	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
+//	m_WeaponSubBags.push_back(pNewDDList);
+//	pNewDDList->SetCheckProc(BagProc);
+//	pNewDDList->SetMessageTarget(this);
 	// Заполняем массив со списком оружия
 	ReInitItems(strSectionName);
 
@@ -380,15 +385,16 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-	CUIBuyWeaponWnd::CUIDragDropItemMP::AddonIDs	addonID;
+	CUIDragDropItemMP::AddonIDs	addonID;
 	CUIDragDropItemMP *pDDItemMP	= dynamic_cast<CUIDragDropItemMP*>(pItem), 
 					  *pAddonOwner	= this_inventory->IsItemAnAddon(pDDItemMP, addonID);
+
 	R_ASSERT(pDDItemMP);
 
 	// Если аддон
-	if (pAddonOwner)
+	if (pAddonOwner)	
 	{
-		pAddonOwner->AttachDetachAddon(addonID, !pAddonOwner->IsAddonAttached(addonID));
+		pAddonOwner->AttachDetachAddon(pDDItemMP, !pAddonOwner->IsAddonAttached(addonID));
 		return false;
 	}
 	// Не аддон
@@ -643,12 +649,12 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			pAddonOwner = IsItemAnAddon(m_pCurrentDragDropItem, addonID);
 
 			// проверяем, а не является ли эта вещь чьим-то аддоном?
-			if (pAddonOwner)
-			{
-				pAddonOwner->AttachDetachAddon(addonID, !pAddonOwner->IsAddonAttached(addonID));
-			}
+//			if (pAddonOwner)
+//			{
+//				pAddonOwner->AttachDetachAddon(addonID, !pAddonOwner->IsAddonAttached(addonID));
+//			}
 			// Если мы нашли уже аддон, то ничего дальше  деалать не надо
-			else
+//			else
 			{
 				// "Поднять" вещь для освобождения занимаемого места
 				SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
@@ -974,6 +980,14 @@ bool CUIBuyWeaponWnd::ToSlot()
 	if (GRENADE_SLOT == m_pCurrentDragDropItem->GetSlot() && 
 		!UITopList[GRENADE_SLOT].GetDragDropItemsList().empty()) return false;
 
+	// Если вещь аддон
+	CUIDragDropItemMP::AddonIDs ID;
+	CUIDragDropItemMP * pDDItemMP = IsItemAnAddon(m_pCurrentDragDropItem, ID);
+	if (pDDItemMP)
+	{
+		pDDItemMP->AttachDetachAddon(ID, true);
+	}
+
 	// Если вещь без номера слота, то ее поместить никуда нельзя (например патроны)
 	if (m_pCurrentDragDropItem->GetSlot() < MP_SLOTS_NUM)
 	{
@@ -1006,11 +1020,12 @@ bool CUIBuyWeaponWnd::ToBelt()
 	// Ecли вещь не впоясобросаемая
 	// Если вещь уже на поясе
 	// Если места больше нет
-	// Если вещь аддон
+	// Если вещь из подтипа дополнительной аппаратуры (аддоны, фонарь)
 
 	if (!CanPutInBelt(m_pCurrentDragDropItem)							||
 		&UITopList[BELT_SLOT] == m_pCurrentDragDropItem->GetParent()	||
-		!UITopList[BELT_SLOT].CanPlaceItem(m_pCurrentDragDropItem)		)
+		!UITopList[BELT_SLOT].CanPlaceItem(m_pCurrentDragDropItem)		||
+		5 == m_pCurrentDragDropItem->GetSectionGroupID())
 		return false;
 
 	static_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
@@ -1141,7 +1156,7 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		if (UIDragDropItem.GetCost() > GetMoneyAmount())
 		{
 			UIDragDropItem.SetColor(cUnableToBuy);
-			UIDragDropItem.EnableDragDrop(false);
+//			UIDragDropItem.EnableDragDrop(false);
 		}
 
 		// Для арморов читаем дополнительно координаты на текстуре с иконками персонажей для арморов
@@ -1239,45 +1254,45 @@ void CUIBuyWeaponWnd::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const std::str
 
 			// Теперь инициализируем изображение
 
-			const char* section  = DDItemMP.m_AddonInfo[i].strAddonName.c_str();
-			u32 iGridWidth = pSettings->r_u32(section, "inv_grid_width");
-			u32 iGridHeight = pSettings->r_u32(section, "inv_grid_height");
-			u32 iXPos = pSettings->r_u32(section, "inv_grid_x");
-			u32 iYPos = pSettings->r_u32(section, "inv_grid_y");
-			int cost  = pSettings->r_u32(section, "cost");
-
-			// А теперь создаем реальную вещь
-			CUIDragDropItemMP& UIDragDropItem = m_vDragDropItems[GetFirstFreeIndex()];
-
-			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
-			UIDragDropItem.SetShader(GetEquipmentIconsShader());
-
-			// Наш последний секретный слот предназначен именно для аддонов
-			UIDragDropItem.SetSlot(static_cast<u32>(-1));
-			UIDragDropItem.SetSectionGroupID(m_WeaponSubBags.size() - 1);
-			UIDragDropItem.SetPosInSectionsGroup(i);
-
-			UIDragDropItem.SetGridHeight(iGridHeight);
-			UIDragDropItem.SetGridWidth(iGridWidth);
-
-			UIDragDropItem.SetCost(cost);
-
-			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
-
-			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-				iXPos		* INV_GRID_WIDTH,
-				iYPos		* INV_GRID_HEIGHT,
-				iGridWidth	* INV_GRID_WIDTH,
-				iGridHeight	* INV_GRID_HEIGHT);
-
-			// Количество доступных секций должно быть не больше затребованных
-			UIDragDropItem.SetAutoDelete(false);
-
-			// Задаем специальную дополнительную функцию отрисовки, для
-			// отображения номера оружия в углу его иконки
-			UIDragDropItem.SetCustomUpdate(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
-			// Берем адрес аддона и запоминаем его
-			DDItemMP.m_pAddon[i] = &UIDragDropItem;
+//			const char* section  = DDItemMP.m_AddonInfo[i].strAddonName.c_str();
+//			u32 iGridWidth = pSettings->r_u32(section, "inv_grid_width");
+//			u32 iGridHeight = pSettings->r_u32(section, "inv_grid_height");
+//			u32 iXPos = pSettings->r_u32(section, "inv_grid_x");
+//			u32 iYPos = pSettings->r_u32(section, "inv_grid_y");
+//			int cost  = pSettings->r_u32(section, "cost");
+//
+//			// А теперь создаем реальную вещь
+//			CUIDragDropItemMP& UIDragDropItem = m_vDragDropItems[GetFirstFreeIndex()];
+//
+//			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+//			UIDragDropItem.SetShader(GetEquipmentIconsShader());
+//
+//			// Наш последний секретный слот предназначен именно для аддонов
+//			UIDragDropItem.SetSlot(static_cast<u32>(-1));
+//			UIDragDropItem.SetSectionGroupID(m_WeaponSubBags.size() - 1);
+//			UIDragDropItem.SetPosInSectionsGroup(i);
+//
+//			UIDragDropItem.SetGridHeight(iGridHeight);
+//			UIDragDropItem.SetGridWidth(iGridWidth);
+//
+//			UIDragDropItem.SetCost(cost);
+//
+//			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+//
+//			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+//				iXPos		* INV_GRID_WIDTH,
+//				iYPos		* INV_GRID_HEIGHT,
+//				iGridWidth	* INV_GRID_WIDTH,
+//				iGridHeight	* INV_GRID_HEIGHT);
+//
+//			// Количество доступных секций должно быть не больше затребованных
+//			UIDragDropItem.SetAutoDelete(false);
+//
+//			// Задаем специальную дополнительную функцию отрисовки, для
+//			// отображения номера оружия в углу его иконки
+//			UIDragDropItem.SetCustomUpdate(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
+//			// Берем адрес аддона и запоминаем его
+//			DDItemMP.m_pAddon[i] = &UIDragDropItem;
 		}
 	}
 }
@@ -1449,7 +1464,7 @@ void CUIBuyWeaponWnd::GetWeaponIndexByName(const std::string sectionName, u8 &gr
 
 //////////////////////////////////////////////////////////////////////////
 
-CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::GetWeapon(u32 slotNum, u32 idx)
+CUIDragDropItemMP * CUIBuyWeaponWnd::GetWeapon(u32 slotNum, u32 idx)
 {
 	R_ASSERT(slotNum < MP_SLOTS_NUM);
 	if (UITopList[slotNum].GetDragDropItemsList().empty()) return NULL;
@@ -1596,25 +1611,25 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 		}
 		break;
 	// Третий уровень - выбор аддона к оружию, если таковые есть
-	case mlAddons:
-		if (dik > DIK_ESCAPE && dik < DIK_4)
-		{
-			// Определяем указатель на аддон по нажадтой кнопке
-
-			// Лист с аддонами у нас всегда последний
-			DRAG_DROP_LIST_it it = m_WeaponSubBags.back()->GetDragDropItemsList().begin();
-			// Сдвигаем итератор на нужный элемент
-			std::advance(it, dik - 2);
-			// Теперь ищем оружие - хозяина аддона
-			CUIDragDropItemMP::AddonIDs ID;
-			CUIDragDropItemMP *pDDItemMP = IsItemAnAddon(static_cast<CUIDragDropItemMP*>(*it), ID);
-
-//			R_ASSERT(pDDItemMP);
-			if (!pDDItemMP) return false;
-
-			pDDItemMP->AttachDetachAddon(ID, 0 == pDDItemMP->m_AddonInfo[ID].iAttachStatus);
-		}
-		break;
+//	case mlAddons:
+//		if (dik > DIK_ESCAPE && dik < DIK_4)
+//		{
+//			// Определяем указатель на аддон по нажатой кнопке
+//
+//			// Лист с аддонами у нас всегда последний
+//			DRAG_DROP_LIST_it it = m_WeaponSubBags.back()->GetDragDropItemsList().begin();
+//			// Сдвигаем итератор на нужный элемент
+//			std::advance(it, dik - 2);
+//			// Теперь ищем оружие - хозяина аддона
+//			CUIDragDropItemMP::AddonIDs ID;
+//			CUIDragDropItemMP *pDDItemMP = IsItemAnAddon(static_cast<CUIDragDropItemMP*>(*it), ID);
+//
+//			// R_ASSERT(pDDItemMP);
+//			if (!pDDItemMP) return false;
+//
+//			pDDItemMP->AttachDetachAddon(ID, 0 == pDDItemMP->m_AddonInfo[ID].iAttachStatus);
+//		}
+//		break;
 	}
 
 	if (DIK_ESCAPE == dik)
@@ -1629,6 +1644,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 	if (dik == g_iOkAccelerator)
 	{
 		SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
+//		CUIDragDropItemMP *p = GetAddonByID(dynamic_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front()), CUIDragDropItemMP::ID_SILENCER);
 		return true;
 	}
 
@@ -1651,7 +1667,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 
 void WpnDrawIndex(CUIDragDropItem *pDDItem)
 {
-	CUIBuyWeaponWnd::CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIBuyWeaponWnd::CUIDragDropItemMP*>(pDDItem);
+	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pDDItem);
 	R_ASSERT(pDDItemMP);
 	if (!pDDItemMP) return;
 
@@ -1818,7 +1834,7 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 					pDDItemMP->SetColor(cUnableToBuy);
 					status = false;
 
-					// Для армора закрациваем дополнительно и иконку с изображением персонажа
+					// Для армора закрашиваем дополнительно и иконку с изображением персонажа
 					if (OUTFIT_SLOT == pDDItemMP->GetSlot())
 						UIOutfitIcon.SetColor(cUnableToBuy);
 					pDDItemMP->m_bAlreadyPaid = false;
@@ -1848,16 +1864,17 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 			if (pDDItemMP->GetCost() <= GetMoneyAmount())
 			{
 				SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
-				(*it)->SetColor(cAbleToBuy);
+				pDDItemMP->SetColor(cAbleToBuy);
 			}
 			else
 			{
-				(*it)->SetColor(cUnableToBuy);
+				pDDItemMP->SetColor(cUnableToBuy);
+				pDDItemMP->m_bAlreadyPaid = false;
 				status = false;
 			}
 		}
 		else
-			(*it)->SetColor(cAbleToBuyOwned);
+			pDDItemMP->SetColor(cAbleToBuyOwned);
 	}
 
 	return status;
@@ -1998,7 +2015,7 @@ void CUIBuyWeaponWnd::ClearRealRepresentationFlags()
 	for (int i = 0; i < m_iUsedItems; ++i)
 	{
 		m_vDragDropItems[i].m_bHasRealRepresentation = false;
-		m_vDragDropItems[i].SetColor(cAbleToBuy);
+//		m_vDragDropItems[i].SetColor(cAbleToBuy);
 		m_vDragDropItems[i].EnableDragDrop(true);
 	}
 }
@@ -2040,33 +2057,24 @@ int CUIBuyWeaponWnd::GetMoneyAmount() const
 	{
 		return m_iMoneyAmount;
 	}
+	// Retuin some really big value
 	return 10000000;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-//-----------------------------------------------------------------------------/
-//  CUIDragDropItemMP class
-//-----------------------------------------------------------------------------/
-
-//////////////////////////////////////////////////////////////////////////
-
-CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID)
+CUIDragDropItemMP * CUIBuyWeaponWnd::GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID)
 {
-	R_ASSERT(pPossibleAddon);
-
-	for (int i = 0; i < m_iUsedItems; ++i)
+	R_ASSERT(pAddonOwner);
+	// Пробегаемся по списку вещей и ищем там нужный аддон
+	for (int i = 0; i < MAX_ITEMS; ++i)
 	{
-		if (m_vDragDropItems[i].bAddonsAvailable)
+		for (int j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
 		{
-			for (u8 j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
+			if (pAddonOwner->m_AddonInfo[j].strAddonName == m_vDragDropItems[i].GetSectionName() &&
+				static_cast<CUIDragDropItemMP::AddonIDs>(j) == ID)
 			{
-				// Если один из типов аддонов
-				if (pPossibleAddon == m_vDragDropItems[i].m_pAddon[j])
-				{
-					ID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
-					return &m_vDragDropItems[i];
-				}
+				return &m_vDragDropItems[i];
 			}
 		}
 	}
@@ -2074,106 +2082,30 @@ CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropI
 	return NULL;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
-void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAddon(int iAddonIndex, bool bAttach, bool bRealRepresentationSet)
-{
-	R_ASSERT(iAddonIndex >= 0 && iAddonIndex < 3);
-	if (m_AddonInfo[iAddonIndex].iAttachStatus != -1)
-	{
-		// И отнимаем от денег стоимость вещи.
-		CUIBuyWeaponWnd *this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
-
-		R_ASSERT(this_inventory);
-
-		if (!m_AddonInfo[iAddonIndex].iAttachStatus == bAttach)
-			0 == m_AddonInfo[iAddonIndex].iAttachStatus
-				? this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - m_pAddon[iAddonIndex]->GetCost())
-				: this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + m_pAddon[iAddonIndex]->GetCost());
-
-		m_AddonInfo[iAddonIndex].iAttachStatus = bAttach ? 1 : 0;
-		m_pAddon[iAddonIndex]->GetUIStaticItem().SetColor(bAttach ? cAttached : cDetached);
-		m_pAddon[iAddonIndex]->EnableDragDrop(!bAttach);
-		m_pAddon[iAddonIndex]->m_bHasRealRepresentation = bRealRepresentationSet;
-
-	}
-}
-
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAllAddons(bool bAttach)
+CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID)
 {
-	for (int i = 0; i < 3; ++i)
-		AttachDetachAddon(i, bAttach);
-}
+	R_ASSERT(pPossibleAddon);
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUIBuyWeaponWnd::CUIDragDropItemMP::ClipperOff()
-{
-	inherited::ClipperOff();
-
-	for (u8 i = 0; i < CUIDragDropItemMP::NUM_OF_ADDONS; ++i)
+	// проверяем не аддон ли pPossibleAddon вещи в слот(е/ах)
+	if (!UITopList[RIFLE_SLOT].GetDragDropItemsList().empty())
 	{
-		if(1 == m_AddonInfo[i].iAttachStatus) inherited::ClipperOff(m_pAddon[i]->GetUIStaticItem());
-	}
-}
+		CUIDragDropItemMP * pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(UITopList[RIFLE_SLOT].GetDragDropItemsList().front());
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUIBuyWeaponWnd::CUIDragDropItemMP::ClipperOn()
-{
-	inherited::ClipperOn();
-
-	for (u8 i = 0; i < CUIDragDropItemMP::NUM_OF_ADDONS; ++i)
-	{
-		if(1 == m_AddonInfo[i].iAttachStatus) this->TextureClipper(0,0,NULL, m_pAddon[i]->GetUIStaticItem());
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUIBuyWeaponWnd::CUIDragDropItemMP::Draw()
-{
-	inherited::Draw();
-
-	RECT rect = GetAbsoluteRect();
-
-	//отцентрировать родительскую иконку по центру ее окна
-	int right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRectScaled().width())/2;
-	int down_offset = (GetHeight()-m_UIStaticItem.GetOriginalRectScaled().height())/2;
-
-	// Отрисовываем аддоны по порядку
-	if (bAddonsAvailable)
-	{
-		CUIDragDropItemMP		*pDDItemMP = NULL;
-		AddonInfo				nfo;
-		for (int i = 0; i < CUIDragDropItemMP::NUM_OF_ADDONS; ++i)
+		if (pDDItemMP && pDDItemMP->bAddonsAvailable)
 		{
-
-			if(0 == m_AddonInfo[i].iAttachStatus || !m_pAddon[i])
-				continue;
-
-			pDDItemMP	= m_pAddon[i];
-			nfo			= m_AddonInfo[i];
-
-			// А теперь отрисовка
-			pDDItemMP->GetUIStaticItem().SetPos(rect.left + right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScale()),
-				rect.top + down_offset + iFloor(0.5f+(float)nfo.y * GetTextureScale()));
-
-			if(m_bClipper) TextureClipper(right_offset + iFloor(0.5f+(float)nfo.x * GetTextureScale()),
-				down_offset +  iFloor(0.5f+(float)nfo.y * GetTextureScale()), 
-				NULL, pDDItemMP->GetUIStaticItem());
-
-			if (pDDItemMP->m_bHasRealRepresentation)
-				pDDItemMP->GetUIStaticItem().SetColor(cAbleToBuyOwned);
-			else
-				pDDItemMP->GetUIStaticItem().SetColor(cDetached);
-
-			pDDItemMP->GetUIStaticItem().Render();
-			pDDItemMP->GetUIStaticItem().SetColor(cAttached);
-
-			pDDItemMP = NULL;
+			for (u8 j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
+			{
+				// Если один из типов аддонов
+				if (pPossibleAddon->GetSectionName() == pDDItemMP->m_AddonInfo[j].strAddonName)
+				{
+					ID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
+					return pDDItemMP;
+				}
+			}
 		}
 	}
+
+	return NULL;
 }

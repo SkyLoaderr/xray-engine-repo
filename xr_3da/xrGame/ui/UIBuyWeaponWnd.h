@@ -24,11 +24,16 @@
 #include "UITabControl.h"
 #include "UIListItem.h"
 #include "UIMultiTextStatic.h"
+#include "UIDragDropItemMP.h"
 
-class CArtifact;
+#define 	BELT_SLOT		5
+#define 	MP_SLOTS_NUM	8
 
-// Пояс
-#define BELT_SLOT			5
+extern const u32	cDetached;
+extern const u32	cAttached;
+extern const u32	cUnableToBuy;
+extern const u32	cAbleToBuy;
+extern const u32	cAbleToBuyOwned;
 
 class CUIBuyWeaponWnd: public CUIDialogWnd
 {
@@ -56,120 +61,9 @@ public:
 	virtual void Hide();
 
 protected:
-//	#define NO_ACTIVE_SLOT			0xffffffff
-//	#define KNIFE_SLOT				0
-//	#define PISTOL_SLOT				1
-//	#define RIFLE_SLOT				2
-//	#define GRENADE_SLOT			3
-//	#define APPARATUS_SLOT			4
-	#define BELT_SLOT				5
-//	#define OUTFIT_SLOT				6
-//	#define PDA_SLOT				7 
-	#define MP_SLOTS_NUM			8
-
 	//-----------------------------------------------------------------------------/
 	//  новые данные относящиеся к покупке оружия 
 	//-----------------------------------------------------------------------------/
-	class CUIDragDropItemMP: public CUIDragDropItem
-	{
-		typedef CUIDragDropItem inherited;
-		// возможность хранения номера слота
-		// в который можно переместить данную вещь
-		u32				slotNum;
-		// хранение номера секции оружия
-		u32				sectionNum;
-		// xранение порядкового номера оружия в секции
-		u32				posInSection;
-		// Имя секции оружия
-		string128		strName;
-		// Запоминаем адрес "хозяина"
-		CUIDragDropList *m_pOwner;
-		// Игровая стоимость вещи
-		int				cost;
-	public:
-		CUIDragDropItemMP(): slotNum					(0),
-							 sectionNum					(0),
-							 bAddonsAvailable			(false),
-							 cost						(0),
-							 m_bAlreadyPaid				(false),
-							 m_bHasRealRepresentation	(false)
-		{
-			std::strcpy(m_strAddonTypeNames[0], "Silencer");
-			std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
-			std::strcpy(m_strAddonTypeNames[2], "Scope");
-
-			for (u8 i = 0; i < NUM_OF_ADDONS; ++i)
-				m_pAddon[i] = NULL;
-		}
-		// Для слота
-		void SetSlot(u32 slot)						{ R_ASSERT(slot < MP_SLOTS_NUM || slot == static_cast<u32>(-1)); slotNum = slot; }
-		u32	 GetSlot()								{ return slotNum; }
-		// Получаем номер группы секций (нож - 0, пистолы - 1, et cetera)
-		void SetSectionGroupID(u32 section)			{ sectionNum = section; }
-		u32	 GetSectionGroupID()					{ return sectionNum; }
-		// Функции для запоминания/возвращения имени секции в .ltx файле, этой вещи
-		void SetSectionName(const char *pData)		{ std::strcpy(strName, pData); }
-		const char * GetSectionName() const			{ return strName; }
-		// Запоминаем/возвращеаем указатель на CUIDragDropList которому изначально пренадлежит
-		// вещь
-		void SetOwner(CUIDragDropList *pOwner)		{ R_ASSERT(pOwner); m_pOwner = pOwner; }
-		CUIDragDropList * GetOwner()				{ return m_pOwner; }
-		// Номер элемента в группе секций
-		void SetPosInSectionsGroup(const u32 pos)	{ posInSection = pos; }
-		u32 GetPosInSectionsGroup() const 			{ return posInSection; }
-
-		//-----------------------------------------------------------------------------/
-		//  Работа с аддонами. Средствами переопределения CWeapon нужную функциональность
-		//	получить не удалось
-		//-----------------------------------------------------------------------------/
-
-		// Структура информации о аддоне
-		typedef struct tAddonInfo
-		{
-			// Имя секции для аддона
-			std::string			strAddonName;
-			// -1 - вообще нельзя приаттачить, 0 - не приаттачен, 1 - приаттачен
-			int					iAttachStatus;
-			// Координаты смещения относительно иконки оружия
-			int					x, y;
-			// Constructor
-			tAddonInfo():		iAttachStatus(-1), x(-1), y(-1) {}
-		} AddonInfo;
-
-		// У каждого оружия максимум 3 аддона. Будем считать, что в массиве они идут в таком поряке:
-		// Scope, Silencer, Grenade Launcher.
-		static const u8		NUM_OF_ADDONS = 3;
-		enum  AddonIDs		{ ID_SILENCER = 0, ID_GRENADE_LAUNCHER, ID_SCOPE };
-		AddonInfo			m_AddonInfo[NUM_OF_ADDONS];
-		// Если у вещи вообще нет аддонов, то поднимаем этот флажек, для ускорения проверок
-		bool				bAddonsAvailable;
-		// Список название типов аддонов
-		char				m_strAddonTypeNames[NUM_OF_ADDONS][25];
-
-		// Аттачим/детачим аддоны
-		void				AttachDetachAddon(int iAddonIndex, bool bAttach, bool bRealRepresentationSet = false);
-		void				AttachDetachAllAddons(bool bAttach);
-		bool				IsAddonAttached(int iAddonIndex) { return m_AddonInfo[iAddonIndex].iAttachStatus == 1; }
-		// Переопределяем некоторые функции, которые нам нужны для коректной отрисовки оружия с аддонами
-		virtual void		ClipperOn();
-		virtual void		ClipperOff();
-		virtual void		Draw();
-		// реальные драг-дроп вещи для тех аддонов, которые существуют для оружия
-		CUIDragDropItemMP	*m_pAddon[NUM_OF_ADDONS];
-
-		// Работа с деньгами
-		void				SetCost(const int c)	{ cost = c; }
-		int					GetCost()	const		{ return cost; }
-		// Поднимаем флаг, если уже заплачено. Нужно для правильного подсчета денег при 
-		// перемещени между слотами и поясом
-		bool				m_bAlreadyPaid;
-		// Флаг для обозначения, что данная drag drop вещь уже имеет раельную игровую репрезентацию
-		bool				m_bHasRealRepresentation;
-
-		// Массив дополнительных полей которые могут быть специфичны для определенных типов вещей,
-		// например для арморов храним координаты иконки в общей текстуре его представляющей
-		xr_vector<float>	m_fAdditionalInfo;
-	};
 
 	CUIStatic			UIBagWnd;
 	CUIStatic			UIDescWnd;
@@ -403,6 +297,8 @@ public:
 	// А не является ли данная вещь чьим-то аддоном?
 	// Возвращаем адрес хозяина аддона, если нашли и тип аддона
 	CUIDragDropItemMP * IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID);
+	// Получить указатель на аддон по ID. В случае несуществования аддона возвращаем NULL.
+	CUIDragDropItemMP * GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID);
 	// Обработчик нажатий на кнопки клавы
 	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 

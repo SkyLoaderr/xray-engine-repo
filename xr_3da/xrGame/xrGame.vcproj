@@ -6823,6 +6823,12 @@
 						RelativePath=".\ui\UIDiaryWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIIconedListItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIIconedListItem.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIJobsWnd.cpp">
 					</File>
 					<File
@@ -7252,6 +7258,12 @@
 				</File>
 				<File
 					RelativePath=".\ui\UIBuyWeaponWnd.h">
+				</File>
+				<File
+					RelativePath=".\ui\UIDragDropItemMP.cpp">
+				</File>
+				<File
+					RelativePath=".\ui\UIDragDropItemMP.h">
 				</File>
 				<Filter
 					Name="Stats"
