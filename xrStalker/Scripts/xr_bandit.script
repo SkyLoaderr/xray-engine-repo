@@ -46,6 +46,9 @@ function bandit:update()
 	end
 
 	-- роллинг стейтов
+	if self.leader == nil then
+		self.state = 5
+	end
 	if self.state == 0 then
 		self.state = 1
 		self.begin = game.time()
@@ -57,13 +60,13 @@ function bandit:update()
 		end
 	end
 	if self.state == 2 then
-		if xr_patrol.is_patrol_end(self.leader) == true then
+		if self.leader ~= nil and xr_patrol.is_patrol_end(self.leader) == true then
 			self.state = 3
 			self.begin = game.time()
 		end
 	end
 	if self.state == 4 then
-		if xr_patrol.is_patrol_end(self.leader) == true then
+		if self.leader ~= nil and xr_patrol.is_patrol_end(self.leader) == true then
 			self.state = 1
 			self.begin = game.time()
 		end
@@ -312,6 +315,31 @@ function bandit:loadJob(name) -- загружает список заданий
 			prior = 1,
 			state = 4, -- в каких состояниях это задание существует
 			leader_name = nil }
+		table.insert(self.Job, t)
+
+		t = { name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = 5, -- в каких состояниях это задание существует
+			center_point = "black_kamp_center"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = 5, -- в каких состояниях это задание существует
+			center_point = "black_kamp_center"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = 5, -- в каких состояниях это задание существует
+			center_point = "black_kamp_center"}
 		table.insert(self.Job, t)			
 	end
 end
