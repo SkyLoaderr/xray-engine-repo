@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "stdafx.h" 
 #include "../dCylinder/dCylinder.h"
 dCollideCylRay(dxGeom *o1, dxGeom *o2, int flags,dContactGeom *contact, int skip);
 //#pragma warning(disable:4995)
