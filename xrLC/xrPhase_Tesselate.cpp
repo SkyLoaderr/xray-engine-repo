@@ -7,13 +7,25 @@ void CBuild::Tesselate	()
 {
 	BOOL	bTesselate	= TRUE;
 	DWORD	cnt_splits	= 0;
+	DWORD	cnt_pass	= 0;
+	g_bUnregister		= FALSE;
 	
 	while (bTesselate)	
 	{
 		bTesselate		= FALSE;
+		cnt_pass		++;
+		cnt_splits		= 0;
+		
+		string256		phase_name;
+		sprintf			(phase_name,"Tesselating, pass %d...",cnt_pass);
+		Phase			(phase_name);
+		
 		for (int I=0; I<int(g_faces.size()); I++)
 		{
 			Face* F				= g_faces[I];
+			if (0==F)			continue;
+
+			Progress			(float(I)/float(g_faces.size()));
 			
 			// Iterate on edges - select longest
 			float	max_len		= -1;
@@ -57,6 +69,13 @@ void CBuild::Tesselate	()
 			F2->AddChannel		(F->tc.front()[idB],UV,F->tc.front()[id2]);
 
 			// Destroy old face
+			_DELETE				(F);
 		}
+
+		Msg ("%d splits performed.",cnt_splits);
 	}
+
+
+
+	g_bUnregister		= TRUE;
 }
