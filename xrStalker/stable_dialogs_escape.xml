@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <string_table>
 	<string id="escape_trader_start_dialog__hello">
-		<text>Hi! How you doing? Hopefully feeling well.\n I've got a job for you for the weekend.</text>
-		<text ln="rus">Привет! Как здоровье? Надеюсь не прихворал.\n У меня для тебя есть работка на выходных.</text>
+		<text>Hi! How you doing? Hopefully feeling well. \n I've got a job for you for the weekend.</text>
+		<text ln="rus">Привет! Как здоровье? Надеюсь не прихворал. \n У меня для тебя есть работка на выходных.</text>
 	</string>
 
 	<string id="escape_trader_jobs__0">
