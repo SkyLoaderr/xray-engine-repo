@@ -109,6 +109,8 @@ public:
 
 	virtual BOOL	IsVisibleForHUD	()	{return FALSE;}
 	virtual BOOL	IsVisibleForAI	()	{return FALSE;}
+
+	virtual void	OnDeviceCreate	();
 };
 		
 #endif

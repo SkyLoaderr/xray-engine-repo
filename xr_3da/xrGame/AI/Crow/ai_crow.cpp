@@ -92,17 +92,10 @@ CAI_Crow::~CAI_Crow()
 void CAI_Crow::Load( LPCSTR section )
 {
 	inherited::Load				(section);
-	// animations
-	CKinematics*	M			= PKinematics(pVisual); R_ASSERT(M);
-	m_Anims.m_death.Load		(M,"norm_death");
-	m_Anims.m_death_dead.Load	(M,"norm_death_dead");
-	m_Anims.m_death_idle.Load	(M,"norm_death_idle");
-	m_Anims.m_fly.Load			(M,"norm_fly_fwd");
-	m_Anims.m_idle.Load			(M,"norm_idle");
+
 	// sounds
 	m_Sounds.m_idle.Load		("monsters\\crow\\idle");
 	// play defaut
-//	M->PlayCycle				(m_Anims.m_idle.GetRandom());
 	
 	fSpeed						= pSettings->ReadFLOAT	(section,"speed");
 	fASpeed						= pSettings->ReadFLOAT	(section,"angular_speed");
@@ -306,3 +299,15 @@ void CAI_Crow::HitImpulse	(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir
 */
 }
 //---------------------------------------------------------------------
+
+void CAI_Crow::OnDeviceCreate()
+{
+	inherited::OnDeviceCreate();
+	// animations
+	CKinematics*	M			= PKinematics(pVisual); R_ASSERT(M);
+	m_Anims.m_death.Load		(M,"norm_death");
+	m_Anims.m_death_dead.Load	(M,"norm_death_dead");
+	m_Anims.m_death_idle.Load	(M,"norm_death_idle");
+	m_Anims.m_fly.Load			(M,"norm_fly_fwd");
+	m_Anims.m_idle.Load			(M,"norm_idle");
+}
