@@ -121,7 +121,7 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
 	float	*startp1, *startp2;
-	float	E1[3], E2[3], D1[3], D2[3];
+	float	E1[3], E2[3];
 
 	if (Sect == BOTTOM) { 
 		startY	= minPixel(A[1]); endY = maxPixel(B[1]); 
@@ -133,9 +133,9 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		if (startY > endY) return;
 
 		// Find the edge differences
-		E1[0] = B[0]-A[0]; E2[0] = C[0]-A[0]; D1[0] = C[0]-A[0]; D2[0] = C[0]-B[0];
-		E1[1] = B[1]-A[1]; E2[1] = C[1]-A[1]; D1[1] = C[1]-A[1]; D2[1] = C[1]-B[1];
-		E1[2] = B[2]-A[2]; E2[2] = C[2]-A[2]; D1[2] = C[2]-A[2]; D2[2] = C[2]-B[2];
+		E1[0] = B[0]-A[0]; E2[0] = C[0]-A[0];
+		E1[1] = B[1]-A[1]; E2[1] = C[1]-A[1];
+		E1[2] = B[2]-A[2]; E2[2] = C[2]-A[2];
 	}
 	else { 
 		startY  = minPixel(B[1]); endY = maxPixel(C[1]); 
@@ -147,19 +147,18 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		if (startY > endY) return;
 
 		// Find the edge differences
-		E1[0] = C[0]-A[0]; E2[0] = C[0]-B[0]; D1[0] = B[0]-A[0]; D2[0] = C[0]-A[0]; 
-		E1[1] = C[1]-A[1]; E2[1] = C[1]-B[1]; D1[1] = B[1]-A[1]; D2[1] = C[1]-A[1]; 
-		E1[2] = C[2]-A[2]; E2[2] = C[2]-B[2]; D1[2] = B[2]-A[2]; D2[2] = C[2]-A[2]; 
+		E1[0] = C[0]-A[0]; E2[0] = C[0]-B[0];
+		E1[1] = C[1]-A[1]; E2[1] = C[1]-B[1];
+		E1[2] = C[2]-A[2]; E2[2] = C[2]-B[2];
 	}
 	
 	// Compute the inverse slopes of the lines, ie rate of change of X by Y
-	float mE1 = E1[0]/E1[1], mE2 = E2[0]/E2[1];
-	float mD1 = D1[0]/D1[1], mD2 = D2[0]/D2[1];
+	float mE1	= E1[0]/E1[1];
+	float mE2	= E2[0]/E2[1];
 	
 	// Initial Y offset for left and right (due to pixel rounding)
 	float	e1_init_dY = startY - startp1[1], e2_init_dY = startY - startp2[1];
 	float	t,leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
-	float	leftClamp,rightClamp;
 	
 	// find initial values, step values
 	if ( ((mE1<mE2)&&(Sect==BOTTOM)) || ((mE1>mE2)&&(Sect==TOP)) ) 
