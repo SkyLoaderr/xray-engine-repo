@@ -315,7 +315,7 @@ const ref_str InventoryUtilities::GetDateAsString(ALife::_TIME_ID date, EDatePre
 
 void InventoryUtilities::UpdateWeight(CUIStatic &wnd, bool withPrefix)
 {
-	CInventoryOwner *pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
+	CInventoryOwner *pInvOwner = smart_cast<CInventoryOwner*>(Level().CurrentEntity());
 	R_ASSERT(pInvOwner);
 	string128 buf;
 	ZeroMemory(buf, 128);
