@@ -99,7 +99,7 @@ function evaluator_raid:__init (name, storage) super ()
 end
 --------------
 function evaluator_raid:evaluate ()
-    return not (self.a.raid_enabled == true)
+    return not (self.a.raid_process == true)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -336,7 +336,6 @@ function action_single_patrol:set_command (command)
     for a = 1, size, 1 do
         xr_motivator.storage[self.object:id()].followers[a].leader_command = command
 --        xr_motivator.storage[self.object:id()].followers[a].npc:motivation_action_manager ():action (xr_actions_id.sidor_act_follower_base + 1):recalculate_position ()
-        --recalculate_position
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -375,7 +374,7 @@ function action_single_patrol:move_callback (obj, action_type, index)
     end   
     
     if ptr:flag (index, 4) and self.a.raid_enabled == true then
-       xr_motivator.storage[self.object:id()].follower.raid_enabled = true
+       xr_motivator.storage[self.object:id()].patrol.raid_process = true
        local size = table.getn (xr_motivator.storage[self.object:id()].followers)
        if size == 0 then return end
        for a = 1, size, 1 do
@@ -514,7 +513,7 @@ function action_raid:move_callback (obj, action_type, index)
     
     local ptr = patrol (self.object:patrol ())
     if ptr:flag (index, 4) == true then
-       self.a.raid_enabled = false
+       self.a.raid_process = false
        return
     end   
     
@@ -639,7 +638,7 @@ function add_to_binder(obj)
   
 	local manager  = obj:motivation_action_manager ()
   	manager:add_evaluator (properties["complete"], this.evaluator_complete ("property_complete", xr_motivator.storage[obj:id()].patrol))
-    manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].follower))
+    manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].patrol))
     
   	local action = this.action_single_patrol ("action_single_patrol", xr_motivator.storage[obj:id()].patrol)
    	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
@@ -649,7 +648,7 @@ function add_to_binder(obj)
    	action:add_effect           	(world_property (properties["complete"],        true))
    	manager:add_action              (operators["single_patrol"], action)
 
-    action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].follower)
+    action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].patrol)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
     action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition     (world_property (properties["raid"],            false))
@@ -660,7 +659,7 @@ function add_to_binder(obj)
    	action:add_precondition (world_property (properties["complete"],  true))   	
 end
 ----------------------------------------------------------------------------------------------------------------------
-function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_path)
+function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_path, raid_process)
 	local char_ini = npc:spawn_ini()
 	local st = xr_motivator.storage[npc:id()].patrol
 	
@@ -713,7 +712,11 @@ function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_
     else
        st.raid_path = raid_path
     end      
-    
+    if raid_process == nil then
+       st.raid_process = false
+    else
+       st.raid_process =raid_process
+    end      
 	xr_motivator.checkStorage (npc)
 	
 end

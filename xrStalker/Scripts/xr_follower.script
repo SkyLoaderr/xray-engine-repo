@@ -165,7 +165,7 @@ function action_follow:__init (name, storage) super (nil, name)
     self.current_phrase = math.random (0, num_phrases)
     self.mental_state = anim.free
     self.time = 0
-    self.dist = storage.distance
+    self.dist = self.a.distance
 end
 --------------
 function action_follow:initialize ()
@@ -215,10 +215,10 @@ function action_follow:execute ()
        self.object:set_item (object.activate, self.object:best_weapon ())     
     end   
     
-    if self.dist ~= self.a.distance then
+    --if self.dist ~= self.a.distance then
        self:recalculate_position ()
-       self.dist = self.a.distance
-    end        
+      -- self.dist = self.a.distance
+    --end        
     
     if self.stage == 0 then 
        if self:check_path () == false then
