@@ -63,6 +63,7 @@ public:
 	_OBJECT_ID						m_tNextFirstSwitchObjectID;
 	_LEVEL_ID						m_tCurrentLevelID;
 
+
 									CSE_ALifeGraphRegistry		();
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);

@@ -174,7 +174,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalyMap()
 		if (!l_tpALifeAnomalousZone || !randI(20))
 			continue;
 
-		CSE_ALifeKnownAnomaly *l_tpALifeKnownAnomaly	= xr_new<CSE_ALifeKnownAnomaly>();
+		CSE_ALifeKnownAnomaly	*l_tpALifeKnownAnomaly	= xr_new<CSE_ALifeKnownAnomaly>();
 		l_tpALifeKnownAnomaly->m_tAnomalousZoneType		= randI(10) ? l_tpALifeAnomalousZone->m_tAnomalyType : EAnomalousZoneType(randI(eAnomalousZoneTypeDummy));
 		l_tpALifeKnownAnomaly->m_fAnomalyPower			= randF(l_tpALifeAnomalousZone->m_maxPower*.5f,l_tpALifeAnomalousZone->m_maxPower*1.5f);
 		l_tpALifeKnownAnomaly->m_fDistance				= randF(l_tpALifeAnomalousZone->m_fDistance*.5f,l_tpALifeAnomalousZone->m_fDistance*1.5f);
@@ -645,7 +645,22 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 
 void CSE_ALifeSimulator::vfUpdateTasks()
 {
-	
+//	TRADER_P_IT					I = m_tpTraders.begin();
+//	TRADER_P_IT					E = m_tpTraders.end();
+//	for ( ; I != E; I++) {
+//		ARTEFACT_ORDER_IT		i = (*I).m_tpOrderedArtefacts.begin();
+//		ARTEFACT_ORDER_IT		e = (*I).m_tpOrderedArtefacts.end();
+//		for ( ; i != e; i++) {
+//			ANOMALY_P_VECTOR_IT	II = m_tpAnomalies.begin();
+//			ANOMALY_P_VECTOR_IT	EE = m_tpAnomalies.end();
+//			for ( ; II != EE; II++) {
+//				ANOMALY_P_IT	ii = (*II)->begin();
+//				ANOMALY_P_IT	ee = (*II)->end();
+//				for ( ; ii != ee; ii++)
+//					(*ii).
+//			}
+//		}
+//	}
 }
 
 void CSE_ALifeSimulator::vfPerformSurge()
