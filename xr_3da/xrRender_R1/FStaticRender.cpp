@@ -13,6 +13,8 @@
 CRender										RImplementation;
 
 // Implementation
+IRender_ObjectSpecific*	CRender::ros_create				(CObject* parent)				{ return xr_new<CLightTrack>();			}
+void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)	{ xr_delete(p);							}
 IVisual*				CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
 IVisual*				CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
 IVisual*				CRender::model_Duplicate		(IVisual* V)					{ return Models.Instance_Duplicate(V);	}

@@ -10,7 +10,7 @@ const	float				lt_inc			= 4.f;
 const	float				lt_dec			= 2.f;
 const	float				lt_smooth		= 4.f;
 
-class	CLightTrack  
+class	CLightTrack			: public IRender_ObjectSpecific
 {
 public:
 	struct Item 
@@ -35,6 +35,8 @@ public:
 
 	void					add				(int id);
 	void					remove			(int id);
+
+	virtual ~CLightTrack	()	{};
 };
 
 #endif // !defined(AFX_LIGHTTRACK_H__89914D61_AC0B_4C7C_BA8C_D7D810738CE7__INCLUDED_)
