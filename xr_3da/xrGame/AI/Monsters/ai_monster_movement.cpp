@@ -228,27 +228,27 @@ bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_ma
 		if (!ai().level_graph().valid_vertex_id(node) || !accessible(node)) return false;
 	}
 	
-	enable_movement									(true);
+	enable_movement						(true);
 	
 	detail().set_velocity_mask			(vel_mask);	
-	detail().set_desirable_mask		(vel_mask);
+	detail().set_desirable_mask			(vel_mask);
 
 	detail().set_try_min_time			(false); 
 	detail().set_use_dest_orientation	(false);
 	
-	level_selector().set_evaluator			(0);
+	level_selector().set_evaluator		(0);
 	detail().set_path_type				(eDetailPathTypeSmooth);
-	set_path_type									(MovementManager::ePathTypeLevelPath);
+	set_path_type						(MovementManager::ePathTypeLevelPath);
 
 	detail().set_dest_position			(target);
-	set_level_dest_vertex							(node);
+	set_level_dest_vertex				(node);
 	
-	set_build_path_at_once							();
-	update_path										();	
+	set_build_path_at_once				();
+	update_path							();	
 	
-	if (is_path_built())							return true;
+	if (is_path_built())				return true;
 
-	enable_movement									(false);
+	enable_movement						(false);
 	return false;
 }
 
