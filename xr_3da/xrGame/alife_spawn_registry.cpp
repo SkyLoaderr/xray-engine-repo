@@ -42,6 +42,8 @@ void CALifeSpawnRegistry::save	(IWriter &memory_stream)
 
 void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 {
+	R_ASSERT					(FS.exist(game_name));
+
 	IReader						*chunk, *chunk0;
 	Msg							("* Loading spawn registry...");
 	R_ASSERT2					(file_stream.find_chunk(SPAWN_CHUNK_DATA),"Cannot find chunk SPAWN_CHUNK_DATA!");
@@ -58,15 +60,6 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	IReader						*stream;
 	bool						file_exists = !!FS.exist(file_name, "$game_spawn$", *m_spawn_name, ".spawn");
 	R_ASSERT3					(file_exists,"Can't find spawn file:",*m_spawn_name);
-	int							spawn_age = FS.get_file_age(file_name);
-	
-	R_ASSERT					(FS.exist(game_name));
-	
-	string256					graph_file_name;
-	FS.update_path				(graph_file_name,"$game_data$",GRAPH_NAME);
-	int							graph_age = FS.get_file_age(graph_file_name);
-	VERIFY3						(spawn_age >= graph_age,"Rebuild spawn file ",file_name);
-
 	stream						= FS.r_open(file_name);
 	load						(*stream,&guid);
 	FS.r_close					(stream);

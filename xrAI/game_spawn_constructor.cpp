@@ -164,14 +164,14 @@ void CGameSpawnConstructor::save_spawn		(LPCSTR name, LPCSTR output)
 	m_spawn_header.m_version		= XRAI_CURRENT_VERSION;
 	m_spawn_header.m_guid			= generate_guid();
 	m_spawn_header.m_graph_guid		= game_graph().header().guid();
-	m_spawn_header.m_level_count	= (u32)m_level_spawns.size();
 	m_spawn_header.m_spawn_count	= spawn_graph().vertex_count();
+	m_spawn_header.m_level_count	= (u32)m_level_spawns.size();
 	
 	stream.open_chunk				(0);
-	save_data						(m_spawn_header.m_version,stream);
+	stream.w_u32					(m_spawn_header.m_version);
 	save_data						(m_spawn_header.m_guid,stream);
 	save_data						(m_spawn_header.m_graph_guid,stream);
-	stream.w_u32					(m_spawn_header.m_count);
+	stream.w_u32					(m_spawn_header.m_spawn_count);
 	stream.w_u32					(m_spawn_header.m_level_count);
 	stream.close_chunk				();
 	
