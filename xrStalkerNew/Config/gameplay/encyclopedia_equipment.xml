@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<encyclopedia>
+    <!-- LIST OF ENCYCLOPEDIA ENTRIES -->
+
+
+    <!------------------------------------------------------------------->
+    <!------------------------------ Items ------------------------------>
+    <!------------------------------------------------------------------->
+
+
+    <!-------------------------------- Med ----------------------------->
+
+    <article id="equipment_items_med" name="Med" group="Equipment/Items">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_items_med</text>
+    </article>
+
+    <!-------------------------------- Capsule ----------------------------->
+
+    <article id="equipment_items_capsule" name="Capsule" group="Equipment/Items">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_items_capsule</text>
+    </article>
+
+    <!-------------------------------- Detect1 ----------------------------->
+
+    <article id="equipment_items_detect1" name="Detect1" group="Equipment/Items">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_items_detect1</text>
+    </article>
+
+    <!-------------------------------- Detect2 ----------------------------->
+
+    <article id="equipment_items_detect2" name="Detect2" group="Equipment/Items">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_items_detect2</text>
+    </article>
+
+    <!-------------------------------- Detect3 ----------------------------->
+
+    <article id="equipment_items_detect3" name="Detect3" group="Equipment/Items">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_items_detect3</text>
+    </article>
+
+    <!-------------------------------- Detect4 ----------------------------->
+
+    <article id="equipment_items_detect4" name="Detect4" group="Equipment/Items">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_items_detect4</text>
+    </article>
+
+    <!-------------------------------- Health ----------------------------->
+
+    <article id="equipment_items_health" name="Health" group="Equipment/Items">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_items_health</text>
+    </article>
+
+    <!-------------------------------- Diagnost ----------------------------->
+
+    <article id="equipment_items_diagnost" name="Diagnost" group="Equipment/Items">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_items_diagnost</text>
+    </article>
+
+
+
+
+    <!------------------------------------------------------------------->
+    <!------------------------------ Armors ------------------------------>
+    <!------------------------------------------------------------------->
+
+
+    <!-------------------------------- Armor1 ----------------------------->
+
+    <article id="equipment_armors_armor1" name="Armor1" group="Equipment/Armors">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_armors_armor1</text>
+    </article>
+
+
+    <!-------------------------------- Sci1 ----------------------------->
+
+    <article id="equipment_armors_sci1" name="Sci1" group="Equipment/Armors">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_armors_sci1</text>
+    </article>
+
+
+    <!-------------------------------- Sci2 ----------------------------->
+
+    <article id="equipment_armors_sci2" name="Sci2" group="Equipment/Armors">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_armors_sci2</text>
+    </article>
+
+
+    <!-------------------------------- Arm-light ----------------------------->
+
+    <article id="equipment_armors_arm-light" name="Arm-light" group="Equipment/Armors">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_armors_arm-light</text>
+    </article>
+
+
+    <!-------------------------------- Arm-medium ----------------------------->
+
+    <article id="equipment_armors_arm-medium" name="Arm-medium" group="Equipment/Armors">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_armors_arm-medium</text>
+    </article>
+
+
+    <!-------------------------------- Arm-heavy ----------------------------->
+
+    <article id="equipment_armors_arm-heavy" name="Arm-heavy" group="Equipment/Armors">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_equipment_armors_arm-heavy</text>
+    </article>
+
+
+</encyclopedia>
+

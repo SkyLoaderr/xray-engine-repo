@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<encyclopedia>
+    <!-- LIST OF ENCYCLOPEDIA ENTRIES -->
+
+
+    <!-------------------------------- Crow ----------------------------->
+
+
+    <article id="mutant_crow_general" name="General" group="Mutants/Crow">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_crow_general</text>
+    </article>
+
+
+    <!-------------------------------- RAT ----------------------------->
+
+
+    <article id="mutant_rat_general" name="General" group="Mutants/Rat">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_rat_general</text>
+    </article>
+
+    <!-------------------------------- FLESH ----------------------------->
+
+
+    <article id="mutant_flesh_evolution" name="Evolution" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_evolution</text>
+    </article>
+    <article id="mutant_flesh_eco" name="Eco" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_eco</text>
+    </article>
+
+    <article id="mutant_flesh_skin" name="Skin" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_skin</text>
+    </article>
+    <article id="mutant_flesh_move" name="Move" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_move</text>
+    </article>
+    <article id="mutant_flesh_eat" name="Eat" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_eat</text>
+    </article>
+    <article id="mutant_flesh_nerve" name="Nerve" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_nerve</text>
+    </article>
+
+    <article id="mutant_flesh_list1" name="List1" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_list1</text>
+    </article>
+
+
+    <!-------------------------------- BLIND DOG ----------------------------->
+
+    <article id="mutant_blind_general" name="General" group="Mutants/Blind">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_blind_general</text>
+    </article>
+
+
+    <!-------------------------------- Boar ----------------------------->
+
+    <article id="mutant_boar_general" name="General" group="Mutants/Boar">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_boar_general</text>
+    </article>
+
+
+    <!-------------------------------- PSEUDODOG ----------------------------->
+
+    <article id="mutant_pseudodog_general" name="General" group="Mutants/Pseudodog">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_pseudodog_general</text>
+    </article>
+    <article id="mutant_pseudodog_area" name="Area" group="Mutants/Pseudodog">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_pseudodog_area</text>
+    </article>
+
+
+    <!-------------------------------- Bloodsucker ----------------------------->
+
+    <article id="mutant_bloodsucker_general" name="General" group="Mutants/Bloodsucker">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_bloodsucker_general</text>
+    </article>
+    <article id="mutant_bloodsucker_area" name="Area" group="Mutants/Bloodsucker">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_bloodsucker_area</text>
+    </article>
+    <article id="mutant_bloodsucker_tentacles" name="Tentacles" group="Mutants/Bloodsucker">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_bloodsucker_tentacles</text>
+    </article>
+    <article id="mutant_bloodsucker_meet" name="Meet" group="Mutants/Bloodsucker">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_bloodsucker_meet</text>
+    </article>
+
+
+    <!-------------------------------- Burer ----------------------------->
+
+    <article id="mutant_burer_general" name="General" group="Mutants/Burer">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_burer_general</text>
+    </article>
+
+
+    <!-------------------------------- Chimera ----------------------------->
+
+    <article id="mutant_chimera_general" name="General" group="Mutants/Chimera">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_chimera_general</text>
+    </article>
+
+
+    <!-------------------------------- Pseudogiant ----------------------------->
+
+    <article id="mutant_pseudogiant_general" name="General" group="Mutants/Pseudogiant">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_pseudogiant_general</text>
+    </article>
+
+
+    <!-------------------------------- Poltergeist ----------------------------->
+
+    <article id="mutant_poltergeist_general" name="General" group="Mutants/Poltergeist">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_poltergeist_general</text>
+    </article>
+
+
+    <!-------------------------------- Controller ----------------------------->
+
+
+    <article id="mutant_controller_general" name="General" group="Mutants/Controller">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_controller_general</text>
+    </article>
+
+
+    <!-------------------------------- Zombie ----------------------------->
+
+    <article id="mutant_zombie_general" name="General" group="Mutants/Zombie">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_zombie_general</text>
+    </article>
+
+
+    <!-------------------------------- Fracture ----------------------------->
+
+    <article id="mutant_fracture_general" name="General" group="Mutants/Fracture">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_fracture_general</text>
+    </article>
+
+
+
+</encyclopedia>
+

@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<encyclopedia>
+    <!-- LIST OF ENCYCLOPEDIA ENTRIES -->
+
+    <!------------------------------------------------------------------->
+    <!--------------------------- ARTIFACTS ----------------------------->
+    <!------------------------------------------------------------------->
+
+
+    <!-------------------------------- Grav ----------------------------->
+
+    <article id="zone_artifact_grav" name="Grav" group="Zone/Artifacts">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_artifact_grav</text>
+    </article>
+
+    <!-------------------------------- Bubl ----------------------------->
+
+    <article id="zone_artifact_bubl" name="Bubl" group="Zone/Artifacts">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_artifact_bubl</text>
+    </article>
+
+    <!-------------------------------- Magnet ----------------------------->
+
+    <article id="zone_artifact_magnet" name="Magnet" group="Zone/Artifacts">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_artifact_magnet</text>
+    </article>
+
+    <!-------------------------------- Cotton ----------------------------->
+
+    <article id="zone_artifact_cotton" name="Cotton" group="Zone/Artifacts">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_artifact_cotton</text>
+    </article>
+
+    <!-------------------------------- Jelly ----------------------------->
+
+    <article id="zone_artifact_jelly" name="Jelly" group="Zone/Artifacts">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_artifact_jelly</text>
+    </article>
+
+    <!-------------------------------- Mercury ----------------------------->
+
+    <article id="zone_artifact_mercury" name="Mercury" group="Zone/Artifacts">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_artifact_mercury</text>
+    </article>
+
+    <!-------------------------------- Drops ----------------------------->
+
+    <article id="zone_artifact_drops" name="Drops" group="Zone/Artifacts">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_artifact_drops</text>
+    </article>
+
+    <!-------------------------------- Empty ----------------------------->
+
+    <article id="zone_artifact_empty" name="Empty" group="Zone/Artifacts">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_artifact_empty</text>
+    </article>
+
+    <!-------------------------------- Needles ----------------------------->
+
+    <article id="zone_artifact_needles" name="Needles" group="Zone/Artifacts">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_artifact_needles</text>
+    </article>
+
+
+
+
+    <!------------------------------------------------------------------->
+    <!--------------------------- ANOMALIES ----------------------------->
+    <!------------------------------------------------------------------->
+
+
+    <!-------------------------------- Bald ----------------------------->
+
+    <article id="zone_anomalies_bald" name="Bald" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_bald</text>
+    </article>
+
+    <!-------------------------------- Meat ----------------------------->
+
+    <article id="zone_anomalies_meat" name="Meat" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_meat</text>
+    </article>
+
+    <!-------------------------------- Radiation ----------------------------->
+
+    <article id="zone_anomalies_radiation" name="Radiation" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_radiation</text>
+    </article>
+
+    <!-------------------------------- Fog ----------------------------->
+
+    <article id="zone_anomalies_fog" name="Fog" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_fog</text>
+    </article>
+
+    <!------------------------------ Anomjelly --------------------------->
+
+    <article id="zone_anomalies_anomjelly" name="Anomjelly" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_anomjelly</text>
+    </article>
+
+    <!-------------------------------- Fuzz ----------------------------->
+
+    <article id="zone_anomalies_fuzz" name="Fuzz" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_fuzz</text>
+    </article>
+
+    <!-------------------------------- Hair ----------------------------->
+
+    <article id="zone_anomalies_hair" name="Hair" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_hair</text>
+    </article>
+
+    <!-------------------------------- Heat ----------------------------->
+
+    <article id="zone_anomalies_heat" name="Heat" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_heat</text>
+    </article>
+
+    <!-------------------------------- Deadzone ----------------------------->
+
+    <article id="zone_anomalies_deadzone" name="Deadzone" group="Zone/Anomalies">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_anomalies_deadzone</text>
+    </article>
+
+
+
+
+    <!------------------------------------------------------------------->
+    <!--------------------------- LOCATIONS ----------------------------->
+    <!------------------------------------------------------------------->
+
+
+    <!-------------------------------- Escape ----------------------------->
+
+    <article id="zone_locations_escape" name="Escape" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_escape</text>
+    </article>
+
+
+    <!-------------------------------- Garbage ----------------------------->
+
+    <article id="zone_locations_garbage" name="Garbage" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_garbage</text>
+    </article>
+
+
+    <!-------------------------------- Agroprom ----------------------------->
+
+    <article id="zone_locations_agroprom" name="Agroprom" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_agroprom</text>
+    </article>
+
+
+    <!-------------------------------- Darkdolina ----------------------------->
+
+    <article id="zone_locations_darkdolina" name="Darkdolina" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_darkdolina</text>
+    </article>
+
+
+    <!-------------------------------- Darklab ----------------------------->
+
+    <article id="zone_locations_darklab" name="Darklab" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_darklab</text>
+    </article>
+
+
+    <!-------------------------------- Bar ----------------------------->
+
+    <article id="zone_locations_bar" name="Bar" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_bar</text>
+    </article>
+
+
+    <!-------------------------------- Rostok ----------------------------->
+
+    <article id="zone_locations_rostok" name="Rostok" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_rostok</text>
+    </article>
+
+
+    <!-------------------------------- Yantar ----------------------------->
+
+    <article id="zone_locations_yantar" name="Yantar" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_yantar</text>
+    </article>
+
+
+    <!-------------------------------- Military-loc ----------------------------->
+
+    <article id="zone_locations_military-loc" name="Military-loc" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_military-loc</text>
+    </article>
+
+
+    <!-------------------------------- Deadcity ----------------------------->
+
+    <article id="zone_locations_deadcity" name="Deadcity" group="Zone/Locations">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_locations_deadcity</text>
+    </article>
+
+
+
+
+
+    <!------------------------------------------------------------------->
+    <!--------------------------- Phenomena ----------------------------->
+    <!------------------------------------------------------------------->
+
+
+    <!-------------------------------- Surge ----------------------------->
+
+    <article id="zone_phenomena_surge_general" name="General" group="Zone/Phenomena/Surge">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_phenomena_surge_general</text>
+    </article>
+
+
+    <article id="zone_phenomena_surge_surge-story" name="Surge-story" group="Zone/Phenomena/Surge">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_phenomena_surge_surge-story</text>
+    </article>
+
+
+
+
+
+    <!------------------------------------------------------------------->
+    <!-------------------------- Zone-story ----------------------------->
+    <!------------------------------------------------------------------->
+
+
+    <!-------------------------------- Story-2006 ----------------------------->
+
+    <article id="zone_zone-story_story-2006" name="Story-2006" group="Zone/Zone-story">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_zone-story_story-2006</text>
+    </article>
+
+
+    <!-------------------------------- Story-2008 ----------------------------->
+
+    <article id="zone_zone-story_story-2008" name="Story-2008" group="Zone/Zone-story">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_zone-story_story-2008</text>
+    </article>
+
+
+    <!-------------------------------- Story-2010 ----------------------------->
+
+    <article id="zone_zone-story_story-2010" name="Story-2010" group="Zone/Zone-story">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_zone-story_story-2010</text>
+    </article>
+
+
+    <!-------------------------------- Story-raid ----------------------------->
+
+    <article id="zone_zone-story_story-raid" name="Story-raid" group="Zone/Zone-story">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_zone_zone-story_story-raid</text>
+    </article>
+
+</encyclopedia>
+
