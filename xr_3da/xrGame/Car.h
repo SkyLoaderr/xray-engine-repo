@@ -231,6 +231,7 @@ private:
 private:
 	float					m_steer_angle;
 	bool					m_repairing;
+	u16						m_bone_steer;
 	CCameraBase*			camera[3];
 	CCameraBase*			active_camera;
 

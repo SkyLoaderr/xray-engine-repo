@@ -18,6 +18,7 @@ CCar::CCar(void)
 
 {
 
+	m_bone_steer	= BI_NONE;
 	active_camera	= 0;
 	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid); 
 	camera[ectFirst]->tag	= ectFirst;
@@ -121,9 +122,13 @@ void	CCar::net_Destroy()
 	m_doors.clear();
 	CPHObject::Deactivate();
 	CKinematics* pKinematics=PKinematics(Visual());
-	CInifile* ini = pKinematics->LL_UserData();
-	if(ini->line_exist("car_definition","steer"))
-		pKinematics->LL_GetBoneInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(0,0);
+
+	if(m_bone_steer!=BI_NONE)
+	{
+		
+		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(0,0);
+		
+	}
 }
 
 void CCar::shedule_Update(u32 dt)
@@ -212,6 +217,7 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 
 void CCar::Hit(float /**P/**/,Fvector &dir,CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/)
 {
+	if(m_bone_steer==element) return;
 	if(m_pPhysicsShell)		m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 }
 
@@ -391,8 +397,7 @@ void CCar::CreateSkeleton()
 		K->Calculate();
 	}
 
-	//CInifile* ini=K->LL_UserData();
-	//K->LL_GetBoneInstance				(K->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback			(cb_Steer,this);
+
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()),&bone_map);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
@@ -408,7 +413,10 @@ void CCar::Init()
 	CInifile* ini = pKinematics->LL_UserData();
 	///SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
 	if(ini->line_exist("car_definition","steer"))
-		pKinematics->LL_GetBoneInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
+	{
+		m_bone_steer=pKinematics->LL_BoneID(ini->r_string("car_definition","steer"));
+		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(cb_Steer,this);
+	}
 	//ref_wheel.Init();
 	m_ref_radius=ini->r_float("car_definition","reference_radius");//ref_wheel.radius;
 
