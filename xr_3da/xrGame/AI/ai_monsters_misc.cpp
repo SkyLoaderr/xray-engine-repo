@@ -329,8 +329,8 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 					vfComputeCircle(tCurrentPosition,tFinishPoint,tpaPoints[iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0],fRadius,tCircleCentre,tFinalPosition,fAlpha0);
 				// build circle points
 				//if ((fSuitableAngle < fAlpha0) && (fRoundedDistance > 0.0)) {
-				if (fSuitableAngle < fAlpha0) {
-					fSegmentSize = 2*fRadius*fRadius*(1 - fSuitAngleCosinus);
+				fSegmentSize = 2*fRadius*fRadius*(1 - fSuitAngleCosinus);
+				if ((fSuitableAngle < fAlpha0) && (fSegmentSize < tPrevPoint.distance_to(tpaPoints[iCurrentPatrolPoint])) && (fSegmentSize < .5f*tpaPoints[iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0].distance_to(tpaPoints[iCurrentPatrolPoint]))) {
 					fAlpha0 = fSuitableAngle;
 					//clamp(fAlpha0 = (fRadius*fRadius + fRadius*fRadius - fSegmentSize*fSegmentSize)/(2*fRadius*fRadius),-0.9999999f,0.9999999f);
 					//fAlpha0 = acosf(fAlpha0);
@@ -419,12 +419,13 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 								if ((dwIntersect) && (COMPUTE_DISTANCE_2D(tPrevPoint,tTravelNode.P) >= 2*EPS_L)) {
 									dwCurNode = iNodeIndex;
 									tPrevPoint = tFinishPoint;
+									j++;
 									break;
 								}
 							}
 							VERIFY(i<iCount);
-							tpaPath.clear();
-							return;
+							//tpaPath.clear();
+							//return;
 						}
 					}
 				}
@@ -502,7 +503,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 						}
 						else {
 							VERIFY(false);
-							tpaPath.clear();
+							//tpaPath.clear();
 							return;
 						}
 				}
@@ -581,10 +582,10 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 					tTravelNode.P = tTempPoint;
 					if ((COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) >= fPreviousRoundedDistance) || 
 						((!bLooped) && (iCurrentPatrolPoint == 1))) {
-						if (fabsf(tTravelNode.P.y - tPrevPoint.y) > 1.f/256.f)
+						//if (fabsf(tTravelNode.P.y - tPrevPoint.y) > 1.f/256.f)
 							tpaPath.push_back(tTravelNode);
-						else
-							tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
+						//else
+						//	tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
 					}
 					tPrevPoint = tTravelNode.P;
 					dwPrevNode = dwCurNode;
@@ -682,8 +683,8 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 							dwCurNode = iSavedIndex;
 						}
 						else {
-							//VERIFY(false);
-							tpaPath.clear();
+							VERIFY(false);
+							//tpaPath.clear();
 							return;
 						}
 					}

@@ -13,7 +13,7 @@
 #include "..\\Level.h"
 
 	// Fuzzy State Machine
-	#define WRITE_LOG
+	//#define WRITE_LOG
 
 	#ifdef WRITE_LOG
 		#define WRITE_TO_LOG(S) {\

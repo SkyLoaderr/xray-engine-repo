@@ -135,7 +135,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 											break;
 										}
 									
-									if ((!tpGlobalAnimation) || (!(m_tpCurrentGlobalBlend->playing)))
+									if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
 										tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
 									break;
 								}
@@ -209,7 +209,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 											break;
 										}
 									
-									if ((!tpGlobalAnimation) || (!(m_tpCurrentGlobalBlend->playing)))
+									if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
 										tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
 									break;
 								}
@@ -241,6 +241,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			}
 		}
 	
+	/**
 	if (tpLegsAnimation != m_tpCurrentLegsAnimation) { 
 		//Msg("restarting animation..."); 
 		m_tpCurrentLegsAnimation = tpLegsAnimation;
@@ -251,6 +252,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			}
 		}
 	}
+	/**/
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;

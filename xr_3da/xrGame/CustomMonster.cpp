@@ -475,6 +475,18 @@ void CCustomMonster::OnRender()
 		CTravelNode&	N2 = AI_Path.TravelPath[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
 		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
 		Device.Primitive.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+		
+		/**
+		Fvector         T;
+        Fvector4        S;
+        
+        T.set   (AI_Path.TravelPath[I].P); T.y+=(Radius()*2);
+        Device.mFullTransform.transform (S,T);
+        
+        pApp->pFont->Size       (0.07f/sqrtf(fabsf(S.w)));
+        pApp->pFont->Color      (D3DCOLOR_RGBA(0,255,0,(S.z<=0)?0:255));
+		pApp->pFont->Out		(S.x,-S.y,"%d",I);
+		/**/
 	}
 	}
 	/*

@@ -586,6 +586,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 	
 	if ((!(AI_Path.fSpeed)) || (AI_Path.TravelPath.empty()) || (AI_Path.TravelPath[AI_Path.TravelStart].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) <= .5f)) {
 		CAI_Soldier *SoldierLeader = dynamic_cast<CAI_Soldier *>(Leader);
+		/**
 		if (!m_bLooped) {
 			Fvector tTemp1 = m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 2];
 			tTemp1.sub(m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 1]);
@@ -600,6 +601,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 				SWITCH_TO_NEW_STATE(aiSoldierTurnOver);
 			}
 		}
+		/**/
 		
 		//if ((dwCurTime - SoldierLeader->m_dwLastRangeSearch < 10000) && (SoldierLeader->AI_Path.fSpeed > EPS_L)) {
 		if (SoldierLeader->AI_Path.fSpeed > EPS_L) {
@@ -609,8 +611,10 @@ void CAI_Soldier::FollowLeaderPatrol()
 			AI_Path.TravelPath.resize(SoldierLeader->AI_Path.TravelPath.size());
 			
 			for (int i=0, j=0; i<SoldierLeader->AI_Path.TravelPath.size(); i++, j++) {
+				
 				AI_Path.TravelPath[j].floating = FALSE;
 				AI_Path.TravelPath[j].P = SoldierLeader->AI_Path.TravelPath[i].P;
+
 				Fvector tTemp;
 				
 				if (m_bLooped)
@@ -625,6 +629,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 					j--;
 					continue;
 				}
+				tTemp.y = 0.f;
 				tTemp.normalize();
 				
 				if (m_bLooped)
@@ -733,6 +738,7 @@ void CAI_Soldier::Patrol()
 			if (((CCustomMonster*)(Group.Members[i]))->AI_Path.fSpeed > EPS_L)
 				return;
 
+		/**
 		if (!m_bLooped) {
 			Fvector tTemp1 = m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 2];
 			tTemp1.sub(m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 1]);
@@ -747,6 +753,7 @@ void CAI_Soldier::Patrol()
 				SWITCH_TO_NEW_STATE(aiSoldierTurnOver);
 			}
 		}
+		/**/
 
 		m_dwLastRangeSearch = dwCurTime;
 		
@@ -757,7 +764,7 @@ void CAI_Soldier::Patrol()
 			m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
 		}
 		
-		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_bLooped);
+		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_bLooped,false);
 		
 		if (AI_Path.TravelPath.size()) {
 			if (!m_bLooped) {

@@ -385,11 +385,13 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 
 	// setup variables
 	TravelStart				= 0;
+	/**
 	// checking for Y-s
 	for (int i=1; i<TravelPath.size(); i++)
 		if (TravelPath[i].P.y - TravelPath[i - 1].P.y > .5f) {
 			Msg("AI_BuildTravelLine : suspicious Y-point found");
 		}
+	/**/
 }
 
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)

@@ -227,12 +227,26 @@ void CAI_Zombie::FreeHunting()
 
 	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
-	if (AI_Path.bNeedRebuild)
+	if (AI_Path.bNeedRebuild) {
 		vfBuildPathToDestinationPoint(0);
+		Fvector tTemp1 = vPosition;
+		tTemp1.sub(AI_Path.TravelPath[AI_Path.TravelStart ? AI_Path.TravelStart - 1 : 0].P);
+		vfNormalizeSafe(tTemp1);
+		SRotation sRot;
+		mk_rotation(tTemp1,sRot);
+		if (!((fabsf(r_torso_target.yaw - sRot.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - sRot.yaw) - PI_MUL_2) < PI_DIV_6)))) {
+			r_torso_target.yaw = sRot.yaw > PI ? sRot.yaw - 2*PI : sRot.yaw;
+			r_spine_target.yaw = r_torso_target.yaw; 
+			r_target.yaw = 0;//r_torso_target.yaw; 
+			SWITCH_TO_NEW_STATE(aiZombieTurnOver);
+		}
+	}
 	else
-		vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
+		if ((AI_Path.TravelPath.empty()) || (!AI_Path.fSpeed)) {
+			vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+		}
 
-	SetLessCoverLook(AI_Node);
+	SetDirectionLook();
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 }
