@@ -1711,6 +1711,8 @@ resource				= 6000
 ammo_mag_size		 = 30
 ammo_class		 = ammo_5.45x39_fmj, ammo_5.45x39_ap
 
+grenade_class		 = ammo_vog-25p
+
 hand_dependence		 = 2
 
 slot 			 = 2		; // secondary
@@ -3451,6 +3453,32 @@ impair			= 1.15
 buck_shot		= 0
 tracer			= off
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_vog-25p]
+$spawn			= ammo\OG-7-B ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = munition\rpg.ogf
+$prefetch 		= 16
+
+cost					 = 50
+
+box_size		= 1
+
+inv_name		= "VOG-25P"
+inv_name_short	= "VOG-25P"
+inv_weight		= .2
+
+k_dist			= 3
+k_disp			= .5
+k_hit			= 5
+k_impulse		= 5
+k_pierce		= 2
+impair			= 1.15
+buck_shot		= 0
+tracer			= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [m_idol_e]
 $spawn 			     = on			; option for Level Editor
 $npc			     = on			; option for Level Editor
