@@ -398,8 +398,13 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	vfAssignGlobalAnimation	(tpGlobalAnimation);
 
 	if (tpGlobalAnimation) {
-		if (m_tpCurrentGlobalAnimation != tpGlobalAnimation)
+		if (m_tpCurrentGlobalAnimation != tpGlobalAnimation) {
+			Msg("Starting animation panic!");
 			m_tpCurrentGlobalBlend = tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
+		}
+		else {
+			Msg("Playing animation panic!");
+		}
 	}
 	else
 		if (g_Alive()) {
