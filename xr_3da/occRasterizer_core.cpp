@@ -177,6 +177,10 @@ void i_line	( occRasterizer* OCC, int x1, int y1, int x2, int y2 )
         }
     }
 }
+void i_edge ( occRasterizer* OCC, float x1, float y1, float x2, float y2)
+{
+	i_line	(OCC,int(x1),int(y1),int(x2),int(y2));
+}
 
 
 /* 
