@@ -135,6 +135,10 @@ function move_mgr:simulate_callback_if_neccessary()
 end
 
 function move_mgr:look_at_waypoint(pt)
+	if not self.patrol_look then
+		return
+	end
+
 	local look_pt = utils.vector_copy_by_val(self.patrol_look:point(pt)):sub(self.object:position())
 	self.object:set_sight(look.direction, look_pt, 0)
 	self.last_look_index = pt
