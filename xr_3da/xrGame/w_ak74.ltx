@@ -37,19 +37,37 @@ inv_grid_y				= 5
 
 ;-----------------------------------------------------------------------------------
 ; base dispersion
-fire_dispersion_base		= 0.05  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+;
+;Setting of the weapon shooting dispersal parameter 
+;
+;Dispersal consists from to basic constituents – dispersal of the weapon (relatively small). In fact, this is a dispersal of a weapon griped in a vice; - dispersal of the weapon behavior in the hands of the host (if he running, or walking or shoots in single shots or in a burst) is another, more significant factor of dispersal. 
+;
+;Dispersal of the weapon depends only from basic dispersal, basket case factor ant time of the ammo.
+;
+;Dispersal of the way the host shooting (standing, running and etc.)
+;
+;Two types of shooting modes can be defined: - usual mode and zoomed mode.  
+;
+;Usual mode: - depends from the position of the player while shooting (standing, sitting, walking and running)
+;
+;Zoomed mode – depends from the dispersal of the weapon and do NOT depends from the position of the shooter. In that mode, dispersal of the weapon &laquo switches to;&raquo;  sight swinging (created be effector). 
+;Weapon recoil in the game also created by recoil effector. 
+
+
+fire_dispersion_base = 0.05 ;angle (in degrees) of the basic weapon dispersal (weapon griped in a vice) 
 
 ;params of weapon recoil
-cam_relax_speed         	= 4.0	;скорость возврата в исходное положение
-cam_dispersion          	= 1.0	;увеличения угла (в градусах) с каждым выстрелом
-cam_max_angle				= 8		;максимальный угол отдачи
-cam_horz_prob				= 1		;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
-cam_horz_factor				= 1.5	;импирический коэффициент отклонения по горизонтали (чем больше, тем сильнее разброс)
+cam_relax_speed = 4.0		;speed of return to the home position
+cam_dispersion = 1.0		;increase of the degree with every shot 
+cam_max_angle = 8			;maximum shot degree 
+cam_horz_prob = 1			;probability of the horizontal deviation of effector while shooting (1 – always deviates)
 
+cam_horz_factor = 1.5		; empirically determined coefficient  of the horizontal deviation (if raises – dispersal raises) 
 
-fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
-condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+fire_dispersion_condition_factor = 5 ;increase of the dispersal in the per cents with maximum deterioration
+misfire_probability = 0.0001 ;probability of misfire with maximum deterioration
+condition_shot_dec = 0.00003 ;increase of the deterioration with every shot 
+
 ;-----------------------------------------------------------------------------------
 
 fire_point             		=  0.0, 0.22, 0.65			; position (3rd person view) for particles of fire 
