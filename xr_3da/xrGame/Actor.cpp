@@ -931,6 +931,9 @@ void CActor::shedule_Update	(u32 DT)
 	{
 		// distinguish interpolation/extrapolation
 		u32	dwTime			= Level().timeServer()-NET_Latency;
+		u32 size			= NET.size();
+		if (size)
+		{
 		net_update&	N		= NET.back();
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{
@@ -992,6 +995,7 @@ void CActor::shedule_Update	(u32 DT)
 				NET_Time				= dwTime;
 			}
 		}
+		};
 
 		mstate_real			= NET_Last.mstate;
 	}
