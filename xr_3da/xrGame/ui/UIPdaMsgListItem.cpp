@@ -58,8 +58,8 @@ void CUIPdaMsgListItem::Init(int x, int y, int width, int height)
 		UIName.Show(false);
 		UIName.Enable(false);
 	}
-	y = (height - (int)UIName.GetFont()->CurrentHeight())/2;
-	UIName.SetTextPos(UIName.GetTextX(), y);		
+//	y = (height - (int)UIName.GetFont()->CurrentHeight())/2;
+//	UIName.SetTextPos(UIName.GetTextX(), y);		
 
 	AttachChild(&UIMsgText);
 	xml_init.InitStatic(uiXml, "text_static", 0, &UIMsgText);	
