@@ -163,6 +163,8 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 	switch (st_current)
 	{
 	case eIdle:
+		fTime	-= dt;
+		if (fTime<0)	fTime = 0;
 		break;
 	case eShoot:
 		{
