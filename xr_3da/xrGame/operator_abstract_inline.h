@@ -48,15 +48,27 @@ void CAbstractOperator::reload						(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const xr_vector<typename CAbstractOperator::COperatorCondition>	&CAbstractOperator::effects	() const
+IC	const xr_vector<typename CAbstractOperator::COperatorCondition>	&CAbstractOperator::conditions	() const
 {
-	return				(m_effects);
+	return				(m_conditions.conditions());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const xr_vector<typename CAbstractOperator::COperatorCondition>	&CAbstractOperator::effects		() const
+{
+	return				(m_effects.conditions());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CAbstractOperator::add_condition	(const COperatorCondition &condition)
+{
+	m_conditions.add_condition	(condition);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::add_effect		(const COperatorCondition &effect)
 {
-	m_effects.push_back		(effect);
+	m_effects.add_condition		(effect);
 }
 
 TEMPLATE_SPECIALIZATION

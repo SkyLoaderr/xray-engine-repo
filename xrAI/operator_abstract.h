@@ -14,7 +14,7 @@ template <
 	typename _world_property,
 	typename _edge_value_type
 >
-class COperatorAbstract : public CConditionState<_world_property> {
+class COperatorAbstract {
 public:
 	typedef _edge_value_type					_edge_value_type;
 
@@ -24,7 +24,8 @@ protected:
 	typedef _world_property						COperatorCondition;
 
 protected:
-	xr_vector<COperatorCondition>				m_effects;
+	CConditionState<_world_property>			m_conditions;
+	CConditionState<_world_property>			m_effects;
 
 public:
 	IC											COperatorAbstract	();
@@ -33,6 +34,8 @@ public:
 	virtual	void								Load				(LPCSTR section);
 	virtual void								reinit				(bool clear_all);
 	virtual void								reload				(LPCSTR section);
+	IC		const xr_vector<COperatorCondition>	&conditions			() const;
+	IC		void								add_condition		(const COperatorCondition &condition);
 	IC		const xr_vector<COperatorCondition>	&effects			() const;
 	IC		void								add_effect			(const COperatorCondition &effect);
 	virtual bool								applicable			(const xr_vector<COperatorCondition> &condition, const xr_vector<COperatorCondition> &start, const xr_vector<COperatorCondition> &self_condition) const;
