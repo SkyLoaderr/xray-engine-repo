@@ -25,6 +25,7 @@ void CBuild::xrPhase_R2_Lights	()
 		L_hemi[it].diffuse.mul_rgba	(L_hemi[it].energy);
 	}
 }
+
 #define NUM_THREADS	6
 class CR2Light : public CThread
 {
@@ -45,6 +46,7 @@ public:
 		vector<R_Light>	Lights = pBuild->L_hemi;
 		if (Lights.empty())		return;
 
+		clMsg			("thread[%d] started for [%d]",thID,vertEnd-vertStart);
 		for (DWORD I = vertStart; I<vertEnd; I++)
 		{
 			Vertex* V		= g_vertices[I];
@@ -57,6 +59,7 @@ public:
 			V->Color.a		= 1.f;
 			thProgress		= float(I - vertStart) / float(vertEnd-vertStart);
 		}
+		clMsg			("thread[%d] completed",thID,vertEnd-vertStart);
 	}
 };
 
@@ -67,7 +70,7 @@ void CBuild::Light_R2			()
 	mem_Compact				();
 
 	// Start threads, wait, continue --- perform all the work
-	Status					("Calculating...");
+	Status					("Calculating... (%d lights)",L_hemi.size());
 	DWORD	start_time		= timeGetTime();
 	CThreadManager			Threads;
 	DWORD	stride			= g_vertices.size()/NUM_THREADS;
