@@ -136,7 +136,7 @@
             </phrase>
             <phrase id="5">
                 <text></text>
-                <has_info>val_prisoner_vait_actor</has_info>
+                <has_info>val_prisoner_wait_actor</has_info>
                 <next>15</next>
             </phrase>
             <phrase id="15">
@@ -155,7 +155,7 @@
             <phrase id="14112">
                 <text>val_prisoner_hello_14112</text>
                 <action>dialogs.break_dialog</action>
-                <give_info>val_prisoner_vait_actor</give_info>
+                <give_info>val_prisoner_wait_actor</give_info>
             </phrase>
             <phrase id="14111">
                 <text>val_prisoner_hello_14111</text>
@@ -178,7 +178,7 @@
             <phrase id="4">
                 <text></text>
                 <dont_has_info>val_prisoner_raid</dont_has_info>
-                <dont_has_info>val_prisoner_vait_actor</dont_has_info>
+                <dont_has_info>val_prisoner_wait_actor</dont_has_info>
                 <has_info>val_prisoner_open_cage</has_info>
                 <next>14</next>
             </phrase>
