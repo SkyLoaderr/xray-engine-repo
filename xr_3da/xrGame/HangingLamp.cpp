@@ -136,13 +136,13 @@ void CHangingLamp::UpdateCL	()
 		Fmatrix xf;
 		if (guid_bone!=BI_NONE)
 		{
-			if(m_pPhysicsShell)
+			if(m_pPhysicsShell&&!lanim)
 			{
-				Fmatrix f;
-				guid_physic_bone->InterpolateGlobalTransform(&f);
-				xf.mul(f,guid_bone_offset);
-				//Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
-				//xf.mul		(XFORM(),M);
+				//Fmatrix f;
+				//guid_physic_bone->InterpolateGlobalTransform(&f);
+				//xf.mul(f,guid_bone_offset);
+				Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
+				xf.mul		(XFORM(),M);
 			}
 			else
 			{
