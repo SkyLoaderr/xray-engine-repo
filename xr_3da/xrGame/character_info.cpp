@@ -5,7 +5,7 @@
 
 #include "stdafx.h"
 #include "character_info.h"
-#include "../xrXMLParser/xrXMLParser.h"
+#include "ui/xrXMLParser.h"
 
 CCharacterInfo::CCharacterInfo()
 {
