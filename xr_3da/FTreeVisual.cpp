@@ -82,8 +82,6 @@ struct	FTreeVisual_setup
 	float		scale;
 	Fvector4	wave;
 	Fvector4	wind;
-	Fvector4	l_dir;
-	Fvector4	l_color;
 
 	FTreeVisual_setup() 
 	{
@@ -99,13 +97,8 @@ struct	FTreeVisual_setup
 		wind.set				(_sin(tm_rot),0,_cos(tm_rot),0);	wind.normalize	();	wind.mul(ps_r__Tree_w_amp);	// dir1*amplitude
 		scale					= 1.f/float(FTreeVisual_quant);
 
-		// D-Light
-		CSun&	sun				= *(g_pGamePersistent->Environment.Suns.front());
-
 		// setup constants
 		wave.set				(ps_r__Tree_Wave.x,	ps_r__Tree_Wave.y,	ps_r__Tree_Wave.z,	Device.fTimeGlobal*ps_r__Tree_w_speed);			// wave
-		l_dir.set				(-sun.Direction().x,	-sun.Direction().y,	-sun.Direction().z,	0);							// L-dir
-		l_color.set				(sun.Color().r,		sun.Color().g,		sun.Color().b,			0);							// L-color
 	}
 };
 
