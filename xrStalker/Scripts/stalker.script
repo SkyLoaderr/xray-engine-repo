@@ -1,154 +1,10 @@
---[[
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
-class "motivation_global"	(motivation)
-
-function motivation_global:__init(obj,motivations) super()
-	self.obj				= obj
-	self.motivations		= motivations
-end
-
-function motivation_global:evaluate(motivation_id)
-	if motivations["alive"] == motivation_id then
-		if self.obj:alive() == true then
-			return			1.0
-		else
-			return			0.0
-		end
-	else
-		if self.obj:alive() == false then
-			return			1.0
-		else
-			return			0.0
-		end
-	end
-end
-
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
-class "evaluator_const"		(property_evaluator)
-
-function evaluator_const:__init(value) super()
-	self.value				= value
-end
-
-function evaluator_const:evaluate()
-	return					self.value
-end
-
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
-class "evaluator_alive"		(property_evaluator)
-
-function evaluator_alive:__init(obj) super()
-	self.obj				= obj
-end
-
-function evaluator_alive:evaluate()
-	return					self.obj:alive()
-end
-
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
-class "action_alive"			(action_base)
-
-function action_alive:__init(object,name) super(object,name)
-	self.name				= name
-end
-
-function action_alive:initialize()
-	action_base.initialize	(self)
-	self.object:set_node_evaluator		(0)
-	self.object:set_path_evaluator		(0)
-	self.object:set_desired_position	(0)
-	self.object:set_desired_direction	(0)
-end
-
-function action_alive:execute()
-	action_base.execute		(self)
-	
-	self.object:play_sound				(2,60000,10000)
-
-	self.object:set_sight				(look.search);
-
-	self.object:set_object				(object.idle);
-
-	self.object:set_path_type			(game_object.game_path)
-	self.object:set_detail_path_type	(path.line)
-	self.object:set_body_state			(move.standing)
-	self.object:set_movement_type		(move.walk)
-	self.object:set_mental_state		(anim.free)
-end
-
-function action_alive:finalize()
-	action_base.finalize	(self)
-end
-]]
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
---///////////////////////////////////////////////////
 class "stalker_script" (object_binder)
 
 function stalker_script:__init		(object) super(object)
 end
 
-function stalker_script:reinit		()
---[[
-	local					motivations	= {}
-	local					operatorts	= {}
-	local					properties	= {}
-	local					manager		= self.object:motivation_action_manager()
-	local					goal		= world_state()
-	
-	manager:clear			()
-
-	motivations["global"]	= 0
-	motivations["dead"]		= 1
-	motivations["alive"]	= 2
-
-	properties["alive"]		= 0
-	properties["dead"]		= 1
-	properties["solved"]	= 2
-
-	operators["dead"]		= 0
-	operators["free"]		= 1
-
-	-- // motivations
-	manager:add_motivation	(motivations["global"],		stalker.motivation_global(motivations))
-
-	goal:clear				()
-	goal:add_condition		(world_property(properties["dead"],	true))
-	manager:add_motivation	(motivations["dead"],		motivation_action(goal))
-
-	goal:clear				()
-	goal:add_condition		(world_property(properties["solved"],true))
-	manager:add_motivation	(motivations["alive"],		motivation_action(goal))
-
-	manager:add_connection	(motivations["global"],		motivations["dead"])
-	manager:add_connection	(motivations["global"],		motivations["alive"])
-
-	-- // evaluators
-	manager:add_evaluator	(properties["alive"],		stalker.evaluator_alive	(self.object))
-	manager:add_evaluator	(properties["dead"],		stalker.evaluator_const	(false))
-	manager:add_evaluator	(properties["solved"],		stalker.evaluator_const	(false))
-
-	-- // operators/actions
-	local					action = stalker.action_base(self.object,"dead")
-	action:add_condition	(properties["alive"],		false)
-	action:add_condition	(properties["dead"],		false)
-	action:add_effect		(properties["dead"],		true)
-	manager:add_action		(operators["dead"],			action)
-
-	local					action = stalker.action.free(self.object,"free")
-	action:add_condition	(properties["alive"],		true)
-	action:add_condition	(properties["solved"],		false)
-	action:add_effect		(properties["solved"],		true)
-	manager:add_action		(operators["free"],			action)
-]]
+function stalker_script:reinit		(obj,storage)
+	object_binder.reinit	(obj,storage)
 end
 
 function stalker_script:reload		(section)
@@ -171,6 +27,5 @@ end
 
 function init		(obj)
 	printf			("stalker.init is called with %s!",obj:name())
-	return
---	obj:set_object	(stalker.stalker_script(obj))
+	obj:set_object	(stalker.stalker_script(obj))
 end
