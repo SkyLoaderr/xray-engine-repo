@@ -10,6 +10,9 @@
 #include "ai_alife.h"
 #include "ai_space.h"
 #include "GameObject.h"
+#include "level_graph.h"
+#include "game_graph.h"
+#include "game_level_cross_table.h"
 
 void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALifeRequest)
 {
@@ -49,7 +52,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
 	m_tpServer->Process_spawn		(tNetPacket,0,FALSE,l_tpAbstract);
 	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
-	R_ASSERT3						(tpALifeDynamicObject->m_tNodeID && (tpALifeDynamicObject->m_tNodeID < getAI().Header().count),"Invalid node for object ",tpALifeDynamicObject->s_name_replace);
+	R_ASSERT3						(ai().level_graph().valid_vertex_id(tpALifeDynamicObject->m_tNodeID),"Invalid vertex for object ",tpALifeDynamicObject->s_name_replace);
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -61,7 +64,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	if (tpTraderParams) {
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
@@ -75,7 +78,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 			}
 #endif
 
-//			R_ASSERT3				(u32(l_tpALifeDynamicObject->m_tNodeID) < getAI().Header().count,"Invalid node for object ",l_tpALifeInventoryItem->s_name_replace);
+//			R_ASSERT3				(ai().level_graph().valid_vertex_id(l_tpALifeDynamicObject->m_tNodeID),"Invalid vertex for object ",l_tpALifeInventoryItem->s_name_replace);
 			m_tpServer->Process_spawn(tNetPacket,0,FALSE,l_tpALifeInventoryItem);
 			l_tpALifeDynamicObject->o_Position		= tpALifeDynamicObject->o_Position;
 			l_tpALifeDynamicObject->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;
@@ -109,7 +112,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	if (tpTraderParams) {
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*I);
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
@@ -154,7 +157,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 		OBJECT_IT					I = tpALifeGroupAbstract->m_tpMembers.begin(), B = I;
 		OBJECT_IT					E = tpALifeGroupAbstract->m_tpMembers.end();
 		u32							N = (u32)(E - I);
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			CSE_ALifeDynamicObject	*J = tpfGetObjectByID(*I);
 			if (tpALifeGroupAbstract->m_bCreateSpawnPositions) {
 				J->o_Position		= tpALifeDynamicObject->o_Position;
@@ -198,17 +201,18 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 				tpGroup->m_fCurSpeed	= tpGroup->m_fGoingSpeed;
 				tpGroup->o_Position		= tpGroupMember->o_Position;
 				u32	dwNodeID			= tpGroup->m_tNodeID;
-				tpGroup->m_tGraphID		= getAI().m_tpaCrossTable[dwNodeID].tGraphIndex;
-				tpGroup->m_fDistanceToPoint = getAI().m_tpaCrossTable[dwNodeID].fDistance;
+				tpGroup->m_tGraphID		= ai().cross_table().vertex(dwNodeID).game_vertex_id();
+				tpGroup->m_fDistanceToPoint = ai().cross_table().vertex(dwNodeID).distance();
 				tpGroup->m_tNextGraphID	= tpGroup->m_tGraphID;
-				u16	wNeighbourCount		= (u16)getAI().m_tpaGraph[tpGroup->m_tGraphID].tNeighbourCount;
-				CSE_ALifeGraph::SGraphEdge	*tpaEdges = (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tpGroup->m_tGraphID].dwEdgeOffset);
-				tpGroup->m_tPrevGraphID	= _GRAPH_ID(tpaEdges[randI(0,wNeighbourCount)].dwVertexNumber);
+				u16	wNeighbourCount		= ai().game_graph().vertex(tpGroup->m_tGraphID)->edge_count();
+				CGameGraph::const_iterator	i,e;
+				ai().game_graph().begin	(tpGroup->m_tGraphID,i,e);
+				tpGroup->m_tPrevGraphID	= (*(i + randI(0,wNeighbourCount))).vertex_id();
 			}
 			vfRemoveOnlineObject	(tpGroupMember,false);
-			I++;
+			++I;
 		}
-		for ( ; I != E; I++)
+		for ( ; I != E; ++I)
 			vfRemoveOnlineObject	(tpfGetObjectByID(*I),false);
 		vfAddObjectToScheduled		(tpALifeDynamicObject);
 		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
@@ -221,18 +225,18 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 {
 	if (I->m_bOnline)
-		if (I->ID_Parent == 0xffff) {
+		if (0xffff == I->ID_Parent) {
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (tpALifeGroupAbstract)
-				for (u32 i=0, N = (u32)tpALifeGroupAbstract->m_tpMembers.size(); i<N; i++) {
+				for (u32 i=0, N = (u32)tpALifeGroupAbstract->m_tpMembers.size(); i<N; ++i) {
 					CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[i]));
 					if (l_tpALifeMonsterAbstract && l_tpALifeMonsterAbstract->fHealth <= 0) {
 						l_tpALifeMonsterAbstract->m_bDirectControl	= true;
 						l_tpALifeMonsterAbstract->m_bOnline			= false;
 						tpALifeGroupAbstract->m_tpMembers.erase(tpALifeGroupAbstract->m_tpMembers.begin() + i);
 						vfUpdateDynamicData(l_tpALifeMonsterAbstract);
-						i--;
-						N--;
+						--i;
+						--N;
 						continue;
 					}
 				}
@@ -245,8 +249,8 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 {
 //	Msg("Validating position");
-	// updating node if it is invalid and object is not attached and online
-	if ((I->m_bOnline || (I->m_tNodeID <= 0) || (I->m_tNodeID >= getAI().Header().count)) && (I->ID_Parent == 0xffff)) {
+	// updating vertex if it is invalid and object is not attached and online
+	if ((I->m_bOnline || ai().level_graph().valid_vertex_id(I->m_tNodeID)) && (0xffff == I->ID_Parent)) {
 		// checking if it is a group of objects
 		CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 		if (tpALifeGroupAbstract) {
@@ -256,36 +260,36 @@ void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 			else {
 				// assign group position to the member position
 				I->o_Position			= tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[0])->o_Position;
-				if (!getAI().bfInsideNode(getAI().Node(I->m_tNodeID),I->o_Position)) {
-					// checking if position is inside the current node
-					I->m_tNodeID		= getAI().q_Node(I->m_tNodeID,I->o_Position);
+				if (!ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
+					// checking if position is inside the current vertex
+					I->m_tNodeID		= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
 					// validating graph point and changing it if needed
-					_GRAPH_ID			tGraphID = getAI().m_tpaCrossTable[I->m_tNodeID].tGraphIndex;
-					if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff))
+					_GRAPH_ID			tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
+					if ((tGraphID != I->m_tGraphID) && (0xffff == I->ID_Parent))
 						if (!I->m_bOnline)
 							vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
 						else
 							I->m_tGraphID = tGraphID;
 
 					// validating distance to graph point via graph cross-table
-					I->m_fDistance		= getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
+					I->m_fDistance		= ai().cross_table().vertex(I->m_tNodeID).distance();
 				}
 			}
 		}
 		else {
-			// otherwise validate position, graph point and node
-			if (!getAI().bfInsideNode(getAI().Node(I->m_tNodeID),I->o_Position)) {
-				// checking if position is inside the current node
-				I->m_tNodeID			= getAI().q_Node(I->m_tNodeID,I->o_Position);
+			// otherwise validate position, graph point and vertex
+			if (!ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
+				// checking if position is inside the current vertex
+				I->m_tNodeID			= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
 				// validating graph point and changing it if needed
-				_GRAPH_ID				tGraphID = getAI().m_tpaCrossTable[I->m_tNodeID].tGraphIndex;
-				if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff))
+				_GRAPH_ID				tGraphID = ai().cross_table().vertex(I->m_tNodeID).game_vertex_id();
+				if ((tGraphID != I->m_tGraphID) && (0xffff == I->ID_Parent))
 					if (!I->m_bOnline)
 						vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
 					else
 						I->m_tGraphID = tGraphID;
 				// validating distance to graph point via graph cross-table
-				I->m_fDistance			= getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
+				I->m_fDistance			= ai().cross_table().vertex(I->m_tNodeID).distance();
 			}
 		}
 	}
@@ -293,13 +297,13 @@ void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 
 void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 {
-	// updating node if it is invalid and object is not attached and online
+	// updating vertex if it is invalid and object is not attached and online
 	vfValidatePosition			(I);
 
 	// checking if the object is online
 	if (I->m_bOnline) {
 		// checking if the object is not attached
-		if (I->ID_Parent == 0xffff) {
+		if (0xffff == I->ID_Parent) {
 			// checking if the object is not a group of objects
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (!tpALifeGroupAbstract) {
@@ -312,7 +316,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				// therefore check all the group members if they are ready to switch offline
 
 				// iterating on group members
-				for (u32 i=0, N = (u32)tpALifeGroupAbstract->m_tpMembers.size(); i<N; i++) {
+				for (u32 i=0, N = (u32)tpALifeGroupAbstract->m_tpMembers.size(); i<N; ++i) {
 					// casting group member to the abstract monster to get access to the Health property
 					CSE_ALifeMonsterAbstract	*tpGroupMember = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[i]));
 					if (tpGroupMember)
@@ -330,9 +334,9 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 							if (!l_tpALifeInventoryItem || !l_tpALifeInventoryItem->bfAttached())
 								vfRemoveObjectFromGraphPoint(tpGroupMember,tpGroupMember->m_tGraphID,false);
 							tpGroupMember->m_bOnline		= true;
-							tpALifeGroupAbstract->m_wCount--;
-							i--;
-							N--;
+							--(tpALifeGroupAbstract->m_wCount);
+							--i;
+							--N;
 							continue;
 						}
 						else
@@ -371,7 +375,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 	else {
 		// so, the object is offline
 		// checking if the object is not attached
-		if (I->ID_Parent == 0xffff) {
+		if (0xffff == I->ID_Parent) {
 			// checking if the object is not an empty group of objects
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (tpALifeGroupAbstract && tpALifeGroupAbstract->m_tpMembers.empty()) {

@@ -11,6 +11,7 @@
 #include "ai_monster_space.h"
 #include "ai_script_lua_space.h"
 #include "car.h"
+#include "movement_manager.h"
 
 class CAbstractAction {
 public:
@@ -88,7 +89,7 @@ public:
 
 	MonsterSpace::EBodyState		m_tBodyState;
 	MonsterSpace::EMovementType		m_tMovementType;
-	MonsterSpace::EPathType			m_tPathType;
+	CMovementManager::EPathType		m_tPathType;
 	CObject							*m_tpObjectToGo;
 	ref_str							m_caPatrolPathToGo;
 	CPatrolPathParams::EPatrolPathStart	m_tPatrolPathStart;
@@ -106,7 +107,7 @@ public:
 		SetInputKeys		(eInputKeyNone);
 		SetBodyState		(MonsterSpace::eBodyStateStand);
 		SetMovementType		(MonsterSpace::eMovementTypeStand);
-		SetPathType			(MonsterSpace::ePathTypeStraight);
+//		SetPathType			(CMovementManager::ePathTypeStraight);
 		SetPatrolPath		("");
 		SetPatrolStart		(CPatrolPathParams::ePatrolPathNearest);
 		SetPatrolStop		(CPatrolPathParams::ePatrolPathContinue);
@@ -117,7 +118,7 @@ public:
 		m_tGoalType			= eGoalTypeDummy;
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, MonsterSpace::EPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CMovementManager::EPathType tPathType, CLuaGameObject *tpObjectToGo, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -126,7 +127,7 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, MonsterSpace::EPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CMovementManager::EPathType tPathType, const CPatrolPathParams &tPatrolPathParams, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -138,7 +139,7 @@ public:
 		SetSpeed			(fSpeed);
 	}
 
-							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, MonsterSpace::EPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f)
+							CMovementAction		(MonsterSpace::EBodyState tBodyState, MonsterSpace::EMovementType tMovementType, CMovementManager::EPathType tPathType, const Fvector &tPosition, float fSpeed = 0.f)
 	{
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
@@ -151,7 +152,7 @@ public:
 	{
 		SetBodyState		(MonsterSpace::eBodyStateStand);
 		SetMovementType		(MonsterSpace::eMovementTypeStand);
-		SetPathType			(MonsterSpace::ePathTypeStraight);
+//		SetPathType			(MonsterSpace::ePathTypeStraight);
 		SetPosition			(tPosition);
 		SetSpeed			(fSpeed);
 		m_tGoalType			= eGoalTypeNoPathPosition;
@@ -194,7 +195,7 @@ public:
 		m_bCompleted		= false;
 	}
 
-			void			SetPathType			(const MonsterSpace::EPathType tPathType)
+			void			SetPathType			(const CMovementManager::EPathType tPathType)
 	{
 		m_tPathType			= tPathType;
 		m_bCompleted		= false;

@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "Actor.h"
 #include "Torch.h"
-#include "xr_weapon_list.h"
 #include "trade.h"
-#include "..\CameraBase.h"
+#include "../CameraBase.h"
 #include "Car.h"
 
 #include "HudManager.h"
@@ -72,7 +71,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		}
 	}
 
-	if(m_vehicle && cmd!= kUSE)
+	if(m_vehicle && kUSE != cmd)
 	{
 		m_vehicle->IR_OnKeyboardPress(cmd);
 		return;
@@ -183,7 +182,7 @@ void CActor::IR_OnKeyboardHold(int cmd)
 		cam_Active()->Move(cmd); break;
 	case kLEFT:
 	case kRIGHT:
-		if (cam_active!=eacFreeLook) cam_Active()->Move(cmd); break;
+		if (eacFreeLook!=cam_active) cam_Active()->Move(cmd); break;
 	}
 }
 
@@ -216,10 +215,10 @@ void CActor::ActorUse()
 	u16 element=BI_NONE;
 	CGameObject* object =pick_Object(element);	
 	if(use_Vehicle(object)) return;
-	if(!Movement.PHCapture())
-		Movement.PHCaptureObject(object,element);
+	if(!m_PhysicMovementControl.PHCapture())
+		m_PhysicMovementControl.PHCaptureObject(object,element);
 	else
-		Movement.PHReleaseObject();
+		m_PhysicMovementControl.PHReleaseObject();
 	
 }
 //void CActor::IR_OnMousePress(int btn)

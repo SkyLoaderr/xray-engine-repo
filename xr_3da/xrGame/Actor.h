@@ -8,7 +8,7 @@
 
 #include "entity.h"
 #include "actor_flags.h"
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
 #include "InventoryOwner.h"
@@ -50,7 +50,7 @@ protected:
 	enum EDamages {DAMAGE_FX_COUNT = 12};
 public:
 	
-	//CPHMovementControl Movement;
+	//CPHMovementControl m_PhysicMovementControl;
 
 	enum EMoveCommand
 	{
@@ -329,7 +329,7 @@ public:
 	{
 		state.bJump			= !!(mstate_real&mcJump);
 		state.bCrouch		= !!(mstate_real&mcCrouch);
-		state.fVelocity		= Movement.GetVelocityActual();
+		state.fVelocity		= m_PhysicMovementControl.GetVelocityActual();
 		return TRUE;
 	}
 	virtual BOOL						renderable_ShadowGenerate	( ) {
@@ -358,7 +358,7 @@ public:
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud);
 	//CWeaponList*						tpfGetWeapons		()	{return Weapons;}
-	virtual f32 GetMass() { return g_Alive()?Movement.GetMass():m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
+	virtual f32 GetMass() { return g_Alive()?m_PhysicMovementControl.GetMass():m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
 	virtual float						Radius				() const;
 
 #ifdef DEBUG

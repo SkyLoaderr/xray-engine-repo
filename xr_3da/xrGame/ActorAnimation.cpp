@@ -3,7 +3,7 @@
 #include "ActorAnimation.h"
 #include "hudmanager.h"
 #include "UI.h"
-#include "xr_weapon_list.h"
+#include "weapon.h"
 
 static const float y_spin_factor		= 0.4f;
 static const float y_shoulder_factor	= 0.4f;
@@ -102,7 +102,7 @@ void CActor::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR bas
 	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
 	landing[1]		= K->ID_Cycle(strconcat(buf,base,"_jump_end_1"));
 
-	for (int k=0; k<12; k++)
+	for (int k=0; k<12; ++k)
 		m_damage[k]	= K->ID_FX(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
 }
 
@@ -239,7 +239,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	HUD().pFontSmall->OutNext	("MSTATE:     [%s]",buf);
 //	if (buf[0]) 
 //		Msg("%s",buf);
-	switch (Movement.Environment())
+	switch (m_PhysicMovementControl.Environment())
 	{
 	case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;
 	case CPHMovementControl::peInAir:		strcpy(buf,"air");				break;
@@ -247,8 +247,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	}
 	HUD().pFontSmall->OutNext	(buf);
 	HUD().pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
-	HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
-	HUD().pFontSmall->OutNext	("Node ID   %d",AI_NodeID);
+	HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl.GetVelocity()));
+	HUD().pFontSmall->OutNext	("vertex ID   %d",level_vertex_id());
 #endif
 #endif
 }

@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 #include "ai_space.h"
-#include "a_star.h"
+#include "graph_engine.h"
 
 //#define OLD_BEHAVIOUR
 
@@ -136,7 +136,7 @@ void CSE_ALifeHumanAbstract::vfGoToCustomer()
 {
 	// go to customer to get something to accomplish task
 	if (m_tpPath.empty()) {
-		getAI().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tpALife->tpfGetObjectByID(m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,m_tpPath);
+		ai().graph_engine().search(ai().game_graph(),m_tGraphID,m_tpALife->tpfGetObjectByID(m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,&m_tpPath,CGraphEngine::CBaseParameters());
 		m_dwCurNode					= 0;
 		m_tNextGraphID				= m_tGraphID;
 		m_fCurSpeed					= m_fGoingSpeed;
@@ -171,7 +171,7 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 	m_fCurSpeed		= m_fGoingSpeed;
 	m_fProbability	= m_fGoingSuccessProbability; 
 	if (m_tpPath.empty()) {
-		getAI().m_tpAStar->ffFindMinimalPath(m_tGraphID,m_tDestGraphPointIndex,m_tpPath);
+		ai().graph_engine().search(ai().game_graph(),m_tGraphID,m_tDestGraphPointIndex,&m_tpPath,CGraphEngine::CBaseParameters());
 		m_dwCurNode				= 0;
 		m_tNextGraphID			= m_tGraphID;
 	}
@@ -186,16 +186,16 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 				case eTaskTypeSearchForItemCG :
 				case eTaskTypeSearchForItemOG : {
 					if ((m_dwCurNode + 1>= (m_tpPath.size())) && (m_tGraphID == m_tNextGraphID)) {
-						l_tpALifeTask->m_dwTryCount++;
+						++(l_tpALifeTask->m_dwTryCount);
 						m_tTaskState = eTaskStateChooseTask;
 					}
 					break;
 				}
 				case eTaskTypeSearchForItemCL :
 				case eTaskTypeSearchForItemOL : {
-//					tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_dwTryCount++;
+//					++(tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_dwTryCount);
 //					m_tTaskState		= eTaskStateChooseTask;
-//					for (m_dwCurTaskLocation++; (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) && (m_baVisitedVertices[m_dwCurTaskLocation]); m_dwCurTaskLocation++);
+//					for (++m_dwCurTaskLocation; (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) && (m_baVisitedVertices[m_dwCurTaskLocation]); ++m_dwCurTaskLocation);
 //					if (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) {
 //						m_baVisitedVertices[m_dwCurTaskLocation] = true;
 //						tpAlife->ffFindMinimalPath(m_tGraphID,tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID][m_dwCurTaskLocation],m_tpPath);

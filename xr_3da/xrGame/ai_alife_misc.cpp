@@ -10,6 +10,7 @@
 #include "ai_alife.h"
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
+#include "game_graph.h"
 
 void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSchedulable)
 {
@@ -19,10 +20,10 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 	R_ASSERT2					(l_tpALifeDynamicObject,"Unknown schedulable object class");
 	_GRAPH_ID					l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
 	vfCheckForInteraction		(tpALifeSchedulable,l_tGraphID);
-	CSE_ALifeGraph::SGraphEdge	*I = (CSE_ALifeGraph::SGraphEdge *)((u8 *)getAI().m_tpaGraph + getAI().m_tpaGraph[l_tGraphID].dwEdgeOffset);
-	CSE_ALifeGraph::SGraphEdge	*E = I + (u32)getAI().m_tpaGraph[l_tGraphID].tNeighbourCount;
-	for ( ; I != E; I++)
-		vfCheckForInteraction	(tpALifeSchedulable,(_GRAPH_ID)(*I).dwVertexNumber);
+	CGameGraph::const_iterator	I, E;
+	ai().game_graph().begin		(l_tGraphID,I,E);
+	for ( ; I != E; ++I)
+		vfCheckForInteraction	(tpALifeSchedulable,(*I).vertex_id());
 }
 
 void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSchedulable, _GRAPH_ID tGraphID)
@@ -36,7 +37,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 	int							l_iGroupIndex;
 	bool						l_bFirstTime = true;
 	bool						l_bMutualDetection;
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		if ((*I).first == tpALifeSchedulable->ID)
 			continue;
 
@@ -63,8 +64,8 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 #endif
 				ECombatResult			l_tCombatResult = eCombatResultRetreat12;
 				bool					l_bDoNotContinue = false;
-				for (int i=0; i<2*int(m_dwMaxCombatIterationCount); i++) {
-					if (tfChooseCombatAction(l_iGroupIndex) == eCombatActionAttack) {
+				for (int i=0; i<2*int(m_dwMaxCombatIterationCount); ++i) {
+					if (eCombatActionAttack == tfChooseCombatAction(l_iGroupIndex)) {
 #ifdef DEBUG
 						if (psAI_Flags.test(aiALife)) {
 							Msg("[LSS] %s choosed to attack %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
@@ -113,7 +114,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 				}
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
-					if (l_tCombatResult == eCombatResultRetreat12)
+					if (eCombatResultRetreat12 == l_tCombatResult)
 						Msg("[LSS] both combat groups decided not to continue combat");
 				}
 #endif

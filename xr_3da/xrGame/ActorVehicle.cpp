@@ -3,7 +3,7 @@
 
 #include "actor.h"
 #include "Car.h"
-#include "..\CameraBase.h"
+#include "../CameraBase.h"
 void CActor::attach_Vehicle(CCar* vehicle)
 {
 	if(!vehicle) return;
@@ -30,7 +30,7 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(NULL,NULL);
 	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(CarHeadCallback,this);
 
-	Movement.DestroyCharacter();
+	m_PhysicMovementControl.DestroyCharacter();
 	//PIItem iitem=m_inventory.ActiveItem();
 	//if(iitem)iitem->m_showHUD=false;
 	setVisible(true);
@@ -42,8 +42,8 @@ void CActor::detach_Vehicle()
 {
 	if(!m_vehicle) return;
 	m_vehicle->detach_Actor();//
-	Movement.CreateCharacter();
-	Movement.SetPosition(m_vehicle->ExitPosition());
+	m_PhysicMovementControl.CreateCharacter();
+	m_PhysicMovementControl.SetPosition(m_vehicle->ExitPosition());
 	r_model_yaw=-m_vehicle->Camera()->yaw;
 	r_torso.yaw=r_model_yaw;
 	r_model_yaw_dest=r_model_yaw;

@@ -18,7 +18,7 @@ void delete_data(xr_map<T1,T2,T3> &tpMap)
 {
 	xr_map<T1,T2,T3>::iterator	I = tpMap.begin();
 	xr_map<T1,T2,T3>::iterator	E = tpMap.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		delete_data				((*I).first);
 		delete_data				((*I).second);
 	}
@@ -30,7 +30,7 @@ void delete_data(xr_set<T1,T2> &tpSet)
 {
 	xr_set<T1,T2>::iterator	I = tpMap.begin();
 	xr_set<T1,T2>::iterator	E = tpMap.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		delete_data				(*I);
 	tpSet.clear					();
 };
@@ -40,7 +40,7 @@ void delete_data(xr_vector<T> &tpVector)
 {
 	xr_vector<T>::iterator		I = tpVector.begin();
 	xr_vector<T>::iterator		E = tpVector.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		delete_data				(*I);
 	tpVector.clear				();
 };
@@ -66,7 +66,7 @@ void save_data(xr_map<T1,T2,T3> &tpMap, M &tStream, bool bSaveCount = true)
 		tStream.w_u32			((u32)tpMap.size());
 	xr_map<T1,T2,T3>::iterator	I = tpMap.begin();
 	xr_map<T1,T2,T3>::iterator	E = tpMap.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		save_data				((*I).second,tStream,bSaveCount);
 };
 
@@ -77,7 +77,7 @@ void save_data(xr_set<T1,T2> &tpSet, M &tStream, bool bSaveCount = true)
 		tStream.w_u32			((u32)tpSet.size());
 	xr_set<T1,T2>::iterator	I = tpSet.begin();
 	xr_set<T1,T2>::iterator	E = tpSet.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		save_data				(*I,tStream,bSaveCount);
 };
 
@@ -88,7 +88,7 @@ void save_data(xr_vector<T> &tpVector, M &tStream, bool bSaveCount = true)
 		tStream.w_u32			((u32)tpVector.size());
 	xr_vector<T>::iterator		I = tpVector.begin();
 	xr_vector<T>::iterator		E = tpVector.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		save_data				(*I,tStream,bSaveCount);
 };
 
@@ -101,7 +101,7 @@ void save_data(xr_vector<bool> &baVector, M &tStream, bool bSaveCount = true)
 	xr_vector<bool>::iterator 	E = baVector.end();
 	u32							dwMask = 0;
 	if (I != E) {
-		for (int j=0; I != E; I++, j++) {
+		for (int j=0; I != E; ++I, ++j) {
 			if (j >= 32) {
 				tStream.w_u32(dwMask);
 				dwMask			= 0;
@@ -168,7 +168,7 @@ void load_data(xr_map<T1,T2,T3> &tpMap, M &tStream, const T1 tfGetKey(const T2))
 {
 	tpMap.clear					();
 	u32							dwCount	= tStream.r_u32();
-	for (int i=0 ; i<(int)dwCount; i++) {
+	for (int i=0 ; i<(int)dwCount; ++i) {
 		T2						T;
 		load_data				(T,tStream);
 		tpMap.insert			(mk_pair(tfGetKey(T),T));
@@ -180,7 +180,7 @@ void load_data(xr_map<T1,T2*,T3> &tpMap, M &tStream, const T1 tfGetKey(const T2*
 {
 	tpMap.clear					();
 	u32							dwCount	= tStream.r_u32();
-	for (int i=0 ; i<(int)dwCount; i++) {
+	for (int i=0 ; i<(int)dwCount; ++i) {
 		T2						*T;
 		load_data				(T,tStream);
 		tpMap.insert			(mk_pair(tfGetKey(T),T));
@@ -192,7 +192,7 @@ void load_data(xr_map<T1,T2,T3> &tpMap, M &tStream, bool bSaveCount = true)
 {
 	xr_map<T1,T2,T3>::iterator	I = tpMap.begin();
 	xr_map<T1,T2,T3>::iterator	E = tpMap.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		load_data				((*I).second,tStream,bSaveCount);
 };
 
@@ -201,7 +201,7 @@ void load_data(xr_set<T1,T2> &tpSet, M &tStream, bool bSaveCount = true)
 {
 	xr_set<T1,T2>::iterator	I = tpSet.begin();
 	xr_set<T1,T2>::iterator	E = tpSet.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		load_data				(*I,tStream,bSaveCount);
 };
 
@@ -212,7 +212,7 @@ void load_data(xr_vector<T> &tpVector, M &tStream, bool bSaveCount = true)
 		tpVector.resize			(tStream.r_u32());
 	xr_vector<T>::iterator		I = tpVector.begin();
 	xr_vector<T>::iterator		E = tpVector.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		load_data				(*I,tStream,bSaveCount);
 };
 
@@ -224,7 +224,7 @@ void load_data(xr_vector<bool> &baVector, M &tStream, bool bSaveCount = true)
 	xr_vector<bool>::iterator 	I = baVector.begin();
 	xr_vector<bool>::iterator 	E = baVector.end();
 	u32							dwMask = 0;
-	for (int j=32; I != E; I++, j++) {
+	for (int j=32; I != E; ++I, ++j) {
 		if (j >= 32) {
 			dwMask				= tStream.r_u32();
 			j					= 0;

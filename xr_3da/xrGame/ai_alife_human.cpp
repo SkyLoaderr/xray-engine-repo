@@ -10,7 +10,8 @@
 #include "ai_alife.h"
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
-#include "ai_primary_funcs.h"
+#include "game_graph.h"
+#include "ef_storage.h"
 
 #define MAX_ITEM_FOOD_COUNT		3
 #define MAX_ITEM_MEDIKIT_COUNT	3
@@ -23,7 +24,7 @@ bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 	I				= children.begin();
 	OBJECT_IT		E = children.end();
 	CSE_ALifeTask	&tTask = *m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		switch (tTask.m_tTaskType) {
 			case eTaskTypeSearchForItemCL :
 			case eTaskTypeSearchForItemCG : {
@@ -71,7 +72,7 @@ bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint()
 	else {
 		if (++m_dwCurNode < m_tpPath.size()) {
 			m_tNextGraphID		= _GRAPH_ID(m_tpPath[m_dwCurNode]);
-			m_fDistanceToPoint	= getAI().ffGetDistanceBetweenGraphPoints(m_tGraphID,m_tNextGraphID);
+			m_fDistanceToPoint	= ai().game_graph().distance(m_tGraphID,m_tNextGraphID);
 			bContinue			= true;
 		}
 		else
@@ -90,15 +91,15 @@ void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 {
 	OBJECT_IT					I = m_tpKnownCustomers.begin();
 	OBJECT_IT					E = m_tpKnownCustomers.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		OBJECT_TASK_PAIR_IT		J = m_tpALife->m_tTaskCrossMap.find(*I);
-		R_ASSERT2				(J != m_tpALife->m_tTaskCrossMap.end(),"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
+		R_ASSERT2				(m_tpALife->m_tTaskCrossMap.end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
 		
 		u32						l_dwMinTryCount = u32(-1);
 		_TASK_ID				l_tBestTaskID = _TASK_ID(-1);
 		TASK_SET_IT				i = (*J).second.begin();
 		TASK_SET_IT				e = (*J).second.end();
-		for ( ; i != e; i++) {
+		for ( ; i != e; ++i) {
 			CSE_ALifeTask		*l_tpTask = m_tpALife->tpfGetTaskByID(*i);
 			if (!l_tpTask->m_dwTryCount) {
 				l_tBestTaskID = l_tpTask->m_tTaskID;
@@ -111,7 +112,7 @@ void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 				}
 		}
 		
-		if (l_tBestTaskID != _TASK_ID(-1)) {
+		if (_TASK_ID(-1) != l_tBestTaskID) {
 			vfSetCurrentTask	(l_tBestTaskID);
 			break;
 		}
@@ -125,13 +126,13 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 	u32							l_dwBestWeapon = 0;
 	OBJECT_IT					I = children.begin();
 	OBJECT_IT					E = children.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		CSE_ALifeItemWeapon		*l_tpALifeItemWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(m_tpALife->tpfGetObjectByID(*I));
 		if (!l_tpALifeItemWeapon)
 			continue;
 
 		l_tpALifeItemWeapon->m_dwAmmoAvailable = get_available_ammo_count(l_tpALifeItemWeapon,children);
-		if (l_tpALifeItemWeapon->m_dwAmmoAvailable || (l_tpALifeItemWeapon->m_dwSlot == 0) || (l_tpALifeItemWeapon->m_dwSlot == 3)) {
+		if (l_tpALifeItemWeapon->m_dwAmmoAvailable || (!l_tpALifeItemWeapon->m_dwSlot) || (3 == l_tpALifeItemWeapon->m_dwSlot)) {
 			u32					l_dwCurrentBestWeapon = 0; 
 			switch (l_tpALifeItemWeapon->m_tClassID) {
 				case CLSID_OBJECT_W_RPG7:
@@ -194,7 +195,7 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 			bool						l_bOk = false;
 			OBJECT_IT					I = children.begin();
 			OBJECT_IT					E = children.end();
-			for ( ; I != E; I++)
+			for ( ; I != E; ++I)
 				if (*I == m_tpCurrentBestWeapon->ID) {
 					l_bOk				= true;
 					CSE_ALifeItem		*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
@@ -208,18 +209,18 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 		}
 		default : {
 			R_ASSERT2					(m_tpCurrentBestWeapon->m_dwAmmoAvailable,"No ammo for the selected weapon!");
-			m_tpCurrentBestWeapon->m_dwAmmoAvailable--;
+			--(m_tpCurrentBestWeapon->m_dwAmmoAvailable);
 			if (m_tpCurrentBestWeapon->m_dwAmmoAvailable)
 				return					(true);
 
-			for (int i=0, n=children.size() ; i<n; i++) {
+			for (int i=0, n=children.size() ; i<n; ++i) {
 				CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
 				if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && l_tpALifeItemAmmo->a_elapsed) {
 #pragma todo("Dima to Dima : Optimize next 2 strings for better performance")
 					m_tpALife->vfDetachItem(*this,l_tpALifeItemAmmo,m_tGraphID);
 					m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
-					i--;
-					n--;
+					--i;
+					--n;
 				}
 			}
 			m_tpCurrentBestWeapon		= 0;
@@ -230,7 +231,7 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 
 void CSE_ALifeHumanAbstract::vfCollectAmmoBoxes()
 {
-	for (int i=0, n=children.size() ; i<n; i++) {
+	for (int i=0, n=children.size() ; i<n; ++i) {
 		
 		if (m_tpALife->m_baMarks[i])
 			continue;
@@ -241,7 +242,7 @@ void CSE_ALifeHumanAbstract::vfCollectAmmoBoxes()
 		if (!l_tpALifeItemAmmo)
 			continue;
 
-		for (int j=i+1; j<n; j++) {
+		for (int j=i+1; j<n; ++j) {
 			if (m_tpALife->m_baMarks[j])
 				continue;
 
@@ -268,7 +269,7 @@ void CSE_ALifeHumanAbstract::vfCollectAmmoBoxes()
 		}
 	}
 
-	for (int i=0, j=0; i<n; i++,j++) {
+	for (int i=0, j=0; i<n; ++i,++j) {
 		m_tpALife->m_baMarks[j] = false;
 
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
@@ -278,8 +279,8 @@ void CSE_ALifeHumanAbstract::vfCollectAmmoBoxes()
 #pragma todo("Dima to Dima : Optimize next 2 strings for better performance")
 		m_tpALife->vfDetachItem	(*this,l_tpALifeItemAmmo,m_tGraphID);
 		m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
-		i--;
-		n--;
+		--i;
+		--n;
 	}
 }
 
@@ -293,7 +294,7 @@ void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 		case 3 :
 			break;
 		default : {
-			for (int i=0, n=children.size() ; i<n; i++) {
+			for (int i=0, n=children.size() ; i<n; ++i) {
 				CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
 				if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name)) {
 					if (m_tpCurrentBestWeapon->m_dwAmmoAvailable > l_tpALifeItemAmmo->a_elapsed) {
@@ -308,8 +309,8 @@ void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 #pragma todo("Dima to Dima : Optimize next 2 strings for better performance")
 					m_tpALife->vfDetachItem(*this,l_tpALifeItemAmmo,m_tGraphID);
 					m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
-					i--;
-					n--;
+					--i;
+					--n;
 				}
 			}
 			m_tpCurrentBestWeapon = 0;
@@ -326,7 +327,7 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALif
 	u32							l_dwResult = 0;
 	OBJECT_IT					I = tpObjectVector.begin();
 	OBJECT_IT					E = tpObjectVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(*I));
 		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name))
 			l_dwResult			+= l_tpALifeItemAmmo->a_elapsed;
@@ -341,7 +342,7 @@ u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALif
 	u32							l_dwResult = 0;
 	ITEM_P_IT					I = tpItemVector.begin();
 	ITEM_P_IT					E = tpItemVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(*I);
 		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && (l_tpALifeItemAmmo->m_dwCost <= m_dwTotalMoney) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItemAmmo->ID) == tpObjectVector->end()))) {
 			l_dwResult			+= l_tpALifeItemAmmo->a_elapsed;
@@ -358,7 +359,7 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 	u32							l_dwCount = 0, l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT					I = tpItemVector.begin();
 	ITEM_P_IT					E = tpItemVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(*I);
 		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && (l_tpALifeItemAmmo->m_dwCost <= m_dwTotalMoney) && bfCanGetItem(l_tpALifeItemAmmo) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItemAmmo->ID) == tpObjectVector->end()))) {
 			if (!tpObjectVector)
@@ -367,7 +368,7 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 				children.push_back(l_tpALifeItemAmmo->ID);
 				m_dwTotalMoney -= l_tpALifeItemAmmo->m_dwCost;
 			}
-			l_dwCount++;
+			++l_dwCount;
 			if (l_dwCount >= MAX_AMMO_ATTACH_COUNT)
 				break;
 		}
@@ -380,7 +381,7 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 	m_tpALife->m_tpItemVector.clear();
 	D_OBJECT_PAIR_IT	I = m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.begin();
 	D_OBJECT_PAIR_IT	E = m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*I).second);
 		if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfUseful() && !(*I).second->m_bOnline)
 			if ((m_tpALife->randF(1.0f) < m_fProbability)) {
@@ -421,10 +422,10 @@ void CSE_ALifeHumanAbstract::vfDetachAll(bool bFictitious)
 
 EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)
 {
-	if (m_tpALife->m_tCombatType == eCombatTypeMonsterMonster) {
+	if (eCombatTypeMonsterMonster == m_tpALife->m_tCombatType) {
 		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable);
 		R_ASSERT2					(l_tpALifeMonsterAbstract,"Inconsistent meet action type");
-		return						(m_tpALife->tfGetRelationType(this,dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable)) == eRelationTypeFriend ? eMeetActionTypeInteract : ((bMutualDetection || m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
+		return						(eRelationTypeFriend == m_tpALife->tfGetRelationType(this,dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable)) ? eMeetActionTypeInteract : ((bMutualDetection || (eCombatActionAttack == m_tpALife->tfChooseCombatAction(iGroupIndex))) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
 	}
 	else
 		return(eMeetActionTypeAttack);
@@ -440,14 +441,14 @@ CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 			return					(0);
 		OBJECT_IT					I = l_tpALifeGroupAbstract->m_tpMembers.begin();
 		OBJECT_IT					E = l_tpALifeGroupAbstract->m_tpMembers.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(l_tpALifeGroupAbstract->m_tpMembers[0]));
 			R_ASSERT				(l_tpALifeHumanAbstract);
-			getAI().m_tpCurrentALifeObject = l_tpALifeHumanAbstract->tpfGetBestDetector();
-			u32						l_dwCurrentValue = iFloor(getAI().m_pfDetectorType->ffGetValue()+.5f);
+			ai().ef_storage().m_tpCurrentALifeObject = l_tpALifeHumanAbstract->tpfGetBestDetector();
+			u32						l_dwCurrentValue = iFloor(ai().ef_storage().m_pfDetectorType->ffGetValue()+.5f);
 			if (l_dwCurrentValue > l_dwBestValue) {
 				l_dwBestValue		= l_dwCurrentValue;
-				m_tpBestDetector	= dynamic_cast<CSE_ALifeDynamicObject*>(getAI().m_tpCurrentALifeObject);
+				m_tpBestDetector	= dynamic_cast<CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeObject);
 			}
 		}
 		return						(m_tpBestDetector);
@@ -455,7 +456,7 @@ CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 	
 	OBJECT_IT						I = children.begin();
 	OBJECT_IT						E = children.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = m_tpALife->tpfGetObjectByID(*I);
 		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 		R_ASSERT2					(l_tpALifeInventoryItem,"Non-item object in the inventory found");
@@ -484,7 +485,7 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 		OBJECT_IT	i = children.begin();
 		OBJECT_IT	e = children.end();
 		ITEM_P_IT	I = m_tpALife->m_tpTempItemBuffer.begin();
-		for ( ; i != e; i++, I++)
+		for ( ; i != e; ++i, ++I)
 			*I		= dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*i));
 		if (tpALifeInventoryItem)
 			*I		= tpALifeInventoryItem;
@@ -494,7 +495,7 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 	{
 		ITEM_P_IT		I = m_tpALife->m_tpTempItemBuffer.begin();
 		ITEM_P_IT		E = m_tpALife->m_tpTempItemBuffer.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(*I);
 			if (l_tpALifeItemWeapon && (!m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot] || (m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot]->m_iVolume < l_tpALifeItemWeapon->m_iVolume)))
 				m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot] = l_tpALifeItemWeapon;
@@ -507,16 +508,16 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 
 	sort			(m_tpALife->m_tpTempItemBuffer.begin(),m_tpALife->m_tpTempItemBuffer.end(),CSortItemVolumePredicate());
 
-#pragma todo("Dima to Dima,Oles,AlexMX,Yura,Jim,Kostia : Instead of greeding algorithm implement faster algorithm which _always_ computes _correct_ result (though this problem seems to be NP)")
+#pragma todo("Dima to Dima,Oles,AlexMX,Yura,Jim,Kostia : Instead of greedy algorithm implement faster algorithm which _always_ computes _correct_ result (though this problem seems to be NP)")
 
 	u64				l_qwInventoryBitMask = 0;
 	ITEM_P_IT		I = m_tpALife->m_tpTempItemBuffer.begin();
 	ITEM_P_IT		E = m_tpALife->m_tpTempItemBuffer.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		bool		l_bOk = true;
 		u64			l_qwItemBitMask = (*I)->m_qwGridBitMask;
-		for (int i=0, n=RUCK_HEIGHT - (*I)->m_iGridHeight, m=RUCK_WIDTH - (*I)->m_iGridWidth; i<=n && l_bOk; i++, l_qwItemBitMask <<= RUCK_WIDTH - m)
-			for (int j=0; j<=m; j++, l_qwItemBitMask <<= 1)
+		for (int i=0, n=RUCK_HEIGHT - (*I)->m_iGridHeight, m=RUCK_WIDTH - (*I)->m_iGridWidth; i<=n && l_bOk; ++i, l_qwItemBitMask <<= RUCK_WIDTH - m)
+			for (int j=0; j<=m; ++j, l_qwItemBitMask <<= 1)
 				if ((l_qwInventoryBitMask ^ l_qwItemBitMask) == (l_qwInventoryBitMask | l_qwItemBitMask)) {
 					l_qwInventoryBitMask |= l_qwItemBitMask;
 					l_bOk = false;
@@ -533,7 +534,7 @@ void CSE_ALifeHumanAbstract::vfChooseGroup(CSE_ALifeGroupAbstract *tpALifeGroupA
 	{
 		OBJECT_IT					I = tpALifeGroupAbstract->m_tpMembers.begin();
 		OBJECT_IT					E = tpALifeGroupAbstract->m_tpMembers.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(*I));
 			R_ASSERT2				(l_tpALifeHumanAbstract,"Invalid group member");
 			l_tpALifeHumanAbstract->vfAttachItems(eTakeTypeMin);
@@ -543,7 +544,7 @@ void CSE_ALifeHumanAbstract::vfChooseGroup(CSE_ALifeGroupAbstract *tpALifeGroupA
 	{
 		OBJECT_IT					I = tpALifeGroupAbstract->m_tpMembers.begin();
 		OBJECT_IT					E = tpALifeGroupAbstract->m_tpMembers.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(*I));
 			R_ASSERT2				(l_tpALifeHumanAbstract,"Invalid group member");
 			l_tpALifeHumanAbstract->vfAttachItems(eTakeTypeRest);
@@ -560,7 +561,7 @@ bool CSE_ALifeHumanAbstract::bfChooseFast()
 	bool							l_bOk = true;
 	ITEM_P_IT						I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT						E = m_tpALife->m_tpItemVector.end(), J = E - 1;
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		if ((I != J) || bfCanGetItem(*I)) {
 			m_fCumulativeItemMass	+= (*I)->m_fMass;
 			m_iCumulativeItemVolume	+= (*I)->m_iVolume;
@@ -577,7 +578,7 @@ bool CSE_ALifeHumanAbstract::bfChooseFast()
 
 	if (l_bOk) {
 		I							= m_tpALife->m_tpItemVector.begin();
-		for ( ; I != E; I++)
+		for ( ; I != E; ++I)
 			m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 		return						(true);
 	}
@@ -590,19 +591,19 @@ int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
 	// choosing equipment
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 	float							l_fItemBestValue	= -1.f;
-	getAI().m_tpCurrentALifeMember	= this;
+	ai().ef_storage().m_tpCurrentALifeMember	= this;
 
 	ITEM_P_IT					I = m_tpALife->m_tpItemVector.begin(), X;
 	ITEM_P_IT					E = m_tpALife->m_tpItemVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		// checking if it is an equipment item
-		getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
-		if (getAI().m_pfEquipmentType->ffGetValue() > getAI().m_pfEquipmentType->ffGetMaxResultValue())
+		ai().ef_storage().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
+		if (ai().ef_storage().m_pfEquipmentType->ffGetValue() > ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue())
 			continue;
 		if (m_dwTotalMoney < (*I)->m_dwCost)
 			continue;
 		// evaluating item
-		float					l_fCurrentValue = getAI().m_pfEquipmentType->ffGetValue();
+		float					l_fCurrentValue = ai().ef_storage().m_pfEquipmentType->ffGetValue();
 		// choosing the best item
 		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
 			l_fItemBestValue	= l_fCurrentValue;
@@ -626,43 +627,43 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 {
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 	float							l_fItemBestValue	= -1.f;
-	getAI().m_tpCurrentALifeMember	= this;
+	ai().ef_storage().m_tpCurrentALifeMember	= this;
 
 	u32						l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		// checking if it is a hand weapon
 		m_dwTotalMoney			= l_dwSafeMoney;
-		getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
+		ai().ef_storage().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
 		if (m_dwTotalMoney < (*I)->m_dwCost)
 			continue;
 		m_dwTotalMoney			-= (*I)->m_dwCost;
-		int						j = getAI().m_pfPersonalWeaponType->dwfGetWeaponType();
+		int						j = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
 		float					l_fCurrentValue = -1.f;
 		switch (tWeaponPriorityType) {
 			case eWeaponPriorityTypeKnife : {
-				if (j != 1)
+				if (1 != j)
 					continue;
-				l_fCurrentValue = getAI().m_pfItemValue->ffGetValue();
+				l_fCurrentValue = ai().ef_storage().m_pfItemValue->ffGetValue();
 				break;
 			}
 			case eWeaponPriorityTypeSecondary : {
-				if (j != 5)
+				if (5 != j)
 					continue;
-				l_fCurrentValue = getAI().m_pfSmallWeaponValue->ffGetValue();
+				l_fCurrentValue = ai().ef_storage().m_pfSmallWeaponValue->ffGetValue();
 				break;
 			}
 			case eWeaponPriorityTypePrimary : {
-				if ((j != 6) && (j != 8) && (j != 9))
+				if ((6 != j) && (8 != j) && (9 != j))
 					continue;
-				l_fCurrentValue = getAI().m_pfMainWeaponValue->ffGetValue();
+				l_fCurrentValue = ai().ef_storage().m_pfMainWeaponValue->ffGetValue();
 				break;
 			}
 			case eWeaponPriorityTypeGrenade : {
-				if (j != 7)
+				if (7 != j)
 					continue;
-				l_fCurrentValue = getAI().m_pfItemValue->ffGetValue();
+				l_fCurrentValue = ai().ef_storage().m_pfItemValue->ffGetValue();
 				break;
 			}
 			default : NODEFAULT;
@@ -699,11 +700,11 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 {
 #pragma todo("Dima to Dima : Add food and medikit items need count computations")
 	// choosing food
-	getAI().m_tpCurrentALifeMember	= this;
+	ai().ef_storage().m_tpCurrentALifeMember	= this;
 	u32							l_dwCount = 0, l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT					I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT					E = m_tpALife->m_tpItemVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		if ((*I)->m_iFoodValue <= 0)
 			continue;
 		if (m_dwTotalMoney < (*I)->m_dwCost)
@@ -715,7 +716,7 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 			else {
 				children.push_back((*I)->ID);
 			}
-			l_dwCount++;
+			++l_dwCount;
 			if (l_dwCount >= MAX_ITEM_FOOD_COUNT)
 				break;
 		}
@@ -736,7 +737,7 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 	u32						l_dwCount = 0, l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		if ((*I)->m_iHealthValue <= 0)
 			continue;
 		if (m_dwTotalMoney < (*I)->m_dwCost)
@@ -747,7 +748,7 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 				m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 			else
 				children.push_back((*I)->ID);
-			l_dwCount++;
+			++l_dwCount;
 			if (l_dwCount >= MAX_ITEM_MEDIKIT_COUNT)
 				break;
 		}
@@ -767,10 +768,10 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 	// choosing detector
 	CSE_ALifeInventoryItem		*l_tpALifeItemBest	= 0;
 	float						l_fItemBestValue	= -1.f;
-	getAI().m_tpCurrentALifeMember	= this;
+	ai().ef_storage().m_tpCurrentALifeMember	= this;
 	ITEM_P_IT					I = m_tpALife->m_tpItemVector.begin(), X;
 	ITEM_P_IT					E = m_tpALife->m_tpItemVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		// checking if it is an item
 		CSE_ALifeItemDetector	*l_tpALifeItem = dynamic_cast<CSE_ALifeItemDetector*>(*I);
 		if (!l_tpALifeItem)
@@ -778,8 +779,8 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 		if (m_dwTotalMoney < l_tpALifeItem->m_dwCost)
 			continue;
 		// evaluating item
-		getAI().m_tpCurrentALifeObject = l_tpALifeItem;
-		float					l_fCurrentValue = getAI().m_pfEquipmentType->ffGetValue();
+		ai().ef_storage().m_tpCurrentALifeObject = l_tpALifeItem;
+		float					l_fCurrentValue = ai().ef_storage().m_pfEquipmentType->ffGetValue();
 		// choosing the best item
 		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(l_tpALifeItem) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItem->ID) == tpObjectVector->end()))) {
 			l_fItemBestValue = l_fCurrentValue;
@@ -804,7 +805,7 @@ int  CSE_ALifeHumanAbstract::ifChooseValuables(OBJECT_VECTOR *tpObjectVector)
 	// choosing the rest objects
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; ++I)
 		if (bfCanGetItem(*I))
 			m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 
@@ -828,14 +829,14 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 		if (bfChooseFast())
 			return;
 	
-	if (tTakeType == eTakeTypeAll) {
+	if (eTakeTypeAll == tTakeType) {
 		m_tpALife->vfAppendItemVector	(children,m_tpALife->m_tpItemVector);
 		vfDetachAll				();
 	}
 	
 	sort						(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 
-	if ((tTakeType == eTakeTypeAll) || (tTakeType == eTakeTypeMin)) {
+	if ((eTakeTypeAll == tTakeType) || (eTakeTypeMin == tTakeType)) {
 		ifChooseFood			();
 		ifChooseWeapon			(eWeaponPriorityTypeKnife);
 		ifChooseWeapon			(eWeaponPriorityTypeSecondary);
@@ -846,6 +847,6 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 		ifChooseEquipment		();
 	}
 
-	if ((tTakeType == eTakeTypeAll) || (tTakeType == eTakeTypeRest))
+	if ((eTakeTypeAll == tTakeType) || (eTakeTypeRest == tTakeType))
 		ifChooseValuables		();
 }

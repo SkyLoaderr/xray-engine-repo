@@ -45,6 +45,7 @@ class CSE_ALifeArtefactNeed;
 class CSE_ALifeInventoryItem;
 class CSE_ALifeItemWeapon;
 class CSE_ALifeSchedulable;
+class CGameGraph;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -60,14 +61,6 @@ namespace ALife {
 	typedef u32	_ORGANIZATION_ID;							// Organization ID
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
-
-#pragma pack(push,4)
-	typedef struct tagSLevelPoint {
-		Fvector		tPoint;
-		u32			tNodeID;
-		float		fDistance;	
-	} SLevelPoint;
-#pragma pack(pop)
 
 	typedef struct tagSTerrainPlace{
 		svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
@@ -102,16 +95,51 @@ namespace ALife {
 #endif
 	};
 
-	struct SLevel {
+	class SLevel {
 		string256				caLevelName;
 		Fvector					tOffset;
 		_LEVEL_ID				tLevelID;
+	public:
+		IC LPCSTR name() const {
+			return				(caLevelName);
+		}
+
+		IC const Fvector &offset() const {
+			return				(tOffset);
+		}
+
+		IC _LEVEL_ID id() const {
+			return				(tLevelID);
+		}
+
+		friend class CGameGraph;
 	};
 
 	struct SSumStackCell {
 		int						i1;
 		int						i2;
 		int						iCurrentSum;
+	};
+
+	class CLevelPoint  {
+		Fvector		tPoint;
+		u32			tNodeID;
+		float		fDistance;	
+	public:
+		IC const Fvector			&level_point		() const
+		{
+			return				(tPoint);
+		}
+
+		IC u32						level_vertex_id		() const
+		{
+			return				(tNodeID);
+		}
+
+		IC float					distance			() const
+		{
+			return				(fDistance);
+		}
 	};
 
 	enum EInjureType {
@@ -349,7 +377,7 @@ namespace ALife {
 	DEFINE_VECTOR	(CSE_ALifeKnownAnomaly*,	ANOMALY_P_VECTOR,				ANOMALY_P_IT);
 	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
 	DEFINE_VECTOR	(CSE_ALifeArtefactDemand*,	DEMAND_P_VECTOR,				DEMAND_P_IT);
-	DEFINE_VECTOR	(SLevelPoint,				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
+	DEFINE_VECTOR	(CLevelPoint,				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
 	DEFINE_VECTOR	(STerrainPlace,				TERRAIN_VECTOR,					TERRAIN_IT);
 	DEFINE_VECTOR	(STraderSupply,				TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
 	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
@@ -382,7 +410,7 @@ namespace ALife {
 };
 
 #ifndef _EDITOR
-#include "ai_console.h"
+#include "ai_debug.h"
 #endif
 
 #endif

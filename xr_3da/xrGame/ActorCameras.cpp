@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Actor.h"
-#include "..\CameraBase.h"
+#include "../CameraBase.h"
 #include "Car.h"
 
 void CActor::cam_Set	(EActorCameras style)
@@ -23,7 +23,7 @@ void CActor::cam_Update(float dt, float fFOV)
 	
 	// get calc eye point 90% from player height
 	Fvector						R;
-	Movement.Box().getsize		(R);
+	m_PhysicMovementControl.Box().getsize		(R);
 	point.set					(0.f,.91f*R.y,0.f);
 	XFORM().transform_tiny	(point);
 

@@ -13,12 +13,12 @@
 #include "ai_script_actions.h"
 #include "../cameramanager.h"
 #include "../effectorpp.h"
-#include "luabind\\adopt_policy.hpp"
-#include "luabind\\dependency_policy.hpp"
-#include "luabind\\return_reference_to_policy.hpp"
-#include "luabind\\out_value_policy.hpp"
-#include "luabind\\discard_result_policy.hpp"
-#include "luabind\\iterator_policy.hpp"
+#include "luabind/adopt_policy.hpp"
+#include "luabind/dependency_policy.hpp"
+#include "luabind/return_reference_to_policy.hpp"
+#include "luabind/out_value_policy.hpp"
+#include "luabind/discard_result_policy.hpp"
+#include "luabind/iterator_policy.hpp"
 #include "ParticlesObject.h"
 #include "ArtifactMerger.h"
 #include "actor.h"
@@ -443,14 +443,14 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("run",					int(MonsterSpace::eMovementTypeRun)),
 				value("stand",					int(MonsterSpace::eMovementTypeStand))
 			]
-			.enum_("path")
-			[
-				value("line",					int(MonsterSpace::ePathTypeStraight)),
-				value("dodge",					int(MonsterSpace::ePathTypeDodge)),
-				value("criteria",				int(MonsterSpace::ePathTypeCriteria)),
-				value("curve",					int(MonsterSpace::ePathTypeStraightDodge)),
-				value("curve_criteria",			int(MonsterSpace::ePathTypeDodgeCriteria))
-			]
+//			.enum_("path")
+//			[
+//				value("line",					int(MonsterSpace::ePathTypeStraight)),
+//				value("dodge",					int(MonsterSpace::ePathTypeDodge)),
+//				value("criteria",				int(MonsterSpace::ePathTypeCriteria)),
+//				value("curve",					int(MonsterSpace::ePathTypeStraightDodge)),
+//				value("curve_criteria",			int(MonsterSpace::ePathTypeDodgeCriteria))
+//			]
 			.enum_("input")
 			[
 				value("none",					int(CMovementAction::eInputKeyNone)),
@@ -485,12 +485,12 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<>())
 			.def(								constructor<const CMovementAction::EInputKeys>())
 			.def(								constructor<const CMovementAction::EInputKeys, float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*,float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const CPatrolPathParams &>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const CPatrolPathParams &,float>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const Fvector &>())
-			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const Fvector &,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,CLuaGameObject*>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,CLuaGameObject*,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,const CPatrolPathParams &>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,const CPatrolPathParams &,float>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,const Fvector &>())
+			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CMovementManager::EPathType,const Fvector &,float>())
 			.def(								constructor<MonsterSpace::EActState,const Fvector &>())
 			.def(								constructor<MonsterSpace::EActState,const CPatrolPathParams &>())
 			.def(								constructor<MonsterSpace::EActState,CLuaGameObject*>())
@@ -744,19 +744,19 @@ void Script::vfExportArtifactMerger(CLuaVirtualMachine *tpLuaVirtualMachine)
 	module(tpLuaVirtualMachine)
 	[
 		class_<CArtifactMerger>("artifact_merger")
-			.def("get_mercury_ball_num",	&CArtifactMerger::GetMercuryBallNum)
-			.def("get_gravi_num",			&CArtifactMerger::GetGraviArtifactNum)
-			.def("get_black_drops_num",		&CArtifactMerger::GetBlackDropsNum)
-			.def("get_needles_num",			&CArtifactMerger::GetNeedlesNum)
+		.def("get_mercury_ball_num",	&CArtifactMerger::GetMercuryBallNum)
+		.def("get_gravi_num",			&CArtifactMerger::GetGraviArtifactNum)
+		.def("get_black_drops_num",		&CArtifactMerger::GetBlackDropsNum)
+		.def("get_needles_num",			&CArtifactMerger::GetNeedlesNum)
 
-			.def("destroy_mercury_ball",	&CArtifactMerger::DestroyMercuryBall)
-			.def("destroy_gravi",			&CArtifactMerger::DestroyGraviArtifact)
-			.def("destroy_black_drops",		&CArtifactMerger::DestroyBlackDrops)
-			.def("destroy_needles",			&CArtifactMerger::DestroyNeedles)
+		.def("destroy_mercury_ball",	&CArtifactMerger::DestroyMercuryBall)
+		.def("destroy_gravi",			&CArtifactMerger::DestroyGraviArtifact)
+		.def("destroy_black_drops",		&CArtifactMerger::DestroyBlackDrops)
+		.def("destroy_needles",			&CArtifactMerger::DestroyNeedles)
 
-			.def("spawn_mercury_ball",	&CArtifactMerger::SpawnMercuryBall)
-			.def("spawn_gravi",			&CArtifactMerger::SpawnGraviArtifact)
-			.def("spawn_black_drops",	&CArtifactMerger::SpawnBlackDrops)
-			.def("spawn_needles",		&CArtifactMerger::SpawnNeedles)
+		.def("spawn_mercury_ball",	&CArtifactMerger::SpawnMercuryBall)
+		.def("spawn_gravi",			&CArtifactMerger::SpawnGraviArtifact)
+		.def("spawn_black_drops",	&CArtifactMerger::SpawnBlackDrops)
+		.def("spawn_needles",		&CArtifactMerger::SpawnNeedles)
 	];
 }

@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 #include "ai_space.h"
+#include "game_graph.h"
+#include "ef_storage.h"
 
 CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 {
@@ -18,11 +20,12 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 	m_caSaveName[0]			= 0;
 	shedule_register		();
 	m_bFirstUpdate			= true;
-	for (int i=0; i<2; i++) {
+	for (int i=0; i<2; ++i) {
 		m_tpaCombatGroups[i].clear();
 		m_tpaCombatGroups[i].reserve(255);
 	}
-	getAI().m_tpALife		= this;
+	VERIFY					(!ai().get_alife());
+	ai().set_alife			(this);
 	m_dwInventorySlotCount	= pSettings->r_u32("inventory","slots");
 	m_tpWeaponVector.resize	(m_dwInventorySlotCount);
 	m_baMarks.assign		(u16(-1),false);
@@ -43,12 +46,14 @@ CSE_ALifeSimulator::~CSE_ALifeSimulator()
 	shedule_unregister		();
 	D_OBJECT_PAIR_IT		I = m_tObjectRegistry.begin();
 	D_OBJECT_PAIR_IT		E = m_tObjectRegistry.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		CSE_Abstract					*l_tpAbstract = dynamic_cast<CSE_Abstract*>((*I).second);
 		if ((*I).second->m_bOnline)
 			m_tpServer->PerformIDgen	(l_tpAbstract->ID);		
 		m_tpServer->entity_Destroy		(l_tpAbstract);
 	}
+
+	ai().set_alife			(0);
 }
 
 float CSE_ALifeSimulator::shedule_Scale()
@@ -102,7 +107,7 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)
 
 		D_OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
 		D_OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			vfUpdateDynamicData			((*I).second);
 			_OBJECT_ID					l_tObjectID = (*I).second->ID;
 			(*I).second->ID				= m_tpServer->PerformIDgen(l_tObjectID);
@@ -112,7 +117,7 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)
 		{
 			EVENT_PAIR_IT				I = m_tEventRegistry.begin();
 			EVENT_PAIR_IT				E = m_tEventRegistry.end();
-			for ( ; I != E; I++)
+			for ( ; I != E; ++I)
 				vfAddEventToGraphPoint	((*I).second,(*I).second->m_tGraphID);
 		}
 	}
@@ -215,9 +220,10 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 		strcpy					(S,*m_cppServerOptions);
 		LPSTR					l_cpPointer = strchr(S,'/');
 		R_ASSERT2				(l_cpPointer,"Invalid server options!");
-		xr_map<_LEVEL_ID,SLevel>::const_iterator I = getAI().GraphHeader().tpLevels.find(getAI().m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
-		R_ASSERT2				(I != getAI().GraphHeader().tpLevels.end(),"Graph point level ID not found!");
-		strconcat				(*m_cppServerOptions,(*I).second.caLevelName,l_cpPointer);
+		xr_map<_LEVEL_ID,SLevel>::const_iterator I = ai().game_graph().header().levels().find(ai().game_graph().vertex(m_tpActor->m_tGraphID)->level_vertex_id());
+		R_ASSERT2				(ai().game_graph().header().levels().end() != I,"Graph point level ID not found!");
+		strconcat				(*m_cppServerOptions,(*I).second.name(),l_cpPointer);
+		ai().load				(l_cpPointer);
 	}
 
 	// finalizing
@@ -237,7 +243,7 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 	D_OBJECT_P_IT				E = m_tpSpawnPoints.end();
 	for (D_OBJECT_P_IT I = B ; I != E; ) {
 		u32						l_dwGroupID	= (*I)->m_dwSpawnGroup;
-		for (D_OBJECT_P_IT m = I + 1, j = I; (m != E) && ((*m)->m_dwSpawnGroup == l_dwGroupID); m++) ;
+		for (D_OBJECT_P_IT m = I + 1, j = I; (m != E) && ((*m)->m_dwSpawnGroup == l_dwGroupID); ++m) ;
 
 		CSE_Abstract			*tpSE_Abstract = F_entity_Create((*I)->s_name);
 		R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
@@ -247,7 +253,7 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 
 		CSE_ALifeAnomalousZone	*tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(i);
 		if (tpALifeAnomalousZone) {
-			for ( ; j != m; j++) {
+			for ( ; j != m; ++j) {
 				CSE_ALifeAnomalousZone	*tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
 				R_ASSERT2				(tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
 				vfCreateObjectFromSpawnPoint(i,*j,_SPAWN_ID(j - B));
@@ -282,7 +288,7 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 
 				SCHEDULE_P_PAIR_IT	I = m_tpScheduledObjects.begin();
 				SCHEDULE_P_PAIR_IT	E = m_tpScheduledObjects.end();
-				for ( ; I != E; I++)
+				for ( ; I != E; ++I)
 					(*I).second->Update();
 
 				break;
@@ -298,7 +304,7 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 
 void CSE_ALifeSimulator::vfInitAI_ALifeMembers()
 {
-	getAI().m_tpCurrentMember	= 0;
-	getAI().m_tpCurrentEnemy	= 0;
-	getAI().m_tpGameObject		= 0;
+	ai().ef_storage().m_tpCurrentMember	= 0;
+	ai().ef_storage().m_tpCurrentEnemy	= 0;
+	ai().ef_storage().m_tpGameObject	= 0;
 }

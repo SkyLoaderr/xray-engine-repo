@@ -50,7 +50,7 @@ void CSE_ALifeTraderAbstract::vfDetachItem(CSE_ALifeInventoryItem *tpALifeInvent
 		if (!I) {
 			if (bRemoveChildren) {
 				OBJECT_IT						I = std::find	(children.begin(),children.end(),tpALifeInventoryItem->ID);
-				R_ASSERT2						(I != children.end(),"Can't detach an item which is not on my own");
+				R_ASSERT2						(children.end() != I,"Can't detach an item which is not on my own");
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
 					Msg							("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
@@ -102,16 +102,16 @@ u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem
 	{
 		OBJECT_IT				i = children.begin();
 		OBJECT_IT				e = children.end();
-		for ( ; i != e; i++)
+		for ( ; i != e; ++i)
 			if (!strcmp(tpALifeObjectRegistry->tpfGetObjectByID(*i)->s_name,l_tpALifeItemArtefact->s_name))
-				l_dwPurchasedCount++;
+				++l_dwPurchasedCount;
 	}
 
 	ARTEFACT_TRADER_ORDER_PAIR_IT	J = m_tpOrderedArtefacts.find(tpALifeInventoryItem->s_name);
-	if ((J != m_tpOrderedArtefacts.end()) && (l_dwPurchasedCount < (*J).second->m_dwTotalCount)) {
+	if ((m_tpOrderedArtefacts.end() != J) && (l_dwPurchasedCount < (*J).second->m_dwTotalCount)) {
 		ARTEFACT_ORDER_IT		I = (*J).second->m_tpOrders.begin();
 		ARTEFACT_ORDER_IT		E = (*J).second->m_tpOrders.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			if (l_dwPurchasedCount <= (*I).m_dwCount)
 				return			((*I).m_dwPrice);
 			else

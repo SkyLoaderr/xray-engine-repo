@@ -9,6 +9,9 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 #include "ai_space.h"
+#include "ef_storage.h"
+#include "game_graph.h"
+#include "level_graph.h"
 
 void CSE_ALifeSimulator::vfFillCombatGroup(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex)
 {
@@ -20,7 +23,7 @@ void CSE_ALifeSimulator::vfFillCombatGroup(CSE_ALifeSchedulable *tpALifeSchedula
 	if (l_tpALifeGroupAbstract) {
 		OBJECT_IT			I = l_tpALifeGroupAbstract->m_tpMembers.begin();
 		OBJECT_IT			E = l_tpALifeGroupAbstract->m_tpMembers.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			CSE_ALifeSchedulable	*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(tpfGetObjectByID(*I));
 			R_ASSERT2				(l_tpALifeSchedulable,"Invalid combat object");
 			tpGroupVector.push_back(l_tpALifeSchedulable);
@@ -36,8 +39,8 @@ void CSE_ALifeSimulator::vfFillCombatGroup(CSE_ALifeSchedulable *tpALifeSchedula
 
 ECombatAction CSE_ALifeSimulator::tfChooseCombatAction(int iCombatGroupIndex)
 {
-	if (m_tCombatType != eCombatTypeMonsterMonster)
-		if (((m_tCombatType == eCombatTypeAnomalyMonster) && !iCombatGroupIndex) || ((m_tCombatType == eCombatTypeMonsterAnomaly) && iCombatGroupIndex))
+	if (eCombatTypeMonsterMonster != m_tCombatType)
+		if (((eCombatTypeAnomalyMonster == m_tCombatType) && !iCombatGroupIndex) || ((eCombatTypeMonsterAnomaly == m_tCombatType) && iCombatGroupIndex))
 			return(eCombatActionAttack);
 		else
 			return(eCombatActionRetreat);
@@ -54,16 +57,16 @@ ECombatAction CSE_ALifeSimulator::tfChooseCombatAction(int iCombatGroupIndex)
 		fMinProbability				= l_tpALifeMonsterAbstract->m_fRetreatThreshold;
 	}
 	while ((i < I) && (j < J)) {
-		getAI().m_tpCurrentALifeMember	= dynamic_cast<CSE_ALifeMonsterAbstract*>(Members[i]);
-		getAI().m_tpCurrentALifeEnemy	= dynamic_cast<CSE_ALifeMonsterAbstract*>(Enemies[j]);
-		float fProbability = getAI().m_pfVictoryProbability->ffGetValue()/100.f, fCurrentProbability;
+		ai().ef_storage().m_tpCurrentALifeMember	= dynamic_cast<CSE_ALifeMonsterAbstract*>(Members[i]);
+		ai().ef_storage().m_tpCurrentALifeEnemy	= dynamic_cast<CSE_ALifeMonsterAbstract*>(Enemies[j]);
+		float fProbability = ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f, fCurrentProbability;
 		if (fProbability > fMinProbability) {
 			fCurrentProbability = fProbability;
-			for (j++; (i < I) && (j < J); j++) {
-				getAI().m_tpCurrentALifeEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>(Enemies[j]);
-				fProbability = getAI().m_pfVictoryProbability->ffGetValue()/100.f;
+			for (++j; (i < I) && (j < J); ++j) {
+				ai().ef_storage().m_tpCurrentALifeEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>(Enemies[j]);
+				fProbability = ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f;
 				if (fCurrentProbability*fProbability < fMinProbability) {
-					i++;
+					++i;
 					break;
 				}
 				else
@@ -72,11 +75,11 @@ ECombatAction CSE_ALifeSimulator::tfChooseCombatAction(int iCombatGroupIndex)
 		}
 		else {
 			fCurrentProbability = 1.0f - fProbability;
-			for (i++; (i < I) && (j < J); i++) {
-				getAI().m_tpCurrentALifeMember	= dynamic_cast<CSE_ALifeMonsterAbstract*>(Members[i]);
-				fProbability = 1.0f - getAI().m_pfVictoryProbability->ffGetValue()/100.f;
+			for (++i; (i < I) && (j < J); ++i) {
+				ai().ef_storage().m_tpCurrentALifeMember	= dynamic_cast<CSE_ALifeMonsterAbstract*>(Members[i]);
+				fProbability = 1.0f - ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f;
 				if (fCurrentProbability*fProbability < fMinProbability) {
-					j++;
+					++j;
 					break;
 				}
 				else
@@ -91,20 +94,20 @@ bool CSE_ALifeSimulator::bfCheckObjectDetection(CSE_ALifeSchedulable *tpALifeSch
 {
 	switch (m_tCombatType) {
 		case eCombatTypeMonsterMonster : {
-			getAI().m_tpCurrentALifeObject	= dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable1);
-			getAI().m_tpCurrentALifeMember	= tpALifeSchedulable1;
-			getAI().m_tpCurrentALifeEnemy	= tpALifeSchedulable2;
-			return							(randF(100) < (int)getAI().m_pfEnemyDetectProbability->ffGetValue());
+			ai().ef_storage().m_tpCurrentALifeObject	= dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable1);
+			ai().ef_storage().m_tpCurrentALifeMember	= tpALifeSchedulable1;
+			ai().ef_storage().m_tpCurrentALifeEnemy		= tpALifeSchedulable2;
+			return										(randF(100) < (int)ai().ef_storage().m_pfEnemyDetectProbability->ffGetValue());
 		}
 		case eCombatTypeAnomalyMonster : {
-			getAI().m_tpCurrentALifeEnemy	= tpALifeSchedulable1;
-			return							(randF(100) < (int)getAI().m_pfAnomalyInteractProbability->ffGetValue());
+			ai().ef_storage().m_tpCurrentALifeEnemy		= tpALifeSchedulable1;
+			return										(randF(100) < (int)ai().ef_storage().m_pfAnomalyInteractProbability->ffGetValue());
 		}
 		case eCombatTypeMonsterAnomaly : {
-			getAI().m_tpCurrentALifeObject	= tpALifeSchedulable1->tpfGetBestDetector();
-			getAI().m_tpCurrentALifeMember	= tpALifeSchedulable1;
-			getAI().m_tpCurrentALifeEnemy	= tpALifeSchedulable2;
-			return							(randF(100) < (int)getAI().m_pfAnomalyDetectProbability->ffGetValue());
+			ai().ef_storage().m_tpCurrentALifeObject	= tpALifeSchedulable1->tpfGetBestDetector();
+			ai().ef_storage().m_tpCurrentALifeMember	= tpALifeSchedulable1;
+			ai().ef_storage().m_tpCurrentALifeEnemy		= tpALifeSchedulable2;
+			return										(randF(100) < (int)ai().ef_storage().m_pfAnomalyDetectProbability->ffGetValue());
 		}
 		default :							NODEFAULT;
 	}
@@ -136,7 +139,7 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 		}
 		else {
 			m_tCombatType			= eCombatTypeMonsterMonster;
-			if (tfGetRelationType(l_tpALifeMonsterAbstract1,l_tpALifeMonsterAbstract2) == eRelationTypeFriend) {
+			if (eRelationTypeFriend == tfGetRelationType(l_tpALifeMonsterAbstract1,l_tpALifeMonsterAbstract2)) {
 				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract1 = dynamic_cast<CSE_ALifeHumanAbstract*>(l_tpALifeMonsterAbstract1);
 				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract2 = dynamic_cast<CSE_ALifeHumanAbstract*>(l_tpALifeMonsterAbstract2);
 				if (l_tpALifeHumanAbstract1 && l_tpALifeHumanAbstract2) {
@@ -154,7 +157,16 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 	if (psAI_Flags.test(aiALife)) {
 		_GRAPH_ID						l_tGraphID = l_tpALifeMonsterAbstract1 ? l_tpALifeMonsterAbstract1->m_tGraphID : l_tpALifeMonsterAbstract2->m_tGraphID;
 		vfPrintTime						("\n[LSS]",tfGetGameTime());
-		Msg								("[LSS] %s met %s on the graph point %d (level %s[%d][%d][%d][%d])",tpALifeSchedulable1->s_name_replace,tpALifeSchedulable2->s_name_replace,l_tGraphID,getAI().GraphHeader().tpLevels.find(getAI().m_tpaGraph[l_tGraphID].tLevelID)->second.caLevelName,getAI().m_tpaGraph[l_tGraphID].tVertexTypes[0],getAI().m_tpaGraph[l_tGraphID].tVertexTypes[1],getAI().m_tpaGraph[l_tGraphID].tVertexTypes[2],getAI().m_tpaGraph[l_tGraphID].tVertexTypes[3]);
+		Msg								("[LSS] %s met %s on the graph point %d (level %s[%d][%d][%d][%d])",
+			tpALifeSchedulable1->s_name_replace,
+			tpALifeSchedulable2->s_name_replace,
+			l_tGraphID,
+			ai().game_graph().header().levels().find(ai().game_graph().vertex(l_tGraphID)->level_id())->second.name(),
+			ai().game_graph().vertex(l_tGraphID)->vertex_type()[0],
+			ai().game_graph().vertex(l_tGraphID)->vertex_type()[1],
+			ai().game_graph().vertex(l_tGraphID)->vertex_type()[2],
+			ai().game_graph().vertex(l_tGraphID)->vertex_type()[3]
+		);
 	}
 #endif
 	
@@ -177,10 +189,10 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 #endif
 	}
 
-	if (m_tCombatType == eCombatTypeMonsterAnomaly)
+	if (eCombatTypeMonsterAnomaly == m_tCombatType)
 		m_tCombatType = eCombatTypeAnomalyMonster;
 	else
-		if (m_tCombatType == eCombatTypeAnomalyMonster)
+		if (eCombatTypeAnomalyMonster == m_tCombatType)
 			m_tCombatType = eCombatTypeMonsterAnomaly;
 
 	if (bfCheckObjectDetection(tpALifeSchedulable2,tpALifeSchedulable1)) {
@@ -202,10 +214,10 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 #endif
 	}
 
-	if (m_tCombatType == eCombatTypeMonsterAnomaly)
+	if (eCombatTypeMonsterAnomaly == m_tCombatType)
 		m_tCombatType = eCombatTypeAnomalyMonster;
 	else
-		if (m_tCombatType == eCombatTypeAnomalyMonster)
+		if (eCombatTypeAnomalyMonster == m_tCombatType)
 			m_tCombatType = eCombatTypeMonsterAnomaly;
 
 	if (iCombatGroupIndex < 0) {
@@ -222,10 +234,10 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 
 bool CSE_ALifeSimulator::bfCheckIfRetreated(int iCombatGroupIndex)
 {
-	getAI().m_tpCurrentALifeObject = (m_tCombatType == eCombatTypeMonsterMonster) ? dynamic_cast<CSE_ALifeObject*>(m_tpaCombatGroups[iCombatGroupIndex][0]) : m_tpaCombatGroups[iCombatGroupIndex][0]->m_tpBestDetector;
-	getAI().m_tpCurrentALifeMember	= m_tpaCombatGroups[iCombatGroupIndex][0];
-	getAI().m_tpCurrentALifeEnemy	= m_tpaCombatGroups[iCombatGroupIndex ^ 1][0];
-	return							(randF(100) < ((m_tCombatType != eCombatTypeMonsterMonster) ? getAI().m_pfAnomalyRetreatProbability->ffGetValue() : getAI().m_pfEnemyRetreatProbability->ffGetValue()));
+	ai().ef_storage().m_tpCurrentALifeObject	= (eCombatTypeMonsterMonster == m_tCombatType) ? dynamic_cast<CSE_ALifeObject*>(m_tpaCombatGroups[iCombatGroupIndex][0]) : m_tpaCombatGroups[iCombatGroupIndex][0]->m_tpBestDetector;
+	ai().ef_storage().m_tpCurrentALifeMember	= m_tpaCombatGroups[iCombatGroupIndex][0];
+	ai().ef_storage().m_tpCurrentALifeEnemy		= m_tpaCombatGroups[iCombatGroupIndex ^ 1][0];
+	return										(randF(100) < ((eCombatTypeMonsterMonster != m_tCombatType) ? ai().ef_storage().m_pfAnomalyRetreatProbability->ffGetValue() : ai().ef_storage().m_pfEnemyRetreatProbability->ffGetValue()));
 }
 
 void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
@@ -233,7 +245,7 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 	SCHEDULE_P_VECTOR		&l_tCombatGroup = m_tpaCombatGroups[iCombatGroupIndex];
 	SCHEDULE_P_IT			I = l_tCombatGroup.begin();
 	SCHEDULE_P_IT			E = l_tCombatGroup.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		EHitType			l_tHitType = eHitTypeMax;
 		float				l_fHitPower = 0.f;
 		if (!(*I)->m_tpCurrentBestWeapon) {
@@ -246,15 +258,15 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 			l_fHitPower		= (*I)->m_tpCurrentBestWeapon->m_fHitPower;
 		}
 		
-		getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
-		getAI().m_tpCurrentALifeMember = *I;
+		ai().ef_storage().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
+		ai().ef_storage().m_tpCurrentALifeMember = *I;
 #ifdef DEBUG
 		if (psAI_Flags.test(aiALife)) {
-			Msg				("[LSS] %s attacks with %s(%d ammo) %d times in a row",(*I)->s_name_replace,(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->s_name_replace : "its natural weapon",(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->m_dwAmmoAvailable : 0,iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue() + .5f));
+			Msg				("[LSS] %s attacks with %s(%d ammo) %d times in a row",(*I)->s_name_replace,(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->s_name_replace : "its natural weapon",(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->m_dwAmmoAvailable : 0,iFloor(ai().ef_storage().m_pfWeaponAttackTimes->ffGetValue() + .5f));
 		}
 #endif
-		for (int i=0, n=iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue() + .5f); i<n; i++) {
-			if (randF(100) < (int)getAI().m_pfWeaponSuccessProbability->ffGetValue()) {
+		for (int i=0, n=iFloor(ai().ef_storage().m_pfWeaponAttackTimes->ffGetValue() + .5f); i<n; ++i) {
+			if (randF(100) < (int)ai().ef_storage().m_pfWeaponSuccessProbability->ffGetValue()) {
 				// choose random enemy group member and perform hit with random power
 				// multiplied by immunity factor
 				int							l_iIndex = randI(m_tpaCombatGroups[iCombatGroupIndex ^ 1].size());
@@ -292,9 +304,9 @@ void CSE_ALifeSimulator::vfAssignArtefactPosition(CSE_ALifeAnomalousZone *tpALif
 {
 	tpALifeDynamicObject->m_tGraphID		= tpALifeAnomalousZone->m_tGraphID;
 	u32										l_dwIndex = tpALifeAnomalousZone->m_dwStartIndex + randI(tpALifeAnomalousZone->m_wArtefactSpawnCount);
-	tpALifeDynamicObject->o_Position		= m_tpArtefactSpawnPositions[l_dwIndex].tPoint;
-	tpALifeDynamicObject->m_tNodeID			= m_tpArtefactSpawnPositions[l_dwIndex].tNodeID;
-	tpALifeDynamicObject->m_fDistance		= m_tpArtefactSpawnPositions[l_dwIndex].fDistance;
+	tpALifeDynamicObject->o_Position		= m_tpArtefactSpawnPositions[l_dwIndex].level_point();
+	tpALifeDynamicObject->m_tNodeID			= m_tpArtefactSpawnPositions[l_dwIndex].level_vertex_id();
+	tpALifeDynamicObject->m_fDistance		= m_tpArtefactSpawnPositions[l_dwIndex].distance();
 }
 
 void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALifeCreatureAbstract, _GRAPH_ID tGraphID, CSE_ALifeSchedulable *tpALifeSchedulable)
@@ -312,13 +324,14 @@ void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALif
 		}
 	}
 
-	SLevelPoint*							l_tpaLevelPoints = (SLevelPoint*)(((u8*)getAI().m_tpaGraph) + getAI().m_tpaGraph[tGraphID].dwPointOffset);
-	u32										l_dwDeathpointIndex = randI(getAI().m_tpaGraph[tGraphID].tDeathPointCount);
+	CGameGraph::const_spawn_iterator		i, e;
+	ai().game_graph().begin_spawn			(tGraphID,i,e);
+	i										+= randI(s32(e - i));
 	tpALifeCreatureAbstract->m_tGraphID		= tGraphID;
-	tpALifeCreatureAbstract->o_Position		= l_tpaLevelPoints[l_dwDeathpointIndex].tPoint;
-	tpALifeCreatureAbstract->m_tNodeID		= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
-	R_ASSERT2								((getAI().m_tpaGraph[tGraphID].tLevelID != m_tCurrentLevelID) || (u32(tpALifeCreatureAbstract->m_tNodeID) < getAI().Header().count),"Invalid node");
-	tpALifeCreatureAbstract->m_fDistance	= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
+	tpALifeCreatureAbstract->o_Position		= (*i).level_point();
+	tpALifeCreatureAbstract->m_tNodeID		= (*i).level_vertex_id();
+	R_ASSERT2								((ai().game_graph().vertex(tGraphID)->level_id() != m_tCurrentLevelID) || ai().level_graph().valid_vertex_id(tpALifeCreatureAbstract->m_tNodeID),"Invalid vertex");
+	tpALifeCreatureAbstract->m_fDistance	= (*i).distance();
 	CSE_ALifeMonsterAbstract				*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeCreatureAbstract);
 	if (l_tpALifeMonsterAbstract)
 		l_tpALifeMonsterAbstract->m_tPrevGraphID = l_tpALifeMonsterAbstract->m_tNextGraphID = l_tpALifeMonsterAbstract->m_tGraphID;
@@ -328,7 +341,7 @@ void CSE_ALifeSimulator::vfAppendItemVector(OBJECT_VECTOR &tObjectVector, ITEM_P
 {
 	OBJECT_IT	I = tObjectVector.begin();
 	OBJECT_IT	E = tObjectVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I));
 		if (l_tpALifeInventoryItem)
 			tItemList.push_back				(l_tpALifeInventoryItem);
@@ -342,10 +355,10 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 	R_ASSERT2				(l_tpALifeDynamicObject,"Unknown schedulable object class");
 	_GRAPH_ID				l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
 	m_tpItemVector.clear();
-	for (int i=0; i<2; i++) {
+	for (int i=0; i<2; ++i) {
 		CSE_ALifeGroupAbstract	*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(m_tpaCombatObjects[i]);
 		if (l_tpALifeGroupAbstract) {
-			for (int I=0, N=l_tpALifeGroupAbstract->m_tpMembers.size() ; I<N; I++) {
+			for (int I=0, N=l_tpALifeGroupAbstract->m_tpMembers.size() ; I<N; ++I) {
 				CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(l_tpALifeGroupAbstract->m_tpMembers[I]));
 				R_ASSERT2					(l_tpALifeMonsterAbstract,"Invalid group member!");
 				l_tpALifeMonsterAbstract->vfUpdateWeaponAmmo	();
@@ -360,9 +373,9 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 					CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeMonsterAbstract);
 					if (l_tpALifeInventoryItem)
 						m_tpItemVector.push_back				(l_tpALifeInventoryItem);
-					l_tpALifeGroupAbstract->m_wCount--;
-					I--;
-					N--;
+					--l_tpALifeGroupAbstract->m_wCount;
+					--I;
+					--N;
 				}
 			}
 			if (!m_tpaCombatObjects[i]->bfActive())
@@ -389,7 +402,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 		}
 	}
 	
-	if (m_tpItemVector.empty() || (m_tCombatType != eCombatTypeMonsterMonster)) {
+	if (m_tpItemVector.empty() || (eCombatTypeMonsterMonster != m_tCombatType)) {
 #ifdef DEBUG
 		if (psAI_Flags.test(aiALife)) {
 			Msg							("[LSS] There is nothing to take");

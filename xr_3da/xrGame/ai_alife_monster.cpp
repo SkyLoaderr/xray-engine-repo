@@ -10,6 +10,8 @@
 #include "ai_alife.h"
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
+#include "game_graph.h"
+#include "ef_storage.h"
 
 void CSE_ALifeMonsterAbstract::Update		()
 {
@@ -34,24 +36,24 @@ void CSE_ALifeMonsterAbstract::Update		()
 		}
 		if (m_tNextGraphID == m_tGraphID) {
 			_GRAPH_ID					tGraphID = m_tNextGraphID;
-			u16							wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;
-			CSE_ALifeGraph::SGraphEdge	*tpaEdges = (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
-
+			CGameGraph::const_iterator	i,e;
 			TERRAIN_VECTOR				&tpaTerrain = m_tpaTerrain;
 			int							iPointCount = (int)tpaTerrain.size();
 			int							iBranches = 0;
-			for (int i=0; i<wNeighbourCount; i++)
-				if (tpaEdges[i].dwVertexNumber != m_tPrevGraphID)
-					for (int j=0; j<iPointCount; j++)
-						if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes))
-							iBranches++;
+			ai().game_graph().begin		(tGraphID,i,e);
+			for ( ; i != e; ++i)
+				if ((*i).vertex_id() != m_tPrevGraphID)
+					for (int j=0; j<iPointCount; ++j)
+						if (ai().game_graph().mask(tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()))
+							++iBranches;
 			bool						bOk = false;
+			ai().game_graph().begin		(tGraphID,i,e);
 			if (!iBranches) {
-				for (int i=0; i<wNeighbourCount; i++) {
-					for (int j=0; j<iPointCount; j++)
-						if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes)) {
-							m_tNextGraphID = (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
-							m_fDistanceToPoint = tpaEdges[i].fPathDistance;
+				for ( ; i != e; ++i) {
+					for (int j=0; j<iPointCount; ++j)
+						if (ai().game_graph().mask(tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type())) {
+							m_tNextGraphID = (*i).vertex_id();
+							m_fDistanceToPoint = (*i).distance();
 							bOk = true;
 							break;
 						}
@@ -62,17 +64,17 @@ void CSE_ALifeMonsterAbstract::Update		()
 			else {
 				int iChosenBranch = m_tpALife->randI(0,iBranches);
 				iBranches = 0;
-				for (int i=0; i<wNeighbourCount; i++)
-					if (tpaEdges[i].dwVertexNumber != m_tPrevGraphID) {
-						for (int j=0; j<iPointCount; j++)
-							if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tPrevGraphID)) {
+				for ( ; i != e; ++i)
+					if ((*i).vertex_id() != m_tPrevGraphID) {
+						for (int j=0; j<iPointCount; ++j)
+							if (ai().game_graph().mask(tpaTerrain[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tPrevGraphID)) {
 								if (iBranches == iChosenBranch) {
-									m_tNextGraphID	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
-									m_fDistanceToPoint = tpaEdges[i].fPathDistance;
+									m_tNextGraphID	= (*i).vertex_id();
+									m_fDistanceToPoint = (*i).distance();
 									bOk = true;
 									break;
 								}
-								iBranches++;
+								++iBranches;
 							}
 							if (bOk)
 								break;
@@ -101,10 +103,10 @@ CSE_ALifeItemWeapon	*CSE_ALifeMonsterAbstract::tpfGetBestWeapon(EHitType &tHitTy
 
 EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)
 {
-	if (m_tpALife->m_tCombatType == eCombatTypeMonsterMonster) {
+	if (eCombatTypeMonsterMonster == m_tpALife->m_tCombatType) {
 		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable);
 		R_ASSERT2					(l_tpALifeMonsterAbstract,"Inconsistent meet action type");
-		return						(m_tpALife->tfGetRelationType(this,dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable)) == eRelationTypeFriend ? eMeetActionTypeIgnore : ((bMutualDetection || m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
+		return						(eRelationTypeFriend == m_tpALife->tfGetRelationType(this,dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable)) ? eMeetActionTypeIgnore : ((bMutualDetection || m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
 	}
 	else
 		return(eMeetActionTypeAttack);
@@ -137,15 +139,15 @@ void CSE_ALifeMonsterAbstract::vfCheckForPopulationChanges()
 
 	_TIME_ID					l_tTimeID = m_tpALife->tfGetGameTime();
 	if (l_tTimeID >= l_tpALifeGroupAbstract->m_tNextBirthTime) {
-		getAI().m_tpCurrentALifeMember = this;
-		l_tpALifeGroupAbstract->m_tNextBirthTime = l_tTimeID + _TIME_ID(getAI().m_pfBirthSpeed->ffGetValue()*24*60*60*1000);
-		if (m_tpALife->randF(100) < getAI().m_pfBirthProbability->ffGetValue()) {
-			u32					l_dwBornCount = iFloor(float(l_tpALifeGroupAbstract->m_wCount)*m_tpALife->randF(.5f,1.5f)*getAI().m_pfBirthPercentage->ffGetValue()/100.f + .5f);
+		ai().ef_storage().m_tpCurrentALifeMember = this;
+		l_tpALifeGroupAbstract->m_tNextBirthTime = l_tTimeID + _TIME_ID(ai().ef_storage().m_pfBirthSpeed->ffGetValue()*24*60*60*1000);
+		if (m_tpALife->randF(100) < ai().ef_storage().m_pfBirthProbability->ffGetValue()) {
+			u32					l_dwBornCount = iFloor(float(l_tpALifeGroupAbstract->m_wCount)*m_tpALife->randF(.5f,1.5f)*ai().ef_storage().m_pfBirthPercentage->ffGetValue()/100.f + .5f);
 			if (l_dwBornCount) {
 				l_tpALifeGroupAbstract->m_tpMembers.resize(l_tpALifeGroupAbstract->m_wCount + l_dwBornCount);
 				OBJECT_IT				I = l_tpALifeGroupAbstract->m_tpMembers.begin() + l_tpALifeGroupAbstract->m_wCount;
 				OBJECT_IT				E = l_tpALifeGroupAbstract->m_tpMembers.end();
-				for ( ; I != E; I++) {
+				for ( ; I != E; ++I) {
 					CSE_Abstract		*l_tpAbstract = m_tpALife->tpfCreateGroupMember	(l_tpALifeGroupAbstract,this);
 					*I					= l_tpAbstract->ID;
 				}
