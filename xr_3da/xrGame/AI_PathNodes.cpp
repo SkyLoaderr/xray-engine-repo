@@ -418,7 +418,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		return;
 	}
 
-//	if (dt<EPS)			return;
+	if (dt<EPS)			return;
 	float	dist		=	speed*dt;
 	float	dist_save	=	dist;
 #ifndef NO_PHYSICS_IN_AI_MOVE
