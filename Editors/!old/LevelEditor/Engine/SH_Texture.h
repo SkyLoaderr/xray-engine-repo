@@ -19,7 +19,7 @@ public:
 	IDirect3DBaseTexture9*				pSurface;
 	CAviPlayerCustom*					pAVI;
 	float								m_material;
-	shared_str								m_bumpmap;
+	shared_str							m_bumpmap;
 
 	// Sequence data
 	u32									seqMSPF;			// milliseconds per frame
