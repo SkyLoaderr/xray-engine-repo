@@ -355,7 +355,7 @@ function action_contact:execute ()
 		if isww == true then
 			self.object:set_mental_state(anim.free)
 			self.object:clear_animations()
-			self.object:add_animation("torg_0", true)
+--			self.object:add_animation("torg_0", true)
      			self.object:set_item(object.deactivate, self.object:best_weapon())
 		end
 		pos.y = pos.y + 1.4
@@ -380,9 +380,11 @@ function action_contact:execute ()
 		end
 
 	        -- Анимации
-		if self.object:animation_count() <= 1 then
-			xr_meet.set_anim(self.object, self.anim)
-		end
+--		if self.object:animation_count() <= 1 then
+--			xr_meet.set_anim(self.object, self.anim)
+--		end
+
+		xr_state.anim_update("idle", self.object)
 	
 		-- Звуки
 		if self.object:active_sound_count() == 0 then
