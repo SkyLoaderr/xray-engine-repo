@@ -66,32 +66,49 @@ void CAI_ALife::vfNewGame()
 		R_ASSERT2				(tpServerEntity,"Can't create entity.");
 		CALifeDynamicObject		*i = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
 		R_ASSERT				(i);
+		NET_Packet				tNetPacket;
+		(*I)->Spawn_Write		(tNetPacket,TRUE);
+		i->Spawn_Read			(tNetPacket);
+		tNetPacket.w_begin		(M_UPDATE);
+		(*I)->UPDATE_Write		(tNetPacket);
+		u16						id;
+		tNetPacket.r_begin		(id);
+		i->UPDATE_Read			(tNetPacket);
+		i->ID					= 0xffff;
 		CALifeAbstractGroup		*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(i);
 		if (tpALifeAbstractGroup) {
-			NET_Packet			tNetPacket;
+			i->ID				= m_tpServer->PerformIDgen(0xffff);
+			m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
+			
 			tpALifeAbstractGroup->m_tpMembers.resize(tpALifeAbstractGroup->m_wCount);
 			OBJECT_IT			II = tpALifeAbstractGroup->m_tpMembers.begin();
 			OBJECT_IT			EE = tpALifeAbstractGroup->m_tpMembers.end();
 			for ( ; II != EE; II++) {
+				NET_Packet			tNetPacket;
+				xrServerEntity		*tp1 = F_entity_Create	(pSettings->ReadSTRING((*I)->s_name,"monster_section"));
+				R_ASSERT2			(tp1,"Can't create entity.");
+				CALifeDynamicObject	*tp2 = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
+				R_ASSERT			(tp2);
+				(*I)->Spawn_Write	(tNetPacket,TRUE);
+				tp2->Spawn_Read		(tNetPacket);
+				tNetPacket.w_begin	(M_UPDATE);
+				(*I)->UPDATE_Write	(tNetPacket);
+				u16					id;
+				tNetPacket.r_begin	(id);
+				tp2->UPDATE_Read	(tNetPacket);
+				tp2->m_bDirectControl	= false;
+				tp2->ID				= 0xffff;
+				vfCreateObject		(tp2);
+				tp2->m_tObjectID	= tp2->ID;
+				m_tObjectRegistry.insert(make_pair(tp2->m_tObjectID,tp2));
 			}
-			i->ID				= m_tpServer->PerformIDgen(0xffff);
-			m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
 		}
 		else {
-			NET_Packet			tNetPacket;
-			(*I)->Spawn_Write	(tNetPacket,TRUE);
-			i->Spawn_Read		(tNetPacket);
-			tNetPacket.w_begin	(M_UPDATE);
-			(*I)->UPDATE_Write	(tNetPacket);
-			u16					id;
-			tNetPacket.r_begin	(id);
-			i->UPDATE_Read		(tNetPacket);
-			i->ID				= 0xffff;
             vfCreateObject		(i);
 			i->m_tObjectID		= i->ID;
 			m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
 		}
-		I						= m;	
+		I						= m;
 	}
 	m_tALifeVersion				= ALIFE_VERSION;
 	m_tGameTime					= u64(Device.dwTimeGlobal);
