@@ -313,9 +313,9 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP.Begin();
 
 	Target.Begin	();
-	// Details
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
-	Details.Render			(Device.vCameraPosition);
+
+	// Environment render
+	pCreator->Environment.RenderFirst		();
 	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
@@ -386,10 +386,15 @@ void	CRender::Render		()
 			mapMatrix.traverseANY	(matrix_L1);
 			mapMatrix.clear			();
 			Lights.BeginStatic		();
+
 			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
-			
 			Wallmarks.Render		();		// Wallmarks has priority as normal geometry
+
+			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
 			Lights_Dynamic.Render	();		// Lights has priority the same as normal geom
+
+			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
+			Details.Render			(Device.vCameraPosition);
 		}
 	}
 	
@@ -410,6 +415,8 @@ void	CRender::Render		()
 	if (vecPatches.size())  {
 		flush_Patches	();
 	}
+
+	Environment.RenderLast	();
 	
 	// Postprocess
 	Target.End				();

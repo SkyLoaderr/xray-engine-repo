@@ -177,15 +177,9 @@ void CCreator::OnRender()
 {
 	if (fabsf(Device.fTimeDelta)<EPS_S) return;
 
-	// Environment render
-	Environment.RenderFirst		();
-
 	// Level render
 	Render.Calculate			();
 	Render.Render				();
-
-	// Environment render
-	Environment.RenderLast		();
 
 	// Font
 	pApp->pFont->OnRender		();
