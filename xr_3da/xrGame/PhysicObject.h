@@ -16,7 +16,7 @@ class CPhysicObject :
 static u32				remove_time;
 	u32					m_unsplit_time;
 	PHSHELL_PAIR_VECTOR m_unsplited_shels;
-	CPhysicObject*		m_source;
+	//CPhysicObject*		m_source;
 	void			CreateSkeleton  (CSE_ALifeObjectPhysic	*po);
 	void			CreateBody		(CSE_ALifeObjectPhysic	*po);
 	void			CopySpawnInit	()							;

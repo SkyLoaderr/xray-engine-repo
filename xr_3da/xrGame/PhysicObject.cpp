@@ -12,7 +12,7 @@ CPhysicObject::CPhysicObject(void) {
 	b_recalculate=false;
 	m_unsplit_time = u32(-1);
 	b_removing=false;
-	m_source=NULL;
+	//m_source=NULL;
 }
 
 CPhysicObject::~CPhysicObject(void)
@@ -48,9 +48,10 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	else
 	{
 		CPhysicObject* source=dynamic_cast<CPhysicObject*>(Level().Objects.net_Find(po->source_id));
+		//m_source=dynamic_cast<CPhysicObject*>(Level().Objects.net_Find(po->source_id));
 		R_ASSERT2(source,"no source");
-		setVisible(true);
-		setEnabled(true);
+		//setVisible(false);
+		//setEnabled(false);
 		source->UnsplitSingle(this);
 	}
 
@@ -107,6 +108,7 @@ void CPhysicObject::UpdateCL	()
 		//	m_source=NULL;
 		//}
 	}
+
 }
 
 void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
@@ -300,6 +302,10 @@ void CPhysicObject::shedule_Update(u32 dt)
 	{
 		PHSplit();
 	}
+
+
+
+	
 	if(b_removing&&Device.dwTimeGlobal-m_unsplit_time>remove_time) 
 	{
 		NET_Packet			P;
@@ -338,7 +344,7 @@ void CPhysicObject::SpawnCopy()
 		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;
 		D->ID				=	0xffff;
-		D->ID_Parent		=	0xffff;//u16(ID());
+		D->ID_Parent		=	0xffff;//u16(ID());//
 		D->ID_Phantom		=	0xffff;
 		D->o_Position		=	Position();
 		XFORM()				.getHPB(D->o_Angle);
@@ -377,25 +383,25 @@ void CPhysicObject::PHSplit()
 void CPhysicObject::OnEvent		(NET_Packet& P, u16 type)
 {
 	inherited::OnEvent		(P,type);
-	u16 id;
-	switch (type)
-	{
-	case GE_OWNERSHIP_TAKE:
-		{
-			P.r_u16		(id);
-			CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
-			//O->H_SetParent(this);
-			//UnsplitSingle( O );
-			break;
-		}
-	case GE_OWNERSHIP_REJECT:
-		{
-			P.r_u16		(id);
-			CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
-			//O->H_SetParent(NULL);
-			break;
-		}
-	}
+	//u16 id;
+	//switch (type)
+	//{
+	//case GE_OWNERSHIP_TAKE:
+	//	{
+	//		P.r_u16		(id);
+	//		CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
+	//		//O->H_SetParent(this);
+	//		UnsplitSingle( dynamic_cast<CPhysicObject*>(O) );
+	//		break;
+	//	}
+	//case GE_OWNERSHIP_REJECT:
+	//	{
+	//		P.r_u16		(id);
+	//		CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
+	//		//O->H_SetParent(NULL);
+	//		break;
+	//	}
+	//}
 }
 void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 
@@ -432,9 +438,10 @@ void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 	newPhysicsShell->set_PhysicsRefObject(O);
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
+	O->setVisible(true);
+	O->setEnabled(true);
 	newKinematics->Calculate();
-	//O->setVisible(true);
-	//O->setEnabled(true);
+
 	//NET_Packet				P;
 	//u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
 	//P.w_u16					(u16(O->ID()));
