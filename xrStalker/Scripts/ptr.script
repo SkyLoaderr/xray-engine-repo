@@ -31,21 +31,25 @@ end
 
 
 function SPatrol:process ()
+
     --if patrol man is dead then exit
     if self.npc == nil or self.npc:alive () == false then return end
     
+    local ctime = game.time ()
+    
     --sounds
     if table.getn (self.sounds) ~= 0 then
-       if self.snd_len > 0 and game.time () >= self.snd_len then 
+       if self.snd_len > 0 and ctime >= self.snd_len then 
           self.snd_len = 0
-          self.snd_time = game.time ()
+          self.snd_time = ctime
        end   
-       if game.time () - self.snd_time >= snd_interval then
-          local sname = self.sounds[math.random (1, table.getn (self.sounds))]
+       if ctime - self.snd_time >= snd_interval then
+          local sname = self.sounds[math.random (1, table.getn (self.sounds) + 1)]
           local s = sound_object (sname)
-          self.snd_len = s:length () + game.time ()
+          self.snd_len = s:length () + ctime
           update_action (self.npc, self.script, sound (sname, "bip01_head", 
                          vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
+          self.snd_time = ctime               
                          
        end
     end         
