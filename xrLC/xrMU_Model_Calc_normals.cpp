@@ -66,6 +66,17 @@ void xrMU_Model::calc_normals()
 	for (I=0; I<Vcount; I++) mu_vertices.destroy	(m_vertices[I]);
 	m_vertices.erase(m_vertices.begin(),m_vertices.begin()+Vcount);
 
+	// Destroy unused vertices
+	{
+		for (int I=0; I<int(m_vertices.size()); I++) 
+			if (m_vertices[I]->adjacent.empty())
+			{
+				mu_vertices.destroy	(m_vertices[I]);
+				m_vertices.erase	(m_vertices.begin()+I);
+				I--;
+			}
+	}
+
 	// Clear temporary flag
 	for (it = m_faces.begin(); it!=m_faces.end(); it++)
 		(*it)->bSplitted = FALSE;

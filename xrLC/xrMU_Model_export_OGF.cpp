@@ -30,7 +30,7 @@ void xrMU_Reference::export_ogf()
 				try {
 					xrMU_Model::v_faces_it	_beg	= model->m_faces.begin() + it->start;
 					xrMU_Model::v_faces_it	_end	= _beg + it->count;
-					for (xrMU_Model::v_faces_it Fit=_beg; Fit!=_end; Fit++)
+					for (xrMU_Model::v_faces_it Fit =_beg; Fit!=_end; Fit++)
 					{
 						OGF_Vertex	V0,V1,V2;
 

@@ -45,6 +45,13 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 	const float eps			= EPS_L;
 	const float eps2		= 2.f*eps;
 
+	// calc pure rotation matrix
+	Fmatrix Rxform,tmp,R;
+	R.set				(xform	);
+	R.translate_over	(0,0,0	);
+	tmp.transpose		(R		);
+	Rxform.invert		(tmp	);
+
 	// Perform lighting
 	CDB::COLLIDER			DB;
 	DB.ray_options			(0);
@@ -60,30 +67,47 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 		float		v_trans	= 0.f;
 		for (u32 f=0; f<V->adjacent.size(); f++)
 		{
-			_face*	F		=	V->adjacent[f];
-			v_amb			+=	F->Shader().vert_ambient;
-			v_trans			+=	F->Shader().vert_translucency;
+			_face*	F			=	V->adjacent[f];
+			v_amb				+=	F->Shader().vert_ambient;
+			v_trans				+=	F->Shader().vert_translucency;
 		}
-		v_amb				/= float(V->adjacent.size());
-		float v_inv			= 1.f-v_amb;
+		v_amb					/=	float(V->adjacent.size());
+		v_trans					/=	float(V->adjacent.size());
+		float v_inv				=	1.f-v_amb;
 
-		Fcolor				vC;
-		Fvector				vP,vN;
-		vC.set				(0,0,0,0);
-		xform.transform_tiny(vP,V->P);
-		xform.transform_dir	(vN,V->N);
-		vN.normalize        ();
-		LightPoint			(&DB, vC, vP, vN, Lights.begin(), Lights.end(), 0);
+		Fcolor					vC;
+		Fvector					vP,vN;
+		vC.set					(0,0,0,0);
+		xform.transform_tiny	(vP,V->P);
+		Rxform.transform_dir	(vN,V->N);
+		vN.normalize			();
 
-		V->C.r				= vC.r*v_inv+v_amb;
-		V->C.g				= vC.g*v_inv+v_amb;
-		V->C.b				= vC.b*v_inv+v_amb;
-		V->C.a				= v_trans;
+		// multi-sample
+		const int n_samples		= 9;
+		for (u32 sample=0; sample<n_samples; sample++)
+		{
+			float					a	= 0.1f * float(sample) / float(n_samples);
+			Fvector					P;
+			P.mad					(vP,vN,a);
+
+			Fcolor					C;
+			LightPoint				(&DB, C, P, vN, Lights.begin(), Lights.end(), 0);
+			vC.r					+=	C.r;
+			vC.g					+=	C.g;
+			vC.b					+=	C.b;
+		}
+		vC.mul_rgb				(1/float(n_samples));
+
+		// 
+		V->C.r					= vC.r*v_inv+v_amb;
+		V->C.g					= vC.g*v_inv+v_amb;
+		V->C.b					= vC.b*v_inv+v_amb;
+		V->C.a					= v_trans;
 
 		// Search
-		const float key		= V->P.x;
-		mapVertIt	it		= g_trans.lower_bound	(key);
-		mapVertIt	it2		= it;
+		const float key			= V->P.x;
+		mapVertIt	it			= g_trans.lower_bound	(key);
+		mapVertIt	it2			= it;
 
 		// Decrement to the start and inc to end
 		while (it!=g_trans.begin() && ((it->first+eps2)>key)) it--;
@@ -148,10 +172,30 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 	dest.resize				(m_vertices.size());
 	for (I = 0; I<m_vertices.size(); I++)
 	{
-		dest[I]			= m_vertices[I]->C;
+		Fvector	ptPos	= m_vertices[I]->P;
+		Fcolor	ptColor	= m_vertices[I]->C;
+
+		Fcolor	_C;		_C.set	(0,0,0,0);
+		float 	_N		= 0;
+
+		for (u32 T=0; T<m_vertices.size(); T++)
+		{
+			Fcolor			vC; 
+			float			oD	= ptPos.distance_to	(m_vertices[T]->P);
+			float			oA  = 1/(1+10*oD*oD);
+			vC.set			(m_vertices[T]->C); 
+			vC.mul_rgb		(oA);
+			_C.r			+=	vC.r;
+			_C.g			+=	vC.g;
+			_C.b			+=	vC.b;
+			_N				+=	oA;
+		}
+
+		_C.mul_rgb		(1/(_N+EPS));
+		_C.a			= 1.f;
+		dest[I]			= _C; //.lerp	(_C,ptColor,.5f);
 	}
 }
-
 
 void xrMU_Reference::calc_lighting()
 {

@@ -197,7 +197,10 @@ void CBuild::LightVertex()
 
 	// Light models
 	for (u32 m=0; m<mu_refs.size(); m++)
+	{
 		mu_refs[m]->calc_lighting	();
+		Progress					(float(m)/float(mu_refs.size()));
+	}
 
 	// Wait other threads
 	Threads.wait			();
