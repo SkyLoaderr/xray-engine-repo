@@ -25,14 +25,15 @@ private:
 	CBlender*					b_bloom;
 	CBlender*					b_combine;
 
-	// MRT-path
-	CRT*						rt_Position;	// 64bit, fat	(x,y,z,?)				(eye-space)
-	CRT*						rt_Normal;		// 64bit, fat	(x,y,z,?)				(eye-space)
-	CRT*						rt_Color;		// 64bit, fat	(r,g,b,specular-gloss)
+	// MRT-path (or decompressed MET)
+	CRT*						rt_Position;	// 64bit,	fat	(x,y,z,?)				(eye-space)
+	CRT*						rt_Normal;		// 64bit,	fat	(x,y,z,hemi)			(eye-space)
+	CRT*						rt_Color;		// 64/32bit,fat	(r,g,b,specular-gloss)	(or decompressed MET-8-8-8-8)
 
 	// MET-path
 	CRT*						rt_Deffer;		// NVE3, 8*4_8*4_16*2_16*2 = 128bit
 
+	// 
 	CRT*						rt_Accumulator;	// 32bit		(r,g,b,specular)
 	CRT*						rt_Generic;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	CRT*						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
@@ -54,6 +55,9 @@ private:
 	IDirect3DTexture9*			t_ds2fade_surf;
 	CTexture*					t_ds2fade;
 private:
+	// Decompress
+	Shader*						s_decompress;	// 0=pos,1=norm,2=color
+
 	// Accum
 	Shader*						s_accum_mask;
 	Shader*						s_accum_direct;
@@ -103,7 +107,7 @@ public:
 	void						u_setrt					(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
 
 	void						phase_scene				();
-	void						phase_scene_sky			();
+	void						phase_decompress		();
 	void						phase_smap_direct		();
 	void						phase_smap_point		(u32 pls_phase);
 	void						phase_smap_spot			();

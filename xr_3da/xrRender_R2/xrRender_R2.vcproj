@@ -235,6 +235,9 @@
 					RelativePath="r2_rendertarget_accum_spot_geom.cpp">
 				</File>
 				<File
+					RelativePath="r2_rendertarget_decompress.cpp">
+				</File>
+				<File
 					RelativePath="r2_rendertarget_phase_accumulator.cpp">
 				</File>
 				<File
@@ -372,6 +375,12 @@
 			</File>
 			<File
 				RelativePath="blender_combine.h">
+			</File>
+			<File
+				RelativePath="blender_decompress.cpp">
+			</File>
+			<File
+				RelativePath="blender_decompress.h">
 			</File>
 			<File
 				RelativePath="blender_deffer_flat.cpp">

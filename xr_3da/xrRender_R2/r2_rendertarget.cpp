@@ -77,7 +77,10 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Deffer					= Device.Shader._CreateRT	(r2_RT_DEFFER,	w,h,(D3DFORMAT)MAKEFOURCC('N','V','E','3'));
 		R_ASSERT					(rt_Deffer);
-	} 
+		rt_Position					= Device.Shader._CreateRT	(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Color					= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8);
+	}
 	else
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
@@ -118,8 +121,16 @@ void	CRenderTarget::OnDeviceCreate	()
 	// POINT
 	{
 		u32 size = PSM_size;
-		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
-		rt_smap_p					= Device.Shader._CreateRTC	(r2_RT_smap_p,				size,D3DFMT_R32F);
+		if (RImplementation.b_nv3x)
+		{
+			rt_smap_p_ZB				= NULL;
+			rt_smap_p					= NULL;
+		} else
+		{
+			// R3xx codepath, nv3x not implemented
+			R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
+			rt_smap_p					= Device.Shader._CreateRTC	(r2_RT_smap_p,				size,D3DFMT_R32F);
+		}
 		s_accum_point_s				= Device.Shader.Create_B	(b_accum_point_s,			"r2\\accum_point_s");
 		s_accum_point_uns			= Device.Shader.Create_B	(b_accum_point_uns,			"r2\\accum_point_uns");
 
