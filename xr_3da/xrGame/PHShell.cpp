@@ -4,7 +4,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-#include "car.h"
+
 ///////////////////////////////////////////////////////////////
 ///#pragma warning(disable:4995)
 //#include "..\ode\src\collision_kernel.h"

@@ -182,12 +182,18 @@ void CCar::SWheelBreak::Init()
 {
 	pwheel->Init();
 	break_torque=pwheel->car->m_break_torque*pwheel->radius/pwheel->car->m_ref_radius;
-
+	hand_break_torque=pwheel->car->m_hand_break_torque*pwheel->radius/pwheel->car->m_ref_radius;
 }
 
 void CCar::SWheelBreak::Break()
 {
 	dJointSetHinge2Param(pwheel->joint, dParamFMax2, break_torque);
+	dJointSetHinge2Param(pwheel->joint, dParamVel2, 0.f);
+}
+
+void CCar::SWheelBreak::HandBreak()
+{
+	dJointSetHinge2Param(pwheel->joint, dParamFMax2, hand_break_torque);
 	dJointSetHinge2Param(pwheel->joint, dParamVel2, 0.f);
 }
 

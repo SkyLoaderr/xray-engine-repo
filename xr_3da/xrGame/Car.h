@@ -93,8 +93,10 @@ neutral
 	{
 		SWheel* pwheel;
 		float break_torque;
+		float hand_break_torque;
 		void Init();
 		void Break();
+		void HandBreak();
 		void Neutral();
 	};
 
@@ -198,18 +200,33 @@ xr_vector <SDoor*>		m_doors_update;
 xr_vector <float>		m_gear_ratious;
 xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 float					m_current_gear_ratio;
+
 float					m_power;
+float					m_power_on_min_rpm;
+float					m_power_on_max_rpm;
+float					m_max_power;//best rpm
+
+/////////////////////porabola
+float m_a,m_b,m_c;
+
 float					m_current_engine_power;
 float					m_axle_friction;
+
 float					m_max_rpm;
 float					m_min_rpm;
+float					m_best_rpm;//max power
+
 float					m_idling_rpm;
 float					m_steering_speed;
 float					m_ref_radius;
 float					m_break_torque;
+float					m_hand_break_torque;
 size_t					m_current_transmission_num;
 
-	////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+/////////////////////////////////////////////////
+	void  InitParabola();
+	float Parabola(float rpm);
 	float GetSteerAngle();
 	void LimitWheels();
 	void Drive();
@@ -245,7 +262,7 @@ size_t					m_current_transmission_num;
 	void Unbreak();
 	void ParseDefinitions				();
 	void CreateSkeleton					();//creates m_pPhysicsShell
-	void InitWheels						();
+	void Init						();
 
 	void PlayExhausts					();
 	void StopExhausts					();

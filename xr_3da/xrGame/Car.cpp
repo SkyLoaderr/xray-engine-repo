@@ -123,7 +123,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 
 	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
-	InitWheels						();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
+	Init						();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
 	m_ident=ph_world->AddObject(dynamic_cast<CPHObject*>(this));
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
@@ -399,7 +399,13 @@ bool CCar::is_Door(int id,xr_map<int,SDoor>::iterator& i)
 	{
 		return false;
 	}
-	else return true;
+	else
+	{
+		if(i->second.joint)//temp for fake doors
+			return true;
+		else
+			return false;
+	}
 }
 
 bool CCar::Enter(const Fvector& pos,const Fvector& dir)
@@ -450,13 +456,35 @@ void CCar::ParseDefinitions()
 	///////////////////////////car properties///////////////////////////////
 	m_power				=		ini->r_float("car_definition","engine_power");
 	m_power				*=		(0.8f*1000.f);
+
+	m_power_on_min_rpm  =		ini->r_float("car_definition","engine_power");
+	m_power_on_min_rpm			*=		(0.8f*1000.f)/10.f;///10 -temp
+
+	m_power_on_max_rpm  =		ini->r_float("car_definition","engine_power");
+	m_power_on_max_rpm			*=		(0.8f*1000.f);
+
+	m_max_power  =				ini->r_float("car_definition","engine_power");
+	m_max_power			*=		(0.8f*1000.f);
+
 	m_max_rpm			=		ini->r_float("car_definition","max_engine_rpm");
 	m_max_rpm			*=		(1.f/60.f*2.f*M_PI);
-	//m_min_rpm			=		ini->r_float("car_definition","min_engine_rpm");
+	
+
+	m_min_rpm			=		ini->r_float("car_definition","idling_engine_rpm");
+	m_min_rpm			*=		(1.f/60.f*2.f*M_PI);
+
+	m_best_rpm			=		ini->r_float("car_definition","idling_engine_rpm");
+	m_best_rpm			*=		(1.f/60.f*2.f*M_PI)*2.f;//
+
 	m_idling_rpm		=		ini->r_float("car_definition","idling_engine_rpm");
+	m_idling_rpm		*=		(1.f/60.f*2.f*M_PI);
+
+	InitParabola		();
+
 	m_axle_friction		=		ini->r_float("car_definition","axle_friction");
 	m_steering_speed	=		ini->r_float("car_definition","steering_speed");
 	m_break_torque		=		ini->r_float("car_definition","break_torque");
+	m_hand_break_torque	=		ini->r_float("car_definition","break_torque");
 
 	/////////////////////////transmission////////////////////////////////////////////////////////////////////////
 	R_ASSERT2(ini->section_exist("transmission_gear_ratio"),"no section transmission_gear_ratio");
@@ -492,7 +520,7 @@ void CCar::CreateSkeleton()
 	m_pPhysicsShell->SetAirResistance(0.f,0.f);
 }
 
-void CCar::InitWheels()
+void CCar::Init()
 {
 //get reference wheel radius
 CKinematics* pKinematics=PKinematics(Visual());
@@ -607,6 +635,8 @@ void CCar::UpdatePower()
 	e=m_driving_wheels.end();
 	for(;i!=e;i++)
 		i->UpdatePower();
+	if(brp)
+		Break();
 }
 
 void CCar::SteerRight()
@@ -774,6 +804,14 @@ void CCar::CircleSwitchTransmission()
 	Transmision(m_current_transmission_num);
 	Drive();
 }
+
+void CCar::InitParabola()
+{
+	m_b=(m_power_on_min_rpm-m_max_power)/
+		(-1.f/2.f/m_best_rpm*m_min_rpm*m_min_rpm+m_min_rpm-m_best_rpm/2.f);
+	m_a=-m_b/m_best_rpm/2.f;
+	m_c=m_max_power-m_b*m_best_rpm/2.f;
+}
 void CCar::PhTune(dReal step)
 {
 	if(m_repairing)Revert();
@@ -793,6 +831,7 @@ void CCar::PhTune(dReal step)
 		}
 	}
 }
+
 
 void CCar::PlayExhausts()
 {
@@ -852,12 +891,26 @@ bool CCar::Use(int id,const Fvector& pos,const Fvector& dir)
 
 }
 
+float CCar::Parabola(float rpm)
+{
+	return m_a*rpm*rpm+m_b*rpm+m_c;
+}
 
 float CCar::EnginePower()
 {
-	float power;
-	power=m_power/50.f+EngineDriveSpeed()/m_max_rpm*(m_power);
-	return power;
+	//float power;
+	//power=m_power/50.f+EngineDriveSpeed()/m_max_rpm*(m_power);
+	//return power;
+	float rpm=EngineDriveSpeed();
+	if(rpm>m_min_rpm)
+	{
+		if(rpm<m_max_rpm)
+			return Parabola(rpm);
+		else
+			return Parabola(m_max_rpm);
+	}
+	else	return m_power_on_min_rpm;
+
 }
 
 float CCar::EngineDriveSpeed()
