@@ -34,7 +34,7 @@ CCameraManager::CCameraManager()
 CCameraManager::~CCameraManager()
 {
 	for (EffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
-		_DELETE(*it);
+		xr_delete(*it);
 }
 
 CEffector* CCameraManager::GetEffector(EEffectorType type)	
@@ -54,7 +54,7 @@ CEffector* CCameraManager::AddEffector(CEffector* ef)
 void CCameraManager::RemoveEffector(EEffectorType type){
 	for (EffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
 		if ((*it)->eType==type){ 
-			_DELETE(*it);
+			xr_delete(*it);
 			m_Effectors.erase(it);
 			return;
 		}
@@ -113,7 +113,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 				}
 			}else{
 				m_Effectors.erase(m_Effectors.begin()+i);
-				_DELETE(eff);
+				xr_delete(eff);
 			}
 		}
 		

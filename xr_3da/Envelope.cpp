@@ -6,7 +6,7 @@
 CEnvelope::~CEnvelope()
 {
 	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++)
-    	_DELETE(*k_it);
+    	xr_delete(*k_it);
 }
 CEnvelope::CEnvelope(CEnvelope* source)
 {

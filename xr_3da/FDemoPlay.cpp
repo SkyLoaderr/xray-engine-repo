@@ -40,7 +40,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 		seq.resize	(sz/sizeof(Fmatrix));
 		m_count		= seq.size();
 		PSGP.memCopy(&*seq.begin(),data,sz);
-		_FREE		(data);
+		xr_free		(data);
 		Log			("! Total frames: ",m_count);
 	}
 	stat_Start		();
@@ -50,7 +50,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 
 CDemoPlay::~CDemoPlay()
 {
-	_DELETE(m_pMotion);
+	xr_delete	(m_pMotion);
 	stat_Stop	();
 	Console.Execute("hud_weapon 1");
 }

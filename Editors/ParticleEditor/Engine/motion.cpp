@@ -62,7 +62,7 @@ COMotion::COMotion(COMotion* source):CCustomMotion(source){
 }
 
 COMotion::~COMotion(){
-	for (int ch=0; ch<ctMaxChannel; ch++) _DELETE(envs[ch]);
+	for (int ch=0; ch<ctMaxChannel; ch++) xr_delete(envs[ch]);
 }
 
 void COMotion::Evaluate(float t, Fvector& T, Fvector& R){
@@ -142,8 +142,8 @@ CSMotion::~CSMotion(){
 void CSMotion::Clear()
 {
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-	    _FREE(bm_it->name);
-		for (int ch=0; ch<ctMaxChannel; ch++) _DELETE(bm_it->envs[ch]);
+	    xr_free(bm_it->name);
+		for (int ch=0; ch<ctMaxChannel; ch++) xr_delete(bm_it->envs[ch]);
     }
 	bone_mots.clear();
 }
