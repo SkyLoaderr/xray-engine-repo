@@ -23,6 +23,23 @@
 #include "Scintilla.h"
 #include "SciLexer.h"
 
+bool isLuaFunction(StyleContext& sc, const char* s)
+{
+	if ( (sc.GetRelative(-(strlen(s)+1))==':')|| //started with :  ->method
+		 (sc.GetRelative(-(strlen(s)+1))=='.') ) //started with .  ->method
+		return true;
+
+	int idx=0;
+	for(;idx!=40;++idx){
+		int c = sc.GetRelative(idx);
+		if( c=='(' )   //have () ->method
+			return true;
+		if (!IsASpaceOrTab(c))
+			return false;
+	}
+	return false;
+}
+
 static inline bool IsAWordChar(const int ch) {
 	return (ch < 0x80) && (isalnum(ch) || ch == '_' /*|| ch == '.'*/);
 }
@@ -138,7 +155,7 @@ static void ColouriseLuaDoc(
 				sc.SetState(SCE_LUA_DEFAULT);
 			}
 		} else if (sc.state == SCE_LUA_IDENTIFIER) {
-			if (!IsAWordChar(sc.ch)) {
+			if (!IsAWordChar(sc.ch) ) {
 				char s[100];
 				sc.GetCurrent(s, sizeof(s));
 				if (keywords.InList(s)) {
@@ -159,10 +176,13 @@ static void ColouriseLuaDoc(
 					sc.ChangeState(SCE_LUA_WORD7);
 /*				} else if (keywords8.InList(s)) {
 					sc.ChangeState(SCE_LUA_WORD8);*/
-//				} else if ( (sc.GetRelative(-(strlen(s)+1))==':')||(sc.GetRelative(-(strlen(s)+1))=='.') ) {
-//					sc.ChangeState(SCE_LUA_WORD8);
-				} else if ( sc.GetRelative(0)=='(' ) {
+				} else if (isLuaFunction(sc,s)){
 					sc.ChangeState(SCE_LUA_WORD8);
+/*				} else if ( (sc.GetRelative(-(strlen(s)+1))==':')||
+							(sc.GetRelative(-(strlen(s)+1))=='.')||
+							(sc.GetRelative(0)=='(') ) {
+					sc.ChangeState(SCE_LUA_WORD8);
+*/
 				} else if ( (sc.GetRelative(0)==':')||(sc.GetRelative(0)=='.') ) {
 					sc.ChangeState(SCE_LUA_WORD7);
 				}
@@ -255,6 +275,9 @@ static void ColouriseLuaDoc(
 				sc.Forward(3);
 
 			} else if (sc.Match('-', '-')) {
+				sc.SetState(SCE_LUA_COMMENTLINE);
+				sc.Forward();
+			} else if (sc.Match('/', '/')) {
 				sc.SetState(SCE_LUA_COMMENTLINE);
 				sc.Forward();
 			} else if (sc.atLineStart && sc.Match('$')) {
