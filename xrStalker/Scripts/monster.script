@@ -120,7 +120,7 @@ function generic_object_binder:update(delta)
 	--	actor:give_info_portion(info_name)
 	--end
 
-	--[[
+	--
 	if self.object:name() == "m_trader" then
 		local actor = level.actor()
 		if not actor then
@@ -133,12 +133,12 @@ function generic_object_binder:update(delta)
 		--	if_then_else(self.object:has_info("esc_trader_tutorial_choice"), "YES", "NO"))
 		--printf("infoportion 'esc_trader_tutorial_chosen': %s",
 		--	if_then_else(self.object:has_info("esc_trader_tutorial_chosen"), "YES", "NO"))
-		printf("infoportion 'esc_trader_newbie': %s",
-			if_then_else(actor:has_info("esc_trader_newbie"), "YES", "NO"))
-		printf("infoportion 'esc_trader_experienced': %s",
-			if_then_else(actor:has_info("esc_trader_experienced"), "YES", "NO"))
-		printf("infoportion 'tutorial_artefact_start': %s",
-			if_then_else(actor:has_info("tutorial_artefact_start"), "YES", "NO"))
+		--printf("infoportion 'esc_trader_newbie': %s",
+		--	if_then_else(actor:has_info("esc_trader_newbie"), "YES", "NO"))
+		--printf("infoportion 'esc_trader_experienced': %s",
+		--	if_then_else(actor:has_info("esc_trader_experienced"), "YES", "NO"))
+		--printf("infoportion 'tutorial_artefact_start': %s",
+		--	if_then_else(actor:has_info("tutorial_artefact_start"), "YES", "NO"))
 		printf("infoportion 'esc_trader_can_leave': %s",
 			if_then_else(actor:has_info("esc_trader_can_leave"), "YES", "NO"))
 	end
