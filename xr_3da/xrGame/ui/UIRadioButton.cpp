@@ -26,6 +26,7 @@ void CUIRadioButton::OnMouse(int x, int y, EUIMessages mouse_action)
 		if(!m_bIsChecked) 
 		{
 			GetMessageTarget()->SendMessage(this, RADIOBUTTON_SET);
+			GetParent()->SendMessage(this, RADIOBUTTON_SET);
 		}
 }
 
@@ -42,7 +43,8 @@ void CUIRadioButton::Draw()
 	if(m_bIsChecked)
 	{
 		GetFont()->SetColor(0xFF00FF00);
-		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left, (float)rect.top+30,	"O");
+		float dy = ((float)rect.bottom-(float)rect.top)/2.0f;
+		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left, (float)rect.top+dy,	"O");
 	}
 
 	GetFont()->OnRender();

@@ -60,32 +60,29 @@ void CUIRadioGroup::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 int CUIRadioGroup::GetCheckedPos()
 {
-	
-	/*for(int i=0; i<m_ChildWndList.size(); ++i, ++it)
-	{
-		if(PtInRect(&(*it)->GetWndRect(), cursor_pos))
-		{
-			if((*it)->IsEnabled())
-			{
-				(*it)->OnMouse(cursor_pos.x -(*it)->GetWndRect().left, 
-							   cursor_pos.y -(*it)->GetWndRect().top, mouse_action);
-				return;
-			}
+	int res = -1;
+	int i = 0;
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it,++i){
+		if(((CUIRadioButton*)(*it))->GetCheck() == true){
+			res=i;
+			return res;
 		}
-	}*/
+	}
 
-	return 0;
+	return res;
 }
 	
 
 void CUIRadioGroup::SetCheckedPos(int new_pos)
 {
-		/*//сбросить флажки на всех кнопках
-		for(WINDOW_LIST_IT it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
-		{
-			((CRadioButton*)(*it))->ResetCheck();
-		}
+		//сбросить флажки на всех кнопках
+		WINDOW_LIST_it it = m_ChildWndList.begin();
+		for(; it != m_ChildWndList.end() ; ++it)
+			((CUIRadioButton*)(*it))->ResetCheck();
 
+		if(new_pos>=m_ChildWndList.size()) return;
 		//установить флажок, той кнопке, что вызывала сообщение
-		((CRadioButton*)m_ChildWndList[new_pos])->SetCheck();*/
+		it = m_ChildWndList.begin();
+		std::advance(it,new_pos);
+		((CUIRadioButton*)(*it))->SetCheck();
 }

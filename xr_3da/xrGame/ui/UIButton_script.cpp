@@ -40,6 +40,10 @@ void CUIButton::script_register(lua_State *L)
 		.def(							constructor<>())
 		.def("AttachChild",				&CUIRadioGroup::AttachChild, adopt(_2))
 		.def("DetachChild",				&CUIRadioGroup::DetachChild, adopt(_2))
+		.def("GetCheckedPos",			&CUIRadioGroup::GetCheckedPos)
+		.def("SetCheckedPos",			&CUIRadioGroup::SetCheckedPos)
+
+
 //		.def("",						&CUIRadioGroup::)
 
 		
