@@ -876,6 +876,70 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+
+	--' Radar antena
+	if type == "rad_antena" then
+		-- охрана ворот
+		t = { section = "logic@rad_antena_gate_walker1",
+			idle = 0,
+			prior = 5, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_gate_walker2",
+			idle = 0,
+			prior = 5, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- шатающиеся по территории
+		t = { section = "logic@rad_antena_walker1",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_walker2",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_walker3",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_walker4",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_walker5",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- мост
+		t = { section = "logic@rad_antena_bridge_walker1",
+			idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
 	gulag_military.load_job (sj, gname, type, squad, groups)
 end
 

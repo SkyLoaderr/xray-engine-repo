@@ -419,6 +419,10 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community == "military"
 	end
 
+	if gulag_type == "rad_antena" then
+		return npc_community == "monolith"
+	end
+
 	return false
 end
 
