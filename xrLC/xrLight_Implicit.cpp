@@ -101,8 +101,8 @@ public:
 		{
 			for (u32 U=0; U<defl.Width(); U++)
 			{
-				base_color	C;
-				u32			Fcount	= 0;
+				base_color_c	C;
+				u32				Fcount	= 0;
 				
 				try {
 					for (u32 J=0; J<Jcount; J++) 
@@ -141,10 +141,10 @@ public:
 					// Calculate lighting amount
 					C.scale				(Fcount);
 					C.mul				(.5f);
-					defl.Lumel(U,V)		= C;
+					defl.Lumel(U,V)._set(C);
 					defl.Marker(U,V)	= 255;
 				} else {
-					defl.Marker	(U,V)	= 0;
+					defl.Marker(U,V)	= 0;
 				}
 			}
 			thProgress	= float(V - y_start) / float(y_end-y_start);

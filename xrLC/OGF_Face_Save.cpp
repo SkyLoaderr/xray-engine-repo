@@ -61,9 +61,9 @@ struct  r1v_lmap	{
 	float		tc0x,tc0y;
 	s16			tc1x,tc1y;
 
-	r1v_lmap	(Fvector3 _P, Fvector _N, base_color_c _CC, Fvector2 tc_base, Fvector2 tc_lmap )
+	r1v_lmap	(Fvector3 _P, Fvector _N, base_color _CC, Fvector2 tc_base, Fvector2 tc_lmap )
 	{
-		base_color		_C;	_CC._get	(_C);
+		base_color_c	_C;	_CC._get	(_C);
 		_N.normalize	();
 		P				= _P;
 		N				= u8_vec4		(_N,u8_clr(_C.hemi));
@@ -79,9 +79,9 @@ struct  r1v_vert	{
 	u32			C;
 	float		tc0x,tc0y;
 
-	r1v_vert	(Fvector3 _P, Fvector _N, base_color_c _CC, Fvector2 tc_base)
+	r1v_vert	(Fvector3 _P, Fvector _N, base_color _CC, Fvector2 tc_base)
 	{
-		base_color		_C;	_CC._get	(_C);
+		base_color_c	_C;	_CC._get	(_C);
 		_N.normalize	();
 		P				= _P;
 		N				= u8_vec4		(_N,u8_clr(_C.hemi));

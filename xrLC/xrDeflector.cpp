@@ -20,6 +20,7 @@ void lm_layer::Pack		(xr_vector<u32>& dest)
 		*W++	= color_rgba(_r,_g,_b,_d);
 	}
 }
+/*
 u32 lm_layer::Pixel	(u32 ID)
 {
 	xr_vector<base_color>::iterator I = surface.begin()+ID;
@@ -29,6 +30,7 @@ u32 lm_layer::Pixel	(u32 ID)
 	u8	_d	= u8_clr(I->sun);
 	return	color_rgba(_r,_g,_b,_d);
 }
+*/
 
 void blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF)
 {

@@ -47,9 +47,9 @@ public:
 			Vertex* V		= g_vertices[I];
 			R_ASSERT		(V);
 
-			base_color		C;
+			base_color_c	C;
 			LightPoint		(&DB, RCAST_Model, C, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
-			V->C			= C;
+			V->C._set		(C);
 			thProgress		= float(I - vertStart) / float(vertEnd-vertStart);
 		}
 	}

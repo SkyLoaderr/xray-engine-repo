@@ -78,16 +78,16 @@ void xrMU_Reference::export_ogf()
 			{
 				Fvector	ptPos	= F.v[lv].v;
 
-				base_color		_C;
+				base_color_c	_C;
 				float 			_N	= 0;
 
 				for (u32 v_it=0; v_it<model->m_vertices.size(); v_it++)
 				{
 					// get base
-					Fvector		baseP;	xform.transform_tiny	(baseP,model->m_vertices[v_it]->P);
-					base_color	baseC	= color[v_it];
+					Fvector			baseP;	xform.transform_tiny	(baseP,model->m_vertices[v_it]->P);
+					base_color_c	baseC;	color[v_it]._get(baseC);
 
-					base_color		vC;
+					base_color_c	vC;
 					float			oD	= ptPos.distance_to	(baseP);
 					float			oA  = 1/(1+100*oD*oD);
 					vC = 			(baseC);

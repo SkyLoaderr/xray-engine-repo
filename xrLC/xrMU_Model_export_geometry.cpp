@@ -52,13 +52,14 @@ void	xrMU_Model::export_geometry		()
 				g_VB.Add	(&oV.P,3*sizeof(float));
 
 				// Normal
+				base_color_c	oV_c;	oV.Color._get(oV_c);
 				Fvector N	= oV.N;
 				N.add		(1.f);
 				N.mul		(.5f*255.f);
-				s32 nx		= iFloor(N.x);					clamp(nx,0,255);
-				s32 ny		= iFloor(N.y);					clamp(ny,0,255);
-				s32 nz		= iFloor(N.z);					clamp(nz,0,255);
-				s32 cc		= iFloor(oV.Color.hemi*255.f);	clamp(cc,0,255);
+				s32 nx		= iFloor(N.x);				clamp(nx,0,255);
+				s32 ny		= iFloor(N.y);				clamp(ny,0,255);
+				s32 nz		= iFloor(N.z);				clamp(nz,0,255);
+				s32 cc		= iFloor(oV_c.hemi*255.f);	clamp(cc,0,255);
 				u32	uN		= color_rgba(nx,ny,nz,cc);
 				g_VB.Add	(&uN,4);
 

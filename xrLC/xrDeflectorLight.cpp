@@ -373,7 +373,7 @@ BOOL	__stdcall rms_test	(lm_layer&	lm, u32 _r, u32 _g, u32 _b, u32 _a, u32 rms)
 	return TRUE;
 }
 
-u32	__stdcall rms_average	(lm_layer& lm, base_color& C)
+u32	__stdcall rms_average	(lm_layer& lm, base_color_c& C)
 {
 	u32 x,y,_count=0;
 
@@ -384,8 +384,10 @@ u32	__stdcall rms_average	(lm_layer& lm, base_color& C)
 			u32	offset	= y*lm.width+x;
 			if (lm.marker[offset]>=254)	
 			{
-				C.add	(lm.surface[offset]);
-				_count	++;
+				base_color_c	cc;
+				lm.surface		[offset]._get (cc);
+				C.add			(cc);
+				_count			++;
 			}
 		}
 	}
@@ -395,8 +397,8 @@ u32	__stdcall rms_average	(lm_layer& lm, base_color& C)
 BOOL	compress_Zero		(lm_layer& lm, u32 rms)
 {
 	// Average color
-	base_color	_c;
-	u32			_count	= rms_average(lm,_c);
+	base_color_c	_c;
+	u32				_count	= rms_average(lm,_c);
 
 	if (0==_count)	{
 		clMsg	("* ERROR: Lightmap not calculated (T:%d)");
@@ -412,7 +414,8 @@ BOOL	compress_Zero		(lm_layer& lm, u32 rms)
 	{
 		u32		c_x			= BORDER*2;
 		u32		c_y			= BORDER*2;
-		lm.surface.assign	(c_x*c_y,_c);
+		base_color ccc;		ccc._set(_c);
+		lm.surface.assign	(c_x*c_y,ccc);
 		lm.marker.assign	(c_x*c_y,255);
 		lm.height			= 0;
 		lm.width			= 0;
