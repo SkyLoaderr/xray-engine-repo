@@ -50,7 +50,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     // OpenAL device
     pDevice						= alcOpenDevice		(NULL);
 	if (pDevice == NULL){
-		Log						("OpenAL: Failed to create device.");
+		Log						("* sound: OpenAL: Failed to create device.");
 		bPresent				= FALSE;
 		return;
 	}
@@ -58,12 +58,12 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     // Get the device specifier.
     ALCubyte* 			        deviceSpecifier;
     deviceSpecifier         	= alcGetString		(pDevice, ALC_DEVICE_SPECIFIER);
-	Msg				        	("OpenAL: Using device '%s'.", deviceSpecifier);
+	Msg				        	("* sound: OpenAL: Using device '%s'.", deviceSpecifier);
 
     // Create context
     pContext					= alcCreateContext	(pDevice,NULL);
 	if (0==pContext){
-		Log						("OpenAL: Failed to create context.");
+		Log						("* sound: OpenAL: Failed to create context.");
 		bPresent				= FALSE;
 		alcCloseDevice			(pDevice); pDevice = 0;
 		return;
@@ -118,7 +118,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 		if (T->_initialize()){	
 			s_targets.push_back	(T);
         }else{
-        	Log					("!OpenAL: Max targets - ",tit);
+        	Log					("! sound: OpenAL: Max targets - ",tit);
             T->_destroy			();
         	xr_delete			(T);
         	break;

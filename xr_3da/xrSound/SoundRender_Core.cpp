@@ -44,8 +44,8 @@ CSoundRender_Core::~CSoundRender_Core()
 
 void CSoundRender_Core::_initialize	(u64 window)
 {
-    Log							("EAX 2.0 extension:",bEAX?"present":"absent");
-    Log							("EAX 2.0 deferred:",bDeferredEAX?"present":"absent");
+    Log							("* sound: EAX 2.0 extension:",bEAX?"present":"absent");
+    Log							("* sound: EAX 2.0 deferred:",bDeferredEAX?"present":"absent");
 	Timer.Start					( );
 
     // load environment
