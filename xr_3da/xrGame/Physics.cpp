@@ -564,9 +564,32 @@ if(!Breaks)
 	}
 	else {
 		for(i = 0; i < 2; ++i){
+
 			dJointSetHinge2Param(Joints[i], dParamFMax2, 5000);
 			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
 			}
+		/////////////
+	switch(DriveDirection)
+	{
+	case 1:
+        for(i = 2; i < 4; ++i)
+			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? -DriveVelocity : DriveVelocity);
+		break;
+
+	case -1:
+        for(i = 2; i < 4; ++i)
+			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? DriveVelocity : -DriveVelocity);
+		break;
+	case 0:
+		for(i = 2; i < 4; ++i){
+			dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
+			dJointSetHinge2Param(Joints[i], dParamFMax2, 100);
+		}
+		return;
+	}
+		/////////////
+		for(i=2;i<4;i++)
+			dJointSetHinge2Param(Joints[i], dParamFMax2, DriveForce);
 		return;
 		}
 	
@@ -575,7 +598,7 @@ if(!Breaks)
 }
 /////////////////////////////////////////
 void CPHJeep::NeutralDrive(){
-	
+	//////////////////
 	for(UINT i = 0; i < 4; ++i){
 			dJointSetHinge2Param(Joints[i], dParamFMax2, 10);
 			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
