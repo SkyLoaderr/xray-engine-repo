@@ -90,17 +90,17 @@ public:
 
 	// Scene control
 	void PreCache							(u32 frames);
-	void Begin								(void);
-	void Clear								(void);
-	void End								(void);
-	void FrameMove							(void);
+	void Begin								();
+	void Clear								();
+	void End								();
+	void FrameMove							();
 	
-	void overdrawBegin						(void);
-	void overdrawEnd						(void);
+	void overdrawBegin						();
+	void overdrawEnd						();
 
 	// Mode control
-	void DumpFlags							(void);
-	u32	 TimerAsync							(void)
+	void DumpFlags							();
+	u32	 TimerAsync							()
 	{
 		u64	qTime		= TimerGlobal.GetElapsed_clk();
 		return u32((qTime*u64(1000))/CPU::cycles_per_second);
@@ -128,8 +128,5 @@ public:
 extern		ENGINE_API		CRenderDevice		Device;
 
 #include	"R_Backend_Runtime.h"
-
-#define		REQ_CREATE()	if (!Device.bReady)	return;
-#define		REQ_DESTROY()	if (Device.bReady)	return;
 
 #endif
