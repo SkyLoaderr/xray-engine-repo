@@ -300,7 +300,10 @@ void CStalkerMovementManager::parse_velocity_mask	()
 
 	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= curr_travel_point_index())) {
 		m_stalker->m_fCurSpeed			= 0;
-		m_stalker->m_body.speed			= 1*PI_DIV_2;
+		if (mental_state() != eMentalStateDanger)
+			m_stalker->m_body.speed		= 1*PI_DIV_2;
+		else
+			m_stalker->m_body.speed		= PI_MUL_2;
 		set_desirable_speed				(m_stalker->m_fCurSpeed);
 		setup_head_speed				();
 		validate_mental_state			();

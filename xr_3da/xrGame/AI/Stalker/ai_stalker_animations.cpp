@@ -478,7 +478,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 //			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->head_orientation().current.yaw)),((m_object->head_orientation().target.yaw)));
 		}
 		else {
-			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[left_angle(-m_object->body_orientation().current.yaw,-m_object->body_orientation().target.yaw) ? 1 : 2];
+			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[!left_angle(-m_object->body_orientation().current.yaw,-m_object->body_orientation().target.yaw) ? 1 : 2];
 //			Msg				("%6d : Playing animation turn %s",Level().timeServer(),left ? "LEFT" : "RIGHT");
 //			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->body_orientation().current.yaw)),((m_object->body_orientation().target.yaw)));
 //			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->head_orientation().current.yaw)),((m_object->head_orientation().target.yaw)));
@@ -508,7 +508,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		}
 
 	bool	forward_direction = false;
-	bool	left = left_angle(-m_object->head_orientation().current.yaw,-yaw);
+	bool	left = !left_angle(-m_object->head_orientation().current.yaw,-yaw);
 
 	if (left) {
 		if (angle_difference(yaw,m_object->head_orientation().current.yaw) <= PI_DIV_3)
@@ -607,7 +607,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 //	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,m_object->body_orientation().target.yaw,m_object->body_orientation().current.yaw,m_object->head_orientation().target.yaw,m_object->head_orientation().current.yaw);
 	
 	forward_direction	= false;
-	left				= left_angle(-m_object->body_orientation().current.yaw,-yaw);
+	left				= !left_angle(-m_object->body_orientation().current.yaw,-yaw);
 
 	if (left) {
 		if (angle_difference(yaw,m_object->body_orientation().current.yaw) <= PI_DIV_3)
