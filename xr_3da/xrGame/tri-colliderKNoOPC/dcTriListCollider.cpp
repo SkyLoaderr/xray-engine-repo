@@ -227,7 +227,7 @@ extern "C" int dSortTriBoxCollide (
 
 
 
-	if(neg_depth<dInfinity&&ret==0){
+	if(neg_depth<dInfinity&&ret==0&&intersect){
 		bool include = true;
 		/*
 		for(i=pos_tries.begin();pos_tries.end() != i;++i){
@@ -283,9 +283,11 @@ extern "C" int dSortTriBoxCollide (
 		bool include = true;
 
 		for(i=pos_tries.begin();pos_tries.end() != i;++i){
-			if((((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[0]])-b_neg_tri->pos)<0.f)||
-				((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[1]])-b_neg_tri->pos)<0.f)||
-				((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[2]])-b_neg_tri->pos)<0.f))
+			if(
+				!((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[0]])-b_neg_tri->pos)>0.f)||
+				!((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[1]])-b_neg_tri->pos)>0.f)||
+				!((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[2]])-b_neg_tri->pos)>0.f)
+				
 				){
 					include=false;
 					break;
@@ -811,7 +813,7 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 
 
 
-						 if(neg_depth<dInfinity&&ret==0){
+						 if(neg_depth<dInfinity&&ret==0&&intersect){
 							 bool include = true;
 							 /*
 							 for(i=pos_tries.begin();pos_tries.end() != i;++i){
