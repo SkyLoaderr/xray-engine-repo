@@ -51,8 +51,8 @@ add_to_type_list(CSE_ALifeSchedulable)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
 public:
-	shared_str							m_caConnectionLevelName;
-	shared_str							m_caConnectionPointName;
+	shared_str						m_caConnectionLevelName;
+	shared_str						m_caConnectionPointName;
 	u8								m_tLocations[LOCATION_TYPE_COUNT];
 
 									CSE_ALifeGraphPoint(LPCSTR caSection);
@@ -75,7 +75,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 public:
 	typedef CSE_Abstract inherited;
 	ALife::_GRAPH_ID				m_tGraphID;
-	ALife::_SPAWN_ID				m_tSpawnID;
 	float							m_fDistance;
 	bool							m_bOnline;
 	float							m_fProbability;

@@ -186,7 +186,7 @@ void CGameSpawnConstructor::add_story_object	(ALife::_STORY_ID id, CSE_ALifeDyna
 void CGameSpawnConstructor::add_object				(CSE_Abstract *object)
 {
 	m_critical_section.Enter	();
-	object->m_spawn_id			= spawn_id();
-	spawn_graph().add_vertex	(xr_new<CServerEntityWrapper>(object),object->m_spawn_id);
+	object->m_tSpawnID			= spawn_id();
+	spawn_graph().add_vertex	(xr_new<CServerEntityWrapper>(object),object->m_tSpawnID);
 	m_critical_section.Leave	();
 }

@@ -23,7 +23,7 @@ void CServerEntityWrapper::save				(IWriter &stream)
 {
 	NET_Packet				net_packet;
 
-	stream.open_chunk		(m_object->m_spawn_id);
+	stream.open_chunk		(m_object->m_tSpawnID);
 
 	// Spawn
 	m_object->Spawn_Write	(net_packet,TRUE);

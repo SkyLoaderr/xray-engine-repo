@@ -234,7 +234,7 @@ void CLevelSpawnConstructor::fill_spawn_groups					()
 		GROUP_OBJECTS::iterator					e = (*I).second->end();
 		for ( ; i != e; i++) {
 			(*i)->m_fProbability				/= accumulator;
-			m_game_spawn_constructor->add_edge	((*J).second->m_spawn_id,(*i)->m_spawn_id,(*i)->m_fProbability);
+			m_game_spawn_constructor->add_edge	((*J).second->m_tSpawnID,(*i)->m_tSpawnID,(*i)->m_fProbability);
 			CSE_ALifeAnomalousZone				*zone = smart_cast<CSE_ALifeAnomalousZone*>(*i);
 			if (zone)
 				normalize_probability			(zone);

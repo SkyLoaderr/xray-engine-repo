@@ -96,8 +96,9 @@
 // 77 - CSE_AlifeTraderAbstract			added CSE_ObjectClimable
 // 78 - CSE_AlifeTraderAbstract			appended with flags for infinite ammo
 // 79 - CSE_AlifeAnomalousZone			appended with power properties (3)
+// 80 - CSE_Abstract					m_tSpawnID property moved from CSE_ALifeObject to CSE_Abstract
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(79)
+#define SPAWN_VERSION	u16(80)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

@@ -30,9 +30,6 @@ class xrClientData;
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_Abstract,ISE_Abstract,CPureServerObject,CScriptValueContainer)
 public:
-#ifdef AI_COMPILER
-	ALife::_SPAWN_ID				m_spawn_id;
-#endif
 	BOOL							net_Ready;
 	BOOL							net_Processed;	// Internal flag for connectivity-graph
 	
@@ -56,6 +53,7 @@ public:
 	Fvector							o_Position;
 	Fvector							o_Angle;
 	CLASS_ID						m_tClassID;
+	ALife::_SPAWN_ID				m_tSpawnID;
 	int								m_script_clsid;
 
 	// for ALife control

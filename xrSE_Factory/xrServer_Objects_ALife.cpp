@@ -216,7 +216,6 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_float			(m_fDistance);
 	tNetPacket.w_u32			(m_bDirectControl);
 	tNetPacket.w_u32			(m_tNodeID);
-	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
 	tNetPacket.w_stringZ		(*m_caGroupControl?*m_caGroupControl:"");
 	tNetPacket.w_u32			(m_flags.get());
 	tNetPacket.w_stringZ		(m_ini_string);
@@ -250,7 +249,7 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion >= 8)
 		tNetPacket.r_u32		(m_tNodeID);
 	
-	if (m_wVersion > 22)
+	if ((m_wVersion > 22) && (m_wVersion <= 79))
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
 	
 	if (m_wVersion > 23)

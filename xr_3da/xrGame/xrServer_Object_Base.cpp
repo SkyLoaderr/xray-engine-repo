@@ -144,6 +144,8 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	if(client_data_size>0)
 		tNetPacket.w			(&*client_data.begin(),client_data_size);
 
+	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
+
 #ifdef XRSE_FACTORY_EXPORTS
 	CScriptValueContainer::assign();
 #endif
@@ -206,6 +208,8 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	}else
 		client_data.clear		();
 
+	if (m_wVersion > 79)
+		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
 
 	u16							size;
 	tNetPacket.r_u16			(size			);	// size
