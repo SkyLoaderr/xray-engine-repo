@@ -1898,6 +1898,9 @@
 						<File
 							RelativePath=".\scripts\garbage_dialogs.script">
 						</File>
+						<File
+							RelativePath=".\Scripts\rad_dialogs.script">
+						</File>
 					</Filter>
 					<Filter
 						Name="LevelTasks"
