@@ -86,11 +86,6 @@ class "action_meet_wait" (action_base)
 function action_meet_wait:__init (npc_name,action_name, storage, char_ini) super (nil, action_name)
 	self.char_ini = char_ini
 	self.a = storage
-
-	self.sound_w = { rnd = 80,
-				   maxidle = 2, 
-				   sumidle = 8,
-				   themes = { "weather", "state", "wait" } }
 end
 function action_meet_wait:initialize()
 	action_base.initialize(self)
@@ -104,18 +99,15 @@ function action_meet_wait:initialize()
 		state_mgr.set_state(self.object, "wait_na", nil, nil, {look_object = db.actor})
 	else			
 		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor})
-	end	
+	end
+	xr_sound.set_sound(self.object, "weather, state, wait")	
 end
 function action_meet_wait:time_callback()
 	state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
 end
 function action_meet_wait:execute ()
 	action_base.execute(self)
-	-- Звуки
-	if self.object:active_sound_count() == 0 then
-		xr_sound.sound_update(self.object, self.sound_w)		
-	end
-
+	
 	local tt = db.storage[self.object:id()]
 	if tt.active_scheme then
 		if db.actor then
@@ -126,6 +118,7 @@ function action_meet_wait:execute ()
 	end
 end
 function action_meet_wait:finalize ()
+	xr_sound.set_sound(self.object, nil)
 	self.object:disable_talk()
 	action_base.finalize(self)
 end
@@ -134,11 +127,6 @@ end
 class "action_weapon" (action_base)
 function action_weapon:__init (npc_name,action_name, storage) super (nil, action_name)
 	self.a = storage
-
-	self.sound_e = { rnd = 100,
-				   maxidle = 5, 
-				   sumidle = 5,
-				   themes = { "threat_weap" } }
 end
 function action_weapon:initialize()
 	action_base.initialize(self)
@@ -149,12 +137,11 @@ function action_weapon:initialize()
 
 	stop_play_sound(self.object)
 	state_mgr.set_state(self.object, "backoff", nil, nil, {look_object = db.actor}, {animation = true})
+	xr_sound.set_sound(self.object, "threat_weap")
 end
 function action_weapon:execute()
 	action_base.execute (self)
-	if self.object:active_sound_count() == 0 then
-		xr_sound.sound_update(self.object, self.sound_e)		
-	end	
+	
 	xr_meet.attack(self.object, self.a)
 
 	local tt = db.storage[self.object:id()]
@@ -167,6 +154,7 @@ function action_weapon:execute()
 	end
 end
 function action_weapon:finalize()
+	xr_sound.set_sound(self.object, nil)
 	action_base.finalize (self)
 end
 
@@ -174,18 +162,6 @@ end
 -- Functions
 ----------------------------------------------------------------------------------------------------------------------
 function attack(npc, st)
-	sound_f = { rnd = 100,
-			   maxidle = 3, 
-			   sumidle = 5,
-			   themes = { "talk_abuse" } }					
-
-	-- если актер ближе какого-то радиуса - открывать огонь
-	if npc:position():distance_to(st.actor:position()) < st.shoot_distance then
-		if npc:active_sound_count() == 0 then
-			xr_sound.sound_update(npc, sound_f)		
-		end
-		--'npc:set_relation(game_object.enemy, st.actor) FIXME
-	end
 end
 function disable_meet(npc)
 	if npc ~= nil and

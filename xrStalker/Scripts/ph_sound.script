@@ -18,16 +18,16 @@ function snd_source:reset_scheme()
 	self.last_update = 0
 	self.st.signals = {}
 	--load the sounds
-	if xr_sound.ph_snd_themes[self.st.theme] == nil or table.getn (xr_sound.ph_snd_themes[self.st.theme]) == 0 then
+	if sound_theme.ph_snd_themes[self.st.theme] == nil or table.getn (sound_theme.ph_snd_themes[self.st.theme]) == 0 then
 	   utils.abort ("Invalid sound theme for object %s", self.object:name ())
 	   return
 	end
 	printf ("Load theme %s", self.st.theme)
-	for a = 1, table.getn (xr_sound.ph_snd_themes[self.st.theme]), 1 do
-	    local snd = sound_object (xr_sound.ph_snd_themes[self.st.theme][a])
+	for a = 1, table.getn (sound_theme.ph_snd_themes[self.st.theme]), 1 do
+	    local snd = sound_object (sound_theme.ph_snd_themes[self.st.theme][a])
 	    if snd ~= nil then
 	       table.insert (self.sound_list, snd)
-	       printf ("Loaded sound %s", xr_sound.ph_snd_themes[self.st.theme][a])
+	       printf ("Loaded sound %s", sound_theme.ph_snd_themes[self.st.theme][a])
 	    end   
     end	    
     if table.getn (self.sound_list) > 1 then

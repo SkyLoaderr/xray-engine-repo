@@ -80,6 +80,10 @@ snd_files = {
 	bar_dolg_base_guard_no_talk	   = [[characters_voice\human_01\talk\rejection\stalker\rejection_2]]
 }
 
+
+
+
+
 ph_snd_themes = {}           
 ph_snd_themes["music"] = {  "characters_voice\\human_01\\scenario\\megafon\\megafon_music_1",
 	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_2",
@@ -120,19 +124,55 @@ function load_sound(obj)
 												//return t
 	end
 	-- загрузка звуков, возвращает ИД пачки и количество звуков в пачке.
-	function load_theme(name, seq)
-		if name ~= nil then
-			local file = snd_files[name]
+	function load_theme(name_rnd, name_into, min, max, rnd, prior)
+		local t = nil
+		local t = {}
+		if name_into ~= nil then								
+			local file = snd_files[name_into]
+			if file ~= nil then
+				local sid = id()				
+				t.into_id = sid
+				t.into_max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid)
+				if t.into_max == 0 then
+					printf( "No into sounds loaded: %s", file )
+				end
+			end
+		end
+		if name_rnd ~= nil then								
+			local file = snd_files[name_rnd]
 			if file ~= nil then
 				local sid = id()
-				local t = { id = sid, seq = seq == true, max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid) }
-				if t.max == 0 then
-					printf( "No sounds loaded: %s", file )
+				t.rnd_id = sid
+				t.rnd_max = obj:add_sound(file, nstl, snd_type.talk, 2, 1, sid)
+				if t.rnd_max == 0 then
+					printf( "No rnd sounds loaded: %s", file )
 				end
-				return t
-			else
-				return nil
 			end
+		end
+		if t.into_id ~= nil or
+		   t.rnd_id ~= nil
+		then
+			if min ~= nil then
+				t.min_snd = min
+			else
+				t.min_snd = 3
+			end
+			if max ~= nil then
+				t.max_snd = max
+			else
+				t.max_snd = 5
+			end
+			if rnd ~= nil then
+				t.rnd_snd = rnd
+			else
+				t.rnd_snd = 100
+			end
+			if prior ~= nil then
+				t.prior = prior
+			else
+				t.prior = 5
+			end
+			return t
 		end
 		return nil
 	end
@@ -154,9 +194,10 @@ function load_sound(obj)
 	theme["state"].types["starvation"].types["stalker"] = load_theme("state_starvation_stalker")
 	theme["state"].types["idle"] = { exec = npc_class, types = {}}
 	theme["state"].types["idle"].types["stalker"] = load_theme("state_idle_stalker")
+	theme["state"].types["idle"].types["military"] = load_theme("military_radio")
 	
 	theme["sleep"] = { exec = npc_class, types = {}}
-	theme["sleep"].types["stalker"] = load_theme("state_sleep_stalker")
+	theme["sleep"].types["stalker"] = load_theme("state_sleep_stalker", nil, 10, 15, 75)
 
 	-- просьба о помощи
 	theme["help"] = { exec = npc_class, types = {}}
@@ -222,17 +263,14 @@ function load_sound(obj)
 
 	------------------------------------------------------------------------------------------------
 	-- лагерь новичков на эскейп
-	theme["seq_novice_camp_guards"] = load_theme("seq_novice_camp_guards", true)
+	theme["seq_novice_camp_guards"] = load_theme(nil, "seq_novice_camp_guards")
 	theme["novice_camp_guards"] = load_theme("novice_camp_guards")
 
 	theme["esc_volk_greet1"] = load_theme("volk_greet1")
 	theme["esc_volk_greet2"] = load_theme("volk_greet2")
 
-	-- radio for military stalkers
-	theme["military_radio"] = load_theme("military_radio")
-
     -- радио для командира патруля
-    theme["patrol_radio_1"] = load_theme("patrol_radio_1", true)
+    theme["patrol_radio_1"] = load_theme(nil, "patrol_radio_1")
 
 	-- Garbage DramMoment
 	theme["gar_dm_bandit_backoff1"] = { exec = npc_class, types = {}}
@@ -262,7 +300,7 @@ function load_sound(obj)
 
 	------------------------------------------------------------------------------------------------
 	-- radar monolith
-	theme["monolith_mumble"] = load_theme("patrol_radio_1", true)
+	theme["monolith_mumble"] = load_theme(nil, "patrol_radio_1", 0, 0, 100)
 	
 	---------------------------------------------------------------------
 	-- ONLY for rolik !!!
@@ -273,142 +311,11 @@ function load_sound(obj)
 	theme["soldier_radio2"] = load_theme("soldier_radio2")
 	theme["soldier_radio3"] = load_theme("soldier_radio3")
 	
-	--printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
+	-- делаем заготовку в db.sound
+	db.sound[obj:id()] = {}
+	
+	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 	--print_table(theme)
-end
------------------------------------------------------------------------------------------------------------------------------------
---	Sound Player Function
------------------------------------------------------------------------------------------------------------------------------------
---  Пример конструктора, описывающего звуки
---
---  self.sound = {
---           maxidle = 10, -- максимальное время между звуками (умолчание = 10)
---           sumidle = 10, -- надбавочное время, добавляется к рандомно выбранному от 1 до максимального. (умолчание = 10)
---               rnd = 75, -- вероятность, с которой будет проигран звук, если пришло время (умолчание = 100)
---            themes = { "weather", "state" }  -- список тем для разговора
---  }
-function sound_update(npc, sound, now)
-	if sound.begin == nil  or  now  or  device():time_global() - sound.begin > sound.idle*1000 then
-		sound.begin = device():time_global()
-
-		if sound.maxidle ~= nil then
-			sound.idle = math.random(sound.maxidle)
-		else
-			sound.idle = math.random(10)
-		end
-
-		if sound.sumidle ~= nil then
-			sound.idle = sound.idle + sound.sumidle
-		else
-			sound.idle = sound.idle + 10
-		end
-
-		if npc:active_sound_count() > 0 then
-			if now then
-				stop_play_sound(npc)
-			else
-				return
-			end
-		end
-
-		function get_sound(path, tt)
-			if path == nil then return nil end
-			if path.exec == nil then
-				if path.max > 0 then
-					tt[path.id] = path.max
-				end
-			else
-				local pe = path.exec(path.types, npc, target)
-				if type(pe) == "table" then
-					for k,v in pe do
-						get_sound(path.types[v], tt)
-					end
-				else
-					get_sound(path.types[pe], tt)
-				end
-			end
-		end
-		function get_sound_count(tt)
-			local n = 0
-			for k,v in tt do
-				n = n + v
-			end
-			return n
-		end
-		--' Разделим заявленные темы на рандомные и последовательные.		
-
-		local sounds_ids = {}
-		local sounds_seq = {}
-
-		for k,v in sound.themes do
-			if theme[v] ~= nil then
-				if theme[v].seq == true then
-					get_sound(theme[v], sounds_seq)
-				else
-					get_sound(theme[v], sounds_ids)
-				end
-			else
-				printf("ERROR: invalid theme %s", v)
-			end
-		end
-		
-		--' проиграть один звук
-		if now or sound.rnd == nil or math.random(100) < sound.rnd then
-			--' играем рандомные звуки
-			local max_seq_cnt = get_sound_count(sounds_seq)
-			if max_seq_cnt > 0 and
-			   (sound["seq_cnt"] == nil or sound["seq_cnt"] <= max_seq_cnt)
-			then						
-				if sound["seq_cnt"] == nil then
-					sound["seq_cnt"] = 0
-				end
-				local n = sound["seq_cnt"]
-				for k,v in sounds_seq do
-					if n < v then
-						--' играем звук
-						npc:play_sound(k, 1, 0, 1, 0, sound["seq_cnt"])
-						sound["seq_cnt"] = sound["seq_cnt"] + 1
-						return
-					else
-						n = n - v
-					end
-				end
-			else
-				local sum = 0
-				local id
-				local num
-
-				for k, w in sounds_ids do
-					sum = sum + w
-				end
-
-				if sum == 0 then
-					return
-				end
-
-				repeat
-					local r = math.random(0, sum - 1)
-					local cur_sum = 0
-
-					for k, w in sounds_ids do
-						cur_sum = cur_sum + w
-
-						if r < cur_sum then
-							id  = k
-							num = r - (cur_sum - w)
-							break
-						end
-					end
-				until id ~= sound.last_id or num ~= sound.last_num or sum == 1
-
-				sound.last_id  = id
-				sound.last_num = num
-
-				npc:play_sound(id, 1, 0, 1, 0, num)
-			end
-		end				
-		
-	end
 end
 
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -428,15 +335,15 @@ function weather_class(avail_types, npc, target)
 	return type
 end          
 function state_class(avail_types, npc, target)
-	local type = {"idle"}
-	if npc.health < 0.5 then
-		table.insert(type, "health")
+	local type = "idle"
+	if npc.power < 0.5 then
+		type = "fatique"
 	end
 	if npc.satiety < 0.5 then
-		table.insert(type, "starvation")
+		type = "starvation"
 	end
-	if npc.power < 0.5 then
-		table.insert(type, "fatique")
+	if npc.health < 0.5 then
+		type = "health"
 	end
 	return type
 end

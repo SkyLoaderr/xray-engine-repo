@@ -1763,6 +1763,16 @@
 							RelativePath=".\Scripts\gulag_radar.script">
 						</File>
 					</Filter>
+					<Filter
+						Name="SoundManager"
+						Filter="">
+						<File
+							RelativePath=".\scripts\sound_theme.script">
+						</File>
+						<File
+							RelativePath=".\scripts\xr_sound.script">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Libraries"
@@ -1787,9 +1797,6 @@
 					</File>
 					<File
 						RelativePath=".\scripts\utils.script">
-					</File>
-					<File
-						RelativePath=".\scripts\xr_sound.script">
 					</File>
 				</Filter>
 				<Filter
@@ -1818,9 +1825,6 @@
 					</File>
 					<File
 						RelativePath=".\scripts\level_news.script">
-					</File>
-					<File
-						RelativePath=".\Scripts\military_radio.script">
 					</File>
 					<File
 						RelativePath=".\scripts\xr_assistance.script">

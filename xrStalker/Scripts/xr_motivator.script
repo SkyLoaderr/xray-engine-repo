@@ -104,8 +104,7 @@ function motivator_binder:reinit()
 //		code = 0,
 //		need_follow = false
 //    }
-//	xr_sos.add_to_binder(self.object, char_ini)
-	military_radio.add_to_binder (self.object, char_ini)
+//	xr_sos.add_to_binder(self.object, char_ini)	
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
@@ -174,7 +173,12 @@ function motivator_binder:update(delta)
 			self.st.state_mgr = nil
 		end
 	end
-    
+    --' Апдейт саундменеджера
+    if self.object:alive() then
+		xr_sound.update(self.object)
+	else
+		stop_play_sound(self.object)
+	end
     
 	--' Проверка ТИМ СКВАД ГРУП
 	--[[

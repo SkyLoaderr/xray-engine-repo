@@ -206,11 +206,6 @@ function action_wait:__init (npc_name,action_name,storage) super (nil,action_nam
 		       idle = nil,
 		       maxidle = 20,
 		       sumidle = 10 }
-
-	self.sound = { rnd = 60,
-				   maxidle = 10, 
-				   sumidle = 10,
-				   themes = { "weather", "state" } }
 end
 function action_wait:initialize()
 	action_base.initialize(self)
@@ -272,16 +267,17 @@ function action_wait:execute()
 		if (device():time_global()/1000 - self.timer.begin) < self.timer.idle then
 			--' проверка говорит ли кто нибудь в лагере
 			
-			if speeks[self.a.center_point] ~= nil then
-				--' может быть это мы говорили? :))
-				if speeks[self.a.center_point] == self.object:id() then
-					--' и может быть мы закончили говорить
-					if self.object:active_sound_count() == 0 then speeks[self.a.center_point] = nil end
-				end
-			else
-				--' Саунды
-				xr_sound.sound_update(self.object, self.sound)
-			end
+//			if speeks[self.a.center_point] ~= nil then
+//				--' может быть это мы говорили? :))
+//				if speeks[self.a.center_point] == self.object:id() then
+//					--' и может быть мы закончили говорить
+//					if self.object:active_sound_count() == 0 then speeks[self.a.center_point] = nil end
+//				end
+//				xr_sound.set_sound(self.object, "")
+//			else
+//				--' Саунды
+//				xr_sound.set_sound(self.object, "weather", "state")
+//			end
 		else
 			self.a.action = 0
 		end

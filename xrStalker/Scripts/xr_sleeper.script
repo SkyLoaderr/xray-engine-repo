@@ -52,14 +52,6 @@ function action_sleeper_activity:reset_scheme()
                        maxidle = 10,
                        sumidle = 20,
                        random = 50 }
-	self.sound_w = { rnd = 60,
-	                 maxidle = 10, 
-	                 sumidle = 10,
-	                 themes = { "weather", "state" } }	
-	self.sound_s = { rnd = 100,
-	                 maxidle = 1, 
-	                 sumidle = 0,
-	                 themes = { "sleep" } }
 
 	self.st.signals = {}
 	self.state = state_walking
@@ -109,10 +101,8 @@ function action_sleeper_activity:callback(mode, number)
 	
 	if self.st.wakeable then
 		state_mgr.set_state(self.object, "sit", nil, nil, {look_position = position})
-		xr_sound.sound_update(self.object, self.sound_w)
 	else
 		state_mgr.set_state(self.object, "sleep", nil, nil, {look_position = position})
-		xr_sound.sound_update(self.object, self.sound_s)
 	end	
 	return true
 end	
@@ -134,9 +124,11 @@ function action_sleeper_activity:execute()
 		if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
 			return
 		end
+		xr_sound.set_sound(self.object, "sleep")
 	end
 end
 function action_sleeper_activity:finalize()
+	xr_sound.set_sound(self.object, nil)
 	self.move_mgr:finalize()
    	action_base.finalize(self)
 end

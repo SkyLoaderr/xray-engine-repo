@@ -15,12 +15,7 @@ function action_process_use:use_callback(victim, who)
 
 	if self.object:is_talk_enabled() == false then
 		if self.object:active_sound_count() == 0 then
-			sound_e = { rnd = 100,
-				   maxidle = 1, 
-				   sumidle = 0,
-				   themes = { "threat_back" } }
-	
-			xr_sound.sound_update(self.object, sound_e)		
+			xr_sound.set_sound_play(self.object, "threat_back")		
 		end
 	end
 
