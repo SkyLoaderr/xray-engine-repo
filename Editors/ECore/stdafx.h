@@ -130,35 +130,11 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	#include "xrXRC.h"
 
 	#include "CustomObject.h"
+	#include "EditorPreferences.h"
 #endif
 
-#ifdef _LEVEL_EDITOR
-	#include "net_utils.h"
-	#define _EDITOR_FILE_NAME_ 	"level"
-	#define _EDITOR_NAME_ 		"Level Editor"
-	#define _HAVE_RECENT_FILES
-#else
-	#ifdef _SHADER_EDITOR
-		#define _EDITOR_FILE_NAME_ 	"shader"
-		#define _EDITOR_NAME_ 		"Shader Editor"
-    #else
-		#ifdef _PARTICLE_EDITOR
-			#define _EDITOR_FILE_NAME_ 	"particle"
-			#define _EDITOR_NAME_ 		"Particle Editor"
-        #else
-			#ifdef _ACTOR_EDITOR
-				#define _EDITOR_FILE_NAME_ 	"actor"
-				#define _EDITOR_NAME_ 		"Actor Editor"
-				#define _HAVE_RECENT_FILES
-            #else
-            	#ifdef _LEVEL_OPTIONS
-					#define _EDITOR_FILE_NAME_ 	"options"
-					#define _EDITOR_NAME_ 		"Level Options"
-                #endif
-    		#endif
-		#endif
-    #endif
-#endif
+#define _EDITOR_FILE_NAME_ "ecore"
+#define _EDITOR_NAME_ 		"ecore"
 
 #define INI_NAME(buf) 		{buf=AnsiString(_EDITOR_FILE_NAME_)+".ini"; FS.update_path(buf,"$local_root$",buf.c_str());}
 #define DEFINE_INI(storage)	{AnsiString buf;	INI_NAME(buf); storage->IniFileName=buf;}
@@ -171,15 +147,15 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #pragma comment(lib,"xrCDBB.lib")
 #pragma comment(lib,"ParticleDLLB.lib")
 
-#pragma comment(lib,"dinput.lib")
-#pragma comment(lib,"freeimage.lib")
-#pragma comment(lib,"d3d9.lib")
-#pragma comment(lib,"dxt.lib")
-#pragma comment(lib,"xrProgressive.lib")
+#pragma comment(lib,"dinputB.lib")
+#pragma comment(lib,"freeimageB.lib")
+#pragma comment(lib,"d3d9B.lib")
+#pragma comment(lib,"dxtB.lib")
+#pragma comment(lib,"xrProgressiveB.lib")
 #pragma comment(lib,"MagicFMDLLB.lib")
 #pragma comment(lib,"ETools.lib")
-#pragma comment(lib,"LWO.lib")
-#pragma comment(lib,"xrHemisphere.lib")
+#pragma comment(lib,"LWOb.lib")
+#pragma comment(lib,"xrHemisphereB.lib")
 #pragma comment(lib,"oggencB.lib")
 
 // path definition
