@@ -23,7 +23,7 @@ function main()
 			)
 
 	while true do
-		if guard01:hit(draftsman) == actor then
+		if guard01:hit.draftsman() == actor then
 			printf("hit = true!")
 			flush()
 		else
