@@ -108,6 +108,13 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID&
 
 	if(ItemDataVector().end() == it)
 	{
+		g_pStringContainer->verify();
+		u32 sz = ItemDataVector().size();
+		int i=0;
+		for(T_VECTOR::iterator it = ItemDataVector().begin();
+			ItemDataVector().end() != it; it++,i++)
+			Msg("[%d]=[%s]",i,*(*it).id );
+
 		R_ASSERT3(no_assert, "item not found, id", *str_id);
 		return NULL;
 	}
@@ -135,7 +142,6 @@ void CSXML_IdToIndex::DeleteIdToIndexData	()
 	T_INIT::InitXmlIdToIndex();
 	xr_delete(m_pItemDataVector);
 }
-
 TEMPLATE_SPECIALIZATION
 typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 {
@@ -193,6 +199,14 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 				index++; 
 			}
 		}
+/*
+		Msg("---------loading Item data Vector--------------" );
+		int i=0;
+		for(T_VECTOR::iterator it = m_pItemDataVector->begin();
+			m_pItemDataVector->end() != it; it++,i++)
+			Msg("[%d]=[%s]",i,*(*it).id );
+		Msg("-----------------------------------------------" );
+*/
 	}
 
 	return *m_pItemDataVector;
