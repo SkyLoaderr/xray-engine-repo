@@ -36,7 +36,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_XRCOREB;XRCORE_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_XRCOREB;XRCORE_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrCoreB.bpf"/>
     <INCLUDEPATH value="R:\SDK\DirectX9.0_sum_2004\Include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc"/>
@@ -49,13 +49,13 @@
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
       -IR:\Borland\CBuilder6\Include\Mfc -src_suffix cpp -D_EDITOR -D_XRCOREB 
-      -DXRCORE_EXPORTS -D_DEBUG -boa"/>
-    <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
-      -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
+      -DXRCORE_EXPORTS -boa"/>
+    <CFLAG1 value="-WD -O2 -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 
+      -6 -b- -k -vi -tWD -tWM -c"/>
+    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
+    <AFLAGS value="/mu /w2 /zn"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -240,8 +240,8 @@ Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=8
-Item0=_EDITOR;_XRCOREB;XRCORE_EXPORTS;_DEBUG
-Item1=_EDITOR;_XRCOREB;XRCORE_EXPORTS
+Item0=_EDITOR;_XRCOREB;XRCORE_EXPORTS
+Item1=_EDITOR;_XRCOREB;XRCORE_EXPORTS;_DEBUG
 Item2=_XRCOREB;XRCORE_EXPORTS
 Item3=_XRCOREB;XRCORE_EXPORTS;_DEBUG
 Item4=_XRCOREB
@@ -274,7 +274,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=z:\LevelEditor.exe
+HostApplication=x:\ActorEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

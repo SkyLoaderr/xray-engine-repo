@@ -109,8 +109,8 @@ void __fastcall PS::CPEDef::OnFlagChange(PropValue* sender)
 void __fastcall PS::CPEDef::OnShaderChange(PropValue* sender)
 {
 	m_CachedShader.destroy	();
-	if (*m_ShaderName&&*m_TextureName)
-		m_CachedShader.create(*m_ShaderName,*m_TextureName);
+	if (m_ShaderName.size()&&m_TextureName.size())
+		m_CachedShader.create(m_ShaderName.c_str(),m_TextureName.c_str());
 }          
 
 void __fastcall PS::CPEDef::OnFrameResize(PropValue* sender)
