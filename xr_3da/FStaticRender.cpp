@@ -171,6 +171,8 @@ extern float		ssaDISCARD,	r_ssaDISCARD;
 extern float		ssaDONTSORT,r_ssaDONTSORT;
 extern float		ssaLOD_A,	r_ssaLOD_A;
 extern float		ssaLOD_B,	r_ssaLOD_B;
+extern float		ssaHZBvsTEX,r_ssaHZBvsTEX;
+
 void CRender::Calculate()
 {
 	Device.Statistic.RenderCALC.Begin();
@@ -185,6 +187,7 @@ void CRender::Calculate()
 	r_ssaDONTSORT					=	(ssaDONTSORT*ssaDONTSORT)/g_fSCREEN;
 	r_ssaLOD_A						=	(ssaLOD_A*ssaLOD_A)/g_fSCREEN;
 	r_ssaLOD_B						=	(ssaLOD_B*ssaLOD_B)/g_fSCREEN;
+	r_ssaHZBvsTEX					=	(ssaHZBvsTEX*ssaHZBvsTEX)/g_fSCREEN;
 	
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
@@ -330,10 +333,11 @@ void CRender::flush_Patches	()
 {
 	// *** Fill VB
 	DWORD						vOffset;
-	FVF::TL*					V = (FVF::TL*)Device.Streams.Vertex.Lock	(vecPatches.size()*4,vsPatches->dwStride, vOffset);
+	FVF::TL*					V		= (FVF::TL*)Device.Streams.Vertex.Lock	(vecPatches.size()*4,vsPatches->dwStride, vOffset);
 	svector<int,max_patches>	groups;
 	ShaderElement*				cur_S=vecPatches[0].S;
 	int							cur_count=0;
+	float						scale	= getTarget()->get_width();
 	for (DWORD i=0; i<vecPatches.size(); i++)
 	{
 		// sort out redundancy
@@ -455,7 +459,6 @@ IC	bool	cmp_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::
 	return (N1->val.ssa > N2->val.ssa);		
 }
 
-const float	ssa_important		= .005f;
 void		sort_tlist			
 	(
 	vector<SceneGraph::mapNormalTextures::TNode*>& lst, 
@@ -479,7 +482,7 @@ void		sort_tlist
 			SceneGraph::mapNormalTextures::TNode* _it	= textures.begin	();
 			SceneGraph::mapNormalTextures::TNode* _end	= textures.end		();
 			for (; _it!=_end; _it++)	{
-				if (_it->val.ssa > ssa_important)	lst.push_back	(_it);
+				if (_it->val.ssa > r_ssaHZBvsTEX)	lst.push_back	(_it);
 				else								temp.push_back	(_it);
 			}
 
