@@ -14,6 +14,7 @@ CUIListItemEx::CUIListItemEx(void)
 {
 	this->InitTexture("ui\\hud_map_point");
 	this->SetStretchTexture(true);
+	this->m_dwSelectionColor = color_argb(100, 0, 0, 255);
 	this->SetColor(color_argb(0, 0, 0, 0));
 	//this->m_bPerformTextLimit = false;
 	//this->SetElipsis(CUIStatic::eepEnd, 3);
@@ -29,7 +30,7 @@ void CUIListItemEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	switch (msg)
 	{
 	case LIST_ITEM_SELECT:
-		this->SetColor(color_argb(255, 0, 0, 255));	
+		this->SetColor(m_dwSelectionColor);	
 		this->Draw();
 		break;
 	case LIST_ITEM_UNSELECT:
@@ -39,9 +40,9 @@ void CUIListItemEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	}
 }
 
-//void CUIListItemEx::SetPerformTextLimit(bool bPerform){
-//	this->m_bPerformTextLimit = bPerform;
-//}
+void CUIListItemEx::SetSelectionColor(u32 dwColor){
+	m_dwSelectionColor = dwColor;
+}
 
 void CUIListItemEx::Draw(){
 //	if (m_bPerformTextLimit)

@@ -20,10 +20,8 @@ public:
 	CUIListItemEx(void);
 	virtual ~CUIListItemEx(void);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
+	virtual void SetSelectionColor(u32 dwColor);
 	virtual void Draw();
-//	        void SetPerformTextLimit(bool bPerform);
-
 protected:
-//	bool m_bPerformTextLimit;
-
+	u32 m_dwSelectionColor;
 };
