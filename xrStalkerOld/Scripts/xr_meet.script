@@ -179,7 +179,7 @@ function evaluator_state_talk:__init(name, storage) super (nil, name)
 end
 function evaluator_state_talk:evaluate()
 	local overrides = xr_logic.generic_scheme_overrides(self.object)
-	if overrides.meet_state == "nil" then
+	if overrides and overrides.meet_state == "nil" then
 		return false
 	end
 	return self.object:is_talking()
