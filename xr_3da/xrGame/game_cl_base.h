@@ -9,7 +9,7 @@ public:
 	{
 		string64	name;
 	};
-	map<DWORD,Player>		players;
+	map<u32,Player>		players;
 public:
 	virtual		void				Create					(LPCSTR options);
 	virtual		void				net_import_state		(NET_Packet& P);

@@ -28,8 +28,8 @@ void CUIFragList::Render()
 
 void CUIFragList::OnFrame()
 {
-	map<DWORD,game_cl_GameState::Player>::iterator I=Game().players.begin();
-	map<DWORD,game_cl_GameState::Player>::iterator E=Game().players.end();
+	map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
+	map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
 
 	CGameFont* H		= Level().HUD()->pHUDFont;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
