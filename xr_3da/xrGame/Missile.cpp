@@ -30,6 +30,7 @@ void CMissile::reinit		()
 	m_pInventory = 0;
 	m_bPending = false;
 	m_fake_missile		= NULL;
+	hud_mode			= FALSE;
 }
 
 void CMissile::Load(LPCSTR section) 
@@ -47,6 +48,11 @@ void CMissile::Load(LPCSTR section)
 	
 	m_offset.setHPB			(VPUSH(angle_offset));
 	m_offset.translate_over	(position_offset);
+
+	m_vThrowPoint = pSettings->r_fvector3(section,"throw_point");
+	m_vThrowDir = pSettings->r_fvector3(section,"throw_dir");
+	m_vHudThrowPoint = pSettings->r_fvector3(hud_sect,"throw_point");
+	m_vHudThrowDir = pSettings->r_fvector3(hud_sect,"throw_dir");
 }
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
@@ -206,7 +212,7 @@ void CMissile::OnH_B_Independent()
 	XFORM().set(E->XFORM());
 	
 	if(m_pPhysicsShell) {
-		Fvector		D;
+		/*Fvector		D;
 		D			= m_throw_direction;
 		D.normalize	();
 
@@ -232,7 +238,15 @@ void CMissile::OnH_B_Independent()
 
 		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
 		
-		XFORM().set	(l_p1);
+		XFORM().set	(l_p1);*/
+
+		Fvector vel;
+		vel.set(m_throw_direction);
+		vel.normalize();
+		vel.mul(m_force);
+		m_pPhysicsShell->Activate(XFORM(), vel, zero_vel);
+		XFORM().c.set(m_throw_point);
+
 //		}
 //		else {
 //			Fvector						linear_velocity = m_throw_direction;
@@ -397,6 +411,7 @@ void CMissile::renderable_Render()
 {
 	inherited::renderable_Render();
 	UpdateXForm();
+	UpdateFP();
 
 	if(m_pHUD && H_Parent() && dynamic_cast<CActor*>(H_Parent())) 
 	{
@@ -445,9 +460,11 @@ void CMissile::Throw()
 	CEntity								*entity = dynamic_cast<CEntity*>(H_Parent());
 	VERIFY								(entity);
 	
-	Fvector								throw_point, throw_direction;
-	entity->g_fireParams				(throw_point,throw_direction);
-	m_fake_missile->m_throw_direction	= throw_direction;
+	//Fvector								throw_point, throw_direction;
+	//entity->g_fireParams				(throw_point,throw_direction);
+
+	m_fake_missile->m_throw_point		= m_throw_point;
+	m_fake_missile->m_throw_direction	= m_throw_direction;
 	
 	m_fake_missile->m_force				= m_force; 
 	m_force								= 0;
@@ -548,4 +565,47 @@ bool CMissile::Action(s32 cmd, u32 flags)
         return true;
 	}
 	return false;
+}
+
+void  CMissile::UpdateFP()
+{
+	if (0==H_Parent())	return;
+
+    if (Device.dwFrame!=dwFP_Frame) 
+	{
+		dwFP_Frame = Device.dwFrame;
+
+		UpdateXForm		();
+
+		if (hud_mode)
+		{
+			// 1st person view - skeletoned
+			CKinematics* V			= PKinematics(m_pHUD->Visual());
+			V->Calculate			();
+
+			// fire point&direction
+			Fmatrix& fire_mat		= V->LL_GetTransform(u16(m_pHUD->iFireBone));
+			Fmatrix& parent			= m_pHUD->Transform	();
+			Fvector& fp				= m_vHudThrowPoint;
+
+			fire_mat.transform_tiny	(m_throw_point,fp);
+			parent.transform_tiny	(m_throw_point);
+			
+			//m_throw_direction.set	(0.f,0.f,1.f);
+			m_throw_direction.set	(m_vHudThrowDir);
+			parent.transform_dir	(m_throw_direction);
+		} 
+		else 
+		{
+			// 3rd person
+			Fmatrix& parent			= H_Parent()->XFORM();
+			Fvector& fp				= m_vThrowPoint;
+
+			parent.transform_tiny	(m_throw_point,fp);
+			
+			//m_throw_direction.set	(0.f,0.f,1.f);
+			m_throw_direction.set	(m_vThrowDir);
+			parent.transform_dir	(m_throw_direction);
+		}
+	}
 }

@@ -22,6 +22,8 @@ public:
 	CMissile(void);
 	virtual ~CMissile(void);
 
+	virtual void reinit				();
+
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
@@ -32,12 +34,18 @@ public:
 	virtual void OnH_B_Chield();
 	virtual void OnH_A_Chield();
 	virtual void OnH_B_Independent();
+
+	virtual void OnEvent			(NET_Packet& P, u16 type);
+
 	virtual void OnAnimationEnd();
 
 	virtual void Show();
 	virtual void Hide();
 	virtual bool IsHidden() {return MS_HIDDEN == m_state;}
 	virtual bool IsPending() {return m_bPending;}
+
+	IC void	SetHUDmode	(BOOL H)	{hud_mode = H;	}
+	IC BOOL	GetHUDmode	()			{return hud_mode;}
 
 	virtual void Throw();
 	virtual void Destroy();
@@ -47,27 +55,39 @@ public:
 	u32 State();
 	virtual u32 State(u32 state);
 
+protected:
+	virtual void UpdateFP();
+	virtual void UpdateXForm();
+	void UpdatePosition(const Fmatrix& trans);
+	void spawn_fake_missile	();
+
+protected:
 	CWeaponHUD* m_pHUD;
+	bool m_bPending;
+	BOOL hud_mode;
+
 	u32 m_state;
 	bool m_throw;
-	f32 m_force, m_minForce, m_maxForce, m_forceGrowSpeed;
 	u32 m_destroyTime, m_stateTime;
 
-	bool m_bPending;
-	virtual void UpdateXForm();
-			void UpdatePosition(const Fmatrix& trans);
-
-private:
 	u32						dwXF_Frame;
 	Fmatrix					m_offset;
 
-protected:
+	u32						dwFP_Frame;
+
+
 	Fvector					m_throw_direction;
+	Fvector					m_throw_point;
 	CMissile				*m_fake_missile;
 
-			void spawn_fake_missile	();
+	//параметры броска
+	float m_force;
+	float m_minForce, m_maxForce, m_forceGrowSpeed;
 
-public:
-	virtual void OnEvent			(NET_Packet& P, u16 type);
-	virtual void reinit				();
+	//относительная точка и направление вылета гранаты
+	Fvector m_vThrowPoint;
+	Fvector m_vThrowDir;
+	//для HUD
+	Fvector m_vHudThrowPoint;
+	Fvector m_vHudThrowDir;
 };
