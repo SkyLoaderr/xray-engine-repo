@@ -11,7 +11,6 @@
 #include "xrMessages.h"
 #include "game_base_space.h"
 #include "script_value_container_impl.h"
-#include "object_factory.h"
 
 #ifndef XRSE_FACTORY_EXPORTS
 #	include "xrEProps.h"
