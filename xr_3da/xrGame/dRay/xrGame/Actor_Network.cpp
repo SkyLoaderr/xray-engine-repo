@@ -571,8 +571,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//*/
 	//----------------------------------
 
-	if (m_DefaultVisualOutfit == NULL)
-		m_DefaultVisualOutfit = cNameVisual();
+	//if (m_DefaultVisualOutfit == NULL)
+	//	m_DefaultVisualOutfit = cNameVisual();
 
 	VERIFY(m_pActorEffector == NULL);
 	m_pActorEffector = xr_new<CActorEffector>();
