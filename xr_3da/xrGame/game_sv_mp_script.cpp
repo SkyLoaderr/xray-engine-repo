@@ -87,7 +87,7 @@ void	game_sv_mp_script::SpawnPlayer				(ClientID id, LPCSTR N, LPCSTR SkinName, 
 
 		if (pOldActor)
 		{
-			AllowDeadBodyRemove(id);
+			AllowDeadBodyRemove(id, pOldActor->ID);
 			m_CorpseList.push_back(pOldOwner->ID);
 		};
 		if (pOldSpectator)
@@ -167,9 +167,9 @@ void game_sv_mp_script::OnPlayerConnect (ClientID id_who)
 {
 	inherited::OnPlayerConnect (id_who);
 };
-void game_sv_mp_script::OnPlayerDisconnect (ClientID id_who, LPSTR Name)
+void game_sv_mp_script::OnPlayerDisconnect (ClientID id_who, LPSTR Name, u16 GameID)
 {
-	inherited::OnPlayerDisconnect (id_who, Name);
+	inherited::OnPlayerDisconnect (id_who, Name, GameID);
 };
 
 

@@ -399,45 +399,19 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 }
 
 
-void game_sv_Deathmatch::OnPlayerDisconnect		(ClientID id_who, LPSTR Name)
+void game_sv_Deathmatch::OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID)
 {
 //	__super::OnPlayerDisconnect	(id_who);
-	inherited::OnPlayerDisconnect	(id_who, Name);
+	inherited::OnPlayerDisconnect	(id_who, Name, GameID);
 	
-//	LPCSTR	Name = NULL;
-
-//	Name = get_name_id(id_who);
-//	Name = get_option_s(Name,"name",Name);
-
-
-	
-	// Remove everything	
-//	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
-//	xrClientData* xrSCData	=	m_server->GetServer_client();	
-
-//	if (xrCData != xrSCData)
+	KillPlayer	(id_who, GameID);
 	{
-		KillPlayer	(id_who);
-		AllowDeadBodyRemove(id_who);
-
-		// Send Message About Client DisConnected
-//		if (xrCData)
-		{
-			NET_Packet			P;
-			GenerateGameMessage (P);
-			P.w_u32				(GAME_EVENT_PLAYER_DISCONNECTED);
-//			P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
-			P.w_stringZ			(Name);
-			u_EventSend(P);
-		};
-	}
-	/*
-	else
-	{
-		CSE_Abstract*		from		= m_server->ID_to_entity(get_id_2_eid(id_who));
-		if (from) m_server->Perform_destroy				(from,net_flags(TRUE, TRUE), FALSE);
+		NET_Packet			P;
+		GenerateGameMessage (P);
+		P.w_u32				(GAME_EVENT_PLAYER_DISCONNECTED);
+		P.w_stringZ			(Name);
+		u_EventSend(P);
 	};
-	*/
 };
 
 
@@ -1168,8 +1142,7 @@ void game_sv_Deathmatch::OnPlayerChangeSkin(ClientID id_who, u8 skin)
 	if (!ps_who) return;
 	ps_who->skin = skin;
 
-	KillPlayer(id_who);
-	
+	KillPlayer(id_who, ps_who->GameID);
 }
 
 void game_sv_Deathmatch::SetTeamScore(u32 idx, int val)

@@ -18,6 +18,8 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	P.B.count = 0;
 	P.w_clientID(CL->ID);
 	P.w_stringZ(CL->Name);
+	xrClientData* xrCData = (xrClientData*)(CL);
+	P.w_u16((NULL != xrCData) ? xrCData->ps->GameID : 0);
 	P.r_pos = 0;
 	ClientID clientID;clientID.set(0);
 //	game->OnEvent(P,GAME_EVENT_PLAYER_DISCONNECTED, 0, clientID);

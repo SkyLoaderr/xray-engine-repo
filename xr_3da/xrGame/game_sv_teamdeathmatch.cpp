@@ -72,7 +72,7 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team)
 	if (!team) team				= AutoTeam();
 	if (!ps_who || ps_who->team == team) return;
 	
-	KillPlayer(id_who);
+	KillPlayer(id_who, ps_who->GameID);
 /////////////////////////////////////////////////////////
 	//Send Switch team message
 	NET_Packet			P;

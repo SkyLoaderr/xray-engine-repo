@@ -79,28 +79,28 @@ void game_sv_mp::OnRoundEnd				(LPCSTR reason)
 }
 
 
-void	game_sv_mp::KillPlayer				(ClientID id_who)
+void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 {
 
 	// Remove everything	
 	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
-	if (!xrCData) return;
-	if (xrCData->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
-	xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+	
+	if (xrCData && xrCData->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
+	if (xrCData) xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+	u16 PlayerID = (xrCData != 0) ? xrCData->ps->GameID : GameID;
 	// Kill Player on all clients
 	NET_Packet			P;
 	P.w_begin			(M_EVENT);
 	P.w_u32				(Level().timeServer());
 	P.w_u16				(GE_DIE);
-	P.w_u16				(xrCData->owner->ID);
-	P.w_u16				(xrCData->owner->ID);
-	P.w_clientID		(xrCData->ID);
+	P.w_u16				(PlayerID);
+	P.w_u16				(PlayerID);
+	P.w_clientID		(id_who);
 	ClientID clientID;clientID.setBroadcast();
 ///	m_server->SendBroadcast	(clientID,P,net_flags(TRUE, TRUE, TRUE));
 	Level().Send(P,net_flags(TRUE,TRUE));
-	AllowDeadBodyRemove(id_who);
+	AllowDeadBodyRemove(id_who, GameID);
 	signal_Syncronize();
-
 };
 
 
@@ -180,7 +180,7 @@ void	game_sv_mp::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 	if (pA)
 	{
 		//------------------------------------------------------------			
-		AllowDeadBodyRemove(id_who);
+		AllowDeadBodyRemove(id_who, xrCData->ps->GameID);
 		//------------------------------------------------------------
 		m_CorpseList.push_back(pOwner->ID);
 		//------------------------------------------------------------
@@ -265,20 +265,22 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 	signal_Syncronize();
 }
 
-void	game_sv_mp::AllowDeadBodyRemove		(ClientID id)
+void	game_sv_mp::AllowDeadBodyRemove		(ClientID id, u16 GameID)
 {
+	/*
 	xrClientData* xrCData	=	m_server->ID_to_client(id);
-	if (!xrCData) return;
-	if (!xrCData->owner) return;
 	
-	if (xrCData->owner->owner != m_server->GetServer_client())
+	if (xrCData && xrCData->owner->owner != m_server->GetServer_client())
 	{
 		xrCData->owner->owner = m_server->GetServer_client();
 	};
+	*/
 
-	CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
+	CSE_Abstract* pSObject = get_entity_from_eid(GameID);
+	pSObject->owner = m_server->GetServer_client();
 
-//	R_ASSERT2	((pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR),"Dead Player is not Actor");
+	CObject* pObject =  Level().Objects.net_Find(GameID);
+	
 
 	if (pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
 	{
@@ -296,9 +298,9 @@ void game_sv_mp::OnPlayerConnect			(ClientID id_who)
 	inherited::OnPlayerConnect (id_who);
 }
 
-void game_sv_mp::OnPlayerDisconnect		(ClientID id_who, LPSTR Name)
+void game_sv_mp::OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID)
 {
-	inherited::OnPlayerDisconnect (id_who, Name);
+	inherited::OnPlayerDisconnect (id_who, Name, GameID);
 }
 
 void	game_sv_mp::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)

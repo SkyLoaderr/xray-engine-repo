@@ -20,14 +20,14 @@ protected:
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);
 				bool				GetPosAngleFromActor	(ClientID id, Fvector& Pos, Fvector &Angle);
 				TeamStruct*			GetTeamData				(u8 Team);
-				void				AllowDeadBodyRemove		(ClientID id);
+				void				AllowDeadBodyRemove		(ClientID id, u16 GameID);
 				void				SpawnWeapon4Actor		(u16 actorId,  LPCSTR N, u8 Addons );
 				void				SpawnWeaponForActor		(u16 actorId,  LPCSTR N, bool isScope, bool isGrenadeLauncher, bool isSilencer);
 public:
 									game_sv_mp				();
 	virtual		void				Create					(ref_str &options);
 	virtual		void				OnPlayerConnect			(ClientID id_who);
-	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name);
+	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
 	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed){SendPlayerKilledMessage(id_killer, id_killed);};
@@ -40,7 +40,7 @@ public:
 	virtual		void				OnRoundEnd				(LPCSTR reason);								// конец раунда
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				Update					();
-				void				KillPlayer				(ClientID id_who);
+				void				KillPlayer				(ClientID id_who, u16 GameID);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
