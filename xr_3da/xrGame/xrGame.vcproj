@@ -646,6 +646,16 @@
 							RelativePath=".\state_manager_state_inline.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="StateManagerGOAP"
+						Filter="">
+						<File
+							RelativePath=".\state_manager_goap.h">
+						</File>
+						<File
+							RelativePath=".\state_manager_goap_inline.h">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
