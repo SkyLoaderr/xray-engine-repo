@@ -112,7 +112,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 	
 	_FREE(m_dwaAtomicIndexes);
     
-	fpaBaseFunctions[m_dwFunctionType - 1] = this;
+	fpaBaseFunctions[m_dwFunctionType] = this;
 	
 	strcat(m_caName,caFileName);
 	Msg("Evaluation function (%s) is successfully loaded",caPath);

@@ -14,7 +14,9 @@
 #include "ai_sounds.h"
 #include "playerlist.h"
 #include "..\fixedset.h"
+// #include "ai_funcs.h"
 
+class CAI_DDD;
 class CHUDManager;
 
 #define DEFAULT_FOV 90.f
@@ -61,6 +63,7 @@ protected:
 	EVENT						eEntitySpawn;
 
 public:
+	CAI_DDD*					m_tpAI_DDD;
 	xrServer*					Server;
 
 	CAI_Space					AI;

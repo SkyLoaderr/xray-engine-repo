@@ -245,27 +245,6 @@ void CEntityAlive::Load		(LPCSTR section)
 
 	// BOX activate
 	Movement.ActivateBox	(0);
-	
-	if (!bPatternFunctionLoaded) {
-		bPatternFunctionLoaded = true;
-		fpaBaseFunctions[0] = &pfDistance;
-		
-		fpaBaseFunctions[21] = &pfPersonalHealth;
-		fpaBaseFunctions[22] = &pfPersonalMorale;
-		fpaBaseFunctions[23] = &pfPersonalCreatureType;
-		fpaBaseFunctions[24] = &pfPersonalWeaponType;
-		
-		fpaBaseFunctions[41] = &pfEnemyHealth;
-		fpaBaseFunctions[42] = &pfEnemyMorale;
-		fpaBaseFunctions[43] = &pfEnemyCreatureType;
-		fpaBaseFunctions[44] = &pfEnemyWeaponType;
-
-		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat",				fpaBaseFunctions);
-		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat",			fpaBaseFunctions);
-		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat",		fpaBaseFunctions);
-		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat",fpaBaseFunctions);
-		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat",fpaBaseFunctions);
-	}
 }
 
 BOOL CEntityAlive::net_Spawn	(LPVOID DC)

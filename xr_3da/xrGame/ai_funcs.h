@@ -16,6 +16,9 @@
 #include "Entity.h"
 #include "xr_weapon_list.h"
 
+#define OUT_MESSAGE(s1,s2)	Msg(s1,s2);
+
+
 class CBaseFunction {
 protected:
 	DWORD			m_dwLastUpdate;
@@ -23,7 +26,7 @@ protected:
 	CEntity			*m_tpLastMonster;
 	float			m_fMinResultValue;
 	float			m_fMaxResultValue;
-	char			m_caName[64];
+	char			m_caName[260];
 
 public:
 
@@ -103,6 +106,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 150.0;
 		strcat(m_caName,"Distance");
+		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	
 	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
@@ -122,6 +126,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"PersonalHealth");
+		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	
 	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
@@ -141,6 +146,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"PersonalMorale");
+		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	
 	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
@@ -160,6 +166,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 22.0;
 		strcat(m_caName,"PersonalCreatureType");
+		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	
 	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
@@ -317,6 +324,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"PersonalWeaponType");
+		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	
 	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
@@ -428,6 +436,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"EnemyHealth");
+		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	
 	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
@@ -447,6 +456,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"EnemyMorale");
+		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	
 	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
@@ -466,6 +476,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 22.0;
 		strcat(m_caName,"EnemyCreatureType");
+		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	
 	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
@@ -485,6 +496,7 @@ public:
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"EnemyWeaponType");
+		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	
 	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
@@ -497,4 +509,54 @@ public:
 	};
 };
  
+#define AI_MAX_EVALUATION_FUNCTION_COUNT 128
+
+class CAI_DDD {
+
+public:
+	CEntityAlive					*m_tpCurrentEnemy;
+	// primary functions
+	CBaseFunction					*fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
+
+	CDistanceFunction				pfDistance;
+
+	CPersonalHealthFunction			pfPersonalHealth;
+	CPersonalMoraleFunction			pfPersonalMorale;
+	CPersonalCreatureTypeFunction	pfPersonalCreatureType;
+	CPersonalWeaponTypeFunction		pfPersonalWeaponType;
+
+	CEnemyHealthFunction			pfEnemyHealth;
+	CEnemyMoraleFunction			pfEnemyMorale;
+	CEnemyCreatureTypeFunction		pfEnemyCreatureType;
+	CEnemyWeaponTypeFunction		pfEnemyWeaponType;
+
+	// complex functions
+	CPatternFunction				pfPersonalStatus;
+	CPatternFunction				pfEnemyStatus;
+	CPatternFunction				pfWeaponEffectiveness;
+	CPatternFunction				pfAttackSuccessProbability;
+	CPatternFunction				pfDefendSuccessProbability;
+
+	CAI_DDD()
+	{	
+		fpaBaseFunctions[0] = &pfDistance;
+		
+		fpaBaseFunctions[21] = &pfPersonalHealth;
+		fpaBaseFunctions[22] = &pfPersonalMorale;
+		fpaBaseFunctions[23] = &pfPersonalCreatureType;
+		fpaBaseFunctions[24] = &pfPersonalWeaponType;
+		
+		fpaBaseFunctions[41] = &pfEnemyHealth;
+		fpaBaseFunctions[42] = &pfEnemyMorale;
+		fpaBaseFunctions[43] = &pfEnemyCreatureType;
+		fpaBaseFunctions[44] = &pfEnemyWeaponType;
+
+		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat",				fpaBaseFunctions);
+		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat",			fpaBaseFunctions);
+		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat",		fpaBaseFunctions);
+		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat",fpaBaseFunctions);
+		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat",fpaBaseFunctions);
+	}
+};
+
 #endif
