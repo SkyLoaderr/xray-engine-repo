@@ -1367,7 +1367,7 @@ void PASource::Execute(ParticleGroup *group)
 	
 	pVector pos, posB, vel, col, siz, rt;
 	
-	if(m_Flags.is((u8)flVertexB_tracks)){
+	if(m_Flags.is(flVertexB_tracks)){
 		for(int i = 0; i < rate; i++){
 			position.Generate(pos);
 			size.Generate(siz);

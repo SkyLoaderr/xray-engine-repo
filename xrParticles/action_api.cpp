@@ -460,7 +460,7 @@ PARTICLEDLL_API void pVertex(float x, float y, float z)
 	
 	pVector pos(x, y, z);
 	pVector siz, rot, vel, col, posB;
-	if(_ps.flags.is((u8)PASource::flVertexB_tracks))
+	if(_ps.flags.is(PASource::flVertexB_tracks))
 		posB = pos;
 	else
 		_ps.VertexB.Generate(posB);
