@@ -1,0 +1,23 @@
+local news = {}
+
+function main()
+	fill_news()
+
+	while true do
+
+		wait()
+	end
+end
+
+function fill_news(	
+	local level_name = level.name()
+	printf("level name %", level_name)
+	
+	if level_name == "selo" then
+		printf("read news for test level")
+
+	end
+	
+	if level_name == "l01_escape" then
+	end
+end
