@@ -19,6 +19,9 @@
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
+	if (Level().iGetKeyState(DIK_LALT))
+		return(false);
+
 	float fResult = 0.f;
 	
 	// computing maximum viewable distance in the specified direction

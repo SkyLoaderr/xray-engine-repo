@@ -602,7 +602,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 		}
 	}
 
-	return(FIGHT_TYPE_RETREAT);
+	return(FIGHT_TYPE_ATTACK);
 //	if (fFightCoefficient > 400)
 //		return(FIGHT_TYPE_RETREAT);
 //	else

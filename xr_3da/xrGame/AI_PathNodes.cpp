@@ -396,8 +396,6 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)
 {
-	if (Level().iGetKeyState(DIK_RSHIFT))
-		__asm int 3;
 	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
 		fSpeed = 0;
 		return;
@@ -437,12 +435,12 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	// resolve stucking
 	Device.Statistic.Physics.Begin	();
 	Me->UpdateTransform	();
-	if (m_bCollision) {
-		Me->Movement.Move	(final,motion,FALSE);
-		motion.sub			(final,p_dest);
-		p_dest.set			(final);
-	}
-	else
+//	if (m_bCollision) {
+//		Me->Movement.Move	(final,motion,FALSE);
+//		motion.sub			(final,p_dest);
+//		p_dest.set			(final);
+//	}
+//	else
 		p_dest.add			(motion);
 
 	float	real_motion	= motion.magnitude() + dist_save-dist;
