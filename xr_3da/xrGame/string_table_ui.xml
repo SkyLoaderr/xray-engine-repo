@@ -2,10 +2,10 @@
 <!-- таблица строк общего назначения -->
 <string_table>
 	<string id="Local Map">
-		<text>Local Map</text>
+		<text>To Local Map</text>
 	</string>
 	<string id="Global Map">
-		<text>Global Map</text>
+		<text>To Global Map</text>
 	</string>
 </string_table>
 
