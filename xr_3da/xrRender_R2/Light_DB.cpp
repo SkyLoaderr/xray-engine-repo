@@ -44,6 +44,9 @@ void CLight_DB::Load			(IReader *fs)
 		{
 			Flight		Ldata;
 			light*		L				= xr_new<light>		();
+			L->flags.bStatic			= true;
+			L->flags.bShadow			= true;
+			L->flags.bActive			= true;
 			F->r						(&L->controller,4);
 			F->r						(&Ldata,sizeof(Flight));
 			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
@@ -80,9 +83,13 @@ void CLight_DB::Unload		()
 light*			CLight_DB::Create	()
 {
 	light*	L					= xr_new<light>	();
+	L->flags.bStatic			= false;
+	L->flags.bActive			= false;
+	L->flags.bShadow			= true;
 	v_dynamic_inactive.insert	(L);
 	return						L;
 }
+
 void			CLight_DB::Destroy	(light* L)
 {
 	set<light*>::iterator	it;

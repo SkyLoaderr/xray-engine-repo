@@ -4,6 +4,7 @@ class light		:	public IRender_Light
 {
 public:
 	struct {
+		u32			bStatic	:	1;
 		u32			bActive	:	1;
 		u32			bShadow	:	1;
 	}				flags;
