@@ -192,8 +192,8 @@ class CAI_Rat : public CCustomMonster
 		float				m_fSoundThreshold;
 
 		// eat troops
-		bool				m_bEatMembers;
-		bool				m_bCannibalism;
+		BOOL				m_bEatMemberCorps;
+		BOOL				m_bCannibalism;
 		u32					m_dwEatCorpInterval;
 
 		//////////////////////////
