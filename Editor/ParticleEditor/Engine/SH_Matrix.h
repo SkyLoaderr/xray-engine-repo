@@ -65,8 +65,6 @@ public:
 					float v = scrollV.Calculate(t)*t;
                     u*=sU;
                     v*=sV;
-//S					u-=floorf(u)/sU;
-//S					v-=floorf(v)/sV;
 					tc_trans	(T, u, v );
 					xform.mul2_43(T);
 				}

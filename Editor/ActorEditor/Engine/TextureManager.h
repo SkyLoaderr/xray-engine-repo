@@ -26,10 +26,10 @@ public:
 private:
 
 	// data
-	BlenderMap	blenders;
-	TextureMap	textures;
-	MatrixMap	matrices;
-	ConstantMap	constants;
+	BlenderMap						blenders;
+	TextureMap						textures;
+	MatrixMap						matrices;
+	ConstantMap						constants;
 
 	// shader code array
 	struct sh_Code {
@@ -89,6 +89,8 @@ public:
 	void							_DeleteMatrix		(CMatrix*  &M);
 	CConstant*						_CreateConstant		(LPCSTR Name);
 	void							_DeleteConstant		(CConstant* &C);
+	CRT*							_CreateRT			(LPCSTR Name, DWORD w, DWORD h);
+	void							_DeleteRT			(CRT* &RT);
 
 	// Shader compiling / optimizing
 	DWORD							_CreateCode			(SimulatorStates& Code);
