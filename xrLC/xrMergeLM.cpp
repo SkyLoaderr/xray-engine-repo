@@ -105,9 +105,9 @@ IC bool cmp_rect(int r1, int r2)
 	return selected[r1].iArea > selected[r2].iArea;	// Need decreasing order
 }
 
-static int current_rect = 0;
-
-static BYTE surface[512*512];
+static	BYTE	surface[512*512];
+static	int		current_rect	= 0;
+const	DWORD	alpha_ref		= 254-BORDER;
 
 // Initialization
 void InitSurface()
@@ -135,7 +135,7 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 			{
 				DWORD C = *S++;
 				DWORD A = RGBA_GETALPHA(C);
-				*P ++	= (A>=(254-BORDER))?255:0;
+				*P ++	= (A>=alpha_ref)?255:0;
 			}
 		}
 	} else {
@@ -147,20 +147,42 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 			{
 				DWORD C = lm[x*s_x+y];
 				DWORD A = RGBA_GETALPHA(C);
-				*P ++	= (A>=(254-BORDER))?255:0;
+				*P ++	= (A>=alpha_ref)?255:0;
 			}
 		}
 	}
 }
 
 // Test of per-pixel intersection (surface test)
-bool Place_Perpixel(_rect& R)
+bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 {
-	for (int y=R.a.y; y<R.b.y; y++)
-	{
-		BYTE*	P = surface+y*512+R.a.x;
-		BYTE*	E = P + R.SizeX();
-		for (; P!=E; P++) if (*P) return false;
+	LPDWORD lm			= D->lm.pSurface;
+	DWORD	s_x			= D->lm.dwWidth+2*BORDER;
+	DWORD	s_y			= D->lm.dwHeight+2*BORDER;
+	CDeflector::span* sp= D->lm_spans;
+	
+	if (!bRotate) {
+		// Normal (and fastest way)
+		for (int y=0; y<s_y; y++)
+		{
+			BYTE*	P = surface+(y+R.a.y)*512+R.a.x+sp[y].first;	// destination scan-line
+			BYTE*	E = P + (sp[y].second-sp[y].first) + 1;
+			DWORD*	S = lm + y*s_x + sp[y].first;
+			for (; P!=E; P++,S++) {
+				if ((*P)&&(RGBA_GETALPHA(*S)>=alpha_ref))	return false;	// overlap detected
+			}
+		}
+	} else {
+		// Rotated :(
+		for (int y=0; y<s_x; y++)
+		{
+			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;
+			for (DWORD x=0; x<s_y; x++,P++)
+			{
+				DWORD C = lm[x*s_x+y];
+				if ((*P)&&(RGBA_GETALPHA(C)>=alpha_ref))	return false;	// overlap detected
+			}
+		}
 	}
 	
 	// It's OK to place it
