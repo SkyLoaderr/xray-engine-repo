@@ -19,6 +19,7 @@
 #include "ai/monsters/bloodsucker/bloodsucker.h"
 #include "actor.h"
 #include "huditem.h"
+#include "ui/UIDialogWnd.h"
 
 bool g_bDisableAllInput = false;
 extern	float	g_fTimeFactor;
@@ -49,7 +50,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	case kQUIT:	{
 		if( HUD().GetUI()->MainInputReceiver() ){
-				if(HUD().GetUI()->MainInputReceiver()->IR_OnKeyboardPress(dik))	return;//special case for mp and main_menu
+				if(HUD().GetUI()->MainInputReceiver()->IR_OnKeyboardPress(key))	return;//special case for mp and main_menu
 				HUD().GetUI()->StartStopMenu( HUD().GetUI()->MainInputReceiver(), true);
 		}else
 			Console->Execute			("main_menu");
