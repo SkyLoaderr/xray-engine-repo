@@ -3,7 +3,9 @@
 #include "entity.h"
 #include "hudmanager.h"
 
+#include "targetcs.h"
 #include "targetcscask.h"
+#include "targetcsbase.h"
 
 #define VIEW_DISTANCE	50.f
 #define VIEW_DISTANCE2	VIEW_DISTANCE*VIEW_DISTANCE
@@ -11,6 +13,7 @@
 #define COLOR_FRIEND	0xffffffff
 #define COLOR_SELF		0xff00ff00
 #define COLOR_TARGET	0xFFFFA0FF
+#define COLOR_BASE		0xff00a000
 
 #define BASE_LEFT		9
 #define BASE_TOP		6
@@ -109,14 +112,26 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 			}
 		}
 		for(u32 i=0; i<Game().targets.size(); i++) {
-			CObject* T = Game().targets[i];
-			if (T->H_Parent()) {
-				CTargetCSCask *l_TC = dynamic_cast<CTargetCSCask*>(T->H_Parent());
-				if(l_TC) T = T->H_Parent();
-				else continue;
+			// draw artifacts
+			CObject* T = dynamic_cast<CTargetCS*>(Game().targets[i]);
+			if (T){
+				if (T->H_Parent()) {
+					CTargetCSCask *l_TC = dynamic_cast<CTargetCSCask*>(T->H_Parent());
+					if(l_TC) T = T->H_Parent();
+					else continue;
+				}
+				ConvertToLocal(LM,T->Position(),P);
+				entity.Out	(P.x,P.y,COLOR_TARGET);
+			}else{
+				// draw artifacts
+				CTargetCSBase* TB = dynamic_cast<CTargetCSBase*>(Game().targets[i]);
+				if (TB){
+					if (TB->g_Team()==Actor->g_Team()){
+						ConvertToLocal(LM,TB->Position(),P);
+						entity.Out	(P.x,P.y,COLOR_BASE);
+					}
+				}
 			}
-			ConvertToLocal(LM,T->Position(),P);
-			entity.Out	(P.x,P.y,COLOR_TARGET);
 		}
 	}
 

@@ -9,7 +9,7 @@ CTargetCSBase::CTargetCSBase(void)
 CTargetCSBase::~CTargetCSBase(void)
 {
 }
-BOOL CTargetCSBase::net_Spawn			(LPVOID DC)
+BOOL CTargetCSBase::net_Spawn		(LPVOID DC)
 {
 	BOOL res	= inherited::net_Spawn(DC);
 
@@ -19,10 +19,18 @@ BOOL CTargetCSBase::net_Spawn			(LPVOID DC)
 		team	= T->s_team;
 		setVisible					(true);
 		setEnabled					(true);
+		Game().targets.push_back	(this);
 	}
 
 	return res;
 }
+
+void CTargetCSBase::net_Destroy()
+{
+	inherited::net_Destroy();
+	Game().targets.erase(find(Game().targets.begin(), Game().targets.end(), this));
+}
+
 void CTargetCSBase::OnDeviceCreate()
 {
 	CCF_Shape*	shape			= new CCF_Shape	(this);
