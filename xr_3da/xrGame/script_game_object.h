@@ -68,6 +68,7 @@ class CScriptGameObject {
 	CGameObject				*m_tpGameObject;
 public:
 
+							CScriptGameObject		(CGameObject *tpGameObject);
 	virtual					~CScriptGameObject		();
 							operator CObject*		();
 
