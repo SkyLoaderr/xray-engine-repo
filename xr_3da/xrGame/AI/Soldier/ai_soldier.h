@@ -568,10 +568,10 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
 		virtual void  OnVisible(); 
-		virtual void  Exec_Movement( float dt );
-		virtual objQualifier* GetQualifier();
+		virtual void  Exec_Movement(float dt);
+		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
 		virtual BOOL  Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
-		virtual void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2);
+		virtual objQualifier* GetQualifier();
 };
 		
 #endif

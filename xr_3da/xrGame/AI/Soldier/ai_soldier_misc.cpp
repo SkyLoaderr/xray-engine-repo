@@ -154,7 +154,7 @@ void CAI_Soldier::Exec_Movement	( float dt )
 	if (eCurrentState != aiSoldierJumping)
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	else {
-		UpdateTransform	();
+		UpdateTransform();
 		if (m_bActionStarted) {
 			m_bActionStarted = false;
 			Fvector tAcceleration, tVelocity;
