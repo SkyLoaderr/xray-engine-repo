@@ -89,8 +89,7 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 	m_bButtonClicked = false;
 
 	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
-			GetParent()->SetCapture(this, m_bCursorOverWindow);
-
+		GetParent()->SetCapture(this, m_bCursorOverWindow);
 
 	switch(m_ePressMode)
 	{

@@ -15,6 +15,7 @@
 #include "UIEncyclopediaWnd.h"
 #include "UIPdaAux.h"
 #include "UIActorInfo.h"
+#include "UIStalkersRankingWnd.h"
 #include "../encyclopedia_article_defs.h"
 
 class CInventoryOwner;
@@ -63,10 +64,11 @@ public:
 	CUIPdaCommunication	UIPdaCommunication;
 
 protected:
-	CUIMapWnd			UIMapWnd;
-	CUIEncyclopediaWnd	UIEncyclopediaWnd;
-	CUIDiaryWnd			UIDiaryWnd;
-	CUIActorInfoWnd		UIActorInfo;
+	CUIMapWnd				UIMapWnd;
+	CUIEncyclopediaWnd		UIEncyclopediaWnd;
+	CUIDiaryWnd				UIDiaryWnd;
+	CUIActorInfoWnd			UIActorInfo;
+	CUIStalkersRankingWnd	UIStalkersRanking;
 
 	//элементы декоративного интерфейса
 	CUIStatic			UIStaticTop;
@@ -88,6 +90,8 @@ protected:
 		eptEvents = 0,
 		eptComm,
 		eptMap,
-		eptEncyclopedia
+		eptEncyclopedia,
+		eptActorStatistic,
+		eptRanking
 	};
 };

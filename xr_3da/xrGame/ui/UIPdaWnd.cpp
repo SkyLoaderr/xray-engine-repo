@@ -87,6 +87,11 @@ void CUIPdaWnd::Init()
 	UIActorInfo.Init();
 	UIActorInfo.Show(false);
 
+	// Окно рейтинга сталкеров
+	UIMainPdaFrame.AttachChild(&UIStalkersRanking);
+	UIStalkersRanking.Init();
+	UIStalkersRanking.Show(false);
+
 	m_pActiveDialog = &UIDiaryWnd;
 
 	// Tab control
@@ -119,21 +124,26 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			// Add custom dialogs here
 			switch (UITabControl.GetActiveIndex()) 
 			{
-			case 0:
+			case eptEvents:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIDiaryWnd);
 				break;
-			case 1:
+			case eptComm:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIPdaCommunication);
 				break;
-			case 2:
+			case eptMap:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIMapWnd);
 				break;
-			case 3:
+			case eptEncyclopedia:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIEncyclopediaWnd);
 				break;
-			case 4:
+			case eptActorStatistic:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIActorInfo);
 				break;
+			case eptRanking:
+				m_pActiveDialog = smart_cast<CUIWindow*>(&UIStalkersRanking);
+				break;
+			default:
+				NODEFAULT;
 			}
 			m_pActiveDialog->Reset();
 			m_pActiveDialog->Show(true);

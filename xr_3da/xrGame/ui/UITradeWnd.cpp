@@ -683,7 +683,7 @@ void CUITradeWnd::SwitchDealControls(bool on)
 	m_bDealControlsVisible = on;
 
 	UIDealClose.Show(on);
-	UIDealClose.SetCapture(this, on);
+//	UIDealClose.SetCapture(this, on);
 	UIDealClose.Enable(on);
 	UIDealClose.HighlightItem(false);
 
