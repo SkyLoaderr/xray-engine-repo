@@ -279,7 +279,7 @@ namespace PAPI{
 		float octaves;		// Octaves
 		float magnitude;	// Scale for rotation around axis
 		float epsilon;		// Softening parameter
-        pDomain movement;	// Movement
+        pVector offset;		// Offset
 
         _METHODS;
     };

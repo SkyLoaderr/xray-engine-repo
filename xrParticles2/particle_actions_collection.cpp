@@ -1581,14 +1581,12 @@ void PATurbulence::Execute(ParticleEffect *effect, float dt)
     {
         Particle &m = effect->particles[i];
 
-		pVector offs,D;
-		movement.Generate(offs);
-
-        pV.add(m.pos,offs);
+        pV.add(m.pos,offset);
         vX.set(pV.x+epsilon,pV.y,pV.z);
         vY.set(pV.x,pV.y+epsilon,pV.z);
         vZ.set(pV.x,pV.y,pV.z+epsilon);
 
+        pVector D;
         float d	=	fractalsum3(pV, frequency, octaves);
         D.x 	= 	(fractalsum3(vX, frequency, octaves) - d)*(float)magnitude;
         D.y 	= 	(fractalsum3(vY, frequency, octaves) - d)*(float)magnitude;
