@@ -330,7 +330,7 @@
 		<col key="yes" def="s72">ISDisk1File</col>
 		<col def="s255">ISBuildSourcePath</col>
 		<col def="I4">Disk</col>
-		<row><td>NewDisk1File2</td><td>&lt;ISPROJECTDIR&gt;\vc\sql_config\setupMSDE.ini</td><td>1</td></row>
+		<row><td>NewDisk1File1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\setupMSDE.ini</td><td>1</td></row>
 		<row><td>NewDisk1File3</td><td>&lt;ISPROJECTDIR&gt;\source\setup\MDAC_TYP.EXE</td><td>1</td></row>
 	</table>
 
@@ -791,6 +791,46 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
+		<row><td>IDSL_ERROR_CONNECT_DB</td><td>1033</td><td/><td>0</td><td/><td>-971498805</td></row>
+		<row><td>IDSL_ERROR_CONNECT_DB</td><td>1049</td><td>'@1(!#@$,00Z!#`$(``_!$`$.`0@`#\$/@0T!#H$.P1.!$&lt;$-00]!#@$.`0@`#$$,`0W!$L$</td><td>27</td><td/><td>-971498805</td></row>
+		<row><td>IDSL_ERROR_REGISTER_SP</td><td>1033</td><td/><td>0</td><td/><td>-971466069</td></row>
+		<row><td>IDSL_ERROR_REGISTER_SP</td><td>1049</td><td>'@1(!#@$,00Z!#`$(``_!$`$.`0@`$`$-00S!#@$001"!$`$,`1&amp;!#@$.`0@`#($/00U!$@$/00U!#D$(`!%!$`$,`0]!#@$/`0^!#D$(``_!$`$/@1&amp;!#4$-`1#!$`$2P0`</td><td>49</td><td/><td>-971466069</td></row>
+		<row><td>IDSL_ERROR_SERVER_CONFIGURE</td><td>1033</td><td/><td>0</td><td/><td>-971466037</td></row>
+		<row><td>IDSL_ERROR_SERVER_CONFIGURE</td><td>1049</td><td>'@1(!#@$,00Z!#`$(``Z!#X$/01$!#@$,P1#!$`$,`1&amp;!#@$.`0@`$$$-01`!#($-01`!#`$(``1!!0$+@``</td><td>31</td><td/><td>-971466037</td></row>
+		<row><td>IDSL_ERROR_SQLSERVER_CONNECT_FAILED</td><td>1033</td><td/><td>0</td><td/><td>-971455893</td></row>
+		<row><td>IDSL_ERROR_SQLSERVER_CONNECT_FAILED</td><td>1049</td><td>'@1(!#@$,00Z!#`$(`!!!#X$-00T!#@$/00U!#T$.`1/!"``000@`$$$-01`!#($-01`!#X$/`0N````</td><td>29</td><td/><td>-971455893</td></row>
+		<row><td>IDSL_ERROR_SQL_QUERY_FAILED</td><td>1033</td><td/><td>0</td><td/><td>-971498965</td></row>
+		<row><td>IDSL_ERROR_SQL_QUERY_FAILED</td><td>1049</td><td>'@1(!#@$,00Z!#`$(``_!$`$.`0@`#($2P0_!#X$.P0]!#4$/00X!#@$(`!3`%$`3``@`#&lt;$,`0_!$`$/@1!!#`$+@``</td><td>34</td><td/><td>-971498965</td></row>
+		<row><td>IDSL_ERROR_UNABLE_TO_LOAD</td><td>1033</td><td/><td>0</td><td/><td>-971478293</td></row>
+		<row><td>IDSL_ERROR_UNABLE_TO_LOAD</td><td>1049</td><td>'00U!#($/@0W!#P$/@0V!#T$/@0@`#&lt;$,`0S!$`$0P0W!#@$0@1,!#H`</td><td>21</td><td/><td>-971466005</td></row>
+		<row><td>IDSL_FEATURE_SETUP_FAILED</td><td>1033</td><td/><td>0</td><td/><td>-971487189</td></row>
+		<row><td>IDSL_FEATURE_SETUP_FAILED</td><td>1049</td><td>'@1(!#@$,00Z!#`$(``_!$`$.`0@`#($2P0Q!#X$0`0U!"``0@0X!#\$,`0@`$,$001"!#`$/00^!#($.@0X!"X`</td><td>33</td><td/><td>-971462613</td></row>
+		<row><td>IDSL_NEED_ADMIN_RIGHTS</td><td>1033</td><td/><td>0</td><td/><td>-971468950</td></row>
+		<row><td>IDSL_NEED_ADMIN_RIGHTS</td><td>1049</td><td>%`0[!$\$(`!#!$$$0@0P!#T$/@0R!#H$.`0@`#\$0`0X!#L$/@0V!#4$/00X!$\$(``]!#4$/@0Q!$4$/@0T!#@$/`1+!"``/P1`!#`$,@0P!"``,`0T!#P$.`0]!#@$001"!$`$,`1"!#X$0`0P!"$`</td><td>57</td><td/><td>-971458710</td></row>
+		<row><td>IDSL_PROGRESS_ADD_REGISTRY</td><td>1033</td><td/><td>0</td><td/><td>-971460053</td></row>
+		<row><td>IDSL_PROGRESS_ADD_REGISTRY</td><td>1049</td><td>%`0^!#$$,`0R!#L$-00]!#@$-00@`#0$,`0]!#T$2P1%!"``,@0@`$`$-00U!$$$0@1`!"X`</td><td>27</td><td/><td>-971460053</td></row>
+		<row><td>IDSL_PROGRESS_CHECK_CONNECTION</td><td>1033</td><td/><td>0</td><td/><td>-971501333</td></row>
+		<row><td>IDSL_PROGRESS_CHECK_CONNECTION</td><td>1049</td><td>'P1`!#X$,@0U!$`$.@0P!"``000^!#4$-`0X!#T$-00]!#@$3P0N````</td><td>20</td><td/><td>-971501333</td></row>
+		<row><td>IDSL_PROGRESS_CONNECT_DB</td><td>1033</td><td/><td>0</td><td/><td>-971450037</td></row>
+		<row><td>IDSL_PROGRESS_CONNECT_DB</td><td>1049</td><td>'P0^!#0$.@0[!$X$1P0U!#T$.`0U!"``,00P!#&lt;$2P0`</td><td>16</td><td/><td>-971450037</td></row>
+		<row><td>IDSL_PROGRESS_END</td><td>1033</td><td/><td>0</td><td/><td>-971486581</td></row>
+		<row><td>IDSL_PROGRESS_END</td><td>1049</td><td>'00P!$$$0@1`!#X$.00Z!#`$(``^!#H$/@0]!$&lt;$-00]!#`$+@``</td><td>19</td><td/><td>-971486581</td></row>
+		<row><td>IDSL_PROGRESS_READ_INI</td><td>1033</td><td/><td>0</td><td/><td>-971464213</td></row>
+		<row><td>IDSL_PROGRESS_READ_INI</td><td>1049</td><td>)P1"!#4$/00X!#4$(``W!#`$/P0X!$$$-00Y!"``.`0W!"``1`0P!#D$.P0P!"``.`0]!#@$1@0X!#`$.P0X!#&lt;$,`1&amp;!#@$.`0N````</td><td>38</td><td/><td>-971464213</td></row>
+		<row><td>IDSL_PROGRESS_REGISTERING_USER</td><td>1033</td><td/><td>0</td><td/><td>-971486709</td></row>
+		<row><td>IDSL_PROGRESS_REGISTERING_USER</td><td>1049</td><td>(`0U!#,$.`1!!$($0`0P!$8$.`1/!"``/P0^!#L$3`0W!#X$,@0P!$($-00[!$\$+@``</td><td>25</td><td/><td>-971486709</td></row>
+		<row><td>IDSL_PROGRESS_REGISTER_SP</td><td>1033</td><td/><td>0</td><td/><td>-971478613</td></row>
+		<row><td>IDSL_PROGRESS_REGISTER_SP</td><td>1049</td><td>(`0U!#,$.`1!!$($0`0P!$8$.`1/!"``,@0]!#4$2`0]!#@$100@`$4$0`0P!#T$.`0\!$L$100@`#\$/@1&amp;!#4$-`1#!$`$+@``</td><td>37</td><td/><td>-971474485</td></row>
+		<row><td>IDSL_PROGRESS_SETUP_SERVER</td><td>1033</td><td/><td>0</td><td/><td>-971450261</td></row>
+		<row><td>IDSL_PROGRESS_SETUP_SERVER</td><td>1049</td><td>'00P!$$$0@1`!#X$.00Z!#`$(`!!!#4$0`0R!#4$0`0P!"X`</td><td>18</td><td/><td>-971450261</td></row>
+		<row><td>IDSL_PROGRESS_START_SERVER</td><td>1033</td><td/><td>0</td><td/><td>-971466613</td></row>
+		<row><td>IDSL_PROGRESS_START_SERVER</td><td>1049</td><td>%P0P!#\$0P1!!#H$(`!!!#4$0`0R!#4$0`0P!"X`</td><td>15</td><td/><td>-971466613</td></row>
+		<row><td>IDSL_PROGRESS_TUNE_CONNECTION</td><td>1033</td><td/><td>0</td><td/><td>-971486965</td></row>
+		<row><td>IDSL_PROGRESS_TUNE_CONNECTION</td><td>1049</td><td>'00P!$$$0@1`!#X$.00Z!#`$(`!!!#X$-00T!#@$/00U!#T$.`1/!"X`</td><td>21</td><td/><td>-971486965</td></row>
+		<row><td>IDSL_REMOVE_KAS</td><td>1033</td><td/><td>0</td><td/><td>-971471030</td></row>
+		<row><td>IDSL_REMOVE_KAS</td><td>1049</td><td>(P0T!#`$.P0U!#T$.`0U!"``&amp;@00!"$$</td><td>12</td><td/><td>-971468982</td></row>
+		<row><td>IDSL_SETUP_ERROR</td><td>1033</td><td/><td>0</td><td/><td>-971468789</td></row>
+		<row><td>IDSL_SETUP_ERROR</td><td>1049</td><td>'@1(!#@$,00Z!#`$(``_!$`$.`0@`$,$001"!#`$/00^!#($.@0U!"``30!3`$0`10`N````</td><td>26</td><td/><td>-971468789</td></row>
 		<row><td>IDS_PRODUCT_NAME</td><td>1033</td><td/><td>0</td><td/><td>1981324427</td></row>
 		<row><td>IDS_PRODUCT_NAME</td><td>1049</td><td>&amp;@0^!#T$001#!#L$3`1"!#`$1@0X!#X$/00]!#X$+0`P!#T$,`0[!#@$0@0X!$&lt;$-01!!#H$,`1/!"``000X!$$$0@0U!#P$,`0`</td><td>37</td><td/><td>1981324427</td></row>
 		<row><td>IDS_SERVER_FEATURE_NAME</td><td>1033</td><td>NewFeature1</td><td>0</td><td/><td>1981332620</td></row>

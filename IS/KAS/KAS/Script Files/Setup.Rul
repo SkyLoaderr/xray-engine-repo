@@ -39,7 +39,8 @@ BOOL	g_NeedReboot;
 #define INI_UPDATE_DATE_ID    	"updateDate"
 #define INI_VERSION_ID			"version"
 #define INI_BUILD_ID			"build"  
-#define INI_SERVER_ID			"server"
+#define INI_SERVER_ID			"Main_ServerName"
+#define INI_INSTANCE_ID			"instance"
 
 //---------------------------------------------------------------------------
 // User defined function prototype
@@ -89,7 +90,7 @@ begin
 		strCmdLine = strCmdLine + " /M" + PRODUCT_GUID; 
 	endif;  
 	// Create the shortcut. 
-	AddFolderIcon(SHELL_OBJECT_FOLDER, "Удаление КАС",strCmdLine, "",TARGETDIR^"MDISplit.ico",0, "", NULL );  
+	AddFolderIcon(SHELL_OBJECT_FOLDER, @IDSL_REMOVE_KAS,strCmdLine, "",TARGETDIR^"MDISplit.ico",0, "", NULL );  
 end;
 //---------------------------------------------------------------------------
 function ClearFolder(folder)
@@ -101,7 +102,7 @@ function BOOL CheckAdminRights()
 begin
 	if (FALSE=SYSINFO.WIN9X.bWin9X) then
 		if (FALSE=SYSINFO.WINNT.bAdmin_Logged_On) then
-        	MessageBox("Для установки приложения необходимы права администратора!", SEVERE);
+        	MessageBox(@IDSL_NEED_ADMIN_RIGHTS, SEVERE);
         	return FALSE;
 		endif;
 	endif;
@@ -142,7 +143,7 @@ begin
     try
         set oObject = GetObject("MSDE_2000_Object");
         if (!IsObject(oObject)) then
-            MessageBoxEx( "Ошибка при установке MSDE.", "", INFORMATION );
+            MessageBoxEx( @IDSL_SETUP_ERROR, "", INFORMATION );
         endif;
         set oStatus = oObject.Status;
         if (!(oStatus.Number = OBJ_STATUS_SUCCESS ||
@@ -236,7 +237,7 @@ Dlg_SetupType:
 			sSetupType 	= "Server";
 		endif;
 		if (FeatureSetupTypeSet (MEDIA, sSetupType) < 0) then
-			MessageBox ("FeatureSetupTypeSet failed.", SEVERE);
+			MessageBox (@IDSL_FEATURE_SETUP_FAILED, SEVERE);
 		endif;
         nSize = 0;
         FeatureCompareSizeRequired(MEDIA, sTargetPath, nSize);
@@ -427,7 +428,7 @@ begin
 		// load dll
 	    nResult 	= UseDLL (DLL_FILE);
 	    if (nResult != 0) then
-	        MessageBox ("Невозможно загрузить: "+DLL_FILE, SEVERE);
+	        MessageBox (@IDSL_ERROR_UNABLE_TO_LOAD+" "+DLL_FILE, SEVERE);
 	        abort;
 	    endif;                  
 	    
@@ -440,70 +441,70 @@ begin
 	    StatusUpdate 	(ON, 99);
     
 	    // Display a message; do not change the progress bar.
-	    SetStatusWindow (-1, "Настройка сервера.");
+	    SetStatusWindow (-1, @IDSL_PROGRESS_SETUP_SERVER);
     
-	    SetStatusWindow (10, "Запуск сервера.");
+	    SetStatusWindow (10, @IDSL_PROGRESS_START_SERVER);
 	    StartServer		();
 	    
-	    SetStatusWindow (20, "Проверка соединения.");
+	    SetStatusWindow (20, @IDSL_PROGRESS_CHECK_CONNECTION);
 		bRes 			= SQL_CONFIG.testConnection(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
 		if (bRes = 0) then 
-		    SetStatusWindow (30, "Настройка соединения.");
+		    SetStatusWindow (30, @IDSL_PROGRESS_TUNE_CONNECTION);
 		    bRes = SQL_CONFIG.tuneServer(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
 		    if(bRes != 0) then
-		        MessageBox ("Ошибка конфигурации сервера БД.", SEVERE);
+		        MessageBox (@IDSL_ERROR_SERVER_CONFIGURE, SEVERE);
 		        bRes	= FALSE;
 		        goto label_end;
 		    endif;
 
-		    SetStatusWindow (40, "Подключение базы 'KAS'.");
+		    SetStatusWindow (40, @IDSL_PROGRESS_CONNECT_DB+"'KAS'");
 		    db_files = "["+TARGETDIR^"DATA\\KAS_Data.MDF] "+"["+TARGETDIR^"DATA\\KAS_Log.LDF]";
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"KAS",db_files);
 		    if(bRes != 0) then
-		        MessageBox ("Ошибка при подключении базы 'KAS'.", SEVERE);
+		        MessageBox (@IDSL_ERROR_CONNECT_DB+"'KAS'", SEVERE);
 		        bRes	= FALSE;
 		        goto label_end; 
 		    else
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (50, "Подключение базы 'client_repl'.");
+		    SetStatusWindow (50, @IDSL_PROGRESS_CONNECT_DB+"'client_repl'");
 		    db_files = "["+TARGETDIR^"DATA\\client_repl_Data.MDF] "+"["+TARGETDIR^"DATA\\client_repl_Log.LDF]";
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"client_repl",db_files);
 		    if(bRes != 0) then
-		        MessageBox ("Ошибка при подключении базы 'client_repl'.", SEVERE);
+		        MessageBox (@IDSL_ERROR_CONNECT_DB+"'client_repl'", SEVERE);
 		        bRes	= FALSE;
 		        goto label_end;
 		    else
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (60, "Подключение базы 'searchdb'.");
+		    SetStatusWindow (60, @IDSL_PROGRESS_CONNECT_DB+"'searchdb'");
 		    db_files = "["+TARGETDIR^"DATA\\searchdb_Data.MDF] "+"["+TARGETDIR^"DATA\\searchdb_Log.LDF]";
 		    bRes = SQL_CONFIG.attachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"searchdb",db_files);
 		    if(bRes != 0) then
-		        MessageBox ("Ошибка при подключении базы 'searchdb'.", SEVERE);
+		        MessageBox (@IDSL_ERROR_CONNECT_DB+"'searchdb'", SEVERE);
 		        bRes	= FALSE;
 		        goto label_end;
 		    else
 		    	bRes=TRUE;
 		    endif;
 		 
-		    SetStatusWindow (70, "Регистрация внешней хранимой поцедуры.");
+		    SetStatusWindow (70, @IDSL_PROGRESS_REGISTER_SP);
 		 	// copy stored proc dll  
 			// register it in DB
 		    bRes = SQL_CONFIG.runSQLString	(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
 		    								"master",
 		    								"EXEC sp_addextendedproc xp_check, '"+SQL_STORED_PROC_DLL_+"'");
 		    if(bRes != 0) then
-		        MessageBox ("Ошибка при регистрации внешней хранимой процедуры.", SEVERE);
+		        MessageBox (@IDSL_ERROR_REGISTER_SP+"'xp_check'", SEVERE);
 		        bRes	= FALSE;
 		        goto label_end;
 		    else
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (80, "Чтение записей из файла инициализации.");
+		    SetStatusWindow (80, @IDSL_PROGRESS_READ_INI);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_UPDATE_DATE_ID, 	sLastUpdate);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_ID, 		sVersion);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_BUILD_ID, 		sBuild);
@@ -514,7 +515,7 @@ begin
 			sSecReg			= "";	
 			ParseSerialNumber(g_sSerial,sPrimReg,sSecReg);
 		                           
-		    SetStatusWindow (90, "Регистрация пользователя.");
+		    SetStatusWindow (90, @IDSL_PROGRESS_REGISTERING_USER);
 			// prepare sql string
 			sInsertSQL = "insert into Summary (primary_reg_id, secondary_reg_id, version_id, build, unique_id, last_update)";
 			sInsertSQL = sInsertSQL+"values('"+sPrimReg+"','"+sSecReg+"','"+sVersion+"','"+sBuild+"',newId(),'"+sLastUpdate+"')"; 
@@ -522,14 +523,14 @@ begin
 		    								"KAS",
 		    								sInsertSQL);
 		    if(bRes != 0) then
-		        MessageBox ("Ошибка при выполнении SQL запроса.", SEVERE);
+		        MessageBox (@IDSL_ERROR_SQL_QUERY_FAILED, SEVERE);
 		        bRes	= FALSE;
 		        goto label_end;
 		    else
 		    	bRes=TRUE;
 		    endif;
 		
-		    SetStatusWindow (95, "Добавление данных в реестр.");
+		    SetStatusWindow (95, @IDSL_PROGRESS_ADD_REGISTRY);
 			// insert registry keys
 			nRootKey 				= HKEY_LOCAL_MACHINE;
 			RegDBSetDefaultRoot		(nRootKey);
@@ -539,32 +540,22 @@ begin
 			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "Main_ServerName", REGDB_STRING, sServerName,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 			endif;
-//.
-			nRootKey 				= HKEY_CURRENT_USER;
-			RegDBSetDefaultRoot		(nRootKey);
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "VersionDB", REGDB_STRING, sVersion,-1) < 0) then
-			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-			endif;
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "Main_ServerName", REGDB_STRING, sServerName,-1) < 0) then
-			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-			endif;
-//.
 		else
-	        MessageBox ("Ошибка соединения с сервером.", SEVERE);
+	        MessageBox (@IDSL_ERROR_SQLSERVER_CONNECT_FAILED, SEVERE);
 	        bRes	= FALSE;
 	        goto label_end;
 		endif;
 		
 label_end:
 	    // Set the progress bar to 100% and displays a message.
-	    SetStatusWindow (100, "Настройка окончена.");
+	    SetStatusWindow (100, @IDSL_PROGRESS_END);
 	
 	    SQL_CONFIG.deInitLibrary();
 	
 		// free dll
 	    nResult = UnUseDLL (DLL_FILE);
 	    if (nResult < 0) then
-	        MessageBox ("Невозможно выгрузить: "+DLL_FILE, SEVERE);
+	   //     MessageBox ("Невозможно выгрузить: "+DLL_FILE, SEVERE);
 	    endif;
 
 		if (bRes=TRUE) then
