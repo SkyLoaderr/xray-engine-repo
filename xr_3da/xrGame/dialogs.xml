@@ -105,14 +105,12 @@
 			</phrase>
 			<phrase id="2">
 				<dont_has_info>trader_start2</dont_has_info>
-				<dont_has_info>job_box_finished</dont_has_info>
 				<goodwill>70</goodwill>
 				<text>Я возьмусь за ящик с блокпоста.</text>
 				<next>4</next>
 			</phrase>
 			<phrase id="3">
 				<dont_has_info>trader_start4</dont_has_info>
-				<dont_has_info>job_box02_finished</dont_has_info>
 				<text>Я возьмусь выкрасть кое-что с Агропрома.</text>
 				<next>5</next>
 			</phrase>
