@@ -197,7 +197,6 @@ function add_to_binder (npc, ini)
     properties["enabled"]           = xr_evaluators_id.sidor_chaser
     properties["chase"]             = xr_evaluators_id.sidor_chaser + 1
     properties["return"]            = xr_evaluators_id.sidor_chaser + 2
-  properties["state_end"]        = xr_evaluators_id.state_change
 
     operators["chase"]              = xr_actions_id.sidor_act_chaser
     operators["return"]             = xr_actions_id.sidor_act_chaser + 1
@@ -213,7 +212,6 @@ function add_to_binder (npc, ini)
      action:add_precondition       (world_property (stalker_ids.property_enemy,    false))
      action:add_precondition       (world_property (properties["enabled"],         true))
      action:add_precondition       (world_property (properties["chase"],           true))
-  action:add_precondition        (world_property (properties["state_end"],       true))
      action:add_effect             (world_property (properties["chase"],           false))
      manager:add_action              (operators["chase"], action)
 
@@ -224,7 +222,6 @@ function add_to_binder (npc, ini)
      action:add_precondition       (world_property (properties["enabled"],         true))
      action:add_precondition       (world_property (properties["chase"],           false))
      action:add_precondition       (world_property (properties["return"],          false))
-  action:add_precondition        (world_property (properties["state_end"],       true))
      action:add_effect             (world_property (properties["enabled"],         false))
      manager:add_action              (operators["return"], action)
 
