@@ -171,7 +171,7 @@ namespace CDB
 		void			clear			()	{ verts.clear(); faces.clear();	}
 	};
 
-	const u32 clpMX = 28, clpMY=16, clpMZ=28;
+	const u32 clpMX = 24, clpMY=16, clpMZ=24;
 	class XRCDB_API CollectorPacked
 	{
 		typedef xr_vector<u32>		DWORDList;
@@ -195,6 +195,7 @@ namespace CDB
 		size_t				getVS()		{ return verts.size();		}
 		TRI*				getT()		{ return &*faces.begin();	}
 		size_t				getTS()		{ return faces.size();		}
+		void				clear();
 	};
 };
 

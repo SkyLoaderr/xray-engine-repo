@@ -203,4 +203,14 @@ namespace CDB
 		}
 		return P;
 	}
+
+	void	CollectorPacked::clear()
+	{
+		verts.clear	();
+		faces.clear	();
+		for (u32 _x=0; x<=clpMX; x++)
+			for (u32 _y=0; y<=clpMY; y++)
+				for (u32 _z=0; z<=clpMZ; z++)
+					VM[_x][_y][_z].clear();
+	}
 };
