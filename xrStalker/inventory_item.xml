@@ -8,24 +8,24 @@
 	</static>
 
 	<!-- WEIGHT -->
-	<static x="220" y="140" width="100" height="60">
+	<static x="220" y="140" width="100" height="20">
 		<text x="0" y="0" font="letterica18" r="216" g="186" b="140"></text>
 	</static>
 
 	<!-- COST -->
-	<static x="220" y="160" width="100" height="60">
+	<static x="220" y="160" width="100" height="20">
 		<text x="0" y="0" font="letterica18" r="216" g="186" b="140"></text>
 	</static>
 
 	<!-- CONDITION -->
-	<static x="220" y="180" width="100" height="60">
+	<static x="220" y="180" width="100" height="20">
 		<text x="0" y="0" font="letterica18" r="216" g="186" b="140"></text>
 	</static>
 
 	<!-- DESCRIPTION -->
-	<static x="20" y="230" width="100" height="60">
-		<text x="0" y="0" font="letterica18" r="216" g="186" b="140"></text>
-	</static>
+	<descr_list x="20" y="230" width="100" height="60" item_height="20">
+		<font font="letterica18" r="216" g="186" b="140"/>
+	</descr_list>
 
 	<!-- 3D STATIC OLD!!!OLD!!!OLD!! REMOVE ME!!! -->
 	<static_3d x="50" y="-185" width="250" height="190"></static_3d>
