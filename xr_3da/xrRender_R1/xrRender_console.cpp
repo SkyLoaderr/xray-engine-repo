@@ -42,7 +42,8 @@ float		ps_r2_ssaHZBvsTEX			= 256.f;
 // R2-specific
 Flags32		ps_r2_ls_flags				= { R2FLAG_SUN | R2FLAG_SKY | R2FLAG_FASTBLOOM | R2FLAG_AA };	// r2-only
 float		ps_r2_df_parallaxh			= 0.02f;
-float		ps_r2_tonemap_middlegray	= 0.18f;// r2-only
+float		ps_r2_tonemap_middlegray	= 0.01f;// r2-only
+float		ps_r2_tonemap_adaptation	= 5.f;	// r2-only
 float		ps_r2_ls_dynamic_range		= 2.f;	// r2-only
 float		ps_r2_ls_bloom_kernel_g		= 3.3f;	// r2-only
 float		ps_r2_ls_bloom_kernel_b		= .6f;	// r2-only
@@ -121,6 +122,7 @@ void		xrRender_initconsole	()
 
 	// R2-specific
 	CMD4(CCC_Float,		"r2_tonemap_middlegray",&ps_r2_tonemap_middlegray,	0.0f,	2.0f	);
+	CMD4(CCC_Float,		"r2_tonemap_adaptation",&ps_r2_tonemap_adaptation,	1.0f,	50.0f	);
 	CMD4(CCC_Float,		"r2_ls_dynamic_range",	&ps_r2_ls_dynamic_range,	.5f,	8.f		);
 	CMD4(CCC_Float,		"r2_ls_bloom_kernel_g",	&ps_r2_ls_bloom_kernel_g,	1.f,	7.f		);
 	CMD4(CCC_Float,		"r2_ls_bloom_kernel_b",	&ps_r2_ls_bloom_kernel_b,	0.01f,	1.f		);

@@ -95,6 +95,7 @@ private:
 
 	// Luminance
 	ref_shader					s_luminance;
+	float						f_luminance_adapt;
 
 	// Combine
 	ref_geom					g_combine;

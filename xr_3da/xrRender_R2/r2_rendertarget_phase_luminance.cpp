@@ -113,7 +113,7 @@ void	CRenderTarget::phase_luminance()
 		float	mgray				= ps_r2_tonemap_middlegray;
 		RCache.set_Element			(s_luminance->E[2]	);
 		RCache.set_Geometry			(g_bloom_filter		);
-		RCache.set_c				("MiddleGray",mgray,mgray,mgray,mgray);
+		RCache.set_c				("MiddleGray",mgray,mgray,mgray,ps_r2_tonemap_adaptation);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
