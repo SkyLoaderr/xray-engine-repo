@@ -47,7 +47,9 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 
 void CAI_Idol::SelectAnimation		(const Fvector& _view, const Fvector& _move, float speed)
 {
-	R_ASSERT						(!m_tpaAnims.empty());
+	//R_ASSERT						(!m_tpaAnims.empty());
+	if (m_tpaAnims.empty())
+		return;
 	if (g_Alive()) {
 		switch (m_dwAnyPlayType) {
 			case 0 : {
@@ -102,6 +104,10 @@ void CAI_Idol::OnEvent		(NET_Packet& P, u16 type)
 			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(this);
 				Log("TAKE - ", O->cName());
+//				if(PIItem(O)->m_slot < 0xffffffff) {
+//					m_inventory.Slot(PIItem(O));
+//					m_inventory.Activate(PIItem(O)->m_slot);
+//				}
 				////if(m_inventory.m_activeSlot == 0xffffffff) {
 				////	if(PIItem(O)->m_slot < 0xffffffff) {
 				////		m_inventory.Slot(PIItem(O)); 
@@ -250,4 +256,12 @@ void CAI_Idol::Update		(u32 dt)
 {
 	inherited::Update		(dt);
 	m_inventory.Update		(dt);
+}
+
+void CAI_Idol::g_WeaponBones	(int &L, int &R1, int &R2)
+{
+	CKinematics *V	= PKinematics(Visual());
+	R1				= V->LL_BoneID("bip01_r_hand");
+	R2				= V->LL_BoneID("bip01_r_finger2");
+	L				= V->LL_BoneID("bip01_l_finger1");
 }
