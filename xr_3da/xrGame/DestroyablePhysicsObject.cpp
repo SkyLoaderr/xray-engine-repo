@@ -42,6 +42,6 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 {
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	m_fHealth-=P;
-	if(m_fHealth<=0.f) Destroy(ID());
+	if(m_fHealth<=0.f) Destroy();
 		
 }
