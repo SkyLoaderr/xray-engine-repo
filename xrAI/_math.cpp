@@ -11,12 +11,12 @@ u16			getFPUsw()		{ return 0;	}
 
 namespace FPU 
 {
-	XRCORE_API void __stdcall	m24		(u16 p)	{}
-	XRCORE_API void __stdcall	m24r	(u16 p)	{}
-	XRCORE_API void __stdcall	m53		(u16 p)	{}
-	XRCORE_API void __stdcall	m53r	(u16 p)	{}
-	XRCORE_API void __stdcall	m64		(u16 p)	{}
-	XRCORE_API void __stdcall	m64r	(u16 p)	{}
+	XRCORE_API void 	m24		(u16 p)	{}
+	XRCORE_API void 	m24r	(u16 p)	{}
+	XRCORE_API void 	m53		(u16 p)	{}
+	XRCORE_API void 	m53r	(u16 p)	{}
+	XRCORE_API void 	m64		(u16 p)	{}
+	XRCORE_API void 	m64r	(u16 p)	{}
 
 	void		initialize		()				{}
 };
