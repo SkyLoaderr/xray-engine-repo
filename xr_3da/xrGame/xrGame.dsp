@@ -187,14 +187,6 @@ SOURCE=.\AI_Console.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\AI_FSM.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_FSM.H
-# End Source File
-# Begin Source File
-
 SOURCE=.\ai_goals.h
 # End Source File
 # Begin Source File
@@ -204,10 +196,6 @@ SOURCE=.\AI_PathNodes.cpp
 # Begin Source File
 
 SOURCE=.\AI_PathNodes.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Selectors.h
 # End Source File
 # Begin Source File
 
@@ -513,40 +501,136 @@ SOURCE=.\FlyerInput.cpp
 # Begin Group "AI_Monsters"
 
 # PROP Default_Filter ""
-# Begin Group "ai_human"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\AI_Human.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AI_Human.h
-# End Source File
-# End Group
 # Begin Group "ai_hen"
 
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\ai_hen.cpp
+SOURCE=.\AI\Hen\ai_hen.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ai_hen.h
-# End Source File
-# End Group
-# Begin Group "ai_rat"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\ai_rat.cpp
+SOURCE=.\AI\Hen\ai_hen.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ai_rat.h
+SOURCE=.\AI\Hen\ai_hen_attack.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_attack.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_cover.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_cover.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_defend.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_defend.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_die.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_die.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_f_hunting.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_f_hunting.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_follow.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_follow.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_go_dir.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_go_dir.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_go_pos.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_go_pos.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_h_pos_u_f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_h_pos_u_f.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_hold_pos.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_hold_pos.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_pursuit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_pursuit.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_retreat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_retreat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_sense_s.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_sense_s.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_u_fire.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_u_fire.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_wait_pos.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Hen\ai_hen_wait_pos.h
 # End Source File
 # End Group
 # End Group

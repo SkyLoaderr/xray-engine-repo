@@ -11,8 +11,7 @@
 #include "entity.h"
 #include "custommonster_vistrack.h"
 #include "ai_commands.h"
-#include "ai_fsm.h"
-#include "ai_selectors.h"
+#include "ai_hen.h"
 #include "ai_pathnodes.h"
 
 class ENGINE_API CMotionDef;
