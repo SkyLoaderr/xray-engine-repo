@@ -2,6 +2,15 @@
 -- Movement manager
 -- Created by: Andrey Fidrya (Zmey), af@svitonline.com
 
+local dist_walk = 10 -- < dist_run
+local dist_run = 25
+-- otherwise - sprint
+
+local walk_min_time = 3000
+local run_min_time = 2000
+
+local keep_state_min_time = 1500 -- переключившись в состояние (бег, ходьба, спринт), не переключаться в другое N ms
+
 local default_wait_time = 5000
 local default_anim_standing = "idle"
 local default_anim_crouch = "hide"
@@ -95,6 +104,12 @@ function move_mgr:validate_paths()
 	end
 end
 
+function move_mgr:extrapolate_callback(npc)
+	printf("___EXTRAPOLATE_CALLBACK___")
+	self.can_use_get_current_point_index = true
+	self.current_point_init_time = device():time_global()
+end
+
 -- Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
@@ -155,7 +170,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	if mode == nil then
 		self.crouch = false
-		self.running = true
+		self.running = false
 		self.danger = false
 		self.sprint = false
 	else
@@ -194,6 +209,18 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	
 	xr_state.anim_update(nil, self.object)
 	self.object:clear_animations()
+
+	-- Подписаться на уведомления о extrapolate_callback
+	local npc_id = self.object:id()
+	local scheme = xr_motivator.storage[npc_id]["active_scheme"]
+	xr_logic.subscribe_action_for_events(self.object, xr_motivator.storage[npc_id][scheme], self)
+
+	-- Пока этот флаг не станет true (он будет установлен в extrapolate_callback), нельзя использовать
+	-- значение, которое возвращает get_current_point_index().
+	self.can_use_get_current_point_index = false
+	self.walk_until = device():time_global() + walk_min_time
+	self.run_until = device():time_global() + walk_min_time + run_min_time
+	self.keep_state_until = device():time_global()
 
 	--self.object:set_mental_state(anim.free)
 	--self.object:set_movement_type(move.run) -- на стартовую точку идти бегом
@@ -373,6 +400,36 @@ end
 function move_mgr:update(no_dialog_mgr_update)
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 	--printf("move_mgr:update(self.object:anims == %d)", self.object:animation_count())
+	if self.can_use_get_current_point_index and not self:arrived_to_first_waypoint() then
+		local t = device():time_global()
+		if t >= self.keep_state_until then
+			self.keep_state_until = t + keep_state_min_time
+
+			local cur_pt = self.object:get_current_point_index()
+			-- self.patrol_walk здесь по идее то же самое, что вернет patrol(self.object:patrol()),
+			-- поэтому использую его для оптимизации.
+			local dist = self.object:position():distance_to(self.patrol_walk:point(cur_pt))
+			printf("_bp: move_mgr: distance to destination waypoint: %d", dist)
+			if dist <= dist_walk or t < self.walk_until then
+				self.crouch = false
+				self.running = false
+				self.danger = false
+				self.sprint = false
+			elseif dist <= dist_run or t < self.run_until then
+				self.crouch = false
+				self.running = true
+				self.danger = false
+				self.sprint = false
+			else
+				self.crouch = false
+				self.running = false
+				self.danger = false
+				self.sprint = true
+			end
+		end
+
+		self:update_movement_state()
+	end
 
 	if not no_dialog_mgr_update then
 		-- self.dialog_mgr:update() -- UNCOMMENT ME
@@ -713,8 +770,8 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	if sig then
 		-- HACK, fixme:
 		local npc_id = self.object:id()
-		local section = xr_motivator.storage[npc_id]["active_section"]
-		local signals = xr_motivator.storage[npc_id][utils.get_scheme_by_section(section)].signals
+		local scheme = xr_motivator.storage[npc_id]["active_scheme"]
+		local signals = xr_motivator.storage[npc_id][scheme].signals
 		signals[sig] = true
 	end
 

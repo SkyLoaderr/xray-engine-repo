@@ -18,6 +18,11 @@ function motivator_binder:__init (obj) super(obj)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:extrapolate_callback()
+	if self.st.active_section ~= nil then
+		printf("___ACTIVE_SECTION___")
+		xr_logic.extrapolate_callback_event(self.object, self.st[self.st.active_scheme])
+	end
+	
 	local cur_pt = self.object:get_current_point_index()
 	printf("_bp: motivator_binder: extrapolate_callback: cur_pt = %d", cur_pt)
 	if patrol(self.object:patrol()):flags(cur_pt):get() == 0 then
@@ -48,15 +53,16 @@ function motivator_binder:reinit()
 -- Общие скрипты
 ----------------------------------------------------------------------------------------------------------------------
     xr_motivator.storage[self.object:id()] = {  followers = {} }
+    self.st = xr_motivator.storage[self.object:id()]
 
     --' Положения тела
-    xr_motivator.storage[self.object:id()].state = xr_state.body_state(self.object)
+    self.st.state = xr_state.body_state(self.object)
 
     --' удар в морду
     xr_punch.add_to_binder (self.object)   
 
     --' Настройка схемы реакции
-	xr_motivator.storage[self.object:id()].reactions = {
+	self.st.reactions = {
 		enabled = true,
 		time_wait = 5*60*1000,
 		evn = xr_reactions.events(self.object),
@@ -70,7 +76,7 @@ function motivator_binder:reinit()
     }
     xr_reactions.add_to_binder(self.object, char_ini)
     --' Настройка встречи
-    xr_motivator.storage[self.object:id()].meet = {
+    self.st.meet = {
 			Buyer = nil,
             Seller = self.object,
             begin_wait_to_see = { time = 300,

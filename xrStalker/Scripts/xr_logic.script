@@ -92,7 +92,9 @@ function non_goap_update_actions_event(npc, st, delta)
 Предназначение:
 	Вызывает у всех монстров и физических объектов, подписанных на события, метод update.
 	Для сталкеров эта функция не вызывается из xr_logic, поскольку у них updates обеспечивает GOAP.
-	
+
+function extrapolate_callback_event(npc, st)
+
 function switch_to_section(npc, st, section)
 Предназначение:
 	Выполняет переключение с одной секции на другую, если новая секция не nil. Если же она nil, остается
@@ -352,7 +354,9 @@ function reset_actions_event(npc, st)
 		return
 	end
 	for action_ptr, is_active in pairs(st.actions) do
-		action_ptr:reset_scheme()
+		if action_ptr.reset_scheme then
+			action_ptr:reset_scheme()
+		end
 	end
 end
 
@@ -382,6 +386,21 @@ function non_goap_waypoint_callback_event(npc, st, action_type, index)
 	for action_ptr, is_active in pairs(st.actions) do
 		if action_ptr.waypoint_callback then
 			action_ptr:waypoint_callback(npc, action_type, index)
+		end
+	end
+end
+
+function extrapolate_callback_event(npc, st)
+	if not st.actions then
+		local global_st = xr_motivator.storage[npc:id()]
+		printf("WARNING: extrapolate_callback_event: scheme '%s', section '%s': at least one action in a scheme " ..
+			"must be subscribed for events", global_st.active_scheme, global_st.active_section)
+		return
+	end
+	for action_ptr, is_active in pairs(st.actions) do
+		if action_ptr.extrapolate_callback then
+			printf("___ISSUING EXTRAPOLATE CALLBACK EVENT___")
+			action_ptr:extrapolate_callback(npc)
 		end
 	end
 end
