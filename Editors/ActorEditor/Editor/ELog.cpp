@@ -10,32 +10,36 @@
 	#include "LogForm.h"
 	#include "splash.h"
 	#include "ui_main.h"
-	void __stdcall ELogCallback(LPCSTR string)
+	void __stdcall ELogCallback(LPCSTR txt)
 	{
-    	if (string[0]=='!') TfrmLog::AddMessage(mtError,AnsiString(string+1));
-		else				TfrmLog::AddMessage(mtInformation,AnsiString(string));
+		if (0!=txt[0]){
+    		if (txt[0]=='!') TfrmLog::AddMessage(mtError,AnsiString(txt+1));
+			else			TfrmLog::AddMessage(mtInformation,AnsiString(lntxt);
+		}
 	}
 #endif
 #ifdef _LW_PLUGIN
 	#include <lwhost.h>
 	extern "C" LWMessageFuncs	*g_msg;
-	void ELogCallback(LPCSTR string)
+	void ELogCallback(LPCSTR txt)
 	{
 //		g_msg->info(string,0);
 	}
 #endif
 #ifdef _MAX_EXPORT
 	#include "NetDeviceLog.h"
-	void __stdcall ELogCallback(LPCSTR string)
+	void __stdcall ELogCallback(LPCSTR txt)
 	{
 //		MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);
 	}
 #endif
 #ifdef _MAYA_EXPORT
-	void __stdcall ELogCallback(LPCSTR string)
+	void __stdcall ELogCallback(LPCSTR txt)
 	{
-		if (string[0]=='!') cerr << "XR-Error: " << string+1 << "\n";
-		else				cerr << "XR-Info:  " << string << "\n";
+		if (0!=txt[0]){
+			if (txt[0]=='!')std::cerr << "XR-Error: " << txt+1 << "\n";
+			else			std::cerr << "XR-Info: " << txt << "\n";
+		}
 	}
 #endif
 	//----------------------------------------------------
