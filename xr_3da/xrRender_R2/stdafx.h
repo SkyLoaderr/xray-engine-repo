@@ -6,6 +6,7 @@
 
 #pragma warning(disable:4995)
 #include "..\stdafx.h"
+#pragma warning(disable:4995)
 #include <d3dx9.h>
 #pragma warning(default:4995)
 #pragma warning( 4 : 4018 )
