@@ -1,20 +1,30 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <!-- CHARACTER INFO IN THE INVENTORY MENU -->
 <window>
 	<!-- NAME -->
-	<static x="30" y="35" width="240" height="60">
-		<text x="0" y="0" font="letterica18" r="255" g="128" b="64"></text>
-	</static>
+	<name_static x="30" y="35" width="240" height="18">
+		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
+	</name_static>
 
 	<!-- RANK -->
-	<static x="20" y="65" width="240" height="60">
-		<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Rank</text>
-	</static>
+	<rank_static x="20" y="65" width="240" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</rank_static>
+	
+	<!-- RANK CAPTION -->
+	<rank_caption x="20" y="65" width="125" height="18">
+		<text x="0" y="0" font="letterica18" r="216" g="186" b="140">rank</text>
+	</rank_caption>
 
 	<!-- COMMUNITY -->
-	<static x="20" y="85" width="240" height="60">
-		<text x="0" y="0" font="letterica18" r="255" g="255" b="255"></text>
-	</static>
+	<community_static x="20" y="85" width="240" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</community_static>
+	
+	<!-- COMMUNITY CAPTION -->
+	<community_caption x="20" y="85" width="125" height="18">
+		<text x="0" y="0" font="letterica18" r="216" g="186" b="140">community</text>
+	</community_caption>
 
 </window>
 
