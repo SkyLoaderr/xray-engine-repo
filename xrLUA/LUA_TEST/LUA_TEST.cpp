@@ -27,6 +27,54 @@ void Log(LPCSTR S)
 	printf("%s",S);
 }
 
+
+//function loadModuleIntoTable(module_name)
+//	-- prevent reloading
+//	assert(not _LOADED[module_name],
+//		'failed: already loaded module' )
+//	local g = {}
+//	local ns = {}
+//	-- save global table
+//	for k, v in _G do
+//		g[k] = v
+//	end
+//
+//	require(module_name)
+//	for k, v in _G do
+//		if g[k] == nil then -- something new
+//			ns[k] = v -- put it into the result table
+//		elseif g[k] ~= _G[k] then -- something already exists
+//			ns[k] = _G[k] -- put newer into the result table
+//			_G[k] = g[k] -- restore original one
+//		end
+//	end
+//	return ns
+//end
+
+//-- module.lua
+//function func1()
+//print('func1!')
+//end
+//
+//var1 = 10
+//--------------
+//
+//lua
+//
+//>mymodule = loadModuleToNamespace('module.lua')
+//>mymodule.func1()
+//func1!
+//>print(mymodule.var1)
+//10
+//> func1()
+//stdin:1: attempt to call global `func1' (a nil value)
+//	  stack traceback:
+//stdin:1: in main chunk
+//		  [C]: ?
+//>print(var1)
+//nil
+
+
 namespace Game {
 	enum EWeatherType {
 		eWeatherTypeSun = u32(0),
@@ -386,6 +434,79 @@ void print_stack(lua_State *luaVM)
 //		printf("%2d : %s\n",i,lua_typename(luaVM, lua_type(luaVM, i)));
 }
 
+void vfLoadFileIntoNamespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true)
+{
+	lua_newtable	(L);
+	lua_pushstring	(L,N);
+	lua_pushvalue	(L,-2);
+	lua_settable	(L,LUA_GLOBALSINDEX);
+	lua_newtable	(L);
+	lua_pushstring	(L,"_G");
+	lua_gettable	(L,LUA_GLOBALSINDEX);
+	lua_pushnil		(L);
+	while (lua_next(L, -2) != 0) {
+		lua_pushvalue	(L,-2);
+		lua_pushvalue	(L,-2);
+		lua_settable	(L,-6);
+		lua_pop			(L, 1);
+	}
+
+	if (luaL_loadfile(L,S)) {
+		for (int i=0; ; i++)
+			if (lua_isstring(L,i))
+				printf	("* [LUA] %s\n",lua_tostring(L,i));
+			else
+				break;
+		lua_error		(L);
+	}
+
+	if (bCall)
+		lua_call		(L,0,0);
+	else {
+		lua_pushvalue	(L,-4);
+		lua_pushvalue	(L,-4);
+		lua_pushvalue	(L,-4);
+		lua_remove		(L,-5);
+		lua_remove		(L,-5);
+		lua_remove		(L,-5);
+	}
+
+	lua_pushnil		(L);
+	while (lua_next(L, -2) != 0) {
+		lua_pushvalue	(L,-2);
+		lua_gettable	(L,-5);
+		if (lua_isnil(L,-1)) {
+			lua_pop			(L,1);
+			lua_pushvalue	(L,-2);
+			lua_pushvalue	(L,-2);
+			lua_settable	(L,-7);
+			lua_pushvalue	(L,-2);
+			lua_pushnil		(L);
+			lua_settable	(L,-5);
+		}
+		else {
+			lua_pop			(L,1);
+			lua_pushvalue	(L,-2);
+			lua_gettable	(L,-4);
+			if (lua_equal(L,-1,-2)) {
+				lua_pushvalue	(L,-3);
+				lua_pushvalue	(L,-2);
+				lua_settable	(L,-7);
+				lua_pop			(L,1);
+				lua_pushvalue	(L,-2);
+				lua_pushvalue	(L,-2);
+				lua_settable	(L,-5);
+			}
+		}
+		lua_pushvalue	(L,-2);
+		lua_pushnil		(L);
+		lua_settable	(L,-6);
+		lua_pop			(L, 1);
+	}
+	
+	lua_pop			(L,3);
+}
+
 // main
 int __cdecl _tmain(int argc, _TCHAR* argv[])
 {
@@ -393,82 +514,18 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	if (!luaVM)
 		lua_error	(luaVM);
 
-////	luaopen_base	(luaVM);
-//	print_stack		(luaVM);
-//	luaopen_string	(luaVM);	// S = String
-//	print_stack		(luaVM);
-//	luaopen_math	(luaVM);	// S = Math, String
-//
-////	print_stack		(luaVM);
-////	lua_pop			(luaVM,2);
-//	print_stack		(luaVM);
-//	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
-//		lua_error	(luaVM);	// S = Extension, Math, String
-//	print_stack		(luaVM);
-//
-////	luaopen_base	(luaVM);
-////	luaopen_string	(luaVM);
-////	luaopen_math	(luaVM);
-//
-//	lua_newtable	(luaVM);	// S = NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//	lua_pushstring	(luaVM,"core");	// S = "core", NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//	lua_pushvalue	(luaVM,-2);	// S = NewTable, "core", NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//	lua_settable	(luaVM,LUA_GLOBALSINDEX);	// S = NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//
-//	lua_setfenv		(luaVM,-2);	// S = NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//
-//	lua_call		(luaVM,0,0);
-//	print_stack		(luaVM);
-//
-//	if (luaL_loadfile(luaVM, "x:\\test1.lua"))
-//		lua_error	(luaVM);	// S = Extension, Math, String
-//
-//	print_stack		(luaVM);
-////	luaopen_base	(luaVM);
-////	luaopen_string	(luaVM);
-////	luaopen_math	(luaVM);
-//
-//	lua_newtable	(luaVM);	// S = NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//	lua_pushstring	(luaVM,"test1");	// S = "core", NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//	lua_pushvalue	(luaVM,-2);	// S = NewTable, "core", NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//	lua_settable	(luaVM,LUA_GLOBALSINDEX);	// S = NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//
-//	lua_setfenv		(luaVM,-2);	// S = NewTable, Extension, Math, String
-//	print_stack		(luaVM);
-//
-//	lua_call		(luaVM,0,0);
-//	print_stack		(luaVM);
-//
-////	lua_dofile		(luaVM,"x:\\test1.lua");
-
 	luaopen_base	(luaVM);
-	luaopen_string	(luaVM);	// S = String
-	luaopen_math	(luaVM);	// S = Math, String
+	luaopen_string	(luaVM);
+	luaopen_math	(luaVM);
 
 	open			(luaVM);
 
-	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
-		lua_error	(luaVM);	// S = Extension, Math, String
+	lua_pop			(luaVM,3);
+	vfLoadFileIntoNamespace(luaVM,"x:\\extension.lua","core");
+	lua_State		*l_tpThread = lua_newthread(luaVM);
+	vfLoadFileIntoNamespace(l_tpThread,"x:\\test1.lua","test1",false);
 
-	scope::init		(luaVM);
-	lua_newtable	(luaVM);
-	detail::getref	(luaVM, scope_stack::top(luaVM));
-	lua_pushstring	(luaVM, "core");
-	lua_pushvalue	(luaVM, -3);
-	lua_settable	(luaVM, -3);
-	lua_call		(luaVM,0,0);
-	lua_pop			(luaVM, 1);
-
-	lua_dofile		(luaVM,"x:\\test1.lua");
+	lua_resume		(l_tpThread,0);
 
 	lua_close		(luaVM);
 }

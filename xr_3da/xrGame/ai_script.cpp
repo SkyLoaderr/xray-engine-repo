@@ -27,28 +27,18 @@ CScript::CScript(LPCSTR caFileName)
 	luaopen_math	(m_tpLuaVirtualMachine);
 #ifdef DEBUG
 	luaopen_debug	(m_tpLuaVirtualMachine);
+	lua_pop			(m_tpLuaVirtualMachine,5);
+#else
+	lua_pop			(m_tpLuaVirtualMachine,4);
 #endif
 
 	vfExportToLua	(m_tpLuaVirtualMachine,caFileName);
 
 	Msg				("* Loading design script %s",caFileName);
-	IReader			*l_tpFileReader = FS.r_open(caFileName);
-	R_ASSERT		(l_tpFileReader);
 
-	CLuaVirtualMachine	*l_tpThread = lua_newthread(m_tpLuaVirtualMachine);
-	string256		S;
-	strconcat		(S,"@",caFileName);		
-	int				i = luaL_loadbuffer(l_tpThread,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),S);
-	
-#ifdef DEBUG
-	if (i) {
-		vfPrintOutput(l_tpThread,m_caScriptFileName);
-		vfPrintError(l_tpThread,i);
-	}
-#endif
+	CLuaVirtualMachine		*l_tpThread = lua_newthread(m_tpLuaVirtualMachine);
+	vfLoadFileIntoNamespace	(l_tpThread,caFileName,false);
 	m_tpThreads.push_back	(l_tpThread);
-
-	FS.r_close		(l_tpFileReader);
 }
 
 CScript::~CScript()
