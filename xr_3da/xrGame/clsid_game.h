@@ -7,6 +7,7 @@
 #define CLSID_SPECTATOR				MK_CLSID('S','P','E','C','T',' ',' ',' ')
 
 // all the monsters
+#define CLSID_AI_GRAPH				MK_CLSID('A','I','_','G','R','A','P','H')
 #define CLSID_AI_CROW				MK_CLSID('A','I','_','C','R','O','W',' ')
 #define CLSID_AI_RAT				MK_CLSID('A','I','_','R','A','T',' ',' ')
 #define CLSID_AI_RAT_WOLF			MK_CLSID('A','I','_','R','A','T','_','W')

@@ -1049,6 +1049,12 @@ void xrGraphPoint::STATE_Write		(NET_Packet& P)
 {
 	P.w_string(m_caConnectionPointName);
 };
+void xrGraphPoint::UPDATE_Read		(NET_Packet& P)
+{
+}
+void xrGraphPoint::UPDATE_Write		(NET_Packet& P)
+{
+}
 
 #ifdef _EDITOR
 void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
@@ -1066,6 +1072,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	switch (cls){
 	case CLSID_OBJECT_ACTOR:		return xr_new<xrSE_Actor>			();
 	case CLSID_OBJECT_DUMMY:		return xr_new<xrSE_Dummy>			();
+	case CLSID_AI_GRAPH:			return xr_new<xrGraphPoint>			();
 	case CLSID_AI_CROW:				return xr_new<xrSE_Crow>			();
 	case CLSID_AI_RAT:				return xr_new<xrSE_Rat>				();
 	case CLSID_AI_ZOMBIE:			return xr_new<xrSE_Zombie>			();
