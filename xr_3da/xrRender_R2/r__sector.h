@@ -47,7 +47,7 @@ protected:
 public:
 	xr_vector<CFrustum>				r_frustums;
 	xr_vector<_scissor>				r_scissors;
-	Fbox2							r_scissor_merged;
+	_scissor						r_scissor_merged;
 	u32								r_marker;
 public:
 	// Main interface

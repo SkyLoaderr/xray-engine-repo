@@ -39,9 +39,14 @@ void CPortalTraverser::traverse			(IRender_Sector* start, CFrustum& F, Fvector& 
 		for (u32 s=0; s<r_sectors.size(); s++)
 		{
 			CSector*	S		= (CSector*)r_sectors[s];
-			S->r_scissor_merged.invalidate();
+			S->r_scissor_merged.invalidate	();
+			S->r_scissor_merged.depth		= flt_max;
 			for (u32 it=0; it<S->r_scissors.size(); it++)
+			{
 				S->r_scissor_merged.merge(S->r_scissors[it]);
+				if (S->r_scissors[it].depth < r_scissor_merged.depth)
+					r_scissor_merged.depth = S->r_scissors[it].depth;
+			}
 		}
 	}
 }

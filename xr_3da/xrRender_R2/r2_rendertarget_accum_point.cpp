@@ -5,19 +5,6 @@ void CRenderTarget::accum_point		(light* L)
 	ref_shader		shader			= L->s_point;
 	if (!shader)	shader			= s_accum_point;
 
-	// Scissor
-	{
-		CSector*	S				= (CSector*)L->spatial.sector;
-		Fbox2		bb				= S->r_scissor_merged;
-		RECT		R;
-		R.left		= clampr	(iFloor	(bb.min.x*Device.dwWidth),	int(0),int(Device.dwWidth));
-		R.right		= clampr	(iCeil	(bb.max.x*Device.dwWidth),	int(0),int(Device.dwWidth));
-		R.top		= clampr	(iFloor	(bb.min.y*Device.dwHeight),	int(0),int(Device.dwHeight));
-		R.bottom	= clampr	(iCeil	(bb.max.y*Device.dwHeight),	int(0),int(Device.dwHeight));
-		CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
-		CHK_DX		(HW.pDevice->SetScissorRect(&R));
-	}
-
 	// Common
 	Fvector		L_pos;
 	float		L_spec;
@@ -34,6 +21,7 @@ void CRenderTarget::accum_point		(light* L)
 	RCache.set_xform_world			(mW);
 	RCache.set_xform_view			(Device.mView);
 	RCache.set_xform_project		(Device.mProject);
+	BOOL	bIntersect				= enable_scissor	(L);
 
 	// *****************************	Mask by stencil		*************************************
 	// *** similar to "Carmack's reverse", but assumes convex, non intersecting objects,
@@ -56,18 +44,8 @@ void CRenderTarget::accum_point		(light* L)
 
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
-	Fmatrix& M						= Device.mFullTransform;
-	Fvector4 plane;
-	plane.x							= -(M._14 + M._13);
-	plane.y							= -(M._24 + M._23);
-	plane.z							= -(M._34 + M._33);
-	plane.w							= -(M._44 + M._43);
-	float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
-	plane.mul						(denom);
-	Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
-	float	p_dist					= P.classify	(L->position) - L->range;
-	if (p_dist<0)					RCache.set_CullMode			(CULL_CW);
-	else							RCache.set_CullMode			(CULL_CCW);
+	if (bIntersect)	RCache.set_CullMode			(CULL_CW);		// back
+	else			RCache.set_CullMode			(CULL_CCW);		// front
 
 	// 2D texgen (texture adjustment matrix)
 	float	_w						= float(Device.dwWidth);

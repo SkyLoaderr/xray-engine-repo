@@ -113,7 +113,7 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 		if (PortalTraverser.i_options&CPortalTraverser::VQ_SCISSOR && (!PORTAL->bDualRender))
 		{
 			// Build scissor rectangle in projection-space
-			Fbox2	bb;	bb.invalidate(); float depth = flt_max; float Ldepth = flt_max;
+			Fbox2	bb;	bb.invalidate(); float depth = flt_max;
 			sPoly&	p	= *P;
 			for		(u32 vit=0; vit<p.size(); vit++)	{
 				Fvector4	t;	
@@ -124,9 +124,7 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 				t.y = v.x*M._12 + v.y*M._22 + v.z*M._32 + M._42;
 				t.z = v.x*M._13 + v.y*M._23 + v.z*M._33 + M._43;
 				t.w = v.x*M._14 + v.y*M._24 + v.z*M._34 + M._44;
-
-				if (t.z < Ldepth)	Ldepth		= t.z;
-				t.mul				(1.f/t.w);
+				t.mul	(1.f/t.w);
 
 				if (t.x < bb.min.x)	bb.min.x	= t.x; 
 				if (t.x > bb.max.x) bb.max.x	= t.x;
@@ -135,7 +133,7 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 				if (t.z < depth)	depth		= t.z;
 			}
 			// Msg	("bb(%s): (%f,%f)-(%f,%f), d=%f", PORTAL->bDualRender?"true":"false",bb.min.x, bb.min.y, bb.max.x, bb.max.y,depth);
-			if (Ldepth<EPS)	{
+			if (depth<EPS)	{
 				scissor	= R_scissor;
 
 				// Cull by HOM (slower algo)
@@ -149,7 +147,7 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 				if (bb.min.y > R_scissor.min.y)	scissor.min.y = bb.min.y; else scissor.min.y = R_scissor.min.y;
 				if (bb.max.x < R_scissor.max.x) scissor.max.x = bb.max.x; else scissor.max.x = R_scissor.max.x;
 				if (bb.max.y < R_scissor.max.y) scissor.max.y = bb.max.y; else scissor.max.y = R_scissor.max.y;
-				scissor.depth	= Ldepth;
+				scissor.depth	= depth;
 
 				// Msg	("scissor: (%f,%f)-(%f,%f)", scissor.min.x, scissor.min.y, scissor.max.x, scissor.max.y);
 				// Check if box is non-empty

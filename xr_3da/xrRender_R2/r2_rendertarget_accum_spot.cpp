@@ -9,31 +9,7 @@ void CRenderTarget::accum_spot	(light* L)
 	ref_shader		shader		= L->s_spot;
 	if (!shader)	shader		= s_accum_spot;
 
-	// Scissor
-	if (HW.Caps.bScissor)
-	{
-		CSector*	S	= (CSector*)L->spatial.sector;
-		Fbox2		bb	= S->r_scissor_merged;
-		RECT		R;
-		R.left		= clampr	(iFloor	(bb.min.x*Device.dwWidth),	int(0),int(Device.dwWidth));
-		R.right		= clampr	(iCeil	(bb.max.x*Device.dwWidth),	int(0),int(Device.dwWidth));
-		R.top		= clampr	(iFloor	(bb.min.y*Device.dwHeight),	int(0),int(Device.dwHeight));
-		R.bottom	= clampr	(iCeil	(bb.max.y*Device.dwHeight),	int(0),int(Device.dwHeight));
-		if	( (Device.dwWidth==(R.right - R.left)) && (Device.dwHeight==(R.bottom-R.top)) )
-		{
-			// full-screen -> do nothing
-		} else {
-			// test if light-volume intersects scissor-rectangle
-			// if it does - do nothing, if doesn't - we look on light through portal
-			Fplane		P;
-
-
-			CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
-			CHK_DX		(HW.pDevice->SetScissorRect(&R));
-		}
-	}
-
-	if (1)
+	BOOL	bIntersect			= FALSE; //enable_scissor(L);
 	{
 		// scale to account range and angle
 		float		s			= 2.f*L->range*tanf(L->cone/2.f);	
@@ -59,6 +35,7 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.set_xform_world			(xf					);
 		RCache.set_xform_view			(Device.mView		);
 		RCache.set_xform_project		(Device.mProject	);
+		bIntersect						= enable_scissor	(L);
 
 		// *** similar to "Carmack's reverse", but assumes convex, non intersecting objects,
 		// *** thus can cope without stencil clear with 127 lights
@@ -81,21 +58,8 @@ void CRenderTarget::accum_spot	(light* L)
 
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
-	{
-		Fmatrix& M						= RCache.xforms.m_wvp;
-		BOOL	bIntersect				= FALSE;
-		for (u32 vit=0; vit<DU_CONE_NUMVERTEX; vit++)	{
-			Fvector&	v	= du_cone_vertices[vit];
-			float _z = v.x*M._13 + v.y*M._23 + v.z*M._33 + M._43;
-			float _w = v.x*M._14 + v.y*M._24 + v.z*M._34 + M._44;
-			if (_z<=0 || _w<=0)	{
-				bIntersect	= TRUE;
-				break;
-			}
-		}
-		if (bIntersect)	RCache.set_CullMode			(CULL_CW);		// back
-		else			RCache.set_CullMode			(CULL_CCW);		// front
-	}
+	if (bIntersect)	RCache.set_CullMode			(CULL_CW);		// back
+	else			RCache.set_CullMode			(CULL_CCW);		// front
 
 	// 2D texgen (texture adjustment matrix)
 	Fmatrix			m_Texgen;

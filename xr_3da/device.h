@@ -77,6 +77,7 @@ public:
 	Fmatrix									mView;
 	Fmatrix									mProject;
 	Fmatrix									mFullTransform;
+	Fmatrix									mInvFullTransform;
 	float									fFOV;
 	float									fASPECT;
 	

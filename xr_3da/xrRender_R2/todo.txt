@@ -37,6 +37,7 @@ R1:
 	* ShadowCast cache (:BUG:)
 
 R2:
+	* optimized sphere around cone-shape
 	* work out tonemapping				(?)							-	?
 	* work out blooming					(again)						-\  3 days	
 	* work out skybox					(again)						-/
