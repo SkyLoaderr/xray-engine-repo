@@ -15,7 +15,10 @@ CWeaponCustomPistol::~CWeaponCustomPistol()
 }
 void CWeaponCustomPistol::switch2_Fire	()
 {
-	if (fTime<=0){
+	if (fTime<=0)
+	{
+		UpdateFP					();
+
 		// Fire
 		Fvector						p1, d;
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
@@ -26,13 +29,17 @@ void CWeaponCustomPistol::switch2_Fire	()
 		fTime						+= fTimeToFire;
 	}
 }
+
+/*
 void CWeaponCustomPistol::switch2_Empty	()
 {
 	pSounds->PlayAtPos(sndEmptyClick,this,vLastFP);
 }
+
 void CWeaponCustomPistol::OnEmptyClick	()
 {
 }
+*/
 
 void	CWeaponCustomPistol::state_Fire	(float dt)
 {

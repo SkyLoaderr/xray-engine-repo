@@ -12,8 +12,8 @@ private:
 	typedef CWeaponMagazined inherited;
 protected:
 	virtual void	switch2_Fire		();
-	virtual void	switch2_Empty		();
-	virtual void	OnEmptyClick		();
+//	virtual void	switch2_Empty		();
+//	virtual void	OnEmptyClick		();
 	virtual void	state_Fire			(float dt);
 	virtual void	state_MagEmpty		(float dt);
 public:

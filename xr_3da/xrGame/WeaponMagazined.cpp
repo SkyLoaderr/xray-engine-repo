@@ -194,12 +194,12 @@ void CWeaponMagazined::UpdateCL			()
 	case eIdle:
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
-		UpdateSounds	();
 		break;
 	case eFire:			state_Fire		(dt);	break;
 	case eMagEmpty:		state_MagEmpty	(dt);	break;
 	case eHidden:		break;
 	}
+	UpdateSounds		();
 	bPending			= FALSE;
 }
 
