@@ -100,8 +100,12 @@ void	CROS_impl::update	(IRenderable* O)
 	if					(dwFrame==Device.dwFrame)			return;
 	dwFrame				= Device.dwFrame;
 	if					(0==O)								return;
-	VERIFY				(dynamic_cast<CROS_impl*>(O->renderable.ROS));
+	VERIFY				(dynamic_cast<CROS_impl*>	(O->renderable.ROS));
 	float	dt			=	Device.fTimeDelta;
+
+	CObject*	_object	= dynamic_cast<CObject*>	(O);
+	BOOL		_enabled= true;
+	if (_object)		{ _enabled=_object->getEnabled(); _object->setEnabled(false); }
 
 	// select sample
 	Fvector	position;	O->renderable.xform.transform_tiny	(position,O->renderable.visual->vis.sphere.P);
@@ -112,12 +116,12 @@ void	CROS_impl::update	(IRenderable* O)
 		if  (--result_sun	< 0)	{
 			result_sun		+=		::Random.randI(lt_hemisamples/4,lt_hemisamples/2)	;
 			#if RENDER==R_R1
-			 light*	sun		=		RImplementation.L_DB->sun_adapted	;
+			 light*	sun		=		RImplementation.L_DB->sun_original	;
 			#else
 			 light*	sun		=		RImplementation.Lights.sun_adapted	;
 			#endif
 			Fvector	direction;	direction.set	(sun->direction).invert().normalize	();
-			sun_value		=	(g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache_sun))?1.f:0.f;
+			sun_value		=	!(bool)(g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache_sun))?1.f:0.f;
 		}
 	}
 	
@@ -129,7 +133,8 @@ void	CROS_impl::update	(IRenderable* O)
 
 		// take sample
 		Fvector	direction;	direction.set	(hdir[sample][0],hdir[sample][1],hdir[sample][2]).normalize	();
-		result[sample]	=	!!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
+		result[sample]	=	!(bool)g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
+		Msg				("%d:-- %s",sample,result[sample]?"true":"false");
 	}
 
 	// light-tracing
@@ -224,4 +229,6 @@ void	CROS_impl::update	(IRenderable* O)
 		accum.add		(lacc);
 	} else 			accum.mad	( desc.lmap_color,	 .1f );
 	approximate				=	accum;
+
+	if (_object)		{ _object->setEnabled(_enabled); }
 }

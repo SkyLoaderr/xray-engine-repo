@@ -369,7 +369,7 @@ void CRender::Calculate				()
 							// track lighting environment
 							VERIFY				(renderable->renderable.ROS);
 							CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
-							T->update			(renderable);
+							//. T->update			(renderable);
 						}
 						set_Object						(renderable);
 						renderable->renderable_Render	();
