@@ -227,12 +227,12 @@ function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 end
 
 function load_dialog:AddItemToList(file_name, date_time)
-	local new_item = CUIListItemEx()
+	local new_item = CUIListItemPair()
 	
-	--new_item:SetTextFileName(file_name)
-	--new_item:SetTextDateTime(date_time)
+	new_item:SetTextFileName(file_name)
+	new_item:SetTextDateTime(date_time)
 	
-	new_item:SetText(file_name)
+	--new_item:SetText(file_name)
 	
 	
 	local list_box = self:GetListWnd("list_window")
