@@ -63,6 +63,7 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 								 LPCSTR  path, 
 								 int node_index)
 {
+	R_ASSERT	(start_node && path);
 	XML_NODE*	node			= NULL;
 	XML_NODE*	node_parent		= NULL;
 
