@@ -142,6 +142,7 @@ void CBuild::mem_CompactSubdivs()
 void CBuild::mem_Compact()
 {
 	Memory.mem_compact	();
+	/*
 	u32					bytes,blocks_used,blocks_free;
 	bytes				= Memory.mem_usage(&blocks_used,&blocks_free);
 	LPCSTR h_status		= 0;
@@ -149,4 +150,5 @@ void CBuild::mem_Compact()
 	else										h_status = "DAMAGED";
 	clMsg				("::MEMORY(%s):: %d MB, %d Bused, %d Bfree",
 		h_status,bytes/(1024*1024),blocks_used,blocks_free);
+	*/
 }
