@@ -116,62 +116,72 @@ section
 */
 void RasterizeSection(unsigned char *Color, float *Depth, 
 					  const int W, const int H, 
-					  float A[3], float B[3], float C[3],
+					  float *A, float *B, float *C,
 					  unsigned char CurrentColor[3], Sections Sect)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	float startY, endY, *startp1, *startp2;
 	if (Sect == BOTTOM) { 
-		startY=minPixel(A[1]); endY=maxPixel(B[1]); 
+		startY	= minPixel(A[1]); endY = maxPixel(B[1]); 
 		startp1 = startp2 = A;
 	}
 	else { 
-		startY = minPixel(B[1]); endY = maxPixel(C[1]); 
+		startY  = minPixel(B[1]); endY = maxPixel(C[1]); 
 		startp1 = A; startp2 = B;
 	}
-	if (startY <= endY) {
+	if (startY <= endY) 
+	{
 		// Find the edge differences
 		float E1[3], E2[3];
-		for (int i=0; i<3; i++)
-			if (Sect == BOTTOM) { E1[i] = B[i]-A[i]; E2[i] = C[i]-A[i]; }
-			else { E1[i] = C[i]-A[i]; E2[i] = C[i]-B[i]; }
-			// Compute the inverse slopes of the lines, ie rate of change of X by Y
-			float mE1 = E1[0]/E1[1];
-			float mE2 = E2[0]/E2[1];
-			// Initial Y offset for left and right (due to pixel rounding)
-			float e1_init_dY = startY - startp1[1], e2_init_dY = startY - startp2[1];
-			float t;
-			float leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
-			// find initial values, step values
-			if ( ((mE1<mE2)&&(Sect==BOTTOM)) || ((mE1>mE2)&&(Sect==TOP)) ) { 
-				// E1 is on the Left
-				// Initial Starting values for left (from E1)
-				t = e1_init_dY/E1[1]; // Initial fraction of offset
-				leftX = startp1[0] + E1[0]*t; left_dX = mE1;
-				leftZ = startp1[2] + E1[2]*t; left_dZ = E1[2]/E1[1];
-				// Initial Ending values for right (from E2)
-				t = e2_init_dY/E2[1]; // Initial fraction of offset
-				rightX = startp2[0] + E2[0]*t; right_dX = mE2;
-				rightZ = startp2[2] + E2[2]*t; right_dZ = E2[2]/E2[1];
-			}
-			else { 
-				// E2 is on left
-				// Initial Starting values for left (from E2)
-				t = e2_init_dY/E2[1]; // Initial fraction of offset
-				leftX = startp2[0] + E2[0]*t; left_dX = mE2;
-				leftZ = startp2[2] + E2[2]*t; left_dZ = E2[2]/E2[1];
-				// Initial Ending values for right (from E1)
-				t = e1_init_dY/E1[1]; // Initial fraction of offset
-				rightX = startp1[0] + E1[0]*t; right_dX = mE1;
-				rightZ = startp1[2] + E1[2]*t; right_dZ = E1[2]/E1[1];
-			}	
-			// Now scan all lines in this section
-			for (; startY<=endY; startY++) {
-				Scan1Line(Color, Depth, W, H, int(startY), leftX, rightX, leftZ, rightZ,
-					CurrentColor);
-				leftX += left_dX; rightX += right_dX;
-				leftZ += left_dZ; rightZ += right_dZ;
-			}
+		if (Sect == BOTTOM)	
+		{
+			E1[0] = B[0]-A[0]; E2[0] = C[0]-A[0];
+			E1[1] = B[1]-A[1]; E2[1] = C[1]-A[1];
+			E1[2] = B[2]-A[2]; E2[2] = C[2]-A[2];
+		} else {
+			E1[0] = C[0]-A[0]; E2[0] = C[0]-B[0];
+			E1[1] = C[1]-A[1]; E2[1] = C[1]-B[1];
+			E1[2] = C[2]-A[2]; E2[2] = C[2]-B[2];
+		}
+
+		// Compute the inverse slopes of the lines, ie rate of change of X by Y
+		float mE1	= E1[0]/E1[1];
+		float mE2	= E2[0]/E2[1];
+		// Initial Y offset for left and right (due to pixel rounding)
+		float e1_init_dY = startY - startp1[1], e2_init_dY = startY - startp2[1];
+		float t;
+		float leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
+		// find initial values, step values
+		if ( ((mE1<mE2)&&(Sect==BOTTOM)) || ((mE1>mE2)&&(Sect==TOP)) ) { 
+			// E1 is on the Left
+			// Initial Starting values for left (from E1)
+			t		= e1_init_dY/E1[1]; // Initial fraction of offset
+			leftX	= startp1[0] + E1[0]*t; left_dX = mE1;
+			leftZ	= startp1[2] + E1[2]*t; left_dZ = E1[2]/E1[1];
+			// Initial Ending values for right (from E2)
+			t		= e2_init_dY/E2[1]; // Initial fraction of offset
+			rightX	= startp2[0] + E2[0]*t; right_dX = mE2;
+			rightZ	= startp2[2] + E2[2]*t; right_dZ = E2[2]/E2[1];
+		}
+		else { 
+			// E2 is on left
+			// Initial Starting values for left (from E2)
+			t		= e2_init_dY/E2[1]; // Initial fraction of offset
+			leftX	= startp2[0] + E2[0]*t; left_dX = mE2;
+			leftZ	= startp2[2] + E2[2]*t; left_dZ = E2[2]/E2[1];
+			// Initial Ending values for right (from E1)
+			t		= e1_init_dY/E1[1]; // Initial fraction of offset
+			rightX	= startp1[0] + E1[0]*t; right_dX = mE1;
+			rightZ	= startp1[2] + E1[2]*t; right_dZ = E1[2]/E1[1];
+		}	
+		// Now scan all lines in this section
+		for (; startY<=endY; startY++) 
+		{
+			Scan1Line(Color, Depth, W, H, int(startY), leftX, rightX, leftZ, rightZ,
+				CurrentColor);
+			leftX += left_dX; rightX += right_dX;
+			leftZ += left_dZ; rightZ += right_dZ;
+		}
 	}
 }
 
@@ -203,13 +213,13 @@ void RasterizeTriangle_FLAT(unsigned char *Color, float *Depth, const int W,
 {
 	// Create local copy of the vertices
 	// Since I am reordering the vertices, changing A,B,C screws up the model
-	float a[3],b[3],c[3];
+	float a[3],  b[3],  c[3];
 	a[0] = A[0]; a[1] = A[1]; a[2] = A[2];
 	b[0] = B[0]; b[1] = B[1]; b[2] = B[2];
 	c[0] = C[0]; c[1] = C[1]; c[2] = C[2];
 	
 	// Order the vertices by Y
-	orderPts(a,b,c);
+	orderPts		(a,b,c);
 	// Rasterise First Section
 	RasterizeSection(Color, Depth, W, H, a, b, c, CurrentColor, BOTTOM);
 	// Rasterise Second Section
