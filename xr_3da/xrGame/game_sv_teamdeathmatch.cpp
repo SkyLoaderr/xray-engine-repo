@@ -61,21 +61,8 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team)
 	DWORD	pTeamColor[2] = {0xffff0000, 0xff0000ff};
 	
 	HUD().outMessage		(pTeamColor[team-1],"","%s has switched to %s",get_option_s(xrCData->Name,"name",xrCData->Name), pTeamName[team-1]);
-	
-	/*
-	if(team == 0 || team == 1) {
-		s16 l_old_team = get_id(id_who)->team;
-		get_id(id_who)->team = team;
-		get_id(id_who)->flags &= ~GAME_PLAYER_FLAG_CS_SPECTATOR;
-		if(get_alive_count(l_old_team) == 0) {
-			OnTeamScore((l_old_team+1)%2);
-			OnRoundEnd("????");
-		}
-	} else {
-		get_id(id_who)->flags |= GAME_PLAYER_FLAG_CS_SPECTATOR|GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-		if(get_alive_count(0)+get_alive_count(1) == 0) OnRoundEnd("????");
-	}
-	*/
+		
+	signal_Syncronize();
 }
 
 void	game_sv_TeamDeathmatch::OnRoundStart			()
@@ -121,8 +108,9 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		if (ps->team != ps_killer->team) continue;
 
 		teams[ps_killer->team-1].score += ps->kills;
-	};
-	
+	};	
 
 	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit) )OnFraglimitExceed();
+
+	signal_Syncronize();
 }
