@@ -94,9 +94,21 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCompress", "..\xrCompress
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scriptDbgIde", "xrScriptDbgIde\xrScriptDebudIde.vcproj", "{2024BB4B-9C57-4EA7-B355-1FFF6FD5CE12}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CJ60Lib", "..\cjLib\CJ60Lib.vcproj", "{17C3FFE4-A323-4A8F-B759-336D6D5EEF5F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SciLexer", "..\scintilla\SciLexer.vcproj", "{0D43EDC2-A071-4407-9E54-4D136FB854CB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 16
+		SccNumberOfProjects = 19
 		SccProjectUniqueName0 = XR_3DA.vcproj
 		SccProjectName0 = \u0022$/XR_3DA\u0022,\u0020WABAAAAA
 		SccLocalPath0 = .
@@ -161,6 +173,18 @@ Global
 		SccLocalPath15 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
+		SccProjectUniqueName16 = xrScriptDbgIde\\xrScriptDebudIde.vcproj
+		SccLocalPath16 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection16 = xrScriptDbgIde\\
+		SccProjectUniqueName17 = ..\\cjLib\\CJ60Lib.vcproj
+		SccProjectName17 = \u0022$/CJ60Lib\u0022,\u0020LNWAAAAA
+		SccLocalPath17 = ..\\cjLib
+		CanCheckoutShared = true
+		SccProjectUniqueName18 = ..\\scintilla\\SciLexer.vcproj
+		SccProjectName18 = \u0022$/SciLexer\u0022,\u0020NHWAAAAA
+		SccLocalPath18 = ..\\scintilla
+		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -258,6 +282,24 @@ Global
 		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Mixed.Build.0 = Release|Win32
 		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Release.ActiveCfg = Release|Win32
 		{EF76867B-6EB8-4DC0-A1D6-E964FAD6FC7B}.Release.Build.0 = Release|Win32
+		{2024BB4B-9C57-4EA7-B355-1FFF6FD5CE12}.Debug.ActiveCfg = Debug|Win32
+		{2024BB4B-9C57-4EA7-B355-1FFF6FD5CE12}.Debug.Build.0 = Debug|Win32
+		{2024BB4B-9C57-4EA7-B355-1FFF6FD5CE12}.Mixed.ActiveCfg = Debug|Win32
+		{2024BB4B-9C57-4EA7-B355-1FFF6FD5CE12}.Mixed.Build.0 = Debug|Win32
+		{2024BB4B-9C57-4EA7-B355-1FFF6FD5CE12}.Release.ActiveCfg = Release|Win32
+		{2024BB4B-9C57-4EA7-B355-1FFF6FD5CE12}.Release.Build.0 = Release|Win32
+		{17C3FFE4-A323-4A8F-B759-336D6D5EEF5F}.Debug.ActiveCfg = Debug|Win32
+		{17C3FFE4-A323-4A8F-B759-336D6D5EEF5F}.Debug.Build.0 = Debug|Win32
+		{17C3FFE4-A323-4A8F-B759-336D6D5EEF5F}.Mixed.ActiveCfg = Release|Win32
+		{17C3FFE4-A323-4A8F-B759-336D6D5EEF5F}.Mixed.Build.0 = Release|Win32
+		{17C3FFE4-A323-4A8F-B759-336D6D5EEF5F}.Release.ActiveCfg = Release|Win32
+		{17C3FFE4-A323-4A8F-B759-336D6D5EEF5F}.Release.Build.0 = Release|Win32
+		{0D43EDC2-A071-4407-9E54-4D136FB854CB}.Debug.ActiveCfg = Debug|Win32
+		{0D43EDC2-A071-4407-9E54-4D136FB854CB}.Debug.Build.0 = Debug|Win32
+		{0D43EDC2-A071-4407-9E54-4D136FB854CB}.Mixed.ActiveCfg = Release|Win32
+		{0D43EDC2-A071-4407-9E54-4D136FB854CB}.Mixed.Build.0 = Release|Win32
+		{0D43EDC2-A071-4407-9E54-4D136FB854CB}.Release.ActiveCfg = Release|Win32
+		{0D43EDC2-A071-4407-9E54-4D136FB854CB}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection

@@ -32,7 +32,7 @@ printf("----------------------main----")
 
 	dt2:setHMSms(13,4,5,67)
 	dump_time(dt2)
-	dump_time(dt)
+	dump_time(dt) 
 
 	if dt==dt2 then 
 		printf("equal")
