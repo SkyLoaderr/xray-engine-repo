@@ -270,6 +270,8 @@
 	</info_portion>
 	<info_portion id="assault_have_vodka">
 	</info_portion>
+	<info_portion id="assault_finished">
+	</info_portion>
 	
 
 </game_information_portions>
