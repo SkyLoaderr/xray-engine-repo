@@ -475,6 +475,7 @@ class CAI_Soldier : public CCustomMonster
 		void OnDefendGroupFireDialog();
 
 		// miscellanious funtions	
+		bool bfCheckIfGroupFightType();
 		bool bfCheckForDanger();
 		void vfStopFire();
 		void SelectSound(int &iIndex);

@@ -31,13 +31,11 @@
 		}
 	#endif
 
-	//m_dwLastRangeSearch = 0;
 	#define GO_TO_NEW_STATE(a) {\
 		eCurrentState = a;\
 		return;\
 	}
 
-	//m_dwLastRangeSearch = 0;
 	#define GO_TO_PREV_STATE {\
 		eCurrentState = tStateStack.top();\
 		tStateStack.pop();\
@@ -49,17 +47,56 @@
 		GO_TO_NEW_STATE(a);\
 	}
 
-	#define CHECK_IF_SWITCH_TO_NEW_STATE(a,b)\
+	#define CHECK_IF_SWITCH_TO_NEW_STATE(a,b) {\
 		if (a)\
-			SWITCH_TO_NEW_STATE(b)
+			SWITCH_TO_NEW_STATE(b);\
+	}
 
-	#define CHECK_IF_GO_TO_PREV_STATE(a)\
+	#define CHECK_IF_GO_TO_PREV_STATE(a) {\
 		if (a)\
-			GO_TO_PREV_STATE
+			GO_TO_PREV_STATE;\
+	}
 
-	#define CHECK_IF_GO_TO_NEW_STATE(a,b)\
+	#define CHECK_IF_GO_TO_NEW_STATE(a,b) {\
 		if (a)\
-			GO_TO_NEW_STATE(b)
+			GO_TO_NEW_STATE(b);\
+	}
+	
+	//////////////////////////////////////////////////////////////////////////
+	#define GO_TO_NEW_STATE_THIS_UPDATE(a) {\
+		bStopThinking = false;\
+		eCurrentState = a;\
+		return;\
+	}
+
+	#define GO_TO_PREV_STATE_THIS_UPDATE {\
+		bStopThinking = false;\
+		eCurrentState = tStateStack.top();\
+		tStateStack.pop();\
+		return;\
+	}
+
+	#define SWITCH_TO_NEW_STATE_THIS_UPDATE(a) {\
+		bStopThinking = false;\
+		tStateStack.push(eCurrentState);\
+		GO_TO_NEW_STATE(a);\
+	}
+
+	#define CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(a,b) {\
+		if (a)\
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(b);\
+	}
+
+	#define CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(a) {\
+		if (a)\
+			GO_TO_PREV_STATE_THIS_UPDATE;\
+	}
+
+	#define CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(a,b) {\
+		bStopThinking = false;\
+		if (a)\
+			GO_TO_NEW_STATE_THIS_UPDATE(b);\
+	}
 	
 	/************************************************************************/
 	/* 		

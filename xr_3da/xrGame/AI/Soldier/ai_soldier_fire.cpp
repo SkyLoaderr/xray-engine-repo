@@ -248,7 +248,19 @@ bool CAI_Soldier::bfCheckForDanger()
 		return(true);
 
 	SelectSound(m_iSoundIndex);
-	if (m_iSoundIndex > -1)
-		return(true);
+	return(m_iSoundIndex > -1);
 }
 
+bool CAI_Soldier::bfCheckIfGroupFightType()
+{
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+
+	DWORD dwMemberCount = this == Leader ? 0 : 1;
+	for (int i=0; i<Group.Members.size(); i++)
+		if (Group.Members[i]->g_Health() > 0)
+			dwMemberCount++;
+
+	return(dwMemberCount > 0);
+}
