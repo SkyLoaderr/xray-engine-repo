@@ -166,10 +166,11 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 			int				S_id	= 0;
 			while (0!=(S = SP.OpenChunk(S_id)))
 			{
-				P.B.count	= S->Length();
+				P.B.count	=	S->Length();
 				S->Read		(P.B.data,P.B.count);
 				S->Close	();
 				Send		(P,net_flags(TRUE));
+				S_id		+=	1;
 			}
 		}
 
