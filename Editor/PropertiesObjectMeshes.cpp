@@ -26,9 +26,7 @@ void __fastcall TfrmPropertiesObject::tsMeshesShow(TObject *Sender)
     EditMeshIt m_it = m_EditObject->m_Meshes.begin();
 
     // root (object name)
-	name.sprintf("%s",m_EditObject->GetName());
-
-    TElTreeItem* root = tvMeshes->Items->AddObject(0,name,(TObject*)m_CurrentObject);
+    TElTreeItem* root = tvMeshes->Items->Add(0,"Meshes");
     root->ParentStyle = false;
     root->Bold = true;
 
@@ -43,10 +41,10 @@ void __fastcall TfrmPropertiesObject::tsMeshesShow(TObject *Sender)
 void __fastcall TfrmPropertiesObject::tvMeshesItemSelectedChange(
       TObject *Sender, TElTreeItem *Item)
 {
+	if (Item==tvMeshes->Selected) return;
     if (Item->Level==0){
-        CEditableObject* O 		= (CEditableObject*)Item->Data;
-		lbVertices->Caption 	= O->GetVertexCount();
-		lbFaces->Caption 		= O->GetFaceCount();
+		lbVertices->Caption 	= m_EditObject->GetVertexCount();
+		lbFaces->Caption 		= m_EditObject->GetFaceCount();
     }else{
         CEditableMesh* M		= (CEditableMesh*)Item->Data;
 		lbVertices->Caption 	= M->GetVertexCount();

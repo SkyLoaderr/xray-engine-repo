@@ -108,10 +108,10 @@ private:	// User declarations
 //    CEditObject* m_SaveObject;
 //    bool bEditObjectMode;
 //    void EnableEditingMode(bool flag);
-    void CloseEditLibrary(bool bReload);
+    bool CloseEditLibrary(bool bReload);
 public:		// User declarations
     __fastcall TfrmEditLibrary(TComponent* Owner);
-    void FinalClose();
+    bool FinalClose();
     void __fastcall EditLibrary();
     void __fastcall OnRender();
     void __fastcall ZoomObject();

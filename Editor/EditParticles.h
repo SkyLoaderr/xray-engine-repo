@@ -121,8 +121,8 @@ public:		// User declarations
 	static void __fastcall ZoomObject();
 // static function
     static void __fastcall ShowEditor();
-    static void __fastcall HideEditor(bool bNeedReload);
-    static void __fastcall FinalClose();
+    static bool __fastcall HideEditor(bool bNeedReload);
+    static bool __fastcall FinalClose();
     static bool __fastcall Visible(){return !!form;}
     static TfrmEditParticles* GetForm(){VERIFY(form); return form;}
     static PS::SDef* __fastcall GetSelectedPS(){if(!Visible()) return 0; else return form->m_SelectedPS;}

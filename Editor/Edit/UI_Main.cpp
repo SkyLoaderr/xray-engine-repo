@@ -494,7 +494,8 @@ void TUI::OnMousePress(int btn){
                 m_StartCp = m_CurrentCp;
                 Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
-                frmEditLibrary->RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm);
+				SRayPickInfo pinf;
+                frmEditLibrary->RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm,&pinf);
             }break;
             case esEditShaders:		break;
             case esEditParticles: 	break;

@@ -35,7 +35,7 @@ object frmPropertiesObject: TfrmPropertiesObject
       Top = 0
       Width = 372
       Height = 342
-      ActivePage = tsInfo
+      ActivePage = tsSurfaces
       Align = alClient
       MultiLine = True
       TabOrder = 0
@@ -180,19 +180,19 @@ object frmPropertiesObject: TfrmPropertiesObject
             ActiveFilterColor = clBlack
             Flat = True
             Sections.Data = {
-              F8FFFFFF0500000014F2821000000000FFFFFFFF000001000000000014000000
-              0000000010270000000000000400000000000000000000000000010000000000
-              000000000001000001000000000100000000000000000000000014F282100000
-              0000FFFFFFFF00000100000000003C0000000000000010270000000001000000
-              0000000000000000000000000100000000000000000000010000080000004D69
-              6E696D756D000100000000000000000000000014F2821000000000FFFFFFFF00
-              000100000000003C000000000000001027000000000100010000000000000000
+              F8FFFFFF050000004434260C00000000FFFFFFFF000001000000000014000000
+              0000000010270000000000400400000000003740000000000000010000000000
+              00000000000100000100000000010000000000000000000000004434260C0000
+              0000FFFFFFFF00000100000000003C0000000000000010270000000001400000
+              0000000037400000000000000100000000000000000000010000080000004D69
+              6E696D756D00010000000000000000000000004434260C00000000FFFFFFFF00
+              000100000000003C000000000000001027000000000140010000000000374000
               00000000000100000000000000000000010000080000004D6178696D756D0001
-              00000000000000000000000014F2821000000000FFFFFFFF0000010000000000
-              3C00000000000000102700000000010002000000000000000000000000000100
+              0000000000000000000000004434260C00000000FFFFFFFF0000010000000000
+              3C00000000000000102700000000014002000000000037400000000000000100
               0000000000000000000100000500000053697A65000100000000000000000000
-              000014F2821000000000FFFFFFFF00000100000000003C000000000000001027
-              0000000001000300000000000000000000000000010000000000000000000001
+              00004434260C00000000FFFFFFFF00000100000000003C000000000000001027
+              0000000001400300000000003740000000000000010000000000000000000001
               00000700000043656E7465720001000000000000000000000000}
             Tracking = True
             AllowDrag = True
@@ -219,6 +219,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           ValueType = vtFloat
           AutoSize = False
           TabOrder = 1
+          OnChange = seTransformChange
         end
         object sePositionY: TMultiObjSpinEdit
           Left = 123
@@ -231,6 +232,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           ValueType = vtFloat
           AutoSize = False
           TabOrder = 2
+          OnChange = seTransformChange
         end
         object sePositionZ: TMultiObjSpinEdit
           Left = 189
@@ -243,6 +245,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           ValueType = vtFloat
           AutoSize = False
           TabOrder = 3
+          OnChange = seTransformChange
         end
         object seScaleX: TMultiObjSpinEdit
           Left = 57
@@ -258,6 +261,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Value = 1
           AutoSize = False
           TabOrder = 4
+          OnChange = seTransformChange
         end
         object seScaleY: TMultiObjSpinEdit
           Left = 123
@@ -273,6 +277,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Value = 1
           AutoSize = False
           TabOrder = 5
+          OnChange = seTransformChange
         end
         object seScaleZ: TMultiObjSpinEdit
           Left = 189
@@ -288,6 +293,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Value = 1
           AutoSize = False
           TabOrder = 6
+          OnChange = seTransformChange
         end
         object seRotateX: TMultiObjSpinEdit
           Left = 57
@@ -300,6 +306,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           MinValue = -180
           AutoSize = False
           TabOrder = 7
+          OnChange = seTransformChange
         end
         object seRotateY: TMultiObjSpinEdit
           Left = 123
@@ -312,6 +319,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           MinValue = -180
           AutoSize = False
           TabOrder = 8
+          OnChange = seTransformChange
         end
         object seRotateZ: TMultiObjSpinEdit
           Left = 189
@@ -324,6 +332,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           MinValue = -180
           AutoSize = False
           TabOrder = 9
+          OnChange = seTransformChange
         end
       end
       object tsMeshes: TTabSheet
@@ -681,9 +690,9 @@ object frmPropertiesObject: TfrmPropertiesObject
           BevelOuter = bvNone
           TabOrder = 1
           object paTexture: TPanel
-            Left = 1
-            Top = 1
-            Width = 152
+            Left = 0
+            Top = 0
+            Width = 154
             Height = 277
             BevelOuter = bvNone
             TabOrder = 0
@@ -691,7 +700,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             object GroupBox2: TGroupBox
               Left = 0
               Top = 0
-              Width = 152
+              Width = 154
               Height = 277
               Align = alClient
               Caption = ' Texture Properties '
@@ -2362,15 +2371,12 @@ object frmPropertiesObject: TfrmPropertiesObject
     Top = 3
     object Position1: TMenuItem
       Caption = 'Position'
-      OnClick = Position1Click
     end
     object Rotation1: TMenuItem
       Caption = 'Rotation'
-      OnClick = Rotation1Click
     end
     object Scale1: TMenuItem
       Caption = 'Scale'
-      OnClick = Scale1Click
     end
   end
   object fsStorage: TFormStorage

@@ -60,9 +60,9 @@ void CLibObject::LoadObject(){
 void CLibObject::SaveObject(){
     CEditableObject* obj = GetReference();
     // check need to transform to world
-    const Fvector& P = obj->t_vPosition;
-    const Fvector& S = obj->t_vScale;
-    const Fvector& R = obj->t_vRotate;
+    Fvector& P = obj->t_vPosition;
+    Fvector& S = obj->t_vScale;
+    Fvector& R = obj->t_vRotate;
     if ((P.x!=0)||(P.y!=0)||(P.z!=0)|| (S.x!=1)||(S.y!=1)||(S.z!=1)|| (R.x!=0)||(R.y!=0)||(R.z!=0)){
     	Fmatrix mRotate, mScale, mTranslate, mTransform;
         // update transform matrix
@@ -73,6 +73,9 @@ void CLibObject::SaveObject(){
         mTransform.mul			(mTranslate,mRotate);
         mTransform.mul			(mScale);
         obj->TranslateToWorld	(mTransform);
+		P.set					(0.f,0.f,0.f);
+    	S.set   				(1.f,1.f,1.f);
+	    R.set  					(0.f,0.f,0.f);
     }
     // mark as delete
     AnsiString fn;
@@ -168,7 +171,7 @@ void ELibrary::RefreshLibrary(){
 //----------------------------------------------------
 bool ELibrary::Load(){
   	char _FileName[MAX_PATH]="library";
-    FS.m_Config.Update(_FileName);
+    FS.m_Meshes.Update(_FileName);
 
     DWORD version = 0;
 
@@ -208,7 +211,7 @@ bool ELibrary::Load(){
 
 void ELibrary::Save(){
   	char _FileName[MAX_PATH]="library";
-    FS.m_Config.Update(_FileName);
+    FS.m_Meshes.Update(_FileName);
 
     CFS_Memory F;
 

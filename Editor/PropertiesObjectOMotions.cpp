@@ -15,7 +15,7 @@ void __fastcall TfrmPropertiesObject::tsOAnimationShow(TObject *Sender){
     tvOMotions->Items->Clear();
 
     // create root tree node (object name)
-    TElTreeItem* root = tvOMotions->Items->AddObject(0,"Motions",0);
+    TElTreeItem* root = tvOMotions->Items->Add(0,"Motions");
     root->ParentStyle = false;
     root->Bold = true;
     root->Underlined = false;
@@ -49,6 +49,7 @@ void __fastcall TfrmPropertiesObject::tsOAnimationShow(TObject *Sender){
 void __fastcall TfrmPropertiesObject::tvOMotionsItemSelectedChange(
       TObject *Sender, TElTreeItem *Item)
 {
+	if (Item==tvOMotions->Selected) return;
 	selected_omotion = 0;
     if (Item->Level==0){
     	gbOMotion->Hide();

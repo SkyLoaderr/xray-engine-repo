@@ -216,11 +216,6 @@ __published:	// IDE-managed Components
 	void __fastcall cbSurfSideFlagClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
 	void __fastcall ExtBtn2Click(TObject *Sender);
-	void __fastcall Position1Click(TObject *Sender);
-	void __fastcall Rotation1Click(TObject *Sender);
-	void __fastcall Scale1Click(TObject *Sender);
-	void __fastcall ebNumericSetMouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall pcObjectsChange(TObject *Sender);
 	void __fastcall tsOAnimationShow(TObject *Sender);
@@ -257,6 +252,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebSelectTextureClick(TObject *Sender);
 	void __fastcall ebSReloadMotionClick(TObject *Sender);
 	void __fastcall ebApplyClick(TObject *Sender);
+	void __fastcall seTransformChange(TObject *Sender);
 private:	// User declarations
     ETextureCore* 			tx_selected;
     st_Surface* 			surf_selected;

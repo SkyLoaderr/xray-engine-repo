@@ -81,11 +81,12 @@ void __fastcall TfrmImageLib::CheckImageLib(){
     	EditImageLib(AnsiString("Check image params"),true);
 }
 
-void __fastcall TfrmImageLib::HideImageLib(){
+bool __fastcall TfrmImageLib::HideImageLib(){
 	if (form){
     	form->Close();
     	check_tex_list.clear();
     }
+    return true;
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

@@ -41,7 +41,7 @@ void TfrmPropertiesObject::SetCurrent(CLibObject* object){
     }else{
 	    m_CurrentObject = object;
     }
-    if (m_CurrentObject){
+    if (form&&m_CurrentObject){
 	    m_EditObject = m_CurrentObject->GetReference();
     	R_ASSERT(m_EditObject);
     }else{
@@ -51,6 +51,10 @@ void TfrmPropertiesObject::SetCurrent(CLibObject* object){
 
 void __fastcall TfrmPropertiesObject::ShowProperties(){
     if (!form) form = new TfrmPropertiesObject(0);
+    if (m_CurrentObject){
+	    m_EditObject = m_CurrentObject->GetReference();
+    	R_ASSERT(m_EditObject);
+    }
     form->Show();
 	form->GetObjectsInfo();
 }
@@ -90,18 +94,14 @@ void __fastcall TfrmPropertiesObject::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
 	Action = caFree;
-	tvMeshes->Items->Clear();
-    tvSurfaces->Items->Clear();
     form = 0;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::OnModified(TObject *Sender)
 {
     if (bLoadMode) return;
-
-    ebOk->Enabled = true;
+    ebOk->Enabled 		= true;
     ebApply->Enabled    = true;
-    frmEditLibrary->OnModified();
     UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -116,6 +116,8 @@ void __fastcall TfrmPropertiesObject::ebOkClick(TObject *Sender)
 void __fastcall TfrmPropertiesObject::ebApplyClick(TObject *Sender)
 {
     ApplyObjectsInfo();
+    ebApply->Enabled 	= false;
+    ebOk->Enabled 		= false;
 }
 //---------------------------------------------------------------------------
 
@@ -155,13 +157,20 @@ void TfrmPropertiesObject::ApplyObjectsInfo(){
             ELog.DlgMsg(mtError,"Enter Object Name!");
             return;
         }
+        // dynamic flag
         cbMakeDynamic->ObjApply( m_EditObject->m_DynamicObject );
+		// class script
         m_EditObject->GetClassScript() = mmScript->Text;
+		// name
         m_EditObject->SetName(edName->Text.c_str());
-
+        // modify transformation
+	    m_EditObject->t_vPosition.set	(sePositionX->Value,sePositionY->Value,	sePositionZ->Value);
+		m_EditObject->t_vRotate.set		(seRotateX->Value,	seRotateY->Value,	seRotateZ->Value);
+	    m_EditObject->t_vScale.set		(seScaleX->Value,	seScaleY->Value,	seScaleZ->Value);
+        // set "NeedSave" object flag
 		m_EditObject->m_LibParent->Modified();
-
-		OnModified(0);
+        // set "Modify" library flag
+	    frmEditLibrary->OnModified();
 	}
 }
 
@@ -225,5 +234,6 @@ void __fastcall TfrmPropertiesObject::Pick(const SRayPickInfo& pinf){
     }
 }
 //---------------------------------------------------------------------------
+
 
 

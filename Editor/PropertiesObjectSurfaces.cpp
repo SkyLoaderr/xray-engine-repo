@@ -22,12 +22,10 @@ void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
 	if (!m_CurrentObject) return;
 // Set up surfaces&textures
     bool bEq;
-    AnsiString name;
     tvSurfaces->Items->Clear();
 
     // create root tree node (object name)
-    name.sprintf("%s (%s)",m_CurrentObject->GetName(),m_CurrentObject->GetName());
-    TElTreeItem* root = tvSurfaces->Items->AddObject(0,name,(TObject*)m_CurrentObject);
+    TElTreeItem* root = tvSurfaces->Items->Add(0,"Surfaces");
     root->ParentStyle = false;
     root->Bold = true;
     root->Underlined = true;
@@ -96,9 +94,8 @@ void __fastcall TfrmPropertiesObject::tvSurfacesItemSelectedChange(
         paImage->Repaint();
     break;
     case 1:{
-    	CEditableObject* O			= (CEditableObject*)Item->Parent->Data;
     	st_Surface* surf			= (st_Surface*)(Item->Data);
-        lbSurfFaces->Caption 		= O->GetSurfFaceCount(surf->name);
+        lbSurfFaces->Caption 		= m_EditObject->GetSurfFaceCount(surf->name);
         lbSurfSideFlag->Caption 	= (surf->sideflag)?"yes":"no";
         lbShader->Caption			= surf->shader->shader->cName;
         lbTexture->Caption			= ListToSequence(surf->textures);

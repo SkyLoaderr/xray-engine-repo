@@ -30,10 +30,10 @@ bool TUI::Command( int _Command, int p1 ){
 	case COMMAND_EXIT:{
 	    EEditorState est = GetEState();
     	switch(est){
-        case esEditLibrary: 	if(frmEditLibrary) frmEditLibrary->FinalClose(); break;
-        case esEditShaders: 	if(frmEditShaders) frmEditShaders->FinalClose(); break;
-        case esEditParticles:	TfrmEditParticles::FinalClose(); break;
-        case esEditImages:		TfrmImageLib::HideImageLib(); break;
+        case esEditLibrary: 	if(frmEditLibrary) if (!frmEditLibrary->FinalClose()) return false; break;
+        case esEditShaders: 	if(frmEditShaders) if (!frmEditShaders->FinalClose()) return false;  break;
+        case esEditParticles:	if (!TfrmEditParticles::FinalClose()) return false;  break;
+        case esEditImages:		if (!TfrmImageLib::HideImageLib()) return false; break;
         case esEditScene:		if (!Scene->IfModified()) return false; break;
         }
         SetStatus("Editor unloading...");

@@ -120,12 +120,12 @@ private:	// User declarations
 
     CLibObject* m_TestObject;
     st_Surface* m_TestExternSurface;
-    void CloseEditShaders(bool bReload);
+    bool CloseEditShaders(bool bReload);
 public:		// User declarations
     __fastcall TfrmEditShaders(TComponent* Owner);
     void InitShaderFolder(const char* nm=0);
     void __fastcall EditShaders();
-    void FinalClose();
+    bool FinalClose();
     void __fastcall OnRender();
     void __fastcall OnIdle();
 	void __fastcall ZoomObject();

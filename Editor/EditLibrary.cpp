@@ -69,8 +69,15 @@ void __fastcall TfrmEditLibrary::OnRender(){
     	CEditableObject* O = m_SelectedObject->GetReference();
 	    if (O){
         	O->RTL_Update(Device.fTimeDelta);
-			O->RenderSingle(precalc_identity);
-            if (fraBottomBar->miDrawObjectBones->Checked) O->RenderBones(precalc_identity);
+		    // update transform matrix
+			Fmatrix	mTransform,mScale,mTranslate,mRotate;
+			mRotate.setHPB			(O->t_vRotate.y, O->t_vRotate.x, O->t_vRotate.z);
+			mScale.scale			(O->t_vScale);
+			mTranslate.translate	(O->t_vPosition);
+			mTransform.mul			(mTranslate,mRotate);
+			mTransform.mul			(mScale);
+			O->RenderSingle			(mTransform);
+            if (fraBottomBar->miDrawObjectBones->Checked) O->RenderBones(mTransform);
 	    }
     }
 }
@@ -108,6 +115,8 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	Action = caFree;
+
+    TfrmPropertiesObject::HideProperties();
 //    if (bEditObjectMode) ebCancelEdit->Click();
 	Scene->unlock();
     Lib->ResetAnimation();
@@ -120,10 +129,10 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 	Device.LightEnable(1,false);
 }
 //---------------------------------------------------------------------------
-void TfrmEditLibrary::CloseEditLibrary(bool bReload){
+bool TfrmEditLibrary::CloseEditLibrary(bool bReload){
     if (ebSave->Enabled){
     	int res = ELog.DlgMsg(mtConfirmation, "Library was change. Do you want save?");
-		if (res==mrCancel) return;
+		if (res==mrCancel) return false;
 		if (res==mrYes) ebSaveClick(0);
     }
     if (bReload){
@@ -132,14 +141,11 @@ void TfrmEditLibrary::CloseEditLibrary(bool bReload){
         UI->SetStatus("");
     }
     Close();
+    return true;
 }
 //---------------------------------------------------------------------------
-void TfrmEditLibrary::FinalClose(){
-    if (ebSave->Enabled){
-	    if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Library was change. Do you want save?")==mrYes)
-    	    ebSaveClick(0);
-    }
-    Close();
+bool TfrmEditLibrary::FinalClose(){
+	return CloseEditLibrary(false);
 }
 //---------------------------------------------------------------------------
 void TfrmEditLibrary::OnModified(){

@@ -176,10 +176,10 @@ void __fastcall TfrmEditShaders::FormClose(TObject *Sender, TCloseAction &Action
 	Device.LightEnable(1,false);
 }
 //---------------------------------------------------------------------------
-void TfrmEditShaders::CloseEditShaders(bool bReload){
+bool TfrmEditShaders::CloseEditShaders(bool bReload){
     if (ebSave->Enabled){
     	int res = ELog.DlgMsg(mtConfirmation, "Library was change. Do you want save?");
-		if (res==mrCancel) return;
+		if (res==mrCancel) return false;
 		if (res==mrYes)
             ebSaveClick(0);
         else{
@@ -191,14 +191,11 @@ void TfrmEditShaders::CloseEditShaders(bool bReload){
         }
     }
     Close();
+    return true;
 }
 //---------------------------------------------------------------------------
-void TfrmEditShaders::FinalClose(){
-    if (ebSave->Enabled){
-	    if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Library was change. Do you want save?")==mrYes)
-    	    ebSaveClick(0);
-    }
-    Close();
+bool TfrmEditShaders::FinalClose(){
+	return CloseEditShaders(false);
 }
 //---------------------------------------------------------------------------
 void TfrmEditShaders::OnModified(){

@@ -22,20 +22,18 @@ void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
 // Set up info
     paBB->Visible = true;
 
-    AnsiString n;
-    int i;
     const Fvector& P=m_EditObject->t_vPosition;
     sePositionX->Value = P.x;
     sePositionY->Value = P.y;
     sePositionZ->Value = P.z;
     const Fvector& R=m_EditObject->t_vRotate;
-    sePositionX->Value = R.x;
-    sePositionY->Value = R.y;
-    sePositionZ->Value = R.z;
+    seRotateX->Value = R.x;
+    seRotateY->Value = R.y;
+    seRotateZ->Value = R.z;
     const Fvector& S=m_EditObject->t_vScale;
-    sePositionX->Value = S.x;
-    sePositionY->Value = S.y;
-    sePositionZ->Value = S.z;
+    seScaleX->Value = S.x;
+    seScaleY->Value = S.y;
+    seScaleZ->Value = S.z;
 
     Fbox& BB = m_EditObject->GetBox();
     for (int col=1; col<5; col++){
@@ -53,33 +51,10 @@ void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmPropertiesObject::ebNumericSetMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
+
+void __fastcall TfrmPropertiesObject::seTransformChange(TObject *Sender)
 {
-    POINT pt;
-    GetCursorPos(&pt);
-    pmNumericSet->TrackButton = tbLeftButton;
-	pmNumericSet->Popup(pt.x,pt.y);
-    OnModified(Sender);
+	OnModified(Sender);
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesObject::Position1Click(TObject *Sender){
-//	UI->Command(COMMAND_SET_NUMERIC_POSITION,(int)m_EditObject);
-    tsInfoShow(Sender);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesObject::Rotation1Click(TObject *Sender){
-//	UI->Command(COMMAND_SET_NUMERIC_ROTATION,(int)m_EditObject);
-    tsInfoShow(Sender);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesObject::Scale1Click(TObject *Sender){
-//	UI->Command(COMMAND_SET_NUMERIC_SCALE,(int)m_EditObject);
-    tsInfoShow(Sender);
-}
-//---------------------------------------------------------------------------
-
 

@@ -46,11 +46,11 @@ void __fastcall TfrmEditParticles::ShowEditor(){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditParticles::HideEditor(bool bNeedReload){
+bool __fastcall TfrmEditParticles::HideEditor(bool bNeedReload){
 	if (form){
 	    if (form->ebSave->Enabled){
             int res = ELog.DlgMsg(mtConfirmation, "Library was change. Do you want save?");
-            if (res==mrCancel) return;
+            if (res==mrCancel) return false;
             if (res==mrYes){
     	        form->ebSaveClick(0);
         	}else{
@@ -63,16 +63,11 @@ void __fastcall TfrmEditParticles::HideEditor(bool bNeedReload){
         }
     	form->Close();
     }
+	return true;
 }
 //---------------------------------------------------------------------------
-void TfrmEditParticles::FinalClose(){
-	if (form){
-	    if (form->ebSave->Enabled){
-		    if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Library was change. Do you want save?")==mrYes)
-				form->ebSaveClick(0);
-        }
-    	form->Close();
-    }
+bool TfrmEditParticles::FinalClose(){
+	return HideEditor(false);
 }
 //---------------------------------------------------------------------------
 

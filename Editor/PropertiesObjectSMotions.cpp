@@ -18,7 +18,7 @@ void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
     tvSMotions->Items->Clear();
 
     // create root tree node (object name)
-    TElTreeItem* root = tvSMotions->Items->AddObject(0,"Motions",0);
+    TElTreeItem* root = tvSMotions->Items->Add(0,"Motions");
     root->ParentStyle = false;
     root->Bold = true;
     root->Underlined = false;
@@ -181,6 +181,7 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemChange(TObject *Sender,
 void __fastcall TfrmPropertiesObject::tvSMotionsItemSelectedChange(
       TObject *Sender, TElTreeItem *Item)
 {
+	if (Item==tvSMotions->Selected) return;
 	// save previous motion data
     selected_smotion = 0;
     if (Item->Level==0){

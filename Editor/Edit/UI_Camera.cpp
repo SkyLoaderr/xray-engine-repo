@@ -275,9 +275,7 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
 
 void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy){
 	float dist = m_Position.distance_to(m_Target);
-	if (Shift.Contains(ssCtrl)){
-        dist -= dx*m_SM;
-    }else if (Shift.Contains(ssAlt)){
+	if (Shift.Contains(ssAlt)){
 		if (Shift.Contains(ssLeft)){
             Fvector vmove;
             vmove.set( m_CamMat.k );  vmove.y = 0;
@@ -295,6 +293,8 @@ void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy){
             vmove.y *= -m_SM;
             m_Target.add( vmove );
         }
+    }else if (Shift.Contains(ssRight)){
+        dist -= dx*m_SM;
     }else{
         m_HPB.x-=m_SR*dx;
         m_HPB.y-=m_SR*dy*m_Aspect;

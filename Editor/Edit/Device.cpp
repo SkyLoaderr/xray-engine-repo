@@ -411,9 +411,43 @@ struct clr_16{
 };
 
 bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height){
-/*	if (!m_bReady) return false;
-	if ((m_DX->BackDesc.ddpfPixelFormat.dwRGBBitCount!=32)&&
-	    (m_DX->BackDesc.ddpfPixelFormat.dwRGBBitCount!=16)) return false;
+	if (!bReady) return false;
+
+    IDirect3DSurface8* pFB=0;
+	//GetSystemMetrics
+	R_CHK(HW.pDevice->CreateImageSurface(Screen->DesktopWidth,Screen->DesktopHeight,D3DFMT_A8R8G8B8,&pFB));
+    if (FAILED(HW.pDevice->GetFrontBuffer(pFB))) return false;
+
+	D3DLOCKED_RECT	D;
+	R_CHK(pFB->LockRect(&D,0,D3DLOCK_NOSYSLOCK));
+
+    width 	= Device.m_RealWidth-2;
+    height 	= Device.m_RealHeight-2;
+	pixels.resize(width*height);
+
+    Ipoint offs;
+    offs.set(1,1);
+    ClientToScreen(Device.m_hRenderWnd,offs.d3d());
+
+	// Image processing
+	DWORD* pPixel	= (DWORD*)D.pBits;
+	DWORD* pEnd		= pPixel+(Screen->DesktopWidth*Screen->DesktopHeight);
+    UI->ProgressStart(height,"Screenshot making");
+    DWORDIt it = pixels.begin();
+    for (DWORD h=0; h<height; h++,it+=width){//offs.y
+        LPDWORD dt 	= LPDWORD(DWORD(pPixel)+DWORD(D.Pitch*h)+DWORD(offs.x));
+        CopyMemory	(it,dt,sizeof(DWORD)*width);
+	    UI->ProgressInc();
+    }
+    UI->ProgressEnd();
+
+    R_CHK(pFB->UnlockRect());
+	pFB->Release	();
+
+    return true;
+/*
+	if ((pDesc->Format!=32)&&
+	    (pDesc->ddpfPixelFormat.dwRGBBitCount!=16)) return false;
 
     DDSURFACEDESC2 desc;
     memset(&desc, 0, sizeof(desc));
@@ -444,7 +478,6 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
         return true;
     }
 */
-    return false;
 }
 
 

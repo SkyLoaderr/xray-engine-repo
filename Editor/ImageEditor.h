@@ -99,7 +99,7 @@ public:		// User declarations
 // static function
     static void __fastcall CheckImageLib();
     static void __fastcall EditImageLib(AnsiString& title, bool bCheck=false);
-    static void __fastcall HideImageLib();
+    static bool __fastcall HideImageLib();
     static bool __fastcall Visible(){return !!form;}
 };
 //---------------------------------------------------------------------------
