@@ -68,6 +68,7 @@ cform				= skeleton
 [physic_object]
 GroupControlSection	= spawn_group
 $spawn 				= "physics\object"
+$prefetch 			= 8
 class				= O_PHYSIC
 
 [device_torch]
@@ -243,7 +244,7 @@ visual              = weapon\bolt\wpn_bolt_hud.ogf
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "food and drugs\medkit"
-;$prefetch 			= 32
+$prefetch 			= 8
 class				= II_MEDKI
 cform				= skeleton
 visual				= equipment\aptechka.ogf
@@ -295,7 +296,7 @@ eat_portions_num = -1
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "food and drugs\kolbasa"
-;$prefetch 			= 32
+$prefetch 			= 8
 class				= II_BREAD
 cform				= skeleton
 visual				= items\kolbasa.ogf	;items\geiger_01.ogf
@@ -770,14 +771,14 @@ cost				= 10
 
 [device_pda]
 GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "devices\pda"
-;$prefetch 		= 32
-class			= D_PDA
-cform           = skeleton
-visual          = equipment\pda.ogf
-radius			= 1
-slot			= 8
+discovery_dependency= 
+$spawn 				= "devices\pda"
+$prefetch 			= 8
+class				= D_PDA
+cform				= skeleton
+visual				= equipment\pda.ogf
+radius				= 1
+slot				= 8
 
 inv_name			= PDA
 inv_name_short		= PDA
@@ -792,12 +793,12 @@ cost				= 50
 [device_atifact_merger]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "devices\artifact merger"
-;$prefetch 		= 32
-class			= D_AFMERG
-cform           = skeleton
-visual          = equipment\pda.ogf
-radius			= 1
+$spawn 				= "devices\artifact merger"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipment\pda.ogf
+radius				= 1
 
 inv_name			= ArtifactMerger
 inv_name_short		= AfMerger

@@ -46,7 +46,7 @@ const CCameraManager &get_camera_manager()
 
 void vfLuaErrorHandler(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
-	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"));
+	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"))
 		vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
 }
 
@@ -61,7 +61,7 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 
 int Script::LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
-	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"));
+	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"))
 		vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
 	return(0);
 }
@@ -96,6 +96,10 @@ void Script::LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpL
 	}
 
 	LuaOut		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)" : "%s%s : %s %s %s",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "",tpLuaDebug->currentline);
+}
+
+void FlushLogFake(LPCSTR S)
+{
 }
 
 void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
