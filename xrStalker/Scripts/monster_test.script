@@ -1,33 +1,37 @@
 
-function run_fnc( npc )
-
-	action( npc, 
-	   move( move.run_fwd, patrol( "way", patrol.start, patrol.stop ) ),
-	   cond( cond.move_end )
-	)
-   
+function action_one( npc )
+	action( npc, anim("spinka"), cond(cond.anim_end));
 end
 
-function main()
-	local monster = get_level_object("monster")
+function action_two( npc )
+	action( npc, anim("spinka_idle"), cond(cond.anim_end));
+end
 
+
+function main()
+	local	 monster = get_level_object("trader");
+	wait	(5000);
+	
+	printf	("Taking Script");
+	
+	local	stage = 0;
+	
 	monster:script( true, script_name() )
 	
-	 while ( true ) do
+	while ( true ) do
 
-		 if( monster:action() == nil ) then
-			this.run_fnc( monster )
-		 end
-		 wait()
+		if( monster:action() == nil ) then
+			if(stage == 0)
+				this.action_one( monster )
+				stage = 1
+			else 
+				this.action_two( monster )
+				stage = 0
+			end
+		end
 
 	 end
 	
 	monster:script( false, script_name() )
 	
-	//monster:script( false, script_name() )
-	//monster:script( false, script_name() )
-	//monster:script( false, script_name() )
-
 end
-
- 
