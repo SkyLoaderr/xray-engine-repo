@@ -395,7 +395,7 @@ void xrMergeGraphs(LPCSTR name)
 			(*i).second->vfSaveEdges(F);
 		}
 	}
-	save_vector						(l_tpLevelPoints,F,false);
+	save_data						(l_tpLevelPoints,F,false);
 	
 	string256						l_caFileName;
 	FS.update_path					(l_caFileName,"$game_data$","game.graph");
