@@ -264,7 +264,7 @@ void CUIMainIngameWnd::Init()
 	UIStaticBattery.AttachChild(&UIBatteryBar);
 	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIBatteryBar);
 	ShowBattery(false);
-	SetBatteryCharge(1.0df);
+	SetBatteryCharge(1.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////
