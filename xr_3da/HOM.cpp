@@ -119,7 +119,7 @@ IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
 IC	BOOL	xform_b		(Fmatrix& X, Fvector& D, Fvector& S)
 {
 	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
-	if (w<EPS) return TRUE;
+	if (w<EPS_L) return TRUE;
 		
 	D.x	= 1.f+(S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41)/w;
 	D.y	= 1.f-(S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w;
@@ -187,7 +187,7 @@ void CHOM::Render		(CFrustum& base)
 
 void CHOM::Debug		()
 {
-	// return;
+	return;
 	
 	// Texture
 	D3DLOCKED_RECT		R;

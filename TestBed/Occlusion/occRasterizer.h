@@ -33,7 +33,8 @@ private:
 	int				bufDepth_2	[occ_dim_2][occ_dim_2];
 	int				bufDepth_3	[occ_dim_3][occ_dim_3];
 public:
-	IC int			d2int		(float d)	{ return iFloor(d*float(0x40000000));	}
+	IC int			d2int		(float d)	{ return iFloor	(d*float(0x40000000));	}
+	IC int			d2int_up	(float d)	{ return iCeil	(d*float(0x40000000));	}
 	IC float		d2float		(int d)		{ return float(d)/float(0x40000000);	}
 
 	void			clear		();
