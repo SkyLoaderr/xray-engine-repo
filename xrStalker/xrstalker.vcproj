@@ -973,6 +973,9 @@
 					RelativePath=".\Config\scripts\val_escort_guard3.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\val_monolith_forget_zone.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\val_prisoner_captive.ltx">
 				</File>
 				<File

@@ -15,6 +15,8 @@ end
 function action_door:reset_scheme()
 	printf("_bp: action_door:reset_scheme: self.object:name()='%s'", self.object:name())
 	self.initialized = false
+	
+	self:initialize()
 end
 
 function action_door:initialize()
@@ -93,10 +95,7 @@ function action_door:update(delta)
 	--end
 
 	if not self.initialized then
-		self:initialize()
-		if not self.initialized then
-			return
-		end
+		utils.abort("object '%s': door failed to initialize", self.object:name())
 	end
 
 	local actor = db.actor
@@ -130,7 +129,7 @@ function action_door:update(delta)
 end
 
 function action_door:close_check()
-	printf("_bp: close_check()")
+	printf("_bp: close_check(): %d", device():time_global())
 	if not self.initialized then
 		printf("_bp: close_check(): not initialized")
 		return false
@@ -149,7 +148,7 @@ function action_door:close_check()
 end
 
 function action_door:close_action()
-	printf("_bp: close_action()")
+	printf("_bp: close_action(): %d", device():time_global())
 
 	printf("_bp: action_door:update(): door blocked")
 	-- «акрыли до предела, будем блокировать
