@@ -58,26 +58,11 @@ void Startup()
 
 	pApp						= new CApplication	( );
 
-	// ...command line for auto level loading
-	char *	pLevelName			= strstr(Engine.Params,"-server ");
-	if (pLevelName) 
-	{
-		string128 cmd,c_name;
-		sscanf					(strstr(Engine.Params,"-server ")+8,"%[^ ] ",c_name);
-		strconcat				(cmd,"server ",c_name);
-		Console.Execute			(cmd);
-	} else {
-		pLevelName				= strstr(Engine.Params,"-client ");
-		if (pLevelName)	{
-			string128 cmd,c_name;
-			sscanf				(strstr(Engine.Params,"-client ")+8,"%[^ ] ",cmd);
-			strconcat			(cmd,"client ",c_name);
-			Console.Execute		(cmd);
-		}
-	}
+	// ...command line for auto start
+	LPCSTR	pStartup			= strstr		(Engine.Params,"-start ");
+	if (pStartup)				Console.Execute	(pStartup+1);
 
 	// Main cycle
-	// Sleep					(1000);
 	Device.Run					( );
 	_DELETE						( pApp			);
 	Engine.Event.Dump			( );

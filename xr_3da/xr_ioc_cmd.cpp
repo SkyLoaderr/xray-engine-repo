@@ -112,16 +112,17 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_Server : public CConsoleCommand
+class CCC_Start : public CConsoleCommand
 {
 public:
-	CCC_Server(LPCSTR N) : CConsoleCommand(N) {};
+	CCC_Start(LPCSTR N) : CConsoleCommand(N) {};
 	virtual void Execute(LPCSTR args) {
 		if (pCreator)	{
-			Log("! Please disconnect/unload first");
+			Log		("! Please disconnect/unload first");
 			return;
 		}
-		string64	l_name;
+		string256	op_server,op_client;
+		
 		strcpy		(l_name,args);
 		if (strchr(l_name,'/'))		*strchr(l_name,'/') = 0;
 		int id		= pApp->Level_ID(l_name);
@@ -149,19 +150,6 @@ public:
 		} else {
 			Log("! Cannot find save-game '%s'.",fn);
 		}
-	}
-};
-
-class CCC_Client : public CConsoleCommand
-{
-public:
-	CCC_Client(LPCSTR N) : CConsoleCommand(N) {};
-	virtual void Execute(LPCSTR args) {
-		if (pCreator)	{
-			Log("! Please disconnect/unload first");
-			return;
-		}
-		Engine.Event.Defer("KERNEL:client",u32(xr_strdup(args)));
 	}
 };
 

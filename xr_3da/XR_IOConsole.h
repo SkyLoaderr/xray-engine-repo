@@ -35,7 +35,7 @@ private:
 	int				scroll_delta;
 	int				cmd_delta;
 	int				old_cmd_delta;
-	char			editor [256];
+	string512		editor;
 	char			*editor_last;
 	BOOL			bShift;
 	BOOL			bCursor;

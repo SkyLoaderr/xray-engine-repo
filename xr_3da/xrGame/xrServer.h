@@ -53,6 +53,7 @@ public:
 	void					PerformMigration		(xrServerEntity* E, xrClientData* from, xrClientData* to);
 	u16						PerformIDgen			(u16 desired);
 	void					Perform_connect_spawn	(xrServerEntity* E, xrClientData* to, NET_Packet& P);
+	void					Perform_transfer		(xrServerEntity* what, xrServerEntity* from, xrServerEntity* to);
 
 	void					Process_spawn			(NET_Packet& P, DPNID sender);
 	void					Process_update			(NET_Packet& P, DPNID sender);

@@ -1281,6 +1281,9 @@
 				RelativePath="xrServer_perform_sls_save.cpp">
 			</File>
 			<File
+				RelativePath="xrServer_perform_transfer.cpp">
+			</File>
+			<File
 				RelativePath="xrServer_process_event.cpp">
 			</File>
 			<File
