@@ -75,6 +75,7 @@ public:
 
 	//возвращает количество узлов с заданым именем
 	int GetNodesNum(const char *path, int index, const char* tag_name);
+	int GetNodesNum(XML_NODE* node, const char* tag_name);
 	
 	
 	//переместиться по XML дереву 
