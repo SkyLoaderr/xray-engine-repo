@@ -14,7 +14,9 @@ D3DVERTEXELEMENT9	decl[] =
 {
 	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
 	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
-	{0, 16, D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	{0, 16, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TANGENT,	0 },
+	{0, 20, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_BINORMAL,	0 },
+	{0, 24, D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
 
@@ -51,16 +53,30 @@ void	xrMU_Model::export_geometry		()
 				g_VB.Add	(&oV.P,3*sizeof(float));
 
 				// Normal
-				base_color_c	oV_c;	oV.Color._get(oV_c);
-				Fvector N	= oV.N;
-				N.add		(1.f);
-				N.mul		(.5f*255.f);
-				s32 nx		= iFloor(N.x);				clamp(nx,0,255);
-				s32 ny		= iFloor(N.y);				clamp(ny,0,255);
-				s32 nz		= iFloor(N.z);				clamp(nz,0,255);
-				s32 cc		= iFloor(oV_c.hemi*255.f);	clamp(cc,0,255);
-				u32	uN		= color_rgba(nx,ny,nz,cc);
-				g_VB.Add	(&uN,4);
+				{
+					base_color_c	oV_c;	oV.Color._get(oV_c);
+					Fvector N	= oV.N;
+					N.add		(1.f);
+					N.mul		(.5f*255.f);
+					s32 nx		= iFloor(N.x);				clamp(nx,0,255);
+					s32 ny		= iFloor(N.y);				clamp(ny,0,255);
+					s32 nz		= iFloor(N.z);				clamp(nz,0,255);
+					s32 cc		= iFloor(oV_c.hemi*255.f);	clamp(cc,0,255);
+					u32	uN		= color_rgba(nx,ny,nz,cc);
+					g_VB.Add	(&uN,4);
+				}
+
+				// Tangent
+				{
+					u32	uT		= color_rgba(oV.T.x,oV.T.y,oV.T.z,0);
+					g_VB.Add	(&uT,4);
+				}
+
+				// Binormal
+				{
+					u32	uB		= color_rgba(oV.B.x,oV.B.y,oV.B.z,0);
+					g_VB.Add	(&uB,4);
+				}
 
 				// TC
 				s16	tu,tv,frac,dummy;
