@@ -47,7 +47,7 @@ struct SFrame
     }
 };
 
-class ENGINE_API CPEDef
+class CPEDef
 {
 public:
     enum{
@@ -113,7 +113,7 @@ public:
 #endif
 };
 
-class ENGINE_API CParticleEffect: public IParticleCustom
+class CParticleEffect: public IParticleCustom
 {
 	friend class PFunction;
 protected:

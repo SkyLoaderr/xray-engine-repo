@@ -297,6 +297,18 @@
 			<File
 				RelativePath="FStaticRender_Volume.cpp">
 			</File>
+			<File
+				RelativePath=".\ParticleEffect.cpp">
+			</File>
+			<File
+				RelativePath=".\ParticleEffect.h">
+			</File>
+			<File
+				RelativePath=".\PSLibrary.cpp">
+			</File>
+			<File
+				RelativePath=".\PSLibrary.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Details"

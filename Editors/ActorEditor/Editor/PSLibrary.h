@@ -8,7 +8,7 @@
 #include "ParticleEffect.h"
 #include "ParticleGroup.h"
 
-class ENGINE_API CPSLibrary{
+class CPSLibrary{
     PS::PSVec			m_PSs;
 
     PS::PEDVec			m_PEDs;
