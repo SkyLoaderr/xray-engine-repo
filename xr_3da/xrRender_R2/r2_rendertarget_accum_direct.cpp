@@ -104,8 +104,9 @@ void CRenderTarget::accum_direct()
 	// Constants
 	Fvector		L_dir,L_clr;	float L_spec;
 	Fcolor		L_sunc			= RImplementation.Lights.sun->color;
-	L_clr.set					(L_sunc.r,L_sunc.g,L_sunc.b).div(ps_r2_ls_dynamic_range);
-	L_spec						= L_clr.magnitude()/_sqrt(3.f);
+	L_clr.set					(L->color.r,L->color.g,L->color.b);
+	L_spec						= u_diffuse2s	(L_clr)/ps_r2_ls_dynamic_range;
+	L_clr.div					(ps_r2_ls_dynamic_range);
 	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun->direction);
 	L_dir.normalize				();
 	RCache.set_c				("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);

@@ -12,8 +12,8 @@ void CRenderTarget::accum_point		(light* L)
 	float		L_spec;
 	float		L_R					= L->range;
 	Fvector		L_clr;				L_clr.set(L->color.r,L->color.g,L->color.b);
+	L_spec							= u_diffuse2s	(L_clr)/ps_r2_ls_dynamic_range;
 	L_clr.div						(ps_r2_ls_dynamic_range);
-	L_spec							= L_clr.magnitude()/_sqrt(3.f);
 	Device.mView.transform_tiny		(L_pos,L->position);
 
 	// Xforms

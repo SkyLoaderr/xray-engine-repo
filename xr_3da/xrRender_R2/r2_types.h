@@ -59,3 +59,6 @@ const u32					occq_size			= 128;
 #define		SE_MASK_SPOT		0
 #define		SE_MASK_POINT		1
 #define		SE_MASK_DIRECT		2
+
+IC	float	u_diffuse2s	(float x, float y, float z)	{ float	v = (x+y+z)/3.f;	return (v<1)?sqrt(v):v; }
+IC	float	u_diffuse2s	(Fvector3& c)				{ return u_diffuse2s(c.x,c.y,c.z);					}
