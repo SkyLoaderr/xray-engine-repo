@@ -255,7 +255,7 @@ IC void i_section	(int Sect, BOOL bMiddle)
 	
 	// Initial Y offset for left and right (due to pixel rounding)
 	float	e1_init_dY = float(startY) - startp1[1], e2_init_dY = float(startY) - startp2[1];
-	float	t,leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ,lhx,rhx;
+	float	t,leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
 	
 	// find initial values, step values
 	if ( ((mE1<mE2)&&(Sect==BOTTOM)) || ((mE1>mE2)&&(Sect==TOP)) ) 
@@ -263,30 +263,30 @@ IC void i_section	(int Sect, BOOL bMiddle)
 		// E1 is on the Left
 		// Initial Starting values for left (from E1)
 		t		= e1_init_dY/E1[1]; // Initial fraction of offset
-		leftX	= startp1[0] + E1[0]*t; left_dX = mE1;	lhx = mE1/2;
+		leftX	= startp1[0] + E1[0]*t; left_dX = mE1;
 		leftZ	= startp1[2] + E1[2]*t; left_dZ = E1[2]/E1[1];
 
 		// Initial Ending values for right	(from E2)
 		t		= e2_init_dY/E2[1]; // Initial fraction of offset
-		rightX	= startp2[0] + E2[0]*t; right_dX = mE2;	rhx = mE2/2;
+		rightX	= startp2[0] + E2[0]*t; right_dX = mE2;
 		rightZ	= startp2[2] + E2[2]*t; right_dZ = E2[2]/E2[1];
 	}
 	else { 
 		// E2 is on left
 		// Initial Starting values for left (from E2)
 		t		= e2_init_dY/E2[1]; // Initial fraction of offset
-		leftX	= startp2[0] + E2[0]*t; left_dX = mE2;	lhx = mE2/2;
+		leftX	= startp2[0] + E2[0]*t; left_dX = mE2;
 		leftZ	= startp2[2] + E2[2]*t; left_dZ = E2[2]/E2[1];
 
 		// Initial Ending values for right	(from E1)
 		t		= e1_init_dY/E1[1]; // Initial fraction of offset
-		rightX	= startp1[0] + E1[0]*t; right_dX = mE1;	rhx = mE1/2;
+		rightX	= startp1[0] + E1[0]*t; right_dX = mE1;
 		rightZ	= startp1[2] + E1[2]*t; right_dZ = E1[2]/E1[1];
 	}
 
 	// Now scan all lines in this section
-	leftX	+= lhx;	// half pixel
-	rightX	+= rhx;	// half pixel
+	float lhx = left_dX/2;	leftX	+= lhx;	// half pixel
+	float rhx = right_dX/2;	rightX	+= rhx;	// half pixel
 	for (; startY<=endY; startY++) 
 	{
 		i_scan	(startY, leftX, lhx, rightX, rhx, leftZ, rightZ);
