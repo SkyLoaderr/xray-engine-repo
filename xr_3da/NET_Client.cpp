@@ -269,6 +269,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 	*/
 
 	// Sync
+	net_TimeDelta	= 0;
 	net_Syncronize	();
 	return			TRUE;
 }
@@ -585,7 +586,6 @@ void __cdecl		sync_thread(void* P)
 void	IPureClient::net_Syncronize	()
 {
 	net_Syncronised		= FALSE;
-	net_TimeDelta		= 0;
 	net_DeltaArray.clear();
 	_beginthread		(sync_thread,0,this);
 }
