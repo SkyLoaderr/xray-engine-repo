@@ -116,11 +116,16 @@ bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerVampireAbstract::check_completion()
 {
+	// если убежал
 	if ((current_substate == eStateRunAway) && 
 		get_state_current()->check_completion())	return true;
 
 	// если враг изменился
 	if (enemy != object->EnemyMan.get_enemy())		return true;
+	
+	// если актера уже контролит другой кровосос
+	if ((current_substate != eStateExecute) && 
+		object->CControlledActor::is_controlled())	return true;
 
 	return false;
 }
