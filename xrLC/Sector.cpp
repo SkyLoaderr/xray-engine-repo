@@ -133,14 +133,14 @@ void CSector::Save(IWriter &fs)
 	vector<OGF_Base *>::iterator F = find(g_tree.begin(),g_tree.end(),TreeRoot);
 	R_ASSERT(F!=g_tree.end());
 	DWORD ID = F-g_tree.begin();
-	fs.write_chunk(fsP_Root,&ID,sizeof(DWORD));
+	fs.w_chunk(fsP_Root,&ID,sizeof(DWORD));
 
 	// Portals
-	fs.write_chunk(fsP_Portals,Portals.begin(),Portals.size()*sizeof(WORD));
+	fs.w_chunk(fsP_Portals,Portals.begin(),Portals.size()*sizeof(WORD));
 
 	// Glows
-	fs.write_chunk(fsP_Glows,Glows.begin(),Glows.size()*sizeof(WORD));
+	fs.w_chunk(fsP_Glows,Glows.begin(),Glows.size()*sizeof(WORD));
 
 	// Lights
-	fs.write_chunk(fsP_Lights,Lights.begin(),Lights.size()*sizeof(WORD));
+	fs.w_chunk(fsP_Lights,Lights.begin(),Lights.size()*sizeof(WORD));
 }

@@ -32,8 +32,8 @@ int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 	}
 	if (f_count>1) {
 		bCriticalErrCnt	++;
-		pBuild->err_multiedge.Wvector(V1->P);
-		pBuild->err_multiedge.Wvector(V2->P);
+		pBuild->err_multiedge.w_fvector3(V1->P);
+		pBuild->err_multiedge.w_fvector3(V2->P);
 	}
 	if (found) {
 		vecFaceIt F = lower_bound(ids.begin(),ids.end(),found);
@@ -115,7 +115,7 @@ void CBuild::BuildCForm(IWriter &fs)
 		mu_refs[ref]->export_cform_game(CL);
 
 	// Saving
-	CFS_Memory		MFS;
+	CMemoryWriter	MFS;
 	Status			("Saving...");
 
 	// Header
@@ -124,14 +124,14 @@ void CBuild::BuildCForm(IWriter &fs)
 	hdr.vertcount	= CL.getVS();
 	hdr.facecount	= CL.getTS();
 	hdr.aabb		= BB;
-	MFS.write		(&hdr,sizeof(hdr));
+	MFS.w			(&hdr,sizeof(hdr));
 
 	// Data
-	MFS.write		(CL.getV(),CL.getVS()*sizeof(Fvector));
-	MFS.write		(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
+	MFS.w			(CL.getV(),CL.getVS()*sizeof(Fvector));
+	MFS.w			(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
 
 	// Compress chunk
-	fs.write_chunk	(fsL_CFORM|CFS_CompressMark,MFS.pointer(),MFS.size());
+	fs.w_chunk		(fsL_CFORM|CFS_CompressMark,MFS.pointer(),MFS.size());
 
 	// clear pDeflector (it is stored in the same memory space with dwMaterialGame)
 	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++)
@@ -143,5 +143,5 @@ void CBuild::BuildCForm(IWriter &fs)
 
 void CBuild::BuildPortals(IWriter& fs)
 {
-	fs.write_chunk(fsL_PORTALS,portals.begin(),portals.size()*sizeof(b_portal));
+	fs.w_chunk		(fsL_PORTALS,portals.begin(),portals.size()*sizeof(b_portal));
 }

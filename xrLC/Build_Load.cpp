@@ -51,7 +51,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	Status					("Vertices...");
 	{
 		F = FS.open_chunk		(EB_Vertices);
-		u32 v_count			=	F->Length()/sizeof(b_vertex);
+		u32 v_count			=	F->length()/sizeof(b_vertex);
 		g_vertices.reserve		(3*v_count/2);
 		scene_bb.invalidate		();
 		for (i=0; i<v_count; i++)
@@ -64,7 +64,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		}
 		Progress			(p_total+=p_cost);
 		clMsg				("* %16s: %d","vertices",g_vertices.size());
-		F->Close			();
+		F->close			();
 	}
 
 	//*******
@@ -72,7 +72,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	{
 		F = FS.open_chunk		(EB_Faces);
 		R_ASSERT				(F);
-		u32 f_count			=	F->Length()/sizeof(b_face);
+		u32 f_count			=	F->length()/sizeof(b_face);
 		g_faces.reserve			(f_count);
 		for (i=0; i<f_count; i++)
 		{
@@ -107,7 +107,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		}
 		Progress			(p_total+=p_cost);
 		clMsg				("* %16s: %d","faces",g_faces.size());
-		F->Close			();
+		F->close			();
 
 		if (dwInvalidFaces)	
 		{
@@ -121,22 +121,22 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	F = FS.open_chunk		(EB_MU_models);
 	if (F)
 	{
-		while (!F->Eof())
+		while (!F->eof())
 		{
 			mu_models.push_back				(xr_new<xrMU_Model>());
 			mu_models.back()->Load			(*F);
 		}
-		F->Close				();
+		F->close				();
 	}
 	F = FS.open_chunk		(EB_MU_refs);
 	if (F)
 	{
-		while (!F->Eof())
+		while (!F->eof())
 		{
 			mu_refs.push_back				(xr_new<xrMU_Reference>());
 			mu_refs.back()->Load			(*F);
 		}		
-		F->Close				();
+		F->close				();
 	}
 
 	//*******
@@ -154,11 +154,11 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		// Controlles/Layers
 		{
 			F = FS.open_chunk		(EB_Light_control);
-			L_control_data.assign	(LPBYTE(F->Pointer()),LPBYTE(F->Pointer())+F->Length());
+			L_control_data.assign	(LPBYTE(F->pointer()),LPBYTE(F->pointer())+F->length());
 
 			R_Layer			temp;
 			
-			while (!F->Eof())
+			while (!F->eof())
 			{
 				F->r				(temp.control.name,sizeof(temp.control.name));
 				u32 cnt				= F->r_u32();
@@ -168,7 +168,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				L_layers.push_back	(temp);
 			}
 
-			F->Close		();
+			F->close		();
 		}
 		// Static
 		{

@@ -25,7 +25,7 @@
 	CMemoryWriter F;
     m_Header.object_count=m_Objects.size();
 	// header
-	F.write_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));
+	F.w_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));
     // objects
 	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
     for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){

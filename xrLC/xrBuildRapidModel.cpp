@@ -97,7 +97,7 @@ void CBuild::BuildRapid()
 	vector<b_rc_face>		rc_faces;
 	rc_faces.resize			(CL.getTS());
 	// Prepare faces
-	for (int k=0; k<CL.getTS(); k++){
+	for (u32 k=0; k<CL.getTS(); k++){
 		CDB::TRI* T			= CL.getT()+k;
 		base_Face* F		= (base_Face*)T->dummy;
 		T->dummy			= k;

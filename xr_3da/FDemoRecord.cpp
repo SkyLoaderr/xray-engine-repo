@@ -179,7 +179,7 @@ void CDemoRecord::OnKeyboardPress	(int dik)
 	if (dik == DIK_ESCAPE)	pCreator->Cameras.RemoveEffector(cefDemo);
 	if (dik == DIK_RETURN){	
 		if (pCreator->CurrentEntity()){
-			pCreator->CurrentEntity()->ForceTransform(m_Camera_);
+			pCreator->CurrentEntity()->ForceTransform(m_Camera);
 			pCreator->Cameras.RemoveEffector(cefDemo);
 		}
 	}
