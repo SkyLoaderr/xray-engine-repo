@@ -95,8 +95,8 @@ IC		void		gm_SetNearer		(BOOL bNearer)
 	if (bNearer	!= gm_Nearer)
 	{
 		gm_Nearer	= bNearer;
-		if (gm_Nearer)	rmNear		();
-		else			rmNormal	();
+		if (gm_Nearer)	Render->rmNear	();
+		else			Render->rmNormal();
 	}
 }
 
@@ -152,6 +152,7 @@ void CRender::Calculate()
 	gm_Ambient						= 0xffffffff;
 	CHK_DX(HW.pDevice->SetMaterial	(gm_Data.d3d()));
 	gm_SetAmbient					(0);
+	gm_SetNearer					(FALSE);
 
 	// Render current sector and beyond
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
