@@ -36,6 +36,7 @@ void CRender::Render	()
 	}
 	Device.Statistic.RenderDUMP.End			();
 
+	/*
 	for (u32 dls_phase=0; dls_phase<2; dls_phase++)
 	{
 		//******* Direct lighting+shadow		::: Calculate
@@ -71,6 +72,7 @@ void CRender::Render	()
 		}
 		Device.Statistic.RenderDUMP.End			();
 	}
+	*/
 
 	// Multiply by lighting contribution
 	Target.phase_accumulator				();
