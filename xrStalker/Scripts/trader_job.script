@@ -135,7 +135,7 @@ end
 
 
 -- функция генерит текст задания для артефактов 
-function artefacts_task_text(original text, first_speaker, second_speaker)
-	printf("%s", original text)
+function artefacts_task_text(original_text, first_speaker, second_speaker)
+	printf("%s", original_text)
 	return "artefact job \\n"
 end
