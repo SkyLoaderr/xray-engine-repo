@@ -130,6 +130,8 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 			vfCreateObject		((*J).second, false);
 		}
 		tpALifeAbstractGroup->m_bCreateSpawnPositions = false;
+		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
+		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 	}
 	else
 		vfCreateObject					(tpALifeDynamicObject);
@@ -176,6 +178,8 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 			VERIFY					(J != m_tObjectRegistry.end());
 			vfReleaseObject			((*J).second);
 		}
+		vfAddObjectToScheduled		(tpALifeDynamicObject);
+		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 	}
 	else
 		vfReleaseObject				(tpALifeDynamicObject);

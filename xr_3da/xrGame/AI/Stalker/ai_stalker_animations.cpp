@@ -266,30 +266,6 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 		if (tpWeapon) {
 			switch (tpWeapon->STATE) {
-				case CWeapon::eIdle : {
-					if (m_tBodyState == eBodyStateStand)
-						switch (m_tMovementType) {
-							case eMovementTypeStand : {
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
-								break;
-							}
-							case eMovementTypeWalk : {
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
-								break;
-							}
-							case eMovementTypeRun : {
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[8].A[0];
-								break;
-							}
-							default : {
-								NODEFAULT;
-								break;
-							}
-						}
-					else
-						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
-					break;
-				}
 				case CWeapon::eReload : {
 					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[4].A[0];
 					break;
@@ -302,7 +278,8 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[3].A[0];
 					break;
 				}
-				case CWeapon::eFire : {
+				case CWeapon::eFire: {
+					Msg				("Weapon is firing (%d)",m_dwCurrentUpdate);
 					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
@@ -311,7 +288,9 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					break;
 				}
 				default : {
-					if (m_tBodyState == eBodyStateStand)
+					if ((m_bFiring && (tpWeapon->STATE != CWeapon::eIdle)) || (m_tBodyState != eBodyStateStand))
+						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
+					else
 						switch (m_tMovementType) {
 							case eMovementTypeStand : {
 								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
@@ -330,8 +309,6 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 								break;
 							}
 						}
-					else
-						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
 					break;
 				}
 			}

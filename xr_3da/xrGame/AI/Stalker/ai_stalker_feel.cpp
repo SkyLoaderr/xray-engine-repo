@@ -398,7 +398,7 @@ void CAI_Stalker::SelectSound(int &iIndex)
 void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
 	#ifdef WRITE_LOG
-		Msg("%s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+//		Msg("%s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
 #ifdef IGNORE_ACTOR
@@ -469,7 +469,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 			if ((((!tpEntity || (tpEntity->g_Team() != g_Team()) || !m_tEnemy.Enemy) && (!who || !who->H_Parent() || !dynamic_cast<CEntity*>(who->H_Parent()) || (dynamic_cast<CEntity*>(who->H_Parent())->g_Team() != g_Team())))) && ((iIndex == -1) || (m_tpaDynamicObjects[iIndex].dwTime < m_dwCurrentUpdate))) {
 				int j;
 #ifndef SILENCE
-				Msg("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+//				Msg("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 #endif
 				for ( j=0; j<(int)m_tpaDynamicSounds.size(); j++)
 					if (who == m_tpaDynamicSounds[j].tpEntity) {

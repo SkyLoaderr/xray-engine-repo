@@ -10,6 +10,8 @@
 #include "ai_stalker.h"
 #include "..\\..\\WeaponMagazined.h"
 
+#define TIME_FIRE_DELTA		400
+
 float CAI_Stalker::HitScale	(int element)
 {
 	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
@@ -305,7 +307,9 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				tpWeaponMagazined->SetQueueSize(1);
 	}
 
+	Msg	("Time : %d\nDESIRED : %s\nREAL : %s\nFIRING : %d",m_dwCurrentUpdate,(tWeaponState == eWeaponStateIdle) ? "IDLE" : "FIRE",(tpWeapon->STATE == CWeapon::eFire) ? "FIRING" : ((tpWeapon->STATE == CWeapon::eIdle) ? "IDLE" : ((tpWeapon->STATE == CWeapon::eReload) ? "RELOAD" : "UNKNOWN")),int(m_bFiring));
 	if (tWeaponState == eWeaponStateIdle) {
+		m_bFiring = false;
 		if (tpWeapon->STATE == CWeapon::eFire)
 			m_inventory.Action(kWPN_FIRE, CMD_STOP);
 		xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
@@ -324,7 +328,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 					u32 dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
 					if (dwStartFireAmmo) {
 						m_bFiring = true;
-						m_dwNoFireTime = Level().timeServer() + ::Random.randI(dwFireDelayMin,dwFireDelayMax);
+						m_dwNoFireTime = m_dwCurrentUpdate + ::Random.randI(dwFireDelayMin,dwFireDelayMax);
 					}
 					else {
 						m_inventory.Action(kWPN_FIRE, CMD_STOP);
@@ -340,8 +344,19 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				if (tpWeapon->STATE == CWeapon::eIdle)
 					if (bfCheckIfCanKillEnemy() && !bfCheckIfCanKillMember()) {
 						dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
-						if (dwStartFireAmmo && (Level().timeServer() > m_dwNoFireTime)) {
-							m_inventory.Action(kWPN_FIRE, CMD_START);
+						if (dwStartFireAmmo && (m_dwCurrentUpdate > m_dwNoFireTime)) {
+							if (m_bFiring && (m_dwCurrentUpdate - m_dwStartFireTime > TIME_FIRE_DELTA)) {
+								m_inventory.Action(kWPN_FIRE, CMD_START);
+								Msg				("Weapon could fire (%d)",m_dwCurrentUpdate);
+							}
+							else {
+								m_dwNoFireTime = m_dwCurrentUpdate;
+								m_inventory.Action(kWPN_FIRE, CMD_STOP);
+							}
+							if (!m_bFiring) {
+								m_dwStartFireTime	= m_dwCurrentUpdate;
+								Msg				("Weapon shouldn't fire (%d)",m_dwCurrentUpdate);
+							}
 							m_bFiring = true;
 						}
 					}
@@ -381,12 +396,12 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				}
 	}
 
-	m_bFiring = (tpWeapon->STATE == CWeapon::eFire) || (tpWeapon->STATE == CWeapon::eFire2);
+	bool bFiring = (tpWeapon->STATE == CWeapon::eFire) || (tpWeapon->STATE == CWeapon::eFire2);
 
 	CGroup &Group = *getGroup();
-	if ((bSafeFire) && (!m_bFiring))
+	if ((bSafeFire) && (!bFiring))
 		Group.m_dwFiring--;
 	else
-		if ((!bSafeFire) && (m_bFiring))
+		if ((!bSafeFire) && (bFiring))
 			Group.m_dwFiring++;
 }

@@ -1035,17 +1035,17 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 
 void CAI_Stalker::Think()
 {
-//	if (!m_dwLastUpdate) {
-//		Level().ObjectSpace.GetNearest(Position(),3.f);
-//		if (Level().ObjectSpace.q_nearest.size()) {
-//			for (u32 i=0, n = Level().ObjectSpace.q_nearest.size(); i<n; i++) {
-//				CInventoryItem	*tpInventoryItem	= dynamic_cast<CInventoryItem*>(Level().ObjectSpace.q_nearest[i]);
-//				CBolt			*tpBolt				= dynamic_cast<CBolt*>(Level().ObjectSpace.q_nearest[i]);
-//				if (tpInventoryItem && !tpBolt)
-//					m_tpItemsToTake.push_back(tpInventoryItem);
-//			}
-//		}
-//	}
+	if (!m_dwLastUpdate) {
+		Level().ObjectSpace.GetNearest(Position(),3.f);
+		if (Level().ObjectSpace.q_nearest.size()) {
+			for (u32 i=0, n = Level().ObjectSpace.q_nearest.size(); i<n; i++) {
+				CInventoryItem	*tpInventoryItem	= dynamic_cast<CInventoryItem*>(Level().ObjectSpace.q_nearest[i]);
+				CBolt			*tpBolt				= dynamic_cast<CBolt*>(Level().ObjectSpace.q_nearest[i]);
+				if (tpInventoryItem && !tpBolt)
+					m_tpItemsToTake.push_back(tpInventoryItem);
+			}
+		}
+	}
 	m_dwLastUpdate			= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
 	m_bStopThinking			= false;
@@ -1088,7 +1088,7 @@ void CAI_Stalker::Think()
 
 #ifndef SILENCE
 	if (g_Alive())
-		Msg("%s : [S=%d][A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),m_bStateChanged ? 1 : 0,A,B,C,D,E,F,G,H,I,J,K,L,M);
+		;//Msg("%s : [S=%d][A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),m_bStateChanged ? 1 : 0,A,B,C,D,E,F,G,H,I,J,K,L,M);
 #endif
 	
 	if (!g_Alive()) {

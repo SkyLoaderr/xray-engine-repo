@@ -97,6 +97,7 @@ private:
 	// firing
 	bool					m_bFiring;
 	u32						m_dwNoFireTime;
+	u32						m_dwStartFireTime;
 	float					m_fAttackSuccessProbability0;
 	float					m_fAttackSuccessProbability1;
 	float					m_fAttackSuccessProbability2;

@@ -110,6 +110,8 @@ void CAI_Stalker::Init()
 
 	AI_Path.TravelPath.clear		();
 	AI_Path.Nodes.clear				();
+
+	m_dwStartFireTime				= 0;
 }
 
 // when soldier is dead
