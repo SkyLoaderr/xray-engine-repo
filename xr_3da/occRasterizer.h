@@ -19,9 +19,13 @@ public:
 	Fvector			raster		[3];		
 	Fplane			plane;
 	float			area;
-	u32			flags;
-	u32			skip;
+	u32				flags;
+	u32				skip;
 };
+
+const float			occQ_s32	= float(0x40000000);	// [-2..2]
+const float			occQ_s16	= float(32767);			// [-1..1]
+typedef	s16			occD;
 
 class ENGINE_API	occRasterizer  
 {
@@ -29,23 +33,26 @@ private:
 	occTri*			bufFrame	[occ_dim][occ_dim];
 	float			bufDepth	[occ_dim][occ_dim];
 
-	int				bufDepth_0	[occ_dim_0][occ_dim_0];
-	int				bufDepth_1	[occ_dim_1][occ_dim_1];
-	int				bufDepth_2	[occ_dim_2][occ_dim_2];
-	int				bufDepth_3	[occ_dim_3][occ_dim_3];
+	occD			bufDepth_0	[occ_dim_0][occ_dim_0];
+	occD			bufDepth_1	[occ_dim_1][occ_dim_1];
+	occD			bufDepth_2	[occ_dim_2][occ_dim_2];
+	occD			bufDepth_3	[occ_dim_3][occ_dim_3];
 public:
-	IC int			d2int		(float d)	{ return iFloor	(d*float(0x40000000));	}
-	IC int			d2int_up	(float d)	{ return iCeil	(d*float(0x40000000));	}
-	IC float		d2float		(int d)		{ return float(d)/float(0x40000000);	}
+	IC int			df_2_s32		(float d)	{ return iFloor	(d*occQ_s32);				}
+	IC s16			df_2_s16		(float d)	{ return s16(iFloor	(d*occQ_s16));			}
+	IC int			df_2_s32up		(float d)	{ return iCeil	(d*occQ_s32);				}
+	IC s16			df_2_s16up		(float d)	{ return s16(iCeil	(d*occQ_s16));			}
+	IC float		ds32_2_f		(s32 d)		{ return float(d)/occQ_s32;					}
+	IC float		ds16_2_f		(s16 d)		{ return float(d)/occQ_s16;					}
 
 	void			clear		();
 	void			propagade	();
-	u32			rasterize	(occTri* T);
+	u32				rasterize	(occTri* T);
 	BOOL			test		(float x0, float y0, float x1, float y1, float z);
 	
 	occTri**		get_frame	()			{ return &(bufFrame[0][0]);	}
 	float*			get_depth	()			{ return &(bufDepth[0][0]);	}
-	int*			get_depth_level	(int level)	
+	occD*			get_depth_level	(int level)	
 	{
 		switch (level)
 		{

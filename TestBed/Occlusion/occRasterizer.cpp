@@ -20,20 +20,20 @@ void __stdcall fillDW_8x	(void* _p, u32 size, u32 value)
 
 IC void propagade_depth			(LPVOID p_dest, LPVOID p_src, int dim)
 {
-	int*	dest = (int*)p_dest;
-	int*	src	 = (int*)p_src;
+	occD*	dest = (occD*)p_dest;
+	occD*	src	 = (occD*)p_src;
 
 	for (int y=0; y<dim; y++)
 	{
 		for (int x=0; x<dim; x++)
 		{
-			int*	base0		= src + (y*2+0)*(dim*2) + (x*2);
-			int*	base1		= src + (y*2+1)*(dim*2) + (x*2);
-			int		f1			= base0[0];
-			int		f2			= base0[1];
-			int		f3			= base1[0];
-			int		f4			= base1[1];
-			int		f			= f1;
+			occD*	base0		= src + (y*2+0)*(dim*2) + (x*2);
+			occD*	base1		= src + (y*2+1)*(dim*2) + (x*2);
+			occD	f1			= base0[0];
+			occD	f2			= base0[1];
+			occD	f3			= base1[0];
+			occD	f4			= base1[1];
+			occD	f			= f1;
 			if (f2>f)	f		= f2;
 			if (f3>f)	f		= f3;
 			if (f4>f)	f		= f4;
@@ -41,7 +41,6 @@ IC void propagade_depth			(LPVOID p_dest, LPVOID p_src, int dim)
 		}
 	}
 }
-
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -109,8 +108,8 @@ void occRasterizer::propagade	()
 			
 			//
 			float d				= pDepth[pos];
-			clamp				(d,-1.99f,1.99f);
-			bufDepth_0[y][x]	= d2int(d);
+			clamp				(d,-0.999f,0.999f);
+			bufDepth_0[y][x]	= df_2_s16	(d);
 		}
 	}
 	
@@ -120,7 +119,7 @@ void occRasterizer::propagade	()
 	propagade_depth	(bufDepth_3,bufDepth_2,occ_dim_3);
 }
 
-IC	BOOL			test_Level	(int* depth, int dim, float _x0, float _y0, float _x1, float _y1, int z)
+IC	BOOL			test_Level	(occD* depth, int dim, float _x0, float _y0, float _x1, float _y1, occD z)
 {
 	float d2	= float(dim/2);
 	int x0		= iCeil		(_x0*d2); clamp(x0,0,	dim-1);
@@ -130,9 +129,9 @@ IC	BOOL			test_Level	(int* depth, int dim, float _x0, float _y0, float _x1, floa
 	
 	for (int y=y0; y<=y1; y++)
 	{
-		int* base	= depth+y*dim;
-		int* it		= base + x0;
-		int* end	= base + x1;
+		occD* base	= depth+y*dim;
+		occD* it	= base + x0;
+		occD* end	= base + x1;
 		for (; it<=end; it++)
 			if (z<*it)	return TRUE;
 	}
@@ -141,7 +140,7 @@ IC	BOOL			test_Level	(int* depth, int dim, float _x0, float _y0, float _x1, floa
 
 BOOL occRasterizer::test		(float _x0, float _y0, float _x1, float _y1, float _z)
 { 
-	int	z		= d2int_up	(_z)+1;
+	occD	z	= df_2_s16up	(_z)+1;
 	return		test_Level(get_depth_level(0),occ_dim_0,_x0,_y0,_x1,_y1,z);
 	/*
 	if	(test_Level(get_depth_level(2),occ_dim_2,_x0,_y0,_x1,_y1,z))
