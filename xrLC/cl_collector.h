@@ -66,7 +66,7 @@ namespace CDB {
 		}
 		Fvector*		getV()	{ return verts.begin();	}
 		int				getVS()	{ return verts.size();	}
-		tri*			getT()	{ return faces.begin();	}
+		TRI*			getT()	{ return faces.begin();	}
 		int				getTS() { return faces.size();	}
 	};
 
@@ -109,7 +109,7 @@ namespace CDB {
 		vector<Fvector>& getV_Vec()	{ return verts;	}
 		Fvector*		getV()	{ return verts.begin();	}
 		int				getVS()	{ return verts.size();	}
-		tri*			getT()	{ return faces.begin();	}
+		TRI*			getT()	{ return faces.begin();	}
 		int				getTS() { return faces.size();	}
 	};
 };

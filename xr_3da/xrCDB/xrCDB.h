@@ -56,7 +56,7 @@ namespace CDB
 	class XRCDB_API MODEL
 	{
 		friend class COLLIDER;	
-	public:
+	private:
 		Opcode::OPCODE_Model*	tree;
 
 		// tris
@@ -68,8 +68,10 @@ namespace CDB
 		MODEL();
 		~MODEL();
 
-		void			build	(Fvector* V, int Vcnt, TRI* T, int Tcnt);
-		DWORD			memory	();
+		IC TRI*			get_tris	()	{ return tris;	}
+
+		void			build		(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		DWORD			memory		();
 	};
 
 	// Collider result

@@ -10,7 +10,7 @@
 #include "MusicStream.h"
 
 #include "3dsound.h"
-#include "collide\cl_intersect.h"
+#include "cl_intersect.h"
 
 CSoundManager*		pSounds = NULL;
 
@@ -405,21 +405,22 @@ BOOL CSoundManager::IsOccluded(	Fvector& P, float R, soundOccluder& occ )
 	
 	// 1. Check cached polygon
 	float _u,_v,_range;
-	if (RAPID::TestRayTri(base,dir,occ,_u,_v,_range,true))
+	if (CDB::TestRayTri(base,dir,occ,_u,_v,_range,true))
 		if (_range>0 && _range<range) return TRUE;
 
 	// 2. Polygon doesn't picked up - real database query
-	static RAPID::XRCollide	DB;
-	DB.RayMode		(RAY_ONLYNEAREST);
-	DB.RayPick		(0,pGeometry,base,dir,range);
-	if (0==DB.GetRayContactCount()) {
+	static CDB::COLLIDER	DB;
+	DB.ray_options			(CDB::OPT_ONLYNEAREST);
+	DB.ray_query			(pGeometry,base,dir,range);
+	if (0==DB.r_count()) {
 		return FALSE;
 	} else {
 		// cache polygon
-		const RAPID::raypick_info*	rpinf	= DB.GetMinRayPickInfo();
-		occ[0].set	(rpinf->p[0]);
-		occ[1].set	(rpinf->p[1]);
-		occ[2].set	(rpinf->p[2]);
+		const CDB::RESULT*	R = DB.r_begin();
+		const CDB::TRI&		T = pGeometry->get_tris() [ R->id ];
+		occ[0].set	(*T.verts[0]);
+		occ[1].set	(*T.verts[1]);
+		occ[2].set	(*T.verts[2]);
 		return TRUE;
 	}
 }
