@@ -6,6 +6,8 @@ class 'FSM'
 
 -- 	инициализация путем задания объекта Non-Player Character
 function FSM:__init(npc_obj)
+	log	("here i am")
+
 	-- указатель на подконтрольный NPC
 	self.npc = npc_obj
 	-- матрица, задающая граф переходов состояний
