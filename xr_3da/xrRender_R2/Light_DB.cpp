@@ -177,7 +177,14 @@ void			CLight_DB::Update()
 		if (RImplementation.ViewBase.testSphere_dirty	(T->position, T->range))
 		{
 			T->dwFrame				=Device.dwFrame;
-			if (T->flags.bShadow)	v_selected_shadowed.push_back	(T);
+			if (T->flags.bShadow)	
+			{
+				//$$$ nv3x codepath doesn't implement shadowed point lights
+				if (RImplementation.b_nv3x && (IRender_Light::POINT==T->flags.type))
+					v_selected_unshadowed.push_back	(T);
+				else
+					v_selected_shadowed.push_back	(T);
+			}
 			else					v_selected_unshadowed.push_back	(T);
 		}
 	}
