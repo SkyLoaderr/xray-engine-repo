@@ -346,9 +346,12 @@ void CKinematics::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
 	VERIFY(bone_id<LL_BoneCount());      
     u64 mask 			= u64(1)<<bone_id;
     visimask.set		(mask,val);
-	if (!visimask.is(mask))
+	if (!visimask.is(mask)){
         bone_instances[bone_id].mTransform.scale(0.f,0.f,0.f);
-        bone_instances[bone_id].mRenderTransform.mul_43(bone_instances[bone_id].mTransform,(*bones)[bone_id]->m2b_transform);
+	}else{
+		CalculateBones_Invalidate	();
+	}
+	bone_instances[bone_id].mRenderTransform.mul_43(bone_instances[bone_id].mTransform,(*bones)[bone_id]->m2b_transform);
     if (bRecursive){
         for (xr_vector<CBoneData*>::iterator C=(*bones)[bone_id]->children.begin(); C!=(*bones)[bone_id]->children.end(); C++)
             LL_SetBoneVisible((*C)->GetSelfID(),val,bRecursive);
@@ -369,6 +372,7 @@ void CKinematics::LL_SetBonesVisible(u64 mask)
 	        B.mul_43		(A,(*bones)[b]->m2b_transform);
         }
 	}
+	CalculateBones_Invalidate	();
 }
 
 IC static void RecursiveBindTransform(CKinematics* K, xr_vector<Fmatrix>& matrices, u16 bone_id, const Fmatrix& parent)

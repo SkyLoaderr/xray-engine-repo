@@ -10,7 +10,7 @@ extern int	psSkeletonUpdate;
 
 //////////////////////////////////////////////////////////////////////////
 // BoneInstance methods
-void		CBoneInstanceRigid::construct	()
+void CBoneInstanceRigid::construct	()
 {
 	ZeroMemory					(this,sizeof(*this));
 	mTransform.identity			();
