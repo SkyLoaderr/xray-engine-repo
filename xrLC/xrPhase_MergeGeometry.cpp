@@ -10,7 +10,7 @@ svector<_TCF,8>			tc;				// TC
 svector<CLightmap*,8>	lmap_layers;
 */
 
-BOOL	FaceEqual(Face* F1, Face* F2)
+IC BOOL	FaceEqual(Face* F1, Face* F2)
 {
 	if (F1->dwMaterial  != F2->dwMaterial)					return FALSE;
 	if (F1->tc.size()	!= F2->tc.size())					return FALSE;
