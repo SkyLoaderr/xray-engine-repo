@@ -17,18 +17,30 @@
 
 ObjectFactory::CLIENT_BASE_CLASS *CObjectItemScript::client_object	() const
 {
-	ObjectFactory::CLIENT_SCRIPT_BASE_CLASS	*object = luabind::object_cast<ObjectFactory::CLIENT_SCRIPT_BASE_CLASS*>(m_client_creator(),luabind::adopt(luabind::result));
-	R_ASSERT								(object);
-	return									(object->_construct());
+	ObjectFactory::CLIENT_SCRIPT_BASE_CLASS	*object;
+	try {
+		object	= luabind::object_cast<ObjectFactory::CLIENT_SCRIPT_BASE_CLASS*>(m_client_creator(),luabind::adopt(luabind::result));
+	}
+	catch(...) {
+		return	(0);
+	}
+	R_ASSERT	(object);
+	return		(object->_construct());
 }
 
 #endif
 
 ObjectFactory::SERVER_BASE_CLASS *CObjectItemScript::server_object	(LPCSTR section) const
 {
-	ObjectFactory::SERVER_SCRIPT_BASE_CLASS	*object = luabind::object_cast<ObjectFactory::SERVER_SCRIPT_BASE_CLASS*>(m_server_creator(section),luabind::adopt(luabind::result));
-	R_ASSERT								(object);
-	return									(object->init());
+	ObjectFactory::SERVER_SCRIPT_BASE_CLASS	*object;
+	try {
+		object	= luabind::object_cast<ObjectFactory::SERVER_SCRIPT_BASE_CLASS*>(m_server_creator(section),luabind::adopt(luabind::result));
+	}
+	catch(...) {
+		return	(0);
+	}
+	R_ASSERT	(object);
+	return		(object->init());
 }
 
 CObjectItemScript::CObjectItemScript	(
