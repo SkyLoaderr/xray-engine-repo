@@ -68,6 +68,7 @@ public:
     virtual 			~CParticleTools		();
 
     void				Render				();
+    void				RenderEnvironment	(){;}
     void				OnFrame				();
 
     bool				OnCreate			();
