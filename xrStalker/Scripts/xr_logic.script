@@ -112,6 +112,11 @@ function try_switch_to_another_section(npc, st)
 	local l = st.logic
 	local npc_id = npc:id()
 
+	if not l then
+		utils.abort("Can't find script switching information in storage, scheme '%s'",
+			st.scheme)
+	end
+
 	if l.on_actor_dist_le then
 		local actor = level.actor()
 		if distance_between(actor, npc) <= l.on_actor_dist_le.dist then
