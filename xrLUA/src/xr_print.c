@@ -1,5 +1,7 @@
 #include <xrCore.h>
 
+#pragma comment( lib, "x:\\xrCore.lib"	)
+
 #include <stdarg.h>
 #include "xr_print.h"
 
