@@ -55,10 +55,10 @@ void					CRender::create					()
 	// distortion
 	u32		v_dev	= CAP_VERSION(HW.Caps.raster_major, HW.Caps.raster_minor);
 	u32		v_need	= CAP_VERSION(1,4);
-	if ( v_dev >= v_need )						b_distortion = TRUE;
-	else										b_distortion = FALSE;
-	if (strstr(Core.Params,"-nodistort"))		b_distortion = FALSE;
-	Msg				("* distortion: %s, dev(%d),need(%d)",b_distortion?"used":"unavailable",v_dev,v_need);
+	if ( v_dev >= v_need )						o.distortion = TRUE;
+	else										o.distortion = FALSE;
+	if (strstr(Core.Params,"-nodistort"))		o.distortion = FALSE;
+	Msg				("* distortion: %s, dev(%d),need(%d)",o.distortion?"used":"unavailable",v_dev,v_need);
 	m_skinning					= 0;
 
 	//

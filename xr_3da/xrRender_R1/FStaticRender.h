@@ -25,8 +25,10 @@ public:
 		PHASE_POINT,
 		PHASE_SPOT
 	};
-
-	BOOL														b_distortion;
+	struct		_options	{
+		u32		distortion	: 1;
+		u32		disasm		: 1;
+	}			o;
 public:
 	// Sector detection and visibility
 	CSector*													pLastSector;
