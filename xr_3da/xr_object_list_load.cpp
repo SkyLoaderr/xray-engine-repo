@@ -6,6 +6,7 @@
 void CObjectList::Load()
 {
 	R_ASSERT			(map_POOL.empty() && map_NETID.empty() && objects.empty() && destroy_queue.empty());
+	if (strstr(Core.Params,"-noprefetch"))	return;
 
 	u32	mem_0			= Memory.mem_usage();
 	CTimer T;			T.Start		();
