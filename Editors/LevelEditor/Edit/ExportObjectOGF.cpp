@@ -157,6 +157,11 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             F.w_stringZ			(m_Surf->_ShaderName());
             F.close_chunk		();
 
+            // Game material
+            F.open_chunk		(OGF_MATERIAL);
+            F.w_stringZ			(m_Surf->_GameMtlName());
+            F.close_chunk		();
+
             // Vertices
             u32 dwFVF			= D3DFVF_XYZ|D3DFVF_NORMAL|(1<<D3DFVF_TEXCOUNT_SHIFT);
             F.open_chunk		(OGF_VERTICES);
@@ -290,6 +295,7 @@ bool CExportObjectOGF::Export(IWriter& F)
 
     CTimer tm;
     tm.Start();
+    BOOL bResult = TRUE;
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
 //        // generate normals
@@ -302,6 +308,17 @@ bool CExportObjectOGF::Export(IWriter& F)
             u32 dwTexCnt 	= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);	R_ASSERT(dwTexCnt==1);
             SSplit* split	= FindSplit(surf);
             if (0==split){
+                SGameMtl* M = GMLib.GetMaterialByID(surf->_GameMtl());
+                if (0==M){
+                    ELog.DlgMsg		(mtError,"Surface: '%s' contains undefined game material.",surf->_Name());
+                    bResult 		= FALSE; 
+                    break; 
+                }
+                if (!M->Flags.is(SGameMtl::flDynamic)){
+                    ELog.DlgMsg		(mtError,"Surface: '%s' contains non-dynamic game material.",surf->_Name());
+                    bResult 		= FALSE; 
+                    break; 
+                }
             	m_Splits.push_back(new SSplit(surf,m_Source->GetBox()));
                 split		= m_Splits.back();
             }
@@ -353,6 +370,11 @@ bool CExportObjectOGF::Export(IWriter& F)
 	    UI.ProgressInc();
     }
 
+    if (!bResult){	
+	    UI.ProgressEnd	();
+    	return 			false;
+    }
+    
 	// create OGF
 	// Saving geometry...
     Fbox BBox;   	BBox.invalidate	();
@@ -384,7 +406,7 @@ bool CExportObjectOGF::Export(IWriter& F)
     tm.Stop			();
     ELog.Msg		(mtInformation,"Build time: %3.2f sec",float(tm.GetElapsed_ms())/1000.f);
     
-    return true;
+    return bResult;
 }
 //------------------------------------------------------------------------------
 

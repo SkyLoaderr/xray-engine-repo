@@ -371,11 +371,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
                     
     F.open_chunk(OGF_IKDATA);
     for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++)
-        if (!(*bone_it)->ExportOGF(F)){ 
-	    	ELog.Msg(mtError,"Bone '%s' has invalid shape.",(*bone_it)->Name());
-        	bRes=false; 
-//            break;
-        }
+        if (!(*bone_it)->ExportOGF(F)) bRes=false; 
     F.close_chunk();
 
     if (!m_Source->GetClassScript().IsEmpty()){

@@ -4,6 +4,7 @@
 #include "bone.h"
 #include "envelope.h"
 #include "topbar.h"
+#include "GameMtlLib.h"
 
 void SJointIKData::clamp_by_limits(Fvector& dest_xyz)
 {
@@ -210,8 +211,22 @@ void CBone::ClampByLimits()
 
 bool CBone::ExportOGF(IWriter& F)
 {
-	if (!shape.Valid()) return false;
-    F.w_stringZ	(game_mtl);
+	// check valid
+	if (!shape.Valid()){
+        ELog.Msg(mtError,"Bone '%s' has invalid shape.",Name());
+    	return false;
+    }
+    SGameMtl* M			= GMLib.GetMaterial(game_mtl);
+    if (!M){
+        ELog.Msg(mtError,"Bone '%s' has invalid game material.",Name());
+    	return false;
+    }
+    if (!M->Flags.is(SGameMtl::flDynamic)){
+        ELog.Msg(mtError,"Bone '%s' has non-dynamic game material.",Name());
+    	return false;
+    }
+    
+    F.w_stringZ	(game_mtl);	
     F.w			(&shape,sizeof(SBoneShape));
 
     F.w_u32		(IK_data.type);
