@@ -10,7 +10,7 @@
 			<text>Артефакт.</text>
 		</location>
 		<task>tutorial_find_artefact</task>
-		<article>zone_anomalies_gravi</article>
+		<article>zone_anomalies_meat</article>
 		<article>zone_artifact_af-blood</article>
 	</info_portion>
 	<info_portion id="tutorial_artefact_gain">
