@@ -520,11 +520,7 @@ void CScriptGameObject::explode	(u32 level_time)
 
 void CScriptGameObject::bind_object			(CScriptBinderObject *object)
 {
-	CScriptBinder			*binder = dynamic_cast<CScriptBinder*>(m_tpGameObject);
-	if (!binder)
-		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CScriptBinder : cannot access class member bind_object!");
-	else
-		binder->set_object	(object);
+	m_tpGameObject->set_object	(object);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1125,12 +1121,7 @@ int	CScriptGameObject::animation_count		() const
 
 CScriptBinderObject	*CScriptGameObject::binded_object	()
 {
-	CScriptBinder	*binder = dynamic_cast<CScriptBinder*>(m_tpGameObject);
-	if (!binder) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member binded_object!");
-		return		(0);
-	}
-	return			(binder->object());
+	return			(m_tpGameObject->object());
 }
 
 void CScriptGameObject::set_previous_point	(int point_index)

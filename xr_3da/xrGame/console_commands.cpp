@@ -848,7 +848,7 @@ public:
 extern void print_help(lua_State *L);
 
 struct CCC_LuaHelp : public IConsole_Command {
-	CCC_LuaHelp(LPCSTR N) : IConsole_Command(N)  { };
+	CCC_LuaHelp(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 
 	virtual void Execute(LPCSTR args) {
 		print_help(ai().script_engine().lua());

@@ -13,6 +13,7 @@
 #include "xrServer_Space.h"
 #include "alife_space.h"
 #include "UsableScriptObject.h"
+#include "script_binder.h"
 
 class CPhysicsShell;
 class CSE_Abstract;
@@ -24,7 +25,8 @@ class CGameObject :
 	virtual public CAI_ObjectLocation,
 	public CPrefetchManager,
 	public CParticlesPlayer,
-	public CUsableScriptObject
+	public CUsableScriptObject,
+	public CScriptBinder
 {
 	typedef CObject inherited;
 	u32						m_dwFrameLoad;

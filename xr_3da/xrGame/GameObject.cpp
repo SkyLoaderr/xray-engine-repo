@@ -77,13 +77,16 @@ void CGameObject::reinit	()
 
 	m_visual_callback.clear		();
 	CAI_ObjectLocation::reinit	();
+	CScriptBinder::reinit		();
 }
 
 void CGameObject::reload	(LPCSTR section)
 {
 	if (!frame_check(m_dwFrameReload))
 		return;
-	m_script_clsid			= object_factory().script_clsid(SUB_CLS_ID);
+
+	m_script_clsid				= object_factory().script_clsid(SUB_CLS_ID);
+	CScriptBinder::reload		(section);
 }
 
 void CGameObject::net_Destroy	()
@@ -116,7 +119,7 @@ void CGameObject::net_Destroy	()
 
 	//удалить партиклы из ParticlePlayer
 	CParticlesPlayer::net_DestroyParticles	();
-
+	CScriptBinder::net_Destroy			();
 }
 
 void CGameObject::OnEvent		(NET_Packet& P, u16 type)
@@ -254,7 +257,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	spawn_supplies				();
 
-	return						(TRUE);
+	return						(CScriptBinder::net_Spawn(DC));
 }
 
 void CGameObject::net_Save		(NET_Packet &net_packet)
@@ -562,6 +565,7 @@ void CGameObject::shedule_Update	(u32 dt)
 
 	// Msg							("-SUB-:[%x][%s] CGameObject::shedule_Update",dynamic_cast<void*>(this),*cName());
 	inherited::shedule_Update	(dt);
+	CScriptBinder::shedule_Update(dt);
 }
 
 BOOL CGameObject::net_SaveRelevant	()

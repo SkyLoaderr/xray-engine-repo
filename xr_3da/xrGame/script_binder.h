@@ -23,8 +23,6 @@ public:
 	virtual void				reload			(LPCSTR section);
 	virtual BOOL				net_Spawn		(LPVOID DC);
 	virtual void				net_Destroy		();
-	virtual void				net_Import		(NET_Packet &net_packet);
-	virtual void				net_Export		(NET_Packet &net_packet);
 	virtual void				shedule_Update	(u32 time_delta);
 			void				set_object		(CScriptBinderObject *object);
 	IC		CScriptBinderObject	*object			();

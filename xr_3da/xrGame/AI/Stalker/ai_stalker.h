@@ -11,7 +11,6 @@
 #include "../../CustomMonster.h"
 #include "../../stalker_movement_manager.h"
 #include "../../sight_manager.h"
-#include "../../script_binder.h"
 #include "../../setup_manager.h"
 #include "../../setup_action.h"
 #include "../../object_handler.h"
@@ -39,7 +38,6 @@ class CAI_Stalker :
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,
 	public CMotivationActionManagerStalker,
-	public CScriptBinder,
 	public CSetupManager<CSetupAction,CAI_Stalker,u32>,
 	public CAI_PhraseDialogManager
 {
