@@ -56,6 +56,7 @@ public:
 		strconcat				(fName,name,m_tLevel.caLevelName);
 		strconcat				(fName,fName,"\\");
 		m_tpAI_Map				= xr_new<CAI_Map>(fName);
+		// loading cross table
 		strcat					(fName,CROSS_TABLE_NAME);
 		m_tpCrossTable			= xr_new<CSE_ALifeCrossTable>(fName);
 		// loading spawn points
@@ -66,7 +67,8 @@ public:
 		IReader					*S = 0;
 		NET_Packet				P;
 		int						S_id	= 0;
-		xr_map<u32,xr_vector<CSE_ALifeObject*> >	tpSGMap;
+		xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>	l_tpSpawnGroupObjectsMap;
+		xr_map<LPCSTR,CSE_SpawnGroup*>				l_tpSpawnGroupControlsMap;
 		while (0!=(S = SP->open_chunk(S_id)))
 		{
 			P.B.count			= S->length();
@@ -85,43 +87,72 @@ public:
 				R_ASSERT2		(E,S);
 			}
 			E->Spawn_Read		(P);
+			
 			//
 			if ((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY)) {
 				CSE_ALifeObject	*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
-					xr_map<u32,xr_vector<CSE_ALifeObject*> >::iterator I = tpSGMap.find(tpALifeObject->m_dwSpawnGroup);
-					if (I == tpSGMap.end()) {
-						xr_vector<CSE_ALifeObject*> tpTemp;
-						tpTemp.clear();
-						tpTemp.push_back(tpALifeObject);
-						tpSGMap.insert(mk_pair(tpALifeObject->m_dwSpawnGroup,tpTemp));
+					xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator I = l_tpSpawnGroupObjectsMap.find(tpALifeObject->m_caGroupControl);
+					if (I == l_tpSpawnGroupObjectsMap.end()) {
+						xr_vector<CSE_ALifeObject*> *tpTemp = xr_new<xr_vector<CSE_ALifeObject*> >();
+						tpTemp->clear();
+						tpTemp->push_back(tpALifeObject);
+						l_tpSpawnGroupObjectsMap.insert(mk_pair(tpALifeObject->m_caGroupControl,tpTemp));
 					}
 					else
-						(*I).second.push_back(tpALifeObject);
+						(*I).second->push_back(tpALifeObject);
 				}
-				else
-					xr_delete(E);
+				else {
+					CSE_SpawnGroup *l_tpSpawnGroup = dynamic_cast<CSE_SpawnGroup*>(tpALifeObject);
+					if (l_tpSpawnGroup) {
+						l_tpSpawnGroup->m_dwSpawnGroup = *dwGroupOffset++;
+						l_tpSpawnGroupControlsMap.insert(mk_pair(l_tpSpawnGroup->s_name_replace,l_tpSpawnGroup));
+					}
+					else
+						xr_delete(E);
+				}
 			}
 			else
 				xr_delete(E);
 			S_id++;
 		}
+		
 		R_ASSERT2(m_tpSpawnPoints.size(),"There are no spawn-points!");
-		ALIFE_OBJECT_P_IT		I = m_tpSpawnPoints.begin();
-		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
-		for ( ; I != E; I++) {
-			xr_map<u32,xr_vector<CSE_ALifeObject*> >::iterator J = tpSGMap.find((*I)->m_dwSpawnGroup);
-			if (J != tpSGMap.end()) {
-				if ((*I)->m_dwSpawnGroup > 0) {
-					for (u32 i=0; i<(*J).second.size(); i++)
-						(*J).second[i]->m_dwSpawnGroup = *dwGroupOffset;
-					++*dwGroupOffset;
+		
+		{
+			ALIFE_OBJECT_P_IT		I = m_tpSpawnPoints.begin();
+			ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
+			for ( ; I != E; I++)
+				if (strlen((*I)->m_caGroupControl) > 0) {
+					xr_map<LPCSTR,CSE_SpawnGroup*>::iterator J = l_tpSpawnGroupControlsMap.find((*I)->m_caGroupControl);
+					if (J != l_tpSpawnGroupControlsMap.end())
+						(*I)->m_dwSpawnGroup = (*J).second->m_dwSpawnGroup;
+					else {
+						string4096	S;
+						sprintf(S,"Cannot find a corresponding group control %s for object %s",(*I)->m_caGroupControl,(*I)->s_name_replace);
+						R_ASSERT2(J != l_tpSpawnGroupControlsMap.end(),S);
+					}
 				}
 				else
-					for (u32 i=0; i<(*J).second.size(); i++)
-						(*J).second[i]->m_dwSpawnGroup = (*dwGroupOffset)++;
-				(*J).second.clear();
+					(*I)->m_dwSpawnGroup = *dwGroupOffset++;
+		}
+		{
+			ALIFE_OBJECT_P_IT		I = m_tpSpawnPoints.begin();
+			ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
+			for ( ; I != E; I++) {
+				xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator J = l_tpSpawnGroupObjectsMap.find((*I)->m_caGroupControl);
+				if (J != l_tpSpawnGroupObjectsMap.end()) {
+					if ((*I)->m_dwSpawnGroup > 0) {
+						for (u32 i=0; i<(*J).second->size(); i++)
+							(*(*J).second)[i]->m_dwSpawnGroup = *dwGroupOffset;
+						++*dwGroupOffset;
+					}
+					else
+						for (u32 i=0; i<(*J).second->size(); i++)
+							(*(*J).second)[i]->m_dwSpawnGroup = (*dwGroupOffset)++;
+					(*J).second->clear();
+				}
 			}
 		}
 	};

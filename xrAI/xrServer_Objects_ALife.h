@@ -82,7 +82,7 @@ public:
 	_SPAWN_ID						m_tSpawnID;
 	float							m_fDistance;
 	bool							m_bOnline;
-	u8								m_ucProbability;
+	float							m_fProbability;
 	u32								m_dwSpawnGroup;
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
@@ -96,7 +96,7 @@ public:
 		m_tObjectID					= _OBJECT_ID(-1);
 		m_tGraphID					= _GRAPH_ID(-1);
 		m_tGraphID					= _SPAWN_ID(-1);
-		m_ucProbability				= 1;
+		m_fProbability				= 1.f;
 		m_dwSpawnGroup				= 0;
 		m_bDirectControl			= true;
 		m_tNodeID					= u32(-1);

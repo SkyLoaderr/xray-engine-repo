@@ -314,7 +314,7 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 {
-	tNetPacket.w_u8				(m_ucProbability);
+	tNetPacket.w_float			(m_fProbability);
 	tNetPacket.w_u32			(m_dwSpawnGroup);
 	tNetPacket.w				(&m_tGraphID,	sizeof(m_tGraphID));
 	tNetPacket.w_float			(m_fDistance);
@@ -327,7 +327,13 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion >= 1) {
-		tNetPacket.r_u8			(m_ucProbability);
+		if (m_wVersion > 24)
+			tNetPacket.r_float		(m_fProbability);
+		else {
+			u8						l_ucTemp;
+			tNetPacket.r_u8			(l_ucTemp);
+			m_fProbability			= (float)l_ucTemp;
+		}
 		tNetPacket.r_u32		(m_dwSpawnGroup);
 		if (m_wVersion < 4) {
 			u16					wDummy;
@@ -362,7 +368,7 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper.CreateU8			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),			&m_ucProbability,	0,100);
+	PHelper.CreateFLOAT			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),			&m_fProbability,	0,100);
 	PHelper.Create...			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  pSettings->r_string("GroupControlSection"));
 }
 #endif

@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(24)
+#define SPAWN_VERSION	u16(25)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -36,6 +36,7 @@
 // 22 - CSE_AnomalousZone			append artefact spawns
 // 23 - CSE_ALifeObject				append spawn ID
 // 24 - CSE_ALifeObject				append group control
+// 25 - CSE_ALifeObject				changed type of the property probability from u8 to float
 //------------------------------------------------------------------------------
 
 class xrClientData;
@@ -238,6 +239,7 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
 	float							m_fGroupProbability;
+	u32								m_dwSpawnGroup;
 	
 									CSE_SpawnGroup	(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
