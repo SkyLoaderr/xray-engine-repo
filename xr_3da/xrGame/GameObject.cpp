@@ -325,6 +325,7 @@ void CGameObject::OnH_B_Chield()
 void CGameObject::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
+	setup_parent_ai_locations	();
 	validate_ai_locations		(false);
 }
 

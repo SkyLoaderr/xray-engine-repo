@@ -88,33 +88,36 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Node.Begin	();
 
+	u32						id;
 	if (valid_vertex_id(current_node_id)) {
 		if (inside(vertex(current_node_id),position)) {
 			Device.Statistic.AI_Node.End();
-			return				(current_node_id);
+			return			(current_node_id);
 		}
-		u32						id = check_position_in_direction(current_node_id,vertex_position(current_node_id),position);
+		id					= check_position_in_direction(current_node_id,vertex_position(current_node_id),position);
 		if (valid_vertex_id(id) && inside(vertex(id),position) && (position.distance_to(vertex_position(id)) < 1.5f)) {
 			Device.Statistic.AI_Node.End();
-			return				(id);
+			return			(id);
 		}
 	}
 
-	u32						id, id_prev = valid_vertex_id(current_node_id) ? current_node_id : 0;
-	CGraphEngine::CPositionParameters	position_params(position,1.f,30.f);
+	u32						id_prev = valid_vertex_id(current_node_id) ? current_node_id : 0;
+	if (position.distance_to(vertex_position(id_prev)) < 30.f) {
+		CGraphEngine::CPositionParameters	position_params(position,1.f,30.f);
 
-	if (ai().graph_engine().search(*this,id_prev,id_prev,0,position_params)) {
-		VERIFY				(valid_vertex_id(position_params.m_vertex_id));
-		Device.Statistic.AI_Node.End		();
-		return				(position_params.m_vertex_id);
+		if (ai().graph_engine().search(*this,id_prev,id_prev,0,position_params)) {
+			VERIFY				(valid_vertex_id(position_params.m_vertex_id));
+			Device.Statistic.AI_Node.End		();
+			return				(position_params.m_vertex_id);
+		}
+
+		if (position_params.m_distance < 1.5f) {
+			VERIFY				(valid_vertex_id(position_params.m_vertex_id));
+			Device.Statistic.AI_Node.End		();
+			return				(position_params.m_vertex_id);
+		}
 	}
 
-	if (position_params.m_distance < 1.5f) {
-		VERIFY				(valid_vertex_id(position_params.m_vertex_id));
-		Device.Statistic.AI_Node.End		();
-		return				(position_params.m_vertex_id);
-	}
-	
 	id						= vertex(position);
 	if (valid_vertex_id(id)) {
 		Device.Statistic.AI_Node.End		();

@@ -813,28 +813,37 @@ public:
 	IC	bool		is_goal_reached	(const _index_type node_index)
 	{
 		if (!graph->inside(node_index,m_params->m_position)) {
-			float						distance = graph->distance(node_index,m_params->m_position);
-			if (distance < m_params->m_distance) {
-				m_params->m_distance	= distance;
-				m_params->m_vertex_id	= node_index;
-			}
+//			float						distance = graph->distance(node_index,m_params->m_position);
+//			if (distance < m_params->m_distance) {
+//				m_params->m_distance	= distance;
+//				m_params->m_vertex_id	= node_index;
+//			}
 			best_node					= graph->vertex(node_index);
 			y1							= (float)(best_node->position().y());
 			return						(false);
 		}
 
-		if ((_abs(m_params->m_position.y - ai().level_graph().vertex_plane_y(node_index,m_params->m_position.x,m_params->m_position.z)) >= m_params->m_epsilon)) {
-			best_node					= graph->vertex(node_index);
-			y1							= (float)(best_node->position().y());
-			return						(false);
-		}
-		else {
-			m_params->m_distance		= 0.f;
-			m_params->m_vertex_id		= node_index;
-			return						(true);
-		}
+//		if ((_abs(m_params->m_position.y - ai().level_graph().vertex_plane_y(node_index,m_params->m_position.x,m_params->m_position.z)) >= m_params->m_epsilon)) {
+//			best_node					= graph->vertex(node_index);
+//			y1							= (float)(best_node->position().y());
+//			return						(false);
+//		}
+//		else {
+//			m_params->m_distance		= 0.f;
+//			m_params->m_vertex_id		= node_index;
+//			return						(true);
+//		}
+		m_params->m_distance		= graph->distance(node_index,m_params->m_position);
+		m_params->m_vertex_id		= node_index;
+		return						(true);
 	}
 	
+	IC	_dist_type	estimate		(const _index_type node_index) const
+	{
+		VERIFY					(graph);
+		return					(graph->vertex_position(node_index).distance_to(m_params->m_position));
+	}
+
 	IC		void		create_path		()
 	{
 	}
