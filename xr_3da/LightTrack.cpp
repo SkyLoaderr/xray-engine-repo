@@ -86,7 +86,7 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 			// Select light
 			dest.lights.push_back	(CLightTrack::Light());
 			CLightTrack::Light&	L	= dest.lights.back();
-			L.L.set					(xrL);
+			L.L						= xrL;
 			L.L.diffuse.mul_rgb		(I->energy);
 			L.energy				= E;
 		}

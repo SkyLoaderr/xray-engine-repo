@@ -56,7 +56,7 @@ public:
 
 	// Lighting
 	virtual void					L_add					(CLightPPA* L	)	= 0;
-	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT>&	dest)	= 0;
+	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest)	= 0;
 	
 	// Models
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)	= 0;
