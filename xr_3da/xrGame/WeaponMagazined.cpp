@@ -168,6 +168,12 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 		case eReload:
 			switch2_Reload	(bHUDView);
 			break;
+		case eShowing:
+			switch2_Showing	(bHUDView);
+			break;
+		case eHiding:
+			switch2_Hiding	(bHUDView);
+			break;
 		}
 		st_current = st_target;
 	}
