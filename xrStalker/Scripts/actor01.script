@@ -10,14 +10,10 @@ function GiveInfo(obj, info_number)
 	end
 end 
 
-
-function f(a, b)
-	return a + b
-end
-
-
-function artifact_merge()
+function artifact_merge(merger)
 	log	("artifact merge in actor01!")
+	printf("black drops num %d",merger:get_black_drops_num())
+	printf("mercury ball num %d",merger:get_mercury_ball_num())
 end
 
 
