@@ -1607,19 +1607,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="motivations"
-							Filter="">
-							<File
-								RelativePath=".\agent_manager_motivations.cpp">
-							</File>
-							<File
-								RelativePath=".\agent_manager_motivations.h">
-							</File>
-							<File
-								RelativePath=".\agent_manager_motivations_inline.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="properties"
 							Filter="">
 							<File

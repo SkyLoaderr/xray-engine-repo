@@ -8,18 +8,17 @@
 
 #pragma once
 
-#include "motivation_action_manager.h"
+#include "action_planner.h"
 
 class CAgentManager;
 class CObject;
 
-class CAgentManagerMotivationPlanner : public CMotivationActionManager<CAgentManager> {
+class CAgentManagerMotivationPlanner : public CActionPlanner<CAgentManager> {
 private:
-	typedef CMotivationActionManager<CAgentManager> inherited;
+	typedef CActionPlanner<CAgentManager> inherited;
 
 public:
 	virtual void		setup			(CAgentManager *object);
-			void		add_motivations	();
 			void		add_evaluators	();
 			void		add_actions		();
 			void		remove_links	(CObject *object);

@@ -93,6 +93,7 @@ public:
 	IC		void				add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 	IC		virtual void		add_operator			(const _edge_type &operator_id,	_operator_ptr _operator);
 	IC		virtual void		add_evaluator			(const _condition_type &condition_id, _condition_evaluator_ptr evaluator);
+	IC		_object_type		&object					() const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

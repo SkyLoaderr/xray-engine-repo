@@ -44,13 +44,20 @@ IC	CPlanner::~CActionPlanner			()
 }
 
 TEMPLATE_SPECIALIZATION
-void CPlanner::setup				(_object_type *object)
+void CPlanner::setup					(_object_type *object)
 {
 	inherited::setup		();
 	m_object				= object;
 	m_current_action_id		= _action_id_type(-1);
 	m_storage.clear			();
 	m_initialized			= false;
+}
+
+TEMPLATE_SPECIALIZATION
+IC	_object_type &CPlanner::object		() const
+{
+	VERIFY					(m_object);
+	return					(*m_object);
 }
 
 TEMPLATE_SPECIALIZATION
