@@ -34,7 +34,6 @@ public:
 private:
 	// Log list
 	CUIListWnd				UILogList;
-	CUIStatic				UIStatic;
 	// Indexes to delete
 	typedef xr_set<int, std::greater<int> > ToDelIndexes;
 	typedef ToDelIndexes::iterator			ToDelIndexes_it;

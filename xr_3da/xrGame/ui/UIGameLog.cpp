@@ -78,10 +78,6 @@ void CUIGameLog::Init()
 	// Chat log
 	AttachChild(&UILogList);
 	xml_init.InitListWnd(uiXml, "game_log_list", 0, &UILogList);
-
-	AttachChild(&UIStatic);
-	Irect r = UILogList.GetWndRect();
-	UIStatic.Init(r.x1, r.y1, r.x2 - r.x1, r.y2 - r.y1);
 }
 
 void CUIGameLog::Draw(){
