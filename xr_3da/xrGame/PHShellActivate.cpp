@@ -21,13 +21,11 @@
 
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 
+	PresetActive();
 	if(bActive)return;
-
 	if(!CPHObject::is_active()) vis_update_deactivate();
 	if(!disable)EnableObject();
-	spatial_register();
 
-	PresetActive();
 	ELEMENT_I i;
 	mXFORM.set(m0);
 	for(i=elements.begin();elements.end() != i;++i){
@@ -36,26 +34,29 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	}
 	bActive=true;
 	bActivating=true;
-
+	spatial_register();
 
 }
 
 
 
 void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
-	if(bActive)return;
 
+	PresetActive();	
+	if(bActive)return;
 	if(!CPHObject::is_active()) vis_update_deactivate();
 	if(!disable)EnableObject();
-	spatial_register();
 
-	PresetActive();
+
+
 
 	ELEMENT_I i;
 	mXFORM.set(transform);
 	for(i=elements.begin();elements.end() != i;++i){
 		(*i)->Activate(transform,lin_vel, ang_vel);
 	}
+
+	spatial_register();
 	bActive=true;
 	bActivating=true;
 
@@ -65,12 +66,14 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 
 void CPHShell::Activate(bool place_current_forms,bool disable)
 { 
+	
+	PresetActive();
 	if(bActive)return;
 	if(!CPHObject::is_active()) vis_update_deactivate();
 	if(!disable)EnableObject();
-	spatial_register();
 
-	PresetActive();
+
+
 
 	{		
 		ELEMENT_I i=elements.begin(),e=elements.end();
@@ -81,6 +84,8 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 		JOINT_I i=joints.begin(),e=joints.end();
 		for(;i!=e;++i) (*i)->Activate();
 	}	
+
+	spatial_register();
 	bActive=true;
 	bActivating=true;
 
@@ -90,10 +95,10 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 void CPHShell::Build(bool place_current_forms/*true*/,bool disable/*false*/)
 {
 	if(bActive)return;
-	bActive=true;
-	bActivating=true;
 
 	PresetActive();
+	bActive=true;
+	bActivating=true;
 
 	{		
 		ELEMENT_I i=elements.begin(),e=elements.end();
@@ -114,7 +119,7 @@ void CPHShell::RunSimulation(bool place_current_forms/*true*/)
 {
 	if(!CPHObject::is_active()) vis_update_deactivate();
 	EnableObject();
-	spatial_register();
+
 
 	dSpaceSetCleanup(m_space,0);
 
@@ -127,7 +132,7 @@ void CPHShell::RunSimulation(bool place_current_forms/*true*/)
 		for(;i!=e;++i) (*i)->RunSimulation();
 	}	
 
-
+	spatial_register();
 }
 
 void CPHShell::AfterSetActive()
@@ -146,8 +151,8 @@ void CPHShell::PureActivate()
 	bActive=true;
 	if(!CPHObject::is_active()) vis_update_deactivate();
 	EnableObject();
-	spatial_register();
 	m_object_in_root.identity();
+	spatial_register();
 }
 
 void CPHShell::PresetActive()
