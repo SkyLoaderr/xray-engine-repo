@@ -11,6 +11,9 @@
 #include "game_sv_single.h"
 #include "GameObject.h"
 
+#define SAVE_PATH	""//"SavedGames\\"
+#define SAVE_NAME	"game.sav"
+
 //#define DYNAMIC_ALLOCATION
 
 // temporary
@@ -94,7 +97,9 @@ void CAI_ALife::Save()
 	CALifeObjectRegistry::Save	(tStream);
 	CALifeEventRegistry::Save	(tStream);
 	CALifeTaskRegistry::Save	(tStream);
-	tStream.SaveTo				("game.sav",0);
+	string256					S;
+	strconcat					(S,SAVE_PATH,SAVE_NAME);
+	tStream.SaveTo				(S,0);
 }
 
 void CAI_ALife::Load()
@@ -117,24 +122,22 @@ void CAI_ALife::Load()
 	CALifeSpawnRegistry::Load	(*tpStream);
 	Engine.FS.Close				(tpStream);
 
-	if (!Engine.FS.Exist(caFileName, ::Path.GameData, "game.sav")) {
+	if (!Engine.FS.Exist(caFileName,SAVE_PATH,SAVE_NAME)) {
 		vfNewGame();
 		Save();
 		R_ASSERT(false);
 	}
-	else {
-		tpStream					= Engine.FS.Open(caFileName);
-		CALifeHeader::Load			(*tpStream);
-		CALifeGameTime::Load		(*tpStream);
-		CALifeObjectRegistry::Load	(*tpStream);
-		CALifeEventRegistry::Load	(*tpStream);
-		CALifeTaskRegistry::Load	(*tpStream);
-	}
+	tpStream					= Engine.FS.Open(caFileName);
+	R_ASSERT					(tpStream);
+	CALifeHeader::Load			(*tpStream);
+	CALifeGameTime::Load		(*tpStream);
+	CALifeObjectRegistry::Load	(*tpStream);
+	CALifeEventRegistry::Load	(*tpStream);
+	CALifeTaskRegistry::Load	(*tpStream);
 	vfUpdateDynamicData();
 
 	m_bLoaded = true;
 #endif
-	return;
 }
 
 void CAI_ALife::vfUpdateDynamicData(CALifeObject *tpALifeObject)

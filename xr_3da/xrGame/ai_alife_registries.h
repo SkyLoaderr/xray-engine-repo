@@ -203,6 +203,7 @@ public:
 															//  динамические объекты
 	ALIFE_ENTITY_P_VECTOR_MAP		m_tLevelMap;
 	CALifeObject					*m_tpActor;
+	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
 
 	void							Init()
 	{
@@ -215,7 +216,42 @@ public:
 				(*I).tpEvents.clear();
 			}
 		}
+		m_tpCurrentLevel			= 0;
+		m_tpActor					= 0;
 	};
+
+	IC void							Update(CALifeObject *tpALifeObject)
+	{
+		if (tpALifeObject->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
+			m_tpActor = tpALifeObject;
+		
+		u8 dwLevelID = Level().AI.m_tpaGraph[tpALifeObject->m_tGraphID].tLevelID;
+		
+		ALIFE_ENTITY_P_VECTOR_PAIR_IT I = m_tLevelMap.find(dwLevelID);
+		if (I == m_tLevelMap.end()) {
+			ALIFE_ENTITY_P_VECTOR *tpTemp = xr_new<ALIFE_ENTITY_P_VECTOR>();
+			tpTemp->push_back(tpALifeObject);
+			m_tLevelMap.insert(make_pair(dwLevelID,tpTemp));
+		}
+		else
+			(*I).second->push_back(tpALifeObject);
+		
+		if (m_tpActor && !m_tpCurrentLevel) {
+			I = m_tLevelMap.find(Level().AI.m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
+			R_ASSERT(I != m_tLevelMap.end());
+			m_tpCurrentLevel = (*I).second;
+		}
+		
+		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeObject);
+		if (tpALifeItem) {
+			if (!tpALifeItem->m_bAttached)
+				m_tpGraphObjects[tpALifeItem->m_tGraphID].tpObjects.push_back(tpALifeItem);
+			return;
+		}
+	
+		if (!dynamic_cast<CALifeTrader *>(tpALifeObject))
+			m_tpGraphObjects[tpALifeObject->m_tGraphID].tpObjects.push_back(tpALifeObject);
+	}
 
 	IC void vfRemoveObjectFromGraphPoint(CALifeObject *tpALifeObject, _GRAPH_ID tGraphID)
 	{
@@ -281,27 +317,6 @@ public:
 		tpALifeItem->m_bAttached = true;
 		m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
 		tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
-	}
-
-	IC void							Update(CALifeObject *tpALifeObject)
-	{
-		if (tpALifeObject->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
-			m_tpActor = tpALifeObject;
-		u8 dwLevelID = Level().AI.m_tpaGraph[tpALifeObject->m_tGraphID].tLevelID;
-		ALIFE_ENTITY_P_VECTOR_PAIR_IT I = m_tLevelMap.find(dwLevelID);
-		if (I == m_tLevelMap.end()) {
-			ALIFE_ENTITY_P_VECTOR tTemp;
-			tTemp.push_back(tpALifeObject);
-			m_tLevelMap.insert(make_pair(dwLevelID,&tTemp));
-		}
-		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeObject);
-		if (tpALifeItem) {
-			if (!tpALifeItem->m_bAttached)
-				m_tpGraphObjects[tpALifeItem->m_tGraphID].tpObjects.push_back(tpALifeItem);
-			return;
-		}
-		if (!dynamic_cast<CALifeTrader *>(tpALifeObject))
-			m_tpGraphObjects[tpALifeObject->m_tGraphID].tpObjects.push_back(tpALifeObject);
 	}
 };
 

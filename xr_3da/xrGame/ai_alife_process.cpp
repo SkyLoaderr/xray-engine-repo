@@ -52,13 +52,18 @@ void CAI_ALife::Update(u32 dt)
 //		default : NODEFAULT;
 //	}
 	
-	OBJECT_PAIR_IT					I = m_tObjectRegistry.begin();
-	OBJECT_PAIR_IT					E = m_tObjectRegistry.end();
+//	ALIFE_ENTITY_P_VECTOR_PAIR_IT J = m_tLevelMap.find(Level().AI.m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
+//	R_ASSERT(J != m_tLevelMap.end());
+//	ALIFE_ENTITY_P_IT				I = (*J).second->begin();
+//	ALIFE_ENTITY_P_IT				E = (*J).second->end();
+
+	ALIFE_ENTITY_P_IT				I = m_tpCurrentLevel->begin();
+	ALIFE_ENTITY_P_IT				E = m_tpCurrentLevel->end();
 	CObject							*tpObject = Level().Objects.net_Find(m_tpActor->ID);
 	if (!tpObject)
 		return;
 	for ( ;I != E; I++)
-		ProcessOnlineOfflineSwitches(tpObject, (*I).second);
+		ProcessOnlineOfflineSwitches(tpObject, *I);
 }
 
 void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
