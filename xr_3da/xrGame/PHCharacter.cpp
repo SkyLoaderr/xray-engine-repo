@@ -844,7 +844,7 @@ else
 
 if(b_clamb_jump){//&&m_wall_contact_normal[1]<M_SQRT1_2
 m_control_force[0]*=4.f;
-m_control_force[1]*=8.f;
+m_control_force[1]*=4.f;//*8.f
 m_control_force[2]*=4.f;
 m_control_force[1]=dFabs(m_control_force[1]);
 m_control_force[0]=m_control_force[0]*accel[0]>0.f ? m_control_force[0] : -m_control_force[0];
@@ -925,6 +925,7 @@ void CPHSimpleCharacter::OnRender(){
 	Fvector n=*(Fvector*)m_ground_contact_normal;
 	n.mul(100.f);
 	Fvector pos=GetPosition();
+	pos.y+=m_radius;
 	RCache.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, 0xffffffff);
 	RCache.dbg_DrawLINE(m,pos,n, 0xefffffff);
 

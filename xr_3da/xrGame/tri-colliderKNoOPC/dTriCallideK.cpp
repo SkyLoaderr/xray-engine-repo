@@ -448,37 +448,81 @@ if(code==0){
 ///////////////////////////////////////////////////////////
 
 
-if (maxc == 1) goto done;
+#define TRI_CONTAIN_POINT(pos)	{\
+ dVector3 cross0, cross1, cross2;\
+ dReal ds0,ds1,ds2;\
+ \
+  dCROSS(cross0,=,triAx,triSideAx0);\
+  ds0=dDOT(cross0,v0);\
+\
+  dCROSS(cross1,=,triAx,triSideAx1);\
+  ds1=dDOT(cross1,v1);\
+\
+  dCROSS(cross2,=,triAx,triSideAx2);\
+  ds2=dDOT(cross2,v2);\
+\
+  if(dDOT(cross0,pos)-ds0>0.f && \
+	 dDOT(cross1,pos)-ds1>0.f && \
+	 dDOT(cross2,pos)-ds2>0.f) ret++;\
+}
+///////////////////////////////////////////////////////////
+
 
   // get the second and third contact points by starting from `p' and going
   // along the two sides with the smallest projected length.
 
-//(@slipch) it is not perfectly right for triangle collision 
-//because it need to check if additional points are in the triangle but it seems cause no problem
- 
-#define FOO(i,j,op) \
-  CONTACT(contact,i*skip)->pos[0] = pos[0] op 2.f*hside[j] * R[0+j]; \
-  CONTACT(contact,i*skip)->pos[1] = pos[1] op 2.f*hside[j] * R[4+j]; \
-  CONTACT(contact,i*skip)->pos[2] = pos[2] op 2.f*hside[j] * R[8+j];
-#define BAR(ctact,side,sideinc) \
-  depth -= B ## sideinc; \
-  if (depth < 0) goto done; \
-  if (A ## sideinc > 0) { FOO(ctact,side,+) } else { FOO(ctact,side,-) } \
-  CONTACT(contact,ctact*skip)->depth = depth; \
-  ret++;
+dReal* pdepth;
 
-  CONTACT(contact,skip)->normal[0] =  triAx[0]*signum;
-  CONTACT(contact,skip)->normal[1] =  triAx[1]*signum;
-  CONTACT(contact,skip)->normal[2] =  triAx[2]*signum;
-  if (maxc == 3) {
-    CONTACT(contact,2*skip)->normal[0] = triAx[0]*signum;
-    CONTACT(contact,2*skip)->normal[1] = triAx[1]*signum;
-    CONTACT(contact,2*skip)->normal[2] = triAx[2]*signum;
+#define FOO(j,op,spoint) \
+	CONTACT(contact,ret*skip)->pos[0] = spoint##[0] op 2.f*hside[j] * R[0+j]; \
+	CONTACT(contact,ret*skip)->pos[1] = spoint##[1] op 2.f*hside[j] * R[4+j]; \
+	CONTACT(contact,ret*skip)->pos[2] = spoint##[2] op 2.f*hside[j] * R[8+j];
+#define BAR(side,sideinc,spos,sdepth) \
+  {\
+  pdepth=&(CONTACT(contact,ret*skip)->depth);\
+  *pdepth =sdepth-B ## sideinc; \
+  if (!(*pdepth < 0)) \
+	{\
+	if (A ## sideinc > 0) { FOO(side,+,spos) } else { FOO(side,-,spos) } \
+	ret++;\
+	}\
   }
+  //TRI_CONTAIN_POINT(CONTACT(contact,ctact*skip)->pos)
+
+   if(B1<B2)
+  {
+	  BAR(0,1,pos,depth);
+	  if(B2<B3) 
+	  {
+		  BAR(1,2,pos,depth);
+		  BAR(0,1,CONTACT(contact,(ret-1)*skip)->pos,CONTACT(contact,(ret-1)*skip)->depth);
+		  
+	  }
+	  else
+	  {
+		  BAR(2,3,pos,depth);
+		  BAR(0,1,CONTACT(contact,(ret-1)*skip)->pos,CONTACT(contact,(ret-1)*skip)->depth);
+	  }
+  }
+  else
+  {
+	  BAR(1,2,pos,depth);
+	  if(B1<B3)
+	  {
+		  BAR(0,1,pos,depth);
+		  BAR(1,2,CONTACT(contact,(ret-1)*skip)->pos,CONTACT(contact,(ret-1)*skip)->depth);
+	  }
+	  else
+	  {		
+		  BAR(2,3,pos,depth);
+		  BAR(1,2,CONTACT(contact,(ret-1)*skip)->pos,CONTACT(contact,(ret-1)*skip)->depth);
+	  }
+  }
+  /*
 
   if (B1 < B2) {
     if (B3 < B1) goto use_side_3; else {
-      BAR(1,0,1);	// use side 1
+      BAR(0,1,pos);	// use side 1
       if (maxc == 2) goto done;
       if (B2 < B3) goto contact2_2; else goto contact2_3;
     }
@@ -486,29 +530,31 @@ if (maxc == 1) goto done;
   else {
     if (B3 < B2) {
       use_side_3:	// use side 3
-      BAR(1,2,3);
+      BAR(2,3,pos);
       if (maxc == 2) goto done;
       if (B1 < B2) goto contact2_1; else goto contact2_2;
     }
     else {
-      BAR(1,1,2);	// use side 2
+      BAR(1,2,pos);	// use side 2
       if (maxc == 2) goto done;
       if (B1 < B3) goto contact2_1; else goto contact2_3;
     }
   }
 
-  contact2_1: BAR(2,0,1); goto done;
-  contact2_2: BAR(2,1,2); goto done;
-  contact2_3: BAR(2,2,3); goto done;
+  contact2_1: BAR(0,1,pos); goto done;
+  contact2_2: BAR(1,2,pos); goto done;
+  contact2_3: BAR(2,3,pos); goto done;
+*/
 #undef FOO
 #undef BAR
-
+#undef TRI_CONTAIN_POINT
  done: ;
 
 ////////////////////////////////////////////////////////////// end (from geom.cpp dCollideBP)
 
 	}
-else if(code<=9)
+else 
+	if(code<=9)
 {
 	switch((code-1)%3){
 	case 0:

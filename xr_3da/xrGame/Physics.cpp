@@ -617,7 +617,7 @@ dBodyAddRelTorque(Bodies[0], 300, 0, 0);
 ///////////////////////////////////////////////////////////////////////////
 
 
-
+//dGeomID plane;
 void CPHWorld::Create(){
 
 	phWorld = dWorldCreate();
@@ -627,7 +627,8 @@ void CPHWorld::Create(){
 	Mesh.Create(Space,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	//Gun.Create(Space);
-	//dCreatePlane(Space,0,1,0,102);
+	//plane=dCreatePlane(Space,0,1,0,-0.1f);
+	//dGeomCreateUserData(plane);
 	//const  dReal k_p=2400000.f;//550000.f;///1000000.f;
 	//const dReal k_d=200000.f;
 	dWorldSetERP(phWorld, ERP(world_spring,world_damping) );
