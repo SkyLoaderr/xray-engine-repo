@@ -245,7 +245,7 @@ void CGlowManager::Render()
 				// Now fade glows directly in front of us
 				TL.transform	(G.spatial.center,Device.mFullTransform);
 				float size		=	fov_scale * G.spatial.radius / TL.p.w;
-				float snear		=	clamp	(TL.p.z,0.f,.5f);
+				float snear		=	clamp	((const float)TL.p.z,0.f,.5f);
 				scale			*=	snear*2.f;
 				if (G.fade*scale<=1.f)	continue;
 				
