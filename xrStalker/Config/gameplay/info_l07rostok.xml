@@ -36,9 +36,11 @@
 	<info_portion id="bar_bar_kill_svoboda_leader_done">
 		<disable>bar_bar_kill_svoboda_leader_start</disable>
 	</info_portion>	
-	<info_portion id="bar_bar_kill_veterans_start"></info_portion>
-	<info_portion id="bar_bar_kill_veterans_done">
-		<disable>bar_bar_kill_veterans_start</disable>
+	<info_portion id="bar_kill_veteran_start"></info_portion>
+	<info_portion id="bar_kill_veteran_killed"></info_portion>
+	<info_portion id="bar_kill_veteran_done">
+		<disable>bar_kill_veteran_start</disable>
+		<disable>bar_kill_veteran_killed</disable>
 	</info_portion>	
 	<info_portion id="bar_bar_yantar_off_start"></info_portion>
 	<info_portion id="bar_bar_yantar_off_done">
