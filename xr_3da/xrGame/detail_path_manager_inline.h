@@ -10,5 +10,5 @@
 
 IC	bool CDetailPathManager::failed() const
 {
-	return			(m_failed);
+	return					(m_failed);
 }

@@ -12,7 +12,7 @@
 
 CDetailPathManager::CDetailPathManager	()
 {
-	Init						();
+	Init					();
 }
 
 CDetailPathManager::~CDetailPathManager	()
@@ -31,26 +31,26 @@ void CDetailPathManager::Init			()
 
 bool CDetailPathManager::valid			() const
 {
-	return				(!m_path.empty() && m_path[0].m_position.similar(m_start_position) && m_path[m_path.size() - 1].m_position.similar(m_dest_position));
+	return					(!m_path.empty() && m_path[0].m_position.similar(m_start_position) && m_path[m_path.size() - 1].m_position.similar(m_dest_position));
 }
 
 bool CDetailPathManager::valid			(const Fvector &position) const
 {
-	return				(!!_valid(position));
+	return					(!!_valid(position));
 }
 
 const Fvector &CDetailPathManager::direction()
 {
 	if ((m_path.size() < 2) || (m_path.size() <= m_current_travel_point + 1))
-		return		(Fvector().set(0,0,1));
+		return				(Fvector().set(0,0,1));
 	
-	Fvector			direction;
-	direction.sub	(m_path[m_current_travel_point + 1].m_position, m_path[m_current_travel_point].m_position);
+	Fvector					direction;
+	direction.sub			(m_path[m_current_travel_point + 1].m_position, m_path[m_current_travel_point].m_position);
 
 	if (direction.magnitude() < EPS_L)
-		return		(direction.set(0,0,1));
+		return				(direction.set(0,0,1));
 	else
-		return		(direction.normalize());
+		return				(direction.normalize());
 }
 
 void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
@@ -93,11 +93,11 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 	STravelPoint			current,next;
 
 	// start point
-	m_path.clear		();
+	m_path.clear			();
 	current.m_linear_speed	= (*m_movement_params.begin()).second.m_linear_speed;
 	current.m_angular_speed	= (*m_movement_params.begin()).second.m_angular_speed;
 	current.m_position		= m_start_position;
-	m_path.push_back	(current);
+	m_path.push_back		(current);
 
 	// end point
 	Fvector					Last = ai().level_graph().vertex_position(level_path.back());
@@ -105,13 +105,13 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 	// segmentation
 	CLevelGraph::SContour	Ccur,Cnext;
 	ai().level_graph().contour(Ccur,level_path[0]);
-	m_segments.clear			();
+	m_segments.clear		();
 	for (u32 I=1; I<level_path.size(); ++I) {
 		CLevelGraph::SSegment		S;
 		ai().level_graph().contour	(Cnext,level_path[I]);
 		ai().level_graph().intersect(S,Ccur,Cnext);
-		m_segments.push_back		(S);
-		Ccur						= Cnext;
+		m_segments.push_back(S);
+		Ccur				= Cnext;
 	}
 
 	// path building
@@ -122,7 +122,7 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 		ai().level_graph().nearest(next.m_position,current.m_position,S.v1,S.v2);
 
 		// select far point
-		Fvector fp	= Last;
+		Fvector				fp	= Last;
 		if ((I+1)<m_segments.size())	{
 			CLevelGraph::SSegment	&F = m_segments[I+1];
 			ai().level_graph().nearest(fp,current.m_position,F.v1,F.v2);
@@ -134,17 +134,17 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 			next.m_position.set(ip);
 		} else {
 			// find nearest point to segment 'current.m_position' to 'fp'
-			float d1 = S.v1.distance_to(fp)+S.v1.distance_to(current.m_position);
-			float d2 = S.v2.distance_to(fp)+S.v2.distance_to(current.m_position);
-			if (d1<d2)	next.m_position.set(S.v1);
-			else		next.m_position.set(S.v2);
+			float			d1 = S.v1.distance_to(fp)+S.v1.distance_to(current.m_position);
+			float			d2 = S.v2.distance_to(fp)+S.v2.distance_to(current.m_position);
+			if (d1<d2)		next.m_position.set(S.v1);
+			else			next.m_position.set(S.v2);
 		}
 
 		// record _new point
 		if (!next.m_position.similar(m_path.back().m_position))	m_path.push_back(next);
 		current				= next;
 	}
-	next.m_position.set			(Last);
+	next.m_position.set		(Last);
 	if (!next.m_position.similar(m_path.back().m_position))	m_path.push_back(next);
 
 	// setup variables
@@ -153,15 +153,15 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 
 float CDetailPathManager::speed	()
 {
-	return				(0.f);
+	return					(0.f);
 }
 
 bool CDetailPathManager::actual() const
 {
-	return				(true);
+	return					(true);
 }
 
 bool CDetailPathManager::completed() const
 {
-	return				(m_path.empty() || m_dest_position.similar(m_path.back().m_position));
+	return					(m_path.empty() || m_dest_position.similar(m_path.back().m_position));
 }
