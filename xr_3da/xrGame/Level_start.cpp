@@ -42,8 +42,20 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 
 	}
 
+	//make Client Name if options doesn't have it
+	if (!strstr(m_caClientOptions,"/name="))
+	{
+		char Text[MAX_COMPUTERNAME_LENGTH + 1]; 
+		u32 size = MAX_COMPUTERNAME_LENGTH + 1;
+		GetComputerName(Text, (LPDWORD)&size);
+		if ((xr_strlen(m_caClientOptions)+xr_strlen(Text)+xr_strlen("/name= ")) < 256)
+		{
+			strcat(m_caClientOptions, "/name=");
+			strcat(m_caClientOptions, Text);
+		};
+	};
 	// Start client
-	bResult						= net_Start_client(op_client);
+	bResult						= net_Start_client(m_caClientOptions);
 
 	//init the fog of war for the current level
 	m_pFogOfWar->Init();
