@@ -21,7 +21,7 @@ function evaluator_state_end:evaluate()
 	return self.a.body_state == self.a.target_state
 end
 
--- стоим лимы
+-- стоим ли мы
 class "evaluator_standing" (property_evaluator)
 function evaluator_standing:__init(storage) super()
 	self.a = storage
