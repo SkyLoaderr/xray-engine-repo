@@ -208,6 +208,7 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		SetCurrentItem(pInvItem);
+		m_pCurrentDragDropItem->Rescale(1.0f);
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{

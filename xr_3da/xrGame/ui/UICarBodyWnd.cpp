@@ -250,8 +250,8 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-
 		SetCurrentItem(pInvItem);
+		m_pCurrentDragDropItem->Rescale(1.0f);
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{

@@ -12,8 +12,6 @@
 #define SCROLLBAR_BACKGROUND_HORZ	"ui\\ui_scb_back"
 #define SCROLLBAR_BACKGROUND_VERT	"ui\\ui_scb_back_v"
 
-const u32	MIN_SCROLLBOX_LENGTH	= 20;
-
 CUIScrollBar::CUIScrollBar(void)
 {
 	m_iMinPos = 1;
@@ -99,35 +97,25 @@ void CUIScrollBar::UpdateScrollBar()
 		//в крайней позиции подправить положение scrollbox
 		if(m_iScrollPos == m_iMaxPos - m_iPageSize + 1)
 		{
-//			m_ScrollBox.MoveWindow(GetWidth() - SCROLLBAR_WIDTH - 
-//											m_ScrollBox.GetWidth(), 
-//											m_ScrollBox.GetWndRect().top);
 			m_ScrollBox.SetWidth(m_IncButton.GetWndRect().left-m_ScrollBox.GetWndRect().left);
 		}
 	}
 	else
 	{
-//		m_ScrollBox.SetHeight((int)((GetHeight()-2*SCROLLBAR_HEIGHT)*
-//									scrollbar_unit*m_iPageSize));
-		m_ScrollBox.SetHeight(iFloor(
-									float((GetHeight()-2*SCROLLBAR_HEIGHT))*
-									scrollbar_unit*float(m_iPageSize)
-									+.5f));
+		int height = iCeil(float((GetHeight()-2*SCROLLBAR_HEIGHT))*
+						   scrollbar_unit*float(m_iPageSize)
+						   +.5f);
+
+		m_ScrollBox.SetHeight(height);
 
 		m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
-								(int)( SCROLLBAR_HEIGHT+
+								iFloor( SCROLLBAR_HEIGHT+
 								(GetHeight()-2*SCROLLBAR_HEIGHT)*
 								scrollbar_unit*(m_iScrollPos-m_iMinPos)));
 
 		//в крайней позиции подправить положение scrollbox
 		if(m_iScrollPos == m_iMaxPos - m_iPageSize + 1)
 		{
-//			m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
-//									GetHeight() - SCROLLBAR_HEIGHT - 
-//									m_ScrollBox.GetHeight());
-//			m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
-//				         m_IncButton.GetWndRect().top - m_ScrollBox.GetHeight());
-
 			m_ScrollBox.SetHeight(m_IncButton.GetWndRect().top-m_ScrollBox.GetWndRect().top);
 		}
 	}
@@ -166,9 +154,9 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			if(m_bIsHorizontal)
 			//горизонтальный
 			{
-				if(m_ScrollBox.GetWndRect().left<SCROLLBAR_WIDTH)
+				if(m_ScrollBox.GetWndRect().left<=SCROLLBAR_WIDTH)
 					m_ScrollBox.MoveWindow(SCROLLBAR_WIDTH, m_ScrollBox.GetWndRect().top);
-				else if(m_ScrollBox.GetWndRect().right>GetWidth() - SCROLLBAR_WIDTH)
+				else if(m_ScrollBox.GetWndRect().right>=GetWidth() - SCROLLBAR_WIDTH)
 					m_ScrollBox.MoveWindow(GetWidth() - SCROLLBAR_WIDTH - 
 											m_ScrollBox.GetWidth(), 
 											m_ScrollBox.GetWndRect().top);
@@ -184,14 +172,15 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					m_iScrollPos = m_iMinPos;
 
 
-				GetMessageTarget()->SendMessage(this, HSCROLL);
+				if (GetMessageTarget())
+					GetMessageTarget()->SendMessage(this, HSCROLL);
 			}
 			//вертикальный
 			else
 			{
-				if(m_ScrollBox.GetWndRect().top<SCROLLBAR_HEIGHT)
+				if(m_ScrollBox.GetWndRect().top<=SCROLLBAR_HEIGHT)
 					m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left, SCROLLBAR_HEIGHT);
-				else if(m_ScrollBox.GetWndRect().bottom>GetHeight() - SCROLLBAR_HEIGHT)
+				else if(m_ScrollBox.GetWndRect().bottom>=GetHeight() - SCROLLBAR_HEIGHT)
 					m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
 											GetHeight() - SCROLLBAR_HEIGHT - 
 											m_ScrollBox.GetHeight());
@@ -202,20 +191,21 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 							float(m_iMaxPos-m_iMinPos+1)/
 							float((s16)GetHeight() - 2*SCROLLBAR_HEIGHT) + m_iMinPos);
 
-				if(m_iScrollPos+m_iPageSize>m_iMaxPos)
+				if(m_iScrollPos+m_iPageSize>=m_iMaxPos)
 							m_iScrollPos = m_iMaxPos - m_iPageSize + 1;
 				if(m_iScrollPos<m_iMinPos) m_iScrollPos = m_iMinPos;
 
-				GetMessageTarget()->SendMessage(this, VSCROLL);
+				if (GetMessageTarget())
+					GetMessageTarget()->SendMessage(this, VSCROLL);
 			}
 			
 		}
 		else if(msg == CUIScrollBox::SCROLLBOX_STOP)
 		{
 			//вычислить новое положение прокрутки
-			UpdateScrollBar();
+//			UpdateScrollBar();
 
-			if(m_bIsHorizontal)
+			if(m_bIsHorizontal && GetMessageTarget())
 				GetMessageTarget()->SendMessage(this, HSCROLL);
 			else
 				GetMessageTarget()->SendMessage(this, VSCROLL);
@@ -256,6 +246,7 @@ void CUIScrollBar::SetRange(s16 iMin, s16 iMax)
 	m_iMaxPos = iMax;
 
 	R_ASSERT(iMax>=iMin);
+ 	if (m_iMaxPos - m_iMinPos > 30) m_iMaxPos = m_iMinPos + 30;
 	
 	UpdateScrollBar();
 }
