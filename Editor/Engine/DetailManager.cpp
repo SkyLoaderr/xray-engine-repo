@@ -161,7 +161,7 @@ void CDetailManager::Render		(Fvector& EYE)
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
 						CList<SlotItem*>&	vis = visible	[sp.id];
-						float				R   = objects	[sp.id].radius;
+						float				R   = objects	[sp.id].bounds.R;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++) 
@@ -193,7 +193,7 @@ void CDetailManager::Render		(Fvector& EYE)
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
 						CList<SlotItem*>&	vis = visible	[sp.id];
-						float				R   = objects	[sp.id].radius;
+						float				R   = objects	[sp.id].bounds.R;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++) 
