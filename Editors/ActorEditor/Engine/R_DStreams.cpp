@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "ResourceManager.h"
 #include "R_DStreams.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -12,7 +13,7 @@ int		rsDIB_Size			= 512;
 
 void _VertexStream::Create	()
 {
-	Device.Shader.Evict		();
+	Device.Resources->Evict		();
 
 	mSize					= rsDVB_Size*1024;
 	R_CHK					(HW.pDevice->CreateVertexBuffer( mSize, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC, 0, D3DPOOL_DEFAULT, &pVB, NULL));
@@ -32,7 +33,7 @@ void _VertexStream::Destroy	()
 
 void _IndexStream::Create	()
 {
-	Device.Shader.Evict		();
+	Device.Resources->Evict		();
 
 	mSize					= rsDIB_Size*1024;
 	R_CHK					(HW.pDevice->CreateIndexBuffer( mSize, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC, D3DFMT_INDEX16, D3DPOOL_DEFAULT, &pIB, NULL));

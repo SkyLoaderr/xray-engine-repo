@@ -9,7 +9,7 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
-#include "TextureManager.h"
+#include "ResourceManager.h"
 #include "tss.h"
 #include "blenders\blender.h"
 #include "blenders\blender_recorder.h"

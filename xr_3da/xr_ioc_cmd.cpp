@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "igame_level.h"
 
+#include "xr_gamma.h"
 #include "x_ray.h"
 #include "xr_ioconsole.h"
 #include "xr_ioc_cmd.h"
@@ -243,8 +244,8 @@ public:
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute(args);
-		Device.Gamma.Gamma	(gamma);
-		Device.Gamma.Update	();
+		Device.Gamma->Gamma		(gamma);
+		Device.Gamma->Update	();
 	}
 };
 //-----------------------------------------------------------------------

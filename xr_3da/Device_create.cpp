@@ -73,8 +73,8 @@ void CRenderDevice::_Create	(LPCSTR shName)
 
 	// Signal everyone - device created
 	RCache.OnDeviceCreate		();
-	Gamma.Update				();
-	Shader.OnDeviceCreate		(shName);
+	Gamma->Update				();
+	Resources->OnDeviceCreate	(shName);
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Statistic.OnDeviceCreate	();
 	dwFrame						= 0;

@@ -6,34 +6,35 @@
 #pragma hdrstop
 
 #include "Shader.h"
+#include "ResourceManager.h"
 
 // 
-STextureList::~STextureList				()			{	Device.Shader._DeleteTextureList	(this);			}
-SMatrixList::~SMatrixList				()			{	Device.Shader._DeleteMatrixList		(this);			}
-SConstantList::~SConstantList			()			{	Device.Shader._DeleteConstantList	(this);			}
-SPass::~SPass							()			{	Device.Shader._DeletePass			(this);			}
-ShaderElement::~ShaderElement			()			{	Device.Shader._DeleteElement		(this);			}
-SGeometry::~SGeometry					()			{	Device.Shader.DeleteGeom			(this);			}
-Shader::~Shader							()			{	Device.Shader.Delete				(this);			}
+STextureList::~STextureList				()			{	Device.Resources->_DeleteTextureList	(this);			}
+SMatrixList::~SMatrixList				()			{	Device.Resources->_DeleteMatrixList		(this);			}
+SConstantList::~SConstantList			()			{	Device.Resources->_DeleteConstantList	(this);			}
+SPass::~SPass							()			{	Device.Resources->_DeletePass			(this);			}
+ShaderElement::~ShaderElement			()			{	Device.Resources->_DeleteElement		(this);			}
+SGeometry::~SGeometry					()			{	Device.Resources->DeleteGeom			(this);			}
+Shader::~Shader							()			{	Device.Resources->Delete				(this);			}
 																							 
 //////////////////////////////////////////////////////////////////////////					 
 void	resptrcode_shader::create		(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
-	_set(Device.Shader.Create			(s_shader,s_textures,s_constants,s_matrices));
+	_set(Device.Resources->Create			(s_shader,s_textures,s_constants,s_matrices));
 }
 void	resptrcode_shader::create		(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
-	_set(Device.Shader.Create_B		(B,s_shader,s_textures,s_constants,s_matrices));
+	_set(Device.Resources->Create_B		(B,s_shader,s_textures,s_constants,s_matrices));
 }
 
 //////////////////////////////////////////////////////////////////////////
 void	resptrcode_geom::create			(u32 FVF , IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	_set(Device.Shader.CreateGeom		(FVF,vb,ib));
+	_set(Device.Resources->CreateGeom		(FVF,vb,ib));
 }
 void	resptrcode_geom::create			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	_set(Device.Shader.CreateGeom		(decl,vb,ib));
+	_set(Device.Resources->CreateGeom		(decl,vb,ib));
 }
 
 //////////////////////////////////////////////////////////////////////

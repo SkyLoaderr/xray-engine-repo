@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "sh_texture.h"
+#include "ResourceManager.h"
 #include "texture.h"
 #include "xr_avi.h"
 
@@ -32,7 +32,7 @@ CTexture::~CTexture()
 	Unload	();
 
 	// release external reference
-	Device.Shader._DeleteTexture	(this);	
+	Device.Resources->_DeleteTexture	(this);	
 }
 
 void					CTexture::surface_set	(IDirect3DBaseTexture9* surf)

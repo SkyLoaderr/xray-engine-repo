@@ -1,12 +1,14 @@
 #include "stdafx.h"
 
+#include "ResourceManager.h"
+
 void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
 	// before destroy
 	bReady						= FALSE;
 	Statistic.OnDeviceDestroy	();
 	seqDevDestroy.Process		(rp_DeviceDestroy);
-	Shader.OnDeviceDestroy		(bKeepTextures);
+	Resources->OnDeviceDestroy	(bKeepTextures);
 	RCache.OnDeviceDestroy		();
 
 	Memory.mem_compact			();

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "ResourceManager.h"
 #include "Blender_Recorder.h"
 #include "Blender.h"
 
@@ -65,18 +66,18 @@ void	CBlender_Compile::PassEnd			()
 	RS.SetTSS				(Stage(),D3DTSS_ALPHAOP,D3DTOP_DISABLE);
 
 	// Create pass
-	ref_state	state		= Device.Shader._CreateState		(RS.GetContainer());
-	ref_ps		ps			= Device.Shader._CreatePS			(pass_ps);
-	ref_vs		vs			= Device.Shader._CreateVS			(pass_vs);
+	ref_state	state		= Device.Resources->_CreateState		(RS.GetContainer());
+	ref_ps		ps			= Device.Resources->_CreatePS			(pass_ps);
+	ref_vs		vs			= Device.Resources->_CreateVS			(pass_vs);
 	ctable.merge			(&ps->constants);
 	ctable.merge			(&vs->constants);
 	SetMapping				();
-	ref_ctable			ct	= Device.Shader._CreateConstantTable(ctable);
-	ref_texture_list	T 	= Device.Shader._CreateTextureList	(passTextures);
-	ref_matrix_list		M	= Device.Shader._CreateMatrixList	(passMatrices);
-	ref_constant_list	C	= Device.Shader._CreateConstantList	(passConstants);
+	ref_ctable			ct	= Device.Resources->_CreateConstantTable(ctable);
+	ref_texture_list	T 	= Device.Resources->_CreateTextureList	(passTextures);
+	ref_matrix_list		M	= Device.Resources->_CreateMatrixList	(passMatrices);
+	ref_constant_list	C	= Device.Resources->_CreateConstantList	(passConstants);
 
-	ref_pass	_pass_		= Device.Shader._CreatePass			(state,ps,vs,ct,T,M,C);
+	ref_pass	_pass_		= Device.Resources->_CreatePass			(state,ps,vs,ct,T,M,C);
 	SH->Passes.push_back	(_pass_);
 }
 
@@ -99,7 +100,7 @@ void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
 
 	// 
 	LPCSTR		T,M;
-	if (!Device.Shader._GetDetailTexture(N,T,M))	return;
+	if (!Device.Resources->_GetDetailTexture(N,T,M))	return;
 
 	// Detail
 	PassBegin		();
@@ -205,14 +206,14 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name)
 		if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
 		N = lst [id];
 	}
-	passTextures.push_back	(Device.Shader._CreateTexture(N));
+	passTextures.push_back	(Device.Resources->_CreateTexture(N));
 //	if (passTextures.back()->isUser())	SH->userTex.push_back(passTextures.back());
 }
 void	CBlender_Compile::Stage_Matrix		(LPCSTR name, int iChannel)
 {
 	sh_list& lst	= L_matrices; 
 	int id			= ParseName(name);
-	CMatrix*	M	= Device.Shader._CreateMatrix	((id>=0)?lst[id]:name);
+	CMatrix*	M	= Device.Resources->_CreateMatrix	((id>=0)?lst[id]:name);
 	passMatrices.push_back(M);
 
 	// Setup transform pipeline
@@ -235,5 +236,5 @@ void	CBlender_Compile::Stage_Constant	(LPCSTR name)
 {
 	sh_list& lst= L_constants;
 	int id		= ParseName(name);
-	passConstants.push_back	(Device.Shader._CreateConstant((id>=0)?lst[id]:name));
+	passConstants.push_back	(Device.Resources->_CreateConstant((id>=0)?lst[id]:name));
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "ResourceManager.h"
 #include "blenders\Blender_Recorder.h"
 #include "blenders\Blender.h"
 
@@ -41,8 +42,8 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	PassSET_LightFog		(FALSE,FALSE);
 
 	// Create shaders
-	SPS* ps					= Device.Shader._CreatePS			(_ps);
-	SVS* vs					= Device.Shader._CreateVS			(_vs);
+	SPS* ps					= Device.Resources->_CreatePS			(_ps);
+	SVS* vs					= Device.Resources->_CreateVS			(_vs);
 	dest.ps					= ps;
 	dest.vs					= vs;
 	ctable.merge			(&ps->constants);
@@ -73,7 +74,7 @@ void	CBlender_Compile::r2_Sampler	(LPCSTR _name, LPCSTR texture, u32 address, u3
 
 	// Create texture
 	while (stage>=passTextures.size())	passTextures.push_back	(NULL);
-	passTextures[stage]		= Device.Shader._CreateTexture		(texture);
+	passTextures[stage]		= Device.Resources->_CreateTexture		(texture);
 
 	// Sampler states
 	RS.SetSAMP				(stage,D3DSAMP_ADDRESSU,	address);
@@ -91,10 +92,10 @@ void	CBlender_Compile::r2_Sampler_rtf(LPCSTR name, LPCSTR texture, u32 element/*
 
 void	CBlender_Compile::r2_End		()
 {
-	dest.constants			= Device.Shader._CreateConstantTable(ctable);
-	dest.state				= Device.Shader._CreateState		(RS.GetContainer());
-	dest.T					= Device.Shader._CreateTextureList	(passTextures);
+	dest.constants			= Device.Resources->_CreateConstantTable(ctable);
+	dest.state				= Device.Resources->_CreateState		(RS.GetContainer());
+	dest.T					= Device.Resources->_CreateTextureList	(passTextures);
 	dest.M					= 0;
 	dest.C					= 0;
-	SH->Passes.push_back	(Device.Shader._CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T,dest.M,dest.C));
+	SH->Passes.push_back	(Device.Resources->_CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T,dest.M,dest.C));
 }

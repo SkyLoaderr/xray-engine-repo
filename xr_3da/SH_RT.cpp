@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "ResourceManager.h"
+
 CRT::CRT			()
 {
 	pSurface		= NULL;
@@ -14,7 +16,7 @@ CRT::~CRT			()
 	Destroy			();
 
 	// release external reference
-	Device.Shader._DeleteRT	(this);	
+	Device.Resources->_DeleteRT	(this);	
 }
 
 void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
@@ -57,13 +59,13 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	if (FAILED(_hr))					return;
 
 	// Try to create texture/surface
-	Device.Shader.Evict					();
+	Device.Resources->Evict					();
 	_hr = HW.pDevice->CreateTexture		(w, h, 1, usage, f, D3DPOOL_DEFAULT, &pSurface,NULL);
 	if (FAILED(_hr) || (0==pSurface))	return;
 
 	// OK
 	R_CHK		(pSurface->GetSurfaceLevel	(0,&pRT));
-	pTexture	= Device.Shader._CreateTexture	(Name);
+	pTexture	= Device.Resources->_CreateTexture	(Name);
 	pTexture->surface_set	(pSurface);
 }
 
@@ -88,7 +90,7 @@ CRTC::~CRTC			()
 	Destroy			();
 
 	// release external reference
-	Device.Shader._DeleteRTC	(this);	
+	Device.Resources->_DeleteRTC	(this);	
 }
 
 void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)
@@ -119,14 +121,14 @@ void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)
 	if (FAILED(_hr))					return;
 
 	// Try to create texture/surface
-	Device.Shader.Evict					();
+	Device.Resources->Evict					();
 	_hr = HW.pDevice->CreateCubeTexture	(size, 1, D3DUSAGE_RENDERTARGET, f, D3DPOOL_DEFAULT, &pSurface,NULL);
 	if (FAILED(_hr) || (0==pSurface))	return;
 
 	// OK
 	for (u32 face=0; face<6; face++)
 		R_CHK	(pSurface->GetCubeMapSurface	((D3DCUBEMAP_FACES)face, 0, pRT+face));
-	pTexture	= Device.Shader._CreateTexture	(Name);
+	pTexture	= Device.Resources->_CreateTexture	(Name);
 	pTexture->surface_set						(pSurface);
 }
 
