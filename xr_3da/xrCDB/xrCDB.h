@@ -85,7 +85,8 @@ namespace CDB
 	enum {
 		OPT_CULL		= (1<<0),
 		OPT_ONLYFIRST	= (1<<1),
-		OPT_ONLYNEAREST	= (1<<2)
+		OPT_ONLYNEAREST	= (1<<2),
+		OPT_FULL_TEST   = (1<<3)		// for box & frustum queries - enable class III test(s)
 	};
 
 	// Collider itself

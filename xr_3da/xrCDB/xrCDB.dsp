@@ -268,8 +268,6 @@ SOURCE=.\xrCDB_box.cpp
 
 !IF  "$(CFG)" == "xrCDB - Win32 Release"
 
-# PROP Exclude_From_Build 1
-
 !ELSEIF  "$(CFG)" == "xrCDB - Win32 Debug"
 
 !ENDIF 
