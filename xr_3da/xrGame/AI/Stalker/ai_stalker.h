@@ -120,6 +120,7 @@ private:
 	u32						m_dwHitTime;
 	Fvector					m_tHitDir;
 	Fvector					m_tHitPosition;
+	float					m_fHitFactor;
 	
 	// VISIBILITY
 	SEnemySelected			m_tEnemy;
@@ -387,6 +388,7 @@ public:
 	virtual void			Death							();
 	virtual void			Load							(LPCSTR	section );				
 	virtual void			HitSignal						(float P,	Fvector& vLocalDir, CObject* who, s16 element);
+	virtual float			HitScale						(int element);
 	virtual void			g_WeaponBones					(int &L, int &R1, int &R2);
 	virtual void			Think							();
 	virtual void			Die								();

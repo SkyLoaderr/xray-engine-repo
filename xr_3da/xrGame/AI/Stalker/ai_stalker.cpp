@@ -84,6 +84,8 @@ CAI_Stalker::CAI_Stalker			()
 
 	m_dwLookChangedTime				= 0;
 
+	m_fHitFactor					= 1.f;
+
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
 
@@ -253,10 +255,27 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	#ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.CreateCharacter();
 	#endif
+	
 	Movement.SetPosition	(vPosition);
 	Movement.SetVelocity	(0,0,0);
 	if (!Level().CurrentViewEntity())
 		Level().SetEntity(this);
+	
+	// load damage params
+	if (pSettings->line_exist(cNameSect(),"damage")) {
+		CInifile::Sect& dam_sect	= pSettings->r_section(pSettings->r_string(cNameSect(),"damage"));
+		for (CInifile::SectIt it=dam_sect.begin(); it!=dam_sect.end(); it++)
+		{
+			if (0==strcmp(it->first,"default")){
+				m_fHitFactor	= (float)atof(it->second);
+			}else{
+				int bone	= PKinematics(pVisual)->LL_BoneID(it->first); 
+				R_ASSERT2(bone!=BONE_NONE,it->first);
+				PKinematics(pVisual)->LL_GetInstance(bone).set_param(0,(float)atof(it->second));
+			}
+		}
+	}
+	
 	return							(TRUE);
 }
 

@@ -10,6 +10,13 @@
 #include "ai_stalker.h"
 #include "..\\..\\WeaponMagazined.h"
 
+float CAI_Stalker::HitScale	(int element)
+{
+	CKinematics* V		= PKinematics(pVisual);			VERIFY(V);
+	float scale			= fis_zero(V->LL_GetInstance(element).get_param(0))?1.f:V->LL_GetInstance(element).get_param(0);
+	return				(m_fHitFactor*scale);
+}
+
 void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
