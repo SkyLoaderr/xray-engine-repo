@@ -42,7 +42,7 @@ function main ()
 
 	dlg_5metrov = classes.DialogueFSM()
 	dlg_5metrov:set({false      }, 0, 1, snd_prefix .. "wounded-08",   {1000},      "govor_1")            -- ты должен добить Пса
-	dlg_5metrov:set({false      }, 1, 2, snd_prefix .. "wounded-09",   {1000},      "govor_2")            -- он свалился с моста
+	dlg_5metrov:set({false      }, 1, 2, snd_prefix .. "wounded-09",   {10},        "govor_2")            -- он свалился с моста
 	dlg_5metrov:set({false      }, 2, 3, snd_prefix .. "wounded-10",   {},          "govor_3", "pause_1") -- во время атаки мутантов
 	dlg_5metrov:set({false      }, 3, 4, snd_prefix .. "wounded-11",   {},          "govor_4", "pause_2") -- забери артефакт
 	dlg_5metrov:set({false      }, 4, 5, snd_prefix .. "wounded-12",   {},          "govor_5", "pause_3") -- и отнеси торговцу... он ждет
@@ -55,9 +55,12 @@ function main ()
 	c_stalker_wounded.default_anim = "idle_raneniy" -- анимация при ничего-не-деланьи
 	c_stalker_wounded.look_at_target_when_talking = false -- не крутить головой в сторону жертвы при разговоре!
 
+	-- Сразу взять под скрипт, чтобы не успел никуда убежать
+	if not c_stalker_wounded.npc:get_script() then
+		c_stalker_wounded.npc:script(true, zmey_gameplay_1.script_name())
+	end
+	
 	local c_actor = classes.NPC(zmey_gameplay_1.script_name(), get_actor())
-
-	c_stalker_wounded.npc:script(true, zmey_gameplay_1.script_name())
 
 	action(c_stalker_wounded.npc, anim("idle_raneniy"), cond(cond.time_end, time_infinite))
 	
@@ -131,6 +134,7 @@ function main ()
 		action_first(c_stalker_wounded.npc, anim("smert"), cond(cond.anim_end, time_infinite))
 		-- Если жив, можно уже начинать играть фразу:
 		psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position(), 0.0);
+		GiveInfoViaPda(c_actor.npc, c_actor.npc, 1)
 		-- Если мертв, то попозже (чтобы не заглушилось предсмертным криком)
 	end
 
@@ -153,6 +157,8 @@ function main ()
 
 	debug_log(zmey_gameplay_1.script_name(), "_bp: Final death animation has finished")
 
+	--GiveInfoViaPda(c_actor.npc, c_stalker_wounded.npc, 1) -- zzz delme FIXME
+
 	if c_stalker_wounded.npc:alive() then
 		local h = hit ()
 		h.power = 200
@@ -169,6 +175,7 @@ function main ()
 		end
 		-- Еще раз:
 		psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position(), 0.0);
+		GiveInfoViaPda(c_actor.npc, c_actor.npc, 1)
 	end
 
 	while true do

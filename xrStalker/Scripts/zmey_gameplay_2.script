@@ -63,9 +63,17 @@ function main ()
 	dlg_not_see_enemy:set({false}, 0, 0, snd_prefix .. "hound-10-2", {2000, 5000}) -- хриплый смех
 
 	debug_log(zmey_gameplay_2.script_name(), "_bp: npcs are about to be created")
-	local c_stalker_pes = classes.NPC(zmey_gameplay_2.script_name(), get_level_object("m_stalker_pes"), get_level_object("wpn_pes"))
+
+	local npc_pes = get_level_object("m_stalker_pes")
+	-- —разу вз€ть под скрипт, чтобы не успел никуда убежать
+	if not npc_pes:get_script() then
+		npc_pes:script(true, zmey_gameplay_2.script_name())
+	end
+
+	local c_stalker_pes = classes.NPC(zmey_gameplay_2.script_name(), npc_pes, get_level_object("wpn_pes"))
 	c_stalker_pes.default_anim = anim.danger -- анимаци€ при ничего-не-деланьи
 	c_stalker_pes.look_at_target_when_talking = false -- не крутить головой в сторону жертвы при разговоре!
+	
 	local c_actor = classes.NPC(zmey_gameplay_2.script_name(), get_actor())
 	debug_log(zmey_gameplay_2.script_name(), "_bp: npcs created")
 

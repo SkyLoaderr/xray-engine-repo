@@ -628,7 +628,7 @@ function Camper:see_enemy()
 	end
 
 	if not self.c_npc:is_shooting() and
-	   (distance_between(self.c_npc.npc, self.c_enemy.npc) <= 10 or self.c_npc.npc.health < 0.99) then
+	   (distance_between(self.c_npc.npc, self.c_enemy.npc) <= 100000 or self.c_npc.npc.health < 0.99) then -- distance was 10
 		if self.c_npc:is_talking() or self.c_npc:is_looking() then
 			interrupt_action(self.c_npc.npc, self.script_name)
 		end
