@@ -52,7 +52,7 @@
 		
 		<visual>actors\bandit\stalker_bandit_1</visual>
 		<supplies>
-		[spawn]
+		[spawn] \n
 		wpn_svu \n
 		ammo_7.62x54_7h15 = 5 \n
 		ammo_7.62x54_ap = 5 \n
