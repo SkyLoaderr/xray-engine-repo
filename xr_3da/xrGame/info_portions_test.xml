@@ -57,6 +57,8 @@
 	<disable>trader_start4</disable>
 	</info_portion>
 	
+	<info_portion id="alert">
+	</info_portion>	
 	
 	<info_portion id="location_test1">
 		<article>one</article>
