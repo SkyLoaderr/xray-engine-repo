@@ -209,13 +209,13 @@
 			<level>l01_escape</level>
 			<object>006</object>
 			<icon name="Волк" big_icon="1" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Принести динамит для Волку.</text>
+			<text>Принести динамит Волку.</text>
 		</location>
 		<disable>escape_dynamite_gain</disable>
 		<disable>escape_dynamite_meet</disable>
 	</info_portion>
 	<info_portion id="escape_dynamite_done">
-		<disable>escape_dynamite_done</disable>
+		<disable>escape_dynamite_have</disable>
 		<disable>escape_dynamite_gain</disable>
 		<disable>escape_dynamite_meet</disable>	
 	</info_portion>
