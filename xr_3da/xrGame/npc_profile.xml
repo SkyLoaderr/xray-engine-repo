@@ -238,4 +238,9 @@
 		<class>Svoboda_master</class>
 	</character>
 
+
+	<character id="svoboda_master_ugrumiy">
+		<class>Svoboda_master</class>
+	</character>
+
 </xml>
