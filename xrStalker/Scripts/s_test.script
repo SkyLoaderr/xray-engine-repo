@@ -4,7 +4,7 @@ function main ()
 	local n2 = get_level_object ("naparnik2")
 
 	n1:script (true, s_test.script_name ())
-	n1:script (true, s_test.script_name ())
+	n2:script (true, s_test.script_name ())
 
 	action (n1, move (move.standing, move.walk, move.line, patrol ("boar_way")), 
 			look (look.search), anim (anim.free), cond (cond.move_end))
