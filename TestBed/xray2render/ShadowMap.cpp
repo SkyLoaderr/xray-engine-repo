@@ -268,7 +268,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderFAT					();
 		RenderShadowMap				();
 		RenderLight_Direct			();
-		RenderCombine				(CM_DBG_ACCUMULATOR);
+		RenderCombine				(CM_NORMAL);
 		// RenderOverlay				();
 
 		// Output statistics
@@ -726,7 +726,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	height->Release						();
 
 	// Power and Normalization Cube-Map
-	hr = CreatePower					(m_pd3dDevice,256,32.f,&t_SpecularPower_32);
+	hr = CreatePower					(m_pd3dDevice,256,4.f,&t_SpecularPower_32);
 	hr = CreateNCM						(m_pd3dDevice,64,&t_NCM);
 
 	m_ArcBall.SetWindow					(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
