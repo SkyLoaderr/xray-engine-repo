@@ -1,84 +1,25 @@
-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
 -- Monster binding
-----------------------------------------------------------------------------------------------------
--- Разработчик: Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
--- Доработки: Andrey Fidrya (Zmey) af@svitonline.com
-----------------------------------------------------------------------------------------------------
-
-//module("bloodsucker")
-//module("monster_bind")
-//module("pripyat_football")
-//module("monster_gameplay")
+-----------------------------------------------------------------------------------
 
 function bind(obj)
-	printf("_bp: monster bind: name='%s'", obj:name())
-    printf ("BIND MONSTER WITH ID : %d", obj:id ())
-	-- Old schemes support
+	printf("_bp: monster.bind: name='%s', id='%d'", obj:name(), obj:id())
+
 	local char_ini = obj:spawn_ini()
 	if not char_ini then
-		return
-	end
-
-	if (char_ini:section_exist("old_trader")) then
-		trader.bind()
 		return
 	end
 
 	// Для спауна
 	xr_spawner.spawn_client(obj)
 
-	----------------------------------------------------------------------------------------
-	-- Старые схемы
-	----------------------------------------------------------------------------------------
-
-	// Читер на ростке(кровосос)
-	--if(char_ini:section_exist("rostok_bloodsuceker")) then
-	--	obj:bind_object(bloodsucker.CRostokBloodSucker(obj))
-	--	return
-	--end
-	
-	// Собака доктора
-	--if(char_ini:section_exist("outcast_dog")) then
-	--	obj:bind_object(monster_bind.COutcastDog(obj))
-	--	return
-	--end
-
-	// Монстр, который после смерти пинает труп
-	--if(char_ini:section_exist("play_with_corpse")) then
-	--	obj:bind_object(monster_bind.CNecrophil(obj))
-	--	return
-	--end
-	
-	// Монтры, которые играю в футбол
-	--if(char_ini:section_exist("play_football")) then
-	--	obj:bind_object(pripyat_football.CFootballPlayer(obj))
-	--	return
-	--end
-
-	// Контролер, тренер монстров игроков
-	--if(char_ini:section_exist("controler_trainer")) then
-	--	obj:bind_object(pripyat_football.CControlerTrainer(obj))
-	--	return
-	--end
-	
-	// Сюжетные и не только скрипты
-	--if(char_ini:section_exist("gameplay")) then
-	--	monster_gameplay.bind(obj, char_ini)
-	--	return
-	--end
-
-	----------------------------------------------------------------------------------------
-	-- Новые схемы
-	----------------------------------------------------------------------------------------
-	printf("_bp: ...binding to new scheme (name='%s')", obj:name())
 	local new_binder = generic_object_binder(obj, char_ini)
 	obj:bind_object(new_binder)
 end
 
----------------------------------------------------------------------------------------------
--- Общий биндер всех монстров
----------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
 class "generic_object_binder" (object_binder)
+
 function generic_object_binder:__init(obj, char_ini) super(obj)
 	self.ini = char_ini
 end 
@@ -90,80 +31,35 @@ end
 function generic_object_binder:reinit()
 	object_binder.reinit(self)
 
+	-- У торговца нет поддержки перемещения
 	if self.object:clsid() ~= clsid.trader then
 		self.object:set_patrol_extrapolate_callback(generic_object_binder.extrapolate_callback, self)
 	end
 
-	printf("generic_object_binder:reinit()")
-
-	printf("_bp: generic_object_binder: %s", self.object:name())
 	xr_motivator.storage[self.object:id()] = { }
 
 	self.st = xr_motivator.storage[self.object:id()]
 
 	self.object:set_callback(self, "waypoint_callback", game_object.movement)
 
-	----------------------------------------------------------------------------------------
-	-- Новые схемы
-	----------------------------------------------------------------------------------------
 	xr_logic.enable_scripts(self.object, self.ini, modules.stype_mobile)
-
---TEST-------------------------------------------------------------
-	--reset_action(self.object, script_name())
---TEST-------------------------------------------------------------
 end
 
 function generic_object_binder:update(delta)
 	object_binder.update(self, delta)
 
-	-- DELME: HACK:
-	--local actor = level.actor()
-	--local info_name = "esc_trader_monolog_1"
-	--if actor and self.object:has_info(info_name) and actor:dont_has_info(info_name) then
-	--	printf("WARNING: HACK: transfering infoportion '%s' from mobile to actor", info_name)
-	--	actor:give_info_portion(info_name)
-	--end
-
-	--[[
-	if self.object:name() == "m_trader" or self.object:name() == "escape_trader" then
-		local actor = level.actor()
-		if not actor then
-			utils.abort("NO ACTOR")
-		end
-		printf("___________m_trader___________")
-		--printf("infoportion 'esc_trader_monolog_1': %s",
-		--	if_then_else(actor:has_info("esc_trader_monolog_1"), "YES", "NO"))
-		--printf("infoportion 'esc_trader_tutorial_choice': %s",
-		--	if_then_else(self.object:has_info("esc_trader_tutorial_choice"), "YES", "NO"))
-		--printf("infoportion 'esc_trader_tutorial_chosen': %s",
-		--	if_then_else(self.object:has_info("esc_trader_tutorial_chosen"), "YES", "NO"))
-		--printf("infoportion 'esc_trader_newbie': %s",
-		--	if_then_else(actor:has_info("esc_trader_newbie"), "YES", "NO"))
-		--printf("infoportion 'esc_trader_experienced': %s",
-		--	if_then_else(actor:has_info("esc_trader_experienced"), "YES", "NO"))
-		--printf("infoportion 'tutorial_artefact_start': %s",
-		--	if_then_else(actor:has_info("tutorial_artefact_start"), "YES", "NO"))
-		printf("infoportion 'esc_trader_can_leave': %s",
-			if_then_else(actor:has_info("esc_trader_can_leave"), "YES", "NO"))
-	end
-	--]]
-
 	if self.st.active_section ~= nil then
 		xr_logic.non_goap_update_actions_event(self.object, self.st[self.st.active_scheme], delta)
 	end
---TEST-------------------------------------------------------------
-	--reset_action(self.object, script_name())
---TEST-------------------------------------------------------------
 end
 
 function generic_object_binder:extrapolate_callback()
 	local cur_pt = self.object:get_current_point_index()
-	printf("_bp: generic_object_binder: extrapolate_callback: cur_pt = %d", cur_pt)
 	if patrol(self.object:patrol()):flags(cur_pt):get() == 0 then
-		printf("_bp: generic_object_binder: extrapolate_callback: true")
+		printf("_bp: generic_object_binder: extrapolate_callback: cur_pt = %d: true", cur_pt)
 		return true
 	end
-	printf("_bp: generic_object_binder: extrapolate_callback: false")
+	printf("_bp: generic_object_binder: extrapolate_callback: cur_pt = %d: false", cur_pt)
 	return false
 end
 
@@ -178,22 +74,3 @@ function generic_object_binder:net_destroy()
 	object_binder.net_destroy(self)
 end 
 
-
-//-------------------------------------------------------------------------------------------
-// Шаблон для скриптов, где монстр будет биндится
-//-------------------------------------------------------------------------------------------
---class "template" (object_binder)
---function template:__init(obj) super(obj)
---end 
-
---function template:reload(section)
---	object_binder.reload(self, section)
---end
-
---function template:update(delta)
---	object_binder.update(self, delta)
---end
-
---function template:net_destroy()
---	object_binder.net_destroy(self)
---end 
