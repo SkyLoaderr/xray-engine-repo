@@ -20,6 +20,7 @@ function load_dialog:__init() super()
    
    self:InitControls()
    self:InitCallBacks()
+   self:FillList()
 end
 
 function load_dialog:__finalize()
@@ -28,6 +29,27 @@ end
 
 function load_dialog:SetClGame  (game_cl)
    self.m_game_cl = game_cl
+end
+
+function save_dialog:FillList()
+	local f = getFS()
+	local flist = f:file_list_open("$game_saves$",FS.FS_ListFiles)
+	local f_cnt = flist:Size()
+	
+	for	it=0, f_cnt-1 	do
+		local file		=	flist:GetAt(it)	
+		
+		printf("file[%d]=%s",it,file)
+		
+		local ext = string.sub(file, string.len(file) - 3)
+		if ext == ".sav" then
+			file = string.sub(file,0 , (string.len(file) - 4))
+			table.insert(self.FileTable,file)
+			self:AddItemToList(file)
+		end
+	end
+	
+	flist:Free()	
 end
 
 function load_dialog:InitControls()
@@ -187,10 +209,7 @@ function load_dialog:OnButton_ok_clicked()
 end
 
 function load_dialog:OnButton_cancel_clicked()
-	local message_box = self:GetMessageBox("message_box")
-	
-	message_box:SetText("Do you really want to exit?")
-	message_box:Show()
+	level.start_stop_menu(self,true)
 end
 
 function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
@@ -213,7 +232,7 @@ end
 
 function load_dialog:AddItemToList(item)
 	local list_box = self:GetListWnd("list_window")
-	local shift = 50
+	local shift = 0
 	local color = GetARGB(255,0,255,255)
 	local parse = false	
 	
