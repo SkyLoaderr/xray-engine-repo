@@ -50,6 +50,9 @@ void	ISpatial::spatial_move	()
 	DB->insert	(this);
 }
 
+//main(){+'\n'["Hello world"];}
+//main(){1[""];}
+
 //////////////////////////////////////////////////////////////////////////
 void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)				
 {
