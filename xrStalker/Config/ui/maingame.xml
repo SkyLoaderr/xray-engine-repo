@@ -136,7 +136,7 @@
 	</car_health_static>
 	
 	<car_panel x="860" y="545" width="150" height="200" align="rb"></car_panel>
-	
+	<!-- MOTION_ICON -->
 	<motion_icon x="0" y="685" width="100" height="100" align="rb"></motion_icon>
 	
 	<!-- artefact panel -->
