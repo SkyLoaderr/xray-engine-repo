@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "build.h"
 
-const float		tess	= 24.0001f;
-
 void CBuild::Tesselate	()
 {
 	DWORD	cnt_splits	= 0;
 	g_bUnregister		= FALSE;
 	
+	const float	tess	= g_params.m_SS_maxsize/2.f;
+
 	for (int I=0; I<int(g_faces.size()); I++)
 	{
 		Face* F				= g_faces[I];

@@ -67,6 +67,8 @@ void CBuild::xrPhase_Subdivide()
 				}
 			}
 		}
+
+		// align plane onto vertices
 		
 		// Process all faces and rearrange them
 		for (F=g_XSplit[X]->begin(); F!=g_XSplit[X]->end(); F++) 
