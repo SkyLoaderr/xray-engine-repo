@@ -429,4 +429,10 @@ function last_action(obj)
   return obj_last_actions[obj]
 end
 
+function if_then_else(cond, if_true, if_false)
+	if cond then
+		return if_true
+	end
+	return if_false
+end
 
