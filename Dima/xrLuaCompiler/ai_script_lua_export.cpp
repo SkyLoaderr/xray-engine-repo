@@ -344,7 +344,7 @@ void CScriptEngine::export_actions()
 				value("start",					int(CPatrolPathManager::ePatrolStartTypeFirst)),
 				value("stop",					int(CPatrolPathManager::ePatrolStartTypeLast)),
 				value("nearest",				int(CPatrolPathManager::ePatrolStartTypeNearest)),
-				value("point",					int(CPatrolPathManager::ePatrolStartTypePoint)),
+				value("custom",					int(CPatrolPathManager::ePatrolStartTypePoint)),
 				value("dummy",					int(CPatrolPathManager::ePatrolStartTypeDummy))
 			]
 			.enum_("stop")
