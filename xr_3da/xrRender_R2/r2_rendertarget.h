@@ -46,7 +46,8 @@ private:
 	// Accum
 	Shader*						s_accum_mask;
 	Shader*						s_accum_direct;
-	Shader*						s_accum_point;
+	Shader*						s_accum_point_s;
+	Shader*						s_accum_point_uns;
 	SGeometry*					g_accum_point;
 	SGeometry*					g_accum_point_tl;
 	IDirect3DVertexBuffer9*		g_accum_point_vb;

@@ -73,6 +73,20 @@ void CRender::Render	()
 		Target.accum_direct						();
 	}
 
+	// Point lighting (unshadowed)
+	if (1)
+	{
+		Target.phase_accumulator		();
+		HOM.Disable						();
+		vector<light*>&	Lvec			= Lights.v_selected_unshadowed;
+		for	(u32 pid=0; pid<Lvec.size(); pid++)
+		{
+			light*	L	= Lvec[pid];
+
+			Target.accum_point_unshadow	(L);
+		}
+	}
+
 	// Point lighting (shadowed)
 	if (1)
 	{
