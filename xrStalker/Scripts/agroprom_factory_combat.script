@@ -29,6 +29,7 @@ local combat_duration = 25000   -- продолжительность боя в мс
 function on_enter( zone, obj )
     if obj:id() == the_actor:id() then
         idle = false
+        printf( "actor has entered zone %s", zone:name() )
     end
 end
 
@@ -79,7 +80,7 @@ function main()
     if the_actor:has_info( "agroprom_factory_combat" ) then
         return
     end
-    
+
     local events = {
         e_wait,    5000,
         e_explode, "factory_combat_grnd_3",
@@ -108,7 +109,7 @@ function main()
         { 6 }
     }
 
-    ----------   
+    ----------
 
     local zone = get_level_object( "zone_factory_combat" )
     zone:set_callback( on_enter, true )
