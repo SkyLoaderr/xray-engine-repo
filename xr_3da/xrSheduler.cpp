@@ -106,9 +106,11 @@ void CSheduler::internal_Unregister	(ISheduled* O, BOOL RT)
 void	CSheduler::Register		(ISheduled* A, BOOL RT				)
 {
 	ItemReg		R;
-	R.OP		= TRUE		;
-	R.RT		= RT		;
-	R.Object	= A			;
+	R.OP		= TRUE				;
+	R.RT		= RT				;
+	R.Object	= A					;
+	R.Object->shedule.b_RT	= RT	;
+
 	Registration.push_back	(R);
 }
 void	CSheduler::Unregister	(ISheduled* A						)
