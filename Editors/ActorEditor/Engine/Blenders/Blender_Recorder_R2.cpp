@@ -36,7 +36,7 @@ void	CBlender_Compile::r_Constant	(LPCSTR name, R_constant_setup* s)
 	if (C)					C->handler	= s;
 }
 
-void	CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
+void	CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, bool b_ps1x_ProjectiveDivide, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
 {
 	//
 	string256				name;
@@ -61,15 +61,17 @@ void	CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, u32 address, u3
 	RS.SetSAMP				(stage,D3DSAMP_MIPFILTER,	fmip);
 	RS.SetSAMP				(stage,D3DSAMP_MAGFILTER,	fmag);
 	RS.SetSAMP				(stage,D3DSAMP_ELEMENTINDEX,element);
+	if	(b_ps1x_ProjectiveDivide)	RS.SetTSS	(stage,D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT3 | D3DTTFF_PROJECTED);
+	else							RS.SetTSS	(stage,D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE );
 }
 
-void	CBlender_Compile::r_Sampler_rtf	(LPCSTR name, LPCSTR texture, u32 element/* =0 */)
+void	CBlender_Compile::r_Sampler_rtf	(LPCSTR name, LPCSTR texture, bool b_ps1x_ProjectiveDivide, u32 element/* =0 */)
 {
-	r_Sampler	(name,texture,D3DTADDRESS_CLAMP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT,element);
+	r_Sampler	(name,texture,b_ps1x_ProjectiveDivide,D3DTADDRESS_CLAMP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT,element);
 }
-void	CBlender_Compile::r_Sampler_clf	(LPCSTR name, LPCSTR texture, u32 element/* =0 */)
+void	CBlender_Compile::r_Sampler_clf	(LPCSTR name, LPCSTR texture, bool b_ps1x_ProjectiveDivide, u32 element/* =0 */)
 {
-	r_Sampler	(name,texture,D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR,element);
+	r_Sampler	(name,texture,b_ps1x_ProjectiveDivide,D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR,element);
 }
 
 void	CBlender_Compile::r_End			()
