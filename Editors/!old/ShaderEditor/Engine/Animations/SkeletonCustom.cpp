@@ -331,7 +331,7 @@ void CKinematics::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
 	VERIFY(bone_id<LL_BoneCount()); 
     u64 mask 			= u64(1)<<bone_id;
     visimask.set		(mask,val);
-    if (!visimask.is(mask))
+	if (!visimask.is(mask))
         bone_instances[bone_id].mTransform.scale(0.f,0.f,0.f);
     if (bRecursive){
         for (xr_vector<CBoneData*>::iterator C=(*bones)[bone_id]->children.begin(); C!=(*bones)[bone_id]->children.end(); C++)

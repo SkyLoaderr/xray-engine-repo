@@ -780,11 +780,11 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
     }
 }
 
-void CSkeletonAnimated::Calculate(BOOL bLight)
+void CSkeletonAnimated::Calculate(BOOL bForced)
 {
 	Update();
 
-	if (Device.dwFrame == Update_Frame) return;
+	if (!bForced)		if (Device.dwFrame==Update_Frame) return;
 	Update_Frame		= Device.dwFrame; 
 
 	// Calculate bones

@@ -67,7 +67,6 @@ void SCarLight::TurnOn()
 {
 	if(isOn()) return;
 	PKinematics(m_holder->PCar()->Visual())->LL_SetBoneVisible(bone_id,TRUE,TRUE);
-	PKinematics(m_holder->PCar()->Visual())->Calculate();
 	glow_render ->set_active(true);
 	light_render->set_active(true);
 }
@@ -136,6 +135,7 @@ void CCarLights::SwitchHeadLights()
 {
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
 	for(;i!=e;++i) (*i)->Switch();
+	PKinematics(PCar()->Visual())->Calculate(TRUE);
 }
 bool CCarLights::IsLight(u16 bone_id)
 {

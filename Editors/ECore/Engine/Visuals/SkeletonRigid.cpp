@@ -17,9 +17,9 @@ void		CBoneInstanceRigid::construct	()
 	Callback_overwrite	= FALSE;
 }
 
-void CSkeletonRigid::Calculate(BOOL bLight)
+void CSkeletonRigid::Calculate(BOOL bForced)
 {
-	if (Device.dwFrame == Update_Frame) return;
+	if (!bForced)		if (Device.dwFrame==Update_Frame) return;
 	Update_Frame		= Device.dwFrame; 
 
 	// Calculate bones

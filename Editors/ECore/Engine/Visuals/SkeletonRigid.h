@@ -24,7 +24,7 @@ protected:
     virtual CBoneData*			CreateBoneData	(u16 ID){return xr_new<CBoneDataRigid>(ID);}
 public:
 	// Main functionality
-	virtual void				Calculate		(BOOL bLight=FALSE);			// Recalculate skeleton (Light mode can be used to avoid interpolation)
+	virtual void				Calculate		(BOOL bForced=FALSE);
 	virtual	CSkeletonRigid*		dcast_PSkeletonRigid	()				{ return this;	}
 };
 IC CSkeletonRigid* PSkeletonRigid(IRender_Visual* V)	{ return V?V->dcast_PSkeletonRigid():0; }

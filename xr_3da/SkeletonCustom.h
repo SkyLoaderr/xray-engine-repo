@@ -132,7 +132,7 @@ public:
 	void						LL_SetBonesVisible	(u64 mask);
 
 	// Main functionality
-	virtual void				Calculate		(BOOL bLight=FALSE)=0;			// Recalculate skeleton (Light mode can be used to avoid interpolation)
+	virtual void				Calculate		(BOOL bForced=FALSE)=0;			// Recalculate skeleton
 	void						Callback		(UpdateCallback C, void* Param)	{	Update_Callback	= C; Update_Callback_Param	= Param;	}
 
 	// debug
