@@ -720,11 +720,23 @@
     <string id="bar_dolg_ivancov_test_start_1112">
         <text>Что-то эта обманчивая легкость меня сильно настораживает. Пожалуй, не сегодня.</text>
     </string>
-    <string id="bar_dolg_leader_job_0">
+    <string id="bar_dolg_leader_job_2">
         <text>Какие мои текущие задачи?</text>
     </string>
-    <string id="bar_dolg_leader_job_1">
-        <text>Пока задач нет, рядовой. Отдыхай.</text>
+    <string id="bar_dolg_leader_job_21">
+        <text>text in default</text>
+    </string>
+    <string id="bar_dolg_leader_job_3">
+        <text>Какие мои текущие задачи?</text>
+    </string>
+    <string id="bar_dolg_leader_job_31">
+        <text>text in default</text>
+    </string>
+    <string id="bar_dolg_leader_job_4">
+        <text>Какие мои текущие задачи?</text>
+    </string>
+    <string id="bar_dolg_leader_job_41">
+        <text>text in default</text>
     </string>
     <string id="bar_dolg_leader_join_0">
         <text>Я хочу вступить в группировку Долг.</text>
