@@ -217,7 +217,7 @@ void CStalkerAnimations::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 			}
 			case FOOD_PREPARE: {
 //				Msg				("Preparing vodka");
-				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[0].A[1];
+				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[11].A[0];
 				break;
 			}
 			case FOOD_EATING : {
