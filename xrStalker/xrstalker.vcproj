@@ -308,9 +308,6 @@
 				<File
 					RelativePath=".\Config\gameplay\tasks_escape.xml">
 				</File>
-				<File
-					RelativePath=".\Config\gameplay\test.xml">
-				</File>
 			</Filter>
 			<Filter
 				Name="misc"
@@ -421,9 +418,6 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\string_table_ui.xml">
-					</File>
-					<File
-						RelativePath=".\Config\text\rus\test_string.xml">
 					</File>
 				</Filter>
 				<Filter
