@@ -351,6 +351,7 @@ void CAI_Stalker::SearchEnemy()
 		m_iCurrentSuspiciousNodeIndex = 0;
 		m_bSearchedForEnemy		= true;
 		m_tPathState			= ePathStateBuildNodePath;
+		Group.m_tpaSuspiciousNodes.clear();
 	}
 	m_bSearchedForEnemy			= true;
 
@@ -379,7 +380,10 @@ void CAI_Stalker::SearchEnemy()
 						}
 					}
 				if (!bOk)
-					vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tSavedEnemyPosition);
+					if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) == -1)
+						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
+					else
+						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tSavedEnemyPosition);
 			}
 			break;
 		}
@@ -414,7 +418,10 @@ void CAI_Stalker::SearchEnemy()
 						}
 					}
 				if (!bOk)
-					vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID));
+					if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) == -1)
+						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
+					else
+						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID));
 			}
 	
 			break;
