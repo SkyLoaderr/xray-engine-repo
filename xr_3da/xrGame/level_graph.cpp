@@ -47,10 +47,6 @@ CLevelGraph::CLevelGraph					(LPCSTR filename, u32 current_version)
 	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + 1.5f);
 	m_column_length				= iFloor((header().box().max.x - header().box().min.x)/header().cell_size() + EPS_L + 1.5f);
 	m_ref_counts.assign			(header().vertex_count(),0);
-#pragma todo("Dima to Dima : Optimize the nearest node by position search")
-	m_valid_nodes.assign		(m_row_length*m_column_length,false);
-	for (u32 i=0, n = header().vertex_count(); i<n; ++i)
-		m_valid_nodes[vertex(i)->position().xz()] = true;
 }
 
 CLevelGraph::~CLevelGraph		()
@@ -67,24 +63,10 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 	u32						selected;
 	set_invalid_vertex		(selected);
 	for (u32 i=0; i<header().vertex_count(); ++i) {
-		const CVertex		*_vertex = vertex(i);
-		if (inside			(_vertex,_node_position)) {
-			float			dist = _abs(vertex_plane_y(_vertex) - position.y);
-			if (dist < min_dist) {
-				inside_vertex = true;
-				min_dist	= dist;
-				selected	= i;
-			}
-		}
-	}
-	
-	if (!valid_vertex_id(selected)) {
-		for (u32 i=0; i<header().vertex_count(); ++i) {
-			float		dist =  distance(i,position);
-			if (dist < min_dist) {
-				min_dist	= dist;
-				selected	= i;
-			}
+		float				dist = distance(i,position);
+		if (dist < min_dist) {
+			min_dist		= dist;
+			selected		= i;
 		}
 	}
 
@@ -99,20 +81,8 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 
 	u32						id;
 
-	if (!valid_vertex_id(current_node_id)) {
-		// so, we do not have a correct current node
-		// performing very slow full search
-#ifdef _DEBUG
-		//Msg					("%6d Full search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
-#endif
-		id					= vertex(position);
-		VERIFY				(valid_vertex_id(id));
-		Device.Statistic.AI_Node.End();
-		return				(id);
-	}
-
 	if (valid_vertex_position(position)) {
-		if (inside(vertex(current_node_id),position)) {
+		if (valid_vertex_id(current_node_id) && inside(vertex(current_node_id),position)) {
 			// so, our node corresponds to the position
 #ifdef _DEBUG
 			//Msg					("%6d No search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
@@ -134,6 +104,17 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 		}
 	}
 
+	if (!valid_vertex_id(current_node_id)) {
+		// so, we do not have a correct current node
+		// performing very slow full search
+#ifdef _DEBUG
+		//Msg					("%6d Full search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+#endif
+		id					= vertex(position);
+		VERIFY				(valid_vertex_id(id));
+		Device.Statistic.AI_Node.End();
+		return				(id);
+	}
 	// so, our position is outside the level graph bounding box
 	// or
 	// there is no node for the current position
