@@ -595,12 +595,15 @@ function Camper:nothing_happened_yet()
 	end
 
 	--printf("Camper: nothing_happened_yet: %d", game.time())
-	if self.c_npc.npc:see(self.c_enemy.npc) then
-		printf("Camper: nothing_happened_yet: npc sees enemy")
+	if self.c_npc.npc:see(self.c_enemy.npc) or self.c_npc.npc.health < 0.99 then
+		printf("Camper: nothing_happened_yet: npc sees enemy or low health")
 		interrupt_action(self.c_npc.npc, self.script_name)
 		self.dlg_see_enemy:reset()
 		self.c_npc:set_dialogue(self.dlg_see_enemy)
 		self.state = self.see_enemy
+		
+		-- ќн уже знает, что игрок здесь, и всегда настороже:
+		self.c_npc.look_at_target_when_talking = true
 		return
 	end
 

@@ -5,9 +5,22 @@
 -- wpn: оружие сталкера
 -- move_type: тип перемещения; один из move.stand, move.run, move.walk
 
+--[[
 local stalkers = {
 	{ stalker="m_stalker_shooting1", anim=anim.danger, distance=15, wpn="wpn_ak74_1", move_type=move.stand },
 	{ stalker="m_stalker_shooting2", anim=anim.danger, distance=15, wpn="wpn_ak74_2", move_type=move.run  }
+}
+--]]
+local stalkers = {
+	{ stalker="m_stalker_shooting1", anim=anim.danger, distance=30, wpn="wpn_ak74_1", move_type=move.stand },
+	{ stalker="m_stalker_shooting2", anim=anim.danger, distance=30, wpn="wpn_ak74_2", move_type=move.stand }, -- ok
+	{ stalker="m_stalker_shooting3", anim=anim.danger, distance=30, wpn="wpn_ak74_3", move_type=move.stand }, -- ok
+	{ stalker="m_stalker_shooting4", anim=anim.danger, distance=30, wpn="wpn_ak74_4", move_type=move.stand },
+	{ stalker="m_stalker_shooting5", anim=anim.danger, distance=30, wpn="wpn_ak74_0000", move_type=move.stand },
+	{ stalker="m_stalker_shooting6", anim=anim.danger, distance=30, wpn="wpn_ak74_0001", move_type=move.stand }, -- ok
+	{ stalker="m_stalker_shooting7", anim=anim.danger, distance=30, wpn="wpn_ak74_0002", move_type=move.stand }, -- ok
+	{ stalker="m_stalker_shooting8", anim=anim.danger, distance=30, wpn="wpn_ak74_0003", move_type=move.stand }, -- ok
+	{ stalker="m_stalker_shooting9", anim=anim.danger, distance=30, wpn="wpn_ak74_0004", move_type=move.stand } -- ok
 }
 
 function main()
