@@ -31,7 +31,9 @@ int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 		}
 	}
 	if (f_count>1) {
-		bCriticalErrCnt++;
+		bCriticalErrCnt	++;
+		pBuild->err_multiedge.Wvector(V1->P);
+		pBuild->err_multiedge.Wvector(V2->P);
 	}
 	if (found) {
 		vecFaceIt F = lower_bound(ids.begin(),ids.end(),found);

@@ -90,6 +90,9 @@ void	Face::Failure		()
 		VPUSH(v[1]->P),
 		VPUSH(v[2]->P)
 		);
+	pBuild->err_invalid.Wvector	(v[0]->P);
+	pBuild->err_invalid.Wvector	(v[1]->P);
+	pBuild->err_invalid.Wvector	(v[2]->P);
 }
 
 void	Face::Verify		()

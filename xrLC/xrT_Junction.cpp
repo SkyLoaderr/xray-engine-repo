@@ -49,15 +49,16 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		}
 		
 		// register
-		record	rec;
-		rec.E1	= vE1;
-		rec.E2	= vE2;
-		rec.T	= vTEST;
+		record					rec;
+		rec.E1					= vE1;
+		rec.E2					= vE2;
+		rec.T					= vTEST;
 		vecJunctions->push_back	(rec);
 		
 		// display
 		if (bWeld)	Msg	("ERROR. unwelded vertex      [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
 		else		Msg	("ERROR. T-junction at vertex [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
+		pBuild->err_tjunction.Wvector	(vTEST->P);
 	}
 }
 
