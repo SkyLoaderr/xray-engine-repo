@@ -111,8 +111,9 @@ static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 
 void	test_rtc	()
 {
-	CStatTimer		tM,tC,tD;
+	CStatTimer		tMc,tM,tC,tD;
 	u32				bytes=0;
+	tMc.FrameStart	();
 	tM.FrameStart	();
 	tC.FrameStart	();
 	tD.FrameStart	();
@@ -125,6 +126,10 @@ void	test_rtc	()
 		u8*			p_out			= xr_alloc<u8>	(out_size_max);
 		for (u32 git=0; git<in_size; git++)			p_in[git] = (u8)::Random.randI	(8);	// garbage
 		bytes		+= in_size;
+
+		tMc.Begin	();
+		memcpy		(p_in_tst,p_in,in_size);
+		tMc.End		();
 
 		tM.Begin	();
 		Memory.mem_copy(p_in_tst,p_in,in_size);
@@ -146,12 +151,14 @@ void	test_rtc	()
 		xr_free		(p_in_tst);
 		xr_free		(p_in);
 	}
+	tMc.FrameEnd	();
 	tM.FrameEnd		();
 	tC.FrameEnd		();
 	tD.FrameEnd		();
-	Msg				("* mm-memcpy:	   %f K/ms",(float(bytes)/tM.result)/1024.f);
-	Msg				("* compression:   %f K/ms",(float(bytes)/tC.result)/1024.f);
-	Msg				("* decompression: %f K/ms",(float(bytes)/tD.result)/1024.f);
+	Msg				("* memcpy:	       %f K/s",1000.f*(float(bytes)/tMc.result)/1024.f);
+	Msg				("* mm-memcpy:	   %f K/s",1000.f*(float(bytes)/tM.result)/1024.f);
+	Msg				("* compression:   %f K/s",1000.f*(float(bytes)/tC.result)/1024.f);
+	Msg				("* decompression: %f K/s",1000.f*(float(bytes)/tD.result)/1024.f);
 }
 
 int APIENTRY WinMain(HINSTANCE hInstance,
