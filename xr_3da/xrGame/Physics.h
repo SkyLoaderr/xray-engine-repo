@@ -183,6 +183,7 @@ static dJointGroupID ContactGroup;
 ////////////////////////////////////////////////////////////////////////////////
 //using namespace std;
 class CPHElement;
+class CPHShell;
 class CPHElement:  public CPhysicsElement {
 
 	vector <dGeomID>		m_geoms;
@@ -203,6 +204,7 @@ class CPHElement:  public CPhysicsElement {
 ///////////////////////////////
 
 	CPHElement* m_parent_element;
+	CPHShell*   m_shell;
 	CPHInterpolation m_body_interpolation;
 
 
@@ -245,7 +247,7 @@ public:
 	virtual	void			add_Sphere				(const Fsphere&	V);
 
 	virtual	void			add_Box					(const Fobb&		V);
-	
+	void			SetShell		(CPHShell* p){m_shell=p;}
 	void			InterpolateGlobalTransform(Fmatrix* m);
 	void			build(dSpaceID space);
 	void			destroy();
@@ -277,6 +279,8 @@ public:
 		bActivating=false;
 		dis_count_f=0;
 		dis_count_f1=0;
+		m_parent_element=NULL;
+		m_shell=NULL;
 	};
 		//CPHElement(){ m_space=ph_world->GetSpace();};
 		virtual ~CPHElement	();
@@ -306,7 +310,10 @@ public:
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
-		elements.push_back((CPHElement*)E);
+		CPHElement* ph_element=(CPHElement*)E;
+		ph_element->SetShell(this);
+		elements.push_back(ph_element);
+
 	};
 
 	virtual	void			add_Joint				(CPhysicsJoint* E, int E1, int E2)					{};

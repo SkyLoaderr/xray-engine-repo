@@ -1442,6 +1442,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 
 void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
 CPHElement*	E			= dynamic_cast<CPHElement*>	(static_cast<CObject*>(B->Callback_Param));
+
 E->CallBack(B);
 }
 
@@ -1449,6 +1450,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 	if(!bActive && !bActivating){
 		mXFORM.set(B->mTransform);
 		bActivating=true;
+		bActive=true;
 		m_start_time=Device.fTimeGlobal;
 		return;
 	}
@@ -1456,22 +1458,33 @@ void CPHElement::CallBack(CBoneInstance* B){
 	if(bActivating){
 
 	Start();
-	SetTransform(mXFORM);
-//	Fmatrix33 m33;
-	Fmatrix m,m1,m2;
-	m1.set(mXFORM);
-	m2.set(B->mTransform);
-	//m1.identity();
-	m1.invert();
-	m.mul(m1,m2);
-	float dt01=Device.fTimeGlobal-m_start_time;
-	m.mul(1.f/dt01);
+	Fmatrix global_transform;
+	global_transform.set(m_shell->mXFORM);
+	global_transform.mulB(mXFORM);
+	if(m_parent_element){
+		global_transform.mulB(m_parent_element->mXFORM);
+	}
+	else
+		m_shell->Activate();
+	SetTransform(global_transform);
+
+
+	//Fmatrix m,m1,m2;
+	//m1.set(mXFORM);
+	//m2.set(B->mTransform);
+
+	//m1.invert();
+	//m.mul(m1,m2);
+	//float dt01=Device.fTimeGlobal-m_start_time;
+	//m.mul(1.f/dt01);
+
+	//Fmatrix33 m33;
 	//m33.set(m);
 	//dMatrix3 R;
 	//PHDynamicData::FMX33toDMX(m33,R);
-	dBodySetLinearVel(m_body,m.c.x,m.c.y,m.c.z);
-	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+//	dBodySetLinearVel(m_body,m.c.x,m.c.y,m.c.z);
+	PSGP.memCopy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	PSGP.memCopy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
 
 
 //////////////////////////////////////////////////////////////
@@ -1483,15 +1496,30 @@ void CPHElement::CallBack(CBoneInstance* B){
 	dis_count_f=0;
 
 	m_body_interpolation.SetBody(m_body);
+	bActivating=false;
 	//previous_f[0]=dInfinity;
 	return;
 	}
 	
+
+//	Fmatrix bone,inv_shell;
+//	InterpolateGlobalTransform(&bone);
+//	inv_shell.set(m_shell->mXFORM);
+//	inv_shell.invert();
+//	bone.mulB(inv_shell);
+//	B->mTransform.set(bone);
 	Fmatrix parent;
 	InterpolateGlobalTransform(&B->mTransform);
+	if(m_parent_element){
 	m_parent_element->InterpolateGlobalTransform(&parent);
 	parent.invert();
 	B->mTransform.mulB(parent);
+	}
+	else{
+		parent.set(m_shell->mXFORM);
+		parent.invert();
+		B->mTransform.mulA(parent);
+	}
 }
 
 void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
@@ -1506,13 +1534,13 @@ void CPHShell::Activate(){
 		return;
 	m_ident=ph_world->AddObject(this);
 
-		vector<CPHElement*>::iterator i;
+		//vector<CPHElement*>::iterator i;
 
-		for(i=elements.begin();i!=elements.end();i++){
+		//for(i=elements.begin();i!=elements.end();i++){
 														//(*i)->Start();
 														//(*i)->SetTransform(m0);
-														(*i)->Activate();
-			}
+											//			(*i)->Activate();
+			//}
 	bActive=true;
 }
 void CPHElement::Activate(){
