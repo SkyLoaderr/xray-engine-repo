@@ -298,8 +298,10 @@ void CDetailManager::Render		(Fvector& EYE)
 		if  (o_total > (o_per_lock*lock_count))	o_per_lock++;
 
 		// Fill VB (and flush it as nesessary)
-		Device.Shader.Set		(Object.shader);
-		Device.Shader.SetupPass	(0);
+		Device.Shader.Set				(Object.shader);
+		Device.Shader.SetupPass			(0);
+		Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
+
 		Fmatrix		mXform,mScale,mRot,mRotXZ;
 		for (DWORD L_ID=0; L_ID<lock_count; L_ID++)
 		{
@@ -342,16 +344,11 @@ void CDetailManager::Render		(Fvector& EYE)
 				vDest					+=	vCount_Object;
 				iDest					+=	iCount_Object;
 				iOffset					+=	vCount_Object;
-				/*
-				Fvector obbr; obbr.set(.1f,.1f,.1f);
-				Device.Primitive.dbg_DrawOBB	(mXform,obbr,0xffffffff);
-				*/
 			}
 			VS->Unlock	(vCount_Lock);
 			IS->Unlock	(iCount_Lock);
 
 			// Render
-			Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
