@@ -19,6 +19,7 @@
 #include "item_manager.h"
 #include "hit_memory_manager.h"
 #include "sound_memory_manager.h"
+#include "explosive.h"
 #include "missile.h"
 #include "script_binder.h"
 #include "motivation_action_manager.h"
@@ -595,13 +596,16 @@ public:
 
 			void explode	(u32 level_time)
 	{
-		CMissile			*missile = dynamic_cast<CMissile*>(m_tpGameObject);
-		if (!missile)
+		CExplosive			*explosive = dynamic_cast<CExplosive*>(m_tpGameObject);
+		VERIFY(m_tpGameObject->H_Parent());
+		
+		if (!explosive)
 			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member explode!");
 		else {
-			NET_Packet			P;
-			missile->u_EventGen	(P,GE_GRENADE_EXPLODE,missile->ID());	
-			missile->u_EventSend(P);
+			Fvector normal;
+			explosive->FindNormal(normal);
+			explosive->SetCurrentParentID(m_tpGameObject->ID());
+			explosive->GenExplodeEvent(m_tpGameObject->Position(), normal);
 		}
 	}
 

@@ -4102,18 +4102,6 @@
 									Name="Automatic"
 									Filter="">
 									<File
-										RelativePath=".\WeaponFakeGrenade.cpp">
-									</File>
-									<File
-										RelativePath=".\WeaponFakeGrenade.h">
-									</File>
-									<File
-										RelativePath=".\WeaponLightGrenade.cpp">
-									</File>
-									<File
-										RelativePath=".\WeaponLightGrenade.h">
-									</File>
-									<File
 										RelativePath=".\WeaponMagazined.cpp">
 									</File>
 									<File
@@ -5147,6 +5135,12 @@
 						</File>
 						<File
 							RelativePath=".\Phrase.h">
+						</File>
+						<File
+							RelativePath=".\PhraseDialog.cpp">
+						</File>
+						<File
+							RelativePath=".\PhraseDialog.h">
 						</File>
 					</Filter>
 				</Filter>

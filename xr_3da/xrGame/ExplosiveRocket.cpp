@@ -37,18 +37,7 @@ void CExplosiveRocket::Contact(const Fvector &pos, const Fvector &normal)
 {
 	if(eCollide == m_eState) return;
 
-
-
-	CExplosive::ExplodeParams(pos,normal);
-
-	//взорвать гранату
-	if (Local()) 
-	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
-		u_EventSend		(P);
-	}
-
+	CExplosive::GenExplodeEvent(pos,normal);
 	inherited::Contact(pos, normal);
 }
 

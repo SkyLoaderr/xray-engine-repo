@@ -368,8 +368,8 @@ void CWeaponMagazined::UpdateCL			()
 			VERIFY(iAmmoElapsed);
 			state_Fire		(dt);	
 			
-			if(fTime<=0 || iAmmoElapsed == 0/*	|| 
-				SingleShotMode() || 
+			if(fTime<=0 || iAmmoElapsed == 0	/*|| 
+				//SingleShotMode() || 
 				StopedAfterQueueFired()*/)
 				StopShooting();
 			break;
@@ -537,7 +537,6 @@ void CWeaponMagazined::switch2_Fire	()
 	m_bStopedAfterQueueFired = false;
 	m_bFireSingleShot = true;
 	m_iShotNum = 0;
-
 
     if(OnClient() && !IsWorking())
 		FireStart();

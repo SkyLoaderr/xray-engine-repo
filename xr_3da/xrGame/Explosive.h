@@ -44,6 +44,9 @@ public:
 	virtual void renderable_Render	();
 
 	virtual void SetCurrentParentID	(u16 parent_id) {m_iCurrentParentID = parent_id;}
+	virtual void GenExplodeEvent (const Fvector& pos, const Fvector& normal);
+	virtual void FindNormal(Fvector& normal);
+
 protected:
 	//ID персонажа который иницировал действие
 	u16 m_iCurrentParentID;

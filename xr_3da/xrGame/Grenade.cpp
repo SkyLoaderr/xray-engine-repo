@@ -81,27 +81,6 @@ void CGrenade::Throw()
 	inherited::Throw			();
 }
 
-void CGrenade::FindNormal(Fvector& normal)
-{
-	Collide::rq_result RQ;
-
-	Fvector pos, dir;
-	dir.set(0,-1.f,0);
-	Center(pos);
-
-	BOOL result = Level().ObjectSpace.RayPick(pos, dir, Radius(), 
-											 Collide::rqtBoth, RQ);
-	if(!result || RQ.O)
-		normal.set(0,1,0);
-	//если лежим на статике
-	//найти треугольник и вычислить нормаль по нему
-	else
-	{
-		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
-		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + RQ.element;
-		normal.mknormal	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
-	}
-}
 
 
 void CGrenade::Destroy() 
@@ -111,14 +90,7 @@ void CGrenade::Destroy()
 
 	Fvector  normal;
 	FindNormal(normal);
-	CExplosive::ExplodeParams(Position(), normal);
-
-	if (Local()) 
-	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
-		u_EventSend		(P);
-	};
+	CExplosive::GenExplodeEvent(Position(), normal);
 }
 
 

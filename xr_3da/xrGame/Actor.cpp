@@ -368,7 +368,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 			{
 				//by Dandy for debug reasons
 				//fEntityHealth += iLost;
-			//	inherited::Hit(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
+				inherited::Hit(0.f,dir,who,element,position_in_bone_space, 0.f, hit_type);
 				return;
 			}
 			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);

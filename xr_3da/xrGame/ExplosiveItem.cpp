@@ -49,14 +49,10 @@ void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
 	{
 		//запомнить того, кто взорвал вещь
 		m_iCurrentParentID = who->ID();
-		CExplosive::ExplodeParams(Position(), XFORM().k);
 
-		if (Local()) 
-		{
-			NET_Packet		P;
-			u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
-			u_EventSend		(P);
-		};
+		Fvector normal;
+		FindNormal(normal);
+		CExplosive::GenExplodeEvent(Position(), normal);
 	}
 }
 

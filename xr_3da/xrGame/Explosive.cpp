@@ -327,6 +327,14 @@ void CExplosive::OnEvent(NET_Packet& P, u16 type)
 {
 	switch (type) {
 		case GE_GRENADE_EXPLODE : {
+			Fvector pos, normal;
+			u16 parent_id;
+			P.r_u16(parent_id);
+			P.r_vec3(pos);
+			P.r_vec3(normal);
+			
+			SetCurrentParentID(parent_id);
+			ExplodeParams(pos,normal);
 			Explode();
 			m_dwExplodeDuration = m_dwExplodeDurationMax;
 			break;
@@ -334,7 +342,7 @@ void CExplosive::OnEvent(NET_Packet& P, u16 type)
 	}
 }
 
-void  CExplosive::ExplodeParams(const Fvector& pos, 
+void CExplosive::ExplodeParams(const Fvector& pos, 
 								const Fvector& dir)
 {
 	m_bReadyToExplode = true;
@@ -343,7 +351,45 @@ void  CExplosive::ExplodeParams(const Fvector& pos,
 }
 
 
+void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
+{
+	VERIFY(0xffff != m_iCurrentParentID);
+
+	if (Local()) 
+	{
+		NET_Packet		P;
+		u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
+		P.w_u16			(m_iCurrentParentID);
+		P.w_vec3		(const_cast<Fvector&>(pos));
+		P.w_vec3		(const_cast<Fvector&>(normal));
+		u_EventSend		(P);
+	}
+}
+
 void CExplosive::renderable_Render		()
 {
 	inherited::renderable_Render	();
 }
+
+void CExplosive::FindNormal(Fvector& normal)
+{
+	Collide::rq_result RQ;
+
+	Fvector pos, dir;
+	dir.set(0,-1.f,0);
+	Center(pos);
+
+	BOOL result = Level().ObjectSpace.RayPick(pos, dir, Radius(), 
+											 Collide::rqtBoth, RQ);
+	if(!result || RQ.O)
+		normal.set(0,1,0);
+	//если лежим на статике
+	//найти треугольник и вычислить нормаль по нему
+	else
+	{
+		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
+		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + RQ.element;
+		normal.mknormal	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
+	}
+}
+

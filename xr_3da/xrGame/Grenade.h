@@ -31,7 +31,7 @@ public:
 	
 	virtual void Throw();
 	virtual void Destroy();
-	virtual void FindNormal(Fvector& normal);
+
 	
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Useful() const;
