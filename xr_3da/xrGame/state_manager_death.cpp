@@ -22,9 +22,9 @@ CStateManagerDeath::~CStateManagerDeath	()
 
 void CStateManagerDeath::Init			()
 {
-	add						(xr_new<CStateDeathRecentlyDead>(),	eDeathStateRecentlyDead,	0);
-	add						(xr_new<CStateDeathAlreadyDead>(),	eDeathStateAlreadyDead,		0);
-	graph().add_edge		(eDeathStateRecentlyDead,eDeathStateAlreadyDead,1);
+	add_state				(xr_new<CStateDeathRecentlyDead>(),	eDeathStateRecentlyDead,	0);
+	add_state				(xr_new<CStateDeathAlreadyDead>(),	eDeathStateAlreadyDead,		0);
+	add_transition			(eDeathStateRecentlyDead,eDeathStateAlreadyDead,1);
 }
 
 void CStateManagerDeath::Load			(LPCSTR section)
@@ -49,7 +49,7 @@ void CStateManagerDeath::initialize		()
 
 void CStateManagerDeath::execute		()
 {
-	set_dest_vertex_id		(eDeathStateAlreadyDead);
+	set_dest_state			(eDeathStateAlreadyDead);
 	inherited::execute		();
 }
 

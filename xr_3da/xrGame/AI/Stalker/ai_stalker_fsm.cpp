@@ -94,7 +94,7 @@ void CAI_Stalker::BackCover(bool bFire)
 //			if (!enemy() && (angle_difference(m_body.current.yaw, m_body.target.yaw) <= PI_DIV_6) && bfCheckIfCanKillTarget(this,m_tSavedEnemyPosition,-m_body.current.yaw,-m_body.current.pitch,ffGetFov()/180.f*PI))
 //				Camp(bFire);
 //			else {
-//				vfSetParameters			(m_tpSelectorCover,0,true,bFire ? eObjectActionPrimaryFire : eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+//				vfSetParameters			(m_tpSelectorCover,0,true,bFire ? eObjectActionFire1 : eObjectActionIdle,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 //				if (Level().timeServer() - m_dwActionStartTime > 6000) {
 //					m_tActionState		= eActionStateWatchGo;
 //					m_dwActionStartTime = Level().timeServer();
@@ -148,8 +148,8 @@ void CAI_Stalker::ForwardStraight()
 //		m_tpSelectorFreeHunting->m_fOptEnemyDistance = 15.f;//tpWeapon->m_fMinRadius + 3.f;
 //	}
 //
-////	vfSetParameters				(m_tpSelectorFreeHunting,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionPrimaryFire,fDistance > 15.f ? ePathTypeStraightDodge : ePathTypeCriteria,eBodyStateStand,enemy()->m_object->Position().distance_to(Position()) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
-//	vfSetParameters				(m_tpSelectorFreeHunting,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionPrimaryFire,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,enemy()->m_object->Position().distance_to(Position()) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+////	vfSetParameters				(m_tpSelectorFreeHunting,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionFire1,fDistance > 15.f ? ePathTypeStraightDodge : ePathTypeCriteria,eBodyStateStand,enemy()->m_object->Position().distance_to(Position()) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+//	vfSetParameters				(m_tpSelectorFreeHunting,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionFire1,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateStand,enemy()->m_object->Position().distance_to(Position()) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 }
 
 void CAI_Stalker::Camp(bool /**bWeapon/**/)
@@ -466,8 +466,8 @@ void CAI_Stalker::ForwardCover()
 //				m_tpSelectorCover->m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
 //			m_tpSelectorCover->m_fMaxEnemyDistance = _max(fDistance - 1.f,m_tpSelectorCover->m_fOptEnemyDistance + 3.f);
 //			m_tpSelectorCover->m_fMinEnemyDistance = _max(fDistance - m_tpSelectorCover->m_fSearchRange,m_tpSelectorCover->m_fOptEnemyDistance - 3.f);
-////			vfSetParameters			(m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionPrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
-//			vfSetParameters			(m_tpSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionPrimaryFire,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+////			vfSetParameters			(m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionFire1,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
+//			vfSetParameters			(m_tpSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eObjectActionIdle : eObjectActionFire1,ePathTypeLevelPath,eDetailPathTypeSmooth,eBodyStateCrouch,eMovementTypeStand,eMentalStateDanger,eLookTypeFirePoint,tPoint);
 //			if (!tpWeapon || ((CWeapon::eFire != tpWeapon->STATE) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || ((!CDetailPathManager::path().empty() && CDetailPathManager::path().size() > CDetailPathManager::curr_travel_point_index() + 1) && (Level().timeServer() - m_dwActionStartTime > 5000))))) {
 //				m_tActionState		= eActionStateWatchGo;
 //				m_dwActionStartTime = Level().timeServer();

@@ -125,19 +125,5 @@ IC	const xr_vector<u32> &CStateManagerAbstract::sequence() const
 	return					(path());
 }
 
-TEMPLATE_SPECIALIZATION
-IC	CStateBase<_Object>	&CStateManagerAbstract::current_state	()
-{
-	VERIFY					(graph().vertex(current_vertex_id()));
-	return					(*graph().vertex(current_vertex_id())->data().m_state);
-}
-
-TEMPLATE_SPECIALIZATION
-IC	const CStateBase<_Object>	&CStateManagerAbstract::current_state	() const
-{
-	VERIFY					(graph().vertex(current_vertex_id()));
-	return					(*graph().vertex(current_vertex_id())->data().m_state);
-}
-
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateManagerAbstract

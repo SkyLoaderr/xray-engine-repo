@@ -63,7 +63,7 @@ void CAI_Stalker::vfSetParameters(
 	);
 	
 	if (!GetScriptControl())
-		CWeaponManager::update		(tWeaponState);
+		CObjectHandler::update		(tWeaponState);
 }
 
 bool CAI_Stalker::useful		(const CGameObject *object) const

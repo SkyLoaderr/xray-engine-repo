@@ -1089,6 +1089,36 @@
 						</File>
 					</Filter>
 					<Filter
+						Name="ObjectHandler"
+						Filter="">
+						<File
+							RelativePath=".\object_handler.cpp">
+						</File>
+						<File
+							RelativePath=".\object_handler.h">
+						</File>
+						<File
+							RelativePath=".\object_handler_inline.h">
+						</File>
+						<Filter
+							Name="ObjectStates"
+							Filter="">
+							<Filter
+								Name="ObjectStateBase"
+								Filter="">
+								<File
+									RelativePath=".\object_state_base.cpp">
+								</File>
+								<File
+									RelativePath=".\object_state_base.h">
+								</File>
+								<File
+									RelativePath=".\object_state_base_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+					</Filter>
+					<Filter
 						Name="MovementManager"
 						Filter="">
 						<File
@@ -1112,19 +1142,6 @@
 						</File>
 						<File
 							RelativePath=".\sight_manager_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="WeaponManager"
-						Filter="">
-						<File
-							RelativePath=".\weapon_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\weapon_manager.h">
-						</File>
-						<File
-							RelativePath=".\weapon_manager_inline.h">
 						</File>
 					</Filter>
 					<Filter

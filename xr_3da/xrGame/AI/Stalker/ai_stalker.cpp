@@ -39,7 +39,7 @@ void CAI_Stalker::reinit			()
 {
 	CCustomMonster::reinit			();
 	CInventoryOwner::reinit			();
-	CWeaponManager::reinit			();
+	CObjectHandler::reinit			();
 	CSightManager::reinit			();
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
@@ -61,7 +61,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 {
 	CCustomMonster::reload			(section);
 	CInventoryOwner::reload			(section);
-//	CWeaponManager::reload			(section);
+//	CObjectHandler::reload			(section);
 //	CSightManager::reload			(section);
 //	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);
@@ -87,7 +87,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	
 	CCustomMonster::Load			(section);
 	CInventoryOwner::Load			(section);
-	CWeaponManager::Load			(section);
+	CObjectHandler::Load			(section);
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
 	CStateManagerStalker::Load		(section);

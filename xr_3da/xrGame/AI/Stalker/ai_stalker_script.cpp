@@ -175,7 +175,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			l_tObjectAction.m_bCompleted = true;
 			break;
 		}
-		case eObjectActionPrimaryFire : {
+		case eObjectActionFire1 : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			if (m_inventory.ActiveItem()) {
@@ -196,7 +196,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			}
 			break;
 		}
-		case eObjectActionSecondaryFire : {
+		case eObjectActionFire2 : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			if (m_inventory.ActiveItem()) {
@@ -217,7 +217,8 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			}
 			break;
 		}
-		case eObjectActionReload : {
+		case eObjectActionReload2 :
+		case eObjectActionReload1 : {
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			if (m_inventory.ActiveItem()) {

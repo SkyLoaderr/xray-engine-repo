@@ -25,9 +25,9 @@ CStateManagerStalker::~CStateManagerStalker	()
 
 void CStateManagerStalker::Init				()
 {
-	add						(xr_new<CStateManagerDeath>(),	eStalkerStateDeath,		0);
-	add						(xr_new<CStateManagerNoALife>(),eStalkerStateNoALife,	3);
-	graph().add_edge		(eStalkerStateNoALife,eStalkerStateDeath,1);
+	add_state				(xr_new<CStateManagerDeath>(),	eStalkerStateDeath,		0);
+	add_state				(xr_new<CStateManagerNoALife>(),eStalkerStateNoALife,	3);
+	add_transition			(eStalkerStateNoALife,eStalkerStateDeath,1);
 //	add						(xr_new<CStateManagerALife>(),	eStalkerStateALife,		2);
 //	add						(xr_new<CStateManagerCombat>(),	eStalkerStateCombat,	1);
 }
@@ -55,9 +55,9 @@ void CStateManagerStalker::initialize		()
 void CStateManagerStalker::execute			()
 {
 	if (m_object->g_Alive())
-		set_dest_vertex_id	(eStalkerStateNoALife);
+		set_dest_state		(eStalkerStateNoALife);
 	else
-		set_dest_vertex_id	(eStalkerStateDeath);
+		set_dest_state		(eStalkerStateDeath);
 	inherited::execute		();
 }
 

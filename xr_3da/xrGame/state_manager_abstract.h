@@ -43,8 +43,13 @@ public:
 private:
 
 protected:
-	virtual	void		add						(T *state, u32 state_id, u32 priority);
+	virtual	void		add_state				(T *state, u32 state_id, u32 priority);
+	IC		void		add_transition			(u32 state_id0, u32 state_id1, float weight);
+	IC		void		add_transition			(u32 state_id0, u32 state_id1, float weight0, float weight1);
 	virtual	void		remove					(u32 state_id);
+	IC		T			&current_state			();
+	IC		T			&dest_state				();
+	IC		void		set_dest_state			(const u32 dest_state_id);
 
 public:
 						CStateManagerAbstract	();
@@ -55,6 +60,10 @@ public:
 	virtual	void		reload					(LPCSTR section);
 	virtual	void		update					(u32 time_delta);
 	IC		T			&state					(const u32 state_id);
+	IC		const u32	&current_state_id		() const;
+	IC		const u32	&dest_state_id			() const;
+	IC		const T		&current_state			() const;
+	IC		const T		&dest_state				() const;
 };
 
 #include "state_manager_abstract_inline.h"

@@ -522,14 +522,23 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.enum_("state")
 			[
 				value("idle",					int(MonsterSpace::eObjectActionIdle)),
-				value("fire1",					int(MonsterSpace::eObjectActionPrimaryFire)),
-				value("fire2",					int(MonsterSpace::eObjectActionSecondaryFire)),
-				value("reload",					int(MonsterSpace::eObjectActionReload)),
+				value("show",					int(MonsterSpace::eObjectActionShow)),		
+				value("hide",					int(MonsterSpace::eObjectActionHide)),		
+				value("take",					int(MonsterSpace::eObjectActionTake)),		
+				value("drop",					int(MonsterSpace::eObjectActionDrop)),		
+				value("strap",					int(MonsterSpace::eObjectActionStrap)),		
+				value("aim1",					int(MonsterSpace::eObjectActionAim1)),		
+				value("aim2",					int(MonsterSpace::eObjectActionAim2)),		
+				value("reload",					int(MonsterSpace::eObjectActionReload1)),	
+				value("reload1",				int(MonsterSpace::eObjectActionReload1)),	
+				value("reload2",				int(MonsterSpace::eObjectActionReload2)),	
+				value("fire1",					int(MonsterSpace::eObjectActionFire1)),		
+				value("fire2",					int(MonsterSpace::eObjectActionFire2)),		
+				value("switch1",				int(MonsterSpace::eObjectActionSwitch1)),	
+				value("switch2",				int(MonsterSpace::eObjectActionSwitch2)),	
 				value("activate",				int(MonsterSpace::eObjectActionActivate)),
 				value("deactivate",				int(MonsterSpace::eObjectActionDeactivate)),
 				value("use",					int(MonsterSpace::eObjectActionUse)),
-				value("take",					int(MonsterSpace::eObjectActionTake)),
-				value("drop",					int(MonsterSpace::eObjectActionDrop)),
 				value("dummy",					int(MonsterSpace::eObjectActionDummy))
 			]
 			.def(								constructor<>())

@@ -66,14 +66,22 @@ namespace MonsterSpace {
 
 	enum EObjectAction {
 		eObjectActionIdle = u32(0),
-		eObjectActionPrimaryFire,
-		eObjectActionSecondaryFire,
-		eObjectActionReload,
+		eObjectActionShow,		
+		eObjectActionHide,		
+		eObjectActionTake,		
+		eObjectActionDrop,		
+		eObjectActionStrap,		
+		eObjectActionAim1,		
+		eObjectActionAim2,		
+		eObjectActionReload1,	
+		eObjectActionReload2,	
+		eObjectActionFire1,		
+		eObjectActionFire2,		
+		eObjectActionSwitch1,	
+		eObjectActionSwitch2,	
 		eObjectActionActivate,
 		eObjectActionDeactivate,
 		eObjectActionUse,
-		eObjectActionTake,
-		eObjectActionDrop,
 		eObjectActionDummy = u32(-1)
 	};
 

@@ -21,7 +21,7 @@ CStateManagerNoALife::~CStateManagerNoALife	()
 
 void CStateManagerNoALife::Init				()
 {
-	add						(xr_new<CStateFreeNoAlife>(),	eNoALifeStateFree,		10);
+	add_state				(xr_new<CStateFreeNoAlife>(),	eNoALifeStateFree,		10);
 }
 
 void CStateManagerNoALife::Load				(LPCSTR section)
@@ -46,7 +46,7 @@ void CStateManagerNoALife::initialize		()
 
 void CStateManagerNoALife::execute			()
 {
-	set_dest_vertex_id		(eNoALifeStateFree);
+	set_dest_state			(eNoALifeStateFree);
 	inherited::execute		();
 }
 

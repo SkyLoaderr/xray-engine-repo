@@ -82,6 +82,13 @@ IC	void CAbstractGraph::add_edge			(const _vertex_id_type vertex_id0, const _ver
 }
 
 TEMPLATE_SPECIALIZATION
+IC	void CAbstractGraph::add_edge			(const _vertex_id_type vertex_id0, const _vertex_id_type vertex_id1, const _edge_weight_type edge_weight0, const _edge_weight_type edge_weight1)
+{
+	add_edge			(vertex_id0,vertex_id1,edge_weight0);
+	add_edge			(vertex_id1,vertex_id0,edge_weight1);
+}
+
+TEMPLATE_SPECIALIZATION
 IC	void CAbstractGraph::remove_edge		(const _vertex_id_type vertex_id0, const _vertex_id_type vertex_id1)
 {
 	VERIFY				(m_edge_count);
