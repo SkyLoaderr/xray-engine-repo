@@ -259,6 +259,10 @@ function NPC:__init(script_name, npc, wpn)
 	self.last_action = self.action_none
 
 	self.dlg_fsm = nil
+
+	-- Ё“» ѕ≈–≈ћ≈ЌЌџ≈ »—ѕќЋ№«”ё“—я ƒЋя Ќј—“–ќ… » ѕќ¬≈ƒ≈Ќ»я, »’ ћќ∆Ќќ ”—“јЌј¬Ћ»¬ј“№ »«¬Ќ≈:
+	self.default_anim = anim.danger
+	self.look_at_target_when_talking = true
 end
 
 function NPC:look(whom)
@@ -368,7 +372,7 @@ function NPC:is_shooting()
 	return self.last_action == self.action_shooting and self.npc:get_script() and self.npc:action()
 end
 
-function NPC:talk(to_whom, snd, bone)
+function NPC:talk(to_whom, snd, animat, bone)
 	debug_log(self.script_name, 'NPC:talk snd=\"%s\"', if_then_else(snd ~= nil, snd, "<nil>"))
 	-- ¬сегда отключать looking при начале talking
 	if self:is_looking() then
@@ -379,24 +383,34 @@ function NPC:talk(to_whom, snd, bone)
 		self.npc:script(true, self.script_name)
 	end
 
+	local use_anim = self.default_anim
+	if animat == nil then
+		debug_log(self.script_name, 'NPC:talk: USING DEFAULT ANIMATION')
+	else
+		debug_log(self.script_name, 'NPC:talk: USING ANIMATION: ' .. animat)
+		use_anim = animat
+	end
+
+	local act = entity_action()
+	if self.look_at_target_when_talking then
+		act:set_action( look(look.fire_point, to_whom) )
+	end
+	act:set_action( anim(use_anim) )
+	act:set_action( move(move.standing, move.stand, move.line, to_whom) )
 	if snd ~= nil then
-		action(self.npc,
-		       look(look.fire_point, to_whom),
-		       anim(anim.danger),
-		       sound(snd, if_then_else(bone ~= nil, bone, "bip01_head"), vector():set(0,0,0), vector():set(0,0,0), false),
-		       move(move.standing, move.stand, move.line, to_whom),
-		       cond(cond.sound_end)
-		       --cond  (cond.time_end, 5000)
+		act:set_action( sound(snd, if_then_else(bone ~= nil, bone, "bip01_head"),
+			vector():set(0,0,0), vector():set(0,0,0), false) )
+		act:set_action( cond(cond.sound_end -- FIXME: прив€зываемс€ только к длине звука, а не к длине звука+анимации!
+			       -- + cond.anim_end  -- не работает! :-(
+			       )
+			       -- cond  (cond.time_end, 5000)
 		)
 	else
+		act:set_action( cond(cond.time_end, time_infinite) )
 		printf("NPC:talk:snd is nil!")
-		action(self.npc,
-		       look(look.fire_point, to_whom),
-		       anim(anim.danger),
-		       move(move.standing, move.stand, move.line, to_whom),
-		       cond(cond.time_end, time_infinite)
-		)
 	end
+	self.npc:command(act, false)
+
 	self.last_action = self.action_talking
 end
 
@@ -412,20 +426,27 @@ function NPC:talk_dialogue(to_whom)
 	printf("NPC:talk_dialogue")
 	if self.dlg_fsm ~= nil then
 		printf("NPC:talk_dialogue:self.dlg_fsm ~= nil")
-		local snd, len, delay = self.dlg_fsm:next_phrase()
+		local snd, animat, len, delay = self.dlg_fsm:next_phrase()
+		if animat == nil then
+			printf("NPC:talk_dialogue:animat returned by next_phrase() is nil")
+		else
+			printf("NPC:talk_dialogue:animat returned by next_phrase() is --- " .. animat)
+		end
 		if snd ~= nil then
-			self:talk(to_whom, snd, nil)
+			self:talk(to_whom, snd, animat, nil)
 		else
 			printf("NPC:talk_dialogue:snd is nil (POSSIBLY WRONG STATE???), starting the infinite pause")
 			delay = time_infinite
 		end
 		-- —делать паузу перед следующей фразой:
-		action(self.npc,
-		       look(look.fire_point, to_whom),
-		       anim(anim.danger),
-		       move(move.standing, move.stand, move.line, to_whom),
-		       cond(cond.time_end, delay)
-		)
+		local act = entity_action()
+		if self.look_at_target_when_talking then
+			act:set_action( look(look.fire_point, to_whom) )
+		end
+		act:set_action( anim(self.default_anim) )
+		act:set_action( move(move.standing, move.stand, move.line, to_whom) )
+		act:set_action( cond(cond.time_end, delay) )
+		self.npc:command(act, false)
 		printf("_bp: talk_dialogue: delay=%d", delay)
 	end
 end
@@ -446,7 +467,7 @@ function DialogueFSM:__init ()
 	self.last_pos_chosen = -1
 end
 
-function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd)
+function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd, animat)
 	printf("DialogueFSM:set: snd=\"%s\"", if_then_else(snd, snd, "<nil>"))
 	local snd_obj = sound_object(snd)
 	if snd_obj ~= nil then
@@ -454,7 +475,16 @@ function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd)
 	end
 	local len = snd_obj:length() -- длительность звука
 	printf("DialogueFSM:set: snd=\"%s\" len=\"%d\"", snd, if_then_else(len, len, 0)) -- nil crashes %d
-	table.insert(self.trans_tbl, {repeatable=repeatable, from=from, to=to, snd=snd, len=len, delay_after_snd=delay_after_snd})
+	--[[ Ёто делаетс€ не здесь! Ёто делает сам монстр, который произносит фразу.
+	local use_anim = anim.danger
+	if animat == nil then
+		printf("DialogueFSM:set: animat is nil, setting to anim.danger")
+	else
+		printf("DialogueFSM:set: animat is --- " .. animat)
+		use_anim = animat
+	end
+	--]]
+	table.insert(self.trans_tbl, {repeatable=repeatable, from=from, to=to, snd=snd, animat=animat, len=len, delay_after_snd=delay_after_snd})
 end
 
 function DialogueFSM:clear()
@@ -513,7 +543,7 @@ function DialogueFSM:next_phrase()
 				delay_num_members)
 		end
 	end
-	return self.trans_tbl[pos_chosen].snd, self.trans_tbl[pos_chosen].len, delay
+	return self.trans_tbl[pos_chosen].snd, self.trans_tbl[pos_chosen].animat, self.trans_tbl[pos_chosen].len, delay
 end
 
 ----------------------------------------------------------------------------------------------------

@@ -46,36 +46,151 @@ function main ()
 
 	-- 1) Подойди 2) Подойди ближе 3) Кашляет 4) Да подойди же ближе! 5) Ты должен выслушать меня 6) Стонет и кашляет
 	dlg_podoidi = classes.DialogueFSM()
-	dlg_podoidi:set(false, 0, 1, snd_podoidi, {15000})
-	dlg_podoidi:set(false, 1, 2, snd_podoidi_blige, {5000})
-	dlg_podoidi:set(false, 2, 3, snd_kashel_long, {3000})
-	dlg_podoidi:set(false, 3, 4, snd_da_podoidige_blige, {4000})
-	dlg_podoidi:set(false, 4, 5, snd_ti_dolgen_menya_vislyshat, {5000})
-	dlg_podoidi:set(false, 5, 5, snd_blood_kashel, {3000, 15000})
-	dlg_podoidi:set(false, 5, 5, snd_kashel, {3000, 15000})
-	dlg_podoidi:set(false, 5, 5, snd_kashel1, {3000, 15000})
-	dlg_podoidi:set(false, 5, 5, snd_kashel2, {3000, 15000})
-	dlg_podoidi:set(false, 5, 5, snd_kashel3, {3000, 15000})
-	dlg_podoidi:set(false, 5, 5, snd_kashel4, {3000, 15000})
-	dlg_podoidi:set(false, 5, 5, snd_kashel5, {3000, 15000})
-	dlg_podoidi:set(false, 5, 5, snd_kashel_long, {3000, 15000})
-	dlg_podoidi:set(false, 5, 5, snd_long_kashel, {3000, 15000})
+	dlg_podoidi:set(false, 0, 1, snd_podoidi, {3000}, "govor_1")
+	dlg_podoidi:set(false, 1, 2, snd_podoidi_blige, {2000}, "zavet")
+	dlg_podoidi:set(false, 2, 3, snd_kashel_long, {2000}, "kashel_1")
+	dlg_podoidi:set(false, 3, 4, snd_da_podoidige_blige, {3000}, "govor_2")
+	dlg_podoidi:set(false, 4, 5, snd_ti_dolgen_menya_vislyshat, {3000}, "govor_4")
+	dlg_podoidi:set(false, 5, 5, snd_blood_kashel, {3000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_kashel, {3000, 5000}, "kashel_2")
+	dlg_podoidi:set(false, 5, 5, snd_kashel1, {3000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_kashel2, {3000, 5000}, "kashel_2")
+	dlg_podoidi:set(false, 5, 5, snd_kashel3, {3000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_kashel4, {3000, 5000}, "kashel_2")
+	dlg_podoidi:set(false, 5, 5, snd_kashel5, {3000, 5000}, "kashel_1")
+	dlg_podoidi:set(false, 5, 5, snd_kashel_long, {3000, 5000}, "kashel_2")
+	dlg_podoidi:set(false, 5, 5, snd_long_kashel, {3000, 5000}, "kashel_1")
+
+	dlg_postoi = classes.DialogueFSM()
+	dlg_postoi:set(false, 0, 1, snd_postoi, {0}, "govor_3")
+	dlg_postoi:set(false, 0, 1, snd_ostanovis, {0}, "govor_3")
+
+	dlg_5metrov = classes.DialogueFSM()
+	dlg_5metrov:set(false, 0, 1, snd_ti_dolgen_dobit_psa, {0}, "govor_1")
+	dlg_5metrov:set(false, 1, 2, snd_zabirai_patroni_i_yhodi, {0}, "govor_2")
 
 ----------------------------------------------------------------------------------------------------
 
-	local c_stalker_wounded = classes.NPC(get_level_object("m_stalker_wounded"))
+	local c_stalker_wounded = classes.NPC(zmey_gameplay_1.script_name(), get_level_object("m_stalker_wounded"))
+	c_stalker_wounded.default_anim = "idle_raneniy" -- анимация при ничего-не-деланьи
+	c_stalker_wounded.look_at_target_when_talking = false -- не крутить головой в сторону жертвы при разговоре!
+
+	local c_actor = classes.NPC(zmey_gameplay_1.script_name(), get_actor())
 
 	c_stalker_wounded.npc:script(true, zmey_gameplay_1.script_name())
 
-	action(c_stalker_wounded.npc,
-	       cond(cond.time_end, time_infinite)
-	)
+	action(c_stalker_wounded.npc, anim("idle_raneniy"), cond(cond.time_end, time_infinite))
 	
-	while true do
+	local state_none = 0
+	local state_5metrov = 1
+	local state_postoi = 2
+	local state_podoidi = 3
+	local cur_state = state_none
+	
+	local in_zone = false
+	local was_near_stalker = false
+	
+	local dist_near_stalker = 3
+	local dist_podoidi = 8
+	local dist_postoi = 15
+	
+	while c_stalker_wounded.npc:alive() do
+		local dist = distance_between(c_stalker_wounded.npc, c_actor.npc)
+		
+		if was_near_stalker and dist > dist_near_stalker then
+			break
+		end
+
+		if dist <= dist_near_stalker then
+			if cur_state ~= state_5metrov then
+				debug_log(zmey_gameplay_1.script_name(), "_bp: STATE=state_5metrov")
+				cur_state = state_5metrov
+				interrupt_action(c_stalker_wounded.npc, zmey_gameplay_1.script_name())
+				dlg_5metrov:reset()
+				c_stalker_wounded:set_dialogue(dlg_5metrov)
+				was_near_stalker = true
+			end
+		elseif distance_between(c_stalker_wounded.npc, c_actor.npc) <= dist_podoidi then 
+			in_zone = true -- кричать "постой!" если будет уходить
+			if cur_state ~= state_podoidi then
+				debug_log(zmey_gameplay_1.script_name(), "_bp: STATE=state_podoidi")
+				cur_state = state_podoidi
+				interrupt_action(c_stalker_wounded.npc, zmey_gameplay_1.script_name())
+				dlg_podoidi:reset()
+				c_stalker_wounded:set_dialogue(dlg_podoidi)
+			end
+		elseif in_zone and distance_between(c_stalker_wounded.npc, c_actor.npc) <= dist_postoi then
+			if cur_state ~= state_postoi then
+				debug_log(zmey_gameplay_1.script_name(), "_bp: STATE=state_postoi")
+				cur_state = state_postoi
+				interrupt_action(c_stalker_wounded.npc, zmey_gameplay_1.script_name())
+				dlg_postoi:reset()
+				c_stalker_wounded:set_dialogue(dlg_postoi)
+			end
+		else
+			--c_stalker_wounded.npc.health = 0
+			break
+		end
+
+		if not c_stalker_wounded:is_talking() and not c_stalker_wounded:is_shooting() then
+			c_stalker_wounded:talk_dialogue(c_actor.npc)
+		end
+
 		wait()
 	end
 
-	--c_stalker_wounded.npc:script(false, zmey_gameplay_1.script_name())
+	if c_stalker_wounded.npc:action() then
+		c_stalker_wounded.npc:script(false, zmey_gameplay_1.script_name())
+		c_stalker_wounded.npc:script(true, zmey_gameplay_1.script_name())
+	end
+	
+	-- фразу отыграем через sound object:
+	local psa_dobei = sound_object(snd_psa_dobei)
+
+	if c_stalker_wounded.npc:alive() then
+		action_first(c_stalker_wounded.npc, anim("smert"), cond(cond.anim_end, time_infinite))
+		-- Если жив, можно уже начинать играть фразу:
+		psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position(), 0);
+		-- Если мертв, то попозже (чтобы не заглушилось предсмертным криком)
+	end
+
+	
+	debug_log(zmey_gameplay_1.script_name(), "_bp: Waiting for death animation to finish")
+	while c_stalker_wounded.npc:action() do
+		wait()
+	end
+	debug_log(zmey_gameplay_1.script_name(), "_bp: Death animation has finished")
+
+	if c_stalker_wounded.npc:alive() then
+		action_first(c_stalker_wounded.npc, anim("smert_end"), cond(cond.anim_end, time_infinite))
+	end
+	debug_log(zmey_gameplay_1.script_name(), "_bp: Waiting for final death animation to finish")
+	while c_stalker_wounded.npc:action() do
+		wait()
+	end
+	debug_log(zmey_gameplay_1.script_name(), "_bp: Final death animation has finished")
+
+	if c_stalker_wounded.npc:alive() then
+		local h = hit ()
+		h.power = 5
+		h.direction = vector ():set(0, 0, 1)
+		h:bone("bip01_head")
+		h.draftsman = get_actor()
+		h.impulse = 0
+		h.type  = hit.wound
+		c_stalker_wounded.npc:hit(h)
+	else
+		local play_to = game.time() + 2000 -- длительность звука
+		while game.time() < play_to do
+			wait()
+		end
+		-- Еще раз:
+		psa_dobei:play_at_pos(c_stalker_wounded.npc, c_stalker_wounded.npc:position(), 0);
+	end
+
+	while true do
+		wait()
+	end
 	
 	debug_log(zmey_gameplay_1.script_name(), "SCRIPT STOPPED: zmey_gameplay_1")
 end
