@@ -8,7 +8,6 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	Fcolor		L_clr				= L->color;
 	Device.mView.transform_tiny		(L_pos,L->sphere.P);
 
-	/*
 	// Xforms
 	Fmatrix mW;
 	mW.scale						(L_R,L_R,L_R);
@@ -114,7 +113,6 @@ void CRenderTarget::accum_point_shadow	(light* L)
 
 	RCache.set_Geometry				(g_accum_point);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
-	*/
 
 	//
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
