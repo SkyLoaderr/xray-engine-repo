@@ -203,7 +203,7 @@ void CAI_Space::Render()
 						{
 							CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
 							if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
-								CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
+								CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 								if (tpALifeHuman && tpALifeHuman->m_tpaVertices.size()) {
 									Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpaVertices[0]].tGlobalPoint;
 									t1.y += .6f;
@@ -419,6 +419,31 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 			if (dist < min_dist) {
 				min_dist = (short)dist;
 				selected = I;
+			}
+		}
+	}
+	if (selected == u32(-1)) {
+		min_dist	= 32767;
+		selected	= -1;
+		for (u32 I=0; I<m_header.count; I++) {
+			if (I == 35) {
+				I = I;
+			}
+			NodeCompressed& N = *m_nodes_ptr[I];
+			if (u_InsideNode(N,P)) {
+				Fvector	DUP, vNorm, v, v1, P0;
+				DUP.set(0,1,0);
+				pvDecompress(vNorm,N.plane);
+				Fplane PL; 
+				UnpackPosition(P0,N.p0);
+				PL.build(P0,vNorm);
+				v.set(pos.x,P0.y,pos.z);	
+				PL.intersectRayPoint(v,DUP,v1);
+				int dist = iFloor((v1.y - pos.y)*(v1.y - pos.y));
+				if (dist < min_dist) {
+					min_dist = (short)dist;
+					selected = I;
+				}
 			}
 		}
 	}

@@ -105,9 +105,9 @@ void CAI_ALife::vfCheckForDeletedEvents(CALifeHumanAbstract	*tpALifeHuman)
 	tpALifeHuman->m_tpEvents.erase(I,tpALifeHuman->m_tpEvents.end());
 }
 
-bool CAI_ALife::bfCheckForItems(xrSE_Human	*tpALifeHumanAbstract)
+bool CAI_ALife::bfCheckForItems(CALifeHumanAbstract	*tpALifeHumanAbstract)
 {
-	xrSE_Human *tpALifeHuman = dynamic_cast<xrSE_Human *>(tpALifeHumanAbstract);
+	CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>(tpALifeHumanAbstract);
 	if (tpALifeHuman)
 		return(bfProcessItems(*tpALifeHuman,tpALifeHuman->m_tGraphID,tpALifeHuman->m_fMaxItemMass,1.f));//tpALifeHuman->m_tTaskState == eTaskStateSearching ? .25f : .05f));
 	else {
@@ -123,9 +123,9 @@ bool CAI_ALife::bfCheckForItems(xrSE_Human	*tpALifeHumanAbstract)
 	}
 }
 
-bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability)
+bool CAI_ALife::bfProcessItems(CAbstractServerObject &tServerEntity, _GRAPH_ID tGraphID, float fMaxItemMass, float fProbability)
 {
-	CALifeTraderParams *tpALifeTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
+	CALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CALifeTraderAbstract*>(&tServerEntity);
 	VERIFY(tpALifeTraderParams);
 	//DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 	//DYNAMIC_OBJECT_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
@@ -180,7 +180,7 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 	return(bOk);
 }
 
-void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeTrader *tpTrader)
+void CAI_ALife::vfCommunicateWithTrader(CALifeHumanAbstract *tpALifeHuman, CALifeTrader *tpTrader)
 {
 //	// update items
 //	TASK_PAIR_IT T = m_tTaskRegistry.find(tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tTaskID);

@@ -61,7 +61,7 @@ public:
 	game_cl_GameState			game;
 	BOOL						game_configured;
 	NET_Queue_Event				game_events;
-	xr_deque<xrServerEntity*>	game_spawn_queue;
+	xr_deque<CAbstractServerObject*>	game_spawn_queue;
 
 	xrServer*					Server;
 
@@ -167,7 +167,7 @@ public:
 	void						ClientSend				();
 	
 	void						g_cl_Spawn				(LPCSTR name, u8 rp, u16 flags);		// only ask server
-	void						g_sv_Spawn				(xrServerEntity* E);					// server reply/command spawning
+	void						g_sv_Spawn				(CAbstractServerObject* E);					// server reply/command spawning
 	
 	// Save/Load/State
 	void						SLS_Load				(LPCSTR name);		// Game Load

@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "hudmanager.h"
 
-void xrServer::Perform_connect_spawn(xrServerEntity* E, xrClientData* CL, NET_Packet& P)
+void xrServer::Perform_connect_spawn(CAbstractServerObject* E, xrClientData* CL, NET_Packet& P)
 {
 	if (E->net_Processed)						return;
 	if (E->s_flags.is(M_SPAWN_OBJECT_PHANTOM))	return;
 
 	// Connectivity order
-	xrServerEntity* Parent = ID_to_entity	(E->ID_Parent);
+	CAbstractServerObject* Parent = ID_to_entity	(E->ID_Parent);
 	if (Parent)		Perform_connect_spawn	(Parent,CL,P);
 
 	// Process

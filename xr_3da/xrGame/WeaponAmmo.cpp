@@ -52,8 +52,8 @@ void CWeaponAmmo::Load(LPCSTR section) {
 
 BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
 	BOOL bResult = inherited::net_Spawn	(DC);
-	xrServerEntity					*e		= (xrServerEntity*)(DC);
-	xrSE_WeaponAmmo					*l_pW	= dynamic_cast<xrSE_WeaponAmmo*>(e);
+	CAbstractServerObject					*e		= (CAbstractServerObject*)(DC);
+	CALifeItemAmmo					*l_pW	= dynamic_cast<CALifeItemAmmo*>(e);
 	m_boxCurr = l_pW->a_elapsed;
 	R_ASSERT(m_boxCurr <= m_boxSize);
 

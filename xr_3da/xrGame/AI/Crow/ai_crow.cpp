@@ -282,10 +282,50 @@ void CAI_Crow::UpdateCL()
 // Core events
 void CAI_Crow::net_Export	(NET_Packet& P)					// export to server
 {
+	// export 
+	R_ASSERT			(Local());
+
+	u8					flags = 0;
+	P.w_float_q16		(fHealth,-1000,1000);
+
+	P.w_float			(0);
+	P.w_u32				(0);
+	P.w_u32				(0);
+
+	P.w_u32				(Level().timeServer());
+	P.w_u8				(flags);
+	
+	float				yaw, pitch, bank;
+	mRotate.getHPB		(yaw,pitch,bank);
+	P.w_angle8			(yaw);
+	P.w_angle8			(yaw);
+	P.w_angle8			(pitch);
 }
 //---------------------------------------------------------------------
 void CAI_Crow::net_Import	(NET_Packet& P)
 {
+	// import
+	R_ASSERT			(Remote());
+
+	u8					flags;
+	P.r_float_q16		(fHealth,-1000,1000);
+
+	float fDummy;
+	u32 dwDummy;
+	P.r_float			(fDummy);
+	P.r_u32				(dwDummy);
+	P.r_u32				(dwDummy);
+
+	P.r_u32				(dwDummy);
+	P.r_u8				(flags);
+	
+	float				yaw, pitch, bank = 0;
+	
+	P.r_angle8			(yaw);
+	P.r_angle8			(yaw);
+	P.r_angle8			(pitch);
+	
+	mRotate.setHPB		(yaw,pitch,bank);
 }
 //---------------------------------------------------------------------
 void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who, s16 element)

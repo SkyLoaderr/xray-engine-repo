@@ -38,7 +38,7 @@ xrClientData*	xrServer::ID_to_client		(DPNID ID)
 	return 0;
 }
 
-xrServerEntity*	xrServer::ID_to_entity		(u16 ID)
+CAbstractServerObject*	xrServer::ID_to_entity		(u16 ID)
 {
 #pragma todo("ID_to_entity - must be replaced to 'game->entity_from_eid()'")	
 	if (0xffff==ID)				return 0;
@@ -59,7 +59,7 @@ void		xrServer::client_Destroy	(IClient* C)
 {
 	// Delete assosiated entity
 	// xrClientData*	D = (xrClientData*)C;
-	// xrServerEntity* E = D->owner;
+	// CAbstractServerObject* E = D->owner;
 
 	xr_delete			(C);
 }
@@ -83,7 +83,7 @@ void xrServer::Update	()
 		q_respawn.erase		(q_respawn.begin());
 
 		// 
-		xrServerEntity* E	= ID_to_entity(R.phantom);
+		CAbstractServerObject* E	= ID_to_entity(R.phantom);
 		E->Spawn_Write		(Packet,FALSE);
 		u16					ID;
 		Packet.r_begin		(ID);	R_ASSERT(M_SPAWN==ID);
@@ -99,7 +99,7 @@ void xrServer::Update	()
 		if (!HasBandwidth(Client))	continue;
 
 		// Send relevant entities to client
-		// xrServerEntity*	Base	= Client->owner;
+		// CAbstractServerObject*	Base	= Client->owner;
 
 		Packet.w_begin	(M_UPDATE);
 
@@ -113,7 +113,7 @@ void xrServer::Update	()
 		xrS_entities::iterator	I=entities.begin(),E=entities.end();
 		for (; I!=E; I++)
 		{
-			xrServerEntity&	Test = *(I->second);
+			CAbstractServerObject&	Test = *(I->second);
 
 			if (0==Test.owner)							continue;	// Phantom(?)
 			if (!Test.net_Ready)						continue;
@@ -157,12 +157,12 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 }
 
 //--------------------------------------------------------------------
-xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
+CAbstractServerObject*	xrServer::entity_Create		(LPCSTR name)
 {
 	return F_entity_Create(name);
 }
 
-void			xrServer::entity_Destroy	(xrServerEntity* P)
+void			xrServer::entity_Destroy	(CAbstractServerObject* P)
 {
 	R_ASSERT			(P);
 	id_free.push_back	(P->ID);

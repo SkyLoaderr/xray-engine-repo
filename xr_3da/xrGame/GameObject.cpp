@@ -79,7 +79,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	setDestroy	(FALSE);	// @@@ WT
 
-	xrServerEntity*		E			= (xrServerEntity*)DC;
+	CAbstractServerObject*		E			= (CAbstractServerObject*)DC;
 	R_ASSERT						(E);
 
 	// Naming
@@ -113,11 +113,15 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		else
 			AI_NodeID			=	AI.q_LoadSearch(vPosition);
 		
-		if (!AI_NodeID)
+		if (!AI_NodeID || (AI_NodeID == u32(-1))) {
 			Msg("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
-
-		AI_Node				=	AI.Node		(AI_NodeID);
-		getAI().ref_add		(AI_NodeID);
+			AI_NodeID			= u32(-1);
+			AI_Node				= NULL;
+		}
+		else {
+			AI_Node				=	AI.Node		(AI_NodeID);
+			getAI().ref_add		(AI_NodeID);
+		}
 	}
 	else 
 	{

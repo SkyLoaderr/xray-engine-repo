@@ -53,11 +53,11 @@ u16					game_sv_GameState::get_id_2_eid				(u32 id)
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
 	if (0==C)			return 0xffff;
-	xrServerEntity*	E	= C->owner;
+	CAbstractServerObject*	E	= C->owner;
 	if (0==E)			return 0xffff;
 	return E->ID;
 }
-xrServerEntity*		game_sv_GameState::get_entity_from_eid		(u16 id)
+CAbstractServerObject*		game_sv_GameState::get_entity_from_eid		(u16 id)
 {
 	xrServer*		S	= Level().Server;
 	return				S->ID_to_entity(id);
@@ -81,7 +81,7 @@ xr_vector<u16>*		game_sv_GameState::get_children				(u32 id)
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
 	if (0==C)			return 0;
-	xrServerEntity* E	= C->owner;
+	CAbstractServerObject* E	= C->owner;
 	if (0==E)			return 0;
 	return	&(E->children);
 }
@@ -156,7 +156,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 		if (0==C)	strcpy(p_name,"Unknown");
 		else 
 		{
-			xrServerEntity* C_e		= C->owner;
+			CAbstractServerObject* C_e		= C->owner;
 			if (0==C_e)		strcpy(p_name,"Unknown");
 			else 
 			{
@@ -257,16 +257,16 @@ void game_sv_GameState::Create					(LPCSTR options)
 	}
 }
 
-void				game_sv_GameState::assign_RP				(xrServerEntity* E)
+void				game_sv_GameState::assign_RP				(CAbstractServerObject* E)
 {
 	VERIFY				(E);
 
 	u8					l_uc_team = u8(-1);
-	xrSE_Spectator		*tpSpectator = dynamic_cast<xrSE_Spectator*>(E);
+	CServerObjectSpectator		*tpSpectator = dynamic_cast<CServerObjectSpectator*>(E);
 	if (tpSpectator)
 		l_uc_team = tpSpectator->g_team();
 	else {
-		xrSE_Teamed		*tpTeamed = dynamic_cast<xrSE_Teamed*>(E);
+		CALifeMonsterAbstract	*tpTeamed = dynamic_cast<CALifeMonsterAbstract*>(E);
 		if (tpTeamed)
 			l_uc_team = tpTeamed->g_team();
 		else
@@ -278,9 +278,9 @@ void				game_sv_GameState::assign_RP				(xrServerEntity* E)
 	E->o_Angle.set		(r.A);
 }
 
-xrServerEntity*		game_sv_GameState::spawn_begin				(LPCSTR N)
+CAbstractServerObject*		game_sv_GameState::spawn_begin				(LPCSTR N)
 {
-	xrServerEntity*	A	= F_entity_Create(N);	R_ASSERT(A);	// create SE
+	CAbstractServerObject*	A	= F_entity_Create(N);	R_ASSERT(A);	// create SE
 	strcpy				(A->s_name,N);							// ltx-def
 	A->s_gameid			=	u8(type);							// game-type
 	A->s_RP				=	0xFE;								// use supplied
@@ -290,7 +290,7 @@ xrServerEntity*		game_sv_GameState::spawn_begin				(LPCSTR N)
 	A->RespawnTime		=	0;									// no-respawn
 	return A;
 }
-void				game_sv_GameState::spawn_end				(xrServerEntity* E, u32 id)
+void				game_sv_GameState::spawn_end				(CAbstractServerObject* E, u32 id)
 {
 	NET_Packet						P;
 	u16								skip_header;

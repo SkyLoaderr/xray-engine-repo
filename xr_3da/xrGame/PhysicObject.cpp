@@ -11,8 +11,8 @@ CPhysicObject::~CPhysicObject(void) {
 
 BOOL CPhysicObject::net_Spawn(LPVOID DC)
 {
-	xrServerEntity			*e	= (xrServerEntity*)(DC);
-	xrSE_PhysicObject		*po	= dynamic_cast<xrSE_PhysicObject*>(e);
+	CAbstractServerObject			*e	= (CAbstractServerObject*)(DC);
+	CALifeObjectPhysic		*po	= dynamic_cast<CALifeObjectPhysic*>(e);
 	R_ASSERT				(po);
 	cNameVisual_set			(po->get_visual());
 	inherited::net_Spawn	(DC);
@@ -705,4 +705,14 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 //	m_pPhysicsShell->SetAirResistance(0.0014f,
 //	1.5f);
 
+}
+
+void CPhysicObject::net_Export(NET_Packet& P)
+{
+	R_ASSERT						(Local());
+}
+
+void CPhysicObject::net_Import(NET_Packet& P)
+{
+	R_ASSERT						(Remote());
 }

@@ -229,8 +229,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		return						(FALSE);
 	Movement.SetPLastMaterial		(&m_dwLastMaterialID);
 
-	xrServerEntity					*e	= (xrServerEntity*)(DC);
-	xrSE_Human						*tpHuman = dynamic_cast<xrSE_Human*>(e);
+	CAbstractServerObject			*e	= (CAbstractServerObject*)(DC);
+	CALifeHumanAbstract						*tpHuman = dynamic_cast<CALifeHumanAbstract*>(e);
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->get_visual());
 	
@@ -310,6 +310,10 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_angle8						(N.o_torso.yaw);
 	P.w_angle8						(N.o_torso.pitch);
 	
+	P.w_float						(m_inventory.TotalWeight());
+	P.w_u32							(0);
+	P.w_u32							(0);
+
 	P.w								(&m_tNextGP,				sizeof(m_tNextGP));
 	P.w								(&m_tCurGP,					sizeof(m_tCurGP));
 	P.w								(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
@@ -328,7 +332,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w							(&f1,						sizeof(f1));
 	}
 	
-	P.w_float						(m_inventory.TotalWeight());
+	P.w_u32							(0);
 	P.w_u32							(0);
 	P.w_u32							(0);
 }
@@ -356,12 +360,16 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 		NET_WasInterpolating		= TRUE;
 	}
 
-	float fDummy;
-	u32 dwDummy;
-	P.r_float			(fDummy);
-	P.r_u32				(dwDummy);
-	P.r_u32				(dwDummy);
+	float							fDummy;
+	u32								dwDummy;
+	P.r_float						(fDummy);
+	P.r_u32							(dwDummy);
+	P.r_u32							(dwDummy);
 
+	P.r_u32							(dwDummy);
+	P.r_u32							(dwDummy);
+	P.r_u32							(dwDummy);
+	
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
 }

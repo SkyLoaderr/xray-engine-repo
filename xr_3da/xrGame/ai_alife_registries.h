@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ai_alife_server_objects.h"
+#include "xrServer_Objects_ALife_All.h"
 #include "ai_alife_predicates.h"
 #include "ai_alife_a_star.h"
 
@@ -68,7 +68,7 @@ public:
 			string64				s_name;
 			tNetPacket.r_string		(s_name);
 			// create entity
-			xrServerEntity			*tpServerEntity = F_entity_Create	(s_name);
+			CAbstractServerObject			*tpServerEntity = F_entity_Create	(s_name);
 			R_ASSERT2				(tpServerEntity,"Can't create entity.");
 			CALifeDynamicObject		*tpALifeDynamicObject = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
 			R_ASSERT2				(tpALifeDynamicObject,"Non-ALife object in the saved game!");
@@ -86,7 +86,7 @@ public:
 		}
 	};
 
-	IC bool bfCheckIfTaskCompleted(xrServerEntity &tServerEntity, CALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
+	IC bool bfCheckIfTaskCompleted(CAbstractServerObject &tServerEntity, CALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
 	{
 		if (tpALifeHumanAbstract->m_dwCurTask >= tpALifeHumanAbstract->m_tpTasks.size())
 			return(false);
@@ -112,12 +112,12 @@ public:
 		return(false);
 	};
 
-	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman, OBJECT_IT &I)
+	IC bool bfCheckIfTaskCompleted(CALifeHumanAbstract *tpALifeHuman, OBJECT_IT &I)
 	{
 		return(bfCheckIfTaskCompleted(*tpALifeHuman,tpALifeHuman,I));
 	};
 
-	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman)
+	IC bool bfCheckIfTaskCompleted(CALifeHumanAbstract *tpALifeHuman)
 	{
 		OBJECT_IT I;
 		return(bfCheckIfTaskCompleted(tpALifeHuman,I));
@@ -330,7 +330,7 @@ public:
 		vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 	};
 
-	IC void vfAttachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true)
+	IC void vfAttachItem(CAbstractServerObject &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true)
 	{
 		if (bAddChild) {
 //.			Msg("ALife : (OFFLINE) Attaching item %s to object %s",tpALifeItem->s_name_replace,tServerEntity.s_name_replace);
@@ -342,12 +342,12 @@ public:
 
 		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 		
-		CALifeTraderParams *tpALifeTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
+		CALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CALifeTraderAbstract*>(&tServerEntity);
 		VERIFY(tpALifeTraderParams);
 		tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
 	}
 
-	IC void vfDetachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild = true)
+	IC void vfDetachItem(CAbstractServerObject &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild = true)
 	{
 		if (bRemoveChild) {
 			xr_vector<u16>				&tChildren = tServerEntity.children;
@@ -359,7 +359,7 @@ public:
 
 		vfAddObjectToGraphPoint(tpALifeItem,tGraphID);
 		
-		CALifeTraderParams *tpTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
+		CALifeTraderAbstract *tpTraderParams = dynamic_cast<CALifeTraderAbstract*>(&tServerEntity);
 		VERIFY(tpTraderParams);
 		tpTraderParams->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 	}
@@ -435,7 +435,7 @@ public:
 			
 			string64				s_name;
 			tNetPacket.r_string		(s_name);
-			xrServerEntity			*E = F_entity_Create(s_name);
+			CAbstractServerObject			*E = F_entity_Create(s_name);
 
 			R_ASSERT2				(E,"Can't create entity.");
 			E->Spawn_Read			(tNetPacket);

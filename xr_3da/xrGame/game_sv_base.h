@@ -28,14 +28,14 @@ public:
 	virtual		u16					get_id_2_eid			(u32 id);
 	virtual		u32					get_it_2_id				(u32 it);
 	virtual		u32					get_count				();
-	virtual		xrServerEntity*		get_entity_from_eid		(u16 id);
+	virtual		CAbstractServerObject*		get_entity_from_eid		(u16 id);
 	
 	// Signals
 	virtual		void				switch_Phase			(u32 new_phase);
 	virtual		void				signal_Syncronize		();
-	virtual		void				assign_RP				(xrServerEntity* E);
-	virtual		xrServerEntity*		spawn_begin				(LPCSTR N);
-	virtual		void				spawn_end				(xrServerEntity* E, u32 id);
+	virtual		void				assign_RP				(CAbstractServerObject* E);
+	virtual		CAbstractServerObject*		spawn_begin				(LPCSTR N);
+	virtual		void				spawn_end				(CAbstractServerObject* E, u32 id);
 
 	// Utilities
 	virtual		s32					get_option_i			(LPCSTR lst, LPCSTR name, s32 def = 0);

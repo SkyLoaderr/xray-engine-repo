@@ -19,7 +19,7 @@ void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
 //.	Msg("ALife : Spawning object %s",tpALifeDynamicObject->s_name_replace);
 
-	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
+	CALifeTraderAbstract			*tpTraderParams = dynamic_cast<CALifeTraderAbstract*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
 		m_tpChildren				= tpALifeDynamicObject->children;
 		tpALifeDynamicObject->children.clear();
@@ -42,7 +42,7 @@ void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 {
 	//VERIFY(tpALifeDynamicObject->ID_Parent == 0xffff);
 	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
-	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
+	CALifeTraderAbstract			*tpTraderParams = dynamic_cast<CALifeTraderAbstract*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
 		m_tpChildren				= tpALifeDynamicObject->children;
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
@@ -74,7 +74,7 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 			if (tpALifeAbstractGroup->m_bCreateSpawnPositions) {
 				(*J).second->o_Position	= tpALifeDynamicObject->o_Position;
 				(*J).second->m_tNodeID	= tpALifeDynamicObject->m_tNodeID;
-				xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
+				CALifeMonsterAbstract	*tpEnemy = dynamic_cast<CALifeMonsterAbstract*>((*J).second);
 				if (tpEnemy)
 					tpEnemy->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
 			}
@@ -162,7 +162,7 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 					for (u32 i=0, N = (u32)tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
 						OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[i]);
 						VERIFY					(J != m_tObjectRegistry.end());
-						xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
+						CALifeMonsterAbstract	*tpEnemy = dynamic_cast<CALifeMonsterAbstract*>((*J).second);
 						if (tpEnemy)
 							if (tpEnemy->fHealth <= 0) {
 								(*J).second->m_bDirectControl	= true;

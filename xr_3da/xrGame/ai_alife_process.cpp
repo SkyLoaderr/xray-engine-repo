@@ -106,7 +106,7 @@ void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 {
 //	CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 //	if (tpALifeHumanAbstract) {
-//		CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
+//		CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 //		if (tpALifeHuman)
 //			vfUpdateHuman(tpALifeHuman);
 //		//else
@@ -114,7 +114,7 @@ void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 //	}
 //	else
 //		vfUpdateMonster(tpALifeMonsterAbstract);
-	xrSE_Human *tpHuman = dynamic_cast<xrSE_Human *>(tpALifeMonsterAbstract);
+	CALifeHumanAbstract *tpHuman = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 	if (tpHuman) {
 		vfUpdateHuman(tpHuman);
 		//else
@@ -131,7 +131,7 @@ void CAI_ALife::vfUpdateMonster(CALifeMonsterAbstract *tpALifeMonsterAbstract)
 	vfCheckForTheBattle		(tpALifeMonsterAbstract);
 }
 
-void CAI_ALife::vfUpdateHuman(xrSE_Human *tpALifeHuman)
+void CAI_ALife::vfUpdateHuman(CALifeHumanAbstract *tpALifeHuman)
 {
 //	switch (tpALifeHuman->m_tTaskState) {
 //		case eTaskStateNoTask : {

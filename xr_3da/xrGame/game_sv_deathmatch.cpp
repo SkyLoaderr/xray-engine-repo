@@ -24,8 +24,8 @@ void	game_sv_Deathmatch::OnRoundStart			()
 
 		// spawn
 		LPCSTR					options	=	get_name_it	(it);
-		xrServerEntity			*E		=	spawn_begin	("actor");													// create SE
-		xrSE_Actor				*A		=	dynamic_cast<xrSE_Actor*>(E);
+		CAbstractServerObject			*E		=	spawn_begin	("actor");													// create SE
+		CALifeCreatureActor				*A		=	dynamic_cast<CALifeCreatureActor*>(E);
 		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 		A->s_team				=	u8(0);																	// no-team
 		A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
@@ -85,14 +85,14 @@ void	game_sv_Deathmatch::Update					()
 BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 {
 	xrServer*			S		= Level().Server;
-	xrServerEntity*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
-	xrServerEntity*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
+	CAbstractServerObject*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
+	CAbstractServerObject*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
 
-	xrSE_Actor*			A		= dynamic_cast<xrSE_Actor*> (e_who);
+	CALifeCreatureActor*			A		= dynamic_cast<CALifeCreatureActor*> (e_who);
 	if (A)
 	{
 		// Actor touches something
-		xrSE_Weapon*	W			=	dynamic_cast<xrSE_Weapon*> (e_what);
+		CALifeItemWeapon*	W			=	dynamic_cast<CALifeItemWeapon*> (e_what);
 		if (W) 
 		{
 			// Weapon
@@ -100,9 +100,9 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			u8 slot						=	W->get_slot	();
 			for (u32 it=0; it<C.size(); it++)
 			{
-				xrServerEntity*		Et	= S->ID_to_entity				(C[it]);
+				CAbstractServerObject*		Et	= S->ID_to_entity				(C[it]);
 				if (0==Et)				continue;
-				xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
+				CALifeItemWeapon*		T	= dynamic_cast<CALifeItemWeapon*>	(Et);
 				if (0==T)				continue;
 				if (slot == T->get_slot())	
 				{
@@ -162,8 +162,8 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	LPCSTR	options			=	get_name_id	(id_who);
 
 	// Spawn "actor"
-	xrServerEntity			*E	=	spawn_begin	("actor");													// create SE
-	xrSE_Actor				*A	=	dynamic_cast<xrSE_Actor*>(E);
+	CAbstractServerObject			*E	=	spawn_begin	("actor");													// create SE
+	CALifeCreatureActor				*A	=	dynamic_cast<CALifeCreatureActor*>(E);
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_team				=	u8(0);																	// no-team
 	A->s_flags.set			(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags

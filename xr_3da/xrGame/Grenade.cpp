@@ -108,7 +108,7 @@ void CGrenade::net_Destroy() {
 void CGrenade::OnH_A_Chield() {
 	inherited::OnH_A_Chield();
 	if(!m_pFake && !dynamic_cast<CGrenade*>(H_Parent())) {
-		xrServerEntity*		D	= F_entity_Create(cNameSect());
+		CAbstractServerObject*		D	= F_entity_Create(cNameSect());
 		R_ASSERT			(D);
 		// Fill
 		strcpy				(D->s_name,cNameSect());

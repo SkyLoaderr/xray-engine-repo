@@ -124,18 +124,18 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
-	xrServerEntity			*e	= (xrServerEntity*)(DC);
-	xrSE_Teamed				*E	= dynamic_cast<xrSE_Teamed*>(e);
+	CAbstractServerObject	*e	= (CAbstractServerObject*)(DC);
+	CALifeCreatureAbstract	*E	= dynamic_cast<CALifeCreatureAbstract*>(e);
 	if (!E) {
 		// Car only!!!!
-		xrSE_Car			*C	= dynamic_cast<xrSE_Car*>(e);
-		R_ASSERT2			(C,"Invalid entity (no inheritance from xrSE_Teamed and xrSE_Car)!");
+		CALifeItemCar		*C	= dynamic_cast<CALifeItemCar*>(e);
+		R_ASSERT2			(C,"Invalid entity (no inheritance from xrSE_Teamed and CALifeItemCar)!");
 		id_Team				= id_Squad = id_Group = 0;
 	}
 	else {
-		id_Team					= E->g_team();
-		id_Squad				= E->g_squad();
-		id_Group				= E->g_group();
+		id_Team				= E->g_team();
+		id_Squad			= E->g_squad();
+		id_Group			= E->g_group();
 	}
 
 	// Register
@@ -152,7 +152,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);
 
-	return				TRUE;
+	return					TRUE;
 }
 
 void CEntity::net_Destroy	()

@@ -7,8 +7,8 @@ void	xrServer::Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 
 	// Parse message
 	u16					id_parent=ID,id_entity;
 	P.r_u16				(id_entity);
-	xrServerEntity*		e_parent	= game->get_entity_from_eid	(id_parent);
-	xrServerEntity*		e_entity	= game->get_entity_from_eid	(id_entity);
+	CAbstractServerObject*		e_parent	= game->get_entity_from_eid	(id_parent);
+	CAbstractServerObject*		e_entity	= game->get_entity_from_eid	(id_entity);
 	if (e_parent && e_entity) 
 	{
 		xrClientData*		c_parent	= e_parent->owner;

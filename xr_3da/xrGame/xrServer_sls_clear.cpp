@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void xrServer::Perform_destroy	(xrServerEntity* tpServerEntity, u32 mode)
+void xrServer::Perform_destroy	(CAbstractServerObject* tpServerEntity, u32 mode)
 {
 	NET_Packet			P;
 	P.w_begin			(M_EVENT);

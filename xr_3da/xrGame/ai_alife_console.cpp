@@ -298,7 +298,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 //			}
 //		}
 //	}
-//	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeDynamicObject);
+//	CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>(tpALifeDynamicObject);
 //	if (tpALifeHuman) {
 //		{
 //			TASK_IT				I = tpALifeHuman->m_tpTaskIDs.begin();
@@ -375,7 +375,7 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 		OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT E = m_tObjectRegistry.end();
 		for (int j=0; I != E; I++) {
-			CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>((*I).second);
+			CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>((*I).second);
 			if (!tpALifeHuman)
 				continue;
 			PERSONAL_EVENT_P_IT i = tpALifeHuman->m_tpEvents.begin();
@@ -435,7 +435,7 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 		OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT E = m_tObjectRegistry.end();
 		for (int j=0; I != E; I++) {
-			CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>((*I).second);
+			CALifeHumanAbstract *tpALifeHuman = dynamic_cast<CALifeHumanAbstract *>((*I).second);
 			if (!tpALifeHuman)
 				continue;
 			TASK_IT i = tpALifeHuman->m_tpTaskIDs.begin();

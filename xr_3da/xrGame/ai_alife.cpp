@@ -68,7 +68,7 @@ void CAI_ALife::vfNewGame()
 			}
 		}
 		
-		xrServerEntity			*tpServerEntity = F_entity_Create	((*I)->s_name);
+		CAbstractServerObject			*tpServerEntity = F_entity_Create	((*I)->s_name);
 		R_ASSERT2				(tpServerEntity,"Can't create entity.");
 		CALifeDynamicObject		*i = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
 		R_ASSERT2				(i,"Non-ALife object in the 'game.spawn'");
@@ -95,7 +95,7 @@ void CAI_ALife::vfNewGame()
 			for ( ; II != EE; II++) {
 				NET_Packet			tNetPacket;
 				LPCSTR				S = pSettings->r_string((*I)->s_name,"monster_section");
-				xrServerEntity		*tp1 = F_entity_Create	(S);
+				CAbstractServerObject		*tp1 = F_entity_Create	(S);
 				R_ASSERT2			(tp1,"Can't create entity.");
 				CALifeDynamicObject	*tp2 = dynamic_cast<CALifeDynamicObject*>(tp1);
 				R_ASSERT2			(tp2,"Non-ALife object in the 'game.spawn'");
@@ -252,7 +252,7 @@ void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
 	}
 }
 
-CALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
+CALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CALifeHumanAbstract *tpALifeHuman)
 {
 	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
 	CALifeTrader *	tpBestTrader = 0;
@@ -271,7 +271,7 @@ CALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
 	return			(tpBestTrader);
 }
 
-void CAI_ALife::vfRemoveObject(xrServerEntity *tpServerEntity)
+void CAI_ALife::vfRemoveObject(CAbstractServerObject *tpServerEntity)
 {
 	CALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpServerEntity->ID];
 	VERIFY						(tpALifeDynamicObject);

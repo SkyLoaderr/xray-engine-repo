@@ -718,7 +718,7 @@ extern "C" {
 
 		// Artifacts
 		case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
-		case CLSID_ARTIFACT:			P = xr_new<CArtifact>();			break;
+		case CLSID_ARTEFACT:			P = xr_new<CArtifact>();			break;
 
 		// Targets
 		case CLSID_TARGET_ASSAULT:		P = xr_new<CTargetAssault>();		break;

@@ -6,18 +6,18 @@
 #define AFX_XRSERVER_H__65728A25_16FC_4A7B_8CCE_D798CA5EC64E__INCLUDED_
 #pragma once
 
-#include "xrServer_Entities.h"
+#include "xrServer_Objects_ALife_All.h"
 #include "game_sv_base.h"
 
 const u32	NET_Latency		= 50;		// time in (ms)
 
 // t-defs
-typedef xr_map<u16,xrServerEntity*>	xrS_entities;
+typedef xr_map<u16,CAbstractServerObject*>	xrS_entities;
 
 class xrClientData	: public IClient
 {
 public:
-	xrServerEntity*			owner;
+	CAbstractServerObject*			owner;
 	BOOL					net_Ready;
 	u32						game_replicate_id;
 
@@ -50,21 +50,21 @@ public:
 	game_sv_GameState*			game;
 
 	void					Perform_game_export		();
-	BOOL					PerformRP				(xrServerEntity* E);
-	void					PerformMigration		(xrServerEntity* E, xrClientData* from, xrClientData* to);
+	BOOL					PerformRP				(CAbstractServerObject* E);
+	void					PerformMigration		(CAbstractServerObject* E, xrClientData* from, xrClientData* to);
 	u16						PerformIDgen			(u16 desired);
-	void					Perform_connect_spawn	(xrServerEntity* E, xrClientData* to, NET_Packet& P);
-	void					Perform_transfer		(xrServerEntity* what, xrServerEntity* from, xrServerEntity* to);
-	void					Perform_reject			(xrServerEntity* what, xrServerEntity* from);
-	void					Perform_destroy			(xrServerEntity* tpServerEntity, u32 mode);
+	void					Perform_connect_spawn	(CAbstractServerObject* E, xrClientData* to, NET_Packet& P);
+	void					Perform_transfer		(CAbstractServerObject* what, CAbstractServerObject* from, CAbstractServerObject* to);
+	void					Perform_reject			(CAbstractServerObject* what, CAbstractServerObject* from);
+	void					Perform_destroy			(CAbstractServerObject* tpServerEntity, u32 mode);
 
-	void					Process_spawn			(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent=FALSE, xrServerEntity* tpExistedEntity=0);
+	void					Process_spawn			(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent=FALSE, CAbstractServerObject* tpExistedEntity=0);
 	void					Process_update			(NET_Packet& P, DPNID sender);
 	void					Process_event			(NET_Packet& P, DPNID sender);
 	void					Process_event_ownership	(NET_Packet& P, DPNID sender, u32 time, u16 ID);
 	void					Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 ID);
 
-	xrClientData*			SelectBestClientToMigrateTo		(xrServerEntity* E, BOOL bForceAnother=FALSE);
+	xrClientData*			SelectBestClientToMigrateTo		(CAbstractServerObject* E, BOOL bForceAnother=FALSE);
 
 public:
 	// constr / destr
@@ -81,14 +81,14 @@ public:
 	virtual void			client_Destroy		(IClient* C);					// destroy client info
 
 	// utilities
-	xrServerEntity*			entity_Create		(LPCSTR name);
-	void					entity_Destroy		(xrServerEntity* P);
+	CAbstractServerObject*			entity_Create		(LPCSTR name);
+	void					entity_Destroy		(CAbstractServerObject* P);
 
 	IC void					clients_Lock		()			{	csPlayers.Enter();	}
 	IC void					clients_Unlock		()			{   csPlayers.Leave();	}
 
 	xrClientData*			ID_to_client		(DPNID ID);
-	xrServerEntity*			ID_to_entity		(u16 ID);
+	CAbstractServerObject*			ID_to_entity		(u16 ID);
 
 	// main
 	virtual BOOL			Connect				(LPCSTR		session_name);

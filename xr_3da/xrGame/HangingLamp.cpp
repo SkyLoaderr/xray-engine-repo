@@ -31,8 +31,8 @@ void CHangingLamp::Load		(LPCSTR section)
 
 BOOL CHangingLamp::net_Spawn(LPVOID DC)
 {
-	xrServerEntity			*e	= (xrServerEntity*)(DC);
-	xrSE_HangingLamp		*lamp	= dynamic_cast<xrSE_HangingLamp*>(e);
+	CAbstractServerObject	*e	= (CAbstractServerObject*)(DC);
+	CALifeObjectHangingLamp	*lamp	= dynamic_cast<CALifeObjectHangingLamp*>(e);
 	R_ASSERT				(lamp);
 	cNameVisual_set			(lamp->get_visual());
 	inherited::net_Spawn	(DC);
@@ -54,7 +54,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	PKinematics(pVisual)->Calculate();
 	lanim					= LALib.FindItem(lamp->color_animator);
 
-	if (lamp->flags.is(xrSE_HangingLamp::flPhysic))		CreateBody(lamp->mass);
+	if (lamp->flags.is(CALifeObjectHangingLamp::flPhysic))		CreateBody(lamp->mass);
 
 	setVisible(true);
 	setEnabled(true);
@@ -169,4 +169,14 @@ void CHangingLamp::CreateBody(float mass)
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
 	m_pPhysicsShell->setMass(mass);
 	m_pPhysicsShell->SmoothElementsInertia(0.2f);
+}
+
+void CHangingLamp::net_Export(NET_Packet& P)
+{
+	R_ASSERT						(Local());
+}
+
+void CHangingLamp::net_Import(NET_Packet& P)
+{
+	R_ASSERT						(Remote());
 }

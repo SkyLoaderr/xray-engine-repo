@@ -34,8 +34,8 @@ void CTorch::Switch()
 
 BOOL CTorch::net_Spawn(LPVOID DC) 
 {
-	xrServerEntity			*e	= (xrServerEntity*)(DC);
-	xrSE_DeviceTorch		*torch	= dynamic_cast<xrSE_DeviceTorch*>(e);
+	CAbstractServerObject			*e	= (CAbstractServerObject*)(DC);
+	CALifeItemTorch		*torch	= dynamic_cast<CALifeItemTorch*>(e);
 	R_ASSERT				(torch);
 	cNameVisual_set			(torch->get_visual());
 	inherited::net_Spawn	(DC);

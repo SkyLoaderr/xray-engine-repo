@@ -233,23 +233,22 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	// export 
 	R_ASSERT			(Local());
-	//VERIFY				(Weapons);
 
-	u8					flags=0;
-	//CGameObject::net_Export(P);
+	u8					flags = 0;
 	P.w_float_q16		(fHealth,-1000,1000);
+
+	P.w_u32				(Level().timeServer());
+	P.w_u8				(flags);
+	P.w_vec3			(vPosition);
+	P.w_angle8			(r_model_yaw);
+	P.w_angle8			(r_torso.yaw);
+	P.w_angle8			(r_torso.pitch);
 
 	P.w_float			(m_inventory.TotalWeight());
 	P.w_u32				(0);
 	P.w_u32				(0);
 
-	P.w_u32				(Level().timeServer());
-	P.w_u8				(flags);
-	P.w_vec3			(vPosition);
 	P.w_u16				(u16(mstate_real));
-	P.w_angle8			(r_model_yaw);
-	P.w_angle8			(r_torso.yaw);
-	P.w_angle8			(r_torso.pitch);
 	P.w_sdir			(NET_SavedAccel);
 	P.w_sdir			(ph_Movement.GetVelocity());
 	P.w_float_q16		(fArmor,-1000,1000);
@@ -262,28 +261,30 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 void CActor::net_Import		(NET_Packet& P)					// import from server
 {
 	// import
-	R_ASSERT				(Remote());
+	R_ASSERT			(Remote());
 
 	net_update			N;
 
-	u8	flags;
-	u16	tmp;
-	//CGameObject::net_Import(P);
+	u8					flags;
+	u16					tmp;
+	
 	P.r_float_q16		(fHealth,-1000,1000);
 
-	float fDummy;
-	u32 dwDummy;
+	float				fDummy;
+	u32					dwDummy;
+	
+	P.r_u32				(N.dwTimeStamp	);
+	P.r_u8				(flags			);
+	P.r_vec3			(N.p_pos		);
+	P.r_angle8			(N.o_model		);
+	P.r_angle8			(N.o_torso.yaw	);
+	P.r_angle8			(N.o_torso.pitch);
+
 	P.r_float			(fDummy);
 	P.r_u32				(dwDummy);
 	P.r_u32				(dwDummy);
 
-	P.r_u32				(N.dwTimeStamp	);
-	P.r_u8				(flags			);
-	P.r_vec3			(N.p_pos		);
 	P.r_u16				(tmp			); N.mstate = u32(tmp);
-	P.r_angle8			(N.o_model		);
-	P.r_angle8			(N.o_torso.yaw	);
-	P.r_angle8			(N.o_torso.pitch);
 	P.r_sdir			(N.p_accel		);
 	P.r_sdir			(N.p_velocity	);
 	P.r_float_q16		(fArmor,-1000,1000);
@@ -312,8 +313,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	ph_Movement.SetPosition	(vPosition);
 	ph_Movement.SetVelocity	(0,0,0);
 
-	xrServerEntity			*e	= (xrServerEntity*)(DC);
-	xrSE_Actor				*E	= dynamic_cast<xrSE_Actor*>(e);
+	CAbstractServerObject			*e	= (CAbstractServerObject*)(DC);
+	CALifeCreatureActor				*E	= dynamic_cast<CALifeCreatureActor*>(e);
 
 	// Dima : 24.02.2003
 	cNameVisual_set			(E->get_visual());
@@ -352,9 +353,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 // @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
 	if(Local()) for(u32 i = 0; i < 1; i++) {
 		// Create
-		//xrServerEntity*		D	= F_entity_Create("detector_simple");
-		//xrServerEntity*		D	= F_entity_Create("grenade_f1");
-		xrServerEntity*		D	= F_entity_Create("bolt");
+		//CAbstractServerObject*		D	= F_entity_Create("detector_simple");
+		//CAbstractServerObject*		D	= F_entity_Create("grenade_f1");
+		CAbstractServerObject*		D	= F_entity_Create("bolt");
 		R_ASSERT			(D);
 		// Fill
 		strcpy				(D->s_name,"bolt");

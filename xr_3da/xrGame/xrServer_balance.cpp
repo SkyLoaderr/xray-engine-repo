@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-xrClientData* xrServer::SelectBestClientToMigrateTo	(xrServerEntity* E, BOOL bForceAnother)
+xrClientData* xrServer::SelectBestClientToMigrateTo	(CAbstractServerObject* E, BOOL bForceAnother)
 {
 	if (bForceAnother)
 	{

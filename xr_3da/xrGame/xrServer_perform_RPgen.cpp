@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-BOOL xrServer::PerformRP	(xrServerEntity* EEE)
+BOOL xrServer::PerformRP	(CAbstractServerObject* EEE)
 {
 	/*
 	// Get LIST of respawn points

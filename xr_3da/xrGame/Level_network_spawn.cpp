@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "gameobject.h"
-#include "xrServer_entities.h"
+#include "xrServer_Objects_ALife_All.h"
 
 void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 {
 	// Create
-	xrServerEntity*		E	= F_entity_Create(name);
+	CAbstractServerObject*		E	= F_entity_Create(name);
 	R_ASSERT			(E);
 
 	// Fill
@@ -28,7 +28,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 	F_entity_Destroy	(E);
 }
 
-void CLevel::g_sv_Spawn		(xrServerEntity* E)
+void CLevel::g_sv_Spawn		(CAbstractServerObject* E)
 {
 	CTimer		T;
 

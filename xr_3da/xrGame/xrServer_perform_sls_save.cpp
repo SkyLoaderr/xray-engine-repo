@@ -8,7 +8,7 @@ void xrServer::SLS_Save	(IWriter& fs)
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
 	for (u32 C=0; I!=E; I++,C++)
 	{
-		xrServerEntity*	E	= I->second;
+		CAbstractServerObject*	E	= I->second;
 
 		fs.open_chunk		(C);
 
