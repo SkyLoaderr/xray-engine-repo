@@ -47,6 +47,7 @@
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
+				ShowProgress="0"
 				OutputFile="x:\game/xrGame.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
