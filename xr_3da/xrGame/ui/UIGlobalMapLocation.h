@@ -21,12 +21,12 @@ class CUIGlobalMapLocation: public CUIMapSpot
 	typedef CUIButton inherited;
 public:
 	// Ctor and Dtor
-	CUIGlobalMapLocation();
-	virtual ~CUIGlobalMapLocation();
+					CUIGlobalMapLocation	();
+	virtual			~CUIGlobalMapLocation	();
 
-	virtual void Init(int width, int height, RECT clipRect, LPCSTR frameBase);
-	void Draw();
-	void SetColor(const u32 cl) { UIBorder.SetColor(cl); }
+	virtual void	Init					(int width, int height, RECT clipRect, LPCSTR frameBase);
+	virtual void	Draw					();
+	void			SetColor				(const u32 cl) { UIBorder.SetColor(cl); }
 	// Имя карты
 	ref_str			m_strMapName;
 protected:

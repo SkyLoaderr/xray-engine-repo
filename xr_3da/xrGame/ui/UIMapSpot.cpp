@@ -7,39 +7,41 @@
 
 #include "../actor.h"
 #include "../level.h"
-
-
 #include "../xrserver.h"
 #include "../xrServer_Objects_ALife.h"
 
+//////////////////////////////////////////////////////////////////////////
+
 const char * const	ARROW_TEX			= "ui\\ui_map_arrow_04";
 const int			ARROW_DIMENTIONS	= 32;
+
+//////////////////////////////////////////////////////////////////////////
 
 CUIMapSpot::CUIMapSpot()
 	:	m_bArrowEnabled		(false),
 		m_bArrowVisible		(false)
 {
-	m_our_level_id = 0xffff;
-	m_object_id = 0xffff;
-	m_vWorldPos.set(0,0,0);
-
-	m_eAlign = eNone;
-
-	m_sDescText.SetText("");
-	m_sNameText.SetText("");
-
-	m_fHeading = 0.f;
-	m_bHeading = false;
-
-	ClipperOn();
-
+	m_our_level_id		= 0xffff;
+	m_object_id			= 0xffff;
+	m_eAlign			= eNone;
+	m_fHeading			= 0.f;
+	m_bHeading			= false;
+	arrow_color			= 0xffffffff;
+	m_LevelName			= NULL;
+	m_vWorldPos.set		(0,0,0);
+	m_sDescText.SetText	("");
+	m_sNameText.SetText	("");
+	ClipperOn			();
 	m_Arrow.CreateShader(ARROW_TEX, "hud\\default");
-
-	arrow_color = 0xffffffff;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 CUIMapSpot::~CUIMapSpot()
 {
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMapSpot::Draw()
 {

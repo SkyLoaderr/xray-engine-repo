@@ -29,13 +29,7 @@ void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion)
 	for(u32 i=0; i<info_portion->MapLocations().size(); i++)
 	{
 		const SMapLocation& map_location = info_portion->MapLocations()[i];
-		if(xr_strlen(*map_location.level_name) > 0)
-		{
-			if(map_location.level_name == Level().name())
-				Level().AddMapLocation(map_location);
-		}
-		else
-			Level().AddMapLocation(map_location);
+		Level().AddMapLocation(map_location);
 	}
 }
 

@@ -29,12 +29,12 @@ CUIStaticItem::~CUIStaticItem()
 
 void CUIStaticItem::CreateShader(LPCSTR tex, LPCSTR sh)
 {
-	if (!hShader)	hShader.create	(sh,tex);
+	hShader.create	(sh,tex);
 }
 
 void CUIStaticItem::SetShader(const ref_shader& sh)
 {
-	hShader.destroy();
+//	hShader.destroy();
 	hShader = sh;
 }
 
@@ -42,7 +42,7 @@ void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
 {
 	//by Dandy
 	//used for reinitializing StaticItems during the game
-	hShader.destroy();
+//	hShader.destroy();
 
 	uFlags &= !flValidRect;
 

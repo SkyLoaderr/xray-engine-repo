@@ -10,18 +10,13 @@
 #include "../levelFogOfWar.h"
 #include "../level.h"
 
+//////////////////////////////////////////////////////////////////////////
 
-//размер просматриваемого в текущей момент
-//окна карты в метрах
-//#define MAP_VIEW_WIDTH_METERS 100.f
-//#define MAP_VIEW_HEIGHT_METERS 100.f
-
-//сколько пиксилей соответствует одному метру
-//#define MAP_PIXEL_TO_METERS ((float)600.f/Device.dwWidth)
-#define FOG_OF_WAR_TEXTURE "ui\\ui_fog_of_war"
-#define FOG_TEX_WIDTH		64
-#define FOG_TEX_HEIGHT		64
-#define FOG_TEX_SIZE		FOG_TEX_WIDTH
+//	Cколько пиксилей соответствует одному метру
+#define FOG_OF_WAR_TEXTURE			"ui\\ui_fog_of_war"
+#define FOG_TEX_WIDTH				64
+#define FOG_TEX_HEIGHT				64
+#define FOG_TEX_SIZE				FOG_TEX_WIDTH
 
 
 //////////////////////////////////////////////////////////////////////
@@ -35,10 +30,13 @@ CUIMapBackground::CUIMapBackground()
 	m_bNoActorFocus = false;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 CUIMapBackground::~CUIMapBackground()
 {
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMapBackground::Init(int x, int y, int width, int height)
 {
@@ -71,59 +69,86 @@ void CUIMapBackground::Init(int x, int y, int width, int height)
 	m_fogOfWarCell.SetTextureScale((float)fog_cell_size/(FOG_TEX_SIZE-2));
 }
 
-//вызывается каждый раз перед вызовом карты
-void CUIMapBackground::InitMapBackground()
+//-----------------------------------------------------------------------------/
+//	Вызывается каждый раз перед вызовом карты
+//-----------------------------------------------------------------------------/
+
+void CUIMapBackground::InitMapBackground(const ref_shader &sh)
 {
 	RECT rect = GetAbsoluteRect();
-	
-	if(*m_MapTextureName)
-		landscape.Init(*m_MapTextureName,"hud\\default",rect.left, rect.top, alNone);
-	else
-		landscape.Init("ui\\ui_minimap_level3",	"hud\\default",	rect.left, rect.top, alNone);
+	landscape.SetPos(rect.left, rect.top);
 	landscape.SetRect(0, 0, GetWidth(), GetHeight());
+	landscape.SetShader(sh);
 
-
-	m_fMapWidthMeters = m_LevelBox.x2 - m_LevelBox.x1;
-	m_fMapHeightMeters = m_LevelBox.z2 - m_LevelBox.z1;
-	m_fMapLeftMeters = m_LevelBox.x1;
-	m_fMapTopMeters = m_LevelBox.z2;
-	m_fMapBottomMeters = m_LevelBox.z1;
+	m_fMapWidthMeters	= m_LevelBox.x2 - m_LevelBox.x1;
+	m_fMapHeightMeters	= m_LevelBox.z2 - m_LevelBox.z1;
+	m_fMapLeftMeters	= m_LevelBox.x1;
+	m_fMapTopMeters		= m_LevelBox.z2;
+	m_fMapBottomMeters	= m_LevelBox.z1;
 
 	if (!m_bNoActorFocus)
+	{
 		UpdateActorPos();
+	}
 	else
 	{
 		UpdateActivePos();
-		m_bNoActorFocus = false;
+		m_bNoActorFocus	= false;
 	}
 	
 	UpdateMapSpots();
-
-	m_pActiveMapSpot = NULL;
+	m_pActiveMapSpot	= NULL;
 }
 
+//-----------------------------------------------------------------------------/
+//	Global predicate for pointer with boost::shared_ptr comparing
+//-----------------------------------------------------------------------------/
+
+struct Cmp: public std::unary_function<CUIMapBackground::MapSpotPtr, bool>
+{
+	CUIWindow * wnd_;
+
+	Cmp(CUIWindow *wnd):wnd_(wnd)
+	{}
+
+	result_type operator ()(const argument_type &lhs)
+	{
+		return lhs.get() == wnd_;
+	}
+};
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMapBackground::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	//проверить сообщение от иконок на карте
-	if(m_vMapSpots.end() != std::find(m_vMapSpots.begin(), m_vMapSpots.end(), pWnd))
+
+	if(m_vMapSpots.end() != std::find_if(m_vMapSpots.begin(), m_vMapSpots.end(), Cmp(pWnd)))
 	{
-		if(STATIC_FOCUS_RECEIVED == msg)
+		if (STATIC_FOCUS_RECEIVED == msg)
 		{
 			m_pActiveMapSpot = smart_cast<CUIMapSpot*>(pWnd);
 			GetTop()->SendMessage(this, MAPSPOT_FOCUS_RECEIVED);
 		}
-		else if(STATIC_FOCUS_LOST == msg)
+		else if (STATIC_FOCUS_LOST == msg)
 		{
 			GetTop()->SendMessage(this, MAPSPOT_FOCUS_LOST);
+			m_pActiveMapSpot = NULL;
+		}
+		else if (BUTTON_CLICKED == msg)
+		{
+			GetTop()->SendMessage(this, MAPSPOT_CLICKED);
 			m_pActiveMapSpot = NULL;
 		}
 	}
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
-//перевод из мировой системы координат в координаты карты на экране
-//с началом координат в левом верхнем углу
+//-----------------------------------------------------------------------------/
+//	Перевод из мировой системы координат в координаты карты на экране
+//	с началом координат в левом верхнем углу
+//-----------------------------------------------------------------------------/
+
 void CUIMapBackground::ConvertToLocal(const Fvector& src, Ivector2& dest)
 {
 	dest.x = iFloor(0.5f + ((src.x - m_fMapLeftMeters - m_fMapX)/m_fMapViewWidthMeters)*(float)m_iMapViewWidthPixels);
@@ -132,7 +157,10 @@ void CUIMapBackground::ConvertToLocal(const Fvector& src, Ivector2& dest)
 			     - m_fMapY)/m_fMapViewHeightMeters)*(float)m_iMapViewHeightPixels);
 }
 
-//сопоставление экранным координатам мировых
+//-----------------------------------------------------------------------------/
+//	Cопоставление экранным координатам мировых
+//-----------------------------------------------------------------------------/
+
 void CUIMapBackground::ConvertFromLocalToMap(int x, int y, Fvector2& dest)
 {
 	dest.x = m_fMapViewWidthMeters*float(x)/float(m_iMapViewWidthPixels);
@@ -140,18 +168,25 @@ void CUIMapBackground::ConvertFromLocalToMap(int x, int y, Fvector2& dest)
 
 }
 
-//перевод из мировой системы координат в 
-//текстурные координаты карты
+//-----------------------------------------------------------------------------/
+//	Перевод из мировой системы координат в 
+//	текстурные координаты карты
+//-----------------------------------------------------------------------------/
+
 void CUIMapBackground::ConvertToTexture(const Fvector& src, Fvector2& dest)
 {
 	ConvertToTexture(src.x, src.z, dest);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMapBackground::ConvertToTexture(float x, float y, Fvector2& dest)
 {
 	dest.x = x/m_fMapWidthMeters;
 	dest.y = y/m_fMapHeightMeters;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMapBackground::Update()
 {
@@ -161,6 +196,8 @@ void CUIMapBackground::Update()
 	//ignore CUIButton update, call CUIWindow not inherited::Update()
 	CUIWindow::Update();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMapBackground::Draw()
 {
@@ -182,6 +219,8 @@ void CUIMapBackground::Draw()
 
 	DrawFogOfWar();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMapBackground::DrawFogOfWar()
 {
@@ -217,6 +256,8 @@ void CUIMapBackground::DrawFogOfWar()
 		}
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMapBackground::DrawFogOfWarCell(int x, int y)
 {
@@ -319,6 +360,8 @@ void CUIMapBackground::DrawFogOfWarCell(int x, int y)
 	m_fogOfWarCell.Update();
 	m_fogOfWarCell.Draw();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 {
@@ -446,7 +489,10 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 	m_iOldMouseY = y;
 }
 
-//обновления иконок на карте
+//-----------------------------------------------------------------------------/
+//	Oбновления иконок на карте
+//-----------------------------------------------------------------------------/
+
 void CUIMapBackground::UpdateMapSpots()
 {
 	//разместить на карте объекты
@@ -469,8 +515,11 @@ void CUIMapBackground::UpdateMapSpots()
 	}
 }
 
-//установить положение карты, так чтобы актер 
-//был по центру
+//-----------------------------------------------------------------------------/
+//	Установить положение карты, так чтобы актер 
+//	был по центру
+//-----------------------------------------------------------------------------/
+
 void CUIMapBackground::UpdateActorPos()
 {
 	//установить положение карты, так чтобы актер 
@@ -481,7 +530,10 @@ void CUIMapBackground::UpdateActorPos()
 	UpdateActivePos();
 }
 
-// Центрируем карту по заданной активной точке
+//-----------------------------------------------------------------------------/
+//	Центрируем карту по заданной активной точке
+//-----------------------------------------------------------------------------/
+
 void CUIMapBackground::UpdateActivePos()
 {
 	//установить положение карты, так чтобы заданая точка 
@@ -525,8 +577,8 @@ void CUIMapBackground::RemoveAllSpots()
 {
 	for(u32 i=0; i<m_vMapSpots.size(); ++i)
 	{	
-		m_vMapSpots[i]->GetParent()->DetachChild(m_vMapSpots[i]);
-		xr_delete(m_vMapSpots[i]);
+		if (m_vMapSpots[i]->GetParent() && m_vMapSpots[i]->GetParent()->IsChild(m_vMapSpots[i].get()))
+			m_vMapSpots[i]->GetParent()->DetachChild(m_vMapSpots[i].get());
 	}
 
 	m_vMapSpots.clear();
