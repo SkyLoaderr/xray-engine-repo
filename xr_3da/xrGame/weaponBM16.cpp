@@ -41,7 +41,9 @@ void CWeaponBM16::PlayAnimShoot()
 
 void CWeaponBM16::PlayAnimReload()
 {
-	if(m_magazine.size()==1)
+	bool b_both = HaveCartridgeInInventory(2);
+
+	if(m_magazine.size()==1 || !b_both)
 		m_pHUD->animPlay(mhud_reload1[Random.randI(mhud_reload1.size())],TRUE,this);
 	else
 		m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);

@@ -35,7 +35,7 @@ protected:
 	void			TriStateReload		();
 	virtual void	OnStateSwitch		(u32 S);
 
-	bool			HaveCartridgeInInventory();
+	bool			HaveCartridgeInInventory(u8 cnt);
 	virtual u8		AddCartridge		(u8 cnt);
 
 	HUD_SOUND		sndShotBoth;

@@ -268,7 +268,7 @@ void CWeaponShotgun::Reload()
 
 void CWeaponShotgun::TriStateReload()
 {
-	if( !HaveCartridgeInInventory() )return;
+	if( !HaveCartridgeInInventory(1) )return;
 	m_sub_state			= eSubstateReloadBegin;
 	SwitchState			(eReload);
 }
@@ -280,7 +280,7 @@ void CWeaponShotgun::OnStateSwitch	(u32 S)
 		return;
 	}
 
-	if( m_magazine.size() == (u32)iMagazineSize || !HaveCartridgeInInventory() ){
+	if( m_magazine.size() == (u32)iMagazineSize || !HaveCartridgeInInventory(1) ){
 			switch2_EndReload		();
 			m_sub_state = eSubstateReloadEnd;
 	};
@@ -288,11 +288,11 @@ void CWeaponShotgun::OnStateSwitch	(u32 S)
 	switch (m_sub_state)
 	{
 	case eSubstateReloadBegin:
-		if( HaveCartridgeInInventory() )
+		if( HaveCartridgeInInventory(1) )
 			switch2_StartReload	();
 		break;
 	case eSubstateReloadInProcess:
-			if( HaveCartridgeInInventory() )
+			if( HaveCartridgeInInventory(1) )
 				switch2_AddCartgidge	();
 		break;
 	case eSubstateReloadEnd:
@@ -337,7 +337,7 @@ void CWeaponShotgun::PlayAnimCloseWeapon()
 	m_pHUD->animPlay(mhud_close[Random.randI(mhud_close.size())],TRUE,this);
 }
 
-bool CWeaponShotgun::HaveCartridgeInInventory		()
+bool CWeaponShotgun::HaveCartridgeInInventory		(u8 cnt)
 {
 	if (unlimited_ammo()) return true;
 	m_pAmmo = NULL;
@@ -347,7 +347,7 @@ bool CWeaponShotgun::HaveCartridgeInInventory		()
 		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
 														   !smart_cast<CActor*>(H_Parent())));
 		
-		if(!m_pAmmo )//&& !l_lockType) 
+		if(!m_pAmmo )
 		{
 			for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 			{
@@ -362,14 +362,14 @@ bool CWeaponShotgun::HaveCartridgeInInventory		()
 			}
 		}
 	}
-	return m_pAmmo != NULL;
+	return (m_pAmmo!=NULL)&&(m_pAmmo->m_boxCurr>=cnt) ;
 }
 
 u8 CWeaponShotgun::AddCartridge		(u8 cnt)
 {
 	if(IsMisfire())	bMisfire = false;
 
-	if( !HaveCartridgeInInventory() )
+	if( !HaveCartridgeInInventory(1) )
 		return 0;
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
