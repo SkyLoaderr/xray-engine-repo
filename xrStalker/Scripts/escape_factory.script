@@ -1,0 +1,36 @@
+local members = {}
+
+-------------------------------------------------------------------------
+function add_member (obj)
+    local ini = obj:spawn_ini ()
+    if ini == nil or ini:section_exist ("factory") == false then
+       return 
+    end
+    local size = table.getn (members) + 1
+    members[size] = obj:id ()
+    switch_offline (obj)
+    return        
+end
+-------------------------------------------------------------------------
+
+
+
+-------------------------------------------------------------------------
+class "factory_combat"
+-----------------------
+function factory_combat:__init (zone, ini)
+    self.ini_ok = true
+end
+-----------------------
+function factory_combat:on_enter (obj)
+    local actor = level.get_actor ()
+    if actor == nil or obj:id () != actor:id () then 
+       return 
+    end
+    
+    if table.getn (members) == 0 then return end
+    for a = 1, table.getn (members), 1 do
+        switch_online (members[a])
+    end
+end
+-----------------------
