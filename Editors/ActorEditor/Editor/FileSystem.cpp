@@ -21,7 +21,7 @@ void FSPath::Init( char *_Root, char *_Add, char *_DefExt, char *_FilterString )
 	strcat( m_Path, _Add );
     strlwr( m_Path );
 	VerifyPath();
-	ELog.Msg( mtInformation, "FS: path = %s", m_Path );
+//	ELog.Msg( mtInformation, "FS: path = %s", m_Path );
 }
 
 void FSPath::Update( char *_FileName )const{

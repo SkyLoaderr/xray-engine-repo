@@ -131,8 +131,6 @@ void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...)
 	g_msg->info(buf,0);
 #endif
 
-	strcat( buf, "\r\n" );
-
     ::Msg(buf);
 }
 //----------------------------------------------------
