@@ -70,7 +70,7 @@ local on_ready = 0
 local on_move = 1
 local on_free = 2
 
-function Defender:__init (npc, script, way, monsters, freed)
+function Defender:__init (npc, script, way, monsters, has_freed)
 	self.npc = npc
 	self.script = script
 	self.way = way
@@ -93,8 +93,7 @@ function Defender:initialize ()
 	   self.state = on_ready		   
 	else
 	   action (self.npc, move (move.standing, move.run, move.line, self.way), anim (anim.danger), cond (cond.move_end))
-	   action (self.npc, move (move.crouch, move.stand, move.line, self.way), anim (anim.danger), 
-	   		   cond (cond.time_end, time_infinite))	
+	   action (self.npc, move (move.crouch, move.stand, move.line, self.way), anim (anim.danger), cond (cond.time_end, time_infinite))	
 	   self.state = on_move		   		   
 	end	   		   
 	
@@ -110,7 +109,6 @@ function Defender:process ()
 	   else 
 	      self.state = on_ready 
 	      printf ("Set On_Ready")
-
 	   end
 	end   
 	--если сталкер должен быть отпущен, то отпускаем
@@ -174,7 +172,7 @@ function main ()
 	local azone = get_level_object ("attack_zone")
 	azone:set_callback (s_test2.zone_callback, true)
 
-    local defender = s_test2.Defender (get_level_object ("stalker_defend"), s_test2.script_name (), patrol ("defend_way"), {monster}, false)
+    local defender = s_test2.Defender (get_level_object ("stalker_defend"), s_test2.script_name (), patrol ("defend_way"), {monster}, true)
 	
 	wait (10000)		
 	
