@@ -183,6 +183,16 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 			Sleep	(1);
 		}
 
+		//
+#pragma todo("spawning monsters")
+		{
+			char		Parsed	[128];
+			int id		= Level().get_RPID	("RP_04");
+			R_ASSERT	(id>=0);
+			sprintf		(Parsed,"m_enemy,%d,1,0,0",id);
+			Engine.Event.Signal	("LEVEL:spawn",DWORD(LPCSTR(Parsed)));
+		}
+
 		// Textures
 		pApp->LoadTitle						("Loading textures...");
 		Device.Shader.DeferredLoad			(FALSE);
