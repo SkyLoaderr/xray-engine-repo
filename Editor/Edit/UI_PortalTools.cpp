@@ -12,7 +12,7 @@
 #include "frustum.h"
 //---------------------------------------------------------------------------
 TUI_PortalTools::TUI_PortalTools():TUI_CustomTools(OBJCLASS_PORTAL){
-    AddControlCB(new TUI_CustomControl		(estSelf,eaSelect,	this));
+    AddControlCB(new TUI_ControlPortalSelect(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlPortalAdd 	(estSelf,eaAdd,		this));
 }
 void TUI_PortalTools::OnObjectsUpdate(){
@@ -71,5 +71,31 @@ bool __fastcall TUI_ControlPortalAdd::End(TShiftState _Shift)
 }
 
 
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+__fastcall TUI_ControlPortalSelect::TUI_ControlPortalSelect(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
+    pFrame 	= 0;
+}
+void TUI_ControlPortalSelect::OnEnter(){
+    pFrame 	= (TfraPortal*)parent_tool->pFrame; VERIFY(pFrame);
+}
+void TUI_ControlPortalSelect::OnExit (){
+	pFrame = 0;
+}
+bool __fastcall TUI_ControlPortalSelect::Start(TShiftState Shift){
+	bool bRes = SelectStart(Shift);
+	if(!bBoxSelection) pFrame->OnChange();
+    return bRes;
+}
+void __fastcall TUI_ControlPortalSelect::Move(TShiftState Shift){
+	SelectProcess(Shift);
+}
+
+bool __fastcall TUI_ControlPortalSelect::End(TShiftState Shift){
+	bool bRes = SelectEnd(Shift);
+	if (bBoxSelection) pFrame->OnChange();
+    return bRes;
+}
 
 

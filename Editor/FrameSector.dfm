@@ -1,8 +1,8 @@
 object fraSector: TfraSector
   Left = 0
   Top = 0
-  Width = 123
-  Height = 391
+  Width = 443
+  Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
   VertScrollBar.Smooth = True
@@ -22,7 +22,7 @@ object fraSector: TfraSector
   object paSectorActions: TPanel
     Left = 0
     Top = 125
-    Width = 123
+    Width = 443
     Height = 144
     Align = alTop
     ParentColor = True
@@ -352,7 +352,7 @@ object fraSector: TfraSector
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -467,7 +467,7 @@ object fraSector: TfraSector
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 125
     Align = alTop
     ParentColor = True
@@ -530,7 +530,7 @@ object fraSector: TfraSector
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter

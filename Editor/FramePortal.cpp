@@ -164,5 +164,10 @@ void __fastcall TfraPortal::ebPickSectorsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
+void __fastcall TfraPortal::ExtBtn3Click(TObject *Sender)
+{
+	CPortal* _O=(CPortal*)cbItems->Items->Objects[cbItems->ItemIndex];
+    if (_O) _O->InvertOrientation();
+}
+//---------------------------------------------------------------------------
 

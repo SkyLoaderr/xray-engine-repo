@@ -103,6 +103,15 @@ void __fastcall TfrmImageLib::FormShow(TObject *Sender)
     InitItemsList();
     UI->BeginEState(esEditImages);
 	bSetMode = false;
+
+    if (bCheckMode&&check_tex_list.size()){
+	    // select first item
+    	TElTreeItem* node = tvItems->Items->LookForItem(0,check_tex_list[0],0,0,false,true,false,true,true);
+	    if (node){
+    		tvItems->Selected = node;
+			tvItems->EnsureVisible(node);
+    	}
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
@@ -124,6 +133,8 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
         }
         UI->ProgressEnd();
     }
+
+    UI->Command(COMMAND_REFRESH_TEXTURES,false);
     
 	_DELETE(sel_tex);
 	Action = caFree;
@@ -375,7 +386,7 @@ extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
 void __fastcall TfrmImageLib::tvItemsKeyPress(TObject *Sender, char &Key)
 {
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
-    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);    
+    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
     if (node){
     	tvItems->Selected = node;
 		tvItems->EnsureVisible(node);

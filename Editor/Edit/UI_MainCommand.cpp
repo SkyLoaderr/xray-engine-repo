@@ -203,7 +203,7 @@ bool TUI::Command( int _Command, int p1 ){
 		break;
 
 	case COMMAND_REFRESH_TEXTURES:
-		Device.RefreshTextures();
+		Device.RefreshTextures(bool(p1));
 		break;
 
     case COMMAND_UNLOAD_LIBMESHES:

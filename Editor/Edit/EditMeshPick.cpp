@@ -87,6 +87,7 @@ bool CEditMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fma
 	            pinf->pt.mul(direction,pinf->rp_inf.range);
     	        pinf->pt.add(start);
             }
+            distance = new_dist;
             return true;
         }
     }

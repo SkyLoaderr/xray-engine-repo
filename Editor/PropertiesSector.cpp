@@ -45,6 +45,8 @@ void TfrmPropertiesSector::GetObjectsInfo(){
     	_O = (CSector *)(*_F);
 		mcSectorColor->ObjNextInit( _O->sector_color.get_windows() );
 	}
+
+    if (m_Objects->size()==1) gbSector->Caption = AnsiString("Sector: '")+AnsiString((*m_Objects->begin())->GetName())+AnsiString("'");
 }
 
 bool TfrmPropertiesSector::ApplyObjectsInfo(){

@@ -74,7 +74,7 @@ protected:
     bool 			GetBMPParams	();
     bool 			GetTGAParams	();
 
-    void			Refresh			();
+    void			Refresh			(bool bOnlyNew);
 	bool 			Load			();
 	void 			Unload			();
 	bool 			LoadBMP			();

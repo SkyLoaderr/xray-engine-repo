@@ -39,6 +39,7 @@ __published:	// IDE-managed Components
 	TRxLabel *RxLabel3;
 	TRxLabel *lbFrontSector;
 	TRxLabel *lbBackSector;
+	TExtBtn *ExtBtn3;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall TopClick(TObject *Sender);
 	void __fastcall ebCreateNewClick(TObject *Sender);
@@ -47,6 +48,7 @@ __published:	// IDE-managed Components
 	void __fastcall cbSectorChange(TObject *Sender);
 	void __fastcall ebPickSectorsClick(TObject *Sender);
 	void __fastcall ebComputeAllPortalsClick(TObject *Sender);
+	void __fastcall ExtBtn3Click(TObject *Sender);
 private:	// User declarations
 	int iPickSectors;
 	void __fastcall FindAndSelectPortalInList(const char* name);

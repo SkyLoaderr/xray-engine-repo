@@ -34,6 +34,14 @@ void __stdcall CCustomMonster::SpinCallback(CBoneInstance* B)
 	Fmatrix				spin;
 	spin.rotateY		(M->NET_Last.o_torso.pitch);
 	B->mTransform.mul_43(spin);
+/*
+	Fmatrix				spin;
+	float				bone_yaw	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
+	float				bone_pitch	= A->r_torso.pitch;
+	clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
+	spin.setXYZ			(bone_yaw,bone_pitch,0);
+	B->mTransform.mul_43(spin);
+*/
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -99,7 +107,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	iArmor					= 0;
 	
 	// Eyes
-	eye_bone				= PKinematics(pVisual)->LL_BoneID("bone17");
+	eye_bone				= PKinematics(pVisual)->LL_BoneID("bip01_head");
 	eye_fov					= ini->ReadFLOAT(section,"eye_fov");
 	eye_range				= ini->ReadFLOAT(section,"eye_range");
 
@@ -112,7 +120,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	PKinematics	V			= PKinematics(pVisual);
 	m_current				= 0;
 	m_idle					= V->ID_Cycle("norm_idle");
-//	m_death					= V->ID_Cycle("norm_death");
+	m_death					= V->ID_Cycle("norm_death");
 //	m_crouch				= V->ID_Cycle("crouch_idle");
 	m_walk.Create			(V,"norm_walk");
 	m_run.Create			(V,"norm_run");

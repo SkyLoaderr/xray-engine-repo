@@ -14,7 +14,7 @@ struct strDX{
 	DDSURFACEDESC2			BackDesc;
 };
 
-extern "C" __declspec(dllimport) HRESULT CreateTexture(LPDIRECTDRAWSURFACE7& pTexture, LPSTR pSrcName, int* w, int* h, BOOL* bAlpha);
+extern "C" __declspec(dllimport) HRESULT CreateTexture(LPDIRECTDRAWSURFACE7& pTexture, LPSTR pSrcName, LPSTR pAlternateSrcName, int* w, int* h, BOOL* bAlpha);
 extern "C" __declspec(dllexport) void ReleaseTexture(LPDIRECTDRAWSURFACE7& pTexture);
 extern "C" __declspec(dllimport) HRESULT ReleaseD3DX();
 extern "C" __declspec(dllimport) HRESULT InitD3DX(HWND hWnd, strDX** dx, DWORD mode);
@@ -71,7 +71,7 @@ public:
 	void 			Destroy		();
     void 			Resize		(int w, int h);
     void			ReloadShaders();
-	void 			RefreshTextures();
+	void 			RefreshTextures(bool bOnlyNew);
 
     void 			RenderNearer(float f_Near);
     void 			ResetNearer	();

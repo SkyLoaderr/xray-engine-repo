@@ -36,7 +36,7 @@ public:
 	virtual void 	Save		(CFS_Base&);
 	virtual bool 	GetBox		(Fbox& box);
     void			Simplify	();
-    void			Update		(bool bLoadMode=false);
+    bool			Update		(bool bLoadMode=false);
     void 			InvertOrientation();
 
     FvectorVec&		Vertices()	{return m_Vertices;}

@@ -15,7 +15,7 @@
 
 //---------------------------------------------------------------------------
 TUI_SectorTools::TUI_SectorTools():TUI_CustomTools(OBJCLASS_SECTOR){
-    AddControlCB(new TUI_CustomControl		(estSelf,eaSelect,	this));
+    AddControlCB(new TUI_ControlSectorSelect(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlSectorAdd 	(estSelf,eaAdd,		this));
 }
 void TUI_SectorTools::OnObjectsUpdate(){
@@ -148,5 +148,32 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
     }
 	m_Action = saNone;
     return true;
+}
+
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+__fastcall TUI_ControlSectorSelect::TUI_ControlSectorSelect(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
+    pFrame 	= 0;
+}
+void TUI_ControlSectorSelect::OnEnter(){
+    pFrame 	= (TfraSector*)parent_tool->pFrame; VERIFY(pFrame);
+}
+void TUI_ControlSectorSelect::OnExit (){
+	pFrame = 0;
+}
+bool __fastcall TUI_ControlSectorSelect::Start(TShiftState Shift){
+	bool bRes = SelectStart(Shift);
+	if(!bBoxSelection) pFrame->OnChange();
+    return bRes;
+}
+void __fastcall TUI_ControlSectorSelect::Move(TShiftState Shift){
+	SelectProcess(Shift);
+}
+
+bool __fastcall TUI_ControlSectorSelect::End(TShiftState Shift){
+	bool bRes = SelectEnd(Shift);
+	if (bBoxSelection) pFrame->OnChange();
+    return bRes;
 }
 

@@ -127,7 +127,7 @@ bool CPortal::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatr
 }
 //----------------------------------------------------
 
-void CPortal::Update(bool bLoadMode){
+bool CPortal::Update(bool bLoadMode){
 	Fbox box;
     GetBox(box);
     box.getsphere(m_Center,m_Radius);
@@ -136,13 +136,20 @@ void CPortal::Update(bool bLoadMode){
     m_Normal.set(0,0,0);
 
     R_ASSERT(!m_Vertices.empty());
-    
-    for (DWORD i=0; i<m_Vertices.size()-1; i++){
+    R_ASSERT(m_Vertices.size()>=3);
+
+    for (DWORD i=0; i<3; i++){//i<m_Vertices.size()-1
     	Fvector temp;
         temp.mknormal(m_Center,m_Vertices[i],m_Vertices[i+1]);
     	m_Normal.add(temp);
     }
-    float m=m_Normal.magnitude();    VERIFY(fabsf(m)>EPS);    m_Normal.div(m);
+    float m=m_Normal.magnitude();
+    if (fabsf(m)<=EPS){
+    	Log->DlgMsg(mtError,"Portal: Some error found at pos: [%3.2f,%3.2f,%3.2f].",m_Vertices[0].x,m_Vertices[0].x,m_Vertices[0].x);
+        m_Valid = false;
+		return false;
+    }
+    m_Normal.div(m);
 
     if (!bLoadMode){
         float step=0.05f;
@@ -182,6 +189,7 @@ void CPortal::Update(bool bLoadMode){
     }
 
 	Simplify();
+    return true;
 }
 //------------------------------------------------------------------------------
 

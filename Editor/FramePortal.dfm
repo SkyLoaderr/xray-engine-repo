@@ -1,7 +1,7 @@
 object fraPortal: TfraPortal
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
@@ -21,8 +21,8 @@ object fraPortal: TfraPortal
   TabOrder = 0
   object paCompute: TPanel
     Left = 0
-    Top = 75
-    Width = 443
+    Top = 90
+    Width = 123
     Height = 132
     Align = alTop
     ParentColor = True
@@ -147,7 +147,7 @@ object fraPortal: TfraPortal
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -222,8 +222,8 @@ object fraPortal: TfraPortal
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
-    Height = 75
+    Width = 123
+    Height = 90
     Align = alTop
     ParentColor = True
     TabOrder = 0
@@ -238,7 +238,7 @@ object fraPortal: TfraPortal
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -310,6 +310,25 @@ object fraPortal: TfraPortal
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
+    end
+    object ExtBtn3: TExtBtn
+      Left = 2
+      Top = 73
+      Width = 120
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      CloseButton = False
+      Caption = 'Invert Orientation'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      OnClick = ExtBtn3Click
     end
     object cbItems: TComboBox
       Left = 3

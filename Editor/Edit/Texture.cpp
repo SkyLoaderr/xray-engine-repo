@@ -136,10 +136,10 @@ void ETextureCore::Unload(){
 	m_Pixels.clear();
 }
 
-void ETextureCore::Refresh(){
+void ETextureCore::Refresh(bool bOnlyNew){
     if (m_bNullTex) return;
     // check file version if non equal remake
-    if (IfNeedUpdate()==1){//&&CheckVersionAndUpdateFiles()){
+    if (!bOnlyNew||(bOnlyNew&&(IfNeedUpdate()==1))){//&&CheckVersionAndUpdateFiles()){
 		DDClear();
     	Unload();
 	    GetParams();
@@ -209,12 +209,14 @@ bool ETextureCore::UpdateThumbnail(){
 }
 
 bool ETextureCore::CreateDDSurface(){
-	AnsiString name;
+	AnsiString name,aname;
     name 		= AnsiString(m_ShortName)+AnsiString(".dds");
 	FS.m_GameTextures.Update(name);
+    aname 		= AnsiString(m_LoadName);
+	FS.m_Textures.Update(aname);
     // check file version if non equal remake
 	CheckVersionAndUpdateFiles();
- 	HRESULT hr = CreateTexture(m_Surface, name.c_str(), &m_Width, &m_Height, &m_AlphaPresent);
+ 	HRESULT hr = CreateTexture(m_Surface, name.c_str(), aname.c_str(), &m_Width, &m_Height, &m_AlphaPresent);
     if (hr!=DD_OK){ 
     	Log->Msg(mtError,"D3D Error: %s",InterpretError(hr));
         return false;

@@ -28,10 +28,9 @@ __published:	// IDE-managed Components
     TExtBtn *ebOk;
     TExtBtn *ebCancel;
     TPanel *paBottom;
-	TGroupBox *GroupBox1;
+	TGroupBox *gbSector;
 	TRxLabel *RxLabel5;
 	TMultiObjColor *mcSectorColor;
-	TGroupBox *GroupBox2;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

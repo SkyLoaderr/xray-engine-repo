@@ -692,7 +692,7 @@ int CPortalUtils::CalculateSelectedPortals(vector<CSector*>& sectors){
         }
     }
     //2. update pervertex adjacency
-    UI->SetStatus("updating pervertex adjacency...");
+    UI->SetStatus("updating per-vertex adjacency...");
     CL->update_adjacency();
     //3. find edges
     UI->SetStatus("searching edges...");

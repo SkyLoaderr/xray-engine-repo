@@ -112,7 +112,11 @@ void CLight::InitDefaultFlaresText(){
 //----------------------------------------------------
 
 bool CLight::GetBox( Fbox& box ){
-	if( m_D3D.type==D3DLIGHT_DIRECTIONAL) return false;
+	if( m_D3D.type==D3DLIGHT_DIRECTIONAL){
+		box.set( m_D3D.position, m_D3D.position );
+        box.grow(VIS_RADIUS);
+    	return true;
+    }
 	box.set( m_D3D.position, m_D3D.position );
 	box.min.sub(m_D3D.range);
 	box.max.add(m_D3D.range);

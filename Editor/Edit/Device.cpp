@@ -290,9 +290,9 @@ void CDevice::ReloadShaders(){
     m_SelectionShader 	= Shader.Create("$ed_selection");
 }
 
-void CDevice::RefreshTextures(){
+void CDevice::RefreshTextures(bool bOnlyNew){
 	UI->SetStatus("Reload textures...");
-	Shader.RefreshTextures();
+	Shader.RefreshTextures(bOnlyNew);
 	UI->SetStatus("");
 }
 
