@@ -1,8 +1,10 @@
 //=============================================================================
 //  Filename:   UINewsWnd.cpp
+//	Created by Roman E. Marchenko, vortex@gsc-game.kiev.ua
+//	Copyright 2004. GSC Game World
+//	---------------------------------------------------------------------------
 //  News subwindow in PDA dialog
 //=============================================================================
-
 
 #include "stdafx.h"
 #include "UINewsWnd.h"
@@ -10,6 +12,10 @@
 #include "UIXmlInit.h"
 #include "UIString.h"
 #include "../UI.h"
+#include "../HUDManager.h"
+#include "../level.h"
+#include "../game_news.h"
+#include "../actor.h"
 
 const char * const	NEWS_XML			= "news.xml";
 
@@ -42,22 +48,43 @@ void CUINewsWnd::Init()
 
 	AttachChild(&UIListWnd);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIListWnd);
-	UIListWnd.ActivateList(true);
+	UIListWnd.ActivateList(false);
 	UIListWnd.EnableScrollBar(true);
+	UIListWnd.SetRightIndention(static_cast<int>(15 * HUD().GetScale()));
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUINewsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
+void CUINewsWnd::AddNews()
 {
-//	CUITreeViewItem *pItem = smart_cast<CUITreeViewItem*>(pWnd);
-//	if (pItem && CUIListWnd::LIST_ITEM_CLICKED == msg)
-//	{
-//		if (pItem->IsRoot())
-//		{
-//			pItem->IsOpened() ? pItem->Close() : pItem->Open();
-//		}
-//	}
-//
-//	inherited::SendMessage(pWnd, msg, pData);
+	UIListWnd.RemoveAll();
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+
+	if (pActor)
+	{
+		GAME_NEWS_VECTOR& news_vector = pActor->game_news_registry.objects();
+		for (GAME_NEWS_IT it = news_vector.begin(); it != news_vector.end(); ++it)
+		{
+			AddNewsItem(it->FullText());
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUINewsWnd::AddNewsItem(const ref_str &text)
+{
+	static CUIString	str;
+	str.SetText(*text);
+	UIListWnd.AddParsedItem<CUIListItem>(str, 0, UIListWnd.GetTextColor());
+	UIListWnd.AddItem<CUIListItem>("");
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUINewsWnd::Show(bool status)
+{
+	if (status)
+		AddNews();
+	inherited::Show(status);
 }

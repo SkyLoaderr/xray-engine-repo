@@ -31,8 +31,6 @@ public:
 	virtual void		SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
 	virtual void		Show(bool status);
 
-	// Добавить новую новость
-	void				AddNewsItem(const char *sData);
 	// Вывести заголовок текущего раздела
 	void				ArticleCaption(LPCSTR caption);
 

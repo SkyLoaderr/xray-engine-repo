@@ -47,7 +47,6 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 	u32			last_pos		= 0;
 	int			GroupID			= GetSize();
 	bool		wrapWord		= false;
-	int			symbolsToSkip	= 0;
 	int			lineWidth		= this->GetItemWidth() - shift - this->GetRightIndention();
 	int			width			= 0;
 	LPCSTR		nextWord		= &text.front();
@@ -55,6 +54,7 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 	char		tmpC			= 0;
 	int			lastWordWidth	= 0;
 	int			charsCount		= 0;
+	int			symToSkip		= 0;
 
 	for(int i = 0; i < static_cast<int>(text.size()) - 2;)
 	{
@@ -65,7 +65,8 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 		if ('\\' == text[i] && 'n' == text[i + 1])
 		{
 			wrapWord		= true;
-			symbolsToSkip	+= 2;
+			symToSkip		= 2;
+			nextWord		+= symToSkip;
 		}
 
 		if ('%' == text[i] && 'c' == text[i + 1])
@@ -118,16 +119,16 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 			{
 				text[i - 1]		= tmpC;
 			}
-			i				+= symbolsToSkip;
-			symbolsToSkip	= 0;
-			last_pos		= i;
+			last_pos		= i + symToSkip;
 			wrapWord		= false;
 		}
 
 		if (nextWord && memorizedWord)
-			i		+= static_cast<int>(nextWord - memorizedWord);
+			i		+= static_cast<int>(nextWord - memorizedWord + symToSkip);
 		else
 			i		= static_cast<int>(text.size());
+
+		symToSkip = 0;
 	}
 
 //	if(last_pos<text.size())

@@ -1,34 +1,40 @@
 //=============================================================================
 //  Filename:   UINewsWnd.h
+//	Created by Roman E. Marchenko, vortex@gsc-game.kiev.ua
+//	Copyright 2004. GSC Game World
+//	---------------------------------------------------------------------------
 //  News subwindow in PDA dialog
 //=============================================================================
 
 #ifndef UI_NEWS_WND_H_
 #define UI_NEWS_WND_H_
 
-// #pragma once
+#pragma once
 
-#include "UIDialogWnd.h"
-#include "UIStatic.h"
+//////////////////////////////////////////////////////////////////////////
+
 #include "UIListWnd.h"
-#include "UITabControl.h"
-#include "UIFrameWindow.h"
-#include "UITreeViewItem.h"
 
-#include "xrXMLParser.h"
+//////////////////////////////////////////////////////////////////////////
 
 class CUINewsWnd: public CUIWindow
 {
 	typedef CUIWindow inherited;
 public:
-	CUINewsWnd();
-	virtual ~CUINewsWnd();
-	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
+					CUINewsWnd	();
+	virtual			~CUINewsWnd	();
 
-	virtual void Init();
+	virtual void	Init		();
+	void			AddNews		();
+	virtual void	Show		(bool status);
 
 	// Окно вывода информации
-	CUIListWnd	UIListWnd;
+	CUIListWnd		UIListWnd;
+
+private:
+	void			AddNewsItem	(const ref_str &text);
 };
+
+//////////////////////////////////////////////////////////////////////////
 
 #endif

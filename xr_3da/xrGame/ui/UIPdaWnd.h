@@ -46,7 +46,6 @@ public:
 //	typedef enum { PDA_MAP_SET_ACTIVE_POINT = 8010 } E_MESSAGE;
 	// Переключиться на карту и сфокусироваться на заданной точке
 	void				FocusOnMap(const int x, const int y, const int z);
-	void				AddNewsItem(const char *sData);
 	void				SetActiveSubdialog(EPdaSections section);
 
 protected:

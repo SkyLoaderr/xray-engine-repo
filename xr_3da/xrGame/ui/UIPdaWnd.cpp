@@ -181,13 +181,6 @@ void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIPdaWnd::AddNewsItem(const char *sData)
-{
-	UIDiaryWnd.AddNewsItem(sData);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIPdaWnd::UpdateDateTime()
 {
 	static ref_str prevStrTime = " ";

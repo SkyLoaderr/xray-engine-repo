@@ -281,18 +281,6 @@ void CUIDiaryWnd::SetContractTrader()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIDiaryWnd::AddNewsItem(const char *sData)
-{
-	CUIString			str;
-	str.SetText(sData);
-
-	UINewsWnd.UIListWnd.AddParsedItem<CUIListItem>(str, 4, 0xffffffff);
-
-	UINewsWnd.UIListWnd.AddItem<CUIListItem>("");
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIDiaryWnd::InitTreeView()
 {
 	CUITreeViewItem *pTVItem = NULL, *pTVItemSub = NULL;

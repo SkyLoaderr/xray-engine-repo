@@ -541,6 +541,7 @@ void CUIMainIngameWnd::Update()
 
 	UpdateFlashingIcons();
 	UIContactsAnimation.Update();
+	UIPdaOnline.SetTextColor(subst_alpha(UIPdaOnline.GetTextColor(), color_get_A(UIContactsAnimation.GetColor())));
 	m_ClawsAnimation.Update();
 
 	CUIWindow::Update();
@@ -847,6 +848,7 @@ CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message)
 	UIPdaMsgListWnd.ScrollToBegin();
 
 	pItem->SetValue(m_dwMaxShowTime);
+	pItem->UIMsgText.MoveWindow(0, 0);
 
 	UIPdaMsgListWnd.Show(true);	
 
@@ -875,6 +877,7 @@ void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRec
 	{
 		pItem->UIIcon.InitTexture(textureName);
 		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
+		pItem->UIMsgText.MoveWindow(originalRect.right, originalRect.bottom);
 	}
 }
 
