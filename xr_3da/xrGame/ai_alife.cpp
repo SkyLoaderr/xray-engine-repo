@@ -306,18 +306,12 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		l_tpALifeAnomalousZone->m_maxPower = randF(.5f*l_tpSpawnAnomalousZone->m_maxPower,1.5f*l_tpSpawnAnomalousZone->m_maxPower);
 		
 		// proceed random artefacts generation for the active zone
-		fSum					= 0;
-		{
-			for (u16 p=0; p<l_tpSpawnAnomalousZone->m_wItemCount; p++)
-				fSum				+= l_tpSpawnAnomalousZone->m_dwaWeights[p];
-		}
-		fSum					/= l_tpSpawnAnomalousZone->m_fBirthProbability;
-		fProbability			= randF(fSum);
+		fProbability			= randF(1.f);
 		fSum					= 0;
 		{
 			for (u32 ii=0, jj=iFloor(l_tpALifeAnomalousZone->m_maxPower*10/3); ii<jj; ii++) {
 				for (u16 p=0; p<l_tpSpawnAnomalousZone->m_wItemCount; p++) {
-					fSum			+= l_tpSpawnAnomalousZone->m_dwaWeights[p];
+					fSum			+= l_tpSpawnAnomalousZone->m_faWeights[p];
 					if (fSum > fProbability)
 						break;
 				}

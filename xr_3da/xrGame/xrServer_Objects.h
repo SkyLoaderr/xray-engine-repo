@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(26)
+#define SPAWN_VERSION	u16(27)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -38,6 +38,7 @@
 // 24 - CSE_ALifeObject				appended group control
 // 25 - CSE_ALifeObject				changed type of the property probability from u8 to float
 // 26 - CSE_AnomalousZone			appended artefact spawn information
+// 27 - CSE_AnomalousZone			weights changed type from u32 to float
 //------------------------------------------------------------------------------
 
 class xrClientData;

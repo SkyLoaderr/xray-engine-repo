@@ -144,6 +144,15 @@ public:
 					for ( ; i != e; i++) {
 						(*i)->m_fProbability /= fSum;
 						(*i)->m_dwSpawnGroup = (*J).second->m_dwSpawnGroup;
+						CSE_ALifeAnomalousZone *l_tpAnomalousZone =dynamic_cast<CSE_ALifeAnomalousZone*>(*i);
+						if (l_tpAnomalousZone) {
+							float l_fSum = 0.f;
+							for (int ii=0; ii<l_tpAnomalousZone->m_wItemCount; ii++)
+								l_fSum += l_tpAnomalousZone->m_dwaWeights[ii];
+							l_fSum /= l_tpAnomalousZone->m_fBirthProbability;
+							for (int ii=0; ii<l_tpAnomalousZone->m_wItemCount; ii++)
+								l_tpAnomalousZone->m_dwaWeights[ii] /= l_fSum;
+						}
 					}
 				}
 				else {

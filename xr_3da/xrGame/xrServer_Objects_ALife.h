@@ -245,7 +245,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_S
 	float							m_fRadius;
 	float							m_fBirthProbability;
 	u16								m_wItemCount;
-	u32								*m_dwaWeights;
+	float							*m_faWeights;
 	string64						*m_cppArtefactSections;
 	u16								m_wArtefactSpawnCount;
 	u32								m_dwStartIndex;

@@ -473,19 +473,19 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 	R_ASSERT2					(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
 	m_wItemCount				>>= 1;
 	
-	m_dwaWeights				= (u32*)xr_malloc(m_wItemCount*sizeof(u32));
+	m_faWeights					= (float*)xr_malloc(m_wItemCount*sizeof(float));
 	m_cppArtefactSections		= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
 	string512					l_caBuffer;
 	for (u16 i=0; i<m_wItemCount; i++) {
 		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,i << 1,l_caBuffer));
-		m_dwaWeights[i]			= atoi(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
+		m_faWeights[i]			= (float)atof(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
 	m_wArtefactSpawnCount		= 32;
 }
 
 CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone()
 {
-	xr_free						(m_dwaWeights);
+	xr_free						(m_faWeights);
 	xr_free						(m_cppArtefactSections);
 }
 
@@ -506,22 +506,28 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float		(m_fBirthProbability);
 		u16						l_wItemCount;
 		tNetPacket.r_u16		(l_wItemCount);
-		u32						*l_dwaWeights			= (u32*)xr_malloc(l_wItemCount*sizeof(u32));
+		float					*l_faWeights			= (float*)xr_malloc(l_wItemCount*sizeof(float));
 		string64				*l_cppArtefactSections	= (string64*)xr_malloc(l_wItemCount*sizeof(string64));
 
 		for (u16 i=0; i<l_wItemCount; i++) {
 			tNetPacket.r_string	(l_cppArtefactSections[i]);
-			tNetPacket.r_u32	(l_dwaWeights[i]);
+			if (m_wVersion > 26)
+				tNetPacket.r_float	(l_faWeights[i]);
+			else {
+				u32					l_dwValue;
+				tNetPacket.r_u32	(l_dwValue);
+				l_faWeights[i]		= float(l_dwValue);
+			}
 		}
 
 		for ( i=0; i<l_wItemCount; i++)
 			for (u16 j=0; j<m_wItemCount; j++)
 				if (!strstr(l_cppArtefactSections[i],m_cppArtefactSections[j])) {
-					m_dwaWeights[j] = l_dwaWeights[i];
+					m_faWeights[j] = l_faWeights[i];
 					break;
 				}
 
-		xr_free					(l_dwaWeights);
+		xr_free					(l_faWeights);
 		xr_free					(l_cppArtefactSections);
 	}
 	if (m_wVersion > 25) {
@@ -544,7 +550,7 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(m_wItemCount);
 	for (u16 i=0; i<m_wItemCount; i++) {
 		tNetPacket.w_string		(m_cppArtefactSections[i]);
-		tNetPacket.w_u32		(m_dwaWeights[i]);
+		tNetPacket.w_float		(m_faWeights[i]);
 	}
 	tNetPacket.w_u16			(m_wArtefactSpawnCount);
 	tNetPacket.w_u32			(m_dwStartIndex);
@@ -569,7 +575,7 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
     PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
 	for (u16 i=0; i<m_wItemCount; i++)
-		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_dwaWeights + i,20,10000);
+		PHelper.CreateFLOAT		(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
 	PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
 	PHelper.CreateU16			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
 }
