@@ -244,6 +244,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	xrSE_Actor*			E	= (xrSE_Actor*)DC;
 
+	// Dima : 24.02.2003
+	cNameVisual_set			(E->caModel);
+
 	//
 	r_model_yaw				= E->o_Angle.y;
 	cam_Active()->Set		(E->o_Angle.y,0,0);		// set's camera orientation
