@@ -2108,7 +2108,7 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 			{
 				CUIDragDropItemMP &DDItemMP = m_vDragDropItems[i];
 				// Если слот не пуст то не перемещаем
-				if (UITopList[DDItemMP.GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == DDItemMP.GetSlot())
+				if (UITopList[DDItemMP.GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == DDItemMP.GetSlot() || NO_ACTIVE_SLOT == DDItemMP.GetSlot())
 				{
 					// Устанавливаем режим работы с денежками
 //					bool bPrevMoneyMode = m_bIgnoreMoney;
