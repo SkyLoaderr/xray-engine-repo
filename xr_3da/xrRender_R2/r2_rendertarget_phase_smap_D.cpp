@@ -5,7 +5,8 @@ void	CRenderTarget::phase_smap_direct()
 	// Targets
 	dwWidth								= DSM_size;
 	dwHeight							= DSM_size;
-	u_setrt								(rt_smap_d, NULL, NULL, rt_smap_d_ZB);
+	if (RImplementation.b_nv3x)			u_setrt	(rt_smap_d_surf, NULL, NULL, rt_smap_d_depth->pRT);
+	else								u_setrt	(rt_smap_d_surf, NULL, NULL, rt_smap_d_ZB);
 	RImplementation.rmNormal			();
 
 	// Clear
@@ -15,5 +16,5 @@ void	CRenderTarget::phase_smap_direct()
 	RCache.set_Stencil					( FALSE );
 
 	// Misc		- draw only back-faces
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			)); 	
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
 }

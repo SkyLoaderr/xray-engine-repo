@@ -38,8 +38,9 @@ private:
 	IDirect3DSurface9*			rt_Bloom_ZB;
 
 	// D-smap
-	CRT*						rt_smap_d;		// 32bit, depth or dummy, depending on shadowmap support
-	IDirect3DSurface9*			rt_smap_d_ZB;
+	CRT*						rt_smap_d_surf;	// 32bit, depth 
+	CRT*						rt_smap_d_depth;// 32bit, depth 
+	IDirect3DSurface9*			rt_smap_d_ZB;	//
 
 	// P-smap
 	CRTC*						rt_smap_p;

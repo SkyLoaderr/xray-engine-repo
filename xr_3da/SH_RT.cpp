@@ -24,12 +24,17 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	if (w>caps.MaxTextureWidth)			return;
 	if (h>caps.MaxTextureHeight)		return;
 
+	// Select usage
+	u32 usage	= 0;
+	if (D3DFMT_D24X8==fmt)				usage = D3DUSAGE_DEPTHSTENCIL;
+	else								usage = D3DUSAGE_RENDERTARGET;
+
 	// Validate render-target usage
 	_hr = HW.pD3D->CheckDeviceFormat(
 		D3DADAPTER_DEFAULT,
 		HW.DevT,
 		HW.Caps.fTarget,
-		D3DUSAGE_RENDERTARGET,
+		usage,
 		D3DRTYPE_TEXTURE,
 		f
 		);
@@ -37,7 +42,7 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 
 	// Try to create texture/surface
 	Device.Shader.Evict					();
-	_hr = HW.pDevice->CreateTexture	(w, h, 1, D3DUSAGE_RENDERTARGET, f, D3DPOOL_DEFAULT, &pSurface,NULL);
+	_hr = HW.pDevice->CreateTexture		(w, h, 1, usage, f, D3DPOOL_DEFAULT, &pSurface,NULL);
 	if (FAILED(_hr) || (0==pSurface))	return;
 
 	// OK
