@@ -19,6 +19,7 @@
 #include "../level.h"
 #include "../map_manager.h"
 #include "../map_spot.h"
+#include "UIInventoryUtilities.h"
 
 const				SCROLLBARS_SHIFT			= 5;
 const				VSCROLLBAR_STEP				= 20; // В пикселях
@@ -566,7 +567,8 @@ void CUIMapWnd::Show(bool status)
 		InitLocalMapObjectives			();
 		if(m_activeLevelMap==NULL)
 			SetActiveMap				(Level().name());
-			SetActivePoint				( Level().CurrentEntity()->Position() );
+		SetActivePoint				( Level().CurrentEntity()->Position() );
+		InventoryUtilities::SendInfoToActor("ui_pda_map_local");
 	}else{
 		m_GlobalMap->Show(false);
 		GetUICursor()->HoldMode(false);
