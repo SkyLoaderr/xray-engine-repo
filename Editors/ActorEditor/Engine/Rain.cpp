@@ -214,8 +214,10 @@ void	CEffect_Rain::Hit		(Fvector& pos)
 
 void	CEffect_Rain::Render	()
 {
+	if (!g_pGameLevel)			return;
+
 	// Parse states
-	float	factor			= g_pGamePersistent->Environment.Current.rain_density;
+	float	factor				= g_pGamePersistent->Environment.Current.rain_density;
 
 	switch (state)
 	{
