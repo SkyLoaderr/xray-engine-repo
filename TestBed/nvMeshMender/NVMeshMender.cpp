@@ -880,8 +880,8 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
         for ( unsigned int face = 0; face < (unsigned int)theFaceCount; ++face )
         {
             // sum bases, so we smooth the tangent space across edges
-            avgS[ pIndices[ face * 3 ] ] +=   sVector[ face ];
-            avgT[ pIndices[ face * 3 ] ] +=   tVector[ face ];
+            avgS[ pIndices[ face * 3 ] ]	 +=   sVector[ face ];
+            avgT[ pIndices[ face * 3 ] ]	 +=   tVector[ face ];
 
             avgS[ pIndices[ face * 3 + 1 ] ] +=   sVector[ face ];
             avgT[ pIndices[ face * 3 + 1 ] ] +=   tVector[ face ];

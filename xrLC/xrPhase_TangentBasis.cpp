@@ -4,6 +4,7 @@
 void CBuild::xrPhase_TangentBasis()
 {
 	// ************************************* Correct single-degenerates
+	/*
 	float	teps			= .5f / 4096.f;		// half pixel from 4096 texture (0.0001220703125)
 	for (u32 f=0; f<g_faces.size(); f++)
 	{
@@ -17,12 +18,22 @@ void CBuild::xrPhase_TangentBasis()
 		float		e20		= tc2.distance_to(tc0);
 		if (e01<teps)
 		{
-			Fvector2	d0,d1,d;
+			Fvector2	d0,d1,d,r;
 			d0.sub		(tc0,tc2);	d0.norm	();
 			d1.sub		(tc1,tc2);	d1.norm	();
 			d.averageA	(d0,d1);	d.norm	();
+			r.cross		(d);		r.mul	(teps);	// right
+			tc1.add		(r);		tc0.sub	(r);	// correction
+		} else if (e12<teps) {
+			Fvector2	d1,d2,d,r;
+			d0.sub		(tc0,tc2);	d0.norm	();
+			d1.sub		(tc1,tc2);	d1.norm	();
+			d.averageA	(d0,d1);	d.norm	();
+			r.cross		(d);		r.mul	(teps);	// right
+			tc1.add		(r);		tc0.sub	(r);	// correction
 		}
 	}
+	*/
 
 	// ************************************* Declare inputs
 	Status						("Declarator...");
@@ -141,8 +152,8 @@ void CBuild::xrPhase_TangentBasis()
 			F->tc.front().uv[v].set			(o_tc		[id*3+0],	o_tc		[id*3+1]);
 			F->basis_tangent[v].set			(o_tangent	[id*3+0],	o_tangent	[id*3+1],	o_tangent	[id*3+2]);
 			F->basis_binormal[v].set		(o_binormal	[id*3+0],	o_binormal	[id*3+1],	o_binormal	[id*3+2]);
-			F->basis_tangent[v].normalize	();
-			F->basis_binormal[v].normalize	();
+			//F->basis_tangent[v].normalize		();
+			//F->basis_binormal[v].normalize	();
 		}
 	}
 }
