@@ -1635,3 +1635,15 @@ void CPHElement::set_State(const SPHNetState& state)
 	if(state.enabled&& !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	if(!state.enabled && dBodyIsEnabled(m_body)) Disable();
 }
+
+void CPHElement::cv2bone_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)
+{
+	xform.rotation(q);
+	xform.mulB(m_inverse_local_transform);
+	xform.c.set(pos);
+}
+void CPHElement::cv2obj_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)
+{
+	cv2bone_Xfrom(q,pos,xform);
+	xform.mulB(m_shell->m_object_in_root);
+}

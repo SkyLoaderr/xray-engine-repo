@@ -148,6 +148,8 @@ public:
 	virtual	void			set_BoxMass						(const Fobb& box, float mass);													//aux
 	virtual void			get_State						(		SPHNetState&	state);
 	virtual void			set_State						(const	SPHNetState&	state);
+	virtual void			cv2obj_Xfrom					(const Fquaternion& q,const Fvector& pos, Fmatrix& xform);
+	virtual void			cv2bone_Xfrom					(const Fquaternion& q,const Fvector& pos, Fmatrix& xform);
 	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL);//aux
 	virtual float			getRadius						();																				//aux
 	virtual void			InterpolateGlobalTransform		(Fmatrix* m);																	//called UpdateCL vis influent
