@@ -9,7 +9,7 @@
 
 #include "CameraDefs.h"
 
-DEFINE_VECTOR(CEffector*,EffectorVec,EffectorIt);
+DEFINE_VECTOR				(CEffector*,EffectorVec,EffectorIt);
 
 class ENGINE_API CCameraManager
 {

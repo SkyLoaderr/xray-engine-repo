@@ -35,7 +35,7 @@ public:
     	float		fPosition;
 		Shader*		hShader;
         string128	texture;
-    	SFlare(){ZeroMemory(this,sizeof(SFlare));}
+    	SFlare()	{ZeroMemory(this,sizeof(SFlare));}
 	};
     DEFINE_VECTOR	(SFlare,FlareVec,FlareIt);
     FlareVec		m_Flares;

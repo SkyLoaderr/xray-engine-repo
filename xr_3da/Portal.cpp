@@ -189,7 +189,7 @@ void CSector::Render(CFrustum &F)
 			if (ssa<ssaLIMIT)	continue;
 
 			// Clip by frustum
-			vector<Fvector> &POLY = PORTAL->getPoly();
+			vector<Fvector> &	POLY = PORTAL->getPoly();
 			S.assign			(POLY.begin(),POLY.size()); D.clear();
 			sPoly* P			= F.ClipPoly(S,D);
 			if (0==P)			continue;
