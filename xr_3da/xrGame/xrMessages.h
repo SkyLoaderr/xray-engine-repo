@@ -88,8 +88,19 @@ M_SPAWN
 	zone
 	{
 		cform {
+			u8				count;
+		
+			element {
+				u8			type;	// 0=Sphere, 1=Box
+		  
+				sphere {
+					Fsphere		def;
+				}
+				box {
+					Fmatrix		def;
+				}
+			}
 		}
-
 	}
 };
 
