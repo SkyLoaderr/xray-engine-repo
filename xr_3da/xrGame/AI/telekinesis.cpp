@@ -25,8 +25,9 @@ void CTelekinesis::deactivate()
 	// 
 	for (u32 i = 0; i < objects.size(); i++) 
 	{
-		xr_delete(objects[i]);
+
 		objects[i]->release();
+		xr_delete(objects[i]);
 	}
 	objects.clear	();
 
