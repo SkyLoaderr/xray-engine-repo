@@ -16,14 +16,11 @@ public:
 	float			range;
 	float			cone;
 	Fcolor			color;
-	u32				controller;
 
 	Shader*			s_spot_s;
 	Shader*			s_spot_uns;
 	Shader*			s_point_s;
 	Shader*			s_point_uns;
-
-	CSector*		sector;
 
 	u32				dwFrame;
 public:

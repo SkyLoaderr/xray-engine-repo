@@ -51,8 +51,9 @@ void CLight_DB::Load			(IReader *fs)
 				L->set_position		(Ldata.position);
 				L->set_range		(Ldata.range);
 				L->set_color		(Ldata.diffuse);
+				L->set_active		(true);
+				R_ASSERT			(L->spatial.sector);
 			}
-			L->set_active				(true);
 		}
 
 		F->close			();

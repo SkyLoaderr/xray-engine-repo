@@ -184,12 +184,6 @@ void CRender::LoadLights(IReader *fs)
 {
 	// lights
 	Lights.Load	(fs);
-
-	// glows
-	IReader*	chunk = fs->open_chunk(fsL_GLOWS);
-	R_ASSERT	(chunk && "Can't find glows");
-	// Glows.Load(chunk);
-	chunk->close();
 }
 
 struct b_portal

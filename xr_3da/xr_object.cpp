@@ -92,6 +92,9 @@ CObject::CObject		( )
 	NameObject					= NULL;
 	NameSection					= NULL;
 	NameVisual					= NULL;
+
+	chk_update_shedule			= u32(-1)/2;
+	chk_update_cl				= u32(-1)/2;
 }
 
 CObject::~CObject				( )
