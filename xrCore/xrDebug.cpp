@@ -110,7 +110,11 @@ void xrDebug::error		(HRESULT hr, const char* expr, const char *file, int line)
 	string1024	buffer;
 	string1024	reason;
 
+#ifdef _M_AMD64
+	const char *desc	= 0;
+#else
 	const char *desc	= DXGetErrorDescription9	(hr);
+#endif
 	if (desc==0) 
 	{
 		FormatMessage	(FORMAT_MESSAGE_FROM_SYSTEM,0,hr,0,buffer,1024,0);
