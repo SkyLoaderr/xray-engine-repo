@@ -31,6 +31,7 @@ public:
 			ref_str					name						() const;
 			u32						accessible_nearest			(const Fvector &position, Fvector &result);
 			bool					shape						() const;
+			bool					default_restrictor			() const;
 };
 
 #include "space_restriction_bridge_inline.h"

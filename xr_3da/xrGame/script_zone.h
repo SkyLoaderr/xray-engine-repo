@@ -8,28 +8,24 @@
 
 #pragma once
 
-#include "GameObject.h"
+#include "space_restrictor.h"
 #include "../feel_touch.h"
 #include "script_space_forward.h"
 
 class CScriptGameObject;
 class CScriptCallback;
 
-class CScriptZone : public CGameObject, public Feel::Touch {
+class CScriptZone : public CSpaceRestrictor, public Feel::Touch {
 	CScriptCallback *m_tpOnEnter;
 	CScriptCallback *m_tpOnExit;
 public:
-	typedef	CGameObject	inherited;
+	typedef	CSpaceRestrictor inherited;
 
 					CScriptZone			();
 	virtual			~CScriptZone		();
 	virtual void	reinit				();
 	virtual BOOL	net_Spawn			(LPVOID DC);
 	virtual void	net_Destroy			();
-
-	virtual void	Center				(Fvector& C)	const;
-	virtual float	Radius				() const;
-
 	virtual void	shedule_Update		(u32 dt);
 	virtual void	feel_touch_new		(CObject* O);
 	virtual void	feel_touch_delete	(CObject* O);

@@ -43,34 +43,37 @@ public:
 
 protected:
 	template <bool add>
-	IC		void				update_restrictions			(ref_str &restrictions, ref_str update);
+	IC		void				update_restrictions				(ref_str &restrictions, ref_str update);
 	
 	template <bool add>
-	IC		void				update_restrictions			(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions);
+	IC		void				update_restrictions				(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions);
 	
-	IC		bool				restriction_presented		(ref_str restrictions, ref_str restriction) const;
-	IC		CRestrictionPtr		restriction					(ALife::_OBJECT_ID id);
-			CRestrictionPtr		restriction					(ref_str out_restrictors, ref_str in_restrictors);
-	IC		void				remove_unused				();
+	IC		bool				restriction_presented			(ref_str restrictions, ref_str restriction) const;
+	IC		CRestrictionPtr		restriction						(ALife::_OBJECT_ID id);
+			CRestrictionPtr		restriction						(ref_str out_restrictors, ref_str in_restrictors);
+	IC		void				collect_garbage					();
+	virtual void				on_default_restrictions_changed	(const RestrictionSpace::EDefaultRestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions);
+	IC		bool				no_default_restrictions			(ref_str restrictions);
 
 public:
-								CSpaceRestrictionManager	();
-	virtual						~CSpaceRestrictionManager	();
-	IC		void				restrict					(ALife::_OBJECT_ID id, ref_str out_restrictors, ref_str in_restrictors);
+								CSpaceRestrictionManager		();
+	virtual						~CSpaceRestrictionManager		();
+	IC		void				restrict						(ALife::_OBJECT_ID id, ref_str out_restrictors, ref_str in_restrictors);
 	template <typename T1, typename T2>
-	IC		void				add_border					(ALife::_OBJECT_ID id, T1 p1, T2 p2);
+	IC		void				add_border						(ALife::_OBJECT_ID id, T1 p1, T2 p2);
 
-			void				add_restrictions			(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions);
-			void				remove_restrictions			(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions);
-			void				remove_border				(ALife::_OBJECT_ID id);
-			bool				accessible					(ALife::_OBJECT_ID id, const Fvector &position, float radius = EPS_L);
-			bool				accessible					(ALife::_OBJECT_ID id, u32 level_vertex_id, float radius = EPS_L);
-			u32					accessible_nearest			(ALife::_OBJECT_ID id, const Fvector &position, Fvector &result);
-			ref_str				in_restrictions				(ALife::_OBJECT_ID id);
-			ref_str				out_restrictions			(ALife::_OBJECT_ID id);
+			void				add_restrictions				(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions);
+			void				remove_restrictions				(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions);
+			void				change_restrictions				(ALife::_OBJECT_ID id, ref_str add_out_restrictions, ref_str add_in_restrictions, ref_str remove_out_restrictions, ref_str remove_in_restrictions);
+			void				remove_border					(ALife::_OBJECT_ID id);
+			bool				accessible						(ALife::_OBJECT_ID id, const Fvector &position, float radius = EPS_L);
+			bool				accessible						(ALife::_OBJECT_ID id, u32 level_vertex_id, float radius = EPS_L);
+			u32					accessible_nearest				(ALife::_OBJECT_ID id, const Fvector &position, Fvector &result);
+			ref_str				in_restrictions					(ALife::_OBJECT_ID id);
+			ref_str				out_restrictions				(ALife::_OBJECT_ID id);
 
 #ifdef DEBUG
-	IC		const SPACE_RESTRICTIONS &restrictions			() const;
+	IC		const SPACE_RESTRICTIONS &restrictions				() const;
 #endif
 };
 

@@ -34,8 +34,9 @@ IC	float CSpaceRestrictionShape::radius			(const CCF_Shape::shape_def &data) con
 #endif
 }
 
-IC	CSpaceRestrictionShape::CSpaceRestrictionShape	(CSpaceRestrictor *space_restrictor)
+IC	CSpaceRestrictionShape::CSpaceRestrictionShape	(CSpaceRestrictor *space_restrictor, bool default_restrictor)
 {
+	m_default					= default_restrictor;
 	m_initialized				= true;
 	
 	VERIFY						(space_restrictor);
@@ -52,4 +53,9 @@ IC	void CSpaceRestrictionShape::initialize			()
 IC	bool CSpaceRestrictionShape::shape				() const
 {
 	return						(true);
+}
+
+IC	bool CSpaceRestrictionShape::default_restrictor	() const
+{
+	return						(m_default);
 }

@@ -26,6 +26,7 @@ public:
 	virtual ref_str					name					() const = 0;
 	virtual bool					shape					() const = 0;
 			u32						accessible_nearest		(const Fvector &position, Fvector &result);
+	virtual bool					default_restrictor		() const = 0;
 };
 
 #include "space_restriction_base_inline.h"

@@ -91,8 +91,9 @@
 // 72 -	CSE_AlifeInventoryItem			removed property m_eItemPlace, added flag
 // 73 -	CSE_AlifeMonsterAbstract		appended with property m_space_restrictors
 // 74 -	CSE_AlifeMonsterAbstract		appended with property m_in_space_restrictors
+// 75 -	CSE_AlifeSpaceRestrictor		new class added, hierarchy changed
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(74)
+#define SPAWN_VERSION	u16(75)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

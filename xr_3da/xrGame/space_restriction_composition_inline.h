@@ -24,3 +24,8 @@ IC	bool CSpaceRestrictionComposition::shape					() const
 {
 	return						(false);
 }
+
+IC	bool CSpaceRestrictionComposition::default_restrictor		() const
+{
+	return						(false);
+}

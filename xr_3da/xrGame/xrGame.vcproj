@@ -1166,11 +1166,33 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="SpaceRestrictions"
+					Name="SpaceRestrictionManager"
 					Filter="">
 					<File
 						RelativePath=".\restriction_space.h">
 					</File>
+					<File
+						RelativePath=".\space_restriction_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\space_restriction_manager.h">
+					</File>
+					<File
+						RelativePath=".\space_restriction_manager_inline.h">
+					</File>
+					<Filter
+						Name="SpaceRestriction"
+						Filter="">
+						<File
+							RelativePath=".\space_restriction.cpp">
+						</File>
+						<File
+							RelativePath=".\space_restriction.h">
+						</File>
+						<File
+							RelativePath=".\space_restriction_inline.h">
+						</File>
+					</Filter>
 					<Filter
 						Name="SpaceRestrictionHolder"
 						Filter="">
@@ -1233,32 +1255,6 @@
 							</File>
 							<File
 								RelativePath=".\space_restriction_shape_inline.h">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
-						Name="SpaceRestrictionManager"
-						Filter="">
-						<File
-							RelativePath=".\space_restriction_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\space_restriction_manager.h">
-						</File>
-						<File
-							RelativePath=".\space_restriction_manager_inline.h">
-						</File>
-						<Filter
-							Name="SpaceRestriction"
-							Filter="">
-							<File
-								RelativePath=".\space_restriction.cpp">
-							</File>
-							<File
-								RelativePath=".\space_restriction.h">
-							</File>
-							<File
-								RelativePath=".\space_restriction_inline.h">
 							</File>
 						</Filter>
 					</Filter>

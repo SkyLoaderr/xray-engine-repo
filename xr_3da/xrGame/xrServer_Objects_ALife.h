@@ -211,15 +211,18 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifePHSkeletonObject)
 #define script_type_list save_type_list(CSE_ALifePHSkeletonObject)
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shape)
-									CSE_ALifeScriptZone		(LPCSTR caSection);
-	virtual							~CSE_ALifeScriptZone	();
-	virtual ISE_Shape*  __stdcall	shape					();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_ALifeScriptZone)
-#define script_type_list save_type_list(CSE_ALifeScriptZone)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSpaceRestrictor,CSE_ALifeDynamicObject,CSE_Shape)
+	u8								m_default_space_restrictor_type;
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeScriptZone)
+									CSE_ALifeSpaceRestrictor	(LPCSTR caSection);
+	virtual							~CSE_ALifeSpaceRestrictor	();
+	virtual ISE_Shape*  __stdcall	shape						();
+	virtual bool					can_switch_offline			() const;
+SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeSpaceRestrictor)
+#define script_type_list save_type_list(CSE_ALifeSpaceRestrictor)
+
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeSpaceRestrictor)
 	ALife::_GRAPH_ID				m_tNextGraphID;
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;
@@ -344,7 +347,7 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMountedWeapon)
 #define script_type_list save_type_list(CSE_ALifeMountedWeapon)
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTeamBaseZone,CSE_ALifeScriptZone)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTeamBaseZone,CSE_ALifeSpaceRestrictor)
 									CSE_ALifeTeamBaseZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeTeamBaseZone	();
 

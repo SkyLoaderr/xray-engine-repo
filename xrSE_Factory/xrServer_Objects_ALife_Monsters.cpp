@@ -265,7 +265,7 @@ void CSE_ALifeTrader::FillProps				(LPCSTR _pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCustomZone
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeCustomZone::CSE_ALifeCustomZone	(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection)
+CSE_ALifeCustomZone::CSE_ALifeCustomZone	(LPCSTR caSection) : CSE_ALifeSpaceRestrictor(caSection)
 {
 	m_maxPower					= 100.f;
 	m_attn						= 1.f;
@@ -282,24 +282,13 @@ CSE_ALifeCustomZone::~CSE_ALifeCustomZone	()
 {
 }
 
-ISE_Shape* CSE_ALifeCustomZone::shape		()
-{
-	return						(this);
-}
-
 void CSE_ALifeCustomZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	// CForm
-	if (m_wVersion >= 15)
-		inherited1::STATE_Read	(tNetPacket,size);
-
-	cform_read					(tNetPacket);
-
+	inherited::STATE_Read		(tNetPacket,size);
 	tNetPacket.r_float			(m_maxPower);
 	tNetPacket.r_float			(m_attn);
 	tNetPacket.r_u32			(m_period);
-
-	if ((m_wVersion > 66) && (m_wVersion > 27)) {
+	if (m_wVersion > 66) {
 		u32						l_dwDummy;
 		tNetPacket.r_u32		(l_dwDummy);
 		m_tAnomalyType			= ALife::EAnomalousZoneType(l_dwDummy);
@@ -308,10 +297,7 @@ void CSE_ALifeCustomZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 void CSE_ALifeCustomZone::STATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited1::STATE_Write		(tNetPacket);
-	// CForm
-	cform_write					(tNetPacket);
-
+	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w_float			(m_maxPower);
 	tNetPacket.w_float			(m_attn);
 	tNetPacket.w_u32			(m_period);
@@ -320,12 +306,12 @@ void CSE_ALifeCustomZone::STATE_Write	(NET_Packet	&tNetPacket)
 
 void CSE_ALifeCustomZone::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
-	inherited1::UPDATE_Read		(tNetPacket);
+	inherited::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeCustomZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited1::UPDATE_Write	(tNetPacket);
+	inherited::UPDATE_Write		(tNetPacket);
 }
 
 //xr_token TokenAnomalyType[]={
@@ -342,11 +328,11 @@ void CSE_ALifeCustomZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 
 void CSE_ALifeCustomZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
-	inherited1::FillProps		(pref,items);
-//	PHelper().CreateToken<u8>		(items,PrepareKey(pref,s_name,"Type"),								(u8*)&m_tAnomalyType,	TokenAnomalyType);
-	PHelper().CreateFloat			(items,PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
-	PHelper().CreateFloat			(items,PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
-	PHelper().CreateU32			(items,PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
+	inherited::FillProps		(pref,items);
+//	PHelper().CreateToken<u8>	(items,PrepareKey(pref,s_name,"Type"),			(u8*)&m_tAnomalyType,	TokenAnomalyType);
+	PHelper().CreateFloat		(items,PrepareKey(pref,s_name,"Power"),			&m_maxPower,0.f,1000.f);
+	PHelper().CreateFloat		(items,PrepareKey(pref,s_name,"Attenuation"),	&m_attn,0.f,100.f);
+	PHelper().CreateU32			(items,PrepareKey(pref,s_name,"Period"),		&m_period,20,10000);
 }
 
 ////////////////////////////////////////////////////////////////////////////

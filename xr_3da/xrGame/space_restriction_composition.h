@@ -34,6 +34,7 @@ public:
 		virtual bool		inside							(const Fvector &position, float radius = EPS_L);
 	IC	virtual ref_str		name							() const;
 	IC	virtual bool		shape							() const;
+	IC	virtual bool		default_restrictor				() const;
 };
 
 #include "space_restriction_composition_inline.h"

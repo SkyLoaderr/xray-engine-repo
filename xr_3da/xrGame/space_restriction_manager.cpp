@@ -39,10 +39,10 @@ IC	void CSpaceRestrictionManager::restrict						(ALife::_OBJECT_ID id, ref_str o
 	CLIENT_RESTRICTIONS::iterator	I = m_clients->find(id);
 	VERIFY2							((m_clients->end() == I) || !(*I).second || !(*I).second->applied(),"Restriction cannot be changed since its border is still applied!");
 	(*m_clients)[id]				= restriction(out_restrictors,in_restrictors);
-	remove_unused					();
+	collect_garbage					();
 }
 
-IC	void CSpaceRestrictionManager::remove_unused				()
+IC	void CSpaceRestrictionManager::collect_garbage				()
 {
 	SPACE_RESTRICTIONS::iterator	I = m_space_restrictions.begin(), J;
 	SPACE_RESTRICTIONS::iterator	E = m_space_restrictions.end();
@@ -162,13 +162,23 @@ IC	void CSpaceRestrictionManager::update_restrictions		(ALife::_OBJECT_ID id, re
 		restrict				(id,new_out_restrictions,new_in_restrictions);
 }
 
+IC	bool CSpaceRestrictionManager::no_default_restrictions	(ref_str restrictions)
+{
+	for (u32 i=0, n=_GetItemCount(*restrictions); i<n; ++i)
+		if (restriction(_GetItem(*restrictions,i,m_temp))->default_restrictor())
+			return				(false);
+	return						(true);
+}
+
 void CSpaceRestrictionManager::add_restrictions				(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions)
 {
+	VERIFY2						(no_default_restrictions(out_restrictions) && no_default_restrictions(in_restrictions),"You cannot add default restrictions!");
 	update_restrictions<true>	(id,out_restrictions,in_restrictions);
 }
 
 void CSpaceRestrictionManager::remove_restrictions			(ALife::_OBJECT_ID id, ref_str out_restrictions, ref_str in_restrictions)
 {
+	VERIFY2						(no_default_restrictions(out_restrictions) && no_default_restrictions(in_restrictions),"You cannot remove default restrictions!");
 	update_restrictions<false>	(id,out_restrictions,in_restrictions);
 }
 
@@ -193,4 +203,32 @@ ref_str	CSpaceRestrictionManager::out_restrictions			(ALife::_OBJECT_ID id)
 	if (client_restriction)
 		return					(client_restriction->out_restrictions());
 	return						("");
+}
+
+void CSpaceRestrictionManager::change_restrictions			(ALife::_OBJECT_ID id, ref_str add_out_restrictions, ref_str add_in_restrictions, ref_str remove_out_restrictions, ref_str remove_in_restrictions)
+{
+	CRestrictionPtr				client_restriction = restriction(id);
+	VERIFY						(client_restriction);
+	ref_str						new_out_restrictions = client_restriction->out_restrictions();
+	ref_str						new_in_restrictions = client_restriction->in_restrictions();
+	update_restrictions<false>	(new_out_restrictions,remove_out_restrictions);
+	update_restrictions<false>	(new_in_restrictions,remove_in_restrictions);
+	update_restrictions<true>	(new_out_restrictions,add_out_restrictions);
+	update_restrictions<true>	(new_in_restrictions,add_in_restrictions);
+	if ((new_out_restrictions != client_restriction->out_restrictions()) || (new_in_restrictions != client_restriction->in_restrictions()))
+		restrict				(id,new_out_restrictions,new_in_restrictions);
+}
+
+void CSpaceRestrictionManager::on_default_restrictions_changed	(const RestrictionSpace::EDefaultRestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions)
+{
+	CLIENT_RESTRICTIONS::const_iterator	I = m_clients->begin();
+	CLIENT_RESTRICTIONS::const_iterator	E = m_clients->end();
+	if (restrictor_type == RestrictionSpace::eDefaultRestrictorTypeOut) {
+		for ( ; I != E; ++I)
+			change_restrictions	((*I).first,new_restrictions,"",old_restrictions,"");
+	}
+	else {
+		for ( ; I != E; ++I)
+			change_restrictions	((*I).first,"",new_restrictions,"",old_restrictions);
+	}
 }

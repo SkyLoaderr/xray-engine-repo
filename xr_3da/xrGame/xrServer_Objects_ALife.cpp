@@ -11,6 +11,7 @@
 #include "xrServer_Objects_ALife.h"
 #include "game_base_space.h"
 #include "object_broker.h"
+#include "restriction_space.h"
 
 #ifndef XRGAME_EXPORTS
 #	include "bone.h"
@@ -538,52 +539,70 @@ void CSE_ALifePHSkeletonObject::FillProps(LPCSTR pref, PropItemVec& items)
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeScriptZone
+// CSE_ALifeSpaceRestrictor
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeScriptZone::CSE_ALifeScriptZone	(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection)
+CSE_ALifeSpaceRestrictor::CSE_ALifeSpaceRestrictor	(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection)
+{
+	m_flags.set					(flUseSwitches,FALSE);
+	m_default_space_restrictor_type	= RestrictionSpace::eDefaultRestrictorTypeNone;
+}
+
+CSE_ALifeSpaceRestrictor::~CSE_ALifeSpaceRestrictor	()
 {
 }
 
-CSE_ALifeScriptZone::~CSE_ALifeScriptZone	()
+bool CSE_ALifeSpaceRestrictor::can_switch_offline	() const
 {
+	return						(false);
 }
 
-ISE_Shape* CSE_ALifeScriptZone::shape		()
+ISE_Shape* CSE_ALifeSpaceRestrictor::shape		()
 {
 	return						(this);
 }
 
-void CSE_ALifeScriptZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeSpaceRestrictor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket,size);
 	cform_read					(tNetPacket);
+	if (m_wVersion > 74)
+		m_default_space_restrictor_type = tNetPacket.r_u8();
 }
 
-void CSE_ALifeScriptZone::STATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeSpaceRestrictor::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	cform_write					(tNetPacket);
+	tNetPacket.w_u8				(m_default_space_restrictor_type);
 }
 
-void CSE_ALifeScriptZone::UPDATE_Read	(NET_Packet	&tNetPacket)
+void CSE_ALifeSpaceRestrictor::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
 }
 
-void CSE_ALifeScriptZone::UPDATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeSpaceRestrictor::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Write	(tNetPacket);
 }
 
-void CSE_ALifeScriptZone::FillProps		(LPCSTR pref, PropItemVec& items)
+xr_token defaul_retrictor_types[]={
+	{ "NONE default restrictor",	RestrictionSpace::eDefaultRestrictorTypeNone},
+	{ "OUT default restrictor",		RestrictionSpace::eDefaultRestrictorTypeOut	},
+	{ "IN default restrictor",		RestrictionSpace::eDefaultRestrictorTypeIn	},
+	{ 0,							0}
+};
+
+void CSE_ALifeSpaceRestrictor::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProps		(pref,items);
+	PHelper().CreateToken8		(items, PrepareKey(pref,s_name,"default restrictor type"), &m_default_space_restrictor_type,	defaul_retrictor_types);
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeLevelChanger
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeScriptZone(caSection)
+CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeSpaceRestrictor(caSection)
 {
 	m_tNextGraphID				= ALife::_GRAPH_ID(-1);
 	m_dwNextNodeID				= u32(-1);
@@ -1283,7 +1302,7 @@ void CSE_ALifeMountedWeapon::FillProps			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTeamBaseZone
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeTeamBaseZone::CSE_ALifeTeamBaseZone(LPCSTR caSection) : CSE_ALifeScriptZone(caSection)
+CSE_ALifeTeamBaseZone::CSE_ALifeTeamBaseZone(LPCSTR caSection) : CSE_ALifeSpaceRestrictor(caSection)
 {
 	m_team						= 0;
 }

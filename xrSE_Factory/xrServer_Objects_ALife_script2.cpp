@@ -77,7 +77,7 @@ void CSE_ALifeTeamBaseZone::script_register(lua_State *L)
 		luabind_class_alife1(
 			CSE_ALifeTeamBaseZone,
 			"cse_alife_team_base_zone",
-			CSE_ALifeScriptZone
+			CSE_ALifeSpaceRestrictor
 		)
 	];
 }

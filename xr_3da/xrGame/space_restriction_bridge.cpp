@@ -50,3 +50,8 @@ bool CSpaceRestrictionBridge::shape						() const
 {
 	return				(object().shape());
 }
+
+bool CSpaceRestrictionBridge::default_restrictor		() const
+{
+	return				(object().default_restrictor());
+}

@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "space_restrictor.h"
-#include "xrServer_Object_Base.h"
+#include "xrServer_Objects_ALife.h"
 #include "level.h"
 #include "space_restriction_manager.h"
 
@@ -29,7 +29,7 @@ float CSpaceRestrictor::Radius		() const
 BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 {
 	CSE_Abstract					*abstract = (CSE_Abstract*)data;
-	CShapeData						*se_shape = dynamic_cast<CShapeData*>(abstract);
+	CSE_ALifeSpaceRestrictor		*se_shape = dynamic_cast<CSE_ALifeSpaceRestrictor*>(abstract);
 	R_ASSERT						(se_shape);
 
 	CCF_Shape						*shape = xr_new<CCF_Shape>(this);
@@ -65,7 +65,7 @@ BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 	if (!ai().get_level_graph())
 		return						(FALSE);
 
-	Level().space_restriction_manager().register_restrictor(this);
+	Level().space_restriction_manager().register_restrictor(this,RestrictionSpace::EDefaultRestrictorTypes(se_shape->m_default_space_restrictor_type));
 
 	return							(TRUE);
 }

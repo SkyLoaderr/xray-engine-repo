@@ -24,5 +24,11 @@ namespace RestrictionSpace {
 			m_last_time_dec = Device.dwTimeGlobal;
 		}
 	};
+
+	enum EDefaultRestrictorTypes {
+		eDefaultRestrictorTypeNone = u8(0),
+		eDefaultRestrictorTypeOut  = u8(1),
+		eDefaultRestrictorTypeIn   = u8(2),
+	};
 };
 

@@ -10,6 +10,8 @@
 
 IC	CSpaceRestrictionHolder::CSpaceRestrictionHolder	()
 {
+	m_default_out_restrictions	= "";
+	m_default_in_restrictions	= "";
 }
 
 IC	ref_str	CSpaceRestrictionHolder::normalize_string	(ref_str space_restrictors)
@@ -36,3 +38,12 @@ IC	ref_str	CSpaceRestrictionHolder::normalize_string	(ref_str space_restrictors)
 	return					(ref_str(m_temp_string));
 }
 
+IC	ref_str	CSpaceRestrictionHolder::default_out_restrictions	() const
+{
+	return					(m_default_out_restrictions);
+}
+
+IC	ref_str	CSpaceRestrictionHolder::default_in_restrictions	() const
+{
+	return					(m_default_in_restrictions);
+}

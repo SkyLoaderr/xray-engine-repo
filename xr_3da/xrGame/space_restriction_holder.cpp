@@ -33,7 +33,7 @@ SpaceRestrictionHolder::CBaseRestrictionPtr CSpaceRestrictionHolder::restriction
 	if (I != m_restrictions.end())
 		return				((*I).second);
 
-	remove_unused			();
+	collect_garbage			();
 
 //	Msg						("INTRUSIVE : adding CSpaceRestrictionBase %s",*space_restrictors);
 	CSpaceRestrictionBase	*composition = xr_new<CSpaceRestrictionComposition>(this,space_restrictors);
@@ -42,11 +42,26 @@ SpaceRestrictionHolder::CBaseRestrictionPtr CSpaceRestrictionHolder::restriction
 	return					(bridge);
 }
 
-void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_restrictor)
+void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_restrictor, const RestrictionSpace::EDefaultRestrictorTypes &restrictor_type)
 {
 	ref_str					space_restrictors = space_restrictor->cName();
-	CSpaceRestrictionShape	*shape = xr_new<CSpaceRestrictionShape>(space_restrictor);
-
+	if (restrictor_type != RestrictionSpace::eDefaultRestrictorTypeNone) {
+		ref_str				*temp = 0, temp1;
+		if (restrictor_type == RestrictionSpace::eDefaultRestrictorTypeOut)
+			temp			= &m_default_out_restrictions;
+		else
+			if (restrictor_type == RestrictionSpace::eDefaultRestrictorTypeOut)
+				temp		= &m_default_in_restrictions;
+			else
+				NODEFAULT;
+		temp1				= *temp;
+		strconcat			(m_temp_string,**temp,*space_restrictors);
+		*temp				= normalize_string(m_temp_string);
+		if (xr_strcmp(*temp,temp1))
+			on_default_restrictions_changed	(restrictor_type,temp1,*temp);
+	}
+	
+	CSpaceRestrictionShape	*shape = xr_new<CSpaceRestrictionShape>(space_restrictor,restrictor_type != RestrictionSpace::eDefaultRestrictorTypeNone);
 //	Msg						("INTRUSIVE : adding CSpaceRestrictionBase %s",*space_restrictors);
 	RESTRICTIONS::iterator	I = m_restrictions.find(space_restrictors);
 	if (I == m_restrictions.end()) {
@@ -58,7 +73,7 @@ void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_re
 	(*I).second->change_implementation(shape);
 }
 
-IC	void CSpaceRestrictionHolder::remove_unused					()
+IC	void CSpaceRestrictionHolder::collect_garbage			()
 {
 	RESTRICTIONS::iterator	I = m_restrictions.begin(), J;
 	RESTRICTIONS::iterator	E = m_restrictions.end();

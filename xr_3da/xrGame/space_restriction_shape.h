@@ -18,6 +18,7 @@ public:
 
 protected:
 	CSpaceRestrictor	*m_restrictor;
+	bool				m_default;
 
 protected:
 	IC			Fvector	position				(const CCF_Shape::shape_def &data) const;
@@ -25,11 +26,12 @@ protected:
 				void	build_border			();
 
 public:
-	IC					CSpaceRestrictionShape	(CSpaceRestrictor *space_restrictor);
+	IC					CSpaceRestrictionShape	(CSpaceRestrictor *space_restrictor, bool default_restrictor);
 	IC	virtual void	initialize				();
 		virtual bool	inside					(const Fvector &position, float radius = EPS_L);
 		virtual ref_str	name					() const;
 	IC	virtual bool	shape					() const;
+	IC	virtual bool	default_restrictor		() const;
 };
 
 #include "space_restriction_shape_inline.h"

@@ -33,51 +33,10 @@ void CScriptZone::reinit		()
 	m_tpOnExit->clear		();
 }
 
-void CScriptZone::Center(Fvector& C) const
-{
-	XFORM().transform_tiny		(C,CFORM()->getSphere().P);
-
-}
-
-float CScriptZone::Radius() const
-{
-	return						(CFORM()->getRadius());
-}
-
 BOOL CScriptZone::net_Spawn	(LPVOID DC) 
 {
-	CCF_Shape					*l_pShape = xr_new<CCF_Shape>(this);
-	collidable.model			= l_pShape;
-
-	CSE_Abstract				*l_tpAbstract = (CSE_Abstract*)(DC);
-	CSE_ALifeScriptZone			*l_tpALifeScriptZone = dynamic_cast<CSE_ALifeScriptZone*>(l_tpAbstract);
-	R_ASSERT					(l_tpALifeScriptZone);
-
 	feel_touch.clear			();
-
-	for (u32 i=0; i < l_tpALifeScriptZone->shapes.size(); ++i) {
-		CSE_Shape::shape_def	&S = l_tpALifeScriptZone->shapes[i];
-		switch (S.type) {
-			case 0 : {
-				l_pShape->add_sphere(S.data.sphere);
-				break;
-					 }
-			case 1 : {
-				l_pShape->add_box(S.data.box);
-				break;
-					 }
-		}
-	}
-
-	BOOL						bOk = inherited::net_Spawn(DC);
-	if (bOk) {
-		l_pShape->ComputeBounds	();
-		Fvector					P;
-		XFORM().transform_tiny	(P,CFORM()->getSphere().P);
-		setEnabled				(true);
-	}
-
-	return						(bOk);
+	return						(inherited::net_Spawn(DC));
 }
 
 void CScriptZone::net_Destroy	()
