@@ -37,7 +37,7 @@ enum EMoveCommand
 	mcLanding	= (1ul<<9ul),
 	mcLanding2	= (1ul<<10ul),
 	mcClimb		= (1ul<<11ul),
-
+	mcCreep		= (1ul<<12ul),
 	mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
 };
 

@@ -62,10 +62,10 @@ IC	dGeomID						GetMotionRayGeom				()							{return m_motion_ray;}
 	void						Step							()							;
 	void 						Freeze							()							;
 	void 						UnFreeze						()							;
-	void						AddFreezedObject				(CPHObject* obj)				;
+	void						AddFreezedObject				(CPHObject* obj)			;
 	void						RemoveFreezedObject				(PH_OBJECT_I i)				;
 	bool 						IsFreezed						()							;
-	u32							CalcNumSteps			(u32 dTime)							;
+	u32							CalcNumSteps					(u32 dTime)					;
 
 #ifdef DRAW_CONTACTS
 	virtual void 				OnRender						()							;

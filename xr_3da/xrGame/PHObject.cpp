@@ -108,6 +108,14 @@ void CPHObject::spatial_register()
 	m_flags.set(st_dirty,TRUE);
 }
 
+void CPHObject::collision_disable()
+{
+	ISpatial::spatial_unregister();
+}
+void CPHObject::collision_enable()
+{
+	ISpatial::spatial_register();
+}
 
 void CPHObject::Freeze()
 {

@@ -238,6 +238,7 @@ IC void			RemoveJoint(dxJoint* joint)
 }
 void			SetPrefereExactIntegration(){m_flags.set_prefere_exact_integration();}
 void			Step(dReal step);
+void			Repair();
 protected:
 private:
 };

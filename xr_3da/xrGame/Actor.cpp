@@ -58,7 +58,8 @@
 
 #include "string_table.h"
 #include "usablescriptobject.h"
-
+#include "../cl_intersect.h"
+#include "ExtendedGeom.h"
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -224,18 +225,23 @@ void CActor::Load	(LPCSTR section )
 
 	// m_PhysicMovementControl: General
 	//m_PhysicMovementControl->SetParent		(this);
-	Fbox	bb;
+	Fbox	bb;Fvector	vBOX_center,vBOX_size;
+	// m_PhysicMovementControl: BOX
+	vBOX_center= pSettings->r_fvector3	(section,"ph_box2_center"	);
+	vBOX_size	= pSettings->r_fvector3	(section,"ph_box2_size"		);
+	bb.set	(vBOX_center,vBOX_center); bb.grow(vBOX_size);
+	m_PhysicMovementControl->SetBox		(2,bb);
 
 	// m_PhysicMovementControl: BOX
-	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
-	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
-	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
+	vBOX_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
+	vBOX_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
+	bb.set	(vBOX_center,vBOX_center); bb.grow(vBOX_size);
 	m_PhysicMovementControl->SetBox		(1,bb);
 
 	// m_PhysicMovementControl: BOX
-	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
-	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
-	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
+	vBOX_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
+	vBOX_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
+	bb.set	(vBOX_center,vBOX_center); bb.grow(vBOX_size);
 	m_PhysicMovementControl->SetBox		(0,bb);
 
 	//// m_PhysicMovementControl: Foots
@@ -1224,3 +1230,90 @@ void CActor::spawn_supplies			()
 	CInventoryOwner::spawn_supplies	();
 }
 
+float max_depth=0.f;
+void __stdcall TestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+{
+	float& depth=c.geom.depth;
+	if(depth>max_depth)
+			max_depth=depth;
+	c.surface.mu*=0.2f;
+	if(depth>0.02)
+	{
+		float force = 100.f *world_gravity;
+		dBodyID b1=dGeomGetBody(c.geom.g1);
+		dBodyID b2=dGeomGetBody(c.geom.g2);
+		if(b1)dBodyAddForce(b1,c.geom.normal[0]*force,c.geom.normal[1]*force,c.geom.normal[2]*force);
+		if(b2)dBodyAddForce(b2,-c.geom.normal[0]*force,-c.geom.normal[1]*force,-c.geom.normal[2]*force);
+		  dxGeomUserData* ud1=retrieveGeomUserData(c.geom.g1);
+		  dxGeomUserData* ud2=retrieveGeomUserData(c.geom.g2);
+
+			  if(ud1)
+			  {
+				  CPhysicsShell* phsl=ud1->ph_ref_object->PPhysicsShell();
+				  if(phsl) phsl->Enable();
+			  }
+
+			  if(ud2)
+			  {
+				  CPhysicsShell* phsl=ud2->ph_ref_object->PPhysicsShell();
+				  if(phsl) phsl->Enable();
+			  }
+
+		
+		do_colide=false;
+	}
+}
+bool CActor:: ActivateBox(DWORD id)
+{
+	// могу ли я встать
+	// can we change size to "bbStandBox"
+	/*
+	Fvector				start_pos;
+	Fbox stand_box=m_PhysicMovementControl->Boxes()[id];
+	stand_box.y1+=m_PhysicMovementControl->FootRadius();
+	m_PhysicMovementControl->GetPosition(start_pos);
+	start_pos.y+=(
+				(m_PhysicMovementControl->Boxes()[id].y2-m_PhysicMovementControl->Boxes()[id].y1)
+				)/2.f;
+	start_pos.y+=m_PhysicMovementControl->FootRadius();
+
+	Fvector AABB;
+	stand_box.getradius(AABB);
+	
+
+	XRC.box_options                (0);
+	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),start_pos,AABB);
+	m_PhysicMovementControl->CollisionEnable(FALSE);
+	g_SpatialSpace->q_box(ph_world->r_spatial,0,STYPE_PHYSIC,start_pos,AABB);
+	m_PhysicMovementControl->CollisionEnable(TRUE);
+	if(ph_world->r_spatial.empty()&&!XRC.r_count())
+	{
+		m_PhysicMovementControl->ActivateBox	(id);
+		return true;
+	}
+	else	return false;
+	*/
+	DWORD old_id=m_PhysicMovementControl->BoxID();
+	m_PhysicMovementControl->ActivateBox(id);
+	ph_world->Freeze();
+	m_PhysicMovementControl->UnFreeze();
+	
+	ObjectContactCallbackFun* saved_callback=m_PhysicMovementControl->ObjectContactCallback();
+	m_PhysicMovementControl->SetOjectContactCallback(TestDepthCallback);
+	max_depth=0.f;
+	bool ret=false;
+	for(int i=0;10>i;i++){
+		max_depth=0.f;
+		m_PhysicMovementControl->EnableCharacter();
+		ph_world->Step();
+		if(max_depth<0.02f) 
+		{
+			ret=true;
+			break;
+		}
+	}
+	if(!ret)m_PhysicMovementControl->ActivateBox(old_id);
+	ph_world->UnFreeze();
+	m_PhysicMovementControl->SetOjectContactCallback(saved_callback);
+	return ret;
+}

@@ -37,28 +37,13 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	// изменилось состояние
 	if (mstate_wf != mstate_real)
 	{
-		// могу ли я встать
+		
 		if ((mstate_real&mcCrouch)&&(0==(mstate_wf&mcCrouch)))
 		{
-			// can we change size to "bbStandBox"
-			Fvector				start_pos;
-			//bbStandBox.getcenter(start_pos);
-			start_pos.add		(Position());
-			//if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,bbStandBox))
-			Fbox stand_box=m_PhysicMovementControl->Boxes()[0];
-			//stand_box.y1+=m_PhysicMovementControl->FootExtent().y;
-			stand_box.y1+=m_PhysicMovementControl->FootRadius();
-			m_PhysicMovementControl->GetPosition(start_pos);
-			start_pos.y+=(
-				//-(m_PhysicMovementControl->Box().y2-m_PhysicMovementControl->Box().y1)+
-				(m_PhysicMovementControl->Boxes()[0].y2-m_PhysicMovementControl->Boxes()[0].y1)
-				)/2.f;
-			//start_pos.y+=m_PhysicMovementControl->FootExtent().y/2.f;
-			start_pos.y+=m_PhysicMovementControl->FootRadius();
-			if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,stand_box))
+
+			if (ActivateBox(0))
 			{
 				mstate_real &= ~mcCrouch;
-				m_PhysicMovementControl->ActivateBox	(0);
 			}
 		}
 	}
@@ -176,17 +161,38 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		// crouch
 		if ((0==(mstate_real&mcCrouch))&&(mstate_wf&mcCrouch))
 		{
-			mstate_real			|=	mcCrouch;
+			
 			m_PhysicMovementControl->EnableCharacter();
-			m_PhysicMovementControl->ActivateBox(1);
-			//m_PhysicMovementControl->ActivateBox(1);
+			if(ActivateBox(1))mstate_real			|=	mcCrouch;
+
 		}
 
 		// mask input into "real" state
 		u32 move	= mcAnyMove|mcAccel;
+
+		if (((mstate_real&mcCrouch)))
+		{
+			if(0==(mstate_real&mcAccel)&&(mstate_wf&mcAccel))
+			{
+				m_PhysicMovementControl->EnableCharacter();
+				if(!ActivateBox(2))move	&=~mcAccel;
+			}
+
+			if((mstate_real&mcAccel)&&0==(mstate_wf&mcAccel))
+			{
+				m_PhysicMovementControl->EnableCharacter();
+				if(ActivateBox(1))mstate_real	&=~mcAccel;
+			}
+
+		}
+
+
+
 		mstate_real &= (~move);
 		mstate_real |= (mstate_wf & move);
 
+	
+		
 		// check player move state
 		if (mstate_real&mcAnyMove)
 		{

@@ -82,6 +82,9 @@ public:
 			void			activate						()										;
 		IC	bool			is_active						()										{return !!m_flags.test(st_activated)/*b_activated*/;}
 			void			deactivate						()										;
+			void			collision_disable				()										;
+			void			collision_enable				()										;
+			
 virtual		void			Collide							()										;
 virtual		void			near_callback					(CPHObject* obj)						{;}
 virtual		void			RMotionsQuery					(qResultVec	&res)						{;}

@@ -1012,6 +1012,7 @@ void CPHSimpleCharacter::SetPhysicsRefObject					(CPhysicsShellHolder* ref_objec
 		dGeomUserDataSetPhysicsRefObject(m_geom_shell,ref_object);
 		dGeomUserDataSetPhysicsRefObject(m_wheel,ref_object);
 		dGeomUserDataSetPhysicsRefObject(m_hat,ref_object);
+		dGeomUserDataSetPhysicsRefObject(m_cap,m_phys_ref_object);
 	}
 }
 
@@ -1095,6 +1096,11 @@ void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* call
 	dGeomUserDataSetObjectContactCallback(m_hat,callback);
 	dGeomUserDataSetObjectContactCallback(m_geom_shell,callback);
 	dGeomUserDataSetObjectContactCallback(m_wheel,callback);
+}
+
+ObjectContactCallbackFun* CPHSimpleCharacter::ObjectContactCallBack()
+{
+ return m_object_contact_callback;
 }
 
 u16 CPHSimpleCharacter::RetriveContactBone()

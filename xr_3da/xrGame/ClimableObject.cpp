@@ -27,16 +27,16 @@
 					else		{on_z;}\
 				}
 
-//#define  NON_MIN_OF(x,on_x1,on_x2,y,on_y1,on_y2,z,on_z1,on_z1)\
-//					if(x>y){\
-//							if	(x>z)	{on_x;}\
-//							else		{on_z;}\
-//							}\
-//					else\
-//							{\
-//							if	(y>z)	{on_y;}\
-//							else		{on_z;}\
-//							}
+#define  NON_MIN_OF(x,on_x1,on_x2,y,on_y1,on_y2,z,on_z1,on_z2)\
+					if(x<y){\
+						if	(x<z){if(y<z){on_z1;on_y2;}else{on_z2;on_y1;}}\
+							else{on_x2;on_y1;}\
+						}\
+					else\
+							{\
+							if	(y<z)	{if(x>z){ on_x1;on_z2;}else{on_z1;on_x2;}}\
+							else		{on_x1;on_y2;}\
+							}
 
 class CPHLeaderGeomShell: public CPHStaticGeomShell
 {
@@ -90,7 +90,16 @@ BOOL CClimableObject::	net_Spawn			( LPVOID DC)
 			_abs(XFORM().j.y),m_axis.set(XFORM().j);m_axis.mul(m_box.m_halfsize.y),
 			_abs(XFORM().k.y),m_axis.set(XFORM().k);m_axis.mul(m_box.m_halfsize.z)
 			);
-	if(m_axis.y<0.f) m_axis.invert();
+	MAX_OF( XFORM().i.z*XFORM().i.z+XFORM().i.x*XFORM().i.x,m_side.set(XFORM().i);m_side.mul(m_box.m_halfsize.x),
+			XFORM().j.z*XFORM().j.z+XFORM().j.x*XFORM().j.x,m_side.set(XFORM().j);m_side.mul(m_box.m_halfsize.y),
+			XFORM().i.z*XFORM().k.z+XFORM().k.x*XFORM().k.x,m_side.set(XFORM().k);m_side.mul(m_box.m_halfsize.z)
+			)
+	if(m_axis.y<0.f)
+	{
+		m_axis.invert();
+		m_side.invert();
+	}
+
 	return ret;
 }
 void CClimableObject::	net_Destroy			()
@@ -143,9 +152,7 @@ void		CClimableObject::	DefineClimbState	(CPHCharacter	*actor)
 
 float		CClimableObject::	DDToAxis			(CPHCharacter	*actor,Fvector &out_dir)
 {
-	POnAxis(actor,out_dir);
-	Fvector pos;actor->GetPosition(pos);
-	out_dir.sub(pos);
+	DToAxis(actor,out_dir);
 	return to_mag_and_dir(out_dir);
 }
 
@@ -163,6 +170,27 @@ void		CClimableObject::	UpperPoint			(Fvector &P)
 {
 	P.add(XFORM().c,m_axis);
 }
+
+void		CClimableObject::DToAxis(CPHCharacter *actor,Fvector &dir)
+{
+	POnAxis(actor,dir);
+	Fvector pos;actor->GetPosition(pos);
+	dir.sub(pos);
+}
+void CClimableObject::DSideToAxis		(CPHCharacter	*actor,Fvector	&dir)
+{
+DToAxis(actor,dir);
+Fvector side;side.set(m_side);
+to_mag_and_dir(side);
+side.mul(side.dotproduct(dir));
+dir.set(side);
+}
+
+float CClimableObject::DDSideToAxis(CPHCharacter *actor,Fvector &dir)
+{
+	DDToAxis(actor,dir);
+	return to_mag_and_dir(dir);
+}
 #ifdef DEBUG
 void CClimableObject ::OnRender()
 {
@@ -171,6 +199,11 @@ void CClimableObject ::OnRender()
 	RCache.dbg_DrawOBB(XFORM(),m_box.m_halfsize,D3DCOLOR_XRGB(0,0,255));
 	Fvector p1,p2,d;
 	d.set(m_axis);
+	p1.add(XFORM().c,d);
+	p2.sub(XFORM().c,d);
+	RCache.dbg_DrawLINE(Fidentity,p1,p2,D3DCOLOR_XRGB(255,0,0));
+
+	d.set(m_side);
 	p1.add(XFORM().c,d);
 	p2.sub(XFORM().c,d);
 	RCache.dbg_DrawLINE(Fidentity,p1,p2,D3DCOLOR_XRGB(255,0,0));

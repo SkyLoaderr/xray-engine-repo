@@ -19,6 +19,12 @@ void CActor::cam_Set	(EActorCameras style)
 	cam_Active()->OnActivate(old_cam);
 }
 
+float CActor::CameraHeight()
+{
+	Fvector						R;
+	m_PhysicMovementControl->Box().getsize		(R);
+	return m_fCamHeightFactor*R.y;
+}
 void CActor::cam_Update(float dt, float fFOV)
 {
 	if(m_holder)
@@ -32,9 +38,8 @@ void CActor::cam_Update(float dt, float fFOV)
 	Fvector point, dangle;
 	
 	// calc eye point from player height
-	Fvector						R;
-	m_PhysicMovementControl->Box().getsize		(R);
-	point.set					(0.f,m_fCamHeightFactor*R.y,0.f);
+
+	point.set					(0.f,CameraHeight(),0.f);
 	XFORM().transform_tiny		(point);
 
 	// soft crouch

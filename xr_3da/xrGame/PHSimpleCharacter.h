@@ -122,6 +122,7 @@ public:
 
 	//get-set
 	virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
+	virtual		ObjectContactCallbackFun* ObjectContactCallBack	();
 	virtual		void		SetAcceleration						(Fvector accel)		;
 	virtual		Fvector		GetAcceleration						()					{ return m_acceleration; };
 	virtual		void		SetMaterial							(u16 material)		;

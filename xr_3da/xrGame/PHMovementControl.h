@@ -152,8 +152,10 @@ public:
 	EEnvironment		Environment		( )			{ return eEnvironment; }
 	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }
 	const Fbox&			Box				( )			{ return aabb; }
+	DWORD				BoxID			( )const	{ return m_dwCurBox;}
 	const Fbox*			Boxes			( )			{return boxes;}
 	float				FootRadius		( )			{if(m_character)return m_character->FootRadius(); else return 0.f;};
+	void				CollisionEnable (BOOL enable){if(m_character) if(enable)m_character->collision_enable();else m_character->collision_disable();}
 	//const Fvector&		FootExtent		( )			{return vFootExt;}
 	void				SetBox			(DWORD id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
 
@@ -235,6 +237,8 @@ public:
 	void				ApplyImpulse			(const Fvector& dir,const dReal P)										;
 	void				SetJumpUpVelocity		(float velocity)														{m_character->SetJupmUpVelocity(velocity);}
 	void				EnableCharacter			()																		{if(m_character)m_character->Enable();}
+	void				SetOjectContactCallback (ObjectContactCallbackFun* callback){if(m_character)m_character->SetObjectContactCallback(callback);}
+	ObjectContactCallbackFun* ObjectContactCallback(){if(m_character)return m_character->ObjectContactCallBack();else return NULL; }
 	u16					ContactBone				(){return m_character->ContactBone();}
 	void				GetDesiredPos			(Fvector& dpos)
 	{	

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PHIsland.h"
+#include "physics.h"
 void	CPHIsland::	Step(dReal step)
 {
 	if(!m_flags.is_active()) return;
@@ -9,4 +10,24 @@ void	CPHIsland::	Step(dReal step)
 	else
 		dWorldQuickStep		(DWorld(),	fixed_step);
 	//dWorldStep(DWorld(),fixed_step);
+}
+
+void CPHIsland::Repair()
+{
+	if(!m_flags.is_active()) return;
+	dBodyID body;
+	for (body = firstbody; body; body = (dxBody *) body->next)
+	{
+		if(!dV_valid(dBodyGetAngularVel(body)))
+				dBodySetAngularVel(body,0.f,0.f,0.f);
+		if(!dV_valid(dBodyGetLinearVel(body)))
+				dBodySetLinearVel(body,0.f,0.f,0.f);
+		if(!dV_valid(dBodyGetPosition(body)))
+				dBodySetPosition(body,0.f,0.f,0.f);
+		if(!dQ_valid(dBodyGetQuaternion(body)))
+		{
+			dQuaternion q={1.f,0.f,0.f,0.f};//dQSetIdentity(q);
+			dBodySetQuaternion(body,q);
+		}
+	}
 }

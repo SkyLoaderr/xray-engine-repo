@@ -11,6 +11,7 @@ class CClimableObject: public CPhysicsShellHolder
 	CPHLeaderGeomShell* m_pStaticShell;
 	Fobb				m_box;
 	Fvector				m_axis;
+	Fvector				m_side;
 	float				m_radius;
 public:
 					CClimableObject		();
@@ -27,8 +28,13 @@ public:
 #endif
 	float			DDLoverP			(CPHCharacter	*actor,Fvector &out_dir);//returns distance and dir to lover point
 	float			DDApperP			(CPHCharacter	*actor,Fvector &out_dir);//returns distance and dir to upper point
+	void			DToAxis				(CPHCharacter	*actor,Fvector &dir);
+	
 	float			DDToAxis			(CPHCharacter	*actor,Fvector &out_dir);//returns distance and dir to ladder axis
 	void			POnAxis				(CPHCharacter	*actor,Fvector	&P);
+
+	void			DSideToAxis			(CPHCharacter	*actor,Fvector	&dir);
+	float			DDSideToAxis		(CPHCharacter	*actor,Fvector	&dir);
 
 	void			LoverPoint			(Fvector	&P);
 	void			UpperPoint			(Fvector	&P);
