@@ -102,12 +102,17 @@ void CAI_Space::Load(LPCSTR name)
 //	for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++)
 //		for (int j=0; j<(int)m_tGraphHeader.dwVertexCount; j++)
 //			if (j != i)
-//				ffFindMinimalPath(i,j,m_tpaNodes);
+//				m_tpAStar->ffFindMinimalPath(i,j);
 //	u64 t2x = CPU::GetCycleCount();
 //	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 //	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 //	t2x -= t1x;
 //	Msg("A star time %11I64u",t2x);
+
+//	AI::Path	Path;
+//	for (int i=0; i<(int)m_header.count; i++)
+//		for (int j = i + 1; j<(int)m_header.count; j++)
+//			m_tpAStar->ffFindOptimalPath(i,j,Path,u32(::Random.randI(0,m_header.count)),30.f);
 }
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x -= 0.f, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z -= 40.f;

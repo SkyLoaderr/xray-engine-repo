@@ -17,7 +17,6 @@ typedef struct tagSNode {
 	float		f;
 	float		g;
 	float		h;
-	tagSNode	*tpNext;
 	tagSNode	*tpForward;
 	tagSNode	*tpBack;
 	tagSNode	*tpOpenedNext;
@@ -31,44 +30,8 @@ typedef struct tagSIndexNode {
 #pragma pack(pop)
 
 template<class CTemplateNode, class SData> class CAStarSearch {
-
 private:
-
 	u32			m_dwMaxNodeCount;
-
-	IC void vfUpdateSuccessors(SNode *tpList, float dDifference)
-	{
-		SNode *tpTemp = tpList->tpForward;
-		while (tpTemp) {
-			if (tpTemp->tpForward)
-				vfUpdateSuccessors(tpTemp->tpForward,dDifference);
-			tpTemp->g -= dDifference;
-			tpTemp->f = tpTemp->g + tpTemp->h;
-
-			if (tpTemp->ucOpenCloseMask)
-				if (tpTemp->tpOpenedPrev->f > tpTemp->f) {
-					tpTemp->tpOpenedPrev->tpOpenedNext = tpTemp->tpOpenedNext;
-					if (tpTemp->tpOpenedNext)
-						tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp->tpOpenedPrev;
-					float dTemp = tpTemp->f;
-					SNode *tpTemp1 = tpTemp;
-					for (tpTemp = tpTemp->tpOpenedPrev; ; tpTemp = tpTemp->tpOpenedPrev)
-						if (tpTemp->f <= dTemp) {
-							tpTemp1->tpOpenedNext = tpTemp->tpOpenedNext;
-							tpTemp1->tpOpenedPrev = tpTemp;
-							if (tpTemp->tpOpenedNext)
-								tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp1;
-							tpTemp->tpOpenedNext = tpTemp1;
-							tpTemp = tpTemp1;
-							break;
-						}
-				}
-
-			tpTemp = tpTemp->tpNext;
-		}
-	}
-
-
 public:
 	CAStarSearch(u32 dwMaxNodeCount)
 	{
@@ -114,9 +77,11 @@ public:
 		tpTemp->ucOpenCloseMask = 1;
 		tpTemp->f = tpTemp->g + tpTemp->h;
 		
+		//!!!
 		while (tpOpenedList->tpOpenedNext) {
 			
 			// finding the node being estimated as the cheapest among the opened ones
+			//!!!
 			tpBestNode = tpOpenedList->tpOpenedNext;
 			
 			// checking if the distance is not too large
@@ -148,6 +113,7 @@ public:
 				return;
 			}
 			
+			//!!!
 			// remove that node from the opened list and put that node to the closed list
 			tpOpenedList->tpOpenedNext = tpBestNode->tpOpenedNext;
 			if (tpBestNode->tpOpenedNext)
@@ -166,18 +132,18 @@ public:
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
-					tpTemp = tpIndexes[iNodeIndex].tpNode;
-					
-					// initialize node
-					float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
-					
 					// check if this node is already in the opened list
 					if (tpTemp->ucOpenCloseMask) {
+						tpTemp = tpIndexes[iNodeIndex].tpNode;
+						// initialize node
+						float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
 						if (tpTemp->g > dG) {
 							tpTemp->g = dG;
 							tpTemp->f = tpTemp->g + tpTemp->h;
 							tpTemp->tpBack = tpBestNode;
 							if (tpTemp->tpOpenedPrev->f > tpTemp->f) {
+								// decreasing value
+								//!!!
 								tpTemp->tpOpenedPrev->tpOpenedNext = tpTemp->tpOpenedNext;
 								if (tpTemp->tpOpenedNext)
 									tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp->tpOpenedPrev;
@@ -196,19 +162,13 @@ public:
 						}
 						continue;
 					}
-					else {
-						if (tpTemp->g > dG) {
-							vfUpdateSuccessors(tpTemp,tpTemp->g - dG);
-							tpTemp->g = dG;
-							tpTemp->f = tpTemp->g + tpTemp->h;
-							tpTemp->tpBack = tpBestNode;
-						}
+					else
 						continue;
-					}
 				}
 				else {
+					//!!!
 					tpTemp2 = tpIndexes[iNodeIndex].tpNode = tpHeap + dwHeap++;
-					tpTemp2->tpNext = tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
+					tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
 					tpIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
 
 					tpTemp2->iIndex = iNodeIndex;
@@ -244,7 +204,6 @@ public:
 					// make it a BESTNODE successor
 					tpTemp1 = tpBestNode->tpForward;
 					tpBestNode->tpForward = tpTemp2;
-					tpTemp2->tpNext = tpTemp1;
 				}
 			}
 			if (dwHeap > m_dwMaxNodeCount)
