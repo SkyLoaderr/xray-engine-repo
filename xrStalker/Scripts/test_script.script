@@ -4,8 +4,8 @@ module("ui_load_dialog")
 function main()
 local dlg = ui_main_menu.main_menu()
 level.start_stop_menu(dlg,true)
-	while (1) do
-		wait(1000)
-	end
+--	while (1) do
+	--	wait(1000)
+	--end
 
 end

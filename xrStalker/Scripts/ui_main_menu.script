@@ -23,6 +23,7 @@ function main_menu:SetClGame(game_cl)
 end
 
 function main_menu:InitControls()
+	printf("hello bill gates!!!")
 	----- DATA ----
 	local indent          = 50
 	local screen          = {width = 1024,height = 768}	
