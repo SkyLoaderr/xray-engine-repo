@@ -86,7 +86,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 
 	// Header
 	hdrLEVEL					H;
-	fs.r_chunk_safe				(fsL_HEADER,&H,sizeof(H));
+	fs.r_chunk_safe				(fsL_HEADER2,&H,sizeof(H));
 	R_ASSERT2					(XRCL_PRODUCTION_VERSION==H.XRLC_version,"Incompatible level version.");
 
 	// Textures

@@ -9,7 +9,8 @@ public:
 	{
 		Fvector		v;
 		Fvector2	t;
-		u32			c;
+		u32			c_rgb_hemi;	// rgb,hemi
+		u8			c_sun;
 	};
 	struct _face
 	{

@@ -2,6 +2,13 @@
 
 class FTreeVisual :	public IRender_Visual
 {
+private:
+	struct	_5color
+	{
+		Fvector					rgb;		// - all static lighting
+		float					hemi;		// - hemisphere
+		float					sun;		// - sun
+	};
 protected:
 	IDirect3DVertexBuffer9*		pVertices;
 	u32							vBase;
@@ -20,8 +27,8 @@ protected:
 	R_constant*					c_l_dir;
 	R_constant*					c_l_color;
 
-	Fvector4					c_scale;
-	Fvector4					c_bias;
+	_5color						c_scale;
+	_5color						c_bias;
 public:
 	Fmatrix						xform;
 public:
