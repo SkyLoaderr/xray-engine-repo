@@ -49,7 +49,5 @@ void CTargetCSBase::Update(u32 dt)
 {
 	inherited::Update	(dt);
 
-	Fvector C;
-	clCenter			(C);
-	feel_touch_update	(C,radius);
+	feel_touch_update	(vPosition,radius);
 }
