@@ -27,7 +27,6 @@ CWeapon::CWeapon(LPCSTR name)
 	m_pContainer= 0;
 	m_Offset.identity();
 
-	pstrUIIcon	= 0;
 	pstrWallmark= 0;
 	hUIIcon		= 0;
 	hWallmark	= 0;
@@ -39,7 +38,6 @@ CWeapon::~CWeapon()
 	_DELETE		(pVisual);
 	_DELETE		(m_pHUD);
 	
-	_FREE		(pstrUIIcon);
 	_FREE		(pstrWallmark);
 	
 	Device.Shader.Delete(hUIIcon);
@@ -185,8 +183,7 @@ void CWeapon::OnDeviceCreate()
 {
 	CObject::OnDeviceCreate();
 
-	if (0==pstrUIIcon)	hUIIcon		= 0;
-	else				hUIIcon		= Device.Shader.Create("font",pstrUIIcon);
+	ShaderCreate		(hUIIcon,"font","");
 
 	if (0==pstrWallmark)hWallmark	= 0; 
 	else				hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
