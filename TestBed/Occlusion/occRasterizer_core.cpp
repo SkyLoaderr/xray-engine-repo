@@ -141,7 +141,7 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	else { 
 		startY  = minPixel(B[1]); endY = maxPixel(C[1]); 
 		startp1 = A; startp2 = B;
-		if (!bMiddle)	startY ++;
+		if (!bMiddle)	startY --;
 		
 		// check 'startY' for out-of-tiangle 
 		int test = minPixel(A[1]);
@@ -210,7 +210,12 @@ void occRasterizer::rasterize	(occTri* T)
 	c[0] = T->raster[2].x; c[1] = T->raster[2].y; c[2] = T->raster[2].z;
 	
 	i_order				(a, b, c);					// Order the vertices by Y
-	if (b[1]>0.5f)	
-	i_section			(this,a, b, c, T,BOTTOM);	// Rasterise First Section
-	i_section			(this,a, b, c, T,TOP);		// Rasterise Second Section
+	if (b[1]-floorf(b[1])>0.5f)	
+	{
+		i_section		(this,a, b, c, T,BOTTOM,TRUE);	// Rasterise First Section
+		i_section		(this,a, b, c, T,TOP,FALSE);	// Rasterise Second Section
+	} else {
+		i_section		(this,a, b, c, T,BOTTOM,FALSE);	// Rasterise First Section
+		i_section		(this,a, b, c, T,TOP,TRUE);		// Rasterise Second Section
+	}
 }
