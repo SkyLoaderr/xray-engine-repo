@@ -1,6 +1,6 @@
 function main ()
 
-	set_current_time (12, 30, 44)
+	set_current_time (19, 00, 00)
 
 	local n1 = get_level_object ("naparnik1")
 	local n2 = get_level_object ("naparnik2")
