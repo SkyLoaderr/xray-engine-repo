@@ -6,6 +6,7 @@
 const DWORD	v_limit			= 2048;
 
 // Render of cached meshes
+/*
 void __fastcall render_Cached(CList<FCached*>& cache)
 {
 	CVertexStream*			vs	= cache[0]->VS;
@@ -70,6 +71,47 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		Device.Primitive.setVertices	(vs->getFVF(),Stride,vs->getBuffer());
 		Device.Primitive.setIndicesUC	(vBase, is->getBuffer());
 		DWORD	dwNumPrimitives			= i_count/3;
+		for (DWORD dwPass = 0; dwPass<dwPassesRequired; dwPass++)
+		{
+			Device.Shader.SetupPass		(dwPass);
+			Device.Primitive.Render		(D3DPT_TRIANGLELIST,0,v_count,iBase,dwNumPrimitives);
+		}
+		UPDATEC(v_count,dwNumPrimitives,dwPassesRequired);
+
+		Start = End;
+	}
+}
+*/
+
+// Render of cached meshes
+void __fastcall render_Cached(CList<FCached*>& cache)
+{
+	CVertexStream*			vs	= cache[0]->VS;
+	CIndexStream*			is	= Device.Streams.Get_IB();
+	DWORD dwPassesRequired		= Device.Shader.dwPassesRequired;
+
+	for (DWORD Start=0; Start<cache.size(); )
+	{
+		FCached& V		=	*(cache[Start]);
+		vs				=	V.VS;
+			
+		// Transfer geometry
+		DWORD	vBase,	iBase;
+		DWORD	Stride	= vs->Stride();
+		BYTE*	verts	= LPBYTE(vs->Lock(V.vCount,vBase));
+		WORD*	indices	= LPWORD(is->Lock(V.iCount,iBase));
+		CopyMemory		(verts,		V.pVertices,V.vCount*Stride);
+		CopyMemory		(indices,	V.pIndices,	V.iCount*sizeof(WORD));
+		vs->Unlock		(V.vCount);
+		is->Unlock		(V.iCount);
+
+		// Render
+		Fsphere	S;		V.bv_BBox.getsphere	(S.P,S.R);
+		::Render.Lights.Select				(S.P,S.R);
+
+		Device.Primitive.setVertices	(vs->getFVF(),Stride,vs->getBuffer());
+		Device.Primitive.setIndicesUC	(vBase, is->getBuffer());
+		DWORD	dwNumPrimitives			= V.iCount/3;
 		for (DWORD dwPass = 0; dwPass<dwPassesRequired; dwPass++)
 		{
 			Device.Shader.SetupPass		(dwPass);
