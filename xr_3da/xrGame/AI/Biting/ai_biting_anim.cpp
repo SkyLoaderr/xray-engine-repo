@@ -82,10 +82,6 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		default : NODEFAULT;
 	}
 
-	if (PostureAnim_old == ePostureLie && m_tPostureAnim != ePostureLie) {
-		m_tPostureAnim = m_tPostureAnim;
-	}
-
 	if ( m_tMovementType == eMovementTypeStand &&  
 		m_tStateType == eStateTypeNormal &&  
 		m_tMovementDir == eMovementDirectionNone &&
@@ -163,6 +159,11 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		m_tActionType == eActionTypeEat ) 
 
 		m_tActionAnim = eActionEat;			// обед
+
+	
+	if (m_tPostureAnim == ePostureLie && m_tActionAnim != eActionEat) {
+		m_tPostureAnim = ePostureStand;
+	}
 
 	if ( ((PostureAnim_old != m_tPostureAnim) || (ActionAnim_old != m_tActionAnim)) && bForceChange)
 		FORCE_ANIMATION_SELECT();
