@@ -208,6 +208,7 @@ void CShaderManager::TexturesLoad	()
 	for (DWORD i=0; i<textures.size(); i++) 
 		textures[i]->Load();
 }
+
 void CShaderManager::TexturesUnload	()
 {
 	// unload textures
