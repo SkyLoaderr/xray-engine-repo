@@ -224,9 +224,6 @@
 			RelativePath=".\dds.h">
 		</File>
 		<File
-			RelativePath=".\nvDXTlib.lib">
-		</File>
-		<File
 			RelativePath=".\ReadMe.txt">
 		</File>
 		<File
