@@ -71,6 +71,7 @@ function base_dialog:InitControls(caption)
 	
 	-- Fonts
 	self.caption_font = GetFontLetterica25()
+	self.edit_font    = GetFontLetterica25()
 	self.button_font  = GetFontLetterica25()
 	self.list_file_font = GetFontMedium()
 	self.list_date_font = GetFontMedium()

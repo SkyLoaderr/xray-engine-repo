@@ -14,12 +14,10 @@ function main()
 	
 end
 
-class "save_dialog" (CUIScriptWnd)
+class "save_dialog" (ui_base_dialog.base_dialog)
 
-function save_dialog:__init() super()
-	self.new_save = ""
-	
-	self:SetFont(GetFontMedium()) --set base font for dialog.
+function save_dialog:__init() super()		
+	self:SetFont(GetFontMedium()) 
 	
 	self:InitControls()
 	self:InitCallBacks()
@@ -55,94 +53,50 @@ function save_dialog:SetClGame  (game_cl)
    self.m_game_cl = game_cl
 end
 function save_dialog:InitControls()
-	----- DATA ----
-	local indent          = 50
-	local screen          = {width = 1024,height = 768}	
-	local main_rect       = {x = 0,
-							 y = 0,
-							 width = 800,
-							 height = 600}	
-	main_rect.x = (screen.width - main_rect.width)/2
-	main_rect.y = (screen.height - main_rect.height)/2
-	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
-	local captiontxt_rect = {x = caption_rect.width/2,
-							 y = caption_rect.height/2,
-							 width = 0,
-							 height = 0}
-	local edit_rect       = {x = indent, 
-						     y = caption_rect.y + caption_rect.height + indent,
-						     width =  300, --caption_rect.width - indent*2, 
+	ui_base_dialog.base_dialog.InitControls(self, "Save Game")
+	
+	----- DATA ----	
+	local edit_rect       = {x = self.left_align_x,
+						     y = self.top_align_y,
+						     width =  300,
 						     height = 28}
-	local btn_ok_rect     = {x = indent,
+	local btn_save_rect   = {x = self.left_align_x,
 							 y = 0,
-							 height = 40,
-							 width  = 135}
-	btn_ok_rect.y = main_rect.height - (btn_ok_rect.height + indent)
-	local btn_cancel_rect = {x = btn_ok_rect.x + btn_ok_rect.width + indent,
-							 y = btn_ok_rect.y,
-							 height = btn_ok_rect.height,
-							 width  = btn_ok_rect.width}
-	local list_rect       = {x = indent,
-						     y = edit_rect.y + edit_rect.height + indent,
+							 width  = self.btn_rect.width,
+							 height = self.btn_rect.height}
+	btn_save_rect.y =  self.bottom_align_y - btn_save_rect.height
+	local btn_back_rect   = {x = btn_save_rect.x + btn_save_rect.width + self.indent,
+							 y = btn_save_rect.y,
+							 height = btn_save_rect.height,
+							 width  = btn_save_rect.width}
+	local list_rect       = {x = self.left_align_x,
+						     y = edit_rect.y + edit_rect.height + self.indent,
 						     width = 0,
 						     height = 0}
-	list_rect.width  = main_rect.width - indent*2
-	list_rect.height = main_rect.height - indent*2 - list_rect.y - btn_ok_rect.height	
-	local message_rect   = {x = 0, y = 0, width = 800, height = 300}
-	--message_rect.x = (main_rect.width - message_rect.width)/2
-	--message_rect.y = (main_rect.height - message_rect.height)/2
-	
+	list_rect.width  = self.main_rect.width - self.indent*2
+	list_rect.height = self.main_rect.height - self.indent*2 - list_rect.y - btn_save_rect.height	
+		
 	----- CODE -------
 	
-	-- init self position and size
-	self:Init(0, 0, screen.width, screen.height)
-	
-	-- MAIN FRAME WINDOW		
-	local main_frame = CUIFrameWindow()
-	main_frame:SetAutoDelete(true)              --parent will delete this item in destructor
-	main_frame:SetWindowName("main_frame")
-	--init texture and position relatively parent
-	main_frame:Init("ui\\ui_frame",main_rect.x, main_rect.y, main_rect.width, main_rect.height)
-    --textures name, root is Gamedata\Textures folder
---	main_static:ClipperOn() --clip texture by window region
-	self:AttachChild(main_frame)
-	
-	-- CAPTION frame --
-	local wnd_caption = CUIFrameWindow()
-	wnd_caption:SetAutoDelete(true)
-	wnd_caption:SetWindowName("wnd_caption")
-	wnd_caption:Init("ui\\ui_pop_up",caption_rect.x, caption_rect.y, caption_rect.width, caption_rect.height)
-	main_frame:AttachChild(wnd_caption)
-	
-	local txt_caption = CUIStatic()
-	txt_caption:SetAutoDelete(true)
-	txt_caption:SetWindowName("txt_caption")
-	txt_caption:SetText("SAVE DIALOG HERE")
-	txt_caption:SetTextAlign(CGameFont.alLeft)
-	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
-	main_frame:AttachChild(txt_caption)
-	
 	-- EDIT box --
-	local frame_edit = CUIFrameWindow()  --background for ListView
+	local frame_edit = CUIFrameWindow()  
     frame_edit:SetAutoDelete(true)
     frame_edit:Init("ui\\ui_frame_very_small", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
-    main_frame:AttachChild(frame_edit)
+    self.main_frame:AttachChild(frame_edit)
 	
 	local edit_filename = CUIEditBox()
 	edit_filename:SetAutoDelete(true)
-	edit_filename:SetFont(GetFontLetterica25())
-	edit_filename:SetWindowName("edit_filename")
-	edit_filename:SetText("edit_me")
+	edit_filename:SetFont(self.edit_font)
+	edit_filename:SetWindowName("edit_filename")	
 	edit_filename:Init(edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
-	main_frame:AttachChild(edit_filename)
+	self.main_frame:AttachChild(edit_filename)
 
 
 	------------LIST-----------------
     local txt_list   = CUIFrameWindow()  --background for ListView
     txt_list:SetAutoDelete(true)
-    txt_list:Init("ui\\ui_pop_up", list_rect.x, list_rect.y, list_rect.width, list_rect.height)
-    -- txt_list:ClipperOn()
-    main_frame:AttachChild(txt_list) 
+    txt_list:Init("ui\\ui_pop_up", list_rect.x, list_rect.y, list_rect.width, list_rect.height)    
+    self.main_frame:AttachChild(txt_list) 
 
     local list_wnd = CUIListWndEx()
     list_wnd:SetAutoDelete(true)
@@ -150,45 +104,33 @@ function save_dialog:InitControls()
     list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)
     list_wnd:SetItemHeight(25)
     list_wnd:EnableScrollBar(true)
-
 	self:Register(list_wnd)
-    main_frame:AttachChild(list_wnd)
+    self.main_frame:AttachChild(list_wnd)
 
---------------------------------------- 
+	-- SAVE button
     local btn   = CUIButton()
 	btn:SetAutoDelete(true) 
-	btn:SetWindowName("button_ok") --set window name for callback processing
-	
-	btn:Init("ui\\ui_button_01",btn_ok_rect.x, btn_ok_rect.y, btn_ok_rect.width, btn_ok_rect.height)
---  btn:Init(10,10,100,100) --or without texture
-    btn:SetText("OK")
-	btn:SetTextAlign(CGameFont.alCenter) --horizontal align. possible values are [alCenter,alLeft,alRight]
-	btn:SetTextY(20) --vertical align(pixel). set value to -1 for center
-	self:Register(btn) --for event-handling
-	main_frame:AttachChild(btn)
---------------------------------------
-    btn   = CUIButton()
+	btn:SetWindowName("button_ok")	
+	btn:Init("ui\\ui_button_01", btn_save_rect.x, btn_save_rect.y, btn_save_rect.width, btn_save_rect.height)
+    btn:SetText("Save")
+	btn:SetFont(self.button_font)
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(self.button_indent)
+	self:Register(btn)
+	self.main_frame:AttachChild(btn)
+
+
+	-- 
+	btn = CUIButton()
     btn:SetAutoDelete(true)
     btn:SetWindowName("button_cancel")	
-	btn:Init("ui\\ui_button_01",btn_cancel_rect.x, btn_cancel_rect.y, btn_cancel_rect.width, btn_cancel_rect.height) 	
-	btn:SetText("cancel")
+	btn:Init("ui\\ui_button_01",btn_back_rect.x, btn_back_rect.y, btn_back_rect.width, btn_back_rect.height) 	
+	btn:SetText("Back")
+	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(20)
+	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	main_frame:AttachChild(btn)
-	
-	
-	-- Message Box --
-	message_box = CUIMessageBox()
-	message_box:SetAutoDelete(true)
-	message_box:SetWindowName("message_box")
-	message_box:SetFont(GetFontLetterica25())
-	message_box:Init("ui\\ui_frame",message_rect.x, message_rect.y, message_rect.width, message_rect.height)
-	message_box:SetStyle(0)	
-	message_box:Hide()
-	self:Register(message_box)
-	self:AttachChild(message_box)
-	message_box:AutoCenter()
+	self.main_frame:AttachChild(btn)
 end
 
 function save_dialog:InitCallBacks()
@@ -285,21 +227,16 @@ function save_dialog:OnButton_cancel_clicked()
 end
 
 function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
-   CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+   ui_base_dialog.base_dialog.OnKeyboard(self,dik,keyboard_action)
      
    DIK_RETURN = 28
    WINDOW_KEY_PRESSED = 6
+
+	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
+		self:OnButton_ok_clicked()
+	end
    
-   local bind = dik_to_bind(dik)
-   if bind == key_bindings.kQUIT then
-      level.start_stop_menu(self,true)
-   end  
-   
-   if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
-	self:OnButton_ok_clicked()
-   end
-   
-   return true
+	return true
 end
 
 function save_dialog:AddItemToList(item)
