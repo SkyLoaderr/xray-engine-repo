@@ -111,6 +111,8 @@ void CCustomZone::Load(LPCSTR section)
 		m_sIdleObjectParticlesBig = pSettings->r_string(section,"idle_big_particles");
 	if(pSettings->line_exist(section,"idle_big_particles")) 
 		m_sIdleObjectParticlesSmall = pSettings->r_string(section,"idle_small_particles");
+
+	m_effector.Load(pSettings->r_string(section,"postprocess"));
 }
 
 BOOL CCustomZone::net_Spawn(LPVOID DC) 
@@ -147,6 +149,8 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 
 		PlayIdleParticles();	
 	}
+
+	m_effector.SetRadius(CFORM()->getSphere().R);
 
 	return bOk;
 }
@@ -189,6 +193,9 @@ void CCustomZone::UpdateCL()
 		}
 		m_bZoneReady = false;
 	}
+	
+	if (EnableEffector())
+		m_effector.Update(Level().CurrentEntity()->Position().distance_to(Position()));
 }
 
 void CCustomZone::shedule_Update(u32 dt)

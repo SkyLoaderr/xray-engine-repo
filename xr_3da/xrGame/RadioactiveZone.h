@@ -15,10 +15,9 @@ public:
 	virtual void Affect(CObject* O);
 
 	virtual void Postprocess(f32 val);
+	virtual bool EnableEffector() {return true;}
 
 	u32 m_dwDeltaTime;
-	u32 m_pp_time;
 	float m_fHitImpulseScale;
-	SZonePPInfo m_pp;
 	ref_str m_pHitEffect;
 };

@@ -19,12 +19,12 @@ public:
 
 	virtual BOOL net_Spawn(LPVOID DC);
 
-	virtual void Load(LPCSTR section);
 	//virtual void Update(u32 dt);
 	virtual void UpdateCL();
 	virtual void Affect(CObject* O);
 
 	virtual void Postprocess(f32 val);
+	virtual bool EnableEffector() {return true;}
 
 protected:
 	float Power(float dist, float mass);		
@@ -33,8 +33,7 @@ protected:
 
 	float m_fHitImpulseScale;
 
-	u32 m_dwDeltaTime, m_pp_time;
-	SZonePPInfo m_pp;
+	u32 m_dwDeltaTime;
 
 
 	//текущий заряд зоны

@@ -1,6 +1,5 @@
 #pragma once
 #include "customzone.h"
-#include "zone_effector.h"
 
 class CMosquitoBald : public CCustomZone
 {
@@ -9,17 +8,11 @@ private:
 public:
 	CMosquitoBald(void);
 	virtual ~CMosquitoBald(void);
-
+	
 	virtual void Load(LPCSTR section);
-	//virtual void Update(u32 dt);
-	virtual void UpdateCL();
-	virtual BOOL net_Spawn(LPVOID DC);
-
 	virtual void Postprocess(f32 val);
+	virtual bool EnableEffector() {return true;}
 
-	u32 m_pp_time;
-	SZonePPInfo m_pp;
 	ref_str m_pHitEffect;
 
-	CZoneEffector	m_effector;
 };

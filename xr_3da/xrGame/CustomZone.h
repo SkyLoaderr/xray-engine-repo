@@ -1,6 +1,7 @@
 #pragma once
 #include "gameobject.h"
 #include "../feel_touch.h"
+#include "zone_effector.h"
 
 class CActor;
 
@@ -47,7 +48,13 @@ class CCustomZone :
 {
 private:
     typedef	CGameObject	inherited;
+
 public:
+
+	CZoneEffector	m_effector;
+
+public:
+
 	CCustomZone(void);
 	virtual ~CCustomZone(void);
 
@@ -163,4 +170,7 @@ protected:
 
 	virtual void PlayObjectIdleParticles(CGameObject* pObject);
 	virtual void StopObjectIdleParticles(CGameObject* pObject);
+
+	virtual bool EnableEffector() {return false;}
+
 };

@@ -744,7 +744,7 @@ public:
 		_GetItem(args,2,param3,' ');
 		
 		CObject			*obj = Level().Objects.FindObjectByName(param1);
-		CMosquitoBald	*p_zone = dynamic_cast<CMosquitoBald *>(obj);
+		CCustomZone		*p_zone = dynamic_cast<CCustomZone *>(obj);
 		if (!p_zone) return;
 		
 		u32 type = 0;
