@@ -112,10 +112,14 @@ extern "C" {
 	ETOOLS_API UINT WINAPI
 		D3DX_GetFVFVertexSize(
 		DWORD					FVF);
+
+	ETOOLS_API const char*  WINAPI DXGetErrorDescription9(
+		HRESULT					hr);
 }
 
 #ifndef CREATEDX_EXPORTS
 	#undef D3DXCompileShaderFromFile
+	#undef DXGetErrorDescription9
 	#define D3DXGetDriverLevel						D3DX_GetDriverLevel
 	#define D3DXGetImageInfoFromFileInMemory		D3DX_GetImageInfoFromFileInMemory
 	#define D3DXCreateCubeTextureFromFileInMemoryEx	D3DX_CreateCubeTextureFromFileInMemoryEx
@@ -128,6 +132,7 @@ extern "C" {
 	#define D3DXGetDeclVertexSize					D3DX_GetDeclVertexSize
 	#define D3DXGetDeclLength						D3DX_GetDeclLength
 	#define D3DXGetFVFVertexSize					D3DX_GetFVFVertexSize
+	#define DXGetErrorDescription9					DX_GetErrorDescription9
 #endif
 
 #endif

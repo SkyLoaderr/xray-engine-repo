@@ -156,4 +156,9 @@ extern "C"{
 	{
 		return D3DXGetFVFVertexSize(FVF);
 	}
+
+	ETOOLS_API const char*  WINAPI DXGetErrorDescription9(HRESULT hr)
+	{
+		return DXGetErrorDescription9(hr);
+	}
 }
