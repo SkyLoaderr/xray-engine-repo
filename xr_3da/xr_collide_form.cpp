@@ -181,16 +181,17 @@ void CCF_Skeleton::BuildState()
 	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
 	{
 		if (!I->valid())	continue;
-		Fobb& B				= K->LL_GetBox(I->elem_id);
+		Fobb& B				= K->LL_GetBox		(I->elem_id);
 		Fmatrix& Mbone		= K->LL_GetTransform(I->elem_id);
-		B.xform_get			(Mbox);
-		T.mul_43			(Mbone,Mbox);	// model space
-		TW.mul_43			(L2W,T);		// world space
+		B.xform_get			(Mbox		);
+		T.mul_43			(Mbone,Mbox	);		// model space
+		TW.mul_43			(L2W,T);			// world space
 		I->OBB.xform_set	(TW);
-		I->IM.invert		(TW);
+		bool		b		= I->IM.invert_b	(TW);
+		if (!b)	I->elem_id	= u16(-1);			//. hack - disable invalid bone
 		I->B.set			(
 							-B.m_halfsize.x,-B.m_halfsize.y,-B.m_halfsize.z,
-							B.m_halfsize.x,B.m_halfsize.y,B.m_halfsize.z
+							 B.m_halfsize.x, B.m_halfsize.y, B.m_halfsize.z
 							);
 	}
 }

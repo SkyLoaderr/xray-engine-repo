@@ -178,6 +178,37 @@ public:
 		return *this;
 	}
 
+	IC	bool	invert_b	( const Self &a )	{		// important: this is 4x3 invert, not the 4x4 one
+		// faster than self-invert
+		T fDetInv = ( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -
+			a._12 * ( a._21 * a._33 - a._23 * a._31 ) +
+			a._13 * ( a._21 * a._32 - a._22 * a._31 ) );
+
+		if (_abs(fDetInv)<=flt_zero)	return	false;
+		fDetInv=1.0f/fDetInv;
+
+		_11 =  fDetInv * ( a._22 * a._33 - a._23 * a._32 );
+		_12 = -fDetInv * ( a._12 * a._33 - a._13 * a._32 );
+		_13 =  fDetInv * ( a._12 * a._23 - a._13 * a._22 );
+		_14 = 0.0f;
+
+		_21 = -fDetInv * ( a._21 * a._33 - a._23 * a._31 );
+		_22 =  fDetInv * ( a._11 * a._33 - a._13 * a._31 );
+		_23 = -fDetInv * ( a._11 * a._23 - a._13 * a._21 );
+		_24 = 0.0f;
+
+		_31 =  fDetInv * ( a._21 * a._32 - a._22 * a._31 );
+		_32 = -fDetInv * ( a._11 * a._32 - a._12 * a._31 );
+		_33 =  fDetInv * ( a._11 * a._22 - a._12 * a._21 );
+		_34 = 0.0f;
+
+		_41 = -( a._41 * _11 + a._42 * _21 + a._43 * _31 );
+		_42 = -( a._41 * _12 + a._42 * _22 + a._43 * _32 );
+		_43 = -( a._41 * _13 + a._42 * _23 + a._43 * _33 );
+		_44 = 1.0f;
+		return true;
+	}
+
 	IC	SelfRef	invert		()					// slower than invert other matrix
 	{
 		Self a;	a.set(*this);	invert(a);
