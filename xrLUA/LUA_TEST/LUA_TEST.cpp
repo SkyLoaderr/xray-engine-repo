@@ -770,18 +770,26 @@ void TestLua1()
 	luaopen_string	(L);
 	luaopen_math	(L);
 	luaopen_table	(L);
-	
-//	open			(L);
 
-	lua_atpanic		(L,LuaPanic);
-	lua_sethook		(L, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+	lua_pop			(L,4);
+	
+	open			(L);
+
+//	lua_atpanic		(L,LuaPanic);
+//	lua_sethook		(L, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 
 //	module(L)
 //	[
 //		def("test1",&test, out_value(_1))
 //	];
 
-	lua_dofile		(L,"x:\\test2.lua");
+//	luaL_loadfile	(L,"x:\\test3.lua");
+//	lua_dofile		(L,"x:\\test2.lua");
+	lua_dostring	(L,"nothing");
+
+//	lua_call		(L,0,0);
+
+//	lua_dofile		(L,"x:\\test2.lua");
 
 	lua_close		(L);
 }
@@ -789,6 +797,6 @@ void TestLua1()
 // main
 int __cdecl main(int argc, char* argv[])
 {
-	TestLua0();
-//	TestLua1();
+//	TestLua0();
+	TestLua1();
 }
