@@ -38,7 +38,10 @@ public:
 									 ALife::EHitType hit_type = eHitTypeWound);
 	
 
-	virtual void Explode();
+	virtual void BreakToPieces();
 
 protected:
+	//партиклы разбивания бутылки
+	ref_str m_sBreakParticles;
+	ref_sound sndBreaking;
 };

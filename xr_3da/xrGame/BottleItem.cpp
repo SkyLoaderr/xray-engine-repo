@@ -8,7 +8,7 @@
 #include "BottleItem.h"
 
 
-#define PLAYING_ANIM_TIME 10000
+#define BREAK_POWER 5.f
 
 CBottleItem::CBottleItem(void) 
 {
@@ -16,6 +16,7 @@ CBottleItem::CBottleItem(void)
 
 CBottleItem::~CBottleItem(void) 
 {
+	sndBreaking.destroy();
 }
 
 
@@ -29,6 +30,12 @@ BOOL CBottleItem::net_Spawn(LPVOID DC)
 void CBottleItem::Load(LPCSTR section) 
 {
 	inherited::Load(section);
+
+	if(pSettings->line_exist(section, "break_particles"))
+		m_sBreakParticles = pSettings->r_string(section, "break_particles");
+
+	if(pSettings->line_exist(section, "break_sound"))
+		sndBreaking.create(TRUE, pSettings->r_string(section, "break_sound"));
 }
 
 void CBottleItem::net_Destroy() 
@@ -60,14 +67,32 @@ void CBottleItem::OnEvent(NET_Packet& P, u16 type)
 	switch (type) 
 	{
 		case GE_GRENADE_EXPLODE : 
-			Explode();
+			BreakToPieces();
 			break;
 	}
 }
 
-void CBottleItem::Explode()
+void CBottleItem::BreakToPieces()
 {
+	//играем звук
+	sndBreaking.play_at_pos(0, Position(), false);
 
+	//отыграть партиклы разбивания
+	if(*m_sBreakParticles)
+	{
+		//показываем эффекты
+		CParticlesObject* pStaticPG; 
+		pStaticPG = xr_new<CParticlesObject>(*m_sBreakParticles,Sector()); 
+		pStaticPG->play_at_pos(Position());
+	}
+
+	//ликвидировать сам объект 
+	if (Local())
+	{
+		NET_Packet			P;
+		u_EventGen			(P,GE_DESTROY,ID());
+		u_EventSend			(P);
+	}
 }
 
 void CBottleItem::Hit (float P, Fvector &dir,	
@@ -78,18 +103,14 @@ void CBottleItem::Hit (float P, Fvector &dir,
 {
 	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
 	
-	if(P>5.f) Explode();
-
-}
-
-/*void CBottleItem::Destroy() 
-{
-	//Generate Expode event
-	if (Local()) 
+	if(P>BREAK_POWER)
 	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
-		u_EventSend		(P);
-	};
+		//Generate Expode event
+		if (Local()) 
+		{
+			NET_Packet		P;
+			u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
+			u_EventSend		(P);
+		};
+	}
 }
-*/
