@@ -147,14 +147,8 @@ function loadJob(sj, gname, type)
 	end
 end
 
-function loadStates(st, gname, type)
+function loadStates(gname, type)
 	if type == "blockpost" then
-		t = { id = 1,
-		    timeout = 1*60*60*1000 }
-		table.insert(st, t)			
-		t = { id = 2,
-		    timeout = 1*60*60*1000 }
-		table.insert(st, t)			
 		return function(obj)
 			for k,v in obj do
 				enemy = v:best_enemy()
