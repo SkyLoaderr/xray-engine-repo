@@ -248,7 +248,7 @@ public:
 			}
 		if (dwStart >= dwFinish) {
 			string4096			S;
-			sprintf				(S,"There are no graph vertices in the game graph for the level '%s' !\n",m_tLevel.caLevelName);
+			sprintf				(S,"There are no graph vertices in the game graph for the level '%s' !\n",*m_tLevel.caLevelName);
 			R_ASSERT2			(dwStart < dwFinish,S);
 		}
 
